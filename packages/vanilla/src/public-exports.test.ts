@@ -64,6 +64,7 @@ import { mountToolbar } from "@skryensya/vanilla/toolbar";
 import { mountTooltip } from "@skryensya/vanilla/tooltip";
 import { mountTreegrid } from "@skryensya/vanilla/treegrid";
 import { mountTreeView } from "@skryensya/vanilla/tree-view";
+import { mountUserSelect } from "@skryensya/vanilla/user-select";
 import { mountVaul } from "@skryensya/vanilla/vaul";
 import { mountWindow } from "@skryensya/vanilla/window";
 import { readFileSync } from "node:fs";
@@ -142,6 +143,7 @@ const mounts = [
   mountTooltip,
   mountTreegrid,
   mountTreeView,
+  mountUserSelect,
   mountVaul,
   mountWindow,
 ];
@@ -149,7 +151,7 @@ const mounts = [
 describe("Vanilla public entry points", () => {
   it("publishes the lazy auto-loader and one mount for every regular enhanced module", () => {
     expect(initComponents).toBeTypeOf("function");
-    expect(mounts).toHaveLength(63);
+    expect(mounts).toHaveLength(64);
     expect(mounts.every((mount) => typeof mount === "function")).toBe(true);
   });
 
@@ -250,6 +252,7 @@ describe("Vanilla public entry points", () => {
         mountTooltip,
         mountTreegrid,
         mountTreeView,
+        mountUserSelect,
         mountVaul,
         mountWindow,
       }).map(([name]) => name),
