@@ -3,8 +3,22 @@
 # `surface` is the shape of the contract the last time somebody reviewed it. If the compiler says it
 # does not match, something a consumer depends on has moved: write the entry and paste in the new
 # hash.
-surface: "df899b8c4a46cf9d"
+surface: "a120f0fb179c71e1"
 entries:
+  - date: 2026-09-26
+    kind: feature
+    es:
+      title: StateButton acepta la appearance de Button
+      body: >-
+        <code>data-appearance</code> pasa al host igual que <code>data-variant</code> y <code>data-size</code>,
+        así que un StateButton puede ser <code>tactile</code>, <code>brutalist</code> o <code>frosted</code> con la
+        misma hoja de Button.
+    en:
+      title: StateButton takes Button's appearance
+      body: >-
+        <code>data-appearance</code> reaches the host like <code>data-variant</code> and <code>data-size</code>, so a
+        StateButton can be <code>tactile</code>, <code>brutalist</code> or <code>frosted</code> through Button's own
+        sheet.
   - date: 2026-09-26
     kind: feature
     es:

@@ -8858,6 +8858,18 @@
           {
             "date": "2026-09-26",
             "en": {
+              "body": "<code>data-appearance</code> reaches the host like <code>data-variant</code> and <code>data-size</code>, so a StateButton can be <code>tactile</code>, <code>brutalist</code> or <code>frosted</code> through Button's own sheet.",
+              "title": "StateButton takes Button's appearance"
+            },
+            "es": {
+              "body": "<code>data-appearance</code> pasa al host igual que <code>data-variant</code> y <code>data-size</code>, así que un StateButton puede ser <code>tactile</code>, <code>brutalist</code> o <code>frosted</code> con la misma hoja de Button.",
+              "title": "StateButton acepta la appearance de Button"
+            },
+            "kind": "feature"
+          },
+          {
+            "date": "2026-09-26",
+            "en": {
               "body": "<code>stableIconNames</code> gained <code>appearance</code>, and an IconStateButton's faces are named from that vocabulary, so the enum widens on its own. Nothing that compiled before stops compiling.",
               "title": "Faces accept appearance"
             },
@@ -42385,6 +42397,7 @@
             "form",
             "data-variant",
             "data-size",
+            "data-appearance",
             "aria-*"
           ],
           "host": {
@@ -51919,7 +51932,7 @@
     "working": "0.0.1"
   },
   "schemaVersion": "2.3",
-  "sourceHash": "744d40edb91862a8",
+  "sourceHash": "8302ba3fe1d4e16a",
   "vocabulary": {
     "a11y": "When `when` holds, one of `requiresOneOf` must be given: an option, a raw attribute, a filled slot, or a child signature by name.",
     "atLeastOneOf": "At least one member of each group counts: a filled slot, a boolean option set to true, or an option other than its default.",
