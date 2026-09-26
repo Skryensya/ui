@@ -1,4 +1,4 @@
-import { checkboxParts, checkboxGroupEvents, selectionParts, type CheckboxGroupValueChangeDetails, type CheckedChangeDetails, type CheckedState, type RadioGroupOrientation, type RadioValueChangeDetails, checkboxContract, radioGroupContract } from "@skryensya/core/selection";
+import { checkboxParts, checkboxGroupEvents, selectionParts, type CheckboxGroupValueChangeDetails, type CheckedChangeDetails, type CheckedState, type RadioGroupOrientation, type RadioValueChangeDetails, checkboxContract, radioGroupContract, switchContract } from "@skryensya/core/selection";
 import { forwardRef, useEffect, useId, useMemo, useRef, useState, type ChangeEvent, type HTMLAttributes, type InputHTMLAttributes, type ReactNode } from "react";
 import { Icon } from "./icon.js";
 
@@ -336,6 +336,8 @@ export const RadioGroup = forwardRef<HTMLDivElement, RadioGroupProps>(function R
 });
 
 export type SwitchProps = Omit<InputHTMLAttributes<HTMLInputElement>, "checked" | "defaultChecked" | "onChange" | "role" | "type"> & {
+  /** How the switch is drawn, on its label: `plain`, `tactile`, `brutalist` or `frosted`. */
+  appearance?: (typeof switchContract.options.appearance.values)[number];
   checked?: boolean;
   children?: ReactNode;
   defaultChecked?: boolean;
@@ -343,13 +345,13 @@ export type SwitchProps = Omit<InputHTMLAttributes<HTMLInputElement>, "checked" 
 };
 
 export const Switch = forwardRef<HTMLInputElement, SwitchProps>(function Switch(
-  { checked, children, className, defaultChecked, disabled, onCheckedChange, ...props },
+  { appearance = switchContract.options.appearance.default, checked, children, className, defaultChecked, disabled, onCheckedChange, ...props },
   ref,
 ) {
   const onChange = (event: ChangeEvent<HTMLInputElement>) => onCheckedChange?.({ checked: event.currentTarget.checked });
 
   return (
-    <label className={classes(selectionParts.switch, className)}>
+    <label className={classes(selectionParts.switch, className)} data-appearance={appearance}>
       <input {...props} checked={checked} className={selectionParts.switchInput} defaultChecked={defaultChecked} disabled={disabled} onChange={onChange} ref={ref} role="switch" type="checkbox" />
       <span aria-hidden="true" className={selectionParts.switchControl}>
         <span className={selectionParts.switchThumb} />

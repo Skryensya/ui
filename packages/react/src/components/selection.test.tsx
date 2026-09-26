@@ -156,6 +156,19 @@ describe("selection controls", () => {
     expect((ui.getByRole("radio", { name: "Pro" }) as HTMLInputElement).disabled).toBe(true);
   });
 
+  it("writes the Switch's appearance on its label, the element that paints", () => {
+    const ui = render(
+      <>
+        <Switch>Plain</Switch>
+        <Switch appearance="brutalist">Brutalist</Switch>
+      </>,
+    );
+    expect(ui.getByRole("switch", { name: "Plain" }).closest("label")?.getAttribute("data-appearance")).toBe("plain");
+    const brutalist = ui.getByRole("switch", { name: "Brutalist" });
+    expect(brutalist.hasAttribute("data-appearance")).toBe(false);
+    expect(brutalist.closest("label")?.getAttribute("data-appearance")).toBe("brutalist");
+  });
+
   it("renders Switch as a native checkbox with switch semantics", () => {
     const onCheckedChange = vi.fn();
     const ui = render(<Switch defaultChecked onCheckedChange={onCheckedChange}>Deploy automatically</Switch>);

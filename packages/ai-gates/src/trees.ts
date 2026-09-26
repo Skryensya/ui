@@ -327,6 +327,17 @@ const signatureTrees: readonly Canonical[] = [
     },
   },
   {
+    /* The option lands on the LABEL, the element that paints, not on the input host. */
+    name: "switch/tactile",
+    enhanced: false,
+    tree: {
+      contract: "switch",
+      signature: "Switch",
+      options: { name: "notificaciones", appearance: "tactile" },
+      children: "Notificaciones",
+    },
+  },
+  {
     /*
      * RESIZABLE COLUMNS, which is the only reason `table`'s enhancer exists. Added because nothing
      * exercised it: the selector `table.sk-table[data-resizable-columns]` matched no canonical
