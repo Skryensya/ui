@@ -37,6 +37,15 @@ describe("Window", () => {
     expect(brutalist.classList.contains("sk-window__content")).toBe(true);
   });
 
+  it("forwards Button's appearance to its trigger, apart from the frame's own", () => {
+    const ui = render(
+      <Window appearance="frosted" title="Inspector" trigger="Open inspector" triggerAppearance="brutalist">
+        <p>Body</p>
+      </Window>,
+    );
+    expect(ui.getByRole("button", { name: "Open inspector" }).getAttribute("data-appearance")).toBe("brutalist");
+  });
+
   it("names its controls with the labels it is given, not Zag's English", async () => {
     const ui = render(
       <Window

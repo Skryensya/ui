@@ -1790,6 +1790,23 @@ const signatureTrees: readonly Canonical[] = [
   },
   /** A command, a checkbox, a separator and a submenu: the four item shapes, including the recursive one. */
   {
+    /* Button's appearance on the trigger, forwarded like its variant. */
+    name: "menu/trigger-brutalist",
+    enhanced: true,
+    tree: {
+      contract: "menu",
+      signature: "Menu",
+      options: { label: "Acciones", triggerAppearance: "brutalist" },
+      slots: {
+        trigger: "Acciones",
+        items: [
+          { options: { value: "edit" }, slots: { label: "Editar" } },
+          { options: { value: "copy" }, slots: { label: "Copiar" } },
+        ],
+      },
+    },
+  },
+  {
     name: "menu/with-submenu",
     enhanced: true,
     tree: {

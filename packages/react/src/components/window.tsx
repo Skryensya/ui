@@ -29,6 +29,7 @@ const {
   resizable: resizableOption,
   restoreLabel: restoreLabelOption,
   triggerIconOnly: triggerIconOnlyOption,
+  triggerAppearance: triggerAppearanceOption,
   triggerSize: triggerSizeOption,
   triggerTone: triggerToneOption,
   triggerVariant: triggerVariantOption,
@@ -66,6 +67,8 @@ export type WindowProps = Omit<HTMLAttributes<HTMLDivElement>, "title" | "childr
   triggerLabel?: string;
   triggerVariant?: string;
   triggerTone?: string;
+  /** Button's appearance on the trigger: `plain`, `tactile`, `brutalist` or `frosted`. */
+  triggerAppearance?: string;
   triggerSize?: string;
   triggerIconOnly?: boolean;
   triggerClassName?: string;
@@ -109,6 +112,7 @@ export function Window({
   triggerClassName,
   triggerIconOnly = triggerIconOnlyOption.default,
   triggerLabel,
+  triggerAppearance,
   triggerSize,
   triggerTone,
   triggerVariant,
@@ -180,6 +184,7 @@ export function Window({
         {...{
           [triggerVariantOption.attr]: triggerVariant,
           [triggerToneOption.attr]: triggerTone,
+          [triggerAppearanceOption.attr]: triggerAppearance,
           [triggerSizeOption.attr]: triggerSize,
           [triggerIconOnlyOption.attr]: triggerIconOnly ? "" : undefined,
         }}
