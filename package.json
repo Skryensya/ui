@@ -16,6 +16,7 @@
     "build": "turbo run build",
     "dev": "turbo run dev --filter=@skryensya/docs --filter=@skryensya/playground",
     "dev:all": "turbo run dev",
+    "storybook": "pnpm --filter @skryensya/storybook storybook",
     "prepare": "husky"
   },
   "devDependencies": {

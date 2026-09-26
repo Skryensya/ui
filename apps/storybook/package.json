@@ -1,0 +1,30 @@
+{
+  "name": "@skryensya/storybook",
+  "private": true,
+  "version": "0.0.1-dev",
+  "type": "module",
+  "description": "Storybook for the React binding. Every story renders a docs usage tree through the same renderTree the docs and the gates use.",
+  "scripts": {
+    "storybook": "storybook dev --port 6006",
+    "build-storybook": "storybook build --output-dir storybook-static",
+    "check": "tsc -p tsconfig.json --noEmit"
+  },
+  "dependencies": {
+    "@skryensya/ai-compiler": "workspace:*",
+    "@skryensya/core": "workspace:*",
+    "@skryensya/react": "workspace:*",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
+  },
+  "devDependencies": {
+    "@storybook/addon-docs": "^10.5.10",
+    "@storybook/react-vite": "^10.5.10",
+    "@types/node": "catalog:",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "sass": "^1.83.0",
+    "storybook": "^10.5.10",
+    "typescript": "^5.9.3",
+    "vite": "^8.1.5"
+  }
+}
