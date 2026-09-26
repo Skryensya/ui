@@ -191,6 +191,31 @@ describe("Tile React contracts", () => {
     expect(ui.getByRole("button", { name: "Default" }).dataset.padding).toBeUndefined();
   });
 
+  it("writes appearance on the painted surface, plain when omitted", () => {
+    const ui = render(
+      <>
+        <TileLink href="/details" appearance="tactile">Link</TileLink>
+        <TileButton appearance="brutalist">Button</TileButton>
+        <TileCheckbox appearance="tactile">Checkbox</TileCheckbox>
+        <TileSwitch appearance="brutalist">Switch</TileSwitch>
+        <TileRadioGroup appearance="brutalist" items={[{ value: "basic", children: "Basic" }]} name="plan" />
+        <ExpandableTile appearance="tactile"><ExpandableTile.Trigger>Summary</ExpandableTile.Trigger></ExpandableTile>
+        <TileButton>Default</TileButton>
+      </>,
+    );
+
+    expect(ui.getByRole("link").dataset.appearance).toBe("tactile");
+    expect(ui.getByRole("button", { name: "Button" }).dataset.appearance).toBe("brutalist");
+    expect(ui.getByRole("checkbox").closest<HTMLElement>(".sk-tile")?.dataset.appearance).toBe("tactile");
+    expect(ui.getByRole("switch").closest<HTMLElement>(".sk-tile")?.dataset.appearance).toBe("brutalist");
+    // The option is the group's, the paint is each item's: the group root carries nothing.
+    const radioTile = ui.getByRole("radio").closest<HTMLElement>(".sk-tile");
+    expect(radioTile?.dataset.appearance).toBe("brutalist");
+    expect(radioTile?.parentElement?.dataset.appearance).toBeUndefined();
+    expect(ui.getByText("Summary").closest<HTMLElement>(".sk-tile")?.dataset.appearance).toBe("tactile");
+    expect(ui.getByRole("button", { name: "Default" }).dataset.appearance).toBe("plain");
+  });
+
   it("supports uncontrolled checkbox changes", async () => {
     const onCheck = vi.fn();
     const ui = render(<TileCheckbox defaultChecked={false} onCheck={onCheck}>Alerts</TileCheckbox>);

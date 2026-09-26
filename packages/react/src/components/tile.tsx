@@ -2,6 +2,7 @@ import {
   tileEvents,
   tileParts,
   type ExpandableTileOptions,
+  type TileAppearance,
   type TileCheckboxOptions,
   type TileRadioGroupOptions,
   type TileSwitchOptions,
@@ -38,15 +39,16 @@ function tileRootClasses(className: string | undefined, ...parts: readonly strin
 export type TileLinkProps = AnchorHTMLAttributes<HTMLAnchorElement> & {
   children?: ReactNode;
   padding?: Space;
+  appearance?: TileAppearance;
   /** Required: a tile that navigates needs a destination. An `<a>` with no `href` is not one. */
   href: string;
 };
 
-export const TileLink = forwardRef<HTMLAnchorElement, TileLinkProps>(function TileLink({ className, children, padding, ...props }, ref) {
+export const TileLink = forwardRef<HTMLAnchorElement, TileLinkProps>(function TileLink({ className, children, padding, appearance = "plain", ...props }, ref) {
   const classes = tileRootClasses(className, tileParts.interactive, "sk-interactive");
 
   return (
-    <a {...props} className={classes} data-padding={padding} data-part="root" data-scope="tile" ref={ref}>
+    <a {...props} className={classes} data-appearance={appearance} data-padding={padding} data-part="root" data-scope="tile" ref={ref}>
       {children}
     </a>
   );
@@ -55,10 +57,11 @@ export const TileLink = forwardRef<HTMLAnchorElement, TileLinkProps>(function Ti
 export type TileButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
   children?: ReactNode;
   padding?: Space;
+  appearance?: TileAppearance;
 };
 
 export const TileButton = forwardRef<HTMLButtonElement, TileButtonProps>(function TileButton(
-  { className, children, disabled, padding, type = "button", ...props },
+  { className, children, disabled, padding, appearance = "plain", type = "button", ...props },
   ref,
 ) {
   const classes = tileRootClasses(className, tileParts.interactive, "sk-interactive");
@@ -67,6 +70,7 @@ export const TileButton = forwardRef<HTMLButtonElement, TileButtonProps>(functio
     <button
       {...props}
       className={classes}
+      data-appearance={appearance}
       data-disabled={disabled ? "" : undefined}
       data-padding={padding}
       data-part="root"
@@ -133,7 +137,7 @@ export type TileCheckboxProps = Omit<LabelHTMLAttributes<HTMLLabelElement>, "onC
   };
 
 export const TileCheckbox = forwardRef<HTMLLabelElement, TileCheckboxProps>(function TileCheckbox(
-  { id, className, children, inputProps, onCheck, indeterminate, padding, ...options },
+  { id, className, children, inputProps, onCheck, indeterminate, padding, appearance = "plain", ...options },
   ref,
 ) {
   const generatedId = useId();
@@ -165,7 +169,7 @@ export const TileCheckbox = forwardRef<HTMLLabelElement, TileCheckboxProps>(func
   };
 
   return (
-    <label {...api.getRootProps()} className={classes} data-padding={padding} data-scope="tile" data-sk-tile-checkbox="" ref={setRefs}>
+    <label {...api.getRootProps()} className={classes} data-appearance={appearance} data-padding={padding} data-scope="tile" data-sk-tile-checkbox="" ref={setRefs}>
       <input {...api.getHiddenInputProps()} {...inputProps} data-part="input" />
       <span className={tileParts.content} data-part="content">
         {children}
@@ -187,7 +191,7 @@ export type TileSwitchProps = Omit<LabelHTMLAttributes<HTMLLabelElement>, "onCha
   };
 
 export const TileSwitch = forwardRef<HTMLLabelElement, TileSwitchProps>(function TileSwitch(
-  { id, className, children, inputProps, onCheck, padding, ...options },
+  { id, className, children, inputProps, onCheck, padding, appearance = "plain", ...options },
   ref,
 ) {
   const generatedId = useId();
@@ -218,7 +222,7 @@ export const TileSwitch = forwardRef<HTMLLabelElement, TileSwitchProps>(function
   };
 
   return (
-    <label {...api.getRootProps()} className={classes} data-padding={padding} data-scope="tile" data-sk-tile-switch="" ref={setRefs}>
+    <label {...api.getRootProps()} className={classes} data-appearance={appearance} data-padding={padding} data-scope="tile" data-sk-tile-switch="" ref={setRefs}>
       <input {...api.getHiddenInputProps()} {...inputProps} data-part="input" role="switch" />
       <span className={tileParts.content} data-part="content">
         {children}
@@ -242,7 +246,7 @@ export type TileRadioGroupProps = Omit<HTMLAttributes<HTMLDivElement>, "defaultV
   };
 
 export const TileRadioGroup = forwardRef<HTMLDivElement, TileRadioGroupProps>(function TileRadioGroup(
-  { id, className, items, name, value, defaultValue, disabled, padding, required, orientation, onValueChange, ...props },
+  { id, className, items, name, value, defaultValue, disabled, padding, appearance = "plain", required, orientation, onValueChange, ...props },
   ref,
 ) {
   const generatedId = useId();
@@ -278,6 +282,7 @@ export const TileRadioGroup = forwardRef<HTMLDivElement, TileRadioGroupProps>(fu
           <label
             {...api.getItemProps(itemProps)}
             className={tileRootClasses(undefined, tileParts.interactive, "sk-interactive")}
+            data-appearance={appearance}
             data-part="item"
             data-padding={padding}
             data-scope="tile"
@@ -304,9 +309,14 @@ export const TileRadioGroup = forwardRef<HTMLDivElement, TileRadioGroupProps>(fu
 type ExpandableTileContextValue = CollapsibleApi;
 const ExpandableTileContext = createContext<ExpandableTileContextValue | null>(null);
 
-export type ExpandableTileProps = Omit<HTMLAttributes<HTMLElement>, "onChange"> &
-  ExpandableTileOptions & {
+export type ExpandableTileProps = Omit<HTMLAttributes<HTMLElement>, "onChange" | "appearance"> &
+  Omit<ExpandableTileOptions, "appearance"> & {
     children?: ReactNode;
+    /**
+     * `null` writes no appearance at all: the section's surface belongs to something else. Only
+     * `Accordion.Item` passes it, because an accordion's frame is the surface and carries the axis.
+     */
+    appearance?: ExpandableTileOptions["appearance"] | null;
   };
 
 type ExpandableTileComponent = ForwardRefExoticComponent<ExpandableTileProps & { ref?: Ref<HTMLElement> }> & {
@@ -315,7 +325,7 @@ type ExpandableTileComponent = ForwardRefExoticComponent<ExpandableTileProps & {
 };
 
 const ExpandableTileRoot = forwardRef<HTMLElement, ExpandableTileProps>(function ExpandableTile(
-  { id, className, children, open, defaultOpen, disabled, padding, onOpenChange, ...props },
+  { id, className, children, open, defaultOpen, disabled, padding, appearance = "plain", onOpenChange, ...props },
   ref,
 ) {
   const generatedId = useId();
@@ -348,6 +358,7 @@ const ExpandableTileRoot = forwardRef<HTMLElement, ExpandableTileProps>(function
         {...api.getRootProps()}
         {...props}
         className={classes}
+        data-appearance={appearance ?? undefined}
         data-padding={padding}
         data-scope="tile"
         // Symmetry with the Vanilla binding's own `AccordionItem.svelte`/`ExpandableTile.svelte`,
