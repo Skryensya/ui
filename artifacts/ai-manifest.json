@@ -6785,6 +6785,19 @@
         "date": null,
         "entries": [
           {
+            "date": "2026-09-26",
+            "en": {
+              "body": "The current page wears Button's construction, written as the <code>--sk-pagination-current-*</code> hooks: a key on a ledge (a press sinks a page), a black-edged block with a hard offset, or a see-through sheet.",
+              "title": "Pagination adds plain, tactile, brutalist and frosted appearances"
+            },
+            "es": {
+              "body": "La página actual lleva la construcción de Button, escrita como los hooks <code>--sk-pagination- current-*</code>: una tecla con saliente (y una página se hunde al presionar), un bloque de borde negro con sombra dura, o una lámina translúcida.",
+              "title": "Pagination suma appearance plain, tactile, brutalist y frosted"
+            },
+            "kind": "feature",
+            "target": "appearance"
+          },
+          {
             "date": "2026-09-17",
             "en": {
               "body": "Interactive or form host signatures publish <code>forward</code> (<code>id</code>/<code>aria-*</code> and link or form attrs where relevant). An attr outside the list is <code>unknown-attr</code>.",
@@ -9506,6 +9519,18 @@
       {
         "date": null,
         "entries": [
+          {
+            "date": "2026-09-26",
+            "en": {
+              "body": "It shares Pagination's sheet, so <code>--sk-pagination-brutalist-offset</code> is among its hooks too.",
+              "title": "TablePager publishes Pagination's brutalist hook"
+            },
+            "es": {
+              "body": "Comparte la hoja de Pagination, así que <code>--sk-pagination-brutalist-offset</code> también está entre sus hooks.",
+              "title": "TablePager publica el hook brutalist de Pagination"
+            },
+            "kind": "feature"
+          },
           {
             "date": "2026-09-17",
             "en": {
@@ -34985,6 +35010,12 @@
         "pageChange": "sk:paginationpagechange"
       },
       "hookDetails": {
+        "--sk-pagination-brutalist-offset": {
+          "default": "3px",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/pagination.css"
+        },
         "--sk-pagination-current-bg": {
           "default": "var(--color-bg-surface-raised)",
           "output": false,
@@ -35131,6 +35162,7 @@
         }
       },
       "hooks": [
+        "--sk-pagination-brutalist-offset",
         "--sk-pagination-current-bg",
         "--sk-pagination-current-border-color",
         "--sk-pagination-current-fg",
@@ -35158,6 +35190,17 @@
       ],
       "id": "pagination",
       "options": {
+        "appearance": {
+          "attr": "data-appearance",
+          "default": "plain",
+          "type": "enum",
+          "values": [
+            "plain",
+            "tactile",
+            "brutalist",
+            "frosted"
+          ]
+        },
         "label": {
           "attr": "aria-label",
           "default": "Pagination",
@@ -35246,7 +35289,8 @@
             "siblings",
             "label",
             "previousLabel",
-            "nextLabel"
+            "nextLabel",
+            "appearance"
           ],
           "react": {
             "from": "@skryensya/react/pagination",
@@ -44203,6 +44247,12 @@
         "change": "sk:tablepagerchange"
       },
       "hookDetails": {
+        "--sk-pagination-brutalist-offset": {
+          "default": "3px",
+          "output": false,
+          "part": "nav",
+          "sheet": "@skryensya/core/components/pagination.css"
+        },
         "--sk-pagination-current-bg": {
           "default": "var(--color-bg-surface-raised)",
           "output": false,
@@ -44391,6 +44441,7 @@
         }
       },
       "hooks": [
+        "--sk-pagination-brutalist-offset",
         "--sk-pagination-current-bg",
         "--sk-pagination-current-border-color",
         "--sk-pagination-current-fg",
@@ -52173,7 +52224,7 @@
     "working": "0.0.1"
   },
   "schemaVersion": "2.3",
-  "sourceHash": "35e9ccfd67c0df6d",
+  "sourceHash": "c1d0553f622c9874",
   "vocabulary": {
     "a11y": "When `when` holds, one of `requiresOneOf` must be given: an option, a raw attribute, a filled slot, or a child signature by name.",
     "atLeastOneOf": "At least one member of each group counts: a filled slot, a boolean option set to true, or an option other than its default.",

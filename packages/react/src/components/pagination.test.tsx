@@ -3,6 +3,13 @@ import { describe, expect, it, vi } from "vitest";
 import { Pagination, TablePager, TablePagerBar, TablePagerEnd, TablePagerNav, TablePagerSize, TablePagerStatus } from "./pagination.js";
 
 describe("Pagination", () => {
+  it("serializes its appearance on the landmark, plain by default", () => {
+    const plain = render(<Pagination page={2} total={5} label="Plain" />);
+    expect(plain.getByRole("navigation", { name: "Plain" }).getAttribute("data-appearance")).toBe("plain");
+    const brutalist = render(<Pagination appearance="brutalist" page={2} total={5} label="Brutalist" />);
+    expect(brutalist.getByRole("navigation", { name: "Brutalist" }).getAttribute("data-appearance")).toBe("brutalist");
+  });
+
   it("marks the current page and disables prev/next at the bounds", () => {
     const ui = render(<Pagination page={1} total={10} />);
     expect(ui.getByRole("button", { current: "page" }).textContent).toBe("1");

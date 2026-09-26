@@ -98,6 +98,7 @@ export const paginationContract = {
     pageChange: { detail: { page: "number" }, reactProp: "onPageChange", reactDetail: "number", source: "root", trigger: "item" },
   },
   hooks: [
+    "--sk-pagination-brutalist-offset",
     "--sk-pagination-current-bg",
     "--sk-pagination-current-border-color",
     "--sk-pagination-current-fg",
@@ -136,13 +137,24 @@ export const paginationContract = {
        node, which is why one attribute can serve both. */
     previousLabel: { type: "string", default: "Previous page", attr: "aria-label" },
     nextLabel: { type: "string", default: "Next page", attr: "aria-label" },
+    /*
+     * HOW THE PAGER IS DRAWN, Button's axis, worn by the current page: `tactile` a key on a ledge
+     * (a press sinks a page), `brutalist` a black-edged block with a hard offset, `frosted` a
+     * see-through sheet. Written as the `--sk-pagination-current-*` hooks.
+     */
+    appearance: {
+      type: "enum",
+      values: ["plain", "tactile", "brutalist", "frosted"],
+      default: "plain",
+      attr: "data-appearance",
+    },
   },
 
   signatures: {
     Pagination: {
       intent: ["pagination", "pager", "page-numbers", "next-previous"],
       host: { element: "nav" },
-      options: ["page", "total", "siblings", "label", "previousLabel", "nextLabel"],
+      options: ["page", "total", "siblings", "label", "previousLabel", "nextLabel", "appearance"],
       /** Host id / a11y; nav labels stay options. */
       forward: ["id", "aria-*"],
       slots: {},
@@ -228,6 +240,7 @@ export const tablePagerContract = {
     change: { detail: { page: "number", pageSize: "number", pageCount: "number", total: "number", start: "number", end: "number" }, reactProp: false, source: "root", trigger: "size" },
   },
   hooks: [
+    "--sk-pagination-brutalist-offset",
     "--sk-pagination-current-bg",
     "--sk-pagination-current-border-color",
     "--sk-pagination-current-fg",

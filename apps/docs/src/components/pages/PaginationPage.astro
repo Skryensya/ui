@@ -3,6 +3,7 @@ import "@skryensya/core/components/pagination.css";
 /* Structure diagram: Annotated specimen; a preview frame only copies styles THIS page loaded. */
 import "@skryensya/core/components/annotation.css";
 import ComponentPageShell from "./ComponentPageShell.astro";
+import AppearanceMenu from "../AppearanceMenu.astro";
 import CodeBlock from "../CodeBlock.astro";
 import ComponentPreview from "../ComponentPreview.astro";
 import { paginationAnatomyTree, paginationTree } from "../../demos/pagination";
@@ -22,8 +23,13 @@ paginationRange(5, 20);
   title="Pagination"
   description={t("paginationPage.description")}
   contractId="pagination"
+  appearanceTargetSelector=".sk-pagination"
   testFiles={["packages/react/src/components/pagination.test.tsx"]}}
 >
+  <Fragment slot="appearance">
+    <AppearanceMenu label={t("prefs.appearance")} />
+  </Fragment>
+
   <Fragment slot="anatomy">
     <p set:html={t("paginationPage.anatomyBody")} />
     <ComponentPreview
