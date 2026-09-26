@@ -204,9 +204,139 @@
     border-radius: var(--radius-pill);
   }
 
+  /*
+   * ── APPEARANCE ───────────────────────────────────────────────────────────────────────────────
+   *
+   * Button's axis on the tab strip (button.css documents each construction in full). The SELECTED
+   * TAB wears the construction; the rest stay flat. Child combinators throughout, so a Tabs nested in
+   * a panel keeps its own appearance. Orientation and `variant` are untouched: the constructions
+   * are drawn without reference to which edge the strip hangs from.
+   */
+
+  /* TACTILE: the selected tab is a raised key on a ledge in a darker step of its own face, lit from
+   * the top; the key IS the indicator, so the bar steps aside. A press sinks a tab instead of
+   * squeezing it. */
+  .sk-tabs[data-appearance="tactile"] > .sk-tabs__list > .sk-tabs__trigger {
+    --tabs-key: var(--color-bg-surface-raised);
+    transition:
+      color var(--motion-state-change-duration) var(--motion-state-change-easing),
+      translate var(--motion-feedback-duration) var(--motion-feedback-easing),
+      box-shadow var(--motion-feedback-duration) var(--motion-feedback-easing);
+  }
+
+  .sk-tabs[data-appearance="tactile"] > .sk-tabs__list > .sk-tabs__trigger[data-selected] {
+    border-radius: var(--sk-tabs-trigger-radius);
+    background:
+      linear-gradient(
+        to bottom,
+        light-dark(color-mix(in oklab, white 14%, transparent), color-mix(in oklab, white 6%, transparent)),
+        transparent 60%
+      ),
+      var(--tabs-key);
+    box-shadow:
+      inset 0 0 0 1px var(--color-border-subtle),
+      0 3px 0 light-dark(
+        color-mix(in oklab, var(--tabs-key) 76%, var(--color-text-primary)),
+        color-mix(in oklab, var(--tabs-key) 72%, var(--color-bg-surface-sunken))
+      );
+  }
+
+  .sk-tabs[data-appearance="tactile"] > .sk-tabs__list > .sk-tabs__trigger:active:not([aria-disabled="true"]) {
+    scale: 1;
+    translate: 0 2px;
+  }
+
+  .sk-tabs[data-appearance="tactile"] > .sk-tabs__list > .sk-tabs__trigger[data-selected]:active:not([aria-disabled="true"]) {
+    box-shadow:
+      inset 0 0 0 1px var(--color-border-subtle),
+      0 1px 0 light-dark(
+        color-mix(in oklab, var(--tabs-key) 76%, var(--color-text-primary)),
+        color-mix(in oklab, var(--tabs-key) 72%, var(--color-bg-surface-sunken))
+      );
+  }
+
+  /* BRUTALIST: the list's rule turns black, and the selected tab is a black-edged block with a hard
+   * offset toward block-end and inline-end (mirrored in RTL). Flat face; the block is the indicator. */
+  .sk-tabs[data-appearance="brutalist"] {
+    --sk-tabs-brutalist-offset: 3px;
+    --brutalist-black: oklch(from var(--shadow-lg) l c h / 1);
+    --brutalist-direction: 1;
+    --sk-tabs-list-border-color: var(--brutalist-black);
+  }
+
+  .sk-tabs[data-appearance="brutalist"]:dir(rtl) {
+    --brutalist-direction: -1;
+  }
+
+  .sk-tabs[data-appearance="brutalist"] > .sk-tabs__list > .sk-tabs__trigger[data-selected] {
+    border-radius: var(--sk-tabs-trigger-radius);
+    background: var(--color-bg-surface);
+    color: var(--color-text-primary);
+    box-shadow:
+      inset 0 0 0 1px var(--brutalist-black),
+      calc(var(--sk-tabs-brutalist-offset) * var(--brutalist-direction)) var(--sk-tabs-brutalist-offset) 0
+        var(--brutalist-black);
+  }
+
+  :is(.sk-tabs[data-appearance="tactile"], .sk-tabs[data-appearance="brutalist"]) > .sk-tabs__list > .sk-tabs__trigger[data-selected]::after {
+    opacity: 0;
+  }
+
+  /* FROSTED: the tab strip is Button's see-through material, the selected tab a denser sheet on it,
+   * and the bar stays. Opaque baseline; the material only where backdrop-filter exists and no
+   * reduced-transparency preference is set. */
+  .sk-tabs[data-appearance="frosted"] > .sk-tabs__list {
+    border-radius: var(--sk-tabs-trigger-radius) var(--sk-tabs-trigger-radius) 0 0;
+    background: var(--color-bg-surface);
+    box-shadow: inset 0 1px 0 light-dark(
+      color-mix(in oklab, var(--color-bg-surface) 70%, transparent),
+      color-mix(in oklab, var(--color-text-primary) 18%, transparent)
+    );
+  }
+
+  .sk-tabs[data-appearance="frosted"] > .sk-tabs__list > .sk-tabs__trigger[data-selected] {
+    background: color-mix(in oklab, var(--color-bg-surface-raised) 85%, transparent);
+  }
+
+  @supports (backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px)) {
+    @media (prefers-reduced-transparency: no-preference) {
+      .sk-tabs[data-appearance="frosted"] > .sk-tabs__list {
+        background: color-mix(in oklab, var(--color-bg-surface) 60%, transparent);
+        -webkit-backdrop-filter: blur(12px) saturate(150%);
+        backdrop-filter: blur(12px) saturate(150%);
+      }
+    }
+  }
+
+  :is([data-contrast="high"] .sk-tabs[data-appearance="frosted"], .sk-tabs[data-appearance="frosted"][data-contrast="high"]) > .sk-tabs__list {
+    background: var(--color-bg-surface);
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+
+  @media (prefers-contrast: more) {
+    :root:not([data-contrast]) .sk-tabs[data-appearance="frosted"] > .sk-tabs__list {
+      background: var(--color-bg-surface);
+      -webkit-backdrop-filter: none;
+      backdrop-filter: none;
+    }
+  }
+
   @media (forced-colors: active) {
     .sk-tabs__trigger[data-selected]::after {
       background: Highlight;
+    }
+
+    /* No key, block or glass: the system strip and its Highlight bar carry the selection. */
+    .sk-tabs[data-appearance] > .sk-tabs__list,
+    .sk-tabs[data-appearance] > .sk-tabs__list > .sk-tabs__trigger {
+      box-shadow: none;
+      -webkit-backdrop-filter: none;
+      backdrop-filter: none;
+    }
+
+    .sk-tabs[data-appearance] > .sk-tabs__list > .sk-tabs__trigger[data-selected]::after {
+      opacity: 1;
     }
   }
 }
