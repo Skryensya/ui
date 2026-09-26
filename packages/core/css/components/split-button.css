@@ -42,8 +42,8 @@
    * divider rule below already had to solve. A future third segment (three-way split, if this ever
    * grows one) welds on BOTH edges at once and still matches here with no new rule.
    */
-  .sk-split-button > .sk-button:is([data-weld-start], [data-weld-end]),
-  .sk-split-button > .sk-menu > button:is([data-weld-start], [data-weld-end]) {
+  .sk-split-button > .sk-button:is([data-weld-start], [data-weld-end]):not([data-appearance="tactile"]),
+  .sk-split-button > .sk-menu > button:is([data-weld-start], [data-weld-end]):not([data-appearance="tactile"]) {
     box-shadow: none;
   }
   /*
@@ -108,4 +108,49 @@
     --sk-split-button-divider-color: var(--sk-button-border-color);
     border-inline-start-color: var(--sk-split-button-divider-color);
   }
+  /*
+   * ── APPEARANCE ───────────────────────────────────────────────────────────────────────────────
+   *
+   * The halves carry Button's appearance themselves (`appearance` on the action, `triggerAppearance`
+   * on Menu's trigger; React's `SplitButton` sets both from one prop). What changes here is the one
+   * shadow the group casts:
+   *
+   *   TACTILE keeps each half's own ledge (the `:not()` on the clearing rule above): a ledge drops
+   *   straight down with no sideways blur, so the two meet at the seam as one continuous ledge, which
+   *   is exactly what a single group shadow could not draw in each half's own fill colour. The group's
+   *   soft shadow goes, or it would sit under the ledge as a second depth.
+   *
+   *   BRUTALIST casts ONE hard black offset around the whole pill instead of the soft one, the welded
+   *   group reading as one slab, mirrored in RTL; the seam is the halves' own black edge.
+   *
+   *   FROSTED needs nothing: the faces are the material, the group keeps its soft shadow.
+   */
+  .sk-split-button:has(> .sk-button[data-appearance="tactile"], > .sk-menu > button[data-appearance="tactile"]) {
+    --sk-split-button-shadow: none;
+    --sk-split-button-wash: none;
+  }
+
+  .sk-split-button:has(> .sk-button[data-appearance="brutalist"], > .sk-menu > button[data-appearance="brutalist"]) {
+    --sk-split-button-brutalist-offset: 5px;
+    --brutalist-direction: 1;
+    --sk-split-button-shadow: calc(var(--sk-split-button-brutalist-offset) * var(--brutalist-direction))
+      var(--sk-split-button-brutalist-offset) 0 oklch(from var(--shadow-lg) l c h / 1);
+    --sk-split-button-wash: none;
+  }
+
+  .sk-split-button:has(> .sk-button[data-appearance="brutalist"], > .sk-menu > button[data-appearance="brutalist"]):dir(rtl) {
+    --brutalist-direction: -1;
+  }
+
+  .sk-split-button > .sk-button[data-appearance="brutalist"]:not(:first-child),
+  .sk-split-button > .sk-menu:not(:first-child) > button[data-appearance="brutalist"] {
+    --sk-split-button-divider-color: var(--sk-button-brutalist-edge);
+  }
+
+  @media (forced-colors: active) {
+    .sk-split-button {
+      --sk-split-button-shadow: none;
+    }
+  }
+
 }

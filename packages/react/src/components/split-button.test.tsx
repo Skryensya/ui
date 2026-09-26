@@ -18,6 +18,16 @@ describe("SplitButton (React)", () => {
     expect(buttons).toHaveLength(2);
   });
 
+  it("gives both halves the same appearance from one prop", () => {
+    const ui = render(
+      <SplitButton appearance="brutalist" menuLabel="Más opciones" menuItems={items}>
+        Guardar
+      </SplitButton>,
+    );
+    expect(ui.getByRole("button", { name: "Guardar" }).getAttribute("data-appearance")).toBe("brutalist");
+    expect(ui.getByRole("button", { name: "Más opciones" }).getAttribute("data-appearance")).toBe("brutalist");
+  });
+
   it("clicking the action button fires onClick, independent of the menu", () => {
     const onClick = vi.fn();
     const ui = render(

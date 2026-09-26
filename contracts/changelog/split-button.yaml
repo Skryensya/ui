@@ -3,8 +3,22 @@
 # `surface` is the shape of the contract the last time somebody reviewed it. If the compiler says it
 # does not match, something a consumer depends on has moved: write the entry and paste in the new
 # hash.
-surface: "98aba7c461e7f5ba"
+surface: "594d5184e745718f"
 entries:
+  - date: 2026-09-26
+    kind: feature
+    es:
+      title: SplitButton dibuja la appearance de sus mitades como un solo grupo
+      body: >-
+        Con <code>tactile</code> cada mitad conserva su saliente y se unen en la costura; con
+        <code>brutalist</code> el grupo proyecta una sola sombra dura negra. El <code>SplitButton</code> de
+        React acepta <code>appearance</code> para las dos mitades.
+    en:
+      title: SplitButton draws its halves' appearance as one group
+      body: >-
+        Under <code>tactile</code> each half keeps its ledge and they meet at the seam; under
+        <code>brutalist</code> the group casts one hard black offset. React's <code>SplitButton</code> takes
+        <code>appearance</code> for both halves.
   - date: 2026-09-17
     kind: feature
     es:
