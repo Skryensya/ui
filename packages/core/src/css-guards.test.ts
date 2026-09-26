@@ -123,3 +123,141 @@ describe("steps bars are written twice and must say the same thing", () => {
     }
   });
 });
+
+/*
+ * BRUTALIST IS AN APPEARANCE, NOT A PRESET. Its identity is the edge, the flat face and the hard
+ * offset, so none of its rules may reach the other axes: no corner (radius stays the dimension's),
+ * no density or size token, no elevation token (the offset is a drawn mark, not height above the
+ * page), and no physical `Npx Npx` shadow that would ignore RTL.
+ */
+describe("button brutalist appearance", () => {
+  const css = stylesheets(join(CSS_DIR, "components")).find(({ path }) => path.endsWith("button.css"))!.css;
+  const rules = [...css.matchAll(/([^{}]*)\{([^{}]*)\}/g)]
+    .map(([, selector, body]) => ({ selector: selector!.trim(), body: body! }))
+    .filter(({ selector }) => selector.includes('.sk-button[data-appearance="brutalist"]'));
+
+  it("has rules to check", () => {
+    expect(rules.length).toBeGreaterThan(5);
+  });
+
+  it("never touches radius, density, size or elevation", () => {
+    const offenders = rules.filter(({ body }) =>
+      /radius|--density|--size-|--space-|--sk-button-(height|padding-x|font-size)|--elevation-/.test(body),
+    );
+    expect(offenders.map(({ selector }) => selector)).toEqual([]);
+  });
+
+  it("paints its offset through the logical hooks, never a physical literal", () => {
+    const offenders = rules.filter(({ body }) => /box-shadow:\s*-?\d+px\s+-?\d+px/.test(body));
+    expect(offenders.map(({ selector }) => selector)).toEqual([]);
+  });
+
+  /* Hover and press move the travel, and only press may add the transform: a `translate` at rest or
+   * on hover cuts the xs/sm touch target back to the face (see the comment in button.css). */
+  it("moves only the travel on hover and press, and transforms only while pressed", () => {
+    const interactive = rules.filter(({ selector }) => /:hover|:active/.test(selector) && !/forced/.test(selector));
+    expect(interactive.length).toBeGreaterThan(0);
+    for (const { selector, body } of interactive) {
+      const properties = [...body.matchAll(/([-\w]+)\s*:/g)].map(([, name]) => name);
+      if (/:active/.test(selector) && properties.includes("translate") && !properties.includes("--brutalist-travel")) continue;
+      expect(properties, selector).toEqual(/:active/.test(selector) ? ["--brutalist-travel", "translate"] : ["--brutalist-travel"]);
+      expect(selector, selector).toMatch(/:not\(:disabled\):not\(\[aria-disabled="true"\]\)/);
+    }
+    const atRest = rules.filter(({ selector, body }) => !/:active/.test(selector) && /(^|[\s;])translate\s*:/.test(body));
+    expect(atRest.map(({ selector }) => selector)).toEqual([]);
+  });
+
+  it("does not tie the physical press to aria-pressed", () => {
+    const offenders = rules.filter(({ selector, body }) => /aria-pressed/.test(selector) && /--brutalist-travel/.test(body));
+    expect(offenders.map(({ selector }) => selector)).toEqual([]);
+  });
+
+  it("is excluded from the plain squeeze, which would otherwise out-specify its press", () => {
+    expect(css).toMatch(/\.sk-button:active[^{]*:not\([^)]*\[data-appearance="brutalist"\][^)]*\)\s*\{/);
+  });
+});
+
+/*
+ * TILE WEARS BUTTON'S APPEARANCES under the same rules: no reach into radius, density or elevation,
+ * logical offsets only, and a surface that moves only while a control is hovered or pressed, never
+ * at rest (a transform at rest makes the tile a containing block for fixed descendants).
+ */
+describe("tile appearances", () => {
+  const css = stylesheets(join(CSS_DIR, "components")).find(({ path }) => path.endsWith("tile.css"))!.css;
+  const rules = [...css.matchAll(/([^{}]*)\{([^{}]*)\}/g)]
+    .map(([, selector, body]) => ({ selector: selector!.trim(), body: body! }))
+    .filter(({ selector }) => /\[data-appearance="(tactile|brutalist)"\]/.test(selector));
+
+  it("has rules to check", () => {
+    expect(rules.length).toBeGreaterThan(8);
+  });
+
+  it("never touches radius, density, size or elevation", () => {
+    const offenders = rules.filter(({ body }) => /radius|--density|--size-|--space-|--sk-tile-padding|--elevation-/.test(body));
+    expect(offenders.map(({ selector }) => selector)).toEqual([]);
+  });
+
+  it("paints its offset through the logical hooks, never a physical literal", () => {
+    const offenders = rules.filter(({ body }) => /box-shadow:\s*-?\d+px\s+-?\d+px/.test(body));
+    expect(offenders.map(({ selector }) => selector)).toEqual([]);
+  });
+
+  it("moves only an enabled interactive tile, and only while hovered or pressed", () => {
+    const moving = rules.filter(({ body }) => /(^|[\s;])translate\s*:(?!\s*none)/.test(body));
+    expect(moving.length).toBeGreaterThan(0);
+    for (const { selector } of moving) {
+      expect(selector, selector).toMatch(/^\.sk-tile--interactive\[data-appearance="(tactile|brutalist)"\]:(hover|active):not\(:disabled, :has\(> input:disabled\)\)$/);
+    }
+  });
+
+  it("never ties the press to selection", () => {
+    const offenders = rules.filter(({ selector, body }) => /checked|selected/.test(selector) && /travel|translate/.test(body));
+    expect(offenders.map(({ selector }) => selector)).toEqual([]);
+  });
+});
+
+/*
+ * FROSTED IS A MATERIAL, NOT A SHAPE OR A MOTION. It never reaches radius, density, size or elevation,
+ * never moves or squeezes the host, and only ever asks for backdrop blur behind the feature query and
+ * the reduced-transparency preference, so the opaque baseline is what every other browser gets.
+ */
+describe("button frosted appearance", () => {
+  const css = stylesheets(join(CSS_DIR, "components")).find(({ path }) => path.endsWith("button.css"))!.css;
+  const rules = [...css.matchAll(/([^{}]*)\{([^{}]*)\}/g)]
+    .map(([, selector, body]) => ({ selector: selector!.trim(), body: body! }))
+    .filter(({ selector }) => selector.includes('.sk-button[data-appearance="frosted"]'));
+
+  it("has rules to check", () => {
+    expect(rules.length).toBeGreaterThan(5);
+  });
+
+  it("never touches radius, density, size or elevation, and never moves the host", () => {
+    const offenders = rules.filter(({ body }) =>
+      /radius|--density|--size-|--space-|--sk-button-(height|padding-x|font-size)|--elevation-|(^|[\s;])(translate|scale|transform)\s*:/.test(body),
+    );
+    expect(offenders.map(({ selector }) => selector)).toEqual([]);
+  });
+
+  it("asks for backdrop blur only inside the feature query and the no-preference branch", () => {
+    const start = css.indexOf("@supports (backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))");
+    expect(start).toBeGreaterThan(-1);
+    let depth = 0;
+    let end = start;
+    for (let i = css.indexOf("{", start); i < css.length; i++) {
+      if (css[i] === "{") depth++;
+      else if (css[i] === "}" && --depth === 0) {
+        end = i;
+        break;
+      }
+    }
+    const guarded = css.slice(start, end);
+    expect(guarded).toContain("prefers-reduced-transparency: no-preference");
+    const blurs = [...css.matchAll(/backdrop-filter:\s*blur\(var\(--sk-button-frost-blur\)\)/g)].map((m) => m.index!);
+    expect(blurs.length).toBeGreaterThan(0);
+    for (const at of blurs) expect(at > start && at < end, `backdrop blur at ${at} outside the guard`).toBe(true);
+  });
+
+  it("is excluded from the plain squeeze", () => {
+    expect(css).toMatch(/\.sk-button:active[^{]*:not\([^)]*\[data-appearance="frosted"\][^)]*\)\s*\{/);
+  });
+});
