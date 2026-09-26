@@ -3,8 +3,21 @@
 # `surface` es la forma del contrato la última vez que alguien la revisó. Si el compilador dice
 # que no coincide, algo de lo que un consumidor depende se movió: escribe la entrada y pega el
 # hash nuevo.
-surface: "bae189ce647acb71"
+surface: "7dbc5d593c102ab9"
 entries:
+  - date: 2026-09-26
+    kind: feature
+    target: appearance
+    es:
+      title: CopyButton y Clipboard suman appearance
+      body: >-
+        El botón de copiar acepta el eje <code>appearance</code> de Button (<code>plain</code>, <code>tactile</code>,
+        <code>brutalist</code>, <code>frosted</code>), escrito en el disparador y pintado por la hoja de Button.
+    en:
+      title: CopyButton and Clipboard add appearance
+      body: >-
+        The copy button takes Button's <code>appearance</code> axis (<code>plain</code>, <code>tactile</code>,
+        <code>brutalist</code>, <code>frosted</code>), written on the trigger and painted by Button's sheet.
   - date: 2026-09-25
     kind: feature
     es:

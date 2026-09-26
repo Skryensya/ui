@@ -3440,6 +3440,25 @@ const signatureTrees: readonly Canonical[] = [
     },
   },
   {
+    name: "clipboard/copy-button-tactile",
+    enhanced: true,
+    tree: {
+      contract: "clipboard",
+      signature: "CopyButton",
+      options: { value: "pnpm add @skryensya/core", label: "Copiar comando", appearance: "tactile" },
+    },
+  },
+  {
+    name: "clipboard/field-brutalist",
+    enhanced: true,
+    tree: {
+      contract: "clipboard",
+      signature: "Clipboard",
+      options: { value: "https://skryensya.dev/s/4821", label: "Copiar enlace", appearance: "brutalist" },
+      slots: { fieldLabel: "Enlace para compartir" },
+    },
+  },
+  {
     name: "clipboard/field",
     enhanced: true,
     tree: {
