@@ -3,8 +3,25 @@
 # `surface` is the shape of the contract the last time somebody reviewed it. If the compiler says it
 # does not match, something a consumer depends on has moved: write the entry and paste in the new
 # hash.
-surface: "7062e2983ee5da11"
+surface: "924379c3e48ad4db"
 entries:
+  - date: 2026-09-26
+    kind: feature
+    target: appearance
+    es:
+      title: Avatar suma appearance plain y brutalist
+      body: >-
+        <code>Avatar.initials</code> y <code>Avatar.image</code> aceptan <code>appearance</code>, el mismo eje de
+        Button, Tile y Box. <code>brutalist</code> dibuja el disco con borde negro y una sombra dura desplazada
+        proporcional a su tamaño; en un <code>AvatarGroup</code> reemplaza el anillo y el contador +N lo sigue.
+        Hooks nuevos <code>--sk-avatar-brutalist-*</code>.
+    en:
+      title: Avatar adds plain and brutalist appearances
+      body: >-
+        <code>Avatar.initials</code> and <code>Avatar.image</code> accept <code>appearance</code>, the same axis as
+        Button, Tile and Box. <code>brutalist</code> draws the disc with a black edge and a hard offset shadow
+        scaled to its size; in an <code>AvatarGroup</code> it replaces the ring and the +N counter follows it.
+        New hooks <code>--sk-avatar-brutalist-*</code>.
   - date: 2026-09-17
     kind: feature
     target: Avatar.image

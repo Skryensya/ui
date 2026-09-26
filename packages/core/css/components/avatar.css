@@ -74,4 +74,56 @@
   /* The "+3" chip reads the same hooks as the discs it caps, so re-tinting a group tints its
      overflow with it instead of leaving one odd grey circle at the end of the stack. */
   .sk-avatar-group__overflow { position: relative; display: inline-grid; place-items: center; inline-size: var(--size-control-md); block-size: var(--size-control-md); flex: none; border-radius: var(--radius-pill); background: var(--sk-avatar-bg, var(--color-bg-surface-sunken)); color: var(--sk-avatar-fg, var(--color-text-primary)); font-size: var(--font-size-caption); font-weight: var(--font-weight-label); }
+
+  /*
+   * BRUTALIST: Button's construction on a disc. A real border for the black edge, because the photo
+   * fills the disc and would cover an inset one; border-box, so the edge takes its pixel from
+   * inside and the disc keeps the size its `size` promised. The hard zero-blur offset goes toward
+   * block-end and inline-end (mirrored in RTL) and scales with the disc: Button's 5px would swamp a
+   * 24px avatar. Black in both modes, from the system's own shadow colour. Never moves: an avatar
+   * is not pressed. Radius stays the pill, and the offset follows it.
+   *
+   * In a group it replaces the surface ring rather than adding to it: the black edge already
+   * separates overlapping discs, and a ring would sever each offset from its disc. The "+N" chip
+   * follows a brutalist stack, so the counter does not sit at the end of it as the one plain disc.
+   */
+  .sk-avatar[data-appearance="brutalist"],
+  .sk-avatar-group:has(> .sk-avatar[data-appearance="brutalist"]) > .sk-avatar-group__overflow {
+    --sk-avatar-brutalist-offset-inline: 3px;
+    --sk-avatar-brutalist-offset-block: 3px;
+    --sk-avatar-brutalist-edge: oklch(from var(--shadow-lg) l c h / 1);
+    --sk-avatar-brutalist-shadow: var(--sk-avatar-brutalist-edge);
+    --brutalist-direction: 1;
+    box-sizing: border-box;
+    border: 1px solid var(--sk-avatar-brutalist-edge);
+    box-shadow: calc(var(--sk-avatar-brutalist-offset-inline) * var(--brutalist-direction))
+      var(--sk-avatar-brutalist-offset-block) 0 var(--sk-avatar-brutalist-shadow);
+  }
+
+  .sk-avatar[data-appearance="brutalist"]:dir(rtl),
+  .sk-avatar-group:has(> .sk-avatar[data-appearance="brutalist"]) > .sk-avatar-group__overflow:dir(rtl) {
+    --brutalist-direction: -1;
+  }
+
+  .sk-avatar[data-appearance="brutalist"][data-size="sm"] {
+    --sk-avatar-brutalist-offset-inline: 2px;
+    --sk-avatar-brutalist-offset-block: 2px;
+  }
+  .sk-avatar[data-appearance="brutalist"][data-size="lg"] {
+    --sk-avatar-brutalist-offset-inline: 4px;
+    --sk-avatar-brutalist-offset-block: 4px;
+  }
+  .sk-avatar[data-appearance="brutalist"][data-size="xl"] {
+    --sk-avatar-brutalist-offset-inline: 5px;
+    --sk-avatar-brutalist-offset-block: 5px;
+  }
+
+  /* Forced colors drop the offset; the edge stays, as the system ink, so the disc keeps a boundary. */
+  @media (forced-colors: active) {
+    .sk-avatar[data-appearance="brutalist"],
+    .sk-avatar-group:has(> .sk-avatar[data-appearance="brutalist"]) > .sk-avatar-group__overflow {
+      border-color: CanvasText;
+      box-shadow: none;
+    }
+  }
 }

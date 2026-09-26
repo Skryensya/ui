@@ -8,6 +8,7 @@ import type { ComponentContract } from "./contract.js";
  * Picking a color is still the consumer's call.
  */
 export type AvatarSize = "sm" | "md" | "lg" | "xl";
+export type AvatarAppearance = "plain" | "brutalist";
 
 export const avatarParts = {
   root: "sk-avatar",
@@ -52,12 +53,22 @@ export const avatarContract = {
   parts: avatarParts,
   hooks: [
     "--sk-avatar-bg",
+    "--sk-avatar-brutalist-edge",
+    "--sk-avatar-brutalist-offset-block",
+    "--sk-avatar-brutalist-offset-inline",
+    "--sk-avatar-brutalist-shadow",
     "--sk-avatar-fg",
     "--sk-avatar-size",
   ],
 
   options: {
     size: { type: "enum", values: ["sm", "md", "lg", "xl"], default: "md", attr: "data-size" },
+    /*
+     * HOW THE DISC IS DRAWN, the axis Button, Tile and Box publish. `brutalist` gives it Button's
+     * black edge and hard offset, scaled to the disc. No `tactile` (an avatar is never pressed) and
+     * no `frosted` (a portrait or initials on see-through glass stops reading as a person).
+     */
+    appearance: { type: "enum", values: ["plain", "brutalist"], default: "plain", attr: "data-appearance" },
     /** The accessible name when initials are the fallback. */
     name: { type: "string", attr: "aria-label" },
     /** The image's alt text; React calls this prop `name`. */
@@ -71,7 +82,7 @@ export const avatarContract = {
     "Avatar.initials": {
       intent: ["person", "user-identity", "no-photo-available"],
       host: { element: "span", when: { src: "absent" } },
-      options: ["size", "name"],
+      options: ["size", "appearance", "name"],
       requires: ["name"],
       forbids: ["src"],
       slots: {
@@ -93,7 +104,7 @@ export const avatarContract = {
     "Avatar.image": {
       intent: ["person", "user-identity", "photo"],
       host: { element: "span", when: { src: "present" } },
-      options: ["size", "imageName", "src"],
+      options: ["size", "appearance", "imageName", "src"],
       requires: ["imageName", "src"],
       slots: {},
       /* ImageFrame chrome via `also`; sheets already resolve. */

@@ -39,6 +39,18 @@ describe("Avatar", () => {
 
     expect(disc?.getAttribute("data-size")).toBe("xl");
   });
+
+  it("serializes appearance, plain by default, on the disc in both structures", () => {
+    const plain = render(<Avatar name="Ada Lovelace" />);
+    expect(plain.getByLabelText("Ada Lovelace").getAttribute("data-appearance")).toBe("plain");
+
+    const initials = render(<Avatar name="Grace Hopper" appearance="brutalist" />);
+    expect(initials.getByLabelText("Grace Hopper").getAttribute("data-appearance")).toBe("brutalist");
+
+    const photo = render(<Avatar name="Alan Turing" appearance="brutalist" src="/alan.png" />);
+    const disc = photo.getByRole("img", { name: "Alan Turing" }).closest(".sk-avatar");
+    expect(disc?.getAttribute("data-appearance")).toBe("brutalist");
+  });
 });
 
 describe("AvatarGroup", () => {
