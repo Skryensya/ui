@@ -19,7 +19,7 @@ if (import.meta.env.PROD) {
  * there's no localStorage here, unlike the header's selector, which genuinely is a site
  * preference).
  *
- * All five live simultaneously as a READ-ONLY GALLERY: nothing is selectable, there is no control
+ * All eight live simultaneously as a READ-ONLY GALLERY: nothing is selectable, there is no control
  * that cycles between them. Each card already shows its own result, side by side with the others,
  * so they can be compared at a glance.
  *
@@ -47,9 +47,9 @@ import "@skryensya/core/patterns/box.css";
 import "@skryensya/core/patterns/image-frame.css";
 
 /* A real (if generic) placeholder photo, not a gradient wash: the same dummyimage.com trick every
- * other card example in these docs already uses (examples/card-data.ts). One shared URL for all 20
- * card instances (5 presets × 2 schemes). The browser fetches it once and serves the rest from
- * cache, so this costs one network request, not twenty. */
+ * other card example in these docs already uses (examples/card-data.ts). One shared URL for all 16
+ * card instances (8 presets × 2 schemes). The browser fetches it once and serves the rest from
+ * cache, so this costs one network request, not sixteen. */
 const demoImage = dummyImage(640, 220, "d4d4d4", "737373", "Image");
 
 interface Preset {
@@ -75,7 +75,7 @@ const SCHEMES = [
 ] as const;
 
 /*
- * Five presets, named for what they evoke, not for the hue that happens to carry them -
+ * Eight presets, named for what they evoke, not for the hue that happens to carry them -
  * "Default" and "UC" are the two exceptions, and neither is a color name either (a baseline and a
  * real institution's initials). Each non-default preset pairs an accent family with a DIFFERENT
  * neutral family for its surfaces/text/borders (ADR 0019's constant, published palettes -
@@ -239,6 +239,115 @@ const PRESETS: Preset[] = [
       "--font-weight-label: 700;",
       "--motion-press-scale: 1;",
     ],
+  },  {
+    id: "terminal",
+    name: "Terminal",
+    description:
+      "Cyan over zinc surfaces, nearly square corners, tight controls and zero microinteraction. Monospaced JetBrains Mono tops off the command-line, developer-tool feel.",
+    fontImport: "https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap",
+    vars: [
+      "--color-action-accent: light-dark(var(--palette-cyan-600), var(--palette-cyan-500));",
+      "--color-text-accent: light-dark(var(--palette-cyan-700), var(--palette-cyan-300));",
+      "--color-border-accent: light-dark(var(--palette-cyan-600), var(--palette-cyan-500));",
+      "--color-bg-accent-subtle: light-dark(var(--palette-cyan-50), var(--palette-cyan-950));",
+      "--color-text-danger: light-dark(var(--palette-red-700), var(--palette-red-300));",
+      "--color-border-danger: light-dark(var(--palette-red-600), var(--palette-red-500));",
+      "--color-bg-danger-subtle: light-dark(var(--palette-red-50), var(--palette-red-950));",
+      "--color-text-success: light-dark(var(--palette-green-700), var(--palette-green-300));",
+      "--color-border-success: light-dark(var(--palette-green-600), var(--palette-green-500));",
+      "--color-bg-success-subtle: light-dark(var(--palette-green-50), var(--palette-green-950));",
+      "--color-text-warning: light-dark(var(--palette-amber-700), var(--palette-amber-300));",
+      "--color-border-warning: light-dark(var(--palette-amber-600), var(--palette-amber-500));",
+      "--color-bg-warning-subtle: light-dark(var(--palette-amber-50), var(--palette-amber-950));",
+      "--color-bg-canvas: light-dark(var(--palette-zinc-100), var(--palette-zinc-950));",
+      "--color-bg-surface: light-dark(var(--palette-white), var(--palette-zinc-900));",
+      "--color-bg-surface-raised: light-dark(var(--palette-white), var(--palette-zinc-800));",
+      "--color-bg-surface-sunken: light-dark(var(--palette-zinc-200), var(--palette-zinc-950));",
+      "--color-text-primary: light-dark(var(--palette-zinc-900), var(--palette-zinc-100));",
+      "--color-text-secondary: light-dark(var(--palette-zinc-700), var(--palette-zinc-300));",
+      "--color-text-tertiary: light-dark(var(--palette-zinc-600), var(--palette-zinc-400));",
+      "--color-border-subtle: light-dark(var(--palette-zinc-300), var(--palette-zinc-800));",
+      "--color-border-default: light-dark(var(--palette-zinc-500), var(--palette-zinc-500));",
+      "--color-border-strong: light-dark(var(--palette-zinc-600), var(--palette-zinc-400));",
+      "--radius-multiplier: 0.25;",
+      "--font-family-body: 'JetBrains Mono', ui-monospace, 'SFMono-Regular', Menlo, monospace;",
+      "--sk-density-factor: 0.9;",
+      "--font-weight-label: 500;",
+      "--motion-press-scale: 1;",
+    ],
+  },
+  {
+    id: "candy",
+    name: "Candy",
+    description:
+      "Pink over warm stone surfaces, pill-round corners, generous air, a soft floating shadow and a button that squishes on press. Rounded Nunito tops off the playful, consumer-app feel.",
+    fontImport: "https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap",
+    vars: [
+      "--color-action-accent: light-dark(var(--palette-pink-600), var(--palette-pink-500));",
+      "--color-text-accent: light-dark(var(--palette-pink-700), var(--palette-pink-300));",
+      "--color-border-accent: light-dark(var(--palette-pink-600), var(--palette-pink-500));",
+      "--color-bg-accent-subtle: light-dark(var(--palette-pink-50), var(--palette-pink-950));",
+      "--color-text-danger: light-dark(var(--palette-rose-700), var(--palette-rose-300));",
+      "--color-border-danger: light-dark(var(--palette-rose-600), var(--palette-rose-500));",
+      "--color-bg-danger-subtle: light-dark(var(--palette-rose-50), var(--palette-rose-950));",
+      "--color-text-success: light-dark(var(--palette-emerald-700), var(--palette-emerald-300));",
+      "--color-border-success: light-dark(var(--palette-emerald-600), var(--palette-emerald-500));",
+      "--color-bg-success-subtle: light-dark(var(--palette-emerald-50), var(--palette-emerald-950));",
+      "--color-text-warning: light-dark(var(--palette-amber-700), var(--palette-amber-300));",
+      "--color-border-warning: light-dark(var(--palette-amber-600), var(--palette-amber-500));",
+      "--color-bg-warning-subtle: light-dark(var(--palette-amber-50), var(--palette-amber-950));",
+      "--color-bg-canvas: light-dark(var(--palette-stone-100), var(--palette-stone-950));",
+      "--color-bg-surface: light-dark(var(--palette-white), var(--palette-stone-900));",
+      "--color-bg-surface-raised: light-dark(var(--palette-white), var(--palette-stone-800));",
+      "--color-bg-surface-sunken: light-dark(var(--palette-stone-200), var(--palette-stone-950));",
+      "--color-text-primary: light-dark(var(--palette-stone-900), var(--palette-stone-100));",
+      "--color-text-secondary: light-dark(var(--palette-stone-700), var(--palette-stone-300));",
+      "--color-text-tertiary: light-dark(var(--palette-stone-600), var(--palette-stone-400));",
+      "--color-border-subtle: light-dark(var(--palette-stone-300), var(--palette-stone-800));",
+      "--color-border-default: light-dark(var(--palette-stone-500), var(--palette-stone-500));",
+      "--color-border-strong: light-dark(var(--palette-stone-600), var(--palette-stone-400));",
+      "--radius-multiplier: 3;",
+      "--font-family-body: 'Nunito', 'Segoe UI', Helvetica, Arial, sans-serif;",
+      "--sk-density-factor: 1.2;",
+      "--elevation-flat: 0 10px 20px -10px var(--shadow-md);",
+      "--font-weight-label: 700;",
+      "--motion-press-scale: 0.92;",
+    ],
+  },
+  {
+    id: "forest",
+    name: "Forest",
+    description:
+      "Deep emerald over gray surfaces, moderate corners and the default rhythm, with a quiet resting shadow. Humanist Figtree tops off the calm, outdoorsy feel of a sustainability or wellness product.",
+    fontImport: "https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700&display=swap",
+    vars: [
+      "--color-action-accent: light-dark(var(--palette-emerald-600), var(--palette-emerald-500));",
+      "--color-text-accent: light-dark(var(--palette-emerald-700), var(--palette-emerald-300));",
+      "--color-border-accent: light-dark(var(--palette-emerald-600), var(--palette-emerald-500));",
+      "--color-bg-accent-subtle: light-dark(var(--palette-emerald-50), var(--palette-emerald-950));",
+      "--color-text-danger: light-dark(var(--palette-red-700), var(--palette-red-300));",
+      "--color-border-danger: light-dark(var(--palette-red-600), var(--palette-red-500));",
+      "--color-bg-danger-subtle: light-dark(var(--palette-red-50), var(--palette-red-950));",
+      "--color-text-success: light-dark(var(--palette-teal-700), var(--palette-teal-300));",
+      "--color-border-success: light-dark(var(--palette-teal-600), var(--palette-teal-500));",
+      "--color-bg-success-subtle: light-dark(var(--palette-teal-50), var(--palette-teal-950));",
+      "--color-text-warning: light-dark(var(--palette-orange-700), var(--palette-orange-300));",
+      "--color-border-warning: light-dark(var(--palette-orange-600), var(--palette-orange-500));",
+      "--color-bg-warning-subtle: light-dark(var(--palette-orange-50), var(--palette-orange-950));",
+      "--color-bg-canvas: light-dark(var(--palette-gray-100), var(--palette-gray-950));",
+      "--color-bg-surface: light-dark(var(--palette-white), var(--palette-gray-900));",
+      "--color-bg-surface-raised: light-dark(var(--palette-white), var(--palette-gray-800));",
+      "--color-bg-surface-sunken: light-dark(var(--palette-gray-200), var(--palette-gray-950));",
+      "--color-text-primary: light-dark(var(--palette-gray-900), var(--palette-gray-100));",
+      "--color-text-secondary: light-dark(var(--palette-gray-700), var(--palette-gray-300));",
+      "--color-text-tertiary: light-dark(var(--palette-gray-600), var(--palette-gray-400));",
+      "--color-border-subtle: light-dark(var(--palette-gray-300), var(--palette-gray-800));",
+      "--color-border-default: light-dark(var(--palette-gray-500), var(--palette-gray-500));",
+      "--color-border-strong: light-dark(var(--palette-gray-600), var(--palette-gray-400));",
+      "--radius-multiplier: 1.25;",
+      "--font-family-body: 'Figtree', 'Segoe UI', Helvetica, Arial, sans-serif;",
+      "--elevation-flat: 0 1px 3px var(--shadow-sm);",
+    ],
   },
 ];
 
@@ -311,7 +420,7 @@ const ucCssTeaching =
 <Base
   fullBleed
   title="Presets"
-  description="Five complete look & feels. Accent, neutral surfaces, roundness, typography, density, shadow and motion. In a read-only gallery."
+  description="Eight complete look & feels. Accent, neutral surfaces, roundness, typography, density, shadow and motion. In a read-only gallery."
 >
   <div class="sk-layout-grid presets-shell">
     <div>
@@ -415,7 +524,7 @@ const ucCssTeaching =
         <a href="https://kitdigital.uc.cl/" target="_blank" rel="noreferrer">kitdigital.uc.cl</a>:
         Celeste accent, pure-gray surfaces, a squarer radius, Roboto typography and zero
         microinteraction: not just the accent color, the whole character of the component. The
-        other three follow the exact same mold, but each one touches whichever dimensions actually
+        other six follow the exact same mold, but each one touches whichever dimensions actually
         set it apart: accent and feedback (danger/success/warning), neutral surfaces (background,
         text, borders. A different gray family per preset, not the same "stone" every time),
         roundness, typography, spacing density (<code>--sk-density-factor</code>), resting shadow
