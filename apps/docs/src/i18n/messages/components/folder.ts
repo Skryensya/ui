@@ -17,6 +17,10 @@ export const folderMessages = {
       "Raíz, path de la silueta, pestaña, contenido y las tres previews (un label, tres líderes). En <code>active</code> para que se vea la forma; el diagrama va plano (sin el lean 3D) para que los anillos caigan donde están las partes.",
     "folderPage.anatomyLabel": "Anatomía de Folder",
     "folderPage.anatomyPreviewLabel": "Folder, parte por parte",
+    "folderPage.appearanceTitle": "Apariencia",
+    "folderPage.appearanceBody":
+      "<code>appearance</code> es el mismo eje de <a href=\"/es/componentes/button\">Button</a>, y todos los ejemplos de esta página lo siguen: cámbialo con el selector de apariencia de arriba. Se ve <strong>solo en el folder revelado</strong>: en reposo sigue siendo del color de su fondo. <code>tactile</code> sombrea la hoja y le pone un canto debajo, <code>brutalist</code> dibuja el borde y la sombra dura en el negro de Button alrededor de la silueta, y <code>frosted</code> vuelve la hoja el material translúcido de Button. El ejemplo de abajo es un solo folder siempre revelado sobre un degradado, para que <code>frosted</code> tenga algo que difuminar.",
+    "folderPage.appearanceLabel": "Un folder revelado sobre un fondo",
     "folderPage.shapeTitle": "Cómo se dibuja",
     "folderPage.shapeBody":
       "La geometría es una función pura de core, <code>folderPath</code>, y las dos bindings la llaman con los mismos números: miden la caja de la carpeta y el ancho de la pestaña, y escriben el <code>d</code> resultante. Los cinco números de la forma (alto de pestaña, barrido de entrada, hombro, esquina superior y radio inferior) son hooks CSS, así que una marca reafina la silueta en su propia hoja sin tocar una binding.",
@@ -123,6 +127,10 @@ export const folderMessages = {
       "Root, silhouette path, tab, content, and the three previews (one label, three leaders). Held <code>active</code> so the shape is visible; the diagram stays flat (no 3D lean) so the rings land on the parts.",
     "folderPage.anatomyLabel": "Folder anatomy",
     "folderPage.anatomyPreviewLabel": "Folder, part by part",
+    "folderPage.appearanceTitle": "Appearance",
+    "folderPage.appearanceBody":
+      "<code>appearance</code> is <a href=\"/components/button\">Button</a>'s axis, and every example on this page follows it: change it with the appearance switch at the top. It shows <strong>only on the revealed folder</strong>: at rest a folder is still the colour of its ground. <code>tactile</code> shades the sheet and puts a ledge under it, <code>brutalist</code> draws Button's black edge and hard offset around the silhouette, and <code>frosted</code> turns the sheet into Button's see-through material. The example below is a single folder, always revealed, on a gradient so <code>frosted</code> has something to blur.",
+    "folderPage.appearanceLabel": "A revealed folder over a backdrop",
     "folderPage.shapeTitle": "How it is drawn",
     "folderPage.shapeBody":
       "The geometry is a pure function in core, <code>folderPath</code>, and both bindings call it with the same numbers: they measure the folder's box and the tab's width, and write the resulting <code>d</code>. The shape's five numbers (tab height, leading sweep, shoulder, top corner and bottom radius) are CSS hooks, so a brand retunes the silhouette in its own stylesheet without touching a binding.",

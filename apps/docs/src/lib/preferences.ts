@@ -27,11 +27,14 @@ export {
   componentPreviewScreenPreference,
 } from "@skryensya/core/component-preview";
 
-/** Component documentation examples can opt into alternate appearances, currently Button tactile. */
-export const appearancePreference = definePreference<"default" | "tactile">({
+/** Component documentation examples can opt into alternate appearances, currently Button tactile, brutalist and frosted. */
+export const appearancePreference = definePreference<"plain" | "tactile" | "brutalist" | "frosted">({
   slot: "appearance",
-  fallback: "default",
-  parse: oneOf(["default", "tactile"]),
+  fallback: "plain",
+  parse: (raw) => {
+    if (raw === "default") return "plain";
+    return oneOf(["plain", "tactile", "brutalist", "frosted"])(raw);
+  },
 });
 
 /** High contrast, the third color mode. A dimension, so it is the site's to store, not a component's. */

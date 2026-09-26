@@ -10,10 +10,12 @@ import "@skryensya/core/patterns/box.css";
 /* The reveal demo fans a few `ImageFrame`s out of its folders, through the `previews` slot. */
 import "@skryensya/core/patterns/image-frame.css";
 import ComponentPageShell from "./ComponentPageShell.astro";
+import AppearanceMenu from "../AppearanceMenu.astro";
 import CodeBlock from "../CodeBlock.astro";
 import ComponentPreview from "../ComponentPreview.astro";
 import {
   folderActiveTree,
+  folderAppearanceTree,
   folderAnatomyCss,
   folderAnatomyTree,
   folderPlainTree,
@@ -22,6 +24,7 @@ import {
   folderTree,
 } from "../../demos/folder";
 import { annotationDemoCss } from "../../demos/annotation";
+import { onAppearanceStage } from "../../lib/frost-stage";
 import { getLocale, useTranslations } from "../../i18n";
 
 const t = useTranslations(getLocale(Astro.url));
@@ -40,6 +43,7 @@ mountFolder();`;
   title="Folder"
   description={t("folderPage.description")}
   contractId="folder"
+  appearanceTargetSelector=".sk-folder"
   testFiles={["packages/core/src/folder.test.ts", "packages/react/src/components/folder.test.tsx", "packages/vanilla/src/components/folder.test.ts"]}}
 >
   <Fragment slot="anatomy">
@@ -53,6 +57,10 @@ mountFolder();`;
       hideSource
       chrome={false}
     />
+  </Fragment>
+
+  <Fragment slot="appearance">
+    <AppearanceMenu label={t("prefs.appearance")} />
   </Fragment>
 
   <Fragment slot="usage">
@@ -74,6 +82,11 @@ mountFolder();`;
     <p set:html={t("folderPage.groundBody")} />
     <ComponentPreview tree={folderSunkenTree(t)} js={js} label={t("folderPage.groundSunkenLabel")} viewport="auto" />
     <ComponentPreview tree={folderRaisedTree(t)} js={js} label={t("folderPage.groundRaisedLabel")} viewport="auto" />
+
+    <h3>{t("folderPage.appearanceTitle")}</h3>
+    <p set:html={t("folderPage.appearanceBody")} />
+    {/* The ONE example on a backdrop, for frosted. It follows the appearance switch like the rest. */}
+    <ComponentPreview tree={onAppearanceStage(folderAppearanceTree(t))} js={js} label={t("folderPage.appearanceLabel")} viewport="auto" />
 
     <h3>{t("folderPage.shapeTitle")}</h3>
     <p set:html={t("folderPage.shapeBody")} />
