@@ -3,6 +3,7 @@ import "@skryensya/core/components/segmented.css";
 /* Structure diagram: Annotated specimen; a preview frame only copies styles THIS page loaded. */
 import "@skryensya/core/components/annotation.css";
 import ComponentPageShell from "./ComponentPageShell.astro";
+import AppearanceMenu from "../AppearanceMenu.astro";
 import CodeBlock from "../CodeBlock.astro";
 import ComponentPreview from "../ComponentPreview.astro";
 import { segmentedAnatomyTree, segmentedTree } from "../../demos/segmented";
@@ -21,8 +22,13 @@ await initComponents();`;
   title="SegmentedControl"
   description={t("segmentedPage.description")}
   contractId="segmented"
+  appearanceTargetSelector=".sk-segmented"
   testFiles={["packages/vanilla/src/components/segmented.test.ts"]}}
 >
+  <Fragment slot="appearance">
+    <AppearanceMenu label={t("prefs.appearance")} />
+  </Fragment>
+
   <Fragment slot="anatomy">
     <p set:html={t("segmentedPage.anatomyBody")} />
     <ComponentPreview

@@ -17,6 +17,13 @@ describe("SegmentedControl", () => {
     expect(selected.classList.contains("sk-interactive")).toBe(true);
   });
 
+  it("serializes its appearance on the root, plain by default", () => {
+    const plain = render(<SegmentedControl defaultValue="week" label="Plain" options={options} />);
+    expect(plain.getByRole("radiogroup", { name: "Plain" }).getAttribute("data-appearance")).toBe("plain");
+    const tactile = render(<SegmentedControl appearance="tactile" defaultValue="week" label="Tactile" options={options} />);
+    expect(tactile.getByRole("radiogroup", { name: "Tactile" }).getAttribute("data-appearance")).toBe("tactile");
+  });
+
   it("names the radiogroup, per WAI's Radio Group pattern", () => {
     const ui = render(<SegmentedControl defaultValue="week" label="Range" options={options} />);
     expect(ui.getByRole("radiogroup", { name: "Range" })).toBeTruthy();

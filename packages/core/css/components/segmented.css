@@ -211,10 +211,106 @@
     cursor: not-allowed;
   }
 
+  /*
+   * ── APPEARANCE ───────────────────────────────────────────────────────────────────────────────
+   *
+   * Button's axis (button.css documents each construction in full), written ONLY as hooks on the
+   * root: the track, the sliding indicator and the not-yet-enhanced checked option all read them, so
+   * one declaration per appearance reaches all three and the indicator's own motion is untouched.
+   */
+
+  /* TACTILE: the track is a deeper well, and the selection a raised key standing on a ledge in a
+   * darker step of its own face, lit from the top. */
+  .sk-segmented[data-appearance="tactile"] {
+    --sk-segmented-shadow: inset 0 2px 3px light-dark(
+      color-mix(in oklab, var(--color-text-primary) 14%, transparent),
+      color-mix(in oklab, var(--color-bg-surface-sunken) 60%, transparent)
+    );
+    --sk-segmented-selected-ring: inset 0 0 0 1px color-mix(in oklab, var(--color-border-accent) 60%, transparent);
+    --sk-segmented-selected-elevation: 0 3px 0 light-dark(
+      color-mix(in oklab, var(--sk-segmented-selected-bg) 76%, var(--color-text-primary)),
+      color-mix(in oklab, var(--sk-segmented-selected-bg) 72%, var(--color-bg-surface-sunken))
+    );
+    --sk-segmented-selected-wash: linear-gradient(
+      to bottom,
+      light-dark(color-mix(in oklab, white 14%, transparent), color-mix(in oklab, white 6%, transparent)),
+      transparent 60%
+    );
+  }
+
+  /* BRUTALIST: a black-edged track with a hard offset toward block-end and inline-end (mirrored in
+   * RTL), and a selection ringed in the same black, flat inside it. */
+  .sk-segmented[data-appearance="brutalist"] {
+    --sk-segmented-brutalist-offset: 3px;
+    --brutalist-black: oklch(from var(--shadow-lg) l c h / 1);
+    --brutalist-direction: 1;
+    --sk-segmented-border-color: var(--brutalist-black);
+    --sk-segmented-wash: none;
+    --sk-segmented-shadow: calc(var(--sk-segmented-brutalist-offset) * var(--brutalist-direction))
+      var(--sk-segmented-brutalist-offset) 0 var(--brutalist-black);
+    --sk-segmented-selected-ring: inset 0 0 0 1px var(--brutalist-black);
+    --sk-segmented-selected-elevation: 0 0 transparent;
+    --sk-segmented-selected-wash: none;
+  }
+
+  .sk-segmented[data-appearance="brutalist"]:dir(rtl) {
+    --brutalist-direction: -1;
+  }
+
+  /* FROSTED: the track is Button's see-through material over whatever is behind it, and the
+   * selection a denser sheet on it. Opaque baseline; the material only where backdrop-filter exists
+   * and no reduced-transparency preference is set. */
+  .sk-segmented[data-appearance="frosted"] {
+    --sk-segmented-frost-opacity: 60%;
+    --sk-segmented-wash: none;
+    --sk-segmented-border-color: color-mix(in oklab, currentColor 18%, transparent);
+    --sk-segmented-shadow: inset 0 1px 0 light-dark(
+      color-mix(in oklab, var(--color-bg-surface) 70%, transparent),
+      color-mix(in oklab, var(--color-text-primary) 18%, transparent)
+    );
+  }
+
+  @supports (backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px)) {
+    @media (prefers-reduced-transparency: no-preference) {
+      .sk-segmented[data-appearance="frosted"] {
+        --sk-segmented-bg: color-mix(in oklab, var(--color-bg-surface-sunken) var(--sk-segmented-frost-opacity), transparent);
+        --sk-segmented-selected-bg: color-mix(
+          in oklab,
+          color-mix(in oklab, var(--color-bg-accent-subtle) 55%, var(--color-bg-surface-raised)) 82%,
+          transparent
+        );
+        -webkit-backdrop-filter: blur(12px) saturate(150%);
+        backdrop-filter: blur(12px) saturate(150%);
+      }
+    }
+  }
+
+  [data-contrast="high"] .sk-segmented[data-appearance="frosted"],
+  .sk-segmented[data-appearance="frosted"][data-contrast="high"] {
+    --sk-segmented-bg: var(--color-bg-surface-sunken);
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+
+  @media (prefers-contrast: more) {
+    :root:not([data-contrast]) .sk-segmented[data-appearance="frosted"] {
+      --sk-segmented-bg: var(--color-bg-surface-sunken);
+      -webkit-backdrop-filter: none;
+      backdrop-filter: none;
+    }
+  }
+
   @media (forced-colors: active) {
     .sk-segmented {
       border-color: CanvasText;
       background: Canvas;
+    }
+
+    /* No well, offset, ledge or glass: the system track and its Highlight selection are the control. */
+    .sk-segmented[data-appearance] {
+      box-shadow: none;
+      -webkit-backdrop-filter: none;
+      backdrop-filter: none;
     }
 
     .sk-segmented__indicator {

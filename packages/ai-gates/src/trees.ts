@@ -1111,6 +1111,21 @@ const signatureTrees: readonly Canonical[] = [
       },
     },
   },
+  {
+    name: "segmented/view-switcher-brutalist",
+    enhanced: true,
+    tree: {
+      contract: "segmented",
+      signature: "Segmented",
+      options: { value: "lista", label: "Vista", appearance: "brutalist" },
+      slots: {
+        items: [
+          { options: { value: "lista" }, slots: { label: "Lista" } },
+          { options: { value: "grilla" }, slots: { label: "Grilla" } },
+        ],
+      },
+    },
+  },
   /*
    * Caption wash over a photo. ImageFrame's `caption` slot is not a second media source, so `src`
    * and MediaCaption can coexist without breaking `exactlyOneOf`. Alone, MediaGradient paints
