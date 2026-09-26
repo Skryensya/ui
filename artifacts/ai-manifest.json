@@ -716,6 +716,19 @@
         "date": null,
         "entries": [
           {
+            "date": "2026-09-26",
+            "en": {
+              "body": "Button's axis on the corner control. <code>tactile</code> and <code>brutalist</code> travel on press through <code>transform</code>, leaving the reveal's rise alone; nothing moves on hover. <code>frosted</code> is glass over the page, opaque wherever the material cannot be trusted.",
+              "title": "BackToTop adds plain, tactile, brutalist and frosted appearances"
+            },
+            "es": {
+              "body": "El eje de Button en el control de esquina. <code>tactile</code> y <code>brutalist</code> viajan al presionar con <code>transform</code>, sin tocar la subida del reveal; nada se mueve en hover. <code>frosted</code> es vidrio sobre la página, opaco donde el material no es fiable.",
+              "title": "BackToTop suma appearance plain, tactile, brutalist y frosted"
+            },
+            "kind": "feature",
+            "target": "appearance"
+          },
+          {
             "date": "2026-09-17",
             "en": {
               "body": "Interactive or form host signatures publish <code>forward</code> (<code>id</code>/<code>aria-*</code> and link or form attrs where relevant). An attr outside the list is <code>unknown-attr</code>.",
@@ -13401,6 +13414,18 @@
           "part": "root",
           "sheet": "@skryensya/core/components/back-to-top.css"
         },
+        "--sk-back-to-top-brutalist-offset": {
+          "default": "4px",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/back-to-top.css"
+        },
+        "--sk-back-to-top-depth": {
+          "default": "5px",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/back-to-top.css"
+        },
         "--sk-back-to-top-enter-scale": {
           "default": "0.82",
           "output": false,
@@ -13409,6 +13434,18 @@
         },
         "--sk-back-to-top-fg": {
           "default": "var(--color-text-primary)",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/back-to-top.css"
+        },
+        "--sk-back-to-top-frost-blur": {
+          "default": "12px",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/back-to-top.css"
+        },
+        "--sk-back-to-top-frost-opacity": {
+          "default": "72%",
           "output": false,
           "part": "root",
           "sheet": "@skryensya/core/components/back-to-top.css"
@@ -13448,8 +13485,12 @@
         "--sk-back-to-top-bg",
         "--sk-back-to-top-border-color",
         "--sk-back-to-top-border-color-hover",
+        "--sk-back-to-top-brutalist-offset",
+        "--sk-back-to-top-depth",
         "--sk-back-to-top-enter-scale",
         "--sk-back-to-top-fg",
+        "--sk-back-to-top-frost-blur",
+        "--sk-back-to-top-frost-opacity",
         "--sk-back-to-top-radius",
         "--sk-back-to-top-shadow",
         "--sk-back-to-top-size",
@@ -13458,6 +13499,17 @@
       ],
       "id": "back-to-top",
       "options": {
+        "appearance": {
+          "attr": "data-appearance",
+          "default": "plain",
+          "type": "enum",
+          "values": [
+            "plain",
+            "tactile",
+            "brutalist",
+            "frosted"
+          ]
+        },
         "scroller": {
           "attr": "data-scroller",
           "machineInput": true,
@@ -13528,7 +13580,8 @@
           "options": [
             "threshold",
             "scroller",
-            "target"
+            "target",
+            "appearance"
           ],
           "react": {
             "from": "@skryensya/react/back-to-top",
@@ -51959,7 +52012,7 @@
     "working": "0.0.1"
   },
   "schemaVersion": "2.3",
-  "sourceHash": "8de2b0e6cb561c2b",
+  "sourceHash": "cb75bbd12d852b67",
   "vocabulary": {
     "a11y": "When `when` holds, one of `requiresOneOf` must be given: an option, a raw attribute, a filled slot, or a child signature by name.",
     "atLeastOneOf": "At least one member of each group counts: a filled slot, a boolean option set to true, or an option other than its default.",

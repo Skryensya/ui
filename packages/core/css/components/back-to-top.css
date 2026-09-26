@@ -218,6 +218,145 @@
    * control rising above its neighbours is what that rule is for everywhere else.
    */
 
+  /*
+   * ── APPEARANCE ───────────────────────────────────────────────────────────────────────────────
+   *
+   * Button's axis on the corner control (button.css documents each construction in full). Two things
+   * are this file's own:
+   *
+   *   PRESS TRAVEL RIDES `transform`, NOT `translate`. `translate` is the reveal's rise, on the
+   *   enter/exit tempo; sharing it would make every press crawl at reveal speed and every reveal
+   *   snap at press speed. `transform` is a separate property on its own feedback tempo, so the two
+   *   compose instead of fighting.
+   *
+   *   NOTHING MOVES ON HOVER, in any appearance: the reasoning under the hover rule above (a control
+   *   that rises into place saying "rise" again on hover) holds for a ledge or an offset too. The
+   *   edge still firms; press is where the travel is.
+   */
+  .sk-back-to-top:is([data-appearance="tactile"], [data-appearance="brutalist"]) {
+    --press: 0;
+    transition:
+      opacity var(--motion-exit-duration) var(--motion-exit-easing),
+      scale var(--motion-exit-duration) var(--motion-exit-easing),
+      translate var(--motion-exit-duration) var(--motion-exit-easing),
+      border-color var(--motion-state-change-duration) var(--motion-state-change-easing),
+      box-shadow var(--motion-feedback-duration) var(--motion-feedback-easing),
+      transform var(--motion-feedback-duration) var(--motion-feedback-easing);
+  }
+
+  .sk-back-to-top:is([data-appearance="tactile"], [data-appearance="brutalist"]):not([hidden]) {
+    transition:
+      opacity var(--motion-enter-duration) var(--motion-enter-easing),
+      scale var(--motion-enter-duration) var(--motion-enter-easing),
+      translate var(--motion-enter-duration) var(--motion-enter-easing),
+      border-color var(--motion-state-change-duration) var(--motion-state-change-easing),
+      box-shadow var(--motion-feedback-duration) var(--motion-feedback-easing),
+      transform var(--motion-feedback-duration) var(--motion-feedback-easing);
+  }
+
+  /* TACTILE: a ledge under the disc, in a darker step of its own surface, that the press sinks into.
+   * Whole pixels: 5px of depth, 4 of travel, 1 left showing. */
+  .sk-back-to-top[data-appearance="tactile"] {
+    --sk-back-to-top-depth: 5px;
+    --tactile-ledge: light-dark(
+      color-mix(in oklab, var(--sk-back-to-top-bg) 76%, var(--color-text-primary)),
+      color-mix(in oklab, var(--sk-back-to-top-bg) 72%, var(--color-bg-surface-sunken))
+    );
+    --press-transform: translateY(calc(var(--sk-back-to-top-depth) * var(--press)));
+    box-shadow:
+      0 calc(var(--sk-back-to-top-depth) * (1 - var(--press))) 0 var(--tactile-ledge),
+      var(--sk-back-to-top-shadow);
+  }
+
+  /* The transform exists only while pressed: nothing at rest carries one it does not need. */
+  .sk-back-to-top[data-appearance="tactile"]:not([hidden]):active {
+    --press: 0.8;
+    transform: var(--press-transform);
+  }
+
+  /* BRUTALIST: the black edge (hover keeps it black; only the paint of the edge is the construction)
+   * and a hard offset the disc travels into, toward block-end and inline-end, mirrored in RTL. */
+  .sk-back-to-top[data-appearance="brutalist"] {
+    --sk-back-to-top-brutalist-offset: 4px;
+    --brutalist-black: oklch(from var(--shadow-lg) l c h / 1);
+    --brutalist-direction: 1;
+    --sk-back-to-top-border-color: var(--brutalist-black);
+    --sk-back-to-top-border-color-hover: var(--brutalist-black);
+    --sk-back-to-top-wash: none;
+    --press-transform: translate(
+      calc(var(--sk-back-to-top-brutalist-offset) * var(--press) * var(--brutalist-direction)),
+      calc(var(--sk-back-to-top-brutalist-offset) * var(--press))
+    );
+    box-shadow:
+      calc(var(--sk-back-to-top-brutalist-offset) * (1 - var(--press)) * var(--brutalist-direction))
+      calc(var(--sk-back-to-top-brutalist-offset) * (1 - var(--press))) 0 var(--brutalist-black);
+  }
+
+  .sk-back-to-top[data-appearance="brutalist"]:dir(rtl) {
+    --brutalist-direction: -1;
+  }
+
+  .sk-back-to-top[data-appearance="brutalist"]:not([hidden]):active {
+    --press: 0.75;
+    transform: var(--press-transform);
+  }
+
+  /* FROSTED: Button's material over whatever the page is showing, which for a control with no scrim
+   * is the whole point. Opaque baseline plus a fine edge and a lit rim; the see-through disc only
+   * where backdrop-filter exists and no reduced-transparency preference is set. */
+  .sk-back-to-top[data-appearance="frosted"] {
+    --sk-back-to-top-frost-opacity: 72%;
+    --sk-back-to-top-frost-blur: 12px;
+    --sk-back-to-top-wash: none;
+    --sk-back-to-top-border-color: color-mix(in oklab, currentColor 22%, transparent);
+    --frost-highlight: light-dark(
+      color-mix(in oklab, var(--color-bg-surface) 70%, transparent),
+      color-mix(in oklab, var(--color-text-primary) 18%, transparent)
+    );
+    box-shadow: inset 0 1px 0 var(--frost-highlight), var(--sk-back-to-top-shadow);
+  }
+
+  @supports (backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px)) {
+    @media (prefers-reduced-transparency: no-preference) {
+      .sk-back-to-top[data-appearance="frosted"] {
+        background: color-mix(in oklab, var(--sk-back-to-top-bg) var(--sk-back-to-top-frost-opacity), transparent);
+        -webkit-backdrop-filter: blur(var(--sk-back-to-top-frost-blur)) saturate(150%);
+        backdrop-filter: blur(var(--sk-back-to-top-frost-blur)) saturate(150%);
+      }
+    }
+  }
+
+  [data-contrast="high"] .sk-back-to-top[data-appearance="frosted"],
+  .sk-back-to-top[data-appearance="frosted"][data-contrast="high"] {
+    background: var(--sk-back-to-top-bg);
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+
+  @media (prefers-contrast: more) {
+    :root:not([data-contrast]) .sk-back-to-top[data-appearance="frosted"] {
+      background: var(--sk-back-to-top-bg);
+      -webkit-backdrop-filter: none;
+      backdrop-filter: none;
+    }
+  }
+
+  /* Forced colors keep none of it: no ledge, no offset, no glass, no travel. The system border stays. */
+  @media (forced-colors: active) {
+    .sk-back-to-top[data-appearance] {
+      border-color: CanvasText;
+      background: Canvas;
+      -webkit-backdrop-filter: none;
+      backdrop-filter: none;
+      box-shadow: none;
+    }
+
+    /* The press as well: the travel rule above is `:active`-specific, so this one matches it. */
+    .sk-back-to-top[data-appearance]:not([hidden]):active {
+      transform: none;
+    }
+  }
+
   @media (prefers-reduced-motion: reduce) {
     /* No scale and no rise - the control just fades, on the collapsed duration. */
     .sk-back-to-top,
