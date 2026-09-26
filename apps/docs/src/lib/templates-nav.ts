@@ -57,5 +57,23 @@ export function templateSections(t: Translate): TemplateSection[] {
       title: t("templates.checkoutTitle"),
       label: t("templates.checkoutLabel"),
     },
+    {
+      id: "pricing",
+      navLabel: t("templates.pricingNavLabel"),
+      title: t("templates.pricingTitle"),
+      label: t("templates.pricingLabel"),
+    },
+    {
+      id: "sign-in",
+      navLabel: t("templates.signInNavLabel"),
+      title: t("templates.signInTitle"),
+      label: t("templates.signInLabel"),
+    },
+    {
+      id: "settings",
+      navLabel: t("templates.settingsNavLabel"),
+      title: t("templates.settingsTitle"),
+      label: t("templates.settingsLabel"),
+    },
   ];
 }
