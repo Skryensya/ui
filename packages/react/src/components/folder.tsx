@@ -8,6 +8,7 @@ import {
   folderParts,
   folderPath,
   folderTabEndFrom,
+  type FolderAppearance,
 } from "@skryensya/core/folder";
 import { observeAppearance } from "@skryensya/core/theme-toggle";
 import {
@@ -22,7 +23,7 @@ import {
 
 const cx = (...classes: Array<string | undefined>) => classes.filter(Boolean).join(" ");
 
-const { active: activeOption } = folderContract.options;
+const { active: activeOption, appearance: appearanceOption } = folderContract.options;
 
 
 
@@ -60,6 +61,8 @@ export type FolderOwnProps = {
    * the screen. See `folder.ts`'s own option doc for why the policy is the composition's.
    */
   active?: boolean;
+  /** How the revealed folder is physically expressed. Button's axis; see `folder.ts`. */
+  appearance?: FolderAppearance;
 };
 
 export type FolderProps = Omit<HTMLAttributes<HTMLDivElement>, "children"> & FolderOwnProps;
@@ -225,6 +228,7 @@ function FolderShape({
 /** A folder-shaped surface. */
 export function Folder({
   active = false,
+  appearance = appearanceOption.default,
   children,
   className,
   label,
@@ -244,6 +248,7 @@ export function Folder({
       ref={rootRef}
       {...{ [folderAttrs.root]: "" }}
       {...{ [activeOption.attr]: active ? activeOption.trueValue : undefined }}
+      {...{ [appearanceOption.attr]: appearance }}
     >
       <FolderShape label={label} pathRef={pathRef} previews={previews} shapeRef={shapeRef} tabRef={tabRef}>
         {children}
@@ -259,6 +264,7 @@ export function Folder({
  */
 export function FolderLink({
   active = false,
+  appearance = appearanceOption.default,
   children,
   className,
   label,
@@ -278,6 +284,7 @@ export function FolderLink({
       ref={rootRef}
       {...{ [folderAttrs.root]: "" }}
       {...{ [activeOption.attr]: active ? activeOption.trueValue : undefined }}
+      {...{ [appearanceOption.attr]: appearance }}
     >
       <FolderShape label={label} pathRef={pathRef} previews={previews} shapeRef={shapeRef} tabRef={tabRef}>
         {children}

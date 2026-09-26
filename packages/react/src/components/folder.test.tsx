@@ -86,6 +86,18 @@ describe("Folder (React)", () => {
     expect(shape.getAttribute("preserveAspectRatio")).toBe("none");
   });
 
+  it("writes appearance on the root of either host, plain when omitted", () => {
+    const ui = render(
+      <>
+        <Folder label="Plain">Body</Folder>
+        <Folder appearance="brutalist" label="Brutalist">Body</Folder>
+        <FolderLink appearance="frosted" href="/radio" label="Frosted">Body</FolderLink>
+      </>,
+    );
+    const roots = ui.container.querySelectorAll<HTMLElement>(".sk-folder");
+    expect([...roots].map((root) => root.dataset.appearance)).toEqual(["plain", "brutalist", "frosted"]);
+  });
+
   it("draws the silhouette from the folder's own box and its tab's width", () => {
     stubLayout({ width: 600, height: 320, tabWidth: 180 });
     const ui = render(<Folder label="Radio">Body</Folder>);
