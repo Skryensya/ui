@@ -19,6 +19,24 @@ describe("Window", () => {
     expect(dialog.getAttribute("data-state")).toBe("open");
   });
 
+  it("writes its appearance on the content, the element that paints, plain by default", async () => {
+    const ui = render(
+      <>
+        <Window defaultOpen title="Plain" trigger="Open plain">
+          <p>Body</p>
+        </Window>
+        <Window appearance="brutalist" defaultOpen title="Brutalist" trigger="Open brutalist">
+          <p>Body</p>
+        </Window>
+      </>,
+    );
+
+    expect((await ui.findByRole("dialog", { name: "Plain" })).getAttribute("data-appearance")).toBe("plain");
+    const brutalist = await ui.findByRole("dialog", { name: "Brutalist" });
+    expect(brutalist.getAttribute("data-appearance")).toBe("brutalist");
+    expect(brutalist.classList.contains("sk-window__content")).toBe(true);
+  });
+
   it("names its controls with the labels it is given, not Zag's English", async () => {
     const ui = render(
       <Window
