@@ -1085,6 +1085,25 @@ const signatureTrees: readonly Canonical[] = [
     },
   },
   {
+    name: "toolbar/brutalist",
+    enhanced: true,
+    tree: {
+      contract: "toolbar",
+      signature: "Toolbar",
+      options: { label: "Formato", appearance: "brutalist" },
+      children: {
+        contract: "toolbar",
+        signature: "ToolbarGroup",
+        children: {
+          contract: "button",
+          signature: "Button.action",
+          options: { variant: "ghost", size: "sm", appearance: "brutalist" },
+          children: "Negrita",
+        },
+      },
+    },
+  },
+  {
     // The fill is derived from the value: a track that says 60 and looks 40 is a lie nobody sees.
     name: "slider/mid-range",
     enhanced: true,
