@@ -73,7 +73,7 @@ const MAP = {
   settings: "settings",
   user: "person",
   language: "translate",
-  appearance: "palette",
+  appearance: "style",
   visibility: "visibility",
   "visibility-off": "visibility_off",
   "mode-system": "monitor",
