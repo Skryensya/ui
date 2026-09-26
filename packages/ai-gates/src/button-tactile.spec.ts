@@ -69,6 +69,43 @@ test("tactile button compresses depth as physical travel increases", async ({ pa
   expect(afterActive?.y).toBe(afterBefore?.y);
 });
 
+test("every tactile variant travels on press, not only solid", async ({ page }) => {
+  await waitForStage(page);
+  await page.evaluate(({ variants }) => {
+    const host = document.createElement("div");
+    host.id = "tactile-variant-press-host";
+    host.style.cssText = "position:fixed;inset:0 auto auto 0;padding:40px;display:flex;gap:16px;align-items:start";
+    host.innerHTML = variants
+      .map(
+        (variant) =>
+          `<button id="press-${variant}" class="sk-button sk-interactive" type="button" data-appearance="tactile" data-variant="${variant}" data-tone="accent">${variant}</button>`,
+      )
+      .join("");
+    document.body.append(host);
+  }, { variants: VARIANTS });
+
+  for (const variant of VARIANTS) {
+    const button = page.locator(`#press-${variant}`);
+    await button.hover();
+    await page.waitForTimeout(120);
+    const hover = await button.evaluate((el) => {
+      const cs = getComputedStyle(el);
+      return { shadow: cs.boxShadow, translate: cs.translate };
+    });
+    await page.mouse.down();
+    await page.waitForTimeout(80);
+    const active = await button.evaluate((el) => {
+      const cs = getComputedStyle(el);
+      return { shadow: cs.boxShadow, translate: cs.translate };
+    });
+    await page.mouse.up();
+    await page.mouse.move(1, 1);
+
+    expect(firstShadowYOffset(hover.shadow), variant).toBeGreaterThan(firstShadowYOffset(active.shadow));
+    expect(translateY(hover.translate), variant).toBeLessThan(translateY(active.translate));
+  }
+});
+
 test("disabled tactile buttons do not physically respond to hover or active", async ({ page }) => {
   await waitForStage(page);
   await page.evaluate(() => {
@@ -105,7 +142,7 @@ test("tactile appearance preserves the existing variant and tone matrix", async 
       const host = document.createElement("div");
       host.style.cssText = "position:fixed;inset:0 auto auto 0;display:flex;gap:8px;flex-wrap:wrap;padding:20px";
       host.innerHTML = [
-        '<button class="sk-button sk-interactive" type="button" data-variant="solid" data-tone="accent">default accent</button>',
+        '<button class="sk-button sk-interactive" type="button" data-variant="solid" data-tone="accent">plain accent</button>',
         '<button class="sk-button sk-interactive" type="button" data-appearance="tactile" data-variant="solid" data-tone="accent">tactile accent</button>',
         ...variants.map((variant) => `<button class="sk-button sk-interactive" type="button" data-appearance="tactile" data-variant="${variant}">${variant}</button>`),
         ...tones.map((tone) => `<button class="sk-button sk-interactive" type="button" data-appearance="tactile" data-tone="${tone}">${tone}</button>`),
@@ -119,7 +156,7 @@ test("tactile appearance preserves the existing variant and tone matrix", async 
         const cs = getComputedStyle(el);
         return {
           text: el.textContent ?? "",
-          appearance: el.getAttribute("data-appearance") ?? "default",
+          appearance: el.getAttribute("data-appearance") ?? "plain",
           bg: cs.backgroundColor,
           fg: cs.color,
           shadow: cs.boxShadow,
@@ -134,7 +171,7 @@ test("tactile appearance preserves the existing variant and tone matrix", async 
     { variants: VARIANTS, tones: TONES },
   );
 
-  expect(rows.find((r) => r.text === "default accent")?.appearance).toBe("default");
+  expect(rows.find((r) => r.text === "plain accent")?.appearance).toBe("plain");
   expect(rows.find((r) => r.text === "tactile accent")?.appearance).toBe("tactile");
   for (const variant of VARIANTS) expect(rows.find((r) => r.text === variant)?.appearance).toBe("tactile");
   for (const tone of TONES) expect(rows.find((r) => r.text === tone)?.appearance).toBe("tactile");

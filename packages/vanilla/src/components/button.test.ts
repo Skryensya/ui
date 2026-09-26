@@ -45,6 +45,45 @@ describe("Button Vanilla contracts", () => {
     expect(root.getAttribute("type")).toBe("button");
   });
 
+  it("accepts brutalist authored markup without runtime appearance logic", () => {
+    const root = mount(
+      '<button class="sk-button sk-interactive" data-sk-button data-appearance="brutalist" data-variant="ghost" data-tone="danger">Delete</button>',
+    );
+
+    expect(() => mountButton(root)).not.toThrow();
+    expect(root.getAttribute("data-appearance")).toBe("brutalist");
+    expect(root.getAttribute("data-variant")).toBe("ghost");
+    expect(root.getAttribute("data-tone")).toBe("danger");
+  });
+
+  it("still refuses an unnamed icon-only brutalist button", () => {
+    const root = mount(
+      '<button class="sk-button sk-interactive" data-sk-button data-appearance="brutalist" data-icon-only><svg class="sk-icon"></svg></button>',
+    );
+
+    expect(() => mountButton(root)).toThrow(/accessible name|aria-label/i);
+  });
+
+  it("accepts frosted authored markup and still refuses an unnamed icon-only one", () => {
+    const root = mount(
+      '<button class="sk-button sk-interactive" data-sk-button data-appearance="frosted" data-variant="soft" data-tone="danger">Delete</button>',
+    );
+    expect(() => mountButton(root)).not.toThrow();
+    expect(root.getAttribute("data-appearance")).toBe("frosted");
+
+    const unnamed = mount(
+      '<button class="sk-button sk-interactive" data-sk-button data-appearance="frosted" data-icon-only><svg class="sk-icon"></svg></button>',
+    );
+    expect(() => mountButton(unnamed)).toThrow(/accessible name|aria-label/i);
+  });
+
+  it("accepts frosted authored navigation markup", () => {
+    const root = mount('<a class="sk-button sk-interactive" data-sk-button data-appearance="frosted" href="/docs">Documentation</a>');
+
+    expect(mountButton(root)).toBe(1);
+    expect(root.getAttribute("data-appearance")).toBe("frosted");
+  });
+
   it("accepts an icon-only button named by aria-label", () => {
     const root = mount(
       '<button class="sk-button sk-interactive" data-sk-button data-icon-only aria-label="Close"><svg class="sk-icon" data-icon="close"></svg></button>',
@@ -121,6 +160,16 @@ describe("Button.navigation Vanilla contracts", () => {
 
     expect(mountButton(root)).toBe(1);
     expect(root.getAttribute("data-appearance")).toBe("tactile");
+    expect(root.getAttribute("href")).toBe("/docs");
+  });
+
+  it("accepts brutalist authored navigation markup", () => {
+    const root = mount(
+      '<a class="sk-button sk-interactive" data-sk-button data-appearance="brutalist" href="/docs">Documentation</a>',
+    );
+
+    expect(mountButton(root)).toBe(1);
+    expect(root.getAttribute("data-appearance")).toBe("brutalist");
     expect(root.getAttribute("href")).toBe("/docs");
   });
 
