@@ -1,22 +1,14 @@
 import type { Decorator, Preview } from "@storybook/react-vite";
 
 /*
- * The sheets the Button trees need, which is `sheetsForTree` over every one of them (the same closure
- * the docs frame loads), plus the fonts and the tier-3 dimension switches the playground's layout
- * loads. A new component's stories add its own closure here.
+ * Only what every story shares: the font, the tokens and the tier-3 dimension switches the
+ * playground's layout loads. Each generated stories file imports its own component sheets, the
+ * `sheetsForTree` closure of its trees, so a story never depends on another having loaded first.
  */
 import "@skryensya/core/fonts/hanken-grotesk.css";
 import "@skryensya/core/tokens.scss"; // brings the state layer and the icon pattern with it
 import "@skryensya/core/dimensions/radius.scss";
 import "@skryensya/core/dimensions/press-scale.scss";
-import "@skryensya/core/patterns/layout.css";
-import "@skryensya/core/components/typography.css";
-import "@skryensya/core/components/button.css";
-import "@skryensya/core/components/annotation.css";
-import "@skryensya/core/components/canvas.css";
-import "@skryensya/core/components/checkbox.css";
-import "@skryensya/core/components/switch.css";
-import "@skryensya/core/components/tile.css";
 
 /*
  * Mode is `color-scheme` on the root, which is what arms every `light-dark()` in the semantic tier;
@@ -62,7 +54,9 @@ const preview: Preview = {
   },
   initialGlobals: { locale: "en", mode: "auto" },
   parameters: {
-    layout: "centered",
+    /* Padded, not centered: a centered story is shrink-wrapped, and everything that sizes to its
+       container (a canvas, a table, a navbar) collapses to nothing. The docs stage is full width too. */
+    layout: "padded",
     backgrounds: { disable: true },
     controls: { expanded: true },
   },

@@ -20,3 +20,6 @@ export function translator(locale: Locale): Translate {
 }
 
 export const isLocale = (value: unknown): value is Locale => typeof value === "string" && value in ui;
+
+/** The locale a translator speaks, for the demos that take a locale rather than `t`. */
+export const localeOf = (t: Translate): Locale => (t as Translate & { locale?: Locale }).locale ?? defaultLocale;
