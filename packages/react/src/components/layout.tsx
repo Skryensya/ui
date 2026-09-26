@@ -1,6 +1,7 @@
 import {
   layoutParts,
   layoutGridParts,
+  type BoxAppearance,
   type BoxBorder,
   type BoxSurface,
   type GridColumns,
@@ -39,10 +40,11 @@ function classes(base: string, className: string | undefined) {
 
 export type BoxProps<Element extends ElementType = "div"> = PolymorphicProps<
   Element,
-  LayoutChildren & { border?: BoxBorder; padding?: Space; surface?: BoxSurface }
+  LayoutChildren & { appearance?: BoxAppearance; border?: BoxBorder; padding?: Space; surface?: BoxSurface }
 >;
 
 export function Box<Element extends ElementType = "div">({
+  appearance = "plain",
   as,
   border = "none",
   className,
@@ -51,7 +53,16 @@ export function Box<Element extends ElementType = "div">({
   ...props
 }: BoxProps<Element>) {
   const Component = as ?? "div";
-  return <Component {...props} className={classes(layoutParts.box, className)} data-border={border} data-padding={padding} data-surface={surface} />;
+  return (
+    <Component
+      {...props}
+      className={classes(layoutParts.box, className)}
+      data-appearance={appearance}
+      data-border={border}
+      data-padding={padding}
+      data-surface={surface}
+    />
+  );
 }
 
 export type HeroProps<Element extends ElementType = "div"> = PolymorphicProps<
