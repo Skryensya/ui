@@ -5,6 +5,57 @@
         "date": null,
         "entries": [
           {
+            "date": "2026-09-26",
+            "en": {
+              "body": "<code>appearance=\"frosted\"</code> puts Button's material on the frame (of <code>Accordion</code>, of <code>DetailsGroup</code>, or of a lone <code>Details</code>), with the open bodies see-through too. <code>brutalist</code> now draws the frame, dividers and offset in black in both modes, at plain's border width. New hooks: <code>--sk-accordion-frost-*</code>, <code>--sk-details-frost-*</code> and the <code>--sk-tile-frost-*</code> Accordion inherits from <code>tile.css</code>.",
+              "title": "Accordion and Details add frosted, and their brutalist moves to Button's black ink"
+            },
+            "es": {
+              "body": "<code>appearance=\"frosted\"</code> pone el material de Button en el marco (de <code>Accordion</code>, de <code>DetailsGroup</code> o de un <code>Details</code> suelto), con los cuerpos abiertos también translúcidos. <code>brutalist</code> ahora dibuja marco, divisores y sombra en negro en ambos modos, al grosor de plain. Hooks nuevos: <code>--sk-accordion-frost-*</code>, <code>--sk-details-frost-*</code> y los <code>--sk-tile-frost-*</code> que Accordion hereda de <code>tile.css</code>.",
+              "title": "Accordion y Details suman frosted, y su brutalist pasa a la tinta negra de Button"
+            },
+            "kind": "feature",
+            "target": "appearance"
+          },
+          {
+            "date": "2026-09-26",
+            "en": {
+              "body": "The native half accepts the same <code>appearance</code> as <code>Accordion</code>. <code>DetailsGroup</code> carries it on its frame, a lone <code>Details</code> on itself, and a <code>Details</code> inside a group ignores its own. Nothing moves: the summary is the control. New hooks: <code>--sk-details-depth</code> and the four <code>--sk-details-brutalist-*</code>.",
+              "title": "Details and DetailsGroup add appearance"
+            },
+            "es": {
+              "body": "La mitad nativa acepta el mismo <code>appearance</code> que <code>Accordion</code>. <code>DetailsGroup</code> lo lleva en su marco, un <code>Details</code> suelto sobre sí mismo, y un <code>Details</code> dentro de un grupo ignora el suyo. Nada se mueve: el summary es el control. Hooks nuevos: <code>--sk-details-depth</code> y los cuatro <code>--sk-details-brutalist-*</code>.",
+              "title": "Details y DetailsGroup suman appearance"
+            },
+            "kind": "feature",
+            "target": "appearance"
+          },
+          {
+            "date": "2026-09-26",
+            "en": {
+              "body": "<code>Accordion</code> accepts <code>appearance</code>, Button's and Tile's axis: <code>plain</code> (the existing look), <code>tactile</code> (a ledge under the frame) and <code>brutalist</code> (a 2px ink frame and dividers and a hard offset). It sits on the root because the frame is the surface; it never moves, each trigger is its own control. New hooks: <code>--sk-accordion-depth</code> and the four <code>--sk-accordion-brutalist-*</code>.",
+              "title": "Accordion adds tactile and brutalist appearance"
+            },
+            "es": {
+              "body": "<code>Accordion</code> acepta <code>appearance</code>, el mismo eje de Button y Tile: <code>plain</code> (el look actual), <code>tactile</code> (un canto bajo el marco) y <code>brutalist</code> (marco y divisores de 2px en tinta y una sombra dura). Se pone en la raíz porque el marco es la superficie; nunca se mueve, cada trigger es su propio control. Hooks nuevos: <code>--sk-accordion-depth</code> y los cuatro <code>--sk-accordion-brutalist-*</code>.",
+              "title": "Accordion suma appearance tactile y brutalist"
+            },
+            "kind": "feature",
+            "target": "appearance"
+          },
+          {
+            "date": "2026-09-26",
+            "en": {
+              "body": "Accordion paints with <code>tile.css</code>, so it publishes the hooks Tile added for <code>appearance</code>: <code>--sk-tile-depth</code> and the four <code>--sk-tile-brutalist-*</code>. Accordion has no <code>appearance</code> of its own; its items are unchanged.",
+              "title": "Accordion documents Tile's appearance hooks"
+            },
+            "es": {
+              "body": "Accordion se dibuja con <code>tile.css</code>, así que publica los hooks que Tile sumó para <code>appearance</code>: <code>--sk-tile-depth</code> y los cuatro <code>--sk-tile-brutalist-*</code>. Accordion no tiene <code>appearance</code>; sus items no cambian.",
+              "title": "Accordion documenta los hooks de apariencia de Tile"
+            },
+            "kind": "feature"
+          },
+          {
             "date": "2026-09-21",
             "en": {
               "body": "<code>DetailsGroup</code>, <code>Details</code>, <code>Details.Summary</code> and <code>Details.Content</code> now live inside the <code>accordion</code> contract, under the same names, the same <code>sk-details*</code> classes and the same React module. They were their own row in the catalogue, which made a reader choose between two entries before learning they answered the same question (the same dissolve Popup got into Popover). Their changelog entries move here; nothing you compose today changes.",
@@ -569,6 +620,19 @@
         "date": null,
         "entries": [
           {
+            "date": "2026-09-26",
+            "en": {
+              "body": "<code>Avatar.initials</code> and <code>Avatar.image</code> accept <code>appearance</code>, the same axis as Button, Tile and Box. <code>brutalist</code> draws the disc with a black edge and a hard offset shadow scaled to its size; in an <code>AvatarGroup</code> it replaces the ring and the +N counter follows it. New hooks <code>--sk-avatar-brutalist-*</code>.",
+              "title": "Avatar adds plain and brutalist appearances"
+            },
+            "es": {
+              "body": "<code>Avatar.initials</code> y <code>Avatar.image</code> aceptan <code>appearance</code>, el mismo eje de Button, Tile y Box. <code>brutalist</code> dibuja el disco con borde negro y una sombra dura desplazada proporcional a su tamaño; en un <code>AvatarGroup</code> reemplaza el anillo y el contador +N lo sigue. Hooks nuevos <code>--sk-avatar-brutalist-*</code>.",
+              "title": "Avatar suma appearance plain y brutalist"
+            },
+            "kind": "feature",
+            "target": "appearance"
+          },
+          {
             "date": "2026-09-17",
             "en": {
               "body": "<code>compose</code> documents the frame via <code>also</code> (<code>systemOwned</code>); sheets already resolved.",
@@ -850,6 +914,19 @@
         "date": null,
         "entries": [
           {
+            "date": "2026-09-26",
+            "en": {
+              "body": "<code>Box</code> accepts <code>appearance</code>, the same axis as Button and Tile. <code>brutalist</code> draws the box with a black edge and a hard offset shadow; <code>frosted</code> makes the surface a translucent material over the blurred backdrop, opaque wherever the material cannot be trusted. No <code>tactile</code>: a box is never pressed. New hooks <code>--sk-box-brutalist-*</code> and <code>--sk-box-frost-*</code>.",
+              "title": "Box adds plain, brutalist and frosted appearances"
+            },
+            "es": {
+              "body": "<code>Box</code> acepta <code>appearance</code>, el mismo eje de Button y Tile. <code>brutalist</code> dibuja la caja con borde negro y una sombra dura desplazada; <code>frosted</code> hace la superficie un material translúcido sobre el fondo difuminado, opaco donde el material no es fiable. Sin <code>tactile</code>: una caja no se presiona. Hooks nuevos <code>--sk-box-brutalist-*</code> y <code>--sk-box-frost-*</code>.",
+              "title": "Box suma appearance plain, brutalist y frosted"
+            },
+            "kind": "feature",
+            "target": "appearance"
+          },
+          {
             "date": "2026-09-17",
             "en": {
               "body": "<code>boxElement</code> takes <code>div</code>, <code>section</code>, <code>article</code>, <code>aside</code>, <code>header</code>, <code>footer</code>, <code>nav</code> and <code>main</code>. React already allowed it through <code>as</code>, but a tree could only emit a <code>div</code>, so a region or a landmark had no way to be written.",
@@ -1024,11 +1101,50 @@
           {
             "date": "2026-09-26",
             "en": {
-              "body": "<code>Button.action</code> and <code>Button.navigation</code> accept <code>appearance</code>. <code>default</code> keeps the existing look; <code>tactile</code> expresses the same Button as a physical control with depth and press compression.",
+              "body": "<code>appearance=\"frosted\"</code> expresses the same Button as a translucent material: the face lets a blurred, saturated backdrop through, with a fine edge and a top highlight. It is not the <code>translucent</code> emphasis, which decides how much the paint lets through; frosted decides how what is behind is processed, and composes with every emphasis. Without <code>backdrop-filter</code>, under reduced transparency, high contrast or forced colors it returns to an opaque face. New hooks: <code>--sk-button-frost-opacity</code>, <code>--sk-button-frost-blur</code> and <code>--sk-button-frost-saturation</code>.",
+              "title": "Button adds frosted appearance"
+            },
+            "es": {
+              "body": "<code>appearance=\"frosted\"</code> expresa el mismo Button como un material translúcido: la cara deja pasar el fondo difuminado y saturado, con un borde fino y un brillo superior. No es el énfasis <code>translucent</code>, que decide cuánto deja ver la pintura; frosted decide cómo se procesa lo de atrás, y se combina con todos los énfasis. Sin <code>backdrop-filter</code>, con transparencia reducida, alto contraste o forced colors vuelve a una cara opaca. Hooks nuevos: <code>--sk-button-frost-opacity</code>, <code>--sk-button-frost-blur</code> y <code>--sk-button-frost-saturation</code>.",
+              "title": "Button suma appearance frosted"
+            },
+            "kind": "feature",
+            "target": "appearance"
+          },
+          {
+            "date": "2026-09-26",
+            "en": {
+              "body": "<code>appearance=\"brutalist\"</code> expresses the same Button as a graphic control: a flat face, a strong edge and a zero-blur offset shadow the face travels into when pressed. Radius, density, tone and emphasis are unchanged. New hooks: <code>--sk-button-brutalist-offset-inline</code>, <code>--sk-button-brutalist-offset-block</code>, <code>--sk-button-brutalist-edge</code> and <code>--sk-button-brutalist-shadow</code>.",
+              "title": "Button adds brutalist appearance"
+            },
+            "es": {
+              "body": "<code>appearance=\"brutalist\"</code> expresa el mismo Button como un control gráfico: cara plana, borde fuerte y una sombra desplazada sin desenfoque hacia la que la cara viaja al presionar. No cambia el radio, la densidad, el tono ni el énfasis. Hooks nuevos: <code>--sk-button-brutalist-offset-inline</code>, <code>--sk-button-brutalist-offset-block</code>, <code>--sk-button-brutalist-edge</code> y <code>--sk-button-brutalist-shadow</code>.",
+              "title": "Button suma appearance brutalist"
+            },
+            "kind": "feature",
+            "target": "appearance"
+          },
+          {
+            "date": "2026-09-26",
+            "en": {
+              "body": "The base <code>appearance</code> value moves from <code>default</code> to <code>plain</code>, so the axis names a concrete visual expression instead of restating that it is the default. <code>tactile</code> is unchanged.",
+              "title": "The base appearance is named plain"
+            },
+            "es": {
+              "body": "El valor base de <code>appearance</code> pasa de <code>default</code> a <code>plain</code>, para que el eje nombre una expresión visual concreta en vez de repetir que es el valor por defecto. <code>tactile</code> no cambia.",
+              "title": "La apariencia base se llama plain"
+            },
+            "kind": "breaking",
+            "target": "appearance"
+          },
+          {
+            "date": "2026-09-26",
+            "en": {
+              "body": "<code>Button.action</code> and <code>Button.navigation</code> accept <code>appearance</code>. <code>plain</code> keeps the existing look; <code>tactile</code> expresses the same Button as a physical control with depth and press compression.",
               "title": "Button adds tactile appearance"
             },
             "es": {
-              "body": "<code>Button.action</code> y <code>Button.navigation</code> aceptan <code>appearance</code>. <code>default</code> conserva el look existente; <code>tactile</code> expresa el mismo Button como un control fisico con profundidad y compresion al presionar.",
+              "body": "<code>Button.action</code> y <code>Button.navigation</code> aceptan <code>appearance</code>. <code>plain</code> conserva el look existente; <code>tactile</code> expresa el mismo Button como un control fisico con profundidad y compresion al presionar.",
               "title": "Button suma appearance tactile"
             },
             "kind": "feature",
@@ -4219,6 +4335,19 @@
       {
         "date": null,
         "entries": [
+          {
+            "date": "2026-09-26",
+            "en": {
+              "body": "<code>Folder</code> and <code>FolderLink</code> accept Button's <code>appearance</code>, and show it only on the revealed folder: at rest it is still the colour of its ground. <code>tactile</code> shades the sheet and puts a ledge under it, <code>brutalist</code> draws Button's black edge and hard offset around the silhouette, and <code>frosted</code> turns the sheet into Button's see-through material. New hooks: <code>--sk-folder-depth</code>, the four <code>--sk-folder-brutalist-*</code> and the three <code>--sk-folder-frost-*</code>.",
+              "title": "Folder adds tactile, brutalist and frosted appearance"
+            },
+            "es": {
+              "body": "<code>Folder</code> y <code>FolderLink</code> aceptan el mismo <code>appearance</code> que Button, y lo muestran solo en el folder revelado: en reposo sigue siendo del color de su fondo. <code>tactile</code> sombrea la hoja y le pone un canto debajo, <code>brutalist</code> dibuja el borde y la sombra dura en el negro de Button alrededor de la silueta, y <code>frosted</code> vuelve la hoja el material translúcido de Button. Hooks nuevos: <code>--sk-folder-depth</code>, los cuatro <code>--sk-folder-brutalist-*</code> y los tres <code>--sk-folder-frost-*</code>.",
+              "title": "Folder suma appearance tactile, brutalist y frosted"
+            },
+            "kind": "feature",
+            "target": "appearance"
+          },
           {
             "date": "2026-09-17",
             "en": {
@@ -9699,6 +9828,32 @@
           {
             "date": "2026-09-26",
             "en": {
+              "body": "<code>appearance=\"frosted\"</code> is Button's material: an opaque baseline with a fine edge and a lit rim, and the blurred see-through sheet only where <code>backdrop-filter</code> exists and reduced transparency was not asked for. It does not move. <code>brutalist</code> now draws its edge and offset in black in both modes, at plain's border width, like Button; a selected tile only changes its edge. New hooks: <code>--sk-tile-frost-opacity</code>, <code>--sk-tile-frost-blur</code> and <code>--sk-tile-frost-saturation</code>.",
+              "title": "Tile adds frosted, and its brutalist moves to Button's black ink"
+            },
+            "es": {
+              "body": "<code>appearance=\"frosted\"</code> es el material de Button: base opaca con borde fino y un brillo arriba, y la lámina translúcida y desenfocada solo donde hay <code>backdrop-filter</code> y no se pidió menos transparencia. No se mueve. <code>brutalist</code> ahora dibuja borde y sombra en negro en ambos modos, al grosor de plain, como Button; un tile seleccionado solo cambia el borde. Hooks nuevos: <code>--sk-tile-frost-opacity</code>, <code>--sk-tile-frost-blur</code> y <code>--sk-tile-frost-saturation</code>.",
+              "title": "Tile suma frosted, y su brutalist pasa a la tinta negra de Button"
+            },
+            "kind": "feature",
+            "target": "appearance"
+          },
+          {
+            "date": "2026-09-26",
+            "en": {
+              "body": "Every Tile signature accepts <code>appearance</code>, Button's axis with Button's values: <code>plain</code> (the existing look), <code>tactile</code> (a ledge it sinks into when pressed) and <code>brutalist</code> (a 2px edge and a hard offset shadow). Selection colours the construction, it does not press it. <code>ExpandableTile</code> wears it without moving. New hooks: <code>--sk-tile-depth</code>, <code>--sk-tile-brutalist-offset-inline</code>, <code>--sk-tile-brutalist-offset-block</code>, <code>--sk-tile-brutalist-edge</code> and <code>--sk-tile-brutalist-shadow</code>.",
+              "title": "Tile adds tactile and brutalist appearance"
+            },
+            "es": {
+              "body": "Todas las firmas de Tile aceptan <code>appearance</code>, el mismo eje de Button con los mismos valores: <code>plain</code> (el look actual), <code>tactile</code> (un canto hacia el que se hunde al presionar) y <code>brutalist</code> (borde de 2px y sombra dura desplazada). La selección tiñe la construcción, no la presiona. <code>ExpandableTile</code> la lleva sin moverse. Hooks nuevos: <code>--sk-tile-depth</code>, <code>--sk-tile-brutalist-offset-inline</code>, <code>--sk-tile-brutalist-offset-block</code>, <code>--sk-tile-brutalist-edge</code> y <code>--sk-tile-brutalist-shadow</code>.",
+              "title": "Tile suma appearance tactile y brutalist"
+            },
+            "kind": "feature",
+            "target": "appearance"
+          },
+          {
+            "date": "2026-09-26",
+            "en": {
               "body": "<code>content</code> and <code>indicator</code> were already renamed into Tile's vocabulary but kept <code>data-scope=\"radio-group\"</code>, naming parts that machine does not have. They now carry <code>data-scope=\"tile\"</code>, like the root and the item, in the template and in both bindings. No selector read them.",
               "title": "The radio group's renamed parts move to the tile scope"
             },
@@ -11176,6 +11331,19 @@
         "date": null,
         "entries": [
           {
+            "date": "2026-09-26",
+            "en": {
+              "body": "<code>Window</code> accepts <code>appearance</code>, the same axis as Button, Tile, Box and Avatar, written on the content. <code>tactile</code> is a slab with a ledge, <code>brutalist</code> a black edge and a hard offset that shrinks behind another window, and <code>frosted</code> a translucent material, opaque wherever the material cannot be trusted. New hooks <code>--sk-window-depth</code>, <code>--sk-window-brutalist-*</code> and <code>--sk-window-frost-*</code>.",
+              "title": "Window adds plain, tactile, brutalist and frosted appearances"
+            },
+            "es": {
+              "body": "<code>Window</code> acepta <code>appearance</code>, el mismo eje de Button, Tile, Box y Avatar, escrito en el contenido. <code>tactile</code> es una losa con saliente, <code>brutalist</code> un borde negro y una sombra dura que se reduce detrás de otra ventana, y <code>frosted</code> un material translúcido, opaco donde el material no es fiable. Hooks nuevos <code>--sk-window-depth</code>, <code>--sk-window-brutalist-*</code> y <code>--sk-window-frost-*</code>.",
+              "title": "Window suma appearance plain, tactile, brutalist y frosted"
+            },
+            "kind": "feature",
+            "target": "appearance"
+          },
+          {
             "date": "2026-09-25",
             "en": {
               "body": "New <code>Window</code> contract on the <code>@zag-js/floating-panel</code> machine, the same one in both bindings. It is a non-modal panel: the title bar drags it, the edges and corners resize it, and its controls minimize, maximize, restore and close it. With focus inside, the arrow keys move it and Escape closes it (or cancels the drag in progress). Several open windows stack, and the last one focused sits on top. The content is a <code>role=\"dialog\"</code> with no <code>aria-modal</code>, named by its title. The controls' names are options (<code>closeLabel</code>, <code>minimizeLabel</code>, <code>maximizeLabel</code>, <code>restoreLabel</code>). Events: <code>sk:windowopenchange</code> and <code>sk:windowstagechange</code>. Its stylesheet is <code>components/window.css</code>.",
@@ -11365,8 +11533,56 @@
           "part": "root",
           "sheet": "@skryensya/core/components/accordion.css"
         },
+        "--sk-accordion-brutalist-edge": {
+          "default": "var(--brutalist-black)",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/accordion.css"
+        },
+        "--sk-accordion-brutalist-offset-block": {
+          "default": "5px",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/accordion.css"
+        },
+        "--sk-accordion-brutalist-offset-inline": {
+          "default": "5px",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/accordion.css"
+        },
+        "--sk-accordion-brutalist-shadow": {
+          "default": "var(--brutalist-black)",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/accordion.css"
+        },
+        "--sk-accordion-depth": {
+          "default": "4px",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/accordion.css"
+        },
         "--sk-accordion-divider-color": {
           "default": "var(--color-border-subtle)",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/accordion.css"
+        },
+        "--sk-accordion-frost-blur": {
+          "default": "16px",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/accordion.css"
+        },
+        "--sk-accordion-frost-opacity": {
+          "default": "82%",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/accordion.css"
+        },
+        "--sk-accordion-frost-saturation": {
+          "default": "150%",
           "output": false,
           "part": "root",
           "sheet": "@skryensya/core/components/accordion.css"
@@ -11443,6 +11659,30 @@
           "part": "native",
           "sheet": "@skryensya/core/components/details.css"
         },
+        "--sk-details-brutalist-edge": {
+          "default": "var(--brutalist-black)",
+          "output": false,
+          "part": "nativeGroup",
+          "sheet": "@skryensya/core/components/details.css"
+        },
+        "--sk-details-brutalist-offset-block": {
+          "default": "5px",
+          "output": false,
+          "part": "nativeGroup",
+          "sheet": "@skryensya/core/components/details.css"
+        },
+        "--sk-details-brutalist-offset-inline": {
+          "default": "5px",
+          "output": false,
+          "part": "nativeGroup",
+          "sheet": "@skryensya/core/components/details.css"
+        },
+        "--sk-details-brutalist-shadow": {
+          "default": "var(--brutalist-black)",
+          "output": false,
+          "part": "nativeGroup",
+          "sheet": "@skryensya/core/components/details.css"
+        },
         "--sk-details-content-bg": {
           "default": "var(--color-bg-surface-sunken)",
           "output": false,
@@ -11455,10 +11695,34 @@
           "part": "native",
           "sheet": "@skryensya/core/components/details.css"
         },
+        "--sk-details-depth": {
+          "default": "4px",
+          "output": false,
+          "part": "nativeGroup",
+          "sheet": "@skryensya/core/components/details.css"
+        },
         "--sk-details-fg": {
           "default": "var(--color-text-primary)",
           "output": false,
           "part": "native",
+          "sheet": "@skryensya/core/components/details.css"
+        },
+        "--sk-details-frost-blur": {
+          "default": "16px",
+          "output": false,
+          "part": "nativeGroup",
+          "sheet": "@skryensya/core/components/details.css"
+        },
+        "--sk-details-frost-opacity": {
+          "default": "82%",
+          "output": false,
+          "part": "nativeGroup",
+          "sheet": "@skryensya/core/components/details.css"
+        },
+        "--sk-details-frost-saturation": {
+          "default": "150%",
+          "output": false,
+          "part": "nativeGroup",
           "sheet": "@skryensya/core/components/details.css"
         },
         "--sk-details-gap": {
@@ -11521,6 +11785,54 @@
           "part": "item",
           "sheet": "@skryensya/core/components/tile.css"
         },
+        "--sk-tile-brutalist-edge": {
+          "default": "var(--brutalist-black)",
+          "output": false,
+          "part": "item",
+          "sheet": "@skryensya/core/components/tile.css"
+        },
+        "--sk-tile-brutalist-offset-block": {
+          "default": "5px",
+          "output": false,
+          "part": "item",
+          "sheet": "@skryensya/core/components/tile.css"
+        },
+        "--sk-tile-brutalist-offset-inline": {
+          "default": "5px",
+          "output": false,
+          "part": "item",
+          "sheet": "@skryensya/core/components/tile.css"
+        },
+        "--sk-tile-brutalist-shadow": {
+          "default": "var(--brutalist-black)",
+          "output": false,
+          "part": "item",
+          "sheet": "@skryensya/core/components/tile.css"
+        },
+        "--sk-tile-depth": {
+          "default": "4px",
+          "output": false,
+          "part": "item",
+          "sheet": "@skryensya/core/components/tile.css"
+        },
+        "--sk-tile-frost-blur": {
+          "default": "16px",
+          "output": false,
+          "part": "item",
+          "sheet": "@skryensya/core/components/tile.css"
+        },
+        "--sk-tile-frost-opacity": {
+          "default": "72%",
+          "output": false,
+          "part": "item",
+          "sheet": "@skryensya/core/components/tile.css"
+        },
+        "--sk-tile-frost-saturation": {
+          "default": "150%",
+          "output": false,
+          "part": "item",
+          "sheet": "@skryensya/core/components/tile.css"
+        },
         "--sk-tile-padding": {
           "default": "var(--space-inset-md)",
           "output": false,
@@ -11549,6 +11861,14 @@
       "hooks": [
         "--sk-accordion-bg",
         "--sk-accordion-border-color",
+        "--sk-accordion-brutalist-edge",
+        "--sk-accordion-brutalist-offset-block",
+        "--sk-accordion-brutalist-offset-inline",
+        "--sk-accordion-brutalist-shadow",
+        "--sk-accordion-depth",
+        "--sk-accordion-frost-blur",
+        "--sk-accordion-frost-opacity",
+        "--sk-accordion-frost-saturation",
         "--sk-accordion-divider-color",
         "--sk-accordion-open-bg",
         "--sk-accordion-radius",
@@ -11566,14 +11886,30 @@
         "--sk-space-3",
         "--sk-space-4",
         "--sk-tile-border-color",
+        "--sk-tile-brutalist-edge",
+        "--sk-tile-brutalist-offset-block",
+        "--sk-tile-brutalist-offset-inline",
+        "--sk-tile-brutalist-shadow",
+        "--sk-tile-depth",
+        "--sk-tile-frost-blur",
+        "--sk-tile-frost-opacity",
+        "--sk-tile-frost-saturation",
         "--sk-tile-padding",
         "--sk-tile-radius",
         "--sk-tile-shadow",
         "--sk-tile-title-weight",
         "--sk-details-bg",
         "--sk-details-border-color",
+        "--sk-details-brutalist-edge",
+        "--sk-details-brutalist-offset-block",
+        "--sk-details-brutalist-offset-inline",
+        "--sk-details-brutalist-shadow",
         "--sk-details-content-bg",
         "--sk-details-content-fg",
+        "--sk-details-depth",
+        "--sk-details-frost-blur",
+        "--sk-details-frost-opacity",
+        "--sk-details-frost-saturation",
         "--sk-details-fg",
         "--sk-details-gap",
         "--sk-details-heading-gap",
@@ -11586,6 +11922,17 @@
       ],
       "id": "accordion",
       "options": {
+        "appearance": {
+          "attr": "data-appearance",
+          "default": "plain",
+          "type": "enum",
+          "values": [
+            "plain",
+            "tactile",
+            "brutalist",
+            "frosted"
+          ]
+        },
         "collapsible": {
           "attr": "data-collapsible",
           "default": true,
@@ -11772,7 +12119,8 @@
             "type",
             "collapsible",
             "disabled",
-            "defaultValue"
+            "defaultValue",
+            "appearance"
           ],
           "react": {
             "from": "@skryensya/react/accordion",
@@ -11956,7 +12304,8 @@
           ],
           "options": [
             "name",
-            "open"
+            "open",
+            "appearance"
           ],
           "react": {
             "from": "@skryensya/react/details",
@@ -12107,7 +12456,9 @@
             "exclusive-disclosures",
             "no-runtime-accordion"
           ],
-          "options": [],
+          "options": [
+            "appearance"
+          ],
           "react": {
             "from": "@skryensya/react/details",
             "name": "DetailsGroup"
@@ -12691,6 +13042,30 @@
           "part": "root",
           "sheet": "@skryensya/core/components/avatar.css"
         },
+        "--sk-avatar-brutalist-edge": {
+          "default": "oklch(from var(--shadow-lg) l c h / 1)",
+          "output": false,
+          "part": "groupOverflow",
+          "sheet": "@skryensya/core/components/avatar.css"
+        },
+        "--sk-avatar-brutalist-offset-block": {
+          "default": "3px",
+          "output": false,
+          "part": "groupOverflow",
+          "sheet": "@skryensya/core/components/avatar.css"
+        },
+        "--sk-avatar-brutalist-offset-inline": {
+          "default": "3px",
+          "output": false,
+          "part": "groupOverflow",
+          "sheet": "@skryensya/core/components/avatar.css"
+        },
+        "--sk-avatar-brutalist-shadow": {
+          "default": "var(--sk-avatar-brutalist-edge)",
+          "output": false,
+          "part": "groupOverflow",
+          "sheet": "@skryensya/core/components/avatar.css"
+        },
         "--sk-avatar-fg": {
           "default": "var(--color-text-primary)",
           "output": false,
@@ -12706,11 +13081,24 @@
       },
       "hooks": [
         "--sk-avatar-bg",
+        "--sk-avatar-brutalist-edge",
+        "--sk-avatar-brutalist-offset-block",
+        "--sk-avatar-brutalist-offset-inline",
+        "--sk-avatar-brutalist-shadow",
         "--sk-avatar-fg",
         "--sk-avatar-size"
       ],
       "id": "avatar",
       "options": {
+        "appearance": {
+          "attr": "data-appearance",
+          "default": "plain",
+          "type": "enum",
+          "values": [
+            "plain",
+            "brutalist"
+          ]
+        },
         "imageName": {
           "attr": "alt",
           "prop": "name",
@@ -12809,6 +13197,7 @@
           ],
           "options": [
             "size",
+            "appearance",
             "imageName",
             "src"
           ],
@@ -12871,6 +13260,7 @@
           ],
           "options": [
             "size",
+            "appearance",
             "name"
           ],
           "react": {
@@ -13524,6 +13914,48 @@
           "part": "box",
           "sheet": "@skryensya/core/patterns/box.css"
         },
+        "--sk-box-brutalist-edge": {
+          "default": "oklch(from var(--shadow-lg) l c h / 1)",
+          "output": false,
+          "part": "box",
+          "sheet": "@skryensya/core/patterns/box.css"
+        },
+        "--sk-box-brutalist-offset-block": {
+          "default": "5px",
+          "output": false,
+          "part": "box",
+          "sheet": "@skryensya/core/patterns/box.css"
+        },
+        "--sk-box-brutalist-offset-inline": {
+          "default": "5px",
+          "output": false,
+          "part": "box",
+          "sheet": "@skryensya/core/patterns/box.css"
+        },
+        "--sk-box-brutalist-shadow": {
+          "default": "var(--sk-box-brutalist-edge)",
+          "output": false,
+          "part": "box",
+          "sheet": "@skryensya/core/patterns/box.css"
+        },
+        "--sk-box-frost-blur": {
+          "default": "16px",
+          "output": false,
+          "part": "box",
+          "sheet": "@skryensya/core/patterns/box.css"
+        },
+        "--sk-box-frost-opacity": {
+          "default": "72%",
+          "output": false,
+          "part": "box",
+          "sheet": "@skryensya/core/patterns/box.css"
+        },
+        "--sk-box-frost-saturation": {
+          "default": "150%",
+          "output": false,
+          "part": "box",
+          "sheet": "@skryensya/core/patterns/box.css"
+        },
         "--sk-box-padding": {
           "default": "0",
           "output": false,
@@ -13553,6 +13985,13 @@
         "--sk-box-bg",
         "--sk-box-border-color",
         "--sk-box-border-width",
+        "--sk-box-brutalist-edge",
+        "--sk-box-brutalist-offset-block",
+        "--sk-box-brutalist-offset-inline",
+        "--sk-box-brutalist-shadow",
+        "--sk-box-frost-blur",
+        "--sk-box-frost-opacity",
+        "--sk-box-frost-saturation",
         "--sk-box-padding",
         "--sk-box-radius",
         "--sk-box-shadow",
@@ -13560,6 +13999,16 @@
       ],
       "id": "box",
       "options": {
+        "appearance": {
+          "attr": "data-appearance",
+          "default": "plain",
+          "type": "enum",
+          "values": [
+            "plain",
+            "brutalist",
+            "frosted"
+          ]
+        },
         "border": {
           "attr": "data-border",
           "default": "none",
@@ -13637,7 +14086,8 @@
             [
               "padding",
               "surface",
-              "border"
+              "border",
+              "appearance"
             ]
           ],
           "host": {
@@ -13652,6 +14102,7 @@
             "padding",
             "surface",
             "border",
+            "appearance",
             "boxElement"
           ],
           "react": {
@@ -14101,6 +14552,30 @@
           "part": "root",
           "sheet": "@skryensya/core/components/button.css"
         },
+        "--sk-button-brutalist-edge": {
+          "default": "var(--brutalist-black)",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/button.css"
+        },
+        "--sk-button-brutalist-offset-block": {
+          "default": "5px",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/button.css"
+        },
+        "--sk-button-brutalist-offset-inline": {
+          "default": "5px",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/button.css"
+        },
+        "--sk-button-brutalist-shadow": {
+          "default": "var(--sk-button-brutalist-edge)",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/button.css"
+        },
         "--sk-button-depth": {
           "default": "5px",
           "output": false,
@@ -14121,6 +14596,24 @@
         },
         "--sk-button-font-weight": {
           "default": "var(--font-weight-label)",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/button.css"
+        },
+        "--sk-button-frost-blur": {
+          "default": "16px",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/button.css"
+        },
+        "--sk-button-frost-opacity": {
+          "default": "84%",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/button.css"
+        },
+        "--sk-button-frost-saturation": {
+          "default": "150%",
           "output": false,
           "part": "root",
           "sheet": "@skryensya/core/components/button.css"
@@ -14179,8 +14672,15 @@
         "--sk-button-bg",
         "--sk-button-border-color",
         "--sk-button-border-width",
+        "--sk-button-brutalist-edge",
+        "--sk-button-brutalist-offset-block",
+        "--sk-button-brutalist-offset-inline",
+        "--sk-button-brutalist-shadow",
         "--sk-button-depth",
         "--sk-button-fg",
+        "--sk-button-frost-blur",
+        "--sk-button-frost-opacity",
+        "--sk-button-frost-saturation",
         "--sk-button-font-size",
         "--sk-button-font-weight",
         "--sk-button-gap",
@@ -14196,11 +14696,13 @@
       "options": {
         "appearance": {
           "attr": "data-appearance",
-          "default": "default",
+          "default": "plain",
           "type": "enum",
           "values": [
-            "default",
-            "tactile"
+            "plain",
+            "tactile",
+            "brutalist",
+            "frosted"
           ]
         },
         "disabled": {
@@ -25525,6 +26027,30 @@
       "category": "content",
       "css": "@skryensya/core/components/folder.css",
       "hookDetails": {
+        "--sk-folder-brutalist-edge": {
+          "default": "oklch(from var(--shadow-lg) l c h / 1)",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/folder.css"
+        },
+        "--sk-folder-brutalist-offset-block": {
+          "default": "6px",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/folder.css"
+        },
+        "--sk-folder-brutalist-offset-inline": {
+          "default": "6px",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/folder.css"
+        },
+        "--sk-folder-brutalist-shadow": {
+          "default": "var(--sk-folder-brutalist-edge)",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/folder.css"
+        },
         "--sk-folder-clip": {
           "default": "none",
           "output": true,
@@ -25533,6 +26059,12 @@
         },
         "--sk-folder-content-gap": {
           "default": "var(--space-stack-xs)",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/folder.css"
+        },
+        "--sk-folder-depth": {
+          "default": "5px",
           "output": false,
           "part": "root",
           "sheet": "@skryensya/core/components/folder.css"
@@ -25557,6 +26089,24 @@
         },
         "--sk-folder-fold-lift": {
           "default": "14px",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/folder.css"
+        },
+        "--sk-folder-frost-blur": {
+          "default": "16px",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/folder.css"
+        },
+        "--sk-folder-frost-opacity": {
+          "default": "72%",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/folder.css"
+        },
+        "--sk-folder-frost-saturation": {
+          "default": "150%",
           "output": false,
           "part": "root",
           "sheet": "@skryensya/core/components/folder.css"
@@ -25761,12 +26311,20 @@
         }
       },
       "hooks": [
+        "--sk-folder-brutalist-edge",
+        "--sk-folder-brutalist-offset-block",
+        "--sk-folder-brutalist-offset-inline",
+        "--sk-folder-brutalist-shadow",
         "--sk-folder-clip",
         "--sk-folder-content-gap",
+        "--sk-folder-depth",
         "--sk-folder-fg",
         "--sk-folder-fill",
         "--sk-folder-fill-active",
         "--sk-folder-fold-lift",
+        "--sk-folder-frost-blur",
+        "--sk-folder-frost-opacity",
+        "--sk-folder-frost-saturation",
         "--sk-folder-ground",
         "--sk-folder-inset-x",
         "--sk-folder-inset-y",
@@ -25808,6 +26366,17 @@
           "default": false,
           "trueValue": "",
           "type": "boolean"
+        },
+        "appearance": {
+          "attr": "data-appearance",
+          "default": "plain",
+          "type": "enum",
+          "values": [
+            "plain",
+            "tactile",
+            "brutalist",
+            "frosted"
+          ]
         },
         "href": {
           "attr": "href",
@@ -25911,7 +26480,8 @@
           ],
           "mount": "data-sk-folder",
           "options": [
-            "active"
+            "active",
+            "appearance"
           ],
           "react": {
             "from": "@skryensya/react/folder",
@@ -26002,6 +26572,7 @@
           "mount": "data-sk-folder",
           "options": [
             "active",
+            "appearance",
             "href"
           ],
           "react": {
@@ -45225,6 +45796,54 @@
           "part": "interactive",
           "sheet": "@skryensya/core/components/tile.css"
         },
+        "--sk-tile-brutalist-edge": {
+          "default": "var(--brutalist-black)",
+          "output": false,
+          "part": "interactive",
+          "sheet": "@skryensya/core/components/tile.css"
+        },
+        "--sk-tile-brutalist-offset-block": {
+          "default": "5px",
+          "output": false,
+          "part": "interactive",
+          "sheet": "@skryensya/core/components/tile.css"
+        },
+        "--sk-tile-brutalist-offset-inline": {
+          "default": "5px",
+          "output": false,
+          "part": "interactive",
+          "sheet": "@skryensya/core/components/tile.css"
+        },
+        "--sk-tile-brutalist-shadow": {
+          "default": "var(--brutalist-black)",
+          "output": false,
+          "part": "interactive",
+          "sheet": "@skryensya/core/components/tile.css"
+        },
+        "--sk-tile-depth": {
+          "default": "4px",
+          "output": false,
+          "part": "interactive",
+          "sheet": "@skryensya/core/components/tile.css"
+        },
+        "--sk-tile-frost-blur": {
+          "default": "16px",
+          "output": false,
+          "part": "interactive",
+          "sheet": "@skryensya/core/components/tile.css"
+        },
+        "--sk-tile-frost-opacity": {
+          "default": "72%",
+          "output": false,
+          "part": "interactive",
+          "sheet": "@skryensya/core/components/tile.css"
+        },
+        "--sk-tile-frost-saturation": {
+          "default": "150%",
+          "output": false,
+          "part": "interactive",
+          "sheet": "@skryensya/core/components/tile.css"
+        },
         "--sk-tile-padding": {
           "default": "var(--space-inset-md)",
           "output": false,
@@ -45267,6 +45886,14 @@
         "--sk-space-3",
         "--sk-space-4",
         "--sk-tile-border-color",
+        "--sk-tile-brutalist-edge",
+        "--sk-tile-brutalist-offset-block",
+        "--sk-tile-brutalist-offset-inline",
+        "--sk-tile-brutalist-shadow",
+        "--sk-tile-depth",
+        "--sk-tile-frost-blur",
+        "--sk-tile-frost-opacity",
+        "--sk-tile-frost-saturation",
         "--sk-tile-padding",
         "--sk-tile-radius",
         "--sk-tile-shadow",
@@ -45278,6 +45905,17 @@
       ],
       "id": "tile",
       "options": {
+        "appearance": {
+          "attr": "data-appearance",
+          "default": "plain",
+          "type": "enum",
+          "values": [
+            "plain",
+            "tactile",
+            "brutalist",
+            "frosted"
+          ]
+        },
         "defaultChecked": {
           "attr": "data-default-checked",
           "default": false,
@@ -45495,7 +46133,8 @@
           "options": [
             "defaultOpen",
             "disabled",
-            "padding"
+            "padding",
+            "appearance"
           ],
           "react": {
             "from": "@skryensya/react/tile",
@@ -45629,7 +46268,8 @@
           ],
           "options": [
             "disabled",
-            "padding"
+            "padding",
+            "appearance"
           ],
           "react": {
             "from": "@skryensya/react/tile",
@@ -45697,7 +46337,8 @@
             "defaultChecked",
             "disabled",
             "required",
-            "padding"
+            "padding",
+            "appearance"
           ],
           "react": {
             "from": "@skryensya/react/tile",
@@ -45920,7 +46561,8 @@
           ],
           "options": [
             "href",
-            "padding"
+            "padding",
+            "appearance"
           ],
           "react": {
             "from": "@skryensya/react/tile",
@@ -45967,7 +46609,8 @@
             "orientation",
             "disabled",
             "required",
-            "padding"
+            "padding",
+            "appearance"
           ],
           "react": {
             "from": "@skryensya/react/tile",
@@ -46051,7 +46694,8 @@
                 ],
                 "element": "label",
                 "options": [
-                  "padding"
+                  "padding",
+                  "appearance"
                 ],
                 "part": "root",
                 "repeat": "items"
@@ -46092,7 +46736,8 @@
             "defaultChecked",
             "disabled",
             "required",
-            "padding"
+            "padding",
+            "appearance"
           ],
           "react": {
             "from": "@skryensya/react/tile",
@@ -50539,8 +51184,56 @@
           "part": "content",
           "sheet": "@skryensya/core/components/window.css"
         },
+        "--sk-window-brutalist-edge": {
+          "default": "oklch(from var(--shadow-lg) l c h / 1)",
+          "output": false,
+          "part": "content",
+          "sheet": "@skryensya/core/components/window.css"
+        },
+        "--sk-window-brutalist-offset-block": {
+          "default": "8px",
+          "output": false,
+          "part": "content",
+          "sheet": "@skryensya/core/components/window.css"
+        },
+        "--sk-window-brutalist-offset-inline": {
+          "default": "8px",
+          "output": false,
+          "part": "content",
+          "sheet": "@skryensya/core/components/window.css"
+        },
+        "--sk-window-brutalist-shadow": {
+          "default": "var(--sk-window-brutalist-edge)",
+          "output": false,
+          "part": "content",
+          "sheet": "@skryensya/core/components/window.css"
+        },
+        "--sk-window-depth": {
+          "default": "6px",
+          "output": false,
+          "part": "content",
+          "sheet": "@skryensya/core/components/window.css"
+        },
         "--sk-window-fg": {
           "default": "var(--color-text-primary)",
+          "output": false,
+          "part": "content",
+          "sheet": "@skryensya/core/components/window.css"
+        },
+        "--sk-window-frost-blur": {
+          "default": "24px",
+          "output": false,
+          "part": "content",
+          "sheet": "@skryensya/core/components/window.css"
+        },
+        "--sk-window-frost-opacity": {
+          "default": "78%",
+          "output": false,
+          "part": "content",
+          "sheet": "@skryensya/core/components/window.css"
+        },
+        "--sk-window-frost-saturation": {
+          "default": "160%",
           "output": false,
           "part": "content",
           "sheet": "@skryensya/core/components/window.css"
@@ -50597,7 +51290,15 @@
       "hooks": [
         "--sk-window-bg",
         "--sk-window-border-color",
+        "--sk-window-brutalist-edge",
+        "--sk-window-brutalist-offset-block",
+        "--sk-window-brutalist-offset-inline",
+        "--sk-window-brutalist-shadow",
+        "--sk-window-depth",
         "--sk-window-fg",
+        "--sk-window-frost-blur",
+        "--sk-window-frost-opacity",
+        "--sk-window-frost-saturation",
         "--sk-window-handle-size",
         "--sk-window-header-bg",
         "--sk-window-header-border-color",
@@ -50609,6 +51310,17 @@
       ],
       "id": "window",
       "options": {
+        "appearance": {
+          "attr": "data-appearance",
+          "default": "plain",
+          "type": "enum",
+          "values": [
+            "plain",
+            "tactile",
+            "brutalist",
+            "frosted"
+          ]
+        },
         "closeLabel": {
           "attr": "aria-label",
           "default": "Close",
@@ -50792,6 +51504,7 @@
             "resizable",
             "closeOnEscape",
             "persistRect",
+            "appearance",
             "defaultWidth",
             "defaultHeight",
             "minWidth",
@@ -51064,6 +51777,9 @@
                     ],
                     "element": "div",
                     "mount": "data-sk-window-content",
+                    "options": [
+                      "appearance"
+                    ],
                     "part": "content"
                   }
                 ],
@@ -51203,7 +51919,7 @@
     "working": "0.0.1"
   },
   "schemaVersion": "2.3",
-  "sourceHash": "4f411991a508a993",
+  "sourceHash": "744d40edb91862a8",
   "vocabulary": {
     "a11y": "When `when` holds, one of `requiresOneOf` must be given: an option, a raw attribute, a filled slot, or a child signature by name.",
     "atLeastOneOf": "At least one member of each group counts: a filled slot, a boolean option set to true, or an option other than its default.",
