@@ -3,8 +3,23 @@
 # `surface` is the shape of the contract the last time somebody reviewed it. If the compiler says it
 # does not match, something a consumer depends on has moved: write the entry and paste in the new
 # hash.
-surface: "ad014f31de44d33e"
+surface: "dd63c3b6ec4f11cc"
 entries:
+  - date: 2026-09-26
+    kind: feature
+    target: appearance
+    es:
+      title: Checkbox suma appearance plain, tactile, brutalist y frosted
+      body: >-
+        En la etiqueta de un Checkbox o la raíz de un CheckboxGroup: <code>tactile</code> una caja elevada que
+        se hunde al presionar, <code>brutalist</code> borde negro y sombra dura, <code>frosted</code> una caja
+        translúcida, opaca donde el material no es fiable.
+    en:
+      title: Checkbox adds plain, tactile, brutalist and frosted appearances
+      body: >-
+        On a Checkbox's label or a CheckboxGroup's root: <code>tactile</code> a raised box that sinks when
+        pressed, <code>brutalist</code> a black edge and hard offset, <code>frosted</code> a see-through box,
+        opaque wherever the material cannot be trusted.
   - date: 2026-09-17
     kind: feature
     es:

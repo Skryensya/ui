@@ -8,6 +8,7 @@ import "@skryensya/core/patterns/wrapper.css";
 /* Structure diagram: Annotated specimen; a preview frame only copies styles THIS page loaded. */
 import "@skryensya/core/components/annotation.css";
 import ComponentPageShell from "./ComponentPageShell.astro";
+import AppearanceMenu from "../AppearanceMenu.astro";
 import CodeBlock from "../CodeBlock.astro";
 import ComponentPreview from "../ComponentPreview.astro";
 import { checkboxAnatomyTree, checkboxGroupTree, checkboxScaleTree, checkboxTree, tileCheckboxTree } from "../../demos/checkbox";
@@ -41,9 +42,14 @@ for (const root of document.querySelectorAll(
   title="Checkbox"
   description={t("checkbox.description")}
   contractId="checkbox"
+  appearanceTargetSelector=".sk-checkbox"
   styleGroups={[{ file: "components/checkbox.css", probe: "sk-checkbox" }]}
   testFiles={["packages/vanilla/src/components/checkbox-group.svelte.test.ts", "packages/vanilla/src/components/tile-checkbox.svelte.test.ts"]}}
 >
+  <Fragment slot="appearance">
+    <AppearanceMenu label={t("prefs.appearance")} />
+  </Fragment>
+
   <Fragment slot="anatomy">
     <p set:html={t("checkbox.anatomyBody")} />
     <ComponentPreview

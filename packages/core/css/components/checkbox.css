@@ -256,4 +256,114 @@
       color: HighlightText;
     }
   }
+
+  /*
+   * ── APPEARANCE ───────────────────────────────────────────────────────────────────────────────
+   *
+   * Button's axis on the box (button.css documents each construction in full), keyed on a
+   * Checkbox's label or a CheckboxGroup's root. Painted on the control directly, with no new
+   * public hooks: checkbox.css is also a hook sheet of Tile and Questionnaire.
+   */
+
+  /* TACTILE: a raised box on a small ledge in a darker step of its own fill, lit from the top; a
+   * press sinks it instead of squeezing it. */
+  :is(.sk-checkbox[data-appearance="tactile"], .sk-checkbox-group[data-appearance="tactile"] .sk-checkbox) .sk-checkbox__control {
+    --checkbox-ledge: light-dark(
+      color-mix(in oklab, var(--sk-checkbox-bg) 72%, var(--color-text-primary)),
+      color-mix(in oklab, var(--sk-checkbox-bg) 64%, var(--color-bg-surface-sunken))
+    );
+    background:
+      linear-gradient(
+        to bottom,
+        light-dark(color-mix(in oklab, white 16%, transparent), color-mix(in oklab, white 6%, transparent)),
+        transparent 60%
+      ),
+      var(--sk-checkbox-bg);
+    box-shadow: 0 2px 0 var(--checkbox-ledge);
+    transition:
+      background-color var(--motion-state-change-duration) var(--motion-state-change-easing),
+      border-color var(--motion-state-change-duration) var(--motion-state-change-easing),
+      color var(--motion-state-change-duration) var(--motion-state-change-easing),
+      translate var(--motion-feedback-duration) var(--motion-feedback-easing),
+      box-shadow var(--motion-feedback-duration) var(--motion-feedback-easing);
+  }
+
+  :is(.sk-checkbox[data-appearance="tactile"], .sk-checkbox-group[data-appearance="tactile"] .sk-checkbox):not(:has(.sk-checkbox__input:disabled)):active .sk-checkbox__control {
+    scale: 1;
+    translate: 0 1px;
+    box-shadow: 0 1px 0 var(--checkbox-ledge);
+  }
+
+  /* BRUTALIST: the black edge and a hard offset the press collapses, toward block-end and
+   * inline-end (mirrored in RTL). */
+  :is(.sk-checkbox[data-appearance="brutalist"], .sk-checkbox-group[data-appearance="brutalist"] .sk-checkbox) {
+    --brutalist-black: oklch(from var(--shadow-lg) l c h / 1);
+    --brutalist-direction: 1;
+  }
+
+  :is(.sk-checkbox[data-appearance="brutalist"], .sk-checkbox-group[data-appearance="brutalist"] .sk-checkbox):dir(rtl) {
+    --brutalist-direction: -1;
+  }
+
+  :is(.sk-checkbox[data-appearance="brutalist"], .sk-checkbox-group[data-appearance="brutalist"] .sk-checkbox) .sk-checkbox__control {
+    border-color: var(--brutalist-black);
+    box-shadow: calc(2px * var(--brutalist-direction)) 2px 0 var(--brutalist-black);
+    transition:
+      background-color var(--motion-state-change-duration) var(--motion-state-change-easing),
+      color var(--motion-state-change-duration) var(--motion-state-change-easing),
+      translate var(--motion-feedback-duration) var(--motion-feedback-easing),
+      box-shadow var(--motion-feedback-duration) var(--motion-feedback-easing);
+  }
+
+  :is(.sk-checkbox[data-appearance="brutalist"], .sk-checkbox-group[data-appearance="brutalist"] .sk-checkbox):not(:has(.sk-checkbox__input:disabled)):active .sk-checkbox__control {
+    scale: 1;
+    translate: calc(2px * var(--brutalist-direction)) 2px;
+    box-shadow: 0 0 0 var(--brutalist-black);
+  }
+
+  /* FROSTED: the box's own fill thinned into a sheet over a blurred backdrop, with a fine edge.
+   * Opaque baseline; the material only where backdrop-filter exists and no reduced-transparency
+   * preference is set. */
+  :is(.sk-checkbox[data-appearance="frosted"], .sk-checkbox-group[data-appearance="frosted"] .sk-checkbox) .sk-checkbox__control {
+    border-color: color-mix(in oklab, currentColor 30%, transparent);
+  }
+
+  :is(.sk-checkbox[data-appearance="frosted"], .sk-checkbox-group[data-appearance="frosted"] .sk-checkbox):has(.sk-checkbox__input:is(:checked, :indeterminate)) .sk-checkbox__control {
+    border-color: var(--sk-checkbox-border-color);
+  }
+
+  @supports (backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px)) {
+    @media (prefers-reduced-transparency: no-preference) {
+      :is(.sk-checkbox[data-appearance="frosted"], .sk-checkbox-group[data-appearance="frosted"] .sk-checkbox) .sk-checkbox__control {
+        background: color-mix(in oklab, var(--sk-checkbox-bg) 60%, transparent);
+        -webkit-backdrop-filter: blur(6px) saturate(150%);
+        backdrop-filter: blur(6px) saturate(150%);
+      }
+    }
+  }
+
+  :is([data-contrast="high"] :is(.sk-checkbox[data-appearance="frosted"], .sk-checkbox-group[data-appearance="frosted"] .sk-checkbox), :is(.sk-checkbox[data-appearance="frosted"], .sk-checkbox-group[data-appearance="frosted"] .sk-checkbox)[data-contrast="high"]) .sk-checkbox__control {
+    background: var(--sk-checkbox-bg);
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+
+  @media (prefers-contrast: more) {
+    :root:not([data-contrast]) :is(.sk-checkbox[data-appearance="frosted"], .sk-checkbox-group[data-appearance="frosted"] .sk-checkbox) .sk-checkbox__control {
+      background: var(--sk-checkbox-bg);
+      -webkit-backdrop-filter: none;
+      backdrop-filter: none;
+    }
+  }
+
+  /* Forced colors keep none of it: the system box, no ledge, offset, glass or travel. */
+  @media (forced-colors: active) {
+    :is(.sk-checkbox[data-appearance], .sk-checkbox-group[data-appearance] .sk-checkbox) .sk-checkbox__control,
+    :is(.sk-checkbox[data-appearance], .sk-checkbox-group[data-appearance] .sk-checkbox):not(:has(.sk-checkbox__input:disabled)):active .sk-checkbox__control {
+      box-shadow: none;
+      translate: none;
+      -webkit-backdrop-filter: none;
+      backdrop-filter: none;
+    }
+  }
 }

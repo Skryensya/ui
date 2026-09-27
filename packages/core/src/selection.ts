@@ -115,6 +115,18 @@ export const checkboxContract = {
   ],
 
   options: {
+    /*
+     * HOW THE BOX IS DRAWN, Button's axis: `tactile` a raised box that sinks when pressed,
+     * `brutalist` a black edge and hard offset, `frosted` a see-through box (opaque wherever the
+     * material cannot be trusted). On the LABEL for a Checkbox and on the root for a group, the
+     * elements that paint: the host of a Checkbox is its input.
+     */
+    appearance: {
+      type: "enum",
+      values: ["plain", "tactile", "brutalist", "frosted"],
+      default: "plain",
+      attr: "data-appearance",
+    },
     name: { type: "string", attr: "name" },
     value: { type: "string", attr: "value" },
     /*
@@ -150,7 +162,7 @@ export const checkboxContract = {
     Checkbox: {
       intent: ["boolean-choice", "opt-in", "accept-terms", "toggle-one-setting"],
       host: { element: "input" },
-      options: ["name", "value", "defaultChecked", "defaultIndeterminate", "disabled", "required"],
+      options: ["name", "value", "defaultChecked", "defaultIndeterminate", "disabled", "required", "appearance"],
       /** Native form association beyond owned options (`name`/`value`/`disabled`/`required`). */
       forward: ["id", "form", "aria-*"],
       slots: {
@@ -160,6 +172,7 @@ export const checkboxContract = {
       template: {
         element: "label",
         part: "checkbox",
+        options: ["appearance"],
         children: [
           {
             element: "input",
@@ -218,7 +231,7 @@ export const checkboxContract = {
     CheckboxGroup: {
       intent: ["select-all", "check-many-at-once", "partial-selection", "parent-checkbox"],
       host: { element: "div" },
-      options: ["name", "orientation", "disabled", "required"],
+      options: ["name", "orientation", "disabled", "required", "appearance"],
       requires: ["name"],
       mount: "data-sk-checkbox-group",
       /** Host id / form / a11y; name stays the option. */

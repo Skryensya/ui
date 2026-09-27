@@ -9,6 +9,21 @@ const permissions = [
 ];
 
 describe("selection controls", () => {
+  it("writes Checkbox's appearance on its label and CheckboxGroup's on its root", () => {
+    const ui = render(
+      <>
+        <Checkbox>Plain</Checkbox>
+        <Checkbox appearance="tactile">Tactile</Checkbox>
+        <CheckboxGroup appearance="brutalist" items={[{ value: "a", label: "A" }]} label="Group" name="g" />
+      </>,
+    );
+    expect(ui.getByRole("checkbox", { name: "Plain" }).closest("label")?.getAttribute("data-appearance")).toBe("plain");
+    const tactile = ui.getByRole("checkbox", { name: "Tactile" });
+    expect(tactile.hasAttribute("data-appearance")).toBe(false);
+    expect(tactile.closest("label")?.getAttribute("data-appearance")).toBe("tactile");
+    expect(ui.getByRole("group", { name: "Group" }).getAttribute("data-appearance")).toBe("brutalist");
+  });
+
   it("keeps Checkbox native while exposing indeterminate state", () => {
     const onCheckedChange = vi.fn();
     const ui = render(<Checkbox defaultChecked="indeterminate" onCheckedChange={onCheckedChange}>Archive</Checkbox>);

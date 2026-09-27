@@ -2064,6 +2064,19 @@
         "date": null,
         "entries": [
           {
+            "date": "2026-09-26",
+            "en": {
+              "body": "On a Checkbox's label or a CheckboxGroup's root: <code>tactile</code> a raised box that sinks when pressed, <code>brutalist</code> a black edge and hard offset, <code>frosted</code> a see-through box, opaque wherever the material cannot be trusted.",
+              "title": "Checkbox adds plain, tactile, brutalist and frosted appearances"
+            },
+            "es": {
+              "body": "En la etiqueta de un Checkbox o la raíz de un CheckboxGroup: <code>tactile</code> una caja elevada que se hunde al presionar, <code>brutalist</code> borde negro y sombra dura, <code>frosted</code> una caja translúcida, opaca donde el material no es fiable.",
+              "title": "Checkbox suma appearance plain, tactile, brutalist y frosted"
+            },
+            "kind": "feature",
+            "target": "appearance"
+          },
+          {
             "date": "2026-09-17",
             "en": {
               "body": "Interactive or form host signatures publish <code>forward</code> (<code>id</code>/<code>aria-*</code> and link or form attrs where relevant). An attr outside the list is <code>unknown-attr</code>.",
@@ -17374,6 +17387,17 @@
       ],
       "id": "checkbox",
       "options": {
+        "appearance": {
+          "attr": "data-appearance",
+          "default": "plain",
+          "type": "enum",
+          "values": [
+            "plain",
+            "tactile",
+            "brutalist",
+            "frosted"
+          ]
+        },
         "defaultChecked": {
           "attr": "checked",
           "default": false,
@@ -17482,7 +17506,8 @@
             "defaultChecked",
             "defaultIndeterminate",
             "disabled",
-            "required"
+            "required",
+            "appearance"
           ],
           "react": {
             "from": "@skryensya/react/selection",
@@ -17555,6 +17580,9 @@
               }
             ],
             "element": "label",
+            "options": [
+              "appearance"
+            ],
             "part": "checkbox"
           }
         },
@@ -17578,7 +17606,8 @@
             "name",
             "orientation",
             "disabled",
-            "required"
+            "required",
+            "appearance"
           ],
           "react": {
             "from": "@skryensya/react/selection",
@@ -52291,7 +52320,7 @@
     "working": "0.0.1"
   },
   "schemaVersion": "2.3",
-  "sourceHash": "68e50d463a0c84f3",
+  "sourceHash": "7c76de7a1457f052",
   "vocabulary": {
     "a11y": "When `when` holds, one of `requiresOneOf` must be given: an option, a raw attribute, a filled slot, or a child signature by name.",
     "atLeastOneOf": "At least one member of each group counts: a filled slot, a boolean option set to true, or an option other than its default.",

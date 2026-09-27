@@ -25,6 +25,8 @@ export function CheckboxIndicators() {
 }
 
 export type CheckboxProps = Omit<InputHTMLAttributes<HTMLInputElement>, "checked" | "defaultChecked" | "onChange" | "type"> & {
+  /** How the box is drawn, on its label: `plain`, `tactile`, `brutalist` or `frosted`. */
+  appearance?: (typeof checkboxContract.options.appearance.values)[number];
   checked?: CheckedState;
   children?: ReactNode;
   defaultChecked?: CheckedState;
@@ -33,7 +35,7 @@ export type CheckboxProps = Omit<InputHTMLAttributes<HTMLInputElement>, "checked
 };
 
 export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(function Checkbox(
-  { checked, children, className, defaultChecked, defaultIndeterminate, disabled, onCheckedChange, ...props },
+  { appearance = checkboxContract.options.appearance.default, checked, children, className, defaultChecked, defaultIndeterminate, disabled, onCheckedChange, ...props },
   ref,
 ) {
   const input = useRef<HTMLInputElement>(null);
@@ -55,7 +57,7 @@ export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(function Che
   };
 
   return (
-    <label className={classes(selectionParts.checkbox, className)}>
+    <label className={classes(selectionParts.checkbox, className)} data-appearance={appearance}>
       <input
         {...props}
         checked={controlled ? checked === true : undefined}
@@ -84,6 +86,8 @@ export type CheckboxGroupItem = {
 };
 
 export type CheckboxGroupProps = Omit<HTMLAttributes<HTMLDivElement>, "defaultValue" | "onChange"> & {
+  /** How every box in the group is drawn, on the group's root. */
+  appearance?: (typeof checkboxContract.options.appearance.values)[number];
   defaultValue?: readonly string[];
   disabled?: boolean;
   items: readonly CheckboxGroupItem[];
@@ -107,7 +111,7 @@ function groupState(items: readonly CheckboxGroupItem[], selected: ReadonlySet<s
 }
 
 export const CheckboxGroup = forwardRef<HTMLDivElement, CheckboxGroupProps>(function CheckboxGroup(
-  { className, defaultValue, disabled, items, label, name, onValueChange, orientation = orientationOption.default, required, value, ...props },
+  { appearance = checkboxContract.options.appearance.default, className, defaultValue, disabled, items, label, name, onValueChange, orientation = orientationOption.default, required, value, ...props },
   ref,
 ) {
   const labelId = useId();
@@ -193,6 +197,7 @@ export const CheckboxGroup = forwardRef<HTMLDivElement, CheckboxGroupProps>(func
       {...props}
       aria-labelledby={labelId}
       className={classes(checkboxParts.checkboxGroup, className)}
+      data-appearance={appearance}
       data-orientation={orientation}
       data-sk-checkbox-group=""
       ref={setRefs}
