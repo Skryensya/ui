@@ -8,6 +8,7 @@ import "@skryensya/core/components/radio-group.css";
 /* Structure diagram: Annotated specimen; a preview frame only copies styles THIS page loaded. */
 import "@skryensya/core/components/annotation.css";
 import ComponentPageShell from "./ComponentPageShell.astro";
+import AppearanceMenu from "../AppearanceMenu.astro";
 import CodeBlock from "../CodeBlock.astro";
 import ComponentPreview from "../ComponentPreview.astro";
 import { VaulDeleteDemo, VaulFiltersDemo, VaulShareDemo } from "../react-demos/vaul";
@@ -486,6 +487,7 @@ export function FiltersSheet() {
   title="Vaul"
   description={t("vaulPage.description")}
   contractId="vaul"
+  appearanceTargetSelector=".sk-vaul"
   tests={[
     {
       file: "packages/react/src/components/vaul.test.tsx",
@@ -513,6 +515,10 @@ export function FiltersSheet() {
     },
   ]}
 >
+  <Fragment slot="appearance">
+    <AppearanceMenu label={t("prefs.appearance")} values={["plain", "brutalist", "frosted"]} unavailable={{ tactile: t("prefs.appearanceTactileUnavailable") }} />
+  </Fragment>
+
   <Fragment slot="anatomy">
     <p set:html={t("vaulPage.anatomyBody")} />
     <ComponentPreview

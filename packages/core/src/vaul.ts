@@ -121,6 +121,18 @@ export const vaulContract = {
   ],
 
   options: {
+    /*
+     * HOW THE PANEL IS DRAWN, Button's axis: brutalist a black edge and hard offset in place of the
+     * soft elevation (the overpull extension still follows the edge), frosted a see-through panel
+     * (opaque wherever the material cannot be trusted). No tactile: a drawer is dragged, never
+     * pressed.
+     */
+    appearance: {
+      type: "enum",
+      values: ["plain", "brutalist", "frosted"],
+      default: "plain",
+      attr: "data-appearance",
+    },
     /** Where the panel is anchored. Logical, so the inline edges follow writing direction. */
     edge: {
       type: "enum",
@@ -195,7 +207,7 @@ export const vaulContract = {
       intent: ["edge-anchored-panel", "bottom-sheet", "drag-to-dismiss", "mobile-navigation"],
       host: { element: "dialog" },
       mount: "data-sk-vaul",
-      options: ["panelId", "edge", "open", "label", "draggable", "dismissThreshold"],
+      options: ["panelId", "edge", "open", "label", "draggable", "dismissThreshold", "appearance"],
       /** Extra a11y; panel id is the panelId option (not forwarded). */
       forward: ["aria-*"],
       slots: {
@@ -235,7 +247,7 @@ export const vaulContract = {
       intent: ["navigation-drawer", "side-panel", "mobile-navigation"],
       host: { element: "dialog" },
       mount: "data-sk-vaul",
-      options: ["panelId", "edge", "open", "label", "draggable", "dismissThreshold"],
+      options: ["panelId", "edge", "open", "label", "draggable", "dismissThreshold", "appearance"],
       /** Extra a11y; panel id is the panelId option (not forwarded). */
       forward: ["aria-*"],
       slots: { children: { accepts: "node", required: true } },

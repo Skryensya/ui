@@ -4,6 +4,7 @@
  * centered box with a 3px black border instead of a panel flush against the inline edge. */
 import "@skryensya/core/patterns/vaul.css";
 import ComponentPageShell from "./ComponentPageShell.astro";
+import AppearanceMenu from "../AppearanceMenu.astro";
 import CodeBlock from "../CodeBlock.astro";
 import ComponentPreview from "../ComponentPreview.astro";
 import "@skryensya/core/components/annotation.css";
@@ -75,6 +76,7 @@ trigger?.addEventListener("click", () => {
   description={t("drawer.description")}
   badge={t("drawer.betaBadge")}
   contractId="vaul"
+  appearanceTargetSelector=".sk-vaul"
   styleGroups={[
     { file: "patterns/vaul.css", probe: "sk-vaul", title: "Heredados de Vaul" },
   ]}
@@ -90,6 +92,10 @@ trigger?.addEventListener("click", () => {
     },
   ]}
 >
+  <Fragment slot="appearance">
+    <AppearanceMenu label={t("prefs.appearance")} values={["plain", "brutalist", "frosted"]} unavailable={{ tactile: t("prefs.appearanceTactileUnavailable") }} />
+  </Fragment>
+
   <Fragment slot="anatomy">
     <p set:html={t("drawer.anatomyBody")} />
     <ComponentPreview
