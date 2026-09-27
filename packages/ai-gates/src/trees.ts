@@ -2500,6 +2500,21 @@ const signatureTrees: readonly Canonical[] = [
     },
   },
   {
+    /* Absent means plain, like controlSize: only a field that asks for an appearance carries one. */
+    name: "input/brutalist",
+    enhanced: true,
+    tree: {
+      contract: "form-field",
+      signature: "FormField",
+      slots: { label: "Correo" },
+      children: {
+        contract: "input",
+        signature: "Input",
+        options: { type: "email", name: "correo", appearance: "brutalist" },
+      },
+    },
+  },
+  {
     name: "input/validated-format",
     enhanced: true,
     tree: {

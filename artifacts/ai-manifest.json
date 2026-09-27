@@ -5047,6 +5047,19 @@
         "date": null,
         "entries": [
           {
+            "date": "2026-09-26",
+            "en": {
+              "body": "<code>Input</code>, <code>NativeInput</code> and <code>Textarea</code> accept <code>appearance</code>: <code>brutalist</code> a black edge and a hard offset in place of the sunken well, <code>frosted</code> a see-through field. Every state still outranks it (an invalid field keeps its danger edge). Absent means <code>plain</code>, like <code>controlSize</code>.",
+              "title": "Input adds brutalist and frosted appearances"
+            },
+            "es": {
+              "body": "<code>Input</code>, <code>NativeInput</code> y <code>Textarea</code> aceptan <code>appearance</code>: <code>brutalist</code> borde negro y sombra dura en lugar del pozo hundido, <code>frosted</code> un campo translúcido. Todo estado sigue por encima (un campo inválido conserva su borde de peligro). Sin valor es <code>plain</code>, como <code>controlSize</code>.",
+              "title": "Input suma appearance brutalist y frosted"
+            },
+            "kind": "feature",
+            "target": "appearance"
+          },
+          {
             "date": "2026-09-19",
             "en": {
               "body": "<code>format</code> adds the validation the platform has none for. <code>\"rut\"</code> (modulo 11 check digit), <code>\"url\"</code> and <code>\"email\"</code> ship in core; <code>\"phone\"</code> covers every country through <code>country</code> and is implemented by the optional <code>@skryensya/phone</code>. The control writes the message into FormField's error slot and <code>setCustomValidity</code> blocks native submit.",
@@ -28528,6 +28541,15 @@
       ],
       "id": "input",
       "options": {
+        "appearance": {
+          "attr": "data-appearance",
+          "type": "enum",
+          "values": [
+            "plain",
+            "brutalist",
+            "frosted"
+          ]
+        },
         "controlSize": {
           "attr": "data-size",
           "type": "enum",
@@ -28664,7 +28686,8 @@
             "disabled",
             "format",
             "country",
-            "errorLabel"
+            "errorLabel",
+            "appearance"
           ],
           "parents": [
             "FormField"
@@ -28707,7 +28730,8 @@
             "controlSize",
             "type",
             "name",
-            "disabled"
+            "disabled",
+            "appearance"
           ],
           "react": {
             "from": "@skryensya/react/input",
@@ -28749,7 +28773,8 @@
             "controlSize",
             "name",
             "placeholder",
-            "disabled"
+            "disabled",
+            "appearance"
           ],
           "parents": [
             "FormField"
@@ -52773,7 +52798,7 @@
     "working": "0.0.1"
   },
   "schemaVersion": "2.3",
-  "sourceHash": "fca00bacda2a4934",
+  "sourceHash": "179e72e6bef8e899",
   "vocabulary": {
     "a11y": "When `when` holds, one of `requiresOneOf` must be given: an option, a raw attribute, a filled slot, or a child signature by name.",
     "atLeastOneOf": "At least one member of each group counts: a filled slot, a boolean option set to true, or an option other than its default.",
