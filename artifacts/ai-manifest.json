@@ -7120,6 +7120,19 @@
         "date": null,
         "entries": [
           {
+            "date": "2026-09-26",
+            "en": {
+              "body": "Input's axis on the field: <code>brutalist</code> a black edge and a hard offset, <code>frosted</code> a see-through field; every state still outranks it. Absent means <code>plain</code>.",
+              "title": "PasswordInput adds brutalist and frosted appearances"
+            },
+            "es": {
+              "body": "El eje de Input en el campo: <code>brutalist</code> borde negro y sombra dura, <code>frosted</code> un campo translúcido; todo estado sigue por encima. Sin valor es <code>plain</code>.",
+              "title": "PasswordInput suma appearance brutalist y frosted"
+            },
+            "kind": "feature",
+            "target": "appearance"
+          },
+          {
             "date": "2026-09-25",
             "en": {
               "body": "New <code>password-input</code> contract on <code>@zag-js/password-input</code>, the same machine in both bindings. The button toggles between hiding and showing, renames itself (<code>showLabel</code>/<code>hideLabel</code>), and the password hides again when the form is submitted or reset. <code>autoComplete</code> tells signing in (<code>current-password</code>) from creating one (<code>new-password</code>). Unlike Zag's, the button is reachable with Tab and activates with Enter or Space.",
@@ -36048,6 +36061,15 @@
       ],
       "id": "password-input",
       "options": {
+        "appearance": {
+          "attr": "data-appearance",
+          "type": "enum",
+          "values": [
+            "plain",
+            "brutalist",
+            "frosted"
+          ]
+        },
         "autoComplete": {
           "attr": "autocomplete",
           "default": "current-password",
@@ -36189,7 +36211,8 @@
             "required",
             "invalid",
             "showLabel",
-            "hideLabel"
+            "hideLabel",
+            "appearance"
           ],
           "react": {
             "from": "@skryensya/react/password-input",
@@ -52867,7 +52890,7 @@
     "working": "0.0.1"
   },
   "schemaVersion": "2.3",
-  "sourceHash": "726366823eb4a564",
+  "sourceHash": "60a799910b433aac",
   "vocabulary": {
     "a11y": "When `when` holds, one of `requiresOneOf` must be given: an option, a raw attribute, a filled slot, or a child signature by name.",
     "atLeastOneOf": "At least one member of each group counts: a filled slot, a boolean option set to true, or an option other than its default.",

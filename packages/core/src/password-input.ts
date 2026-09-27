@@ -86,6 +86,17 @@ export const passwordInputContract = {
   ],
 
   options: {
+    /*
+     * HOW THE FIELD IS DRAWN, Input's axis: brutalist a black edge and hard offset in place of the
+     * soft well, frosted a see-through field (opaque wherever the material cannot be trusted).
+     * Every state still outranks it. Absent means plain, as for Input. No tactile: a field is typed
+     * into, not pressed.
+     */
+    appearance: {
+      type: "enum",
+      values: ["plain", "brutalist", "frosted"],
+      attr: "data-appearance",
+    },
     /** Submitted with the form. */
     name: { type: "string", attr: "name", machineInput: true },
     /**
@@ -143,6 +154,7 @@ export const passwordInputContract = {
         "invalid",
         "showLabel",
         "hideLabel",
+        "appearance",
       ],
       forward: ["id", "aria-*"],
       slots: {
