@@ -6,7 +6,7 @@ import { mountWindow } from "./window.js";
  * The enhancer renders nothing: it scans the authored parts and patches Zag's props onto them. The
  * markup below is what the contract's template emits, trimmed of the icon spans.
  */
-function markup(root = "") {
+function markup(root = "", content = "") {
   const stage = (value: string, label: string) =>
     `<button class="sk-window__stage sk-button sk-interactive" data-sk-window-stage type="button" data-stage="${value}" aria-label="${label}"></button>`;
   const handles = ["n", "e", "s", "w", "ne", "se", "sw", "nw"]
@@ -15,7 +15,7 @@ function markup(root = "") {
   document.body.innerHTML = `<div class="sk-window" data-sk-window ${root}>
     <button class="sk-window__trigger sk-button sk-interactive" data-sk-window-trigger type="button">Abrir</button>
     <div class="sk-window__positioner" data-sk-window-positioner>
-      <div class="sk-window__content" data-sk-window-content>
+      <div class="sk-window__content" data-sk-window-content ${content}>
         <div class="sk-window__drag" data-sk-window-drag>
           <div class="sk-window__header" data-sk-window-header>
             <h2 class="sk-window__title" data-sk-window-title>Inspector</h2>
@@ -60,6 +60,14 @@ describe("Window Vanilla contracts", () => {
     expect(part("content").getAttribute("role")).toBe("dialog");
     expect(part("content").hasAttribute("aria-modal")).toBe(false);
     expect(part("content").getAttribute("aria-labelledby")).toBe(part("title").id);
+  });
+
+  it("keeps the authored appearance on the content through the machine's own props", async () => {
+    markup("", 'data-appearance="frosted"');
+    expect(part("content").getAttribute("data-appearance")).toBe("frosted");
+    fireEvent.click(part("trigger"));
+    await waitFor(() => expect(part("content").getAttribute("data-state")).toBe("open"));
+    expect(part("content").getAttribute("data-appearance")).toBe("frosted");
   });
 
   it("keeps the authored labels over Zag's English", async () => {

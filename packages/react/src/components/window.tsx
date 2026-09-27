@@ -18,6 +18,7 @@ import { Icon } from "./icon.js";
 const cx = (...classes: Array<string | undefined>) => classes.filter(Boolean).join(" ");
 
 const {
+  appearance: appearanceOption,
   closeLabel: closeLabelOption,
   closeOnEscape: closeOnEscapeOption,
   defaultOpen: defaultOpenOption,
@@ -52,6 +53,8 @@ export type WindowProps = Omit<HTMLAttributes<HTMLDivElement>, "title" | "childr
   closeOnEscape?: boolean;
   /** Reopen where it was left instead of re-centred. */
   persistRect?: boolean;
+  /** How the frame is drawn: `plain`, `tactile`, `brutalist` or `frosted`. */
+  appearance?: (typeof appearanceOption.values)[number];
   defaultWidth?: number;
   defaultHeight?: number;
   minWidth?: number;
@@ -80,6 +83,7 @@ const stageLabelKey = {
 } as const satisfies Record<WindowStage, string>;
 
 export function Window({
+  appearance = appearanceOption.default,
   children,
   className,
   closeLabel = closeLabelOption.default,
@@ -184,7 +188,7 @@ export function Window({
       </button>
       <Portal container={container}>
         <div {...withoutStackZIndex(api.getPositionerProps())} className={windowParts.positioner}>
-          <div {...api.getContentProps()} className={windowParts.content}>
+          <div {...api.getContentProps()} className={windowParts.content} data-appearance={appearance}>
             <div {...api.getDragTriggerProps()} className={windowParts.drag}>
               <div {...api.getHeaderProps()} className={windowParts.header}>
                 <h2 {...api.getTitleProps()} className={windowParts.title}>
