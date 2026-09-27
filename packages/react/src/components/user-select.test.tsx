@@ -188,7 +188,8 @@ describe("UserSelect", () => {
     const search = await ui.findByRole("searchbox");
     fireEvent.change(search, { target: { value: "zzz" } });
 
-    expect(await ui.findByText('No users found for "zzz"')).toBeTruthy();
+    expect(await ui.findByText('No users match "zzz"')).toBeTruthy();
+    expect(ui.getByText("Try another name or email.")).toBeTruthy();
   });
 
   it("shows the loading pattern instead of the empty state while loading", async () => {
@@ -250,5 +251,20 @@ describe("UserSelect", () => {
       expect(box.getAttribute("aria-hidden")).toBe("true");
     }
     expect(options[0]!.querySelector(".sk-select__item-indicator")).toBeNull();
+  });
+
+  it("opens with the selected users first, and keeps that order while it stays open", async () => {
+    const ui = render(<Harness value={["john", "marco"]} />);
+    const names = () => ui.getAllByRole("option").map((option) => option.textContent);
+
+    fireEvent.click(ui.getByRole("combobox"));
+    await waitFor(() => expect(ui.getAllByRole("option")).toHaveLength(users.length));
+    expect(names()[0]).toContain("Marco Rossi");
+    expect(names()[1]).toContain("John Alder");
+
+    fireEvent.click(ui.getByRole("option", { name: /Jane Cooper/ }));
+    await waitFor(() => expect(ui.getByRole("combobox").getAttribute("aria-label")).toContain("3 users"));
+    expect(names()[0]).toContain("Marco Rossi");
+    expect(names()[2]).toContain("Jane Cooper");
   });
 });

@@ -8355,6 +8355,18 @@
           {
             "date": "2026-09-27",
             "en": {
+              "body": "A row marked <code>hidden</code> (filtered out by a search) stayed visible because <code>display: grid</code> outranked the browser's own <code>display: none</code>. It now disappears.",
+              "title": "Hidden rows actually hide"
+            },
+            "es": {
+              "body": "Una fila con <code>hidden</code> (filtrada por una búsqueda) seguía visible porque <code>display: grid</code> le ganaba al <code>display: none</code> del navegador. Ahora desaparece.",
+              "title": "Las filas ocultas se ocultan de verdad"
+            },
+            "kind": "bugfix"
+          },
+          {
+            "date": "2026-09-27",
+            "en": {
               "body": "Select takes variant=\"ghost\": the trigger drops its fill, border and shadow and keeps only the value, the chevron and the state layer for hover, press and focus. Absent still means outline, so existing markup is unchanged.",
               "title": "Ghost variant"
             },
@@ -53023,7 +53035,7 @@
     "working": "0.0.1"
   },
   "schemaVersion": "2.3",
-  "sourceHash": "660483bc97e5f54b",
+  "sourceHash": "c802e36b2b34618c",
   "vocabulary": {
     "a11y": "When `when` holds, one of `requiresOneOf` must be given: an option, a raw attribute, a filled slot, or a child signature by name.",
     "atLeastOneOf": "At least one member of each group counts: a filled slot, a boolean option set to true, or an option other than its default.",
