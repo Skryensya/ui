@@ -24,6 +24,7 @@ const {
 } = heroContract.options;
 
 const {
+  appearance: footerAppearanceOption,
   divider: dividerOption,
   padding: footerPaddingOption,
   surface: footerSurfaceOption,
@@ -107,12 +108,19 @@ export function Hero<Element extends ElementType = "div">({
  */
 export type FooterProps<Element extends ElementType = "footer"> = PolymorphicProps<
   Element,
-  LayoutChildren & { divider?: boolean; padding?: FooterPadding; surface?: FooterSurface }
+  LayoutChildren & {
+    /** How the band is drawn: `plain`, `brutalist` or `frosted`. */
+    appearance?: (typeof footerAppearanceOption.values)[number];
+    divider?: boolean;
+    padding?: FooterPadding;
+    surface?: FooterSurface;
+  }
 >;
 
 export function Footer<Element extends ElementType = "footer">({
   as,
   className,
+  appearance = footerAppearanceOption.default,
   divider = dividerOption.default,
   padding = footerPaddingOption.default,
   surface = footerSurfaceOption.default,
@@ -123,6 +131,7 @@ export function Footer<Element extends ElementType = "footer">({
     <Component
       {...props}
       className={classes(footerParts.footer, className)}
+      data-appearance={appearance}
       data-divider={divider ? "" : "false"}
       data-padding={padding}
       data-surface={surface}

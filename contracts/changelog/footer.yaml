@@ -3,8 +3,21 @@
 # `surface` is the shape of the contract the last time somebody reviewed it. If the compiler says it
 # does not match, something a consumer depends on has moved: write the entry and paste in the new
 # hash.
-surface: "940e23ff6194c771"
+surface: "ac7b6c1ffb48fba1"
 entries:
+  - date: 2026-09-26
+    kind: feature
+    target: appearance
+    es:
+      title: Footer suma appearance plain, brutalist y frosted
+      body: >-
+        <code>brutalist</code> dibuja la banda con un divisor negro y una sombra dura; <code>frosted</code> la
+        hace translúcida, opaca donde el material no es fiable. Sin <code>tactile</code>.
+    en:
+      title: Footer adds plain, brutalist and frosted appearances
+      body: >-
+        <code>brutalist</code> draws the band with a black divider and a hard offset; <code>frosted</code> makes
+        it see-through, opaque wherever the material cannot be trusted. No <code>tactile</code>.
   - date: 2026-09-17
     kind: bugfix
     es:

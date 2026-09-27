@@ -43,6 +43,17 @@ describe("layout primitives", () => {
     expect(ui.getByText("Frosted").getAttribute("data-appearance")).toBe("frosted");
   });
 
+  it("serializes Footer's appearance, plain by default", () => {
+    const ui = render(
+      <>
+        <Footer as="div">Plain</Footer>
+        <Footer as="div" appearance="brutalist">Brutalist</Footer>
+      </>,
+    );
+    expect(ui.getByText("Plain").getAttribute("data-appearance")).toBe("plain");
+    expect(ui.getByText("Brutalist").getAttribute("data-appearance")).toBe("brutalist");
+  });
+
   it("renders Stack, Inline and Grid as the documented layout contracts", () => {
     const ui = render(
       <>

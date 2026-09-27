@@ -1,5 +1,6 @@
 ---
 import ComponentPageShell from "./ComponentPageShell.astro";
+import AppearanceMenu from "../AppearanceMenu.astro";
 import ComponentPreview from "../ComponentPreview.astro";
 import { footerColumnsTree, footerCreditTree } from "../../demos/layout";
 import { getLocale, useTranslations } from "../../i18n";
@@ -22,6 +23,7 @@ const footerOneLineTree = footerCreditTree(t);
   description={t("footer.description")}
   badge={t("footer.betaBadge")}
   contractId="footer"
+  appearanceTargetSelector=".sk-footer"
   styleGroups={[{ file: "patterns/footer.css", probe: "sk-footer" }]}
   tests={[
     {
@@ -39,6 +41,10 @@ const footerOneLineTree = footerCreditTree(t);
     },
   ]}
 >
+  <Fragment slot="appearance">
+    <AppearanceMenu label={t("prefs.appearance")} values={["plain", "brutalist", "frosted"]} unavailable={{ tactile: t("prefs.appearanceTactileUnavailable") }} />
+  </Fragment>
+
   <Fragment slot="anatomy">
     <p set:html={t("footer.anatomyBody")} />
     <ComponentPreview
