@@ -89,6 +89,7 @@ export const codePreviewContract = {
   hooks: [
     "--sk-code-preview-bg",
     "--sk-code-preview-border-color",
+    "--sk-code-preview-brutalist-offset",
     "--sk-code-preview-collapsed-padding-block",
     "--sk-code-preview-copy-scroll-inset",
     "--sk-code-preview-copy-sticky-top",
@@ -109,6 +110,17 @@ export const codePreviewContract = {
   hookSheets: ["@skryensya/core/components/switch.css"],
 
   options: {
+    /*
+     * HOW THE PANEL IS DRAWN, Button's axis: brutalist a black edge, black dividers and a hard
+     * offset, frosted a see-through panel (opaque wherever the material cannot be trusted). No
+     * tactile: a code panel is never pressed.
+     */
+    appearance: {
+      type: "enum",
+      values: ["plain", "brutalist", "frosted"],
+      default: "plain",
+      attr: "data-appearance",
+    },
     /** The panel is taller than its window, so it gets a disclosure control. */
     collapsible: { type: "boolean", default: false, attr: codePreviewAttrs.collapsible, trueValue: "", machineInput: true },
     /** Total lines, and how many the collapsed window shows. Counted where the code is made. */
@@ -141,7 +153,7 @@ export const codePreviewContract = {
       intent: ["code-block", "show-a-snippet", "long-code-with-a-window"],
       host: { element: "div" },
       mount: codePreviewAttrs.root,
-      options: ["collapsible", "lines", "previewLines", "moreLabel", "lessLabel"],
+      options: ["collapsible", "lines", "previewLines", "moreLabel", "lessLabel", "appearance"],
       compose: [
         { of: "button", sheets: ["@skryensya/core/components/button.css"], systemOwned: true },
         { of: "icon", systemOwned: true },
@@ -237,7 +249,7 @@ export const codePreviewContract = {
       intent: ["condensed-and-full-code", "two-levels-of-detail", "code-with-a-density-switch"],
       host: { element: "div" },
       mount: codePreviewAttrs.root,
-      options: ["collapsible", "lines", "previewLines", "moreLabel", "lessLabel", "switchLabel"],
+      options: ["collapsible", "lines", "previewLines", "moreLabel", "lessLabel", "switchLabel", "appearance"],
       compose: [
         { of: "button", sheets: ["@skryensya/core/components/button.css"], systemOwned: true },
         { of: "icon", systemOwned: true },

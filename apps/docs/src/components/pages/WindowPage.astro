@@ -7,6 +7,7 @@
 import "@skryensya/core/components/window.css";
 import "@skryensya/core/components/table.css";
 import ComponentPageShell from "./ComponentPageShell.astro";
+import AppearanceMenu from "../AppearanceMenu.astro";
 import CodeBlock from "../CodeBlock.astro";
 import ComponentPreview from "../ComponentPreview.astro";
 import "@skryensya/core/components/annotation.css";
@@ -34,11 +35,16 @@ const keys = [
   description={t("windowPage.description")}
   contractId="window"
   styleGroups={[{ file: "components/window.css", probe: "sk-window", title: "Window" }]}
+  appearanceTargetSelector=".sk-window__content"
   testFiles={[
     "packages/vanilla/src/components/window.svelte.test.ts",
     "packages/react/src/components/window.test.tsx",
   ]}
 >
+  <Fragment slot="appearance">
+    <AppearanceMenu label={t("prefs.appearance")} />
+  </Fragment>
+
   <Fragment slot="anatomy">
     <p set:html={t("windowPage.anatomyBody")} />
     <ComponentPreview

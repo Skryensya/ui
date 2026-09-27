@@ -3,8 +3,23 @@
 # `surface` es la forma del contrato la última vez que alguien la revisó. Si el compilador dice
 # que no coincide, algo de lo que un consumidor depende se movió: escribe la entrada y pega el
 # hash nuevo.
-surface: "94b9ca6fc1977946"
+surface: "97b92a8002c9bcbb"
 entries:
+  - date: 2026-09-26
+    kind: feature
+    target: appearance
+    es:
+      title: Tour suma appearance plain, brutalist y frosted
+      body: >-
+        <code>brutalist</code> dibuja cada paso con borde negro y una sombra dura en lugar de la elevación
+        suave; <code>frosted</code> lo hace translúcido, opaco donde el material no es fiable. Sin
+        <code>tactile</code>.
+    en:
+      title: Tour adds plain, brutalist and frosted appearances
+      body: >-
+        <code>brutalist</code> draws each step with a black edge and a hard offset in place of the soft
+        elevation; <code>frosted</code> makes it see-through, opaque wherever the material cannot be trusted. No
+        <code>tactile</code>.
   - date: 2026-09-25
     kind: feature
     target: Tour

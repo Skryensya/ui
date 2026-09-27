@@ -3,8 +3,23 @@
 # `surface` is the shape of the contract the last time somebody reviewed it. If the compiler says it
 # does not match, something a consumer depends on has moved: write the entry and paste in the new
 # hash.
-surface: "0defd0f7cb23158f"
+surface: "440ec013205ae6ea"
 entries:
+  - date: 2026-09-26
+    kind: feature
+    target: appearance
+    es:
+      title: Sidebar suma appearance plain, brutalist y frosted
+      body: >-
+        <code>brutalist</code> dibuja el riel con borde negro y una sombra dura a lo largo de su lado final;
+        <code>frosted</code> lo hace translúcido sobre la página, opaco donde el material no es fiable. Sin
+        <code>tactile</code>: un riel no se presiona.
+    en:
+      title: Sidebar adds plain, brutalist and frosted appearances
+      body: >-
+        <code>brutalist</code> draws the rail with a black edge and a hard offset along its inline-end side;
+        <code>frosted</code> makes it see-through over the page, opaque wherever the material cannot be trusted.
+        No <code>tactile</code>: a rail is never pressed.
   - date: 2026-09-17
     kind: feature
     es:

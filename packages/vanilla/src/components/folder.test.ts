@@ -1,5 +1,5 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
-import { defaultFolderGeometry, folderClipPath, folderPath } from "@skryensya/core/folder";
+import { defaultFolderGeometry, folderClipPath, folderFanClipPath, folderMaskImage, folderPath } from "@skryensya/core/folder";
 import { destroyMount } from "../runtime/svelte-hydrate.js";
 import { mountFolder } from "./folder.js";
 
@@ -161,6 +161,14 @@ describe("Folder vanilla enhancer", () => {
     expect(root.style.getPropertyValue("--sk-folder-clip")).toBe(
       folderClipPath(path().getAttribute("d")!),
     );
+  });
+
+  it("publishes the fan's clip and the frosted mask from the same outline", () => {
+    const root = markup({ width: 600, height: 320, tabWidth: 180 });
+    expect(mountFolder(document)).toBe(1);
+    const d = path().getAttribute("d")!;
+    expect(root.style.getPropertyValue("--sk-folder-fan-clip")).toBe(folderFanClipPath(d));
+    expect(root.style.getPropertyValue("--sk-folder-mask")).toBe(folderMaskImage(d, 600, 320));
   });
 
   it("refuses a root missing the nodes it has to draw into", () => {

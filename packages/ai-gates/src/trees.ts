@@ -97,6 +97,47 @@ const signatureTrees: readonly Canonical[] = [
     },
   },
   {
+    /* Appearance is paint only: the same host and attributes in both bindings, which is what G2 proves. */
+    name: "button/action-brutalist",
+    enhanced: true,
+    tree: {
+      contract: "button",
+      signature: "Button.action",
+      options: { tone: "accent", appearance: "brutalist" },
+      children: "Empezar",
+    },
+  },
+  {
+    name: "button/navigation-brutalist",
+    enhanced: true,
+    tree: {
+      contract: "button",
+      signature: "Button.navigation",
+      options: { variant: "ghost", appearance: "brutalist", href: "/docs" },
+      children: "Documentación",
+    },
+  },
+  {
+    name: "button/action-frosted",
+    enhanced: true,
+    tree: {
+      contract: "button",
+      signature: "Button.action",
+      options: { tone: "danger", variant: "soft", appearance: "frosted" },
+      children: "Borrar",
+    },
+  },
+  {
+    name: "button/navigation-frosted",
+    enhanced: true,
+    tree: {
+      contract: "button",
+      signature: "Button.navigation",
+      options: { appearance: "frosted", href: "/docs" },
+      children: "Documentación",
+    },
+  },
+  {
     name: "image-frame/src",
     enhanced: false,
     tree: {
@@ -210,6 +251,17 @@ const signatureTrees: readonly Canonical[] = [
     },
   },
   {
+    /* The option lands on the LABEL, the element that paints, not on the input host. */
+    name: "checkbox/brutalist",
+    enhanced: false,
+    tree: {
+      contract: "checkbox",
+      signature: "Checkbox",
+      options: { name: "boletin", appearance: "brutalist" },
+      children: "Recibir el boletín",
+    },
+  },
+  {
     /*
      * The one selection signature whose state is DERIVED. The parent holds no name and no value: it
      * reads its children (all / none / some) and a click on it makes them agree. Which children
@@ -256,6 +308,21 @@ const signatureTrees: readonly Canonical[] = [
     },
   },
   {
+    name: "radio-group/tactile",
+    enhanced: false,
+    tree: {
+      contract: "radio-group",
+      signature: "RadioGroup",
+      options: { name: "envio", value: "estandar", label: "Envío", appearance: "tactile" },
+      slots: {
+        items: [
+          { options: { value: "estandar" }, slots: { label: "Estándar" } },
+          { options: { value: "express" }, slots: { label: "Express" } },
+        ],
+      },
+    },
+  },
+  {
     /*
      * THE STANDALONE RADIO, which is a separate signature and not a piece of the group above.
      * Its own intent is "matrix-cell" / "radio-in-a-table": one cell in a grid of choices, where
@@ -283,6 +350,17 @@ const signatureTrees: readonly Canonical[] = [
       signature: "Switch",
       options: { name: "dark-mode", defaultChecked: true },
       children: "Modo oscuro",
+    },
+  },
+  {
+    /* The option lands on the LABEL, the element that paints, not on the input host. */
+    name: "switch/tactile",
+    enhanced: false,
+    tree: {
+      contract: "switch",
+      signature: "Switch",
+      options: { name: "notificaciones", appearance: "tactile" },
+      children: "Notificaciones",
     },
   },
   {
@@ -415,6 +493,11 @@ const signatureTrees: readonly Canonical[] = [
     name: "badge/danger",
     enhanced: false,
     tree: { contract: "badge", signature: "Badge", options: { tone: "danger" }, children: "3" },
+  },
+  {
+    name: "kbd/brutalist",
+    enhanced: false,
+    tree: { contract: "kbd", signature: "Kbd", options: { appearance: "brutalist" }, children: "K" },
   },
   {
     name: "kbd/key",
@@ -767,6 +850,26 @@ const signatureTrees: readonly Canonical[] = [
     },
   },
   {
+    name: "layout/box-brutalist",
+    enhanced: false,
+    tree: {
+      contract: "box",
+      signature: "Box",
+      options: { padding: "md", surface: "surface", appearance: "brutalist" },
+      children: { contract: "typography", signature: "Text", children: "Caja dibujada" },
+    },
+  },
+  {
+    name: "layout/box-frosted",
+    enhanced: false,
+    tree: {
+      contract: "box",
+      signature: "Box",
+      options: { padding: "md", surface: "raised", appearance: "frosted" },
+      children: { contract: "typography", signature: "Text", children: "Caja esmerilada" },
+    },
+  },
+  {
     // One entry, two shapes: a crumb with an href is a link, the last one is where you are.
     name: "breadcrumb/trail",
     enhanced: false,
@@ -803,6 +906,17 @@ const signatureTrees: readonly Canonical[] = [
         title: "No hay resultados",
         description: "Prueba con otros términos.",
       },
+    },
+  },
+  {
+    name: "callout/brutalist",
+    enhanced: false,
+    tree: {
+      contract: "callout",
+      signature: "Callout",
+      options: { tone: "info", appearance: "brutalist" },
+      slots: { title: "Mantenimiento programado" },
+      children: "El servicio estará en pausa el domingo a las 02:00.",
     },
   },
   {
@@ -1072,6 +1186,25 @@ const signatureTrees: readonly Canonical[] = [
     },
   },
   {
+    name: "toolbar/brutalist",
+    enhanced: true,
+    tree: {
+      contract: "toolbar",
+      signature: "Toolbar",
+      options: { label: "Formato", appearance: "brutalist" },
+      children: {
+        contract: "toolbar",
+        signature: "ToolbarGroup",
+        children: {
+          contract: "button",
+          signature: "Button.action",
+          options: { variant: "ghost", size: "sm", appearance: "brutalist" },
+          children: "Negrita",
+        },
+      },
+    },
+  },
+  {
     // The fill is derived from the value: a track that says 60 and looks 40 is a lie nobody sees.
     name: "slider/mid-range",
     enhanced: true,
@@ -1090,6 +1223,21 @@ const signatureTrees: readonly Canonical[] = [
       contract: "segmented",
       signature: "Segmented",
       options: { value: "lista", label: "Vista" },
+      slots: {
+        items: [
+          { options: { value: "lista" }, slots: { label: "Lista" } },
+          { options: { value: "grilla" }, slots: { label: "Grilla" } },
+        ],
+      },
+    },
+  },
+  {
+    name: "segmented/view-switcher-brutalist",
+    enhanced: true,
+    tree: {
+      contract: "segmented",
+      signature: "Segmented",
+      options: { value: "lista", label: "Vista", appearance: "brutalist" },
       slots: {
         items: [
           { options: { value: "lista" }, slots: { label: "Lista" } },
@@ -1301,6 +1449,23 @@ const signatureTrees: readonly Canonical[] = [
       },
     },
   },
+  {
+    /* Button's appearance, forwarded to the host like its variant: Button's sheet paints it. */
+    name: "state-button/copy-brutalist",
+    enhanced: false,
+    tree: {
+      contract: "state-button",
+      signature: "StateButton",
+      options: { current: "idle" },
+      attrs: { "aria-label": "Copiar", "data-appearance": "brutalist" },
+      slots: {
+        faces: [
+          { options: { name: "idle", icon: "copy" }, slots: {} },
+          { options: { name: "copied", icon: "check" }, slots: {} },
+        ],
+      },
+    },
+  },
   /** Three faces, so the same anatomy proves it is not hardcoded to two. */
   {
     name: "state-button/theme-light",
@@ -1497,6 +1662,20 @@ const signatureTrees: readonly Canonical[] = [
       },
     },
   },
+  {
+    name: "popover/frosted",
+    enhanced: false,
+    tree: {
+      contract: "popover",
+      signature: "Popover",
+      options: { panelId: "demo-popover-frosted", appearance: "frosted" },
+      slots: {
+        trigger: "Detalles del envío",
+        title: "Envío express",
+        children: "Llega mañana antes de las 14:00.",
+      },
+    },
+  },
   /*
    * CLOSED, like every other portalling tree here. Open, the two windows on the stage share one
    * stack, so one is `data-topmost` and the other `data-behind` for a reason neither binding
@@ -1510,6 +1689,20 @@ const signatureTrees: readonly Canonical[] = [
       contract: "window",
       signature: "Window",
       options: { defaultWidth: 360, defaultHeight: 220 },
+      slots: {
+        trigger: "Abrir inspector",
+        title: "Inspector",
+        children: "Las propiedades de la capa seleccionada.",
+      },
+    },
+  },
+  {
+    name: "window/closed-brutalist",
+    enhanced: true,
+    tree: {
+      contract: "window",
+      signature: "Window",
+      options: { defaultWidth: 360, defaultHeight: 220, appearance: "brutalist" },
       slots: {
         trigger: "Abrir inspector",
         title: "Inspector",
@@ -1745,6 +1938,23 @@ const signatureTrees: readonly Canonical[] = [
     },
   },
   /** A command, a checkbox, a separator and a submenu: the four item shapes, including the recursive one. */
+  {
+    /* Button's appearance on the trigger, forwarded like its variant. */
+    name: "menu/trigger-brutalist",
+    enhanced: true,
+    tree: {
+      contract: "menu",
+      signature: "Menu",
+      options: { label: "Acciones", triggerAppearance: "brutalist" },
+      slots: {
+        trigger: "Acciones",
+        items: [
+          { options: { value: "edit" }, slots: { label: "Editar" } },
+          { options: { value: "copy" }, slots: { label: "Copiar" } },
+        ],
+      },
+    },
+  },
   {
     name: "menu/with-submenu",
     enhanced: true,
@@ -2338,6 +2548,21 @@ const signatureTrees: readonly Canonical[] = [
     },
   },
   {
+    /* Absent means plain, like controlSize: only a field that asks for an appearance carries one. */
+    name: "input/brutalist",
+    enhanced: true,
+    tree: {
+      contract: "form-field",
+      signature: "FormField",
+      slots: { label: "Correo" },
+      children: {
+        contract: "input",
+        signature: "Input",
+        options: { type: "email", name: "correo", appearance: "brutalist" },
+      },
+    },
+  },
+  {
     name: "input/validated-format",
     enhanced: true,
     tree: {
@@ -2549,6 +2774,36 @@ const signatureTrees: readonly Canonical[] = [
         overflow: "+3",
       },
     },
+  },
+  {
+    name: "avatar/group-brutalist",
+    enhanced: false,
+    tree: {
+      contract: "avatar",
+      signature: "AvatarGroup",
+      options: { label: "Revisores" },
+      slots: {
+        children: [
+          {
+            contract: "avatar",
+            signature: "Avatar.initials",
+            options: { name: "Ada Lovelace", appearance: "brutalist" },
+            children: "AL",
+          },
+          {
+            contract: "avatar",
+            signature: "Avatar.image",
+            options: { imageName: "Foto de perfil de Grace Hopper", src: SAMPLE_MEDIA, appearance: "brutalist" },
+          },
+        ],
+        overflow: "+3",
+      },
+    },
+  },
+  {
+    name: "badge/brutalist",
+    enhanced: false,
+    tree: { contract: "badge", signature: "Badge", options: { tone: "accent", appearance: "brutalist" }, children: "Nuevo" },
   },
   {
     name: "badge/dot",
@@ -3061,6 +3316,26 @@ const signatureTrees: readonly Canonical[] = [
     tree: { contract: "back-to-top", signature: "BackToTop", options: { threshold: 0 }, children: "Volver arriba" },
   },
   {
+    name: "back-to-top/tactile",
+    enhanced: true,
+    tree: {
+      contract: "back-to-top",
+      signature: "BackToTop",
+      options: { threshold: 0, appearance: "tactile" },
+      children: "Volver arriba",
+    },
+  },
+  {
+    name: "hero/brutalist",
+    enhanced: false,
+    tree: {
+      contract: "hero",
+      signature: "Hero",
+      options: { surface: "raised", appearance: "brutalist", padding: "lg" },
+      children: { contract: "typography", signature: "Heading", children: "Lanzamiento de julio" },
+    },
+  },
+  {
     name: "hero/basic",
     enhanced: false,
     tree: {
@@ -3368,6 +3643,25 @@ const signatureTrees: readonly Canonical[] = [
       contract: "clipboard",
       signature: "CopyButton",
       options: { value: "pnpm add @skryensya/core", label: "Copiar comando", copiedLabel: "Copiado", errorLabel: "No se pudo copiar" },
+    },
+  },
+  {
+    name: "clipboard/copy-button-tactile",
+    enhanced: true,
+    tree: {
+      contract: "clipboard",
+      signature: "CopyButton",
+      options: { value: "pnpm add @skryensya/core", label: "Copiar comando", appearance: "tactile" },
+    },
+  },
+  {
+    name: "clipboard/field-brutalist",
+    enhanced: true,
+    tree: {
+      contract: "clipboard",
+      signature: "Clipboard",
+      options: { value: "https://skryensya.dev/s/4821", label: "Copiar enlace", appearance: "brutalist" },
+      slots: { fieldLabel: "Enlace para compartir" },
     },
   },
   {

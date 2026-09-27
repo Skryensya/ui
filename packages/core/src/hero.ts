@@ -75,6 +75,7 @@ export const heroContract = {
   parts: heroParts,
   hooks: [
     "--sk-hero-bg",
+    "--sk-hero-brutalist-offset",
     "--sk-hero-min-height",
     "--sk-hero-padding",
     "--sk-hero-radius",
@@ -83,6 +84,17 @@ export const heroContract = {
   ],
 
   options: {
+    /*
+     * HOW THE BAND IS DRAWN, Button's axis: brutalist a black edge and hard offset in place of the
+     * surface's soft elevation, frosted a see-through band over the page (opaque wherever the
+     * material cannot be trusted). No tactile: a hero is never pressed.
+     */
+    appearance: {
+      type: "enum",
+      values: ["plain", "brutalist", "frosted"],
+      default: "plain",
+      attr: "data-appearance",
+    },
     padding: { type: "enum", values: ["none", "xs", "sm", "md", "lg", "xl"], default: "xl", attr: "data-padding" },
     /*
      * THE EXPANDED SIDE OF THE SAME CHOICE, declared rather than inferred (decision 30). The plain
@@ -101,7 +113,7 @@ export const heroContract = {
     Hero: {
       intent: ["page-intro", "banner", "landing-page-opener", "primary-call-to-action-block"],
       host: { element: "div" },
-      options: ["padding", "paddingExpanded", "surface", "align", "heroElement"],
+      options: ["padding", "paddingExpanded", "surface", "align", "heroElement", "appearance"],
       slots: { children: { accepts: "node", required: true } },
       descendants: [
         {

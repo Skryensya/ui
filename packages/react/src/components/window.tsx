@@ -18,6 +18,7 @@ import { Icon } from "./icon.js";
 const cx = (...classes: Array<string | undefined>) => classes.filter(Boolean).join(" ");
 
 const {
+  appearance: appearanceOption,
   closeLabel: closeLabelOption,
   closeOnEscape: closeOnEscapeOption,
   defaultOpen: defaultOpenOption,
@@ -28,6 +29,7 @@ const {
   resizable: resizableOption,
   restoreLabel: restoreLabelOption,
   triggerIconOnly: triggerIconOnlyOption,
+  triggerAppearance: triggerAppearanceOption,
   triggerSize: triggerSizeOption,
   triggerTone: triggerToneOption,
   triggerVariant: triggerVariantOption,
@@ -52,6 +54,8 @@ export type WindowProps = Omit<HTMLAttributes<HTMLDivElement>, "title" | "childr
   closeOnEscape?: boolean;
   /** Reopen where it was left instead of re-centred. */
   persistRect?: boolean;
+  /** How the frame is drawn: `plain`, `tactile`, `brutalist` or `frosted`. */
+  appearance?: (typeof appearanceOption.values)[number];
   defaultWidth?: number;
   defaultHeight?: number;
   minWidth?: number;
@@ -63,6 +67,8 @@ export type WindowProps = Omit<HTMLAttributes<HTMLDivElement>, "title" | "childr
   triggerLabel?: string;
   triggerVariant?: string;
   triggerTone?: string;
+  /** Button's appearance on the trigger: `plain`, `tactile`, `brutalist` or `frosted`. */
+  triggerAppearance?: string;
   triggerSize?: string;
   triggerIconOnly?: boolean;
   triggerClassName?: string;
@@ -80,6 +86,7 @@ const stageLabelKey = {
 } as const satisfies Record<WindowStage, string>;
 
 export function Window({
+  appearance = appearanceOption.default,
   children,
   className,
   closeLabel = closeLabelOption.default,
@@ -105,6 +112,7 @@ export function Window({
   triggerClassName,
   triggerIconOnly = triggerIconOnlyOption.default,
   triggerLabel,
+  triggerAppearance,
   triggerSize,
   triggerTone,
   triggerVariant,
@@ -176,6 +184,7 @@ export function Window({
         {...{
           [triggerVariantOption.attr]: triggerVariant,
           [triggerToneOption.attr]: triggerTone,
+          [triggerAppearanceOption.attr]: triggerAppearance,
           [triggerSizeOption.attr]: triggerSize,
           [triggerIconOnlyOption.attr]: triggerIconOnly ? "" : undefined,
         }}
@@ -184,7 +193,7 @@ export function Window({
       </button>
       <Portal container={container}>
         <div {...withoutStackZIndex(api.getPositionerProps())} className={windowParts.positioner}>
-          <div {...api.getContentProps()} className={windowParts.content}>
+          <div {...api.getContentProps()} className={windowParts.content} data-appearance={appearance}>
             <div {...api.getDragTriggerProps()} className={windowParts.drag}>
               <div {...api.getHeaderProps()} className={windowParts.header}>
                 <h2 {...api.getTitleProps()} className={windowParts.title}>

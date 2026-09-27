@@ -36,6 +36,13 @@ describe("Tabs", () => {
     expect(document.getElementById(overviewPanelId!)?.textContent).toBe("Overview panel");
   });
 
+  it("serializes its appearance on the root, plain by default", () => {
+    const plain = render(<Tabs defaultValue="activity" id="plain-tabs" items={items} />);
+    expect(plain.container.querySelector(".sk-tabs")?.getAttribute("data-appearance")).toBe("plain");
+    const brutalist = render(<Tabs appearance="brutalist" defaultValue="activity" id="brutalist-tabs" items={items} />);
+    expect(brutalist.container.querySelector(".sk-tabs")?.getAttribute("data-appearance")).toBe("brutalist");
+  });
+
   it("defaults to size md and honors an explicit size", () => {
     const ui = render(<Tabs defaultValue="overview" id="account-tabs" items={items} />);
     expect(ui.container.querySelector(".sk-tabs")?.getAttribute("data-size")).toBe("md");

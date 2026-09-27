@@ -14,6 +14,7 @@ import { Icon, useIconSet } from "./icon.js";
 /* Derived, never restated: the defaults live in the contract. */
 const pagerOptions = tablePagerContract.options;
 const {
+  appearance: appearanceOption,
   label: labelOption,
   nextLabel: nextLabelOption,
   previousLabel: previousLabelOption,
@@ -42,9 +43,12 @@ export type PaginationProps = Omit<HTMLAttributes<HTMLElement>, "onChange"> & {
   label?: string;
   previousLabel?: string;
   nextLabel?: string;
+  /** How the pager is drawn, worn by the current page: `plain`, `tactile`, `brutalist` or `frosted`. */
+  appearance?: (typeof appearanceOption.values)[number];
 };
 
 export function Pagination({
+  appearance = appearanceOption.default,
   className,
   label = labelOption.default,
   nextLabel = nextLabelOption.default,
@@ -74,6 +78,7 @@ export function Pagination({
       ref={rootRef}
       aria-label={label}
       className={cx(paginationParts.root, className)}
+      data-appearance={appearance}
       data-page={page}
       data-siblings={siblings}
       data-total={total}

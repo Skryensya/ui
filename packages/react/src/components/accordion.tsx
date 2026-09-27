@@ -96,6 +96,7 @@ const AccordionRoot = forwardRef<HTMLDivElement, AccordionProps>(function Accord
   {
     children,
     className,
+    appearance = "plain",
     collapsible = collapsibleOption.default,
     defaultValue,
     disabled = disabledOption.default,
@@ -165,6 +166,7 @@ const AccordionRoot = forwardRef<HTMLDivElement, AccordionProps>(function Accord
         className={[accordionParts.root, className].filter(Boolean).join(" ")}
         data-part={accordionDataParts.root}
         data-scope={accordionScope}
+        data-appearance={appearance}
         data-sk-accordion=""
         data-type={type}
         ref={setRefs}
@@ -201,6 +203,8 @@ const AccordionItem = forwardRef<HTMLElement, AccordionItemProps>(function Accor
   return (
     <ExpandableTile
       {...props}
+      // The frame carries appearance (Accordion root); an item never does, same as its template.
+      appearance={null}
       className={className}
       data-part={accordionDataParts.item}
       data-value={value}

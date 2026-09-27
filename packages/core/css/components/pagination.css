@@ -143,6 +143,98 @@
     user-select: none;
   }
 
+  /*
+   * ── APPEARANCE ───────────────────────────────────────────────────────────────────────────────
+   *
+   * Button's axis (button.css documents each construction in full), worn by the CURRENT page and
+   * written as the `--sk-pagination-current-*` hooks it already reads. The other pages stay the
+   * quiet ghost squares they are.
+   */
+
+  /* TACTILE: the current page is a key on a deeper ledge in a darker step of its own face; a press
+   * sinks a page instead of squeezing it. */
+  .sk-pagination[data-appearance="tactile"] {
+    --sk-pagination-current-ledge: light-dark(
+      color-mix(in oklab, var(--sk-pagination-current-bg) 72%, var(--color-text-primary)),
+      color-mix(in oklab, var(--sk-pagination-current-bg) 68%, var(--color-bg-surface-sunken))
+    );
+    --sk-pagination-current-shadow:
+      inset 0 1px 0 var(--sk-pagination-current-highlight),
+      0 3px 0 var(--sk-pagination-current-ledge),
+      var(--elevation-raised);
+  }
+
+  .sk-pagination[data-appearance="tactile"] :is(.sk-pagination__item, .sk-pagination__previous, .sk-pagination__next) {
+    transition:
+      background-color var(--motion-state-change-duration) var(--motion-state-change-easing),
+      border-color var(--motion-state-change-duration) var(--motion-state-change-easing),
+      box-shadow var(--motion-feedback-duration) var(--motion-feedback-easing),
+      color var(--motion-state-change-duration) var(--motion-state-change-easing),
+      translate var(--motion-feedback-duration) var(--motion-feedback-easing);
+  }
+
+  .sk-pagination[data-appearance="tactile"] :is(.sk-pagination__item, .sk-pagination__previous, .sk-pagination__next):active:not(:disabled) {
+    scale: 1;
+    translate: 0 2px;
+  }
+
+  /* BRUTALIST: the current page is a flat, black-edged block with a hard offset toward block-end and
+   * inline-end (mirrored in RTL). */
+  .sk-pagination[data-appearance="brutalist"] {
+    --sk-pagination-brutalist-offset: 3px;
+    --brutalist-black: oklch(from var(--shadow-lg) l c h / 1);
+    --brutalist-direction: 1;
+    --sk-pagination-current-border-color: var(--brutalist-black);
+    --sk-pagination-current-wash: none;
+    --sk-pagination-current-shadow: calc(var(--sk-pagination-brutalist-offset) * var(--brutalist-direction))
+      var(--sk-pagination-brutalist-offset) 0 var(--brutalist-black);
+  }
+
+  .sk-pagination[data-appearance="brutalist"]:dir(rtl) {
+    --brutalist-direction: -1;
+  }
+
+  /* FROSTED: the current page is Button's see-through sheet, with a fine edge and a lit rim. Opaque
+   * baseline; the material only where backdrop-filter exists and no reduced-transparency preference
+   * is set. */
+  .sk-pagination[data-appearance="frosted"] {
+    --sk-pagination-current-wash: none;
+    --sk-pagination-current-border-color: color-mix(in oklab, currentColor 18%, transparent);
+  }
+
+  @supports (backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px)) {
+    @media (prefers-reduced-transparency: no-preference) {
+      .sk-pagination[data-appearance="frosted"] {
+        --sk-pagination-current-bg: color-mix(in oklab, var(--color-bg-surface-raised) 70%, transparent);
+      }
+
+      .sk-pagination[data-appearance="frosted"] .sk-pagination__item[aria-current="page"] {
+        -webkit-backdrop-filter: blur(10px) saturate(150%);
+        backdrop-filter: blur(10px) saturate(150%);
+      }
+    }
+  }
+
+  :is([data-contrast="high"] .sk-pagination[data-appearance="frosted"], .sk-pagination[data-appearance="frosted"][data-contrast="high"]) {
+    --sk-pagination-current-bg: var(--color-bg-surface-raised);
+  }
+
+  :is([data-contrast="high"] .sk-pagination[data-appearance="frosted"], .sk-pagination[data-appearance="frosted"][data-contrast="high"]) .sk-pagination__item[aria-current="page"] {
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+
+  @media (prefers-contrast: more) {
+    :root:not([data-contrast]) .sk-pagination[data-appearance="frosted"] {
+      --sk-pagination-current-bg: var(--color-bg-surface-raised);
+    }
+
+    :root:not([data-contrast]) .sk-pagination[data-appearance="frosted"] .sk-pagination__item[aria-current="page"] {
+      -webkit-backdrop-filter: none;
+      backdrop-filter: none;
+    }
+  }
+
   @media (forced-colors: active) {
     .sk-pagination__item,
     .sk-pagination__previous,
@@ -167,6 +259,16 @@
 
     .sk-pagination__ellipsis {
       color: GrayText;
+    }
+
+    /* Every appearance falls back to the system square: Highlight marks the page, nothing else. */
+    .sk-pagination[data-appearance] .sk-pagination__item[aria-current="page"] {
+      -webkit-backdrop-filter: none;
+      backdrop-filter: none;
+    }
+
+    .sk-pagination[data-appearance] :is(.sk-pagination__item, .sk-pagination__previous, .sk-pagination__next):active {
+      translate: none;
     }
   }
 }

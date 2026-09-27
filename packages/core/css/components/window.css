@@ -165,6 +165,128 @@
     user-select: none;
   }
 
+  /*
+   * ── APPEARANCE ───────────────────────────────────────────────────────────────────────────────
+   *
+   * The axis Button, Tile, Box and Avatar publish, on the frame (button.css documents each
+   * construction in full). It sits on the CONTENT, the element that paints, because React portals the
+   * positioner to the body and an attribute on the root would never reach it. A window is dragged,
+   * never pressed, so none of the three moves. The title-bar controls stay plain ghost buttons: icon
+   * controls read the same in every frame. Radius, padding and the stack order are untouched.
+   */
+
+  /* TACTILE: a solid slab. A ledge under the frame, in a darker step of its own surface, and Button's
+   * lit-top face gradient over the frame and the title bar. The modal shadow stays beneath the ledge. */
+  .sk-window__content[data-appearance="tactile"] {
+    --sk-window-depth: 6px;
+    --sk-window-wash: linear-gradient(
+      to bottom,
+      light-dark(color-mix(in oklab, white 10%, transparent), color-mix(in oklab, white 5%, transparent)),
+      transparent 40%
+    );
+    --tactile-ledge: light-dark(
+      color-mix(in oklab, var(--sk-window-bg) 76%, var(--color-text-primary)),
+      color-mix(in oklab, var(--sk-window-bg) 72%, var(--color-bg-surface-sunken))
+    );
+    box-shadow: 0 var(--sk-window-depth) 0 var(--tactile-ledge), var(--sk-window-shadow);
+  }
+
+  .sk-window__content[data-appearance="tactile"][data-behind] {
+    box-shadow: 0 calc(var(--sk-window-depth) * 0.6) 0 var(--tactile-ledge), var(--sk-window-shadow-behind);
+  }
+
+  .sk-window__content[data-appearance="tactile"] .sk-window__header {
+    background:
+      linear-gradient(
+        to bottom,
+        light-dark(color-mix(in oklab, white 12%, transparent), color-mix(in oklab, white 6%, transparent)),
+        light-dark(color-mix(in oklab, black 4%, transparent), color-mix(in oklab, black 8%, transparent))
+      ),
+      var(--sk-window-header-bg);
+  }
+
+  /* BRUTALIST: the black edge, a black rule under the title bar, and a hard zero-blur offset toward
+   * block-end and inline-end (mirrored in RTL). It replaces the soft modal shadow, and it is what says
+   * which window is in front: a window behind another keeps half of it. A maximized window IS the
+   * viewport, so there is nothing to offset from. */
+  .sk-window__content[data-appearance="brutalist"] {
+    --sk-window-brutalist-offset-inline: 8px;
+    --sk-window-brutalist-offset-block: 8px;
+    --sk-window-brutalist-edge: oklch(from var(--shadow-lg) l c h / 1);
+    --sk-window-brutalist-shadow: var(--sk-window-brutalist-edge);
+    --sk-window-border-color: var(--sk-window-brutalist-edge);
+    --sk-window-header-border-color: var(--sk-window-brutalist-edge);
+    --sk-window-wash: none;
+    --brutalist-direction: 1;
+    --brutalist-reach: 1;
+    box-shadow: calc(var(--sk-window-brutalist-offset-inline) * var(--brutalist-reach) * var(--brutalist-direction))
+      calc(var(--sk-window-brutalist-offset-block) * var(--brutalist-reach)) 0 var(--sk-window-brutalist-shadow);
+  }
+
+  .sk-window__content[data-appearance="brutalist"]:dir(rtl) {
+    --brutalist-direction: -1;
+  }
+
+  .sk-window__content[data-appearance="brutalist"][data-behind] {
+    --brutalist-reach: 0.5;
+  }
+
+  .sk-window__content[data-appearance="brutalist"][data-maximized] {
+    --brutalist-reach: 0;
+  }
+
+  /* FROSTED: Button's material on the frame. The baseline is the plain overlay, opaque, plus a fine
+   * edge and a lit top rim; only where backdrop-filter exists and no reduced-transparency preference
+   * is set do the frame and its title bar become see-through sheets over a blurred backdrop. The
+   * modal shadow stays: a window still floats above the page, it is only made of glass. */
+  .sk-window__content[data-appearance="frosted"] {
+    --sk-window-frost-opacity: 78%;
+    --sk-window-frost-blur: 24px;
+    --sk-window-frost-saturation: 160%;
+    --sk-window-wash: none;
+    --sk-window-border-color: color-mix(in oklab, currentColor 18%, transparent);
+    --frost-highlight: light-dark(
+      color-mix(in oklab, var(--color-bg-surface) 70%, transparent),
+      color-mix(in oklab, var(--color-text-primary) 18%, transparent)
+    );
+    box-shadow: inset 0 1px 0 var(--frost-highlight), var(--sk-window-shadow);
+  }
+
+  .sk-window__content[data-appearance="frosted"][data-behind] {
+    box-shadow: inset 0 1px 0 var(--frost-highlight), var(--sk-window-shadow-behind);
+  }
+
+  @supports (backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px)) {
+    @media (prefers-reduced-transparency: no-preference) {
+      .sk-window__content[data-appearance="frosted"] {
+        background: color-mix(in oklab, var(--sk-window-bg) var(--sk-window-frost-opacity), transparent);
+        -webkit-backdrop-filter: blur(var(--sk-window-frost-blur)) saturate(var(--sk-window-frost-saturation));
+        backdrop-filter: blur(var(--sk-window-frost-blur)) saturate(var(--sk-window-frost-saturation));
+      }
+
+      /* The title bar is the same sheet, a shade denser, not an opaque strip across the glass. */
+      .sk-window__content[data-appearance="frosted"] .sk-window__header {
+        background: color-mix(in oklab, var(--sk-window-header-bg) 40%, transparent);
+      }
+    }
+  }
+
+  /* High contrast outranks the material: back to the opaque baseline. */
+  [data-contrast="high"] .sk-window__content[data-appearance="frosted"],
+  .sk-window__content[data-appearance="frosted"][data-contrast="high"] {
+    background: var(--sk-window-bg);
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+
+  @media (prefers-contrast: more) {
+    :root:not([data-contrast]) .sk-window__content[data-appearance="frosted"] {
+      background: var(--sk-window-bg);
+      -webkit-backdrop-filter: none;
+      backdrop-filter: none;
+    }
+  }
+
   @media (prefers-reduced-motion: reduce) {
     .sk-window__content {
       transition: none;
@@ -180,6 +302,18 @@
 
     .sk-window__header {
       border-block-end-color: CanvasText;
+      background: Canvas;
+    }
+
+    /* Every appearance falls back to the system frame: no ledge, no offset, no glass. */
+    .sk-window__content[data-appearance] {
+      background: Canvas;
+      -webkit-backdrop-filter: none;
+      backdrop-filter: none;
+      box-shadow: none;
+    }
+
+    .sk-window__content[data-appearance] .sk-window__header {
       background: Canvas;
     }
   }

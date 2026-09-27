@@ -3,8 +3,23 @@
 # `surface` is the shape of the contract the last time somebody reviewed it. If the compiler says it
 # does not match, something a consumer depends on has moved: write the entry and paste in the new
 # hash.
-surface: "8995f50c928b2042"
+surface: "ca80ed96b5a6d35c"
 entries:
+  - date: 2026-09-26
+    kind: feature
+    target: appearance
+    es:
+      title: Toolbar suma appearance plain, tactile, brutalist y frosted
+      body: >-
+        El marco de la barra lleva el eje de Button: <code>tactile</code> una consola con saliente,
+        <code>brutalist</code> borde y separadores negros con sombra dura, <code>frosted</code> una barra
+        translúcida, opaca donde el material no es fiable. Los Button de adentro definen la suya.
+    en:
+      title: Toolbar adds plain, tactile, brutalist and frosted appearances
+      body: >-
+        The bar's frame takes Button's axis: <code>tactile</code> a console slab on a ledge,
+        <code>brutalist</code> a black edge and separators with a hard offset, <code>frosted</code> a see-
+        through bar, opaque wherever the material cannot be trusted. The Buttons inside set their own.
   - date: 2026-09-17
     kind: feature
     es:

@@ -3,8 +3,21 @@
 # `surface` is the shape of the contract the last time somebody reviewed it. If the compiler says it
 # does not match, something a consumer depends on has moved: write the entry and paste in the new
 # hash.
-surface: "bd4001aee09e2b89"
+surface: "10fe80228571c744"
 entries:
+  - date: 2026-09-26
+    kind: feature
+    target: appearance
+    es:
+      title: Tag suma appearance plain y brutalist
+      body: >-
+        <code>brutalist</code> dibuja la etiqueta con borde negro y una sombra dura pequeña, en <code>Tag</code>
+        y <code>Tag.link</code>. Sin <code>tactile</code> ni <code>frosted</code>.
+    en:
+      title: Tag adds plain and brutalist appearances
+      body: >-
+        <code>brutalist</code> draws the chip with a black edge and a small hard offset, on <code>Tag</code> and
+        <code>Tag.link</code>. No <code>tactile</code> and no <code>frosted</code>.
   - date: 2026-09-17
     kind: feature
     es:

@@ -63,13 +63,20 @@ function normalize(markup: string): string {
 describe("emitMarkup", () => {
   it("writes the action signature onto its native host", () => {
     expect(normalize(emitMarkup(saveButton))).toBe(
-      '<button class="sk-button sk-interactive" data-sk-button data-variant="solid" data-tone="accent" data-appearance="default" data-size="md" type="button">Guardar</button>',
+      '<button class="sk-button sk-interactive" data-sk-button data-variant="solid" data-tone="accent" data-appearance="plain" data-size="md" type="button">Guardar</button>',
     );
+  });
+
+  it.each(["brutalist", "frosted"])("writes %s onto either host as the same data-appearance, nothing more", (appearance) => {
+    const action = normalize(emitMarkup({ ...saveButton, options: { ...saveButton.options, appearance } }));
+    const link = normalize(emitMarkup({ ...docsLink, options: { ...docsLink.options, appearance } }));
+    expect(action).toBe(normalize(emitMarkup(saveButton)).replace('data-appearance="plain"', `data-appearance="${appearance}"`));
+    expect(link).toBe(normalize(emitMarkup(docsLink)).replace('data-appearance="plain"', `data-appearance="${appearance}"`));
   });
 
   it("switches host on the discriminant, and drops nothing else", () => {
     expect(normalize(emitMarkup(docsLink))).toBe(
-      '<a class="sk-button sk-interactive" data-sk-button data-variant="solid" data-tone="accent" data-appearance="default" data-size="md" href="/docs">Documentación</a>',
+      '<a class="sk-button sk-interactive" data-sk-button data-variant="solid" data-tone="accent" data-appearance="plain" data-size="md" href="/docs">Documentación</a>',
     );
   });
 
@@ -298,7 +305,7 @@ describe("emitMarkup", () => {
   it("keeps a short opening tag on one line", () => {
     expect(
       emitMarkup({ contract: "kbd", signature: "Kbd", children: "⌘K" }),
-    ).toBe('<kbd class="sk-kbd" data-tone="neutral">⌘K</kbd>');
+    ).toBe('<kbd class="sk-kbd" data-appearance="plain" data-tone="neutral">⌘K</kbd>');
   });
 
   /*
@@ -343,7 +350,7 @@ describe("emitMarkup", () => {
         "  data-sk-button",
         '  data-variant="solid"',
         '  data-tone="accent"',
-        '  data-appearance="default"',
+        '  data-appearance="plain"',
         '  data-size="md"',
         '  href="/docs"',
         ">",

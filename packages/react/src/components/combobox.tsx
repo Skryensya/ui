@@ -2,6 +2,7 @@ import {
   comboboxEvents,
   comboboxParts,
   type ComboboxItem,
+  comboboxContract,
 } from "@skryensya/core/combobox";
 import { formFieldParts } from "@skryensya/core/form-field";
 import { combobox } from "@skryensya/core/machines";
@@ -68,10 +69,13 @@ export type ComboboxProps = {
   resultCountLabel?: (details: { count: number; inputValue: string }) => string;
   onValueChange?: (details: { value: string[] }) => void;
   onInputValueChange?: (details: { inputValue: string }) => void;
+  /** How the field is drawn: `plain`, `brutalist` or `frosted`. Absent means plain. */
+  appearance?: (typeof comboboxContract.options.appearance.values)[number];
 };
 
 export function Combobox({
   allowCustomValue,
+  appearance,
   clearLabel = "Limpiar selección",
   clearIndicator,
   container,
@@ -220,6 +224,7 @@ export function Combobox({
     <div
       {...api.getRootProps()}
       className={cx(formFieldParts.root, comboboxParts.root)}
+      data-appearance={appearance}
       data-disabled={disabled ? "" : undefined}
       data-sk-combobox=""
       data-virtual-focus={

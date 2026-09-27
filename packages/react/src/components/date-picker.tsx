@@ -28,7 +28,7 @@ const { clearLabel: clearLabelOption, locale: localeOption, selectionMode: selec
 // `selectionMode` comes from the contract, so Core stays the only place its values are defined.
 export type DatePickerProps = Pick<
   SignatureOptionsOf<typeof datePickerContract, "DatePicker">,
-  "selectionMode"
+  "selectionMode" | "appearance"
 > & {
   /** Where the popover is portalled. Absent it goes to the body: see `ComboboxProps.container`. */
   container?: RefObject<HTMLElement>;
@@ -74,6 +74,7 @@ export type DatePickerProps = Pick<
  * instance (popover-mode, not inline) and the field around it.
  */
 export function DatePicker({
+  appearance,
   clearLabel = clearLabelOption.default,
   container,
   contentLabel,
@@ -147,6 +148,7 @@ export function DatePicker({
     <div
       {...api.getRootProps()}
       className={datePickerParts.root}
+      data-appearance={appearance}
       data-selection-mode={selectionMode}
       data-sk-date-picker=""
       ref={rootRef}
@@ -210,6 +212,8 @@ export function DatePicker({
 }
 
 export type NativeDatePickerProps = {
+  /** How the field is drawn: `plain`, `brutalist` or `frosted`. Absent means plain. */
+  appearance?: (typeof datePickerContract.options.appearance.values)[number];
   /** Names the field. Contract slot is text-only and required. */
   label: string;
   name?: string;
@@ -237,6 +241,7 @@ export type NativeDatePickerProps = {
  * for that decision.
  */
 export function NativeDatePicker({
+  appearance,
   defaultValue,
   disabled,
   id,
@@ -253,7 +258,7 @@ export function NativeDatePicker({
   const inputId = id ?? generatedId;
 
   return (
-    <div className={datePickerParts.root}>
+    <div className={datePickerParts.root} data-appearance={appearance}>
       {/* Named through `aria-labelledby` rather than `for`/`id`: see the contract, where the
           reason is the shared stage rather than the markup. */}
       <label className={datePickerParts.label} id={`${inputId}-label`}>

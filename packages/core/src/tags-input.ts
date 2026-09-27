@@ -117,6 +117,17 @@ export const tagsInputContract = {
   ],
 
   options: {
+    /*
+     * HOW THE FIELD IS DRAWN, Input's axis: brutalist a black edge and hard offset in place of the
+     * soft well, frosted a see-through field (opaque wherever the material cannot be trusted).
+     * Every state still outranks it. Absent means plain, as for Input. No tactile: a field is typed
+     * into, not pressed.
+     */
+    appearance: {
+      type: "enum",
+      values: ["plain", "brutalist", "frosted"],
+      attr: "data-appearance",
+    },
     /**
      * The accessible name of the field where tags are typed.
      *
@@ -198,6 +209,7 @@ export const tagsInputContract = {
         "readOnly",
         "invalid",
         "required",
+        "appearance",
       ],
       requires: ["label"],
       forward: ["id", "aria-*"],

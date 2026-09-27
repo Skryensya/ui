@@ -16,6 +16,41 @@ import { anatomyCanvas, anatomyHints } from "./annotation-parts";
  * whole. `Strong` was the nearest thing available and it is the wrong claim: a path is not emphasis.
  */
 
+/*
+ * A section's body, shared by the machine half and the native half so the two render the same
+ * content: the page compares them, and a comparison over different copy compares nothing.
+ */
+const sectionBody = (t: Translate, value: string): UsageTree => ({
+  contract: "layout",
+  signature: "Stack",
+  options: { gap: "sm" },
+  children: [
+    {
+      contract: "typography",
+      signature: "Text",
+      options: { tone: "secondary" },
+      children: t(`demo.accordion.${value}.p1` as never),
+    },
+    {
+      contract: "typography",
+      signature: "Text",
+      options: { tone: "secondary" },
+      children:
+        value === "runtime"
+          ? [
+              t("demo.accordion.runtime.p2a"),
+              {
+                contract: "typography",
+                signature: "Code",
+                children: t("demo.accordion.runtime.p2code"),
+              },
+              t("demo.accordion.runtime.p2b"),
+            ]
+          : t(`demo.accordion.${value}.p2` as never),
+    },
+  ],
+});
+
 /** One section: the trigger's copy and mark, then the body. */
 const item = (t: Translate, value: string): UsageTree => ({
   contract: "accordion",
@@ -41,36 +76,7 @@ const item = (t: Translate, value: string): UsageTree => ({
       contract: "accordion",
       signature: "Accordion.Content",
       children: [
-        {
-          contract: "layout",
-          signature: "Stack",
-          options: { gap: "sm" },
-          children: [
-            {
-              contract: "typography",
-              signature: "Text",
-              options: { tone: "secondary" },
-              children: t(`demo.accordion.${value}.p1` as never),
-            },
-            {
-              contract: "typography",
-              signature: "Text",
-              options: { tone: "secondary" },
-              children:
-                value === "runtime"
-                  ? [
-                      t("demo.accordion.runtime.p2a"),
-                      {
-                        contract: "typography",
-                        signature: "Code",
-                        children: t("demo.accordion.runtime.p2code"),
-                      },
-                      t("demo.accordion.runtime.p2b"),
-                    ]
-                  : t(`demo.accordion.${value}.p2` as never),
-            },
-          ],
-        },
+        sectionBody(t, value),
       ],
     },
   ],
@@ -244,14 +250,16 @@ export const accordionAnatomyCss = `.sk-annotated-figure {
   inline-size: 24rem;
 }`;
 
-export const detailsGroupTree = (t: Translate): UsageTree => ({
+/* `name` is the browser's exclusivity key across the whole DOCUMENT, not the group: two groups on
+   one page sharing it would close each other's sections. The appearance comparison passes its own. */
+export const detailsGroupTree = (t: Translate, name = "deployment"): UsageTree => ({
   contract: "accordion",
   signature: "DetailsGroup",
   attrs: { "aria-label": t("demo.accordion.detailsLabel") },
   children: deployment.map((value, i) => ({
     contract: "accordion",
     signature: "Details",
-    options: { name: "deployment", ...(i === 0 ? { open: true } : {}) },
+    options: { name, ...(i === 0 ? { open: true } : {}) },
     children: [
       {
         contract: "accordion",
@@ -268,7 +276,8 @@ export const detailsGroupTree = (t: Translate): UsageTree => ({
           {
             contract: "typography",
             signature: "Text",
-            options: { tone: "secondary", textElement: "span" },
+            /* `sm`: the size TileContent's description paints at, so the two summaries match. */
+            options: { tone: "secondary", size: "sm", textElement: "span" },
             children: t(`demo.accordion.${value}.description` as never),
           },
         ],
@@ -276,12 +285,7 @@ export const detailsGroupTree = (t: Translate): UsageTree => ({
       {
         contract: "accordion",
         signature: "Details.Content",
-        children: {
-          contract: "typography",
-          signature: "Text",
-          options: { tone: "secondary" },
-          children: t(`demo.accordion.${value}.p1` as never),
-        },
+        children: sectionBody(t, value),
       },
     ],
   })),

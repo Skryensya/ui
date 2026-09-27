@@ -4,6 +4,13 @@ import { NavList, NavListGroup, NavListLink } from "./nav-list.js";
 import { Navbar, NavbarActions, NavbarBrand } from "./navbar.js";
 
 describe("Navbar", () => {
+  it("serializes its appearance on the bar, plain by default", () => {
+    const plain = render(<Navbar>Plain</Navbar>);
+    expect(plain.container.querySelector("header")?.getAttribute("data-appearance")).toBe("plain");
+    const frosted = render(<Navbar appearance="frosted">Frosted</Navbar>);
+    expect(frosted.container.querySelector("header")?.getAttribute("data-appearance")).toBe("frosted");
+  });
+
   it("uses a header landmark while leaving navigation to its NavList child", () => {
     const ui = render(
       <Navbar data-testid="app-navbar">

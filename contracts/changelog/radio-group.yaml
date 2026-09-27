@@ -3,8 +3,23 @@
 # `surface` is the shape of the contract the last time somebody reviewed it. If the compiler says it
 # does not match, something a consumer depends on has moved: write the entry and paste in the new
 # hash.
-surface: "49a2696cfa73c4b2"
+surface: "446ec6c35f923296"
 entries:
+  - date: 2026-09-26
+    kind: feature
+    target: appearance
+    es:
+      title: RadioGroup suma appearance plain, tactile, brutalist y frosted
+      body: >-
+        En la etiqueta de un Radio o la raíz de un RadioGroup, pintada en el anillo: <code>tactile</code> un
+        disco elevado que se hunde al presionar, <code>brutalist</code> borde negro y sombra dura,
+        <code>frosted</code> un disco translúcido, opaco donde el material no es fiable.
+    en:
+      title: RadioGroup adds plain, tactile, brutalist and frosted appearances
+      body: >-
+        On a Radio's label or a RadioGroup's root, painted on the ring: <code>tactile</code> a raised disc that
+        sinks when pressed, <code>brutalist</code> a black edge and hard offset, <code>frosted</code> a see-
+        through disc, opaque wherever the material cannot be trusted.
   - date: 2026-09-18
     kind: feature
     target: Radio

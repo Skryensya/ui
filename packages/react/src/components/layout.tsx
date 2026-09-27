@@ -1,6 +1,7 @@
 import {
   layoutParts,
   layoutGridParts,
+  type BoxAppearance,
   type BoxBorder,
   type BoxSurface,
   type GridColumns,
@@ -18,11 +19,13 @@ import type { ComponentPropsWithoutRef, ElementType, ReactNode } from "react";
 
 const {
   align: heroAlignOption,
+  appearance: heroAppearanceOption,
   padding: heroPaddingOption,
   surface: heroSurfaceOption,
 } = heroContract.options;
 
 const {
+  appearance: footerAppearanceOption,
   divider: dividerOption,
   padding: footerPaddingOption,
   surface: footerSurfaceOption,
@@ -40,10 +43,17 @@ function classes(base: string, className: string | undefined) {
 
 export type BoxProps<Element extends ElementType = "div"> = PolymorphicProps<
   Element,
-  LayoutChildren & { border?: BoxBorder; padding?: Space; paddingExpanded?: Space; surface?: BoxSurface }
+  LayoutChildren & {
+    appearance?: BoxAppearance;
+    border?: BoxBorder;
+    padding?: Space;
+    paddingExpanded?: Space;
+    surface?: BoxSurface;
+  }
 >;
 
 export function Box<Element extends ElementType = "div">({
+  appearance = "plain",
   as,
   border = "none",
   className,
@@ -57,6 +67,7 @@ export function Box<Element extends ElementType = "div">({
     <Component
       {...props}
       className={classes(layoutParts.box, className)}
+      data-appearance={appearance}
       data-border={border}
       data-padding={padding}
       data-padding-expanded={paddingExpanded}
@@ -67,11 +78,19 @@ export function Box<Element extends ElementType = "div">({
 
 export type HeroProps<Element extends ElementType = "div"> = PolymorphicProps<
   Element,
-  LayoutChildren & { align?: HeroAlign; padding?: HeroPadding; paddingExpanded?: HeroPadding; surface?: HeroSurface }
+  LayoutChildren & {
+    align?: HeroAlign;
+    /** How the band is drawn: `plain`, `brutalist` or `frosted`. */
+    appearance?: (typeof heroAppearanceOption.values)[number];
+    padding?: HeroPadding;
+    paddingExpanded?: HeroPadding;
+    surface?: HeroSurface;
+  }
 >;
 
 export function Hero<Element extends ElementType = "div">({
   align = heroAlignOption.default,
+  appearance = heroAppearanceOption.default,
   as,
   className,
   padding = heroPaddingOption.default,
@@ -85,6 +104,7 @@ export function Hero<Element extends ElementType = "div">({
       {...props}
       className={classes(heroParts.hero, className)}
       data-align={align}
+      data-appearance={appearance}
       data-padding={padding}
       data-padding-expanded={paddingExpanded}
       data-surface={surface}
@@ -100,12 +120,20 @@ export function Hero<Element extends ElementType = "div">({
  */
 export type FooterProps<Element extends ElementType = "footer"> = PolymorphicProps<
   Element,
-  LayoutChildren & { divider?: boolean; padding?: FooterPadding; paddingExpanded?: FooterPadding; surface?: FooterSurface }
+  LayoutChildren & {
+    /** How the band is drawn: `plain`, `brutalist` or `frosted`. */
+    appearance?: (typeof footerAppearanceOption.values)[number];
+    divider?: boolean;
+    padding?: FooterPadding;
+    paddingExpanded?: FooterPadding;
+    surface?: FooterSurface;
+  }
 >;
 
 export function Footer<Element extends ElementType = "footer">({
   as,
   className,
+  appearance = footerAppearanceOption.default,
   divider = dividerOption.default,
   padding = footerPaddingOption.default,
   paddingExpanded,
@@ -117,6 +145,7 @@ export function Footer<Element extends ElementType = "footer">({
     <Component
       {...props}
       className={classes(footerParts.footer, className)}
+      data-appearance={appearance}
       data-divider={divider ? "" : "false"}
       data-padding={padding}
       data-padding-expanded={paddingExpanded}

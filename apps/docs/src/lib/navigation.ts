@@ -786,6 +786,21 @@ const componentItems = [
       "rail derecho",
     ],
   },
+  {
+    href: "/components/user-select",
+    label: "UserSelect",
+    trailing: "Beta",
+    aliases: [
+      "selector de usuarios",
+      "seleccionar personas",
+      "assignees",
+      "reviewers",
+      "collaborators",
+      "people picker",
+      "person select",
+      "multi-select de personas",
+    ],
+  },
   { href: "/vaul", label: "Vaul", aliases: ["drawer pattern", "sheet"] },
   { href: "/components/wrapper", label: "Wrapper", aliases: ["container", "contenedor", "envoltorio"] },
   {
@@ -995,6 +1010,7 @@ const allComponentNavigation = [
       "/components/switch",
       "/components/tags-input",
       "/components/time-field",
+      "/components/user-select",
     ),
   },
   {
@@ -1266,6 +1282,22 @@ export const documentationNavigation = [
               "profundidad",
               "material elevation",
               "z-depth",
+            ],
+          },
+          {
+            href: "/appearance",
+            label: "Apariencia",
+            aliases: [
+              "appearance",
+              "apariencias",
+              "tactile",
+              "brutalist",
+              "brutalismo",
+              "frosted",
+              "glassmorphism",
+              "plain",
+              "neobrutalism",
+              "estilo físico",
             ],
           },
           {

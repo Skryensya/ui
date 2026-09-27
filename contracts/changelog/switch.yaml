@@ -3,8 +3,23 @@
 # `surface` is the shape of the contract the last time somebody reviewed it. If the compiler says it
 # does not match, something a consumer depends on has moved: write the entry and paste in the new
 # hash.
-surface: "ba7899acb476c7e4"
+surface: "1fcefb32ea77badd"
 entries:
+  - date: 2026-09-26
+    kind: feature
+    target: appearance
+    es:
+      title: Switch suma appearance plain, tactile, brutalist y frosted
+      body: >-
+        En la etiqueta, que es lo que se pinta: <code>tactile</code> un pulgar elevado en un pozo que se hunde
+        al presionar, <code>brutalist</code> bordes negros y un pulgar con sombra dura, <code>frosted</code> un
+        riel translúcido, opaco donde el material no es fiable.
+    en:
+      title: Switch adds plain, tactile, brutalist and frosted appearances
+      body: >-
+        On the label, the element that paints: <code>tactile</code> a raised thumb in a well that sinks when
+        pressed, <code>brutalist</code> black edges and a hard-offset thumb, <code>frosted</code> a see-through
+        track, opaque wherever the material cannot be trusted.
   - date: 2026-09-17
     kind: feature
     target: Switch

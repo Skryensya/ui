@@ -30,6 +30,8 @@ export const toolbarContract = {
     "--sk-toolbar-bg",
     "--sk-toolbar-border-color",
     "--sk-toolbar-border-width",
+    "--sk-toolbar-brutalist-offset",
+    "--sk-toolbar-depth",
     "--sk-toolbar-gap",
     "--sk-toolbar-padding",
     "--sk-toolbar-radius",
@@ -43,6 +45,17 @@ export const toolbarContract = {
       default: "horizontal",
       attr: "data-orientation",
       alsoAttr: "aria-orientation",
+    },
+    /*
+     * HOW THE BAR'S FRAME IS DRAWN, Button's axis: `tactile` a console slab on a ledge,
+     * `brutalist` a black edge and hard offset, `frosted` a see-through bar (opaque wherever the
+     * material cannot be trusted). The Buttons inside set their own.
+     */
+    appearance: {
+      type: "enum",
+      values: ["plain", "tactile", "brutalist", "frosted"],
+      default: "plain",
+      attr: "data-appearance",
     },
     /** Names the bar. A page with two toolbars needs each told apart. */
     label: { type: "string", attr: "aria-label" },
@@ -64,7 +77,7 @@ export const toolbarContract = {
     Toolbar: {
       intent: ["bar-of-controls", "editor-toolbar", "grouped-actions"],
       host: { element: "div" },
-      options: ["orientation", "label", "loopFocus"],
+      options: ["orientation", "label", "loopFocus", "appearance"],
       requires: ["label"],
       /** Host id / a11y; label stays the option. */
       forward: ["id", "aria-*"],

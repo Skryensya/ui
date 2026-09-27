@@ -2006,12 +2006,13 @@ describe("folder: measured tab silhouette", () => {
     ).toBe(true);
   });
 
-  it("publishes mount on Folder/FolderLink and runtime clip/tail outputHooks", () => {
+  it("publishes mount on Folder/FolderLink and its runtime clip, fan clip, mask and tail outputHooks", () => {
     const contract = getContract("folder")!;
     expect(contract.signatures.Folder.mount).toBe("data-sk-folder");
     expect(contract.signatures.FolderLink.mount).toBe("data-sk-folder");
-    expect(contract.outputHooks).toEqual(["--sk-folder-clip", "--sk-folder-tail"]);
-    expect(contract.hooks).toEqual(expect.arrayContaining(["--sk-folder-clip", "--sk-folder-tail"]));
+    const outputs = ["--sk-folder-clip", "--sk-folder-fan-clip", "--sk-folder-mask", "--sk-folder-tail"];
+    expect(contract.outputHooks).toEqual(outputs);
+    expect(contract.hooks).toEqual(expect.arrayContaining(outputs));
     expect(emitMarkup(folder({ options: { active: true } }))).toContain("data-active");
   });
 
@@ -3288,10 +3289,10 @@ describe("navbar: header shell for brand, guests, and actions", () => {
     expect(markup).toContain("Skryensya");
   });
 
-  it("publishes its own 13 hooks with no foreign hookSheets, and pulls nav-list via guests", () => {
+  it("publishes its own 14 hooks with no foreign hookSheets, and pulls nav-list via guests", () => {
     const contract = getContract("navbar")!;
     expect(contract.hookSheets ?? []).toEqual([]);
-    expect(contract.hooks).toHaveLength(13);
+    expect(contract.hooks).toHaveLength(14);
     expect(contract.signatures.Navbar.slots.children.of).toEqual([
       "NavbarBrand",
       "NavbarActions",
@@ -3387,7 +3388,7 @@ describe("pagination: computed page window with pageChange", () => {
   it("publishes pageChange and its own hooks with no foreign hookSheets", () => {
     const contract = getContract("pagination")!;
     expect(contract.events).toEqual({ pageChange: "sk:paginationpagechange" });
-    expect(contract.hooks).toHaveLength(24);
+    expect(contract.hooks).toHaveLength(25);
     expect(contract.hookSheets ?? []).toEqual([]);
     const { sheets, unplaced } = sheetsForTree(pager());
     expect(sheets).toEqual(["@skryensya/core/components/pagination.css"]);
@@ -3869,10 +3870,10 @@ describe("segmented: small exclusive choice with a sliding thumb", () => {
     expect(markup).toContain("sk-interactive");
   });
 
-  it("publishes valueChange and fourteen own hooks with no foreign hookSheets", () => {
+  it("publishes valueChange and sixteen own hooks with no foreign hookSheets", () => {
     const contract = getContract("segmented")!;
     expect(contract.events).toEqual({ valueChange: "sk:segmentedvaluechange" });
-    expect(contract.hooks).toHaveLength(14);
+    expect(contract.hooks).toHaveLength(16);
     expect(contract.hooks?.every((hook) => hook.startsWith("--sk-segmented-"))).toBe(true);
     expect(contract.hookSheets ?? []).toEqual([]);
     expect(contract.signatures.Segmented.mount).toBe("data-sk-segmented");

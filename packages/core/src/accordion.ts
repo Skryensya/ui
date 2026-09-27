@@ -22,6 +22,7 @@ export type AccordionOptions = {
   defaultValue?: AccordionValue;
   collapsible?: boolean;
   disabled?: boolean;
+  appearance?: AccordionAppearance;
   onValueChange?: (details: AccordionValueChangeDetails) => void;
 };
 
@@ -123,6 +124,14 @@ export const accordionContract = {
   hooks: [
     "--sk-accordion-bg",
     "--sk-accordion-border-color",
+    "--sk-accordion-brutalist-edge",
+    "--sk-accordion-brutalist-offset-block",
+    "--sk-accordion-brutalist-offset-inline",
+    "--sk-accordion-brutalist-shadow",
+    "--sk-accordion-depth",
+    "--sk-accordion-frost-blur",
+    "--sk-accordion-frost-opacity",
+    "--sk-accordion-frost-saturation",
     "--sk-accordion-divider-color",
     "--sk-accordion-open-bg",
     "--sk-accordion-radius",
@@ -140,6 +149,14 @@ export const accordionContract = {
     "--sk-space-3",
     "--sk-space-4",
     "--sk-tile-border-color",
+    "--sk-tile-brutalist-edge",
+    "--sk-tile-brutalist-offset-block",
+    "--sk-tile-brutalist-offset-inline",
+    "--sk-tile-brutalist-shadow",
+    "--sk-tile-depth",
+    "--sk-tile-frost-blur",
+    "--sk-tile-frost-opacity",
+    "--sk-tile-frost-saturation",
     "--sk-tile-padding",
     "--sk-tile-radius",
     "--sk-tile-shadow",
@@ -147,8 +164,16 @@ export const accordionContract = {
     /* The native half's own surface (details.css). Same bag, because one contract now ships both. */
     "--sk-details-bg",
     "--sk-details-border-color",
+    "--sk-details-brutalist-edge",
+    "--sk-details-brutalist-offset-block",
+    "--sk-details-brutalist-offset-inline",
+    "--sk-details-brutalist-shadow",
     "--sk-details-content-bg",
     "--sk-details-content-fg",
+    "--sk-details-depth",
+    "--sk-details-frost-blur",
+    "--sk-details-frost-opacity",
+    "--sk-details-frost-saturation",
     "--sk-details-fg",
     "--sk-details-gap",
     "--sk-details-heading-gap",
@@ -170,6 +195,19 @@ export const accordionContract = {
   options: {
     /** How many sections may be open. `single` is the default because it is what keeps a page short. */
     type: { type: "enum", values: ["single", "multiple"], default: "single", attr: "data-type" },
+    /*
+     * Button's and Tile's axis, same values, same meaning. It lives on the ROOT, not on each item,
+     * because the items are flattened into one frame (accordion.css) and the frame is the surface
+     * that gets expressed. The platform half follows the same rule: `DetailsGroup` carries it for
+     * its frame, a lone `Details` for itself, and a `Details` inside a group defers to the group. Like an ExpandableTile it never travels: each trigger is the control,
+     * and a whole frame sinking under one of them would be a motion that belongs to no one.
+     */
+    appearance: {
+      type: "enum",
+      values: ["plain", "tactile", "brutalist", "frosted"],
+      default: "plain",
+      attr: "data-appearance",
+    },
     /**
      * Whether the open section may be closed again. Only meaningful when `type` is `single`
      * (with `multiple`, every open section can close independently).
@@ -220,7 +258,7 @@ export const accordionContract = {
     Accordion: {
       intent: ["accordion", "faq", "collapsible-sections", "coordinated-expandables"],
       host: { element: "div" },
-      options: ["type", "collapsible", "disabled", "defaultValue"],
+      options: ["type", "collapsible", "disabled", "defaultValue", "appearance"],
       /*
        * With `multiple`, every open section can close on its own; `collapsible` only gates `single`.
        * Both bindings already ignore the combo (`canCollapse = type === "multiple" || collapsible`).
@@ -350,7 +388,7 @@ export const accordionContract = {
     DetailsGroup: {
       intent: ["faq-without-javascript", "exclusive-disclosures", "no-runtime-accordion"],
       host: { element: "section" },
-      options: [],
+      options: ["appearance"],
       slots: { children: { accepts: "signature", of: ["Details"], required: true } },
       template: { element: "section", part: "nativeGroup", host: true, slot: "children" },
       react: { from: "@skryensya/react/details", name: "DetailsGroup" },
@@ -364,7 +402,7 @@ export const accordionContract = {
        * exclusivity, docs aside). The group is optional coordination via shared `name`, not a
        * required ancestor, same split `Accordion` vs a single `ExpandableTile`.
        */
-      options: ["name", "open"],
+      options: ["name", "open", "appearance"],
       slots: {
         children: {
           accepts: "signature",
@@ -447,3 +485,4 @@ export const accordionContract = {
 
 /** Derived, never restated: adding a value to the contract's `type` enum is the only edit. */
 export type AccordionType = OptionValue<typeof accordionContract.options.type>;
+export type AccordionAppearance = OptionValue<typeof accordionContract.options.appearance>;

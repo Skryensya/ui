@@ -115,6 +115,18 @@ export const checkboxContract = {
   ],
 
   options: {
+    /*
+     * HOW THE BOX IS DRAWN, Button's axis: `tactile` a raised box that sinks when pressed,
+     * `brutalist` a black edge and hard offset, `frosted` a see-through box (opaque wherever the
+     * material cannot be trusted). On the LABEL for a Checkbox and on the root for a group, the
+     * elements that paint: the host of a Checkbox is its input.
+     */
+    appearance: {
+      type: "enum",
+      values: ["plain", "tactile", "brutalist", "frosted"],
+      default: "plain",
+      attr: "data-appearance",
+    },
     name: { type: "string", attr: "name" },
     value: { type: "string", attr: "value" },
     /*
@@ -150,7 +162,7 @@ export const checkboxContract = {
     Checkbox: {
       intent: ["boolean-choice", "opt-in", "accept-terms", "toggle-one-setting"],
       host: { element: "input" },
-      options: ["name", "value", "defaultChecked", "defaultIndeterminate", "disabled", "required"],
+      options: ["name", "value", "defaultChecked", "defaultIndeterminate", "disabled", "required", "appearance"],
       /** Native form association beyond owned options (`name`/`value`/`disabled`/`required`). */
       forward: ["id", "form", "aria-*"],
       slots: {
@@ -160,6 +172,7 @@ export const checkboxContract = {
       template: {
         element: "label",
         part: "checkbox",
+        options: ["appearance"],
         children: [
           {
             element: "input",
@@ -218,7 +231,7 @@ export const checkboxContract = {
     CheckboxGroup: {
       intent: ["select-all", "check-many-at-once", "partial-selection", "parent-checkbox"],
       host: { element: "div" },
-      options: ["name", "orientation", "disabled", "required"],
+      options: ["name", "orientation", "disabled", "required", "appearance"],
       requires: ["name"],
       mount: "data-sk-checkbox-group",
       /** Host id / form / a11y; name stays the option. */
@@ -387,6 +400,18 @@ export const switchContract = {
      */
     defaultChecked: { type: "boolean", default: false, attr: "checked", trueValue: "", prop: "defaultChecked" },
     disabled: { type: "boolean", default: false, attr: "disabled", trueValue: "" },
+    /*
+     * HOW THE SWITCH IS DRAWN, Button's axis: `tactile` a raised thumb in a sunken well that sinks
+     * when pressed, `brutalist` black edges and a hard-offset thumb, `frosted` a see-through track
+     * (opaque wherever the material cannot be trusted). On the LABEL, the element that paints: the
+     * host is the input.
+     */
+    appearance: {
+      type: "enum",
+      values: ["plain", "tactile", "brutalist", "frosted"],
+      default: "plain",
+      attr: "data-appearance",
+    },
   },
 
   a11y: [
@@ -402,13 +427,14 @@ export const switchContract = {
     Switch: {
       intent: ["on-off", "immediate-setting", "enable-feature"],
       host: { element: "input" },
-      options: ["name", "value", "defaultChecked", "disabled"],
+      options: ["name", "value", "defaultChecked", "disabled", "appearance"],
       /** Native form association beyond owned options (`name`/`value`/`disabled`). */
       forward: ["id", "form", "aria-*"],
       slots: { children: { accepts: "node" } },
       template: {
         element: "label",
         part: "switch",
+        options: ["appearance"],
         children: [
           { element: "input", part: "switchInput", host: true, attrs: { type: "checkbox", role: "switch" } },
           {
@@ -472,6 +498,17 @@ export const radioGroupContract = {
   ],
 
   options: {
+    /*
+     * HOW THE RING IS DRAWN, Button's axis: `tactile` a raised disc that sinks when pressed,
+     * `brutalist` a black edge and hard offset, `frosted` a see-through disc (opaque wherever the
+     * material cannot be trusted). On the LABEL for a Radio and on the root for a group.
+     */
+    appearance: {
+      type: "enum",
+      values: ["plain", "tactile", "brutalist", "frosted"],
+      default: "plain",
+      attr: "data-appearance",
+    },
     /** Shared by every input, and what makes the choice exclusive. The group's, never an option's. */
     name: { type: "string", attr: "name" },
     /**
@@ -536,7 +573,7 @@ export const radioGroupContract = {
     Radio: {
       intent: ["one-radio", "matrix-cell", "radio-in-a-table", "grid-of-choices"],
       host: { element: "input" },
-      options: ["name", "value", "radioDefaultChecked", "disabled", "required"],
+      options: ["name", "value", "radioDefaultChecked", "disabled", "required", "appearance"],
       requires: ["name"],
       /** Native form association and the naming a matrix needs, beyond the owned options. */
       forward: ["id", "form", "aria-*"],
@@ -547,6 +584,7 @@ export const radioGroupContract = {
       template: {
         element: "label",
         part: "radio",
+        options: ["appearance"],
         children: [
           { element: "input", part: "radioInput", host: true, attrs: { type: "radio" } },
           {
@@ -564,7 +602,7 @@ export const radioGroupContract = {
     RadioGroup: {
       intent: ["one-of-many", "exclusive-choice", "pick-a-single-option"],
       host: { element: "div" },
-      options: ["name", "value", "orientation", "spread", "disabled", "required", "label"],
+      options: ["name", "value", "orientation", "spread", "disabled", "required", "label", "appearance"],
       requires: ["name"],
       /** Host id / a11y names beyond owned `label` / `name` options. */
       forward: ["id", "aria-*"],

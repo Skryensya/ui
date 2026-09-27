@@ -131,6 +131,7 @@ const MAP: Record<string, string> = {
   "/components/tour": "Signpost",
   "/components/tree-view": "ListTree",
   "/components/treegrid": "FolderTree",
+  "/components/user-select": "Users",
   "/components/window": "AppWindowMac",
   "/components/wrapper": "Frame",
   "/hotkey": "Command",

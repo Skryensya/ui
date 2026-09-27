@@ -12,6 +12,8 @@ export const avatarMessages = {
     "demo.avatar.personThree": "Persona 3",
 
     "avatar.description": "Avatar: ImageFrame o iniciales, AvatarGroup con colapso +N y componente React.",
+    "avatar.tactileUnavailable": "Solo para controles que se presionan",
+    "avatar.frostedUnavailable": "Solo para superficies, no para retratos",
     "avatar.betaBadge": "Beta",
     "avatar.lede":
       'Avatar es el token visual de una persona o entidad: una foto recortada con <strong>ImageFrame</strong> (1/1, cover, pill) o, sin imagen, las dos primeras letras del nombre. <strong>AvatarGroup</strong> apila un conjunto y colapsa el excedente en un contador «+N».',
@@ -66,6 +68,8 @@ export const avatarMessages = {
     "demo.avatar.personThree": "Person 3",
 
     "avatar.description": "Avatar: ImageFrame or initials, AvatarGroup with +N collapse, and a React component.",
+    "avatar.tactileUnavailable": "Only for controls you press",
+    "avatar.frostedUnavailable": "Only for surfaces, not portraits",
     "avatar.betaBadge": "Beta",
     "avatar.lede":
       'Avatar is the visual token for a person or entity: a cropped photo with <strong>ImageFrame</strong> (1/1, cover, pill), or, with no image, the first two letters of the name. <strong>AvatarGroup</strong> stacks a set and collapses the overflow into a "+N" counter.',

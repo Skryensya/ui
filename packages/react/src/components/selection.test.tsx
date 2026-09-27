@@ -9,6 +9,21 @@ const permissions = [
 ];
 
 describe("selection controls", () => {
+  it("writes Checkbox's appearance on its label and CheckboxGroup's on its root", () => {
+    const ui = render(
+      <>
+        <Checkbox>Plain</Checkbox>
+        <Checkbox appearance="tactile">Tactile</Checkbox>
+        <CheckboxGroup appearance="brutalist" items={[{ value: "a", label: "A" }]} label="Group" name="g" />
+      </>,
+    );
+    expect(ui.getByRole("checkbox", { name: "Plain" }).closest("label")?.getAttribute("data-appearance")).toBe("plain");
+    const tactile = ui.getByRole("checkbox", { name: "Tactile" });
+    expect(tactile.hasAttribute("data-appearance")).toBe(false);
+    expect(tactile.closest("label")?.getAttribute("data-appearance")).toBe("tactile");
+    expect(ui.getByRole("group", { name: "Group" }).getAttribute("data-appearance")).toBe("brutalist");
+  });
+
   it("keeps Checkbox native while exposing indeterminate state", () => {
     const onCheckedChange = vi.fn();
     const ui = render(<Checkbox defaultChecked="indeterminate" onCheckedChange={onCheckedChange}>Archive</Checkbox>);
@@ -156,6 +171,19 @@ describe("selection controls", () => {
     expect((ui.getByRole("radio", { name: "Pro" }) as HTMLInputElement).disabled).toBe(true);
   });
 
+  it("writes the Switch's appearance on its label, the element that paints", () => {
+    const ui = render(
+      <>
+        <Switch>Plain</Switch>
+        <Switch appearance="brutalist">Brutalist</Switch>
+      </>,
+    );
+    expect(ui.getByRole("switch", { name: "Plain" }).closest("label")?.getAttribute("data-appearance")).toBe("plain");
+    const brutalist = ui.getByRole("switch", { name: "Brutalist" });
+    expect(brutalist.hasAttribute("data-appearance")).toBe(false);
+    expect(brutalist.closest("label")?.getAttribute("data-appearance")).toBe("brutalist");
+  });
+
   it("renders Switch as a native checkbox with switch semantics", () => {
     const onCheckedChange = vi.fn();
     const ui = render(<Switch defaultChecked onCheckedChange={onCheckedChange}>Deploy automatically</Switch>);
@@ -168,6 +196,19 @@ describe("selection controls", () => {
 });
 
 describe("Radio (one on its own)", () => {
+  it("writes Radio's appearance on its label and RadioGroup's on its root", () => {
+    const ui = render(
+      <>
+        <Radio name="solo" appearance="brutalist">Solo</Radio>
+        <RadioGroup appearance="frosted" items={[{ value: "a", label: "A" }]} label="Group" name="g" />
+      </>,
+    );
+    const solo = ui.getByRole("radio", { name: "Solo" });
+    expect(solo.hasAttribute("data-appearance")).toBe(false);
+    expect(solo.closest("label")?.getAttribute("data-appearance")).toBe("brutalist");
+    expect(ui.getByRole("radiogroup", { name: "Group" }).getAttribute("data-appearance")).toBe("frosted");
+  });
+
   it("is a radio whose group is its name, and takes a label only when given one", () => {
     const ui = render(
       <table>

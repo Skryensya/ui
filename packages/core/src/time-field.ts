@@ -339,6 +339,17 @@ export const timeFieldContract = {
   ],
 
   options: {
+    /*
+     * HOW THE FIELD IS DRAWN, Input's axis: brutalist a black edge and hard offset in place of the
+     * soft well, frosted a see-through field (opaque wherever the material cannot be trusted).
+     * Every state still outranks it. Absent means plain, as for Input. No tactile: a field is typed
+     * into, not pressed.
+     */
+    appearance: {
+      type: "enum",
+      values: ["plain", "brutalist", "frosted"],
+      attr: "data-appearance",
+    },
     name: { type: "string", attr: "data-name", machineInput: true },
     /** Decides the hour cycle, the segment order and the separators. Not decoration. */
     locale: { type: "string", default: "en", attr: "data-locale", machineInput: true },
@@ -413,6 +424,7 @@ export const timeFieldContract = {
         "clearLabel",
         "optionsStep",
         "optionsLabel",
+        "appearance",
       ],
       /** Host id / a11y; control state stays options. */
       forward: ["id", "aria-*"],

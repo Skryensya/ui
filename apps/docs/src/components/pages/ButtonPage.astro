@@ -9,7 +9,18 @@ import CodeBlock from "../CodeBlock.astro";
 import ComponentPreview from "../ComponentPreview.astro";
 import {
   buttonAnatomyTree,
+  buttonAppearanceTree,
   buttonAsLinkTree,
+  buttonBrutalistMatrixTree,
+  buttonBrutalistRadiusTree,
+  buttonBrutalistShapesTree,
+  buttonBrutalistStatesCss,
+  buttonBrutalistStatesTree,
+  buttonFrostedBackdropsTree,
+  buttonFrostedMatrixTree,
+  buttonFrostedRadiusTree,
+  buttonFrostedShapesTree,
+  buttonFrostedStatesTree,
   buttonDefaultTree,
   buttonDestructivePairTree,
   buttonIconOnlyTree,
@@ -47,7 +58,7 @@ button.addEventListener("click", runDeployment);`;
   title="Button"
   description={t("button.description")}
   contractId="button"
-  appearanceTargetSelector="[data-sk-button]"
+  appearanceTargetSelector="[data-sk-button], .sk-tile--interactive[data-appearance]"
   testFiles={["packages/react/src/components/button.test.tsx", "packages/vanilla/src/components/button.test.ts"]}}
 >
   <Fragment slot="appearance">
@@ -92,6 +103,43 @@ button.addEventListener("click", runDeployment);`;
     <h3>{t("button.linkTitle")}</h3>
     <p set:html={t("button.linkBody")} />
     <ComponentPreview tree={buttonAsLinkTree(t, LINK_HREF)} label={t("button.linkLabel")} />
+
+    <h3>{t("button.appearanceTitle")}</h3>
+    <p set:html={t("button.appearanceBody")} />
+    {/* Comparisons of appearances: the page-wide appearance switch must not repaint them. */}
+    <div data-docs-appearance-fixed>
+      <ComponentPreview tree={buttonAppearanceTree(t)} label={t("button.appearanceLabel")} />
+
+      <h4>{t("button.brutalistMatrixTitle")}</h4>
+      <p set:html={t("button.brutalistMatrixBody")} />
+      <ComponentPreview tree={buttonBrutalistMatrixTree(t)} label={t("button.brutalistMatrixLabel")} />
+
+      <h4>{t("button.brutalistRadiusTitle")}</h4>
+      <p set:html={t("button.brutalistRadiusBody")} />
+      <ComponentPreview tree={buttonBrutalistRadiusTree(t)} label={t("button.brutalistRadiusLabel")} />
+
+      <h4>{t("button.brutalistStatesTitle")}</h4>
+      <p set:html={t("button.brutalistStatesBody")} />
+      <ComponentPreview tree={buttonBrutalistStatesTree(t)} css={buttonBrutalistStatesCss} label={t("button.brutalistStatesLabel")} />
+
+      <h4>{t("button.brutalistShapesTitle")}</h4>
+      <p set:html={t("button.brutalistShapesBody")} />
+      <ComponentPreview tree={buttonBrutalistShapesTree(t, LINK_HREF)} label={t("button.brutalistShapesLabel")} />
+
+      <h4>{t("button.frostedTitle")}</h4>
+      <p set:html={t("button.frostedBody")} />
+      <ComponentPreview tree={buttonFrostedBackdropsTree(t)} label={t("button.frostedBackdropsLabel")} />
+
+      <h4>{t("button.frostedMatrixTitle")}</h4>
+      <p set:html={t("button.frostedMatrixBody")} />
+      <ComponentPreview tree={buttonFrostedMatrixTree(t)} label={t("button.frostedMatrixLabel")} />
+
+      <h4>{t("button.frostedDetailsTitle")}</h4>
+      <p set:html={t("button.frostedDetailsBody")} />
+      <ComponentPreview tree={buttonFrostedRadiusTree(t)} label={t("button.frostedRadiusLabel")} />
+      <ComponentPreview tree={buttonFrostedStatesTree(t)} label={t("button.frostedStatesLabel")} />
+      <ComponentPreview tree={buttonFrostedShapesTree(t, LINK_HREF)} label={t("button.frostedShapesLabel")} />
+    </div>
 
     <h3>{t("button.tileTitle")}</h3>
     <p set:html={t("button.tileBody")} />

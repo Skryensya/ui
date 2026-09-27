@@ -35,6 +35,19 @@ describe("CopyButton", () => {
     expect(events).toEqual(["copied"]);
   });
 
+  it("writes Button's appearance on the trigger, plain by default, in both signatures", () => {
+    const ui = render(
+      <>
+        <CopyButton label="Plain" value="a" />
+        <CopyButton appearance="brutalist" label="Brutalist" value="b" />
+        <Clipboard appearance="frosted" fieldLabel="Link" label="Field" value="c" />
+      </>,
+    );
+    expect(ui.getByRole("button", { name: "Plain" }).getAttribute("data-appearance")).toBe("plain");
+    expect(ui.getByRole("button", { name: "Brutalist" }).getAttribute("data-appearance")).toBe("brutalist");
+    expect(ui.getByRole("button", { name: "Field" }).getAttribute("data-appearance")).toBe("frosted");
+  });
+
   it("reads a target's text at the moment of the click", async () => {
     const ui = render(
       <>

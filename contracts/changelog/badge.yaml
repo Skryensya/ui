@@ -3,8 +3,22 @@
 # `surface` is the shape of the contract the last time somebody reviewed it. If the compiler says it
 # does not match, something a consumer depends on has moved: write the entry and paste in the new
 # hash.
-surface: "7292c19dfaecedeb"
+surface: "d9fde7683e0b24d0"
 entries:
+  - date: 2026-09-26
+    kind: feature
+    target: appearance
+    es:
+      title: Badge suma appearance plain y brutalist
+      body: >-
+        <code>brutalist</code> dibuja la marca con borde negro y una sombra dura pequeña. Sin
+        <code>tactile</code> (una insignia no se presiona) ni <code>frosted</code> (el vidrio solo le costaría
+        contraste al texto).
+    en:
+      title: Badge adds plain and brutalist appearances
+      body: >-
+        <code>brutalist</code> draws the mark with a black edge and a small hard offset. No <code>tactile</code>
+        (a badge is never pressed) and no <code>frosted</code> (glass would only cost the label its contrast).
   - date: 2026-09-17
     kind: feature
     target: BadgeHolder

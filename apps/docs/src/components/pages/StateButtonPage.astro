@@ -3,6 +3,7 @@ import "@skryensya/core/components/state-button.css";
 import "@skryensya/core/components/button.css";
 import "@skryensya/core/components/annotation.css";
 import ComponentPageShell from "./ComponentPageShell.astro";
+import AppearanceMenu from "../AppearanceMenu.astro";
 import CodeBlock from "../CodeBlock.astro";
 import ComponentPreview from "../ComponentPreview.astro";
 import {
@@ -24,8 +25,13 @@ const styles = `@import "@skryensya/core/components/state-button.css";`;
   title="StateButton"
   description={t("stateButtonPage.description")}
   contractId="state-button"
+  appearanceTargetSelector=".sk-icon-toggle"
   testFiles={["packages/react/src/components/state-button.test.tsx"]}
 >
+  <Fragment slot="appearance">
+    <AppearanceMenu label={t("prefs.appearance")} />
+  </Fragment>
+
   <Fragment slot="anatomy">
     <p set:html={t("stateButtonPage.anatomyDiagramBody")} />
     <ComponentPreview

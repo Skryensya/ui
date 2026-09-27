@@ -4,6 +4,7 @@ import "@skryensya/core/components/split-button.css";
 import "@skryensya/core/components/annotation.css";
 import "@skryensya/core/components/menu.css";
 import ComponentPageShell from "./ComponentPageShell.astro";
+import AppearanceMenu from "../AppearanceMenu.astro";
 import CodeBlock from "../CodeBlock.astro";
 import ComponentPreview from "../ComponentPreview.astro";
 import {
@@ -38,12 +39,17 @@ initComponents();`;
   title="SplitButton"
   description={t("splitButtonPage.description")}
   contractId="split-button"
+  appearanceTargetSelector=".sk-split-button .sk-button"
   styleGroups={[
     { file: "components/split-button.css", probe: "sk-split-button", title: "SplitButton" },
     { file: "patterns/anchored.css", probe: "sk-anchored", title: "Heredados de Anclaje" },
   ]}
   testFiles={["packages/react/src/components/split-button.test.tsx"]}}
 >
+  <Fragment slot="appearance">
+    <AppearanceMenu label={t("prefs.appearance")} />
+  </Fragment>
+
   <Fragment slot="anatomy">
     <p set:html={t("splitButtonPage.anatomyBody")} />
     <ComponentPreview

@@ -4,7 +4,7 @@ import type { OptionValue } from "@skryensya/core/contract";
 import { useEffect, useRef, type FocusEvent, type HTMLAttributes, type KeyboardEvent, type ReactNode } from "react";
 
 /* Derived, never restated: the default lives in the contract. */
-const { loopFocus: loopFocusOption, orientation: orientationOption } = toolbarContract.options;
+const { appearance: appearanceOption, loopFocus: loopFocusOption, orientation: orientationOption } = toolbarContract.options;
 
 const cx = (base: string, className: string | undefined) => (className ? `${base} ${className}` : base);
 
@@ -18,6 +18,8 @@ export type ToolbarProps = Omit<HTMLAttributes<HTMLDivElement>, "role"> & {
   children: ReactNode;
   // Derived: Core owns the axis, and a copy here would go stale the day a third one appears.
   orientation?: OptionValue<typeof toolbarContract.options.orientation>;
+  /** How the bar's frame is drawn: `plain`, `tactile`, `brutalist` or `frosted`. */
+  appearance?: OptionValue<typeof toolbarContract.options.appearance>;
   loopFocus?: boolean;
 };
 
@@ -27,6 +29,7 @@ export function Toolbar({
   label,
   loopFocus = loopFocusOption.default,
   orientation = orientationOption.default,
+  appearance = appearanceOption.default,
   ...rest
 }: ToolbarProps) {
   const ref = useRef<HTMLDivElement>(null);
@@ -78,6 +81,7 @@ export function Toolbar({
       aria-label={label}
       aria-orientation={orientation}
       className={cx(toolbarParts.root, className)}
+      data-appearance={appearance}
       data-orientation={orientation}
       data-sk-toolbar=""
       onFocus={onFocus}

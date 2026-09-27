@@ -7,6 +7,7 @@ import "@skryensya/core/components/sidebar.css";
 /* Structure diagram: Annotated specimen; a preview frame only copies styles THIS page loaded. */
 import "@skryensya/core/components/annotation.css";
 import ComponentPageShell from "./ComponentPageShell.astro";
+import AppearanceMenu from "../AppearanceMenu.astro";
 import CodeBlock from "../CodeBlock.astro";
 import ComponentPreview from "../ComponentPreview.astro";
 import {
@@ -42,8 +43,13 @@ await initComponents();`;
   title="Sidebar"
   description={t("sidebarPage.description")}
   contractId="sidebar"
+  appearanceTargetSelector=".sk-sidebar"
   testFiles={["packages/react/src/components/sidebar.test.tsx", "packages/vanilla/src/components/sidebar.test.ts"]}}
 >
+  <Fragment slot="appearance">
+    <AppearanceMenu label={t("prefs.appearance")} values={["plain", "brutalist", "frosted"]} unavailable={{ tactile: t("prefs.appearanceTactileUnavailable") }} />
+  </Fragment>
+
   <Fragment slot="anatomy">
     <p set:html={t("sidebarPage.anatomyBody")} />
     <ComponentPreview

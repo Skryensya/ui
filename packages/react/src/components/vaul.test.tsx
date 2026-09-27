@@ -8,6 +8,13 @@ import { Drawer, Vaul } from "./vaul.js";
  * the two bindings from disagreeing before a script runs. The behaviour half is further down.
  */
 describe("Vaul", () => {
+  it("serializes its appearance on the panel, plain by default", () => {
+    const plain = render(<Vaul label="Plain">Body</Vaul>);
+    expect(plain.container.querySelector("dialog")?.getAttribute("data-appearance")).toBe("plain");
+    const brutalist = render(<Drawer appearance="brutalist" label="Brutalist">Body</Drawer>);
+    expect(brutalist.container.querySelector("dialog")?.getAttribute("data-appearance")).toBe("brutalist");
+  });
+
   it("carries the enhancer's scope markers at rest", () => {
     const ui = render(
       <Vaul label="Filtros" open>

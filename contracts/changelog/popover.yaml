@@ -3,8 +3,36 @@
 # `surface` is the shape of the contract the last time somebody reviewed it. If the compiler says it
 # does not match, something a consumer depends on has moved: write the entry and paste in the new
 # hash.
-surface: "2da64c679c4f4216"
+surface: "d75c29f8f816fb0c"
 entries:
+  - date: 2026-09-26
+    kind: feature
+    target: appearance
+    es:
+      title: Popover suma appearance plain, brutalist y frosted
+      body: >-
+        En la raíz, para el panel: <code>brutalist</code> un borde negro y una sombra dura en lugar de la
+        elevación suave, <code>frosted</code> un panel translúcido, opaco donde el material no es fiable. El
+        disparador tiene la suya, <code>triggerAppearance</code>.
+    en:
+      title: Popover adds plain, brutalist and frosted appearances
+      body: >-
+        On the root, for the panel: <code>brutalist</code> a black edge and a hard offset in place of the soft
+        elevation, <code>frosted</code> a see-through panel, opaque wherever the material cannot be trusted. The
+        trigger has its own, <code>triggerAppearance</code>.
+  - date: 2026-09-26
+    kind: feature
+    target: triggerAppearance
+    es:
+      title: El disparador acepta la appearance de Button
+      body: >-
+        <code>triggerAppearance</code> lleva el eje <code>appearance</code> de Button al disparador, igual que
+        <code>triggerVariant</code>, y lo pinta la hoja de Button.
+    en:
+      title: The trigger takes Button's appearance
+      body: >-
+        <code>triggerAppearance</code> forwards Button's <code>appearance</code> axis to the trigger, like
+        <code>triggerVariant</code>, painted by Button's own sheet.
   - date: 2026-09-17
     kind: breaking
     es:

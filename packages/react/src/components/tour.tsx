@@ -28,6 +28,7 @@ export type { TourStartOptions, TourState } from "@skryensya/core/tour-controlle
 
 /* Derived, never restated: the defaults live in the contract. */
 const {
+  appearance: appearanceOption,
   progressLabel: progressOption,
   nextLabel: nextOption,
   finishLabel: finishOption,
@@ -64,6 +65,8 @@ export type TourProps = Omit<HTMLAttributes<HTMLDivElement>, "children" | "title
   TourCallbacks & {
     /** The tour's id: what its triggers name in `opens`, and what its memory is keyed by. */
     id: string;
+    /** How each step is drawn: `plain`, `brutalist` or `frosted`. */
+    appearance?: (typeof appearanceOption.values)[number];
     /** One element and one idea per step. A step whose target is not on the page is skipped. */
     steps: readonly TourStep[];
     /** The imperative handle. */
@@ -82,6 +85,7 @@ export type TourProps = Omit<HTMLAttributes<HTMLDivElement>, "children" | "title
   };
 
 export function Tour({
+  appearance = appearanceOption.default,
   id,
   steps,
   ref,
@@ -161,7 +165,7 @@ export function Tour({
   });
 
   return (
-    <div {...props} className={cx(tourParts.root, className)} id={id} ref={rootRef}>
+    <div {...props} className={cx(tourParts.root, className)} data-appearance={appearance} id={id} ref={rootRef}>
       <ol className={tourParts.steps} hidden>
         {steps.map((step, index) => (
           <li

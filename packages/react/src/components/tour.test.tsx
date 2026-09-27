@@ -68,6 +68,13 @@ beforeEach(() => {
 afterEach(() => vi.restoreAllMocks());
 
 describe("Tour (React)", () => {
+  it("serializes its appearance on the root, plain by default", () => {
+    const plain = render(<Tour id="plain-tour" steps={steps} />);
+    expect(plain.container.querySelector(`.${tourParts.root}`)?.getAttribute("data-appearance")).toBe("plain");
+    const brutalist = render(<Tour appearance="brutalist" id="brutalist-tour" steps={steps} />);
+    expect(brutalist.container.querySelector(`.${tourParts.root}`)?.getAttribute("data-appearance")).toBe("brutalist");
+  });
+
   it("renders the steps as the hidden list and starts nothing on mount", () => {
     render(<Page />);
     const items = document.querySelectorAll(`.${tourParts.step}`);

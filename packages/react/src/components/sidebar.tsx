@@ -21,7 +21,7 @@ import {
 import { useStoredPreference } from "./storage.js";
 
 /* Derived, never restated: the default lives in the contract. */
-const { defaultCollapsed: defaultCollapsedOption } = sidebarContract.options;
+const { appearance: appearanceOption, defaultCollapsed: defaultCollapsedOption } = sidebarContract.options;
 
 const cx = (base: string, className: string | undefined) => (className ? `${base} ${className}` : base);
 
@@ -61,6 +61,7 @@ export type SidebarProps = Omit<HTMLAttributes<HTMLElement>, "children"> &
  * visually quiet but keep naming the icons.
  */
 export function Sidebar({
+  appearance = appearanceOption.default,
   children,
   className,
   collapsed: collapsedProp,
@@ -114,6 +115,7 @@ export function Sidebar({
         {...props}
         aria-label={landmarkLabel}
         className={cx(sidebarParts.root, className)}
+        data-appearance={appearance}
         data-default-collapsed={defaultCollapsed ? "" : undefined}
         data-sk-sidebar=""
         data-state={collapsed ? "collapsed" : "expanded"}

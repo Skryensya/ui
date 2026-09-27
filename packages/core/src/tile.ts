@@ -6,6 +6,7 @@ export type TileElement = "div" | "article" | "section" | "li";
 export type TileCheckedState = boolean | "indeterminate";
 export type TileSurfaceOptions = {
   padding?: Space;
+  appearance?: TileAppearance;
 };
 
 
@@ -152,6 +153,14 @@ export const tileContract = {
     "--sk-space-3",
     "--sk-space-4",
     "--sk-tile-border-color",
+    "--sk-tile-brutalist-edge",
+    "--sk-tile-brutalist-offset-block",
+    "--sk-tile-brutalist-offset-inline",
+    "--sk-tile-brutalist-shadow",
+    "--sk-tile-depth",
+    "--sk-tile-frost-blur",
+    "--sk-tile-frost-opacity",
+    "--sk-tile-frost-saturation",
     "--sk-tile-padding",
     "--sk-tile-radius",
     "--sk-tile-shadow",
@@ -176,6 +185,19 @@ export const tileContract = {
   options: {
     /** Inner spacing, on the same scale Box uses. Absent means the stylesheet's own. */
     padding: { type: "enum", values: ["none", "xs", "sm", "md", "lg", "xl"], attr: "data-padding" },
+    /*
+     * HOW THE SURFACE IS PHYSICALLY EXPRESSED: Button's axis, same values, same meaning, so a page
+     * that sets one appearance sets it for both. Plain is the flat bordered card; `tactile` gives it
+     * a ledge it presses into; `brutalist` Button's black edge and hard offset; `frosted` Button's
+     * see-through material over whatever sits behind it. Nothing about what the
+     * tile does: that is still the signature. An expandable tile wears it and never travels.
+     */
+    appearance: {
+      type: "enum",
+      values: ["plain", "tactile", "brutalist", "frosted"],
+      default: "plain",
+      attr: "data-appearance",
+    },
     href: { type: "string", attr: "href" },
     /* The choice's identity in a form. Machine input: the enhancer reads them off the root, React
        passes props, and Zag never writes them back. */
@@ -194,7 +216,7 @@ export const tileContract = {
     TileLink: {
       intent: ["clickable-card", "navigation-tile", "linked-surface", "card-that-goes-somewhere"],
       host: { element: "a" },
-      options: ["href", "padding"],
+      options: ["href", "padding", "appearance"],
       requires: ["href"],
       /** Link host attrs beyond href (Button.navigation peer). */
       forward: ["id", "target", "rel", "download", "aria-*"],
@@ -213,7 +235,7 @@ export const tileContract = {
     TileButton: {
       intent: ["actionable-card", "card-that-does-something", "full-surface-action"],
       host: { element: "button" },
-      options: ["disabled", "padding"],
+      options: ["disabled", "padding", "appearance"],
       /** Form association and a11y names (Button.action peer); `disabled` stays an option. */
       forward: ["id", "name", "form", "formaction", "formmethod", "formenctype", "formnovalidate", "formtarget", "aria-*"],
       slots: { children: { accepts: "node", required: true } },
@@ -325,7 +347,7 @@ export const tileContract = {
     TileCheckbox: {
       intent: ["selectable-card", "multi-select-tile", "card-with-a-checkbox", "pick-several"],
       host: { element: "label" },
-      options: ["name", "value", "defaultChecked", "disabled", "required", "padding"],
+      options: ["name", "value", "defaultChecked", "disabled", "required", "padding", "appearance"],
       /** Host id / form / a11y; control name stays the `name` option (`data-name`). */
       forward: ["id", "form", "aria-*"],
       slots: { children: { accepts: "node", required: true } },
@@ -369,7 +391,7 @@ export const tileContract = {
     TileSwitch: {
       intent: ["toggle-card", "setting-tile", "card-with-a-switch", "turn-on-or-off"],
       host: { element: "label" },
-      options: ["name", "value", "defaultChecked", "disabled", "required", "padding"],
+      options: ["name", "value", "defaultChecked", "disabled", "required", "padding", "appearance"],
       /** Host id / form / a11y; control name stays the `name` option (`data-name`). */
       forward: ["id", "form", "aria-*"],
       slots: { children: { accepts: "node", required: true } },
@@ -402,7 +424,7 @@ export const tileContract = {
     TileRadioGroup: {
       intent: ["pick-one-card", "plan-picker", "single-select-tiles", "choose-one"],
       host: { element: "div" },
-      options: ["name", "defaultValue", "orientation", "disabled", "required", "padding"],
+      options: ["name", "defaultValue", "orientation", "disabled", "required", "padding", "appearance"],
       requires: ["name"],
       slots: {
         items: {
@@ -435,8 +457,8 @@ export const tileContract = {
             part: "root",
             also: ["sk-tile--interactive", "sk-interactive"],
             attrs: { "data-scope": "tile", "data-part": "item" },
-            // Padding is the OPTION's, not the group's: each tile is the surface being padded.
-            options: ["padding"],
+            // Padding and appearance are the OPTION's, not the group's: each tile is the surface.
+            options: ["padding", "appearance"],
             repeat: "items",
             children: [
               {
@@ -467,7 +489,7 @@ export const tileContract = {
     ExpandableTile: {
       intent: ["expandable-card", "show-more", "collapsible-surface", "disclosure"],
       host: { element: "section" },
-      options: ["defaultOpen", "disabled", "padding"],
+      options: ["defaultOpen", "disabled", "padding", "appearance"],
       slots: {
         children: {
           accepts: "signature",
@@ -541,3 +563,4 @@ export const tileContract = {
 
 /** Derived, never restated: adding a value to the contract's `orientation` enum is the only edit. */
 export type TileRadioOrientation = OptionValue<typeof tileContract.options.orientation>;
+export type TileAppearance = OptionValue<typeof tileContract.options.appearance>;

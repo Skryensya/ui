@@ -7,8 +7,75 @@
 # `surface` is the shape of the contract the last time somebody reviewed it. If the compiler says it
 # does not match, something a consumer depends on has moved: write the entry and paste in the new
 # hash.
-surface: "f52b47fc00e201d9"
+surface: "a51a5e5cb1d4c964"
 entries:
+  - date: 2026-09-26
+    kind: feature
+    target: appearance
+    es:
+      title: Accordion y Details suman frosted, y su brutalist pasa a la tinta negra de Button
+      body: >-
+        <code>appearance="frosted"</code> pone el material de Button en el marco (de <code>Accordion</code>, de
+        <code>DetailsGroup</code> o de un <code>Details</code> suelto), con los cuerpos abiertos también translúcidos.
+        <code>brutalist</code> ahora dibuja marco, divisores y sombra en negro en ambos modos, al grosor de plain. Hooks
+        nuevos: <code>--sk-accordion-frost-*</code>, <code>--sk-details-frost-*</code> y los <code>--sk-tile-frost-*</code>
+        que Accordion hereda de <code>tile.css</code>.
+    en:
+      title: Accordion and Details add frosted, and their brutalist moves to Button's black ink
+      body: >-
+        <code>appearance="frosted"</code> puts Button's material on the frame (of <code>Accordion</code>, of
+        <code>DetailsGroup</code>, or of a lone <code>Details</code>), with the open bodies see-through too.
+        <code>brutalist</code> now draws the frame, dividers and offset in black in both modes, at plain's border width.
+        New hooks: <code>--sk-accordion-frost-*</code>, <code>--sk-details-frost-*</code> and the
+        <code>--sk-tile-frost-*</code> Accordion inherits from <code>tile.css</code>.
+  - date: 2026-09-26
+    kind: feature
+    target: appearance
+    es:
+      title: Details y DetailsGroup suman appearance
+      body: >-
+        La mitad nativa acepta el mismo <code>appearance</code> que <code>Accordion</code>. <code>DetailsGroup</code> lo
+        lleva en su marco, un <code>Details</code> suelto sobre sí mismo, y un <code>Details</code> dentro de un grupo ignora
+        el suyo. Nada se mueve: el summary es el control. Hooks nuevos: <code>--sk-details-depth</code> y los cuatro
+        <code>--sk-details-brutalist-*</code>.
+    en:
+      title: Details and DetailsGroup add appearance
+      body: >-
+        The native half accepts the same <code>appearance</code> as <code>Accordion</code>. <code>DetailsGroup</code>
+        carries it on its frame, a lone <code>Details</code> on itself, and a <code>Details</code> inside a group ignores its
+        own. Nothing moves: the summary is the control. New hooks: <code>--sk-details-depth</code> and the four
+        <code>--sk-details-brutalist-*</code>.
+  - date: 2026-09-26
+    kind: feature
+    target: appearance
+    es:
+      title: Accordion suma appearance tactile y brutalist
+      body: >-
+        <code>Accordion</code> acepta <code>appearance</code>, el mismo eje de Button y Tile: <code>plain</code> (el look
+        actual), <code>tactile</code> (un canto bajo el marco) y <code>brutalist</code> (marco y divisores de 2px en tinta y
+        una sombra dura). Se pone en la raíz porque el marco es la superficie; nunca se mueve, cada trigger es su propio
+        control. Hooks nuevos: <code>--sk-accordion-depth</code> y los cuatro <code>--sk-accordion-brutalist-*</code>.
+    en:
+      title: Accordion adds tactile and brutalist appearance
+      body: >-
+        <code>Accordion</code> accepts <code>appearance</code>, Button's and Tile's axis: <code>plain</code> (the existing
+        look), <code>tactile</code> (a ledge under the frame) and <code>brutalist</code> (a 2px ink frame and dividers and a
+        hard offset). It sits on the root because the frame is the surface; it never moves, each trigger is its own
+        control. New hooks: <code>--sk-accordion-depth</code> and the four <code>--sk-accordion-brutalist-*</code>.
+  - date: 2026-09-26
+    kind: feature
+    es:
+      title: Accordion documenta los hooks de apariencia de Tile
+      body: >-
+        Accordion se dibuja con <code>tile.css</code>, así que publica los hooks que Tile sumó para
+        <code>appearance</code>: <code>--sk-tile-depth</code> y los cuatro <code>--sk-tile-brutalist-*</code>.
+        Accordion no tiene <code>appearance</code>; sus items no cambian.
+    en:
+      title: Accordion documents Tile's appearance hooks
+      body: >-
+        Accordion paints with <code>tile.css</code>, so it publishes the hooks Tile added for
+        <code>appearance</code>: <code>--sk-tile-depth</code> and the four <code>--sk-tile-brutalist-*</code>.
+        Accordion has no <code>appearance</code> of its own; its items are unchanged.
   - date: 2026-09-21
     kind: rework
     es:

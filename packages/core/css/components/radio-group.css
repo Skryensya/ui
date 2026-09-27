@@ -155,4 +155,111 @@
       background: CanvasText;
     }
   }
+
+  /*
+   * ── APPEARANCE ───────────────────────────────────────────────────────────────────────────────
+   *
+   * Button's axis on the ring (button.css documents each construction in full), keyed on a Radio's
+   * label or a RadioGroup's root and painted on `.sk-radio__control::before`, the ring itself. No new
+   * public hooks: radio-group.css is also a hook sheet of Questionnaire.
+   */
+
+  /* TACTILE: a raised disc on a small ledge, lit from the top; a press sinks it, not the hit area. */
+  :is(.sk-radio[data-appearance="tactile"], .sk-radio-group[data-appearance="tactile"] .sk-radio) .sk-radio__control::before {
+    --radio-ledge: light-dark(
+      color-mix(in oklab, var(--color-bg-surface-raised) 72%, var(--color-text-primary)),
+      color-mix(in oklab, var(--color-bg-surface-raised) 64%, var(--color-bg-surface-sunken))
+    );
+    background:
+      linear-gradient(
+        to bottom,
+        light-dark(color-mix(in oklab, white 16%, transparent), color-mix(in oklab, white 6%, transparent)),
+        transparent 60%
+      ),
+      var(--color-bg-surface-raised);
+    box-shadow: 0 2px 0 var(--radio-ledge);
+    transition:
+      border-color var(--motion-state-change-duration) var(--motion-state-change-easing),
+      translate var(--motion-feedback-duration) var(--motion-feedback-easing),
+      box-shadow var(--motion-feedback-duration) var(--motion-feedback-easing);
+  }
+
+  :is(.sk-radio[data-appearance="tactile"], .sk-radio-group[data-appearance="tactile"] .sk-radio):not(:has(.sk-radio__input:disabled)):active .sk-radio__control {
+    scale: 1;
+  }
+
+  :is(.sk-radio[data-appearance="tactile"], .sk-radio-group[data-appearance="tactile"] .sk-radio):not(:has(.sk-radio__input:disabled)):active .sk-radio__control::before {
+    translate: 0 1px;
+    box-shadow: 0 1px 0 var(--radio-ledge);
+  }
+
+  /* BRUTALIST: the black edge and a hard offset the press collapses, toward block-end and
+   * inline-end (mirrored in RTL). */
+  :is(.sk-radio[data-appearance="brutalist"], .sk-radio-group[data-appearance="brutalist"] .sk-radio) {
+    --brutalist-black: oklch(from var(--shadow-lg) l c h / 1);
+    --brutalist-direction: 1;
+  }
+
+  :is(.sk-radio[data-appearance="brutalist"], .sk-radio-group[data-appearance="brutalist"] .sk-radio):dir(rtl) {
+    --brutalist-direction: -1;
+  }
+
+  :is(.sk-radio[data-appearance="brutalist"], .sk-radio-group[data-appearance="brutalist"] .sk-radio) .sk-radio__control::before {
+    border-color: var(--brutalist-black);
+    background: var(--color-bg-surface);
+    box-shadow: calc(2px * var(--brutalist-direction)) 2px 0 var(--brutalist-black);
+    transition:
+      translate var(--motion-feedback-duration) var(--motion-feedback-easing),
+      box-shadow var(--motion-feedback-duration) var(--motion-feedback-easing);
+  }
+
+  :is(.sk-radio[data-appearance="brutalist"], .sk-radio-group[data-appearance="brutalist"] .sk-radio):not(:has(.sk-radio__input:disabled)):active .sk-radio__control {
+    scale: 1;
+  }
+
+  :is(.sk-radio[data-appearance="brutalist"], .sk-radio-group[data-appearance="brutalist"] .sk-radio):not(:has(.sk-radio__input:disabled)):active .sk-radio__control::before {
+    translate: calc(2px * var(--brutalist-direction)) 2px;
+    box-shadow: 0 0 0 var(--brutalist-black);
+  }
+
+  /* FROSTED: the ring becomes a see-through disc over a blurred backdrop. Opaque baseline; the
+   * material only where backdrop-filter exists and no reduced-transparency preference is set. */
+  :is(.sk-radio[data-appearance="frosted"], .sk-radio-group[data-appearance="frosted"] .sk-radio) .sk-radio__control::before {
+    background: var(--color-bg-surface);
+  }
+
+  @supports (backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px)) {
+    @media (prefers-reduced-transparency: no-preference) {
+      :is(.sk-radio[data-appearance="frosted"], .sk-radio-group[data-appearance="frosted"] .sk-radio) .sk-radio__control::before {
+        background: color-mix(in oklab, var(--color-bg-surface) 55%, transparent);
+        -webkit-backdrop-filter: blur(6px) saturate(150%);
+        backdrop-filter: blur(6px) saturate(150%);
+      }
+    }
+  }
+
+  :is([data-contrast="high"] :is(.sk-radio[data-appearance="frosted"], .sk-radio-group[data-appearance="frosted"] .sk-radio), :is(.sk-radio[data-appearance="frosted"], .sk-radio-group[data-appearance="frosted"] .sk-radio)[data-contrast="high"]) .sk-radio__control::before {
+    background: var(--color-bg-surface);
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+
+  @media (prefers-contrast: more) {
+    :root:not([data-contrast]) :is(.sk-radio[data-appearance="frosted"], .sk-radio-group[data-appearance="frosted"] .sk-radio) .sk-radio__control::before {
+      background: var(--color-bg-surface);
+      -webkit-backdrop-filter: none;
+      backdrop-filter: none;
+    }
+  }
+
+  /* Forced colors keep none of it: the system ring, no ledge, offset, glass or travel. */
+  @media (forced-colors: active) {
+    :is(.sk-radio[data-appearance], .sk-radio-group[data-appearance] .sk-radio) .sk-radio__control::before,
+    :is(.sk-radio[data-appearance], .sk-radio-group[data-appearance] .sk-radio):not(:has(.sk-radio__input:disabled)):active .sk-radio__control::before {
+      box-shadow: none;
+      translate: none;
+      -webkit-backdrop-filter: none;
+      backdrop-filter: none;
+    }
+  }
 }

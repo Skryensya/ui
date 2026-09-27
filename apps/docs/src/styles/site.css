@@ -3257,6 +3257,18 @@ html[data-sk-component-preview-pref="vanilla"] [data-sk-install-binding="react"]
   transform: none !important;
 }
 
+/* Under each appearance's name: what it is, or why this page does not offer it. Quieter than the
+ * name, and it follows the disabled colour on an unavailable entry instead of fighting it. */
+.docs-appearance-menu__note {
+  display: block;
+  font-size: var(--font-size-caption);
+  color: var(--color-text-secondary);
+}
+
+.docs-appearance-menu .sk-menu__item[data-disabled] .docs-appearance-menu__note {
+  color: inherit;
+}
+
 .docs-appearance-menu .sk-menu__item[data-checked] > .sk-menu__item-indicator {
   visibility: visible;
 }

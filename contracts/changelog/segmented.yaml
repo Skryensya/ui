@@ -3,8 +3,23 @@
 # `surface` is the shape of the contract the last time somebody reviewed it. If the compiler says it
 # does not match, something a consumer depends on has moved: write the entry and paste in the new
 # hash.
-surface: "d6f8fb2faf2c82c1"
+surface: "628934891e901ca8"
 entries:
+  - date: 2026-09-26
+    kind: feature
+    target: appearance
+    es:
+      title: Segmented suma appearance plain, tactile, brutalist y frosted
+      body: >-
+        El eje de Button escrito solo como hooks en la raíz: <code>tactile</code> una tecla elevada en un pozo
+        más hondo, <code>brutalist</code> una pista de borde negro con sombra dura, <code>frosted</code> una
+        pista translúcida, opaca donde el material no es fiable.
+    en:
+      title: Segmented adds plain, tactile, brutalist and frosted appearances
+      body: >-
+        Button's axis written only as hooks on the root: <code>tactile</code> a raised key in a deeper well,
+        <code>brutalist</code> a black-edged track with a hard offset, <code>frosted</code> a see-through track,
+        opaque wherever the material cannot be trusted.
   - date: 2026-09-17
     kind: feature
     es:
