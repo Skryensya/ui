@@ -10,6 +10,13 @@ import { Dialog } from "./dialog.js";
 describe("Dialog", () => {
   // Rendered open throughout: a closed `<dialog>` is inert, so nothing inside it has a role to
   // query, which is the platform doing its half of this contract.
+  it("serializes its appearance on the dialog, plain by default", () => {
+    const plain = render(<Dialog title="Plain">Body</Dialog>);
+    expect(plain.container.querySelector("dialog")?.getAttribute("data-appearance")).toBe("plain");
+    const frosted = render(<Dialog appearance="frosted" title="Frosted">Body</Dialog>);
+    expect(frosted.container.querySelector("dialog")?.getAttribute("data-appearance")).toBe("frosted");
+  });
+
   it("closes through the platform's own form rather than a handler", () => {
     const ui = render(
       <Dialog open title="Confirmar">

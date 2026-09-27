@@ -3556,6 +3556,19 @@
         "date": null,
         "entries": [
           {
+            "date": "2026-09-26",
+            "en": {
+              "body": "<code>brutalist</code> draws the panel with a black edge and a hard offset in place of the soft elevation; <code>frosted</code> makes it a translucent material over the page, opaque wherever the material cannot be trusted. No <code>tactile</code>: a dialog is never pressed.",
+              "title": "Dialog adds plain, brutalist and frosted appearances"
+            },
+            "es": {
+              "body": "<code>brutalist</code> dibuja el panel con borde negro y una sombra dura en lugar de la elevación suave; <code>frosted</code> lo hace un material translúcido sobre la página, opaco donde el material no es fiable. Sin <code>tactile</code>: un diálogo no se presiona.",
+              "title": "Dialog suma appearance plain, brutalist y frosted"
+            },
+            "kind": "feature",
+            "target": "appearance"
+          },
+          {
             "date": "2026-09-21",
             "en": {
               "body": "<code>footerAlign</code> no longer declares a default: the stylesheet already aligns the footer to the end and there is no <code>=\"end\"</code> rule, so the attribute was noise on every dialog. Leaving it unset renders identically; <code>start</code> is unchanged. Both bindings now agree - React dropped <code>end</code> and the emitter did not.",
@@ -24539,6 +24552,12 @@
           "part": "root",
           "sheet": "@skryensya/core/components/dialog.css"
         },
+        "--sk-dialog-brutalist-offset": {
+          "default": "8px",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/dialog.css"
+        },
         "--sk-dialog-elevation": {
           "default": "var(--elevation-modal)",
           "output": false,
@@ -24605,6 +24624,7 @@
         "--sk-dialog-bg",
         "--sk-dialog-border-color",
         "--sk-dialog-border-width",
+        "--sk-dialog-brutalist-offset",
         "--sk-dialog-elevation",
         "--sk-dialog-fg",
         "--sk-dialog-footer-border-color",
@@ -24626,6 +24646,16 @@
           "default": false,
           "trueValue": "alertdialog",
           "type": "boolean"
+        },
+        "appearance": {
+          "attr": "data-appearance",
+          "default": "plain",
+          "type": "enum",
+          "values": [
+            "plain",
+            "brutalist",
+            "frosted"
+          ]
         },
         "closeLabel": {
           "attr": "aria-label",
@@ -24716,7 +24746,8 @@
             "open",
             "vaul",
             "alert",
-            "footerAlign"
+            "footerAlign",
+            "appearance"
           ],
           "react": {
             "from": "@skryensya/react/dialog",
@@ -52349,7 +52380,7 @@
     "working": "0.0.1"
   },
   "schemaVersion": "2.3",
-  "sourceHash": "6f894a64fe3f6e5a",
+  "sourceHash": "d5b617dc3f8f3d88",
   "vocabulary": {
     "a11y": "When `when` holds, one of `requiresOneOf` must be given: an option, a raw attribute, a filled slot, or a child signature by name.",
     "atLeastOneOf": "At least one member of each group counts: a filled slot, a boolean option set to true, or an option other than its default.",

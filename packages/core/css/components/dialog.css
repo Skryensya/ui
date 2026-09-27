@@ -217,4 +217,78 @@
       --sk-dialog-footer-border-color: CanvasText;
     }
   }
+
+  /*
+   * ── APPEARANCE ───────────────────────────────────────────────────────────────────────────────
+   *
+   * Button's axis on the dialog's surface (button.css documents each construction in full). Plain,
+   * brutalist and frosted: a surface is never pressed, so there is no tactile. Radius, padding and
+   * motion are untouched.
+   */
+
+  /* BRUTALIST: the black edge and a hard zero-blur offset toward block-end and inline-end
+   * (mirrored in RTL), in place of the soft elevation. Flat face. */
+  .sk-dialog[data-appearance="brutalist"] {
+    --sk-dialog-brutalist-offset: 8px;
+    --brutalist-black: oklch(from var(--shadow-lg) l c h / 1);
+    --brutalist-direction: 1;
+    --sk-dialog-border-color: var(--brutalist-black);
+    --sk-dialog-header-border-color: var(--brutalist-black);
+    --sk-dialog-footer-border-color: var(--brutalist-black);
+    --sk-dialog-wash: none;
+    --sk-dialog-elevation: calc(var(--sk-dialog-brutalist-offset) * var(--brutalist-direction)) var(--sk-dialog-brutalist-offset) 0 var(--brutalist-black);
+  }
+
+  .sk-dialog[data-appearance="brutalist"]:dir(rtl) {
+    --brutalist-direction: -1;
+  }
+
+  /* FROSTED: Button's see-through material over whatever sits behind the dialog, with a fine edge and
+   * a lit top rim over its own shadow. Opaque baseline; the material only where backdrop-filter
+   * exists and no reduced-transparency preference is set. */
+  .sk-dialog[data-appearance="frosted"] {
+    --frost-highlight: light-dark(
+      color-mix(in oklab, var(--color-bg-surface) 70%, transparent),
+      color-mix(in oklab, var(--color-text-primary) 18%, transparent)
+    );
+    --sk-dialog-wash: none;
+    --sk-dialog-border-color: color-mix(in oklab, currentColor 18%, transparent);
+    --sk-dialog-elevation: inset 0 1px 0 var(--frost-highlight), var(--elevation-modal);
+  }
+
+  @supports (backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px)) {
+    @media (prefers-reduced-transparency: no-preference) {
+      .sk-dialog[data-appearance="frosted"] {
+        background: color-mix(in oklab, var(--sk-dialog-bg) 78%, transparent);
+        -webkit-backdrop-filter: blur(24px) saturate(150%);
+        backdrop-filter: blur(24px) saturate(150%);
+      }
+    }
+  }
+
+  /* High contrast outranks the material: back to the opaque baseline. */
+  [data-contrast="high"] .sk-dialog[data-appearance="frosted"],
+  .sk-dialog[data-appearance="frosted"][data-contrast="high"] {
+    background: var(--sk-dialog-bg);
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+
+  @media (prefers-contrast: more) {
+    :root:not([data-contrast]) .sk-dialog[data-appearance="frosted"] {
+      background: var(--sk-dialog-bg);
+      -webkit-backdrop-filter: none;
+      backdrop-filter: none;
+    }
+  }
+
+  /* Forced colors keep neither construction: the system surface and its boundary. */
+  @media (forced-colors: active) {
+    .sk-dialog[data-appearance] {
+      background: Canvas;
+      -webkit-backdrop-filter: none;
+      backdrop-filter: none;
+      box-shadow: none;
+    }
+  }
 }
