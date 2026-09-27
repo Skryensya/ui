@@ -72,6 +72,17 @@ export const inputContract = {
   ],
 
   options: {
+    /*
+     * HOW THE FIELD IS DRAWN, Button's axis: brutalist a black edge and hard offset in place of the
+     * sunken well, frosted a see-through field (opaque wherever the material cannot be trusted).
+     * Every state still outranks it. Absent means plain, like controlSize, so fields that embed one
+     * stay unchanged. No tactile: a field is typed into, not pressed.
+     */
+    appearance: {
+      type: "enum",
+      values: ["plain", "brutalist", "frosted"],
+      attr: "data-appearance",
+    },
     /** Named `controlSize` in the binding: `size` is already a native attribute of `<input>`. */
     controlSize: { type: "enum", values: ["sm", "md", "lg"], attr: "data-size" },
     /**
@@ -125,7 +136,7 @@ export const inputContract = {
     Input: {
       intent: ["text-entry", "single-line-input", "email", "password", "search-field"],
       host: { element: "input" },
-      options: ["controlSize", "type", "name", "placeholder", "disabled", "format", "country", "errorLabel"],
+      options: ["controlSize", "type", "name", "placeholder", "disabled", "format", "country", "errorLabel", "appearance"],
       /*
        * NO `mount` ATTRIBUTE, unlike most enhanced signatures, and it is worth saying why rather
        * than reading as an omission. `format` already writes `data-format`, which is the only state
@@ -160,7 +171,7 @@ export const inputContract = {
     NativeInput: {
       intent: ["styled-native-input", "platform-control", "native-time-input"],
       host: { element: "input" },
-      options: ["controlSize", "type", "name", "disabled"],
+      options: ["controlSize", "type", "name", "disabled", "appearance"],
       forward: ["id", "readonly", "value", "autocomplete", "required", "maxlength", "minlength", "pattern", "min", "max", "step", "aria-*"],
       /*
        * `type` is the whole point of this signature: without it NativeInput is just Input that
@@ -176,7 +187,7 @@ export const inputContract = {
     Textarea: {
       intent: ["multi-line-input", "long-text", "comment", "description-entry"],
       host: { element: "textarea" },
-      options: ["controlSize", "name", "placeholder", "disabled"],
+      options: ["controlSize", "name", "placeholder", "disabled", "appearance"],
       forward: ["id", "readonly", "value", "autocomplete", "required", "maxlength", "minlength", "rows", "cols", "aria-*"],
       parents: ["FormField"],
       slots: {},

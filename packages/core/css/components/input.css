@@ -216,4 +216,77 @@
   .sk-input[aria-disabled="true"]::-webkit-calendar-picker-indicator {
     background-color: var(--sk-input-disabled-fg);
   }
+
+  /*
+   * ── APPEARANCE ───────────────────────────────────────────────────────────────────────────────
+   *
+   * Button's axis on the field, for every family that paints a `.sk-input` (Combobox, NumberField,
+   * PasswordInput, DatePicker, TimeField, TagsInput…): they forward the attribute, this draws it.
+   * Written as the existing hooks behind `:where()`, at the base rule's own specificity, so every
+   * STATE above still outranks it: an invalid brutalist field keeps its danger edge, a disabled one
+   * its disabled paint. The offset is internal, since this sheet is a hook sheet of those families.
+   * No tactile: a field is typed into, not pressed.
+   */
+
+  /* BRUTALIST: the black edge and a hard offset toward block-end and inline-end, mirrored in RTL, in
+   * place of the sunken well. Disabled drops the offset. */
+  .sk-input:where([data-appearance="brutalist"]) {
+    --input-brutalist-offset: 3px;
+    --brutalist-black: oklch(from var(--shadow-lg) l c h / 1);
+    --brutalist-direction: 1;
+    --sk-input-border-color: var(--brutalist-black);
+    --sk-input-wash: none;
+    --sk-input-shadow: calc(var(--input-brutalist-offset) * var(--brutalist-direction)) var(--input-brutalist-offset) 0
+      var(--brutalist-black);
+  }
+
+  .sk-input:where([data-appearance="brutalist"]):dir(rtl) {
+    --brutalist-direction: -1;
+  }
+
+  .sk-input:where([data-appearance="brutalist"]):is(:disabled, [aria-disabled="true"]) {
+    --sk-input-shadow: none;
+  }
+
+  /* FROSTED: the field's own fill (whichever state set it) thinned into a sheet over a blurred
+   * backdrop, with a fine edge. Opaque baseline; the material only where backdrop-filter exists and
+   * no reduced-transparency preference is set. */
+  .sk-input:where([data-appearance="frosted"]) {
+    --sk-input-wash: none;
+    --sk-input-border-color: color-mix(in oklab, currentColor 24%, transparent);
+    --sk-input-shadow: inset 0 1px 2px var(--shadow-sm);
+  }
+
+  @supports (backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px)) {
+    @media (prefers-reduced-transparency: no-preference) {
+      .sk-input:where([data-appearance="frosted"]) {
+        background: color-mix(in oklab, var(--sk-input-bg) 60%, transparent);
+        -webkit-backdrop-filter: blur(10px) saturate(150%);
+        backdrop-filter: blur(10px) saturate(150%);
+      }
+    }
+  }
+
+  :is([data-contrast="high"] .sk-input, .sk-input[data-contrast="high"]):where([data-appearance="frosted"]) {
+    background: var(--sk-input-bg);
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+
+  @media (prefers-contrast: more) {
+    :root:not([data-contrast]) .sk-input:where([data-appearance="frosted"]) {
+      background: var(--sk-input-bg);
+      -webkit-backdrop-filter: none;
+      backdrop-filter: none;
+    }
+  }
+
+  @media (forced-colors: active) {
+    .sk-input[data-appearance] {
+      background: Canvas;
+      -webkit-backdrop-filter: none;
+      backdrop-filter: none;
+      box-shadow: none;
+    }
+  }
 }

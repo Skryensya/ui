@@ -9,6 +9,19 @@ import { Input, NativeInput, Textarea } from "./input.js";
 const controlIn = (result: ReturnType<typeof render>) => within(result.container);
 
 describe("Input contract", () => {
+  it("writes an appearance only when asked, on every field shape", () => {
+    const ui = render(
+      <>
+        <Input aria-label="Plain" />
+        <Input aria-label="Brutalist" appearance="brutalist" />
+        <Textarea aria-label="Frosted" appearance="frosted" />
+      </>,
+    );
+    expect(ui.getByLabelText("Plain").hasAttribute("data-appearance")).toBe(false);
+    expect(ui.getByLabelText("Brutalist").getAttribute("data-appearance")).toBe("brutalist");
+    expect(ui.getByLabelText("Frosted").getAttribute("data-appearance")).toBe("frosted");
+  });
+
   it("stays a valid control outside a FormField", () => {
     const ui = render(<Input aria-label="Search" name="q" />);
     const input = controlIn(ui).getByRole("textbox", { name: "Search" }) as HTMLInputElement;

@@ -3,6 +3,7 @@
 import "@skryensya/core/components/annotation.css";
 import { annotationDemoCss } from "../../demos/annotation";
 import ComponentPageShell from "./ComponentPageShell.astro";
+import AppearanceMenu from "../AppearanceMenu.astro";
 import CodeBlock from "../CodeBlock.astro";
 import ComponentPreview from "../ComponentPreview.astro";
 import { inputAnatomyTree, inputFormatTree, inputTree, textareaTree } from "../../demos/input";
@@ -26,6 +27,7 @@ const css = `@import "@skryensya/core/tokens.scss";
   title={t("inputPage.title")}
   description={t("inputPage.description")}
   contractId="input"
+  appearanceTargetSelector=".sk-input"
   testFiles={[
     /* The arithmetic first: the page claims these formats are checked for real, and this is the
        suite that proves it. The two bindings below prove they both ask it the same question. */
@@ -35,6 +37,10 @@ const css = `@import "@skryensya/core/tokens.scss";
     "packages/vanilla/src/components/input.test.ts",
   ]}
 >
+  <Fragment slot="appearance">
+    <AppearanceMenu label={t("prefs.appearance")} values={["plain", "brutalist", "frosted"]} unavailable={{ tactile: t("prefs.appearanceTactileUnavailable") }} />
+  </Fragment>
+
   <Fragment slot="anatomy">
     <p set:html={t("inputPage.anatomyBody")} />
     <ComponentPreview
