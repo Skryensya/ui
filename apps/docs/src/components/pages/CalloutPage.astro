@@ -3,6 +3,7 @@
    same way Accordion's, Button's and Breadcrumb's do. */
 import "@skryensya/core/components/annotation.css";
 import ComponentPageShell from "./ComponentPageShell.astro";
+import AppearanceMenu from "../AppearanceMenu.astro";
 import CodeBlock from "../CodeBlock.astro";
 import ComponentPreview from "../ComponentPreview.astro";
 import {
@@ -24,8 +25,13 @@ const t = useTranslations(getLocale(Astro.url));
   description={t("callout.description")}
   badge={t("callout.betaBadge")}
   contractId="callout"
+  appearanceTargetSelector=".sk-callout"
   testFiles={["packages/react/src/components/callout.test.tsx"]}}
 >
+  <Fragment slot="appearance">
+    <AppearanceMenu label={t("prefs.appearance")} values={["plain", "brutalist", "frosted"]} unavailable={{ tactile: t("prefs.appearanceTactileUnavailable") }} />
+  </Fragment>
+
   <Fragment slot="anatomy">
     <p set:html={t("callout.anatomyBody")} />
     <ComponentPreview

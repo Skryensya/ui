@@ -1562,6 +1562,19 @@
         "date": null,
         "entries": [
           {
+            "date": "2026-09-26",
+            "en": {
+              "body": "<code>brutalist</code> draws the box with a black edge and a hard offset (the tone keeps its fill and ink); <code>frosted</code> makes it a see-through tinted sheet, opaque wherever the material cannot be trusted. No <code>tactile</code>: a callout is never pressed.",
+              "title": "Callout adds plain, brutalist and frosted appearances"
+            },
+            "es": {
+              "body": "<code>brutalist</code> dibuja la caja con borde negro y sombra dura (el tono conserva su relleno y su tinta); <code>frosted</code> la hace una lámina teñida translúcida, opaca donde el material no es fiable. Sin <code>tactile</code>: un callout no se presiona.",
+              "title": "Callout suma appearance plain, brutalist y frosted"
+            },
+            "kind": "feature",
+            "target": "appearance"
+          },
+          {
             "date": "2026-09-12",
             "en": {
               "body": "The contract now publishes this component's <code>5</code> styling hooks. Nothing you wrote changes: the same hooks, under the same names, and the stylesheet was not touched. What is new is that the contract declares them, so the compiler fails when the stylesheet declares one the contract does not publish, or the contract promises one the stylesheet never declares. That second half is the one that matters: until now, re-declaring a hook that no longer existed was not an error, it was silence.",
@@ -15649,6 +15662,16 @@
       ],
       "id": "callout",
       "options": {
+        "appearance": {
+          "attr": "data-appearance",
+          "default": "plain",
+          "type": "enum",
+          "values": [
+            "plain",
+            "brutalist",
+            "frosted"
+          ]
+        },
         "tone": {
           "attr": "data-tone",
           "default": "neutral",
@@ -15699,7 +15722,8 @@
             "aside-note"
           ],
           "options": [
-            "tone"
+            "tone",
+            "appearance"
           ],
           "react": {
             "from": "@skryensya/react/callout",
@@ -52518,7 +52542,7 @@
     "working": "0.0.1"
   },
   "schemaVersion": "2.3",
-  "sourceHash": "37166cf7e07bca0f",
+  "sourceHash": "b3026d409b6dd479",
   "vocabulary": {
     "a11y": "When `when` holds, one of `requiresOneOf` must be given: an option, a raw attribute, a filled slot, or a child signature by name.",
     "atLeastOneOf": "At least one member of each group counts: a filled slot, a boolean option set to true, or an option other than its default.",
