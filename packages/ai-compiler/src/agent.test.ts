@@ -48,7 +48,12 @@ describe("contracts: several families in one answer", () => {
     const over = service.contracts(ids, "contract");
     expect(over.ok).toBe(false);
     expect(over.value).toMatchObject({ error: `Too many contract ids: ${CONTRACTS_BATCH_LIMIT + 1}.` });
-    expect(service.contracts(ids.slice(0, CONTRACTS_BATCH_LIMIT), "contract").ok).toBe(true);
+    /* Exactly the count bound is allowed. The SMALLEST families, so this checks the count and not the
+       byte budget, which the first eight alphabetically outgrew once Accordion and Button did. */
+    const smallest = Object.keys(built.manifest.contracts)
+      .sort((x, y) => JSON.stringify(built.manifest.contracts[x]).length - JSON.stringify(built.manifest.contracts[y]).length)
+      .slice(0, CONTRACTS_BATCH_LIMIT);
+    expect(service.contracts(smallest, "contract").ok).toBe(true);
   });
 
   it("fails whole past the byte budget, and names a split that fits", () => {

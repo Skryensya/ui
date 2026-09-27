@@ -97,6 +97,47 @@ const signatureTrees: readonly Canonical[] = [
     },
   },
   {
+    /* Appearance is paint only: the same host and attributes in both bindings, which is what G2 proves. */
+    name: "button/action-brutalist",
+    enhanced: true,
+    tree: {
+      contract: "button",
+      signature: "Button.action",
+      options: { tone: "accent", appearance: "brutalist" },
+      children: "Empezar",
+    },
+  },
+  {
+    name: "button/navigation-brutalist",
+    enhanced: true,
+    tree: {
+      contract: "button",
+      signature: "Button.navigation",
+      options: { variant: "ghost", appearance: "brutalist", href: "/docs" },
+      children: "Documentación",
+    },
+  },
+  {
+    name: "button/action-frosted",
+    enhanced: true,
+    tree: {
+      contract: "button",
+      signature: "Button.action",
+      options: { tone: "danger", variant: "soft", appearance: "frosted" },
+      children: "Borrar",
+    },
+  },
+  {
+    name: "button/navigation-frosted",
+    enhanced: true,
+    tree: {
+      contract: "button",
+      signature: "Button.navigation",
+      options: { appearance: "frosted", href: "/docs" },
+      children: "Documentación",
+    },
+  },
+  {
     name: "image-frame/src",
     enhanced: false,
     tree: {
@@ -716,6 +757,26 @@ const signatureTrees: readonly Canonical[] = [
           { contract: "badge", signature: "Badge", options: { tone: "success" }, children: "Dos" },
         ],
       },
+    },
+  },
+  {
+    name: "layout/box-brutalist",
+    enhanced: false,
+    tree: {
+      contract: "box",
+      signature: "Box",
+      options: { padding: "md", surface: "surface", appearance: "brutalist" },
+      children: { contract: "typography", signature: "Text", children: "Caja dibujada" },
+    },
+  },
+  {
+    name: "layout/box-frosted",
+    enhanced: false,
+    tree: {
+      contract: "box",
+      signature: "Box",
+      options: { padding: "md", surface: "raised", appearance: "frosted" },
+      children: { contract: "typography", signature: "Text", children: "Caja esmerilada" },
     },
   },
   {
@@ -1462,6 +1523,20 @@ const signatureTrees: readonly Canonical[] = [
       contract: "window",
       signature: "Window",
       options: { defaultWidth: 360, defaultHeight: 220 },
+      slots: {
+        trigger: "Abrir inspector",
+        title: "Inspector",
+        children: "Las propiedades de la capa seleccionada.",
+      },
+    },
+  },
+  {
+    name: "window/closed-brutalist",
+    enhanced: true,
+    tree: {
+      contract: "window",
+      signature: "Window",
+      options: { defaultWidth: 360, defaultHeight: 220, appearance: "brutalist" },
       slots: {
         trigger: "Abrir inspector",
         title: "Inspector",
@@ -2497,6 +2572,31 @@ const signatureTrees: readonly Canonical[] = [
         children: [
           { contract: "avatar", signature: "Avatar.initials", options: { name: "Ada Lovelace" }, children: "AL" },
           { contract: "avatar", signature: "Avatar.initials", options: { name: "Grace Hopper" }, children: "GH" },
+        ],
+        overflow: "+3",
+      },
+    },
+  },
+  {
+    name: "avatar/group-brutalist",
+    enhanced: false,
+    tree: {
+      contract: "avatar",
+      signature: "AvatarGroup",
+      options: { label: "Revisores" },
+      slots: {
+        children: [
+          {
+            contract: "avatar",
+            signature: "Avatar.initials",
+            options: { name: "Ada Lovelace", appearance: "brutalist" },
+            children: "AL",
+          },
+          {
+            contract: "avatar",
+            signature: "Avatar.image",
+            options: { imageName: "Foto de perfil de Grace Hopper", src: SAMPLE_MEDIA, appearance: "brutalist" },
+          },
         ],
         overflow: "+3",
       },
