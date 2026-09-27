@@ -1269,6 +1269,22 @@ export const documentationNavigation = [
             ],
           },
           {
+            href: "/appearance",
+            label: "Apariencia",
+            aliases: [
+              "appearance",
+              "apariencias",
+              "tactile",
+              "brutalist",
+              "brutalismo",
+              "frosted",
+              "glassmorphism",
+              "plain",
+              "neobrutalism",
+              "estilo físico",
+            ],
+          },
+          {
             href: "/typography",
             label: "Tipografía",
             aliases: [
