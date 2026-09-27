@@ -1,5 +1,6 @@
 import {
   BACK_TO_TOP_DEFAULT_THRESHOLD,
+  backToTopContract,
   backToTopParts,
   backToTopScrollBehavior,
   backToTopShouldReveal,
@@ -13,6 +14,9 @@ import {
   type MouseEvent,
 } from "react";
 import { Icon } from "./icon.js";
+
+/* Derived, never restated: the values and the default live in the contract. */
+const { appearance: appearanceOption } = backToTopContract.options;
 
 /*
  * BACK TO TOP: the React half of the same contract the Vanilla enhancer connects to.
@@ -29,6 +33,8 @@ export type BackToTopProps = Omit<
 > & {
   /** The accessible name. A destination, not an instruction: "Back to top". Matches the contract slot. */
   children: string;
+  /** How the control is drawn: `plain`, `tactile`, `brutalist` or `frosted`. */
+  appearance?: (typeof appearanceOption.values)[number];
   /** Pixels scrolled from the start before it reveals itself. Default 400. */
   threshold?: number;
   /** A CSS selector for the scroll container to return to its start. Default: the window. */
@@ -39,6 +45,7 @@ export type BackToTopProps = Omit<
 };
 
 export function BackToTop({
+  appearance = appearanceOption.default,
   children,
   className,
   onClick,
@@ -107,6 +114,7 @@ export function BackToTop({
           ? `${backToTopParts.root} sk-interactive ${className}`
           : `${backToTopParts.root} sk-interactive`
       }
+      data-appearance={appearance}
       data-sk-back-to-top=""
       hidden={!visible}
       onClick={handleClick}

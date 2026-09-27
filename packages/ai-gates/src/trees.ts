@@ -3130,6 +3130,16 @@ const signatureTrees: readonly Canonical[] = [
     tree: { contract: "back-to-top", signature: "BackToTop", options: { threshold: 0 }, children: "Volver arriba" },
   },
   {
+    name: "back-to-top/tactile",
+    enhanced: true,
+    tree: {
+      contract: "back-to-top",
+      signature: "BackToTop",
+      options: { threshold: 0, appearance: "tactile" },
+      children: "Volver arriba",
+    },
+  },
+  {
     name: "hero/basic",
     enhanced: false,
     tree: {
