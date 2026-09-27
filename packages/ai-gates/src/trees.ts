@@ -495,6 +495,11 @@ const signatureTrees: readonly Canonical[] = [
     tree: { contract: "badge", signature: "Badge", options: { tone: "danger" }, children: "3" },
   },
   {
+    name: "kbd/brutalist",
+    enhanced: false,
+    tree: { contract: "kbd", signature: "Kbd", options: { appearance: "brutalist" }, children: "K" },
+  },
+  {
     name: "kbd/key",
     enhanced: false,
     tree: { contract: "kbd", signature: "Kbd", children: "⌘K" },
