@@ -9284,6 +9284,19 @@
         "date": null,
         "entries": [
           {
+            "date": "2026-09-26",
+            "en": {
+              "body": "On the label, the element that paints: <code>tactile</code> a raised thumb in a well that sinks when pressed, <code>brutalist</code> black edges and a hard-offset thumb, <code>frosted</code> a see-through track, opaque wherever the material cannot be trusted.",
+              "title": "Switch adds plain, tactile, brutalist and frosted appearances"
+            },
+            "es": {
+              "body": "En la etiqueta, que es lo que se pinta: <code>tactile</code> un pulgar elevado en un pozo que se hunde al presionar, <code>brutalist</code> bordes negros y un pulgar con sombra dura, <code>frosted</code> un riel translúcido, opaco donde el material no es fiable.",
+              "title": "Switch suma appearance plain, tactile, brutalist y frosted"
+            },
+            "kind": "feature",
+            "target": "appearance"
+          },
+          {
             "date": "2026-09-17",
             "en": {
               "body": "Publishes <code>forward</code> with <code>id</code>/<code>form</code>/<code>aria-*</code> on the native host. An attr outside the list is <code>unknown-attr</code>.",
@@ -43378,6 +43391,17 @@
       ],
       "id": "switch",
       "options": {
+        "appearance": {
+          "attr": "data-appearance",
+          "default": "plain",
+          "type": "enum",
+          "values": [
+            "plain",
+            "tactile",
+            "brutalist",
+            "frosted"
+          ]
+        },
         "defaultChecked": {
           "attr": "checked",
           "default": false,
@@ -43442,7 +43466,8 @@
             "name",
             "value",
             "defaultChecked",
-            "disabled"
+            "disabled",
+            "appearance"
           ],
           "react": {
             "from": "@skryensya/react/selection",
@@ -43485,6 +43510,9 @@
               }
             ],
             "element": "label",
+            "options": [
+              "appearance"
+            ],
             "part": "switch"
           }
         }
@@ -52263,7 +52291,7 @@
     "working": "0.0.1"
   },
   "schemaVersion": "2.3",
-  "sourceHash": "063c5be29c82424a",
+  "sourceHash": "68e50d463a0c84f3",
   "vocabulary": {
     "a11y": "When `when` holds, one of `requiresOneOf` must be given: an option, a raw attribute, a filled slot, or a child signature by name.",
     "atLeastOneOf": "At least one member of each group counts: a filled slot, a boolean option set to true, or an option other than its default.",

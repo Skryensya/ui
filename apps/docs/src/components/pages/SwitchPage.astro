@@ -4,6 +4,7 @@ import "@skryensya/core/components/switch.css";
 /* Structure diagram: Annotated specimen; a preview frame only copies styles THIS page loaded. */
 import "@skryensya/core/components/annotation.css";
 import ComponentPageShell from "./ComponentPageShell.astro";
+import AppearanceMenu from "../AppearanceMenu.astro";
 import CodeBlock from "../CodeBlock.astro";
 import ComponentPreview from "../ComponentPreview.astro";
 import { switchAnatomyTree, switchTree, tileSwitchTree } from "../../demos/switch";
@@ -32,9 +33,14 @@ for (const root of document.querySelectorAll(
   title="Switch"
   description={t("switchPage.description")}
   contractId="switch"
+  appearanceTargetSelector=".sk-switch"
   styleGroups={[{ file: "components/switch.css", probe: "sk-switch" }]}
   testFiles={["packages/vanilla/src/components/tile-switch.svelte.test.ts"]}}
 >
+  <Fragment slot="appearance">
+    <AppearanceMenu label={t("prefs.appearance")} />
+  </Fragment>
+
   <Fragment slot="anatomy">
     <p set:html={t("switchPage.anatomyBody")} />
     <ComponentPreview

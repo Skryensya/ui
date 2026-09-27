@@ -387,6 +387,18 @@ export const switchContract = {
      */
     defaultChecked: { type: "boolean", default: false, attr: "checked", trueValue: "", prop: "defaultChecked" },
     disabled: { type: "boolean", default: false, attr: "disabled", trueValue: "" },
+    /*
+     * HOW THE SWITCH IS DRAWN, Button's axis: `tactile` a raised thumb in a sunken well that sinks
+     * when pressed, `brutalist` black edges and a hard-offset thumb, `frosted` a see-through track
+     * (opaque wherever the material cannot be trusted). On the LABEL, the element that paints: the
+     * host is the input.
+     */
+    appearance: {
+      type: "enum",
+      values: ["plain", "tactile", "brutalist", "frosted"],
+      default: "plain",
+      attr: "data-appearance",
+    },
   },
 
   a11y: [
@@ -402,13 +414,14 @@ export const switchContract = {
     Switch: {
       intent: ["on-off", "immediate-setting", "enable-feature"],
       host: { element: "input" },
-      options: ["name", "value", "defaultChecked", "disabled"],
+      options: ["name", "value", "defaultChecked", "disabled", "appearance"],
       /** Native form association beyond owned options (`name`/`value`/`disabled`). */
       forward: ["id", "form", "aria-*"],
       slots: { children: { accepts: "node" } },
       template: {
         element: "label",
         part: "switch",
+        options: ["appearance"],
         children: [
           { element: "input", part: "switchInput", host: true, attrs: { type: "checkbox", role: "switch" } },
           {

@@ -160,6 +160,113 @@
     outline-offset: var(--focus-ring-offset);
   }
 
+  /*
+   * ── APPEARANCE ───────────────────────────────────────────────────────────────────────────────
+   *
+   * Button's axis on the standalone switch (button.css documents each construction in full), keyed
+   * on the label. The thumb's slide rides `transform`; a press rides `translate`, so the two compose
+   * instead of one cancelling the other.
+   */
+
+  /* TACTILE: a sunken well and a raised thumb on a small ledge; a press sinks the thumb, not the track. */
+  .sk-switch[data-appearance="tactile"] .sk-switch__control {
+    box-shadow: inset 0 2px 3px light-dark(
+      color-mix(in oklab, var(--color-text-primary) 18%, transparent),
+      color-mix(in oklab, var(--color-bg-surface-sunken) 70%, transparent)
+    );
+  }
+
+  .sk-switch[data-appearance="tactile"] .sk-switch__thumb {
+    box-shadow:
+      0 2px 0 light-dark(
+        color-mix(in oklab, var(--sk-switch-thumb-bg) 70%, var(--color-text-primary)),
+        color-mix(in oklab, var(--sk-switch-thumb-bg) 60%, var(--color-bg-surface-sunken))
+      ),
+      var(--elevation-raised);
+    transition:
+      transform var(--motion-state-change-duration) var(--motion-state-change-easing),
+      translate var(--motion-feedback-duration) var(--motion-feedback-easing),
+      box-shadow var(--motion-feedback-duration) var(--motion-feedback-easing);
+  }
+
+  /* BRUTALIST: the black edge on track and thumb, and a hard offset under the thumb that the press
+   * collapses, toward block-end and inline-end (mirrored in RTL). */
+  /* Internal (`--switch-*`, not hooks): switch.css is also a hook sheet of Tile and Code Preview, and
+   * the appearance adds no knob a consumer needs there. */
+  .sk-switch[data-appearance="brutalist"] {
+    --switch-brutalist-offset: 2px;
+    --brutalist-black: oklch(from var(--shadow-lg) l c h / 1);
+    --brutalist-direction: 1;
+  }
+
+  .sk-switch[data-appearance="brutalist"] .sk-switch__control {
+    border-color: var(--brutalist-black);
+  }
+
+  .sk-switch[data-appearance="brutalist"]:dir(rtl) {
+    --brutalist-direction: -1;
+  }
+
+  .sk-switch[data-appearance="brutalist"] .sk-switch__thumb {
+    border: 1px solid var(--brutalist-black);
+    box-sizing: border-box;
+    box-shadow: calc(var(--switch-brutalist-offset) * var(--brutalist-direction)) var(--switch-brutalist-offset) 0
+      var(--brutalist-black);
+    transition:
+      transform var(--motion-state-change-duration) var(--motion-state-change-easing),
+      translate var(--motion-feedback-duration) var(--motion-feedback-easing),
+      box-shadow var(--motion-feedback-duration) var(--motion-feedback-easing);
+  }
+
+  /* The press, for both: the track stops squeezing and the thumb travels instead. */
+  .sk-switch:is([data-appearance="tactile"], [data-appearance="brutalist"]):active .sk-switch__control {
+    scale: 1;
+  }
+
+  .sk-switch[data-appearance="tactile"]:not(:has(.sk-switch__input:disabled)):active .sk-switch__thumb {
+    translate: 0 1px;
+    box-shadow: 0 1px 0 light-dark(
+      color-mix(in oklab, var(--sk-switch-thumb-bg) 70%, var(--color-text-primary)),
+      color-mix(in oklab, var(--sk-switch-thumb-bg) 60%, var(--color-bg-surface-sunken))
+    );
+  }
+
+  .sk-switch[data-appearance="brutalist"]:not(:has(.sk-switch__input:disabled)):active .sk-switch__thumb {
+    translate: calc(var(--switch-brutalist-offset) * var(--brutalist-direction)) var(--switch-brutalist-offset);
+    box-shadow: 0 0 0 var(--brutalist-black);
+  }
+
+  /* FROSTED: the track is Button's see-through material. Opaque baseline; the material only where
+   * backdrop-filter exists and no reduced-transparency preference is set. */
+  .sk-switch[data-appearance="frosted"] .sk-switch__control {
+    border-color: color-mix(in oklab, currentColor 22%, transparent);
+  }
+
+  /* The track's own fill (whichever state set `--sk-switch-bg`), thinned into a sheet. */
+  @supports (backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px)) {
+    @media (prefers-reduced-transparency: no-preference) {
+      .sk-switch[data-appearance="frosted"] .sk-switch__control {
+        background: color-mix(in oklab, var(--sk-switch-bg) 55%, transparent);
+        -webkit-backdrop-filter: blur(8px) saturate(150%);
+        backdrop-filter: blur(8px) saturate(150%);
+      }
+    }
+  }
+
+  :is([data-contrast="high"] .sk-switch[data-appearance="frosted"], .sk-switch[data-appearance="frosted"][data-contrast="high"]) .sk-switch__control {
+    background: var(--sk-switch-bg);
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+
+  @media (prefers-contrast: more) {
+    :root:not([data-contrast]) .sk-switch[data-appearance="frosted"] .sk-switch__control {
+      background: var(--sk-switch-bg);
+      -webkit-backdrop-filter: none;
+      backdrop-filter: none;
+    }
+  }
+
   @media (forced-colors: active) {
     .sk-switch__control {
       border-color: CanvasText;
@@ -170,6 +277,19 @@
     .sk-tile:has(> input[type="checkbox"][role="switch"]:checked) > .sk-switch__control {
       border-color: Highlight;
       background: Highlight;
+    }
+
+    /* No well, ledge, offset, glass or thumb travel: the system track and thumb. */
+    .sk-switch[data-appearance] .sk-switch__control {
+      box-shadow: none;
+      -webkit-backdrop-filter: none;
+      backdrop-filter: none;
+    }
+
+    .sk-switch[data-appearance] .sk-switch__thumb,
+    .sk-switch[data-appearance]:not(:has(.sk-switch__input:disabled)):active .sk-switch__thumb {
+      box-shadow: none;
+      translate: none;
     }
   }
 }
