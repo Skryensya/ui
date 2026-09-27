@@ -3,8 +3,21 @@
 # `surface` is the shape of the contract the last time somebody reviewed it. If the compiler says it
 # does not match, something a consumer depends on has moved: write the entry and paste in the new
 # hash.
-surface: "366ec5b0cc108623"
+surface: "5da66e1cdc979876"
 entries:
+  - date: 2026-09-26
+    kind: feature
+    target: appearance
+    es:
+      title: Combobox suma appearance brutalist y frosted
+      body: >-
+        El eje de Input en el campo: <code>brutalist</code> borde negro y sombra dura, <code>frosted</code> un
+        campo translúcido; todo estado sigue por encima. Sin valor es <code>plain</code>.
+    en:
+      title: Combobox adds brutalist and frosted appearances
+      body: >-
+        Input's axis on the field: <code>brutalist</code> a black edge and a hard offset, <code>frosted</code> a
+        see-through field; every state still outranks it. Absent means <code>plain</code>.
   - date: 2026-09-17
     kind: feature
     es:

@@ -16,6 +16,13 @@ const setup = (props: Partial<Parameters<typeof Combobox>[0]> = {}) => {
 };
 
 describe("Combobox", () => {
+  it("writes an appearance on the root only when asked", () => {
+    const plain = render(<Combobox items={items} label="Plain" />);
+    expect(plain.container.querySelector(".sk-combobox")?.hasAttribute("data-appearance")).toBe(false);
+    const frosted = render(<Combobox appearance="frosted" items={items} label="Frosted" />);
+    expect(frosted.container.querySelector(".sk-combobox")?.getAttribute("data-appearance")).toBe("frosted");
+  });
+
   it("keeps the typed search when the field is left without a selection", async () => {
     const { ui, input } = setup();
 
