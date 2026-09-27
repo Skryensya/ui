@@ -3288,10 +3288,10 @@ describe("navbar: header shell for brand, guests, and actions", () => {
     expect(markup).toContain("Skryensya");
   });
 
-  it("publishes its own 13 hooks with no foreign hookSheets, and pulls nav-list via guests", () => {
+  it("publishes its own 14 hooks with no foreign hookSheets, and pulls nav-list via guests", () => {
     const contract = getContract("navbar")!;
     expect(contract.hookSheets ?? []).toEqual([]);
-    expect(contract.hooks).toHaveLength(13);
+    expect(contract.hooks).toHaveLength(14);
     expect(contract.signatures.Navbar.slots.children.of).toEqual([
       "NavbarBrand",
       "NavbarActions",
