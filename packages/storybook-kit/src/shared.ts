@@ -1,6 +1,6 @@
 /*
  * THE PREVIEW SETTINGS BOTH STORYBOOKS USE: the toolbar and the page the stories sit on. Each app
- * (`apps/storybook`, `apps/storybook-vanilla`) spreads these into its own `.storybook/preview`.
+ * (`apps/storybook-react`, `apps/storybook-vanilla`) spreads these into its own `.storybook/preview`.
  */
 
 export const globalTypes = {

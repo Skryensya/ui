@@ -7,7 +7,7 @@
  * aliases, as `demos/trees.test.ts` explains a bare `node` run cannot), keeps every export that
  * yields a usage tree the contracts accept, and writes `src/stories/<module>.stories.ts`.
  *
- * EACH STORYBOOK RUNS THIS FOR ITSELF, into its own `src/stories/`: `apps/storybook` (React) and
+ * EACH STORYBOOK RUNS THIS FOR ITSELF, into its own `src/stories/`: `apps/storybook-react` (React) and
  * `apps/storybook-vanilla` each own their stories and neither reads the other's. A file takes its
  * API (`treeStory`, `withCss`, `localeOf`, the story types) from its app's `src/tree-story`, which is
  * where the binding lives: React draws the tree with `renderTree` and shows `emitReact`; Vanilla
