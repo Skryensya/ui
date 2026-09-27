@@ -48,6 +48,8 @@ export const segmentedContract = {
     "--sk-segmented-bg",
     "--sk-segmented-border-color",
     "--sk-segmented-border-width",
+    "--sk-segmented-brutalist-offset",
+    "--sk-segmented-frost-opacity",
     "--sk-segmented-gap",
     "--sk-segmented-option-fg",
     "--sk-segmented-padding",
@@ -76,13 +78,24 @@ export const segmentedContract = {
      *  had no way to carry it at all before this option existed. Every real usage passed `aria-label`
      *  by hand, outside the contract. */
     label: { type: "string", attr: "aria-label" },
+    /*
+     * HOW THE CONTROL IS DRAWN, Button's axis: `tactile` a raised key in a deeper well, `brutalist` a
+     * black-edged track with a hard offset, `frosted` a see-through track (opaque wherever the
+     * material cannot be trusted). Hooks only: the indicator's own motion is untouched.
+     */
+    appearance: {
+      type: "enum",
+      values: ["plain", "tactile", "brutalist", "frosted"],
+      default: "plain",
+      attr: "data-appearance",
+    },
   },
 
   signatures: {
     Segmented: {
       intent: ["small-exclusive-choice", "view-switcher", "two-or-three-options"],
       host: { element: "div" },
-      options: ["value", "label"],
+      options: ["value", "label", "appearance"],
       requires: ["value", "label"],
       /** Host id / a11y; label stays the option. */
       forward: ["id", "aria-*"],

@@ -7903,6 +7903,19 @@
         "date": null,
         "entries": [
           {
+            "date": "2026-09-26",
+            "en": {
+              "body": "Button's axis written only as hooks on the root: <code>tactile</code> a raised key in a deeper well, <code>brutalist</code> a black-edged track with a hard offset, <code>frosted</code> a see-through track, opaque wherever the material cannot be trusted.",
+              "title": "Segmented adds plain, tactile, brutalist and frosted appearances"
+            },
+            "es": {
+              "body": "El eje de Button escrito solo como hooks en la raíz: <code>tactile</code> una tecla elevada en un pozo más hondo, <code>brutalist</code> una pista de borde negro con sombra dura, <code>frosted</code> una pista translúcida, opaca donde el material no es fiable.",
+              "title": "Segmented suma appearance plain, tactile, brutalist y frosted"
+            },
+            "kind": "feature",
+            "target": "appearance"
+          },
+          {
             "date": "2026-09-17",
             "en": {
               "body": "Interactive or form host signatures publish <code>forward</code> (<code>id</code>/<code>aria-*</code> and link or form attrs where relevant). An attr outside the list is <code>unknown-attr</code>.",
@@ -39704,6 +39717,18 @@
           "part": "root",
           "sheet": "@skryensya/core/components/segmented.css"
         },
+        "--sk-segmented-brutalist-offset": {
+          "default": "3px",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/segmented.css"
+        },
+        "--sk-segmented-frost-opacity": {
+          "default": "60%",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/segmented.css"
+        },
         "--sk-segmented-gap": {
           "default": "var(--space-inline-xs)",
           "output": false,
@@ -39775,6 +39800,8 @@
         "--sk-segmented-bg",
         "--sk-segmented-border-color",
         "--sk-segmented-border-width",
+        "--sk-segmented-brutalist-offset",
+        "--sk-segmented-frost-opacity",
         "--sk-segmented-gap",
         "--sk-segmented-option-fg",
         "--sk-segmented-padding",
@@ -39789,6 +39816,17 @@
       ],
       "id": "segmented",
       "options": {
+        "appearance": {
+          "attr": "data-appearance",
+          "default": "plain",
+          "type": "enum",
+          "values": [
+            "plain",
+            "tactile",
+            "brutalist",
+            "frosted"
+          ]
+        },
         "label": {
           "attr": "aria-label",
           "type": "string"
@@ -39842,7 +39880,8 @@
           "mount": "data-sk-segmented",
           "options": [
             "value",
-            "label"
+            "label",
+            "appearance"
           ],
           "react": {
             "from": "@skryensya/react/segmented",
@@ -52102,7 +52141,7 @@
     "working": "0.0.1"
   },
   "schemaVersion": "2.3",
-  "sourceHash": "f97414a999917d36",
+  "sourceHash": "6da559c9fe72ec34",
   "vocabulary": {
     "a11y": "When `when` holds, one of `requiresOneOf` must be given: an option, a raw attribute, a filled slot, or a child signature by name.",
     "atLeastOneOf": "At least one member of each group counts: a filled slot, a boolean option set to true, or an option other than its default.",
