@@ -9960,6 +9960,19 @@
         "date": null,
         "entries": [
           {
+            "date": "2026-09-26",
+            "en": {
+              "body": "<code>brutalist</code> draws the chip with a black edge and a small hard offset, on <code>Tag</code> and <code>Tag.link</code>. No <code>tactile</code> and no <code>frosted</code>.",
+              "title": "Tag adds plain and brutalist appearances"
+            },
+            "es": {
+              "body": "<code>brutalist</code> dibuja la etiqueta con borde negro y una sombra dura pequeña, en <code>Tag</code> y <code>Tag.link</code>. Sin <code>tactile</code> ni <code>frosted</code>.",
+              "title": "Tag suma appearance plain y brutalist"
+            },
+            "kind": "feature",
+            "target": "appearance"
+          },
+          {
             "date": "2026-09-17",
             "en": {
               "body": "The remove control is system-owned Button+Icon; <code>compose</code> declares it (<code>systemOwned</code>), same as Dialog close.",
@@ -45664,6 +45677,15 @@
       ],
       "id": "tag",
       "options": {
+        "appearance": {
+          "attr": "data-appearance",
+          "default": "plain",
+          "type": "enum",
+          "values": [
+            "plain",
+            "brutalist"
+          ]
+        },
         "href": {
           "attr": "href",
           "type": "string"
@@ -45758,7 +45780,8 @@
           "options": [
             "tone",
             "removable",
-            "removeLabel"
+            "removeLabel",
+            "appearance"
           ],
           "react": {
             "from": "@skryensya/react/tag",
@@ -45837,7 +45860,8 @@
           ],
           "options": [
             "tone",
-            "href"
+            "href",
+            "appearance"
           ],
           "react": {
             "from": "@skryensya/react/tag",
@@ -52690,7 +52714,7 @@
     "working": "0.0.1"
   },
   "schemaVersion": "2.3",
-  "sourceHash": "c1f4be8355dd7528",
+  "sourceHash": "5aec7ea5f76436a3",
   "vocabulary": {
     "a11y": "When `when` holds, one of `requiresOneOf` must be given: an option, a raw attribute, a filled slot, or a child signature by name.",
     "atLeastOneOf": "At least one member of each group counts: a filled slot, a boolean option set to true, or an option other than its default.",

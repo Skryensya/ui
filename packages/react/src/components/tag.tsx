@@ -4,11 +4,13 @@ import { Button } from "./button.js";
 import { Icon } from "./icon.js";
 
 /* Derived, never restated: the default lives in the contract. */
-const { tone: toneOption, removeLabel: removeLabelOption } = tagContract.options;
+const { appearance: appearanceOption, tone: toneOption, removeLabel: removeLabelOption } = tagContract.options;
 
 const cx = (base: string, className: string | undefined) => (className ? `${base} ${className}` : base);
 
 type TagOwnProps = {
+  /** How the chip is drawn: `plain`, or `brutalist`'s black edge and small hard offset. */
+  appearance?: (typeof appearanceOption.values)[number];
   /** Plain chip text. Matches the contract slot (`accepts: "text"`). */
   children: string;
   tone?: TagTone;
@@ -39,10 +41,10 @@ type LinkTagProps = Omit<AnchorHTMLAttributes<HTMLAnchorElement>, "children"> &
 
 export type TagProps = StaticTagProps | LinkTagProps;
 
-export function Tag({ children, className, tone = toneOption.default, ...props }: TagProps) {
+export function Tag({ appearance = appearanceOption.default, children, className, tone = toneOption.default, ...props }: TagProps) {
   if (props.href !== undefined) {
     return (
-      <a {...props} className={cx(`${tagParts.root} sk-interactive`, className)} data-tone={tone}>
+      <a {...props} className={cx(`${tagParts.root} sk-interactive`, className)} data-appearance={appearance} data-tone={tone}>
         <span className={tagParts.label}>{children}</span>
       </a>
     );
@@ -53,6 +55,7 @@ export function Tag({ children, className, tone = toneOption.default, ...props }
     <span
       {...spanProps}
       className={cx(tagParts.root, className)}
+      data-appearance={appearance}
       data-removable={removable ? "" : undefined}
       data-tone={tone}
     >
