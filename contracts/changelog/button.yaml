@@ -3,8 +3,63 @@
 # `surface` is the shape of the contract the last time somebody reviewed it. If the compiler says it
 # does not match, something a consumer depends on has moved: write the entry and paste in the new
 # hash.
-surface: "9ef19af99a343d35"
+surface: "f481cab9a19f485c"
 entries:
+  - date: 2026-09-26
+    kind: feature
+    target: appearance
+    es:
+      title: Button suma appearance frosted
+      body: >-
+        <code>appearance="frosted"</code> expresa el mismo Button como un material translúcido: la cara deja
+        pasar el fondo difuminado y saturado, con un borde fino y un brillo superior. No es el énfasis
+        <code>translucent</code>, que decide cuánto deja ver la pintura; frosted decide cómo se procesa lo de
+        atrás, y se combina con todos los énfasis. Sin <code>backdrop-filter</code>, con transparencia
+        reducida, alto contraste o forced colors vuelve a una cara opaca. Hooks nuevos:
+        <code>--sk-button-frost-opacity</code>, <code>--sk-button-frost-blur</code> y
+        <code>--sk-button-frost-saturation</code>.
+    en:
+      title: Button adds frosted appearance
+      body: >-
+        <code>appearance="frosted"</code> expresses the same Button as a translucent material: the face lets
+        a blurred, saturated backdrop through, with a fine edge and a top highlight. It is not the
+        <code>translucent</code> emphasis, which decides how much the paint lets through; frosted decides how
+        what is behind is processed, and composes with every emphasis. Without <code>backdrop-filter</code>,
+        under reduced transparency, high contrast or forced colors it returns to an opaque face. New hooks:
+        <code>--sk-button-frost-opacity</code>, <code>--sk-button-frost-blur</code> and
+        <code>--sk-button-frost-saturation</code>.
+  - date: 2026-09-26
+    kind: feature
+    target: appearance
+    es:
+      title: Button suma appearance brutalist
+      body: >-
+        <code>appearance="brutalist"</code> expresa el mismo Button como un control gráfico: cara plana, borde
+        fuerte y una sombra desplazada sin desenfoque hacia la que la cara viaja al presionar. No cambia el
+        radio, la densidad, el tono ni el énfasis. Hooks nuevos: <code>--sk-button-brutalist-offset-inline</code>,
+        <code>--sk-button-brutalist-offset-block</code>, <code>--sk-button-brutalist-edge</code> y
+        <code>--sk-button-brutalist-shadow</code>.
+    en:
+      title: Button adds brutalist appearance
+      body: >-
+        <code>appearance="brutalist"</code> expresses the same Button as a graphic control: a flat face, a
+        strong edge and a zero-blur offset shadow the face travels into when pressed. Radius, density, tone
+        and emphasis are unchanged. New hooks: <code>--sk-button-brutalist-offset-inline</code>,
+        <code>--sk-button-brutalist-offset-block</code>, <code>--sk-button-brutalist-edge</code> and
+        <code>--sk-button-brutalist-shadow</code>.
+  - date: 2026-09-26
+    kind: breaking
+    target: appearance
+    es:
+      title: La apariencia base se llama plain
+      body: >-
+        El valor base de <code>appearance</code> pasa de <code>default</code> a <code>plain</code>, para que el eje nombre una
+        expresión visual concreta en vez de repetir que es el valor por defecto. <code>tactile</code> no cambia.
+    en:
+      title: The base appearance is named plain
+      body: >-
+        The base <code>appearance</code> value moves from <code>default</code> to <code>plain</code>, so the axis names a concrete
+        visual expression instead of restating that it is the default. <code>tactile</code> is unchanged.
   - date: 2026-09-26
     kind: feature
     target: appearance
@@ -12,13 +67,13 @@ entries:
       title: Button suma appearance tactile
       body: >-
         <code>Button.action</code> y <code>Button.navigation</code> aceptan <code>appearance</code>.
-        <code>default</code> conserva el look existente; <code>tactile</code> expresa el mismo Button como
+        <code>plain</code> conserva el look existente; <code>tactile</code> expresa el mismo Button como
         un control fisico con profundidad y compresion al presionar.
     en:
       title: Button adds tactile appearance
       body: >-
         <code>Button.action</code> and <code>Button.navigation</code> accept <code>appearance</code>.
-        <code>default</code> keeps the existing look; <code>tactile</code> expresses the same Button as a
+        <code>plain</code> keeps the existing look; <code>tactile</code> expresses the same Button as a
         physical control with depth and press compression.
   - date: 2026-09-17
     kind: feature

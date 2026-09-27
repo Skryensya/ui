@@ -34,6 +34,11 @@
     /* Public only because tactile is a physical expression consumers may need to tune with density
      * or a local surface. Intermediate travel/compression math stays in the rules below. */
     --sk-button-depth: 5px;
+    /* Brutalist's hard offset, as LOGICAL magnitudes: how far the shadow sits toward inline-end and
+     * block-end. Lengths, never a unitless 0 (they go through min()/round()). RTL mirrors the inline
+     * side on its own, so a consumer never writes a negative value to follow the reading direction. */
+    --sk-button-brutalist-offset-inline: 5px;
+    --sk-button-brutalist-offset-block: 5px;
     --sk-button-radius: var(--radius-control);
     /* Buttons stay comfortably tappable even when density contracts the surrounding layout. */
     --sk-button-height: max(var(--size-control-md), var(--size-touch-target));
@@ -153,7 +158,7 @@
    * guards live in one selector rather than a later override rule, so there is no specificity
    * order to get wrong between them.
    */
-  .sk-button:active:not(:disabled):not([aria-disabled="true"]):not([data-weld-start]):not([data-weld-end]):not([data-appearance="tactile"]) {
+  .sk-button:active:not(:disabled):not([aria-disabled="true"]):not([data-weld-start]):not([data-weld-end]):not([data-appearance="tactile"], [data-appearance="brutalist"], [data-appearance="frosted"]) {
     scale: var(--motion-press-scale);
     /* Pairs with the squeeze: every variant but `ghost` carries `--elevation-raised` at rest, and
      * flattening it to `--elevation-flat` (`none`) while pressed reads as the button meeting the
@@ -321,8 +326,8 @@
   /*
    * ── APPEARANCE ───────────────────────────────────────────────────────────────────────────────
    *
-   * `appearance` changes the physical expression of the same Button contract. The default is the
-   * base paint above, matched by absence. Tactile consumes one central depth: as travel increases,
+   * `appearance` changes the physical expression of the same Button contract. Plain is the base
+   * paint above, matched by absence. Tactile consumes one central depth: as travel increases,
    * the visible depth and separation shadow shrink. The host's normal-flow footprint is unchanged;
    * `translate` is paint/compositor feedback only.
    */
@@ -353,6 +358,11 @@
 
   .sk-button[data-appearance="tactile"][data-variant="ghost"] {
     --sk-button-depth: 3px;
+    --sk-button-bg: color-mix(in oklab, currentColor 6%, transparent);
+    --sk-button-border-color: color-mix(in oklab, currentColor 18%, transparent);
+    --sk-button-wash: none;
+    --state-layer-hover-opacity: 0.04;
+    --state-layer-pressed-opacity: 0.08;
     box-shadow:
       0 var(--sk-button-depth) 0 color-mix(in oklab, currentColor 20%, transparent),
       0 calc(var(--sk-button-depth) + 1px) 3px color-mix(in oklab, currentColor 10%, transparent);
@@ -530,10 +540,14 @@
     }
 
     .sk-button[data-appearance="tactile"][data-variant="ghost"]:hover:not(:disabled):not([aria-disabled="true"]) {
+      /* Ghost is already almost transparent, so changing its cast shadow on hover reads as the
+       * shadow disappearing and coming back rather than as physical travel. Keep the rest depth
+       * stable and let the tiny translate/state layer carry hover; the real compression happens on
+       * active, where the press is intentional. */
       box-shadow:
-        0 calc(var(--sk-button-depth) * 0.78) 0 color-mix(in oklab, currentColor 19%, transparent),
-        0 calc(var(--sk-button-depth) * 0.78 + 1px) 3px color-mix(in oklab, currentColor 9%, transparent);
-      translate: 0 calc(var(--sk-button-depth) * 0.22);
+        0 var(--sk-button-depth) 0 color-mix(in oklab, currentColor 20%, transparent),
+        0 calc(var(--sk-button-depth) + 1px) 3px color-mix(in oklab, currentColor 10%, transparent);
+      translate: 0 calc(var(--sk-button-depth) * 0.12);
     }
 
     .sk-button[data-appearance="tactile"][data-variant="translucent"]:hover:not(:disabled):not([aria-disabled="true"]) {
@@ -558,6 +572,313 @@
       );
     translate: 0 calc(var(--sk-button-depth) * 0.86);
     scale: 1;
+  }
+
+  .sk-button[data-appearance="tactile"][data-variant="soft"]:active:not(:disabled):not([aria-disabled="true"]) {
+    box-shadow:
+      0 calc(var(--sk-button-depth) * 0.14) 0 light-dark(
+        color-mix(in oklab, var(--sk-button-bg) 82%, var(--sk-button-ink)),
+        color-mix(in oklab, var(--sk-button-bg) 76%, var(--color-bg-surface-sunken))
+      );
+    translate: 0 calc(var(--sk-button-depth) * 0.86);
+    scale: 1;
+  }
+
+  .sk-button[data-appearance="tactile"][data-variant="ghost"]:active:not(:disabled):not([aria-disabled="true"]) {
+    box-shadow: 0 calc(var(--sk-button-depth) * 0.14) 0 color-mix(in oklab, currentColor 16%, transparent);
+    translate: 0 calc(var(--sk-button-depth) * 0.86);
+    scale: 1;
+  }
+
+  .sk-button[data-appearance="tactile"][data-variant="translucent"]:active:not(:disabled):not([aria-disabled="true"]) {
+    box-shadow:
+      0 calc(var(--sk-button-depth) * 0.14) 0 light-dark(
+        color-mix(in oklab, var(--color-border-subtle) 52%, transparent),
+        color-mix(in oklab, var(--color-action-neutral) 38%, transparent)
+      );
+    translate: 0 calc(var(--sk-button-depth) * 0.86);
+    scale: 1;
+  }
+
+  /*
+   * BRUTALIST. Graphic depth, NOT semantic elevation: a flat face, a hard edge, and a zero-blur
+   * offset the face travels into. `--elevation-*` means height above the page and none of it is
+   * spent here; the offset is a drawn mark attached to the control.
+   *
+   * ONE FORMULA FOR EVERY STATE. The states below move a single internal `--brutalist-travel`
+   * (0 at rest, negative grows the shadow, positive presses). The visible shadow is
+   * `offset × (1 - travel)` and, while pressed, the face moves by whatever the shadow gave up, so
+   * the shadow's far edge stays put: the face slides toward a fixed hole. `box-shadow` is declared
+   * once, here, so a container that clears a welded half's shadow (split-button.css does) wins in
+   * every state instead of losing to a :hover or :active rule with more specificity.
+   *
+   * NO TRANSFORM AT REST OR ON HOVER. Any `translate` other than `none`, even `0 0`, makes Chrome
+   * hit-test the host against its clip without `overflow-clip-margin`, which cuts the `::after`
+   * touch target back to the face: measured, an `xs` brutalist stopped answering 6px outside its
+   * face. So hover grows the offset without lifting the face, and `translate` exists only while
+   * `:active`, the same trade plain's own `scale` squeeze already makes mid-press.
+   *
+   * WHOLE PIXELS, via round(): a hard edge at 3.75px antialiases into the soft shadow this appearance
+   * exists not to be. The remaining shadow never drops below 1px while there is an offset at all, so a
+   * press never swallows the face into its shadow completely.
+   *
+   * RTL MIRRORS the inline side (`:dir(rtl)` below), the same decision sticker.css made: the offset
+   * is UI geometry that follows the reading direction, not a fixed light source.
+   *
+   * INDEPENDENT of radius and density: no corner, size or spacing is touched here, so the face keeps
+   * whatever `data-radius` resolves to and the offset follows the corner (box-shadow does).
+   *
+   * Internal (`--brutalist-*`, not hooks): a consumer who set one would be fighting the state.
+   */
+  .sk-button[data-appearance="brutalist"] {
+    /* The edge keeps plain's own width, so switching appearance never changes the button's size (and
+     * split-button's 1px seam overlap still holds); the weight comes from the ink and the offset. */
+    --sk-button-wash: none;
+    /* The ink that draws the construction, and it is BLACK in both modes: a shadow is dark, whatever
+     * the page is. text-primary would have been the obvious token and it is wrong in dark, where it
+     * turns near-white and the offset reads as a glow (a grey mix of the border was tried too, and
+     * reads as dirt). Opaque black comes from the system's own shadow colour rather than a raw value:
+     * `--shadow-lg` is black at some alpha in both modes, and this keeps its channels at full alpha.
+     * Every variant and tone draws with this same black: the construction is one ink, the fill and
+     * the label are what carry tone. */
+    --brutalist-black: oklch(from var(--shadow-lg) l c h / 1);
+    --sk-button-brutalist-edge: var(--brutalist-black);
+    --sk-button-brutalist-shadow: var(--sk-button-brutalist-edge);
+    --brutalist-direction: 1;
+    --brutalist-travel: 0;
+    /* Disabled scales the whole construction down rather than inventing a second geometry. */
+    --brutalist-reach: 1;
+    --brutalist-offset-inline: round(nearest, calc(var(--sk-button-brutalist-offset-inline) * var(--brutalist-reach)), 1px);
+    --brutalist-offset-block: round(nearest, calc(var(--sk-button-brutalist-offset-block) * var(--brutalist-reach)), 1px);
+    --brutalist-shadow-inline: max(
+      min(var(--brutalist-offset-inline), 1px),
+      round(nearest, calc(var(--brutalist-offset-inline) * (1 - var(--brutalist-travel))), 1px)
+    );
+    --brutalist-shadow-block: max(
+      min(var(--brutalist-offset-block), 1px),
+      round(nearest, calc(var(--brutalist-offset-block) * (1 - var(--brutalist-travel))), 1px)
+    );
+    border-color: var(--sk-button-brutalist-edge);
+    box-shadow: calc(var(--brutalist-shadow-inline) * var(--brutalist-direction)) var(--brutalist-shadow-block) 0
+      var(--sk-button-brutalist-shadow);
+    /* Face and shadow on ONE tempo. The base transitions box-shadow at state-change speed and
+     * translate at feedback speed; split like that, the face outruns its own shadow mid-press and
+     * the fixed far edge visibly wobbles. Reduced motion needs no block of its own: the feedback
+     * token already goes instant under it, so the pressed state lands immediately. */
+    transition:
+      background-color var(--motion-state-change-duration) var(--motion-state-change-easing),
+      border-color var(--motion-state-change-duration) var(--motion-state-change-easing),
+      color var(--motion-state-change-duration) var(--motion-state-change-easing),
+      box-shadow var(--motion-feedback-duration) var(--motion-feedback-easing),
+      translate var(--motion-feedback-duration) var(--motion-feedback-easing);
+  }
+
+  .sk-button[data-appearance="brutalist"]:dir(rtl) {
+    --brutalist-direction: -1;
+  }
+
+  /* Solid is the base above: strongest edge, full offset. Each quieter emphasis spends LESS of the
+   * construction instead of dropping it, so the four stay distinguishable inside the appearance. */
+
+  /* SOFT: the same black, a shorter offset under the receding fill. */
+  .sk-button[data-appearance="brutalist"][data-variant="soft"] {
+    --sk-button-brutalist-offset-inline: 4px;
+    --sk-button-brutalist-offset-block: 4px;
+  }
+
+  /* GHOST: still no body (the transparent fill comes from ghost itself, and aria-pressed can still
+   * give it one). The same black outline with the smallest offset, so it reads as a drawn control
+   * rather than as a filled block with its paint missing. On a dark page a black outline is faint:
+   * the label, in the tone's ink, is what carries a ghost there, as it does in plain. */
+  .sk-button[data-appearance="brutalist"][data-variant="ghost"] {
+    --sk-button-brutalist-offset-inline: 2px;
+    --sk-button-brutalist-offset-block: 2px;
+  }
+
+  /* TRANSLUCENT keeps its see-through face; only the construction is added, in the same black and a
+   * shorter offset. */
+  .sk-button[data-appearance="brutalist"][data-variant="translucent"] {
+    --sk-button-brutalist-offset-inline: 4px;
+    --sk-button-brutalist-offset-block: 4px;
+  }
+
+  /* Hover reaches a notch further: the same hard offset, one pixel longer. No glow, no lift. */
+  @media (any-hover: hover) {
+    .sk-button[data-appearance="brutalist"]:hover:not(:disabled):not([aria-disabled="true"]) {
+      --brutalist-travel: -0.25;
+    }
+  }
+
+  /* Press drives the face most of the way home. aria-pressed is deliberately absent from these two
+   * rules: a toggle that is ON keeps its rest offset and is told apart by the pressed paint above,
+   * and it still travels when clicked again, because `:active` is the finger and not the state. */
+  .sk-button[data-appearance="brutalist"]:active:not(:disabled):not([aria-disabled="true"]) {
+    --brutalist-travel: 0.8;
+    translate:
+      calc((var(--brutalist-offset-inline) - var(--brutalist-shadow-inline)) * var(--brutalist-direction))
+      calc(var(--brutalist-offset-block) - var(--brutalist-shadow-block));
+  }
+
+  /*
+   * FROSTED. A MATERIAL, not a paint: the face is a thin sheet that lets what is behind it through,
+   * diffused. The contract is the one `patterns/transparency.css` already set for the system:
+   *
+   *   BASELINE (always)  the plain face, opaque, plus the material's fine edge and top highlight.
+   *                      This is what a browser without backdrop-filter, a reduced-transparency
+   *                      preference, high contrast or forced colors gets: an intentional, legible
+   *                      control, never a see-through one with nothing behind it processed.
+   *   MATERIAL (only under `@supports (backdrop-filter)` AND reduced-transparency: no-preference)
+   *                      the same face at `--sk-button-frost-opacity`, over a blurred and
+   *                      saturated backdrop.
+   *
+   * FROSTED IS NOT `variant="translucent"`. That variant is emphasis: a paint that lets an unknown
+   * surface show through. Frosted is how the material processes that surface, and it composes with
+   * every variant, translucent included: see the translucent rule below for how the two resolve.
+   *
+   * No new tone, no new geometry: the face is whatever `--sk-button-bg` the variant and tone
+   * resolved, the edge is the button's own ink, and radius/density/size are never touched, so the
+   * backdrop clips to whatever corner the radius dimension gives the host. No travel, no squeeze:
+   * interaction is the shared state layer plus a slightly denser face.
+   *
+   * THE OPACITIES ARE A CONTRAST FLOOR, NOT TASTE. A filled face over an unknown backdrop has to keep
+   * its label legible over the worst one (black under a light face, white under a dark one);
+   * button-frosted.spec.ts measures solid and soft at 4.5:1 over both, in both modes. Ghost and
+   * translucent make no such promise in plain either, so frosted adds blur to them, never less paint.
+   *
+   * Internal (`--frost-*`, not hooks): the state density, the floor and the edge are math the states
+   * drive; the three `--sk-button-frost-*` hooks are the material a consumer may actually tune, the
+   * same three knobs `.sk-translucent` publishes.
+   */
+  .sk-button[data-appearance="frosted"] {
+    --sk-button-frost-opacity: 84%;
+    --sk-button-frost-blur: 16px;
+    --sk-button-frost-saturation: 150%;
+    /* What the material is tinted with. The resolved face by default; ghost swaps it (below). */
+    --frost-face: var(--sk-button-bg);
+    /* Added by hover/active. A minimum opacity raised by pressed/disabled. */
+    --frost-density: 0%;
+    --frost-floor: 0%;
+    /* The fine optical edge, from the button's own ink so it reads on its own face in every tone and
+     * mode; and a one-pixel top highlight, the lit rim of the sheet. The highlight is mode-aware
+     * through semantic tokens: the page's surface in light, a trace of the primary ink in dark. */
+    --frost-edge: color-mix(in oklab, currentColor 24%, transparent);
+    --frost-highlight: light-dark(
+      color-mix(in oklab, var(--color-bg-surface) 70%, transparent),
+      color-mix(in oklab, var(--color-text-primary) 18%, transparent)
+    );
+    /* Separation from the backdrop: a hairline of the system's own shadow colour under the sheet.
+     * Its own value rather than `--sk-button-shadow`, because that hook is `none` on ghost, pressed
+     * and disabled, and `inset …, none` is an invalid list that drops the highlight with it. */
+    --frost-drop: 0 1px 2px var(--shadow-sm);
+    /* The lit face of the sheet, through the wash hook Button already layers over its fill: faint,
+     * gone by mid-height so it never sits under the label. It is what still says "material" on a
+     * toned face whose legibility floor lets only a trace of the backdrop through. */
+    --sk-button-wash: linear-gradient(
+      to bottom,
+      color-mix(in oklab, var(--frost-highlight) 55%, transparent),
+      transparent 50%
+    );
+    border-color: var(--frost-edge);
+    box-shadow: inset 0 1px 0 var(--frost-highlight), var(--frost-drop);
+  }
+
+  /* SOLID is the base above: the densest face, the tone at full strength, the backdrop a trace. */
+
+  /* SOFT recedes by being thinner, over the same material. */
+  .sk-button[data-appearance="frosted"][data-variant="soft"] {
+    --sk-button-frost-opacity: 76%;
+  }
+
+  /*
+   * A TONED FACE HAS LESS HEADROOM. Neutral faces keep 7:1 or better at the opacities above even over
+   * a black or white backdrop; accent and danger fills and washes sit much closer to their ink, and
+   * measured, they only clear 4.5:1 over the worst backdrop from about 94%. So a toned filled face
+   * lets through a trace of the backdrop and the material reads mostly in its edge, highlight and
+   * blurred tint. That is the honest cost of promising a legible label over an unknown surface.
+   */
+  .sk-button[data-appearance="frosted"]:is([data-tone="accent"], [data-tone="danger"]):not(
+      [data-variant="ghost"],
+      [data-variant="translucent"]
+    ) {
+    --sk-button-frost-opacity: 94%;
+  }
+
+  /* GHOST keeps no body of its own: the material is a faint sheet of the page's surface rather than
+   * a tinted tile, the edge is fainter, and the blur is lighter, so it reads as ink on glass and
+   * never as a soft button in disguise. `--sk-button-bg` itself is left alone, so aria-pressed can
+   * still give it its fill. */
+  .sk-button[data-appearance="frosted"][data-variant="ghost"] {
+    --sk-button-frost-opacity: 14%;
+    --sk-button-frost-blur: 8px;
+    --frost-face: var(--color-bg-surface);
+    --frost-edge: color-mix(in oklab, currentColor 16%, transparent);
+    --frost-drop: 0 0 transparent;
+    --sk-button-wash: none;
+  }
+
+  /* TRANSLUCENT is where the two axes meet, and they resolve into ONE sheet, not two opacities
+   * multiplied: the variant already chose how much of the backdrop its paint lets through, so the
+   * material keeps that paint at full strength and adds only the processing. Its face alpha is
+   * therefore exactly plain translucent's, over a blurred backdrop instead of a sharp one. */
+  .sk-button[data-appearance="frosted"][data-variant="translucent"] {
+    --sk-button-frost-opacity: 100%;
+  }
+
+  @supports (backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px)) {
+    @media (prefers-reduced-transparency: no-preference) {
+      .sk-button[data-appearance="frosted"] {
+        background:
+          var(--sk-button-wash)
+          color-mix(
+            in oklab,
+            var(--frost-face) max(var(--frost-floor), min(100%, var(--sk-button-frost-opacity) + var(--frost-density))),
+            transparent
+          );
+        /* One filter pair, bounded to the host's own box, and never transitioned: states move the
+         * face's opacity, which is cheap, and leave the blur radius alone. */
+        -webkit-backdrop-filter: blur(var(--sk-button-frost-blur)) saturate(var(--sk-button-frost-saturation));
+        backdrop-filter: blur(var(--sk-button-frost-blur)) saturate(var(--sk-button-frost-saturation));
+      }
+    }
+  }
+
+  /* Hover and press make the sheet a little denser, beneath the state layer that already tints it. */
+  @media (any-hover: hover) {
+    .sk-button[data-appearance="frosted"]:hover:not(:disabled):not([aria-disabled="true"]) {
+      --frost-density: 6%;
+    }
+  }
+
+  .sk-button[data-appearance="frosted"]:active:not(:disabled):not([aria-disabled="true"]) {
+    --frost-density: 12%;
+  }
+
+  /* A toggle that is ON is told apart by the pressed paint (the PRESSED section above), never by
+   * blur alone: the floor makes that paint nearly opaque, so the selection reads the same with the
+   * material, without it, and under hover. The face follows the pressed fill even on ghost. */
+  .sk-button[data-appearance="frosted"][aria-pressed="true"] {
+    --frost-face: var(--sk-button-bg);
+    --frost-floor: 92%;
+    --frost-edge: color-mix(in oklab, currentColor 36%, transparent);
+    --frost-drop: 0 0 transparent;
+  }
+
+  /* HIGH CONTRAST OUTRANKS THE MATERIAL. The hc mode strengthens tokens; a see-through face would
+   * hand the contrast straight back to whatever sits behind the button, so both of its triggers
+   * return frosted to the opaque baseline. */
+  [data-contrast="high"] .sk-button[data-appearance="frosted"],
+  .sk-button[data-appearance="frosted"][data-contrast="high"] {
+    background: var(--sk-button-wash) var(--sk-button-bg);
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+
+  @media (prefers-contrast: more) {
+    :root:not([data-contrast]) .sk-button[data-appearance="frosted"] {
+      background: var(--sk-button-wash) var(--sk-button-bg);
+      -webkit-backdrop-filter: none;
+      backdrop-filter: none;
+    }
   }
 
   /* Icon-only is a SHAPE, a third axis orthogonal to variant and size, an accent button can be
@@ -604,6 +925,24 @@
     border-start-end-radius: 0;
     border-end-end-radius: 0;
     border-inline-end-color: transparent;
+  }
+
+  /*
+   * A WELDED BRUTALIST GROUP is one slab, not a row of blocks each throwing its own shadow sideways
+   * onto the next. Every welded member drops the INLINE offset and keeps the block one, so the group
+   * casts a single continuous block-end shadow, and a pressed segment travels straight down instead
+   * of sliding over its neighbour's seam (the same reason plain skips its squeeze when welded).
+   *
+   * The SEAM is one line, drawn by the member that welds on its start: the weld rules above clear
+   * both touching edges, which leaves a flat group with no division at all once the edge is the
+   * construction's own ink. The leading member's end stays clear, so the line is never doubled.
+   */
+  .sk-button[data-appearance="brutalist"]:is([data-weld-start], [data-weld-end]) {
+    --sk-button-brutalist-offset-inline: 0px;
+  }
+
+  .sk-button[data-appearance="brutalist"][data-weld-start] {
+    border-inline-start-color: var(--sk-button-brutalist-edge);
   }
 
   /* Sizes key off data-size, an ORTHOGONAL axis to data-variant, so an accent button can also
@@ -738,6 +1077,26 @@
     scale: 1;
   }
 
+  /* Disabled outranks the material too: a near-opaque disabled face, a quiet edge and no highlight,
+   * so a bright backdrop cannot make an unavailable control look live. The density never moves,
+   * because the hover/active rules above never match a disabled host. */
+  .sk-button[data-appearance="frosted"]:is(:disabled, [aria-disabled="true"]) {
+    --frost-face: var(--sk-button-bg);
+    --frost-floor: 94%;
+    --frost-edge: var(--color-border-subtle);
+    --frost-highlight: transparent;
+    --frost-drop: 0 0 transparent;
+  }
+
+  /* Disabled outranks appearance: the construction stays recognisable but shrinks and fades to the
+   * disabled border colour, so a strong offset never makes an unavailable control look pressable.
+   * Travel cannot happen at all, because the hover/active rules above never match a disabled host. */
+  .sk-button[data-appearance="brutalist"]:is(:disabled, [aria-disabled="true"]) {
+    --brutalist-reach: 0.4;
+    --sk-button-brutalist-edge: var(--color-border-default);
+    --sk-button-brutalist-shadow: var(--color-border-subtle);
+  }
+
   @media (forced-colors: active) {
     .sk-button {
       --sk-button-border-color: CanvasText;
@@ -780,6 +1139,34 @@
       color: CanvasText;
     }
 
+    /* Brutalist degrades to a plain system control: the UA drops box-shadow here anyway, and a face
+     * that travels with no shadow to travel into reads as a jump. The edge keeps the system ink;
+     * focus, aria-pressed (Highlight above) and disabled (GrayText below) are carried as for plain. */
+    .sk-button[data-appearance="brutalist"] {
+      --sk-button-brutalist-edge: CanvasText;
+      box-shadow: none;
+    }
+
+    .sk-button[data-appearance="brutalist"]:active:not(:disabled):not([aria-disabled="true"]) {
+      translate: none;
+    }
+
+    /* Frosted keeps nothing of the material here: the UA would keep the face's alpha (forced colors
+     * replace a colour's channels, not its transparency) and blur whatever is behind it, so the face
+     * goes back to the opaque system paint and the edge to the system ink. */
+    .sk-button[data-appearance="frosted"] {
+      --frost-edge: CanvasText;
+      --frost-highlight: transparent;
+      background: var(--sk-button-bg);
+      -webkit-backdrop-filter: none;
+      backdrop-filter: none;
+      box-shadow: none;
+    }
+
+    .sk-button[data-appearance="frosted"]:is(:disabled, [aria-disabled="true"]) {
+      --frost-edge: GrayText;
+    }
+
     .sk-button:disabled,
     .sk-button[aria-disabled="true"] {
       --sk-button-bg: Canvas;
@@ -787,6 +1174,10 @@
       --sk-button-border-color: GrayText;
       background: Canvas;
       color: GrayText;
+    }
+
+    .sk-button[data-appearance="brutalist"]:is(:disabled, [aria-disabled="true"]) {
+      --sk-button-brutalist-edge: GrayText;
     }
   }
 }
