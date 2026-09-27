@@ -49,7 +49,6 @@ export const segmentedContract = {
     "--sk-segmented-border-color",
     "--sk-segmented-border-width",
     "--sk-segmented-brutalist-offset",
-    "--sk-segmented-frost-opacity",
     "--sk-segmented-gap",
     "--sk-segmented-option-fg",
     "--sk-segmented-padding",

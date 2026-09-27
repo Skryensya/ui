@@ -240,9 +240,6 @@
     --sk-details-brutalist-offset-inline: 5px;
     --sk-details-brutalist-offset-block: 5px;
     /* Accordion's own values (accordion.css): the two halves of one contract are one material. */
-    --sk-details-frost-opacity: 82%;
-    --sk-details-frost-blur: 16px;
-    --sk-details-frost-saturation: 150%;
   }
 
   :is(.sk-details:not(.sk-details-group > *), .sk-details-group)[data-appearance="tactile"] {
@@ -294,35 +291,20 @@
     border-block-start-color: color-mix(in oklab, currentColor 12%, transparent);
   }
 
-  @supports (backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px)) {
-    @media (prefers-reduced-transparency: no-preference) {
-      :is(.sk-details:not(.sk-details-group > *), .sk-details-group)[data-appearance="frosted"] {
-        background:
-          linear-gradient(to bottom, color-mix(in oklab, var(--frost-highlight) 60%, transparent), transparent 12rem),
-          color-mix(in oklab, var(--color-bg-surface) var(--sk-details-frost-opacity), transparent);
-        -webkit-backdrop-filter: blur(var(--sk-details-frost-blur)) saturate(var(--sk-details-frost-saturation));
-        backdrop-filter: blur(var(--sk-details-frost-blur)) saturate(var(--sk-details-frost-saturation));
-      }
-
-      :is(.sk-details:not(.sk-details-group > *), .sk-details-group)[data-appearance="frosted"] .sk-details__content {
-        --sk-details-content-bg: color-mix(in oklab, var(--color-bg-surface-sunken) 72%, transparent);
-      }
-    }
+  /* The material, behind the system switch (semantic/_frost.scss); off, the surface and the sunken
+   * body stay opaque. */
+  :is(.sk-details:not(.sk-details-group > *), .sk-details-group)[data-appearance="frosted"] {
+    --frost-glass: var(--frost-on)
+      linear-gradient(to bottom, color-mix(in oklab, var(--frost-highlight) 60%, transparent), transparent 12rem),
+      color-mix(in oklab, var(--color-bg-surface) 82%, transparent);
+    background: var(--frost-glass, var(--color-bg-surface));
+    -webkit-backdrop-filter: var(--frost-on) blur(16px) saturate(150%);
+    backdrop-filter: var(--frost-on) blur(16px) saturate(150%);
   }
 
-  [data-contrast="high"] :is(.sk-details, .sk-details-group)[data-appearance="frosted"],
-  :is(.sk-details, .sk-details-group)[data-appearance="frosted"][data-contrast="high"] {
-    background: var(--color-bg-surface);
-    -webkit-backdrop-filter: none;
-    backdrop-filter: none;
-  }
-
-  @media (prefers-contrast: more) {
-    :root:not([data-contrast]) :is(.sk-details, .sk-details-group)[data-appearance="frosted"] {
-      background: var(--color-bg-surface);
-      -webkit-backdrop-filter: none;
-      backdrop-filter: none;
-    }
+  :is(.sk-details:not(.sk-details-group > *), .sk-details-group)[data-appearance="frosted"] .sk-details__content {
+    --frost-glass: var(--frost-on) color-mix(in oklab, var(--color-bg-surface-sunken) 72%, transparent);
+    --sk-details-content-bg: var(--frost-glass, var(--color-bg-surface-sunken));
   }
 
   @media (forced-colors: active) {

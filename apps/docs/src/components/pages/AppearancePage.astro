@@ -82,14 +82,13 @@ const tree = `{
   "children": "Save"
 }`;
 
-const hooks = `/* The same four families on every component that publishes the value. */
+const hooks = `/* The same families on every component that publishes the value. */
 .pricing .sk-tile {
   --sk-tile-depth: 6px;                     /* tactile: how deep the ledge is */
   --sk-tile-brutalist-offset-inline: 8px;   /* brutalist: the hard offset, logical */
   --sk-tile-brutalist-offset-block: 8px;
   --sk-tile-brutalist-edge: var(--color-text-accent); /* brutalist: the ink */
-  --sk-tile-frost-opacity: 80%;             /* frosted: the material */
-  --sk-tile-frost-blur: 20px;
+  /* frosted has no hooks: its opacity is a contrast floor, not a taste. */
 }`;
 ---
 

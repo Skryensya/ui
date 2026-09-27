@@ -1,5 +1,6 @@
 import { expect, test, type Page } from "@playwright/test";
 import { waitForStage } from "./fixtures.js";
+import { setScheme, TEXT_FLOOR, worstContrast } from "./frost-contrast.js";
 
 /*
  * FROSTED, measured on the real stylesheet: a translucent material over a processed backdrop, with an
@@ -20,10 +21,6 @@ async function reduceTransparency(page: Page, on: boolean): Promise<void> {
   });
   // The face's colour transitions like any state change; read it once it has landed.
   await page.waitForTimeout(400);
-}
-
-async function setScheme(page: Page, scheme: "light" | "dark" | ""): Promise<void> {
-  await page.evaluate((scheme) => (document.documentElement.style.colorScheme = scheme), scheme);
 }
 
 async function mount(page: Page, html: string, hostStyle = ""): Promise<void> {
@@ -83,39 +80,6 @@ async function read(page: Page, selector: string): Promise<Read> {
   });
 }
 
-/** WCAG contrast of the label over the face composited on a black and on a white backdrop. */
-async function worstContrast(page: Page, selector: string): Promise<number> {
-  return page.locator(selector).evaluate((el) => {
-    const cs = getComputedStyle(el);
-    const ctx = document.createElement("canvas").getContext("2d", { willReadFrequently: true })!;
-    const paint = (...layers: string[]) => {
-      ctx.clearRect(0, 0, 1, 1);
-      for (const layer of layers) {
-        ctx.fillStyle = layer;
-        ctx.fillRect(0, 0, 1, 1);
-      }
-      const [r, g, b] = ctx.getImageData(0, 0, 1, 1).data;
-      return [r!, g!, b!];
-    };
-    const lum = ([r, g, b]: number[]) =>
-      [r!, g!, b!]
-        .map((c) => c / 255)
-        .map((c) => (c <= 0.03928 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4))
-        .reduce((sum, c, i) => sum + c * [0.2126, 0.7152, 0.0722][i]!, 0);
-    const ratio = (a: number[], b: number[]) => {
-      const [hi, lo] = [lum(a), lum(b)].sort((x, y) => y - x);
-      return (hi! + 0.05) / (lo! + 0.05);
-    };
-    return Math.min(
-      ...["#000", "#fff"].map((backdrop) => {
-        const face = paint(backdrop, cs.backgroundColor);
-        const ink = paint(backdrop, cs.backgroundColor, cs.color);
-        return ratio(face, ink);
-      }),
-    );
-  });
-}
-
 const button = (id: string, attrs = "", label = "Continue") =>
   `<button id="${id}" class="sk-button sk-interactive" type="button" data-appearance="frosted" ${attrs}>${label}</button>`;
 
@@ -163,23 +127,30 @@ test("omitting data-appearance is plain, and the other appearances are untouched
   for (const id of ["#implicit", "#tactile", "#brutalist"]) expect((await read(page, id)).backdrop, id).toBe("none");
 });
 
-test("solid and soft keep the label at 4.5:1 over a black and a white backdrop, in both modes", async ({ page }) => {
-  const cells = (["solid", "soft"] as const).flatMap((variant) => TONES.map((tone) => ({ variant, tone })));
-  await mount(page, cells.map(({ variant, tone }) => button(`c-${variant}-${tone}`, `data-variant="${variant}" data-tone="${tone}"`)).join(""));
+test("every variant and tone keeps the label at 4.5:1 over a black and a white backdrop, at rest and pressed, in both modes", async ({ page }) => {
+  const cells = VARIANTS.flatMap((variant) => TONES.flatMap((tone) => [false, true].map((pressed) => ({ variant, tone, pressed }))));
+  const id = ({ variant, tone, pressed }: (typeof cells)[number]) => `c-${variant}-${tone}${pressed ? "-on" : ""}`;
+  await mount(
+    page,
+    cells
+      .map((cell) => button(id(cell), `data-variant="${cell.variant}" data-tone="${cell.tone}"${cell.pressed ? ' aria-pressed="true"' : ""}`))
+      .join(""),
+  );
   const report: string[] = [];
   for (const scheme of ["light", "dark"] as const) {
     await setScheme(page, scheme);
-    for (const { variant, tone } of cells) {
-      const ratio = await worstContrast(page, `#c-${variant}-${tone}`);
-      report.push(`${scheme} ${variant}/${tone}: ${ratio.toFixed(2)}`);
-      expect(ratio, `${scheme} ${variant}/${tone}`).toBeGreaterThanOrEqual(4.5);
+    for (const cell of cells) {
+      const label = `${scheme} ${cell.variant}/${cell.tone}${cell.pressed ? " pressed" : ""}`;
+      const ratio = await worstContrast(page, `#${id(cell)}`);
+      report.push(`${label}: ${ratio.toFixed(2)}`);
+      expect(ratio, label).toBeGreaterThanOrEqual(TEXT_FLOOR);
     }
   }
   test.info().annotations.push({ type: "contrast", description: report.join(", ") });
   await setScheme(page, "");
 });
 
-test("variant and tone keep their meaning: ghost thinnest, translucent resolves into one sheet", async ({ page }) => {
+test("variant and tone keep their meaning: the same ink, and emphasis orders the sheets", async ({ page }) => {
   await mount(
     page,
     VARIANTS.flatMap((variant) =>
@@ -200,15 +171,15 @@ test("variant and tone keep their meaning: ghost thinnest, translucent resolves 
       expect(frosted.fg, cell).toBe(plain.fg);
       expect(frosted.backdrop, cell).toContain("blur");
       if (tone === "neutral") alpha[variant] = frosted.bgAlpha;
-      // Translucent: exactly the variant's own paint, not the variant's alpha times the material's.
-      if (variant === "translucent") expect(frosted.bgAlpha, cell).toBeCloseTo(plain.bgAlpha, 2);
+      // Ghost and translucent gain a real sheet: plain promises nothing over an unknown backdrop.
+      if (variant === "ghost" || variant === "translucent") expect(frosted.bgAlpha, cell).toBeGreaterThan(plain.bgAlpha);
     }
   }
+  // Emphasis still orders the sheets: solid densest, ghost thinnest, and still see-through.
   expect(alpha.solid).toBeGreaterThan(alpha.soft!);
-  expect(alpha.soft).toBeGreaterThan(alpha.ghost!);
-  // Ghost is a faint sheet, not a soft button in disguise.
-  expect(alpha.ghost).toBeLessThan(0.25);
-  expect(alpha.ghost).toBeGreaterThan(0);
+  expect(alpha.soft).toBeGreaterThan(alpha.translucent!);
+  expect(alpha.translucent).toBeGreaterThan(alpha.ghost!);
+  expect(alpha.ghost).toBeLessThan(1);
 });
 
 /* On a neutral face: a toned face already sits at its 94% legibility floor, so its density has
@@ -273,7 +244,7 @@ test("aria-pressed is a paint, not a blur: distinct with the material, without i
   }
 });
 
-test("the baseline (no backdrop-filter, or reduced transparency) is the opaque plain face plus the edge", async ({ page }) => {
+test("the baseline (no backdrop-filter, or reduced transparency) is the opaque face plus the edge", async ({ page }) => {
   await mount(
     page,
     VARIANTS.map(
@@ -288,31 +259,30 @@ test("the baseline (no backdrop-filter, or reduced transparency) is the opaque p
     const plain = await read(page, `#p-${variant}`);
     const frosted = await read(page, `#f-${variant}`);
     expect(frosted.backdrop, variant).toBe("none");
-    // The face falls back to exactly the plain paint: opaque where plain is opaque.
-    expect(frosted.bg, variant).toBe(plain.bg);
+    // The face falls back to the material's own face, opaque: the plain paint for solid and soft,
+    // the sheet's tint for ghost and translucent, so the label stays legible without the blur too.
+    if (variant === "solid" || variant === "soft") expect(frosted.bg, variant).toBe(plain.bg);
+    expect(frosted.bgAlpha, variant).toBe(1);
     expect(frosted.fg, variant).toBe(plain.fg);
     expect(frosted.shadow, variant).toContain("inset");
   }
-  expect((await read(page, "#f-solid")).bgAlpha).toBe(1);
-  expect((await read(page, "#f-soft")).bgAlpha).toBe(1);
   await reduceTransparency(page, false);
 
-  // And every declaration that asks for the material sits behind the feature query.
+  // And every declaration that asks for the material sits behind the system switch.
   const outside = await page.evaluate(() => {
     const found: string[] = [];
-    const walk = (rules: CSSRuleList, guarded: boolean) => {
+    const walk = (rules: CSSRuleList) => {
       for (const rule of Array.from(rules)) {
-        if (rule instanceof CSSSupportsRule) walk(rule.cssRules, guarded || rule.conditionText.includes("backdrop-filter"));
-        else if (rule instanceof CSSGroupingRule) walk(rule.cssRules, guarded);
+        if (rule instanceof CSSGroupingRule) walk(rule.cssRules);
         else if (rule instanceof CSSStyleRule && rule.selectorText.includes('data-appearance="frosted"')) {
-          const value = rule.style.getPropertyValue("backdrop-filter");
-          if (value && value !== "none" && !guarded) found.push(rule.selectorText);
+          const value = rule.style.getPropertyValue("backdrop-filter").trim();
+          if (value && value !== "none" && !value.startsWith("var(--frost-on)")) found.push(rule.selectorText);
         }
       }
     };
     for (const sheet of Array.from(document.styleSheets)) {
       try {
-        walk(sheet.cssRules, false);
+        walk(sheet.cssRules);
       } catch {
         /* cross-origin sheet */
       }

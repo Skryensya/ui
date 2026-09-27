@@ -261,43 +261,26 @@
    * selection a denser sheet on it. Opaque baseline; the material only where backdrop-filter exists
    * and no reduced-transparency preference is set. */
   .sk-segmented[data-appearance="frosted"] {
-    --sk-segmented-frost-opacity: 60%;
     --sk-segmented-wash: none;
     --sk-segmented-border-color: color-mix(in oklab, currentColor 18%, transparent);
-    --sk-segmented-shadow: inset 0 1px 0 light-dark(
-      color-mix(in oklab, var(--color-bg-surface) 70%, transparent),
-      color-mix(in oklab, var(--color-text-primary) 18%, transparent)
+    --sk-segmented-shadow: inset 0 1px 0 var(--frost-highlight);
+  }
+
+  /* The material, behind the system switch (semantic/_frost.scss); off, the track and the selection
+   * keep their own opaque paint. */
+  .sk-segmented[data-appearance="frosted"] {
+    /* 72%: the unselected options are secondary ink, and measured they clear 4.5:1 over the worst
+     * backdrop only from about 70%. */
+    --frost-glass: var(--frost-on) color-mix(in oklab, var(--color-bg-surface-sunken) 72%, transparent);
+    --frost-glass-selected: var(--frost-on)
+      color-mix(in oklab, color-mix(in oklab, var(--color-bg-accent-subtle) 55%, var(--color-bg-surface-raised)) 82%, transparent);
+    --sk-segmented-bg: var(--frost-glass, var(--color-bg-surface-sunken));
+    --sk-segmented-selected-bg: var(
+      --frost-glass-selected,
+      color-mix(in oklab, var(--color-bg-accent-subtle) 55%, var(--color-bg-surface-raised))
     );
-  }
-
-  @supports (backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px)) {
-    @media (prefers-reduced-transparency: no-preference) {
-      .sk-segmented[data-appearance="frosted"] {
-        --sk-segmented-bg: color-mix(in oklab, var(--color-bg-surface-sunken) var(--sk-segmented-frost-opacity), transparent);
-        --sk-segmented-selected-bg: color-mix(
-          in oklab,
-          color-mix(in oklab, var(--color-bg-accent-subtle) 55%, var(--color-bg-surface-raised)) 82%,
-          transparent
-        );
-        -webkit-backdrop-filter: blur(12px) saturate(150%);
-        backdrop-filter: blur(12px) saturate(150%);
-      }
-    }
-  }
-
-  [data-contrast="high"] .sk-segmented[data-appearance="frosted"],
-  .sk-segmented[data-appearance="frosted"][data-contrast="high"] {
-    --sk-segmented-bg: var(--color-bg-surface-sunken);
-    -webkit-backdrop-filter: none;
-    backdrop-filter: none;
-  }
-
-  @media (prefers-contrast: more) {
-    :root:not([data-contrast]) .sk-segmented[data-appearance="frosted"] {
-      --sk-segmented-bg: var(--color-bg-surface-sunken);
-      -webkit-backdrop-filter: none;
-      backdrop-filter: none;
-    }
+    -webkit-backdrop-filter: var(--frost-on) blur(12px) saturate(150%);
+    backdrop-filter: var(--frost-on) blur(12px) saturate(150%);
   }
 
   @media (forced-colors: active) {

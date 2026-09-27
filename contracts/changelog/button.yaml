@@ -3,8 +3,23 @@
 # `surface` is the shape of the contract the last time somebody reviewed it. If the compiler says it
 # does not match, something a consumer depends on has moved: write the entry and paste in the new
 # hash.
-surface: "f481cab9a19f485c"
+surface: "a061323dc856294e"
 entries:
+  - date: 2026-09-27
+    kind: rework
+    target: appearance
+    es:
+      title: Frosted ghost y translucent ganan una lámina legible
+      body: >-
+        Con <code>appearance="frosted"</code>, ghost y translucent dejan de ser casi transparentes: llevan una
+        lámina de la superficie (65% neutro, 68% translucent, 90% con tono) para que el texto sostenga 4.5:1
+        sobre cualquier fondo, y pressed sube su piso a 96%. Sin el material, su base es esa cara, opaca.
+    en:
+      title: Frosted ghost and translucent gain a legible sheet
+      body: >-
+        With <code>appearance="frosted"</code>, ghost and translucent are no longer nearly clear: they carry a
+        sheet of the surface (65% neutral, 68% translucent, 90% toned) so the label holds 4.5:1 over any
+        backdrop, and pressed raises its floor to 96%. Without the material, their baseline is that face, opaque.
   - date: 2026-09-26
     kind: feature
     target: appearance

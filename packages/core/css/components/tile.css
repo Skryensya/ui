@@ -588,16 +588,13 @@
    * and also sinks would be two expressions at once. Selection keeps plain's accent border.
    */
   .sk-tile:where(.sk-tile--interactive, .sk-tile--expandable)[data-appearance="frosted"] {
-    --sk-tile-frost-opacity: 72%;
-    --sk-tile-frost-blur: 16px;
-    --sk-tile-frost-saturation: 150%;
     --sk-tile-border-color: color-mix(in oklab, currentColor 18%, transparent);
-    --frost-highlight: light-dark(
-      color-mix(in oklab, var(--color-bg-surface) 70%, transparent),
-      color-mix(in oklab, var(--color-text-primary) 18%, transparent)
-    );
     --frost-wash: linear-gradient(to bottom, color-mix(in oklab, var(--frost-highlight) 45%, transparent), transparent 40%);
-    background: var(--frost-wash) var(--color-bg-surface);
+    /* The material behind the system switch (semantic/_frost.scss); off, the opaque surface. */
+    --frost-glass: var(--frost-on) color-mix(in oklab, var(--color-bg-surface) 72%, transparent);
+    background: var(--frost-wash) var(--frost-glass, var(--color-bg-surface));
+    -webkit-backdrop-filter: var(--frost-on) blur(16px) saturate(150%);
+    backdrop-filter: var(--frost-on) blur(16px) saturate(150%);
     box-shadow: inset 0 1px 0 var(--frost-highlight), 0 1px 2px var(--shadow-sm);
   }
 
@@ -618,37 +615,10 @@
     --frost-highlight: transparent;
   }
 
-  @supports (backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px)) {
-    @media (prefers-reduced-transparency: no-preference) {
-      .sk-tile:where(.sk-tile--interactive, .sk-tile--expandable)[data-appearance="frosted"] {
-        background:
-          var(--frost-wash)
-          color-mix(in oklab, var(--color-bg-surface) var(--sk-tile-frost-opacity), transparent);
-        -webkit-backdrop-filter: blur(var(--sk-tile-frost-blur)) saturate(var(--sk-tile-frost-saturation));
-        backdrop-filter: blur(var(--sk-tile-frost-blur)) saturate(var(--sk-tile-frost-saturation));
-      }
-
-      /* The revealed panel is part of the same sheet: sunken, but still see-through. */
-      .sk-tile--expandable[data-appearance="frosted"] > .sk-tile__expandable-content:not([hidden]) {
-        background: color-mix(in oklab, var(--color-bg-surface-sunken) 55%, transparent);
-      }
-    }
-  }
-
-  /* High contrast outranks the material, as it does for Button: back to the opaque baseline. */
-  [data-contrast="high"] .sk-tile[data-appearance="frosted"],
-  .sk-tile[data-appearance="frosted"][data-contrast="high"] {
-    background: var(--color-bg-surface);
-    -webkit-backdrop-filter: none;
-    backdrop-filter: none;
-  }
-
-  @media (prefers-contrast: more) {
-    :root:not([data-contrast]) .sk-tile[data-appearance="frosted"] {
-      background: var(--color-bg-surface);
-      -webkit-backdrop-filter: none;
-      backdrop-filter: none;
-    }
+  /* The revealed panel is part of the same sheet: sunken, but still see-through. */
+  .sk-tile--expandable[data-appearance="frosted"] > .sk-tile__expandable-content:not([hidden]) {
+    --frost-glass: var(--frost-on) color-mix(in oklab, var(--color-bg-surface-sunken) 55%, transparent);
+    background: var(--frost-glass, var(--color-bg-surface-sunken));
   }
 
   @media (forced-colors: active) {

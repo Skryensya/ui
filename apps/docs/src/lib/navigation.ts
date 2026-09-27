@@ -1462,6 +1462,7 @@ export const documentationNavigation = [
               "blur",
               "glassmorphism",
               "fondos translúcidos",
+              "frosted",
             ],
           },
         ],

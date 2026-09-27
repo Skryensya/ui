@@ -17,9 +17,6 @@
     --sk-accordion-depth: 4px;
     --sk-accordion-brutalist-offset-inline: 5px;
     --sk-accordion-brutalist-offset-block: 5px;
-    --sk-accordion-frost-opacity: 82%;
-    --sk-accordion-frost-blur: 16px;
-    --sk-accordion-frost-saturation: 150%;
 
     display: grid;
     gap: 0;
@@ -176,37 +173,18 @@
     box-shadow: inset 0 1px 0 var(--frost-highlight), 0 1px 2px var(--shadow-sm);
   }
 
-  @supports (backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px)) {
-    @media (prefers-reduced-transparency: no-preference) {
-      .sk-accordion[data-appearance="frosted"] {
-        --sk-accordion-bg: color-mix(in oklab, var(--color-bg-surface) var(--sk-accordion-frost-opacity), transparent);
-        --sk-accordion-open-bg: color-mix(in oklab, var(--color-bg-surface-sunken) 72%, transparent);
-        background:
-          linear-gradient(to bottom, color-mix(in oklab, var(--frost-highlight) 60%, transparent), transparent 12rem),
-          var(--sk-accordion-bg);
-        -webkit-backdrop-filter: blur(var(--sk-accordion-frost-blur)) saturate(var(--sk-accordion-frost-saturation));
-        backdrop-filter: blur(var(--sk-accordion-frost-blur)) saturate(var(--sk-accordion-frost-saturation));
-      }
-    }
-  }
-
-  [data-contrast="high"] .sk-accordion[data-appearance="frosted"],
-  .sk-accordion[data-appearance="frosted"][data-contrast="high"] {
-    --sk-accordion-bg: var(--color-bg-surface);
-    --sk-accordion-open-bg: var(--color-bg-surface-sunken);
-    background: var(--sk-accordion-bg);
-    -webkit-backdrop-filter: none;
-    backdrop-filter: none;
-  }
-
-  @media (prefers-contrast: more) {
-    :root:not([data-contrast]) .sk-accordion[data-appearance="frosted"] {
-      --sk-accordion-bg: var(--color-bg-surface);
-      --sk-accordion-open-bg: var(--color-bg-surface-sunken);
-      background: var(--sk-accordion-bg);
-      -webkit-backdrop-filter: none;
-      backdrop-filter: none;
-    }
+  /* The material, behind the system switch (semantic/_frost.scss); off, the frame keeps its own
+   * opaque surface and sunken bodies. */
+  .sk-accordion[data-appearance="frosted"] {
+    --frost-glass: var(--frost-on) color-mix(in oklab, var(--color-bg-surface) 82%, transparent);
+    --frost-glass-open: var(--frost-on) color-mix(in oklab, var(--color-bg-surface-sunken) 72%, transparent);
+    --frost-lit: var(--frost-on)
+      linear-gradient(to bottom, color-mix(in oklab, var(--frost-highlight) 60%, transparent), transparent 12rem),;
+    --sk-accordion-bg: var(--frost-glass, var(--color-bg-surface));
+    --sk-accordion-open-bg: var(--frost-glass-open, var(--color-bg-surface-sunken));
+    background: var(--frost-lit,) var(--sk-accordion-bg);
+    -webkit-backdrop-filter: var(--frost-on) blur(16px) saturate(150%);
+    backdrop-filter: var(--frost-on) blur(16px) saturate(150%);
   }
 
   @media (forced-colors: active) {

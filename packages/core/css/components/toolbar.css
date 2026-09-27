@@ -98,29 +98,11 @@
       0 1px 2px var(--shadow-sm);
   }
 
-  @supports (backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px)) {
-    @media (prefers-reduced-transparency: no-preference) {
-      .sk-toolbar[data-appearance="frosted"] {
-        background: color-mix(in oklab, var(--sk-toolbar-bg) 70%, transparent);
-        -webkit-backdrop-filter: blur(16px) saturate(150%);
-        backdrop-filter: blur(16px) saturate(150%);
-      }
-    }
-  }
-
-  [data-contrast="high"] .sk-toolbar[data-appearance="frosted"],
-  .sk-toolbar[data-appearance="frosted"][data-contrast="high"] {
-    background: var(--sk-toolbar-bg);
-    -webkit-backdrop-filter: none;
-    backdrop-filter: none;
-  }
-
-  @media (prefers-contrast: more) {
-    :root:not([data-contrast]) .sk-toolbar[data-appearance="frosted"] {
-      background: var(--sk-toolbar-bg);
-      -webkit-backdrop-filter: none;
-      backdrop-filter: none;
-    }
+  .sk-toolbar[data-appearance="frosted"] {
+    --frost-glass: var(--frost-on) color-mix(in oklab, var(--sk-toolbar-bg) 70%, transparent);
+    background: var(--frost-glass, var(--sk-toolbar-bg));
+    -webkit-backdrop-filter: var(--frost-on) blur(16px) saturate(150%);
+    backdrop-filter: var(--frost-on) blur(16px) saturate(150%);
   }
 
   @media (forced-colors: active) {

@@ -3,8 +3,23 @@
 # `surface` is the shape of the contract the last time somebody reviewed it. If the compiler says it
 # does not match, something a consumer depends on has moved: write the entry and paste in the new
 # hash.
-surface: "9b4279cdea0620f4"
+surface: "f7d90e41a8937f23"
 entries:
+  - date: 2026-09-27
+    kind: bugfix
+    target: appearance
+    es:
+      title: En un stack, la sombra brutalist acompaña todo el borde visible
+      body: >-
+        La sombra de un folder que no es el último se cortaba donde empieza el siguiente, a la altura de
+        su pestaña, y dejaba el tramo final del borde sin sombra, rematado en un corte cuadrado. Ahora
+        llega hasta donde el cuerpo del siguiente folder cubre ese borde, envolviendo su esquina.
+    en:
+      title: In a stack, the brutalist shadow follows the whole visible edge
+      body: >-
+        A folder's shadow, when it was not the last one, stopped where the next folder begins, at the
+        height of its tab, leaving the last stretch of edge bare and ending in a square notch. It now
+        runs down to where the next folder's body covers that edge, wrapping its corner.
   - date: 2026-09-27
     kind: bugfix
     target: appearance

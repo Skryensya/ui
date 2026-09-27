@@ -1,0 +1,60 @@
+/*
+ * FROST, the one switch every `appearance="frosted"` surface reads.
+ *
+ * Whether the see-through material may render is a question about the READER and the BROWSER, never
+ * about the component, so it is answered once here instead of in every stylesheet that publishes
+ * frosted. Each of them used to repeat the same four blocks: an `@supports (backdrop-filter)` +
+ * `prefers-reduced-transparency: no-preference` gate, and a return to opaque for
+ * `data-contrast="high"`, for `prefers-contrast: more` and for forced colors.
+ *
+ * `--frost-on` IS A SPACE TOGGLE. On, it is an empty value; off, it is `initial`, the guaranteed-
+ * invalid value. A component writes its material behind it and names its opaque baseline as the
+ * fallback:
+ *
+ *   --frost-glass: var(--frost-on) color-mix(in oklab, var(--sk-x-bg) 72%, transparent);
+ *   background: var(--frost-glass, var(--sk-x-bg));
+ *   backdrop-filter: var(--frost-on) blur(16px) saturate(150%);
+ *
+ * When the switch is off, `--frost-glass` is invalid too, so `background` takes the fallback, and
+ * `backdrop-filter` is invalid at computed-value time, which resolves to `none`. Off is the default:
+ * a browser that cannot blur, or a reader who asked for less transparency, gets the opaque surface
+ * without anybody having to remember a branch.
+ */
+@mixin tokens {
+  --frost-on: initial;
+  /* The lit top rim of the sheet: the page's surface in light, a trace of the primary ink in dark.
+   * Mixed from colours high contrast re-declares, so `hc-tokens` (css/_mixins.scss) re-declares it too. */
+  --frost-highlight: light-dark(
+    color-mix(in oklab, var(--color-bg-surface) 70%, transparent),
+    color-mix(in oklab, var(--color-text-primary) 18%, transparent)
+  );
+}
+
+@mixin switch {
+  @supports (backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px)) {
+    @media (prefers-reduced-transparency: no-preference) {
+      :root {
+        --frost-on: ;
+      }
+    }
+  }
+
+  /* High contrast outranks the material: a see-through face would hand the contrast straight back to
+   * whatever sits behind it. Set on a subtree, it turns the material off for that subtree only. */
+  [data-contrast="high"] {
+    --frost-on: initial;
+  }
+
+  @media (prefers-contrast: more) {
+    :root:not([data-contrast]) {
+      --frost-on: initial;
+    }
+  }
+
+  /* Forced colors paint the system's own opaque surfaces; there is no material to keep. */
+  @media (forced-colors: active) {
+    :root {
+      --frost-on: initial;
+    }
+  }
+}

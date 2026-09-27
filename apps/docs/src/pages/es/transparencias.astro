@@ -1,108 +1,65 @@
 ---
+/*
+ * TRANSPARENCIA, el fundamento: la política que sigue toda superficie translúcida del sistema. Se
+ * aplica con `appearance="frosted"` en cada componente. No hay una clase suelta: la antigua
+ * `.sk-translucent` (patterns/transparency.css) se eliminó cuando todas las superficies que pintaba
+ * publicaron frosted.
+ */
 import Base from "../../layouts/Base.astro";
 import CodeBlock from "../../components/CodeBlock.astro";
-import StylingHooks from "../../components/StylingHooks.astro";
-import "@skryensya/core/patterns/transparency.css";
+import "@skryensya/core/patterns/box.css";
 
-const install = `@import "@skryensya/core/tokens.scss";
-@import "@skryensya/core/patterns/box.css";
-@import "@skryensya/core/patterns/transparency.css";`;
+const react = `import { Navbar, NavbarBrand } from "@skryensya/react/navbar";
+import { Box } from "@skryensya/react/box";
 
-const basicHtml = `<article
-  class="sk-box sk-translucent"
-  data-strength="md"
-  data-border="subtle"
-  data-padding="lg"
-  data-surface="surface"
->
-  <h2>Resumen semanal</h2>
-  <p>El contenido siempre vive sobre un fallback opaco.</p>
-</article>`;
-
-const navbarReact = `import {
-  Navbar,
-  NavbarActions,
-  NavbarBrand,
-} from "@skryensya/react/navbar";
-import { Button } from "@skryensya/react/button";
-
-<Navbar className="sk-translucent" data-strength="sm">
+<Navbar appearance="frosted">
   <NavbarBrand>Atlas</NavbarBrand>
-  <NavbarActions>
-    <Button variant="ghost">Buscar</Button>
-    <Button tone="accent">Crear</Button>
-  </NavbarActions>
-</Navbar>;`;
+</Navbar>
 
-const boxReact = `import { Box } from "@skryensya/react/box";
-
-<Box
-  as="article"
-  className="sk-translucent"
-  data-strength="md"
-  surface="surface"
-  border="subtle"
-  padding="lg"
->
+<Box as="article" appearance="frosted" surface="surface" padding="lg">
   <h2>Actividad</h2>
   <p>12 cambios desde tu última visita.</p>
 </Box>;`;
 
-const dialogHtml = `<dialog
-  class="sk-dialog sk-translucent"
-  data-strength="sm"
-  aria-labelledby="invite-title"
+const html = `<article
+  class="sk-box"
+  data-appearance="frosted"
+  data-surface="surface"
+  data-padding="lg"
 >
-  <header class="sk-dialog__header">
-    <h2 id="invite-title" class="sk-dialog__title">
-      Invitar al equipo
-    </h2>
-  </header>
-  <div class="sk-dialog__body">
-    <p>El backdrop y la superficie se reducen por separado.</p>
-  </div>
-</dialog>`;
+  <h2>Resumen semanal</h2>
+  <p>El contenido siempre vive sobre una base opaca.</p>
+</article>`;
 
-const customize = `.hero-glass {
-  /* El fallback opaco contra el que se valida el contraste. */
-  --sk-translucent-surface: var(--color-bg-surface-raised);
-
-  /* Solo se usan cuando la transparencia está permitida. */
-  --sk-translucent-opacity: 76%;
-  --sk-translucent-blur: 20px;
-  --sk-translucent-saturation: 120%;
+const customize = `.hero-card {
+  /* El tinte: la superficie opaca de la que parte el material. */
+  --sk-box-bg: var(--color-bg-surface-raised);
 }`;
 
-const manualReduction = `.legacy-glass {
-  background: rgb(255 255 255 / 72%);
-  backdrop-filter: blur(16px);
-}
-
-@media (prefers-reduced-transparency: reduce) {
-  .legacy-glass {
-    background: var(--color-bg-surface);
-    backdrop-filter: none;
-  }
+const ownMarkup = `.my-glass {
+  /* El material, detrás del interruptor del sistema; el fallback es la base opaca. */
+  --frost-glass: var(--frost-on) color-mix(in oklab, var(--color-bg-surface) 80%, transparent);
+  background: var(--frost-glass, var(--color-bg-surface));
+  -webkit-backdrop-filter: var(--frost-on) blur(16px) saturate(150%);
+  backdrop-filter: var(--frost-on) blur(16px) saturate(150%);
 }`;
+
 ---
 
 <Base
   title="Transparencias"
   documentLayout="grid"
-  description="Superficies translúcidas reutilizables, con blur progresivo, fallback opaco y reducción automática."
+  description="La política detrás de toda superficie translúcida: base opaca, blur progresivo, transparencia reducida, alto contraste y un piso de contraste."
 >
   <h1>Transparencias</h1>
   <p class="lede">
-    Una superficie translúcida deja percibir el contexto sin entregarle el contraste. La clase <code>sk-translucent</code> compone alpha y backdrop blur sobre los componentes que conoce, pero siempre parte de una superficie opaca. Si el navegador no entiende la preferencia, o quien lee pide menos transparencia, el contenido conserva exactamente la misma caja y la misma lectura.
+    Una superficie translúcida deja percibir el contexto sin entregarle el contraste. En este sistema, la
+    transparencia no es una clase que se agrega: es una política que sigue toda superficie translúcida, y se
+    enciende con <a href="/es/apariencia"><code>appearance="frosted"</code></a>. Siempre parte de una superficie
+    opaca. Si el navegador no puede desenfocar, o quien lee pide menos transparencia, el contenido conserva
+    exactamente la misma caja y la misma lectura.
   </p>
 
-  <div class="sk-callout" data-tone="info">
-    <div class="sk-callout__content">
-      <p>
-        <strong><code>prefers-reduced-transparency</code> sigue siendo experimental.</strong> Por eso el sistema no se apoya en la rama <code>reduce</code> para ser seguro: la transparencia y el blur solo se encienden bajo <code>no-preference</code>. Sin ningún soporte, el fallback es opaco.
-      </p>
-    </div>
-  </div>
 
   <h2>Qué está pasando</h2>
   <p>
@@ -127,124 +84,97 @@ const manualReduction = `.legacy-glass {
       </div>
 
       <div class="transparency-lab__samples">
-        <article
-          class="sk-box sk-translucent transparency-lab__panel"
-          data-strength="sm"
-          data-border="subtle"
-        >
-          <code>sm</code>
-          <strong>Discreta</strong>
-          <span>92% superficie · 8px blur</span>
+        <article class="sk-box transparency-lab__panel" data-appearance="frosted" data-surface="sunken">
+          <code>sunken</code>
+          <strong>Hundida</strong>
+          <span>La superficie hundida, frosted</span>
         </article>
-        <article
-          class="sk-box sk-translucent transparency-lab__panel"
-          data-strength="md"
-          data-border="subtle"
-        >
-          <code>md</code>
+        <article class="sk-box transparency-lab__panel" data-appearance="frosted" data-surface="surface">
+          <code>surface</code>
           <strong>Estándar</strong>
-          <span>82% superficie · 16px blur</span>
+          <span>La superficie de la página, frosted</span>
         </article>
-        <article
-          class="sk-box sk-translucent transparency-lab__panel"
-          data-strength="lg"
-          data-border="subtle"
-        >
-          <code>lg</code>
-          <strong>Expresiva</strong>
-          <span>70% superficie · 24px blur</span>
+        <article class="sk-box transparency-lab__panel" data-appearance="frosted" data-surface="raised">
+          <code>raised</code>
+          <strong>Elevada</strong>
+          <span>La superficie elevada, frosted</span>
         </article>
       </div>
     </div>
     <figcaption>
-      El fondo de calibración combina bordes finos, cambios de color y tipografía para que se vean tanto el
-      alpha como el blur. Con la reducción, las tres muestras convergen en la misma superficie opaca.
+      Tres Box frosted sobre un fondo de calibración que combina líneas finas, cambios de color y tipografía, para
+      que se vean tanto el alpha como el blur. Cada uno tiñe el material con su propia superficie. Con la
+      reducción, vuelven a esas mismas tres superficies opacas.
     </figcaption>
   </figure>
 
-  <h2>Instalar</h2>
-  <p>
-    El patrón es opt-in. Importa primero los tokens y los estilos del componente que quieres pintar;
-    <code>transparency.css</code> trae la clase componible y su política de accesibilidad.
-  </p>
-  <CodeBlock code={install} label="CSS" />
+  <h2>La política</h2>
+  <p>Toda superficie frosted del sistema sigue estas reglas, y tu propio vidrio también debería.</p>
+  <ol>
+    <li>
+      <strong>Primero opaco.</strong> La base es la superficie opaca del propio componente, declarada antes de
+      cualquier query. Es lo que recibe un navegador sin <code>backdrop-filter</code>, y tiene que ser un diseño
+      terminado y legible, no uno roto.
+    </li>
+    <li>
+      <strong>El material es una mejora, y se decide una sola vez.</strong> El alpha y el blur solo se encienden
+      bajo <code>@supports (backdrop-filter)</code> <em>y</em>
+      <code>prefers-reduced-transparency: no-preference</code>. Esa decisión vive en un solo lugar, el interruptor
+      <code>--frost-on</code>, y toda superficie frosted lo lee; ningún componente la repite. El sistema nunca
+      depende de la rama <code>reduce</code> para ser seguro.
+    </li>
+    <li>
+      <strong>La opacidad es un piso de contraste, no un gusto.</strong> Una cara sobre un fondo desconocido tiene
+      que mantener legible su texto sobre el peor de ellos, así que toda superficie frosted se mide a 4.5:1 sobre
+      negro y blanco puros, en ambos modos: cada variante y tono de Button, en reposo y presionado, y cada
+      superficie con texto. Las caras neutras necesitan entre 65 y 75%; las con tono (accent, danger, un callout
+      con tono) entre 90 y 94%, así que dejan pasar apenas un rastro. Por eso el material no tiene hooks.
+    </li>
+    <li>
+      <strong>El alto contraste manda sobre el material.</strong> <code>data-contrast="high"</code> y
+      <code>prefers-contrast: more</code> vuelven a la base opaca.
+    </li>
+    <li>
+      <strong>Forced colors conserva solo el límite.</strong> La cara pasa a <code>Canvas</code>, el blur y las
+      sombras se van, y el borde se queda.
+    </li>
+    <li>
+      <strong>El contenido queda al 100%.</strong> Solo la pintura de la superficie se mezcla con
+      <code>transparent</code>.
+    </li>
+    <li>
+      <strong>El blur nunca se anima.</strong> Los estados cambian la densidad de la cara, que es barato; el radio
+      del blur no se mueve.
+    </li>
+  </ol>
 
-  <h2>Una clase, tres intensidades</h2>
-  <p>
-    Agrega <code>sk-translucent</code> al mismo nodo que ya pinta la superficie. Sin
-    <code>data-strength</code>, el valor es <code>md</code>. La intensidad describe cuánto se percibe el
-    efecto: <code>lg</code> deja ver más backdrop y lo desenfoca más fuerte.
-  </p>
-  <CodeBlock code={basicHtml} label="HTML" lang="html" />
-
-  <div class="sk-table-scroll">
-    <table class="sk-table">
-      <thead class="sk-table__head">
-        <tr class="sk-table__row">
-          <th class="sk-table__header">Strength</th>
-          <th class="sk-table__header">Superficie</th>
-          <th class="sk-table__header">Blur</th>
-          <th class="sk-table__header">Uso recomendado</th>
-        </tr>
-      </thead>
-      <tbody class="sk-table__body">
-        <tr class="sk-table__row">
-          <td class="sk-table__cell"><code>sm</code></td>
-          <td class="sk-table__cell">92%</td>
-          <td class="sk-table__cell">8px</td>
-          <td class="sk-table__cell">Navbar, Sidebar, Dialog</td>
-        </tr>
-        <tr class="sk-table__row">
-          <td class="sk-table__cell"><code>md</code></td>
-          <td class="sk-table__cell">82%</td>
-          <td class="sk-table__cell">16px</td>
-          <td class="sk-table__cell">Box, cards y paneles flotantes</td>
-        </tr>
-        <tr class="sk-table__row">
-          <td class="sk-table__cell"><code>lg</code></td>
-          <td class="sk-table__cell">70%</td>
-          <td class="sk-table__cell">24px</td>
-          <td class="sk-table__cell">Un hero o una pieza editorial; nunca UI densa</td>
-        </tr>
-      </tbody>
-    </table>
+  <div class="sk-callout" data-tone="info">
+    <div class="sk-callout__content">
+      <p>
+        <strong><code>prefers-reduced-transparency</code> sigue siendo experimental.</strong> Por eso la regla 2
+        enciende el material bajo <code>no-preference</code> en vez de apagarlo bajo <code>reduce</code>: sin
+        ningún soporte, el resultado es opaco.
+      </p>
+    </div>
   </div>
 
-  <h2>Los componentes que conoce</h2>
+  <h2>Usarlo</h2>
   <p>
-    La clase ya engancha los hooks de superficie de <strong>Box, Navbar, Dialog, Sidebar, Vaul y
-    Drawer</strong>. No cambia ninguna anatomía ni crea una variante paralela: el mismo componente gana una
-    capa de pintura opcional.
+    Pon <code>appearance="frosted"</code> en el componente que pinta la superficie. Es el mismo eje que plain,
+    tactile y brutalist, así que no cambia variante, tono, tamaño, radio ni densidad.
+    <a href="/es/apariencia">Apariencia</a> lista todos los componentes que lo publican.
   </p>
-
-  <h3>Navbar: persistente y discreto</h3>
-  <p>
-    Usa <code>sm</code>: la navegación se queda estable mientras el contenido pasa por detrás.
-  </p>
-  <CodeBlock code={navbarReact} label="React · Navbar" lang="tsx" />
-
-  <h3>Box: una card sobre media</h3>
-  <p>
-    <code>md</code> funciona cuando la card flota sobre una imagen o un fondo editorial. Sobre un canvas
-    plano, un Box opaco es más simple y no necesita nada de este patrón.
-  </p>
-  <CodeBlock code={boxReact} label="React · Box" lang="tsx" />
-
-  <h3>Dialog: el panel y el backdrop son cosas distintas</h3>
-  <p>
-    La clase pinta el panel. El <code>::backdrop</code> sigue siendo de Dialog, y se vuelve opaco con la
-    transparencia reducida. Para un modal, quédate en <code>sm</code>: lo que tiene que dominar es la tarea,
-    no el fondo.
-  </p>
-  <CodeBlock code={dialogHtml} label="HTML · Dialog" lang="html" />
+  <CodeBlock code={react} label="React" lang="tsx" />
+  <CodeBlock code={html} label="HTML" lang="html" />
 
   <h2>Personalizar sin romper el fallback</h2>
   <p>
-    <code>--sk-translucent-surface</code> es la superficie opaca real. Los otros tres hooks solo afectan a la
-    mejora translúcida. Cambiar el alpha nunca debería ser la forma de arreglar el contraste: primero elige
-    una superficie opaca correcta, y valida texto y bordes contra esa.
+    Te queda una sola decisión: el <strong>tinte</strong>, la superficie opaca del componente
+    (<code>surface</code>, o su hook <code>--sk-*-bg</code>). Es contra lo que se valida el contraste, y lo que
+    muestra la reducción. El material en sí (opacidad, blur, saturación) es fijo por componente, porque su
+    opacidad es el piso de contraste medido para el texto de ese componente; no hay nada que ajustar sin romperlo.
   </p>
-  <CodeBlock code={customize} label="CSS · hooks" />
+  <CodeBlock code={customize} label="CSS" />
 
   <h2>Cuándo no usarlo</h2>
   <ul>
@@ -255,13 +185,14 @@ const manualReduction = `.legacy-glass {
     <li>Sobre la capa de estado: ese alpha comunica interacción, no es una superficie de vidrio.</li>
   </ul>
 
-  <h2>Superficies heredadas</h2>
+  <h2>Tu propio markup</h2>
   <p>
-    Si no puedes adoptar <code>sk-translucent</code>, escribe la reducción a mano. Esta forma sirve para
-    código viejo, pero la línea base queda transparente en navegadores sin soporte; para código nuevo, la
-    clase del sistema es la más segura.
+    Para una superficie que no es de la librería, lee el mismo interruptor. <code>--frost-on</code> es un space
+    toggle: encendido, está vacío; apagado (sin <code>backdrop-filter</code>, con transparencia reducida, alto
+    contraste o forced colors), es inválido, así que el vidrio cae a la superficie opaca y el filtro a
+    <code>none</code>. Mide tu texto sobre negro y blanco antes de elegir la opacidad.
   </p>
-  <CodeBlock code={manualReduction} label="CSS · legacy" />
+  <CodeBlock code={ownMarkup} label="CSS" />
 
   <h2>Qué dice el contrato del sistema</h2>
   <ul>
@@ -286,21 +217,11 @@ const manualReduction = `.legacy-glass {
   <h2>Checklist</h2>
   <ul>
     <li>El fallback opaco funciona antes de cualquier media query.</li>
-    <li>La clase vive en el mismo nodo que pinta la superficie.</li>
+    <li>La apariencia vive en el componente que pinta la superficie.</li>
     <li>El texto y los iconos se quedan al 100% de opacidad.</li>
-    <li>El borde o la elevación siguen separando la caja de lo que hay detrás.</li>
+    <li>El borde o la elevación siguen separando la superficie de lo que hay detrás.</li>
     <li>La UI funciona aunque el navegador ignore la preferencia por completo.</li>
   </ul>
-
-  <StylingHooks
-    groups={[
-      {
-        file: "patterns/transparency.css",
-        probe: "sk-translucent",
-        title: "Transparencia",
-      },
-    ]}
-  />
 
   <p>
     Referencia de plataforma: <a
@@ -403,13 +324,7 @@ const manualReduction = `.legacy-glass {
     min-block-size: 13rem;
     padding: var(--space-inset-md);
     align-content: end;
-    border-color: color-mix(
-      in oklab,
-      var(--color-border-strong) 72%,
-      transparent
-    );
     border-radius: var(--radius-surface);
-    box-shadow: var(--elevation-raised);
   }
 
   .transparency-lab__panel code {

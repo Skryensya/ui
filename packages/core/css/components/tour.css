@@ -473,38 +473,15 @@
    * a lit top rim over its own shadow. Opaque baseline; the material only where backdrop-filter
    * exists and no reduced-transparency preference is set. */
   .sk-tour[data-appearance="frosted"] .sk-tour__popover {
-    --frost-highlight: light-dark(
-      color-mix(in oklab, var(--color-bg-surface) 70%, transparent),
-      color-mix(in oklab, var(--color-text-primary) 18%, transparent)
-    );
     --sk-tour-border-color: color-mix(in oklab, currentColor 18%, transparent);
     --sk-tour-shadow: inset 0 1px 0 var(--frost-highlight), var(--elevation-overlay);
   }
 
-  @supports (backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px)) {
-    @media (prefers-reduced-transparency: no-preference) {
-      .sk-tour[data-appearance="frosted"] .sk-tour__popover {
-        background: color-mix(in oklab, var(--sk-tour-bg) 80%, transparent);
-        -webkit-backdrop-filter: blur(20px) saturate(150%);
-        backdrop-filter: blur(20px) saturate(150%);
-      }
-    }
-  }
-
-  /* High contrast outranks the material: back to the opaque baseline. */
-  [data-contrast="high"] .sk-tour[data-appearance="frosted"] .sk-tour__popover,
-  .sk-tour[data-appearance="frosted"] .sk-tour__popover[data-contrast="high"] {
-    background: var(--sk-tour-bg);
-    -webkit-backdrop-filter: none;
-    backdrop-filter: none;
-  }
-
-  @media (prefers-contrast: more) {
-    :root:not([data-contrast]) .sk-tour[data-appearance="frosted"] .sk-tour__popover {
-      background: var(--sk-tour-bg);
-      -webkit-backdrop-filter: none;
-      backdrop-filter: none;
-    }
+  .sk-tour[data-appearance="frosted"] .sk-tour__popover {
+    --frost-glass: var(--frost-on) color-mix(in oklab, var(--sk-tour-bg) 80%, transparent);
+    background: var(--frost-glass, var(--sk-tour-bg));
+    -webkit-backdrop-filter: var(--frost-on) blur(20px) saturate(150%);
+    backdrop-filter: var(--frost-on) blur(20px) saturate(150%);
   }
 
   /* Forced colors keep neither construction: the system surface and its boundary. */

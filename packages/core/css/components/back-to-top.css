@@ -305,40 +305,16 @@
    * is the whole point. Opaque baseline plus a fine edge and a lit rim; the see-through disc only
    * where backdrop-filter exists and no reduced-transparency preference is set. */
   .sk-back-to-top[data-appearance="frosted"] {
-    --sk-back-to-top-frost-opacity: 72%;
-    --sk-back-to-top-frost-blur: 12px;
     --sk-back-to-top-wash: none;
     --sk-back-to-top-border-color: color-mix(in oklab, currentColor 22%, transparent);
-    --frost-highlight: light-dark(
-      color-mix(in oklab, var(--color-bg-surface) 70%, transparent),
-      color-mix(in oklab, var(--color-text-primary) 18%, transparent)
-    );
     box-shadow: inset 0 1px 0 var(--frost-highlight), var(--sk-back-to-top-shadow);
   }
 
-  @supports (backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px)) {
-    @media (prefers-reduced-transparency: no-preference) {
-      .sk-back-to-top[data-appearance="frosted"] {
-        background: color-mix(in oklab, var(--sk-back-to-top-bg) var(--sk-back-to-top-frost-opacity), transparent);
-        -webkit-backdrop-filter: blur(var(--sk-back-to-top-frost-blur)) saturate(150%);
-        backdrop-filter: blur(var(--sk-back-to-top-frost-blur)) saturate(150%);
-      }
-    }
-  }
-
-  [data-contrast="high"] .sk-back-to-top[data-appearance="frosted"],
-  .sk-back-to-top[data-appearance="frosted"][data-contrast="high"] {
-    background: var(--sk-back-to-top-bg);
-    -webkit-backdrop-filter: none;
-    backdrop-filter: none;
-  }
-
-  @media (prefers-contrast: more) {
-    :root:not([data-contrast]) .sk-back-to-top[data-appearance="frosted"] {
-      background: var(--sk-back-to-top-bg);
-      -webkit-backdrop-filter: none;
-      backdrop-filter: none;
-    }
+  .sk-back-to-top[data-appearance="frosted"] {
+    --frost-glass: var(--frost-on) color-mix(in oklab, var(--sk-back-to-top-bg) 72%, transparent);
+    background: var(--frost-glass, var(--sk-back-to-top-bg));
+    -webkit-backdrop-filter: var(--frost-on) blur(12px) saturate(150%);
+    backdrop-filter: var(--frost-on) blur(12px) saturate(150%);
   }
 
   /* Forced colors keep none of it: no ledge, no offset, no glass, no travel. The system border stays. */
