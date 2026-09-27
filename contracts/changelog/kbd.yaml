@@ -3,8 +3,21 @@
 # `surface` is the shape of the contract the last time somebody reviewed it. If the compiler says it
 # does not match, something a consumer depends on has moved: write the entry and paste in the new
 # hash.
-surface: "a62731284f4e90f6"
+surface: "526dee590cd044cc"
 entries:
+  - date: 2026-09-26
+    kind: feature
+    target: appearance
+    es:
+      title: Kbd suma appearance plain y brutalist
+      body: >-
+        <code>brutalist</code> dibuja la tecla con borde negro y una sombra dura pequeña en lugar de la
+        profundidad suave de la tecla. Sin <code>tactile</code> ni <code>frosted</code>.
+    en:
+      title: Kbd adds plain and brutalist appearances
+      body: >-
+        <code>brutalist</code> draws the key with a black edge and a small hard offset in place of the keycap's
+        soft depth. No <code>tactile</code> and no <code>frosted</code>.
   - date: 2026-08-22
     kind: feature
     target: tone

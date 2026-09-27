@@ -5117,6 +5117,19 @@
         "date": null,
         "entries": [
           {
+            "date": "2026-09-26",
+            "en": {
+              "body": "<code>brutalist</code> draws the key with a black edge and a small hard offset in place of the keycap's soft depth. No <code>tactile</code> and no <code>frosted</code>.",
+              "title": "Kbd adds plain and brutalist appearances"
+            },
+            "es": {
+              "body": "<code>brutalist</code> dibuja la tecla con borde negro y una sombra dura pequeña en lugar de la profundidad suave de la tecla. Sin <code>tactile</code> ni <code>frosted</code>.",
+              "title": "Kbd suma appearance plain y brutalist"
+            },
+            "kind": "feature",
+            "target": "appearance"
+          },
+          {
             "date": "2026-09-12",
             "en": {
               "body": "The contract now publishes this component's <code>12</code> styling hooks. Nothing you wrote changes: the same hooks, under the same names, and the stylesheet was not touched. What is new is that the contract declares them, so the compiler fails when the stylesheet declares one the contract does not publish, or the contract promises one the stylesheet never declares. That second half is the one that matters: until now, re-declaring a hook that no longer existed was not an error, it was silence.",
@@ -28819,6 +28832,15 @@
       ],
       "id": "kbd",
       "options": {
+        "appearance": {
+          "attr": "data-appearance",
+          "default": "plain",
+          "type": "enum",
+          "values": [
+            "plain",
+            "brutalist"
+          ]
+        },
         "tone": {
           "attr": "data-tone",
           "default": "neutral",
@@ -28857,7 +28879,8 @@
             "key-combination"
           ],
           "options": [
-            "tone"
+            "tone",
+            "appearance"
           ],
           "react": {
             "from": "@skryensya/react/kbd",
@@ -52714,7 +52737,7 @@
     "working": "0.0.1"
   },
   "schemaVersion": "2.3",
-  "sourceHash": "5aec7ea5f76436a3",
+  "sourceHash": "0dd6d15c4e36a340",
   "vocabulary": {
     "a11y": "When `when` holds, one of `requiresOneOf` must be given: an option, a raw attribute, a filled slot, or a child signature by name.",
     "atLeastOneOf": "At least one member of each group counts: a filled slot, a boolean option set to true, or an option other than its default.",

@@ -41,6 +41,17 @@ export const kbdContract = {
     "--sk-kbd-wash",
   ],
   options: {
+    /*
+     * HOW THE KEY IS DRAWN, Button's axis, brutalist alone: a black edge and a small hard offset in
+     * place of the keycap's soft depth. No tactile (a legend is never pressed) and no frosted
+     * (glass would only cost the legend its contrast).
+     */
+    appearance: {
+      type: "enum",
+      values: ["plain", "brutalist"],
+      default: "plain",
+      attr: "data-appearance",
+    },
     tone: {
       type: "enum",
       values: ["neutral", "accent"],
@@ -53,7 +64,7 @@ export const kbdContract = {
     Kbd: {
       intent: ["keyboard-key", "shortcut", "key-combination"],
       host: { element: "kbd" },
-      options: ["tone"],
+      options: ["tone", "appearance"],
       slots: { children: { accepts: "text", required: true } },
       template: { element: "kbd", part: "root", host: true, slot: "children" },
       react: { from: "@skryensya/react/kbd", name: "Kbd" },
