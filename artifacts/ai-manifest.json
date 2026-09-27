@@ -10458,6 +10458,19 @@
         "date": null,
         "entries": [
           {
+            "date": "2026-09-26",
+            "en": {
+              "body": "The bar's frame takes Button's axis: <code>tactile</code> a console slab on a ledge, <code>brutalist</code> a black edge and separators with a hard offset, <code>frosted</code> a see- through bar, opaque wherever the material cannot be trusted. The Buttons inside set their own.",
+              "title": "Toolbar adds plain, tactile, brutalist and frosted appearances"
+            },
+            "es": {
+              "body": "El marco de la barra lleva el eje de Button: <code>tactile</code> una consola con saliente, <code>brutalist</code> borde y separadores negros con sombra dura, <code>frosted</code> una barra translúcida, opaca donde el material no es fiable. Los Button de adentro definen la suya.",
+              "title": "Toolbar suma appearance plain, tactile, brutalist y frosted"
+            },
+            "kind": "feature",
+            "target": "appearance"
+          },
+          {
             "date": "2026-09-17",
             "en": {
               "body": "Interactive or form host signatures publish <code>forward</code> (<code>id</code>/<code>aria-*</code> and link or form attrs where relevant). An attr outside the list is <code>unknown-attr</code>.",
@@ -48205,6 +48218,18 @@
           "part": "root",
           "sheet": "@skryensya/core/components/toolbar.css"
         },
+        "--sk-toolbar-brutalist-offset": {
+          "default": "4px",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/toolbar.css"
+        },
+        "--sk-toolbar-depth": {
+          "default": "4px",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/toolbar.css"
+        },
         "--sk-toolbar-gap": {
           "default": "var(--space-inline-xs)",
           "output": false,
@@ -48234,6 +48259,8 @@
         "--sk-toolbar-bg",
         "--sk-toolbar-border-color",
         "--sk-toolbar-border-width",
+        "--sk-toolbar-brutalist-offset",
+        "--sk-toolbar-depth",
         "--sk-toolbar-gap",
         "--sk-toolbar-padding",
         "--sk-toolbar-radius",
@@ -48241,6 +48268,17 @@
       ],
       "id": "toolbar",
       "options": {
+        "appearance": {
+          "attr": "data-appearance",
+          "default": "plain",
+          "type": "enum",
+          "values": [
+            "plain",
+            "tactile",
+            "brutalist",
+            "frosted"
+          ]
+        },
         "groupLabel": {
           "attr": "aria-label",
           "prop": "label",
@@ -48317,7 +48355,8 @@
           "options": [
             "orientation",
             "label",
-            "loopFocus"
+            "loopFocus",
+            "appearance"
           ],
           "react": {
             "from": "@skryensya/react/toolbar",
@@ -52224,7 +52263,7 @@
     "working": "0.0.1"
   },
   "schemaVersion": "2.3",
-  "sourceHash": "c1d0553f622c9874",
+  "sourceHash": "063c5be29c82424a",
   "vocabulary": {
     "a11y": "When `when` holds, one of `requiresOneOf` must be given: an option, a raw attribute, a filled slot, or a child signature by name.",
     "atLeastOneOf": "At least one member of each group counts: a filled slot, a boolean option set to true, or an option other than its default.",

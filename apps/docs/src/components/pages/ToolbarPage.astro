@@ -7,6 +7,7 @@ import "@skryensya/core/components/button.css";
 /* Structure diagram: Annotated specimen; a preview frame only copies styles THIS page loaded. */
 import "@skryensya/core/components/annotation.css";
 import ComponentPageShell from "./ComponentPageShell.astro";
+import AppearanceMenu from "../AppearanceMenu.astro";
 import CodeBlock from "../CodeBlock.astro";
 import ComponentPreview from "../ComponentPreview.astro";
 import { nestedToolbarTree, toolbarAnatomyTree, toolbarTree } from "../../demos/toolbar";
@@ -29,7 +30,12 @@ initComponents();`;
   description={t("toolbarPage.description")}
   badge={t("toolbarPage.betaBadge")}
   contractId="toolbar"
+  appearanceTargetSelector=".sk-toolbar"
 >
+  <Fragment slot="appearance">
+    <AppearanceMenu label={t("prefs.appearance")} />
+  </Fragment>
+
   <Fragment slot="anatomy">
     <p set:html={t("toolbarPage.anatomyBody")} />
     <ComponentPreview
