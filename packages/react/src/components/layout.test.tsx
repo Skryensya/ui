@@ -32,6 +32,17 @@ describe("layout primitives", () => {
     expect(ui.getByText("Frosted").getAttribute("data-surface")).toBe("raised");
   });
 
+  it("serializes Hero's appearance, plain by default", () => {
+    const ui = render(
+      <>
+        <Hero>Plain</Hero>
+        <Hero appearance="frosted" surface="raised">Frosted</Hero>
+      </>,
+    );
+    expect(ui.getByText("Plain").getAttribute("data-appearance")).toBe("plain");
+    expect(ui.getByText("Frosted").getAttribute("data-appearance")).toBe("frosted");
+  });
+
   it("renders Stack, Inline and Grid as the documented layout contracts", () => {
     const ui = render(
       <>

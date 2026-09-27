@@ -3253,6 +3253,16 @@ const signatureTrees: readonly Canonical[] = [
     },
   },
   {
+    name: "hero/brutalist",
+    enhanced: false,
+    tree: {
+      contract: "hero",
+      signature: "Hero",
+      options: { surface: "raised", appearance: "brutalist", padding: "lg" },
+      children: { contract: "typography", signature: "Heading", children: "Lanzamiento de julio" },
+    },
+  },
+  {
     name: "hero/basic",
     enhanced: false,
     tree: {
