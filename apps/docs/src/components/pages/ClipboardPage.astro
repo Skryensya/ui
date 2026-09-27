@@ -1,5 +1,6 @@
 ---
 import ComponentPageShell from "./ComponentPageShell.astro";
+import AppearanceMenu from "../AppearanceMenu.astro";
 import CodeBlock from "../CodeBlock.astro";
 import ComponentPreview from "../ComponentPreview.astro";
 import "@skryensya/core/components/annotation.css";
@@ -37,8 +38,13 @@ const vanilla = `document.addEventListener("sk:clipboardstatuschange", (event) =
   description={t("clipboard.description")}
   badge={t("clipboard.betaBadge")}
   contractId="clipboard"
+  appearanceTargetSelector=".sk-clipboard__trigger"
   testFiles={["packages/react/src/components/clipboard.test.tsx", "packages/vanilla/src/components/clipboard.svelte.test.ts"]}
 >
+  <Fragment slot="appearance">
+    <AppearanceMenu label={t("prefs.appearance")} />
+  </Fragment>
+
   <Fragment slot="anatomy">
     <p set:html={t("clipboard.anatomyBody")} />
     <ComponentPreview

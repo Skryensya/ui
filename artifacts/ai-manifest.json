@@ -2180,6 +2180,19 @@
         "date": null,
         "entries": [
           {
+            "date": "2026-09-26",
+            "en": {
+              "body": "The copy button takes Button's <code>appearance</code> axis (<code>plain</code>, <code>tactile</code>, <code>brutalist</code>, <code>frosted</code>), written on the trigger and painted by Button's sheet.",
+              "title": "CopyButton and Clipboard add appearance"
+            },
+            "es": {
+              "body": "El botón de copiar acepta el eje <code>appearance</code> de Button (<code>plain</code>, <code>tactile</code>, <code>brutalist</code>, <code>frosted</code>), escrito en el disparador y pintado por la hoja de Button.",
+              "title": "CopyButton y Clipboard suman appearance"
+            },
+            "kind": "feature",
+            "target": "appearance"
+          },
+          {
             "date": "2026-09-25",
             "en": {
               "body": "New <code>clipboard</code> contract on <code>@zag-js/clipboard</code>, the same machine in both bindings. <code>CopyButton</code> is the button alone: it copies <code>value</code> or, at the moment of the click, the text of the element <code>target</code> names. <code>Clipboard</code> adds a label and a read-only field showing the value. If the browser refuses the write, the button says so (<code>data-error</code>, \"Copy failed\") instead of showing \"Copied\" anyway.",
@@ -17713,6 +17726,17 @@
       ],
       "id": "clipboard",
       "options": {
+        "appearance": {
+          "attr": "data-appearance",
+          "default": "plain",
+          "type": "enum",
+          "values": [
+            "plain",
+            "tactile",
+            "brutalist",
+            "frosted"
+          ]
+        },
         "copiedLabel": {
           "default": "Copied",
           "type": "string"
@@ -17844,7 +17868,8 @@
             "label",
             "copiedLabel",
             "errorLabel",
-            "timeout"
+            "timeout",
+            "appearance"
           ],
           "react": {
             "from": "@skryensya/react/clipboard",
@@ -17982,7 +18007,8 @@
                     "element": "button",
                     "mount": "data-sk-clipboard-trigger",
                     "options": [
-                      "label"
+                      "label",
+                      "appearance"
                     ],
                     "part": "trigger"
                   }
@@ -18031,7 +18057,8 @@
             "errorLabel",
             "timeout",
             "size",
-            "variant"
+            "variant",
+            "appearance"
           ],
           "react": {
             "from": "@skryensya/react/clipboard",
@@ -51932,7 +51959,7 @@
     "working": "0.0.1"
   },
   "schemaVersion": "2.3",
-  "sourceHash": "8302ba3fe1d4e16a",
+  "sourceHash": "8de2b0e6cb561c2b",
   "vocabulary": {
     "a11y": "When `when` holds, one of `requiresOneOf` must be given: an option, a raw attribute, a filled slot, or a child signature by name.",
     "atLeastOneOf": "At least one member of each group counts: a filled slot, a boolean option set to true, or an option other than its default.",

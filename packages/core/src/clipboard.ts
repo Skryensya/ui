@@ -217,6 +217,13 @@ export const clipboardContract = {
     size: { type: "enum", values: ["xs", "sm", "md"], default: "sm", attr: "data-size" },
     /** The button's variant, Button's own values minus `solid`: copying is never the primary action. */
     variant: { type: "enum", values: ["soft", "ghost"], default: "soft", attr: "data-variant" },
+    /** The button's appearance, Button's whole axis: Button's own sheet paints it on the trigger. */
+    appearance: {
+      type: "enum",
+      values: ["plain", "tactile", "brutalist", "frosted"],
+      default: "plain",
+      attr: "data-appearance",
+    },
   },
 
   signatures: {
@@ -224,7 +231,7 @@ export const clipboardContract = {
       intent: ["copy-to-clipboard", "copy-code", "copy-a-value"],
       host: { element: "button" },
       mount: clipboardAttrs.root,
-      options: ["value", "target", "label", "copiedLabel", "errorLabel", "timeout", "size", "variant"],
+      options: ["value", "target", "label", "copiedLabel", "errorLabel", "timeout", "size", "variant", "appearance"],
       requires: ["label"],
       forward: ["id", "aria-*"],
       compose: [
@@ -248,7 +255,7 @@ export const clipboardContract = {
       intent: ["copy-a-link", "share-link", "copy-api-key", "read-only-value-with-copy"],
       host: { element: "div" },
       mount: clipboardAttrs.root,
-      options: ["value", "label", "copiedLabel", "errorLabel", "timeout"],
+      options: ["value", "label", "copiedLabel", "errorLabel", "timeout", "appearance"],
       requires: ["value", "label"],
       forward: ["id", "aria-*"],
       compose: [
@@ -285,7 +292,7 @@ export const clipboardContract = {
                 mount: clipboardAttrs.trigger,
                 /* The field's height, so the pair reads as one control. */
                 attrs: { type: "button", "data-icon-only": "", "data-variant": "soft", "data-size": "md" },
-                options: ["label"],
+                options: ["label", "appearance"],
                 children: [...faces],
               },
             ],
