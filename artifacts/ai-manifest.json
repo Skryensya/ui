@@ -3320,6 +3320,19 @@
         "date": null,
         "entries": [
           {
+            "date": "2026-09-26",
+            "en": {
+              "body": "Input's axis on the field: <code>brutalist</code> a black edge and a hard offset, <code>frosted</code> a see-through field; every state still outranks it. Absent means <code>plain</code>.",
+              "title": "DatePicker adds brutalist and frosted appearances"
+            },
+            "es": {
+              "body": "El eje de Input en el campo: <code>brutalist</code> borde negro y sombra dura, <code>frosted</code> un campo translúcido; todo estado sigue por encima. Sin valor es <code>plain</code>.",
+              "title": "DatePicker suma appearance brutalist y frosted"
+            },
+            "kind": "feature",
+            "target": "appearance"
+          },
+          {
             "date": "2026-09-17",
             "en": {
               "body": "Interactive or form host signatures publish <code>forward</code> (<code>id</code>/<code>aria-*</code> and link or form attrs where relevant). An attr outside the list is <code>unknown-attr</code>.",
@@ -23477,6 +23490,15 @@
       ],
       "id": "date-picker",
       "options": {
+        "appearance": {
+          "attr": "data-appearance",
+          "type": "enum",
+          "values": [
+            "plain",
+            "brutalist",
+            "frosted"
+          ]
+        },
         "clearLabel": {
           "attr": "aria-label",
           "default": "Clear",
@@ -23657,7 +23679,8 @@
             "required",
             "invalid",
             "placeholder",
-            "clearLabel"
+            "clearLabel",
+            "appearance"
           ],
           "portals": {
             "container": true
@@ -23771,7 +23794,8 @@
             "max",
             "disabled",
             "readOnly",
-            "required"
+            "required",
+            "appearance"
           ],
           "react": {
             "from": "@skryensya/react/date-picker",
@@ -52936,7 +52960,7 @@
     "working": "0.0.1"
   },
   "schemaVersion": "2.3",
-  "sourceHash": "d2fbbefb8a69623f",
+  "sourceHash": "c608b49eb96d15b9",
   "vocabulary": {
     "a11y": "When `when` holds, one of `requiresOneOf` must be given: an option, a raw attribute, a filled slot, or a child signature by name.",
     "atLeastOneOf": "At least one member of each group counts: a filled slot, a boolean option set to true, or an option other than its default.",
