@@ -89,16 +89,16 @@ export const helpCenterTree = (t: Translate): UsageTree => ({
           children: {
             contract: "layout",
             signature: "Stack",
-            options: { gap: "lg", gapDesktop: "xl" },
+            options: { gap: "lg", gapExpanded: "xl" },
             children: [
               {
                 contract: "hero",
                 signature: "Hero",
-                options: { surface: "raised", align: "center", padding: "lg", paddingDesktop: "xl" },
+                options: { surface: "raised", align: "center", padding: "lg", paddingExpanded: "xl" },
                 children: {
                   contract: "wrapper",
                   signature: "Wrapper",
-                  options: { wrapperSize: "sm", gutter: "md", gutterDesktop: "lg" },
+                  options: { wrapperSize: "sm", gutter: "md", gutterExpanded: "lg" },
                   children: {
                     contract: "layout",
                     signature: "Stack",
@@ -144,11 +144,11 @@ export const helpCenterTree = (t: Translate): UsageTree => ({
               {
                 contract: "wrapper",
                 signature: "Wrapper",
-                options: { wrapperSize: "lg", gutter: "md", gutterDesktop: "lg" },
+                options: { wrapperSize: "lg", gutter: "md", gutterExpanded: "lg" },
                 children: {
                   contract: "layout",
                   signature: "Stack",
-                  options: { gap: "lg", gapDesktop: "xl" },
+                  options: { gap: "lg", gapExpanded: "xl" },
                   children: [
                     {
                       contract: "tabs",
@@ -219,7 +219,7 @@ export const helpCenterTree = (t: Translate): UsageTree => ({
                     {
                       contract: "box",
                       signature: "Box",
-                      options: { surface: "sunken", border: "subtle", padding: "md", paddingDesktop: "lg" },
+                      options: { surface: "sunken", border: "subtle", padding: "md", paddingExpanded: "lg" },
                       children: {
                         contract: "layout",
                         signature: "Inline",

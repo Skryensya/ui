@@ -27,7 +27,7 @@ const navLink = (label: string, href: string, current = false): UsageTree => ({
 const feature = (icon: string, title: string, body: string): UsageTree => ({
   contract: "box",
   signature: "Box",
-  options: { surface: "raised", border: "subtle", padding: "md", paddingDesktop: "lg" },
+  options: { surface: "raised", border: "subtle", padding: "md", paddingExpanded: "lg" },
   children: {
     contract: "layout",
     signature: "Stack",
@@ -123,11 +123,11 @@ export const marketingTree = (t: Translate): UsageTree => ({
           children: {
             contract: "wrapper",
             signature: "Wrapper",
-            options: { wrapperSize: "lg", gutter: "md", gutterDesktop: "lg" },
+            options: { wrapperSize: "lg", gutter: "md", gutterExpanded: "lg" },
             children: {
               contract: "layout",
               signature: "Stack",
-              options: { gap: "lg", gapDesktop: "xl" },
+              options: { gap: "lg", gapExpanded: "xl" },
               children: [
                 /*
                  * HERO. The eyebrow is a `Badge`, not a `Tag`, and the catalogue draws that line
@@ -206,7 +206,7 @@ export const marketingTree = (t: Translate): UsageTree => ({
                 {
                   contract: "box",
                   signature: "Box",
-                  options: { surface: "sunken", border: "subtle", padding: "md", paddingDesktop: "lg" },
+                  options: { surface: "sunken", border: "subtle", padding: "md", paddingExpanded: "lg" },
                   children: {
                     contract: "layout",
                     signature: "Grid",
@@ -227,7 +227,7 @@ export const marketingTree = (t: Translate): UsageTree => ({
                 {
                   contract: "box",
                   signature: "Box",
-                  options: { surface: "raised", border: "subtle", padding: "lg", paddingDesktop: "xl" },
+                  options: { surface: "raised", border: "subtle", padding: "lg", paddingExpanded: "xl" },
                   children: {
                     contract: "layout",
                     signature: "Stack",

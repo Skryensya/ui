@@ -130,7 +130,7 @@ export const docsSiteTree = (t: Translate): UsageTree => ({
           children: {
             contract: "layout",
             signature: "Stack",
-            options: { gap: "md", gapDesktop: "lg" },
+            options: { gap: "md", gapExpanded: "lg" },
             children: [
               {
                 contract: "breadcrumb",

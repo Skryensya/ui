@@ -44,7 +44,7 @@ const plan = ({ name, blurb, price, period, features, cta, featured }: Plan): Us
     surface: "raised",
     border: featured ? "default" : "subtle",
     padding: "md",
-    paddingDesktop: "lg",
+    paddingExpanded: "lg",
   },
   children: {
     contract: "layout",
@@ -138,11 +138,11 @@ export const pricingTree = (t: Translate, locale: "es" | "en"): UsageTree => {
             children: {
               contract: "wrapper",
               signature: "Wrapper",
-              options: { wrapperSize: "lg", gutter: "md", gutterDesktop: "lg" },
+              options: { wrapperSize: "lg", gutter: "md", gutterExpanded: "lg" },
               children: {
                 contract: "layout",
                 signature: "Stack",
-                options: { gap: "lg", gapDesktop: "xl" },
+                options: { gap: "lg", gapExpanded: "xl" },
                 children: [
                   {
                     contract: "layout",

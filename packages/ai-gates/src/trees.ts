@@ -720,25 +720,25 @@ const signatureTrees: readonly Canonical[] = [
   },
   {
     /*
-     * DECISION 30, the declared desktop side of every spacing option at once. Nothing here is
+     * DECISION 30, the declared expanded side of every spacing option at once. Nothing here is
      * enhanced, so what G2 compares is plain attribute realization: the emitter and React must write
-     * the same `data-*-desktop` beside the same phone value, and neither may invent one it was not
+     * the same `data-*-expanded` beside the same compact value, and neither may invent one it was not
      * given (the first Stack inside declares none).
      */
-    name: "layout/declared-desktop-spacing",
+    name: "layout/declared-expanded-spacing",
     enhanced: false,
     tree: {
       contract: "wrapper",
       signature: "Wrapper",
-      options: { gutter: "md", gutterDesktop: "lg" },
+      options: { gutter: "md", gutterExpanded: "lg" },
       children: {
         contract: "box",
         signature: "Box",
-        options: { padding: "md", paddingDesktop: "xl", surface: "raised" },
+        options: { padding: "md", paddingExpanded: "xl", surface: "raised" },
         children: {
           contract: "layout",
           signature: "Grid",
-          options: { columns: "2", gap: "sm", gapDesktop: "lg", responsive: true },
+          options: { columns: "2", gap: "sm", gapExpanded: "lg", responsive: true },
           children: [
             {
               contract: "layout",
@@ -751,11 +751,11 @@ const signatureTrees: readonly Canonical[] = [
             },
             /* A Stack, not an Inline: an Inline here would also trip the emitter/React disagreement over
              * `data-block-start="none"` that `layout/inline-row` already records, and this tree is
-             * about the desktop attributes only. Inline's `gapDesktop` is covered in React's own test. */
+             * about the expanded attributes only. Inline's `gapExpanded` is covered in React's own test. */
             {
               contract: "layout",
               signature: "Stack",
-              options: { gap: "xs", gapDesktop: "md" },
+              options: { gap: "xs", gapExpanded: "md" },
               children: [
                 { contract: "badge", signature: "Badge", children: "Uno" },
                 { contract: "badge", signature: "Badge", children: "Dos" },

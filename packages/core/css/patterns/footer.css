@@ -112,28 +112,28 @@
    * step it down to `md` so the footer stays a considered close without eating the screen.
    */
   @media (max-width: 35.999rem) {
-    /* Only when the author left the desktop side unsaid: a footer that declares
-       `paddingDesktop` has already said what its phone padding is, and this guess would overrule it. */
-    .sk-footer[data-padding="lg"]:not([data-padding-desktop]) {
+    /* Only when the author left the expanded side unsaid: a footer that declares
+       `paddingExpanded` has already said what its phone padding is, and this guess would overrule it. */
+    .sk-footer[data-padding="lg"]:not([data-padding-expanded]) {
       --sk-footer-padding: var(--space-inset-md);
     }
-    .sk-footer[data-padding="xl"]:not([data-padding-desktop]) {
+    .sk-footer[data-padding="xl"]:not([data-padding-expanded]) {
       --sk-footer-padding: var(--space-inset-lg);
     }
   }
 
   /*
-   * DESKTOP OVERRIDES, declared (decision 30). 52rem is `--breakpoint-desktop`
+   * EXPANDED OVERRIDES, declared (decision 30). 52rem is `--breakpoint-desktop`
    * (semantic/_breakpoints.scss), a literal here because a CSS `@media` cannot read a custom
    * property, the same hand-copy `vaul.css` makes. The plain attribute is the value from the smallest
-   * screen up; the `-desktop` one replaces it from this width up, and only when the author wrote it.
+   * screen up; the `-expanded` one replaces it from this width up, and only when the author wrote it.
    */
   @media (min-width: 52rem) {
-    .sk-footer[data-padding-desktop="none"] { --sk-footer-padding: 0; }
-    .sk-footer[data-padding-desktop="xs"] { --sk-footer-padding: var(--space-inset-xs); }
-    .sk-footer[data-padding-desktop="sm"] { --sk-footer-padding: var(--space-inset-sm); }
-    .sk-footer[data-padding-desktop="md"] { --sk-footer-padding: var(--space-inset-md); }
-    .sk-footer[data-padding-desktop="lg"] { --sk-footer-padding: var(--space-inset-lg); }
-    .sk-footer[data-padding-desktop="xl"] { --sk-footer-padding: var(--space-inset-xl); }
+    .sk-footer[data-padding-expanded="none"] { --sk-footer-padding: 0; }
+    .sk-footer[data-padding-expanded="xs"] { --sk-footer-padding: var(--space-inset-xs); }
+    .sk-footer[data-padding-expanded="sm"] { --sk-footer-padding: var(--space-inset-sm); }
+    .sk-footer[data-padding-expanded="md"] { --sk-footer-padding: var(--space-inset-md); }
+    .sk-footer[data-padding-expanded="lg"] { --sk-footer-padding: var(--space-inset-lg); }
+    .sk-footer[data-padding-expanded="xl"] { --sk-footer-padding: var(--space-inset-xl); }
   }
 }

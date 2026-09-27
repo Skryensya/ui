@@ -44,7 +44,7 @@ export const siteFooter = (t: Translate, brand = "Lumen"): UsageTree => ({
   children: {
     contract: "wrapper",
     signature: "Wrapper",
-    options: { wrapperSize: "lg", gutter: "md", gutterDesktop: "lg" },
+    options: { wrapperSize: "lg", gutter: "md", gutterExpanded: "lg" },
     children: {
       contract: "layout",
       signature: "Inline",

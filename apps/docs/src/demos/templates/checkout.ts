@@ -75,11 +75,11 @@ export const checkoutTree = (t: Translate, locale: "es" | "en"): UsageTree => {
           children: {
             contract: "wrapper",
             signature: "Wrapper",
-            options: { wrapperSize: "lg", gutter: "md", gutterDesktop: "lg" },
+            options: { wrapperSize: "lg", gutter: "md", gutterExpanded: "lg" },
             children: {
               contract: "layout",
               signature: "Stack",
-              options: { gap: "md", gapDesktop: "lg" },
+              options: { gap: "md", gapExpanded: "lg" },
               children: [
                 {
                   contract: "steps",
@@ -117,7 +117,7 @@ export const checkoutTree = (t: Translate, locale: "es" | "en"): UsageTree => {
                 {
                   contract: "layout",
                   signature: "Grid",
-                  options: { columns: "2", gap: "md", gapDesktop: "lg", responsive: true },
+                  options: { columns: "2", gap: "md", gapExpanded: "lg", responsive: true },
                   children: [
                     {
                       contract: "layout",
@@ -207,7 +207,7 @@ export const checkoutTree = (t: Translate, locale: "es" | "en"): UsageTree => {
                     {
                       contract: "box",
                       signature: "Box",
-                      options: { surface: "sunken", border: "subtle", padding: "md", paddingDesktop: "lg" },
+                      options: { surface: "sunken", border: "subtle", padding: "md", paddingExpanded: "lg" },
                       children: {
                         contract: "layout",
                         signature: "Stack",

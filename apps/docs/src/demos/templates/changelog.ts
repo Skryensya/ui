@@ -59,11 +59,11 @@ export const changelogTree = (t: Translate): UsageTree => {
             children: {
               contract: "wrapper",
               signature: "Wrapper",
-              options: { wrapperSize: "md", gutter: "md", gutterDesktop: "lg" },
+              options: { wrapperSize: "md", gutter: "md", gutterExpanded: "lg" },
               children: {
                 contract: "layout",
                 signature: "Stack",
-                options: { gap: "lg", gapDesktop: "xl" },
+                options: { gap: "lg", gapExpanded: "xl" },
                 children: [
                   {
                     contract: "layout",

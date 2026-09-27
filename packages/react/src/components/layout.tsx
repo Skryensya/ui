@@ -40,7 +40,7 @@ function classes(base: string, className: string | undefined) {
 
 export type BoxProps<Element extends ElementType = "div"> = PolymorphicProps<
   Element,
-  LayoutChildren & { border?: BoxBorder; padding?: Space; paddingDesktop?: Space; surface?: BoxSurface }
+  LayoutChildren & { border?: BoxBorder; padding?: Space; paddingExpanded?: Space; surface?: BoxSurface }
 >;
 
 export function Box<Element extends ElementType = "div">({
@@ -48,7 +48,7 @@ export function Box<Element extends ElementType = "div">({
   border = "none",
   className,
   padding = "none",
-  paddingDesktop,
+  paddingExpanded,
   surface = "none",
   ...props
 }: BoxProps<Element>) {
@@ -59,7 +59,7 @@ export function Box<Element extends ElementType = "div">({
       className={classes(layoutParts.box, className)}
       data-border={border}
       data-padding={padding}
-      data-padding-desktop={paddingDesktop}
+      data-padding-expanded={paddingExpanded}
       data-surface={surface}
     />
   );
@@ -67,7 +67,7 @@ export function Box<Element extends ElementType = "div">({
 
 export type HeroProps<Element extends ElementType = "div"> = PolymorphicProps<
   Element,
-  LayoutChildren & { align?: HeroAlign; padding?: HeroPadding; paddingDesktop?: HeroPadding; surface?: HeroSurface }
+  LayoutChildren & { align?: HeroAlign; padding?: HeroPadding; paddingExpanded?: HeroPadding; surface?: HeroSurface }
 >;
 
 export function Hero<Element extends ElementType = "div">({
@@ -75,7 +75,7 @@ export function Hero<Element extends ElementType = "div">({
   as,
   className,
   padding = heroPaddingOption.default,
-  paddingDesktop,
+  paddingExpanded,
   surface = heroSurfaceOption.default,
   ...props
 }: HeroProps<Element>) {
@@ -86,7 +86,7 @@ export function Hero<Element extends ElementType = "div">({
       className={classes(heroParts.hero, className)}
       data-align={align}
       data-padding={padding}
-      data-padding-desktop={paddingDesktop}
+      data-padding-expanded={paddingExpanded}
       data-surface={surface}
     />
   );
@@ -100,7 +100,7 @@ export function Hero<Element extends ElementType = "div">({
  */
 export type FooterProps<Element extends ElementType = "footer"> = PolymorphicProps<
   Element,
-  LayoutChildren & { divider?: boolean; padding?: FooterPadding; paddingDesktop?: FooterPadding; surface?: FooterSurface }
+  LayoutChildren & { divider?: boolean; padding?: FooterPadding; paddingExpanded?: FooterPadding; surface?: FooterSurface }
 >;
 
 export function Footer<Element extends ElementType = "footer">({
@@ -108,7 +108,7 @@ export function Footer<Element extends ElementType = "footer">({
   className,
   divider = dividerOption.default,
   padding = footerPaddingOption.default,
-  paddingDesktop,
+  paddingExpanded,
   surface = footerSurfaceOption.default,
   ...props
 }: FooterProps<Element>) {
@@ -119,7 +119,7 @@ export function Footer<Element extends ElementType = "footer">({
       className={classes(footerParts.footer, className)}
       data-divider={divider ? "" : "false"}
       data-padding={padding}
-      data-padding-desktop={paddingDesktop}
+      data-padding-expanded={paddingExpanded}
       data-surface={surface}
     />
   );
@@ -127,7 +127,7 @@ export function Footer<Element extends ElementType = "footer">({
 
 export type StackProps<Element extends ElementType = "div"> = PolymorphicProps<
   Element,
-  LayoutChildren & { align?: LayoutAlign; gap?: Space; gapDesktop?: Space }
+  LayoutChildren & { align?: LayoutAlign; gap?: Space; gapExpanded?: Space }
 >;
 
 export function Stack<Element extends ElementType = "div">({
@@ -135,7 +135,7 @@ export function Stack<Element extends ElementType = "div">({
   align,
   className,
   gap = "md",
-  gapDesktop,
+  gapExpanded,
   ...props
 }: StackProps<Element>) {
   const Component = as ?? "div";
@@ -145,7 +145,7 @@ export function Stack<Element extends ElementType = "div">({
       className={classes(layoutParts.stack, className)}
       data-align={align}
       data-gap={gap}
-      data-gap-desktop={gapDesktop}
+      data-gap-expanded={gapExpanded}
     />
   );
 }
@@ -157,7 +157,7 @@ export type InlineProps<Element extends ElementType = "div"> = PolymorphicProps<
     blockStart?: InlineBlockStart;
     equal?: boolean;
     gap?: Space;
-    gapDesktop?: Space;
+    gapExpanded?: Space;
     justify?: InlineJustify;
     wrap?: boolean;
   }
@@ -170,7 +170,7 @@ export function Inline<Element extends ElementType = "div">({
   className,
   equal = false,
   gap = "md",
-  gapDesktop,
+  gapExpanded,
   justify = "start",
   wrap = true,
   ...props
@@ -184,7 +184,7 @@ export function Inline<Element extends ElementType = "div">({
       data-block-start={blockStart === "none" ? undefined : blockStart}
       data-equal={equal ? "" : undefined}
       data-gap={gap}
-      data-gap-desktop={gapDesktop}
+      data-gap-expanded={gapExpanded}
       data-justify={justify}
       data-wrap={wrap}
     />
@@ -197,7 +197,7 @@ export type GridProps<Element extends ElementType = "div"> = PolymorphicProps<
     columns?: GridColumns;
     fill?: boolean;
     gap?: Space;
-    gapDesktop?: Space;
+    gapExpanded?: Space;
     multicol?: boolean;
     responsive?: boolean;
     "data-multicol"?: string;
@@ -211,7 +211,7 @@ export function Grid<Element extends ElementType = "div">({
   columns = 1,
   fill = false,
   gap = "md",
-  gapDesktop,
+  gapExpanded,
   multicol,
   responsive,
   "data-multicol": rawMulticol,
@@ -226,7 +226,7 @@ export function Grid<Element extends ElementType = "div">({
       data-columns={columns}
       data-fill={fill ? "" : undefined}
       data-gap={gap}
-      data-gap-desktop={gapDesktop}
+      data-gap-expanded={gapExpanded}
       data-multicol={multicol === true ? "" : multicol === false ? undefined : rawMulticol}
       data-responsive={responsive === true ? "" : responsive === false ? undefined : rawResponsive}
     />
@@ -260,14 +260,14 @@ export function Main(props: MainProps) {
 
 export type WrapperProps<Element extends ElementType = "div"> = PolymorphicProps<
   Element,
-  LayoutChildren & { gutter?: WrapperGutter; gutterDesktop?: WrapperGutter; size?: WrapperSize }
+  LayoutChildren & { gutter?: WrapperGutter; gutterExpanded?: WrapperGutter; size?: WrapperSize }
 >;
 
 export function Wrapper<Element extends ElementType = "div">({
   as,
   className,
   gutter,
-  gutterDesktop,
+  gutterExpanded,
   size = "md",
   ...props
 }: WrapperProps<Element>) {
@@ -277,7 +277,7 @@ export function Wrapper<Element extends ElementType = "div">({
       {...props}
       className={classes(layoutParts.wrapper, className)}
       data-gutter={gutter}
-      data-gutter-desktop={gutterDesktop}
+      data-gutter-expanded={gutterExpanded}
       data-size={size}
     />
   );

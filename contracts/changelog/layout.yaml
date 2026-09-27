@@ -3,19 +3,19 @@
 # `surface` is the shape of the contract the last time somebody reviewed it. If the compiler says it
 # does not match, something a consumer depends on has moved: write the entry and paste in the new
 # hash.
-surface: "34d4a45a0425d8f6"
+surface: "921e6d448d249f24"
 entries:
   - date: 2026-09-27
     kind: feature
-    target: gapDesktop
+    target: gapExpanded
     es:
-      title: Stack, Inline y Grid declaran su gap de desktop con gapDesktop
+      title: Stack, Inline y Grid declaran su gap para pantallas amplias con gapExpanded
       body: >-
-        <code>gap</code> es el valor desde la pantalla más chica; <code>gapDesktop</code> lo reemplaza desde el breakpoint <code>desktop</code> (52rem). Sin declararlo no cambia nada.
+        <code>gap</code> es el valor desde la pantalla más chica; <code>gapExpanded</code> lo reemplaza desde el breakpoint <code>desktop</code> (52rem). Sin declararlo no cambia nada.
     en:
-      title: Stack, Inline and Grid declare their desktop gap with gapDesktop
+      title: Stack, Inline and Grid declare their gap for expanded screens with gapExpanded
       body: >-
-        <code>gap</code> is the value from the smallest screen up; <code>gapDesktop</code> replaces it from the <code>desktop</code> breakpoint (52rem) up. Left out, nothing changes.
+        <code>gap</code> is the value from the smallest screen up; <code>gapExpanded</code> replaces it from the <code>desktop</code> breakpoint (52rem) up. Left out, nothing changes.
   - date: 2026-09-17
     kind: feature
     target: LayoutGrid

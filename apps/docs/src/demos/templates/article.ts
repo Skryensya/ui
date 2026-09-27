@@ -47,16 +47,16 @@ export const articleTree = (t: Translate): UsageTree => ({
           children: {
             contract: "layout",
             signature: "Stack",
-            options: { gap: "lg", gapDesktop: "xl" },
+            options: { gap: "lg", gapExpanded: "xl" },
             children: [
               {
                 contract: "hero",
                 signature: "Hero",
-                options: { surface: "sunken", padding: "lg", paddingDesktop: "xl" },
+                options: { surface: "sunken", padding: "lg", paddingExpanded: "xl" },
                 children: {
                   contract: "wrapper",
                   signature: "Wrapper",
-                  options: { wrapperSize: "sm", gutter: "md", gutterDesktop: "lg" },
+                  options: { wrapperSize: "sm", gutter: "md", gutterExpanded: "lg" },
                   children: {
                     contract: "layout",
                     signature: "Stack",
@@ -132,11 +132,11 @@ export const articleTree = (t: Translate): UsageTree => ({
               {
                 contract: "wrapper",
                 signature: "Wrapper",
-                options: { wrapperSize: "sm", gutter: "md", gutterDesktop: "lg" },
+                options: { wrapperSize: "sm", gutter: "md", gutterExpanded: "lg" },
                 children: {
                   contract: "layout",
                   signature: "Stack",
-                  options: { gap: "md", gapDesktop: "lg" },
+                  options: { gap: "md", gapExpanded: "lg" },
                   children: [
                     {
                       contract: "image-frame",
