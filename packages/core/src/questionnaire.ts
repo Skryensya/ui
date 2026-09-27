@@ -898,7 +898,7 @@ export const questionnaireDefaultLabels = {
  * The same restraint the tiles and the text field below take.
  */
 const buttonAttrs = (variant: "solid" | "soft" | "ghost") =>
-  ({ "data-size": "sm", "data-tone": "neutral", "data-variant": variant }) as const;
+  ({ "data-appearance": "plain", "data-size": "sm", "data-tone": "neutral", "data-variant": variant }) as const;
 
 /*
  * THE CONTRACT, and what it deliberately does not redraw.
@@ -1434,7 +1434,7 @@ export const questionnaireContract = {
                      * is the inset that makes a single line fill its own minimum, and the column of
                      * options reads level whatever each label is worth.
                      */
-                    attrs: { "data-scope": "tile", "data-part": "item", "data-padding": "md" },
+                    attrs: { "data-scope": "tile", "data-part": "item", "data-appearance": "plain", "data-padding": "md" },
                     repeat: "choices",
                     children: [
                       {
@@ -1453,7 +1453,7 @@ export const questionnaireContract = {
                         ],
                       },
                       /* The shortcut is a tile sibling: it is positioned in the left gutter, never read as answer content. */
-                      { element: "kbd", part: "shortcut", also: ["sk-kbd"], attrs: { "aria-hidden": "true", "data-tone": "neutral" } },
+                      { element: "kbd", part: "shortcut", also: ["sk-kbd"], attrs: { "aria-hidden": "true", "data-appearance": "plain", "data-tone": "neutral" } },
                       {
                         element: "span",
                         also: ["sk-tile__selection-indicator"],
@@ -1475,7 +1475,7 @@ export const questionnaireContract = {
                     mount: "data-sk-tile-checkbox",
                     options: ["name"],
                     /* Same inset as the single-answer tile above, and for the same reason. */
-                    attrs: { "data-scope": "tile", "data-padding": "md" },
+                    attrs: { "data-scope": "tile", "data-appearance": "plain", "data-padding": "md" },
                     repeat: "choices",
                     itemOptions: ["value", "disabled"],
                     itemOptionAttrs: { disabled: "data-disabled" },
@@ -1491,7 +1491,7 @@ export const questionnaireContract = {
                         ],
                       },
                       /* The shortcut is a tile sibling: it is positioned in the left gutter, never read as answer content. */
-                      { element: "kbd", part: "shortcut", also: ["sk-kbd"], attrs: { "aria-hidden": "true", "data-tone": "neutral" } },
+                      { element: "kbd", part: "shortcut", also: ["sk-kbd"], attrs: { "aria-hidden": "true", "data-appearance": "plain", "data-tone": "neutral" } },
                       /* Both states, exactly as `TileCheckbox`'s own template writes them: React renders
                          the real component, so a single-state indicator here would be a divergence
                          between the two bindings rather than a smaller checkbox. */

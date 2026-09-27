@@ -535,9 +535,10 @@ function round(value: number): number {
 /*
  * ONE KIND OF BUTTON: ghost, sm (a 44px hit area around a smaller face). The zoom bar is Canvas's,
  * ghost buttons in one pill; Close, previous and next are the same lone ghost button, so the chrome
- * reads as one set and the photo stays the loudest thing on the screen.
+ * reads as one set and the photo stays the loudest thing on the screen. Exported so React reads the
+ * same object instead of a copy that can drift.
  */
-const controlLook = {
+export const lightboxControlLook = {
   zoom: { variant: "ghost", size: "sm", icon: "md" },
   close: { variant: "ghost", size: "sm", icon: "md" },
   nav: { variant: "ghost", size: "sm", icon: "md" },
@@ -547,7 +548,7 @@ const control = (
   action: LightboxAction,
   option: string,
   icon: string,
-  look: keyof typeof controlLook,
+  look: keyof typeof lightboxControlLook,
 ): ContractTemplate => ({
   element: "button",
   part: look === "nav" ? "nav" : "control",
@@ -557,10 +558,10 @@ const control = (
     type: "button",
     [lightboxAttrs.action]: action,
     "data-icon-only": "",
-    "data-variant": controlLook[look].variant,
-    "data-size": controlLook[look].size,
+    "data-variant": lightboxControlLook[look].variant,
+    "data-size": lightboxControlLook[look].size,
   },
-  children: [{ element: "span", attrs: { "data-sk-icon": icon, "data-sk-icon-size": controlLook[look].icon } }],
+  children: [{ element: "span", attrs: { "data-sk-icon": icon, "data-sk-icon-size": lightboxControlLook[look].icon } }],
 });
 
 /* ---------------------------------------------------------------------------------------------- *

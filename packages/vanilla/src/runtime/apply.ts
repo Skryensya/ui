@@ -56,6 +56,11 @@ const BOOLEAN_ATTRS = new Set([
   "inert",
 ]);
 
+// Enumerated attributes whose "false" is a value, not an absence: `spellcheck="false"` turns spell
+// checking off, while removing it leaves the browser default on. Only what React is seen to write as
+// "false" from the same Zag props: it drops Zag's `draggable: false`, so that one stays removed.
+const ENUMERATED_FALSE_ATTRS = new Set(["spellcheck"]);
+
 /*
  * Which inline declarations THIS runtime put on each node. Authored markup also brings inline styles
  * (`style="--sk-carousel-slide-size: 26rem"`); overwriting the whole attribute would erase them, so we
@@ -167,8 +172,9 @@ export function applyZagProps(
     }
 
     if (value === false || value === undefined || value === null) {
-      // Boolean aria-* attributes need the string "false" (they stay present); the rest are removed.
-      if (value === false && key.startsWith("aria-")) {
+      // Boolean aria-* attributes need the string "false" (they stay present), and so do the
+      // enumerated ones whose "false" is a state rather than an absence; the rest are removed.
+      if (value === false && (key.startsWith("aria-") || ENUMERATED_FALSE_ATTRS.has(key))) {
         node.setAttribute(key, "false");
         owned.add(key);
       } else if (value === false || previous?.has(key)) {

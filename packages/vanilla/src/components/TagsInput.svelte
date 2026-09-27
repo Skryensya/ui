@@ -137,6 +137,7 @@
           class="{tagsInputParts.remove} {tagParts.remove} sk-button sk-interactive"
           aria-label={removeLabel}
           type="button"
+          data-appearance="plain"
           data-variant="ghost"
           data-tone="neutral"
           data-size="sm"

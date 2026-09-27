@@ -34,7 +34,6 @@ export function useFormFieldControl(props: {
   "aria-describedby"?: string;
 }) {
   const field = useContext(FormFieldContext);
-  const generatedId = useId();
 
   /*
    * A control with no field above it still validates and still blocks its form (the constraint it
@@ -44,7 +43,9 @@ export function useFormFieldControl(props: {
   const reportError = field?.reportError ?? noReportError;
 
   return {
-    id: props.id ?? field?.controlId ?? generatedId,
+    /* No invented id for a control standing alone: nothing points at it, and the emitted markup
+     * writes none either, so inventing one here was a divergence between the bindings (G2). */
+    id: props.id ?? field?.controlId,
     describedBy: props["aria-describedby"] ?? field?.describedBy,
     invalid: field?.invalid ?? false,
     required: props.required ?? field?.required ?? false,

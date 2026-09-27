@@ -3,8 +3,20 @@
 # `surface` is the shape of the contract the last time somebody reviewed it. If the compiler says it
 # does not match, something a consumer depends on has moved: write the entry and paste in the new
 # hash.
-surface: "febbda370a6e9a58"
+surface: "df2946f9af9be70a"
 entries:
+  - date: 2026-09-27
+    kind: chore
+    es:
+      title: Tabs declara data-sk-tabs como su punto de montaje
+      body: >-
+        El atributo ya se emitía; ahora el contrato lo nombra como <code>mount</code>, como los demás componentes
+        con enhancer, y la comparación entre bindings ignora sus marcas de ciclo de vida. El markup no cambia.
+    en:
+      title: Tabs declares data-sk-tabs as its mount point
+      body: >-
+        The attribute was already emitted; the contract now names it as <code>mount</code>, like every other
+        enhanced component, and the binding comparison ignores its lifecycle markers. The markup is unchanged.
   - date: 2026-09-27
     kind: bugfix
     target: appearance

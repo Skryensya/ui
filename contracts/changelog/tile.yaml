@@ -5,6 +5,16 @@
 # hash.
 surface: "7087b4e1f89e3813"
 entries:
+  - date: 2026-09-27
+    kind: feature
+    es:
+      title: TileCheckbox y TileRadioGroup aceptan aside en React
+      body: >-
+        Contenido junto al contenido de la opción, no dentro de él, para marcas que no deben formar parte de su texto accesible. Questionnaire lo usa para la tecla de atajo, como ya la ubicaba su plantilla.
+    en:
+      title: "TileCheckbox and TileRadioGroup take aside in React"
+      body: >-
+        Content beside the choice's content, not inside it, for marks that must not join its accessible text. Questionnaire uses it for the shortcut key, where its template already placed it.
   - date: 2026-09-26
     kind: feature
     target: appearance

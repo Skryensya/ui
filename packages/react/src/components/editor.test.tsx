@@ -247,8 +247,8 @@ describe("Editor: FormField integration", () => {
     expect(screen.getByText("Descripción").getAttribute("for")).toBe(content.id);
   });
 
-  it("rendered standalone, the content surface falls back to its own generated id", () => {
+  it("rendered standalone, the content surface invents no id nothing points at", () => {
     render(<Editor defaultValue="<p>Hola</p>" />);
-    expect(screen.getByRole("textbox").id).toBeTruthy();
+    expect(screen.getByRole("textbox").id).toBe("");
   });
 });

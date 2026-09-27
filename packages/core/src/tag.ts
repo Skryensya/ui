@@ -130,6 +130,7 @@ export const tagContract = {
             options: ["removeLabel"],
             attrs: {
               type: "button",
+              "data-appearance": "plain",
               "data-variant": "ghost",
               "data-tone": "neutral",
               "data-size": "sm",

@@ -1,5 +1,7 @@
-import { stepsParts, type Step, type StepStatus } from "@skryensya/core/steps";
+import { stepsContract, stepsParts, type Step, type StepStatus } from "@skryensya/core/steps";
 import { type HTMLAttributes, type ReactNode } from "react";
+
+const { appearance: appearanceOption } = stepsContract.options;
 
 const cx = (base: string, className: string | undefined) => (className ? `${base} ${className}` : base);
 
@@ -11,11 +13,13 @@ export type StepsProps = Omit<HTMLAttributes<HTMLOListElement>, "children"> & {
   current?: number;
   /** Rail direction. Defaults to horizontal, switching to vertical below 40rem. Pin either value to opt out of that responsive default. */
   "data-orientation"?: "horizontal" | "vertical";
+  /** How a stage is drawn: a numbered disc per stage, or a bar segment. */
+  appearance?: (typeof appearanceOption.values)[number];
 };
 
-export function Steps({ className, current = 0, steps, ...props }: StepsProps) {
+export function Steps({ appearance = appearanceOption.default, className, current = 0, steps, ...props }: StepsProps) {
   return (
-    <ol {...props} className={cx(stepsParts.root, className)} role="list">
+    <ol {...props} className={cx(stepsParts.root, className)} data-appearance={appearance} role="list">
       {steps.map((step, index) => {
         const status = step.status ?? deriveStatus(index, current);
         return (

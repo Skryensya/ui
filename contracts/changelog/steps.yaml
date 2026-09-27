@@ -5,6 +5,17 @@
 # hash.
 surface: "dbb5f4bc94783f48"
 entries:
+  - date: 2026-09-27
+    kind: bugfix
+    target: Steps
+    es:
+      title: Steps en React acepta appearance
+      body: >-
+        React no recibía <code>appearance</code>: el valor se colaba como atributo suelto en el <code>&lt;ol&gt;</code> y <code>segments</code> nunca se pintaba. Ahora escribe <code>data-appearance</code>, con <code>markers</code> por defecto, igual que el markup emitido.
+    en:
+      title: "Steps in React accepts appearance"
+      body: >-
+        React did not take <code>appearance</code>: it leaked onto the <code>&lt;ol&gt;</code> as a stray attribute and <code>segments</code> never drew. It now writes <code>data-appearance</code>, <code>markers</code> by default, as the emitted markup does.
   - date: 2026-09-19
     kind: rework
     es:

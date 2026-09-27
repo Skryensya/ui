@@ -26,7 +26,8 @@ describe("Input contract", () => {
     const ui = render(<Input aria-label="Search" name="q" />);
     const input = controlIn(ui).getByRole("textbox", { name: "Search" }) as HTMLInputElement;
 
-    expect(input.id).toBeTruthy();
+    // No invented id: nothing points at a lone control, and the emitted markup writes none either.
+    expect(input.id).toBe("");
     expect(input.getAttribute("aria-describedby")).toBeNull();
   });
 

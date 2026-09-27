@@ -991,7 +991,7 @@ function attributesFor(node: ContractTemplate, ctx: NodeContext): string[] {
     if (id) out.push(attr("aria-labelledby", id));
   }
 
-  if (node.slot && labelledSlots(ctx.signature.template).has(node.slot)) {
+  if (node.slot && labelledSlots(ctx.signature.template, ctx).has(node.slot)) {
     const id = slotId(ctx, node.slot);
     if (id) out.push(attr("id", id));
   }
@@ -1051,10 +1051,16 @@ function claimedElsewhere(
   return others;
 }
 
-/** Slot names some node in this template points at with `labelledBySlot`. */
-function labelledSlots(root: ContractTemplate): ReadonlySet<string> {
+/*
+ * Slot names some EMITTED node in this template points at with `labelledBySlot`. A pointer on a node
+ * this tree's options leave out (`whenGiven`/`whenMissing`) points at nothing, and naming its target
+ * anyway put an id on NavList's collapsible trigger that no element referred to (G2 caught it).
+ */
+function labelledSlots(root: ContractTemplate, ctx: NodeContext): ReadonlySet<string> {
   const names = new Set<string>();
   const visit = (node: ContractTemplate): void => {
+    if (node.whenGiven !== undefined && !supplied(node.whenGiven, ctx)) return;
+    if (node.whenMissing !== undefined && supplied(node.whenMissing, ctx)) return;
     if (node.labelledBySlot) names.add(node.labelledBySlot);
     for (const child of node.children ?? []) visit(child);
   };

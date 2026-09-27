@@ -5,6 +5,17 @@
 # hash nuevo.
 surface: "65d1f39639bc18bc"
 entries:
+  - date: 2026-09-27
+    kind: bugfix
+    target: Lightbox
+    es:
+      title: Anterior y siguiente de Lightbox usan el botón del contrato en React
+      body: >-
+        React dibujaba la navegación como <code>translucent</code> <code>md</code>, una copia vieja; el contrato dice <code>ghost</code> <code>sm</code>, como Cerrar. React ahora lee el mismo objeto que el contrato.
+    en:
+      title: "Lightbox's previous and next use the contract's button in React"
+      body: >-
+        React drew navigation as <code>translucent</code> <code>md</code>, a stale copy; the contract says <code>ghost</code> <code>sm</code>, like Close. React now reads the same object as the contract.
   - date: 2026-09-24
     kind: feature
     target: Lightbox
