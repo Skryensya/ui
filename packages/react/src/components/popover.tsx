@@ -6,6 +6,7 @@ import { anchoredParts } from "@skryensya/core/anchored";
 const cx = (...classes: Array<string | undefined>) => classes.filter(Boolean).join(" ");
 
 const {
+  appearance: appearanceOption,
   closeLabel: closeLabelOption,
   placement: placementOption,
   triggerVariant: triggerVariantOption,
@@ -30,6 +31,8 @@ export type PopoverProps = Omit<HTMLAttributes<HTMLDivElement>, "content" | "tit
    * for one thing. Escape and light-dismiss still work: they are the platform's, not the chrome's.
    */
   bare?: boolean;
+  /** How the panel is drawn: `plain`, `brutalist` or `frosted`. The trigger's is `triggerAppearance`. */
+  appearance?: (typeof appearanceOption.values)[number];
   placement?: PopoverPlacement;
   triggerLabel?: string;
   closeLabel?: string;
@@ -50,6 +53,7 @@ export type PopoverProps = Omit<HTMLAttributes<HTMLDivElement>, "content" | "tit
 
 /** Native Popover API: the browser owns light-dismiss, Escape and top-layer behaviour. No portal. */
 export function Popover({
+  appearance = appearanceOption.default,
   bare = false,
   children,
   className,
@@ -88,6 +92,7 @@ export function Popover({
     <div
       {...props}
       className={cx(popoverParts.root, className)}
+      data-appearance={appearance}
       data-arrow={arrow ? "" : undefined}
       data-bare={bare ? "" : undefined}
     >

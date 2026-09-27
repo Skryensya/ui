@@ -3,8 +3,23 @@
 # `surface` is the shape of the contract the last time somebody reviewed it. If the compiler says it
 # does not match, something a consumer depends on has moved: write the entry and paste in the new
 # hash.
-surface: "95030abe631d94e9"
+surface: "d75c29f8f816fb0c"
 entries:
+  - date: 2026-09-26
+    kind: feature
+    target: appearance
+    es:
+      title: Popover suma appearance plain, brutalist y frosted
+      body: >-
+        En la raíz, para el panel: <code>brutalist</code> un borde negro y una sombra dura en lugar de la
+        elevación suave, <code>frosted</code> un panel translúcido, opaco donde el material no es fiable. El
+        disparador tiene la suya, <code>triggerAppearance</code>.
+    en:
+      title: Popover adds plain, brutalist and frosted appearances
+      body: >-
+        On the root, for the panel: <code>brutalist</code> a black edge and a hard offset in place of the soft
+        elevation, <code>frosted</code> a see-through panel, opaque wherever the material cannot be trusted. The
+        trigger has its own, <code>triggerAppearance</code>.
   - date: 2026-09-26
     kind: feature
     target: triggerAppearance

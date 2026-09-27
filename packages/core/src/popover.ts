@@ -75,6 +75,18 @@ export const popoverContract = {
   hookSheets: ["@skryensya/core/patterns/anchored.css"],
 
   options: {
+    /*
+     * HOW THE PANEL IS DRAWN, Button's axis: brutalist a black edge and hard offset in place of the
+     * soft elevation, frosted a see-through panel (opaque wherever the material cannot be trusted).
+     * On the root; the trigger has its own, triggerAppearance. No tactile: a panel is never
+     * pressed.
+     */
+    appearance: {
+      type: "enum",
+      values: ["plain", "brutalist", "frosted"],
+      default: "plain",
+      attr: "data-appearance",
+    },
     /** The id that ties the trigger to the panel. Authored, because the platform needs a real id. */
     panelId: {
       type: "string",
@@ -142,6 +154,7 @@ export const popoverContract = {
         "triggerSize",
         "triggerAppearance",
         "triggerIconOnly",
+        "appearance",
       ],
       requires: ["panelId"],
       /** Extra a11y on the wrapper; panel id is the panelId option (not forwarded). */
@@ -248,6 +261,7 @@ export const popoverContract = {
         "triggerSize",
         "triggerAppearance",
         "triggerIconOnly",
+        "appearance",
       ],
       requires: ["panelId"],
       /** Extra a11y on the wrapper; panel id is the panelId option (not forwarded). */

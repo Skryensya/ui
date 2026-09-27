@@ -7,6 +7,7 @@ import "@skryensya/core/components/annotation.css";
    sheet has to come from here. */
 import "@skryensya/core/components/checkbox.css";
 import ComponentPageShell from "./ComponentPageShell.astro";
+import AppearanceMenu from "../AppearanceMenu.astro";
 import CodeBlock from "../CodeBlock.astro";
 import ComponentPreview from "../ComponentPreview.astro";
 import {
@@ -35,12 +36,17 @@ mountIcons(document, lucideIcons);`;
   title="Popover"
   description={t("popoverPage.description")}
   contractId="popover"
+  appearanceTargetSelector=".sk-popover"
   styleGroups={[
     { file: "components/popover.css", probe: "sk-popover", title: "Popover" },
     { file: "patterns/anchored.css", probe: "sk-anchored", title: "Heredados de Anclaje" },
   ]}
   testFiles={["packages/react/src/components/popover.test.tsx"]}
 >
+  <Fragment slot="appearance">
+    <AppearanceMenu label={t("prefs.appearance")} values={["plain", "brutalist", "frosted"]} unavailable={{ tactile: t("prefs.appearanceTactileUnavailable") }} />
+  </Fragment>
+
   <Fragment slot="anatomy">
     <p set:html={t("popoverPage.anatomyBody")} />
     <ComponentPreview

@@ -28,6 +28,13 @@ describe("Popover (React)", () => {
     expect(content.textContent).toContain("Content");
   });
 
+  it("serializes the panel's appearance on the root, apart from the trigger's", () => {
+    const ui = render(<Popover appearance="frosted" trigger="Open" triggerAppearance="brutalist">Content</Popover>);
+    const trigger = ui.getByRole("button", { name: "Open" });
+    expect(trigger.closest(".sk-popover")?.getAttribute("data-appearance")).toBe("frosted");
+    expect(trigger.getAttribute("data-appearance")).toBe("brutalist");
+  });
+
   it("forwards Button's appearance to its trigger", () => {
     const ui = render(<Popover trigger="Open" triggerAppearance="tactile">Content</Popover>);
     expect(ui.getByRole("button", { name: "Open" }).getAttribute("data-appearance")).toBe("tactile");
