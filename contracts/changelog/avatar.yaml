@@ -5,6 +5,19 @@
 # hash.
 surface: "924379c3e48ad4db"
 entries:
+  - date: 2026-09-27
+    kind: bugfix
+    es:
+      title: El +N del grupo sigue el tamaño de los discos
+      body: >-
+        El chip <code>+N</code> de <code>AvatarGroup</code> y el solapamiento ahora miden lo mismo que los
+        avatares del grupo. Antes eran siempre md, así que un grupo sm terminaba en un chip más alto que los
+        discos y un contenedor de altura fija lo recortaba.
+    en:
+      title: The group's +N follows the discs' size
+      body: >-
+        AvatarGroup's <code>+N</code> chip and its overlap now match the size of the avatars in the group. They
+        were always md, so an sm stack ended in a chip taller than its discs, which a fixed-height host cropped.
   - date: 2026-09-26
     kind: feature
     es:

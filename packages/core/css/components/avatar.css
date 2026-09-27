@@ -70,10 +70,19 @@
   .sk-avatar-group { display: inline-flex; align-items: center; }
   .sk-avatar-group > .sk-avatar,
   .sk-avatar-group > .sk-avatar-group__overflow { box-shadow: 0 0 0 2px var(--color-bg-surface); }
-  .sk-avatar-group > * + * { margin-inline-start: calc(var(--size-control-md) / -3); }
+  /*
+   * The "+N" chip and the overlap follow the discs' own size. They were fixed at md, so a stack of
+   * sm avatars ended in a chip taller than every disc beside it, which any fixed-height host (a
+   * select trigger) cropped top and bottom. `--avatar-group-size` is internal, not a hook.
+   */
+  .sk-avatar-group { --avatar-group-size: var(--size-control-md); }
+  .sk-avatar-group:has(> .sk-avatar[data-size="sm"]) { --avatar-group-size: var(--size-control-sm); }
+  .sk-avatar-group:has(> .sk-avatar[data-size="lg"]) { --avatar-group-size: var(--size-control-lg); }
+  .sk-avatar-group:has(> .sk-avatar[data-size="xl"]) { --avatar-group-size: calc(var(--size-control-lg) * 4 / 3); }
+  .sk-avatar-group > * + * { margin-inline-start: calc(var(--avatar-group-size) / -3); }
   /* The "+3" chip reads the same hooks as the discs it caps, so re-tinting a group tints its
      overflow with it instead of leaving one odd grey circle at the end of the stack. */
-  .sk-avatar-group__overflow { position: relative; display: inline-grid; place-items: center; inline-size: var(--size-control-md); block-size: var(--size-control-md); flex: none; border-radius: var(--radius-pill); background: var(--sk-avatar-bg, var(--color-bg-surface-sunken)); color: var(--sk-avatar-fg, var(--color-text-primary)); font-size: var(--font-size-caption); font-weight: var(--font-weight-label); }
+  .sk-avatar-group__overflow { position: relative; display: inline-grid; place-items: center; inline-size: var(--avatar-group-size); block-size: var(--avatar-group-size); flex: none; border-radius: var(--radius-pill); background: var(--sk-avatar-bg, var(--color-bg-surface-sunken)); color: var(--sk-avatar-fg, var(--color-text-primary)); font-size: var(--font-size-caption); font-weight: var(--font-weight-label); }
 
   /*
    * BRUTALIST: Button's construction on a disc. A real border for the black edge, because the photo
