@@ -1,5 +1,5 @@
 import { comboboxParts } from "@skryensya/core/combobox";
-import { selectAttrs, selectParts, selectPositioning } from "@skryensya/core/select";
+import { selectAttrs, selectParts, selectPositioning, type SelectOptions } from "@skryensya/core/select";
 import { select } from "@skryensya/core/machines";
 import { userSelectAttrs, userSelectSearchKey } from "@skryensya/core/user-select";
 import { normalizeProps, Portal, useMachine } from "@zag-js/react";
@@ -37,6 +37,11 @@ export type UserSelectProps = {
   /** Caps the trigger's avatar stack; the rest collapse into `GroupedAvatar`'s own "+N". */
   maxAvatars?: number;
   className?: string;
+  /**
+   * Select's `variant`. Defaults to `ghost`, unlike Select: the trigger shows faces and names, and
+   * a bordered box around a row of avatars reads as a form field where a picker is meant.
+   */
+  variant?: SelectOptions["variant"];
   /** Where the floating listbox is portalled. See `Select`'s own prop of the same name. */
   container?: RefObject<HTMLElement>;
 };
@@ -54,6 +59,7 @@ export function UserSelect({
   searchPlaceholder = "Search users...",
   users,
   value,
+  variant = "ghost",
 }: UserSelectProps) {
   const generatedId = useId();
   const machineId = id ?? generatedId;
@@ -145,6 +151,7 @@ export function UserSelect({
   return (
     <div
       className={cx(selectParts.root, className)}
+      data-variant={variant}
       ref={rootRef}
       {...{ [selectAttrs.root]: "", [userSelectAttrs.root]: "" }}
     >
@@ -246,7 +253,7 @@ export function UserSelect({
               // `tabIndex={-1}`: `getListProps()` defaults it to 0 for a STANDALONE listbox
               // (`composite: false`'s other use case), but here the search input is the one real tab
               // stop; the list is reached through it via `aria-activedescendant`, never by Tab.
-              <div {...api.getListProps()} tabIndex={-1}>
+              <div {...api.getListProps()} className="sk-scrollbar" tabIndex={-1} {...{ [userSelectAttrs.list]: "" }}>
                 {filteredUsers.map((user) => (
                   <div
                     {...api.getItemProps({ item: user })}

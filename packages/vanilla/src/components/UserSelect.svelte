@@ -106,6 +106,9 @@
       content.append(listEl);
     }
   }
+  // The rows scroll inside their own fixed-height well, with the kit's scrollbar, so the search
+  // field above and the footer below stay put while the list moves.
+  listEl.classList.add("sk-scrollbar");
 
   let emptyEl = root.querySelector<HTMLElement>(own.empty);
   if (!emptyEl) {

@@ -14,10 +14,12 @@ import { userSelectRoster, type UserSelectDemoUser } from "./data/user-select";
  */
 
 const row = (user: UserSelectDemoUser): string => `<div class="sk-select__item sk-interactive" data-sk-select-item data-value="${user.id}" data-email="${user.email}"${user.disabled ? " data-disabled" : ""}>
+        <span class="sk-inline" data-align="center" data-gap="sm" data-wrap="false">
         <span class="sk-avatar" data-size="sm" role="img" aria-label="${user.name}" style="--sk-avatar-bg: var(--palette-${user.hue}); --sk-avatar-fg: var(--palette-white);"><span class="sk-avatar__fallback" aria-hidden="true">${avatarInitials(user.name)}</span></span>
         <span class="sk-combobox__item-copy">
           <span class="sk-select__item-text" data-sk-select-item-text>${user.name}</span>
           <span class="sk-select__item-text sk-combobox__item-description">${user.email}</span>
+        </span>
         </span>
         <span class="sk-select__item-indicator" data-sk-select-item-indicator aria-hidden="true"><span data-sk-icon="check" data-sk-icon-size="md"></span></span>
       </div>`;
@@ -26,6 +28,7 @@ const row = (user: UserSelectDemoUser): string => `<div class="sk-select__item s
 export const userSelectHtml = (t: Translate, roster: readonly UserSelectDemoUser[] = userSelectRoster): string => `<div
   class="sk-select"
   data-sk-user-select
+  data-variant="ghost"
   id="assignees"
   data-value="jane"
   data-placeholder="${t("userSelectPage.placeholder")}"
@@ -49,7 +52,7 @@ export const userSelectHtml = (t: Translate, roster: readonly UserSelectDemoUser
 </div>`;
 
 /** An empty roster: the "no users available" branch, frozen open. */
-export const userSelectEmptyHtml = (t: Translate): string => `<div class="sk-select" data-sk-user-select id="assignees-empty" data-placeholder="${t("userSelectPage.placeholder")}">
+export const userSelectEmptyHtml = (t: Translate): string => `<div class="sk-select" data-sk-user-select data-variant="ghost" id="assignees-empty" data-placeholder="${t("userSelectPage.placeholder")}">
   <div class="sk-select__control" data-sk-select-control>
     <button class="sk-select__trigger sk-anchor sk-interactive" data-sk-select-trigger type="button">
       <span class="sk-select__value" data-sk-select-value></span>
