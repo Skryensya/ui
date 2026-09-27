@@ -1,9 +1,10 @@
 import { comboboxParts } from "@skryensya/core/combobox";
-import { selectAttrs, selectParts, selectPositioning, type SelectOptions } from "@skryensya/core/select";
+import { selectAttrs, selectParts, selectPositioning } from "@skryensya/core/select";
 import { select } from "@skryensya/core/machines";
 import { selectionParts } from "@skryensya/core/selection";
 import {
   userSelectAttrs,
+  userSelectContract,
   userSelectLabel,
   userSelectLabels,
   userSelectSearchKey,
@@ -13,20 +14,20 @@ import { normalizeProps, Portal, useMachine } from "@zag-js/react";
 import { useId, useMemo, useRef, useState, type KeyboardEvent, type RefObject } from "react";
 import { useAnchored } from "./anchored.js";
 import { Avatar, AvatarGroup } from "./avatar.js";
-import { Button } from "./button.js";
 import { Icon } from "./icon.js";
-import { Input } from "./input.js";
-import { Inline } from "./layout.js";
 import { Loader } from "./loader.js";
-import { Text } from "./typography.js";
 
 const cx = (...classes: Array<string | undefined>) => classes.filter(Boolean).join(" ");
+
+const { variant: variantOption } = userSelectContract.options;
 
 export type UserSelectUser = {
   id: string;
   name: string;
   email?: string;
   avatarUrl?: string;
+  /** What the avatar shows without a photo. Derived from `name` when absent. */
+  initials?: string;
   disabled?: boolean;
 };
 
@@ -35,8 +36,11 @@ export type UserSelectProps = {
   /** Submitted under this name by the hidden native `<select multiple>`, same role as Select's own. */
   name?: string;
   users: readonly UserSelectUser[];
-  value: readonly string[];
-  onValueChange: (value: string[]) => void;
+  /** The selection, controlled. Leave it out and pass `defaultValue` to let the component own it. */
+  value?: readonly string[];
+  /** The selection it opens with when uncontrolled: ids, as an array or space-separated. */
+  defaultValue?: string | readonly string[];
+  onValueChange?: (value: string[]) => void;
   /**
    * The noun for what is picked, plural: "users" by default. Every default string reads it
    * ("3 users", "No users available"), so `term="members"` relabels the whole picker in English.
@@ -60,17 +64,28 @@ export type UserSelectProps = {
   maxAvatars?: number;
   className?: string;
   /**
-   * Select's `variant`. Defaults to `ghost`, unlike Select: the trigger shows faces and names, and
-   * a bordered box around a row of avatars reads as a form field where a picker is meant.
+   * How much body the trigger has. Defaults to `ghost`, unlike Select: the trigger shows faces and
+   * names, and a bordered box around a row of avatars reads as a form field where a picker is meant.
    */
-  variant?: SelectOptions["variant"];
+  variant?: (typeof userSelectContract.options.variant.values)[number];
   /** Where the floating listbox is portalled. See `Select`'s own prop of the same name. */
   container?: RefObject<HTMLElement>;
 };
 
+const toIds = (value: string | readonly string[] | undefined): string[] =>
+  value === undefined ? [] : typeof value === "string" ? value.split(/\s+/).filter(Boolean) : [...value];
+
+/*
+ * THE DOM IS THE CONTRACT'S TEMPLATE (`userSelectContract`), element for element, and G2 holds this
+ * binding and the Vanilla enhancer to it. That is why the inner pieces are plain elements carrying
+ * the kit's classes rather than `Input`, `Button`, `Text` or `Inline`: those components add their own
+ * attributes (a validation hook, an appearance, a ref'd value attribute) that authored markup does not
+ * carry, and every one of them was a divergence between the two bindings.
+ */
 export function UserSelect({
   className,
   container,
+  defaultValue,
   disabled,
   id,
   labels: labelOverrides,
@@ -83,12 +98,14 @@ export function UserSelect({
   term,
   unselectedLabel: unselectedProp,
   users,
-  value,
-  variant = "ghost",
+  value: valueProp,
+  variant = variantOption.default,
 }: UserSelectProps) {
   const generatedId = useId();
   const machineId = id ?? generatedId;
   const rootRef = useRef<HTMLDivElement>(null);
+  const searchRef = useRef<HTMLInputElement>(null);
+  const listRef = useRef<HTMLDivElement>(null);
   const [query, setQuery] = useState("");
 
   const labels: UserSelectLabels = {
@@ -104,28 +121,20 @@ export function UserSelect({
   const placeholder = label("placeholder");
   const searchPlaceholder = label("searchPlaceholder");
 
-  const usersById = useMemo(() => new Map(users.map((user) => [user.id, user])), [users]);
-  const selectedUsers = useMemo(
-    () => value.map((userId) => usersById.get(userId)).filter((user): user is UserSelectUser => user != null),
-    [value, usersById],
-  );
-
-  // Folded once per user list, not once per row per keystroke, same precedent as Combobox's own
-  // `searchKeys`. Name and email searched together so "mar" and an email-local-part both match.
   /*
    * SELECTED FIRST, decided when the list OPENS and then held: whoever was already picked sits at the
    * top where they can be reviewed at a glance, but ticking or unticking a row while the list is open
    * never moves it out from under the pointer. The next open re-sorts.
    */
-  const listRef = useRef<HTMLDivElement>(null);
-  const valueRef = useRef(value);
-  valueRef.current = value;
-  const [pinned, setPinned] = useState<readonly string[]>(() => value);
+  const initialValue = useMemo(() => (valueProp ? [...valueProp] : toIds(defaultValue)), []); // eslint-disable-line react-hooks/exhaustive-deps
+  const [pinned, setPinned] = useState<readonly string[]>(initialValue);
   const orderedUsers = useMemo(() => {
     const first = new Set(pinned);
     return [...users.filter((user) => first.has(user.id)), ...users.filter((user) => !first.has(user.id))];
   }, [users, pinned]);
 
+  // Folded once per user list, not once per row per keystroke, same precedent as Combobox's own
+  // `searchKeys`. Name and email searched together so "mar" and an email-local-part both match.
   const searchKeys = useMemo(
     () => new Map(users.map((user) => [user.id, userSelectSearchKey(`${user.name} ${user.email ?? ""}`)])),
     [users],
@@ -162,10 +171,12 @@ export function UserSelect({
     // because "does not close on select" is the one behavior this whole component depends on.
     closeOnSelect: false,
     disabled,
-    value: [...value],
+    ...(valueProp ? { value: [...valueProp] } : { defaultValue: initialValue }),
     positioning: selectPositioning,
+    // The clear button's accessible name is its visible text, not Zag's own "Clear value".
+    translations: { clearTriggerLabel: label("clear") },
     onValueChange(details: { value: string[] }) {
-      onValueChange([...details.value]);
+      onValueChange?.([...details.value]);
     },
     // Every open starts from the full roster, never a stale filtered view. Cleared on OPEN rather
     // than on close: closing is an exit transition, and clearing then brought every filtered-out row
@@ -173,6 +184,7 @@ export function UserSelect({
     onOpenChange(details: { open: boolean }) {
       if (!details.open) return;
       setQuery("");
+      if (searchRef.current) searchRef.current.value = "";
       setPinned(valueRef.current);
       listRef.current?.scrollTo({ top: 0 });
     },
@@ -180,14 +192,21 @@ export function UserSelect({
   const api = select.connect(service, normalizeProps);
   const anchor = useAnchored(machineId);
 
+  const value = api.value;
+  const valueRef = useRef(value);
+  valueRef.current = value;
+
+  const usersById = useMemo(() => new Map(users.map((user) => [user.id, user])), [users]);
+  const selectedUsers = value
+    .map((userId) => usersById.get(userId))
+    .filter((user): user is UserSelectUser => user != null);
+
   const selectionLabel =
     selectedUsers.length === 0
       ? placeholder
       : selectedUsers.length === 1
         ? `${placeholder}, ${label("selectedOne", { name: selectedUsers[0]!.name })}`
         : `${placeholder}, ${label("selectedMany", { count: selectedUsers.length })}`;
-
-  const triggerProps = api.getTriggerProps();
 
   // Content's own `onKeyDown` (bubbled up from the search input below) maps Space to "toggle the
   // highlighted user", same as Enter: correct for a bare listbox, wrong for a live text field where
@@ -202,16 +221,30 @@ export function UserSelect({
     ? null
     : loading
       ? label("loading")
-      : filteredUsers.length === 1
-        ? label("result")
-        : label("results", { count: filteredUsers.length });
+      : filteredUsers.length === 0
+        ? users.length === 0
+          ? label("empty")
+          : label("noResults", { query: query.trim() })
+        : filteredUsers.length === 1
+          ? label("result")
+          : label("results", { count: filteredUsers.length });
+
+  const noRoster = users.length === 0;
+  // The summary avatar is the row's own, drawn again: same props, so the same DOM the Vanilla
+  // enhancer gets by cloning the row's authored one.
+  const avatarOf = (user: UserSelectUser) => (
+    <Avatar aria-hidden="true" key={user.id} name={user.name} size="sm" src={user.avatarUrl}>
+      {user.initials}
+    </Avatar>
+  );
 
   return (
     <div
+      {...api.getRootProps()}
       className={cx(selectParts.root, className)}
       data-variant={variant}
       ref={rootRef}
-      {...{ [selectAttrs.root]: "", [userSelectAttrs.root]: "" }}
+      {...{ [userSelectAttrs.root]: "" }}
     >
       <select {...api.getHiddenSelectProps()} {...{ [selectAttrs.hidden]: "" }}>
         {users.map((user) => (
@@ -220,9 +253,9 @@ export function UserSelect({
           </option>
         ))}
       </select>
-      <div className={selectParts.control} {...{ [selectAttrs.control]: "" }}>
+      <div {...api.getControlProps()} className={selectParts.control} {...{ [selectAttrs.control]: "" }}>
         <button
-          {...triggerProps}
+          {...api.getTriggerProps()}
           {...anchor.anchor(`${selectParts.trigger} sk-interactive`)}
           {...{ [selectAttrs.trigger]: "" }}
           aria-label={selectionLabel}
@@ -231,45 +264,27 @@ export function UserSelect({
         >
           {/* Decorative: the button's own `aria-label` above is the one textual representation a
               screen reader gets, so it never has to parse a name next to a stack of avatar images. */}
-          {selectedUsers.length === 0 ? (
-            <span
-              {...api.getValueTextProps()}
-              aria-hidden="true"
-              className={selectParts.value}
-              {...{ [selectAttrs.value]: "" }}
-            >
+          <span aria-hidden="true" className={selectParts.value} {...{ [selectAttrs.value]: "" }}>
+            {selectedUsers.length === 0 ? (
               <span {...{ [userSelectAttrs.unselected]: "" }}>
                 <span className="sk-avatar" data-size="sm">
-                  <Icon name="user" />
+                  <Icon name="user" size="sm" />
                 </span>
                 {label("unselected")}
               </span>
-            </span>
-          ) : (
-            <Inline
-              {...api.getValueTextProps()}
-              align="center"
-              aria-hidden="true"
-              as="span"
-              className={selectParts.value}
-              gap="sm"
-              wrap={false}
-              {...{ [selectAttrs.value]: "" }}
-            >
-              {selectedUsers.length === 1 ? (
-                <Avatar name={selectedUsers[0]!.name} size="sm" src={selectedUsers[0]!.avatarUrl} />
-              ) : (
-                <AvatarGroup max={maxAvatars}>
-                  {selectedUsers.map((user) => (
-                    <Avatar key={user.id} name={user.name} size="sm" src={user.avatarUrl} />
-                  ))}
-                </AvatarGroup>
-              )}
-              <span className={selectParts.value}>
-                {selectedUsers.length === 1 ? selectedUsers[0]!.name : label("count", { count: selectedUsers.length })}
+            ) : (
+              <span className="sk-inline" data-align="center" data-gap="sm" data-wrap="false">
+                {selectedUsers.length === 1 ? (
+                  avatarOf(selectedUsers[0]!)
+                ) : (
+                  <AvatarGroup max={maxAvatars}>{selectedUsers.map(avatarOf)}</AvatarGroup>
+                )}
+                <span className={selectParts.value}>
+                  {selectedUsers.length === 1 ? selectedUsers[0]!.name : label("count", { count: selectedUsers.length })}
+                </span>
               </span>
-            </Inline>
-          )}
+            )}
+          </span>
           <span
             {...api.getIndicatorProps()}
             aria-hidden="true"
@@ -291,29 +306,30 @@ export function UserSelect({
           {...{ [selectAttrs.positioner]: "" }}
         >
           <div {...api.getContentProps()} className={selectParts.content} {...{ [selectAttrs.content]: "" }}>
-            <Input
+            {/* Uncontrolled: a controlled input writes a `value` attribute authored markup never has. */}
+            <input
               aria-label={searchPlaceholder}
-              controlSize="sm"
+              className="sk-input"
+              data-size="sm"
               disabled={disabled}
               onChange={(event) => setQuery(event.target.value)}
               onKeyDown={handleSearchKeyDown}
               placeholder={searchPlaceholder}
+              ref={searchRef}
               type="search"
-              value={query}
+              {...{ [userSelectAttrs.search]: "" }}
             />
-            <div aria-atomic="true" className={cx(comboboxParts.status, "sk-visually-hidden")} role="status">
+            <div
+              aria-atomic="true"
+              className={cx(comboboxParts.status, "sk-visually-hidden")}
+              role="status"
+              {...{ [userSelectAttrs.status]: "" }}
+            >
               {resultsStatus}
             </div>
             {loading ? (
               <div className={comboboxParts.empty} role="presentation">
                 <Loader size="sm" /> {label("loading")}
-              </div>
-            ) : users.length === 0 ? (
-              <div className={comboboxParts.empty} role="presentation" {...{ [userSelectAttrs.empty]: "" }}>
-                <span aria-hidden="true" {...{ [userSelectAttrs.emptyIcon]: "" }}>
-                  <Icon name="user" />
-                </span>
-                <span {...{ [userSelectAttrs.emptyTitle]: "" }}>{label("empty")}</span>
               </div>
             ) : (
               // `tabIndex={-1}`: `getListProps()` defaults it to 0 for a STANDALONE listbox
@@ -331,52 +347,74 @@ export function UserSelect({
                     {...api.getItemProps({ item: user })}
                     className={cx(selectParts.item, "sk-interactive")}
                     key={user.id}
+                    {...{ [selectAttrs.item]: "" }}
                   >
                     {/* Decorative: the option's own `aria-selected` is the state; this box only shows it.
                         Checked from the row's `data-state` in CSS, so it needs no state of its own. */}
                     <span aria-hidden="true" className={selectionParts.checkbox} {...{ [userSelectAttrs.check]: "" }}>
                       <span className={selectionParts.checkboxControl}>
                         <span className={selectionParts.checkboxIndicator} data-state="checked">
-                          <Icon name="check" />
+                          <Icon name="check" size="sm" />
                         </span>
                       </span>
                     </span>
-                    <Inline align="center" as="span" gap="sm" wrap={false}>
-                      <Avatar aria-hidden="true" name={user.name} size="sm" src={user.avatarUrl} />
+                    <span className="sk-inline" data-align="center" data-gap="sm" data-wrap="false">
+                      {avatarOf(user)}
                       <span className={comboboxParts.itemCopy}>
-                        <span {...api.getItemTextProps({ item: user })} className={selectParts.itemText}>
+                        <span
+                          {...api.getItemTextProps({ item: user })}
+                          className={selectParts.itemText}
+                          {...{ [selectAttrs.itemText]: "" }}
+                        >
                           {user.name}
                         </span>
                         {user.email ? (
-                          <span className={cx(selectParts.itemText, comboboxParts.itemDescription)}>
-                            {user.email}
-                          </span>
+                          <span className={cx(selectParts.itemText, comboboxParts.itemDescription)}>{user.email}</span>
                         ) : null}
                       </span>
-                    </Inline>
+                    </span>
                   </div>
                 ))}
-                {filteredUsers.length === 0 ? (
-                  <div className={comboboxParts.empty} role="presentation" {...{ [userSelectAttrs.empty]: "" }}>
-                    <span aria-hidden="true" {...{ [userSelectAttrs.emptyIcon]: "" }}>
-                      <Icon name="search" />
-                    </span>
-                    <span {...{ [userSelectAttrs.emptyTitle]: "" }}>{label("noResults", { query: query.trim() })}</span>
-                    <span {...{ [userSelectAttrs.emptyHint]: "" }}>{label("noResultsHint")}</span>
-                  </div>
-                ) : null}
+                <div
+                  className={comboboxParts.empty}
+                  hidden={filteredUsers.length > 0}
+                  role="presentation"
+                  {...{ [userSelectAttrs.empty]: "" }}
+                >
+                  <span aria-hidden="true" {...{ [userSelectAttrs.emptyIcon]: "" }}>
+                    <Icon name={noRoster ? "user" : "search"} />
+                  </span>
+                  <span {...{ [userSelectAttrs.emptyTitle]: "" }}>
+                    {noRoster ? label("empty") : label("noResults", { query: query.trim() })}
+                  </span>
+                  <span hidden={noRoster} {...{ [userSelectAttrs.emptyHint]: "" }}>
+                    {noRoster ? "" : label("noResultsHint")}
+                  </span>
+                </div>
               </div>
             )}
-            {value.length > 0 ? (
-              <Inline align="center" as="span" gap="sm" justify="between" {...{ [userSelectAttrs.footer]: "" }}>
-                <Text as="span" size="caption" tone="secondary">
-                  {label("selectedCount", { count: value.length })}
-                </Text>
-                <Button onClick={() => api.clearValue()} size="sm" variant="ghost">
-                  {label("clear")}
-                </Button>
-              </Inline>
-            ) : null}
+            <span
+              className="sk-inline"
+              data-align="center"
+              data-gap="sm"
+              data-justify="between"
+              hidden={value.length === 0}
+              {...{ [userSelectAttrs.footer]: "" }}
+            >
+              <span className="sk-text" data-size="caption" data-tone="secondary" {...{ [userSelectAttrs.count]: "" }}>
+                {label("selectedCount", { count: value.length })}
+              </span>
+              <button
+                {...api.getClearTriggerProps()}
+                className="sk-button sk-interactive"
+                data-size="sm"
+                data-variant="ghost"
+                type="button"
+                {...{ [userSelectAttrs.clear]: "" }}
+              >
+                {label("clear")}
+              </button>
+            </span>
           </div>
         </div>
       </Portal>

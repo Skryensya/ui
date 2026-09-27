@@ -11676,6 +11676,26 @@
         "version": "0.0.1-dev"
       }
     ],
+    "user-select": [
+      {
+        "date": null,
+        "entries": [
+          {
+            "date": "2026-09-27",
+            "en": {
+              "body": "UserSelect becomes a family of the system: a contract, its own sheet (<code>user-select.css</code>) with hooks for the list height and the dropdown size, a canonical tree compared across React and Vanilla, automatic mounting through <code>initComponents()</code> and a reference page.",
+              "title": "UserSelect gets its own contract"
+            },
+            "es": {
+              "body": "UserSelect pasa a ser una familia del sistema: contrato, hoja propia (<code>user-select.css</code>) con hooks para el alto de la lista y el tamaño del desplegable, árbol canónico comparado entre React y Vanilla, montaje automático con <code>initComponents()</code> y página de referencia.",
+              "title": "UserSelect tiene contrato propio"
+            },
+            "kind": "feature"
+          }
+        ],
+        "version": "0.0.1-dev"
+      }
+    ],
     "vaul": [
       {
         "date": null,
@@ -51610,6 +51630,586 @@
         }
       }
     },
+    "user-select": {
+      "bindings": {
+        "UserSelect": {
+          "enhancer": "data-sk-user-select",
+          "markup": true,
+          "portals": true,
+          "react": "@skryensya/react/user-select#UserSelect"
+        }
+      },
+      "category": "forms",
+      "css": "@skryensya/core/components/user-select.css",
+      "eventDetails": {
+        "valueChange": {
+          "detail": {
+            "value": "string[]"
+          },
+          "reactProp": "onValueChange",
+          "source": "root",
+          "trigger": "item"
+        }
+      },
+      "events": {
+        "valueChange": "sk:userselectvaluechange"
+      },
+      "hookDetails": {
+        "--sk-user-select-content-max-block-size": {
+          "default": "22rem",
+          "output": false,
+          "part": "content",
+          "sheet": "@skryensya/core/components/user-select.css"
+        },
+        "--sk-user-select-content-min-inline-size": {
+          "default": "16rem",
+          "output": false,
+          "part": "content",
+          "sheet": "@skryensya/core/components/user-select.css"
+        },
+        "--sk-user-select-list-block-size": {
+          "default": "15rem",
+          "output": false,
+          "part": "content",
+          "sheet": "@skryensya/core/components/user-select.css"
+        }
+      },
+      "hooks": [
+        "--sk-user-select-content-max-block-size",
+        "--sk-user-select-content-min-inline-size",
+        "--sk-user-select-list-block-size"
+      ],
+      "id": "user-select",
+      "options": {
+        "disabled": {
+          "attr": "data-disabled",
+          "default": false,
+          "machineInput": true,
+          "trueValue": "",
+          "type": "boolean"
+        },
+        "maxAvatars": {
+          "attr": "data-max-avatars",
+          "type": "number"
+        },
+        "name": {
+          "attr": "name",
+          "type": "string"
+        },
+        "placeholder": {
+          "attr": "data-placeholder",
+          "type": "string"
+        },
+        "searchPlaceholder": {
+          "attr": "data-search-placeholder",
+          "type": "string"
+        },
+        "term": {
+          "attr": "data-term",
+          "type": "string"
+        },
+        "unselectedLabel": {
+          "attr": "data-unselected-label",
+          "type": "string"
+        },
+        "value": {
+          "attr": "data-value",
+          "machineInput": true,
+          "prop": "defaultValue",
+          "type": "string"
+        },
+        "variant": {
+          "attr": "data-variant",
+          "default": "ghost",
+          "type": "enum",
+          "values": [
+            "outline",
+            "ghost"
+          ]
+        }
+      },
+      "parts": {
+        "content": "sk-select__content",
+        "control": "sk-select__control",
+        "indicator": "sk-select__indicator",
+        "item": "sk-select__item",
+        "itemText": "sk-select__item-text",
+        "positioner": "sk-select__positioner",
+        "root": "sk-select",
+        "trigger": "sk-select__trigger",
+        "value": "sk-select__value"
+      },
+      "semantics": {
+        "UserSelect": {
+          "alternatives": [
+            "Select",
+            "Combobox",
+            "TagsInput"
+          ],
+          "avoidWhen": [
+            "exactly one person is chosen; a Select or Combobox with avatar rows reads better",
+            "the options are not people; that is Select, Combobox or a CheckboxGroup",
+            "the chosen people must each stay visible and removable as chips; that is TagsInput"
+          ],
+          "useWhen": [
+            "picking people: assignees, reviewers, members, recipients",
+            "any number can be chosen and the choice should read at a glance as faces and a count",
+            "the list is long enough that the person searches it by name or email"
+          ]
+        }
+      },
+      "signatures": {
+        "UserSelect": {
+          "compose": [
+            {
+              "of": "select",
+              "sheets": [
+                "@skryensya/core/components/select.css",
+                "@skryensya/core/patterns/anchored.css"
+              ],
+              "systemOwned": true
+            },
+            {
+              "of": "combobox",
+              "sheets": [
+                "@skryensya/core/components/combobox.css"
+              ],
+              "systemOwned": true
+            },
+            {
+              "of": "avatar",
+              "sheets": [
+                "@skryensya/core/components/avatar.css"
+              ],
+              "systemOwned": true
+            },
+            {
+              "of": "checkbox",
+              "sheets": [
+                "@skryensya/core/components/checkbox.css"
+              ],
+              "systemOwned": true
+            }
+          ],
+          "forward": [
+            "id",
+            "aria-*"
+          ],
+          "host": {
+            "element": "div"
+          },
+          "intent": [
+            "pick-people",
+            "assignees",
+            "multiple-selection",
+            "searchable-list",
+            "avatar-summary"
+          ],
+          "mount": "data-sk-user-select",
+          "options": [
+            "variant",
+            "name",
+            "value",
+            "disabled",
+            "term",
+            "placeholder",
+            "searchPlaceholder",
+            "unselectedLabel",
+            "maxAvatars"
+          ],
+          "portals": {
+            "container": true
+          },
+          "react": {
+            "from": "@skryensya/react/user-select",
+            "name": "UserSelect"
+          },
+          "slots": {
+            "items": {
+              "accepts": "items",
+              "item": {
+                "key": "id",
+                "options": {
+                  "disabled": {
+                    "attr": "data-disabled",
+                    "default": false,
+                    "trueValue": "",
+                    "type": "boolean"
+                  },
+                  "id": {
+                    "attr": "data-value",
+                    "type": "string"
+                  }
+                },
+                "slots": {
+                  "email": {
+                    "accepts": "text"
+                  },
+                  "initials": {
+                    "accepts": "text",
+                    "required": true
+                  },
+                  "name": {
+                    "accepts": "text",
+                    "required": true
+                  }
+                }
+              },
+              "prop": "users",
+              "required": true
+            }
+          },
+          "template": {
+            "children": [
+              {
+                "attrs": {
+                  "aria-hidden": "true",
+                  "multiple": "",
+                  "style": "border:0;clip:rect(0 0 0 0);height:1px;margin:-1px;overflow:hidden;padding:0;position:absolute;width:1px;white-space:nowrap;word-wrap:normal;",
+                  "tabindex": "-1"
+                },
+                "children": [
+                  {
+                    "element": "option",
+                    "itemOptionAttrs": {
+                      "disabled": "disabled",
+                      "id": "value"
+                    },
+                    "itemOptions": [
+                      "id",
+                      "disabled"
+                    ],
+                    "itemSlot": "name",
+                    "repeat": "items",
+                    "selectedBy": {
+                      "attr": "selected",
+                      "option": "value"
+                    }
+                  }
+                ],
+                "element": "select",
+                "mount": "data-sk-select-hidden",
+                "options": [
+                  "name"
+                ]
+              },
+              {
+                "children": [
+                  {
+                    "also": [
+                      "sk-anchor",
+                      "sk-interactive"
+                    ],
+                    "attrs": {
+                      "type": "button"
+                    },
+                    "children": [
+                      {
+                        "attrs": {
+                          "aria-hidden": "true"
+                        },
+                        "element": "span",
+                        "mount": "data-sk-select-value",
+                        "part": "value"
+                      },
+                      {
+                        "attrs": {
+                          "aria-hidden": "true"
+                        },
+                        "children": [
+                          {
+                            "attrs": {
+                              "data-state": "closed"
+                            },
+                            "children": [
+                              {
+                                "attrs": {
+                                  "data-sk-icon": "chevron-down",
+                                  "data-sk-icon-size": "md"
+                                },
+                                "element": "span"
+                              }
+                            ],
+                            "element": "span"
+                          },
+                          {
+                            "attrs": {
+                              "data-state": "open"
+                            },
+                            "children": [
+                              {
+                                "attrs": {
+                                  "data-sk-icon": "chevron-up",
+                                  "data-sk-icon-size": "md"
+                                },
+                                "element": "span"
+                              }
+                            ],
+                            "element": "span"
+                          }
+                        ],
+                        "element": "span",
+                        "mount": "data-sk-select-indicator",
+                        "part": "indicator"
+                      }
+                    ],
+                    "element": "button",
+                    "mount": "data-sk-select-trigger",
+                    "part": "trigger"
+                  }
+                ],
+                "element": "div",
+                "mount": "data-sk-select-control",
+                "part": "control"
+              },
+              {
+                "also": [
+                  "sk-anchored"
+                ],
+                "children": [
+                  {
+                    "children": [
+                      {
+                        "also": [
+                          "sk-input"
+                        ],
+                        "attrs": {
+                          "data-size": "sm",
+                          "type": "search"
+                        },
+                        "element": "input",
+                        "mount": "data-sk-user-select-search"
+                      },
+                      {
+                        "also": [
+                          "sk-combobox__status",
+                          "sk-visually-hidden"
+                        ],
+                        "attrs": {
+                          "aria-atomic": "true",
+                          "role": "status"
+                        },
+                        "element": "div",
+                        "mount": "data-sk-user-select-status"
+                      },
+                      {
+                        "also": [
+                          "sk-scrollbar"
+                        ],
+                        "children": [
+                          {
+                            "also": [
+                              "sk-interactive"
+                            ],
+                            "children": [
+                              {
+                                "also": [
+                                  "sk-checkbox"
+                                ],
+                                "attrs": {
+                                  "aria-hidden": "true"
+                                },
+                                "children": [
+                                  {
+                                    "also": [
+                                      "sk-checkbox__control"
+                                    ],
+                                    "children": [
+                                      {
+                                        "also": [
+                                          "sk-checkbox__indicator"
+                                        ],
+                                        "attrs": {
+                                          "data-state": "checked"
+                                        },
+                                        "children": [
+                                          {
+                                            "attrs": {
+                                              "data-sk-icon": "check",
+                                              "data-sk-icon-size": "sm"
+                                            },
+                                            "element": "span"
+                                          }
+                                        ],
+                                        "element": "span"
+                                      }
+                                    ],
+                                    "element": "span"
+                                  }
+                                ],
+                                "element": "span",
+                                "mount": "data-sk-user-select-check"
+                              },
+                              {
+                                "also": [
+                                  "sk-inline"
+                                ],
+                                "attrs": {
+                                  "data-align": "center",
+                                  "data-gap": "sm",
+                                  "data-wrap": "false"
+                                },
+                                "children": [
+                                  {
+                                    "also": [
+                                      "sk-avatar"
+                                    ],
+                                    "attrs": {
+                                      "aria-hidden": "true",
+                                      "data-appearance": "plain",
+                                      "data-size": "sm",
+                                      "role": "img"
+                                    },
+                                    "attrsFromItemSlot": {
+                                      "aria-label": "name"
+                                    },
+                                    "children": [
+                                      {
+                                        "also": [
+                                          "sk-avatar__fallback"
+                                        ],
+                                        "attrs": {
+                                          "aria-hidden": "true"
+                                        },
+                                        "element": "span",
+                                        "itemSlot": "initials"
+                                      }
+                                    ],
+                                    "element": "span"
+                                  },
+                                  {
+                                    "also": [
+                                      "sk-combobox__item-copy"
+                                    ],
+                                    "children": [
+                                      {
+                                        "element": "span",
+                                        "itemSlot": "name",
+                                        "mount": "data-sk-select-item-text",
+                                        "part": "itemText"
+                                      },
+                                      {
+                                        "also": [
+                                          "sk-combobox__item-description"
+                                        ],
+                                        "element": "span",
+                                        "itemSlot": "email",
+                                        "part": "itemText",
+                                        "whenItemSlotGiven": "email"
+                                      }
+                                    ],
+                                    "element": "span"
+                                  }
+                                ],
+                                "element": "span"
+                              }
+                            ],
+                            "element": "div",
+                            "itemOptions": [
+                              "id",
+                              "disabled"
+                            ],
+                            "mount": "data-sk-select-item",
+                            "part": "item",
+                            "repeat": "items"
+                          },
+                          {
+                            "also": [
+                              "sk-combobox__empty"
+                            ],
+                            "attrs": {
+                              "hidden": "",
+                              "role": "presentation"
+                            },
+                            "children": [
+                              {
+                                "attrs": {
+                                  "aria-hidden": "true"
+                                },
+                                "children": [
+                                  {
+                                    "attrs": {
+                                      "data-sk-icon": "search",
+                                      "data-sk-icon-size": "md"
+                                    },
+                                    "element": "span"
+                                  }
+                                ],
+                                "element": "span",
+                                "mount": "data-sk-user-select-empty-icon"
+                              },
+                              {
+                                "element": "span",
+                                "mount": "data-sk-user-select-empty-title"
+                              },
+                              {
+                                "element": "span",
+                                "mount": "data-sk-user-select-empty-hint"
+                              }
+                            ],
+                            "element": "div",
+                            "mount": "data-sk-user-select-empty"
+                          }
+                        ],
+                        "element": "div",
+                        "mount": "data-sk-user-select-list"
+                      },
+                      {
+                        "also": [
+                          "sk-inline"
+                        ],
+                        "attrs": {
+                          "data-align": "center",
+                          "data-gap": "sm",
+                          "data-justify": "between"
+                        },
+                        "children": [
+                          {
+                            "also": [
+                              "sk-text"
+                            ],
+                            "attrs": {
+                              "data-size": "caption",
+                              "data-tone": "secondary"
+                            },
+                            "element": "span",
+                            "mount": "data-sk-user-select-count"
+                          },
+                          {
+                            "also": [
+                              "sk-button",
+                              "sk-interactive"
+                            ],
+                            "attrs": {
+                              "data-size": "sm",
+                              "data-variant": "ghost",
+                              "type": "button"
+                            },
+                            "element": "button",
+                            "mount": "data-sk-user-select-clear"
+                          }
+                        ],
+                        "element": "span",
+                        "mount": "data-sk-user-select-footer"
+                      }
+                    ],
+                    "element": "div",
+                    "mount": "data-sk-select-content",
+                    "part": "content"
+                  }
+                ],
+                "element": "div",
+                "mount": "data-sk-select-positioner",
+                "part": "positioner"
+              }
+            ],
+            "element": "div",
+            "host": true,
+            "part": "root"
+          }
+        }
+      }
+    },
     "vaul": {
       "a11y": [
         {
@@ -53035,7 +53635,7 @@
     "working": "0.0.1"
   },
   "schemaVersion": "2.3",
-  "sourceHash": "c802e36b2b34618c",
+  "sourceHash": "abae5d7dd3563d89",
   "vocabulary": {
     "a11y": "When `when` holds, one of `requiresOneOf` must be given: an option, a raw attribute, a filled slot, or a child signature by name.",
     "atLeastOneOf": "At least one member of each group counts: a filled slot, a boolean option set to true, or an option other than its default.",

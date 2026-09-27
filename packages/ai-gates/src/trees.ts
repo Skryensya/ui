@@ -1250,6 +1250,28 @@ const signatureTrees: readonly Canonical[] = [
       },
     },
   },
+  /*
+   * USER SELECT: one person already picked (the trigger summary is a face and a name), one with no
+   * email (the description row is conditional), one disabled (the entry option reaches the row and
+   * the hidden native option both).
+   */
+  {
+    name: "user-select/assignees",
+    enhanced: true,
+    tree: {
+      contract: "user-select",
+      signature: "UserSelect",
+      options: { name: "assignees", value: "jane" },
+      slots: {
+        items: [
+          { options: { id: "jane" }, slots: { name: "Jane Cooper", initials: "JC", email: "jane@acme.dev" } },
+          { options: { id: "maria" }, slots: { name: "Maria Fuentes", initials: "MF", email: "maria@acme.dev" } },
+          { options: { id: "sam" }, slots: { name: "Sam Lee", initials: "SL" } },
+          { options: { id: "alex", disabled: true }, slots: { name: "Alex Kim", initials: "AK", email: "alex@acme.dev" } },
+        ],
+      },
+    },
+  },
   {
     name: "select/native",
     enhanced: false,

@@ -48,6 +48,7 @@ import { toolbarContract } from "./toolbar.js";
 import { editorContract } from "./editor.js";
 import { tooltipContract } from "./tooltip.js";
 import { selectContract } from "./select.js";
+import { userSelectContract } from "./user-select.js";
 import { menuContract } from "./menu.js";
 import { menubarContract } from "./menubar.js";
 import { megamenuContract } from "./megamenu.js";
@@ -189,6 +190,7 @@ export const contracts = fromContracts(
   editorContract,
   tooltipContract,
   selectContract,
+  userSelectContract,
   menuContract,
   menubarContract,
   megamenuContract,

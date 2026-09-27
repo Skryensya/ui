@@ -5253,6 +5253,40 @@
       ]
     },
     {
+      "category": "forms",
+      "css": "@skryensya/core/components/user-select.css",
+      "id": "user-select",
+      "signatures": [
+        {
+          "alternatives": [
+            "Select",
+            "Combobox",
+            "TagsInput"
+          ],
+          "avoidWhen": [
+            "exactly one person is chosen; a Select or Combobox with avatar rows reads better",
+            "the options are not people; that is Select, Combobox or a CheckboxGroup",
+            "the chosen people must each stay visible and removable as chips; that is TagsInput"
+          ],
+          "host": "div",
+          "id": "UserSelect",
+          "intent": [
+            "pick-people",
+            "assignees",
+            "multiple-selection",
+            "searchable-list",
+            "avatar-summary"
+          ],
+          "parents": [],
+          "useWhen": [
+            "picking people: assignees, reviewers, members, recipients",
+            "any number can be chosen and the choice should read at a glance as faces and a count",
+            "the list is long enough that the person searches it by name or email"
+          ]
+        }
+      ]
+    },
+    {
       "category": "overlays",
       "css": "@skryensya/core/patterns/vaul.css",
       "id": "vaul",
@@ -5410,5 +5444,5 @@
     }
   ],
   "schemaVersion": "2.3",
-  "sourceHash": "c802e36b2b34618c"
+  "sourceHash": "abae5d7dd3563d89"
 }

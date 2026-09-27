@@ -1,0 +1,21 @@
+# What changed in user-select, in the words its users read. Only appended to, never rewritten.
+#
+# `surface` is the shape of the contract the last time somebody reviewed it. If the compiler says it
+# does not match, something a consumer depends on has moved: write the entry and paste in the new
+# hash.
+surface: "9f6af20be6330242"
+entries:
+  - date: 2026-09-27
+    kind: feature
+    es:
+      title: UserSelect tiene contrato propio
+      body: >-
+        UserSelect pasa a ser una familia del sistema: contrato, hoja propia (<code>user-select.css</code>) con
+        hooks para el alto de la lista y el tamaño del desplegable, árbol canónico comparado entre React y
+        Vanilla, montaje automático con <code>initComponents()</code> y página de referencia.
+    en:
+      title: UserSelect gets its own contract
+      body: >-
+        UserSelect becomes a family of the system: a contract, its own sheet (<code>user-select.css</code>) with
+        hooks for the list height and the dropdown size, a canonical tree compared across React and Vanilla,
+        automatic mounting through <code>initComponents()</code> and a reference page.

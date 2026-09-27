@@ -1,0 +1,15 @@
+# The structure lives in packages/core/src/user-select.ts. Here, only why it is chosen.
+
+UserSelect:
+  useWhen:
+    - "picking people: assignees, reviewers, members, recipients"
+    - "any number can be chosen and the choice should read at a glance as faces and a count"
+    - "the list is long enough that the person searches it by name or email"
+  avoidWhen:
+    - "exactly one person is chosen; a Select or Combobox with avatar rows reads better"
+    - "the options are not people; that is Select, Combobox or a CheckboxGroup"
+    - "the chosen people must each stay visible and removable as chips; that is TagsInput"
+  alternatives:
+    - Select
+    - Combobox
+    - TagsInput

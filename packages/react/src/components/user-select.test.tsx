@@ -179,7 +179,9 @@ describe("UserSelect", () => {
   it("says a roster is empty, distinctly from a search with no matches", async () => {
     const ui = render(<Harness users={[]} />);
     fireEvent.click(ui.getByRole("combobox", { name: "Select users" }));
-    expect(await ui.findByText("No users available")).toBeTruthy();
+    await waitFor(() =>
+      expect(document.querySelector("[data-sk-user-select-empty-title]")!.textContent).toBe("No users available"),
+    );
   });
 
   it("says a search has no matches, distinctly from an empty roster", async () => {
@@ -188,7 +190,9 @@ describe("UserSelect", () => {
     const search = await ui.findByRole("searchbox");
     fireEvent.change(search, { target: { value: "zzz" } });
 
-    expect(await ui.findByText('No users match "zzz"')).toBeTruthy();
+    await waitFor(() =>
+      expect(document.querySelector("[data-sk-user-select-empty-title]")!.textContent).toBe('No users match "zzz"'),
+    );
     expect(ui.getByText("Try another name or email.")).toBeTruthy();
   });
 

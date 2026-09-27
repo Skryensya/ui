@@ -84,6 +84,14 @@ const UNSTYLED_PARTS: readonly { scope: string; part: string; where?: string; be
     where: "[data-sk-tile-radio-group]",
     because: "the radio group's box: tile.ts's template gives it no part class, the paint is each option's",
   },
+  {
+    scope: "select",
+    part: "list",
+    where: "[data-sk-user-select-list]",
+    because:
+      "UserSelect's listbox inside the content box (`composite: false`); user-select.css paints it by its " +
+      "mount, `[data-sk-user-select-list]`, and the rows inside are Select's own item parts",
+  },
 ];
 
 /* Every class a contract publishes as a part, plus the Anchoring pattern's (a tooltip's arrow). */
