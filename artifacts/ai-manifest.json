@@ -8276,6 +8276,19 @@
         "date": null,
         "entries": [
           {
+            "date": "2026-09-26",
+            "en": {
+              "body": "The enhanced Select accepts <code>appearance</code>, Input's axis: <code>brutalist</code> a black edge and a hard offset, <code>frosted</code> a see-through field; every state still outranks it. Absent means <code>plain</code>. <code>Select.native</code> has none: there is no root to carry it.",
+              "title": "Select adds brutalist and frosted appearances"
+            },
+            "es": {
+              "body": "La versión mejorada acepta <code>appearance</code>, el eje de Input: <code>brutalist</code> borde negro y sombra dura, <code>frosted</code> un campo translúcido; todo estado sigue por encima. Sin valor es <code>plain</code>. <code>Select.native</code> no la tiene: no hay raíz que la lleve.",
+              "title": "Select suma appearance brutalist y frosted"
+            },
+            "kind": "feature",
+            "target": "appearance"
+          },
+          {
             "date": "2026-09-20",
             "en": {
               "body": "<code>.sk-select</code> declared <code>gap: --space-stack-xs</code>, but its only two children are <code>control</code> and the positioner, and the positioner is out of flow, so the gap had nothing to act on. The label and the trigger live inside <code>control</code>, where that gap never reached them, and sat 3px apart on line leading alone. <code>control</code> is now the stack, so the spacing is the one the contract already declared. Markup and bindings are unchanged.",
@@ -40762,6 +40775,15 @@
       ],
       "id": "select",
       "options": {
+        "appearance": {
+          "attr": "data-appearance",
+          "type": "enum",
+          "values": [
+            "plain",
+            "brutalist",
+            "frosted"
+          ]
+        },
         "disabled": {
           "attr": "data-disabled",
           "default": false,
@@ -40868,7 +40890,8 @@
             "value",
             "placeholder",
             "disabled",
-            "required"
+            "required",
+            "appearance"
           ],
           "portals": {
             "container": true
@@ -52798,7 +52821,7 @@
     "working": "0.0.1"
   },
   "schemaVersion": "2.3",
-  "sourceHash": "179e72e6bef8e899",
+  "sourceHash": "0b6800600027119b",
   "vocabulary": {
     "a11y": "When `when` holds, one of `requiresOneOf` must be given: an option, a raw attribute, a filled slot, or a child signature by name.",
     "atLeastOneOf": "At least one member of each group counts: a filled slot, a boolean option set to true, or an option other than its default.",

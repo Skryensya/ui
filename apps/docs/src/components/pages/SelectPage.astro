@@ -3,6 +3,7 @@ import "@skryensya/core/components/select.css";
 /* Structure diagram: Annotated specimen; a preview frame only copies styles THIS page loaded. */
 import "@skryensya/core/components/annotation.css";
 import ComponentPageShell from "./ComponentPageShell.astro";
+import AppearanceMenu from "../AppearanceMenu.astro";
 import CodeBlock from "../CodeBlock.astro";
 import ComponentPreview from "../ComponentPreview.astro";
 import { selectAnatomyCss, selectAnatomyHtml, selectNativeTree, selectTree } from "../../demos/select";
@@ -49,6 +50,7 @@ const forms = `<div
   title="Select"
   description={t("selectPage.description")}
   contractId="select"
+  appearanceTargetSelector=".sk-select"
   styleGroups={[
     { file: "components/select.css", probe: "sk-select" },
     { file: "patterns/anchored.css", probe: "sk-anchored", title: "Heredados de Anclaje" },
@@ -56,6 +58,10 @@ const forms = `<div
   ]}
   testFiles={["packages/react/src/components/select.test.tsx", "packages/vanilla/src/components/select.test.ts"]}}
 >
+  <Fragment slot="appearance">
+    <AppearanceMenu label={t("prefs.appearance")} values={["plain", "brutalist", "frosted"]} unavailable={{ tactile: t("prefs.appearanceTactileUnavailable") }} />
+  </Fragment>
+
   <Fragment slot="anatomy">
     <p set:html={t("selectPage.anatomyBody")} />
     <ComponentPreview
