@@ -96,6 +96,13 @@ export const heroContract = {
       attr: "data-appearance",
     },
     padding: { type: "enum", values: ["none", "xs", "sm", "md", "lg", "xl"], default: "xl", attr: "data-padding" },
+    /*
+     * THE EXPANDED SIDE OF THE SAME CHOICE, declared rather than inferred (decision 30). The plain
+     * option is the compact value, from the smallest screen up; this one replaces it from the
+     * `desktop` breakpoint (52rem, semantic/_breakpoints.scss) up. No default: absent, the plain
+     * option holds at every width, exactly as before this existed.
+     */
+    paddingExpanded: { type: "enum", values: ["none", "xs", "sm", "md", "lg", "xl"], attr: "data-padding-expanded" },
     surface: { type: "enum", values: ["none", "sunken", "surface", "raised"], default: "surface", attr: "data-surface" },
     align: { type: "enum", values: ["start", "center"], default: "start", attr: "data-align" },
     /** `section` or `header` when the opener is a region of its own. React's `as`. */
@@ -106,7 +113,7 @@ export const heroContract = {
     Hero: {
       intent: ["page-intro", "banner", "landing-page-opener", "primary-call-to-action-block"],
       host: { element: "div" },
-      options: ["padding", "surface", "align", "heroElement", "appearance"],
+      options: ["padding", "paddingExpanded", "surface", "align", "heroElement", "appearance"],
       slots: { children: { accepts: "node", required: true } },
       descendants: [
         {

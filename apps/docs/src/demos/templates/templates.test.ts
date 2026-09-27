@@ -2,10 +2,21 @@ import { validateUsageTree } from "@skryensya/ai-compiler/validate";
 import { describe, expect, it } from "vitest";
 import { useTranslations, type Translate } from "../../i18n";
 import { appShellExplorerTree, appShellTree } from "../app-shell";
+import { articleTree } from "./article";
+import { bookingTree } from "./booking";
+import { changelogTree } from "./changelog";
 import { checkoutTree } from "./checkout";
 import { dashboardTree } from "./dashboard";
 import { docsSiteTree } from "./docs-site";
+import { helpCenterTree } from "./help-center";
 import { marketingTree } from "./marketing";
+import { notFoundTree } from "./not-found";
+import { onboardingTree } from "./onboarding";
+import { pricingTree } from "./pricing";
+import { productTree } from "./product";
+import { settingsTree } from "./settings";
+import { signInTree } from "./sign-in";
+import { teamTree } from "./team";
 
 /*
  * EVERY TEMPLATE, AGAINST ITS CONTRACTS.
@@ -30,6 +41,17 @@ const templates: Record<string, () => ReturnType<typeof marketingTree>> = {
   "docs-site": () => docsSiteTree(t),
   dashboard: () => dashboardTree(t, "es"),
   checkout: () => checkoutTree(t, "es"),
+  pricing: () => pricingTree(t, "es"),
+  "sign-in": () => signInTree(t),
+  settings: () => settingsTree(t),
+  onboarding: () => onboardingTree(t),
+  product: () => productTree(t, "es"),
+  article: () => articleTree(t),
+  "help-center": () => helpCenterTree(t),
+  booking: () => bookingTree(t, "es"),
+  changelog: () => changelogTree(t),
+  team: () => teamTree(t),
+  "not-found": () => notFoundTree(t),
 };
 
 describe("templates", () => {
@@ -56,6 +78,17 @@ describe("templates", () => {
       "docs-site": [docsSiteTree(t), docsSiteTree(en)],
       dashboard: [dashboardTree(t, "es"), dashboardTree(en, "en")],
       checkout: [checkoutTree(t, "es"), checkoutTree(en, "en")],
+      pricing: [pricingTree(t, "es"), pricingTree(en, "en")],
+      "sign-in": [signInTree(t), signInTree(en)],
+      settings: [settingsTree(t), settingsTree(en)],
+      onboarding: [onboardingTree(t), onboardingTree(en)],
+      product: [productTree(t, "es"), productTree(en, "en")],
+      article: [articleTree(t), articleTree(en)],
+      "help-center": [helpCenterTree(t), helpCenterTree(en)],
+      booking: [bookingTree(t, "es"), bookingTree(en, "en")],
+      changelog: [changelogTree(t), changelogTree(en)],
+      team: [teamTree(t), teamTree(en)],
+      "not-found": [notFoundTree(t), notFoundTree(en)],
     };
     for (const [name, [spanish, english]] of Object.entries(built)) {
       expect(JSON.stringify(english), `${name} is not translated`).not.toEqual(

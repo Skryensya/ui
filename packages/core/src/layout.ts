@@ -25,6 +25,8 @@ export type GridColumns = 1 | 2 | 3 | 4 | 5;
 export type LayoutGridWidth = "narrow" | "content" | "breakout" | "full-width" | "rail" | "rail-start";
 /** Page-column max measure on a size scale, see patterns/wrapper.css. */
 export type WrapperSize = "sm" | "md" | "lg" | "full";
+/** A Wrapper gutter step: the inset scale without `xs`, which is too thin to be a page edge. */
+export type WrapperGutter = "none" | "sm" | "md" | "lg" | "xl";
 /*
  * The elements a layout primitive may render as from a tree, the same freedom React's `as` gives,
  * closed to the sectioning and landmark tags. A list (`ul`/`ol`) is left out on purpose: it brings a
@@ -95,6 +97,13 @@ export const boxContract = {
 
   options: {
     padding: { type: "enum", values: ["none", "xs", "sm", "md", "lg", "xl"], default: "none", attr: "data-padding" },
+    /*
+     * THE EXPANDED SIDE OF THE SAME CHOICE, declared rather than inferred (decision 30). The plain
+     * option is the compact value, from the smallest screen up; this one replaces it from the
+     * `desktop` breakpoint (52rem, semantic/_breakpoints.scss) up. No default: absent, the plain
+     * option holds at every width, exactly as before this existed.
+     */
+    paddingExpanded: { type: "enum", values: ["none", "xs", "sm", "md", "lg", "xl"], attr: "data-padding-expanded" },
     surface: { type: "enum", values: ["none", "sunken", "surface", "raised"], default: "none", attr: "data-surface" },
     border: { type: "enum", values: ["none", "subtle", "default"], default: "none", attr: "data-border" },
     /*
@@ -114,7 +123,7 @@ export const boxContract = {
     Box: {
       intent: ["padded-region", "card-like-surface", "bordered-region"],
       host: { element: "div" },
-      options: ["padding", "surface", "border", "appearance", "boxElement"],
+      options: ["padding", "paddingExpanded", "surface", "border", "appearance", "boxElement"],
       /* A Box IS its visual style. With all three at `none` it paints nothing and is a bare `div`
          standing in for a decision; grouping without paint is Stack, Inline or Grid. */
       atLeastOneOf: [["padding", "surface", "border", "appearance"]],
@@ -162,6 +171,13 @@ export const layoutContract = {
 
   options: {
     gap: { type: "enum", values: ["none", "xs", "sm", "md", "lg", "xl"], default: "md", attr: "data-gap" },
+    /*
+     * THE EXPANDED SIDE OF THE SAME CHOICE, declared rather than inferred (decision 30). The plain
+     * option is the compact value, from the smallest screen up; this one replaces it from the
+     * `desktop` breakpoint (52rem, semantic/_breakpoints.scss) up. No default: absent, the plain
+     * option holds at every width, exactly as before this existed.
+     */
+    gapExpanded: { type: "enum", values: ["none", "xs", "sm", "md", "lg", "xl"], attr: "data-gap-expanded" },
     align: { type: "enum", values: ["start", "center", "end", "stretch"], attr: "data-align" },
     inlineAlign: { type: "enum", values: ["start", "center", "end", "baseline", "stretch"], default: "end", attr: "data-align", prop: "align" },
     justify: { type: "enum", values: ["start", "center", "end", "between"], default: "start", attr: "data-justify" },
@@ -201,7 +217,7 @@ export const layoutContract = {
     Stack: {
       intent: ["vertical-rhythm", "things-one-above-another", "form-fields"],
       host: { element: "div" },
-      options: ["gap", "align", "layoutElement"],
+      options: ["gap", "gapExpanded", "align", "layoutElement"],
       slots: { children: { accepts: "node", required: true } },
       template: { element: "div", part: "stack", host: true, slot: "children" },
       react: { from: "@skryensya/react/layout", name: "Stack" },
@@ -210,7 +226,7 @@ export const layoutContract = {
     Inline: {
       intent: ["things-side-by-side", "button-row", "label-and-value"],
       host: { element: "div" },
-      options: ["gap", "inlineAlign", "justify", "wrap", "equal", "blockStart", "layoutElement"],
+      options: ["gap", "gapExpanded", "inlineAlign", "justify", "wrap", "equal", "blockStart", "layoutElement"],
       slots: { children: { accepts: "node", required: true } },
       template: { element: "div", part: "inline", host: true, slot: "children" },
       react: { from: "@skryensya/react/layout", name: "Inline" },
@@ -219,7 +235,7 @@ export const layoutContract = {
     Grid: {
       intent: ["columns", "card-grid", "equal-width-cells"],
       host: { element: "div" },
-      options: ["gap", "columns", "multicol", "responsive", "fill", "layoutElement"],
+      options: ["gap", "gapExpanded", "columns", "multicol", "responsive", "fill", "layoutElement"],
       slots: { children: { accepts: "node", required: true } },
       template: { element: "div", part: "grid", host: true, slot: "children" },
       react: { from: "@skryensya/react/layout", name: "Grid" },
@@ -288,6 +304,13 @@ export const wrapperContract = {
 
   options: {
     wrapperSize: { type: "enum", values: ["sm", "md", "lg", "full"], default: "md", attr: "data-size", prop: "size" },
+    /*
+     * The inline gutter either side of the column. No default: absent, the gutter stays the
+     * `--space-inset-lg` it has always been, so no existing page moves. Declared, it takes a step of
+     * the inset scale; `gutterExpanded` replaces it from the `desktop` breakpoint up (decision 30).
+     */
+    gutter: { type: "enum", values: ["none", "sm", "md", "lg", "xl"], attr: "data-gutter" },
+    gutterExpanded: { type: "enum", values: ["none", "sm", "md", "lg", "xl"], attr: "data-gutter-expanded" },
     /** The element it renders as; React's `as`. A `section` or `nav` still wants an accessible name. */
     wrapperElement: { type: "enum", values: layoutElements, default: "div", element: true, prop: "as" },
   },
@@ -296,7 +319,7 @@ export const wrapperContract = {
     Wrapper: {
       intent: ["page-column", "centred-measure", "content-width"],
       host: { element: "div" },
-      options: ["wrapperSize", "wrapperElement"],
+      options: ["wrapperSize", "gutter", "gutterExpanded", "wrapperElement"],
       notInside: ["Wrapper"],
       slots: { children: { accepts: "node", required: true } },
       template: { element: "div", part: "wrapper", host: true, slot: "children" },

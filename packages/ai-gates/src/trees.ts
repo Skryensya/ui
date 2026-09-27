@@ -802,6 +802,54 @@ const signatureTrees: readonly Canonical[] = [
     },
   },
   {
+    /*
+     * DECISION 30, the declared expanded side of every spacing option at once. Nothing here is
+     * enhanced, so what G2 compares is plain attribute realization: the emitter and React must write
+     * the same `data-*-expanded` beside the same compact value, and neither may invent one it was not
+     * given (the first Stack inside declares none).
+     */
+    name: "layout/declared-expanded-spacing",
+    enhanced: false,
+    tree: {
+      contract: "wrapper",
+      signature: "Wrapper",
+      options: { gutter: "md", gutterExpanded: "lg" },
+      children: {
+        contract: "box",
+        signature: "Box",
+        options: { padding: "md", paddingExpanded: "xl", surface: "raised" },
+        children: {
+          contract: "layout",
+          signature: "Grid",
+          options: { columns: "2", gap: "sm", gapExpanded: "lg", responsive: true },
+          children: [
+            {
+              contract: "layout",
+              signature: "Stack",
+              options: { gap: "sm" },
+              children: [
+                { contract: "typography", signature: "Text", children: "Móvil" },
+                { contract: "typography", signature: "Text", children: "Escritorio" },
+              ],
+            },
+            /* A Stack, not an Inline: an Inline here would also trip the emitter/React disagreement over
+             * `data-block-start="none"` that `layout/inline-row` already records, and this tree is
+             * about the expanded attributes only. Inline's `gapExpanded` is covered in React's own test. */
+            {
+              contract: "layout",
+              signature: "Stack",
+              options: { gap: "xs", gapExpanded: "md" },
+              children: [
+                { contract: "badge", signature: "Badge", children: "Uno" },
+                { contract: "badge", signature: "Badge", children: "Dos" },
+              ],
+            },
+          ],
+        },
+      },
+    },
+  },
+  {
     name: "layout/box-brutalist",
     enhanced: false,
     tree: {

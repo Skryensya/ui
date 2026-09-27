@@ -1,5 +1,6 @@
 import type { UsageTree } from "@skryensya/core/usage-tree";
 import type { Translate } from "../../i18n";
+import { menuButton, siteFooter } from "./shared";
 
 /*
  * MARKETING LANDING. The "sitio público" shape: a document a stranger scrolls top to bottom, not
@@ -26,7 +27,7 @@ const navLink = (label: string, href: string, current = false): UsageTree => ({
 const feature = (icon: string, title: string, body: string): UsageTree => ({
   contract: "box",
   signature: "Box",
-  options: { surface: "raised", border: "subtle", padding: "lg" },
+  options: { surface: "raised", border: "subtle", padding: "md", paddingExpanded: "lg" },
   children: {
     contract: "layout",
     signature: "Stack",
@@ -74,7 +75,8 @@ export const marketingTree = (t: Translate): UsageTree => ({
           contract: "nav-list",
           signature: "NavList",
           options: { orientation: "horizontal" },
-          attrs: { "aria-label": t("demo.marketing.nav") },
+          /* The phone gets the menu button below instead; four links do not fit beside a CTA. */
+          attrs: { "aria-label": t("demo.marketing.nav"), class: "template-wide-only" },
           children: {
             contract: "nav-list",
             signature: "NavListGroup",
@@ -94,6 +96,7 @@ export const marketingTree = (t: Translate): UsageTree => ({
               contract: "button",
               signature: "Button.action",
               options: { variant: "ghost" },
+              attrs: { class: "template-wide-only" },
               children: t("demo.marketing.signIn"),
             },
             {
@@ -102,6 +105,7 @@ export const marketingTree = (t: Translate): UsageTree => ({
               options: { tone: "accent" },
               children: t("demo.marketing.cta"),
             },
+            menuButton(t),
           ],
         },
       ],
@@ -111,148 +115,151 @@ export const marketingTree = (t: Translate): UsageTree => ({
       signature: "Stack",
       options: { gap: "none" },
       attrs: { class: "page-shell" },
-      children: {
-        contract: "layout",
-        signature: "Main",
-        attrs: { class: "page-shell__main" },
-        children: {
-          contract: "wrapper",
-          signature: "Wrapper",
-          options: { wrapperSize: "lg" },
+      children: [
+        {
+          contract: "layout",
+          signature: "Main",
+          attrs: { class: "page-shell__main" },
           children: {
-            contract: "layout",
-            signature: "Stack",
-            options: { gap: "xl" },
-            children: [
-              /*
-               * HERO. The eyebrow is a `Badge`, not a `Tag`, and the catalogue draws that line
-               * itself: a Tag is something the reader can REMOVE (an applied filter, a keyword),
-               * and `Tag.avoidWhen` sends exactly this case away: "it is just a count or a state
-               * nobody can touch; that is a Badge". A release marker is read, never dismissed.
-               * Both render as a capsule, which is precisely why picking by appearance gets it
-               * wrong: the difference is whether it can be acted on.
-               */
-              {
-                contract: "layout",
-                signature: "Stack",
-                options: { gap: "md", align: "start" },
-                children: [
-                  {
-                    contract: "badge",
-                    signature: "Badge",
-                    options: { tone: "accent" },
-                    children: t("demo.marketing.heroTag"),
-                  },
-                  {
-                    contract: "typography",
-                    signature: "Heading",
-                    options: { headingSize: "display-md", flush: true },
-                    children: t("demo.marketing.heroTitle"),
-                  },
-                  {
-                    contract: "typography",
-                    signature: "Text",
-                    options: { size: "lg", tone: "secondary" },
-                    children: t("demo.marketing.heroBody"),
-                  },
-                  {
-                    contract: "layout",
-                    signature: "Inline",
-                    options: { gap: "sm" },
-                    children: [
-                      {
-                        contract: "button",
-                        signature: "Button.action",
-                        options: { tone: "accent", size: "lg" },
-                        children: t("demo.marketing.heroPrimary"),
-                      },
-                      {
-                        contract: "button",
-                        signature: "Button.action",
-                        options: { variant: "ghost", size: "lg" },
-                        children: t("demo.marketing.heroSecondary"),
-                      },
-                    ],
-                  },
-                ],
-              },
-              {
-                contract: "layout",
-                signature: "Grid",
-                options: { columns: "3", gap: "md", multicol: true },
-                children: [
-                  feature(
-                    "settings",
-                    t("demo.marketing.feature1Title"),
-                    t("demo.marketing.feature1Body"),
-                  ),
-                  feature(
-                    "success",
-                    t("demo.marketing.feature2Title"),
-                    t("demo.marketing.feature2Body"),
-                  ),
-                  feature(
-                    "refresh",
-                    t("demo.marketing.feature3Title"),
-                    t("demo.marketing.feature3Body"),
-                  ),
-                ],
-              },
-              {
-                contract: "box",
-                signature: "Box",
-                options: { surface: "sunken", border: "subtle", padding: "lg" },
-                children: {
-                  contract: "layout",
-                  signature: "Grid",
-                  options: { columns: "3", gap: "md", multicol: true },
-                  attrs: { "aria-label": t("demo.marketing.proofLabel") },
-                  children: [
-                    proof(t("demo.marketing.proof1Label"), t("demo.marketing.proof1Value")),
-                    proof(t("demo.marketing.proof2Label"), t("demo.marketing.proof2Value")),
-                    proof(t("demo.marketing.proof3Label"), t("demo.marketing.proof3Value")),
-                  ],
-                },
-              },
-              /*
-               * CLOSING CTA. `align: center` on the Stack, not a text-align override: the button is
-               * a box and the heading is a box, and centring the FLOW is what puts both on the same
-               * axis without either of them knowing about the other.
-               */
-              {
-                contract: "box",
-                signature: "Box",
-                options: { surface: "raised", border: "subtle", padding: "xl" },
-                children: {
+            contract: "wrapper",
+            signature: "Wrapper",
+            options: { wrapperSize: "lg", gutter: "md", gutterExpanded: "lg" },
+            children: {
+              contract: "layout",
+              signature: "Stack",
+              options: { gap: "lg", gapExpanded: "xl" },
+              children: [
+                /*
+                 * HERO. The eyebrow is a `Badge`, not a `Tag`, and the catalogue draws that line
+                 * itself: a Tag is something the reader can REMOVE (an applied filter, a keyword),
+                 * and `Tag.avoidWhen` sends exactly this case away: "it is just a count or a state
+                 * nobody can touch; that is a Badge". A release marker is read, never dismissed.
+                 * Both render as a capsule, which is precisely why picking by appearance gets it
+                 * wrong: the difference is whether it can be acted on.
+                 */
+                {
                   contract: "layout",
                   signature: "Stack",
-                  options: { gap: "md", align: "center" },
+                  options: { gap: "md", align: "start" },
                   children: [
+                    {
+                      contract: "badge",
+                      signature: "Badge",
+                      options: { tone: "accent" },
+                      children: t("demo.marketing.heroTag"),
+                    },
                     {
                       contract: "typography",
                       signature: "Heading",
-                      options: { headingSize: "h2", flush: true },
-                      children: t("demo.marketing.ctaTitle"),
+                      options: { headingSize: "display-md", flush: true },
+                      children: t("demo.marketing.heroTitle"),
                     },
                     {
                       contract: "typography",
                       signature: "Text",
-                      options: { tone: "secondary" },
-                      children: t("demo.marketing.ctaBody"),
+                      options: { size: "lg", tone: "secondary" },
+                      children: t("demo.marketing.heroBody"),
                     },
                     {
-                      contract: "button",
-                      signature: "Button.action",
-                      options: { tone: "accent", size: "lg" },
-                      children: t("demo.marketing.cta"),
+                      contract: "layout",
+                      signature: "Inline",
+                      options: { gap: "sm" },
+                      children: [
+                        {
+                          contract: "button",
+                          signature: "Button.action",
+                          options: { tone: "accent", size: "lg" },
+                          children: t("demo.marketing.heroPrimary"),
+                        },
+                        {
+                          contract: "button",
+                          signature: "Button.action",
+                          options: { variant: "ghost", size: "lg" },
+                          children: t("demo.marketing.heroSecondary"),
+                        },
+                      ],
                     },
                   ],
                 },
-              },
-            ],
+                {
+                  contract: "layout",
+                  signature: "Grid",
+                  options: { columns: "3", gap: "md", responsive: true },
+                  children: [
+                    feature(
+                      "settings",
+                      t("demo.marketing.feature1Title"),
+                      t("demo.marketing.feature1Body"),
+                    ),
+                    feature(
+                      "success",
+                      t("demo.marketing.feature2Title"),
+                      t("demo.marketing.feature2Body"),
+                    ),
+                    feature(
+                      "refresh",
+                      t("demo.marketing.feature3Title"),
+                      t("demo.marketing.feature3Body"),
+                    ),
+                  ],
+                },
+                {
+                  contract: "box",
+                  signature: "Box",
+                  options: { surface: "sunken", border: "subtle", padding: "md", paddingExpanded: "lg" },
+                  children: {
+                    contract: "layout",
+                    signature: "Grid",
+                    options: { columns: "3", gap: "md", responsive: true },
+                    attrs: { "aria-label": t("demo.marketing.proofLabel") },
+                    children: [
+                      proof(t("demo.marketing.proof1Label"), t("demo.marketing.proof1Value")),
+                      proof(t("demo.marketing.proof2Label"), t("demo.marketing.proof2Value")),
+                      proof(t("demo.marketing.proof3Label"), t("demo.marketing.proof3Value")),
+                    ],
+                  },
+                },
+                /*
+                 * CLOSING CTA. `align: center` on the Stack, not a text-align override: the button is
+                 * a box and the heading is a box, and centring the FLOW is what puts both on the same
+                 * axis without either of them knowing about the other.
+                 */
+                {
+                  contract: "box",
+                  signature: "Box",
+                  options: { surface: "raised", border: "subtle", padding: "lg", paddingExpanded: "xl" },
+                  children: {
+                    contract: "layout",
+                    signature: "Stack",
+                    options: { gap: "md", align: "center" },
+                    children: [
+                      {
+                        contract: "typography",
+                        signature: "Heading",
+                        options: { headingSize: "h2", flush: true },
+                        children: t("demo.marketing.ctaTitle"),
+                      },
+                      {
+                        contract: "typography",
+                        signature: "Text",
+                        options: { tone: "secondary" },
+                        children: t("demo.marketing.ctaBody"),
+                      },
+                      {
+                        contract: "button",
+                        signature: "Button.action",
+                        options: { tone: "accent", size: "lg" },
+                        children: t("demo.marketing.cta"),
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
           },
         },
-      },
+        siteFooter(t),
+      ],
     },
   ],
 });
