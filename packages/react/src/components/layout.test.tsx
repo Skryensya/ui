@@ -193,4 +193,50 @@ describe("layout primitives", () => {
     expect(hero.getAttribute("data-padding")).toBe("lg");
     expect(hero.getAttribute("data-surface")).toBe("sunken");
   });
+
+  /*
+   * DECISION 30: the expanded side of a spacing choice is declared, never inferred. Each `*Expanded`
+   * prop lands on its own `data-*-expanded` attribute, and leaving it off writes nothing, so the plain
+   * value holds at every width exactly as it did before the prop existed.
+   */
+  it("writes each declared expanded spacing beside its compact value", () => {
+    const ui = render(
+      <>
+        <Box padding="md" paddingExpanded="xl">Card</Box>
+        <Stack gap="md" gapExpanded="xl">Stack</Stack>
+        <Inline gap="sm" gapExpanded="lg">Inline</Inline>
+        <Grid gap="sm" gapExpanded="lg">Grid</Grid>
+        <Hero padding="md" paddingExpanded="xl">Pitch</Hero>
+        <Footer padding="md" paddingExpanded="lg">Footer</Footer>
+        <Wrapper gutter="md" gutterExpanded="lg">Column</Wrapper>
+      </>,
+    );
+
+    const attrs = (selector: string, name: string) => {
+      const el = ui.container.querySelector(selector);
+      return [el?.getAttribute(`data-${name}`), el?.getAttribute(`data-${name}-expanded`)];
+    };
+    expect(attrs(".sk-box", "padding")).toEqual(["md", "xl"]);
+    expect(attrs(".sk-stack", "gap")).toEqual(["md", "xl"]);
+    expect(attrs(".sk-inline", "gap")).toEqual(["sm", "lg"]);
+    expect(attrs(".sk-grid", "gap")).toEqual(["sm", "lg"]);
+    expect(attrs(".sk-hero", "padding")).toEqual(["md", "xl"]);
+    expect(attrs(".sk-footer", "padding")).toEqual(["md", "lg"]);
+    expect(attrs(".sk-wrapper", "gutter")).toEqual(["md", "lg"]);
+  });
+
+  it("writes no expanded attribute, and no Wrapper gutter, when none was declared", () => {
+    const ui = render(
+      <>
+        <Box padding="lg">Card</Box>
+        <Stack>Stack</Stack>
+        <Wrapper>Column</Wrapper>
+      </>,
+    );
+
+    expect(ui.container.querySelector(".sk-box")?.hasAttribute("data-padding-expanded")).toBe(false);
+    expect(ui.container.querySelector(".sk-stack")?.hasAttribute("data-gap-expanded")).toBe(false);
+    expect(ui.container.querySelector(".sk-wrapper")?.hasAttribute("data-gutter")).toBe(false);
+    expect(ui.container.querySelector(".sk-wrapper")?.hasAttribute("data-gutter-expanded")).toBe(false);
+  });
 });

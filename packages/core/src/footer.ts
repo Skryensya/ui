@@ -86,6 +86,13 @@ export const footerContract = {
       default: "lg",
       attr: "data-padding",
     },
+    /*
+     * THE EXPANDED SIDE OF THE SAME CHOICE, declared rather than inferred (decision 30). The plain
+     * option is the compact value, from the smallest screen up; this one replaces it from the
+     * `desktop` breakpoint (52rem, semantic/_breakpoints.scss) up. No default: absent, the plain
+     * option holds at every width, exactly as before this existed.
+     */
+    paddingExpanded: { type: "enum", values: ["none", "xs", "sm", "md", "lg", "xl"], attr: "data-padding-expanded" },
     surface: {
       type: "enum",
       values: ["none", "sunken", "surface", "raised"],
@@ -119,7 +126,7 @@ export const footerContract = {
         "footer-navigation-block",
       ],
       host: { element: "footer" },
-      options: ["padding", "surface", "divider", "footerElement", "appearance"],
+      options: ["padding", "paddingExpanded", "surface", "divider", "footerElement", "appearance"],
       slots: { children: { accepts: "node", required: true } },
       template: {
         element: "footer",

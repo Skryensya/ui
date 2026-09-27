@@ -318,6 +318,12 @@ A dimension. A single runtime multiplier over spacing, never a second authored s
 concern only: type, radius, focus rings and hit areas are deliberately density-invariant.
 _Avoid_: compact mode, size mode, spacing scale
 
+**Expanded spacing**:
+The spacing a layout declares for screens at or past the `desktop` breakpoint, written as a second
+option beside the compact one (`paddingExpanded`, `gapExpanded`, `gutterExpanded`). The plain option
+is the compact value. Named for the room available, not the device; never inferred: see decision 30.
+_Avoid_: desktop spacing, responsive spacing, fluid spacing, breakpoint variant
+
 **Radius**:
 A dimension. Global corner *roundness*, five discrete steps `none · sm · md · lg · xl`, with `md`
 the baseline, as an override block that re-declares the semantic radius roles, orthogonal to brand.

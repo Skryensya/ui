@@ -57,5 +57,71 @@ export function templateSections(t: Translate): TemplateSection[] {
       title: t("templates.checkoutTitle"),
       label: t("templates.checkoutLabel"),
     },
+    {
+      id: "pricing",
+      navLabel: t("templates.pricingNavLabel"),
+      title: t("templates.pricingTitle"),
+      label: t("templates.pricingLabel"),
+    },
+    {
+      id: "sign-in",
+      navLabel: t("templates.signInNavLabel"),
+      title: t("templates.signInTitle"),
+      label: t("templates.signInLabel"),
+    },
+    {
+      id: "settings",
+      navLabel: t("templates.settingsNavLabel"),
+      title: t("templates.settingsTitle"),
+      label: t("templates.settingsLabel"),
+    },
+    {
+      id: "onboarding",
+      navLabel: t("templates.onboardingNavLabel"),
+      title: t("templates.onboardingTitle"),
+      label: t("templates.onboardingLabel"),
+    },
+    {
+      id: "product",
+      navLabel: t("templates.productNavLabel"),
+      title: t("templates.productTitle"),
+      label: t("templates.productLabel"),
+    },
+    {
+      id: "article",
+      navLabel: t("templates.articleNavLabel"),
+      title: t("templates.articleTitle"),
+      label: t("templates.articleLabel"),
+    },
+    {
+      id: "help-center",
+      navLabel: t("templates.helpCenterNavLabel"),
+      title: t("templates.helpCenterTitle"),
+      label: t("templates.helpCenterLabel"),
+    },
+    {
+      id: "booking",
+      navLabel: t("templates.bookingNavLabel"),
+      title: t("templates.bookingTitle"),
+      label: t("templates.bookingLabel"),
+    },
+    {
+      id: "changelog",
+      navLabel: t("templates.changelogNavLabel"),
+      title: t("templates.changelogTitle"),
+      label: t("templates.changelogLabel"),
+    },
+    {
+      id: "team",
+      navLabel: t("templates.teamNavLabel"),
+      title: t("templates.teamTitle"),
+      label: t("templates.teamLabel"),
+    },
+    {
+      id: "not-found",
+      navLabel: t("templates.notFoundNavLabel"),
+      title: t("templates.notFoundTitle"),
+      label: t("templates.notFoundLabel"),
+    },
   ];
 }

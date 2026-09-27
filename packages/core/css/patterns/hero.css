@@ -201,4 +201,19 @@
       box-shadow: none;
     }
   }
+
+  /*
+   * EXPANDED OVERRIDES, declared (decision 30). 52rem is `--breakpoint-desktop`
+   * (semantic/_breakpoints.scss), a literal here because a CSS `@media` cannot read a custom
+   * property, the same hand-copy `vaul.css` makes. The plain attribute is the value from the smallest
+   * screen up; the `-expanded` one replaces it from this width up, and only when the author wrote it.
+   */
+  @media (min-width: 52rem) {
+    .sk-hero[data-padding-expanded="none"] { --sk-hero-padding: 0; }
+    .sk-hero[data-padding-expanded="xs"] { --sk-hero-padding: var(--space-inset-xs); }
+    .sk-hero[data-padding-expanded="sm"] { --sk-hero-padding: var(--space-inset-sm); }
+    .sk-hero[data-padding-expanded="md"] { --sk-hero-padding: var(--space-inset-md); }
+    .sk-hero[data-padding-expanded="lg"] { --sk-hero-padding: var(--space-inset-lg); }
+    .sk-hero[data-padding-expanded="xl"] { --sk-hero-padding: var(--space-inset-xl); }
+  }
 }

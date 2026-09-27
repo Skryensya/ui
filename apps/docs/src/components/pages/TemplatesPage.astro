@@ -23,20 +23,49 @@ import "@skryensya/core/components/input.css";
 import "@skryensya/core/components/kbd.css";
 import "@skryensya/core/components/list.css";
 import "@skryensya/core/components/pagination.css";
+import "@skryensya/core/components/password-input.css";
 import "@skryensya/core/components/process-list.css";
 import "@skryensya/core/components/segmented.css";
 import "@skryensya/core/components/select.css";
+import "@skryensya/core/components/separator.css";
 import "@skryensya/core/components/stat.css";
 import "@skryensya/core/components/steps.css";
+import "@skryensya/core/components/switch.css";
 import "@skryensya/core/components/table.css";
 import "@skryensya/core/components/toc.css";
 import "@skryensya/core/components/avatar.css";
 import "@skryensya/core/patterns/wrapper.css";
+import "@skryensya/core/components/tile.css";
+import "@skryensya/core/components/tabs.css";
+import "@skryensya/core/components/accordion.css";
+import "@skryensya/core/components/quote.css";
+import "@skryensya/core/patterns/hero.css";
+import "@skryensya/core/patterns/image-frame.css";
+import "@skryensya/core/patterns/media-gradient.css";
+import "@skryensya/core/components/rating.css";
+import "@skryensya/core/components/number-field.css";
+import "@skryensya/core/components/description-list.css";
+import "@skryensya/core/components/calendar.css";
+import "@skryensya/core/components/changelog.css";
+import "@skryensya/core/components/empty-state.css";
+import "@skryensya/core/components/tag.css";
+import "@skryensya/core/patterns/footer.css";
 import { appShellExplorerTree, appShellTree } from "../../demos/app-shell";
+import { articleTree } from "../../demos/templates/article";
+import { bookingTree } from "../../demos/templates/booking";
+import { changelogTree } from "../../demos/templates/changelog";
 import { checkoutTree } from "../../demos/templates/checkout";
 import { dashboardTree } from "../../demos/templates/dashboard";
 import { docsSiteTree } from "../../demos/templates/docs-site";
+import { helpCenterTree } from "../../demos/templates/help-center";
 import { marketingTree } from "../../demos/templates/marketing";
+import { notFoundTree } from "../../demos/templates/not-found";
+import { onboardingTree } from "../../demos/templates/onboarding";
+import { pricingTree } from "../../demos/templates/pricing";
+import { productTree } from "../../demos/templates/product";
+import { settingsTree } from "../../demos/templates/settings";
+import { signInTree } from "../../demos/templates/sign-in";
+import { teamTree } from "../../demos/templates/team";
 import { getLocale, useTranslations } from "../../i18n";
 import { templateSections } from "../../lib/templates-nav";
 
@@ -56,6 +85,17 @@ const TREES: Record<string, () => ReturnType<typeof marketingTree>> = {
   "docs-site": () => docsSiteTree(t),
   dashboard: () => dashboardTree(t, locale),
   checkout: () => checkoutTree(t, locale),
+  pricing: () => pricingTree(t, locale),
+  "sign-in": () => signInTree(t),
+  settings: () => settingsTree(t),
+  onboarding: () => onboardingTree(t),
+  product: () => productTree(t, locale),
+  article: () => articleTree(t),
+  "help-center": () => helpCenterTree(t),
+  booking: () => bookingTree(t, locale),
+  changelog: () => changelogTree(t),
+  team: () => teamTree(t),
+  "not-found": () => notFoundTree(t),
 };
 
 const templates = templateSections(t).map((section) => ({

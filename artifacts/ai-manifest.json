@@ -964,6 +964,19 @@
         "date": null,
         "entries": [
           {
+            "date": "2026-09-27",
+            "en": {
+              "body": "<code>padding</code> is the value from the smallest screen up; <code>paddingExpanded</code> replaces it from the <code>desktop</code> breakpoint (52rem) up. Left out, nothing changes: existing markup renders as before.",
+              "title": "Box declares its padding for expanded screens with paddingExpanded"
+            },
+            "es": {
+              "body": "<code>padding</code> es el valor desde la pantalla más chica; <code>paddingExpanded</code> lo reemplaza desde el breakpoint <code>desktop</code> (52rem). Sin declararlo no cambia nada: el markup existente se ve igual.",
+              "title": "Box declara su padding para pantallas amplias con paddingExpanded"
+            },
+            "kind": "feature",
+            "target": "paddingExpanded"
+          },
+          {
             "date": "2026-09-26",
             "en": {
               "body": "<code>Box</code> accepts <code>appearance</code>, the same axis as Button and Tile. <code>brutalist</code> draws the box with a black edge and a hard offset shadow; <code>frosted</code> makes the surface a translucent material over the blurred backdrop, opaque wherever the material cannot be trusted. No <code>tactile</code>: a box is never pressed. New hooks <code>--sk-box-brutalist-*</code> and <code>--sk-box-frost-*</code>.",
@@ -4620,6 +4633,19 @@
         "date": null,
         "entries": [
           {
+            "date": "2026-09-27",
+            "en": {
+              "body": "<code>paddingExpanded</code> replaces <code>padding</code> from the <code>desktop</code> breakpoint (52rem) up. Once declared, the automatic phone step-down of <code>lg</code> and <code>xl</code> no longer applies: the declaration wins.",
+              "title": "Footer declares its padding for expanded screens with paddingExpanded"
+            },
+            "es": {
+              "body": "<code>paddingExpanded</code> reemplaza a <code>padding</code> desde el breakpoint <code>desktop</code> (52rem). Si se declara, la reducción automática de <code>lg</code> y <code>xl</code> en teléfonos deja de aplicarse: manda lo declarado.",
+              "title": "Footer declara su padding para pantallas amplias con paddingExpanded"
+            },
+            "kind": "feature",
+            "target": "paddingExpanded"
+          },
+          {
             "date": "2026-09-26",
             "en": {
               "body": "<code>brutalist</code> draws the band with a black divider and a hard offset; <code>frosted</code> makes it see-through, opaque wherever the material cannot be trusted. No <code>tactile</code>.",
@@ -4744,6 +4770,19 @@
       {
         "date": null,
         "entries": [
+          {
+            "date": "2026-09-27",
+            "en": {
+              "body": "<code>padding</code> is the value from the smallest screen up; <code>paddingExpanded</code> replaces it from the <code>desktop</code> breakpoint (52rem) up. Left out, nothing changes.",
+              "title": "Hero declares its padding for expanded screens with paddingExpanded"
+            },
+            "es": {
+              "body": "<code>padding</code> es el valor desde la pantalla más chica; <code>paddingExpanded</code> lo reemplaza desde el breakpoint <code>desktop</code> (52rem). Sin declararlo no cambia nada.",
+              "title": "Hero declara su padding para pantallas amplias con paddingExpanded"
+            },
+            "kind": "feature",
+            "target": "paddingExpanded"
+          },
           {
             "date": "2026-09-26",
             "en": {
@@ -5263,6 +5302,19 @@
       {
         "date": null,
         "entries": [
+          {
+            "date": "2026-09-27",
+            "en": {
+              "body": "<code>gap</code> is the value from the smallest screen up; <code>gapExpanded</code> replaces it from the <code>desktop</code> breakpoint (52rem) up. Left out, nothing changes.",
+              "title": "Stack, Inline and Grid declare their gap for expanded screens with gapExpanded"
+            },
+            "es": {
+              "body": "<code>gap</code> es el valor desde la pantalla más chica; <code>gapExpanded</code> lo reemplaza desde el breakpoint <code>desktop</code> (52rem). Sin declararlo no cambia nada.",
+              "title": "Stack, Inline y Grid declaran su gap para pantallas amplias con gapExpanded"
+            },
+            "kind": "feature",
+            "target": "gapExpanded"
+          },
           {
             "date": "2026-09-17",
             "en": {
@@ -11938,6 +11990,19 @@
         "date": null,
         "entries": [
           {
+            "date": "2026-09-27",
+            "en": {
+              "body": "<code>gutter</code> picks the inset either side of the column from the inset scale; <code>gutterExpanded</code> replaces it from the <code>desktop</code> breakpoint (52rem) up. Left out, the gutter stays <code>--space-inset-lg</code>.",
+              "title": "Wrapper declares its side gutter with gutter and gutterExpanded"
+            },
+            "es": {
+              "body": "<code>gutter</code> elige el margen a cada lado de la columna en la escala de inset; <code>gutterExpanded</code> lo reemplaza desde el breakpoint <code>desktop</code> (52rem). Sin declararlos el margen sigue en <code>--space-inset-lg</code>.",
+              "title": "Wrapper declara su margen lateral con gutter y gutterExpanded"
+            },
+            "kind": "feature",
+            "target": "gutter"
+          },
+          {
             "date": "2026-09-17",
             "en": {
               "body": "<code>wrapperElement</code> takes <code>div</code>, <code>section</code>, <code>article</code>, <code>aside</code>, <code>header</code>, <code>footer</code>, <code>nav</code> and <code>main</code>. React already allowed it through <code>as</code>, but a tree could only emit a <code>div</code>, so a region or a landmark had no way to be written.",
@@ -14672,6 +14737,18 @@
             "xl"
           ]
         },
+        "paddingExpanded": {
+          "attr": "data-padding-expanded",
+          "type": "enum",
+          "values": [
+            "none",
+            "xs",
+            "sm",
+            "md",
+            "lg",
+            "xl"
+          ]
+        },
         "surface": {
           "attr": "data-surface",
           "default": "none",
@@ -14724,6 +14801,7 @@
           ],
           "options": [
             "padding",
+            "paddingExpanded",
             "surface",
             "border",
             "appearance",
@@ -27588,6 +27666,18 @@
             "xl"
           ]
         },
+        "paddingExpanded": {
+          "attr": "data-padding-expanded",
+          "type": "enum",
+          "values": [
+            "none",
+            "xs",
+            "sm",
+            "md",
+            "lg",
+            "xl"
+          ]
+        },
         "surface": {
           "attr": "data-surface",
           "default": "sunken",
@@ -27638,6 +27728,7 @@
           ],
           "options": [
             "padding",
+            "paddingExpanded",
             "surface",
             "divider",
             "footerElement",
@@ -28043,6 +28134,18 @@
             "xl"
           ]
         },
+        "paddingExpanded": {
+          "attr": "data-padding-expanded",
+          "type": "enum",
+          "values": [
+            "none",
+            "xs",
+            "sm",
+            "md",
+            "lg",
+            "xl"
+          ]
+        },
         "surface": {
           "attr": "data-surface",
           "default": "surface",
@@ -28103,6 +28206,7 @@
           ],
           "options": [
             "padding",
+            "paddingExpanded",
             "surface",
             "align",
             "heroElement",
@@ -29360,6 +29464,18 @@
             "xl"
           ]
         },
+        "gapExpanded": {
+          "attr": "data-gap-expanded",
+          "type": "enum",
+          "values": [
+            "none",
+            "xs",
+            "sm",
+            "md",
+            "lg",
+            "xl"
+          ]
+        },
         "inlineAlign": {
           "attr": "data-align",
           "default": "end",
@@ -29512,6 +29628,7 @@
           ],
           "options": [
             "gap",
+            "gapExpanded",
             "columns",
             "multicol",
             "responsive",
@@ -29546,6 +29663,7 @@
           ],
           "options": [
             "gap",
+            "gapExpanded",
             "inlineAlign",
             "justify",
             "wrap",
@@ -29651,6 +29769,7 @@
           ],
           "options": [
             "gap",
+            "gapExpanded",
             "align",
             "layoutElement"
           ],
@@ -53542,6 +53661,28 @@
       ],
       "id": "wrapper",
       "options": {
+        "gutter": {
+          "attr": "data-gutter",
+          "type": "enum",
+          "values": [
+            "none",
+            "sm",
+            "md",
+            "lg",
+            "xl"
+          ]
+        },
+        "gutterExpanded": {
+          "attr": "data-gutter-expanded",
+          "type": "enum",
+          "values": [
+            "none",
+            "sm",
+            "md",
+            "lg",
+            "xl"
+          ]
+        },
         "wrapperElement": {
           "default": "div",
           "element": true,
@@ -53608,6 +53749,8 @@
           ],
           "options": [
             "wrapperSize",
+            "gutter",
+            "gutterExpanded",
             "wrapperElement"
           ],
           "react": {
@@ -53635,7 +53778,7 @@
     "working": "0.0.1"
   },
   "schemaVersion": "2.3",
-  "sourceHash": "abae5d7dd3563d89",
+  "sourceHash": "938db544b4bfedd9",
   "vocabulary": {
     "a11y": "When `when` holds, one of `requiresOneOf` must be given: an option, a raw attribute, a filled slot, or a child signature by name.",
     "atLeastOneOf": "At least one member of each group counts: a filled slot, a boolean option set to true, or an option other than its default.",
