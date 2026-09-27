@@ -124,6 +124,7 @@ export function localeOf(t: Translate): Locale {
  */
 const routeSegments: Record<string, Partial<Record<Locale, string>>> = {
   accent: { es: "acento" },
+  appearance: { es: "apariencia" },
   components: { es: "componentes" },
   architecture: { es: "arquitectura" },
   reference: { es: "referencia" },

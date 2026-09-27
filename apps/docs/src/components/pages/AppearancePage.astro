@@ -1,0 +1,210 @@
+---
+/*
+ * THE APPEARANCE FOUNDATION: one component read in both locales (the routes are shells), the same
+ * pattern the component pages use, so the English and Spanish pages cannot drift.
+ *
+ * The specimens follow the page's own appearance switch, like every component page's examples,
+ * rather than laying the four values side by side: the axis is one decision, and the page shows it
+ * being made. The support table is read from the contracts at build time, so it cannot fall behind
+ * a component that gains or drops a value.
+ */
+import "@skryensya/core/components/tile.css";
+import "@skryensya/core/components/checkbox.css";
+import "@skryensya/core/components/accordion.css";
+import Base from "../../layouts/Base.astro";
+import AppearanceMenu from "../AppearanceMenu.astro";
+import CodeBlock from "../CodeBlock.astro";
+import ComponentPreview from "../ComponentPreview.astro";
+import { contracts } from "@skryensya/core/registry";
+import { appearanceSpecimenTree } from "../../demos/appearance";
+import { onAppearanceStage } from "../../lib/frost-stage";
+import { getNavigation } from "../../lib/navigation";
+import { getLocale, localizePath, useTranslations } from "../../i18n";
+
+const locale = getLocale(Astro.url);
+const t = useTranslations(locale);
+
+type Appearance = "plain" | "tactile" | "brutalist" | "frosted";
+const APPEARANCES: readonly Appearance[] = ["plain", "tactile", "brutalist", "frosted"];
+
+/* The component catalogue's own labels, so a row reads the way the sidebar does. */
+const componentLabels = new Map(
+  getNavigation(locale)
+    .flatMap((section) => section.groups)
+    .flatMap((group) => group.items)
+    .map((item) => [item.href, item.label] as const),
+);
+
+/*
+ * EVERY CONTRACT THAT PUBLISHES THE OPTION, and on which signatures. Read, never typed: a family that
+ * gains `appearance` tomorrow shows up here on the next build with nobody editing this page.
+ */
+const support = Object.values(contracts)
+  .flatMap((contract) => {
+    const option = (contract.options as Record<string, { values?: readonly string[] } | undefined>).appearance;
+    /* THIS axis only: it always includes `plain`. Another family's option that merely shares the
+       name (Steps' is its layout) is a different concept, and listing it would read as "supports
+       none of them". */
+    if (!option?.values?.includes("plain")) return [];
+    const signatures = Object.entries(contract.signatures)
+      .filter(([, signature]) => ((signature as { options?: readonly string[] }).options ?? []).includes("appearance"))
+      .map(([name]) => name);
+    if (signatures.length === 0) return [];
+    const href = localizePath(`/components/${contract.id}`, locale);
+    return [{ id: contract.id, href, label: componentLabels.get(href) ?? contract.id, values: option.values, signatures }];
+  })
+  .sort((a, b) => a.label.localeCompare(b.label, locale));
+
+const rows: readonly { value: Appearance; what: string; motion: string }[] = APPEARANCES.map((value) => ({
+  value,
+  what: t(`appearancePage.${value}What` as never),
+  motion: t(`appearancePage.${value}Motion` as never),
+}));
+
+const html = `<button class="sk-button sk-interactive" data-sk-button
+  data-variant="solid" data-tone="accent" data-appearance="brutalist"
+  type="button">Save</button>
+
+<section class="sk-accordion" data-sk-accordion data-appearance="frosted">
+  …
+</section>`;
+
+const react = `import { Button } from "@skryensya/react/button";
+import { TileButton } from "@skryensya/react/tile";
+
+<Button tone="accent" appearance="brutalist">Save</Button>
+<TileButton appearance="tactile">…</TileButton>`;
+
+const tree = `{
+  "contract": "button",
+  "signature": "Button.action",
+  "options": { "tone": "accent", "appearance": "frosted" },
+  "children": "Save"
+}`;
+
+const hooks = `/* The same four families on every component that publishes the value. */
+.pricing .sk-tile {
+  --sk-tile-depth: 6px;                     /* tactile: how deep the ledge is */
+  --sk-tile-brutalist-offset-inline: 8px;   /* brutalist: the hard offset, logical */
+  --sk-tile-brutalist-offset-block: 8px;
+  --sk-tile-brutalist-edge: var(--color-text-accent); /* brutalist: the ink */
+  --sk-tile-frost-opacity: 80%;             /* frosted: the material */
+  --sk-tile-frost-blur: 20px;
+}`;
+---
+
+<Base title={t("appearancePage.title")} description={t("appearancePage.description")} documentLayout="grid">
+  <div
+    class="docs-appearance-foundation"
+    data-toc-transparent
+    data-docs-appearance-scope
+    data-docs-appearance-target="[data-appearance]"
+  >
+    <header class="docs-appearance-foundation__head">
+      <h1>{t("appearancePage.title")}</h1>
+      <AppearanceMenu label={t("prefs.appearance")} />
+    </header>
+
+    <p class="lede" set:html={t("appearancePage.lede")} />
+
+    <h2>{t("appearancePage.specimenTitle")}</h2>
+    <p set:html={t("appearancePage.specimenBody")} />
+    <ComponentPreview tree={appearanceSpecimenTree(t)} label={t("appearancePage.specimenLabel")} />
+    <p set:html={t("appearancePage.backdropBody")} />
+    <ComponentPreview tree={onAppearanceStage(appearanceSpecimenTree(t))} label={t("appearancePage.backdropLabel")} />
+
+    <h2>{t("appearancePage.valuesTitle")}</h2>
+    <div class="sk-table-scroll">
+      <table class="sk-table">
+        <thead class="sk-table__head">
+          <tr class="sk-table__row">
+            <th class="sk-table__header">{t("appearancePage.headValue")}</th>
+            <th class="sk-table__header">{t("appearancePage.headWhat")}</th>
+            <th class="sk-table__header">{t("appearancePage.headMotion")}</th>
+          </tr>
+        </thead>
+        <tbody class="sk-table__body">
+          {rows.map((row) => (
+            <tr class="sk-table__row">
+              <td class="sk-table__cell"><code>{row.value}</code></td>
+              <td class="sk-table__cell">{row.what}</td>
+              <td class="sk-table__cell">{row.motion}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+
+    <h2>{t("appearancePage.rulesTitle")}</h2>
+    <ul>
+      <li set:html={t("appearancePage.ruleIndependent")} />
+      <li set:html={t("appearancePage.ruleSurface")} />
+      <li set:html={t("appearancePage.ruleNoTravel")} />
+      <li set:html={t("appearancePage.ruleSelection")} />
+      <li set:html={t("appearancePage.ruleBlack")} />
+      <li set:html={t("appearancePage.ruleFrosted")} />
+      <li set:html={t("appearancePage.ruleReveal")} />
+      <li set:html={t("appearancePage.ruleDisabled")} />
+      <li set:html={t("appearancePage.ruleForced")} />
+    </ul>
+
+    <h2>{t("appearancePage.supportTitle")}</h2>
+    <p set:html={t("appearancePage.supportBody")} />
+    <div class="sk-table-scroll">
+      <table class="sk-table">
+        <thead class="sk-table__head">
+          <tr class="sk-table__row">
+            <th class="sk-table__header">{t("appearancePage.headComponent")}</th>
+            {APPEARANCES.map((value) => <th class="sk-table__header"><code>{value}</code></th>)}
+            <th class="sk-table__header">{t("appearancePage.headSignatures")}</th>
+          </tr>
+        </thead>
+        <tbody class="sk-table__body">
+          {support.map((row) => (
+            <tr class="sk-table__row">
+              <td class="sk-table__cell"><a href={row.href}>{row.label}</a></td>
+              {APPEARANCES.map((value) => (
+                <td class="sk-table__cell docs-appearance-foundation__mark">
+                  {row.values.includes(value) ? t("appearancePage.yes") : <span class="docs-appearance-foundation__no">{t("appearancePage.no")}</span>}
+                </td>
+              ))}
+              <td class="sk-table__cell">
+                {row.signatures.map((name, index) => (
+                  <Fragment>{index > 0 && ", "}<code>{name}</code></Fragment>
+                ))}
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+
+    <h2>{t("appearancePage.useTitle")}</h2>
+    <p set:html={t("appearancePage.useBody")} />
+    <CodeBlock code={html} label="HTML" lang="html" />
+    <CodeBlock code={react} label="React" lang="tsx" />
+    <CodeBlock code={tree} label="Usage tree" lang="ts" />
+
+    <h2>{t("appearancePage.hooksTitle")}</h2>
+    <p set:html={t("appearancePage.hooksBody")} />
+    <CodeBlock code={hooks} label="CSS" lang="css" />
+  </div>
+</Base>
+
+<style>
+  .docs-appearance-foundation__head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-inline-md);
+  }
+
+  .docs-appearance-foundation__mark {
+    text-align: center;
+  }
+
+  .docs-appearance-foundation__no {
+    color: var(--color-text-secondary);
+  }
+</style>
