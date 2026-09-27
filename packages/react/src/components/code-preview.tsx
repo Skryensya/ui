@@ -4,7 +4,13 @@ import { useId, useState, type ReactNode } from "react";
 import { Icon } from "./icon.js";
 
 /* Derived, never restated: the default lives in the contract. */
-const { collapsible: collapsibleOption, lessLabel: lessLabelOption, moreLabel: moreLabelOption, switchLabel: switchLabelOption } = codePreviewContract.options;
+const {
+  appearance: appearanceOption,
+  collapsible: collapsibleOption,
+  lessLabel: lessLabelOption,
+  moreLabel: moreLabelOption,
+  switchLabel: switchLabelOption,
+} = codePreviewContract.options;
 
 /*
  * CODE PREVIEW: the React half, which did not exist.
@@ -18,6 +24,8 @@ const { collapsible: collapsibleOption, lessLabel: lessLabelOption, moreLabel: m
  * line counts that make "show 40 more lines" a real number rather than a guess.
  */
 export type CodePreviewProps = {
+  /** How the panel is drawn: `plain`, `brutalist` or `frosted`. */
+  appearance?: (typeof appearanceOption.values)[number];
   children: ReactNode;
   label?: string;
   note?: string;
@@ -46,6 +54,7 @@ export type CodePreviewProps = {
 };
 
 export function CodePreview({
+  appearance = appearanceOption.default,
   aside,
   controlsId,
   ownViewports = false,
@@ -66,6 +75,7 @@ export function CodePreview({
   return (
     <div
       className={codePreviewParts.root}
+      data-appearance={appearance}
       {...{
         [codePreviewAttrs.root]: "",
         // `expanded` is the enhancer's bookkeeping, written when the control is used rather than

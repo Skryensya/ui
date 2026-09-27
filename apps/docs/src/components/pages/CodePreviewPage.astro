@@ -6,6 +6,7 @@ import "@skryensya/core/components/code-preview.css";
 /* Structure diagram: Annotated specimen; a preview frame only copies styles THIS page loaded. */
 import "@skryensya/core/components/annotation.css";
 import ComponentPageShell from "./ComponentPageShell.astro";
+import AppearanceMenu from "../AppearanceMenu.astro";
 import CodeBlock from "../CodeBlock.astro";
 import ComponentPreview from "../ComponentPreview.astro";
 import { codePreviewAnatomyCss, codePreviewAnatomyHtml } from "../../demos/code-preview";
@@ -51,8 +52,13 @@ const example = `const registrations = [
   title="CodePreview"
   description={t("codePreview.description")}
   contractId="code-preview"
+  appearanceTargetSelector=".sk-code-preview"
   testFiles={["packages/vanilla/src/components/code-preview.test.ts"]}}
 >
+  <Fragment slot="appearance">
+    <AppearanceMenu label={t("prefs.appearance")} values={["plain", "brutalist", "frosted"]} unavailable={{ tactile: t("prefs.appearanceTactileUnavailable") }} />
+  </Fragment>
+
   <Fragment slot="anatomy">
     <p set:html={t("codePreview.anatomyBody")} />
     <ComponentPreview

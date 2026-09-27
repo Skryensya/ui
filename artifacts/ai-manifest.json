@@ -2252,6 +2252,19 @@
         "date": null,
         "entries": [
           {
+            "date": "2026-09-26",
+            "en": {
+              "body": "<code>brutalist</code> draws the panel with a black edge and dividers and a hard offset; <code>frosted</code> makes it see-through, opaque wherever the material cannot be trusted. No <code>tactile</code>.",
+              "title": "CodePreview adds plain, brutalist and frosted appearances"
+            },
+            "es": {
+              "body": "<code>brutalist</code> dibuja el panel con borde y divisores negros y una sombra dura; <code>frosted</code> lo hace translúcido, opaco donde el material no es fiable. Sin <code>tactile</code>.",
+              "title": "CodePreview suma appearance plain, brutalist y frosted"
+            },
+            "kind": "feature",
+            "target": "appearance"
+          },
+          {
             "date": "2026-09-21",
             "en": {
               "body": "<code>--sk-code-preview-label-bg</code> is now a declared styling hook: the label paints as its own sunken region while the body of the block sits on the ordinary surface. That value existed in the stylesheet and no contract named it, so overriding it was documented nowhere.",
@@ -18552,6 +18565,12 @@
           "part": "root",
           "sheet": "@skryensya/core/components/code-preview.css"
         },
+        "--sk-code-preview-brutalist-offset": {
+          "default": "5px",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/code-preview.css"
+        },
         "--sk-code-preview-collapsed-padding-block": {
           "default": "var(--space-inset-md)",
           "output": false,
@@ -18622,6 +18641,7 @@
       "hooks": [
         "--sk-code-preview-bg",
         "--sk-code-preview-border-color",
+        "--sk-code-preview-brutalist-offset",
         "--sk-code-preview-collapsed-padding-block",
         "--sk-code-preview-copy-scroll-inset",
         "--sk-code-preview-copy-sticky-top",
@@ -18639,6 +18659,16 @@
       ],
       "id": "code-preview",
       "options": {
+        "appearance": {
+          "attr": "data-appearance",
+          "default": "plain",
+          "type": "enum",
+          "values": [
+            "plain",
+            "brutalist",
+            "frosted"
+          ]
+        },
         "collapsible": {
           "attr": "data-sk-code-preview-collapsible",
           "default": false,
@@ -18742,7 +18772,8 @@
             "lines",
             "previewLines",
             "moreLabel",
-            "lessLabel"
+            "lessLabel",
+            "appearance"
           ],
           "react": {
             "from": "@skryensya/react/code-preview",
@@ -18892,7 +18923,8 @@
             "previewLines",
             "moreLabel",
             "lessLabel",
-            "switchLabel"
+            "switchLabel",
+            "appearance"
           ],
           "react": {
             "from": "@skryensya/react/code-preview",
@@ -52604,7 +52636,7 @@
     "working": "0.0.1"
   },
   "schemaVersion": "2.3",
-  "sourceHash": "011fd407e1052e13",
+  "sourceHash": "8cd99dc67b7afab8",
   "vocabulary": {
     "a11y": "When `when` holds, one of `requiresOneOf` must be given: an option, a raw attribute, a filled slot, or a child signature by name.",
     "atLeastOneOf": "At least one member of each group counts: a filled slot, a boolean option set to true, or an option other than its default.",

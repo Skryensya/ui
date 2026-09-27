@@ -4,6 +4,13 @@ import { CodePreview, CodePreviewDensity } from "./code-preview.js";
 import { ComponentPreviewBare } from "./component-preview.js";
 
 describe("CodePreview", () => {
+  it("serializes its appearance on the panel, plain by default", () => {
+    const plain = render(<CodePreview>const a = 1;</CodePreview>);
+    expect(plain.container.querySelector(".sk-code-preview")?.getAttribute("data-appearance")).toBe("plain");
+    const brutalist = render(<CodePreview appearance="brutalist">const b = 2;</CodePreview>);
+    expect(brutalist.container.querySelector(".sk-code-preview")?.getAttribute("data-appearance")).toBe("brutalist");
+  });
+
   it("wraps already-highlighted code without touching it", () => {
     const ui = render(
       <CodePreview>
