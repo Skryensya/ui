@@ -17,7 +17,7 @@ if (import.meta.env.PROD) {
  * one changes neither this page nor the rest of the site (which is why there is no localStorage here,
  * unlike the header's picker, which is a site preference).
  *
- * The eight live simultaneously as a READ-ONLY GALLERY: nothing is selectable, there is no control that
+ * The eleven live simultaneously as a READ-ONLY GALLERY: nothing is selectable, there is no control that
  * cycles between them. Each card already shows its own result, side by side with the others, so they
  * can be compared at a glance.
  *
@@ -44,9 +44,9 @@ import "@skryensya/core/patterns/box.css";
 import "@skryensya/core/patterns/image-frame.css";
 
 /* A real (if generic) placeholder photo, not a gradient wash: the same dummyimage.com trick every
- * other card example in these docs already uses (examples/card-data.ts). One shared URL for all 16
- * card instances (8 presets × 2 schemes). The browser fetches it once and serves the rest from
- * cache, so this costs one network request, not sixteen. */
+ * other card example in these docs already uses (examples/card-data.ts). One shared URL for all 22
+ * card instances (11 presets × 2 schemes). The browser fetches it once and serves the rest from
+ * cache, so this costs one network request, not twenty-two. */
 const demoImage = dummyImage(640, 220, "d4d4d4", "737373", "Imagen");
 
 interface Preset {
@@ -72,7 +72,7 @@ const SCHEMES = [
 ] as const;
 
 /*
- * Eight presets, named for what they evoke, not for the hue that happens to carry them -
+ * Eleven presets, named for what they evoke, not for the hue that happens to carry them -
  * "Predeterminado" and "UC" are the two exceptions, and neither is a color name either (a baseline
  * and a real institution's initials). Each non-default preset pairs an accent family with a
  * DIFFERENT neutral family for its surfaces/text/borders (ADR 0019's constant, published palettes -
@@ -345,6 +345,118 @@ const PRESETS: Preset[] = [
       "--font-family-body: 'Figtree', 'Segoe UI', Helvetica, Arial, sans-serif;",
       "--elevation-flat: 0 1px 3px var(--shadow-sm);",
     ],
+  },  {
+    id: "brutalista",
+    name: "Brutalista",
+    description:
+      "Violeta sobre superficies de gris puro, esquinas rectas, una sombra dura desplazada sin desenfoque, etiquetas muy gruesas y un botón que cae visiblemente sobre su sombra. Bricolage Grotesque remata el carácter ruidoso de cartel neo-brutalista.",
+    fontImport: "https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;600;700;800&display=swap",
+    vars: [
+      "--color-action-accent: light-dark(var(--palette-violet-600), var(--palette-violet-500));",
+      "--color-text-accent: light-dark(var(--palette-violet-700), var(--palette-violet-300));",
+      "--color-border-accent: light-dark(var(--palette-violet-600), var(--palette-violet-500));",
+      "--color-bg-accent-subtle: light-dark(var(--palette-violet-50), var(--palette-violet-950));",
+      "--color-text-danger: light-dark(var(--palette-red-700), var(--palette-red-300));",
+      "--color-border-danger: light-dark(var(--palette-red-600), var(--palette-red-500));",
+      "--color-bg-danger-subtle: light-dark(var(--palette-red-50), var(--palette-red-950));",
+      "--color-text-success: light-dark(var(--palette-green-700), var(--palette-green-300));",
+      "--color-border-success: light-dark(var(--palette-green-600), var(--palette-green-500));",
+      "--color-bg-success-subtle: light-dark(var(--palette-green-50), var(--palette-green-950));",
+      "--color-text-warning: light-dark(var(--palette-amber-700), var(--palette-amber-300));",
+      "--color-border-warning: light-dark(var(--palette-amber-600), var(--palette-amber-500));",
+      "--color-bg-warning-subtle: light-dark(var(--palette-amber-50), var(--palette-amber-950));",
+      "--color-bg-canvas: light-dark(var(--palette-neutral-100), var(--palette-neutral-950));",
+      "--color-bg-surface: light-dark(var(--palette-white), var(--palette-neutral-900));",
+      "--color-bg-surface-raised: light-dark(var(--palette-white), var(--palette-neutral-800));",
+      "--color-bg-surface-sunken: light-dark(var(--palette-neutral-200), var(--palette-neutral-950));",
+      "--color-text-primary: light-dark(var(--palette-neutral-900), var(--palette-neutral-100));",
+      "--color-text-secondary: light-dark(var(--palette-neutral-700), var(--palette-neutral-300));",
+      "--color-text-tertiary: light-dark(var(--palette-neutral-600), var(--palette-neutral-400));",
+      "--color-border-subtle: light-dark(var(--palette-neutral-300), var(--palette-neutral-800));",
+      "--color-border-default: light-dark(var(--palette-neutral-500), var(--palette-neutral-500));",
+      "--color-border-strong: light-dark(var(--palette-neutral-600), var(--palette-neutral-400));",
+      "--color-border-subtle: light-dark(var(--palette-neutral-900), var(--palette-neutral-100));",
+      "--color-border-default: light-dark(var(--palette-neutral-900), var(--palette-neutral-100));",
+      "--radius-multiplier: 0;",
+      "--font-family-body: 'Bricolage Grotesque', 'Segoe UI', Helvetica, Arial, sans-serif;",
+      "--elevation-flat: 4px 4px 0 0 light-dark(var(--palette-neutral-900), var(--palette-neutral-100));",
+      "--font-weight-label: 800;",
+      "--motion-press-scale: 0.96;",
+    ],
+  },
+  {
+    id: "oceano",
+    name: "Océano",
+    description:
+      "Azul cielo sobre superficies gray frías, esquinas suaves, un poco más de aire y una sombra de reposo suave. IBM Plex Sans remata el carácter claro y confiable de un producto financiero o de salud.",
+    fontImport: "https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&display=swap",
+    vars: [
+      "--color-action-accent: light-dark(var(--palette-sky-600), var(--palette-sky-500));",
+      "--color-text-accent: light-dark(var(--palette-sky-700), var(--palette-sky-300));",
+      "--color-border-accent: light-dark(var(--palette-sky-600), var(--palette-sky-500));",
+      "--color-bg-accent-subtle: light-dark(var(--palette-sky-50), var(--palette-sky-950));",
+      "--color-text-danger: light-dark(var(--palette-rose-700), var(--palette-rose-300));",
+      "--color-border-danger: light-dark(var(--palette-rose-600), var(--palette-rose-500));",
+      "--color-bg-danger-subtle: light-dark(var(--palette-rose-50), var(--palette-rose-950));",
+      "--color-text-success: light-dark(var(--palette-emerald-700), var(--palette-emerald-300));",
+      "--color-border-success: light-dark(var(--palette-emerald-600), var(--palette-emerald-500));",
+      "--color-bg-success-subtle: light-dark(var(--palette-emerald-50), var(--palette-emerald-950));",
+      "--color-text-warning: light-dark(var(--palette-amber-700), var(--palette-amber-300));",
+      "--color-border-warning: light-dark(var(--palette-amber-600), var(--palette-amber-500));",
+      "--color-bg-warning-subtle: light-dark(var(--palette-amber-50), var(--palette-amber-950));",
+      "--color-bg-canvas: light-dark(var(--palette-gray-100), var(--palette-gray-950));",
+      "--color-bg-surface: light-dark(var(--palette-white), var(--palette-gray-900));",
+      "--color-bg-surface-raised: light-dark(var(--palette-white), var(--palette-gray-800));",
+      "--color-bg-surface-sunken: light-dark(var(--palette-gray-200), var(--palette-gray-950));",
+      "--color-text-primary: light-dark(var(--palette-gray-900), var(--palette-gray-100));",
+      "--color-text-secondary: light-dark(var(--palette-gray-700), var(--palette-gray-300));",
+      "--color-text-tertiary: light-dark(var(--palette-gray-600), var(--palette-gray-400));",
+      "--color-border-subtle: light-dark(var(--palette-gray-300), var(--palette-gray-800));",
+      "--color-border-default: light-dark(var(--palette-gray-500), var(--palette-gray-500));",
+      "--color-border-strong: light-dark(var(--palette-gray-600), var(--palette-gray-400));",
+      "--radius-multiplier: 1.25;",
+      "--font-family-body: 'IBM Plex Sans', 'Segoe UI', Helvetica, Arial, sans-serif;",
+      "--sk-density-factor: 1.05;",
+      "--elevation-flat: 0 4px 12px -6px var(--shadow-md);",
+      "--font-weight-label: 500;",
+    ],
+  },
+  {
+    id: "burdeos",
+    name: "Burdeos",
+    description:
+      "Rosa profundo sobre superficies stone cálidas, esquinas contenidas, aire generoso y un botón que apenas se hunde al presionarlo. Fraunces, una serif de alto contraste, remata el carácter lujoso de una boutique, una viña o una revista.",
+    fontImport: "https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&display=swap",
+    vars: [
+      "--color-action-accent: light-dark(var(--palette-rose-600), var(--palette-rose-500));",
+      "--color-text-accent: light-dark(var(--palette-rose-700), var(--palette-rose-300));",
+      "--color-border-accent: light-dark(var(--palette-rose-600), var(--palette-rose-500));",
+      "--color-bg-accent-subtle: light-dark(var(--palette-rose-50), var(--palette-rose-950));",
+      "--color-text-danger: light-dark(var(--palette-red-700), var(--palette-red-300));",
+      "--color-border-danger: light-dark(var(--palette-red-600), var(--palette-red-500));",
+      "--color-bg-danger-subtle: light-dark(var(--palette-red-50), var(--palette-red-950));",
+      "--color-text-success: light-dark(var(--palette-emerald-700), var(--palette-emerald-300));",
+      "--color-border-success: light-dark(var(--palette-emerald-600), var(--palette-emerald-500));",
+      "--color-bg-success-subtle: light-dark(var(--palette-emerald-50), var(--palette-emerald-950));",
+      "--color-text-warning: light-dark(var(--palette-amber-700), var(--palette-amber-300));",
+      "--color-border-warning: light-dark(var(--palette-amber-600), var(--palette-amber-500));",
+      "--color-bg-warning-subtle: light-dark(var(--palette-amber-50), var(--palette-amber-950));",
+      "--color-bg-canvas: light-dark(var(--palette-stone-100), var(--palette-stone-950));",
+      "--color-bg-surface: light-dark(var(--palette-white), var(--palette-stone-900));",
+      "--color-bg-surface-raised: light-dark(var(--palette-white), var(--palette-stone-800));",
+      "--color-bg-surface-sunken: light-dark(var(--palette-stone-200), var(--palette-stone-950));",
+      "--color-text-primary: light-dark(var(--palette-stone-900), var(--palette-stone-100));",
+      "--color-text-secondary: light-dark(var(--palette-stone-700), var(--palette-stone-300));",
+      "--color-text-tertiary: light-dark(var(--palette-stone-600), var(--palette-stone-400));",
+      "--color-border-subtle: light-dark(var(--palette-stone-300), var(--palette-stone-800));",
+      "--color-border-default: light-dark(var(--palette-stone-500), var(--palette-stone-500));",
+      "--color-border-strong: light-dark(var(--palette-stone-600), var(--palette-stone-400));",
+      "--radius-multiplier: 0.75;",
+      "--font-family-body: 'Fraunces', Georgia, 'Times New Roman', serif;",
+      "--sk-density-factor: 1.15;",
+      "--font-weight-label: 600;",
+      "--motion-press-scale: 0.99;",
+    ],
   },
 ];
 
@@ -417,7 +529,7 @@ const ucCssTeaching =
 <Base
   fullBleed
   title="Presets"
-  description="Ocho look & feel completos. Acento, superficies neutras, redondez, tipografía, densidad, sombra y motion. En una galería de solo lectura."
+  description="Once look & feel completos. Acento, superficies neutras, redondez, tipografía, densidad, sombra y motion. En una galería de solo lectura."
 >
   <div class="sk-layout-grid presets-shell">
     <div>
@@ -520,7 +632,7 @@ const ucCssTeaching =
         <strong>UC</strong> reproduce el look de
         <a href="https://kitdigital.uc.cl/" target="_blank" rel="noreferrer">kitdigital.uc.cl</a>: acento
         celeste, superficies en gris puro, radio más recto, tipografía Roboto y cero microinteracción -
-        no solo el color de acento, todo el carácter del componente. Los otros seis siguen exactamente
+        no solo el color de acento, todo el carácter del componente. Los otros nueve siguen exactamente
         el mismo molde, pero cada uno toca las dimensiones que realmente lo distinguen: acento y
         feedback (danger/success/warning), superficies neutras (fondo, texto, bordes. Una familia de
         gris distinta por preset, no la misma "stone" de siempre), redondez, tipografía, densidad de
