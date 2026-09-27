@@ -7,6 +7,7 @@ import { useModalTabWrap } from "./modal-tab-wrap.js";
 /* Derived, never restated: the default lives in the contract. */
 const {
   alert: alertOption,
+  appearance: appearanceOption,
   closeLabel: closeLabelOption,
   vaul: vaulOption,
 } = dialogContract.options;
@@ -47,10 +48,13 @@ export type DialogProps = DialogHTMLAttributes<HTMLDialogElement> & {
    */
   alert?: boolean;
   footerAlign?: DialogOptions["footerAlign"];
+  /** How the surface is drawn: `plain`, `brutalist` or `frosted`. */
+  appearance?: DialogOptions["appearance"];
 };
 
 export function Dialog({
   alert = alertOption.default,
+  appearance = appearanceOption.default,
   children,
   className,
   closeLabel = closeLabelOption.default,
@@ -71,6 +75,7 @@ export function Dialog({
       aria-labelledby={titleId}
       aria-modal={alert ? "true" : undefined}
       className={className ? `${dialogParts.root} ${className}` : dialogParts.root}
+      data-appearance={appearance}
       data-footer-align={footerAlign}
       data-sk-dialog-vaul={vaul ? "" : undefined}
       // The enhancer's drag axis is generic and defaults to `inline-start` with nothing to read;
