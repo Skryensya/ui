@@ -3,8 +3,21 @@
 # `surface` is the shape of the contract the last time somebody reviewed it. If the compiler says it
 # does not match, something a consumer depends on has moved: write the entry and paste in the new
 # hash.
-surface: "fa096a0b6e50bb09"
+surface: "3b0334a39a494680"
 entries:
+  - date: 2026-09-26
+    kind: feature
+    target: triggerAppearance
+    es:
+      title: El disparador acepta la appearance de Button
+      body: >-
+        <code>triggerAppearance</code> lleva el eje <code>appearance</code> de Button al disparador, igual que
+        <code>triggerVariant</code>, y lo pinta la hoja de Button.
+    en:
+      title: The trigger takes Button's appearance
+      body: >-
+        <code>triggerAppearance</code> forwards Button's <code>appearance</code> axis to the trigger, like
+        <code>triggerVariant</code>, painted by Button's own sheet.
   - date: 2026-09-26
     kind: feature
     target: appearance

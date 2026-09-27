@@ -28,6 +28,11 @@ describe("Popover (React)", () => {
     expect(content.textContent).toContain("Content");
   });
 
+  it("forwards Button's appearance to its trigger", () => {
+    const ui = render(<Popover trigger="Open" triggerAppearance="tactile">Content</Popover>);
+    expect(ui.getByRole("button", { name: "Open" }).getAttribute("data-appearance")).toBe("tactile");
+  });
+
   it("renders a title and description in the full (non-bare) anatomy", () => {
     const ui = render(
       <Popover trigger="Open" title="Filtros" description="Elige una categoría.">

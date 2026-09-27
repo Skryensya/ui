@@ -119,6 +119,9 @@ export const popoverContract = {
     /** Button's meaning axis, the same forward Menu's `triggerTone` makes. */
     triggerTone: { type: "string", attr: "data-tone", valuesFrom: { contract: "button", option: "tone" } },
     triggerSize: { type: "string", attr: "data-size", valuesFrom: { contract: "button", option: "size" } },
+    /** Button's appearance axis (plain, tactile, brutalist, frosted), forwarded to the trigger like its
+     *  variant, and painted by Button's own sheet. */
+    triggerAppearance: { type: "string", attr: "data-appearance", valuesFrom: { contract: "button", option: "appearance" } },
     /** The icon-only SHAPE: a control-sized square holding one glyph, zero inline padding. Pair it
      *  with a `triggerLabel`, since a trigger with no visible content announces nothing. */
     triggerIconOnly: { type: "boolean", default: false, attr: "data-icon-only", trueValue: "" },
@@ -137,6 +140,7 @@ export const popoverContract = {
         "triggerVariant",
         "triggerTone",
         "triggerSize",
+        "triggerAppearance",
         "triggerIconOnly",
       ],
       requires: ["panelId"],
@@ -181,7 +185,7 @@ export const popoverContract = {
             // Claims the `trigger*` options for ITSELF (each one's own `attr` already says where,
             // so only `panelId` needs the rename below), the same "one option, one element" split
             // `Menu`'s own trigger keeps.
-            options: ["panelId", "triggerLabel", "triggerVariant", "triggerTone", "triggerSize", "triggerIconOnly"],
+            options: ["panelId", "triggerLabel", "triggerVariant", "triggerTone", "triggerSize", "triggerAppearance", "triggerIconOnly"],
             optionAttrs: { panelId: "popovertarget" },
             slot: "trigger",
           },
@@ -242,6 +246,7 @@ export const popoverContract = {
         "triggerVariant",
         "triggerTone",
         "triggerSize",
+        "triggerAppearance",
         "triggerIconOnly",
       ],
       requires: ["panelId"],
@@ -269,7 +274,7 @@ export const popoverContract = {
             // Claims the `trigger*` options for ITSELF (each one's own `attr` already says where,
             // so only `panelId` needs the rename below), the same "one option, one element" split
             // `Menu`'s own trigger keeps.
-            options: ["panelId", "triggerLabel", "triggerVariant", "triggerTone", "triggerSize", "triggerIconOnly"],
+            options: ["panelId", "triggerLabel", "triggerVariant", "triggerTone", "triggerSize", "triggerAppearance", "triggerIconOnly"],
             optionAttrs: { panelId: "popovertarget" },
             slot: "trigger",
           },

@@ -5951,6 +5951,19 @@
         "date": null,
         "entries": [
           {
+            "date": "2026-09-26",
+            "en": {
+              "body": "<code>triggerAppearance</code> forwards Button's <code>appearance</code> axis to the trigger, like <code>triggerVariant</code>, painted by Button's own sheet.",
+              "title": "The trigger takes Button's appearance"
+            },
+            "es": {
+              "body": "<code>triggerAppearance</code> lleva el eje <code>appearance</code> de Button al disparador, igual que <code>triggerVariant</code>, y lo pinta la hoja de Button.",
+              "title": "El disparador acepta la appearance de Button"
+            },
+            "kind": "feature",
+            "target": "triggerAppearance"
+          },
+          {
             "date": "2026-09-17",
             "en": {
               "body": "Interactive or form host signatures publish <code>forward</code> (<code>id</code>/<code>aria-*</code> and link or form attrs where relevant). An attr outside the list is <code>unknown-attr</code>.",
@@ -7001,6 +7014,19 @@
       {
         "date": null,
         "entries": [
+          {
+            "date": "2026-09-26",
+            "en": {
+              "body": "<code>triggerAppearance</code> forwards Button's <code>appearance</code> axis to the trigger, like <code>triggerVariant</code>, painted by Button's own sheet.",
+              "title": "The trigger takes Button's appearance"
+            },
+            "es": {
+              "body": "<code>triggerAppearance</code> lleva el eje <code>appearance</code> de Button al disparador, igual que <code>triggerVariant</code>, y lo pinta la hoja de Button.",
+              "title": "El disparador acepta la appearance de Button"
+            },
+            "kind": "feature",
+            "target": "triggerAppearance"
+          },
           {
             "date": "2026-09-17",
             "en": {
@@ -11368,6 +11394,19 @@
       {
         "date": null,
         "entries": [
+          {
+            "date": "2026-09-26",
+            "en": {
+              "body": "<code>triggerAppearance</code> forwards Button's <code>appearance</code> axis to the trigger, like <code>triggerVariant</code>, painted by Button's own sheet.",
+              "title": "The trigger takes Button's appearance"
+            },
+            "es": {
+              "body": "<code>triggerAppearance</code> lleva el eje <code>appearance</code> de Button al disparador, igual que <code>triggerVariant</code>, y lo pinta la hoja de Button.",
+              "title": "El disparador acepta la appearance de Button"
+            },
+            "kind": "feature",
+            "target": "triggerAppearance"
+          },
           {
             "date": "2026-09-26",
             "en": {
@@ -32106,6 +32145,14 @@
           "attr": "aria-label",
           "type": "string"
         },
+        "triggerAppearance": {
+          "attr": "data-appearance",
+          "type": "string",
+          "valuesFrom": {
+            "contract": "button",
+            "option": "appearance"
+          }
+        },
         "triggerIconOnly": {
           "attr": "data-icon-only",
           "default": false,
@@ -32223,6 +32270,7 @@
             "triggerVariant",
             "triggerTone",
             "triggerSize",
+            "triggerAppearance",
             "triggerIconOnly",
             "disabled",
             "density",
@@ -32333,6 +32381,7 @@
                   "triggerVariant",
                   "triggerTone",
                   "triggerSize",
+                  "triggerAppearance",
                   "triggerIconOnly"
                 ],
                 "part": "trigger",
@@ -36231,6 +36280,14 @@
             "inline-end"
           ]
         },
+        "triggerAppearance": {
+          "attr": "data-appearance",
+          "type": "string",
+          "valuesFrom": {
+            "contract": "button",
+            "option": "appearance"
+          }
+        },
         "triggerIconOnly": {
           "attr": "data-icon-only",
           "default": false,
@@ -36338,6 +36395,7 @@
             "triggerVariant",
             "triggerTone",
             "triggerSize",
+            "triggerAppearance",
             "triggerIconOnly"
           ],
           "react": {
@@ -36384,6 +36442,7 @@
                   "triggerVariant",
                   "triggerTone",
                   "triggerSize",
+                  "triggerAppearance",
                   "triggerIconOnly"
                 ],
                 "part": "trigger",
@@ -36500,6 +36559,7 @@
             "triggerVariant",
             "triggerTone",
             "triggerSize",
+            "triggerAppearance",
             "triggerIconOnly"
           ],
           "react": {
@@ -36540,6 +36600,7 @@
                   "triggerVariant",
                   "triggerTone",
                   "triggerSize",
+                  "triggerAppearance",
                   "triggerIconOnly"
                 ],
                 "part": "trigger",
@@ -51493,6 +51554,14 @@
           "default": "Restore",
           "type": "string"
         },
+        "triggerAppearance": {
+          "attr": "data-appearance",
+          "type": "string",
+          "valuesFrom": {
+            "contract": "button",
+            "option": "appearance"
+          }
+        },
         "triggerIconOnly": {
           "attr": "data-icon-only",
           "default": false,
@@ -51610,6 +51679,7 @@
             "triggerVariant",
             "triggerTone",
             "triggerSize",
+            "triggerAppearance",
             "triggerIconOnly"
           ],
           "portals": {
@@ -51650,6 +51720,7 @@
                   "triggerVariant",
                   "triggerTone",
                   "triggerSize",
+                  "triggerAppearance",
                   "triggerIconOnly"
                 ],
                 "part": "trigger",
@@ -52012,7 +52083,7 @@
     "working": "0.0.1"
   },
   "schemaVersion": "2.3",
-  "sourceHash": "cb75bbd12d852b67",
+  "sourceHash": "84277315a851b0be",
   "vocabulary": {
     "a11y": "When `when` holds, one of `requiresOneOf` must be given: an option, a raw attribute, a filled slot, or a child signature by name.",
     "atLeastOneOf": "At least one member of each group counts: a filled slot, a boolean option set to true, or an option other than its default.",

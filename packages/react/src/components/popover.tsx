@@ -10,6 +10,7 @@ const {
   placement: placementOption,
   triggerVariant: triggerVariantOption,
   triggerTone: triggerToneOption,
+  triggerAppearance: triggerAppearanceOption,
   triggerSize: triggerSizeOption,
   triggerIconOnly: triggerIconOnlyOption,
 } = popoverContract.options;
@@ -39,6 +40,8 @@ export type PopoverProps = Omit<HTMLAttributes<HTMLDivElement>, "content" | "tit
    *  the trigger directly once these are set; nothing here repeats their CSS. */
   triggerVariant?: string;
   triggerTone?: string;
+  /** Button's appearance on the trigger: `plain`, `tactile`, `brutalist` or `frosted`. */
+  triggerAppearance?: string;
   triggerSize?: string;
   /** The SAME attribute `Button`'s own `iconOnly` option writes; see `popover.ts`'s identical
    *  option doc. Pair it with `triggerLabel`. */
@@ -60,6 +63,7 @@ export function Popover({
   triggerClassName,
   triggerIconOnly = false,
   triggerLabel,
+  triggerAppearance,
   triggerSize,
   triggerTone,
   triggerVariant,
@@ -95,6 +99,7 @@ export function Popover({
         {...{
           [triggerVariantOption.attr]: triggerVariant,
           [triggerToneOption.attr]: triggerTone,
+          [triggerAppearanceOption.attr]: triggerAppearance,
           [triggerSizeOption.attr]: triggerSize,
           [triggerIconOnlyOption.attr]: triggerIconOnly ? triggerIconOnlyOption.trueValue : undefined,
         }}

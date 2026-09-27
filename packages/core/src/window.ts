@@ -288,6 +288,9 @@ export const windowContract = {
     triggerVariant: { type: "string", attr: "data-variant", valuesFrom: { contract: "button", option: "variant" } },
     triggerTone: { type: "string", attr: "data-tone", valuesFrom: { contract: "button", option: "tone" } },
     triggerSize: { type: "string", attr: "data-size", valuesFrom: { contract: "button", option: "size" } },
+    /** Button's appearance axis (plain, tactile, brutalist, frosted), forwarded to the trigger like its
+     *  variant, and painted by Button's own sheet. */
+    triggerAppearance: { type: "string", attr: "data-appearance", valuesFrom: { contract: "button", option: "appearance" } },
     triggerIconOnly: { type: "boolean", default: false, attr: "data-icon-only", trueValue: "" },
   },
 
@@ -314,6 +317,7 @@ export const windowContract = {
         "triggerVariant",
         "triggerTone",
         "triggerSize",
+        "triggerAppearance",
         "triggerIconOnly",
       ],
       mount: windowAttrs.root,
@@ -348,7 +352,7 @@ export const windowContract = {
             also: ["sk-button", "sk-interactive"],
             mount: windowAttrs.trigger,
             attrs: { type: "button" },
-            options: ["triggerLabel", "triggerVariant", "triggerTone", "triggerSize", "triggerIconOnly"],
+            options: ["triggerLabel", "triggerVariant", "triggerTone", "triggerSize", "triggerAppearance", "triggerIconOnly"],
             slot: "trigger",
           },
           {

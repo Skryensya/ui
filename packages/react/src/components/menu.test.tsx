@@ -47,6 +47,13 @@ describe("Menu (React)", () => {
     expect(trigger.getAttribute("aria-expanded")).toBe("false");
   });
 
+  it("forwards Button's appearance to its trigger", () => {
+    const ui = render(<Menu items={items} label="File actions" trigger="Actions" triggerAppearance="brutalist" />);
+    const trigger = ui.getByRole("button", { name: "Actions" });
+    expect(trigger.getAttribute("data-appearance")).toBe("brutalist");
+    expect(trigger.classList.contains("sk-button")).toBe(true);
+  });
+
   it("renders no indicator slot at all when indicator is null", () => {
     const ui = render(
       <Menu indicator={null} items={items} label="File actions" trigger="Actions" />,
