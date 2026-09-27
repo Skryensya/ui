@@ -1,5 +1,5 @@
 import type { Locator } from "@playwright/test";
-import { expect, test } from "./fixtures.js";
+import { expect, test, waitForStage } from "./fixtures.js";
 
 /*
  * THE INVALID QUESTION, WHICH G2 RENDERS BUT NEVER REACHES.
@@ -55,7 +55,13 @@ async function errorStateOf(block: Locator, binding: "vanilla" | "react") {
   };
 }
 
-test("a question that fails carries the same error wiring in both bindings", async ({ stagePage: page }) => {
+/*
+ * Its own page, not the worker's shared stage: failing a question leaves it invalid and moves focus
+ * into it, and on the shared stage that state leaked into whatever ran next (G2 then saw one
+ * binding's tile carrying `data-focus`). Same reason `button-pressed.spec.ts` renders its own.
+ */
+test("a question that fails carries the same error wiring in both bindings", async ({ page }) => {
+  await waitForStage(page);
   const block = page.locator(`[data-case="${CASE}"]`);
 
   const vanilla = await errorStateOf(block, "vanilla");

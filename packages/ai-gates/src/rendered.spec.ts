@@ -45,6 +45,9 @@ const DRAWS_NOTHING = new Set([
   /* Same reason as the toast template beside it: a `<template>`'s content is inert by the HTML
    * spec and never part of the rendered tree, in either binding. */
   "comment-thread/template",
+  /* Closed on purpose: the case exists to compare the `hidden` that `present: false` adds, and a
+   * hidden element has no box in either binding. */
+  "presence/closed",
 ]);
 
 test("every canonical tree paints something", async ({ stagePage: page }) => {
