@@ -33,6 +33,7 @@ const loaders: Record<string, () => Promise<Record<string, unknown>>> = {
   "@skryensya/react/annotation": () => import("./components/annotation.js"),
   "@skryensya/react/diagram": () => import("./components/diagram.js"),
   "@skryensya/react/select": () => import("./components/select.js"),
+  "@skryensya/react/user-select": () => import("./components/user-select.js"),
   "@skryensya/react/menu": () => import("./components/menu.js"),
   "@skryensya/react/combobox": () => import("./components/combobox.js"),
   "@skryensya/react/calendar": () => import("./components/calendar.js"),

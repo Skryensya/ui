@@ -125,6 +125,7 @@ const mounts = [
   mountRating,
   mountSegmented,
   mountSelect,
+  mountUserSelect,
   mountSidebar,
   mountSlider,
   mountSliderRange,
@@ -150,7 +151,7 @@ const mounts = [
 describe("Vanilla public entry points", () => {
   it("publishes the lazy auto-loader and one mount for every regular enhanced module", () => {
     expect(initComponents).toBeTypeOf("function");
-    expect(mounts).toHaveLength(63);
+    expect(mounts).toHaveLength(64);
     expect(mounts.every((mount) => typeof mount === "function")).toBe(true);
   });
 
@@ -166,17 +167,6 @@ describe("Vanilla public entry points", () => {
     expect(mountComponentPreview).toBeTypeOf("function");
     expect(mountEditor).toBeTypeOf("function");
     expect(destroyMount).toBeTypeOf("function");
-  });
-
-  /*
-   * UserSelect is absent from `mounts`/`runtime/registry.ts` for a different reason than Editor's
-   * (no peer dependency involved): it has no compiled contract yet, so `vanilla-conformance.test.ts`
-   * (`@skryensya/ai-gates`) has no canonical tree to exercise `[data-sk-user-select]` against, and
-   * that gate requires every REGISTERED selector to be. The subpath still publishes and still
-   * mounts; a page just calls `mountUserSelect()` itself, same shape Editor's page already does.
-   */
-  it("publishes UserSelect through an explicit subpath, same reasoning as Editor", () => {
-    expect(mountUserSelect).toBeTypeOf("function");
   });
 
   /*
@@ -244,6 +234,7 @@ describe("Vanilla public entry points", () => {
         mountRating,
         mountSegmented,
         mountSelect,
+        mountUserSelect,
         mountSidebar,
         mountSlider,
         mountSliderRange,

@@ -21,6 +21,7 @@
   } from "@skryensya/core/user-select";
   import { normalizeProps, useMachine } from "@zag-js/svelte";
   import { onDestroy, onMount } from "svelte";
+  import { remountIcons } from "../icon.js";
   import { applyZagProps, bindZagEvents, type DomProps } from "../runtime/apply";
   import { bindParts, type PartBinding } from "../runtime/bind-part.svelte";
   import { getRoot, uniqueId } from "../runtime/svelte-hydrate";
@@ -33,8 +34,10 @@
    * around whatever the author wrote).
    *
    * Every row stays hand-authored, avatar included: this enhancer never builds a row, it only reads
-   * `data-value` / the item-text node / `data-email` off it, same as `Select.svelte` reads its own
-   * items. The ONE thing it renders is the trigger's live avatar summary, because that has no
+   * `data-value`, the item-text node and the description (the email) off it, same as `Select.svelte`
+   * reads its own items. The markup it expects is `userSelectContract`'s template; the parts that
+   * template lists but an author left out (the list wrapper, the status, the empty row, the footer,
+   * each row's checkbox) are generated in the same shape, so G2 sees one DOM either way. The ONE thing it renders is the trigger's live avatar summary, because that has no
    * authored form (it changes with the selection) - and even that clones the AUTHORED avatar off the
    * matching row rather than re-deriving one, so initials-vs-photo stays Avatar's call, never this
    * file's.
@@ -102,6 +105,7 @@
     control.append(indicator);
     box.append(control);
     node.prepend(box);
+    remountIcons(box);
   };
 
   const readItem = (node: HTMLElement): Authored => {
@@ -110,7 +114,7 @@
     if (!value) throw new Error("Every [data-sk-select-item] needs a non-empty data-value.");
     const text = node.querySelector<HTMLElement>(selector.itemText) ?? node;
     const label = text.textContent?.trim() || value;
-    const email = node.dataset.email ?? "";
+    const email = node.querySelector(`.${comboboxParts.itemDescription}`)?.textContent?.trim() ?? node.dataset.email ?? "";
     return {
       node,
       item: { value, label, disabled: node.hasAttribute("data-disabled") },
@@ -179,16 +183,22 @@
   });
   const emptyTitleEl = emptyPart(userSelectAttrs.emptyTitle, () => document.createElement("span"));
   const emptyHintEl = emptyPart(userSelectAttrs.emptyHint, () => document.createElement("span"));
-  let emptyIconName = "";
+  // The authored glyph's name, placeholder or already upgraded (`data-icon` on the svg), so a row the
+  // template drew is kept rather than redrawn.
+  let emptyIconName =
+    emptyIconEl.querySelector("[data-sk-icon]")?.getAttribute("data-sk-icon") ??
+    emptyIconEl.querySelector("[data-icon]")?.getAttribute("data-icon") ??
+    "";
   const setEmptyIcon = (name: string) => {
     if (name === emptyIconName) return;
     emptyIconName = name;
-    // A fresh placeholder each time: the page's icon set upgrades new `data-sk-icon` nodes, not a
-    // renamed one it already upgraded.
+    // A fresh placeholder each time: the icon set upgrades new `data-sk-icon` nodes, not a renamed one
+    // it already upgraded.
     const glyph = document.createElement("span");
     glyph.dataset.skIcon = name;
     glyph.dataset.skIconSize = "md";
     emptyIconEl.replaceChildren(glyph);
+    remountIcons(emptyIconEl);
   };
 
   let statusEl = root.querySelector<HTMLElement>(own.status);
@@ -198,7 +208,8 @@
     statusEl.setAttribute(userSelectAttrs.status, "");
     statusEl.setAttribute("role", "status");
     statusEl.setAttribute("aria-atomic", "true");
-    content.append(statusEl);
+    // Right after the search field, where the template has it.
+    search.after(statusEl);
   }
 
   let footerEl = root.querySelector<HTMLElement>(own.footer);
@@ -223,7 +234,6 @@
     clearEl.dataset.variant = "ghost";
     clearEl.dataset.size = "sm";
     clearEl.type = "button";
-    clearEl.textContent = label("clear");
     clearEl.setAttribute(userSelectAttrs.clear, "");
 
     footerEl.append(countEl, clearEl);
@@ -233,6 +243,9 @@
   const placeholder = label("placeholder");
   const unselectedLabel = label("unselected");
   if (!search.placeholder) search.placeholder = label("searchPlaceholder");
+  if (!search.hasAttribute("aria-label")) search.setAttribute("aria-label", search.placeholder);
+  if (root.hasAttribute("data-disabled")) search.disabled = true;
+  if (clearEl && !clearEl.textContent?.trim()) clearEl.textContent = label("clear");
   const maxAvatars = Number(root.dataset.maxAvatars) || 3;
 
   const emptyMessage = () =>
@@ -304,6 +317,8 @@
     disabled: root.hasAttribute("data-disabled"),
     defaultValue: readDefaultValue(),
     positioning: { ...selectPositioning, boundary: root.closest("dialog") ? document.documentElement : undefined },
+    // The clear button's accessible name is its visible text, not Zag's own "Clear value".
+    translations: { clearTriggerLabel: clearEl?.textContent?.trim() || label("clear") },
     onValueChange(details: { value: string[] }) {
       root.dispatchEvent(new CustomEvent(userSelectEvents.valueChange, { bubbles: true, detail: { value: details.value } }));
     },
@@ -343,6 +358,7 @@
       disc.append(glyph);
       empty.append(disc, unselectedLabel);
       valueEl.append(empty);
+      remountIcons(valueEl);
       return;
     }
 
