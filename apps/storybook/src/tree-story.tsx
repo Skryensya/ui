@@ -3,14 +3,15 @@ import { emitReact } from "@skryensya/ai-compiler/emit";
 import type { UsageTree } from "@skryensya/core/usage-tree";
 import { loadTree, renderTree } from "@skryensya/react/render-tree";
 import type { Translate } from "@docs/i18n";
-import { isLocale, translator } from "./translate";
+import { isLocale, translator } from "@skryensya/storybook-kit/translate";
 
 /*
- * THE REACT RENDERER BEHIND `@story`. The Vanilla app (`apps/storybook-vanilla/src/tree-story.ts`)
- * exports the same names; a story imports from `@story` and never learns which one it got.
+ * THIS STORYBOOK'S BINDING: what every generated story imports (`treeStory`, `argsStory`, `withCss`,
+ * `localeOf`, the story types). A tree is drawn by `renderTree` and its code panel shows `emitReact`,
+ * the TSX a consumer writes for it, which is the snippet the docs page prints for React.
  */
 
-export { localeOf } from "./translate";
+export { localeOf } from "@skryensya/storybook-kit/translate";
 export type Meta = ReactMeta;
 export type StoryObj<Args = Record<string, unknown>> = ReactStoryObj<Args>;
 

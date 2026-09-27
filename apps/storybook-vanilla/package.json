@@ -3,17 +3,19 @@
   "private": true,
   "version": "0.0.1-dev",
   "type": "module",
-  "description": "Storybook for the Vanilla binding. Renders the same generated stories as apps/storybook, as emitted markup brought to life by the Vanilla enhancers.",
+  "description": "The Vanilla Storybook: every docs demo tree as emitted markup brought to life by the Vanilla enhancers, with that markup in the code panel.",
   "scripts": {
     "storybook": "storybook dev --port 6007",
     "build-storybook": "storybook build --output-dir storybook-static",
-    "check": "tsc -p tsconfig.json --noEmit"
+    "generate": "node scripts/generate-stories.ts",
+    "check": "node scripts/generate-stories.ts --check && tsc -p tsconfig.json --noEmit"
   },
   "dependencies": {
     "@skryensya/ai-compiler": "workspace:*",
     "@skryensya/core": "workspace:*",
     "@skryensya/editor": "workspace:*",
     "@skryensya/icons-lucide": "workspace:*",
+    "@skryensya/storybook-kit": "workspace:*",
     "@skryensya/vanilla": "workspace:*"
   },
   "devDependencies": {

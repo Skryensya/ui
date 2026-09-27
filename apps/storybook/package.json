@@ -3,7 +3,7 @@
   "private": true,
   "version": "0.0.1-dev",
   "type": "module",
-  "description": "Storybook for the React binding. Every story renders a docs usage tree through the same renderTree the docs and the gates use.",
+  "description": "The React Storybook: every docs demo tree drawn by renderTree, with its React source in the code panel.",
   "scripts": {
     "storybook": "storybook dev --port 6006",
     "build-storybook": "storybook build --output-dir storybook-static",
@@ -14,6 +14,7 @@
     "@skryensya/ai-compiler": "workspace:*",
     "@skryensya/core": "workspace:*",
     "@skryensya/react": "workspace:*",
+    "@skryensya/storybook-kit": "workspace:*",
     "react": "^19.0.0",
     "react-dom": "^19.0.0"
   },

@@ -4,17 +4,17 @@ import type { UsageTree } from "@skryensya/core/usage-tree";
 import { lucideIcons } from "@skryensya/icons-lucide";
 import { mountComponentsWithIcons } from "@skryensya/vanilla/auto";
 import type { Translate } from "@docs/i18n";
-import { isLocale, translator } from "../../storybook/src/translate";
+import { isLocale, translator } from "@skryensya/storybook-kit/translate";
 
 /*
- * THE VANILLA RENDERER BEHIND `@story`, the same names `apps/storybook/src/tree-story.tsx` exports
- * for React. A story imports from `@story` and never learns which one it got.
- *
- * A tree becomes the markup `emitMarkup` writes (what the docs' Vanilla stage shows and what a
- * consumer authors), and the enhancers bring it to life in the order the docs preview frame uses.
+ * THIS STORYBOOK'S BINDING: what every generated story imports (`treeStory`, `argsStory`, `withCss`,
+ * `localeOf`, the story types). A tree becomes the markup `emitMarkup` writes (what the docs'
+ * Vanilla stage shows and what a consumer authors), the enhancers bring it to life in the order the
+ * docs preview frame uses, and the code panel shows that markup, the snippet the docs print for
+ * Vanilla.
  */
 
-export { localeOf } from "../../storybook/src/translate";
+export { localeOf } from "@skryensya/storybook-kit/translate";
 export type Meta = HtmlMeta;
 export type StoryObj<Args = Record<string, unknown>> = HtmlStoryObj<Args>;
 
