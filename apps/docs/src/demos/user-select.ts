@@ -1,6 +1,8 @@
 import { avatarInitials } from "@skryensya/core/avatar";
 import { userSelectLabel, userSelectLabels, type UserSelectLabels } from "@skryensya/core/user-select";
+import type { UsageTree } from "@skryensya/core/usage-tree";
 import type { Translate, UIKey } from "../i18n";
+import { anatomyFigureHtml } from "./annotation-parts";
 import { userSelectRoster, type UserSelectDemoUser } from "./data/user-select";
 
 /*
@@ -14,9 +16,9 @@ import { userSelectRoster, type UserSelectDemoUser } from "./data/user-select";
  * whatever the row already has.
  */
 
-const row = (user: UserSelectDemoUser): string => `<div class="sk-select__item sk-interactive" data-sk-select-item data-value="${user.id}" data-email="${user.email}"${user.disabled ? " data-disabled" : ""}>
+const row = (user: UserSelectDemoUser): string => `<div class="sk-select__item sk-interactive" data-sk-select-item data-value="${user.id}"${user.disabled ? " data-disabled" : ""}>
         <span class="sk-inline" data-align="center" data-gap="sm" data-wrap="false">
-        <span class="sk-avatar" data-size="sm" role="img" aria-label="${user.name}" style="--sk-avatar-bg: var(--palette-${user.hue}); --sk-avatar-fg: var(--palette-white);"><span class="sk-avatar__fallback" aria-hidden="true">${avatarInitials(user.name)}</span></span>
+        <span class="sk-avatar" data-size="sm" data-appearance="plain" role="img" aria-label="${user.name}" aria-hidden="true" style="--sk-avatar-bg: var(--palette-${user.hue}); --sk-avatar-fg: var(--palette-white);"><span class="sk-avatar__fallback" aria-hidden="true">${avatarInitials(user.name)}</span></span>
         <span class="sk-combobox__item-copy">
           <span class="sk-select__item-text" data-sk-select-item-text>${user.name}</span>
           <span class="sk-select__item-text sk-combobox__item-description">${user.email}</span>
@@ -93,21 +95,153 @@ export const userSelectEmptyHtml = (t: Translate): string => `<div class="sk-sel
   </div>
 </div>`;
 
-/*
- * The EXPLICIT mount, not `initComponents()`: UserSelect has no compiled contract yet (see
- * `packages/core/src/user-select.ts`'s own note), so it carries no canonical usage tree and stays
- * out of the auto-loader's registry, same shape Editor's own page already shows for a different
- * reason. This is the one snippet that is actually true of how this component mounts.
- */
-export const userSelectJs = `import { mountUserSelect } from "@skryensya/vanilla/user-select";
+/* Mounted by the auto-loader like every other family: UserSelect is in its registry now. */
+export const userSelectJs = `import { initComponents } from "@skryensya/vanilla/auto";
 import { mountIcons } from "@skryensya/vanilla/icon";
 import { lucideIcons } from "@skryensya/icons-lucide";
 
 mountIcons(document, lucideIcons);
-mountUserSelect();`;
+await initComponents();`;
 
 export const userSelectListen = `document
   .getElementById("assignees")
   .addEventListener("sk:userselectvaluechange", (event) => {
     console.log(event.detail.value); // ["jane", "maria"]
   });`;
+
+/*
+ * THE ANATOMY: the enhanced DOM, frozen open, drawn in flow. Written by hand rather than emitted from
+ * a tree because the specimen needs the list OPEN and in flow, and the rows in their colors; the
+ * shape is `userSelectContract`'s template. The root deliberately does NOT
+ * carry `data-sk-user-select`: the preview frame mounts anything that does, and a specimen must not
+ * become a live picker.
+ */
+const anatomyAvatar = (user: UserSelectDemoUser): string =>
+  `<span class="sk-avatar" data-size="sm" style="--sk-avatar-bg: var(--palette-${user.hue}); --sk-avatar-fg: var(--palette-white);"><span class="sk-avatar__fallback">${avatarInitials(user.name)}</span></span>`;
+
+const anatomyRow = (user: UserSelectDemoUser, checked: boolean): string => `<div class="sk-select__item sk-interactive" role="option" aria-selected="${checked}" data-state="${checked ? "checked" : "unchecked"}">
+                <span class="sk-checkbox" data-sk-user-select-check aria-hidden="true"><span class="sk-checkbox__control"><span class="sk-checkbox__indicator" data-state="checked"><span data-sk-icon="check" data-sk-icon-size="sm"></span></span></span></span>
+                <span class="sk-inline" data-align="center" data-gap="sm" data-wrap="false">
+                  ${anatomyAvatar(user)}
+                  <span class="sk-combobox__item-copy">
+                    <span class="sk-select__item-text">${user.name}</span>
+                    <span class="sk-select__item-text sk-combobox__item-description">${user.email}</span>
+                  </span>
+                </span>
+              </div>`;
+
+const userSelectAnatomySpecimen = (t: Translate): string => {
+  const labels = userSelectDemoLabels(t);
+  const [jane, maria, marco] = userSelectRoster;
+  return `<div class="sk-select" data-variant="ghost">
+  <div class="sk-select__control">
+    <button class="sk-select__trigger sk-anchor sk-interactive" type="button" data-state="open" aria-expanded="true" tabindex="-1">
+      <span class="sk-select__value">
+        <span class="sk-inline" data-align="center" data-gap="sm" data-wrap="false">
+          <span class="sk-avatar-group">${anatomyAvatar(jane!)}${anatomyAvatar(maria!)}</span>
+          <span class="sk-select__value">${userSelectLabel(labels, "count", { count: 2 })}</span>
+        </span>
+      </span>
+      <span class="sk-select__indicator" aria-hidden="true">
+        <span data-state="closed"><span data-sk-icon="chevron-down" data-sk-icon-size="md"></span></span>
+        <span data-state="open"><span data-sk-icon="chevron-up" data-sk-icon-size="md"></span></span>
+      </span>
+    </button>
+  </div>
+  <div class="sk-select__positioner sk-anchored">
+    <div class="sk-select__content" data-state="open">
+      <input class="sk-input" data-sk-user-select-search type="search" placeholder="${attrEscape(userSelectLabel(labels, "searchPlaceholder"))}" data-size="sm" tabindex="-1" />
+      <div data-sk-user-select-list class="sk-scrollbar" role="listbox" aria-multiselectable="true">
+              ${anatomyRow(jane!, true)}
+              ${anatomyRow(maria!, true)}
+              ${anatomyRow(marco!, false)}
+      </div>
+      <span class="sk-inline" data-align="center" data-gap="sm" data-justify="between" data-sk-user-select-footer>
+        <span class="sk-text" data-size="caption" data-tone="secondary">${userSelectLabel(labels, "selectedCount", { count: 2 })}</span>
+        <button class="sk-button sk-interactive" type="button" data-variant="ghost" data-size="sm" tabindex="-1">${userSelectLabel(labels, "clear")}</button>
+      </span>
+    </div>
+  </div>
+</div>`;
+};
+
+export const userSelectAnatomyHtml = (t: Translate): string =>
+  anatomyFigureHtml(t, {
+    label: t("userSelectPage.anatomyLabel"),
+    specimen: userSelectAnatomySpecimen(t),
+    parts: [
+      { for: ".sk-select", side: "inline-start", mark: "bracket" },
+      { for: ".sk-select__trigger", side: "inline-end" },
+      { for: ".sk-avatar-group", side: "inline-start" },
+      { for: ".sk-select__indicator", side: "inline-end" },
+      { for: ".sk-select__content", side: "inline-start", mark: "bracket" },
+      { for: "[data-sk-user-select-search]", side: "inline-end", name: "data-sk-user-select-search" },
+      { for: "[data-sk-user-select-list]", side: "inline-start", mark: "bracket", name: "data-sk-user-select-list" },
+      { for: ".sk-select__item", side: "inline-end", match: "first" },
+      { for: "[data-sk-user-select-check]", side: "inline-start", match: "first", name: "data-sk-user-select-check" },
+      { for: ".sk-combobox__item-copy", side: "inline-end", match: "first" },
+      { for: "[data-sk-user-select-footer]", side: "inline-end", name: "data-sk-user-select-footer" },
+    ],
+  });
+
+export const userSelectAnatomyCss = `.sk-annotated-figure {
+  --sk-annotation-font-family: var(--font-family-code);
+}
+
+/* In flow, not floating: the content sits under the trigger at the width the live one opens at. */
+.sk-annotated__subject > .sk-select {
+  display: inline-grid;
+  gap: var(--space-stack-md);
+  inline-size: 18rem;
+  text-align: start;
+}
+
+.sk-annotated__subject > .sk-select > .sk-select__positioner {
+  position: static;
+  display: block;
+  inline-size: 100%;
+}
+
+.sk-annotated .sk-select__content {
+  inline-size: 100%;
+  min-inline-size: 0;
+}
+
+/* Three rows, drawn at their own height rather than inside the live list's fixed 15rem well. */
+.sk-annotated [data-sk-user-select-list] {
+  flex: none;
+}
+
+.sk-annotated__subject {
+  text-align: center;
+}`;
+
+/*
+ * THE SAME PICKER AS A USAGE TREE, the contract's own shape: what the stories and the MCP examples
+ * are built from. The page's live stage stays hand-authored only for the colored avatars, which a
+ * tree cannot express; the structure is the same.
+ */
+export const userSelectTree = (t: Translate): UsageTree => {
+  const labels = userSelectDemoLabels(t);
+  const options: Record<string, string> = { name: "assignees", value: "jane" };
+  // Only what the locale changes: the English page's tree carries none of these.
+  if (labels.term !== userSelectLabels.term) options.term = labels.term;
+  for (const [option, key] of [
+    ["placeholder", "placeholder"],
+    ["searchPlaceholder", "searchPlaceholder"],
+    ["unselectedLabel", "unselected"],
+  ] as const) {
+    if (labels[key] !== userSelectLabels[key]) options[option] = userSelectLabel(labels, key);
+  }
+  return {
+    contract: "user-select",
+    signature: "UserSelect",
+    options,
+    slots: {
+      items: userSelectRoster.map((user) => ({
+        options: { id: user.id, ...(user.disabled ? { disabled: true } : {}) },
+        slots: { name: user.name, initials: avatarInitials(user.name), email: user.email },
+      })),
+    },
+  };
+};

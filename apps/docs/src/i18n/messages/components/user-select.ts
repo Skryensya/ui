@@ -15,11 +15,15 @@ export const userSelectMessages = {
     "userSelectPage.label.loading": "Cargando {term}...",
     "userSelectPage.label.result": "1 resultado disponible",
     "userSelectPage.label.results": "{count} resultados disponibles",
+    "userSelectPage.anatomyBody":
+      "Un UserSelect es un <code>Select</code> con búsqueda y selección múltiple: el trigger resume la selección con un <code>GroupedAvatar</code> y un conteo, y el content (sólo presente mientras está abierto) apila el buscador, el listbox y el pie. Las partes con atributo <code>data-sk-user-select-*</code> son las que la composición agrega; si no las autoras, el enhancer Vanilla las genera. El espécimen se dibuja abierto y queda así.",
+    "userSelectPage.anatomyLabel": "Anatomía de UserSelect",
+    "userSelectPage.anatomyPreviewLabel": "UserSelect abierto, parte por parte",
     "userSelectPage.description": "UserSelect: un selector múltiple de personas compuesto sobre Select, Avatar y GroupedAvatar.",
     "userSelectPage.lede":
-      "No es una primitive nueva: es <code>Select</code> mismo, su trigger, su máquina, su chrome de dropdown, combinado con <code>Avatar</code> y <code>GroupedAvatar</code> para representar la selección, y un campo de búsqueda para filtrar. Compártelo visualmente al lado de un <code>Select</code> normal y son claramente la misma familia.",
+      "Un selector de personas construido sobre <code>Select</code>: su trigger, su máquina y su dropdown, más lo que un selector de personas necesita y un Select no tiene: búsqueda, un checkbox por fila (la selección es múltiple), un resumen con <code>GroupedAvatar</code> en el trigger y estados vacíos. Tiene contrato y hoja propios (<code>user-select.css</code>); al lado de un <code>Select</code> normal se leen como la misma familia.",
     "userSelectPage.calloutBody":
-      "El trigger reutiliza exactamente el chrome de <code>Select</code> (altura, borde, radio, focus, chevron). El dropdown reutiliza su posicionamiento, su portal y su animación, con <code>composite: false</code> para poder alojar un campo de búsqueda real junto al listbox. Cada fila es un <code>Avatar</code> autoreado, nunca reconstruido por este componente.",
+      "El trigger reutiliza exactamente el chrome de <code>Select</code> (altura, borde, radio, focus, chevron). El dropdown reutiliza su posicionamiento, su portal y su animación, con <code>composite: false</code> para poder alojar un campo de búsqueda real junto al listbox. Cada fila lleva su propio <code>Avatar</code>; el resumen del trigger lo repite, nunca inventa otro.",
     "userSelectPage.basicTitle": "Selección múltiple con búsqueda",
     "userSelectPage.basicBody":
       "Busca por nombre o email; la búsqueda nunca cierra el dropdown ni limpia la selección. Cada fila entera es el objetivo de clic: el check es sólo el estado visual, nunca un control aparte.",
@@ -37,9 +41,9 @@ export const userSelectMessages = {
       "El estado seleccionado nunca depende sólo del color: el check permanece visible además del tinte de fondo.",
     "userSelectPage.vanillaTitle": "Vanilla",
     "userSelectPage.vanillaBody":
-      "El enhancer nunca inventa una fila: lee <code>data-value</code>, el nodo de texto y un <code>data-email</code> opcional de cada <code>[data-sk-select-item]</code> ya autorado, y clona su propio <code>.sk-avatar</code> para el resumen del trigger, nunca deriva iniciales por su cuenta. El wrapper del listado (<code>role=\"listbox\"</code>), la fila vacía y el pie \"N seleccionados · Clear all\" se generan solos si no los autoras.",
+      "El enhancer nunca inventa una fila: lee <code>data-value</code>, el nombre y la descripción (el email) de cada <code>[data-sk-select-item]</code> ya autorado, y clona su propio <code>.sk-avatar</code> para el resumen del trigger, nunca deriva iniciales por su cuenta. El wrapper del listado (<code>role=\"listbox\"</code>), la fila vacía y el pie \"N seleccionados · Clear all\" se generan solos si no los autoras.",
     "userSelectPage.explicitMountNote":
-      "UserSelect aún no tiene un contrato compilado propio, así que no forma parte del registro de <code>initComponents()</code>: móntalo con <code>mountUserSelect()</code>, explícitamente.",
+      "UserSelect se monta solo con <code>initComponents()</code>, como el resto del sistema. <code>mountUserSelect()</code> sigue disponible para montar uno solo a mano.",
     "userSelectPage.listenTitle": "Escuchar el cambio",
     "userSelectPage.reactTitle": "React",
     "userSelectPage.reactBody":
@@ -61,11 +65,15 @@ export const userSelectMessages = {
     "userSelectPage.label.loading": "Loading {term}...",
     "userSelectPage.label.result": "1 result available",
     "userSelectPage.label.results": "{count} results available",
+    "userSelectPage.anatomyBody":
+      "A UserSelect is a <code>Select</code> with search and multiple selection: the trigger sums up the selection with a <code>GroupedAvatar</code> and a count, and the content (present only while open) stacks the search field, the listbox and the footer. The parts named by a <code>data-sk-user-select-*</code> attribute are the ones the composition adds; left unauthored, the Vanilla enhancer generates them. The specimen is drawn open and stays open.",
+    "userSelectPage.anatomyLabel": "UserSelect anatomy",
+    "userSelectPage.anatomyPreviewLabel": "An open UserSelect, part by part",
     "userSelectPage.description": "UserSelect: a multi-person picker composed from Select, Avatar and GroupedAvatar.",
     "userSelectPage.lede":
-      "This is not a new primitive: it is <code>Select</code> itself, its trigger, its machine, its dropdown chrome, combined with <code>Avatar</code> and <code>GroupedAvatar</code> to represent the selection, and a search field to filter it. Set it beside a plain <code>Select</code> and they read as the same family.",
+      "A people picker built on <code>Select</code>: its trigger, its machine and its dropdown, plus what a people picker needs and a Select does not have: search, a checkbox per row (the selection is multiple), a <code>GroupedAvatar</code> summary in the trigger and empty states. It has its own contract and sheet (<code>user-select.css</code>); beside a plain <code>Select</code> the two read as the same family.",
     "userSelectPage.calloutBody":
-      "The trigger reuses Select's exact chrome (height, border, radius, focus, chevron). The dropdown reuses its positioning, portal and animation, with <code>composite: false</code> so it can hold a real search field next to the listbox. Every row is an authored <code>Avatar</code>, never one this component rebuilds.",
+      "The trigger reuses Select's exact chrome (height, border, radius, focus, chevron). The dropdown reuses its positioning, portal and animation, with <code>composite: false</code> so it can hold a real search field next to the listbox. Every row carries its own <code>Avatar</code>; the trigger's summary repeats it, never invents another.",
     "userSelectPage.basicTitle": "Multi-select with search",
     "userSelectPage.basicBody":
       "Search by name or email; searching never closes the dropdown or clears the selection. The whole row is the click target: the check is only the visual state, never a separate control.",
@@ -83,9 +91,9 @@ export const userSelectMessages = {
       "Selected state never depends on color alone: the check stays visible alongside the background tint.",
     "userSelectPage.vanillaTitle": "Vanilla",
     "userSelectPage.vanillaBody":
-      "The enhancer never invents a row: it reads <code>data-value</code>, the text node and an optional <code>data-email</code> off each authored <code>[data-sk-select-item]</code>, and clones its own <code>.sk-avatar</code> for the trigger's summary, it never derives initials on its own. The list wrapper (<code>role=\"listbox\"</code>), the empty row and the \"N selected · Clear all\" footer generate themselves when not authored.",
+      "The enhancer never invents a row: it reads <code>data-value</code>, the name and the description (the email) off each authored <code>[data-sk-select-item]</code>, and clones its own <code>.sk-avatar</code> for the trigger's summary, it never derives initials on its own. The list wrapper (<code>role=\"listbox\"</code>), the empty row and the \"N selected · Clear all\" footer generate themselves when not authored.",
     "userSelectPage.explicitMountNote":
-      "UserSelect has no compiled contract of its own yet, so it is not part of <code>initComponents()</code>'s registry: mount it with <code>mountUserSelect()</code>, explicitly.",
+      "UserSelect mounts through <code>initComponents()</code>, like the rest of the system. <code>mountUserSelect()</code> is still there to mount one by hand.",
     "userSelectPage.listenTitle": "Listening for the change",
     "userSelectPage.reactTitle": "React",
     "userSelectPage.reactBody":

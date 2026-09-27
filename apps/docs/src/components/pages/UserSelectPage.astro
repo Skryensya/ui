@@ -1,18 +1,27 @@
 ---
 /*
- * A composition guide, not a new primitive's page: there is no `user-select.ts` compiled contract
- * (see the callout below), so the shell runs with no `contractId` and Referencia/Cambios drop out,
- * same precedent `CardPage.astro` sets for a pattern with no contract of its own. Estilo still reads
- * real published hooks (Select, Combobox, Avatar); Tests reads the two real files written for both
- * bindings.
+ * UserSelect's page: its own contract (`userSelectContract`), so the shell renders Referencia and
+ * Cambios, and the anatomy opens Referencia like every other family's. Estilo lists its own sheet and
+ * the ones it composes; Tests reads the two real files written for both bindings.
  */
 import "@skryensya/core/components/select.css";
 import "@skryensya/core/components/combobox.css";
 import "@skryensya/core/components/checkbox.css";
+import "@skryensya/core/components/user-select.css";
+/* The anatomy diagram's own sheets: the specimen is annotated in place. */
+import "@skryensya/core/components/canvas.css";
+import "@skryensya/core/components/annotation.css";
 import CodeBlock from "../CodeBlock.astro";
 import ComponentPageShell from "./ComponentPageShell.astro";
 import ComponentPreview from "../ComponentPreview.astro";
-import { userSelectHtml, userSelectEmptyHtml, userSelectJs, userSelectListen } from "../../demos/user-select";
+import {
+  userSelectAnatomyCss,
+  userSelectAnatomyHtml,
+  userSelectEmptyHtml,
+  userSelectHtml,
+  userSelectJs,
+  userSelectListen,
+} from "../../demos/user-select";
 import { UserSelectBasicDemo, UserSelectLoadingDemo } from "../react-demos/user-select";
 import { getLocale, useTranslations } from "../../i18n";
 
@@ -25,7 +34,8 @@ const styles = `@import "@skryensya/core/patterns/anchored.css";
 @import "@skryensya/core/components/select.css";
 @import "@skryensya/core/components/combobox.css";
 @import "@skryensya/core/components/avatar.css";
-@import "@skryensya/core/components/checkbox.css";`;
+@import "@skryensya/core/components/checkbox.css";
+@import "@skryensya/core/components/user-select.css";`;
 
 const reactSource = `<UserSelect
   users={users}
@@ -50,7 +60,9 @@ const reactSource = `<UserSelect
   title="UserSelect"
   description={t("userSelectPage.description")}
   badge="Beta"
+  contractId="user-select"
   styleGroups={[
+    { file: "components/user-select.css", probe: "sk-select", title: "UserSelect" },
     { file: "components/select.css", probe: "sk-select", title: "Select" },
     { file: "components/combobox.css", probe: "sk-combobox", title: "Combobox" },
     { file: "components/avatar.css", probe: "sk-avatar", title: "Avatar" },
@@ -59,6 +71,18 @@ const reactSource = `<UserSelect
   ]}
   testFiles={["packages/react/src/components/user-select.test.tsx", "packages/vanilla/src/components/user-select.test.ts"]}
 >
+  <Fragment slot="anatomy">
+    <p set:html={t("userSelectPage.anatomyBody")} />
+    <ComponentPreview
+      html={userSelectAnatomyHtml(t)}
+      css={userSelectAnatomyCss}
+      label={t("userSelectPage.anatomyPreviewLabel")}
+      screens={false}
+      hideSource
+      chrome={false}
+    />
+  </Fragment>
+
   <Fragment slot="usage">
     <p class="lede" set:html={t("userSelectPage.lede")} />
 
