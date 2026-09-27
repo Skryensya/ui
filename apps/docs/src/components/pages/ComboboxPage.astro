@@ -1,5 +1,6 @@
 ---
 import ComponentPageShell from "./ComponentPageShell.astro";
+import AppearanceMenu from "../AppearanceMenu.astro";
 import CodeBlock from "../CodeBlock.astro";
 import ComponentPreview from "../ComponentPreview.astro";
 import { comboboxAnatomyCss, comboboxAnatomyHtml, comboboxTree } from "../../demos/combobox";
@@ -33,6 +34,7 @@ initComponents();`;
   description={t("combobox.description")}
   badge={t("combobox.betaBadge")}
   contractId="combobox"
+  appearanceTargetSelector=".sk-combobox"
   styleGroups={[
     { file: "components/combobox.css", probe: "sk-combobox", title: "Combobox" },
     { file: "patterns/anchored.css", probe: "sk-anchored", title: "Heredados de Anclaje" },
@@ -40,6 +42,10 @@ initComponents();`;
   ]}
   testFiles={["packages/react/src/components/combobox.test.tsx", "packages/vanilla/src/components/combobox.test.ts"]}}
 >
+  <Fragment slot="appearance">
+    <AppearanceMenu label={t("prefs.appearance")} values={["plain", "brutalist", "frosted"]} unavailable={{ tactile: t("prefs.appearanceTactileUnavailable") }} />
+  </Fragment>
+
   <Fragment slot="anatomy">
     <p set:html={t("combobox.anatomyBody")} />
     <ComponentPreview
