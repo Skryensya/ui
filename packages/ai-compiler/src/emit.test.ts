@@ -305,7 +305,7 @@ describe("emitMarkup", () => {
   it("keeps a short opening tag on one line", () => {
     expect(
       emitMarkup({ contract: "kbd", signature: "Kbd", children: "⌘K" }),
-    ).toBe('<kbd class="sk-kbd" data-tone="neutral">⌘K</kbd>');
+    ).toBe('<kbd class="sk-kbd" data-appearance="plain" data-tone="neutral">⌘K</kbd>');
   });
 
   /*
