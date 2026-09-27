@@ -3,6 +3,15 @@ import { describe, expect, it } from "vitest";
 import { Callout } from "./callout.js";
 
 describe("Callout", () => {
+  it("serializes its appearance beside its tone, plain by default", () => {
+    const plain = render(<Callout title="Plain">Body</Callout>);
+    expect(plain.container.querySelector(".sk-callout")?.getAttribute("data-appearance")).toBe("plain");
+    const brutalist = render(<Callout appearance="brutalist" tone="warning" title="Brutalist">Body</Callout>);
+    const root = brutalist.container.querySelector(".sk-callout");
+    expect(root?.getAttribute("data-appearance")).toBe("brutalist");
+    expect(root?.getAttribute("data-tone")).toBe("warning");
+  });
+
   it("announces danger assertively and everything else politely", () => {
     const plain = render(<Callout>Heads up</Callout>);
     expect(plain.getByRole("status").getAttribute("data-tone")).toBe("neutral");

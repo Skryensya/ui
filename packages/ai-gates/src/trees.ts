@@ -856,6 +856,17 @@ const signatureTrees: readonly Canonical[] = [
     },
   },
   {
+    name: "callout/brutalist",
+    enhanced: false,
+    tree: {
+      contract: "callout",
+      signature: "Callout",
+      options: { tone: "info", appearance: "brutalist" },
+      slots: { title: "Mantenimiento programado" },
+      children: "El servicio estará en pausa el domingo a las 02:00.",
+    },
+  },
+  {
     // Tone changes the ACCESSIBILITY here, not just the colour: danger is an assertive live region.
     name: "callout/danger",
     enhanced: false,

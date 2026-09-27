@@ -2,11 +2,13 @@ import { calloutParts, getCalloutLiveRegion, type CalloutTone, calloutContract }
 import { type HTMLAttributes, type ReactNode } from "react";
 
 /* Derived, never restated: the default lives in the contract. */
-const { tone: toneOption } = calloutContract.options;
+const { appearance: appearanceOption, tone: toneOption } = calloutContract.options;
 
 const cx = (base: string, className: string | undefined) => (className ? `${base} ${className}` : base);
 
 export type CalloutProps = Omit<HTMLAttributes<HTMLDivElement>, "title"> & {
+  /** How the box is drawn: `plain`, `brutalist` or `frosted`. The tone keeps its fill and ink. */
+  appearance?: (typeof appearanceOption.values)[number];
   /**
    * Optional recovery action owned by the caller. A `translucent` or `danger` Button, or a plain Link.
    * Never a dismiss: Callout is purely informational and has no way to close itself, unlike Toast.
@@ -20,7 +22,16 @@ export type CalloutProps = Omit<HTMLAttributes<HTMLDivElement>, "title"> & {
   tone?: CalloutTone;
 };
 
-export function Callout({ actions, children, className, icon, title, tone = toneOption.default, ...props }: CalloutProps) {
+export function Callout({
+  actions,
+  appearance = appearanceOption.default,
+  children,
+  className,
+  icon,
+  title,
+  tone = toneOption.default,
+  ...props
+}: CalloutProps) {
   const live = calloutLiveRegionFor(tone);
 
   return (
@@ -29,6 +40,7 @@ export function Callout({ actions, children, className, icon, title, tone = tone
       aria-atomic="true"
       aria-live={live.ariaLive}
       className={cx(calloutParts.root, className)}
+      data-appearance={appearance}
       data-tone={tone}
       role={live.role}
     >
