@@ -70,6 +70,17 @@ export const numberFieldContract = {
   ],
 
   options: {
+    /*
+     * HOW THE FIELD IS DRAWN, Input's axis: brutalist a black edge and hard offset in place of the
+     * soft well, frosted a see-through field (opaque wherever the material cannot be trusted).
+     * Every state still outranks it. Absent means plain, as for Input. No tactile: a field is typed
+     * into, not pressed.
+     */
+    appearance: {
+      type: "enum",
+      values: ["plain", "brutalist", "frosted"],
+      attr: "data-appearance",
+    },
     /** Submitted with the form. The machine writes it onto the real input. */
     name: { type: "string", attr: "name", machineInput: true },
     /** Initial uncontrolled value. Authored markup puts it on the input; React names the prop. */
@@ -114,6 +125,7 @@ export const numberFieldContract = {
         "invalid",
         "decrementLabel",
         "incrementLabel",
+        "appearance",
       ],
       /** Host id / a11y names beyond owned label and machine name. */
       forward: ["id", "aria-*"],

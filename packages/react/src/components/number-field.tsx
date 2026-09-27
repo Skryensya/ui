@@ -16,6 +16,8 @@ const {
 } = numberFieldContract.options;
 
 export type NumberFieldProps = {
+  /** How the field is drawn: `plain`, `brutalist` or `frosted`. Absent means plain. */
+  appearance?: (typeof numberFieldContract.options.appearance.values)[number];
   id?: string;
   name?: string;
   /** Names the field. Contract slot is text-only. */
@@ -41,6 +43,7 @@ export type NumberFieldProps = {
 };
 
 export function NumberField({
+  appearance,
   decrementIcon,
   decrementLabel = decrementLabelOption.default,
   defaultValue,
@@ -98,6 +101,7 @@ export function NumberField({
     <div
       {...api.getRootProps()}
       className={numberFieldParts.root}
+      data-appearance={appearance}
       data-invalid={invalid || undefined}
       data-sk-number-field=""
       ref={rootRef}
