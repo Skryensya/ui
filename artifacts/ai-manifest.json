@@ -4645,6 +4645,19 @@
           {
             "date": "2026-09-26",
             "en": {
+              "body": "<code>brutalist</code> draws the band with a black edge and a hard offset in place of its surface's soft elevation; <code>frosted</code> makes it see-through over the page, opaque wherever the material cannot be trusted. No <code>tactile</code>.",
+              "title": "Hero adds plain, brutalist and frosted appearances"
+            },
+            "es": {
+              "body": "<code>brutalist</code> dibuja la banda con borde negro y una sombra dura en lugar de la elevación suave de su superficie; <code>frosted</code> la hace translúcida sobre la página, opaca donde el material no es fiable. Sin <code>tactile</code>.",
+              "title": "Hero suma appearance plain, brutalist y frosted"
+            },
+            "kind": "feature",
+            "target": "appearance"
+          },
+          {
+            "date": "2026-09-26",
+            "en": {
               "body": "The content rule \"a real heading always goes inside, never just large text\" stops being a convention: <code>Hero</code> declares <code>descendants</code>, and the validator requires at least one <code>typography.Heading</code> at any depth of its content (inside a <code>Stack</code>, a column, a tab's panel). A tree whose hero is all <code>Text</code>, which used to validate, now fails with <code>missing-descendant</code>; the fix is to make the headline a <code>Heading</code>. Every published pattern already did. What is NOT enforced, and why: \"at most one\", since a count cannot tell the hero's own headline from a card title composed inside it; the level (h1 or h2), since the tree does not say whether the hero opens the page or a section; and \"at most one primary action\", since \"primary\" is an option value and this rule counts signatures.",
               "title": "A Hero without a Heading no longer validates"
             },
@@ -27577,6 +27590,12 @@
           "part": "hero",
           "sheet": "@skryensya/core/patterns/hero.css"
         },
+        "--sk-hero-brutalist-offset": {
+          "default": "8px",
+          "output": false,
+          "part": "hero",
+          "sheet": "@skryensya/core/patterns/hero.css"
+        },
         "--sk-hero-min-height": {
           "default": "26rem",
           "output": false,
@@ -27610,6 +27629,7 @@
       },
       "hooks": [
         "--sk-hero-bg",
+        "--sk-hero-brutalist-offset",
         "--sk-hero-min-height",
         "--sk-hero-padding",
         "--sk-hero-radius",
@@ -27625,6 +27645,16 @@
           "values": [
             "start",
             "center"
+          ]
+        },
+        "appearance": {
+          "attr": "data-appearance",
+          "default": "plain",
+          "type": "enum",
+          "values": [
+            "plain",
+            "brutalist",
+            "frosted"
           ]
         },
         "heroElement": {
@@ -27713,7 +27743,8 @@
             "padding",
             "surface",
             "align",
-            "heroElement"
+            "heroElement",
+            "appearance"
           ],
           "react": {
             "from": "@skryensya/react/layout",
@@ -52542,7 +52573,7 @@
     "working": "0.0.1"
   },
   "schemaVersion": "2.3",
-  "sourceHash": "b3026d409b6dd479",
+  "sourceHash": "6b7fab79959749f1",
   "vocabulary": {
     "a11y": "When `when` holds, one of `requiresOneOf` must be given: an option, a raw attribute, a filled slot, or a child signature by name.",
     "atLeastOneOf": "At least one member of each group counts: a filled slot, a boolean option set to true, or an option other than its default.",

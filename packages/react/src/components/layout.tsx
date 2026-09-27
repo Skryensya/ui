@@ -18,6 +18,7 @@ import type { ComponentPropsWithoutRef, ElementType, ReactNode } from "react";
 
 const {
   align: heroAlignOption,
+  appearance: heroAppearanceOption,
   padding: heroPaddingOption,
   surface: heroSurfaceOption,
 } = heroContract.options;
@@ -67,11 +68,18 @@ export function Box<Element extends ElementType = "div">({
 
 export type HeroProps<Element extends ElementType = "div"> = PolymorphicProps<
   Element,
-  LayoutChildren & { align?: HeroAlign; padding?: HeroPadding; surface?: HeroSurface }
+  LayoutChildren & {
+    align?: HeroAlign;
+    /** How the band is drawn: `plain`, `brutalist` or `frosted`. */
+    appearance?: (typeof heroAppearanceOption.values)[number];
+    padding?: HeroPadding;
+    surface?: HeroSurface;
+  }
 >;
 
 export function Hero<Element extends ElementType = "div">({
   align = heroAlignOption.default,
+  appearance = heroAppearanceOption.default,
   as,
   className,
   padding = heroPaddingOption.default,
@@ -84,6 +92,7 @@ export function Hero<Element extends ElementType = "div">({
       {...props}
       className={classes(heroParts.hero, className)}
       data-align={align}
+      data-appearance={appearance}
       data-padding={padding}
       data-surface={surface}
     />
