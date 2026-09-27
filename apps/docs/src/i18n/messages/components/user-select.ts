@@ -1,6 +1,7 @@
 export const userSelectMessages = {
   es: {
     "userSelectPage.placeholder": "Seleccionar personas",
+    "userSelectPage.unselected": "Nadie seleccionado",
     "userSelectPage.searchPlaceholder": "Buscar personas...",
     "userSelectPage.description": "UserSelect: un selector múltiple de personas compuesto sobre Select, Avatar y GroupedAvatar.",
     "userSelectPage.lede":
@@ -34,6 +35,7 @@ export const userSelectMessages = {
   },
   en: {
     "userSelectPage.placeholder": "Select users",
+    "userSelectPage.unselected": "No one selected",
     "userSelectPage.searchPlaceholder": "Search users...",
     "userSelectPage.description": "UserSelect: a multi-person picker composed from Select, Avatar and GroupedAvatar.",
     "userSelectPage.lede":

@@ -159,6 +159,7 @@
   }
 
   const placeholder = root.dataset.placeholder || "Select users";
+  const unselectedLabel = root.dataset.unselectedLabel || "No one selected";
   if (!search.placeholder) search.placeholder = root.dataset.searchPlaceholder || "Search users...";
   const maxAvatars = Number(root.dataset.maxAvatars) || 3;
 
@@ -236,7 +237,8 @@
     return `${placeholder}, ${selected.length} users selected`;
   };
 
-  let renderedKey = "";
+  // `null`, not "": an empty selection's key IS "", and the first render must still paint the empty state.
+  let renderedKey: string | null = null;
   const renderTriggerValue = () => {
     const selected = selectedRows();
     const nextKey = selected.map((row) => row.item.value).join(" ");
@@ -245,7 +247,19 @@
 
     valueEl.replaceChildren();
     if (selected.length === 0) {
-      valueEl.textContent = placeholder;
+      // An empty dashed disc where the faces go, then the label. The icon is a `data-sk-icon`
+      // placeholder the page's own icon set upgrades, like every other generated glyph here.
+      const empty = document.createElement("span");
+      empty.setAttribute(userSelectAttrs.unselected, "");
+      const disc = document.createElement("span");
+      disc.className = avatarParts.root;
+      disc.dataset.size = "sm";
+      const glyph = document.createElement("span");
+      glyph.dataset.skIcon = "user";
+      glyph.dataset.skIconSize = "sm";
+      disc.append(glyph);
+      empty.append(disc, unselectedLabel);
+      valueEl.append(empty);
       return;
     }
 

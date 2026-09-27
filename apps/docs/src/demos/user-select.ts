@@ -31,7 +31,7 @@ export const userSelectHtml = (t: Translate, roster: readonly UserSelectDemoUser
   data-variant="ghost"
   id="assignees"
   data-value="jane"
-  data-placeholder="${t("userSelectPage.placeholder")}"
+  data-placeholder="${t("userSelectPage.placeholder")}" data-unselected-label="${t("userSelectPage.unselected")}"
   data-search-placeholder="${t("userSelectPage.searchPlaceholder")}"
 >
   <div class="sk-select__control" data-sk-select-control>
@@ -52,7 +52,7 @@ export const userSelectHtml = (t: Translate, roster: readonly UserSelectDemoUser
 </div>`;
 
 /** An empty roster: the "no users available" branch, frozen open. */
-export const userSelectEmptyHtml = (t: Translate): string => `<div class="sk-select" data-sk-user-select data-variant="ghost" id="assignees-empty" data-placeholder="${t("userSelectPage.placeholder")}">
+export const userSelectEmptyHtml = (t: Translate): string => `<div class="sk-select" data-sk-user-select data-variant="ghost" id="assignees-empty" data-placeholder="${t("userSelectPage.placeholder")}" data-unselected-label="${t("userSelectPage.unselected")}">
   <div class="sk-select__control" data-sk-select-control>
     <button class="sk-select__trigger sk-anchor sk-interactive" data-sk-select-trigger type="button">
       <span class="sk-select__value" data-sk-select-value></span>

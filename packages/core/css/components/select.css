@@ -574,36 +574,80 @@
    * first wheel). The rows' own wrapper (`data-sk-user-select-list`, the listbox) scrolls instead, at a
    * FIXED height, so filtering never makes the box jump, and it shrinks only when the viewport leaves
    * less room than that. `sk-scrollbar` on the same element paints the rail.
+   *
+   * One inset everywhere: the content's padding is the rows' padding and the gap between the field,
+   * the list and the footer, so every edge in the box lines up on the same 8px.
    */
   /* `:not([data-state="closed"])`: the `:has()` outranks the closed rule's `display: none` above. */
   .sk-select__content:not([data-state="closed"]):has(> [data-sk-user-select-list]) {
     display: flex;
     flex-direction: column;
-    gap: var(--space-stack-sm);
-    /* People rows carry a name AND an email, so the box is at least 20rem even under a narrow trigger. */
-    min-inline-size: max(var(--reference-width), 20rem);
-    /* Room for the search field, the list's own 16rem and the footer; the list gives way first. */
-    max-block-size: min(24rem, var(--available-height));
+    gap: var(--space-inset-sm);
+    min-inline-size: max(var(--reference-width), 16rem);
+    max-block-size: min(22rem, var(--available-height));
     padding: var(--space-inset-sm);
     overflow: hidden;
   }
 
+  /*
+   * The rail sits in the box's own right padding, not over the rows: the list reaches halfway into
+   * that padding (negative margin) and reserves a stable gutter there, so rows keep their width
+   * whether or not the list overflows, and the thumb runs beside them with air on both sides,
+   * neither cutting into a row nor touching the box's border.
+   */
   [data-sk-user-select-list] {
-    --sk-select-item-padding: var(--space-inset-sm) var(--space-inset-md);
+    --sk-select-item-padding: var(--space-inset-xs) var(--space-inset-sm);
 
     display: grid;
     grid-auto-rows: max-content;
     align-content: start;
-    gap: var(--space-stack-xs);
-    flex: 0 1 16rem;
+    gap: 2px;
+    flex: 0 1 15rem;
     min-block-size: 0;
+    margin-inline-end: calc(-1 * var(--space-inset-xs));
+    padding-inline-end: var(--space-inset-xs);
     overflow-y: auto;
     overscroll-behavior: contain;
+    scrollbar-gutter: stable;
   }
 
-  /* Avatar to name: a step more air than a text row's own gap, so the face and the name read as two. */
-  [data-sk-user-select-list] .sk-select__item > .sk-inline {
-    gap: var(--space-inline-md);
+  /* Thumb only: a filled track would draw a grey strip down the box beside the rows. Qualified with
+   * `.sk-scrollbar` so it outranks the pattern's own declaration of the same hook. */
+  .sk-select__content > [data-sk-user-select-list].sk-scrollbar {
+    --sk-scrollbar-track-bg: transparent;
+  }
+
+  /* Rows with the footer under them keep the footer's text on the rows' own text line. */
+  .sk-select__content > [data-sk-user-select-footer] {
+    padding-inline: var(--space-inset-sm) 0;
+  }
+
+  /*
+   * The trigger's value clips (it ellipsizes a long name), which also cropped the avatars' 2px
+   * surface ring. The avatar summary gets that ring's width back as padding.
+   */
+  .sk-select__value:has(.sk-avatar) {
+    padding: 2px 0 2px 2px;
+  }
+
+  /* NOTHING SELECTED: an empty dashed disc where the faces go, then the label, both quiet. */
+  [data-sk-user-select-unselected] {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-inline-sm);
+    color: var(--color-text-secondary);
+  }
+
+  .sk-select__value [data-sk-user-select-unselected] > .sk-avatar {
+    --sk-avatar-bg: transparent;
+    --sk-avatar-fg: var(--color-text-tertiary);
+
+    box-sizing: border-box;
+    border: 1px dashed var(--color-border-strong);
+  }
+
+  .sk-select__value [data-sk-user-select-unselected] .sk-icon {
+    --sk-icon-size: var(--size-icon-sm);
   }
 
   .sk-select__item[data-state="checked"] .sk-select__item-indicator {
