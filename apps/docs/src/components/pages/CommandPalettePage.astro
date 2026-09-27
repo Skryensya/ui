@@ -1,5 +1,6 @@
 ---
 import ComponentPageShell from "./ComponentPageShell.astro";
+import AppearanceMenu from "../AppearanceMenu.astro";
 import CodeBlock from "../CodeBlock.astro";
 import ComponentPreview from "../ComponentPreview.astro";
 import {
@@ -30,8 +31,13 @@ const hotkeyHint = `<kbd class="sk-kbd" data-sk-command-palette-hint>⌘K</kbd>`
   title="CommandPalette"
   description={t("commandPalette.description")}
   contractId="command-palette"
+  appearanceTargetSelector=".sk-command-palette"
   testFiles={["packages/react/src/components/command-palette.test.tsx", "packages/vanilla/src/components/command-palette.test.ts"]}}
 >
+  <Fragment slot="appearance">
+    <AppearanceMenu label={t("prefs.appearance")} values={["plain", "brutalist", "frosted"]} unavailable={{ tactile: t("prefs.appearanceTactileUnavailable") }} />
+  </Fragment>
+
   <Fragment slot="anatomy">
     <p set:html={t("commandPalette.anatomyBody")} />
     <ComponentPreview

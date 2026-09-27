@@ -6,6 +6,7 @@ import { useVaulDrag } from "./vaul-drag.js";
 
 /* Derived, never restated: the default lives in the contract. */
 const {
+  appearance: appearanceOption,
   emptyLabel: emptyLabelOption,
   open: openOption,
   placeholder: placeholderOption,
@@ -64,9 +65,12 @@ export type CommandPaletteProps = {
    * runs and `sk:commandpalettecommand` fires on the dialog, the same event the enhancer dispatches.
    */
   onCommand?: (command: string, entry: CommandPaletteCommand) => void;
+  /** How the palette is drawn (Dialog's axis): `plain`, `brutalist` or `frosted`. */
+  appearance?: (typeof appearanceOption.values)[number];
 };
 
 export function CommandPalette({
+  appearance = appearanceOption.default,
   closeLabel = commandPaletteContract.options.closeLabel.default,
   emptyLabel = emptyLabelOption.default,
   footer,
@@ -206,6 +210,7 @@ export function CommandPalette({
     <dialog
       aria-label={label}
       className={`sk-dialog ${commandPaletteParts.root}`}
+      data-appearance={appearance}
       data-sk-dialog-vaul={vaul ? vaulOption.trueValue : undefined}
       id={id}
       open={open}

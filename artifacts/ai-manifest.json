@@ -2611,6 +2611,19 @@
         "date": null,
         "entries": [
           {
+            "date": "2026-09-26",
+            "en": {
+              "body": "Dialog's axis, painted by Dialog's own sheet since the root is a <code>.sk-dialog</code>: <code>brutalist</code> a black edge and hard offset, <code>frosted</code> a see-through panel, opaque wherever the material cannot be trusted.",
+              "title": "CommandPalette adds plain, brutalist and frosted appearances"
+            },
+            "es": {
+              "body": "El eje de Dialog, pintado por la hoja de Dialog porque la raíz es un <code>.sk-dialog</code>: <code>brutalist</code> borde negro y sombra dura, <code>frosted</code> un panel translúcido, opaco donde el material no es fiable.",
+              "title": "CommandPalette suma appearance plain, brutalist y frosted"
+            },
+            "kind": "feature",
+            "target": "appearance"
+          },
+          {
             "date": "2026-09-25",
             "en": {
               "body": "An entry can carry <code>command</code> instead of <code>href</code>. Commands are listed only once the query starts with <code>/</code>, and a query without it lists only destinations. Activating one closes the palette and fires <code>sk:commandpalettecommand</code> on the dialog with <code>{ command, entry }</code>; React also calls <code>onCommand</code>. It never navigates and never reaches <code>onSelect</code>.",
@@ -20422,6 +20435,16 @@
       ],
       "id": "command-palette",
       "options": {
+        "appearance": {
+          "attr": "data-appearance",
+          "default": "plain",
+          "type": "enum",
+          "values": [
+            "plain",
+            "brutalist",
+            "frosted"
+          ]
+        },
         "closeLabel": {
           "attr": "aria-label",
           "default": "Close",
@@ -20537,7 +20560,8 @@
             "emptyLabel",
             "open",
             "vaul",
-            "entries"
+            "entries",
+            "appearance"
           ],
           "react": {
             "from": "@skryensya/react/command-palette",
@@ -52494,7 +52518,7 @@
     "working": "0.0.1"
   },
   "schemaVersion": "2.3",
-  "sourceHash": "844a3684e9914700",
+  "sourceHash": "37166cf7e07bca0f",
   "vocabulary": {
     "a11y": "When `when` holds, one of `requiresOneOf` must be given: an option, a raw attribute, a filled slot, or a child signature by name.",
     "atLeastOneOf": "At least one member of each group counts: a filled slot, a boolean option set to true, or an option other than its default.",

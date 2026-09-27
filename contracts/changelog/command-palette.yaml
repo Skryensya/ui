@@ -3,8 +3,23 @@
 # `surface` is the shape of the contract the last time somebody reviewed it. If the compiler says it
 # does not match, something a consumer depends on has moved: write the entry and paste in the new
 # hash.
-surface: "77058b2f6f0d72b4"
+surface: "a3867ea9af369a27"
 entries:
+  - date: 2026-09-26
+    kind: feature
+    target: appearance
+    es:
+      title: CommandPalette suma appearance plain, brutalist y frosted
+      body: >-
+        El eje de Dialog, pintado por la hoja de Dialog porque la raíz es un <code>.sk-dialog</code>:
+        <code>brutalist</code> borde negro y sombra dura, <code>frosted</code> un panel translúcido, opaco donde
+        el material no es fiable.
+    en:
+      title: CommandPalette adds plain, brutalist and frosted appearances
+      body: >-
+        Dialog's axis, painted by Dialog's own sheet since the root is a <code>.sk-dialog</code>:
+        <code>brutalist</code> a black edge and hard offset, <code>frosted</code> a see-through panel, opaque
+        wherever the material cannot be trusted.
   - date: 2026-09-17
     kind: feature
     es:
