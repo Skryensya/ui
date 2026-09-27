@@ -71,10 +71,10 @@ describe("layout primitives", () => {
     expect(ui.container.querySelector(".sk-grid")?.hasAttribute("data-multicol")).toBe(true);
   });
 
-  it("omits data-block-start when Inline's space above is the default none", () => {
+  it("writes data-block-start=none for Inline's default, as the emitted markup does", () => {
     const ui = render(<Inline>Inline</Inline>);
 
-    expect(ui.container.querySelector(".sk-inline")?.hasAttribute("data-block-start")).toBe(false);
+    expect(ui.container.querySelector(".sk-inline")?.getAttribute("data-block-start")).toBe("none");
   });
 
   it("switches Grid into responsive rows and lets a child request a wider span", () => {

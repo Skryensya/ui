@@ -5,6 +5,17 @@
 # hash.
 surface: "f0a11f0e56139cc3"
 entries:
+  - date: 2026-09-27
+    kind: bugfix
+    target: Stat
+    es:
+      title: La cuenta animada de Stat termina en el value escrito
+      body: >-
+        Con <code>count</code> y <code>animate</code>, React ignoraba <code>value</code> y mostraba el número formateado en el idioma del navegador, empezando en 0. Ahora muestra <code>value</code> hasta que la cuenta arranca y termina en él, como el enhancer.
+    en:
+      title: "Stat's animated count lands on the authored value"
+      body: >-
+        With <code>count</code> and <code>animate</code>, React ignored <code>value</code> and showed the number formatted in the browser locale, starting at 0. It now shows <code>value</code> until the count starts and ends on it, as the enhancer does.
   - date: 2026-09-17
     kind: chore
     es:

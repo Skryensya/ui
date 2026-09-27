@@ -148,11 +148,11 @@ export const tabsContract = {
           },
         },
       },
+      mount: "data-sk-tabs",
       template: {
         element: "div",
         part: "root",
         host: true,
-        attrs: { "data-sk-tabs": "" },
         children: [
           {
             element: "div",

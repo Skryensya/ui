@@ -1,4 +1,4 @@
-import { lightboxAttrs, lightboxContract, lightboxParts, type LightboxAction, type LightboxImage } from "@skryensya/core/lightbox";
+import { lightboxAttrs, lightboxContract, lightboxControlLook as controlLook, lightboxParts, type LightboxAction, type LightboxImage } from "@skryensya/core/lightbox";
 import {
   LIGHTBOX_CLOSED_STATE,
   connectLightbox,
@@ -230,13 +230,6 @@ export function Lightbox({
     </dialog>
   );
 }
-
-/* The contract's three looks, see `controlLook` in `@skryensya/core/lightbox`. */
-const controlLook = {
-  zoom: { variant: "ghost", size: "sm", icon: "md" },
-  close: { variant: "ghost", size: "sm", icon: "md" },
-  nav: { variant: "translucent", size: "md", icon: "md" },
-} as const;
 
 function LightboxControl({
   action,

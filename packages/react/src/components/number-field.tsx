@@ -81,7 +81,10 @@ export function NumberField({
     disabled,
     readOnly,
     required,
-    invalid,
+    /* Always a boolean, as the vanilla enhancer passes it. Left undefined, Zag derives invalidity from
+     * the range, and an EMPTY field (NaN) is out of range: it was announced invalid before anyone typed.
+     * Out-of-range input is clamped on blur anyway; invalid is what the author or the form says. */
+    invalid: invalid ?? false,
     formatOptions,
     translations: { decrementLabel, incrementLabel },
     onValueChange(details) {

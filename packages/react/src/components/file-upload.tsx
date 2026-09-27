@@ -228,7 +228,7 @@ export function FileUpload({
       data-sk-file-upload=""
       /* `zone` is the default, so it writes no attribute at all: the same rule every other contract
          option follows, and what keeps the two bindings' markup diffable. */
-      data-drop-scope={dropScope === dropScopeOption.default ? undefined : dropScope}
+      data-drop-scope={dropScope}
       /* Page scope drags happen away from the dashed box, so the control says so too. */
       data-dragging={dragging ? "" : undefined}
       /* Something was refused: the control says so as a whole, not only in the message below it. */

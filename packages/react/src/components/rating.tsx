@@ -96,6 +96,7 @@ export function Rating({
       data-readonly={readOnly ? "" : undefined}
       data-size={symbolSize}
       ref={rootRef}
+      style={{ "--sk-rating-max": max } as React.CSSProperties}
     >
       {/*
         * THE GROUP, and the name goes here rather than on the root: Zag puts `role="radiogroup"` on

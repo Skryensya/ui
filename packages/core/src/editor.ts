@@ -106,7 +106,7 @@ const toolbarTemplate = {
   mount: "data-sk-toolbar",
   options: ["toolbarLabel"],
   optionAttrs: { toolbarLabel: "aria-label" },
-  attrs: { role: "toolbar" },
+  attrs: { role: "toolbar", "data-appearance": "plain" },
 } as const;
 
 /** The DOM events this family dispatches on its root, `sk:<family><event>` like every other. */

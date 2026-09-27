@@ -72,7 +72,12 @@ export function Stat({
     <div {...props} className={cx(statParts.root, className)} data-sk-stat="">
       <span className={statParts.label}>{label}</span>
       {animated ? (
-        <StatValue animate={options} format={countFormat} to={metric as number} />
+        <StatValue
+          animate={options}
+          authoredText={count !== undefined && typeof value === "string" ? value : undefined}
+          format={countFormat}
+          to={metric as number}
+        />
       ) : (
         <span className={statParts.value}>{staticValue}</span>
       )}
@@ -87,10 +92,13 @@ export function Stat({
 
 function StatValue({
   animate,
+  authoredText,
   format,
   to,
 }: {
   animate: StatAnimateOptions;
+  /** `value` when `count` drives the animation: the text the count lands on, as the enhancer reads it. */
+  authoredText?: string;
   format?: (n: number) => string;
   to: number;
 }) {
@@ -101,9 +109,12 @@ function StatValue({
     () => format ?? ((n: number) => formatStatCount(n, { fractionDigits: digits })),
     [digits, format],
   );
-  const finalText = useMemo(() => formatTick(to), [formatTick, to]);
+  const finalText = useMemo(() => authoredText ?? formatTick(to), [authoredText, formatTick, to]);
   const valueRef = useRef<HTMLSpanElement>(null);
-  const [text, setText] = useState(() => formatTick(prefersReducedMotion() ? to : from));
+  /* The FINAL value until the count starts, as the vanilla enhancer leaves the authored markup: a
+   * server render, a reader who never scrolls it into view, and a screen reader all get the real
+   * number, never a `from` that is only the first frame of an animation. */
+  const [text, setText] = useState(finalText);
 
   useEffect(() => {
     const node = valueRef.current;
@@ -124,6 +135,7 @@ function StatValue({
         to,
         duration,
         onUpdate: (n) => setText(formatTick(n)),
+        onComplete: () => setText(finalText),
       });
     };
 
@@ -147,7 +159,7 @@ function StatValue({
       observer?.disconnect();
       handle?.stop();
     };
-  }, [animate.duration, formatTick, from, to, whenVisible]);
+  }, [animate.duration, finalText, formatTick, from, to, whenVisible]);
 
   return (
     <span className={statParts.value} ref={valueRef}>

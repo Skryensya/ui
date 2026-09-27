@@ -26,7 +26,7 @@ const t = useTranslations(getLocale(Astro.url));
           description: t("inlinePage.test1"),
         },
         {
-          name: "omits data-block-start when Inline's space above is the default none",
+          name: "writes data-block-start=none for Inline's default, as the emitted markup does",
           description: t("inlinePage.test2"),
         },
       ],

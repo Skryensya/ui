@@ -128,9 +128,9 @@ describe("FileUpload", () => {
     expect(ui.container.querySelector<HTMLElement>("[data-sk-file-upload-overlay]")!.hidden).toBe(true);
   });
 
-  it("writes the scope onto the root, and writes nothing for the default", () => {
+  it("writes the scope onto the root, the default included, as the emitted markup does", () => {
     const zone = render(<FileUpload label="Subir" />);
-    expect(zone.container.querySelector("[data-sk-file-upload]")!.hasAttribute("data-drop-scope")).toBe(false);
+    expect(zone.container.querySelector("[data-sk-file-upload]")!.getAttribute("data-drop-scope")).toBe("zone");
     zone.unmount();
 
     const page = render(<FileUpload dropScope="page" label="Subir" overlayLabel="Suelta" />);

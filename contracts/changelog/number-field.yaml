@@ -5,6 +5,17 @@
 # hash.
 surface: "62765e948f8ffa10"
 entries:
+  - date: 2026-09-27
+    kind: bugfix
+    target: NumberField
+    es:
+      title: Un NumberField vacío ya no se anuncia inválido
+      body: >-
+        En React, un campo vacío con <code>min</code> contaba como fuera de rango y llevaba <code>aria-invalid</code> antes de escribir nada. Ahora solo es inválido si el autor o el formulario lo dicen, como en vanilla; el valor se ajusta al rango al salir.
+    en:
+      title: "An empty NumberField is no longer announced invalid"
+      body: >-
+        In React, an empty field with a <code>min</code> counted as out of range and carried <code>aria-invalid</code> before anyone typed. It is now invalid only when the author or the form says so, as in vanilla; the value is clamped to the range on blur.
   - date: 2026-09-26
     kind: feature
     target: appearance

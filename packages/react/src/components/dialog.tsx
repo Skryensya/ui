@@ -1,4 +1,5 @@
 import { dialogParts, dialogContract } from "@skryensya/core/dialog";
+import { vaulDataParts, vaulScope } from "@skryensya/core/vaul";
 import type { SignatureOptionsOf } from "@skryensya/core/contract";
 import { useId, type DialogHTMLAttributes, type ReactNode } from "react";
 import { Icon } from "./icon.js";
@@ -81,6 +82,9 @@ export function Dialog({
       // The enhancer's drag axis is generic and defaults to `inline-start` with nothing to read;
       // `dialog-vaul.css` only ever slides from the bottom, so this is not a choice: see core.
       data-edge={vaul ? "block-end" : undefined}
+      /* The vaul enhancer's scope markers, rendered at rest as `Vaul` does. */
+      data-part={vaul ? vaulDataParts.root : undefined}
+      data-scope={vaul ? vaulScope : undefined}
       role={alert ? "alertdialog" : undefined}
     >
       {vaul ? <div aria-hidden="true" data-part="handle" /> : null}

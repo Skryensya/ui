@@ -5630,6 +5630,19 @@
         "date": null,
         "entries": [
           {
+            "date": "2026-09-27",
+            "en": {
+              "body": "React drew navigation as <code>translucent</code> <code>md</code>, a stale copy; the contract says <code>ghost</code> <code>sm</code>, like Close. React now reads the same object as the contract.",
+              "title": "Lightbox's previous and next use the contract's button in React"
+            },
+            "es": {
+              "body": "React dibujaba la navegación como <code>translucent</code> <code>md</code>, una copia vieja; el contrato dice <code>ghost</code> <code>sm</code>, como Cerrar. React ahora lee el mismo objeto que el contrato.",
+              "title": "Anterior y siguiente de Lightbox usan el botón del contrato en React"
+            },
+            "kind": "bugfix",
+            "target": "Lightbox"
+          },
+          {
             "date": "2026-09-24",
             "en": {
               "body": "New <code>Lightbox</code> contract on the native <code>&lt;dialog&gt;</code> with <code>showModal()</code>: the top layer, the inert page, Escape and the scroll lock are the platform's, and focus returns to what opened it (or, when that is gone, to the thumbnail of the photo the reader ended on). It opens from thumbnails (<code>Lightbox.Trigger</code>, a link to the full image that works with no script) or from code with the same lifecycle: <code>open</code>, <code>close</code>, <code>next</code>, <code>previous</code>, <code>goTo</code> and <code>resetZoom</code>. In React, <code>LightboxProvider</code> + <code>useLightbox()</code> give one viewer for the whole app. Zoom with buttons, <code>+</code>/<code>-</code>/<code>0</code>, the wheel, a double click, a double tap and a pinch; zoomed in, dragging and the arrows move the image inside its frame. A swipe changes photo and a swipe down closes. Only the two neighbours are preloaded, and a failed image says so in words without blocking navigation.",
@@ -7028,6 +7041,19 @@
       {
         "date": null,
         "entries": [
+          {
+            "date": "2026-09-27",
+            "en": {
+              "body": "In React, an empty field with a <code>min</code> counted as out of range and carried <code>aria-invalid</code> before anyone typed. It is now invalid only when the author or the form says so, as in vanilla; the value is clamped to the range on blur.",
+              "title": "An empty NumberField is no longer announced invalid"
+            },
+            "es": {
+              "body": "En React, un campo vacío con <code>min</code> contaba como fuera de rango y llevaba <code>aria-invalid</code> antes de escribir nada. Ahora solo es inválido si el autor o el formulario lo dicen, como en vanilla; el valor se ajusta al rango al salir.",
+              "title": "Un NumberField vacío ya no se anuncia inválido"
+            },
+            "kind": "bugfix",
+            "target": "NumberField"
+          },
           {
             "date": "2026-09-26",
             "en": {
@@ -9388,6 +9414,19 @@
         "date": null,
         "entries": [
           {
+            "date": "2026-09-27",
+            "en": {
+              "body": "With <code>count</code> and <code>animate</code>, React ignored <code>value</code> and showed the number formatted in the browser locale, starting at 0. It now shows <code>value</code> until the count starts and ends on it, as the enhancer does.",
+              "title": "Stat's animated count lands on the authored value"
+            },
+            "es": {
+              "body": "Con <code>count</code> y <code>animate</code>, React ignoraba <code>value</code> y mostraba el número formateado en el idioma del navegador, empezando en 0. Ahora muestra <code>value</code> hasta que la cuenta arranca y termina en él, como el enhancer.",
+              "title": "La cuenta animada de Stat termina en el value escrito"
+            },
+            "kind": "bugfix",
+            "target": "Stat"
+          },
+          {
             "date": "2026-09-17",
             "en": {
               "body": "The surface hash now projects options through a whitelist (no <code>machineInput</code>), includes <code>eventDetails</code>, and still excludes the template (<code>also</code>, ephemeral attrs). This contract's API did not change; only what the hash measures did.",
@@ -9729,6 +9768,19 @@
       {
         "date": null,
         "entries": [
+          {
+            "date": "2026-09-27",
+            "en": {
+              "body": "React did not take <code>appearance</code>: it leaked onto the <code>&lt;ol&gt;</code> as a stray attribute and <code>segments</code> never drew. It now writes <code>data-appearance</code>, <code>markers</code> by default, as the emitted markup does.",
+              "title": "Steps in React accepts appearance"
+            },
+            "es": {
+              "body": "React no recibía <code>appearance</code>: el valor se colaba como atributo suelto en el <code>&lt;ol&gt;</code> y <code>segments</code> nunca se pintaba. Ahora escribe <code>data-appearance</code>, con <code>markers</code> por defecto, igual que el markup emitido.",
+              "title": "Steps en React acepta appearance"
+            },
+            "kind": "bugfix",
+            "target": "Steps"
+          },
           {
             "date": "2026-09-19",
             "en": {
@@ -10209,6 +10261,18 @@
           {
             "date": "2026-09-27",
             "en": {
+              "body": "The attribute was already emitted; the contract now names it as <code>mount</code>, like every other enhanced component, and the binding comparison ignores its lifecycle markers. The markup is unchanged.",
+              "title": "Tabs declares data-sk-tabs as its mount point"
+            },
+            "es": {
+              "body": "El atributo ya se emitía; ahora el contrato lo nombra como <code>mount</code>, como los demás componentes con enhancer, y la comparación entre bindings ignora sus marcas de ciclo de vida. El markup no cambia.",
+              "title": "Tabs declara data-sk-tabs como su punto de montaje"
+            },
+            "kind": "chore"
+          },
+          {
+            "date": "2026-09-27",
+            "en": {
               "body": "The list's sheet rises from 60% to 74%: over a black or white backdrop, the secondary ink of unselected tabs fell to 3.1:1.",
               "title": "Frosted tabs keep unselected triggers legible"
             },
@@ -10550,6 +10614,18 @@
       {
         "date": null,
         "entries": [
+          {
+            "date": "2026-09-27",
+            "en": {
+              "body": "Content beside the choice's content, not inside it, for marks that must not join its accessible text. Questionnaire uses it for the shortcut key, where its template already placed it.",
+              "title": "TileCheckbox and TileRadioGroup take aside in React"
+            },
+            "es": {
+              "body": "Contenido junto al contenido de la opción, no dentro de él, para marcas que no deben formar parte de su texto accesible. Questionnaire lo usa para la tecla de atajo, como ya la ubicaba su plantilla.",
+              "title": "TileCheckbox y TileRadioGroup aceptan aside en React"
+            },
+            "kind": "feature"
+          },
           {
             "date": "2026-09-27",
             "en": {
@@ -23128,6 +23204,7 @@
                       "sk-interactive"
                     ],
                     "attrs": {
+                      "data-appearance": "plain",
                       "data-icon-only": "",
                       "data-size": "sm",
                       "data-tone": "neutral",
@@ -25826,6 +25903,7 @@
                   "sk-toolbar"
                 ],
                 "attrs": {
+                  "data-appearance": "plain",
                   "role": "toolbar"
                 },
                 "element": "div",
@@ -32060,6 +32138,7 @@
                 ],
                 "attrs": {
                   "aria-pressed": "false",
+                  "data-appearance": "plain",
                   "data-icon-only": "",
                   "data-size": "sm",
                   "data-sk-button": "",
@@ -32193,6 +32272,7 @@
                 ],
                 "attrs": {
                   "aria-pressed": "true",
+                  "data-appearance": "plain",
                   "data-icon-only": "",
                   "data-size": "sm",
                   "data-sk-button": "",
@@ -38898,6 +38978,7 @@
                       "sk-interactive"
                     ],
                     "attrs": {
+                      "data-appearance": "plain",
                       "data-size": "sm",
                       "data-tone": "neutral",
                       "data-variant": "soft",
@@ -38915,6 +38996,7 @@
                       "sk-interactive"
                     ],
                     "attrs": {
+                      "data-appearance": "plain",
                       "data-size": "sm",
                       "data-tone": "neutral",
                       "data-variant": "ghost",
@@ -38932,6 +39014,7 @@
                       "sk-interactive"
                     ],
                     "attrs": {
+                      "data-appearance": "plain",
                       "data-size": "sm",
                       "data-tone": "neutral",
                       "data-variant": "solid",
@@ -38949,6 +39032,7 @@
                       "sk-interactive"
                     ],
                     "attrs": {
+                      "data-appearance": "plain",
                       "data-size": "sm",
                       "data-tone": "neutral",
                       "data-variant": "solid",
@@ -39271,6 +39355,7 @@
                           "sk-interactive"
                         ],
                         "attrs": {
+                          "data-appearance": "plain",
                           "data-padding": "md",
                           "data-part": "item",
                           "data-scope": "tile"
@@ -39322,6 +39407,7 @@
                             ],
                             "attrs": {
                               "aria-hidden": "true",
+                              "data-appearance": "plain",
                               "data-tone": "neutral"
                             },
                             "element": "kbd",
@@ -39363,6 +39449,7 @@
                           "sk-interactive"
                         ],
                         "attrs": {
+                          "data-appearance": "plain",
                           "data-padding": "md",
                           "data-scope": "tile"
                         },
@@ -39406,6 +39493,7 @@
                             ],
                             "attrs": {
                               "aria-hidden": "true",
+                              "data-appearance": "plain",
                               "data-tone": "neutral"
                             },
                             "element": "kbd",
@@ -45767,7 +45855,7 @@
       ],
       "bindings": {
         "Tabs": {
-          "enhancer": null,
+          "enhancer": "data-sk-tabs",
           "markup": true,
           "portals": false,
           "react": "@skryensya/react/tabs#Tabs"
@@ -46002,6 +46090,7 @@
             "switch-between-panels",
             "sections-in-one-region"
           ],
+          "mount": "data-sk-tabs",
           "options": [
             "orientation",
             "activationMode",
@@ -46046,9 +46135,6 @@
             }
           },
           "template": {
-            "attrs": {
-              "data-sk-tabs": ""
-            },
             "children": [
               {
                 "attrs": {
@@ -46320,6 +46406,7 @@
                   "sk-interactive"
                 ],
                 "attrs": {
+                  "data-appearance": "plain",
                   "data-icon-only": "",
                   "data-size": "sm",
                   "data-sk-button": "",
@@ -46771,6 +46858,7 @@
                                       "sk-interactive"
                                     ],
                                     "attrs": {
+                                      "data-appearance": "plain",
                                       "data-icon-only": "",
                                       "data-size": "sm",
                                       "data-sk-button": "",
@@ -53810,7 +53898,7 @@
     "working": "0.0.1"
   },
   "schemaVersion": "2.3",
-  "sourceHash": "1dae83a58d6433db",
+  "sourceHash": "45c88a600bd841fc",
   "vocabulary": {
     "a11y": "When `when` holds, one of `requiresOneOf` must be given: an option, a raw attribute, a filled slot, or a child signature by name.",
     "atLeastOneOf": "At least one member of each group counts: a filled slot, a boolean option set to true, or an option other than its default.",

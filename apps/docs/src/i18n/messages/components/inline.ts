@@ -39,7 +39,7 @@ export const inlineMessages = {
     "inlinePage.contractItem6":
       '<code>blockStart</code> acepta <code>none</code>, <code>xs</code>, <code>sm</code>, <code>md</code>, <code>lg</code>, <code>xl</code> o <code>auto</code>; por defecto es <code>none</code>. En HTML es <code>data-block-start</code>. <code>auto</code> sienta la fila en el piso de una card.',
     "inlinePage.test1": "Renderiza Stack, Inline y Grid según los contratos de layout documentados.",
-    "inlinePage.test2": "Omite <code>data-block-start</code> cuando el aire encima es el default <code>none</code>.",
+    "inlinePage.test2": "Escribe <code>data-block-start=\"none\"</code> para el aire por defecto, igual que el markup emitido.",
   },
   en: {
     "demo.inline.title": "Project Atlas",
@@ -81,6 +81,6 @@ export const inlineMessages = {
     "inlinePage.contractItem6":
       '<code>blockStart</code> accepts <code>none</code>, <code>xs</code>, <code>sm</code>, <code>md</code>, <code>lg</code>, <code>xl</code>, or <code>auto</code>; the default is <code>none</code>. In HTML it is <code>data-block-start</code>. <code>auto</code> sits the row on a card\'s floor.',
     "inlinePage.test1": "Renders Stack, Inline and Grid as the documented layout contracts.",
-    "inlinePage.test2": "Omits <code>data-block-start</code> when the space above is the default <code>none</code>.",
+    "inlinePage.test2": "Writes <code>data-block-start=\"none\"</code> for the default space above, as the emitted markup does.",
   },
 } as const;

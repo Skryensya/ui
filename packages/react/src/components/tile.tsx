@@ -133,11 +133,14 @@ export const TileChevron = forwardRef<HTMLSpanElement, TileChevronProps>(functio
 export type TileCheckboxProps = Omit<LabelHTMLAttributes<HTMLLabelElement>, "onChange"> &
   TileCheckboxOptions & {
     children?: ReactNode;
+    /** Rendered beside the content, not in it: a composing pattern's own mark (Questionnaire's
+     * shortcut key) that must not become part of the choice's accessible text. */
+    aside?: ReactNode;
     inputProps?: Omit<InputHTMLAttributes<HTMLInputElement>, "checked" | "defaultChecked" | "disabled" | "name" | "required" | "type" | "value">;
   };
 
 export const TileCheckbox = forwardRef<HTMLLabelElement, TileCheckboxProps>(function TileCheckbox(
-  { id, className, children, inputProps, onCheck, indeterminate, padding, appearance = "plain", ...options },
+  { id, className, children, aside, inputProps, onCheck, indeterminate, padding, appearance = "plain", ...options },
   ref,
 ) {
   const generatedId = useId();
@@ -174,6 +177,7 @@ export const TileCheckbox = forwardRef<HTMLLabelElement, TileCheckboxProps>(func
       <span className={tileParts.content} data-part="content">
         {children}
       </span>
+      {aside}
       <span aria-hidden="true" className={`${selectionParts.checkboxControl} sk-interactive`} data-part="indicator">
         <CheckboxIndicators />
       </span>
@@ -237,6 +241,8 @@ export const TileSwitch = forwardRef<HTMLLabelElement, TileSwitchProps>(function
 export type TileRadioItem = {
   value: string;
   children: ReactNode;
+  /** Beside the content, not in it. See `TileCheckboxProps.aside`. */
+  aside?: ReactNode;
   disabled?: boolean;
 };
 
@@ -292,6 +298,7 @@ export const TileRadioGroup = forwardRef<HTMLDivElement, TileRadioGroupProps>(fu
             <span {...api.getItemTextProps(itemProps)} className={tileParts.content} data-part="content" data-scope="tile">
               {item.children}
             </span>
+            {item.aside}
             <span
               {...api.getItemControlProps(itemProps)}
               aria-hidden="true"

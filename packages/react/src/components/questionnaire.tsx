@@ -415,7 +415,7 @@ export function Questionnaire({
           {stepsWindow ? (
             <Steps
               aria-label={progressLabel}
-              data-appearance={progress === "segments" ? "segments" : undefined}
+              appearance={progress === "segments" ? "segments" : "markers"}
               data-orientation={progressOrientation}
               data-window-after={stepsWindow.hasAfter ? "" : undefined}
               data-window-before={stepsWindow.hasBefore ? "" : undefined}
@@ -493,21 +493,30 @@ function keyTarget(
 }
 
 /*
- * The choice's content, and its shortcut key when the questionnaire has them on. The key comes from
+ * The choice's content. Its shortcut key is the tile's `aside`, a sibling of the content and never
+ * part of the answer's text, as the contract template places it.
+ */
+function ChoiceContent({ choice }: { choice: QuestionnaireChoice }) {
+  return (
+    <>
+      <span className="sk-tile__title">{choice.label}</span>
+      {choice.description ? <span className="sk-tile__description">{choice.description}</span> : null}
+    </>
+  );
+}
+
+/*
+ * The shortcut key, when the questionnaire has them on. The key comes from
  * core's own `questionnaireShortcuts`, the SAME map the keyboard resolves against, so the letter on
  * screen is always the letter that works (a CSS counter here would be a second, drifting count, and
  * would number a tenth choice that `numbers` mode cannot reach). Empty when there is none, which is
  * what the stylesheet hides.
  */
-function ChoiceContent({ choice, shortcut }: { choice: QuestionnaireChoice; shortcut: string | null }) {
+function ChoiceShortcut({ shortcut }: { shortcut: string | null }) {
   return (
-    <>
-      <span className="sk-tile__title">{choice.label}</span>
-      {choice.description ? <span className="sk-tile__description">{choice.description}</span> : null}
-      <Kbd aria-hidden="true" className={questionnaireParts.shortcut}>
-        {shortcut ?? ""}
-      </Kbd>
-    </>
+    <Kbd aria-hidden="true" className={questionnaireParts.shortcut}>
+      {shortcut ?? ""}
+    </Kbd>
   );
 }
 
@@ -648,7 +657,8 @@ export function QuestionnaireItem({
             items={choices.map((choice) => ({
               value: choice.value,
               disabled: choice.disabled,
-              children: <ChoiceContent choice={choice} shortcut={shortcutByValue.get(choice.value) ?? null} />,
+              children: <ChoiceContent choice={choice} />,
+              aside: <ChoiceShortcut shortcut={shortcutByValue.get(choice.value) ?? null} />,
             }))}
             name={name}
             onValueChange={(details) => send({ type: "choose", name, value: details.value })}
@@ -666,8 +676,9 @@ export function QuestionnaireItem({
                 name={name}
                 onCheck={(details) => send({ type: "select", name, value: choice.value, selected: details.checked === true })}
                 value={choice.value}
+                aside={<ChoiceShortcut shortcut={shortcutByValue.get(choice.value) ?? null} />}
               >
-                <ChoiceContent choice={choice} shortcut={shortcutByValue.get(choice.value) ?? null} />
+                <ChoiceContent choice={choice} />
               </TileCheckbox>
             ))}
           </div>

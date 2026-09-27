@@ -43,14 +43,17 @@
    */
   const buttonClass = `${buttonParts.root} ${buttonParts.interactive}`;
   const {
+    appearance: appearanceOption,
     variant: variantOption,
     tone: toneOption,
     size: sizeOption,
     iconOnly: iconOnlyOption,
   } = buttonContract.options;
-  /* BOTH appearance axes, defaults included, because React composes a real `<Button>` here and
-   * Button serializes both. Naming only the emphasis left `data-tone` off one side of G2. */
+  /* EVERY look axis, defaults included, because React composes a real `<Button>` here and Button
+   * serializes all of them. Naming only the emphasis left `data-tone`, then `data-appearance`, off one
+   * side of G2. */
   const smGhost = {
+    [appearanceOption.attr]: appearanceOption.default,
     [variantOption.attr]: "ghost",
     [toneOption.attr]: toneOption.default,
     [sizeOption.attr]: "sm",

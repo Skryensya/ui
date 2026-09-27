@@ -79,9 +79,6 @@ export function Pagination({
       aria-label={label}
       className={cx(paginationParts.root, className)}
       data-appearance={appearance}
-      data-page={page}
-      data-siblings={siblings}
-      data-total={total}
     >
       <button
         aria-label={previousLabel}

@@ -1,4 +1,5 @@
 import { commandPaletteAttrs, commandPaletteEvents, commandPaletteParts, commandPaletteOptionContext, filterCommandPaletteEntries, type CommandPaletteCommand, type CommandPaletteCommandEventDetail, type CommandPaletteEntry, commandPaletteContract } from "@skryensya/core/command-palette";
+import { vaulDataParts, vaulScope } from "@skryensya/core/vaul";
 import { useEffect, useLayoutEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import { Icon } from "./icon.js";
 import { useModalTabWrap } from "./modal-tab-wrap.js";
@@ -212,6 +213,11 @@ export function CommandPalette({
       className={`sk-dialog ${commandPaletteParts.root}`}
       data-appearance={appearance}
       data-sk-dialog-vaul={vaul ? vaulOption.trueValue : undefined}
+      /* What the vaul enhancer writes on the authored root, rendered at rest as `Vaul` does. The
+         palette only ever slides from block-end (see `useVaulDrag` above). */
+      data-edge={vaul ? "block-end" : undefined}
+      data-part={vaul ? vaulDataParts.root : undefined}
+      data-scope={vaul ? vaulScope : undefined}
       id={id}
       open={open}
       ref={dialog}

@@ -34,8 +34,8 @@ describe("Pagination", () => {
     const ui = render(<Pagination page={2} total={10} />);
     const root = ui.getByRole("navigation");
     root.addEventListener("sk:paginationpagechange", onDom);
-    expect(root.getAttribute("data-page")).toBe("2");
-    expect(root.getAttribute("data-total")).toBe("10");
+    // page, total and siblings are computed inputs: the buttons express them, the root does not.
+    expect(root.hasAttribute("data-total")).toBe(false);
 
     fireEvent.click(ui.getByRole("button", { name: "3" }));
     expect(onDom).toHaveBeenCalled();

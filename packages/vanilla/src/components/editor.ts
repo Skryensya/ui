@@ -3,6 +3,7 @@ import { rootSelectorFor } from "@skryensya/core/selectors";
 import { editorIcons, type EditorIconName } from "@skryensya/core/editor-icons";
 import { renderIconBox } from "@skryensya/core/icon";
 import { toolbarParts } from "@skryensya/core/toolbar";
+import { applyToolbarTabStop, toolbarStops } from "@skryensya/core/toolbar-dom";
 import { popoverContract, popoverParts } from "@skryensya/core/popover";
 import { anchoredParts } from "@skryensya/core/anchored";
 import { createEditorView, setEditorContent, type EditorView, type EditorState } from "@skryensya/editor/view";
@@ -123,15 +124,11 @@ function connect(root: HTMLElement): () => void {
   if (!toolbar) throw new Error("[data-sk-editor] necesita un [data-sk-toolbar]: no existe una versión sin toolbar.");
 
   /*
-   * No generated id on the ROOT: it was assigned here and read by nothing, and an id only one
-   * binding writes is a divergence G2 reports for nothing in return.
-   *
-   * The CONTENT gets one, because that id is real: it is what a `FormField`'s label points its
-   * `for` at, which is exactly what React's `useFormFieldControl` mints for the same element. An
-   * author writing this markup by hand supplies it; nothing had been minting it when the enhancer
-   * built the control instead.
+   * No generated id on the root or the content: an id only one binding writes, and nothing points
+   * at, is a divergence G2 reports for nothing in return. Inside a FormField the emitted markup
+   * already carries the content's id and the label's `for`; React's `useFormFieldControl` likewise
+   * names the content only when a field is there to point at it.
    */
-  if (!content.id) content.id = uniqueId("sk-editor-content");
 
   const readOnly = root.hasAttribute("data-readonly");
   const disabled = root.hasAttribute("data-disabled");
@@ -189,6 +186,9 @@ function connect(root: HTMLElement): () => void {
   function buildLinkPopover(getView: () => EditorView | undefined): HTMLElement {
     const wrapper = document.createElement("div");
     wrapper.className = popoverParts.root;
+    // What `Popover.tsx` writes on its root for this shape: the default appearance, and the arrow below.
+    wrapper.dataset.appearance = popoverContract.options.appearance.default;
+    wrapper.setAttribute("data-arrow", "");
     const contentId = uniqueId("sk-editor-link");
 
     const trigger = document.createElement("button");
@@ -330,6 +330,13 @@ function connect(root: HTMLElement): () => void {
       }
     },
   });
+
+  /*
+   * One tab stop from the start, taken after the first paint so a disabled Undo/Redo is not counted
+   * as a stop. Toolbar's enhancer mounted on this bar while it was still empty and only re-applies on
+   * `focusin`; until then every button would be its own stop.
+   */
+  applyToolbarTabStop(toolbarStops(toolbar), undefined);
 
   /*
    * Vanilla's own escape hatch, symmetric with React's `ref`-based `EditorHandle`: since a Vanilla

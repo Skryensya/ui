@@ -210,7 +210,7 @@ export function Inline<Element extends ElementType = "div">({
       {...props}
       className={classes(layoutParts.inline, className)}
       data-align={align}
-      data-block-start={blockStart === "none" ? undefined : blockStart}
+      data-block-start={blockStart}
       data-equal={equal ? "" : undefined}
       data-gap={gap}
       data-gap-expanded={gapExpanded}

@@ -132,6 +132,9 @@ function readItem(fieldset: HTMLFieldSetElement): ItemView | null {
     error.hidden = true;
     fieldset.append(error);
   }
+  /* Named at mount, not when it first turns invalid: React's element carries its id from the first
+   * render, and a pointer that appears later should find its target already named. */
+  ensureId(error, "sk-questionnaire-error");
 
   /*
    * THE AUTHORED DEFAULTS ARE THE STATE'S, not the tiles' alone. A hand-written `data-default-value`
@@ -176,11 +179,18 @@ function readItem(fieldset: HTMLFieldSetElement): ItemView | null {
       `.${questionnaireParts.text} :is(input, textarea)`,
     ),
     control: fieldset.querySelector<HTMLElement>(`.${questionnaireParts.control}`),
-    description: fieldset.querySelector<HTMLElement>(`.${questionnaireParts.description}`),
+    description: namedDescription(fieldset),
     error,
     defaultAnswer,
   };
 }
+
+/* The same rule as the error's id, for the same reason. */
+const namedDescription = (fieldset: HTMLElement) => {
+  const description = fieldset.querySelector<HTMLElement>(`.${questionnaireParts.description}`);
+  if (description) ensureId(description, "sk-questionnaire-description");
+  return description;
+};
 
 const labelOf = (root: HTMLElement, attr: string, fallback: string) => root.getAttribute(attr) ?? fallback;
 
@@ -238,7 +248,7 @@ function connect(root: HTMLElement): () => void {
       steps.className = stepsParts.root;
       steps.setAttribute("role", "list");
       steps.setAttribute("data-orientation", railOrientation);
-      if (progressMode === "segments") steps.setAttribute("data-appearance", "segments");
+      steps.setAttribute("data-appearance", progressMode === "segments" ? "segments" : "markers");
       steps.setAttribute("aria-label", labels.progress);
       progress.append(steps);
     }
