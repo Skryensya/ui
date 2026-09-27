@@ -75,5 +75,29 @@ export function templateSections(t: Translate): TemplateSection[] {
       title: t("templates.settingsTitle"),
       label: t("templates.settingsLabel"),
     },
+    {
+      id: "onboarding",
+      navLabel: t("templates.onboardingNavLabel"),
+      title: t("templates.onboardingTitle"),
+      label: t("templates.onboardingLabel"),
+    },
+    {
+      id: "product",
+      navLabel: t("templates.productNavLabel"),
+      title: t("templates.productTitle"),
+      label: t("templates.productLabel"),
+    },
+    {
+      id: "article",
+      navLabel: t("templates.articleNavLabel"),
+      title: t("templates.articleTitle"),
+      label: t("templates.articleLabel"),
+    },
+    {
+      id: "help-center",
+      navLabel: t("templates.helpCenterNavLabel"),
+      title: t("templates.helpCenterTitle"),
+      label: t("templates.helpCenterLabel"),
+    },
   ];
 }

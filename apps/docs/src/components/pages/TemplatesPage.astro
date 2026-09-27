@@ -35,12 +35,26 @@ import "@skryensya/core/components/table.css";
 import "@skryensya/core/components/toc.css";
 import "@skryensya/core/components/avatar.css";
 import "@skryensya/core/patterns/wrapper.css";
+import "@skryensya/core/components/tile.css";
+import "@skryensya/core/components/tabs.css";
+import "@skryensya/core/components/accordion.css";
+import "@skryensya/core/components/quote.css";
+import "@skryensya/core/patterns/hero.css";
+import "@skryensya/core/patterns/image-frame.css";
+import "@skryensya/core/patterns/media-gradient.css";
+import "@skryensya/core/components/rating.css";
+import "@skryensya/core/components/number-field.css";
+import "@skryensya/core/components/description-list.css";
 import { appShellExplorerTree, appShellTree } from "../../demos/app-shell";
+import { articleTree } from "../../demos/templates/article";
 import { checkoutTree } from "../../demos/templates/checkout";
 import { dashboardTree } from "../../demos/templates/dashboard";
 import { docsSiteTree } from "../../demos/templates/docs-site";
+import { helpCenterTree } from "../../demos/templates/help-center";
 import { marketingTree } from "../../demos/templates/marketing";
+import { onboardingTree } from "../../demos/templates/onboarding";
 import { pricingTree } from "../../demos/templates/pricing";
+import { productTree } from "../../demos/templates/product";
 import { settingsTree } from "../../demos/templates/settings";
 import { signInTree } from "../../demos/templates/sign-in";
 import { getLocale, useTranslations } from "../../i18n";
@@ -65,6 +79,10 @@ const TREES: Record<string, () => ReturnType<typeof marketingTree>> = {
   pricing: () => pricingTree(t, locale),
   "sign-in": () => signInTree(t),
   settings: () => settingsTree(t),
+  onboarding: () => onboardingTree(t),
+  product: () => productTree(t, locale),
+  article: () => articleTree(t),
+  "help-center": () => helpCenterTree(t),
 };
 
 const templates = templateSections(t).map((section) => ({
