@@ -57,14 +57,22 @@
    * first means a summary can hold one line, or a heading over a description, or three spans, and
    * the layout is the same rule each time.
    *
-   * `grid-row: 1 / -1` on the indicator so it stays centred against the whole stack rather than
-   * riding the first row when the text runs to two.
+   * THE INDICATOR SPANS THE WHOLE TEXT STACK, and `1 / -1` could not say so: `-1` counts from the end
+   * of the EXPLICIT grid, and these rows are all implicit, so the indicator spanned row 1 only and
+   * rode the title instead of centring on title plus description (a Tile trigger centres its
+   * chevron, and the two halves of Accordion have to look the same). A span of 12 covers any summary
+   * a person would write; the rows past the text are empty and auto, so they measure 0, and
+   * `align-content: center` keeps them from sharing out the min-height and nudging the text.
+   *
+   * The gap between title and description is a margin, not a row gap, for the same reason: a row
+   * gap would also open between those empty rows. It is Tile's content gap, `--sk-space-2`.
    */
   .sk-details__summary {
     display: grid;
     grid-template-columns: minmax(0, 1fr) auto;
     gap: 0 var(--sk-details-gap);
     align-items: center;
+    align-content: center;
     min-block-size: var(--size-control-lg);
     padding: var(--sk-details-padding);
     cursor: pointer;
@@ -75,9 +83,23 @@
     grid-column: 1;
   }
 
+  .sk-details__summary > * + :not(.sk-details__indicator) {
+    margin-block-start: var(--sk-details-heading-gap);
+  }
+
+  /*
+   * A heading in the summary sits at the line-height a Tile title actually RENDERS at, so the two
+   * halves of Accordion measure the same. That is 1.5 today, not the heading scale's snug 1.35:
+   * tile.css asks for `var(--line-height-heading)`, a token nothing declares, and the title falls
+   * back to the inherited body line-height. If tile.css moves to the real heading token, this goes.
+   */
+  .sk-details .sk-details__summary > .sk-heading {
+    --sk-heading-line-height: var(--font-line-height-body);
+  }
+
   .sk-details__summary > .sk-details__indicator {
     grid-column: 2;
-    grid-row: 1 / -1;
+    grid-row: 1 / span 12;
   }
 
   .sk-details__summary::-webkit-details-marker {
@@ -203,7 +225,112 @@
     border-block-start: 1px solid var(--color-border-subtle);
   }
 
+  /*
+   * ── APPEARANCE ───────────────────────────────────────────────────────────────────────────────
+   *
+   * The same two constructions Accordion draws on its frame (accordion.css), for the same reason:
+   * the SURFACE wears them and nothing moves, because the summary is the control. The surface is the
+   * group's frame when there is a group, and the details itself when it stands alone; a details
+   * inside a group ignores its own value, since drawing a second frame inside the first is exactly
+   * what the group exists to prevent.
+   */
+  .sk-details,
+  .sk-details-group {
+    --sk-details-depth: 4px;
+    --sk-details-brutalist-offset-inline: 5px;
+    --sk-details-brutalist-offset-block: 5px;
+    /* Accordion's own values (accordion.css): the two halves of one contract are one material. */
+    --sk-details-frost-opacity: 82%;
+    --sk-details-frost-blur: 16px;
+    --sk-details-frost-saturation: 150%;
+  }
+
+  :is(.sk-details:not(.sk-details-group > *), .sk-details-group)[data-appearance="tactile"] {
+    box-shadow:
+      0 var(--sk-details-depth) 0 light-dark(
+        color-mix(in oklab, var(--color-bg-surface) 76%, var(--color-text-primary)),
+        color-mix(in oklab, var(--color-bg-surface-sunken) 55%, black)
+      ),
+      0 calc(var(--sk-details-depth) + 1px) 4px light-dark(
+        color-mix(in oklab, var(--color-text-primary) 14%, transparent),
+        color-mix(in oklab, var(--color-bg-surface-sunken) 44%, transparent)
+      );
+  }
+
+  :is(.sk-details:not(.sk-details-group > *), .sk-details-group)[data-appearance="brutalist"] {
+    /* Button's ink: black in both modes, at plain's border width (see button.css). */
+    --brutalist-black: oklch(from var(--shadow-lg) l c h / 1);
+    --sk-details-brutalist-edge: var(--brutalist-black);
+    --sk-details-brutalist-shadow: var(--brutalist-black);
+    --brutalist-direction: 1;
+    border-color: var(--sk-details-brutalist-edge);
+    box-shadow:
+      calc(round(nearest, var(--sk-details-brutalist-offset-inline), 1px) * var(--brutalist-direction))
+      round(nearest, var(--sk-details-brutalist-offset-block), 1px)
+      0 var(--sk-details-brutalist-shadow);
+  }
+
+  :is(.sk-details:not(.sk-details-group > *), .sk-details-group)[data-appearance="brutalist"]:dir(rtl) {
+    --brutalist-direction: -1;
+  }
+
+  /* The group's dividers go to the construction's ink too: one slab ruled into sections. */
+  .sk-details-group[data-appearance="brutalist"] > .sk-details + .sk-details {
+    border-block-start-color: var(--sk-details-brutalist-edge);
+  }
+
+  /* FROSTED: Button's material, on the same surface brutalist uses (the group's frame, or a lone
+   * details). Opaque baseline first; the see-through sheet only where it can be done honestly. */
+  :is(.sk-details:not(.sk-details-group > *), .sk-details-group)[data-appearance="frosted"] {
+    --frost-highlight: light-dark(
+      color-mix(in oklab, var(--color-bg-surface) 90%, transparent),
+      color-mix(in oklab, var(--color-text-primary) 22%, transparent)
+    );
+    border-color: color-mix(in oklab, currentColor 18%, transparent);
+    box-shadow: inset 0 1px 0 var(--frost-highlight), 0 1px 2px var(--shadow-sm);
+  }
+
+  .sk-details-group[data-appearance="frosted"] > .sk-details + .sk-details {
+    border-block-start-color: color-mix(in oklab, currentColor 12%, transparent);
+  }
+
+  @supports (backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px)) {
+    @media (prefers-reduced-transparency: no-preference) {
+      :is(.sk-details:not(.sk-details-group > *), .sk-details-group)[data-appearance="frosted"] {
+        background:
+          linear-gradient(to bottom, color-mix(in oklab, var(--frost-highlight) 60%, transparent), transparent 12rem),
+          color-mix(in oklab, var(--color-bg-surface) var(--sk-details-frost-opacity), transparent);
+        -webkit-backdrop-filter: blur(var(--sk-details-frost-blur)) saturate(var(--sk-details-frost-saturation));
+        backdrop-filter: blur(var(--sk-details-frost-blur)) saturate(var(--sk-details-frost-saturation));
+      }
+
+      :is(.sk-details:not(.sk-details-group > *), .sk-details-group)[data-appearance="frosted"] .sk-details__content {
+        --sk-details-content-bg: color-mix(in oklab, var(--color-bg-surface-sunken) 72%, transparent);
+      }
+    }
+  }
+
+  [data-contrast="high"] :is(.sk-details, .sk-details-group)[data-appearance="frosted"],
+  :is(.sk-details, .sk-details-group)[data-appearance="frosted"][data-contrast="high"] {
+    background: var(--color-bg-surface);
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+
+  @media (prefers-contrast: more) {
+    :root:not([data-contrast]) :is(.sk-details, .sk-details-group)[data-appearance="frosted"] {
+      background: var(--color-bg-surface);
+      -webkit-backdrop-filter: none;
+      backdrop-filter: none;
+    }
+  }
+
   @media (forced-colors: active) {
+    :is(.sk-details, .sk-details-group)[data-appearance] {
+      box-shadow: none;
+      backdrop-filter: none;
+    }
+
     .sk-details {
       border-color: CanvasText;
       background: Canvas;

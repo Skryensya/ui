@@ -123,6 +123,18 @@ describe("Accordion React contracts", () => {
     expect(ui.getByRole("heading", { name: "High" }).getAttribute("aria-level")).toBe("6");
   });
 
+  /* No twin: appearance is paint on authored markup, and the Vanilla enhancer never writes it. */
+  it("writes appearance on the frame only, plain when omitted", () => {
+    const { container, unmount } = render(<Accordion appearance="brutalist">{items}</Accordion>);
+    const root = container.querySelector<HTMLElement>("[data-sk-accordion]")!;
+    expect(root.dataset.appearance).toBe("brutalist");
+    expect(root.querySelector("[data-appearance]")).toBeNull();
+    unmount();
+
+    const plain = render(<Accordion>{items}</Accordion>);
+    expect(plain.container.querySelector<HTMLElement>("[data-sk-accordion]")!.dataset.appearance).toBe("plain");
+  });
+
   it("keeps exactly one item open in single mode", async () => {
     const onValueChange = vi.fn();
     const ui = render(<Accordion defaultValue="runtime" onValueChange={onValueChange}>{items}</Accordion>);
