@@ -214,7 +214,8 @@ describe("UserSelect Vanilla contracts", () => {
 
     fireEvent.click(trigger);
     await waitFor(() => expect(empty.hidden).toBe(false));
-    expect(empty.textContent).toBe("No users available");
+    expect(empty.querySelector("[data-sk-user-select-empty-title]")!.textContent).toBe("No users available");
+    expect((empty.querySelector("[data-sk-user-select-empty-hint]") as HTMLElement).hidden).toBe(true);
   });
 
   it("says a search has no matches, distinctly from an empty roster", async () => {
@@ -225,7 +226,9 @@ describe("UserSelect Vanilla contracts", () => {
     type(search, "zzz");
 
     await waitFor(() => expect(empty.hidden).toBe(false));
-    expect(empty.textContent).toBe('No users found for "zzz"');
+    expect(empty.querySelector("[data-sk-user-select-empty-title]")!.textContent).toBe('No users match "zzz"');
+    expect(empty.querySelector("[data-sk-user-select-empty-hint]")!.textContent).toBe("Try another name or email.");
+    expect(shown(root)).toHaveLength(0);
   });
 
   it("destroying the mount stops the machine", async () => {
@@ -272,5 +275,19 @@ describe("UserSelect Vanilla contracts", () => {
       expect(box.getAttribute("aria-hidden")).toBe("true");
       expect(item.querySelectorAll("[data-sk-user-select-check]")).toHaveLength(1);
     }
+  });
+
+  it("opens with the selected rows first, and keeps that order while it stays open", async () => {
+    const root = mount(markup().replace('id="assignees"', 'id="assignees" data-value="john marco"'));
+    const { trigger } = parts(root);
+    const order = () => [...root.querySelectorAll<HTMLElement>("[data-sk-select-item]")].map((n) => n.dataset.value);
+
+    fireEvent.click(trigger);
+    await waitFor(() => expect(trigger.getAttribute("aria-expanded")).toBe("true"));
+    expect(order().slice(0, 2)).toEqual(["marco", "john"]);
+
+    fireEvent.click(root.querySelector('[data-sk-select-item][data-value="jane"]') as HTMLElement);
+    await waitFor(() => expect(trigger.getAttribute("aria-label")).toContain("3 users"));
+    expect(order().slice(0, 2)).toEqual(["marco", "john"]);
   });
 });

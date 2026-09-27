@@ -150,14 +150,46 @@
   // field above and the footer below stay put while the list moves.
   listEl.classList.add("sk-scrollbar");
 
+  // Inside the list, after the rows, so "nothing matches" sits in the list's own fixed height
+  // instead of under an empty well. `role="presentation"`: a listbox's children are options.
   let emptyEl = root.querySelector<HTMLElement>(own.empty);
   if (!emptyEl) {
     emptyEl = document.createElement("div");
     emptyEl.className = comboboxParts.empty;
     emptyEl.setAttribute(userSelectAttrs.empty, "");
     emptyEl.setAttribute("role", "presentation");
-    content.append(emptyEl);
+    listEl.append(emptyEl);
   }
+  // Icon, title and hint; authored ones are kept, missing ones are generated.
+  const emptyPart = (attr: string, make: () => HTMLElement) => {
+    let node = emptyEl!.querySelector<HTMLElement>(`[${attr}]`);
+    if (!node) {
+      node = make();
+      node.setAttribute(attr, "");
+      emptyEl!.append(node);
+    }
+    return node;
+  };
+  // An authored empty row without the structure (bare text) is emptied; the parts below replace it.
+  if (!emptyEl.querySelector(own.emptyTitle)) emptyEl.replaceChildren();
+  const emptyIconEl = emptyPart(userSelectAttrs.emptyIcon, () => {
+    const node = document.createElement("span");
+    node.setAttribute("aria-hidden", "true");
+    return node;
+  });
+  const emptyTitleEl = emptyPart(userSelectAttrs.emptyTitle, () => document.createElement("span"));
+  const emptyHintEl = emptyPart(userSelectAttrs.emptyHint, () => document.createElement("span"));
+  let emptyIconName = "";
+  const setEmptyIcon = (name: string) => {
+    if (name === emptyIconName) return;
+    emptyIconName = name;
+    // A fresh placeholder each time: the page's icon set upgrades new `data-sk-icon` nodes, not a
+    // renamed one it already upgraded.
+    const glyph = document.createElement("span");
+    glyph.dataset.skIcon = name;
+    glyph.dataset.skIconSize = "md";
+    emptyIconEl.replaceChildren(glyph);
+  };
 
   let statusEl = root.querySelector<HTMLElement>(own.status);
   if (!statusEl) {
@@ -206,7 +238,7 @@
   const emptyMessage = () =>
     authored.length === 0
       ? label("empty")
-      : label("noResults", { query });
+      : label("noResults", { query: query.trim() });
 
   const resultText = (count: number) => {
     if (count === 0) return emptyMessage();
@@ -224,10 +256,23 @@
   // `$state.raw`: always REPLACED wholesale by a filter pass, never mutated row by row.
   let visible = $state.raw(authored);
   let query = $state("");
+  /*
+   * SELECTED FIRST, decided when the list OPENS and then held: whoever was already picked sits at the
+   * top, but ticking a row while the list is open never moves it out from under the pointer. The rows
+   * are moved, not rebuilt, so every authored node and its bindings stay the same element.
+   */
+  let ordered: Authored[] = authored;
+  const pinSelected = (values: readonly string[]) => {
+    const first = new Set(values);
+    ordered = [...authored.filter((row) => first.has(row.item.value)), ...authored.filter((row) => !first.has(row.item.value))];
+    listEl!.prepend(...ordered.map((row) => row.node));
+    // A new order starts at its top: a scroll offset kept from the last open would land mid-list.
+    listEl!.scrollTop = 0;
+  };
 
   const filterAuthoredItems = (value: string) => {
     const needle = userSelectSearchKey(value.trim());
-    const next = needle ? authored.filter((row) => row.key.includes(needle)) : authored;
+    const next = needle ? ordered.filter((row) => row.key.includes(needle)) : ordered;
     visible = next;
     const shown = new Set(next);
     for (const row of authored) {
@@ -388,7 +433,11 @@
       props: () => ({}),
       after: (node) => {
         node.hidden = visible.length > 0;
-        node.textContent = emptyMessage();
+        const noRoster = authored.length === 0;
+        setEmptyIcon(noRoster ? "user" : "search");
+        emptyTitleEl.textContent = emptyMessage();
+        emptyHintEl.textContent = noRoster ? "" : label("noResultsHint");
+        emptyHintEl.hidden = noRoster;
       },
     },
     {
@@ -488,6 +537,10 @@
   // Closing spends the search, same as Combobox's typed query: the next open starts from the full
   // roster, never a stale filtered view.
   $effect(() => {
+    if (!wasOpen && api.open) {
+      pinSelected(api.value);
+      filterAuthoredItems(query);
+    }
     if (wasOpen && !api.open) {
       query = "";
       search.value = "";

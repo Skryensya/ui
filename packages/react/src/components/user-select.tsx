@@ -112,15 +112,29 @@ export function UserSelect({
 
   // Folded once per user list, not once per row per keystroke, same precedent as Combobox's own
   // `searchKeys`. Name and email searched together so "mar" and an email-local-part both match.
+  /*
+   * SELECTED FIRST, decided when the list OPENS and then held: whoever was already picked sits at the
+   * top where they can be reviewed at a glance, but ticking or unticking a row while the list is open
+   * never moves it out from under the pointer. The next open re-sorts.
+   */
+  const listRef = useRef<HTMLDivElement>(null);
+  const valueRef = useRef(value);
+  valueRef.current = value;
+  const [pinned, setPinned] = useState<readonly string[]>(() => value);
+  const orderedUsers = useMemo(() => {
+    const first = new Set(pinned);
+    return [...users.filter((user) => first.has(user.id)), ...users.filter((user) => !first.has(user.id))];
+  }, [users, pinned]);
+
   const searchKeys = useMemo(
-    () => users.map((user) => userSelectSearchKey(`${user.name} ${user.email ?? ""}`)),
+    () => new Map(users.map((user) => [user.id, userSelectSearchKey(`${user.name} ${user.email ?? ""}`)])),
     [users],
   );
   const filteredUsers = useMemo(() => {
     const needle = userSelectSearchKey(query.trim());
-    if (!needle) return users;
-    return users.filter((_, index) => searchKeys[index]!.includes(needle));
-  }, [users, query, searchKeys]);
+    if (!needle) return orderedUsers;
+    return orderedUsers.filter((user) => searchKeys.get(user.id)!.includes(needle));
+  }, [orderedUsers, query, searchKeys]);
 
   const collection = useMemo(
     () =>
@@ -156,7 +170,10 @@ export function UserSelect({
     // The search is the user's work-in-progress the same way Combobox's typed query is; closing
     // clears it so the next open starts from the full roster, never a stale filtered view.
     onOpenChange(details: { open: boolean }) {
-      if (!details.open) setQuery("");
+      // A new order starts at its top: a scroll offset kept from the last open would land mid-list.
+      if (details.open) listRef.current?.scrollTo({ top: 0 });
+      if (details.open) setPinned(valueRef.current);
+      else setQuery("");
     },
   });
   const api = select.connect(service, normalizeProps);
@@ -291,14 +308,23 @@ export function UserSelect({
                 <Loader size="sm" /> {label("loading")}
               </div>
             ) : users.length === 0 ? (
-              <div className={comboboxParts.empty} role="presentation">
-                {label("empty")}
+              <div className={comboboxParts.empty} role="presentation" {...{ [userSelectAttrs.empty]: "" }}>
+                <span aria-hidden="true" {...{ [userSelectAttrs.emptyIcon]: "" }}>
+                  <Icon name="user" />
+                </span>
+                <span {...{ [userSelectAttrs.emptyTitle]: "" }}>{label("empty")}</span>
               </div>
             ) : (
               // `tabIndex={-1}`: `getListProps()` defaults it to 0 for a STANDALONE listbox
               // (`composite: false`'s other use case), but here the search input is the one real tab
               // stop; the list is reached through it via `aria-activedescendant`, never by Tab.
-              <div {...api.getListProps()} className="sk-scrollbar" tabIndex={-1} {...{ [userSelectAttrs.list]: "" }}>
+              <div
+                {...api.getListProps()}
+                className="sk-scrollbar"
+                ref={listRef}
+                tabIndex={-1}
+                {...{ [userSelectAttrs.list]: "" }}
+              >
                 {filteredUsers.map((user) => (
                   <div
                     {...api.getItemProps({ item: user })}
@@ -330,8 +356,12 @@ export function UserSelect({
                   </div>
                 ))}
                 {filteredUsers.length === 0 ? (
-                  <div className={comboboxParts.empty} role="presentation">
-                    {label("noResults", { query })}
+                  <div className={comboboxParts.empty} role="presentation" {...{ [userSelectAttrs.empty]: "" }}>
+                    <span aria-hidden="true" {...{ [userSelectAttrs.emptyIcon]: "" }}>
+                      <Icon name="search" />
+                    </span>
+                    <span {...{ [userSelectAttrs.emptyTitle]: "" }}>{label("noResults", { query: query.trim() })}</span>
+                    <span {...{ [userSelectAttrs.emptyHint]: "" }}>{label("noResultsHint")}</span>
                   </div>
                 ) : null}
               </div>

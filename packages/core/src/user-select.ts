@@ -31,6 +31,9 @@ export const userSelectAttrs = {
   clear: "data-sk-user-select-clear",
   unselected: "data-sk-user-select-unselected",
   check: "data-sk-user-select-check",
+  emptyIcon: "data-sk-user-select-empty-icon",
+  emptyTitle: "data-sk-user-select-empty-title",
+  emptyHint: "data-sk-user-select-empty-hint",
 } as const;
 
 export type UserSelectPart = keyof typeof userSelectAttrs;
@@ -60,7 +63,9 @@ export const userSelectLabels = {
   selectedMany: "{count} {term} selected",
   clear: "Clear all",
   empty: "No {term} available",
-  noResults: 'No {term} found for "{query}"',
+  /** The search came back empty: the title, then a hint under it. */
+  noResults: 'No {term} match "{query}"',
+  noResultsHint: "Try another name or email.",
   loading: "Loading {term}...",
   result: "1 result available",
   results: "{count} results available",

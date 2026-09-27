@@ -6,6 +6,18 @@
 surface: "a874bca51d502f1d"
 entries:
   - date: 2026-09-27
+    kind: bugfix
+    es:
+      title: Las filas ocultas se ocultan de verdad
+      body: >-
+        Una fila con <code>hidden</code> (filtrada por una búsqueda) seguía visible porque <code>display:
+        grid</code> le ganaba al <code>display: none</code> del navegador. Ahora desaparece.
+    en:
+      title: Hidden rows actually hide
+      body: >-
+        A row marked <code>hidden</code> (filtered out by a search) stayed visible because <code>display:
+        grid</code> outranked the browser's own <code>display: none</code>. It now disappears.
+  - date: 2026-09-27
     kind: feature
     target: variant
     es:

@@ -564,6 +564,12 @@
     white-space: nowrap;
   }
 
+  /* A filtered-out row is `hidden`, and the `display: grid` above outranks the UA's own
+   * `[hidden] { display: none }`, so without this a row a search excluded stayed on screen. */
+  .sk-select__item[hidden] {
+    display: none;
+  }
+
   .sk-select__item-indicator {
     visibility: hidden;
   }
@@ -648,6 +654,48 @@
     --sk-checkbox-bg: var(--sk-checkbox-disabled-bg);
     --sk-checkbox-fg: var(--sk-checkbox-disabled-fg);
     --sk-checkbox-border-color: var(--sk-checkbox-disabled-border-color);
+  }
+
+  /*
+   * NOTHING MATCHES: an icon, what happened and what to try, centered in the list's own fixed height
+   * so the box does not collapse under the search field while someone is still typing.
+   */
+  [data-sk-user-select-list]:not(:has(> .sk-select__item:not([hidden]))) {
+    align-content: center;
+  }
+
+  .sk-select__content [data-sk-user-select-empty] {
+    display: grid;
+    justify-items: center;
+    gap: var(--space-stack-xs);
+    padding: var(--space-inset-md);
+    text-align: center;
+  }
+
+  .sk-select__content [data-sk-user-select-empty][hidden] {
+    display: none;
+  }
+
+  .sk-select__content [data-sk-user-select-empty-icon] {
+    display: inline-grid;
+    place-items: center;
+    inline-size: var(--size-control-md);
+    block-size: var(--size-control-md);
+    margin-block-end: var(--space-stack-xs);
+    border-radius: var(--radius-pill);
+    background: var(--color-bg-surface-sunken);
+    color: var(--color-text-secondary);
+  }
+
+  .sk-select__content [data-sk-user-select-empty-title] {
+    color: var(--color-text-primary);
+    font-weight: var(--font-weight-label);
+    overflow-wrap: anywhere;
+  }
+
+  .sk-select__content [data-sk-user-select-empty-hint] {
+    color: var(--color-text-secondary);
+    font-size: var(--font-size-caption);
   }
 
   /* Rows with the footer under them keep the footer's text on the rows' own text line. */
