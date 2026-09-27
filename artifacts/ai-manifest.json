@@ -11359,6 +11359,19 @@
         "date": null,
         "entries": [
           {
+            "date": "2026-09-26",
+            "en": {
+              "body": "<code>brutalist</code> draws the panel with a black edge and a hard offset in place of the soft elevation (the overpull extension still follows the edge); <code>frosted</code> makes it see-through, opaque wherever the material cannot be trusted. No <code>tactile</code>: a drawer is dragged, never pressed.",
+              "title": "Vaul and Drawer add plain, brutalist and frosted appearances"
+            },
+            "es": {
+              "body": "<code>brutalist</code> dibuja el panel con borde negro y una sombra dura en lugar de la elevación suave (la extensión de arrastre sigue al borde); <code>frosted</code> lo hace translúcido, opaco donde el material no es fiable. Sin <code>tactile</code>: un cajón se arrastra, no se presiona.",
+              "title": "Vaul y Drawer suman appearance plain, brutalist y frosted"
+            },
+            "kind": "feature",
+            "target": "appearance"
+          },
+          {
             "date": "2026-09-17",
             "en": {
               "body": "The contract declares <code>authoredAttrs</code>: <code>data-sk-vaul-close</code> is authored on any control inside the panel (usually a Button) and closes it. The hook used to live only inside the template, so a Button carrying it failed with <code>unknown-attr</code>.",
@@ -51251,6 +51264,16 @@
       ],
       "id": "vaul",
       "options": {
+        "appearance": {
+          "attr": "data-appearance",
+          "default": "plain",
+          "type": "enum",
+          "values": [
+            "plain",
+            "brutalist",
+            "frosted"
+          ]
+        },
         "buttonIconOnly": {
           "attr": "data-icon-only",
           "default": false,
@@ -51421,7 +51444,8 @@
             "open",
             "label",
             "draggable",
-            "dismissThreshold"
+            "dismissThreshold",
+            "appearance"
           ],
           "react": {
             "from": "@skryensya/react/vaul",
@@ -51516,7 +51540,8 @@
             "open",
             "label",
             "draggable",
-            "dismissThreshold"
+            "dismissThreshold",
+            "appearance"
           ],
           "react": {
             "from": "@skryensya/react/vaul",
@@ -52405,7 +52430,7 @@
     "working": "0.0.1"
   },
   "schemaVersion": "2.3",
-  "sourceHash": "c007ebf6a2369029",
+  "sourceHash": "cf12feb0eaf095fb",
   "vocabulary": {
     "a11y": "When `when` holds, one of `requiresOneOf` must be given: an option, a raw attribute, a filled slot, or a child signature by name.",
     "atLeastOneOf": "At least one member of each group counts: a filled slot, a boolean option set to true, or an option other than its default.",

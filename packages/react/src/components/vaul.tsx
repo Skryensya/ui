@@ -21,7 +21,12 @@ import { useModalTabWrap } from "./modal-tab-wrap.js";
 import { useVaulDrag } from "./vaul-drag.js";
 
 /* Derived, never restated: the defaults live in the contract. */
-const { dismissThreshold: thresholdOption, draggable: draggableOption, edge: edgeOption } = vaulContract.options;
+const {
+  appearance: appearanceOption,
+  dismissThreshold: thresholdOption,
+  draggable: draggableOption,
+  edge: edgeOption,
+} = vaulContract.options;
 
 /*
  * VAUL: a modal panel anchored to an edge.
@@ -37,6 +42,8 @@ const { dismissThreshold: thresholdOption, draggable: draggableOption, edge: edg
  * the grab to match.
  */
 export type VaulProps = Omit<DialogHTMLAttributes<HTMLDialogElement>, "aria-label" | "children"> & {
+  /** How the panel is drawn: `plain`, `brutalist` or `frosted`. */
+  appearance?: (typeof appearanceOption.values)[number];
   children: ReactNode;
   /**
    * Names the panel. Required: `showModal()` gives the root an implicit `role="dialog"` whether or
@@ -66,6 +73,7 @@ export type VaulProps = Omit<DialogHTMLAttributes<HTMLDialogElement>, "aria-labe
 };
 
 function VaulRoot({
+  appearance = appearanceOption.default,
   children,
   className,
   dismissThreshold = thresholdOption.default,
@@ -122,6 +130,7 @@ function VaulRoot({
       ref={setRef}
       aria-label={label}
       className={[vaulParts.root, drawer ? "sk-drawer" : undefined, className].filter(Boolean).join(" ")}
+      data-appearance={appearance}
       data-edge={edge}
       /* The scope markers the enhancer writes at runtime, so both bindings carry them at rest,
          the same pair Tile's binding renders rather than waiting for a script. */
