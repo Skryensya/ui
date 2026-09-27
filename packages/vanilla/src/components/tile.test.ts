@@ -50,6 +50,12 @@ describe("Tile factories", () => {
     expect(defaultLink.dataset.padding).toBeUndefined();
     expect(createTileButton().dataset.padding).toBeUndefined();
   });
+
+  it("writes appearance on TileLink and TileButton, plain when omitted", () => {
+    expect(createTileLink({ href: "/usage", appearance: "tactile" }).dataset.appearance).toBe("tactile");
+    expect(createTileButton({ appearance: "brutalist" }).dataset.appearance).toBe("brutalist");
+    expect(createTileButton().dataset.appearance).toBe("plain");
+  });
 });
 
 describe("Tile class helpers", () => {

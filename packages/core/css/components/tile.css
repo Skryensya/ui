@@ -38,6 +38,11 @@
      */
     --sk-tile-title-weight: var(--font-weight-heading);
     --sk-tile-shadow: var(--elevation-flat);
+    /* Appearance geometry, the same public magnitudes Button publishes for its own tactile and
+     * brutalist expressions (see APPEARANCE below). Inert on a plain tile. */
+    --sk-tile-depth: 4px;
+    --sk-tile-brutalist-offset-inline: 5px;
+    --sk-tile-brutalist-offset-block: 5px;
 
     box-sizing: border-box;
     display: grid;
@@ -385,6 +390,171 @@
     cursor: progress;
   }
 
+  /*
+   * ── APPEARANCE ───────────────────────────────────────────────────────────────────────────────
+   *
+   * The same axis Button publishes, with the same three values and the same meaning: how the
+   * surface is PHYSICALLY expressed, never what it does. Plain is everything above, matched by
+   * absence. Tile has no variant or tone, so each appearance has exactly one construction here,
+   * derived from the surface and the border the tile already paints.
+   *
+   * ONE TRAVEL PER APPEARANCE. Rest, hover and press only move `--tactile-travel` or
+   * `--brutalist-travel`; `box-shadow` is declared once per appearance, so no state rule can
+   * disagree with another about the shape of the shadow.
+   *
+   * ONLY A CONTROL TRAVELS. Hover and press match `.sk-tile--interactive` (link, button and the
+   * three wrapped inputs). An expandable tile is a container, its trigger is the control, so the
+   * section wears the construction at rest and never moves: a whole card sinking while its own
+   * panel animates open would be two motions answering one click.
+   *
+   * SELECTION IS NOT PRESS, the same decision Button makes for `aria-pressed`: a checked tile keeps
+   * its rest depth and is told apart by paint (the selected border colour, carried into the ledge
+   * and the offset), and it still travels when clicked again.
+   *
+   * No `translate` at rest, only while hovered or pressed: any transform other than `none` makes the
+   * tile a containing block for fixed-position descendants, which a tile hosting a menu would feel.
+   */
+  .sk-tile:where(.sk-tile--interactive, .sk-tile--expandable)[data-appearance="tactile"] {
+    --tactile-travel: 0;
+    /* Dark reaches past the sunken surface toward black: a tile's face sits almost ON the sunken
+     * tone in dark mode, so Button's surface-to-sunken mix left a ledge nobody could see. */
+    --tactile-ledge: light-dark(
+      color-mix(in oklab, var(--color-bg-surface) 76%, var(--color-text-primary)),
+      color-mix(in oklab, var(--color-bg-surface-sunken) 55%, black)
+    );
+    --tactile-haze: light-dark(
+      color-mix(in oklab, var(--color-text-primary) 14%, transparent),
+      color-mix(in oklab, var(--color-bg-surface-sunken) 44%, transparent)
+    );
+    --tactile-drop: calc(var(--sk-tile-depth) * (1 - var(--tactile-travel)));
+    background:
+      linear-gradient(
+        to bottom,
+        light-dark(color-mix(in oklab, white 10%, transparent), color-mix(in oklab, white 6%, transparent)),
+        transparent 55%,
+        light-dark(color-mix(in oklab, black 5%, transparent), color-mix(in oklab, black 8%, transparent))
+      ),
+      var(--color-bg-surface);
+    box-shadow:
+      0 var(--tactile-drop) 0 var(--tactile-ledge),
+      0 calc(var(--tactile-drop) + 1px) 4px var(--tactile-haze);
+    transition:
+      border-color var(--motion-state-change-duration) var(--motion-state-change-easing),
+      box-shadow var(--motion-feedback-duration) var(--motion-feedback-easing),
+      translate var(--motion-feedback-duration) var(--motion-feedback-easing);
+  }
+
+  .sk-tile:where(.sk-tile--interactive, .sk-tile--expandable)[data-appearance="tactile"]:where(
+      [data-state="checked"],
+      [data-state="selected"],
+      :has(> input:checked),
+      :has(> input[type="checkbox"]:indeterminate)
+    ) {
+    --tactile-ledge: light-dark(
+      color-mix(in oklab, var(--sk-color-border-selected) 72%, var(--color-text-primary)),
+      color-mix(in oklab, var(--sk-color-border-selected) 56%, black)
+    );
+  }
+
+  @media (any-hover: hover) {
+    .sk-tile--interactive[data-appearance="tactile"]:hover:not(:disabled, :has(> input:disabled)) {
+      --tactile-travel: 0.18;
+      translate: 0 calc(var(--sk-tile-depth) * var(--tactile-travel));
+    }
+  }
+
+  .sk-tile--interactive[data-appearance="tactile"]:active:not(:disabled, :has(> input:disabled)) {
+    --tactile-travel: 0.86;
+    --tactile-haze: transparent;
+    translate: 0 calc(var(--sk-tile-depth) * var(--tactile-travel));
+  }
+
+  /* Disabled outranks appearance: a shallower, colourless ledge, so an unavailable tile still reads
+   * as the same object without promising a press. The travel rules above never match it. */
+  .sk-tile:where(.sk-tile--interactive, .sk-tile--expandable)[data-appearance="tactile"]:is(
+      [data-disabled]:disabled,
+      :has(> input:disabled)
+    ) {
+    --tactile-travel: 0.45;
+    --tactile-ledge: var(--color-border-subtle);
+    --tactile-haze: color-mix(in oklab, var(--color-text-disabled) 18%, transparent);
+  }
+
+  /*
+   * BRUTALIST: a flat face, a drawn edge and a zero-blur offset the face travels into. The formula
+   * is Button's, read line for line (button.css documents the why): the visible offset is
+   * `offset × (1 - travel)` in whole pixels, never below 1px while there is an offset at all, and
+   * while pressed the face moves by exactly what the offset gave up, so the far edge stays put.
+   * Logical offsets, mirrored under RTL. No radius, density or elevation token is touched.
+   *
+   * BUTTON'S INK, BLACK IN BOTH MODES: a shadow is dark whatever the page is, and text-primary turns
+   * near-white in dark and reads as a glow. Same source as button.css, the system's own shadow colour
+   * at full alpha. The border keeps plain's width, so switching appearance never resizes the tile.
+   */
+  .sk-tile:where(.sk-tile--interactive, .sk-tile--expandable)[data-appearance="brutalist"] {
+    --brutalist-black: oklch(from var(--shadow-lg) l c h / 1);
+    --sk-tile-brutalist-edge: var(--brutalist-black);
+    --sk-tile-brutalist-shadow: var(--brutalist-black);
+    --brutalist-direction: 1;
+    --brutalist-travel: 0;
+    --brutalist-reach: 1;
+    --brutalist-offset-inline: round(nearest, calc(var(--sk-tile-brutalist-offset-inline) * var(--brutalist-reach)), 1px);
+    --brutalist-offset-block: round(nearest, calc(var(--sk-tile-brutalist-offset-block) * var(--brutalist-reach)), 1px);
+    --brutalist-shadow-inline: max(
+      min(var(--brutalist-offset-inline), 1px),
+      round(nearest, calc(var(--brutalist-offset-inline) * (1 - var(--brutalist-travel))), 1px)
+    );
+    --brutalist-shadow-block: max(
+      min(var(--brutalist-offset-block), 1px),
+      round(nearest, calc(var(--brutalist-offset-block) * (1 - var(--brutalist-travel))), 1px)
+    );
+    border-color: var(--sk-tile-brutalist-edge);
+    box-shadow: calc(var(--brutalist-shadow-inline) * var(--brutalist-direction)) var(--brutalist-shadow-block) 0
+      var(--sk-tile-brutalist-shadow);
+    transition:
+      border-color var(--motion-state-change-duration) var(--motion-state-change-easing),
+      box-shadow var(--motion-feedback-duration) var(--motion-feedback-easing),
+      translate var(--motion-feedback-duration) var(--motion-feedback-easing);
+  }
+
+  .sk-tile:where(.sk-tile--interactive, .sk-tile--expandable)[data-appearance="brutalist"]:dir(rtl) {
+    --brutalist-direction: -1;
+  }
+
+  /* The offset stays black; only the EDGE of a chosen tile turns the selected colour, because the
+   * border is the one whole-card selection cue plain has, and dropping it would leave the indicator
+   * alone to say which card is on. */
+  .sk-tile:where(.sk-tile--interactive, .sk-tile--expandable)[data-appearance="brutalist"]:where(
+      [data-state="checked"],
+      [data-state="selected"],
+      :has(> input:checked),
+      :has(> input[type="checkbox"]:indeterminate)
+    ) {
+    --sk-tile-brutalist-edge: var(--sk-color-border-selected);
+  }
+
+  @media (any-hover: hover) {
+    .sk-tile--interactive[data-appearance="brutalist"]:hover:not(:disabled, :has(> input:disabled)) {
+      --brutalist-travel: -0.25;
+    }
+  }
+
+  .sk-tile--interactive[data-appearance="brutalist"]:active:not(:disabled, :has(> input:disabled)) {
+    --brutalist-travel: 0.8;
+    translate:
+      calc((var(--brutalist-offset-inline) - var(--brutalist-shadow-inline)) * var(--brutalist-direction))
+      calc(var(--brutalist-offset-block) - var(--brutalist-shadow-block));
+  }
+
+  .sk-tile:where(.sk-tile--interactive, .sk-tile--expandable)[data-appearance="brutalist"]:is(
+      [data-disabled]:disabled,
+      :has(> input:disabled)
+    ) {
+    --brutalist-reach: 0.4;
+    --sk-tile-brutalist-edge: var(--color-border-default);
+    --sk-tile-brutalist-shadow: var(--color-border-subtle);
+  }
+
   /* Height + padding grow from zero together so the box eases open from nothing (border-box keeps the
    * measured --height honest, no overshoot to snap back). The content fade is a separate, inner-only
    * animation so the surface stays solid while its text arrives. */
@@ -411,6 +581,76 @@
     }
   }
 
+  /*
+   * FROSTED: Button's material (button.css documents the contract). The baseline is the plain
+   * surface, opaque, plus a fine edge and a lit top rim; only a browser with backdrop-filter and no
+   * reduced-transparency preference gets the see-through sheet. No travel: a card that goes glassy
+   * and also sinks would be two expressions at once. Selection keeps plain's accent border.
+   */
+  .sk-tile:where(.sk-tile--interactive, .sk-tile--expandable)[data-appearance="frosted"] {
+    --sk-tile-frost-opacity: 72%;
+    --sk-tile-frost-blur: 16px;
+    --sk-tile-frost-saturation: 150%;
+    --sk-tile-border-color: color-mix(in oklab, currentColor 18%, transparent);
+    --frost-highlight: light-dark(
+      color-mix(in oklab, var(--color-bg-surface) 70%, transparent),
+      color-mix(in oklab, var(--color-text-primary) 18%, transparent)
+    );
+    --frost-wash: linear-gradient(to bottom, color-mix(in oklab, var(--frost-highlight) 45%, transparent), transparent 40%);
+    background: var(--frost-wash) var(--color-bg-surface);
+    box-shadow: inset 0 1px 0 var(--frost-highlight), 0 1px 2px var(--shadow-sm);
+  }
+
+  .sk-tile:where(.sk-tile--interactive, .sk-tile--expandable)[data-appearance="frosted"]:where(
+      [data-state="checked"],
+      [data-state="selected"],
+      :has(> input:checked),
+      :has(> input[type="checkbox"]:indeterminate)
+    ) {
+    --sk-tile-border-color: var(--sk-color-border-selected);
+  }
+
+  .sk-tile:where(.sk-tile--interactive, .sk-tile--expandable)[data-appearance="frosted"]:is(
+      [data-disabled]:disabled,
+      :has(> input:disabled)
+    ) {
+    --sk-tile-border-color: var(--sk-color-border-subtle);
+    --frost-highlight: transparent;
+  }
+
+  @supports (backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px)) {
+    @media (prefers-reduced-transparency: no-preference) {
+      .sk-tile:where(.sk-tile--interactive, .sk-tile--expandable)[data-appearance="frosted"] {
+        background:
+          var(--frost-wash)
+          color-mix(in oklab, var(--color-bg-surface) var(--sk-tile-frost-opacity), transparent);
+        -webkit-backdrop-filter: blur(var(--sk-tile-frost-blur)) saturate(var(--sk-tile-frost-saturation));
+        backdrop-filter: blur(var(--sk-tile-frost-blur)) saturate(var(--sk-tile-frost-saturation));
+      }
+
+      /* The revealed panel is part of the same sheet: sunken, but still see-through. */
+      .sk-tile--expandable[data-appearance="frosted"] > .sk-tile__expandable-content:not([hidden]) {
+        background: color-mix(in oklab, var(--color-bg-surface-sunken) 55%, transparent);
+      }
+    }
+  }
+
+  /* High contrast outranks the material, as it does for Button: back to the opaque baseline. */
+  [data-contrast="high"] .sk-tile[data-appearance="frosted"],
+  .sk-tile[data-appearance="frosted"][data-contrast="high"] {
+    background: var(--color-bg-surface);
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+
+  @media (prefers-contrast: more) {
+    :root:not([data-contrast]) .sk-tile[data-appearance="frosted"] {
+      background: var(--color-bg-surface);
+      -webkit-backdrop-filter: none;
+      backdrop-filter: none;
+    }
+  }
+
   @media (forced-colors: active) {
     .sk-tile:where(.sk-tile--interactive, .sk-tile--expandable) {
       --sk-tile-border-color: CanvasText;
@@ -429,6 +669,40 @@
     .sk-tile:where(.sk-tile--interactive, .sk-tile--expandable):has(> input:disabled) {
       --sk-tile-border-color: GrayText;
       color: GrayText;
+    }
+
+    /* Every appearance degrades to the plain system surface: the UA drops box-shadow here anyway, and
+     * a face that travels with nothing to travel into reads as a jump. The border above still
+     * carries selection (Highlight) and disabled (GrayText). */
+    .sk-tile:where(.sk-tile--interactive, .sk-tile--expandable):is([data-appearance="tactile"], [data-appearance="brutalist"], [data-appearance="frosted"]) {
+      --sk-tile-border-color: CanvasText;
+      border-color: var(--sk-tile-border-color);
+      background: Canvas;
+      box-shadow: none;
+      backdrop-filter: none;
+    }
+
+    /* The appearance rules set their own edge colours at a higher specificity than the plain
+     * forced-colors rules above, so selection and disabled are restated for them here. */
+    .sk-tile:where(.sk-tile--interactive, .sk-tile--expandable):is([data-appearance="tactile"], [data-appearance="brutalist"], [data-appearance="frosted"]):is(
+        [data-state="checked"],
+        [data-state="selected"],
+        :has(> input:checked),
+        :has(> input[type="checkbox"]:indeterminate)
+      ) {
+      --sk-tile-border-color: Highlight;
+    }
+
+    .sk-tile:where(.sk-tile--interactive, .sk-tile--expandable):is([data-appearance="tactile"], [data-appearance="brutalist"], [data-appearance="frosted"]):is(
+        [data-disabled]:disabled,
+        :has(> input:disabled)
+      ) {
+      --sk-tile-border-color: GrayText;
+    }
+
+    /* Same guard as the travel rules, so this ties their specificity and wins on order. */
+    .sk-tile--interactive:is([data-appearance="tactile"], [data-appearance="brutalist"]):is(:hover, :active):not(:disabled, :has(> input:disabled)) {
+      translate: none;
     }
   }
 }
