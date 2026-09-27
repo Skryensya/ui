@@ -62,16 +62,16 @@ export const productTree = (t: Translate, locale: "es" | "en"): UsageTree => {
             children: {
               contract: "wrapper",
               signature: "Wrapper",
-              options: { wrapperSize: "lg", gutter: "md", gutterDesktop: "lg" },
+              options: { wrapperSize: "lg", gutter: "md", gutterExpanded: "lg" },
               children: {
                 contract: "layout",
                 signature: "Stack",
-                options: { gap: "lg", gapDesktop: "xl" },
+                options: { gap: "lg", gapExpanded: "xl" },
                 children: [
                   {
                     contract: "layout",
                     signature: "Grid",
-                    options: { columns: "2", gap: "md", gapDesktop: "lg", responsive: true },
+                    options: { columns: "2", gap: "md", gapExpanded: "lg", responsive: true },
                     children: [
                       {
                         contract: "image-frame",

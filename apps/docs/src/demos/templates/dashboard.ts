@@ -218,7 +218,7 @@ export const dashboardTree = (t: Translate, locale: "es" | "en"): UsageTree => {
             children: {
               contract: "layout",
               signature: "Stack",
-              options: { gap: "md", gapDesktop: "lg" },
+              options: { gap: "md", gapExpanded: "lg" },
               children: [
                 {
                   contract: "layout",

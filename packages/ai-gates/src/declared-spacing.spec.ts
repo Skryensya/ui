@@ -3,20 +3,20 @@ import { waitForStage } from "./fixtures.js";
 
 /*
  * DECISION 30, measured rather than asserted from the markup: the plain spacing option is what a
- * phone gets, the `-desktop` one is what a screen at or past the `desktop` breakpoint (52rem) gets,
- * and a layout that declared no desktop side keeps its phone value at every width. The symmetry
+ * phone gets, the `Expanded` one is what a screen at or past the `desktop` breakpoint (52rem) gets,
+ * and a layout that declared no expanded side keeps its compact value at every width. The symmetry
  * gate proves both bindings write the same attributes; this proves the stylesheet reads them.
  */
 
 const MARKUP = `
-  <div id="wrapper" class="sk-wrapper" data-size="md" data-gutter="sm" data-gutter-desktop="xl">
-    <div id="box" class="sk-box" data-padding="sm" data-padding-desktop="xl" data-surface="raised">
-      <div id="stack" class="sk-stack" data-gap="xs" data-gap-desktop="xl"><p>a</p><p>b</p></div>
-      <div id="inline" class="sk-inline" data-gap="xs" data-gap-desktop="lg"><span>a</span><span>b</span></div>
-      <div id="grid" class="sk-grid" data-gap="xs" data-gap-desktop="lg"><span>a</span></div>
+  <div id="wrapper" class="sk-wrapper" data-size="md" data-gutter="sm" data-gutter-expanded="xl">
+    <div id="box" class="sk-box" data-padding="sm" data-padding-expanded="xl" data-surface="raised">
+      <div id="stack" class="sk-stack" data-gap="xs" data-gap-expanded="xl"><p>a</p><p>b</p></div>
+      <div id="inline" class="sk-inline" data-gap="xs" data-gap-expanded="lg"><span>a</span><span>b</span></div>
+      <div id="grid" class="sk-grid" data-gap="xs" data-gap-expanded="lg"><span>a</span></div>
     </div>
-    <div id="hero" class="sk-hero" data-padding="sm" data-padding-desktop="xl"><h2>Hero</h2></div>
-    <footer id="footer" class="sk-footer" data-padding="lg" data-padding-desktop="xl">Footer</footer>
+    <div id="hero" class="sk-hero" data-padding="sm" data-padding-expanded="xl"><h2>Hero</h2></div>
+    <footer id="footer" class="sk-footer" data-padding="lg" data-padding-expanded="xl">Footer</footer>
     <footer id="footer-undeclared" class="sk-footer" data-padding="lg">Footer</footer>
     <div id="box-undeclared" class="sk-box" data-padding="sm">Plain</div>
   </div>
@@ -69,7 +69,7 @@ async function measure(page: Page, width: number) {
   });
 }
 
-test("a phone gets the plain spacing option, however the desktop side is declared", async ({ page }) => {
+test("a phone gets the plain spacing option, however the expanded side is declared", async ({ page }) => {
   const m = await measure(page, 390);
   expect(m.wrapper).toBe(m.tokens.insetSm);
   expect(m.box).toBe(m.tokens.insetSm);
@@ -83,7 +83,7 @@ test("a phone gets the plain spacing option, however the desktop side is declare
   expect(m.footerUndeclared).toBe(m.tokens.insetMd);
 });
 
-test("from the desktop breakpoint up the declared desktop side replaces it", async ({ page }) => {
+test("from the desktop breakpoint up the declared expanded side replaces it", async ({ page }) => {
   const m = await measure(page, 1280);
   expect(m.wrapper).toBe(m.tokens.insetXl);
   expect(m.box).toBe(m.tokens.insetXl);

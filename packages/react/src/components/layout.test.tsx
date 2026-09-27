@@ -158,26 +158,26 @@ describe("layout primitives", () => {
   });
 
   /*
-   * DECISION 30: the desktop side of a spacing choice is declared, never inferred. Each `*Desktop`
-   * prop lands on its own `data-*-desktop` attribute, and leaving it off writes nothing, so the plain
+   * DECISION 30: the expanded side of a spacing choice is declared, never inferred. Each `*Expanded`
+   * prop lands on its own `data-*-expanded` attribute, and leaving it off writes nothing, so the plain
    * value holds at every width exactly as it did before the prop existed.
    */
-  it("writes each declared desktop spacing beside its phone value", () => {
+  it("writes each declared expanded spacing beside its compact value", () => {
     const ui = render(
       <>
-        <Box padding="md" paddingDesktop="xl">Card</Box>
-        <Stack gap="md" gapDesktop="xl">Stack</Stack>
-        <Inline gap="sm" gapDesktop="lg">Inline</Inline>
-        <Grid gap="sm" gapDesktop="lg">Grid</Grid>
-        <Hero padding="md" paddingDesktop="xl">Pitch</Hero>
-        <Footer padding="md" paddingDesktop="lg">Footer</Footer>
-        <Wrapper gutter="md" gutterDesktop="lg">Column</Wrapper>
+        <Box padding="md" paddingExpanded="xl">Card</Box>
+        <Stack gap="md" gapExpanded="xl">Stack</Stack>
+        <Inline gap="sm" gapExpanded="lg">Inline</Inline>
+        <Grid gap="sm" gapExpanded="lg">Grid</Grid>
+        <Hero padding="md" paddingExpanded="xl">Pitch</Hero>
+        <Footer padding="md" paddingExpanded="lg">Footer</Footer>
+        <Wrapper gutter="md" gutterExpanded="lg">Column</Wrapper>
       </>,
     );
 
     const attrs = (selector: string, name: string) => {
       const el = ui.container.querySelector(selector);
-      return [el?.getAttribute(`data-${name}`), el?.getAttribute(`data-${name}-desktop`)];
+      return [el?.getAttribute(`data-${name}`), el?.getAttribute(`data-${name}-expanded`)];
     };
     expect(attrs(".sk-box", "padding")).toEqual(["md", "xl"]);
     expect(attrs(".sk-stack", "gap")).toEqual(["md", "xl"]);
@@ -188,7 +188,7 @@ describe("layout primitives", () => {
     expect(attrs(".sk-wrapper", "gutter")).toEqual(["md", "lg"]);
   });
 
-  it("writes no desktop attribute, and no Wrapper gutter, when none was declared", () => {
+  it("writes no expanded attribute, and no Wrapper gutter, when none was declared", () => {
     const ui = render(
       <>
         <Box padding="lg">Card</Box>
@@ -197,9 +197,9 @@ describe("layout primitives", () => {
       </>,
     );
 
-    expect(ui.container.querySelector(".sk-box")?.hasAttribute("data-padding-desktop")).toBe(false);
-    expect(ui.container.querySelector(".sk-stack")?.hasAttribute("data-gap-desktop")).toBe(false);
+    expect(ui.container.querySelector(".sk-box")?.hasAttribute("data-padding-expanded")).toBe(false);
+    expect(ui.container.querySelector(".sk-stack")?.hasAttribute("data-gap-expanded")).toBe(false);
     expect(ui.container.querySelector(".sk-wrapper")?.hasAttribute("data-gutter")).toBe(false);
-    expect(ui.container.querySelector(".sk-wrapper")?.hasAttribute("data-gutter-desktop")).toBe(false);
+    expect(ui.container.querySelector(".sk-wrapper")?.hasAttribute("data-gutter-expanded")).toBe(false);
   });
 });
