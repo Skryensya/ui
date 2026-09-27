@@ -71,6 +71,16 @@ const enhancerAttributes = [
    */
   "data-sk-treegrid-colgroup",
   "data-sk-treegrid-disclosure",
+  // Table's own `<colgroup>` marker, for the same reason as Treegrid's just above.
+  "data-sk-table-colgroup",
+  /*
+   * Carousel's mounting marker. Its mount mark is an OPTION (`mounted`, `data-sk-carousel`), not a
+   * signature `mount`, because `mounted={false}` must leave it off; declaring it as a mount would have
+   * the emitter write it unconditionally. So `templateMounts` cannot derive it. `-ready` is NOT
+   * skipped: carousel.css keys the native controls and mouse drag off it, so both bindings must
+   * write it, and exempting it once hid React drawing both sets of controls.
+   */
+  "data-sk-carousel-mounting",
 ];
 
 /** Every `mount` declared below a signature's root, in template order. */

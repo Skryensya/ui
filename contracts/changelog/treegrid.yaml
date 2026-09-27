@@ -5,6 +5,17 @@
 # hash.
 surface: "3b0f0353626c7981"
 entries:
+  - date: 2026-09-27
+    kind: rework
+    target: Treegrid
+    es:
+      title: "El resize de columnas usa el splitter de Zag en ambos bindings"
+      body: >-
+        El mismo resizer que Table, en React y en vanilla. <code>aria-valuemin</code> y <code>aria-valuemax</code> son los mínimos reales del par, y el marcador pasa a ser <code>data-sk-column-resizer</code> en ambos.
+    en:
+      title: "Column resizing uses the Zag splitter in both bindings"
+      body: >-
+        The same resizer as Table, in React and vanilla. <code>aria-valuemin</code> and <code>aria-valuemax</code> are the pair's real floors, and the marker is <code>data-sk-column-resizer</code> in both.
   - date: 2026-09-17
     kind: feature
     es:

@@ -5,6 +5,17 @@
 # hash.
 surface: "6dee59dcc21a5938"
 entries:
+  - date: 2026-09-27
+    kind: rework
+    target: Carousel
+    es:
+      title: "Carousel en React corre su propia máquina"
+      body: >-
+        Antes React solo renderizaba el markup y esperaba al enhancer de vanilla: sin ese runtime no había controles. Ahora usa la misma máquina de Zag, con la misma configuración, ids y etiquetas que vanilla.
+    en:
+      title: "Carousel in React runs its own machine"
+      body: >-
+        React used to render only the markup and wait for the vanilla enhancer: without that runtime there were no controls. It now runs the same Zag machine, with the same configuration, ids and labels as vanilla.
   - date: 2026-09-17
     kind: feature
     es:

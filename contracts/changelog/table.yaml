@@ -5,6 +5,17 @@
 # hash.
 surface: "cf6a3e82cfca9eb8"
 entries:
+  - date: 2026-09-27
+    kind: rework
+    target: Table
+    es:
+      title: "El resize de columnas usa el splitter de Zag en ambos bindings"
+      body: >-
+        React deja su resizer propio por el mismo de vanilla. <code>aria-valuemin</code> y <code>aria-valuemax</code> son ahora los mínimos reales del par, no 0 y 100. Se quita un <code>aria-controls</code> que apuntaba a ids inexistentes, y el ancho inicial se mide sin el padding del contenedor.
+    en:
+      title: "Column resizing uses the Zag splitter in both bindings"
+      body: >-
+        React drops its own resizer for vanilla's. <code>aria-valuemin</code> and <code>aria-valuemax</code> are now the pair's real floors, not 0 and 100. An <code>aria-controls</code> pointing at missing ids is gone, and the initial width is measured without the wrapper's padding.
   - date: 2026-08-25
     kind: bugfix
     target: Table

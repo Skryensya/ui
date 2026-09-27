@@ -22,10 +22,9 @@
  *   - `accordion` had zero importers anywhere. `Accordion.svelte` says in prose that it runs one
  *     `@zag-js/collapsible` per item INSTEAD of a single accordion machine, and the re-export
  *     simply outlived that decision.
- * `carousel` and `splitter` stay, with a note: each has exactly ONE adapter today (both Vanilla),
- * so by ADR-0010's own "two adapters" test they are not yet earning this place. Moving them to
- * Vanilla was tried and reverted: pnpm re-resolves a dependency that moves package, and the 30-day
- * `minimumReleaseAge` quarantine then refuses it. An exclusion exists for CVEs, not for tidiness.
+ * `carousel` and `splitter` used to be the exceptions, one Vanilla adapter each; both have their
+ * React adapter now (React's Carousel, and the ColumnResizer Table and Treegrid share), so both
+ * meet the cut.
  */
 
 export * as tabs from "@zag-js/tabs";

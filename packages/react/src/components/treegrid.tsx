@@ -1,14 +1,10 @@
 import { computeTreegridVisibility, defaultTreegridColumnWeights, diffTreegridVisibility, resolveColumnResize, resolveTreegridKey, treegridParts, TREEGRID_EXIT_FALLBACK_MS, TREEGRID_MIN_COLUMN_WIDTH as MIN_COLUMN_WIDTH, type TreegridFocus, type TreegridRowTransition, treegridContract, treegridEvents } from "@skryensya/core/treegrid";
+import { contentBoxWidth } from "@skryensya/core/splitter-dom";
 
 /* Derived, never restated: the default lives in the contract. */
 const { resizableColumns: resizableColumnsOption } = treegridContract.options;
-import {
-  hasCrossedDragThreshold,
-  resolveSplitterKey,
-  resolveWeightedColumnWidths,
-  splitterDirectionSign,
-  splitterValuePercent,
-} from "@skryensya/core/splitter";
+import { resolveWeightedColumnWidths } from "@skryensya/core/splitter";
+import { ColumnResizer } from "./column-resizer.js";
 import {
   Children,
   cloneElement,
@@ -16,12 +12,12 @@ import {
   isValidElement,
   useContext,
   useEffect,
+  useId,
   useMemo,
   useRef,
   useState,
   type HTMLAttributes,
   type KeyboardEvent,
-  type PointerEvent as ReactPointerEvent,
   type ReactElement,
   type ReactNode,
   type RefObject,
@@ -68,6 +64,8 @@ type TreegridContextValue = {
   resizeLabel?: string;
   columnWidths: readonly number[];
   setColumnWidths: (widths: readonly number[]) => void;
+  /** The table's id, which the resizers' machines derive their own ids and `data-ownedby` from. */
+  rootId: string;
 };
 
 const TreegridContext = createContext<TreegridContextValue | null>(null);
@@ -145,8 +143,11 @@ export function Treegrid({
   resizableColumns = resizableColumnsOption.default,
   resizeLabel,
   columnWeights,
+  id,
   ...props
 }: TreegridProps) {
+  const generatedId = useId();
+  const rootId = id ?? generatedId;
   // Lazy initializer: seeded from each row's OWN authored `expanded`, read once. A branch that
   // opens by default (`expanded` true) must not silently start collapsed just because state starts
   // empty. Later toggles only ever touch this map, never `readRows` again.
@@ -231,7 +232,8 @@ export function Treegrid({
       return true;
     };
 
-    if (seedFrom(measured.getBoundingClientRect().width)) return;
+    // The content box, the same box the observer below reports (`@skryensya/core/splitter-dom`).
+    if (seedFrom(contentBoxWidth(measured))) return;
     const observer = new ResizeObserver((entries) => {
       if (seedFrom(entries[0]?.contentRect.width ?? 0)) observer.disconnect();
     });
@@ -452,6 +454,7 @@ export function Treegrid({
     resizeLabel,
     columnWidths,
     setColumnWidths,
+    rootId,
   };
 
   return (
@@ -461,7 +464,10 @@ export function Treegrid({
         aria-label={label}
         className={cx(`${treegridParts.root} sk-table`, className)}
         data-resizable-columns={resizableColumns ? "" : undefined}
+        data-resize-label={resizeLabel}
         data-sk-treegrid=""
+        // Named only when a resizer needs it, as the vanilla enhancer names it.
+        id={resizableColumns && colCount >= 2 ? rootId : id}
         onKeyDown={onKeyDown}
         ref={tableRef}
         role="treegrid"
@@ -531,105 +537,21 @@ export function TreegridColumnHeader(publicProps: TreegridColumnHeaderProps) {
 }
 
 /**
- * The drag edge for one column boundary: never authored, `TreegridColumnHeader` renders one when
- * `resizableColumns` is on and this is not the last column. Same shape as `SidebarResizeHandle`
- * (press-vs-drag threshold, RTL sign, `resolveSplitterKey` for the keyboard), reading/writing the
- * PAIR of widths on either side of it through context instead of a single CSS-clamped property -
- * `resolveColumnResize`'s own doc explains why a column resize cannot be one clamped value.
+ * The drag edge for one column boundary, the shared `ColumnResizer` (Table renders the same one).
+ * Treegrid's reset is an even split of the pair, Sidebar's own Enter/dblclick convention.
  */
 function TreegridColumnResizer({ columnIndex, headerRef }: { columnIndex: number; headerRef: RefObject<HTMLTableCellElement | null> }) {
   const context = useTreegridContext("ColumnResizer");
-  const dragRef = useRef<{ pointerId: number; startX: number; startWidths: readonly number[]; dragging: boolean } | null>(
-    null,
-  );
-
-  const before = context.columnWidths[columnIndex] ?? 0;
-  const after = context.columnWidths[columnIndex + 1] ?? 0;
-  const total = before + after;
-  const max = Math.max(MIN_COLUMN_WIDTH, total - MIN_COLUMN_WIDTH);
-  const percent = splitterValuePercent(before, MIN_COLUMN_WIDTH, max);
-
-  const direction = () =>
-    splitterDirectionSign(headerRef.current && getComputedStyle(headerRef.current).direction === "rtl" ? "rtl" : "ltr");
-
-  /** From the CURRENT widths. Right for a discrete keyboard press, wrong for a continuous drag
-   * (see `onPointerMove` below, which resolves against the drag's OWN start snapshot instead). */
-  const resize = (delta: number) => {
-    context.setColumnWidths(resolveColumnResize({ widths: context.columnWidths, index: columnIndex, delta, min: MIN_COLUMN_WIDTH }));
-  };
-
-  /** Back to an even split between this pair. The keyboard's answer to double-click, same as
-   * Sidebar's own Enter/dblclick reset. */
-  const reset = () => resize(total / 2 - before);
-
   return (
-    <div
-      aria-label={context.resizeLabel ? `${context.resizeLabel}: ${headerRef.current?.textContent?.trim() ?? ""}` : ""}
-      aria-orientation="vertical"
-      aria-valuemax={100}
-      aria-valuemin={0}
-      aria-valuenow={percent}
-      className={cx(treegridParts.columnResizer, "sk-splitter")}
-      data-sk-treegrid-column-resizer
-      onDoubleClick={reset}
-      onKeyDown={(event: KeyboardEvent<HTMLDivElement>) => {
-        const action = resolveSplitterKey(event);
-        switch (action.kind) {
-          case "delta":
-            resize(action.delta * direction());
-            break;
-          case "home":
-            resize(-Infinity);
-            break;
-          case "end":
-            resize(Infinity);
-            break;
-          case "reset":
-            event.preventDefault();
-            reset();
-            return;
-          case "none":
-            return;
-        }
-        event.preventDefault();
-      }}
-      onLostPointerCapture={(event: ReactPointerEvent<HTMLDivElement>) => {
-        if (!dragRef.current) return;
-        dragRef.current = null;
-        event.currentTarget.removeAttribute("data-dragging");
-      }}
-      onPointerDown={(event: ReactPointerEvent<HTMLDivElement>) => {
-        if (event.button !== 0) return;
-        event.preventDefault();
-        dragRef.current = { pointerId: event.pointerId, startX: event.clientX, startWidths: context.columnWidths, dragging: false };
-        event.currentTarget.setPointerCapture(event.pointerId);
-      }}
-      onPointerMove={(event: ReactPointerEvent<HTMLDivElement>) => {
-        const drag = dragRef.current;
-        if (!drag || drag.pointerId !== event.pointerId) return;
-        if (!drag.dragging) {
-          if (!hasCrossedDragThreshold(drag.startX, event.clientX)) return;
-          drag.dragging = true;
-          drag.startX = event.clientX;
-          drag.startWidths = context.columnWidths;
-          event.currentTarget.setAttribute("data-dragging", "");
-        }
-        context.setColumnWidths(
-          resolveColumnResize({
-            widths: drag.startWidths,
-            index: columnIndex,
-            delta: (event.clientX - drag.startX) * direction(),
-            min: MIN_COLUMN_WIDTH,
-          }),
-        );
-      }}
-      onPointerUp={(event: ReactPointerEvent<HTMLDivElement>) => {
-        const drag = dragRef.current;
-        if (!drag || drag.pointerId !== event.pointerId) return;
-        event.currentTarget.releasePointerCapture(event.pointerId);
-      }}
-      role="separator"
-      tabIndex={0}
+    <ColumnResizer
+      className={treegridParts.columnResizer}
+      headerRef={headerRef}
+      index={columnIndex}
+      label={context.resizeLabel ? `${context.resizeLabel}: ${headerRef.current?.textContent?.trim() ?? ""}` : ""}
+      min={MIN_COLUMN_WIDTH}
+      rootId={context.rootId}
+      setWidths={context.setColumnWidths}
+      widths={context.columnWidths}
     />
   );
 }

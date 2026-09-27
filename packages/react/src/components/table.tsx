@@ -3,14 +3,11 @@ import { tableParts, tableContract } from "@skryensya/core/table";
 /* Derived, never restated: the default lives in the contract. */
 const { stickyColumn: stickyColumnOption, stickyHeader: stickyHeaderOption, resizableColumns: resizableColumnsOption, scope: scopeOption } = tableContract.options;
 import {
-  hasCrossedDragThreshold,
-  resolveColumnResize,
-  resolveSplitterKey,
   resolveWeightedColumnWidths,
-  splitterDirectionSign,
-  splitterValuePercent,
   SPLITTER_MIN_COLUMN_WIDTH as MIN_COLUMN_WIDTH,
 } from "@skryensya/core/splitter";
+import { contentBoxWidth } from "@skryensya/core/splitter-dom";
+import { ColumnResizer } from "./column-resizer.js";
 import {
   Children,
   cloneElement,
@@ -19,11 +16,10 @@ import {
   isValidElement,
   useContext,
   useEffect,
+  useId,
   useRef,
   useState,
   type HTMLAttributes,
-  type KeyboardEvent,
-  type PointerEvent as ReactPointerEvent,
   type ReactElement,
   type ReactNode,
   type RefObject,
@@ -46,6 +42,8 @@ const cx = (base: string, className: string | undefined) => (className ? `${base
  * the pointer.
  */
 type TableContextValue = {
+  /** The table's id, which the resizers' machines derive their own ids and `data-ownedby` from. */
+  rootId: string;
   resizableColumns: boolean;
   resizeLabel?: string;
   columnWidths: readonly number[];
@@ -191,8 +189,11 @@ export function Table({
   resizableColumns = resizableColumnsOption.default,
   resizeLabel,
   columnWeights,
+  id,
   ...props
 }: TableProps) {
+  const generatedId = useId();
+  const rootId = id ?? generatedId;
   const tableRef = useRef<HTMLTableElement | null>(null);
   const [columnWidths, setColumnWidths] = useState<readonly number[]>([]);
 
@@ -252,7 +253,8 @@ export function Table({
       return true;
     };
 
-    if (seedFrom(measured.getBoundingClientRect().width)) return;
+    // The content box, the same box the observer below reports (`@skryensya/core/splitter-dom`).
+    if (seedFrom(contentBoxWidth(measured))) return;
     const observer = new ResizeObserver((entries) => {
       if (seedFrom(entries[0]?.contentRect.width ?? 0)) observer.disconnect();
     });
@@ -295,7 +297,9 @@ export function Table({
     return () => observer.disconnect();
   }, [resizableColumns]);
 
-  const context: TableContextValue = { resizableColumns, resizeLabel, columnWidths, setColumnWidths, tableRef };
+  const context: TableContextValue = { rootId, resizableColumns, resizeLabel, columnWidths, setColumnWidths, tableRef };
+  // Named only when a resizer needs it, as the vanilla enhancer names it: nothing else points at it.
+  const resizes = resizableColumns && readHeadColumnCount(children) >= 2;
 
   return (
     <TableContext.Provider value={context}>
@@ -303,6 +307,8 @@ export function Table({
         {...props}
         className={cx(tableParts.root, className)}
         data-resizable-columns={resizableColumns ? "" : undefined}
+        data-resize-label={resizeLabel}
+        id={resizes ? rootId : id}
         ref={tableRef}
       >
         {resizableColumns && columnWidths.length > 0 ? (
@@ -408,113 +414,26 @@ export function TableHeader(publicProps: TableHeaderProps) {
 
 /**
  * The drag edge for one column boundary: never authored, `TableHeader` renders one when
- * `resizableColumns` is on, this header is inside the head row, and it is not the last column.
- * Identical shape to Treegrid's own `TreegridColumnResizer`: same shared primitive
- * (`@skryensya/core/splitter`), same press-vs-drag threshold, RTL sign, keyboard mapping. The two
- * differ only in WHERE the width pair lives (this reads/writes `Table`'s own context instead of
- * Treegrid's).
+ * `resizableColumns` is on, this header is inside the head row, and it is not the last column. The
+ * shared `ColumnResizer` (Treegrid renders the same one); what is Table's own is the reset, which
+ * fits the column to its content, the spreadsheet double-click convention.
  */
-function TableColumnResizer({
-  columnIndex,
-  headerRef,
-}: {
-  columnIndex: number;
-  headerRef: RefObject<HTMLTableCellElement | null>;
-}) {
+function TableColumnResizer({ columnIndex, headerRef }: { columnIndex: number; headerRef: RefObject<HTMLTableCellElement | null> }) {
   const context = useTableContext("ColumnResizer");
-  const dragRef = useRef<{ pointerId: number; startX: number; startWidths: readonly number[]; dragging: boolean } | null>(
-    null,
-  );
-
-  const before = context.columnWidths[columnIndex] ?? 0;
-  const after = context.columnWidths[columnIndex + 1] ?? 0;
-  const total = before + after;
-  const max = Math.max(MIN_COLUMN_WIDTH, total - MIN_COLUMN_WIDTH);
-  const percent = splitterValuePercent(before, MIN_COLUMN_WIDTH, max);
-
-  const direction = () =>
-    splitterDirectionSign(headerRef.current && getComputedStyle(headerRef.current).direction === "rtl" ? "rtl" : "ltr");
-
-  const resize = (delta: number) => {
-    context.setColumnWidths(resolveColumnResize({ widths: context.columnWidths, index: columnIndex, delta, min: MIN_COLUMN_WIDTH }));
-  };
-
-  // Fits the column to its own content. The spreadsheet double-click convention, distinct from
-  // Treegrid's own even-split reset (see `measureColumnContentWidth`'s own doc, above).
-  const reset = () => {
-    const table = context.tableRef.current;
-    const target = table ? measureColumnContentWidth(table, columnIndex, MIN_COLUMN_WIDTH) : total / 2;
-    resize(target - before);
-  };
-
   return (
-    <div
-      aria-label={context.resizeLabel ? `${context.resizeLabel}: ${headerRef.current?.textContent?.trim() ?? ""}` : ""}
-      aria-orientation="vertical"
-      aria-valuemax={100}
-      aria-valuemin={0}
-      aria-valuenow={percent}
-      className={cx(tableParts.columnResizer, "sk-splitter")}
-      data-sk-column-resizer
-      onDoubleClick={reset}
-      onKeyDown={(event: KeyboardEvent<HTMLDivElement>) => {
-        const action = resolveSplitterKey(event);
-        switch (action.kind) {
-          case "delta":
-            resize(action.delta * direction());
-            break;
-          case "home":
-            resize(-Infinity);
-            break;
-          case "end":
-            resize(Infinity);
-            break;
-          case "reset":
-            event.preventDefault();
-            reset();
-            return;
-          case "none":
-            return;
-        }
-        event.preventDefault();
+    <ColumnResizer
+      className={tableParts.columnResizer}
+      headerRef={headerRef}
+      index={columnIndex}
+      label={context.resizeLabel ? `${context.resizeLabel}: ${headerRef.current?.textContent?.trim() ?? ""}` : ""}
+      min={MIN_COLUMN_WIDTH}
+      resetWidth={() => {
+        const table = context.tableRef.current;
+        return table ? measureColumnContentWidth(table, columnIndex, MIN_COLUMN_WIDTH) : undefined;
       }}
-      onLostPointerCapture={(event: ReactPointerEvent<HTMLDivElement>) => {
-        if (!dragRef.current) return;
-        dragRef.current = null;
-        event.currentTarget.removeAttribute("data-dragging");
-      }}
-      onPointerDown={(event: ReactPointerEvent<HTMLDivElement>) => {
-        if (event.button !== 0) return;
-        event.preventDefault();
-        dragRef.current = { pointerId: event.pointerId, startX: event.clientX, startWidths: context.columnWidths, dragging: false };
-        event.currentTarget.setPointerCapture(event.pointerId);
-      }}
-      onPointerMove={(event: ReactPointerEvent<HTMLDivElement>) => {
-        const drag = dragRef.current;
-        if (!drag || drag.pointerId !== event.pointerId) return;
-        if (!drag.dragging) {
-          if (!hasCrossedDragThreshold(drag.startX, event.clientX)) return;
-          drag.dragging = true;
-          drag.startX = event.clientX;
-          drag.startWidths = context.columnWidths;
-          event.currentTarget.setAttribute("data-dragging", "");
-        }
-        context.setColumnWidths(
-          resolveColumnResize({
-            widths: drag.startWidths,
-            index: columnIndex,
-            delta: (event.clientX - drag.startX) * direction(),
-            min: MIN_COLUMN_WIDTH,
-          }),
-        );
-      }}
-      onPointerUp={(event: ReactPointerEvent<HTMLDivElement>) => {
-        const drag = dragRef.current;
-        if (!drag || drag.pointerId !== event.pointerId) return;
-        event.currentTarget.releasePointerCapture(event.pointerId);
-      }}
-      role="separator"
-      tabIndex={0}
+      rootId={context.rootId}
+      setWidths={context.setColumnWidths}
+      widths={context.columnWidths}
     />
   );
 }

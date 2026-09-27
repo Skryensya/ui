@@ -11,6 +11,7 @@ import {
   type TreegridRowMeta,
 } from "@skryensya/core/treegrid";
 import { parseColumnWeights, resolveWeightedColumnWidths } from "@skryensya/core/splitter";
+import { contentBoxWidth } from "@skryensya/core/splitter-dom";
 import { createConnectMount } from "../runtime/svelte-hydrate.js";
 import { attachColumnResizer, createColumnWidths, watchColumnLayout } from "../splitter.svelte.js";
 
@@ -115,7 +116,7 @@ function applyColumnGroup(root: HTMLElement, rows: readonly RowEntry[]): HTMLTab
    */
   const widths = resizable
     ? resolveWeightedColumnWidths({
-        total: measured.getBoundingClientRect().width,
+        total: contentBoxWidth(measured),
         weights: readColumnWeights(root, colCount),
         min: MIN_COLUMN_WIDTH,
       })
