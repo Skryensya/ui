@@ -1,5 +1,6 @@
 import type { UsageTree } from "@skryensya/core/usage-tree";
 import type { Translate } from "../../i18n";
+import { siteFooter } from "./shared";
 import { blankImage } from "../../examples/card-data";
 
 /*
@@ -53,190 +54,193 @@ export const productTree = (t: Translate, locale: "es" | "en"): UsageTree => {
         signature: "Stack",
         options: { gap: "none" },
         attrs: { class: "page-shell" },
-        children: {
-          contract: "layout",
-          signature: "Main",
-          attrs: { class: "page-shell__main" },
-          children: {
-            contract: "wrapper",
-            signature: "Wrapper",
-            options: { wrapperSize: "lg" },
+        children: [
+          {
+            contract: "layout",
+            signature: "Main",
+            attrs: { class: "page-shell__main" },
             children: {
-              contract: "layout",
-              signature: "Stack",
-              options: { gap: "xl" },
-              children: [
-                {
-                  contract: "layout",
-                  signature: "Grid",
-                  options: { columns: "2", gap: "lg", multicol: true },
-                  children: [
-                    {
-                      contract: "image-frame",
-                      signature: "ImageFrame",
-                      options: {
-                        aspect: "1/1",
-                        src: blankImage(800, 800, "a8a29e"),
-                        alt: t("demo.product.imageAlt"),
-                      },
-                      slots: {
-                        caption: {
-                          contract: "media-gradient",
-                          signature: "MediaCaption",
-                          children: [
-                            { contract: "media-gradient", signature: "MediaGradient" },
-                            {
-                              contract: "button",
-                              signature: "Button.action",
-                              options: { variant: "translucent", size: "sm" },
-                              children: [
-                                {
-                                  contract: "icon",
-                                  signature: "Icon",
-                                  options: { name: "maximize", size: "sm" },
-                                },
-                                t("demo.product.gallery"),
-                              ],
-                            },
-                          ],
-                        },
-                      },
-                    },
-                    {
-                      contract: "layout",
-                      signature: "Stack",
-                      options: { gap: "md", align: "start" },
-                      children: [
-                        {
-                          contract: "badge",
-                          signature: "Badge",
-                          options: { tone: "success" },
-                          children: t("demo.product.inStock"),
-                        },
-                        {
-                          contract: "typography",
-                          signature: "Heading",
-                          options: { headingSize: "h2", flush: true },
-                          children: t("demo.product.name"),
-                        },
-                        {
-                          contract: "rating",
-                          signature: "RatingDisplay",
-                          options: { value: 4.6, label: t("demo.product.ratingLabel") },
-                          slots: {
-                            valueText: locale === "es" ? "4,6" : "4.6",
-                            count: t("demo.product.ratingCount"),
-                          },
-                        },
-                        {
-                          contract: "typography",
-                          signature: "Text",
-                          options: { size: "lg", weight: "emphasis" },
-                          children: money("89"),
-                        },
-                        {
-                          contract: "typography",
-                          signature: "Text",
-                          options: { tone: "secondary" },
-                          children: t("demo.product.summary"),
-                        },
-                        {
-                          contract: "number-field",
-                          signature: "NumberField",
-                          options: {
-                            name: "quantity",
-                            defaultValue: "1",
-                            min: 1,
-                            max: 5,
-                            step: 1,
-                            incrementLabel: t("demo.product.increment"),
-                            decrementLabel: t("demo.product.decrement"),
-                          },
-                          slots: { label: t("demo.product.quantity") },
-                        },
-                        {
-                          contract: "layout",
-                          signature: "Inline",
-                          options: { gap: "sm", wrap: true },
-                          children: [
-                            {
-                              contract: "button",
-                              signature: "Button.action",
-                              options: { appearance: "tactile", tone: "accent", size: "lg" },
-                              children: t("demo.product.addToCart"),
-                            },
-                            {
-                              contract: "button",
-                              signature: "Button.action",
-                              options: { variant: "soft", size: "lg" },
-                              children: [
-                                {
-                                  contract: "icon",
-                                  signature: "Icon",
-                                  options: { name: "like", size: "sm" },
-                                },
-                                t("demo.product.save"),
-                              ],
-                            },
-                          ],
-                        },
-                      ],
-                    },
-                  ],
-                },
-                {
-                  contract: "tabs",
-                  signature: "Tabs",
-                  options: { value: "description", variant: "hanging" },
-                  attrs: { "aria-label": t("demo.product.detailsLabel") },
-                  slots: {
-                    items: [
+              contract: "wrapper",
+              signature: "Wrapper",
+              options: { wrapperSize: "lg" },
+              children: {
+                contract: "layout",
+                signature: "Stack",
+                options: { gap: "xl" },
+                children: [
+                  {
+                    contract: "layout",
+                    signature: "Grid",
+                    options: { columns: "2", gap: "lg", responsive: true },
+                    children: [
                       {
-                        options: { value: "description" },
-                        slots: {
-                          label: t("demo.product.tabDescription"),
-                          children: {
-                            contract: "typography",
-                            signature: "Text",
-                            children: t("demo.product.description"),
-                          },
+                        contract: "image-frame",
+                        signature: "ImageFrame",
+                        options: {
+                          aspect: "1/1",
+                          src: blankImage(800, 800, "a8a29e"),
+                          alt: t("demo.product.imageAlt"),
                         },
-                      },
-                      {
-                        options: { value: "specs" },
                         slots: {
-                          label: t("demo.product.tabSpecs"),
-                          children: {
-                            contract: "description-list",
-                            signature: "DescriptionList",
-                            options: { layout: "columns", dividers: true },
+                          caption: {
+                            contract: "media-gradient",
+                            signature: "MediaCaption",
                             children: [
-                              spec(t("demo.product.specLayout"), "65 %"),
-                              spec(t("demo.product.specSwitches"), t("demo.product.specSwitchesValue")),
-                              spec(t("demo.product.specWeight"), "780 g"),
-                              spec(t("demo.product.specConnection"), "USB-C · Bluetooth 5.1"),
+                              { contract: "media-gradient", signature: "MediaGradient" },
+                              {
+                                contract: "button",
+                                signature: "Button.action",
+                                options: { variant: "translucent", size: "sm" },
+                                children: [
+                                  {
+                                    contract: "icon",
+                                    signature: "Icon",
+                                    options: { name: "maximize", size: "sm" },
+                                  },
+                                  t("demo.product.gallery"),
+                                ],
+                              },
                             ],
                           },
                         },
                       },
                       {
-                        options: { value: "shipping" },
-                        slots: {
-                          label: t("demo.product.tabShipping"),
-                          children: {
+                        contract: "layout",
+                        signature: "Stack",
+                        options: { gap: "md", align: "start" },
+                        children: [
+                          {
+                            contract: "badge",
+                            signature: "Badge",
+                            options: { tone: "success" },
+                            children: t("demo.product.inStock"),
+                          },
+                          {
+                            contract: "typography",
+                            signature: "Heading",
+                            options: { headingSize: "h2", flush: true },
+                            children: t("demo.product.name"),
+                          },
+                          {
+                            contract: "rating",
+                            signature: "RatingDisplay",
+                            options: { value: 4.6, label: t("demo.product.ratingLabel") },
+                            slots: {
+                              valueText: locale === "es" ? "4,6" : "4.6",
+                              count: t("demo.product.ratingCount"),
+                            },
+                          },
+                          {
                             contract: "typography",
                             signature: "Text",
-                            children: t("demo.product.shipping"),
+                            options: { size: "lg", weight: "emphasis" },
+                            children: money("89"),
                           },
-                        },
+                          {
+                            contract: "typography",
+                            signature: "Text",
+                            options: { tone: "secondary" },
+                            children: t("demo.product.summary"),
+                          },
+                          {
+                            contract: "number-field",
+                            signature: "NumberField",
+                            options: {
+                              name: "quantity",
+                              defaultValue: "1",
+                              min: 1,
+                              max: 5,
+                              step: 1,
+                              incrementLabel: t("demo.product.increment"),
+                              decrementLabel: t("demo.product.decrement"),
+                            },
+                            slots: { label: t("demo.product.quantity") },
+                          },
+                          {
+                            contract: "layout",
+                            signature: "Inline",
+                            options: { gap: "sm", wrap: true },
+                            children: [
+                              {
+                                contract: "button",
+                                signature: "Button.action",
+                                options: { appearance: "tactile", tone: "accent", size: "lg" },
+                                children: t("demo.product.addToCart"),
+                              },
+                              {
+                                contract: "button",
+                                signature: "Button.action",
+                                options: { variant: "soft", size: "lg" },
+                                children: [
+                                  {
+                                    contract: "icon",
+                                    signature: "Icon",
+                                    options: { name: "like", size: "sm" },
+                                  },
+                                  t("demo.product.save"),
+                                ],
+                              },
+                            ],
+                          },
+                        ],
                       },
                     ],
                   },
-                },
-              ],
+                  {
+                    contract: "tabs",
+                    signature: "Tabs",
+                    options: { value: "description", variant: "hanging" },
+                    attrs: { "aria-label": t("demo.product.detailsLabel") },
+                    slots: {
+                      items: [
+                        {
+                          options: { value: "description" },
+                          slots: {
+                            label: t("demo.product.tabDescription"),
+                            children: {
+                              contract: "typography",
+                              signature: "Text",
+                              children: t("demo.product.description"),
+                            },
+                          },
+                        },
+                        {
+                          options: { value: "specs" },
+                          slots: {
+                            label: t("demo.product.tabSpecs"),
+                            children: {
+                              contract: "description-list",
+                              signature: "DescriptionList",
+                              options: { layout: "columns", dividers: true },
+                              children: [
+                                spec(t("demo.product.specLayout"), "65 %"),
+                                spec(t("demo.product.specSwitches"), t("demo.product.specSwitchesValue")),
+                                spec(t("demo.product.specWeight"), "780 g"),
+                                spec(t("demo.product.specConnection"), "USB-C · Bluetooth 5.1"),
+                              ],
+                            },
+                          },
+                        },
+                        {
+                          options: { value: "shipping" },
+                          slots: {
+                            label: t("demo.product.tabShipping"),
+                            children: {
+                              contract: "typography",
+                              signature: "Text",
+                              children: t("demo.product.shipping"),
+                            },
+                          },
+                        },
+                      ],
+                    },
+                  },
+                ],
+              },
             },
           },
-        },
+          siteFooter(t),
+        ],
       },
     ],
   };

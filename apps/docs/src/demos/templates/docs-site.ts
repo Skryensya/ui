@@ -1,5 +1,6 @@
 import type { UsageTree } from "@skryensya/core/usage-tree";
 import type { Translate } from "../../i18n";
+import { menuButton } from "./shared";
 
 /*
  * DOCUMENTATION SITE. Three columns, and each one answers a different question: the Sidebar says
@@ -50,18 +51,30 @@ export const docsSiteTree = (t: Translate): UsageTree => ({
               contract: "button",
               signature: "Button.action",
               options: { variant: "soft" },
+              attrs: { class: "template-wide-only" },
               children: [
                 { contract: "icon", signature: "Icon", options: { name: "search", size: "sm" } },
                 t("demo.docsSite.search"),
                 { contract: "kbd", signature: "Kbd", children: "⌘K" },
               ],
             },
+            /* The phone's version: the same door, icon-only. A keyboard shortcut means nothing on a
+             * touch screen, and the labelled button left the brand wrapping onto two lines. */
+            {
+              contract: "button",
+              signature: "Button.action",
+              options: { variant: "soft", iconOnly: true },
+              attrs: { "aria-label": t("demo.docsSite.search"), class: "template-narrow-only" },
+              children: { contract: "icon", signature: "Icon", options: { name: "search" } },
+            },
             {
               contract: "button",
               signature: "Button.action",
               options: { tone: "accent" },
+              attrs: { class: "template-wide-only" },
               children: t("demo.docsSite.getStarted"),
             },
+            menuButton(t),
           ],
         },
       ],
@@ -75,7 +88,8 @@ export const docsSiteTree = (t: Translate): UsageTree => ({
         {
           contract: "sidebar",
           signature: "Sidebar",
-          attrs: { id: "docs-template-sidebar" },
+          /* On a phone the rail folds behind the Navbar's menu button, as the docs site's own does. */
+          attrs: { id: "docs-template-sidebar", class: "template-wide-only" },
           children: [
             {
               contract: "sidebar",
@@ -223,7 +237,7 @@ export const docsSiteTree = (t: Translate): UsageTree => ({
           contract: "toc",
           signature: "Toc",
           options: { title: t("demo.docsSite.onThisPage") },
-          attrs: { class: "docs-template__toc" },
+          attrs: { class: "docs-template__toc template-wide-only" },
           slots: {
             items: [
               {

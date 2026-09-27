@@ -34,7 +34,7 @@ const person = (
       children: {
         contract: "layout",
         signature: "Inline",
-        options: { gap: "sm", inlineAlign: "center" },
+        options: { gap: "sm", inlineAlign: "center", wrap: false },
         children: [
           {
             contract: "avatar",
@@ -46,7 +46,14 @@ const person = (
         ],
       },
     },
-    { contract: "table", signature: "TableCell", children: email },
+    /* The column a phone drops first: the name already identifies the row, and a clipped address
+     * is worse than none. Its header cell carries the same class, so the columns stay aligned. */
+    {
+      contract: "table",
+      signature: "TableCell",
+      attrs: { class: "template-wide-only" },
+      children: email,
+    },
     { contract: "table", signature: "TableCell", children: role },
     {
       contract: "table",
@@ -211,9 +218,11 @@ export const teamTree = (t: Translate): UsageTree => {
                             t("demo.team.colRole"),
                             t("demo.team.colStatus"),
                             t("demo.team.colActions"),
-                          ].map((label) => ({
+                          ].map((label, index) => ({
                             contract: "table",
                             signature: "TableHeader",
+                            // Index 1 is Email, dropped on a phone along with its cells (`person`).
+                            ...(index === 1 ? { attrs: { class: "template-wide-only" } } : {}),
                             children: label,
                           })),
                         },

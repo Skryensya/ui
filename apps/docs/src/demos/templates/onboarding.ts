@@ -60,7 +60,9 @@ export const onboardingTree = (t: Translate): UsageTree => ({
               {
                 contract: "steps",
                 signature: "Steps",
-                options: { appearance: "segments" },
+                /* `horizontal` pinned: the published opt-out of Steps' phone fallback to a vertical rail.
+                 * A segmented bar reads as progress only while it runs across the screen. */
+                options: { appearance: "segments", orientation: "horizontal" },
                 slots: {
                   items: [
                     {

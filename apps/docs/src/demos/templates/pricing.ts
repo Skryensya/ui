@@ -1,5 +1,6 @@
 import type { UsageTree } from "@skryensya/core/usage-tree";
 import type { Translate } from "../../i18n";
+import { siteFooter } from "./shared";
 
 /*
  * PRICING. The comparison shape: three offers side by side, read ACROSS rather than down. What
@@ -128,108 +129,111 @@ export const pricingTree = (t: Translate, locale: "es" | "en"): UsageTree => {
         signature: "Stack",
         options: { gap: "none" },
         attrs: { class: "page-shell" },
-        children: {
-          contract: "layout",
-          signature: "Main",
-          attrs: { class: "page-shell__main" },
-          children: {
-            contract: "wrapper",
-            signature: "Wrapper",
-            options: { wrapperSize: "lg" },
+        children: [
+          {
+            contract: "layout",
+            signature: "Main",
+            attrs: { class: "page-shell__main" },
             children: {
-              contract: "layout",
-              signature: "Stack",
-              options: { gap: "xl" },
-              children: [
-                {
-                  contract: "layout",
-                  signature: "Stack",
-                  options: { gap: "md", align: "center" },
-                  children: [
-                    {
-                      contract: "typography",
-                      signature: "Heading",
-                      options: { headingSize: "display-sm", flush: true },
-                      children: t("demo.pricing.title"),
-                    },
-                    {
-                      contract: "typography",
-                      signature: "Text",
-                      options: { size: "lg", tone: "secondary" },
-                      children: t("demo.pricing.lede"),
-                    },
-                    {
-                      contract: "segmented",
-                      signature: "Segmented",
-                      options: { value: "annual", label: t("demo.pricing.cycleLabel") },
-                      slots: {
-                        items: [
-                          {
-                            options: { value: "monthly" },
-                            slots: { label: t("demo.pricing.monthly") },
-                          },
-                          {
-                            options: { value: "annual" },
-                            slots: { label: t("demo.pricing.annual") },
-                          },
-                        ],
+              contract: "wrapper",
+              signature: "Wrapper",
+              options: { wrapperSize: "lg" },
+              children: {
+                contract: "layout",
+                signature: "Stack",
+                options: { gap: "xl" },
+                children: [
+                  {
+                    contract: "layout",
+                    signature: "Stack",
+                    options: { gap: "md", align: "center" },
+                    children: [
+                      {
+                        contract: "typography",
+                        signature: "Heading",
+                        options: { headingSize: "display-sm", flush: true },
+                        children: t("demo.pricing.title"),
                       },
-                    },
-                  ],
-                },
-                {
-                  contract: "layout",
-                  signature: "Grid",
-                  options: { columns: "3", gap: "md", multicol: true },
-                  children: [
-                    plan({
-                      name: t("demo.pricing.freeName"),
-                      blurb: t("demo.pricing.freeBlurb"),
-                      price: money("0"),
-                      period: t("demo.pricing.perMonth"),
-                      features: [
-                        t("demo.pricing.feature1Projects"),
-                        t("demo.pricing.featureCommunity"),
-                      ],
-                      cta: t("demo.pricing.freeCta"),
-                    }),
-                    plan({
-                      name: t("demo.pricing.teamName"),
-                      blurb: t("demo.pricing.teamBlurb"),
-                      price: money("24"),
-                      period: t("demo.pricing.perSeat"),
-                      features: [
-                        t("demo.pricing.featureUnlimited"),
-                        t("demo.pricing.featureReviews"),
-                        t("demo.pricing.featureEmail"),
-                      ],
-                      cta: t("demo.pricing.teamCta"),
-                      featured: t("demo.pricing.popular"),
-                    }),
-                    plan({
-                      name: t("demo.pricing.enterpriseName"),
-                      blurb: t("demo.pricing.enterpriseBlurb"),
-                      price: t("demo.pricing.enterprisePrice"),
-                      period: t("demo.pricing.enterprisePeriod"),
-                      features: [
-                        t("demo.pricing.featureSso"),
-                        t("demo.pricing.featureAudit"),
-                        t("demo.pricing.featureSla"),
-                      ],
-                      cta: t("demo.pricing.enterpriseCta"),
-                    }),
-                  ],
-                },
-                {
-                  contract: "typography",
-                  signature: "Text",
-                  options: { size: "sm", tone: "tertiary" },
-                  children: t("demo.pricing.footnote"),
-                },
-              ],
+                      {
+                        contract: "typography",
+                        signature: "Text",
+                        options: { size: "lg", tone: "secondary" },
+                        children: t("demo.pricing.lede"),
+                      },
+                      {
+                        contract: "segmented",
+                        signature: "Segmented",
+                        options: { value: "annual", label: t("demo.pricing.cycleLabel") },
+                        slots: {
+                          items: [
+                            {
+                              options: { value: "monthly" },
+                              slots: { label: t("demo.pricing.monthly") },
+                            },
+                            {
+                              options: { value: "annual" },
+                              slots: { label: t("demo.pricing.annual") },
+                            },
+                          ],
+                        },
+                      },
+                    ],
+                  },
+                  {
+                    contract: "layout",
+                    signature: "Grid",
+                    options: { columns: "3", gap: "md", responsive: true },
+                    children: [
+                      plan({
+                        name: t("demo.pricing.freeName"),
+                        blurb: t("demo.pricing.freeBlurb"),
+                        price: money("0"),
+                        period: t("demo.pricing.perMonth"),
+                        features: [
+                          t("demo.pricing.feature1Projects"),
+                          t("demo.pricing.featureCommunity"),
+                        ],
+                        cta: t("demo.pricing.freeCta"),
+                      }),
+                      plan({
+                        name: t("demo.pricing.teamName"),
+                        blurb: t("demo.pricing.teamBlurb"),
+                        price: money("24"),
+                        period: t("demo.pricing.perSeat"),
+                        features: [
+                          t("demo.pricing.featureUnlimited"),
+                          t("demo.pricing.featureReviews"),
+                          t("demo.pricing.featureEmail"),
+                        ],
+                        cta: t("demo.pricing.teamCta"),
+                        featured: t("demo.pricing.popular"),
+                      }),
+                      plan({
+                        name: t("demo.pricing.enterpriseName"),
+                        blurb: t("demo.pricing.enterpriseBlurb"),
+                        price: t("demo.pricing.enterprisePrice"),
+                        period: t("demo.pricing.enterprisePeriod"),
+                        features: [
+                          t("demo.pricing.featureSso"),
+                          t("demo.pricing.featureAudit"),
+                          t("demo.pricing.featureSla"),
+                        ],
+                        cta: t("demo.pricing.enterpriseCta"),
+                      }),
+                    ],
+                  },
+                  {
+                    contract: "typography",
+                    signature: "Text",
+                    options: { size: "sm", tone: "tertiary" },
+                    children: t("demo.pricing.footnote"),
+                  },
+                ],
+              },
             },
           },
-        },
+          siteFooter(t),
+        ],
       },
     ],
   };

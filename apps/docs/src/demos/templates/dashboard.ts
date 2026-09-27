@@ -1,5 +1,6 @@
 import type { UsageTree } from "@skryensya/core/usage-tree";
 import type { Translate } from "../../i18n";
+import { menuButton } from "./shared";
 
 /*
  * ANALYTICS DASHBOARD. The SaaS back-office shape. It shares the app shell with `app-shell.ts`;
@@ -15,8 +16,9 @@ import type { Translate } from "../../i18n";
  *   - the table is `TableScroll` + `stickyHeader`, not a bare `Table`. A data table inside a pane
  *     that already scrolls needs its own scroll container or its header leaves with the page.
  *
- * The KPI row is `multicol`, which is Grid's own published reflow (1 → 2 → 3 → 4 across the kit's
- * breakpoints, layout.css). Without it `data-columns="4"` is literally `repeat(4, minmax(0, 1fr))`
+ * The KPI row is `responsive`, which is Grid's own published reflow (1 → 2 → 3 → 4 across the kit's
+ * breakpoints, layout.css), as a real CSS grid so the four cards share each row's height; `multicol`
+ * reflows on the same breakpoints but balances columns like newspaper text. Without either `data-columns="4"` is literally `repeat(4, minmax(0, 1fr))`
  * and never reflows: measured at a 900px viewport, the four cards were 43px wide each, which is not
  * a narrow dashboard so much as an unreadable one. With it they were 73px.
  *
@@ -120,11 +122,13 @@ export const dashboardTree = (t: Translate, locale: "es" | "en"): UsageTree => {
                 contract: "button",
                 signature: "Button.action",
                 options: { variant: "soft" },
+                attrs: { class: "template-wide-only" },
                 children: [
                   { contract: "icon", signature: "Icon", options: { name: "download", size: "sm" } },
                   t("demo.dashboard.export"),
                 ],
               },
+              menuButton(t),
               /*
                * `name` is the ACCESSIBLE name; the letters on screen are `children`. They are two
                * separate things on purpose: "HP" is not what anyone should hear read aloud. And
@@ -149,7 +153,9 @@ export const dashboardTree = (t: Translate, locale: "es" | "en"): UsageTree => {
           {
             contract: "sidebar",
             signature: "Sidebar",
-            attrs: { id: "dashboard-template-sidebar" },
+            /* On a phone the rail folds behind the Navbar's menu button: a 390px screen has no room
+             * for a navigation column beside the figures it is meant to navigate between. */
+            attrs: { id: "dashboard-template-sidebar", class: "template-wide-only" },
             children: [
               /*
                * NOT `floating`. The floating trigger is an overlay pinned to the rail's outer edge,
@@ -217,7 +223,7 @@ export const dashboardTree = (t: Translate, locale: "es" | "en"): UsageTree => {
                 {
                   contract: "layout",
                   signature: "Inline",
-                  options: { gap: "md", justify: "between", inlineAlign: "center" },
+                  options: { gap: "md", justify: "between", inlineAlign: "center", wrap: true },
                   children: [
                     {
                       contract: "typography",
@@ -255,7 +261,7 @@ export const dashboardTree = (t: Translate, locale: "es" | "en"): UsageTree => {
                 {
                   contract: "layout",
                   signature: "Grid",
-                  options: { columns: "4", gap: "md", multicol: true },
+                  options: { columns: "4", gap: "md", responsive: true },
                   attrs: { "aria-label": t("demo.dashboard.kpiLabel") },
                   children: [
                     kpi(t("demo.dashboard.kpiRevenue"), money("48.200"), "12,5%", "up"),
