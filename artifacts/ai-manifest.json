@@ -6593,6 +6593,19 @@
         "date": null,
         "entries": [
           {
+            "date": "2026-09-26",
+            "en": {
+              "body": "<code>brutalist</code> draws the bar with a black rule and a hard offset beneath it; <code>frosted</code> makes it see-through over the content scrolling underneath, opaque wherever the material cannot be trusted. No <code>tactile</code>: a bar is never pressed.",
+              "title": "Navbar adds plain, brutalist and frosted appearances"
+            },
+            "es": {
+              "body": "<code>brutalist</code> dibuja la barra con una línea negra y una sombra dura debajo; <code>frosted</code> la hace translúcida sobre el contenido que pasa por debajo, opaca donde el material no es fiable. Sin <code>tactile</code>: una barra no se presiona.",
+              "title": "Navbar suma appearance plain, brutalist y frosted"
+            },
+            "kind": "feature",
+            "target": "appearance"
+          },
+          {
             "date": "2026-09-17",
             "en": {
               "body": "No surface change: three signatures (<code>Navbar</code>/<code>NavbarBrand</code>/ <code>NavbarActions</code>), <code>NavList</code> and <code>Megamenu</code> guests, <code>13</code> own hooks, no enhancer or events. Semantics now point at <code>Sidebar</code> and <code>Megamenu</code> as alternatives; the stylesheet comment clarifies the host is <code>&lt;header&gt;</code>, not a second <code>&lt;nav&gt;</code>.",
@@ -34201,6 +34214,12 @@
           "part": "root",
           "sheet": "@skryensya/core/components/navbar.css"
         },
+        "--sk-navbar-brutalist-offset": {
+          "default": "4px",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/navbar.css"
+        },
         "--sk-navbar-elevation": {
           "default": "var(--elevation-raised)",
           "output": false,
@@ -34251,6 +34270,7 @@
         "--sk-navbar-brand-fg",
         "--sk-navbar-brand-font-size",
         "--sk-navbar-brand-font-weight",
+        "--sk-navbar-brutalist-offset",
         "--sk-navbar-elevation",
         "--sk-navbar-fg",
         "--sk-navbar-gap",
@@ -34260,7 +34280,18 @@
         "--sk-navbar-wash"
       ],
       "id": "navbar",
-      "options": {},
+      "options": {
+        "appearance": {
+          "attr": "data-appearance",
+          "default": "plain",
+          "type": "enum",
+          "values": [
+            "plain",
+            "brutalist",
+            "frosted"
+          ]
+        }
+      },
       "parts": {
         "actions": "sk-navbar__actions",
         "brand": "sk-navbar__brand",
@@ -34309,7 +34340,9 @@
             "app-header",
             "page-chrome"
           ],
-          "options": [],
+          "options": [
+            "appearance"
+          ],
           "react": {
             "from": "@skryensya/react/navbar",
             "name": "Navbar"
@@ -52461,7 +52494,7 @@
     "working": "0.0.1"
   },
   "schemaVersion": "2.3",
-  "sourceHash": "f0e2f154d26849ac",
+  "sourceHash": "844a3684e9914700",
   "vocabulary": {
     "a11y": "When `when` holds, one of `requiresOneOf` must be given: an option, a raw attribute, a filled slot, or a child signature by name.",
     "atLeastOneOf": "At least one member of each group counts: a filled slot, a boolean option set to true, or an option other than its default.",

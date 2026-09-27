@@ -6,6 +6,7 @@ import "@skryensya/core/components/avatar.css";
 /* Structure diagram: Annotated specimen; a preview frame only copies styles THIS page loaded. */
 import "@skryensya/core/components/annotation.css";
 import ComponentPageShell from "./ComponentPageShell.astro";
+import AppearanceMenu from "../AppearanceMenu.astro";
 import CodeBlock from "../CodeBlock.astro";
 import ComponentPreview from "../ComponentPreview.astro";
 import { navbarAnatomyTree, navbarAppTree, navbarBareCss, navbarBareTree, navbarTree } from "../../demos/navbar";
@@ -26,8 +27,13 @@ const css = `@import "@skryensya/core/tokens.scss";
   title="Navbar"
   description={t("navbarPage.description")}
   contractId="navbar"
+  appearanceTargetSelector=".sk-navbar"
   testFiles={["packages/react/src/components/navbar.test.tsx"]}}
 >
+  <Fragment slot="appearance">
+    <AppearanceMenu label={t("prefs.appearance")} values={["plain", "brutalist", "frosted"]} unavailable={{ tactile: t("prefs.appearanceTactileUnavailable") }} />
+  </Fragment>
+
   <Fragment slot="anatomy">
     <p set:html={t("navbarPage.anatomyBody")} />
     <ComponentPreview
