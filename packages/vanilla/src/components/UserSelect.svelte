@@ -534,16 +534,14 @@
     );
   });
 
-  // Closing spends the search, same as Combobox's typed query: the next open starts from the full
-  // roster, never a stale filtered view.
+  // Every open starts from the full roster, never a stale filtered view. Cleared on OPEN rather than on
+  // close: closing is an exit transition, and clearing then brought every filtered-out row back into
+  // the box while it was still fading out.
   $effect(() => {
     if (!wasOpen && api.open) {
-      pinSelected(api.value);
-      filterAuthoredItems(query);
-    }
-    if (wasOpen && !api.open) {
       query = "";
       search.value = "";
+      pinSelected(api.value);
       filterAuthoredItems("");
     }
     wasOpen = api.open;

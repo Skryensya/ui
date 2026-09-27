@@ -584,9 +584,17 @@
    * One inset everywhere: the content's padding is the rows' padding and the gap between the field,
    * the list and the footer, so every edge in the box lines up on the same 8px.
    */
-  /* `:not([data-state="closed"])`: the `:has()` outranks the closed rule's `display: none` above. */
+  /*
+   * Only `display` waits for the open state (the `:has()` would otherwise outrank the closed rule's
+   * `display: none` above). Everything else holds while CLOSED too, because closing is an exit
+   * transition: the box is still painted while it fades, and dropping the width and padding at its
+   * first frame collapsed the whole list mid-fade (the search narrowed, the footer wrapped).
+   */
   .sk-select__content:not([data-state="closed"]):has(> [data-sk-user-select-list]) {
     display: flex;
+  }
+
+  .sk-select__content:has(> [data-sk-user-select-list]) {
     flex-direction: column;
     gap: var(--space-inset-sm);
     min-inline-size: max(var(--reference-width), 16rem);
