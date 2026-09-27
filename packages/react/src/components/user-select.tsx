@@ -167,13 +167,14 @@ export function UserSelect({
     onValueChange(details: { value: string[] }) {
       onValueChange([...details.value]);
     },
-    // The search is the user's work-in-progress the same way Combobox's typed query is; closing
-    // clears it so the next open starts from the full roster, never a stale filtered view.
+    // Every open starts from the full roster, never a stale filtered view. Cleared on OPEN rather
+    // than on close: closing is an exit transition, and clearing then brought every filtered-out row
+    // back into the box while it was still fading out. A new order also starts at its top.
     onOpenChange(details: { open: boolean }) {
-      // A new order starts at its top: a scroll offset kept from the last open would land mid-list.
-      if (details.open) listRef.current?.scrollTo({ top: 0 });
-      if (details.open) setPinned(valueRef.current);
-      else setQuery("");
+      if (!details.open) return;
+      setQuery("");
+      setPinned(valueRef.current);
+      listRef.current?.scrollTo({ top: 0 });
     },
   });
   const api = select.connect(service, normalizeProps);

@@ -223,6 +223,7 @@ describe("UserSelect Vanilla contracts", () => {
     const { trigger, search, empty } = parts(root);
 
     fireEvent.click(trigger);
+    await waitFor(() => expect(trigger.getAttribute("aria-expanded")).toBe("true"));
     type(search, "zzz");
 
     await waitFor(() => expect(empty.hidden).toBe(false));
@@ -289,5 +290,24 @@ describe("UserSelect Vanilla contracts", () => {
     fireEvent.click(root.querySelector('[data-sk-select-item][data-value="jane"]') as HTMLElement);
     await waitFor(() => expect(trigger.getAttribute("aria-label")).toContain("3 users"));
     expect(order().slice(0, 2)).toEqual(["marco", "john"]);
+  });
+
+  it("keeps a search through the close and spends it on the next open", async () => {
+    const root = mount(markup());
+    const { trigger, search } = parts(root);
+
+    fireEvent.click(trigger);
+    await waitFor(() => expect(trigger.getAttribute("aria-expanded")).toBe("true"));
+    type(search, "zzz");
+    await waitFor(() => expect(shown(root)).toHaveLength(0));
+
+    fireEvent.keyDown(document.activeElement!, { key: "Escape" });
+    await waitFor(() => expect(trigger.getAttribute("aria-expanded")).toBe("false"));
+    // Still filtered while the box fades out: nothing reflows into the exit.
+    expect(shown(root)).toHaveLength(0);
+
+    fireEvent.click(trigger);
+    await waitFor(() => expect(shown(root)).toHaveLength(users.length));
+    expect(search.value).toBe("");
   });
 });
