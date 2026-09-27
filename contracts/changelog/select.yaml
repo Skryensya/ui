@@ -3,8 +3,23 @@
 # `surface` is the shape of the contract the last time somebody reviewed it. If the compiler says it
 # does not match, something a consumer depends on has moved: write the entry and paste in the new
 # hash.
-surface: "61153803ebe43898"
+surface: "5669ee5585cf3dc1"
 entries:
+  - date: 2026-09-26
+    kind: feature
+    target: appearance
+    es:
+      title: Select suma appearance brutalist y frosted
+      body: >-
+        La versión mejorada acepta <code>appearance</code>, el eje de Input: <code>brutalist</code> borde negro
+        y sombra dura, <code>frosted</code> un campo translúcido; todo estado sigue por encima. Sin valor es
+        <code>plain</code>. <code>Select.native</code> no la tiene: no hay raíz que la lleve.
+    en:
+      title: Select adds brutalist and frosted appearances
+      body: >-
+        The enhanced Select accepts <code>appearance</code>, Input's axis: <code>brutalist</code> a black edge
+        and a hard offset, <code>frosted</code> a see-through field; every state still outranks it. Absent means
+        <code>plain</code>. <code>Select.native</code> has none: there is no root to carry it.
   - date: 2026-09-17
     kind: feature
     target: Select
