@@ -3,6 +3,13 @@ import { describe, expect, it, vi } from "vitest";
 import { DatePicker, NativeDatePicker } from "./date-picker.js";
 
 describe("DatePicker", () => {
+  it("writes an appearance on the root only when asked", () => {
+    const plain = render(<DatePicker label="Plain" locale="es" />);
+    expect(plain.container.querySelector(".sk-date-picker")?.hasAttribute("data-appearance")).toBe(false);
+    const brutalist = render(<DatePicker appearance="brutalist" label="Brutalist" locale="es" />);
+    expect(brutalist.container.querySelector(".sk-date-picker")?.getAttribute("data-appearance")).toBe("brutalist");
+  });
+
   it("names every control in the language `locale` names, Spanish here", async () => {
     const ui = render(<DatePicker locale="es" label="Fecha" />);
     const trigger = ui.getByRole("button", { name: "Abrir calendario" });

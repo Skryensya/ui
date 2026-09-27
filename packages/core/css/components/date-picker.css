@@ -259,4 +259,70 @@
       animation: none;
     }
   }
+
+  /*
+   * ── APPEARANCE ───────────────────────────────────────────────────────────────────────────────
+   *
+   * Input's axis on this field (input.css documents it): written as the root's own hooks behind
+   * `:where()`, at the base rule's specificity, so every state (invalid, disabled, read-only) still
+   * outranks it. The offset is internal. No tactile: a field is typed into, not pressed.
+   */
+
+  /* BRUTALIST: the black edge and a hard offset toward block-end and inline-end, mirrored in RTL,
+   * in place of the soft well. */
+  .sk-date-picker:where([data-appearance="brutalist"]) {
+    --field-brutalist-offset: 3px;
+    --brutalist-black: oklch(from var(--shadow-lg) l c h / 1);
+    --brutalist-direction: 1;
+    --sk-date-picker-border-color: var(--brutalist-black);
+    --sk-date-picker-wash: none;
+    --sk-date-picker-shadow: calc(var(--field-brutalist-offset) * var(--brutalist-direction)) var(--field-brutalist-offset) 0
+      var(--brutalist-black);
+  }
+
+  .sk-date-picker:where([data-appearance="brutalist"]):dir(rtl) {
+    --brutalist-direction: -1;
+  }
+
+  /* FROSTED: the field's own fill (whichever state set it) thinned into a sheet over a blurred
+   * backdrop, with a fine edge. Opaque baseline; the material only where backdrop-filter exists and
+   * no reduced-transparency preference is set. */
+  .sk-date-picker:where([data-appearance="frosted"]) {
+    --sk-date-picker-wash: none;
+    --sk-date-picker-border-color: color-mix(in oklab, currentColor 24%, transparent);
+    --sk-date-picker-shadow: inset 0 1px 2px var(--shadow-sm);
+  }
+
+  @supports (backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px)) {
+    @media (prefers-reduced-transparency: no-preference) {
+      .sk-date-picker:where([data-appearance="frosted"]) .sk-date-picker__control {
+        background: color-mix(in oklab, var(--sk-date-picker-bg) 60%, transparent);
+        -webkit-backdrop-filter: blur(10px) saturate(150%);
+        backdrop-filter: blur(10px) saturate(150%);
+      }
+    }
+  }
+
+  :is([data-contrast="high"] .sk-date-picker, .sk-date-picker[data-contrast="high"]):where([data-appearance="frosted"]) .sk-date-picker__control {
+    background: var(--sk-date-picker-bg);
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+
+  @media (prefers-contrast: more) {
+    :root:not([data-contrast]) .sk-date-picker:where([data-appearance="frosted"]) .sk-date-picker__control {
+      background: var(--sk-date-picker-bg);
+      -webkit-backdrop-filter: none;
+      backdrop-filter: none;
+    }
+  }
+
+  @media (forced-colors: active) {
+    .sk-date-picker[data-appearance] .sk-date-picker__control {
+      background: Canvas;
+      -webkit-backdrop-filter: none;
+      backdrop-filter: none;
+      box-shadow: none;
+    }
+  }
 }

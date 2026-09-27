@@ -116,6 +116,17 @@ export const datePickerContract = {
   hookSheets: ["@skryensya/core/patterns/anchored.css"],
 
   options: {
+    /*
+     * HOW THE FIELD IS DRAWN, Input's axis: brutalist a black edge and hard offset in place of the
+     * soft well, frosted a see-through field (opaque wherever the material cannot be trusted).
+     * Every state still outranks it. Absent means plain, as for Input. No tactile: a field is typed
+     * into, not pressed.
+     */
+    appearance: {
+      type: "enum",
+      values: ["plain", "brutalist", "frosted"],
+      attr: "data-appearance",
+    },
     /** Submitted under this name. */
     name: { type: "string", attr: "data-name", machineInput: true },
     /**
@@ -173,6 +184,7 @@ export const datePickerContract = {
         "invalid",
         "placeholder",
         "clearLabel",
+        "appearance",
       ],
       /** Host id / a11y; control state stays options. */
       forward: ["id", "aria-*"],
@@ -259,7 +271,7 @@ export const datePickerContract = {
        * same split ColorPicker.native makes for `value`. `selectionMode` stays off this signature, 
        * a native date input is always a single day.
        */
-      options: ["name", "locale", "value", "min", "max", "disabled", "readOnly", "required"],
+      options: ["name", "locale", "value", "min", "max", "disabled", "readOnly", "required", "appearance"],
       /** Host id / a11y; control state stays options. */
       forward: ["id", "aria-*"],
       slots: {
