@@ -590,6 +590,24 @@
   }
 
   /*
+   * GHOST: the trigger keeps its value and its chevron and loses its body (fill, border, well). It is
+   * still a control: the shared state layer on `.sk-select__trigger` (`sk-interactive`) tints it on
+   * hover and press and the focus ring is untouched. An OPEN ghost keeps a faint fill, so the field
+   * the list belongs to is still obvious while the list is up. Written as the root's hooks behind
+   * `:where()`, so every state (invalid, disabled) still outranks it.
+   */
+  .sk-select:where([data-variant="ghost"]) {
+    --sk-select-bg: transparent;
+    --sk-select-border-color: transparent;
+    --sk-select-wash: none;
+    --sk-select-shadow: none;
+  }
+
+  .sk-select:where([data-variant="ghost"]) .sk-select__trigger[data-state="open"] {
+    background: color-mix(in oklab, currentColor 6%, transparent);
+  }
+
+  /*
    * ── APPEARANCE ───────────────────────────────────────────────────────────────────────────────
    *
    * Input's axis on this field (input.css documents it): written as the root's own hooks behind

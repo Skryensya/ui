@@ -3,8 +3,23 @@
 # `surface` is the shape of the contract the last time somebody reviewed it. If the compiler says it
 # does not match, something a consumer depends on has moved: write the entry and paste in the new
 # hash.
-surface: "5669ee5585cf3dc1"
+surface: "a874bca51d502f1d"
 entries:
+  - date: 2026-09-27
+    kind: feature
+    target: variant
+    es:
+      title: Variante ghost
+      body: >-
+        Select acepta variant="ghost": el disparador pierde el relleno, el borde y la sombra, y conserva solo el
+        valor, el chevrón y la capa de estado para hover, presión y foco. Sin el atributo sigue siendo outline,
+        así que el marcado existente no cambia.
+    en:
+      title: Ghost variant
+      body: >-
+        Select takes variant="ghost": the trigger drops its fill, border and shadow and keeps only the value,
+        the chevron and the state layer for hover, press and focus. Absent still means outline, so existing
+        markup is unchanged.
   - date: 2026-09-26
     kind: feature
     target: appearance
