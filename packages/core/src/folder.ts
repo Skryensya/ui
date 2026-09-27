@@ -309,6 +309,42 @@ export function folderClipPath(d: string): string {
   return d ? `path("${d}")` : "none";
 }
 
+/*
+ * How far the fan's clip reaches past the folder on every side: far enough that no preview, at any
+ * rise, spread, tilt or shadow, gets near its edge. A clip that small enough to matter would cut a
+ * preview in mid-air.
+ */
+const FAN_CLIP_REACH = 10_000;
+
+/**
+ * EVERYTHING EXCEPT THE FOLDER, for the preview fan: a huge rectangle and the silhouette in one
+ * `evenodd` path, so the silhouette is the hole.
+ *
+ * The fan sits BEHIND the folder on purpose (the cards rise out of it), and an opaque folder hid the
+ * tucked half of every card. A see-through one does not: under `frosted` the lower halves showed
+ * through the glass, blurred, as a light block and a stray edge. Clipping the fan to the outside of
+ * the silhouette removes exactly the part the folder is meant to cover, whatever the folder is made
+ * of, and changes nothing for an opaque one. Same coordinates as `folderClipPath`: the fan's layer
+ * and the silhouette both hang off the folder's own top-left corner.
+ */
+export function folderFanClipPath(d: string): string {
+  if (!d) return "none";
+  const r = FAN_CLIP_REACH;
+  return `path(evenodd, "M${-r} ${-r} H${r} V${r} H${-r} Z ${d}")`;
+}
+
+/**
+ * The silhouette as a MASK image, for the one paint `clip-path` cannot contain: a backdrop blur.
+ * Measured in Chrome, `backdrop-filter` on the clipped layer leaked past the path, a square-cornered
+ * patch of blur showing outside the tab's rounded corner; a mask of the same shape holds it exactly.
+ * Sized to the folder's own box (`width` × `height`), the same pixels `folderPath` drew in.
+ */
+export function folderMaskImage(d: string, width: number, height: number): string {
+  if (!d || width <= 0 || height <= 0) return "none";
+  const svg = `<svg xmlns='http://www.w3.org/2000/svg' width='${width}' height='${height}' viewBox='0 0 ${width} ${height}'><path d='${d}'/></svg>`;
+  return `url("data:image/svg+xml,${encodeURIComponent(svg)}")`;
+}
+
 /**
  * Reads the geometry off computed style, falling back per-property to the default above.
  *
@@ -404,7 +440,7 @@ export const folderContract = {
   css: "@skryensya/core/components/folder.css",
   parts: folderParts,
   /* Written by both silhouette drawers on every measure; read them, never set them as overrides. */
-  outputHooks: ["--sk-folder-clip", "--sk-folder-tail"],
+  outputHooks: ["--sk-folder-clip", "--sk-folder-fan-clip", "--sk-folder-mask", "--sk-folder-tail"],
   hooks: [
     "--sk-folder-brutalist-edge",
     "--sk-folder-brutalist-offset-block",
@@ -413,6 +449,7 @@ export const folderContract = {
     "--sk-folder-clip",
     "--sk-folder-content-gap",
     "--sk-folder-depth",
+    "--sk-folder-fan-clip",
     "--sk-folder-fg",
     "--sk-folder-fill",
     "--sk-folder-fill-active",
@@ -427,6 +464,7 @@ export const folderContract = {
     "--sk-folder-label-offset",
     "--sk-folder-label-size",
     "--sk-folder-lift",
+    "--sk-folder-mask",
     "--sk-folder-max-inline-size",
     "--sk-folder-min-height",
     "--sk-folder-perspective",

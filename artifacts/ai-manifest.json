@@ -4478,6 +4478,19 @@
         "date": null,
         "entries": [
           {
+            "date": "2026-09-27",
+            "en": {
+              "body": "Under <code>frosted</code>, the tucked half of the previews showed through the glass and the blur leaked past the tab's rounded corner. The fan is now clipped to what lies outside the silhouette (<code>--sk-folder-fan-clip</code>) and the glass takes the silhouette as a mask (<code>--sk-folder-mask</code>), two new outputs both bindings write. Under <code>brutalist</code>, the hard offset no longer runs down beside the next folder: it stops where that folder begins.",
+              "title": "Frosted and brutalist on Folder no longer look broken in a stack"
+            },
+            "es": {
+              "body": "Con <code>frosted</code>, la mitad escondida de las previews se veía a través del vidrio y el desenfoque se escapaba por la esquina redondeada de la pestaña. Ahora el abanico se recorta a lo que queda fuera de la silueta (<code>--sk-folder-fan-clip</code>) y el vidrio usa la silueta como máscara (<code>--sk-folder-mask</code>), dos salidas nuevas que escriben los dos bindings. Con <code>brutalist</code>, la sombra desplazada ya no baja al lado del folder siguiente: termina donde ese folder empieza.",
+              "title": "Frosted y brutalist en Folder ya no se ven rotos en un stack"
+            },
+            "kind": "bugfix",
+            "target": "appearance"
+          },
+          {
             "date": "2026-09-26",
             "en": {
               "body": "<code>Folder</code> and <code>FolderLink</code> accept Button's <code>appearance</code>, and show it only on the revealed folder: at rest it is still the colour of its ground. <code>tactile</code> shades the sheet and puts a ledge under it, <code>brutalist</code> draws Button's black edge and hard offset around the silhouette, and <code>frosted</code> turns the sheet into Button's see-through material. New hooks: <code>--sk-folder-depth</code>, the four <code>--sk-folder-brutalist-*</code> and the three <code>--sk-folder-frost-*</code>.",
@@ -26733,6 +26746,12 @@
           "part": "root",
           "sheet": "@skryensya/core/components/folder.css"
         },
+        "--sk-folder-fan-clip": {
+          "default": "none",
+          "output": true,
+          "part": "root",
+          "sheet": "@skryensya/core/components/folder.css"
+        },
         "--sk-folder-fg": {
           "default": "var(--color-text-primary)",
           "output": false,
@@ -26814,6 +26833,12 @@
         "--sk-folder-lift": {
           "default": "8px",
           "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/folder.css"
+        },
+        "--sk-folder-mask": {
+          "default": "none",
+          "output": true,
           "part": "root",
           "sheet": "@skryensya/core/components/folder.css"
         },
@@ -26982,6 +27007,7 @@
         "--sk-folder-clip",
         "--sk-folder-content-gap",
         "--sk-folder-depth",
+        "--sk-folder-fan-clip",
         "--sk-folder-fg",
         "--sk-folder-fill",
         "--sk-folder-fill-active",
@@ -26996,6 +27022,7 @@
         "--sk-folder-label-offset",
         "--sk-folder-label-size",
         "--sk-folder-lift",
+        "--sk-folder-mask",
         "--sk-folder-max-inline-size",
         "--sk-folder-min-height",
         "--sk-folder-perspective",
@@ -27053,6 +27080,8 @@
       },
       "outputHooks": [
         "--sk-folder-clip",
+        "--sk-folder-fan-clip",
+        "--sk-folder-mask",
         "--sk-folder-tail"
       ],
       "parts": {
@@ -52960,7 +52989,7 @@
     "working": "0.0.1"
   },
   "schemaVersion": "2.3",
-  "sourceHash": "c608b49eb96d15b9",
+  "sourceHash": "c485bd9a307172df",
   "vocabulary": {
     "a11y": "When `when` holds, one of `requiresOneOf` must be given: an option, a raw attribute, a filled slot, or a child signature by name.",
     "atLeastOneOf": "At least one member of each group counts: a filled slot, a boolean option set to true, or an option other than its default.",

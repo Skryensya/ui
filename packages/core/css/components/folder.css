@@ -96,6 +96,8 @@
      * contract can name them as `outputHooks` (read them, never set them as brand overrides).
      */
     --sk-folder-clip: none;
+    --sk-folder-fan-clip: none;
+    --sk-folder-mask: none;
     --sk-folder-tail: 0px;
     /*
      * Thrown UPWARD, and mixed from the text colour rather than taken from the elevation ramp: the
@@ -432,6 +434,10 @@
      */
     z-index: -1;
     pointer-events: none;
+    /* The part of the fan the folder is meant to cover is removed rather than covered, so the fan
+     * still rises out of the folder when the folder is see-through (`frosted`). folder.ts'
+     * `folderFanClipPath` documents the shape; `none` until the binding has measured. */
+    clip-path: var(--sk-folder-fan-clip);
   }
 
   /*
@@ -855,6 +861,7 @@
       color-mix(in oklab, var(--color-bg-surface-sunken) 55%, black)
     );
     --folder-mark-offset: 0 var(--sk-folder-depth);
+    --folder-mark-block: var(--sk-folder-depth);
   }
 
   /* BRUTALIST: Button's black ink (the system's shadow colour at full alpha) for edge and offset. */
@@ -865,6 +872,19 @@
     --folder-mark-offset:
       calc(round(nearest, var(--sk-folder-brutalist-offset-inline), 1px) * var(--folder-direction))
       round(nearest, var(--sk-folder-brutalist-offset-block), 1px);
+    --folder-mark-block: round(nearest, var(--sk-folder-brutalist-offset-block), 1px);
+  }
+
+  /*
+   * IN A STACK, THE MARK STOPS WHERE THE NEXT FOLDER BEGINS. The next folder covers this one's tail,
+   * but only inside its own outline, and the offset sticks out past that outline: left alone it ran
+   * down beside the next folder and read as that folder's. So the copy is masked to the part of this
+   * folder a reader can see, the stack's own overlap rule measured the same way (`min` of the tail
+   * and the ceiling), less the mark's own block shift, since the copy is translated by it.
+   */
+  .sk-folder-stack > .sk-folder:not(:last-child):is([data-appearance="tactile"], [data-appearance="brutalist"])::after {
+    mask: linear-gradient(black, black) top left / 100%
+      calc(100% - min(var(--sk-folder-tail), var(--sk-folder-stack-overlap)) - var(--folder-mark-block)) no-repeat;
   }
 
   /* FROSTED: the clipped layer itself becomes the sheet, so the blur follows the silhouette exactly.
@@ -911,6 +931,9 @@
         background: color-mix(in oklab, var(--color-bg-surface) var(--sk-folder-frost-opacity), transparent);
         -webkit-backdrop-filter: blur(var(--sk-folder-frost-blur)) saturate(var(--sk-folder-frost-saturation));
         backdrop-filter: blur(var(--sk-folder-frost-blur)) saturate(var(--sk-folder-frost-saturation));
+        /* The blur leaks past `clip-path` (see `folderMaskImage`); the same outline as a mask holds it. */
+        -webkit-mask: var(--sk-folder-mask) 0 0 / 100% 100% no-repeat;
+        mask: var(--sk-folder-mask) 0 0 / 100% 100% no-repeat;
       }
     }
   }
@@ -948,6 +971,8 @@
           background: color-mix(in oklab, var(--color-bg-surface) var(--sk-folder-frost-opacity), transparent);
           -webkit-backdrop-filter: blur(var(--sk-folder-frost-blur)) saturate(var(--sk-folder-frost-saturation));
           backdrop-filter: blur(var(--sk-folder-frost-blur)) saturate(var(--sk-folder-frost-saturation));
+          -webkit-mask: var(--sk-folder-mask) 0 0 / 100% 100% no-repeat;
+          mask: var(--sk-folder-mask) 0 0 / 100% 100% no-repeat;
         }
       }
     }
