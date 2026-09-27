@@ -1,0 +1,32 @@
+{
+  "name": "@skryensya/storybook-vanilla",
+  "private": true,
+  "version": "0.0.1-dev",
+  "type": "module",
+  "description": "The Vanilla Storybook: every docs demo tree as emitted markup brought to life by the Vanilla enhancers, with that markup in the code panel.",
+  "scripts": {
+    "storybook": "storybook dev --port 6007",
+    "build-storybook": "storybook build --output-dir storybook-static",
+    "generate": "node scripts/generate-stories.ts",
+    "check": "node scripts/generate-stories.ts --check && tsc -p tsconfig.json --noEmit"
+  },
+  "dependencies": {
+    "@skryensya/ai-compiler": "workspace:*",
+    "@skryensya/core": "workspace:*",
+    "@skryensya/editor": "workspace:*",
+    "@skryensya/icons-lucide": "workspace:*",
+    "@skryensya/storybook-kit": "workspace:*",
+    "@skryensya/vanilla": "workspace:*"
+  },
+  "devDependencies": {
+    "@storybook/addon-docs": "^10.5.10",
+    "@storybook/html-vite": "^10.5.10",
+    "@sveltejs/vite-plugin-svelte": "^7.2.0",
+    "@types/node": "catalog:",
+    "sass": "^1.83.0",
+    "storybook": "^10.5.10",
+    "svelte": "^5.56.7",
+    "typescript": "^5.9.3",
+    "vite": "^8.1.5"
+  }
+}

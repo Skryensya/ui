@@ -5,6 +5,7 @@
 .turbo
 **/node_modules
 **/dist
+**/storybook-static
 **/.astro
 **/test-results
 test-results

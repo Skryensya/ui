@@ -1,0 +1,25 @@
+{
+  /*
+   * The generated stories are NOT type-checked here. They reach into the docs' demo modules, which
+   * are written and checked (`astro check`) under Astro's base config, which is not strict: under
+   * strictNullChecks their untyped tree literals widen and stop matching `UsageTree`. What vouches
+   * for a generated file is the generator itself (every tree validated against its contracts) and
+   * `generate-stories.ts --check`; what is checked here is the code written by hand.
+   */
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "jsx": "react-jsx",
+    "strict": true,
+    "skipLibCheck": true,
+    "noEmit": true,
+    "verbatimModuleSyntax": true,
+    "allowImportingTsExtensions": true,
+    "types": ["node", "vite/client"],
+    "paths": {
+      "@docs/*": ["../docs/src/*"]
+    }
+  },
+  "include": [".storybook/**/*", "scripts/**/*", "src/*.ts", "src/*.tsx", "src/playgrounds/**/*"]
+}
