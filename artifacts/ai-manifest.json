@@ -10861,6 +10861,19 @@
         "date": null,
         "entries": [
           {
+            "date": "2026-09-26",
+            "en": {
+              "body": "<code>brutalist</code> draws each step with a black edge and a hard offset in place of the soft elevation; <code>frosted</code> makes it see-through, opaque wherever the material cannot be trusted. No <code>tactile</code>.",
+              "title": "Tour adds plain, brutalist and frosted appearances"
+            },
+            "es": {
+              "body": "<code>brutalist</code> dibuja cada paso con borde negro y una sombra dura en lugar de la elevación suave; <code>frosted</code> lo hace translúcido, opaco donde el material no es fiable. Sin <code>tactile</code>.",
+              "title": "Tour suma appearance plain, brutalist y frosted"
+            },
+            "kind": "feature",
+            "target": "appearance"
+          },
+          {
             "date": "2026-09-25",
             "en": {
               "body": "New <code>Tour</code> contract: a ring around one element and a non-modal dialog that explains it, step by step. No backdrop, no <code>inert</code> or <code>aria-modal</code>, and a click outside does nothing. It starts only when someone asks (<code>Tour.Trigger</code> or <code>start()</code>), never advances on its own, and a step whose target is missing or hidden is skipped. Focus goes to Continue on every step change (an <code>aria-live</code> region announces the new step) and back to the trigger on close; <kbd>Esc</kbd> yields to open menus and dialogs. It remembers whether it was completed or skipped, and the trigger can read \"Repeat tour\".",
@@ -49190,6 +49203,12 @@
           "part": "popover",
           "sheet": "@skryensya/core/components/tour.css"
         },
+        "--sk-tour-brutalist-offset": {
+          "default": "5px",
+          "output": false,
+          "part": "popover",
+          "sheet": "@skryensya/core/components/tour.css"
+        },
         "--sk-tour-fg": {
           "default": "light-dark(var(--color-text-primary), var(--color-text-inverse))",
           "output": false,
@@ -49253,6 +49272,7 @@
       },
       "hooks": [
         "--sk-tour-bg",
+        "--sk-tour-brutalist-offset",
         "--sk-tour-fg",
         "--sk-tour-muted-fg",
         "--sk-tour-border-color",
@@ -49272,6 +49292,16 @@
       ],
       "id": "tour",
       "options": {
+        "appearance": {
+          "attr": "data-appearance",
+          "default": "plain",
+          "type": "enum",
+          "values": [
+            "plain",
+            "brutalist",
+            "frosted"
+          ]
+        },
         "closeLabel": {
           "attr": "aria-label",
           "default": "Close tour",
@@ -49423,7 +49453,8 @@
             "previousLabel",
             "skipLabel",
             "closeLabel",
-            "remember"
+            "remember",
+            "appearance"
           ],
           "react": {
             "from": "@skryensya/react/tour",
@@ -52636,7 +52667,7 @@
     "working": "0.0.1"
   },
   "schemaVersion": "2.3",
-  "sourceHash": "8cd99dc67b7afab8",
+  "sourceHash": "c669348268e36aa8",
   "vocabulary": {
     "a11y": "When `when` holds, one of `requiresOneOf` must be given: an option, a raw attribute, a filled slot, or a child signature by name.",
     "atLeastOneOf": "At least one member of each group counts: a filled slot, a boolean option set to true, or an option other than its default.",

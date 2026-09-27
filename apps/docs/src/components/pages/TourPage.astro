@@ -14,6 +14,7 @@ import "@skryensya/core/components/table.css";
 import "@skryensya/core/components/annotation.css";
 import CodeBlock from "../CodeBlock.astro";
 import ComponentPageShell from "./ComponentPageShell.astro";
+import AppearanceMenu from "../AppearanceMenu.astro";
 import ComponentPreview from "../ComponentPreview.astro";
 import { tourAnatomyCss, tourAnatomyHtml, tourBasicTree, tourDemoCss, tourMissingTree } from "../../demos/tour";
 import { getLocale, useTranslations } from "../../i18n";
@@ -101,12 +102,17 @@ const keys = [
   title="Tour"
   description={t("tour.description")}
   contractId="tour"
+  appearanceTargetSelector=".sk-tour"
   testFiles={[
     "packages/core/src/tour.test.ts",
     "packages/vanilla/src/components/tour.test.ts",
     "packages/react/src/components/tour.test.tsx",
   ]}
 >
+  <Fragment slot="appearance">
+    <AppearanceMenu label={t("prefs.appearance")} values={["plain", "brutalist", "frosted"]} unavailable={{ tactile: t("prefs.appearanceTactileUnavailable") }} />
+  </Fragment>
+
   <Fragment slot="anatomy">
     <p set:html={t("tour.anatomyBody")} />
     <ComponentPreview
