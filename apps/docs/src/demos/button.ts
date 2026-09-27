@@ -31,11 +31,11 @@ const axisLabel = (text: string): UsageTree => ({
   children: text,
 });
 
-export const buttonVariantTree = (t: Translate): UsageTree => ({
+const variantMatrix = (t: Translate, appearance?: "brutalist" | "frosted", backdrop = ""): UsageTree => ({
   contract: "layout",
   signature: "Grid",
   options: { columns: "4", gap: "md" },
-  attrs: { style: "align-items: center; justify-items: start;" },
+  attrs: { style: `align-items: center; justify-items: start;${backdrop}` },
   children: [
     { contract: "typography", signature: "Text", options: { size: "caption" }, children: "" },
     ...TONES.map((tone) => axisLabel(tone)),
@@ -49,12 +49,250 @@ export const buttonVariantTree = (t: Translate): UsageTree => ({
           options: {
             ...(variant === "solid" ? {} : { variant }),
             ...(tone === "neutral" ? {} : { tone }),
+            ...(appearance ? { appearance } : {}),
           },
           children: t("demo.button.action"),
         }),
       ),
     ]),
   ],
+});
+
+export const buttonVariantTree = (t: Translate): UsageTree => variantMatrix(t);
+
+/** The same matrix, every cell brutalist: emphasis and tone keep their meaning inside the appearance. */
+export const buttonBrutalistMatrixTree = (t: Translate): UsageTree => variantMatrix(t, "brutalist");
+
+/*
+ * FROSTED ONLY MEANS SOMETHING OVER SOMETHING. On a blank page a material that processes its backdrop
+ * has nothing to process, so every frosted specimen sits on a backdrop the docs own: the page's own
+ * surface, a chromatic sweep built from the action tokens, and a local photograph (the lightbox
+ * demo's, served from `public/`, no remote dependency).
+ */
+const FROST_PHOTO = "/demos/lightbox/street-small.jpg";
+const FROST_BACKDROPS = {
+  surface: "background: var(--color-bg-surface);",
+  chromatic: "background: linear-gradient(135deg, var(--color-action-accent), var(--color-action-danger));",
+  photo: `background: center / cover url(${FROST_PHOTO});`,
+} as const;
+const onBackdrop = (backdrop: string) => ` padding: var(--space-inset-lg); border-radius: var(--radius-surface); ${backdrop}`;
+
+/** The matrix again, frosted, over the photograph: the material has detail and colour to work on. */
+export const buttonFrostedMatrixTree = (t: Translate): UsageTree =>
+  variantMatrix(t, "frosted", onBackdrop(FROST_BACKDROPS.photo));
+
+/*
+ * ── APPEARANCE ──────────────────────────────────────────────────────────────────────────────────
+ *
+ * These previews COMPARE appearances, so the page wraps them in `data-docs-appearance-fixed` and
+ * the page-wide appearance switch leaves them alone. Each one keeps every other axis still.
+ */
+const APPEARANCES = ["plain", "tactile", "brutalist", "frosted"] as const;
+type ShowcasedAppearance = "brutalist" | "frosted";
+
+/** Captions over their cells, `columns` at a time: scaffolding rows between rows of buttons. */
+const captionedGrid = (
+  columns: "2" | "3" | "4",
+  cells: readonly (readonly [string, UsageTree])[],
+  style = "",
+): UsageTree => ({
+  contract: "layout",
+  signature: "Grid",
+  options: { columns, gap: "md" },
+  attrs: { style: `align-items: center; justify-items: start;${style}` },
+  children: Array.from({ length: Math.ceil(cells.length / Number(columns)) }, (_, row) =>
+    cells.slice(row * Number(columns), (row + 1) * Number(columns)),
+  ).flatMap((row) => [...row.map(([caption]) => axisLabel(caption)), ...row.map(([, cell]) => cell)]),
+});
+
+/* Frosted specimens stand on the photograph; brutalist ones on the page, where they belong. */
+const stage = (appearance: ShowcasedAppearance) => (appearance === "frosted" ? onBackdrop(FROST_BACKDROPS.photo) : "");
+
+/**
+ * One Button, every appearance: same label, same tone, same everything else. Over the photograph, so
+ * the one material that processes its backdrop has a backdrop to process; the others ignore it.
+ */
+export const buttonAppearanceTree = (t: Translate): UsageTree =>
+  captionedGrid(
+    "4",
+    APPEARANCES.map((appearance) => [
+      appearance,
+      {
+        contract: "button",
+        signature: "Button.action",
+        options: { tone: "accent", ...(appearance === "plain" ? {} : { appearance }) },
+        children: t("demo.button.continue"),
+      },
+    ]),
+    onBackdrop(FROST_BACKDROPS.photo),
+  );
+
+/*
+ * Radius is its own dimension, and no appearance touches it. The corners here come from
+ * `--sk-button-radius`, the value `data-radius="none"` and `"xl"` resolve Button's radius to; the
+ * appearance is identical in both.
+ */
+const radiusTree = (t: Translate, appearance: ShowcasedAppearance): UsageTree =>
+  captionedGrid(
+    "2",
+    (
+      [
+        ["radius: none", "0px"],
+        ["radius: xl", "16px"],
+      ] as const
+    ).map(([caption, radius]) => [
+      caption,
+      {
+        contract: "button",
+        signature: "Button.action",
+        options: { appearance, tone: "accent" },
+        attrs: { style: `--sk-button-radius: ${radius}` },
+        children: t("demo.button.save"),
+      },
+    ]),
+    stage(appearance),
+  );
+
+/*
+ * Rest, pressed and disabled are static. Hover, active and focus-visible are states only a person
+ * can put a button in, so those three are live: point at one, hold it down, Tab to it.
+ */
+const statesTree = (t: Translate, appearance: ShowcasedAppearance): UsageTree => {
+  const specimen = (options: Record<string, unknown> = {}): UsageTree => ({
+    contract: "button",
+    signature: "Button.action",
+    options: { appearance, tone: "accent", ...options },
+    children: t("demo.button.save"),
+  });
+  return captionedGrid(
+    "3",
+    [
+      ["rest", specimen()],
+      ["hover", specimen()],
+      [":active", specimen()],
+      ["aria-pressed", { ...specimen({ pressed: true, tone: "neutral" }), children: t("demo.button.edit") }],
+      ["disabled", specimen({ disabled: true })],
+      [":focus-visible", specimen()],
+    ],
+    stage(appearance),
+  );
+};
+
+/** The two shapes and the two hosts: icon-only, a navigation link, and a welded pair. */
+const shapesTree = (t: Translate, appearance: ShowcasedAppearance, href: string): UsageTree => ({
+  contract: "layout",
+  signature: "Inline",
+  options: { gap: "lg", inlineAlign: "center" },
+  attrs: stage(appearance) ? { style: stage(appearance) } : undefined,
+  children: [
+    {
+      contract: "button",
+      signature: "Button.action",
+      options: { appearance, iconOnly: true },
+      attrs: { "aria-label": t("demo.button.settings") },
+      children: { contract: "icon", signature: "Icon", options: { name: "settings" } },
+    },
+    {
+      contract: "button",
+      signature: "Button.navigation",
+      options: { appearance, tone: "accent", href },
+      children: t("demo.button.readNews"),
+    },
+    {
+      contract: "layout",
+      signature: "Inline",
+      options: { gap: "none" },
+      children: [
+        {
+          contract: "button",
+          signature: "Button.action",
+          options: { appearance, weldEnd: true },
+          children: t("demo.button.edit"),
+        },
+        {
+          contract: "button",
+          signature: "Button.action",
+          options: { appearance, weldStart: true },
+          children: t("demo.button.copy"),
+        },
+      ],
+    },
+  ],
+});
+
+export const buttonBrutalistRadiusTree = (t: Translate): UsageTree => radiusTree(t, "brutalist");
+export const buttonBrutalistStatesTree = (t: Translate): UsageTree => statesTree(t, "brutalist");
+export const buttonBrutalistShapesTree = (t: Translate, href: string = PLACEHOLDER_HREF): UsageTree =>
+  shapesTree(t, "brutalist", href);
+
+/*
+ * Hover, :active and :focus-visible are states only a pointer or a keyboard can put a button in, so a
+ * page cannot show them at rest. The states preview pins them in its own frame, by position in the
+ * grid (rest, hover, active, pressed, disabled, focus): the same values button.css drives, set by
+ * hand, so all six read at once and the live buttons still answer when used.
+ */
+export const buttonBrutalistStatesCss = `.sk-grid > button.sk-button:nth-of-type(2) {
+  --brutalist-travel: -0.25;
+  --state-layer-opacity: var(--state-layer-hover-opacity);
+}
+.sk-grid > button.sk-button:nth-of-type(3) {
+  --brutalist-travel: 0.8;
+  --state-layer-opacity: var(--state-layer-pressed-opacity);
+  translate:
+    calc((var(--brutalist-offset-inline) - var(--brutalist-shadow-inline)) * var(--brutalist-direction))
+    calc(var(--brutalist-offset-block) - var(--brutalist-shadow-block));
+}
+.sk-grid > button.sk-button:nth-of-type(6) {
+  outline: var(--focus-ring-width) solid var(--focus-ring-color);
+  outline-offset: var(--focus-ring-offset);
+}`;
+
+export const buttonFrostedRadiusTree = (t: Translate): UsageTree => radiusTree(t, "frosted");
+export const buttonFrostedStatesTree = (t: Translate): UsageTree => statesTree(t, "frosted");
+export const buttonFrostedShapesTree = (t: Translate, href: string = PLACEHOLDER_HREF): UsageTree =>
+  shapesTree(t, "frosted", href);
+
+/**
+ * The same four buttons on the three backdrops frosted has to survive: the page's own surface, a
+ * chromatic sweep and a photograph. Plain translucent opens each row, for the distinction the
+ * section is about: the variant lets the backdrop through, the material processes it.
+ */
+export const buttonFrostedBackdropsTree = (t: Translate): UsageTree => ({
+  contract: "layout",
+  signature: "Stack",
+  options: { gap: "md" },
+  children: Object.values(FROST_BACKDROPS).map(
+    (backdrop): UsageTree => ({
+      contract: "layout",
+      signature: "Inline",
+      options: { gap: "md", inlineAlign: "center" },
+      attrs: { style: onBackdrop(backdrop) },
+      children: [
+        {
+          contract: "button",
+          signature: "Button.action",
+          options: { variant: "translucent" },
+          children: "translucent",
+        },
+        ...(
+          [
+            {},
+            { tone: "accent" },
+            { tone: "danger", variant: "soft" },
+            { variant: "ghost" },
+            { variant: "translucent" },
+          ] as const
+        ).map(
+          (options): UsageTree => ({
+            contract: "button",
+            signature: "Button.action",
+            options: { appearance: "frosted", ...options },
+            children: t("demo.button.continue"),
+          }),
+        ),
+      ],
+    }),
+  ),
 });
 
 /**

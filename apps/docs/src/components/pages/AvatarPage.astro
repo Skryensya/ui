@@ -5,6 +5,7 @@ import "@skryensya/core/components/avatar.css";
 /* Structure diagram: Annotated specimen; a preview frame only copies styles THIS page loaded. */
 import "@skryensya/core/components/annotation.css";
 import ComponentPageShell from "./ComponentPageShell.astro";
+import AppearanceMenu from "../AppearanceMenu.astro";
 import CodeBlock from "../CodeBlock.astro";
 import ComponentPreview from "../ComponentPreview.astro";
 import {
@@ -103,8 +104,17 @@ window.addEventListener("pagehide", () => observer.disconnect(), { once: true })
   description={t("avatar.description")}
   badge={t("avatar.betaBadge")}
   contractId="avatar"
+  appearanceTargetSelector=".sk-avatar"
   testFiles={["packages/react/src/components/avatar.test.tsx"]}}
 >
+  <Fragment slot="appearance">
+    <AppearanceMenu
+      label={t("prefs.appearance")}
+      values={["plain", "brutalist"]}
+      unavailable={{ tactile: t("avatar.tactileUnavailable"), frosted: t("avatar.frostedUnavailable") }}
+    />
+  </Fragment>
+
   <Fragment slot="anatomy">
     <p set:html={t("avatar.anatomyBody")} />
     <ComponentPreview

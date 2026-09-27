@@ -49,7 +49,11 @@ export const accordionMessages = {
     "accordion.multipleTitle": "Accordion de grupo múltiple",
     "accordion.multipleBody":
       '<code>type="multiple"</code> conserva cada disclosure de forma independiente.',
-    "accordion.multipleLabel": "Accordion multiple",
+    "accordion.appearanceTitle": "Apariencia",
+    "accordion.appearanceStageLabel": "Accordion sobre un fondo",
+    "accordion.appearanceBody":
+      "<code>appearance</code> es el mismo eje de Button y Tile, y todos los ejemplos de esta página lo siguen: cámbialo con el selector de apariencia de arriba. Va en la raíz porque el marco es la superficie: <code>tactile</code> le pone un canto debajo, <code>brutalist</code> dibuja el marco, los divisores y una sombra dura en el negro de Button, y <code>frosted</code> vuelve el marco el material translúcido de Button. La mitad nativa sigue la misma regla: <code>DetailsGroup</code> la lleva en su marco, un <code>Details</code> suelto sobre sí mismo. El marco nunca se mueve; cada trigger es su propio control. El ejemplo de abajo está sobre un degradado, porque <code>frosted</code> necesita algo detrás que difuminar; prueba ahí cada apariencia sobre un fondo.",
+        "accordion.multipleLabel": "Accordion multiple",
     "accordion.contractTitle": "Contrato",
     "accordion.contractSelection":
       'Abrir un item no pinta el borde de selección: eso queda para checkbox y radio.',
@@ -167,7 +171,11 @@ export const accordionMessages = {
     "accordion.multipleTitle": "Accordion as a multiple group",
     "accordion.multipleBody":
       '<code>type="multiple"</code> keeps each disclosure independent.',
-    "accordion.multipleLabel": "Accordion multiple",
+    "accordion.appearanceTitle": "Appearance",
+    "accordion.appearanceStageLabel": "Accordion over a backdrop",
+    "accordion.appearanceBody":
+      "<code>appearance</code> is Button's and Tile's axis, and every example on this page follows it: change it with the appearance switch at the top. It goes on the root because the frame is the surface: <code>tactile</code> puts a ledge under it, <code>brutalist</code> draws the frame, dividers and a hard offset in Button's black, and <code>frosted</code> turns the frame into Button's see-through material. The native half follows the same rule: <code>DetailsGroup</code> carries it on its frame, a lone <code>Details</code> on itself. The frame never moves; each trigger is its own control. The example below sits on a gradient, because <code>frosted</code> needs something behind it to blur; try each appearance over a backdrop there.",
+        "accordion.multipleLabel": "Accordion multiple",
     "accordion.contractTitle": "Contract",
     "accordion.contractSelection":
       "Opening an item does not paint the selection border: that is for checkbox and radio.",

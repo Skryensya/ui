@@ -36,6 +36,11 @@ export const boxMessages = {
       'Box y Tile comparten superficie, borde, radio y el vocabulario de <code>padding</code>. Usa <code>data-padding="none"</code> en HTML o <code>padding="none"</code> en React cuando el header o la imagen del contenido deban tocar el borde; ese hijo es quien declara su propio inset. La diferencia entre ambos es exclusivamente la interacción que Tile sí posee.',
     "box.whenBody3":
       'La guía <a href="/es/componentes/card">Card</a> aplica esta decisión a cards de contenido, noticia, producto, enlace, acción, selección y métricas.',
+    "box.tactileUnavailable": "Solo para controles que se presionan",
+    "box.appearanceTitle": "Apariencia",
+    "box.appearanceBody":
+      "<code>appearance</code> es el mismo eje de Button y Tile: <code>plain</code> es la caja que pintan <code>surface</code> y <code>border</code>, <code>brutalist</code> la dibuja con borde negro y una sombra dura desplazada, y <code>frosted</code> la hace un material translúcido que difumina lo que tiene detrás (opaco donde el material no es fiable). Sin <code>tactile</code>: una caja no se presiona. Cambia la apariencia con el menú de esta página; la caja está sobre una foto para que frosted tenga algo que procesar.",
+    "box.appearanceLabel": "Box sobre una foto, con la apariencia del menú",
     "box.htmlTitle": "HTML escrito a mano",
     "box.contractItem1": 'En HTML, elige el elemento semántico y añade la clase <code>sk-box</code>.',
     "box.contractItem2":
@@ -83,6 +88,11 @@ export const boxMessages = {
       'Box and Tile share surface, border, radius and the <code>padding</code> vocabulary. Use <code>data-padding="none"</code> in HTML or <code>padding="none"</code> in React when a header or the content\'s image needs to touch the border; that child is the one declaring its own inset. The only difference between the two is the interaction Tile owns and Box does not.',
     "box.whenBody3":
       'The <a href="/components/card">Card</a> guide applies this decision to content, news, product, link, action, selection and metric cards.',
+    "box.tactileUnavailable": "Only for controls you press",
+    "box.appearanceTitle": "Appearance",
+    "box.appearanceBody":
+      "<code>appearance</code> is the same axis as Button's and Tile's: <code>plain</code> is the box <code>surface</code> and <code>border</code> paint, <code>brutalist</code> draws it with a black edge and a hard offset shadow, and <code>frosted</code> makes it a translucent material that blurs what is behind it (opaque wherever the material cannot be trusted). No <code>tactile</code>: a box is never pressed. Switch it with this page's appearance menu; the box sits on a photograph so frosted has something to process.",
+    "box.appearanceLabel": "Box on a photograph, in the menu's appearance",
     "box.htmlTitle": "Authored HTML",
     "box.contractItem1": 'In HTML, pick the semantic element and add the <code>sk-box</code> class.',
     "box.contractItem2":

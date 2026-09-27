@@ -199,3 +199,17 @@ export const folderActiveTree = (t: Translate): UsageTree =>
       active: index === 1,
     }))),
   );
+
+/*
+ * THE APPEARANCE SPECIMEN: one folder, held `active` so its appearance is on screen without reaching
+ * for it, with its fan out. No `Box` ground on purpose: the page stands this one on the appearance
+ * gradient (lib/frost-stage), so `frosted` has something to blur. It is ONE folder because a folder
+ * at rest copies its ground's paint to disappear, and a gradient copied into a folder's own box does
+ * not line up with the gradient behind it; a folder that is always revealed never shows that copy.
+ */
+export const folderAppearanceTree = (t: Translate): UsageTree => ({
+  contract: "layout",
+  signature: "Stack",
+  options: { align: "center" },
+  children: stack([{ ...projects(t)[1]!, previews: 3, active: true }]),
+});
