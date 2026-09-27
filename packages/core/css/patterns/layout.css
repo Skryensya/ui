@@ -518,4 +518,33 @@
       grid-template-columns: var(--sk-grid-template, repeat(var(--sk-grid-columns), minmax(0, 1fr)));
     }
   }
+
+  /*
+   * DESKTOP OVERRIDES, declared (decision 30). 52rem is `--breakpoint-desktop`
+   * (semantic/_breakpoints.scss), a literal here because a CSS `@media` cannot read a custom
+   * property, the same hand-copy `vaul.css` makes. The plain attribute is the value from the smallest
+   * screen up; the `-desktop` one replaces it from this width up, and only when the author wrote it.
+   */
+  @media (min-width: 52rem) {
+    .sk-stack[data-gap-desktop="none"] { --sk-stack-gap: 0; }
+    .sk-stack[data-gap-desktop="xs"] { --sk-stack-gap: var(--space-stack-xs); }
+    .sk-stack[data-gap-desktop="sm"] { --sk-stack-gap: var(--space-stack-sm); }
+    .sk-stack[data-gap-desktop="md"] { --sk-stack-gap: var(--space-stack-md); }
+    .sk-stack[data-gap-desktop="lg"] { --sk-stack-gap: var(--space-stack-lg); }
+    .sk-stack[data-gap-desktop="xl"] { --sk-stack-gap: var(--space-stack-xl); }
+
+    .sk-inline[data-gap-desktop="none"] { --sk-inline-gap: 0; }
+    .sk-inline[data-gap-desktop="xs"] { --sk-inline-gap: var(--space-inline-xs); }
+    .sk-inline[data-gap-desktop="sm"] { --sk-inline-gap: var(--space-inline-sm); }
+    .sk-inline[data-gap-desktop="md"] { --sk-inline-gap: var(--space-inline-md); }
+    .sk-inline[data-gap-desktop="lg"] { --sk-inline-gap: var(--space-inline-lg); }
+    .sk-inline[data-gap-desktop="xl"] { --sk-inline-gap: var(--space-inset-xl); }
+
+    .sk-grid[data-gap-desktop="none"] { --sk-grid-gap: 0; }
+    .sk-grid[data-gap-desktop="xs"] { --sk-grid-gap: var(--space-stack-xs); }
+    .sk-grid[data-gap-desktop="sm"] { --sk-grid-gap: var(--space-stack-sm); }
+    .sk-grid[data-gap-desktop="md"] { --sk-grid-gap: var(--space-stack-md); }
+    .sk-grid[data-gap-desktop="lg"] { --sk-grid-gap: var(--space-stack-lg); }
+    .sk-grid[data-gap-desktop="xl"] { --sk-grid-gap: var(--space-stack-xl); }
+  }
 }

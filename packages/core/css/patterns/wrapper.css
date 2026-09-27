@@ -37,4 +37,25 @@
     --sk-wrapper-max: none;
     inline-size: 100%;
   }
+
+  /* The gutter, when declared. Absent, it stays the `--space-inset-lg` set above (decision 30). */
+  .sk-wrapper[data-gutter="none"] { --sk-wrapper-padding-inline: 0; }
+  .sk-wrapper[data-gutter="sm"] { --sk-wrapper-padding-inline: var(--space-inset-sm); }
+  .sk-wrapper[data-gutter="md"] { --sk-wrapper-padding-inline: var(--space-inset-md); }
+  .sk-wrapper[data-gutter="lg"] { --sk-wrapper-padding-inline: var(--space-inset-lg); }
+  .sk-wrapper[data-gutter="xl"] { --sk-wrapper-padding-inline: var(--space-inset-xl); }
+
+  /*
+   * DESKTOP OVERRIDES, declared (decision 30). 52rem is `--breakpoint-desktop`
+   * (semantic/_breakpoints.scss), a literal here because a CSS `@media` cannot read a custom
+   * property, the same hand-copy `vaul.css` makes. The plain attribute is the value from the smallest
+   * screen up; the `-desktop` one replaces it from this width up, and only when the author wrote it.
+   */
+  @media (min-width: 52rem) {
+    .sk-wrapper[data-gutter-desktop="none"] { --sk-wrapper-padding-inline: 0; }
+    .sk-wrapper[data-gutter-desktop="sm"] { --sk-wrapper-padding-inline: var(--space-inset-sm); }
+    .sk-wrapper[data-gutter-desktop="md"] { --sk-wrapper-padding-inline: var(--space-inset-md); }
+    .sk-wrapper[data-gutter-desktop="lg"] { --sk-wrapper-padding-inline: var(--space-inset-lg); }
+    .sk-wrapper[data-gutter-desktop="xl"] { --sk-wrapper-padding-inline: var(--space-inset-xl); }
+  }
 }

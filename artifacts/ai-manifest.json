@@ -850,6 +850,19 @@
         "date": null,
         "entries": [
           {
+            "date": "2026-09-27",
+            "en": {
+              "body": "<code>padding</code> is the value from the smallest screen up; <code>paddingDesktop</code> replaces it from the <code>desktop</code> breakpoint (52rem) up. Left out, nothing changes: existing markup renders as before.",
+              "title": "Box declares its desktop padding with paddingDesktop"
+            },
+            "es": {
+              "body": "<code>padding</code> es el valor desde la pantalla más chica; <code>paddingDesktop</code> lo reemplaza desde el breakpoint <code>desktop</code> (52rem). Sin declararlo no cambia nada: el markup existente se ve igual.",
+              "title": "Box declara su padding de desktop con paddingDesktop"
+            },
+            "kind": "feature",
+            "target": "paddingDesktop"
+          },
+          {
             "date": "2026-09-17",
             "en": {
               "body": "<code>boxElement</code> takes <code>div</code>, <code>section</code>, <code>article</code>, <code>aside</code>, <code>header</code>, <code>footer</code>, <code>nav</code> and <code>main</code>. React already allowed it through <code>as</code>, but a tree could only emit a <code>div</code>, so a region or a landmark had no way to be written.",
@@ -4324,6 +4337,19 @@
         "date": null,
         "entries": [
           {
+            "date": "2026-09-27",
+            "en": {
+              "body": "<code>paddingDesktop</code> replaces <code>padding</code> from the <code>desktop</code> breakpoint (52rem) up. Once declared, the automatic phone step-down of <code>lg</code> and <code>xl</code> no longer applies: the declaration wins.",
+              "title": "Footer declares its desktop padding with paddingDesktop"
+            },
+            "es": {
+              "body": "<code>paddingDesktop</code> reemplaza a <code>padding</code> desde el breakpoint <code>desktop</code> (52rem). Si se declara, la reducción automática de <code>lg</code> y <code>xl</code> en teléfonos deja de aplicarse: manda lo declarado.",
+              "title": "Footer declara su padding de desktop con paddingDesktop"
+            },
+            "kind": "feature",
+            "target": "paddingDesktop"
+          },
+          {
             "date": "2026-09-17",
             "en": {
               "body": "<code>divider</code> now declares <code>falseValue: \"false\"</code>, matching what React already wrote. Without it, emit omitted the attribute on opt-out and the stylesheet kept painting the top rule.",
@@ -4435,6 +4461,19 @@
       {
         "date": null,
         "entries": [
+          {
+            "date": "2026-09-27",
+            "en": {
+              "body": "<code>padding</code> is the value from the smallest screen up; <code>paddingDesktop</code> replaces it from the <code>desktop</code> breakpoint (52rem) up. Left out, nothing changes.",
+              "title": "Hero declares its desktop padding with paddingDesktop"
+            },
+            "es": {
+              "body": "<code>padding</code> es el valor desde la pantalla más chica; <code>paddingDesktop</code> lo reemplaza desde el breakpoint <code>desktop</code> (52rem). Sin declararlo no cambia nada.",
+              "title": "Hero declara su padding de desktop con paddingDesktop"
+            },
+            "kind": "feature",
+            "target": "paddingDesktop"
+          },
           {
             "date": "2026-09-26",
             "en": {
@@ -4902,6 +4941,19 @@
       {
         "date": null,
         "entries": [
+          {
+            "date": "2026-09-27",
+            "en": {
+              "body": "<code>gap</code> is the value from the smallest screen up; <code>gapDesktop</code> replaces it from the <code>desktop</code> breakpoint (52rem) up. Left out, nothing changes.",
+              "title": "Stack, Inline and Grid declare their desktop gap with gapDesktop"
+            },
+            "es": {
+              "body": "<code>gap</code> es el valor desde la pantalla más chica; <code>gapDesktop</code> lo reemplaza desde el breakpoint <code>desktop</code> (52rem). Sin declararlo no cambia nada.",
+              "title": "Stack, Inline y Grid declaran su gap de desktop con gapDesktop"
+            },
+            "kind": "feature",
+            "target": "gapDesktop"
+          },
           {
             "date": "2026-09-17",
             "en": {
@@ -11197,6 +11249,19 @@
         "date": null,
         "entries": [
           {
+            "date": "2026-09-27",
+            "en": {
+              "body": "<code>gutter</code> picks the inset either side of the column from the inset scale; <code>gutterDesktop</code> replaces it from the <code>desktop</code> breakpoint (52rem) up. Left out, the gutter stays <code>--space-inset-lg</code>.",
+              "title": "Wrapper declares its side gutter with gutter and gutterDesktop"
+            },
+            "es": {
+              "body": "<code>gutter</code> elige el margen a cada lado de la columna en la escala de inset; <code>gutterDesktop</code> lo reemplaza desde el breakpoint <code>desktop</code> (52rem). Sin declararlos el margen sigue en <code>--space-inset-lg</code>.",
+              "title": "Wrapper declara su margen lateral con gutter y gutterDesktop"
+            },
+            "kind": "feature",
+            "target": "gutter"
+          },
+          {
             "date": "2026-09-17",
             "en": {
               "body": "<code>wrapperElement</code> takes <code>div</code>, <code>section</code>, <code>article</code>, <code>aside</code>, <code>header</code>, <code>footer</code>, <code>nav</code> and <code>main</code>. React already allowed it through <code>as</code>, but a tree could only emit a <code>div</code>, so a region or a landmark had no way to be written.",
@@ -13599,6 +13664,18 @@
             "xl"
           ]
         },
+        "paddingDesktop": {
+          "attr": "data-padding-desktop",
+          "type": "enum",
+          "values": [
+            "none",
+            "xs",
+            "sm",
+            "md",
+            "lg",
+            "xl"
+          ]
+        },
         "surface": {
           "attr": "data-surface",
           "default": "none",
@@ -13650,6 +13727,7 @@
           ],
           "options": [
             "padding",
+            "paddingDesktop",
             "surface",
             "border",
             "boxElement"
@@ -26250,6 +26328,18 @@
             "xl"
           ]
         },
+        "paddingDesktop": {
+          "attr": "data-padding-desktop",
+          "type": "enum",
+          "values": [
+            "none",
+            "xs",
+            "sm",
+            "md",
+            "lg",
+            "xl"
+          ]
+        },
         "surface": {
           "attr": "data-surface",
           "default": "sunken",
@@ -26300,6 +26390,7 @@
           ],
           "options": [
             "padding",
+            "paddingDesktop",
             "surface",
             "divider",
             "footerElement"
@@ -26687,6 +26778,18 @@
             "xl"
           ]
         },
+        "paddingDesktop": {
+          "attr": "data-padding-desktop",
+          "type": "enum",
+          "values": [
+            "none",
+            "xs",
+            "sm",
+            "md",
+            "lg",
+            "xl"
+          ]
+        },
         "surface": {
           "attr": "data-surface",
           "default": "surface",
@@ -26747,6 +26850,7 @@
           ],
           "options": [
             "padding",
+            "paddingDesktop",
             "surface",
             "align",
             "heroElement"
@@ -27971,6 +28075,18 @@
             "xl"
           ]
         },
+        "gapDesktop": {
+          "attr": "data-gap-desktop",
+          "type": "enum",
+          "values": [
+            "none",
+            "xs",
+            "sm",
+            "md",
+            "lg",
+            "xl"
+          ]
+        },
         "inlineAlign": {
           "attr": "data-align",
           "default": "end",
@@ -28123,6 +28239,7 @@
           ],
           "options": [
             "gap",
+            "gapDesktop",
             "columns",
             "multicol",
             "responsive",
@@ -28157,6 +28274,7 @@
           ],
           "options": [
             "gap",
+            "gapDesktop",
             "inlineAlign",
             "justify",
             "wrap",
@@ -28262,6 +28380,7 @@
           ],
           "options": [
             "gap",
+            "gapDesktop",
             "align",
             "layoutElement"
           ],
@@ -51110,6 +51229,28 @@
       ],
       "id": "wrapper",
       "options": {
+        "gutter": {
+          "attr": "data-gutter",
+          "type": "enum",
+          "values": [
+            "none",
+            "sm",
+            "md",
+            "lg",
+            "xl"
+          ]
+        },
+        "gutterDesktop": {
+          "attr": "data-gutter-desktop",
+          "type": "enum",
+          "values": [
+            "none",
+            "sm",
+            "md",
+            "lg",
+            "xl"
+          ]
+        },
         "wrapperElement": {
           "default": "div",
           "element": true,
@@ -51176,6 +51317,8 @@
           ],
           "options": [
             "wrapperSize",
+            "gutter",
+            "gutterDesktop",
             "wrapperElement"
           ],
           "react": {
@@ -51203,7 +51346,7 @@
     "working": "0.0.1"
   },
   "schemaVersion": "2.3",
-  "sourceHash": "4f411991a508a993",
+  "sourceHash": "2595d906d199978f",
   "vocabulary": {
     "a11y": "When `when` holds, one of `requiresOneOf` must be given: an option, a raw attribute, a filled slot, or a child signature by name.",
     "atLeastOneOf": "At least one member of each group counts: a filled slot, a boolean option set to true, or an option other than its default.",

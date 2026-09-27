@@ -70,4 +70,19 @@
   .sk-box[data-padding="md"] { --sk-box-padding: var(--space-inset-md); }
   .sk-box[data-padding="lg"] { --sk-box-padding: var(--space-inset-lg); }
   .sk-box[data-padding="xl"] { --sk-box-padding: var(--space-inset-xl); }
+
+  /*
+   * DESKTOP OVERRIDES, declared (decision 30). 52rem is `--breakpoint-desktop`
+   * (semantic/_breakpoints.scss), a literal here because a CSS `@media` cannot read a custom
+   * property, the same hand-copy `vaul.css` makes. The plain attribute is the value from the smallest
+   * screen up; the `-desktop` one replaces it from this width up, and only when the author wrote it.
+   */
+  @media (min-width: 52rem) {
+    .sk-box[data-padding-desktop="none"] { --sk-box-padding: 0; }
+    .sk-box[data-padding-desktop="xs"] { --sk-box-padding: var(--space-inset-xs); }
+    .sk-box[data-padding-desktop="sm"] { --sk-box-padding: var(--space-inset-sm); }
+    .sk-box[data-padding-desktop="md"] { --sk-box-padding: var(--space-inset-md); }
+    .sk-box[data-padding-desktop="lg"] { --sk-box-padding: var(--space-inset-lg); }
+    .sk-box[data-padding-desktop="xl"] { --sk-box-padding: var(--space-inset-xl); }
+  }
 }
