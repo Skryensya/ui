@@ -308,6 +308,21 @@ const signatureTrees: readonly Canonical[] = [
     },
   },
   {
+    name: "radio-group/tactile",
+    enhanced: false,
+    tree: {
+      contract: "radio-group",
+      signature: "RadioGroup",
+      options: { name: "envio", value: "estandar", label: "Envío", appearance: "tactile" },
+      slots: {
+        items: [
+          { options: { value: "estandar" }, slots: { label: "Estándar" } },
+          { options: { value: "express" }, slots: { label: "Express" } },
+        ],
+      },
+    },
+  },
+  {
     /*
      * THE STANDALONE RADIO, which is a separate signature and not a piece of the group above.
      * Its own intent is "matrix-cell" / "radio-in-a-table": one cell in a grid of choices, where

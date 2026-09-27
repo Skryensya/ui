@@ -498,6 +498,17 @@ export const radioGroupContract = {
   ],
 
   options: {
+    /*
+     * HOW THE RING IS DRAWN, Button's axis: `tactile` a raised disc that sinks when pressed,
+     * `brutalist` a black edge and hard offset, `frosted` a see-through disc (opaque wherever the
+     * material cannot be trusted). On the LABEL for a Radio and on the root for a group.
+     */
+    appearance: {
+      type: "enum",
+      values: ["plain", "tactile", "brutalist", "frosted"],
+      default: "plain",
+      attr: "data-appearance",
+    },
     /** Shared by every input, and what makes the choice exclusive. The group's, never an option's. */
     name: { type: "string", attr: "name" },
     /**
@@ -562,7 +573,7 @@ export const radioGroupContract = {
     Radio: {
       intent: ["one-radio", "matrix-cell", "radio-in-a-table", "grid-of-choices"],
       host: { element: "input" },
-      options: ["name", "value", "radioDefaultChecked", "disabled", "required"],
+      options: ["name", "value", "radioDefaultChecked", "disabled", "required", "appearance"],
       requires: ["name"],
       /** Native form association and the naming a matrix needs, beyond the owned options. */
       forward: ["id", "form", "aria-*"],
@@ -573,6 +584,7 @@ export const radioGroupContract = {
       template: {
         element: "label",
         part: "radio",
+        options: ["appearance"],
         children: [
           { element: "input", part: "radioInput", host: true, attrs: { type: "radio" } },
           {
@@ -590,7 +602,7 @@ export const radioGroupContract = {
     RadioGroup: {
       intent: ["one-of-many", "exclusive-choice", "pick-a-single-option"],
       host: { element: "div" },
-      options: ["name", "value", "orientation", "spread", "disabled", "required", "label"],
+      options: ["name", "value", "orientation", "spread", "disabled", "required", "label", "appearance"],
       requires: ["name"],
       /** Host id / a11y names beyond owned `label` / `name` options. */
       forward: ["id", "aria-*"],
