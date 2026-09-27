@@ -1,4 +1,4 @@
-import type { ComponentContract } from "./contract.js";
+import type { ComponentContract, OptionValue } from "./contract.js";
 
 /*
  * FOLDER: a surface whose top edge carries a TAB, drawn as one continuous silhouette.
@@ -406,12 +406,20 @@ export const folderContract = {
   /* Written by both silhouette drawers on every measure; read them, never set them as overrides. */
   outputHooks: ["--sk-folder-clip", "--sk-folder-tail"],
   hooks: [
+    "--sk-folder-brutalist-edge",
+    "--sk-folder-brutalist-offset-block",
+    "--sk-folder-brutalist-offset-inline",
+    "--sk-folder-brutalist-shadow",
     "--sk-folder-clip",
     "--sk-folder-content-gap",
+    "--sk-folder-depth",
     "--sk-folder-fg",
     "--sk-folder-fill",
     "--sk-folder-fill-active",
     "--sk-folder-fold-lift",
+    "--sk-folder-frost-blur",
+    "--sk-folder-frost-opacity",
+    "--sk-folder-frost-saturation",
     "--sk-folder-ground",
     "--sk-folder-inset-x",
     "--sk-folder-inset-y",
@@ -467,6 +475,20 @@ export const folderContract = {
      * promises what it does when told: the same reveal the pointer gets, plus its fan.
      */
     active: { type: "boolean", default: false, attr: "data-active", trueValue: "" },
+    /*
+     * Button's axis, same values, same meaning, expressed on the REVEALED folder only: at rest a
+     * folder is the colour of its ground and meant to be unseen, so every construction appears
+     * with the reveal and never before it. `tactile` shades the sheet and puts a ledge under it,
+     * `brutalist` draws Button's black edge and hard offset around the silhouette, `frosted` makes
+     * the sheet Button's see-through material. folder.css documents why none of them can be a
+     * drop-shadow on this shape.
+     */
+    appearance: {
+      type: "enum",
+      values: ["plain", "tactile", "brutalist", "frosted"],
+      default: "plain",
+      attr: "data-appearance",
+    },
     /** Where a `FolderLink` goes. */
     href: { type: "string", attr: "href" },
     /**
@@ -483,7 +505,7 @@ export const folderContract = {
       intent: ["folder", "tabbed-surface", "labelled-card", "file-folder"],
       host: { element: "div" },
       mount: folderAttrs.root,
-      options: ["active"],
+      options: ["active", "appearance"],
       slots: {
         /** What the tab holds. A heading, usually. Its width is what the silhouette is drawn around. */
         label: { accepts: "node", required: true },
@@ -538,7 +560,7 @@ export const folderContract = {
       intent: ["folder-link", "clickable-folder", "folder-that-goes-somewhere"],
       host: { element: "a" },
       mount: folderAttrs.root,
-      options: ["active", "href"],
+      options: ["active", "appearance", "href"],
       requires: ["href"],
       /** Link host attrs beyond href/active (Button.navigation peer). */
       forward: ["id", "target", "rel", "download", "aria-*"],
@@ -630,3 +652,5 @@ export const folderContract = {
     },
   },
 } as const satisfies ComponentContract;
+
+export type FolderAppearance = OptionValue<typeof folderContract.options.appearance>;

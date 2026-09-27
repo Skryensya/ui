@@ -792,6 +792,213 @@
   }
 
   /*
+   * ── APPEARANCE ───────────────────────────────────────────────────────────────────────────────
+   *
+   * Button's axis, same values, same meaning, expressed on the REVEALED folder: at rest a folder is
+   * the colour of its ground and meant to be unseen, and an appearance that showed there would give
+   * that away. Every construction appears on the same states the reveal does, and the lift stays.
+   *
+   * WHY NOT A DROP-SHADOW. The silhouette's layer is clipped to its own path (`--sk-folder-clip`),
+   * and a clip removes everything painted outside it: measured, a `drop-shadow` on the path vanished
+   * entirely and a stroke kept only its inner half. So the two constructions that live OUTSIDE the
+   * shape (tactile's ledge, brutalist's offset) are a second copy of the silhouette on `::after`,
+   * clipped by the same path and shifted, behind the shape (`z-index: -1` inside the folder's own
+   * isolated stacking context). `::before` is taken: FolderLink's state layer lives there.
+   *
+   * THE EDGE is the path's stroke at 2px, of which the clip leaves exactly the inner 1px: Button's
+   * plain-width edge, drawn on a shape no border can follow.
+   *
+   * Internal (`--folder-*`): the states drive them. The published hooks are the magnitudes and inks.
+   */
+  .sk-folder {
+    --sk-folder-depth: 5px;
+    --sk-folder-brutalist-offset-inline: 6px;
+    --sk-folder-brutalist-offset-block: 6px;
+    --sk-folder-frost-opacity: 72%;
+    --sk-folder-frost-blur: 16px;
+    --sk-folder-frost-saturation: 150%;
+    --folder-direction: 1;
+  }
+
+  .sk-folder:dir(rtl) {
+    --folder-direction: -1;
+  }
+
+  .sk-folder:is([data-appearance="tactile"], [data-appearance="brutalist"])::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    clip-path: var(--sk-folder-clip);
+    background: var(--folder-mark);
+    translate: var(--folder-mark-offset);
+    opacity: 0;
+    transition: opacity var(--motion-state-change-duration) var(--motion-state-change-easing);
+  }
+
+  /* TACTILE: a ledge the colour of the revealed sheet's own underside, straight down, and the shaded
+   * face Button's and Tile's tactile have. The face is what carries it in a STACK, where the next
+   * folder covers exactly the strip the ledge would show. It is drawn on the clipped layer rather
+   * than the path, because an SVG fill takes a colour and never a gradient. */
+  .sk-folder[data-appearance="tactile"] {
+    --folder-tactile-face:
+      linear-gradient(
+        to bottom,
+        light-dark(color-mix(in oklab, white 22%, transparent), color-mix(in oklab, white 7%, transparent)),
+        transparent 45%,
+        light-dark(color-mix(in oklab, black 6%, transparent), color-mix(in oklab, black 12%, transparent))
+      ),
+      var(--sk-folder-fill-active);
+    --folder-mark: light-dark(
+      color-mix(in oklab, var(--sk-folder-fill-active) 76%, var(--color-text-primary)),
+      color-mix(in oklab, var(--color-bg-surface-sunken) 55%, black)
+    );
+    --folder-mark-offset: 0 var(--sk-folder-depth);
+  }
+
+  /* BRUTALIST: Button's black ink (the system's shadow colour at full alpha) for edge and offset. */
+  .sk-folder[data-appearance="brutalist"] {
+    --sk-folder-brutalist-edge: oklch(from var(--shadow-lg) l c h / 1);
+    --sk-folder-brutalist-shadow: var(--sk-folder-brutalist-edge);
+    --folder-mark: var(--sk-folder-brutalist-shadow);
+    --folder-mark-offset:
+      calc(round(nearest, var(--sk-folder-brutalist-offset-inline), 1px) * var(--folder-direction))
+      round(nearest, var(--sk-folder-brutalist-offset-block), 1px);
+  }
+
+  /* FROSTED: the clipped layer itself becomes the sheet, so the blur follows the silhouette exactly.
+   * The path gives up its fill to it and keeps only a lit rim. */
+  .sk-folder[data-appearance="frosted"] {
+    --folder-frost-highlight: light-dark(
+      color-mix(in oklab, var(--color-bg-surface) 90%, transparent),
+      color-mix(in oklab, var(--color-text-primary) 22%, transparent)
+    );
+  }
+
+  /* The reveal, restated for the constructions: the same three ways in the folder itself answers. */
+  .sk-folder:is([data-appearance="tactile"], [data-appearance="brutalist"]):is(:focus-within, [data-active])::after {
+    opacity: 1;
+  }
+
+  .sk-folder[data-appearance="brutalist"]:is(:focus-within, [data-active]) .sk-folder__shape-path {
+    stroke: var(--sk-folder-brutalist-edge);
+    stroke-width: 2px;
+  }
+
+  .sk-folder[data-appearance="tactile"]:is(:focus-within, [data-active]) .sk-folder__shape-path {
+    fill: transparent;
+  }
+
+  .sk-folder[data-appearance="tactile"]:is(:focus-within, [data-active]) .sk-folder__shape {
+    background: var(--folder-tactile-face);
+  }
+
+  .sk-folder[data-appearance="frosted"]:is(:focus-within, [data-active]) .sk-folder__shape-path {
+    stroke: var(--folder-frost-highlight);
+    stroke-width: 2px;
+  }
+
+  @supports (backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px)) {
+    @media (prefers-reduced-transparency: no-preference) {
+      /* Only here does the path give its fill up to the sheet: without the material, the opaque
+       * revealed fill stays, and the folder is still seen. */
+      .sk-folder[data-appearance="frosted"]:is(:focus-within, [data-active]) .sk-folder__shape-path {
+        fill: transparent;
+      }
+
+      .sk-folder[data-appearance="frosted"]:is(:focus-within, [data-active]) .sk-folder__shape {
+        background: color-mix(in oklab, var(--color-bg-surface) var(--sk-folder-frost-opacity), transparent);
+        -webkit-backdrop-filter: blur(var(--sk-folder-frost-blur)) saturate(var(--sk-folder-frost-saturation));
+        backdrop-filter: blur(var(--sk-folder-frost-blur)) saturate(var(--sk-folder-frost-saturation));
+      }
+    }
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .sk-folder:is([data-appearance="tactile"], [data-appearance="brutalist"]):hover::after {
+      opacity: 1;
+    }
+
+    .sk-folder[data-appearance="brutalist"]:hover .sk-folder__shape-path {
+      stroke: var(--sk-folder-brutalist-edge);
+      stroke-width: 2px;
+    }
+
+    .sk-folder[data-appearance="tactile"]:hover .sk-folder__shape-path {
+      fill: transparent;
+    }
+
+    .sk-folder[data-appearance="tactile"]:hover .sk-folder__shape {
+      background: var(--folder-tactile-face);
+    }
+
+    .sk-folder[data-appearance="frosted"]:hover .sk-folder__shape-path {
+      stroke: var(--folder-frost-highlight);
+      stroke-width: 2px;
+    }
+
+    @supports (backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px)) {
+      @media (prefers-reduced-transparency: no-preference) {
+        .sk-folder[data-appearance="frosted"]:hover .sk-folder__shape-path {
+          fill: transparent;
+        }
+
+        .sk-folder[data-appearance="frosted"]:hover .sk-folder__shape {
+          background: color-mix(in oklab, var(--color-bg-surface) var(--sk-folder-frost-opacity), transparent);
+          -webkit-backdrop-filter: blur(var(--sk-folder-frost-blur)) saturate(var(--sk-folder-frost-saturation));
+          backdrop-filter: blur(var(--sk-folder-frost-blur)) saturate(var(--sk-folder-frost-saturation));
+        }
+      }
+    }
+  }
+
+  /* A coarse pointer paints the folder permanently (see the reveal above), so the construction too. */
+  @media not all and (hover: hover) {
+    .sk-folder:is([data-appearance="tactile"], [data-appearance="brutalist"])::after {
+      opacity: 1;
+    }
+
+    .sk-folder[data-appearance="brutalist"] .sk-folder__shape-path {
+      stroke: var(--sk-folder-brutalist-edge);
+      stroke-width: 2px;
+    }
+
+    .sk-folder[data-appearance="tactile"] .sk-folder__shape-path {
+      fill: transparent;
+    }
+
+    .sk-folder[data-appearance="tactile"] .sk-folder__shape {
+      background: var(--folder-tactile-face);
+    }
+  }
+
+  /* High contrast outranks the material, as it does for Button: the opaque revealed fill returns. */
+  [data-contrast="high"] .sk-folder[data-appearance="frosted"] .sk-folder__shape,
+  .sk-folder[data-appearance="frosted"][data-contrast="high"] .sk-folder__shape {
+    background: var(--sk-folder-ground);
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+
+  [data-contrast="high"] .sk-folder[data-appearance="frosted"] .sk-folder__shape-path,
+  .sk-folder[data-appearance="frosted"][data-contrast="high"] .sk-folder__shape-path {
+    fill: var(--sk-folder-fill);
+  }
+
+  @media (prefers-contrast: more) {
+    :root:not([data-contrast]) .sk-folder[data-appearance="frosted"] .sk-folder__shape {
+      background: var(--sk-folder-ground);
+      -webkit-backdrop-filter: none;
+      backdrop-filter: none;
+    }
+
+    :root:not([data-contrast]) .sk-folder[data-appearance="frosted"] .sk-folder__shape-path {
+      fill: var(--sk-folder-fill);
+    }
+  }
+
+  /*
    * FORCED COLOURS. The silhouette is `fill`ed, and a forced-colours mode replaces colour with a
    * system palette that has no notion of "a tinted card": painting it `Canvas` with a `CanvasText`
    * edge is what keeps the folder a visible shape rather than a rectangle of text on a rectangle.
@@ -811,6 +1018,16 @@
     .sk-folder[data-active] .sk-folder__shape-path {
       fill: Highlight;
       stroke: HighlightText;
+    }
+
+    /* Every appearance falls back to the system silhouette above. */
+    .sk-folder[data-appearance]::after {
+      display: none;
+    }
+
+    .sk-folder[data-appearance] .sk-folder__shape {
+      -webkit-backdrop-filter: none;
+      backdrop-filter: none;
     }
   }
 }
