@@ -1,15 +1,29 @@
-import type { Decorator, StoryObj } from "@storybook/react-vite";
+import type { Decorator, Meta as ReactMeta, StoryObj as ReactStoryObj } from "@storybook/react-vite";
 import { emitReact } from "@skryensya/ai-compiler/emit";
 import type { UsageTree } from "@skryensya/core/usage-tree";
 import { loadTree, renderTree } from "@skryensya/react/render-tree";
 import type { Translate } from "@docs/i18n";
 import { isLocale, translator } from "./translate";
 
+/*
+ * THE REACT RENDERER BEHIND `@story`. The Vanilla app (`apps/storybook-vanilla/src/tree-story.ts`)
+ * exports the same names; a story imports from `@story` and never learns which one it got.
+ */
+
+export { localeOf } from "./translate";
+export type Meta = ReactMeta;
+export type StoryObj<Args = Record<string, unknown>> = ReactStoryObj<Args>;
+
 /** A docs demo: one composition, authored as a function of the translator. */
 export type TreeFactory = (t: Translate) => UsageTree;
 
 const treeFor = (factory: TreeFactory, locale: unknown): UsageTree =>
   factory(translator(isLocale(locale) ? locale : "en"));
+
+const source = (code: (context: { args: never; globals: Record<string, unknown> }) => string) => ({
+  language: "tsx",
+  transform: (_code: string, context: { args: never; globals: Record<string, unknown> }) => code(context),
+});
 
 /*
  * ONE STORY PER DOCS TREE, and the story adds nothing to it. The tree is translated into the toolbar's
@@ -32,12 +46,30 @@ export function treeStory(factory: TreeFactory, story: StoryObj = {}): StoryObj 
       ...story.parameters,
       docs: {
         ...story.parameters?.docs,
-        source: {
-          language: "tsx",
-          transform: (_code: string, { globals }: { globals: Record<string, unknown> }) =>
-            emitReact(treeFor(factory, globals.locale)),
-        },
+        source: source(({ globals }) => emitReact(treeFor(factory, globals.locale))),
       },
+    },
+  };
+}
+
+/*
+ * A story whose tree is built from its args (a playground). Loaded per render, because an arg can
+ * name a family (an icon in a slot) the previous tree did not.
+ */
+export function argsStory<Args>(build: (args: Args) => UsageTree, story: StoryObj<Args>): StoryObj<Args> {
+  return {
+    ...story,
+    loaders: [
+      async ({ args }: { args: unknown }) => {
+        const tree = build(args as Args);
+        await loadTree(tree);
+        return { tree };
+      },
+    ],
+    render: (args: unknown) => <>{renderTree(build(args as Args))}</>,
+    parameters: {
+      ...story.parameters,
+      docs: { ...story.parameters?.docs, source: source(({ args }) => emitReact(build(args))) },
     },
   };
 }
