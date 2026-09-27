@@ -37,6 +37,7 @@ export type SelectProps = Omit<SelectOptions, "options"> & {
 
 export function Select({
   appearance,
+  variant,
   container,
   id,
   name,
@@ -95,7 +96,7 @@ export function Select({
   const anchor = useAnchored(id ?? generatedId);
 
   return (
-    <div {...api.getRootProps()} className={selectParts.root} data-appearance={appearance} data-sk-select="" ref={rootRef}>
+    <div {...api.getRootProps()} className={selectParts.root} data-appearance={appearance} data-sk-select="" data-variant={variant} ref={rootRef}>
       <select {...api.getHiddenSelectProps()} {...{ [selectAttrs.hidden]: "" }}>
         {options.map((option) => (
           <option disabled={option.disabled} key={option.value} value={option.value}>

@@ -11,6 +11,8 @@ export type SelectValueChangeDetails = {
 };
 
 export type SelectOptions = {
+  /** How much body the trigger has: `outline` (absent) or `ghost`. */
+  variant?: (typeof selectContract.options.variant.values)[number];
   /** How the field is drawn: `plain`, `brutalist` or `frosted`. Absent means plain. */
   appearance?: (typeof selectContract.options.appearance.values)[number];
   id?: string;
@@ -187,6 +189,18 @@ export const selectContract = {
      * Every state still outranks it. Absent means plain, as for Input. No tactile: a field is typed
      * into, not pressed.
      */
+    /*
+     * HOW MUCH BODY THE TRIGGER HAS. `outline` (absent) is the bordered, filled field every other
+     * form control is; `ghost` drops the fill, the border and the well and keeps only the value and
+     * the chevron, with the shared state layer for hover, press and focus: a select that sits in a
+     * toolbar, a card header or a row of people without drawing a box around itself. Absent means
+     * outline, so existing markup is unchanged. Every state (invalid, disabled) still outranks it.
+     */
+    variant: {
+      type: "enum",
+      values: ["outline", "ghost"],
+      attr: "data-variant",
+    },
     appearance: {
       type: "enum",
       values: ["plain", "brutalist", "frosted"],
@@ -266,7 +280,7 @@ export const selectContract = {
       intent: ["controlled-collection", "item-markup", "positioned-listbox", "value-change-event"],
       host: { element: "div" },
       mount: selectAttrs.root,
-      options: ["name", "value", "placeholder", "disabled", "required", "appearance"],
+      options: ["name", "value", "placeholder", "disabled", "required", "variant", "appearance"],
       portals: { container: true },
       /** Host id / a11y names; form association stays on the hidden native input. */
       forward: ["id", "aria-*"],
