@@ -42,6 +42,17 @@ export const badgeContract = {
   ],
 
   options: {
+    /*
+     * HOW THE MARK IS DRAWN, Button's axis, brutalist alone: a black edge and a small hard offset.
+     * No tactile (a badge is never pressed) and no frosted (glass would only cost the label its
+     * contrast).
+     */
+    appearance: {
+      type: "enum",
+      values: ["plain", "brutalist"],
+      default: "plain",
+      attr: "data-appearance",
+    },
     /** Named by ROLE, never by hue: a brand may swap what colour `accent` is and the name stays true. */
     tone: {
       type: "enum",
@@ -59,7 +70,7 @@ export const badgeContract = {
     Badge: {
       intent: ["count", "status", "status-pill", "count-label"],
       host: { element: "span" },
-      options: ["tone", "size"],
+      options: ["tone", "size", "appearance"],
       slots: { children: { accepts: "text", required: true } },
       template: { element: "span", part: "root", host: true, slot: "children" },
       react: { from: "@skryensya/react/badge", name: "Badge" },

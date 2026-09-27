@@ -821,6 +821,19 @@
         "date": null,
         "entries": [
           {
+            "date": "2026-09-26",
+            "en": {
+              "body": "<code>brutalist</code> draws the mark with a black edge and a small hard offset. No <code>tactile</code> (a badge is never pressed) and no <code>frosted</code> (glass would only cost the label its contrast).",
+              "title": "Badge adds plain and brutalist appearances"
+            },
+            "es": {
+              "body": "<code>brutalist</code> dibuja la marca con borde negro y una sombra dura pequeña. Sin <code>tactile</code> (una insignia no se presiona) ni <code>frosted</code> (el vidrio solo le costaría contraste al texto).",
+              "title": "Badge suma appearance plain y brutalist"
+            },
+            "kind": "feature",
+            "target": "appearance"
+          },
+          {
             "date": "2026-09-17",
             "en": {
               "body": "<code>BadgeHolder.hitTesting.childrenNone</code> names <code>Badge</code> and <code>BadgeDot</code>: under the holder they do not receive clicks (<code>pointer-events: none</code> in the stylesheet). The manifest and vocabulary publish the channel.",
@@ -14048,6 +14061,15 @@
       ],
       "id": "badge",
       "options": {
+        "appearance": {
+          "attr": "data-appearance",
+          "default": "plain",
+          "type": "enum",
+          "values": [
+            "plain",
+            "brutalist"
+          ]
+        },
         "label": {
           "attr": "aria-label",
           "type": "string"
@@ -14137,7 +14159,8 @@
           ],
           "options": [
             "tone",
-            "size"
+            "size",
+            "appearance"
           ],
           "react": {
             "from": "@skryensya/react/badge",
@@ -52667,7 +52690,7 @@
     "working": "0.0.1"
   },
   "schemaVersion": "2.3",
-  "sourceHash": "c669348268e36aa8",
+  "sourceHash": "c1f4be8355dd7528",
   "vocabulary": {
     "a11y": "When `when` holds, one of `requiresOneOf` must be given: an option, a raw attribute, a filled slot, or a child signature by name.",
     "atLeastOneOf": "At least one member of each group counts: a filled slot, a boolean option set to true, or an option other than its default.",

@@ -2733,6 +2733,11 @@ const signatureTrees: readonly Canonical[] = [
     },
   },
   {
+    name: "badge/brutalist",
+    enhanced: false,
+    tree: { contract: "badge", signature: "Badge", options: { tone: "accent", appearance: "brutalist" }, children: "Nuevo" },
+  },
+  {
     name: "badge/dot",
     enhanced: false,
     tree: {
