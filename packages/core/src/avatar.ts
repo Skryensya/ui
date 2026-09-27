@@ -129,6 +129,7 @@ export const avatarContract = {
               "data-position": "center",
               "data-radius": "pill",
               "data-border": "none",
+              "data-appearance": "plain",
             },
             children: [
               {

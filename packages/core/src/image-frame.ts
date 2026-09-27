@@ -43,6 +43,17 @@ export const imageFrameContract = {
   ],
 
   options: {
+    /*
+     * HOW THE FRAME IS DRAWN, Button's axis, brutalist alone: a black edge and a hard offset around
+     * the media. No tactile (a picture is not a key) and no frosted (glass over a photograph would
+     * hide the photograph).
+     */
+    appearance: {
+      type: "enum",
+      values: ["plain", "brutalist"],
+      default: "plain",
+      attr: "data-appearance",
+    },
     /** The frame box. `auto` keeps the media's intrinsic measure. */
     aspect: {
       type: "enum",
@@ -105,7 +116,7 @@ export const imageFrameContract = {
     ImageFrame: {
       intent: ["media", "clipped-media", "aspect-ratio-box", "thumbnail", "cover-image"],
       host: { element: "div" },
-      options: ["aspect", "fit", "position", "radius", "border", "src", "alt", "frameElement"],
+      options: ["aspect", "fit", "position", "radius", "border", "src", "alt", "frameElement", "appearance"],
       exactlyOneOf: [["src", "children"]],
       slots: {
         /** Authored media: `picture`, `video`, anything the `src` convenience cannot express. */

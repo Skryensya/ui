@@ -7,6 +7,18 @@ surface: "924379c3e48ad4db"
 entries:
   - date: 2026-09-26
     kind: feature
+    es:
+      title: El marco de la foto declara su appearance
+      body: >-
+        La foto de <code>Avatar.image</code> escribe <code>data-appearance="plain"</code> en su ImageFrame, como
+        ya escribía sus otras opciones, para que el marcado y React sigan iguales.
+    en:
+      title: The photo's frame spells its appearance
+      body: >-
+        <code>Avatar.image</code>'s photo writes <code>data-appearance="plain"</code> on its ImageFrame, as it
+        already wrote the frame's other options, so the markup and React stay identical.
+  - date: 2026-09-26
+    kind: feature
     target: appearance
     es:
       title: Avatar suma appearance plain y brutalist

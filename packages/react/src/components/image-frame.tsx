@@ -33,6 +33,7 @@ export function ImageFrame<Element extends ElementType = "div">({
   position = o.position.default,
   radius = o.radius.default,
   border = o.border.default,
+  appearance = o.appearance.default,
   caption,
   className,
   src,
@@ -51,6 +52,7 @@ export function ImageFrame<Element extends ElementType = "div">({
         [o.position.attr]: position,
         [o.radius.attr]: radius,
         [o.border.attr]: border,
+        [o.appearance.attr]: appearance,
       }}
     >
       {src != null ? <img className={imageFrameParts.media} src={src} alt={alt} /> : children}
