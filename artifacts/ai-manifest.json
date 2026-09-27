@@ -7056,6 +7056,19 @@
           {
             "date": "2026-09-26",
             "en": {
+              "body": "On the root, for the panel: <code>brutalist</code> a black edge and a hard offset in place of the soft elevation, <code>frosted</code> a see-through panel, opaque wherever the material cannot be trusted. The trigger has its own, <code>triggerAppearance</code>.",
+              "title": "Popover adds plain, brutalist and frosted appearances"
+            },
+            "es": {
+              "body": "En la raíz, para el panel: <code>brutalist</code> un borde negro y una sombra dura en lugar de la elevación suave, <code>frosted</code> un panel translúcido, opaco donde el material no es fiable. El disparador tiene la suya, <code>triggerAppearance</code>.",
+              "title": "Popover suma appearance plain, brutalist y frosted"
+            },
+            "kind": "feature",
+            "target": "appearance"
+          },
+          {
+            "date": "2026-09-26",
+            "en": {
               "body": "<code>triggerAppearance</code> forwards Button's <code>appearance</code> axis to the trigger, like <code>triggerVariant</code>, painted by Button's own sheet.",
               "title": "The trigger takes Button's appearance"
             },
@@ -36429,6 +36442,16 @@
       ],
       "id": "popover",
       "options": {
+        "appearance": {
+          "attr": "data-appearance",
+          "default": "plain",
+          "type": "enum",
+          "values": [
+            "plain",
+            "brutalist",
+            "frosted"
+          ]
+        },
         "arrow": {
           "attr": "data-arrow",
           "default": false,
@@ -36577,7 +36600,8 @@
             "triggerTone",
             "triggerSize",
             "triggerAppearance",
-            "triggerIconOnly"
+            "triggerIconOnly",
+            "appearance"
           ],
           "react": {
             "from": "@skryensya/react/popover",
@@ -36741,7 +36765,8 @@
             "triggerTone",
             "triggerSize",
             "triggerAppearance",
-            "triggerIconOnly"
+            "triggerIconOnly",
+            "appearance"
           ],
           "react": {
             "from": "@skryensya/react/popover",
@@ -52380,7 +52405,7 @@
     "working": "0.0.1"
   },
   "schemaVersion": "2.3",
-  "sourceHash": "d5b617dc3f8f3d88",
+  "sourceHash": "c007ebf6a2369029",
   "vocabulary": {
     "a11y": "When `when` holds, one of `requiresOneOf` must be given: an option, a raw attribute, a filled slot, or a child signature by name.",
     "atLeastOneOf": "At least one member of each group counts: a filled slot, a boolean option set to true, or an option other than its default.",

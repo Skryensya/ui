@@ -1598,6 +1598,20 @@ const signatureTrees: readonly Canonical[] = [
       },
     },
   },
+  {
+    name: "popover/frosted",
+    enhanced: false,
+    tree: {
+      contract: "popover",
+      signature: "Popover",
+      options: { panelId: "demo-popover-frosted", appearance: "frosted" },
+      slots: {
+        trigger: "Detalles del envío",
+        title: "Envío express",
+        children: "Llega mañana antes de las 14:00.",
+      },
+    },
+  },
   /*
    * CLOSED, like every other portalling tree here. Open, the two windows on the stage share one
    * stack, so one is `data-topmost` and the other `data-behind` for a reason neither binding
