@@ -620,6 +620,18 @@
         "date": null,
         "entries": [
           {
+            "date": "2026-09-27",
+            "en": {
+              "body": "AvatarGroup's <code>+N</code> chip and its overlap now match the size of the avatars in the group. They were always md, so an sm stack ended in a chip taller than its discs, which a fixed-height host cropped.",
+              "title": "The group's +N follows the discs' size"
+            },
+            "es": {
+              "body": "El chip <code>+N</code> de <code>AvatarGroup</code> y el solapamiento ahora miden lo mismo que los avatares del grupo. Antes eran siempre md, así que un grupo sm terminaba en un chip más alto que los discos y un contenedor de altura fija lo recortaba.",
+              "title": "El +N del grupo sigue el tamaño de los discos"
+            },
+            "kind": "bugfix"
+          },
+          {
             "date": "2026-09-26",
             "en": {
               "body": "<code>Avatar.image</code>'s photo writes <code>data-appearance=\"plain\"</code> on its ImageFrame, as it already wrote the frame's other options, so the markup and React stay identical.",
@@ -53011,7 +53023,7 @@
     "working": "0.0.1"
   },
   "schemaVersion": "2.3",
-  "sourceHash": "d1d0e56700f1f05a",
+  "sourceHash": "660483bc97e5f54b",
   "vocabulary": {
     "a11y": "When `when` holds, one of `requiresOneOf` must be given: an option, a raw attribute, a filled slot, or a child signature by name.",
     "atLeastOneOf": "At least one member of each group counts: a filled slot, a boolean option set to true, or an option other than its default.",

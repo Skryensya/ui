@@ -29,6 +29,7 @@ export const userSelectAttrs = {
   footer: "data-sk-user-select-footer",
   count: "data-sk-user-select-count",
   clear: "data-sk-user-select-clear",
+  unselected: "data-sk-user-select-unselected",
 } as const;
 
 export type UserSelectPart = keyof typeof userSelectAttrs;

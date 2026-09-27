@@ -32,6 +32,8 @@ export type UserSelectProps = {
   onValueChange: (value: string[]) => void;
   placeholder?: string;
   searchPlaceholder?: string;
+  /** Shown in the trigger, beside an empty disc, while nobody is selected. */
+  unselectedLabel?: string;
   disabled?: boolean;
   loading?: boolean;
   /** Caps the trigger's avatar stack; the rest collapse into `GroupedAvatar`'s own "+N". */
@@ -57,6 +59,7 @@ export function UserSelect({
   onValueChange,
   placeholder = "Select users",
   searchPlaceholder = "Search users...",
+  unselectedLabel = "No one selected",
   users,
   value,
   variant = "ghost",
@@ -180,7 +183,12 @@ export function UserSelect({
               className={selectParts.value}
               {...{ [selectAttrs.value]: "" }}
             >
-              {placeholder}
+              <span {...{ [userSelectAttrs.unselected]: "" }}>
+                <span className="sk-avatar" data-size="sm">
+                  <Icon name="user" />
+                </span>
+                {unselectedLabel}
+              </span>
             </span>
           ) : (
             <Inline
@@ -286,7 +294,7 @@ export function UserSelect({
               </div>
             )}
             {value.length > 0 ? (
-              <Inline align="center" as="span" gap="sm" justify="between">
+              <Inline align="center" as="span" gap="sm" justify="between" {...{ [userSelectAttrs.footer]: "" }}>
                 <Text as="span" size="caption" tone="secondary">
                   {value.length} selected
                 </Text>

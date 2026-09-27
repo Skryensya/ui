@@ -27,6 +27,7 @@ export const UserSelectBasicDemo = framed(function UserSelectBasicDemo({ lang = 
     <UserSelect
       onValueChange={setValue}
       placeholder={es ? "Seleccionar personas" : "Select users"}
+      unselectedLabel={es ? "Nadie seleccionado" : "No one selected"}
       searchPlaceholder={es ? "Buscar personas..." : "Search users..."}
       users={users}
       value={value}
@@ -42,6 +43,7 @@ export const UserSelectLoadingDemo = framed(function UserSelectLoadingDemo({ lan
       loading
       onValueChange={() => {}}
       placeholder={es ? "Seleccionar personas" : "Select users"}
+      unselectedLabel={es ? "Nadie seleccionado" : "No one selected"}
       users={users}
       value={[]}
     />
