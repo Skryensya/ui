@@ -112,11 +112,28 @@
    * step it down to `md` so the footer stays a considered close without eating the screen.
    */
   @media (max-width: 35.999rem) {
-    .sk-footer[data-padding="lg"] {
+    /* Only when the author left the desktop side unsaid: a footer that declares
+       `paddingDesktop` has already said what its phone padding is, and this guess would overrule it. */
+    .sk-footer[data-padding="lg"]:not([data-padding-desktop]) {
       --sk-footer-padding: var(--space-inset-md);
     }
-    .sk-footer[data-padding="xl"] {
+    .sk-footer[data-padding="xl"]:not([data-padding-desktop]) {
       --sk-footer-padding: var(--space-inset-lg);
     }
+  }
+
+  /*
+   * DESKTOP OVERRIDES, declared (decision 30). 52rem is `--breakpoint-desktop`
+   * (semantic/_breakpoints.scss), a literal here because a CSS `@media` cannot read a custom
+   * property, the same hand-copy `vaul.css` makes. The plain attribute is the value from the smallest
+   * screen up; the `-desktop` one replaces it from this width up, and only when the author wrote it.
+   */
+  @media (min-width: 52rem) {
+    .sk-footer[data-padding-desktop="none"] { --sk-footer-padding: 0; }
+    .sk-footer[data-padding-desktop="xs"] { --sk-footer-padding: var(--space-inset-xs); }
+    .sk-footer[data-padding-desktop="sm"] { --sk-footer-padding: var(--space-inset-sm); }
+    .sk-footer[data-padding-desktop="md"] { --sk-footer-padding: var(--space-inset-md); }
+    .sk-footer[data-padding-desktop="lg"] { --sk-footer-padding: var(--space-inset-lg); }
+    .sk-footer[data-padding-desktop="xl"] { --sk-footer-padding: var(--space-inset-xl); }
   }
 }

@@ -3,8 +3,19 @@
 # `surface` is the shape of the contract the last time somebody reviewed it. If the compiler says it
 # does not match, something a consumer depends on has moved: write the entry and paste in the new
 # hash.
-surface: "940e23ff6194c771"
+surface: "23952795ae20e2c1"
 entries:
+  - date: 2026-09-27
+    kind: feature
+    target: paddingDesktop
+    es:
+      title: Footer declara su padding de desktop con paddingDesktop
+      body: >-
+        <code>paddingDesktop</code> reemplaza a <code>padding</code> desde el breakpoint <code>desktop</code> (52rem). Si se declara, la reducción automática de <code>lg</code> y <code>xl</code> en teléfonos deja de aplicarse: manda lo declarado.
+    en:
+      title: Footer declares its desktop padding with paddingDesktop
+      body: >-
+        <code>paddingDesktop</code> replaces <code>padding</code> from the <code>desktop</code> breakpoint (52rem) up. Once declared, the automatic phone step-down of <code>lg</code> and <code>xl</code> no longer applies: the declaration wins.
   - date: 2026-09-17
     kind: bugfix
     es:

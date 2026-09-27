@@ -3,8 +3,19 @@
 # `surface` is the shape of the contract the last time somebody reviewed it. If the compiler says it
 # does not match, something a consumer depends on has moved: write the entry and paste in the new
 # hash.
-surface: "7124f7eeae8b7a9c"
+surface: "71e05341e9c7e66e"
 entries:
+  - date: 2026-09-27
+    kind: feature
+    target: paddingDesktop
+    es:
+      title: Box declara su padding de desktop con paddingDesktop
+      body: >-
+        <code>padding</code> es el valor desde la pantalla más chica; <code>paddingDesktop</code> lo reemplaza desde el breakpoint <code>desktop</code> (52rem). Sin declararlo no cambia nada: el markup existente se ve igual.
+    en:
+      title: Box declares its desktop padding with paddingDesktop
+      body: >-
+        <code>padding</code> is the value from the smallest screen up; <code>paddingDesktop</code> replaces it from the <code>desktop</code> breakpoint (52rem) up. Left out, nothing changes: existing markup renders as before.
   - date: 2026-09-16
     kind: bugfix
     es:

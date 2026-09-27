@@ -74,6 +74,13 @@ export const footerContract = {
       default: "lg",
       attr: "data-padding",
     },
+    /*
+     * THE DESKTOP SIDE OF THE SAME CHOICE, declared rather than inferred (decision 30). The plain
+     * option is the value from the smallest screen up; this one replaces it from the `desktop`
+     * breakpoint (52rem, semantic/_breakpoints.scss) up. No default: absent, the plain option holds
+     * at every width, exactly as before this existed.
+     */
+    paddingDesktop: { type: "enum", values: ["none", "xs", "sm", "md", "lg", "xl"], attr: "data-padding-desktop" },
     surface: {
       type: "enum",
       values: ["none", "sunken", "surface", "raised"],
@@ -107,7 +114,7 @@ export const footerContract = {
         "footer-navigation-block",
       ],
       host: { element: "footer" },
-      options: ["padding", "surface", "divider", "footerElement"],
+      options: ["padding", "paddingDesktop", "surface", "divider", "footerElement"],
       slots: { children: { accepts: "node", required: true } },
       template: {
         element: "footer",
