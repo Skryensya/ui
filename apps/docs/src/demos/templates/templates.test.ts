@@ -6,6 +6,9 @@ import { checkoutTree } from "./checkout";
 import { dashboardTree } from "./dashboard";
 import { docsSiteTree } from "./docs-site";
 import { marketingTree } from "./marketing";
+import { pricingTree } from "./pricing";
+import { settingsTree } from "./settings";
+import { signInTree } from "./sign-in";
 
 /*
  * EVERY TEMPLATE, AGAINST ITS CONTRACTS.
@@ -30,6 +33,9 @@ const templates: Record<string, () => ReturnType<typeof marketingTree>> = {
   "docs-site": () => docsSiteTree(t),
   dashboard: () => dashboardTree(t, "es"),
   checkout: () => checkoutTree(t, "es"),
+  pricing: () => pricingTree(t, "es"),
+  "sign-in": () => signInTree(t),
+  settings: () => settingsTree(t),
 };
 
 describe("templates", () => {
@@ -56,6 +62,9 @@ describe("templates", () => {
       "docs-site": [docsSiteTree(t), docsSiteTree(en)],
       dashboard: [dashboardTree(t, "es"), dashboardTree(en, "en")],
       checkout: [checkoutTree(t, "es"), checkoutTree(en, "en")],
+      pricing: [pricingTree(t, "es"), pricingTree(en, "en")],
+      "sign-in": [signInTree(t), signInTree(en)],
+      settings: [settingsTree(t), settingsTree(en)],
     };
     for (const [name, [spanish, english]] of Object.entries(built)) {
       expect(JSON.stringify(english), `${name} is not translated`).not.toEqual(

@@ -23,11 +23,14 @@ import "@skryensya/core/components/input.css";
 import "@skryensya/core/components/kbd.css";
 import "@skryensya/core/components/list.css";
 import "@skryensya/core/components/pagination.css";
+import "@skryensya/core/components/password-input.css";
 import "@skryensya/core/components/process-list.css";
 import "@skryensya/core/components/segmented.css";
 import "@skryensya/core/components/select.css";
+import "@skryensya/core/components/separator.css";
 import "@skryensya/core/components/stat.css";
 import "@skryensya/core/components/steps.css";
+import "@skryensya/core/components/switch.css";
 import "@skryensya/core/components/table.css";
 import "@skryensya/core/components/toc.css";
 import "@skryensya/core/components/avatar.css";
@@ -37,6 +40,9 @@ import { checkoutTree } from "../../demos/templates/checkout";
 import { dashboardTree } from "../../demos/templates/dashboard";
 import { docsSiteTree } from "../../demos/templates/docs-site";
 import { marketingTree } from "../../demos/templates/marketing";
+import { pricingTree } from "../../demos/templates/pricing";
+import { settingsTree } from "../../demos/templates/settings";
+import { signInTree } from "../../demos/templates/sign-in";
 import { getLocale, useTranslations } from "../../i18n";
 import { templateSections } from "../../lib/templates-nav";
 
@@ -56,6 +62,9 @@ const TREES: Record<string, () => ReturnType<typeof marketingTree>> = {
   "docs-site": () => docsSiteTree(t),
   dashboard: () => dashboardTree(t, locale),
   checkout: () => checkoutTree(t, locale),
+  pricing: () => pricingTree(t, locale),
+  "sign-in": () => signInTree(t),
+  settings: () => settingsTree(t),
 };
 
 const templates = templateSections(t).map((section) => ({
