@@ -20,6 +20,8 @@ const {
 const cx = (base: string, className: string | undefined) => (className ? `${base} ${className}` : base);
 
 export type TagsInputProps = {
+  /** How the field is drawn: `plain`, `brutalist` or `frosted`. Absent means plain. */
+  appearance?: (typeof tagsInputContract.options.appearance.values)[number];
   id?: string;
   /**
    * The accessible name of the entry. Required: with no name a screen reader announces an edit
@@ -56,6 +58,7 @@ export type TagsInputProps = {
  * what is typed to one of its own options, and this one takes the person's own vocabulary.
  */
 export function TagsInput({
+  appearance,
   allowDuplicates,
   className,
   defaultValue,
@@ -113,6 +116,7 @@ export function TagsInput({
     <div
       {...api.getRootProps()}
       className={cx(tagsInputParts.root, className)}
+      data-appearance={appearance}
       data-disabled={disabled ? "" : undefined}
       data-invalid={invalid ? "" : undefined}
       data-readonly={readOnly ? "" : undefined}

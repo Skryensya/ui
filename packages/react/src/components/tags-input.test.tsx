@@ -29,6 +29,13 @@ const type = async (entry: HTMLElement, value: string) => {
 const commit = (entry: HTMLElement) => fireEvent.keyDown(entry, { key: "Enter" });
 
 describe("TagsInput", () => {
+  it("writes an appearance on the root only when asked", () => {
+    const plain = render(<TagsInput label="Plain" />);
+    expect(plain.container.querySelector(".sk-tags-input")?.hasAttribute("data-appearance")).toBe(false);
+    const frosted = render(<TagsInput appearance="frosted" label="Frosted" />);
+    expect(frosted.container.querySelector(".sk-tags-input")?.getAttribute("data-appearance")).toBe("frosted");
+  });
+
   it("renders the tags it starts with, as composed Tags", () => {
     // The chip is a Tag, not a drawing of one: the class is what says so.
     const ui = render(<TagsInput defaultValue={["react", "svelte"]} label="Topics" />);
