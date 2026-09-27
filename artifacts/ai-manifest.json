@@ -990,6 +990,19 @@
           {
             "date": "2026-09-27",
             "en": {
+              "body": "<code>measure</code> (<code>sm</code>, <code>md</code>, <code>lg</code>) sets a width ceiling from the same scale as Wrapper, neither centred nor guttered: the Box keeps its place in the flow. It counts toward <code>atLeastOneOf</code>.",
+              "title": "Box caps its width with measure"
+            },
+            "es": {
+              "body": "<code>measure</code> (<code>sm</code>, <code>md</code>, <code>lg</code>) pone un techo de ancho desde la misma escala que Wrapper, sin centrar y sin gutter: el Box conserva su lugar en el flujo. Cuenta como decisión visual para <code>atLeastOneOf</code>.",
+              "title": "Box limita su ancho con measure"
+            },
+            "kind": "feature",
+            "target": "measure"
+          },
+          {
+            "date": "2026-09-27",
+            "en": {
               "body": "<code>padding</code> is the value from the smallest screen up; <code>paddingExpanded</code> replaces it from the <code>desktop</code> breakpoint (52rem) up. Left out, nothing changes: existing markup renders as before.",
               "title": "Box declares its padding for expanded screens with paddingExpanded"
             },
@@ -5438,6 +5451,32 @@
       {
         "date": null,
         "entries": [
+          {
+            "date": "2026-09-27",
+            "en": {
+              "body": "<code>minColumn</code> (<code>sm</code>, <code>md</code>, <code>lg</code>) sets the narrowest a column may get, and the Grid's own width decides how many fit, with no breakpoint. It excludes <code>columns</code>, <code>responsive</code>, <code>multicol</code> and <code>fill</code>.",
+              "title": "Grid finds its own column count with minColumn"
+            },
+            "es": {
+              "body": "<code>minColumn</code> (<code>sm</code>, <code>md</code>, <code>lg</code>) fija el ancho mínimo de cada columna y el propio ancho del Grid decide cuántas caben, sin breakpoints. Excluye <code>columns</code>, <code>responsive</code>, <code>multicol</code> y <code>fill</code>.",
+              "title": "Grid encuentra su número de columnas con minColumn"
+            },
+            "kind": "feature",
+            "target": "minColumn"
+          },
+          {
+            "date": "2026-09-27",
+            "en": {
+              "body": "Inline publishes <code>sizing</code> (<code>fit</code>, <code>fill</code>) as a child attribute, authored in the child's <code>attrs</code> as <code>data-sizing</code>. <code>fill</code> starts from its content size and takes what the row leaves; the row still wraps before squeezing it.",
+              "title": "An Inline child can take the leftover space with data-sizing"
+            },
+            "es": {
+              "body": "Inline publica <code>sizing</code> (<code>fit</code>, <code>fill</code>) como atributo del hijo, escrito en sus <code>attrs</code> como <code>data-sizing</code>. <code>fill</code> parte del tamaño de su contenido y toma lo que la fila deja; la fila sigue haciendo wrap antes de apretarlo.",
+              "title": "Un hijo de Inline puede ocupar el espacio que sobra con data-sizing"
+            },
+            "kind": "feature",
+            "target": "Inline"
+          },
           {
             "date": "2026-09-27",
             "en": {
@@ -14962,6 +15001,15 @@
             "main"
           ]
         },
+        "measure": {
+          "attr": "data-measure",
+          "type": "enum",
+          "values": [
+            "sm",
+            "md",
+            "lg"
+          ]
+        },
         "padding": {
           "attr": "data-padding",
           "default": "none",
@@ -15026,7 +15074,8 @@
               "padding",
               "surface",
               "border",
-              "appearance"
+              "appearance",
+              "measure"
             ]
           ],
           "host": {
@@ -15043,6 +15092,7 @@
             "surface",
             "border",
             "appearance",
+            "measure",
             "boxElement"
           ],
           "react": {
@@ -29714,6 +29764,15 @@
             "main"
           ]
         },
+        "minColumn": {
+          "attr": "data-min-column",
+          "type": "enum",
+          "values": [
+            "sm",
+            "md",
+            "lg"
+          ]
+        },
         "multicol": {
           "attr": "data-multicol",
           "default": false,
@@ -29816,6 +29875,14 @@
       },
       "signatures": {
         "Grid": {
+          "excludes": {
+            "minColumn": [
+              "columns",
+              "multicol",
+              "responsive",
+              "fill"
+            ]
+          },
           "host": {
             "element": "div"
           },
@@ -29831,6 +29898,7 @@
             "multicol",
             "responsive",
             "fill",
+            "minColumn",
             "layoutElement"
           ],
           "react": {
@@ -29876,6 +29944,16 @@
           "slots": {
             "children": {
               "accepts": "node",
+              "childAttrs": {
+                "sizing": {
+                  "attr": "data-sizing",
+                  "type": "enum",
+                  "values": [
+                    "fit",
+                    "fill"
+                  ]
+                }
+              },
               "required": true
             }
           },
@@ -53937,7 +54015,7 @@
     "working": "0.0.1"
   },
   "schemaVersion": "2.3",
-  "sourceHash": "899e09012cc9793f",
+  "sourceHash": "34962fada936a262",
   "vocabulary": {
     "a11y": "When `when` holds, one of `requiresOneOf` must be given: an option, a raw attribute, a filled slot, or a child signature by name.",
     "atLeastOneOf": "At least one member of each group counts: a filled slot, a boolean option set to true, or an option other than its default.",
