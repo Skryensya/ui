@@ -14,6 +14,8 @@ const config: StorybookConfig = {
   framework: "@storybook/react-vite",
   addons: ["@storybook/addon-docs"],
   stories: ["../src/**/*.stories.@(ts|tsx)"],
+  // The demos' own media (`/demos/*.svg`), served from where the docs serve it.
+  staticDirs: ["../../docs/public"],
   core: { disableTelemetry: true },
   viteFinal: async (vite) => ({
     ...vite,
