@@ -3387,7 +3387,7 @@ describe("pagination: computed page window with pageChange", () => {
   it("publishes pageChange and its own hooks with no foreign hookSheets", () => {
     const contract = getContract("pagination")!;
     expect(contract.events).toEqual({ pageChange: "sk:paginationpagechange" });
-    expect(contract.hooks).toHaveLength(24);
+    expect(contract.hooks).toHaveLength(25);
     expect(contract.hookSheets ?? []).toEqual([]);
     const { sheets, unplaced } = sheetsForTree(pager());
     expect(sheets).toEqual(["@skryensya/core/components/pagination.css"]);
@@ -3869,10 +3869,10 @@ describe("segmented: small exclusive choice with a sliding thumb", () => {
     expect(markup).toContain("sk-interactive");
   });
 
-  it("publishes valueChange and fourteen own hooks with no foreign hookSheets", () => {
+  it("publishes valueChange and sixteen own hooks with no foreign hookSheets", () => {
     const contract = getContract("segmented")!;
     expect(contract.events).toEqual({ valueChange: "sk:segmentedvaluechange" });
-    expect(contract.hooks).toHaveLength(14);
+    expect(contract.hooks).toHaveLength(16);
     expect(contract.hooks?.every((hook) => hook.startsWith("--sk-segmented-"))).toBe(true);
     expect(contract.hookSheets ?? []).toEqual([]);
     expect(contract.signatures.Segmented.mount).toBe("data-sk-segmented");
