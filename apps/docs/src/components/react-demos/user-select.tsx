@@ -32,7 +32,7 @@ export const UserSelectBasicDemo = framed(function UserSelectBasicDemo({ lang = 
       value={value}
     />
   );
-}, { viewport: "menu" });
+}, { viewport: "menu-deep" });
 
 /** The loading branch: no `useState` needed, `loading` is a static prop here. */
 export const UserSelectLoadingDemo = framed(function UserSelectLoadingDemo({ lang = "es" }: DemoProps) {

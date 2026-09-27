@@ -579,15 +579,31 @@
   .sk-select__content:not([data-state="closed"]):has(> [data-sk-user-select-list]) {
     display: flex;
     flex-direction: column;
-    gap: var(--space-stack-xs);
+    gap: var(--space-stack-sm);
+    /* People rows carry a name AND an email, so the box is at least 20rem even under a narrow trigger. */
+    min-inline-size: max(var(--reference-width), 20rem);
+    /* Room for the search field, the list's own 16rem and the footer; the list gives way first. */
+    max-block-size: min(24rem, var(--available-height));
+    padding: var(--space-inset-sm);
     overflow: hidden;
   }
 
   [data-sk-user-select-list] {
-    flex: 0 1 15rem;
+    --sk-select-item-padding: var(--space-inset-sm) var(--space-inset-md);
+
+    display: grid;
+    grid-auto-rows: max-content;
+    align-content: start;
+    gap: var(--space-stack-xs);
+    flex: 0 1 16rem;
     min-block-size: 0;
     overflow-y: auto;
     overscroll-behavior: contain;
+  }
+
+  /* Avatar to name: a step more air than a text row's own gap, so the face and the name read as two. */
+  [data-sk-user-select-list] .sk-select__item > .sk-inline {
+    gap: var(--space-inline-md);
   }
 
   .sk-select__item[data-state="checked"] .sk-select__item-indicator {
