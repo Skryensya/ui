@@ -446,4 +446,74 @@
       border-color: CanvasText;
     }
   }
+
+  /*
+   * ── APPEARANCE ───────────────────────────────────────────────────────────────────────────────
+   *
+   * Button's axis on the tour step's surface (button.css documents each construction in full). Plain,
+   * brutalist and frosted: a surface is never pressed, so there is no tactile. Radius, padding and
+   * motion are untouched.
+   */
+
+  /* BRUTALIST: the black edge and a hard zero-blur offset toward block-end and inline-end
+   * (mirrored in RTL), in place of the soft elevation. Flat face. */
+  .sk-tour[data-appearance="brutalist"] .sk-tour__popover {
+    --sk-tour-brutalist-offset: 5px;
+    --brutalist-black: oklch(from var(--shadow-lg) l c h / 1);
+    --brutalist-direction: 1;
+    --sk-tour-border-color: var(--brutalist-black);
+    --sk-tour-shadow: calc(var(--sk-tour-brutalist-offset) * var(--brutalist-direction)) var(--sk-tour-brutalist-offset) 0 var(--brutalist-black);
+  }
+
+  .sk-tour[data-appearance="brutalist"] .sk-tour__popover:dir(rtl) {
+    --brutalist-direction: -1;
+  }
+
+  /* FROSTED: Button's see-through material over whatever sits behind the tour step, with a fine edge and
+   * a lit top rim over its own shadow. Opaque baseline; the material only where backdrop-filter
+   * exists and no reduced-transparency preference is set. */
+  .sk-tour[data-appearance="frosted"] .sk-tour__popover {
+    --frost-highlight: light-dark(
+      color-mix(in oklab, var(--color-bg-surface) 70%, transparent),
+      color-mix(in oklab, var(--color-text-primary) 18%, transparent)
+    );
+    --sk-tour-border-color: color-mix(in oklab, currentColor 18%, transparent);
+    --sk-tour-shadow: inset 0 1px 0 var(--frost-highlight), var(--elevation-overlay);
+  }
+
+  @supports (backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px)) {
+    @media (prefers-reduced-transparency: no-preference) {
+      .sk-tour[data-appearance="frosted"] .sk-tour__popover {
+        background: color-mix(in oklab, var(--sk-tour-bg) 80%, transparent);
+        -webkit-backdrop-filter: blur(20px) saturate(150%);
+        backdrop-filter: blur(20px) saturate(150%);
+      }
+    }
+  }
+
+  /* High contrast outranks the material: back to the opaque baseline. */
+  [data-contrast="high"] .sk-tour[data-appearance="frosted"] .sk-tour__popover,
+  .sk-tour[data-appearance="frosted"] .sk-tour__popover[data-contrast="high"] {
+    background: var(--sk-tour-bg);
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+
+  @media (prefers-contrast: more) {
+    :root:not([data-contrast]) .sk-tour[data-appearance="frosted"] .sk-tour__popover {
+      background: var(--sk-tour-bg);
+      -webkit-backdrop-filter: none;
+      backdrop-filter: none;
+    }
+  }
+
+  /* Forced colors keep neither construction: the system surface and its boundary. */
+  @media (forced-colors: active) {
+    .sk-tour[data-appearance] .sk-tour__popover {
+      background: Canvas;
+      -webkit-backdrop-filter: none;
+      backdrop-filter: none;
+      box-shadow: none;
+    }
+  }
 }

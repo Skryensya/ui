@@ -415,6 +415,7 @@ export const tourContract = {
   systemOwned: [],
   hooks: [
     "--sk-tour-bg",
+    "--sk-tour-brutalist-offset",
     "--sk-tour-fg",
     "--sk-tour-muted-fg",
     "--sk-tour-border-color",
@@ -452,6 +453,17 @@ export const tourContract = {
   },
 
   options: {
+    /*
+     * HOW THE STEP IS DRAWN, Button's axis: brutalist a black edge and hard offset in place of the
+     * soft elevation, frosted a see-through step (opaque wherever the material cannot be trusted).
+     * No tactile: a step is never pressed.
+     */
+    appearance: {
+      type: "enum",
+      values: ["plain", "brutalist", "frosted"],
+      default: "plain",
+      attr: "data-appearance",
+    },
     /** The tour's id, which its triggers name in `opens` and its memory is keyed by. */
     tourId: { type: "string", attr: "id", prop: "id" },
     /** "Step {index} of {count}". Counts only the steps whose target is on the page. */
@@ -489,7 +501,7 @@ export const tourContract = {
       host: { element: "div" },
       mount: tourAttrs.root,
       requires: ["tourId"],
-      options: ["tourId", "progressLabel", "nextLabel", "finishLabel", "previousLabel", "skipLabel", "closeLabel", "remember"],
+      options: ["tourId", "progressLabel", "nextLabel", "finishLabel", "previousLabel", "skipLabel", "closeLabel", "remember", "appearance"],
       forward: ["aria-*"],
       compose: [
         { of: "button", sheets: ["@skryensya/core/components/button.css"], systemOwned: true },
