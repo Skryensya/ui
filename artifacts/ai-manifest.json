@@ -6804,6 +6804,19 @@
         "date": null,
         "entries": [
           {
+            "date": "2026-09-26",
+            "en": {
+              "body": "Input's axis on the field: <code>brutalist</code> a black edge and a hard offset, <code>frosted</code> a see-through field; every state still outranks it. Absent means <code>plain</code>.",
+              "title": "NumberField adds brutalist and frosted appearances"
+            },
+            "es": {
+              "body": "El eje de Input en el campo: <code>brutalist</code> borde negro y sombra dura, <code>frosted</code> un campo translúcido; todo estado sigue por encima. Sin valor es <code>plain</code>.",
+              "title": "NumberField suma appearance brutalist y frosted"
+            },
+            "kind": "feature",
+            "target": "appearance"
+          },
+          {
             "date": "2026-09-17",
             "en": {
               "body": "Publishes <code>forward</code> with <code>id</code>/<code>aria-*</code> on the host. An attr outside the list is <code>unknown-attr</code>.",
@@ -34874,6 +34887,15 @@
       ],
       "id": "number-field",
       "options": {
+        "appearance": {
+          "attr": "data-appearance",
+          "type": "enum",
+          "values": [
+            "plain",
+            "brutalist",
+            "frosted"
+          ]
+        },
         "decrementLabel": {
           "attr": "aria-label",
           "default": "Decrease",
@@ -35020,7 +35042,8 @@
             "required",
             "invalid",
             "decrementLabel",
-            "incrementLabel"
+            "incrementLabel",
+            "appearance"
           ],
           "react": {
             "from": "@skryensya/react/number-field",
@@ -52844,7 +52867,7 @@
     "working": "0.0.1"
   },
   "schemaVersion": "2.3",
-  "sourceHash": "3c7c581617d1b693",
+  "sourceHash": "726366823eb4a564",
   "vocabulary": {
     "a11y": "When `when` holds, one of `requiresOneOf` must be given: an option, a raw attribute, a filled slot, or a child signature by name.",
     "atLeastOneOf": "At least one member of each group counts: a filled slot, a boolean option set to true, or an option other than its default.",
