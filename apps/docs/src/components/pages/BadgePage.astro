@@ -1,6 +1,7 @@
 ---
 import type { UsageTree } from "@skryensya/core/usage-tree";
 import ComponentPageShell from "./ComponentPageShell.astro";
+import AppearanceMenu from "../AppearanceMenu.astro";
 import CodeBlock from "../CodeBlock.astro";
 import ComponentPreview from "../ComponentPreview.astro";
 import {
@@ -41,8 +42,13 @@ const tree = {
   title="Badge"
   description={t("badge.description")}
   contractId="badge"
+  appearanceTargetSelector=".sk-badge"
   testFiles={["packages/react/src/components/badge.test.tsx"]}}
 >
+  <Fragment slot="appearance">
+    <AppearanceMenu label={t("prefs.appearance")} values={["plain", "brutalist"]} unavailable={{ tactile: t("prefs.appearanceTactileUnavailable"), frosted: t("prefs.appearanceFrostedUnavailable") }} />
+  </Fragment>
+
   <Fragment slot="anatomy">
     <p set:html={t("badge.anatomyBody")} />
     <ComponentPreview

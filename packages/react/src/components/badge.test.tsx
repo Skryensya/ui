@@ -6,6 +6,17 @@ import { Button } from "./button.js";
 import { Icon } from "./icon.js";
 
 describe("Badge", () => {
+  it("serializes its appearance beside tone and size, plain by default", () => {
+    const ui = render(
+      <>
+        <Badge>Plain</Badge>
+        <Badge appearance="brutalist">Brutalist</Badge>
+      </>,
+    );
+    expect(ui.getByText("Plain").getAttribute("data-appearance")).toBe("plain");
+    expect(ui.getByText("Brutalist").getAttribute("data-appearance")).toBe("brutalist");
+  });
+
   it("renders its accessible label and forwards semantic attributes", () => {
     const ui = render(
       <Badge aria-label="3 unread messages" size="sm" tone="accent">

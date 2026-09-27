@@ -2,19 +2,28 @@ import { badgeParts, type BadgeSize, type BadgeTone, badgeContract } from "@skry
 import { type HTMLAttributes, type ReactNode } from "react";
 
 /* Derived, never restated: the default lives in the contract. */
-const { size: sizeOption, tone: toneOption, pulse: pulseOption } = badgeContract.options;
+const { appearance: appearanceOption, size: sizeOption, tone: toneOption, pulse: pulseOption } = badgeContract.options;
 
 export type BadgeProps = Omit<HTMLAttributes<HTMLSpanElement>, "children"> & {
   children: ReactNode;
   tone?: BadgeTone;
   size?: BadgeSize;
+  /** How the mark is drawn: `plain`, or `brutalist`'s black edge and small hard offset. */
+  appearance?: (typeof appearanceOption.values)[number];
 };
 
-export function Badge({ children, className, size = sizeOption.default, tone = toneOption.default, ...props }: BadgeProps) {
+export function Badge({
+  appearance = appearanceOption.default,
+  children,
+  className,
+  size = sizeOption.default,
+  tone = toneOption.default,
+  ...props
+}: BadgeProps) {
   const classes = className ? `${badgeParts.root} ${className}` : badgeParts.root;
 
   return (
-    <span {...props} className={classes} data-size={size} data-tone={tone}>
+    <span {...props} className={classes} data-appearance={appearance} data-size={size} data-tone={tone}>
       {children}
     </span>
   );
