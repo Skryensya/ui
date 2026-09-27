@@ -3,6 +3,7 @@ import type { ComponentContract } from "./contract.js";
 export type Space = "none" | "xs" | "sm" | "md" | "lg" | "xl";
 export type BoxSurface = "none" | "sunken" | "surface" | "raised";
 export type BoxBorder = "none" | "subtle" | "default";
+export type BoxAppearance = "plain" | "brutalist" | "frosted";
 export type LayoutAlign = "start" | "center" | "end" | "stretch";
 export type InlineAlign = "start" | "center" | "end" | "baseline" | "stretch";
 export type InlineJustify = "start" | "center" | "end" | "between";
@@ -79,6 +80,13 @@ export const boxContract = {
     "--sk-box-bg",
     "--sk-box-border-color",
     "--sk-box-border-width",
+    "--sk-box-brutalist-edge",
+    "--sk-box-brutalist-offset-block",
+    "--sk-box-brutalist-offset-inline",
+    "--sk-box-brutalist-shadow",
+    "--sk-box-frost-blur",
+    "--sk-box-frost-opacity",
+    "--sk-box-frost-saturation",
     "--sk-box-padding",
     "--sk-box-radius",
     "--sk-box-shadow",
@@ -89,6 +97,15 @@ export const boxContract = {
     padding: { type: "enum", values: ["none", "xs", "sm", "md", "lg", "xl"], default: "none", attr: "data-padding" },
     surface: { type: "enum", values: ["none", "sunken", "surface", "raised"], default: "none", attr: "data-surface" },
     border: { type: "enum", values: ["none", "subtle", "default"], default: "none", attr: "data-border" },
+    /*
+     * HOW THE SURFACE IS MATERIALLY EXPRESSED, the same axis Button and Tile publish, so a region
+     * and the controls inside it can share one language. `plain` is the box as `surface`/`border`
+     * paint it; `brutalist` draws it with Button's black edge and hard offset; `frosted` makes the
+     * surface Button's see-through material (opaque wherever the material cannot be trusted). No
+     * `tactile`: that expression is press travel, and a Box is never pressed. Independent of
+     * `surface`, `border` and `padding`: frosted tints with the surface, brutalist draws around it.
+     */
+    appearance: { type: "enum", values: ["plain", "brutalist", "frosted"], default: "plain", attr: "data-appearance" },
     /** The element it renders as; React's `as`. A `section` or `nav` still wants an accessible name. */
     boxElement: { type: "enum", values: layoutElements, default: "div", element: true, prop: "as" },
   },
@@ -97,10 +114,10 @@ export const boxContract = {
     Box: {
       intent: ["padded-region", "card-like-surface", "bordered-region"],
       host: { element: "div" },
-      options: ["padding", "surface", "border", "boxElement"],
+      options: ["padding", "surface", "border", "appearance", "boxElement"],
       /* A Box IS its visual style. With all three at `none` it paints nothing and is a bare `div`
          standing in for a decision; grouping without paint is Stack, Inline or Grid. */
-      atLeastOneOf: [["padding", "surface", "border"]],
+      atLeastOneOf: [["padding", "surface", "border", "appearance"]],
       slots: { children: { accepts: "node", required: true } },
       template: { element: "div", part: "box", host: true, slot: "children" },
       react: { from: "@skryensya/react/layout", name: "Box" },

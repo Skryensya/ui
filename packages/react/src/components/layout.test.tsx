@@ -17,6 +17,21 @@ describe("layout primitives", () => {
     expect(box.getAttribute("data-padding")).toBe("lg");
   });
 
+  it("serializes Box appearance, plain by default, like its other options", () => {
+    const ui = render(
+      <>
+        <Box padding="md">Plain</Box>
+        <Box appearance="brutalist" surface="surface">Brutalist</Box>
+        <Box appearance="frosted" surface="raised">Frosted</Box>
+      </>,
+    );
+
+    expect(ui.getByText("Plain").getAttribute("data-appearance")).toBe("plain");
+    expect(ui.getByText("Brutalist").getAttribute("data-appearance")).toBe("brutalist");
+    expect(ui.getByText("Frosted").getAttribute("data-appearance")).toBe("frosted");
+    expect(ui.getByText("Frosted").getAttribute("data-surface")).toBe("raised");
+  });
+
   it("renders Stack, Inline and Grid as the documented layout contracts", () => {
     const ui = render(
       <>

@@ -3,8 +3,27 @@
 # `surface` is the shape of the contract the last time somebody reviewed it. If the compiler says it
 # does not match, something a consumer depends on has moved: write the entry and paste in the new
 # hash.
-surface: "7124f7eeae8b7a9c"
+surface: "5385f2dfed02aa3d"
 entries:
+  - date: 2026-09-26
+    kind: feature
+    target: appearance
+    es:
+      title: Box suma appearance plain, brutalist y frosted
+      body: >-
+        <code>Box</code> acepta <code>appearance</code>, el mismo eje de Button y Tile. <code>brutalist</code>
+        dibuja la caja con borde negro y una sombra dura desplazada; <code>frosted</code> hace la superficie
+        un material translúcido sobre el fondo difuminado, opaco donde el material no es fiable. Sin
+        <code>tactile</code>: una caja no se presiona. Hooks nuevos <code>--sk-box-brutalist-*</code> y
+        <code>--sk-box-frost-*</code>.
+    en:
+      title: Box adds plain, brutalist and frosted appearances
+      body: >-
+        <code>Box</code> accepts <code>appearance</code>, the same axis as Button and Tile. <code>brutalist</code>
+        draws the box with a black edge and a hard offset shadow; <code>frosted</code> makes the surface a
+        translucent material over the blurred backdrop, opaque wherever the material cannot be trusted. No
+        <code>tactile</code>: a box is never pressed. New hooks <code>--sk-box-brutalist-*</code> and
+        <code>--sk-box-frost-*</code>.
   - date: 2026-09-16
     kind: bugfix
     es:
