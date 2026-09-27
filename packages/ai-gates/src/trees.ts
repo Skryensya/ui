@@ -1314,6 +1314,23 @@ const signatureTrees: readonly Canonical[] = [
       },
     },
   },
+  {
+    /* Button's appearance, forwarded to the host like its variant: Button's sheet paints it. */
+    name: "state-button/copy-brutalist",
+    enhanced: false,
+    tree: {
+      contract: "state-button",
+      signature: "StateButton",
+      options: { current: "idle" },
+      attrs: { "aria-label": "Copiar", "data-appearance": "brutalist" },
+      slots: {
+        faces: [
+          { options: { name: "idle", icon: "copy" }, slots: {} },
+          { options: { name: "copied", icon: "check" }, slots: {} },
+        ],
+      },
+    },
+  },
   /** Three faces, so the same anatomy proves it is not hardcoded to two. */
   {
     name: "state-button/theme-light",
