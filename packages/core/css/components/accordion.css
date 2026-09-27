@@ -13,6 +13,13 @@
     --sk-accordion-bg: var(--color-bg-surface);
     --sk-accordion-divider-color: var(--color-border-subtle);
     --sk-accordion-open-bg: var(--color-bg-surface-sunken);
+    /* Appearance geometry, the frame's own (see APPEARANCE below). Inert on a plain accordion. */
+    --sk-accordion-depth: 4px;
+    --sk-accordion-brutalist-offset-inline: 5px;
+    --sk-accordion-brutalist-offset-block: 5px;
+    --sk-accordion-frost-opacity: 82%;
+    --sk-accordion-frost-blur: 16px;
+    --sk-accordion-frost-saturation: 150%;
 
     display: grid;
     gap: 0;
@@ -101,7 +108,113 @@
     background: var(--sk-accordion-open-bg);
   }
 
+  /*
+   * ── APPEARANCE ───────────────────────────────────────────────────────────────────────────────
+   *
+   * Tile's two constructions, drawn on the FRAME, because the frame is the one surface: the items
+   * inside are flattened into it and never carry their own. At rest only, the same as an
+   * ExpandableTile: every trigger is its own control, so nothing here moves on hover or press.
+   *
+   * Brutalist is Button's construction: one black ink in both modes (the system's shadow colour at
+   * full alpha, see button.css), at plain's border width so the frame never changes size. The
+   * dividers take the same ink, so the stack reads as one slab ruled into sections rather than a
+   * black frame around faint hairlines. Radius is untouched.
+   */
+  .sk-accordion[data-appearance="tactile"] {
+    box-shadow:
+      0 var(--sk-accordion-depth) 0 light-dark(
+        color-mix(in oklab, var(--color-bg-surface) 76%, var(--color-text-primary)),
+        color-mix(in oklab, var(--color-bg-surface-sunken) 55%, black)
+      ),
+      0 calc(var(--sk-accordion-depth) + 1px) 4px light-dark(
+        color-mix(in oklab, var(--color-text-primary) 14%, transparent),
+        color-mix(in oklab, var(--color-bg-surface-sunken) 44%, transparent)
+      );
+  }
+
+  .sk-accordion[data-appearance="brutalist"] {
+    --brutalist-black: oklch(from var(--shadow-lg) l c h / 1);
+    --sk-accordion-brutalist-edge: var(--brutalist-black);
+    --sk-accordion-brutalist-shadow: var(--brutalist-black);
+    --sk-accordion-border-color: var(--sk-accordion-brutalist-edge);
+    --sk-accordion-divider-color: var(--sk-accordion-brutalist-edge);
+    --brutalist-direction: 1;
+    --brutalist-reach: 1;
+    box-shadow:
+      calc(round(nearest, calc(var(--sk-accordion-brutalist-offset-inline) * var(--brutalist-reach)), 1px) * var(--brutalist-direction))
+      round(nearest, calc(var(--sk-accordion-brutalist-offset-block) * var(--brutalist-reach)), 1px)
+      0 var(--sk-accordion-brutalist-shadow);
+  }
+
+  .sk-accordion[data-appearance="brutalist"]:dir(rtl) {
+    --brutalist-direction: -1;
+  }
+
+  /* A disabled accordion keeps the construction recognisable but shrunk and muted, as Tile does. */
+  .sk-accordion[data-appearance="brutalist"][data-disabled] {
+    --brutalist-reach: 0.4;
+    --sk-accordion-brutalist-edge: var(--color-border-default);
+    --sk-accordion-brutalist-shadow: var(--color-border-subtle);
+  }
+
+  /*
+   * FROSTED: Button's material on the frame. Opaque baseline with a fine edge and a lit rim; the
+   * see-through sheet only where backdrop-filter exists and transparency is not reduced. The open
+   * bodies stay sunken but let the same sheet through, so the frame reads as one pane of glass.
+   *
+   * LIGHTER THAN TILE'S SHEET on purpose: an accordion is a tall block of reading, and at tile's
+   * density the backdrop greyed the whole column. A denser face, a lit wash down from the top edge
+   * and open bodies that recede only a little keep it bright while the backdrop still shows.
+   */
+  .sk-accordion[data-appearance="frosted"] {
+    --sk-accordion-border-color: color-mix(in oklab, currentColor 18%, transparent);
+    --sk-accordion-divider-color: color-mix(in oklab, currentColor 12%, transparent);
+    --frost-highlight: light-dark(
+      color-mix(in oklab, var(--color-bg-surface) 90%, transparent),
+      color-mix(in oklab, var(--color-text-primary) 22%, transparent)
+    );
+    box-shadow: inset 0 1px 0 var(--frost-highlight), 0 1px 2px var(--shadow-sm);
+  }
+
+  @supports (backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px)) {
+    @media (prefers-reduced-transparency: no-preference) {
+      .sk-accordion[data-appearance="frosted"] {
+        --sk-accordion-bg: color-mix(in oklab, var(--color-bg-surface) var(--sk-accordion-frost-opacity), transparent);
+        --sk-accordion-open-bg: color-mix(in oklab, var(--color-bg-surface-sunken) 72%, transparent);
+        background:
+          linear-gradient(to bottom, color-mix(in oklab, var(--frost-highlight) 60%, transparent), transparent 12rem),
+          var(--sk-accordion-bg);
+        -webkit-backdrop-filter: blur(var(--sk-accordion-frost-blur)) saturate(var(--sk-accordion-frost-saturation));
+        backdrop-filter: blur(var(--sk-accordion-frost-blur)) saturate(var(--sk-accordion-frost-saturation));
+      }
+    }
+  }
+
+  [data-contrast="high"] .sk-accordion[data-appearance="frosted"],
+  .sk-accordion[data-appearance="frosted"][data-contrast="high"] {
+    --sk-accordion-bg: var(--color-bg-surface);
+    --sk-accordion-open-bg: var(--color-bg-surface-sunken);
+    background: var(--sk-accordion-bg);
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+
+  @media (prefers-contrast: more) {
+    :root:not([data-contrast]) .sk-accordion[data-appearance="frosted"] {
+      --sk-accordion-bg: var(--color-bg-surface);
+      --sk-accordion-open-bg: var(--color-bg-surface-sunken);
+      background: var(--sk-accordion-bg);
+      -webkit-backdrop-filter: none;
+      backdrop-filter: none;
+    }
+  }
+
   @media (forced-colors: active) {
+    .sk-accordion[data-appearance] {
+      box-shadow: none;
+      backdrop-filter: none;
+    }
+
     .sk-accordion {
       border-color: CanvasText;
       background: Canvas;

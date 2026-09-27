@@ -4,6 +4,17 @@ import { tagEvents } from "@skryensya/core/tag";
 import { Tag } from "./tag.js";
 
 describe("Tag", () => {
+  it("serializes its appearance on both hosts, plain by default", () => {
+    const ui = render(
+      <>
+        <Tag>Plain</Tag>
+        <Tag appearance="brutalist" href="#x">Brutalist</Tag>
+      </>,
+    );
+    expect(ui.getByText("Plain").closest(".sk-tag")?.getAttribute("data-appearance")).toBe("plain");
+    expect(ui.getByText("Brutalist").closest("a")?.getAttribute("data-appearance")).toBe("brutalist");
+  });
+
   it("carries its tone and label", () => {
     const ui = render(<Tag tone="accent">tokens</Tag>);
     const tag = ui.getByText("tokens").closest(".sk-tag");

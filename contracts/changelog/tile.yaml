@@ -3,8 +3,48 @@
 # `surface` is the shape of the contract the last time somebody reviewed it. If the compiler says it
 # does not match, something a consumer depends on has moved: write the entry and paste in the new
 # hash.
-surface: "00533a54468128d6"
+surface: "7f7d653a4de2c1b9"
 entries:
+  - date: 2026-09-26
+    kind: feature
+    target: appearance
+    es:
+      title: Tile suma frosted, y su brutalist pasa a la tinta negra de Button
+      body: >-
+        <code>appearance="frosted"</code> es el material de Button: base opaca con borde fino y un brillo arriba, y la
+        lámina translúcida y desenfocada solo donde hay <code>backdrop-filter</code> y no se pidió menos transparencia. No
+        se mueve. <code>brutalist</code> ahora dibuja borde y sombra en negro en ambos modos, al grosor de plain, como
+        Button; un tile seleccionado solo cambia el borde. Hooks nuevos: <code>--sk-tile-frost-opacity</code>,
+        <code>--sk-tile-frost-blur</code> y <code>--sk-tile-frost-saturation</code>.
+    en:
+      title: Tile adds frosted, and its brutalist moves to Button's black ink
+      body: >-
+        <code>appearance="frosted"</code> is Button's material: an opaque baseline with a fine edge and a lit rim, and
+        the blurred see-through sheet only where <code>backdrop-filter</code> exists and reduced transparency was not
+        asked for. It does not move. <code>brutalist</code> now draws its edge and offset in black in both modes, at
+        plain's border width, like Button; a selected tile only changes its edge. New hooks:
+        <code>--sk-tile-frost-opacity</code>, <code>--sk-tile-frost-blur</code> and <code>--sk-tile-frost-saturation</code>.
+  - date: 2026-09-26
+    kind: feature
+    target: appearance
+    es:
+      title: Tile suma appearance tactile y brutalist
+      body: >-
+        Todas las firmas de Tile aceptan <code>appearance</code>, el mismo eje de Button con los mismos valores:
+        <code>plain</code> (el look actual), <code>tactile</code> (un canto hacia el que se hunde al presionar) y
+        <code>brutalist</code> (borde de 2px y sombra dura desplazada). La selección tiñe la construcción, no la
+        presiona. <code>ExpandableTile</code> la lleva sin moverse. Hooks nuevos: <code>--sk-tile-depth</code>,
+        <code>--sk-tile-brutalist-offset-inline</code>, <code>--sk-tile-brutalist-offset-block</code>,
+        <code>--sk-tile-brutalist-edge</code> y <code>--sk-tile-brutalist-shadow</code>.
+    en:
+      title: Tile adds tactile and brutalist appearance
+      body: >-
+        Every Tile signature accepts <code>appearance</code>, Button's axis with Button's values:
+        <code>plain</code> (the existing look), <code>tactile</code> (a ledge it sinks into when pressed) and
+        <code>brutalist</code> (a 2px edge and a hard offset shadow). Selection colours the construction, it does
+        not press it. <code>ExpandableTile</code> wears it without moving. New hooks: <code>--sk-tile-depth</code>,
+        <code>--sk-tile-brutalist-offset-inline</code>, <code>--sk-tile-brutalist-offset-block</code>,
+        <code>--sk-tile-brutalist-edge</code> and <code>--sk-tile-brutalist-shadow</code>.
   - date: 2026-09-26
     kind: bugfix
     target: TileRadioGroup

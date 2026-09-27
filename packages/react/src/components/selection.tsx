@@ -1,4 +1,4 @@
-import { checkboxParts, checkboxGroupEvents, selectionParts, type CheckboxGroupValueChangeDetails, type CheckedChangeDetails, type CheckedState, type RadioGroupOrientation, type RadioValueChangeDetails, checkboxContract, radioGroupContract } from "@skryensya/core/selection";
+import { checkboxParts, checkboxGroupEvents, selectionParts, type CheckboxGroupValueChangeDetails, type CheckedChangeDetails, type CheckedState, type RadioGroupOrientation, type RadioValueChangeDetails, checkboxContract, radioGroupContract, switchContract } from "@skryensya/core/selection";
 import { forwardRef, useEffect, useId, useMemo, useRef, useState, type ChangeEvent, type HTMLAttributes, type InputHTMLAttributes, type ReactNode } from "react";
 import { Icon } from "./icon.js";
 
@@ -25,6 +25,8 @@ export function CheckboxIndicators() {
 }
 
 export type CheckboxProps = Omit<InputHTMLAttributes<HTMLInputElement>, "checked" | "defaultChecked" | "onChange" | "type"> & {
+  /** How the box is drawn, on its label: `plain`, `tactile`, `brutalist` or `frosted`. */
+  appearance?: (typeof checkboxContract.options.appearance.values)[number];
   checked?: CheckedState;
   children?: ReactNode;
   defaultChecked?: CheckedState;
@@ -33,7 +35,7 @@ export type CheckboxProps = Omit<InputHTMLAttributes<HTMLInputElement>, "checked
 };
 
 export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(function Checkbox(
-  { checked, children, className, defaultChecked, defaultIndeterminate, disabled, onCheckedChange, ...props },
+  { appearance = checkboxContract.options.appearance.default, checked, children, className, defaultChecked, defaultIndeterminate, disabled, onCheckedChange, ...props },
   ref,
 ) {
   const input = useRef<HTMLInputElement>(null);
@@ -55,7 +57,7 @@ export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(function Che
   };
 
   return (
-    <label className={classes(selectionParts.checkbox, className)}>
+    <label className={classes(selectionParts.checkbox, className)} data-appearance={appearance}>
       <input
         {...props}
         checked={controlled ? checked === true : undefined}
@@ -84,6 +86,8 @@ export type CheckboxGroupItem = {
 };
 
 export type CheckboxGroupProps = Omit<HTMLAttributes<HTMLDivElement>, "defaultValue" | "onChange"> & {
+  /** How every box in the group is drawn, on the group's root. */
+  appearance?: (typeof checkboxContract.options.appearance.values)[number];
   defaultValue?: readonly string[];
   disabled?: boolean;
   items: readonly CheckboxGroupItem[];
@@ -107,7 +111,7 @@ function groupState(items: readonly CheckboxGroupItem[], selected: ReadonlySet<s
 }
 
 export const CheckboxGroup = forwardRef<HTMLDivElement, CheckboxGroupProps>(function CheckboxGroup(
-  { className, defaultValue, disabled, items, label, name, onValueChange, orientation = orientationOption.default, required, value, ...props },
+  { appearance = checkboxContract.options.appearance.default, className, defaultValue, disabled, items, label, name, onValueChange, orientation = orientationOption.default, required, value, ...props },
   ref,
 ) {
   const labelId = useId();
@@ -193,6 +197,7 @@ export const CheckboxGroup = forwardRef<HTMLDivElement, CheckboxGroupProps>(func
       {...props}
       aria-labelledby={labelId}
       className={classes(checkboxParts.checkboxGroup, className)}
+      data-appearance={appearance}
       data-orientation={orientation}
       data-sk-checkbox-group=""
       ref={setRefs}
@@ -248,6 +253,8 @@ export type RadioGroupItem = {
 };
 
 export type RadioProps = Omit<InputHTMLAttributes<HTMLInputElement>, "type"> & {
+  /** How the ring is drawn, on its label: `plain`, `tactile`, `brutalist` or `frosted`. */
+  appearance?: (typeof radioGroupContract.options.appearance.values)[number];
   children?: ReactNode;
 };
 
@@ -257,11 +264,11 @@ export type RadioProps = Omit<InputHTMLAttributes<HTMLInputElement>, "type"> & {
  * sharing a `name` are one group to the browser wherever they sit in the DOM.
  */
 export const Radio = forwardRef<HTMLInputElement, RadioProps>(function Radio(
-  { children, className, ...props },
+  { appearance = radioGroupContract.options.appearance.default, children, className, ...props },
   ref,
 ) {
   return (
-    <label className={classes(selectionParts.radio, className)}>
+    <label className={classes(selectionParts.radio, className)} data-appearance={appearance}>
       <input {...props} className={selectionParts.radioInput} ref={ref} type="radio" />
       <span aria-hidden="true" className={selectionParts.radioControl}>
         <span className={selectionParts.radioIndicator} />
@@ -272,6 +279,8 @@ export const Radio = forwardRef<HTMLInputElement, RadioProps>(function Radio(
 });
 
 export type RadioGroupProps = Omit<HTMLAttributes<HTMLDivElement>, "defaultValue" | "onChange" | "aria-label"> & {
+  /** How every ring in the group is drawn, on the group's root. */
+  appearance?: (typeof radioGroupContract.options.appearance.values)[number];
   defaultValue?: string | null;
   disabled?: boolean;
   items: readonly RadioGroupItem[];
@@ -287,7 +296,7 @@ export type RadioGroupProps = Omit<HTMLAttributes<HTMLDivElement>, "defaultValue
 };
 
 export const RadioGroup = forwardRef<HTMLDivElement, RadioGroupProps>(function RadioGroup(
-  { className, defaultValue, disabled, items, label, name, onValueChange, orientation = radioOrientationOption.default, required, spread, value, ...props },
+  { appearance = radioGroupContract.options.appearance.default, className, defaultValue, disabled, items, label, name, onValueChange, orientation = radioOrientationOption.default, required, spread, value, ...props },
   ref,
 ) {
   const controlled = value !== undefined;
@@ -307,6 +316,7 @@ export const RadioGroup = forwardRef<HTMLDivElement, RadioGroupProps>(function R
       aria-label={label}
       aria-orientation={orientation}
       className={classes(selectionParts.radioGroup, className)}
+      data-appearance={appearance}
       data-orientation={orientation}
       data-spread={spread ? "" : undefined}
       ref={ref}
@@ -336,6 +346,8 @@ export const RadioGroup = forwardRef<HTMLDivElement, RadioGroupProps>(function R
 });
 
 export type SwitchProps = Omit<InputHTMLAttributes<HTMLInputElement>, "checked" | "defaultChecked" | "onChange" | "role" | "type"> & {
+  /** How the switch is drawn, on its label: `plain`, `tactile`, `brutalist` or `frosted`. */
+  appearance?: (typeof switchContract.options.appearance.values)[number];
   checked?: boolean;
   children?: ReactNode;
   defaultChecked?: boolean;
@@ -343,13 +355,13 @@ export type SwitchProps = Omit<InputHTMLAttributes<HTMLInputElement>, "checked" 
 };
 
 export const Switch = forwardRef<HTMLInputElement, SwitchProps>(function Switch(
-  { checked, children, className, defaultChecked, disabled, onCheckedChange, ...props },
+  { appearance = switchContract.options.appearance.default, checked, children, className, defaultChecked, disabled, onCheckedChange, ...props },
   ref,
 ) {
   const onChange = (event: ChangeEvent<HTMLInputElement>) => onCheckedChange?.({ checked: event.currentTarget.checked });
 
   return (
-    <label className={classes(selectionParts.switch, className)}>
+    <label className={classes(selectionParts.switch, className)} data-appearance={appearance}>
       <input {...props} checked={checked} className={selectionParts.switchInput} defaultChecked={defaultChecked} disabled={disabled} onChange={onChange} ref={ref} role="switch" type="checkbox" />
       <span aria-hidden="true" className={selectionParts.switchControl}>
         <span className={selectionParts.switchThumb} />

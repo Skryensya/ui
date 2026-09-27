@@ -97,8 +97,12 @@ export const backToTopContract = {
     "--sk-back-to-top-bg",
     "--sk-back-to-top-border-color",
     "--sk-back-to-top-border-color-hover",
+    "--sk-back-to-top-brutalist-offset",
+    "--sk-back-to-top-depth",
     "--sk-back-to-top-enter-scale",
     "--sk-back-to-top-fg",
+    "--sk-back-to-top-frost-blur",
+    "--sk-back-to-top-frost-opacity",
     "--sk-back-to-top-radius",
     "--sk-back-to-top-shadow",
     "--sk-back-to-top-size",
@@ -107,6 +111,18 @@ export const backToTopContract = {
   ],
 
   options: {
+    /*
+     * HOW THE CONTROL IS DRAWN, Button's axis: `tactile` a ledge the disc presses into, `brutalist` a
+     * black edge and hard offset, `frosted` see-through glass over the page (opaque wherever the
+     * material cannot be trusted). None of them moves on hover; the press travel never touches the
+     * reveal's own rise.
+     */
+    appearance: {
+      type: "enum",
+      values: ["plain", "tactile", "brutalist", "frosted"],
+      default: "plain",
+      attr: "data-appearance",
+    },
     /**
      * Distance the scroller must travel from its start before the control reveals itself. The
      * enhancer reads it off the DOM and computes visibility from it; React takes it as a prop. It
@@ -154,7 +170,7 @@ export const backToTopContract = {
       ],
       host: { element: "button" },
       mount: backToTopAttrs.root,
-      options: ["threshold", "scroller", "target"],
+      options: ["threshold", "scroller", "target", "appearance"],
       /** Host id / a11y names; label stays the text slot, not a forwarded attr. */
       forward: ["id", "aria-*"],
       /*

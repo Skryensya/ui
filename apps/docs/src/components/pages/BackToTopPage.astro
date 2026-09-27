@@ -1,5 +1,6 @@
 ---
 import ComponentPageShell from "./ComponentPageShell.astro";
+import AppearanceMenu from "../AppearanceMenu.astro";
 import CodeBlock from "../CodeBlock.astro";
 import ComponentPreview from "../ComponentPreview.astro";
 import {
@@ -72,8 +73,13 @@ const pill = `.mi-back-to-top {
   description={t("backToTop.description")}
   badge={t("backToTop.betaBadge")}
   contractId="back-to-top"
+  appearanceTargetSelector=".sk-back-to-top"
   testFiles={["packages/react/src/components/back-to-top.test.tsx", "packages/vanilla/src/components/back-to-top.test.ts"]}}
 >
+  <Fragment slot="appearance">
+    <AppearanceMenu label={t("prefs.appearance")} />
+  </Fragment>
+
   <Fragment slot="anatomy">
     <p set:html={t("backToTop.anatomyBody")} />
     <ComponentPreview

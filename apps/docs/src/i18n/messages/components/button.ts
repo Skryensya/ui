@@ -37,6 +37,40 @@ export const buttonMessages = {
     "button.destructiveBody":
       "Estos dos botones se muestran juntos porque el contraste es el concepto: <code>ghost</code> + <code>danger</code> es el disparador que puede vivir en una fila de acciones; <code>solid</code> + <code>danger</code> confirma el borrado.",
     "button.destructiveLabel": "Disparador y confirmación destructivos",
+    "button.appearanceTitle": "Apariencia",
+    "button.appearanceBody":
+      "<code>appearance</code> dice <strong>cómo se expresa</strong> el mismo botón, sin cambiar qué significa ni qué tan fuerte es. <code>plain</code> es el valor por defecto; <code>tactile</code> le da profundidad de material y recorrido físico; <code>brutalist</code> lo dibuja: cara plana, borde fuerte y una sombra desplazada sin desenfoque hacia la que la cara viaja al presionar; <code>frosted</code> lo hace de un material translúcido que difumina lo que tiene detrás. Los cuatro de abajo tienen el mismo tono y el mismo texto, sobre una foto para que el material tenga algo que procesar. El selector de apariencia de esta página cambia todos los demás ejemplos.",
+    "button.appearanceLabel": "La misma acción en plain, tactile, brutalist y frosted",
+    "button.brutalistMatrixTitle": "Brutalist en cada énfasis y tono",
+    "button.brutalistMatrixBody":
+      "El énfasis sigue diciendo qué tan fuerte es: <code>solid</code> gasta toda la construcción, <code>soft</code> y <code>translucent</code> una sombra más corta y más clara, y <code>ghost</code> sólo tinta, sin relleno. <code>translucent</code> conserva su cara semitransparente y deriva el borde de su propio color de texto, así que sigue funcionando sobre cualquier superficie. El tono no cambia.",
+    "button.brutalistMatrixLabel": "Brutalist: todos los énfasis por todos los tonos",
+    "button.brutalistRadiusTitle": "Brutalist no es un radio",
+    "button.brutalistRadiusBody":
+      "La identidad está en el borde, la cara plana y la sombra dura, no en las esquinas. Aquí la esquina es la que <code>data-radius=\"none\"</code> y <code>\"xl\"</code> le dan al botón; con la preferencia de radio del sitio pasa lo mismo en toda la página.",
+    "button.brutalistRadiusLabel": "Brutalist con radio none y xl",
+    "button.brutalistStatesTitle": "Estados",
+    "button.brutalistStatesBody":
+      "<code>hover</code> alarga la sombra un píxel. <code>:active</code> empuja la cara hacia la sombra hasta dejar un píxel. <code>aria-pressed</code> es el estado lógico: un toggle encendido se pinta como encendido pero mantiene su sombra de reposo y vuelve a viajar al presionarlo. <code>disabled</code> encoge y apaga la construcción. El anillo de foco es el del sistema, aparte de la sombra. Los tres estados de interacción están congelados para compararlos; en una app vienen del puntero y del teclado.",
+    "button.brutalistStatesLabel": "Estados de un botón brutalist",
+    "button.brutalistShapesTitle": "Formas y hosts",
+    "button.brutalistShapesBody":
+      "Solo icono conserva su cuadrado y su nombre accesible. Un <code>Button.navigation</code> es un <code>&lt;a&gt;</code> con la misma construcción. Los botones soldados son una sola pieza: ninguna mitad proyecta sombra hacia la otra, comparten una línea en la unión y cada uno se hunde en vertical.",
+    "button.brutalistShapesLabel": "Brutalist solo icono, como enlace y soldado",
+    "button.frostedTitle": "Frosted: un material, no una pintura",
+    "button.frostedBody":
+      "<code>frosted</code> hace la cara de un material translúcido: deja pasar lo que hay detrás, difuminado y saturado, con un borde fino y un brillo arriba. No es el énfasis <code>translucent</code>. <code>translucent</code> decide cuánto deja ver la pintura; <code>frosted</code> decide cómo se procesa lo de atrás. Cada fila abre con un <code>translucent</code> plain, sobre la superficie de la página, un degradado de color y una foto: el variant deja ver el fondo nítido, el material lo difumina.",
+    "button.frostedBackdropsLabel": "Frosted sobre superficie, color y foto",
+    "button.frostedMatrixTitle": "Frosted en cada énfasis y tono",
+    "button.frostedMatrixBody":
+      "<code>solid</code> es la cara más densa y <code>soft</code> una más delgada. En <code>accent</code> y <code>danger</code> la cara casi no deja pasar el fondo: es lo que cuesta que el texto mantenga 4.5:1 sobre un fondo negro o blanco, y el material se lee en el borde, el brillo y el tinte difuminado. <code>ghost</code> sigue sin cuerpo: es una lámina tenue de la superficie, así que su legibilidad depende del fondo igual que la de un ghost plain. <code>translucent</code> conserva exactamente la pintura de su variant y le suma el difuminado: una sola lámina, no dos opacidades.",
+    "button.frostedMatrixLabel": "Frosted: todos los énfasis por todos los tonos sobre una foto",
+    "button.frostedDetailsTitle": "Radio, estados y formas",
+    "button.frostedDetailsBody":
+      "El material sigue la esquina que dé el radio. <code>hover</code> y <code>:active</code> hacen la cara un poco más densa bajo la capa de estado, sin moverla. <code>aria-pressed</code> se pinta como encendido y casi opaco, así que se distingue con o sin material. <code>disabled</code> es casi opaco y sin brillo. El anillo de foco es el del sistema. Sin <code>backdrop-filter</code>, con transparencia reducida, alto contraste o forced colors, frosted vuelve a la cara opaca de plain con su borde fino.",
+    "button.frostedRadiusLabel": "Frosted con radio none y xl",
+    "button.frostedStatesLabel": "Estados de un botón frosted",
+    "button.frostedShapesLabel": "Frosted solo icono, como enlace y soldado",
     "button.sizesTitle": "Tamaños",
     "button.sizesLabel": "Button · xs / sm / md / lg",
     "button.iconTitle": "Con icono",
@@ -104,6 +138,40 @@ export const buttonMessages = {
     "button.destructiveBody":
       "These two buttons appear together because their contrast is the concept: <code>ghost</code> + <code>danger</code> is the trigger that can live in an action row; <code>solid</code> + <code>danger</code> confirms deletion.",
     "button.destructiveLabel": "Destructive trigger and confirmation",
+    "button.appearanceTitle": "Appearance",
+    "button.appearanceBody":
+      "<code>appearance</code> says <strong>how the same button is expressed</strong>, without changing what it means or how loud it is. <code>plain</code> is the default; <code>tactile</code> gives it material depth and physical travel; <code>brutalist</code> draws it: a flat face, a strong edge and a zero-blur offset shadow the face travels into when pressed; <code>frosted</code> makes it a translucent material that blurs what is behind it. The four below share one tone and one label, over a photograph so the material has something to process. This page's appearance switch changes every other example.",
+    "button.appearanceLabel": "The same action as plain, tactile, brutalist and frosted",
+    "button.brutalistMatrixTitle": "Brutalist in every emphasis and tone",
+    "button.brutalistMatrixBody":
+      "Emphasis still says how loud: <code>solid</code> spends the whole construction, <code>soft</code> and <code>translucent</code> a shorter, lighter shadow, and <code>ghost</code> ink only, with no fill. <code>translucent</code> keeps its see-through face and derives its edge from its own text colour, so it still works over any surface. Tone is unchanged.",
+    "button.brutalistMatrixLabel": "Brutalist: every emphasis by every tone",
+    "button.brutalistRadiusTitle": "Brutalist is not a radius",
+    "button.brutalistRadiusBody":
+      "The identity is the edge, the flat face and the hard shadow, not the corners. The corner here is the one <code>data-radius=\"none\"</code> and <code>\"xl\"</code> give the button; the site's radius preference does the same to the whole page.",
+    "button.brutalistRadiusLabel": "Brutalist under radius none and xl",
+    "button.brutalistStatesTitle": "States",
+    "button.brutalistStatesBody":
+      "<code>hover</code> reaches the shadow one pixel further. <code>:active</code> drives the face into the shadow until one pixel is left. <code>aria-pressed</code> is the logical state: a toggle that is on paints as on but keeps its rest shadow, and travels again when pressed. <code>disabled</code> shrinks and mutes the construction. The focus ring is the system's own, apart from the shadow. The three interaction states are held still so they can be compared; in an app they come from the pointer and the keyboard.",
+    "button.brutalistStatesLabel": "States of a brutalist button",
+    "button.brutalistShapesTitle": "Shapes and hosts",
+    "button.brutalistShapesBody":
+      "Icon-only keeps its square and its accessible name. A <code>Button.navigation</code> is an <code>&lt;a&gt;</code> with the same construction. Welded buttons are one piece: neither half throws a shadow onto the other, they share one line at the seam, and each presses straight down.",
+    "button.brutalistShapesLabel": "Brutalist icon-only, as a link, and welded",
+    "button.frostedTitle": "Frosted: a material, not a paint",
+    "button.frostedBody":
+      "<code>frosted</code> makes the face a translucent material: it lets what is behind through, blurred and saturated, with a fine edge and a highlight along the top. It is not the <code>translucent</code> emphasis. <code>translucent</code> decides how much the paint lets through; <code>frosted</code> decides how what is behind is processed. Each row opens with a plain <code>translucent</code>, over the page's surface, a colour sweep and a photograph: the variant shows the backdrop sharp, the material diffuses it.",
+    "button.frostedBackdropsLabel": "Frosted over a surface, colour and a photograph",
+    "button.frostedMatrixTitle": "Frosted in every emphasis and tone",
+    "button.frostedMatrixBody":
+      "<code>solid</code> is the densest face and <code>soft</code> a thinner one. On <code>accent</code> and <code>danger</code> the face lets through only a trace of the backdrop: that is what it costs to keep the label at 4.5:1 over a black or a white backdrop, and the material reads in the edge, the highlight and the blurred tint. <code>ghost</code> still has no body: it is a faint sheet of the surface, so its legibility depends on the backdrop just as a plain ghost's does. <code>translucent</code> keeps its variant's paint exactly and adds the blur: one sheet, not two opacities.",
+    "button.frostedMatrixLabel": "Frosted: every emphasis by every tone over a photograph",
+    "button.frostedDetailsTitle": "Radius, states and shapes",
+    "button.frostedDetailsBody":
+      "The material follows whatever corner the radius gives. <code>hover</code> and <code>:active</code> make the face slightly denser beneath the state layer, without moving it. <code>aria-pressed</code> paints as on and nearly opaque, so it reads with or without the material. <code>disabled</code> is nearly opaque with no highlight. The focus ring is the system's own. Without <code>backdrop-filter</code>, under reduced transparency, high contrast or forced colors, frosted returns to plain's opaque face with its fine edge.",
+    "button.frostedRadiusLabel": "Frosted under radius none and xl",
+    "button.frostedStatesLabel": "States of a frosted button",
+    "button.frostedShapesLabel": "Frosted icon-only, as a link, and welded",
     "button.sizesTitle": "Sizes",
     "button.sizesLabel": "Button · xs / sm / md / lg",
     "button.iconTitle": "With an icon",

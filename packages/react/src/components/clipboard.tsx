@@ -18,6 +18,7 @@ import { Icon } from "./icon.js";
 export type { ClipboardStatus } from "@skryensya/core/clipboard";
 
 const {
+  appearance: appearanceOption,
   copiedLabel: copiedLabelOption,
   errorLabel: errorLabelOption,
   label: labelOption,
@@ -28,6 +29,8 @@ const {
 
 type SharedProps = {
   id?: string;
+  /** The button's appearance: Button's `plain`, `tactile`, `brutalist` or `frosted`. */
+  appearance?: ClipboardOptions["appearance"];
   /** The button's accessible name at rest. Say WHAT is copied when a page has several. */
   label?: string;
   copiedLabel?: string;
@@ -115,6 +118,7 @@ function useClipboard(options: {
 
 /** The button: glyphs, live region and flag. Shared by both signatures. */
 function Trigger({
+  appearance,
   clip,
   id,
   label,
@@ -126,6 +130,7 @@ function Trigger({
   target,
   value,
 }: {
+  appearance: string;
   clip: ReturnType<typeof useClipboard>;
   id: string;
   label: string;
@@ -149,6 +154,7 @@ function Trigger({
       {...(root ? { [clipboardAttrs.root]: "" } : {})}
       {...{ [clipboardAttrs.trigger]: "" }}
       aria-label={error ? errorLabel : triggerProps["aria-label"]}
+      data-appearance={appearance}
       data-error={error ? "" : undefined}
       data-icon-only=""
       data-size={size}
@@ -185,6 +191,7 @@ function Trigger({
 
 /** Copies a value, or the text of another element, with one click. */
 export function CopyButton({
+  appearance = appearanceOption.default,
   id,
   value = "",
   target,
@@ -210,6 +217,7 @@ export function CopyButton({
   });
   return (
     <Trigger
+      appearance={appearance}
       clip={clip}
       copiedLabel={copiedLabel}
       errorLabel={errorLabel}
@@ -226,6 +234,7 @@ export function CopyButton({
 
 /** A value in a read-only field, with the copy button beside it: a share link, an API key. */
 export function Clipboard({
+  appearance = appearanceOption.default,
   id,
   value,
   fieldLabel,
@@ -264,6 +273,7 @@ export function Clipboard({
           value={value}
         />
         <Trigger
+          appearance={appearance}
           clip={clip}
           copiedLabel={copiedLabel}
           errorLabel={errorLabel}

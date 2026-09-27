@@ -14,6 +14,13 @@ const press = (trigger: HTMLElement) => {
 };
 
 describe("NumberField (React)", () => {
+  it("writes an appearance on the root only when asked", () => {
+    const plain = render(<NumberField label="Plain" defaultValue="1" />);
+    expect(plain.container.querySelector(".sk-number-field")?.hasAttribute("data-appearance")).toBe(false);
+    const brutalist = render(<NumberField appearance="brutalist" label="Brutalist" defaultValue="1" />);
+    expect(brutalist.container.querySelector(".sk-number-field")?.getAttribute("data-appearance")).toBe("brutalist");
+  });
+
   it("wires the accessible names from decrementLabel/incrementLabel onto the triggers", () => {
     const ui = render(
       <NumberField label="Quantity" defaultValue="5" decrementLabel="Decrease" incrementLabel="Increase" />,

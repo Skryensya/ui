@@ -37,8 +37,15 @@ export const buttonContract = {
     "--sk-button-bg",
     "--sk-button-border-color",
     "--sk-button-border-width",
+    "--sk-button-brutalist-edge",
+    "--sk-button-brutalist-offset-block",
+    "--sk-button-brutalist-offset-inline",
+    "--sk-button-brutalist-shadow",
     "--sk-button-depth",
     "--sk-button-fg",
+    "--sk-button-frost-blur",
+    "--sk-button-frost-opacity",
+    "--sk-button-frost-saturation",
     "--sk-button-font-size",
     "--sk-button-font-weight",
     "--sk-button-gap",
@@ -92,15 +99,21 @@ export const buttonContract = {
     },
     /*
      * HOW IT IS PHYSICALLY EXPRESSED, and nothing about what it means or how loud it is. The
-     * default appearance is the existing flat/raised Button paint and feedback. `tactile` keeps the
+     * plain appearance is the existing flat/raised Button paint and feedback. `tactile` keeps the
      * same host, anatomy, slots, states and options, but renders the control as a physical push
-     * button with visible travel into its surface. Independent axis: never spell this as
-     * `tactile-solid`, `tactile-danger`, or another compound value.
+     * button with visible travel into its surface. `brutalist` is the graphic hard-edge expression:
+     * flat face, strong outline, zero-blur offset shadow and mechanical travel. `frosted` is a
+     * material: a translucent face over a blurred backdrop, with an opaque baseline wherever the
+     * material cannot be trusted (no backdrop-filter, reduced transparency, high contrast, forced
+     * colors). Not the `translucent` variant: that is how loud the paint is over an unknown
+     * surface; frosted is how the surface behind is processed, and it composes with every variant.
+     * Independent axis: never spell this as `tactile-solid`, `frosted-danger`, or another compound
+     * value.
      */
     appearance: {
       type: "enum",
-      values: ["default", "tactile"],
-      default: "default",
+      values: ["plain", "tactile", "brutalist", "frosted"],
+      default: "plain",
       attr: "data-appearance",
     },
     /*

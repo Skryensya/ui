@@ -7,6 +7,7 @@ import "@skryensya/core/patterns/scrollbar.css";
 /* Structure diagram: Annotated specimen; a preview frame only copies styles THIS page loaded. */
 import "@skryensya/core/components/annotation.css";
 import ComponentPageShell from "./ComponentPageShell.astro";
+import AppearanceMenu from "../AppearanceMenu.astro";
 import CodeBlock from "../CodeBlock.astro";
 import ComponentPreview from "../ComponentPreview.astro";
 import {
@@ -36,12 +37,17 @@ const t = useTranslations(locale);
   title="TimeField"
   description={t("timeFieldPage.description")}
   contractId="time-field"
+  appearanceTargetSelector=".sk-time-field"
   styleGroups={[
     { file: "components/time-field.css", probe: "sk-time-field", title: "TimeField" },
     { file: "components/button.css", probe: "sk-button", title: "Heredados de Button" },
   ]}
   testFiles={["packages/vanilla/src/components/time-field.svelte.test.ts"]}
 >
+  <Fragment slot="appearance">
+    <AppearanceMenu label={t("prefs.appearance")} values={["plain", "brutalist", "frosted"]} unavailable={{ tactile: t("prefs.appearanceTactileUnavailable") }} />
+  </Fragment>
+
   <Fragment slot="anatomy">
     <p set:html={t("timeFieldPage.anatomyBody")} />
     <ComponentPreview

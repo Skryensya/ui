@@ -5,7 +5,8 @@ import { annotationDemoCss } from "../../demos/annotation";
 import { boxAnatomyTree } from "../../demos/layout-anatomy";
 import ComponentPageShell from "./ComponentPageShell.astro";
 import ComponentPreview from "../ComponentPreview.astro";
-import { boxTree } from "../../demos/layout";
+import AppearanceMenu from "../AppearanceMenu.astro";
+import { boxAppearanceTree, boxTree } from "../../demos/layout";
 import { getLocale, useTranslations } from "../../i18n";
 /* The sheet itself, not only its source: the Style hooks table resolves each hook
    against a real element, and a page that never loads `patterns/box.css` would show every
@@ -20,6 +21,7 @@ const t = useTranslations(getLocale(Astro.url));
   description={t("box.description")}
   contractId="box"
   styleGroups={[{ file: "patterns/box.css", probe: "sk-box" }]}
+  appearanceTargetSelector=".sk-box"
   tests={[
     {
       file: "packages/react/src/components/layout.test.tsx",
@@ -32,6 +34,14 @@ const t = useTranslations(getLocale(Astro.url));
     },
   ]}
 >
+  <Fragment slot="appearance">
+    <AppearanceMenu
+      label={t("prefs.appearance")}
+      values={["plain", "brutalist", "frosted"]}
+      unavailable={{ tactile: t("box.tactileUnavailable") }}
+    />
+  </Fragment>
+
   <Fragment slot="anatomy">
     <p set:html={t("box.anatomyBody")} />
     <ComponentPreview
@@ -54,6 +64,10 @@ const t = useTranslations(getLocale(Astro.url));
     <h3>{t("box.htmlTitle")}</h3>
     <ComponentPreview tree={boxTree(t)} label="Box" />
     <p set:html={t("component.reactNote")} />
+
+    <h3>{t("box.appearanceTitle")}</h3>
+    <p set:html={t("box.appearanceBody")} />
+    <ComponentPreview tree={boxAppearanceTree(t)} label={t("box.appearanceLabel")} />
 
     <h3>{t("component.contractNotesTitle")}</h3>
     <ul>

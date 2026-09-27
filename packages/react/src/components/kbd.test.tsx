@@ -3,6 +3,17 @@ import { describe, expect, it } from "vitest";
 import { Kbd } from "./kbd.js";
 
 describe("Kbd", () => {
+  it("serializes its appearance beside its tone, plain by default", () => {
+    const ui = render(
+      <>
+        <Kbd>Esc</Kbd>
+        <Kbd appearance="brutalist">K</Kbd>
+      </>,
+    );
+    expect(ui.getByText("Esc").getAttribute("data-appearance")).toBe("plain");
+    expect(ui.getByText("K").getAttribute("data-appearance")).toBe("brutalist");
+  });
+
   it("renders a native <kbd> carrying the part class", () => {
     const ui = render(<Kbd>⌘K</Kbd>);
     const el = ui.container.querySelector("kbd");

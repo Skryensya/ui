@@ -17,6 +17,43 @@ describe("layout primitives", () => {
     expect(box.getAttribute("data-padding")).toBe("lg");
   });
 
+  it("serializes Box appearance, plain by default, like its other options", () => {
+    const ui = render(
+      <>
+        <Box padding="md">Plain</Box>
+        <Box appearance="brutalist" surface="surface">Brutalist</Box>
+        <Box appearance="frosted" surface="raised">Frosted</Box>
+      </>,
+    );
+
+    expect(ui.getByText("Plain").getAttribute("data-appearance")).toBe("plain");
+    expect(ui.getByText("Brutalist").getAttribute("data-appearance")).toBe("brutalist");
+    expect(ui.getByText("Frosted").getAttribute("data-appearance")).toBe("frosted");
+    expect(ui.getByText("Frosted").getAttribute("data-surface")).toBe("raised");
+  });
+
+  it("serializes Hero's appearance, plain by default", () => {
+    const ui = render(
+      <>
+        <Hero>Plain</Hero>
+        <Hero appearance="frosted" surface="raised">Frosted</Hero>
+      </>,
+    );
+    expect(ui.getByText("Plain").getAttribute("data-appearance")).toBe("plain");
+    expect(ui.getByText("Frosted").getAttribute("data-appearance")).toBe("frosted");
+  });
+
+  it("serializes Footer's appearance, plain by default", () => {
+    const ui = render(
+      <>
+        <Footer as="div">Plain</Footer>
+        <Footer as="div" appearance="brutalist">Brutalist</Footer>
+      </>,
+    );
+    expect(ui.getByText("Plain").getAttribute("data-appearance")).toBe("plain");
+    expect(ui.getByText("Brutalist").getAttribute("data-appearance")).toBe("brutalist");
+  });
+
   it("renders Stack, Inline and Grid as the documented layout contracts", () => {
     const ui = render(
       <>

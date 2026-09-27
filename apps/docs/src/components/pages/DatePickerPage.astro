@@ -1,5 +1,6 @@
 ---
 import ComponentPageShell from "./ComponentPageShell.astro";
+import AppearanceMenu from "../AppearanceMenu.astro";
 import CodeBlock from "../CodeBlock.astro";
 import ComponentPreview from "../ComponentPreview.astro";
 import {
@@ -25,6 +26,7 @@ const styles = `@import "@skryensya/core/patterns/anchored.css";
   title="DatePicker"
   description={t("datePicker.description")}
   contractId="date-picker"
+  appearanceTargetSelector=".sk-date-picker"
   styleGroups={[
     { file: "components/date-picker.css", probe: "sk-date-picker", title: "DatePicker" },
     { file: "components/calendar.css", probe: "sk-calendar", title: "Heredados de Calendar" },
@@ -33,6 +35,10 @@ const styles = `@import "@skryensya/core/patterns/anchored.css";
   ]}
   testFiles={["packages/vanilla/src/components/date-picker.svelte.test.ts"]}}
 >
+  <Fragment slot="appearance">
+    <AppearanceMenu label={t("prefs.appearance")} values={["plain", "brutalist", "frosted"]} unavailable={{ tactile: t("prefs.appearanceTactileUnavailable") }} />
+  </Fragment>
+
   <Fragment slot="anatomy">
     <p set:html={t("datePicker.anatomyBody")} />
     <ComponentPreview

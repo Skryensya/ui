@@ -66,6 +66,18 @@ describe("BackToTop", () => {
     expect(ui.getByRole("button", { name: "Volver arriba" })).toBe(button);
   });
 
+  it("serializes its appearance, plain by default", () => {
+    const ui = render(
+      <>
+        <BackToTop>Plain</BackToTop>
+        <BackToTop appearance="brutalist">Brutalist</BackToTop>
+      </>,
+    );
+    const [plain, brutalist] = ui.getAllByRole("button", { hidden: true });
+    expect(plain!.getAttribute("data-appearance")).toBe("plain");
+    expect(brutalist!.getAttribute("data-appearance")).toBe("brutalist");
+  });
+
   it("reveals once scrolled past the threshold and hides again above it", () => {
     const ui = render(<BackToTop threshold={400}>Volver arriba</BackToTop>);
     const button = ui.container.querySelector<HTMLButtonElement>(".sk-back-to-top")!;

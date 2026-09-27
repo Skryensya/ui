@@ -12,6 +12,13 @@ const open = (ui: ReturnType<typeof render>) =>
   ui.container.querySelector<HTMLInputElement>("input[role='combobox']")!;
 
 describe("CommandPalette", () => {
+  it("serializes its appearance on the dialog, plain by default", () => {
+    const plain = render(<CommandPalette id="plain-palette" items={items} label="Plain" />);
+    expect(plain.container.querySelector("dialog")?.getAttribute("data-appearance")).toBe("plain");
+    const brutalist = render(<CommandPalette appearance="brutalist" id="brutalist-palette" items={items} label="Brutalist" />);
+    expect(brutalist.container.querySelector("dialog")?.getAttribute("data-appearance")).toBe("brutalist");
+  });
+
   it("claims nothing at rest: no options and no expanded popup", () => {
     const ui = render(<CommandPalette id="cmd" items={items} label="Buscar" open />);
     const input = open(ui);

@@ -3,8 +3,47 @@
 # `surface` is the shape of the contract the last time somebody reviewed it. If the compiler says it
 # does not match, something a consumer depends on has moved: write the entry and paste in the new
 # hash.
-surface: "024941a5461bdfbb"
+surface: "9b4279cdea0620f4"
 entries:
+  - date: 2026-09-27
+    kind: bugfix
+    target: appearance
+    es:
+      title: Frosted y brutalist en Folder ya no se ven rotos en un stack
+      body: >-
+        Con <code>frosted</code>, la mitad escondida de las previews se veía a través del vidrio y el desenfoque se
+        escapaba por la esquina redondeada de la pestaña. Ahora el abanico se recorta a lo que queda fuera de la silueta
+        (<code>--sk-folder-fan-clip</code>) y el vidrio usa la silueta como máscara (<code>--sk-folder-mask</code>), dos
+        salidas nuevas que escriben los dos bindings. Con <code>brutalist</code>, la sombra desplazada ya no baja al lado
+        del folder siguiente: termina donde ese folder empieza.
+    en:
+      title: Frosted and brutalist on Folder no longer look broken in a stack
+      body: >-
+        Under <code>frosted</code>, the tucked half of the previews showed through the glass and the blur leaked past
+        the tab's rounded corner. The fan is now clipped to what lies outside the silhouette
+        (<code>--sk-folder-fan-clip</code>) and the glass takes the silhouette as a mask (<code>--sk-folder-mask</code>),
+        two new outputs both bindings write. Under <code>brutalist</code>, the hard offset no longer runs down beside
+        the next folder: it stops where that folder begins.
+  - date: 2026-09-26
+    kind: feature
+    target: appearance
+    es:
+      title: Folder suma appearance tactile, brutalist y frosted
+      body: >-
+        <code>Folder</code> y <code>FolderLink</code> aceptan el mismo <code>appearance</code> que Button, y lo muestran
+        solo en el folder revelado: en reposo sigue siendo del color de su fondo. <code>tactile</code> sombrea la hoja y
+        le pone un canto debajo, <code>brutalist</code> dibuja el borde y la sombra dura en el negro de Button alrededor de
+        la silueta, y <code>frosted</code> vuelve la hoja el material translúcido de Button. Hooks nuevos:
+        <code>--sk-folder-depth</code>, los cuatro <code>--sk-folder-brutalist-*</code> y los tres
+        <code>--sk-folder-frost-*</code>.
+    en:
+      title: Folder adds tactile, brutalist and frosted appearance
+      body: >-
+        <code>Folder</code> and <code>FolderLink</code> accept Button's <code>appearance</code>, and show it only on the
+        revealed folder: at rest it is still the colour of its ground. <code>tactile</code> shades the sheet and puts a
+        ledge under it, <code>brutalist</code> draws Button's black edge and hard offset around the silhouette, and
+        <code>frosted</code> turns the sheet into Button's see-through material. New hooks: <code>--sk-folder-depth</code>,
+        the four <code>--sk-folder-brutalist-*</code> and the three <code>--sk-folder-frost-*</code>.
   - date: 2026-09-17
     kind: feature
     es:

@@ -1,12 +1,29 @@
 ---
 import "@skryensya/core/components/tile.css";
 import "@skryensya/core/components/button.css";
+/* The appearance comparison paints a TileCheckbox, whose indicator is checkbox.css's. */
+import "@skryensya/core/components/checkbox.css";
+import "@skryensya/core/components/switch.css";
+/* "Tile or Box?" paints the Box half of the comparison. */
+import "@skryensya/core/patterns/box.css";
 /* Structure diagram: Annotated specimen; a preview frame only copies styles THIS page loaded. */
 import "@skryensya/core/components/annotation.css";
 import ComponentPageShell from "./ComponentPageShell.astro";
+import AppearanceMenu from "../AppearanceMenu.astro";
 import ComponentPreview from "../ComponentPreview.astro";
 import { annotationDemoCss } from "../../demos/annotation";
-import { expandableTileTree, tileAnatomyTree } from "../../demos/tile";
+import {
+  expandableTileTree,
+  tileAnatomyTree,
+  tileAppearanceTree,
+  tileButtonGroupTree,
+  tileCheckboxTree,
+  tileLinkGridTree,
+  tilePaddingTree,
+  tileRadioGroupTree,
+  tileSwitchTree,
+  tileVersusBoxTree,
+} from "../../demos/tile";
 import { getLocale, localizePath, useTranslations } from "../../i18n";
 
 const locale = getLocale(Astro.url);
@@ -20,8 +37,13 @@ const href = (path: string) => localizePath(path, locale);
   title="Tile"
   description={t("tilePage.description")}
   contractId="tile"
+  appearanceTargetSelector=".sk-tile:is(.sk-tile--interactive, .sk-tile--expandable)[data-appearance]"
   testFiles={["packages/react/src/components/tile.test.tsx"]}}
 >
+  <Fragment slot="appearance">
+    <AppearanceMenu label={t("prefs.appearance")} />
+  </Fragment>
+
   <Fragment slot="anatomy">
     <p set:html={t("tilePage.anatomyBody")} />
     <ComponentPreview
@@ -36,12 +58,9 @@ const href = (path: string) => localizePath(path, locale);
 
   <Fragment slot="usage">
     <p class="lede" set:html={t("tilePage.lede")} />
-    <ComponentPreview tree={expandableTileTree(t)} label={t("tilePage.expandableLabel")} />
-
-    <p set:html={t("tilePage.body1")} />
-    <p set:html={t("tilePage.body2")} />
 
     <h3>{t("tilePage.chooseTitle")}</h3>
+    <p set:html={t("tilePage.chooseBody")} />
     <div class="sk-table-scroll">
       <table class="sk-table">
         <thead class="sk-table__head">
@@ -59,6 +78,45 @@ const href = (path: string) => localizePath(path, locale);
       </table>
     </div>
 
+    <h3>{t("tilePage.linkTitle")}</h3>
+    <p set:html={t("tilePage.linkBody")} />
+    <ComponentPreview tree={tileLinkGridTree(t)} label={t("tilePage.linkLabel")} />
+
+    <h3>{t("tilePage.buttonTitle")}</h3>
+    <p set:html={t("tilePage.buttonBody")} />
+    <ComponentPreview tree={tileButtonGroupTree(t)} label={t("tilePage.buttonLabel")} />
+
+    <h3>{t("tilePage.checkboxTitle")}</h3>
+    <p set:html={t("tilePage.checkboxBody")} />
+    <ComponentPreview tree={tileCheckboxTree(t)} label={t("tilePage.checkboxLabel")} />
+
+    <h3>{t("tilePage.switchTitle")}</h3>
+    <p set:html={t("tilePage.switchBody")} />
+    <ComponentPreview tree={tileSwitchTree(t)} label={t("tilePage.switchLabel")} />
+
+    <h3>{t("tilePage.radioTitle")}</h3>
+    <p set:html={t("tilePage.radioBody")} />
+    <ComponentPreview tree={tileRadioGroupTree(t)} label={t("tilePage.radioLabel")} />
+
+    <h3>{t("tilePage.expandableTitle")}</h3>
+    <p set:html={t("tilePage.expandableBody")} />
+    <ComponentPreview tree={expandableTileTree(t)} label={t("tilePage.expandableLabel")} />
+
+    <h3>{t("tilePage.versusTitle")}</h3>
+    <p set:html={t("tilePage.versusBody")} />
+    <ComponentPreview tree={tileVersusBoxTree(t)} label={t("tilePage.versusLabel")} />
+
+    <h3>{t("tilePage.paddingTitle")}</h3>
+    <p set:html={t("tilePage.paddingBody")} />
+    <ComponentPreview tree={tilePaddingTree(t)} label={t("tilePage.paddingLabel")} />
+
+    <h3>{t("tilePage.appearanceTitle")}</h3>
+    <p set:html={t("tilePage.appearanceBody")} />
+    {/* A comparison of appearances: the page-wide appearance switch must not repaint it. */}
+    <div data-docs-appearance-fixed>
+      <ComponentPreview tree={tileAppearanceTree(t)} label={t("tilePage.appearanceLabel")} />
+    </div>
+
     <h3>{t("tilePage.contractsTitle")}</h3>
     <ul>
       <li set:html={t("tilePage.contractItem1")} />
@@ -67,5 +125,8 @@ const href = (path: string) => localizePath(path, locale);
       <li set:html={t("tilePage.contractItem4")} />
       <li set:html={t("tilePage.contractItem5")} />
     </ul>
+
+    <p set:html={t("tilePage.body1")} />
+    <p set:html={t("tilePage.body2")} />
   </Fragment>
 </ComponentPageShell>

@@ -3,8 +3,23 @@
 # `surface` is the shape of the contract the last time somebody reviewed it. If the compiler says it
 # does not match, something a consumer depends on has moved: write the entry and paste in the new
 # hash.
-surface: "dcb977326aa314e2"
+surface: "f44ac684e24664b0"
 entries:
+  - date: 2026-09-26
+    kind: feature
+    target: appearance
+    es:
+      title: Pagination suma appearance plain, tactile, brutalist y frosted
+      body: >-
+        La página actual lleva la construcción de Button, escrita como los hooks <code>--sk-pagination-
+        current-*</code>: una tecla con saliente (y una página se hunde al presionar), un bloque de borde negro
+        con sombra dura, o una lámina translúcida.
+    en:
+      title: Pagination adds plain, tactile, brutalist and frosted appearances
+      body: >-
+        The current page wears Button's construction, written as the <code>--sk-pagination-current-*</code>
+        hooks: a key on a ledge (a press sinks a page), a black-edged block with a hard offset, or a see-through
+        sheet.
   - date: 2026-09-17
     kind: feature
     es:

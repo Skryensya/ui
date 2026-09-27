@@ -36,7 +36,7 @@ describe("Button", () => {
       // authored markup, so a React button that left one off would diverge at G2.
       expect(button.getAttribute("data-variant")).toBe("solid");
       expect(button.getAttribute("data-tone")).toBe("neutral");
-      expect(button.getAttribute("data-appearance")).toBe("default");
+      expect(button.getAttribute("data-appearance")).toBe("plain");
     }
   });
 
@@ -46,7 +46,7 @@ describe("Button", () => {
     const button = ui.getByRole("button", { name: "Continue" });
 
     expect(buttonContract.options.appearance.attr).toBe("data-appearance");
-    expect(buttonContract.options.appearance.default).toBe("default");
+    expect(buttonContract.options.appearance.default).toBe("plain");
     expect(button.getAttribute("data-appearance")).toBe("tactile");
   });
 
@@ -104,6 +104,112 @@ describe("Button", () => {
 
     expect(button.getAttribute("data-appearance")).toBe("tactile");
     expect(button.getAttribute("aria-pressed")).toBe("true");
+  });
+
+  it("publishes plain, tactile, brutalist and frosted as one appearance axis, plain by default", () => {
+    expect(buttonContract.options.appearance.values).toEqual(["plain", "tactile", "brutalist", "frosted"]);
+    expect(buttonContract.options.appearance.default).toBe("plain");
+  });
+
+  it("supports brutalist across every variant and tone pairing without compound values", () => {
+    const variants = buttonContract.options.variant.values;
+    const tones = buttonContract.options.tone.values;
+    const ui = render(
+      <>
+        {variants.flatMap((variant) =>
+          tones.map((tone) => (
+            <Button key={`${variant}-${tone}`} appearance="brutalist" variant={variant} tone={tone}>
+              {`${variant} ${tone}`}
+            </Button>
+          )),
+        )}
+      </>,
+    );
+
+    for (const variant of variants) {
+      for (const tone of tones) {
+        const button = ui.getByRole("button", { name: `${variant} ${tone}` });
+        expect(button.getAttribute("data-appearance")).toBe("brutalist");
+        expect(button.getAttribute("data-variant")).toBe(variant);
+        expect(button.getAttribute("data-tone")).toBe(tone);
+      }
+    }
+  });
+
+  it("supports frosted across every variant and tone pairing, beside pressed and disabled", () => {
+    const variants = buttonContract.options.variant.values;
+    const tones = buttonContract.options.tone.values;
+    const ui = render(
+      <>
+        {variants.flatMap((variant) =>
+          tones.map((tone) => (
+            <Button key={`${variant}-${tone}`} appearance="frosted" variant={variant} tone={tone}>
+              {`${variant} ${tone}`}
+            </Button>
+          )),
+        )}
+        <Button appearance="frosted" pressed>
+          Bold
+        </Button>
+        <Button appearance="frosted" disabled>
+          Save
+        </Button>
+      </>,
+    );
+
+    for (const variant of variants) {
+      for (const tone of tones) {
+        const button = ui.getByRole("button", { name: `${variant} ${tone}` });
+        expect(button.getAttribute("data-appearance")).toBe("frosted");
+        expect(button.getAttribute("data-variant")).toBe(variant);
+        expect(button.getAttribute("data-tone")).toBe(tone);
+      }
+    }
+    expect(ui.getByRole("button", { name: "Bold" }).getAttribute("aria-pressed")).toBe("true");
+    expect((ui.getByRole("button", { name: "Save" }) as HTMLButtonElement).disabled).toBe(true);
+  });
+
+  it("still asks an icon-only frosted button for its accessible name", () => {
+    const spy = vi.spyOn(console, "error").mockImplementation(() => {});
+    render(
+      <Button appearance="frosted" iconOnly>
+        <svg className="sk-icon" />
+      </Button>,
+    );
+    expect(spy).toHaveBeenCalledWith(expect.stringMatching(/accessible name/i));
+    spy.mockRestore();
+  });
+
+  it("keeps aria-pressed and disabled as states beside brutalist, not as appearance", () => {
+    const ui = render(
+      <>
+        <Button appearance="brutalist" pressed>
+          Bold
+        </Button>
+        <Button appearance="brutalist" disabled>
+          Save
+        </Button>
+      </>,
+    );
+
+    const pressed = ui.getByRole("button", { name: "Bold" });
+    expect(pressed.getAttribute("data-appearance")).toBe("brutalist");
+    expect(pressed.getAttribute("aria-pressed")).toBe("true");
+
+    const disabled = ui.getByRole("button", { name: "Save" });
+    expect(disabled.getAttribute("data-appearance")).toBe("brutalist");
+    expect((disabled as HTMLButtonElement).disabled).toBe(true);
+  });
+
+  it("still asks an icon-only brutalist button for its accessible name", () => {
+    const spy = vi.spyOn(console, "error").mockImplementation(() => {});
+    render(
+      <Button appearance="brutalist" iconOnly>
+        <svg className="sk-icon" />
+      </Button>,
+    );
+    expect(spy).toHaveBeenCalledWith(expect.stringMatching(/accessible name/i));
+    spy.mockRestore();
   });
 
   /* The floor of the size scale, and the one size whose whole point is that it is smaller than the
@@ -244,7 +350,7 @@ describe("Button.navigation", () => {
     expect(link.getAttribute("data-tone")).toBe("accent");
     expect(link.getAttribute("data-variant")).toBe("solid");
     expect(link.getAttribute("data-size")).toBe("md");
-    expect(link.getAttribute("data-appearance")).toBe("default");
+    expect(link.getAttribute("data-appearance")).toBe("plain");
     expect(link.classList.contains("sk-button")).toBe(true);
     expect(link.classList.contains("sk-interactive")).toBe(true);
   });
@@ -262,6 +368,31 @@ describe("Button.navigation", () => {
     expect(link.classList.contains("sk-interactive")).toBe(true);
     expect(link.classList.contains("cta")).toBe(true);
     expect(link.getAttribute("data-testid")).toBe("cta");
+  });
+
+  it("maps brutalist appearance on a navigation host", () => {
+    const ui = render(
+      <Button href="/continue" appearance="brutalist" tone="accent">
+        Continue
+      </Button>,
+    );
+    const link = ui.getByRole("link", { name: "Continue" });
+
+    expect(link.tagName).toBe("A");
+    expect(link.getAttribute("data-appearance")).toBe("brutalist");
+    expect(link.getAttribute("data-tone")).toBe("accent");
+  });
+
+  it("maps frosted appearance on a navigation host", () => {
+    const ui = render(
+      <Button href="/continue" appearance="frosted">
+        Continue
+      </Button>,
+    );
+    const link = ui.getByRole("link", { name: "Continue" });
+
+    expect(link.tagName).toBe("A");
+    expect(link.getAttribute("data-appearance")).toBe("frosted");
   });
 
   it("does not write aria-pressed or disabled on a navigation host", () => {

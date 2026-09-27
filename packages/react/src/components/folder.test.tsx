@@ -1,6 +1,6 @@
 import { render, waitFor } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
-import { defaultFolderGeometry, folderClipPath, folderPath } from "@skryensya/core/folder";
+import { defaultFolderGeometry, folderClipPath, folderFanClipPath, folderPath } from "@skryensya/core/folder";
 import { Folder, FolderLink, FolderPreview, FolderStack } from "./folder.js";
 
 /*
@@ -84,6 +84,18 @@ describe("Folder (React)", () => {
     expect(shape.getAttribute("aria-hidden")).toBe("true");
     expect(shape.getAttribute("focusable")).toBe("false");
     expect(shape.getAttribute("preserveAspectRatio")).toBe("none");
+  });
+
+  it("writes appearance on the root of either host, plain when omitted", () => {
+    const ui = render(
+      <>
+        <Folder label="Plain">Body</Folder>
+        <Folder appearance="brutalist" label="Brutalist">Body</Folder>
+        <FolderLink appearance="frosted" href="/radio" label="Frosted">Body</FolderLink>
+      </>,
+    );
+    const roots = ui.container.querySelectorAll<HTMLElement>(".sk-folder");
+    expect([...roots].map((root) => root.dataset.appearance)).toEqual(["plain", "brutalist", "frosted"]);
   });
 
   it("draws the silhouette from the folder's own box and its tab's width", () => {
@@ -177,6 +189,8 @@ describe("Folder (React)", () => {
     const root = ui.container.querySelector<HTMLElement>(".sk-folder")!;
     const d = ui.container.querySelector(".sk-folder__shape-path")!.getAttribute("d")!;
     expect(root.style.getPropertyValue("--sk-folder-clip")).toBe(folderClipPath(d));
+    expect(root.style.getPropertyValue("--sk-folder-fan-clip")).toBe(folderFanClipPath(d));
+    expect(root.style.getPropertyValue("--sk-folder-mask")).toMatch(/^url\("data:image\/svg\+xml,/);
   });
 
   /*

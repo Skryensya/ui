@@ -59,6 +59,7 @@ export const footerContract = {
   parts: footerParts,
   hooks: [
     "--sk-footer-bg",
+    "--sk-footer-brutalist-offset",
     "--sk-footer-divider-color",
     "--sk-footer-divider-width",
     "--sk-footer-padding",
@@ -68,6 +69,17 @@ export const footerContract = {
   ],
 
   options: {
+    /*
+     * HOW THE BAND IS DRAWN, Button's axis: brutalist a black divider and a hard offset, frosted a
+     * see-through band (opaque wherever the material cannot be trusted). No tactile: a footer is
+     * never pressed.
+     */
+    appearance: {
+      type: "enum",
+      values: ["plain", "brutalist", "frosted"],
+      default: "plain",
+      attr: "data-appearance",
+    },
     padding: {
       type: "enum",
       values: ["none", "xs", "sm", "md", "lg", "xl"],
@@ -114,7 +126,7 @@ export const footerContract = {
         "footer-navigation-block",
       ],
       host: { element: "footer" },
-      options: ["padding", "paddingExpanded", "surface", "divider", "footerElement"],
+      options: ["padding", "paddingExpanded", "surface", "divider", "footerElement", "appearance"],
       slots: { children: { accepts: "node", required: true } },
       template: {
         element: "footer",

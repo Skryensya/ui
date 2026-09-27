@@ -13,6 +13,8 @@ export type SidebarResizeChangeDetails = {
 
 export type SidebarOptions = {
   id?: string;
+  /** How the rail is drawn: `plain`, `brutalist` (black edge, hard offset) or `frosted` (see-through). */
+  appearance?: (typeof sidebarContract.options.appearance.values)[number];
   /** Controlled: the caller owns the state and re-renders on change. */
   collapsed?: boolean;
   /** Uncontrolled: initializes the state once, then interaction owns it. */
@@ -142,6 +144,7 @@ export const sidebarContract = {
     "--sk-sidebar-bg",
     "--sk-sidebar-border-color",
     "--sk-sidebar-border-width",
+    "--sk-sidebar-brutalist-offset",
     "--sk-sidebar-collapsed-inline-size",
     "--sk-sidebar-duration",
     "--sk-sidebar-easing",
@@ -185,6 +188,17 @@ export const sidebarContract = {
   hookSheets: ["@skryensya/core/patterns/splitter.css"],
 
   options: {
+    /*
+     * HOW THE RAIL IS DRAWN, Button's axis: brutalist a black edge and a hard offset along the
+     * inline-end side, frosted a see-through rail over the page (opaque wherever the material
+     * cannot be trusted). No tactile: a rail is never pressed.
+     */
+    appearance: {
+      type: "enum",
+      values: ["plain", "brutalist", "frosted"],
+      default: "plain",
+      attr: "data-appearance",
+    },
     /** Starts narrowed. Read once as the initial state; after that the interaction owns it. */
     defaultCollapsed: {
       type: "boolean",
@@ -239,7 +253,7 @@ export const sidebarContract = {
     Sidebar: {
       intent: ["sidebar", "side-navigation", "app-shell-rail", "left-nav"],
       host: { element: "aside" },
-      options: ["defaultCollapsed", "storageKey", "minInlineSize", "maxInlineSize", "landmarkLabel"],
+      options: ["defaultCollapsed", "storageKey", "minInlineSize", "maxInlineSize", "landmarkLabel", "appearance"],
       slots: {
         children: {
           accepts: "signature",

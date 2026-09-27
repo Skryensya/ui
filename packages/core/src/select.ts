@@ -11,6 +11,8 @@ export type SelectValueChangeDetails = {
 };
 
 export type SelectOptions = {
+  /** How the field is drawn: `plain`, `brutalist` or `frosted`. Absent means plain. */
+  appearance?: (typeof selectContract.options.appearance.values)[number];
   id?: string;
   name?: string;
   disabled?: boolean;
@@ -179,6 +181,17 @@ export const selectContract = {
   hookSheets: ["@skryensya/core/patterns/anchored.css"],
 
   options: {
+    /*
+     * HOW THE FIELD IS DRAWN, Input's axis: brutalist a black edge and hard offset in place of the
+     * soft well, frosted a see-through field (opaque wherever the material cannot be trusted).
+     * Every state still outranks it. Absent means plain, as for Input. No tactile: a field is typed
+     * into, not pressed.
+     */
+    appearance: {
+      type: "enum",
+      values: ["plain", "brutalist", "frosted"],
+      attr: "data-appearance",
+    },
     /** Submitted under this name, and what makes the hidden native control worth rendering. */
     name: { type: "string", attr: "name" },
     /**
@@ -253,7 +266,7 @@ export const selectContract = {
       intent: ["controlled-collection", "item-markup", "positioned-listbox", "value-change-event"],
       host: { element: "div" },
       mount: selectAttrs.root,
-      options: ["name", "value", "placeholder", "disabled", "required"],
+      options: ["name", "value", "placeholder", "disabled", "required", "appearance"],
       portals: { container: true },
       /** Host id / a11y names; form association stays on the hidden native input. */
       forward: ["id", "aria-*"],

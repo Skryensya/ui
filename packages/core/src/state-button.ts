@@ -83,10 +83,11 @@ export const stateButtonContract = {
       host: { element: "button" },
       options: ["current"],
       /*
-       * Button look attrs (`data-variant` / `data-size`) stay on the host via `also: sk-button`, not
-       * re-declared as options here. Form association and a11y names mirror Button.action.
+       * Button look attrs (`data-variant` / `data-size` / `data-appearance`) stay on the host via
+       * `also: sk-button`, not re-declared as options here: Button's own sheet paints every one of
+       * them, appearance included. Form association and a11y names mirror Button.action.
        */
-      forward: ["id", "name", "form", "data-variant", "data-size", "aria-*"],
+      forward: ["id", "name", "form", "data-variant", "data-size", "data-appearance", "aria-*"],
       slots: {
         /** One entry per state. `name` is what `current` is compared against; `icon` is the glyph. */
         faces: {

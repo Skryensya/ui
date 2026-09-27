@@ -16,6 +16,8 @@
     "build": "turbo run build",
     "dev": "turbo run dev --filter=@skryensya/docs --filter=@skryensya/playground",
     "dev:all": "turbo run dev",
+    "storybook:react": "pnpm --filter @skryensya/storybook-react storybook",
+    "storybook:vanilla": "pnpm --filter @skryensya/storybook-vanilla storybook",
     "prepare": "husky"
   },
   "devDependencies": {
@@ -34,6 +36,9 @@
       "this safe to apply blindly over someone else's dependencies. Verified before writing it:",
       "each of the 8 appears with ONE single major in the lockfile, so there is no consumer",
       "expecting another line that forcing it would break.",
+      "devalue (added 2026-09-26, GHSA-9rgm-9g3h-6x36, DoS on malformed input): reached only through",
+      "@astrojs/react in apps/docs. 5.9.2 is the first patched version and the newest one past the",
+      "30-day cooldown on the day it was added; one major (5) in the lockfile, so the caret is safe.",
       "The entry is deleted when the package above bumps on its own: an override that no longer changes",
       "anything is a frozen old version waiting for someone to notice it."
     ],
@@ -48,7 +53,8 @@
       "sharp": "^0.35.4",
       "smol-toml": "^1.7.1",
       "svgo": "^4.1.0",
-      "undici": "^7.29.0"
+      "undici": "^7.29.0",
+      "devalue": "^5.9.2"
     }
   }
 }

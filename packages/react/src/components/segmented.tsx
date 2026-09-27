@@ -1,7 +1,10 @@
-import { segmentedEvents, segmentedParts, type SegmentedOption } from "@skryensya/core/segmented";
+import { segmentedContract, segmentedEvents, segmentedParts, type SegmentedOption } from "@skryensya/core/segmented";
 import { useLayoutEffect, useRef, useState, type HTMLAttributes, type KeyboardEvent as ReactKeyboardEvent } from "react";
 
 const cx = (base: string, className: string | undefined) => (className ? `${base} ${className}` : base);
+
+/* Derived, never restated: the values and the default live in the contract. */
+const { appearance: appearanceOption } = segmentedContract.options;
 
 export type SegmentedControlProps = Omit<
   HTMLAttributes<HTMLDivElement>,
@@ -13,9 +16,12 @@ export type SegmentedControlProps = Omit<
   onValueChange?: (value: string) => void;
   /** The group's own accessible name. WAI's Radio Group pattern expects one on `role="radiogroup"`. */
   label: string;
+  /** How the control is drawn: `plain`, `tactile`, `brutalist` or `frosted`. */
+  appearance?: (typeof appearanceOption.values)[number];
 };
 
 export function SegmentedControl({
+  appearance = appearanceOption.default,
   className,
   defaultValue,
   label,
@@ -92,6 +98,7 @@ export function SegmentedControl({
       {...props}
       aria-label={label}
       className={cx(segmentedParts.root, className)}
+      data-appearance={appearance}
       data-sk-segmented=""
       data-value={selected}
       ref={rootRef}

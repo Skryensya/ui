@@ -35,6 +35,7 @@ export const dialogContract = {
     "--sk-dialog-bg",
     "--sk-dialog-border-color",
     "--sk-dialog-border-width",
+    "--sk-dialog-brutalist-offset",
     "--sk-dialog-elevation",
     "--sk-dialog-fg",
     "--sk-dialog-footer-border-color",
@@ -54,6 +55,17 @@ export const dialogContract = {
   hookSheets: ["@skryensya/core/patterns/dialog-vaul.css"],
 
   options: {
+    /*
+     * HOW THE SURFACE IS DRAWN, Button's axis: brutalist a black edge and hard offset in place of
+     * the soft elevation, frosted a see-through panel over the page (opaque wherever the material
+     * cannot be trusted). No tactile: a dialog is never pressed.
+     */
+    appearance: {
+      type: "enum",
+      values: ["plain", "brutalist", "frosted"],
+      default: "plain",
+      attr: "data-appearance",
+    },
     /** What the closing control announces. Lives on the close button as `aria-label`, not the host. */
     closeLabel: { type: "string", default: "Close", attr: "aria-label" },
     /**
@@ -111,7 +123,7 @@ export const dialogContract = {
     Dialog: {
       intent: ["modal-dialog", "blocking-confirmation", "focused-task"],
       host: { element: "dialog" },
-      options: ["closeLabel", "open", "vaul", "alert", "footerAlign"],
+      options: ["closeLabel", "open", "vaul", "alert", "footerAlign", "appearance"],
       /*
        * Close control is a system-owned Button (+ close icon), not an authored child. `also` already
        * pulls button.css; compose is the machine-readable statement of that borrow.

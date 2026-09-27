@@ -26,6 +26,13 @@ function Fixture() {
 }
 
 describe("Toolbar React contracts", () => {
+  it("serializes its appearance on the bar, plain by default", () => {
+    const plain = render(<Toolbar label="Plain"><button type="button">A</button></Toolbar>);
+    expect(plain.getByRole("toolbar", { name: "Plain" }).getAttribute("data-appearance")).toBe("plain");
+    const tactile = render(<Toolbar appearance="tactile" label="Tactile"><button type="button">A</button></Toolbar>);
+    expect(tactile.getByRole("toolbar", { name: "Tactile" }).getAttribute("data-appearance")).toBe("tactile");
+  });
+
   it("sets role and aria-orientation", () => {
     const ui = render(<Fixture />);
     const toolbar = ui.getByRole("toolbar", { name: "Formato" });

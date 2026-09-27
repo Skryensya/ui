@@ -1,6 +1,6 @@
 import { splitButtonContract, splitButtonParts } from "@skryensya/core/split-button";
 import type { SignatureOptionsOf } from "@skryensya/core/contract";
-import type { ButtonTone, ButtonVariant } from "@skryensya/core/button";
+import type { ButtonAppearance, ButtonTone, ButtonVariant } from "@skryensya/core/button";
 import type { MenuItem } from "@skryensya/core/menu";
 import type { ReactNode } from "react";
 import { Button } from "./button.js";
@@ -33,6 +33,8 @@ export type SplitButtonProps = {
   variant?: ButtonVariant;
   /** The action's meaning. A split button's dominant action is `accent` unless told otherwise. */
   tone?: ButtonTone;
+  /** Button's appearance, for BOTH halves: the action and the menu trigger always match. */
+  appearance?: ButtonAppearance;
   size?: "sm" | "md" | "lg";
   /** The group's own accessible name; see `split-button.ts`'s own `role="group"` doc for why it
    *  is optional. */
@@ -71,6 +73,7 @@ export function SplitButton({
   // so a plain `<Button>` reads as a secondary control, the opposite of what this contract names.
   // Hardcoded here on purpose rather than read off Button's contract.
   tone = "accent",
+  appearance = "plain",
   size = "md",
 }: SplitButtonProps) {
   return (
@@ -78,7 +81,16 @@ export function SplitButton({
       {action ?? (
         // `weldEnd`: the action half of a split button always has a trigger glued to its end
         // side: never author-configurable, unlike `variant`/`size` above.
-        <Button variant={variant} tone={tone} size={size} weldEnd disabled={disabled} onClick={onClick} type="button">
+        <Button
+          variant={variant}
+          tone={tone}
+          appearance={appearance}
+          size={size}
+          weldEnd
+          disabled={disabled}
+          onClick={onClick}
+          type="button"
+        >
           {children}
         </Button>
       )}
@@ -100,6 +112,7 @@ export function SplitButton({
           // its own start edge welded flat against the action's end edge.
           triggerVariant={variant}
           triggerTone={tone}
+          triggerAppearance={appearance}
           triggerSize={size}
           triggerIconOnly
           triggerWeldStart

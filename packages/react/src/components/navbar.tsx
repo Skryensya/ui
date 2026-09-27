@@ -1,9 +1,14 @@
-import { navbarParts } from "@skryensya/core/navbar";
+import { navbarContract, navbarParts } from "@skryensya/core/navbar";
+
+/* Derived, never restated: the values and the default live in the contract. */
+const { appearance: appearanceOption } = navbarContract.options;
 import { type HTMLAttributes, type ReactNode } from "react";
 
 const cx = (base: string, className: string | undefined) => (className ? `${base} ${className}` : base);
 
 export type NavbarProps = HTMLAttributes<HTMLElement> & {
+  /** How the bar is drawn: `plain`, `brutalist` or `frosted`. */
+  appearance?: (typeof appearanceOption.values)[number];
   children: ReactNode;
 };
 
@@ -14,9 +19,9 @@ export type NavbarProps = HTMLAttributes<HTMLElement> & {
  * A `<header>`, not a `<nav>`: the NavList inside is the nav landmark, and nesting one in another
  * would announce two.
  */
-export function Navbar({ children, className, ...props }: NavbarProps) {
+export function Navbar({ appearance = appearanceOption.default, children, className, ...props }: NavbarProps) {
   return (
-    <header {...props} className={cx(navbarParts.root, className)}>
+    <header {...props} className={cx(navbarParts.root, className)} data-appearance={appearance}>
       {children}
     </header>
   );

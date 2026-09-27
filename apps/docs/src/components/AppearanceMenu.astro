@@ -1,13 +1,38 @@
 ---
 import { iconMarkup } from "../icons";
+import { getLocale, useTranslations } from "../i18n";
+
+type Appearance = "plain" | "tactile" | "brutalist" | "frosted";
 
 interface Props {
   tile?: boolean;
   label?: string;
   description?: string;
+  /** The appearances this page's component publishes. */
+  values?: readonly Appearance[];
+  /**
+   * Appearances the family deliberately does not publish, listed disabled with the reason, so a
+   * reader sees the axis is the same one and why a value is missing (Box has no `tactile`).
+   */
+  unavailable?: Partial<Record<Appearance, string>>;
 }
 
-const { tile = false, label, description } = Astro.props;
+const ALL: readonly Appearance[] = ["plain", "tactile", "brutalist", "frosted"];
+const { tile = false, label, description, values = ALL, unavailable = {} } = Astro.props;
+const labelFor = (value: string) => value.charAt(0).toUpperCase() + value.slice(1);
+const t = useTranslations(getLocale(Astro.url));
+/* What each appearance IS, in a line: the same wording on every page that lists it. */
+const descriptions: Record<Appearance, string> = {
+  plain: t("prefs.appearancePlain"),
+  tactile: t("prefs.appearanceTactile"),
+  brutalist: t("prefs.appearanceBrutalist"),
+  frosted: t("prefs.appearanceFrosted"),
+};
+/* `disabled` on a div is what the Menu enhancer reads (Menu.svelte's `boolAttr`), and what Astro's
+   HTML types refuse, so an unavailable entry gets it through a spread. */
+const disabledAttr: Record<string, string> = { disabled: "disabled" };
+/* The canonical order, so a disabled entry sits where it does on every other page. */
+const items = ALL.filter((value) => values.includes(value) || value in unavailable);
 const appearanceIcon = iconMarkup("appearance");
 ---
 
@@ -25,10 +50,10 @@ const appearanceIcon = iconMarkup("appearance");
         <span class="sk-tile__title">{label}</span>
         {description && <span class="sk-tile__description">{description}</span>}
       </span>
-      <span class="docs-prefs-tile__value" data-docs-appearance-label>Default</span>
+      <span class="docs-prefs-tile__value" data-docs-appearance-label>Plain</span>
     </button>
   ) : (
-    <div class="sk-menu docs-appearance-menu" data-sk-menu aria-label={label}>
+    <div class="sk-menu docs-appearance-menu" data-sk-menu aria-label={label} data-docs-appearance-values={values.join(" ")}>
       <button
         class="sk-menu__trigger sk-button sk-interactive sk-anchor dimensions__appearance-trigger"
         data-sk-menu-trigger
@@ -42,35 +67,34 @@ const appearanceIcon = iconMarkup("appearance");
       </button>
       <div class="sk-menu__positioner sk-anchored" data-sk-menu-positioner>
         <div class="sk-menu__content" data-sk-menu-content>
-          <div
-            class="sk-menu__item sk-interactive"
-            data-sk-menu-item
-            data-type="radio"
-            data-group="appearance"
-            data-value="default"
-            data-docs-appearance-set="default"
-            data-checked
-            aria-checked="true"
-          >
-            <span class="sk-menu__item-label">Default</span>
-            <span class="sk-menu__item-indicator" aria-hidden="true">
-              <span data-sk-icon="check" data-sk-icon-size="md" />
-            </span>
-          </div>
-          <div
-            class="sk-menu__item sk-interactive"
-            data-sk-menu-item
-            data-type="radio"
-            data-group="appearance"
-            data-value="tactile"
-            data-docs-appearance-set="tactile"
-            aria-checked="false"
-          >
-            <span class="sk-menu__item-label">Tactile</span>
-            <span class="sk-menu__item-indicator" aria-hidden="true">
-              <span data-sk-icon="check" data-sk-icon-size="md" />
-            </span>
-          </div>
+          {items.map((value) => {
+            const reason = values.includes(value) ? undefined : unavailable[value];
+            /* An unavailable value says why it is missing; the rest say what they are. */
+            const note = reason ?? descriptions[value];
+            return (
+            <div
+              class="sk-menu__item sk-interactive"
+              data-sk-menu-item
+              data-type="radio"
+              data-group="appearance"
+              data-value={value}
+              data-docs-appearance-set={value}
+              data-checked={value === values[0] ? "" : undefined}
+              aria-checked={value === values[0] ? "true" : "false"}
+              {...(reason === undefined ? {} : disabledAttr)}
+              data-disabled={reason === undefined ? undefined : ""}
+              aria-disabled={reason === undefined ? undefined : "true"}
+            >
+              <span class="sk-menu__item-label">
+                {labelFor(value)}
+                <span class="docs-appearance-menu__note">{note}</span>
+              </span>
+              <span class="sk-menu__item-indicator" aria-hidden="true">
+                <span data-sk-icon="check" data-sk-icon-size="md" />
+              </span>
+            </div>
+            );
+          })}
         </div>
       </div>
     </div>

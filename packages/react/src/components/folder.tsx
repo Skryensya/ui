@@ -1,6 +1,8 @@
 import {
   folderAttrs,
   folderClipPath,
+  folderFanClipPath,
+  folderMaskImage,
   folderContract,
   folderGeometryFrom,
   folderGroundFrom,
@@ -8,6 +10,7 @@ import {
   folderParts,
   folderPath,
   folderTabEndFrom,
+  type FolderAppearance,
 } from "@skryensya/core/folder";
 import { observeAppearance } from "@skryensya/core/theme-toggle";
 import {
@@ -22,7 +25,7 @@ import {
 
 const cx = (...classes: Array<string | undefined>) => classes.filter(Boolean).join(" ");
 
-const { active: activeOption } = folderContract.options;
+const { active: activeOption, appearance: appearanceOption } = folderContract.options;
 
 
 
@@ -60,6 +63,8 @@ export type FolderOwnProps = {
    * the screen. See `folder.ts`'s own option doc for why the policy is the composition's.
    */
   active?: boolean;
+  /** How the revealed folder is physically expressed. Button's axis; see `folder.ts`. */
+  appearance?: FolderAppearance;
 };
 
 export type FolderProps = Omit<HTMLAttributes<HTMLDivElement>, "children"> & FolderOwnProps;
@@ -127,6 +132,10 @@ function useFolderSilhouette<Root extends HTMLElement>(
       shape.setAttribute("viewBox", `0 0 ${width} ${height}`);
       path.setAttribute("d", d);
       root.style.setProperty("--sk-folder-clip", folderClipPath(d));
+      // The fan is clipped to OUTSIDE the silhouette, so a see-through folder never shows its tucked half.
+      root.style.setProperty("--sk-folder-fan-clip", folderFanClipPath(d));
+      // The same outline as a mask: the only thing that contains a frosted folder's backdrop blur.
+      root.style.setProperty("--sk-folder-mask", folderMaskImage(d, width, height));
       // The ground the folder is invisible against at rest. Read here rather than named in the
       // stylesheet because no rule can ask what colour is behind an element; `null` leaves the
       // property unset so `folder.css`'s own default stands.
@@ -225,6 +234,7 @@ function FolderShape({
 /** A folder-shaped surface. */
 export function Folder({
   active = false,
+  appearance = appearanceOption.default,
   children,
   className,
   label,
@@ -244,6 +254,7 @@ export function Folder({
       ref={rootRef}
       {...{ [folderAttrs.root]: "" }}
       {...{ [activeOption.attr]: active ? activeOption.trueValue : undefined }}
+      {...{ [appearanceOption.attr]: appearance }}
     >
       <FolderShape label={label} pathRef={pathRef} previews={previews} shapeRef={shapeRef} tabRef={tabRef}>
         {children}
@@ -259,6 +270,7 @@ export function Folder({
  */
 export function FolderLink({
   active = false,
+  appearance = appearanceOption.default,
   children,
   className,
   label,
@@ -278,6 +290,7 @@ export function FolderLink({
       ref={rootRef}
       {...{ [folderAttrs.root]: "" }}
       {...{ [activeOption.attr]: active ? activeOption.trueValue : undefined }}
+      {...{ [appearanceOption.attr]: appearance }}
     >
       <FolderShape label={label} pathRef={pathRef} previews={previews} shapeRef={shapeRef} tabRef={tabRef}>
         {children}

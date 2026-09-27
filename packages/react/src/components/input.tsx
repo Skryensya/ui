@@ -21,7 +21,10 @@ import {
 import { useFormFieldControl } from "./form-field.js";
 
 /* Derived, never restated: the default lives in the contract. */
-const { type: typeOption } = inputContract.options;
+const { appearance: appearanceOption, type: typeOption } = inputContract.options;
+
+/** How a field is drawn: `plain`, `brutalist` or `frosted`. Absent means plain. */
+type InputAppearance = (typeof appearanceOption.values)[number];
 
 const cx = (base: string, className: string | undefined) => (className ? `${base} ${className}` : base);
 
@@ -29,6 +32,7 @@ export type InputProps = InputHTMLAttributes<HTMLInputElement> & {
   size?: never;
   /** Control height. Named `controlSize` because `size` is already a native input attribute. */
   controlSize?: InputSize;
+  appearance?: InputAppearance;
   /**
    * Validation the control owns, for values the platform has no check for: a RUT's check digit, a
    * Chilean numbering plan, a URL that actually resolves somewhere. See the contract's own option.
@@ -49,7 +53,7 @@ export type InputProps = InputHTMLAttributes<HTMLInputElement> & {
 };
 
 export const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
-  { className, controlSize, country, errorLabel, format, onBlur, onChange, onValidate, type = typeOption.default, ...props },
+  { appearance, className, controlSize, country, errorLabel, format, onBlur, onChange, onValidate, type = typeOption.default, ...props },
   ref,
 ) {
   const control = useFormFieldControl(props);
@@ -148,6 +152,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
       className={cx(inputParts.root, className)}
       data-country={country}
       data-format={format}
+      data-appearance={appearance}
       data-size={controlSize}
       disabled={control.disabled}
       id={control.id}
@@ -164,6 +169,7 @@ export type NativeInputProps = InputHTMLAttributes<HTMLInputElement> & {
   size?: never;
   /** Control height. Named `controlSize` because `size` is already a native input attribute. */
   controlSize?: InputSize;
+  appearance?: InputAppearance;
 };
 
 /*
@@ -172,7 +178,7 @@ export type NativeInputProps = InputHTMLAttributes<HTMLInputElement> & {
  * aria-label; inside one it inherits id / describedBy / invalid / required / disabled.
  */
 export const NativeInput = forwardRef<HTMLInputElement, NativeInputProps>(function NativeInput(
-  { className, controlSize, ...props },
+  { appearance, className, controlSize, ...props },
   ref,
 ) {
   const control = useFormFieldControl(props);
@@ -183,6 +189,7 @@ export const NativeInput = forwardRef<HTMLInputElement, NativeInputProps>(functi
       aria-describedby={control.describedBy}
       aria-invalid={control.invalid ? "true" : undefined}
       className={cx(inputParts.root, className)}
+      data-appearance={appearance}
       data-size={controlSize}
       disabled={control.disabled}
       id={control.id}
@@ -194,10 +201,11 @@ export const NativeInput = forwardRef<HTMLInputElement, NativeInputProps>(functi
 
 export type TextareaProps = TextareaHTMLAttributes<HTMLTextAreaElement> & {
   controlSize?: InputSize;
+  appearance?: InputAppearance;
 };
 
 export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(function Textarea(
-  { className, controlSize, ...props },
+  { appearance, className, controlSize, ...props },
   ref,
 ) {
   const control = useFormFieldControl(props);
@@ -208,6 +216,7 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(function 
       aria-describedby={control.describedBy}
       aria-invalid={control.invalid ? "true" : undefined}
       className={cx(inputParts.root, className)}
+      data-appearance={appearance}
       data-size={controlSize}
       disabled={control.disabled}
       id={control.id}

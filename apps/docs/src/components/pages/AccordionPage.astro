@@ -30,6 +30,7 @@ import "@skryensya/core/components/annotation.css";
 import "@skryensya/core/components/diagram.css";
 import CodeBlock from "../CodeBlock.astro";
 import ComponentPageShell from "./ComponentPageShell.astro";
+import AppearanceMenu from "../AppearanceMenu.astro";
 import ComponentPreview from "../ComponentPreview.astro";
 import VanillaMount from "../VanillaMount.astro";
 import { vanillaMounts } from "../../lib/vanilla-mounts";
@@ -43,6 +44,7 @@ import {
   detailsAnatomyTree,
   detailsGroupTree,
 } from "../../demos/accordion";
+import { onAppearanceStage } from "../../lib/frost-stage";
 import { annotationAnatomyTree } from "../../demos/annotation";
 import { getLocale, useTranslations } from "../../i18n";
 
@@ -80,6 +82,7 @@ const detailsLink = `<a href="#details-nativo">${t("accordion.detailsNativoLabel
   title="Accordion"
   description={t("accordion.description")}
   contractId="accordion"
+  appearanceTargetSelector="[data-sk-accordion], .sk-details-group, .sk-details:not(.sk-details-group > *)"
   styleGroups={[
     { file: "components/accordion.css", probe: "sk-accordion", title: "Accordion" },
     { file: "components/details.css", probe: "sk-details", title: t("accordion.detailsNativoLabel") },
@@ -112,6 +115,10 @@ const detailsLink = `<a href="#details-nativo">${t("accordion.detailsNativoLabel
       hideSource
       chrome={false}
     />
+  </Fragment>
+
+  <Fragment slot="appearance">
+    <AppearanceMenu label={t("prefs.appearance")} />
   </Fragment>
 
   <Fragment slot="usage">
@@ -161,6 +168,12 @@ const detailsLink = `<a href="#details-nativo">${t("accordion.detailsNativoLabel
     />
     <p set:html={t("accordion.choiceNoJs")} />
 
+    <h3>{t("accordion.appearanceTitle")}</h3>
+    <p set:html={t("accordion.appearanceBody")} />
+    {/* The ONE example on a backdrop: frosted needs something behind it to process. It follows the
+        appearance switch like every other example; only its ground is different. */}
+    <ComponentPreview tree={onAppearanceStage(accordionExclusiveTree(t))} label={t("accordion.appearanceStageLabel")} />
+
     <h3>{t("accordion.oneItemTitle")}</h3>
     <p set:html={t("accordion.oneItemBody")} />
     <ComponentPreview tree={accordionSingleTree(t)} label={t("accordion.oneItemLabel")} />
@@ -196,6 +209,7 @@ const detailsLink = `<a href="#details-nativo">${t("accordion.detailsNativoLabel
     <h3>{t("accordion.multipleTitle")}</h3>
     <p set:html={t("accordion.multipleBody")} />
     <ComponentPreview tree={accordionMultipleTree(t)} label={t("accordion.multipleLabel")} />
+
 
     {/*
       * Two bullets, where there were seven. The other five said what the Referencia tab now

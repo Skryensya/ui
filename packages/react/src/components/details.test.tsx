@@ -85,6 +85,21 @@ describe("Details", () => {
     expect(ui.container.querySelectorAll("details[open]")).toHaveLength(1);
   });
 
+  it("writes appearance on the group and on a lone details, plain when omitted", () => {
+    const { container } = render(
+      <>
+        <DetailsGroup appearance="brutalist">
+          <Details><Details.Summary>Runtime</Details.Summary><Details.Content>Node 24</Details.Content></Details>
+        </DetailsGroup>
+        <Details appearance="tactile"><Details.Summary>Alone</Details.Summary><Details.Content>x</Details.Content></Details>
+      </>,
+    );
+    const group = container.querySelector<HTMLElement>(".sk-details-group")!;
+    expect(group.dataset.appearance).toBe("brutalist");
+    expect(group.querySelector<HTMLElement>(".sk-details")!.dataset.appearance).toBe("plain");
+    expect(container.querySelector<HTMLElement>(":scope > .sk-details")!.dataset.appearance).toBe("tactile");
+  });
+
   it("joins a consumer's className instead of replacing the part's", () => {
     const ui = render(
       <DetailsGroup className="faq">

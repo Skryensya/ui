@@ -4,6 +4,13 @@ import { describe, expect, it } from "vitest";
 import { ImageFrame } from "./image-frame.js";
 
 describe("ImageFrame", () => {
+  it("serializes its appearance beside its other options, plain by default", () => {
+    const plain = render(<ImageFrame alt="Plain" src="/a.png" />);
+    expect(plain.getByRole("img", { name: "Plain" }).closest(".sk-image-frame")?.getAttribute("data-appearance")).toBe("plain");
+    const brutalist = render(<ImageFrame alt="Brutalist" appearance="brutalist" src="/b.png" />);
+    expect(brutalist.getByRole("img", { name: "Brutalist" }).closest(".sk-image-frame")?.getAttribute("data-appearance")).toBe("brutalist");
+  });
+
   it("maps geometry props to data attributes on the authored root", () => {
     const ui = render(
       <ImageFrame as="figure" aspect="16/9" fit="contain" position="top" radius="control" border="subtle">

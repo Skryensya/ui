@@ -3,8 +3,24 @@
 # `surface` is the shape of the contract the last time somebody reviewed it. If the compiler says it
 # does not match, something a consumer depends on has moved: write the entry and paste in the new
 # hash.
-surface: "386595a3dec56d63"
+surface: "796e072bd665546a"
 entries:
+  - date: 2026-09-26
+    kind: feature
+    target: appearance
+    es:
+      title: Vaul y Drawer suman appearance plain, brutalist y frosted
+      body: >-
+        <code>brutalist</code> dibuja el panel con borde negro y una sombra dura en lugar de la elevación suave
+        (la extensión de arrastre sigue al borde); <code>frosted</code> lo hace translúcido, opaco donde el
+        material no es fiable. Sin <code>tactile</code>: un cajón se arrastra, no se presiona.
+    en:
+      title: Vaul and Drawer add plain, brutalist and frosted appearances
+      body: >-
+        <code>brutalist</code> draws the panel with a black edge and a hard offset in place of the soft
+        elevation (the overpull extension still follows the edge); <code>frosted</code> makes it see-through,
+        opaque wherever the material cannot be trusted. No <code>tactile</code>: a drawer is dragged, never
+        pressed.
   - date: 2026-09-17
     kind: feature
     es:

@@ -1,5 +1,6 @@
 ---
 import ComponentPageShell from "./ComponentPageShell.astro";
+import AppearanceMenu from "../AppearanceMenu.astro";
 import ComponentPreview from "../ComponentPreview.astro";
 import {
   heroAppBadgesTree,
@@ -89,6 +90,7 @@ const heroQuoteTree = heroTestimonialTree(t);
   description={t("hero.description")}
   badge={t("hero.betaBadge")}
   contractId="hero"
+  appearanceTargetSelector=".sk-hero"
   styleGroups={[{ file: "patterns/hero.css", probe: "sk-hero" }]}
   tests={[
     {
@@ -106,6 +108,10 @@ const heroQuoteTree = heroTestimonialTree(t);
     },
   ]}
 >
+  <Fragment slot="appearance">
+    <AppearanceMenu label={t("prefs.appearance")} values={["plain", "brutalist", "frosted"]} unavailable={{ tactile: t("prefs.appearanceTactileUnavailable") }} />
+  </Fragment>
+
   <Fragment slot="anatomy">
     <p set:html={t("hero.anatomyBody")} />
     <ComponentPreview

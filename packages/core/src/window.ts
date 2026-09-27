@@ -187,7 +187,15 @@ export const windowContract = {
   hooks: [
     "--sk-window-bg",
     "--sk-window-border-color",
+    "--sk-window-brutalist-edge",
+    "--sk-window-brutalist-offset-block",
+    "--sk-window-brutalist-offset-inline",
+    "--sk-window-brutalist-shadow",
+    "--sk-window-depth",
     "--sk-window-fg",
+    "--sk-window-frost-blur",
+    "--sk-window-frost-opacity",
+    "--sk-window-frost-saturation",
     "--sk-window-handle-size",
     "--sk-window-header-bg",
     "--sk-window-header-border-color",
@@ -256,6 +264,18 @@ export const windowContract = {
     minWidth: { type: "number", min: 1, attr: "data-min-width", machineInput: true },
     /** The shortest a resize can make it, in CSS pixels. */
     minHeight: { type: "number", min: 1, attr: "data-min-height", machineInput: true },
+    /*
+     * HOW THE FRAME IS DRAWN, the axis Button, Tile, Box and Avatar publish: `tactile` a solid slab
+     * with a ledge, `brutalist` a black edge and hard offset, `frosted` a see-through sheet (opaque
+     * wherever the material cannot be trusted). Written on the CONTENT, the element that paints,
+     * because React portals the positioner away from the root.
+     */
+    appearance: {
+      type: "enum",
+      values: ["plain", "tactile", "brutalist", "frosted"],
+      default: "plain",
+      attr: "data-appearance",
+    },
     /** Accessible name of the icon-only close control. Replaces Zag's hardcoded English one. */
     closeLabel: { type: "string", default: "Close", attr: "aria-label" },
     /** Accessible names of the three icon-only stage controls. */
@@ -268,6 +288,9 @@ export const windowContract = {
     triggerVariant: { type: "string", attr: "data-variant", valuesFrom: { contract: "button", option: "variant" } },
     triggerTone: { type: "string", attr: "data-tone", valuesFrom: { contract: "button", option: "tone" } },
     triggerSize: { type: "string", attr: "data-size", valuesFrom: { contract: "button", option: "size" } },
+    /** Button's appearance axis (plain, tactile, brutalist, frosted), forwarded to the trigger like its
+     *  variant, and painted by Button's own sheet. */
+    triggerAppearance: { type: "string", attr: "data-appearance", valuesFrom: { contract: "button", option: "appearance" } },
     triggerIconOnly: { type: "boolean", default: false, attr: "data-icon-only", trueValue: "" },
   },
 
@@ -281,6 +304,7 @@ export const windowContract = {
         "resizable",
         "closeOnEscape",
         "persistRect",
+        "appearance",
         "defaultWidth",
         "defaultHeight",
         "minWidth",
@@ -293,6 +317,7 @@ export const windowContract = {
         "triggerVariant",
         "triggerTone",
         "triggerSize",
+        "triggerAppearance",
         "triggerIconOnly",
       ],
       mount: windowAttrs.root,
@@ -327,7 +352,7 @@ export const windowContract = {
             also: ["sk-button", "sk-interactive"],
             mount: windowAttrs.trigger,
             attrs: { type: "button" },
-            options: ["triggerLabel", "triggerVariant", "triggerTone", "triggerSize", "triggerIconOnly"],
+            options: ["triggerLabel", "triggerVariant", "triggerTone", "triggerSize", "triggerAppearance", "triggerIconOnly"],
             slot: "trigger",
           },
           {
@@ -339,6 +364,7 @@ export const windowContract = {
                 element: "div",
                 part: "content",
                 mount: windowAttrs.content,
+                options: ["appearance"],
                 children: [
                   {
                     element: "div",

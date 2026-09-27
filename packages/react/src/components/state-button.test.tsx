@@ -22,6 +22,13 @@ describe("StateButton (React)", () => {
     expect(button.hasAttribute("data-icon-only")).toBe(true);
   });
 
+  it("carries Button's appearance on the host, like its variant", () => {
+    const ui = render(<StateButton faces={faces} current="light" aria-label="Modo" data-appearance="brutalist" />);
+    const button = ui.getByRole("button");
+    expect(button.getAttribute("data-appearance")).toBe("brutalist");
+    expect(button.classList.contains("sk-button")).toBe(true);
+  });
+
   it("writes data-current on the button itself", () => {
     const ui = render(<StateButton faces={faces} current="light" aria-label="Modo" />);
     expect(ui.getByRole("button").getAttribute("data-current")).toBe("light");

@@ -3,8 +3,23 @@
 # `surface` is the shape of the contract the last time somebody reviewed it. If the compiler says it
 # does not match, something a consumer depends on has moved: write the entry and paste in the new
 # hash.
-surface: "350f6896717c90d1"
+surface: "f775ee85aa62e902"
 entries:
+  - date: 2026-09-26
+    kind: feature
+    target: appearance
+    es:
+      title: Callout suma appearance plain, brutalist y frosted
+      body: >-
+        <code>brutalist</code> dibuja la caja con borde negro y sombra dura (el tono conserva su relleno y su
+        tinta); <code>frosted</code> la hace una lámina teñida translúcida, opaca donde el material no es
+        fiable. Sin <code>tactile</code>: un callout no se presiona.
+    en:
+      title: Callout adds plain, brutalist and frosted appearances
+      body: >-
+        <code>brutalist</code> draws the box with a black edge and a hard offset (the tone keeps its fill and
+        ink); <code>frosted</code> makes it a see-through tinted sheet, opaque wherever the material cannot be
+        trusted. No <code>tactile</code>: a callout is never pressed.
   - date: 2026-08-11
     kind: feature
     es:

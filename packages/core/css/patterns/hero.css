@@ -131,6 +131,78 @@
   }
 
   /*
+   * ── APPEARANCE ───────────────────────────────────────────────────────────────────────────────
+   *
+   * Button's axis on the hero's surface (button.css documents each construction in full). Plain,
+   * brutalist and frosted: a surface is never pressed, so there is no tactile. Radius, padding and
+   * motion are untouched.
+   */
+
+  /* BRUTALIST: the black edge and a hard zero-blur offset toward block-end and inline-end
+   * (mirrored in RTL), in place of the soft elevation. Flat face. */
+  .sk-hero[data-appearance="brutalist"] {
+    --sk-hero-brutalist-offset: 8px;
+    --brutalist-black: oklch(from var(--shadow-lg) l c h / 1);
+    --brutalist-direction: 1;
+    --sk-hero-wash: none;
+    --sk-hero-shadow: calc(var(--sk-hero-brutalist-offset) * var(--brutalist-direction)) var(--sk-hero-brutalist-offset) 0 var(--brutalist-black);
+    border: 1px solid var(--brutalist-black);
+  }
+
+  .sk-hero[data-appearance="brutalist"]:dir(rtl) {
+    --brutalist-direction: -1;
+  }
+
+  /* FROSTED: Button's see-through material over whatever sits behind the hero, with a fine edge and
+   * a lit top rim over its own shadow. Opaque baseline; the material only where backdrop-filter
+   * exists and no reduced-transparency preference is set. */
+  .sk-hero[data-appearance="frosted"] {
+    --frost-highlight: light-dark(
+      color-mix(in oklab, var(--color-bg-surface) 70%, transparent),
+      color-mix(in oklab, var(--color-text-primary) 18%, transparent)
+    );
+    --sk-hero-wash: none;
+    border: 1px solid color-mix(in oklab, currentColor 18%, transparent);
+    --sk-hero-shadow: inset 0 1px 0 var(--frost-highlight), var(--elevation-raised);
+  }
+
+  @supports (backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px)) {
+    @media (prefers-reduced-transparency: no-preference) {
+      .sk-hero[data-appearance="frosted"] {
+        background: color-mix(in oklab, var(--sk-hero-bg) 70%, transparent);
+        -webkit-backdrop-filter: blur(24px) saturate(150%);
+        backdrop-filter: blur(24px) saturate(150%);
+      }
+    }
+  }
+
+  /* High contrast outranks the material: back to the opaque baseline. */
+  [data-contrast="high"] .sk-hero[data-appearance="frosted"],
+  .sk-hero[data-appearance="frosted"][data-contrast="high"] {
+    background: var(--sk-hero-bg);
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+
+  @media (prefers-contrast: more) {
+    :root:not([data-contrast]) .sk-hero[data-appearance="frosted"] {
+      background: var(--sk-hero-bg);
+      -webkit-backdrop-filter: none;
+      backdrop-filter: none;
+    }
+  }
+
+  /* Forced colors keep neither construction: the system surface and its boundary. */
+  @media (forced-colors: active) {
+    .sk-hero[data-appearance] {
+      background: Canvas;
+      -webkit-backdrop-filter: none;
+      backdrop-filter: none;
+      box-shadow: none;
+    }
+  }
+
+  /*
    * EXPANDED OVERRIDES, declared (decision 30). 52rem is `--breakpoint-desktop`
    * (semantic/_breakpoints.scss), a literal here because a CSS `@media` cannot read a custom
    * property, the same hand-copy `vaul.css` makes. The plain attribute is the value from the smallest

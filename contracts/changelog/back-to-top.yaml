@@ -3,8 +3,23 @@
 # `surface` is the shape of the contract the last time somebody reviewed it. If the compiler says it
 # does not match, something a consumer depends on has moved: write the entry and paste in the new
 # hash.
-surface: "6ad560bc5662bc88"
+surface: "2ad0a361210d61c2"
 entries:
+  - date: 2026-09-26
+    kind: feature
+    target: appearance
+    es:
+      title: BackToTop suma appearance plain, tactile, brutalist y frosted
+      body: >-
+        El eje de Button en el control de esquina. <code>tactile</code> y <code>brutalist</code> viajan al presionar
+        con <code>transform</code>, sin tocar la subida del reveal; nada se mueve en hover. <code>frosted</code> es
+        vidrio sobre la página, opaco donde el material no es fiable.
+    en:
+      title: BackToTop adds plain, tactile, brutalist and frosted appearances
+      body: >-
+        Button's axis on the corner control. <code>tactile</code> and <code>brutalist</code> travel on press through
+        <code>transform</code>, leaving the reveal's rise alone; nothing moves on hover. <code>frosted</code> is glass
+        over the page, opaque wherever the material cannot be trusted.
   - date: 2026-09-17
     kind: feature
     es:

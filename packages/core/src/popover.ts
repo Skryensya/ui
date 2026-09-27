@@ -75,6 +75,18 @@ export const popoverContract = {
   hookSheets: ["@skryensya/core/patterns/anchored.css"],
 
   options: {
+    /*
+     * HOW THE PANEL IS DRAWN, Button's axis: brutalist a black edge and hard offset in place of the
+     * soft elevation, frosted a see-through panel (opaque wherever the material cannot be trusted).
+     * On the root; the trigger has its own, triggerAppearance. No tactile: a panel is never
+     * pressed.
+     */
+    appearance: {
+      type: "enum",
+      values: ["plain", "brutalist", "frosted"],
+      default: "plain",
+      attr: "data-appearance",
+    },
     /** The id that ties the trigger to the panel. Authored, because the platform needs a real id. */
     panelId: {
       type: "string",
@@ -119,6 +131,9 @@ export const popoverContract = {
     /** Button's meaning axis, the same forward Menu's `triggerTone` makes. */
     triggerTone: { type: "string", attr: "data-tone", valuesFrom: { contract: "button", option: "tone" } },
     triggerSize: { type: "string", attr: "data-size", valuesFrom: { contract: "button", option: "size" } },
+    /** Button's appearance axis (plain, tactile, brutalist, frosted), forwarded to the trigger like its
+     *  variant, and painted by Button's own sheet. */
+    triggerAppearance: { type: "string", attr: "data-appearance", valuesFrom: { contract: "button", option: "appearance" } },
     /** The icon-only SHAPE: a control-sized square holding one glyph, zero inline padding. Pair it
      *  with a `triggerLabel`, since a trigger with no visible content announces nothing. */
     triggerIconOnly: { type: "boolean", default: false, attr: "data-icon-only", trueValue: "" },
@@ -137,7 +152,9 @@ export const popoverContract = {
         "triggerVariant",
         "triggerTone",
         "triggerSize",
+        "triggerAppearance",
         "triggerIconOnly",
+        "appearance",
       ],
       requires: ["panelId"],
       /** Extra a11y on the wrapper; panel id is the panelId option (not forwarded). */
@@ -181,7 +198,7 @@ export const popoverContract = {
             // Claims the `trigger*` options for ITSELF (each one's own `attr` already says where,
             // so only `panelId` needs the rename below), the same "one option, one element" split
             // `Menu`'s own trigger keeps.
-            options: ["panelId", "triggerLabel", "triggerVariant", "triggerTone", "triggerSize", "triggerIconOnly"],
+            options: ["panelId", "triggerLabel", "triggerVariant", "triggerTone", "triggerSize", "triggerAppearance", "triggerIconOnly"],
             optionAttrs: { panelId: "popovertarget" },
             slot: "trigger",
           },
@@ -242,7 +259,9 @@ export const popoverContract = {
         "triggerVariant",
         "triggerTone",
         "triggerSize",
+        "triggerAppearance",
         "triggerIconOnly",
+        "appearance",
       ],
       requires: ["panelId"],
       /** Extra a11y on the wrapper; panel id is the panelId option (not forwarded). */
@@ -269,7 +288,7 @@ export const popoverContract = {
             // Claims the `trigger*` options for ITSELF (each one's own `attr` already says where,
             // so only `panelId` needs the rename below), the same "one option, one element" split
             // `Menu`'s own trigger keeps.
-            options: ["panelId", "triggerLabel", "triggerVariant", "triggerTone", "triggerSize", "triggerIconOnly"],
+            options: ["panelId", "triggerLabel", "triggerVariant", "triggerTone", "triggerSize", "triggerAppearance", "triggerIconOnly"],
             optionAttrs: { panelId: "popovertarget" },
             slot: "trigger",
           },

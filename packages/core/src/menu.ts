@@ -399,6 +399,9 @@ export const menuContract = {
     /** Button's other appearance axis, forwarded the same way and for the same reason as `triggerVariant`. */
     triggerTone: { type: "string", attr: "data-tone", valuesFrom: { contract: "button", option: "tone" } },
     triggerSize: { type: "string", attr: "data-size", valuesFrom: { contract: "button", option: "size" } },
+    /** Button's appearance axis (plain, tactile, brutalist, frosted), forwarded to the trigger like its
+     *  variant, and painted by Button's own sheet. */
+    triggerAppearance: { type: "string", attr: "data-appearance", valuesFrom: { contract: "button", option: "appearance" } },
     /**
      * The SAME attribute `Button`'s own `iconOnly` option writes (`data-icon-only`). A trigger
      * with no visible `trigger` content (paired with `triggerLabel` for its accessible name) is
@@ -455,6 +458,7 @@ export const menuContract = {
         "triggerVariant",
         "triggerTone",
         "triggerSize",
+        "triggerAppearance",
         "triggerIconOnly",
         "disabled",
         "density",
@@ -502,6 +506,7 @@ export const menuContract = {
               "triggerVariant",
               "triggerTone",
               "triggerSize",
+              "triggerAppearance",
               "triggerIconOnly",
             ],
             attrs: { type: "button" },

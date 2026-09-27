@@ -178,6 +178,17 @@ export const commandPaletteContract = {
   },
 
   options: {
+    /*
+     * HOW THE PALETTE IS DRAWN, Dialog's appearance axis, painted by Dialog's own sheet since the
+     * root is a .sk-dialog: brutalist a black edge and hard offset, frosted a see-through panel
+     * (opaque wherever the material cannot be trusted). No tactile.
+     */
+    appearance: {
+      type: "enum",
+      values: ["plain", "brutalist", "frosted"],
+      default: "plain",
+      attr: "data-appearance",
+    },
     /** Names the dialog for anyone who cannot see it. An option, not a slot: both bindings put it
      * on `aria-label`, and a visually-hidden element would be a second way to say one thing. */
     label: { type: "string", attr: "aria-label" },
@@ -226,6 +237,7 @@ export const commandPaletteContract = {
         "open",
         "vaul",
         "entries",
+        "appearance",
       ],
       requires: ["label", "paletteId"],
       /** Extra a11y; palette id is the paletteId option (not forwarded). */

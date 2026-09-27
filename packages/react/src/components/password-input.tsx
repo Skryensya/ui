@@ -19,6 +19,8 @@ const {
 } = passwordInputContract.options;
 
 export type PasswordInputProps = {
+  /** How the field is drawn: `plain`, `brutalist` or `frosted`. Absent means plain. */
+  appearance?: (typeof passwordInputContract.options.appearance.values)[number];
   id?: string;
   name?: string;
   /** Names the field. Contract slot is text-only. */
@@ -43,6 +45,7 @@ export type PasswordInputProps = {
 };
 
 export function PasswordInput({
+  appearance,
   autoComplete = autoCompleteOption.default,
   defaultVisible,
   disabled,
@@ -97,6 +100,7 @@ export function PasswordInput({
     <div
       {...api.getRootProps()}
       className={passwordInputParts.root}
+      data-appearance={appearance}
       data-invalid={invalid || undefined}
       {...{ [passwordInputAttrs.root]: "" }}
       ref={rootRef}

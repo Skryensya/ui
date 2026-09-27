@@ -8,6 +8,7 @@ import "@skryensya/core/components/annotation.css";
 /* The last demo puts the field inside a FormField, and a frame only copies what this page loaded. */
 import "@skryensya/core/components/form-field.css";
 import ComponentPageShell from "./ComponentPageShell.astro";
+import AppearanceMenu from "../AppearanceMenu.astro";
 import CodeBlock from "../CodeBlock.astro";
 import ComponentPreview from "../ComponentPreview.astro";
 import {
@@ -33,11 +34,16 @@ const styles = `@import "@skryensya/core/components/tags-input.css";
   title="TagsInput"
   description={t("tagsInputPage.description")}
   contractId="tags-input"
+  appearanceTargetSelector=".sk-tags-input"
   testFiles={[
     "packages/react/src/components/tags-input.test.tsx",
     "packages/vanilla/src/components/tags-input.test.ts",
   ]}
 >
+  <Fragment slot="appearance">
+    <AppearanceMenu label={t("prefs.appearance")} values={["plain", "brutalist", "frosted"]} unavailable={{ tactile: t("prefs.appearanceTactileUnavailable") }} />
+  </Fragment>
+
   <Fragment slot="anatomy">
     <p set:html={t("tagsInputPage.anatomyBody")} />
     <ComponentPreview

@@ -9,6 +9,13 @@ const options = [
 ];
 
 describe("Select", () => {
+  it("writes an appearance on the root only when asked", () => {
+    const plain = render(<Select label="Plain" name="plain" options={options} />);
+    expect(plain.container.querySelector(".sk-select")?.hasAttribute("data-appearance")).toBe(false);
+    const brutalist = render(<Select appearance="brutalist" label="Brutalist" name="brutalist" options={options} />);
+    expect(brutalist.container.querySelector(".sk-select")?.getAttribute("data-appearance")).toBe("brutalist");
+  });
+
   it("uses the Zag select machine for popup selection and form value", async () => {
     const onValueChange = vi.fn();
     const ui = render(

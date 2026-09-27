@@ -5,6 +5,57 @@
         "date": null,
         "entries": [
           {
+            "date": "2026-09-26",
+            "en": {
+              "body": "<code>appearance=\"frosted\"</code> puts Button's material on the frame (of <code>Accordion</code>, of <code>DetailsGroup</code>, or of a lone <code>Details</code>), with the open bodies see-through too. <code>brutalist</code> now draws the frame, dividers and offset in black in both modes, at plain's border width. New hooks: <code>--sk-accordion-frost-*</code>, <code>--sk-details-frost-*</code> and the <code>--sk-tile-frost-*</code> Accordion inherits from <code>tile.css</code>.",
+              "title": "Accordion and Details add frosted, and their brutalist moves to Button's black ink"
+            },
+            "es": {
+              "body": "<code>appearance=\"frosted\"</code> pone el material de Button en el marco (de <code>Accordion</code>, de <code>DetailsGroup</code> o de un <code>Details</code> suelto), con los cuerpos abiertos también translúcidos. <code>brutalist</code> ahora dibuja marco, divisores y sombra en negro en ambos modos, al grosor de plain. Hooks nuevos: <code>--sk-accordion-frost-*</code>, <code>--sk-details-frost-*</code> y los <code>--sk-tile-frost-*</code> que Accordion hereda de <code>tile.css</code>.",
+              "title": "Accordion y Details suman frosted, y su brutalist pasa a la tinta negra de Button"
+            },
+            "kind": "feature",
+            "target": "appearance"
+          },
+          {
+            "date": "2026-09-26",
+            "en": {
+              "body": "The native half accepts the same <code>appearance</code> as <code>Accordion</code>. <code>DetailsGroup</code> carries it on its frame, a lone <code>Details</code> on itself, and a <code>Details</code> inside a group ignores its own. Nothing moves: the summary is the control. New hooks: <code>--sk-details-depth</code> and the four <code>--sk-details-brutalist-*</code>.",
+              "title": "Details and DetailsGroup add appearance"
+            },
+            "es": {
+              "body": "La mitad nativa acepta el mismo <code>appearance</code> que <code>Accordion</code>. <code>DetailsGroup</code> lo lleva en su marco, un <code>Details</code> suelto sobre sí mismo, y un <code>Details</code> dentro de un grupo ignora el suyo. Nada se mueve: el summary es el control. Hooks nuevos: <code>--sk-details-depth</code> y los cuatro <code>--sk-details-brutalist-*</code>.",
+              "title": "Details y DetailsGroup suman appearance"
+            },
+            "kind": "feature",
+            "target": "appearance"
+          },
+          {
+            "date": "2026-09-26",
+            "en": {
+              "body": "<code>Accordion</code> accepts <code>appearance</code>, Button's and Tile's axis: <code>plain</code> (the existing look), <code>tactile</code> (a ledge under the frame) and <code>brutalist</code> (a 2px ink frame and dividers and a hard offset). It sits on the root because the frame is the surface; it never moves, each trigger is its own control. New hooks: <code>--sk-accordion-depth</code> and the four <code>--sk-accordion-brutalist-*</code>.",
+              "title": "Accordion adds tactile and brutalist appearance"
+            },
+            "es": {
+              "body": "<code>Accordion</code> acepta <code>appearance</code>, el mismo eje de Button y Tile: <code>plain</code> (el look actual), <code>tactile</code> (un canto bajo el marco) y <code>brutalist</code> (marco y divisores de 2px en tinta y una sombra dura). Se pone en la raíz porque el marco es la superficie; nunca se mueve, cada trigger es su propio control. Hooks nuevos: <code>--sk-accordion-depth</code> y los cuatro <code>--sk-accordion-brutalist-*</code>.",
+              "title": "Accordion suma appearance tactile y brutalist"
+            },
+            "kind": "feature",
+            "target": "appearance"
+          },
+          {
+            "date": "2026-09-26",
+            "en": {
+              "body": "Accordion paints with <code>tile.css</code>, so it publishes the hooks Tile added for <code>appearance</code>: <code>--sk-tile-depth</code> and the four <code>--sk-tile-brutalist-*</code>. Accordion has no <code>appearance</code> of its own; its items are unchanged.",
+              "title": "Accordion documents Tile's appearance hooks"
+            },
+            "es": {
+              "body": "Accordion se dibuja con <code>tile.css</code>, así que publica los hooks que Tile sumó para <code>appearance</code>: <code>--sk-tile-depth</code> y los cuatro <code>--sk-tile-brutalist-*</code>. Accordion no tiene <code>appearance</code>; sus items no cambian.",
+              "title": "Accordion documenta los hooks de apariencia de Tile"
+            },
+            "kind": "feature"
+          },
+          {
             "date": "2026-09-21",
             "en": {
               "body": "<code>DetailsGroup</code>, <code>Details</code>, <code>Details.Summary</code> and <code>Details.Content</code> now live inside the <code>accordion</code> contract, under the same names, the same <code>sk-details*</code> classes and the same React module. They were their own row in the catalogue, which made a reader choose between two entries before learning they answered the same question (the same dissolve Popup got into Popover). Their changelog entries move here; nothing you compose today changes.",
@@ -569,6 +620,31 @@
         "date": null,
         "entries": [
           {
+            "date": "2026-09-26",
+            "en": {
+              "body": "<code>Avatar.image</code>'s photo writes <code>data-appearance=\"plain\"</code> on its ImageFrame, as it already wrote the frame's other options, so the markup and React stay identical.",
+              "title": "The photo's frame spells its appearance"
+            },
+            "es": {
+              "body": "La foto de <code>Avatar.image</code> escribe <code>data-appearance=\"plain\"</code> en su ImageFrame, como ya escribía sus otras opciones, para que el marcado y React sigan iguales.",
+              "title": "El marco de la foto declara su appearance"
+            },
+            "kind": "feature"
+          },
+          {
+            "date": "2026-09-26",
+            "en": {
+              "body": "<code>Avatar.initials</code> and <code>Avatar.image</code> accept <code>appearance</code>, the same axis as Button, Tile and Box. <code>brutalist</code> draws the disc with a black edge and a hard offset shadow scaled to its size; in an <code>AvatarGroup</code> it replaces the ring and the +N counter follows it. New hooks <code>--sk-avatar-brutalist-*</code>.",
+              "title": "Avatar adds plain and brutalist appearances"
+            },
+            "es": {
+              "body": "<code>Avatar.initials</code> y <code>Avatar.image</code> aceptan <code>appearance</code>, el mismo eje de Button, Tile y Box. <code>brutalist</code> dibuja el disco con borde negro y una sombra dura desplazada proporcional a su tamaño; en un <code>AvatarGroup</code> reemplaza el anillo y el contador +N lo sigue. Hooks nuevos <code>--sk-avatar-brutalist-*</code>.",
+              "title": "Avatar suma appearance plain y brutalist"
+            },
+            "kind": "feature",
+            "target": "appearance"
+          },
+          {
             "date": "2026-09-17",
             "en": {
               "body": "<code>compose</code> documents the frame via <code>also</code> (<code>systemOwned</code>); sheets already resolved.",
@@ -651,6 +727,19 @@
       {
         "date": null,
         "entries": [
+          {
+            "date": "2026-09-26",
+            "en": {
+              "body": "Button's axis on the corner control. <code>tactile</code> and <code>brutalist</code> travel on press through <code>transform</code>, leaving the reveal's rise alone; nothing moves on hover. <code>frosted</code> is glass over the page, opaque wherever the material cannot be trusted.",
+              "title": "BackToTop adds plain, tactile, brutalist and frosted appearances"
+            },
+            "es": {
+              "body": "El eje de Button en el control de esquina. <code>tactile</code> y <code>brutalist</code> viajan al presionar con <code>transform</code>, sin tocar la subida del reveal; nada se mueve en hover. <code>frosted</code> es vidrio sobre la página, opaco donde el material no es fiable.",
+              "title": "BackToTop suma appearance plain, tactile, brutalist y frosted"
+            },
+            "kind": "feature",
+            "target": "appearance"
+          },
           {
             "date": "2026-09-17",
             "en": {
@@ -743,6 +832,19 @@
       {
         "date": null,
         "entries": [
+          {
+            "date": "2026-09-26",
+            "en": {
+              "body": "<code>brutalist</code> draws the mark with a black edge and a small hard offset. No <code>tactile</code> (a badge is never pressed) and no <code>frosted</code> (glass would only cost the label its contrast).",
+              "title": "Badge adds plain and brutalist appearances"
+            },
+            "es": {
+              "body": "<code>brutalist</code> dibuja la marca con borde negro y una sombra dura pequeña. Sin <code>tactile</code> (una insignia no se presiona) ni <code>frosted</code> (el vidrio solo le costaría contraste al texto).",
+              "title": "Badge suma appearance plain y brutalist"
+            },
+            "kind": "feature",
+            "target": "appearance"
+          },
           {
             "date": "2026-09-17",
             "en": {
@@ -861,6 +963,19 @@
             },
             "kind": "feature",
             "target": "paddingExpanded"
+          },
+          {
+            "date": "2026-09-26",
+            "en": {
+              "body": "<code>Box</code> accepts <code>appearance</code>, the same axis as Button and Tile. <code>brutalist</code> draws the box with a black edge and a hard offset shadow; <code>frosted</code> makes the surface a translucent material over the blurred backdrop, opaque wherever the material cannot be trusted. No <code>tactile</code>: a box is never pressed. New hooks <code>--sk-box-brutalist-*</code> and <code>--sk-box-frost-*</code>.",
+              "title": "Box adds plain, brutalist and frosted appearances"
+            },
+            "es": {
+              "body": "<code>Box</code> acepta <code>appearance</code>, el mismo eje de Button y Tile. <code>brutalist</code> dibuja la caja con borde negro y una sombra dura desplazada; <code>frosted</code> hace la superficie un material translúcido sobre el fondo difuminado, opaco donde el material no es fiable. Sin <code>tactile</code>: una caja no se presiona. Hooks nuevos <code>--sk-box-brutalist-*</code> y <code>--sk-box-frost-*</code>.",
+              "title": "Box suma appearance plain, brutalist y frosted"
+            },
+            "kind": "feature",
+            "target": "appearance"
           },
           {
             "date": "2026-09-17",
@@ -1037,11 +1152,50 @@
           {
             "date": "2026-09-26",
             "en": {
-              "body": "<code>Button.action</code> and <code>Button.navigation</code> accept <code>appearance</code>. <code>default</code> keeps the existing look; <code>tactile</code> expresses the same Button as a physical control with depth and press compression.",
+              "body": "<code>appearance=\"frosted\"</code> expresses the same Button as a translucent material: the face lets a blurred, saturated backdrop through, with a fine edge and a top highlight. It is not the <code>translucent</code> emphasis, which decides how much the paint lets through; frosted decides how what is behind is processed, and composes with every emphasis. Without <code>backdrop-filter</code>, under reduced transparency, high contrast or forced colors it returns to an opaque face. New hooks: <code>--sk-button-frost-opacity</code>, <code>--sk-button-frost-blur</code> and <code>--sk-button-frost-saturation</code>.",
+              "title": "Button adds frosted appearance"
+            },
+            "es": {
+              "body": "<code>appearance=\"frosted\"</code> expresa el mismo Button como un material translúcido: la cara deja pasar el fondo difuminado y saturado, con un borde fino y un brillo superior. No es el énfasis <code>translucent</code>, que decide cuánto deja ver la pintura; frosted decide cómo se procesa lo de atrás, y se combina con todos los énfasis. Sin <code>backdrop-filter</code>, con transparencia reducida, alto contraste o forced colors vuelve a una cara opaca. Hooks nuevos: <code>--sk-button-frost-opacity</code>, <code>--sk-button-frost-blur</code> y <code>--sk-button-frost-saturation</code>.",
+              "title": "Button suma appearance frosted"
+            },
+            "kind": "feature",
+            "target": "appearance"
+          },
+          {
+            "date": "2026-09-26",
+            "en": {
+              "body": "<code>appearance=\"brutalist\"</code> expresses the same Button as a graphic control: a flat face, a strong edge and a zero-blur offset shadow the face travels into when pressed. Radius, density, tone and emphasis are unchanged. New hooks: <code>--sk-button-brutalist-offset-inline</code>, <code>--sk-button-brutalist-offset-block</code>, <code>--sk-button-brutalist-edge</code> and <code>--sk-button-brutalist-shadow</code>.",
+              "title": "Button adds brutalist appearance"
+            },
+            "es": {
+              "body": "<code>appearance=\"brutalist\"</code> expresa el mismo Button como un control gráfico: cara plana, borde fuerte y una sombra desplazada sin desenfoque hacia la que la cara viaja al presionar. No cambia el radio, la densidad, el tono ni el énfasis. Hooks nuevos: <code>--sk-button-brutalist-offset-inline</code>, <code>--sk-button-brutalist-offset-block</code>, <code>--sk-button-brutalist-edge</code> y <code>--sk-button-brutalist-shadow</code>.",
+              "title": "Button suma appearance brutalist"
+            },
+            "kind": "feature",
+            "target": "appearance"
+          },
+          {
+            "date": "2026-09-26",
+            "en": {
+              "body": "The base <code>appearance</code> value moves from <code>default</code> to <code>plain</code>, so the axis names a concrete visual expression instead of restating that it is the default. <code>tactile</code> is unchanged.",
+              "title": "The base appearance is named plain"
+            },
+            "es": {
+              "body": "El valor base de <code>appearance</code> pasa de <code>default</code> a <code>plain</code>, para que el eje nombre una expresión visual concreta en vez de repetir que es el valor por defecto. <code>tactile</code> no cambia.",
+              "title": "La apariencia base se llama plain"
+            },
+            "kind": "breaking",
+            "target": "appearance"
+          },
+          {
+            "date": "2026-09-26",
+            "en": {
+              "body": "<code>Button.action</code> and <code>Button.navigation</code> accept <code>appearance</code>. <code>plain</code> keeps the existing look; <code>tactile</code> expresses the same Button as a physical control with depth and press compression.",
               "title": "Button adds tactile appearance"
             },
             "es": {
-              "body": "<code>Button.action</code> y <code>Button.navigation</code> aceptan <code>appearance</code>. <code>default</code> conserva el look existente; <code>tactile</code> expresa el mismo Button como un control fisico con profundidad y compresion al presionar.",
+              "body": "<code>Button.action</code> y <code>Button.navigation</code> aceptan <code>appearance</code>. <code>plain</code> conserva el look existente; <code>tactile</code> expresa el mismo Button como un control fisico con profundidad y compresion al presionar.",
               "title": "Button suma appearance tactile"
             },
             "kind": "feature",
@@ -1445,6 +1599,19 @@
       {
         "date": null,
         "entries": [
+          {
+            "date": "2026-09-26",
+            "en": {
+              "body": "<code>brutalist</code> draws the box with a black edge and a hard offset (the tone keeps its fill and ink); <code>frosted</code> makes it a see-through tinted sheet, opaque wherever the material cannot be trusted. No <code>tactile</code>: a callout is never pressed.",
+              "title": "Callout adds plain, brutalist and frosted appearances"
+            },
+            "es": {
+              "body": "<code>brutalist</code> dibuja la caja con borde negro y sombra dura (el tono conserva su relleno y su tinta); <code>frosted</code> la hace una lámina teñida translúcida, opaca donde el material no es fiable. Sin <code>tactile</code>: un callout no se presiona.",
+              "title": "Callout suma appearance plain, brutalist y frosted"
+            },
+            "kind": "feature",
+            "target": "appearance"
+          },
           {
             "date": "2026-09-12",
             "en": {
@@ -1948,6 +2115,19 @@
         "date": null,
         "entries": [
           {
+            "date": "2026-09-26",
+            "en": {
+              "body": "On a Checkbox's label or a CheckboxGroup's root: <code>tactile</code> a raised box that sinks when pressed, <code>brutalist</code> a black edge and hard offset, <code>frosted</code> a see-through box, opaque wherever the material cannot be trusted.",
+              "title": "Checkbox adds plain, tactile, brutalist and frosted appearances"
+            },
+            "es": {
+              "body": "En la etiqueta de un Checkbox o la raíz de un CheckboxGroup: <code>tactile</code> una caja elevada que se hunde al presionar, <code>brutalist</code> borde negro y sombra dura, <code>frosted</code> una caja translúcida, opaca donde el material no es fiable.",
+              "title": "Checkbox suma appearance plain, tactile, brutalist y frosted"
+            },
+            "kind": "feature",
+            "target": "appearance"
+          },
+          {
             "date": "2026-09-17",
             "en": {
               "body": "Interactive or form host signatures publish <code>forward</code> (<code>id</code>/<code>aria-*</code> and link or form attrs where relevant). An attr outside the list is <code>unknown-attr</code>.",
@@ -2077,6 +2257,19 @@
         "date": null,
         "entries": [
           {
+            "date": "2026-09-26",
+            "en": {
+              "body": "The copy button takes Button's <code>appearance</code> axis (<code>plain</code>, <code>tactile</code>, <code>brutalist</code>, <code>frosted</code>), written on the trigger and painted by Button's sheet.",
+              "title": "CopyButton and Clipboard add appearance"
+            },
+            "es": {
+              "body": "El botón de copiar acepta el eje <code>appearance</code> de Button (<code>plain</code>, <code>tactile</code>, <code>brutalist</code>, <code>frosted</code>), escrito en el disparador y pintado por la hoja de Button.",
+              "title": "CopyButton y Clipboard suman appearance"
+            },
+            "kind": "feature",
+            "target": "appearance"
+          },
+          {
             "date": "2026-09-25",
             "en": {
               "body": "New <code>clipboard</code> contract on <code>@zag-js/clipboard</code>, the same machine in both bindings. <code>CopyButton</code> is the button alone: it copies <code>value</code> or, at the moment of the click, the text of the element <code>target</code> names. <code>Clipboard</code> adds a label and a read-only field showing the value. If the browser refuses the write, the button says so (<code>data-error</code>, \"Copy failed\") instead of showing \"Copied\" anyway.",
@@ -2096,6 +2289,19 @@
       {
         "date": null,
         "entries": [
+          {
+            "date": "2026-09-26",
+            "en": {
+              "body": "<code>brutalist</code> draws the panel with a black edge and dividers and a hard offset; <code>frosted</code> makes it see-through, opaque wherever the material cannot be trusted. No <code>tactile</code>.",
+              "title": "CodePreview adds plain, brutalist and frosted appearances"
+            },
+            "es": {
+              "body": "<code>brutalist</code> dibuja el panel con borde y divisores negros y una sombra dura; <code>frosted</code> lo hace translúcido, opaco donde el material no es fiable. Sin <code>tactile</code>.",
+              "title": "CodePreview suma appearance plain, brutalist y frosted"
+            },
+            "kind": "feature",
+            "target": "appearance"
+          },
           {
             "date": "2026-09-21",
             "en": {
@@ -2341,6 +2547,19 @@
         "date": null,
         "entries": [
           {
+            "date": "2026-09-26",
+            "en": {
+              "body": "Input's axis on the field: <code>brutalist</code> a black edge and a hard offset, <code>frosted</code> a see-through field; every state still outranks it. Absent means <code>plain</code>.",
+              "title": "Combobox adds brutalist and frosted appearances"
+            },
+            "es": {
+              "body": "El eje de Input en el campo: <code>brutalist</code> borde negro y sombra dura, <code>frosted</code> un campo translúcido; todo estado sigue por encima. Sin valor es <code>plain</code>.",
+              "title": "Combobox suma appearance brutalist y frosted"
+            },
+            "kind": "feature",
+            "target": "appearance"
+          },
+          {
             "date": "2026-09-17",
             "en": {
               "body": "Interactive or form host signatures publish <code>forward</code> (<code>id</code>/<code>aria-*</code> and link or form attrs where relevant). An attr outside the list is <code>unknown-attr</code>.",
@@ -2468,6 +2687,19 @@
       {
         "date": null,
         "entries": [
+          {
+            "date": "2026-09-26",
+            "en": {
+              "body": "Dialog's axis, painted by Dialog's own sheet since the root is a <code>.sk-dialog</code>: <code>brutalist</code> a black edge and hard offset, <code>frosted</code> a see-through panel, opaque wherever the material cannot be trusted.",
+              "title": "CommandPalette adds plain, brutalist and frosted appearances"
+            },
+            "es": {
+              "body": "El eje de Dialog, pintado por la hoja de Dialog porque la raíz es un <code>.sk-dialog</code>: <code>brutalist</code> borde negro y sombra dura, <code>frosted</code> un panel translúcido, opaco donde el material no es fiable.",
+              "title": "CommandPalette suma appearance plain, brutalist y frosted"
+            },
+            "kind": "feature",
+            "target": "appearance"
+          },
           {
             "date": "2026-09-25",
             "en": {
@@ -3101,6 +3333,19 @@
         "date": null,
         "entries": [
           {
+            "date": "2026-09-26",
+            "en": {
+              "body": "Input's axis on the field: <code>brutalist</code> a black edge and a hard offset, <code>frosted</code> a see-through field; every state still outranks it. Absent means <code>plain</code>.",
+              "title": "DatePicker adds brutalist and frosted appearances"
+            },
+            "es": {
+              "body": "El eje de Input en el campo: <code>brutalist</code> borde negro y sombra dura, <code>frosted</code> un campo translúcido; todo estado sigue por encima. Sin valor es <code>plain</code>.",
+              "title": "DatePicker suma appearance brutalist y frosted"
+            },
+            "kind": "feature",
+            "target": "appearance"
+          },
+          {
             "date": "2026-09-17",
             "en": {
               "body": "Interactive or form host signatures publish <code>forward</code> (<code>id</code>/<code>aria-*</code> and link or form attrs where relevant). An attr outside the list is <code>unknown-attr</code>.",
@@ -3413,6 +3658,19 @@
       {
         "date": null,
         "entries": [
+          {
+            "date": "2026-09-26",
+            "en": {
+              "body": "<code>brutalist</code> draws the panel with a black edge and a hard offset in place of the soft elevation; <code>frosted</code> makes it a translucent material over the page, opaque wherever the material cannot be trusted. No <code>tactile</code>: a dialog is never pressed.",
+              "title": "Dialog adds plain, brutalist and frosted appearances"
+            },
+            "es": {
+              "body": "<code>brutalist</code> dibuja el panel con borde negro y una sombra dura en lugar de la elevación suave; <code>frosted</code> lo hace un material translúcido sobre la página, opaco donde el material no es fiable. Sin <code>tactile</code>: un diálogo no se presiona.",
+              "title": "Dialog suma appearance plain, brutalist y frosted"
+            },
+            "kind": "feature",
+            "target": "appearance"
+          },
           {
             "date": "2026-09-21",
             "en": {
@@ -4233,6 +4491,32 @@
         "date": null,
         "entries": [
           {
+            "date": "2026-09-27",
+            "en": {
+              "body": "Under <code>frosted</code>, the tucked half of the previews showed through the glass and the blur leaked past the tab's rounded corner. The fan is now clipped to what lies outside the silhouette (<code>--sk-folder-fan-clip</code>) and the glass takes the silhouette as a mask (<code>--sk-folder-mask</code>), two new outputs both bindings write. Under <code>brutalist</code>, the hard offset no longer runs down beside the next folder: it stops where that folder begins.",
+              "title": "Frosted and brutalist on Folder no longer look broken in a stack"
+            },
+            "es": {
+              "body": "Con <code>frosted</code>, la mitad escondida de las previews se veía a través del vidrio y el desenfoque se escapaba por la esquina redondeada de la pestaña. Ahora el abanico se recorta a lo que queda fuera de la silueta (<code>--sk-folder-fan-clip</code>) y el vidrio usa la silueta como máscara (<code>--sk-folder-mask</code>), dos salidas nuevas que escriben los dos bindings. Con <code>brutalist</code>, la sombra desplazada ya no baja al lado del folder siguiente: termina donde ese folder empieza.",
+              "title": "Frosted y brutalist en Folder ya no se ven rotos en un stack"
+            },
+            "kind": "bugfix",
+            "target": "appearance"
+          },
+          {
+            "date": "2026-09-26",
+            "en": {
+              "body": "<code>Folder</code> and <code>FolderLink</code> accept Button's <code>appearance</code>, and show it only on the revealed folder: at rest it is still the colour of its ground. <code>tactile</code> shades the sheet and puts a ledge under it, <code>brutalist</code> draws Button's black edge and hard offset around the silhouette, and <code>frosted</code> turns the sheet into Button's see-through material. New hooks: <code>--sk-folder-depth</code>, the four <code>--sk-folder-brutalist-*</code> and the three <code>--sk-folder-frost-*</code>.",
+              "title": "Folder adds tactile, brutalist and frosted appearance"
+            },
+            "es": {
+              "body": "<code>Folder</code> y <code>FolderLink</code> aceptan el mismo <code>appearance</code> que Button, y lo muestran solo en el folder revelado: en reposo sigue siendo del color de su fondo. <code>tactile</code> sombrea la hoja y le pone un canto debajo, <code>brutalist</code> dibuja el borde y la sombra dura en el negro de Button alrededor de la silueta, y <code>frosted</code> vuelve la hoja el material translúcido de Button. Hooks nuevos: <code>--sk-folder-depth</code>, los cuatro <code>--sk-folder-brutalist-*</code> y los tres <code>--sk-folder-frost-*</code>.",
+              "title": "Folder suma appearance tactile, brutalist y frosted"
+            },
+            "kind": "feature",
+            "target": "appearance"
+          },
+          {
             "date": "2026-09-17",
             "en": {
               "body": "Interactive or form host signatures publish <code>forward</code> (<code>id</code>/<code>aria-*</code> and link or form attrs where relevant). An attr outside the list is <code>unknown-attr</code>.",
@@ -4348,6 +4632,19 @@
             },
             "kind": "feature",
             "target": "paddingExpanded"
+          },
+          {
+            "date": "2026-09-26",
+            "en": {
+              "body": "<code>brutalist</code> draws the band with a black divider and a hard offset; <code>frosted</code> makes it see-through, opaque wherever the material cannot be trusted. No <code>tactile</code>.",
+              "title": "Footer adds plain, brutalist and frosted appearances"
+            },
+            "es": {
+              "body": "<code>brutalist</code> dibuja la banda con un divisor negro y una sombra dura; <code>frosted</code> la hace translúcida, opaca donde el material no es fiable. Sin <code>tactile</code>.",
+              "title": "Footer suma appearance plain, brutalist y frosted"
+            },
+            "kind": "feature",
+            "target": "appearance"
           },
           {
             "date": "2026-09-17",
@@ -4473,6 +4770,19 @@
             },
             "kind": "feature",
             "target": "paddingExpanded"
+          },
+          {
+            "date": "2026-09-26",
+            "en": {
+              "body": "<code>brutalist</code> draws the band with a black edge and a hard offset in place of its surface's soft elevation; <code>frosted</code> makes it see-through over the page, opaque wherever the material cannot be trusted. No <code>tactile</code>.",
+              "title": "Hero adds plain, brutalist and frosted appearances"
+            },
+            "es": {
+              "body": "<code>brutalist</code> dibuja la banda con borde negro y una sombra dura en lugar de la elevación suave de su superficie; <code>frosted</code> la hace translúcida sobre la página, opaca donde el material no es fiable. Sin <code>tactile</code>.",
+              "title": "Hero suma appearance plain, brutalist y frosted"
+            },
+            "kind": "feature",
+            "target": "appearance"
           },
           {
             "date": "2026-09-26",
@@ -4746,6 +5056,19 @@
         "date": null,
         "entries": [
           {
+            "date": "2026-09-26",
+            "en": {
+              "body": "<code>brutalist</code> frames the media with a black edge and a hard offset. No <code>tactile</code> and no <code>frosted</code> (glass over a photograph would hide it).",
+              "title": "ImageFrame adds plain and brutalist appearances"
+            },
+            "es": {
+              "body": "<code>brutalist</code> enmarca el medio con un borde negro y una sombra dura. Sin <code>tactile</code> ni <code>frosted</code> (el vidrio sobre una foto la escondería).",
+              "title": "ImageFrame suma appearance plain y brutalist"
+            },
+            "kind": "feature",
+            "target": "appearance"
+          },
+          {
             "date": "2026-09-17",
             "en": {
               "body": "<code>compose</code> documents the MediaCaption (media-gradient contract) caption slot.",
@@ -4801,6 +5124,19 @@
       {
         "date": null,
         "entries": [
+          {
+            "date": "2026-09-26",
+            "en": {
+              "body": "<code>Input</code>, <code>NativeInput</code> and <code>Textarea</code> accept <code>appearance</code>: <code>brutalist</code> a black edge and a hard offset in place of the sunken well, <code>frosted</code> a see-through field. Every state still outranks it (an invalid field keeps its danger edge). Absent means <code>plain</code>, like <code>controlSize</code>.",
+              "title": "Input adds brutalist and frosted appearances"
+            },
+            "es": {
+              "body": "<code>Input</code>, <code>NativeInput</code> y <code>Textarea</code> aceptan <code>appearance</code>: <code>brutalist</code> borde negro y sombra dura en lugar del pozo hundido, <code>frosted</code> un campo translúcido. Todo estado sigue por encima (un campo inválido conserva su borde de peligro). Sin valor es <code>plain</code>, como <code>controlSize</code>.",
+              "title": "Input suma appearance brutalist y frosted"
+            },
+            "kind": "feature",
+            "target": "appearance"
+          },
           {
             "date": "2026-09-19",
             "en": {
@@ -4896,6 +5232,19 @@
       {
         "date": null,
         "entries": [
+          {
+            "date": "2026-09-26",
+            "en": {
+              "body": "<code>brutalist</code> draws the key with a black edge and a small hard offset in place of the keycap's soft depth. No <code>tactile</code> and no <code>frosted</code>.",
+              "title": "Kbd adds plain and brutalist appearances"
+            },
+            "es": {
+              "body": "<code>brutalist</code> dibuja la tecla con borde negro y una sombra dura pequeña en lugar de la profundidad suave de la tecla. Sin <code>tactile</code> ni <code>frosted</code>.",
+              "title": "Kbd suma appearance plain y brutalist"
+            },
+            "kind": "feature",
+            "target": "appearance"
+          },
           {
             "date": "2026-09-12",
             "en": {
@@ -5848,6 +6197,19 @@
         "date": null,
         "entries": [
           {
+            "date": "2026-09-26",
+            "en": {
+              "body": "<code>triggerAppearance</code> forwards Button's <code>appearance</code> axis to the trigger, like <code>triggerVariant</code>, painted by Button's own sheet.",
+              "title": "The trigger takes Button's appearance"
+            },
+            "es": {
+              "body": "<code>triggerAppearance</code> lleva el eje <code>appearance</code> de Button al disparador, igual que <code>triggerVariant</code>, y lo pinta la hoja de Button.",
+              "title": "El disparador acepta la appearance de Button"
+            },
+            "kind": "feature",
+            "target": "triggerAppearance"
+          },
+          {
             "date": "2026-09-17",
             "en": {
               "body": "Interactive or form host signatures publish <code>forward</code> (<code>id</code>/<code>aria-*</code> and link or form attrs where relevant). An attr outside the list is <code>unknown-attr</code>.",
@@ -6451,6 +6813,19 @@
         "date": null,
         "entries": [
           {
+            "date": "2026-09-26",
+            "en": {
+              "body": "<code>brutalist</code> draws the bar with a black rule and a hard offset beneath it; <code>frosted</code> makes it see-through over the content scrolling underneath, opaque wherever the material cannot be trusted. No <code>tactile</code>: a bar is never pressed.",
+              "title": "Navbar adds plain, brutalist and frosted appearances"
+            },
+            "es": {
+              "body": "<code>brutalist</code> dibuja la barra con una línea negra y una sombra dura debajo; <code>frosted</code> la hace translúcida sobre el contenido que pasa por debajo, opaca donde el material no es fiable. Sin <code>tactile</code>: una barra no se presiona.",
+              "title": "Navbar suma appearance plain, brutalist y frosted"
+            },
+            "kind": "feature",
+            "target": "appearance"
+          },
+          {
             "date": "2026-09-17",
             "en": {
               "body": "No surface change: three signatures (<code>Navbar</code>/<code>NavbarBrand</code>/ <code>NavbarActions</code>), <code>NavList</code> and <code>Megamenu</code> guests, <code>13</code> own hooks, no enhancer or events. Semantics now point at <code>Sidebar</code> and <code>Megamenu</code> as alternatives; the stylesheet comment clarifies the host is <code>&lt;header&gt;</code>, not a second <code>&lt;nav&gt;</code>.",
@@ -6506,6 +6881,19 @@
       {
         "date": null,
         "entries": [
+          {
+            "date": "2026-09-26",
+            "en": {
+              "body": "Input's axis on the field: <code>brutalist</code> a black edge and a hard offset, <code>frosted</code> a see-through field; every state still outranks it. Absent means <code>plain</code>.",
+              "title": "NumberField adds brutalist and frosted appearances"
+            },
+            "es": {
+              "body": "El eje de Input en el campo: <code>brutalist</code> borde negro y sombra dura, <code>frosted</code> un campo translúcido; todo estado sigue por encima. Sin valor es <code>plain</code>.",
+              "title": "NumberField suma appearance brutalist y frosted"
+            },
+            "kind": "feature",
+            "target": "appearance"
+          },
           {
             "date": "2026-09-17",
             "en": {
@@ -6669,6 +7057,19 @@
         "date": null,
         "entries": [
           {
+            "date": "2026-09-26",
+            "en": {
+              "body": "The current page wears Button's construction, written as the <code>--sk-pagination-current-*</code> hooks: a key on a ledge (a press sinks a page), a black-edged block with a hard offset, or a see-through sheet.",
+              "title": "Pagination adds plain, tactile, brutalist and frosted appearances"
+            },
+            "es": {
+              "body": "La página actual lleva la construcción de Button, escrita como los hooks <code>--sk-pagination- current-*</code>: una tecla con saliente (y una página se hunde al presionar), un bloque de borde negro con sombra dura, o una lámina translúcida.",
+              "title": "Pagination suma appearance plain, tactile, brutalist y frosted"
+            },
+            "kind": "feature",
+            "target": "appearance"
+          },
+          {
             "date": "2026-09-17",
             "en": {
               "body": "Interactive or form host signatures publish <code>forward</code> (<code>id</code>/<code>aria-*</code> and link or form attrs where relevant). An attr outside the list is <code>unknown-attr</code>.",
@@ -6797,6 +7198,19 @@
         "date": null,
         "entries": [
           {
+            "date": "2026-09-26",
+            "en": {
+              "body": "Input's axis on the field: <code>brutalist</code> a black edge and a hard offset, <code>frosted</code> a see-through field; every state still outranks it. Absent means <code>plain</code>.",
+              "title": "PasswordInput adds brutalist and frosted appearances"
+            },
+            "es": {
+              "body": "El eje de Input en el campo: <code>brutalist</code> borde negro y sombra dura, <code>frosted</code> un campo translúcido; todo estado sigue por encima. Sin valor es <code>plain</code>.",
+              "title": "PasswordInput suma appearance brutalist y frosted"
+            },
+            "kind": "feature",
+            "target": "appearance"
+          },
+          {
             "date": "2026-09-25",
             "en": {
               "body": "New <code>password-input</code> contract on <code>@zag-js/password-input</code>, the same machine in both bindings. The button toggles between hiding and showing, renames itself (<code>showLabel</code>/<code>hideLabel</code>), and the password hides again when the form is submitted or reset. <code>autoComplete</code> tells signing in (<code>current-password</code>) from creating one (<code>new-password</code>). Unlike Zag's, the button is reachable with Tab and activates with Enter or Space.",
@@ -6898,6 +7312,32 @@
       {
         "date": null,
         "entries": [
+          {
+            "date": "2026-09-26",
+            "en": {
+              "body": "On the root, for the panel: <code>brutalist</code> a black edge and a hard offset in place of the soft elevation, <code>frosted</code> a see-through panel, opaque wherever the material cannot be trusted. The trigger has its own, <code>triggerAppearance</code>.",
+              "title": "Popover adds plain, brutalist and frosted appearances"
+            },
+            "es": {
+              "body": "En la raíz, para el panel: <code>brutalist</code> un borde negro y una sombra dura en lugar de la elevación suave, <code>frosted</code> un panel translúcido, opaco donde el material no es fiable. El disparador tiene la suya, <code>triggerAppearance</code>.",
+              "title": "Popover suma appearance plain, brutalist y frosted"
+            },
+            "kind": "feature",
+            "target": "appearance"
+          },
+          {
+            "date": "2026-09-26",
+            "en": {
+              "body": "<code>triggerAppearance</code> forwards Button's <code>appearance</code> axis to the trigger, like <code>triggerVariant</code>, painted by Button's own sheet.",
+              "title": "The trigger takes Button's appearance"
+            },
+            "es": {
+              "body": "<code>triggerAppearance</code> lleva el eje <code>appearance</code> de Button al disparador, igual que <code>triggerVariant</code>, y lo pinta la hoja de Button.",
+              "title": "El disparador acepta la appearance de Button"
+            },
+            "kind": "feature",
+            "target": "triggerAppearance"
+          },
           {
             "date": "2026-09-17",
             "en": {
@@ -7586,6 +8026,19 @@
         "date": null,
         "entries": [
           {
+            "date": "2026-09-26",
+            "en": {
+              "body": "On a Radio's label or a RadioGroup's root, painted on the ring: <code>tactile</code> a raised disc that sinks when pressed, <code>brutalist</code> a black edge and hard offset, <code>frosted</code> a see- through disc, opaque wherever the material cannot be trusted.",
+              "title": "RadioGroup adds plain, tactile, brutalist and frosted appearances"
+            },
+            "es": {
+              "body": "En la etiqueta de un Radio o la raíz de un RadioGroup, pintada en el anillo: <code>tactile</code> un disco elevado que se hunde al presionar, <code>brutalist</code> borde negro y sombra dura, <code>frosted</code> un disco translúcido, opaco donde el material no es fiable.",
+              "title": "RadioGroup suma appearance plain, tactile, brutalist y frosted"
+            },
+            "kind": "feature",
+            "target": "appearance"
+          },
+          {
             "date": "2026-09-18",
             "en": {
               "body": "<code>Radio</code> publishes one radio on its own. <code>RadioGroup</code> is still the answer for a list of options; this is the case it cannot serve: a <strong>matrix</strong>, where every row is a question and every column a point, so each cell holds a radio. Radios sharing a <code>name</code> are one group to the browser wherever they sit, and that is what makes a table of radios work. The visible label is optional: in a matrix the row and column headers name it, and <code>aria-label</code> covers the rest.",
@@ -7774,6 +8227,19 @@
         "date": null,
         "entries": [
           {
+            "date": "2026-09-26",
+            "en": {
+              "body": "Button's axis written only as hooks on the root: <code>tactile</code> a raised key in a deeper well, <code>brutalist</code> a black-edged track with a hard offset, <code>frosted</code> a see-through track, opaque wherever the material cannot be trusted.",
+              "title": "Segmented adds plain, tactile, brutalist and frosted appearances"
+            },
+            "es": {
+              "body": "El eje de Button escrito solo como hooks en la raíz: <code>tactile</code> una tecla elevada en un pozo más hondo, <code>brutalist</code> una pista de borde negro con sombra dura, <code>frosted</code> una pista translúcida, opaca donde el material no es fiable.",
+              "title": "Segmented suma appearance plain, tactile, brutalist y frosted"
+            },
+            "kind": "feature",
+            "target": "appearance"
+          },
+          {
             "date": "2026-09-17",
             "en": {
               "body": "Interactive or form host signatures publish <code>forward</code> (<code>id</code>/<code>aria-*</code> and link or form attrs where relevant). An attr outside the list is <code>unknown-attr</code>.",
@@ -7926,6 +8392,19 @@
       {
         "date": null,
         "entries": [
+          {
+            "date": "2026-09-26",
+            "en": {
+              "body": "The enhanced Select accepts <code>appearance</code>, Input's axis: <code>brutalist</code> a black edge and a hard offset, <code>frosted</code> a see-through field; every state still outranks it. Absent means <code>plain</code>. <code>Select.native</code> has none: there is no root to carry it.",
+              "title": "Select adds brutalist and frosted appearances"
+            },
+            "es": {
+              "body": "La versión mejorada acepta <code>appearance</code>, el eje de Input: <code>brutalist</code> borde negro y sombra dura, <code>frosted</code> un campo translúcido; todo estado sigue por encima. Sin valor es <code>plain</code>. <code>Select.native</code> no la tiene: no hay raíz que la lleve.",
+              "title": "Select suma appearance brutalist y frosted"
+            },
+            "kind": "feature",
+            "target": "appearance"
+          },
           {
             "date": "2026-09-20",
             "en": {
@@ -8127,6 +8606,19 @@
       {
         "date": null,
         "entries": [
+          {
+            "date": "2026-09-26",
+            "en": {
+              "body": "<code>brutalist</code> draws the rail with a black edge and a hard offset along its inline-end side; <code>frosted</code> makes it see-through over the page, opaque wherever the material cannot be trusted. No <code>tactile</code>: a rail is never pressed.",
+              "title": "Sidebar adds plain, brutalist and frosted appearances"
+            },
+            "es": {
+              "body": "<code>brutalist</code> dibuja el riel con borde negro y una sombra dura a lo largo de su lado final; <code>frosted</code> lo hace translúcido sobre la página, opaco donde el material no es fiable. Sin <code>tactile</code>: un riel no se presiona.",
+              "title": "Sidebar suma appearance plain, brutalist y frosted"
+            },
+            "kind": "feature",
+            "target": "appearance"
+          },
           {
             "date": "2026-09-17",
             "en": {
@@ -8532,6 +9024,18 @@
         "date": null,
         "entries": [
           {
+            "date": "2026-09-26",
+            "en": {
+              "body": "Under <code>tactile</code> each half keeps its ledge and they meet at the seam; under <code>brutalist</code> the group casts one hard black offset. React's <code>SplitButton</code> takes <code>appearance</code> for both halves.",
+              "title": "SplitButton draws its halves' appearance as one group"
+            },
+            "es": {
+              "body": "Con <code>tactile</code> cada mitad conserva su saliente y se unen en la costura; con <code>brutalist</code> el grupo proyecta una sola sombra dura negra. El <code>SplitButton</code> de React acepta <code>appearance</code> para las dos mitades.",
+              "title": "SplitButton dibuja la appearance de sus mitades como un solo grupo"
+            },
+            "kind": "feature"
+          },
+          {
             "date": "2026-09-17",
             "en": {
               "body": "Interactive or form host signatures publish <code>forward</code> (<code>id</code>/<code>aria-*</code> and link or form attrs where relevant). An attr outside the list is <code>unknown-attr</code>.",
@@ -8778,6 +9282,18 @@
       {
         "date": null,
         "entries": [
+          {
+            "date": "2026-09-26",
+            "en": {
+              "body": "<code>data-appearance</code> reaches the host like <code>data-variant</code> and <code>data-size</code>, so a StateButton can be <code>tactile</code>, <code>brutalist</code> or <code>frosted</code> through Button's own sheet.",
+              "title": "StateButton takes Button's appearance"
+            },
+            "es": {
+              "body": "<code>data-appearance</code> pasa al host igual que <code>data-variant</code> y <code>data-size</code>, así que un StateButton puede ser <code>tactile</code>, <code>brutalist</code> o <code>frosted</code> con la misma hoja de Button.",
+              "title": "StateButton acepta la appearance de Button"
+            },
+            "kind": "feature"
+          },
           {
             "date": "2026-09-26",
             "en": {
@@ -9105,6 +9621,19 @@
         "date": null,
         "entries": [
           {
+            "date": "2026-09-26",
+            "en": {
+              "body": "On the label, the element that paints: <code>tactile</code> a raised thumb in a well that sinks when pressed, <code>brutalist</code> black edges and a hard-offset thumb, <code>frosted</code> a see-through track, opaque wherever the material cannot be trusted.",
+              "title": "Switch adds plain, tactile, brutalist and frosted appearances"
+            },
+            "es": {
+              "body": "En la etiqueta, que es lo que se pinta: <code>tactile</code> un pulgar elevado en un pozo que se hunde al presionar, <code>brutalist</code> bordes negros y un pulgar con sombra dura, <code>frosted</code> un riel translúcido, opaco donde el material no es fiable.",
+              "title": "Switch suma appearance plain, tactile, brutalist y frosted"
+            },
+            "kind": "feature",
+            "target": "appearance"
+          },
+          {
             "date": "2026-09-17",
             "en": {
               "body": "Publishes <code>forward</code> with <code>id</code>/<code>form</code>/<code>aria-*</code> on the native host. An attr outside the list is <code>unknown-attr</code>.",
@@ -9341,6 +9870,18 @@
         "date": null,
         "entries": [
           {
+            "date": "2026-09-26",
+            "en": {
+              "body": "It shares Pagination's sheet, so <code>--sk-pagination-brutalist-offset</code> is among its hooks too.",
+              "title": "TablePager publishes Pagination's brutalist hook"
+            },
+            "es": {
+              "body": "Comparte la hoja de Pagination, así que <code>--sk-pagination-brutalist-offset</code> también está entre sus hooks.",
+              "title": "TablePager publica el hook brutalist de Pagination"
+            },
+            "kind": "feature"
+          },
+          {
             "date": "2026-09-17",
             "en": {
               "body": "<code>eventDetails</code> declares <code>source</code> (part that dispatches the CustomEvent) and, when clear, <code>trigger</code> (part the user activates). An agent knows where to listen and which control causes the event.",
@@ -9456,6 +9997,19 @@
       {
         "date": null,
         "entries": [
+          {
+            "date": "2026-09-26",
+            "en": {
+              "body": "The selected tab wears the construction: <code>tactile</code> a raised key, <code>brutalist</code> a black-edged block with a hard offset, <code>frosted</code> a see-through strip, opaque wherever the material cannot be trusted. CSS-only, in both orientations and variants.",
+              "title": "Tabs adds plain, tactile, brutalist and frosted appearances"
+            },
+            "es": {
+              "body": "La pestaña seleccionada lleva la construcción: <code>tactile</code> una tecla elevada, <code>brutalist</code> un bloque de borde negro con sombra dura, <code>frosted</code> una tira translúcida, opaca donde el material no es fiable. Solo CSS, en ambas orientaciones y variantes.",
+              "title": "Tabs suma appearance plain, tactile, brutalist y frosted"
+            },
+            "kind": "feature",
+            "target": "appearance"
+          },
           {
             "date": "2026-09-17",
             "en": {
@@ -9587,6 +10141,19 @@
         "date": null,
         "entries": [
           {
+            "date": "2026-09-26",
+            "en": {
+              "body": "<code>brutalist</code> draws the chip with a black edge and a small hard offset, on <code>Tag</code> and <code>Tag.link</code>. No <code>tactile</code> and no <code>frosted</code>.",
+              "title": "Tag adds plain and brutalist appearances"
+            },
+            "es": {
+              "body": "<code>brutalist</code> dibuja la etiqueta con borde negro y una sombra dura pequeña, en <code>Tag</code> y <code>Tag.link</code>. Sin <code>tactile</code> ni <code>frosted</code>.",
+              "title": "Tag suma appearance plain y brutalist"
+            },
+            "kind": "feature",
+            "target": "appearance"
+          },
+          {
             "date": "2026-09-17",
             "en": {
               "body": "The remove control is system-owned Button+Icon; <code>compose</code> declares it (<code>systemOwned</code>), same as Dialog close.",
@@ -9717,6 +10284,19 @@
         "date": null,
         "entries": [
           {
+            "date": "2026-09-26",
+            "en": {
+              "body": "Input's axis on the field: <code>brutalist</code> a black edge and a hard offset, <code>frosted</code> a see-through field; every state still outranks it. Absent means <code>plain</code>.",
+              "title": "TagsInput adds brutalist and frosted appearances"
+            },
+            "es": {
+              "body": "El eje de Input en el campo: <code>brutalist</code> borde negro y sombra dura, <code>frosted</code> un campo translúcido; todo estado sigue por encima. Sin valor es <code>plain</code>.",
+              "title": "TagsInput suma appearance brutalist y frosted"
+            },
+            "kind": "feature",
+            "target": "appearance"
+          },
+          {
             "date": "2026-09-25",
             "en": {
               "body": "A tree with initial tags handed React <code>defaultValue=[{ label: \"react\" }]</code>, which does not typecheck against <code>string[]</code> and throws on render. The collection declares <code>unwrap: \"label\"</code>, so the render and the published snippet pass <code>[\"react\"]</code>. The markup does not change.",
@@ -9748,6 +10328,32 @@
       {
         "date": null,
         "entries": [
+          {
+            "date": "2026-09-26",
+            "en": {
+              "body": "<code>appearance=\"frosted\"</code> is Button's material: an opaque baseline with a fine edge and a lit rim, and the blurred see-through sheet only where <code>backdrop-filter</code> exists and reduced transparency was not asked for. It does not move. <code>brutalist</code> now draws its edge and offset in black in both modes, at plain's border width, like Button; a selected tile only changes its edge. New hooks: <code>--sk-tile-frost-opacity</code>, <code>--sk-tile-frost-blur</code> and <code>--sk-tile-frost-saturation</code>.",
+              "title": "Tile adds frosted, and its brutalist moves to Button's black ink"
+            },
+            "es": {
+              "body": "<code>appearance=\"frosted\"</code> es el material de Button: base opaca con borde fino y un brillo arriba, y la lámina translúcida y desenfocada solo donde hay <code>backdrop-filter</code> y no se pidió menos transparencia. No se mueve. <code>brutalist</code> ahora dibuja borde y sombra en negro en ambos modos, al grosor de plain, como Button; un tile seleccionado solo cambia el borde. Hooks nuevos: <code>--sk-tile-frost-opacity</code>, <code>--sk-tile-frost-blur</code> y <code>--sk-tile-frost-saturation</code>.",
+              "title": "Tile suma frosted, y su brutalist pasa a la tinta negra de Button"
+            },
+            "kind": "feature",
+            "target": "appearance"
+          },
+          {
+            "date": "2026-09-26",
+            "en": {
+              "body": "Every Tile signature accepts <code>appearance</code>, Button's axis with Button's values: <code>plain</code> (the existing look), <code>tactile</code> (a ledge it sinks into when pressed) and <code>brutalist</code> (a 2px edge and a hard offset shadow). Selection colours the construction, it does not press it. <code>ExpandableTile</code> wears it without moving. New hooks: <code>--sk-tile-depth</code>, <code>--sk-tile-brutalist-offset-inline</code>, <code>--sk-tile-brutalist-offset-block</code>, <code>--sk-tile-brutalist-edge</code> and <code>--sk-tile-brutalist-shadow</code>.",
+              "title": "Tile adds tactile and brutalist appearance"
+            },
+            "es": {
+              "body": "Todas las firmas de Tile aceptan <code>appearance</code>, el mismo eje de Button con los mismos valores: <code>plain</code> (el look actual), <code>tactile</code> (un canto hacia el que se hunde al presionar) y <code>brutalist</code> (borde de 2px y sombra dura desplazada). La selección tiñe la construcción, no la presiona. <code>ExpandableTile</code> la lleva sin moverse. Hooks nuevos: <code>--sk-tile-depth</code>, <code>--sk-tile-brutalist-offset-inline</code>, <code>--sk-tile-brutalist-offset-block</code>, <code>--sk-tile-brutalist-edge</code> y <code>--sk-tile-brutalist-shadow</code>.",
+              "title": "Tile suma appearance tactile y brutalist"
+            },
+            "kind": "feature",
+            "target": "appearance"
+          },
           {
             "date": "2026-09-26",
             "en": {
@@ -9938,6 +10544,19 @@
       {
         "date": null,
         "entries": [
+          {
+            "date": "2026-09-26",
+            "en": {
+              "body": "Input's axis on the field: <code>brutalist</code> a black edge and a hard offset, <code>frosted</code> a see-through field; every state still outranks it. Absent means <code>plain</code>.",
+              "title": "TimeField adds brutalist and frosted appearances"
+            },
+            "es": {
+              "body": "El eje de Input en el campo: <code>brutalist</code> borde negro y sombra dura, <code>frosted</code> un campo translúcido; todo estado sigue por encima. Sin valor es <code>plain</code>.",
+              "title": "TimeField suma appearance brutalist y frosted"
+            },
+            "kind": "feature",
+            "target": "appearance"
+          },
           {
             "date": "2026-09-17",
             "en": {
@@ -10228,6 +10847,19 @@
         "date": null,
         "entries": [
           {
+            "date": "2026-09-26",
+            "en": {
+              "body": "The bar's frame takes Button's axis: <code>tactile</code> a console slab on a ledge, <code>brutalist</code> a black edge and separators with a hard offset, <code>frosted</code> a see- through bar, opaque wherever the material cannot be trusted. The Buttons inside set their own.",
+              "title": "Toolbar adds plain, tactile, brutalist and frosted appearances"
+            },
+            "es": {
+              "body": "El marco de la barra lleva el eje de Button: <code>tactile</code> una consola con saliente, <code>brutalist</code> borde y separadores negros con sombra dura, <code>frosted</code> una barra translúcida, opaca donde el material no es fiable. Los Button de adentro definen la suya.",
+              "title": "Toolbar suma appearance plain, tactile, brutalist y frosted"
+            },
+            "kind": "feature",
+            "target": "appearance"
+          },
+          {
             "date": "2026-09-17",
             "en": {
               "body": "Interactive or form host signatures publish <code>forward</code> (<code>id</code>/<code>aria-*</code> and link or form attrs where relevant). An attr outside the list is <code>unknown-attr</code>.",
@@ -10461,6 +11093,19 @@
       {
         "date": null,
         "entries": [
+          {
+            "date": "2026-09-26",
+            "en": {
+              "body": "<code>brutalist</code> draws each step with a black edge and a hard offset in place of the soft elevation; <code>frosted</code> makes it see-through, opaque wherever the material cannot be trusted. No <code>tactile</code>.",
+              "title": "Tour adds plain, brutalist and frosted appearances"
+            },
+            "es": {
+              "body": "<code>brutalist</code> dibuja cada paso con borde negro y una sombra dura en lugar de la elevación suave; <code>frosted</code> lo hace translúcido, opaco donde el material no es fiable. Sin <code>tactile</code>.",
+              "title": "Tour suma appearance plain, brutalist y frosted"
+            },
+            "kind": "feature",
+            "target": "appearance"
+          },
           {
             "date": "2026-09-25",
             "en": {
@@ -11051,6 +11696,19 @@
         "date": null,
         "entries": [
           {
+            "date": "2026-09-26",
+            "en": {
+              "body": "<code>brutalist</code> draws the panel with a black edge and a hard offset in place of the soft elevation (the overpull extension still follows the edge); <code>frosted</code> makes it see-through, opaque wherever the material cannot be trusted. No <code>tactile</code>: a drawer is dragged, never pressed.",
+              "title": "Vaul and Drawer add plain, brutalist and frosted appearances"
+            },
+            "es": {
+              "body": "<code>brutalist</code> dibuja el panel con borde negro y una sombra dura en lugar de la elevación suave (la extensión de arrastre sigue al borde); <code>frosted</code> lo hace translúcido, opaco donde el material no es fiable. Sin <code>tactile</code>: un cajón se arrastra, no se presiona.",
+              "title": "Vaul y Drawer suman appearance plain, brutalist y frosted"
+            },
+            "kind": "feature",
+            "target": "appearance"
+          },
+          {
             "date": "2026-09-17",
             "en": {
               "body": "The contract declares <code>authoredAttrs</code>: <code>data-sk-vaul-close</code> is authored on any control inside the panel (usually a Button) and closes it. The hook used to live only inside the template, so a Button carrying it failed with <code>unknown-attr</code>.",
@@ -11227,6 +11885,32 @@
       {
         "date": null,
         "entries": [
+          {
+            "date": "2026-09-26",
+            "en": {
+              "body": "<code>triggerAppearance</code> forwards Button's <code>appearance</code> axis to the trigger, like <code>triggerVariant</code>, painted by Button's own sheet.",
+              "title": "The trigger takes Button's appearance"
+            },
+            "es": {
+              "body": "<code>triggerAppearance</code> lleva el eje <code>appearance</code> de Button al disparador, igual que <code>triggerVariant</code>, y lo pinta la hoja de Button.",
+              "title": "El disparador acepta la appearance de Button"
+            },
+            "kind": "feature",
+            "target": "triggerAppearance"
+          },
+          {
+            "date": "2026-09-26",
+            "en": {
+              "body": "<code>Window</code> accepts <code>appearance</code>, the same axis as Button, Tile, Box and Avatar, written on the content. <code>tactile</code> is a slab with a ledge, <code>brutalist</code> a black edge and a hard offset that shrinks behind another window, and <code>frosted</code> a translucent material, opaque wherever the material cannot be trusted. New hooks <code>--sk-window-depth</code>, <code>--sk-window-brutalist-*</code> and <code>--sk-window-frost-*</code>.",
+              "title": "Window adds plain, tactile, brutalist and frosted appearances"
+            },
+            "es": {
+              "body": "<code>Window</code> acepta <code>appearance</code>, el mismo eje de Button, Tile, Box y Avatar, escrito en el contenido. <code>tactile</code> es una losa con saliente, <code>brutalist</code> un borde negro y una sombra dura que se reduce detrás de otra ventana, y <code>frosted</code> un material translúcido, opaco donde el material no es fiable. Hooks nuevos <code>--sk-window-depth</code>, <code>--sk-window-brutalist-*</code> y <code>--sk-window-frost-*</code>.",
+              "title": "Window suma appearance plain, tactile, brutalist y frosted"
+            },
+            "kind": "feature",
+            "target": "appearance"
+          },
           {
             "date": "2026-09-25",
             "en": {
@@ -11430,8 +12114,56 @@
           "part": "root",
           "sheet": "@skryensya/core/components/accordion.css"
         },
+        "--sk-accordion-brutalist-edge": {
+          "default": "var(--brutalist-black)",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/accordion.css"
+        },
+        "--sk-accordion-brutalist-offset-block": {
+          "default": "5px",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/accordion.css"
+        },
+        "--sk-accordion-brutalist-offset-inline": {
+          "default": "5px",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/accordion.css"
+        },
+        "--sk-accordion-brutalist-shadow": {
+          "default": "var(--brutalist-black)",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/accordion.css"
+        },
+        "--sk-accordion-depth": {
+          "default": "4px",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/accordion.css"
+        },
         "--sk-accordion-divider-color": {
           "default": "var(--color-border-subtle)",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/accordion.css"
+        },
+        "--sk-accordion-frost-blur": {
+          "default": "16px",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/accordion.css"
+        },
+        "--sk-accordion-frost-opacity": {
+          "default": "82%",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/accordion.css"
+        },
+        "--sk-accordion-frost-saturation": {
+          "default": "150%",
           "output": false,
           "part": "root",
           "sheet": "@skryensya/core/components/accordion.css"
@@ -11508,6 +12240,30 @@
           "part": "native",
           "sheet": "@skryensya/core/components/details.css"
         },
+        "--sk-details-brutalist-edge": {
+          "default": "var(--brutalist-black)",
+          "output": false,
+          "part": "nativeGroup",
+          "sheet": "@skryensya/core/components/details.css"
+        },
+        "--sk-details-brutalist-offset-block": {
+          "default": "5px",
+          "output": false,
+          "part": "nativeGroup",
+          "sheet": "@skryensya/core/components/details.css"
+        },
+        "--sk-details-brutalist-offset-inline": {
+          "default": "5px",
+          "output": false,
+          "part": "nativeGroup",
+          "sheet": "@skryensya/core/components/details.css"
+        },
+        "--sk-details-brutalist-shadow": {
+          "default": "var(--brutalist-black)",
+          "output": false,
+          "part": "nativeGroup",
+          "sheet": "@skryensya/core/components/details.css"
+        },
         "--sk-details-content-bg": {
           "default": "var(--color-bg-surface-sunken)",
           "output": false,
@@ -11520,10 +12276,34 @@
           "part": "native",
           "sheet": "@skryensya/core/components/details.css"
         },
+        "--sk-details-depth": {
+          "default": "4px",
+          "output": false,
+          "part": "nativeGroup",
+          "sheet": "@skryensya/core/components/details.css"
+        },
         "--sk-details-fg": {
           "default": "var(--color-text-primary)",
           "output": false,
           "part": "native",
+          "sheet": "@skryensya/core/components/details.css"
+        },
+        "--sk-details-frost-blur": {
+          "default": "16px",
+          "output": false,
+          "part": "nativeGroup",
+          "sheet": "@skryensya/core/components/details.css"
+        },
+        "--sk-details-frost-opacity": {
+          "default": "82%",
+          "output": false,
+          "part": "nativeGroup",
+          "sheet": "@skryensya/core/components/details.css"
+        },
+        "--sk-details-frost-saturation": {
+          "default": "150%",
+          "output": false,
+          "part": "nativeGroup",
           "sheet": "@skryensya/core/components/details.css"
         },
         "--sk-details-gap": {
@@ -11586,6 +12366,54 @@
           "part": "item",
           "sheet": "@skryensya/core/components/tile.css"
         },
+        "--sk-tile-brutalist-edge": {
+          "default": "var(--brutalist-black)",
+          "output": false,
+          "part": "item",
+          "sheet": "@skryensya/core/components/tile.css"
+        },
+        "--sk-tile-brutalist-offset-block": {
+          "default": "5px",
+          "output": false,
+          "part": "item",
+          "sheet": "@skryensya/core/components/tile.css"
+        },
+        "--sk-tile-brutalist-offset-inline": {
+          "default": "5px",
+          "output": false,
+          "part": "item",
+          "sheet": "@skryensya/core/components/tile.css"
+        },
+        "--sk-tile-brutalist-shadow": {
+          "default": "var(--brutalist-black)",
+          "output": false,
+          "part": "item",
+          "sheet": "@skryensya/core/components/tile.css"
+        },
+        "--sk-tile-depth": {
+          "default": "4px",
+          "output": false,
+          "part": "item",
+          "sheet": "@skryensya/core/components/tile.css"
+        },
+        "--sk-tile-frost-blur": {
+          "default": "16px",
+          "output": false,
+          "part": "item",
+          "sheet": "@skryensya/core/components/tile.css"
+        },
+        "--sk-tile-frost-opacity": {
+          "default": "72%",
+          "output": false,
+          "part": "item",
+          "sheet": "@skryensya/core/components/tile.css"
+        },
+        "--sk-tile-frost-saturation": {
+          "default": "150%",
+          "output": false,
+          "part": "item",
+          "sheet": "@skryensya/core/components/tile.css"
+        },
         "--sk-tile-padding": {
           "default": "var(--space-inset-md)",
           "output": false,
@@ -11614,6 +12442,14 @@
       "hooks": [
         "--sk-accordion-bg",
         "--sk-accordion-border-color",
+        "--sk-accordion-brutalist-edge",
+        "--sk-accordion-brutalist-offset-block",
+        "--sk-accordion-brutalist-offset-inline",
+        "--sk-accordion-brutalist-shadow",
+        "--sk-accordion-depth",
+        "--sk-accordion-frost-blur",
+        "--sk-accordion-frost-opacity",
+        "--sk-accordion-frost-saturation",
         "--sk-accordion-divider-color",
         "--sk-accordion-open-bg",
         "--sk-accordion-radius",
@@ -11631,14 +12467,30 @@
         "--sk-space-3",
         "--sk-space-4",
         "--sk-tile-border-color",
+        "--sk-tile-brutalist-edge",
+        "--sk-tile-brutalist-offset-block",
+        "--sk-tile-brutalist-offset-inline",
+        "--sk-tile-brutalist-shadow",
+        "--sk-tile-depth",
+        "--sk-tile-frost-blur",
+        "--sk-tile-frost-opacity",
+        "--sk-tile-frost-saturation",
         "--sk-tile-padding",
         "--sk-tile-radius",
         "--sk-tile-shadow",
         "--sk-tile-title-weight",
         "--sk-details-bg",
         "--sk-details-border-color",
+        "--sk-details-brutalist-edge",
+        "--sk-details-brutalist-offset-block",
+        "--sk-details-brutalist-offset-inline",
+        "--sk-details-brutalist-shadow",
         "--sk-details-content-bg",
         "--sk-details-content-fg",
+        "--sk-details-depth",
+        "--sk-details-frost-blur",
+        "--sk-details-frost-opacity",
+        "--sk-details-frost-saturation",
         "--sk-details-fg",
         "--sk-details-gap",
         "--sk-details-heading-gap",
@@ -11651,6 +12503,17 @@
       ],
       "id": "accordion",
       "options": {
+        "appearance": {
+          "attr": "data-appearance",
+          "default": "plain",
+          "type": "enum",
+          "values": [
+            "plain",
+            "tactile",
+            "brutalist",
+            "frosted"
+          ]
+        },
         "collapsible": {
           "attr": "data-collapsible",
           "default": true,
@@ -11837,7 +12700,8 @@
             "type",
             "collapsible",
             "disabled",
-            "defaultValue"
+            "defaultValue",
+            "appearance"
           ],
           "react": {
             "from": "@skryensya/react/accordion",
@@ -12021,7 +12885,8 @@
           ],
           "options": [
             "name",
-            "open"
+            "open",
+            "appearance"
           ],
           "react": {
             "from": "@skryensya/react/details",
@@ -12172,7 +13037,9 @@
             "exclusive-disclosures",
             "no-runtime-accordion"
           ],
-          "options": [],
+          "options": [
+            "appearance"
+          ],
           "react": {
             "from": "@skryensya/react/details",
             "name": "DetailsGroup"
@@ -12756,6 +13623,30 @@
           "part": "root",
           "sheet": "@skryensya/core/components/avatar.css"
         },
+        "--sk-avatar-brutalist-edge": {
+          "default": "oklch(from var(--shadow-lg) l c h / 1)",
+          "output": false,
+          "part": "groupOverflow",
+          "sheet": "@skryensya/core/components/avatar.css"
+        },
+        "--sk-avatar-brutalist-offset-block": {
+          "default": "3px",
+          "output": false,
+          "part": "groupOverflow",
+          "sheet": "@skryensya/core/components/avatar.css"
+        },
+        "--sk-avatar-brutalist-offset-inline": {
+          "default": "3px",
+          "output": false,
+          "part": "groupOverflow",
+          "sheet": "@skryensya/core/components/avatar.css"
+        },
+        "--sk-avatar-brutalist-shadow": {
+          "default": "var(--sk-avatar-brutalist-edge)",
+          "output": false,
+          "part": "groupOverflow",
+          "sheet": "@skryensya/core/components/avatar.css"
+        },
         "--sk-avatar-fg": {
           "default": "var(--color-text-primary)",
           "output": false,
@@ -12771,11 +13662,24 @@
       },
       "hooks": [
         "--sk-avatar-bg",
+        "--sk-avatar-brutalist-edge",
+        "--sk-avatar-brutalist-offset-block",
+        "--sk-avatar-brutalist-offset-inline",
+        "--sk-avatar-brutalist-shadow",
         "--sk-avatar-fg",
         "--sk-avatar-size"
       ],
       "id": "avatar",
       "options": {
+        "appearance": {
+          "attr": "data-appearance",
+          "default": "plain",
+          "type": "enum",
+          "values": [
+            "plain",
+            "brutalist"
+          ]
+        },
         "imageName": {
           "attr": "alt",
           "prop": "name",
@@ -12874,6 +13778,7 @@
           ],
           "options": [
             "size",
+            "appearance",
             "imageName",
             "src"
           ],
@@ -12893,6 +13798,7 @@
                   "sk-image-frame"
                 ],
                 "attrs": {
+                  "data-appearance": "plain",
                   "data-aspect": "1/1",
                   "data-border": "none",
                   "data-fit": "cover",
@@ -12936,6 +13842,7 @@
           ],
           "options": [
             "size",
+            "appearance",
             "name"
           ],
           "react": {
@@ -13051,6 +13958,18 @@
           "part": "root",
           "sheet": "@skryensya/core/components/back-to-top.css"
         },
+        "--sk-back-to-top-brutalist-offset": {
+          "default": "4px",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/back-to-top.css"
+        },
+        "--sk-back-to-top-depth": {
+          "default": "5px",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/back-to-top.css"
+        },
         "--sk-back-to-top-enter-scale": {
           "default": "0.82",
           "output": false,
@@ -13059,6 +13978,18 @@
         },
         "--sk-back-to-top-fg": {
           "default": "var(--color-text-primary)",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/back-to-top.css"
+        },
+        "--sk-back-to-top-frost-blur": {
+          "default": "12px",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/back-to-top.css"
+        },
+        "--sk-back-to-top-frost-opacity": {
+          "default": "72%",
           "output": false,
           "part": "root",
           "sheet": "@skryensya/core/components/back-to-top.css"
@@ -13098,8 +14029,12 @@
         "--sk-back-to-top-bg",
         "--sk-back-to-top-border-color",
         "--sk-back-to-top-border-color-hover",
+        "--sk-back-to-top-brutalist-offset",
+        "--sk-back-to-top-depth",
         "--sk-back-to-top-enter-scale",
         "--sk-back-to-top-fg",
+        "--sk-back-to-top-frost-blur",
+        "--sk-back-to-top-frost-opacity",
         "--sk-back-to-top-radius",
         "--sk-back-to-top-shadow",
         "--sk-back-to-top-size",
@@ -13108,6 +14043,17 @@
       ],
       "id": "back-to-top",
       "options": {
+        "appearance": {
+          "attr": "data-appearance",
+          "default": "plain",
+          "type": "enum",
+          "values": [
+            "plain",
+            "tactile",
+            "brutalist",
+            "frosted"
+          ]
+        },
         "scroller": {
           "attr": "data-scroller",
           "machineInput": true,
@@ -13178,7 +14124,8 @@
           "options": [
             "threshold",
             "scroller",
-            "target"
+            "target",
+            "appearance"
           ],
           "react": {
             "from": "@skryensya/react/back-to-top",
@@ -13348,6 +14295,15 @@
       ],
       "id": "badge",
       "options": {
+        "appearance": {
+          "attr": "data-appearance",
+          "default": "plain",
+          "type": "enum",
+          "values": [
+            "plain",
+            "brutalist"
+          ]
+        },
         "label": {
           "attr": "aria-label",
           "type": "string"
@@ -13437,7 +14393,8 @@
           ],
           "options": [
             "tone",
-            "size"
+            "size",
+            "appearance"
           ],
           "react": {
             "from": "@skryensya/react/badge",
@@ -13589,6 +14546,48 @@
           "part": "box",
           "sheet": "@skryensya/core/patterns/box.css"
         },
+        "--sk-box-brutalist-edge": {
+          "default": "oklch(from var(--shadow-lg) l c h / 1)",
+          "output": false,
+          "part": "box",
+          "sheet": "@skryensya/core/patterns/box.css"
+        },
+        "--sk-box-brutalist-offset-block": {
+          "default": "5px",
+          "output": false,
+          "part": "box",
+          "sheet": "@skryensya/core/patterns/box.css"
+        },
+        "--sk-box-brutalist-offset-inline": {
+          "default": "5px",
+          "output": false,
+          "part": "box",
+          "sheet": "@skryensya/core/patterns/box.css"
+        },
+        "--sk-box-brutalist-shadow": {
+          "default": "var(--sk-box-brutalist-edge)",
+          "output": false,
+          "part": "box",
+          "sheet": "@skryensya/core/patterns/box.css"
+        },
+        "--sk-box-frost-blur": {
+          "default": "16px",
+          "output": false,
+          "part": "box",
+          "sheet": "@skryensya/core/patterns/box.css"
+        },
+        "--sk-box-frost-opacity": {
+          "default": "72%",
+          "output": false,
+          "part": "box",
+          "sheet": "@skryensya/core/patterns/box.css"
+        },
+        "--sk-box-frost-saturation": {
+          "default": "150%",
+          "output": false,
+          "part": "box",
+          "sheet": "@skryensya/core/patterns/box.css"
+        },
         "--sk-box-padding": {
           "default": "0",
           "output": false,
@@ -13618,6 +14617,13 @@
         "--sk-box-bg",
         "--sk-box-border-color",
         "--sk-box-border-width",
+        "--sk-box-brutalist-edge",
+        "--sk-box-brutalist-offset-block",
+        "--sk-box-brutalist-offset-inline",
+        "--sk-box-brutalist-shadow",
+        "--sk-box-frost-blur",
+        "--sk-box-frost-opacity",
+        "--sk-box-frost-saturation",
         "--sk-box-padding",
         "--sk-box-radius",
         "--sk-box-shadow",
@@ -13625,6 +14631,16 @@
       ],
       "id": "box",
       "options": {
+        "appearance": {
+          "attr": "data-appearance",
+          "default": "plain",
+          "type": "enum",
+          "values": [
+            "plain",
+            "brutalist",
+            "frosted"
+          ]
+        },
         "border": {
           "attr": "data-border",
           "default": "none",
@@ -13714,7 +14730,8 @@
             [
               "padding",
               "surface",
-              "border"
+              "border",
+              "appearance"
             ]
           ],
           "host": {
@@ -13730,6 +14747,7 @@
             "paddingExpanded",
             "surface",
             "border",
+            "appearance",
             "boxElement"
           ],
           "react": {
@@ -14179,6 +15197,30 @@
           "part": "root",
           "sheet": "@skryensya/core/components/button.css"
         },
+        "--sk-button-brutalist-edge": {
+          "default": "var(--brutalist-black)",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/button.css"
+        },
+        "--sk-button-brutalist-offset-block": {
+          "default": "5px",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/button.css"
+        },
+        "--sk-button-brutalist-offset-inline": {
+          "default": "5px",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/button.css"
+        },
+        "--sk-button-brutalist-shadow": {
+          "default": "var(--sk-button-brutalist-edge)",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/button.css"
+        },
         "--sk-button-depth": {
           "default": "5px",
           "output": false,
@@ -14199,6 +15241,24 @@
         },
         "--sk-button-font-weight": {
           "default": "var(--font-weight-label)",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/button.css"
+        },
+        "--sk-button-frost-blur": {
+          "default": "16px",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/button.css"
+        },
+        "--sk-button-frost-opacity": {
+          "default": "84%",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/button.css"
+        },
+        "--sk-button-frost-saturation": {
+          "default": "150%",
           "output": false,
           "part": "root",
           "sheet": "@skryensya/core/components/button.css"
@@ -14257,8 +15317,15 @@
         "--sk-button-bg",
         "--sk-button-border-color",
         "--sk-button-border-width",
+        "--sk-button-brutalist-edge",
+        "--sk-button-brutalist-offset-block",
+        "--sk-button-brutalist-offset-inline",
+        "--sk-button-brutalist-shadow",
         "--sk-button-depth",
         "--sk-button-fg",
+        "--sk-button-frost-blur",
+        "--sk-button-frost-opacity",
+        "--sk-button-frost-saturation",
         "--sk-button-font-size",
         "--sk-button-font-weight",
         "--sk-button-gap",
@@ -14274,11 +15341,13 @@
       "options": {
         "appearance": {
           "attr": "data-appearance",
-          "default": "default",
+          "default": "plain",
           "type": "enum",
           "values": [
-            "default",
-            "tactile"
+            "plain",
+            "tactile",
+            "brutalist",
+            "frosted"
           ]
         },
         "disabled": {
@@ -14915,6 +15984,16 @@
       ],
       "id": "callout",
       "options": {
+        "appearance": {
+          "attr": "data-appearance",
+          "default": "plain",
+          "type": "enum",
+          "values": [
+            "plain",
+            "brutalist",
+            "frosted"
+          ]
+        },
         "tone": {
           "attr": "data-tone",
           "default": "neutral",
@@ -14965,7 +16044,8 @@
             "aside-note"
           ],
           "options": [
-            "tone"
+            "tone",
+            "appearance"
           ],
           "react": {
             "from": "@skryensya/react/callout",
@@ -16744,6 +17824,17 @@
       ],
       "id": "checkbox",
       "options": {
+        "appearance": {
+          "attr": "data-appearance",
+          "default": "plain",
+          "type": "enum",
+          "values": [
+            "plain",
+            "tactile",
+            "brutalist",
+            "frosted"
+          ]
+        },
         "defaultChecked": {
           "attr": "checked",
           "default": false,
@@ -16852,7 +17943,8 @@
             "defaultChecked",
             "defaultIndeterminate",
             "disabled",
-            "required"
+            "required",
+            "appearance"
           ],
           "react": {
             "from": "@skryensya/react/selection",
@@ -16925,6 +18017,9 @@
               }
             ],
             "element": "label",
+            "options": [
+              "appearance"
+            ],
             "part": "checkbox"
           }
         },
@@ -16948,7 +18043,8 @@
             "name",
             "orientation",
             "disabled",
-            "required"
+            "required",
+            "appearance"
           ],
           "react": {
             "from": "@skryensya/react/selection",
@@ -17277,6 +18373,17 @@
       ],
       "id": "clipboard",
       "options": {
+        "appearance": {
+          "attr": "data-appearance",
+          "default": "plain",
+          "type": "enum",
+          "values": [
+            "plain",
+            "tactile",
+            "brutalist",
+            "frosted"
+          ]
+        },
         "copiedLabel": {
           "default": "Copied",
           "type": "string"
@@ -17408,7 +18515,8 @@
             "label",
             "copiedLabel",
             "errorLabel",
-            "timeout"
+            "timeout",
+            "appearance"
           ],
           "react": {
             "from": "@skryensya/react/clipboard",
@@ -17546,7 +18654,8 @@
                     "element": "button",
                     "mount": "data-sk-clipboard-trigger",
                     "options": [
-                      "label"
+                      "label",
+                      "appearance"
                     ],
                     "part": "trigger"
                   }
@@ -17595,7 +18704,8 @@
             "errorLabel",
             "timeout",
             "size",
-            "variant"
+            "variant",
+            "appearance"
           ],
           "react": {
             "from": "@skryensya/react/clipboard",
@@ -17738,6 +18848,12 @@
           "part": "root",
           "sheet": "@skryensya/core/components/code-preview.css"
         },
+        "--sk-code-preview-brutalist-offset": {
+          "default": "5px",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/code-preview.css"
+        },
         "--sk-code-preview-collapsed-padding-block": {
           "default": "var(--space-inset-md)",
           "output": false,
@@ -17808,6 +18924,7 @@
       "hooks": [
         "--sk-code-preview-bg",
         "--sk-code-preview-border-color",
+        "--sk-code-preview-brutalist-offset",
         "--sk-code-preview-collapsed-padding-block",
         "--sk-code-preview-copy-scroll-inset",
         "--sk-code-preview-copy-sticky-top",
@@ -17825,6 +18942,16 @@
       ],
       "id": "code-preview",
       "options": {
+        "appearance": {
+          "attr": "data-appearance",
+          "default": "plain",
+          "type": "enum",
+          "values": [
+            "plain",
+            "brutalist",
+            "frosted"
+          ]
+        },
         "collapsible": {
           "attr": "data-sk-code-preview-collapsible",
           "default": false,
@@ -17928,7 +19055,8 @@
             "lines",
             "previewLines",
             "moreLabel",
-            "lessLabel"
+            "lessLabel",
+            "appearance"
           ],
           "react": {
             "from": "@skryensya/react/code-preview",
@@ -18078,7 +19206,8 @@
             "previewLines",
             "moreLabel",
             "lessLabel",
-            "switchLabel"
+            "switchLabel",
+            "appearance"
           ],
           "react": {
             "from": "@skryensya/react/code-preview",
@@ -19199,6 +20328,15 @@
           "machineInput": true,
           "type": "boolean"
         },
+        "appearance": {
+          "attr": "data-appearance",
+          "type": "enum",
+          "values": [
+            "plain",
+            "brutalist",
+            "frosted"
+          ]
+        },
         "disabled": {
           "attr": "disabled",
           "default": false,
@@ -19316,7 +20454,8 @@
             "required",
             "readOnly",
             "multiple",
-            "allowCustomValue"
+            "allowCustomValue",
+            "appearance"
           ],
           "portals": {
             "container": true
@@ -19671,6 +20810,16 @@
       ],
       "id": "command-palette",
       "options": {
+        "appearance": {
+          "attr": "data-appearance",
+          "default": "plain",
+          "type": "enum",
+          "values": [
+            "plain",
+            "brutalist",
+            "frosted"
+          ]
+        },
         "closeLabel": {
           "attr": "aria-label",
           "default": "Close",
@@ -19786,7 +20935,8 @@
             "emptyLabel",
             "open",
             "vaul",
-            "entries"
+            "entries",
+            "appearance"
           ],
           "react": {
             "from": "@skryensya/react/command-palette",
@@ -22431,6 +23581,15 @@
       ],
       "id": "date-picker",
       "options": {
+        "appearance": {
+          "attr": "data-appearance",
+          "type": "enum",
+          "values": [
+            "plain",
+            "brutalist",
+            "frosted"
+          ]
+        },
         "clearLabel": {
           "attr": "aria-label",
           "default": "Clear",
@@ -22611,7 +23770,8 @@
             "required",
             "invalid",
             "placeholder",
-            "clearLabel"
+            "clearLabel",
+            "appearance"
           ],
           "portals": {
             "container": true
@@ -22725,7 +23885,8 @@
             "max",
             "disabled",
             "readOnly",
-            "required"
+            "required",
+            "appearance"
           ],
           "react": {
             "from": "@skryensya/react/date-picker",
@@ -23853,6 +25014,12 @@
           "part": "root",
           "sheet": "@skryensya/core/components/dialog.css"
         },
+        "--sk-dialog-brutalist-offset": {
+          "default": "8px",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/dialog.css"
+        },
         "--sk-dialog-elevation": {
           "default": "var(--elevation-modal)",
           "output": false,
@@ -23919,6 +25086,7 @@
         "--sk-dialog-bg",
         "--sk-dialog-border-color",
         "--sk-dialog-border-width",
+        "--sk-dialog-brutalist-offset",
         "--sk-dialog-elevation",
         "--sk-dialog-fg",
         "--sk-dialog-footer-border-color",
@@ -23940,6 +25108,16 @@
           "default": false,
           "trueValue": "alertdialog",
           "type": "boolean"
+        },
+        "appearance": {
+          "attr": "data-appearance",
+          "default": "plain",
+          "type": "enum",
+          "values": [
+            "plain",
+            "brutalist",
+            "frosted"
+          ]
         },
         "closeLabel": {
           "attr": "aria-label",
@@ -24030,7 +25208,8 @@
             "open",
             "vaul",
             "alert",
-            "footerAlign"
+            "footerAlign",
+            "appearance"
           ],
           "react": {
             "from": "@skryensya/react/dialog",
@@ -25603,6 +26782,30 @@
       "category": "content",
       "css": "@skryensya/core/components/folder.css",
       "hookDetails": {
+        "--sk-folder-brutalist-edge": {
+          "default": "oklch(from var(--shadow-lg) l c h / 1)",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/folder.css"
+        },
+        "--sk-folder-brutalist-offset-block": {
+          "default": "6px",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/folder.css"
+        },
+        "--sk-folder-brutalist-offset-inline": {
+          "default": "6px",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/folder.css"
+        },
+        "--sk-folder-brutalist-shadow": {
+          "default": "var(--sk-folder-brutalist-edge)",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/folder.css"
+        },
         "--sk-folder-clip": {
           "default": "none",
           "output": true,
@@ -25612,6 +26815,18 @@
         "--sk-folder-content-gap": {
           "default": "var(--space-stack-xs)",
           "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/folder.css"
+        },
+        "--sk-folder-depth": {
+          "default": "5px",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/folder.css"
+        },
+        "--sk-folder-fan-clip": {
+          "default": "none",
+          "output": true,
           "part": "root",
           "sheet": "@skryensya/core/components/folder.css"
         },
@@ -25635,6 +26850,24 @@
         },
         "--sk-folder-fold-lift": {
           "default": "14px",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/folder.css"
+        },
+        "--sk-folder-frost-blur": {
+          "default": "16px",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/folder.css"
+        },
+        "--sk-folder-frost-opacity": {
+          "default": "72%",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/folder.css"
+        },
+        "--sk-folder-frost-saturation": {
+          "default": "150%",
           "output": false,
           "part": "root",
           "sheet": "@skryensya/core/components/folder.css"
@@ -25678,6 +26911,12 @@
         "--sk-folder-lift": {
           "default": "8px",
           "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/folder.css"
+        },
+        "--sk-folder-mask": {
+          "default": "none",
+          "output": true,
           "part": "root",
           "sheet": "@skryensya/core/components/folder.css"
         },
@@ -25839,12 +27078,21 @@
         }
       },
       "hooks": [
+        "--sk-folder-brutalist-edge",
+        "--sk-folder-brutalist-offset-block",
+        "--sk-folder-brutalist-offset-inline",
+        "--sk-folder-brutalist-shadow",
         "--sk-folder-clip",
         "--sk-folder-content-gap",
+        "--sk-folder-depth",
+        "--sk-folder-fan-clip",
         "--sk-folder-fg",
         "--sk-folder-fill",
         "--sk-folder-fill-active",
         "--sk-folder-fold-lift",
+        "--sk-folder-frost-blur",
+        "--sk-folder-frost-opacity",
+        "--sk-folder-frost-saturation",
         "--sk-folder-ground",
         "--sk-folder-inset-x",
         "--sk-folder-inset-y",
@@ -25852,6 +27100,7 @@
         "--sk-folder-label-offset",
         "--sk-folder-label-size",
         "--sk-folder-lift",
+        "--sk-folder-mask",
         "--sk-folder-max-inline-size",
         "--sk-folder-min-height",
         "--sk-folder-perspective",
@@ -25887,6 +27136,17 @@
           "trueValue": "",
           "type": "boolean"
         },
+        "appearance": {
+          "attr": "data-appearance",
+          "default": "plain",
+          "type": "enum",
+          "values": [
+            "plain",
+            "tactile",
+            "brutalist",
+            "frosted"
+          ]
+        },
         "href": {
           "attr": "href",
           "type": "string"
@@ -25898,6 +27158,8 @@
       },
       "outputHooks": [
         "--sk-folder-clip",
+        "--sk-folder-fan-clip",
+        "--sk-folder-mask",
         "--sk-folder-tail"
       ],
       "parts": {
@@ -25989,7 +27251,8 @@
           ],
           "mount": "data-sk-folder",
           "options": [
-            "active"
+            "active",
+            "appearance"
           ],
           "react": {
             "from": "@skryensya/react/folder",
@@ -26080,6 +27343,7 @@
           "mount": "data-sk-folder",
           "options": [
             "active",
+            "appearance",
             "href"
           ],
           "react": {
@@ -26250,6 +27514,12 @@
           "part": "footer",
           "sheet": "@skryensya/core/patterns/footer.css"
         },
+        "--sk-footer-brutalist-offset": {
+          "default": "6px",
+          "output": false,
+          "part": "footer",
+          "sheet": "@skryensya/core/patterns/footer.css"
+        },
         "--sk-footer-divider-color": {
           "default": "var(--color-border-subtle)",
           "output": false,
@@ -26289,6 +27559,7 @@
       },
       "hooks": [
         "--sk-footer-bg",
+        "--sk-footer-brutalist-offset",
         "--sk-footer-divider-color",
         "--sk-footer-divider-width",
         "--sk-footer-padding",
@@ -26298,6 +27569,16 @@
       ],
       "id": "footer",
       "options": {
+        "appearance": {
+          "attr": "data-appearance",
+          "default": "plain",
+          "type": "enum",
+          "values": [
+            "plain",
+            "brutalist",
+            "frosted"
+          ]
+        },
         "divider": {
           "attr": "data-divider",
           "default": true,
@@ -26393,7 +27674,8 @@
             "paddingExpanded",
             "surface",
             "divider",
-            "footerElement"
+            "footerElement",
+            "appearance"
           ],
           "react": {
             "from": "@skryensya/react/layout",
@@ -26704,6 +27986,12 @@
           "part": "hero",
           "sheet": "@skryensya/core/patterns/hero.css"
         },
+        "--sk-hero-brutalist-offset": {
+          "default": "8px",
+          "output": false,
+          "part": "hero",
+          "sheet": "@skryensya/core/patterns/hero.css"
+        },
         "--sk-hero-min-height": {
           "default": "26rem",
           "output": false,
@@ -26737,6 +28025,7 @@
       },
       "hooks": [
         "--sk-hero-bg",
+        "--sk-hero-brutalist-offset",
         "--sk-hero-min-height",
         "--sk-hero-padding",
         "--sk-hero-radius",
@@ -26752,6 +28041,16 @@
           "values": [
             "start",
             "center"
+          ]
+        },
+        "appearance": {
+          "attr": "data-appearance",
+          "default": "plain",
+          "type": "enum",
+          "values": [
+            "plain",
+            "brutalist",
+            "frosted"
           ]
         },
         "heroElement": {
@@ -26853,7 +28152,8 @@
             "paddingExpanded",
             "surface",
             "align",
-            "heroElement"
+            "heroElement",
+            "appearance"
           ],
           "react": {
             "from": "@skryensya/react/layout",
@@ -27107,6 +28407,15 @@
           "attr": "alt",
           "type": "string"
         },
+        "appearance": {
+          "attr": "data-appearance",
+          "default": "plain",
+          "type": "enum",
+          "values": [
+            "plain",
+            "brutalist"
+          ]
+        },
         "aspect": {
           "attr": "data-aspect",
           "default": "auto",
@@ -27244,7 +28553,8 @@
             "border",
             "src",
             "alt",
-            "frameElement"
+            "frameElement",
+            "appearance"
           ],
           "react": {
             "from": "@skryensya/react/image-frame",
@@ -27476,6 +28786,15 @@
       ],
       "id": "input",
       "options": {
+        "appearance": {
+          "attr": "data-appearance",
+          "type": "enum",
+          "values": [
+            "plain",
+            "brutalist",
+            "frosted"
+          ]
+        },
         "controlSize": {
           "attr": "data-size",
           "type": "enum",
@@ -27612,7 +28931,8 @@
             "disabled",
             "format",
             "country",
-            "errorLabel"
+            "errorLabel",
+            "appearance"
           ],
           "parents": [
             "FormField"
@@ -27655,7 +28975,8 @@
             "controlSize",
             "type",
             "name",
-            "disabled"
+            "disabled",
+            "appearance"
           ],
           "react": {
             "from": "@skryensya/react/input",
@@ -27697,7 +29018,8 @@
             "controlSize",
             "name",
             "placeholder",
-            "disabled"
+            "disabled",
+            "appearance"
           ],
           "parents": [
             "FormField"
@@ -27816,6 +29138,15 @@
       ],
       "id": "kbd",
       "options": {
+        "appearance": {
+          "attr": "data-appearance",
+          "default": "plain",
+          "type": "enum",
+          "values": [
+            "plain",
+            "brutalist"
+          ]
+        },
         "tone": {
           "attr": "data-tone",
           "default": "neutral",
@@ -27854,7 +29185,8 @@
             "key-combination"
           ],
           "options": [
-            "tone"
+            "tone",
+            "appearance"
           ],
           "react": {
             "from": "@skryensya/react/kbd",
@@ -31562,6 +32894,14 @@
           "attr": "aria-label",
           "type": "string"
         },
+        "triggerAppearance": {
+          "attr": "data-appearance",
+          "type": "string",
+          "valuesFrom": {
+            "contract": "button",
+            "option": "appearance"
+          }
+        },
         "triggerIconOnly": {
           "attr": "data-icon-only",
           "default": false,
@@ -31679,6 +33019,7 @@
             "triggerVariant",
             "triggerTone",
             "triggerSize",
+            "triggerAppearance",
             "triggerIconOnly",
             "disabled",
             "density",
@@ -31789,6 +33130,7 @@
                   "triggerVariant",
                   "triggerTone",
                   "triggerSize",
+                  "triggerAppearance",
                   "triggerIconOnly"
                 ],
                 "part": "trigger",
@@ -33407,6 +34749,12 @@
           "part": "root",
           "sheet": "@skryensya/core/components/navbar.css"
         },
+        "--sk-navbar-brutalist-offset": {
+          "default": "4px",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/navbar.css"
+        },
         "--sk-navbar-elevation": {
           "default": "var(--elevation-raised)",
           "output": false,
@@ -33457,6 +34805,7 @@
         "--sk-navbar-brand-fg",
         "--sk-navbar-brand-font-size",
         "--sk-navbar-brand-font-weight",
+        "--sk-navbar-brutalist-offset",
         "--sk-navbar-elevation",
         "--sk-navbar-fg",
         "--sk-navbar-gap",
@@ -33466,7 +34815,18 @@
         "--sk-navbar-wash"
       ],
       "id": "navbar",
-      "options": {},
+      "options": {
+        "appearance": {
+          "attr": "data-appearance",
+          "default": "plain",
+          "type": "enum",
+          "values": [
+            "plain",
+            "brutalist",
+            "frosted"
+          ]
+        }
+      },
       "parts": {
         "actions": "sk-navbar__actions",
         "brand": "sk-navbar__brand",
@@ -33515,7 +34875,9 @@
             "app-header",
             "page-chrome"
           ],
-          "options": [],
+          "options": [
+            "appearance"
+          ],
           "react": {
             "from": "@skryensya/react/navbar",
             "name": "Navbar"
@@ -33736,6 +35098,15 @@
       ],
       "id": "number-field",
       "options": {
+        "appearance": {
+          "attr": "data-appearance",
+          "type": "enum",
+          "values": [
+            "plain",
+            "brutalist",
+            "frosted"
+          ]
+        },
         "decrementLabel": {
           "attr": "aria-label",
           "default": "Decrease",
@@ -33882,7 +35253,8 @@
             "required",
             "invalid",
             "decrementLabel",
-            "incrementLabel"
+            "incrementLabel",
+            "appearance"
           ],
           "react": {
             "from": "@skryensya/react/number-field",
@@ -34354,6 +35726,12 @@
         "pageChange": "sk:paginationpagechange"
       },
       "hookDetails": {
+        "--sk-pagination-brutalist-offset": {
+          "default": "3px",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/pagination.css"
+        },
         "--sk-pagination-current-bg": {
           "default": "var(--color-bg-surface-raised)",
           "output": false,
@@ -34500,6 +35878,7 @@
         }
       },
       "hooks": [
+        "--sk-pagination-brutalist-offset",
         "--sk-pagination-current-bg",
         "--sk-pagination-current-border-color",
         "--sk-pagination-current-fg",
@@ -34527,6 +35906,17 @@
       ],
       "id": "pagination",
       "options": {
+        "appearance": {
+          "attr": "data-appearance",
+          "default": "plain",
+          "type": "enum",
+          "values": [
+            "plain",
+            "tactile",
+            "brutalist",
+            "frosted"
+          ]
+        },
         "label": {
           "attr": "aria-label",
           "default": "Pagination",
@@ -34615,7 +36005,8 @@
             "siblings",
             "label",
             "previousLabel",
-            "nextLabel"
+            "nextLabel",
+            "appearance"
           ],
           "react": {
             "from": "@skryensya/react/pagination",
@@ -34868,6 +36259,15 @@
       ],
       "id": "password-input",
       "options": {
+        "appearance": {
+          "attr": "data-appearance",
+          "type": "enum",
+          "values": [
+            "plain",
+            "brutalist",
+            "frosted"
+          ]
+        },
         "autoComplete": {
           "attr": "autocomplete",
           "default": "current-password",
@@ -35009,7 +36409,8 @@
             "required",
             "invalid",
             "showLabel",
-            "hideLabel"
+            "hideLabel",
+            "appearance"
           ],
           "react": {
             "from": "@skryensya/react/password-input",
@@ -35655,6 +37056,16 @@
       ],
       "id": "popover",
       "options": {
+        "appearance": {
+          "attr": "data-appearance",
+          "default": "plain",
+          "type": "enum",
+          "values": [
+            "plain",
+            "brutalist",
+            "frosted"
+          ]
+        },
         "arrow": {
           "attr": "data-arrow",
           "default": false,
@@ -35686,6 +37097,14 @@
             "inline-start",
             "inline-end"
           ]
+        },
+        "triggerAppearance": {
+          "attr": "data-appearance",
+          "type": "string",
+          "valuesFrom": {
+            "contract": "button",
+            "option": "appearance"
+          }
         },
         "triggerIconOnly": {
           "attr": "data-icon-only",
@@ -35794,7 +37213,9 @@
             "triggerVariant",
             "triggerTone",
             "triggerSize",
-            "triggerIconOnly"
+            "triggerAppearance",
+            "triggerIconOnly",
+            "appearance"
           ],
           "react": {
             "from": "@skryensya/react/popover",
@@ -35840,6 +37261,7 @@
                   "triggerVariant",
                   "triggerTone",
                   "triggerSize",
+                  "triggerAppearance",
                   "triggerIconOnly"
                 ],
                 "part": "trigger",
@@ -35956,7 +37378,9 @@
             "triggerVariant",
             "triggerTone",
             "triggerSize",
-            "triggerIconOnly"
+            "triggerAppearance",
+            "triggerIconOnly",
+            "appearance"
           ],
           "react": {
             "from": "@skryensya/react/popover",
@@ -35996,6 +37420,7 @@
                   "triggerVariant",
                   "triggerTone",
                   "triggerSize",
+                  "triggerAppearance",
                   "triggerIconOnly"
                 ],
                 "part": "trigger",
@@ -38380,6 +39805,17 @@
       ],
       "id": "radio-group",
       "options": {
+        "appearance": {
+          "attr": "data-appearance",
+          "default": "plain",
+          "type": "enum",
+          "values": [
+            "plain",
+            "tactile",
+            "brutalist",
+            "frosted"
+          ]
+        },
         "disabled": {
           "attr": "disabled",
           "default": false,
@@ -38496,7 +39932,8 @@
             "value",
             "radioDefaultChecked",
             "disabled",
-            "required"
+            "required",
+            "appearance"
           ],
           "react": {
             "from": "@skryensya/react/selection",
@@ -38541,6 +39978,9 @@
               }
             ],
             "element": "label",
+            "options": [
+              "appearance"
+            ],
             "part": "radio"
           }
         },
@@ -38564,7 +40004,8 @@
             "spread",
             "disabled",
             "required",
-            "label"
+            "label",
+            "appearance"
           ],
           "react": {
             "from": "@skryensya/react/selection",
@@ -39087,6 +40528,18 @@
           "part": "root",
           "sheet": "@skryensya/core/components/segmented.css"
         },
+        "--sk-segmented-brutalist-offset": {
+          "default": "3px",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/segmented.css"
+        },
+        "--sk-segmented-frost-opacity": {
+          "default": "60%",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/segmented.css"
+        },
         "--sk-segmented-gap": {
           "default": "var(--space-inline-xs)",
           "output": false,
@@ -39158,6 +40611,8 @@
         "--sk-segmented-bg",
         "--sk-segmented-border-color",
         "--sk-segmented-border-width",
+        "--sk-segmented-brutalist-offset",
+        "--sk-segmented-frost-opacity",
         "--sk-segmented-gap",
         "--sk-segmented-option-fg",
         "--sk-segmented-padding",
@@ -39172,6 +40627,17 @@
       ],
       "id": "segmented",
       "options": {
+        "appearance": {
+          "attr": "data-appearance",
+          "default": "plain",
+          "type": "enum",
+          "values": [
+            "plain",
+            "tactile",
+            "brutalist",
+            "frosted"
+          ]
+        },
         "label": {
           "attr": "aria-label",
           "type": "string"
@@ -39225,7 +40691,8 @@
           "mount": "data-sk-segmented",
           "options": [
             "value",
-            "label"
+            "label",
+            "appearance"
           ],
           "react": {
             "from": "@skryensya/react/segmented",
@@ -39575,6 +41042,15 @@
       ],
       "id": "select",
       "options": {
+        "appearance": {
+          "attr": "data-appearance",
+          "type": "enum",
+          "values": [
+            "plain",
+            "brutalist",
+            "frosted"
+          ]
+        },
         "disabled": {
           "attr": "data-disabled",
           "default": false,
@@ -39681,7 +41157,8 @@
             "value",
             "placeholder",
             "disabled",
-            "required"
+            "required",
+            "appearance"
           ],
           "portals": {
             "container": true
@@ -40293,6 +41770,12 @@
           "part": "root",
           "sheet": "@skryensya/core/components/sidebar.css"
         },
+        "--sk-sidebar-brutalist-offset": {
+          "default": "6px",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/sidebar.css"
+        },
         "--sk-sidebar-collapsed-inline-size": {
           "default": "calc(\n      var(--size-control-sm) + var(--sk-sidebar-padding) * 2 + var(--sk-sidebar-border-width)\n    )",
           "output": false,
@@ -40496,6 +41979,7 @@
         "--sk-sidebar-bg",
         "--sk-sidebar-border-color",
         "--sk-sidebar-border-width",
+        "--sk-sidebar-brutalist-offset",
         "--sk-sidebar-collapsed-inline-size",
         "--sk-sidebar-duration",
         "--sk-sidebar-easing",
@@ -40535,6 +42019,16 @@
       ],
       "id": "sidebar",
       "options": {
+        "appearance": {
+          "attr": "data-appearance",
+          "default": "plain",
+          "type": "enum",
+          "values": [
+            "plain",
+            "brutalist",
+            "frosted"
+          ]
+        },
         "defaultCollapsed": {
           "attr": "data-default-collapsed",
           "default": false,
@@ -40676,7 +42170,8 @@
             "storageKey",
             "minInlineSize",
             "maxInlineSize",
-            "landmarkLabel"
+            "landmarkLabel",
+            "appearance"
           ],
           "react": {
             "from": "@skryensya/react/sidebar",
@@ -41503,6 +42998,12 @@
       "category": "actions",
       "css": "@skryensya/core/components/split-button.css",
       "hookDetails": {
+        "--sk-split-button-brutalist-offset": {
+          "default": "5px",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/split-button.css"
+        },
         "--sk-split-button-shadow": {
           "default": "var(--elevation-raised)",
           "output": false,
@@ -41517,6 +43018,7 @@
         }
       },
       "hooks": [
+        "--sk-split-button-brutalist-offset",
         "--sk-split-button-shadow",
         "--sk-split-button-wash"
       ],
@@ -41933,6 +43435,7 @@
             "form",
             "data-variant",
             "data-size",
+            "data-appearance",
             "aria-*"
           ],
           "host": {
@@ -42644,6 +44147,17 @@
       ],
       "id": "switch",
       "options": {
+        "appearance": {
+          "attr": "data-appearance",
+          "default": "plain",
+          "type": "enum",
+          "values": [
+            "plain",
+            "tactile",
+            "brutalist",
+            "frosted"
+          ]
+        },
         "defaultChecked": {
           "attr": "checked",
           "default": false,
@@ -42708,7 +44222,8 @@
             "name",
             "value",
             "defaultChecked",
-            "disabled"
+            "disabled",
+            "appearance"
           ],
           "react": {
             "from": "@skryensya/react/selection",
@@ -42751,6 +44266,9 @@
               }
             ],
             "element": "label",
+            "options": [
+              "appearance"
+            ],
             "part": "switch"
           }
         }
@@ -43526,6 +45044,12 @@
         "change": "sk:tablepagerchange"
       },
       "hookDetails": {
+        "--sk-pagination-brutalist-offset": {
+          "default": "3px",
+          "output": false,
+          "part": "nav",
+          "sheet": "@skryensya/core/components/pagination.css"
+        },
         "--sk-pagination-current-bg": {
           "default": "var(--color-bg-surface-raised)",
           "output": false,
@@ -43714,6 +45238,7 @@
         }
       },
       "hooks": [
+        "--sk-pagination-brutalist-offset",
         "--sk-pagination-current-bg",
         "--sk-pagination-current-border-color",
         "--sk-pagination-current-fg",
@@ -44124,6 +45649,12 @@
         "valueChange": "sk:tabsvaluechange"
       },
       "hookDetails": {
+        "--sk-tabs-brutalist-offset": {
+          "default": "3px",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/tabs.css"
+        },
         "--sk-tabs-gap": {
           "default": "var(--space-stack-md)",
           "output": false,
@@ -44216,6 +45747,7 @@
         }
       },
       "hooks": [
+        "--sk-tabs-brutalist-offset",
         "--sk-tabs-gap",
         "--sk-tabs-indicator-bg",
         "--sk-tabs-indicator-size",
@@ -44242,6 +45774,17 @@
           "values": [
             "automatic",
             "manual"
+          ]
+        },
+        "appearance": {
+          "attr": "data-appearance",
+          "default": "plain",
+          "type": "enum",
+          "values": [
+            "plain",
+            "tactile",
+            "brutalist",
+            "frosted"
           ]
         },
         "orientation": {
@@ -44324,7 +45867,8 @@
             "activationMode",
             "value",
             "size",
-            "variant"
+            "variant",
+            "appearance"
           ],
           "react": {
             "from": "@skryensya/react/tabs",
@@ -44507,6 +46051,15 @@
       ],
       "id": "tag",
       "options": {
+        "appearance": {
+          "attr": "data-appearance",
+          "default": "plain",
+          "type": "enum",
+          "values": [
+            "plain",
+            "brutalist"
+          ]
+        },
         "href": {
           "attr": "href",
           "type": "string"
@@ -44601,7 +46154,8 @@
           "options": [
             "tone",
             "removable",
-            "removeLabel"
+            "removeLabel",
+            "appearance"
           ],
           "react": {
             "from": "@skryensya/react/tag",
@@ -44680,7 +46234,8 @@
           ],
           "options": [
             "tone",
-            "href"
+            "href",
+            "appearance"
           ],
           "react": {
             "from": "@skryensya/react/tag",
@@ -44869,6 +46424,15 @@
           "trueValue": "",
           "type": "boolean"
         },
+        "appearance": {
+          "attr": "data-appearance",
+          "type": "enum",
+          "values": [
+            "plain",
+            "brutalist",
+            "frosted"
+          ]
+        },
         "delimiter": {
           "attr": "data-delimiter",
           "default": ",",
@@ -45004,7 +46568,8 @@
             "disabled",
             "readOnly",
             "invalid",
-            "required"
+            "required",
+            "appearance"
           ],
           "react": {
             "from": "@skryensya/react/tags-input",
@@ -45344,6 +46909,54 @@
           "part": "interactive",
           "sheet": "@skryensya/core/components/tile.css"
         },
+        "--sk-tile-brutalist-edge": {
+          "default": "var(--brutalist-black)",
+          "output": false,
+          "part": "interactive",
+          "sheet": "@skryensya/core/components/tile.css"
+        },
+        "--sk-tile-brutalist-offset-block": {
+          "default": "5px",
+          "output": false,
+          "part": "interactive",
+          "sheet": "@skryensya/core/components/tile.css"
+        },
+        "--sk-tile-brutalist-offset-inline": {
+          "default": "5px",
+          "output": false,
+          "part": "interactive",
+          "sheet": "@skryensya/core/components/tile.css"
+        },
+        "--sk-tile-brutalist-shadow": {
+          "default": "var(--brutalist-black)",
+          "output": false,
+          "part": "interactive",
+          "sheet": "@skryensya/core/components/tile.css"
+        },
+        "--sk-tile-depth": {
+          "default": "4px",
+          "output": false,
+          "part": "interactive",
+          "sheet": "@skryensya/core/components/tile.css"
+        },
+        "--sk-tile-frost-blur": {
+          "default": "16px",
+          "output": false,
+          "part": "interactive",
+          "sheet": "@skryensya/core/components/tile.css"
+        },
+        "--sk-tile-frost-opacity": {
+          "default": "72%",
+          "output": false,
+          "part": "interactive",
+          "sheet": "@skryensya/core/components/tile.css"
+        },
+        "--sk-tile-frost-saturation": {
+          "default": "150%",
+          "output": false,
+          "part": "interactive",
+          "sheet": "@skryensya/core/components/tile.css"
+        },
         "--sk-tile-padding": {
           "default": "var(--space-inset-md)",
           "output": false,
@@ -45386,6 +46999,14 @@
         "--sk-space-3",
         "--sk-space-4",
         "--sk-tile-border-color",
+        "--sk-tile-brutalist-edge",
+        "--sk-tile-brutalist-offset-block",
+        "--sk-tile-brutalist-offset-inline",
+        "--sk-tile-brutalist-shadow",
+        "--sk-tile-depth",
+        "--sk-tile-frost-blur",
+        "--sk-tile-frost-opacity",
+        "--sk-tile-frost-saturation",
         "--sk-tile-padding",
         "--sk-tile-radius",
         "--sk-tile-shadow",
@@ -45397,6 +47018,17 @@
       ],
       "id": "tile",
       "options": {
+        "appearance": {
+          "attr": "data-appearance",
+          "default": "plain",
+          "type": "enum",
+          "values": [
+            "plain",
+            "tactile",
+            "brutalist",
+            "frosted"
+          ]
+        },
         "defaultChecked": {
           "attr": "data-default-checked",
           "default": false,
@@ -45614,7 +47246,8 @@
           "options": [
             "defaultOpen",
             "disabled",
-            "padding"
+            "padding",
+            "appearance"
           ],
           "react": {
             "from": "@skryensya/react/tile",
@@ -45748,7 +47381,8 @@
           ],
           "options": [
             "disabled",
-            "padding"
+            "padding",
+            "appearance"
           ],
           "react": {
             "from": "@skryensya/react/tile",
@@ -45816,7 +47450,8 @@
             "defaultChecked",
             "disabled",
             "required",
-            "padding"
+            "padding",
+            "appearance"
           ],
           "react": {
             "from": "@skryensya/react/tile",
@@ -46039,7 +47674,8 @@
           ],
           "options": [
             "href",
-            "padding"
+            "padding",
+            "appearance"
           ],
           "react": {
             "from": "@skryensya/react/tile",
@@ -46086,7 +47722,8 @@
             "orientation",
             "disabled",
             "required",
-            "padding"
+            "padding",
+            "appearance"
           ],
           "react": {
             "from": "@skryensya/react/tile",
@@ -46170,7 +47807,8 @@
                 ],
                 "element": "label",
                 "options": [
-                  "padding"
+                  "padding",
+                  "appearance"
                 ],
                 "part": "root",
                 "repeat": "items"
@@ -46211,7 +47849,8 @@
             "defaultChecked",
             "disabled",
             "required",
-            "padding"
+            "padding",
+            "appearance"
           ],
           "react": {
             "from": "@skryensya/react/tile",
@@ -46644,6 +48283,15 @@
       ],
       "id": "time-field",
       "options": {
+        "appearance": {
+          "attr": "data-appearance",
+          "type": "enum",
+          "values": [
+            "plain",
+            "brutalist",
+            "frosted"
+          ]
+        },
         "clearLabel": {
           "attr": "data-clear-label",
           "default": "Clear time",
@@ -46807,7 +48455,8 @@
             "periodLabel",
             "clearLabel",
             "optionsStep",
-            "optionsLabel"
+            "optionsLabel",
+            "appearance"
           ],
           "portals": {
             "container": true
@@ -47384,6 +49033,18 @@
           "part": "root",
           "sheet": "@skryensya/core/components/toolbar.css"
         },
+        "--sk-toolbar-brutalist-offset": {
+          "default": "4px",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/toolbar.css"
+        },
+        "--sk-toolbar-depth": {
+          "default": "4px",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/toolbar.css"
+        },
         "--sk-toolbar-gap": {
           "default": "var(--space-inline-xs)",
           "output": false,
@@ -47413,6 +49074,8 @@
         "--sk-toolbar-bg",
         "--sk-toolbar-border-color",
         "--sk-toolbar-border-width",
+        "--sk-toolbar-brutalist-offset",
+        "--sk-toolbar-depth",
         "--sk-toolbar-gap",
         "--sk-toolbar-padding",
         "--sk-toolbar-radius",
@@ -47420,6 +49083,17 @@
       ],
       "id": "toolbar",
       "options": {
+        "appearance": {
+          "attr": "data-appearance",
+          "default": "plain",
+          "type": "enum",
+          "values": [
+            "plain",
+            "tactile",
+            "brutalist",
+            "frosted"
+          ]
+        },
         "groupLabel": {
           "attr": "aria-label",
           "prop": "label",
@@ -47496,7 +49170,8 @@
           "options": [
             "orientation",
             "label",
-            "loopFocus"
+            "loopFocus",
+            "appearance"
           ],
           "react": {
             "from": "@skryensya/react/toolbar",
@@ -47969,6 +49644,12 @@
           "part": "popover",
           "sheet": "@skryensya/core/components/tour.css"
         },
+        "--sk-tour-brutalist-offset": {
+          "default": "5px",
+          "output": false,
+          "part": "popover",
+          "sheet": "@skryensya/core/components/tour.css"
+        },
         "--sk-tour-fg": {
           "default": "light-dark(var(--color-text-primary), var(--color-text-inverse))",
           "output": false,
@@ -48032,6 +49713,7 @@
       },
       "hooks": [
         "--sk-tour-bg",
+        "--sk-tour-brutalist-offset",
         "--sk-tour-fg",
         "--sk-tour-muted-fg",
         "--sk-tour-border-color",
@@ -48051,6 +49733,16 @@
       ],
       "id": "tour",
       "options": {
+        "appearance": {
+          "attr": "data-appearance",
+          "default": "plain",
+          "type": "enum",
+          "values": [
+            "plain",
+            "brutalist",
+            "frosted"
+          ]
+        },
         "closeLabel": {
           "attr": "aria-label",
           "default": "Close tour",
@@ -48202,7 +49894,8 @@
             "previousLabel",
             "skipLabel",
             "closeLabel",
-            "remember"
+            "remember",
+            "appearance"
           ],
           "react": {
             "from": "@skryensya/react/tour",
@@ -50249,6 +51942,16 @@
       ],
       "id": "vaul",
       "options": {
+        "appearance": {
+          "attr": "data-appearance",
+          "default": "plain",
+          "type": "enum",
+          "values": [
+            "plain",
+            "brutalist",
+            "frosted"
+          ]
+        },
         "buttonIconOnly": {
           "attr": "data-icon-only",
           "default": false,
@@ -50419,7 +52122,8 @@
             "open",
             "label",
             "draggable",
-            "dismissThreshold"
+            "dismissThreshold",
+            "appearance"
           ],
           "react": {
             "from": "@skryensya/react/vaul",
@@ -50514,7 +52218,8 @@
             "open",
             "label",
             "draggable",
-            "dismissThreshold"
+            "dismissThreshold",
+            "appearance"
           ],
           "react": {
             "from": "@skryensya/react/vaul",
@@ -50658,8 +52363,56 @@
           "part": "content",
           "sheet": "@skryensya/core/components/window.css"
         },
+        "--sk-window-brutalist-edge": {
+          "default": "oklch(from var(--shadow-lg) l c h / 1)",
+          "output": false,
+          "part": "content",
+          "sheet": "@skryensya/core/components/window.css"
+        },
+        "--sk-window-brutalist-offset-block": {
+          "default": "8px",
+          "output": false,
+          "part": "content",
+          "sheet": "@skryensya/core/components/window.css"
+        },
+        "--sk-window-brutalist-offset-inline": {
+          "default": "8px",
+          "output": false,
+          "part": "content",
+          "sheet": "@skryensya/core/components/window.css"
+        },
+        "--sk-window-brutalist-shadow": {
+          "default": "var(--sk-window-brutalist-edge)",
+          "output": false,
+          "part": "content",
+          "sheet": "@skryensya/core/components/window.css"
+        },
+        "--sk-window-depth": {
+          "default": "6px",
+          "output": false,
+          "part": "content",
+          "sheet": "@skryensya/core/components/window.css"
+        },
         "--sk-window-fg": {
           "default": "var(--color-text-primary)",
+          "output": false,
+          "part": "content",
+          "sheet": "@skryensya/core/components/window.css"
+        },
+        "--sk-window-frost-blur": {
+          "default": "24px",
+          "output": false,
+          "part": "content",
+          "sheet": "@skryensya/core/components/window.css"
+        },
+        "--sk-window-frost-opacity": {
+          "default": "78%",
+          "output": false,
+          "part": "content",
+          "sheet": "@skryensya/core/components/window.css"
+        },
+        "--sk-window-frost-saturation": {
+          "default": "160%",
           "output": false,
           "part": "content",
           "sheet": "@skryensya/core/components/window.css"
@@ -50716,7 +52469,15 @@
       "hooks": [
         "--sk-window-bg",
         "--sk-window-border-color",
+        "--sk-window-brutalist-edge",
+        "--sk-window-brutalist-offset-block",
+        "--sk-window-brutalist-offset-inline",
+        "--sk-window-brutalist-shadow",
+        "--sk-window-depth",
         "--sk-window-fg",
+        "--sk-window-frost-blur",
+        "--sk-window-frost-opacity",
+        "--sk-window-frost-saturation",
         "--sk-window-handle-size",
         "--sk-window-header-bg",
         "--sk-window-header-border-color",
@@ -50728,6 +52489,17 @@
       ],
       "id": "window",
       "options": {
+        "appearance": {
+          "attr": "data-appearance",
+          "default": "plain",
+          "type": "enum",
+          "values": [
+            "plain",
+            "tactile",
+            "brutalist",
+            "frosted"
+          ]
+        },
         "closeLabel": {
           "attr": "aria-label",
           "default": "Close",
@@ -50806,6 +52578,14 @@
           "attr": "aria-label",
           "default": "Restore",
           "type": "string"
+        },
+        "triggerAppearance": {
+          "attr": "data-appearance",
+          "type": "string",
+          "valuesFrom": {
+            "contract": "button",
+            "option": "appearance"
+          }
         },
         "triggerIconOnly": {
           "attr": "data-icon-only",
@@ -50911,6 +52691,7 @@
             "resizable",
             "closeOnEscape",
             "persistRect",
+            "appearance",
             "defaultWidth",
             "defaultHeight",
             "minWidth",
@@ -50923,6 +52704,7 @@
             "triggerVariant",
             "triggerTone",
             "triggerSize",
+            "triggerAppearance",
             "triggerIconOnly"
           ],
           "portals": {
@@ -50963,6 +52745,7 @@
                   "triggerVariant",
                   "triggerTone",
                   "triggerSize",
+                  "triggerAppearance",
                   "triggerIconOnly"
                 ],
                 "part": "trigger",
@@ -51183,6 +52966,9 @@
                     ],
                     "element": "div",
                     "mount": "data-sk-window-content",
+                    "options": [
+                      "appearance"
+                    ],
                     "part": "content"
                   }
                 ],
@@ -51346,7 +53132,7 @@
     "working": "0.0.1"
   },
   "schemaVersion": "2.3",
-  "sourceHash": "8f787219f91b4d29",
+  "sourceHash": "79dc106933517d30",
   "vocabulary": {
     "a11y": "When `when` holds, one of `requiresOneOf` must be given: an option, a raw attribute, a filled slot, or a child signature by name.",
     "atLeastOneOf": "At least one member of each group counts: a filled slot, a boolean option set to true, or an option other than its default.",

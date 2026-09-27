@@ -154,4 +154,74 @@
       color: GrayText;
     }
   }
+
+  /*
+   * ── APPEARANCE ───────────────────────────────────────────────────────────────────────────────
+   *
+   * Button's axis on the callout's surface (button.css documents each construction in full). Plain,
+   * brutalist and frosted: a surface is never pressed, so there is no tactile. Radius, padding and
+   * motion are untouched.
+   */
+
+  /* BRUTALIST: the black edge and a hard zero-blur offset toward block-end and inline-end
+   * (mirrored in RTL), in place of the soft elevation. Flat face. */
+  .sk-callout[data-appearance="brutalist"] {
+    --callout-brutalist-offset: 4px;
+    --brutalist-black: oklch(from var(--shadow-lg) l c h / 1);
+    --brutalist-direction: 1;
+    box-shadow: calc(var(--callout-brutalist-offset) * var(--brutalist-direction)) var(--callout-brutalist-offset) 0 var(--brutalist-black);
+    border-color: var(--brutalist-black);
+  }
+
+  .sk-callout[data-appearance="brutalist"]:dir(rtl) {
+    --brutalist-direction: -1;
+  }
+
+  /* FROSTED: Button's see-through material over whatever sits behind the callout, with a fine edge and
+   * a lit top rim over its own shadow. Opaque baseline; the material only where backdrop-filter
+   * exists and no reduced-transparency preference is set. */
+  .sk-callout[data-appearance="frosted"] {
+    --frost-highlight: light-dark(
+      color-mix(in oklab, var(--color-bg-surface) 70%, transparent),
+      color-mix(in oklab, var(--color-text-primary) 18%, transparent)
+    );
+    border-color: color-mix(in oklab, currentColor 18%, transparent);
+    box-shadow: inset 0 1px 0 var(--frost-highlight), 0 1px 2px var(--shadow-sm);
+  }
+
+  @supports (backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px)) {
+    @media (prefers-reduced-transparency: no-preference) {
+      .sk-callout[data-appearance="frosted"] {
+        background: color-mix(in oklab, var(--sk-callout-bg) 72%, transparent);
+        -webkit-backdrop-filter: blur(16px) saturate(150%);
+        backdrop-filter: blur(16px) saturate(150%);
+      }
+    }
+  }
+
+  /* High contrast outranks the material: back to the opaque baseline. */
+  [data-contrast="high"] .sk-callout[data-appearance="frosted"],
+  .sk-callout[data-appearance="frosted"][data-contrast="high"] {
+    background: var(--sk-callout-bg);
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+
+  @media (prefers-contrast: more) {
+    :root:not([data-contrast]) .sk-callout[data-appearance="frosted"] {
+      background: var(--sk-callout-bg);
+      -webkit-backdrop-filter: none;
+      backdrop-filter: none;
+    }
+  }
+
+  /* Forced colors keep neither construction: the system surface and its boundary. */
+  @media (forced-colors: active) {
+    .sk-callout[data-appearance] {
+      background: Canvas;
+      -webkit-backdrop-filter: none;
+      backdrop-filter: none;
+      box-shadow: none;
+    }
+  }
 }

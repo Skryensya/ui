@@ -1,0 +1,20 @@
+{
+  "$schema": "https://turbo.build/schema.json",
+  "extends": ["//"],
+  "tasks": {
+    /* `generate-stories --check` reads the docs app (its demos, the pages that show them, the
+     * catalog), which is not a dependency of this package, so nothing else would hash those files:
+     * editing a demo would replay a green log without regenerating anything. */
+    "check": {
+      "inputs": [
+        "$TURBO_DEFAULT$",
+        "$TURBO_ROOT$/apps/docs/src/demos/**",
+        "$TURBO_ROOT$/apps/docs/src/examples/**",
+        "$TURBO_ROOT$/apps/docs/src/components/pages/**",
+        "$TURBO_ROOT$/apps/docs/src/pages/**",
+        "$TURBO_ROOT$/apps/docs/src/lib/**",
+        "$TURBO_ROOT$/apps/docs/src/i18n/**"
+      ]
+    }
+  }
+}

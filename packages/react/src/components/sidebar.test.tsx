@@ -44,6 +44,13 @@ function renderSidebar(props: Omit<SidebarProps, "children"> = {}) {
 }
 
 describe("Sidebar React contracts", () => {
+  it("serializes its appearance on the rail, plain by default", () => {
+    const plain = render(<Sidebar landmarkLabel="Plain">Nav</Sidebar>);
+    expect(plain.getByRole("complementary", { name: "Plain" }).getAttribute("data-appearance")).toBe("plain");
+    const frosted = render(<Sidebar appearance="frosted" landmarkLabel="Frosted">Nav</Sidebar>);
+    expect(frosted.getByRole("complementary", { name: "Frosted" }).getAttribute("data-appearance")).toBe("frosted");
+  });
+
   it("collapses uncontrolled and reports the change", () => {
     const onCollapsedChange = vi.fn();
     const onDom = vi.fn();

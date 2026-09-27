@@ -2,31 +2,50 @@ import { updateComponentPreviewStageDocument } from "@skryensya/vanilla/componen
 import { getPreference, setPreference, subscribePreference } from "@skryensya/vanilla/storage";
 import { appearancePreference } from "../lib/preferences";
 
-type Appearance = "default" | "tactile";
+type Appearance = "plain" | "tactile" | "brutalist" | "frosted";
+
+const APPEARANCES: readonly Appearance[] = ["plain", "tactile", "brutalist", "frosted"];
 
 const scopeSelector = "[data-docs-appearance-scope]";
 const setSelector = "[data-docs-appearance-set]";
 const toggleSelector = "[data-docs-appearance-toggle]";
 const labelSelector = "[data-docs-appearance-label]";
-const appearanceTargetSelector = `[data-appearance="default"], [data-appearance="tactile"]`;
+const appearanceTargetSelector = APPEARANCES.map((value) => `[data-appearance="${value}"]`).join(", ");
+/* A preview that exists to COMPARE appearances (plain beside tactile, brutalist and frosted) opts out of
+   the page-wide switch, or choosing one appearance would repaint the comparison into three copies. */
+const fixedSelector = "[data-docs-appearance-fixed]";
 
 let bound = false;
 
 function isAppearance(value: unknown): value is Appearance {
-  return value === "default" || value === "tactile";
+  return APPEARANCES.includes(value as Appearance);
 }
 
-function nextAppearance(value: Appearance): Appearance {
-  return value === "tactile" ? "default" : "tactile";
+/* The appearances a scope's component publishes, from its menu; every one when it names none. */
+function allowedIn(scope: HTMLElement): readonly Appearance[] {
+  const listed = scope.querySelector<HTMLElement>("[data-docs-appearance-values]")?.dataset.docsAppearanceValues;
+  const values = listed?.split(/\s+/).filter(isAppearance);
+  return values?.length ? values : APPEARANCES;
+}
+
+/* The preference is site-wide, the values are per page: tactile chosen on Button reads as plain on
+   Box, which has no tactile, and comes back when the reader returns to Button. */
+function effectiveIn(scope: HTMLElement, value: Appearance): Appearance {
+  return allowedIn(scope).includes(value) ? value : "plain";
+}
+
+function nextAppearance(scope: HTMLElement, value: Appearance): Appearance {
+  const allowed = allowedIn(scope);
+  return allowed[(allowed.indexOf(value) + 1) % allowed.length]!;
 }
 
 function labelFor(value: Appearance): string {
-  return value === "tactile" ? "Tactile" : "Default";
+  return value.charAt(0).toUpperCase() + value.slice(1);
 }
 
 function current(scope: HTMLElement): Appearance {
   const value = scope.getAttribute("data-docs-appearance");
-  return isAppearance(value) ? value : getPreference(appearancePreference);
+  return effectiveIn(scope, isAppearance(value) ? value : getPreference(appearancePreference));
 }
 
 function targetSelector(scope: HTMLElement): string {
@@ -50,7 +69,7 @@ function writeFrameSource(frame: HTMLIFrameElement, value: Appearance): void {
 
 function writeFrame(frame: HTMLIFrameElement, value: Appearance): void {
   const scope = frame.closest<HTMLElement>(scopeSelector);
-  if (!scope) return;
+  if (!scope || frame.closest(fixedSelector)) return;
   writeFrameSource(frame, value);
   try {
     frame.contentDocument?.querySelectorAll<HTMLElement>(targetSelector(scope)).forEach((element) => {
@@ -61,10 +80,11 @@ function writeFrame(frame: HTMLIFrameElement, value: Appearance): void {
   }
 }
 
-function apply(scope: HTMLElement, value: Appearance): void {
+function apply(scope: HTMLElement, preferred: Appearance): void {
+  const value = effectiveIn(scope, preferred);
   scope.setAttribute("data-docs-appearance", value);
   scope.querySelectorAll<HTMLElement>(targetSelector(scope)).forEach((element) => {
-    element.setAttribute("data-appearance", value);
+    if (!element.closest(fixedSelector)) element.setAttribute("data-appearance", value);
   });
   scope.querySelectorAll<HTMLIFrameElement>("iframe.sk-component-preview__stage").forEach((frame) => {
     writeFrame(frame, value);
@@ -99,6 +119,8 @@ export function initAppearance(): void {
   document.addEventListener("click", (event) => {
     const target = event.target as Element | null;
     const set = target?.closest<HTMLElement>(setSelector);
+    // A value the page lists but its component does not publish (Box's tactile) is not a choice.
+    if (set?.matches("[data-disabled], [aria-disabled='true']")) return;
     if (set) {
       const scope = set.closest<HTMLElement>(scopeSelector);
       const value = set.getAttribute("data-docs-appearance-set");
@@ -114,7 +136,7 @@ export function initAppearance(): void {
     if (toggle) {
       const scope = toggle.closest<HTMLElement>(scopeSelector);
       if (scope) {
-        const value = nextAppearance(current(scope));
+        const value = nextAppearance(scope, current(scope));
         apply(scope, value);
         setPreference(appearancePreference, value);
         document.dispatchEvent(new CustomEvent("sk:dimensions-changed"));

@@ -3,8 +3,23 @@
 # `surface` is the shape of the contract the last time somebody reviewed it. If the compiler says it
 # does not match, something a consumer depends on has moved: write the entry and paste in the new
 # hash.
-surface: "16c02346cf5f1dd4"
+surface: "febbda370a6e9a58"
 entries:
+  - date: 2026-09-26
+    kind: feature
+    target: appearance
+    es:
+      title: Tabs suma appearance plain, tactile, brutalist y frosted
+      body: >-
+        La pestaña seleccionada lleva la construcción: <code>tactile</code> una tecla elevada,
+        <code>brutalist</code> un bloque de borde negro con sombra dura, <code>frosted</code> una tira
+        translúcida, opaca donde el material no es fiable. Solo CSS, en ambas orientaciones y variantes.
+    en:
+      title: Tabs adds plain, tactile, brutalist and frosted appearances
+      body: >-
+        The selected tab wears the construction: <code>tactile</code> a raised key, <code>brutalist</code> a
+        black-edged block with a hard offset, <code>frosted</code> a see-through strip, opaque wherever the
+        material cannot be trusted. CSS-only, in both orientations and variants.
   - date: 2026-09-17
     kind: feature
     es:

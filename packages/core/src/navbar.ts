@@ -30,6 +30,7 @@ export const navbarContract = {
     "--sk-navbar-brand-fg",
     "--sk-navbar-brand-font-size",
     "--sk-navbar-brand-font-weight",
+    "--sk-navbar-brutalist-offset",
     "--sk-navbar-elevation",
     "--sk-navbar-fg",
     "--sk-navbar-gap",
@@ -38,13 +39,25 @@ export const navbarContract = {
     "--sk-navbar-padding-y",
     "--sk-navbar-wash",
   ],
-  options: {},
+  options: {
+    /*
+     * HOW THE BAR IS DRAWN, Button's axis: brutalist a black rule and a hard offset under it,
+     * frosted a see-through bar over the content scrolling beneath (opaque wherever the material
+     * cannot be trusted). No tactile: a bar is never pressed.
+     */
+    appearance: {
+      type: "enum",
+      values: ["plain", "brutalist", "frosted"],
+      default: "plain",
+      attr: "data-appearance",
+    },
+  },
 
   signatures: {
     Navbar: {
       intent: ["top-bar", "app-header", "page-chrome"],
       host: { element: "header" },
-      options: [],
+      options: ["appearance"],
       slots: {
         children: {
           accepts: "signature",

@@ -1,4 +1,4 @@
-import { detailsParts } from "@skryensya/core/accordion";
+import { detailsParts, type AccordionAppearance } from "@skryensya/core/accordion";
 import type { HTMLAttributes, ReactNode } from "react";
 import { Icon } from "./icon.js";
 
@@ -17,11 +17,11 @@ import { Icon } from "./icon.js";
  * `<details><summary>…</summary>…</details>` by hand, which is the point of reaching for the
  * platform's own element instead of a machine.
  */
-export type DetailsGroupProps = HTMLAttributes<HTMLElement> & { children?: ReactNode };
+export type DetailsGroupProps = HTMLAttributes<HTMLElement> & { children?: ReactNode; appearance?: AccordionAppearance };
 
-export function DetailsGroup({ children, className, ...props }: DetailsGroupProps) {
+export function DetailsGroup({ children, className, appearance = "plain", ...props }: DetailsGroupProps) {
   return (
-    <section {...props} className={className ? `${detailsParts.group} ${className}` : detailsParts.group}>
+    <section {...props} className={className ? `${detailsParts.group} ${className}` : detailsParts.group} data-appearance={appearance}>
       {children}
     </section>
   );
@@ -31,6 +31,8 @@ export type DetailsProps = Omit<HTMLAttributes<HTMLElement>, "children"> & {
   children: ReactNode;
   name?: string;
   open?: boolean;
+  /** Ignored inside a `DetailsGroup`: the group's frame is the surface there. */
+  appearance?: AccordionAppearance;
 };
 
 type DetailsComponent = ((props: DetailsProps) => ReactNode) & {
@@ -38,11 +40,12 @@ type DetailsComponent = ((props: DetailsProps) => ReactNode) & {
   Content: typeof DetailsContent;
 };
 
-function DetailsRoot({ children, className, name, open, ...props }: DetailsProps) {
+function DetailsRoot({ children, className, name, open, appearance = "plain", ...props }: DetailsProps) {
   return (
     <details
       {...props}
       className={className ? `${detailsParts.root} ${className}` : detailsParts.root}
+      data-appearance={appearance}
       name={name}
       open={open}
     >

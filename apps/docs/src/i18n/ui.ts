@@ -141,8 +141,10 @@ import { tooltipMessages } from "./messages/components/tooltip";
 import { tourMessages } from "./messages/components/tour";
 import { treeViewMessages } from "./messages/components/tree-view";
 import { treegridMessages } from "./messages/components/treegrid";
+import { userSelectMessages } from "./messages/components/user-select";
 import { wrapperMessages } from "./messages/components/wrapper";
 import { foundationsMessages } from "./messages/foundations";
+import { appearanceMessages } from "./messages/appearance";
 import { gradientsMessages } from "./messages/gradients";
 import { indexMessages } from "./messages/index";
 import { navListMessages } from "./messages/nav-list";
@@ -287,8 +289,10 @@ export const ui = {
     ...tourMessages.es,
     ...treeViewMessages.es,
     ...treegridMessages.es,
+    ...userSelectMessages.es,
     ...wrapperMessages.es,
     ...foundationsMessages.es,
+    ...appearanceMessages.es,
     ...gradientsMessages.es,
     ...indexMessages.es,
     ...navListMessages.es,
@@ -428,8 +432,10 @@ export const ui = {
     ...tourMessages.en,
     ...treeViewMessages.en,
     ...treegridMessages.en,
+    ...userSelectMessages.en,
     ...wrapperMessages.en,
     ...foundationsMessages.en,
+    ...appearanceMessages.en,
     ...gradientsMessages.en,
     ...indexMessages.en,
     ...navListMessages.en,
@@ -465,6 +471,7 @@ export const navLabel: Record<Locale, Partial<Record<string, string>>> = {
     "/reference": "Tokens",
     "/dimensions": "Dimensions",
     "/elevation": "Elevation",
+    "/appearance": "Appearance",
     "/zoom": "Zoom and reflow",
     "/keyboard": "Keyboard navigation",
     "/density": "Component density",

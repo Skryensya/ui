@@ -16,6 +16,13 @@ const hiddenValue = (ui: RenderResult) =>
   (ui.container.querySelector('input[type="hidden"]') as HTMLInputElement).value;
 
 describe("TimeField", () => {
+  it("writes an appearance on the root only when asked", () => {
+    const plain = render(<TimeField label="Plain" />);
+    expect(plain.container.querySelector(".sk-time-field")?.hasAttribute("data-appearance")).toBe(false);
+    const brutalist = render(<TimeField appearance="brutalist" label="Brutalist" />);
+    expect(brutalist.container.querySelector(".sk-time-field")?.getAttribute("data-appearance")).toBe("brutalist");
+  });
+
   it("groups the segments under one accessible name, with no native type=time anywhere", () => {
     const { ui } = setup({ defaultValue: "09:30", locale: "en-US" });
 

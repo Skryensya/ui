@@ -29,6 +29,7 @@ const {
   triggerWeldEnd: triggerWeldEndOption,
   triggerVariant: triggerVariantOption,
   triggerTone: triggerToneOption,
+  triggerAppearance: triggerAppearanceOption,
   triggerSize: triggerSizeOption,
   triggerIconOnly: triggerIconOnlyOption,
 } = menuContract.options;
@@ -59,6 +60,8 @@ export type MenuProps = Pick<
    *  the trigger directly once these are set; nothing here repeats their CSS. */
   triggerVariant?: string;
   triggerTone?: string;
+  /** Button's appearance on the trigger: `plain`, `tactile`, `brutalist` or `frosted`. */
+  triggerAppearance?: string;
   triggerSize?: string;
   /** The SAME attribute `Button`'s own `iconOnly` option writes; see `menu.ts`'s identical
    *  option doc. */
@@ -567,6 +570,7 @@ export function Menu({
   triggerWeldEnd,
   triggerVariant,
   triggerTone,
+  triggerAppearance,
   triggerSize,
   triggerIconOnly,
 }: MenuProps) {
@@ -692,6 +696,7 @@ export function Menu({
             [triggerWeldEndOption.attr]: triggerWeldEnd ? triggerWeldEndOption.trueValue : undefined,
             [triggerVariantOption.attr]: triggerVariant,
             [triggerToneOption.attr]: triggerTone,
+            [triggerAppearanceOption.attr]: triggerAppearance,
             [triggerSizeOption.attr]: triggerSize,
             [triggerIconOnlyOption.attr]: triggerIconOnly ? triggerIconOnlyOption.trueValue : undefined,
           }}

@@ -16,6 +16,7 @@ import "@skryensya/core/components/list.css";
 import "@skryensya/core/components/annotation.css";
 import CodeBlock from "../CodeBlock.astro";
 import ComponentPageShell from "./ComponentPageShell.astro";
+import AppearanceMenu from "../AppearanceMenu.astro";
 import ComponentPreview from "../ComponentPreview.astro";
 import {
   dialogAnatomyCss,
@@ -60,12 +61,17 @@ await initComponents();`;
   title="Dialog"
   description={t("dialog.description")}
   contractId="dialog"
+  appearanceTargetSelector=".sk-dialog"
   styleGroups={[
     { file: "components/dialog.css", probe: "sk-dialog", title: "Dialog" },
     { file: "patterns/dialog-vaul.css", probe: "data-sk-dialog-vaul", title: "Dialog Vaul" },
   ]}
   testFiles={["packages/react/src/components/dialog.test.tsx"]}}
 >
+  <Fragment slot="appearance">
+    <AppearanceMenu label={t("prefs.appearance")} values={["plain", "brutalist", "frosted"]} unavailable={{ tactile: t("prefs.appearanceTactileUnavailable") }} />
+  </Fragment>
+
   <Fragment slot="anatomy">
     <p set:html={t("dialog.anatomyBody")} />
     <ComponentPreview

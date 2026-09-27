@@ -63,6 +63,17 @@ export const calloutContract = {
   ],
 
   options: {
+    /*
+     * HOW THE BOX IS DRAWN, Button's axis: brutalist a black edge and hard offset (the tone keeps
+     * its fill and ink), frosted a see-through tinted sheet (opaque wherever the material cannot be
+     * trusted). No tactile: a callout is never pressed.
+     */
+    appearance: {
+      type: "enum",
+      values: ["plain", "brutalist", "frosted"],
+      default: "plain",
+      attr: "data-appearance",
+    },
     tone: {
       type: "enum",
       values: ["neutral", "info", "success", "warning", "danger"],
@@ -75,7 +86,7 @@ export const calloutContract = {
     Callout: {
       intent: ["message", "something-went-wrong", "confirmation", "warning-notice", "aside-note"],
       host: { element: "div" },
-      options: ["tone"],
+      options: ["tone", "appearance"],
       slots: {
         icon: { accepts: "signature", of: ["Icon"] },
         title: { accepts: "text" },

@@ -138,6 +138,17 @@ export const comboboxContract = {
   },
 
   options: {
+    /*
+     * HOW THE FIELD IS DRAWN, Input's axis: brutalist a black edge and hard offset in place of the
+     * soft well, frosted a see-through field (opaque wherever the material cannot be trusted).
+     * Every state still outranks it. Absent means plain, as for Input. No tactile: a field is typed
+     * into, not pressed.
+     */
+    appearance: {
+      type: "enum",
+      values: ["plain", "brutalist", "frosted"],
+      attr: "data-appearance",
+    },
     /** Submitted under this name. Lives on the input, like every other form attribute here. */
     name: { type: "string", attr: "name" },
     /**
@@ -176,6 +187,7 @@ export const comboboxContract = {
         "readOnly",
         "multiple",
         "allowCustomValue",
+        "appearance",
       ],
       /** Host id / form association / a11y; name/disabled/required/readonly stay options. */
       forward: ["id", "form", "autocomplete", "aria-*"],

@@ -1,4 +1,5 @@
 import { PLACEHOLDER_HREF } from "../lib/placeholder-hrefs";
+import { frostStage } from "./data/frost-stage";
 import type { UsageTree } from "@skryensya/core/usage-tree";
 import type { Translate } from "../i18n";
 
@@ -14,6 +15,21 @@ export const boxTree = (t: Translate): UsageTree => ({
     { contract: "typography", signature: "Text", children: t("demo.box.body") },
     { contract: "button", signature: "Button.action", children: t("demo.box.action") },
   ],
+});
+
+/*
+ * The same Box on the photograph Button's, Tile's and Accordion's frosted demos use: brutalist and
+ * plain read on any page, but frosted only shows what it does over a backdrop with detail and colour.
+ * The page's appearance menu retunes it.
+ */
+export const boxAppearanceTree = (t: Translate): UsageTree => ({
+  contract: "layout",
+  signature: "Stack",
+  attrs: { style: frostStage },
+  children: {
+    ...boxTree(t),
+    attrs: { style: "max-inline-size: 22rem;" },
+  },
 });
 
 const boxFace = (
