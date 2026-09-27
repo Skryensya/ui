@@ -251,6 +251,17 @@ const signatureTrees: readonly Canonical[] = [
     },
   },
   {
+    /* The option lands on the LABEL, the element that paints, not on the input host. */
+    name: "checkbox/brutalist",
+    enhanced: false,
+    tree: {
+      contract: "checkbox",
+      signature: "Checkbox",
+      options: { name: "boletin", appearance: "brutalist" },
+      children: "Recibir el boletín",
+    },
+  },
+  {
     /*
      * The one selection signature whose state is DERIVED. The parent holds no name and no value: it
      * reads its children (all / none / some) and a click on it makes them agree. Which children
