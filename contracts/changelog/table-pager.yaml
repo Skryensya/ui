@@ -3,8 +3,19 @@
 # `surface` is the shape of the contract the last time somebody reviewed it. If the compiler says it
 # does not match, something a consumer depends on has moved: write the entry and paste in the new
 # hash.
-surface: "1df30b10f8fdd075"
+surface: "04e5019672d21455"
 entries:
+  - date: 2026-09-26
+    kind: feature
+    es:
+      title: TablePager publica el hook brutalist de Pagination
+      body: >-
+        Comparte la hoja de Pagination, así que <code>--sk-pagination-brutalist-offset</code> también está entre
+        sus hooks.
+    en:
+      title: TablePager publishes Pagination's brutalist hook
+      body: >-
+        It shares Pagination's sheet, so <code>--sk-pagination-brutalist-offset</code> is among its hooks too.
   - date: 2026-09-17
     kind: feature
     es:
