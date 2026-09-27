@@ -196,6 +196,19 @@ describe("selection controls", () => {
 });
 
 describe("Radio (one on its own)", () => {
+  it("writes Radio's appearance on its label and RadioGroup's on its root", () => {
+    const ui = render(
+      <>
+        <Radio name="solo" appearance="brutalist">Solo</Radio>
+        <RadioGroup appearance="frosted" items={[{ value: "a", label: "A" }]} label="Group" name="g" />
+      </>,
+    );
+    const solo = ui.getByRole("radio", { name: "Solo" });
+    expect(solo.hasAttribute("data-appearance")).toBe(false);
+    expect(solo.closest("label")?.getAttribute("data-appearance")).toBe("brutalist");
+    expect(ui.getByRole("radiogroup", { name: "Group" }).getAttribute("data-appearance")).toBe("frosted");
+  });
+
   it("is a radio whose group is its name, and takes a label only when given one", () => {
     const ui = render(
       <table>

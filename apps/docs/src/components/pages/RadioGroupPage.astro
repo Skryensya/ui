@@ -10,6 +10,7 @@ import "@skryensya/core/components/table.css";
 /* Structure diagram: Annotated specimen; a preview frame only copies styles THIS page loaded. */
 import "@skryensya/core/components/annotation.css";
 import ComponentPageShell from "./ComponentPageShell.astro";
+import AppearanceMenu from "../AppearanceMenu.astro";
 import CodeBlock from "../CodeBlock.astro";
 import ComponentPreview from "../ComponentPreview.astro";
 import { radioGroupAnatomyTree, radioGroupLikertTree, radioGroupMatrixTree, radioGroupTree, tileRadioGroupTree } from "../../demos/radio-group";
@@ -35,9 +36,14 @@ root.addEventListener("sk:tilevaluechange", (event) => {
   title="RadioGroup"
   description={t("radioGroupPage.description")}
   contractId="radio-group"
+  appearanceTargetSelector=".sk-radio"
   styleGroups={[{ file: "components/radio-group.css", probe: "sk-radio-group" }]}
   testFiles={["packages/vanilla/src/components/tile-radio-group.svelte.test.ts"]}}
 >
+  <Fragment slot="appearance">
+    <AppearanceMenu label={t("prefs.appearance")} />
+  </Fragment>
+
   <Fragment slot="anatomy">
     <p set:html={t("radioGroupPage.anatomyBody")} />
     <ComponentPreview

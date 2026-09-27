@@ -253,6 +253,8 @@ export type RadioGroupItem = {
 };
 
 export type RadioProps = Omit<InputHTMLAttributes<HTMLInputElement>, "type"> & {
+  /** How the ring is drawn, on its label: `plain`, `tactile`, `brutalist` or `frosted`. */
+  appearance?: (typeof radioGroupContract.options.appearance.values)[number];
   children?: ReactNode;
 };
 
@@ -262,11 +264,11 @@ export type RadioProps = Omit<InputHTMLAttributes<HTMLInputElement>, "type"> & {
  * sharing a `name` are one group to the browser wherever they sit in the DOM.
  */
 export const Radio = forwardRef<HTMLInputElement, RadioProps>(function Radio(
-  { children, className, ...props },
+  { appearance = radioGroupContract.options.appearance.default, children, className, ...props },
   ref,
 ) {
   return (
-    <label className={classes(selectionParts.radio, className)}>
+    <label className={classes(selectionParts.radio, className)} data-appearance={appearance}>
       <input {...props} className={selectionParts.radioInput} ref={ref} type="radio" />
       <span aria-hidden="true" className={selectionParts.radioControl}>
         <span className={selectionParts.radioIndicator} />
@@ -277,6 +279,8 @@ export const Radio = forwardRef<HTMLInputElement, RadioProps>(function Radio(
 });
 
 export type RadioGroupProps = Omit<HTMLAttributes<HTMLDivElement>, "defaultValue" | "onChange" | "aria-label"> & {
+  /** How every ring in the group is drawn, on the group's root. */
+  appearance?: (typeof radioGroupContract.options.appearance.values)[number];
   defaultValue?: string | null;
   disabled?: boolean;
   items: readonly RadioGroupItem[];
@@ -292,7 +296,7 @@ export type RadioGroupProps = Omit<HTMLAttributes<HTMLDivElement>, "defaultValue
 };
 
 export const RadioGroup = forwardRef<HTMLDivElement, RadioGroupProps>(function RadioGroup(
-  { className, defaultValue, disabled, items, label, name, onValueChange, orientation = radioOrientationOption.default, required, spread, value, ...props },
+  { appearance = radioGroupContract.options.appearance.default, className, defaultValue, disabled, items, label, name, onValueChange, orientation = radioOrientationOption.default, required, spread, value, ...props },
   ref,
 ) {
   const controlled = value !== undefined;
@@ -312,6 +316,7 @@ export const RadioGroup = forwardRef<HTMLDivElement, RadioGroupProps>(function R
       aria-label={label}
       aria-orientation={orientation}
       className={classes(selectionParts.radioGroup, className)}
+      data-appearance={appearance}
       data-orientation={orientation}
       data-spread={spread ? "" : undefined}
       ref={ref}
