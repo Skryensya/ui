@@ -2006,12 +2006,13 @@ describe("folder: measured tab silhouette", () => {
     ).toBe(true);
   });
 
-  it("publishes mount on Folder/FolderLink and runtime clip/tail outputHooks", () => {
+  it("publishes mount on Folder/FolderLink and its runtime clip, fan clip, mask and tail outputHooks", () => {
     const contract = getContract("folder")!;
     expect(contract.signatures.Folder.mount).toBe("data-sk-folder");
     expect(contract.signatures.FolderLink.mount).toBe("data-sk-folder");
-    expect(contract.outputHooks).toEqual(["--sk-folder-clip", "--sk-folder-tail"]);
-    expect(contract.hooks).toEqual(expect.arrayContaining(["--sk-folder-clip", "--sk-folder-tail"]));
+    const outputs = ["--sk-folder-clip", "--sk-folder-fan-clip", "--sk-folder-mask", "--sk-folder-tail"];
+    expect(contract.outputHooks).toEqual(outputs);
+    expect(contract.hooks).toEqual(expect.arrayContaining(outputs));
     expect(emitMarkup(folder({ options: { active: true } }))).toContain("data-active");
   });
 

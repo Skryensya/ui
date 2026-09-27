@@ -1,6 +1,8 @@
 import {
   folderAttrs,
   folderClipPath,
+  folderFanClipPath,
+  folderMaskImage,
   folderContract,
   folderGeometryFrom,
   folderGroundFrom,
@@ -130,6 +132,10 @@ function useFolderSilhouette<Root extends HTMLElement>(
       shape.setAttribute("viewBox", `0 0 ${width} ${height}`);
       path.setAttribute("d", d);
       root.style.setProperty("--sk-folder-clip", folderClipPath(d));
+      // The fan is clipped to OUTSIDE the silhouette, so a see-through folder never shows its tucked half.
+      root.style.setProperty("--sk-folder-fan-clip", folderFanClipPath(d));
+      // The same outline as a mask: the only thing that contains a frosted folder's backdrop blur.
+      root.style.setProperty("--sk-folder-mask", folderMaskImage(d, width, height));
       // The ground the folder is invisible against at rest. Read here rather than named in the
       // stylesheet because no rule can ask what colour is behind an element; `null` leaves the
       // property unset so `folder.css`'s own default stands.

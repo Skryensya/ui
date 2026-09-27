@@ -3,8 +3,27 @@
 # `surface` is the shape of the contract the last time somebody reviewed it. If the compiler says it
 # does not match, something a consumer depends on has moved: write the entry and paste in the new
 # hash.
-surface: "de8c433f2b1e285c"
+surface: "9b4279cdea0620f4"
 entries:
+  - date: 2026-09-27
+    kind: bugfix
+    target: appearance
+    es:
+      title: Frosted y brutalist en Folder ya no se ven rotos en un stack
+      body: >-
+        Con <code>frosted</code>, la mitad escondida de las previews se veía a través del vidrio y el desenfoque se
+        escapaba por la esquina redondeada de la pestaña. Ahora el abanico se recorta a lo que queda fuera de la silueta
+        (<code>--sk-folder-fan-clip</code>) y el vidrio usa la silueta como máscara (<code>--sk-folder-mask</code>), dos
+        salidas nuevas que escriben los dos bindings. Con <code>brutalist</code>, la sombra desplazada ya no baja al lado
+        del folder siguiente: termina donde ese folder empieza.
+    en:
+      title: Frosted and brutalist on Folder no longer look broken in a stack
+      body: >-
+        Under <code>frosted</code>, the tucked half of the previews showed through the glass and the blur leaked past
+        the tab's rounded corner. The fan is now clipped to what lies outside the silhouette
+        (<code>--sk-folder-fan-clip</code>) and the glass takes the silhouette as a mask (<code>--sk-folder-mask</code>),
+        two new outputs both bindings write. Under <code>brutalist</code>, the hard offset no longer runs down beside
+        the next folder: it stops where that folder begins.
   - date: 2026-09-26
     kind: feature
     target: appearance

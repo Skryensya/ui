@@ -1,8 +1,10 @@
 import { describe, expect, it } from "vitest";
 import {
   defaultFolderGeometry,
+  folderFanClipPath,
   folderGeometryFrom,
   folderGroundFrom,
+  folderMaskImage,
   folderPath,
   folderTabEndFrom,
   folderTabEnd,
@@ -177,6 +179,33 @@ describe("folderPath", () => {
  * folder's leading inset, and the difference is visible - the label overhangs the flat top of its
  * own tab by exactly that much.
  */
+describe("folderFanClipPath", () => {
+  /* The fan must stay visible AROUND the folder and vanish INSIDE it, whatever the folder is made of:
+   * one path, the outline as the hole, drawn with evenodd. */
+  it("cuts the silhouette out of a rectangle far larger than any fan", () => {
+    expect(folderFanClipPath("M0 0 H10 V10 H0 Z")).toBe('path(evenodd, "M-10000 -10000 H10000 V10000 H-10000 Z M0 0 H10 V10 H0 Z")');
+  });
+
+  it("clips nothing until there is a shape", () => {
+    expect(folderFanClipPath("")).toBe("none");
+  });
+});
+
+describe("folderMaskImage", () => {
+  it("draws the same path, at the folder's own pixel size, as an SVG mask", () => {
+    const mask = folderMaskImage("M0 0 H10 V10 H0 Z", 600, 320);
+    expect(mask.startsWith('url("data:image/svg+xml,')).toBe(true);
+    const svg = decodeURIComponent(mask.slice('url("data:image/svg+xml,'.length, -2));
+    expect(svg).toContain("width='600' height='320' viewBox='0 0 600 320'");
+    expect(svg).toContain("<path d='M0 0 H10 V10 H0 Z'/>");
+  });
+
+  it("masks nothing until there is a shape and a box", () => {
+    expect(folderMaskImage("", 600, 320)).toBe("none");
+    expect(folderMaskImage("M0 0 Z", 0, 320)).toBe("none");
+  });
+});
+
 describe("folderTabEndFrom", () => {
   it("measures to the tab's far edge, not merely its width", () => {
     expect(folderTabEndFrom({ offsetWidth: 600 }, { offsetLeft: 24, offsetWidth: 61 }, false)).toBe(85);
