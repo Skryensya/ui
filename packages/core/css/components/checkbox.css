@@ -328,7 +328,7 @@
     border-color: color-mix(in oklab, currentColor 30%, transparent);
   }
 
-  :is(.sk-checkbox[data-appearance="frosted"], .sk-checkbox-group[data-appearance="frosted"] .sk-checkbox):has(.sk-checkbox__input:is(:checked, :indeterminate)) .sk-checkbox__control {
+  :is(.sk-checkbox[data-appearance="frosted"], .sk-checkbox-group[data-appearance="frosted"] .sk-checkbox):has(.sk-checkbox__input:checked, input[type="checkbox"].sk-checkbox__input:indeterminate) .sk-checkbox__control {
     border-color: var(--sk-checkbox-border-color);
   }
 
