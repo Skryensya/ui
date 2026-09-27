@@ -121,4 +121,30 @@
       border-color: CanvasText;
     }
   }
+
+  /*
+   * ── APPEARANCE ───────────────────────────────────────────────────────────────────────────────
+   *
+   * Button's axis on the tag, which takes brutalist alone: a mark this small is never pressed
+   * (no tactile), and see-through glass on it would only cost its label contrast (no frosted). A
+   * black edge and a 2px hard offset toward block-end and inline-end, mirrored in RTL; the
+   * offset is internal so no sheet that reuses this one inherits a hook it does not document.
+   */
+  .sk-tag[data-appearance="brutalist"] {
+    --brutalist-offset: 2px;
+    --brutalist-black: oklch(from var(--shadow-lg) l c h / 1);
+    --brutalist-direction: 1;
+    border-color: var(--brutalist-black);
+    box-shadow: calc(var(--brutalist-offset) * var(--brutalist-direction)) var(--brutalist-offset) 0 var(--brutalist-black);
+  }
+
+  .sk-tag[data-appearance="brutalist"]:dir(rtl) {
+    --brutalist-direction: -1;
+  }
+
+  @media (forced-colors: active) {
+    .sk-tag[data-appearance="brutalist"] {
+      box-shadow: none;
+    }
+  }
 }

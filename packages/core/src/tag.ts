@@ -57,6 +57,17 @@ export const tagContract = {
   },
 
   options: {
+    /*
+     * HOW THE CHIP IS DRAWN, Button's axis, brutalist alone: a black edge and a small hard offset.
+     * No tactile (a chip is not a key) and no frosted (glass would only cost the label its
+     * contrast).
+     */
+    appearance: {
+      type: "enum",
+      values: ["plain", "brutalist"],
+      default: "plain",
+      attr: "data-appearance",
+    },
     tone: {
       type: "enum",
       values: ["neutral", "accent", "success", "warning", "danger"],
@@ -88,7 +99,7 @@ export const tagContract = {
     Tag: {
       intent: ["removable-label", "filter-chip", "applied-filter", "keyword"],
       host: { element: "span", when: { href: "absent" } },
-      options: ["tone", "removable", "removeLabel"],
+      options: ["tone", "removable", "removeLabel", "appearance"],
       /** Host id / a11y names; remove control chrome stays template realization, not forwarded attrs. */
       forward: ["id", "aria-*"],
       /*
@@ -135,7 +146,7 @@ export const tagContract = {
     "Tag.link": {
       intent: ["tag-link", "navigable-keyword", "facet-link"],
       host: { element: "a", when: { href: "present" } },
-      options: ["tone", "href"],
+      options: ["tone", "href", "appearance"],
       requires: ["href"],
       forbids: ["removable", "removeLabel"],
       /** Link host attrs the contract does not map (same channel as Button.navigation). */

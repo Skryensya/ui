@@ -3,6 +3,7 @@ import "@skryensya/core/components/tag.css";
 /* Structure diagram: Annotated specimen; a preview frame only copies styles THIS page loaded. */
 import "@skryensya/core/components/annotation.css";
 import ComponentPageShell from "./ComponentPageShell.astro";
+import AppearanceMenu from "../AppearanceMenu.astro";
 import CodeBlock from "../CodeBlock.astro";
 import ComponentPreview from "../ComponentPreview.astro";
 import { tagAnatomyTree, tagLinksTree, tagRemovableTree, tagSimpleTree, tagTonesTree } from "../../demos/tag";
@@ -17,8 +18,13 @@ const install = `pnpm add @skryensya/core @skryensya/react`;
   title="Tag"
   description={t("tagPage.description")}
   contractId="tag"
+  appearanceTargetSelector=".sk-tag"
   testFiles={["packages/react/src/components/tag.test.tsx"]}}
 >
+  <Fragment slot="appearance">
+    <AppearanceMenu label={t("prefs.appearance")} values={["plain", "brutalist"]} unavailable={{ tactile: t("prefs.appearanceTactileUnavailable"), frosted: t("prefs.appearanceFrostedUnavailable") }} />
+  </Fragment>
+
   <Fragment slot="anatomy">
     <p set:html={t("tagPage.anatomyBody")} />
     <ComponentPreview
