@@ -24,6 +24,8 @@ const skippedDirectories = {
      not called `dist` for the same reason `.preview-heights-dist` is not. `react-modules.json` alone
      is 1.2MB of bundled kit, and it carries the em dashes of whatever component prose went into it. */
   sandbox: true,
+  /* `apps/storybook/storybook-static/`: `storybook build`'s output, Storybook's own bundle included. */
+  "storybook-static": true,
 } satisfies Record<string, true>;
 const checkedExtensions = {
   ".astro": true,
