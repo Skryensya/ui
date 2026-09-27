@@ -266,4 +266,70 @@
   .sk-time-field__options-positioner .sk-select__content {
     overscroll-behavior: contain;
   }
+
+  /*
+   * ── APPEARANCE ───────────────────────────────────────────────────────────────────────────────
+   *
+   * Input's axis on this field (input.css documents it): written as the root's own hooks behind
+   * `:where()`, at the base rule's specificity, so every state (invalid, disabled, read-only) still
+   * outranks it. The offset is internal. No tactile: a field is typed into, not pressed.
+   */
+
+  /* BRUTALIST: the black edge and a hard offset toward block-end and inline-end, mirrored in RTL,
+   * in place of the soft well. */
+  .sk-time-field:where([data-appearance="brutalist"]) {
+    --field-brutalist-offset: 3px;
+    --brutalist-black: oklch(from var(--shadow-lg) l c h / 1);
+    --brutalist-direction: 1;
+    --sk-time-field-border-color: var(--brutalist-black);
+    --sk-time-field-wash: none;
+    --sk-time-field-shadow: calc(var(--field-brutalist-offset) * var(--brutalist-direction)) var(--field-brutalist-offset) 0
+      var(--brutalist-black);
+  }
+
+  .sk-time-field:where([data-appearance="brutalist"]):dir(rtl) {
+    --brutalist-direction: -1;
+  }
+
+  /* FROSTED: the field's own fill (whichever state set it) thinned into a sheet over a blurred
+   * backdrop, with a fine edge. Opaque baseline; the material only where backdrop-filter exists and
+   * no reduced-transparency preference is set. */
+  .sk-time-field:where([data-appearance="frosted"]) {
+    --sk-time-field-wash: none;
+    --sk-time-field-border-color: color-mix(in oklab, currentColor 24%, transparent);
+    --sk-time-field-shadow: inset 0 1px 2px var(--shadow-sm);
+  }
+
+  @supports (backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px)) {
+    @media (prefers-reduced-transparency: no-preference) {
+      .sk-time-field:where([data-appearance="frosted"]) .sk-time-field__control {
+        background: color-mix(in oklab, var(--sk-time-field-bg) 60%, transparent);
+        -webkit-backdrop-filter: blur(10px) saturate(150%);
+        backdrop-filter: blur(10px) saturate(150%);
+      }
+    }
+  }
+
+  :is([data-contrast="high"] .sk-time-field, .sk-time-field[data-contrast="high"]):where([data-appearance="frosted"]) .sk-time-field__control {
+    background: var(--sk-time-field-bg);
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+
+  @media (prefers-contrast: more) {
+    :root:not([data-contrast]) .sk-time-field:where([data-appearance="frosted"]) .sk-time-field__control {
+      background: var(--sk-time-field-bg);
+      -webkit-backdrop-filter: none;
+      backdrop-filter: none;
+    }
+  }
+
+  @media (forced-colors: active) {
+    .sk-time-field[data-appearance] .sk-time-field__control {
+      background: Canvas;
+      -webkit-backdrop-filter: none;
+      backdrop-filter: none;
+      box-shadow: none;
+    }
+  }
 }

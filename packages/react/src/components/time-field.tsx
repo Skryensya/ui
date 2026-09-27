@@ -62,6 +62,8 @@ function segmentText(
 const ADVANCE_DELAY = 500;
 
 export type TimeFieldProps = {
+  /** How the field is drawn: `plain`, `brutalist` or `frosted`. Absent means plain. */
+  appearance?: (typeof timeFieldContract.options.appearance.values)[number];
   clearLabel?: string;
   /**
    * Where the picker's own floating listbox is portalled. Defaults to `document.body`, which is
@@ -128,6 +130,7 @@ export type TimeFieldProps = {
  * own `connect.js`, not assumed).
  */
 export function TimeField({
+  appearance,
   clearLabel = clearLabelOption.default,
   container,
   defaultValue,
@@ -349,7 +352,7 @@ export function TimeField({
   };
 
   return (
-    <div className={timeFieldParts.root} data-invalid={invalid ? "" : undefined} data-sk-time-field="">
+    <div className={timeFieldParts.root} data-appearance={appearance} data-invalid={invalid ? "" : undefined} data-sk-time-field="">
       <span className={timeFieldParts.label} id={labelId}>
         {label}
       </span>
