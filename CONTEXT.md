@@ -489,3 +489,48 @@ _Avoid_: the changelog check, the version bump
 The dependency-free checker that reads the CSS and fails on a broken rule. It is what makes the
 tiers a system rather than three folders, every rule here is executable, not aspirational.
 _Avoid_: the linter, stylelint
+
+## Maker
+
+**Maker**:
+The visual page builder. A person composes signatures into a tree inside ordinary document flow,
+and the browser places everything; nothing in it has coordinates. Distinct from the **Editor**
+contract, which is rich text.
+_Avoid_: editor, page editor, builder, canvas (the Canvas contract is a pan-and-zoom surface)
+
+**Maker page**:
+The one thing a person edits in the Maker: a tree of maker nodes. It holds only what the author
+chose, never what the browser computed (position, rendered size).
+_Avoid_: site document, SiteDocument, layout, artboard
+
+**Maker node**:
+One usage-tree node plus a stable identity. Stripping the identities from a maker page yields a
+valid-shaped usage tree, and nothing else is lost.
+_Avoid_: EditorNode, element, layer, block
+
+**Maker operation**:
+One change to a maker page from the closed set: insert, move, remove, wrap, unwrap, set an option,
+set a host attribute, set a slot's text or entries. Dragging, the keyboard, the inspector and a prompt
+all speak only in operations, and no operation accepts a position.
+_Avoid_: command (the Editor's word), action, mutation, edit
+
+**Stage**:
+Where the Maker renders a maker page with the real bindings, in its own browsing context. Choosing a
+stage width changes only the space the browser is given, never the maker page.
+_Avoid_: canvas, artboard, viewport, preview frame
+
+**Pending**:
+A maker page that is structurally sound but that validation does not accept yet: an empty container,
+an option a constraint still needs. Shown and reported, never silently repaired.
+_Avoid_: invalid, broken, draft, error state
+
+**Preset**:
+The maker node a signature is inserted as: every option at its default, plus the first value that
+satisfies each constraint, unless the semantic overlay names a better one. Belongs to the contract,
+not to the Maker.
+_Avoid_: template, default node, starter
+
+**Layout role**:
+What a maker node is to its parent, said in the parent's terms: "item in a wrapping row, sized to
+fit". It comes from the parent and is lost when the node moves.
+_Avoid_: position, placement (the anchored sense), constraints
