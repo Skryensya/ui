@@ -3,8 +3,21 @@
 # `surface` is the shape of the contract the last time somebody reviewed it. If the compiler says it
 # does not match, something a consumer depends on has moved: write the entry and paste in the new
 # hash.
-surface: "09688828bda4a24a"
+surface: "9df24c4596401cec"
 entries:
+  - date: 2026-09-26
+    kind: feature
+    target: appearance
+    es:
+      title: ImageFrame suma appearance plain y brutalist
+      body: >-
+        <code>brutalist</code> enmarca el medio con un borde negro y una sombra dura. Sin <code>tactile</code>
+        ni <code>frosted</code> (el vidrio sobre una foto la escondería).
+    en:
+      title: ImageFrame adds plain and brutalist appearances
+      body: >-
+        <code>brutalist</code> frames the media with a black edge and a hard offset. No <code>tactile</code> and
+        no <code>frosted</code> (glass over a photograph would hide it).
   - date: 2026-09-17
     kind: feature
     es:
