@@ -12,6 +12,13 @@ const keyboardPress = (trigger: HTMLElement) => fireEvent.click(trigger, { detai
 const field = (ui: ReturnType<typeof render>) => ui.getByLabelText("Password") as HTMLInputElement;
 
 describe("PasswordInput (React)", () => {
+  it("writes an appearance on the root only when asked", () => {
+    const plain = render(<PasswordInput label="Plain" />);
+    expect(plain.container.querySelector(".sk-password-input")?.hasAttribute("data-appearance")).toBe(false);
+    const frosted = render(<PasswordInput appearance="frosted" label="Frosted" />);
+    expect(frosted.container.querySelector(".sk-password-input")?.getAttribute("data-appearance")).toBe("frosted");
+  });
+
   it("starts hidden, names the toggle for what it will do, and asks for a saved password", () => {
     const ui = render(<PasswordInput label="Password" />);
     expect(field(ui).type).toBe("password");
