@@ -568,6 +568,28 @@
     visibility: hidden;
   }
 
+  /*
+   * A LIST WITH COMPANY: UserSelect's content holds a search field above the rows and a footer below
+   * them, so the content box itself must not be the scroller (the field would scroll away with the
+   * first wheel). The rows' own wrapper (`data-sk-user-select-list`, the listbox) scrolls instead, at a
+   * FIXED height, so filtering never makes the box jump, and it shrinks only when the viewport leaves
+   * less room than that. `sk-scrollbar` on the same element paints the rail.
+   */
+  /* `:not([data-state="closed"])`: the `:has()` outranks the closed rule's `display: none` above. */
+  .sk-select__content:not([data-state="closed"]):has(> [data-sk-user-select-list]) {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-stack-xs);
+    overflow: hidden;
+  }
+
+  [data-sk-user-select-list] {
+    flex: 0 1 15rem;
+    min-block-size: 0;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+  }
+
   .sk-select__item[data-state="checked"] .sk-select__item-indicator {
     visibility: visible;
   }
