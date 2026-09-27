@@ -18,8 +18,7 @@
     "allowImportingTsExtensions": true,
     "types": ["node", "vite/client"],
     "paths": {
-      "@docs/*": ["../docs/src/*"],
-      "@story": ["./src/tree-story.tsx"]
+      "@docs/*": ["../docs/src/*"]
     }
   },
   "include": [".storybook/**/*", "scripts/**/*", "src/*.ts", "src/*.tsx", "src/playgrounds/**/*"]

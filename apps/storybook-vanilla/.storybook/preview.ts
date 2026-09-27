@@ -1,5 +1,5 @@
 import type { Decorator, Preview } from "@storybook/html-vite";
-import { applyPage, globalTypes, initialGlobals, parameters } from "../../storybook/src/shared";
+import { applyPage, globalTypes, initialGlobals, parameters } from "@skryensya/storybook-kit/shared";
 
 /* The same base sheets as the React Storybook; each stories file brings its component sheets. */
 import "@skryensya/core/fonts/hanken-grotesk.css";

@@ -1,5 +1,5 @@
 import type { Decorator, Preview } from "@storybook/react-vite";
-import { applyPage, globalTypes, initialGlobals, parameters } from "../src/shared";
+import { applyPage, globalTypes, initialGlobals, parameters } from "@skryensya/storybook-kit/shared";
 
 /*
  * Only what every story shares: the font, the tokens and the tier-3 dimension switches the

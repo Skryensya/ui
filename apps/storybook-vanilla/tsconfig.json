@@ -1,8 +1,10 @@
 {
   /*
-   * Only the code written by hand is checked here. The stories are `apps/storybook`'s generated
-   * files, vouched for by its generator (every tree validated against its contracts) and by its
-   * `generate-stories.ts --check`; see that app's tsconfig for why they are not type-checked.
+   * Only the code written by hand is checked here, not the generated stories. They reach into the
+   * docs' demo modules, which are written and checked (`astro check`) under Astro's base config,
+   * which is not strict: under strictNullChecks their untyped tree literals widen and stop matching
+   * `UsageTree`. What vouches for a generated file is the generator (every tree validated against its
+   * contracts) and `generate-stories.ts --check`.
    */
   "compilerOptions": {
     "target": "ES2022",
@@ -18,5 +20,5 @@
       "@docs/*": ["../docs/src/*"]
     }
   },
-  "include": [".storybook/**/*", "src/**/*"]
+  "include": [".storybook/**/*", "scripts/**/*", "src/*.ts", "src/playgrounds/**/*"]
 }

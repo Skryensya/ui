@@ -1,7 +1,6 @@
 /*
- * WHAT BOTH STORYBOOKS SHARE, the React one (this app) and the Vanilla one (`apps/storybook-vanilla`):
- * the toolbar, the page the stories sit on, and the stories themselves. Only the renderer differs,
- * and each app supplies its own behind the `@story` alias (see `main-shared.ts`).
+ * THE PREVIEW SETTINGS BOTH STORYBOOKS USE: the toolbar and the page the stories sit on. Each app
+ * (`apps/storybook`, `apps/storybook-vanilla`) spreads these into its own `.storybook/preview`.
  */
 
 export const globalTypes = {
@@ -40,6 +39,9 @@ export const parameters = {
   layout: "padded",
   backgrounds: { disable: true },
   controls: { expanded: true },
+  /* The code panel beside every story: the binding's own source (TSX in React, HTML in Vanilla),
+     which each app's `tree-story` writes from the same tree the story draws. */
+  docs: { codePanel: true },
 };
 
 /*
