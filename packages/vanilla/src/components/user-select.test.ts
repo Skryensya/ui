@@ -244,4 +244,33 @@ describe("UserSelect Vanilla contracts", () => {
     fireEvent.click(root.querySelector('[data-sk-select-item][data-value="maria"]') as HTMLElement);
     expect(handler).not.toHaveBeenCalled();
   });
+
+  it("reads data-term and data-*-label for every string it writes", async () => {
+    const root = mount(
+      markup()
+        .replace('data-placeholder="Select users"', 'data-term="usuarios" data-placeholder="Seleccionar {term}"')
+        .replace("data-sk-user-select ", 'data-sk-user-select data-selected-many-label="{count} {term} seleccionados" data-count-label="{count} {term}" data-selected-count-label="{count} seleccionados" data-clear-label="Limpiar" '),
+    );
+    const { trigger, value } = parts(root);
+
+    fireEvent.click(trigger);
+    fireEvent.click(root.querySelector('[data-sk-select-item][data-value="jane"]') as HTMLElement);
+    await waitFor(() => expect(trigger.getAttribute("aria-label")).toContain("Jane Cooper"));
+    fireEvent.click(root.querySelector('[data-sk-select-item][data-value="maria"]') as HTMLElement);
+
+    await waitFor(() => expect(trigger.getAttribute("aria-label")).toBe("Seleccionar usuarios, 2 usuarios seleccionados"));
+    expect(value.textContent).toContain("2 usuarios");
+    expect(parts(root).footer.textContent).toContain("2 seleccionados");
+    expect(parts(root).clear.textContent).toBe("Limpiar");
+  });
+
+  it("leads every row with a decorative checkbox, and the authored trailing check stays out of its way", () => {
+    const root = mount(markup());
+    for (const item of parts(root).items) {
+      const box = item.firstElementChild as HTMLElement;
+      expect(box.hasAttribute("data-sk-user-select-check")).toBe(true);
+      expect(box.getAttribute("aria-hidden")).toBe("true");
+      expect(item.querySelectorAll("[data-sk-user-select-check]")).toHaveLength(1);
+    }
+  });
 });

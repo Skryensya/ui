@@ -10,7 +10,15 @@
   import { select } from "@skryensya/core/machines";
   import { selectAttrs, selectParts, selectPositioning, type SelectOption } from "@skryensya/core/select";
   import { selectorsFor } from "@skryensya/core/selectors";
-  import { userSelectAttrs, userSelectEvents, userSelectSearchKey } from "@skryensya/core/user-select";
+  import { selectionParts } from "@skryensya/core/selection";
+  import {
+    userSelectAttrs,
+    userSelectEvents,
+    userSelectLabel,
+    userSelectLabels,
+    userSelectSearchKey,
+    type UserSelectLabels,
+  } from "@skryensya/core/user-select";
   import { normalizeProps, useMachine } from "@zag-js/svelte";
   import { onDestroy, onMount } from "svelte";
   import { applyZagProps, bindZagEvents, type DomProps } from "../runtime/apply";
@@ -36,11 +44,19 @@
   const selector = selectorsFor(selectAttrs);
   const own = selectorsFor(userSelectAttrs);
 
-  const fromTemplate = (template: string, values: Record<string, string>) => {
-    let result = template;
-    for (const [key, value] of Object.entries(values)) result = result.replaceAll(`{${key}}`, value);
-    return result;
-  };
+  /*
+   * The same string table React reads (`userSelectLabels`), overridden from the root: `data-term`
+   * for the noun, `data-placeholder` and `data-search-placeholder` under their existing names, and
+   * `data-<key>-label` for every other key (`data-clear-label`, `data-count-label`, ...).
+   */
+  const labels = { ...userSelectLabels } as UserSelectLabels;
+  for (const key of Object.keys(userSelectLabels) as (keyof UserSelectLabels)[]) {
+    const attr = key === "term" || key === "placeholder" || key === "searchPlaceholder" ? key : `${key}Label`;
+    const authoredLabel = root.dataset[attr];
+    if (authoredLabel) labels[key] = authoredLabel;
+  }
+  const label = (key: Exclude<keyof UserSelectLabels, "term">, values?: Record<string, string | number>) =>
+    userSelectLabel(labels, key, values);
 
   const control = root.querySelector<HTMLElement>(selector.control);
   const trigger = root.querySelector<HTMLElement>(selector.trigger);
@@ -65,7 +81,31 @@
     indicator: HTMLElement | null;
   };
 
+  // Multiple selection shows a leading checkbox on every row. Decorative (the option's own
+  // `aria-selected` is the state) and checked from the row's `data-state` in CSS, so it is inserted
+  // once and never touched again. An authored one is kept as it is.
+  const ensureCheck = (node: HTMLElement) => {
+    if (node.querySelector(own.check)) return;
+    const box = document.createElement("span");
+    box.className = selectionParts.checkbox;
+    box.setAttribute(userSelectAttrs.check, "");
+    box.setAttribute("aria-hidden", "true");
+    const control = document.createElement("span");
+    control.className = selectionParts.checkboxControl;
+    const indicator = document.createElement("span");
+    indicator.className = selectionParts.checkboxIndicator;
+    indicator.dataset.state = "checked";
+    const glyph = document.createElement("span");
+    glyph.dataset.skIcon = "check";
+    glyph.dataset.skIconSize = "sm";
+    indicator.append(glyph);
+    control.append(indicator);
+    box.append(control);
+    node.prepend(box);
+  };
+
   const readItem = (node: HTMLElement): Authored => {
+    ensureCheck(node);
     const value = node.dataset.value;
     if (!value) throw new Error("Every [data-sk-select-item] needs a non-empty data-value.");
     const text = node.querySelector<HTMLElement>(selector.itemText) ?? node;
@@ -151,28 +191,26 @@
     clearEl.dataset.variant = "ghost";
     clearEl.dataset.size = "sm";
     clearEl.type = "button";
-    clearEl.textContent = root.dataset.clearLabel || "Clear all";
+    clearEl.textContent = label("clear");
     clearEl.setAttribute(userSelectAttrs.clear, "");
 
     footerEl.append(countEl, clearEl);
     content.append(footerEl);
   }
 
-  const placeholder = root.dataset.placeholder || "Select users";
-  const unselectedLabel = root.dataset.unselectedLabel || "No one selected";
-  if (!search.placeholder) search.placeholder = root.dataset.searchPlaceholder || "Search users...";
+  const placeholder = label("placeholder");
+  const unselectedLabel = label("unselected");
+  if (!search.placeholder) search.placeholder = label("searchPlaceholder");
   const maxAvatars = Number(root.dataset.maxAvatars) || 3;
 
   const emptyMessage = () =>
     authored.length === 0
-      ? root.dataset.emptyLabel || "No users available"
-      : fromTemplate(root.dataset.noResultsLabel || 'No users found for "{query}"', { query });
+      ? label("empty")
+      : label("noResults", { query });
 
   const resultText = (count: number) => {
     if (count === 0) return emptyMessage();
-    const template =
-      count === 1 ? (root.dataset.resultLabel ?? "1 result available") : (root.dataset.resultsLabel ?? "{count} results available");
-    return fromTemplate(template, { count: String(count) });
+    return count === 1 ? label("result") : label("results", { count });
   };
 
   const makeCollection = (items: SelectOption[]) =>
@@ -233,8 +271,8 @@
   const triggerLabel = () => {
     const selected = selectedRows();
     if (selected.length === 0) return placeholder;
-    if (selected.length === 1) return `${placeholder}, ${selected[0]!.item.label} selected`;
-    return `${placeholder}, ${selected.length} users selected`;
+    if (selected.length === 1) return `${placeholder}, ${label("selectedOne", { name: selected[0]!.item.label })}`;
+    return `${placeholder}, ${label("selectedMany", { count: selected.length })}`;
   };
 
   // `null`, not "": an empty selection's key IS "", and the first render must still paint the empty state.
@@ -291,10 +329,10 @@
       wrap.append(group);
     }
 
-    const label = document.createElement("span");
-    label.className = selectParts.value;
-    label.textContent = selected.length === 1 ? selected[0]!.item.label : `${selected.length} users`;
-    wrap.append(label);
+    const text = document.createElement("span");
+    text.className = selectParts.value;
+    text.textContent = selected.length === 1 ? selected[0]!.item.label : label("count", { count: selected.length });
+    wrap.append(text);
     valueEl.append(wrap);
   };
 
@@ -375,7 +413,7 @@
       node: () => countEl,
       props: () => ({}),
       after: (node) => {
-        node.textContent = `${api.value.length} selected`;
+        node.textContent = label("selectedCount", { count: api.value.length });
       },
     },
     { part: "clear", node: () => clearEl, props: () => api.getClearTriggerProps(), events: true },

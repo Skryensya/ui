@@ -8,6 +8,7 @@
  */
 import "@skryensya/core/components/select.css";
 import "@skryensya/core/components/combobox.css";
+import "@skryensya/core/components/checkbox.css";
 import CodeBlock from "../CodeBlock.astro";
 import ComponentPageShell from "./ComponentPageShell.astro";
 import ComponentPreview from "../ComponentPreview.astro";
@@ -23,14 +24,25 @@ const vanillaInstall = `pnpm add @skryensya/core @skryensya/vanilla`;
 const styles = `@import "@skryensya/core/patterns/anchored.css";
 @import "@skryensya/core/components/select.css";
 @import "@skryensya/core/components/combobox.css";
-@import "@skryensya/core/components/avatar.css";`;
+@import "@skryensya/core/components/avatar.css";
+@import "@skryensya/core/components/checkbox.css";`;
 
 const reactSource = `<UserSelect
   users={users}
   value={value}
   onValueChange={setValue}
-  placeholder="${t("userSelectPage.placeholder")}"
-  searchPlaceholder="${t("userSelectPage.searchPlaceholder")}"
+  term="${t("userSelectPage.label.term")}"${
+    t("userSelectPage.label.term") === "users"
+      ? ""
+      : `
+  labels={{
+    placeholder: "${t("userSelectPage.label.placeholder")}",
+    count: "${t("userSelectPage.label.count")}",
+    selectedCount: "${t("userSelectPage.label.selectedCount")}",
+    clear: "${t("userSelectPage.label.clear")}",
+    // ...every key in userSelectLabels
+  }}`
+  }
 />`;
 ---
 
@@ -42,6 +54,7 @@ const reactSource = `<UserSelect
     { file: "components/select.css", probe: "sk-select", title: "Select" },
     { file: "components/combobox.css", probe: "sk-combobox", title: "Combobox" },
     { file: "components/avatar.css", probe: "sk-avatar", title: "Avatar" },
+    { file: "components/checkbox.css", probe: "sk-checkbox", title: "Checkbox" },
     { file: "patterns/anchored.css", probe: "sk-anchored", title: "Heredados de Anclaje" },
   ]}
   testFiles={["packages/react/src/components/user-select.test.tsx", "packages/vanilla/src/components/user-select.test.ts"]}

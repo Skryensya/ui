@@ -6,6 +6,7 @@
 import { UserSelect, type UserSelectUser } from "@skryensya/react/user-select";
 import { useState } from "react";
 import { userSelectRoster } from "../../demos/data/user-select";
+import { userSelectMessages } from "../../i18n/messages/components/user-select";
 import { framedIn } from "./framed";
 
 const framed = framedIn("user-select");
@@ -19,16 +20,25 @@ const users: UserSelectUser[] = userSelectRoster.map(({ id, name, email, disable
 
 type DemoProps = { lang?: "es" | "en" };
 
+/* The same `userSelectPage.label.*` messages the Vanilla stage reads, so both halves say the same thing. */
+const labelsFor = (lang: "es" | "en") => {
+  const messages = userSelectMessages[lang] as Record<string, string>;
+  const prefix = "userSelectPage.label.";
+  return Object.fromEntries(
+    Object.entries(messages)
+      .filter(([key]) => key.startsWith(prefix))
+      .map(([key, text]) => [key.slice(prefix.length), text]),
+  );
+};
+
 export const UserSelectBasicDemo = framed(function UserSelectBasicDemo({ lang = "es" }: DemoProps) {
   const [value, setValue] = useState<string[]>(["jane"]);
-  const es = lang === "es";
 
   return (
     <UserSelect
+      labels={labelsFor(lang)}
       onValueChange={setValue}
-      placeholder={es ? "Seleccionar personas" : "Select users"}
-      unselectedLabel={es ? "Nadie seleccionado" : "No one selected"}
-      searchPlaceholder={es ? "Buscar personas..." : "Search users..."}
+      term={labelsFor(lang).term}
       users={users}
       value={value}
     />
@@ -37,13 +47,12 @@ export const UserSelectBasicDemo = framed(function UserSelectBasicDemo({ lang = 
 
 /** The loading branch: no `useState` needed, `loading` is a static prop here. */
 export const UserSelectLoadingDemo = framed(function UserSelectLoadingDemo({ lang = "es" }: DemoProps) {
-  const es = lang === "es";
   return (
     <UserSelect
+      labels={labelsFor(lang)}
       loading
       onValueChange={() => {}}
-      placeholder={es ? "Seleccionar personas" : "Select users"}
-      unselectedLabel={es ? "Nadie seleccionado" : "No one selected"}
+      term={labelsFor(lang).term}
       users={users}
       value={[]}
     />
