@@ -1,0 +1,70 @@
+# syntax=docker/dockerfile:1.7
+# React Storybook only (@skryensya/storybook-react). Build context must be the monorepo root.
+# Dokploy: Dockerfile path = Dockerfile.storybook-react
+#
+# A STATIC SITE, served by nginx like the docs. The stories are committed (each Storybook generates
+# its own with `pnpm generate` and `check` fails when they are stale), so this image only builds
+# them; it never regenerates anything.
+
+# Same digests as Dockerfile.docs; bump them together (`docker buildx imagetools inspect ...`).
+FROM node:24-bookworm-slim@sha256:0e0ff40c39bc087845bfb27465a0df4ea419520094bc35842ff83dd8cbe6f9b6 AS build
+
+ENV PNPM_HOME=/pnpm
+ENV PATH="$PNPM_HOME:$PATH"
+
+RUN corepack enable && corepack prepare pnpm@10.18.2 --activate
+
+WORKDIR /app
+
+COPY package.json pnpm-lock.yaml pnpm-workspace.yaml turbo.json ./
+COPY apps/docs/package.json ./apps/docs/package.json
+COPY apps/storybook-react/package.json ./apps/storybook-react/package.json
+COPY packages/ai-compiler/package.json ./packages/ai-compiler/package.json
+COPY packages/charts/package.json ./packages/charts/package.json
+COPY packages/core/package.json ./packages/core/package.json
+COPY packages/editor/package.json ./packages/editor/package.json
+COPY packages/icons-lucide/package.json ./packages/icons-lucide/package.json
+COPY packages/icons-material/package.json ./packages/icons-material/package.json
+COPY packages/icons-phosphor/package.json ./packages/icons-phosphor/package.json
+COPY packages/react/package.json ./packages/react/package.json
+COPY packages/storybook-kit/package.json ./packages/storybook-kit/package.json
+COPY packages/vanilla/package.json ./packages/vanilla/package.json
+COPY contracts/snippets/package.json ./contracts/snippets/package.json
+
+RUN --mount=type=cache,id=pnpm-store,target=/pnpm/store \
+  pnpm config set store-dir /pnpm/store && pnpm fetch --frozen-lockfile
+
+RUN --mount=type=cache,id=pnpm-store,target=/pnpm/store \
+  pnpm config set store-dir /pnpm/store && pnpm install --frozen-lockfile --offline
+
+# The stories draw the DOCS' demo trees (apps/docs/src/demos, through the `@docs` alias) and serve
+# the docs' own media (apps/docs/public), so the docs app is source here, not a site to build.
+COPY apps/docs ./apps/docs
+COPY apps/storybook-react ./apps/storybook-react
+COPY packages/ai-compiler ./packages/ai-compiler
+COPY packages/charts ./packages/charts
+COPY packages/core ./packages/core
+# Optional peer of the bindings, and silent when missing: Vite stubs it and the build fails far
+# from here. Dockerfile.docs explains it at length.
+COPY packages/editor ./packages/editor
+COPY packages/icons-lucide ./packages/icons-lucide
+COPY packages/icons-material ./packages/icons-material
+COPY packages/icons-phosphor ./packages/icons-phosphor
+COPY packages/react ./packages/react
+COPY packages/storybook-kit ./packages/storybook-kit
+COPY packages/vanilla ./packages/vanilla
+COPY contracts ./contracts
+COPY artifacts ./artifacts
+
+ENV NODE_OPTIONS=--max-old-space-size=4096
+RUN pnpm --filter @skryensya/storybook-react build-storybook
+
+#   docker buildx imagetools inspect nginx:1.27-alpine
+FROM nginx:1.27-alpine@sha256:65645c7bb6a0661892a8b03b89d0743208a18dd2f3f17a54ef4b76fb8e2f2a10 AS runtime
+
+COPY nginx.storybook.conf /etc/nginx/conf.d/default.conf
+COPY --from=build /app/apps/storybook-react/storybook-static /usr/share/nginx/html
+
+EXPOSE 80
+
+CMD ["nginx", "-g", "daemon off;"]

@@ -64,6 +64,7 @@ import { mountToolbar } from "@skryensya/vanilla/toolbar";
 import { mountTooltip } from "@skryensya/vanilla/tooltip";
 import { mountTreegrid } from "@skryensya/vanilla/treegrid";
 import { mountTreeView } from "@skryensya/vanilla/tree-view";
+import { mountUserSelect } from "@skryensya/vanilla/user-select";
 import { mountVaul } from "@skryensya/vanilla/vaul";
 import { mountWindow } from "@skryensya/vanilla/window";
 import { readFileSync } from "node:fs";
@@ -165,6 +166,17 @@ describe("Vanilla public entry points", () => {
     expect(mountComponentPreview).toBeTypeOf("function");
     expect(mountEditor).toBeTypeOf("function");
     expect(destroyMount).toBeTypeOf("function");
+  });
+
+  /*
+   * UserSelect is absent from `mounts`/`runtime/registry.ts` for a different reason than Editor's
+   * (no peer dependency involved): it has no compiled contract yet, so `vanilla-conformance.test.ts`
+   * (`@skryensya/ai-gates`) has no canonical tree to exercise `[data-sk-user-select]` against, and
+   * that gate requires every REGISTERED selector to be. The subpath still publishes and still
+   * mounts; a page just calls `mountUserSelect()` itself, same shape Editor's page already does.
+   */
+  it("publishes UserSelect through an explicit subpath, same reasoning as Editor", () => {
+    expect(mountUserSelect).toBeTypeOf("function");
   });
 
   /*
