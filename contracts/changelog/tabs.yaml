@@ -5,6 +5,17 @@
 # hash.
 surface: "febbda370a6e9a58"
 entries:
+  - date: 2026-09-27
+    kind: bugfix
+    target: appearance
+    es:
+      title: Las pestañas frosted mantienen legibles las no seleccionadas
+      body: >-
+        La lámina de la lista sube de 60% a 74%: sobre un fondo negro o blanco, el texto secundario de las pestañas no seleccionadas caía a 3.1:1.
+    en:
+      title: Frosted tabs keep unselected triggers legible
+      body: >-
+        The list's sheet rises from 60% to 74%: over a black or white backdrop, the secondary ink of unselected tabs fell to 3.1:1.
   - date: 2026-09-26
     kind: feature
     target: appearance

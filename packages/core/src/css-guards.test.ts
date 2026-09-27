@@ -238,26 +238,46 @@ describe("button frosted appearance", () => {
     expect(offenders.map(({ selector }) => selector)).toEqual([]);
   });
 
-  it("asks for backdrop blur only inside the feature query and the no-preference branch", () => {
-    const start = css.indexOf("@supports (backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))");
-    expect(start).toBeGreaterThan(-1);
-    let depth = 0;
-    let end = start;
-    for (let i = css.indexOf("{", start); i < css.length; i++) {
-      if (css[i] === "{") depth++;
-      else if (css[i] === "}" && --depth === 0) {
-        end = i;
-        break;
-      }
-    }
-    const guarded = css.slice(start, end);
-    expect(guarded).toContain("prefers-reduced-transparency: no-preference");
-    const blurs = [...css.matchAll(/backdrop-filter:\s*blur\(var\(--sk-button-frost-blur\)\)/g)].map((m) => m.index!);
-    expect(blurs.length).toBeGreaterThan(0);
-    for (const at of blurs) expect(at > start && at < end, `backdrop blur at ${at} outside the guard`).toBe(true);
-  });
-
   it("is excluded from the plain squeeze", () => {
     expect(css).toMatch(/\.sk-button:active[^{]*:not\([^)]*\[data-appearance="frosted"\][^)]*\)\s*\{/);
+  });
+});
+
+/*
+ * FROSTED READS ONE SWITCH. Whether the material may render (backdrop-filter support, the reader's
+ * transparency and contrast preferences, forced colours) is decided once, in semantic/_frost.scss, as
+ * the `--frost-on` space toggle. A stylesheet that restates the gate drifts from it, and one that asks
+ * for blur without the toggle blurs for a reader who asked for less transparency.
+ */
+describe("frosted material", () => {
+  const sheets = [...stylesheets(join(CSS_DIR, "components")), ...stylesheets(join(CSS_DIR, "patterns"))];
+  const frosted = sheets.filter(({ css }) => css.includes('data-appearance="frosted"'));
+
+  it("has stylesheets to check", () => {
+    expect(frosted.length).toBeGreaterThan(20);
+  });
+
+  it("asks for backdrop blur only behind the --frost-on switch", () => {
+    const offenders = frosted.flatMap(({ path, css }) =>
+      [...css.matchAll(/(?:-webkit-)?backdrop-filter\s*:\s*([^;]+);/g)]
+        .map((m) => m[1]!.trim())
+        .filter((value) => value !== "none" && !value.startsWith("var(--frost-on)"))
+        .map((value) => `${path}: ${value}`),
+    );
+    expect(offenders).toEqual([]);
+  });
+
+  it("never restates the gate the switch owns", () => {
+    const offenders = frosted
+      .filter(({ css }) => /prefers-reduced-transparency:\s*no-preference|@supports\s*\(backdrop-filter/.test(css))
+      .map(({ path }) => path);
+    expect(offenders).toEqual([]);
+  });
+
+  it("publishes no material hooks: frosted is not tunable", () => {
+    const offenders = frosted.flatMap(({ path, css }) =>
+      [...css.matchAll(/--sk-[a-z-]+-frost-[a-z]+/g)].map((m) => `${path}: ${m[0]}`),
+    );
+    expect(offenders).toEqual([]);
   });
 });

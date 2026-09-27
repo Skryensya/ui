@@ -5,6 +5,18 @@
         "date": null,
         "entries": [
           {
+            "date": "2026-09-27",
+            "en": {
+              "body": "The <code>--sk-*-frost-opacity</code>, <code>-blur</code> and <code>-saturation</code> hooks are removed: frosted's opacity is the contrast floor measured for each component's text, not a setting. Every frosted surface now reads one switch, <code>--frost-on</code>, which decides support, reduced transparency, high contrast and forced colours. They look the same as before.",
+              "title": "Frosted stops publishing material hooks"
+            },
+            "es": {
+              "body": "Se eliminan los hooks <code>--sk-*-frost-opacity</code>, <code>-blur</code> y <code>-saturation</code>: la opacidad de frosted es el piso de contraste medido para el texto de cada componente, no un ajuste. Todas las superficies frosted leen ahora un único interruptor, <code>--frost-on</code>, que decide soporte, transparencia reducida, alto contraste y forced colors. Se ven igual que antes.",
+              "title": "Frosted deja de publicar hooks de material"
+            },
+            "kind": "breaking"
+          },
+          {
             "date": "2026-09-26",
             "en": {
               "body": "<code>appearance=\"frosted\"</code> puts Button's material on the frame (of <code>Accordion</code>, of <code>DetailsGroup</code>, or of a lone <code>Details</code>), with the open bodies see-through too. <code>brutalist</code> now draws the frame, dividers and offset in black in both modes, at plain's border width. New hooks: <code>--sk-accordion-frost-*</code>, <code>--sk-details-frost-*</code> and the <code>--sk-tile-frost-*</code> Accordion inherits from <code>tile.css</code>.",
@@ -740,6 +752,18 @@
         "date": null,
         "entries": [
           {
+            "date": "2026-09-27",
+            "en": {
+              "body": "The <code>--sk-*-frost-opacity</code>, <code>-blur</code> and <code>-saturation</code> hooks are removed: frosted's opacity is the contrast floor measured for each component's text, not a setting. Every frosted surface now reads one switch, <code>--frost-on</code>, which decides support, reduced transparency, high contrast and forced colours. They look the same as before.",
+              "title": "Frosted stops publishing material hooks"
+            },
+            "es": {
+              "body": "Se eliminan los hooks <code>--sk-*-frost-opacity</code>, <code>-blur</code> y <code>-saturation</code>: la opacidad de frosted es el piso de contraste medido para el texto de cada componente, no un ajuste. Todas las superficies frosted leen ahora un único interruptor, <code>--frost-on</code>, que decide soporte, transparencia reducida, alto contraste y forced colors. Se ven igual que antes.",
+              "title": "Frosted deja de publicar hooks de material"
+            },
+            "kind": "breaking"
+          },
+          {
             "date": "2026-09-26",
             "en": {
               "body": "Button's axis on the corner control. <code>tactile</code> and <code>brutalist</code> travel on press through <code>transform</code>, leaving the reveal's rise alone; nothing moves on hover. <code>frosted</code> is glass over the page, opaque wherever the material cannot be trusted.",
@@ -977,6 +1001,30 @@
             "target": "paddingExpanded"
           },
           {
+            "date": "2026-09-27",
+            "en": {
+              "body": "<code>patterns/transparency.css</code> and its <code>sk-translucent</code> class are gone. Every surface it painted publishes <code>appearance=\"frosted\"</code>, which keeps the opaque baseline and adds a contrast floor, the high-contrast return to opaque and the <code>-webkit-</code> prefix. Use <code>appearance=\"frosted\"</code> instead; <code>data-strength</code> has no equivalent.",
+              "title": "sk-translucent is removed; transparency comes from the frosted appearance"
+            },
+            "es": {
+              "body": "<code>patterns/transparency.css</code> y su clase <code>sk-translucent</code> dejan de existir. Todas las superficies que pintaba publican <code>appearance=\"frosted\"</code>, que conserva la base opaca y suma un piso de contraste, el retorno a opaco con alto contraste y el prefijo <code>-webkit-</code>. Usa <code>appearance=\"frosted\"</code> en su lugar; <code>data-strength</code> no tiene equivalente.",
+              "title": "Se elimina sk-translucent; la transparencia se aplica con appearance frosted"
+            },
+            "kind": "breaking"
+          },
+          {
+            "date": "2026-09-27",
+            "en": {
+              "body": "The <code>--sk-*-frost-opacity</code>, <code>-blur</code> and <code>-saturation</code> hooks are removed: frosted's opacity is the contrast floor measured for each component's text, not a setting. Every frosted surface now reads one switch, <code>--frost-on</code>, which decides support, reduced transparency, high contrast and forced colours. They look the same as before.",
+              "title": "Frosted stops publishing material hooks"
+            },
+            "es": {
+              "body": "Se eliminan los hooks <code>--sk-*-frost-opacity</code>, <code>-blur</code> y <code>-saturation</code>: la opacidad de frosted es el piso de contraste medido para el texto de cada componente, no un ajuste. Todas las superficies frosted leen ahora un único interruptor, <code>--frost-on</code>, que decide soporte, transparencia reducida, alto contraste y forced colors. Se ven igual que antes.",
+              "title": "Frosted deja de publicar hooks de material"
+            },
+            "kind": "breaking"
+          },
+          {
             "date": "2026-09-26",
             "en": {
               "body": "<code>Box</code> accepts <code>appearance</code>, the same axis as Button and Tile. <code>brutalist</code> draws the box with a black edge and a hard offset shadow; <code>frosted</code> makes the surface a translucent material over the blurred backdrop, opaque wherever the material cannot be trusted. No <code>tactile</code>: a box is never pressed. New hooks <code>--sk-box-brutalist-*</code> and <code>--sk-box-frost-*</code>.",
@@ -1161,6 +1209,31 @@
       {
         "date": null,
         "entries": [
+          {
+            "date": "2026-09-27",
+            "en": {
+              "body": "With <code>appearance=\"frosted\"</code>, ghost and translucent are no longer nearly clear: they carry a sheet of the surface (65% neutral, 68% translucent, 90% toned) so the label holds 4.5:1 over any backdrop, and pressed raises its floor to 96%. Without the material, their baseline is that face, opaque.",
+              "title": "Frosted ghost and translucent gain a legible sheet"
+            },
+            "es": {
+              "body": "Con <code>appearance=\"frosted\"</code>, ghost y translucent dejan de ser casi transparentes: llevan una lámina de la superficie (65% neutro, 68% translucent, 90% con tono) para que el texto sostenga 4.5:1 sobre cualquier fondo, y pressed sube su piso a 96%. Sin el material, su base es esa cara, opaca.",
+              "title": "Frosted ghost y translucent ganan una lámina legible"
+            },
+            "kind": "rework",
+            "target": "appearance"
+          },
+          {
+            "date": "2026-09-27",
+            "en": {
+              "body": "The <code>--sk-*-frost-opacity</code>, <code>-blur</code> and <code>-saturation</code> hooks are removed: frosted's opacity is the contrast floor measured for each component's text, not a setting. Every frosted surface now reads one switch, <code>--frost-on</code>, which decides support, reduced transparency, high contrast and forced colours. They look the same as before.",
+              "title": "Frosted stops publishing material hooks"
+            },
+            "es": {
+              "body": "Se eliminan los hooks <code>--sk-*-frost-opacity</code>, <code>-blur</code> y <code>-saturation</code>: la opacidad de frosted es el piso de contraste medido para el texto de cada componente, no un ajuste. Todas las superficies frosted leen ahora un único interruptor, <code>--frost-on</code>, que decide soporte, transparencia reducida, alto contraste y forced colors. Se ven igual que antes.",
+              "title": "Frosted deja de publicar hooks de material"
+            },
+            "kind": "breaking"
+          },
           {
             "date": "2026-09-26",
             "en": {
@@ -1611,6 +1684,19 @@
       {
         "date": null,
         "entries": [
+          {
+            "date": "2026-09-27",
+            "en": {
+              "body": "A toned callout's sheet rises from 72% to 94% (neutral stays at 72%): over a black or white backdrop its text fell to 2.8:1.",
+              "title": "A toned frosted callout keeps its text legible"
+            },
+            "es": {
+              "body": "La lámina de un callout con tono sube de 72% a 94% (el neutro se queda en 72%): sobre un fondo negro o blanco, su texto caía a 2.8:1.",
+              "title": "Un callout frosted con tono mantiene su texto legible"
+            },
+            "kind": "bugfix",
+            "target": "appearance"
+          },
           {
             "date": "2026-09-26",
             "en": {
@@ -3671,6 +3757,18 @@
         "date": null,
         "entries": [
           {
+            "date": "2026-09-27",
+            "en": {
+              "body": "<code>patterns/transparency.css</code> and its <code>sk-translucent</code> class are gone. Every surface it painted publishes <code>appearance=\"frosted\"</code>, which keeps the opaque baseline and adds a contrast floor, the high-contrast return to opaque and the <code>-webkit-</code> prefix. Use <code>appearance=\"frosted\"</code> instead; <code>data-strength</code> has no equivalent.",
+              "title": "sk-translucent is removed; transparency comes from the frosted appearance"
+            },
+            "es": {
+              "body": "<code>patterns/transparency.css</code> y su clase <code>sk-translucent</code> dejan de existir. Todas las superficies que pintaba publican <code>appearance=\"frosted\"</code>, que conserva la base opaca y suma un piso de contraste, el retorno a opaco con alto contraste y el prefijo <code>-webkit-</code>. Usa <code>appearance=\"frosted\"</code> en su lugar; <code>data-strength</code> no tiene equivalente.",
+              "title": "Se elimina sk-translucent; la transparencia se aplica con appearance frosted"
+            },
+            "kind": "breaking"
+          },
+          {
             "date": "2026-09-26",
             "en": {
               "body": "<code>brutalist</code> draws the panel with a black edge and a hard offset in place of the soft elevation; <code>frosted</code> makes it a translucent material over the page, opaque wherever the material cannot be trusted. No <code>tactile</code>: a dialog is never pressed.",
@@ -4505,6 +4603,19 @@
           {
             "date": "2026-09-27",
             "en": {
+              "body": "A folder's shadow, when it was not the last one, stopped where the next folder begins, at the height of its tab, leaving the last stretch of edge bare and ending in a square notch. It now runs down to where the next folder's body covers that edge, wrapping its corner.",
+              "title": "In a stack, the brutalist shadow follows the whole visible edge"
+            },
+            "es": {
+              "body": "La sombra de un folder que no es el último se cortaba donde empieza el siguiente, a la altura de su pestaña, y dejaba el tramo final del borde sin sombra, rematado en un corte cuadrado. Ahora llega hasta donde el cuerpo del siguiente folder cubre ese borde, envolviendo su esquina.",
+              "title": "En un stack, la sombra brutalist acompaña todo el borde visible"
+            },
+            "kind": "bugfix",
+            "target": "appearance"
+          },
+          {
+            "date": "2026-09-27",
+            "en": {
               "body": "Under <code>frosted</code>, the tucked half of the previews showed through the glass and the blur leaked past the tab's rounded corner. The fan is now clipped to what lies outside the silhouette (<code>--sk-folder-fan-clip</code>) and the glass takes the silhouette as a mask (<code>--sk-folder-mask</code>), two new outputs both bindings write. Under <code>brutalist</code>, the hard offset no longer runs down beside the next folder: it stops where that folder begins.",
               "title": "Frosted and brutalist on Folder no longer look broken in a stack"
             },
@@ -4514,6 +4625,18 @@
             },
             "kind": "bugfix",
             "target": "appearance"
+          },
+          {
+            "date": "2026-09-27",
+            "en": {
+              "body": "The <code>--sk-*-frost-opacity</code>, <code>-blur</code> and <code>-saturation</code> hooks are removed: frosted's opacity is the contrast floor measured for each component's text, not a setting. Every frosted surface now reads one switch, <code>--frost-on</code>, which decides support, reduced transparency, high contrast and forced colours. They look the same as before.",
+              "title": "Frosted stops publishing material hooks"
+            },
+            "es": {
+              "body": "Se eliminan los hooks <code>--sk-*-frost-opacity</code>, <code>-blur</code> y <code>-saturation</code>: la opacidad de frosted es el piso de contraste medido para el texto de cada componente, no un ajuste. Todas las superficies frosted leen ahora un único interruptor, <code>--frost-on</code>, que decide soporte, transparencia reducida, alto contraste y forced colors. Se ven igual que antes.",
+              "title": "Frosted deja de publicar hooks de material"
+            },
+            "kind": "breaking"
           },
           {
             "date": "2026-09-26",
@@ -6825,6 +6948,18 @@
         "date": null,
         "entries": [
           {
+            "date": "2026-09-27",
+            "en": {
+              "body": "<code>patterns/transparency.css</code> and its <code>sk-translucent</code> class are gone. Every surface it painted publishes <code>appearance=\"frosted\"</code>, which keeps the opaque baseline and adds a contrast floor, the high-contrast return to opaque and the <code>-webkit-</code> prefix. Use <code>appearance=\"frosted\"</code> instead; <code>data-strength</code> has no equivalent.",
+              "title": "sk-translucent is removed; transparency comes from the frosted appearance"
+            },
+            "es": {
+              "body": "<code>patterns/transparency.css</code> y su clase <code>sk-translucent</code> dejan de existir. Todas las superficies que pintaba publican <code>appearance=\"frosted\"</code>, que conserva la base opaca y suma un piso de contraste, el retorno a opaco con alto contraste y el prefijo <code>-webkit-</code>. Usa <code>appearance=\"frosted\"</code> en su lugar; <code>data-strength</code> no tiene equivalente.",
+              "title": "Se elimina sk-translucent; la transparencia se aplica con appearance frosted"
+            },
+            "kind": "breaking"
+          },
+          {
             "date": "2026-09-26",
             "en": {
               "body": "<code>brutalist</code> draws the bar with a black rule and a hard offset beneath it; <code>frosted</code> makes it see-through over the content scrolling underneath, opaque wherever the material cannot be trusted. No <code>tactile</code>: a bar is never pressed.",
@@ -8239,6 +8374,31 @@
         "date": null,
         "entries": [
           {
+            "date": "2026-09-27",
+            "en": {
+              "body": "The track rises from 60% to 72%: over a black or white backdrop, the secondary ink of unselected options fell to 3.3:1.",
+              "title": "Frosted segmented keeps unselected options legible"
+            },
+            "es": {
+              "body": "El track sube de 60% a 72%: sobre un fondo negro o blanco, el texto secundario de las opciones no seleccionadas caía a 3.3:1.",
+              "title": "Segmented frosted mantiene legibles las opciones no seleccionadas"
+            },
+            "kind": "bugfix",
+            "target": "appearance"
+          },
+          {
+            "date": "2026-09-27",
+            "en": {
+              "body": "The <code>--sk-*-frost-opacity</code>, <code>-blur</code> and <code>-saturation</code> hooks are removed: frosted's opacity is the contrast floor measured for each component's text, not a setting. Every frosted surface now reads one switch, <code>--frost-on</code>, which decides support, reduced transparency, high contrast and forced colours. They look the same as before.",
+              "title": "Frosted stops publishing material hooks"
+            },
+            "es": {
+              "body": "Se eliminan los hooks <code>--sk-*-frost-opacity</code>, <code>-blur</code> y <code>-saturation</code>: la opacidad de frosted es el piso de contraste medido para el texto de cada componente, no un ajuste. Todas las superficies frosted leen ahora un único interruptor, <code>--frost-on</code>, que decide soporte, transparencia reducida, alto contraste y forced colors. Se ven igual que antes.",
+              "title": "Frosted deja de publicar hooks de material"
+            },
+            "kind": "breaking"
+          },
+          {
             "date": "2026-09-26",
             "en": {
               "body": "Button's axis written only as hooks on the root: <code>tactile</code> a raised key in a deeper well, <code>brutalist</code> a black-edged track with a hard offset, <code>frosted</code> a see-through track, opaque wherever the material cannot be trusted.",
@@ -8643,6 +8803,18 @@
       {
         "date": null,
         "entries": [
+          {
+            "date": "2026-09-27",
+            "en": {
+              "body": "<code>patterns/transparency.css</code> and its <code>sk-translucent</code> class are gone. Every surface it painted publishes <code>appearance=\"frosted\"</code>, which keeps the opaque baseline and adds a contrast floor, the high-contrast return to opaque and the <code>-webkit-</code> prefix. Use <code>appearance=\"frosted\"</code> instead; <code>data-strength</code> has no equivalent.",
+              "title": "sk-translucent is removed; transparency comes from the frosted appearance"
+            },
+            "es": {
+              "body": "<code>patterns/transparency.css</code> y su clase <code>sk-translucent</code> dejan de existir. Todas las superficies que pintaba publican <code>appearance=\"frosted\"</code>, que conserva la base opaca y suma un piso de contraste, el retorno a opaco con alto contraste y el prefijo <code>-webkit-</code>. Usa <code>appearance=\"frosted\"</code> en su lugar; <code>data-strength</code> no tiene equivalente.",
+              "title": "Se elimina sk-translucent; la transparencia se aplica con appearance frosted"
+            },
+            "kind": "breaking"
+          },
           {
             "date": "2026-09-26",
             "en": {
@@ -10035,6 +10207,19 @@
         "date": null,
         "entries": [
           {
+            "date": "2026-09-27",
+            "en": {
+              "body": "The list's sheet rises from 60% to 74%: over a black or white backdrop, the secondary ink of unselected tabs fell to 3.1:1.",
+              "title": "Frosted tabs keep unselected triggers legible"
+            },
+            "es": {
+              "body": "La lámina de la lista sube de 60% a 74%: sobre un fondo negro o blanco, el texto secundario de las pestañas no seleccionadas caía a 3.1:1.",
+              "title": "Las pestañas frosted mantienen legibles las no seleccionadas"
+            },
+            "kind": "bugfix",
+            "target": "appearance"
+          },
+          {
             "date": "2026-09-26",
             "en": {
               "body": "The selected tab wears the construction: <code>tactile</code> a raised key, <code>brutalist</code> a black-edged block with a hard offset, <code>frosted</code> a see-through strip, opaque wherever the material cannot be trusted. CSS-only, in both orientations and variants.",
@@ -10365,6 +10550,18 @@
       {
         "date": null,
         "entries": [
+          {
+            "date": "2026-09-27",
+            "en": {
+              "body": "The <code>--sk-*-frost-opacity</code>, <code>-blur</code> and <code>-saturation</code> hooks are removed: frosted's opacity is the contrast floor measured for each component's text, not a setting. Every frosted surface now reads one switch, <code>--frost-on</code>, which decides support, reduced transparency, high contrast and forced colours. They look the same as before.",
+              "title": "Frosted stops publishing material hooks"
+            },
+            "es": {
+              "body": "Se eliminan los hooks <code>--sk-*-frost-opacity</code>, <code>-blur</code> y <code>-saturation</code>: la opacidad de frosted es el piso de contraste medido para el texto de cada componente, no un ajuste. Todas las superficies frosted leen ahora un único interruptor, <code>--frost-on</code>, que decide soporte, transparencia reducida, alto contraste y forced colors. Se ven igual que antes.",
+              "title": "Frosted deja de publicar hooks de material"
+            },
+            "kind": "breaking"
+          },
           {
             "date": "2026-09-26",
             "en": {
@@ -11753,6 +11950,18 @@
         "date": null,
         "entries": [
           {
+            "date": "2026-09-27",
+            "en": {
+              "body": "<code>patterns/transparency.css</code> and its <code>sk-translucent</code> class are gone. Every surface it painted publishes <code>appearance=\"frosted\"</code>, which keeps the opaque baseline and adds a contrast floor, the high-contrast return to opaque and the <code>-webkit-</code> prefix. Use <code>appearance=\"frosted\"</code> instead; <code>data-strength</code> has no equivalent.",
+              "title": "sk-translucent is removed; transparency comes from the frosted appearance"
+            },
+            "es": {
+              "body": "<code>patterns/transparency.css</code> y su clase <code>sk-translucent</code> dejan de existir. Todas las superficies que pintaba publican <code>appearance=\"frosted\"</code>, que conserva la base opaca y suma un piso de contraste, el retorno a opaco con alto contraste y el prefijo <code>-webkit-</code>. Usa <code>appearance=\"frosted\"</code> en su lugar; <code>data-strength</code> no tiene equivalente.",
+              "title": "Se elimina sk-translucent; la transparencia se aplica con appearance frosted"
+            },
+            "kind": "breaking"
+          },
+          {
             "date": "2026-09-26",
             "en": {
               "body": "<code>brutalist</code> draws the panel with a black edge and a hard offset in place of the soft elevation (the overpull extension still follows the edge); <code>frosted</code> makes it see-through, opaque wherever the material cannot be trusted. No <code>tactile</code>: a drawer is dragged, never pressed.",
@@ -11942,6 +12151,18 @@
       {
         "date": null,
         "entries": [
+          {
+            "date": "2026-09-27",
+            "en": {
+              "body": "The <code>--sk-*-frost-opacity</code>, <code>-blur</code> and <code>-saturation</code> hooks are removed: frosted's opacity is the contrast floor measured for each component's text, not a setting. Every frosted surface now reads one switch, <code>--frost-on</code>, which decides support, reduced transparency, high contrast and forced colours. They look the same as before.",
+              "title": "Frosted stops publishing material hooks"
+            },
+            "es": {
+              "body": "Se eliminan los hooks <code>--sk-*-frost-opacity</code>, <code>-blur</code> y <code>-saturation</code>: la opacidad de frosted es el piso de contraste medido para el texto de cada componente, no un ajuste. Todas las superficies frosted leen ahora un único interruptor, <code>--frost-on</code>, que decide soporte, transparencia reducida, alto contraste y forced colors. Se ven igual que antes.",
+              "title": "Frosted deja de publicar hooks de material"
+            },
+            "kind": "breaking"
+          },
           {
             "date": "2026-09-26",
             "en": {
@@ -12207,24 +12428,6 @@
           "part": "root",
           "sheet": "@skryensya/core/components/accordion.css"
         },
-        "--sk-accordion-frost-blur": {
-          "default": "16px",
-          "output": false,
-          "part": "root",
-          "sheet": "@skryensya/core/components/accordion.css"
-        },
-        "--sk-accordion-frost-opacity": {
-          "default": "82%",
-          "output": false,
-          "part": "root",
-          "sheet": "@skryensya/core/components/accordion.css"
-        },
-        "--sk-accordion-frost-saturation": {
-          "default": "150%",
-          "output": false,
-          "part": "root",
-          "sheet": "@skryensya/core/components/accordion.css"
-        },
         "--sk-accordion-open-bg": {
           "default": "var(--color-bg-surface-sunken)",
           "output": false,
@@ -12345,24 +12548,6 @@
           "part": "native",
           "sheet": "@skryensya/core/components/details.css"
         },
-        "--sk-details-frost-blur": {
-          "default": "16px",
-          "output": false,
-          "part": "nativeGroup",
-          "sheet": "@skryensya/core/components/details.css"
-        },
-        "--sk-details-frost-opacity": {
-          "default": "82%",
-          "output": false,
-          "part": "nativeGroup",
-          "sheet": "@skryensya/core/components/details.css"
-        },
-        "--sk-details-frost-saturation": {
-          "default": "150%",
-          "output": false,
-          "part": "nativeGroup",
-          "sheet": "@skryensya/core/components/details.css"
-        },
         "--sk-details-gap": {
           "default": "var(--sk-space-3)",
           "output": false,
@@ -12453,24 +12638,6 @@
           "part": "item",
           "sheet": "@skryensya/core/components/tile.css"
         },
-        "--sk-tile-frost-blur": {
-          "default": "16px",
-          "output": false,
-          "part": "item",
-          "sheet": "@skryensya/core/components/tile.css"
-        },
-        "--sk-tile-frost-opacity": {
-          "default": "72%",
-          "output": false,
-          "part": "item",
-          "sheet": "@skryensya/core/components/tile.css"
-        },
-        "--sk-tile-frost-saturation": {
-          "default": "150%",
-          "output": false,
-          "part": "item",
-          "sheet": "@skryensya/core/components/tile.css"
-        },
         "--sk-tile-padding": {
           "default": "var(--space-inset-md)",
           "output": false,
@@ -12504,9 +12671,6 @@
         "--sk-accordion-brutalist-offset-inline",
         "--sk-accordion-brutalist-shadow",
         "--sk-accordion-depth",
-        "--sk-accordion-frost-blur",
-        "--sk-accordion-frost-opacity",
-        "--sk-accordion-frost-saturation",
         "--sk-accordion-divider-color",
         "--sk-accordion-open-bg",
         "--sk-accordion-radius",
@@ -12529,9 +12693,6 @@
         "--sk-tile-brutalist-offset-inline",
         "--sk-tile-brutalist-shadow",
         "--sk-tile-depth",
-        "--sk-tile-frost-blur",
-        "--sk-tile-frost-opacity",
-        "--sk-tile-frost-saturation",
         "--sk-tile-padding",
         "--sk-tile-radius",
         "--sk-tile-shadow",
@@ -12545,9 +12706,6 @@
         "--sk-details-content-bg",
         "--sk-details-content-fg",
         "--sk-details-depth",
-        "--sk-details-frost-blur",
-        "--sk-details-frost-opacity",
-        "--sk-details-frost-saturation",
         "--sk-details-fg",
         "--sk-details-gap",
         "--sk-details-heading-gap",
@@ -14039,18 +14197,6 @@
           "part": "root",
           "sheet": "@skryensya/core/components/back-to-top.css"
         },
-        "--sk-back-to-top-frost-blur": {
-          "default": "12px",
-          "output": false,
-          "part": "root",
-          "sheet": "@skryensya/core/components/back-to-top.css"
-        },
-        "--sk-back-to-top-frost-opacity": {
-          "default": "72%",
-          "output": false,
-          "part": "root",
-          "sheet": "@skryensya/core/components/back-to-top.css"
-        },
         "--sk-back-to-top-radius": {
           "default": "var(--radius-pill)",
           "output": false,
@@ -14090,8 +14236,6 @@
         "--sk-back-to-top-depth",
         "--sk-back-to-top-enter-scale",
         "--sk-back-to-top-fg",
-        "--sk-back-to-top-frost-blur",
-        "--sk-back-to-top-frost-opacity",
         "--sk-back-to-top-radius",
         "--sk-back-to-top-shadow",
         "--sk-back-to-top-size",
@@ -14627,24 +14771,6 @@
           "part": "box",
           "sheet": "@skryensya/core/patterns/box.css"
         },
-        "--sk-box-frost-blur": {
-          "default": "16px",
-          "output": false,
-          "part": "box",
-          "sheet": "@skryensya/core/patterns/box.css"
-        },
-        "--sk-box-frost-opacity": {
-          "default": "72%",
-          "output": false,
-          "part": "box",
-          "sheet": "@skryensya/core/patterns/box.css"
-        },
-        "--sk-box-frost-saturation": {
-          "default": "150%",
-          "output": false,
-          "part": "box",
-          "sheet": "@skryensya/core/patterns/box.css"
-        },
         "--sk-box-padding": {
           "default": "0",
           "output": false,
@@ -14678,9 +14804,6 @@
         "--sk-box-brutalist-offset-block",
         "--sk-box-brutalist-offset-inline",
         "--sk-box-brutalist-shadow",
-        "--sk-box-frost-blur",
-        "--sk-box-frost-opacity",
-        "--sk-box-frost-saturation",
         "--sk-box-padding",
         "--sk-box-radius",
         "--sk-box-shadow",
@@ -15302,24 +15425,6 @@
           "part": "root",
           "sheet": "@skryensya/core/components/button.css"
         },
-        "--sk-button-frost-blur": {
-          "default": "16px",
-          "output": false,
-          "part": "root",
-          "sheet": "@skryensya/core/components/button.css"
-        },
-        "--sk-button-frost-opacity": {
-          "default": "84%",
-          "output": false,
-          "part": "root",
-          "sheet": "@skryensya/core/components/button.css"
-        },
-        "--sk-button-frost-saturation": {
-          "default": "150%",
-          "output": false,
-          "part": "root",
-          "sheet": "@skryensya/core/components/button.css"
-        },
         "--sk-button-gap": {
           "default": "var(--space-inline-sm)",
           "output": false,
@@ -15380,9 +15485,6 @@
         "--sk-button-brutalist-shadow",
         "--sk-button-depth",
         "--sk-button-fg",
-        "--sk-button-frost-blur",
-        "--sk-button-frost-opacity",
-        "--sk-button-frost-saturation",
         "--sk-button-font-size",
         "--sk-button-font-weight",
         "--sk-button-gap",
@@ -26911,24 +27013,6 @@
           "part": "root",
           "sheet": "@skryensya/core/components/folder.css"
         },
-        "--sk-folder-frost-blur": {
-          "default": "16px",
-          "output": false,
-          "part": "root",
-          "sheet": "@skryensya/core/components/folder.css"
-        },
-        "--sk-folder-frost-opacity": {
-          "default": "72%",
-          "output": false,
-          "part": "root",
-          "sheet": "@skryensya/core/components/folder.css"
-        },
-        "--sk-folder-frost-saturation": {
-          "default": "150%",
-          "output": false,
-          "part": "root",
-          "sheet": "@skryensya/core/components/folder.css"
-        },
         "--sk-folder-ground": {
           "default": "var(--color-bg-canvas)",
           "output": false,
@@ -27147,9 +27231,6 @@
         "--sk-folder-fill",
         "--sk-folder-fill-active",
         "--sk-folder-fold-lift",
-        "--sk-folder-frost-blur",
-        "--sk-folder-frost-opacity",
-        "--sk-folder-frost-saturation",
         "--sk-folder-ground",
         "--sk-folder-inset-x",
         "--sk-folder-inset-y",
@@ -40591,12 +40672,6 @@
           "part": "root",
           "sheet": "@skryensya/core/components/segmented.css"
         },
-        "--sk-segmented-frost-opacity": {
-          "default": "60%",
-          "output": false,
-          "part": "root",
-          "sheet": "@skryensya/core/components/segmented.css"
-        },
         "--sk-segmented-gap": {
           "default": "var(--space-inline-xs)",
           "output": false,
@@ -40669,7 +40744,6 @@
         "--sk-segmented-border-color",
         "--sk-segmented-border-width",
         "--sk-segmented-brutalist-offset",
-        "--sk-segmented-frost-opacity",
         "--sk-segmented-gap",
         "--sk-segmented-option-fg",
         "--sk-segmented-padding",
@@ -47005,24 +47079,6 @@
           "part": "interactive",
           "sheet": "@skryensya/core/components/tile.css"
         },
-        "--sk-tile-frost-blur": {
-          "default": "16px",
-          "output": false,
-          "part": "interactive",
-          "sheet": "@skryensya/core/components/tile.css"
-        },
-        "--sk-tile-frost-opacity": {
-          "default": "72%",
-          "output": false,
-          "part": "interactive",
-          "sheet": "@skryensya/core/components/tile.css"
-        },
-        "--sk-tile-frost-saturation": {
-          "default": "150%",
-          "output": false,
-          "part": "interactive",
-          "sheet": "@skryensya/core/components/tile.css"
-        },
         "--sk-tile-padding": {
           "default": "var(--space-inset-md)",
           "output": false,
@@ -47070,9 +47126,6 @@
         "--sk-tile-brutalist-offset-inline",
         "--sk-tile-brutalist-shadow",
         "--sk-tile-depth",
-        "--sk-tile-frost-blur",
-        "--sk-tile-frost-opacity",
-        "--sk-tile-frost-saturation",
         "--sk-tile-padding",
         "--sk-tile-radius",
         "--sk-tile-shadow",
@@ -53045,24 +53098,6 @@
           "part": "content",
           "sheet": "@skryensya/core/components/window.css"
         },
-        "--sk-window-frost-blur": {
-          "default": "24px",
-          "output": false,
-          "part": "content",
-          "sheet": "@skryensya/core/components/window.css"
-        },
-        "--sk-window-frost-opacity": {
-          "default": "78%",
-          "output": false,
-          "part": "content",
-          "sheet": "@skryensya/core/components/window.css"
-        },
-        "--sk-window-frost-saturation": {
-          "default": "160%",
-          "output": false,
-          "part": "content",
-          "sheet": "@skryensya/core/components/window.css"
-        },
         "--sk-window-handle-size": {
           "default": "0.5rem",
           "output": false,
@@ -53121,9 +53156,6 @@
         "--sk-window-brutalist-shadow",
         "--sk-window-depth",
         "--sk-window-fg",
-        "--sk-window-frost-blur",
-        "--sk-window-frost-opacity",
-        "--sk-window-frost-saturation",
         "--sk-window-handle-size",
         "--sk-window-header-bg",
         "--sk-window-header-border-color",
@@ -53778,7 +53810,7 @@
     "working": "0.0.1"
   },
   "schemaVersion": "2.3",
-  "sourceHash": "938db544b4bfedd9",
+  "sourceHash": "1dae83a58d6433db",
   "vocabulary": {
     "a11y": "When `when` holds, one of `requiresOneOf` must be given: an option, a raw attribute, a filled slot, or a child signature by name.",
     "atLeastOneOf": "At least one member of each group counts: a filled slot, a boolean option set to true, or an option other than its default.",

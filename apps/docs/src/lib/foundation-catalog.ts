@@ -85,8 +85,8 @@ const foundationDescriptions = {
     en: "Protects type on photos with a text-sized gradient wash tinted by accent.",
   },
   "/transparency": {
-    es: "Construye superficies translúcidas con blur, fallback opaco y reducción automática de transparencia.",
-    en: "Builds translucent surfaces with blur, opaque fallback, and automatic reduced-transparency support.",
+    es: "La política de toda superficie translúcida: base opaca, blur progresivo y reducción de transparencia.",
+    en: "The policy behind every translucent surface: opaque baseline, progressive blur, reduced transparency.",
   },
 } as const satisfies Readonly<Record<string, FoundationDescription>>;
 

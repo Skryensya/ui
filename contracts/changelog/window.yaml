@@ -3,7 +3,7 @@
 # `surface` is the shape of the contract the last time somebody reviewed it. If the compiler says it
 # does not match, something a consumer depends on has moved: write the entry and paste in the new
 # hash.
-surface: "3b0334a39a494680"
+surface: "3dc3ff3715a6203f"
 entries:
   - date: 2026-09-26
     kind: feature

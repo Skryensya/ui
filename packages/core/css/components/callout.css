@@ -181,38 +181,19 @@
    * a lit top rim over its own shadow. Opaque baseline; the material only where backdrop-filter
    * exists and no reduced-transparency preference is set. */
   .sk-callout[data-appearance="frosted"] {
-    --frost-highlight: light-dark(
-      color-mix(in oklab, var(--color-bg-surface) 70%, transparent),
-      color-mix(in oklab, var(--color-text-primary) 18%, transparent)
-    );
+    /* A contrast floor, not taste: a toned callout's ink sits close to its subtle fill, and measured it
+     * only clears 4.5:1 over the worst backdrop from about 92%. Neutral has the headroom to show more. */
+    --frost-opacity: 94%;
+    --frost-glass: var(--frost-on) color-mix(in oklab, var(--sk-callout-bg) var(--frost-opacity), transparent);
     border-color: color-mix(in oklab, currentColor 18%, transparent);
     box-shadow: inset 0 1px 0 var(--frost-highlight), 0 1px 2px var(--shadow-sm);
+    background: var(--frost-glass, var(--sk-callout-bg));
+    -webkit-backdrop-filter: var(--frost-on) blur(16px) saturate(150%);
+    backdrop-filter: var(--frost-on) blur(16px) saturate(150%);
   }
 
-  @supports (backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px)) {
-    @media (prefers-reduced-transparency: no-preference) {
-      .sk-callout[data-appearance="frosted"] {
-        background: color-mix(in oklab, var(--sk-callout-bg) 72%, transparent);
-        -webkit-backdrop-filter: blur(16px) saturate(150%);
-        backdrop-filter: blur(16px) saturate(150%);
-      }
-    }
-  }
-
-  /* High contrast outranks the material: back to the opaque baseline. */
-  [data-contrast="high"] .sk-callout[data-appearance="frosted"],
-  .sk-callout[data-appearance="frosted"][data-contrast="high"] {
-    background: var(--sk-callout-bg);
-    -webkit-backdrop-filter: none;
-    backdrop-filter: none;
-  }
-
-  @media (prefers-contrast: more) {
-    :root:not([data-contrast]) .sk-callout[data-appearance="frosted"] {
-      background: var(--sk-callout-bg);
-      -webkit-backdrop-filter: none;
-      backdrop-filter: none;
-    }
+  .sk-callout[data-appearance="frosted"][data-tone="neutral"] {
+    --frost-opacity: 72%;
   }
 
   /* Forced colors keep neither construction: the system surface and its boundary. */

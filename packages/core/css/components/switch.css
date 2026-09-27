@@ -243,28 +243,11 @@
   }
 
   /* The track's own fill (whichever state set `--sk-switch-bg`), thinned into a sheet. */
-  @supports (backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px)) {
-    @media (prefers-reduced-transparency: no-preference) {
-      .sk-switch[data-appearance="frosted"] .sk-switch__control {
-        background: color-mix(in oklab, var(--sk-switch-bg) 55%, transparent);
-        -webkit-backdrop-filter: blur(8px) saturate(150%);
-        backdrop-filter: blur(8px) saturate(150%);
-      }
-    }
-  }
-
-  :is([data-contrast="high"] .sk-switch[data-appearance="frosted"], .sk-switch[data-appearance="frosted"][data-contrast="high"]) .sk-switch__control {
-    background: var(--sk-switch-bg);
-    -webkit-backdrop-filter: none;
-    backdrop-filter: none;
-  }
-
-  @media (prefers-contrast: more) {
-    :root:not([data-contrast]) .sk-switch[data-appearance="frosted"] .sk-switch__control {
-      background: var(--sk-switch-bg);
-      -webkit-backdrop-filter: none;
-      backdrop-filter: none;
-    }
+  .sk-switch[data-appearance="frosted"] .sk-switch__control {
+    --frost-glass: var(--frost-on) color-mix(in oklab, var(--sk-switch-bg) 55%, transparent);
+    background: var(--frost-glass, var(--sk-switch-bg));
+    -webkit-backdrop-filter: var(--frost-on) blur(8px) saturate(150%);
+    backdrop-filter: var(--frost-on) blur(8px) saturate(150%);
   }
 
   @media (forced-colors: active) {

@@ -5,6 +5,17 @@
 # hash.
 surface: "f775ee85aa62e902"
 entries:
+  - date: 2026-09-27
+    kind: bugfix
+    target: appearance
+    es:
+      title: Un callout frosted con tono mantiene su texto legible
+      body: >-
+        La lámina de un callout con tono sube de 72% a 94% (el neutro se queda en 72%): sobre un fondo negro o blanco, su texto caía a 2.8:1.
+    en:
+      title: A toned frosted callout keeps its text legible
+      body: >-
+        A toned callout's sheet rises from 72% to 94% (neutral stays at 72%): over a black or white backdrop its text fell to 2.8:1.
   - date: 2026-09-26
     kind: feature
     target: appearance

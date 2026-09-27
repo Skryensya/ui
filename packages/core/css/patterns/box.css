@@ -103,62 +103,30 @@
   }
 
   /*
-   * FROSTED: the see-through sheet, on the same contract as `patterns/transparency.css` and Button.
+   * FROSTED: the see-through sheet, on the same transparency policy as Button.
    * The baseline is the surface opaque plus a fine edge and a lit top rim; the material (face at
-   * `--sk-box-frost-opacity` over a blurred, saturated backdrop) only where backdrop-filter exists
-   * and no reduced-transparency preference is set. The sheet is tinted with the Box's own surface,
+   * 72% over a blurred, saturated backdrop) only while the system switch is on
+   * (semantic/_frost.scss). The sheet is tinted with the Box's own surface,
    * or the page's surface when `surface` is none, since a frosted nothing has nothing to frost.
    */
   .sk-box[data-appearance="frosted"] {
-    --sk-box-frost-opacity: 72%;
-    --sk-box-frost-blur: 16px;
-    --sk-box-frost-saturation: 150%;
     --sk-box-border-width: 1px;
     --frost-face: var(--color-bg-surface);
-    --frost-highlight: light-dark(
-      color-mix(in oklab, var(--color-bg-surface) 70%, transparent),
-      color-mix(in oklab, var(--color-text-primary) 18%, transparent)
-    );
+    --frost-glass: var(--frost-on) color-mix(in oklab, var(--frost-face) 72%, transparent);
     --sk-box-wash: linear-gradient(
       to bottom,
       color-mix(in oklab, var(--frost-highlight) 45%, transparent),
       transparent 40%
     );
     border-color: color-mix(in oklab, currentColor 18%, transparent);
-    background: var(--sk-box-wash) var(--frost-face);
+    background: var(--sk-box-wash) var(--frost-glass, var(--frost-face));
+    -webkit-backdrop-filter: var(--frost-on) blur(16px) saturate(150%);
+    backdrop-filter: var(--frost-on) blur(16px) saturate(150%);
     box-shadow: inset 0 1px 0 var(--frost-highlight), 0 1px 2px var(--shadow-sm);
   }
 
   .sk-box[data-appearance="frosted"]:is([data-surface="sunken"], [data-surface="surface"], [data-surface="raised"]) {
     --frost-face: var(--sk-box-bg);
-  }
-
-  @supports (backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px)) {
-    @media (prefers-reduced-transparency: no-preference) {
-      .sk-box[data-appearance="frosted"] {
-        background:
-          var(--sk-box-wash)
-          color-mix(in oklab, var(--frost-face) var(--sk-box-frost-opacity), transparent);
-        -webkit-backdrop-filter: blur(var(--sk-box-frost-blur)) saturate(var(--sk-box-frost-saturation));
-        backdrop-filter: blur(var(--sk-box-frost-blur)) saturate(var(--sk-box-frost-saturation));
-      }
-    }
-  }
-
-  /* High contrast outranks the material: back to the opaque baseline. */
-  [data-contrast="high"] .sk-box[data-appearance="frosted"],
-  .sk-box[data-appearance="frosted"][data-contrast="high"] {
-    background: var(--frost-face);
-    -webkit-backdrop-filter: none;
-    backdrop-filter: none;
-  }
-
-  @media (prefers-contrast: more) {
-    :root:not([data-contrast]) .sk-box[data-appearance="frosted"] {
-      background: var(--frost-face);
-      -webkit-backdrop-filter: none;
-      backdrop-filter: none;
-    }
   }
 
   /* Forced colors keep neither construction: the offset and the blur go, the edge becomes the

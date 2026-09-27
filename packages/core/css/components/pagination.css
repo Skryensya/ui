@@ -202,37 +202,15 @@
     --sk-pagination-current-border-color: color-mix(in oklab, currentColor 18%, transparent);
   }
 
-  @supports (backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px)) {
-    @media (prefers-reduced-transparency: no-preference) {
-      .sk-pagination[data-appearance="frosted"] {
-        --sk-pagination-current-bg: color-mix(in oklab, var(--color-bg-surface-raised) 70%, transparent);
-      }
-
-      .sk-pagination[data-appearance="frosted"] .sk-pagination__item[aria-current="page"] {
-        -webkit-backdrop-filter: blur(10px) saturate(150%);
-        backdrop-filter: blur(10px) saturate(150%);
-      }
-    }
+  /* The material, behind the system switch (semantic/_frost.scss). */
+  .sk-pagination[data-appearance="frosted"] {
+    --frost-glass: var(--frost-on) color-mix(in oklab, var(--color-bg-surface-raised) 70%, transparent);
+    --sk-pagination-current-bg: var(--frost-glass, var(--color-bg-surface-raised));
   }
 
-  :is([data-contrast="high"] .sk-pagination[data-appearance="frosted"], .sk-pagination[data-appearance="frosted"][data-contrast="high"]) {
-    --sk-pagination-current-bg: var(--color-bg-surface-raised);
-  }
-
-  :is([data-contrast="high"] .sk-pagination[data-appearance="frosted"], .sk-pagination[data-appearance="frosted"][data-contrast="high"]) .sk-pagination__item[aria-current="page"] {
-    -webkit-backdrop-filter: none;
-    backdrop-filter: none;
-  }
-
-  @media (prefers-contrast: more) {
-    :root:not([data-contrast]) .sk-pagination[data-appearance="frosted"] {
-      --sk-pagination-current-bg: var(--color-bg-surface-raised);
-    }
-
-    :root:not([data-contrast]) .sk-pagination[data-appearance="frosted"] .sk-pagination__item[aria-current="page"] {
-      -webkit-backdrop-filter: none;
-      backdrop-filter: none;
-    }
+  .sk-pagination[data-appearance="frosted"] .sk-pagination__item[aria-current="page"] {
+    -webkit-backdrop-filter: var(--frost-on) blur(10px) saturate(150%);
+    backdrop-filter: var(--frost-on) blur(10px) saturate(150%);
   }
 
   @media (forced-colors: active) {

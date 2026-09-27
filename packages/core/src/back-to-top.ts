@@ -101,8 +101,6 @@ export const backToTopContract = {
     "--sk-back-to-top-depth",
     "--sk-back-to-top-enter-scale",
     "--sk-back-to-top-fg",
-    "--sk-back-to-top-frost-blur",
-    "--sk-back-to-top-frost-opacity",
     "--sk-back-to-top-radius",
     "--sk-back-to-top-shadow",
     "--sk-back-to-top-size",

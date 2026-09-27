@@ -240,15 +240,8 @@
    * is set do the frame and its title bar become see-through sheets over a blurred backdrop. The
    * modal shadow stays: a window still floats above the page, it is only made of glass. */
   .sk-window__content[data-appearance="frosted"] {
-    --sk-window-frost-opacity: 78%;
-    --sk-window-frost-blur: 24px;
-    --sk-window-frost-saturation: 160%;
     --sk-window-wash: none;
     --sk-window-border-color: color-mix(in oklab, currentColor 18%, transparent);
-    --frost-highlight: light-dark(
-      color-mix(in oklab, var(--color-bg-surface) 70%, transparent),
-      color-mix(in oklab, var(--color-text-primary) 18%, transparent)
-    );
     box-shadow: inset 0 1px 0 var(--frost-highlight), var(--sk-window-shadow);
   }
 
@@ -256,35 +249,18 @@
     box-shadow: inset 0 1px 0 var(--frost-highlight), var(--sk-window-shadow-behind);
   }
 
-  @supports (backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px)) {
-    @media (prefers-reduced-transparency: no-preference) {
-      .sk-window__content[data-appearance="frosted"] {
-        background: color-mix(in oklab, var(--sk-window-bg) var(--sk-window-frost-opacity), transparent);
-        -webkit-backdrop-filter: blur(var(--sk-window-frost-blur)) saturate(var(--sk-window-frost-saturation));
-        backdrop-filter: blur(var(--sk-window-frost-blur)) saturate(var(--sk-window-frost-saturation));
-      }
-
-      /* The title bar is the same sheet, a shade denser, not an opaque strip across the glass. */
-      .sk-window__content[data-appearance="frosted"] .sk-window__header {
-        background: color-mix(in oklab, var(--sk-window-header-bg) 40%, transparent);
-      }
-    }
+  /* The material, behind the system switch (semantic/_frost.scss); off, the opaque overlay. */
+  .sk-window__content[data-appearance="frosted"] {
+    --frost-glass: var(--frost-on) color-mix(in oklab, var(--sk-window-bg) 78%, transparent);
+    background: var(--frost-glass, var(--sk-window-bg));
+    -webkit-backdrop-filter: var(--frost-on) blur(24px) saturate(160%);
+    backdrop-filter: var(--frost-on) blur(24px) saturate(160%);
   }
 
-  /* High contrast outranks the material: back to the opaque baseline. */
-  [data-contrast="high"] .sk-window__content[data-appearance="frosted"],
-  .sk-window__content[data-appearance="frosted"][data-contrast="high"] {
-    background: var(--sk-window-bg);
-    -webkit-backdrop-filter: none;
-    backdrop-filter: none;
-  }
-
-  @media (prefers-contrast: more) {
-    :root:not([data-contrast]) .sk-window__content[data-appearance="frosted"] {
-      background: var(--sk-window-bg);
-      -webkit-backdrop-filter: none;
-      backdrop-filter: none;
-    }
+  /* The title bar is the same sheet, a shade denser, not an opaque strip across the glass. */
+  .sk-window__content[data-appearance="frosted"] .sk-window__header {
+    --frost-glass: var(--frost-on) color-mix(in oklab, var(--sk-window-header-bg) 40%, transparent);
+    background: var(--frost-glass, var(--sk-window-header-bg));
   }
 
   @media (prefers-reduced-motion: reduce) {

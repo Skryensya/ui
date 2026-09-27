@@ -721,15 +721,14 @@
 
   /*
    * FROSTED. A MATERIAL, not a paint: the face is a thin sheet that lets what is behind it through,
-   * diffused. The contract is the one `patterns/transparency.css` already set for the system:
+   * diffused. The contract is the system's transparency policy (the Transparency foundation page):
    *
    *   BASELINE (always)  the plain face, opaque, plus the material's fine edge and top highlight.
    *                      This is what a browser without backdrop-filter, a reduced-transparency
    *                      preference, high contrast or forced colors gets: an intentional, legible
    *                      control, never a see-through one with nothing behind it processed.
-   *   MATERIAL (only under `@supports (backdrop-filter)` AND reduced-transparency: no-preference)
-   *                      the same face at `--sk-button-frost-opacity`, over a blurred and
-   *                      saturated backdrop.
+   *   MATERIAL (only while the system's `--frost-on` switch is on: semantic/_frost.scss)
+   *                      the same face at `--frost-opacity`, over a blurred and saturated backdrop.
    *
    * FROSTED IS NOT `variant="translucent"`. That variant is emphasis: a paint that lets an unknown
    * surface show through. Frosted is how the material processes that surface, and it composes with
@@ -740,32 +739,27 @@
    * backdrop clips to whatever corner the radius dimension gives the host. No travel, no squeeze:
    * interaction is the shared state layer plus a slightly denser face.
    *
-   * THE OPACITIES ARE A CONTRAST FLOOR, NOT TASTE. A filled face over an unknown backdrop has to keep
-   * its label legible over the worst one (black under a light face, white under a dark one);
-   * button-frosted.spec.ts measures solid and soft at 4.5:1 over both, in both modes. Ghost and
-   * translucent make no such promise in plain either, so frosted adds blur to them, never less paint.
+   * THE OPACITIES ARE A CONTRAST FLOOR, NOT TASTE. A face over an unknown backdrop has to keep its
+   * label legible over the worst one (black under a light face, white under a dark one);
+   * button-frosted.spec.ts measures EVERY variant and tone at 4.5:1 over both, in both modes, at rest
+   * and pressed. That includes ghost and translucent, which promise nothing in plain: frosted gives
+   * them a real sheet, so frosted is the one appearance whose label is legible over anything.
    *
-   * Internal (`--frost-*`, not hooks): the state density, the floor and the edge are math the states
-   * drive; the three `--sk-button-frost-*` hooks are the material a consumer may actually tune, the
-   * same three knobs `.sk-translucent` publishes.
+   * All internal (`--frost-*`, not hooks): the material is not tunable. Opacity, blur, density, floor
+   * and edge are math the variants and states drive.
    */
   .sk-button[data-appearance="frosted"] {
-    --sk-button-frost-opacity: 84%;
-    --sk-button-frost-blur: 16px;
-    --sk-button-frost-saturation: 150%;
-    /* What the material is tinted with. The resolved face by default; ghost swaps it (below). */
+    --frost-opacity: 84%;
+    --frost-blur: 16px;
+    /* What the material is tinted with, and the opaque baseline. The resolved face by default; ghost
+     * and translucent swap it (below). */
     --frost-face: var(--sk-button-bg);
     /* Added by hover/active. A minimum opacity raised by pressed/disabled. */
     --frost-density: 0%;
     --frost-floor: 0%;
     /* The fine optical edge, from the button's own ink so it reads on its own face in every tone and
-     * mode; and a one-pixel top highlight, the lit rim of the sheet. The highlight is mode-aware
-     * through semantic tokens: the page's surface in light, a trace of the primary ink in dark. */
+     * mode. The top highlight, the lit rim of the sheet, is the system's `--frost-highlight`. */
     --frost-edge: color-mix(in oklab, currentColor 24%, transparent);
-    --frost-highlight: light-dark(
-      color-mix(in oklab, var(--color-bg-surface) 70%, transparent),
-      color-mix(in oklab, var(--color-text-primary) 18%, transparent)
-    );
     /* Separation from the backdrop: a hairline of the system's own shadow colour under the sheet.
      * Its own value rather than `--sk-button-shadow`, because that hook is `none` on ghost, pressed
      * and disabled, and `inset …, none` is an invalid list that drops the highlight with it. */
@@ -786,7 +780,7 @@
 
   /* SOFT recedes by being thinner, over the same material. */
   .sk-button[data-appearance="frosted"][data-variant="soft"] {
-    --sk-button-frost-opacity: 76%;
+    --frost-opacity: 76%;
   }
 
   /*
@@ -800,46 +794,54 @@
       [data-variant="ghost"],
       [data-variant="translucent"]
     ) {
-    --sk-button-frost-opacity: 94%;
+    --frost-opacity: 94%;
   }
 
-  /* GHOST keeps no body of its own: the material is a faint sheet of the page's surface rather than
-   * a tinted tile, the edge is fainter, and the blur is lighter, so it reads as ink on glass and
-   * never as a soft button in disguise. `--sk-button-bg` itself is left alone, so aria-pressed can
-   * still give it its fill. */
+  /* GHOST keeps no tinted body of its own: the material is a sheet of the page's surface rather than a
+   * tinted tile, the edge is fainter, and the blur is lighter. Unlike plain ghost it is a real sheet,
+   * because ink alone is illegible over a backdrop nobody chose: measured, a neutral label clears
+   * 4.5:1 over the worst backdrop from about 62%, a toned one from about 88%. `--sk-button-bg` itself
+   * is left alone, so aria-pressed can still give it its fill. */
   .sk-button[data-appearance="frosted"][data-variant="ghost"] {
-    --sk-button-frost-opacity: 14%;
-    --sk-button-frost-blur: 8px;
+    --frost-opacity: 65%;
+    --frost-blur: 8px;
     --frost-face: var(--color-bg-surface);
     --frost-edge: color-mix(in oklab, currentColor 16%, transparent);
     --frost-drop: 0 0 transparent;
     --sk-button-wash: none;
   }
 
-  /* TRANSLUCENT is where the two axes meet, and they resolve into ONE sheet, not two opacities
-   * multiplied: the variant already chose how much of the backdrop its paint lets through, so the
-   * material keeps that paint at full strength and adds only the processing. Its face alpha is
-   * therefore exactly plain translucent's, over a blurred backdrop instead of a sharp one. */
+  /* TRANSLUCENT keeps its variant's neutral tint, made opaque (the translucent paint laid over the
+   * page's surface) so the material can carry the same floor as ghost: a neutral label from about 66%,
+   * a toned one from about 90%. It still reads as translucent's grey, a step denser than ghost. */
   .sk-button[data-appearance="frosted"][data-variant="translucent"] {
-    --sk-button-frost-opacity: 100%;
+    --frost-opacity: 68%;
+    --frost-face: light-dark(
+      var(--color-bg-surface-sunken),
+      color-mix(in oklab, var(--color-action-neutral) 36%, var(--color-bg-surface))
+    );
   }
 
-  @supports (backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px)) {
-    @media (prefers-reduced-transparency: no-preference) {
-      .sk-button[data-appearance="frosted"] {
-        background:
-          var(--sk-button-wash)
-          color-mix(
-            in oklab,
-            var(--frost-face) max(var(--frost-floor), min(100%, var(--sk-button-frost-opacity) + var(--frost-density))),
-            transparent
-          );
-        /* One filter pair, bounded to the host's own box, and never transitioned: states move the
-         * face's opacity, which is cheap, and leave the blur radius alone. */
-        -webkit-backdrop-filter: blur(var(--sk-button-frost-blur)) saturate(var(--sk-button-frost-saturation));
-        backdrop-filter: blur(var(--sk-button-frost-blur)) saturate(var(--sk-button-frost-saturation));
-      }
-    }
+  .sk-button[data-appearance="frosted"]:is([data-variant="ghost"], [data-variant="translucent"]):is(
+      [data-tone="accent"],
+      [data-tone="danger"]
+    ) {
+    --frost-opacity: 90%;
+  }
+
+  /* One filter pair, bounded to the host's own box, and never transitioned: states move the face's
+   * opacity, which is cheap, and leave the blur radius alone. Without the material, the face itself
+   * is the opaque baseline. */
+  .sk-button[data-appearance="frosted"] {
+    --frost-glass: var(--frost-on) var(--sk-button-wash)
+      color-mix(
+        in oklab,
+        var(--frost-face) max(var(--frost-floor), min(100%, var(--frost-opacity) + var(--frost-density))),
+        transparent
+      );
+    background: var(--frost-glass, var(--sk-button-wash) var(--frost-face));
+    -webkit-backdrop-filter: var(--frost-on) blur(var(--frost-blur)) saturate(150%);
+    backdrop-filter: var(--frost-on) blur(var(--frost-blur)) saturate(150%);
   }
 
   /* Hover and press make the sheet a little denser, beneath the state layer that already tints it. */
@@ -858,27 +860,11 @@
    * material, without it, and under hover. The face follows the pressed fill even on ghost. */
   .sk-button[data-appearance="frosted"][aria-pressed="true"] {
     --frost-face: var(--sk-button-bg);
-    --frost-floor: 92%;
+    /* 96%, not less: a toned ghost's pressed fill sits closest to its ink, and measured it only clears
+     * 4.5:1 over the worst backdrop from about 94%. */
+    --frost-floor: 96%;
     --frost-edge: color-mix(in oklab, currentColor 36%, transparent);
     --frost-drop: 0 0 transparent;
-  }
-
-  /* HIGH CONTRAST OUTRANKS THE MATERIAL. The hc mode strengthens tokens; a see-through face would
-   * hand the contrast straight back to whatever sits behind the button, so both of its triggers
-   * return frosted to the opaque baseline. */
-  [data-contrast="high"] .sk-button[data-appearance="frosted"],
-  .sk-button[data-appearance="frosted"][data-contrast="high"] {
-    background: var(--sk-button-wash) var(--sk-button-bg);
-    -webkit-backdrop-filter: none;
-    backdrop-filter: none;
-  }
-
-  @media (prefers-contrast: more) {
-    :root:not([data-contrast]) .sk-button[data-appearance="frosted"] {
-      background: var(--sk-button-wash) var(--sk-button-bg);
-      -webkit-backdrop-filter: none;
-      backdrop-filter: none;
-    }
   }
 
   /* Icon-only is a SHAPE, a third axis orthogonal to variant and size, an accent button can be

@@ -63,3 +63,50 @@ entries:
         <code>--sk-icon-size</code>. A hook now belongs to the sheet that declares it without naming
         another family, and the gate uses that same rule. No styling changes; what changes is whose
         each hook is said to be.
+  - date: 2026-09-27
+    kind: breaking
+    contracts:
+      - box
+      - dialog
+      - navbar
+      - sidebar
+      - vaul
+    es:
+      title: Se elimina sk-translucent; la transparencia se aplica con appearance frosted
+      body: >-
+        <code>patterns/transparency.css</code> y su clase <code>sk-translucent</code> dejan de existir. Todas
+        las superficies que pintaba publican <code>appearance="frosted"</code>, que conserva la base opaca y
+        suma un piso de contraste, el retorno a opaco con alto contraste y el prefijo <code>-webkit-</code>.
+        Usa <code>appearance="frosted"</code> en su lugar; <code>data-strength</code> no tiene equivalente.
+    en:
+      title: sk-translucent is removed; transparency comes from the frosted appearance
+      body: >-
+        <code>patterns/transparency.css</code> and its <code>sk-translucent</code> class are gone. Every
+        surface it painted publishes <code>appearance="frosted"</code>, which keeps the opaque baseline and
+        adds a contrast floor, the high-contrast return to opaque and the <code>-webkit-</code> prefix. Use
+        <code>appearance="frosted"</code> instead; <code>data-strength</code> has no equivalent.
+  - date: 2026-09-27
+    kind: breaking
+    contracts:
+      - accordion
+      - back-to-top
+      - box
+      - button
+      - folder
+      - segmented
+      - tile
+      - window
+    es:
+      title: Frosted deja de publicar hooks de material
+      body: >-
+        Se eliminan los hooks <code>--sk-*-frost-opacity</code>, <code>-blur</code> y <code>-saturation</code>:
+        la opacidad de frosted es el piso de contraste medido para el texto de cada componente, no un ajuste.
+        Todas las superficies frosted leen ahora un único interruptor, <code>--frost-on</code>, que decide
+        soporte, transparencia reducida, alto contraste y forced colors. Se ven igual que antes.
+    en:
+      title: Frosted stops publishing material hooks
+      body: >-
+        The <code>--sk-*-frost-opacity</code>, <code>-blur</code> and <code>-saturation</code> hooks are removed:
+        frosted's opacity is the contrast floor measured for each component's text, not a setting. Every
+        frosted surface now reads one switch, <code>--frost-on</code>, which decides support, reduced
+        transparency, high contrast and forced colours. They look the same as before.

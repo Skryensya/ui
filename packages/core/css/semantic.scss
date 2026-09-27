@@ -23,6 +23,7 @@
 @use "semantic/type";
 @use "semantic/motion";
 @use "semantic/state";
+@use "semantic/frost";
 @use "semantic/z";
 @use "semantic/breakpoints";
 @use "semantic/reduced-motion";
@@ -57,9 +58,12 @@
     @include type.tokens;
     @include motion.tokens;
     @include state.tokens;
+    @include frost.tokens;
     @include z.tokens;
     @include breakpoints.tokens;
   }
+
+  @include frost.switch;
 
   @include density.tokens;
 

@@ -332,28 +332,11 @@
     border-color: var(--sk-checkbox-border-color);
   }
 
-  @supports (backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px)) {
-    @media (prefers-reduced-transparency: no-preference) {
-      :is(.sk-checkbox[data-appearance="frosted"], .sk-checkbox-group[data-appearance="frosted"] .sk-checkbox) .sk-checkbox__control {
-        background: color-mix(in oklab, var(--sk-checkbox-bg) 60%, transparent);
-        -webkit-backdrop-filter: blur(6px) saturate(150%);
-        backdrop-filter: blur(6px) saturate(150%);
-      }
-    }
-  }
-
-  :is([data-contrast="high"] :is(.sk-checkbox[data-appearance="frosted"], .sk-checkbox-group[data-appearance="frosted"] .sk-checkbox), :is(.sk-checkbox[data-appearance="frosted"], .sk-checkbox-group[data-appearance="frosted"] .sk-checkbox)[data-contrast="high"]) .sk-checkbox__control {
-    background: var(--sk-checkbox-bg);
-    -webkit-backdrop-filter: none;
-    backdrop-filter: none;
-  }
-
-  @media (prefers-contrast: more) {
-    :root:not([data-contrast]) :is(.sk-checkbox[data-appearance="frosted"], .sk-checkbox-group[data-appearance="frosted"] .sk-checkbox) .sk-checkbox__control {
-      background: var(--sk-checkbox-bg);
-      -webkit-backdrop-filter: none;
-      backdrop-filter: none;
-    }
+  :is(.sk-checkbox[data-appearance="frosted"], .sk-checkbox-group[data-appearance="frosted"] .sk-checkbox) .sk-checkbox__control {
+    --frost-glass: var(--frost-on) color-mix(in oklab, var(--sk-checkbox-bg) 60%, transparent);
+    background: var(--frost-glass, var(--sk-checkbox-bg));
+    -webkit-backdrop-filter: var(--frost-on) blur(6px) saturate(150%);
+    backdrop-filter: var(--frost-on) blur(6px) saturate(150%);
   }
 
   /* Forced colors keep none of it: the system box, no ledge, offset, glass or travel. */

@@ -3870,10 +3870,10 @@ describe("segmented: small exclusive choice with a sliding thumb", () => {
     expect(markup).toContain("sk-interactive");
   });
 
-  it("publishes valueChange and sixteen own hooks with no foreign hookSheets", () => {
+  it("publishes valueChange and fifteen own hooks with no foreign hookSheets", () => {
     const contract = getContract("segmented")!;
     expect(contract.events).toEqual({ valueChange: "sk:segmentedvaluechange" });
-    expect(contract.hooks).toHaveLength(16);
+    expect(contract.hooks).toHaveLength(15);
     expect(contract.hooks?.every((hook) => hook.startsWith("--sk-segmented-"))).toBe(true);
     expect(contract.hookSheets ?? []).toEqual([]);
     expect(contract.signatures.Segmented.mount).toBe("data-sk-segmented");
