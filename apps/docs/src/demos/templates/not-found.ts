@@ -49,11 +49,11 @@ export const notFoundTree = (t: Translate): UsageTree => ({
           children: {
             contract: "wrapper",
             signature: "Wrapper",
-            options: { wrapperSize: "sm" },
+            options: { wrapperSize: "sm", gutter: "md", gutterDesktop: "lg" },
             children: {
               contract: "layout",
               signature: "Stack",
-              options: { gap: "xl" },
+              options: { gap: "lg", gapDesktop: "xl" },
               children: [
                 {
                   contract: "empty-state",

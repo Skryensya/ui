@@ -118,11 +118,11 @@ export const teamTree = (t: Translate): UsageTree => {
           children: {
             contract: "wrapper",
             signature: "Wrapper",
-            options: { wrapperSize: "lg" },
+            options: { wrapperSize: "lg", gutter: "md", gutterDesktop: "lg" },
             children: {
               contract: "layout",
               signature: "Stack",
-              options: { gap: "lg" },
+              options: { gap: "md", gapDesktop: "lg" },
               children: [
                 {
                   contract: "layout",

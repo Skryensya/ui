@@ -89,16 +89,16 @@ export const helpCenterTree = (t: Translate): UsageTree => ({
           children: {
             contract: "layout",
             signature: "Stack",
-            options: { gap: "xl" },
+            options: { gap: "lg", gapDesktop: "xl" },
             children: [
               {
                 contract: "hero",
                 signature: "Hero",
-                options: { surface: "raised", align: "center" },
+                options: { surface: "raised", align: "center", padding: "lg", paddingDesktop: "xl" },
                 children: {
                   contract: "wrapper",
                   signature: "Wrapper",
-                  options: { wrapperSize: "sm" },
+                  options: { wrapperSize: "sm", gutter: "md", gutterDesktop: "lg" },
                   children: {
                     contract: "layout",
                     signature: "Stack",
@@ -144,11 +144,11 @@ export const helpCenterTree = (t: Translate): UsageTree => ({
               {
                 contract: "wrapper",
                 signature: "Wrapper",
-                options: { wrapperSize: "lg" },
+                options: { wrapperSize: "lg", gutter: "md", gutterDesktop: "lg" },
                 children: {
                   contract: "layout",
                   signature: "Stack",
-                  options: { gap: "xl" },
+                  options: { gap: "lg", gapDesktop: "xl" },
                   children: [
                     {
                       contract: "tabs",
@@ -219,7 +219,7 @@ export const helpCenterTree = (t: Translate): UsageTree => ({
                     {
                       contract: "box",
                       signature: "Box",
-                      options: { surface: "sunken", border: "subtle", padding: "lg" },
+                      options: { surface: "sunken", border: "subtle", padding: "md", paddingDesktop: "lg" },
                       children: {
                         contract: "layout",
                         signature: "Inline",

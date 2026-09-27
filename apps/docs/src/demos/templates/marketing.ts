@@ -27,7 +27,7 @@ const navLink = (label: string, href: string, current = false): UsageTree => ({
 const feature = (icon: string, title: string, body: string): UsageTree => ({
   contract: "box",
   signature: "Box",
-  options: { surface: "raised", border: "subtle", padding: "lg" },
+  options: { surface: "raised", border: "subtle", padding: "md", paddingDesktop: "lg" },
   children: {
     contract: "layout",
     signature: "Stack",
@@ -123,11 +123,11 @@ export const marketingTree = (t: Translate): UsageTree => ({
           children: {
             contract: "wrapper",
             signature: "Wrapper",
-            options: { wrapperSize: "lg" },
+            options: { wrapperSize: "lg", gutter: "md", gutterDesktop: "lg" },
             children: {
               contract: "layout",
               signature: "Stack",
-              options: { gap: "xl" },
+              options: { gap: "lg", gapDesktop: "xl" },
               children: [
                 /*
                  * HERO. The eyebrow is a `Badge`, not a `Tag`, and the catalogue draws that line
@@ -206,7 +206,7 @@ export const marketingTree = (t: Translate): UsageTree => ({
                 {
                   contract: "box",
                   signature: "Box",
-                  options: { surface: "sunken", border: "subtle", padding: "lg" },
+                  options: { surface: "sunken", border: "subtle", padding: "md", paddingDesktop: "lg" },
                   children: {
                     contract: "layout",
                     signature: "Grid",
@@ -227,7 +227,7 @@ export const marketingTree = (t: Translate): UsageTree => ({
                 {
                   contract: "box",
                   signature: "Box",
-                  options: { surface: "raised", border: "subtle", padding: "xl" },
+                  options: { surface: "raised", border: "subtle", padding: "lg", paddingDesktop: "xl" },
                   children: {
                     contract: "layout",
                     signature: "Stack",

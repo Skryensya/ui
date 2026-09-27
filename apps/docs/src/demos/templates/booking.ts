@@ -56,11 +56,11 @@ export const bookingTree = (t: Translate, locale: "es" | "en"): UsageTree => ({
           children: {
             contract: "wrapper",
             signature: "Wrapper",
-            options: { wrapperSize: "lg" },
+            options: { wrapperSize: "lg", gutter: "md", gutterDesktop: "lg" },
             children: {
               contract: "layout",
               signature: "Stack",
-              options: { gap: "lg" },
+              options: { gap: "md", gapDesktop: "lg" },
               children: [
                 {
                   contract: "layout",
@@ -84,12 +84,12 @@ export const bookingTree = (t: Translate, locale: "es" | "en"): UsageTree => ({
                 {
                   contract: "layout",
                   signature: "Grid",
-                  options: { columns: "2", gap: "lg", responsive: true },
+                  options: { columns: "2", gap: "md", gapDesktop: "lg", responsive: true },
                   children: [
                     {
                       contract: "layout",
                       signature: "Stack",
-                      options: { gap: "lg" },
+                      options: { gap: "md", gapDesktop: "lg" },
                       children: [
                         {
                           contract: "calendar",
@@ -121,7 +121,7 @@ export const bookingTree = (t: Translate, locale: "es" | "en"): UsageTree => ({
                     {
                       contract: "box",
                       signature: "Box",
-                      options: { surface: "sunken", border: "subtle", padding: "lg" },
+                      options: { surface: "sunken", border: "subtle", padding: "md", paddingDesktop: "lg" },
                       children: {
                         contract: "layout",
                         signature: "Stack",

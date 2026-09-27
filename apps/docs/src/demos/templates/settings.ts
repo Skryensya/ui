@@ -31,7 +31,7 @@ const field = (label: string, name: string, placeholder: string, type = "text"):
 const section = (title: string, description: string, body: UsageTree[]): UsageTree => ({
   contract: "box",
   signature: "Box",
-  options: { surface: "raised", border: "subtle", padding: "lg" },
+  options: { surface: "raised", border: "subtle", padding: "md", paddingDesktop: "lg" },
   children: {
     contract: "layout",
     signature: "Stack",
@@ -135,11 +135,11 @@ export const settingsTree = (t: Translate): UsageTree => ({
         children: {
           contract: "wrapper",
           signature: "Wrapper",
-          options: { wrapperSize: "md" },
+          options: { wrapperSize: "md", gutter: "md", gutterDesktop: "lg" },
           children: {
             contract: "layout",
             signature: "Stack",
-            options: { gap: "lg" },
+            options: { gap: "md", gapDesktop: "lg" },
             children: [
               {
                 contract: "layout",

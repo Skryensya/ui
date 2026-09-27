@@ -2943,13 +2943,10 @@ main a:not(
   }
 
   /* On a phone-sized frame the Navbar's own `lg` inset leaves the brand and one action fighting for
-     a row; the Wrapper's gutter below it is the width the rest of the page already aligns to. */
+     a row. The page's Wrappers declare an `md` phone gutter (decision 30); the Navbar publishes no
+     spacing option, so it is aligned to that gutter here. */
   .templates__example .sk-navbar {
     --sk-navbar-padding-x: var(--space-inset-md);
-  }
-
-  .templates__example .sk-wrapper {
-    --sk-wrapper-padding-inline: var(--space-inset-md);
   }
 
   /* The changelog's date column is sized to its longest date, which on a phone took a third of the

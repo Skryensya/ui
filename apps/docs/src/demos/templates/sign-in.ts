@@ -38,15 +38,15 @@ export const signInTree = (t: Translate): UsageTree => ({
         children: {
           contract: "wrapper",
           signature: "Wrapper",
-          options: { wrapperSize: "sm" },
+          options: { wrapperSize: "sm", gutter: "md", gutterDesktop: "lg" },
           children: {
             contract: "box",
             signature: "Box",
-            options: { surface: "raised", border: "subtle", padding: "lg" },
+            options: { surface: "raised", border: "subtle", padding: "md", paddingDesktop: "lg" },
             children: {
               contract: "layout",
               signature: "Stack",
-              options: { gap: "lg" },
+              options: { gap: "md", gapDesktop: "lg" },
               children: [
                 {
                   contract: "layout",
