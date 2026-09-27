@@ -1,5 +1,6 @@
 import type { UsageTree } from "@skryensya/core/usage-tree";
 import type { Translate } from "../../i18n";
+import { siteFooter } from "./shared";
 
 /*
  * NOT FOUND. The smallest page a site ships and the one most often built by hand. Here it is an
@@ -40,68 +41,71 @@ export const notFoundTree = (t: Translate): UsageTree => ({
       signature: "Stack",
       options: { gap: "none" },
       attrs: { class: "page-shell" },
-      children: {
-        contract: "layout",
-        signature: "Main",
-        attrs: { class: "page-shell__main" },
-        children: {
-          contract: "wrapper",
-          signature: "Wrapper",
-          options: { wrapperSize: "sm" },
+      children: [
+        {
+          contract: "layout",
+          signature: "Main",
+          attrs: { class: "page-shell__main" },
           children: {
-            contract: "layout",
-            signature: "Stack",
-            options: { gap: "xl" },
-            children: [
-              {
-                contract: "empty-state",
-                signature: "EmptyState",
-                slots: {
-                  icon: { contract: "icon", signature: "Icon", options: { name: "search" } },
-                  title: t("demo.notFound.title"),
-                  description: t("demo.notFound.body"),
-                  actions: [
+            contract: "wrapper",
+            signature: "Wrapper",
+            options: { wrapperSize: "sm" },
+            children: {
+              contract: "layout",
+              signature: "Stack",
+              options: { gap: "xl" },
+              children: [
+                {
+                  contract: "empty-state",
+                  signature: "EmptyState",
+                  slots: {
+                    icon: { contract: "icon", signature: "Icon", options: { name: "search" } },
+                    title: t("demo.notFound.title"),
+                    description: t("demo.notFound.body"),
+                    actions: [
+                      {
+                        contract: "button",
+                        signature: "Button.navigation",
+                        options: { href: "#inicio", tone: "accent" },
+                        children: t("demo.notFound.home"),
+                      },
+                      {
+                        contract: "button",
+                        signature: "Button.navigation",
+                        options: { href: "#contacto", variant: "soft" },
+                        children: t("demo.notFound.contact"),
+                      },
+                    ],
+                  },
+                },
+                {
+                  contract: "layout",
+                  signature: "Stack",
+                  options: { gap: "sm" },
+                  children: [
                     {
-                      contract: "button",
-                      signature: "Button.navigation",
-                      options: { href: "#inicio", tone: "accent" },
-                      children: t("demo.notFound.home"),
+                      contract: "typography",
+                      signature: "Heading",
+                      options: { headingSize: "h4", flush: true },
+                      children: t("demo.notFound.suggestionsTitle"),
                     },
                     {
-                      contract: "button",
-                      signature: "Button.navigation",
-                      options: { href: "#contacto", variant: "soft" },
-                      children: t("demo.notFound.contact"),
+                      contract: "list",
+                      signature: "List",
+                      children: [
+                        suggestion(t("demo.notFound.s1"), t("demo.notFound.s1Hint"), "#docs"),
+                        suggestion(t("demo.notFound.s2"), t("demo.notFound.s2Hint"), "#precios"),
+                        suggestion(t("demo.notFound.s3"), t("demo.notFound.s3Hint"), "#blog"),
+                      ],
                     },
                   ],
                 },
-              },
-              {
-                contract: "layout",
-                signature: "Stack",
-                options: { gap: "sm" },
-                children: [
-                  {
-                    contract: "typography",
-                    signature: "Heading",
-                    options: { headingSize: "h4", flush: true },
-                    children: t("demo.notFound.suggestionsTitle"),
-                  },
-                  {
-                    contract: "list",
-                    signature: "List",
-                    children: [
-                      suggestion(t("demo.notFound.s1"), t("demo.notFound.s1Hint"), "#docs"),
-                      suggestion(t("demo.notFound.s2"), t("demo.notFound.s2Hint"), "#precios"),
-                      suggestion(t("demo.notFound.s3"), t("demo.notFound.s3Hint"), "#blog"),
-                    ],
-                  },
-                ],
-              },
-            ],
+              ],
+            },
           },
         },
-      },
+        siteFooter(t),
+      ],
     },
   ],
 });

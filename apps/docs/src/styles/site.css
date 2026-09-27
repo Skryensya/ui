@@ -2881,14 +2881,121 @@ main a:not(
   overflow: auto;
   background: var(--color-bg-canvas);
   /* Same reasoning as `.app-shell`: this box is the body of a site, not a card, so it must not
-     round the corner where it meets the Navbar above it. */
+     round the corner where it meets the Navbar above it. A Hero placed straight in the page is the
+     same kind of thing, a full-width band, so it drops its card radius too (below). */
   --sk-box-radius: 0;
 }
 
-.page-shell__main {
-  padding-block: var(--space-inset-xl);
-  padding-inline: var(--space-inset-lg);
+/* The Hero declares its radius hook on itself, so the value has to be set on the Hero, not
+   inherited from the shell. */
+.page-shell .sk-hero {
+  --sk-hero-radius: 0;
 }
+
+/* Block padding only. Every page template puts its content in a `Wrapper`, and the Wrapper already
+ * owns the inline gutter: a second one here stacked on top of it and, on a phone, left a 390px
+ * screen a 200px column. Without it a Hero placed straight in the main also runs edge to edge, as a
+ * page band does on a real site. */
+.page-shell__main {
+  /* Grows into whatever the page leaves, so a short page (sign-in, 404) keeps its footer on the
+     bottom edge instead of floating it halfway up the screen. */
+  flex: 1 0 auto;
+  padding-block: var(--space-inset-xl);
+}
+
+/* The page footer's content sits in a Wrapper (templates/shared.ts), which owns the gutter; the
+   Footer's own inline padding on top of it set the credit line in from the column above it. */
+.page-shell > .sk-footer {
+  padding-inline: 0;
+}
+
+/* A page that opens on a Hero band starts flush under the Navbar, the way a real landing does,
+   rather than with a strip of canvas between the bar and the band. */
+.page-shell__main:has(> .sk-stack > .sk-hero:first-child) {
+  padding-block-start: 0;
+}
+
+/*
+ * NARROW-SCREEN SWAPS for templates, measured against the FRAME, not the viewport: a template sits
+ * inside the docs stage, and on a desktop reader's screen that stage can still be phone-narrow (or
+ * the reverse), so a viewport query would answer the wrong question. The frame is the query
+ * container; a template opts an element in with `attrs: { class: "template-wide-only" }` or
+ * `"template-narrow-only"`.
+ *
+ * This is the site acting as the consuming app, like `.app-shell` above: the Navbar publishes no
+ * collapsed state, and which links fold behind a menu on a phone is each product's own call.
+ */
+.templates__example {
+  container: template-frame / inline-size;
+}
+
+.template-narrow-only {
+  display: none;
+}
+
+@container template-frame (max-width: 40rem) {
+  .template-wide-only {
+    display: none;
+  }
+
+  .template-narrow-only {
+    display: revert-layer;
+  }
+
+  /* On a phone-sized frame the Navbar's own `lg` inset leaves the brand and one action fighting for
+     a row; the Wrapper's gutter below it is the width the rest of the page already aligns to. */
+  .templates__example .sk-navbar {
+    --sk-navbar-padding-x: var(--space-inset-md);
+  }
+
+  .templates__example .sk-wrapper {
+    --sk-wrapper-padding-inline: var(--space-inset-md);
+  }
+
+  /* The changelog's date column is sized to its longest date, which on a phone took a third of the
+     row and left each entry a 110px column. The date moves under the version instead, and the
+     first column collapses to nothing. */
+  .templates__example .sk-changelog__release {
+    grid-template-rows: auto auto auto;
+  }
+
+  .templates__example .sk-changelog__date {
+    grid-column: 3;
+    grid-row: 2;
+    justify-self: start;
+  }
+
+  .templates__example .sk-changelog__entries {
+    grid-row: 3;
+  }
+
+  /* A horizontal tab list publishes no overflow of its own: three labels wider than a phone
+     pushed the whole page sideways, because the list's min-content set the width of every column
+     above it. It scrolls on its own row instead, as a tab strip on a phone does. Only here: a
+     scrollport clips the triggers' focus ring, so the padding gives the ring (width + offset) room
+     inside it, and a frame wide enough never pays for either. */
+  .templates__example .sk-tabs:not([data-orientation="vertical"]) .sk-tabs__list {
+    --template-tab-ring: calc(var(--focus-ring-width) + var(--focus-ring-offset));
+
+    overflow-x: auto;
+    scrollbar-width: none;
+    padding: var(--template-tab-ring);
+    margin-inline: calc(var(--template-tab-ring) * -1);
+  }
+
+  .templates__example .sk-tabs:not([data-orientation="vertical"]) .sk-tabs__trigger {
+    white-space: nowrap;
+  }
+
+  /* Display sizes are set for a desktop hero: at a phone's measure `display-md` broke a six-word
+     headline into five lines. One step down, through the heading's own hooks. */
+  .templates__example .sk-heading[data-size="display-md"],
+  .templates__example .sk-heading[data-size="display-lg"] {
+    --sk-heading-font-size: var(--font-size-display-sm);
+    --sk-heading-line-height: var(--font-line-height-display-sm);
+  }
+}
+
 
 /*
  * The docs template's third column. `Toc`'s host is already an `<aside>` (a landmark on its own),

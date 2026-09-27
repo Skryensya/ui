@@ -42,7 +42,7 @@ export const signInTree = (t: Translate): UsageTree => ({
           children: {
             contract: "box",
             signature: "Box",
-            options: { surface: "raised", border: "subtle", padding: "xl" },
+            options: { surface: "raised", border: "subtle", padding: "lg" },
             children: {
               contract: "layout",
               signature: "Stack",

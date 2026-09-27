@@ -117,7 +117,7 @@ export const checkoutTree = (t: Translate, locale: "es" | "en"): UsageTree => {
                 {
                   contract: "layout",
                   signature: "Grid",
-                  options: { columns: "2", gap: "lg", multicol: true },
+                  options: { columns: "2", gap: "lg", responsive: true },
                   children: [
                     {
                       contract: "layout",
