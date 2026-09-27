@@ -617,6 +617,39 @@
     --sk-scrollbar-track-bg: transparent;
   }
 
+  /*
+   * MULTIPLE SELECTION, SHOWN AS SUCH: a leading checkbox on every row (`data-sk-user-select-check`,
+   * Checkbox's own parts, decorative). A trailing check reads as "the one chosen"; a column of boxes
+   * says at a glance that any number can be. The row's own `data-state` checks it, so the box has no
+   * state of its own to drift, and an authored trailing indicator steps aside for it.
+   */
+  .sk-select__item:has(> [data-sk-user-select-check]) {
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: var(--space-inline-md);
+  }
+
+  .sk-select__item:has(> [data-sk-user-select-check]) > .sk-select__item-indicator {
+    display: none;
+  }
+
+  .sk-select__item[data-state="checked"] > .sk-checkbox {
+    --sk-checkbox-bg: var(--sk-checkbox-selected-bg);
+    --sk-checkbox-fg: var(--sk-checkbox-selected-fg);
+    --sk-checkbox-border-color: var(--sk-checkbox-selected-border-color);
+  }
+
+  .sk-select__item[data-state="checked"] > .sk-checkbox .sk-checkbox__indicator[data-state="checked"] {
+    opacity: 1;
+    scale: 1;
+    filter: blur(0);
+  }
+
+  .sk-select__item[data-disabled] > .sk-checkbox {
+    --sk-checkbox-bg: var(--sk-checkbox-disabled-bg);
+    --sk-checkbox-fg: var(--sk-checkbox-disabled-fg);
+    --sk-checkbox-border-color: var(--sk-checkbox-disabled-border-color);
+  }
+
   /* Rows with the footer under them keep the footer's text on the rows' own text line. */
   .sk-select__content > [data-sk-user-select-footer] {
     padding-inline: var(--space-inset-sm) 0;

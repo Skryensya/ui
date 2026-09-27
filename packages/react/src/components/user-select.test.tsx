@@ -206,4 +206,49 @@ describe("UserSelect", () => {
     expect(trigger.getAttribute("aria-label")).toBe("Select users, 4 users selected");
     expect(ui.getByText("+2")).toBeTruthy();
   });
+
+  it("relabels every default string from `term` alone", () => {
+    const ui = render(<Harness placeholder={undefined} term="members" value={["jane", "maria"]} />);
+    const trigger = ui.getByRole("combobox");
+
+    expect(trigger.getAttribute("aria-label")).toBe("Select members, 2 members selected");
+    expect(ui.getByText("2 members")).toBeTruthy();
+  });
+
+  it("localizes through `labels`", async () => {
+    const ui = render(
+      <Harness
+        labels={{
+          placeholder: "Seleccionar {term}",
+          count: "{count} {term}",
+          selectedMany: "{count} {term} seleccionados",
+          selectedCount: "{count} seleccionados",
+          clear: "Limpiar",
+        }}
+        placeholder={undefined}
+        term="usuarios"
+        value={["jane", "maria"]}
+      />,
+    );
+    const trigger = ui.getByRole("combobox");
+    expect(trigger.getAttribute("aria-label")).toBe("Seleccionar usuarios, 2 usuarios seleccionados");
+    expect(ui.getByText("2 usuarios")).toBeTruthy();
+
+    fireEvent.click(trigger);
+    expect(await ui.findByText("2 seleccionados")).toBeTruthy();
+    expect(ui.getByRole("button", { name: "Limpiar" })).toBeTruthy();
+  });
+
+  it("leads every row with a decorative checkbox, since the selection is multiple", async () => {
+    const ui = render(<Harness value={["jane"]} />);
+    fireEvent.click(ui.getByRole("combobox"));
+    const options = await ui.findAllByRole("option");
+
+    for (const option of options) {
+      const box = option.firstElementChild as HTMLElement;
+      expect(box.hasAttribute("data-sk-user-select-check")).toBe(true);
+      expect(box.getAttribute("aria-hidden")).toBe("true");
+    }
+    expect(options[0]!.querySelector(".sk-select__item-indicator")).toBeNull();
+  });
 });

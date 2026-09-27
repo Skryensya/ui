@@ -1,7 +1,14 @@
 import { comboboxParts } from "@skryensya/core/combobox";
 import { selectAttrs, selectParts, selectPositioning, type SelectOptions } from "@skryensya/core/select";
 import { select } from "@skryensya/core/machines";
-import { userSelectAttrs, userSelectSearchKey } from "@skryensya/core/user-select";
+import { selectionParts } from "@skryensya/core/selection";
+import {
+  userSelectAttrs,
+  userSelectLabel,
+  userSelectLabels,
+  userSelectSearchKey,
+  type UserSelectLabels,
+} from "@skryensya/core/user-select";
 import { normalizeProps, Portal, useMachine } from "@zag-js/react";
 import { useId, useMemo, useRef, useState, type KeyboardEvent, type RefObject } from "react";
 import { useAnchored } from "./anchored.js";
@@ -30,9 +37,22 @@ export type UserSelectProps = {
   users: readonly UserSelectUser[];
   value: readonly string[];
   onValueChange: (value: string[]) => void;
+  /**
+   * The noun for what is picked, plural: "users" by default. Every default string reads it
+   * ("3 users", "No users available"), so `term="members"` relabels the whole picker in English.
+   */
+  term?: string;
+  /**
+   * Any of the composition's strings, as templates (`{term}`, `{count}`, `{name}`, `{query}`); see
+   * `userSelectLabels` in `@skryensya/core/user-select` for every key and its default. Localizing
+   * means passing these, since another language's sentences do not come from swapping one noun.
+   */
+  labels?: Partial<Omit<UserSelectLabels, "term">>;
+  /** Shorthand for `labels.placeholder`. */
   placeholder?: string;
+  /** Shorthand for `labels.searchPlaceholder`. */
   searchPlaceholder?: string;
-  /** Shown in the trigger, beside an empty disc, while nobody is selected. */
+  /** Shorthand for `labels.unselected`: shown in the trigger, beside an empty disc, while nobody is selected. */
   unselectedLabel?: string;
   disabled?: boolean;
   loading?: boolean;
@@ -53,13 +73,15 @@ export function UserSelect({
   container,
   disabled,
   id,
+  labels: labelOverrides,
   loading,
   maxAvatars = 3,
   name,
   onValueChange,
-  placeholder = "Select users",
-  searchPlaceholder = "Search users...",
-  unselectedLabel = "No one selected",
+  placeholder: placeholderProp,
+  searchPlaceholder: searchPlaceholderProp,
+  term,
+  unselectedLabel: unselectedProp,
   users,
   value,
   variant = "ghost",
@@ -68,6 +90,19 @@ export function UserSelect({
   const machineId = id ?? generatedId;
   const rootRef = useRef<HTMLDivElement>(null);
   const [query, setQuery] = useState("");
+
+  const labels: UserSelectLabels = {
+    ...userSelectLabels,
+    ...labelOverrides,
+    ...(term === undefined ? {} : { term }),
+    ...(placeholderProp === undefined ? {} : { placeholder: placeholderProp }),
+    ...(searchPlaceholderProp === undefined ? {} : { searchPlaceholder: searchPlaceholderProp }),
+    ...(unselectedProp === undefined ? {} : { unselected: unselectedProp }),
+  };
+  const label = (key: Exclude<keyof UserSelectLabels, "term">, values?: Record<string, string | number>) =>
+    userSelectLabel(labels, key, values);
+  const placeholder = label("placeholder");
+  const searchPlaceholder = label("searchPlaceholder");
 
   const usersById = useMemo(() => new Map(users.map((user) => [user.id, user])), [users]);
   const selectedUsers = useMemo(
@@ -131,8 +166,8 @@ export function UserSelect({
     selectedUsers.length === 0
       ? placeholder
       : selectedUsers.length === 1
-        ? `${placeholder}, ${selectedUsers[0]!.name} selected`
-        : `${placeholder}, ${selectedUsers.length} users selected`;
+        ? `${placeholder}, ${label("selectedOne", { name: selectedUsers[0]!.name })}`
+        : `${placeholder}, ${label("selectedMany", { count: selectedUsers.length })}`;
 
   const triggerProps = api.getTriggerProps();
 
@@ -148,8 +183,10 @@ export function UserSelect({
   const resultsStatus = !api.open
     ? null
     : loading
-      ? "Loading users"
-      : `${filteredUsers.length} ${filteredUsers.length === 1 ? "result" : "results"} available`;
+      ? label("loading")
+      : filteredUsers.length === 1
+        ? label("result")
+        : label("results", { count: filteredUsers.length });
 
   return (
     <div
@@ -187,7 +224,7 @@ export function UserSelect({
                 <span className="sk-avatar" data-size="sm">
                   <Icon name="user" />
                 </span>
-                {unselectedLabel}
+                {label("unselected")}
               </span>
             </span>
           ) : (
@@ -211,7 +248,7 @@ export function UserSelect({
                 </AvatarGroup>
               )}
               <span className={selectParts.value}>
-                {selectedUsers.length === 1 ? selectedUsers[0]!.name : `${selectedUsers.length} users`}
+                {selectedUsers.length === 1 ? selectedUsers[0]!.name : label("count", { count: selectedUsers.length })}
               </span>
             </Inline>
           )}
@@ -251,11 +288,11 @@ export function UserSelect({
             </div>
             {loading ? (
               <div className={comboboxParts.empty} role="presentation">
-                <Loader size="sm" /> Loading users...
+                <Loader size="sm" /> {label("loading")}
               </div>
             ) : users.length === 0 ? (
               <div className={comboboxParts.empty} role="presentation">
-                No users available
+                {label("empty")}
               </div>
             ) : (
               // `tabIndex={-1}`: `getListProps()` defaults it to 0 for a STANDALONE listbox
@@ -268,6 +305,15 @@ export function UserSelect({
                     className={cx(selectParts.item, "sk-interactive")}
                     key={user.id}
                   >
+                    {/* Decorative: the option's own `aria-selected` is the state; this box only shows it.
+                        Checked from the row's `data-state` in CSS, so it needs no state of its own. */}
+                    <span aria-hidden="true" className={selectionParts.checkbox} {...{ [userSelectAttrs.check]: "" }}>
+                      <span className={selectionParts.checkboxControl}>
+                        <span className={selectionParts.checkboxIndicator} data-state="checked">
+                          <Icon name="check" />
+                        </span>
+                      </span>
+                    </span>
                     <Inline align="center" as="span" gap="sm" wrap={false}>
                       <Avatar aria-hidden="true" name={user.name} size="sm" src={user.avatarUrl} />
                       <span className={comboboxParts.itemCopy}>
@@ -281,14 +327,11 @@ export function UserSelect({
                         ) : null}
                       </span>
                     </Inline>
-                    <span {...api.getItemIndicatorProps({ item: user })} className={selectParts.itemIndicator}>
-                      <Icon name="check" />
-                    </span>
                   </div>
                 ))}
                 {filteredUsers.length === 0 ? (
                   <div className={comboboxParts.empty} role="presentation">
-                    {`No users found for "${query}"`}
+                    {label("noResults", { query })}
                   </div>
                 ) : null}
               </div>
@@ -296,10 +339,10 @@ export function UserSelect({
             {value.length > 0 ? (
               <Inline align="center" as="span" gap="sm" justify="between" {...{ [userSelectAttrs.footer]: "" }}>
                 <Text as="span" size="caption" tone="secondary">
-                  {value.length} selected
+                  {label("selectedCount", { count: value.length })}
                 </Text>
                 <Button onClick={() => api.clearValue()} size="sm" variant="ghost">
-                  Clear all
+                  {label("clear")}
                 </Button>
               </Inline>
             ) : null}

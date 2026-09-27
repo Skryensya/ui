@@ -30,10 +30,54 @@ export const userSelectAttrs = {
   count: "data-sk-user-select-count",
   clear: "data-sk-user-select-clear",
   unselected: "data-sk-user-select-unselected",
+  check: "data-sk-user-select-check",
 } as const;
 
 export type UserSelectPart = keyof typeof userSelectAttrs;
 export type UserSelectAttr = (typeof userSelectAttrs)[UserSelectPart];
+
+/*
+ * EVERY STRING THE COMPOSITION WRITES, one table both bindings read, so React and Vanilla never say
+ * different things. Each is a template: `{term}` is the noun for what is being picked ("users" by
+ * default; "usuarios", "members", "reviewers"...), `{count}`, `{name}` and `{query}` are filled at
+ * the point of use. Changing `term` alone relabels an English picker; localizing replaces the
+ * sentences too, because a noun cannot carry another language's word order ("No hay usuarios").
+ *
+ * React takes these as `term` and `labels`; Vanilla as `data-term` and `data-<key>-label` on the root
+ * (`data-placeholder` and `data-search-placeholder` keep their existing names).
+ */
+export const userSelectLabels = {
+  term: "users",
+  placeholder: "Select {term}",
+  searchPlaceholder: "Search {term}...",
+  unselected: "No one selected",
+  /** The trigger's text beside the avatar stack when two or more are selected. */
+  count: "{count} {term}",
+  /** The footer's count. */
+  selectedCount: "{count} selected",
+  /** Appended to the trigger's accessible name: "Select users, Jane Cooper selected". */
+  selectedOne: "{name} selected",
+  selectedMany: "{count} {term} selected",
+  clear: "Clear all",
+  empty: "No {term} available",
+  noResults: 'No {term} found for "{query}"',
+  loading: "Loading {term}...",
+  result: "1 result available",
+  results: "{count} results available",
+} as const;
+
+export type UserSelectLabels = { -readonly [K in keyof typeof userSelectLabels]: string };
+
+/** Fills one template: `{term}` from the labels themselves, the rest from `values`. */
+export function userSelectLabel(
+  labels: UserSelectLabels,
+  key: Exclude<keyof UserSelectLabels, "term">,
+  values: Record<string, string | number> = {},
+): string {
+  let result = labels[key].replaceAll("{term}", labels.term);
+  for (const [name, value] of Object.entries(values)) result = result.replaceAll(`{${name}}`, String(value));
+  return result;
+}
 
 export const userSelectEvents = {
   valueChange: "sk:userselectvaluechange",
