@@ -51,11 +51,11 @@ export const onboardingTree = (t: Translate): UsageTree => ({
         children: {
           contract: "wrapper",
           signature: "Wrapper",
-          options: { wrapperSize: "md" },
+          options: { wrapperSize: "md", gutter: "md", gutterDesktop: "lg" },
           children: {
             contract: "layout",
             signature: "Stack",
-            options: { gap: "lg" },
+            options: { gap: "md", gapDesktop: "lg" },
             children: [
               {
                 contract: "steps",
