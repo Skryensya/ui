@@ -503,6 +503,11 @@ What the Maker opens, saves and exports: maker pages in order, each with a name 
 The order is the order the site offers its pages in, never anything about their layout.
 _Avoid_: site document, SiteDocument, project, workspace
 
+**Maker project**:
+A maker site kept by the Maker's server under a name, with a revision that goes up on every save.
+A save names the revision it was made on, so the person and an agent never overwrite each other.
+_Avoid_: document, file, workspace, workbook
+
 **Maker page**:
 One page of a maker site: a name, a path and a tree of maker nodes whose root is a Main. It holds
 only what the author chose, never what the browser computed (position, rendered size).

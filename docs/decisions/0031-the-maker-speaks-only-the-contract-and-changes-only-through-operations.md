@@ -65,8 +65,9 @@ The spec asked that prompts respect the same paradigm. They do by construction: 
 site through the MCP's `maker_read` and changes it through `maker_apply`, whose input is the closed
 set of operations and nothing else. "Put these two buttons next to each other" can only arrive as a
 wrap in an Inline. The agent works through the MCP rather than a prompt box inside the Maker, so no
-model key lives in a browser, and the two share a revisioned site file that the Maker's dev server
-watches: an agent's change appears live and is undone like any other step.
+model key lives in a browser, and both save projects through the Maker's own API on top of the
+revision they read (PostgreSQL announces every change): an agent's change appears live in any open
+Maker and is undone like any other step.
 
 ## Structure is always sound, options may be pending
 

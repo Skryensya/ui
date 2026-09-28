@@ -2,8 +2,8 @@
 import Base from "../../layouts/Base.astro";
 import CodeBlock from "../../components/CodeBlock.astro";
 
-const run = `pnpm --filter @skryensya/maker dev   # http://localhost:4200
-# otro sitio: http://localhost:4200/?site=landing`;
+const run = `docker compose -f apps/maker/docker-compose.yml up -d   # PostgreSQL, una vez
+pnpm --filter @skryensya/maker dev                        # http://localhost:4200`;
 
 const outline = `page 3f2a… "Inicio" /
   9c1e… layout/Main
@@ -16,6 +16,7 @@ const outline = `page 3f2a… "Inicio" /
         77f2… "Leer la documentación"`;
 
 const apply = `{
+  "project": "7d0c…",
   "revision": 4,
   "operations": [
     {
@@ -49,10 +50,11 @@ const apply = `{
 
   <h2>Cómo abrirlo</h2>
   <p>
-    El Maker es una app local en <code>apps/maker</code>. Cada sitio es un archivo en
-    <code>.maker/</code>, en la raíz del repositorio, con el nombre que da el parámetro
-    <code>site</code>; el de por defecto es el archivo que usan las herramientas del Maker del servidor
-    MCP.
+    El Maker es una app local en <code>apps/maker</code>. Sus proyectos viven en PostgreSQL, que el
+    archivo compose levanta en el puerto 5433 (<code>DATABASE_URL</code> apunta a otro). Puedes tener
+    varios proyectos abiertos a la vez, cada uno en una pestaña con su propio historial, y las pestañas
+    abiertas vuelven en la próxima visita. Sin base de datos el Maker sigue funcionando, con un sitio
+    guardado en el navegador, y lo avisa.
   </p>
   <CodeBlock code={run} label="Shell" lang="bash" />
 
@@ -120,15 +122,15 @@ const apply = `{
   <h2>Editar con un agente</h2>
   <p>
     Un prompt sigue la misma regla. El servidor MCP que corre desde el repositorio ofrece
-    <code>maker_read</code>, que devuelve el sitio abierto como un outline con un id en cada nodo, y
-    <code>maker_apply</code>, que acepta operaciones y nada más. Pídele a un agente "pon estos dos
+    <code>maker_projects</code>, <code>maker_read</code>, que devuelve un proyecto como un outline con un
+    id en cada nodo, y <code>maker_apply</code>, que acepta operaciones y nada más. Pídele a un agente "pon estos dos
     botones lado a lado" y lo único que puede enviar es un wrap en un Inline.
   </p>
   <CodeBlock code={outline} label="maker_read" lang="yaml" />
   <CodeBlock code={apply} label="maker_apply" lang="json" />
   <p>
-    El cambio llega al archivo del sitio, el Maker abierto lo muestra al instante, y es un paso más del
-    historial: deshacer lo revierte. Si el agente pasa la <code>revision</code> que leyó, nunca pisa algo
+    El cambio se guarda en el proyecto, cualquier Maker que lo tenga abierto lo muestra al instante, y
+    es un paso más del historial: deshacer lo revierte. Si el agente pasa la <code>revision</code> que leyó, nunca pisa algo
     que hayas hecho entretanto; en ese caso la petición se rechaza con el outline actual. Una operación
     que el contrato rechaza (una opción que la signature no declara, un Wrapper dentro de otro) rechaza
     la petición completa, con el motivo.
@@ -137,7 +139,7 @@ const apply = `{
   <h2>Export</h2>
   <p>
     La página abierta se exporta como React, como HTML con las hojas de estilo que necesita, o como
-    usage tree; el sitio completo se exporta como un componente por página, o como el archivo de sitio
-    que el Maker vuelve a abrir. Todas las formas salen del mismo emisor que usa <code>validate_ui</code>.
+    usage tree; el sitio completo se exporta como un componente por página, o como un archivo de sitio,
+    que el Maker vuelve a abrir como un proyecto nuevo. Todas las formas salen del mismo emisor que usa <code>validate_ui</code>.
   </p>
 </Base>

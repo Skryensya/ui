@@ -276,7 +276,10 @@ dos bindings (ADR-0015) y verde en `ai-gates`.
 
 ## Después de la v1
 
-- [x] Edición por prompt: `maker_read` / `maker_apply` en el MCP stdio, sobre un archivo de sitio con revisión (`.maker/<nombre>.maker.json`) que el dev server del Maker vigila; los cambios del agente llegan en vivo como un paso deshacible, y ninguno de los dos pisa al otro (escrituras en serie, 409 al quedar atrás). El agente inserta usage trees o signatures; los ids los pone el modelo.
+- [x] Edición por prompt: `maker_projects` / `maker_read` / `maker_apply` en el MCP stdio, contra la API del Maker (`MAKER_URL`); los cambios del agente llegan en vivo como un paso deshacible, y ninguno pisa al otro (escrituras en serie, 409 al quedar atrás). El agente inserta usage trees o signatures; los ids los pone el modelo.
+- [x] Proyectos en PostgreSQL (`@skryensya/maker-server`: tabla `maker_projects` con el sitio en `jsonb` y revisión, LISTEN/NOTIFY para avisar cambios, API HTTP montada en el dev server; `docker-compose.yml` para la base). Varios proyectos abiertos como pestañas, cada uno con su historial; pestañas y activa recordadas; crear, abrir, renombrar y borrar (con confirmación); un archivo de sitio se abre como proyecto nuevo. Sin base, el Maker trabaja en el navegador y lo dice.
+- [ ] Un servidor de producción (el API y la app compilada en un proceso, con Dockerfile).
+- [ ] Usuarios y permisos sobre los proyectos.
 - [ ] Un campo de prompt dentro del propio Maker (necesitaría un modelo accesible desde la app).
 - [ ] Edición inline de texto sobre el stage.
 - [x] Varias páginas (**Maker site**): nombre y ruta únicos por página, cada una con su árbol; operaciones de sitio (add, remove, rename, setPagePath, movePage, edit) en el mismo historial; enlaces entre páginas con sugerencias de rutas, enlaces rotos como Pending, y en modo Interact un enlace interno abre su página; export de todas las páginas y del sitio; el formato de una página abre como sitio de una página.
