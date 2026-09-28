@@ -115,13 +115,21 @@ export function Stage({ maker, drag }: { maker: Maker; drag: Drag }) {
     const frameWindow = frameRef.current?.contentWindow;
     const document = doc();
     if (!ready || !frameWindow || !document) return;
-    const observer = new ResizeObserver(measure);
+    /* Next frame, not inside the observer's own callback: measuring updates the overlays, and a
+       resize answered in the same frame is the "ResizeObserver loop" the browser reports. */
+    let frame = 0;
+    const later = () => {
+      cancelAnimationFrame(frame);
+      frame = requestAnimationFrame(measure);
+    };
+    const observer = new ResizeObserver(later);
     observer.observe(document.documentElement);
     observer.observe(frameRef.current!);
-    frameWindow.addEventListener("scroll", measure);
+    frameWindow.addEventListener("scroll", later);
     return () => {
+      cancelAnimationFrame(frame);
       observer.disconnect();
-      frameWindow.removeEventListener("scroll", measure);
+      frameWindow.removeEventListener("scroll", later);
     };
   }, [ready, measure]);
 

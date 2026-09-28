@@ -117,7 +117,9 @@ test("changing the stage width changes the room the browser has, never the page"
   await page.getByRole("radio", { name: "36rem" }).click();
   await expect(page.locator(".maker-stage__frame")).toHaveCSS("inline-size", "576px");
   await expect(page.locator(".maker-stage__meta")).toContainText("compact");
-  await page.getByRole("radio", { name: "72rem" }).click();
+  /* Wider than the column it sits in: it keeps its width and the column scrolls. */
+  await page.getByRole("radio", { name: "90rem" }).click();
+  await expect(page.locator(".maker-stage__frame")).toHaveCSS("inline-size", "1440px");
   await expect(page.locator(".maker-stage__meta")).toContainText("expanded");
   expect(await saved()).toBe(before);
 });

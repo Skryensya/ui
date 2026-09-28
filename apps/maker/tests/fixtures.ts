@@ -18,7 +18,8 @@ export async function selectInOutline(page: Page, label: string): Promise<void> 
   await page
     .locator(".maker-outline :is(.sk-tree-view__branch-text, .sk-tree-view__item-text)", { hasText: new RegExp(`^${escaped}$`) })
     .last()
-    .click();
+    /* A leaf's text takes no pointer events (the row does), so the click is forced onto it. */
+    .click({ force: true });
 }
 
 /** The saved page as an indented list of signatures and quoted text runs. */
