@@ -45,14 +45,35 @@ const WRAPPERS = [
   { contract: "wrapper", signature: "Wrapper" },
 ] as const;
 
+/** Asked by a double-click on the stage: put the caret in the selection's text. */
+export const EDIT_TEXT = "maker:edit-text";
+
+function useEditTextRequests() {
+  useEffect(() => {
+    const onRequest = () =>
+      requestAnimationFrame(() => {
+        const field = document.querySelector<HTMLInputElement | HTMLTextAreaElement>(".maker-inspector [data-content] :is(input, textarea)");
+        field?.focus();
+        field?.select();
+      });
+    window.addEventListener(EDIT_TEXT, onRequest);
+    return () => window.removeEventListener(EDIT_TEXT, onRequest);
+  }, []);
+}
+
 export function Inspector({ maker }: { maker: Maker }) {
+  useEditTextRequests();
   const root = maker.page.root;
   const id = maker.view.selected;
   const child = id ? findChild(root, id) : undefined;
   if (!id || !child) {
     return (
       <div className="maker-inspector">
-        <Text tone="secondary">Select something on the stage or in the outline.</Text>
+        <Text tone="secondary">
+          {childrenOf(root, "children").length === 0
+            ? "This page is empty. Add a Wrapper from Insert on the left to start a page column, or open Sections for a ready-made hero."
+            : "Nothing selected. Click something on the stage or in the layers; double-click text to edit it."}
+        </Text>
       </div>
     );
   }
@@ -82,7 +103,7 @@ export function Inspector({ maker }: { maker: Maker }) {
   const expanded = options.filter((name) => name.endsWith("Expanded"));
   const childAttrs = at ? Object.values(slotOf(at.parent, at.slot)?.childAttrs ?? {}) : [];
   const forward = resolved?.signature.forward;
-  const takesLabel = !forward || forward.some((name) => name === "aria-label" || name === "aria-*");
+  const takesLabel = needsAccessibleName(resolved?.contract, resolved?.signature.forward, child);
 
   const setOption = (name: string, value: OptionInput | undefined) => gesture([{ type: "setOption", node: id, name, value }]);
 
@@ -90,6 +111,8 @@ export function Inspector({ maker }: { maker: Maker }) {
     <div className="maker-inspector">
       <Stack gap="lg">
         <Header title={child.signature} subtitle={child.contract} role={role} onParent={(parent) => maker.setView({ selected: parent })} />
+
+        <SlotsSection maker={maker} node={child} />
 
         {problems.length > 0 ? (
           <section className="maker-inspector__pending" aria-label="Pending">
@@ -164,7 +187,6 @@ export function Inspector({ maker }: { maker: Maker }) {
           </section>
         ) : null}
 
-        <SlotsSection maker={maker} node={child} />
 
         {takesLabel ? (
           <CommitField
@@ -229,12 +251,12 @@ function ExclusiveChoice({ choice, node, contract, maker }: { choice: Choice; no
       <legend>Decided by</legend>
       <Stack gap="sm">
         <SegmentedControl
-          label={`What decides ${choice.others.join(", ")}`}
+          label={`What decides ${choice.others.map(humanize).join(", ")}`}
           value={byKey ? "key" : "others"}
           onValueChange={(value) => choose(value as "key" | "others")}
           options={[
-            { value: "others", label: choice.others.join(" · ") },
-            { value: "key", label: choice.key },
+            { value: "others", label: choice.others.map(humanize).join(" · ") },
+            { value: "key", label: humanize(choice.key) },
           ]}
         />
         {(byKey ? [choice.key] : choice.others).map((name) => (
@@ -306,7 +328,7 @@ function OptionField({
   /** Values worth offering for a free field: the site's page paths, for an href. */
   suggestions?: readonly string[];
 }) {
-  const label = name.replace(/^data-/, "");
+  const label = humanize(name);
   const fallback = option.default === undefined ? "not set" : `default: ${String(option.default)}`;
   if (option.type === "enum" || option.type === "boolean") {
     const values = option.type === "enum" ? (option.values ?? []) : ["true", "false"];
@@ -401,7 +423,7 @@ function SlotsSection({ maker, node }: { maker: Maker; node: MakerNode }) {
   });
   if (fields.length === 0) return null;
   return (
-    <section aria-label="Content">
+    <section aria-label="Content" data-content="">
       <Stack gap="sm">
         <Heading as="h3" size="h6">
           Content
@@ -425,7 +447,7 @@ function SlotsSection({ maker, node }: { maker: Maker; node: MakerNode }) {
             return (
               <CommitField
                 key={name}
-                label={name}
+                label={humanize(name)}
                 value={held?.kind === "text" ? held.text : ""}
                 onCommit={(text) => maker.gesture([{ type: "setText", node: node.id, slot: name, text }])}
               />
@@ -435,7 +457,7 @@ function SlotsSection({ maker, node }: { maker: Maker; node: MakerNode }) {
           return (
             <CommitField
               key={name}
-              label={name}
+              label={humanize(name)}
               value={"text" in run ? run.text : ""}
               onCommit={(text) => maker.gesture([{ type: "setText", node: run.id, slot: name, text }])}
             />
@@ -574,4 +596,37 @@ function Actions({ maker, id }: { maker: Maker; id: string; node: MakerNode | un
       </Stack>
     </section>
   );
+}
+
+/*
+ * LABELS PEOPLE READ. The contract's option names stay the vocabulary (they are what an agent and
+ * the exported code use), but the inspector writes them the way a form would: `headingSize` as
+ * "Heading size", the `children` slot as "Text".
+ */
+const SPECIAL: Readonly<Record<string, string>> = { children: "Text", href: "Link (href)", "data-sizing": "Sizing", "data-width": "Width" };
+
+export function humanize(name: string): string {
+  if (SPECIAL[name]) return SPECIAL[name]!;
+  const words = name.replace(/^data-/, "").replace(/([a-z0-9])([A-Z])/g, "$1 $2").replace(/-/g, " ").toLowerCase();
+  return words.charAt(0).toUpperCase() + words.slice(1);
+}
+
+/**
+ * An accessible name field only where one is owed: a rule of the contract asks for it in the node's
+ * current state (Button with `iconOnly`), the signature forwards `aria-label` on purpose, or the node
+ * already carries one. Elsewhere its own text names it, and an empty field invites a second name.
+ */
+function needsAccessibleName(contract: ComponentContract | undefined, forward: readonly string[] | undefined, node: MakerNode): boolean {
+  if (node.attrs?.["aria-label"]) return true;
+  if (forward?.some((name) => name === "aria-label")) return true;
+  return (contract?.a11y ?? []).some((rule) => {
+    if (!rule.requiresOneOf.includes("aria-label")) return false;
+    if (rule.signatures && !rule.signatures.includes(node.signature)) return false;
+    return Object.entries(rule.when).every(([option, wanted]) => {
+      const given = node.options?.[option];
+      if (wanted === "present") return given !== undefined;
+      if (wanted === "absent") return given === undefined;
+      return (given ?? contract?.options[option]?.default) === wanted;
+    });
+  });
 }

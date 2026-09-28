@@ -60,10 +60,14 @@ export function Pages({ maker }: { maker: Maker }) {
           </li>
         ))}
       </ul>
-      <div className="maker-pages__fields">
-        <CommitField label="Page name" value={page.name} onCommit={(name) => run([{ type: "renamePage", page: page.id, name }])} />
-        <CommitField label="Path" value={page.path} onCommit={(path) => run([{ type: "setPagePath", page: page.id, path }])} />
-      </div>
+      {/* Folded by default: naming a page is occasional, and open it took half the column. */}
+      <details className="maker-pages__settings">
+        <summary>Page settings: {page.name}</summary>
+        <div className="maker-pages__fields">
+          <CommitField label="Page name" value={page.name} onCommit={(name) => run([{ type: "renamePage", page: page.id, name }])} />
+          <CommitField label="Path" value={page.path} onCommit={(path) => run([{ type: "setPagePath", page: page.id, path }])} />
+        </div>
+      </details>
     </div>
   );
 }

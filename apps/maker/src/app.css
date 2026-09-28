@@ -308,6 +308,13 @@ body,
 .maker-pages__fields {
   display: grid;
   gap: var(--space-stack-xs);
+  padding-block-start: var(--space-stack-xs);
+}
+
+.maker-pages__settings > summary {
+  font-size: 0.8125rem;
+  color: var(--color-text-secondary);
+  cursor: pointer;
 }
 
 .maker__panel-title {
@@ -372,22 +379,45 @@ body,
 /* ─── stage ─────────────────────────────────────────────────────────────────────────────────── */
 
 .maker-stage {
+  position: relative;
   display: flex;
   flex-direction: column;
-  /* `safe`: a stage wider than the column scrolls from its start instead of losing its left edge. */
-  align-items: safe center;
+  align-items: center;
   gap: var(--space-stack-xs);
   block-size: 100%;
+  min-inline-size: 0;
 }
 
-/* Exactly the chosen width, never squeezed to fit the column: a stage narrower than it claims
-   would answer its media queries and container widths with the wrong number. It scrolls instead. */
+/* The box the scaled frame occupies: the chosen width times the scale, so the column never
+   scrolls sideways and the whole page is in view. */
+.maker-stage__sizer {
+  flex: 0 0 auto;
+  max-inline-size: 100%;
+}
+
+/* Exactly the chosen CSS width, never squeezed: a stage narrower than it claims would answer its
+   media queries and container widths with the wrong number. It is scaled to fit instead. */
 .maker-stage__frame {
   position: relative;
-  flex: 1 0 auto;
-  min-block-size: 20rem;
-  border: 1px solid var(--color-border-subtle);
+  box-sizing: border-box;
+  transform-origin: 0 0;
+  /* An outline, not a border: it takes no room, so the iframe is exactly the chosen width. */
+  outline: 1px solid var(--color-border-subtle);
   background: var(--color-bg-canvas);
+}
+
+.maker-stage__empty {
+  position: absolute;
+  z-index: 1;
+  inset-block-start: 5rem;
+  inset-inline: 0;
+  margin: 0 auto;
+  max-inline-size: 24rem;
+  padding: var(--space-inset-sm);
+  text-align: center;
+  font-size: 0.875rem;
+  color: var(--color-text-secondary);
+  pointer-events: none;
 }
 
 .maker-stage__iframe {
