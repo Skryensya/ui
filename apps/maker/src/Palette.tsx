@@ -1,6 +1,7 @@
 import { useMemo, useState } from "react";
 import { discover } from "@skryensya/ai-compiler/discover";
 import { snippets } from "@skryensya/snippets";
+import { Icon } from "@skryensya/react/icon";
 import { Input } from "@skryensya/react/input";
 import { SegmentedControl } from "@skryensya/react/segmented";
 import { Text } from "@skryensya/react/typography";
@@ -19,6 +20,7 @@ import {
 } from "@skryensya/maker-model";
 import index from "../../../artifacts/ai-index.json";
 import { DRAG_THRESHOLD, type Drag } from "./drag";
+import { glyphFor, MakerIcon } from "./icons";
 import type { Maker } from "./state";
 
 /*
@@ -108,7 +110,10 @@ export function Palette({ maker, drag }: { maker: Maker; drag: Drag }) {
       />
       {tab === "components" ? (
         <>
-          <Input type="search" placeholder="Search the catalogue" aria-label="Search the catalogue" value={query} onChange={(event) => setQuery(event.currentTarget.value)} />
+          <div className="maker-palette__search">
+            <Icon name="search" />
+            <Input type="search" placeholder="Search the catalogue" aria-label="Search the catalogue" value={query} onChange={(event) => setQuery(event.currentTarget.value)} />
+          </div>
           <Text size="sm" tone="tertiary">
             {shown.length} that fit {maker.view.selected ? "at the selection" : "at the end of the page"}
           </Text>
@@ -122,7 +127,8 @@ export function Palette({ maker, drag }: { maker: Maker; drag: Drag }) {
                     return (
                       <li key={`${ref.contract}/${ref.signature}`}>
                         <button type="button" className="maker-palette__item" onClick={() => insert(make)} onPointerDown={pressToDrag(make)}>
-                          {ref.signature}
+                          <MakerIcon icon={{ glyph: glyphFor(ref.signature) ?? "component" }} />
+                          <span>{ref.signature}</span>
                         </button>
                       </li>
                     );

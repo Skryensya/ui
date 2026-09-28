@@ -8,15 +8,12 @@ import {
   isNode,
   locate,
   nodeSlots,
-  presetFor,
-  randomId,
-  reidentify,
   type MakerChild,
   type MakerNode,
-  type Operation,
   type Place,
 } from "@skryensya/maker-model";
 import { DRAG_THRESHOLD, type Drag, type Target } from "./drag";
+import { actionForKey } from "./actions";
 import type { Maker } from "./state";
 
 /*
@@ -89,16 +86,16 @@ export function Outline({ maker, drag }: { maker: Maker; drag: Drag }) {
   const onKeyDownCapture = (event: React.KeyboardEvent) => {
     intent.current = "fold";
     if (!selected) return;
-    const mod = event.metaKey || event.ctrlKey;
-    const operation = keyOperation(root, selected, event.key, event.altKey, mod, event.shiftKey);
-    if (!operation) return;
+    const action = actionForKey(event.key, event.altKey, event.metaKey || event.ctrlKey, event.shiftKey);
+    if (!action) return;
     event.preventDefault();
     event.stopPropagation();
-    if (operation === "unsupported") {
+    const gesture = action.gesture(root, selected);
+    if (!gesture) {
       maker.say("Nothing to do there: that move has no place the contract allows.");
       return;
     }
-    maker.gesture(operation.operations, operation.select);
+    maker.gesture(gesture.operations, gesture.select);
   };
 
   /* ─── pointer: drag a row ────────────────────────────────────────────────────────────────── */
@@ -220,48 +217,5 @@ function outlineTarget(root: MakerNode, host: HTMLElement, allowed: readonly Pla
   const after = { ...before, index: at.index + 1 };
   if (band < 0.5 && has(before)) return { place: before, surface: "outline", indicator: lineAt(rect.top) };
   if (band >= 0.5 && has(after)) return { place: after, surface: "outline", indicator: lineAt(rect.bottom) };
-  return undefined;
-}
-
-type KeyResult = { operations: readonly Operation[]; select?: string } | "unsupported" | undefined;
-
-function keyOperation(root: MakerNode, id: string, key: string, alt: boolean, mod: boolean, shift: boolean): KeyResult {
-  const at = locate(root, id);
-  const child = findChild(root, id);
-  if (!child) return undefined;
-
-  if (alt && !mod && at) {
-    if (key === "ArrowUp") return at.index > 0 ? { operations: [{ type: "move", child: id, to: { parent: at.parent.id, slot: at.slot, index: at.index - 1 } }] } : "unsupported";
-    if (key === "ArrowDown") {
-      const count = childrenOf(at.parent, at.slot).length;
-      return at.index < count - 1 ? { operations: [{ type: "move", child: id, to: { parent: at.parent.id, slot: at.slot, index: at.index + 2 } }] } : "unsupported";
-    }
-    if (key === "ArrowLeft") {
-      const outer = locate(root, at.parent.id);
-      return outer ? { operations: [{ type: "move", child: id, to: { parent: outer.parent.id, slot: outer.slot, index: outer.index + 1 } }] } : "unsupported";
-    }
-    if (key === "ArrowRight") {
-      const previous = childrenOf(at.parent, at.slot)[at.index - 1];
-      if (!previous || !isNode(previous)) return "unsupported";
-      return { operations: [{ type: "move", child: id, to: { parent: previous.id, slot: "children", index: childrenOf(previous, "children").length } }] };
-    }
-  }
-
-  if (mod && (key === "g" || key === "G")) {
-    if (shift) return isNode(child) ? { operations: [{ type: "unwrap", node: id }] } : "unsupported";
-    const container = presetFor({ contract: "layout", signature: "Stack" }, randomId)!;
-    return { operations: [{ type: "wrap", children: [id], container }], select: container.id };
-  }
-
-  if (mod && (key === "d" || key === "D") && at) {
-    const copy = reidentify(child, randomId);
-    return { operations: [{ type: "insert", at: { parent: at.parent.id, slot: at.slot, index: at.index + 1 }, child: copy }], select: copy.id };
-  }
-
-  if (!mod && !alt && (key === "Delete" || key === "Backspace") && at) {
-    const siblings = childrenOf(at.parent, at.slot);
-    const next = siblings[at.index + 1] ?? siblings[at.index - 1];
-    return { operations: [{ type: "remove", child: id }], select: next?.id ?? at.parent.id };
-  }
   return undefined;
 }

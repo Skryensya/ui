@@ -2,10 +2,12 @@ import { useMemo, useState } from "react";
 import { emitMarkup, emitReactSource } from "@skryensya/ai-compiler/emit";
 import { sheetsForTree } from "@skryensya/ai-compiler/sheets-for-tree";
 import { Button } from "@skryensya/react/button";
+import { Icon } from "@skryensya/react/icon";
 import { SegmentedControl } from "@skryensya/react/segmented";
 import { Text } from "@skryensya/react/typography";
 import { Inline, Stack } from "@skryensya/react/layout";
 import { parse, serialize, toUsageTree } from "@skryensya/maker-model";
+import { IconButton } from "./IconButton";
 import { CATALOGUE_HASH, type Maker } from "./state";
 
 /*
@@ -71,9 +73,7 @@ export function ExportPanel({ maker, onClose }: { maker: Maker; onClose: () => v
       <Stack gap="md">
         <Inline justify="between" align="center">
           <h2 className="maker-export__title">Export</h2>
-          <Button variant="ghost" size="sm" onClick={onClose}>
-            Close
-          </Button>
+          <IconButton icon={{ role: "close" }} label="Close export" onClick={onClose} />
         </Inline>
         {errors.length > 0 ? (
           <div className="maker-export__warning" role="status">
@@ -104,13 +104,14 @@ export function ExportPanel({ maker, onClose }: { maker: Maker; onClose: () => v
         />
         <textarea className="maker-export__code" readOnly value={output.text} aria-label="Exported code" spellCheck={false} />
         <Inline gap="sm">
-          <Button variant="solid" size="sm" onClick={download} disabled={!output.file}>
+          <Button variant="solid" size="sm" pre={<Icon name="download" />} onClick={download} disabled={!output.file}>
             Download {output.file ?? ""}
           </Button>
-          <Button variant="soft" size="sm" onClick={() => void navigator.clipboard?.writeText(output.text)}>
+          <Button variant="soft" size="sm" pre={<Icon name="copy" />} onClick={() => void navigator.clipboard?.writeText(output.text)}>
             Copy
           </Button>
           <label className="maker-export__import">
+            <Icon name="upload" />
             <span>Open a maker page…</span>
             <input
               type="file"

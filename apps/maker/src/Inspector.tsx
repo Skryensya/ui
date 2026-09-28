@@ -2,12 +2,14 @@ import { useEffect, useState } from "react";
 import type { ContractOption } from "@skryensya/core/contract";
 import type { ItemInput, OptionInput } from "@skryensya/core/usage-tree";
 import { Button } from "@skryensya/react/button";
+import { Toolbar, ToolbarGroup, ToolbarSeparator } from "@skryensya/react/toolbar";
 import { FormField } from "@skryensya/react/form-field";
 import { Input } from "@skryensya/react/input";
 import { NativeSelect } from "@skryensya/react/select-native";
 import { Heading, Text } from "@skryensya/react/typography";
 import { Inline, Stack } from "@skryensya/react/layout";
 import {
+  applyAll,
   childrenOf,
   findChild,
   isNode,
@@ -22,6 +24,9 @@ import {
   type MakerNode,
   type Operation,
 } from "@skryensya/maker-model";
+import { actions, allowed, wrapIn, type Gesture } from "./actions";
+import { IconButton } from "./IconButton";
+import { glyphFor } from "./icons";
 import type { Maker } from "./state";
 
 /*
@@ -430,61 +435,49 @@ function swap<T>(list: readonly T[], a: number, b: number): readonly T[] {
   return next;
 }
 
-function Actions({ maker, id, node, at }: { maker: Maker; id: string; node: MakerNode | undefined; at: boolean }) {
-  const [wrapWith, setWrapWith] = useState(0);
-  const child = findChild(maker.page.root, id)!;
-  const location = locate(maker.page.root, id);
+function Actions({ maker, id }: { maker: Maker; id: string; node: MakerNode | undefined; at: boolean }) {
+  const root = maker.page.root;
+  const run = (gesture: Gesture | undefined) => gesture && maker.gesture(gesture.operations, gesture.select);
+  const tool = (actionId: string) => actions.find((action) => action.id === actionId)!;
   return (
     <section aria-label="Structure">
       <Stack gap="sm">
         <Heading as="h3" size="h6">
           Structure
         </Heading>
-        {at ? (
-          <Inline gap="xs" align="end">
-            <FormField label="Wrap in">
-              <NativeSelect
-                value={String(wrapWith)}
-                onChange={(event) => setWrapWith(Number(event.currentTarget.value))}
-                options={WRAPPERS.map((ref, index) => ({ value: String(index), label: ref.signature }))}
+        <Toolbar label="Structure" className="maker-inspector__tools">
+          <ToolbarGroup label="Wrap in">
+            {WRAPPERS.map((ref) => {
+              const gesture = wrapIn(root, id, ref.contract, ref.signature);
+              const ok = gesture && applyAll(root, gesture.operations).ok;
+              return (
+                <IconButton
+                  key={ref.signature}
+                  icon={{ glyph: glyphFor(ref.signature)! }}
+                  label={`Wrap in ${ref.signature}`}
+                  disabled={!ok}
+                  onClick={() => run(gesture)}
+                />
+              );
+            })}
+          </ToolbarGroup>
+          <ToolbarSeparator />
+          {(["unwrap", "duplicate", "remove"] as const).map((actionId) => {
+            const action = tool(actionId);
+            const gesture = allowed(root, id, action);
+            return (
+              <IconButton
+                key={actionId}
+                icon={action.icon}
+                label={action.label}
+                shortcut={action.shortcut}
+                disabled={!gesture}
+                tone={actionId === "remove" ? "danger" : undefined}
+                onClick={() => run(gesture)}
               />
-            </FormField>
-            <Button
-              variant="soft"
-              size="sm"
-              onClick={() => {
-                const container = presetFor(WRAPPERS[wrapWith]!, randomId)!;
-                maker.gesture([{ type: "wrap", children: [id], container }], container.id);
-              }}
-            >
-              Wrap
-            </Button>
-          </Inline>
-        ) : null}
-        <Inline gap="xs">
-          {node && at ? (
-            <Button variant="ghost" size="sm" onClick={() => maker.gesture([{ type: "unwrap", node: id }], childrenOf(node, "children")[0]?.id)}>
-              Unwrap
-            </Button>
-          ) : null}
-          {location ? (
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={() => {
-                const copy = reidentify(child, randomId);
-                maker.gesture([{ type: "insert", at: { parent: location.parent.id, slot: location.slot, index: location.index + 1 }, child: copy }], copy.id);
-              }}
-            >
-              Duplicate
-            </Button>
-          ) : null}
-          {location ? (
-            <Button variant="ghost" size="sm" tone="danger" onClick={() => maker.gesture([{ type: "remove", child: id }], location.parent.id)}>
-              Remove
-            </Button>
-          ) : null}
-        </Inline>
+            );
+          })}
+        </Toolbar>
       </Stack>
     </section>
   );
