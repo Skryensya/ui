@@ -498,10 +498,15 @@ and the browser places everything; nothing in it has coordinates. Distinct from 
 contract, which is rich text.
 _Avoid_: editor, page editor, builder, canvas (the Canvas contract is a pan-and-zoom surface)
 
+**Maker site**:
+What the Maker opens, saves and exports: maker pages in order, each with a name and a unique path.
+The order is the order the site offers its pages in, never anything about their layout.
+_Avoid_: site document, SiteDocument, project, workspace
+
 **Maker page**:
-The one thing a person edits in the Maker: a tree of maker nodes. It holds only what the author
-chose, never what the browser computed (position, rendered size).
-_Avoid_: site document, SiteDocument, layout, artboard
+One page of a maker site: a name, a path and a tree of maker nodes whose root is a Main. It holds
+only what the author chose, never what the browser computed (position, rendered size).
+_Avoid_: layout, artboard, screen, frame
 
 **Maker node**:
 One usage-tree node plus a stable identity. Stripping the identities from a maker page yields a
@@ -509,9 +514,10 @@ valid-shaped usage tree, and nothing else is lost.
 _Avoid_: EditorNode, element, layer, block
 
 **Maker operation**:
-One change to a maker page from the closed set: insert, move, remove, wrap, unwrap, set an option,
-set a host attribute, set a slot's text or entries. Dragging, the keyboard, the inspector and a prompt
-all speak only in operations, and no operation accepts a position.
+One change from the closed set. On a page's tree: insert, move, remove, wrap, unwrap, set an option,
+set a host attribute, set a slot's text or entries. On the site: add, remove, rename, move a page,
+set its path, and edit (one page operation, addressed to one page). Dragging, the keyboard, the
+inspector and a prompt all speak only in operations, and no operation accepts a position.
 _Avoid_: command (the Editor's word), action, mutation, edit
 
 **Stage**:

@@ -6,7 +6,7 @@ import { Icon } from "@skryensya/react/icon";
 import { SegmentedControl } from "@skryensya/react/segmented";
 import { Text } from "@skryensya/react/typography";
 import { Inline, Stack } from "@skryensya/react/layout";
-import { parse, serialize, toUsageTree } from "@skryensya/maker-model";
+import { parseSite, randomId, serializeSite, toUsageTree, type MakerPageEntry } from "@skryensya/maker-model";
 import { IconButton } from "./IconButton";
 import { CATALOGUE_HASH, type Maker } from "./state";
 
@@ -16,7 +16,17 @@ import { CATALOGUE_HASH, type Maker } from "./state";
  * only wanted to keep their work.
  */
 
-type Format = "page" | "tree" | "react" | "html";
+type Format = "site" | "tree" | "react" | "html" | "site-react";
+
+/** `/about/team` → `AboutTeamPage`; `/` → `HomePage`. */
+function componentName(page: MakerPageEntry): string {
+  const words = page.path === "/" ? ["home"] : page.path.split(/[/-]/).filter(Boolean);
+  return `${words.map((word) => word[0]!.toUpperCase() + word.slice(1)).join("")}Page`;
+}
+
+function fileName(page: MakerPageEntry): string {
+  return page.path === "/" ? "index.tsx" : `${page.path.slice(1)}.tsx`;
+}
 
 export function ExportPanel({ maker, onClose }: { maker: Maker; onClose: () => void }) {
   const [format, setFormat] = useState<Format>("react");
@@ -24,8 +34,18 @@ export function ExportPanel({ maker, onClose }: { maker: Maker; onClose: () => v
   const output = useMemo(() => {
     try {
       switch (format) {
-        case "page":
-          return { text: serialize(maker.page, CATALOGUE_HASH), file: "page.maker.json" };
+        case "site":
+          return { text: serializeSite(maker.site, CATALOGUE_HASH), file: "site.maker.json" };
+        case "site-react": {
+          const files = maker.site.pages.map((page) => {
+            const tree = toUsageTree(page.root);
+            const source = emitReactSource(tree, { component: componentName(page) });
+            const imports = sheetsForTree(tree).sheets.map((sheet) => `import "${sheet}";`).join("\n");
+            const data = source.data ? `\n\n// pages/${source.data.file}\n${source.data.source}` : "";
+            return `// pages/${fileName(page)}: ${page.name} (${page.path})\n${imports}\n${source.component}${data}`;
+          });
+          return { text: files.join("\n\n"), file: "pages.tsx.txt" };
+        }
         case "tree":
           return { text: JSON.stringify(tree, null, 2), file: "page.usage-tree.json" };
         case "html": {
@@ -34,7 +54,7 @@ export function ExportPanel({ maker, onClose }: { maker: Maker; onClose: () => v
           return { text: `${links}\n${emitMarkup(tree)}`, file: "page.html" };
         }
         case "react": {
-          const source = emitReactSource(tree, { component: "Page" });
+          const source = emitReactSource(tree, { component: componentName(maker.page) });
           const { sheets } = sheetsForTree(tree);
           const imports = sheets.map((sheet) => `import "${sheet}";`).join("\n");
           const data = source.data ? `\n\n// ${source.data.file}\n${source.data.source}` : "";
@@ -44,7 +64,7 @@ export function ExportPanel({ maker, onClose }: { maker: Maker; onClose: () => v
     } catch (error) {
       return { text: `This page cannot be emitted yet: ${error instanceof Error ? error.message : String(error)}`, file: undefined };
     }
-  }, [format, tree, maker.page]);
+  }, [format, tree, maker.page, maker.site]);
 
   const errors = maker.problems.problems.filter((problem) => problem.severity === "error");
 
@@ -59,12 +79,12 @@ export function ExportPanel({ maker, onClose }: { maker: Maker; onClose: () => v
   };
 
   const importPage = async (file: File) => {
-    const opened = parse(await file.text(), CATALOGUE_HASH);
+    const opened = parseSite(await file.text(), CATALOGUE_HASH, randomId);
     if (!opened.ok) {
       maker.say(opened.reason);
       return;
     }
-    maker.load(opened.page, opened.catalogueChanged ? "The catalogue changed since this page was saved; anything that no longer fits is marked pending." : undefined);
+    maker.load(opened.site, opened.catalogueChanged ? "The catalogue changed since this site was saved; anything that no longer fits is marked pending." : undefined);
     onClose();
   };
 
@@ -72,7 +92,7 @@ export function ExportPanel({ maker, onClose }: { maker: Maker; onClose: () => v
     <div className="maker-export">
       <Stack gap="md">
         <Inline justify="between" align="center">
-          <h2 className="maker-export__title">Export</h2>
+          <h2 className="maker-export__title">Export {maker.page.name}</h2>
           <IconButton icon={{ role: "close" }} label="Close export" onClick={onClose} />
         </Inline>
         {errors.length > 0 ? (
@@ -99,7 +119,8 @@ export function ExportPanel({ maker, onClose }: { maker: Maker; onClose: () => v
             { value: "react", label: "React" },
             { value: "html", label: "HTML" },
             { value: "tree", label: "Usage tree" },
-            { value: "page", label: "Maker page" },
+            { value: "site-react", label: "All pages" },
+            { value: "site", label: "Site" },
           ]}
         />
         <textarea className="maker-export__code" readOnly value={output.text} aria-label="Exported code" spellCheck={false} />
@@ -112,7 +133,7 @@ export function ExportPanel({ maker, onClose }: { maker: Maker; onClose: () => v
           </Button>
           <label className="maker-export__import">
             <Icon name="upload" />
-            <span>Open a maker page…</span>
+            <span>Open a site…</span>
             <input
               type="file"
               accept=".json,application/json"

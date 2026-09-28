@@ -1,24 +1,28 @@
 import { useCallback, useEffect, useMemo, useReducer } from "react";
 import {
-  commit,
-  createPage,
+  ancestors,
+  brokenLinks,
+  commitSite,
+  createSite,
   isNode,
-  parse,
+  onPage,
+  parseSite,
   pending,
   randomId,
   redo,
-  serialize,
+  resolve,
+  serializeSite,
   startHistory,
   toUsageTree,
   undo,
   walk,
-  ancestors,
-  resolve,
   type History,
   type MakerNode,
-  type MakerPage,
+  type MakerPageEntry,
+  type MakerSite,
   type Operation,
   type Pending,
+  type SiteOperation,
 } from "@skryensya/maker-model";
 import type { UsageTree } from "@skryensya/core/usage-tree";
 import { sourceHash } from "../../../artifacts/ai-index.json";
@@ -34,6 +38,8 @@ export const CATALOGUE_HASH = sourceHash;
 export type StageWidth = "fit" | 36 | 52 | 72 | 90 | { px: number };
 
 export type View = {
+  /** The page open on the stage. */
+  readonly page: string;
   readonly selected?: string;
   readonly width: StageWidth;
   readonly mode: "edit" | "interact";
@@ -44,43 +50,57 @@ export type View = {
 };
 
 type State = {
-  readonly history: History;
+  readonly history: History<MakerSite>;
   readonly view: View;
   /** The last refusal, said out loud once and then replaced. */
   readonly notice?: { readonly text: string; readonly at: number };
 };
 
 type Action =
-  | { type: "gesture"; operations: readonly Operation[]; select?: string }
+  | { type: "gesture"; operations: readonly SiteOperation[]; select?: string; page?: string }
   | { type: "undo" }
   | { type: "redo" }
-  | { type: "load"; page: MakerPage; notice?: string }
+  | { type: "load"; site: MakerSite; notice?: string }
   | { type: "view"; change: Partial<View> }
   | { type: "notice"; text: string };
 
-const STORAGE_KEY = "skryensya-maker:page";
+const STORAGE_KEY = "skryensya-maker:site";
+/** Where the single-page Maker kept its page; read once, as a one-page site, then left alone. */
+const LEGACY_PAGE_KEY = "skryensya-maker:page";
 const VIEW_KEY = "skryensya-maker:view";
+
+/** The view, held to the site: an open page that no longer exists falls back to the first. */
+function settle(site: MakerSite, view: View): View {
+  const page = site.pages.some((entry) => entry.id === view.page) ? view.page : site.pages[0]!.id;
+  const root = site.pages.find((entry) => entry.id === page)!.root;
+  return { ...view, page, selected: page === view.page ? keep(root, view.selected) : undefined };
+}
 
 function reducer(state: State, action: Action): State {
   switch (action.type) {
     case "gesture": {
-      const result = commit(state.history, action.operations);
+      const result = commitSite(state.history, action.operations);
       if (!result.ok) return { ...state, notice: { text: result.reason, at: Date.now() } };
-      const selected = action.select ?? state.view.selected;
-      return { ...state, history: result.history, view: { ...state.view, selected: keep(result.history.present.root, selected) } };
+      const view = { ...state.view, page: action.page ?? state.view.page, selected: action.select ?? state.view.selected };
+      return { ...state, history: result.history, view: settle(result.history.present, view) };
     }
     case "undo": {
       const history = undo(state.history);
-      return { ...state, history, view: { ...state.view, selected: keep(history.present.root, state.view.selected) } };
+      return { ...state, history, view: settle(history.present, state.view) };
     }
     case "redo": {
       const history = redo(state.history);
-      return { ...state, history, view: { ...state.view, selected: keep(history.present.root, state.view.selected) } };
+      return { ...state, history, view: settle(history.present, state.view) };
     }
     case "load":
-      return { ...state, history: startHistory(action.page), view: { ...state.view, selected: undefined }, notice: action.notice ? { text: action.notice, at: Date.now() } : undefined };
+      return {
+        ...state,
+        history: startHistory(action.site),
+        view: settle(action.site, { ...state.view, page: action.site.pages[0]!.id, selected: undefined }),
+        notice: action.notice ? { text: action.notice, at: Date.now() } : undefined,
+      };
     case "view":
-      return { ...state, view: { ...state.view, ...action.change } };
+      return { ...state, view: settle(state.history.present, { ...state.view, ...action.change }) };
     case "notice":
       return { ...state, notice: { text: action.text, at: Date.now() } };
   }
@@ -109,51 +129,78 @@ function writeStorage(key: string, value: string): void {
   try {
     localStorage.setItem(key, value);
   } catch {
-    /* Private window or blocked storage: the page still works, it just is not remembered. */
+    /* Private window or blocked storage: the site still works, it just is not remembered. */
   }
 }
 
+const CATALOGUE_MOVED = "The catalogue changed since this site was saved; anything that no longer fits is marked pending.";
+
 function initialState(): State {
-  const view: View = { width: "fit", mode: "edit", scheme: "light", contrast: false, density: "default", radius: "md" };
   let savedView: Partial<View> = {};
   try {
     savedView = JSON.parse(readStorage(VIEW_KEY) ?? "{}") as Partial<View>;
   } catch {
     savedView = {};
   }
-  const saved = readStorage(STORAGE_KEY);
-  const opened = saved ? parse(saved, CATALOGUE_HASH) : undefined;
-  const page = opened?.ok ? opened.page : createPage(CATALOGUE_HASH, randomId);
+  const saved = readStorage(STORAGE_KEY) ?? readStorage(LEGACY_PAGE_KEY);
+  const opened = saved ? parseSite(saved, CATALOGUE_HASH, randomId) : undefined;
+  const site = opened?.ok ? opened.site : createSite(CATALOGUE_HASH, randomId);
+  const view: View = { page: site.pages[0]!.id, width: "fit", mode: "edit", scheme: "light", contrast: false, density: "default", radius: "md", ...savedView, selected: undefined };
   return {
-    history: startHistory(page),
-    view: { ...view, ...savedView, selected: undefined },
-    notice: opened?.ok && opened.catalogueChanged ? { text: "The catalogue changed since this page was saved; anything that no longer fits is marked pending.", at: Date.now() } : undefined,
+    history: startHistory(site),
+    view: settle(site, view),
+    notice: opened?.ok && opened.catalogueChanged ? { text: CATALOGUE_MOVED, at: Date.now() } : undefined,
   };
 }
 
 export function useMaker() {
   const [state, dispatch] = useReducer(reducer, undefined, initialState);
-  const page = state.history.present;
+  const site = state.history.present;
+  const page: MakerPageEntry = site.pages.find((entry) => entry.id === state.view.page) ?? site.pages[0]!;
 
-  useEffect(() => writeStorage(STORAGE_KEY, serialize(page, CATALOGUE_HASH)), [page]);
+  useEffect(() => writeStorage(STORAGE_KEY, serializeSite(site, CATALOGUE_HASH)), [site]);
   useEffect(() => {
     const { selected: _selected, ...rest } = state.view;
     writeStorage(VIEW_KEY, JSON.stringify(rest));
   }, [state.view]);
 
-  const problems: Pending = useMemo(() => pending(page.root), [page.root]);
+  /* What the validator says about this page, plus its links to paths no page of the site has. */
+  const problems: Pending = useMemo(() => {
+    const own = pending(page.root);
+    const broken = brokenLinks(site)
+      .filter((link) => link.page === page.id)
+      .map((link) => ({
+        path: "",
+        rule: "broken-link",
+        severity: "error" as const,
+        message: `Links to "${link.href}", and no page of this site lives there.`,
+        nodes: [link.node],
+      }));
+    return { valid: own.valid && broken.length === 0, problems: [...own.problems, ...broken] };
+  }, [page.root, site]);
 
+  const pageId = page.id;
   return {
+    site,
     page,
     view: state.view,
     notice: state.notice,
     problems,
     canUndo: state.history.past.length > 0,
     canRedo: state.history.future.length > 0,
-    gesture: useCallback((operations: readonly Operation[], select?: string) => dispatch({ type: "gesture", operations, select }), []),
+    /** Operations on the open page's tree: one gesture, one step. */
+    gesture: useCallback(
+      (operations: readonly Operation[], select?: string) => dispatch({ type: "gesture", operations: onPage(pageId, operations), select }),
+      [pageId],
+    ),
+    /** Operations on the site itself (pages), optionally opening a page afterwards. */
+    siteGesture: useCallback(
+      (operations: readonly SiteOperation[], open?: string) => dispatch({ type: "gesture", operations, page: open, select: undefined }),
+      [],
+    ),
     undo: useCallback(() => dispatch({ type: "undo" }), []),
     redo: useCallback(() => dispatch({ type: "redo" }), []),
-    load: useCallback((next: MakerPage, notice?: string) => dispatch({ type: "load", page: next, notice }), []),
+    load: useCallback((next: MakerSite, notice?: string) => dispatch({ type: "load", site: next, notice }), []),
     setView: useCallback((change: Partial<View>) => dispatch({ type: "view", change }), []),
     say: useCallback((text: string) => dispatch({ type: "notice", text }), []),
   };

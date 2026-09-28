@@ -27,7 +27,9 @@ export async function pageTree(page: Page): Promise<string> {
   return page.evaluate(() => {
     type Held = { kind: string; children?: Node[] };
     type Node = { signature?: string; text?: string; slots?: Record<string, Held> };
-    const saved = JSON.parse(localStorage.getItem("skryensya-maker:page") ?? "null") as { root: Node } | null;
+    const site = JSON.parse(localStorage.getItem("skryensya-maker:site") ?? "null") as { pages: { id: string; root: Node }[] } | null;
+    const view = JSON.parse(localStorage.getItem("skryensya-maker:view") ?? "{}") as { page?: string };
+    const saved = site?.pages.find((page) => page.id === view.page) ?? site?.pages[0];
     if (!saved) return "";
     const show = (node: Node, depth: number): string[] => [
       " ".repeat(depth * 2) + (node.signature ?? JSON.stringify(node.text)),

@@ -112,7 +112,7 @@ test("fill or fit is offered as the Inline's, and it is left behind when the chi
 });
 
 test("changing the stage width changes the room the browser has, never the page", async ({ page }) => {
-  const saved = () => page.evaluate(() => localStorage.getItem("skryensya-maker:page"));
+  const saved = () => page.evaluate(() => localStorage.getItem("skryensya-maker:site"));
   const before = await saved();
   await page.getByRole("button", { name: /^Stage width: 36rem/ }).click();
   await expect(page.locator(".maker-stage__frame")).toHaveCSS("inline-size", "576px");
@@ -136,14 +136,14 @@ test("edit mode selects instead of activating; interact mode activates; navigati
 });
 
 test("the stored page holds no coordinates, sizes or styles", async ({ page }) => {
-  const saved = (await page.evaluate(() => localStorage.getItem("skryensya-maker:page")))!;
+  const saved = (await page.evaluate(() => localStorage.getItem("skryensya-maker:site")))!;
   expect(saved).not.toMatch(/"(style|class|x|y|top|left|width|height|transform|position)"\s*:/);
 });
 
 test("export emits React, HTML and the usage tree from the same page, pending or not", async ({ page }) => {
   await page.getByRole("button", { name: "Export", exact: true }).click();
   const code = page.getByLabel("Exported code");
-  await expect(code).toHaveValue(/export function Page/);
+  await expect(code).toHaveValue(/export function HomePage/);
   await expect(code).toHaveValue(/<Stack/);
   await page.getByRole("radio", { name: "HTML" }).click();
   await expect(code).toHaveValue(/class="sk-stack"/);
@@ -190,7 +190,7 @@ test("a section is inserted as a whole subtree with fresh identities", async ({ 
   await page.locator(".maker-palette").getByRole("button", { name: /hero with actions/i }).click();
   await expect.poll(() => pageTree(page)).toMatch(/^  Hero$/m);
   const ids = await page.evaluate(() => {
-    const saved = localStorage.getItem("skryensya-maker:page")!;
+    const saved = localStorage.getItem("skryensya-maker:site")!;
     return [...saved.matchAll(/"id": "([^"]+)"/g)].map((m) => m[1]);
   });
   expect(new Set(ids).size).toBe(ids.length);
@@ -230,7 +230,7 @@ test("a dialog is held open on the stage while it or something in it is selected
   const dialog = stage(page).locator("dialog");
   await expect.poll(() => dialog.evaluate((d) => (d as HTMLDialogElement).open)).toBe(true);
   expect(await pageTree(page)).toContain("      Dialog");
-  const saved = (await page.evaluate(() => localStorage.getItem("skryensya-maker:page")))!;
+  const saved = (await page.evaluate(() => localStorage.getItem("skryensya-maker:site")))!;
   expect(saved).not.toMatch(/"open": true/);
   await selectInOutline(page, "Heading");
   await expect.poll(() => dialog.evaluate((d) => (d as HTMLDialogElement).open)).toBe(false);
@@ -328,4 +328,61 @@ test("dragging in an Inline that wraps lands between the buttons of the line und
   await dragOnStage(page, centre(boxes[0]!), { x: target.x + 3, y: target.y + target.height / 2 });
   const expected = [...before.slice(1, firstOfSecondLine), before[0], ...before.slice(firstOfSecondLine)];
   await expect.poll(ids).toEqual(expected);
+});
+
+test("pages: add, rename, re-path, link between them, and follow the link in interact mode", async ({ page }) => {
+  const pages = page.locator(".maker-pages");
+  await page.getByRole("toolbar", { name: "Pages" }).getByRole("button", { name: "Add a page" }).click();
+  await expect(pages.getByRole("button", { name: /Page 2/ })).toHaveAttribute("aria-current", "page");
+  await pages.getByLabel("Page name").fill("About");
+  await pages.getByLabel("Page name").press("Enter");
+  await pages.getByLabel("Path").fill("/about");
+  await pages.getByLabel("Path").press("Enter");
+  await expect(pages.getByRole("button", { name: /About/ })).toContainText("/about");
+  /* A new page is its own tree: empty, with its own Main. */
+  expect(await pageTree(page)).toBe("Main");
+
+  /* A bad path is refused out loud and changes nothing. */
+  await pages.getByLabel("Path").fill("/About Us");
+  await pages.getByLabel("Path").press("Enter");
+  await expect(page.locator(".maker__notice")).toContainText("not a page path");
+  await expect(pages.getByRole("button", { name: /About/ })).toContainText("/about");
+
+  /* Back home: a link to /about is whole; to a path no page has, it is pending. */
+  await pages.getByRole("button", { name: /Home/ }).click();
+  await selectInOutline(page, "Stack");
+  await addFromPalette(page, "Button.navigation");
+  const href = page.locator(".maker__right").getByLabel("href", { exact: true });
+  await href.fill("/nowhere");
+  await href.press("Enter");
+  await expect(page.locator(".maker__right")).toContainText('Links to "/nowhere"');
+  await href.fill("/about");
+  await href.press("Enter");
+  await expect(page.locator(".maker__right")).not.toContainText("Links to");
+
+  await page.getByRole("button", { name: /^Interact/ }).click();
+  await stage(page).locator('a[href="/about"]').click();
+  await expect(pages.getByRole("button", { name: /About/ })).toHaveAttribute("aria-current", "page");
+});
+
+test("page operations are undone like any other gesture", async ({ page }) => {
+  const tools = page.getByRole("toolbar", { name: "Pages" });
+  await tools.getByRole("button", { name: "Duplicate this page" }).click();
+  await expect(page.locator(".maker-pages__item")).toHaveCount(2);
+  /* The copy is a real page: same tree, new identities. */
+  expect(await pageTree(page)).toContain("      Heading");
+  await tools.getByRole("button", { name: "Remove this page" }).click();
+  await expect(page.locator(".maker-pages__item")).toHaveCount(1);
+  await page.getByRole("button", { name: "Undo", exact: true }).click();
+  await expect(page.locator(".maker-pages__item")).toHaveCount(2);
+});
+
+test("export offers the whole site: every page as its own component, and the site file", async ({ page }) => {
+  await page.getByRole("toolbar", { name: "Pages" }).getByRole("button", { name: "Add a page" }).click();
+  await page.getByRole("button", { name: "Export", exact: true }).click();
+  const code = page.getByLabel("Exported code");
+  await page.getByRole("radio", { name: "All pages" }).click();
+  await expect(code).toHaveValue(/pages\/index\.tsx[\s\S]*export function HomePage[\s\S]*pages\/page\.tsx[\s\S]*export function PagePage/);
+  await page.getByRole("radio", { name: "Site" }).click();
+  await expect(code).toHaveValue(/"format": "skryensya-maker-site"/);
 });

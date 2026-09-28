@@ -55,6 +55,10 @@ publishes it, and anything else only when the signature forwards it.
 What the browser computes (rects, rendered sizes) is read from the stage while painting overlays and
 resolving a drop, and is never written to a maker page.
 
+A site adds its own few beside them: add, remove, rename and move a page, set its path, and `edit`,
+which carries one page operation to one page. They share the one history, so removing a page is
+undone like removing a button.
+
 ## Structure is always sound, options may be pending
 
 A drop zone appears only where the contract allows the node (`notInside`, required descendants), so
