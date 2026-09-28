@@ -1,4 +1,6 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import { detectMac, formatHotkey, isTypingContext } from "@skryensya/core/hotkey";
+import { useHotkey } from "@skryensya/react/hotkey";
 import { Button } from "@skryensya/react/button";
 import { Icon } from "@skryensya/react/icon";
 import { NativeSelect } from "@skryensya/react/select-native";
@@ -37,22 +39,16 @@ export function App() {
   const [exporting, setExporting] = useState(false);
   const { view, setView } = maker;
 
-  useEffect(() => {
-    const onKey = (event: KeyboardEvent) => {
-      const target = event.target as HTMLElement;
-      if (target.closest("input, textarea, select, [contenteditable]")) return;
-      const mod = event.metaKey || event.ctrlKey;
-      if (mod && (event.key === "z" || event.key === "Z")) {
-        event.preventDefault();
-        if (event.shiftKey) maker.redo();
-        else maker.undo();
-      }
-    };
-    window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
-  }, [maker.undo, maker.redo]);
+  /* Undo and redo page-wide, through the kit's hotkeys; inside a text field they stay the field's. */
+  const history = (step: () => void) => (event: KeyboardEvent) => {
+    if (isTypingContext(event.target)) return;
+    event.preventDefault();
+    step();
+  };
+  useHotkey("mod+z", history(maker.undo), { preventDefault: false });
+  useHotkey("mod+shift+z", history(maker.redo), { preventDefault: false });
 
-  const mod = /mac/i.test(navigator.platform) ? "⌘" : "Ctrl+";
+  const mac = detectMac();
 
   return (
     <div className={`maker${drag.session ? " maker--dragging" : ""}`}>
@@ -63,8 +59,8 @@ export function App() {
         </h1>
         <Toolbar label="Maker" className="maker__toolbar">
           <ToolbarGroup label="History">
-            <IconButton icon={{ glyph: "undo" }} label="Undo" shortcut={`${mod}Z`} onClick={maker.undo} disabled={!maker.canUndo} />
-            <IconButton icon={{ glyph: "redo" }} label="Redo" shortcut={`${mod}⇧Z`} onClick={maker.redo} disabled={!maker.canRedo} />
+            <IconButton icon={{ glyph: "undo" }} label="Undo" shortcut={formatHotkey("mod+z", mac)} onClick={maker.undo} disabled={!maker.canUndo} />
+            <IconButton icon={{ glyph: "redo" }} label="Redo" shortcut={formatHotkey("mod+shift+z", mac)} onClick={maker.redo} disabled={!maker.canRedo} />
           </ToolbarGroup>
           <ToolbarSeparator />
           <ToolbarGroup label="Stage width">

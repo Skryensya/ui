@@ -1,5 +1,5 @@
 import { Toolbar } from "@skryensya/react/toolbar";
-import { actions, allowed } from "./actions";
+import { actions, allowed, shortcutOf } from "./actions";
 import { IconButton } from "./IconButton";
 import type { Maker } from "./state";
 
@@ -19,7 +19,7 @@ export function SelectionTools({ maker }: { maker: Maker }) {
             key={action.id}
             icon={action.icon}
             label={action.label}
-            shortcut={action.shortcut}
+            shortcut={shortcutOf(action)}
             disabled={!gesture}
             tone={action.id === "remove" ? "danger" : undefined}
             onClick={() => gesture && maker.gesture(gesture.operations, gesture.select)}

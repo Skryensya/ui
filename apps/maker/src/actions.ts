@@ -10,6 +10,7 @@ import {
   type MakerNode,
   type Operation,
 } from "@skryensya/maker-model";
+import { detectMac, formatHotkey } from "@skryensya/core/hotkey";
 import type { AnyIcon } from "./icons";
 
 /*
@@ -26,18 +27,17 @@ export type ActionId = "move-up" | "move-down" | "outdent" | "indent" | "wrap" |
 export type Action = {
   readonly id: ActionId;
   readonly label: string;
-  readonly shortcut: string;
+  /** Hotkey specs in the kit's syntax (decision 25); the first is the one shown. */
+  readonly hotkeys: readonly string[];
   readonly icon: AnyIcon;
   readonly gesture: (root: MakerNode, id: string) => Gesture | undefined;
 };
-
-const MOD = typeof navigator !== "undefined" && /mac/i.test(navigator.platform) ? "⌘" : "Ctrl+";
 
 export const actions: readonly Action[] = [
   {
     id: "move-up",
     label: "Move before the previous sibling",
-    shortcut: "Alt+↑",
+    hotkeys: ["alt+arrowup"],
     icon: { glyph: "move-up" },
     gesture: (root, id) => {
       const at = locate(root, id);
@@ -47,7 +47,7 @@ export const actions: readonly Action[] = [
   {
     id: "move-down",
     label: "Move after the next sibling",
-    shortcut: "Alt+↓",
+    hotkeys: ["alt+arrowdown"],
     icon: { glyph: "move-down" },
     gesture: (root, id) => {
       const at = locate(root, id);
@@ -58,7 +58,7 @@ export const actions: readonly Action[] = [
   {
     id: "outdent",
     label: "Move out of its container",
-    shortcut: "Alt+←",
+    hotkeys: ["alt+arrowleft"],
     icon: { glyph: "outdent" },
     gesture: (root, id) => {
       const at = locate(root, id);
@@ -69,7 +69,7 @@ export const actions: readonly Action[] = [
   {
     id: "indent",
     label: "Move into the previous container",
-    shortcut: "Alt+→",
+    hotkeys: ["alt+arrowright"],
     icon: { glyph: "indent" },
     gesture: (root, id) => {
       const at = locate(root, id);
@@ -81,14 +81,14 @@ export const actions: readonly Action[] = [
   {
     id: "wrap",
     label: "Wrap in a Stack",
-    shortcut: `${MOD}G`,
+    hotkeys: ["mod+g"],
     icon: { glyph: "wrap" },
     gesture: (root, id) => wrapIn(root, id, "layout", "Stack"),
   },
   {
     id: "unwrap",
     label: "Unwrap: replace by its children",
-    shortcut: `${MOD}⇧G`,
+    hotkeys: ["mod+shift+g"],
     icon: { glyph: "unwrap" },
     gesture: (root, id) => {
       const node = findChild(root, id);
@@ -98,7 +98,7 @@ export const actions: readonly Action[] = [
   {
     id: "duplicate",
     label: "Duplicate",
-    shortcut: `${MOD}D`,
+    hotkeys: ["mod+d"],
     icon: { glyph: "duplicate" },
     gesture: (root, id) => {
       const at = locate(root, id);
@@ -111,7 +111,7 @@ export const actions: readonly Action[] = [
   {
     id: "remove",
     label: "Remove",
-    shortcut: "Delete",
+    hotkeys: ["delete", "backspace"],
     icon: { role: "delete" },
     gesture: (root, id) => {
       const at = locate(root, id);
@@ -136,17 +136,7 @@ export function allowed(root: MakerNode, id: string | undefined, action: Action)
   return gesture && applyAll(root, gesture.operations).ok ? gesture : undefined;
 }
 
-/** The action a key press means, if any. */
-export function actionForKey(key: string, alt: boolean, mod: boolean, shift: boolean): Action | undefined {
-  const byId = (id: ActionId) => actions.find((action) => action.id === id);
-  if (alt && !mod) {
-    if (key === "ArrowUp") return byId("move-up");
-    if (key === "ArrowDown") return byId("move-down");
-    if (key === "ArrowLeft") return byId("outdent");
-    if (key === "ArrowRight") return byId("indent");
-  }
-  if (mod && (key === "g" || key === "G")) return byId(shift ? "unwrap" : "wrap");
-  if (mod && !shift && (key === "d" || key === "D")) return byId("duplicate");
-  if (!mod && !alt && (key === "Delete" || key === "Backspace")) return byId("remove");
-  return undefined;
+/** An action's shortcut the way the platform writes it: "⌘G" on a Mac, "Ctrl+G" elsewhere. */
+export function shortcutOf(action: Action): string {
+  return formatHotkey(action.hotkeys[0]!, detectMac());
 }

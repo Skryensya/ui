@@ -13,7 +13,8 @@ import {
   type Place,
 } from "@skryensya/maker-model";
 import { DRAG_THRESHOLD, type Drag, type Target } from "./drag";
-import { actionForKey } from "./actions";
+import { useHotkey } from "@skryensya/react/hotkey";
+import { actions, type Action } from "./actions";
 import type { Maker } from "./state";
 
 /*
@@ -83,19 +84,14 @@ export function Outline({ maker, drag }: { maker: Maker; drag: Drag }) {
 
   /* ─── keyboard: every structural gesture, on the selected node ──────────────────────────── */
 
-  const onKeyDownCapture = (event: React.KeyboardEvent) => {
+  /*
+   * The structural shortcuts, one kit hotkey per action (decision 25), scoped to the outline so
+   * they act on the selection only while the tree has focus. Folding by keyboard is still the tree
+   * view's own; noting the key here is what lets that fold through.
+   */
+  const [host, setHost] = useState<HTMLDivElement | null>(null);
+  const onKeyDownCapture = () => {
     intent.current = "fold";
-    if (!selected) return;
-    const action = actionForKey(event.key, event.altKey, event.metaKey || event.ctrlKey, event.shiftKey);
-    if (!action) return;
-    event.preventDefault();
-    event.stopPropagation();
-    const gesture = action.gesture(root, selected);
-    if (!gesture) {
-      maker.say("Nothing to do there: that move has no place the contract allows.");
-      return;
-    }
-    maker.gesture(gesture.operations, gesture.select);
   };
 
   /* ─── pointer: drag a row ────────────────────────────────────────────────────────────────── */
@@ -142,7 +138,18 @@ export function Outline({ maker, drag }: { maker: Maker; drag: Drag }) {
   const hostBox = hostRef.current?.getBoundingClientRect();
 
   return (
-    <div className="maker-outline" ref={hostRef} onKeyDownCapture={onKeyDownCapture} onPointerDown={onPointerDown}>
+    <div
+      className="maker-outline"
+      ref={(element) => {
+        hostRef.current = element;
+        setHost(element);
+      }}
+      onKeyDownCapture={onKeyDownCapture}
+      onPointerDown={onPointerDown}
+    >
+      {actions.flatMap((action) =>
+        action.hotkeys.map((spec) => <ActionHotkey key={spec} spec={spec} action={action} target={host} maker={maker} />),
+      )}
       <style>
         {[...pendingIds]
           .map((id) => `.maker-outline [data-value="${CSS.escape(id)}"] > :is(.sk-tree-view__item-text, .sk-tree-view__branch-control .sk-tree-view__branch-text)::after`)
@@ -218,4 +225,23 @@ function outlineTarget(root: MakerNode, host: HTMLElement, allowed: readonly Pla
   if (band < 0.5 && has(before)) return { place: before, surface: "outline", indicator: lineAt(rect.top) };
   if (band >= 0.5 && has(after)) return { place: after, surface: "outline", indicator: lineAt(rect.bottom) };
   return undefined;
+}
+
+/** One shortcut, bound through the kit's hotkeys for as long as the outline is mounted. */
+function ActionHotkey({ spec, action, target, maker }: { spec: string; action: Action; target: HTMLElement | null; maker: Maker }) {
+  useHotkey(
+    spec,
+    () => {
+      const selected = maker.view.selected;
+      if (!selected) return;
+      const gesture = action.gesture(maker.page.root, selected);
+      if (!gesture) {
+        maker.say("Nothing to do there: that move has no place the contract allows.");
+        return;
+      }
+      maker.gesture(gesture.operations, gesture.select);
+    },
+    { target, enabled: target !== null },
+  );
+  return null;
 }
