@@ -1,7 +1,12 @@
 import { readFileSync } from "node:fs";
+import { fileURLToPath } from "node:url";
 import type { Plugin, ViteDevServer } from "vite";
 import type * as Api from "@skryensya/maker-server/api";
 import type * as Store from "@skryensya/maker-server/store";
+import type * as Publish from "@skryensya/maker-server/publish";
+
+/** Publishing settings, from `apps/maker/.env.local` (never committed) or the environment. */
+export type PublishSettings = { token?: string; url?: string; domain?: string };
 
 /*
  * THE PROJECTS API INSIDE THE DEV SERVER, so the Maker is still one command. The store is Postgres
@@ -12,7 +17,7 @@ import type * as Store from "@skryensya/maker-server/store";
  * The server package is loaded through Vite rather than imported: it reads the Maker's model from
  * TypeScript source, which the config's plain Node loader cannot resolve.
  */
-export function makerApi(): Plugin {
+export function makerApi(settings: PublishSettings = {}): Plugin {
   const index = JSON.parse(readFileSync(new URL("../../../artifacts/ai-index.json", import.meta.url), "utf8")) as { sourceHash: string };
 
   return {
@@ -30,7 +35,17 @@ export function makerApi(): Plugin {
         unavailable = `No database: ${error instanceof Error ? error.message : String(error)}. Start it with \`docker compose -f apps/maker/docker-compose.yml up -d\`.`;
         server.config.logger.warn(`  maker: ${unavailable}`);
       }
-      const api = store ? createMakerApi(store, index.sourceHash) : undefined;
+      /* Publishing exists only where the token does: on the one machine that publishes (ADR-0033). */
+      const publishing: Publish.PublishConfig | undefined = settings.token
+        ? {
+            token: settings.token,
+            endpoint: settings.url ?? "https://publish.skryensya.dev",
+            domain: settings.domain ?? "skryensya.dev",
+            kitDir: fileURLToPath(new URL("../../../packages/maker-server/kit-dist", import.meta.url)),
+          }
+        : undefined;
+      server.config.logger.info(`  maker: publishing ${publishing ? `to ${publishing.endpoint}` : "off (no SITES_PUBLISH_TOKEN)"}`);
+      const api = store ? createMakerApi(store, index.sourceHash, publishing) : undefined;
       server.middlewares.use((request, response, next) => {
         if (!request.url?.startsWith("/api/")) return next();
         if (!api) {
