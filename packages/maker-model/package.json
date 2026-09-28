@@ -1,0 +1,29 @@
+{
+  "name": "@skryensya/maker-model",
+  "version": "0.0.1-dev",
+  "private": true,
+  "type": "module",
+  "description": "The Maker's model: a maker page as a tree of maker nodes, the closed set of operations that change it, and its projection to a usage tree. Pure data and functions: no DOM, no React, no coordinates.",
+  "files": [
+    "src"
+  ],
+  "exports": {
+    ".": {
+      "types": "./src/index.ts",
+      "default": "./src/index.ts"
+    }
+  },
+  "scripts": {
+    "check": "tsc -p tsconfig.json --noEmit && vitest run"
+  },
+  "dependencies": {
+    "@skryensya/ai-compiler": "workspace:*",
+    "@skryensya/core": "workspace:*"
+  },
+  "devDependencies": {
+    "@skryensya/ai-gates": "workspace:*",
+    "@skryensya/snippets": "workspace:*",
+    "typescript": "^5.9.3",
+    "vitest": "^4.1.11"
+  }
+}
