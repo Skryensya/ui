@@ -3,6 +3,7 @@ import { findChild, findNode, type MakerNode } from "@skryensya/maker-model";
 import { DRAG_THRESHOLD, type Drag } from "../drag";
 import { stageTree, type Maker, type StageWidth } from "../state";
 import { elementFor, nodeIdAt, placeAt, type Rect } from "./geometry";
+import { EDIT_TEXT } from "../Inspector";
 
 /*
  * THE STAGE: an iframe the maker page renders in, as wide as the chosen stage width and not a
@@ -33,13 +34,35 @@ export function Stage({ maker, drag }: { maker: Maker; drag: Drag }) {
   const [hovered, setHovered] = useState<string>();
   const [overlay, setOverlay] = useState<Overlay>({});
   const [frameWidth, setFrameWidth] = useState(0);
+  /* The room the stage column has, and how much the preview is shrunk to fit it. */
+  const [space, setSpace] = useState({ width: 0, height: 0 });
   const [renderError, setRenderError] = useState<string>();
   const root = maker.page.root;
   const { selected, mode } = maker.view;
 
+  /*
+   * A WIDTH WIDER THAN THE COLUMN IS SHOWN SMALLER, NEVER NARROWER. The frame keeps the exact CSS
+   * width chosen, so the page's media queries and container widths answer to that number, and the
+   * whole frame (iframe and overlays together) is scaled down to fit, the way a browser's responsive
+   * mode does. Everything that turns a pointer into a place divides by the scale.
+   */
+  const targetPx = maker.view.width === "fit" ? space.width : typeof maker.view.width === "number" ? maker.view.width * REM : maker.view.width.px;
+  const scale = targetPx > 0 && space.width > 0 ? Math.min(1, space.width / targetPx) : 1;
+  const frameHeight = Math.max(320, (space.height - 32) / scale);
+
+  useLayoutEffect(() => {
+    const shell = shellRef.current;
+    if (!shell) return;
+    const read = () => setSpace({ width: shell.clientWidth, height: shell.clientHeight });
+    read();
+    const observer = new ResizeObserver(() => requestAnimationFrame(read));
+    observer.observe(shell);
+    return () => observer.disconnect();
+  }, []);
+
   /* Latest values for listeners that live on the stage's document across renders. */
-  const live = useRef({ root, selected, mode, drag, maker });
-  live.current = { root, selected, mode, drag, maker };
+  const live = useRef({ root, selected, mode, drag, maker, scale });
+  live.current = { root, selected, mode, drag, maker, scale };
 
   const doc = () => frameRef.current?.contentDocument ?? null;
 
@@ -167,6 +190,15 @@ export function Stage({ maker, drag }: { maker: Maker; drag: Drag }) {
       if (id) live.current.maker.setView({ selected: id });
     };
     const onSubmit = (event: Event) => event.preventDefault();
+    /* Double-click: select, and go straight to its text in the inspector. */
+    const onDoubleClick = (event: MouseEvent) => {
+      if (live.current.mode !== "edit") return;
+      event.preventDefault();
+      const id = nodeIdAt(event.target as Element);
+      if (!id) return;
+      live.current.maker.setView({ selected: id });
+      window.dispatchEvent(new CustomEvent(EDIT_TEXT));
+    };
     const onPointerDown = (event: PointerEvent) => {
       if (live.current.mode !== "edit" || event.button !== 0) return;
       const id = nodeIdAt(event.target as Element);
@@ -190,7 +222,8 @@ export function Stage({ maker, drag }: { maker: Maker; drag: Drag }) {
         }
         if (press.dragging) {
           const box = offset();
-          live.current.drag.move(event.clientX + box.left, event.clientY + box.top);
+          const k = live.current.scale;
+          live.current.drag.move(box.left + event.clientX * k, box.top + event.clientY * k);
         }
         return;
       }
@@ -213,6 +246,7 @@ export function Stage({ maker, drag }: { maker: Maker; drag: Drag }) {
 
     document.addEventListener("click", onClick, true);
     document.addEventListener("submit", onSubmit, true);
+    document.addEventListener("dblclick", onDoubleClick, true);
     document.addEventListener("pointerdown", onPointerDown, true);
     document.addEventListener("pointermove", onPointerMove, true);
     document.addEventListener("pointerup", onPointerUp, true);
@@ -221,6 +255,7 @@ export function Stage({ maker, drag }: { maker: Maker; drag: Drag }) {
     return () => {
       document.removeEventListener("click", onClick, true);
       document.removeEventListener("submit", onSubmit, true);
+      document.removeEventListener("dblclick", onDoubleClick, true);
       document.removeEventListener("pointerdown", onPointerDown, true);
       document.removeEventListener("pointermove", onPointerMove, true);
       document.removeEventListener("pointerup", onPointerUp, true);
@@ -238,13 +273,14 @@ export function Stage({ maker, drag }: { maker: Maker; drag: Drag }) {
         if (!frame || !document) return undefined;
         const box = frame.getBoundingClientRect();
         if (x < box.left || x > box.right || y < box.top || y > box.bottom) return undefined;
-        const found = placeAt(document, live.current.root, allowed, x - box.left, y - box.top);
+        const k = live.current.scale;
+        const found = placeAt(document, live.current.root, allowed, (x - box.left) / k, (y - box.top) / k);
         if (!found) return undefined;
         const r = found.indicator.rect;
         return {
           place: found.place,
           surface: "stage",
-          indicator: { kind: found.indicator.kind, rect: { left: r.left + box.left, top: r.top + box.top, width: r.width, height: r.height } },
+          indicator: { kind: found.indicator.kind, rect: { left: box.left + r.left * k, top: box.top + r.top * k, width: r.width * k, height: r.height * k } },
         };
       }),
     [drag.register],
@@ -256,8 +292,9 @@ export function Stage({ maker, drag }: { maker: Maker; drag: Drag }) {
     const shell = shellRef.current;
     if (!shell) return;
     event.currentTarget.setPointerCapture(event.pointerId);
-    const left = shell.getBoundingClientRect().left;
-    const onMove = (move: PointerEvent) => maker.setView({ width: { px: Math.max(240, Math.round(move.clientX - left)) } });
+    const left = frameRef.current?.getBoundingClientRect().left ?? shell.getBoundingClientRect().left;
+    const k = scale;
+    const onMove = (move: PointerEvent) => maker.setView({ width: { px: Math.max(240, Math.round((move.clientX - left) / k)) } });
     const onUp = () => {
       window.removeEventListener("pointermove", onMove);
       window.removeEventListener("pointerup", onUp);
@@ -271,7 +308,21 @@ export function Stage({ maker, drag }: { maker: Maker; drag: Drag }) {
 
   return (
     <div className="maker-stage" ref={shellRef}>
-      <div className="maker-stage__frame" style={{ inlineSize: widthStyle(maker.view.width) }}>
+      {/* Outside the frame, so it reads at full size however small the stage is shown. */}
+      {root.slots.children?.kind === "nodes" && root.slots.children.children.length === 0 && mode === "edit" ? (
+        <p className="maker-stage__empty">
+          Empty page. Add a <strong>Wrapper</strong> from Insert for a page column, or drag a section here.
+        </p>
+      ) : null}
+      <div className="maker-stage__sizer" style={{ inlineSize: targetPx * scale || undefined, blockSize: frameHeight * scale }}>
+      <div
+        className="maker-stage__frame"
+        style={{
+          inlineSize: maker.view.width === "fit" ? "100%" : widthStyle(maker.view.width),
+          blockSize: frameHeight,
+          transform: scale < 1 ? `scale(${scale})` : undefined,
+        }}
+      >
         <iframe ref={frameRef} src="/stage.html" title="Page stage" className="maker-stage__iframe" />
         <div className="maker-stage__overlays" aria-hidden="true">
           {overlay.hovered ? <div className="maker-overlay maker-overlay--hover" style={box(overlay.hovered)} /> : null}
@@ -283,7 +334,12 @@ export function Stage({ maker, drag }: { maker: Maker; drag: Drag }) {
           {indicator && frameBox ? (
             <div
               className={`maker-overlay maker-overlay--drop-${indicator.kind}`}
-              style={box({ ...indicator.rect, left: indicator.rect.left - frameBox.left, top: indicator.rect.top - frameBox.top })}
+              style={box({
+                left: (indicator.rect.left - frameBox.left) / scale,
+                top: (indicator.rect.top - frameBox.top) / scale,
+                width: indicator.rect.width / scale,
+                height: indicator.rect.height / scale,
+              })}
             />
           ) : null}
         </div>
@@ -295,9 +351,11 @@ export function Stage({ maker, drag }: { maker: Maker; drag: Drag }) {
           onPointerDown={onHandleDown}
         />
       </div>
+      </div>
       <p className="maker-stage__meta">
         {Math.round(frameWidth)}px · {(frameWidth / REM).toFixed(1)}rem ·{" "}
         {frameWidth >= EXPANDED_PX ? "expanded (≥ 52rem): *Expanded options apply" : "compact: *Expanded options do not apply"}
+        {scale < 1 ? ` · shown at ${Math.round(scale * 100)}% to fit` : ""}
       </p>
       {renderError ? (
         <p className="maker-stage__error" role="alert">

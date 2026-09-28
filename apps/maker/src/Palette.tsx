@@ -8,6 +8,7 @@ import { Text } from "@skryensya/react/typography";
 import {
   canPlaceAt,
   childrenOf,
+  findChild,
   fromUsageTree,
   insertable,
   insertionPlace,
@@ -43,6 +44,17 @@ export function Palette({ maker, drag }: { maker: Maker; drag: Drag }) {
     () => (maker.view.selected ? insertionPlace(root, maker.view.selected) : undefined) ?? { parent: root.id, slot: "children", index: childrenOf(root, "children").length },
     [root, maker.view.selected],
   );
+
+  /* Said in words, since it is not always "inside the selection": after a heading, it is below it. */
+  const whereItGoes = useMemo(() => {
+    const parent = findChild(root, place.parent);
+    const parentName = parent && "signature" in parent ? parent.signature : "the page";
+    const before = parent && "signature" in parent ? childrenOf(parent, place.slot)[place.index - 1] : undefined;
+    if (maker.view.selected && before && before.id === maker.view.selected) {
+      return `after ${"signature" in before ? before.signature : "this text"}, in ${parentName}`;
+    }
+    return parent?.id === root.id ? "at the end of the page" : `inside ${parentName}, at the end`;
+  }, [root, place, maker.view.selected]);
 
   const allowed = useMemo(() => insertable(root, place, (ref) => presetFor(ref, () => "preview")), [root, place]);
 
@@ -115,7 +127,7 @@ export function Palette({ maker, drag }: { maker: Maker; drag: Drag }) {
             <Input type="search" placeholder="Search the catalogue" aria-label="Search the catalogue" value={query} onChange={(event) => setQuery(event.currentTarget.value)} />
           </div>
           <Text size="sm" tone="tertiary">
-            {shown.length} that fit {maker.view.selected ? "at the selection" : "at the end of the page"}
+            {shown.length} fit {whereItGoes}
           </Text>
           <div className="maker-palette__list">
             {groups.map(([category, refs]) => (

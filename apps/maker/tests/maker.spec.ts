@@ -94,14 +94,14 @@ test("the inspector offers the contract's options and nothing else, and they rea
   await selectInOutline(page, "Stack");
   const inspector = page.locator(".maker__right");
   await expect(inspector.getByText("Layout role")).toBeVisible();
-  await expect(inspector.getByLabel("gap", { exact: true })).toBeVisible();
+  await expect(inspector.getByLabel("Gap", { exact: true })).toBeVisible();
   /* Stack declares no padding and no justify; nothing in the inspector names a length or a position. */
-  await expect(inspector.getByLabel("padding", { exact: true })).toHaveCount(0);
-  await expect(inspector.getByLabel("justify", { exact: true })).toHaveCount(0);
-  for (const word of ["width", "height", "top", "left", "x", "y"]) {
+  await expect(inspector.getByLabel("Padding", { exact: true })).toHaveCount(0);
+  await expect(inspector.getByLabel("Justify", { exact: true })).toHaveCount(0);
+  for (const word of ["Width", "Height", "Top", "Left", "X", "Y", "width", "height", "top", "left", "x", "y"]) {
     await expect(inspector.getByLabel(word, { exact: true })).toHaveCount(0);
   }
-  await inspector.getByLabel("gap", { exact: true }).selectOption("xl");
+  await inspector.getByLabel("Gap", { exact: true }).selectOption("xl");
   await expect(stage(page).locator(".sk-stack").first()).toHaveAttribute("data-gap", "xl");
 });
 
@@ -109,7 +109,7 @@ test("fill or fit is offered as the Inline's, and it is left behind when the chi
   await selectInOutline(page, "Button.action");
   const inspector = page.locator(".maker__right");
   await expect(inspector.getByRole("heading", { name: "In this Inline" })).toBeVisible();
-  await inspector.getByLabel("sizing", { exact: true }).selectOption("fill");
+  await inspector.getByLabel("Sizing", { exact: true }).selectOption("fill");
   await expect(stage(page).locator('[data-sizing="fill"]')).toHaveCount(1);
   await page.locator(".maker-outline [role=tree]").focus();
   await page.keyboard.press("Alt+ArrowLeft");
@@ -279,24 +279,24 @@ test("a Grid is decided one way or the other, never both: columns, or minColumn"
   await selectInOutline(page, "Stack");
   await addFromPalette(page, "Grid");
   const inspector = page.locator(".maker__right");
-  await expect(inspector.getByLabel("columns", { exact: true })).toBeVisible();
-  await expect(inspector.getByLabel("minColumn", { exact: true })).toHaveCount(0);
-  await inspector.getByLabel("columns", { exact: true }).selectOption("3");
-  await inspector.getByRole("radio", { name: "minColumn" }).click();
-  await expect(inspector.getByLabel("minColumn", { exact: true })).toBeVisible();
-  await expect(inspector.getByLabel("columns", { exact: true })).toHaveCount(0);
+  await expect(inspector.getByLabel("Columns", { exact: true })).toBeVisible();
+  await expect(inspector.getByLabel("Min column", { exact: true })).toHaveCount(0);
+  await inspector.getByLabel("Columns", { exact: true }).selectOption("3");
+  await inspector.getByRole("radio", { name: "Min column" }).click();
+  await expect(inspector.getByLabel("Min column", { exact: true })).toBeVisible();
+  await expect(inspector.getByLabel("Columns", { exact: true })).toHaveCount(0);
   const grid = stage(page).locator(".sk-grid").first();
   await expect(grid).toHaveAttribute("data-min-column", "sm");
   /* Pending only because the grid is still empty: never because two options decide the same thing. */
   await expect(inspector).not.toContainText("already decides");
-  await inspector.getByRole("radio", { name: /^columns/ }).click();
+  await inspector.getByRole("radio", { name: /^Columns/ }).click();
   await expect(grid).not.toHaveAttribute("data-min-column", /.*/);
 });
 
 test("dragging in a Grid follows the columns the browser laid out", async ({ page }) => {
   await selectInOutline(page, "Stack");
   await addFromPalette(page, "Grid");
-  await page.locator(".maker__right").getByRole("radio", { name: "minColumn" }).click();
+  await page.locator(".maker__right").getByRole("radio", { name: "Min column" }).click();
   for (let i = 0; i < 3; i++) {
     await selectInOutline(page, "Grid");
     await addFromPalette(page, "Badge");
@@ -338,6 +338,7 @@ test("pages: add, rename, re-path, link between them, and follow the link in int
   const pages = page.locator(".maker-pages");
   await page.getByRole("toolbar", { name: "Pages" }).getByRole("button", { name: "Add a page" }).click();
   await expect(pages.getByRole("button", { name: /Page 2/ })).toHaveAttribute("aria-current", "page");
+  await pages.getByText(/^Page settings/).click();
   await pages.getByLabel("Page name").fill("About");
   await pages.getByLabel("Page name").press("Enter");
   await pages.getByLabel("Path").fill("/about");
@@ -356,7 +357,7 @@ test("pages: add, rename, re-path, link between them, and follow the link in int
   await pages.getByRole("button", { name: /Home/ }).click();
   await selectInOutline(page, "Stack");
   await addFromPalette(page, "Button.navigation");
-  const href = page.locator(".maker__right").getByLabel("href", { exact: true });
+  const href = page.locator(".maker__right").getByLabel("Link (href)", { exact: true });
   await href.fill("/nowhere");
   await href.press("Enter");
   await expect(page.locator(".maker__right")).toContainText('Links to "/nowhere"');
@@ -413,6 +414,35 @@ test("an agent's change to the project arrives live, as one step the person can 
 
 test("the person's changes are saved to the project for an agent to read", async ({ page }) => {
   await selectInOutline(page, "Stack");
-  await page.locator(".maker__right").getByLabel("gap", { exact: true }).selectOption("lg");
+  await page.locator(".maker__right").getByLabel("Gap", { exact: true }).selectOption("lg");
   await expect.poll(() => savedJson(page)).toMatch(/"gap":"lg"/);
+});
+
+test("inserting after a heading, a paragraph or a button lands below it, so a sequence needs no reselecting", async ({ page }) => {
+  await selectInOutline(page, "Heading");
+  await expect(page.locator(".maker-palette")).toContainText("after Heading, in Stack");
+  await addFromPalette(page, "Text");
+  await addFromPalette(page, "Text");
+  await expect.poll(() => pageTree(page)).toMatch(/Heading\n\s+"Heading"\n\s+Text\n\s+"Text"\n\s+Text\n\s+"Text"\n\s+Text/);
+});
+
+test("double-clicking text on the stage selects it and puts the caret in its text", async ({ page }) => {
+  await stage(page).locator("h2").dblclick();
+  await expect(page.locator(".maker__right h2").first()).toHaveText("Heading");
+  const field = page.locator(".maker__right").getByLabel("Text", { exact: true });
+  await expect(field).toBeFocused();
+  await page.keyboard.type("Café Aurora");
+  await page.keyboard.press("Enter");
+  await expect(stage(page).locator("h2")).toHaveText("Café Aurora");
+});
+
+test("a stage wider than its column is shown whole, scaled, at its exact CSS width", async ({ page }) => {
+  await page.getByRole("button", { name: /^Stage width: 90rem/ }).click();
+  const frame = page.locator(".maker-stage__frame");
+  await expect(frame).toHaveCSS("inline-size", "1440px");
+  await expect(page.locator(".maker-stage__meta")).toContainText(/shown at \d+% to fit/);
+  const [frameBox, column] = [await frame.boundingBox(), await page.locator(".maker__stage").boundingBox()];
+  expect(frameBox!.x + frameBox!.width).toBeLessThanOrEqual(column!.x + column!.width + 1);
+  /* The iframe itself still lays the page out at 1440 CSS px. */
+  expect(await stage(page).locator("html").evaluate((html) => html.clientWidth)).toBe(1440);
 });
