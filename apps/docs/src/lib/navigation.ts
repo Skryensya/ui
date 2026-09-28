@@ -1235,6 +1235,11 @@ export const documentationNavigation = [
             label: "Montaje automático",
             aliases: ["auto mount", "initComponents", "auto-mounting", "automatic mounting", "vanilla mount"],
           },
+          {
+            href: "/maker",
+            label: "Maker",
+            aliases: ["page builder", "constructor de páginas", "editor visual", "visual editor", "maker_apply", "maker_read"],
+          },
         ],
       },
     ],

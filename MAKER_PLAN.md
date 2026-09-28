@@ -270,7 +270,11 @@ dos bindings (ADR-0015) y verde en `ai-gates`.
 
 ---
 
-## Después de la v1 (no se construye ahora)
+## Documentación
+
+- [x] Página `/maker` y `/es/maker` en el sitio de docs (grupo "Primeros pasos"): la regla, las primitivas, el inspector, el stage, las páginas, el teclado, la edición con un agente (`maker_read` / `maker_apply`) y el export.
+
+## Después de la v1
 
 - [x] Edición por prompt: `maker_read` / `maker_apply` en el MCP stdio, sobre un archivo de sitio con revisión (`.maker/<nombre>.maker.json`) que el dev server del Maker vigila; los cambios del agente llegan en vivo como un paso deshacible, y ninguno de los dos pisa al otro (escrituras en serie, 409 al quedar atrás). El agente inserta usage trees o signatures; los ids los pone el modelo.
 - [ ] Un campo de prompt dentro del propio Maker (necesitaría un modelo accesible desde la app).
