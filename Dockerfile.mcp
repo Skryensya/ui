@@ -33,6 +33,7 @@ COPY packages/devtools/package.json ./packages/devtools/package.json
 COPY packages/icons-lucide/package.json ./packages/icons-lucide/package.json
 COPY packages/icons-material/package.json ./packages/icons-material/package.json
 COPY packages/icons-phosphor/package.json ./packages/icons-phosphor/package.json
+COPY packages/maker-model/package.json ./packages/maker-model/package.json
 COPY packages/mcp/package.json ./packages/mcp/package.json
 COPY packages/react/package.json ./packages/react/package.json
 COPY packages/vanilla/package.json ./packages/vanilla/package.json
@@ -47,6 +48,7 @@ RUN --mount=type=cache,id=pnpm-store,target=/pnpm/store \
 
 COPY packages/ai-compiler ./packages/ai-compiler
 COPY packages/core ./packages/core
+COPY packages/maker-model ./packages/maker-model
 COPY packages/mcp ./packages/mcp
 COPY packages/react ./packages/react
 COPY contracts ./contracts
