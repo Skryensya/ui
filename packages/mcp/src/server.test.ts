@@ -63,15 +63,16 @@ afterAll(async () => {
 describe("the surface", () => {
   it("exposes exactly the declared inventory, in workflow order", async () => {
     const { tools: listed } = await client.listTools();
-    expect(listed.map((tool) => tool.name)).toEqual([...toolNames]);
+    /* The declared inventory, then the Maker's two, which only the local stdio server offers. */
+    expect(listed.map((tool) => tool.name)).toEqual([...toolNames, "maker_read", "maker_apply"]);
     expect(toolNames).toEqual(["discover_ui", "get_examples", "get_contract", "get_contracts", "validate_ui", "get_catalog"]);
   });
 
-  it("declares an outputSchema and read-only annotations on every tool", async () => {
+  it("declares an outputSchema on every tool, and read-only annotations on all but maker_apply", async () => {
     const { tools: listed } = await client.listTools();
     for (const tool of listed) {
       expect(tool.outputSchema?.type, tool.name).toBe("object");
-      expect(tool.annotations?.readOnlyHint, tool.name).toBe(true);
+      expect(tool.annotations?.readOnlyHint, tool.name).toBe(tool.name !== "maker_apply");
     }
   });
 

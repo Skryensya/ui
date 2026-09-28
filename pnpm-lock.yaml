@@ -789,6 +789,9 @@ importers:
       '@skryensya/core':
         specifier: workspace:*
         version: link:../core
+      '@skryensya/maker-model':
+        specifier: workspace:*
+        version: link:../maker-model
       '@skryensya/snippets':
         specifier: workspace:*
         version: link:../../contracts/snippets

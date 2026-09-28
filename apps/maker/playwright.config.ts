@@ -1,4 +1,9 @@
+import { tmpdir } from "node:os";
+import { join } from "node:path";
 import { defineConfig } from "@playwright/test";
+
+/* Site files for the run, never the checkout's `.maker/`; each test opens a site of its own. */
+process.env.MAKER_DIR ??= join(tmpdir(), `maker-e2e-${process.pid}`);
 
 /* The Maker's own browser checks: it starts its dev server and drives the real app. */
 export default defineConfig({
@@ -11,7 +16,8 @@ export default defineConfig({
   webServer: {
     command: "vite --port 4201 --strictPort",
     url: "http://localhost:4201",
-    reuseExistingServer: !process.env.CI,
+    reuseExistingServer: false,
+    env: { MAKER_DIR: process.env.MAKER_DIR },
     timeout: 60_000,
   },
 });

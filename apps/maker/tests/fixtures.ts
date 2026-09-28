@@ -1,11 +1,20 @@
 import { expect, type Page } from "@playwright/test";
 
 /** A clean Maker: nothing remembered from a previous test. */
-export async function openMaker(page: Page): Promise<void> {
-  await page.goto("/");
+let opened = 0;
+
+/** A site name no other test uses, so parallel tests never share a site file. */
+export function uniqueSite(): string {
+  return `t${process.pid}-${Date.now().toString(36)}-${++opened}`;
+}
+
+export async function openMaker(page: Page, site = uniqueSite()): Promise<string> {
+  await page.goto(`/?site=${site}`);
   await page.evaluate(() => localStorage.clear());
   await page.reload();
   await expect(page.frameLocator("iframe.maker-stage__iframe").locator("main[data-maker-node]")).toBeAttached();
+  await expect(page.locator(".maker__sync--live")).toBeVisible();
+  return site;
 }
 
 export async function addFromPalette(page: Page, signature: string): Promise<void> {

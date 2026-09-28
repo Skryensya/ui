@@ -6,6 +6,7 @@ import { Icon } from "@skryensya/react/icon";
 import { NativeSelect } from "@skryensya/react/select-native";
 import { Toolbar, ToolbarGroup, ToolbarSeparator } from "@skryensya/react/toolbar";
 import { useDrag } from "./drag";
+import { siteName, useSiteSync } from "./sync";
 import { ExportPanel } from "./ExportPanel";
 import { IconButton } from "./IconButton";
 import { MakerIcon, type AnyIcon } from "./icons";
@@ -37,6 +38,7 @@ const same = (a: StageWidth, b: StageWidth) => a === b;
 export function App() {
   const maker = useMaker();
   const drag = useDrag(maker.page.root, maker.gesture);
+  const sync = useSiteSync(maker);
   const [exporting, setExporting] = useState(false);
   const { view, setView } = maker;
 
@@ -103,6 +105,12 @@ export function App() {
             />
           </ToolbarGroup>
         </Toolbar>
+        <span
+          className={`maker__sync maker__sync--${sync}`}
+          title={sync === "live" ? `Shared with agents through .maker/${siteName}.maker.json` : sync === "local" ? "Kept in this browser only" : "Connecting"}
+        >
+          {sync === "live" ? `Live · ${siteName}` : sync === "local" ? "This browser only" : "…"}
+        </span>
         <Button variant="solid" size="sm" pre={<Icon name="download" />} onClick={() => setExporting(true)}>
           Export
         </Button>

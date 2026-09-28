@@ -1,4 +1,7 @@
 import { expect, test } from "@playwright/test";
+import { readFileSync, renameSync, writeFileSync } from "node:fs";
+import { join } from "node:path";
+import { applySiteAll, decodeSiteFile, encodeSiteFile, randomId, resolveAgentOperations } from "@skryensya/maker-model";
 import { addFromPalette, buildSamplePage, openMaker, pageTree, selectInOutline } from "./fixtures";
 
 /*
@@ -8,8 +11,10 @@ import { addFromPalette, buildSamplePage, openMaker, pageTree, selectInOutline }
 
 const stage = (page: import("@playwright/test").Page) => page.frameLocator("iframe.maker-stage__iframe");
 
+let site = "";
+
 test.beforeEach(async ({ page }) => {
-  await openMaker(page);
+  site = await openMaker(page);
   await buildSamplePage(page);
 });
 
@@ -385,4 +390,38 @@ test("export offers the whole site: every page as its own component, and the sit
   await expect(code).toHaveValue(/pages\/index\.tsx[\s\S]*export function HomePage[\s\S]*pages\/page\.tsx[\s\S]*export function PagePage/);
   await page.getByRole("radio", { name: "Site" }).click();
   await expect(code).toHaveValue(/"format": "skryensya-maker-site"/);
+});
+
+test("an agent's change to the site file arrives live, as one step the person can undo", async ({ page }) => {
+  const path = join(process.env.MAKER_DIR!, `${site}.maker.json`);
+  /* The page as the person left it, saved to the file. */
+  await expect.poll(() => decodeSiteFile(readFileSync(path, "utf8"))?.site.pages[0]?.root.slots.children).toBeTruthy();
+  await expect.poll(() => JSON.stringify(decodeSiteFile(readFileSync(path, "utf8"))?.site)).toContain("Button.action");
+
+  /* What the MCP's maker_apply does: resolve an agent's operations, apply, write one revision up. */
+  const file = decodeSiteFile(readFileSync(path, "utf8"))!;
+  const home = file.site.pages[0]!;
+  const stack = JSON.stringify(home.root).match(/"id":"([^"]+)","contract":"layout","signature":"Stack"/)![1]!;
+  const resolved = resolveAgentOperations(
+    file.site,
+    [{ type: "page", page: home.id, operations: [{ type: "setOption", node: stack, name: "gap", value: "xl" }] }],
+    randomId,
+  );
+  if (!resolved.ok) throw new Error(resolved.reason);
+  const applied = applySiteAll(file.site, resolved.value);
+  if (!applied.ok) throw new Error(applied.reason);
+  writeFileSync(`${path}.tmp`, encodeSiteFile({ revision: file.revision + 1, site: applied.site }));
+  renameSync(`${path}.tmp`, path);
+
+  await expect(stage(page).locator(".sk-stack").first()).toHaveAttribute("data-gap", "xl");
+  await expect(page.locator(".maker__notice")).toContainText("An agent changed the site");
+  await page.getByRole("button", { name: "Undo", exact: true }).click();
+  await expect(stage(page).locator(".sk-stack").first()).not.toHaveAttribute("data-gap", "xl");
+});
+
+test("the person's changes are written to the site file for an agent to read", async ({ page }) => {
+  const path = join(process.env.MAKER_DIR!, `${site}.maker.json`);
+  await selectInOutline(page, "Stack");
+  await page.locator(".maker__right").getByLabel("gap", { exact: true }).selectOption("lg");
+  await expect.poll(() => readFileSync(path, "utf8")).toMatch(/"gap": "lg"/);
 });

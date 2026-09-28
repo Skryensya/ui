@@ -59,6 +59,15 @@ A site adds its own few beside them: add, remove, rename and move a page, set it
 which carries one page operation to one page. They share the one history, so removing a page is
 undone like removing a button.
 
+## A prompt is an agent speaking operations
+
+The spec asked that prompts respect the same paradigm. They do by construction: an agent reads the
+site through the MCP's `maker_read` and changes it through `maker_apply`, whose input is the closed
+set of operations and nothing else. "Put these two buttons next to each other" can only arrive as a
+wrap in an Inline. The agent works through the MCP rather than a prompt box inside the Maker, so no
+model key lives in a browser, and the two share a revisioned site file that the Maker's dev server
+watches: an agent's change appears live and is undone like any other step.
+
 ## Structure is always sound, options may be pending
 
 A drop zone appears only where the contract allows the node (`notInside`, required descendants), so

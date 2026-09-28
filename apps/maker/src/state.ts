@@ -61,6 +61,7 @@ type Action =
   | { type: "undo" }
   | { type: "redo" }
   | { type: "load"; site: MakerSite; notice?: string }
+  | { type: "remote"; site: MakerSite; notice?: string }
   | { type: "view"; change: Partial<View> }
   | { type: "notice"; text: string };
 
@@ -99,6 +100,11 @@ function reducer(state: State, action: Action): State {
         view: settle(action.site, { ...state.view, page: action.site.pages[0]!.id, selected: undefined }),
         notice: action.notice ? { text: action.notice, at: Date.now() } : undefined,
       };
+    case "remote": {
+      /* A change made elsewhere (an agent, through the site file) is one more step: undoable. */
+      const history = { past: [...state.history.past, state.history.present], present: action.site, future: [] };
+      return { ...state, history, view: settle(action.site, state.view), notice: action.notice ? { text: action.notice, at: Date.now() } : state.notice };
+    }
     case "view":
       return { ...state, view: settle(state.history.present, { ...state.view, ...action.change }) };
     case "notice":
@@ -201,6 +207,8 @@ export function useMaker() {
     undo: useCallback(() => dispatch({ type: "undo" }), []),
     redo: useCallback(() => dispatch({ type: "redo" }), []),
     load: useCallback((next: MakerSite, notice?: string) => dispatch({ type: "load", site: next, notice }), []),
+    /** A site that changed elsewhere, taken in as one undoable step. */
+    receive: useCallback((next: MakerSite, notice?: string) => dispatch({ type: "remote", site: next, notice }), []),
     setView: useCallback((change: Partial<View>) => dispatch({ type: "view", change }), []),
     say: useCallback((text: string) => dispatch({ type: "notice", text }), []),
   };
