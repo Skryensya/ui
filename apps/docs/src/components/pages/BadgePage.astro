@@ -3,6 +3,7 @@ import ComponentPageShell from "./ComponentPageShell.astro";
 import AppearanceMenu from "../AppearanceMenu.astro";
 import CodeBlock from "../CodeBlock.astro";
 import ComponentPreview from "../ComponentPreview.astro";
+import PropertyPreview from "../PropertyPreview.astro";
 import {
   badgeAnatomyTree,
   badgeDotsTree,
@@ -30,6 +31,14 @@ const install = `pnpm add @skryensya/core @skryensya/react`;
  * demo module export so the generator actually sees it and a story exists to link to.
  */
 const storybookTitle = "Components/Content/Badge";
+
+/* PROTOTYPE, not yet a real demo module: a single Badge to try `tone` on, for a screenshot only. */
+const tryToneTree = {
+  contract: "badge",
+  signature: "Badge",
+  options: { tone: "neutral" },
+  children: "Label",
+};
 ---
 
 <ComponentPageShell
@@ -66,6 +75,10 @@ const storybookTitle = "Components/Content/Badge";
       storybookTitle={storybookTitle}
       storybookStory="Tag"
     />
+
+    <h3>Try it (prototype)</h3>
+    <p>A lighter preview: one example, one property, no viewport switching (that's Storybook's job now).</p>
+    <PropertyPreview tree={tryToneTree} optionName="tone" label="Badge" />
 
     <h4>{t("badge.smallTitle")}</h4>
     <p set:html={t("badge.smallBody")} />

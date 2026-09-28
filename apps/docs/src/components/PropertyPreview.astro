@@ -1,0 +1,98 @@
+---
+/*
+ * PROTOTYPE: a lighter sibling to `ComponentPreview.astro`. One tree, ONE option played with live,
+ * React-only stage (no Vanilla binding, no viewport presets - see `lib/navigation.ts`'s Storybook
+ * links for where those live now), no source panels, no overflow menu.
+ *
+ * The control's values are never authored here: `signatureOptions` reads them straight off the
+ * option's own `ContractOption` (packages/core/src/contract.ts), the same declaration
+ * `discover_ui`/`validate_ui` and every other binding already agree on. Passing the wrong
+ * `optionName` (one the signature does not declare) fails LOUD, at build time, rather than quietly
+ * rendering an empty control.
+ */
+import { getContract, getSignature } from "@skryensya/core/registry";
+import { signatureOptions } from "@skryensya/core/contract";
+import type { UsageTree } from "@skryensya/core/usage-tree";
+import { PropertyPlayground } from "./react-demos/property-playground";
+import "@skryensya/core/components/segmented.css";
+
+interface Props {
+  tree: UsageTree;
+  /** The one option this preview lets the reader vary. Must be `type: "enum"` on the signature. */
+  optionName: string;
+  label?: string;
+}
+
+const { tree, optionName, label } = Astro.props;
+
+const contract = getContract(tree.contract);
+if (!contract) throw new Error(`PropertyPreview: no contract "${tree.contract}".`);
+const signature = getSignature(contract, tree.signature);
+if (!signature) throw new Error(`PropertyPreview: no signature "${tree.signature}" on "${tree.contract}".`);
+
+const found = signatureOptions(contract, signature).find(([name]) => name === optionName);
+if (!found) {
+  throw new Error(`PropertyPreview: "${tree.signature}" declares no option "${optionName}".`);
+}
+const [, option] = found;
+if (option.type !== "enum" || !option.values) {
+  throw new Error(`PropertyPreview: "${optionName}" is a "${option.type}" option, not an enum.`);
+}
+---
+
+<div class="sk-property-preview">
+  {label && <p class="sk-property-preview__label">{label}</p>}
+  <PropertyPlayground
+    client:visible
+    tree={tree}
+    optionName={optionName}
+    values={option.values}
+    defaultValue={(option.default as string | undefined) ?? option.values[0]}
+    controlLabel={`${optionName} (${tree.contract} ${tree.signature})`}
+  />
+</div>
+
+<style>
+  .sk-property-preview {
+    margin-block-end: var(--space-stack-md);
+  }
+
+  .sk-property-preview__label {
+    margin: 0 0 var(--space-stack-xs);
+    color: var(--color-text-secondary);
+    font-family: var(--font-family-code);
+    font-size: var(--font-size-caption);
+    font-weight: var(--font-weight-emphasis);
+  }
+
+  .sk-property-preview :global(.sk-property-playground) {
+    display: grid;
+    border: 1px solid var(--color-border-subtle);
+    border-radius: var(--radius-surface);
+    background: var(--color-bg-surface);
+    overflow: hidden;
+  }
+
+  .sk-property-preview :global(.sk-property-playground__stage) {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-block-size: 8rem;
+    padding: var(--space-inset-lg);
+    background: var(--color-bg-surface-sunken);
+  }
+
+  .sk-property-preview :global(.sk-property-playground__control) {
+    display: flex;
+    align-items: center;
+    gap: var(--space-inline-sm);
+    padding: var(--space-inset-sm) var(--space-inset-md);
+    border-block-start: 1px solid var(--color-border-subtle);
+  }
+
+  .sk-property-preview :global(.sk-property-playground__control-label) {
+    color: var(--color-text-tertiary);
+    font-family: var(--font-family-code);
+    font-size: var(--font-size-caption);
+  }
+</style>
