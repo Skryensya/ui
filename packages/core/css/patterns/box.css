@@ -71,6 +71,11 @@
   .sk-box[data-padding="lg"] { --sk-box-padding: var(--space-inset-lg); }
   .sk-box[data-padding="xl"] { --sk-box-padding: var(--space-inset-xl); }
 
+  /* A ceiling on the Wrapper's scale, never centred: the Box keeps its place in the flow. */
+  .sk-box[data-measure="sm"] { max-inline-size: var(--size-wrapper-sm); }
+  .sk-box[data-measure="md"] { max-inline-size: var(--size-wrapper-md); }
+  .sk-box[data-measure="lg"] { max-inline-size: var(--size-wrapper-lg); }
+
   /*
    * ── APPEARANCE ───────────────────────────────────────────────────────────────────────────────
    *

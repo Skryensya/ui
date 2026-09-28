@@ -870,6 +870,51 @@ const signatureTrees: readonly Canonical[] = [
     },
   },
   {
+    /*
+     * DECISION 31, the sizing the Maker exposes: a Box that stops at a measure, a Grid that counts
+     * its lanes from its own width, and an Inline child that takes the leftover row. Nothing is
+     * enhanced; G2 compares attribute realization, including a parent's `childAttrs` written on the
+     * child through `attrs`. `logical-sizing.spec.ts` measures what the attributes do.
+     */
+    name: "layout/logical-sizing",
+    enhanced: false,
+    tree: {
+      contract: "box",
+      signature: "Box",
+      options: { measure: "sm", padding: "md" },
+      children: {
+        contract: "layout",
+        signature: "Stack",
+        children: [
+          {
+            contract: "layout",
+            signature: "Grid",
+            options: { minColumn: "sm", gap: "sm" },
+            children: [
+              { contract: "badge", signature: "Badge", children: "Uno" },
+              { contract: "badge", signature: "Badge", children: "Dos" },
+              { contract: "badge", signature: "Badge", children: "Tres" },
+            ],
+          },
+          {
+            contract: "layout",
+            signature: "Inline",
+            options: { gap: "xs" },
+            children: [
+              {
+                contract: "typography",
+                signature: "Text",
+                attrs: { "data-sizing": "fill" },
+                children: "Ocupa lo que sobra",
+              },
+              { contract: "badge", signature: "Badge", attrs: { "data-sizing": "fit" }, children: "Fit" },
+            ],
+          },
+        ],
+      },
+    },
+  },
+  {
     // One entry, two shapes: a crumb with an href is a link, the last one is where you are.
     name: "breadcrumb/trail",
     enhanced: false,
