@@ -1,5 +1,6 @@
 import { Toolbar } from "@skryensya/react/toolbar";
 import { actions, allowed, shortcutOf } from "./actions";
+import { runCanvasCommand, type CanvasCommand } from "./CanvasMenu";
 import { IconButton } from "./IconButton";
 import type { Maker } from "./state";
 
@@ -28,6 +29,7 @@ export function SelectionActionButtons({
   const selected = maker.view.selected;
   return actions.map((action) => {
     const gesture = allowed(root, selected, action);
+    const enabled = Boolean(gesture) || (maker.view.selectedIds.length > 1 && ["duplicate", "move-up", "move-down", "remove"].includes(action.id));
     return (
       <IconButton
         key={action.id}
@@ -36,9 +38,9 @@ export function SelectionActionButtons({
         shortcut={shortcutOf(action)}
         appearance={appearance}
         size={size}
-        disabled={!gesture}
+        disabled={!enabled}
         tone={action.id === "remove" ? "danger" : undefined}
-        onClick={() => gesture && maker.gesture(gesture.operations, gesture.select)}
+        onClick={() => runCanvasCommand(maker, action.id as CanvasCommand)}
       />
     );
   });

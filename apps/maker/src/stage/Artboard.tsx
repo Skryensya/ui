@@ -155,7 +155,7 @@ export function Artboard({
       selected: mode === "edit" ? rectOf(selected) : undefined,
       selectedMany: mode === "edit" ? selectedIds.filter((id) => id !== selected).map(rectOf).filter((rect): rect is Rect => Boolean(rect)) : undefined,
       hovered: mode === "edit" && hovered !== selected && !selectedIds.includes(hovered ?? "") ? rectOf(hovered) : undefined,
-      label: selectedNode && "signature" in selectedNode ? selectedNode.signature : selectedNode ? "Text" : undefined,
+      label: selectedIds.length > 1 ? `${selectedIds.length} selected` : selectedNode && "signature" in selectedNode ? selectedNode.signature : selectedNode ? "Text" : undefined,
       marquee: current.marquee,
     }));
     setFrameWidth(frameRef.current?.clientWidth ?? 0);
@@ -242,7 +242,7 @@ export function Artboard({
       if (!id) return;
       live.current.maker.setView({ page: live.current.pageId, selected: id });
       requestAnimationFrame(() => {
-        if (!startInlineTextEdit(document, live.current.root, id, live.current.maker)) window.dispatchEvent(new CustomEvent(EDIT_TEXT));
+        if (!startInlineTextEdit(document, live.current.root, id, live.current.maker, event.target as Element)) window.dispatchEvent(new CustomEvent(EDIT_TEXT));
       });
     };
     let marquee: { x: number; y: number; additive: boolean } | undefined;
@@ -531,13 +531,15 @@ type InlineTextTarget = {
   readonly fallback: string;
 };
 
-function startInlineTextEdit(document: Document, root: MakerNode, id: string, maker: Maker): boolean {
+function startInlineTextEdit(document: Document, root: MakerNode, id: string, maker: Maker, clicked: Element): boolean {
   const target = inlineTextTarget(root, id);
   if (!target) return false;
-  const element = elementFor(document, target.element);
-  if (!element) return false;
+  const owner = elementFor(document, target.element);
+  if (!owner) return false;
 
   const previous = target.value.trim() === "" ? target.fallback : target.value;
+  const element = editableTextElement(owner, clicked, previous);
+  if (!element) return false;
   element.textContent = previous;
   element.setAttribute("contenteditable", "plaintext-only");
   element.setAttribute("data-maker-editing", "");
@@ -584,6 +586,22 @@ function startInlineTextEdit(document: Document, root: MakerNode, id: string, ma
   element.addEventListener("input", onInput);
   onInput();
   return true;
+}
+
+function editableTextElement(owner: HTMLElement, clicked: Element, text: string): HTMLElement | undefined {
+  const needle = text.trim();
+  const insideOwner = owner.contains(clicked) ? clicked : owner;
+  let current: Element | null = insideOwner;
+  while (current && current !== owner.parentElement) {
+    if (current instanceof HTMLElement && owner.contains(current)) {
+      const content = (current.textContent ?? "").trim();
+      const hasNestedMakerNodes = Boolean(current.querySelector("[data-maker-node]"));
+      if (!hasNestedMakerNodes && (!needle || content === needle || (content.includes(needle) && current !== owner))) return current;
+    }
+    if (current === owner) break;
+    current = current.parentElement;
+  }
+  return owner.children.length === 0 || !owner.querySelector("[data-maker-node]") ? owner : undefined;
 }
 
 function inlineTextTarget(root: MakerNode, id: string): InlineTextTarget | undefined {

@@ -22,7 +22,7 @@ import { selectParent, type Maker } from "./state";
  * available exactly when the model would accept the gesture, like the inspector's buttons.
  */
 
-export type CanvasCommand = "copy" | "cut" | "paste" | "duplicate" | "remove" | "move-up" | "move-down" | "outdent" | "indent" | "wrap" | "unwrap";
+export type CanvasCommand = "copy" | "cut" | "paste" | "duplicate" | "remove" | "move-up" | "move-down" | "outdent" | "indent" | "wrap" | "unwrap" | "select-all";
 
 /** A frame asks for a command by name. */
 export const CANVAS_COMMAND = "maker:canvas-command";
@@ -50,6 +50,8 @@ export function canvasKeyCommand(event: KeyboardEvent): CanvasCommand | undefine
   if (!mod || event.altKey) return undefined;
   if (event.shiftKey && event.key.toLowerCase() !== "g") return undefined;
   switch (event.key.toLowerCase()) {
+    case "a":
+      return event.shiftKey ? undefined : "select-all";
     case "c":
       return "copy";
     case "x":
@@ -74,6 +76,11 @@ export function runCanvasCommand(maker: Maker, command: CanvasCommand): boolean 
       return cutSelection(maker);
     case "paste":
       return paste(maker);
+    case "select-all": {
+      const selectedIds = selectableIds(maker.page.root);
+      maker.setView({ selected: selectedIds.at(-1), selectedIds });
+      return selectedIds.length > 0;
+    }
     case "duplicate":
     case "move-up":
     case "move-down":
@@ -100,6 +107,18 @@ export function runCanvasCommand(maker: Maker, command: CanvasCommand): boolean 
   }
 }
 
+function selectableIds(root: MakerChild): readonly string[] {
+  if (!("signature" in root)) return [root.id];
+  const ids: string[] = [];
+  for (const held of Object.values(root.slots)) {
+    if (held.kind !== "nodes") continue;
+    for (const child of held.children) {
+      ids.push(child.id, ...selectableIds(child));
+    }
+  }
+  return ids;
+}
+
 function rootMostSelection(maker: Maker): readonly string[] {
   const selected = maker.view.selectedIds;
   return selected.filter((id) => !ancestors(maker.page.root, id).some((node) => selected.includes(node.id)));
@@ -116,7 +135,7 @@ function duplicateMany(maker: Maker): boolean {
   if (entries.length < 2) return false;
   const operations: Operation[] = [];
   const selectedIds: string[] = [];
-  for (const entry of entries) {
+  for (const entry of [...entries].sort((a, b) => b.at.index - a.at.index)) {
     const child = reidentify(entry.child, randomId);
     operations.push({ type: "insert", at: { parent: entry.at.parent.id, slot: entry.at.slot, index: entry.at.index + 1 }, child });
     selectedIds.push(child.id);
@@ -224,6 +243,7 @@ export function CanvasMenu({ maker }: { maker: Maker }) {
     { value: "cut", label: "Cut", disabled: !available("cut") },
     { value: "paste", label: copied() ? "Paste" : "Paste (nothing copied)", disabled: !available("paste") },
     { value: "duplicate", label: "Duplicate", disabled: !available("duplicate") },
+    { value: "select-all", label: "Select all", disabled: selectableIds(root).length === 0 },
     { value: "sep-edit", kind: "separator" },
     { value: "parent", label: "Select parent", disabled: !selected },
     { value: "move", label: "Move", disabled: moves.every((action) => !allowed(root, selected, action)), children: moves.map(entry) },
