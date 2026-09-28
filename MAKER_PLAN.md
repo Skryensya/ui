@@ -205,7 +205,7 @@ dos bindings (ADR-0015) y verde en `ai-gates`.
 - [x] Selección sincronizada con el stage y el inspector.
 - [x] Click en la fila selecciona sin plegar; solo el chevron o el teclado pliegan.
 - [x] Teclado: `Alt+↑/↓` mover, `Alt+←` sacar al parent, `Alt+→` entrar al hermano anterior, `Mod+G` wrap en Stack, `Mod+Shift+G` unwrap, `Mod+D` duplicar, `Delete` quitar, `Mod+Z` / `Mod+Shift+Z`. Lo que el contract rechaza se avisa y no cambia nada.
-- [ ] Los atajos se registran con listeners propios, no con el sistema de hotkeys de Zag (ADR-0025). Pendiente de migrar.
+- [x] Los atajos van por `useHotkey` del kit (ADR-0025), uno por acción, acotados al outline; undo/redo por toda la página salvo dentro de un campo de texto. La etiqueta sale de `formatHotkey` (⌘G / Ctrl+G).
 - [x] DnD en el outline: arriba/abajo de una fila = antes/después; banda central = adentro (si es contenedor); sub-rama de slot = adentro del slot.
 - [x] Marca "· pending" por nodo en el outline.
 
@@ -222,7 +222,7 @@ dos bindings (ADR-0015) y verde en `ai-gates`.
 - [x] Opciones del contract: enum y boolean como select con "(default: …)"; string y number como campo que confirma en blur/Enter.
 - [x] Opciones `*Expanded` agrupadas bajo "On expanded widths (≥ 52rem)".
 - [x] Grupo "In this \<parent\>" con los `childAttrs` del parent (sizing en Inline, width en LayoutGrid).
-- [ ] Grid como "Columns: Fixed | Auto-fit": hoy `columns` y `minColumn` son dos selects y el conflicto se muestra como Pending (`excluded-option`).
+- [x] Cada `excludes` del contract es una elección de qué decide (Grid: `columns · multicol · responsive · fill` o `minColumn`; Text: `size · tone · weight` o `textRole`); solo se ven las opciones del lado elegido y cambiar de lado es un gesto que limpia el otro. Un `option=value` oculta lo que ese valor vuelve inútil.
 - [x] Contenido: slots de texto, text runs y colecciones (agregar, quitar, reordenar entradas).
 - [x] Nombre accesible (`aria-label`) cuando la signature lo acepta.
 - [x] Acciones: wrap in (Stack, Inline, Grid, Box, Wrapper), unwrap, duplicate, remove.
@@ -246,7 +246,7 @@ dos bindings (ADR-0015) y verde en `ai-gates`.
 
 - [x] La paleta construye una página real que el binding de React renderiza.
 - [x] DnD en el stage (borde de un bloque → antes) y en el outline; del palette al stage dentro de un Inline.
-- [ ] DnD en el stage dentro de un Grid y de un Inline con wrap en varias líneas.
+- [x] DnD en el stage dentro de un Grid (tres columnas lado a lado) y de un Inline que hace wrap a 36rem (cae entre los botones de la línea bajo el puntero).
 - [x] Teclado: mover, wrap, unwrap, duplicar, quitar, undo; un movimiento rechazado se avisa y no cambia la página.
 - [x] Cambiar el ancho del stage no cambia la Maker page.
 - [x] Modo Edit selecciona; Interact activa; la navegación queda bloqueada.

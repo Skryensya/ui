@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
-import type { ContractOption } from "@skryensya/core/contract";
+import type { ComponentContract, ContractOption } from "@skryensya/core/contract";
 import type { ItemInput, OptionInput } from "@skryensya/core/usage-tree";
 import { Button } from "@skryensya/react/button";
 import { Toolbar, ToolbarGroup, ToolbarSeparator } from "@skryensya/react/toolbar";
 import { FormField } from "@skryensya/react/form-field";
 import { Input } from "@skryensya/react/input";
 import { NativeSelect } from "@skryensya/react/select-native";
+import { SegmentedControl } from "@skryensya/react/segmented";
 import { Heading, Text } from "@skryensya/react/typography";
 import { Inline, Stack } from "@skryensya/react/layout";
 import {
@@ -24,7 +25,7 @@ import {
   type MakerNode,
   type Operation,
 } from "@skryensya/maker-model";
-import { actions, allowed, wrapIn, type Gesture } from "./actions";
+import { actions, allowed, shortcutOf, wrapIn, type Gesture } from "./actions";
 import { IconButton } from "./IconButton";
 import { glyphFor } from "./icons";
 import type { Maker } from "./state";
@@ -75,7 +76,9 @@ export function Inspector({ maker }: { maker: Maker }) {
   const resolved = resolve(child);
   const problems = problemsOf(maker.problems, id).filter((problem) => problem.severity === "error");
   const options = resolved?.signature.options ?? [];
-  const base = options.filter((name) => !name.endsWith("Expanded"));
+  const { choices, hidden } = exclusions(child, resolved?.signature.excludes ?? {}, options);
+  const inChoice = new Set(choices.flatMap((choice) => [choice.key, ...choice.others]));
+  const base = options.filter((name) => !name.endsWith("Expanded") && !inChoice.has(name) && !hidden.has(name));
   const expanded = options.filter((name) => name.endsWith("Expanded"));
   const childAttrs = at ? Object.values(slotOf(at.parent, at.slot)?.childAttrs ?? {}) : [];
   const forward = resolved?.signature.forward;
@@ -103,12 +106,15 @@ export function Inspector({ maker }: { maker: Maker }) {
           </section>
         ) : null}
 
-        {base.length > 0 ? (
+        {base.length > 0 || choices.length > 0 ? (
           <section aria-label="Options">
             <Stack gap="sm">
               <Heading as="h3" size="h6">
                 Options
               </Heading>
+              {choices.map((choice) => (
+                <ExclusiveChoice key={choice.key} choice={choice} node={child} contract={resolved!.contract} maker={maker} />
+              ))}
               {base.map((name) => (
                 <OptionField key={name} name={name} option={resolved!.contract.options[name]!} value={child.options?.[name]} onChange={(value) => setOption(name, value)} />
               ))}
@@ -164,6 +170,71 @@ export function Inspector({ maker }: { maker: Maker }) {
         <Actions maker={maker} id={id} node={child} at={at !== undefined} />
       </Stack>
     </div>
+  );
+}
+
+/*
+ * TWO WAYS TO DECIDE ONE THING. A contract's `excludes` says one option already decides what a few
+ * others would (Grid's `minColumn` decides the lane count that `columns`, `responsive`, `multicol`
+ * and `fill` otherwise decide; Text's `textRole` decides size, tone and weight). The inspector shows
+ * that as a choice of which way decides, and only the options on the chosen side; switching is one
+ * gesture that clears the other side, so the page never holds both. An `option=value` rule instead
+ * hides what that value makes meaningless.
+ */
+type Choice = { readonly key: string; readonly others: readonly string[] };
+
+function exclusions(
+  node: MakerNode,
+  excludes: Readonly<Record<string, readonly string[]>>,
+  options: readonly string[],
+): { choices: readonly Choice[]; hidden: ReadonlySet<string> } {
+  const choices: Choice[] = [];
+  const hidden = new Set<string>();
+  for (const [key, excluded] of Object.entries(excludes)) {
+    const others = excluded.filter((name) => options.includes(name));
+    if (key.includes("=")) {
+      const [name, value] = key.split("=");
+      if (String(node.options?.[name!]) === value) others.forEach((other) => hidden.add(other));
+    } else if (options.includes(key) && others.length > 0) {
+      choices.push({ key, others });
+    }
+  }
+  return { choices, hidden };
+}
+
+function ExclusiveChoice({ choice, node, contract, maker }: { choice: Choice; node: MakerNode; contract: ComponentContract; maker: Maker }) {
+  const byKey = node.options?.[choice.key] !== undefined;
+  const set = (name: string, value: OptionInput | undefined) => maker.gesture([{ type: "setOption", node: node.id, name, value }]);
+  const choose = (side: "key" | "others") => {
+    if (side === "others") {
+      maker.gesture([{ type: "setOption", node: node.id, name: choice.key }]);
+      return;
+    }
+    const option = contract.options[choice.key]!;
+    const first = option.type === "enum" ? (option.default as string | undefined) ?? option.values?.[0] : option.type === "boolean" ? true : undefined;
+    maker.gesture([
+      ...choice.others.map((name) => ({ type: "setOption" as const, node: node.id, name })),
+      ...(first !== undefined ? [{ type: "setOption" as const, node: node.id, name: choice.key, value: first }] : []),
+    ]);
+  };
+  return (
+    <fieldset className="maker-choice">
+      <legend>Decided by</legend>
+      <Stack gap="sm">
+        <SegmentedControl
+          label={`What decides ${choice.others.join(", ")}`}
+          value={byKey ? "key" : "others"}
+          onValueChange={(value) => choose(value as "key" | "others")}
+          options={[
+            { value: "others", label: choice.others.join(" · ") },
+            { value: "key", label: choice.key },
+          ]}
+        />
+        {(byKey ? [choice.key] : choice.others).map((name) => (
+          <OptionField key={name} name={name} option={contract.options[name]!} value={node.options?.[name]} onChange={(value) => set(name, value)} />
+        ))}
+      </Stack>
+    </fieldset>
   );
 }
 
@@ -470,7 +541,7 @@ function Actions({ maker, id }: { maker: Maker; id: string; node: MakerNode | un
                 key={actionId}
                 icon={action.icon}
                 label={action.label}
-                shortcut={action.shortcut}
+                shortcut={shortcutOf(action)}
                 disabled={!gesture}
                 tone={actionId === "remove" ? "danger" : undefined}
                 onClick={() => run(gesture)}
