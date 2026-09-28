@@ -1,17 +1,12 @@
-import { mkdirSync, readFileSync, renameSync, writeFileSync } from "node:fs";
-import { dirname } from "node:path";
 import type { McpServer } from "@modelcontextprotocol/server";
 import {
   applySiteAll,
-  createSite,
-  decodeSiteFile,
   describeSite,
-  encodeSiteFile,
   parseSite,
   randomId,
   resolveAgentOperations,
   type AgentSiteOperation,
-  type SiteFile,
+  type MakerSite,
 } from "@skryensya/maker-model";
 import { z } from "zod";
 import { provenance } from "./manifest.js";
@@ -19,14 +14,15 @@ import { provenance } from "./manifest.js";
 /*
  * THE MAKER, OVER MCP (decision 31: a prompt speaks only in operations).
  *
- * Two tools on the site the Maker app has open, shared through one file: `maker_read` returns it as
- * an outline with identities, `maker_apply` takes Maker operations and nothing else. There is no
- * field anywhere in this vocabulary for a coordinate, a length or a style, so "put these two
+ * Tools on the projects the Maker keeps (PostgreSQL, through the Maker's own API): list them, read
+ * one as an outline with identities, and change it with Maker operations and nothing else. There is
+ * no field anywhere in this vocabulary for a coordinate, a length or a style, so "put these two
  * buttons next to each other" can only arrive as a wrap in an Inline, and the browser decides the
- * rest.
+ * rest. A change is saved on top of the revision it was made from, so it never overwrites the person;
+ * an open Maker shows it at once, as one undoable step.
  *
- * STDIO ONLY, and only from a checkout: the file lives beside the repository, and the Maker's dev
- * server watches it and shows every applied change live, as one undoable step.
+ * STDIO ONLY: the local server talks to the local Maker (`MAKER_URL`, http://localhost:4200 by
+ * default). The HTTP server has no Maker to talk to and does not offer these tools.
  */
 
 const place = z.object({
@@ -69,77 +65,136 @@ const siteOperation = z.discriminatedUnion("type", [
 
 const makerOutput = z.object({
   ...{ schemaVersion: z.string(), sourceHash: z.string() },
-  revision: z.number().describe("The site file's revision this answer describes."),
+  project: z.string().optional().describe("The project this answer is about."),
+  revision: z.number().describe("The project's revision this answer describes."),
   outline: z.string().describe("The site: every page, node and text run with its id, and what is pending."),
   refused: z.string().optional().describe("Why nothing was applied, when the operations were refused."),
 });
 
-/**
- * The site on disk. A missing file starts an empty site and saves it at once, so the ids this read
- * hands out are the ones the next call finds. A file that exists and does not read as a site is
- * NEVER replaced: that would throw away someone's work; the tools report it instead.
- */
-function read(path: string): SiteFile | { readonly unreadable: string } {
-  let text: string;
-  try {
-    text = readFileSync(path, "utf8");
-  } catch (error) {
-    if ((error as NodeJS.ErrnoException).code !== "ENOENT") return { unreadable: `Cannot read ${path}: ${(error as Error).message}` };
-    const fresh: SiteFile = { revision: 0, site: createSite(provenance.sourceHash, randomId) };
-    write(path, fresh);
-    return fresh;
-  }
-  const file = decodeSiteFile(text);
-  if (!file) return { unreadable: `${path} is not a Maker site file; it was left untouched.` };
-  const opened = parseSite(JSON.stringify(file.site), provenance.sourceHash, randomId);
-  if (!opened.ok) return { unreadable: `${path} holds no readable site (${opened.reason}); it was left untouched.` };
-  return { revision: file.revision, site: opened.site };
-}
+const projectsOutput = z.object({
+  ...{ schemaVersion: z.string(), sourceHash: z.string() },
+  projects: z.array(z.object({ id: z.string(), name: z.string(), revision: z.number(), updatedAt: z.string() })),
+  refused: z.string().optional(),
+});
 
-/** Write through a temporary file and a rename, so the Maker never reads half a site. */
-function write(path: string, file: SiteFile): void {
-  mkdirSync(dirname(path), { recursive: true });
-  const temporary = `${path}.${process.pid}.tmp`;
-  writeFileSync(temporary, encodeSiteFile(file));
-  renameSync(temporary, path);
+type ProjectRow = { id: string; name: string; revision: number; updatedAt: string; site: MakerSite };
+
+class MakerUnavailable extends Error {}
+
+/** The Maker's API, or a sentence saying how to start it. */
+function client(base: string) {
+  const call = async (path: string, init?: RequestInit): Promise<Response> => {
+    try {
+      return await fetch(new URL(`/api${path}`, base), init);
+    } catch {
+      throw new MakerUnavailable(
+        `The Maker is not running at ${base}. Start it with \`pnpm --filter @skryensya/maker dev\` ` +
+          "(and its database with `docker compose -f apps/maker/docker-compose.yml up -d`), or point MAKER_URL at it.",
+      );
+    }
+  };
+  const failed = async (response: Response) =>
+    ((await response.json().catch(() => ({}))) as { error?: string }).error ?? `The Maker answered ${response.status}.`;
+  return {
+    async list() {
+      const response = await call("/projects");
+      if (!response.ok) throw new MakerUnavailable(await failed(response));
+      return (await response.json()) as Omit<ProjectRow, "site">[];
+    },
+    async get(id: string): Promise<ProjectRow | string> {
+      const response = await call(`/projects/${encodeURIComponent(id)}`);
+      if (response.status === 404) return `No project "${id}". maker_projects lists them.`;
+      if (!response.ok) throw new MakerUnavailable(await failed(response));
+      return (await response.json()) as ProjectRow;
+    },
+    async save(id: string, baseRevision: number, site: MakerSite): Promise<{ ok: true; revision: number } | { ok: false; current: ProjectRow } | { ok: false; reason: string }> {
+      const response = await call(`/projects/${encodeURIComponent(id)}`, {
+        method: "PUT",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ baseRevision, site }),
+      });
+      if (response.ok) return { ok: true, revision: ((await response.json()) as { revision: number }).revision };
+      if (response.status === 409) return { ok: false, current: (await response.json()) as ProjectRow };
+      return { ok: false, reason: await failed(response) };
+    },
+  };
 }
 
 function answer(value: z.infer<typeof makerOutput>, isError = false) {
   return {
-    content: [{ type: "text" as const, text: value.refused ? `${value.refused}\n\n${value.outline}` : value.outline }],
+    content: [{ type: "text" as const, text: value.refused ? `${value.refused}${value.outline ? `\n\n${value.outline}` : ""}` : value.outline }],
     structuredContent: value,
     ...(isError ? { isError: true } : {}),
   };
 }
 
-export function registerMakerTools(server: McpServer, sitePath: string): void {
+const refusedAnswer = (reason: string) => answer({ ...provenance, revision: -1, outline: "", refused: reason }, true);
+
+/** A project's site as the Maker reads it, so what an agent sees is exactly what the Maker opens. */
+function siteOf(row: ProjectRow): MakerSite {
+  const opened = parseSite(JSON.stringify(row.site), provenance.sourceHash, randomId);
+  return opened.ok ? opened.site : row.site;
+}
+
+export function registerMakerTools(server: McpServer, makerUrl: string): void {
+  const maker = client(makerUrl);
+  const guard = async <T,>(run: () => Promise<T>) => {
+    try {
+      return await run();
+    } catch (error) {
+      if (error instanceof MakerUnavailable) return refusedAnswer(error.message) as T;
+      throw error;
+    }
+  };
+
   server.registerTool(
-    "maker_read",
+    "maker_projects",
     {
-      title: "Read the site open in the Maker",
-      description:
-        "The site the Maker app is editing, as an outline: each page (`page <id> \"name\" /path`), then " +
-        "one line per node (`<id> contract/Signature option=value …`), text runs as `<id> \"text\"`, and " +
-        "what is pending with the ids it concerns. Read it before maker_apply: operations address nodes " +
-        "and pages by these ids.",
+      title: "List the Maker's projects",
+      description: "Every project the Maker keeps, newest change first: id, name and revision. Pass an id to maker_read and maker_apply.",
       inputSchema: z.object({}),
-      outputSchema: makerOutput,
+      outputSchema: projectsOutput,
       annotations: { readOnlyHint: true, idempotentHint: true, openWorldHint: false },
     },
     async () => {
-      const file = read(sitePath);
-      if ("unreadable" in file) return answer({ ...provenance, revision: -1, outline: "", refused: file.unreadable }, true);
-      return answer({ ...provenance, revision: file.revision, outline: describeSite(file.site) });
+      try {
+        const projects = await maker.list();
+        const text = projects.length === 0 ? "No projects yet." : projects.map((p) => `${p.id} "${p.name}" revision ${p.revision}`).join("\n");
+        return { content: [{ type: "text" as const, text }], structuredContent: { ...provenance, projects } };
+      } catch (error) {
+        if (!(error instanceof MakerUnavailable)) throw error;
+        return { content: [{ type: "text" as const, text: error.message }], structuredContent: { ...provenance, projects: [], refused: error.message }, isError: true };
+      }
     },
+  );
+
+  server.registerTool(
+    "maker_read",
+    {
+      title: "Read a Maker project",
+      description:
+        "A project's site as an outline: each page (`page <id> \"name\" /path`), then one line per node " +
+        "(`<id> contract/Signature option=value …`), text runs as `<id> \"text\"`, and what is pending with " +
+        "the ids it concerns. Read it before maker_apply: operations address nodes and pages by these ids.",
+      inputSchema: z.object({ project: z.string().describe("The project id, from maker_projects.") }),
+      outputSchema: makerOutput,
+      annotations: { readOnlyHint: true, idempotentHint: true, openWorldHint: false },
+    },
+    async ({ project }) =>
+      guard(async () => {
+        const row = await maker.get(project);
+        if (typeof row === "string") return refusedAnswer(row);
+        return answer({ ...provenance, project, revision: row.revision, outline: describeSite(siteOf(row)) });
+      }),
   );
 
   server.registerTool(
     "maker_apply",
     {
-      title: "Change the site open in the Maker, by operations",
+      title: "Change a Maker project, by operations",
       description:
-        "Apply Maker operations to the open site, all or none, as one undoable step in the Maker. " +
-        "Layout is STRUCTURE: to put things side by side, wrap them in an Inline; one above another, a " +
+        "Apply Maker operations to a project, all or none, as one undoable step in any Maker that has it " +
+        "open. Layout is STRUCTURE: to put things side by side, wrap them in an Inline; one above another, a " +
         "Stack; in columns, a Grid (minColumn lets its own width decide how many); a width ceiling is a " +
         "Box's measure; spacing is the container's gap or a Box's padding. There is no x, y, width, " +
         "margin or style anywhere, and an operation the contract refuses (an option a signature does not " +
@@ -147,29 +202,35 @@ export function registerMakerTools(server: McpServer, sitePath: string): void {
         "the reason. Pass `revision` from maker_read so a change the person made meanwhile is not " +
         "overwritten; on a mismatch nothing is applied and the current outline comes back.",
       inputSchema: z.object({
+        project: z.string().describe("The project id, from maker_projects."),
         revision: z.number().int().min(0).optional().describe("The revision maker_read returned."),
         operations: z.array(siteOperation).min(1),
       }),
       outputSchema: makerOutput,
       annotations: { readOnlyHint: false, destructiveHint: false, idempotentHint: false, openWorldHint: false },
     },
-    async (args) => {
-      /* zod checked the shape; a `tree` is typed as a usage tree here, and the contract judges it
-         when it is placed (an unknown signature has no place anywhere). */
-      const operations = args.operations as unknown as AgentSiteOperation[];
-      const file = read(sitePath);
-      if ("unreadable" in file) return answer({ ...provenance, revision: -1, outline: "", refused: file.unreadable }, true);
-      const current = { ...provenance, revision: file.revision, outline: describeSite(file.site) };
-      if (args.revision !== undefined && args.revision !== file.revision) {
-        return answer({ ...current, refused: `The site is at revision ${file.revision}, not ${args.revision}: it changed since you read it. Nothing was applied; re-read the outline below.` }, true);
-      }
-      const resolved = resolveAgentOperations(file.site, operations, randomId);
-      if (!resolved.ok) return answer({ ...current, refused: resolved.reason }, true);
-      const applied = applySiteAll(file.site, resolved.value);
-      if (!applied.ok) return answer({ ...current, refused: applied.reason }, true);
-      const next: SiteFile = { revision: file.revision + 1, site: applied.site };
-      write(sitePath, next);
-      return answer({ ...provenance, revision: next.revision, outline: describeSite(next.site) });
-    },
+    async (args) =>
+      guard(async () => {
+        /* zod checked the shape; a `tree` is typed as a usage tree here, and the contract judges it
+           when it is placed (an unknown signature has no place anywhere). */
+        const operations = args.operations as unknown as AgentSiteOperation[];
+        const row = await maker.get(args.project);
+        if (typeof row === "string") return refusedAnswer(row);
+        const site = siteOf(row);
+        const current = { ...provenance, project: args.project, revision: row.revision, outline: describeSite(site) };
+        if (args.revision !== undefined && args.revision !== row.revision) {
+          return answer({ ...current, refused: `The project is at revision ${row.revision}, not ${args.revision}: it changed since you read it. Nothing was applied; re-read the outline below.` }, true);
+        }
+        const resolved = resolveAgentOperations(site, operations, randomId);
+        if (!resolved.ok) return answer({ ...current, refused: resolved.reason }, true);
+        const applied = applySiteAll(site, resolved.value);
+        if (!applied.ok) return answer({ ...current, refused: applied.reason }, true);
+        const saved = await maker.save(args.project, row.revision, applied.site);
+        if (!saved.ok && "current" in saved) {
+          return answer({ ...current, revision: saved.current.revision, outline: describeSite(siteOf(saved.current)), refused: "Someone saved the project while this was being applied. Nothing was applied; re-read the outline below." }, true);
+        }
+        if (!saved.ok) return answer({ ...current, refused: saved.reason }, true);
+        return answer({ ...provenance, project: args.project, revision: saved.revision, outline: describeSite(applied.site) });
+      }),
   );
 }

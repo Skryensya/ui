@@ -6,7 +6,7 @@ import { Icon } from "@skryensya/react/icon";
 import { SegmentedControl } from "@skryensya/react/segmented";
 import { Text } from "@skryensya/react/typography";
 import { Inline, Stack } from "@skryensya/react/layout";
-import { parseSite, randomId, serializeSite, toUsageTree, type MakerPageEntry } from "@skryensya/maker-model";
+import { parseSite, randomId, serializeSite, toUsageTree, type MakerPageEntry, type MakerSite } from "@skryensya/maker-model";
 import { IconButton } from "./IconButton";
 import { CATALOGUE_HASH, type Maker } from "./state";
 
@@ -28,7 +28,16 @@ function fileName(page: MakerPageEntry): string {
   return page.path === "/" ? "index.tsx" : `${page.path.slice(1)}.tsx`;
 }
 
-export function ExportPanel({ maker, onClose }: { maker: Maker; onClose: () => void }) {
+export function ExportPanel({
+  maker,
+  onClose,
+  importAsProject,
+}: {
+  maker: Maker;
+  onClose: () => void;
+  /** With a projects server, an opened site file becomes a new project instead of replacing this one. */
+  importAsProject?: (name: string, site: MakerSite) => Promise<void>;
+}) {
   const [format, setFormat] = useState<Format>("react");
   const tree = useMemo(() => toUsageTree(maker.page.root), [maker.page.root]);
   const output = useMemo(() => {
@@ -84,7 +93,11 @@ export function ExportPanel({ maker, onClose }: { maker: Maker; onClose: () => v
       maker.say(opened.reason);
       return;
     }
-    maker.load(opened.site, opened.catalogueChanged ? "The catalogue changed since this site was saved; anything that no longer fits is marked pending." : undefined);
+    if (importAsProject) {
+      await importAsProject(file.name.replace(/\.maker\.json$|\.json$/, "") || "Imported site", opened.site);
+    } else {
+      maker.load(opened.site, opened.catalogueChanged ? "The catalogue changed since this site was saved; anything that no longer fits is marked pending." : undefined);
+    }
     onClose();
   };
 
@@ -133,7 +146,7 @@ export function ExportPanel({ maker, onClose }: { maker: Maker; onClose: () => v
           </Button>
           <label className="maker-export__import">
             <Icon name="upload" />
-            <span>Open a site…</span>
+            <span>{importAsProject ? "Open a site file as a new project…" : "Open a site…"}</span>
             <input
               type="file"
               accept=".json,application/json"

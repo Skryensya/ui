@@ -1,9 +1,7 @@
-import { tmpdir } from "node:os";
-import { join } from "node:path";
 import { defineConfig } from "@playwright/test";
 
-/* Site files for the run, never the checkout's `.maker/`; each test opens a site of its own. */
-process.env.MAKER_DIR ??= join(tmpdir(), `maker-e2e-${process.pid}`);
+/* Projects live in the dev server's memory for the run, never in the database; each test opens a
+   project of its own, so parallel tests never share one. */
 
 /* The Maker's own browser checks: it starts its dev server and drives the real app. */
 export default defineConfig({
@@ -17,7 +15,7 @@ export default defineConfig({
     command: "vite --port 4201 --strictPort",
     url: "http://localhost:4201",
     reuseExistingServer: false,
-    env: { MAKER_DIR: process.env.MAKER_DIR },
+    env: { MAKER_STORE: "memory" },
     timeout: 60_000,
   },
 });

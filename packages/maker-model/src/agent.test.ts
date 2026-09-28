@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { decodeSiteFile, describeSite, encodeSiteFile, resolveAgentOperations, type AgentSiteOperation } from "./agent.js";
+import { describeSite, resolveAgentOperations, type AgentSiteOperation } from "./agent.js";
 import { childrenOf, findNode } from "./node.js";
 import { counterIds } from "./project.js";
 import { applySiteAll, createSite, type MakerSite } from "./site.js";
@@ -91,14 +91,5 @@ describe("the outline an agent reads", () => {
     expect(outline).toContain("s layout/Stack");
     expect(outline).toContain('b1-t "One"');
     expect(outline).toMatch(/pending:\n\s+\[ag\d+\] missing-required-slot/);
-  });
-});
-
-describe("the site file", () => {
-  it("round-trips, and rejects what is not one", () => {
-    const file = { revision: 3, site: site() };
-    expect(decodeSiteFile(encodeSiteFile(file))).toEqual(file);
-    expect(decodeSiteFile("{}")).toBeUndefined();
-    expect(decodeSiteFile("nope")).toBeUndefined();
   });
 });

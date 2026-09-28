@@ -1,0 +1,22 @@
+# The Maker's database, for local development: `docker compose -f apps/maker/docker-compose.yml up -d`.
+# Port 5433 so it never collides with a Postgres already on 5432. The Maker reads DATABASE_URL and
+# defaults to exactly this one.
+services:
+  maker-db:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_USER: maker
+      POSTGRES_PASSWORD: maker
+      POSTGRES_DB: maker
+    ports:
+      - "127.0.0.1:5433:5432"
+    volumes:
+      - maker-db:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U maker -d maker"]
+      interval: 2s
+      timeout: 3s
+      retries: 20
+
+volumes:
+  maker-db:

@@ -18,12 +18,9 @@ import { stalenessCheck } from "./staleness.js";
  */
 const staleness = stalenessCheck(fileURLToPath(new URL("../../../artifacts/ai-index.json", import.meta.url)), provenance.sourceHash);
 
-/*
- * The Maker's site file, shared with the Maker's dev server: `MAKER_SITE` when set, otherwise
- * `.maker/site.maker.json` at the checkout's root.
- */
-const makerSite = process.env.MAKER_SITE ?? fileURLToPath(new URL("../../../.maker/site.maker.json", import.meta.url));
+/* The local Maker, whose projects the maker_* tools read and change: MAKER_URL, or the dev server. */
+const makerUrl = process.env.MAKER_URL ?? "http://localhost:4200";
 
-serveStdio(() => createServerWith({ staleness, makerSite }), {
+serveStdio(() => createServerWith({ staleness, makerUrl }), {
   onerror: (error) => console.error("skryensya-ui MCP (stdio):", error.message),
 });

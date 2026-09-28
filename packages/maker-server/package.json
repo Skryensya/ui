@@ -1,0 +1,32 @@
+{
+  "name": "@skryensya/maker-server",
+  "version": "0.0.1-dev",
+  "private": true,
+  "type": "module",
+  "description": "The Maker's projects: a store (PostgreSQL, or memory for tests) and the HTTP API over it that the Maker app and the MCP's maker tools both use.",
+  "exports": {
+    "./api": {
+      "types": "./src/api.ts",
+      "default": "./src/api.ts"
+    },
+    "./store": {
+      "types": "./src/store.ts",
+      "default": "./src/store.ts"
+    }
+  },
+  "files": [
+    "src"
+  ],
+  "scripts": {
+    "check": "tsc -p tsconfig.json --noEmit && vitest run"
+  },
+  "dependencies": {
+    "@skryensya/maker-model": "workspace:*",
+    "postgres": "^3.4.9"
+  },
+  "devDependencies": {
+    "@types/node": "catalog:",
+    "typescript": "^5.9.3",
+    "vitest": "^4.1.11"
+  }
+}

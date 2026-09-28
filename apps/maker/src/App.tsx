@@ -6,7 +6,9 @@ import { Icon } from "@skryensya/react/icon";
 import { NativeSelect } from "@skryensya/react/select-native";
 import { Toolbar, ToolbarGroup, ToolbarSeparator } from "@skryensya/react/toolbar";
 import { useDrag } from "./drag";
-import { siteName, useSiteSync } from "./sync";
+import { useProjectSync } from "./sync";
+import { ProjectsPanel } from "./ProjectsPanel";
+import { useWorkspace, type Workspace } from "./workspace";
 import { ExportPanel } from "./ExportPanel";
 import { IconButton } from "./IconButton";
 import { MakerIcon, type AnyIcon } from "./icons";
@@ -16,7 +18,7 @@ import { Pages } from "./Pages";
 import { Palette } from "./Palette";
 import { SelectionTools } from "./SelectionTools";
 import { Stage } from "./stage/Stage";
-import { useMaker, type StageWidth, type View } from "./state";
+import { LOCAL_PROJECT, useMaker, type StageWidth, type View } from "./state";
 
 /*
  * The Maker's chrome: one toolbar on top for everything about VIEWING the page (history, stage
@@ -35,10 +37,77 @@ const WIDTHS: readonly { width: StageWidth; label: string; icon: AnyIcon }[] = [
 
 const same = (a: StageWidth, b: StageWidth) => a === b;
 
+/*
+ * THE SHELL: the open projects as tabs, and the one that shows. With nothing open, the list of
+ * projects is the whole screen.
+ */
 export function App() {
-  const maker = useMaker();
+  const workspace = useWorkspace();
+  const [projectsOpen, setProjectsOpen] = useState(false);
+  const server = workspace.mode.kind === "server";
+
+  return (
+    <div className="maker-shell">
+      <header className="maker-tabs">
+        <h1 className="maker__brand">
+          <MakerIcon icon={{ glyph: "insert" }} size="md" />
+          Maker
+        </h1>
+        {server ? (
+          <>
+            <nav className="maker-tabs__list" aria-label="Open projects">
+              {workspace.open.map((id) => (
+                <span key={id} className="maker-tabs__tab" data-active={id === workspace.active ? "" : undefined}>
+                  <button type="button" className="maker-tabs__name" aria-current={id === workspace.active ? "page" : undefined} onClick={() => workspace.setActive(id)}>
+                    {workspace.nameOf(id)}
+                  </button>
+                  <IconButton icon={{ role: "close" }} label={`Close ${workspace.nameOf(id)}`} onClick={() => workspace.close(id)} />
+                </span>
+              ))}
+            </nav>
+            <IconButton icon={{ role: "folder" }} label="All projects" pressed={projectsOpen} onClick={() => setProjectsOpen((value) => !value)} />
+          </>
+        ) : null}
+        <span className="maker-tabs__store">
+          {workspace.mode.kind === "server"
+            ? workspace.mode.store === "postgres"
+              ? "PostgreSQL"
+              : "Server memory"
+            : workspace.mode.kind === "local"
+              ? "This browser only"
+              : "…"}
+        </span>
+      </header>
+      {workspace.mode.kind === "local" ? (
+        <p className="maker-shell__local" role="status">
+          {workspace.mode.reason}
+        </p>
+      ) : null}
+      {workspace.active ? (
+        <Editor key={workspace.active} projectId={workspace.active} workspace={workspace} projectsOpen={projectsOpen} onCloseProjects={() => setProjectsOpen(false)} />
+      ) : workspace.mode.kind === "server" ? (
+        <main className="maker-start">
+          <ProjectsPanel workspace={workspace} />
+        </main>
+      ) : null}
+    </div>
+  );
+}
+
+function Editor({
+  projectId,
+  workspace,
+  projectsOpen,
+  onCloseProjects,
+}: {
+  projectId: string;
+  workspace: Workspace;
+  projectsOpen: boolean;
+  onCloseProjects: () => void;
+}) {
+  const maker = useMaker(projectId);
   const drag = useDrag(maker.page.root, maker.gesture);
-  const sync = useSiteSync(maker);
+  const sync = useProjectSync(maker, projectId !== LOCAL_PROJECT);
   const [exporting, setExporting] = useState(false);
   const { view, setView } = maker;
 
@@ -55,11 +124,8 @@ export function App() {
 
   return (
     <div className={`maker${drag.session ? " maker--dragging" : ""}`}>
-      <header className="maker__top">
-        <h1 className="maker__brand">
-          <MakerIcon icon={{ glyph: "insert" }} size="md" />
-          Maker
-        </h1>
+      {/* Not a <header>: the shell's tab row is the page's one banner. A named region instead. */}
+      <section className="maker__top" aria-label="View and export">
         <Toolbar label="Maker" className="maker__toolbar">
           <ToolbarGroup label="History">
             <IconButton icon={{ glyph: "undo" }} label="Undo" shortcut={formatHotkey("mod+z", mac)} onClick={maker.undo} disabled={!maker.canUndo} />
@@ -105,16 +171,15 @@ export function App() {
             />
           </ToolbarGroup>
         </Toolbar>
-        <span
-          className={`maker__sync maker__sync--${sync}`}
-          title={sync === "live" ? `Shared with agents through .maker/${siteName}.maker.json` : sync === "local" ? "Kept in this browser only" : "Connecting"}
-        >
-          {sync === "live" ? `Live · ${siteName}` : sync === "local" ? "This browser only" : "…"}
-        </span>
+        {projectId !== LOCAL_PROJECT ? (
+          <span className={`maker__sync maker__sync--${sync}`} role="status">
+            {sync === "saved" ? "Saved" : sync === "syncing" ? "Saving…" : "Offline: changes wait here"}
+          </span>
+        ) : null}
         <Button variant="solid" size="sm" pre={<Icon name="download" />} onClick={() => setExporting(true)}>
           Export
         </Button>
-      </header>
+      </section>
 
       <aside className="maker__left" aria-label="Site">
         <section className="maker__panel maker__pages" aria-labelledby="maker-pages">
@@ -151,8 +216,18 @@ export function App() {
         <Stage maker={maker} drag={drag} />
       </main>
 
-      <aside className="maker__right" aria-label={exporting ? "Export" : "Inspector"}>
-        {exporting ? <ExportPanel maker={maker} onClose={() => setExporting(false)} /> : <Inspector maker={maker} />}
+      <aside className="maker__right" aria-label={projectsOpen ? "Projects" : exporting ? "Export" : "Inspector"}>
+        {projectsOpen ? (
+          <ProjectsPanel workspace={workspace} onClose={onCloseProjects} />
+        ) : exporting ? (
+          <ExportPanel
+            maker={maker}
+            onClose={() => setExporting(false)}
+            importAsProject={workspace.mode.kind === "server" ? (name, site) => workspace.create(name, site) : undefined}
+          />
+        ) : (
+          <Inspector maker={maker} />
+        )}
       </aside>
 
       <p className="maker__notice" role="status" aria-live="polite" key={maker.notice?.at}>

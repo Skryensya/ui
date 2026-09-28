@@ -1,8 +1,6 @@
 import { expect, test } from "@playwright/test";
-import { readFileSync, renameSync, writeFileSync } from "node:fs";
-import { join } from "node:path";
-import { applySiteAll, decodeSiteFile, encodeSiteFile, randomId, resolveAgentOperations } from "@skryensya/maker-model";
-import { addFromPalette, buildSamplePage, openMaker, pageTree, selectInOutline } from "./fixtures";
+import { applySiteAll, randomId, resolveAgentOperations, type MakerSite } from "@skryensya/maker-model";
+import { addFromPalette, buildSamplePage, openMaker, pageTree, savedProject, selectInOutline } from "./fixtures";
 
 /*
  * The Maker in a real browser (decision 31): a page is built by composing, changed by operations,
@@ -11,15 +9,17 @@ import { addFromPalette, buildSamplePage, openMaker, pageTree, selectInOutline }
 
 const stage = (page: import("@playwright/test").Page) => page.frameLocator("iframe.maker-stage__iframe");
 
-let site = "";
+let project = "";
 
 test.beforeEach(async ({ page }) => {
-  site = await openMaker(page);
+  project = await openMaker(page);
   await buildSamplePage(page);
 });
 
+const savedJson = async (page: import("@playwright/test").Page) => JSON.stringify((await savedProject(page, project)).site);
+
 test("the palette builds a real page, rendered by the React binding on the stage", async ({ page }) => {
-  expect(await pageTree(page)).toBe(
+  await expect.poll(() => pageTree(page)).toBe(
     [
       "Main",
       "  Wrapper",
@@ -86,6 +86,7 @@ test("a move the contract refuses is refused out loud, and the page is untouched
   /* Into the previous sibling: there is none, so no place exists. */
   await page.keyboard.press("Alt+ArrowRight");
   await expect(page.locator(".maker__notice")).not.toBeEmpty();
+  await page.waitForTimeout(400);
   expect(await pageTree(page)).toBe(before);
 });
 
@@ -117,7 +118,8 @@ test("fill or fit is offered as the Inline's, and it is left behind when the chi
 });
 
 test("changing the stage width changes the room the browser has, never the page", async ({ page }) => {
-  const saved = () => page.evaluate(() => localStorage.getItem("skryensya-maker:site"));
+  const saved = () => savedJson(page);
+  await page.waitForTimeout(400);
   const before = await saved();
   await page.getByRole("button", { name: /^Stage width: 36rem/ }).click();
   await expect(page.locator(".maker-stage__frame")).toHaveCSS("inline-size", "576px");
@@ -126,6 +128,7 @@ test("changing the stage width changes the room the browser has, never the page"
   await page.getByRole("button", { name: /^Stage width: 90rem/ }).click();
   await expect(page.locator(".maker-stage__frame")).toHaveCSS("inline-size", "1440px");
   await expect(page.locator(".maker-stage__meta")).toContainText("expanded");
+  await page.waitForTimeout(400);
   expect(await saved()).toBe(before);
 });
 
@@ -141,8 +144,8 @@ test("edit mode selects instead of activating; interact mode activates; navigati
 });
 
 test("the stored page holds no coordinates, sizes or styles", async ({ page }) => {
-  const saved = (await page.evaluate(() => localStorage.getItem("skryensya-maker:site")))!;
-  expect(saved).not.toMatch(/"(style|class|x|y|top|left|width|height|transform|position)"\s*:/);
+  await expect.poll(() => savedJson(page)).toContain("Button.action");
+  expect(await savedJson(page)).not.toMatch(/"(style|class|x|y|top|left|width|height|transform|position)"\s*:/);
 });
 
 test("export emits React, HTML and the usage tree from the same page, pending or not", async ({ page }) => {
@@ -194,10 +197,7 @@ test("a section is inserted as a whole subtree with fresh identities", async ({ 
   await page.getByRole("radio", { name: "Sections" }).click();
   await page.locator(".maker-palette").getByRole("button", { name: /hero with actions/i }).click();
   await expect.poll(() => pageTree(page)).toMatch(/^  Hero$/m);
-  const ids = await page.evaluate(() => {
-    const saved = localStorage.getItem("skryensya-maker:site")!;
-    return [...saved.matchAll(/"id": "([^"]+)"/g)].map((m) => m[1]);
-  });
+  const ids = [...(await savedJson(page)).matchAll(/"id":"([^"]+)"/g)].map((m) => m[1]);
   expect(new Set(ids).size).toBe(ids.length);
 });
 
@@ -234,9 +234,8 @@ test("a dialog is held open on the stage while it or something in it is selected
   await addFromPalette(page, "Dialog");
   const dialog = stage(page).locator("dialog");
   await expect.poll(() => dialog.evaluate((d) => (d as HTMLDialogElement).open)).toBe(true);
-  expect(await pageTree(page)).toContain("      Dialog");
-  const saved = (await page.evaluate(() => localStorage.getItem("skryensya-maker:site")))!;
-  expect(saved).not.toMatch(/"open": true/);
+  await expect.poll(() => pageTree(page)).toContain("      Dialog");
+  expect(await savedJson(page)).not.toMatch(/"open":true/);
   await selectInOutline(page, "Heading");
   await expect.poll(() => dialog.evaluate((d) => (d as HTMLDialogElement).open)).toBe(false);
 });
@@ -345,7 +344,7 @@ test("pages: add, rename, re-path, link between them, and follow the link in int
   await pages.getByLabel("Path").press("Enter");
   await expect(pages.getByRole("button", { name: /About/ })).toContainText("/about");
   /* A new page is its own tree: empty, with its own Main. */
-  expect(await pageTree(page)).toBe("Main");
+  await expect.poll(() => pageTree(page)).toBe("Main");
 
   /* A bad path is refused out loud and changes nothing. */
   await pages.getByLabel("Path").fill("/About Us");
@@ -375,7 +374,7 @@ test("page operations are undone like any other gesture", async ({ page }) => {
   await tools.getByRole("button", { name: "Duplicate this page" }).click();
   await expect(page.locator(".maker-pages__item")).toHaveCount(2);
   /* The copy is a real page: same tree, new identities. */
-  expect(await pageTree(page)).toContain("      Heading");
+  await expect.poll(() => pageTree(page)).toContain("      Heading");
   await tools.getByRole("button", { name: "Remove this page" }).click();
   await expect(page.locator(".maker-pages__item")).toHaveCount(1);
   await page.getByRole("button", { name: "Undo", exact: true }).click();
@@ -392,36 +391,28 @@ test("export offers the whole site: every page as its own component, and the sit
   await expect(code).toHaveValue(/"format": "skryensya-maker-site"/);
 });
 
-test("an agent's change to the site file arrives live, as one step the person can undo", async ({ page }) => {
-  const path = join(process.env.MAKER_DIR!, `${site}.maker.json`);
-  /* The page as the person left it, saved to the file. */
-  await expect.poll(() => decodeSiteFile(readFileSync(path, "utf8"))?.site.pages[0]?.root.slots.children).toBeTruthy();
-  await expect.poll(() => JSON.stringify(decodeSiteFile(readFileSync(path, "utf8"))?.site)).toContain("Button.action");
+test("an agent's change to the project arrives live, as one step the person can undo", async ({ page }) => {
+  await expect.poll(() => savedJson(page)).toContain("Button.action");
 
-  /* What the MCP's maker_apply does: resolve an agent's operations, apply, write one revision up. */
-  const file = decodeSiteFile(readFileSync(path, "utf8"))!;
-  const home = file.site.pages[0]!;
+  /* What the MCP's maker_apply does: resolve an agent's operations, apply, save on top of the revision. */
+  const { revision, site } = (await savedProject(page, project)) as unknown as { revision: number; site: MakerSite };
+  const home = site.pages[0]!;
   const stack = JSON.stringify(home.root).match(/"id":"([^"]+)","contract":"layout","signature":"Stack"/)![1]!;
-  const resolved = resolveAgentOperations(
-    file.site,
-    [{ type: "page", page: home.id, operations: [{ type: "setOption", node: stack, name: "gap", value: "xl" }] }],
-    randomId,
-  );
+  const resolved = resolveAgentOperations(site, [{ type: "page", page: home.id, operations: [{ type: "setOption", node: stack, name: "gap", value: "xl" }] }], randomId);
   if (!resolved.ok) throw new Error(resolved.reason);
-  const applied = applySiteAll(file.site, resolved.value);
+  const applied = applySiteAll(site, resolved.value);
   if (!applied.ok) throw new Error(applied.reason);
-  writeFileSync(`${path}.tmp`, encodeSiteFile({ revision: file.revision + 1, site: applied.site }));
-  renameSync(`${path}.tmp`, path);
+  const put = await page.request.put(`/api/projects/${project}`, { data: { baseRevision: revision, site: applied.site } });
+  expect(put.status()).toBe(200);
 
   await expect(stage(page).locator(".sk-stack").first()).toHaveAttribute("data-gap", "xl");
-  await expect(page.locator(".maker__notice")).toContainText("An agent changed the site");
+  await expect(page.locator(".maker__notice")).toContainText("Someone else changed this project");
   await page.getByRole("button", { name: "Undo", exact: true }).click();
   await expect(stage(page).locator(".sk-stack").first()).not.toHaveAttribute("data-gap", "xl");
 });
 
-test("the person's changes are written to the site file for an agent to read", async ({ page }) => {
-  const path = join(process.env.MAKER_DIR!, `${site}.maker.json`);
+test("the person's changes are saved to the project for an agent to read", async ({ page }) => {
   await selectInOutline(page, "Stack");
   await page.locator(".maker__right").getByLabel("gap", { exact: true }).selectOption("lg");
-  await expect.poll(() => readFileSync(path, "utf8")).toMatch(/"gap": "lg"/);
+  await expect.poll(() => savedJson(page)).toMatch(/"gap":"lg"/);
 });
