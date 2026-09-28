@@ -1,5 +1,4 @@
 ---
-import type { UsageTree } from "@skryensya/core/usage-tree";
 import ComponentPageShell from "./ComponentPageShell.astro";
 import AppearanceMenu from "../AppearanceMenu.astro";
 import CodeBlock from "../CodeBlock.astro";
@@ -10,6 +9,7 @@ import {
   badgeHoldersTree,
   badgePulseTree,
   badgeSmallTree,
+  badgeTagTree,
 } from "../../demos/badge";
 import { annotationDemoCss } from "../../demos/annotation";
 import { getLocale, useTranslations } from "../../i18n";
@@ -21,21 +21,15 @@ const t = useTranslations(getLocale(Astro.url));
 const install = `pnpm add @skryensya/core @skryensya/react`;
 
 /*
- * The demo, as a USAGE TREE. The markup below the stage, the TSX beside it and the live React
- * island are all emitted from this, so the snippet a reader copies is what they just saw render.
+ * PILOT (see ADR/plan on delegating per-example source to Storybook): every "kind" below is exactly
+ * what each storybook app's own generate-stories.ts computes for this page's demos
+ * (Components, then the catalog group in English, then the label - here "Components/Content/Badge",
+ * read off `lib/navigation.ts`'s own catalog), so this one constant is the only place that can drift
+ * from the generator. Each `storybookStory` name matches its tree's generated story export 1:1:
+ * unlike the hand-written `tree` this page used to keep locally, every preview below now points at a
+ * demo module export so the generator actually sees it and a story exists to link to.
  */
-const tree = {
-  contract: "layout",
-  signature: "Inline",
-  options: { gap: "sm" },
-  children: [
-    { contract: "badge", signature: "Badge", options: { tone: "neutral" }, children: "Neutral" },
-    { contract: "badge", signature: "Badge", options: { tone: "accent" }, children: "Accent" },
-    { contract: "badge", signature: "Badge", options: { tone: "success" }, children: "Success" },
-    { contract: "badge", signature: "Badge", options: { tone: "warning" }, children: "Warning" },
-    { contract: "badge", signature: "Badge", options: { tone: "danger" }, children: "Danger" },
-  ],
-} as const satisfies UsageTree;
+const storybookTitle = "Components/Content/Badge";
 ---
 
 <ComponentPageShell
@@ -65,23 +59,53 @@ const tree = {
     <p class="lede" set:html={t("badge.lede")} />
     <h3>{t("badge.tagTitle")}</h3>
     <p set:html={t("badge.tagBody")} />
-    <ComponentPreview tree={tree} label={t("badge.tagLabel")} />
+    <ComponentPreview
+      tree={badgeTagTree(t)}
+      label={t("badge.tagLabel")}
+      hideSource
+      storybookTitle={storybookTitle}
+      storybookStory="Tag"
+    />
 
     <h4>{t("badge.smallTitle")}</h4>
     <p set:html={t("badge.smallBody")} />
-    <ComponentPreview tree={badgeSmallTree(t)} label={t("badge.smallLabel")} />
+    <ComponentPreview
+      tree={badgeSmallTree(t)}
+      label={t("badge.smallLabel")}
+      hideSource
+      storybookTitle={storybookTitle}
+      storybookStory="Small"
+    />
 
     <h3>{t("badge.dotTitle")}</h3>
     <p set:html={t("badge.dotBody")} />
-    <ComponentPreview tree={badgeDotsTree(t)} label={t("badge.dotLabel")} />
+    <ComponentPreview
+      tree={badgeDotsTree(t)}
+      label={t("badge.dotLabel")}
+      hideSource
+      storybookTitle={storybookTitle}
+      storybookStory="Dots"
+    />
 
     <h4>{t("badge.pulseTitle")}</h4>
     <p set:html={t("badge.pulseBody")} />
-    <ComponentPreview tree={badgePulseTree(t)} label={t("badge.pulseLabel")} />
+    <ComponentPreview
+      tree={badgePulseTree(t)}
+      label={t("badge.pulseLabel")}
+      hideSource
+      storybookTitle={storybookTitle}
+      storybookStory="Pulse"
+    />
 
     <h4>{t("badge.cornerTitle")}</h4>
     <p set:html={t("badge.cornerBody")} />
-    <ComponentPreview tree={badgeHoldersTree(t)} label={t("badge.cornerLabel")} />
+    <ComponentPreview
+      tree={badgeHoldersTree(t)}
+      label={t("badge.cornerLabel")}
+      hideSource
+      storybookTitle={storybookTitle}
+      storybookStory="Holders"
+    />
 
     <p set:html={t("component.reactNote")} />
   </Fragment>

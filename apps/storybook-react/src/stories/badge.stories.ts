@@ -14,6 +14,7 @@ import { treeStory, withCss, type Meta, type StoryObj } from "../tree-story";
 export default { title: "Components/Content/Badge", tags: ["autodocs"] } satisfies Meta;
 
 export const Anatomy: StoryObj = treeStory(demos.badgeAnatomyTree, { decorators: [withCss(annotationDemoCss)] });
+export const Tag: StoryObj = treeStory(demos.badgeTagTree);
 export const Small: StoryObj = treeStory(demos.badgeSmallTree);
 export const Dots: StoryObj = treeStory(demos.badgeDotsTree);
 export const Pulse: StoryObj = treeStory(demos.badgePulseTree);
