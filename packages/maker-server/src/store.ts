@@ -13,11 +13,21 @@ import type { MakerSite } from "@skryensya/maker-model";
  * LISTEN/NOTIFY, so a write from any process reaches every open Maker.
  */
 
+export type Publication = {
+  /** The subdomain: `<siteName>.skryensya.dev`. */
+  readonly siteName: string;
+  readonly url: string;
+  readonly revision: number;
+  readonly at: string;
+};
+
 export type ProjectSummary = {
   readonly id: string;
   readonly name: string;
   readonly revision: number;
   readonly updatedAt: string;
+  /** The live publication, or undefined while the project is not published. */
+  readonly publication?: Publication;
 };
 
 export type Project = ProjectSummary & { readonly site: MakerSite };
@@ -37,6 +47,8 @@ export interface ProjectStore {
   save(id: string, baseRevision: number, site: MakerSite): Promise<Saved>;
   rename(id: string, name: string): Promise<ProjectSummary | undefined>;
   remove(id: string): Promise<boolean>;
+  /** Record or clear a publication. A site name already held by another project is refused. */
+  setPublication(id: string, publication: Publication | null): Promise<{ ok: true } | { ok: false; reason: string }>;
   subscribe(listener: (event: ProjectEvent) => void): () => void;
   close(): Promise<void>;
 }
@@ -49,9 +61,29 @@ const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 /** Only a well-formed id reaches the database; anything else simply is not a project. */
 export const isProjectId = (id: string) => UUID.test(id);
 
-type Row = { id: string; name: string; revision: number; updated_at: Date; site?: MakerSite };
+type Row = {
+  id: string;
+  name: string;
+  revision: number;
+  updated_at: Date;
+  site?: MakerSite;
+  site_name?: string | null;
+  published_revision?: number | null;
+  published_url?: string | null;
+  published_at?: Date | null;
+};
 
-const summary = (row: Row): ProjectSummary => ({ id: row.id, name: row.name, revision: row.revision, updatedAt: row.updated_at.toISOString() });
+const summary = (row: Row): ProjectSummary => ({
+  id: row.id,
+  name: row.name,
+  revision: row.revision,
+  updatedAt: row.updated_at.toISOString(),
+  ...(row.site_name && row.published_url && row.published_revision && row.published_at
+    ? { publication: { siteName: row.site_name, url: row.published_url, revision: row.published_revision, at: row.published_at.toISOString() } }
+    : {}),
+});
+
+const COLUMNS = "id, name, revision, updated_at, site_name, published_revision, published_url, published_at";
 
 export async function postgresStore(url: string): Promise<ProjectStore> {
   const sql = postgres(url, { max: 5, onnotice: () => {} });
@@ -65,18 +97,18 @@ export async function postgresStore(url: string): Promise<ProjectStore> {
   const store: ProjectStore = {
     kind: "postgres",
     async list() {
-      const rows = await sql<Row[]>`select id, name, revision, updated_at from maker_projects order by updated_at desc`;
+      const rows = await sql<Row[]>`select ${sql.unsafe(COLUMNS)} from maker_projects order by updated_at desc`;
       return rows.map(summary);
     },
     async get(id) {
       if (!isProjectId(id)) return undefined;
-      const [row] = await sql<Row[]>`select id, name, revision, updated_at, site from maker_projects where id = ${id}`;
+      const [row] = await sql<Row[]>`select ${sql.unsafe(COLUMNS)}, site from maker_projects where id = ${id}`;
       return row ? { ...summary(row), site: row.site! } : undefined;
     },
     async create(name, site) {
       const [row] = await sql<Row[]>`
         insert into maker_projects (name, site) values (${name.trim()}, ${sql.json(site as never)})
-        returning id, name, revision, updated_at, site`;
+        returning ${sql.unsafe(COLUMNS)}, site`;
       return { ...summary(row!), site: row!.site! };
     },
     async save(id, baseRevision, site) {
@@ -93,13 +125,30 @@ export async function postgresStore(url: string): Promise<ProjectStore> {
       if (!isProjectId(id)) return undefined;
       const [row] = await sql<Row[]>`
         update maker_projects set name = ${name.trim()}, updated_at = now() where id = ${id}
-        returning id, name, revision, updated_at`;
+        returning ${sql.unsafe(COLUMNS)}`;
       return row ? summary(row) : undefined;
     },
     async remove(id) {
       if (!isProjectId(id)) return false;
       const result = await sql`delete from maker_projects where id = ${id}`;
       return result.count > 0;
+    },
+    async setPublication(id, publication) {
+      if (!isProjectId(id)) return { ok: false, reason: `No project "${id}".` };
+      try {
+        const [row] = publication
+          ? await sql<Row[]>`
+              update maker_projects set site_name = ${publication.siteName}, published_revision = ${publication.revision},
+                published_url = ${publication.url}, published_at = ${publication.at}
+              where id = ${id} returning id`
+          : await sql<Row[]>`
+              update maker_projects set published_revision = null, published_url = null, published_at = null
+              where id = ${id} returning id`;
+        return row ? { ok: true } : { ok: false, reason: `No project "${id}".` };
+      } catch (error) {
+        if ((error as { code?: string }).code === "23505") return { ok: false, reason: `"${publication?.siteName}" is already the site name of another project.` };
+        throw error;
+      }
     },
     subscribe(listener) {
       listeners.add(listener);
@@ -151,6 +200,16 @@ export function memoryStore(): ProjectStore {
       announce({ id, revision: next.revision, op: "update" });
       const { site: _site, ...rest } = next;
       return rest;
+    },
+    async setPublication(id, publication) {
+      const current = projects.get(id);
+      if (!current) return { ok: false, reason: `No project "${id}".` };
+      if (publication && [...projects.values()].some((other) => other.id !== id && other.publication?.siteName === publication.siteName)) {
+        return { ok: false, reason: `"${publication.siteName}" is already the site name of another project.` };
+      }
+      const { publication: _old, ...rest } = current;
+      projects.set(id, publication ? { ...rest, publication } : rest);
+      return { ok: true };
     },
     async remove(id) {
       const had = projects.delete(id);

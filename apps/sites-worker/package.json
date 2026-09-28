@@ -1,0 +1,22 @@
+{
+  "name": "@skryensya/sites-worker",
+  "version": "0.0.1-dev",
+  "private": true,
+  "type": "module",
+  "description": "The Cloudflare Worker that serves every site the Maker publishes, at <name>.skryensya.dev, from R2; and takes new publications at publish.skryensya.dev, behind a token.",
+  "scripts": {
+    "check": "tsc -p tsconfig.json --noEmit && tsc -p tsconfig.test.json --noEmit && vitest run",
+    "deploy": "npx wrangler@4 deploy",
+    "dev:local": "tsx dev/local.ts"
+  },
+  "dependencies": {
+    "@skryensya/maker-server": "workspace:*"
+  },
+  "devDependencies": {
+    "@skryensya/maker-model": "workspace:*",
+    "@types/node": "catalog:",
+    "tsx": "^4.19.2",
+    "typescript": "^5.9.3",
+    "vitest": "^4.1.11"
+  }
+}

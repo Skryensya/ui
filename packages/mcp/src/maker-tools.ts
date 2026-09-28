@@ -136,6 +136,15 @@ function siteOf(row: ProjectRow): MakerSite {
   return opened.ok ? opened.site : row.site;
 }
 
+const publishOutput = z.object({
+  ...{ schemaVersion: z.string(), sourceHash: z.string() },
+  project: z.string(),
+  url: z.string().optional().describe("Where the site now lives, when it was published."),
+  unpublished: z.string().optional().describe("The site name taken down, when it was unpublished."),
+  pending: z.array(z.object({ page: z.string(), message: z.string() })).optional(),
+  refused: z.string().optional(),
+});
+
 export function registerMakerTools(server: McpServer, makerUrl: string): void {
   const maker = client(makerUrl);
   const guard = async <T,>(run: () => Promise<T>) => {
@@ -232,5 +241,45 @@ export function registerMakerTools(server: McpServer, makerUrl: string): void {
         if (!saved.ok) return answer({ ...current, refused: saved.reason }, true);
         return answer({ ...provenance, project: args.project, revision: saved.revision, outline: describeSite(applied.site) });
       }),
+  );
+
+  server.registerTool(
+    "maker_publish",
+    {
+      title: "Publish a Maker project to its subdomain",
+      description:
+        "Publish a project as a static site at https://<name>.skryensya.dev/ (the project as last saved), " +
+        "or take it down with `unpublish: true`. Only works where the Maker has the publish token, which " +
+        "is the one machine that publishes; elsewhere it says so. `name` defaults to the project's current " +
+        "site name, or one derived from its name. A site with a link that would run code is refused. This " +
+        "puts content on the public internet: publish only when the person asked for it.",
+      inputSchema: z.object({
+        project: z.string().describe("The project id, from maker_projects."),
+        name: z.string().optional().describe("The subdomain: lowercase letters, digits and inner hyphens."),
+        unpublish: z.boolean().optional().describe("Take the site down instead."),
+      }),
+      outputSchema: publishOutput,
+      annotations: { readOnlyHint: false, destructiveHint: false, idempotentHint: true, openWorldHint: true },
+    },
+    async ({ project, name, unpublish }) => {
+      const reply = (value: Omit<z.infer<typeof publishOutput>, "schemaVersion" | "sourceHash">, isError = false) => ({
+        content: [{ type: "text" as const, text: value.refused ?? (value.url ? `Published at ${value.url}` : `Unpublished ${value.unpublished ?? "nothing"}.`) }],
+        structuredContent: { ...provenance, ...value },
+        ...(isError ? { isError: true } : {}),
+      });
+      let response: Response;
+      try {
+        response = await fetch(new URL(`/api/projects/${encodeURIComponent(project)}/publish`, makerUrl), {
+          method: unpublish ? "DELETE" : "POST",
+          headers: { "content-type": "application/json" },
+          body: unpublish ? undefined : JSON.stringify(name ? { name } : {}),
+        });
+      } catch {
+        return reply({ project, refused: `The Maker is not running at ${makerUrl}.` }, true);
+      }
+      const body = (await response.json().catch(() => ({}))) as { url?: string; unpublished?: string | null; pending?: { page: string; message: string }[]; error?: string };
+      if (!response.ok) return reply({ project, refused: body.error ?? `The Maker answered ${response.status}.` }, true);
+      return reply(unpublish ? { project, unpublished: body.unpublished ?? undefined } : { project, url: body.url, pending: body.pending });
+    },
   );
 }

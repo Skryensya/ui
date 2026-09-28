@@ -118,6 +118,12 @@ describe("maker tools", () => {
     expect(stale.refused).toMatch(/changed since you read it/);
   });
 
+  it("says publishing is off where the Maker has no publish token", async () => {
+    const result = await client.callTool({ name: "maker_publish", arguments: { project, name: "cafe" } });
+    expect(result.isError).toBe(true);
+    expect((result.structuredContent as { refused?: string }).refused).toMatch(/SITES_PUBLISH_TOKEN/);
+  });
+
   it("says how to start the Maker when it is not running", async () => {
     const offline = await connect("http://127.0.0.1:9");
     const result = await offline.callTool({ name: "maker_read", arguments: { project } });

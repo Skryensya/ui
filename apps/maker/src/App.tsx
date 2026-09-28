@@ -8,6 +8,7 @@ import { Toolbar, ToolbarGroup, ToolbarSeparator } from "@skryensya/react/toolba
 import { useDrag } from "./drag";
 import { useProjectSync } from "./sync";
 import { ProjectsPanel } from "./ProjectsPanel";
+import { PublishPanel } from "./PublishPanel";
 import { useWorkspace, type Workspace } from "./workspace";
 import { ExportPanel } from "./ExportPanel";
 import { IconButton } from "./IconButton";
@@ -109,6 +110,7 @@ function Editor({
   const drag = useDrag(maker.page.root, maker.gesture);
   const sync = useProjectSync(maker, projectId !== LOCAL_PROJECT);
   const [exporting, setExporting] = useState(false);
+  const [publishingOpen, setPublishingOpen] = useState(false);
   const { view, setView } = maker;
 
   /* Undo and redo page-wide, through the kit's hotkeys; inside a text field they stay the field's. */
@@ -176,9 +178,14 @@ function Editor({
             {sync === "saved" ? "Saved" : sync === "syncing" ? "Saving…" : "Offline: changes wait here"}
           </span>
         ) : null}
-        <Button variant="solid" size="sm" pre={<Icon name="download" />} onClick={() => setExporting(true)}>
+        <Button variant="soft" size="sm" pre={<Icon name="download" />} onClick={() => { setPublishingOpen(false); setExporting(true); }}>
           Export
         </Button>
+        {projectId !== LOCAL_PROJECT ? (
+          <Button variant="solid" size="sm" pre={<Icon name="upload" />} onClick={() => { setExporting(false); setPublishingOpen(true); }}>
+            Publish
+          </Button>
+        ) : null}
       </section>
 
       <aside className="maker__left" aria-label="Site">
@@ -216,9 +223,11 @@ function Editor({
         <Stage maker={maker} drag={drag} />
       </main>
 
-      <aside className="maker__right" aria-label={projectsOpen ? "Projects" : exporting ? "Export" : "Inspector"}>
+      <aside className="maker__right" aria-label={projectsOpen ? "Projects" : publishingOpen ? "Publish" : exporting ? "Export" : "Inspector"}>
         {projectsOpen ? (
           <ProjectsPanel workspace={workspace} onClose={onCloseProjects} />
+        ) : publishingOpen ? (
+          <PublishPanel maker={maker} sync={sync} onClose={() => setPublishingOpen(false)} onPublished={() => void workspace.refresh()} />
         ) : exporting ? (
           <ExportPanel
             maker={maker}
