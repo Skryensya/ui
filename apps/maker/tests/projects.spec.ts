@@ -1,12 +1,11 @@
 import { expect, test, type Page } from "@playwright/test";
-import { addFromPalette, openMaker, savedProject, selectInOutline } from "./fixtures";
+import { addFromPalette, openMaker, savedProject, selectInOutline, stage, layers } from "./fixtures";
 
 /*
  * Projects: several open at once as tabs, each with its own history, kept by the server and
  * reopened on the next visit.
  */
 
-const stage = (page: Page) => page.frameLocator("iframe.maker-stage__iframe");
 const tabs = (page: Page) => page.getByRole("navigation", { name: "Open projects" });
 
 async function newProject(page: Page, name: string) {
@@ -24,17 +23,17 @@ test("several projects open as tabs, each keeping its own page and history", asy
 
   const second = `Beta ${Date.now()}`;
   await newProject(page, second);
-  await expect(page.locator(".maker-outline")).not.toContainText("Wrapper");
+  await expect((await layers(page)).locator(".maker-outline")).not.toContainText("Wrapper");
   await addFromPalette(page, "Stack");
-  await expect(page.locator(".maker-outline")).toContainText("Stack");
+  await expect((await layers(page)).locator(".maker-outline")).toContainText("Stack");
 
   /* Back to the first: its tree, and its history (undo removes its Wrapper, not the Beta Stack). */
   await tabs(page).getByRole("button", { name: /^Alpha/ }).click();
-  await expect(page.locator(".maker-outline")).toContainText("Wrapper");
+  await expect((await layers(page)).locator(".maker-outline")).toContainText("Wrapper");
   await page.getByRole("button", { name: "Undo", exact: true }).click();
-  await expect(page.locator(".maker-outline")).not.toContainText("Wrapper");
+  await expect((await layers(page)).locator(".maker-outline")).not.toContainText("Wrapper");
   await tabs(page).getByRole("button", { name: second, exact: true }).click();
-  await expect(page.locator(".maker-outline")).toContainText("Stack");
+  await expect((await layers(page)).locator(".maker-outline")).toContainText("Stack");
 });
 
 test("open tabs and the showing one come back on the next visit", async ({ page }) => {
@@ -80,6 +79,6 @@ test("a change saved in one window reaches the same project open in another", as
   await expect(other.locator(".maker__sync")).toHaveText("Saved");
   await selectInOutline(page, "Main");
   await addFromPalette(page, "Wrapper");
-  await expect(other.locator(".maker-outline")).toContainText("Wrapper");
+  await expect((await layers(other)).locator(".maker-outline")).toContainText("Wrapper");
   await expect(stage(other).locator(".sk-wrapper")).toHaveCount(1);
 });

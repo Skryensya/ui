@@ -59,8 +59,10 @@ Relacionado: [ADR-0031](docs/decisions/0031-the-maker-speaks-only-the-contract-a
 ### Lo que el Maker nunca hace
 
 `position: absolute`, drag libre por coordenadas, resize handles que escriban width/height, snapping
-por píxel, canvas infinito, offsets manuales, márgenes negativos, transforms como layout. Ninguna
-Maker page guarda x, y, top, left, translate, un ancho o alto calculado, ni un rect medido.
+por píxel, canvas infinito *en el documento*, offsets manuales, márgenes negativos, transforms como
+layout. Ninguna Maker page guarda x, y, top, left, translate, un ancho o alto calculado, ni un rect
+medido. El espacio de trabajo sí es un canvas con pan y zoom, pero es solo vista: la cámara no se
+guarda y cada página se dibuja con el layout real del navegador.
 
 ---
 
@@ -285,6 +287,7 @@ dos bindings (ADR-0015) y verde en `ai-gates`.
 - [ ] Usuarios y permisos sobre los proyectos.
 - [ ] Un campo de prompt dentro del propio Maker (necesitaría un modelo accesible desde la app).
 - [ ] Edición inline de texto sobre el stage.
+- [x] Espacio de trabajo tipo Figma: un canvas con pan (espacio, botón central o arrastrar el fondo) y zoom (rueda con Ctrl/⌘, `⌘=`/`⌘−`, `Shift+1` todas las páginas, `Shift+2` la abierta) donde cada página del sitio es un artboard a su ancho CSS exacto; un click en otra página la abre. Paneles flotantes y plegables (Layers/Insert a la izquierda, inspector a la derecha, recordados en el navegador). La cámara nunca se guarda.
 - [x] Varias páginas (**Maker site**): nombre y ruta únicos por página, cada una con su árbol; operaciones de sitio (add, remove, rename, setPagePath, movePage, edit) en el mismo historial; enlaces entre páginas con sugerencias de rutas, enlaces rotos como Pending, y en modo Interact un enlace interno abre su página; export de todas las páginas y del sitio; el formato de una página abre como sitio de una página.
 - [ ] Piezas compartidas entre páginas (navbar/footer editados una vez).
 - [ ] Persistencia en backend.

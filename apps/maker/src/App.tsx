@@ -18,7 +18,8 @@ import { Outline } from "./Outline";
 import { Pages } from "./Pages";
 import { Palette } from "./Palette";
 import { SelectionTools } from "./SelectionTools";
-import { Stage } from "./stage/Stage";
+import { Canvas } from "./stage/Canvas";
+import { SegmentedControl } from "@skryensya/react/segmented";
 import { LOCAL_PROJECT, useMaker, type StageWidth, type View } from "./state";
 
 /*
@@ -29,7 +30,6 @@ import { LOCAL_PROJECT, useMaker, type StageWidth, type View } from "./state";
  */
 
 const WIDTHS: readonly { width: StageWidth; label: string; icon: AnyIcon }[] = [
-  { width: "fit", label: "Fit the space available", icon: { role: "fit" } },
   { width: 36, label: "36rem, compact (phone)", icon: { role: "screen-mobile" } },
   { width: 52, label: "52rem, where expanded begins (tablet)", icon: { role: "screen-tablet" } },
   { width: 72, label: "72rem (desktop)", icon: { role: "screen-desktop" } },
@@ -111,6 +111,8 @@ function Editor({
   const sync = useProjectSync(maker, projectId !== LOCAL_PROJECT);
   const [exporting, setExporting] = useState(false);
   const [publishingOpen, setPublishingOpen] = useState(false);
+  const [panels, setPanels] = usePanels();
+  const [leftTab, setLeftTab] = useState<"layers" | "insert">("layers");
   const { view, setView } = maker;
 
   /* Undo and redo page-wide, through the kit's hotkeys; inside a text field they stay the field's. */
@@ -127,7 +129,7 @@ function Editor({
   return (
     <div className={`maker${drag.session ? " maker--dragging" : ""}`}>
       {/* Not a <header>: the shell's tab row is the page's one banner. A named region instead. */}
-      <section className="maker__top" aria-label="View and export">
+      <section className="maker__top maker-float" aria-label="View and export">
         <Toolbar label="Maker" className="maker__toolbar">
           <ToolbarGroup label="History">
             <IconButton icon={{ glyph: "undo" }} label="Undo" shortcut={formatHotkey("mod+z", mac)} onClick={maker.undo} disabled={!maker.canUndo} />
@@ -188,42 +190,75 @@ function Editor({
         ) : null}
       </section>
 
-      <aside className="maker__left" aria-label="Site">
-        <section className="maker__panel maker__pages" aria-labelledby="maker-pages">
-          <header className="maker__panel-header">
-            <h2 className="maker__panel-title" id="maker-pages">
-              <MakerIcon icon={{ glyph: "pages" }} />
-              Pages
-            </h2>
-          </header>
-          <Pages maker={maker} />
-        </section>
-        <section className="maker__panel maker__outline" aria-labelledby="maker-layers">
-          <header className="maker__panel-header">
-            <h2 className="maker__panel-title" id="maker-layers">
-              <MakerIcon icon={{ glyph: "layers" }} />
-              Layers of {maker.page.name}
-            </h2>
-          </header>
-          <SelectionTools maker={maker} />
-          <Outline maker={maker} drag={drag} />
-        </section>
-        <section className="maker__panel maker__palette" aria-labelledby="maker-insert">
-          <header className="maker__panel-header">
-            <h2 className="maker__panel-title" id="maker-insert">
-              <MakerIcon icon={{ role: "add" }} />
-              Insert
-            </h2>
-          </header>
-          <Palette maker={maker} drag={drag} />
-        </section>
-      </aside>
+      {panels.left ? (
+        <aside className="maker__left maker-float" aria-label="Site">
+          <div className="maker-float__head">
+            <SegmentedControl
+              label="Left panel"
+              value={leftTab}
+              onValueChange={(value) => setLeftTab(value as "layers" | "insert")}
+              options={[
+                { value: "layers", label: "Layers" },
+                { value: "insert", label: "Insert" },
+              ]}
+            />
+            <IconButton icon={{ role: "chevron-left" }} label="Hide the left panel" onClick={() => setPanels({ ...panels, left: false })} />
+          </div>
+          {leftTab === "layers" ? (
+            <>
+              <section className="maker__panel maker__pages" aria-labelledby="maker-pages">
+                <header className="maker__panel-header">
+                  <h2 className="maker__panel-title" id="maker-pages">
+                    <MakerIcon icon={{ glyph: "pages" }} />
+                    Pages
+                  </h2>
+                </header>
+                <Pages maker={maker} />
+              </section>
+              <section className="maker__panel maker__outline" aria-labelledby="maker-layers">
+                <header className="maker__panel-header">
+                  <h2 className="maker__panel-title" id="maker-layers">
+                    <MakerIcon icon={{ glyph: "layers" }} />
+                    Layers of {maker.page.name}
+                  </h2>
+                </header>
+                <SelectionTools maker={maker} />
+                <Outline maker={maker} drag={drag} />
+              </section>
+            </>
+          ) : (
+            <section className="maker__panel maker__palette" aria-labelledby="maker-insert">
+              <header className="maker__panel-header">
+                <h2 className="maker__panel-title" id="maker-insert">
+                  <MakerIcon icon={{ role: "add" }} />
+                  Insert
+                </h2>
+              </header>
+              <Palette maker={maker} drag={drag} />
+            </section>
+          )}
+        </aside>
+      ) : (
+        <span className="maker-float-toggle maker-float-toggle--left">
+          <IconButton icon={{ glyph: "layers" }} label="Show the left panel" onClick={() => setPanels({ ...panels, left: true })} />
+        </span>
+      )}
 
       <main className="maker__stage">
-        <Stage maker={maker} drag={drag} />
+        <Canvas maker={maker} drag={drag} insets={{ left: panels.left ? 336 : 16, right: panels.right ? 368 : 16, top: 72 }} />
       </main>
 
-      <aside className="maker__right" aria-label={projectsOpen ? "Projects" : publishingOpen ? "Publish" : exporting ? "Export" : "Inspector"}>
+      {!panels.right && !projectsOpen && !publishingOpen && !exporting ? (
+        <span className="maker-float-toggle maker-float-toggle--right">
+          <IconButton icon={{ glyph: "inspect" }} label="Show the inspector" onClick={() => setPanels({ ...panels, right: true })} />
+        </span>
+      ) : (
+      <aside className="maker__right maker-float" aria-label={projectsOpen ? "Projects" : publishingOpen ? "Publish" : exporting ? "Export" : "Inspector"}>
+        {!projectsOpen && !publishingOpen && !exporting ? (
+          <div className="maker-float__head maker-float__head--end">
+            <IconButton icon={{ role: "chevron-right" }} label="Hide the inspector" onClick={() => setPanels({ ...panels, right: false })} />
+          </div>
+        ) : null}
         {projectsOpen ? (
           <ProjectsPanel workspace={workspace} onClose={onCloseProjects} />
         ) : publishingOpen ? (
@@ -238,10 +273,31 @@ function Editor({
           <Inspector maker={maker} />
         )}
       </aside>
+      )}
 
       <p className="maker__notice" role="status" aria-live="polite" key={maker.notice?.at}>
         {maker.notice?.text}
       </p>
     </div>
   );
+}
+
+/** Which floating panels are open: a per-person preference, remembered in this browser. */
+function usePanels(): [{ left: boolean; right: boolean }, (next: { left: boolean; right: boolean }) => void] {
+  const [panels, setPanels] = useState(() => {
+    try {
+      return { left: true, right: true, ...(JSON.parse(localStorage.getItem("skryensya-maker:panels") ?? "{}") as object) };
+    } catch {
+      return { left: true, right: true };
+    }
+  });
+  const update = (next: { left: boolean; right: boolean }) => {
+    setPanels(next);
+    try {
+      localStorage.setItem("skryensya-maker:panels", JSON.stringify(next));
+    } catch {
+      /* not remembered */
+    }
+  };
+  return [panels, update];
 }

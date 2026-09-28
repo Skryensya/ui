@@ -1,4 +1,17 @@
-import { expect, type Page } from "@playwright/test";
+import { expect, type Locator, type Page } from "@playwright/test";
+
+/** The page open in the Maker: the artboard on the canvas that is being edited. */
+export const stage = (page: Page) => page.frameLocator(".maker-artboard[data-active] iframe.maker-stage__iframe");
+
+/** The left panel on one of its tabs: Layers (pages and the outline) or Insert (the palette). */
+export async function leftTab(page: Page, tab: "Layers" | "Insert"): Promise<Locator> {
+  const panel = page.locator(".maker__left");
+  const radio = panel.getByRole("radio", { name: tab, exact: true });
+  if (!(await radio.isChecked())) await radio.click();
+  return panel;
+}
+export const layers = (page: Page) => leftTab(page, "Layers");
+export const insert = (page: Page) => leftTab(page, "Insert");
 
 /** A clean Maker: nothing remembered from a previous test. */
 let made = 0;
@@ -12,7 +25,7 @@ export async function openMaker(page: Page, name = `Test ${process.pid}-${++made
   const response = await page.request.post("/api/projects", { data: { name } });
   current = ((await response.json()) as { id: string }).id;
   await page.goto(`/?project=${current}`);
-  await expect(page.frameLocator("iframe.maker-stage__iframe").locator("main[data-maker-node]")).toBeAttached();
+  await expect(stage(page).locator("main[data-maker-node]")).toBeAttached();
   await expect(page.locator(".maker__sync")).toHaveText("Saved");
   return current;
 }
@@ -27,13 +40,13 @@ export async function savedProject(page: Page, id = current): Promise<{ revision
 }
 
 export async function addFromPalette(page: Page, signature: string): Promise<void> {
-  await page.locator(".maker-palette").getByRole("button", { name: signature, exact: true }).first().click();
+  await (await insert(page)).locator(".maker-palette").getByRole("button", { name: signature, exact: true }).first().click();
 }
 
 /** Select a node by clicking its row in the outline (the last row with that label). */
 export async function selectInOutline(page: Page, label: string): Promise<void> {
   const escaped = label.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-  await page
+  await (await layers(page))
     .locator(".maker-outline :is(.sk-tree-view__branch-text, .sk-tree-view__item-text)", { hasText: new RegExp(`^${escaped}$`) })
     .last()
     /* A leaf's text takes no pointer events (the row does), so the click is forced onto it. */
@@ -42,7 +55,7 @@ export async function selectInOutline(page: Page, label: string): Promise<void> 
 
 /** The page open in the Maker, as saved: an indented list of signatures and quoted text runs. */
 export async function pageTree(page: Page): Promise<string> {
-  const openName = (await page.locator(".maker-pages__item[aria-current=page] .maker-pages__name").textContent()) ?? "";
+  const openName = (await (await layers(page)).locator(".maker-pages__item[aria-current=page] .maker-pages__name").textContent()) ?? "";
   const { site } = await savedProject(page);
   const saved = site.pages.find((entry) => entry.name === openName) ?? site.pages[0];
   if (!saved) return "";

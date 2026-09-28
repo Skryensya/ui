@@ -1,12 +1,11 @@
 import { expect, test } from "@playwright/test";
-import { openMaker, savedProject } from "./fixtures";
+import { openMaker, savedProject, stage, layers } from "./fixtures";
 
 /*
  * The docs gallery's templates as starting points: from the projects panel, and from the gallery's
  * own "Open in Maker" link (`?template=<id>&lang=<locale>`).
  */
 
-const stage = (page: import("@playwright/test").Page) => page.frameLocator("iframe.maker-stage__iframe");
 
 test("a new project can start as one of the docs templates", async ({ page }) => {
   await openMaker(page);
@@ -17,7 +16,7 @@ test("a new project can start as one of the docs templates", async ({ page }) =>
   const tabs = page.getByRole("navigation", { name: "Open projects" });
   await expect(tabs.getByRole("button", { name: /^Landing de producto/ })).toHaveAttribute("aria-current", "page");
   await expect(stage(page).locator("main h1, main h2").first()).toBeVisible();
-  await expect(page.locator(".maker-outline")).toContainText("Navbar");
+  await expect((await layers(page)).locator(".maker-outline")).toContainText("Navbar");
 });
 
 test("the gallery's Open in Maker link makes the project once, and the address forgets it", async ({ page }) => {
