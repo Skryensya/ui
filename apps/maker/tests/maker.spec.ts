@@ -1,13 +1,12 @@
 import { expect, test } from "@playwright/test";
 import { applySiteAll, randomId, resolveAgentOperations, type MakerSite } from "@skryensya/maker-model";
-import { addFromPalette, buildSamplePage, openMaker, pageTree, savedProject, selectInOutline } from "./fixtures";
+import { addFromPalette, buildSamplePage, openMaker, pageTree, savedProject, selectInOutline, stage, layers, insert } from "./fixtures";
 
 /*
  * The Maker in a real browser (decision 31): a page is built by composing, changed by operations,
  * and nothing the browser measures ever lands in it.
  */
 
-const stage = (page: import("@playwright/test").Page) => page.frameLocator("iframe.maker-stage__iframe");
 
 let project = "";
 
@@ -55,7 +54,7 @@ test("dragging on the stage near a block's top edge drops before it, as a move",
 
 test("the keyboard moves, wraps, unwraps, duplicates and removes, all as operations", async ({ page }) => {
   await selectInOutline(page, "Heading");
-  const tree = page.locator(".maker-outline");
+  const tree = (await layers(page)).locator(".maker-outline");
   await tree.locator("[role=tree]").focus();
 
   await page.keyboard.press("Alt+ArrowDown");
@@ -81,7 +80,7 @@ test("the keyboard moves, wraps, unwraps, duplicates and removes, all as operati
 
 test("a move the contract refuses is refused out loud, and the page is untouched", async ({ page }) => {
   await selectInOutline(page, "Wrapper");
-  await page.locator(".maker-outline [role=tree]").focus();
+  await (await layers(page)).locator(".maker-outline [role=tree]").focus();
   const before = await pageTree(page);
   /* Into the previous sibling: there is none, so no place exists. */
   await page.keyboard.press("Alt+ArrowRight");
@@ -111,7 +110,7 @@ test("fill or fit is offered as the Inline's, and it is left behind when the chi
   await expect(inspector.getByRole("heading", { name: "In this Inline" })).toBeVisible();
   await inspector.getByLabel("Sizing", { exact: true }).selectOption("fill");
   await expect(stage(page).locator('[data-sizing="fill"]')).toHaveCount(1);
-  await page.locator(".maker-outline [role=tree]").focus();
+  await (await layers(page)).locator(".maker-outline [role=tree]").focus();
   await page.keyboard.press("Alt+ArrowLeft");
   await expect.poll(() => pageTree(page)).toContain("      Inline\n        Button.action\n          \"Button\"\n      Button.action");
   await expect(stage(page).locator('[data-sizing="fill"]')).toHaveCount(0);
@@ -122,11 +121,11 @@ test("changing the stage width changes the room the browser has, never the page"
   await page.waitForTimeout(400);
   const before = await saved();
   await page.getByRole("button", { name: /^Stage width: 36rem/ }).click();
-  await expect(page.locator(".maker-stage__frame")).toHaveCSS("inline-size", "576px");
+  await expect(page.locator(".maker-artboard[data-active] .maker-stage__frame")).toHaveCSS("inline-size", "576px");
   await expect(page.locator(".maker-stage__meta")).toContainText("compact");
   /* Wider than the column it sits in: it keeps its width and the column scrolls. */
   await page.getByRole("button", { name: /^Stage width: 90rem/ }).click();
-  await expect(page.locator(".maker-stage__frame")).toHaveCSS("inline-size", "1440px");
+  await expect(page.locator(".maker-artboard[data-active] .maker-stage__frame")).toHaveCSS("inline-size", "1440px");
   await expect(page.locator(".maker-stage__meta")).toContainText("expanded");
   await page.waitForTimeout(400);
   expect(await saved()).toBe(before);
@@ -161,8 +160,9 @@ test("export emits React, HTML and the usage tree from the same page, pending or
 });
 
 test("dragging a row in the outline moves the node, and only where the contract allows", async ({ page }) => {
+  const panel = await layers(page);
   const row = (label: string) =>
-    page.locator(".maker-outline :is(.sk-tree-view__branch-text, .sk-tree-view__item-text)", { hasText: new RegExp(`^${label}$`) }).last();
+    panel.locator(".maker-outline :is(.sk-tree-view__branch-text, .sk-tree-view__item-text)", { hasText: new RegExp(`^${label}$`) }).last();
   const text = (await row("Text").boundingBox())!;
   const heading = (await row("Heading").boundingBox())!;
   await page.mouse.move(text.x + 10, text.y + text.height / 2);
@@ -170,15 +170,15 @@ test("dragging a row in the outline moves the node, and only where the contract 
   await page.mouse.move(text.x + 10, text.y - 10, { steps: 4 });
   /* The upper edge of the Heading row: before it. */
   await page.mouse.move(heading.x + 10, heading.y + 2, { steps: 6 });
-  await expect(page.locator(".maker-outline .maker-overlay--drop-line")).toBeVisible();
+  await expect((await layers(page)).locator(".maker-outline .maker-overlay--drop-line")).toBeVisible();
   await page.mouse.up();
   await expect.poll(() => pageTree(page)).toContain("    Stack\n      Text\n        \"Text\"\n      Heading");
 });
 
 test("dragging from the palette onto the stage inserts exactly there", async ({ page }) => {
-  await page.getByRole("radio", { name: "Components" }).click();
+  await (await insert(page)).getByRole("radio", { name: "Components" }).click();
   await selectInOutline(page, "Inline");
-  const item = page.locator(".maker-palette").getByRole("button", { name: "Badge", exact: true });
+  const item = (await insert(page)).locator(".maker-palette").getByRole("button", { name: "Badge", exact: true });
   await item.scrollIntoViewIfNeeded();
   const from = (await item.boundingBox())!;
   const first = (await stage(page).getByRole("button", { name: "Button" }).first().boundingBox())!;
@@ -194,8 +194,8 @@ test("dragging from the palette onto the stage inserts exactly there", async ({ 
 test("a section is inserted as a whole subtree with fresh identities", async ({ page }) => {
   /* At the page's top level: this hero brings its own Wrapper, and a Wrapper never sits in one. */
   await selectInOutline(page, "Main");
-  await page.getByRole("radio", { name: "Sections" }).click();
-  await page.locator(".maker-palette").getByRole("button", { name: /hero with actions/i }).click();
+  await (await insert(page)).getByRole("radio", { name: "Sections" }).click();
+  await (await insert(page)).locator(".maker-palette").getByRole("button", { name: /hero with actions/i }).click();
   await expect.poll(() => pageTree(page)).toMatch(/^  Hero$/m);
   const ids = [...(await savedJson(page)).matchAll(/"id":"([^"]+)"/g)].map((m) => m[1]);
   expect(new Set(ids).size).toBe(ids.length);
@@ -203,10 +203,10 @@ test("a section is inserted as a whole subtree with fresh identities", async ({ 
 
 test("an emptied container stays, pending, with a place to drop into", async ({ page }) => {
   await selectInOutline(page, "Inline");
-  await page.locator(".maker-outline [role=tree]").focus();
+  await (await layers(page)).locator(".maker-outline [role=tree]").focus();
   for (let i = 0; i < 2; i++) {
     await selectInOutline(page, "Button.action");
-    await page.locator(".maker-outline [role=tree]").focus();
+    await (await layers(page)).locator(".maker-outline [role=tree]").focus();
     await page.keyboard.press("Delete");
   }
   await expect.poll(() => pageTree(page)).toMatch(/Inline$/);
@@ -335,7 +335,7 @@ test("dragging in an Inline that wraps lands between the buttons of the line und
 });
 
 test("pages: add, rename, re-path, link between them, and follow the link in interact mode", async ({ page }) => {
-  const pages = page.locator(".maker-pages");
+  const pages = (await layers(page)).locator(".maker-pages");
   await page.getByRole("toolbar", { name: "Pages" }).getByRole("button", { name: "Add a page" }).click();
   await expect(pages.getByRole("button", { name: /Page 2/ })).toHaveAttribute("aria-current", "page");
   await pages.getByText(/^Page settings/).click();
@@ -367,19 +367,19 @@ test("pages: add, rename, re-path, link between them, and follow the link in int
 
   await page.getByRole("button", { name: /^Interact/ }).click();
   await stage(page).locator('a[href="/about"]').click();
-  await expect(pages.getByRole("button", { name: /About/ })).toHaveAttribute("aria-current", "page");
+  await expect((await layers(page)).locator(".maker-pages").getByRole("button", { name: /About/ })).toHaveAttribute("aria-current", "page");
 });
 
 test("page operations are undone like any other gesture", async ({ page }) => {
   const tools = page.getByRole("toolbar", { name: "Pages" });
   await tools.getByRole("button", { name: "Duplicate this page" }).click();
-  await expect(page.locator(".maker-pages__item")).toHaveCount(2);
+  await expect((await layers(page)).locator(".maker-pages__item")).toHaveCount(2);
   /* The copy is a real page: same tree, new identities. */
   await expect.poll(() => pageTree(page)).toContain("      Heading");
   await tools.getByRole("button", { name: "Remove this page" }).click();
-  await expect(page.locator(".maker-pages__item")).toHaveCount(1);
+  await expect((await layers(page)).locator(".maker-pages__item")).toHaveCount(1);
   await page.getByRole("button", { name: "Undo", exact: true }).click();
-  await expect(page.locator(".maker-pages__item")).toHaveCount(2);
+  await expect((await layers(page)).locator(".maker-pages__item")).toHaveCount(2);
 });
 
 test("export offers the whole site: every page as its own component, and the site file", async ({ page }) => {
@@ -420,7 +420,7 @@ test("the person's changes are saved to the project for an agent to read", async
 
 test("inserting after a heading, a paragraph or a button lands below it, so a sequence needs no reselecting", async ({ page }) => {
   await selectInOutline(page, "Heading");
-  await expect(page.locator(".maker-palette")).toContainText("after Heading, in Stack");
+  await expect((await insert(page)).locator(".maker-palette")).toContainText("after Heading, in Stack");
   await addFromPalette(page, "Text");
   await addFromPalette(page, "Text");
   await expect.poll(() => pageTree(page)).toMatch(/Heading\n\s+"Heading"\n\s+Text\n\s+"Text"\n\s+Text\n\s+"Text"\n\s+Text/);
@@ -436,13 +436,27 @@ test("double-clicking text on the stage selects it and puts the caret in its tex
   await expect(stage(page).locator("h2")).toHaveText("Café Aurora");
 });
 
-test("a stage wider than its column is shown whole, scaled, at its exact CSS width", async ({ page }) => {
+test("the canvas shows every page as an artboard at its exact CSS width, and zooming never touches the site", async ({ page }) => {
+  const saved = () => savedJson(page);
+  await (await layers(page)).getByRole("button", { name: /add a page/i }).click();
+  await expect(page.locator(".maker-artboard")).toHaveCount(2);
+  await page.waitForTimeout(400);
+  const before = await saved();
   await page.getByRole("button", { name: /^Stage width: 90rem/ }).click();
-  const frame = page.locator(".maker-stage__frame");
-  await expect(frame).toHaveCSS("inline-size", "1440px");
-  await expect(page.locator(".maker-stage__meta")).toContainText(/shown at \d+% to fit/);
-  const [frameBox, column] = [await frame.boundingBox(), await page.locator(".maker__stage").boundingBox()];
-  expect(frameBox!.x + frameBox!.width).toBeLessThanOrEqual(column!.x + column!.width + 1);
-  /* The iframe itself still lays the page out at 1440 CSS px. */
+  await expect(page.locator(".maker-artboard[data-active] .maker-stage__frame")).toHaveCSS("inline-size", "1440px");
+  /* The iframe lays the page out at 1440 CSS px, whatever the zoom shows it at. */
   expect(await stage(page).locator("html").evaluate((html) => html.clientWidth)).toBe(1440);
+  const zoom = page.locator(".maker-zoom__value");
+  const at = await zoom.textContent();
+  await page.getByRole("button", { name: "Zoom in" }).click();
+  await expect(zoom).not.toHaveText(at!);
+  await page.getByRole("button", { name: "Fit every page" }).click();
+  const canvas = (await page.locator(".maker-canvas").boundingBox())!;
+  for (const board of await page.locator(".maker-artboard .maker-stage__frame").all()) {
+    const box = (await board.boundingBox())!;
+    expect(box.x).toBeGreaterThanOrEqual(canvas.x);
+    expect(box.x + box.width).toBeLessThanOrEqual(canvas.x + canvas.width + 1);
+  }
+  await page.waitForTimeout(400);
+  expect(await saved()).toBe(before);
 });

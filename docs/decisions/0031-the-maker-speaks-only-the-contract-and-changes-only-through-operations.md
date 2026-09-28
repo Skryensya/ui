@@ -81,3 +81,6 @@ constraint not yet met is shown and reported, never silently repaired, and does 
   trees.
 - The stage renders in its own browsing context, sized to the chosen width, because the kit's CSS
   still answers to the viewport in places, and a narrowed div would lie about it.
+- The editor's workspace is a pannable, zoomable canvas with every page side by side, but the canvas
+  is view state only: the camera is never saved, each artboard is laid out by the browser at its
+  exact CSS width, and zoom scales the picture, never the room the page has.

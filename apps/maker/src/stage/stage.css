@@ -14,8 +14,9 @@ body {
   font-family: var(--font-family-body);
 }
 
+/* No minimum: the artboard is as tall as this, and a floor here would feed back into it. */
 #stage {
-  min-block-size: 100vh;
+  display: flow-root;
 }
 
 [data-maker-node]:empty {

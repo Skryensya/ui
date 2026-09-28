@@ -167,17 +167,13 @@ body,
   color: var(--color-text-tertiary);
 }
 
-/* ─── the editor ───────────────────────────────────────────────────────────────────────────────── */
+/* ─── the editor: a canvas with floating panels over it ────────────────────────────────────────── */
 
 .maker {
-  display: grid;
+  position: relative;
   flex: 1 1 auto;
   min-block-size: 0;
-  grid-template-columns: minmax(16rem, 20rem) minmax(0, 1fr) minmax(18rem, 22rem);
-  grid-template-rows: auto minmax(0, 1fr);
-  grid-template-areas:
-    "top top top"
-    "left stage right";
+  overflow: hidden;
 }
 
 .maker--dragging,
@@ -187,16 +183,6 @@ body,
 }
 
 /* ─── the top bar: brand, the view toolbar, export ─────────────────────────────────────────────── */
-
-.maker__top {
-  grid-area: top;
-  display: flex;
-  align-items: center;
-  gap: var(--space-inline-md);
-  padding: var(--space-inset-xs) var(--space-inset-sm);
-  border-block-end: 1px solid var(--color-border-subtle);
-  background: var(--color-bg-surface);
-}
 
 .maker__brand {
   display: inline-flex;
@@ -220,24 +206,8 @@ body,
   inline-size: auto;
 }
 
-.maker__left,
-.maker__right {
-  min-block-size: 0;
-  overflow: auto;
-  background: var(--color-bg-surface);
-}
 
-.maker__left {
-  grid-area: left;
-  display: grid;
-  grid-template-rows: minmax(0, auto) minmax(0, 1fr) minmax(0, 1fr);
-  border-inline-end: 1px solid var(--color-border-subtle);
-}
 
-.maker__right {
-  grid-area: right;
-  border-inline-start: 1px solid var(--color-border-subtle);
-}
 
 .maker__panel {
   display: flex;
@@ -349,13 +319,6 @@ body,
   color: var(--color-text-tertiary);
 }
 
-.maker__stage {
-  grid-area: stage;
-  min-inline-size: 0;
-  min-block-size: 0;
-  overflow: auto;
-  padding: var(--space-inset-md);
-}
 
 .maker__notice {
   position: fixed;
@@ -398,23 +361,6 @@ body,
 }
 
 /* ─── stage ─────────────────────────────────────────────────────────────────────────────────── */
-
-.maker-stage {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: var(--space-stack-xs);
-  block-size: 100%;
-  min-inline-size: 0;
-}
-
-/* The box the scaled frame occupies: the chosen width times the scale, so the column never
-   scrolls sideways and the whole page is in view. */
-.maker-stage__sizer {
-  flex: 0 0 auto;
-  max-inline-size: 100%;
-}
 
 /* Exactly the chosen CSS width, never squeezed: a stage narrower than it claims would answer its
    media queries and container widths with the wrong number. It is scaled to fit instead. */
@@ -742,4 +688,213 @@ body,
   align-items: center;
   gap: var(--space-inline-xs);
   font-size: 0.875rem;
+}
+
+/* ─── canvas ──────────────────────────────────────────────────────────────────────────────────── */
+
+.maker__stage {
+  position: absolute;
+  inset: 0;
+}
+
+.maker-canvas {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  background-color: var(--color-bg-surface-sunken);
+  background-image: radial-gradient(circle, color-mix(in oklab, var(--color-text-tertiary) 35%, transparent) 1px, transparent 1px);
+  background-size: 24px 24px;
+  touch-action: none;
+}
+
+.maker-canvas--pan-ready,
+.maker-canvas--pan-ready * {
+  cursor: grab !important;
+}
+
+.maker-canvas--panning,
+.maker-canvas--panning * {
+  cursor: grabbing !important;
+}
+
+/* While the canvas pans, the pages do not take the pointer, or a drag over one would end there. */
+.maker-canvas--pan-ready .maker-stage__iframe,
+.maker-canvas--panning .maker-stage__iframe {
+  pointer-events: none;
+}
+
+.maker-canvas__world {
+  position: absolute;
+  inset-block-start: 0;
+  inset-inline-start: 0;
+  display: flex;
+  align-items: flex-start;
+  gap: 160px;
+  padding: 48px;
+  transform-origin: 0 0;
+  will-change: transform;
+}
+
+.maker-artboard {
+  position: relative;
+  flex: 0 0 auto;
+}
+
+.maker-artboard__label {
+  position: absolute;
+  inset-block-end: 100%;
+  inset-inline-start: 0;
+  display: inline-flex;
+  gap: 0.5rem;
+  margin: 0 0 6px;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--color-text-secondary);
+  font: inherit;
+  font-size: 0.8125rem;
+  white-space: nowrap;
+  transform-origin: 0 100%;
+  cursor: pointer;
+}
+
+.maker-artboard[data-active] .maker-artboard__label {
+  color: var(--color-border-accent);
+  font-weight: 600;
+}
+
+.maker-artboard__path {
+  color: var(--color-text-tertiary);
+  font-family: ui-monospace, monospace;
+}
+
+.maker-artboard .maker-stage__frame {
+  box-shadow: 0 1px 3px rgb(0 0 0 / 0.12), 0 8px 24px rgb(0 0 0 / 0.08);
+}
+
+.maker-artboard[data-active] .maker-stage__frame {
+  outline: 2px solid color-mix(in oklab, var(--color-border-accent) 55%, transparent);
+}
+
+.maker-artboard .maker-stage__meta {
+  position: absolute;
+  inset-block-start: 100%;
+  inset-inline-start: 0;
+  margin: 6px 0 0;
+  white-space: nowrap;
+  transform-origin: 0 0;
+}
+
+.maker-stage__frame .maker-stage__empty {
+  position: absolute;
+  inset-block-start: 5rem;
+}
+
+/* ─── floating panels ─────────────────────────────────────────────────────────────────────────── */
+
+.maker-float {
+  position: absolute;
+  z-index: 2;
+  box-sizing: border-box;
+  border: 1px solid var(--color-border-subtle);
+  border-radius: 12px;
+  background: var(--color-bg-surface);
+  box-shadow: 0 2px 6px rgb(0 0 0 / 0.06), 0 12px 32px rgb(0 0 0 / 0.1);
+}
+
+.maker__top.maker-float {
+  inset-block-start: 12px;
+  inset-inline: 50%;
+  translate: -50% 0;
+  display: flex;
+  align-items: center;
+  gap: var(--space-inline-sm);
+  inline-size: max-content;
+  max-inline-size: calc(100% - 24px);
+  padding: 4px 8px;
+  border-radius: 999px;
+}
+
+.maker__top .maker__toolbar {
+  flex: 0 1 auto;
+  border: 0;
+  background: none;
+  box-shadow: none;
+}
+
+.maker__left.maker-float {
+  inset-block: 72px 12px;
+  inset-inline-start: 12px;
+  inline-size: 312px;
+  display: grid;
+  grid-template-rows: auto minmax(0, auto) minmax(0, 1fr);
+  overflow: hidden;
+}
+
+.maker__right.maker-float {
+  inset-block: 72px 12px;
+  inset-inline-end: 12px;
+  inline-size: 344px;
+  overflow: auto;
+}
+
+.maker-float__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-inline-xs);
+  padding: 8px;
+  border-block-end: 1px solid var(--color-border-subtle);
+}
+
+.maker-float__head--end {
+  justify-content: flex-end;
+  padding: 4px 8px;
+  border: 0;
+}
+
+.maker-float-toggle {
+  position: absolute;
+  z-index: 2;
+  inset-block-start: 72px;
+  border: 1px solid var(--color-border-subtle);
+  border-radius: 10px;
+  background: var(--color-bg-surface);
+  box-shadow: 0 4px 16px rgb(0 0 0 / 0.1);
+}
+
+.maker-float-toggle--left {
+  inset-inline-start: 12px;
+}
+
+.maker-float-toggle--right {
+  inset-inline-end: 12px;
+}
+
+.maker-zoom {
+  position: absolute;
+  z-index: 2;
+  inset-block-end: 12px;
+  inset-inline-end: 50%;
+  translate: 50% 0;
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  padding: 2px 6px;
+  border: 1px solid var(--color-border-subtle);
+  border-radius: 999px;
+  background: var(--color-bg-surface);
+  box-shadow: 0 4px 16px rgb(0 0 0 / 0.1);
+}
+
+.maker-zoom__value {
+  min-inline-size: 3.5rem;
+  padding: 0.25rem;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  font-size: 0.8125rem;
+  font-variant-numeric: tabular-nums;
+  cursor: pointer;
 }

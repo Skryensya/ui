@@ -6,10 +6,14 @@ import { elementFor, nodeIdAt, placeAt, type Rect } from "./geometry";
 import { EDIT_TEXT } from "../Inspector";
 
 /*
- * THE STAGE: an iframe the maker page renders in, as wide as the chosen stage width and not a
- * pixel different, so the page's own media queries and container widths answer to that width
- * exactly as they will in a real browser. Changing the width changes the room the browser has and
- * nothing in the page.
+ * AN ARTBOARD: one page of the site on the canvas, in an iframe as wide as the chosen stage width
+ * and not a pixel different, so the page's own media queries and container widths answer to that
+ * width exactly as they will in a real browser. It is as tall as its content, like a frame on a
+ * design canvas: the canvas scrolls, the page does not.
+ *
+ * The open page's artboard is the one being edited: selection, hover, dragging and drops happen in
+ * it. Clicking any other artboard opens that page. The canvas's zoom scales every artboard; the
+ * frame keeps its CSS width and everything that turns a pointer into a place divides by the zoom.
  *
  * Overlays (hover, selection, the drop indicator) are painted over the iframe in this document,
  * from rects read out of the stage's DOM the moment they are needed. They take no pointer events
@@ -19,50 +23,56 @@ import { EDIT_TEXT } from "../Inspector";
 const REM = 16;
 const EXPANDED_PX = 52 * REM;
 
-function widthStyle(width: StageWidth): string {
-  if (width === "fit") return "100%";
-  if (typeof width === "number") return `${width}rem`;
-  return `${width.px}px`;
+/** The CSS width of every artboard. "fit" (a column-era value) reads as the desktop width. */
+export function widthPx(width: StageWidth): number {
+  if (width === "fit") return 72 * REM;
+  if (typeof width === "number") return width * REM;
+  return width.px;
 }
+
+/* The shortest an artboard gets: an empty page still has room to drop into. */
+const MIN_HEIGHT = 640;
+
+/** A wheel or trackpad gesture over an artboard, in the Maker's own viewport coordinates. */
+export type CanvasWheel = { deltaX: number; deltaY: number; zoom: boolean; clientX: number; clientY: number };
 
 type Overlay = { selected?: Rect; hovered?: Rect; label?: string };
 
-export function Stage({ maker, drag }: { maker: Maker; drag: Drag }) {
+export function Artboard({
+  maker,
+  drag,
+  pageId,
+  zoom,
+  onWheel,
+  onPanKey,
+}: {
+  maker: Maker;
+  drag: Drag;
+  pageId: string;
+  zoom: number;
+  onWheel: (wheel: CanvasWheel) => void;
+  /** Space held or released inside the page, so the canvas can pan while the pointer is over it. */
+  onPanKey: (held: boolean) => void;
+}) {
   const frameRef = useRef<HTMLIFrameElement>(null);
-  const shellRef = useRef<HTMLDivElement>(null);
   const [ready, setReady] = useState(false);
   const [hovered, setHovered] = useState<string>();
   const [overlay, setOverlay] = useState<Overlay>({});
   const [frameWidth, setFrameWidth] = useState(0);
-  /* The room the stage column has, and how much the preview is shrunk to fit it. */
-  const [space, setSpace] = useState({ width: 0, height: 0 });
+  const [contentHeight, setContentHeight] = useState(MIN_HEIGHT);
   const [renderError, setRenderError] = useState<string>();
-  const root = maker.page.root;
-  const { selected, mode } = maker.view;
-
-  /*
-   * A WIDTH WIDER THAN THE COLUMN IS SHOWN SMALLER, NEVER NARROWER. The frame keeps the exact CSS
-   * width chosen, so the page's media queries and container widths answer to that number, and the
-   * whole frame (iframe and overlays together) is scaled down to fit, the way a browser's responsive
-   * mode does. Everything that turns a pointer into a place divides by the scale.
-   */
-  const targetPx = maker.view.width === "fit" ? space.width : typeof maker.view.width === "number" ? maker.view.width * REM : maker.view.width.px;
-  const scale = targetPx > 0 && space.width > 0 ? Math.min(1, space.width / targetPx) : 1;
-  const frameHeight = Math.max(320, (space.height - 32) / scale);
-
-  useLayoutEffect(() => {
-    const shell = shellRef.current;
-    if (!shell) return;
-    const read = () => setSpace({ width: shell.clientWidth, height: shell.clientHeight });
-    read();
-    const observer = new ResizeObserver(() => requestAnimationFrame(read));
-    observer.observe(shell);
-    return () => observer.disconnect();
-  }, []);
+  const page = maker.site.pages.find((entry) => entry.id === pageId) ?? maker.page;
+  const root = page.root;
+  const active = page.id === maker.page.id;
+  const mode = maker.view.mode;
+  const selected = active ? maker.view.selected : undefined;
+  const scale = zoom;
+  const targetPx = widthPx(maker.view.width);
+  const frameHeight = Math.max(MIN_HEIGHT, contentHeight);
 
   /* Latest values for listeners that live on the stage's document across renders. */
-  const live = useRef({ root, selected, mode, drag, maker, scale });
-  live.current = { root, selected, mode, drag, maker, scale };
+  const live = useRef({ root, selected, mode, drag, maker, scale, active, pageId, onWheel, onPanKey });
+  live.current = { root, selected, mode, drag, maker, scale, active, pageId, onWheel, onPanKey };
 
   const doc = () => frameRef.current?.contentDocument ?? null;
 
@@ -140,6 +150,10 @@ export function Stage({ maker, drag }: { maker: Maker; drag: Drag }) {
       label: selectedNode && "signature" in selectedNode ? selectedNode.signature : selectedNode ? "Text" : undefined,
     });
     setFrameWidth(frameRef.current?.clientWidth ?? 0);
+    /* As tall as the page's content. #stage has no minimum of its own, so a page that uses 100vh
+       settles at the frame's height instead of growing it forever. */
+    const content = document.getElementById("stage")?.scrollHeight ?? 0;
+    setContentHeight((current) => (Math.abs(current - content) > 1 ? content : current));
   }, [selected, hovered, mode, root]);
 
   useLayoutEffect(measure, [measure, tick]);
@@ -157,6 +171,8 @@ export function Stage({ maker, drag }: { maker: Maker; drag: Drag }) {
     };
     const observer = new ResizeObserver(later);
     observer.observe(document.documentElement);
+    const content = document.getElementById("stage");
+    if (content) observer.observe(content);
     observer.observe(frameRef.current!);
     frameWindow.addEventListener("scroll", later);
     return () => {
@@ -197,7 +213,9 @@ export function Stage({ maker, drag }: { maker: Maker; drag: Drag }) {
         return;
       }
       const id = nodeIdAt(target);
-      if (id) live.current.maker.setView({ selected: id });
+      /* On another page's artboard, the click opens that page, with what was clicked selected. */
+      if (!live.current.active) live.current.maker.setView({ page: live.current.pageId, selected: id });
+      else if (id) live.current.maker.setView({ selected: id });
     };
     const onSubmit = (event: Event) => event.preventDefault();
     /* Double-click: select, and go straight to its text in the inspector. */
@@ -206,11 +224,11 @@ export function Stage({ maker, drag }: { maker: Maker; drag: Drag }) {
       event.preventDefault();
       const id = nodeIdAt(event.target as Element);
       if (!id) return;
-      live.current.maker.setView({ selected: id });
+      live.current.maker.setView({ page: live.current.pageId, selected: id });
       window.dispatchEvent(new CustomEvent(EDIT_TEXT));
     };
     const onPointerDown = (event: PointerEvent) => {
-      if (live.current.mode !== "edit" || event.button !== 0) return;
+      if (live.current.mode !== "edit" || event.button !== 0 || !live.current.active) return;
       const id = nodeIdAt(event.target as Element);
       if (!id || id === live.current.root.id) return;
       /* Only what is already selected drags, so a click that wanders a little is still a click. */
@@ -237,7 +255,7 @@ export function Stage({ maker, drag }: { maker: Maker; drag: Drag }) {
         }
         return;
       }
-      if (live.current.mode === "edit") setHovered(nodeIdAt(event.target as Element));
+      if (live.current.mode === "edit" && live.current.active) setHovered(nodeIdAt(event.target as Element));
     };
     const onPointerUp = () => {
       if (press?.dragging) {
@@ -252,6 +270,26 @@ export function Stage({ maker, drag }: { maker: Maker; drag: Drag }) {
         live.current.drag.end(false);
         press = undefined;
       }
+      if (event.code === "Space" && !event.repeat && live.current.mode === "edit") {
+        event.preventDefault();
+        live.current.onPanKey(true);
+      }
+    };
+    const onKeyUp = (event: KeyboardEvent) => {
+      if (event.code === "Space") live.current.onPanKey(false);
+    };
+    /* The page does not scroll (the artboard is as tall as it is): a wheel over it moves the canvas. */
+    const onWheelInside = (event: WheelEvent) => {
+      event.preventDefault();
+      const box = offset();
+      const k = live.current.scale;
+      live.current.onWheel({
+        deltaX: event.deltaX,
+        deltaY: event.deltaY,
+        zoom: event.ctrlKey || event.metaKey,
+        clientX: box.left + event.clientX * k,
+        clientY: box.top + event.clientY * k,
+      });
     };
 
     document.addEventListener("click", onClick, true);
@@ -262,6 +300,8 @@ export function Stage({ maker, drag }: { maker: Maker; drag: Drag }) {
     document.addEventListener("pointerup", onPointerUp, true);
     document.addEventListener("pointerleave", onLeave);
     document.addEventListener("keydown", onKey, true);
+    document.addEventListener("keyup", onKeyUp, true);
+    document.addEventListener("wheel", onWheelInside, { passive: false });
     return () => {
       document.removeEventListener("click", onClick, true);
       document.removeEventListener("submit", onSubmit, true);
@@ -271,16 +311,19 @@ export function Stage({ maker, drag }: { maker: Maker; drag: Drag }) {
       document.removeEventListener("pointerup", onPointerUp, true);
       document.removeEventListener("pointerleave", onLeave);
       document.removeEventListener("keydown", onKey, true);
+      document.removeEventListener("keyup", onKeyUp, true);
+      document.removeEventListener("wheel", onWheelInside);
     };
   }, [ready]);
 
   /* The stage as a drop surface for drags that started anywhere. */
   useEffect(
     () =>
-      drag.register("stage", (x, y, allowed) => {
+      drag.register(`stage:${pageId}`, (x, y, allowed) => {
         const frame = frameRef.current;
         const document = doc();
-        if (!frame || !document) return undefined;
+        /* Drops land on the open page only: an operation belongs to one page. */
+        if (!frame || !document || !live.current.active) return undefined;
         const box = frame.getBoundingClientRect();
         if (x < box.left || x > box.right || y < box.top || y > box.bottom) return undefined;
         const k = live.current.scale;
@@ -293,16 +336,15 @@ export function Stage({ maker, drag }: { maker: Maker; drag: Drag }) {
           indicator: { kind: found.indicator.kind, rect: { left: box.left + r.left * k, top: box.top + r.top * k, width: r.width * k, height: r.height * k } },
         };
       }),
-    [drag.register],
+    [drag.register, pageId],
   );
 
   /* ─── the stage width handle ─────────────────────────────────────────────────────────────── */
 
   const onHandleDown = (event: React.PointerEvent<HTMLDivElement>) => {
-    const shell = shellRef.current;
-    if (!shell) return;
+    event.stopPropagation();
     event.currentTarget.setPointerCapture(event.pointerId);
-    const left = frameRef.current?.getBoundingClientRect().left ?? shell.getBoundingClientRect().left;
+    const left = frameRef.current?.getBoundingClientRect().left ?? 0;
     const k = scale;
     const onMove = (move: PointerEvent) => maker.setView({ width: { px: Math.max(240, Math.round((move.clientX - left) / k)) } });
     const onUp = () => {
@@ -313,32 +355,37 @@ export function Stage({ maker, drag }: { maker: Maker; drag: Drag }) {
     window.addEventListener("pointerup", onUp);
   };
 
-  const indicator = drag.session?.target?.surface === "stage" ? drag.session.target.indicator : undefined;
+  const indicator = active && drag.session?.target?.surface === "stage" ? drag.session.target.indicator : undefined;
   const frameBox = frameRef.current?.getBoundingClientRect();
 
+  const empty = root.slots.children?.kind === "nodes" && root.slots.children.children.length === 0;
+
   return (
-    <div className="maker-stage" ref={shellRef}>
-      {/* Outside the frame, so it reads at full size however small the stage is shown. */}
-      {root.slots.children?.kind === "nodes" && root.slots.children.children.length === 0 && mode === "edit" ? (
-        <p className="maker-stage__empty">
-          Empty page. Add a <strong>Wrapper</strong> from Insert for a page column, or drag a section here.
-        </p>
-      ) : null}
-      <div className="maker-stage__sizer" style={{ inlineSize: targetPx * scale || undefined, blockSize: frameHeight * scale }}>
-      <div
-        className="maker-stage__frame"
-        style={{
-          inlineSize: maker.view.width === "fit" ? "100%" : widthStyle(maker.view.width),
-          blockSize: frameHeight,
-          transform: scale < 1 ? `scale(${scale})` : undefined,
-        }}
+    <div className="maker-artboard" data-active={active ? "" : undefined} data-page={page.id}>
+      <button
+        type="button"
+        className="maker-artboard__label"
+        style={{ transform: `scale(${1 / zoom})` }}
+        onClick={() => maker.setView({ page: page.id, selected: undefined })}
+        aria-current={active ? "page" : undefined}
       >
-        <iframe ref={frameRef} src="/stage.html" title="Page stage" className="maker-stage__iframe" onLoad={checkReady} />
+        <span className="maker-artboard__name">{page.name}</span>
+        <span className="maker-artboard__path">{page.path}</span>
+      </button>
+      <div className="maker-stage__frame" style={{ inlineSize: targetPx, blockSize: frameHeight }}>
+        <iframe ref={frameRef} src="/stage.html" title={`Page ${page.name}`} className="maker-stage__iframe" onLoad={checkReady} />
+        {empty && mode === "edit" ? (
+          <p className="maker-stage__empty" style={{ fontSize: `${0.875 / zoom}rem` }}>
+            Empty page. Add a <strong>Wrapper</strong> from Insert for a page column, or drag a section here.
+          </p>
+        ) : null}
         <div className="maker-stage__overlays" aria-hidden="true">
           {overlay.hovered ? <div className="maker-overlay maker-overlay--hover" style={box(overlay.hovered)} /> : null}
           {overlay.selected ? (
-            <div className="maker-overlay maker-overlay--selected" style={box(overlay.selected)}>
-              <span className="maker-overlay__label">{overlay.label}</span>
+            <div className="maker-overlay maker-overlay--selected" style={{ ...box(overlay.selected), borderWidth: 2 / zoom }}>
+              <span className="maker-overlay__label" style={{ transform: `scale(${1 / zoom})` }}>
+                {overlay.label}
+              </span>
             </div>
           ) : null}
           {indicator && frameBox ? (
@@ -353,20 +400,16 @@ export function Stage({ maker, drag }: { maker: Maker; drag: Drag }) {
             />
           ) : null}
         </div>
-        <div
-          className="maker-stage__handle"
-          role="separator"
-          aria-orientation="vertical"
-          aria-label="Stage width"
-          onPointerDown={onHandleDown}
-        />
+        {active ? (
+          <div className="maker-stage__handle" role="separator" aria-orientation="vertical" aria-label="Stage width" onPointerDown={onHandleDown} />
+        ) : null}
       </div>
-      </div>
-      <p className="maker-stage__meta">
-        {Math.round(frameWidth)}px · {(frameWidth / REM).toFixed(1)}rem ·{" "}
-        {frameWidth >= EXPANDED_PX ? "expanded (≥ 52rem): *Expanded options apply" : "compact: *Expanded options do not apply"}
-        {scale < 1 ? ` · shown at ${Math.round(scale * 100)}% to fit` : ""}
-      </p>
+      {active ? (
+        <p className="maker-stage__meta" style={{ transform: `scale(${1 / zoom})` }}>
+          {Math.round(frameWidth)}px · {(frameWidth / REM).toFixed(1)}rem ·{" "}
+          {frameWidth >= EXPANDED_PX ? "expanded (≥ 52rem): *Expanded options apply" : "compact: *Expanded options do not apply"}
+        </p>
+      ) : null}
       {renderError ? (
         <p className="maker-stage__error" role="alert">
           The stage could not render this page: {renderError}
