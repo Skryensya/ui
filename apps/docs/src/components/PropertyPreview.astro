@@ -48,12 +48,15 @@ if (option.type !== "enum" || !option.values) {
 const codeHref =
   storybookTitle && storybookStory ? storybookDocsUrl(storybookReactUrl, storybookTitle, storybookStory) : null;
 const codeIcon = iconMarkup("code", { size: "sm" });
+/* A TITLE, not a field readout: `tone` -> "Tone". Same one-liner `AppearanceMenu.astro` uses for its
+   own option labels, not a shared helper - there is exactly one call site for this per component. */
+const title = optionName.charAt(0).toUpperCase() + optionName.slice(1);
 ---
 
 <div class="sk-property-preview">
   <div class="sk-property-preview__card">
     <div class="sk-property-preview__header">
-      <span class="sk-property-preview__name">Propiedad: <strong>{optionName}</strong></span>
+      <p class="sk-property-preview__name">{title}</p>
       {
         codeHref && (
           <a
@@ -109,13 +112,9 @@ const codeIcon = iconMarkup("code", { size: "sm" });
   }
 
   .sk-property-preview__name {
-    color: var(--color-text-tertiary);
-    font-size: var(--font-size-caption);
-  }
-
-  .sk-property-preview__name strong {
-    color: var(--color-text-secondary);
-    font-family: var(--font-family-code);
+    margin: 0;
+    color: var(--color-text-primary);
+    font-size: var(--font-size-body-lg);
     font-weight: var(--font-weight-emphasis);
   }
 
