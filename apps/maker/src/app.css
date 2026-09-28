@@ -400,6 +400,19 @@ body,
   font: inherit;
 }
 
+.maker-choice {
+  margin: 0;
+  padding: var(--space-inset-sm);
+  border: 1px solid var(--color-border-subtle);
+  border-radius: var(--radius-control);
+}
+
+.maker-choice legend {
+  padding-inline: 0.25rem;
+  font-size: 0.8125rem;
+  color: var(--color-text-tertiary);
+}
+
 .maker-items {
   margin: 0;
   padding: var(--space-inset-sm);

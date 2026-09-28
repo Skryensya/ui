@@ -258,3 +258,74 @@ test("every icon-only control in the chrome has a name", async ({ page }) => {
   expect(unnamed).toEqual([]);
   await expect(page.getByRole("toolbar", { name: "Maker" }).locator("svg.sk-icon").first()).toBeVisible();
 });
+
+/** Select what is under `from` on the stage, then drag it to a point. */
+async function dragOnStage(page: import("@playwright/test").Page, from: { x: number; y: number }, to: { x: number; y: number }) {
+  await page.mouse.click(from.x, from.y);
+  await page.mouse.move(from.x, from.y);
+  await page.mouse.down();
+  await page.mouse.move(from.x + 12, from.y + 12, { steps: 4 });
+  await page.mouse.move(to.x, to.y, { steps: 12 });
+  await page.mouse.up();
+}
+
+const centre = (box: { x: number; y: number; width: number; height: number }) => ({ x: box.x + box.width / 2, y: box.y + box.height / 2 });
+
+test("a Grid is decided one way or the other, never both: columns, or minColumn", async ({ page }) => {
+  await selectInOutline(page, "Stack");
+  await addFromPalette(page, "Grid");
+  const inspector = page.locator(".maker__right");
+  await expect(inspector.getByLabel("columns", { exact: true })).toBeVisible();
+  await expect(inspector.getByLabel("minColumn", { exact: true })).toHaveCount(0);
+  await inspector.getByLabel("columns", { exact: true }).selectOption("3");
+  await inspector.getByRole("radio", { name: "minColumn" }).click();
+  await expect(inspector.getByLabel("minColumn", { exact: true })).toBeVisible();
+  await expect(inspector.getByLabel("columns", { exact: true })).toHaveCount(0);
+  const grid = stage(page).locator(".sk-grid").first();
+  await expect(grid).toHaveAttribute("data-min-column", "sm");
+  /* Pending only because the grid is still empty: never because two options decide the same thing. */
+  await expect(inspector).not.toContainText("already decides");
+  await inspector.getByRole("radio", { name: /^columns/ }).click();
+  await expect(grid).not.toHaveAttribute("data-min-column", /.*/);
+});
+
+test("dragging in a Grid follows the columns the browser laid out", async ({ page }) => {
+  await selectInOutline(page, "Stack");
+  await addFromPalette(page, "Grid");
+  await page.locator(".maker__right").getByRole("radio", { name: "minColumn" }).click();
+  for (let i = 0; i < 3; i++) {
+    await selectInOutline(page, "Grid");
+    await addFromPalette(page, "Badge");
+  }
+  await page.getByRole("button", { name: /^Stage width: 72rem/ }).click();
+  const cells = stage(page).locator(".sk-grid > *");
+  await expect(cells).toHaveCount(3);
+  const [a, , c] = await Promise.all([0, 1, 2].map(async (i) => (await cells.nth(i).boundingBox())!));
+  /* Laid out across: the three cells share a row. */
+  expect(Math.abs(a!.y - c!.y)).toBeLessThan(2);
+  const ids = () => cells.evaluateAll((els) => els.map((el) => (el as HTMLElement).dataset.makerNode));
+  const before = await ids();
+  await dragOnStage(page, centre(c!), { x: a!.x + 3, y: a!.y + a!.height / 2 });
+  await expect.poll(ids).toEqual([before[2], before[0], before[1]]);
+});
+
+test("dragging in an Inline that wraps lands between the buttons of the line under the pointer", async ({ page }) => {
+  await selectInOutline(page, "Inline");
+  for (let i = 0; i < 6; i++) {
+    await selectInOutline(page, "Inline");
+    await addFromPalette(page, "Button.action");
+  }
+  await page.getByRole("button", { name: /^Stage width: 36rem/ }).click();
+  const buttons = stage(page).locator(".sk-inline > *");
+  await expect(buttons).toHaveCount(8);
+  const boxes = await Promise.all(Array.from({ length: 8 }, async (_, i) => (await buttons.nth(i).boundingBox())!));
+  const firstOfSecondLine = boxes.findIndex((box) => box.y > boxes[0]!.y + 4);
+  /* It wraps, and the browser chose where. */
+  expect(firstOfSecondLine).toBeGreaterThan(0);
+  const ids = () => buttons.evaluateAll((els) => els.map((el) => (el as HTMLElement).dataset.makerNode));
+  const before = await ids();
+  const target = boxes[firstOfSecondLine]!;
+  await dragOnStage(page, centre(boxes[0]!), { x: target.x + 3, y: target.y + target.height / 2 });
+  const expected = [...before.slice(1, firstOfSecondLine), before[0], ...before.slice(firstOfSecondLine)];
+  await expect.poll(ids).toEqual(expected);
+});
