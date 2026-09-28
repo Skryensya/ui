@@ -61,5 +61,3 @@ evals/agent/runs/
 # `build` both regenerate it first, and it was never tracked before the split either.
 apps/playground/public/sandbox/
 
-# The Maker site file shared by the Maker app and the MCP (apps/maker, packages/mcp).
-.maker/

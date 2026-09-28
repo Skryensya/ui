@@ -1,7 +1,7 @@
 import { fileURLToPath } from "node:url";
 import react from "@vitejs/plugin-react";
 import { defineConfig } from "vite";
-import { siteSync } from "./site-sync";
+import { makerApi } from "./server/plugin";
 
 /*
  * TWO PAGES, one origin. `index.html` is the Maker's own chrome; `stage.html` is the document the
@@ -14,15 +14,13 @@ import { siteSync } from "./site-sync";
  *
  * `fs.allow` reaches the workspace root for `artifacts/ai-index.json` (the catalogue's hash).
  *
- * `siteSync` shares the open site with an agent through a file (see `site-sync.ts`).
+ * `makerApi` serves the projects (Postgres) to the Maker and to agents (see `server/`).
  */
 const workspaceRoot = fileURLToPath(new URL("../..", import.meta.url));
 
-/* Where the site files the MCP's maker tools share with this app live: MAKER_DIR, or `.maker/`. */
-const siteDir = process.env.MAKER_DIR ?? fileURLToPath(new URL("../../.maker", import.meta.url));
 
 export default defineConfig({
-  plugins: [react(), siteSync(siteDir)],
+  plugins: [react(), makerApi()],
   build: {
     rollupOptions: {
       input: {

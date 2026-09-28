@@ -15,6 +15,7 @@
     "@skryensya/core": "workspace:*",
     "@skryensya/icons-lucide": "workspace:*",
     "@skryensya/maker-model": "workspace:*",
+    "@skryensya/maker-server": "workspace:*",
     "@skryensya/react": "workspace:*",
     "@skryensya/snippets": "workspace:*",
     "lucide": "^1.24.0",

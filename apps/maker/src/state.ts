@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useReducer } from "react";
+import { useCallback, useEffect, useMemo, useSyncExternalStore } from "react";
 import {
   ancestors,
   brokenLinks,
@@ -141,32 +141,92 @@ function writeStorage(key: string, value: string): void {
 
 const CATALOGUE_MOVED = "The catalogue changed since this site was saved; anything that no longer fits is marked pending.";
 
-function initialState(): State {
-  let savedView: Partial<View> = {};
+/** The view preferences a person carries from project to project: width, mode, theme. */
+function savedPreferences(): Partial<View> {
   try {
-    savedView = JSON.parse(readStorage(VIEW_KEY) ?? "{}") as Partial<View>;
+    const { page: _page, selected: _selected, ...rest } = JSON.parse(readStorage(VIEW_KEY) ?? "{}") as Partial<View>;
+    return rest;
   } catch {
-    savedView = {};
+    return {};
   }
-  const saved = readStorage(STORAGE_KEY) ?? readStorage(LEGACY_PAGE_KEY);
-  const opened = saved ? parseSite(saved, CATALOGUE_HASH, randomId) : undefined;
-  const site = opened?.ok ? opened.site : createSite(CATALOGUE_HASH, randomId);
-  const view: View = { page: site.pages[0]!.id, width: "fit", mode: "edit", scheme: "light", contrast: false, density: "default", radius: "md", ...savedView, selected: undefined };
+}
+
+/**
+ * A project's state when it opens: the site it was given, or (the browser-only project) what this
+ * browser kept, and the view preferences the person last used.
+ */
+function initialState(given?: MakerSite): State {
+  let site = given;
+  let catalogueChanged = false;
+  if (!site) {
+    const saved = readStorage(STORAGE_KEY) ?? readStorage(LEGACY_PAGE_KEY);
+    const opened = saved ? parseSite(saved, CATALOGUE_HASH, randomId) : undefined;
+    site = opened?.ok ? opened.site : createSite(CATALOGUE_HASH, randomId);
+    catalogueChanged = opened?.ok === true && opened.catalogueChanged;
+  } else {
+    catalogueChanged = given!.sourceHash !== CATALOGUE_HASH;
+  }
+  const view: View = { page: site.pages[0]!.id, width: "fit", mode: "edit", scheme: "light", contrast: false, density: "default", radius: "md", ...savedPreferences() };
   return {
     history: startHistory(site),
     view: settle(site, view),
-    notice: opened?.ok && opened.catalogueChanged ? { text: CATALOGUE_MOVED, at: Date.now() } : undefined,
+    notice: catalogueChanged ? { text: CATALOGUE_MOVED, at: Date.now() } : undefined,
   };
 }
 
-export function useMaker() {
-  const [state, dispatch] = useReducer(reducer, undefined, initialState);
+/*
+ * EVERY OPEN PROJECT KEEPS ITS STATE, its history and its view, for as long as it is open, whether
+ * or not its tab is the one showing. So the state lives here, keyed by project, and not inside a
+ * component that unmounts when another tab is chosen.
+ */
+
+/** The project that lives in this browser only, used when there is no projects server. */
+export const LOCAL_PROJECT = "local";
+
+const states = new Map<string, State>();
+const listeners = new Set<() => void>();
+const emit = () => listeners.forEach((listener) => listener());
+const subscribe = (listener: () => void) => {
+  listeners.add(listener);
+  return () => void listeners.delete(listener);
+};
+
+/** Open a project's state with its site (or, for the local project, what the browser kept). */
+export function seedProject(id: string, site?: MakerSite): void {
+  if (states.has(id)) return;
+  states.set(id, initialState(site));
+  emit();
+}
+
+export function isSeeded(id: string): boolean {
+  return states.has(id);
+}
+
+/** Close a project: its state, history included, is let go. */
+export function forgetProject(id: string): void {
+  if (states.delete(id)) emit();
+}
+
+function dispatchTo(id: string, action: Action): void {
+  const state = states.get(id);
+  if (!state) return;
+  states.set(id, reducer(state, action));
+  emit();
+}
+
+export function useMaker(projectId: string) {
+  seedProject(projectId);
+  const state = useSyncExternalStore(subscribe, () => states.get(projectId)!);
+  const dispatch = useCallback((action: Action) => dispatchTo(projectId, action), [projectId]);
   const site = state.history.present;
   const page: MakerPageEntry = site.pages.find((entry) => entry.id === state.view.page) ?? site.pages[0]!;
 
-  useEffect(() => writeStorage(STORAGE_KEY, serializeSite(site, CATALOGUE_HASH)), [site]);
+  /* Only the browser-only project is kept in the browser; the others are kept by the server. */
   useEffect(() => {
-    const { selected: _selected, ...rest } = state.view;
+    if (projectId === LOCAL_PROJECT) writeStorage(STORAGE_KEY, serializeSite(site, CATALOGUE_HASH));
+  }, [projectId, site]);
+  useEffect(() => {
+    const { selected: _selected, page: _page, ...rest } = state.view;
     writeStorage(VIEW_KEY, JSON.stringify(rest));
   }, [state.view]);
 
@@ -187,6 +247,7 @@ export function useMaker() {
 
   const pageId = page.id;
   return {
+    projectId,
     site,
     page,
     view: state.view,
@@ -197,20 +258,20 @@ export function useMaker() {
     /** Operations on the open page's tree: one gesture, one step. */
     gesture: useCallback(
       (operations: readonly Operation[], select?: string) => dispatch({ type: "gesture", operations: onPage(pageId, operations), select }),
-      [pageId],
+      [dispatch, pageId],
     ),
     /** Operations on the site itself (pages), optionally opening a page afterwards. */
     siteGesture: useCallback(
       (operations: readonly SiteOperation[], open?: string) => dispatch({ type: "gesture", operations, page: open, select: undefined }),
-      [],
+      [dispatch],
     ),
-    undo: useCallback(() => dispatch({ type: "undo" }), []),
-    redo: useCallback(() => dispatch({ type: "redo" }), []),
-    load: useCallback((next: MakerSite, notice?: string) => dispatch({ type: "load", site: next, notice }), []),
+    undo: useCallback(() => dispatch({ type: "undo" }), [dispatch]),
+    redo: useCallback(() => dispatch({ type: "redo" }), [dispatch]),
+    load: useCallback((next: MakerSite, notice?: string) => dispatch({ type: "load", site: next, notice }), [dispatch]),
     /** A site that changed elsewhere, taken in as one undoable step. */
-    receive: useCallback((next: MakerSite, notice?: string) => dispatch({ type: "remote", site: next, notice }), []),
-    setView: useCallback((change: Partial<View>) => dispatch({ type: "view", change }), []),
-    say: useCallback((text: string) => dispatch({ type: "notice", text }), []),
+    receive: useCallback((next: MakerSite, notice?: string) => dispatch({ type: "remote", site: next, notice }), [dispatch]),
+    setView: useCallback((change: Partial<View>) => dispatch({ type: "view", change }), [dispatch]),
+    say: useCallback((text: string) => dispatch({ type: "notice", text }), [dispatch]),
   };
 }
 

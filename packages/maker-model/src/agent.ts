@@ -130,24 +130,3 @@ function describeNode(node: MakerNode, depth: number, lines: string[]): void {
     }
   }
 }
-
-/*
- * THE SITE FILE the Maker and an agent share: the site and a revision that goes up by one on every
- * write. A writer that read revision n may only write n + 1; anything else means someone wrote in
- * between, and the writer reads again instead of overwriting them.
- */
-export type SiteFile = { readonly revision: number; readonly site: MakerSite };
-
-export function encodeSiteFile(file: SiteFile): string {
-  return `${JSON.stringify(file, null, 2)}\n`;
-}
-
-export function decodeSiteFile(text: string): SiteFile | undefined {
-  try {
-    const data = JSON.parse(text) as Partial<SiteFile>;
-    if (typeof data.revision !== "number" || typeof data.site !== "object" || data.site === null) return undefined;
-    return data as SiteFile;
-  } catch {
-    return undefined;
-  }
-}

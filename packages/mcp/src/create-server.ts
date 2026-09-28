@@ -24,8 +24,8 @@ const service = createAgentService(pair, snippets);
 export type ServerOptions = {
   /** A warning to attach to every answer, or undefined when there is none (see `staleness.ts`). */
   readonly staleness?: () => string | undefined;
-  /** The Maker's site file; given, the server also offers maker_read and maker_apply. */
-  readonly makerSite?: string;
+  /** The Maker's address; given, the server also offers the maker_* tools on its projects. */
+  readonly makerUrl?: string;
 };
 
 /** The factory both transports hand the SDK. The HTTP one calls it with a request context, which
@@ -70,7 +70,7 @@ export function createServerWith(options: ServerOptions): McpServer {
     );
   }
 
-  if (options.makerSite) registerMakerTools(server, options.makerSite);
+  if (options.makerUrl) registerMakerTools(server, options.makerUrl);
 
   return server;
 }
