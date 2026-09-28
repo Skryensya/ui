@@ -100,9 +100,15 @@ function sampleItem(slot: ContractSlot, n: number): ItemInput {
   return { ...(Object.keys(options).length ? { options } : {}), slots };
 }
 
+/**
+ * A readable placeholder from a signature id. `Accordion.Item` reads as "Item", but a lowercase
+ * suffix is a variant, not a name: `Button.action` reads as "Button".
+ */
 function humanize(signature: string): string {
-  const last = signature.split(".").at(-1) ?? signature;
-  return last.replace(/([a-z])([A-Z])/g, "$1 $2");
+  const parts = signature.split(".");
+  const last = parts.at(-1) ?? signature;
+  const name = /^[a-z]/.test(last) && parts.length > 1 ? parts[0]! : last;
+  return name.replace(/([a-z])([A-Z])/g, "$1 $2");
 }
 
 function kebab(signature: string): string {
