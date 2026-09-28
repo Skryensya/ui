@@ -33,7 +33,7 @@ export type { FeedProps, FeedArticleProps } from "./components/feed.js";
 export { Menubar, MenubarItem } from "./components/menubar.js";
 export type { MenubarProps, MenubarItemProps } from "./components/menubar.js";
 export { AppBar, AppBarMenu, AppBarStatus } from "./components/app-bar.js";
-export type { AppBarProps, AppBarMenuProps, AppBarStatusProps } from "./components/app-bar.js";
+export type { AppBarItem, AppBarProps, AppBarMenuProps, AppBarStatusProps } from "./components/app-bar.js";
 export { Megamenu, MegamenuTrigger } from "./components/megamenu.js";
 export type { MegamenuProps, MegamenuTriggerProps } from "./components/megamenu.js";
 export { Loader } from "./components/loader.js";

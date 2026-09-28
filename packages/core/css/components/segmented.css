@@ -57,6 +57,9 @@
     --sk-segmented-selected-ring: inset 0 0 0 1px var(--color-border-accent);
     --sk-segmented-selected-elevation: var(--elevation-raised);
     --sk-segmented-selected-wash: var(--elevation-wash-raised);
+    --sk-segmented-block-size: var(--size-control-sm);
+    --sk-segmented-font-size: var(--font-size-body-sm);
+    --sk-segmented-option-padding-inline: var(--space-inset-sm);
 
     /*
      * The TRACK, not the option, is what has to read as "the same size as a sm button": a reader
@@ -72,7 +75,7 @@
     position: relative;
     isolation: isolate;
     display: inline-flex;
-    block-size: var(--size-control-sm);
+    block-size: var(--sk-segmented-block-size);
     padding: var(--sk-segmented-padding);
     gap: var(--sk-segmented-gap);
     border: var(--sk-segmented-border-width) solid var(--sk-segmented-border-color);
@@ -80,6 +83,40 @@
     background: var(--sk-segmented-wash) var(--sk-segmented-bg);
     box-shadow: var(--sk-segmented-shadow);
   }
+  /*
+   * SIZE: the track steps up Button's own control scale, and the options' type and inline padding
+   * step with it, so a larger control is larger everywhere at once instead of a tall track around
+   * small text.
+   *
+   * CONCENTRIC CORNERS from `md` up. The thumb's radius is the track's minus the padding between
+   * them (the indicator rule below), so at `sm` a track of `--radius-control` holds a thumb a few
+   * pixels round, fine at that size. Scaled up with the same track radius, the growing padding ate
+   * the thumb's corner down to 2px: a nearly square chip in a rounded groove, the two outlines
+   * visibly not parallel. So from `md` the TRACK takes the padding on top of `--radius-control`, and
+   * the thumb is left with exactly `--radius-control`, the radius every other control has. The
+   * `min(multiplier * 1000, 1)` factor is 1 whenever the theme rounds at all and 0 when it does
+   * not, so "no radius" still squares both.
+   */
+  .sk-segmented[data-size="md"],
+  .sk-segmented[data-size="lg"] {
+    --sk-segmented-radius: calc(var(--radius-control) + var(--sk-segmented-padding) * min(var(--radius-multiplier, 1) * 1000, 1));
+  }
+
+  .sk-segmented[data-size="md"] {
+    --sk-segmented-block-size: var(--size-control-md);
+    --sk-segmented-font-size: var(--font-size-body-sm);
+    --sk-segmented-option-padding-inline: var(--space-inset-md);
+  }
+
+  /* The well's padding grows a notch at `lg` so the thumb keeps its proportion of the groove, and
+     the options get room to breathe on either side of a word read at body size. */
+  .sk-segmented[data-size="lg"] {
+    --sk-segmented-block-size: var(--size-control-lg);
+    --sk-segmented-font-size: var(--font-size-body);
+    --sk-segmented-padding: calc(var(--space-inset-xs) * 1.5);
+    --sk-segmented-option-padding-inline: calc(var(--space-inset-md) * 1.25);
+  }
+
   .sk-segmented__indicator {
     position: absolute;
     inset-block-start: 0;
@@ -133,11 +170,11 @@
     place-items: center;
     border-radius: max(0px, calc(var(--sk-segmented-radius) - var(--sk-segmented-padding)));
     padding-block: 0;
-    padding-inline: var(--space-inset-sm);
+    padding-inline: var(--sk-segmented-option-padding-inline);
     background: transparent;
     color: var(--sk-segmented-option-fg);
     font: inherit;
-    font-size: var(--font-size-body-sm);
+    font-size: var(--sk-segmented-font-size);
     font-weight: var(--font-weight-label);
     cursor: pointer;
     white-space: nowrap;

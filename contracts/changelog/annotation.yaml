@@ -360,3 +360,21 @@ entries:
         In markup, <code>inert</code> is an HTML boolean attribute, so turning it off wrote nothing and the Vanilla subject stayed just as inert. The option now
         emits <code>inert="false"</code> when off and the enhancer reads it as the opt-out; React already honoured it through its boolean prop. An anatomy that
         wants to show state changes can keep its subject usable in both.
+  - date: 2026-09-28
+    kind: feature
+    es:
+      title: La leyenda queda debajo del dibujo, sin contenedor
+      body: >-
+        La figura ya no es una tarjeta de dos bandas. Solo el dibujo está enmarcado, con el borde y
+        el radio del propio canvas; la leyenda va debajo como texto, sin fondo, sin línea y sin
+        relleno lateral, alineada con el borde del dibujo. <code>--sk-annotated-legend-bg</code> pasa
+        a <code>transparent</code> (sigue siendo el hook para devolverle un fondo) y
+        <code>--sk-annotated-figure-inset</code> es ahora el espacio bajo la leyenda.
+    en:
+      title: The legend sits under the drawing, with no container
+      body: >-
+        The figure is no longer a card of two bands. Only the drawing is framed, with the canvas's own
+        border and radius; the legend goes under it as text, with no ground, no hairline and no side
+        padding, aligned with the drawing's edge. <code>--sk-annotated-legend-bg</code> becomes
+        <code>transparent</code> (still the hook to give it a ground back) and
+        <code>--sk-annotated-figure-inset</code> is now the room under the legend.

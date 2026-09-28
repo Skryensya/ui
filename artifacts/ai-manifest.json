@@ -371,6 +371,18 @@
         "date": null,
         "entries": [
           {
+            "date": "2026-09-28",
+            "en": {
+              "body": "The figure is no longer a card of two bands. Only the drawing is framed, with the canvas's own border and radius; the legend goes under it as text, with no ground, no hairline and no side padding, aligned with the drawing's edge. <code>--sk-annotated-legend-bg</code> becomes <code>transparent</code> (still the hook to give it a ground back) and <code>--sk-annotated-figure-inset</code> is now the room under the legend.",
+              "title": "The legend sits under the drawing, with no container"
+            },
+            "es": {
+              "body": "La figura ya no es una tarjeta de dos bandas. Solo el dibujo está enmarcado, con el borde y el radio del propio canvas; la leyenda va debajo como texto, sin fondo, sin línea y sin relleno lateral, alineada con el borde del dibujo. <code>--sk-annotated-legend-bg</code> pasa a <code>transparent</code> (sigue siendo el hook para devolverle un fondo) y <code>--sk-annotated-figure-inset</code> es ahora el espacio bajo la leyenda.",
+              "title": "La leyenda queda debajo del dibujo, sin contenedor"
+            },
+            "kind": "feature"
+          },
+          {
             "date": "2026-09-24",
             "en": {
               "body": "<code>fitOnly</code> option, under the same name <code>Canvas</code> uses: the frame is still shown fitted to the available width, but with no zoom bar, no gestures and no tab stop on the viewport. It is the shape of an anatomy that is read at rest, like the ones in these docs.",
@@ -654,6 +666,18 @@
               "title": "Chevron en los títulos que abren algo, y el título abierto se distingue"
             },
             "kind": "feature"
+          },
+          {
+            "date": "2026-09-28",
+            "en": {
+              "body": "The <code>items</code> of <code>AppBarMenu</code> and <code>AppBarStatus</code> are no longer Menu's whole item shape: they accept no <code>kind</code> (no checkboxes, radios or separators) and no <code>group</code>. What stays is commands, links with <code>href</code>, commands with <code>disabled</code>, <code>tone</code> for a destructive action, and submenus through <code>children</code>. Choosing and adjusting belongs to the application, not to its bar; a tree with any of those items is now invalid.",
+              "title": "AppBar dropdowns hold actions only"
+            },
+            "es": {
+              "body": "<code>items</code> de <code>AppBarMenu</code> y <code>AppBarStatus</code> ya no es la forma de ítem de <code>Menu</code> completa: no acepta <code>kind</code> (ni casillas, ni radios, ni separadores) ni <code>group</code>. Quedan comandos, enlaces con <code>href</code>, comandos con <code>disabled</code>, <code>tone</code> para una acción destructiva y submenús con <code>children</code>. Elegir y ajustar pertenece a la aplicación, no a su barra; un árbol con cualquiera de esos ítems ahora es inválido.",
+              "title": "Los desplegables de AppBar solo tienen acciones"
+            },
+            "kind": "breaking"
           }
         ],
         "version": "0.0.1-dev"
@@ -2445,6 +2469,18 @@
       {
         "date": null,
         "entries": [
+          {
+            "date": "2026-09-28",
+            "en": {
+              "body": "A block with no <code>label</code> (an install command, nearly always) set the copy button at the top with the inset of a header it does not have, out of line with the line it copies, and on narrow screens the text ran underneath it. The button is now centred on the first line, and the code's scrolling area ends before the button, so a long line is cut there and scrolls. With a label nothing changes.",
+              "title": "Without a label, the copy button lines up with the first line and never covers the code"
+            },
+            "es": {
+              "body": "Un bloque sin <code>label</code> (un comando de instalación, casi siempre) ponía el botón de copiar arriba con el margen de la cabecera que no tiene, desalineado con la línea que copia, y en pantallas angostas el texto pasaba por debajo del botón. Ahora el botón se centra en la primera línea y el área que desplaza el código termina antes del botón, así una línea larga se corta ahí y se desplaza. Con etiqueta nada cambia.",
+              "title": "Sin etiqueta, el botón de copiar se alinea con la primera línea y no tapa el código"
+            },
+            "kind": "bugfix"
+          },
           {
             "date": "2026-09-26",
             "en": {
@@ -8484,6 +8520,18 @@
         "date": null,
         "entries": [
           {
+            "date": "2026-09-28",
+            "en": {
+              "body": "<code>size</code> (<code>sm</code>, <code>md</code>, <code>lg</code>) lands on <code>data-size</code>. <code>sm</code> is the size it always had and the default, the height of a small button; <code>md</code> and <code>lg</code> are for when the control is what is being read rather than one more control in a row, like a preview's value switcher. Height, type and the options' padding move together. New hooks: <code>--sk-segmented-block-size</code>, <code>--sk-segmented-font-size</code> and <code>--sk-segmented-option-padding-inline</code>.",
+              "title": "Segmented gains size, on Button's scale"
+            },
+            "es": {
+              "body": "<code>size</code> (<code>sm</code>, <code>md</code>, <code>lg</code>) va en <code>data-size</code>. <code>sm</code> es el tamaño de siempre y el default, a la altura de un botón pequeño; <code>md</code> y <code>lg</code> son para cuando el control es lo que se lee y no un control más en una fila, como el selector de valores de una vista previa. Altura, tipo y relleno de las opciones cambian juntos. Hooks nuevos: <code>--sk-segmented-block-size</code>, <code>--sk-segmented-font-size</code> y <code>--sk-segmented-option-padding-inline</code>.",
+              "title": "Segmented gana size, en la escala de Button"
+            },
+            "kind": "feature"
+          },
+          {
             "date": "2026-09-27",
             "en": {
               "body": "The track rises from 60% to 72%: over a black or white backdrop, the secondary ink of unselected options fell to 3.3:1.",
@@ -13487,7 +13535,7 @@
       "css": "@skryensya/core/components/annotation.css",
       "hookDetails": {
         "--sk-annotated-figure-inset": {
-          "default": "var(--space-inset-md)",
+          "default": "var(--space-stack-xl)",
           "output": false,
           "part": "figure",
           "sheet": "@skryensya/core/components/annotation.css"
@@ -13505,7 +13553,7 @@
           "sheet": "@skryensya/core/components/annotation.css"
         },
         "--sk-annotated-legend-bg": {
-          "default": "var(--color-bg-surface-sunken)",
+          "default": "transparent",
           "output": false,
           "part": "figure",
           "sheet": "@skryensya/core/components/annotation.css"
@@ -14237,8 +14285,11 @@
           ]
         },
         "AppBarMenu": {
+          "avoidWhen": [
+            "the menu would toggle or choose something (a checkbox, a radio set, a view setting); the bar holds actions only, so that belongs in the application's own panel or inspector"
+          ],
           "useWhen": [
-            "one menu of the bar. With `items` (Menu's own item shape: commands, checkbox/radio, separators, nested submenus) it opens a dropdown; without, it is a command that acts at once",
+            "one menu of the bar. With `items` (actions only: commands, links, disabled commands and submenus two or three levels deep) it opens a dropdown; without, it is a command that acts at once",
             "`strong` for the application's own menu, the first one, drawn in bold"
           ]
         },
@@ -14365,22 +14416,9 @@
                     "trueValue": "",
                     "type": "boolean"
                   },
-                  "group": {
-                    "attr": "data-group",
-                    "type": "string"
-                  },
                   "href": {
                     "attr": "href",
                     "type": "string"
-                  },
-                  "kind": {
-                    "attr": "data-type",
-                    "type": "enum",
-                    "values": [
-                      "checkbox",
-                      "radio",
-                      "separator"
-                    ]
                   },
                   "tone": {
                     "attr": "data-tone",
@@ -14479,41 +14517,16 @@
                                     ],
                                     "element": "span",
                                     "itemSlot": "label"
-                                  },
-                                  {
-                                    "also": [
-                                      "sk-menu__item-indicator"
-                                    ],
-                                    "attrs": {
-                                      "aria-hidden": "true"
-                                    },
-                                    "children": [
-                                      {
-                                        "attrs": {
-                                          "data-sk-icon": "check",
-                                          "data-sk-icon-size": "md"
-                                        },
-                                        "element": "span"
-                                      }
-                                    ],
-                                    "element": "span",
-                                    "whenItemGiven": "kind"
                                   }
                                 ],
                                 "element": "div",
                                 "itemOptions": [
                                   "value",
                                   "disabled",
-                                  "kind",
-                                  "tone",
-                                  "group"
+                                  "tone"
                                 ],
                                 "mount": "data-sk-menu-item",
                                 "whenItemMissing": "href",
-                                "whenItemNotEquals": {
-                                  "equals": "separator",
-                                  "option": "kind"
-                                },
                                 "whenItemSlotMissing": "children"
                               },
                               {
@@ -14528,57 +14541,18 @@
                                     ],
                                     "element": "span",
                                     "itemSlot": "label"
-                                  },
-                                  {
-                                    "also": [
-                                      "sk-menu__item-indicator"
-                                    ],
-                                    "attrs": {
-                                      "aria-hidden": "true"
-                                    },
-                                    "children": [
-                                      {
-                                        "attrs": {
-                                          "data-sk-icon": "check",
-                                          "data-sk-icon-size": "md"
-                                        },
-                                        "element": "span"
-                                      }
-                                    ],
-                                    "element": "span",
-                                    "whenItemGiven": "kind"
                                   }
                                 ],
                                 "element": "a",
                                 "itemOptions": [
                                   "value",
                                   "disabled",
-                                  "kind",
                                   "tone",
-                                  "group",
                                   "href"
                                 ],
                                 "mount": "data-sk-menu-item",
                                 "whenItemGiven": "href",
-                                "whenItemNotEquals": {
-                                  "equals": "separator",
-                                  "option": "kind"
-                                },
                                 "whenItemSlotMissing": "children"
-                              },
-                              {
-                                "also": [
-                                  "sk-menu__separator"
-                                ],
-                                "attrs": {
-                                  "role": "separator"
-                                },
-                                "element": "div",
-                                "mount": "data-sk-menu-separator",
-                                "whenItemEquals": {
-                                  "equals": "separator",
-                                  "option": "kind"
-                                }
                               },
                               {
                                 "also": [
@@ -14723,22 +14697,9 @@
                     "trueValue": "",
                     "type": "boolean"
                   },
-                  "group": {
-                    "attr": "data-group",
-                    "type": "string"
-                  },
                   "href": {
                     "attr": "href",
                     "type": "string"
-                  },
-                  "kind": {
-                    "attr": "data-type",
-                    "type": "enum",
-                    "values": [
-                      "checkbox",
-                      "radio",
-                      "separator"
-                    ]
                   },
                   "tone": {
                     "attr": "data-tone",
@@ -14842,41 +14803,16 @@
                                     ],
                                     "element": "span",
                                     "itemSlot": "label"
-                                  },
-                                  {
-                                    "also": [
-                                      "sk-menu__item-indicator"
-                                    ],
-                                    "attrs": {
-                                      "aria-hidden": "true"
-                                    },
-                                    "children": [
-                                      {
-                                        "attrs": {
-                                          "data-sk-icon": "check",
-                                          "data-sk-icon-size": "md"
-                                        },
-                                        "element": "span"
-                                      }
-                                    ],
-                                    "element": "span",
-                                    "whenItemGiven": "kind"
                                   }
                                 ],
                                 "element": "div",
                                 "itemOptions": [
                                   "value",
                                   "disabled",
-                                  "kind",
-                                  "tone",
-                                  "group"
+                                  "tone"
                                 ],
                                 "mount": "data-sk-menu-item",
                                 "whenItemMissing": "href",
-                                "whenItemNotEquals": {
-                                  "equals": "separator",
-                                  "option": "kind"
-                                },
                                 "whenItemSlotMissing": "children"
                               },
                               {
@@ -14891,57 +14827,18 @@
                                     ],
                                     "element": "span",
                                     "itemSlot": "label"
-                                  },
-                                  {
-                                    "also": [
-                                      "sk-menu__item-indicator"
-                                    ],
-                                    "attrs": {
-                                      "aria-hidden": "true"
-                                    },
-                                    "children": [
-                                      {
-                                        "attrs": {
-                                          "data-sk-icon": "check",
-                                          "data-sk-icon-size": "md"
-                                        },
-                                        "element": "span"
-                                      }
-                                    ],
-                                    "element": "span",
-                                    "whenItemGiven": "kind"
                                   }
                                 ],
                                 "element": "a",
                                 "itemOptions": [
                                   "value",
                                   "disabled",
-                                  "kind",
                                   "tone",
-                                  "group",
                                   "href"
                                 ],
                                 "mount": "data-sk-menu-item",
                                 "whenItemGiven": "href",
-                                "whenItemNotEquals": {
-                                  "equals": "separator",
-                                  "option": "kind"
-                                },
                                 "whenItemSlotMissing": "children"
-                              },
-                              {
-                                "also": [
-                                  "sk-menu__separator"
-                                ],
-                                "attrs": {
-                                  "role": "separator"
-                                },
-                                "element": "div",
-                                "mount": "data-sk-menu-separator",
-                                "whenItemEquals": {
-                                  "equals": "separator",
-                                  "option": "kind"
-                                }
                               },
                               {
                                 "also": [
@@ -41940,6 +41837,12 @@
           "part": "root",
           "sheet": "@skryensya/core/components/segmented.css"
         },
+        "--sk-segmented-block-size": {
+          "default": "var(--size-control-sm)",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/segmented.css"
+        },
         "--sk-segmented-border-color": {
           "default": "var(--color-border-default)",
           "output": false,
@@ -41958,6 +41861,12 @@
           "part": "root",
           "sheet": "@skryensya/core/components/segmented.css"
         },
+        "--sk-segmented-font-size": {
+          "default": "var(--font-size-body-sm)",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/segmented.css"
+        },
         "--sk-segmented-gap": {
           "default": "var(--space-inline-xs)",
           "output": false,
@@ -41966,6 +41875,12 @@
         },
         "--sk-segmented-option-fg": {
           "default": "var(--color-text-secondary)",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/segmented.css"
+        },
+        "--sk-segmented-option-padding-inline": {
+          "default": "var(--space-inset-sm)",
           "output": false,
           "part": "root",
           "sheet": "@skryensya/core/components/segmented.css"
@@ -42027,11 +41942,14 @@
       },
       "hooks": [
         "--sk-segmented-bg",
+        "--sk-segmented-block-size",
         "--sk-segmented-border-color",
         "--sk-segmented-border-width",
         "--sk-segmented-brutalist-offset",
         "--sk-segmented-gap",
+        "--sk-segmented-font-size",
         "--sk-segmented-option-fg",
+        "--sk-segmented-option-padding-inline",
         "--sk-segmented-padding",
         "--sk-segmented-radius",
         "--sk-segmented-selected-bg",
@@ -42058,6 +41976,16 @@
         "label": {
           "attr": "aria-label",
           "type": "string"
+        },
+        "size": {
+          "attr": "data-size",
+          "default": "sm",
+          "type": "enum",
+          "values": [
+            "sm",
+            "md",
+            "lg"
+          ]
         },
         "value": {
           "attr": "data-value",
@@ -42109,7 +42037,8 @@
           "options": [
             "value",
             "label",
-            "appearance"
+            "appearance",
+            "size"
           ],
           "react": {
             "from": "@skryensya/react/segmented",
@@ -55096,7 +55025,7 @@
     "working": "0.0.1"
   },
   "schemaVersion": "2.3",
-  "sourceHash": "08f1282c7689fc8e",
+  "sourceHash": "cbe8a68030f8e65a",
   "vocabulary": {
     "a11y": "When `when` holds, one of `requiresOneOf` must be given: an option, a raw attribute, a filled slot, or a child signature by name.",
     "atLeastOneOf": "At least one member of each group counts: a filled slot, a boolean option set to true, or an option other than its default.",

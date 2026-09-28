@@ -3,7 +3,7 @@
 # `surface` is the shape of the contract the last time somebody reviewed it. If the compiler says it
 # does not match, something a consumer depends on has moved: write the entry and paste in the new
 # hash.
-surface: "3d98c4592fe837dd"
+surface: "97709aa0f68dcb9c"
 entries:
   - date: 2026-09-27
     kind: bugfix
@@ -233,3 +233,24 @@ entries:
       body: >-
         <code>sk-value-change</code> → <code>sk:segmentedvaluechange</code>. No two families dispatch the same name any more: a listener on a root stops receiving
         the events of a different component nested inside it. The contract now declares them in <code>events</code>, so the compiler publishes them.
+  - date: 2026-09-28
+    kind: feature
+    es:
+      title: Segmented gana size, en la escala de Button
+      body: >-
+        <code>size</code> (<code>sm</code>, <code>md</code>, <code>lg</code>) va en
+        <code>data-size</code>. <code>sm</code> es el tamaño de siempre y el default, a la altura de un
+        botón pequeño; <code>md</code> y <code>lg</code> son para cuando el control es lo que se lee y
+        no un control más en una fila, como el selector de valores de una vista previa. Altura, tipo y
+        relleno de las opciones cambian juntos. Hooks nuevos:
+        <code>--sk-segmented-block-size</code>, <code>--sk-segmented-font-size</code> y
+        <code>--sk-segmented-option-padding-inline</code>.
+    en:
+      title: Segmented gains size, on Button's scale
+      body: >-
+        <code>size</code> (<code>sm</code>, <code>md</code>, <code>lg</code>) lands on
+        <code>data-size</code>. <code>sm</code> is the size it always had and the default, the height
+        of a small button; <code>md</code> and <code>lg</code> are for when the control is what is being
+        read rather than one more control in a row, like a preview's value switcher. Height, type and
+        the options' padding move together. New hooks: <code>--sk-segmented-block-size</code>,
+        <code>--sk-segmented-font-size</code> and <code>--sk-segmented-option-padding-inline</code>.

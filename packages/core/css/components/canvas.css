@@ -105,6 +105,21 @@
   }
 
   /*
+   * BEFORE THE BINDING PLACES IT, A FITTED DRAWING IS ALREADY CENTRED. Until the script has measured
+   * and written its first view (`data-sk-placed`), the content sat at the viewport's top-left corner
+   * and then jumped to the middle when the script arrived, late and visibly on a page of several.
+   * A fit-only canvas centres it with CSS instead, on both axes, which is where the fit puts any
+   * drawing that fits at 100%: the script then lands on the same place and nothing moves. Only a
+   * drawing too big for its frame still changes when it is scaled down, which no stylesheet can
+   * know in advance. Interactive canvases are left alone: their first view is the same fit, but a
+   * reader cannot act on them before the script anyway.
+   */
+  .sk-canvas[data-fit-only]:not([data-sk-placed]) > .sk-canvas__viewport {
+    display: grid;
+    place-items: center;
+  }
+
+  /*
    * ORIGIN TOP-LEFT, and every function in `@skryensya/core/canvas` assumes it: a content point `p`
    * is drawn at `translate + p * scale`. `will-change` because a pinch rewrites this every frame.
    */
@@ -112,6 +127,16 @@
     inline-size: var(--sk-canvas-content-inline-size);
     transform-origin: 0 0;
     will-change: transform;
+  }
+
+  .sk-canvas[data-sk-zooming] .sk-canvas__content {
+    transition: transform var(--motion-release-duration) var(--motion-release-easing);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .sk-canvas[data-sk-zooming] .sk-canvas__content {
+      transition: none;
+    }
   }
 
   /*

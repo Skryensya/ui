@@ -1,18 +1,15 @@
 import { appBarAttrs, appBarParts, resolveAppBarKey, shouldSwitchOnPointer } from "@skryensya/core/app-bar";
 import { menuAttrs, menuEvents, menuParts, type MenuApi, type MenuItem } from "@skryensya/core/menu";
 import {
-  Children,
-  cloneElement,
   createContext,
-  isValidElement,
   useContext,
   useEffect,
   useId,
+  useLayoutEffect,
   useRef,
   useState,
   type HTMLAttributes,
   type KeyboardEvent,
-  type ReactElement,
   type ReactNode,
   type RefObject,
 } from "react";
@@ -29,21 +26,24 @@ const cx = (...names: (string | false | undefined)[]) => names.filter(Boolean).j
  * menus, Left/Right between them carrying an open dropdown along, and pointing at another trigger
  * while one menu is open switches to it.
  *
- * Every trigger registers under a key: `m<i>` for the menus (the roving set, in order) and `s<i>`
- * for the status menus (pointer switching only; each is its own tab stop). The index is injected by
- * the parent, like Menubar's, so an author never writes one.
+ * Every trigger registers itself with the bar (menus and status menus alike), and the bar orders the
+ * menus by where their triggers sit in the document, not by position among its own children: a menu
+ * rendered through a wrapper component, a fragment or a map is still in the right place in the
+ * roving order, and nothing is injected into an author's elements.
  */
 
-type Entry = { api: MenuApi | null; trigger: HTMLElement | null };
+type Entry = { api: MenuApi | null; trigger: HTMLElement | null; menu: boolean };
 
 type AppBarContextValue = {
   register: (key: string, entry: Entry | null) => void;
-  /** The menu holding the tab stop. */
-  stop: number;
+  /** Whether `key`'s trigger holds the menus' one tab stop. */
+  isStop: (key: string) => boolean;
   /** Close every open dropdown but `except`'s. */
   closeOthers: (except: string) => void;
   /** A pointer arrived on `key`'s trigger: switch to it when another menu is open. */
   pointed: (key: string) => void;
+  /** Focus arrived on `key`'s trigger: it becomes the tab stop. */
+  focused: (key: string) => void;
 };
 
 const AppBarContext = createContext<AppBarContextValue | null>(null);
@@ -63,25 +63,29 @@ export type AppBarProps = Omit<HTMLAttributes<HTMLDivElement>, "children"> & {
   status?: ReactNode;
 };
 
-/** Injects `index` into each element of `nodes` that is `type`, leaving anything else alone. */
-function indexed(nodes: ReactNode, type: unknown): ReactNode {
-  let index = 0;
-  return Children.map(nodes, (child) =>
-    isValidElement(child) && child.type === type
-      ? cloneElement(child as ReactElement<Record<string, unknown>>, { index: index++ })
-      : child,
-  );
-}
+const inDocumentOrder = (a: HTMLElement | null, b: HTMLElement | null) =>
+  a && b ? (a.compareDocumentPosition(b) & Node.DOCUMENT_POSITION_FOLLOWING ? -1 : 1) : 0;
 
 export function AppBar({ children, className, label, status, ...props }: AppBarProps) {
   const entries = useRef(new Map<string, Entry>());
-  const [stop, setStop] = useState(0);
+  const [stop, setStop] = useState<string>();
 
-  const menuKeys = () => [...entries.current.keys()].filter((key) => key.startsWith("m")).sort((a, b) => Number(a.slice(1)) - Number(b.slice(1)));
+  /** The menus' keys, in the order their triggers sit in the document. */
+  const menuKeys = () =>
+    [...entries.current]
+      .filter(([, entry]) => entry.menu)
+      .sort(([, a], [, b]) => inDocumentOrder(a.trigger, b.trigger))
+      .map(([key]) => key);
   const openKey = () => [...entries.current].find(([, entry]) => entry.api?.open)?.[0];
   const closeOthers = (except?: string) => {
     for (const [key, entry] of entries.current) if (key !== except && entry.api?.open) entry.api.setOpen(false);
   };
+
+  /* Until a menu has been focused, the first one holds the stop. Known only once the menus have
+     registered, which their layout effects do before this one runs. */
+  useLayoutEffect(() => {
+    if (stop === undefined || !entries.current.has(stop)) setStop(menuKeys()[0]);
+  });
 
   const onKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
     if (event.defaultPrevented || !["ArrowLeft", "ArrowRight", "Home", "End"].includes(event.key)) return;
@@ -89,15 +93,17 @@ export function AppBar({ children, className, label, status, ...props }: AppBarP
     if ((event.target as HTMLElement).closest("[data-sk-submenu]")) return;
     const keys = menuKeys();
     const open = openKey();
-    const focused = keys.findIndex((key) => entries.current.get(key)?.trigger === document.activeElement);
-    const index = focused !== -1 ? focused : open?.startsWith("m") ? keys.indexOf(open) : stop;
-    const action = resolveAppBarKey({ key: event.key, index, count: keys.length, open: open?.startsWith("m") ?? false });
+    const openMenu = open !== undefined && keys.includes(open) ? open : undefined;
+    const focused = keys.find((key) => entries.current.get(key)?.trigger === document.activeElement);
+    const current = focused ?? openMenu ?? stop ?? keys[0];
+    const action = resolveAppBarKey({ key: event.key, index: Math.max(0, keys.indexOf(current!)), count: keys.length, open: openMenu !== undefined });
     if (action.kind === "none") return;
     event.preventDefault();
     event.stopPropagation();
-    const target = entries.current.get(keys[action.index]!);
-    setStop(action.index);
-    closeOthers(keys[action.index]);
+    const key = keys[action.index]!;
+    const target = entries.current.get(key);
+    setStop(key);
+    closeOthers(key);
     /* Opening moves focus into the list (Menu's own open does); otherwise the title takes it. */
     if (action.open && target?.api) target.api.setOpen(true);
     else target?.trigger?.focus();
@@ -108,7 +114,7 @@ export function AppBar({ children, className, label, status, ...props }: AppBarP
       if (entry) entries.current.set(key, entry);
       else entries.current.delete(key);
     },
-    stop,
+    isStop: (key) => key === stop,
     closeOthers,
     pointed: (key) => {
       const all = [...entries.current.keys()];
@@ -117,7 +123,10 @@ export function AppBar({ children, className, label, status, ...props }: AppBarP
       closeOthers(key);
       const entry = entries.current.get(key);
       entry?.api?.setOpen(true);
-      if (key.startsWith("m")) setStop(Number(key.slice(1)));
+      if (entry?.menu) setStop(key);
+    },
+    focused: (key) => {
+      if (entries.current.get(key)?.menu) setStop(key);
     },
   };
 
@@ -125,21 +134,28 @@ export function AppBar({ children, className, label, status, ...props }: AppBarP
     <AppBarContext.Provider value={context}>
       <div {...props} {...{ [appBarAttrs.root]: "" }} className={cx(appBarParts.root, className)}>
         <div aria-label={label} className={appBarParts.menus} onKeyDownCapture={onKeyDown} role="menubar">
-          {indexed(children, AppBarMenu)}
+          {children}
         </div>
-        {status ? <div className={appBarParts.status}>{indexed(status, AppBarStatus)}</div> : null}
+        {status ? <div className={appBarParts.status}>{status}</div> : null}
       </div>
     </AppBarContext.Provider>
   );
 }
 
+/**
+ * One action of a dropdown: Menu's item without what would make it a control (`kind`, so no
+ * checkbox, radio or separator; `checked`; `group`). The contract's `appBarItemShape`, in types.
+ */
+export type AppBarItem = Omit<MenuItem, "kind" | "checked" | "group" | "children"> & {
+  /** A second or third level of actions. */
+  children?: readonly AppBarItem[];
+};
+
 type DropdownProps = {
-  /** The dropdown: Menu's own item shape, verbatim. Without it the item is a plain command or text. */
-  items?: readonly MenuItem[];
+  /** The dropdown's actions. Without it the item is a plain command, or plain text on the status side. */
+  items?: readonly AppBarItem[];
   /** A command inside the dropdown was chosen: Menu's own `onSelect`. */
   onSelect?: (details: { value: string }) => void;
-  /** A checkbox or radio inside the dropdown toggled: Menu's own `onCheckedChange`. */
-  onCheckedChange?: (details: { value: string; checked: boolean }) => void;
   /** Where the dropdown portals: Menu's own `container`. */
   container?: RefObject<HTMLElement>;
 };
@@ -153,19 +169,14 @@ function Chevron() {
   );
 }
 
-function initialCheckedState(items: readonly MenuItem[]): CheckedState {
-  return Object.fromEntries(
-    items.flatMap((item) => [...(item.checked ? [[item.value, true] as const] : []), ...Object.entries(initialCheckedState(item.children ?? []))]),
-  );
-}
-
-const nestsSubmenu = (items: readonly MenuItem[]): boolean => items.some((item) => Boolean(item.children?.length));
+const nestsSubmenu = (items: readonly AppBarItem[]): boolean => items.some((item) => Boolean(item.children?.length));
 
 /** The machine, the popup and the registration one trigger of the bar needs, menu or status alike. */
-function useDropdown(key: string, items: readonly MenuItem[] | undefined) {
+function useDropdown(menu: boolean, items: readonly AppBarItem[] | undefined) {
   const context = useAppBar("AppBarMenu and AppBarStatus");
   const hasMenu = Boolean(items?.length);
   const id = useId();
+  const key = id;
   const eventRootRef = useRef<HTMLDivElement | null>(null);
   const triggerRef = useRef<HTMLButtonElement | null>(null);
   const { service, api } = useMenuMachine({
@@ -178,10 +189,12 @@ function useDropdown(key: string, items: readonly MenuItem[] | undefined) {
   /* Withheld the moment any level nests a submenu, exactly as Menu does: the browser's engine and the
      machine's must not place two levels of one tree, or the submenu lands in the wrong space. */
   const anchor = useAnchored(id, !nestsSubmenu(items ?? []));
-  const [checkedState, setChecked] = useState<CheckedState>(() => initialCheckedState(items ?? []));
+  /* Nothing in a bar's dropdown is ever checked (actions only), so Menu's checked state stays empty. */
+  const checkedState: CheckedState = {};
 
-  useEffect(() => {
-    context.register(key, { api: hasMenu ? api : null, trigger: triggerRef.current });
+  /* A layout effect, so the bar can find its first menu in its own layout effect, before paint. */
+  useLayoutEffect(() => {
+    context.register(key, { api: hasMenu ? api : null, trigger: triggerRef.current, menu });
     return () => context.register(key, null);
   });
 
@@ -190,17 +203,9 @@ function useDropdown(key: string, items: readonly MenuItem[] | undefined) {
     if (hasMenu && api.open) context.closeOthers(key);
   }, [api.open, hasMenu, key]);
 
-  const setCheckedState = (changed: MenuItem, checked: boolean) => {
-    setChecked((current) => {
-      if (changed.kind !== "radio" || !checked) return { ...current, [changed.value]: checked };
-      const next = { ...current };
-      for (const candidate of items ?? []) if (candidate.kind === "radio" && candidate.group === changed.group) next[candidate.value] = false;
-      next[changed.value] = true;
-      return next;
-    });
-  };
+  const setCheckedState = () => {};
 
-  return { context, hasMenu, api, service, anchor, eventRootRef, triggerRef, checkedState, setCheckedState };
+  return { key, context, hasMenu, api, service, anchor, eventRootRef, triggerRef, checkedState, setCheckedState };
 }
 
 function Popup({
@@ -208,7 +213,6 @@ function Popup({
   items,
   container,
   onSelect,
-  onCheckedChange,
 }: DropdownProps & { dropdown: ReturnType<typeof useDropdown> }) {
   return (
     <MenuPopup
@@ -218,7 +222,6 @@ function Popup({
       density="compact"
       eventRootRef={dropdown.eventRootRef}
       items={items!}
-      onCheckedChange={onCheckedChange}
       onSelect={onSelect}
       positionerProps={dropdown.anchor.positioner(dropdown.api.getPositionerProps(), cx(appBarParts.dropdown, menuParts.positioner))}
       service={dropdown.service}
@@ -237,17 +240,15 @@ export type AppBarMenuProps = DropdownProps & {
 };
 
 export function AppBarMenu(publicProps: AppBarMenuProps) {
-  const { children, container, items, onActivate, onCheckedChange, onSelect, strong } = publicProps;
-  /* Injected by AppBar: never author-set. */
-  const index = (publicProps as AppBarMenuProps & { index?: number }).index ?? 0;
-  const key = `m${index}`;
-  const dropdown = useDropdown(key, items);
-  const { context, hasMenu, api, anchor, eventRootRef, triggerRef } = dropdown;
-  const tabIndex = context.stop === index ? 0 : -1;
+  const { children, container, items, onActivate, onSelect, strong } = publicProps;
+  const dropdown = useDropdown(true, items);
+  const { key, context, hasMenu, api, anchor, eventRootRef, triggerRef } = dropdown;
+  const tabIndex = context.isStop(key) ? 0 : -1;
   const common = {
     [menuAttrs.trigger]: "",
     [appBarAttrs.trigger]: "",
     [appBarAttrs.menuTrigger]: "",
+    onFocus: () => context.focused(key),
     onPointerEnter: () => context.pointed(key),
     ref: triggerRef,
     role: "menuitem",
@@ -273,7 +274,7 @@ export function AppBarMenu(publicProps: AppBarMenuProps) {
           {children}
         </button>
       )}
-      {hasMenu ? <Popup dropdown={dropdown} items={items} container={container} onSelect={onSelect} onCheckedChange={onCheckedChange} /> : null}
+      {hasMenu ? <Popup dropdown={dropdown} items={items} container={container} onSelect={onSelect} /> : null}
     </div>
   );
 }
@@ -284,11 +285,9 @@ export type AppBarStatusProps = DropdownProps & {
 };
 
 export function AppBarStatus(publicProps: AppBarStatusProps) {
-  const { children, container, items, onCheckedChange, onSelect } = publicProps;
-  const index = (publicProps as AppBarStatusProps & { index?: number }).index ?? 0;
-  const key = `s${index}`;
-  const dropdown = useDropdown(key, items);
-  const { context, hasMenu, api, anchor, eventRootRef, triggerRef } = dropdown;
+  const { children, container, items, onSelect } = publicProps;
+  const dropdown = useDropdown(false, items);
+  const { key, context, hasMenu, api, anchor, eventRootRef, triggerRef } = dropdown;
 
   return (
     <div ref={eventRootRef} className={cx(appBarParts.statusItem, menuParts.root)} data-density="compact" {...{ [menuAttrs.root]: "" }}>
@@ -305,7 +304,7 @@ export function AppBarStatus(publicProps: AppBarStatusProps) {
             {children}
             <Chevron />
           </button>
-          <Popup dropdown={dropdown} items={items} container={container} onSelect={onSelect} onCheckedChange={onCheckedChange} />
+          <Popup dropdown={dropdown} items={items} container={container} onSelect={onSelect} />
         </>
       ) : (
         <span className={appBarParts.statusText}>{children}</span>

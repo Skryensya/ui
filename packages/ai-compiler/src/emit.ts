@@ -92,8 +92,7 @@ const PRINT_WIDTH = 75;
  * it has to turns a tag anyone could read at a glance into a column of one-word lines (measured at
  * 56: `<a class="sk-breadcrumb__link" href="/" title="Inicio">` became five lines, and a separator
  * holding a single `/` became five more). A sentence is READ, left to right, and the surface it is
- * read on is never the full window: the Playground puts the editor beside the thing it runs, a docs
- * source panel sits inside a card inside a document column, and either can be dragged narrower.
+ * read on is never the full window: a docs source panel sits inside a card inside a document column, and either can be dragged narrower.
  *
  * So prose gets the narrow pane's measure and tags keep the wide one's. The cost is accepted on
  * purpose: a long sentence takes four or five lines where it used to take three, and no line of a
@@ -1247,8 +1246,8 @@ type JsxContext = {
 
 export type ReactEmitOptions = {
   /**
-   * The component to wrap the JSX in. Given, the snippet is ALWAYS a component (the playground's
-   * entry file needs one whether or not there is data); absent, one is derived from the root
+   * The component to wrap the JSX in. Given, the snippet is ALWAYS a component (an entry file
+   * needs one whether or not there is data); absent, one is derived from the root
    * signature and used only when there is data to hold.
    */
   readonly component?: string;

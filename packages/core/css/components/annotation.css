@@ -54,7 +54,9 @@
     /* The two bands of a figure with a legend: the drawing on the surface, the legend below it on a
        ground one step down, so the list reads as apparatus under the figure and not as more of it. */
     --sk-annotated-surface-bg: var(--color-bg-surface);
-    --sk-annotated-legend-bg: var(--color-bg-surface-sunken);
+    /* No ground of its own: the legend sits under the drawing as plain text (see the figure below).
+       Kept as a hook so a consumer that wants a band back can paint one. */
+    --sk-annotated-legend-bg: transparent;
     /*
      * THE SPECIMEN IS DESATURATED, so that colour in a diagram means exactly one thing: annotation.
      *
@@ -157,35 +159,31 @@
   }
 
   /*
-   * THE FIGURE IS A CARD OF TWO BANDS. The drawing sits in the first, on the surface; the legend in
-   * the second, on a sunken ground behind a hairline, tighter and quieter. Two containers because
-   * they are two kinds of content: the drawing is what the reader looks at, the legend is what they
-   * look things UP in, and letting them share one ground made the list read as a second drawing
-   * competing with the first.
+   * THE FIGURE IS A DRAWING WITH ITS LEGEND UNDER IT. Only the drawing is framed: the canvas keeps
+   * its own border, radius and surface. The legend has no container at all, no band, no hairline, no
+   * ground: it is a list read under the picture, the way a caption sits under a figure in print. It
+   * used to be a second band inside one card with the drawing, sunken behind a line, which made a
+   * lookup list into a second box competing with the thing it explains.
    */
   .sk-annotated-figure {
-    --sk-annotated-figure-inset: var(--space-inset-md);
+    /* The room under the legend, before whatever follows the figure. */
+    --sk-annotated-figure-inset: var(--space-stack-xl);
     display: flex;
     flex-direction: column;
     inline-size: 100%;
     max-inline-size: 100%;
-    overflow: clip;
-    border: 1px solid var(--color-border-subtle);
-    border-radius: var(--radius-surface);
-    background: var(--sk-annotated-surface-bg);
   }
 
-  /* The legend's padding is the one inset a narrow screen still pays for at full size, so it tightens. */
+  /* A narrow screen keeps less of that room: the page around it is tighter too. */
   @media (max-width: 40rem) {
     .sk-annotated-figure {
-      --sk-annotated-figure-inset: var(--space-inset-sm);
+      --sk-annotated-figure-inset: var(--space-stack-lg);
     }
   }
 
   /*
-   * THE FRAME SITS ON A CANVAS. It keeps a margin inside it (scaled with everything else), and the
-   * canvas drops its own border, since the card already has one and the legend band below is the
-   * only division the figure wants.
+   * THE FRAME SITS ON A CANVAS, and the canvas is the figure's only frame: its own border and radius,
+   * on the drawing's surface. The drawing keeps a margin inside it (scaled with everything else).
    */
   .sk-canvas__content > .sk-annotated {
     box-sizing: border-box;
@@ -207,14 +205,14 @@
   }
 
   .sk-annotated-figure > .sk-canvas {
-    border: 0;
-    border-radius: 0;
-    background: transparent;
+    --sk-canvas-bg: var(--sk-annotated-surface-bg);
   }
 
+  /* Under the drawing, flush with its edge and clear of what follows: a little air above, more
+     below, so the list reads as the figure's and the next paragraph starts after a real pause. */
   .sk-annotated-figure > .sk-annotated__legend {
-    border-block-start: 1px solid var(--color-border-subtle);
-    padding: var(--sk-annotated-figure-inset);
+    padding-block: var(--space-stack-sm) var(--sk-annotated-figure-inset);
+    padding-inline: 0;
     background: var(--sk-annotated-legend-bg);
   }
 

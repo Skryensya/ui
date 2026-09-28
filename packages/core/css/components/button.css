@@ -600,6 +600,25 @@
     scale: 1;
   }
 
+  /* A tactile toggle that is ON should look latched, not raised. Keep a small physical edge so it
+   * still reads as a button, but park the face down until the toggle is released. */
+  .sk-button[data-appearance="tactile"][aria-pressed="true"]:not(:disabled):not([aria-disabled="true"]):not(:active) {
+    box-shadow:
+      0 calc(var(--sk-button-depth) * 0.22) 0 light-dark(
+        color-mix(in oklab, var(--sk-button-bg) 76%, var(--color-text-primary)),
+        color-mix(in oklab, var(--sk-button-bg) 72%, var(--color-bg-surface-sunken))
+      ),
+      0 calc(var(--sk-button-depth) * 0.22 + 1px) 2px light-dark(
+        color-mix(in oklab, var(--color-text-primary) 10%, transparent),
+        color-mix(in oklab, var(--color-bg-surface-sunken) 30%, transparent)
+      );
+    translate: 0 calc(var(--sk-button-depth) * 0.72);
+  }
+
+  .sk-button[data-appearance="tactile"][data-variant="ghost"][aria-pressed="true"]:not(:disabled):not([aria-disabled="true"]):not(:active) {
+    box-shadow: 0 calc(var(--sk-button-depth) * 0.22) 0 color-mix(in oklab, currentColor 16%, transparent);
+  }
+
   /*
    * BRUTALIST. Graphic depth, NOT semantic elevation: a flat face, a hard edge, and a zero-blur
    * offset the face travels into. `--elevation-*` means height above the page and none of it is

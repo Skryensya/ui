@@ -46,11 +46,14 @@ export const segmentedContract = {
   },
   hooks: [
     "--sk-segmented-bg",
+    "--sk-segmented-block-size",
     "--sk-segmented-border-color",
     "--sk-segmented-border-width",
     "--sk-segmented-brutalist-offset",
     "--sk-segmented-gap",
+    "--sk-segmented-font-size",
     "--sk-segmented-option-fg",
+    "--sk-segmented-option-padding-inline",
     "--sk-segmented-padding",
     "--sk-segmented-radius",
     "--sk-segmented-selected-bg",
@@ -88,13 +91,20 @@ export const segmentedContract = {
       default: "plain",
       attr: "data-appearance",
     },
+    /*
+     * The TRACK's size, on Button's scale: `sm` is the size it has always been, the height of a
+     * small button it usually sits beside; `md` and `lg` are for a segmented control that is the
+     * thing on screen rather than one more control in a row, like the value switcher of a
+     * documentation preview. Height, type and the options' inline padding move together.
+     */
+    size: { type: "enum", values: ["sm", "md", "lg"], default: "sm", attr: "data-size" },
   },
 
   signatures: {
     Segmented: {
       intent: ["small-exclusive-choice", "view-switcher", "two-or-three-options"],
       host: { element: "div" },
-      options: ["value", "label", "appearance"],
+      options: ["value", "label", "appearance", "size"],
       requires: ["value", "label"],
       /** Host id / a11y; label stays the option. */
       forward: ["id", "aria-*"],

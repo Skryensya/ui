@@ -126,3 +126,21 @@ entries:
       body: >-
         The kit is an English library and its defaults were Spanish: <code>moreLabel</code> Expand, <code>lessLabel</code> Collapse, <code>switchLabel</code> Show the full version. An interface in another
         language passes its own texts, and the <code>locale</code> it needs.
+  - date: 2026-09-28
+    kind: bugfix
+    es:
+      title: Sin etiqueta, el botón de copiar se alinea con la primera línea y no tapa el código
+      body: >-
+        Un bloque sin <code>label</code> (un comando de instalación, casi siempre) ponía el botón de
+        copiar arriba con el margen de la cabecera que no tiene, desalineado con la línea que copia,
+        y en pantallas angostas el texto pasaba por debajo del botón. Ahora el botón se centra en la
+        primera línea y el área que desplaza el código termina antes del botón, así una línea larga
+        se corta ahí y se desplaza. Con etiqueta nada cambia.
+    en:
+      title: Without a label, the copy button lines up with the first line and never covers the code
+      body: >-
+        A block with no <code>label</code> (an install command, nearly always) set the copy button at
+        the top with the inset of a header it does not have, out of line with the line it copies,
+        and on narrow screens the text ran underneath it. The button is now centred on the first
+        line, and the code's scrolling area ends before the button, so a long line is cut there and
+        scrolls. With a label nothing changes.

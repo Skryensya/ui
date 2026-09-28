@@ -665,82 +665,6 @@ function connectStageResizer(root: HTMLElement): Cleanup {
  * step here (no compression, no `fetch`) standing between the click and the URL, so the direct call
  * already satisfies every browser's "was this a user gesture" check for a new tab.
  */
-/** What the two apps agree on. Neither imports the other, so these strings ARE the interface. */
-export const playgroundReadyMessage = "sk-playground-ready";
-export const playgroundHandoffMessage = "sk-playground-handoff";
-
-/**
- * Hands this demo's source to the Playground, in the one way that survives the two apps being on
- * different origins.
- *
- * WHY NOT `sessionStorage`, which is what the Playground originally read. Storage is partitioned per
- * ORIGIN, and since the apps split they only share one when both sit behind a single host. Under
- * `pnpm dev` they are two ports, and a write here was simply unreadable there - the handoff worked in
- * production and silently did nothing in development, which is the worst of the two orders to have it.
- *
- * WHY NOT THE URL. Measured over the 182 canonical trees: median 1.2 KB, mean 1.9 KB, and
- * `comment-thread/thread` at 18 KB. A fragment would carry it, but "open in the playground" would
- * produce a URL nobody can read, share or paste, for the sake of a transfer that is over in one hop.
- *
- * SO: `postMessage`, which is the mechanism that exists for exactly this. No size limit, explicit
- * about the origin it will talk to, and it leaves the address bar clean. The cost is a handshake -
- * the new tab has to tell us it is listening, because there is no way to know when a document in
- * another origin has booted.
- *
- * Returns `false` when it could not take over the navigation (a popup blocker, no payload), so the
- * caller can let the plain link through instead of swallowing the click.
- */
-/**
- * The payload plus where it came from: this page, as the reader has it (a `?tab=` included), with
- * the fragment pointed at this preview. The Playground's "See the docs" follows it back. Added here
- * rather than at build time because only the browser knows the origin the page is being read on.
- */
-function withDocsAddress(payload: string, root: HTMLElement): string {
-  try {
-    const docs = new URL(location.href);
-    docs.hash = root.id;
-    return encodeURIComponent(JSON.stringify({ ...JSON.parse(decodeURIComponent(payload)), docs: docs.href }));
-  } catch {
-    return payload;
-  }
-}
-
-export function openInPlayground(root: HTMLElement, url: string): boolean {
-  const payload = root.getAttribute(componentPreviewAttrs.playground);
-  if (!payload) return false;
-
-  /* Synchronous, in the click's own turn: anything async first and the browser treats the open as
-   * unsolicited. */
-  const target = window.open(url, "_blank");
-  if (!target) return false;
-
-  const origin = new URL(url, location.href).origin;
-
-  const onReady = (event: MessageEvent) => {
-    /*
-     * BOTH CHECKS MATTER. `event.source` proves the message came from the tab we just opened rather
-     * than from any other frame that happens to know the string; `origin` is what we will only ever
-     * send TO, so the payload cannot land anywhere else even if something else answered first.
-     */
-    if (event.source !== target) return;
-    if ((event.data as { type?: unknown } | null)?.type !== playgroundReadyMessage) return;
-
-    target.postMessage({ type: playgroundHandoffMessage, payload: withDocsAddress(payload, root) }, origin);
-    window.removeEventListener("message", onReady);
-  };
-
-  window.addEventListener("message", onReady);
-
-  /*
-   * The listener is dropped after one minute whether or not the tab ever answered. A Playground that
-   * failed to load, or that the reader closed on the way, would otherwise leave this page listening
-   * for a handshake that is never coming.
-   */
-  window.setTimeout(() => window.removeEventListener("message", onReady), 60_000);
-
-  return true;
-}
-
 /**
  * One shared "Ver código"/"Ocultar código" STATE for the whole preview, not one per binding: a
  * demo's Vanilla source-tabs group (HTML/CSS/TS) and its React one (Componente/data) are two
@@ -915,7 +839,6 @@ export function connectComponentPreview(root: HTMLElement): Cleanup {
   const bindingTabs = root.querySelector<HTMLElement>(selector(componentPreviewAttrs.bindingTabs));
   const sourceTabs = root.querySelector<HTMLElement>(selector(componentPreviewAttrs.sourceTabs));
   const reload = root.querySelector<HTMLElement>(selector(componentPreviewAttrs.reload));
-  const playground = root.querySelector<HTMLElement>(selector(componentPreviewAttrs.playgroundOpen));
   /*
    * A PREVIEW THAT ONLY HAS ONE BINDING HAS NOTHING TO SWITCH, and must not be switched away from.
    *
@@ -974,23 +897,6 @@ export function connectComponentPreview(root: HTMLElement): Cleanup {
   };
 
   const onReload = () => reloadComponentPreviewStage(root);
-  /*
-   * The handoff needs to own the navigation, because it has to hold a reference to the tab it opened
-   * in order to talk to it. So the click is taken over - but only a PLAIN one.
-   *
-   * A modified click (cmd, ctrl, shift, middle button) is the reader asking the browser for a tab on
-   * their own terms, and stealing that would be rude. Those fall through to the `href`, land on the
-   * Playground's own catalogue, and simply arrive without this demo's source. Same for a popup
-   * blocker, which is what the `false` return covers.
-   */
-  const onPlayground = (event: MouseEvent) => {
-    if (event.defaultPrevented || event.button !== 0) return;
-    if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
-
-    const url = (event.currentTarget as HTMLAnchorElement | null)?.href;
-    if (!url) return;
-    if (openInPlayground(root, url)) event.preventDefault();
-  };
   const disconnectResizer = connectStageResizer(root);
   const disconnectScreenTabs = connectScreenTabs(root);
   // Every source-tabs group this preview has (vanilla HTML/CSS/TS, react Componente/data), kept
@@ -1003,7 +909,6 @@ export function connectComponentPreview(root: HTMLElement): Cleanup {
   sourceTabs?.addEventListener(tabsEvents.valueChange, onSourceChange);
   document.addEventListener(componentPreviewBindingChangeEvent, onSharedBinding);
   reload?.addEventListener("click", onReload);
-  playground?.addEventListener("click", onPlayground as EventListener);
 
   const fromTabs = bindingTabs?.getAttribute("data-value");
   const initial =
@@ -1025,7 +930,6 @@ export function connectComponentPreview(root: HTMLElement): Cleanup {
     sourceTabs?.removeEventListener(tabsEvents.valueChange, onSourceChange);
     document.removeEventListener(componentPreviewBindingChangeEvent, onSharedBinding);
     reload?.removeEventListener("click", onReload);
-    playground?.removeEventListener("click", onPlayground as EventListener);
     disconnectResizer();
     disconnectScreenTabs();
     disconnectSourceToggle();

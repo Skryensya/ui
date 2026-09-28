@@ -24,6 +24,13 @@ describe("SegmentedControl", () => {
     expect(tactile.getByRole("radiogroup", { name: "Tactile" }).getAttribute("data-appearance")).toBe("tactile");
   });
 
+  it("serializes its size on the root, sm by default, on Button's scale", () => {
+    const small = render(<SegmentedControl defaultValue="week" label="Small" options={options} />);
+    expect(small.getByRole("radiogroup", { name: "Small" }).getAttribute("data-size")).toBe("sm");
+    const large = render(<SegmentedControl size="lg" defaultValue="week" label="Large" options={options} />);
+    expect(large.getByRole("radiogroup", { name: "Large" }).getAttribute("data-size")).toBe("lg");
+  });
+
   it("names the radiogroup, per WAI's Radio Group pattern", () => {
     const ui = render(<SegmentedControl defaultValue="week" label="Range" options={options} />);
     expect(ui.getByRole("radiogroup", { name: "Range" })).toBeTruthy();

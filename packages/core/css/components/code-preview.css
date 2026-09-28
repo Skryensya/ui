@@ -221,6 +221,57 @@
     margin-inline-end: calc(var(--space-inset-xs) + var(--sk-code-preview-copy-scroll-inset));
   }
 
+  /*
+   * WITHOUT A LABEL, the copy button is the only thing on the block's top edge, and it sits on the
+   * code itself rather than under a header strip. Two things follow, both for a block that is often
+   * a single command (an install line):
+   *
+   *   - The first line's text would run underneath the button: on a phone, a command longer than the
+   *     box went straight under it (measured). The code's SCROLLER ends before the button, so a long
+   *     line is cut at that edge and scrolls, instead of hiding behind it. A margin, not padding:
+   *     end padding in a scroll container only adds room to scroll into; text that overflows is
+   *     still painted across it until the reader scrolls (measured too, the first attempt).
+   *   - Pinned to the top with the label's small inset, the button sat above the line it copies and
+   *     read as misaligned. It is centred on the FIRST line instead: that line's middle is the
+   *     `pre`'s top padding plus half a line box, and the button's top is that minus half its own
+   *     height. Same arithmetic for one line or fifty, so a long block still reads the same way.
+   *
+   * With a label none of this applies: the header strip holds the top edge, and the button keeps
+   * the inset it always had.
+   */
+  /* The button's offset from the top edge (centred on the first line, see above) is also its offset
+     from the inline-end edge: equal on both sides, so it reads as placed in the corner rather than
+     pushed against it. Written out where it is used rather than held in a custom property: an
+     `--sk-code-preview-*` property declared here would be a public styling hook, and this is a
+     measurement, not something to retune. */
+  .sk-code-preview:not(:has(> .sk-code-preview__label)) pre {
+    margin-inline-end: calc(var(--size-control-sm) + max(
+      var(--space-inset-xs),
+      calc(
+        var(--space-inset-md) + var(--sk-code-preview-font-size) * var(--font-line-height-body-relaxed) / 2 -
+          var(--size-control-sm) / 2
+      )
+    ) * 2);
+    padding-inline-end: var(--space-inset-xs);
+  }
+
+  .sk-code-preview:not(:has(> .sk-code-preview__label)) .sk-code-preview__preview > .sk-copy-button {
+    margin-block-start: max(
+      var(--space-inset-xs),
+      calc(
+        var(--space-inset-md) + var(--sk-code-preview-font-size) * var(--font-line-height-body-relaxed) / 2 -
+          var(--size-control-sm) / 2
+      )
+    );
+    margin-inline-end: max(
+      var(--space-inset-xs),
+      calc(
+        var(--space-inset-md) + var(--sk-code-preview-font-size) * var(--font-line-height-body-relaxed) / 2 -
+          var(--size-control-sm) / 2
+      )
+    );
+  }
+
   .sk-code-preview__more {
     display: flex;
     justify-content: center;

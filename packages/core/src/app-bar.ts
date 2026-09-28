@@ -1,4 +1,4 @@
-import type { ComponentContract } from "./contract.js";
+import type { ComponentContract, ContractTemplate } from "./contract.js";
 import { menuAttrs, menuItemShape, menuParts, menuPopupTemplatePortable } from "./menu.js";
 
 /*
@@ -15,8 +15,9 @@ import { menuAttrs, menuItemShape, menuParts, menuPopupTemplatePortable } from "
  * uses wants, so the two stay separate widgets that share only what is genuinely the same thing.
  *
  * WHAT IS SHARED. Every dropdown here is a real `Menu`: the wrapper is a `[data-sk-menu]` root, the
- * trigger carries `data-sk-menu-trigger`, and the popup is `menuPopupTemplatePortable`, so items,
- * checkbox/radio, separators and nested submenus are Menu's own, in both bindings. What the app bar
+ * trigger carries `data-sk-menu-trigger`, and the popup is `menuPopupTemplatePortable`, so items and
+ * nested submenus are Menu's own, in both bindings. What the bar narrows is WHICH items: actions
+ * only (`appBarItemShape` below), never a checkbox, a radio or a separator. What the app bar
  * owns is the BAR: one tab stop across its menus, Left/Right between them (opening the neighbour when
  * one was open), and the desktop habit that once one menu is open, pointing at another opens it.
  *
@@ -51,12 +52,41 @@ export const appBarAttrs = {
 } as const;
 
 /*
- * Menu's popup, as the bar's: its own part class, and the compact density written on the positioner
- * itself as well as on the wrapper. React portals the positioner and has to re-stamp the density
- * there; saying it in the template too keeps the two bindings' DOM the same.
+ * ONLY ACTIONS. A bar item's dropdown is Menu's item shape minus everything that makes it a control
+ * rather than a command: no `kind` (so no checkbox, no radio, and no separator either) and no `group`
+ * (which exists only to pair radios). What stays is what an action is: a value, a label, a
+ * destination when it navigates, `disabled` when it is unavailable now, `tone` when it destroys, and
+ * `children` for a second or third level of the same. Settings belong in the application, not in its
+ * bar; a desktop bar that toggles and chooses is a settings panel folded into menus.
+ */
+const { kind: _kind, group: _group, ...actionOptions } = menuItemShape.options;
+export const appBarItemShape = { ...menuItemShape, options: actionOptions } as const;
+
+/**
+ * Menu's popup with every node and condition that exists only for `kind` taken out: the checkbox and
+ * radio indicator, the separator, and the "not a separator" test on a command. Derived rather than
+ * written again, so the bar's popup stays Menu's in everything else (the item, the link, the nested
+ * submenu) and follows it when it changes; and the template names no item option the shape lacks.
+ */
+function actionsOnly(node: ContractTemplate): ContractTemplate | undefined {
+  if (node.whenItemGiven === "kind" || node.whenItemEquals?.option === "kind") return undefined;
+  const { whenItemNotEquals, itemOptions, children, ...rest } = node;
+  const kept = children?.map(actionsOnly).filter((child): child is ContractTemplate => child !== undefined);
+  return {
+    ...rest,
+    ...(whenItemNotEquals && whenItemNotEquals.option !== "kind" ? { whenItemNotEquals } : {}),
+    ...(itemOptions ? { itemOptions: itemOptions.filter((name) => name in actionOptions) } : {}),
+    ...(kept ? { children: kept } : {}),
+  };
+}
+
+/*
+ * Menu's popup, as the bar's: actions only, its own part class, and the compact density written on
+ * the positioner itself as well as on the wrapper. React portals the positioner and has to re-stamp
+ * the density there; saying it in the template too keeps the two bindings' DOM the same.
  */
 const appBarDropdown = {
-  ...menuPopupTemplatePortable,
+  ...actionsOnly(menuPopupTemplatePortable)!,
   part: "dropdown",
   attrs: { ...menuPopupTemplatePortable.attrs, "data-density": "compact" },
   whenGiven: "items",
@@ -139,7 +169,7 @@ export const appBarContract = {
     },
 
     /*
-     * One menu title. With `items` (Menu's own item shape, verbatim) it opens a dropdown; without,
+     * One menu title. With `items` (actions only: `appBarItemShape`) it opens a dropdown; without,
      * it is a command that acts at once. Either way it is a `menuitem` of the menubar, WAI's own
      * vocabulary for both shapes of a top-level item.
      */
@@ -160,7 +190,7 @@ export const appBarContract = {
       portals: { container: true },
       slots: {
         children: { accepts: "text", required: true },
-        items: { accepts: "items", item: menuItemShape },
+        items: { accepts: "items", item: appBarItemShape },
       },
       template: {
         element: "div",
@@ -226,7 +256,7 @@ export const appBarContract = {
       portals: { container: true },
       slots: {
         children: { accepts: "text", required: true },
-        items: { accepts: "items", item: menuItemShape },
+        items: { accepts: "items", item: appBarItemShape },
       },
       template: {
         element: "div",

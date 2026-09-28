@@ -73,10 +73,14 @@ export const canvasAttrs = {
   dragging: "data-sk-dragging",
   /** Written while the view is not the fitted one, so a consumer can style "zoomed in". */
   zoomed: "data-sk-zoomed",
+  /** Written for discrete zoom changes, so the transform eases without slowing drag or pinch. */
+  zooming: "data-sk-zooming",
   minZoom: "data-min-zoom",
   maxZoom: "data-max-zoom",
   /** Authored: the canvas only fits. No zoom, no pan, no zoom bar. */
   fitOnly: "data-fit-only",
+  /** Set once the binding has placed the drawing (its first fit). Until then canvas.css centres it. */
+  placed: "data-sk-placed",
 } as const;
 
 export type CanvasAction = "zoom-out" | "zoom-in" | "fit";
@@ -92,7 +96,7 @@ export type CanvasPoint = { readonly x: number; readonly y: number };
 export const CANVAS_MIN_ZOOM = 0.25;
 export const CANVAS_MAX_ZOOM = 4;
 /** One press of a button or a key multiplies or divides the scale by this. */
-export const CANVAS_ZOOM_STEP = 1.25;
+export const CANVAS_ZOOM_STEP = 1.15;
 /** One arrow key moves the content this far, in screen px. */
 export const CANVAS_PAN_STEP = 40;
 /** How long a gesture hint stays up, in ms. */
@@ -188,7 +192,7 @@ export function canvasClampView(view: CanvasView, content: CanvasSize, viewport:
 export function canvasWheelFactor(deltaY: number, deltaMode = 0): number {
   const px = deltaMode === 1 ? deltaY * 16 : deltaMode === 2 ? deltaY * 400 : deltaY;
   const bounded = Math.min(Math.max(px, -50), 50);
-  return Math.exp(-bounded * 0.01);
+  return Math.exp(-bounded * 0.004);
 }
 
 const distance = (a: CanvasPoint, b: CanvasPoint): number => Math.hypot(a.x - b.x, a.y - b.y);
@@ -299,6 +303,7 @@ export function connectCanvasView(root: HTMLElement, options: CanvasViewOptions 
 
   let view: CanvasView = { x: 0, y: 0, scale: 1 };
   let fitted = true;
+  let zoomTimer = 0;
 
   /* `offsetWidth`, not the bounding rect: the transform scales the rect and not the layout box, and
      it is the layout box, the content's own size, that every function above is written against. */
@@ -318,6 +323,7 @@ export function connectCanvasView(root: HTMLElement, options: CanvasViewOptions 
         (action === "zoom-out" && view.scale <= min + 1e-6);
     }
     root.toggleAttribute(canvasAttrs.zoomed, !fitted);
+    root.setAttribute(canvasAttrs.placed, "");
   };
 
   const layout = (): void => {
@@ -346,8 +352,15 @@ export function connectCanvasView(root: HTMLElement, options: CanvasViewOptions 
   };
 
   const centre = (): CanvasPoint => ({ x: viewport.clientWidth / 2, y: viewport.clientHeight / 2 });
-  const zoomBy = (factor: number, anchor: CanvasPoint = centre()): void =>
+  const animateZoom = (): void => {
+    root.setAttribute(canvasAttrs.zooming, "");
+    clearTimeout(zoomTimer);
+    zoomTimer = window.setTimeout(() => root.removeAttribute(canvasAttrs.zooming), 320);
+  };
+  const zoomBy = (factor: number, anchor: CanvasPoint = centre()): void => {
+    animateZoom();
     move(canvasZoomAround(view, clampZoom(view.scale * factor, min, max), anchor));
+  };
   const fit = (): void => {
     fitted = true;
     layout();
@@ -522,6 +535,7 @@ export function connectCanvasView(root: HTMLElement, options: CanvasViewOptions 
 
   return () => {
     clearTimeout(hintTimer);
+    clearTimeout(zoomTimer);
     observer?.disconnect();
     win?.removeEventListener("resize", layout);
     viewport.removeEventListener("wheel", onWheel);
