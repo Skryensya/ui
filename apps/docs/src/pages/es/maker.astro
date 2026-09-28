@@ -136,6 +136,16 @@ const apply = `{
     la petición completa, con el motivo.
   </p>
 
+  <h2>Publicar</h2>
+  <p>
+    Un proyecto se publica como sitio estático en <code>https://&lt;nombre&gt;.skryensya.dev/</code>: una
+    página por ruta, con las hojas de estilo y los enhancers del kit, servida por un único Worker de
+    Cloudflare. Solo publica la máquina que tiene el token de publicación. Un enlace que ejecutaría
+    código (<code>javascript:</code>, un documento <code>data:</code>) impide publicar el sitio completo, y
+    cada página se sirve con una política que ejecuta el kit y ningún otro script. La configuración de
+    una sola vez está en <code>apps/sites-worker/README.md</code>.
+  </p>
+
   <h2>Export</h2>
   <p>
     La página abierta se exporta como React, como HTML con las hojas de estilo que necesita, o como
