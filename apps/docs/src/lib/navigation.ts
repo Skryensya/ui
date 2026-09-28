@@ -877,6 +877,12 @@ const componentItems = [
     aliases: ["menú", "menu de acciones", "context menu"],
   },
   {
+    href: "/components/app-bar",
+    label: "AppBar",
+    trailing: "Beta",
+    aliases: ["barra de aplicación", "barra de aplicacion", "app bar", "barra superior", "top bar", "menu bar macos", "barra de menús de escritorio"],
+  },
+  {
     href: "/components/menubar",
     label: "Menubar",
     aliases: ["barra de menú", "barra de menu", "menubar-editor"],
@@ -979,6 +985,7 @@ const allComponentNavigation = [
       "/components/split-button",
       "/components/menu",
       "/components/menubar",
+      "/components/app-bar",
       "/components/toolbar",
       "/components/command-palette",
       "/components/state-button",

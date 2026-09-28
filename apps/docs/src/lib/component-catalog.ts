@@ -228,6 +228,10 @@ const componentDescriptions = {
     es: "Presenta una lista compacta de acciones contextuales.",
     en: "Presents a compact list of contextual actions.",
   },
+  "/components/app-bar": {
+    es: "Una línea corta de texto en el borde superior de una aplicación: sus menús y su estado.",
+    en: "One short line of text on an application's top edge: its menus and its state.",
+  },
   "/components/menubar": {
     es: "Barra horizontal persistente de comandos, algunos con desplegable.",
     en: "A persistent horizontal bar of commands, some opening a dropdown.",

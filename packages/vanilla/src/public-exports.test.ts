@@ -36,6 +36,7 @@ import { mountMarquee } from "@skryensya/vanilla/marquee";
 import { mountMegamenu } from "@skryensya/vanilla/megamenu";
 import { mountMenu } from "@skryensya/vanilla/menu";
 import { mountMenubar } from "@skryensya/vanilla/menubar";
+import { mountAppBar } from "@skryensya/vanilla/app-bar";
 import { mountMeter } from "@skryensya/vanilla/meter";
 import { mountNavListGroup } from "@skryensya/vanilla/nav-list";
 import { mountNumberField } from "@skryensya/vanilla/number-field";
@@ -84,6 +85,7 @@ import { describe, expect, it } from "vitest";
 const mounts = [
   mountAccordion,
   mountAnnotated,
+  mountAppBar,
   mountBackToTop,
   mountBreadcrumb,
   mountButton,
@@ -151,7 +153,7 @@ const mounts = [
 describe("Vanilla public entry points", () => {
   it("publishes the lazy auto-loader and one mount for every regular enhanced module", () => {
     expect(initComponents).toBeTypeOf("function");
-    expect(mounts).toHaveLength(64);
+    expect(mounts).toHaveLength(65);
     expect(mounts.every((mount) => typeof mount === "function")).toBe(true);
   });
 
@@ -193,6 +195,7 @@ describe("Vanilla public entry points", () => {
       Object.entries({
         mountAccordion,
         mountAnnotated,
+        mountAppBar,
         mountBackToTop,
         mountBreadcrumb,
         mountButton,

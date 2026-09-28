@@ -65,6 +65,7 @@ export { mountSliderRange } from "./components/slider-range.js";
  */
 export { mountNavListGroup } from "./components/nav-list.js";
 export { mountMenubar } from "./components/menubar.js";
+export { mountAppBar } from "./components/app-bar.js";
 export { mountBreadcrumb } from "./components/breadcrumb.js";
 export { mountChart } from "./components/chart.js";
 export { mountMeter } from "./components/meter.js";

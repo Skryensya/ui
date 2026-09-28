@@ -1,0 +1,67 @@
+---
+import "@skryensya/core/components/app-bar.css";
+import "@skryensya/core/components/menu.css";
+import "@skryensya/core/patterns/state-layer.css";
+/* Structure diagram: the Annotated specimen is drawn by Annotation's own sheet. */
+import "@skryensya/core/components/annotation.css";
+import ComponentPageShell from "./ComponentPageShell.astro";
+import CodeBlock from "../CodeBlock.astro";
+import ComponentPreview from "../ComponentPreview.astro";
+import { appBarAnatomyCss, appBarAnatomyHtml, appBarMinimalTree, appBarTree } from "../../demos/app-bar";
+import { getLocale, useTranslations } from "../../i18n";
+
+const t = useTranslations(getLocale(Astro.url));
+
+const install = `@import "@skryensya/core/components/app-bar.css";
+@import "@skryensya/core/patterns/state-layer.css";`;
+const js = `import { initComponents } from "@skryensya/vanilla/auto";
+
+initComponents();`;
+---
+
+<ComponentPageShell
+  title="AppBar"
+  description={t("appBarPage.description")}
+  contractId="app-bar"
+  badge="Beta"
+  styleGroups={[
+    { file: "components/app-bar.css", probe: "sk-app-bar", title: "AppBar" },
+    { file: "patterns/state-layer.css", probe: "sk-interactive", title: "Heredados de State layer" },
+  ]}
+  testFiles={["packages/core/src/app-bar.test.ts", "packages/react/src/components/app-bar.test.tsx", "packages/vanilla/src/components/app-bar.svelte.test.ts"]}
+>
+  <Fragment slot="anatomy">
+    <p set:html={t("appBarPage.anatomyBody")} />
+    <ComponentPreview
+      html={appBarAnatomyHtml(t)}
+      css={appBarAnatomyCss}
+      label={t("appBarPage.anatomyPreviewLabel")}
+      screens={false}
+      hideSource
+      chrome={false}
+    />
+  </Fragment>
+
+  <Fragment slot="usage">
+    <p class="lede" set:html={t("appBarPage.lede")} />
+    <ComponentPreview tree={appBarTree(t)} js={js} label={t("appBarPage.label")} viewport="menu-deep" />
+
+    <h3>{t("component.contractNotesTitle")}</h3>
+    <p set:html={t("appBarPage.contractBody")} />
+
+    <h3>{t("appBarPage.statusTitle")}</h3>
+    <p set:html={t("appBarPage.statusBody")} />
+
+    <h3>{t("appBarPage.minimalTitle")}</h3>
+    <p set:html={t("appBarPage.minimalBody")} />
+    <ComponentPreview tree={appBarMinimalTree(t)} js={js} label={t("appBarPage.minimalTitle")} viewport="menu" />
+  </Fragment>
+
+  <Fragment slot="install">
+    <CodeBlock code={install} label="CSS" lang="css" />
+  </Fragment>
+
+  <Fragment slot="a11y">
+    <p set:html={t("appBarPage.a11yBody")} />
+  </Fragment>
+</ComponentPageShell>

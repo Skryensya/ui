@@ -119,6 +119,7 @@ const loaders: Record<string, () => Promise<Record<string, unknown>>> = {
   "@skryensya/react/comment-thread": () => import("./components/comment-thread.js"),
   "@skryensya/react/questionnaire": () => import("./components/questionnaire.js"),
   "@skryensya/react/menubar": () => import("./components/menubar.js"),
+  "@skryensya/react/app-bar": () => import("./components/app-bar.js"),
   "@skryensya/react/megamenu": () => import("./components/megamenu.js"),
   "@skryensya/react/tabs": () => import("./components/tabs.js"),
   "@skryensya/react/toc": () => import("./components/toc.js"),

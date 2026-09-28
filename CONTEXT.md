@@ -65,6 +65,14 @@ A component that is a place to put things, a sidebar, a navbar, as opposed to th
 A shell owns its own chrome and its own states, and adjusts its guests only by re-declaring their
 styling hooks, never by reaching into their markup.
 
+**App bar**:
+A component. The one short line of text across the top of an application: its menus on the leading
+side, the application's own first and in bold, and a few words of status on the trailing side. Its
+titles are words, not buttons, and a menu opens by being chosen, never by hovering alone. Not a
+navbar, which is a site's header of destinations, and not a menubar, which is a widget placed among
+other controls on a page.
+_Avoid_: top bar, system bar, header, menu bar (for this)
+
 **Rail**:
 The sidebar, collapsed: narrowed to one control wide, showing icons. It is not a hidden sidebar, 
 nothing is removed, so a rail is never a disclosure.
