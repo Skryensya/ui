@@ -165,6 +165,22 @@
     --sk-wrapper-padding-inline: var(--space-inset-md);
   }
 
+  /*
+   * A component page nests two more insets inside that one: the tab panel is a layout grid of its
+   * own, with the default `lg` gutter, and the hero and tab strip are sized off `--docs-measure-room`,
+   * which takes `lg` off each side again (site.css). On desktop that is the reading measure; here
+   * it stacked on top of the pair's gutter and put every component page 40px from the edge at 390px,
+   * against 16px on every other page. The pair's gutter is the page edge on mobile, so the inner
+   * ones stand down to nothing.
+   */
+  main[data-document-layout="grid"]:has(> .docs-component-shell) {
+    --docs-measure-room: 100%;
+  }
+
+  main[data-document-layout="grid"]:has(> .docs-component-shell) .sk-tabs__content.sk-layout-grid {
+    --sk-layout-gutter: 0px;
+  }
+
   /* Same step-down as the pair's own `[data-document-layout="grid"]` rule above, so the footer
      row's own gutter matches the article's regardless of which shape THIS page happens to be:
      `.docs-footer-row` is always `sk-layout-grid`, never the fixed non-grid pair template. */
