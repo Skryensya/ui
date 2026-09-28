@@ -2,8 +2,8 @@
 import Base from "../layouts/Base.astro";
 import CodeBlock from "../components/CodeBlock.astro";
 
-const run = `pnpm --filter @skryensya/maker dev   # http://localhost:4200
-# another site: http://localhost:4200/?site=landing`;
+const run = `docker compose -f apps/maker/docker-compose.yml up -d   # PostgreSQL, once
+pnpm --filter @skryensya/maker dev                        # http://localhost:4200`;
 
 const outline = `page 3f2a… "Home" /
   9c1e… layout/Main
@@ -16,6 +16,7 @@ const outline = `page 3f2a… "Home" /
         77f2… "Read the docs"`;
 
 const apply = `{
+  "project": "7d0c…",
   "revision": 4,
   "operations": [
     {
@@ -49,9 +50,10 @@ const apply = `{
 
   <h2>Run it</h2>
   <p>
-    The Maker is a local app in <code>apps/maker</code>. Each site is a file in <code>.maker/</code>
-    at the root of the checkout, named by the <code>site</code> parameter; the default one is the file
-    the MCP server's Maker tools use.
+    The Maker is a local app in <code>apps/maker</code>. Its projects live in PostgreSQL, which the
+    compose file starts on port 5433 (<code>DATABASE_URL</code> points elsewhere). Several projects can be
+    open at once, each in a tab with its own history; open tabs come back on the next visit. Without a
+    database the Maker still works, keeping one site in the browser, and says so.
   </p>
   <CodeBlock code={run} label="Shell" lang="bash" />
 
@@ -118,15 +120,15 @@ const apply = `{
   <h2>Editing with an agent</h2>
   <p>
     A prompt follows the same rule. The MCP server run from the checkout offers
-    <code>maker_read</code>, which returns the open site as an outline with an id on every node, and
-    <code>maker_apply</code>, which takes operations and nothing else. Ask an agent to "put these two
+    <code>maker_projects</code>, <code>maker_read</code>, which returns a project as an outline with an
+    id on every node, and <code>maker_apply</code>, which takes operations and nothing else. Ask an agent to "put these two
     buttons next to each other" and the only thing it can send is a wrap in an Inline.
   </p>
   <CodeBlock code={outline} label="maker_read" lang="yaml" />
   <CodeBlock code={apply} label="maker_apply" lang="json" />
   <p>
-    The change lands in the site file, the open Maker shows it at once, and it is one step in the
-    history: undo takes it back. Passing the <code>revision</code> it read means an agent never
+    The change is saved to the project, any Maker that has it open shows it at once, and it is one step
+    in the history: undo takes it back. Passing the <code>revision</code> it read means an agent never
     overwrites something you did in the meantime; the request is refused with the current outline
     instead. An operation the contract refuses (an option the signature does not declare, a Wrapper
     inside a Wrapper) refuses the whole request, with the reason.
@@ -135,7 +137,8 @@ const apply = `{
   <h2>Export</h2>
   <p>
     The open page exports as React, HTML with the stylesheets it needs, or the usage tree; the whole
-    site exports as one component per page, or as the site file the Maker opens again. Every form
+    site exports as one component per page, or as a site file, which the Maker opens again as a new
+    project. Every form
     comes from the same emitter <code>validate_ui</code> uses.
   </p>
 </Base>
