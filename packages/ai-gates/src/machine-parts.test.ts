@@ -58,11 +58,11 @@ const RESCOPED: Readonly<Record<string, readonly MachineName[]>> = {
 };
 
 /*
- * Machines with ONE adapter today, both vanilla-only. The header of `machines.ts` names them as not
- * yet earning their place; listing them here keeps that honest from both sides: the test fails if
- * one gains its React adapter and stays listed, or if a new machine lands with only one.
+ * Machines with ONE adapter today. Empty since carousel and splitter gained their React adapters;
+ * kept so the test stays honest from both sides: it fails if a machine listed here gains its second
+ * adapter, or if a new machine lands with only one and is not listed.
  */
-const ONE_ADAPTER: ReadonlySet<MachineName> = new Set(["carousel", "splitter"]);
+const ONE_ADAPTER: ReadonlySet<MachineName> = new Set([]);
 
 /*
  * Machine parts rendered with no contract part, on purpose, each with its reason. `where` narrows a

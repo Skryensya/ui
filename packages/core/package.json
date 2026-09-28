@@ -551,6 +551,10 @@
       "types": "./src/toolbar.ts",
       "default": "./src/toolbar.ts"
     },
+    "./splitter-dom": {
+      "types": "./src/splitter-dom.ts",
+      "default": "./src/splitter-dom.ts"
+    },
     "./toolbar-dom": {
       "types": "./src/toolbar-dom.ts",
       "default": "./src/toolbar-dom.ts"

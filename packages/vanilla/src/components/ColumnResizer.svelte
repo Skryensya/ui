@@ -138,8 +138,12 @@
    * (`resolveSplitterKey`'s own step/coarseStep in PX, Enter resets to `resetWidth`). Keyboard stays
    * hand-wired below; Zag still owns the pointer drag and the focus/hover state attributes.
    */
+  /*
+   * `aria-controls` goes too: Zag points it at panel elements that do not exist here (a column is a
+   * `<col>` and its cells, not one element), and a reference to a missing id is an ARIA error.
+   */
   const bindableProps = (): DomProps => {
-    const { onKeyDown: _zagKeyDown, ...rest } = triggerProps();
+    const { onKeyDown: _zagKeyDown, "aria-controls": _missingPanels, ...rest } = triggerProps();
     return rest;
   };
   const sync = () => {

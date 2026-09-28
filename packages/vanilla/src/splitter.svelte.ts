@@ -1,4 +1,5 @@
 import { resolveWeightedColumnWidths } from "@skryensya/core/splitter";
+import { contentBoxWidth } from "@skryensya/core/splitter-dom";
 import { flushSync, mount, unmount } from "svelte";
 import ColumnResizer from "./components/ColumnResizer.svelte";
 
@@ -116,7 +117,8 @@ export function watchColumnLayout(options: {
     apply(resolveWeightedColumnWidths({ total, weights, min }));
     return true;
   };
-  if (seedFrom(measured.getBoundingClientRect().width)) return () => {};
+  // The content box, the same box the observer below reports: `contentBoxWidth`'s own doc.
+  if (seedFrom(contentBoxWidth(measured))) return () => {};
   const observer = new ResizeObserver((entries) => {
     if (seedFrom(entries[0]?.contentRect.width ?? 0)) observer.disconnect();
   });

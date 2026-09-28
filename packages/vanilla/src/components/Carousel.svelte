@@ -1,6 +1,6 @@
 <script lang="ts">
   import { carousel } from "@skryensya/core/machines";
-  import { carouselEvents, carouselParts, type CarouselGotoDetail } from "@skryensya/core/carousel";
+  import { carouselEvents, carouselParts, carouselTranslations, type CarouselGotoDetail } from "@skryensya/core/carousel";
   import { normalizeProps, useMachine } from "@zag-js/svelte";
   import { onDestroy, onMount } from "svelte";
   import { bindParts, type PartBinding } from "../runtime/bind-part.svelte";
@@ -94,14 +94,7 @@
     // A slide's width is set by the system's CSS; the machine only measures where each snap point falls.
     autoSize: true,
     spacing: "var(--sk-carousel-gap)",
-    translations: {
-      nextTrigger: "Siguiente",
-      prevTrigger: "Anterior",
-      indicator: (index: number) => `Ir a la diapositiva ${index + 1}`,
-      item: (index: number, count: number) => `${index + 1} de ${count}`,
-      autoplayStart: "Reanudar la rotación",
-      autoplayStop: "Pausar la rotación",
-    },
+    translations: carouselTranslations,
   }));
 
   const api = $derived(carousel.connect(service, normalizeProps));
@@ -276,7 +269,7 @@
         {...api.getAutoplayTriggerProps()}
         class="{carouselParts.button} {carouselParts.autoplay} sk-interactive"
         data-pressed={desiredPlaying ? "" : undefined}
-        aria-label={desiredPlaying ? "Pausar la rotación" : "Reanudar la rotación"}
+        aria-label={desiredPlaying ? carouselTranslations.autoplayStop : carouselTranslations.autoplayStart}
         onclick={(event) => {
           if (event.defaultPrevented) return;
           desiredPlaying = !desiredPlaying;

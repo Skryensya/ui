@@ -4,6 +4,7 @@ import {
   resolveWeightedColumnWidths,
   SPLITTER_MIN_COLUMN_WIDTH as MIN_COLUMN_WIDTH,
 } from "@skryensya/core/splitter";
+import { resizableTableWidth } from "@skryensya/core/splitter-dom";
 import { createConnectMount } from "../runtime/svelte-hydrate.js";
 import {
   attachColumnResizer,
@@ -74,7 +75,7 @@ function connect(root: HTMLElement): () => void {
   })();
   const availableWidth = (total: number) => Math.max(0, total - borderWidth);
   const seedWidths = resolveWeightedColumnWidths({
-    total: availableWidth(measured.getBoundingClientRect().width),
+    total: resizableTableWidth(measured, root),
     weights,
     min: MIN_COLUMN_WIDTH,
   });

@@ -207,16 +207,18 @@ describe("Table column resize", () => {
     spy.mockRestore();
   });
 
-  it("reports its position as a percentage of the pair's travel, not a raw pixel count", () => {
+  it("reports its position as its share of the pair, bounded by each column's floor", () => {
     const restore = stubTableWidth(600);
     const ui = render(<ResizableFixture />);
     const handle = resizers(ui.container)[0]!;
-    expect(handle.getAttribute("aria-valuemin")).toBe("0");
-    expect(handle.getAttribute("aria-valuemax")).toBe("100");
+    const value = (name: string) => Number(handle.getAttribute(name));
+    // The floors are real bounds of this pair, not the 0 and 100 no drag can reach.
+    expect(value("aria-valuemin")).toBeGreaterThan(0);
+    expect(value("aria-valuemax")).toBe(100 - value("aria-valuemin"));
     fireEvent.keyDown(handle, { key: "End" });
-    expect(handle.getAttribute("aria-valuenow")).toBe("100");
+    expect(value("aria-valuenow")).toBe(value("aria-valuemax"));
     fireEvent.keyDown(handle, { key: "Home" });
-    expect(handle.getAttribute("aria-valuenow")).toBe("0");
+    expect(value("aria-valuenow")).toBe(value("aria-valuemin"));
     restore();
   });
 

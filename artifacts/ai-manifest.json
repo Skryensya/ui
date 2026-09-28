@@ -1802,6 +1802,19 @@
         "date": null,
         "entries": [
           {
+            "date": "2026-09-27",
+            "en": {
+              "body": "React used to render only the markup and wait for the vanilla enhancer: without that runtime there were no controls. It now runs the same Zag machine, with the same configuration, ids and labels as vanilla.",
+              "title": "Carousel in React runs its own machine"
+            },
+            "es": {
+              "body": "Antes React solo renderizaba el markup y esperaba al enhancer de vanilla: sin ese runtime no había controles. Ahora usa la misma máquina de Zag, con la misma configuración, ids y etiquetas que vanilla.",
+              "title": "Carousel en React corre su propia máquina"
+            },
+            "kind": "rework",
+            "target": "Carousel"
+          },
+          {
             "date": "2026-09-17",
             "en": {
               "body": "<code>eventDetails</code> declares <code>source</code> (part that dispatches the CustomEvent) and, when clear, <code>trigger</code> (part the user activates). An agent knows where to listen and which control causes the event.",
@@ -10000,6 +10013,19 @@
         "date": null,
         "entries": [
           {
+            "date": "2026-09-27",
+            "en": {
+              "body": "React drops its own resizer for vanilla's. <code>aria-valuemin</code> and <code>aria-valuemax</code> are now the pair's real floors, not 0 and 100. An <code>aria-controls</code> pointing at missing ids is gone, and the initial width is measured without the wrapper's padding.",
+              "title": "Column resizing uses the Zag splitter in both bindings"
+            },
+            "es": {
+              "body": "React deja su resizer propio por el mismo de vanilla. <code>aria-valuemin</code> y <code>aria-valuemax</code> son ahora los mínimos reales del par, no 0 y 100. Se quita un <code>aria-controls</code> que apuntaba a ids inexistentes, y el ancho inicial se mide sin el padding del contenedor.",
+              "title": "El resize de columnas usa el splitter de Zag en ambos bindings"
+            },
+            "kind": "rework",
+            "target": "Table"
+          },
+          {
             "date": "2026-09-17",
             "en": {
               "body": "<code>columnWeights</code> declares that it is a comma-separated list of positive numbers and how many entries it takes: one per column of the first row. A list with a 0 or one entry too many used to validate, and the binding silently dropped it for its default split.",
@@ -11706,6 +11732,19 @@
       {
         "date": null,
         "entries": [
+          {
+            "date": "2026-09-27",
+            "en": {
+              "body": "The same resizer as Table, in React and vanilla. <code>aria-valuemin</code> and <code>aria-valuemax</code> are the pair's real floors, and the marker is <code>data-sk-column-resizer</code> in both.",
+              "title": "Column resizing uses the Zag splitter in both bindings"
+            },
+            "es": {
+              "body": "El mismo resizer que Table, en React y en vanilla. <code>aria-valuemin</code> y <code>aria-valuemax</code> son los mínimos reales del par, y el marcador pasa a ser <code>data-sk-column-resizer</code> en ambos.",
+              "title": "El resize de columnas usa el splitter de Zag en ambos bindings"
+            },
+            "kind": "rework",
+            "target": "Treegrid"
+          },
           {
             "date": "2026-09-17",
             "en": {
@@ -53898,7 +53937,7 @@
     "working": "0.0.1"
   },
   "schemaVersion": "2.3",
-  "sourceHash": "45c88a600bd841fc",
+  "sourceHash": "899e09012cc9793f",
   "vocabulary": {
     "a11y": "When `when` holds, one of `requiresOneOf` must be given: an option, a raw attribute, a filled slot, or a child signature by name.",
     "atLeastOneOf": "At least one member of each group counts: a filled slot, a boolean option set to true, or an option other than its default.",

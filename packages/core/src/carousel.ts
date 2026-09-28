@@ -81,10 +81,20 @@ export type CarouselGotoDetail = {
   index: number;
 };
 
+/** The machine's labels, one copy for both bindings so their accessible names cannot drift. */
+export const carouselTranslations = {
+  nextTrigger: "Siguiente",
+  prevTrigger: "Anterior",
+  indicator: (index: number) => `Ir a la diapositiva ${index + 1}`,
+  item: (index: number, count: number) => `${index + 1} de ${count}`,
+  autoplayStart: "Reanudar la rotación",
+  autoplayStop: "Pausar la rotación",
+};
+
 /**
- * The contract. Both bindings render the SAME markup and hand it to the same enhancer (React's
- * Carousel writes the mount mark itself), so what a contract adds here is not symmetry, which is
- * free, but the vocabulary: which knobs exist and what each one costs.
+ * The contract. Both bindings run the SAME `@zag-js/carousel` machine with the same configuration
+ * (vanilla's enhancer, React's own component), so what a contract adds here is the vocabulary:
+ * which knobs exist and what each one costs.
  *
  * `autoplay` is the interesting one. A carousel that moves by itself has to be stoppable (WCAG
  * 2.2.2), so turning it on is also what draws the pause control: the option and the control are one
