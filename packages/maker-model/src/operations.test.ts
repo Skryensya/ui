@@ -170,3 +170,12 @@ describe("a gesture", () => {
     expect(locate(ok(applyAll(page(), gesture)), "s")!.parent.id).toBe(box.id);
   });
 });
+
+describe("links that run code", () => {
+  it("are refused like any value the contract does not allow", () => {
+    const link = { id: "nav", contract: "button", signature: "Button.navigation", options: { href: "/" }, slots: { children: { kind: "nodes" as const, children: [{ id: "nav-t", text: "Go" }] } } };
+    const root = ok(apply(page(), { type: "insert", at: { parent: "i", slot: "children", index: 0 }, child: link }));
+    expect(apply(root, { type: "setOption", node: "nav", name: "href", value: "javascript:alert(1)" }).ok).toBe(false);
+    expect(apply(root, { type: "setOption", node: "nav", name: "href", value: "https://example.com" }).ok).toBe(true);
+  });
+});

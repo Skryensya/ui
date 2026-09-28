@@ -803,7 +803,48 @@ function checkOptions(
     const option = contract.options[name] as ContractOption;
     const problem = optionValueProblem(option, name, value);
     if (problem) problems.push({ path, rule: "invalid-option-value", severity: "error", message: problem });
+    else if (option.attr && typeof value === "string") {
+      const unsafe = unsafeUrlProblem(option.attr, value);
+      if (unsafe) problems.push({ path, rule: "unsafe-url", severity: "error", message: `"${name}": ${unsafe}` });
+    }
   }
+  for (const [name, value] of Object.entries(tree.attrs ?? {})) {
+    const unsafe = unsafeUrlProblem(name, value);
+    if (unsafe) problems.push({ path, rule: "unsafe-url", severity: "error", message: `"${name}": ${unsafe}` });
+  }
+}
+
+/*
+ * A URL THAT RUNS CODE IS NOT A LINK. An option or attribute that lands on an attribute a browser
+ * resolves as a URL takes a relative path, a fragment, or an http(s), mailto or tel URL, and nothing
+ * else: `javascript:`, `data:` and `vbscript:` execute or smuggle content when a published page is
+ * opened. The scheme is read the way the browser reads it, after dropping whitespace and control
+ * characters, so `java\tscript:` is caught too.
+ */
+const URL_ATTRS: ReadonlySet<string> = new Set(["href", "src", "action", "formaction", "poster", "srcset", "xlink:href", "cite", "background"]);
+
+const SAFE_SCHEMES: ReadonlySet<string> = new Set(["http", "https", "mailto", "tel"]);
+/*
+ * An inline image is content, not a destination: `data:image/…` where the attribute loads an image
+ * (a Sticker ships its artwork that way) and never where it navigates. No contract renders an
+ * iframe, embed or object, the elements where a `src` could load a document instead.
+ */
+const IMAGE_ATTRS: ReadonlySet<string> = new Set(["src", "poster", "srcset"]);
+
+export function unsafeUrlProblem(attr: string, value: string): string | undefined {
+  if (!URL_ATTRS.has(attr.toLowerCase())) return undefined;
+  const candidates = attr.toLowerCase() === "srcset" ? value.split(",").map((part) => part.trim().split(/\s+/)[0] ?? "") : [value];
+  for (const candidate of candidates) {
+    const normalized = candidate.replace(/[\u0000-\u0020\u007f-\u009f]/g, "").toLowerCase();
+    const scheme = /^([a-z][a-z0-9+.-]*):/.exec(normalized)?.[1];
+    if (scheme === "data" && IMAGE_ATTRS.has(attr.toLowerCase()) && normalized.startsWith("data:image/")) continue;
+    /* Where it navigates (a lightbox's link to the full image), only a raster: an SVG can carry script. */
+    if (scheme === "data" && /^data:image\/(png|jpe?g|gif|webp|avif)[;,]/.test(normalized)) continue;
+    if (scheme && !SAFE_SCHEMES.has(scheme)) {
+      return `a "${scheme}:" URL is not allowed; use a relative path, a #fragment, or an http(s), mailto or tel URL.`;
+    }
+  }
+  return undefined;
 }
 
 function optionValueProblem(option: ContractOption, name: string, value: unknown): string | undefined {

@@ -16,6 +16,10 @@ import type { UsageTree } from "@skryensya/core/usage-tree";
  * nothing. A gate's fixture cannot depend on an asset that may or may not be served: inline it, and
  * the image is the same pixels on every machine.
  */
+/* The full image a lightbox link points at: a raster, since a link may not point at an inline SVG
+   (an SVG can carry script; the validator's unsafe-url rule). 1x1 PNG. */
+const SAMPLE_MEDIA_FULL = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==";
+
 const SAMPLE_MEDIA =
   "data:image/svg+xml;utf8," +
   encodeURIComponent(
@@ -3651,7 +3655,7 @@ const signatureTrees: readonly Canonical[] = [
           (alt): UsageTree => ({
             contract: "lightbox",
             signature: "Lightbox.Trigger",
-            options: { opens: "gate-lightbox", triggerSrc: SAMPLE_MEDIA, triggerWidth: 1600, triggerHeight: 900, triggerTitle: alt },
+            options: { opens: "gate-lightbox", triggerSrc: SAMPLE_MEDIA_FULL, triggerWidth: 1600, triggerHeight: 900, triggerTitle: alt },
             slots: {
               children: {
                 contract: "image-frame",

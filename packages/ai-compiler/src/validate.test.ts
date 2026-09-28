@@ -6290,3 +6290,37 @@ describe("portals: container scoping", () => {
     expect(getContract("popover")!.signatures["Popover.bare"].portals).toBeUndefined();
   });
 });
+
+describe("unsafe URLs", () => {
+  const link = (href: string) =>
+    validateUsageTree({ contract: "button", signature: "Button.navigation", options: { href }, children: "Go" }).problems.filter(
+      (problem) => problem.rule === "unsafe-url",
+    );
+
+  it("refuses a URL that runs code, however it is spelled", () => {
+    for (const href of ["javascript:alert(1)", "JavaScript:alert(1)", " java\tscript:alert(1)", "data:text/html,<script>", "vbscript:x"]) {
+      expect(link(href), href).toHaveLength(1);
+    }
+  });
+
+  it("accepts paths, fragments and the schemes a link is for", () => {
+    for (const href of ["/about", "about", "#team", "https://example.com", "http://example.com", "mailto:hola@example.com", "tel:+56900000000", "?q=1"]) {
+      expect(link(href), href).toEqual([]);
+    }
+  });
+
+  it("lets an inline image be an image, and nothing else", () => {
+    const sticker = (src: string) =>
+      validateUsageTree({ contract: "sticker", signature: "Sticker", options: { src, alt: "" } }).problems.filter((p) => p.rule === "unsafe-url");
+    expect(sticker("data:image/svg+xml;utf8,<svg/>")).toEqual([]);
+    expect(sticker("data:text/html,<script>")).toHaveLength(1);
+    /* A link to an image may be a raster, never an SVG, which can carry script. */
+    expect(link("data:image/png;base64,AAAA")).toEqual([]);
+    expect(link("data:image/svg+xml;utf8,<svg onload=alert(1)/>")).toHaveLength(1);
+  });
+
+  it("checks attributes too", () => {
+    const problems = validateUsageTree({ contract: "typography", signature: "Text", attrs: { cite: "javascript:x" }, children: "Hola" }).problems;
+    expect(problems.some((problem) => problem.rule === "unsafe-url")).toBe(true);
+  });
+});

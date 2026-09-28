@@ -1,4 +1,5 @@
 import type { ContractOption } from "@skryensya/core/contract";
+import { unsafeUrlProblem } from "@skryensya/ai-compiler/validate";
 import type { ItemInput, OptionInput } from "@skryensya/core/usage-tree";
 import {
   ancestors,
@@ -197,6 +198,8 @@ function setOption(root: MakerNode, id: string, name: string, value: OptionInput
   if (value !== undefined) {
     const problem = valueProblem(option, value);
     if (problem) return refuse(`"${name}" ${problem}`);
+    const unsafe = option.attr && typeof value === "string" ? unsafeUrlProblem(option.attr, value) : undefined;
+    if (unsafe) return refuse(`"${name}": ${unsafe}`);
   }
   return {
     ok: true,
@@ -228,6 +231,9 @@ function setAttr(root: MakerNode, id: string, name: string, value: string | unde
   if (!resolved) return refuse(`${node.contract}/${node.signature} is not in the catalogue.`);
   const owned = resolved.signature.options.some((option) => resolved.contract.options[option]?.attr === name);
   if (owned) return refuse(`"${name}" is written by one of ${node.signature}'s options; set the option.`);
+
+  const unsafe = value !== undefined ? unsafeUrlProblem(name, value) : undefined;
+  if (unsafe) return refuse(`"${name}": ${unsafe}`);
 
   const childAttr = parentChildAttr(root, id, name);
   if (childAttr) {
