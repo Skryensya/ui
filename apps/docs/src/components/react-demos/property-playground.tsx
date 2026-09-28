@@ -60,12 +60,7 @@ export function PropertyPlayground({
           items={values.map((v) => ({ value: v, label: v }))}
         />
       </div>
-      {description && (
-        <div className="sk-property-playground__when">
-          <p className="sk-property-playground__when-title">Cuándo usar</p>
-          <p className="sk-property-playground__when-body">{description}</p>
-        </div>
-      )}
+      {description && <p className="sk-property-playground__when">{description}</p>}
       <div className="sk-property-playground__stage">{Render ? Render(liveTree) : null}</div>
     </div>
   );
