@@ -1,6 +1,6 @@
 import { expect, test } from "@playwright/test";
 import { applySiteAll, randomId, resolveAgentOperations, type MakerSite } from "@skryensya/maker-model";
-import { addFromPalette, buildSamplePage, openMaker, pageTree, savedProject, selectInOutline, stage, layers, insert } from "./fixtures";
+import { addFromPalette, buildSamplePage, openMaker, pageTree, savedProject, selectInOutline, stage, layers, insert, setWidth, zoomTo, pageCommand } from "./fixtures";
 
 /*
  * The Maker in a real browser (decision 31): a page is built by composing, changed by operations,
@@ -120,11 +120,11 @@ test("changing the stage width changes the room the browser has, never the page"
   const saved = () => savedJson(page);
   await page.waitForTimeout(400);
   const before = await saved();
-  await page.getByRole("button", { name: /^Stage width: 36rem/ }).click();
+  await setWidth(page, 36);
   await expect(page.locator(".maker-artboard[data-active] .maker-stage__frame")).toHaveCSS("inline-size", "576px");
   await expect(page.locator(".maker-stage__meta")).toContainText("compact");
   /* Wider than the column it sits in: it keeps its width and the column scrolls. */
-  await page.getByRole("button", { name: /^Stage width: 90rem/ }).click();
+  await setWidth(page, 90);
   await expect(page.locator(".maker-artboard[data-active] .maker-stage__frame")).toHaveCSS("inline-size", "1440px");
   await expect(page.locator(".maker-stage__meta")).toContainText("expanded");
   await page.waitForTimeout(400);
@@ -301,7 +301,7 @@ test("dragging in a Grid follows the columns the browser laid out", async ({ pag
     await selectInOutline(page, "Grid");
     await addFromPalette(page, "Badge");
   }
-  await page.getByRole("button", { name: /^Stage width: 72rem/ }).click();
+  await setWidth(page, 72);
   const cells = stage(page).locator(".sk-grid > *");
   await expect(cells).toHaveCount(3);
   const [a, , c] = await Promise.all([0, 1, 2].map(async (i) => (await cells.nth(i).boundingBox())!));
@@ -319,7 +319,7 @@ test("dragging in an Inline that wraps lands between the buttons of the line und
     await selectInOutline(page, "Inline");
     await addFromPalette(page, "Button.action");
   }
-  await page.getByRole("button", { name: /^Stage width: 36rem/ }).click();
+  await setWidth(page, 36);
   const buttons = stage(page).locator(".sk-inline > *");
   await expect(buttons).toHaveCount(8);
   const boxes = await Promise.all(Array.from({ length: 8 }, async (_, i) => (await buttons.nth(i).boundingBox())!));
@@ -338,18 +338,19 @@ test("pages: add, rename, re-path, link between them, and follow the link in int
   const pages = (await layers(page)).locator(".maker-pages");
   await page.getByRole("toolbar", { name: "Pages" }).getByRole("button", { name: "Add a page" }).click();
   await expect(pages.getByRole("button", { name: /Page 2/ })).toHaveAttribute("aria-current", "page");
-  await pages.getByText(/^Page settings/).click();
-  await pages.getByLabel("Page name").fill("About");
-  await pages.getByLabel("Page name").press("Enter");
-  await pages.getByLabel("Path").fill("/about");
-  await pages.getByLabel("Path").press("Enter");
+  /* Nothing selected on the new page: the inspector shows the page itself. */
+  const settings = page.locator(".maker__right");
+  await settings.getByLabel("Page name").fill("About");
+  await settings.getByLabel("Page name").press("Enter");
+  await settings.getByLabel("Path").fill("/about");
+  await settings.getByLabel("Path").press("Enter");
   await expect(pages.getByRole("button", { name: /About/ })).toContainText("/about");
   /* A new page is its own tree: empty, with its own Main. */
   await expect.poll(() => pageTree(page)).toBe("Main");
 
   /* A bad path is refused out loud and changes nothing. */
-  await pages.getByLabel("Path").fill("/About Us");
-  await pages.getByLabel("Path").press("Enter");
+  await settings.getByLabel("Path").fill("/About Us");
+  await settings.getByLabel("Path").press("Enter");
   await expect(page.locator(".maker__notice")).toContainText("not a page path");
   await expect(pages.getByRole("button", { name: /About/ })).toContainText("/about");
 
@@ -371,12 +372,11 @@ test("pages: add, rename, re-path, link between them, and follow the link in int
 });
 
 test("page operations are undone like any other gesture", async ({ page }) => {
-  const tools = page.getByRole("toolbar", { name: "Pages" });
-  await tools.getByRole("button", { name: "Duplicate this page" }).click();
+  await pageCommand(page, "Duplicate this page");
   await expect((await layers(page)).locator(".maker-pages__item")).toHaveCount(2);
   /* The copy is a real page: same tree, new identities. */
   await expect.poll(() => pageTree(page)).toContain("      Heading");
-  await tools.getByRole("button", { name: "Remove this page" }).click();
+  await pageCommand(page, "Remove this page");
   await expect((await layers(page)).locator(".maker-pages__item")).toHaveCount(1);
   await page.getByRole("button", { name: "Undo", exact: true }).click();
   await expect((await layers(page)).locator(".maker-pages__item")).toHaveCount(2);
@@ -442,7 +442,7 @@ test("the canvas shows every page as an artboard at its exact CSS width, and zoo
   await expect(page.locator(".maker-artboard")).toHaveCount(2);
   await page.waitForTimeout(400);
   const before = await saved();
-  await page.getByRole("button", { name: /^Stage width: 90rem/ }).click();
+  await setWidth(page, 90);
   await expect(page.locator(".maker-artboard[data-active] .maker-stage__frame")).toHaveCSS("inline-size", "1440px");
   /* The iframe lays the page out at 1440 CSS px, whatever the zoom shows it at. */
   expect(await stage(page).locator("html").evaluate((html) => html.clientWidth)).toBe(1440);
@@ -450,7 +450,7 @@ test("the canvas shows every page as an artboard at its exact CSS width, and zoo
   const at = await zoom.textContent();
   await page.getByRole("button", { name: "Zoom in" }).click();
   await expect(zoom).not.toHaveText(at!);
-  await page.getByRole("button", { name: "Fit every page" }).click();
+  await zoomTo(page, "Fit every page");
   const canvas = (await page.locator(".maker-canvas").boundingBox())!;
   for (const board of await page.locator(".maker-artboard .maker-stage__frame").all()) {
     const box = (await board.boundingBox())!;

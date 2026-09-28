@@ -406,8 +406,10 @@ export function Artboard({
       </div>
       {active ? (
         <p className="maker-stage__meta" style={{ transform: `scale(${1 / zoom})` }}>
-          {Math.round(frameWidth)}px · {(frameWidth / REM).toFixed(1)}rem ·{" "}
-          {frameWidth >= EXPANDED_PX ? "expanded (≥ 52rem): *Expanded options apply" : "compact: *Expanded options do not apply"}
+          {+(frameWidth / REM).toFixed(1)}rem ·{" "}
+          <span title={frameWidth >= EXPANDED_PX ? "At 52rem or wider: *Expanded options apply" : "Under 52rem: *Expanded options do not apply"}>
+            {frameWidth >= EXPANDED_PX ? "expanded" : "compact"}
+          </span>
         </p>
       ) : null}
       {renderError ? (

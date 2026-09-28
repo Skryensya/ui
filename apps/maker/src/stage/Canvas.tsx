@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
 import { useHotkey } from "@skryensya/react/hotkey";
 import type { Drag } from "../drag";
+import { Menu } from "@skryensya/react/menu";
 import { IconButton } from "../IconButton";
 import type { Maker } from "../state";
 import { Artboard, type CanvasWheel } from "./Artboard";
@@ -190,12 +191,26 @@ export function Canvas({ maker, drag, insets }: { maker: Maker; drag: Drag; inse
       </div>
       <div className="maker-zoom" role="toolbar" aria-label="Zoom">
         <IconButton icon={{ role: "zoom-out" }} label="Zoom out" shortcut="⌘−" onClick={() => zoomAt(0.8)} />
-        <button type="button" className="maker-zoom__value" title="Zoom to 100% (Shift+0)" onClick={() => setCamera((current) => ({ ...current, k: 1 }))}>
-          {Math.round(camera.k * 100)}%
-        </button>
+        <Menu
+          label="Zoom to"
+          triggerLabel={`Zoom: ${Math.round(camera.k * 100)}%`}
+          triggerVariant="ghost"
+          triggerSize="sm"
+          triggerClassName="maker-zoom__value"
+          indicator={null}
+          trigger={`${Math.round(camera.k * 100)}%`}
+          items={[
+            { value: "all", label: "Fit every page (Shift+1)" },
+            { value: "page", label: "Fit the open page (Shift+2)" },
+            { value: "100", label: "Zoom to 100% (Shift+0)" },
+          ]}
+          onSelect={({ value }) => {
+            if (value === "all") fitAll();
+            if (value === "page") fitPage(pageId);
+            if (value === "100") setCamera((current) => ({ ...current, k: 1 }));
+          }}
+        />
         <IconButton icon={{ role: "zoom-in" }} label="Zoom in" shortcut="⌘=" onClick={() => zoomAt(1.25)} />
-        <IconButton icon={{ role: "fit" }} label="Fit every page" shortcut="Shift+1" onClick={fitAll} />
-        <IconButton icon={{ role: "maximize" }} label="Fit the open page" shortcut="Shift+2" onClick={() => fitPage(pageId)} />
       </div>
     </>
   );
