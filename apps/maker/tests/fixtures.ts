@@ -82,3 +82,21 @@ export async function buildSamplePage(page: Page): Promise<void> {
   await expect.poll(async () => (await pageTree(page)).match(/Button\.action/g)?.length).toBe(2);
   await expect(page.locator(".maker__sync")).toHaveText("Saved");
 }
+
+/** Pick a stage width from the toolbar's width menu. */
+export async function setWidth(page: Page, rem: 36 | 52 | 72 | 90): Promise<void> {
+  await page.getByRole("button", { name: /^Stage width/ }).click();
+  await page.getByRole("menuitemradio", { name: new RegExp(`^${rem}rem`) }).click();
+}
+
+/** Run one of the canvas's zoom commands from the zoom menu. */
+export async function zoomTo(page: Page, command: "Fit every page" | "Fit the open page" | "Zoom to 100%"): Promise<void> {
+  await page.getByRole("button", { name: /^Zoom: / }).click();
+  await page.getByRole("menuitem", { name: new RegExp(`^${command.replace("%", "%")}`) }).click();
+}
+
+/** Run one of the open page's commands from its row's "more" menu. */
+export async function pageCommand(page: Page, command: string): Promise<void> {
+  await (await layers(page)).locator(".maker-pages").getByRole("button", { name: "Page actions" }).click();
+  await page.getByRole("menuitem", { name: command }).click();
+}

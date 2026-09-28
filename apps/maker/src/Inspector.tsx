@@ -2,7 +2,7 @@ import { useEffect, useId, useState } from "react";
 import type { ComponentContract, ContractOption } from "@skryensya/core/contract";
 import type { ItemInput, OptionInput } from "@skryensya/core/usage-tree";
 import { Button } from "@skryensya/react/button";
-import { Toolbar, ToolbarGroup, ToolbarSeparator } from "@skryensya/react/toolbar";
+import { Toolbar } from "@skryensya/react/toolbar";
 import { FormField } from "@skryensya/react/form-field";
 import { Input } from "@skryensya/react/input";
 import { NativeSelect } from "@skryensya/react/select-native";
@@ -25,7 +25,9 @@ import {
   type MakerNode,
   type Operation,
 } from "@skryensya/maker-model";
-import { actions, allowed, shortcutOf, wrapIn, type Gesture } from "./actions";
+import { wrapIn, type Gesture } from "./actions";
+import { PageSettings } from "./Pages";
+import { SelectionTools } from "./SelectionTools";
 import { IconButton } from "./IconButton";
 import { glyphFor } from "./icons";
 import type { Maker } from "./state";
@@ -69,11 +71,17 @@ export function Inspector({ maker }: { maker: Maker }) {
   if (!id || !child) {
     return (
       <div className="maker-inspector">
-        <Text tone="secondary">
-          {childrenOf(root, "children").length === 0
-            ? "This page is empty. Add a Wrapper from Insert on the left to start a page column, or open Sections for a ready-made hero."
-            : "Nothing selected. Click something on the stage or in the layers; double-click text to edit it."}
-        </Text>
+        <Stack gap="lg">
+          <Heading as="h2" size="h5">
+            Page
+          </Heading>
+          <PageSettings maker={maker} />
+          <Text size="sm" tone="secondary">
+            {childrenOf(root, "children").length === 0
+              ? "This page is empty. Add a Wrapper from Insert on the left to start a page column, or open Sections for a ready-made hero."
+              : "Click something on the canvas or in the layers to edit it; double-click text to type in it."}
+          </Text>
+        </Stack>
       </div>
     );
   }
@@ -87,6 +95,7 @@ export function Inspector({ maker }: { maker: Maker }) {
       <div className="maker-inspector">
         <Stack gap="md">
           <Header title="Text" role={role} onParent={(parent) => maker.setView({ selected: parent })} />
+          <SelectionTools maker={maker} />
           <CommitField label="Text" value={child.text} multiline onCommit={(text) => gesture([{ type: "setText", node: id, slot: "children", text }])} />
           <Actions maker={maker} id={id} node={undefined} at={at !== undefined} />
         </Stack>
@@ -111,6 +120,7 @@ export function Inspector({ maker }: { maker: Maker }) {
     <div className="maker-inspector">
       <Stack gap="lg">
         <Header title={child.signature} subtitle={child.contract} role={role} onParent={(parent) => maker.setView({ selected: parent })} />
+        <SelectionTools maker={maker} />
 
         <SlotsSection maker={maker} node={child} />
 
@@ -281,7 +291,7 @@ function Header({
   return (
     <header className="maker-inspector__header">
       <Stack gap="xs">
-        <Heading as="h2" size="h4">
+        <Heading as="h2" size="h5">
           {title}
         </Heading>
         {subtitle ? (
@@ -553,41 +563,22 @@ function swap<T>(list: readonly T[], a: number, b: number): readonly T[] {
 function Actions({ maker, id }: { maker: Maker; id: string; node: MakerNode | undefined; at: boolean }) {
   const root = maker.page.root;
   const run = (gesture: Gesture | undefined) => gesture && maker.gesture(gesture.operations, gesture.select);
-  const tool = (actionId: string) => actions.find((action) => action.id === actionId)!;
   return (
-    <section aria-label="Structure">
+    <section aria-label="Wrap in">
       <Stack gap="sm">
         <Heading as="h3" size="h6">
-          Structure
+          Wrap in
         </Heading>
         <Toolbar label="Structure" className="maker-inspector__tools">
-          <ToolbarGroup label="Wrap in">
-            {WRAPPERS.map((ref) => {
-              const gesture = wrapIn(root, id, ref.contract, ref.signature);
-              const ok = gesture && applyAll(root, gesture.operations).ok;
-              return (
-                <IconButton
-                  key={ref.signature}
-                  icon={{ glyph: glyphFor(ref.signature)! }}
-                  label={`Wrap in ${ref.signature}`}
-                  disabled={!ok}
-                  onClick={() => run(gesture)}
-                />
-              );
-            })}
-          </ToolbarGroup>
-          <ToolbarSeparator />
-          {(["unwrap", "duplicate", "remove"] as const).map((actionId) => {
-            const action = tool(actionId);
-            const gesture = allowed(root, id, action);
+          {WRAPPERS.map((ref) => {
+            const gesture = wrapIn(root, id, ref.contract, ref.signature);
+            const ok = gesture && applyAll(root, gesture.operations).ok;
             return (
               <IconButton
-                key={actionId}
-                icon={action.icon}
-                label={action.label}
-                shortcut={shortcutOf(action)}
-                disabled={!gesture}
-                tone={actionId === "remove" ? "danger" : undefined}
+                key={ref.signature}
+                icon={{ glyph: glyphFor(ref.signature)! }}
+                label={`Wrap in ${ref.signature}`}
+                disabled={!ok}
                 onClick={() => run(gesture)}
               />
             );
