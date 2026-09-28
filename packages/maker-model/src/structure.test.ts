@@ -53,6 +53,16 @@ describe("insertion place", () => {
     expect(insertionPlace(samplePage(), "s")).toEqual({ parent: "s", slot: "children", index: 3 });
   });
 
+  it("goes right after a selected heading, paragraph or button: what they hold is their own text", () => {
+    expect(insertionPlace(samplePage(), "h")).toEqual({ parent: "s", slot: "children", index: 1 });
+    expect(insertionPlace(samplePage(), "b1")).toEqual({ parent: "i", slot: "children", index: 1 });
+  });
+
+  it("goes inside an empty layout container, the place it is waiting to fill", () => {
+    const root = node("main", "layout", "Main", [node("empty", "layout", "Stack")]);
+    expect(insertionPlace(root, "empty")).toEqual({ parent: "empty", slot: "children", index: 0 });
+  });
+
   it("goes right after a selected text run, which holds nothing", () => {
     expect(insertionPlace(samplePage(), "h-t")).toEqual({ parent: "h", slot: "children", index: 1 });
   });

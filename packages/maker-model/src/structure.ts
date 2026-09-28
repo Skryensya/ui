@@ -155,15 +155,32 @@ export function dropTargets(root: MakerNode, child: MakerChild): readonly Place[
 }
 
 /**
- * Where an insertion lands when something is selected: inside it (at the end of its first slot
- * that takes nodes) when it can hold children, otherwise right after it in its own parent.
+ * Where an insertion lands when something is selected: inside it when it is a CONTAINER, otherwise
+ * right after it in its own parent.
+ *
+ * A heading, a paragraph or a button also has a slot that takes nodes, but what it holds is its own
+ * text: after adding a heading, the next thing a person adds is the paragraph below it, not a link
+ * inside it. Inserting inside those made every sequence a round trip to reselect the parent. So a
+ * node counts as a container when it is a layout primitive, when its slot takes composed
+ * signatures (an accordion's items), or when it already holds nodes and no text of its own.
  */
+export function isContainer(node: MakerNode): boolean {
+  const resolved = resolve(node);
+  if (!resolved) return false;
+  if (resolved.contract.category === "layout") return nodeSlots(node).length > 0;
+  const slot = nodeSlots(node)[0];
+  if (!slot) return false;
+  if (resolved.signature.slots[slot]?.accepts === "signature") return true;
+  const held = childrenOf(node, slot);
+  return held.length > 0 && held.every(isNode);
+}
+
 export function insertionPlace(root: MakerNode, selected: string): Place | undefined {
   const target = findChild(root, selected);
   if (!target) return undefined;
-  if (isNode(target)) {
-    const slot = nodeSlots(target)[0];
-    if (slot) return { parent: target.id, slot, index: childrenOf(target, slot).length };
+  if (isNode(target) && isContainer(target)) {
+    const slot = nodeSlots(target)[0]!;
+    return { parent: target.id, slot, index: childrenOf(target, slot).length };
   }
   const at = locate(root, selected);
   return at ? { parent: at.parent.id, slot: at.slot, index: at.index + 1 } : undefined;
