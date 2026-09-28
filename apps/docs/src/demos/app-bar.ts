@@ -13,7 +13,7 @@ const appBarAnatomySpecimen = (t: Translate): string => `<div class="sk-app-bar"
       <button class="sk-app-bar__trigger sk-interactive sk-anchor" type="button" role="menuitem" tabindex="-1">${t("demo.appBar.app")}</button>
     </div>
     <div class="sk-app-bar__menu sk-menu">
-      <button class="sk-app-bar__trigger sk-interactive sk-anchor" type="button" role="menuitem" aria-haspopup="menu" aria-expanded="true" tabindex="-1">${t("demo.appBar.file")}</button>
+      <button class="sk-app-bar__trigger sk-interactive sk-anchor" type="button" role="menuitem" aria-haspopup="menu" aria-expanded="true" tabindex="-1">${t("demo.appBar.file")}<span class="sk-app-bar__indicator" aria-hidden="true"><span data-sk-icon="chevron-down" data-sk-icon-size="sm"></span></span></button>
       <div class="sk-app-bar__dropdown sk-menu__positioner sk-anchored">
         <div class="sk-menu__content" data-state="open" role="menu">
           <div class="sk-menu__item sk-interactive" role="menuitem"><span class="sk-menu__item-label">${t("demo.appBar.new")}</span></div>
@@ -28,7 +28,7 @@ const appBarAnatomySpecimen = (t: Translate): string => `<div class="sk-app-bar"
   <div class="sk-app-bar__status">
     <div class="sk-app-bar__status-item sk-menu"><span class="sk-app-bar__status-text">${t("demo.appBar.saved")}</span></div>
     <div class="sk-app-bar__status-item sk-menu">
-      <button class="sk-app-bar__trigger sk-interactive sk-anchor" type="button" aria-haspopup="menu" aria-expanded="false">72rem</button>
+      <button class="sk-app-bar__trigger sk-interactive sk-anchor" type="button" aria-haspopup="menu" aria-expanded="false">72rem<span class="sk-app-bar__indicator" aria-hidden="true"><span data-sk-icon="chevron-down" data-sk-icon-size="sm"></span></span></button>
     </div>
   </div>
 </div>`;
@@ -42,6 +42,7 @@ export const appBarAnatomyHtml = (t: Translate): string =>
       { for: ".sk-app-bar__menus", side: "block-start" },
       { for: ".sk-app-bar__menu", side: "inline-start" },
       { for: ".sk-app-bar__trigger", side: "block-start", ringPlacement: "offset", ringDistance: 2 },
+      { for: ".sk-app-bar__indicator", side: "block-start" },
       { for: ".sk-menu__content", side: "inline-start" },
       { for: ".sk-app-bar__status", side: "block-end" },
       { for: ".sk-app-bar__status-item", side: "inline-end" },
@@ -106,7 +107,14 @@ export const appBarTree = (t: Translate): UsageTree => ({
       item("new", t("demo.appBar.new")),
       item("open", t("demo.appBar.open")),
       separator("sep"),
-      { options: { value: "export" }, slots: { label: t("demo.appBar.export"), children: [item("html", "HTML"), item("react", "React")] } },
+      /* Three levels: File, then Export, then React. Nested submenus are Menu's own, at any depth. */
+      {
+        options: { value: "export" },
+        slots: {
+          label: t("demo.appBar.export"),
+          children: [item("html", "HTML"), { options: { value: "react" }, slots: { label: "React", children: [item("tsx", "TSX"), item("jsx", "JSX")] } }],
+        },
+      },
     ]),
     menu(t("demo.appBar.edit"), [item("undo", t("demo.appBar.undo")), item("redo", t("demo.appBar.redo"))]),
     menu(t("demo.appBar.view"), [item("zoom-in", t("demo.appBar.zoomIn")), item("zoom-out", t("demo.appBar.zoomOut"))]),

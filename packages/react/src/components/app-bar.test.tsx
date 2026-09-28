@@ -49,10 +49,33 @@ describe("AppBar", () => {
     expect(ui.getByRole("button", { name: "Ancho" }).getAttribute("aria-haspopup")).toBe("menu");
   });
 
-  it("draws the application's own menu in bold through data-strong, and no chevrons anywhere", () => {
+  it("draws the application's own menu in bold, and a chevron only where something opens", () => {
     const ui = render(<Fixture />);
-    expect(titles(ui)[0]!.closest(".sk-app-bar__menu")!.hasAttribute("data-strong")).toBe(true);
-    expect(ui.container.querySelector("[data-sk-icon], svg")).toBeNull();
+    const [maker, archivo, ver, ayuda] = titles(ui);
+    expect(maker!.closest(".sk-app-bar__menu")!.hasAttribute("data-strong")).toBe(true);
+    for (const title of [maker, archivo, ver]) expect(title!.querySelector(".sk-app-bar__indicator")).not.toBeNull();
+    expect(ayuda!.querySelector(".sk-app-bar__indicator")).toBeNull();
+    expect(ui.getByRole("button", { name: "Ancho" }).querySelector(".sk-app-bar__indicator")).not.toBeNull();
+    expect(ui.getByText("Guardado").querySelector(".sk-app-bar__indicator")).toBeNull();
+  });
+
+  it("nests submenus to a third level inside a dropdown, as Menu does", async () => {
+    const ui = render(
+      <AppBar label="Maker">
+        <AppBarMenu
+          items={[{ value: "export", label: "Exportar", children: [{ value: "react", label: "React", children: [{ value: "tsx", label: "TSX" }] }] }]}
+        >
+          Archivo
+        </AppBarMenu>
+      </AppBar>,
+    );
+    fireEvent.click(ui.getByRole("menuitem", { name: "Archivo" }));
+    await tick();
+    const exportar = ui.getByRole("menuitem", { name: "Exportar" });
+    expect(exportar.getAttribute("aria-haspopup")).toBe("menu");
+    /* Every level stays inside the bar's own positioner, so the bar's dense rows reach all of them. */
+    expect(exportar.closest(".sk-app-bar__dropdown")).not.toBeNull();
+    expect(document.querySelector(".sk-app-bar__dropdown")!.textContent).toContain("TSX");
   });
 
   it("moves between menus with Left/Right, wrapping, without opening anything", async () => {
