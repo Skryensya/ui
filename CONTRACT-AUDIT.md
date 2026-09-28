@@ -11,10 +11,10 @@ and **lessons** so the rest of the catalogue can be audited the same way.
 
 ## Breaking changes are allowed
 
-The kit has **no external consumers**: the only code depending on it is `apps/docs` and
-`apps/playground`, both in this repo. So a contract fix is never held back because it breaks
-something. Break it, then repair every caller in docs and playground in the same change, and leave
-the tree clean (build, tests, demos). What still matters is noticing WHAT broke: search both apps for
+The kit has **no external consumers**: the only code depending on it is `apps/docs` and the
+Storybooks, all in this repo. So a contract fix is never held back because it breaks
+something. Break it, then repair every caller in the same change, and leave
+the tree clean (build, tests, demos). What still matters is noticing WHAT broke: search every app for
 the old name, rerun the demo tree tests, and write the changelog entry as `breaking` so the history
 stays honest. Do not keep a deprecated alias just to spare a consumer that does not exist.
 

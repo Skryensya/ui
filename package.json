@@ -14,8 +14,9 @@
     "check:all": "pnpm check && pnpm check:gates",
     "audit:gate": "node scripts/audit-gate.ts",
     "build": "turbo run build",
-    "dev": "turbo run dev --filter=@skryensya/docs --filter=@skryensya/playground",
-    "dev:all": "turbo run dev",
+    "dev": "turbo run dev",
+    "dev:docs": "turbo run dev --filter=@skryensya/docs",
+    "dev:maker": "turbo run dev --filter=@skryensya/maker",
     "storybook:react": "pnpm --filter @skryensya/storybook-react storybook",
     "storybook:vanilla": "pnpm --filter @skryensya/storybook-vanilla storybook",
     "prepare": "husky"
