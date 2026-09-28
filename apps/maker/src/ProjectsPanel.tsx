@@ -1,0 +1,179 @@
+import { useEffect, useState } from "react";
+import { NativeSelect } from "@skryensya/react/select-native";
+import { listTemplates, templateSite, type TemplateEntry, type TemplateLocale } from "./templates";
+import { Button } from "@skryensya/react/button";
+import { Icon } from "@skryensya/react/icon";
+import { Input } from "@skryensya/react/input";
+import { FormField } from "@skryensya/react/form-field";
+import { Heading, Text } from "@skryensya/react/typography";
+import { Inline, Stack } from "@skryensya/react/layout";
+import { IconButton } from "./IconButton";
+import { CommitField } from "./Inspector";
+import type { Workspace } from "./workspace";
+
+/*
+ * EVERY PROJECT THE SERVER HOLDS: open one in a tab, rename it, delete it, or start a new one.
+ * Deleting asks twice, in place, because it is the one thing here undo cannot bring back.
+ */
+
+const when = new Intl.DateTimeFormat(undefined, { dateStyle: "medium", timeStyle: "short" });
+
+export function ProjectsPanel({ workspace, onClose }: { workspace: Workspace; onClose?: () => void }) {
+  const [name, setName] = useState("");
+  const [confirming, setConfirming] = useState<string>();
+  const [renaming, setRenaming] = useState<string>();
+
+  const create = async () => {
+    const trimmed = name.trim();
+    if (!trimmed) return;
+    await workspace.create(trimmed);
+    setName("");
+    onClose?.();
+  };
+
+  return (
+    <div className="maker-projects">
+      <Stack gap="md">
+        <Inline justify="between" align="center">
+          <Heading as="h2" size="h4">
+            Projects
+          </Heading>
+          {onClose ? <IconButton icon={{ role: "close" }} label="Close projects" onClick={onClose} /> : null}
+        </Inline>
+        {workspace.mode.kind === "server" ? (
+          <Text size="sm" tone="tertiary">
+            Kept in {workspace.mode.store === "postgres" ? "PostgreSQL" : "this server's memory (lost when it stops)"}.
+          </Text>
+        ) : null}
+
+        <form
+          className="maker-projects__new"
+          onSubmit={(event) => {
+            event.preventDefault();
+            void create();
+          }}
+        >
+          <FormField label="New project">
+            <Input value={name} placeholder="Landing page" onChange={(event) => setName(event.currentTarget.value)} />
+          </FormField>
+          <Button type="submit" variant="solid" size="sm" pre={<Icon name="add" />} disabled={!name.trim()}>
+            Create
+          </Button>
+        </form>
+
+        <TemplateGallery workspace={workspace} onCreated={onClose} />
+
+        {workspace.error ? (
+          <Text size="sm" role="alert">
+            {workspace.error}
+          </Text>
+        ) : null}
+
+        {workspace.projects.length === 0 ? (
+          <Text tone="secondary">No projects yet. Name one above to start.</Text>
+        ) : (
+          <ul className="maker-projects__list" aria-label="All projects">
+            {workspace.projects.map((project) => {
+              const isOpen = workspace.open.includes(project.id);
+              return (
+                <li key={project.id} className="maker-projects__item">
+                  {renaming === project.id ? (
+                    <CommitField
+                      label="Project name"
+                      value={project.name}
+                      onCommit={(next) => {
+                        setRenaming(undefined);
+                        if (next.trim()) void workspace.rename(project.id, next.trim());
+                      }}
+                    />
+                  ) : (
+                    <button
+                      type="button"
+                      className="maker-projects__open"
+                      onClick={() => {
+                        void workspace.openProject(project.id);
+                        onClose?.();
+                      }}
+                    >
+                      <span className="maker-projects__name">{project.name}</span>
+                      <span className="maker-projects__meta">
+                        {isOpen ? "Open · " : ""}
+                        {when.format(new Date(project.updatedAt))}
+                      </span>
+                    </button>
+                  )}
+                  <Inline gap="xs">
+                    <IconButton icon={{ role: "edit" }} label={`Rename ${project.name}`} onClick={() => setRenaming(project.id)} />
+                    {confirming === project.id ? (
+                      <Button
+                        variant="solid"
+                        tone="danger"
+                        size="sm"
+                        onClick={() => {
+                          setConfirming(undefined);
+                          void workspace.remove(project.id);
+                        }}
+                      >
+                        Delete {project.name}
+                      </Button>
+                    ) : (
+                      <IconButton icon={{ role: "delete" }} label={`Delete ${project.name}`} tone="danger" onClick={() => setConfirming(project.id)} />
+                    )}
+                  </Inline>
+                </li>
+              );
+            })}
+          </ul>
+        )}
+      </Stack>
+    </div>
+  );
+}
+
+/** The docs gallery's templates: a new project starts as one of them. */
+function TemplateGallery({ workspace, onCreated }: { workspace: Workspace; onCreated?: () => void }) {
+  const [open, setOpen] = useState(false);
+  const [locale, setLocale] = useState<TemplateLocale>("es");
+  const [templates, setTemplates] = useState<TemplateEntry[]>([]);
+  const [busy, setBusy] = useState<string>();
+
+  useEffect(() => {
+    if (open) void listTemplates(locale).then(setTemplates);
+  }, [open, locale]);
+
+  const start = async (id: string) => {
+    setBusy(id);
+    const opened = await templateSite(id, locale);
+    if (opened) await workspace.create(opened.title, opened.site);
+    setBusy(undefined);
+    onCreated?.();
+  };
+
+  return (
+    <details className="maker-templates" onToggle={(event) => setOpen(event.currentTarget.open)}>
+      <summary>Start from a template</summary>
+      <Stack gap="sm">
+        <FormField label="Language">
+          <NativeSelect
+            value={locale}
+            onChange={(event) => setLocale(event.currentTarget.value as TemplateLocale)}
+            options={[
+              { value: "es", label: "Español" },
+              { value: "en", label: "English" },
+            ]}
+          />
+        </FormField>
+        <ul className="maker-templates__list" aria-label="Templates">
+          {templates.map((template) => (
+            <li key={template.id}>
+              <button type="button" className="maker-projects__open" disabled={busy !== undefined} onClick={() => void start(template.id)}>
+                <span className="maker-projects__name">{busy === template.id ? "Creating…" : template.title}</span>
+                <span className="maker-projects__meta">{template.description}</span>
+              </button>
+            </li>
+          ))}
+        </ul>
+      </Stack>
+    </details>
+  );
+}

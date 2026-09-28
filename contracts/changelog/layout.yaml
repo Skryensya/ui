@@ -3,8 +3,30 @@
 # `surface` is the shape of the contract the last time somebody reviewed it. If the compiler says it
 # does not match, something a consumer depends on has moved: write the entry and paste in the new
 # hash.
-surface: "921e6d448d249f24"
+surface: "48932c085d8912e1"
 entries:
+  - date: 2026-09-27
+    kind: feature
+    target: minColumn
+    es:
+      title: Grid encuentra su número de columnas con minColumn
+      body: >-
+        <code>minColumn</code> (<code>sm</code>, <code>md</code>, <code>lg</code>) fija el ancho mínimo de cada columna y el propio ancho del Grid decide cuántas caben, sin breakpoints. Excluye <code>columns</code>, <code>responsive</code>, <code>multicol</code> y <code>fill</code>.
+    en:
+      title: Grid finds its own column count with minColumn
+      body: >-
+        <code>minColumn</code> (<code>sm</code>, <code>md</code>, <code>lg</code>) sets the narrowest a column may get, and the Grid's own width decides how many fit, with no breakpoint. It excludes <code>columns</code>, <code>responsive</code>, <code>multicol</code> and <code>fill</code>.
+  - date: 2026-09-27
+    kind: feature
+    target: Inline
+    es:
+      title: Un hijo de Inline puede ocupar el espacio que sobra con data-sizing
+      body: >-
+        Inline publica <code>sizing</code> (<code>fit</code>, <code>fill</code>) como atributo del hijo, escrito en sus <code>attrs</code> como <code>data-sizing</code>. <code>fill</code> parte del tamaño de su contenido y toma lo que la fila deja; la fila sigue haciendo wrap antes de apretarlo.
+    en:
+      title: An Inline child can take the leftover space with data-sizing
+      body: >-
+        Inline publishes <code>sizing</code> (<code>fit</code>, <code>fill</code>) as a child attribute, authored in the child's <code>attrs</code> as <code>data-sizing</code>. <code>fill</code> starts from its content size and takes what the row leaves; the row still wraps before squeezing it.
   - date: 2026-09-27
     kind: feature
     target: gapExpanded

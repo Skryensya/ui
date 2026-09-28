@@ -1,4 +1,4 @@
-import { anchoredParts } from "@skryensya/core/anchored";
+import { anchoredParts, supportsAnchorPositioning } from "@skryensya/core/anchored";
 import type { SignatureOptionsOf } from "@skryensya/core/contract";
 import {
   menuAttrs,
@@ -125,7 +125,10 @@ export function useMenuMachine(props: {
     defaultOpen: props.defaultOpen,
     open: props.open,
     onOpenChange: props.onOpenChange,
-    positioning: { placement: "bottom-start", strategy: "fixed" },
+    /* `gutter: 0` where the anchoring engine exists: `.sk-anchored`'s margin already is the hook's gap
+       even when the machine places the box, and the machine's 8px default came on top of it. Same
+       rule, same reason as `Menu.svelte`. */
+    positioning: { placement: "bottom-start", strategy: "fixed", ...(supportsAnchorPositioning() ? { gutter: 0 } : {}) },
   });
   const api = menu.connect(service, normalizeProps);
   return { service, api };

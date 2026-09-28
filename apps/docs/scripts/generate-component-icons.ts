@@ -86,6 +86,7 @@ const MAP: Record<string, string> = {
   "/components/marquee": "MoveHorizontal",
   "/components/megamenu": "LayoutPanelTop",
   "/components/menu": "Menu",
+  "/components/app-bar": "AppWindow",
   "/components/menubar": "SquareMenu",
   "/components/meter": "Gauge",
   "/components/navbar": "PanelTop",

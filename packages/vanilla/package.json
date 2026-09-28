@@ -237,6 +237,10 @@
       "types": "./src/components/menubar.ts",
       "default": "./src/components/menubar.ts"
     },
+    "./app-bar": {
+      "types": "./src/components/app-bar.ts",
+      "default": "./src/components/app-bar.ts"
+    },
     "./meter": {
       "types": "./src/components/meter.ts",
       "default": "./src/components/meter.ts"

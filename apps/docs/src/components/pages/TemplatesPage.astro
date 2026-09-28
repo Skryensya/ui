@@ -50,22 +50,8 @@ import "@skryensya/core/components/changelog.css";
 import "@skryensya/core/components/empty-state.css";
 import "@skryensya/core/components/tag.css";
 import "@skryensya/core/patterns/footer.css";
-import { appShellExplorerTree, appShellTree } from "../../demos/app-shell";
-import { articleTree } from "../../demos/templates/article";
-import { bookingTree } from "../../demos/templates/booking";
-import { changelogTree } from "../../demos/templates/changelog";
-import { checkoutTree } from "../../demos/templates/checkout";
-import { dashboardTree } from "../../demos/templates/dashboard";
-import { docsSiteTree } from "../../demos/templates/docs-site";
-import { helpCenterTree } from "../../demos/templates/help-center";
-import { marketingTree } from "../../demos/templates/marketing";
-import { notFoundTree } from "../../demos/templates/not-found";
-import { onboardingTree } from "../../demos/templates/onboarding";
-import { pricingTree } from "../../demos/templates/pricing";
-import { productTree } from "../../demos/templates/product";
-import { settingsTree } from "../../demos/templates/settings";
-import { signInTree } from "../../demos/templates/sign-in";
-import { teamTree } from "../../demos/templates/team";
+import { templateTrees } from "../../demos/templates/registry";
+import { makerUrl } from "../../lib/navigation";
 import { getLocale, useTranslations } from "../../i18n";
 import { templateSections } from "../../lib/templates-nav";
 
@@ -78,29 +64,21 @@ const t = useTranslations(locale);
  * templates; here we only attach the emitted markup. Adding a template is one entry there plus one
  * tree here.
  */
-const TREES: Record<string, () => ReturnType<typeof marketingTree>> = {
-  "app-shell": () => appShellTree(t),
-  "app-shell-explorer": () => appShellExplorerTree(t),
-  marketing: () => marketingTree(t),
-  "docs-site": () => docsSiteTree(t),
-  dashboard: () => dashboardTree(t, locale),
-  checkout: () => checkoutTree(t, locale),
-  pricing: () => pricingTree(t, locale),
-  "sign-in": () => signInTree(t),
-  settings: () => settingsTree(t),
-  onboarding: () => onboardingTree(t),
-  product: () => productTree(t, locale),
-  article: () => articleTree(t),
-  "help-center": () => helpCenterTree(t),
-  booking: () => bookingTree(t, locale),
-  changelog: () => changelogTree(t),
-  team: () => teamTree(t),
-  "not-found": () => notFoundTree(t),
-};
+const TREES = templateTrees(t, locale);
 
 const templates = templateSections(t).map((section) => ({
   ...section,
   markup: emitMarkup(TREES[section.id](), { fillDefaults: false }),
+  /* The Maker opens a new project as this template, in this page's language. */
+  openInMaker: makerUrl
+    ? emitMarkup({
+        contract: "button",
+        signature: "Button.navigation",
+        options: { href: `${makerUrl}?template=${encodeURIComponent(section.id)}&lang=${locale}`, variant: "soft", size: "sm" },
+        attrs: { target: "_blank", rel: "noopener" },
+        children: t("templates.openInMaker"),
+      })
+    : undefined,
 }));
 ---
 
@@ -129,6 +107,7 @@ const templates = templateSections(t).map((section) => ({
     {
       templates.map((template) => (
         <section id={template.id} class="templates__section" aria-label={template.title}>
+          {template.openInMaker ? <div class="templates__actions" set:html={template.openInMaker} /> : null}
           <section class="templates__example" aria-label={template.label}>
             <Fragment set:html={template.markup} />
           </section>
@@ -178,6 +157,12 @@ const templates = templateSections(t).map((section) => ({
 
   .templates__section {
     scroll-margin-top: calc(var(--docs-navbar-h, var(--docs-header-block-size)) + var(--space-stack-md));
+  }
+
+  .templates__actions {
+    display: flex;
+    justify-content: flex-end;
+    margin-block-end: var(--space-stack-xs);
   }
 
   .templates__section + .templates__section {

@@ -4,6 +4,8 @@ export type Space = "none" | "xs" | "sm" | "md" | "lg" | "xl";
 export type BoxSurface = "none" | "sunken" | "surface" | "raised";
 export type BoxBorder = "none" | "subtle" | "default";
 export type BoxAppearance = "plain" | "brutalist" | "frosted";
+/** A Box's inline ceiling, on the Wrapper's size scale but never centred: see patterns/box.css. */
+export type BoxMeasure = "sm" | "md" | "lg";
 export type LayoutAlign = "start" | "center" | "end" | "stretch";
 export type InlineAlign = "start" | "center" | "end" | "baseline" | "stretch";
 export type InlineJustify = "start" | "center" | "end" | "between";
@@ -13,6 +15,10 @@ export type InlineJustify = "start" | "center" | "end" | "between";
  */
 export type InlineBlockStart = Space | "auto";
 export type GridColumns = 1 | 2 | 3 | 4 | 5;
+/** The narrowest a Grid lane may get before the browser drops one: `--size-column-*`. */
+export type GridMinColumn = "sm" | "md" | "lg";
+/** How a direct Inline child takes the row's main axis: its content (`fit`) or what is left (`fill`). */
+export type InlineChildSizing = "fit" | "fill";
 /**
  * Named spans a direct LayoutGrid child may request with `data-width`.
  *
@@ -112,6 +118,13 @@ export const boxContract = {
      * `surface`, `border` and `padding`: frosted tints with the surface, brutalist draws around it.
      */
     appearance: { type: "enum", values: ["plain", "brutalist", "frosted"], default: "plain", attr: "data-appearance" },
+    /*
+     * The inline ceiling of the region, from the same `--size-wrapper-*` scale a Wrapper takes, but
+     * NOT centred and with no gutter: a Box keeps its place in its parent's flow and only stops
+     * growing. The Wrapper stays the one centred page column; this is a paragraph block or a form
+     * that should not stretch to a 90rem row. No default: absent, the Box is as wide as its parent.
+     */
+    measure: { type: "enum", values: ["sm", "md", "lg"], attr: "data-measure" },
     /** The element it renders as; React's `as`. A `section` or `nav` still wants an accessible name. */
     boxElement: { type: "enum", values: layoutElements, default: "div", element: true, prop: "as" },
   },
@@ -120,10 +133,10 @@ export const boxContract = {
     Box: {
       intent: ["padded-region", "card-like-surface", "bordered-region"],
       host: { element: "div" },
-      options: ["padding", "paddingExpanded", "surface", "border", "appearance", "boxElement"],
+      options: ["padding", "paddingExpanded", "surface", "border", "appearance", "measure", "boxElement"],
       /* A Box IS its visual style. With all three at `none` it paints nothing and is a bare `div`
          standing in for a decision; grouping without paint is Stack, Inline or Grid. */
-      atLeastOneOf: [["padding", "surface", "border", "appearance"]],
+      atLeastOneOf: [["padding", "surface", "border", "appearance", "measure"]],
       slots: { children: { accepts: "node", required: true } },
       template: { element: "div", part: "box", host: true, slot: "children" },
       react: { from: "@skryensya/react/layout", name: "Box" },
@@ -206,6 +219,13 @@ export const layoutContract = {
      * escape hatches, not published override hooks.
      */
     fill: { type: "boolean", default: false, attr: "data-fill", trueValue: "" },
+    /*
+     * The narrowest a lane may get, and nothing else: the browser fits as many lanes as the GRID'S
+     * OWN width allows (`repeat(auto-fit, minmax(min(X, 100%), 1fr))`), so a Grid in a sidebar and
+     * the same Grid in a page column each find their own count with no breakpoint. It decides the
+     * lane count, which is why it excludes the options that decide it another way.
+     */
+    minColumn: { type: "enum", values: ["sm", "md", "lg"], attr: "data-min-column" },
     /** The element it renders as; React's `as`. A `section` or `nav` still wants an accessible name. */
     layoutElement: { type: "enum", values: layoutElements, default: "div", element: true, prop: "as" },
   },
@@ -224,7 +244,21 @@ export const layoutContract = {
       intent: ["things-side-by-side", "button-row", "label-and-value"],
       host: { element: "div" },
       options: ["gap", "gapExpanded", "inlineAlign", "justify", "wrap", "equal", "blockStart", "layoutElement"],
-      slots: { children: { accepts: "node", required: true } },
+      slots: {
+        children: {
+          accepts: "node",
+          required: true,
+          /*
+           * Fit or fill is a relation to THIS row, so the row publishes it and the child carries it
+           * (`data-sizing`), the same way LayoutGrid publishes `width`. A child moved out of the row
+           * leaves it behind instead of carrying a flex rule its new parent never reads. Absent is
+           * `fit`. Under `equal` every child already shares the row, so `fill` adds nothing there.
+           */
+          childAttrs: {
+            sizing: { type: "enum", values: ["fit", "fill"], attr: "data-sizing" },
+          },
+        },
+      },
       template: { element: "div", part: "inline", host: true, slot: "children" },
       react: { from: "@skryensya/react/layout", name: "Inline" },
     },
@@ -232,7 +266,8 @@ export const layoutContract = {
     Grid: {
       intent: ["columns", "card-grid", "equal-width-cells"],
       host: { element: "div" },
-      options: ["gap", "gapExpanded", "columns", "multicol", "responsive", "fill", "layoutElement"],
+      options: ["gap", "gapExpanded", "columns", "multicol", "responsive", "fill", "minColumn", "layoutElement"],
+      excludes: { minColumn: ["columns", "multicol", "responsive", "fill"] },
       slots: { children: { accepts: "node", required: true } },
       template: { element: "div", part: "grid", host: true, slot: "children" },
       react: { from: "@skryensya/react/layout", name: "Grid" },

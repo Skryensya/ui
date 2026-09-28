@@ -491,6 +491,10 @@
       "types": "./src/menubar.ts",
       "default": "./src/menubar.ts"
     },
+    "./app-bar": {
+      "types": "./src/app-bar.ts",
+      "default": "./src/app-bar.ts"
+    },
     "./megamenu": {
       "types": "./src/megamenu.ts",
       "default": "./src/megamenu.ts"

@@ -51,6 +51,7 @@ import { selectContract } from "./select.js";
 import { userSelectContract } from "./user-select.js";
 import { menuContract } from "./menu.js";
 import { menubarContract } from "./menubar.js";
+import { appBarContract } from "./app-bar.js";
 import { megamenuContract } from "./megamenu.js";
 import { meterContract } from "./meter.js";
 import { ratingContract } from "./rating.js";
@@ -193,6 +194,7 @@ export const contracts = fromContracts(
   userSelectContract,
   menuContract,
   menubarContract,
+  appBarContract,
   megamenuContract,
   meterContract,
   ratingContract,

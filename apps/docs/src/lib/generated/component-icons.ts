@@ -63,6 +63,7 @@ export const componentIcons: Readonly<Record<string, IconData | StableIconName>>
   "/components/marquee": { viewBox: "0 0 24 24", attrs: ATTRS, body: "<path d=\"m18 8 4 4-4 4\" /><path d=\"M2 12h20\" /><path d=\"m6 8-4 4 4 4\" />" },
   "/components/megamenu": { viewBox: "0 0 24 24", attrs: ATTRS, body: "<rect width=\"18\" height=\"7\" x=\"3\" y=\"3\" rx=\"1\" /><rect width=\"7\" height=\"7\" x=\"3\" y=\"14\" rx=\"1\" /><rect width=\"7\" height=\"7\" x=\"14\" y=\"14\" rx=\"1\" />" },
   "/components/menu": { viewBox: "0 0 24 24", attrs: ATTRS, body: "<path d=\"M4 5h16\" /><path d=\"M4 12h16\" /><path d=\"M4 19h16\" />" },
+  "/components/app-bar": { viewBox: "0 0 24 24", attrs: ATTRS, body: "<rect x=\"2\" y=\"4\" width=\"20\" height=\"16\" rx=\"2\" /><path d=\"M10 4v4\" /><path d=\"M2 8h20\" /><path d=\"M6 4v4\" />" },
   "/components/menubar": { viewBox: "0 0 24 24", attrs: ATTRS, body: "<rect width=\"18\" height=\"18\" x=\"3\" y=\"3\" rx=\"2\" /><path d=\"M7 8h10\" /><path d=\"M7 12h10\" /><path d=\"M7 16h10\" />" },
   "/components/meter": { viewBox: "0 0 24 24", attrs: ATTRS, body: "<path d=\"m12 14 4-4\" /><path d=\"M3.34 19a10 10 0 1 1 17.32 0\" />" },
   "/components/navbar": { viewBox: "0 0 24 24", attrs: ATTRS, body: "<rect width=\"18\" height=\"18\" x=\"3\" y=\"3\" rx=\"2\" /><path d=\"M3 9h18\" />" },

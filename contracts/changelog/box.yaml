@@ -3,8 +3,19 @@
 # `surface` is the shape of the contract the last time somebody reviewed it. If the compiler says it
 # does not match, something a consumer depends on has moved: write the entry and paste in the new
 # hash.
-surface: "d4ace5e0efcd6501"
+surface: "53a5e458df15c436"
 entries:
+  - date: 2026-09-27
+    kind: feature
+    target: measure
+    es:
+      title: Box limita su ancho con measure
+      body: >-
+        <code>measure</code> (<code>sm</code>, <code>md</code>, <code>lg</code>) pone un techo de ancho desde la misma escala que Wrapper, sin centrar y sin gutter: el Box conserva su lugar en el flujo. Cuenta como decisión visual para <code>atLeastOneOf</code>.
+    en:
+      title: Box caps its width with measure
+      body: >-
+        <code>measure</code> (<code>sm</code>, <code>md</code>, <code>lg</code>) sets a width ceiling from the same scale as Wrapper, neither centred nor guttered: the Box keeps its place in the flow. It counts toward <code>atLeastOneOf</code>.
   - date: 2026-09-27
     kind: feature
     target: paddingExpanded

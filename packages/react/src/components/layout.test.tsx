@@ -239,4 +239,23 @@ describe("layout primitives", () => {
     expect(ui.container.querySelector(".sk-wrapper")?.hasAttribute("data-gutter")).toBe(false);
     expect(ui.container.querySelector(".sk-wrapper")?.hasAttribute("data-gutter-expanded")).toBe(false);
   });
+
+  /* DECISION 31: the sizing the Maker exposes is the contract's, written only when declared. */
+  it("writes Box measure and Grid minColumn only when declared", () => {
+    const ui = render(
+      <>
+        <Box measure="sm">Measured</Box>
+        <Grid minColumn="md">Auto-fit</Grid>
+        <Box padding="md">Plain</Box>
+        <Grid columns={2}>Fixed</Grid>
+      </>,
+    );
+    const [measured, plain] = ui.container.querySelectorAll(".sk-box");
+    const [autoFit, fixed] = ui.container.querySelectorAll(".sk-grid");
+
+    expect(measured?.getAttribute("data-measure")).toBe("sm");
+    expect(plain?.hasAttribute("data-measure")).toBe(false);
+    expect(autoFit?.getAttribute("data-min-column")).toBe("md");
+    expect(fixed?.hasAttribute("data-min-column")).toBe(false);
+  });
 });

@@ -100,6 +100,7 @@ import { marqueeMessages } from "./messages/components/marquee";
 import { megamenuMessages } from "./messages/components/megamenu";
 import { menuMessages } from "./messages/components/menu";
 import { menubarMessages } from "./messages/components/menubar";
+import { appBarMessages } from "./messages/components/app-bar";
 import { meterMessages } from "./messages/components/meter";
 import { ratingMessages } from "./messages/components/rating";
 import { navbarMessages } from "./messages/components/navbar";
@@ -246,6 +247,7 @@ export const ui = {
     ...megamenuMessages.es,
     ...menuMessages.es,
     ...menubarMessages.es,
+    ...appBarMessages.es,
     ...meterMessages.es,
     ...ratingMessages.es,
     ...navbarMessages.es,
@@ -389,6 +391,7 @@ export const ui = {
     ...megamenuMessages.en,
     ...menuMessages.en,
     ...menubarMessages.en,
+    ...appBarMessages.en,
     ...meterMessages.en,
     ...ratingMessages.en,
     ...navbarMessages.en,

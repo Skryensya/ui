@@ -209,6 +209,77 @@
       ]
     },
     {
+      "category": "actions",
+      "css": "@skryensya/core/components/app-bar.css",
+      "id": "app-bar",
+      "signatures": [
+        {
+          "alternatives": [
+            "Menubar",
+            "Navbar",
+            "Toolbar",
+            "Menu"
+          ],
+          "avoidWhen": [
+            "the screen is narrow or the pointer is a finger (mobile): its 24px targets, switch-by-pointing and single clipped line assume a desktop with a mouse or trackpad; show a Navbar with a Menu, or one button opening a Menu, there instead",
+            "it is a website's header with destinations; that is a Navbar",
+            "the menus sit among other controls on a page and should read as buttons; that is a Menubar",
+            "the actions are icons for the current selection; that is a Toolbar",
+            "there is a single menu of commands behind one button; that is a Menu"
+          ],
+          "host": "div",
+          "id": "AppBar",
+          "intent": [
+            "application-bar",
+            "app-menu-bar",
+            "desktop-style-top-bar",
+            "editor-top-bar"
+          ],
+          "parents": [],
+          "useWhen": [
+            "the top edge of an application (an editor, a tool, a dashboard) needs its menus in one short line of text, the way a desktop OS draws its menu bar",
+            "the application also has a few words of state to keep in view (saved, a width, a zoom level, a clock) and some of them open a small menu"
+          ]
+        },
+        {
+          "alternatives": [],
+          "avoidWhen": [],
+          "host": "div",
+          "id": "AppBarMenu",
+          "intent": [
+            "app-bar-menu",
+            "app-bar-command"
+          ],
+          "parents": [
+            "AppBar"
+          ],
+          "useWhen": [
+            "one menu of the bar. With `items` (Menu's own item shape: commands, checkbox/radio, separators, nested submenus) it opens a dropdown; without, it is a command that acts at once",
+            "`strong` for the application's own menu, the first one, drawn in bold"
+          ]
+        },
+        {
+          "alternatives": [],
+          "avoidWhen": [
+            "it is a command the person runs; put it in one of the bar's menus"
+          ],
+          "host": "div",
+          "id": "AppBarStatus",
+          "intent": [
+            "app-bar-status",
+            "app-bar-status-menu"
+          ],
+          "parents": [
+            "AppBar"
+          ],
+          "useWhen": [
+            "a few words of state on the trailing side of the bar; plain text stays text, not a control",
+            "with `items`, the words become a menu button, the way a desktop status item opens its own small menu"
+          ]
+        }
+      ]
+    },
+    {
       "category": "content",
       "css": "@skryensya/core/components/avatar.css",
       "id": "avatar",
@@ -5444,5 +5515,5 @@
     }
   ],
   "schemaVersion": "2.3",
-  "sourceHash": "899e09012cc9793f"
+  "sourceHash": "08f1282c7689fc8e"
 }

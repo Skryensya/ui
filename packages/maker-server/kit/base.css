@@ -1,0 +1,15 @@
+/*
+ * What a published page's own document needs from the kit, and what the Root contract leaves to the
+ * consumer: the body's face and colours. A stylesheet, not an inline <style>, so the site's CSP can
+ * forbid inline styles in the document head.
+ */
+html,
+body {
+  margin: 0;
+}
+
+body {
+  background: var(--color-bg-canvas);
+  color: var(--color-text-primary);
+  font-family: var(--font-family-body);
+}

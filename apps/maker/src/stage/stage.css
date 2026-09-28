@@ -1,0 +1,32 @@
+/*
+ * Stage-only affordances. They exist in this document and never in anything the Maker exports.
+ *
+ * An empty container has no content to give it a size, so it would collapse to nothing and offer
+ * no place to drop into. It gets a floor and a dashed edge here; the page itself stays as it is,
+ * pending, until something is dropped in.
+ */
+html,
+body {
+  margin: 0;
+  background: var(--color-bg-canvas, Canvas);
+  color: var(--color-text-primary, CanvasText);
+  /* The Root contract leaves the body's face to the consumer; the stage is that consumer here. */
+  font-family: var(--font-family-body);
+}
+
+/* No minimum: the artboard is as tall as this, and a floor here would feed back into it. */
+#stage {
+  display: flow-root;
+}
+
+[data-maker-node]:empty {
+  min-block-size: 3rem;
+  min-inline-size: 3rem;
+  outline: 1px dashed color-mix(in oklab, currentColor 35%, transparent);
+  outline-offset: -1px;
+}
+
+/* In edit mode nothing in the page reacts to the pointer on its own: a click selects. */
+html[data-maker-mode="edit"] #stage * {
+  cursor: default;
+}

@@ -27,6 +27,15 @@
     --size-wrapper-md: 64rem;
     --size-wrapper-lg: 90rem;
 
+    /* The narrowest a Grid lane gets before the grid drops one (`data-min-column`). A floor, not a
+       width: lanes grow past it to share the row. Stable like the wrappers, since they decide how
+       many lanes a row holds, and density tightening them would add a lane rather than tighten one.
+       `md` is where a card with a title, two lines and an action still reads; the tile grid's own
+       15rem sits between `sm` and `md`. */
+    --size-column-sm: 12rem;
+    --size-column-md: 18rem;
+    --size-column-lg: 24rem;
+
     /* A QR's size is a SCANNABILITY property, so density deliberately does not touch it: a camera
        needs a physical module big enough to resolve, and a compact UI shrinking the code until it
        stops reading would be density breaking the component rather than tightening it.

@@ -65,6 +65,14 @@ A component that is a place to put things, a sidebar, a navbar, as opposed to th
 A shell owns its own chrome and its own states, and adjusts its guests only by re-declaring their
 styling hooks, never by reaching into their markup.
 
+**App bar**:
+A component. The one short line of text across the top of an application: its menus on the leading
+side, the application's own first and in bold, and a few words of status on the trailing side. Its
+titles are words, not buttons, and a menu opens by being chosen, never by hovering alone. Not a
+navbar, which is a site's header of destinations, and not a menubar, which is a widget placed among
+other controls on a page.
+_Avoid_: top bar, system bar, header, menu bar (for this)
+
 **Rail**:
 The sidebar, collapsed: narrowed to one control wide, showing icons. It is not a hidden sidebar, 
 nothing is removed, so a rail is never a disclosure.
@@ -489,3 +497,59 @@ _Avoid_: the changelog check, the version bump
 The dependency-free checker that reads the CSS and fails on a broken rule. It is what makes the
 tiers a system rather than three folders, every rule here is executable, not aspirational.
 _Avoid_: the linter, stylelint
+
+## Maker
+
+**Maker**:
+The visual page builder. A person composes signatures into a tree inside ordinary document flow,
+and the browser places everything; nothing in it has coordinates. Distinct from the **Editor**
+contract, which is rich text.
+_Avoid_: editor, page editor, builder, canvas (the Canvas contract is a pan-and-zoom surface)
+
+**Maker site**:
+What the Maker opens, saves and exports: maker pages in order, each with a name and a unique path.
+The order is the order the site offers its pages in, never anything about their layout.
+_Avoid_: site document, SiteDocument, project, workspace
+
+**Maker project**:
+A maker site kept by the Maker's server under a name, with a revision that goes up on every save.
+A save names the revision it was made on, so the person and an agent never overwrite each other.
+_Avoid_: document, file, workspace, workbook
+
+**Maker page**:
+One page of a maker site: a name, a path and a tree of maker nodes whose root is a Main. It holds
+only what the author chose, never what the browser computed (position, rendered size).
+_Avoid_: layout, artboard, screen, frame
+
+**Maker node**:
+One usage-tree node plus a stable identity. Stripping the identities from a maker page yields a
+valid-shaped usage tree, and nothing else is lost.
+_Avoid_: EditorNode, element, layer, block
+
+**Maker operation**:
+One change from the closed set. On a page's tree: insert, move, remove, wrap, unwrap, set an option,
+set a host attribute, set a slot's text or entries. On the site: add, remove, rename, move a page,
+set its path, and edit (one page operation, addressed to one page). Dragging, the keyboard, the
+inspector and a prompt all speak only in operations, and no operation accepts a position.
+_Avoid_: command (the Editor's word), action, mutation, edit
+
+**Stage**:
+Where the Maker renders a maker page with the real bindings, in its own browsing context. Choosing a
+stage width changes only the space the browser is given, never the maker page.
+_Avoid_: canvas, artboard, viewport, preview frame
+
+**Pending**:
+A maker page that is structurally sound but that validation does not accept yet: an empty container,
+an option a constraint still needs. Shown and reported, never silently repaired.
+_Avoid_: invalid, broken, draft, error state
+
+**Preset**:
+The maker node a signature is inserted as: every option at its default, plus the first value that
+satisfies each constraint, unless the semantic overlay names a better one. Belongs to the contract,
+not to the Maker.
+_Avoid_: template, default node, starter
+
+**Layout role**:
+What a maker node is to its parent, said in the parent's terms: "item in a wrapping row, sized to
+fit". It comes from the parent and is lost when the node moves.
+_Avoid_: position, placement (the anchored sense), constraints
