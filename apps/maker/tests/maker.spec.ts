@@ -114,11 +114,11 @@ test("fill or fit is offered as the Inline's, and it is left behind when the chi
 test("changing the stage width changes the room the browser has, never the page", async ({ page }) => {
   const saved = () => page.evaluate(() => localStorage.getItem("skryensya-maker:page"));
   const before = await saved();
-  await page.getByRole("radio", { name: "36rem" }).click();
+  await page.getByRole("button", { name: /^Stage width: 36rem/ }).click();
   await expect(page.locator(".maker-stage__frame")).toHaveCSS("inline-size", "576px");
   await expect(page.locator(".maker-stage__meta")).toContainText("compact");
   /* Wider than the column it sits in: it keeps its width and the column scrolls. */
-  await page.getByRole("radio", { name: "90rem" }).click();
+  await page.getByRole("button", { name: /^Stage width: 90rem/ }).click();
   await expect(page.locator(".maker-stage__frame")).toHaveCSS("inline-size", "1440px");
   await expect(page.locator(".maker-stage__meta")).toContainText("expanded");
   expect(await saved()).toBe(before);
@@ -130,7 +130,7 @@ test("edit mode selects instead of activating; interact mode activates; navigati
   const link = stage(page).locator("a[href]").first();
   await link.click();
   await expect(page.locator(".maker__right h2").first()).toHaveText("Button.navigation");
-  await page.getByRole("radio", { name: "Interact" }).click();
+  await page.getByRole("button", { name: /^Interact/ }).click();
   await link.click();
   expect(await page.frames()[1]!.url()).toContain("/stage.html");
 });
@@ -141,7 +141,7 @@ test("the stored page holds no coordinates, sizes or styles", async ({ page }) =
 });
 
 test("export emits React, HTML and the usage tree from the same page, pending or not", async ({ page }) => {
-  await page.getByRole("button", { name: "Export" }).click();
+  await page.getByRole("button", { name: "Export", exact: true }).click();
   const code = page.getByLabel("Exported code");
   await expect(code).toHaveValue(/export function Page/);
   await expect(code).toHaveValue(/<Stack/);
@@ -234,4 +234,27 @@ test("a dialog is held open on the stage while it or something in it is selected
   expect(saved).not.toMatch(/"open": true/);
   await selectInOutline(page, "Heading");
   await expect.poll(() => dialog.evaluate((d) => (d as HTMLDialogElement).open)).toBe(false);
+});
+
+test("the selection toolbar runs the keyboard's gestures, disabled exactly where the contract refuses", async ({ page }) => {
+  const tools = page.getByRole("toolbar", { name: "Selection" });
+  await selectInOutline(page, "Wrapper");
+  /* The Wrapper is Main's only child: nothing to move past, nothing to indent into. */
+  await expect(tools.getByRole("button", { name: "Move after the next sibling" })).toBeDisabled();
+  await expect(tools.getByRole("button", { name: "Move into the previous container" })).toBeDisabled();
+  await selectInOutline(page, "Heading");
+  await tools.getByRole("button", { name: "Move after the next sibling" }).click();
+  await expect.poll(() => pageTree(page)).toContain("      Text\n        \"Text\"\n      Heading");
+  await page.getByRole("toolbar", { name: "Structure" }).getByRole("button", { name: "Wrap in Inline" }).click();
+  await expect.poll(() => pageTree(page)).toContain("      Inline\n        Heading");
+});
+
+test("every icon-only control in the chrome has a name", async ({ page }) => {
+  const unnamed = await page.evaluate(() =>
+    [...document.querySelectorAll("button")]
+      .filter((button) => !button.closest("iframe") && !(button.getAttribute("aria-label") || button.textContent?.trim()))
+      .map((button) => button.outerHTML.slice(0, 80)),
+  );
+  expect(unnamed).toEqual([]);
+  await expect(page.getByRole("toolbar", { name: "Maker" }).locator("svg.sk-icon").first()).toBeVisible();
 });

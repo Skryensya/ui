@@ -1,28 +1,35 @@
 import { useEffect, useState } from "react";
 import { Button } from "@skryensya/react/button";
-import { SegmentedControl } from "@skryensya/react/segmented";
+import { Icon } from "@skryensya/react/icon";
 import { NativeSelect } from "@skryensya/react/select-native";
+import { Toolbar, ToolbarGroup, ToolbarSeparator } from "@skryensya/react/toolbar";
 import { useDrag } from "./drag";
 import { ExportPanel } from "./ExportPanel";
+import { IconButton } from "./IconButton";
+import { MakerIcon, type AnyIcon } from "./icons";
 import { Inspector } from "./Inspector";
 import { Outline } from "./Outline";
 import { Palette } from "./Palette";
+import { SelectionTools } from "./SelectionTools";
 import { Stage } from "./stage/Stage";
 import { useMaker, type StageWidth, type View } from "./state";
 
 /*
- * The Maker's chrome: the page as a tree on the left (outline, and the palette that adds to it),
- * the stage in the middle, the inspector on the right. The toolbar holds only VIEW controls
- * (stage width, edit or interact, theme) and history; none of them changes the page.
+ * The Maker's chrome: one toolbar on top for everything about VIEWING the page (history, stage
+ * width, edit or interact, theme) and exporting it; the page as a tree on the left with the tools
+ * that act on the selection; the stage in the middle; the inspector on the right. Nothing in the
+ * top toolbar changes the page except undo and redo.
  */
 
-const WIDTHS: readonly { value: string; label: string; width: StageWidth }[] = [
-  { value: "fit", label: "Fit", width: "fit" },
-  { value: "36", label: "36rem", width: 36 },
-  { value: "52", label: "52rem", width: 52 },
-  { value: "72", label: "72rem", width: 72 },
-  { value: "90", label: "90rem", width: 90 },
+const WIDTHS: readonly { width: StageWidth; label: string; icon: AnyIcon }[] = [
+  { width: "fit", label: "Fit the space available", icon: { role: "fit" } },
+  { width: 36, label: "36rem, compact (phone)", icon: { role: "screen-mobile" } },
+  { width: 52, label: "52rem, where expanded begins (tablet)", icon: { role: "screen-tablet" } },
+  { width: 72, label: "72rem (desktop)", icon: { role: "screen-desktop" } },
+  { width: 90, label: "90rem, the widest page column", icon: { role: "maximize" } },
 ];
+
+const same = (a: StageWidth, b: StageWidth) => a === b;
 
 export function App() {
   const maker = useMaker();
@@ -45,55 +52,83 @@ export function App() {
     return () => window.removeEventListener("keydown", onKey);
   }, [maker.undo, maker.redo]);
 
-  const widthValue = typeof view.width === "object" ? "custom" : String(view.width);
+  const mod = /mac/i.test(navigator.platform) ? "⌘" : "Ctrl+";
 
   return (
     <div className={`maker${drag.session ? " maker--dragging" : ""}`}>
-      <header className="maker__toolbar">
-        <h1 className="maker__brand">Maker</h1>
-        <div className="maker__group">
-          <Button variant="ghost" size="sm" onClick={maker.undo} disabled={!maker.canUndo}>
-            Undo
-          </Button>
-          <Button variant="ghost" size="sm" onClick={maker.redo} disabled={!maker.canRedo}>
-            Redo
-          </Button>
-        </div>
-        <SegmentedControl
-          label="Stage width"
-          value={widthValue === "custom" ? undefined : widthValue}
-          onValueChange={(value) => setView({ width: WIDTHS.find((w) => w.value === value)!.width })}
-          options={WIDTHS.map(({ value, label }) => ({ value, label }))}
-        />
-        <SegmentedControl
-          label="Mode"
-          value={view.mode}
-          onValueChange={(value) => setView({ mode: value as View["mode"] })}
-          options={[
-            { value: "edit", label: "Edit" },
-            { value: "interact", label: "Interact" },
-          ]}
-        />
-        <div className="maker__group">
-          <NativeSelect aria-label="Color mode" value={view.scheme} onChange={(e) => setView({ scheme: e.currentTarget.value as View["scheme"] })} options={[{ value: "light", label: "Light" }, { value: "dark", label: "Dark" }]} />
-          <NativeSelect aria-label="Density" value={view.density} onChange={(e) => setView({ density: e.currentTarget.value as View["density"] })} options={[{ value: "compact", label: "Compact" }, { value: "default", label: "Default density" }, { value: "comfortable", label: "Comfortable" }]} />
-          <NativeSelect aria-label="Radius" value={view.radius} onChange={(e) => setView({ radius: e.currentTarget.value as View["radius"] })} options={["none", "sm", "md", "lg", "xl"].map((r) => ({ value: r, label: `Radius ${r}` }))} />
-          <label className="maker__check">
-            <input type="checkbox" checked={view.contrast} onChange={(e) => setView({ contrast: e.currentTarget.checked })} /> High contrast
-          </label>
-        </div>
-        <Button variant="solid" size="sm" onClick={() => setExporting(true)}>
+      <header className="maker__top">
+        <h1 className="maker__brand">
+          <MakerIcon icon={{ glyph: "insert" }} size="md" />
+          Maker
+        </h1>
+        <Toolbar label="Maker" className="maker__toolbar">
+          <ToolbarGroup label="History">
+            <IconButton icon={{ glyph: "undo" }} label="Undo" shortcut={`${mod}Z`} onClick={maker.undo} disabled={!maker.canUndo} />
+            <IconButton icon={{ glyph: "redo" }} label="Redo" shortcut={`${mod}⇧Z`} onClick={maker.redo} disabled={!maker.canRedo} />
+          </ToolbarGroup>
+          <ToolbarSeparator />
+          <ToolbarGroup label="Stage width">
+            {WIDTHS.map(({ width, label, icon }) => (
+              <IconButton key={String(width)} icon={icon} label={`Stage width: ${label}`} pressed={same(view.width, width)} onClick={() => setView({ width })} />
+            ))}
+          </ToolbarGroup>
+          <ToolbarSeparator />
+          <ToolbarGroup label="Mode">
+            <IconButton icon={{ glyph: "edit" }} label="Edit: a click selects" pressed={view.mode === "edit"} onClick={() => setView({ mode: "edit" })} />
+            <IconButton icon={{ glyph: "interact" }} label="Interact: the page responds" pressed={view.mode === "interact"} onClick={() => setView({ mode: "interact" })} />
+          </ToolbarGroup>
+          <ToolbarSeparator />
+          <ToolbarGroup label="Theme of the stage">
+            <IconButton
+              icon={{ role: view.scheme === "dark" ? "mode-dark" : "mode-light" }}
+              label="Dark stage"
+              pressed={view.scheme === "dark"}
+              onClick={() => setView({ scheme: view.scheme === "dark" ? "light" : "dark" })}
+            />
+            <IconButton icon={{ glyph: "contrast" }} label="High contrast stage" pressed={view.contrast} onClick={() => setView({ contrast: !view.contrast })} />
+            <NativeSelect
+              className="maker__select"
+              aria-label="Density"
+              value={view.density}
+              onChange={(e) => setView({ density: e.currentTarget.value as View["density"] })}
+              options={[
+                { value: "compact", label: "Density: compact" },
+                { value: "default", label: "Density: default" },
+                { value: "comfortable", label: "Density: comfortable" },
+              ]}
+            />
+            <NativeSelect
+              className="maker__select"
+              aria-label="Radius"
+              value={view.radius}
+              onChange={(e) => setView({ radius: e.currentTarget.value as View["radius"] })}
+              options={["none", "sm", "md", "lg", "xl"].map((r) => ({ value: r, label: `Radius ${r}` }))}
+            />
+          </ToolbarGroup>
+        </Toolbar>
+        <Button variant="solid" size="sm" pre={<Icon name="download" />} onClick={() => setExporting(true)}>
           Export
         </Button>
       </header>
 
       <aside className="maker__left" aria-label="Page">
-        <section className="maker__outline" aria-label="Outline">
-          <h2 className="maker__panel-title">Outline</h2>
+        <section className="maker__panel maker__outline" aria-labelledby="maker-layers">
+          <header className="maker__panel-header">
+            <h2 className="maker__panel-title" id="maker-layers">
+              <MakerIcon icon={{ glyph: "layers" }} />
+              Layers
+            </h2>
+          </header>
+          <SelectionTools maker={maker} />
           <Outline maker={maker} drag={drag} />
         </section>
-        <section className="maker__palette" aria-label="Insert">
-          <h2 className="maker__panel-title">Insert</h2>
+        <section className="maker__panel maker__palette" aria-labelledby="maker-insert">
+          <header className="maker__panel-header">
+            <h2 className="maker__panel-title" id="maker-insert">
+              <MakerIcon icon={{ role: "add" }} />
+              Insert
+            </h2>
+          </header>
           <Palette maker={maker} drag={drag} />
         </section>
       </aside>
@@ -109,7 +144,6 @@ export function App() {
       <p className="maker__notice" role="status" aria-live="polite" key={maker.notice?.at}>
         {maker.notice?.text}
       </p>
-      {drag.session?.target && drag.session.target.surface !== "stage" ? null : null}
     </div>
   );
 }
