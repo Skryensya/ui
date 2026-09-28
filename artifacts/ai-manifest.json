@@ -627,6 +627,38 @@
         "version": "0.0.1-dev"
       }
     ],
+    "app-bar": [
+      {
+        "date": null,
+        "entries": [
+          {
+            "date": "2026-09-28",
+            "en": {
+              "body": "It joins the catalogue with <code>AppBar</code>: the short line of text across the top edge of an application, like a desktop OS draws one. <code>AppBarMenu</code> is each menu (<code>strong</code> draws the application's own in bold) and opens a real <code>Menu</code> with <code>items</code>, or acts at once without them. <code>AppBarStatus</code> puts state at the end of the line: text, or a menu button when it has <code>items</code>. The menus are a <code>menubar</code> named by <code>label</code>, with one tab stop; Left and Right move between them carrying an open dropdown along, and once a menu is open, pointing at another switches to it. The dropdowns are dense: 24px rows with little block padding, tuned with <code>--sk-app-bar-menu-item-block-size</code> and <code>--sk-app-bar-menu-item-padding-block</code>.",
+              "title": "AppBar is published as a contract, with three signatures"
+            },
+            "es": {
+              "body": "Entra al catálogo <code>AppBar</code>: la barra corta de texto que cruza el borde superior de una aplicación, como la de un sistema de escritorio. <code>AppBarMenu</code> es cada menú (<code>strong</code> dibuja en negrita el de la propia aplicación) y abre un <code>Menu</code> real con <code>items</code>, o actúa de inmediato sin ellos. <code>AppBarStatus</code> pone estado al final de la línea: texto, o un botón de menú si trae <code>items</code>. Los menús son un <code>menubar</code> nombrado por <code>label</code>, con una sola parada de tabulación; Izquierda y Derecha pasan de uno a otro llevando el desplegable abierto, y con un menú abierto basta apuntar a otro para cambiar. Los desplegables son densos, con menos relleno vertical que la densidad compacta de <code>Menu</code>, y se ajustan con <code>--sk-app-bar-menu-item-padding-block</code>.",
+              "title": "AppBar se publica como contrato, con tres signatures"
+            },
+            "kind": "feature"
+          },
+          {
+            "date": "2026-09-28",
+            "en": {
+              "body": "A title or a status with <code>items</code> carries a small chevron (the <code>indicator</code> part), turned while its list is open; a command or plain text carries none. The title fills the bar's height and is square, and the dropdown hangs from its bottom edge with no gap. Open, the title takes the accent's fill and text and an accent line along that edge, so it is plain which title the list belongs to. New hooks: <code>--sk-app-bar-item-open-fg</code> and <code>--sk-app-bar-item-open-indicator</code>; <code>--sk-app-bar-item-radius</code> becomes <code>0</code>.",
+              "title": "A chevron on titles that open something, and the open title stands out"
+            },
+            "es": {
+              "body": "Un título o un estado con <code>items</code> lleva un chevron pequeño (parte <code>indicator</code>), que gira mientras su lista está abierta; un comando o un texto no lleva ninguno. El título ocupa todo el alto de la barra y es cuadrado, y el desplegable cuelga de su borde inferior sin separación. Abierto, el título lleva el relleno y el texto del acento y una línea de acento en ese borde, así se ve de qué título sale la lista. Hooks nuevos: <code>--sk-app-bar-item-open-fg</code> y <code>--sk-app-bar-item-open-indicator</code>; <code>--sk-app-bar-item-radius</code> pasa a <code>0</code>.",
+              "title": "Chevron en los títulos que abren algo, y el título abierto se distingue"
+            },
+            "kind": "feature"
+          }
+        ],
+        "version": "0.0.1-dev"
+      }
+    ],
     "avatar": [
       {
         "date": null,
@@ -987,6 +1019,19 @@
       {
         "date": null,
         "entries": [
+          {
+            "date": "2026-09-27",
+            "en": {
+              "body": "<code>measure</code> (<code>sm</code>, <code>md</code>, <code>lg</code>) sets a width ceiling from the same scale as Wrapper, neither centred nor guttered: the Box keeps its place in the flow. It counts toward <code>atLeastOneOf</code>.",
+              "title": "Box caps its width with measure"
+            },
+            "es": {
+              "body": "<code>measure</code> (<code>sm</code>, <code>md</code>, <code>lg</code>) pone un techo de ancho desde la misma escala que Wrapper, sin centrar y sin gutter: el Box conserva su lugar en el flujo. Cuenta como decisión visual para <code>atLeastOneOf</code>.",
+              "title": "Box limita su ancho con measure"
+            },
+            "kind": "feature",
+            "target": "measure"
+          },
           {
             "date": "2026-09-27",
             "en": {
@@ -5438,6 +5483,32 @@
       {
         "date": null,
         "entries": [
+          {
+            "date": "2026-09-27",
+            "en": {
+              "body": "<code>minColumn</code> (<code>sm</code>, <code>md</code>, <code>lg</code>) sets the narrowest a column may get, and the Grid's own width decides how many fit, with no breakpoint. It excludes <code>columns</code>, <code>responsive</code>, <code>multicol</code> and <code>fill</code>.",
+              "title": "Grid finds its own column count with minColumn"
+            },
+            "es": {
+              "body": "<code>minColumn</code> (<code>sm</code>, <code>md</code>, <code>lg</code>) fija el ancho mínimo de cada columna y el propio ancho del Grid decide cuántas caben, sin breakpoints. Excluye <code>columns</code>, <code>responsive</code>, <code>multicol</code> y <code>fill</code>.",
+              "title": "Grid encuentra su número de columnas con minColumn"
+            },
+            "kind": "feature",
+            "target": "minColumn"
+          },
+          {
+            "date": "2026-09-27",
+            "en": {
+              "body": "Inline publishes <code>sizing</code> (<code>fit</code>, <code>fill</code>) as a child attribute, authored in the child's <code>attrs</code> as <code>data-sizing</code>. <code>fill</code> starts from its content size and takes what the row leaves; the row still wraps before squeezing it.",
+              "title": "An Inline child can take the leftover space with data-sizing"
+            },
+            "es": {
+              "body": "Inline publica <code>sizing</code> (<code>fit</code>, <code>fill</code>) como atributo del hijo, escrito en sus <code>attrs</code> como <code>data-sizing</code>. <code>fill</code> parte del tamaño de su contenido y toma lo que la fila deja; la fila sigue haciendo wrap antes de apretarlo.",
+              "title": "Un hijo de Inline puede ocupar el espacio que sobra con data-sizing"
+            },
+            "kind": "feature",
+            "target": "Inline"
+          },
           {
             "date": "2026-09-27",
             "en": {
@@ -13923,6 +13994,1055 @@
         "ring"
       ]
     },
+    "app-bar": {
+      "bindings": {
+        "AppBar": {
+          "enhancer": "data-sk-app-bar",
+          "markup": true,
+          "portals": false,
+          "react": "@skryensya/react/app-bar#AppBar"
+        },
+        "AppBarMenu": {
+          "enhancer": null,
+          "markup": true,
+          "portals": true,
+          "react": "@skryensya/react/app-bar#AppBarMenu"
+        },
+        "AppBarStatus": {
+          "enhancer": null,
+          "markup": true,
+          "portals": true,
+          "react": "@skryensya/react/app-bar#AppBarStatus"
+        }
+      },
+      "category": "actions",
+      "css": "@skryensya/core/components/app-bar.css",
+      "hookDetails": {
+        "--sk-anchored-align": {
+          "default": "auto",
+          "output": false,
+          "part": null,
+          "sheet": "@skryensya/core/patterns/anchored.css"
+        },
+        "--sk-anchored-arrow-edge": {
+          "default": "calc(\n        var(--sk-anchored-offset) +\n          var(--sk-anchored-arrow-inset, calc(var(--sk-anchored-arrow-size, 8px) * 1.5)) -\n          var(--sk-anchored-arrow-size, 8px) / 2\n      )",
+          "output": false,
+          "part": null,
+          "sheet": "@skryensya/core/patterns/anchored.css"
+        },
+        "--sk-anchored-arrow-near": {
+          "default": "calc(\n        var(--sk-anchored-offset) - var(--sk-anchored-arrow-size, 8px) / 2\n      )",
+          "output": false,
+          "part": null,
+          "sheet": "@skryensya/core/patterns/anchored.css"
+        },
+        "--sk-anchored-justify": {
+          "default": "anchor-center",
+          "output": false,
+          "part": null,
+          "sheet": "@skryensya/core/patterns/anchored.css"
+        },
+        "--sk-anchored-offset": {
+          "default": "0",
+          "output": false,
+          "part": "dropdown",
+          "sheet": "@skryensya/core/components/app-bar.css"
+        },
+        "--sk-anchored-position-area": {
+          "default": "block-end span-all",
+          "output": false,
+          "part": null,
+          "sheet": "@skryensya/core/patterns/anchored.css"
+        },
+        "--sk-anchored-position-try": {
+          "default": "flip-block",
+          "output": false,
+          "part": null,
+          "sheet": "@skryensya/core/patterns/anchored.css"
+        },
+        "--sk-anchored-size": {
+          "default": "max-content",
+          "output": false,
+          "part": null,
+          "sheet": "@skryensya/core/patterns/anchored.css"
+        },
+        "--sk-anchored-z": {
+          "default": "var(--z-popover)",
+          "output": false,
+          "part": null,
+          "sheet": "@skryensya/core/patterns/anchored.css"
+        },
+        "--sk-app-bar-bg": {
+          "default": "color-mix(in oklab, var(--color-bg-surface) 88%, transparent)",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/app-bar.css"
+        },
+        "--sk-app-bar-block-size": {
+          "default": "var(--size-control-xs)",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/app-bar.css"
+        },
+        "--sk-app-bar-border-color": {
+          "default": "var(--color-border-subtle)",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/app-bar.css"
+        },
+        "--sk-app-bar-dropdown-padding-block": {
+          "default": "0.1875rem",
+          "output": false,
+          "part": "dropdown",
+          "sheet": "@skryensya/core/components/app-bar.css"
+        },
+        "--sk-app-bar-fg": {
+          "default": "var(--color-text-primary)",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/app-bar.css"
+        },
+        "--sk-app-bar-font-size": {
+          "default": "var(--font-size-body-sm)",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/app-bar.css"
+        },
+        "--sk-app-bar-gap": {
+          "default": "var(--space-inline-sm)",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/app-bar.css"
+        },
+        "--sk-app-bar-item-open-bg": {
+          "default": "var(--color-bg-accent-subtle)",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/app-bar.css"
+        },
+        "--sk-app-bar-item-open-fg": {
+          "default": "var(--color-text-accent)",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/app-bar.css"
+        },
+        "--sk-app-bar-item-open-indicator": {
+          "default": "var(--color-border-accent)",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/app-bar.css"
+        },
+        "--sk-app-bar-item-padding-inline": {
+          "default": "var(--space-inline-sm)",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/app-bar.css"
+        },
+        "--sk-app-bar-item-radius": {
+          "default": "0",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/app-bar.css"
+        },
+        "--sk-app-bar-menu-item-block-size": {
+          "default": "1.5rem",
+          "output": false,
+          "part": "dropdown",
+          "sheet": "@skryensya/core/components/app-bar.css"
+        },
+        "--sk-app-bar-menu-item-padding-block": {
+          "default": "0.0625rem",
+          "output": false,
+          "part": "dropdown",
+          "sheet": "@skryensya/core/components/app-bar.css"
+        },
+        "--sk-app-bar-muted-fg": {
+          "default": "var(--color-text-secondary)",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/app-bar.css"
+        }
+      },
+      "hooks": [
+        "--sk-anchored-align",
+        "--sk-anchored-arrow-edge",
+        "--sk-anchored-arrow-near",
+        "--sk-anchored-justify",
+        "--sk-anchored-offset",
+        "--sk-anchored-position-area",
+        "--sk-anchored-position-try",
+        "--sk-anchored-size",
+        "--sk-anchored-z",
+        "--sk-app-bar-bg",
+        "--sk-app-bar-block-size",
+        "--sk-app-bar-border-color",
+        "--sk-app-bar-dropdown-padding-block",
+        "--sk-app-bar-fg",
+        "--sk-app-bar-font-size",
+        "--sk-app-bar-gap",
+        "--sk-app-bar-item-open-bg",
+        "--sk-app-bar-item-open-fg",
+        "--sk-app-bar-item-open-indicator",
+        "--sk-app-bar-menu-item-block-size",
+        "--sk-app-bar-menu-item-padding-block",
+        "--sk-app-bar-item-padding-inline",
+        "--sk-app-bar-item-radius",
+        "--sk-app-bar-muted-fg"
+      ],
+      "hookSheets": [
+        "@skryensya/core/patterns/anchored.css"
+      ],
+      "id": "app-bar",
+      "options": {
+        "label": {
+          "attr": "aria-label",
+          "type": "string"
+        },
+        "strong": {
+          "attr": "data-strong",
+          "default": false,
+          "trueValue": "",
+          "type": "boolean"
+        }
+      },
+      "parts": {
+        "dropdown": "sk-app-bar__dropdown",
+        "indicator": "sk-app-bar__indicator",
+        "menu": "sk-app-bar__menu",
+        "menus": "sk-app-bar__menus",
+        "root": "sk-app-bar",
+        "status": "sk-app-bar__status",
+        "statusItem": "sk-app-bar__status-item",
+        "statusText": "sk-app-bar__status-text",
+        "trigger": "sk-app-bar__trigger"
+      },
+      "semantics": {
+        "AppBar": {
+          "alternatives": [
+            "Menubar",
+            "Navbar",
+            "Toolbar",
+            "Menu"
+          ],
+          "avoidWhen": [
+            "the screen is narrow or the pointer is a finger (mobile): its 24px targets, switch-by-pointing and single clipped line assume a desktop with a mouse or trackpad; show a Navbar with a Menu, or one button opening a Menu, there instead",
+            "it is a website's header with destinations; that is a Navbar",
+            "the menus sit among other controls on a page and should read as buttons; that is a Menubar",
+            "the actions are icons for the current selection; that is a Toolbar",
+            "there is a single menu of commands behind one button; that is a Menu"
+          ],
+          "useWhen": [
+            "the top edge of an application (an editor, a tool, a dashboard) needs its menus in one short line of text, the way a desktop OS draws its menu bar",
+            "the application also has a few words of state to keep in view (saved, a width, a zoom level, a clock) and some of them open a small menu"
+          ]
+        },
+        "AppBarMenu": {
+          "useWhen": [
+            "one menu of the bar. With `items` (Menu's own item shape: commands, checkbox/radio, separators, nested submenus) it opens a dropdown; without, it is a command that acts at once",
+            "`strong` for the application's own menu, the first one, drawn in bold"
+          ]
+        },
+        "AppBarStatus": {
+          "avoidWhen": [
+            "it is a command the person runs; put it in one of the bar's menus"
+          ],
+          "useWhen": [
+            "a few words of state on the trailing side of the bar; plain text stays text, not a control",
+            "with `items`, the words become a menu button, the way a desktop status item opens its own small menu"
+          ]
+        }
+      },
+      "signatures": {
+        "AppBar": {
+          "forward": [
+            "id",
+            "aria-*"
+          ],
+          "host": {
+            "element": "div"
+          },
+          "intent": [
+            "application-bar",
+            "app-menu-bar",
+            "desktop-style-top-bar",
+            "editor-top-bar"
+          ],
+          "mount": "data-sk-app-bar",
+          "options": [
+            "label"
+          ],
+          "react": {
+            "from": "@skryensya/react/app-bar",
+            "name": "AppBar"
+          },
+          "requires": [
+            "label"
+          ],
+          "slots": {
+            "children": {
+              "accepts": "signature",
+              "of": [
+                "AppBarMenu"
+              ],
+              "required": true
+            },
+            "status": {
+              "accepts": "signature",
+              "of": [
+                "AppBarStatus"
+              ]
+            }
+          },
+          "template": {
+            "children": [
+              {
+                "attrs": {
+                  "role": "menubar"
+                },
+                "element": "div",
+                "options": [
+                  "label"
+                ],
+                "part": "menus",
+                "slot": "children"
+              },
+              {
+                "element": "div",
+                "part": "status",
+                "slot": "status",
+                "whenGiven": "status"
+              }
+            ],
+            "element": "div",
+            "host": true,
+            "part": "root"
+          }
+        },
+        "AppBarMenu": {
+          "compose": [
+            {
+              "of": "menu",
+              "sheets": [
+                "@skryensya/core/components/menu.css",
+                "@skryensya/core/patterns/anchored.css"
+              ],
+              "systemOwned": true
+            }
+          ],
+          "host": {
+            "element": "div"
+          },
+          "intent": [
+            "app-bar-menu",
+            "app-bar-command"
+          ],
+          "options": [
+            "strong"
+          ],
+          "parents": [
+            "AppBar"
+          ],
+          "portals": {
+            "container": true
+          },
+          "react": {
+            "from": "@skryensya/react/app-bar",
+            "name": "AppBarMenu"
+          },
+          "slots": {
+            "children": {
+              "accepts": "text",
+              "required": true
+            },
+            "items": {
+              "accepts": "items",
+              "item": {
+                "key": "value",
+                "options": {
+                  "disabled": {
+                    "attr": "data-disabled",
+                    "default": false,
+                    "trueValue": "",
+                    "type": "boolean"
+                  },
+                  "group": {
+                    "attr": "data-group",
+                    "type": "string"
+                  },
+                  "href": {
+                    "attr": "href",
+                    "type": "string"
+                  },
+                  "kind": {
+                    "attr": "data-type",
+                    "type": "enum",
+                    "values": [
+                      "checkbox",
+                      "radio",
+                      "separator"
+                    ]
+                  },
+                  "tone": {
+                    "attr": "data-tone",
+                    "type": "enum",
+                    "values": [
+                      "danger"
+                    ]
+                  },
+                  "value": {
+                    "attr": "data-value",
+                    "type": "string"
+                  }
+                },
+                "slots": {
+                  "children": {
+                    "accepts": "items",
+                    "recursive": true
+                  },
+                  "label": {
+                    "accepts": "text"
+                  }
+                }
+              }
+            }
+          },
+          "template": {
+            "also": [
+              "sk-menu"
+            ],
+            "attrs": {
+              "data-density": "compact"
+            },
+            "children": [
+              {
+                "also": [
+                  "sk-interactive",
+                  "sk-anchor"
+                ],
+                "attrs": {
+                  "data-sk-app-bar-menu": "",
+                  "data-sk-app-bar-trigger": "",
+                  "data-sk-menu-trigger": "",
+                  "role": "menuitem",
+                  "type": "button"
+                },
+                "children": [
+                  {
+                    "attrs": {
+                      "aria-hidden": "true"
+                    },
+                    "children": [
+                      {
+                        "attrs": {
+                          "data-sk-icon": "chevron-down",
+                          "data-sk-icon-size": "sm"
+                        },
+                        "element": "span"
+                      }
+                    ],
+                    "element": "span",
+                    "part": "indicator",
+                    "whenGiven": "items"
+                  }
+                ],
+                "element": "button",
+                "part": "trigger",
+                "slot": "children"
+              },
+              {
+                "also": [
+                  "sk-menu__positioner",
+                  "sk-anchored"
+                ],
+                "attrs": {
+                  "data-density": "compact"
+                },
+                "children": [
+                  {
+                    "also": [
+                      "sk-menu__content"
+                    ],
+                    "children": [
+                      {
+                        "children": [
+                          {
+                            "children": [
+                              {
+                                "also": [
+                                  "sk-menu__item",
+                                  "sk-interactive"
+                                ],
+                                "children": [
+                                  {
+                                    "also": [
+                                      "sk-menu__item-label"
+                                    ],
+                                    "element": "span",
+                                    "itemSlot": "label"
+                                  },
+                                  {
+                                    "also": [
+                                      "sk-menu__item-indicator"
+                                    ],
+                                    "attrs": {
+                                      "aria-hidden": "true"
+                                    },
+                                    "children": [
+                                      {
+                                        "attrs": {
+                                          "data-sk-icon": "check",
+                                          "data-sk-icon-size": "md"
+                                        },
+                                        "element": "span"
+                                      }
+                                    ],
+                                    "element": "span",
+                                    "whenItemGiven": "kind"
+                                  }
+                                ],
+                                "element": "div",
+                                "itemOptions": [
+                                  "value",
+                                  "disabled",
+                                  "kind",
+                                  "tone",
+                                  "group"
+                                ],
+                                "mount": "data-sk-menu-item",
+                                "whenItemMissing": "href",
+                                "whenItemNotEquals": {
+                                  "equals": "separator",
+                                  "option": "kind"
+                                },
+                                "whenItemSlotMissing": "children"
+                              },
+                              {
+                                "also": [
+                                  "sk-menu__item",
+                                  "sk-interactive"
+                                ],
+                                "children": [
+                                  {
+                                    "also": [
+                                      "sk-menu__item-label"
+                                    ],
+                                    "element": "span",
+                                    "itemSlot": "label"
+                                  },
+                                  {
+                                    "also": [
+                                      "sk-menu__item-indicator"
+                                    ],
+                                    "attrs": {
+                                      "aria-hidden": "true"
+                                    },
+                                    "children": [
+                                      {
+                                        "attrs": {
+                                          "data-sk-icon": "check",
+                                          "data-sk-icon-size": "md"
+                                        },
+                                        "element": "span"
+                                      }
+                                    ],
+                                    "element": "span",
+                                    "whenItemGiven": "kind"
+                                  }
+                                ],
+                                "element": "a",
+                                "itemOptions": [
+                                  "value",
+                                  "disabled",
+                                  "kind",
+                                  "tone",
+                                  "group",
+                                  "href"
+                                ],
+                                "mount": "data-sk-menu-item",
+                                "whenItemGiven": "href",
+                                "whenItemNotEquals": {
+                                  "equals": "separator",
+                                  "option": "kind"
+                                },
+                                "whenItemSlotMissing": "children"
+                              },
+                              {
+                                "also": [
+                                  "sk-menu__separator"
+                                ],
+                                "attrs": {
+                                  "role": "separator"
+                                },
+                                "element": "div",
+                                "mount": "data-sk-menu-separator",
+                                "whenItemEquals": {
+                                  "equals": "separator",
+                                  "option": "kind"
+                                }
+                              },
+                              {
+                                "also": [
+                                  "sk-menu"
+                                ],
+                                "children": [
+                                  {
+                                    "also": [
+                                      "sk-menu__item",
+                                      "sk-interactive",
+                                      "sk-anchor"
+                                    ],
+                                    "attrs": {
+                                      "type": "button"
+                                    },
+                                    "children": [
+                                      {
+                                        "also": [
+                                          "sk-menu__item-label"
+                                        ],
+                                        "element": "span",
+                                        "itemSlot": "label"
+                                      },
+                                      {
+                                        "also": [
+                                          "sk-menu__item-indicator"
+                                        ],
+                                        "attrs": {
+                                          "aria-hidden": "true"
+                                        },
+                                        "children": [
+                                          {
+                                            "attrs": {
+                                              "data-sk-icon": "chevron-right",
+                                              "data-sk-icon-size": "md"
+                                            },
+                                            "element": "span"
+                                          }
+                                        ],
+                                        "element": "span"
+                                      }
+                                    ],
+                                    "element": "button",
+                                    "mount": "data-sk-menu-trigger"
+                                  },
+                                  {
+                                    "also": [
+                                      "sk-menu__positioner",
+                                      "sk-anchored"
+                                    ],
+                                    "attrs": {
+                                      "data-sk-submenu": ""
+                                    },
+                                    "children": [
+                                      {
+                                        "also": [
+                                          "sk-menu__content"
+                                        ],
+                                        "children": [
+                                          {
+                                            "recurse": "entry",
+                                            "repeatItemSlot": "children"
+                                          }
+                                        ],
+                                        "element": "div",
+                                        "mount": "data-sk-menu-content"
+                                      }
+                                    ],
+                                    "element": "div",
+                                    "mount": "data-sk-menu-positioner"
+                                  }
+                                ],
+                                "element": "div",
+                                "mount": "data-sk-menu",
+                                "whenItemSlotGiven": "children"
+                              }
+                            ],
+                            "name": "entry"
+                          }
+                        ],
+                        "repeat": "items"
+                      }
+                    ],
+                    "element": "div",
+                    "mount": "data-sk-menu-content"
+                  }
+                ],
+                "element": "div",
+                "mount": "data-sk-menu-positioner",
+                "part": "dropdown",
+                "whenGiven": "items"
+              }
+            ],
+            "element": "div",
+            "host": true,
+            "mount": "data-sk-menu",
+            "part": "menu"
+          }
+        },
+        "AppBarStatus": {
+          "compose": [
+            {
+              "of": "menu",
+              "sheets": [
+                "@skryensya/core/components/menu.css",
+                "@skryensya/core/patterns/anchored.css"
+              ],
+              "systemOwned": true
+            }
+          ],
+          "host": {
+            "element": "div"
+          },
+          "intent": [
+            "app-bar-status",
+            "app-bar-status-menu"
+          ],
+          "options": [],
+          "parents": [
+            "AppBar"
+          ],
+          "portals": {
+            "container": true
+          },
+          "react": {
+            "from": "@skryensya/react/app-bar",
+            "name": "AppBarStatus"
+          },
+          "slots": {
+            "children": {
+              "accepts": "text",
+              "required": true
+            },
+            "items": {
+              "accepts": "items",
+              "item": {
+                "key": "value",
+                "options": {
+                  "disabled": {
+                    "attr": "data-disabled",
+                    "default": false,
+                    "trueValue": "",
+                    "type": "boolean"
+                  },
+                  "group": {
+                    "attr": "data-group",
+                    "type": "string"
+                  },
+                  "href": {
+                    "attr": "href",
+                    "type": "string"
+                  },
+                  "kind": {
+                    "attr": "data-type",
+                    "type": "enum",
+                    "values": [
+                      "checkbox",
+                      "radio",
+                      "separator"
+                    ]
+                  },
+                  "tone": {
+                    "attr": "data-tone",
+                    "type": "enum",
+                    "values": [
+                      "danger"
+                    ]
+                  },
+                  "value": {
+                    "attr": "data-value",
+                    "type": "string"
+                  }
+                },
+                "slots": {
+                  "children": {
+                    "accepts": "items",
+                    "recursive": true
+                  },
+                  "label": {
+                    "accepts": "text"
+                  }
+                }
+              }
+            }
+          },
+          "template": {
+            "also": [
+              "sk-menu"
+            ],
+            "attrs": {
+              "data-density": "compact"
+            },
+            "children": [
+              {
+                "element": "span",
+                "part": "statusText",
+                "slot": "children",
+                "whenMissing": "items"
+              },
+              {
+                "also": [
+                  "sk-interactive",
+                  "sk-anchor"
+                ],
+                "attrs": {
+                  "data-sk-app-bar-trigger": "",
+                  "data-sk-menu-trigger": "",
+                  "type": "button"
+                },
+                "children": [
+                  {
+                    "attrs": {
+                      "aria-hidden": "true"
+                    },
+                    "children": [
+                      {
+                        "attrs": {
+                          "data-sk-icon": "chevron-down",
+                          "data-sk-icon-size": "sm"
+                        },
+                        "element": "span"
+                      }
+                    ],
+                    "element": "span",
+                    "part": "indicator",
+                    "whenGiven": "items"
+                  }
+                ],
+                "element": "button",
+                "part": "trigger",
+                "slot": "children",
+                "whenGiven": "items"
+              },
+              {
+                "also": [
+                  "sk-menu__positioner",
+                  "sk-anchored"
+                ],
+                "attrs": {
+                  "data-density": "compact"
+                },
+                "children": [
+                  {
+                    "also": [
+                      "sk-menu__content"
+                    ],
+                    "children": [
+                      {
+                        "children": [
+                          {
+                            "children": [
+                              {
+                                "also": [
+                                  "sk-menu__item",
+                                  "sk-interactive"
+                                ],
+                                "children": [
+                                  {
+                                    "also": [
+                                      "sk-menu__item-label"
+                                    ],
+                                    "element": "span",
+                                    "itemSlot": "label"
+                                  },
+                                  {
+                                    "also": [
+                                      "sk-menu__item-indicator"
+                                    ],
+                                    "attrs": {
+                                      "aria-hidden": "true"
+                                    },
+                                    "children": [
+                                      {
+                                        "attrs": {
+                                          "data-sk-icon": "check",
+                                          "data-sk-icon-size": "md"
+                                        },
+                                        "element": "span"
+                                      }
+                                    ],
+                                    "element": "span",
+                                    "whenItemGiven": "kind"
+                                  }
+                                ],
+                                "element": "div",
+                                "itemOptions": [
+                                  "value",
+                                  "disabled",
+                                  "kind",
+                                  "tone",
+                                  "group"
+                                ],
+                                "mount": "data-sk-menu-item",
+                                "whenItemMissing": "href",
+                                "whenItemNotEquals": {
+                                  "equals": "separator",
+                                  "option": "kind"
+                                },
+                                "whenItemSlotMissing": "children"
+                              },
+                              {
+                                "also": [
+                                  "sk-menu__item",
+                                  "sk-interactive"
+                                ],
+                                "children": [
+                                  {
+                                    "also": [
+                                      "sk-menu__item-label"
+                                    ],
+                                    "element": "span",
+                                    "itemSlot": "label"
+                                  },
+                                  {
+                                    "also": [
+                                      "sk-menu__item-indicator"
+                                    ],
+                                    "attrs": {
+                                      "aria-hidden": "true"
+                                    },
+                                    "children": [
+                                      {
+                                        "attrs": {
+                                          "data-sk-icon": "check",
+                                          "data-sk-icon-size": "md"
+                                        },
+                                        "element": "span"
+                                      }
+                                    ],
+                                    "element": "span",
+                                    "whenItemGiven": "kind"
+                                  }
+                                ],
+                                "element": "a",
+                                "itemOptions": [
+                                  "value",
+                                  "disabled",
+                                  "kind",
+                                  "tone",
+                                  "group",
+                                  "href"
+                                ],
+                                "mount": "data-sk-menu-item",
+                                "whenItemGiven": "href",
+                                "whenItemNotEquals": {
+                                  "equals": "separator",
+                                  "option": "kind"
+                                },
+                                "whenItemSlotMissing": "children"
+                              },
+                              {
+                                "also": [
+                                  "sk-menu__separator"
+                                ],
+                                "attrs": {
+                                  "role": "separator"
+                                },
+                                "element": "div",
+                                "mount": "data-sk-menu-separator",
+                                "whenItemEquals": {
+                                  "equals": "separator",
+                                  "option": "kind"
+                                }
+                              },
+                              {
+                                "also": [
+                                  "sk-menu"
+                                ],
+                                "children": [
+                                  {
+                                    "also": [
+                                      "sk-menu__item",
+                                      "sk-interactive",
+                                      "sk-anchor"
+                                    ],
+                                    "attrs": {
+                                      "type": "button"
+                                    },
+                                    "children": [
+                                      {
+                                        "also": [
+                                          "sk-menu__item-label"
+                                        ],
+                                        "element": "span",
+                                        "itemSlot": "label"
+                                      },
+                                      {
+                                        "also": [
+                                          "sk-menu__item-indicator"
+                                        ],
+                                        "attrs": {
+                                          "aria-hidden": "true"
+                                        },
+                                        "children": [
+                                          {
+                                            "attrs": {
+                                              "data-sk-icon": "chevron-right",
+                                              "data-sk-icon-size": "md"
+                                            },
+                                            "element": "span"
+                                          }
+                                        ],
+                                        "element": "span"
+                                      }
+                                    ],
+                                    "element": "button",
+                                    "mount": "data-sk-menu-trigger"
+                                  },
+                                  {
+                                    "also": [
+                                      "sk-menu__positioner",
+                                      "sk-anchored"
+                                    ],
+                                    "attrs": {
+                                      "data-sk-submenu": ""
+                                    },
+                                    "children": [
+                                      {
+                                        "also": [
+                                          "sk-menu__content"
+                                        ],
+                                        "children": [
+                                          {
+                                            "recurse": "entry",
+                                            "repeatItemSlot": "children"
+                                          }
+                                        ],
+                                        "element": "div",
+                                        "mount": "data-sk-menu-content"
+                                      }
+                                    ],
+                                    "element": "div",
+                                    "mount": "data-sk-menu-positioner"
+                                  }
+                                ],
+                                "element": "div",
+                                "mount": "data-sk-menu",
+                                "whenItemSlotGiven": "children"
+                              }
+                            ],
+                            "name": "entry"
+                          }
+                        ],
+                        "repeat": "items"
+                      }
+                    ],
+                    "element": "div",
+                    "mount": "data-sk-menu-content"
+                  }
+                ],
+                "element": "div",
+                "mount": "data-sk-menu-positioner",
+                "part": "dropdown",
+                "whenGiven": "items"
+              }
+            ],
+            "element": "div",
+            "host": true,
+            "mount": "data-sk-menu",
+            "part": "statusItem"
+          }
+        }
+      }
+    },
     "avatar": {
       "bindings": {
         "Avatar.image": {
@@ -14962,6 +16082,15 @@
             "main"
           ]
         },
+        "measure": {
+          "attr": "data-measure",
+          "type": "enum",
+          "values": [
+            "sm",
+            "md",
+            "lg"
+          ]
+        },
         "padding": {
           "attr": "data-padding",
           "default": "none",
@@ -15026,7 +16155,8 @@
               "padding",
               "surface",
               "border",
-              "appearance"
+              "appearance",
+              "measure"
             ]
           ],
           "host": {
@@ -15043,6 +16173,7 @@
             "surface",
             "border",
             "appearance",
+            "measure",
             "boxElement"
           ],
           "react": {
@@ -29714,6 +30845,15 @@
             "main"
           ]
         },
+        "minColumn": {
+          "attr": "data-min-column",
+          "type": "enum",
+          "values": [
+            "sm",
+            "md",
+            "lg"
+          ]
+        },
         "multicol": {
           "attr": "data-multicol",
           "default": false,
@@ -29816,6 +30956,14 @@
       },
       "signatures": {
         "Grid": {
+          "excludes": {
+            "minColumn": [
+              "columns",
+              "multicol",
+              "responsive",
+              "fill"
+            ]
+          },
           "host": {
             "element": "div"
           },
@@ -29831,6 +30979,7 @@
             "multicol",
             "responsive",
             "fill",
+            "minColumn",
             "layoutElement"
           ],
           "react": {
@@ -29876,6 +31025,16 @@
           "slots": {
             "children": {
               "accepts": "node",
+              "childAttrs": {
+                "sizing": {
+                  "attr": "data-sizing",
+                  "type": "enum",
+                  "values": [
+                    "fit",
+                    "fill"
+                  ]
+                }
+              },
               "required": true
             }
           },
@@ -53937,7 +55096,7 @@
     "working": "0.0.1"
   },
   "schemaVersion": "2.3",
-  "sourceHash": "899e09012cc9793f",
+  "sourceHash": "08f1282c7689fc8e",
   "vocabulary": {
     "a11y": "When `when` holds, one of `requiresOneOf` must be given: an option, a raw attribute, a filled slot, or a child signature by name.",
     "atLeastOneOf": "At least one member of each group counts: a filled slot, a boolean option set to true, or an option other than its default.",

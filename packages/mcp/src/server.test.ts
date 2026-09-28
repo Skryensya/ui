@@ -63,15 +63,16 @@ afterAll(async () => {
 describe("the surface", () => {
   it("exposes exactly the declared inventory, in workflow order", async () => {
     const { tools: listed } = await client.listTools();
-    expect(listed.map((tool) => tool.name)).toEqual([...toolNames]);
+    /* The declared inventory, then the Maker's two, which only the local stdio server offers. */
+    expect(listed.map((tool) => tool.name)).toEqual([...toolNames, "maker_projects", "maker_read", "maker_apply", "maker_publish"]);
     expect(toolNames).toEqual(["discover_ui", "get_examples", "get_contract", "get_contracts", "validate_ui", "get_catalog"]);
   });
 
-  it("declares an outputSchema and read-only annotations on every tool", async () => {
+  it("declares an outputSchema on every tool, and read-only annotations on all but the ones that change things", async () => {
     const { tools: listed } = await client.listTools();
     for (const tool of listed) {
       expect(tool.outputSchema?.type, tool.name).toBe("object");
-      expect(tool.annotations?.readOnlyHint, tool.name).toBe(true);
+      expect(tool.annotations?.readOnlyHint, tool.name).toBe(tool.name !== "maker_apply" && tool.name !== "maker_publish");
     }
   });
 
@@ -81,6 +82,15 @@ describe("the surface", () => {
     expect(text).not.toMatch(/page through ALL|EVERY time|IS NOT OPTIONAL/);
     // Significantly shorter than the ~4,500 characters it replaced.
     expect(text.length).toBeLessThan(2_000);
+  });
+});
+
+describe("staleness", () => {
+  /* Built from this checkout, the binary serves the catalogue on disk: no warning block, ever. A
+     false alarm here would teach an agent to ignore the real one. */
+  it("adds no warning while the catalogue it serves is the one compiled on disk", async () => {
+    const result = await client.callTool({ name: "get_contract", arguments: { id: "layout" } });
+    expect(result.content as unknown[]).toHaveLength(1);
   });
 });
 

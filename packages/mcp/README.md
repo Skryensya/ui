@@ -139,6 +139,29 @@ Both speak the 2026-07-28 protocol and fall back to the 2025 handshake for older
 the MCP TypeScript SDK v2 (`serveStdio`, `createMcpHandler`). HTTP is stateless: a fresh server per
 request, no sessions, so `GET` and `DELETE` on `/mcp` from a 2025-era client answer `405`.
 
+A stdio server reads its catalogue once, when the client starts it, so a rebuild afterwards does
+not reach it. When it runs from a checkout, every answer compares the catalogue it serves with
+`artifacts/ai-index.json` on disk, and while the two differ it adds a second text block saying so
+and asking for a restart (`/mcp` in Claude Code). The HTTP server is frozen at deploy and never
+checks.
+
+## The Maker's tools (stdio only)
+
+The local stdio server also offers tools on the Maker's projects (`apps/maker`), so an agent edits a
+page the way a person does: by structure, never by position.
+
+| Tool | What it does |
+|---|---|
+| `maker_projects` | Every project the Maker keeps: id, name, revision. |
+| `maker_read` | One project as an outline: each page, one line per node with its id, signature and the options set, text runs with their ids, and what is pending. |
+| `maker_apply` | Maker operations on one project (insert a usage tree or a signature, move, remove, wrap, unwrap, set an option, an attribute or text; add, remove, rename, re-path or move a page), all or none, as one undoable step. Nothing in its schema can carry a coordinate, a length or a style. |
+| `maker_publish` | Publish a project at `https://<name>.skryensya.dev/`, or take it down. Works only where the Maker has the publish token (ADR-0033). |
+
+They talk to the Maker's own API at `MAKER_URL` (the dev server, `http://localhost:4200`, by default),
+which keeps projects in PostgreSQL. `maker_apply` saves on top of the revision it read and never
+overwrites a change made since; an open Maker shows every applied change live. When the Maker is not
+running, the tools say how to start it. The HTTP server does not offer these tools.
+
 ## HTTP configuration
 
 | Variable | Default | Meaning |

@@ -1,0 +1,163 @@
+---
+import Base from "../layouts/Base.astro";
+import CodeBlock from "../components/CodeBlock.astro";
+
+const run = `docker compose -f apps/maker/docker-compose.yml up -d   # PostgreSQL, once
+pnpm --filter @skryensya/maker dev                        # http://localhost:4200`;
+
+const outline = `page 3f2a… "Home" /
+  9c1e… layout/Main
+    41b7… layout/Stack gap="lg"
+      a0d2… typography/Heading
+        a0d3… "Build once, use it everywhere."
+      77e9… button/Button.action
+        77ea… "Get started"
+      77f1… button/Button.action
+        77f2… "Read the docs"`;
+
+const apply = `{
+  "project": "7d0c…",
+  "revision": 4,
+  "operations": [
+    {
+      "type": "page",
+      "page": "3f2a…",
+      "operations": [
+        {
+          "type": "wrap",
+          "children": ["77e9…", "77f1…"],
+          "with": { "contract": "layout", "signature": "Inline", "options": { "gap": "sm" } }
+        }
+      ]
+    }
+  ]
+}`;
+---
+
+<Base
+  title="Maker"
+  description="A visual page builder where the browser does the layout: pages are trees of signatures, changed only by operations, never by coordinates."
+  documentLayout="grid"
+>
+  <h1>Maker</h1>
+  <p class="lede">
+    The Maker builds pages by composing the kit's own components inside ordinary document flow. There
+    is no canvas and no coordinate: a page is a tree, <code>Stack</code>, <code>Inline</code>,
+    <code>Grid</code>, <code>Box</code> and <code>Wrapper</code> say how its parts relate, and the
+    browser works out where everything lands. What it exports is the same usage tree
+    <code>validate_ui</code> accepts, emitted as React or HTML.
+  </p>
+
+  <h2>Run it</h2>
+  <p>
+    The Maker is a local app in <code>apps/maker</code>. Its projects live in PostgreSQL, which the
+    compose file starts on port 5433 (<code>DATABASE_URL</code> points elsewhere). Several projects can be
+    open at once, each in a tab with its own history; open tabs come back on the next visit. Without a
+    database the Maker still works, keeping one site in the browser, and says so.
+  </p>
+  <p>
+    A new project can start as any page of the <a href="/templates">templates gallery</a>, from the
+    projects panel or from the gallery's own <em>Open in Maker</em> link.
+  </p>
+  <CodeBlock code={run} label="Shell" lang="bash" />
+
+  <h2>The one rule</h2>
+  <p>
+    Nothing is ever placed by position. There is no <code>x</code>, no <code>top</code>, no
+    <code>absolute</code>, no pixel width, no negative margin and no transform used for layout, and the
+    reason is not a lint rule: <strong>no operation can express one</strong>. Every change is one of a
+    closed set, and a <em>place</em> in that set is a parent, a slot and an index among siblings. You
+    decide that two buttons belong in a row; the browser decides where the row breaks.
+  </p>
+  <ul>
+    <li><strong>Things one above another:</strong> a <code>Stack</code>, spaced by its <code>gap</code>.</li>
+    <li><strong>Things side by side:</strong> an <code>Inline</code>. With <code>wrap</code> on, the browser moves them to a new line when the room runs out.</li>
+    <li><strong>A real grid:</strong> a <code>Grid</code>. With <code>minColumn</code>, its own width decides how many columns fit, with no breakpoint.</li>
+    <li><strong>A page column:</strong> a <code>Wrapper</code>, centred, on the size scale.</li>
+    <li><strong>A region with its own surface or a ceiling on its width:</strong> a <code>Box</code>, with <code>padding</code>, <code>surface</code>, <code>border</code> or <code>measure</code>.</li>
+    <li><strong>A child that takes what a row leaves:</strong> <code>sizing: fill</code>, which the Inline offers to its children and a child loses when it moves elsewhere.</li>
+  </ul>
+
+  <h2>The inspector shows the contract, and only the contract</h2>
+  <p>
+    Selecting a node shows what it is, which parent holds it, its position among its siblings and its
+    <em>layout role</em>: what it is to its parent, in the parent's terms ("item in a row that wraps;
+    fills the leftover space"). Below that come the options its signature declares, and nothing else.
+    A Stack has no padding field because a Stack has no padding: padding is a Box's, and "Wrap in Box"
+    is one click away. When two options decide the same thing, such as a Grid's <code>columns</code>
+    and <code>minColumn</code>, the inspector asks which one decides, and switching clears the other.
+  </p>
+  <p>
+    A page may be <strong>pending</strong>: an empty container, a missing accessible name, a link to a
+    path no page has. Pending is shown on the node and reported, never repaired for you, and it never
+    blocks an export. What is never allowed is broken <em>structure</em>: a drop zone only appears
+    where the contract accepts the node, so a Wrapper cannot land inside a Wrapper, and a block cannot
+    land inside a heading or a button.
+  </p>
+
+  <h2>The stage is a real browser</h2>
+  <p>
+    The page renders in its own document with the real React binding, as wide as the width you pick
+    and not a pixel different, so media queries and container widths answer exactly as they will in
+    production. Changing the width changes the room the browser has and nothing in the page. In
+    <em>Edit</em> mode a click selects; in <em>Interact</em> mode the page responds, and a link to
+    another page of the site opens it.
+  </p>
+  <p>
+    Every page of the site sits side by side on a canvas you pan and zoom, like a design tool; click a
+    page to open it. The canvas is only a view: zooming scales the picture, never the width the page
+    is laid out at, and where you left the camera is not part of the site.
+  </p>
+
+  <h2>Pages</h2>
+  <p>
+    A site is a list of pages, each with a name, a path such as <code>/about</code> and its own tree.
+    Adding, renaming, moving and removing a page are operations too, in the same history, so removing
+    a page is undone like removing a button. Links between pages are ordinary <code>href</code>
+    options; the inspector suggests the site's paths, and a link to a path no page has is pending.
+  </p>
+
+  <h2>Keyboard</h2>
+  <p>With the layers panel focused, every structural action has a shortcut, and the toolbar at the top of the inspector runs exactly the same actions.</p>
+  <ul>
+    <li><kbd class="sk-kbd">Alt</kbd> + <kbd class="sk-kbd">↑</kbd> / <kbd class="sk-kbd">↓</kbd>: move before the previous or after the next sibling.</li>
+    <li><kbd class="sk-kbd">Alt</kbd> + <kbd class="sk-kbd">←</kbd>: move out of the container; <kbd class="sk-kbd">Alt</kbd> + <kbd class="sk-kbd">→</kbd>: into the previous one.</li>
+    <li><kbd class="sk-kbd">⌘G</kbd> wraps in a Stack, <kbd class="sk-kbd">⌘⇧G</kbd> unwraps, <kbd class="sk-kbd">⌘D</kbd> duplicates, <kbd class="sk-kbd">Delete</kbd> removes.</li>
+    <li><kbd class="sk-kbd">⌘Z</kbd> and <kbd class="sk-kbd">⌘⇧Z</kbd> undo and redo, anywhere outside a text field.</li>
+  </ul>
+
+  <h2>Editing with an agent</h2>
+  <p>
+    A prompt follows the same rule. The MCP server run from the checkout offers
+    <code>maker_projects</code>, <code>maker_read</code>, which returns a project as an outline with an
+    id on every node, and <code>maker_apply</code>, which takes operations and nothing else. Ask an agent to "put these two
+    buttons next to each other" and the only thing it can send is a wrap in an Inline.
+  </p>
+  <CodeBlock code={outline} label="maker_read" lang="yaml" />
+  <CodeBlock code={apply} label="maker_apply" lang="json" />
+  <p>
+    The change is saved to the project, any Maker that has it open shows it at once, and it is one step
+    in the history: undo takes it back. Passing the <code>revision</code> it read means an agent never
+    overwrites something you did in the meantime; the request is refused with the current outline
+    instead. An operation the contract refuses (an option the signature does not declare, a Wrapper
+    inside a Wrapper) refuses the whole request, with the reason.
+  </p>
+
+  <h2>Publish</h2>
+  <p>
+    A project is published as a static site at <code>https://&lt;name&gt;.skryensya.dev/</code>: one page
+    per path, with the kit's stylesheets and enhancers, served by one Cloudflare Worker. Only the
+    machine that holds the publish token can publish. A link that would run code
+    (<code>javascript:</code>, a <code>data:</code> document) keeps the whole site from being published,
+    and every page is served with a policy that runs the kit and no other script. The one-time setup is
+    in <code>apps/sites-worker/README.md</code>.
+  </p>
+
+  <h2>Export</h2>
+  <p>
+    The open page exports as React, HTML with the stylesheets it needs, or the usage tree; the whole
+    site exports as one component per page, or as a site file, which the Maker opens again as a new
+    project. Every form
+    comes from the same emitter <code>validate_ui</code> uses.
+  </p>
+</Base>

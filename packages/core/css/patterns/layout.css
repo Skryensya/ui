@@ -60,6 +60,10 @@
   .sk-inline[data-align="stretch"] { align-items: stretch; }
   .sk-inline[data-wrap="false"] { flex-wrap: nowrap; }
   .sk-inline[data-equal] > * { flex: 1 1 0; min-inline-size: 0; }
+  /* A `fill` child starts from its content and takes what the row leaves. The row still wraps
+     before it squeezes: the break is decided on the content size, so a field beside a button
+     stays one row where both fit and drops the button to a line of its own where they do not. */
+  .sk-inline > [data-sizing="fill"] { flex: 1 1 auto; min-inline-size: 0; }
   .sk-inline[data-justify="start"] { justify-content: flex-start; }
   .sk-inline[data-justify="center"] { justify-content: center; }
   .sk-inline[data-justify="end"] { justify-content: flex-end; }
@@ -115,6 +119,17 @@
   .sk-grid[data-gap="sm"] { --sk-grid-gap: var(--space-stack-sm); }
   .sk-grid[data-gap="lg"] { --sk-grid-gap: var(--space-stack-lg); }
   .sk-grid[data-gap="xl"] { --sk-grid-gap: var(--space-stack-xl); }
+
+  /*
+   * AUTO-FIT, the lane count the Grid's own width decides. `min(X, 100%)` keeps a single lane from
+   * overflowing a container narrower than the floor. It answers to the grid box, not the viewport,
+   * so the same tree finds three lanes in a page column and one in a sidebar. The validator keeps
+   * `columns`, `responsive`, `multicol` and `fill` off a grid that declares this. Three written rules
+   * and no hook: the floor is a step of the scale, never a length a caller supplies.
+   */
+  .sk-grid[data-min-column="sm"] { grid-template-columns: repeat(auto-fit, minmax(min(var(--size-column-sm), 100%), 1fr)); }
+  .sk-grid[data-min-column="md"] { grid-template-columns: repeat(auto-fit, minmax(min(var(--size-column-md), 100%), 1fr)); }
+  .sk-grid[data-min-column="lg"] { grid-template-columns: repeat(auto-fit, minmax(min(var(--size-column-lg), 100%), 1fr)); }
 
   /*
    * LAYOUT GRID, one page flow with named reading measures.

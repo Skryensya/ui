@@ -1,0 +1,57 @@
+# What changed in app-bar, in the words its users read. Only appended to, never rewritten.
+#
+# `surface` is the shape of the contract the last time somebody reviewed it. If the compiler says it
+# does not match, something a consumer depends on has moved: write the entry and paste in the new
+# hash.
+surface: "2d935258223f938d"
+entries:
+  - date: 2026-09-28
+    kind: feature
+    es:
+      title: AppBar se publica como contrato, con tres signatures
+      body: >-
+        Entra al catálogo <code>AppBar</code>: la barra corta de texto que cruza el borde superior de
+        una aplicación, como la de un sistema de escritorio. <code>AppBarMenu</code> es cada menú
+        (<code>strong</code> dibuja en negrita el de la propia aplicación) y abre un <code>Menu</code>
+        real con <code>items</code>, o actúa de inmediato sin ellos. <code>AppBarStatus</code> pone
+        estado al final de la línea: texto, o un botón de menú si trae <code>items</code>. Los menús
+        son un <code>menubar</code> nombrado por <code>label</code>, con una sola parada de tabulación;
+        Izquierda y Derecha pasan de uno a otro llevando el desplegable abierto, y con un menú abierto
+        basta apuntar a otro para cambiar. Los desplegables son densos, con menos relleno vertical
+        que la densidad compacta de <code>Menu</code>, y se ajustan con
+        <code>--sk-app-bar-menu-item-padding-block</code>.
+    en:
+      title: AppBar is published as a contract, with three signatures
+      body: >-
+        It joins the catalogue with <code>AppBar</code>: the short line of text across the top edge of
+        an application, like a desktop OS draws one. <code>AppBarMenu</code> is each menu
+        (<code>strong</code> draws the application's own in bold) and opens a real <code>Menu</code>
+        with <code>items</code>, or acts at once without them. <code>AppBarStatus</code> puts state at
+        the end of the line: text, or a menu button when it has <code>items</code>. The menus are a
+        <code>menubar</code> named by <code>label</code>, with one tab stop; Left and Right move
+        between them carrying an open dropdown along, and once a menu is open, pointing at another
+        switches to it. The dropdowns are dense: 24px rows with little
+        block padding, tuned with <code>--sk-app-bar-menu-item-block-size</code> and
+        <code>--sk-app-bar-menu-item-padding-block</code>.
+  - date: 2026-09-28
+    kind: feature
+    es:
+      title: Chevron en los títulos que abren algo, y el título abierto se distingue
+      body: >-
+        Un título o un estado con <code>items</code> lleva un chevron pequeño (parte
+        <code>indicator</code>), que gira mientras su lista está abierta; un comando o un texto no
+        lleva ninguno. El título ocupa todo el alto de la barra y es cuadrado, y el desplegable cuelga
+        de su borde inferior sin separación. Abierto, el título lleva el relleno y el texto del acento
+        y una línea de acento en ese borde, así se ve de qué título sale la lista. Hooks nuevos:
+        <code>--sk-app-bar-item-open-fg</code> y <code>--sk-app-bar-item-open-indicator</code>;
+        <code>--sk-app-bar-item-radius</code> pasa a <code>0</code>.
+    en:
+      title: A chevron on titles that open something, and the open title stands out
+      body: >-
+        A title or a status with <code>items</code> carries a small chevron (the
+        <code>indicator</code> part), turned while its list is open; a command or plain text carries
+        none. The title fills the bar's height and is square, and the dropdown hangs from its bottom
+        edge with no gap. Open, the title takes the accent's fill and text and an accent line along
+        that edge, so it is plain which title the list belongs to. New hooks:
+        <code>--sk-app-bar-item-open-fg</code> and <code>--sk-app-bar-item-open-indicator</code>;
+        <code>--sk-app-bar-item-radius</code> becomes <code>0</code>.

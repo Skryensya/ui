@@ -401,6 +401,10 @@
       "types": "./src/components/menubar.tsx",
       "default": "./src/components/menubar.tsx"
     },
+    "./app-bar": {
+      "types": "./src/components/app-bar.tsx",
+      "default": "./src/components/app-bar.tsx"
+    },
     "./meter": {
       "types": "./src/components/meter.tsx",
       "default": "./src/components/meter.tsx"

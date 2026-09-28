@@ -74,6 +74,7 @@ report. The command above serves the same site locally.
 | [`@skryensya/ai-compiler`](packages/ai-compiler) | Reconciles the declared contracts with the semantic overlay and emits `artifacts/ai-manifest.json`. |
 | [`@skryensya/mcp`](packages/mcp) | MCP server over that manifest (stdio and stateless HTTP), so an agent can discover candidate components, read their contracts and validate a composition before writing code. |
 | [`@skryensya/ai-gates`](packages/ai-gates) | Playwright gates: cross-binding symmetry, accessibility, focus-ring modality, and visual baselines. |
+| [`@skryensya/maker-model`](packages/maker-model) | The Maker's model: a page as a tree of signatures, changed only by operations that take a parent and an index, never a position ([ADR-0031](docs/decisions/0031-the-maker-speaks-only-the-contract-and-changes-only-through-operations.md)). |
 
 ### Content and apps
 
@@ -82,6 +83,7 @@ report. The command above serves the same site locally.
 | [`@skryensya/snippets`](contracts/snippets) | Established compositions below screen scale: one component well composed, or a small molecule. |
 | [`@skryensya/docs`](apps/docs) | The documentation site at [ui.skryensya.dev](https://ui.skryensya.dev) (Astro), and the system's own biggest consumer. |
 | [`@skryensya/eval-viewer`](apps/eval-viewer) | Local-only viewer for agent eval runs. |
+| [`@skryensya/maker`](apps/maker) | Local-only visual page builder. The browser does the layout: pages compose Stack, Inline, Grid, Box and Wrapper, and export as React, HTML or a usage tree. `pnpm --filter @skryensya/maker dev`. |
 
 ## Repository layout
 

@@ -20,6 +20,7 @@
     "@modelcontextprotocol/server": "^2.0.0",
     "@skryensya/ai-compiler": "workspace:*",
     "@skryensya/core": "workspace:*",
+    "@skryensya/maker-model": "workspace:*",
     "@skryensya/snippets": "workspace:*",
     "hono": "^4.12.34",
     "zod": "^4.4.3"
@@ -27,6 +28,7 @@
   "devDependencies": {
     "@modelcontextprotocol/client": "^2.0.0",
     "@modelcontextprotocol/sdk": "^1.30.0",
+    "@skryensya/maker-server": "workspace:*",
     "@types/node": "catalog:",
     "esbuild": "^0.28.1",
     "tsx": "^4.19.2",

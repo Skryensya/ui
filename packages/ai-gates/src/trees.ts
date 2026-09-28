@@ -16,6 +16,10 @@ import type { UsageTree } from "@skryensya/core/usage-tree";
  * nothing. A gate's fixture cannot depend on an asset that may or may not be served: inline it, and
  * the image is the same pixels on every machine.
  */
+/* The full image a lightbox link points at: a raster, since a link may not point at an inline SVG
+   (an SVG can carry script; the validator's unsafe-url rule). 1x1 PNG. */
+const SAMPLE_MEDIA_FULL = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==";
+
 const SAMPLE_MEDIA =
   "data:image/svg+xml;utf8," +
   encodeURIComponent(
@@ -867,6 +871,51 @@ const signatureTrees: readonly Canonical[] = [
       signature: "Box",
       options: { padding: "md", surface: "raised", appearance: "frosted" },
       children: { contract: "typography", signature: "Text", children: "Caja esmerilada" },
+    },
+  },
+  {
+    /*
+     * DECISION 31, the sizing the Maker exposes: a Box that stops at a measure, a Grid that counts
+     * its lanes from its own width, and an Inline child that takes the leftover row. Nothing is
+     * enhanced; G2 compares attribute realization, including a parent's `childAttrs` written on the
+     * child through `attrs`. `logical-sizing.spec.ts` measures what the attributes do.
+     */
+    name: "layout/logical-sizing",
+    enhanced: false,
+    tree: {
+      contract: "box",
+      signature: "Box",
+      options: { measure: "sm", padding: "md" },
+      children: {
+        contract: "layout",
+        signature: "Stack",
+        children: [
+          {
+            contract: "layout",
+            signature: "Grid",
+            options: { minColumn: "sm", gap: "sm" },
+            children: [
+              { contract: "badge", signature: "Badge", children: "Uno" },
+              { contract: "badge", signature: "Badge", children: "Dos" },
+              { contract: "badge", signature: "Badge", children: "Tres" },
+            ],
+          },
+          {
+            contract: "layout",
+            signature: "Inline",
+            options: { gap: "xs" },
+            children: [
+              {
+                contract: "typography",
+                signature: "Text",
+                attrs: { "data-sizing": "fill" },
+                children: "Ocupa lo que sobra",
+              },
+              { contract: "badge", signature: "Badge", attrs: { "data-sizing": "fit" }, children: "Fit" },
+            ],
+          },
+        ],
+      },
     },
   },
   {
@@ -2971,6 +3020,47 @@ const signatureTrees: readonly Canonical[] = [
     },
   },
   {
+    // Every shape the bar has: the application's menu in bold, a dropdown, a plain command, one word
+    // of status and one status menu. The dropdowns are Menu's own item shape, as in Menubar's tree.
+    name: "app-bar/desktop",
+    enhanced: true,
+    tree: {
+      contract: "app-bar",
+      signature: "AppBar",
+      options: { label: "Maker" },
+      children: [
+        {
+          contract: "app-bar",
+          signature: "AppBarMenu",
+          options: { strong: true },
+          slots: { children: "Maker", items: [{ options: { value: "about" }, slots: { label: "Acerca de Maker" } }] },
+        },
+        {
+          contract: "app-bar",
+          signature: "AppBarMenu",
+          slots: {
+            children: "Archivo",
+            items: [
+              { options: { value: "new" }, slots: { label: "Nuevo" } },
+              { options: { value: "export" }, slots: { label: "Exportar" } },
+            ],
+          },
+        },
+        { contract: "app-bar", signature: "AppBarMenu", children: "Ayuda" },
+      ],
+      slots: {
+        status: [
+          { contract: "app-bar", signature: "AppBarStatus", children: "Guardado" },
+          {
+            contract: "app-bar",
+            signature: "AppBarStatus",
+            slots: { children: "72rem", items: [{ options: { value: "36" }, slots: { label: "36rem" } }] },
+          },
+        ],
+      },
+    },
+  },
+  {
     // WAI's own layout-grid example: a row is a logical grouping, not necessarily one visual line.
     name: "data-grid/recipient-pills",
     enhanced: true,
@@ -3606,7 +3696,7 @@ const signatureTrees: readonly Canonical[] = [
           (alt): UsageTree => ({
             contract: "lightbox",
             signature: "Lightbox.Trigger",
-            options: { opens: "gate-lightbox", triggerSrc: SAMPLE_MEDIA, triggerWidth: 1600, triggerHeight: 900, triggerTitle: alt },
+            options: { opens: "gate-lightbox", triggerSrc: SAMPLE_MEDIA_FULL, triggerWidth: 1600, triggerHeight: 900, triggerTitle: alt },
             slots: {
               children: {
                 contract: "image-frame",

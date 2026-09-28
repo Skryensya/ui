@@ -1,0 +1,166 @@
+---
+import Base from "../../layouts/Base.astro";
+import CodeBlock from "../../components/CodeBlock.astro";
+
+const run = `docker compose -f apps/maker/docker-compose.yml up -d   # PostgreSQL, una vez
+pnpm --filter @skryensya/maker dev                        # http://localhost:4200`;
+
+const outline = `page 3f2a… "Inicio" /
+  9c1e… layout/Main
+    41b7… layout/Stack gap="lg"
+      a0d2… typography/Heading
+        a0d3… "Construye una vez, úsalo en todas partes."
+      77e9… button/Button.action
+        77ea… "Empezar"
+      77f1… button/Button.action
+        77f2… "Leer la documentación"`;
+
+const apply = `{
+  "project": "7d0c…",
+  "revision": 4,
+  "operations": [
+    {
+      "type": "page",
+      "page": "3f2a…",
+      "operations": [
+        {
+          "type": "wrap",
+          "children": ["77e9…", "77f1…"],
+          "with": { "contract": "layout", "signature": "Inline", "options": { "gap": "sm" } }
+        }
+      ]
+    }
+  ]
+}`;
+---
+
+<Base
+  title="Maker"
+  description="Un constructor visual de páginas donde el navegador hace el layout: las páginas son árboles de signatures y cambian solo por operaciones, nunca por coordenadas."
+  documentLayout="grid"
+>
+  <h1>Maker</h1>
+  <p class="lede">
+    El Maker construye páginas componiendo los mismos componentes del kit dentro del flujo normal del
+    documento. No hay canvas ni coordenadas: una página es un árbol, <code>Stack</code>,
+    <code>Inline</code>, <code>Grid</code>, <code>Box</code> y <code>Wrapper</code> dicen cómo se
+    relacionan sus partes, y el navegador resuelve dónde queda cada una. Lo que exporta es el mismo
+    usage tree que acepta <code>validate_ui</code>, emitido como React o HTML.
+  </p>
+
+  <h2>Cómo abrirlo</h2>
+  <p>
+    El Maker es una app local en <code>apps/maker</code>. Sus proyectos viven en PostgreSQL, que el
+    archivo compose levanta en el puerto 5433 (<code>DATABASE_URL</code> apunta a otro). Puedes tener
+    varios proyectos abiertos a la vez, cada uno en una pestaña con su propio historial, y las pestañas
+    abiertas vuelven en la próxima visita. Sin base de datos el Maker sigue funcionando, con un sitio
+    guardado en el navegador, y lo avisa.
+  </p>
+  <p>
+    Un proyecto nuevo puede partir de cualquier página de la <a href="/es/templates">galería de
+    templates</a>, desde el panel de proyectos o desde el enlace <em>Abrir en Maker</em> de la propia
+    galería.
+  </p>
+  <CodeBlock code={run} label="Shell" lang="bash" />
+
+  <h2>La única regla</h2>
+  <p>
+    Nada se coloca por posición. No hay <code>x</code>, ni <code>top</code>, ni <code>absolute</code>,
+    ni anchos en píxeles, ni márgenes negativos, ni transforms usados como layout, y el motivo no es una
+    regla de lint: <strong>ninguna operación puede expresarlo</strong>. Cada cambio pertenece a un
+    conjunto cerrado, y un <em>lugar</em> en ese conjunto es un parent, un slot y un índice entre
+    hermanos. Tú decides que dos botones van en fila; el navegador decide dónde se parte la fila.
+  </p>
+  <ul>
+    <li><strong>Cosas una sobre otra:</strong> un <code>Stack</code>, separadas por su <code>gap</code>.</li>
+    <li><strong>Cosas lado a lado:</strong> un <code>Inline</code>. Con <code>wrap</code> activo, el navegador las pasa a otra línea cuando se acaba el espacio.</li>
+    <li><strong>Una cuadrícula de verdad:</strong> un <code>Grid</code>. Con <code>minColumn</code>, su propio ancho decide cuántas columnas caben, sin breakpoints.</li>
+    <li><strong>Una columna de página:</strong> un <code>Wrapper</code>, centrado, en la escala de tamaños.</li>
+    <li><strong>Una región con superficie propia o un techo de ancho:</strong> un <code>Box</code>, con <code>padding</code>, <code>surface</code>, <code>border</code> o <code>measure</code>.</li>
+    <li><strong>Un hijo que ocupa lo que deja la fila:</strong> <code>sizing: fill</code>, que el Inline ofrece a sus hijos y que un hijo pierde al moverse a otro lugar.</li>
+  </ul>
+
+  <h2>El inspector muestra el contrato, y solo el contrato</h2>
+  <p>
+    Al seleccionar un nodo ves qué es, qué parent lo contiene, su posición entre sus hermanos y su
+    <em>layout role</em>: lo que es para su parent, en los términos del parent ("item in a row that
+    wraps; fills the leftover space"). Debajo aparecen las opciones que declara su signature, y nada más.
+    Un Stack no tiene campo de padding porque un Stack no tiene padding: el padding es de Box, y
+    "Wrap in Box" está a un click. Cuando dos opciones deciden lo mismo, como <code>columns</code> y
+    <code>minColumn</code> en un Grid, el inspector pregunta cuál decide, y cambiar limpia la otra.
+  </p>
+  <p>
+    Una página puede quedar <strong>pending</strong>: un contenedor vacío, un nombre accesible que
+    falta, un enlace a una ruta que ninguna página tiene. Lo pendiente se muestra en el nodo y se
+    reporta, nunca se repara solo, y nunca bloquea un export. Lo que nunca se permite es una
+    <em>estructura</em> rota: una drop zone solo aparece donde el contrato acepta el nodo, así que un
+    Wrapper no cae dentro de otro Wrapper, ni un bloque dentro de un encabezado o un botón.
+  </p>
+
+  <h2>El stage es un navegador de verdad</h2>
+  <p>
+    La página se renderiza en su propio documento con el binding real de React, tan ancha como el ancho
+    que elijas y ni un píxel distinta, así que las media queries y los anchos de contenedor responden
+    exactamente como en producción. Cambiar el ancho cambia el espacio que tiene el navegador y nada de
+    la página. En modo <em>Edit</em> un click selecciona; en modo <em>Interact</em> la página responde,
+    y un enlace a otra página del sitio la abre.
+  </p>
+  <p>
+    Todas las páginas del sitio están lado a lado en un canvas que se mueve y se acerca, como en una
+    herramienta de diseño; un click en una página la abre. El canvas es solo una vista: el zoom escala
+    la imagen, nunca el ancho con el que se hace el layout, y dónde dejaste la cámara no es parte del
+    sitio.
+  </p>
+
+  <h2>Páginas</h2>
+  <p>
+    Un sitio es una lista de páginas, cada una con nombre, una ruta como <code>/nosotros</code> y su
+    propio árbol. Agregar, renombrar, mover y quitar una página también son operaciones, en el mismo
+    historial, así que quitar una página se deshace igual que quitar un botón. Los enlaces entre
+    páginas son opciones <code>href</code> comunes; el inspector sugiere las rutas del sitio, y un
+    enlace a una ruta que ninguna página tiene queda pending.
+  </p>
+
+  <h2>Teclado</h2>
+  <p>Con el panel de capas enfocado, cada acción estructural tiene su atajo, y la barra al inicio del inspector ejecuta exactamente las mismas acciones.</p>
+  <ul>
+    <li><kbd class="sk-kbd">Alt</kbd> + <kbd class="sk-kbd">↑</kbd> / <kbd class="sk-kbd">↓</kbd>: mover antes del hermano anterior o después del siguiente.</li>
+    <li><kbd class="sk-kbd">Alt</kbd> + <kbd class="sk-kbd">←</kbd>: sacar del contenedor; <kbd class="sk-kbd">Alt</kbd> + <kbd class="sk-kbd">→</kbd>: meter en el anterior.</li>
+    <li><kbd class="sk-kbd">⌘G</kbd> envuelve en un Stack, <kbd class="sk-kbd">⌘⇧G</kbd> desenvuelve, <kbd class="sk-kbd">⌘D</kbd> duplica, <kbd class="sk-kbd">Delete</kbd> quita.</li>
+    <li><kbd class="sk-kbd">⌘Z</kbd> y <kbd class="sk-kbd">⌘⇧Z</kbd> deshacen y rehacen, en cualquier lugar fuera de un campo de texto.</li>
+  </ul>
+
+  <h2>Editar con un agente</h2>
+  <p>
+    Un prompt sigue la misma regla. El servidor MCP que corre desde el repositorio ofrece
+    <code>maker_projects</code>, <code>maker_read</code>, que devuelve un proyecto como un outline con un
+    id en cada nodo, y <code>maker_apply</code>, que acepta operaciones y nada más. Pídele a un agente "pon estos dos
+    botones lado a lado" y lo único que puede enviar es un wrap en un Inline.
+  </p>
+  <CodeBlock code={outline} label="maker_read" lang="yaml" />
+  <CodeBlock code={apply} label="maker_apply" lang="json" />
+  <p>
+    El cambio se guarda en el proyecto, cualquier Maker que lo tenga abierto lo muestra al instante, y
+    es un paso más del historial: deshacer lo revierte. Si el agente pasa la <code>revision</code> que leyó, nunca pisa algo
+    que hayas hecho entretanto; en ese caso la petición se rechaza con el outline actual. Una operación
+    que el contrato rechaza (una opción que la signature no declara, un Wrapper dentro de otro) rechaza
+    la petición completa, con el motivo.
+  </p>
+
+  <h2>Publicar</h2>
+  <p>
+    Un proyecto se publica como sitio estático en <code>https://&lt;nombre&gt;.skryensya.dev/</code>: una
+    página por ruta, con las hojas de estilo y los enhancers del kit, servida por un único Worker de
+    Cloudflare. Solo publica la máquina que tiene el token de publicación. Un enlace que ejecutaría
+    código (<code>javascript:</code>, un documento <code>data:</code>) impide publicar el sitio completo, y
+    cada página se sirve con una política que ejecuta el kit y ningún otro script. La configuración de
+    una sola vez está en <code>apps/sites-worker/README.md</code>.
+  </p>
+
+  <h2>Export</h2>
+  <p>
+    La página abierta se exporta como React, como HTML con las hojas de estilo que necesita, o como
+    usage tree; el sitio completo se exporta como un componente por página, o como un archivo de sitio,
+    que el Maker vuelve a abrir como un proyecto nuevo. Todas las formas salen del mismo emisor que usa <code>validate_ui</code>.
+  </p>
+</Base>

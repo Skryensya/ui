@@ -113,7 +113,18 @@
      * scrollport instead of floating free. The exact failure `patterns/anchored.css` already
      * explains choosing `fixed` over `absolute` to avoid for the browser-placed case.
      */
-    positioning: { placement: "bottom-start" as const, strategy: "fixed" as const },
+    /*
+     * `gutter: 0` wherever the anchoring engine exists, even when this machine is the one placing
+     * the box: `.sk-anchored` still applies `margin: var(--sk-anchored-offset)` there, so the machine's
+     * own 8px default came ON TOP of the hook (measured: 12px under a trigger whose hook says 4px,
+     * and 8px under one whose hook says 0). The hook is the one gap; only a browser without the
+     * engine, where that margin never applies, keeps the machine's default.
+     */
+    positioning: {
+      placement: "bottom-start" as const,
+      strategy: "fixed" as const,
+      ...(supportsAnchorPositioning() ? { gutter: 0 } : {}),
+    },
     onOpenChange(details: { open: boolean }) {
       root.dispatchEvent(new CustomEvent(menuEvents.openChange, { bubbles: true, detail: { open: details.open } }));
     },

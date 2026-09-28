@@ -60,3 +60,4 @@ evals/agent/runs/
 # the files instead. It is build output, not source: `pnpm --filter @skryensya/playground dev` and
 # `build` both regenerate it first, and it was never tracked before the split either.
 apps/playground/public/sandbox/
+

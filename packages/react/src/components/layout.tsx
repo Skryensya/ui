@@ -3,8 +3,10 @@ import {
   layoutGridParts,
   type BoxAppearance,
   type BoxBorder,
+  type BoxMeasure,
   type BoxSurface,
   type GridColumns,
+  type GridMinColumn,
   type InlineAlign,
   type InlineBlockStart,
   type InlineJustify,
@@ -46,6 +48,7 @@ export type BoxProps<Element extends ElementType = "div"> = PolymorphicProps<
   LayoutChildren & {
     appearance?: BoxAppearance;
     border?: BoxBorder;
+    measure?: BoxMeasure;
     padding?: Space;
     paddingExpanded?: Space;
     surface?: BoxSurface;
@@ -57,6 +60,7 @@ export function Box<Element extends ElementType = "div">({
   as,
   border = "none",
   className,
+  measure,
   padding = "none",
   paddingExpanded,
   surface = "none",
@@ -69,6 +73,7 @@ export function Box<Element extends ElementType = "div">({
       className={classes(layoutParts.box, className)}
       data-appearance={appearance}
       data-border={border}
+      data-measure={measure}
       data-padding={padding}
       data-padding-expanded={paddingExpanded}
       data-surface={surface}
@@ -227,6 +232,8 @@ export type GridProps<Element extends ElementType = "div"> = PolymorphicProps<
     fill?: boolean;
     gap?: Space;
     gapExpanded?: Space;
+    /** The narrowest lane before the grid drops one; the grid's own width decides the count. */
+    minColumn?: GridMinColumn;
     multicol?: boolean;
     responsive?: boolean;
     "data-multicol"?: string;
@@ -241,6 +248,7 @@ export function Grid<Element extends ElementType = "div">({
   fill = false,
   gap = "md",
   gapExpanded,
+  minColumn,
   multicol,
   responsive,
   "data-multicol": rawMulticol,
@@ -256,6 +264,7 @@ export function Grid<Element extends ElementType = "div">({
       data-fill={fill ? "" : undefined}
       data-gap={gap}
       data-gap-expanded={gapExpanded}
+      data-min-column={minColumn}
       data-multicol={multicol === true ? "" : multicol === false ? undefined : rawMulticol}
       data-responsive={responsive === true ? "" : responsive === false ? undefined : rawResponsive}
     />

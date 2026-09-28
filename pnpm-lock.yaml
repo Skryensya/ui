@@ -163,6 +163,67 @@ importers:
         specifier: ^8.1.5
         version: 8.1.5(@types/node@24.13.3)(esbuild@0.28.1)(sass@1.101.0)(tsx@4.23.1)(yaml@2.9.0)
 
+  apps/maker:
+    dependencies:
+      '@skryensya/ai-compiler':
+        specifier: workspace:*
+        version: link:../../packages/ai-compiler
+      '@skryensya/core':
+        specifier: workspace:*
+        version: link:../../packages/core
+      '@skryensya/icons-lucide':
+        specifier: workspace:*
+        version: link:../../packages/icons-lucide
+      '@skryensya/maker-model':
+        specifier: workspace:*
+        version: link:../../packages/maker-model
+      '@skryensya/maker-server':
+        specifier: workspace:*
+        version: link:../../packages/maker-server
+      '@skryensya/react':
+        specifier: workspace:*
+        version: link:../../packages/react
+      '@skryensya/snippets':
+        specifier: workspace:*
+        version: link:../../contracts/snippets
+      lucide:
+        specifier: ^1.24.0
+        version: 1.24.0
+      react:
+        specifier: ^19.2.7
+        version: 19.2.7
+      react-dom:
+        specifier: ^19.2.7
+        version: 19.2.7(react@19.2.7)
+    devDependencies:
+      '@playwright/test':
+        specifier: ^1.62.0
+        version: 1.62.0
+      '@types/node':
+        specifier: ^24.13.3
+        version: 24.13.3
+      '@types/react':
+        specifier: ^19.0.0
+        version: 19.2.17
+      '@types/react-dom':
+        specifier: ^19.0.0
+        version: 19.2.3(@types/react@19.2.17)
+      '@vitejs/plugin-react':
+        specifier: ^5.0.0
+        version: 5.2.0(vite@8.1.5(@types/node@24.13.3)(esbuild@0.28.1)(sass@1.101.0)(tsx@4.23.1)(yaml@2.9.0))
+      axe-core:
+        specifier: ^4.10.2
+        version: 4.12.1
+      sass:
+        specifier: ^1.83.0
+        version: 1.101.0
+      typescript:
+        specifier: ^5.9.3
+        version: 5.9.3
+      vite:
+        specifier: ^8.1.5
+        version: 8.1.5(@types/node@24.13.3)(esbuild@0.28.1)(sass@1.101.0)(tsx@4.23.1)(yaml@2.9.0)
+
   apps/playground:
     dependencies:
       '@codesandbox/sandpack-react':
@@ -229,6 +290,28 @@ importers:
       vite:
         specifier: ^8.1.5
         version: 8.1.5(@types/node@24.13.3)(esbuild@0.28.1)(sass@1.101.0)(tsx@4.23.1)(yaml@2.9.0)
+
+  apps/sites-worker:
+    dependencies:
+      '@skryensya/maker-server':
+        specifier: workspace:*
+        version: link:../../packages/maker-server
+    devDependencies:
+      '@skryensya/maker-model':
+        specifier: workspace:*
+        version: link:../../packages/maker-model
+      '@types/node':
+        specifier: ^24.13.3
+        version: 24.13.3
+      tsx:
+        specifier: ^4.19.2
+        version: 4.23.1
+      typescript:
+        specifier: ^5.9.3
+        version: 5.9.3
+      vitest:
+        specifier: ^4.1.11
+        version: 4.1.11(@types/node@24.13.3)(jsdom@29.1.1)(vite@8.1.5(@types/node@24.13.3)(esbuild@0.28.1)(sass@1.101.0)(tsx@4.23.1)(yaml@2.9.0))
 
   apps/storybook-react:
     dependencies:
@@ -695,6 +778,71 @@ importers:
         specifier: ^5.9.3
         version: 5.9.3
 
+  packages/maker-model:
+    dependencies:
+      '@skryensya/ai-compiler':
+        specifier: workspace:*
+        version: link:../ai-compiler
+      '@skryensya/core':
+        specifier: workspace:*
+        version: link:../core
+    devDependencies:
+      '@skryensya/ai-gates':
+        specifier: workspace:*
+        version: link:../ai-gates
+      '@skryensya/snippets':
+        specifier: workspace:*
+        version: link:../../contracts/snippets
+      typescript:
+        specifier: ^5.9.3
+        version: 5.9.3
+      vitest:
+        specifier: ^4.1.11
+        version: 4.1.11(@types/node@24.13.3)(jsdom@29.1.1)(vite@8.1.5(@types/node@24.13.3)(esbuild@0.28.1)(sass@1.101.0)(tsx@4.23.1)(yaml@2.9.0))
+
+  packages/maker-server:
+    dependencies:
+      '@skryensya/ai-compiler':
+        specifier: workspace:*
+        version: link:../ai-compiler
+      '@skryensya/core':
+        specifier: workspace:*
+        version: link:../core
+      '@skryensya/maker-model':
+        specifier: workspace:*
+        version: link:../maker-model
+      postgres:
+        specifier: ^3.4.9
+        version: 3.4.9
+    devDependencies:
+      '@skryensya/icons-lucide':
+        specifier: workspace:*
+        version: link:../icons-lucide
+      '@skryensya/vanilla':
+        specifier: workspace:*
+        version: link:../vanilla
+      '@sveltejs/vite-plugin-svelte':
+        specifier: ^7.0.0
+        version: 7.2.0(svelte@5.56.7)(vite@8.1.5(@types/node@24.13.3)(esbuild@0.28.1)(sass@1.101.0)(tsx@4.23.1)(yaml@2.9.0))
+      '@types/node':
+        specifier: ^24.13.3
+        version: 24.13.3
+      sass:
+        specifier: ^1.83.0
+        version: 1.101.0
+      svelte:
+        specifier: ^5.0.0
+        version: 5.56.7
+      typescript:
+        specifier: ^5.9.3
+        version: 5.9.3
+      vite:
+        specifier: ^8.1.5
+        version: 8.1.5(@types/node@24.13.3)(esbuild@0.28.1)(sass@1.101.0)(tsx@4.23.1)(yaml@2.9.0)
+      vitest:
+        specifier: ^4.1.11
+        version: 4.1.11(@types/node@24.13.3)(jsdom@29.1.1)(vite@8.1.5(@types/node@24.13.3)(esbuild@0.28.1)(sass@1.101.0)(tsx@4.23.1)(yaml@2.9.0))
+
   packages/mcp:
     dependencies:
       '@modelcontextprotocol/node':
@@ -709,6 +857,9 @@ importers:
       '@skryensya/core':
         specifier: workspace:*
         version: link:../core
+      '@skryensya/maker-model':
+        specifier: workspace:*
+        version: link:../maker-model
       '@skryensya/snippets':
         specifier: workspace:*
         version: link:../../contracts/snippets
@@ -725,6 +876,9 @@ importers:
       '@modelcontextprotocol/sdk':
         specifier: ^1.30.0
         version: 1.30.0(zod@4.4.3)
+      '@skryensya/maker-server':
+        specifier: workspace:*
+        version: link:../maker-server
       '@types/node':
         specifier: ^24.13.3
         version: 24.13.3
@@ -4160,6 +4314,10 @@ packages:
   postcss@8.5.26:
     resolution: {integrity: sha512-u82N74LFzG8ca+dD8puPnplTXoGH4fTPpVGuIbt36G3qvNlkvfD0lEAZSxaly3KX8TS/L1A1gsCEmvKmBcVbkQ==}
     engines: {node: ^10 || ^12 || >=14}
+
+  postgres@3.4.9:
+    resolution: {integrity: sha512-GD3qdB0x1z9xgFI6cdRD6xu2Sp2WCOEoe3mtnyB5Ee0XrrL5Pe+e4CCnJrRMnL1zYtRDZmQQVbvOttLnKDLnaw==}
+    engines: {node: '>=12'}
 
   prettier@3.9.6:
     resolution: {integrity: sha512-OpN0zzVdiaiAhxpuuj5efpIS4sY9j7bY6uR5mnj5yPzGkdkjNKSJeUThPb60Jw29QuAZgA4o+/iB49kFiaBX6g==}
@@ -8496,6 +8654,8 @@ snapshots:
       nanoid: 3.3.18
       picocolors: 1.1.1
       source-map-js: 1.2.1
+
+  postgres@3.4.9: {}
 
   prettier@3.9.6: {}
 
