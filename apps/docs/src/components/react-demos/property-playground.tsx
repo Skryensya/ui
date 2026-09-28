@@ -50,7 +50,6 @@ export function PropertyPlayground({
 
   return (
     <div className="sk-property-playground">
-      <div className="sk-property-playground__stage">{Render ? Render(liveTree) : null}</div>
       <div className="sk-property-playground__control">
         <RadioGroup
           label={controlLabel}
@@ -67,6 +66,7 @@ export function PropertyPlayground({
           <p className="sk-property-playground__when-body">{description}</p>
         </div>
       )}
+      <div className="sk-property-playground__stage">{Render ? Render(liveTree) : null}</div>
     </div>
   );
 }
