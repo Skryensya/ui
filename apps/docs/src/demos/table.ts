@@ -1,6 +1,6 @@
 import type { UsageTree } from "@skryensya/core/usage-tree";
 import type { Translate } from "../i18n";
-import { deploymentRows, pageSizeItems } from "./data/table";
+import { deploymentRows } from "./data/table";
 import { anatomyCanvas, anatomyHints, namePart } from "./annotation-parts";
 
 /*
@@ -249,7 +249,8 @@ export const tableInBoxTree = (t: Translate): UsageTree => ({
   children: tableTree(t),
 });
 
-function deploymentsTable(t: Translate): UsageTree {
+/** The eight-row deployments table the density and TablePager demos share. */
+export function deploymentsTable(t: Translate): UsageTree {
   return {
     contract: "table",
     signature: "TableScroll",
@@ -304,53 +305,6 @@ function deploymentsTable(t: Translate): UsageTree {
     },
   };
 }
-
-export const tablePagerTree = (t: Translate): UsageTree => ({
-  contract: "table-pager",
-  signature: "TablePager",
-  options: {
-    pageSize: 5,
-    statusTemplate: t("demo.table.range"),
-    previousLabel: t("demo.table.previousPage"),
-    nextLabel: t("demo.table.nextPage"),
-    pageLabel: t("demo.table.page"),
-  },
-  children: [
-    deploymentsTable(t),
-    {
-      contract: "table-pager",
-      signature: "TablePagerBar",
-      children: [
-        {
-          contract: "table-pager",
-          signature: "TablePagerSize",
-          children: {
-            contract: "select",
-            signature: "Select",
-            options: { name: "page-size", value: "5" },
-            slots: { label: t("demo.table.rowsPerPage"), items: pageSizeItems },
-          },
-        },
-        {
-          contract: "table-pager",
-          signature: "TablePagerEnd",
-          children: [
-            {
-              contract: "table-pager",
-              signature: "TablePagerStatus",
-              children: t("demo.table.range", { start: "1", end: "5", total: "8" }),
-            },
-            {
-              contract: "table-pager",
-              signature: "TablePagerNav",
-              options: { navLabel: t("demo.table.pagination") },
-            },
-          ],
-        },
-      ],
-    },
-  ],
-});
 
 export const tableDensityTree = (t: Translate, densityFactor: number = 1): UsageTree => {
   const tree = deploymentsTable(t);

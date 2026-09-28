@@ -6,6 +6,11 @@ export const componentMessages = {
      * for the same reason as `contract.*` above. `{name}` is the one thing that changes.
      */
     "component.tabUsage": "Uso",
+    /* A page with do's and don'ts names its first tab this, and the guidelines get their own. */
+    "component.tabOverview": "Resumen",
+    "component.tabGuidelines": "Guía de uso",
+    "component.do": "Hazlo",
+    "component.dont": "Evítalo",
     "component.anatomy": "Anatomía",
     "component.tabInstall": "Instalación",
     "component.tabStyle": "Style hooks",
@@ -22,6 +27,10 @@ export const componentMessages = {
   en: {
 
     "component.tabUsage": "Usage",
+    "component.tabOverview": "Overview",
+    "component.tabGuidelines": "Usage guide",
+    "component.do": "Do",
+    "component.dont": "Don't",
     "component.anatomy": "Anatomy",
     "component.tabInstall": "Installation",
     "component.tabStyle": "Style hooks",

@@ -37,10 +37,9 @@ import { buildPreviewFrameDocument } from "../lib/preview-frame";
 import { exampleComponentName } from "../lib/example-component-name";
 import { compileDemoScript } from "../lib/demo-script";
 import { getLocale, useTranslations } from "../i18n";
-import { playgroundUrl, storybookDocsUrl, storybookReactUrl, storybookVanillaUrl } from "../lib/navigation";
+import { storybookDocsUrl, storybookReactUrl, storybookVanillaUrl } from "../lib/navigation";
 import { previewHeight } from "../lib/preview-heights";
 import { slugify } from "../lib/document-index";
-import { treeAnchorId } from "../lib/tree-anchor";
 
 type CodeLanguage = "bash" | "css" | "html" | "ts" | "tsx";
 
@@ -280,7 +279,7 @@ const reactData = reactSource?.data;
  * Drawer (`Vaul.drawer`, patterns/vaul.css), never a third tab or binding among the Vanilla/React
  * source panels below. It has no live stage (a usage tree renders nothing) and no per-binding home
  * (both were emitted from it equally), so it sits with the card's other secondary actions
- * (Reload, Open in the playground) instead of competing for space with either source panel. Copyable as-is into
+ * (Reload, the Storybook links) instead of competing for space with either source panel. Copyable as-is into
  * `validate_ui` (see the MCP server instructions): the same shape, not a description of it.
  */
 const treeJson = tree ? JSON.stringify(tree, null, 2) : undefined;
@@ -288,30 +287,8 @@ const treeJson = tree ? JSON.stringify(tree, null, 2) : undefined;
 const vanillaCode = code ?? treeHtml ?? html;
 
 /*
- * THE PLAYGROUND HANDOFF, prepared at build time and carried on the root.
- *
- * `vanillaCode` is the SAME source the panel below shows - `code` when the author overrode it, the
- * emitted authored markup when there is a tree, the raw `html` otherwise. Handing over anything else
- * would open an editor on code the reader was not just looking at.
- *
- * Not gated on having a tree. It was at first, on the reasoning that a raw-`html` preview has
- * "nothing to hand over" - which was simply wrong: that markup IS its source, and it is exactly what
- * `vanillaCode` already resolves for the panel. The gate is having source at all.
- *
- * AND having somewhere to send it. `playgroundUrl` is null where no playground is reachable (see its
- * own note in `lib/navigation.ts`), and handing source to a link that 404s is the same broken item
- * the rail used to carry, one menu deeper.
- *
- * Encoded as `Playground.tsx` decodes it: `encodeURIComponent` over the JSON. The two apps share no
- * module, so this string is the whole interface between them.
- */
-const playgroundHandoff =
-  vanillaCode && playgroundUrl
-    ? encodeURIComponent(JSON.stringify({ label: label ?? tree?.contract ?? "", vanilla: vanillaCode }))
-    : undefined;
-/*
  * PILOT: both Storybook hrefs at once, one per deployed app. `storybookDocsUrl` itself returns null
- * for whichever base is not configured (same as `playgroundUrl`), and both are null when this preview
+ * for whichever base is not configured, and both are null when this preview
  * was never told which story it became.
  */
 const storybookReactHref =
@@ -376,22 +353,6 @@ const previewId = ((): string => {
   used.add(candidate);
   return candidate;
 })();
-/*
- * A SECOND ADDRESS, derived from the tree rather than the label, so the Playground's "See the docs"
- * can land on this exact demo (see `lib/tree-anchor.ts`). It sits on the header, not the root: the
- * root's id is `previewId` above, which existing links already point at. Deduped like `previewId`,
- * because a page may render the same tree twice and the first one is the one worth landing on.
- */
-const treeAnchor = ((): string | undefined => {
-  if (!authoredTree) return undefined;
-  const used = ((locals as { componentPreviewTreeAnchors?: Set<string> }).componentPreviewTreeAnchors ??= new Set());
-  /* The AUTHORED tree: the Playground hashes the tree it was handed, which never carries the
-     `fitOnly` an anatomy gets above. */
-  const id = treeAnchorId(authoredTree);
-  if (used.has(id)) return undefined;
-  used.add(id);
-  return id;
-})();
 const hasVanillaStage = previewHtml.length > 0;
 const frameDocument = hasVanillaStage
   ? buildPreviewFrameDocument({
@@ -421,17 +382,14 @@ const reloadIcon = iconMarkup("refresh", { size: "sm" });
  */
 const sourceToggleIcon = iconMarkup("chevron-down", { size: "sm" });
 const contractIcon = iconMarkup("file", { size: "sm" });
-/* `code`: the Playground is where this demo stops being a specimen and becomes source you can run. */
 /*
  * LAUNCH, not `code`, and the difference is where the row goes rather than what it shows you.
  *
  * Every other item in this menu acts on the card in front of the reader: Reload re-runs this stage,
- * View contract opens a drawer beside it. This one is the only row that LEAVES, into a tab of its
- * own, and `external-link` is the vocabulary's name for exactly that (the arrow out of a box every
- * platform draws for "opens elsewhere"). `code` said "source", which is what the panels under the
- * stage already say without going anywhere.
+ * View contract opens a drawer beside it. The Storybook rows are the only ones that LEAVE, into a
+ * tab of their own, and `external-link` is the vocabulary's name for exactly that.
  */
-const playgroundIcon = iconMarkup("external-link", { size: "sm" });
+const externalIcon = iconMarkup("external-link", { size: "sm" });
 /*
  * Screen presets. The name is a stable ROLE, not a device drawing, which is why the accessible
  * name spells out the actual viewport: `screen-tablet` tells you the class of screen, `768 × 1024`
@@ -528,7 +486,6 @@ const stageStyle =
         "data-sk-preview-zoomed": zoomedDesktop ? "" : undefined,
       }
     : { "data-sk-preview-boot": "" })}
-  data-sk-component-preview-playground={playgroundHandoff}
   data-sk-preview-source={previewSource}
   data-sk-component-preview-chrome={chrome ? undefined : "false"}
   data-sk-component-preview-surface={isAnatomy && !chrome ? "none" : undefined}
@@ -537,7 +494,7 @@ const stageStyle =
 >
   {
     chrome && (
-  <header class="sk-component-preview__header" id={treeAnchor}>
+  <header class="sk-component-preview__header">
     {
       /*
        * THE LABEL ALONE. The card used to open with its 1-based position on the page, which was only
@@ -658,40 +615,8 @@ const stageStyle =
             </div>
             {
               /*
-               * OPEN IN THE PLAYGROUND. An `<a>`, not a `<div>` like its neighbours, because it is
-               * the only item here that genuinely NAVIGATES: Reload acts on this page,
-               * and View contract opens a drawer beside it.
-               *
-               * That also buys the graceful half of the handoff. The source travels in
-               * `sessionStorage` (the Playground's own contract), which is per-origin, and the two
-               * apps only share an origin when they sit behind one host. Where they do not, this is
-               * still a link to the Playground and the reader lands on its catalogue - a button
-               * would just have looked broken.
-               *
-               * Only when there is a tree: a preview authored from raw `html` has no emitted source
-               * to hand over, and an item that opens an empty editor is worse than no item.
-               */
-              playgroundHandoff && playgroundUrl && (
-                <a
-                  class="sk-menu__item sk-interactive"
-                  data-sk-menu-item
-                  data-value="playground"
-                  data-sk-component-preview-playground-open
-                  href={playgroundUrl}
-                  rel="noreferrer"
-                  target="_blank"
-                >
-                  <span class="sk-menu__item-label">{t("preview.playgroundAction")}</span>
-                  <span class="sk-component-preview__menu-icon">
-                    <Fragment set:html={playgroundIcon} />
-                  </span>
-                </a>
-              )
-            }
-            {
-              /*
-               * PILOT: STORYBOOK, same reasoning and same shape as the Playground item above, one
-               * per deployed app. Gated on both a configured base URL and this preview knowing which
+               * PILOT: STORYBOOK, an `<a>` and not a `<div>` like its neighbours, because it is the
+               * only item here that genuinely NAVIGATES. One per deployed app. Gated on both a configured base URL and this preview knowing which
                * story its tree became (`storybookTitle`/`storybookStory`): a page that never set
                * those has nothing here, same as it had before this pilot.
                */
@@ -706,7 +631,7 @@ const stageStyle =
                 >
                   <span class="sk-menu__item-label">{t("preview.storybookReactAction")}</span>
                   <span class="sk-component-preview__menu-icon">
-                    <Fragment set:html={playgroundIcon} />
+                    <Fragment set:html={externalIcon} />
                   </span>
                 </a>
               )
@@ -723,7 +648,7 @@ const stageStyle =
                 >
                   <span class="sk-menu__item-label">{t("preview.storybookVanillaAction")}</span>
                   <span class="sk-component-preview__menu-icon">
-                    <Fragment set:html={playgroundIcon} />
+                    <Fragment set:html={externalIcon} />
                   </span>
                 </a>
               )

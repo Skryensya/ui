@@ -15,10 +15,10 @@ export const appBarMessages = {
     "appBarPage.anatomyPreviewLabel": "Una AppBar con un menú abierto, parte por parte",
     "appBarPage.label": "Barra de aplicación",
     "appBarPage.contractBody":
-      'Cada desplegable es un <code>Menu</code> real: comandos, casillas, radios, separadores y submenús son de <code>Menu</code>, en los dos bindings. Lo que es de la barra: una sola parada de tabulación para los menús, <kbd class="sk-kbd">←</kbd>/<kbd class="sk-kbd">→</kbd> entre ellos llevando el desplegable abierto, y la costumbre de escritorio de que, con un menú abierto, basta apuntar a otro para cambiar. Apuntar sin nada abierto no abre nada.',
+      'Cada desplegable es un <code>Menu</code> real, en los dos bindings, pero <strong>solo con acciones</strong>: comandos, enlaces (<code>href</code>), comandos deshabilitados y submenús de segundo o tercer nivel. No hay casillas, radios ni separadores: elegir y ajustar es trabajo de la aplicación, no de su barra, y el validador los rechaza. Lo que es de la barra: una sola parada de tabulación para los menús, <kbd class="sk-kbd">←</kbd>/<kbd class="sk-kbd">→</kbd> entre ellos llevando el desplegable abierto, y la costumbre de escritorio de que, con un menú abierto, basta apuntar a otro para cambiar. Apuntar sin nada abierto no abre nada.',
     "appBarPage.statusTitle": "Estado a la derecha",
     "appBarPage.statusBody":
-      '<code>AppBarStatus</code> sin <code>items</code> es texto y nada más: no recibe foco ni se presiona, porque no hay nada que hacer con él. Con <code>items</code> se vuelve un botón de menú con esa etiqueta, como un ítem de estado de escritorio que abre su propio menú pequeño. Aquí el ancho es un grupo de radios.',
+      '<code>AppBarStatus</code> sin <code>items</code> es texto y nada más: no recibe foco ni se presiona, porque no hay nada que hacer con él. Con <code>items</code> se vuelve un botón de menú con esa etiqueta, como un ítem de estado de escritorio que abre su propio menú pequeño. Aquí el ancho abre acciones que lo cambian.',
     "appBarPage.minimalTitle": "Solo menús",
     "appBarPage.minimalBody": "La zona de estado es opcional. Sin ella, la barra es el nombre de la aplicación y sus menús.",
     "appBarPage.a11yBody":
@@ -56,10 +56,10 @@ export const appBarMessages = {
     "appBarPage.anatomyPreviewLabel": "An AppBar with one menu open, part by part",
     "appBarPage.label": "Application bar",
     "appBarPage.contractBody":
-      'Every dropdown is a real <code>Menu</code>: commands, checkboxes, radios, separators and submenus are <code>Menu</code>\'s, in both bindings. What belongs to the bar: one tab stop for the menus, <kbd class="sk-kbd">←</kbd>/<kbd class="sk-kbd">→</kbd> between them carrying an open dropdown along, and the desktop habit that once a menu is open, pointing at another switches to it. Pointing with nothing open opens nothing.',
+      'Every dropdown is a real <code>Menu</code>, in both bindings, but <strong>with actions only</strong>: commands, links (<code>href</code>), disabled commands, and submenus a second or third level deep. No checkboxes, radios or separators: choosing and adjusting is the application\'s work, not its bar\'s, and the validator refuses them. What belongs to the bar: one tab stop for the menus, <kbd class="sk-kbd">←</kbd>/<kbd class="sk-kbd">→</kbd> between them carrying an open dropdown along, and the desktop habit that once a menu is open, pointing at another switches to it. Pointing with nothing open opens nothing.',
     "appBarPage.statusTitle": "State on the right",
     "appBarPage.statusBody":
-      '<code>AppBarStatus</code> without <code>items</code> is text and nothing else: it takes no focus and cannot be pressed, because there is nothing to do with it. With <code>items</code> it becomes a menu button with that label, like a desktop status item opening its own small menu. Here the width is a radio group.',
+      '<code>AppBarStatus</code> without <code>items</code> is text and nothing else: it takes no focus and cannot be pressed, because there is nothing to do with it. With <code>items</code> it becomes a menu button with that label, like a desktop status item opening its own small menu. Here the width opens actions that change it.',
     "appBarPage.minimalTitle": "Menus only",
     "appBarPage.minimalBody": "The status region is optional. Without it, the bar is the application's name and its menus.",
     "appBarPage.a11yBody":

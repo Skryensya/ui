@@ -232,6 +232,10 @@ const componentDescriptions = {
     es: "Una línea corta de texto en el borde superior de una aplicación: sus menús y su estado.",
     en: "One short line of text on an application's top edge: its menus and its state.",
   },
+  "/components/media-gradient": {
+    es: "Un wash del tamaño del texto para que se lea sobre una foto.",
+    en: "A wash the size of the text, so it reads over a photo.",
+  },
   "/components/menubar": {
     es: "Barra horizontal persistente de comandos, algunos con desplegable.",
     en: "A persistent horizontal bar of commands, some opening a dropdown.",
@@ -247,6 +251,14 @@ const componentDescriptions = {
   "/components/navbar": {
     es: "Reúne marca, navegación y acciones globales en la cabecera.",
     en: "Collects brand, global navigation, and actions in the header.",
+  },
+  "/components/otp-input": {
+    es: "Un código de un solo uso, con un campo por dígito.",
+    en: "A one-time code, one field per digit.",
+  },
+  "/components/table-pager": {
+    es: "Pagina en el cliente las filas de una tabla, con tamaño de página opcional.",
+    en: "Pages a table's rows on the client, with an optional page size.",
   },
   "/components/password-input": {
     es: "Un campo de contraseña con un botón para mostrar lo que se escribió.",

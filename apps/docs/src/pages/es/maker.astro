@@ -97,6 +97,17 @@ const apply = `{
     Wrapper no cae dentro de otro Wrapper, ni un bloque dentro de un encabezado o un botón.
   </p>
 
+  <h2>La barra</h2>
+  <p>
+    Cada comando es una palabra en la <a href="/es/componentes/app-bar">AppBar</a> de arriba: File
+    (nuevo, cerrar, exportar, publicar), Edit (deshacer, rehacer, seleccionar el contenedor y las
+    acciones sobre la selección), View (editar o interactuar, el ancho del stage, la vista previa, el
+    zoom, los paneles), Page, Insert y Help. El ancho y el zoom también están a su derecha, junto a si
+    el proyecto está guardado. Los proyectos abiertos son pestañas debajo. Un click en una parte vacía
+    de la página selecciona la página misma (su Main), así que después de que una sección llena la
+    página, lo siguiente que insertes va debajo.
+  </p>
+
   <h2>El stage es un navegador de verdad</h2>
   <p>
     La página se renderiza en su propio documento con el binding real de React, tan ancha como el ancho
@@ -121,9 +132,10 @@ const apply = `{
     enlace a una ruta que ninguna página tiene queda pending.
   </p>
 
-  <h2>Teclado</h2>
-  <p>Con el panel de capas enfocado, cada acción estructural tiene su atajo, y la barra al inicio del inspector ejecuta exactamente las mismas acciones.</p>
+  <h2 id="keyboard">Teclado</h2>
+  <p>Con el panel de capas enfocado, cada acción estructural tiene su atajo, y la barra al inicio del inspector y el menú Edit de la barra de arriba ejecutan exactamente las mismas acciones.</p>
   <ul>
+    <li><kbd class="sk-kbd">Esc</kbd>: selecciona el contenedor de lo seleccionado, hasta el Main de la página, y después nada. Con Main seleccionado, lo que insertes va al final de la página.</li>
     <li><kbd class="sk-kbd">Alt</kbd> + <kbd class="sk-kbd">↑</kbd> / <kbd class="sk-kbd">↓</kbd>: mover antes del hermano anterior o después del siguiente.</li>
     <li><kbd class="sk-kbd">Alt</kbd> + <kbd class="sk-kbd">←</kbd>: sacar del contenedor; <kbd class="sk-kbd">Alt</kbd> + <kbd class="sk-kbd">→</kbd>: meter en el anterior.</li>
     <li><kbd class="sk-kbd">⌘G</kbd> envuelve en un Stack, <kbd class="sk-kbd">⌘⇧G</kbd> desenvuelve, <kbd class="sk-kbd">⌘D</kbd> duplica, <kbd class="sk-kbd">Delete</kbd> quita.</li>

@@ -1,7 +1,8 @@
 import type { UsageTree } from "@skryensya/core/usage-tree";
 import type { Translate } from "../i18n";
+import { anatomyCanvas, anatomyHints, namePart } from "./annotation-parts";
 
-/** Offline media used by both demos on the gradients page. */
+/** Offline media every demo on the MediaGradient page uses. */
 export const DEMO_MEDIA_GRADIENT_SRC = "/demos/media-gradient.svg";
 
 /*
@@ -61,7 +62,11 @@ export const mediaGradientCardTree = (t: Translate): UsageTree => ({
   ],
 });
 
-function edgeFrame(edge: "top" | "bottom" | "start" | "end"): UsageTree {
+function edgeFrame(
+  edge: "top" | "bottom" | "start" | "end",
+  strength: "sm" | "md" | "lg" = "md",
+  label: string = edge,
+): UsageTree {
   return {
     contract: "image-frame",
     signature: "ImageFrame",
@@ -75,9 +80,9 @@ function edgeFrame(edge: "top" | "bottom" | "start" | "end"): UsageTree {
           {
             contract: "media-gradient",
             signature: "MediaGradient",
-            options: { strength: "md" },
+            options: { strength },
           },
-          edge,
+          label,
         ],
       },
     },
@@ -90,4 +95,49 @@ export const mediaGradientEdgesTree = (): UsageTree => ({
   signature: "Grid",
   options: { columns: "2", gap: "md" },
   children: [edgeFrame("bottom"), edgeFrame("top"), edgeFrame("start"), edgeFrame("end")],
+});
+
+/** Same edge, three strengths: more opacity and tint, never more of the photo covered. */
+export const mediaGradientStrengthsTree = (): UsageTree => ({
+  contract: "layout",
+  signature: "Grid",
+  options: { columns: "3", gap: "md" },
+  children: (["sm", "md", "lg"] as const).map((strength) => edgeFrame("bottom", strength, strength)),
+});
+
+/** The frame, the caption that sets the measure and the wash inside it. */
+export const mediaGradientAnatomyTree = (t: Translate): UsageTree => ({
+  contract: "annotation",
+  signature: "Annotated",
+  options: { ...anatomyCanvas(t), label: t("mediaGradient.anatomyLabel"), inert: true },
+  slots: {
+    ...anatomyHints(t),
+    subject: {
+      contract: "image-frame",
+      signature: "ImageFrame",
+      options: { aspect: "16/9", src: DEMO_MEDIA_GRADIENT_SRC, alt: "" },
+      attrs: { style: "inline-size: 24rem; max-inline-size: 100%;" },
+      slots: {
+        caption: {
+          contract: "media-gradient",
+          signature: "MediaCaption",
+          options: { edge: "bottom" },
+          children: [
+            { contract: "media-gradient", signature: "MediaGradient", options: { strength: "lg" } },
+            {
+              contract: "typography",
+              signature: "Heading",
+              options: { headingSize: "h4", flush: true },
+              children: t("demo.mediaGradient.title"),
+            },
+          ],
+        },
+      },
+    },
+    items: [
+      namePart(".sk-image-frame", "block-start", { mark: "bracket" }),
+      namePart(".sk-media-caption", "inline-end", { mark: "bracket" }),
+      namePart(".sk-media-gradient", "block-end"),
+    ],
+  },
 });

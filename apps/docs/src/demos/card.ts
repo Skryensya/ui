@@ -14,7 +14,7 @@ import type { CardCopy } from "../examples/card-data";
  * COMPOSITION ONLY, NO SKIN. Card has no contract and no stylesheet of its own, and these trees do
  * not smuggle one in: there is no `attrs.class` here and no `examples/card.css`. Every inset, well,
  * eyebrow, price and floor is a published option (Box padding and surface, Stack alignment, Text
- * size and weight, Inline `blockStart="auto"`). That is also what lets the playground run them:
+ * size and weight, Inline `blockStart="auto"`). That is also what lets Storybook run them:
  * it loads the kit's CSS and nothing else, so a docs-local class would render unstyled there.
  *
  * WHAT THAT COSTS, said plainly: `Box` hosts a `div`, so the three examples whose hand-written

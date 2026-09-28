@@ -74,8 +74,6 @@ export const appBarAnatomyCss = `.sk-annotated-figure {
 }`;
 
 const item = (value: string, label: string): ItemInput => ({ options: { value }, slots: { label } });
-const separator = (value: string): ItemInput => ({ options: { value, kind: "separator" }, slots: {} });
-const radio = (value: string, label: string): ItemInput => ({ options: { value, kind: "radio", group: "width" }, slots: { label } });
 
 const menu = (label: string, items?: readonly ItemInput[], strong = false): UsageTree => ({
   contract: "app-bar",
@@ -95,18 +93,17 @@ const status = (label: string, items?: readonly ItemInput[]): UsageTree => ({
 /*
  * A desktop application's bar: its own menu in bold, File with a submenu, Edit, View, and Help as a
  * plain command; on the trailing side "Saved" (text, not a control), the stage width as a small menu
- * of radio items, and a clock. The same shapes Maker's own bar uses.
+ * of actions that change it, and a clock. Actions only, everywhere: the bar allows nothing else.
  */
 export const appBarTree = (t: Translate): UsageTree => ({
   contract: "app-bar",
   signature: "AppBar",
   options: { label: t("demo.appBar.app") },
   children: [
-    menu(t("demo.appBar.app"), [item("about", t("demo.appBar.about")), separator("sep"), item("settings", t("demo.appBar.settings"))], true),
+    menu(t("demo.appBar.app"), [item("about", t("demo.appBar.about")), item("settings", t("demo.appBar.settings"))], true),
     menu(t("demo.appBar.file"), [
       item("new", t("demo.appBar.new")),
       item("open", t("demo.appBar.open")),
-      separator("sep"),
       /* Three levels: File, then Export, then React. Nested submenus are Menu's own, at any depth. */
       {
         options: { value: "export" },
@@ -123,7 +120,7 @@ export const appBarTree = (t: Translate): UsageTree => ({
   slots: {
     status: [
       status(t("demo.appBar.saved")),
-      status("72rem", [radio("36", "36rem"), radio("52", "52rem"), radio("72", "72rem"), radio("90", "90rem")]),
+      status("72rem", [item("36", "36rem"), item("52", "52rem"), item("72", "72rem"), item("90", "90rem")]),
       status("14:02"),
     ],
   },

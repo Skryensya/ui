@@ -1,18 +1,28 @@
 ---
 import ComponentPageShell from "./ComponentPageShell.astro";
-import AppearanceMenu from "../AppearanceMenu.astro";
 import CodeBlock from "../CodeBlock.astro";
 import ComponentPreview from "../ComponentPreview.astro";
-import PropertyPreview from "../PropertyPreview.astro";
+import UsagePreview from "../UsagePreview.astro";
+import DoDont from "../DoDont.astro";
 import {
-  badgeAnatomyTree,
-  badgeDotsTree,
-  badgeHoldersTree,
-  badgePulseTree,
-  badgeSmallTree,
-  badgeTagTree,
+  badgeDoAccentOnceTree,
+  badgeDoAnchoredDotTree,
+  badgeDoCountTree,
+  badgeDoWordsTree,
+  badgeDontAccentAllTree,
+  badgeDontColorOnlyTree,
+  badgeDontCountTree,
+  badgeDontLoneDotTree,
+  badgeDoBesideTree,
+  badgeDoPulseTree,
+  badgeDoShortTree,
+  badgeDoToneTree,
+  badgeDontControlTree,
+  badgeDontLongTree,
+  badgeDontPulseTree,
+  badgeDontToneTree,
 } from "../../demos/badge";
-import { annotationDemoCss } from "../../demos/annotation";
+import { badgeAnatomyCss, badgeAnatomyTree, badgeHoldersTree, badgeLabelTree, badgeLoneDotTree, badgeTagTree } from "../../demos/badge";
 import { getLocale, useTranslations } from "../../i18n";
 /* Structure diagram: Annotated specimen; a preview frame only copies styles THIS page loaded. */
 import "@skryensya/core/components/annotation.css";
@@ -32,31 +42,87 @@ const install = `pnpm add @skryensya/core @skryensya/react`;
  */
 const storybookTitle = "Components/Content/Badge";
 
-/* PROTOTYPE, not yet a real demo module: a single Badge to try `tone` on, for a screenshot only. */
-const tryToneTree = {
-  contract: "badge",
-  signature: "Badge",
-  options: { tone: "neutral" },
-  children: "Label",
-};
+/* What each value of a property is for, read from this page's messages: `badge.prop.<option>.<value>`. */
+const explain = (option: string, values: readonly string[]) =>
+  Object.fromEntries(values.map((value) => [value, t(`badge.prop.${option}.${value}` as Parameters<typeof t>[0])]));
 ---
 
 <ComponentPageShell
   title="Badge"
   description={t("badge.description")}
   contractId="badge"
-  appearanceTargetSelector=".sk-badge"
+  untitledCode
   testFiles={["packages/react/src/components/badge.test.tsx"]}}
 >
-  <Fragment slot="appearance">
-    <AppearanceMenu label={t("prefs.appearance")} values={["plain", "brutalist"]} unavailable={{ tactile: t("prefs.appearanceTactileUnavailable"), frosted: t("prefs.appearanceFrostedUnavailable") }} />
-  </Fragment>
+  <Fragment slot="usage">
+    <p class="lede" set:html={t("badge.lede")} />
 
-  <Fragment slot="anatomy">
+    <UsagePreview
+      tree={badgeLabelTree(t)}
+      optionName="tone"
+      title={t("badge.prop.tone.title")}
+      description={t("badge.prop.tone.body")}
+      explain={explain("tone", ["neutral", "accent", "success", "warning", "danger"])}
+      storybookTitle={storybookTitle}
+      storybookStory="Label"
+    />
+
+    <UsagePreview
+      tree={badgeLabelTree(t)}
+      optionName="size"
+      title={t("badge.prop.size.title")}
+      description={t("badge.prop.size.body")}
+      explain={explain("size", ["sm", "md"])}
+      labels={{ sm: "sm", md: "md" }}
+      storybookTitle={storybookTitle}
+      storybookStory="Label"
+    />
+
+    <UsagePreview
+      tree={badgeLabelTree(t)}
+      optionName="appearance"
+      title={t("badge.prop.appearance.title")}
+      description={t("badge.prop.appearance.body")}
+      explain={explain("appearance", ["plain", "brutalist"])}
+      storybookTitle={storybookTitle}
+      storybookStory="Label"
+    />
+
+    <UsagePreview
+      tree={badgeLoneDotTree(t)}
+      optionName="pulse"
+      title={t("badge.prop.pulse.title")}
+      description={t("badge.prop.pulse.body")}
+      explain={explain("pulse", ["false", "true"])}
+      labels={{ false: t("badge.prop.pulse.falseLabel"), true: t("badge.prop.pulse.trueLabel") }}
+      storybookTitle={storybookTitle}
+      storybookStory="LoneDot"
+    />
+
+    <UsagePreview
+      tree={badgeTagTree(t)}
+      title={t("badge.tagTitle")}
+      description={t("badge.tagBody")}
+      storybookTitle={storybookTitle}
+      storybookStory="Tag"
+    />
+
+    <UsagePreview
+      tree={badgeHoldersTree(t)}
+      title={t("badge.cornerTitle")}
+      description={t("badge.cornerBody")}
+      storybookTitle={storybookTitle}
+      storybookStory="Holders"
+    />
+
+    <p set:html={t("component.reactNote")} />
+
+    {/* The anatomy closes the Overview, not the Reference tab: first what Badge is and how it looks, then its parts by name. */}
+    <h3>{t("component.anatomy")}</h3>
     <p set:html={t("badge.anatomyBody")} />
     <ComponentPreview
       tree={badgeAnatomyTree(t)}
-      css={annotationDemoCss}
+      css={badgeAnatomyCss}
       label={t("badge.anatomyPreviewLabel")}
       screens={false}
       hideSource
@@ -64,88 +130,51 @@ const tryToneTree = {
     />
   </Fragment>
 
-  <Fragment slot="usage">
-    <p class="lede" set:html={t("badge.lede")} />
-    <h3>{t("badge.tagTitle")}</h3>
-    <p set:html={t("badge.tagBody")} />
-    <ComponentPreview
-      tree={badgeTagTree(t)}
-      label={t("badge.tagLabel")}
-      hideSource
-      storybookTitle={storybookTitle}
-      storybookStory="Tag"
+  <Fragment slot="guidelines">
+    <p class="lede">{t("badge.dd.lede")}</p>
+    <DoDont
+      title={t("badge.dd.tone.title")}
+      do={{ tree: badgeDoToneTree(t), caption: t("badge.dd.tone.do") }}
+      dont={{ tree: badgeDontToneTree(t), caption: t("badge.dd.tone.dont") }}
     />
-
-    <h3>Try it (prototype)</h3>
-    <p>A lighter preview: one example, one property, no viewport switching (that's Storybook's job now).</p>
-    <PropertyPreview
-      tree={tryToneTree}
-      optionName="tone"
-      storybookTitle={storybookTitle}
-      storybookStory="Tag"
-      whenToUse={{
-        neutral: "Para metadata sin urgencia: una categoría, un estado por defecto.",
-        accent: "Para destacar sin alarmar: una novedad, un valor recomendado.",
-        success: "Para confirmar que algo salió bien o ya está disponible.",
-        warning: "Para atención sin bloquear: algo que conviene revisar pronto.",
-        danger: "Para lo urgente o destructivo: errores, acciones irreversibles.",
-      }}
+    <DoDont
+      title={t("badge.dd.short.title")}
+      do={{ tree: badgeDoShortTree(t), caption: t("badge.dd.short.do") }}
+      dont={{ tree: badgeDontLongTree(t), caption: t("badge.dd.short.dont") }}
     />
-    <p>
-      Uno de estos por propiedad, no un selector que cambia de propiedad dentro del mismo widget:
-      acá está <code>size</code> aparte, sin "cuándo usar" (es opcional).
-    </p>
-    <PropertyPreview
-      tree={tryToneTree}
-      optionName="size"
-      storybookTitle={storybookTitle}
-      storybookStory="Tag"
+    <DoDont
+      title={t("badge.dd.control.title")}
+      do={{ tree: badgeDoBesideTree(t), caption: t("badge.dd.control.do") }}
+      dont={{ tree: badgeDontControlTree(t), caption: t("badge.dd.control.dont") }}
     />
-
-    <h4>{t("badge.smallTitle")}</h4>
-    <p set:html={t("badge.smallBody")} />
-    <ComponentPreview
-      tree={badgeSmallTree(t)}
-      label={t("badge.smallLabel")}
-      hideSource
-      storybookTitle={storybookTitle}
-      storybookStory="Small"
+    <DoDont
+      title={t("badge.dd.accent.title")}
+      do={{ tree: badgeDoAccentOnceTree(t), caption: t("badge.dd.accent.do") }}
+      dont={{ tree: badgeDontAccentAllTree(t), caption: t("badge.dd.accent.dont") }}
     />
-
-    <h3>{t("badge.dotTitle")}</h3>
-    <p set:html={t("badge.dotBody")} />
-    <ComponentPreview
-      tree={badgeDotsTree(t)}
-      label={t("badge.dotLabel")}
-      hideSource
-      storybookTitle={storybookTitle}
-      storybookStory="Dots"
+    <DoDont
+      title={t("badge.dd.words.title")}
+      do={{ tree: badgeDoWordsTree(t), caption: t("badge.dd.words.do") }}
+      dont={{ tree: badgeDontColorOnlyTree(t), caption: t("badge.dd.words.dont") }}
     />
-
-    <h4>{t("badge.pulseTitle")}</h4>
-    <p set:html={t("badge.pulseBody")} />
-    <ComponentPreview
-      tree={badgePulseTree(t)}
-      label={t("badge.pulseLabel")}
-      hideSource
-      storybookTitle={storybookTitle}
-      storybookStory="Pulse"
+    <DoDont
+      title={t("badge.dd.count.title")}
+      do={{ tree: badgeDoCountTree(t), caption: t("badge.dd.count.do") }}
+      dont={{ tree: badgeDontCountTree(t), caption: t("badge.dd.count.dont") }}
     />
-
-    <h4>{t("badge.cornerTitle")}</h4>
-    <p set:html={t("badge.cornerBody")} />
-    <ComponentPreview
-      tree={badgeHoldersTree(t)}
-      label={t("badge.cornerLabel")}
-      hideSource
-      storybookTitle={storybookTitle}
-      storybookStory="Holders"
+    <DoDont
+      title={t("badge.dd.anchored.title")}
+      do={{ tree: badgeDoAnchoredDotTree(t), caption: t("badge.dd.anchored.do") }}
+      dont={{ tree: badgeDontLoneDotTree(t), caption: t("badge.dd.anchored.dont") }}
     />
-
-    <p set:html={t("component.reactNote")} />
+    <DoDont
+      title={t("badge.dd.pulse.title")}
+      do={{ tree: badgeDoPulseTree(t), caption: t("badge.dd.pulse.do") }}
+      dont={{ tree: badgeDontPulseTree(t), caption: t("badge.dd.pulse.dont") }}
+    />
   </Fragment>
 
   <Fragment slot="install">
-    <CodeBlock code={install} label="terminal" />
+    <CodeBlock code={install} lang="bash" />
   </Fragment>
 </ComponentPageShell>

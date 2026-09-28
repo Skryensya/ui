@@ -108,7 +108,7 @@ import "@skryensya/core/effects/collapse-header.css";
 
 /* kbd is in the global chrome (the ⌘K search badge, the palette footer), so its consumer skin loads
  * here rather than per-page, the same reason the button skin above does. */
-/* table skin: the token reference, demos and playground all share one consumer CSS. */
+/* table skin: the token reference and the demos share one consumer CSS. */
 /* pagination appears in /personalizar and the component page, one consumer skin. */
 /* switch: CodeBlock Condensed/Full density control, plus /personalizar and the component page. */
 import "../styles/site.css";
@@ -433,7 +433,7 @@ const settingsIcon = iconMarkup("settings");
 const previousIcon = iconMarkup("arrow-left");
 const nextIcon = iconMarkup("arrow-right");
 const reportIssueIcon = iconMarkup("external-link", { size: "sm" });
-/* The same glyph, for the one global destination that leaves this site (the Playground). Its own
+/* The same glyph, for a global destination that leaves this site (`external`). Its own
    constant rather than a second use of the one above, because these two are not one decision: that
    one marks a link in the footer, this one marks a row in the nav. */
 const launchIcon = iconMarkup("external-link", { size: "sm" });
@@ -812,8 +812,7 @@ const PALETTE_PRESETS = palettePresets(locale);
                           <span class="sk-nav-list__label">{item.label}</span>
                         </button>
                       ) : (
-                        /* `external` leaves the site (the Playground is its own origin since the
-                           split), so it opens in a new tab rather than dropping the reader out of
+                        /* `external` leaves the site, so it opens in a new tab rather than dropping the reader out of
                            the docs with the back button as their only way home. */
                         <a
                           class="sk-nav-list__link sk-interactive"

@@ -30,6 +30,7 @@
     "@skryensya/react": "workspace:*",
     "@skryensya/vanilla": "workspace:*",
     "@tanstack/charts": "0.15.0",
+    "@zag-js/react": "^1.43.3",
     "react": "^19.0.0",
     "react-dom": "^19.0.0"
   },

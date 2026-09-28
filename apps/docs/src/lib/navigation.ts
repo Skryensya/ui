@@ -20,15 +20,13 @@ export type NavigationItem = {
   /**
    * This entry leaves the site, so it opens in a new tab.
    *
-   * ONE ENTRY HAS THIS TODAY and it is the Playground (see `playgroundUrl`): since the split it is a
-   * different app on a different ORIGIN, and a same-tab navigation there drops the reader out of the
-   * docs with the back button as their only way home. Every other entry in every rail is a path on
-   * this site.
+   * NO ENTRY HAS THIS TODAY. It is for a destination that is a different app on a different ORIGIN,
+   * where a same-tab navigation drops the reader out of the docs with the back button as their only
+   * way home.
    *
    * It is a FLAG rather than a `startsWith("http")` test at each render site, because "absolute URL"
-   * and "leaves this site" are not the same fact: `PUBLIC_PLAYGROUND_URL` may well name the same
-   * host in a deployment that puts both apps behind one origin, and the sniff would then get it
-   * wrong in the quiet direction. The three places that render an item (the header nav in
+   * and "leaves this site" are not the same fact: a deployment may put both apps behind one host,
+   * and the sniff would then get it wrong in the quiet direction. The three places that render an item (the header nav in
    * `Base.astro`, `SiteFooter.astro` and `DrawerNav.astro`) all read this.
    *
    * `rel="noopener noreferrer"` travels with it, and no separate "opens in a new tab" text: that is
@@ -724,6 +722,12 @@ const componentItems = [
   { href: "/components/switch", label: "Switch", aliases: ["interruptor"] },
   { href: "/components/table", label: "Table", aliases: ["tabla"] },
   {
+    href: "/components/table-pager",
+    label: "TablePager",
+    trailing: "Beta",
+    aliases: ["paginar tabla", "tabla paginada", "paginated table", "table pagination", "filas por página", "rows per page"],
+  },
+  {
     href: "/components/treegrid",
     label: "Treegrid",
     trailing: "Beta",
@@ -873,6 +877,12 @@ const componentItems = [
     aliases: ["marquesina", "ticker", "cinta continua", "scrolling text", "logo wall"],
   },
   {
+    href: "/components/media-gradient",
+    label: "MediaGradient",
+    trailing: "Beta",
+    aliases: ["gradient", "gradients", "gradientes", "media gradient", "media-gradient", "media caption", "contraste sobre imagen", "text on image", "texto sobre imagen", "wash", "velo", "scrim"],
+  },
+  {
     href: "/components/menu",
     label: "Menu",
     aliases: ["menú", "menu de acciones", "context menu"],
@@ -892,6 +902,12 @@ const componentItems = [
     href: "/components/number-field",
     label: "NumberField",
     aliases: ["campo numérico", "campo numerico", "stepper"],
+  },
+  {
+    href: "/components/otp-input",
+    label: "OtpInput",
+    trailing: "Beta",
+    aliases: ["código de verificación", "codigo de verificacion", "otp", "pin", "pin input", "one-time code", "2fa", "código sms"],
   },
   {
     href: "/components/password-input",
@@ -1009,6 +1025,7 @@ const allComponentNavigation = [
       "/components/input",
       "/components/listbox",
       "/components/number-field",
+      "/components/otp-input",
       "/components/password-input",
       "/components/questionnaire",
       "/components/radio-group",
@@ -1072,6 +1089,7 @@ const allComponentNavigation = [
     items: componentGroupItems(
       "/components/description-list",
       "/components/table",
+      "/components/table-pager",
       "/components/data-grid",
       "/components/treegrid",
       "/components/list",
@@ -1093,6 +1111,7 @@ const allComponentNavigation = [
       "/components/tag",
       "/components/avatar",
       "/components/image-frame",
+      "/components/media-gradient",
       "/components/sticker",
       "/components/carousel",
       "/components/qr-code",
@@ -1149,7 +1168,7 @@ if (
  *
  * ONE FILTER REACHES EVERY SURFACE, which is the reason it lives here and not in each renderer.
  * `getNavigation` builds the sidebar, the component index, the landing page and the search index
- * from this list, and the playground imports this very export to name and link its presets. A
+ * from this list. A
  * paused component leaves all of them together, which is what "hidden" has to mean: a sidebar that
  * dropped it while search still found it would be worse than not hiding it at all.
  *
@@ -1176,28 +1195,6 @@ export const componentNavigation = allComponentNavigation
  * overridden per locale in `i18n/ui.ts` (`navLabel`), keyed by href.
  */
 /*
- * THE PLAYGROUND IS A DIFFERENT APP, and since the split it is a different ORIGIN too: its own
- * Astro build, its own nginx container (`Dockerfile.playground`), its own port in development. So
- * this is the one entry in the rail that cannot be a bare path resolved against this site.
- *
- * NULL WHEN THERE IS NO PLAYGROUND TO POINT AT, and everything that links into it is hidden rather
- * than pointed somewhere hopeful. The old default was a bare `/playground`, on the reasoning that
- * the deployment puts both apps behind one host. Nothing in this repo does that: `nginx.docs.conf`
- * serves this app's own dist and has no `location /playground`, so the rail's Playground entry was a
- * 404 on the deployed site (measured: `https://ui.skryensya.dev/playground` answers 404, and no
- * playground host resolves at all). A rail entry that cannot work is worse than one that is not
- * there: it reads as a broken site rather than as a feature that is not deployed yet.
- *
- * In development it still points at the port `apps/playground` actually serves, so the entry works
- * the moment both are running. In every other topology `PUBLIC_PLAYGROUND_URL` names the origin, and
- * setting it is what turns the entry back on: there is no second place to edit.
- */
-/** Exported because a ComponentPreview links into it too, not only the global rail. */
-export const playgroundUrl: string | null =
-  import.meta.env.PUBLIC_PLAYGROUND_URL ??
-  (import.meta.env.DEV ? "http://localhost:4174/" : null);
-
-/*
  * THE MAKER (apps/maker) runs on the machine of whoever builds pages with it, so the gallery's
  * "Open in Maker" link points at it only where one is known to exist: PUBLIC_MAKER_URL when set, the
  * Maker's dev address in development, and nowhere (no link at all) on a build that names none.
@@ -1206,9 +1203,9 @@ export const makerUrl: string | null =
   import.meta.env.PUBLIC_MAKER_URL ?? (import.meta.env.DEV ? "http://localhost:4200/" : null);
 
 /*
- * THE TWO STORYBOOKS (apps/storybook-react, apps/storybook-vanilla) are separate deployed apps, same
- * reasoning as `playgroundUrl` above: null where none is known to exist, rather than a bare path that
- * 404s on a topology that does not put every app behind one host.
+ * THE TWO STORYBOOKS (apps/storybook-react, apps/storybook-vanilla) are separate deployed apps: each
+ * base is null where none is known to exist, rather than a bare path that 404s on a topology that
+ * does not put every app behind one host.
  */
 export const storybookReactUrl: string | null =
   import.meta.env.PUBLIC_STORYBOOK_REACT_URL ??
@@ -1245,21 +1242,14 @@ export function storybookDocsUrl(
   return `${base}?path=/docs/${kind}--docs#${name}`;
 }
 
-/*
- * LAST, AND THAT IS THE POINT OF THE ORDER. Everything before it is a place on this site, and the
- * row reads as one journey through the documentation: start, foundations, the catalogue, what you
- * can build from it. The Playground is not a further step along that path, it is a different
- * application at a different origin, opened in a tab of its own (`external`), so it sits after the
- * site's own destinations rather than between two of them. The launch mark the header draws beside
- * it (`Base.astro`) says the same thing in the same row.
- */
+/* The row reads as one journey through the documentation: start, foundations, the catalogue, what
+   you can build from it. */
 export const globalNavigation = [
   { href: "/", label: "nav.home" },
   { href: "/foundations", label: "nav.foundations" },
   { href: "/components", label: "nav.components" },
   { href: "/templates", label: "nav.templates" },
   { href: "/presets", label: "nav.presets" },
-  ...(playgroundUrl ? [{ href: playgroundUrl, label: "nav.playground", external: true }] : []),
 ] satisfies readonly NavigationItem[];
 
 export const documentationNavigation = [
@@ -1498,20 +1488,6 @@ export const documentationNavigation = [
             href: "/scroll-lock",
             label: "Scroll lock",
             aliases: ["scrollbar gutter", "cls", "overflow hidden", "congelar scroll", "reserva scrollbar"],
-          },
-          {
-            href: "/gradients",
-            label: "Media gradient",
-            aliases: [
-              "gradient",
-              "gradients",
-              "media gradient",
-              "media-gradient",
-              "contraste sobre imagen",
-              "text on image",
-              "wash",
-              "velo",
-            ],
           },
           {
             href: "/transparency",

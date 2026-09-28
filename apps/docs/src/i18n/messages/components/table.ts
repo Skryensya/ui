@@ -59,8 +59,7 @@ export const tableMessages = {
     "tablePage.resizableLabel": "Rendimiento por región, redimensionable",
     "tablePage.pagerTitle": "Con paginación",
     "tablePage.pagerBody":
-      '<code>data-sk-table-pager</code> es el enhancer vanilla; <code>sk-table-pager</code> es el pattern de layout (tabla + barra). Marcas las filas, dejas el <code>nav</code> vacío y (opcional) un status y un <a class="sk-link sk-interactive" href="/es/componentes/select"><code>Select</code></a> de tamaño de página. El tamaño va al inicio de la barra; status y <a class="sk-link sk-interactive" href="/es/componentes/pagination"><code>Pagination</code></a> van juntos en <code>sk-table-pager__end</code>. Usa <code>data-layout="fixed"</code> para que no bailen los anchos de columna.',
-    "tablePage.pagerLabel": "Table + Pagination",
+      'Para paginar en el cliente las filas de una tabla escrita a mano, con tamaño de página opcional, envuélvela en <a class="sk-link sk-interactive" href="/es/componentes/table-pager">TablePager</a>. Si los datos llegan paginados del servidor, usa <a class="sk-link sk-interactive" href="/es/componentes/pagination">Pagination</a> sola.',
     "tablePage.boxTitle": "Dentro de un Box",
     "tablePage.boxBody":
       "Dentro del <code>padding</code> de un <code>.sk-box</code>, la <code>.sk-table</code> redondea con el radio de elemento anidado (<code>--radius-control</code>) en vez del de superficie: Box aporta la superficie y la tabla es un elemento dentro de ella. Así el radio queda más ajustado, nunca colapsa a una caja cuadrada, y sigue acompañando al eje <code>data-radius</code>.",
@@ -133,8 +132,7 @@ export const tableMessages = {
     "tablePage.resizableLabel": "Performance by region, resizable",
     "tablePage.pagerTitle": "With pagination",
     "tablePage.pagerBody":
-      '<code>data-sk-table-pager</code> is the vanilla enhancer; <code>sk-table-pager</code> is the layout pattern (table + bar). You mark the rows, leave the <code>nav</code> empty and, optionally, a status and a page-size <a class="sk-link sk-interactive" href="/components/select"><code>Select</code></a>. Page size sits at the start of the bar; status and <a class="sk-link sk-interactive" href="/components/pagination"><code>Pagination</code></a> sit together in <code>sk-table-pager__end</code>. Use <code>data-layout="fixed"</code> so column widths do not shift.',
-    "tablePage.pagerLabel": "Table + Pagination",
+      'To page a hand-written table\'s rows on the client, with an optional page size, wrap it in <a class="sk-link sk-interactive" href="/components/table-pager">TablePager</a>. If the data arrives paged from the server, use <a class="sk-link sk-interactive" href="/components/pagination">Pagination</a> on its own.',
     "tablePage.boxTitle": "Inside a Box",
     "tablePage.boxBody":
       "Inside a <code>.sk-box</code>'s <code>padding</code>, the <code>.sk-table</code> rounds with the nested-element radius (<code>--radius-control</code>) instead of the surface one: Box provides the surface and the table is an element inside it. That keeps the radius tighter, never collapses into a square box, and still follows the <code>data-radius</code> axis.",

@@ -1,0 +1,68 @@
+/*
+ * THE DOCS PREVIEW CARD, used by `UsagePreview` for both fixed examples and one-property live
+ * controls. Global classes rather than scoped copies:
+ * the two cards must read as the same object on a page, and a change to one that forgot the other
+ * is exactly the drift this file exists to stop.
+ *
+ * What a card never has: a viewport switcher or an appearance menu. An example is shown once, at
+ * the page's own width and in its own look; a property that changes the look is its own property
+ * card, and other sizes of screen are Storybook's job, linked from the corner.
+ */
+.sk-preview-section {
+  margin-block: var(--space-stack-lg);
+}
+
+.sk-preview-section__description {
+  margin-block: 0 var(--space-stack-md);
+  color: var(--color-text-secondary);
+}
+
+/* One container, one rhythm: whatever sits inside is separated by `gap` alone, no divider lines. */
+.sk-preview-card {
+  position: relative;
+  display: grid;
+  gap: var(--space-stack-lg);
+  padding: var(--space-inset-md);
+  border: 1px solid var(--color-border-subtle);
+  border-radius: var(--radius-surface);
+  background: var(--color-bg-surface);
+}
+
+/* Two classes: the site's own link colour (a single-class rule on every `a` in content) must not
+   paint this icon blue. It is a quiet tool in a corner, not a link in prose. */
+.sk-preview-card .sk-preview-card__code-link {
+  position: absolute;
+  z-index: 1;
+  inset-block-start: var(--space-inset-md);
+  inset-inline-end: var(--space-inset-md);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  inline-size: 2rem;
+  block-size: 2rem;
+  border-radius: var(--radius-control);
+  color: var(--color-text-tertiary);
+}
+
+.sk-preview-card .sk-preview-card__code-link:hover {
+  background: var(--color-bg-surface-sunken);
+  color: var(--color-text-secondary);
+}
+
+/* The example is what is centred; room enough that a small one does not look lost or cramped. */
+.sk-preview-card__stage {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  min-block-size: 7rem;
+  padding-block: var(--space-stack-sm);
+}
+
+/* A fixed sentence under an example: centred, quiet, the same place a property card's explanation sits. */
+.sk-preview-card__caption {
+  margin: 0;
+  color: var(--color-text-secondary);
+  text-align: center;
+  text-wrap: balance;
+}

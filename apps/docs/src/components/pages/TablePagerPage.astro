@@ -1,0 +1,69 @@
+---
+import "@skryensya/core/components/select.css";
+import "@skryensya/core/components/table.css";
+import "@skryensya/core/components/pagination.css";
+import "@skryensya/core/patterns/table-pager.css";
+/* Structure diagram: Annotated specimen; a preview frame only copies styles THIS page loaded. */
+import "@skryensya/core/components/annotation.css";
+import ComponentPageShell from "./ComponentPageShell.astro";
+import CodeBlock from "../CodeBlock.astro";
+import ComponentPreview from "../ComponentPreview.astro";
+import { tablePagerAnatomyTree, tablePagerMinimalTree, tablePagerTree } from "../../demos/table-pager";
+import { annotationDemoCss } from "../../demos/annotation";
+import { getLocale, useTranslations } from "../../i18n";
+
+const t = useTranslations(getLocale(Astro.url));
+const styles = `@import "@skryensya/core/components/table.css";
+@import "@skryensya/core/components/pagination.css";
+@import "@skryensya/core/patterns/table-pager.css";`;
+---
+
+<ComponentPageShell
+  title="TablePager"
+  description={t("tablePager.description")}
+  badge={t("tablePager.betaBadge")}
+  contractId="table-pager"
+  testFiles={["packages/react/src/components/pagination.test.tsx", "packages/vanilla/src/components/table-pager.test.ts"]}
+>
+  <Fragment slot="anatomy">
+    <p set:html={t("tablePager.anatomyBody")} />
+    <ComponentPreview
+      tree={tablePagerAnatomyTree(t)}
+      css={annotationDemoCss}
+      label={t("tablePager.anatomyPreviewLabel")}
+      screens={false}
+      hideSource
+      chrome={false}
+    />
+  </Fragment>
+
+  <Fragment slot="usage">
+    <p class="lede" set:html={t("tablePager.lede")} />
+
+    <h3>{t("tablePager.whenTitle")}</h3>
+    <ul>
+      <li set:html={t("tablePager.whenItem1")} />
+      <li set:html={t("tablePager.whenItem2")} />
+      <li set:html={t("tablePager.whenItem3")} />
+    </ul>
+
+    <h3>{t("tablePager.fullTitle")}</h3>
+    <p set:html={t("tablePager.fullBody")} />
+    <ComponentPreview tree={tablePagerTree(t)} label={t("tablePager.fullPreviewLabel")} />
+
+    <h3>{t("tablePager.minimalTitle")}</h3>
+    <p set:html={t("tablePager.minimalBody")} />
+    <ComponentPreview tree={tablePagerMinimalTree(t)} label={t("tablePager.minimalPreviewLabel")} />
+
+    <h3>{t("tablePager.eventsTitle")}</h3>
+    <p set:html={t("tablePager.eventsBody")} />
+  </Fragment>
+
+  <Fragment slot="install">
+    <CodeBlock code={styles} label="CSS" lang="css" />
+  </Fragment>
+
+  <Fragment slot="a11y">
+    <p set:html={t("tablePager.a11yBody")} />
+  </Fragment>
+</ComponentPageShell>

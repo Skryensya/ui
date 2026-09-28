@@ -106,6 +106,18 @@ export const vanillaMounts = {
     mount: "mountFadeEdge",
     selector: "[data-sk-fade-edge][data-scroll-aware]",
   },
+  "/components/otp-input": {
+    name: "OtpInput",
+    entrypoint: "@skryensya/vanilla/otp-input",
+    mount: "mountOtpInput",
+    selector: "[data-sk-otp-input]",
+  },
+  "/components/table-pager": {
+    name: "TablePager",
+    entrypoint: "@skryensya/vanilla/table-pager",
+    mount: "mountTablePager",
+    selector: "[data-sk-table-pager]",
+  },
   "/components/password-input": {
     name: "PasswordInput",
     entrypoint: "@skryensya/vanilla/password-input",

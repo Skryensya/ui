@@ -1,0 +1,165 @@
+---
+/*
+ * ONE USAGE PREVIEW, WITH OR WITHOUT A CONTROL. A component page uses the same card whether it is
+ * showing one fixed composition or varying one option live: title/description above, live React stage
+ * in the card, optional Storybook link, optional caption or per-value explanation below.
+ *
+ * A lighter sibling to `ComponentPreview.astro`: one tree, React-only stage (no Vanilla binding, no
+ * viewport presets: Storybook has those, linked from the card), no source panels.
+ *
+ * When `optionName` is present, the control's values are never authored here: `signatureOptions`
+ * reads them off the option's own `ContractOption` (packages/core/src/contract.ts), the declaration
+ * `discover_ui`/`validate_ui` and both bindings already agree on. An `optionName` the signature does
+ * not declare, or one that is neither an enum nor a boolean, fails LOUD at build time rather than
+ * rendering an empty control.
+ */
+import { getContract, getSignature } from "@skryensya/core/registry";
+import { signatureOptions } from "@skryensya/core/contract";
+import type { UsageTree } from "@skryensya/core/usage-tree";
+import { ExampleStage } from "./react-demos/example-stage";
+import { PropertyPlayground } from "./react-demos/property-playground";
+import { iconMarkup } from "../icons";
+import { storybookDocsUrl, storybookReactUrl } from "../lib/navigation";
+import { getLocale, useTranslations } from "../i18n";
+import "@skryensya/core/components/segmented.css";
+import "./preview-card.css";
+
+interface Props {
+  tree: UsageTree;
+  /** The one option this preview varies: an enum, or a boolean (played as its two values). Omit for a fixed example. */
+  optionName?: string;
+  /** The preview's heading. Omit it when the page already titled this example. */
+  title?: string;
+  /** What the preview shows, above the card. Trusted HTML from the page's messages. */
+  description?: string;
+  /** One sentence under a fixed example, inside the card. Trusted HTML. */
+  caption?: string;
+  /** What each value is for, under the controlled example for the one chosen. Trusted HTML; optional per value. */
+  explain?: Record<string, string>;
+  /** A segment's label per value. Absent, the value itself, capitalized ("neutral" -> "Neutral"). */
+  labels?: Record<string, string>;
+  /** Same pair `ComponentPreview` takes (`lib/navigation.ts`). Omit either and no code link renders. */
+  storybookTitle?: string;
+  storybookStory?: string;
+}
+
+const { tree, optionName, title, description, caption, explain, labels, storybookTitle, storybookStory } = Astro.props;
+const t = useTranslations(getLocale(Astro.url));
+
+let values: readonly string[] = [];
+let defaultValue = "";
+let segmentLabels: Record<string, string> = {};
+let isBoolean = false;
+if (optionName) {
+  const contract = getContract(tree.contract);
+  if (!contract) throw new Error(`UsagePreview: no contract "${tree.contract}".`);
+  const signature = getSignature(contract, tree.signature);
+  if (!signature) throw new Error(`UsagePreview: no signature "${tree.signature}" on "${tree.contract}".`);
+
+  const found = signatureOptions(contract, signature).find(([name]) => name === optionName);
+  if (!found) throw new Error(`UsagePreview: "${tree.signature}" declares no option "${optionName}".`);
+  const [, option] = found;
+  isBoolean = option.type === "boolean";
+  if (!isBoolean && (option.type !== "enum" || !option.values)) {
+    throw new Error(`UsagePreview: "${optionName}" is a "${option.type}" option, neither an enum nor a boolean.`);
+  }
+  values = isBoolean ? ["false", "true"] : option.values!;
+  defaultValue = String(tree.options?.[optionName] ?? option.default ?? values[0]);
+  segmentLabels = Object.fromEntries(values.map((value) => [value, labels?.[value] ?? value.charAt(0).toUpperCase() + value.slice(1)]));
+}
+
+const codeHref = storybookTitle && storybookStory ? storybookDocsUrl(storybookReactUrl, storybookTitle, storybookStory) : null;
+const codeIcon = iconMarkup("code", { size: "sm" });
+const id = title ? `usage-${title.toLowerCase().replace(/[^a-z0-9]+/g, "-")}` : undefined;
+---
+
+<section class:list={["sk-preview-section", optionName && "sk-usage-preview--controlled"]} {...(id ? { "aria-labelledby": id } : {})}>
+  {title && <h3 id={id}>{title}</h3>}
+  {description && <p class="sk-preview-section__description" set:html={description} />}
+  <div class="sk-preview-card">
+    {
+      codeHref && (
+        <a class="sk-preview-card__code-link" href={codeHref} rel="noreferrer" target="_blank" aria-label={`${t("preview.viewCode")} (${optionName})`}>
+          <Fragment set:html={codeIcon} />
+        </a>
+      )
+    }
+    {
+      optionName ? (
+        <PropertyPlayground
+          client:visible
+          tree={tree}
+          optionName={optionName}
+          values={values}
+          boolean={isBoolean}
+          defaultValue={defaultValue}
+          labels={segmentLabels}
+          controlLabel={title ?? optionName}
+          explain={explain}
+        />
+      ) : (
+        <>
+          <ExampleStage client:visible tree={tree} />
+          {caption && <p class="sk-preview-card__caption" set:html={caption} />}
+        </>
+      )
+    }
+  </div>
+</section>
+
+<style>
+  /* The card itself is `preview-card.css`; only the optional control and crossfading sentence are
+     this component's own. */
+  .sk-usage-preview--controlled :global(.sk-property-playground) {
+    display: grid;
+    gap: var(--space-stack-lg);
+  }
+
+  /* Where the control will be, before React draws it: the `lg` track's own height. */
+  .sk-usage-preview--controlled :global(.sk-property-playground__control-slot) {
+    block-size: var(--size-control-lg);
+  }
+
+  /* The control sits at the start, not stretched across the card; the example is what is centred. */
+  .sk-usage-preview--controlled :global(.sk-property-playground__control) {
+    justify-self: start;
+    max-inline-size: 100%;
+    overflow-x: auto;
+  }
+
+  /*
+   * THE SENTENCE UNDER THE EXAMPLE crossfades when the value changes, and does nothing else: no
+   * travel, no blur, which read as the text jumping. All of them share one grid cell (see
+   * property-playground.tsx), so the cell keeps the height of the longest and the card never
+   * jumps; the one leaving and the one arriving fade over the same time on the same curve, so they
+   * cross evenly with no dip in the middle. Half again the system's enter duration: slower than a
+   * control's state change, since this is a sentence to read, and it shortens with the token under
+   * `prefers-reduced-motion`.
+   */
+  .sk-usage-preview--controlled :global(.sk-property-playground__explain) {
+    --sk-property-preview-fade: calc(var(--motion-enter-duration) * 1.5);
+
+    display: grid;
+    color: var(--color-text-secondary);
+    text-align: center;
+  }
+
+  .sk-usage-preview--controlled :global(.sk-property-playground__explain > p) {
+    grid-area: 1 / 1;
+    margin: 0;
+    text-wrap: balance;
+    opacity: 0;
+    visibility: hidden;
+    transition:
+      opacity var(--sk-property-preview-fade) var(--motion-state-change-easing),
+      visibility 0s linear var(--sk-property-preview-fade);
+  }
+
+  .sk-usage-preview--controlled :global(.sk-property-playground__explain > p[data-active]) {
+    opacity: 1;
+    visibility: visible;
+    transition:
+      opacity var(--sk-property-preview-fade) var(--motion-state-change-easing),
+      visibility 0s;
+  }
+</style>
