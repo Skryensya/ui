@@ -11,6 +11,7 @@ import { IconButton } from "./IconButton";
 import { MakerIcon, type AnyIcon } from "./icons";
 import { Inspector } from "./Inspector";
 import { Outline } from "./Outline";
+import { Pages } from "./Pages";
 import { Palette } from "./Palette";
 import { SelectionTools } from "./SelectionTools";
 import { Stage } from "./stage/Stage";
@@ -107,12 +108,21 @@ export function App() {
         </Button>
       </header>
 
-      <aside className="maker__left" aria-label="Page">
+      <aside className="maker__left" aria-label="Site">
+        <section className="maker__panel maker__pages" aria-labelledby="maker-pages">
+          <header className="maker__panel-header">
+            <h2 className="maker__panel-title" id="maker-pages">
+              <MakerIcon icon={{ glyph: "pages" }} />
+              Pages
+            </h2>
+          </header>
+          <Pages maker={maker} />
+        </section>
         <section className="maker__panel maker__outline" aria-labelledby="maker-layers">
           <header className="maker__panel-header">
             <h2 className="maker__panel-title" id="maker-layers">
               <MakerIcon icon={{ glyph: "layers" }} />
-              Layers
+              Layers of {maker.page.name}
             </h2>
           </header>
           <SelectionTools maker={maker} />

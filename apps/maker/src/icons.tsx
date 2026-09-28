@@ -23,6 +23,8 @@ import {
   Ungroup,
   Component,
   Contrast,
+  Files,
+  FilePlus2,
   type IconNode,
 } from "lucide";
 
@@ -66,6 +68,8 @@ export const makerGlyphs = {
   grid: fromLucide(LayoutGrid),
   box: fromLucide(Square),
   component: fromLucide(Component),
+  pages: fromLucide(Files),
+  "add-page": fromLucide(FilePlus2),
   wrapper: fromLucide(PanelsTopLeft),
 } as const;
 

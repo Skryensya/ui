@@ -145,8 +145,17 @@ export function Stage({ maker, drag }: { maker: Maker; drag: Drag }) {
 
     const onClick = (event: MouseEvent) => {
       const target = event.target as Element;
-      /* Navigation and submission are always blocked: the stage is not a browser tab. */
-      if (target.closest("a[href]")) event.preventDefault();
+      /* Navigation and submission are always blocked: the stage is not a browser tab. In interact
+         mode a link to a page of this site opens that page, which is what following it means here. */
+      const anchor = target.closest<HTMLAnchorElement>("a[href]");
+      if (anchor) {
+        event.preventDefault();
+        if (live.current.mode === "interact") {
+          const path = (anchor.getAttribute("href") ?? "").split(/[?#]/)[0]!.replace(/\/$/, "") || "/";
+          const page = live.current.maker.site.pages.find((entry) => entry.path === path);
+          if (page) live.current.maker.setView({ page: page.id, selected: undefined });
+        }
+      }
       if (live.current.mode !== "edit") return;
       event.preventDefault();
       event.stopPropagation();

@@ -274,7 +274,8 @@ dos bindings (ADR-0015) y verde en `ai-gates`.
 
 - [ ] Edición por prompt: un tool MCP `apply_operations` que solo acepta Maker operations.
 - [ ] Edición inline de texto sobre el stage.
-- [ ] `SiteDocument`: varias páginas y piezas compartidas (navbar/footer una sola vez).
+- [x] Varias páginas (**Maker site**): nombre y ruta únicos por página, cada una con su árbol; operaciones de sitio (add, remove, rename, setPagePath, movePage, edit) en el mismo historial; enlaces entre páginas con sugerencias de rutas, enlaces rotos como Pending, y en modo Interact un enlace interno abre su página; export de todas las páginas y del sitio; el formato de una página abre como sitio de una página.
+- [ ] Piezas compartidas entre páginas (navbar/footer editados una vez).
 - [ ] Persistencia en backend.
 - [ ] Migraciones explícitas de Maker pages cuando exista el primer consumidor.
 - [ ] Container queries en los primitivos, como cambio de todo el kit (ADR-0030 lo deja fuera).

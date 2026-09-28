@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useId, useState } from "react";
 import type { ComponentContract, ContractOption } from "@skryensya/core/contract";
 import type { ItemInput, OptionInput } from "@skryensya/core/usage-tree";
 import { Button } from "@skryensya/react/button";
@@ -116,7 +116,14 @@ export function Inspector({ maker }: { maker: Maker }) {
                 <ExclusiveChoice key={choice.key} choice={choice} node={child} contract={resolved!.contract} maker={maker} />
               ))}
               {base.map((name) => (
-                <OptionField key={name} name={name} option={resolved!.contract.options[name]!} value={child.options?.[name]} onChange={(value) => setOption(name, value)} />
+                <OptionField
+                  key={name}
+                  name={name}
+                  option={resolved!.contract.options[name]!}
+                  value={child.options?.[name]}
+                  onChange={(value) => setOption(name, value)}
+                  suggestions={resolved!.contract.options[name]!.attr === "href" ? maker.site.pages.map((page) => page.path) : undefined}
+                />
               ))}
             </Stack>
           </section>
@@ -290,11 +297,14 @@ function OptionField({
   option,
   value,
   onChange,
+  suggestions,
 }: {
   name: string;
   option: ContractOption;
   value: OptionInput | undefined;
   onChange: (value: OptionInput | undefined) => void;
+  /** Values worth offering for a free field: the site's page paths, for an href. */
+  suggestions?: readonly string[];
 }) {
   const label = name.replace(/^data-/, "");
   const fallback = option.default === undefined ? "not set" : `default: ${String(option.default)}`;
@@ -318,26 +328,30 @@ function OptionField({
       label={label}
       value={value === undefined ? "" : String(value)}
       type={option.type === "number" ? "number" : "text"}
+      suggestions={suggestions}
       onCommit={(raw) => onChange(raw === "" ? undefined : option.type === "number" ? Number(raw) : raw)}
     />
   );
 }
 
 /** A text field that commits once, on blur or Enter: one committed field is one undo step. */
-function CommitField({
+export function CommitField({
   label,
   value,
   onCommit,
   multiline,
   type = "text",
+  suggestions,
 }: {
   label: string;
   value: string;
   onCommit: (value: string) => void;
   multiline?: boolean;
   type?: "text" | "number";
+  suggestions?: readonly string[];
 }) {
   const [draft, setDraft] = useState(value);
+  const listId = useId();
   useEffect(() => setDraft(value), [value]);
   const commit = () => {
     if (draft !== value) onCommit(draft);
@@ -355,6 +369,7 @@ function CommitField({
       ) : (
         <Input
           type={type}
+          list={suggestions?.length ? listId : undefined}
           value={draft}
           onChange={(event) => setDraft(event.currentTarget.value)}
           onBlur={commit}
@@ -363,6 +378,13 @@ function CommitField({
           }}
         />
       )}
+      {suggestions?.length ? (
+        <datalist id={listId}>
+          {suggestions.map((suggestion) => (
+            <option key={suggestion} value={suggestion} />
+          ))}
+        </datalist>
+      ) : null}
     </FormField>
   );
 }
