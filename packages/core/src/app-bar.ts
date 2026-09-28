@@ -32,6 +32,8 @@ export const appBarParts = {
   status: "sk-app-bar__status",
   statusItem: "sk-app-bar__status-item",
   statusText: "sk-app-bar__status-text",
+  /** The small chevron on a title that opens something. Absent on a plain command or plain text. */
+  indicator: "sk-app-bar__indicator",
   /** Menu's own positioner, marked as the bar's, so the bar can tighten its rows even where React
    *  has portalled it out of the bar. */
   dropdown: "sk-app-bar__dropdown",
@@ -46,6 +48,18 @@ export const appBarAttrs = {
   trigger: "data-sk-app-bar-trigger",
   /** Only the menus' triggers: the roving set Left/Right move through. */
   menuTrigger: "data-sk-app-bar-menu",
+} as const;
+
+/*
+ * Menu's popup, as the bar's: its own part class, and the compact density written on the positioner
+ * itself as well as on the wrapper. React portals the positioner and has to re-stamp the density
+ * there; saying it in the template too keeps the two bindings' DOM the same.
+ */
+const appBarDropdown = {
+  ...menuPopupTemplatePortable,
+  part: "dropdown",
+  attrs: { ...menuPopupTemplatePortable.attrs, "data-density": "compact" },
+  whenGiven: "items",
 } as const;
 
 export const appBarContract = {
@@ -71,6 +85,8 @@ export const appBarContract = {
     "--sk-app-bar-font-size",
     "--sk-app-bar-gap",
     "--sk-app-bar-item-open-bg",
+    "--sk-app-bar-item-open-fg",
+    "--sk-app-bar-item-open-indicator",
     "--sk-app-bar-menu-item-block-size",
     "--sk-app-bar-menu-item-padding-block",
     "--sk-app-bar-item-padding-inline",
@@ -172,8 +188,19 @@ export const appBarContract = {
               [appBarAttrs.menuTrigger]: "",
             },
             slot: "children",
+            /* A small chevron on a title that opens something, none on a plain command: it would
+               promise a list that never comes. app-bar.css turns it while the list is open. */
+            children: [
+              {
+                element: "span",
+                part: "indicator",
+                attrs: { "aria-hidden": "true" },
+                whenGiven: "items",
+                children: [{ element: "span", attrs: { "data-sk-icon": "chevron-down", "data-sk-icon-size": "sm" } }],
+              },
+            ],
           },
-          { ...menuPopupTemplatePortable, part: "dropdown", whenGiven: "items" },
+          appBarDropdown,
         ],
       },
       react: { from: "@skryensya/react/app-bar", name: "AppBarMenu" },
@@ -217,8 +244,17 @@ export const appBarContract = {
             attrs: { type: "button", [menuAttrs.trigger]: "", [appBarAttrs.trigger]: "" },
             slot: "children",
             whenGiven: "items",
+            children: [
+              {
+                element: "span",
+                part: "indicator",
+                attrs: { "aria-hidden": "true" },
+                whenGiven: "items",
+                children: [{ element: "span", attrs: { "data-sk-icon": "chevron-down", "data-sk-icon-size": "sm" } }],
+              },
+            ],
           },
-          { ...menuPopupTemplatePortable, part: "dropdown", whenGiven: "items" },
+          appBarDropdown,
         ],
       },
       react: { from: "@skryensya/react/app-bar", name: "AppBarStatus" },

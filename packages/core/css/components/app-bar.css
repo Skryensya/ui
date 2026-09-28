@@ -28,12 +28,14 @@
     --sk-app-bar-font-size: var(--font-size-body-sm);
     --sk-app-bar-gap: var(--space-inline-sm);
     --sk-app-bar-item-padding-inline: var(--space-inline-sm);
-    --sk-app-bar-item-radius: var(--radius-control);
-    --sk-app-bar-item-open-bg: color-mix(in oklab, currentColor 14%, transparent);
+    --sk-app-bar-item-radius: 0;
+    --sk-app-bar-item-open-bg: var(--color-bg-accent-subtle);
+    --sk-app-bar-item-open-fg: var(--color-text-accent);
+    --sk-app-bar-item-open-indicator: var(--color-border-accent);
 
     position: relative;
     display: flex;
-    align-items: center;
+    align-items: stretch;
     gap: var(--sk-app-bar-gap);
     box-sizing: border-box;
     min-block-size: var(--sk-app-bar-block-size);
@@ -80,7 +82,7 @@
   .sk-app-bar__menus,
   .sk-app-bar__status {
     display: flex;
-    align-items: center;
+    align-items: stretch;
     position: relative;
     flex: 0 1 auto;
     min-inline-size: 0;
@@ -101,12 +103,17 @@
     display: inline-flex;
   }
 
+  /*
+   * A TITLE IS AS TALL AS THE BAR. Not a pill floating in the line: the whole height is the target,
+   * and the dropdown hangs from the bar's bottom edge with nothing between them, so the open title
+   * and its list read as one shape (below).
+   */
   .sk-app-bar__trigger,
   .sk-app-bar__status-text {
     display: inline-flex;
     align-items: center;
+    gap: 0.25rem;
     box-sizing: border-box;
-    min-block-size: calc(var(--sk-app-bar-block-size) - 6px);
     padding-inline: var(--sk-app-bar-item-padding-inline);
     white-space: nowrap;
   }
@@ -128,14 +135,37 @@
     font-weight: var(--font-weight-heading);
   }
 
+  /*
+   * WHOSE LIST IS THIS. An open title is marked three ways at once: the accent's subtle fill, the
+   * accent text, and an accent line along its bottom edge, which is exactly the edge the dropdown
+   * hangs from. The line is what ties the two together; the fill alone read as a hover that stuck.
+   */
   .sk-app-bar__trigger[aria-expanded="true"] {
     background: var(--sk-app-bar-item-open-bg);
+    color: var(--sk-app-bar-item-open-fg);
+    box-shadow: inset 0 -2px 0 var(--sk-app-bar-item-open-indicator);
   }
 
-  /* A status menu reads as status until it is used: the same muted colour as its text neighbours,
-     full colour while open. */
-  .sk-app-bar__status .sk-app-bar__trigger[aria-expanded="true"] {
-    color: var(--sk-app-bar-fg);
+  /* A status menu reads as status until it is used. */
+  .sk-app-bar__status .sk-app-bar__trigger:not([aria-expanded="true"]) {
+    color: inherit;
+  }
+
+  /* Small and quiet: it says "this opens a list", nothing louder. Turned while the list is open. */
+  .sk-app-bar__indicator {
+    display: inline-flex;
+    opacity: 0.7;
+    transition: rotate var(--motion-state-change-duration) var(--motion-state-change-easing);
+  }
+
+  .sk-app-bar__trigger[aria-expanded="true"] .sk-app-bar__indicator {
+    rotate: 180deg;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .sk-app-bar__indicator {
+      transition: none;
+    }
   }
 
   /*
@@ -146,6 +176,13 @@
    * positioner, because in React the popup is portalled out of the bar and no descendant selector
    * reaches it there.
    */
+  /* Flush under the title, start edges aligned: Menu's own offset is a gap for a trigger that stands
+     alone, and here that gap is what made the list look like it came from nowhere. Two classes, so
+     it wins over `.sk-menu__positioner` whichever sheet a page happens to load last. */
+  .sk-app-bar__dropdown.sk-menu__positioner {
+    --sk-anchored-offset: 0;
+  }
+
   .sk-app-bar__dropdown {
     --sk-app-bar-dropdown-padding-block: 0.1875rem;
     --sk-app-bar-menu-item-padding-block: 0.0625rem;
@@ -154,6 +191,12 @@
 
   .sk-app-bar__dropdown .sk-menu__content {
     padding-block: var(--sk-app-bar-dropdown-padding-block);
+  }
+
+  /* The top-level list's corner under its title is square, so the title and the list meet as one
+     shape. A submenu comes out to the side of an item and keeps every corner. */
+  .sk-app-bar__dropdown:not([data-sk-submenu]) > .sk-menu__content {
+    border-start-start-radius: 0;
   }
 
   .sk-app-bar__dropdown .sk-menu__item {

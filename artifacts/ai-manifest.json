@@ -642,6 +642,18 @@
               "title": "AppBar se publica como contrato, con tres signatures"
             },
             "kind": "feature"
+          },
+          {
+            "date": "2026-09-28",
+            "en": {
+              "body": "A title or a status with <code>items</code> carries a small chevron (the <code>indicator</code> part), turned while its list is open; a command or plain text carries none. The title fills the bar's height and is square, and the dropdown hangs from its bottom edge with no gap. Open, the title takes the accent's fill and text and an accent line along that edge, so it is plain which title the list belongs to. New hooks: <code>--sk-app-bar-item-open-fg</code> and <code>--sk-app-bar-item-open-indicator</code>; <code>--sk-app-bar-item-radius</code> becomes <code>0</code>.",
+              "title": "A chevron on titles that open something, and the open title stands out"
+            },
+            "es": {
+              "body": "Un título o un estado con <code>items</code> lleva un chevron pequeño (parte <code>indicator</code>), que gira mientras su lista está abierta; un comando o un texto no lleva ninguno. El título ocupa todo el alto de la barra y es cuadrado, y el desplegable cuelga de su borde inferior sin separación. Abierto, el título lleva el relleno y el texto del acento y una línea de acento en ese borde, así se ve de qué título sale la lista. Hooks nuevos: <code>--sk-app-bar-item-open-fg</code> y <code>--sk-app-bar-item-open-indicator</code>; <code>--sk-app-bar-item-radius</code> pasa a <code>0</code>.",
+              "title": "Chevron en los títulos que abren algo, y el título abierto se distingue"
+            },
+            "kind": "feature"
           }
         ],
         "version": "0.0.1-dev"
@@ -14031,10 +14043,10 @@
           "sheet": "@skryensya/core/patterns/anchored.css"
         },
         "--sk-anchored-offset": {
-          "default": "var(--space-stack-xs)",
+          "default": "0",
           "output": false,
-          "part": null,
-          "sheet": "@skryensya/core/patterns/anchored.css"
+          "part": "dropdown",
+          "sheet": "@skryensya/core/components/app-bar.css"
         },
         "--sk-anchored-position-area": {
           "default": "block-end span-all",
@@ -14103,7 +14115,19 @@
           "sheet": "@skryensya/core/components/app-bar.css"
         },
         "--sk-app-bar-item-open-bg": {
-          "default": "color-mix(in oklab, currentColor 14%, transparent)",
+          "default": "var(--color-bg-accent-subtle)",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/app-bar.css"
+        },
+        "--sk-app-bar-item-open-fg": {
+          "default": "var(--color-text-accent)",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/app-bar.css"
+        },
+        "--sk-app-bar-item-open-indicator": {
+          "default": "var(--color-border-accent)",
           "output": false,
           "part": "root",
           "sheet": "@skryensya/core/components/app-bar.css"
@@ -14115,7 +14139,7 @@
           "sheet": "@skryensya/core/components/app-bar.css"
         },
         "--sk-app-bar-item-radius": {
-          "default": "var(--radius-control)",
+          "default": "0",
           "output": false,
           "part": "root",
           "sheet": "@skryensya/core/components/app-bar.css"
@@ -14157,6 +14181,8 @@
         "--sk-app-bar-font-size",
         "--sk-app-bar-gap",
         "--sk-app-bar-item-open-bg",
+        "--sk-app-bar-item-open-fg",
+        "--sk-app-bar-item-open-indicator",
         "--sk-app-bar-menu-item-block-size",
         "--sk-app-bar-menu-item-padding-block",
         "--sk-app-bar-item-padding-inline",
@@ -14181,6 +14207,7 @@
       },
       "parts": {
         "dropdown": "sk-app-bar__dropdown",
+        "indicator": "sk-app-bar__indicator",
         "menu": "sk-app-bar__menu",
         "menus": "sk-app-bar__menus",
         "root": "sk-app-bar",
@@ -14198,6 +14225,7 @@
             "Menu"
           ],
           "avoidWhen": [
+            "the screen is narrow or the pointer is a finger (mobile): its 24px targets, switch-by-pointing and single clipped line assume a desktop with a mouse or trackpad; show a Navbar with a Menu, or one button opening a Menu, there instead",
             "it is a website's header with destinations; that is a Navbar",
             "the menus sit among other controls on a page and should read as buttons; that is a Menubar",
             "the actions are icons for the current selection; that is a Toolbar",
@@ -14398,6 +14426,25 @@
                   "role": "menuitem",
                   "type": "button"
                 },
+                "children": [
+                  {
+                    "attrs": {
+                      "aria-hidden": "true"
+                    },
+                    "children": [
+                      {
+                        "attrs": {
+                          "data-sk-icon": "chevron-down",
+                          "data-sk-icon-size": "sm"
+                        },
+                        "element": "span"
+                      }
+                    ],
+                    "element": "span",
+                    "part": "indicator",
+                    "whenGiven": "items"
+                  }
+                ],
                 "element": "button",
                 "part": "trigger",
                 "slot": "children"
@@ -14407,6 +14454,9 @@
                   "sk-menu__positioner",
                   "sk-anchored"
                 ],
+                "attrs": {
+                  "data-density": "compact"
+                },
                 "children": [
                   {
                     "also": [
@@ -14738,6 +14788,25 @@
                   "data-sk-menu-trigger": "",
                   "type": "button"
                 },
+                "children": [
+                  {
+                    "attrs": {
+                      "aria-hidden": "true"
+                    },
+                    "children": [
+                      {
+                        "attrs": {
+                          "data-sk-icon": "chevron-down",
+                          "data-sk-icon-size": "sm"
+                        },
+                        "element": "span"
+                      }
+                    ],
+                    "element": "span",
+                    "part": "indicator",
+                    "whenGiven": "items"
+                  }
+                ],
                 "element": "button",
                 "part": "trigger",
                 "slot": "children",
@@ -14748,6 +14817,9 @@
                   "sk-menu__positioner",
                   "sk-anchored"
                 ],
+                "attrs": {
+                  "data-density": "compact"
+                },
                 "children": [
                   {
                     "also": [
@@ -55024,7 +55096,7 @@
     "working": "0.0.1"
   },
   "schemaVersion": "2.3",
-  "sourceHash": "be482ec71d9e83c2",
+  "sourceHash": "08f1282c7689fc8e",
   "vocabulary": {
     "a11y": "When `when` holds, one of `requiresOneOf` must be given: an option, a raw attribute, a filled slot, or a child signature by name.",
     "atLeastOneOf": "At least one member of each group counts: a filled slot, a boolean option set to true, or an option other than its default.",

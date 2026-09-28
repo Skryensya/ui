@@ -17,6 +17,7 @@ import {
   type RefObject,
 } from "react";
 import { useAnchored } from "./anchored.js";
+import { Icon } from "./icon.js";
 import { MenuPopup, useMenuMachine, type CheckedState } from "./menu.js";
 
 const cx = (...names: (string | false | undefined)[]) => names.filter(Boolean).join(" ");
@@ -143,11 +144,22 @@ type DropdownProps = {
   container?: RefObject<HTMLElement>;
 };
 
+/** The small chevron on a trigger that opens something; the contract's `indicator` part. */
+function Chevron() {
+  return (
+    <span aria-hidden="true" className={appBarParts.indicator}>
+      <Icon name="chevron-down" size="sm" />
+    </span>
+  );
+}
+
 function initialCheckedState(items: readonly MenuItem[]): CheckedState {
   return Object.fromEntries(
     items.flatMap((item) => [...(item.checked ? [[item.value, true] as const] : []), ...Object.entries(initialCheckedState(item.children ?? []))]),
   );
 }
+
+const nestsSubmenu = (items: readonly MenuItem[]): boolean => items.some((item) => Boolean(item.children?.length));
 
 /** The machine, the popup and the registration one trigger of the bar needs, menu or status alike. */
 function useDropdown(key: string, items: readonly MenuItem[] | undefined) {
@@ -163,7 +175,9 @@ function useDropdown(key: string, items: readonly MenuItem[] | undefined) {
       eventRootRef.current?.dispatchEvent(new CustomEvent(menuEvents.openChange, { bubbles: true, detail: details }));
     },
   });
-  const anchor = useAnchored(id);
+  /* Withheld the moment any level nests a submenu, exactly as Menu does: the browser's engine and the
+     machine's must not place two levels of one tree, or the submenu lands in the wrong space. */
+  const anchor = useAnchored(id, !nestsSubmenu(items ?? []));
   const [checkedState, setChecked] = useState<CheckedState>(() => initialCheckedState(items ?? []));
 
   useEffect(() => {
@@ -252,6 +266,7 @@ export function AppBarMenu(publicProps: AppBarMenuProps) {
       {hasMenu ? (
         <button {...api.getTriggerProps()} {...anchor.anchor(cx(appBarParts.trigger, "sk-interactive"))} {...common}>
           {children}
+          <Chevron />
         </button>
       ) : (
         <button className={cx(appBarParts.trigger, "sk-interactive", "sk-anchor")} onClick={() => onActivate?.()} {...common}>
@@ -288,6 +303,7 @@ export function AppBarStatus(publicProps: AppBarStatusProps) {
             type="button"
           >
             {children}
+            <Chevron />
           </button>
           <Popup dropdown={dropdown} items={items} container={container} onSelect={onSelect} onCheckedChange={onCheckedChange} />
         </>

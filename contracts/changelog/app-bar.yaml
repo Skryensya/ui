@@ -3,7 +3,7 @@
 # `surface` is the shape of the contract the last time somebody reviewed it. If the compiler says it
 # does not match, something a consumer depends on has moved: write the entry and paste in the new
 # hash.
-surface: "3420604628f95ed5"
+surface: "2d935258223f938d"
 entries:
   - date: 2026-09-28
     kind: feature
@@ -33,3 +33,25 @@ entries:
         switches to it. The dropdowns are dense: 24px rows with little
         block padding, tuned with <code>--sk-app-bar-menu-item-block-size</code> and
         <code>--sk-app-bar-menu-item-padding-block</code>.
+  - date: 2026-09-28
+    kind: feature
+    es:
+      title: Chevron en los títulos que abren algo, y el título abierto se distingue
+      body: >-
+        Un título o un estado con <code>items</code> lleva un chevron pequeño (parte
+        <code>indicator</code>), que gira mientras su lista está abierta; un comando o un texto no
+        lleva ninguno. El título ocupa todo el alto de la barra y es cuadrado, y el desplegable cuelga
+        de su borde inferior sin separación. Abierto, el título lleva el relleno y el texto del acento
+        y una línea de acento en ese borde, así se ve de qué título sale la lista. Hooks nuevos:
+        <code>--sk-app-bar-item-open-fg</code> y <code>--sk-app-bar-item-open-indicator</code>;
+        <code>--sk-app-bar-item-radius</code> pasa a <code>0</code>.
+    en:
+      title: A chevron on titles that open something, and the open title stands out
+      body: >-
+        A title or a status with <code>items</code> carries a small chevron (the
+        <code>indicator</code> part), turned while its list is open; a command or plain text carries
+        none. The title fills the bar's height and is square, and the dropdown hangs from its bottom
+        edge with no gap. Open, the title takes the accent's fill and text and an accent line along
+        that edge, so it is plain which title the list belongs to. New hooks:
+        <code>--sk-app-bar-item-open-fg</code> and <code>--sk-app-bar-item-open-indicator</code>;
+        <code>--sk-app-bar-item-radius</code> becomes <code>0</code>.
