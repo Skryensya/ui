@@ -102,6 +102,27 @@ body,
   flex: 1 1 auto;
 }
 
+.maker-templates > summary {
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.maker-templates__list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(16rem, 100%), 1fr));
+  gap: var(--space-stack-xs);
+  margin: var(--space-stack-sm) 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.maker-templates__list > li > button {
+  inline-size: 100%;
+  border: 1px solid var(--color-border-subtle);
+  border-radius: var(--radius-control);
+  background: var(--color-bg-surface);
+}
+
 .maker-projects__list {
   display: grid;
   gap: var(--space-stack-xs);

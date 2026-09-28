@@ -9,3 +9,4 @@ export * from "./history.js";
 export * from "./role.js";
 export * from "./site.js";
 export * from "./agent.js";
+export * from "./template.js";
