@@ -145,6 +145,22 @@ not reach it. When it runs from a checkout, every answer compares the catalogue 
 and asking for a restart (`/mcp` in Claude Code). The HTTP server is frozen at deploy and never
 checks.
 
+## The Maker's tools (stdio only)
+
+The local stdio server also offers tools on the site open in the Maker (`apps/maker`), so an
+agent edits a page the way a person does: by structure, never by position.
+
+| Tool | What it does |
+|---|---|
+| `maker_read` | The site as an outline: each page, one line per node with its id, signature and the options set, text runs with their ids, and what is pending. |
+| `maker_apply` | Maker operations (insert a usage tree or a signature, move, remove, wrap, unwrap, set an option, an attribute or text; add, remove, rename, re-path or move a page), all or none, as one undoable step. Nothing in its schema can carry a coordinate, a length or a style. |
+
+They share one file with the Maker's dev server, `.maker/site.maker.json` at the checkout's root
+(`MAKER_SITE` to point elsewhere). The file carries a revision; `maker_apply` given the revision it
+read refuses to overwrite a change made since, and the Maker shows every applied change live. A file
+that exists and does not read as a site is never replaced. The HTTP server does not offer these
+tools: it has no site to share.
+
 ## HTTP configuration
 
 | Variable | Default | Meaning |

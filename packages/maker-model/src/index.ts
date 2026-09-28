@@ -8,3 +8,4 @@ export * from "./page.js";
 export * from "./history.js";
 export * from "./role.js";
 export * from "./site.js";
+export * from "./agent.js";

@@ -1,6 +1,7 @@
 import { fileURLToPath } from "node:url";
 import react from "@vitejs/plugin-react";
 import { defineConfig } from "vite";
+import { siteSync } from "./site-sync";
 
 /*
  * TWO PAGES, one origin. `index.html` is the Maker's own chrome; `stage.html` is the document the
@@ -12,11 +13,16 @@ import { defineConfig } from "vite";
  * like any page, so React's refresh preamble and the dependency scan cover it with no workaround.
  *
  * `fs.allow` reaches the workspace root for `artifacts/ai-index.json` (the catalogue's hash).
+ *
+ * `siteSync` shares the open site with an agent through a file (see `site-sync.ts`).
  */
 const workspaceRoot = fileURLToPath(new URL("../..", import.meta.url));
 
+/* Where the site files the MCP's maker tools share with this app live: MAKER_DIR, or `.maker/`. */
+const siteDir = process.env.MAKER_DIR ?? fileURLToPath(new URL("../../.maker", import.meta.url));
+
 export default defineConfig({
-  plugins: [react()],
+  plugins: [react(), siteSync(siteDir)],
   build: {
     rollupOptions: {
       input: {

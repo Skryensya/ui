@@ -4,6 +4,7 @@ import { snippets } from "@skryensya/snippets";
 import { instructions } from "./instructions.js";
 import { pair } from "./manifest.js";
 import { reportingInput, type Checked } from "./schemas.js";
+import { registerMakerTools } from "./maker-tools.js";
 import { tools } from "./tools.js";
 
 /*
@@ -23,6 +24,8 @@ const service = createAgentService(pair, snippets);
 export type ServerOptions = {
   /** A warning to attach to every answer, or undefined when there is none (see `staleness.ts`). */
   readonly staleness?: () => string | undefined;
+  /** The Maker's site file; given, the server also offers maker_read and maker_apply. */
+  readonly makerSite?: string;
 };
 
 /** The factory both transports hand the SDK. The HTTP one calls it with a request context, which
@@ -66,6 +69,8 @@ export function createServerWith(options: ServerOptions): McpServer {
       },
     );
   }
+
+  if (options.makerSite) registerMakerTools(server, options.makerSite);
 
   return server;
 }

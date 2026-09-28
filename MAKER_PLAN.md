@@ -272,7 +272,8 @@ dos bindings (ADR-0015) y verde en `ai-gates`.
 
 ## Después de la v1 (no se construye ahora)
 
-- [ ] Edición por prompt: un tool MCP `apply_operations` que solo acepta Maker operations.
+- [x] Edición por prompt: `maker_read` / `maker_apply` en el MCP stdio, sobre un archivo de sitio con revisión (`.maker/<nombre>.maker.json`) que el dev server del Maker vigila; los cambios del agente llegan en vivo como un paso deshacible, y ninguno de los dos pisa al otro (escrituras en serie, 409 al quedar atrás). El agente inserta usage trees o signatures; los ids los pone el modelo.
+- [ ] Un campo de prompt dentro del propio Maker (necesitaría un modelo accesible desde la app).
 - [ ] Edición inline de texto sobre el stage.
 - [x] Varias páginas (**Maker site**): nombre y ruta únicos por página, cada una con su árbol; operaciones de sitio (add, remove, rename, setPagePath, movePage, edit) en el mismo historial; enlaces entre páginas con sugerencias de rutas, enlaces rotos como Pending, y en modo Interact un enlace interno abre su página; export de todas las páginas y del sitio; el formato de una página abre como sitio de una página.
 - [ ] Piezas compartidas entre páginas (navbar/footer editados una vez).
