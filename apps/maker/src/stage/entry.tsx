@@ -31,9 +31,19 @@ const host = document.getElementById("stage")!;
 const root = createRoot(host);
 setPortalContainer({ current: host });
 
+/*
+ * THE LATEST TREE WINS. Rendering waits for the binding modules a tree needs, and two requests can
+ * finish out of order: a first render still loading its modules resolved after a newer one and put
+ * the older page back on the stage, so a change the outline showed never appeared. Each request is
+ * numbered, and one that finishes after a newer request was made is dropped.
+ */
+let latest = 0;
+
 window.makerStage = {
   async render(tree) {
+    const request = ++latest;
     await loadTree(tree);
+    if (request !== latest) return;
     /* Synchronous, so the parent can measure the moment this resolves. */
     flushSync(() => root.render(renderTree(tree)));
   },

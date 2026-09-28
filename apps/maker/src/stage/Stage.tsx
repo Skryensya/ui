@@ -66,11 +66,21 @@ export function Stage({ maker, drag }: { maker: Maker; drag: Drag }) {
 
   const doc = () => frameRef.current?.contentDocument ?? null;
 
+  /*
+   * The stage is ready when its document has installed `window.makerStage`. It says so with a
+   * message, but a stage served from cache can say it before this listener exists, and a missed
+   * message left the stage blank for good. So its presence is also checked directly: now, and when
+   * the iframe finishes loading.
+   */
+  const checkReady = () => {
+    if (frameRef.current?.contentWindow?.makerStage) setReady(true);
+  };
   useEffect(() => {
     const onMessage = (event: MessageEvent) => {
       if (event.origin === window.location.origin && event.data?.type === "maker-stage-ready") setReady(true);
     };
     window.addEventListener("message", onMessage);
+    checkReady();
     return () => window.removeEventListener("message", onMessage);
   }, []);
 
@@ -323,7 +333,7 @@ export function Stage({ maker, drag }: { maker: Maker; drag: Drag }) {
           transform: scale < 1 ? `scale(${scale})` : undefined,
         }}
       >
-        <iframe ref={frameRef} src="/stage.html" title="Page stage" className="maker-stage__iframe" />
+        <iframe ref={frameRef} src="/stage.html" title="Page stage" className="maker-stage__iframe" onLoad={checkReady} />
         <div className="maker-stage__overlays" aria-hidden="true">
           {overlay.hovered ? <div className="maker-overlay maker-overlay--hover" style={box(overlay.hovered)} /> : null}
           {overlay.selected ? (
