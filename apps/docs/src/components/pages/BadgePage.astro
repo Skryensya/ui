@@ -91,6 +91,16 @@ const tryToneTree = {
         danger: "Para lo urgente o destructivo: errores, acciones irreversibles.",
       }}
     />
+    <p>
+      Uno de estos por propiedad, no un selector que cambia de propiedad dentro del mismo widget:
+      acá está <code>size</code> aparte, sin "cuándo usar" (es opcional).
+    </p>
+    <PropertyPreview
+      tree={tryToneTree}
+      optionName="size"
+      storybookTitle={storybookTitle}
+      storybookStory="Tag"
+    />
 
     <h4>{t("badge.smallTitle")}</h4>
     <p set:html={t("badge.smallBody")} />

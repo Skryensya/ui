@@ -51,23 +51,23 @@ const codeIcon = iconMarkup("code", { size: "sm" });
 ---
 
 <div class="sk-property-preview">
+  <div class="sk-property-preview__header">
+    <span class="sk-property-preview__name">Propiedad: <strong>{optionName}</strong></span>
+    {
+      codeHref && (
+        <a
+          class="sk-property-preview__code-link"
+          href={codeHref}
+          rel="noreferrer"
+          target="_blank"
+          aria-label={`Ver código (${optionName})`}
+        >
+          <Fragment set:html={codeIcon} />
+        </a>
+      )
+    }
+  </div>
   <div class="sk-property-preview__card">
-    <div class="sk-property-preview__header">
-      <span class="sk-property-preview__name">{optionName}</span>
-      {
-        codeHref && (
-          <a
-            class="sk-property-preview__code-link"
-            href={codeHref}
-            rel="noreferrer"
-            target="_blank"
-            aria-label={`Ver código (${optionName})`}
-          >
-            <Fragment set:html={codeIcon} />
-          </a>
-        )
-      }
-    </div>
     <PropertyPlayground
       client:visible
       tree={tree}
@@ -92,20 +92,28 @@ const codeIcon = iconMarkup("code", { size: "sm" });
     overflow: hidden;
   }
 
+  /*
+   * A CAPTION, not a toolbar: earlier this had a sunken background matching `ComponentPreview`'s
+   * header, and it read as a bar of controls (paired with the code link) rather than as "this card
+   * is about the `tone` property" - plain text, no fill, is what a static label looks like next to a
+   * real link.
+   */
   .sk-property-preview__header {
     display: flex;
-    align-items: center;
+    align-items: baseline;
     justify-content: space-between;
     gap: var(--space-inline-sm);
-    padding: var(--space-inset-sm) var(--space-inset-md);
-    border-block-end: 1px solid var(--color-border-subtle);
-    background: var(--color-bg-surface-sunken);
+    padding: 0 0 var(--space-stack-sm);
   }
 
   .sk-property-preview__name {
+    color: var(--color-text-tertiary);
+    font-size: var(--font-size-caption);
+  }
+
+  .sk-property-preview__name strong {
     color: var(--color-text-secondary);
     font-family: var(--font-family-code);
-    font-size: var(--font-size-caption);
     font-weight: var(--font-weight-emphasis);
   }
 
