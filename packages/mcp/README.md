@@ -139,6 +139,12 @@ Both speak the 2026-07-28 protocol and fall back to the 2025 handshake for older
 the MCP TypeScript SDK v2 (`serveStdio`, `createMcpHandler`). HTTP is stateless: a fresh server per
 request, no sessions, so `GET` and `DELETE` on `/mcp` from a 2025-era client answer `405`.
 
+A stdio server reads its catalogue once, when the client starts it, so a rebuild afterwards does
+not reach it. When it runs from a checkout, every answer compares the catalogue it serves with
+`artifacts/ai-index.json` on disk, and while the two differ it adds a second text block saying so
+and asking for a restart (`/mcp` in Claude Code). The HTTP server is frozen at deploy and never
+checks.
+
 ## HTTP configuration
 
 | Variable | Default | Meaning |

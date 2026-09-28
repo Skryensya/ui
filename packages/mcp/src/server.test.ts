@@ -84,6 +84,15 @@ describe("the surface", () => {
   });
 });
 
+describe("staleness", () => {
+  /* Built from this checkout, the binary serves the catalogue on disk: no warning block, ever. A
+     false alarm here would teach an agent to ignore the real one. */
+  it("adds no warning while the catalogue it serves is the one compiled on disk", async () => {
+    const result = await client.callTool({ name: "get_contract", arguments: { id: "layout" } });
+    expect(result.content as unknown[]).toHaveLength(1);
+  });
+});
+
 describe("discover_ui", () => {
   it("is deterministic over the wire", async () => {
     const args = { query: "a switch that applies a setting immediately" };

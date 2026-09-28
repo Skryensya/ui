@@ -20,7 +20,18 @@ import { tools } from "./tools.js";
 
 const service = createAgentService(pair, snippets);
 
+export type ServerOptions = {
+  /** A warning to attach to every answer, or undefined when there is none (see `staleness.ts`). */
+  readonly staleness?: () => string | undefined;
+};
+
+/** The factory both transports hand the SDK. The HTTP one calls it with a request context, which
+ *  is why the options go through `createServerWith` instead of a parameter here. */
 export function createServer(): McpServer {
+  return createServerWith({});
+}
+
+export function createServerWith(options: ServerOptions): McpServer {
   const server = new McpServer(
     {
       name: "skryensya-ui",
@@ -50,6 +61,7 @@ export function createServer(): McpServer {
           checked.ok
             ? (tool.run as (s: typeof service, a: unknown) => AgentResult<object>)(service, checked.data)
             : service.invalidInput(tool.name, checked.issues),
+          options.staleness?.(),
         );
       },
     );
@@ -67,10 +79,13 @@ export function createServer(): McpServer {
  *
  * Errors keep provenance and are machine-readable too; the SDK skips output validation for them.
  */
-function toCallResult(result: AgentResult<object>) {
+function toCallResult(result: AgentResult<object>, warning?: string) {
   const value = result.value as Record<string, unknown>;
   return {
-    content: [{ type: "text" as const, text: JSON.stringify(value) }],
+    content: [
+      { type: "text" as const, text: JSON.stringify(value) },
+      ...(warning ? [{ type: "text" as const, text: warning }] : []),
+    ],
     structuredContent: value,
     ...(result.ok ? {} : { isError: true }),
   };

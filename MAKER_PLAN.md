@@ -66,9 +66,11 @@ Maker page guarda x, y, top, left, translate, un ancho o alto calculado, ni un r
 
 ## Fase 0. Hallazgo aparte (fuera del Maker)
 
-- [ ] Rebuild y redeploy del MCP `skryensya-ui`: `get_contract` sirve un manifest viejo, sin
-      `gapExpanded`, `paddingExpanded`, `appearance` ni el `gutter` de Wrapper que sí están en
-      `packages/core/src/layout.ts`.
+- [x] Causa: el servidor stdio carga el catálogo una vez al arrancar; el bundle en disco estaba al
+      día, el proceso no. Ahora cada respuesta compara su `sourceHash` con `artifacts/ai-index.json`
+      y, si difieren, agrega un bloque de texto pidiendo reiniciar (`/mcp`). Sin tocar los esquemas.
+- [ ] Reiniciar el MCP de las sesiones abiertas (lo hace quien usa el cliente: `/mcp`).
+- [ ] Verificar el hash del MCP HTTP desplegado, si hay uno, contra el catálogo actual.
 
 ---
 
