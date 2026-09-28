@@ -5,7 +5,7 @@
  * a click. This mounts straight into the parent document, same realm as the page around it.
  */
 import { useEffect, useState } from "react";
-import { SegmentedControl } from "@skryensya/react/segmented";
+import { RadioGroup } from "@skryensya/react/radio-group";
 import type { UsageTree } from "@skryensya/core/usage-tree";
 
 export interface PropertyPlaygroundProps {
@@ -14,6 +14,8 @@ export interface PropertyPlaygroundProps {
   values: readonly string[];
   defaultValue: string;
   controlLabel: string;
+  /** "Cuándo usar" copy per value. Optional per value AND per option: only renders where given. */
+  whenToUse?: Partial<Record<string, string>>;
 }
 
 export function PropertyPlayground({
@@ -22,6 +24,7 @@ export function PropertyPlayground({
   values,
   defaultValue,
   controlLabel,
+  whenToUse,
 }: PropertyPlaygroundProps) {
   const [value, setValue] = useState(defaultValue);
   const [Render, setRender] = useState<
@@ -43,21 +46,27 @@ export function PropertyPlayground({
   }, []);
 
   const liveTree: UsageTree = { ...tree, options: { ...tree.options, [optionName]: value } };
+  const description = whenToUse?.[value];
 
   return (
     <div className="sk-property-playground">
-      <div className="sk-property-playground__stage">
-        {Render ? Render(liveTree) : null}
-      </div>
+      <div className="sk-property-playground__stage">{Render ? Render(liveTree) : null}</div>
       <div className="sk-property-playground__control">
-        <span className="sk-property-playground__control-label">{optionName}</span>
-        <SegmentedControl
+        <RadioGroup
           label={controlLabel}
+          name={optionName}
           value={value}
-          onValueChange={setValue}
-          options={values.map((v) => ({ value: v, label: v }))}
+          onValueChange={({ value: next }) => setValue(next)}
+          orientation="horizontal"
+          items={values.map((v) => ({ value: v, label: v }))}
         />
       </div>
+      {description && (
+        <div className="sk-property-playground__when">
+          <p className="sk-property-playground__when-title">Cuándo usar</p>
+          <p className="sk-property-playground__when-body">{description}</p>
+        </div>
+      )}
     </div>
   );
 }

@@ -78,7 +78,20 @@ const tryToneTree = {
 
     <h3>Try it (prototype)</h3>
     <p>A lighter preview: one example, one property, no viewport switching (that's Storybook's job now).</p>
-    <PropertyPreview tree={tryToneTree} optionName="tone" label="Badge" />
+    <PropertyPreview
+      tree={tryToneTree}
+      optionName="tone"
+      label="Badge"
+      storybookTitle={storybookTitle}
+      storybookStory="Tag"
+      whenToUse={{
+        neutral: "Para metadata sin urgencia: una categoría, un estado por defecto.",
+        accent: "Para destacar sin alarmar: una novedad, un valor recomendado.",
+        success: "Para confirmar que algo salió bien o ya está disponible.",
+        warning: "Para atención sin bloquear: algo que conviene revisar pronto.",
+        danger: "Para lo urgente o destructivo: errores, acciones irreversibles.",
+      }}
+    />
 
     <h4>{t("badge.smallTitle")}</h4>
     <p set:html={t("badge.smallBody")} />
