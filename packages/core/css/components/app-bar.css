@@ -1,0 +1,169 @@
+/*
+ * TIER 3, APP BAR
+ *
+ * One short line of text across the top of an application: its menus on the leading side, a few
+ * words of state on the trailing side. Every dropdown IS a `Menu` (`app-bar.ts` says why), so its
+ * positioner, content and items are `sk-menu__*`, painted by `menu.css`, imported below. This sheet
+ * owns the bar and its words.
+ *
+ * A TITLE IS A WORD, NOT A BUTTON. No `sk-button` here, on purpose: a Button brings a control's
+ * height, padding and border, which is exactly the weight an app bar exists to shed. The trigger is
+ * text with the system's state layer (`sk-interactive`) for hover, press and focus, and one state of
+ * its own that the layer cannot carry: OPEN. A hover tint leaves with the pointer; an open menu's
+ * title has to stay marked while the pointer is down in its list, so it gets a real background.
+ *
+ * SHORT BY DEFAULT. The block size is the kit's smallest control step, not a padded header, and the
+ * type is the caption size: the bar is read at a glance and never competes with the page under it.
+ * Both are hooks, so a consumer that wants a roomier bar says so in two declarations.
+ */
+@import url("./menu.css");
+
+@layer components {
+  .sk-app-bar {
+    --sk-app-bar-bg: color-mix(in oklab, var(--color-bg-surface) 88%, transparent);
+    --sk-app-bar-fg: var(--color-text-primary);
+    --sk-app-bar-muted-fg: var(--color-text-secondary);
+    --sk-app-bar-border-color: var(--color-border-subtle);
+    --sk-app-bar-block-size: var(--size-control-xs);
+    --sk-app-bar-font-size: var(--font-size-body-sm);
+    --sk-app-bar-gap: var(--space-inline-sm);
+    --sk-app-bar-item-padding-inline: var(--space-inline-sm);
+    --sk-app-bar-item-radius: var(--radius-control);
+    --sk-app-bar-item-open-bg: color-mix(in oklab, currentColor 14%, transparent);
+
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: var(--sk-app-bar-gap);
+    box-sizing: border-box;
+    min-block-size: var(--sk-app-bar-block-size);
+    padding-inline: var(--space-inset-xs);
+    border-block-end: 1px solid var(--sk-app-bar-border-color);
+    color: var(--sk-app-bar-fg);
+    font-size: var(--sk-app-bar-font-size);
+    line-height: 1;
+  }
+
+  /*
+   * THE SURFACE IS A LAYER BEHIND THE BAR, NOT THE BAR. Translucent and blurred over whatever
+   * scrolls under it, the way a desktop bar is; but `backdrop-filter` on an element makes it the
+   * containing block of every `position: fixed` descendant, and the dropdowns are exactly that
+   * (anchored.css). On the bar itself it shut every dropdown inside a box one line tall. On a
+   * pseudo-element behind the content it blurs the same pixels and contains nothing.
+   *
+   * No z-index and no `isolation`: either would make the bar a stacking context, and a dropdown
+   * inside one can never rise above whatever positioned content follows the bar. The regions are
+   * positioned instead, so they paint over this layer by document order alone.
+   */
+  .sk-app-bar::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: var(--sk-app-bar-bg);
+    -webkit-backdrop-filter: saturate(1.6) blur(16px);
+    backdrop-filter: saturate(1.6) blur(16px);
+  }
+
+  @supports not (backdrop-filter: blur(1px)) {
+    .sk-app-bar {
+      --sk-app-bar-bg: var(--color-bg-surface);
+    }
+  }
+
+  /*
+   * ONE LINE, WHATEVER THE WIDTH. When the line runs out, the bar gives up words rather than
+   * wrapping or letting two regions overprint: status first (it shrinks a thousand times faster),
+   * then the last menus. `hidden`, not `clip`: a menu cut off at the end is still reached by the
+   * keyboard, and focusing it scrolls it into view. The dropdowns are `position: fixed`, so this
+   * clipping never reaches them.
+   */
+  .sk-app-bar__menus,
+  .sk-app-bar__status {
+    display: flex;
+    align-items: center;
+    position: relative;
+    flex: 0 1 auto;
+    min-inline-size: 0;
+    overflow: hidden;
+  }
+
+  /* The status region sits at the end of the line: layout is the bar's, since "state on the
+     trailing side" is what makes it an app bar. */
+  .sk-app-bar__status {
+    flex-shrink: 1000;
+    gap: var(--space-inline-xs);
+    margin-inline-start: auto;
+    color: var(--sk-app-bar-muted-fg);
+  }
+
+  .sk-app-bar__menu,
+  .sk-app-bar__status-item {
+    display: inline-flex;
+  }
+
+  .sk-app-bar__trigger,
+  .sk-app-bar__status-text {
+    display: inline-flex;
+    align-items: center;
+    box-sizing: border-box;
+    min-block-size: calc(var(--sk-app-bar-block-size) - 6px);
+    padding-inline: var(--sk-app-bar-item-padding-inline);
+    white-space: nowrap;
+  }
+
+  .sk-app-bar__trigger {
+    /* The layer tints with the text colour, and a danger item's red never belongs on a title. */
+    --state-layer-color: var(--sk-app-bar-fg);
+
+    margin: 0;
+    border: 0;
+    border-radius: var(--sk-app-bar-item-radius);
+    background: transparent;
+    color: inherit;
+    font: inherit;
+    cursor: default;
+  }
+
+  .sk-app-bar__menu[data-strong] > .sk-app-bar__trigger {
+    font-weight: var(--font-weight-heading);
+  }
+
+  .sk-app-bar__trigger[aria-expanded="true"] {
+    background: var(--sk-app-bar-item-open-bg);
+  }
+
+  /* A status menu reads as status until it is used: the same muted colour as its text neighbours,
+     full colour while open. */
+  .sk-app-bar__status .sk-app-bar__trigger[aria-expanded="true"] {
+    color: var(--sk-app-bar-fg);
+  }
+
+  /*
+   * DENSER THAN COMPACT. Menu's compact density is a list you read; a desktop bar's dropdown is one
+   * you scan, so the rows lose most of their block padding and drop to 24px, WCAG 2.2's minimum
+   * target and not a pixel under it (Menu's compact row is the kit's small control, taller than
+   * that at the default density). Keyed on the bar's own class on the
+   * positioner, because in React the popup is portalled out of the bar and no descendant selector
+   * reaches it there.
+   */
+  .sk-app-bar__dropdown {
+    --sk-app-bar-dropdown-padding-block: 0.1875rem;
+    --sk-app-bar-menu-item-padding-block: 0.0625rem;
+    --sk-app-bar-menu-item-block-size: 1.5rem;
+  }
+
+  .sk-app-bar__dropdown .sk-menu__content {
+    padding-block: var(--sk-app-bar-dropdown-padding-block);
+  }
+
+  .sk-app-bar__dropdown .sk-menu__item {
+    min-block-size: var(--sk-app-bar-menu-item-block-size);
+    padding-block: var(--sk-app-bar-menu-item-padding-block);
+  }
+
+  @media (forced-colors: active) {
+    .sk-app-bar__trigger[aria-expanded="true"] {
+      outline: 1px solid CanvasText;
+    }
+  }
+}

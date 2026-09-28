@@ -275,6 +275,10 @@ const registrations: readonly Registration[] = [
     load: async () => (await import("../components/menubar.js")).mountMenubar,
   },
   {
+    selector: "[data-sk-app-bar]",
+    load: async () => (await import("../components/app-bar.js")).mountAppBar,
+  },
+  {
     selector: "[data-sk-megamenu]",
     load: async () => (await import("../components/megamenu.js")).mountMegamenu,
   },

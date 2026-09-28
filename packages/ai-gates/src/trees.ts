@@ -3020,6 +3020,47 @@ const signatureTrees: readonly Canonical[] = [
     },
   },
   {
+    // Every shape the bar has: the application's menu in bold, a dropdown, a plain command, one word
+    // of status and one status menu. The dropdowns are Menu's own item shape, as in Menubar's tree.
+    name: "app-bar/desktop",
+    enhanced: true,
+    tree: {
+      contract: "app-bar",
+      signature: "AppBar",
+      options: { label: "Maker" },
+      children: [
+        {
+          contract: "app-bar",
+          signature: "AppBarMenu",
+          options: { strong: true },
+          slots: { children: "Maker", items: [{ options: { value: "about" }, slots: { label: "Acerca de Maker" } }] },
+        },
+        {
+          contract: "app-bar",
+          signature: "AppBarMenu",
+          slots: {
+            children: "Archivo",
+            items: [
+              { options: { value: "new" }, slots: { label: "Nuevo" } },
+              { options: { value: "export" }, slots: { label: "Exportar" } },
+            ],
+          },
+        },
+        { contract: "app-bar", signature: "AppBarMenu", children: "Ayuda" },
+      ],
+      slots: {
+        status: [
+          { contract: "app-bar", signature: "AppBarStatus", children: "Guardado" },
+          {
+            contract: "app-bar",
+            signature: "AppBarStatus",
+            slots: { children: "72rem", items: [{ options: { value: "36" }, slots: { label: "36rem" } }] },
+          },
+        ],
+      },
+    },
+  },
+  {
     // WAI's own layout-grid example: a row is a logical grouping, not necessarily one visual line.
     name: "data-grid/recipient-pills",
     enhanced: true,
