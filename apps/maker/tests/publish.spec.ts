@@ -1,5 +1,5 @@
 import { expect, test } from "@playwright/test";
-import { buildSamplePage, openMaker } from "./fixtures";
+import { buildSamplePage, openMaker, bar } from "./fixtures";
 
 /*
  * Publishing end to end: from the Publish panel, through the sites Worker run locally, to the site
@@ -13,7 +13,7 @@ test("a project is published at its subdomain, with the kit, and can be taken do
   await buildSamplePage(page);
   const name = `cafe-${Date.now().toString(36)}`;
 
-  await page.getByRole("button", { name: "Publish", exact: true }).click();
+  await bar(page, ["File", "Publish…"]);
   const panel = page.locator(".maker__right");
   const field = panel.getByLabel("Site name");
   await field.fill(name);

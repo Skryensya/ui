@@ -1,4 +1,5 @@
-import type { ContractOption, ContractSlot } from "@skryensya/core/contract";
+import type { ComponentContract, ContractOption, ContractSignature, ContractSlot } from "@skryensya/core/contract";
+import { contractIds, getContract, getSignature } from "@skryensya/core/registry";
 import type { ItemInput, OptionInput } from "@skryensya/core/usage-tree";
 import type { MakerNode, MakerSlot } from "./node.js";
 import type { IdFactory } from "./project.js";
@@ -18,6 +19,10 @@ import { resolve, type SignatureRef } from "./structure.js";
  */
 
 export function presetFor(ref: SignatureRef, newId: IdFactory): MakerNode | undefined {
+  return presetForInner(ref, newId, 0, []);
+}
+
+function presetForInner(ref: SignatureRef, newId: IdFactory, depth: number, stack: readonly string[]): MakerNode | undefined {
   const resolved = resolve(ref);
   if (!resolved) return undefined;
   const { contract, signature } = resolved;
@@ -33,7 +38,7 @@ export function presetFor(ref: SignatureRef, newId: IdFactory): MakerNode | unde
       return;
     }
     const slot = signature.slots[name];
-    if (slot) slots[name] = sampleSlot(slot, ref.signature, layout, newId);
+    if (slot) slots[name] = sampleSlot(slot, ref, layout, newId, depth, stack);
   };
 
   for (const name of signature.requires ?? []) give(name);
@@ -49,9 +54,11 @@ export function presetFor(ref: SignatureRef, newId: IdFactory): MakerNode | unde
   }
   for (const [name, slot] of Object.entries(signature.slots)) {
     if (name in slots) continue;
-    if (slot.required) slots[name] = sampleSlot(slot, ref.signature, layout, newId);
-    else if (slot.accepts === "node" || slot.accepts === "signature") slots[name] = { kind: "nodes", children: [] };
+    if (slot.required || slot.accepts === "text" || slot.accepts === "items" || slot.accepts === "signature") {
+      slots[name] = sampleSlot(slot, ref, layout, newId, depth, stack);
+    }
   }
+  addDisplayDefaults(contract, signature, options, slots, ref, newId, depth, stack);
 
   return { id: newId(), contract: ref.contract, signature: ref.signature, ...(Object.keys(options).length ? { options } : {}), slots };
 }
@@ -67,20 +74,110 @@ function sampleValue(option: ContractOption, name: string, signature: string, pr
   if (option.pattern) return option.pattern.example;
   if (option.default !== undefined) return String(option.default);
   if (name === "href" || name.endsWith("Href")) return "#";
-  if (name === "src" || name.endsWith("Src")) return "";
+  if (name === "src" || name.endsWith("Src")) return sampleImageSrc;
   if (/id$/i.test(name)) return `${kebab(signature)}-1`;
   return humanize(signature);
 }
 
-function sampleSlot(slot: ContractSlot, signature: string, layout: boolean, newId: IdFactory): MakerSlot {
-  if (slot.accepts === "text") return { kind: "text", text: humanize(signature) };
+function sampleSlot(
+  slot: ContractSlot,
+  ref: SignatureRef,
+  layout: boolean,
+  newId: IdFactory,
+  depth: number,
+  stack: readonly string[],
+): MakerSlot {
+  if (slot.accepts === "text") return { kind: "text", text: humanize(ref.signature) };
   if (slot.accepts === "items") {
     const count = Math.max(slot.minItems ?? 1, 1);
     return { kind: "items", items: Array.from({ length: count }, (_, i) => sampleItem(slot, i + 1)) };
   }
-  if (slot.accepts === "node" && !layout) return { kind: "nodes", children: [{ id: newId(), text: humanize(signature) }] };
+  if (slot.accepts === "signature") {
+    const count = Math.max(slot.minItems ?? 1, 1);
+    const children = Array.from({ length: count }, (_, i) => sampleSignatureChild(slot, ref, newId, depth, stack, i + 1)).filter(
+      (child): child is MakerNode => Boolean(child),
+    );
+    return { kind: "nodes", children };
+  }
+  if (slot.accepts === "node") return { kind: "nodes", children: [{ id: newId(), text: humanize(ref.signature) }] };
   return { kind: "nodes", children: [] };
 }
+
+function sampleSignatureChild(
+  slot: ContractSlot,
+  ref: SignatureRef,
+  newId: IdFactory,
+  depth: number,
+  stack: readonly string[],
+  n: number,
+): MakerNode | undefined {
+  if (depth > 3) return undefined;
+  const signatures = slot.of ?? [];
+  const signature = signatures.find((candidate) => !stack.includes(`${ref.contract}/${candidate}`)) ?? signatures[0];
+  if (!signature) return undefined;
+  const childRef = resolveChildRef(ref.contract, signature);
+  if (!childRef) return undefined;
+  const child = presetForInner(childRef, newId, depth + 1, [...stack, `${ref.contract}/${ref.signature}`]);
+  if (child && slot.uniqueChildOption) return { ...child, options: { ...child.options, [slot.uniqueChildOption]: `item-${n}` } };
+  return child;
+}
+
+function resolveChildRef(contract: string, signature: string): SignatureRef | undefined {
+  const local = getContract(contract);
+  if (local && getSignature(local, signature)) return { contract, signature };
+  for (const id of contractIds()) {
+    const candidate = getContract(id);
+    if (candidate && getSignature(candidate, signature)) return { contract: id, signature };
+  }
+  return undefined;
+}
+
+function addDisplayDefaults(
+  contract: ComponentContract,
+  signature: ContractSignature,
+  options: Record<string, OptionInput>,
+  slots: Record<string, MakerSlot>,
+  ref: SignatureRef,
+  newId: IdFactory,
+  depth: number,
+  stack: readonly string[],
+) {
+  for (const name of signature.options) {
+    if (name in options) continue;
+    const option = contract.options[name];
+    if (!option) continue;
+    if (option.type === "number" && /^(value|progress|percent|rating|count|total)$/i.test(name)) {
+      options[name] = numberDisplayValue(option);
+    }
+    if (option.type === "boolean" && /^(checked|selected|expanded|open|active|current)$/i.test(name)) {
+      options[name] = true;
+    }
+    if (option.type === "enum" && /^variant$/i.test(name)) {
+      const values = (option.values ?? []).filter((value) => !(option.deprecatedValues && value in option.deprecatedValues));
+      const visual = values.find((value) => /accent|primary|filled|solid/i.test(value));
+      if (visual && visual !== option.default) options[name] = visual;
+    }
+  }
+  for (const [name, slot] of Object.entries(signature.slots)) {
+    if (name in slots) continue;
+    if (slot.accepts === "node" && /(children|content|body|label|title|description|caption|actions)$/i.test(name)) {
+      slots[name] = { kind: "nodes", children: [{ id: newId(), text: humanize(ref.signature) }] };
+    }
+    if (slot.accepts === "signature" && /(children|content|body|actions|icon|logo|caption)$/i.test(name)) {
+      slots[name] = sampleSlot(slot, ref, false, newId, depth, stack);
+    }
+  }
+}
+
+function numberDisplayValue(option: ContractOption): number {
+  const min = option.min ?? 0;
+  const max = option.max ?? 100;
+  if (Number.isFinite(min) && Number.isFinite(max) && max > min) return Math.round(min + (max - min) * 0.6);
+  return Math.max(1, min);
+}
+
+const sampleImageSrc =
+  "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 300'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' x2='1' y1='0' y2='1'%3E%3Cstop stop-color='%2384cc16'/%3E%3Cstop offset='1' stop-color='%2306b6d4'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='400' height='300' rx='32' fill='url(%23g)'/%3E%3Ccircle cx='95' cy='92' r='34' fill='white' fill-opacity='.85'/%3E%3Cpath d='M44 246 154 136l72 72 48-48 82 86z' fill='white' fill-opacity='.78'/%3E%3C/svg%3E";
 
 function sampleItem(slot: ContractSlot, n: number): ItemInput {
   const item = slot.item;

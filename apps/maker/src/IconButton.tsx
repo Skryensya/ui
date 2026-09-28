@@ -14,6 +14,8 @@ export function IconButton({
   disabled,
   pressed,
   tone,
+  appearance,
+  size = "sm",
 }: {
   icon: AnyIcon;
   label: string;
@@ -21,18 +23,22 @@ export function IconButton({
   onClick: () => void;
   disabled?: boolean;
   pressed?: boolean;
-  tone?: "danger";
+  tone?: "accent" | "danger";
+  appearance?: "plain" | "tactile" | "brutalist" | "frosted";
+  size?: "xs" | "sm" | "md" | "lg";
 }) {
+  const activeTone = pressed ? "accent" : tone;
   return (
     <Tooltip content={shortcut ? `${label} (${shortcut})` : label}>
       <Button
         variant="ghost"
-        size="sm"
+        appearance={appearance}
+        size={size}
         iconOnly
         aria-label={label}
         disabled={disabled}
         {...(pressed !== undefined ? { pressed } : {})}
-        {...(tone ? { tone } : {})}
+        {...(activeTone ? { tone: activeTone } : {})}
         onClick={onClick}
       >
         <MakerIcon icon={icon} />

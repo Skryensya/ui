@@ -1,6 +1,6 @@
 import { expect, test } from "@playwright/test";
 import { applySiteAll, randomId, resolveAgentOperations, type MakerSite } from "@skryensya/maker-model";
-import { addFromPalette, buildSamplePage, openMaker, pageTree, savedProject, selectInOutline, stage, layers, insert, setWidth, zoomTo, pageCommand } from "./fixtures";
+import { addFromPalette, buildSamplePage, openMaker, pageTree, savedProject, selectInOutline, stage, layers, insert, setWidth, zoomTo, pageCommand, bar } from "./fixtures";
 
 /*
  * The Maker in a real browser (decision 31): a page is built by composing, changed by operations,
@@ -137,7 +137,7 @@ test("edit mode selects instead of activating; interact mode activates; navigati
   const link = stage(page).locator("a[href]").first();
   await link.click();
   await expect(page.locator(".maker__right h2").first()).toHaveText("Button.navigation");
-  await page.getByRole("button", { name: /^Interact/ }).click();
+  await bar(page, ["View", "Interact mode"]);
   await link.click();
   expect(await page.frames()[1]!.url()).toContain("/stage.html");
 });
@@ -148,7 +148,7 @@ test("the stored page holds no coordinates, sizes or styles", async ({ page }) =
 });
 
 test("export emits React, HTML and the usage tree from the same page, pending or not", async ({ page }) => {
-  await page.getByRole("button", { name: "Export", exact: true }).click();
+  await bar(page, ["File", "Export…"]);
   const code = page.getByLabel("Exported code");
   await expect(code).toHaveValue(/export function HomePage/);
   await expect(code).toHaveValue(/<Stack/);
@@ -260,7 +260,9 @@ test("every icon-only control in the chrome has a name", async ({ page }) => {
       .map((button) => button.outerHTML.slice(0, 80)),
   );
   expect(unnamed).toEqual([]);
-  await expect(page.getByRole("toolbar", { name: "Maker" }).locator("svg.sk-icon").first()).toBeVisible();
+  /* The bar's commands are words: every title in it names itself with its own text. */
+  const titles = page.locator(".maker-shell__bar [role=menubar] [role=menuitem]");
+  await expect(titles).toHaveText(["Maker", "File", "Edit", "View", "Page", "Insert", "Help"]);
 });
 
 /** Select what is under `from` on the stage, then drag it to a point. */
@@ -366,7 +368,7 @@ test("pages: add, rename, re-path, link between them, and follow the link in int
   await href.press("Enter");
   await expect(page.locator(".maker__right")).not.toContainText("Links to");
 
-  await page.getByRole("button", { name: /^Interact/ }).click();
+  await bar(page, ["View", "Interact mode"]);
   await stage(page).locator('a[href="/about"]').click();
   await expect((await layers(page)).locator(".maker-pages").getByRole("button", { name: /About/ })).toHaveAttribute("aria-current", "page");
 });
@@ -378,13 +380,13 @@ test("page operations are undone like any other gesture", async ({ page }) => {
   await expect.poll(() => pageTree(page)).toContain("      Heading");
   await pageCommand(page, "Remove this page");
   await expect((await layers(page)).locator(".maker-pages__item")).toHaveCount(1);
-  await page.getByRole("button", { name: "Undo", exact: true }).click();
+  await bar(page, ["Edit", "Undo"]);
   await expect((await layers(page)).locator(".maker-pages__item")).toHaveCount(2);
 });
 
 test("export offers the whole site: every page as its own component, and the site file", async ({ page }) => {
   await page.getByRole("toolbar", { name: "Pages" }).getByRole("button", { name: "Add a page" }).click();
-  await page.getByRole("button", { name: "Export", exact: true }).click();
+  await bar(page, ["File", "Export…"]);
   const code = page.getByLabel("Exported code");
   await page.getByRole("radio", { name: "All pages" }).click();
   await expect(code).toHaveValue(/pages\/index\.tsx[\s\S]*export function HomePage[\s\S]*pages\/page\.tsx[\s\S]*export function PagePage/);
@@ -408,7 +410,7 @@ test("an agent's change to the project arrives live, as one step the person can 
 
   await expect(stage(page).locator(".sk-stack").first()).toHaveAttribute("data-gap", "xl");
   await expect(page.locator(".maker__notice")).toContainText("Someone else changed this project");
-  await page.getByRole("button", { name: "Undo", exact: true }).click();
+  await bar(page, ["Edit", "Undo"]);
   await expect(stage(page).locator(".sk-stack").first()).not.toHaveAttribute("data-gap", "xl");
 });
 
@@ -446,9 +448,9 @@ test("the canvas shows every page as an artboard at its exact CSS width, and zoo
   await expect(page.locator(".maker-artboard[data-active] .maker-stage__frame")).toHaveCSS("inline-size", "1440px");
   /* The iframe lays the page out at 1440 CSS px, whatever the zoom shows it at. */
   expect(await stage(page).locator("html").evaluate((html) => html.clientWidth)).toBe(1440);
-  const zoom = page.locator(".maker-zoom__value");
+  const zoom = page.locator(".maker-shell__bar .sk-app-bar__status .sk-app-bar__trigger").last();
   const at = await zoom.textContent();
-  await page.getByRole("button", { name: "Zoom in" }).click();
+  await zoomTo(page, "Zoom in");
   await expect(zoom).not.toHaveText(at!);
   await zoomTo(page, "Fit every page");
   const canvas = (await page.locator(".maker-canvas").boundingBox())!;

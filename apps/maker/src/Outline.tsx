@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from "react";
+import { Button } from "@skryensya/react/button";
 import { TreeView } from "@skryensya/react/tree-view";
 import type { TreeNode } from "@skryensya/core/tree-view";
 import {
@@ -69,6 +70,7 @@ function branchIds(nodes: readonly TreeNode[], into: string[] = []): string[] {
 export function Outline({ maker, drag }: { maker: Maker; drag: Drag }) {
   const root = maker.page.root;
   const selected = maker.view.selected;
+  const selectedIds = maker.view.selectedIds;
   const nodes = useMemo(() => [toTree(root, selected)], [root, selected]);
   const branches = useMemo(() => branchIds(nodes), [nodes]);
   const [collapsed, setCollapsed] = useState<ReadonlySet<string>>(new Set());
@@ -96,8 +98,30 @@ export function Outline({ maker, drag }: { maker: Maker; drag: Drag }) {
 
   /* ─── pointer: drag a row ────────────────────────────────────────────────────────────────── */
 
+  /*
+   * WAS THIS PRESS ON THE CHEVRON? Asked of where the pointer is, not of what it hit: the chevron
+   * takes no pointer events of its own (the tree view paints it inside the row's control and lets
+   * the control receive the press), so the event's target is always the whole row's button and a
+   * `closest()` on the chevron never matched. Every fold by pointer was then read as a selection
+   * and thrown away, which is why no branch could be closed with the mouse. A few pixels of slack
+   * around a 16px glyph, so a press at its edge still folds.
+   */
+  const onChevron = (event: React.PointerEvent) => {
+    const control = (event.target as Element).closest(".sk-tree-view__branch-control");
+    const chevron = control?.querySelector(".sk-tree-view__branch-indicator");
+    if (!chevron) return false;
+    const box = chevron.getBoundingClientRect();
+    const slack = 4;
+    return (
+      event.clientX >= box.left - slack &&
+      event.clientX <= box.right + slack &&
+      event.clientY >= box.top - slack &&
+      event.clientY <= box.bottom + slack
+    );
+  };
+
   const onPointerDown = (event: React.PointerEvent<HTMLDivElement>) => {
-    intent.current = (event.target as Element).closest(".sk-tree-view__branch-indicator") ? "fold" : "select";
+    intent.current = onChevron(event) ? "fold" : "select";
     if (event.button !== 0) return;
     const row = (event.target as Element).closest<HTMLElement>("[data-value]");
     const id = row?.dataset.value;
@@ -139,7 +163,7 @@ export function Outline({ maker, drag }: { maker: Maker; drag: Drag }) {
 
   return (
     <div
-      className="maker-outline"
+      className="maker-outline sk-scrollbar sk-scrollbar--reveal"
       ref={(element) => {
         hostRef.current = element;
         setHost(element);
@@ -156,21 +180,29 @@ export function Outline({ maker, drag }: { maker: Maker; drag: Drag }) {
           .join(",\n")}
         {pendingIds.size > 0 ? ' { content: " · pending"; color: var(--color-text-tertiary); font-size: 0.85em; }' : ""}
       </style>
+      <div className="maker-outline__tools" aria-label="Layer tree actions">
+        <Button variant="ghost" size="xs" disabled={branches.length === 0 || collapsed.size === branches.length} onClick={() => setCollapsed(new Set(branches))}>
+          Collapse all
+        </Button>
+        <Button variant="ghost" size="xs" disabled={collapsed.size === 0} onClick={() => setCollapsed(new Set())}>
+          Expand all
+        </Button>
+      </div>
       <TreeView
         label="Page outline"
         nodes={nodes}
-        selectionMode="single"
-        selectedValue={selected ? [selected] : []}
+        selectionMode="multiple"
+        selectedValue={selectedIds.length > 0 ? [...selectedIds] : selected ? [selected] : []}
         expandedValue={expanded}
         onExpandedChange={({ expandedValue }) => {
           if (intent.current !== "fold") return;
           setCollapsed(new Set(branches.filter((id) => !expandedValue.includes(id))));
         }}
         onSelectionChange={({ selectedValue }) => {
-          const value = selectedValue[0];
-          if (!value) return;
-          const branch = parseSlotBranch(value);
-          maker.setView({ selected: branch ? branch.owner : value });
+          const values = selectedValue.map((value) => parseSlotBranch(value)?.owner ?? value).filter((value) => findChild(root, value));
+          const selected = values.at(-1);
+          if (!selected) return;
+          maker.setView({ selected, selectedIds: values });
         }}
       />
       {indicator && hostBox ? (

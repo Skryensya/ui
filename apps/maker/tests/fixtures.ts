@@ -26,7 +26,7 @@ export async function openMaker(page: Page, name = `Test ${process.pid}-${++made
   current = ((await response.json()) as { id: string }).id;
   await page.goto(`/?project=${current}`);
   await expect(stage(page).locator("main[data-maker-node]")).toBeAttached();
-  await expect(page.locator(".maker__sync")).toHaveText("Saved");
+  await expect(syncState(page)).toHaveText("Saved");
   return current;
 }
 
@@ -80,19 +80,39 @@ export async function buildSamplePage(page: Page): Promise<void> {
   await addFromPalette(page, "Button.action");
   /* Saved whole: both buttons are in the project, not only in the browser. */
   await expect.poll(async () => (await pageTree(page)).match(/Button\.action/g)?.length).toBe(2);
-  await expect(page.locator(".maker__sync")).toHaveText("Saved");
+  await expect(syncState(page)).toHaveText("Saved");
 }
 
-/** Pick a stage width from the toolbar's width menu. */
+/** The bar's word for whether the project is saved: "Saved", "Saving…" or "Offline". */
+export const syncState = (page: Page) => page.locator(".maker-shell__bar .sk-app-bar__status-text").first();
+
+/**
+ * Run a command from the Maker's bar by the words on the way to it: the menu's title, then each item
+ * down to the one that acts, as a person reads them ("View", "Stage width", "36rem").
+ */
+export async function bar(page: Page, path: readonly string[]): Promise<void> {
+  const [title, ...items] = path;
+  await page.locator(".maker-shell__bar").getByRole("menuitem", { name: title, exact: true }).click();
+  for (const item of items) {
+    await page.getByRole("menuitem", { name: item, exact: true }).last().click();
+  }
+}
+
+/** Pick a stage width from the bar's View menu. The current width is offered unavailable: already there. */
 export async function setWidth(page: Page, rem: 36 | 52 | 72 | 90): Promise<void> {
-  await page.getByRole("button", { name: /^Stage width/ }).click();
-  await page.getByRole("menuitemradio", { name: new RegExp(`^${rem}rem`) }).click();
+  await bar(page, ["View", "Stage width"]);
+  const item = page.getByRole("menuitem", { name: `${rem}rem`, exact: true }).last();
+  if ((await item.getAttribute("aria-disabled")) === "true") {
+    await page.keyboard.press("Escape");
+    await page.keyboard.press("Escape");
+    return;
+  }
+  await item.click();
 }
 
-/** Run one of the canvas's zoom commands from the zoom menu. */
-export async function zoomTo(page: Page, command: "Fit every page" | "Fit the open page" | "Zoom to 100%"): Promise<void> {
-  await page.getByRole("button", { name: /^Zoom: / }).click();
-  await page.getByRole("menuitem", { name: new RegExp(`^${command.replace("%", "%")}`) }).click();
+/** Run one of the canvas's zoom commands from the bar. */
+export async function zoomTo(page: Page, command: "Fit every page" | "Fit the open page" | "Zoom to 100%" | "Zoom in" | "Zoom out"): Promise<void> {
+  await bar(page, ["View", "Zoom", command]);
 }
 
 /** Run one of the open page's commands from its row's "more" menu. */

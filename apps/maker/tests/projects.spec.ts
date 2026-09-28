@@ -1,5 +1,5 @@
 import { expect, test, type Page } from "@playwright/test";
-import { addFromPalette, openMaker, savedProject, selectInOutline, stage, layers } from "./fixtures";
+import { addFromPalette, openMaker, savedProject, selectInOutline, stage, layers, bar, syncState } from "./fixtures";
 
 /*
  * Projects: several open at once as tabs, each with its own history, kept by the server and
@@ -30,7 +30,7 @@ test("several projects open as tabs, each keeping its own page and history", asy
   /* Back to the first: its tree, and its history (undo removes its Wrapper, not the Beta Stack). */
   await tabs(page).getByRole("button", { name: /^Alpha/ }).click();
   await expect((await layers(page)).locator(".maker-outline")).toContainText("Wrapper");
-  await page.getByRole("button", { name: "Undo", exact: true }).click();
+  await bar(page, ["Edit", "Undo"]);
   await expect((await layers(page)).locator(".maker-outline")).not.toContainText("Wrapper");
   await tabs(page).getByRole("button", { name: second, exact: true }).click();
   await expect((await layers(page)).locator(".maker-outline")).toContainText("Stack");
@@ -76,7 +76,7 @@ test("a change saved in one window reaches the same project open in another", as
   const id = await openMaker(page, `Shared ${Date.now()}`);
   const other = await context.newPage();
   await other.goto(`/?project=${id}`);
-  await expect(other.locator(".maker__sync")).toHaveText("Saved");
+  await expect(syncState(other)).toHaveText("Saved");
   await selectInOutline(page, "Main");
   await addFromPalette(page, "Wrapper");
   await expect((await layers(other)).locator(".maker-outline")).toContainText("Wrapper");

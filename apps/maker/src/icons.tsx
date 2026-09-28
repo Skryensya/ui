@@ -13,6 +13,7 @@ import {
   ListTree,
   MousePointer2,
   PanelsTopLeft,
+  Play,
   Pointer,
   Redo2,
   Rows3,
@@ -69,6 +70,7 @@ export const makerGlyphs = {
   box: fromLucide(Square),
   component: fromLucide(Component),
   pages: fromLucide(Files),
+  play: fromLucide(Play),
   "add-page": fromLucide(FilePlus2),
   wrapper: fromLucide(PanelsTopLeft),
 } as const;

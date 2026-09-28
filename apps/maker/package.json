@@ -8,7 +8,8 @@
     "dev": "vite",
     "build": "vite build",
     "check": "tsc -p tsconfig.json --noEmit",
-    "test": "playwright test"
+    "test": "playwright test",
+    "thumbnails": "tsx scripts/generate-component-thumbnails.ts"
   },
   "dependencies": {
     "@skryensya/ai-compiler": "workspace:*",

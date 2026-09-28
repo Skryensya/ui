@@ -18,20 +18,40 @@ function freePath(site: MakerSite, base: string): string {
   for (let n = 2; ; n++) if (!taken.has(`${base}-${n}`)) return `${base}-${n}`;
 }
 
-export function Pages({ maker, titleId }: { maker: Maker; titleId: string }) {
+/**
+ * What can be done to the open page, as commands the Pages list and the Maker's bar share. Each is a
+ * site operation, so it is undone like anything else.
+ */
+export function pageCommands(maker: Maker) {
   const { site, page } = maker;
   const index = site.pages.findIndex((entry) => entry.id === page.id);
   const run = (operations: readonly SiteOperation[], open?: string) => maker.siteGesture(operations, open);
+  return {
+    index,
+    canMoveUp: index > 0,
+    canMoveDown: index < site.pages.length - 1,
+    canRemove: site.pages.length > 1,
+    add() {
+      const path = freePath(site, "/page");
+      const id = randomId();
+      run([{ type: "addPage", page: emptyPage(id, `Page ${site.pages.length + 1}`, path, randomId), index: index + 1 }], id);
+    },
+    duplicate() {
+      const copy = duplicatePage(page, `${page.name} copy`, freePath(site, page.path === "/" ? "/home" : page.path), randomId);
+      run([{ type: "addPage", page: copy, index: index + 1 }], copy.id);
+    },
+    moveUp: () => run([{ type: "movePage", page: page.id, index: index - 1 }]),
+    moveDown: () => run([{ type: "movePage", page: page.id, index: index + 1 }]),
+    remove: () => run([{ type: "removePage", page: page.id }]),
+  };
+}
 
-  const add = () => {
-    const path = freePath(site, "/page");
-    const id = randomId();
-    run([{ type: "addPage", page: emptyPage(id, `Page ${site.pages.length + 1}`, path, randomId), index: index + 1 }], id);
-  };
-  const duplicate = () => {
-    const copy = duplicatePage(page, `${page.name} copy`, freePath(site, page.path === "/" ? "/home" : page.path), randomId);
-    run([{ type: "addPage", page: copy, index: index + 1 }], copy.id);
-  };
+export function Pages({ maker, titleId }: { maker: Maker; titleId: string }) {
+  const { site, page } = maker;
+  const commands = pageCommands(maker);
+  const add = commands.add;
+  const duplicate = commands.duplicate;
+  const run = (operations: readonly SiteOperation[], open?: string) => maker.siteGesture(operations, open);
 
   const menu = (entry: MakerSite["pages"][number], at: number) => (
     <Menu
@@ -62,9 +82,12 @@ export function Pages({ maker, titleId }: { maker: Maker; titleId: string }) {
   return (
     <div className="maker-pages">
       <header className="maker__panel-header">
-        <h2 className="maker__panel-title" id={titleId}>
-          Pages
-        </h2>
+        <span>
+          <h2 className="maker__panel-title" id={titleId}>
+            Pages
+          </h2>
+          <span className="maker__panel-meta">{site.pages.length} total</span>
+        </span>
         <Toolbar label="Pages" className="maker-pages__tools">
           <IconButton icon={{ role: "add" }} label="Add a page" onClick={add} />
         </Toolbar>
