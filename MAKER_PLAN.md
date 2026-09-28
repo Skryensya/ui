@@ -260,10 +260,11 @@ dos bindings (ADR-0015) y verde en `ai-gates`.
 
 ## Fase 4. Cierre de la v1
 
-- [ ] Construir en el Maker, sin tocar código, una landing de ejemplo (navbar, hero, grid de tiles, footer) y revisarla a 36 / 52 / 90rem.
-- [ ] Verificar que el TSX y el HTML exportados renderizan igual que el stage (los dos bindings).
-- [ ] Documentar el Maker en `README.md` (qué hace) y enlazar ADR-0031.
-- [ ] Marcar ADR-0031 como aceptado con la evidencia.
+- [x] Construida desde la interfaz, sin tocar código: hero (sección), Wrapper > Stack > Heading + Grid `minColumn: md` con 6 TileLink, footer (sección); revisada a 36 / 52 / 90rem. El Grid pasa de 1 a 2 y a 4 columnas por su propio ancho. Sin navbar: el snippet de navbar no existe todavía.
+- [x] Revisarla destapó que el stage se encogía a la columna disponible (90rem medía 898px). Ahora mide exactamente lo elegido y la columna hace scroll; cubierto en test.
+- [~] TSX/HTML exportados = stage: el stage renderiza la misma proyección (`toUsageTree` + `data-maker-node`) con `renderTree`, y el export usa `emitReact`/`emitMarkup` sobre esa misma proyección; la igualdad React/markup ya la prueba el gate de simetría de `ai-gates`. No hay una comparación de píxeles propia del Maker.
+- [x] Documentado en `README.md` (paquetes `maker-model` y `maker`) con enlace a ADR-0031.
+- [x] ADR-0031 no lleva estado: las ADR de este repo no tienen campo de estado.
 
 ---
 
