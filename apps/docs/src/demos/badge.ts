@@ -84,6 +84,19 @@ export const badgeAnatomyTree = (t: Translate): UsageTree => ({
 });
 
 
+export const badgeTagTree = (_t: Translate): UsageTree => ({
+  contract: "layout",
+  signature: "Inline",
+  options: { gap: "sm" },
+  children: [
+    { contract: "badge", signature: "Badge", options: { tone: "neutral" }, children: "Neutral" },
+    { contract: "badge", signature: "Badge", options: { tone: "accent" }, children: "Accent" },
+    { contract: "badge", signature: "Badge", options: { tone: "success" }, children: "Success" },
+    { contract: "badge", signature: "Badge", options: { tone: "warning" }, children: "Warning" },
+    { contract: "badge", signature: "Badge", options: { tone: "danger" }, children: "Danger" },
+  ],
+});
+
 export const badgeDotsTree = (_t: Translate): UsageTree => ({
   contract: "layout",
   signature: "Inline",

@@ -37,7 +37,7 @@ import { buildPreviewFrameDocument } from "../lib/preview-frame";
 import { exampleComponentName } from "../lib/example-component-name";
 import { compileDemoScript } from "../lib/demo-script";
 import { getLocale, useTranslations } from "../i18n";
-import { playgroundUrl } from "../lib/navigation";
+import { playgroundUrl, storybookDocsUrl, storybookReactUrl, storybookVanillaUrl } from "../lib/navigation";
 import { previewHeight } from "../lib/preview-heights";
 import { slugify } from "../lib/document-index";
 import { treeAnchorId } from "../lib/tree-anchor";
@@ -167,6 +167,16 @@ interface Props {
    * does not. Omit to inherit the panel's default.
    */
   width?: "narrow" | "content" | "breakout" | "full-width";
+  /*
+   * PILOT: the generated Storybook story this preview's tree became (`storybookDocsUrl`,
+   * `lib/navigation.ts`), so its overflow menu can hand the reader off to that story's "Show code"
+   * block instead of (or alongside) the source panels below. `storybookTitle` is the story's "kind"
+   * exactly as `generate-stories.ts` computes it (`Components/<catalog group>/<label>`); `storybookStory`
+   * is the PascalCase story name it derives from the demo export. Both are required together: a href
+   * built from only one would be wrong, not merely absent.
+   */
+  storybookTitle?: string;
+  storybookStory?: string;
 }
 
 const {
@@ -193,6 +203,8 @@ const {
   hideSource = false,
   chrome = true,
   width,
+  storybookTitle,
+  storybookStory,
 } = Astro.props;
 const locale = getLocale(Astro.url);
 const t = useTranslations(locale);
@@ -297,6 +309,15 @@ const playgroundHandoff =
   vanillaCode && playgroundUrl
     ? encodeURIComponent(JSON.stringify({ label: label ?? tree?.contract ?? "", vanilla: vanillaCode }))
     : undefined;
+/*
+ * PILOT: both Storybook hrefs at once, one per deployed app. `storybookDocsUrl` itself returns null
+ * for whichever base is not configured (same as `playgroundUrl`), and both are null when this preview
+ * was never told which story it became.
+ */
+const storybookReactHref =
+  storybookTitle && storybookStory ? storybookDocsUrl(storybookReactUrl, storybookTitle, storybookStory) : null;
+const storybookVanillaHref =
+  storybookTitle && storybookStory ? storybookDocsUrl(storybookVanillaUrl, storybookTitle, storybookStory) : null;
 /*
  * The `react` slot carries the LIVE demo (an actual `@skryensya/react` component, `client:visible`);
  * the `react` string prop stays the source shown under it. Either alone still counts as "there is a
@@ -661,6 +682,46 @@ const stageStyle =
                   target="_blank"
                 >
                   <span class="sk-menu__item-label">{t("preview.playgroundAction")}</span>
+                  <span class="sk-component-preview__menu-icon">
+                    <Fragment set:html={playgroundIcon} />
+                  </span>
+                </a>
+              )
+            }
+            {
+              /*
+               * PILOT: STORYBOOK, same reasoning and same shape as the Playground item above, one
+               * per deployed app. Gated on both a configured base URL and this preview knowing which
+               * story its tree became (`storybookTitle`/`storybookStory`): a page that never set
+               * those has nothing here, same as it had before this pilot.
+               */
+              storybookReactHref && (
+                <a
+                  class="sk-menu__item sk-interactive"
+                  data-sk-menu-item
+                  data-value="storybook-react"
+                  href={storybookReactHref}
+                  rel="noreferrer"
+                  target="_blank"
+                >
+                  <span class="sk-menu__item-label">{t("preview.storybookReactAction")}</span>
+                  <span class="sk-component-preview__menu-icon">
+                    <Fragment set:html={playgroundIcon} />
+                  </span>
+                </a>
+              )
+            }
+            {
+              storybookVanillaHref && (
+                <a
+                  class="sk-menu__item sk-interactive"
+                  data-sk-menu-item
+                  data-value="storybook-vanilla"
+                  href={storybookVanillaHref}
+                  rel="noreferrer"
+                  target="_blank"
+                >
+                  <span class="sk-menu__item-label">{t("preview.storybookVanillaAction")}</span>
                   <span class="sk-component-preview__menu-icon">
                     <Fragment set:html={playgroundIcon} />
                   </span>

@@ -3,6 +3,8 @@ export const previewMessages = {
 
     "preview.reloadAction": "Recargar",
     "preview.playgroundAction": "Playground",
+    "preview.storybookReactAction": "Storybook (React)",
+    "preview.storybookVanillaAction": "Storybook (Vanilla)",
     "preview.moreActions": "Más acciones: {name}",
     "preview.screenToggleLabel": "Tamaño de pantalla ({name}): {hint}",
     "preview.bindingGroup": "Vínculo del código: {name}",
@@ -30,6 +32,8 @@ export const previewMessages = {
 
     "preview.reloadAction": "Reload",
     "preview.playgroundAction": "Playground",
+    "preview.storybookReactAction": "Storybook (React)",
+    "preview.storybookVanillaAction": "Storybook (Vanilla)",
     "preview.moreActions": "More actions: {name}",
     "preview.screenToggleLabel": "Screen size ({name}): {hint}",
     "preview.bindingGroup": "Code binding: {name}",

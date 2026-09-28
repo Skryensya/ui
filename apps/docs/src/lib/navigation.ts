@@ -1,5 +1,6 @@
 import { isPausedRoute } from "@skryensya/core/paused";
 import { hasTranslation, localizePath, navLabel, useTranslations, type Locale } from "../i18n";
+import { slugify } from "./document-index";
 
 /** Maturity of a component's contract. Only meaningful within `componentItems`. */
 export type ComponentStatus = "wip" | "stable";
@@ -1203,6 +1204,46 @@ export const playgroundUrl: string | null =
  */
 export const makerUrl: string | null =
   import.meta.env.PUBLIC_MAKER_URL ?? (import.meta.env.DEV ? "http://localhost:4200/" : null);
+
+/*
+ * THE TWO STORYBOOKS (apps/storybook-react, apps/storybook-vanilla) are separate deployed apps, same
+ * reasoning as `playgroundUrl` above: null where none is known to exist, rather than a bare path that
+ * 404s on a topology that does not put every app behind one host.
+ */
+export const storybookReactUrl: string | null =
+  import.meta.env.PUBLIC_STORYBOOK_REACT_URL ??
+  (import.meta.env.DEV ? "http://localhost:6006/" : null);
+
+export const storybookVanillaUrl: string | null =
+  import.meta.env.PUBLIC_STORYBOOK_VANILLA_URL ??
+  (import.meta.env.DEV ? "http://localhost:6007/" : null);
+
+/*
+ * ONE EXAMPLE, ONE STORY: the deep link a `ComponentPreview` hands over when it knows which generated
+ * story (each storybook app's own `scripts/generate-stories.ts`) its tree became. `title` is the story's
+ * "kind" as that script computes it (`Components/<catalog group>/<label>`, English always: Storybook
+ * has no locale), `story` is the PascalCase export name it derives from the demo's own export
+ * (`badgeSmallTree` -> `Small`). The id this builds is exactly what Storybook's own `toId(kind, name)`
+ * produces, verified against a real build's `index.json` rather than assumed: lower-case, every run of
+ * non `[a-z0-9]` collapsed to one `-`, kind and story joined by `--`. `slugify` (this file already
+ * imports it for nothing else, `document-index.ts`) happens to do exactly that.
+ *
+ * Points at the component's DOCS page (`/docs/<id>--docs`), not its bare story: that is the one route
+ * `@storybook/addon-docs` is guaranteed to render every story's source under a "Show code" block on,
+ * autodocs needing no further setup than the `tags: ["autodocs"]` every generated file already
+ * carries. The story's own anchor is appended as a hash for a direct scroll where Storybook's docs
+ * page happens to honor one; landing on the page at all does not depend on it.
+ */
+export function storybookDocsUrl(
+  base: string | null,
+  title: string,
+  story: string,
+): string | null {
+  if (!base) return null;
+  const kind = slugify(title);
+  const name = slugify(story);
+  return `${base}?path=/docs/${kind}--docs#${name}`;
+}
 
 /*
  * LAST, AND THAT IS THE POINT OF THE ORDER. Everything before it is a place on this site, and the
