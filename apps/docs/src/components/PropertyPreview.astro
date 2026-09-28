@@ -14,16 +14,23 @@ import { getContract, getSignature } from "@skryensya/core/registry";
 import { signatureOptions } from "@skryensya/core/contract";
 import type { UsageTree } from "@skryensya/core/usage-tree";
 import { PropertyPlayground } from "./react-demos/property-playground";
-import "@skryensya/core/components/segmented.css";
+import { iconMarkup } from "../icons";
+import { storybookDocsUrl, storybookReactUrl } from "../lib/navigation";
+import "@skryensya/core/components/radio-group.css";
 
 interface Props {
   tree: UsageTree;
   /** The one option this preview lets the reader vary. Must be `type: "enum"` on the signature. */
   optionName: string;
   label?: string;
+  /** "Cuándo usar" copy per value. Renders only for the value currently selected, when given. */
+  whenToUse?: Record<string, string>;
+  /** Same pair `ComponentPreview` takes (`lib/navigation.ts`). Omit either and no code link renders. */
+  storybookTitle?: string;
+  storybookStory?: string;
 }
 
-const { tree, optionName, label } = Astro.props;
+const { tree, optionName, label, whenToUse, storybookTitle, storybookStory } = Astro.props;
 
 const contract = getContract(tree.contract);
 if (!contract) throw new Error(`PropertyPreview: no contract "${tree.contract}".`);
@@ -38,18 +45,41 @@ const [, option] = found;
 if (option.type !== "enum" || !option.values) {
   throw new Error(`PropertyPreview: "${optionName}" is a "${option.type}" option, not an enum.`);
 }
+
+const codeHref =
+  storybookTitle && storybookStory ? storybookDocsUrl(storybookReactUrl, storybookTitle, storybookStory) : null;
+const codeIcon = iconMarkup("code", { size: "sm" });
 ---
 
 <div class="sk-property-preview">
   {label && <p class="sk-property-preview__label">{label}</p>}
-  <PropertyPlayground
-    client:visible
-    tree={tree}
-    optionName={optionName}
-    values={option.values}
-    defaultValue={(option.default as string | undefined) ?? option.values[0]}
-    controlLabel={`${optionName} (${tree.contract} ${tree.signature})`}
-  />
+  <div class="sk-property-preview__card">
+    <div class="sk-property-preview__header">
+      <span class="sk-property-preview__name">{optionName}</span>
+      {
+        codeHref && (
+          <a
+            class="sk-property-preview__code-link"
+            href={codeHref}
+            rel="noreferrer"
+            target="_blank"
+            aria-label={`Ver código (${optionName})`}
+          >
+            <Fragment set:html={codeIcon} />
+          </a>
+        )
+      }
+    </div>
+    <PropertyPlayground
+      client:visible
+      tree={tree}
+      optionName={optionName}
+      values={option.values}
+      defaultValue={(option.default as string | undefined) ?? option.values[0]}
+      controlLabel={`${optionName} (${tree.contract} ${tree.signature})`}
+      whenToUse={whenToUse}
+    />
+  </div>
 </div>
 
 <style>
@@ -65,12 +95,43 @@ if (option.type !== "enum" || !option.values) {
     font-weight: var(--font-weight-emphasis);
   }
 
-  .sk-property-preview :global(.sk-property-playground) {
-    display: grid;
+  .sk-property-preview__card {
     border: 1px solid var(--color-border-subtle);
     border-radius: var(--radius-surface);
     background: var(--color-bg-surface);
     overflow: hidden;
+  }
+
+  .sk-property-preview__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-inline-sm);
+    padding: var(--space-inset-sm) var(--space-inset-md);
+    border-block-end: 1px solid var(--color-border-subtle);
+    background: var(--color-bg-surface-sunken);
+  }
+
+  .sk-property-preview__name {
+    color: var(--color-text-secondary);
+    font-family: var(--font-family-code);
+    font-size: var(--font-size-caption);
+    font-weight: var(--font-weight-emphasis);
+  }
+
+  .sk-property-preview__code-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    inline-size: 1.75rem;
+    block-size: 1.75rem;
+    border-radius: var(--radius-control);
+    color: var(--color-text-tertiary);
+  }
+
+  .sk-property-preview__code-link:hover {
+    background: var(--color-bg-surface);
+    color: var(--color-text-secondary);
   }
 
   .sk-property-preview :global(.sk-property-playground__stage) {
@@ -79,20 +140,29 @@ if (option.type !== "enum" || !option.values) {
     justify-content: center;
     min-block-size: 8rem;
     padding: var(--space-inset-lg);
-    background: var(--color-bg-surface-sunken);
   }
 
   .sk-property-preview :global(.sk-property-playground__control) {
     display: flex;
     align-items: center;
-    gap: var(--space-inline-sm);
     padding: var(--space-inset-sm) var(--space-inset-md);
     border-block-start: 1px solid var(--color-border-subtle);
   }
 
-  .sk-property-preview :global(.sk-property-playground__control-label) {
-    color: var(--color-text-tertiary);
-    font-family: var(--font-family-code);
+  .sk-property-preview :global(.sk-property-playground__when) {
+    padding: var(--space-inset-sm) var(--space-inset-md) var(--space-inset-md);
+    border-block-start: 1px solid var(--color-border-subtle);
+  }
+
+  .sk-property-preview :global(.sk-property-playground__when-title) {
+    margin: 0 0 var(--space-stack-xs);
+    color: var(--color-text-secondary);
     font-size: var(--font-size-caption);
+    font-weight: var(--font-weight-emphasis);
+  }
+
+  .sk-property-preview :global(.sk-property-playground__when-body) {
+    margin: 0;
+    color: var(--color-text-secondary);
   }
 </style>
