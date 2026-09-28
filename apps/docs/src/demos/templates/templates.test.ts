@@ -1,22 +1,7 @@
 import { validateUsageTree } from "@skryensya/ai-compiler/validate";
 import { describe, expect, it } from "vitest";
 import { useTranslations, type Translate } from "../../i18n";
-import { appShellExplorerTree, appShellTree } from "../app-shell";
-import { articleTree } from "./article";
-import { bookingTree } from "./booking";
-import { changelogTree } from "./changelog";
-import { checkoutTree } from "./checkout";
-import { dashboardTree } from "./dashboard";
-import { docsSiteTree } from "./docs-site";
-import { helpCenterTree } from "./help-center";
-import { marketingTree } from "./marketing";
-import { notFoundTree } from "./not-found";
-import { onboardingTree } from "./onboarding";
-import { pricingTree } from "./pricing";
-import { productTree } from "./product";
-import { settingsTree } from "./settings";
-import { signInTree } from "./sign-in";
-import { teamTree } from "./team";
+import { templateTrees } from "./registry";
 
 /*
  * EVERY TEMPLATE, AGAINST ITS CONTRACTS.
@@ -34,25 +19,7 @@ import { teamTree } from "./team";
  */
 const t: Translate = useTranslations("es");
 
-const templates: Record<string, () => ReturnType<typeof marketingTree>> = {
-  "app-shell": () => appShellTree(t),
-  "app-shell-explorer": () => appShellExplorerTree(t),
-  marketing: () => marketingTree(t),
-  "docs-site": () => docsSiteTree(t),
-  dashboard: () => dashboardTree(t, "es"),
-  checkout: () => checkoutTree(t, "es"),
-  pricing: () => pricingTree(t, "es"),
-  "sign-in": () => signInTree(t),
-  settings: () => settingsTree(t),
-  onboarding: () => onboardingTree(t),
-  product: () => productTree(t, "es"),
-  article: () => articleTree(t),
-  "help-center": () => helpCenterTree(t),
-  booking: () => bookingTree(t, "es"),
-  changelog: () => changelogTree(t),
-  team: () => teamTree(t),
-  "not-found": () => notFoundTree(t),
-};
+const templates = templateTrees(t, "es");
 
 describe("templates", () => {
   for (const [name, build] of Object.entries(templates)) {
@@ -73,23 +40,9 @@ describe("templates", () => {
    */
   it("every template renders in both locales", () => {
     const en = useTranslations("en");
-    const built = {
-      marketing: [marketingTree(t), marketingTree(en)],
-      "docs-site": [docsSiteTree(t), docsSiteTree(en)],
-      dashboard: [dashboardTree(t, "es"), dashboardTree(en, "en")],
-      checkout: [checkoutTree(t, "es"), checkoutTree(en, "en")],
-      pricing: [pricingTree(t, "es"), pricingTree(en, "en")],
-      "sign-in": [signInTree(t), signInTree(en)],
-      settings: [settingsTree(t), settingsTree(en)],
-      onboarding: [onboardingTree(t), onboardingTree(en)],
-      product: [productTree(t, "es"), productTree(en, "en")],
-      article: [articleTree(t), articleTree(en)],
-      "help-center": [helpCenterTree(t), helpCenterTree(en)],
-      booking: [bookingTree(t, "es"), bookingTree(en, "en")],
-      changelog: [changelogTree(t), changelogTree(en)],
-      team: [teamTree(t), teamTree(en)],
-      "not-found": [notFoundTree(t), notFoundTree(en)],
-    };
+    const spanishTrees = templateTrees(t, "es");
+    const englishTrees = templateTrees(en, "en");
+    const built = Object.fromEntries(Object.keys(spanishTrees).map((name) => [name, [spanishTrees[name]!(), englishTrees[name]!()]]));
     for (const [name, [spanish, english]] of Object.entries(built)) {
       expect(JSON.stringify(english), `${name} is not translated`).not.toEqual(
         JSON.stringify(spanish),

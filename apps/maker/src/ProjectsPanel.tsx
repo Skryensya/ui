@@ -1,4 +1,6 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { NativeSelect } from "@skryensya/react/select-native";
+import { listTemplates, templateSite, type TemplateEntry, type TemplateLocale } from "./templates";
 import { Button } from "@skryensya/react/button";
 import { Icon } from "@skryensya/react/icon";
 import { Input } from "@skryensya/react/input";
@@ -58,6 +60,8 @@ export function ProjectsPanel({ workspace, onClose }: { workspace: Workspace; on
             Create
           </Button>
         </form>
+
+        <TemplateGallery workspace={workspace} onCreated={onClose} />
 
         {workspace.error ? (
           <Text size="sm" role="alert">
@@ -123,5 +127,53 @@ export function ProjectsPanel({ workspace, onClose }: { workspace: Workspace; on
         )}
       </Stack>
     </div>
+  );
+}
+
+/** The docs gallery's templates: a new project starts as one of them. */
+function TemplateGallery({ workspace, onCreated }: { workspace: Workspace; onCreated?: () => void }) {
+  const [open, setOpen] = useState(false);
+  const [locale, setLocale] = useState<TemplateLocale>("es");
+  const [templates, setTemplates] = useState<TemplateEntry[]>([]);
+  const [busy, setBusy] = useState<string>();
+
+  useEffect(() => {
+    if (open) void listTemplates(locale).then(setTemplates);
+  }, [open, locale]);
+
+  const start = async (id: string) => {
+    setBusy(id);
+    const opened = await templateSite(id, locale);
+    if (opened) await workspace.create(opened.title, opened.site);
+    setBusy(undefined);
+    onCreated?.();
+  };
+
+  return (
+    <details className="maker-templates" onToggle={(event) => setOpen(event.currentTarget.open)}>
+      <summary>Start from a template</summary>
+      <Stack gap="sm">
+        <FormField label="Language">
+          <NativeSelect
+            value={locale}
+            onChange={(event) => setLocale(event.currentTarget.value as TemplateLocale)}
+            options={[
+              { value: "es", label: "Español" },
+              { value: "en", label: "English" },
+            ]}
+          />
+        </FormField>
+        <ul className="maker-templates__list" aria-label="Templates">
+          {templates.map((template) => (
+            <li key={template.id}>
+              <button type="button" className="maker-projects__open" disabled={busy !== undefined} onClick={() => void start(template.id)}>
+                <span className="maker-projects__name">{busy === template.id ? "Creating…" : template.title}</span>
+                <span className="maker-projects__meta">{template.description}</span>
+              </button>
+            </li>
+          ))}
+        </ul>
+      </Stack>
+    </details>
   );
 }

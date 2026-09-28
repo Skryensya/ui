@@ -11,6 +11,20 @@ import {
 } from "./projects";
 import { forgetProject, LOCAL_PROJECT, seedProject } from "./state";
 import { closed, opened } from "./sync";
+import { templateSite, type TemplateLocale } from "./templates";
+
+/* A template request is honoured once per page load, whatever React does with effects. */
+let templateTaken = false;
+function takeTemplateRequest(params: URLSearchParams): string | undefined {
+  const id = params.get("template");
+  if (!id || templateTaken) return undefined;
+  templateTaken = true;
+  const url = new URL(window.location.href);
+  url.searchParams.delete("template");
+  url.searchParams.delete("lang");
+  window.history.replaceState(null, "", url);
+  return id;
+}
 
 /*
  * THE WORKSPACE: which projects exist, which are open as tabs, and which one shows. Open tabs and
@@ -116,10 +130,22 @@ export function useWorkspace() {
   /* Start: find out whether there is a server, then reopen what was open. */
   useEffect(() => {
     /* Read before anything is awaited: once the workspace is up it writes the address itself. */
-    const fromAddress = new URLSearchParams(window.location.search).get("project");
+    const params = new URLSearchParams(window.location.search);
+    const fromAddress = params.get("project");
+    /* `?template=<id>&lang=<es|en>`: the docs gallery's "Open in Maker". Taken once, then dropped
+       from the address so a reload does not make a second project. */
+    const templateId = takeTemplateRequest(params);
+    const templateLocale: TemplateLocale = params.get("lang") === "en" ? "en" : "es";
     void (async () => {
       const server = await available();
       if (!server.ok) {
+        if (templateId) {
+          const opened = await templateSite(templateId, templateLocale);
+          if (opened) {
+            forgetProject(LOCAL_PROJECT);
+            seedProject(LOCAL_PROJECT, opened.site);
+          }
+        }
         seedProject(LOCAL_PROJECT);
         setMode({ kind: "local", reason: server.reason });
         setOpen([LOCAL_PROJECT]);
@@ -134,6 +160,16 @@ export function useWorkspace() {
       for (const id of tabs) await openProject(id);
       const wanted = fromAddress && exists.has(fromAddress) ? fromAddress : read<string | null>(ACTIVE_KEY, null);
       setActive(wanted && tabs.includes(wanted) ? wanted : tabs.at(-1));
+      if (templateId) {
+        const opened = await templateSite(templateId, templateLocale);
+        if (opened) {
+          const project = await createProject(opened.title, opened.site);
+          setProjects(await listProjects().catch(() => [] as ProjectSummary[]));
+          await openProject(project.id);
+        } else {
+          setError(`No template "${templateId}".`);
+        }
+      }
       /* Last: from here on the workspace remembers itself, so it must already be what it restored. */
       setMode({ kind: "server", store: server.store });
     })();

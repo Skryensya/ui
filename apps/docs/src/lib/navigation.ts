@@ -1190,6 +1190,14 @@ export const playgroundUrl: string | null =
   (import.meta.env.DEV ? "http://localhost:4174/" : null);
 
 /*
+ * THE MAKER (apps/maker) runs on the machine of whoever builds pages with it, so the gallery's
+ * "Open in Maker" link points at it only where one is known to exist: PUBLIC_MAKER_URL when set, the
+ * Maker's dev address in development, and nowhere (no link at all) on a build that names none.
+ */
+export const makerUrl: string | null =
+  import.meta.env.PUBLIC_MAKER_URL ?? (import.meta.env.DEV ? "http://localhost:4200/" : null);
+
+/*
  * LAST, AND THAT IS THE POINT OF THE ORDER. Everything before it is a place on this site, and the
  * row reads as one journey through the documentation: start, foundations, the catalogue, what you
  * can build from it. The Playground is not a further step along that path, it is a different
