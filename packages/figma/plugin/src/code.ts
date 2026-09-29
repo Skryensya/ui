@@ -615,6 +615,8 @@ async function syncSpecimen(ctx: SetCtx, found: Map<string, SceneNode>, page: Pa
     page.appendChild(frame);
   }
   tag(run, frame, provenance("specimen", "specimen"));
+  // Registered here so `arrange` places it below the sets instead of leaving it at the origin.
+  found.set("specimen", frame);
 
   const entries = new Map(frame.children.map((c) => [getTag(c, "specimen"), c as FrameNode]));
   let created = 0;
