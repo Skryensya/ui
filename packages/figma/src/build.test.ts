@@ -224,7 +224,7 @@ describe("the stage", () => {
 describe("representation", () => {
   it("stays far below the naive product", () => {
     const report = manifest.report as { variants: { naiveAllOptions: Record<string, number>; variantsTotal: number } };
-    expect(report.variants.naiveAllOptions.button).toBe(27648);
+    expect(report.variants.naiveAllOptions.button).toBe(20736);
     for (const set of sets) expect(set.cells.length).toBeLessThanOrEqual(500);
     expect(report.variants.variantsTotal).toBe(sets.reduce((n, s) => n + s.cells.length, 0));
   });

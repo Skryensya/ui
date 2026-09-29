@@ -3,8 +3,25 @@
 # `surface` is the shape of the contract the last time somebody reviewed it. If the compiler says it
 # does not match, something a consumer depends on has moved: write the entry and paste in the new
 # hash.
-surface: "a061323dc856294e"
+surface: "ee96ffb5f7ad76f0"
 entries:
+  - date: 2026-09-29
+    kind: breaking
+    target: variant
+    es:
+      title: translucent se funde en un soft mejor
+      body: >-
+        <code>variant</code> queda en <code>solid</code>, <code>soft</code> y <code>ghost</code>. <code>soft</code> toma la
+        pintura semitransparente de <code>translucent</code>: sobre el lienzo se lee como un gris suave y sobre un fondo de
+        color o una foto se funde en vez de tapar. Con tono es un lavado de su acento mezclado con transparente. Donde decía
+        <code>variant="translucent"</code>, escribe <code>variant="soft"</code>.
+    en:
+      title: translucent folds into a better soft
+      body: >-
+        <code>variant</code> is now <code>solid</code>, <code>soft</code> and <code>ghost</code>. <code>soft</code> takes
+        <code>translucent</code>'s see-through paint: on canvas it reads as a quiet grey, over a coloured card or a photo it
+        blends instead of covering. Toned, it is a wash of its accent mixed into transparent. Where you wrote
+        <code>variant="translucent"</code>, write <code>variant="soft"</code>.
   - date: 2026-09-27
     kind: rework
     target: appearance

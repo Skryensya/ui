@@ -7,7 +7,7 @@ export const calloutWithRetryCase: EvalCase = {
     en: "An error notice with a button to retry the operation.",
   },
   notes: [
-    "Amplitud: la acción de un Callout está restringida por el contrato a `translucent`/`danger` " +
+    "Amplitud: la acción de un Callout está restringida por el contrato a `soft`/`danger` " +
       "(`restrictOptions`), así nunca compite visualmente con el botón primario real de la pantalla.",
   ],
   tree: {

@@ -15,7 +15,7 @@ import { getLightbox, mountLightbox } from "./lightbox.js";
  */
 
 const control = (action: string, label: string) =>
-  `<button type="button" class="sk-lightbox__control sk-button sk-interactive" data-lightbox-action="${action}" aria-label="${label}" data-icon-only data-variant="translucent" data-size="md"><span data-sk-icon="x"></span></button>`;
+  `<button type="button" class="sk-lightbox__control sk-button sk-interactive" data-lightbox-action="${action}" aria-label="${label}" data-icon-only data-variant="soft" data-size="md"><span data-sk-icon="x"></span></button>`;
 
 function markup(attrs = ""): string {
   return `

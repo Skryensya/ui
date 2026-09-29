@@ -62,16 +62,15 @@ export const buttonContract = {
      * a single list spelled six of them, picking arbitrarily which. You got loud-destructive but not
      * quiet-destructive, quiet-neutral but not quiet-primary.
      *
-     *   solid        the fill carries it. A form's submit, a confirm.
-     *   soft         a fill that recedes: present, not competing. (This was `subtle`.)
-     *   ghost        ink only. Toolbars, action rows, anywhere a box per control would be noise.
-     *   translucent  soft, for an UNKNOWN surface behind: over media, over a colored card. Slightly
-     *                impure on this axis (it is really a surface adaptation), and kept here anyway
-     *                because a third axis for one value would cost more than it explains.
+     *   solid   the fill carries it. A form's submit, a confirm.
+     *   soft    a see-through fill that recedes: present, not competing, and at home on any
+     *           surface, canvas, a coloured card or a photograph. (It was `subtle`, and it absorbed
+     *           `translucent`, which was the same paint for an unknown surface under a second name.)
+     *   ghost   ink only. Toolbars, action rows, anywhere a box per control would be noise.
      */
     variant: {
       type: "enum",
-      values: ["solid", "soft", "ghost", "translucent"],
+      values: ["solid", "soft", "ghost"],
       default: "solid",
       attr: "data-variant",
     },
@@ -102,7 +101,7 @@ export const buttonContract = {
      * flat face, strong outline, zero-blur offset shadow and mechanical travel. `frosted` is a
      * material: a translucent face over a blurred backdrop, with an opaque baseline wherever the
      * material cannot be trusted (no backdrop-filter, reduced transparency, high contrast, forced
-     * colors). Not the `translucent` variant: that is how loud the paint is over an unknown
+     * colors). Not the `soft` variant: that is how loud the paint is over an unknown
      * surface; frosted is how the surface behind is processed, and it composes with every variant.
      * Independent axis: never spell this as `tactile-solid`, `frosted-danger`, or another compound
      * value.
@@ -149,7 +148,7 @@ export const buttonContract = {
      * group's middle members). Removes BOTH things a round, bordered corner there would get
      * wrong: the corner's own rounding (reads as a gap between two separate controls instead of
      * a seam in one welded shape) AND the edge's own border color (for any variant that paints
-     * one: `solid`, `soft`, `translucent`. A visible border sitting right next to whatever the
+     * one: `solid`, `soft`. A visible border sitting right next to whatever the
      * neighbor paints on ITS OWN touching edge doubles the seam into two competing lines; a
      * toned fill and `ghost` never had this problem, their own border is already transparent,
      * which is exactly why the bug stayed hidden until an example paired two neutral halves).

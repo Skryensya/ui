@@ -5817,7 +5817,7 @@ describe("generic rules: groups, pairs, counts, positions, conditions, vocabular
         options: { label: "Más", ...options },
         slots: { trigger: "Más", items: [{ options: { value: "a" }, slots: { label: "A" } }] },
       }) as UsageTree;
-    expect(messageFor(menu({ triggerVariant: "accent" }), "invalid-option-value")).toContain("solid, soft, ghost, translucent");
+    expect(messageFor(menu({ triggerVariant: "accent" }), "invalid-option-value")).toContain("solid, soft, ghost");
     expect(rules(menu({ triggerVariant: "soft", triggerTone: "danger", triggerSize: "sm" }))).not.toContain("invalid-option-value");
   });
 

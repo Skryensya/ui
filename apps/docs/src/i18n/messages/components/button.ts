@@ -31,7 +31,7 @@ export const buttonMessages = {
     "button.defaultLabel": "Button con valores por defecto",
     "button.variantsTitle": "Énfasis y tono",
     "button.variantsBody":
-      "<code>variant</code> dice <strong>qué tan fuerte</strong> es el botón: <code>solid</code>, <code>soft</code>, <code>ghost</code> o <code>translucent</code>. <code>tone</code> dice <strong>qué significa</strong>: <code>neutral</code>, <code>accent</code> o <code>danger</code>. Son dos decisiones independientes, así que se combinan todas: filas por énfasis, columnas por tono. Un botón ejecuta una acción, por eso no tiene los tonos <code>success</code> ni <code>warning</code> de Badge.",
+      "<code>variant</code> dice <strong>qué tan fuerte</strong> es el botón: <code>solid</code>, <code>soft</code> o <code>ghost</code>. <code>tone</code> dice <strong>qué significa</strong>: <code>neutral</code>, <code>accent</code> o <code>danger</code>. Son dos decisiones independientes, así que se combinan todas: filas por énfasis, columnas por tono. Un botón ejecuta una acción, por eso no tiene los tonos <code>success</code> ni <code>warning</code> de Badge.",
     "button.variantsLabel": "Todos los énfasis por todos los tonos",
     "button.destructiveTitle": "La excepción que se compara",
     "button.destructiveBody":
@@ -43,7 +43,7 @@ export const buttonMessages = {
     "button.appearanceLabel": "La misma acción en plain, tactile, brutalist y frosted",
     "button.brutalistMatrixTitle": "Brutalist en cada énfasis y tono",
     "button.brutalistMatrixBody":
-      "El énfasis sigue diciendo qué tan fuerte es: <code>solid</code> gasta toda la construcción, <code>soft</code> y <code>translucent</code> una sombra más corta y más clara, y <code>ghost</code> sólo tinta, sin relleno. <code>translucent</code> conserva su cara semitransparente y deriva el borde de su propio color de texto, así que sigue funcionando sobre cualquier superficie. El tono no cambia.",
+      "El énfasis sigue diciendo qué tan fuerte es: <code>solid</code> gasta toda la construcción, <code>soft</code> una sombra más corta y más clara, y <code>ghost</code> sólo tinta, sin relleno. <code>soft</code> conserva su cara semitransparente, así que sigue funcionando sobre cualquier superficie. El tono no cambia.",
     "button.brutalistMatrixLabel": "Brutalist: todos los énfasis por todos los tonos",
     "button.brutalistRadiusTitle": "Brutalist no es un radio",
     "button.brutalistRadiusBody":
@@ -59,11 +59,11 @@ export const buttonMessages = {
     "button.brutalistShapesLabel": "Brutalist solo icono, como enlace y soldado",
     "button.frostedTitle": "Frosted: un material, no una pintura",
     "button.frostedBody":
-      "<code>frosted</code> hace la cara de un material translúcido: deja pasar lo que hay detrás, difuminado y saturado, con un borde fino y un brillo arriba. No es el énfasis <code>translucent</code>. <code>translucent</code> decide cuánto deja ver la pintura; <code>frosted</code> decide cómo se procesa lo de atrás. Cada fila abre con un <code>translucent</code> plain, sobre la superficie de la página, un degradado de color y una foto: el variant deja ver el fondo nítido, el material lo difumina.",
+      "<code>frosted</code> hace la cara de un material translúcido: deja pasar lo que hay detrás, difuminado y saturado, con un borde fino y un brillo arriba. No es el énfasis <code>soft</code>. <code>soft</code> decide cuánto deja ver la pintura; <code>frosted</code> decide cómo se procesa lo de atrás. Cada fila abre con un <code>soft</code> plain, sobre la superficie de la página, un degradado de color y una foto: el variant deja ver el fondo nítido, el material lo difumina.",
     "button.frostedBackdropsLabel": "Frosted sobre superficie, color y foto",
     "button.frostedMatrixTitle": "Frosted en cada énfasis y tono",
     "button.frostedMatrixBody":
-      "<code>solid</code> es la cara más densa y <code>soft</code> una más delgada. En <code>accent</code> y <code>danger</code> la cara casi no deja pasar el fondo: es lo que cuesta que el texto mantenga 4.5:1 sobre un fondo negro o blanco, y el material se lee en el borde, el brillo y el tinte difuminado. <code>ghost</code> sigue sin cuerpo: es una lámina tenue de la superficie, así que su legibilidad depende del fondo igual que la de un ghost plain. <code>translucent</code> conserva exactamente la pintura de su variant y le suma el difuminado: una sola lámina, no dos opacidades.",
+      "<code>solid</code> es la cara más densa y <code>soft</code> una más delgada. En <code>accent</code> y <code>danger</code> la cara casi no deja pasar el fondo: es lo que cuesta que el texto mantenga 4.5:1 sobre un fondo negro o blanco, y el material se lee en el borde, el brillo y el tinte difuminado. <code>ghost</code> sigue sin cuerpo: es una lámina tenue de la superficie, así que su legibilidad depende del fondo igual que la de un ghost plain.",
     "button.frostedMatrixLabel": "Frosted: todos los énfasis por todos los tonos sobre una foto",
     "button.frostedDetailsTitle": "Radio, estados y formas",
     "button.frostedDetailsBody":
@@ -93,9 +93,8 @@ export const buttonMessages = {
     "button.prop.variant.title": "Énfasis",
     "button.prop.variant.body": "<code>variant</code> decide qué tan fuerte se ve el botón.",
     "button.prop.variant.solid": "Usa <code>solid</code> para la acción principal o una confirmación.",
-    "button.prop.variant.soft": "Usa <code>soft</code> para una acción visible pero secundaria.",
+    "button.prop.variant.soft": "Usa <code>soft</code> para una acción visible pero secundaria, también sobre superficies de color o con imagen.",
     "button.prop.variant.ghost": "Usa <code>ghost</code> en barras o filas donde la caja sobra.",
-    "button.prop.variant.translucent": "Usa <code>translucent</code> sobre superficies variables o con imagen.",
     "button.prop.tone.title": "Tono",
     "button.prop.tone.body": "<code>tone</code> comunica la intención de la acción.",
     "button.prop.tone.neutral": "Usa <code>neutral</code> para acciones normales.",
@@ -159,7 +158,7 @@ export const buttonMessages = {
     "button.defaultLabel": "Button with default values",
     "button.variantsTitle": "Emphasis and tone",
     "button.variantsBody":
-      "<code>variant</code> says <strong>how loud</strong> the button is: <code>solid</code>, <code>soft</code>, <code>ghost</code>, or <code>translucent</code>. <code>tone</code> says <strong>what it means</strong>: <code>neutral</code>, <code>accent</code>, or <code>danger</code>. They are independent decisions, so every pairing is shown: rows by emphasis, columns by tone. A button performs an action, so it does not have Badge's <code>success</code> or <code>warning</code> tones.",
+      "<code>variant</code> says <strong>how loud</strong> the button is: <code>solid</code>, <code>soft</code>, or <code>ghost</code>. <code>tone</code> says <strong>what it means</strong>: <code>neutral</code>, <code>accent</code>, or <code>danger</code>. They are independent decisions, so every pairing is shown: rows by emphasis, columns by tone. A button performs an action, so it does not have Badge's <code>success</code> or <code>warning</code> tones.",
     "button.variantsLabel": "Every emphasis by every tone",
     "button.destructiveTitle": "The exception worth comparing",
     "button.destructiveBody":
@@ -171,7 +170,7 @@ export const buttonMessages = {
     "button.appearanceLabel": "The same action as plain, tactile, brutalist and frosted",
     "button.brutalistMatrixTitle": "Brutalist in every emphasis and tone",
     "button.brutalistMatrixBody":
-      "Emphasis still says how loud: <code>solid</code> spends the whole construction, <code>soft</code> and <code>translucent</code> a shorter, lighter shadow, and <code>ghost</code> ink only, with no fill. <code>translucent</code> keeps its see-through face and derives its edge from its own text colour, so it still works over any surface. Tone is unchanged.",
+      "Emphasis still says how loud: <code>solid</code> spends the whole construction, <code>soft</code> a shorter, lighter shadow, and <code>ghost</code> ink only, with no fill. <code>soft</code> keeps its see-through face, so it still works over any surface. Tone is unchanged.",
     "button.brutalistMatrixLabel": "Brutalist: every emphasis by every tone",
     "button.brutalistRadiusTitle": "Brutalist is not a radius",
     "button.brutalistRadiusBody":
@@ -187,11 +186,11 @@ export const buttonMessages = {
     "button.brutalistShapesLabel": "Brutalist icon-only, as a link, and welded",
     "button.frostedTitle": "Frosted: a material, not a paint",
     "button.frostedBody":
-      "<code>frosted</code> makes the face a translucent material: it lets what is behind through, blurred and saturated, with a fine edge and a highlight along the top. It is not the <code>translucent</code> emphasis. <code>translucent</code> decides how much the paint lets through; <code>frosted</code> decides how what is behind is processed. Each row opens with a plain <code>translucent</code>, over the page's surface, a colour sweep and a photograph: the variant shows the backdrop sharp, the material diffuses it.",
+      "<code>frosted</code> makes the face a translucent material: it lets what is behind through, blurred and saturated, with a fine edge and a highlight along the top. It is not the <code>soft</code> emphasis. <code>soft</code> decides how much the paint lets through; <code>frosted</code> decides how what is behind is processed. Each row opens with a plain <code>soft</code>, over the page's surface, a colour sweep and a photograph: the variant shows the backdrop sharp, the material diffuses it.",
     "button.frostedBackdropsLabel": "Frosted over a surface, colour and a photograph",
     "button.frostedMatrixTitle": "Frosted in every emphasis and tone",
     "button.frostedMatrixBody":
-      "<code>solid</code> is the densest face and <code>soft</code> a thinner one. On <code>accent</code> and <code>danger</code> the face lets through only a trace of the backdrop: that is what it costs to keep the label at 4.5:1 over a black or a white backdrop, and the material reads in the edge, the highlight and the blurred tint. <code>ghost</code> still has no body: it is a faint sheet of the surface, so its legibility depends on the backdrop just as a plain ghost's does. <code>translucent</code> keeps its variant's paint exactly and adds the blur: one sheet, not two opacities.",
+      "<code>solid</code> is the densest face and <code>soft</code> a thinner one. On <code>accent</code> and <code>danger</code> the face lets through only a trace of the backdrop: that is what it costs to keep the label at 4.5:1 over a black or a white backdrop, and the material reads in the edge, the highlight and the blurred tint. <code>ghost</code> still has no body: it is a faint sheet of the surface, so its legibility depends on the backdrop just as a plain ghost's does.",
     "button.frostedMatrixLabel": "Frosted: every emphasis by every tone over a photograph",
     "button.frostedDetailsTitle": "Radius, states and shapes",
     "button.frostedDetailsBody":
@@ -221,9 +220,8 @@ export const buttonMessages = {
     "button.prop.variant.title": "Emphasis",
     "button.prop.variant.body": "<code>variant</code> decides how strong the button looks.",
     "button.prop.variant.solid": "Use <code>solid</code> for the primary action or a confirmation.",
-    "button.prop.variant.soft": "Use <code>soft</code> for an action that is visible but secondary.",
+    "button.prop.variant.soft": "Use <code>soft</code> for an action that is visible but secondary, on coloured or image surfaces too.",
     "button.prop.variant.ghost": "Use <code>ghost</code> in bars or rows where the box is noise.",
-    "button.prop.variant.translucent": "Use <code>translucent</code> on variable or image surfaces.",
     "button.prop.tone.title": "Tone",
     "button.prop.tone.body": "<code>tone</code> communicates the action's intent.",
     "button.prop.tone.neutral": "Use <code>neutral</code> for normal actions.",

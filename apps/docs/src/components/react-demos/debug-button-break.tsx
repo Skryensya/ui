@@ -11,7 +11,7 @@ import { Icon, IconSetProvider } from "@skryensya/react/icon";
 import { lucideIcons } from "@skryensya/icons-lucide";
 import type { ReactNode } from "react";
 
-const VARIANTS = ["solid", "soft", "ghost", "translucent"] as const;
+const VARIANTS = ["solid", "soft", "ghost"] as const;
 const TONES = ["neutral", "accent", "danger"] as const;
 const SIZES = ["xs", "sm", "md", "lg"] as const;
 

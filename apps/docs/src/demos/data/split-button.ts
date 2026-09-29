@@ -13,10 +13,10 @@ export const splitButtonSubtleMenuItems = (t: Translate): readonly ItemInput[] =
   { options: { value: "archive-thread" }, slots: { label: t("demo.splitButton.subtleItem2") } },
 ];
 
-/** Download sits over media. Pairs with `variant: "translucent"`, meant for photo/hero backdrops. */
-export const splitButtonTranslucentMenuItems = (t: Translate): readonly ItemInput[] => [
-  { options: { value: "download-hires" }, slots: { label: t("demo.splitButton.translucentItem1") } },
-  { options: { value: "download-original" }, slots: { label: t("demo.splitButton.translucentItem2") } },
+/** Download sits over media. Pairs with `variant: "soft"`, meant for photo/hero backdrops. */
+export const splitButtonOverMediaMenuItems = (t: Translate): readonly ItemInput[] => [
+  { options: { value: "download-hires" }, slots: { label: t("demo.splitButton.overMediaItem1") } },
+  { options: { value: "download-original" }, slots: { label: t("demo.splitButton.overMediaItem2") } },
 ];
 
 /** Share is chromeless, optional. Pairs with `variant: "ghost"`. */

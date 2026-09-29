@@ -20,7 +20,7 @@ export const buttonDefaultTree = (t: Translate): UsageTree => ({
  * Every cell carries the same neutral word so the only thing varying is the pairing; the destructive
  * example below is where a real destructive label belongs.
  */
-const EMPHASES = ["solid", "soft", "ghost", "translucent"] as const;
+const EMPHASES = ["solid", "soft", "ghost"] as const;
 const TONES = ["neutral", "accent", "danger"] as const;
 
 /** A row or column header: caption-sized and secondary, scaffolding rather than content. */
@@ -254,8 +254,8 @@ export const buttonFrostedShapesTree = (t: Translate, href: string = PLACEHOLDER
 
 /**
  * The same four buttons on the three backdrops frosted has to survive: the page's own surface, a
- * chromatic sweep and a photograph. Plain translucent opens each row, for the distinction the
- * section is about: the variant lets the backdrop through, the material processes it.
+ * chromatic sweep and a photograph. Plain soft opens each row, for the distinction the section is
+ * about: the variant lets the backdrop through, the material processes it.
  */
 export const buttonFrostedBackdropsTree = (t: Translate): UsageTree => ({
   contract: "layout",
@@ -271,8 +271,8 @@ export const buttonFrostedBackdropsTree = (t: Translate): UsageTree => ({
         {
           contract: "button",
           signature: "Button.action",
-          options: { variant: "translucent" },
-          children: "translucent",
+          options: { variant: "soft" },
+          children: "soft",
         },
         ...(
           [
@@ -280,7 +280,7 @@ export const buttonFrostedBackdropsTree = (t: Translate): UsageTree => ({
             { tone: "accent" },
             { tone: "danger", variant: "soft" },
             { variant: "ghost" },
-            { variant: "translucent" },
+            { variant: "soft" },
           ] as const
         ).map(
           (options): UsageTree => ({

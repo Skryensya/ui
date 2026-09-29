@@ -7,7 +7,7 @@ import { waitForStage } from "./fixtures.js";
  * claims are about what the browser paints, not about what the source says.
  */
 
-const VARIANTS = ["solid", "soft", "ghost", "translucent"] as const;
+const VARIANTS = ["solid", "soft", "ghost"] as const;
 const TONES = ["neutral", "accent", "danger"] as const;
 
 type Shadow = { x: number; y: number; blur: number; color: string } | null;
@@ -199,8 +199,8 @@ test("every variant and tone keeps its meaning, and the quieter emphases spend l
       expect(brutalist.shadow, cell).not.toBeNull();
       expect(brutalist.shadow!.blur, cell).toBe(0);
       expect(brutalist.shadow!.x, cell).toBe(brutalist.shadow!.y);
-      // The face is the variant's own: ghost stays see-through, translucent stays translucent,
-      // solid and soft keep the fill tone gave them.
+      // The face is the variant's own: ghost stays see-through, soft keeps its see-through wash,
+      // solid keeps the fill tone gave it.
       expect(brutalist.bg, cell).toBe(plain.bg);
       expect(brutalist.fg, cell).toBe(plain.fg);
       // Every cell has a visible edge, even the variants whose plain border is transparent.
@@ -211,7 +211,6 @@ test("every variant and tone keeps its meaning, and the quieter emphases spend l
 
   expect(offsets.solid).toBeGreaterThan(offsets.soft!);
   expect(offsets.soft).toBeGreaterThan(offsets.ghost!);
-  expect(offsets.translucent).toBeGreaterThan(offsets.ghost!);
   expect(await read(page, "#b-ghost-danger").then((r) => r.bg)).toBe("rgba(0, 0, 0, 0)");
 });
 

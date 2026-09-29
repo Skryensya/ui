@@ -8,7 +8,7 @@ import { setScheme, TEXT_FLOOR, worstContrast } from "./frost-contrast.js";
  * computed paint, composited colour, hit testing, emulated preferences.
  */
 
-const VARIANTS = ["solid", "soft", "ghost", "translucent"] as const;
+const VARIANTS = ["solid", "soft", "ghost"] as const;
 const TONES = ["neutral", "accent", "danger"] as const;
 
 /* Chromium supports backdrop-filter and prefers-reduced-transparency, so the MATERIAL path is what
@@ -171,14 +171,13 @@ test("variant and tone keep their meaning: the same ink, and emphasis orders the
       expect(frosted.fg, cell).toBe(plain.fg);
       expect(frosted.backdrop, cell).toContain("blur");
       if (tone === "neutral") alpha[variant] = frosted.bgAlpha;
-      // Ghost and translucent gain a real sheet: plain promises nothing over an unknown backdrop.
-      if (variant === "ghost" || variant === "translucent") expect(frosted.bgAlpha, cell).toBeGreaterThan(plain.bgAlpha);
+      // Ghost and soft gain a real sheet: their plain paint lets an unknown backdrop through.
+      if (variant === "ghost" || variant === "soft") expect(frosted.bgAlpha, cell).toBeGreaterThan(plain.bgAlpha);
     }
   }
   // Emphasis still orders the sheets: solid densest, ghost thinnest, and still see-through.
   expect(alpha.solid).toBeGreaterThan(alpha.soft!);
-  expect(alpha.soft).toBeGreaterThan(alpha.translucent!);
-  expect(alpha.translucent).toBeGreaterThan(alpha.ghost!);
+  expect(alpha.soft).toBeGreaterThan(alpha.ghost!);
   expect(alpha.ghost).toBeLessThan(1);
 });
 
@@ -259,9 +258,10 @@ test("the baseline (no backdrop-filter, or reduced transparency) is the opaque f
     const plain = await read(page, `#p-${variant}`);
     const frosted = await read(page, `#f-${variant}`);
     expect(frosted.backdrop, variant).toBe("none");
-    // The face falls back to the material's own face, opaque: the plain paint for solid and soft,
-    // the sheet's tint for ghost and translucent, so the label stays legible without the blur too.
-    if (variant === "solid" || variant === "soft") expect(frosted.bg, variant).toBe(plain.bg);
+    // The face falls back to the material's own face, opaque: the plain paint for solid, the sheet's
+    // tint for ghost and soft (whose plain paint is see-through), so the label stays legible
+    // without the blur too.
+    if (variant === "solid") expect(frosted.bg, variant).toBe(plain.bg);
     expect(frosted.bgAlpha, variant).toBe(1);
     expect(frosted.fg, variant).toBe(plain.fg);
     expect(frosted.shadow, variant).toContain("inset");

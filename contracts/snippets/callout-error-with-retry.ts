@@ -8,9 +8,9 @@ export const calloutErrorWithRetrySnippet: Snippet = {
     "A Callout on its own is valid with no actions  -  most callouts are not dead ends, and nothing " +
       "in the contract should force one. This is what to reach for the moment a callout IS reporting " +
       "a failed operation: the reader's next step has to be as visible as the error itself.",
-    "`actions` restricts `variant` to `translucent`/`danger` (get_contract's own `restrictOptions`) " +
+    "`actions` restricts `variant` to `soft`/`danger` (get_contract's own `restrictOptions`) " +
       " -  a full-strength `neutral` action inside a tone=\"danger\" callout would out-compete the " +
-      "callout's own color for attention; `translucent` reads as \"lives inside this callout\", not " +
+      "callout's own color for attention; `soft` reads as \"lives inside this callout\", not " +
       "a separate control competing with it.",
     "`title` and the description in `children` are separate slots on purpose: assistive tech reaches " +
       "the callout's role and title first, then the longer text. Folding both into `children` loses " +
@@ -27,7 +27,7 @@ export const calloutErrorWithRetrySnippet: Snippet = {
         {
           contract: "button",
           signature: "Button.action",
-          options: { variant: "translucent" },
+          options: { variant: "soft" },
           children: "Try again",
         },
       ],

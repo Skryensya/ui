@@ -19,7 +19,7 @@ export const calloutMessages = {
     "callout.lede1":
       "Callout es un mensaje inline que permanece en el layout mientras dure su condición. A diferencia de Toast, transitorio y montado en una región flotante, Callout vive en el flujo del contenido. Un solo peso visual, el panel con borde: el tono es la única variable, así que dos Callouts nunca compiten por cuál se ve más urgente.",
     "callout.lede2":
-      "Es puramente informativo: muestra algo, no ejecuta nada. No tiene cierre; a diferencia de Toast, Callout no se puede descartar, porque nada en la página depende de que desaparezca. La única pieza interactiva que puede llevar es una acción de recuperación, y el contrato la limita a <code>translucent</code> o <code>danger</code> para que nunca compita con la acción primaria real de la página.",
+      "Es puramente informativo: muestra algo, no ejecuta nada. No tiene cierre; a diferencia de Toast, Callout no se puede descartar, porque nada en la página depende de que desaparezca. La única pieza interactiva que puede llevar es una acción de recuperación, y el contrato la limita a <code>soft</code> o <code>danger</code> para que nunca compita con la acción primaria real de la página.",
     "callout.anatomyBody":
       "Un Callout es un panel con dos columnas: el ícono a un lado y <code>sk-callout__content</code> al otro, con el título arriba de la descripción, y las acciones en su propia fila abajo, alineadas con esa columna y nunca al lado del texto. Sólo <code>children</code> es obligatorio; el ícono, el título y las acciones son opcionales y el espécimen los trae todos para poder nombrarlos. Está congelado y en gris: este dibujo es sobre las partes, y los tonos tienen cuatro paneles vivos más abajo.",
     "callout.anatomyLabel": "Anatomía de Callout",
@@ -39,9 +39,9 @@ export const calloutMessages = {
     "callout.warningTitle": "Warning, con un Link de recuperación",
     "callout.warningBody": "La acción de recuperación es un <code>Link</code> simple: un destino, no un comando.",
     "callout.warningLabel": "Callout warning",
-    "callout.successTitle": "Success, con un Button translucent",
+    "callout.successTitle": "Success, con un Button soft",
     "callout.successBody":
-      'Cuando la acción es un <a href="/es/componentes/button">Button</a>, el slot solo acepta <code>variant="translucent"</code> o <code>variant="danger"</code>; nunca <code>accent</code> ni el default <code>neutral</code>: un Callout no es el lugar de la llamada a la acción accent de la página. Usa <code>translucent</code> para botones que se mezclan con el fondo coloreado del callout, y <code>danger</code> cuando necesites una acción destructiva que destaque visualmente.',
+      'Cuando la acción es un <a href="/es/componentes/button">Button</a>, el slot solo acepta <code>variant="soft"</code> o <code>variant="danger"</code>; nunca <code>accent</code> ni el default <code>neutral</code>: un Callout no es el lugar de la llamada a la acción accent de la página. Usa <code>soft</code> para botones que se mezclan con el fondo coloreado del callout, y <code>danger</code> cuando necesites una acción destructiva que destaque visualmente.',
     "callout.successLabel": "Callout success",
     "callout.anatomyTitle": "Anatomía",
     "callout.anatomyItem1": "<code>sk-callout__icon</code> es decorativo y solo aparece cuando aporta una señal visual.",
@@ -51,7 +51,7 @@ export const calloutMessages = {
     "callout.anatomyItem4":
       "<code>data-tone</code> acepta <code>neutral</code> (default), <code>info</code>, <code>success</code>, <code>warning</code> o <code>danger</code>.",
     "callout.reactBody":
-      'El código está en la pestaña <strong>React</strong> de cada ejemplo. <code>actions</code> es el único punto de interactividad: un <code>ReactNode</code> que el consumidor arma con el <code>Link</code> o el <code>Button</code> (<code>translucent</code>/<code>danger</code>) que necesite. No hay <code>dismissible</code> ni <code>onDismiss</code>; si necesitas que el mensaje se pueda cerrar, es un <a href="/es/componentes/toast">Toast</a>, no un Callout.',
+      'El código está en la pestaña <strong>React</strong> de cada ejemplo. <code>actions</code> es el único punto de interactividad: un <code>ReactNode</code> que el consumidor arma con el <code>Link</code> o el <code>Button</code> (<code>soft</code>/<code>danger</code>) que necesite. No hay <code>dismissible</code> ni <code>onDismiss</code>; si necesitas que el mensaje se pueda cerrar, es un <a href="/es/componentes/toast">Toast</a>, no un Callout.',
     "callout.prop.tone.title": "Tono",
     "callout.prop.tone.body": "<code>tone</code> comunica qué tipo de mensaje es.",
     "callout.prop.tone.neutral": "Usa <code>neutral</code> para avisos comunes sin color semántico.",
@@ -92,7 +92,7 @@ export const calloutMessages = {
     "callout.lede1":
       "Callout is an inline message that stays in the layout for as long as its condition holds. Unlike Toast, transient and mounted in a floating region, Callout lives in the flow of content. One visual weight, the bordered panel: tone is the only variable, so two Callouts never compete over which looks more urgent.",
     "callout.lede2":
-      "It is purely informational: it shows something, it runs nothing. It has no dismiss; unlike Toast, a Callout cannot be dismissed, because nothing on the page depends on it going away. The one interactive piece it can carry is a recovery action, and the contract narrows it to <code>translucent</code> or <code>danger</code> so it never competes with the page's real accent action.",
+      "It is purely informational: it shows something, it runs nothing. It has no dismiss; unlike Toast, a Callout cannot be dismissed, because nothing on the page depends on it going away. The one interactive piece it can carry is a recovery action, and the contract narrows it to <code>soft</code> or <code>danger</code> so it never competes with the page's real accent action.",
     "callout.anatomyBody":
       "A Callout is a panel of two columns: the icon on one side and <code>sk-callout__content</code> on the other, the title stacked over the description, and the actions on their own row below, aligned with that column and never beside the text. Only <code>children</code> is required; the icon, the title and the actions are optional, and the specimen carries all of them so each can be named. It is frozen and drained to grey: this drawing is about the parts, and the tones have four live panels further down.",
     "callout.anatomyLabel": "Callout anatomy",
@@ -112,9 +112,9 @@ export const calloutMessages = {
     "callout.warningTitle": "Warning, with a recovery Link",
     "callout.warningBody": "The recovery action is a plain <code>Link</code>: a destination, not a command.",
     "callout.warningLabel": "Warning callout",
-    "callout.successTitle": "Success, with a translucent Button",
+    "callout.successTitle": "Success, with a soft Button",
     "callout.successBody":
-      'When the action is a <a href="/components/button">Button</a>, the slot only accepts <code>variant="translucent"</code> or <code>variant="danger"</code>; never <code>accent</code> nor the default <code>neutral</code>: a Callout is not the place for the page\'s main call to action. Use <code>translucent</code> for buttons that blend with the callout\'s colored background, and <code>danger</code> when you need a destructive action to stand out visually.',
+      'When the action is a <a href="/components/button">Button</a>, the slot only accepts <code>variant="soft"</code> or <code>variant="danger"</code>; never <code>accent</code> nor the default <code>neutral</code>: a Callout is not the place for the page\'s main call to action. Use <code>soft</code> for buttons that blend with the callout\'s colored background, and <code>danger</code> when you need a destructive action to stand out visually.',
     "callout.successLabel": "Success callout",
     "callout.anatomyTitle": "Anatomy",
     "callout.anatomyItem1": "<code>sk-callout__icon</code> is decorative and only appears when it carries a visual signal.",
@@ -124,7 +124,7 @@ export const calloutMessages = {
     "callout.anatomyItem4":
       "<code>data-tone</code> accepts <code>neutral</code> (default), <code>info</code>, <code>success</code>, <code>warning</code> or <code>danger</code>.",
     "callout.reactBody":
-      'The code is in the <strong>React</strong> tab of each example. <code>actions</code> is the only point of interactivity: a <code>ReactNode</code> the consumer assembles from whichever <code>Link</code> or <code>Button</code> (<code>translucent</code>/<code>danger</code>) it needs. There is no <code>dismissible</code> or <code>onDismiss</code>; if you need the message to be closable, that\'s a <a href="/components/toast">Toast</a>, not a Callout.',
+      'The code is in the <strong>React</strong> tab of each example. <code>actions</code> is the only point of interactivity: a <code>ReactNode</code> the consumer assembles from whichever <code>Link</code> or <code>Button</code> (<code>soft</code>/<code>danger</code>) it needs. There is no <code>dismissible</code> or <code>onDismiss</code>; if you need the message to be closable, that\'s a <a href="/components/toast">Toast</a>, not a Callout.',
     "callout.prop.tone.title": "Tone",
     "callout.prop.tone.body": "<code>tone</code> communicates what kind of message this is.",
     "callout.prop.tone.neutral": "Use <code>neutral</code> for ordinary notices without semantic color.",

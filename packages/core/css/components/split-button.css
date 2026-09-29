@@ -80,7 +80,7 @@
     /* The hairline seam IS this button's own border color, declared HERE rather than on the
      * `.sk-split-button` wrapper above: `--sk-button-border-color` is set on the button element
      * itself (button.css), not on an ancestor, so reading it anywhere above this element would
-     * resolve to nothing. `neutral`/`subtle`/`translucent` carry a real border color there, so the
+     * resolve to nothing. `neutral`/`subtle`/`soft` carry a real border color there, so the
      * divider reads as that same border continuing across the internal edge; `accent`/`danger`/
      * `ghost` carry `transparent`, so the seam between two segments of the same solid fill
      * disappears too - consistent with those variants never showing a border anywhere else on the

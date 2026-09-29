@@ -114,7 +114,7 @@ describe("Marquee", () => {
     // Button's, not a lookalike's: the state layer, the focus ring and the touch target come with it.
     expect(button.classList.contains("sk-button")).toBe(true);
     expect(button.classList.contains("sk-interactive")).toBe(true);
-    expect(button.dataset.variant).toBe("translucent");
+    expect(button.dataset.variant).toBe("soft");
     expect(button.hasAttribute("data-icon-only")).toBe(true);
     // The glyph is an element because both of a `.sk-button`'s pseudos are already spoken for.
     expect(button.querySelector(".sk-marquee__glyph")).toBeTruthy();

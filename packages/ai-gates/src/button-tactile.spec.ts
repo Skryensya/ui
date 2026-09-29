@@ -1,7 +1,7 @@
 import { expect, test } from "@playwright/test";
 import { waitForStage } from "./fixtures.js";
 
-const VARIANTS = ["solid", "soft", "ghost", "translucent"] as const;
+const VARIANTS = ["solid", "soft", "ghost"] as const;
 const TONES = ["neutral", "accent", "danger"] as const;
 
 function firstShadowYOffset(shadow: string): number {
