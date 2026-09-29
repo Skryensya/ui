@@ -325,7 +325,8 @@ export function resolve(text: string, kind: Kind, ctx: Context, role: string): B
     current = ref.fallback.trim();
   }
 
-  if (/^(auto|none|normal)$/.test(current)) return undefined;
+  // No number to bind: auto, none, and the content-sized widths (Figma's hug, which a frame already is).
+  if (/^(auto|none|normal|fit-content|max-content|min-content)$/.test(current)) return undefined;
 
   try {
     const touchesVars = /var\(|light-dark\(|currentcolor/i.test(current);

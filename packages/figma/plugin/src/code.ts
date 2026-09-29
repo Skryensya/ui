@@ -534,7 +534,8 @@ const cellHeightOf = (spec: M.ComponentSet) =>
       if (h) return Number(valueOf(h));
       const text = manifest.styles.layers[c.layers].find((l): l is Extract<M.Layer, { kind: "text" }> => l.kind === "text");
       if (!text) return 0;
-      const line = (Number(valueOf(text.text.fontSize)) * text.text.lineHeight) / 100;
+      // Auto leading is the font's own; 120% is what a body face's comes to.
+      const line = (Number(valueOf(text.text.fontSize)) * (text.text.lineHeight === "auto" ? 120 : text.text.lineHeight)) / 100;
       const padding = Number(valueOf(box.padding.top)) + Number(valueOf(box.padding.bottom));
       const border = box.strokeWeight ? 2 * Number(valueOf(box.strokeWeight)) : 0;
       return Math.ceil(line + padding + border);
@@ -854,7 +855,8 @@ async function applyText(ctx: SetCtx, node: TextNode, text: M.Text, sample: stri
   node.fontName = font;
   if (!node.characters) node.characters = sample;
   node.textAutoResize = "WIDTH_AND_HEIGHT";
-  node.lineHeight = { unit: "PERCENT", value: text.lineHeight };
+  node.lineHeight = text.lineHeight === "auto" ? { unit: "AUTO" } : { unit: "PERCENT", value: text.lineHeight };
+  node.textDecoration = text.underline ? "UNDERLINE" : "NONE";
   node.fontSize = Number(valueOf(text.fontSize));
   node.fills = [toPaint(ctx, text.fill)];
   const binds: [VariableBindableTextField, M.Bound<unknown>][] = [
@@ -1108,7 +1110,8 @@ async function planLayout(ctx: Ctx, frame: FrameNode, spec: M.ComponentSet, cell
   const { run } = ctx;
   const cols = combos(spec.grid.columns);
   const rows = combos(spec.grid.rows);
-  const outerCol = spec.grid.columns[0].name;
+  // A set with nothing across (Heading: its sizes run down) is one column, with no heading over it.
+  const outerCol = spec.grid.columns[0]?.name ?? "";
   const sectionAxis = spec.grid.rows[0]?.name ?? "";
   const keep = new Set<string>(["title"]);
   const title = ensureLabel(ctx, frame, "title", spec.name, await labelStyle(ctx, 600, TITLE_SIZE));
@@ -1188,7 +1191,7 @@ async function measureFirst(ctx: Ctx, spec: M.ComponentSet, set: ComponentSetNod
       const probe = figma.createText();
       probe.fontName = font;
       probe.fontSize = Number(valueOf(label.text.fontSize));
-      probe.lineHeight = { unit: "PERCENT", value: label.text.lineHeight };
+      probe.lineHeight = label.text.lineHeight === "auto" ? { unit: "AUTO" } : { unit: "PERCENT", value: label.text.lineHeight };
       probe.textAutoResize = "WIDTH_AND_HEIGHT";
       probe.characters = sample;
       textW = probe.width;

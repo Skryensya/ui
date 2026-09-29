@@ -224,7 +224,9 @@ export function textOf(ctx: Context): Text {
   // Figma stores a line height as a plain percentage, so it is read as the number it comes to.
   const authored = prop(ctx, "line-height") ?? "normal";
   const lineHeight = /var\(/.test(authored) ? substituted(authored, ctx) : authored;
-  if (!/^\d*\.?\d+$/.test(lineHeight)) throw new Unsupported(`line-height ${authored}: only unitless is read`);
+  // `normal` (a Link inherits it) is the font's own leading: Figma's Auto.
+  if (lineHeight !== "normal" && !/^\d*\.?\d+$/.test(lineHeight)) throw new Unsupported(`line-height ${authored}: only unitless is read`);
+  const decoration = `${prop(ctx, "text-decoration-line") ?? ""} ${prop(ctx, "text-decoration") ?? ""}`;
   const family = resolve(prop(ctx, "font-family") ?? ctx.inherited?.["font-family"] ?? "", "string", ctx, "font-family");
   const weight = resolve(prop(ctx, "font-weight") ?? "400", "number", ctx, "font-weight");
   const size = resolve(prop(ctx, "font-size") ?? "16px", "number", ctx, "font-size");
@@ -234,8 +236,9 @@ export function textOf(ctx: Context): Text {
     fontFamily: family as Bound<string>,
     fontWeight: weight as Bound<number>,
     fontSize: size as Bound<number>,
-    lineHeight: parseFloat(lineHeight) * 100,
+    lineHeight: lineHeight === "normal" ? "auto" : parseFloat(lineHeight) * 100,
     fill: { type: "SOLID", color },
+    ...(/underline/.test(decoration) ? { underline: true as const } : {}),
   };
 }
 

@@ -6,9 +6,10 @@ import { kbdRealization } from "./kbd.js";
 import { tagRealization } from "./tag.js";
 import { avatarRealization } from "./avatar.js";
 import { textRealization } from "./text.js";
+import { headingRealization } from "./heading.js";
 
 /*
  * EVERY CONTRACT FIGMA DRAWS, in the order their columns stand on the page. Adding a component is a
  * realization file and one line here; `catalogue.test.ts` holds each one to compiling clean.
  */
-export const catalogue: readonly Realization[] = [buttonRealization, badgeRealization, badgeDotRealization, kbdRealization, tagRealization, avatarRealization, textRealization];
+export const catalogue: readonly Realization[] = [buttonRealization, badgeRealization, badgeDotRealization, kbdRealization, tagRealization, avatarRealization, textRealization, headingRealization];
