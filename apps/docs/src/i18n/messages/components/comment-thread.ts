@@ -150,6 +150,9 @@ export const commentThreadMessages = {
     "demo.commentThread.body6": "Consectetur adipiscing elit, sed do eiusmod.",
     "demo.commentThread.body7": "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium.",
     "demo.commentThread.body8": "Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit.",
+    "commentThread.showcaseTitle": "Showcases",
+    "commentThread.showcaseBody": "Un hilo de comentarios con respuestas anidadas, votos y su estado de carga.",
+    "commentThread.guidelinesLede": "CommentThread muestra una conversación con respuestas anidadas.",
   },
   en: {
 
@@ -302,5 +305,8 @@ export const commentThreadMessages = {
     "demo.commentThread.body6": "Consectetur adipiscing elit, sed do eiusmod.",
     "demo.commentThread.body7": "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium.",
     "demo.commentThread.body8": "Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit.",
+    "commentThread.showcaseTitle": "Showcases",
+    "commentThread.showcaseBody": "A comment thread with nested replies, votes, and its loading state.",
+    "commentThread.guidelinesLede": "CommentThread shows a conversation with nested replies.",
   },
 } as const;

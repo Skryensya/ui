@@ -251,6 +251,12 @@ export const chartsMessages = {
     "demo.charts.analytics.button": "Ver analítica",
     "demo.charts.analytics.chartLabel": "Visitas por semana",
     "demo.charts.analytics.chartDescription": "Ocho semanas, subiendo de 38.200 a 61.400 visitas.",
+    "chartsPage.showcaseTitle": "Showcases",
+    "chartsPage.showcaseBody": "Gráficos de barras, líneas y áreas, en tarjetas y en vistas de analítica.",
+    "chartsPage.guidelinesLede": "Charts dibuja una serie de datos para ver su forma de un vistazo.",
+    "chartsPage.guide.item1": "Elige la forma por la pregunta: barras para comparar, líneas para una tendencia en el tiempo.",
+    "chartsPage.guide.item2": "Pon un título que diga qué muestra el gráfico, y las unidades en el eje o en el valor.",
+    "chartsPage.guide.item3": "Si el número exacto importa más que la forma, usa una <a href=\"/es/componentes/table\">Table</a> o un <a href=\"/es/componentes/stat\">Stat</a>.",
   },
   en: {
 
@@ -504,5 +510,11 @@ export const chartsMessages = {
     "demo.charts.analytics.button": "View Analytics",
     "demo.charts.analytics.chartLabel": "Visits per week",
     "demo.charts.analytics.chartDescription": "Eight weeks, rising from 38,200 to 61,400 visits.",
+    "chartsPage.showcaseTitle": "Showcases",
+    "chartsPage.showcaseBody": "Bar, line and area charts, in cards and in analytics views.",
+    "chartsPage.guidelinesLede": "Charts draws a data series so its shape shows at a glance.",
+    "chartsPage.guide.item1": "Pick the form by the question: bars to compare, lines for a trend over time.",
+    "chartsPage.guide.item2": "Give it a title saying what it shows, and the units on the axis or the value.",
+    "chartsPage.guide.item3": "When the exact number matters more than the shape, use a <a href=\"/components/table\">Table</a> or a <a href=\"/components/stat\">Stat</a>.",
   },
 } as const;

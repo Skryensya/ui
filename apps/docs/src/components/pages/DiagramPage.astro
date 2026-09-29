@@ -2,6 +2,7 @@
 import ComponentPageShell from "./ComponentPageShell.astro";
 import CodeBlock from "../CodeBlock.astro";
 import ComponentPreview from "../ComponentPreview.astro";
+import UsagePreview from "../UsagePreview.astro";
 import "@skryensya/core/components/annotation.css";
 import {
   diagramAnatomyCss,
@@ -125,24 +126,11 @@ const hooks = `.mi-diagrama {
   contractId="diagram"
   testFiles={["packages/core/src/diagram.test.ts", "packages/vanilla/src/components/diagram.test.ts", "packages/react/src/components/diagram.test.tsx"]}}
 >
-  <Fragment slot="anatomy">
-    <p set:html={t("diagram.anatomyBody")} />
-    <ComponentPreview
-      tree={diagramAnatomyTree(t)}
-      css={diagramAnatomyCss}
-      label={t("diagram.anatomyPreviewLabel")}
-      screens={false}
-      hideSource
-      chrome={false}
-    />
-  </Fragment>
-
   <Fragment slot="usage">
     <p class="lede" set:html={t("diagram.lede")} />
 
-    <h3>{t("diagram.whenTitle")}</h3>
-    <p set:html={t("diagram.whenBody1")} />
-    <p set:html={t("diagram.whenBody2")} />
+    <h3>{t("diagram.showcaseTitle")}</h3>
+    <p set:html={t("diagram.showcaseBody")} />
 
     <h3>{t("diagram.modelTitle")}</h3>
     <p set:html={t("diagram.modelBody")} />
@@ -280,6 +268,24 @@ const hooks = `.mi-diagrama {
       <li set:html={t("diagram.contractItem2")} />
       <li set:html={t("diagram.contractItem3")} />
     </ul>
+
+    <h3>{t("component.anatomy")}</h3>
+    <p set:html={t("diagram.anatomyBody")} />
+    <ComponentPreview
+      tree={diagramAnatomyTree(t)}
+      css={diagramAnatomyCss}
+      label={t("diagram.anatomyPreviewLabel")}
+      screens={false}
+      hideSource
+      chrome={false}
+    />
+  </Fragment>
+
+  <Fragment slot="guidelines">
+    <p class="lede" set:html={t("diagram.guidelinesLede")} />
+    <h3>{t("diagram.whenTitle")}</h3>
+    <p set:html={t("diagram.whenBody1")} />
+    <p set:html={t("diagram.whenBody2")} />
   </Fragment>
 
   <Fragment slot="install">

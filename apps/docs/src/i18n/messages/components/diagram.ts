@@ -217,6 +217,9 @@ export const diagramMessages = {
       "Una arista que no se puede trazar (porque nombra un nodo ausente, o porque sus extremos todavía no tienen caja) queda marcada con <code>data-sk-orphan</code> y no se dibuja. El hueco se conserva en el overlay: el emparejamiento entre una arista y su dibujo es por índice, y una lista más corta le daría a cada conector la etiqueta del de al lado.",
     "diagram.contractItem3":
       "Los conectores, las puntas de flecha y las listas de lectura son <code>systemOwned</code>: los escribe el binding después de medir, y el emisor de markup deja el overlay vacío. En los nodos y en las aristas no hay nada que un autor no haya escrito.",
+    "diagram.showcaseTitle": "Showcases",
+    "diagram.showcaseBody": "Flujos, ramas, árboles, estados, procesos, lógica e infraestructura dibujados desde datos.",
+    "diagram.guidelinesLede": "Diagram dibuja nodos y conexiones a partir de datos.",
   },
   en: {
     "diagram.anatomyLabel": "Diagram anatomy",
@@ -436,5 +439,8 @@ export const diagramMessages = {
       "An edge that cannot be routed (it names a missing node, or its ends have no box yet) is marked <code>data-sk-orphan</code> and is not drawn. The gap is kept in the overlay: the pairing between an edge and its drawing is by index, and a shorter list would hand every connector the label above it.",
     "diagram.contractItem3":
       "The connectors, the arrowheads and the reading lists are <code>systemOwned</code>: the binding writes them after measuring, and the markup emitter leaves the overlay empty. Nothing in the nodes or the edges is anything an author did not write.",
+    "diagram.showcaseTitle": "Showcases",
+    "diagram.showcaseBody": "Flows, branches, trees, states, processes, logic and infrastructure drawn from data.",
+    "diagram.guidelinesLede": "Diagram draws nodes and connections from data.",
   },
 } as const;

@@ -16,6 +16,7 @@ import CodeBlock from "../CodeBlock.astro";
 import ComponentPageShell from "./ComponentPageShell.astro";
 import AppearanceMenu from "../AppearanceMenu.astro";
 import ComponentPreview from "../ComponentPreview.astro";
+import UsagePreview from "../UsagePreview.astro";
 import { tourAnatomyCss, tourAnatomyHtml, tourBasicTree, tourDemoCss, tourMissingTree } from "../../demos/tour";
 import { getLocale, useTranslations } from "../../i18n";
 
@@ -113,20 +114,11 @@ const keys = [
     <AppearanceMenu label={t("prefs.appearance")} values={["plain", "brutalist", "frosted"]} unavailable={{ tactile: t("prefs.appearanceTactileUnavailable") }} />
   </Fragment>
 
-  <Fragment slot="anatomy">
-    <p set:html={t("tour.anatomyBody")} />
-    <ComponentPreview
-      html={tourAnatomyHtml(t)}
-      css={tourAnatomyCss}
-      label={t("tour.anatomyPreviewLabel")}
-      screens={false}
-      hideSource
-      chrome={false}
-    />
-  </Fragment>
-
   <Fragment slot="usage">
     <p class="lede" set:html={t("tour.lede")} />
+
+    <h3>{t("tour.showcaseTitle")}</h3>
+    <p set:html={t("tour.showcaseBody")} />
 
     <h3>{t("tour.basicTitle")}</h3>
     <p set:html={t("tour.basicBody")} />
@@ -149,9 +141,6 @@ const keys = [
       defaultScreen="free"
     />
 
-    <h3>{t("tour.writingTitle")}</h3>
-    <p set:html={t("tour.writingBody")} />
-
     <h3>{t("tour.programmaticTitle")}</h3>
     <p set:html={t("tour.programmaticBody")} />
     <CodeBlock code={reactSteps} label="React" lang="tsx" />
@@ -169,6 +158,27 @@ const keys = [
       <li set:html={t("tour.contractItem1")} />
       <li set:html={t("tour.contractItem2")} />
       <li set:html={t("tour.contractItem3")} />
+    </ul>
+
+    <h3>{t("component.anatomy")}</h3>
+    <p set:html={t("tour.anatomyBody")} />
+    <ComponentPreview
+      html={tourAnatomyHtml(t)}
+      css={tourAnatomyCss}
+      label={t("tour.anatomyPreviewLabel")}
+      screens={false}
+      hideSource
+      chrome={false}
+    />
+  </Fragment>
+
+  <Fragment slot="guidelines">
+    <p class="lede" set:html={t("tour.guidelinesLede")} />
+    <h3>{t("tour.writingTitle")}</h3>
+    <p set:html={t("tour.writingBody")} />
+    <ul>
+      <li set:html={t("tour.guide.item1")} />
+      <li set:html={t("tour.guide.item2")} />
     </ul>
   </Fragment>
 

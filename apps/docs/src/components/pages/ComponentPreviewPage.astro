@@ -11,6 +11,7 @@ import "@skryensya/core/components/tile.css";
 import ComponentPageShell from "./ComponentPageShell.astro";
 import CodeBlock from "../CodeBlock.astro";
 import ComponentPreview from "../ComponentPreview.astro";
+import UsagePreview from "../UsagePreview.astro";
 import { buildPreviewFrameDocument } from "../../lib/preview-frame";
 import { emitMarkup, emitReactSource } from "@skryensya/ai-compiler/emit";
 /* The anatomy diagram is an Annotated frame, so this page needs its sheet the way every other
@@ -246,30 +247,13 @@ await initComponents(document);`;
   contractId="component-preview"
   testFiles={["packages/vanilla/src/components/component-preview.test.ts", "packages/react/src/components/component-preview.test.tsx"]}}
 >
-  <Fragment slot="anatomy">
-    <p set:html={t("componentPreview.anatomyBody")} />
-    <ComponentPreview
-      tree={componentPreviewAnatomyTree(t)}
-      css={annotationDemoCss}
-      label={t("componentPreview.anatomyPreviewLabel")}
-      screens={false}
-      hideSource
-      chrome={false}
-    />
-  </Fragment>
-
   <Fragment slot="usage">
     <p class="lede" set:html={t("componentPreview.lede")} />
 
-    <ComponentPreview tree={componentPreviewButtonTree(t)} js={demoJs} label="Button" />
-    <h3>{t("componentPreview.responsibilitiesTitle")}</h3>
-    <ul>
-      <li set:html={t("componentPreview.respItem1")} />
-      <li set:html={t("componentPreview.respItem2")} />
-      <li set:html={t("componentPreview.respItem3")} />
-    </ul>
-    <p set:html={t("componentPreview.crossBody")} />
+    <h3>{t("componentPreview.showcaseTitle")}</h3>
+    <p set:html={t("componentPreview.showcaseBody")} />
 
+    <ComponentPreview tree={componentPreviewButtonTree(t)} js={demoJs} label="Button" />
     <h3>{t("componentPreview.minimalTitle")}</h3>
     <p set:html={t("componentPreview.minimalBody")} />
     <ComponentPreview label="ComponentPreview" note={t("componentPreview.minimalNote")} code={anatomy} js={anatomyJs} lang="html">
@@ -436,7 +420,29 @@ await initComponents(document);`;
     <h3 id="bare">{t("componentPreview.bareTitle")}</h3>
     <p set:html={t("componentPreview.bareBody1")} />
     <p set:html={t("componentPreview.bareBody2")} />
-    <ComponentPreview tree={componentPreviewBareTree(t)} label="ComponentPreview.bare" />
+    <UsagePreview tree={componentPreviewBareTree(t)} />
+
+    <h3>{t("component.anatomy")}</h3>
+    <p set:html={t("componentPreview.anatomyBody")} />
+    <ComponentPreview
+      tree={componentPreviewAnatomyTree(t)}
+      css={annotationDemoCss}
+      label={t("componentPreview.anatomyPreviewLabel")}
+      screens={false}
+      hideSource
+      chrome={false}
+    />
+  </Fragment>
+
+  <Fragment slot="guidelines">
+    <p class="lede" set:html={t("componentPreview.guidelinesLede")} />
+    <h3>{t("componentPreview.responsibilitiesTitle")}</h3>
+    <ul>
+      <li set:html={t("componentPreview.respItem1")} />
+      <li set:html={t("componentPreview.respItem2")} />
+      <li set:html={t("componentPreview.respItem3")} />
+    </ul>
+    <p set:html={t("componentPreview.crossBody")} />
   </Fragment>
 
   <Fragment slot="install">

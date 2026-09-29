@@ -20,11 +20,11 @@ import { treeStory, withCss, type Meta, type StoryObj } from "../tree-story";
 export default { title: "Components/Content/CommentThread", tags: ["autodocs"] } satisfies Meta;
 
 export const CommentAnatomy: StoryObj = treeStory(demos.commentAnatomyTree, { decorators: [withCss(annotationDemoCss)] });
-export const CommentAlone: StoryObj = treeStory(demos.commentAloneTree);
 export const CommentActions: StoryObj = treeStory(demos.commentActionsTree);
 export const CommentLikes: StoryObj = treeStory(demos.commentLikesTree);
 export const Default: StoryObj = treeStory(demos.commentThreadTree);
 export const Fixed: StoryObj = treeStory(demos.commentThreadFixedTree);
 export const CommentDeep: StoryObj = treeStory(demos.commentDeepTree);
-export const CommentSkeleton: StoryObj = treeStory(demos.commentSkeletonTree);
 export const InfiniteScroll: StoryObj = treeStory(demos.commentThreadInfiniteScrollTree);
+export const CommentAlone: StoryObj = treeStory(demos.commentAloneTree);
+export const CommentSkeleton: StoryObj = treeStory(demos.commentSkeletonTree);

@@ -38,6 +38,9 @@ export const colorPickerMessages = {
     "colorPicker.test5": "Elige un swatch preset y actualiza el color actual.",
     "colorPicker.test6": "La anatomía compact quita las filas de canal por completo.",
     "colorPicker.test7": "Mantiene el nombre accesible del trigger sin que Zag lo pise.",
+    "colorPicker.showcaseTitle": "Showcases",
+    "colorPicker.showcaseBody": "El selector nativo, el personalizado, el compacto, con colores sugeridos y deshabilitado.",
+    "colorPicker.guidelinesLede": "ColorPicker elige un color, escrito o sobre un plano de color.",
   },
   en: {
     "demo.colorPicker.label": "Brand color",
@@ -78,5 +81,8 @@ export const colorPickerMessages = {
     "colorPicker.test5": "Selects a preset swatch and updates the current color.",
     "colorPicker.test6": "The compact anatomy drops the channel-input rows entirely.",
     "colorPicker.test7": "Keeps the trigger's accessible name intact instead of letting Zag override it.",
+    "colorPicker.showcaseTitle": "Showcases",
+    "colorPicker.showcaseBody": "The native picker, the custom one, the compact one, with suggested colours, and disabled.",
+    "colorPicker.guidelinesLede": "ColorPicker picks a colour, typed or on a colour plane.",
   },
 } as const;

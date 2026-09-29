@@ -83,6 +83,9 @@ export const componentPreviewMessages = {
     "componentPreview.testReact2": "Muestra una nota al lado del título cuando se da.",
     "componentPreview.testReact3": "Omite el header por completo cuando no hay título ni nota.",
     "componentPreview.testReact4": "Conserva el header con solo una nota, sin texto de título.",
+    "componentPreview.showcaseTitle": "Showcases",
+    "componentPreview.showcaseBody": "Una vista previa mínima, con pantallas, completa y sin marco.",
+    "componentPreview.guidelinesLede": "ComponentPreview muestra un ejemplo vivo con su código, como en estas páginas.",
   },
   en: {
     "demo.componentPreview.title": "Primary button",
@@ -168,5 +171,8 @@ export const componentPreviewMessages = {
     "componentPreview.testReact2": "Renders a note beside the title when given.",
     "componentPreview.testReact3": "Omits the header entirely when there is neither a title nor a note.",
     "componentPreview.testReact4": "Keeps the header when only a note is given, with no title text.",
+    "componentPreview.showcaseTitle": "Showcases",
+    "componentPreview.showcaseBody": "A minimal preview, with screens, complete, and bare.",
+    "componentPreview.guidelinesLede": "ComponentPreview shows a live example with its code, as on these pages.",
   },
 } as const;
