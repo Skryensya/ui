@@ -35,17 +35,4 @@ export const buttonRealization: Realization = {
     },
     divider: "--color-border-subtle",
   },
-  specimen: {
-    module: "apps/docs/src/demos/button.ts",
-    exports: [
-      "buttonVariantTree",
-      "buttonAppearanceTree",
-      "buttonSizesTree",
-      "buttonIconTree",
-      "buttonIconOnlyTree",
-      "buttonDestructivePairTree",
-      // Rest, pressed and disabled; its hover, :active and :focus-visible cells are live-only and draw as rest.
-      "buttonBrutalistStatesTree",
-    ],
-  },
 };

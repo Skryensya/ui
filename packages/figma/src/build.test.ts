@@ -11,12 +11,11 @@ import { evalColor, evalQuantity } from "./evaluate.js";
 import type { ComponentSet, FigmaManifest } from "./manifest-types.js";
 import { buttonRealization } from "./realizations/button.js";
 
-const root = join(import.meta.dirname, "../../..");
 let manifest: FigmaManifest;
 let sets: ComponentSet[];
 
 beforeAll(async () => {
-  manifest = await buildFigmaManifest(root, buttonRealization);
+  manifest = await buildFigmaManifest(buttonRealization);
   sets = manifest.components.filter((c): c is ComponentSet => c.kind === "component-set");
 });
 
@@ -24,7 +23,7 @@ const variable = (id: string) => manifest.variables.find((v) => v.id === id);
 
 describe("determinism", () => {
   it("builds byte-identical output twice", async () => {
-    const again = await buildFigmaManifest(root, buttonRealization);
+    const again = await buildFigmaManifest(buttonRealization);
     expect(canonical(again)).toBe(canonical(manifest));
   });
 
@@ -148,9 +147,6 @@ describe("the Icon set", () => {
     expect(new Set(slots)).toEqual(new Set(["pre,children,post"]));
   });
 
-  it("names the icon a docs preview puts in a slot", () => {
-    expect(manifest.specimen.find((e) => e.source === "buttonIconTree")?.icons).toEqual({ pre: "download" });
-  });
 });
 
 describe("the stage", () => {
@@ -177,13 +173,6 @@ describe("representation", () => {
     expect(report.variants.variantsTotal).toBe(sets.reduce((n, s) => n + s.cells.length, 0));
   });
 
-  it("mirrors the docs previews on the specimen, every one landing on a cell", () => {
-    expect(manifest.specimen.length).toBeGreaterThanOrEqual(15);
-    for (const entry of manifest.specimen) {
-      const set = sets.find((s) => s.id === entry.set)!;
-      expect(set.cells.some((c) => c.key === entry.cell)).toBe(true);
-    }
-  });
 });
 
 describe("the evaluator", () => {

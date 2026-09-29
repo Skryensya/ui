@@ -13,7 +13,7 @@ const [command = "build", rootArg = "."] = process.argv.slice(2);
 const root = resolve(rootArg);
 const out = join(root, "artifacts", "figma-manifest.json");
 
-const manifest = await buildFigmaManifest(root, buttonRealization);
+const manifest = await buildFigmaManifest(buttonRealization);
 const text = canonical(manifest);
 
 if (command === "check") {

@@ -7,13 +7,10 @@
  */
 
 import { createHash } from "node:crypto";
-import { join } from "node:path";
-import { pathToFileURL } from "node:url";
 import { emitMarkup } from "@skryensya/ai-compiler/emit";
 import { canonical } from "@skryensya/ai-compiler/manifest";
 import { sheetsForTree } from "@skryensya/ai-compiler/sheets-for-tree";
 import { surfaceHash } from "@skryensya/ai-compiler/surface";
-import { walkUsageTree } from "@skryensya/ai-compiler/usage-walk";
 import type { ComponentContract, ContractOption } from "@skryensya/core/contract";
 import { parseTokens } from "@skryensya/core/parse";
 import { getContract } from "@skryensya/core/registry";
@@ -31,7 +28,6 @@ import {
   type Layer,
   type Bound,
   type Rgba,
-  type SpecimenEntry,
   type Stage,
   type Styles,
 } from "./manifest-types.js";
@@ -43,9 +39,16 @@ const hash = (value: unknown) => createHash("sha256").update(canonical(value)).d
 
 /*
  * ONE PAGE for everything. A Starter (free) Figma file holds a single page, and the icon set, the
- * component sets and the specimen fit on one as stacked frames.
+ * component sets fit on one as stacked frames.
  */
 const PAGE = { id: "skryensya", name: "Skryensya" };
+
+/*
+ * ONE MODE per collection. A Starter file holds one, so the collections declare `light` only and the
+ * plugin never asks for more. Every variable still carries its dark value, evaluated from the same
+ * light-dark() the CSS ships: adding `dark` here is the whole change for a file that can hold it.
+ */
+const FILE_MODES = ["light"] as const;
 
 /** The vocabulary's own name for a stand-in glyph: what an icon slot shows before anyone picks one. */
 const DEFAULT_ICON = "placeholder";
@@ -104,7 +107,7 @@ function mounted(markup: string, iconContract: ComponentContract): string {
 
 /* ── the compiler ───────────────────────────────────────────────────────────────────────────── */
 
-export async function buildFigmaManifest(repoRoot: string, realization: Realization): Promise<FigmaManifest> {
+export async function buildFigmaManifest(realization: Realization): Promise<FigmaManifest> {
   const contract = getContract(realization.contract);
   const iconContract = getContract("icon");
   if (!contract || !iconContract) throw new Error(`unknown contract ${realization.contract}`);
@@ -309,7 +312,6 @@ export async function buildFigmaManifest(repoRoot: string, realization: Realizat
   const dead = [...registry.diagnostics].filter((d) => d.code === "DERIVED_UNSUPPORTED");
   if (dead.length) throw new Error(`component variables failed to evaluate:\n${dead.map((d) => d.message).join("\n")}`);
 
-  const specimen = await specimenOf(repoRoot, realization, contract, sets, stateAxis, diagnostics);
 
   const variables = [...registry.variables.values()].sort((a, b) =>
     a.collection === b.collection ? a.name.localeCompare(b.name) : a.collection.localeCompare(b.collection),
@@ -361,17 +363,15 @@ export async function buildFigmaManifest(repoRoot: string, realization: Realizat
       conditions: "no @media or @supports block holds",
     },
     collections: [
-      { id: "primitives" as const, name: "Skryensya / Primitives", modes: ["light", "dark"] as const },
-      { id: "semantic" as const, name: "Skryensya / Semantic", modes: ["light", "dark"] as const },
-      { id: "component" as const, name: `Skryensya / ${sets[0].name.split(" / ")[0]}`, modes: ["light", "dark"] as const },
+      { id: "primitives" as const, name: "Skryensya / Primitives", modes: FILE_MODES },
+      { id: "semantic" as const, name: "Skryensya / Semantic", modes: FILE_MODES },
+      { id: "component" as const, name: `Skryensya / ${sets[0].name.split(" / ")[0]}`, modes: FILE_MODES },
     ],
     variables,
     pages: [PAGE],
     stage,
     components: [icon, ...sets],
     styles,
-    specimenPage: PAGE.id,
-    specimen,
     diagnostics: allDiagnostics,
     report,
   };
@@ -450,64 +450,4 @@ async function iconSetOf(realization: Realization, iconContract: ComponentContra
     icons,
   };
   return { ...body, hash: hash(body) };
-}
-
-/* ── specimen: the docs previews, as instances ──────────────────────────────────────────────────── */
-
-async function specimenOf(
-  repoRoot: string,
-  realization: Realization,
-  contract: ComponentContract,
-  sets: ComponentSet[],
-  stateAxis: Axis,
-  diagnostics: Diagnostic[],
-): Promise<SpecimenEntry[]> {
-  const demos = (await import(pathToFileURL(join(repoRoot, realization.specimen.module)).href)) as Record<string, (t: (k: string) => string) => UsageTree>;
-  const { ui } = (await import(pathToFileURL(join(repoRoot, "apps/docs/src/i18n/ui.ts")).href)) as { ui: { en: Record<string, string> } };
-  const t = (key: string) => ui.en[key] ?? key;
-  const out: SpecimenEntry[] = [];
-
-  for (const source of realization.specimen.exports) {
-    const build = demos[source];
-    if (typeof build !== "function") throw new Error(`${realization.specimen.module} has no export ${source}`);
-    let index = 0;
-    walkUsageTree(build(t), (node) => {
-      if (node.contract !== realization.contract) return;
-      const id = `${source}#${index++}`;
-      if (node.signature !== realization.signature) {
-        diagnostics.push({ severity: "info", code: "SPECIMEN_SKIPPED", subject: id, message: `${node.signature} is not realized` });
-        return;
-      }
-      const given = { ...defaultsOf(contract, Object.keys(contract.options)), ...(node.options ?? {}) } as Record<string, unknown>;
-      const set = sets.find((s) => s.id === `${realization.contract}/${given[realization.splitBy]}`);
-      if (!set) return;
-      const props: Record<string, string> = {};
-      for (const axis of set.axes) {
-        if (axis.name === stateAxis.name) {
-          props[axis.name] = stateAxis.values.find((v) => given[v] === true) ?? stateAxis.values[0];
-        } else props[axis.name] = String(given[axis.name] ?? false);
-      }
-      const key = Object.entries(props).map(([k, v]) => `${k}=${v}`).join(", ");
-      if (!set.cells.some((c) => c.key === key)) {
-        diagnostics.push({ severity: "info", code: "SPECIMEN_SKIPPED", subject: id, message: `no cell ${key}` });
-        return;
-      }
-      const slots = { ...(node.slots ?? {}), ...(node.children !== undefined ? { children: node.children } : {}) } as Record<string, unknown>;
-      const properties: Record<string, string | boolean> = {};
-      const icons: Record<string, string> = {};
-      const iconName = (content: unknown) =>
-        typeof content === "object" && content !== null && (content as UsageTree).contract === "icon"
-          ? String((content as UsageTree).options?.name ?? "")
-          : undefined;
-      for (const [slot, spec] of Object.entries(realization.slots)) {
-        const content = slots[slot];
-        if (spec.holds === "text" && typeof content === "string") properties[slot] = content;
-        if (spec.holds === "icon") properties[slot] = content !== undefined;
-        const name = iconName(content);
-        if (name) icons[slot] = name;
-      }
-      out.push({ id, source, set: set.id, cell: key, properties, icons });
-    });
-  }
-  return out;
 }
