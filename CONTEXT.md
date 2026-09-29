@@ -345,9 +345,19 @@ _Avoid_: corner style, shape mode, roundness theme
 
 **State layer**:
 A pattern. One semi-transparent overlay, tinted with the component's own content color, that
-signals hover, focus, pressed, selected or dragged. Exactly one state shows at a time; opacities
+signals hover, focus, active, selected or dragged. Exactly one state shows at a time; opacities
 are never summed.
 _Avoid_: interaction layer, interaction overlay, ripple
+
+**Active**:
+The moment a control is being pressed, pointer or key held down: CSS `:active`, over when released.
+Distinct from **Pressed**, which outlasts the press.
+_Avoid_: pressed (for this), clicked, down
+
+**Pressed**:
+A toggle's own state: a button that stays on (`aria-pressed`), bold in a toolbar, an upvote. It
+persists after the press ends and is announced; a button that springs back is never pressed.
+_Avoid_: active (for this), selected, checked, on
 
 **Virtual focus**:
 The focus ring on an option that DOM focus never reached: focus stays in a text input and
