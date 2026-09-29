@@ -15,6 +15,7 @@ function markup(root = "") {
     <div class="sk-color-picker__control">
       <button class="sk-color-picker__trigger" type="button" aria-label="Choose color">
         <span class="sk-color-picker__swatch"></span>
+        <span class="sk-color-picker__value"></span>
       </button>
     </div>
   </div>`;
@@ -59,9 +60,10 @@ describe("ColorPicker Vanilla contracts", () => {
     await waitFor(() => expect(trigger().getAttribute("aria-expanded")).toBe("false"));
   });
 
-  it("shows the starting color on the root's own custom property", () => {
+  it("shows the starting color on the root and in the field text", () => {
     const root = markup('data-value="#3366ff"');
     expect(root.style.getPropertyValue("--value")).toBe("rgba(51, 102, 255, 1)");
+    expect(document.querySelector(".sk-color-picker__value")?.textContent).toBe("rgba(51, 102, 255, 1)");
   });
 
   it("commits a typed hex value and only shows the selected channel format", async () => {

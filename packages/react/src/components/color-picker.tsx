@@ -135,10 +135,10 @@ function ColorPickerField({
           aria-label={triggerLabel ?? colorPickerContract.options.triggerLabel.default}
           aria-labelledby={undefined}
           className={`${colorPickerParts.trigger} sk-button sk-interactive`}
-          data-icon-only=""
           type="button"
         >
           <span className={colorPickerParts.swatch} />
+          <span className={colorPickerParts.value}>{api.valueAsString}</span>
         </button>
       </div>
       <Portal container={container}>

@@ -29,6 +29,7 @@ export const colorPickerParts = {
   control: "sk-color-picker__control",
   trigger: "sk-color-picker__trigger",
   swatch: "sk-color-picker__swatch",
+  value: "sk-color-picker__value",
   hiddenInput: "sk-color-picker__hidden-input",
   positioner: "sk-color-picker__positioner",
   content: "sk-color-picker__content",
@@ -134,15 +135,18 @@ export const colorPickerContract = {
     "--sk-color-picker-content-radius",
     "--sk-color-picker-content-shadow",
     "--sk-color-picker-content-wash",
+    "--sk-color-picker-field-padding",
     "--sk-color-picker-gap",
     "--sk-color-picker-label-color",
     "--sk-color-picker-rail-block-size",
     "--sk-color-picker-rail-radius",
     "--sk-color-picker-rail-thumb-size",
     "--sk-color-picker-swatch-border-color",
+    "--sk-color-picker-swatch-size",
     "--sk-color-picker-thumb-ring-color",
     "--sk-color-picker-thumb-ring-size",
     "--sk-color-picker-thumb-shadow",
+    "--sk-color-picker-trigger-inline-size",
     "--sk-color-picker-trigger-size",
   ],
   /*
@@ -165,10 +169,10 @@ export const colorPickerContract = {
     required: { type: "boolean", default: false, attr: "data-required", trueValue: "", machineInput: true },
     invalid: { type: "boolean", default: false, attr: "data-invalid", trueValue: "", machineInput: true },
     /**
-     * Names the swatch button. Required in practice, not in the type: the trigger is icon-only
-     * (a color swatch, no text), so it is the one control on this component that a screen reader
-     * cannot otherwise name. The default is generic on purpose ("Choose color");
-     * a consumer editing a specific field ("Color de marca") should say what the color is FOR.
+     * Names the picker trigger. Required in practice, not in the type: the visible value is a color
+     * token, not a field name, so a screen reader still needs the action and purpose. The default is
+     * generic on purpose ("Choose color"); a consumer editing a specific field ("Color de marca")
+     * should say what the color is FOR.
      */
     triggerLabel: { type: "string", default: "Choose color", attr: "aria-label" },
     /**
@@ -255,8 +259,8 @@ export const colorPickerContract = {
                 part: "trigger",
                 also: ["sk-button", "sk-interactive"],
                 options: ["triggerLabel"],
-                attrs: { type: "button", "data-icon-only": "" },
-                children: [{ element: "span", part: "swatch" }],
+                attrs: { type: "button" },
+                children: [{ element: "span", part: "swatch" }, { element: "span", part: "value" }],
               },
             ],
           },
@@ -321,8 +325,8 @@ export const colorPickerContract = {
                 part: "trigger",
                 also: ["sk-button", "sk-interactive"],
                 options: ["triggerLabel"],
-                attrs: { type: "button", "data-icon-only": "" },
-                children: [{ element: "span", part: "swatch" }],
+                attrs: { type: "button" },
+                children: [{ element: "span", part: "swatch" }, { element: "span", part: "value" }],
               },
             ],
           },

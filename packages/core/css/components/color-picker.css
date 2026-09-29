@@ -16,22 +16,25 @@
     --sk-color-picker-gap: var(--space-stack-xs);
     --sk-color-picker-label-color: var(--color-text-secondary);
     --sk-color-picker-trigger-size: var(--size-control-md);
+    --sk-color-picker-trigger-inline-size: 13.5rem;
+    --sk-color-picker-field-padding: 0.25rem;
+    --sk-color-picker-swatch-size: calc(var(--sk-color-picker-trigger-size) - 0.6rem);
     --sk-color-picker-swatch-border-color: var(--color-border-default);
 
-    --sk-color-picker-content-bg: color-mix(in oklch, var(--color-bg-surface-overlay) 92%, var(--color-action-accent) 8%);
-    --sk-color-picker-content-border-color: color-mix(in oklch, var(--color-border-subtle) 70%, var(--color-action-accent) 30%);
+    --sk-color-picker-content-bg: var(--color-bg-surface-overlay);
+    --sk-color-picker-content-border-color: var(--color-border-subtle);
     --sk-color-picker-content-radius: var(--radius-surface);
-    --sk-color-picker-content-inline-size: 18rem;
+    --sk-color-picker-content-inline-size: 15.5rem;
     --sk-color-picker-content-padding: var(--space-inset-sm);
     --sk-color-picker-content-gap: var(--space-stack-xs);
     --sk-color-picker-content-shadow: var(--elevation-overlay);
     --sk-color-picker-content-wash: var(--elevation-wash-overlay);
 
-    --sk-color-picker-area-block-size: 8.75rem;
-    --sk-color-picker-area-radius: calc(var(--radius-control) + 2px);
-    --sk-color-picker-area-thumb-size: 1.15rem;
+    --sk-color-picker-area-block-size: 8.5rem;
+    --sk-color-picker-area-radius: calc(var(--radius-surface) - 2px);
+    --sk-color-picker-area-thumb-size: 1.05rem;
 
-    --sk-color-picker-rail-block-size: 0.85rem;
+    --sk-color-picker-rail-block-size: 0.65rem;
     --sk-color-picker-rail-radius: var(--radius-pill);
     --sk-color-picker-rail-thumb-size: 1.15rem;
     --sk-color-picker-thumb-ring-color: var(--color-bg-surface);
@@ -53,15 +56,24 @@
     display: inline-flex;
   }
 
-  /* The trigger is a real icon-only Button; only its content (the swatch) is component-specific. */
+  /* The trigger reads as a compact input: a live preview swatch, then the current value as text. */
   .sk-color-picker__trigger.sk-button {
-    --sk-button-bg: transparent;
-    --sk-button-border-color: var(--sk-color-picker-swatch-border-color);
+    --sk-button-bg: var(--color-bg-surface-sunken);
+    --sk-button-border-color: var(--color-border-default);
     --sk-button-radius: var(--radius-control);
+    --sk-button-padding-x: var(--sk-color-picker-field-padding);
+    --sk-button-width: min(100%, var(--sk-color-picker-trigger-inline-size));
 
-    inline-size: var(--sk-color-picker-trigger-size);
+    display: grid;
+    grid-template-columns: var(--sk-color-picker-swatch-size) minmax(0, 1fr);
+    gap: var(--space-inline-xs);
+    align-items: center;
+    justify-content: start;
+    inline-size: var(--sk-button-width);
+    min-inline-size: min(100%, 10rem);
     block-size: var(--sk-color-picker-trigger-size);
-    padding: 3px;
+    padding-block: var(--sk-color-picker-field-padding);
+    text-align: start;
   }
   .sk-color-picker__trigger[type="color"] {
     box-sizing: border-box;
@@ -107,23 +119,36 @@
    */
   .sk-color-picker__swatch {
     display: block;
-    inline-size: 100%;
-    block-size: 100%;
+    inline-size: var(--sk-color-picker-swatch-size);
+    block-size: var(--sk-color-picker-swatch-size);
+    border: 1px solid color-mix(in oklch, var(--color-border-default) 70%, black 30%);
     border-radius: calc(var(--radius-control) - 3px);
     background-image: linear-gradient(var(--value, #000), var(--value, #000)), conic-gradient(#ddd 0 25%, transparent 0 50%, #ddd 0 75%, transparent 0);
     background-size:
       100% 100%,
       var(--sk-color-picker-checkerboard-size) var(--sk-color-picker-checkerboard-size);
     background-color: #fff;
+    box-shadow: inset 0 1px 0 rgb(255 255 255 / 20%);
+  }
+
+  .sk-color-picker__value {
+    overflow: hidden;
+    color: var(--color-text-primary);
+    font-family: var(--font-family-mono);
+    font-size: var(--font-size-body-sm);
+    font-variant-numeric: tabular-nums;
+    line-height: 1;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
 
   /* ── THE PANEL, redeclared on the positioner: React portals it to the body, so nothing here
    * reaches it by inheritance from `.sk-color-picker` (same note as `date-picker.css`'s own). ── */
   .sk-color-picker__positioner {
-    --sk-color-picker-content-bg: color-mix(in oklch, var(--color-bg-surface-overlay) 92%, var(--color-action-accent) 8%);
-    --sk-color-picker-content-border-color: color-mix(in oklch, var(--color-border-subtle) 70%, var(--color-action-accent) 30%);
+    --sk-color-picker-content-bg: var(--color-bg-surface-overlay);
+    --sk-color-picker-content-border-color: var(--color-border-subtle);
     --sk-color-picker-content-radius: var(--radius-surface);
-    --sk-color-picker-content-inline-size: 18rem;
+    --sk-color-picker-content-inline-size: 15.5rem;
     --sk-color-picker-content-padding: var(--space-inset-sm);
     --sk-color-picker-content-gap: var(--space-stack-xs);
     --sk-color-picker-content-shadow: var(--elevation-overlay);
@@ -147,7 +172,7 @@
     border-radius: var(--sk-color-picker-content-radius);
     background:
       var(--sk-color-picker-content-wash),
-      linear-gradient(180deg, color-mix(in oklch, var(--color-bg-surface-overlay) 98%, white 2%), var(--sk-color-picker-content-bg)),
+      linear-gradient(180deg, color-mix(in oklch, var(--color-bg-surface-overlay) 96%, white 4%), var(--sk-color-picker-content-bg)),
       var(--sk-color-picker-content-bg);
     /* The rim-light inset stays hand-authored (a highlight, not a shadow); the ambient shadow used
      * to be `-raised` PLUS an extra hand-tuned layer compensating for feeling under-elevated. Its
@@ -170,10 +195,10 @@
     block-size: var(--sk-color-picker-area-block-size);
     border-radius: var(--sk-color-picker-area-radius);
     overflow: hidden;
-    border: 1px solid color-mix(in oklch, var(--color-border-default) 65%, var(--color-bg-canvas) 35%);
+    border: 1px solid color-mix(in oklch, var(--color-border-default) 55%, transparent);
     box-shadow:
       inset 0 1px 0 rgb(255 255 255 / 18%),
-      0 1px 2px rgb(0 0 0 / 30%);
+      0 1px 2px rgb(0 0 0 / 18%);
   }
   /* `getAreaBackgroundProps` inlines `position: relative` on this element (not `absolute`), which
    * an external stylesheet cannot out-rank without `!important`. Filling the parent by SIZE
@@ -242,26 +267,27 @@
   /* ── CHANNEL FORMAT + INPUT ROW: show one editable model at a time. Compact drops the whole
    * editor area, not just its spacing, per the anatomy split `color-picker.ts` documents. ── */
   .sk-color-picker__format-switch {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 1px;
+    order: 4;
+    display: inline-flex;
+    justify-self: start;
+    gap: 2px;
     padding: 2px;
     border: 1px solid var(--color-border-subtle);
-    border-radius: calc(var(--radius-control) + 2px);
-    background: color-mix(in oklch, var(--color-bg-canvas) 42%, transparent);
+    border-radius: var(--radius-pill);
+    background: color-mix(in oklch, var(--color-bg-surface-sunken) 72%, transparent);
   }
   .sk-color-picker__format-option {
-    min-block-size: 1.65rem;
+    min-block-size: 1.4rem;
+    padding-inline: var(--space-inset-xs);
     border: 0;
-    border-radius: calc(var(--radius-control) - 2px);
+    border-radius: var(--radius-pill);
     background: transparent;
     color: var(--color-text-secondary);
     cursor: pointer;
     font: inherit;
     font-size: var(--font-size-caption);
     font-weight: var(--font-weight-label);
-    letter-spacing: 0.04em;
-    text-transform: uppercase;
+    letter-spacing: 0.02em;
   }
   .sk-color-picker__format-option:is(:hover, :focus-visible) {
     color: var(--color-text-primary);
@@ -273,24 +299,21 @@
   }
   .sk-color-picker__format-option[data-state="checked"] {
     color: var(--color-text-primary);
-    background: color-mix(in oklch, var(--color-action-accent) 28%, var(--color-bg-surface-raised) 72%);
-    box-shadow: inset 0 0 0 1px color-mix(in oklch, var(--color-action-accent) 40%, transparent);
+    background: var(--color-bg-surface-raised);
+    box-shadow: inset 0 0 0 1px color-mix(in oklch, var(--color-action-accent) 30%, transparent);
   }
   .sk-color-picker__channels {
+    order: 3;
     display: grid;
-    gap: 1px;
-    padding: 2px;
-    border: 1px solid var(--color-border-subtle);
-    border-radius: calc(var(--radius-control) + 2px);
-    background: color-mix(in oklch, var(--color-bg-canvas) 42%, transparent);
+    gap: var(--space-stack-2xs);
   }
   [data-anatomy="compact"] .sk-color-picker__channels {
     display: none;
   }
   .sk-color-picker__channel-row {
     display: grid;
-    grid-template-columns: minmax(3.75rem, 0.7fr) repeat(var(--sk-color-picker-channel-count, 3), 1fr);
-    gap: 1px;
+    grid-template-columns: minmax(2.75rem, 0.55fr) repeat(var(--sk-color-picker-channel-count, 3), 1fr);
+    gap: var(--space-inline-2xs);
     align-items: center;
   }
   .sk-color-picker__channel-label {
@@ -298,8 +321,8 @@
     display: grid;
     align-items: center;
     padding-inline: var(--space-inset-xs);
-    border-radius: calc(var(--radius-control) - 2px);
-    background: color-mix(in oklch, var(--color-bg-surface-sunken) 62%, transparent);
+    border-radius: var(--radius-control);
+    background: var(--color-bg-surface-sunken);
     color: var(--sk-color-picker-label-color);
     font-size: var(--font-size-caption);
     font-weight: var(--font-weight-label);
@@ -309,10 +332,10 @@
   .sk-color-picker__channel-input {
     box-sizing: border-box;
     inline-size: 100%;
-    min-block-size: 1.75rem;
+    min-block-size: 1.9rem;
     padding: 0 var(--space-inset-2xs);
     border: 0;
-    border-radius: calc(var(--radius-control) - 2px);
+    border-radius: var(--radius-control);
     /* A field, `sunken` like Input/Select/Combobox elsewhere (see /elevacion): the real token now,
        not the hand-mixed raised/canvas blend this used before real `sunken` was tuned to be usable
        here. `--elevation-sunken` is the SECOND layer, after the border simulation this control
@@ -334,20 +357,20 @@
 
   /* ── PRESET SWATCHES ── */
   .sk-color-picker__swatch-group {
+    order: 5;
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(1.75rem, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(1.35rem, 1fr));
     gap: var(--space-inline-xs);
-    padding: var(--space-inset-xs);
-    border: 1px solid var(--color-border-subtle);
-    border-radius: calc(var(--radius-control) + 2px);
-    background: color-mix(in oklch, var(--color-bg-canvas) 38%, transparent);
+    padding: 0;
+    border: 0;
+    background: transparent;
   }
   .sk-color-picker__swatch-trigger {
     box-sizing: border-box;
     inline-size: 100%;
     aspect-ratio: 1;
-    min-block-size: 1.75rem;
-    padding: 3px;
+    min-block-size: 1.35rem;
+    padding: 2px;
     border: 1px solid var(--sk-color-picker-swatch-border-color);
     border-radius: var(--radius-control);
     background: var(--color-bg-surface);

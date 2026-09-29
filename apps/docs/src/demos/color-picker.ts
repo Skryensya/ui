@@ -119,14 +119,24 @@ export const colorPickerAnatomyCss = `.sk-annotated-figure {
 export const colorPickerTree = (t: Translate): UsageTree => ({
   contract: "color-picker",
   signature: "ColorPicker",
-  options: { triggerLabel: t("kit.chooseColor"), name: "brand", value: "#3366ff" },
+  options: {
+    triggerLabel: t("kit.chooseColor"),
+    name: "brand",
+    value: "#3366ff",
+    swatches: "#3366ff #22c55e #f59e0b #ef4444 #111827 #ffffff",
+  },
   slots: { label: t("demo.colorPicker.label") },
 });
 
 export const compactColorPickerTree = (t: Translate): UsageTree => ({
   contract: "color-picker",
   signature: "ColorPicker.compact",
-  options: { triggerLabel: t("kit.chooseColor"), name: "accent", value: "#22aabb" },
+  options: {
+    triggerLabel: t("kit.chooseColor"),
+    name: "accent",
+    value: "#22aabb",
+    swatches: "#22aabb #3366ff #22c55e #f59e0b",
+  },
   slots: { label: t("demo.colorPicker.compactLabel") },
 });
 

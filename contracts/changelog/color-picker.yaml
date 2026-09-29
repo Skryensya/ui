@@ -3,8 +3,22 @@
 # `surface` is the shape of the contract the last time somebody reviewed it. If the compiler says it
 # does not match, something a consumer depends on has moved: write the entry and paste in the new
 # hash.
-surface: "ff88229e27d74bef"
+surface: "fcebe841ac1e1917"
 entries:
+  - date: 2026-09-29
+    kind: feature
+    es:
+      title: El disparador muestra el valor
+      body: >-
+        El disparador deja de ser solo ícono: junto a la muestra lleva <code>sk-color-picker__value</code> con el color
+        escrito. Nuevos hooks: <code>--sk-color-picker-field-padding</code>, <code>--sk-color-picker-swatch-size</code>
+        y <code>--sk-color-picker-trigger-inline-size</code>.
+    en:
+      title: The trigger shows the value
+      body: >-
+        The trigger is no longer icon-only: beside the swatch it carries <code>sk-color-picker__value</code> with the
+        colour written out. New hooks: <code>--sk-color-picker-field-padding</code>, <code>--sk-color-picker-swatch-size</code>
+        and <code>--sk-color-picker-trigger-inline-size</code>.
   - date: 2026-09-17
     kind: feature
     es:

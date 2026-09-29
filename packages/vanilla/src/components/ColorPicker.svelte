@@ -28,6 +28,7 @@
   const label = root.querySelector<HTMLElement>(`.${colorPickerParts.label}`);
   const control = root.querySelector<HTMLElement>(`.${colorPickerParts.control}`);
   const trigger = root.querySelector<HTMLButtonElement>(`.${colorPickerParts.trigger}`);
+  const value = root.querySelector<HTMLElement>(`.${colorPickerParts.value}`);
   // Optional, like Select's hidden `<select>`: it is only patched if the author put it there (or the
   // emitter generated it). Without it, `name` simply does not reach a submit.
   const hiddenInput = root.querySelector<HTMLInputElement>(`.${colorPickerParts.hiddenInput}`);
@@ -104,6 +105,10 @@
   ];
 
   bindParts(bindings);
+
+  $effect(() => {
+    if (value) value.textContent = api.valueAsString;
+  });
 
   onMount(() => {
     if (anchored) unbindAnchor = bindAnchor(control, positioner, anchorNameFor(root.id));
