@@ -10,6 +10,7 @@ import ComponentPageShell from "./ComponentPageShell.astro";
 import AppearanceMenu from "../AppearanceMenu.astro";
 import CodeBlock from "../CodeBlock.astro";
 import ComponentPreview from "../ComponentPreview.astro";
+import UsagePreview from "../UsagePreview.astro";
 import {
   sidebarAnatomyTree,
   sidebarFloatingTriggerTree,
@@ -50,20 +51,11 @@ await initComponents();`;
     <AppearanceMenu label={t("prefs.appearance")} values={["plain", "brutalist", "frosted"]} unavailable={{ tactile: t("prefs.appearanceTactileUnavailable") }} />
   </Fragment>
 
-  <Fragment slot="anatomy">
-    <p set:html={t("sidebarPage.anatomyBody")} />
-    <ComponentPreview
-      tree={sidebarAnatomyTree(t)}
-      css={annotationDemoCss}
-      label={t("sidebarPage.anatomyPreviewLabel")}
-      screens={false}
-      hideSource
-      chrome={false}
-    />
-  </Fragment>
-
   <Fragment slot="usage">
     <p class="lede" set:html={t("sidebarPage.lede")} />
+
+    <h3>{t("sidebarPage.showcaseTitle")}</h3>
+    <p set:html={t("sidebarPage.showcaseBody")} />
     <h3>{t("sidebarPage.contentTitle")}</h3>
     <p set:html={t("sidebarPage.contentBody")} />
 
@@ -108,6 +100,27 @@ await initComponents();`;
     <p set:html={t("sidebarPage.htmlBody2")} />
 
     <p set:html={t("sidebarPage.reactBody")} />
+
+    <h3>{t("component.anatomy")}</h3>
+    <p set:html={t("sidebarPage.anatomyBody")} />
+    <ComponentPreview
+      tree={sidebarAnatomyTree(t)}
+      css={annotationDemoCss}
+      label={t("sidebarPage.anatomyPreviewLabel")}
+      screens={false}
+      hideSource
+      chrome={false}
+    />
+  </Fragment>
+
+  <Fragment slot="guidelines">
+    <p class="lede" set:html={t("sidebarPage.guidelinesLede")} />
+    <ul>
+      <li set:html={t("sidebarPage.guide.use1")} />
+      <li set:html={t("sidebarPage.guide.use2")} />
+      <li set:html={t("sidebarPage.guide.avoid1")} />
+      <li set:html={t("sidebarPage.guide.avoid2")} />
+    </ul>
   </Fragment>
 
   <Fragment slot="install">

@@ -79,6 +79,20 @@ export const footerMessages = {
     /* Appended by `report-issue.ts` at the end of the body above, with JS only: the only thing the
        server cannot know. Without JS the body above is already a complete report on its own. */
     "footer.reportIssue.environment": "\n\n**Entorno:**\n- Navegador: {ua}\n- Tamaño de ventana: {viewport}",
+    "footer.prop.surface.title": "Superficie",
+    "footer.prop.surface.body": "La <code>surface</code> decide el fondo del pie respecto de la página.",
+    "footer.prop.surface.none": "Usa <code>none</code> cuando el pie es una sola línea sobre el fondo de la página.",
+    "footer.prop.surface.sunken": "Usa <code>sunken</code>, el default, para separar el pie del contenido sin una línea dura.",
+    "footer.prop.surface.surface": "Usa <code>surface</code> cuando la página tiene un fondo hundido y el pie debe subir.",
+    "footer.prop.surface.raised": "Usa <code>raised</code> para un pie que se lee como una tarjeta.",
+    "footer.prop.appearance.title": "Apariencia",
+    "footer.prop.appearance.body": "La <code>appearance</code> decide cómo se dibuja el pie.",
+    "footer.prop.appearance.plain": "Usa <code>plain</code>, el default, en casi todas partes.",
+    "footer.prop.appearance.brutalist": "Usa <code>brutalist</code> cuando el resto de la página lo es.",
+    "footer.prop.appearance.frosted": "Usa <code>frosted</code> sobre una imagen o un fondo con color.",
+    "footer.showcaseTitle": "Showcases",
+    "footer.showcaseBody": "El pie de un sitio con columnas de enlaces, y una sola línea de créditos.",
+    "footer.guidelinesLede": "Footer cierra la página con enlaces secundarios, datos legales y créditos.",
   },
   en: {
     "footer.anatomyLabel": "Footer anatomy",
@@ -157,5 +171,19 @@ export const footerMessages = {
     /* Appended by `report-issue.ts` to the end of the body above, JS only: the one thing the server
        cannot know. Without JS the body above is already a complete report on its own. */
     "footer.reportIssue.environment": "\n\n**Environment:**\n- Browser: {ua}\n- Window size: {viewport}",
+    "footer.prop.surface.title": "Surface",
+    "footer.prop.surface.body": "<code>surface</code> decides the footer's background against the page.",
+    "footer.prop.surface.none": "Use <code>none</code> when the footer is a single line on the page's background.",
+    "footer.prop.surface.sunken": "Use <code>sunken</code>, the default, to set the footer apart from the content without a hard line.",
+    "footer.prop.surface.surface": "Use <code>surface</code> when the page has a sunken background and the footer should rise.",
+    "footer.prop.surface.raised": "Use <code>raised</code> for a footer that reads as a card.",
+    "footer.prop.appearance.title": "Appearance",
+    "footer.prop.appearance.body": "<code>appearance</code> decides how the footer is drawn.",
+    "footer.prop.appearance.plain": "Use <code>plain</code>, the default, almost everywhere.",
+    "footer.prop.appearance.brutalist": "Use <code>brutalist</code> when the rest of the page is.",
+    "footer.prop.appearance.frosted": "Use <code>frosted</code> over an image or a coloured background.",
+    "footer.showcaseTitle": "Showcases",
+    "footer.showcaseBody": "A site footer with columns of links, and a single credit line.",
+    "footer.guidelinesLede": "Footer closes the page with secondary links, legal details and credits.",
   },
 } as const;

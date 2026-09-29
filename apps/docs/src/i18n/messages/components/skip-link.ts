@@ -52,6 +52,13 @@ export const skipLinkMessages = {
       "En reposo sigue en el árbol de accesibilidad: si estuviera con display none, este test no lo encontraría, y el Tab tampoco.",
     "skipLink.test3":
       "El destino recibe su requisito como valor (<code>skipLinkTarget</code>), y el href apunta al id que lo lleva.",
+    "skipLink.showcaseTitle": "Showcases",
+    "skipLink.showcaseBody": "Un enlace para saltar al contenido, y dos para saltar a destinos distintos.",
+    "skipLink.guidelinesLede": "SkipLink deja saltar con el teclado lo que se repite al inicio de cada página.",
+    "skipLink.guide.use1": "Ponlo primero en el documento: se ve recién al recibir el foco.",
+    "skipLink.guide.use2": "Si hay varios, el primero lleva al contenido, que es lo que casi todos vinieron a leer.",
+    "skipLink.guide.avoid1": "El destino tiene que poder recibir el foco (<code>tabindex=\"-1\"</code>); si no, el siguiente Tab vuelve a lo que se quería saltar.",
+    "skipLink.guide.avoid2": "No enlaces a un destino que puede no estar en la página.",
   },
   en: {
     "skipLink.anatomyLabel": "SkipLink anatomy",
@@ -106,5 +113,12 @@ export const skipLinkMessages = {
       "At rest it is still in the accessibility tree: with display none this test would not find it, and neither would Tab.",
     "skipLink.test3":
       "The destination receives its own requirement as a value (<code>skipLinkTarget</code>), and the href points at the id that carries it.",
+    "skipLink.showcaseTitle": "Showcases",
+    "skipLink.showcaseBody": "A link to skip to the content, and two to skip to different targets.",
+    "skipLink.guidelinesLede": "SkipLink lets keyboard users skip what repeats at the top of every page.",
+    "skipLink.guide.use1": "Put it first in the document: it only shows when it takes focus.",
+    "skipLink.guide.use2": "When there are several, the first goes to the content, which is what almost everyone came to read.",
+    "skipLink.guide.avoid1": "The target must be able to take focus (<code>tabindex=\"-1\"</code>); otherwise the next Tab goes back to what was meant to be skipped.",
+    "skipLink.guide.avoid2": "Do not link to a target that may not be on the page.",
   },
 } as const;

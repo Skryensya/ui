@@ -6,6 +6,8 @@ import "@skryensya/core/components/annotation.css";
 import ComponentPageShell from "./ComponentPageShell.astro";
 import CodeBlock from "../CodeBlock.astro";
 import ComponentPreview from "../ComponentPreview.astro";
+import UsagePreview from "../UsagePreview.astro";
+import DoDont from "../DoDont.astro";
 import {
   breadcrumbCollapseTree,
   breadcrumbIconTree,
@@ -32,20 +34,11 @@ const styles = `@import "@skryensya/core/components/breadcrumb.css";`;
   contractId="breadcrumb"
   testFiles={["packages/react/src/components/breadcrumb.test.tsx", "packages/vanilla/src/components/breadcrumb.test.ts"]}}
 >
-  <Fragment slot="anatomy">
-    <p set:html={t("breadcrumb.anatomyBody")} />
-    <ComponentPreview
-      tree={annotationPluralTree(t)}
-      css={annotationPluralCss}
-      label={t("annotation.pluralLabel")}
-      screens={false}
-      hideSource
-      chrome={false}
-    />
-  </Fragment>
-
   <Fragment slot="usage">
     <p class="lede" set:html={t("breadcrumb.description")} />
+
+    <h3>{t("breadcrumb.showcaseTitle")}</h3>
+    <p set:html={t("breadcrumb.showcaseBody")} />
     <h3>{t("breadcrumb.examplesTitle")}</h3>
 
     <h4>{t("breadcrumb.twoTitle")}</h4>
@@ -90,6 +83,27 @@ const styles = `@import "@skryensya/core/components/breadcrumb.css";`;
 
     <h3>{t("component.contractNotesTitle")}</h3>
     <p set:html={t("breadcrumb.contractBody")} />
+
+    <h3>{t("component.anatomy")}</h3>
+    <p set:html={t("breadcrumb.anatomyBody")} />
+    <ComponentPreview
+      tree={annotationPluralTree(t)}
+      css={annotationPluralCss}
+      label={t("annotation.pluralLabel")}
+      screens={false}
+      hideSource
+      chrome={false}
+    />
+  </Fragment>
+
+  <Fragment slot="guidelines">
+    <p class="lede" set:html={t("breadcrumb.guidelinesLede")} />
+    <DoDont
+      canvas
+      title={t("breadcrumb.dd.collapse.title")}
+      do={{ tree: breadcrumbCollapseTree(t, { documents: "#", projects: "#", designSystem: "#", components: "#" }), caption: t("breadcrumb.dd.collapse.do") }}
+      dont={{ tree: breadcrumbLongTree(t, "#"), caption: t("breadcrumb.dd.collapse.dont") }}
+    />
   </Fragment>
 
   <Fragment slot="install">

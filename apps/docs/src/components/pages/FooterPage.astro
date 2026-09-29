@@ -2,6 +2,7 @@
 import ComponentPageShell from "./ComponentPageShell.astro";
 import AppearanceMenu from "../AppearanceMenu.astro";
 import ComponentPreview from "../ComponentPreview.astro";
+import UsagePreview from "../UsagePreview.astro";
 import { footerColumnsTree, footerCreditTree } from "../../demos/layout";
 import { getLocale, useTranslations } from "../../i18n";
 import { footerAnatomyTree, layoutAnatomyFillCss } from "../../demos/layout-anatomy";
@@ -16,6 +17,10 @@ const docsHref = locale === "en" ? "/en" : "/";
 
 const footerSiteTree = footerColumnsTree(t, docsHref);
 const footerOneLineTree = footerCreditTree(t);
+
+/* What each value of a property is for, read from this page's messages. Same model Badge uses. */
+const explain = (option: string, values: readonly string[]) =>
+  Object.fromEntries(values.map((value) => [value, t(`footer.prop.${option}.${value}` as Parameters<typeof t>[0])]));
 ---
 
 <ComponentPageShell
@@ -45,7 +50,51 @@ const footerOneLineTree = footerCreditTree(t);
     <AppearanceMenu label={t("prefs.appearance")} values={["plain", "brutalist", "frosted"]} unavailable={{ tactile: t("prefs.appearanceTactileUnavailable") }} />
   </Fragment>
 
-  <Fragment slot="anatomy">
+  <Fragment slot="usage">
+    <p class="lede" set:html={t("footer.lede")} />
+
+    <UsagePreview
+      tree={footerSiteTree}
+      optionName="surface"
+      title={t("footer.prop.surface.title")}
+      description={t("footer.prop.surface.body")}
+      explain={explain("surface", ["none", "sunken", "surface", "raised"])}
+      stageMinBlockSize="14rem"
+    />
+
+    <UsagePreview
+      tree={footerSiteTree}
+      optionName="appearance"
+      title={t("footer.prop.appearance.title")}
+      description={t("footer.prop.appearance.body")}
+      explain={explain("appearance", ["plain", "brutalist", "frosted"])}
+      stageMinBlockSize="14rem"
+    />
+
+    <h3>{t("footer.showcaseTitle")}</h3>
+    <p set:html={t("footer.showcaseBody")} />
+
+    <h3>{t("footer.htmlTitle")}</h3>
+
+    <h4>{t("footer.patternSiteTitle")}</h4>
+    <p>{t("footer.patternSiteDescription")}</p>
+    <UsagePreview tree={footerSiteTree} />
+
+    <h4>{t("footer.patternCreditTitle")}</h4>
+    <p>{t("footer.patternCreditDescription")}</p>
+    <UsagePreview tree={footerOneLineTree} />
+
+    <p set:html={t("component.reactNote")} />
+
+    <h3>{t("component.contractNotesTitle")}</h3>
+    <ul>
+      <li set:html={t("footer.contractItem1")} />
+      <li set:html={t("footer.contractItem2")} />
+      <li set:html={t("footer.contractItem3")} />
+      <li set:html={t("footer.contractItem4")} />
+    </ul>
+
+    <h3>{t("component.anatomy")}</h3>
     <p set:html={t("footer.anatomyBody")} />
     <ComponentPreview
       tree={footerAnatomyTree(t)}
@@ -57,33 +106,12 @@ const footerOneLineTree = footerCreditTree(t);
     />
   </Fragment>
 
-  <Fragment slot="usage">
-    <p class="lede" set:html={t("footer.lede")} />
-
+  <Fragment slot="guidelines">
+    <p class="lede" set:html={t("footer.guidelinesLede")} />
     <h3>{t("footer.whenTitle")}</h3>
     <p set:html={t("footer.whenBody1")} />
     <p set:html={t("footer.whenBody2")} />
     <p set:html={t("footer.whenBody3")} />
-
-    <h3>{t("footer.htmlTitle")}</h3>
-
-    <h4>{t("footer.patternSiteTitle")}</h4>
-    <p>{t("footer.patternSiteDescription")}</p>
-    <ComponentPreview tree={footerSiteTree} label="Site footer" />
-
-    <h4>{t("footer.patternCreditTitle")}</h4>
-    <p>{t("footer.patternCreditDescription")}</p>
-    <ComponentPreview tree={footerOneLineTree} label="Credit line" />
-
-    <p set:html={t("component.reactNote")} />
-
-    <h3>{t("component.contractNotesTitle")}</h3>
-    <ul>
-      <li set:html={t("footer.contractItem1")} />
-      <li set:html={t("footer.contractItem2")} />
-      <li set:html={t("footer.contractItem3")} />
-      <li set:html={t("footer.contractItem4")} />
-    </ul>
   </Fragment>
 
   <Fragment slot="a11y">

@@ -4,6 +4,7 @@
 import ComponentPageShell from "./ComponentPageShell.astro";
 import CodeBlock from "../CodeBlock.astro";
 import ComponentPreview from "../ComponentPreview.astro";
+import UsagePreview from "../UsagePreview.astro";
 import {
   skipLinkAnatomyCss,
   skipLinkAnatomyTree,
@@ -48,20 +49,11 @@ const pair = `<body>
   contractId="skip-link"
   testFiles={["packages/react/src/components/skip-link.test.tsx"]}}
 >
-  <Fragment slot="anatomy">
-    <p set:html={t("skipLink.anatomyBody")} />
-    <ComponentPreview
-      tree={skipLinkAnatomyTree(t)}
-      css={skipLinkAnatomyCss}
-      label={t("skipLink.anatomyPreviewLabel")}
-      screens={false}
-      hideSource
-      chrome={false}
-    />
-  </Fragment>
-
   <Fragment slot="usage">
     <p class="lede" set:html={t("skipLink.lede")} />
+
+    <h3>{t("skipLink.showcaseTitle")}</h3>
+    <p set:html={t("skipLink.showcaseBody")} />
 
     <p set:html={t("skipLink.tryItBody")} />
 
@@ -89,6 +81,27 @@ const pair = `<body>
 
     <h3>{t("component.contractNotesTitle")}</h3>
     <p set:html={t("skipLink.contractBody")} />
+
+    <h3>{t("component.anatomy")}</h3>
+    <p set:html={t("skipLink.anatomyBody")} />
+    <ComponentPreview
+      tree={skipLinkAnatomyTree(t)}
+      css={skipLinkAnatomyCss}
+      label={t("skipLink.anatomyPreviewLabel")}
+      screens={false}
+      hideSource
+      chrome={false}
+    />
+  </Fragment>
+
+  <Fragment slot="guidelines">
+    <p class="lede" set:html={t("skipLink.guidelinesLede")} />
+    <ul>
+      <li set:html={t("skipLink.guide.use1")} />
+      <li set:html={t("skipLink.guide.use2")} />
+      <li set:html={t("skipLink.guide.avoid1")} />
+      <li set:html={t("skipLink.guide.avoid2")} />
+    </ul>
   </Fragment>
 
   <Fragment slot="install">
