@@ -159,6 +159,11 @@ function expand(decls: readonly (readonly [string, string])[]): (readonly [strin
         break;
       }
       case "border": {
+        // `border: 0` or `border: none` clears it: no style, no width (the dot drops the label's hairline).
+        if (parts.length === 1 && (parts[0] === "0" || parts[0] === "none")) {
+          out.push(["border-style", "none"], ["border-width", "0"]);
+          break;
+        }
         const style = parts.find((p) => BORDER_STYLES.has(p));
         const rest = parts.filter((p) => p !== style);
         if (style) out.push(["border-style", style]);

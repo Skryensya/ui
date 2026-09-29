@@ -12,8 +12,12 @@ export type Realization = {
    * host (a `<button>` and an `<a>` with the same paint) are one drawing.
    */
   signature: string;
-  /** The enum option whose values become separate component sets rather than a Figma variant. */
-  splitBy: string;
+  /**
+   * The enum option whose values become separate component sets rather than a Figma variant. Absent
+   * when the signature has none to split on (BadgeDot has no appearance): then it is one set, named
+   * after the signature.
+   */
+  splitBy?: string;
   /**
    * Boolean options folded into ONE Figma variant, because they are states of the same control and
    * a designer picks one: `rest` is none of them. Combinations are not drawn.

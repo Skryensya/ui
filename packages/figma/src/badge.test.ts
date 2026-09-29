@@ -2,6 +2,7 @@ import { beforeAll, describe, expect, it } from "vitest";
 import { badgeContract } from "@skryensya/core/badge";
 import { buildFigmaManifest } from "./build.js";
 import type { ComponentSet, FigmaManifest } from "./manifest-types.js";
+import { badgeDotRealization } from "./realizations/badge-dot.js";
 import { badgeRealization } from "./realizations/badge.js";
 import { buttonRealization } from "./realizations/button.js";
 
@@ -9,8 +10,8 @@ let both: FigmaManifest;
 let badge: ComponentSet[];
 
 beforeAll(async () => {
-  both = await buildFigmaManifest([buttonRealization, badgeRealization]);
-  badge = both.components.filter((c): c is ComponentSet => c.kind === "component-set" && c.id.startsWith("badge/"));
+  both = await buildFigmaManifest([buttonRealization, badgeRealization, badgeDotRealization]);
+  badge = both.components.filter((c): c is ComponentSet => c.kind === "component-set" && c.id.startsWith("badge/") && c.id !== "badge/dot");
 });
 
 describe("Badge", () => {
@@ -38,6 +39,20 @@ describe("Badge", () => {
     const names = both.variables.filter((v) => v.collection === "component").map((v) => v.name);
     expect(names.some((n) => n.startsWith("badge/"))).toBe(true);
     expect(names.every((n) => n.startsWith("badge/") || n.startsWith("button/") || n.startsWith("component-preview/"))).toBe(true);
+  });
+
+  it("draws the dot too: one set, a variant per tone, a bare circle with no border and no text", () => {
+    const dot = both.components.find((c): c is ComponentSet => c.id === "badge/dot")!;
+    expect(dot.name).toBe("Badge / Dot");
+    expect(dot.axes).toEqual([{ name: "tone", values: [...badgeContract.options.tone.values] }]);
+    expect(dot.properties).toEqual([]);
+    for (const cell of dot.cells) {
+      expect(both.styles.surfaces[cell.surface].strokes).toEqual([]);
+      expect(both.styles.layers[cell.layers]).toEqual([]);
+      expect(both.styles.boxes[cell.box].width).toEqual(both.styles.boxes[cell.box].height);
+    }
+    const danger = dot.cells.find((c) => c.props.tone === "danger")!;
+    expect(both.styles.surfaces[danger.surface].fills[0]).toEqual({ type: "SOLID", color: { variable: "--color-border-danger" } });
   });
 
   it("changes nothing about Button's sets by being added", async () => {

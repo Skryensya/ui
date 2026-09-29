@@ -515,6 +515,8 @@ function rowOffsets(spec: M.ComponentSet, cellH: number) {
   const rowY: number[] = [];
   const sections: { value: string; top: number; last: number }[] = [];
   let y = INNER;
+  // A set with nothing down its side (the dot: its tones run across) is one row, with no heading.
+  if (!sectionAxis) return { rows, rowY: rows.map(() => y), sections, sectionAxis: "" };
   rows.forEach((row, i) => {
     if (i > 0) y += cellH + GAP;
     if (i === 0 || row[sectionAxis] !== rows[i - 1][sectionAxis]) {
@@ -1072,7 +1074,7 @@ async function planLayout(ctx: Ctx, frame: FrameNode, spec: M.ComponentSet, cell
   const cols = combos(spec.grid.columns);
   const rows = combos(spec.grid.rows);
   const outerCol = spec.grid.columns[0].name;
-  const sectionAxis = spec.grid.rows[0].name;
+  const sectionAxis = spec.grid.rows[0]?.name ?? "";
   const keep = new Set<string>(["title"]);
   const title = ensureLabel(ctx, frame, "title", spec.name, await labelStyle(ctx, 600, TITLE_SIZE));
   const style = await labelStyle(ctx);
@@ -1082,14 +1084,14 @@ async function planLayout(ctx: Ctx, frame: FrameNode, spec: M.ComponentSet, cell
   const { rowY, sections } = rowOffsets(spec, cellH);
   const colX = offsets(cols.length, cellW, GAP, GROUP, (i) => cols[i][outerCol], INNER);
 
-  // A row names what the section heading does not already say.
-  const rowLabels = rows.map((row) => {
+  // A row names what the section heading does not already say; a set with no row axes has nothing to name.
+  const rowLabels = (spec.grid.rows.length ? rows : []).map((row) => {
     const key = `row:${Object.values(row).join(",")}`;
     keep.add(key);
     const inner = Object.entries(row).filter(([axis]) => axis !== sectionAxis);
     return ensureLabel(ctx, frame, key, inner.map(([a, v]) => word(a, v)).join(" · "), style);
   });
-  const labelW = Math.max(...rowLabels.map((t) => t.width));
+  const labelW = Math.max(0, ...rowLabels.map((t) => t.width));
   const setX = FRAME_PAD + 16 + labelW + LABEL_GAP;
   const setY = setTop();
   move(run, title, FRAME_PAD, FRAME_PAD);
