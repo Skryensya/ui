@@ -41,6 +41,12 @@ import { Registry, resolve, type CellProps, type Context } from "./resolve.js";
 
 const hash = (value: unknown) => createHash("sha256").update(canonical(value)).digest("hex").slice(0, 16);
 
+/*
+ * ONE PAGE for everything. A Starter (free) Figma file holds a single page, and the icon set, the
+ * component sets and the specimen fit on one as stacked frames.
+ */
+const PAGE = { id: "skryensya", name: "Skryensya" };
+
 /** The vocabulary's own name for a stand-in glyph: what an icon slot shows before anyone picks one. */
 const DEFAULT_ICON = "placeholder";
 
@@ -270,7 +276,7 @@ export async function buildFigmaManifest(repoRoot: string, realization: Realizat
       kind: "component-set",
       id: `${realization.contract}/${splitValue}`,
       name: `${titleOf(contract.id)} / ${splitValue}`,
-      page: contract.id,
+      page: PAGE.id,
       axes: setAxes,
       grid,
       defaultCell,
@@ -348,14 +354,11 @@ export async function buildFigmaManifest(repoRoot: string, realization: Realizat
       { id: "component" as const, name: `Skryensya / ${sets[0].name.split(" / ")[0]}`, modes: ["light", "dark"] as const },
     ],
     variables,
-    pages: [
-      { id: iconContract.id, name: titleOf(iconContract.id) },
-      { id: contract.id, name: titleOf(contract.id) },
-    ],
+    pages: [PAGE],
     stage,
     components: [icon, ...sets],
     styles,
-    specimenPage: contract.id,
+    specimenPage: PAGE.id,
     specimen,
     diagnostics: allDiagnostics,
     report,
@@ -424,7 +427,7 @@ async function iconSetOf(realization: Realization, iconContract: ComponentContra
     kind: "icon-set" as const,
     id: iconContract.id,
     name: titleOf(iconContract.id),
-    page: iconContract.id,
+    page: PAGE.id,
     axis: "name",
     source: realization.icons.module,
     default: DEFAULT_ICON,

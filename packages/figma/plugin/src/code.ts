@@ -1096,21 +1096,31 @@ async function syncSpecimen(ctx: SetCtx, found: Map<string, SceneNode>, page: Pa
 
 /* ── the run ────────────────────────────────────────────────────────────────────────────────── */
 
-/** One page per component, found by tag. The first sync's single page is left as it is. */
+/**
+ * The manifest's pages, found by tag. A page of ours from an earlier layout is adopted before a new
+ * one is made, and when the plan allows no new page (a Starter file holds one), the current page is.
+ */
 async function ensurePages(run: Run): Promise<Map<string, PageNode>> {
   const out = new Map<string, PageNode>();
+  const adoptable = figma.root.children.filter((p) => getTag(p, "id").startsWith("page") && !manifest.pages.some((m) => getTag(p, "id") === `page:${m.id}`));
   for (const spec of manifest.pages) {
     const id = `page:${spec.id}`;
-    let page = figma.root.children.find((p) => getTag(p, "id") === id);
+    let page = figma.root.children.find((p) => getTag(p, "id") === id) ?? adoptable.shift();
     if (!page) {
       run.log("CREATE", `page ${spec.name}`);
       if (!run.apply) continue;
-      page = figma.createPage();
-      page.name = spec.name;
+      try {
+        page = figma.createPage();
+      } catch (error) {
+        run.log("WARN", `page ${spec.name}`, `could not be created (${String(error)}); the current page is used`);
+        page = figma.currentPage;
+      }
     }
-    tag(run, page, provenance("page", id));
-    await page.loadAsync();
-    out.set(spec.id, page);
+    const p = page;
+    if (p.name !== spec.name) run.write(() => (p.name = spec.name));
+    tag(run, p, provenance("page", id));
+    await p.loadAsync();
+    out.set(spec.id, p);
   }
   return out;
 }
