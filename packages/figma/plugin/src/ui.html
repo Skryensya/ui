@@ -24,14 +24,23 @@
   li[data-state="pending"] .bar, li[data-state="done"] .bar { display: none; }
   li[data-state="running"] .summary { display: none; }
 
+  #components { border: 1px solid var(--figma-color-border); border-radius: 6px; padding: 8px 10px; margin-block-end: 12px; display: grid; gap: 6px; }
+  #components legend { padding: 0 4px; }
+  #components label { display: grid; grid-template-columns: 16px 1fr auto; gap: 8px; align-items: center; }
+  #components label[data-forced] { opacity: .75; }
+
   details { margin-block-start: 14px; }
   summary { cursor: pointer; }
   pre { white-space: pre-wrap; margin: 8px 0 0; font: 11px/1.45 ui-monospace, monospace; }
   .error { color: var(--figma-color-text-danger); }
 </style>
 
+<fieldset id="components">
+  <legend class="muted">Components to import</legend>
+</fieldset>
+
 <div class="row">
-  <button class="primary" id="sync">Sync Button</button>
+  <button class="primary" id="sync">Sync</button>
   <button id="dry">Dry run</button>
   <button id="stop" hidden>Stop</button>
   <button id="copy" hidden>Copy report</button>
@@ -52,6 +61,11 @@
   const busy = (on) => {
     stopping = false;
     buttons.forEach((b) => (b.disabled = on));
+    $("sync").dataset.running = on ? "true" : "";
+    // The pick is locked while a run works from it.
+    document.querySelectorAll("#components input").forEach((box) => (box.dataset.locked = on ? "true" : ""));
+    $("components").disabled = on;
+    if (!on) refreshPick();
     // Stop exists only while something runs: idle, there is nothing for it to act on.
     $("stop").hidden = !on;
     $("stop").disabled = false;
@@ -59,6 +73,38 @@
   };
   const fmt = (ms) => { const s = Math.round(ms / 1000); return `${Math.floor(s / 60)}:${String(s % 60).padStart(2, "0")}`; };
   const MARK = { pending: "○", running: "◐", done: "✓" };
+
+  /*
+   * THE PICK. Every component starts checked; the Icon set is checked and locked whenever something
+   * checked draws icons (a Button's slots show them), and says which ones need it.
+   */
+  let components = [];
+  const checked = () => components.filter((c) => $(`pick-${c.id}`)?.checked).map((c) => c.id);
+  function refreshPick() {
+    const chosen = new Set(checked());
+    const icons = components.find((c) => c.icons);
+    if (icons) {
+      const users = components.filter((c) => c.needsIcons && chosen.has(c.id)).map((c) => c.name);
+      const box = $(`pick-${icons.id}`);
+      const label = box.closest("label");
+      box.disabled = users.length > 0;
+      if (users.length) box.checked = true;
+      label.toggleAttribute("data-forced", users.length > 0);
+      label.querySelector(".why").textContent = users.length ? `used by ${users.join(", ")}` : `${icons.variants} icons`;
+    }
+    // Nothing picked, nothing to run.
+    if (!$("sync").dataset.running) buttons.forEach((b) => (b.disabled = checked().length === 0));
+  }
+  function renderPick(list) {
+    components = list;
+    for (const c of list) {
+      const label = document.createElement("label");
+      label.innerHTML = `<input type="checkbox" id="pick-${c.id}" checked><span>${c.name}</span><span class="why muted">${c.icons ? `${c.variants} icons` : `${c.variants} variants`}</span>`;
+      $("components").append(label);
+    }
+    $("components").addEventListener("change", refreshPick);
+    refreshPick();
+  }
 
   let mode = "";
   const start = (type) => {
@@ -68,7 +114,7 @@
     $("copy").hidden = true;
     $("status").className = "";
     $("status").textContent = type === "sync" ? "Syncing…" : "Dry run…";
-    parent.postMessage({ pluginMessage: { type } }, "*");
+    parent.postMessage({ pluginMessage: { type, only: checked() } }, "*");
   };
   // Figma's plugin frame blocks the async clipboard API; a selected textarea and execCommand is what works there.
   let reportText = "";
@@ -127,7 +173,10 @@
   onmessage = ({ data }) => {
     const m = data.pluginMessage;
     if (!m) return;
-    if (m.type === "ready") $("source").textContent = `manifest ${m.sourceHash}`;
+    if (m.type === "ready") {
+      $("source").textContent = `manifest ${m.sourceHash}`;
+      renderPick(m.components ?? []);
+    }
     if (m.type === "progress") renderProgress(m);
     if (m.type === "error") {
       busy(false);
