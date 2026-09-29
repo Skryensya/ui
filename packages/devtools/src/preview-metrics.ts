@@ -21,6 +21,8 @@ const READOUT_CLASS = "sk-devtools-preview-metrics";
 const READY = "data-sk-component-preview-frame-ready";
 const ERROR = "data-sk-component-preview-frame-error";
 const STAGE = "iframe.sk-component-preview__stage";
+const USAGE_CARD = ".sk-preview-card";
+const USAGE_STAGE = ".sk-preview-card__stage";
 const VANILLA = '[data-sk-component-preview-binding="vanilla"]';
 
 type Sample = { readonly at: number; readonly height: number; readonly ready: boolean };
@@ -89,7 +91,7 @@ function bindingOf(stage: Element): string {
   return stage.closest(`[${"data-sk-component-preview-binding"}]`)?.getAttribute("data-sk-component-preview-binding") ?? (stage.matches(VANILLA) ? "vanilla" : "react");
 }
 
-function watch(root: HTMLElement): (() => void) | null {
+function watchComponentPreview(root: HTMLElement): (() => void) | null {
   const stages = [...root.querySelectorAll<HTMLIFrameElement>(STAGE)];
   if (stages.length === 0) return null;
 
@@ -203,6 +205,76 @@ function watch(root: HTMLElement): (() => void) | null {
   };
 }
 
+function watchUsagePreview(card: HTMLElement): (() => void) | null {
+  const stage = card.querySelector<HTMLElement>(USAGE_STAGE);
+  if (!stage) return null;
+
+  const readout = document.createElement("div");
+  readout.className = READOUT_CLASS;
+  readout.setAttribute("aria-hidden", "true");
+  stage.after(readout);
+
+  const section = card.closest<HTMLElement>(".sk-preview-section");
+  const id = section?.id || section?.querySelector("h3")?.textContent?.trim() || "(usage preview)";
+  const source = section?.classList.contains("sk-usage-preview--controlled") ? "usage · property" : "usage";
+  const started = performance.now();
+  const samples: Sample[] = [];
+  let last = "";
+
+  const paint = () => {
+    const box = stage.getBoundingClientRect();
+    const width = Math.round(box.width);
+    const height = Math.round(box.height);
+    if (width === 0 && height === 0) return;
+
+    /* UsagePreview is not an iframe: React islands hydrate in place, so the useful distinction is
+       whether there is anything in the stage yet. That catches the same class of problem the iframe
+       readout catches: the reserved floor versus the settled specimen. */
+    const ready = stage.childElementCount > 0 || Boolean(stage.textContent?.trim());
+    const key = `${width}x${height}:${ready}`;
+    if (key === last) return;
+    last = key;
+
+    samples.push({ at: Math.round(performance.now() - started), height, ready });
+    const loading = samples.find((sample) => !sample.ready);
+    const delta = loading ? height - loading.height : 0;
+    const shifted = Boolean(loading) && ready && delta !== 0;
+    const reserved = getComputedStyle(card)
+      .getPropertyValue("--sk-preview-card-stage-min-block-size")
+      .trim();
+
+    readout.dataset.shift = shifted ? "yes" : "no";
+    readout.innerHTML = "";
+    const idEl = document.createElement("b");
+    idEl.textContent = id;
+    const sourceEl = document.createElement("i");
+    sourceEl.textContent = source;
+    const live = document.createElement("span");
+    live.textContent =
+      `${width}×${height} · ${ready ? "settled" : "loading"}` +
+      (shifted ? ` (from ${loading?.height}) · shift ${delta > 0 ? "+" : ""}${delta}` : "") +
+      ` · min ${reserved || "default"}` +
+      ` · ${samples.length} change${samples.length === 1 ? "" : "s"}`;
+    readout.append(idEl, sourceEl, live);
+
+    console.debug(
+      `[preview-metrics] ${id} · ${source} · +${samples.at(-1)?.at}ms · ${width}×${height} · ${ready ? "settled" : "loading"}`,
+    );
+  };
+
+  paint();
+  const resize = new ResizeObserver(paint);
+  resize.observe(stage);
+  const mutations = new MutationObserver(paint);
+  mutations.observe(stage, { childList: true, subtree: true, characterData: true, attributes: true, attributeFilter: ["style", "class"] });
+
+  return () => {
+    resize.disconnect();
+    mutations.disconnect();
+    readout.remove();
+  };
+}
+
 export function createPreviewMetrics() {
   ensureStyleTag();
   let stops: (() => void)[] = [];
@@ -214,7 +286,12 @@ export function createPreviewMetrics() {
   const attach = () => {
     for (const root of document.querySelectorAll<HTMLElement>("[data-sk-component-preview]")) {
       if (root.querySelector(`.${READOUT_CLASS}`)) continue;
-      const stop = watch(root);
+      const stop = watchComponentPreview(root);
+      if (stop) stops.push(stop);
+    }
+    for (const card of document.querySelectorAll<HTMLElement>(USAGE_CARD)) {
+      if (card.querySelector(`.${READOUT_CLASS}`)) continue;
+      const stop = watchUsagePreview(card);
       if (stop) stops.push(stop);
     }
   };
