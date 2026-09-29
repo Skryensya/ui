@@ -156,7 +156,8 @@ describe("the stage", () => {
     const grid = sets[0].grid;
     expect(grid.rows.map((a) => a.name)).toEqual(["variant", "tone", "size"]);
     expect(grid.columns.map((a) => a.name)).toEqual(["iconOnly", "state"]);
-    expect(sets.every((s) => s.page === "button")).toBe(true);
+    expect(manifest.pages).toHaveLength(1);
+    expect(manifest.components.every((c) => c.page === manifest.pages[0].id)).toBe(true);
   });
 });
 
