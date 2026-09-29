@@ -1,0 +1,194 @@
+/*
+ * THE FIGMA MANIFEST, as types. Shared by the compiler that writes it and the plugin that reads it,
+ * so this file imports nothing: the plugin bundles it without dragging the compiler in.
+ *
+ * It describes REPRESENTATION INTENT (this frame's fill is bound to that variable), never Plugin API
+ * steps. How a frame gets created or updated is the plugin's business; what it should end up as is
+ * this.
+ */
+
+export const SCHEMA_VERSION = 1;
+
+export type Mode = "light" | "dark";
+export const MODES: readonly Mode[] = ["light", "dark"];
+
+export type Rgba = { r: number; g: number; b: number; a: number };
+
+/** A value Figma can hold directly, or a reference to another variable by its id. */
+export type VariableValue =
+  | { kind: "literal"; value: number | string | Rgba }
+  | { kind: "alias"; variable: string };
+
+/**
+ * How the value was obtained. `alias` and `literal` are the token as authored; `evaluated` is a
+ * formula computed under the manifest's evaluation context, and carries the formula.
+ */
+export type ValueSource = "alias" | "literal" | "evaluated";
+
+export type CollectionId = "primitives" | "semantic" | "component";
+
+export type Collection = { id: CollectionId; name: string; modes: readonly Mode[] };
+
+export type Variable = {
+  /** The CSS custom property it stands for, or the hook plus its cell discriminator for a derived one. */
+  id: string;
+  /** Figma's slash-separated name. */
+  name: string;
+  collection: CollectionId;
+  type: "COLOR" | "FLOAT" | "STRING";
+  values: Record<Mode, VariableValue>;
+  source: Record<Mode, ValueSource>;
+  /** The authored CSS it came from, for the description and the report. */
+  expression: string;
+  /** What a developer writes: `var(--color-action-neutral)`. */
+  codeSyntax: string;
+};
+
+/** A field either bound to a variable or set to a value that has no variable (with its formula). */
+export type Bound<T> = { variable: string } | { value: T; expression: string };
+
+export type Paint =
+  | { type: "SOLID"; color: Bound<Rgba> }
+  | {
+      type: "GRADIENT_LINEAR";
+      /** CSS angle: 180 is `to bottom`. */
+      angle: number;
+      stops: { position: number; color: Rgba }[];
+      expression: string;
+    };
+
+export type Effect =
+  | {
+      type: "DROP_SHADOW" | "INNER_SHADOW";
+      x: Bound<number>;
+      y: Bound<number>;
+      blur: Bound<number>;
+      spread: Bound<number>;
+      color: Bound<Rgba>;
+    }
+  | { type: "BACKGROUND_BLUR"; radius: Bound<number> };
+
+/** An auto-layout frame's geometry. */
+export type Box = {
+  direction: "HORIZONTAL" | "VERTICAL";
+  mainAlign: "MIN" | "CENTER" | "MAX" | "SPACE_BETWEEN";
+  crossAlign: "MIN" | "CENTER" | "MAX";
+  /** Fixed when bound; hugging its content otherwise. */
+  width?: Bound<number>;
+  height?: Bound<number>;
+  minHeight?: Bound<number>;
+  padding: { top: Bound<number>; right: Bound<number>; bottom: Bound<number>; left: Bound<number> };
+  gap?: Bound<number>;
+  radius?: Bound<number>;
+  strokeWeight?: Bound<number>;
+  clipsContent: boolean;
+};
+
+/** What is drawn on and around the frame. */
+export type Surface = {
+  strokes: Paint[];
+  fills: Paint[];
+  effects: Effect[];
+};
+
+/** An auto-layout frame, described by what it looks like. */
+export type Frame = Box & Surface;
+
+export type Text = {
+  fontFamily: Bound<string>;
+  fontWeight: Bound<number>;
+  fontSize: Bound<number>;
+  /** Percent of the font size; CSS `line-height: 1` is 100. */
+  lineHeight: number;
+  fill: Paint;
+};
+
+/** A square slot that holds an instance of the icon component. */
+export type IconSlot = { size: Bound<number>; color: Paint };
+
+/** One layer inside a cell, in order. `property` names the component property that drives it. */
+export type Layer =
+  | { kind: "icon"; slot: string; visibleProperty?: string; swapProperty: string; icon: IconSlot }
+  | { kind: "text"; slot: string; textProperty: string; text: Text };
+
+export type ComponentProperty =
+  | { name: string; type: "TEXT"; default: string }
+  | { name: string; type: "BOOLEAN"; default: boolean }
+  | { name: string; type: "INSTANCE_SWAP"; default: string };
+
+/**
+ * One Figma variant. Its geometry, surface and layers are shared by many cells, so they live once
+ * in the manifest's `styles` and a cell points at them by content hash.
+ */
+export type Cell = {
+  /** `variant=soft, tone=danger, …`: Figma's own variant name, and the identity of the cell. */
+  key: string;
+  props: Record<string, string>;
+  box: string;
+  surface: string;
+  layers: string;
+  hash: string;
+};
+
+export type Styles = {
+  boxes: Record<string, Box>;
+  surfaces: Record<string, Surface>;
+  layers: Record<string, Layer[]>;
+};
+
+export type ComponentSet = {
+  kind: "component-set";
+  id: string;
+  name: string;
+  axes: { name: string; values: string[] }[];
+  /**
+   * Which axes run across the grid and which run down it, each with its values in drawing order:
+   * the contract's default first, because Figma's default variant is the top-left one.
+   */
+  grid: { columns: { name: string; values: string[] }[]; rows: { name: string; values: string[] }[] };
+  /** The cell every default lands on, which the grid puts top-left. */
+  defaultCell: string;
+  properties: ComponentProperty[];
+  cells: Cell[];
+  contractHash: string;
+  visualHash: string;
+};
+
+/** A plain component, no variants: the icon placeholder the slots swap from. */
+export type Component = {
+  kind: "component";
+  id: string;
+  name: string;
+  size: number;
+  stroke: Rgba;
+  hash: string;
+};
+
+export type SpecimenEntry = {
+  id: string;
+  /** The docs preview it came from. */
+  source: string;
+  set: string;
+  cell: string;
+  properties: Record<string, string | boolean>;
+};
+
+export type Diagnostic = {
+  severity: "info" | "warning";
+  code: string;
+  subject: string;
+  message: string;
+};
+
+export type FigmaManifest = {
+  schemaVersion: number;
+  sourceHash: string;
+  evaluationContext: Record<string, string>;
+  collections: Collection[];
+  variables: Variable[];
+  components: (Component | ComponentSet)[];
+  styles: Styles;
+  specimen: SpecimenEntry[];
+  diagnostics: Diagnostic[];
+  report: Record<string, unknown>;
+};
