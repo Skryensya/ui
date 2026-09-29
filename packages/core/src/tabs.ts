@@ -47,7 +47,6 @@ export const tabsContract = {
     valueChange: { detail: { value: "string" }, reactProp: "onValueChange", source: "root", trigger: "trigger" },
   },
   hooks: [
-    "--sk-tabs-brutalist-offset",
     "--sk-tabs-gap",
     "--sk-tabs-indicator-bg",
     "--sk-tabs-indicator-size",
@@ -111,24 +110,13 @@ export const tabsContract = {
       default: "underline",
       attr: "data-variant",
     },
-    /*
-     * HOW THE STRIP IS DRAWN, Button's axis, worn by the SELECTED tab: `tactile` a raised key,
-     * `brutalist` a black-edged block with a hard offset, `frosted` a see-through strip (opaque
-     * wherever the material cannot be trusted). CSS-only like `size` and `variant`.
-     */
-    appearance: {
-      type: "enum",
-      values: ["plain", "tactile", "brutalist", "frosted"],
-      default: "plain",
-      attr: "data-appearance",
-    },
   },
 
   signatures: {
     Tabs: {
       intent: ["tabs", "switch-between-panels", "sections-in-one-region"],
       host: { element: "div" },
-      options: ["orientation", "activationMode", "value", "size", "variant", "appearance"],
+      options: ["orientation", "activationMode", "value", "size", "variant"],
       /** Host id / a11y names on the tabs root. */
       forward: ["id", "aria-*"],
       slots: {

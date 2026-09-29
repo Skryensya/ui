@@ -10416,6 +10416,18 @@
         "date": null,
         "entries": [
           {
+            "date": "2026-09-29",
+            "en": {
+              "body": "Tabs is always drawn plain: <code>appearance</code> goes, with the tactile, brutalist and frosted constructions of the selected tab and the <code>--sk-tabs-brutalist-offset</code> hook. The bar under the selected tab is the only selection mark.",
+              "title": "Tabs no longer has an appearance"
+            },
+            "es": {
+              "body": "Tabs se dibuja siempre plain: salen <code>appearance</code>, las construcciones tactile, brutalist y frosted de la pestaña seleccionada y el hook <code>--sk-tabs-brutalist-offset</code>. La barra bajo la pestaña seleccionada es la única marca de selección.",
+              "title": "Tabs deja de tener appearance"
+            },
+            "kind": "breaking"
+          },
+          {
             "date": "2026-09-27",
             "en": {
               "body": "The attribute was already emitted; the contract now names it as <code>mount</code>, like every other enhanced component, and the binding comparison ignores its lifecycle markers. The markup is unchanged.",
@@ -10437,8 +10449,7 @@
               "body": "La lámina de la lista sube de 60% a 74%: sobre un fondo negro o blanco, el texto secundario de las pestañas no seleccionadas caía a 3.1:1.",
               "title": "Las pestañas frosted mantienen legibles las no seleccionadas"
             },
-            "kind": "bugfix",
-            "target": "appearance"
+            "kind": "bugfix"
           },
           {
             "date": "2026-09-26",
@@ -10450,8 +10461,7 @@
               "body": "La pestaña seleccionada lleva la construcción: <code>tactile</code> una tecla elevada, <code>brutalist</code> un bloque de borde negro con sombra dura, <code>frosted</code> una tira translúcida, opaca donde el material no es fiable. Solo CSS, en ambas orientaciones y variantes.",
               "title": "Tabs suma appearance plain, tactile, brutalist y frosted"
             },
-            "kind": "feature",
-            "target": "appearance"
+            "kind": "feature"
           },
           {
             "date": "2026-09-17",
@@ -47057,12 +47067,6 @@
         "valueChange": "sk:tabsvaluechange"
       },
       "hookDetails": {
-        "--sk-tabs-brutalist-offset": {
-          "default": "3px",
-          "output": false,
-          "part": "root",
-          "sheet": "@skryensya/core/components/tabs.css"
-        },
         "--sk-tabs-gap": {
           "default": "var(--space-stack-md)",
           "output": false,
@@ -47155,7 +47159,6 @@
         }
       },
       "hooks": [
-        "--sk-tabs-brutalist-offset",
         "--sk-tabs-gap",
         "--sk-tabs-indicator-bg",
         "--sk-tabs-indicator-size",
@@ -47182,17 +47185,6 @@
           "values": [
             "automatic",
             "manual"
-          ]
-        },
-        "appearance": {
-          "attr": "data-appearance",
-          "default": "plain",
-          "type": "enum",
-          "values": [
-            "plain",
-            "tactile",
-            "brutalist",
-            "frosted"
           ]
         },
         "orientation": {
@@ -47276,8 +47268,7 @@
             "activationMode",
             "value",
             "size",
-            "variant",
-            "appearance"
+            "variant"
           ],
           "react": {
             "from": "@skryensya/react/tabs",
@@ -55079,7 +55070,7 @@
     "working": "0.0.1"
   },
   "schemaVersion": "2.3",
-  "sourceHash": "751afaf7ab5d5d82",
+  "sourceHash": "924d221f40f4e382",
   "vocabulary": {
     "a11y": "When `when` holds, one of `requiresOneOf` must be given: an option, a raw attribute, a filled slot, or a child signature by name.",
     "atLeastOneOf": "At least one member of each group counts: a filled slot, a boolean option set to true, or an option other than its default.",

@@ -359,7 +359,7 @@ function ProjectTabs({
     "--maker-tabs-right": rightDocked ? `${panelWidths.right}px` : "0px",
   } as CSSProperties;
   return (
-    <nav className="maker-tabs sk-tabs" data-size="md" data-appearance="plain" data-variant="underline" aria-label="Open projects" style={style}>
+    <nav className="maker-tabs sk-tabs" data-size="md" data-variant="underline" aria-label="Open projects" style={style}>
       <span className="maker-tabs__projects-button">
         <IconButton icon={{ role: "folder" }} label="All projects" appearance="tactile" pressed={projectsOpen} onClick={onProjects} />
       </span>

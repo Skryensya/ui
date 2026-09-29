@@ -4,12 +4,11 @@ import { icons, noStates, stage } from "./shared.js";
 /*
  * Tabs, as Figma structure, drawn as it nests: three tabs, the first selected with its panel shown,
  * the others' panels hidden as the binding hides them. Each tab's label and panel text is a text
- * property. One set per appearance.
+ * property.
  */
 export const tabsRealization: Realization = {
   contract: "tabs",
   signature: "Tabs",
-  splitBy: "appearance",
   nested: true,
   state: noStates,
   overlays: {},

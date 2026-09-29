@@ -3,8 +3,22 @@
 # `surface` is the shape of the contract the last time somebody reviewed it. If the compiler says it
 # does not match, something a consumer depends on has moved: write the entry and paste in the new
 # hash.
-surface: "df2946f9af9be70a"
+surface: "c713df84b6673d95"
 entries:
+  - date: 2026-09-29
+    kind: breaking
+    es:
+      title: Tabs deja de tener appearance
+      body: >-
+        Tabs se dibuja siempre plain: salen <code>appearance</code>, las construcciones tactile, brutalist y
+        frosted de la pestaña seleccionada y el hook <code>--sk-tabs-brutalist-offset</code>. La barra bajo la
+        pestaña seleccionada es la única marca de selección.
+    en:
+      title: Tabs no longer has an appearance
+      body: >-
+        Tabs is always drawn plain: <code>appearance</code> goes, with the tactile, brutalist and frosted
+        constructions of the selected tab and the <code>--sk-tabs-brutalist-offset</code> hook. The bar under
+        the selected tab is the only selection mark.
   - date: 2026-09-27
     kind: chore
     es:
@@ -19,7 +33,6 @@ entries:
         enhanced component, and the binding comparison ignores its lifecycle markers. The markup is unchanged.
   - date: 2026-09-27
     kind: bugfix
-    target: appearance
     es:
       title: Las pestañas frosted mantienen legibles las no seleccionadas
       body: >-
@@ -30,7 +43,6 @@ entries:
         The list's sheet rises from 60% to 74%: over a black or white backdrop, the secondary ink of unselected tabs fell to 3.1:1.
   - date: 2026-09-26
     kind: feature
-    target: appearance
     es:
       title: Tabs suma appearance plain, tactile, brutalist y frosted
       body: >-
