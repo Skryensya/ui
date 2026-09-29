@@ -34,9 +34,10 @@ import { selectRealization } from "./select.js";
 import { passwordInputRealization } from "./password-input.js";
 import { numberFieldRealization } from "./number-field.js";
 import { listRealization } from "./list.js";
+import { navListRealization } from "./nav-list.js";
 
 /*
  * EVERY CONTRACT FIGMA DRAWS, in the order their columns stand on the page. Adding a component is a
  * realization file and one line here; `catalogue.test.ts` holds each one to compiling clean.
  */
-export const catalogue: readonly Realization[] = [buttonRealization, buttonNavigationRealization, badgeRealization, badgeDotRealization, kbdRealization, tagRealization, tagLinkRealization, avatarRealization, textRealization, headingRealization, linkRealization, codeRealization, strongRealization, skipLinkRealization, backToTopRealization, statRealization, calloutRealization, separatorRealization, labelledSeparatorRealization, quoteRealization, emptyStateRealization, progressRealization, meterRealization, inputRealization, textareaRealization, breadcrumbRealization, descriptionListRealization, segmentedRealization, tabsRealization, accordionRealization, paginationRealization, stepsRealization, checkboxRealization, switchRealization, radioRealization, selectRealization, passwordInputRealization, numberFieldRealization, listRealization];
+export const catalogue: readonly Realization[] = [buttonRealization, buttonNavigationRealization, badgeRealization, badgeDotRealization, kbdRealization, tagRealization, tagLinkRealization, avatarRealization, textRealization, headingRealization, linkRealization, codeRealization, strongRealization, skipLinkRealization, backToTopRealization, statRealization, calloutRealization, separatorRealization, labelledSeparatorRealization, quoteRealization, emptyStateRealization, progressRealization, meterRealization, inputRealization, textareaRealization, breadcrumbRealization, descriptionListRealization, segmentedRealization, tabsRealization, accordionRealization, paginationRealization, stepsRealization, checkboxRealization, switchRealization, radioRealization, selectRealization, passwordInputRealization, numberFieldRealization, listRealization, navListRealization];

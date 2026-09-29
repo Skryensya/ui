@@ -791,12 +791,16 @@ async function compileRealization(authored: Realization, shared: Shared): Promis
           const frameBox = stretch ? { ...measured, stretch: true as const } : measured;
           const box = track && /fr\b/.test(track) ? { ...frameBox, grow: true as const } : frameBox;
           const slot = unique(partOf(child) ?? child.localName);
-          // Drawn at a width, a block down a column spans it, as CSS stretches it by default.
-          const spans = realization.width && stacking && !box.width;
+          // Drawn at a width, a block down a column spans it, as CSS stretches it by default; so does
+          // a block inside a plain block (a nav link filling its list item), the one thing on its line.
+          const blockLevel = (d: string | undefined) => d === undefined || /^(block|flex|grid|list-item)$/.test(d);
+          const inFlow = !/flex|grid/.test(display) && blockLevel(display || undefined) && blockLevel(cascaded.get(child)!.get("display"));
+          const spans = realization.width && inner !== undefined && (stacking || inFlow) && !box.width;
           out.push({
             kind: "frame",
             slot,
-            box: intern(styles.boxes, spans ? { ...box, stretch: true as const } : box),
+            // Down a column it stretches across; in a block laid as a row it grows along it.
+            box: intern(styles.boxes, spans ? (downward ? { ...box, stretch: true as const } : { ...box, grow: true as const }) : box),
             surface: intern(styles.surfaces, { strokes, fills, effects }),
             layers: [
               ...overlaysOf(child),
