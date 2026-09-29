@@ -474,3 +474,12 @@ describe("StateButton", () => {
     expect(icons.map((l) => l.kind === "icon" && l.default)).toEqual(["mode-light"]);
   });
 });
+
+describe("CopyButton", () => {
+  it("shows the copy glyph at rest and the check once copied", () => {
+    const set = manifest.components.find((c): c is ComponentSet => c.kind === "component-set" && c.id === "copy-button/plain")!;
+    const glyphs = (ls: Layer[]): string[] => ls.flatMap((l) => (l.kind === "icon" ? [l.default] : l.kind === "frame" ? glyphs(l.layers) : []));
+    const cell = (state: string) => manifest.styles.layers[set.cells.find((c) => c.props.state === state && c.props.size === "sm" && c.props.variant === "soft")!.layers];
+    expect([glyphs(cell("rest")), glyphs(cell("copied"))]).toEqual([["copy"], ["check"]]);
+  });
+});
