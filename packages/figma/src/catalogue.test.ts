@@ -595,3 +595,13 @@ describe("Footer", () => {
     expect(set.axes.map((a) => a.name)).toEqual(["surface", "divider"]);
   });
 });
+
+describe("Navbar", () => {
+  it("lays out brand and links, then a spacer that pushes the actions to the end", () => {
+    const set = manifest.components.find((c): c is ComponentSet => c.kind === "component-set" && c.id === "navbar/plain")!;
+    const layers = manifest.styles.layers[set.cells[0].layers];
+    expect(layers.map((l) => l.slot)).toEqual(["brand 1", "nav", "spacer", "actions"]);
+    const spacer = layers[2];
+    expect(spacer.kind === "frame" && manifest.styles.boxes[spacer.box].grow).toBe(true);
+  });
+});

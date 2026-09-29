@@ -870,6 +870,18 @@ async function compileRealization(authored: Realization, shared: Shared): Promis
           if (shownStyle.get("visibility") === "hidden" || shownStyle.get("display") === "none" || child.hasAttribute("hidden")) continue;
           const seeThrough = shownStyle.get("opacity");
           if (seeThrough !== undefined && lengthOf(seeThrough, child) === 0) continue;
+          // An auto leading margin in a flex row (a Navbar's actions) pushes the rest to the end: a
+          // spacer that takes the free room, drawn just before it.
+          if (!downward && /flex/.test(display) && (shownStyle.get("margin-inline-start") ?? shownStyle.get("margin-left")) === "auto") {
+            const zero = { value: 0, expression: "0" };
+            out.push({
+              kind: "frame",
+              slot: unique("spacer"),
+              box: intern(styles.boxes, { direction: "HORIZONTAL", mainAlign: "MIN", crossAlign: "MIN", grow: true, padding: { top: zero, right: zero, bottom: zero, left: zero }, clipsContent: false }),
+              surface: intern(styles.surfaces, { strokes: [], fills: [], effects: [] }),
+              layers: [],
+            });
+          }
           if (child.classList.contains(iconContract.parts.root)) {
             const part = partOf(el);
             const slot = slotOfPart(part) ?? part ?? "icon";
