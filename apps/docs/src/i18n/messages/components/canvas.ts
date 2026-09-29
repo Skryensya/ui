@@ -45,6 +45,9 @@ export const canvasMessages = {
       "En HTML: <code>.sk-canvas</code> contiene visor, contenido, controles y avisos. El hijo puede ser cualquier dibujo estático; Canvas sólo mide y transforma esa caja.",
     "canvas.contractItem2":
       "En React: <code>&lt;Canvas&gt;</code> recibe el dibujo como <code>children</code>. No envuelvas <code>Annotated</code>: ese componente ya incorpora un Canvas y deja su leyenda fuera de la escala.",
+    "canvas.showcaseTitle": "Showcases",
+    "canvas.showcaseBody": "Una superficie que se acerca, se aleja y se arrastra.",
+    "canvas.guidelinesLede": "Canvas es una superficie para explorar algo más grande que la vista, acercando y arrastrando.",
   },
   en: {
     "canvas.anatomyLabel": "Canvas anatomy",
@@ -92,5 +95,8 @@ export const canvasMessages = {
       "In HTML: <code>.sk-canvas</code> holds a viewport, content, controls, and hints. Its child can be any static drawing; Canvas only measures and transforms that box.",
     "canvas.contractItem2":
       "In React: <code>&lt;Canvas&gt;</code> receives the drawing as <code>children</code>. Do not wrap <code>Annotated</code>: it already includes a Canvas and keeps its legend outside the scale.",
+    "canvas.showcaseTitle": "Showcases",
+    "canvas.showcaseBody": "A surface that zooms in, zooms out and pans.",
+    "canvas.guidelinesLede": "Canvas is a surface for exploring something larger than the view, by zooming and panning.",
   },
 } as const;

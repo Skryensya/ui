@@ -109,6 +109,13 @@ export const carouselMessages = {
     "carousel.test4": "Se ancla a un punto y reporta la página en el evento de cambio.",
     "carousel.test5":
       "El foco en el ENLACE de una tarjeta (no sólo en los botones prev/next) pausa el autoplay, y lo retoma al perderlo.",
+    "carousel.showcaseTitle": "Showcases",
+    "carousel.showcaseBody": "Tarjetas que se deslizan, varias a la vez con avance automático, con contenido que recibe foco, sin controles y la versión nativa.",
+    "carousel.guidelinesLede": "Carousel muestra una fila de elementos que se recorre de a uno o de a varios.",
+    "carousel.guide.item1": "Úsalo cuando los elementos son parecidos y está bien ver solo algunos a la vez, como fotos o productos.",
+    "carousel.guide.item2": "Deja siempre una forma de avanzar sin arrastrar: botones o puntos.",
+    "carousel.guide.item3": "Si el avance es automático, da una forma de pausarlo.",
+    "carousel.guide.item4": "Lo importante no va escondido en la tercera diapositiva: quizás nadie llegue.",
   },
   en: {
     "demo.carousel.label": "What's new",
@@ -220,5 +227,12 @@ export const carouselMessages = {
     "carousel.test4": "Snaps to a dot and reports the page on the change event.",
     "carousel.test5":
       "Focus landing on a card's LINK (not just the prev/next buttons) pauses autoplay, and resumes it on blur.",
+    "carousel.showcaseTitle": "Showcases",
+    "carousel.showcaseBody": "Sliding cards, several at once with autoplay, with focusable content, without controls, and the native version.",
+    "carousel.guidelinesLede": "Carousel shows a row of items browsed one or several at a time.",
+    "carousel.guide.item1": "Use it when the items are alike and seeing only some at a time is fine, like photos or products.",
+    "carousel.guide.item2": "Always leave a way to move on without dragging: buttons or dots.",
+    "carousel.guide.item3": "If it advances on its own, give a way to pause it.",
+    "carousel.guide.item4": "What matters does not go hidden on the third slide: nobody may get there.",
   },
 } as const;

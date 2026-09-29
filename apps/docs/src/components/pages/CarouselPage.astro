@@ -4,6 +4,7 @@ import "@skryensya/core/components/annotation.css";
 import ComponentPageShell from "./ComponentPageShell.astro";
 import CodeBlock from "../CodeBlock.astro";
 import ComponentPreview from "../ComponentPreview.astro";
+import UsagePreview from "../UsagePreview.astro";
 import {
   carouselAnatomyTree,
   carouselAutoplayTree,
@@ -73,21 +74,11 @@ carousel.addEventListener("sk:carouselchange", (event) => {
   contractId="carousel"
   testFiles={["packages/react/src/components/carousel.test.tsx", "packages/vanilla/src/components/carousel.svelte.test.ts"]}}
 >
-  <Fragment slot="anatomy">
-    <p set:html={t("carousel.anatomyBody")} />
-    <ComponentPreview
-      tree={carouselAnatomyTree(t)}
-      css={annotationDemoCss}
-      js={bootstrap}
-      label={t("carousel.anatomyPreviewLabel")}
-      screens={false}
-      hideSource
-      chrome={false}
-    />
-  </Fragment>
-
   <Fragment slot="usage">
     <p class="lede" set:html={t("carousel.lede")} />
+
+    <h3>{t("carousel.showcaseTitle")}</h3>
+    <p set:html={t("carousel.showcaseBody")} />
     <h3>{t("carousel.cardsTitle")}</h3>
     <p set:html={t("carousel.cardsBody")} />
     <ComponentPreview
@@ -136,6 +127,28 @@ carousel.addEventListener("sk:carouselchange", (event) => {
       <li set:html={t("carousel.contractItem7")} />
       <li set:html={t("carousel.contractItem8")} />
       <li set:html={t("carousel.contractItem9")} />
+    </ul>
+
+    <h3>{t("component.anatomy")}</h3>
+    <p set:html={t("carousel.anatomyBody")} />
+    <ComponentPreview
+      tree={carouselAnatomyTree(t)}
+      css={annotationDemoCss}
+      js={bootstrap}
+      label={t("carousel.anatomyPreviewLabel")}
+      screens={false}
+      hideSource
+      chrome={false}
+    />
+  </Fragment>
+
+  <Fragment slot="guidelines">
+    <p class="lede" set:html={t("carousel.guidelinesLede")} />
+    <ul>
+      <li set:html={t("carousel.guide.item1")} />
+      <li set:html={t("carousel.guide.item2")} />
+      <li set:html={t("carousel.guide.item3")} />
+      <li set:html={t("carousel.guide.item4")} />
     </ul>
   </Fragment>
 

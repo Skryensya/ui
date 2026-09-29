@@ -5,6 +5,7 @@ import "@skryensya/core/components/annotation.css";
 import ComponentPageShell from "./ComponentPageShell.astro";
 import CodeBlock from "../CodeBlock.astro";
 import ComponentPreview from "../ComponentPreview.astro";
+import UsagePreview from "../UsagePreview.astro";
 import { changelogAnatomyTree, changelogTree } from "../../demos/changelog";
 import { annotationDemoCss } from "../../demos/annotation";
 import { getLocale, useTranslations } from "../../i18n";
@@ -22,28 +23,12 @@ const styles = `@import "@skryensya/core/components/changelog.css";`;
   contractId="changelog"
   testFiles={["packages/react/src/components/changelog.test.tsx"]}}
 >
-  <Fragment slot="anatomy">
-    <p set:html={t("changelogPage.anatomyBody")} />
-    <ComponentPreview
-      tree={changelogAnatomyTree(t)}
-      css={annotationDemoCss}
-      label={t("changelogPage.anatomyPreviewLabel")}
-      screens={false}
-      hideSource
-      chrome={false}
-    />
-  </Fragment>
-
   <Fragment slot="usage">
     <p class="lede" set:html={t("changelogPage.lede")} />
-    <ComponentPreview tree={changelogTree(t)} label="Changelog" note={t("changelogPage.previewNote")} />
 
-    <h3>{t("changelogPage.whenTitle")}</h3>
-    <ul>
-      <li set:html={t("changelogPage.whenItem1")} />
-      <li set:html={t("changelogPage.whenItem2")} />
-      <li set:html={t("changelogPage.whenItem3")} />
-    </ul>
+    <h3>{t("changelogPage.showcaseTitle")}</h3>
+    <p set:html={t("changelogPage.showcaseBody")} />
+    <ComponentPreview tree={changelogTree(t)} label="Changelog" note={t("changelogPage.previewNote")} />
 
     <h3>{t("component.contractNotesTitle")}</h3>
     <ul>
@@ -56,6 +41,27 @@ const styles = `@import "@skryensya/core/components/changelog.css";`;
 
     <h3>{t("changelogPage.datesTitle")}</h3>
     <p set:html={t("changelogPage.datesBody")} />
+
+    <h3>{t("component.anatomy")}</h3>
+    <p set:html={t("changelogPage.anatomyBody")} />
+    <ComponentPreview
+      tree={changelogAnatomyTree(t)}
+      css={annotationDemoCss}
+      label={t("changelogPage.anatomyPreviewLabel")}
+      screens={false}
+      hideSource
+      chrome={false}
+    />
+  </Fragment>
+
+  <Fragment slot="guidelines">
+    <p class="lede" set:html={t("changelogPage.guidelinesLede")} />
+    <h3>{t("changelogPage.whenTitle")}</h3>
+    <ul>
+      <li set:html={t("changelogPage.whenItem1")} />
+      <li set:html={t("changelogPage.whenItem2")} />
+      <li set:html={t("changelogPage.whenItem3")} />
+    </ul>
   </Fragment>
 
   <Fragment slot="install">

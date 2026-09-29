@@ -8,6 +8,7 @@ import "@skryensya/core/patterns/icon.css";
 import ComponentPageShell from "./ComponentPageShell.astro";
 import CodeBlock from "../CodeBlock.astro";
 import ComponentPreview from "../ComponentPreview.astro";
+import UsagePreview from "../UsagePreview.astro";
 import { dataGridActionsTree, dataGridAnatomyTree, dataGridScoresTree } from "../../demos/data-grid";
 import { annotationDemoCss } from "../../demos/annotation";
 import { getLocale, useTranslations } from "../../i18n";
@@ -35,7 +36,23 @@ initComponents();`;
   ]}
   testFiles={["packages/react/src/components/data-grid.test.tsx", "packages/vanilla/src/components/data-grid.test.ts"]}}
 >
-  <Fragment slot="anatomy">
+  <Fragment slot="usage">
+    <p class="lede" set:html={t("dataGridPage.lede")} />
+
+    <h3>{t("dataGridPage.showcaseTitle")}</h3>
+    <p set:html={t("dataGridPage.showcaseBody")} />
+    <h3>{t("dataGridPage.dataTitle")}</h3>
+    <p set:html={t("dataGridPage.dataBody")} />
+    <ComponentPreview tree={dataGridScoresTree(t)} js={js} label={t("dataGridPage.dataLabel")} />
+
+    <h3>{t("dataGridPage.layoutTitle")}</h3>
+    <p set:html={t("dataGridPage.layoutBody")} />
+    <ComponentPreview tree={dataGridActionsTree(t)} js={js} label={t("dataGridPage.layoutLabel")} />
+
+    <h3>{t("component.contractNotesTitle")}</h3>
+    <p set:html={t("dataGridPage.contractBody")} />
+
+    <h3>{t("component.anatomy")}</h3>
     <p set:html={t("dataGridPage.anatomyBody")} />
     <ComponentPreview
       tree={dataGridAnatomyTree(t)}
@@ -47,18 +64,12 @@ initComponents();`;
     />
   </Fragment>
 
-  <Fragment slot="usage">
-    <p class="lede" set:html={t("dataGridPage.lede")} />
-    <h3>{t("dataGridPage.dataTitle")}</h3>
-    <p set:html={t("dataGridPage.dataBody")} />
-    <ComponentPreview tree={dataGridScoresTree(t)} js={js} label={t("dataGridPage.dataLabel")} />
-
-    <h3>{t("dataGridPage.layoutTitle")}</h3>
-    <p set:html={t("dataGridPage.layoutBody")} />
-    <ComponentPreview tree={dataGridActionsTree(t)} js={js} label={t("dataGridPage.layoutLabel")} />
-
-    <h3>{t("component.contractNotesTitle")}</h3>
-    <p set:html={t("dataGridPage.contractBody")} />
+  <Fragment slot="guidelines">
+    <p class="lede" set:html={t("dataGridPage.guidelinesLede")} />
+    <ul>
+      <li set:html={t("dataGridPage.guide.item1")} />
+      <li set:html={t("dataGridPage.guide.item2")} />
+    </ul>
   </Fragment>
 
   <Fragment slot="install">

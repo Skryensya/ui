@@ -28,6 +28,11 @@ export const editorMessages = {
     "editorPage.compactLabel": "Editor con barra compacta",
     "editorPage.a11yBody":
       "La superficie es <code>role=\"textbox\"</code> con <code>aria-multiline=\"true\"</code>; dentro de un FormField hereda su <code>id</code>/<code>aria-describedby</code>/<code>aria-invalid</code>. Cada botón de la barra anuncia su estado con <code>aria-pressed</code>, y la barra hereda el roving tabindex de Toolbar: las flechas se mueven entre botones y Tab entra y sale de la barra en un solo paso.",
+    "editorPage.showcaseTitle": "Showcases",
+    "editorPage.showcaseBody": "Un editor de texto con formato, y su barra compacta.",
+    "editorPage.guidelinesLede": "Editor recibe texto con formato: negrita, listas, enlaces.",
+    "editorPage.guide.item1": "Úsalo cuando el texto necesita formato, como una descripción o un comentario largo.",
+    "editorPage.guide.item2": "Para texto sin formato, un <a href=\"/es/componentes/input\">Textarea</a> es más simple.",
   },
   en: {
     "demo.editor.placeholder": "Write something…",
@@ -58,5 +63,10 @@ export const editorMessages = {
     "editorPage.compactLabel": "Editor with a compact bar",
     "editorPage.a11yBody":
       "The surface is <code>role=\"textbox\"</code> with <code>aria-multiline=\"true\"</code>; nested in a FormField it inherits its <code>id</code>/<code>aria-describedby</code>/<code>aria-invalid</code>. Every bar button announces its state with <code>aria-pressed</code>, and the bar inherits Toolbar's own roving tabindex: arrows move between buttons, and Tab enters and exits the bar in one step.",
+    "editorPage.showcaseTitle": "Showcases",
+    "editorPage.showcaseBody": "A rich-text editor, and its compact toolbar.",
+    "editorPage.guidelinesLede": "Editor takes formatted text: bold, lists, links.",
+    "editorPage.guide.item1": "Use it when the text needs formatting, like a description or a long comment.",
+    "editorPage.guide.item2": "For plain text, a <a href=\"/components/input\">Textarea</a> is simpler.",
   },
 } as const;

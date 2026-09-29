@@ -78,6 +78,12 @@ export const feedMessages = {
     "demo.feed.comment1": "Me pasó lo mismo con el lector de pantalla en Firefox.",
     "demo.feed.comment2": "Buenísimo el cambio, ahora el orden de lectura tiene sentido.",
 
+    "feedPage.showcaseTitle": "Showcases",
+    "feedPage.showcaseBody": "Una lista de publicaciones, de actividad, cargando, con carga infinita y de comentarios.",
+    "feedPage.guidelinesLede": "Feed es una lista de artículos que crece al bajar, y se recorre con el teclado.",
+    "feedPage.guide.item1": "Úsalo para contenido que se agrega a medida que se lee: publicaciones, actividad, comentarios.",
+    "feedPage.guide.item2": "Marca la lista como ocupada mientras carga más, para que el lector de pantalla espere.",
+    "feedPage.guide.item3": "Para una lista fija, una <a href=\"/es/componentes/list\">List</a> alcanza.",
   },
   en: {
 
@@ -157,5 +163,11 @@ export const feedMessages = {
     "demo.feed.comment1": "Same thing happened to me with the screen reader on Firefox.",
     "demo.feed.comment2": "Great change, the reading order finally makes sense.",
 
+    "feedPage.showcaseTitle": "Showcases",
+    "feedPage.showcaseBody": "A list of posts, of activity, loading, with infinite loading, and of comments.",
+    "feedPage.guidelinesLede": "Feed is a list of articles that grows as you scroll, navigated with the keyboard.",
+    "feedPage.guide.item1": "Use it for content added as it is read: posts, activity, comments.",
+    "feedPage.guide.item2": "Mark the list as busy while more loads, so screen readers wait.",
+    "feedPage.guide.item3": "For a fixed list, a <a href=\"/components/list\">List</a> is enough.",
   },
 } as const;

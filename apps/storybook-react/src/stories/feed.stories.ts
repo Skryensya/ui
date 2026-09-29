@@ -18,8 +18,8 @@ import { treeStory, withCss, type Meta, type StoryObj } from "../tree-story";
 export default { title: "Components/Content/Feed", tags: ["autodocs"] } satisfies Meta;
 
 export const Anatomy: StoryObj = treeStory(demos.feedAnatomyTree, { decorators: [withCss(annotationDemoCss)] });
+export const Infinite: StoryObj = treeStory(demos.feedInfiniteTree);
 export const Default: StoryObj = treeStory(demos.feedTree);
 export const Activity: StoryObj = treeStory(demos.feedActivityTree);
 export const Busy: StoryObj = treeStory(demos.feedBusyTree);
-export const Infinite: StoryObj = treeStory(demos.feedInfiniteTree);
 export const Comments: StoryObj = treeStory(demos.feedCommentsTree);
