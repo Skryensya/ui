@@ -46214,6 +46214,177 @@
         "columns": []
       },
       "visualHash": "e9d50130a0a063cc"
+    },
+    {
+      "axes": [],
+      "cells": [
+        {
+          "box": "edb5fb8785c522d0",
+          "hash": "3b1000860b19be1d",
+          "id": "sidebar/plain/",
+          "key": "",
+          "layers": "836af5cc8a7951fd",
+          "props": {},
+          "surface": "82d94bda55e9390f"
+        }
+      ],
+      "contractHash": "440ec013205ae6ea",
+      "defaultCell": "",
+      "grid": {
+        "columns": [],
+        "rows": []
+      },
+      "id": "sidebar/plain",
+      "interactions": [],
+      "kind": "component-set",
+      "name": "Sidebar / plain",
+      "page": "skryensya",
+      "properties": [
+        {
+          "default": "Workspace",
+          "name": "group 1",
+          "type": "TEXT"
+        },
+        {
+          "default": "Projects",
+          "name": "link 1",
+          "type": "TEXT"
+        },
+        {
+          "default": "Schedule",
+          "name": "link 2",
+          "type": "TEXT"
+        },
+        {
+          "default": "Settings",
+          "name": "link 3",
+          "type": "TEXT"
+        },
+        {
+          "default": "Signed in as Ana",
+          "name": "footer 1",
+          "type": "TEXT"
+        }
+      ],
+      "showcase": {
+        "base": {},
+        "columns": []
+      },
+      "visualHash": "906c1a53e4fc97f7"
+    },
+    {
+      "axes": [],
+      "cells": [
+        {
+          "box": "edb5fb8785c522d0",
+          "hash": "40314379bf3cf4a1",
+          "id": "sidebar/brutalist/",
+          "key": "",
+          "layers": "836af5cc8a7951fd",
+          "props": {},
+          "surface": "9a02ffcb2aa7bb13"
+        }
+      ],
+      "contractHash": "440ec013205ae6ea",
+      "defaultCell": "",
+      "grid": {
+        "columns": [],
+        "rows": []
+      },
+      "id": "sidebar/brutalist",
+      "interactions": [],
+      "kind": "component-set",
+      "name": "Sidebar / brutalist",
+      "page": "skryensya",
+      "properties": [
+        {
+          "default": "Workspace",
+          "name": "group 1",
+          "type": "TEXT"
+        },
+        {
+          "default": "Projects",
+          "name": "link 1",
+          "type": "TEXT"
+        },
+        {
+          "default": "Schedule",
+          "name": "link 2",
+          "type": "TEXT"
+        },
+        {
+          "default": "Settings",
+          "name": "link 3",
+          "type": "TEXT"
+        },
+        {
+          "default": "Signed in as Ana",
+          "name": "footer 1",
+          "type": "TEXT"
+        }
+      ],
+      "showcase": {
+        "base": {},
+        "columns": []
+      },
+      "visualHash": "ff99fa4780963a20"
+    },
+    {
+      "axes": [],
+      "cells": [
+        {
+          "box": "edb5fb8785c522d0",
+          "hash": "f3d038db11c6c27a",
+          "id": "sidebar/frosted/",
+          "key": "",
+          "layers": "836af5cc8a7951fd",
+          "props": {},
+          "surface": "a7b24d8600f70037"
+        }
+      ],
+      "contractHash": "440ec013205ae6ea",
+      "defaultCell": "",
+      "grid": {
+        "columns": [],
+        "rows": []
+      },
+      "id": "sidebar/frosted",
+      "interactions": [],
+      "kind": "component-set",
+      "name": "Sidebar / frosted",
+      "page": "skryensya",
+      "properties": [
+        {
+          "default": "Workspace",
+          "name": "group 1",
+          "type": "TEXT"
+        },
+        {
+          "default": "Projects",
+          "name": "link 1",
+          "type": "TEXT"
+        },
+        {
+          "default": "Schedule",
+          "name": "link 2",
+          "type": "TEXT"
+        },
+        {
+          "default": "Settings",
+          "name": "link 3",
+          "type": "TEXT"
+        },
+        {
+          "default": "Signed in as Ana",
+          "name": "footer 1",
+          "type": "TEXT"
+        }
+      ],
+      "showcase": {
+        "base": {},
+        "columns": []
+      },
+      "visualHash": "7271e69d72514d55"
     }
   ],
   "diagnostics": [
@@ -46849,6 +47020,18 @@
     },
     {
       "code": "CONDITION_SKIPPED",
+      "message": "0 rule(s) under a condition the evaluation context does not hold",
+      "severity": "info",
+      "subject": "components/sidebar.css @import url(\"../patterns/splitter.css\")"
+    },
+    {
+      "code": "CONDITION_SKIPPED",
+      "message": "1 rule(s) under a condition the evaluation context does not hold",
+      "severity": "info",
+      "subject": "components/sidebar.css @media (forced-colors: active)"
+    },
+    {
+      "code": "CONDITION_SKIPPED",
       "message": "1 rule(s) under a condition the evaluation context does not hold",
       "severity": "info",
       "subject": "components/split-button.css @media (forced-colors: active)"
@@ -47391,6 +47574,18 @@
       "code": "CONDITION_SKIPPED",
       "message": "2 rule(s) under a condition the evaluation context does not hold",
       "severity": "info",
+      "subject": "patterns/nav-list.css @media (forced-colors: active)"
+    },
+    {
+      "code": "CONDITION_SKIPPED",
+      "message": "2 rule(s) under a condition the evaluation context does not hold",
+      "severity": "info",
+      "subject": "patterns/nav-list.css @media (prefers-reduced-motion: reduce)"
+    },
+    {
+      "code": "CONDITION_SKIPPED",
+      "message": "2 rule(s) under a condition the evaluation context does not hold",
+      "severity": "info",
       "subject": "patterns/nav-list.css @media (prefers-reduced-motion: reduce)"
     },
     {
@@ -47403,7 +47598,13 @@
       "code": "CONDITION_SKIPPED",
       "message": "1 rule(s) under a condition the evaluation context does not hold",
       "severity": "info",
-      "subject": "patterns/state-layer.css @media (prefers-reduced-motion: reduce)"
+      "subject": "patterns/splitter.css @media (forced-colors: active)"
+    },
+    {
+      "code": "CONDITION_SKIPPED",
+      "message": "1 rule(s) under a condition the evaluation context does not hold",
+      "severity": "info",
+      "subject": "patterns/splitter.css @media (prefers-reduced-motion: reduce)"
     },
     {
       "code": "CONDITION_SKIPPED",
@@ -47602,6 +47803,24 @@
       "message": "1 rule(s) under a condition the evaluation context does not hold",
       "severity": "info",
       "subject": "patterns/state-layer.css @media (prefers-reduced-motion: reduce)"
+    },
+    {
+      "code": "CONDITION_SKIPPED",
+      "message": "1 rule(s) under a condition the evaluation context does not hold",
+      "severity": "info",
+      "subject": "patterns/state-layer.css @media (prefers-reduced-motion: reduce)"
+    },
+    {
+      "code": "CONDITION_SKIPPED",
+      "message": "1 rule(s) under a condition the evaluation context does not hold",
+      "severity": "info",
+      "subject": "patterns/state-layer.css @media (prefers-reduced-motion: reduce)"
+    },
+    {
+      "code": "CONDITION_SKIPPED",
+      "message": "0 rule(s) under a condition the evaluation context does not hold",
+      "severity": "info",
+      "subject": "patterns/state-layer.css @property --state-layer-opacity"
     },
     {
       "code": "CONDITION_SKIPPED",
@@ -48380,6 +48599,20 @@
           "tone"
         ]
       },
+      "sidebar": {
+        "excluded": [
+          "defaultCollapsed",
+          "storageKey",
+          "minInlineSize",
+          "maxInlineSize"
+        ],
+        "nonVisual": [
+          "landmarkLabel"
+        ],
+        "visual": [
+          "appearance"
+        ]
+      },
       "skip-link": {
         "excluded": [],
         "nonVisual": [
@@ -48609,11 +48842,11 @@
     },
     "tokens": {
       "catalogueAdded": 301,
-      "componentVariables": 589,
+      "componentVariables": 602,
       "modeValuesBySource": {
         "alias": 203,
-        "evaluated": 1025,
-        "literal": 882
+        "evaluated": 1041,
+        "literal": 892
       },
       "reached": 207,
       "reachedAsVariables": 157,
@@ -48634,8 +48867,8 @@
       "variables": 466
     },
     "variants": {
-      "components": 148,
-      "componentSets": 147,
+      "components": 151,
+      "componentSets": 150,
       "naiveAllOptions": {
         "accordion": 32,
         "avatar": 8,
@@ -48681,6 +48914,7 @@
         "segmented": 12,
         "select": 24,
         "separator": 48,
+        "sidebar": 6,
         "skip-link": 1,
         "split-button": 1,
         "stat": 6,
@@ -48747,6 +48981,7 @@
         "segmented": 12,
         "select": 6,
         "separator": 3,
+        "sidebar": 3,
         "skip-link": 1,
         "split-button": 1,
         "stat": 3,
@@ -49356,13 +49591,25 @@
         {
           "set": "navbar/frosted",
           "variants": 1
+        },
+        {
+          "set": "sidebar/plain",
+          "variants": 1
+        },
+        {
+          "set": "sidebar/brutalist",
+          "variants": 1
+        },
+        {
+          "set": "sidebar/frosted",
+          "variants": 1
         }
       ],
-      "variantsTotal": 2612
+      "variantsTotal": 2615
     }
   },
   "schemaVersion": 1,
-  "sourceHash": "15dbe921c941733d",
+  "sourceHash": "d8ec13f36f92934b",
   "stage": {
     "background": {
       "variable": "--color-bg-surface"
@@ -49495,6 +49742,35 @@
           "value": 360
         }
       },
+      "03422ad46d07c66d": {
+        "clipsContent": false,
+        "crossAlign": "MIN",
+        "direction": "HORIZONTAL",
+        "height": {
+          "expression": "1px",
+          "value": 1
+        },
+        "mainAlign": "MIN",
+        "padding": {
+          "bottom": {
+            "expression": "0",
+            "value": 0
+          },
+          "left": {
+            "expression": "0",
+            "value": 0
+          },
+          "right": {
+            "expression": "0",
+            "value": 0
+          },
+          "top": {
+            "expression": "0",
+            "value": 0
+          }
+        },
+        "stretch": true
+      },
       "087a87487955328f": {
         "clipsContent": false,
         "crossAlign": "MIN",
@@ -49601,6 +49877,27 @@
           "expression": "640px",
           "value": 640
         }
+      },
+      "0ad733db09660aaa": {
+        "clipsContent": true,
+        "crossAlign": "CENTER",
+        "direction": "HORIZONTAL",
+        "mainAlign": "MIN",
+        "padding": {
+          "bottom": {
+            "variable": "--space-inset-md"
+          },
+          "left": {
+            "variable": "sidebar:padding-inline:0c8ec168aa"
+          },
+          "right": {
+            "variable": "sidebar:padding-inline:0c8ec168aa"
+          },
+          "top": {
+            "variable": "--space-inset-md"
+          }
+        },
+        "stretch": true
       },
       "0b4b090ec74bd714": {
         "clipsContent": true,
@@ -51252,6 +51549,34 @@
           "right": {
             "expression": "1px",
             "value": 1
+          },
+          "top": {
+            "expression": "0",
+            "value": 0
+          }
+        }
+      },
+      "3ea168dbd1efba2f": {
+        "clipsContent": false,
+        "crossAlign": "MIN",
+        "direction": "VERTICAL",
+        "gap": {
+          "variable": "--space-stack-xs"
+        },
+        "grow": true,
+        "mainAlign": "MIN",
+        "padding": {
+          "bottom": {
+            "expression": "0",
+            "value": 0
+          },
+          "left": {
+            "expression": "0",
+            "value": 0
+          },
+          "right": {
+            "expression": "0",
+            "value": 0
           },
           "top": {
             "expression": "0",
@@ -53234,6 +53559,33 @@
           "value": 200
         }
       },
+      "705f2de157b4fe05": {
+        "clipsContent": true,
+        "crossAlign": "CENTER",
+        "direction": "HORIZONTAL",
+        "gap": {
+          "variable": "--space-inline-sm"
+        },
+        "mainAlign": "MIN",
+        "minHeight": {
+          "variable": "--size-control-lg"
+        },
+        "padding": {
+          "bottom": {
+            "variable": "--space-inset-md"
+          },
+          "left": {
+            "variable": "sidebar:padding-inline:0c8ec168aa"
+          },
+          "right": {
+            "variable": "sidebar:padding-inline:0c8ec168aa"
+          },
+          "top": {
+            "variable": "--space-inset-md"
+          }
+        },
+        "stretch": true
+      },
       "70a8dfc7d68a14a8": {
         "clipsContent": false,
         "crossAlign": "CENTER",
@@ -54761,6 +55113,30 @@
           "variable": "navbar:sk-button-border-width:93e20626bf"
         }
       },
+      "9ab6ae87ca0ba07d": {
+        "clipsContent": false,
+        "crossAlign": "CENTER",
+        "direction": "HORIZONTAL",
+        "mainAlign": "MIN",
+        "minHeight": {
+          "variable": "sidebar:sk-nav-list-group-label-min-height:5feceb66ff"
+        },
+        "padding": {
+          "bottom": {
+            "variable": "--space-inline-xs"
+          },
+          "left": {
+            "variable": "--space-inset-sm"
+          },
+          "right": {
+            "variable": "--space-inset-sm"
+          },
+          "top": {
+            "variable": "--space-stack-xs"
+          }
+        },
+        "stretch": true
+      },
       "9d3a0e4a86057c87": {
         "clipsContent": true,
         "crossAlign": "MIN",
@@ -55178,6 +55554,36 @@
             "value": 1
           }
         }
+      },
+      "aa081ff402fa9efe": {
+        "clipsContent": false,
+        "crossAlign": "MIN",
+        "direction": "HORIZONTAL",
+        "grow": true,
+        "mainAlign": "MIN",
+        "minHeight": {
+          "expression": "0",
+          "value": 0
+        },
+        "minWidth": {
+          "expression": "0",
+          "value": 0
+        },
+        "padding": {
+          "bottom": {
+            "variable": "--space-inset-md"
+          },
+          "left": {
+            "variable": "sidebar:padding-inline:0c8ec168aa"
+          },
+          "right": {
+            "variable": "sidebar:padding-inline:0c8ec168aa"
+          },
+          "top": {
+            "variable": "--space-inset-md"
+          }
+        },
+        "stretch": true
       },
       "aa30715c9f4705d4": {
         "clipsContent": false,
@@ -56054,6 +56460,38 @@
           "expression": "240px",
           "value": 240
         }
+      },
+      "be6988d368c36858": {
+        "clipsContent": false,
+        "crossAlign": "MIN",
+        "direction": "VERTICAL",
+        "gap": {
+          "variable": "sidebar:sk-nav-list-item-gap:5feceb66ff"
+        },
+        "mainAlign": "MIN",
+        "minWidth": {
+          "expression": "0",
+          "value": 0
+        },
+        "padding": {
+          "bottom": {
+            "expression": "0",
+            "value": 0
+          },
+          "left": {
+            "expression": "0",
+            "value": 0
+          },
+          "right": {
+            "expression": "0",
+            "value": 0
+          },
+          "top": {
+            "expression": "0",
+            "value": 0
+          }
+        },
+        "stretch": true
       },
       "be7c0e9a5de88036": {
         "clipsContent": false,
@@ -57290,6 +57728,51 @@
           }
         }
       },
+      "edb5fb8785c522d0": {
+        "clipsContent": false,
+        "crossAlign": "MIN",
+        "direction": "VERTICAL",
+        "mainAlign": "MIN",
+        "padding": {
+          "bottom": {
+            "expression": "0",
+            "value": 0
+          },
+          "left": {
+            "expression": "0",
+            "value": 0
+          },
+          "right": {
+            "expression": "0",
+            "value": 0
+          },
+          "top": {
+            "expression": "0",
+            "value": 0
+          }
+        },
+        "strokeSides": {
+          "bottom": {
+            "expression": "0",
+            "value": 0
+          },
+          "left": {
+            "expression": "0",
+            "value": 0
+          },
+          "right": {
+            "variable": "sidebar:border-width:93e20626bf"
+          },
+          "top": {
+            "expression": "0",
+            "value": 0
+          }
+        },
+        "width": {
+          "expression": "240px",
+          "value": 240
+        }
+      },
       "eea33d5d2050475a": {
         "clipsContent": false,
         "crossAlign": "CENTER",
@@ -57647,6 +58130,43 @@
           }
         },
         "stretch": true
+      },
+      "fa1934333ddb2ffd": {
+        "clipsContent": true,
+        "crossAlign": "CENTER",
+        "direction": "VERTICAL",
+        "height": {
+          "variable": "--size-control-sm"
+        },
+        "mainAlign": "CENTER",
+        "minWidth": {
+          "expression": "0",
+          "value": 0
+        },
+        "padding": {
+          "bottom": {
+            "expression": "0",
+            "value": 0
+          },
+          "left": {
+            "expression": "0",
+            "value": 0
+          },
+          "right": {
+            "expression": "0",
+            "value": 0
+          },
+          "top": {
+            "expression": "0",
+            "value": 0
+          }
+        },
+        "radius": {
+          "variable": "--radius-control"
+        },
+        "width": {
+          "variable": "--size-control-sm"
+        }
       },
       "fa5bf57f700df35d": {
         "clipsContent": false,
@@ -77700,6 +78220,354 @@
             "lineHeight": 150
           },
           "textProperty": "children"
+        }
+      ],
+      "836af5cc8a7951fd": [
+        {
+          "box": "705f2de157b4fe05",
+          "kind": "frame",
+          "layers": [
+            {
+              "box": "fa1934333ddb2ffd",
+              "kind": "frame",
+              "layers": [
+                {
+                  "fills": [
+                    {
+                      "color": {
+                        "variable": "sidebar:state-layer:2898638ebc"
+                      },
+                      "type": "SOLID"
+                    }
+                  ],
+                  "kind": "overlay",
+                  "slot": "state layer"
+                },
+                {
+                  "default": "menu",
+                  "icon": {
+                    "color": {
+                      "color": {
+                        "variable": "--color-text-secondary"
+                      },
+                      "type": "SOLID"
+                    },
+                    "size": {
+                      "variable": "--size-icon-md"
+                    }
+                  },
+                  "kind": "icon",
+                  "slot": "trigger"
+                }
+              ],
+              "slot": "trigger",
+              "surface": "a39c603f0591c36b"
+            }
+          ],
+          "slot": "header",
+          "surface": "fa0b643878e9242d"
+        },
+        {
+          "box": "aa081ff402fa9efe",
+          "kind": "frame",
+          "layers": [
+            {
+              "box": "3ea168dbd1efba2f",
+              "kind": "frame",
+              "layers": [
+                {
+                  "box": "59249b785485aab6",
+                  "kind": "frame",
+                  "layers": [
+                    {
+                      "box": "9ab6ae87ca0ba07d",
+                      "kind": "frame",
+                      "layers": [
+                        {
+                          "kind": "text",
+                          "slot": "group 1",
+                          "text": {
+                            "fill": {
+                              "color": {
+                                "variable": "--color-text-tertiary"
+                              },
+                              "type": "SOLID"
+                            },
+                            "fontFamily": {
+                              "variable": "--font-family-body"
+                            },
+                            "fontSize": {
+                              "variable": "--font-size-caption"
+                            },
+                            "fontWeight": {
+                              "variable": "--font-weight-label"
+                            },
+                            "lineHeight": 150
+                          },
+                          "textProperty": "group 1"
+                        }
+                      ],
+                      "slot": "group-label",
+                      "surface": "fa0b643878e9242d"
+                    },
+                    {
+                      "box": "be6988d368c36858",
+                      "kind": "frame",
+                      "layers": [
+                        {
+                          "box": "5461256b0e8b86b7",
+                          "kind": "frame",
+                          "layers": [
+                            {
+                              "box": "27354bdaae42692f",
+                              "kind": "frame",
+                              "layers": [
+                                {
+                                  "fills": [
+                                    {
+                                      "color": {
+                                        "variable": "sidebar:state-layer:a2cb713142"
+                                      },
+                                      "type": "SOLID"
+                                    }
+                                  ],
+                                  "kind": "overlay",
+                                  "slot": "state layer"
+                                },
+                                {
+                                  "default": "folder",
+                                  "icon": {
+                                    "color": {
+                                      "color": {
+                                        "variable": "--color-text-accent"
+                                      },
+                                      "type": "SOLID"
+                                    },
+                                    "size": {
+                                      "variable": "--size-icon-md"
+                                    }
+                                  },
+                                  "kind": "icon",
+                                  "slot": "link"
+                                },
+                                {
+                                  "kind": "text",
+                                  "slot": "link 1",
+                                  "text": {
+                                    "fill": {
+                                      "color": {
+                                        "variable": "--color-text-accent"
+                                      },
+                                      "type": "SOLID"
+                                    },
+                                    "fontFamily": {
+                                      "variable": "--font-family-body"
+                                    },
+                                    "fontSize": {
+                                      "variable": "--font-size-body-sm"
+                                    },
+                                    "fontWeight": {
+                                      "variable": "--font-weight-body"
+                                    },
+                                    "lineHeight": 150
+                                  },
+                                  "textProperty": "link 1"
+                                }
+                              ],
+                              "slot": "link",
+                              "surface": "53758dab5130f1ad"
+                            }
+                          ],
+                          "slot": "item",
+                          "surface": "fa0b643878e9242d"
+                        },
+                        {
+                          "box": "5461256b0e8b86b7",
+                          "kind": "frame",
+                          "layers": [
+                            {
+                              "box": "27354bdaae42692f",
+                              "kind": "frame",
+                              "layers": [
+                                {
+                                  "fills": [
+                                    {
+                                      "color": {
+                                        "variable": "sidebar:state-layer:2898638ebc"
+                                      },
+                                      "type": "SOLID"
+                                    }
+                                  ],
+                                  "kind": "overlay",
+                                  "slot": "state layer"
+                                },
+                                {
+                                  "default": "calendar",
+                                  "icon": {
+                                    "color": {
+                                      "color": {
+                                        "variable": "--color-text-secondary"
+                                      },
+                                      "type": "SOLID"
+                                    },
+                                    "size": {
+                                      "variable": "--size-icon-md"
+                                    }
+                                  },
+                                  "kind": "icon",
+                                  "slot": "link"
+                                },
+                                {
+                                  "kind": "text",
+                                  "slot": "link 2",
+                                  "text": {
+                                    "fill": {
+                                      "color": {
+                                        "variable": "--color-text-secondary"
+                                      },
+                                      "type": "SOLID"
+                                    },
+                                    "fontFamily": {
+                                      "variable": "--font-family-body"
+                                    },
+                                    "fontSize": {
+                                      "variable": "--font-size-body-sm"
+                                    },
+                                    "fontWeight": {
+                                      "variable": "--font-weight-body"
+                                    },
+                                    "lineHeight": 150
+                                  },
+                                  "textProperty": "link 2"
+                                }
+                              ],
+                              "slot": "link",
+                              "surface": "96a254424bd53aac"
+                            }
+                          ],
+                          "slot": "item 2",
+                          "surface": "fa0b643878e9242d"
+                        },
+                        {
+                          "box": "5461256b0e8b86b7",
+                          "kind": "frame",
+                          "layers": [
+                            {
+                              "box": "27354bdaae42692f",
+                              "kind": "frame",
+                              "layers": [
+                                {
+                                  "fills": [
+                                    {
+                                      "color": {
+                                        "variable": "sidebar:state-layer:2898638ebc"
+                                      },
+                                      "type": "SOLID"
+                                    }
+                                  ],
+                                  "kind": "overlay",
+                                  "slot": "state layer"
+                                },
+                                {
+                                  "default": "settings",
+                                  "icon": {
+                                    "color": {
+                                      "color": {
+                                        "variable": "--color-text-secondary"
+                                      },
+                                      "type": "SOLID"
+                                    },
+                                    "size": {
+                                      "variable": "--size-icon-md"
+                                    }
+                                  },
+                                  "kind": "icon",
+                                  "slot": "link"
+                                },
+                                {
+                                  "kind": "text",
+                                  "slot": "link 3",
+                                  "text": {
+                                    "fill": {
+                                      "color": {
+                                        "variable": "--color-text-secondary"
+                                      },
+                                      "type": "SOLID"
+                                    },
+                                    "fontFamily": {
+                                      "variable": "--font-family-body"
+                                    },
+                                    "fontSize": {
+                                      "variable": "--font-size-body-sm"
+                                    },
+                                    "fontWeight": {
+                                      "variable": "--font-weight-body"
+                                    },
+                                    "lineHeight": 150
+                                  },
+                                  "textProperty": "link 3"
+                                }
+                              ],
+                              "slot": "link",
+                              "surface": "96a254424bd53aac"
+                            }
+                          ],
+                          "slot": "item 3",
+                          "surface": "fa0b643878e9242d"
+                        }
+                      ],
+                      "slot": "list",
+                      "surface": "fa0b643878e9242d"
+                    }
+                  ],
+                  "slot": "group",
+                  "surface": "fa0b643878e9242d"
+                }
+              ],
+              "slot": "nav",
+              "surface": "fa0b643878e9242d"
+            }
+          ],
+          "slot": "content",
+          "surface": "fa0b643878e9242d"
+        },
+        {
+          "box": "03422ad46d07c66d",
+          "kind": "frame",
+          "layers": [],
+          "slot": "separator",
+          "surface": "70ec0030a159137a"
+        },
+        {
+          "box": "0ad733db09660aaa",
+          "kind": "frame",
+          "layers": [
+            {
+              "kind": "text",
+              "slot": "footer 1",
+              "text": {
+                "fill": {
+                  "color": {
+                    "variable": "--color-text-tertiary"
+                  },
+                  "type": "SOLID"
+                },
+                "fontFamily": {
+                  "variable": "--font-family-body"
+                },
+                "fontSize": {
+                  "variable": "--font-size-caption"
+                },
+                "fontWeight": {
+                  "variable": "--font-weight-body"
+                },
+                "lineHeight": 150
+              },
+              "textProperty": "footer 1"
+            }
+          ],
+          "slot": "footer",
+          "surface": "fa0b643878e9242d"
         }
       ],
       "83c5d200da042e6b": [
@@ -100658,6 +101526,18 @@
           }
         ]
       },
+      "53758dab5130f1ad": {
+        "effects": [],
+        "fills": [
+          {
+            "color": {
+              "variable": "sidebar:sk-nav-list-link-current-bg:5d942880e9"
+            },
+            "type": "SOLID"
+          }
+        ],
+        "strokes": []
+      },
       "5391dd22d79b268b": {
         "effects": [
           {
@@ -105204,6 +106084,18 @@
           }
         ]
       },
+      "96a254424bd53aac": {
+        "effects": [],
+        "fills": [
+          {
+            "color": {
+              "variable": "sidebar:sk-nav-list-link-bg:10e9f5602d"
+            },
+            "type": "SOLID"
+          }
+        ],
+        "strokes": []
+      },
       "96d74ebe168a8e3a": {
         "effects": [
           {
@@ -105431,6 +106323,46 @@
           {
             "color": {
               "variable": "navbar:sk-button-border-color:10e9f5602d"
+            },
+            "type": "SOLID"
+          }
+        ]
+      },
+      "9a02ffcb2aa7bb13": {
+        "effects": [
+          {
+            "blur": {
+              "expression": "0",
+              "value": 0
+            },
+            "color": {
+              "variable": "sidebar:brutalist-black:b75258c11d"
+            },
+            "spread": {
+              "expression": "0",
+              "value": 0
+            },
+            "type": "DROP_SHADOW",
+            "x": {
+              "variable": "sidebar:shadow-1-x:2378f45205"
+            },
+            "y": {
+              "variable": "sidebar:brutalist-offset:7adef6a048"
+            }
+          }
+        ],
+        "fills": [
+          {
+            "color": {
+              "variable": "--color-bg-surface"
+            },
+            "type": "SOLID"
+          }
+        ],
+        "strokes": [
+          {
+            "color": {
+              "variable": "sidebar:brutalist-black:b75258c11d"
             },
             "type": "SOLID"
           }
@@ -106466,6 +107398,55 @@
           {
             "color": {
               "variable": "button:frost-edge:4de4a161c4"
+            },
+            "type": "SOLID"
+          }
+        ]
+      },
+      "a7b24d8600f70037": {
+        "effects": [
+          {
+            "blur": {
+              "expression": "0",
+              "value": 0
+            },
+            "color": {
+              "variable": "--frost-highlight"
+            },
+            "spread": {
+              "expression": "0",
+              "value": 0
+            },
+            "type": "INNER_SHADOW",
+            "x": {
+              "expression": "0",
+              "value": 0
+            },
+            "y": {
+              "expression": "1px",
+              "value": 1
+            }
+          },
+          {
+            "radius": {
+              "expression": "20px",
+              "value": 20
+            },
+            "type": "BACKGROUND_BLUR"
+          }
+        ],
+        "fills": [
+          {
+            "color": {
+              "variable": "sidebar:frost-glass:ddcb59710b"
+            },
+            "type": "SOLID"
+          }
+        ],
+        "strokes": [
+          {
+            "color": {
+              "variable": "sidebar:border-color:dfa846e305"
             },
             "type": "SOLID"
           }
@@ -125306,6 +126287,362 @@
         "light": {
           "kind": "literal",
           "value": 1
+        }
+      }
+    },
+    {
+      "codeSyntax": "var(--sk-sidebar-border-color)",
+      "collection": "component",
+      "expression": "color-mix(in oklab, var(--color-text-primary) 18%, transparent)",
+      "id": "sidebar:border-color:dfa846e305",
+      "name": "sidebar/border-color/frosted",
+      "source": {
+        "dark": "evaluated",
+        "light": "evaluated"
+      },
+      "type": "COLOR",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": {
+            "a": 0.18,
+            "b": 0.9579,
+            "g": 0.9609,
+            "r": 0.9609
+          }
+        },
+        "light": {
+          "kind": "literal",
+          "value": {
+            "a": 0.18,
+            "b": 0.0903,
+            "g": 0.098,
+            "r": 0.1095
+          }
+        }
+      }
+    },
+    {
+      "codeSyntax": "var(--sk-sidebar-border-width)",
+      "collection": "component",
+      "expression": "1px",
+      "id": "sidebar:border-width:93e20626bf",
+      "name": "sidebar/border-width",
+      "source": {
+        "dark": "literal",
+        "light": "literal"
+      },
+      "type": "FLOAT",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": 1
+        },
+        "light": {
+          "kind": "literal",
+          "value": 1
+        }
+      }
+    },
+    {
+      "codeSyntax": "var(--brutalist-black)",
+      "collection": "component",
+      "expression": "oklch(from var(--shadow-lg) l c h / 1)",
+      "id": "sidebar:brutalist-black:b75258c11d",
+      "name": "sidebar/brutalist-black/brutalist",
+      "source": {
+        "dark": "evaluated",
+        "light": "evaluated"
+      },
+      "type": "COLOR",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": {
+            "a": 1,
+            "b": 0,
+            "g": 0,
+            "r": 0
+          }
+        },
+        "light": {
+          "kind": "literal",
+          "value": {
+            "a": 1,
+            "b": 0,
+            "g": 0,
+            "r": 0
+          }
+        }
+      }
+    },
+    {
+      "codeSyntax": "var(--sk-sidebar-brutalist-offset)",
+      "collection": "component",
+      "expression": "6px",
+      "id": "sidebar:brutalist-offset:7adef6a048",
+      "name": "sidebar/brutalist-offset/brutalist",
+      "source": {
+        "dark": "literal",
+        "light": "literal"
+      },
+      "type": "FLOAT",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": 6
+        },
+        "light": {
+          "kind": "literal",
+          "value": 6
+        }
+      }
+    },
+    {
+      "codeSyntax": "var(--frost-glass)",
+      "collection": "component",
+      "expression": "var(--frost-on) color-mix(in oklab, var(--color-bg-surface) 72%, transparent)",
+      "id": "sidebar:frost-glass:ddcb59710b",
+      "name": "sidebar/frost-glass/frosted",
+      "source": {
+        "dark": "evaluated",
+        "light": "evaluated"
+      },
+      "type": "COLOR",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": {
+            "a": 0.72,
+            "b": 0.0903,
+            "g": 0.098,
+            "r": 0.1095
+          }
+        },
+        "light": {
+          "kind": "literal",
+          "value": {
+            "a": 0.72,
+            "b": 1,
+            "g": 1,
+            "r": 1
+          }
+        }
+      }
+    },
+    {
+      "codeSyntax": "var(--sk-sidebar-padding-inline)",
+      "collection": "component",
+      "expression": "min(var(--space-inset-md), calc(clamp( 11rem, 13rem, 20rem ) / 4))",
+      "id": "sidebar:padding-inline:0c8ec168aa",
+      "name": "sidebar/padding-inline",
+      "source": {
+        "dark": "evaluated",
+        "light": "evaluated"
+      },
+      "type": "FLOAT",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": 16
+        },
+        "light": {
+          "kind": "literal",
+          "value": 16
+        }
+      }
+    },
+    {
+      "codeSyntax": "",
+      "collection": "component",
+      "expression": "calc(6px * 1)",
+      "id": "sidebar:shadow-1-x:2378f45205",
+      "name": "sidebar/shadow-1-x/brutalist",
+      "source": {
+        "dark": "evaluated",
+        "light": "evaluated"
+      },
+      "type": "FLOAT",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": 6
+        },
+        "light": {
+          "kind": "literal",
+          "value": 6
+        }
+      }
+    },
+    {
+      "codeSyntax": "var(--sk-nav-list-group-label-min-height)",
+      "collection": "component",
+      "expression": "0",
+      "id": "sidebar:sk-nav-list-group-label-min-height:5feceb66ff",
+      "name": "sidebar/sk-nav-list-group-label-min-height",
+      "source": {
+        "dark": "literal",
+        "light": "literal"
+      },
+      "type": "FLOAT",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": 0
+        },
+        "light": {
+          "kind": "literal",
+          "value": 0
+        }
+      }
+    },
+    {
+      "codeSyntax": "var(--sk-nav-list-item-gap)",
+      "collection": "component",
+      "expression": "0",
+      "id": "sidebar:sk-nav-list-item-gap:5feceb66ff",
+      "name": "sidebar/sk-nav-list-item-gap",
+      "source": {
+        "dark": "literal",
+        "light": "literal"
+      },
+      "type": "FLOAT",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": 0
+        },
+        "light": {
+          "kind": "literal",
+          "value": 0
+        }
+      }
+    },
+    {
+      "codeSyntax": "var(--sk-nav-list-link-bg)",
+      "collection": "component",
+      "expression": "transparent",
+      "id": "sidebar:sk-nav-list-link-bg:10e9f5602d",
+      "name": "sidebar/sk-nav-list-link-bg",
+      "source": {
+        "dark": "literal",
+        "light": "literal"
+      },
+      "type": "COLOR",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": {
+            "a": 0,
+            "b": 0,
+            "g": 0,
+            "r": 0
+          }
+        },
+        "light": {
+          "kind": "literal",
+          "value": {
+            "a": 0,
+            "b": 0,
+            "g": 0,
+            "r": 0
+          }
+        }
+      }
+    },
+    {
+      "codeSyntax": "var(--sk-nav-list-link-current-bg)",
+      "collection": "component",
+      "expression": "light-dark( color-mix(in oklab, var(--color-action-accent) 12%, var(--color-bg-surface)), var(--color-bg-accent-subtle) )",
+      "id": "sidebar:sk-nav-list-link-current-bg:5d942880e9",
+      "name": "sidebar/sk-nav-list-link-current-bg",
+      "source": {
+        "dark": "evaluated",
+        "light": "evaluated"
+      },
+      "type": "COLOR",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": {
+            "a": 1,
+            "b": 0.3357,
+            "g": 0.1431,
+            "r": 0.0873
+          }
+        },
+        "light": {
+          "kind": "literal",
+          "value": {
+            "a": 1,
+            "b": 1,
+            "g": 0.9314,
+            "r": 0.889
+          }
+        }
+      }
+    },
+    {
+      "codeSyntax": "",
+      "collection": "component",
+      "expression": "color-mix( in srgb, var(--color-text-secondary) calc(0 * 100%), transparent )",
+      "id": "sidebar:state-layer:2898638ebc",
+      "name": "sidebar/state-layer",
+      "source": {
+        "dark": "evaluated",
+        "light": "evaluated"
+      },
+      "type": "COLOR",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": {
+            "a": 0,
+            "b": 0,
+            "g": 0,
+            "r": 0
+          }
+        },
+        "light": {
+          "kind": "literal",
+          "value": {
+            "a": 0,
+            "b": 0,
+            "g": 0,
+            "r": 0
+          }
+        }
+      }
+    },
+    {
+      "codeSyntax": "",
+      "collection": "component",
+      "expression": "color-mix( in srgb, var(--color-text-accent) calc(0 * 100%), transparent )",
+      "id": "sidebar:state-layer:a2cb713142",
+      "name": "sidebar/state-layer-2",
+      "source": {
+        "dark": "evaluated",
+        "light": "evaluated"
+      },
+      "type": "COLOR",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": {
+            "a": 0,
+            "b": 0,
+            "g": 0,
+            "r": 0
+          }
+        },
+        "light": {
+          "kind": "literal",
+          "value": {
+            "a": 0,
+            "b": 0,
+            "g": 0,
+            "r": 0
+          }
         }
       }
     },

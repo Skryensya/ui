@@ -605,3 +605,11 @@ describe("Navbar", () => {
     expect(spacer.kind === "frame" && manifest.styles.boxes[spacer.box].grow).toBe(true);
   });
 });
+
+describe("Sidebar", () => {
+  it("stacks its trigger, a group of links, a separator and its footer", () => {
+    const set = manifest.components.find((c): c is ComponentSet => c.kind === "component-set" && c.id === "sidebar/plain")!;
+    expect(manifest.styles.layers[set.cells[0].layers].map((l) => l.slot)).toEqual(["header", "content", "separator", "footer"]);
+    expect(set.properties.map((p) => p.name)).toEqual(["group 1", "link 1", "link 2", "link 3", "footer 1"]);
+  });
+});

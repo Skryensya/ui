@@ -1112,6 +1112,10 @@ function applySurface(ctx: SetCtx, node: ComponentNode | FrameNode, surface: M.S
   node.effects = surface.effects.map((e) => toEffect(ctx, e));
 }
 
+/** Whether a frame hugs its content along its own direction: then nothing in it can grow along it. */
+const huggingAlong = (parent: ComponentNode | FrameNode) =>
+  (parent.layoutMode === "HORIZONTAL" ? parent.layoutSizingHorizontal : parent.layoutSizingVertical) === "HUG";
+
 const KIND_NODE = { icon: "INSTANCE", text: "TEXT", frame: "FRAME", overlay: "RECTANGLE", ring: "RECTANGLE", edge: "RECTANGLE" } as const;
 
 /**
@@ -1188,7 +1192,7 @@ async function applyLayers(
       // A text that fills spans its parent (grows along a row, stretches down a column) and wraps.
       if (layer.fill) text.textAutoResize = "HEIGHT";
       const across = parent.layoutMode === "HORIZONTAL";
-      text.layoutGrow = layer.fill && across ? 1 : 0;
+      text.layoutGrow = layer.fill && across && !huggingAlong(parent) ? 1 : 0;
       text.layoutAlign = layer.fill && !across ? "STRETCH" : "INHERIT";
     } else if (layer.kind === "frame") {
       const frame = child as FrameNode;
@@ -1203,7 +1207,8 @@ async function applyLayers(
         frame.constraints = { horizontal: "MIN", vertical: box.absolute.reach === "bottom" ? "STRETCH" : "MIN" };
       } else {
         frame.layoutPositioning = "AUTO";
-        frame.layoutGrow = box.grow ? 1 : 0;
+        // Growing only means something along a parent of set size; in one that hugs, it hugs too.
+        frame.layoutGrow = box.grow && !huggingAlong(parent) ? 1 : 0;
         frame.layoutAlign = box.stretch ? "STRETCH" : "INHERIT";
       }
       await applyLayers(ctx, frame, { id }, layer.layers, cellKey, sample);
