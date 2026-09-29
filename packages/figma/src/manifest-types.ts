@@ -127,7 +127,14 @@ export type ComponentProperty =
  * in the manifest's `styles` and a cell points at them by content hash.
  */
 export type Cell = {
-  /** `variant=soft, tone=danger, …`: Figma's own variant name, and the identity of the cell. */
+  /**
+   * The cell's identity: `<set id>/<axis>=<value>,…` with the axes in alphabetical order, so it does
+   * not move when the grid is regrouped, the axes are reordered or the variant's name is spelled
+   * differently. The plugin finds the Figma component by this id and updates it in place; it is also
+   * what a script or an agent uses to address one variant from outside.
+   */
+  id: string;
+  /** `variant=soft, tone=danger, …`: Figma's own variant name, what a designer reads in the panel. */
   key: string;
   props: Record<string, string>;
   box: string;
@@ -202,7 +209,8 @@ export type IconSet = {
   strokeWidth: number;
   /** The viewBox width, the size a variant is drawn at. */
   size: number;
-  icons: { name: string; svg: string; hash: string }[];
+  /** `id` is `<set id>/<name>`: how the plugin, and anything outside it, finds one icon's component. */
+  icons: { id: string; name: string; svg: string; hash: string }[];
   hash: string;
 };
 

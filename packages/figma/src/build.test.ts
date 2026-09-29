@@ -6,7 +6,7 @@ import { canonical } from "@skryensya/ai-compiler/manifest";
 import { surfaceHash } from "@skryensya/ai-compiler/surface";
 import { buttonContract } from "@skryensya/core/button";
 import { parseTokens } from "@skryensya/core/parse";
-import { buildFigmaManifest } from "./build.js";
+import { buildFigmaManifest, cellId } from "./build.js";
 import { evalColor, evalQuantity } from "./evaluate.js";
 import type { ComponentSet, FigmaManifest } from "./manifest-types.js";
 import { buttonRealization } from "./realizations/button.js";
@@ -32,11 +32,27 @@ describe("determinism", () => {
     expect(keys).toEqual([...keys].sort((a, b) => a.localeCompare(b)));
   });
 
-  it("hashes each cell over its own content", () => {
+  it("hashes each cell over its own content, not its id", () => {
     for (const cell of sets[0].cells.slice(0, 20)) {
-      const { hash, ...body } = cell;
+      const { hash, id: _id, ...body } = cell;
       expect(createHash("sha256").update(canonical(body)).digest("hex").slice(0, 16)).toBe(hash);
     }
+  });
+
+  it("gives every cell and icon a deterministic id, unique across the manifest", () => {
+    const ids = sets.flatMap((set) => set.cells.map((cell) => cell.id));
+    expect(new Set(ids).size).toBe(ids.length);
+    for (const set of sets) for (const cell of set.cells) expect(cell.id).toBe(cellId(set.id, cell.props));
+    const icons = manifest.components.find((c) => c.kind === "icon-set")!;
+    if (icons.kind !== "icon-set") throw new Error("no icon set");
+    for (const icon of icons.icons) expect(icon.id).toBe(`${icons.id}/${icon.name}`);
+  });
+
+  it("keeps a cell's id whatever order its axes come in", () => {
+    const props = { variant: "soft", tone: "danger", size: "md", state: "rest", iconOnly: "false" };
+    const reversed = Object.fromEntries(Object.entries(props).reverse());
+    expect(cellId("button/action", reversed)).toBe(cellId("button/action", props));
+    expect(cellId("button/action", props)).toBe("button/action/iconOnly=false,size=md,state=rest,tone=danger,variant=soft");
   });
 
   it("reuses surfaceHash for the contract hash, unchanged in meaning", () => {
