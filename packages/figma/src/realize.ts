@@ -43,7 +43,19 @@ function fontSizeOf(value: string, ctx: Context): string {
 function withoutEm(value: string, ctx: Context): string {
   const substitutedText = /var\(/.test(value) ? substituted(value, ctx) : value;
   // `ch`, the width of a "0", taken as half an em: what a body face's zero comes to.
-  const text = substitutedText.replace(/(^|[^\w.])(\d*\.?\d+)ch\b/g, (_, before: string, n: string) => `${before}${Number(n) / 2}em`);
+  // `lh`, one line of the element's own text: its font size times its line height, as ems.
+  const leading = (() => {
+    // A line height naming a token nothing declares is unset, as the browser has it: the default.
+    try {
+      return Number.parseFloat(substituted(prop(ctx, "line-height") ?? ctx.inherited?.["line-height"] ?? "1.2", ctx));
+    } catch {
+      return 1.2;
+    }
+  })();
+  const perLine = Number.isFinite(leading) && leading > 0 && leading < 5 ? leading : 1.2;
+  const text = substitutedText
+    .replace(/(^|[^\w.])(\d*\.?\d+)ch\b/g, (_, before: string, n: string) => `${before}${Number(n) / 2}em`)
+    .replace(/(^|[^\w.])(\d*\.?\d+)lh\b/g, (_, before: string, n: string) => `${before}${Number(n) * perLine}em`);
   if (!EM.test(text)) return text === substitutedText ? value : text;
   EM.lastIndex = 0;
   // The element's own size, itself possibly in em of its parent's (Code: 0.9em, padding 0.3em).
