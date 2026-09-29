@@ -230,11 +230,17 @@ const hasOutline = (ctx: Context) => {
  * An outline, as the ring it draws: `width` wide, `offset` outside the border box, in its colour.
  * Figma has no outline, so it becomes a layer of its own; the gap the offset leaves stays empty.
  */
-export function ringOf(ctx: Context): { width: Bound<number>; offset: Bound<number>; color: Paint } | undefined {
+export function ringOf(
+  ctx: Context,
+): { width: Bound<number>; offset: Bound<number>; radius: Bound<number>; color: Paint } | undefined {
   if (!hasOutline(ctx)) return undefined;
   const width = asNumber(resolve(prop(ctx, "outline-width") ?? "0px", "number", ctx, "outline-width"));
-  const offset = asNumber(resolve(prop(ctx, "outline-offset") ?? "0px", "number", ctx, "outline-offset")) ?? ZERO;
+  const offsetText = prop(ctx, "outline-offset") ?? "0px";
+  const offset = asNumber(resolve(offsetText, "number", ctx, "outline-offset")) ?? ZERO;
   const color = asColor(resolve(prop(ctx, "outline-color") ?? "currentColor", "color", ctx, "outline-color"));
-  if (!width || !color) return undefined;
-  return { width, offset, color: { type: "SOLID", color } };
+  // The ring's corners are the border's grown by the offset: a formula, so a variable of its own,
+  // and a radius token change reaches the ring the way it reaches the border.
+  const radius = asNumber(resolve(`calc(${prop(ctx, "border-radius") ?? "0px"} + ${offsetText})`, "number", ctx, "outline-radius"));
+  if (!width || !color || !radius) return undefined;
+  return { width, offset, radius, color: { type: "SOLID", color } };
 }
