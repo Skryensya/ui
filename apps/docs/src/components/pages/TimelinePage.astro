@@ -7,7 +7,16 @@ import "@skryensya/core/patterns/icon.css";
 import ComponentPageShell from "./ComponentPageShell.astro";
 import CodeBlock from "../CodeBlock.astro";
 import ComponentPreview from "../ComponentPreview.astro";
-import { timelineAnatomyTree, timelineTonesTree, timelineTree } from "../../demos/timeline";
+import UsagePreview from "../UsagePreview.astro";
+import DoDont from "../DoDont.astro";
+import {
+  timelineAnatomyTree,
+  timelineDoTimeTree,
+  timelineDontTimeTree,
+  timelineDontToneTree,
+  timelineTonesTree,
+  timelineTree,
+} from "../../demos/timeline";
 import { annotationDemoCss } from "../../demos/annotation";
 import { getLocale, useTranslations } from "../../i18n";
 
@@ -15,6 +24,10 @@ const t = useTranslations(getLocale(Astro.url));
 const install = `pnpm add @skryensya/core @skryensya/react`;
 const styles = `@import "@skryensya/core/components/timeline.css";
 @import "@skryensya/core/patterns/icon.css";`;
+
+/* What each value of a property is for, read from this page's messages. Same model Badge uses. */
+const explain = (option: string, values: readonly string[]) =>
+  Object.fromEntries(values.map((value) => [value, t(`timelinePage.prop.${option}.${value}` as Parameters<typeof t>[0])]));
 ---
 
 <ComponentPageShell
@@ -23,7 +36,38 @@ const styles = `@import "@skryensya/core/components/timeline.css";
   contractId="timeline"
   testFiles={["packages/react/src/components/timeline.test.tsx"]}
 >
-  <Fragment slot="anatomy">
+  <Fragment slot="usage">
+    <p class="lede" set:html={t("timelinePage.lede")} />
+
+    <UsagePreview
+      tree={timelineDoTimeTree(t)}
+      optionName="tone"
+      title={t("timelinePage.prop.tone.title")}
+      description={t("timelinePage.prop.tone.body")}
+      explain={explain("tone", ["neutral", "accent", "success", "warning", "danger"])}
+      stageMinBlockSize="14rem"
+      target={["children", 0]}
+    />
+
+    <h3>{t("timelinePage.showcaseTitle")}</h3>
+    <p set:html={t("timelinePage.showcaseBody")} />
+    <UsagePreview tree={timelineTree(t)} />
+
+    <h3>{t("timelinePage.tonesTitle")}</h3>
+    <p set:html={t("timelinePage.tonesBody")} />
+    <UsagePreview tree={timelineTonesTree(t)} />
+
+    <h3>{t("component.contractNotesTitle")}</h3>
+    <ul>
+      <li set:html={t("timelinePage.contractItem1")} />
+      <li set:html={t("timelinePage.contractItem2")} />
+      <li set:html={t("timelinePage.contractItem3")} />
+      <li set:html={t("timelinePage.contractItem4")} />
+      <li set:html={t("timelinePage.contractItem5")} />
+      <li set:html={t("timelinePage.contractItem6")} />
+    </ul>
+
+    <h3>{t("component.anatomy")}</h3>
     <p set:html={t("timelinePage.anatomyBody")} />
     <ComponentPreview
       tree={timelineAnatomyTree(t)}
@@ -35,14 +79,8 @@ const styles = `@import "@skryensya/core/components/timeline.css";
     />
   </Fragment>
 
-  <Fragment slot="usage">
-    <p class="lede" set:html={t("timelinePage.lede")} />
-    <ComponentPreview tree={timelineTree(t)} label="Timeline" />
-
-    <h3>{t("timelinePage.tonesTitle")}</h3>
-    <p set:html={t("timelinePage.tonesBody")} />
-    <ComponentPreview tree={timelineTonesTree(t)} label={t("timelinePage.tonesPreviewLabel")} />
-
+  <Fragment slot="guidelines">
+    <p class="lede" set:html={t("timelinePage.guidelinesLede")} />
     <h3>{t("timelinePage.whenTitle")}</h3>
     <ul>
       <li set:html={t("timelinePage.whenItem1")} />
@@ -50,16 +88,16 @@ const styles = `@import "@skryensya/core/components/timeline.css";
       <li set:html={t("timelinePage.whenItem3")} />
       <li set:html={t("timelinePage.whenItem4")} />
     </ul>
-
-    <h3>{t("component.contractNotesTitle")}</h3>
-    <ul>
-      <li set:html={t("timelinePage.contractItem1")} />
-      <li set:html={t("timelinePage.contractItem2")} />
-      <li set:html={t("timelinePage.contractItem3")} />
-      <li set:html={t("timelinePage.contractItem4")} />
-      <li set:html={t("timelinePage.contractItem5")} />
-      <li set:html={t("timelinePage.contractItem6")} />
-    </ul>
+    <DoDont
+      title={t("timelinePage.dd.time.title")}
+      do={{ tree: timelineDoTimeTree(t), caption: t("timelinePage.dd.time.do") }}
+      dont={{ tree: timelineDontTimeTree(t), caption: t("timelinePage.dd.time.dont") }}
+    />
+    <DoDont
+      title={t("timelinePage.dd.tone.title")}
+      do={{ tree: timelineDoTimeTree(t), caption: t("timelinePage.dd.tone.do") }}
+      dont={{ tree: timelineDontToneTree(t), caption: t("timelinePage.dd.tone.dont") }}
+    />
   </Fragment>
 
   <Fragment slot="install">

@@ -148,3 +148,44 @@ export const inputFormatTree = (t: Translate): UsageTree => ({
     },
   ],
 });
+
+/* One field, the specimen the `appearance`, `controlSize` and `disabled` previews vary. */
+export const inputSingleTree = (t: Translate): UsageTree => ({
+  contract: "form-field",
+  signature: "FormField",
+  slots: { label: "Email" },
+  attrs: { style: "inline-size: min(100%, 18rem)" },
+  children: { contract: "input", signature: "Input", options: { type: "email", name: "email-single", placeholder: t("demo.input.dd.placeholder") } },
+});
+
+/* Don't: the placeholder as the only label, gone as soon as someone types. */
+export const inputDontPlaceholderTree = (_t: Translate): UsageTree => ({
+  contract: "form-field",
+  signature: "FormField",
+  options: { labelHidden: true },
+  slots: { label: "Email" },
+  attrs: { style: "inline-size: 16rem" },
+  children: { contract: "input", signature: "Input", options: { type: "email", name: "email-placeholder", placeholder: "Email" } },
+});
+
+export const inputDoLabelTree = (t: Translate): UsageTree => ({
+  ...inputSingleTree(t),
+  attrs: { style: "inline-size: 16rem" },
+});
+
+/* Don't: a message several sentences long in a one-line field. */
+export const inputDontLongTree = (t: Translate): UsageTree => ({
+  contract: "form-field",
+  signature: "FormField",
+  slots: { label: t("demo.input.dd.message") },
+  children: { contract: "input", signature: "Input", options: { name: "message-line", placeholder: t("demo.input.dd.messagePlaceholder") } },
+  attrs: { style: "inline-size: 16rem" },
+});
+
+export const inputDoLongTree = (t: Translate): UsageTree => ({
+  contract: "form-field",
+  signature: "FormField",
+  slots: { label: t("demo.input.dd.message") },
+  children: { contract: "input", signature: "Textarea", options: { name: "message-area", placeholder: t("demo.input.dd.messagePlaceholder") } },
+  attrs: { style: "inline-size: 16rem" },
+});

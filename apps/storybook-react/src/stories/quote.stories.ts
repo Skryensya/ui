@@ -2,6 +2,7 @@
 // change the demo (or the docs page that shows it) and run `pnpm generate` in this app.
 import "@skryensya/core/components/annotation.css";
 import "@skryensya/core/components/button.css";
+import "@skryensya/core/components/callout.css";
 import "@skryensya/core/components/canvas.css";
 import "@skryensya/core/components/quote.css";
 import "@skryensya/core/patterns/box.css";
@@ -16,3 +17,6 @@ export const Default: StoryObj = treeStory(demos.quoteTree);
 export const Bare: StoryObj = treeStory(demos.quoteBareTree);
 export const Pull: StoryObj = treeStory(demos.quotePullTree);
 export const Testimonial: StoryObj = treeStory(demos.quoteTestimonialTree);
+export const DontLongPull: StoryObj = treeStory(demos.quoteDontLongPullTree);
+export const DontNotice: StoryObj = treeStory(demos.quoteDontNoticeTree);
+export const DoNotice: StoryObj = treeStory(demos.quoteDoNoticeTree);

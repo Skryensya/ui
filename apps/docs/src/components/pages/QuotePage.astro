@@ -7,9 +7,14 @@ import "@skryensya/core/patterns/box.css";
 import ComponentPageShell from "./ComponentPageShell.astro";
 import CodeBlock from "../CodeBlock.astro";
 import ComponentPreview from "../ComponentPreview.astro";
+import UsagePreview from "../UsagePreview.astro";
+import DoDont from "../DoDont.astro";
 import {
   quoteAnatomyTree,
   quoteBareTree,
+  quoteDoNoticeTree,
+  quoteDontLongPullTree,
+  quoteDontNoticeTree,
   quotePullTree,
   quoteTestimonialTree,
   quoteTree,
@@ -20,6 +25,10 @@ import { getLocale, useTranslations } from "../../i18n";
 const t = useTranslations(getLocale(Astro.url));
 const install = `pnpm add @skryensya/core @skryensya/react`;
 const styles = `@import "@skryensya/core/components/quote.css";`;
+
+/* What each value of a property is for, read from this page's messages. Same model Badge uses. */
+const explain = (option: string, values: readonly string[]) =>
+  Object.fromEntries(values.map((value) => [value, t(`quotePage.prop.${option}.${value}` as Parameters<typeof t>[0])]));
 ---
 
 <ComponentPageShell
@@ -28,7 +37,47 @@ const styles = `@import "@skryensya/core/components/quote.css";`;
   contractId="quote"
   testFiles={["packages/react/src/components/quote.test.tsx"]}
 >
-  <Fragment slot="anatomy">
+  <Fragment slot="usage">
+    <p class="lede" set:html={t("quotePage.lede")} />
+
+    <UsagePreview
+      tree={quoteTree(t)}
+      optionName="variant"
+      title={t("quotePage.prop.variant.title")}
+      description={t("quotePage.prop.variant.body")}
+      explain={explain("variant", ["block", "pull"])}
+      stageMinBlockSize="12rem"
+    />
+
+    <h3>{t("quotePage.showcaseTitle")}</h3>
+    <p set:html={t("quotePage.showcaseBody")} />
+    <UsagePreview tree={quoteTree(t)} />
+
+    <h3>{t("quotePage.citeTitle")}</h3>
+    <p set:html={t("quotePage.citeBody")} />
+
+    <h3>{t("quotePage.bareTitle")}</h3>
+    <p set:html={t("quotePage.bareBody")} />
+    <UsagePreview tree={quoteBareTree(t)} />
+
+    <h3>{t("quotePage.pullTitle")}</h3>
+    <p set:html={t("quotePage.pullBody")} />
+    <UsagePreview tree={quotePullTree(t)} />
+
+    <h3>{t("quotePage.testimonialTitle")}</h3>
+    <p set:html={t("quotePage.testimonialBody")} />
+    <UsagePreview tree={quoteTestimonialTree(t)} />
+
+    <h3>{t("component.contractNotesTitle")}</h3>
+    <ul>
+      <li set:html={t("quotePage.contractItem1")} />
+      <li set:html={t("quotePage.contractItem2")} />
+      <li set:html={t("quotePage.contractItem3")} />
+      <li set:html={t("quotePage.contractItem4")} />
+      <li set:html={t("quotePage.contractItem5")} />
+    </ul>
+
+    <h3>{t("component.anatomy")}</h3>
     <p set:html={t("quotePage.anatomyBody")} />
     <ComponentPreview
       tree={quoteAnatomyTree(t)}
@@ -40,25 +89,8 @@ const styles = `@import "@skryensya/core/components/quote.css";`;
     />
   </Fragment>
 
-  <Fragment slot="usage">
-    <p class="lede" set:html={t("quotePage.lede")} />
-    <ComponentPreview tree={quoteTree(t)} label="Quote" />
-
-    <h3>{t("quotePage.citeTitle")}</h3>
-    <p set:html={t("quotePage.citeBody")} />
-
-    <h3>{t("quotePage.bareTitle")}</h3>
-    <p set:html={t("quotePage.bareBody")} />
-    <ComponentPreview tree={quoteBareTree(t)} label={t("quotePage.barePreviewLabel")} />
-
-    <h3>{t("quotePage.pullTitle")}</h3>
-    <p set:html={t("quotePage.pullBody")} />
-    <ComponentPreview tree={quotePullTree(t)} label={t("quotePage.pullPreviewLabel")} />
-
-    <h3>{t("quotePage.testimonialTitle")}</h3>
-    <p set:html={t("quotePage.testimonialBody")} />
-    <ComponentPreview tree={quoteTestimonialTree(t)} label={t("quotePage.testimonialPreviewLabel")} />
-
+  <Fragment slot="guidelines">
+    <p class="lede" set:html={t("quotePage.guidelinesLede")} />
     <h3>{t("quotePage.whenTitle")}</h3>
     <ul>
       <li set:html={t("quotePage.whenItem1")} />
@@ -66,15 +98,17 @@ const styles = `@import "@skryensya/core/components/quote.css";`;
       <li set:html={t("quotePage.whenItem3")} />
       <li set:html={t("quotePage.whenItem4")} />
     </ul>
-
-    <h3>{t("component.contractNotesTitle")}</h3>
-    <ul>
-      <li set:html={t("quotePage.contractItem1")} />
-      <li set:html={t("quotePage.contractItem2")} />
-      <li set:html={t("quotePage.contractItem3")} />
-      <li set:html={t("quotePage.contractItem4")} />
-      <li set:html={t("quotePage.contractItem5")} />
-    </ul>
+    <DoDont
+      canvas
+      title={t("quotePage.dd.pull.title")}
+      do={{ tree: quotePullTree(t), caption: t("quotePage.dd.pull.do") }}
+      dont={{ tree: quoteDontLongPullTree(t), caption: t("quotePage.dd.pull.dont") }}
+    />
+    <DoDont
+      title={t("quotePage.dd.notice.title")}
+      do={{ tree: quoteDoNoticeTree(t), caption: t("quotePage.dd.notice.do") }}
+      dont={{ tree: quoteDontNoticeTree(t), caption: t("quotePage.dd.notice.dont") }}
+    />
   </Fragment>
 
   <Fragment slot="install">
