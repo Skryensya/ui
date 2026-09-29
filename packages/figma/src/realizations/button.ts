@@ -47,12 +47,3 @@ export const buttonRealization: Realization = {
     divider: "--color-border-subtle",
   },
 };
-
-/* Button.navigation: the same faces as a link to one destination, so never pressed or disabled. */
-export const buttonNavigationRealization: Realization = {
-  ...buttonRealization,
-  id: "button-navigation",
-  signature: "Button.navigation",
-  state: { ...buttonRealization.state, options: [] },
-  given: { href: "#" },
-};
