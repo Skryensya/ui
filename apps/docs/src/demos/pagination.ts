@@ -42,3 +42,38 @@ export const paginationTree = (t: Translate): UsageTree => ({
     nextLabel: t("demo.pagination.next"),
   },
 });
+
+/* Don't: two pages of results split in two. */
+export const paginationDontFewTree = (t: Translate): UsageTree => ({
+  contract: "pagination",
+  signature: "Pagination",
+  options: {
+    page: 1,
+    total: 2,
+    label: t("demo.pagination.label"),
+    previousLabel: t("demo.pagination.previous"),
+    nextLabel: t("demo.pagination.next"),
+  },
+});
+
+const paginationRows = (t: Translate): UsageTree => ({
+  contract: "layout",
+  signature: "Stack",
+  options: { gap: "xs" },
+  children: [1, 2, 3].map((n) => ({ contract: "typography", signature: "Text", children: `${t("demo.pagination.dd.row")} ${n}` })),
+});
+
+/* Do/Don't: the pager under what it pages, or above it. */
+export const paginationDoBelowTree = (t: Translate): UsageTree => ({
+  contract: "layout",
+  signature: "Stack",
+  options: { gap: "md", align: "center" },
+  children: [paginationRows(t), paginationTree(t)],
+});
+
+export const paginationDontAboveTree = (t: Translate): UsageTree => ({
+  contract: "layout",
+  signature: "Stack",
+  options: { gap: "md", align: "center" },
+  children: [paginationTree(t), paginationRows(t)],
+});

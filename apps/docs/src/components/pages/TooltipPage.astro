@@ -10,11 +10,25 @@ import "@skryensya/core/components/button.css";
 import ComponentPageShell from "./ComponentPageShell.astro";
 import CodeBlock from "../CodeBlock.astro";
 import ComponentPreview from "../ComponentPreview.astro";
-import { tooltipAnatomyCss, tooltipAnatomyHtml, tooltipTree } from "../../demos/tooltip";
+import UsagePreview from "../UsagePreview.astro";
+import DoDont from "../DoDont.astro";
+import {
+  tooltipAnatomyCss,
+  tooltipAnatomyHtml,
+  tooltipDoIconTree,
+  tooltipDontLongTree,
+  tooltipDontRepeatTree,
+  tooltipSingleTree,
+  tooltipTree,
+} from "../../demos/tooltip";
 import { getLocale, useTranslations } from "../../i18n";
 
 const t = useTranslations(getLocale(Astro.url));
 const install = `pnpm add @skryensya/core @skryensya/vanilla @skryensya/react`;
+
+/* What each value of a property is for, read from this page's messages. Same model Badge uses. */
+const explain = (option: string, values: readonly string[]) =>
+  Object.fromEntries(values.map((value) => [value, t(`tooltipPage.prop.${option}.${value}` as Parameters<typeof t>[0])]));
 ---
 
 <ComponentPageShell
@@ -23,20 +37,31 @@ const install = `pnpm add @skryensya/core @skryensya/vanilla @skryensya/react`;
   contractId="tooltip"
   testFiles={["packages/react/src/components/tooltip.test.tsx"]}}
 >
-  <Fragment slot="anatomy">
-    <p set:html={t("tooltipPage.anatomyBody")} />
-    <ComponentPreview
-      html={tooltipAnatomyHtml(t)}
-      css={tooltipAnatomyCss}
-      label={t("tooltipPage.anatomyPreviewLabel")}
-      screens={false}
-      hideSource
-      chrome={false}
-    />
-  </Fragment>
-
   <Fragment slot="usage">
     <p class="lede" set:html={t("tooltipPage.lede")} />
+
+    <UsagePreview
+      tree={tooltipSingleTree(t)}
+      optionName="placement"
+      title={t("tooltipPage.prop.placement.title")}
+      description={t("tooltipPage.prop.placement.body")}
+      explain={explain("placement", ["block-start", "block-end", "inline-start", "inline-end"])}
+      stageMinBlockSize="12rem"
+      labels={{ "block-start": t("tooltipPage.prop.placement.top"), "block-end": t("tooltipPage.prop.placement.bottom"), "inline-start": t("tooltipPage.prop.placement.start"), "inline-end": t("tooltipPage.prop.placement.end") }}
+    />
+
+    <UsagePreview
+      tree={tooltipSingleTree(t)}
+      optionName="arrow"
+      title={t("tooltipPage.prop.arrow.title")}
+      description={t("tooltipPage.prop.arrow.body")}
+      explain={explain("arrow", ["false", "true"])}
+      stageMinBlockSize="12rem"
+      labels={{ false: t("tooltipPage.prop.arrow.falseLabel"), true: t("tooltipPage.prop.arrow.trueLabel") }}
+    />
+
+    <h3>{t("tooltipPage.showcaseTitle")}</h3>
+    <p set:html={t("tooltipPage.showcaseBody")} />
     {/* `menu`: the tooltip paints out of flow, and in a stage sized to the content it would have
         nowhere to go, so the real placement would never be visible. */}
     <ComponentPreview tree={tooltipTree(t)} label="Tooltip" viewport="menu" />
@@ -57,6 +82,31 @@ const install = `pnpm add @skryensya/core @skryensya/vanilla @skryensya/react`;
     <p set:html={t("tooltipPage.positioningBody2")} />
 
     <p set:html={t("component.reactNote")} />
+
+    <h3>{t("component.anatomy")}</h3>
+    <p set:html={t("tooltipPage.anatomyBody")} />
+    <ComponentPreview
+      html={tooltipAnatomyHtml(t)}
+      css={tooltipAnatomyCss}
+      label={t("tooltipPage.anatomyPreviewLabel")}
+      screens={false}
+      hideSource
+      chrome={false}
+    />
+  </Fragment>
+
+  <Fragment slot="guidelines">
+    <p class="lede" set:html={t("tooltipPage.guidelinesLede")} />
+    <DoDont
+      title={t("tooltipPage.dd.short.title")}
+      do={{ tree: tooltipDoIconTree(t), caption: t("tooltipPage.dd.short.do") }}
+      dont={{ tree: tooltipDontLongTree(t), caption: t("tooltipPage.dd.short.dont") }}
+    />
+    <DoDont
+      title={t("tooltipPage.dd.repeat.title")}
+      do={{ tree: tooltipDoIconTree(t), caption: t("tooltipPage.dd.repeat.do") }}
+      dont={{ tree: tooltipDontRepeatTree(t), caption: t("tooltipPage.dd.repeat.dont") }}
+    />
   </Fragment>
 
   <Fragment slot="install">

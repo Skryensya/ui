@@ -20,6 +20,6 @@ export default { title: "Components/Forms/RadioGroup", tags: ["autodocs"] } sati
 
 export const Anatomy: StoryObj = treeStory(demos.radioGroupAnatomyTree, { decorators: [withCss(annotationDemoCss)] });
 export const Default: StoryObj = treeStory(demos.radioGroupTree);
+export const TileRadioGroup: StoryObj = treeStory(demos.tileRadioGroupTree);
 export const Likert: StoryObj = treeStory(demos.radioGroupLikertTree);
 export const Matrix: StoryObj = treeStory(demos.radioGroupMatrixTree);
-export const TileRadioGroup: StoryObj = treeStory(demos.tileRadioGroupTree);

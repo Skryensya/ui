@@ -35,7 +35,9 @@ export const sliderAnatomyTree = (t: Translate): UsageTree => ({
 
 export const sliderTree = (t: Translate): UsageTree => ({
   contract: "layout",
-  signature: "Inline",
+  signature: "Stack",
+  options: { gap: "lg" },
+  attrs: { style: "inline-size: min(100%, 18rem)" },
   children: [
     {
       contract: "slider",
@@ -67,4 +69,46 @@ export const sliderRangeTree = (t: Translate): UsageTree => ({
     lowLabel: t("demo.slider.priceMin"),
     highLabel: t("demo.slider.priceMax"),
   },
+  attrs: { style: "inline-size: min(100%, 22rem)" },
+});
+
+/* One slider, the specimen the `disabled` preview varies. */
+export const sliderSingleTree = (t: Translate): UsageTree => ({
+  contract: "slider",
+  signature: "Slider",
+  options: { value: 65 },
+  attrs: { "aria-label": t("demo.slider.volume"), style: "inline-size: min(100%, 18rem)" },
+});
+
+/* Don't: a minimum and a maximum as two unrelated sliders. */
+export const sliderDontTwoTree = (t: Translate): UsageTree => ({
+  contract: "layout",
+  signature: "Stack",
+  options: { gap: "md" },
+  children: [
+    { contract: "slider", signature: "Slider", options: { value: 20 }, attrs: { "aria-label": t("demo.slider.priceMin"), style: "inline-size: 14rem" } },
+    { contract: "slider", signature: "Slider", options: { value: 80 }, attrs: { "aria-label": t("demo.slider.priceMax"), style: "inline-size: 14rem" } },
+  ],
+});
+
+export const sliderDoRangeTree = (t: Translate): UsageTree => ({
+  contract: "slider",
+  signature: "SliderRange",
+  options: { lowValue: 20, highValue: 80, min: 0, max: 100, lowLabel: t("demo.slider.priceMin"), highLabel: t("demo.slider.priceMax") },
+  attrs: { style: "inline-size: 14rem" },
+});
+
+/* Don't: an exact number picked by dragging. */
+export const sliderDontExactTree = (t: Translate): UsageTree => ({
+  contract: "slider",
+  signature: "Slider",
+  options: { value: 37, min: 0, max: 120 },
+  attrs: { "aria-label": t("demo.slider.dd.age"), style: "inline-size: 14rem" },
+});
+
+export const sliderDoApproxTree = (t: Translate): UsageTree => ({
+  contract: "slider",
+  signature: "Slider",
+  options: { value: 65 },
+  attrs: { "aria-label": t("demo.slider.volume"), style: "inline-size: 14rem" },
 });

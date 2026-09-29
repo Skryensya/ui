@@ -4,13 +4,30 @@ import ComponentPageShell from "./ComponentPageShell.astro";
 import AppearanceMenu from "../AppearanceMenu.astro";
 import CodeBlock from "../CodeBlock.astro";
 import ComponentPreview from "../ComponentPreview.astro";
-import { kbdAccentTree, kbdAnatomyTree, kbdTree } from "../../demos/kbd";
+import UsagePreview from "../UsagePreview.astro";
+import DoDont from "../DoDont.astro";
+import {
+  kbdAccentTree,
+  kbdAnatomyTree,
+  kbdDoChordTree,
+  kbdDoInlineTree,
+  kbdDontAccentTree,
+  kbdDontAloneTree,
+  kbdDontChordTree,
+  kbdSingleTree,
+  kbdTree,
+} from "../../demos/kbd";
 import { getLocale, useTranslations } from "../../i18n";
 import { annotationDemoCss } from "../../demos/annotation";
 import "@skryensya/core/components/annotation.css";
 
 const t = useTranslations(getLocale(Astro.url));
 const install = `pnpm add @skryensya/core @skryensya/react`;
+const storybookTitle = "Components/Content/Kbd";
+
+/* What each value of a property is for, read from this page's messages. Same model Badge uses. */
+const explain = (option: string, values: readonly string[]) =>
+  Object.fromEntries(values.map((value) => [value, t(`kbdPage.prop.${option}.${value}` as Parameters<typeof t>[0])]));
 ---
 
 <ComponentPageShell
@@ -24,25 +41,42 @@ const install = `pnpm add @skryensya/core @skryensya/react`;
     <AppearanceMenu label={t("prefs.appearance")} values={["plain", "brutalist"]} unavailable={{ tactile: t("prefs.appearanceTactileUnavailable"), frosted: t("prefs.appearanceFrostedUnavailable") }} />
   </Fragment>
 
-  <Fragment slot="anatomy">
-    <p set:html={t("kbdPage.anatomyBody")} />
-    <ComponentPreview
-      tree={kbdAnatomyTree(t)}
-      css={annotationDemoCss}
-      label={t("kbdPage.anatomyPreviewLabel")}
-      screens={false}
-      hideSource
-      chrome={false}
-    />
-  </Fragment>
-
   <Fragment slot="usage">
     <p class="lede" set:html={t("kbdPage.lede")} />
-    <ComponentPreview tree={kbdTree} label="Kbd" />
 
-    <h3>{t("kbdPage.toneTitle")}</h3>
-    <p set:html={t("kbdPage.toneBody")} />
-    <ComponentPreview tree={kbdAccentTree} label="Kbd accent" />
+    <UsagePreview
+      tree={kbdSingleTree}
+      optionName="tone"
+      title={t("kbdPage.prop.tone.title")}
+      description={t("kbdPage.prop.tone.body")}
+      explain={explain("tone", ["neutral", "accent"])}
+      stageMinBlockSize="7rem"
+    />
+    <UsagePreview
+      tree={kbdSingleTree}
+      optionName="appearance"
+      title={t("kbdPage.prop.appearance.title")}
+      description={t("kbdPage.prop.appearance.body")}
+      explain={explain("appearance", ["plain", "brutalist"])}
+      stageMinBlockSize="7rem"
+    />
+
+    <h3>{t("kbdPage.showcaseTitle")}</h3>
+    <p set:html={t("kbdPage.showcaseBody")} />
+    <UsagePreview
+      tree={kbdTree}
+      title={t("kbdPage.keysTitle")}
+      description={t("kbdPage.keysBody")}
+      storybookTitle={storybookTitle}
+      storybookStory="Default"
+    />
+    <UsagePreview
+      tree={kbdAccentTree}
+      title={t("kbdPage.accentTitle")}
+      description={t("kbdPage.toneBody")}
+      storybookTitle={storybookTitle}
+      storybookStory="Accent"
+    />
 
     <h3>{t("kbdPage.squareTitle")}</h3>
     <p set:html={t("kbdPage.squareBody")} />
@@ -65,6 +99,36 @@ const install = `pnpm add @skryensya/core @skryensya/react`;
     <p set:html={t("kbdPage.scriptBody")} />
 
     <p set:html={t("component.reactNote")} />
+
+    <h3>{t("component.anatomy")}</h3>
+    <p set:html={t("kbdPage.anatomyBody")} />
+    <ComponentPreview
+      tree={kbdAnatomyTree(t)}
+      css={annotationDemoCss}
+      label={t("kbdPage.anatomyPreviewLabel")}
+      screens={false}
+      hideSource
+      chrome={false}
+    />
+  </Fragment>
+
+  <Fragment slot="guidelines">
+    <p class="lede" set:html={t("kbdPage.guidelinesLede")} />
+    <DoDont
+      title={t("kbdPage.dd.context.title")}
+      do={{ tree: kbdDoInlineTree(t), caption: t("kbdPage.dd.context.do") }}
+      dont={{ tree: kbdDontAloneTree, caption: t("kbdPage.dd.context.dont") }}
+    />
+    <DoDont
+      title={t("kbdPage.dd.chord.title")}
+      do={{ tree: kbdDoChordTree, caption: t("kbdPage.dd.chord.do") }}
+      dont={{ tree: kbdDontChordTree, caption: t("kbdPage.dd.chord.dont") }}
+    />
+    <DoDont
+      title={t("kbdPage.dd.accent.title")}
+      do={{ tree: kbdTree, caption: t("kbdPage.dd.accent.do") }}
+      dont={{ tree: kbdDontAccentTree, caption: t("kbdPage.dd.accent.dont") }}
+    />
   </Fragment>
 
   <Fragment slot="install">

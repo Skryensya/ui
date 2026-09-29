@@ -5,12 +5,24 @@ import "@skryensya/core/components/annotation.css";
 import ComponentPageShell from "./ComponentPageShell.astro";
 import CodeBlock from "../CodeBlock.astro";
 import ComponentPreview from "../ComponentPreview.astro";
-import { stepsAnatomyTree, stepsTree, stepsVerticalTree } from "../../demos/steps";
+import UsagePreview from "../UsagePreview.astro";
+import DoDont from "../DoDont.astro";
+import {
+  stepsAnatomyTree,
+  stepsDontColorTree,
+  stepsDontManyTree,
+  stepsTree,
+  stepsVerticalTree,
+} from "../../demos/steps";
 import { annotationDemoCss } from "../../demos/annotation";
 import { getLocale, useTranslations } from "../../i18n";
 
 const install = `pnpm add @skryensya/core @skryensya/react`;
 const t = useTranslations(getLocale(Astro.url));
+
+/* What each value of a property is for, read from this page's messages. Same model Badge uses. */
+const explain = (option: string, values: readonly string[]) =>
+  Object.fromEntries(values.map((value) => [value, t(`stepsPage.prop.${option}.${value}` as Parameters<typeof t>[0])]));
 ---
 
 <ComponentPageShell
@@ -19,7 +31,42 @@ const t = useTranslations(getLocale(Astro.url));
   contractId="steps"
   testFiles={["packages/react/src/components/steps.test.tsx"]}}
 >
-  <Fragment slot="anatomy">
+  <Fragment slot="usage">
+    <p class="lede" set:html={t("stepsPage.lede")} />
+
+    <UsagePreview
+      tree={stepsTree(t)}
+      optionName="orientation"
+      title={t("stepsPage.prop.orientation.title")}
+      description={t("stepsPage.prop.orientation.body")}
+      explain={explain("orientation", ["horizontal", "vertical"])}
+      stageMinBlockSize="20rem"
+    />
+
+    <UsagePreview
+      tree={stepsTree(t)}
+      optionName="appearance"
+      title={t("stepsPage.prop.appearance.title")}
+      description={t("stepsPage.prop.appearance.body")}
+      explain={explain("appearance", ["markers", "segments"])}
+      stageMinBlockSize="10rem"
+    />
+
+    <h3>{t("stepsPage.showcaseTitle")}</h3>
+    <p set:html={t("stepsPage.showcaseBody")} />
+    <UsagePreview tree={stepsTree(t)} />
+    <p set:html={t("stepsPage.body")} />
+
+    <h3>{t("stepsPage.mobileTitle")}</h3>
+    <p set:html={t("stepsPage.mobileBody")} />
+
+    <h3>{t("stepsPage.verticalTitle")}</h3>
+    <p set:html={t("stepsPage.verticalBody")} />
+    <UsagePreview tree={stepsVerticalTree(t)} />
+
+    <p set:html={t("component.reactNote")} />
+
+    <h3>{t("component.anatomy")}</h3>
     <p set:html={t("stepsPage.anatomyBody")} />
     <ComponentPreview
       tree={stepsAnatomyTree(t)}
@@ -31,19 +78,20 @@ const t = useTranslations(getLocale(Astro.url));
     />
   </Fragment>
 
-  <Fragment slot="usage">
-    <p class="lede" set:html={t("stepsPage.lede")} />
-    <ComponentPreview tree={stepsTree(t)} label="Steps" />
-    <p set:html={t("stepsPage.body")} />
-
-    <h3>{t("stepsPage.mobileTitle")}</h3>
-    <p set:html={t("stepsPage.mobileBody")} />
-
-    <h3>{t("stepsPage.verticalTitle")}</h3>
-    <p set:html={t("stepsPage.verticalBody")} />
-    <ComponentPreview tree={stepsVerticalTree(t)} label={t("stepsPage.verticalLabel")} />
-
-    <p set:html={t("component.reactNote")} />
+  <Fragment slot="guidelines">
+    <p class="lede" set:html={t("stepsPage.guidelinesLede")} />
+    <DoDont
+      canvas
+      title={t("stepsPage.dd.few.title")}
+      do={{ tree: stepsTree(t), caption: t("stepsPage.dd.few.do") }}
+      dont={{ tree: stepsDontManyTree(t), caption: t("stepsPage.dd.few.dont") }}
+    />
+    <DoDont
+      canvas
+      title={t("stepsPage.dd.cue.title")}
+      do={{ tree: stepsTree(t), caption: t("stepsPage.dd.cue.do") }}
+      dont={{ tree: stepsDontColorTree(t), caption: t("stepsPage.dd.cue.dont") }}
+    />
   </Fragment>
 
   <Fragment slot="install">

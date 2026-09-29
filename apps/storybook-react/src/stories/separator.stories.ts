@@ -13,6 +13,7 @@ import { treeStory, withCss, type Meta, type StoryObj } from "../tree-story";
 export default { title: "Components/Layout/Separator", tags: ["autodocs"] } satisfies Meta;
 
 export const Anatomy: StoryObj = treeStory(demos.separatorAnatomyTree, { decorators: [withCss(annotationDemoCss)] });
+export const Single: StoryObj = treeStory((t) => demos.separatorSingleTree());
 export const Default: StoryObj = treeStory(demos.separatorTree);
 export const Tones: StoryObj = treeStory(demos.separatorTonesTree);
 export const Vertical: StoryObj = treeStory(demos.separatorVerticalTree);

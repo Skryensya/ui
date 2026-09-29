@@ -99,3 +99,33 @@ export const statAnimatedTree = (t: Translate, locale: "es" | "en"): UsageTree =
     }),
   ],
 });
+
+/* One stat, the specimen the `trend` preview varies: no arrow, so every trend value stays true. */
+export const statSingleTree = (t: Translate): UsageTree => ({
+  contract: "stat",
+  signature: "Stat",
+  options: { trend: "up" },
+  slots: { label: t("demo.stat.orders"), value: "1,204", change: "8.2%" },
+});
+
+/* Do/Don't: a number with its name and its direction, or a bare figure. */
+export const statDoContextTree = (t: Translate): UsageTree => statCard(t("demo.stat.orders"), "1,204", "8.2%", "up", "arrow-up");
+
+export const statDontContextTree = (_t: Translate): UsageTree => ({
+  contract: "box",
+  signature: "Box",
+  options: { surface: "surface", border: "subtle", padding: "lg" },
+  children: { contract: "typography", signature: "Heading", options: { headingSize: "display-sm", flush: true }, children: "1,204" },
+});
+
+/* Don't: many comparable figures as a wall of stats, where a table reads better. */
+export const statDontWallTree = (t: Translate): UsageTree => ({
+  contract: "layout",
+  signature: "Grid",
+  options: { columns: "3", gap: "sm" },
+  children: ["Jan", "Feb", "Mar", "Apr", "May", "Jun"].map((month, i) => ({
+    contract: "stat",
+    signature: "Stat",
+    slots: { label: `${t("demo.stat.orders")} ${month}`, value: String(980 + i * 45) },
+  })),
+});

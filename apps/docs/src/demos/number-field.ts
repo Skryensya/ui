@@ -51,3 +51,27 @@ export const numberFieldTree = (t: Translate): UsageTree => ({
   },
   slots: { label: t("demo.numberField.label") },
 });
+
+/* One field, the specimen the `appearance` and `disabled` previews vary. */
+export const numberFieldSingleTree = (t: Translate): UsageTree => ({
+  ...numberFieldTree(t),
+  attrs: { style: "inline-size: min(100%, 14rem)" },
+});
+
+/* Don't: an approximate value typed digit by digit, where dragging reads better. */
+export const numberFieldDontApproxTree = (t: Translate): UsageTree => ({
+  contract: "number-field",
+  signature: "NumberField",
+  options: {
+    locale: t("kit.locale"),
+    defaultValue: "65",
+    decrementLabel: t("demo.numberField.decrement"),
+    incrementLabel: t("demo.numberField.increment"),
+    max: 100,
+    min: 0,
+    name: "volume",
+    step: 1,
+  },
+  slots: { label: t("demo.numberField.dd.volume") },
+  attrs: { style: "inline-size: 14rem" },
+});

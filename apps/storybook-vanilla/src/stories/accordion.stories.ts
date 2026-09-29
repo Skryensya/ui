@@ -10,17 +10,18 @@ import "@skryensya/core/components/diagram.css";
 import "@skryensya/core/components/switch.css";
 import "@skryensya/core/components/tile.css";
 import "@skryensya/core/components/typography.css";
-import "@skryensya/core/patterns/layout.css";
 import "@skryensya/core/patterns/visually-hidden.css";
 import * as demos from "@docs/demos/accordion";
-const { accordionAnatomyCss, accordionChoiceCss } = demos;
+const { accordionAnatomyCss } = demos;
 import { treeStory, withCss, type Meta, type StoryObj } from "../tree-story";
 
 export default { title: "Components/Content/Accordion", tags: ["autodocs"] } satisfies Meta;
 
 export const DetailsAnatomy: StoryObj = treeStory(demos.detailsAnatomyTree, { decorators: [withCss(accordionAnatomyCss)] });
-export const Choice: StoryObj = treeStory(demos.accordionChoiceTree, { decorators: [withCss(accordionChoiceCss)] });
 export const Single: StoryObj = treeStory(demos.accordionSingleTree);
 export const Exclusive: StoryObj = treeStory(demos.accordionExclusiveTree);
-export const DetailsGroup: StoryObj = treeStory(demos.detailsGroupTree);
 export const Multiple: StoryObj = treeStory(demos.accordionMultipleTree);
+export const Closed: StoryObj = treeStory(demos.accordionClosedTree);
+export const DontVerbose: StoryObj = treeStory(demos.accordionDontVerboseTree);
+export const DetailsGroup: StoryObj = treeStory(demos.detailsGroupTree);
+export const Choice: StoryObj = treeStory(demos.accordionChoiceTree);

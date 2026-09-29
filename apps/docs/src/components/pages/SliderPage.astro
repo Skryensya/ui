@@ -5,12 +5,27 @@ import "@skryensya/core/components/annotation.css";
 import ComponentPageShell from "./ComponentPageShell.astro";
 import CodeBlock from "../CodeBlock.astro";
 import ComponentPreview from "../ComponentPreview.astro";
-import { sliderAnatomyTree, sliderRangeTree, sliderTree } from "../../demos/slider";
+import UsagePreview from "../UsagePreview.astro";
+import DoDont from "../DoDont.astro";
+import {
+  sliderAnatomyTree,
+  sliderDoApproxTree,
+  sliderDoRangeTree,
+  sliderDontExactTree,
+  sliderDontTwoTree,
+  sliderRangeTree,
+  sliderSingleTree,
+  sliderTree,
+} from "../../demos/slider";
 import { annotationDemoCss } from "../../demos/annotation";
 import { getLocale, useTranslations } from "../../i18n";
 
 const install = `pnpm add @skryensya/core @skryensya/vanilla @skryensya/react`;
 const t = useTranslations(getLocale(Astro.url));
+
+/* What each value of a property is for, read from this page's messages. Same model Badge uses. */
+const explain = (option: string, values: readonly string[]) =>
+  Object.fromEntries(values.map((value) => [value, t(`sliderPage.prop.${option}.${value}` as Parameters<typeof t>[0])]));
 ---
 
 <ComponentPageShell
@@ -19,7 +34,31 @@ const t = useTranslations(getLocale(Astro.url));
   contractId="slider"
   testFiles={["packages/react/src/components/slider.test.tsx", "packages/vanilla/src/components/slider.test.ts", "packages/core/src/slider-range.test.ts", "packages/react/src/components/slider-range.test.tsx", "packages/vanilla/src/components/slider-range.test.ts"]}}
 >
-  <Fragment slot="anatomy">
+  <Fragment slot="usage">
+    <p class="lede" set:html={t("sliderPage.lede")} />
+
+    <UsagePreview
+      tree={sliderSingleTree(t)}
+      optionName="disabled"
+      title={t("sliderPage.prop.disabled.title")}
+      description={t("sliderPage.prop.disabled.body")}
+      explain={explain("disabled", ["false", "true"])}
+      stageMinBlockSize="6rem"
+      labels={{ false: t("sliderPage.prop.disabled.falseLabel"), true: t("sliderPage.prop.disabled.trueLabel") }}
+    />
+
+    <h3>{t("sliderPage.showcaseTitle")}</h3>
+    <p set:html={t("sliderPage.showcaseBody")} />
+    <UsagePreview tree={sliderTree(t)} />
+    <p set:html={t("sliderPage.body1")} />
+    <p set:html={t("sliderPage.body2")} />
+    <p set:html={t("component.reactNote")} />
+
+    <h3>{t("sliderPage.rangeTitle")}</h3>
+    <p set:html={t("sliderPage.rangeBody")} />
+    <UsagePreview tree={sliderRangeTree(t)} />
+
+    <h3>{t("component.anatomy")}</h3>
     <p set:html={t("sliderPage.anatomyBody")} />
     <ComponentPreview
       tree={sliderAnatomyTree(t)}
@@ -31,16 +70,18 @@ const t = useTranslations(getLocale(Astro.url));
     />
   </Fragment>
 
-  <Fragment slot="usage">
-    <p class="lede" set:html={t("sliderPage.lede")} />
-    <ComponentPreview tree={sliderTree(t)} label="Slider" />
-    <p set:html={t("sliderPage.body1")} />
-    <p set:html={t("sliderPage.body2")} />
-    <p set:html={t("component.reactNote")} />
-
-    <h3>{t("sliderPage.rangeTitle")}</h3>
-    <p set:html={t("sliderPage.rangeBody")} />
-    <ComponentPreview tree={sliderRangeTree(t)} label={t("sliderPage.rangeLabel")} />
+  <Fragment slot="guidelines">
+    <p class="lede" set:html={t("sliderPage.guidelinesLede")} />
+    <DoDont
+      title={t("sliderPage.dd.approx.title")}
+      do={{ tree: sliderDoApproxTree(t), caption: t("sliderPage.dd.approx.do") }}
+      dont={{ tree: sliderDontExactTree(t), caption: t("sliderPage.dd.approx.dont") }}
+    />
+    <DoDont
+      title={t("sliderPage.dd.range.title")}
+      do={{ tree: sliderDoRangeTree(t), caption: t("sliderPage.dd.range.do") }}
+      dont={{ tree: sliderDontTwoTree(t), caption: t("sliderPage.dd.range.dont") }}
+    />
   </Fragment>
 
   <Fragment slot="install">

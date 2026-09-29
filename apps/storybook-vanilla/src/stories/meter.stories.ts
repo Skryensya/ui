@@ -13,3 +13,7 @@ export default { title: "Components/Data/Meter", tags: ["autodocs"] } satisfies 
 
 export const Anatomy: StoryObj = treeStory(demos.meterAnatomyTree, { decorators: [withCss(annotationDemoCss)] });
 export const Default: StoryObj = treeStory(demos.meterTree);
+export const Single: StoryObj = treeStory(demos.meterSingleTree);
+export const DoTone: StoryObj = treeStory(demos.meterDoToneTree);
+export const DontTone: StoryObj = treeStory(demos.meterDontToneTree);
+export const DontTask: StoryObj = treeStory(demos.meterDontTaskTree);

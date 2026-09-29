@@ -13,14 +13,14 @@ export default { title: "Components/Content/Heading", tags: ["autodocs"] } satis
 
 export const HeadingAnatomy: StoryObj = treeStory(demos.headingAnatomyTree, { decorators: [withCss(annotationDemoCss)] });
 export const TextAnatomy: StoryObj = treeStory(demos.textAnatomyTree);
+export const Code: StoryObj = treeStory(demos.codeTree);
+export const Output: StoryObj = treeStory(demos.outputTree);
 export const HeadingDisplay: StoryObj = treeStory(demos.headingDisplayTree);
 export const HeadingDocument: StoryObj = treeStory(demos.headingDocumentTree);
 export const HeadingPageTitle: StoryObj = treeStory(demos.headingPageTitleTree);
 export const HeadingOutline: StoryObj = treeStory(demos.headingOutlineTree);
 export const HeadingCompact: StoryObj = treeStory(demos.headingCompactTree);
 export const HeadingFlush: StoryObj = treeStory(demos.headingFlushTree);
-export const Code: StoryObj = treeStory(demos.codeTree);
-export const Output: StoryObj = treeStory(demos.outputTree);
 export const TextScale: StoryObj = treeStory((t) => demos.textScaleTree());
 export const TextTitle: StoryObj = treeStory(demos.textTitleTree);
 export const TextReading: StoryObj = treeStory(demos.textReadingTree);

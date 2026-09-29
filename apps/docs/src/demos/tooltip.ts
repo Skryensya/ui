@@ -146,3 +146,46 @@ export const tooltipTree = (t: Translate): UsageTree => ({
     },
   ],
 });
+
+/* One tooltip, the specimen the `placement` and `arrow` previews vary: hover or focus it to open. */
+export const tooltipSingleTree = (t: Translate): UsageTree => ({
+  contract: "tooltip",
+  signature: "Tooltip",
+  options: { arrow: true },
+  slots: {
+    content: t("demo.tooltip.export.content"),
+    children: iconTrigger("download", t("demo.tooltip.export.label")),
+  },
+});
+
+/*
+ * THE DO/DON'T PICTURES ARE DRAWN, NOT OPENED. A tooltip's machine closes it on scroll, so one held
+ * open with `defaultOpen` is gone by the time a reader scrolls to the pair. Each picture is the
+ * trigger with the bubble's own class drawn above it, which is what the reader would see on hover.
+ */
+const drawnTooltip = (content: string, trigger: UsageTree): UsageTree => ({
+  contract: "layout",
+  signature: "Stack",
+  options: { gap: "sm", align: "center" },
+  attrs: { style: "max-inline-size: 16rem" },
+  children: [
+    { contract: "layout", signature: "Stack", options: { gap: "none" }, attrs: { class: "sk-tooltip__content", "data-state": "open" }, children: content },
+    trigger,
+  ],
+});
+
+export const tooltipDoIconTree = (t: Translate): UsageTree =>
+  drawnTooltip(t("demo.tooltip.export.content"), iconTrigger("download", t("demo.tooltip.export.label")));
+
+/* Don't: a paragraph in a tooltip, where a Popover belongs. */
+export const tooltipDontLongTree = (t: Translate): UsageTree =>
+  drawnTooltip(t("demo.tooltip.dd.long"), iconTrigger("info", t("demo.tooltip.metric.label")));
+
+/* Don't: the tooltip repeats the words already on the button. */
+export const tooltipDontRepeatTree = (t: Translate): UsageTree =>
+  drawnTooltip(t("demo.tooltip.export.label"), {
+    contract: "button",
+    signature: "Button.action",
+    options: { variant: "soft" },
+    children: [{ contract: "icon", signature: "Icon", options: { name: "download" } }, t("demo.tooltip.export.label")],
+  });

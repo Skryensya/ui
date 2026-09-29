@@ -57,3 +57,13 @@ export const emptyStateAnatomyTree = (t: Translate): UsageTree => ({
     ],
   },
 });
+
+/* Don't: a vague title with no way forward. */
+export const emptyStateDontVagueTree = (t: Translate): UsageTree => ({
+  contract: "empty-state",
+  signature: "EmptyState",
+  slots: {
+    icon: { contract: "icon", signature: "Icon", options: { name: "search" } },
+    title: t("demo.emptyState.dd.vague"),
+  },
+});

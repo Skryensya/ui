@@ -150,3 +150,44 @@ export const processListTree = (t: Translate): UsageTree => ({
     },
   ],
 });
+
+const processItem = (title: string, body: string): UsageTree => ({
+  contract: "process-list",
+  signature: "ProcessListItem",
+  slots: { title, children: { contract: "typography", signature: "Text", options: { tone: "secondary" }, children: body } },
+});
+
+/* Do: an order the reader follows, short titles. */
+export const processListDoShortTree = (t: Translate): UsageTree => ({
+  contract: "process-list",
+  signature: "ProcessList",
+  attrs: { "aria-label": t("demo.processList.label") },
+  children: [
+    processItem(t("demo.processList.install.title"), t("demo.processList.install.body")),
+    processItem(t("demo.processList.import.title"), t("demo.processList.import.body")),
+    processItem(t("demo.processList.render.title"), t("demo.processList.render.body")),
+  ],
+});
+
+/* Don't: features with no order, numbered as if there were one. */
+export const processListDontUnorderedTree = (t: Translate): UsageTree => ({
+  contract: "process-list",
+  signature: "ProcessList",
+  attrs: { "aria-label": t("demo.processList.label") },
+  children: [
+    processItem(t("demo.processList.dd.fast"), t("demo.processList.dd.fastBody")),
+    processItem(t("demo.processList.dd.accessible"), t("demo.processList.dd.accessibleBody")),
+    processItem(t("demo.processList.dd.themable"), t("demo.processList.dd.themableBody")),
+  ],
+});
+
+/* Don't: the whole instruction in the title. */
+export const processListDontLongTree = (t: Translate): UsageTree => ({
+  contract: "process-list",
+  signature: "ProcessList",
+  attrs: { "aria-label": t("demo.processList.label") },
+  children: [
+    processItem(t("demo.processList.dd.longTitle"), t("demo.processList.install.body")),
+    processItem(t("demo.processList.import.title"), t("demo.processList.import.body")),
+  ],
+});

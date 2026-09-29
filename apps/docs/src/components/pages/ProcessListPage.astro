@@ -6,7 +6,15 @@ import "@skryensya/core/components/code-preview.css";
 import ComponentPageShell from "./ComponentPageShell.astro";
 import CodeBlock from "../CodeBlock.astro";
 import ComponentPreview from "../ComponentPreview.astro";
-import { processListAnatomyTree, processListTree } from "../../demos/process-list";
+import UsagePreview from "../UsagePreview.astro";
+import DoDont from "../DoDont.astro";
+import {
+  processListAnatomyTree,
+  processListDoShortTree,
+  processListDontLongTree,
+  processListDontUnorderedTree,
+  processListTree,
+} from "../../demos/process-list";
 import { annotationDemoCss } from "../../demos/annotation";
 import { getLocale, useTranslations } from "../../i18n";
 
@@ -22,21 +30,12 @@ const styles = `@import "@skryensya/core/components/process-list.css";
   contractId="process-list"
   testFiles={["packages/react/src/components/process-list.test.tsx"]}}
 >
-  <Fragment slot="anatomy">
-    <p set:html={t("processListPage.anatomyBody")} />
-    <ComponentPreview
-      tree={processListAnatomyTree(t)}
-      css={annotationDemoCss}
-      label={t("processListPage.anatomyPreviewLabel")}
-      screens={false}
-      hideSource
-      chrome={false}
-    />
-  </Fragment>
-
   <Fragment slot="usage">
     <p class="lede" set:html={t("processListPage.lede")} />
-    <ComponentPreview tree={processListTree(t)} label="ProcessList" />
+
+    <h3>{t("processListPage.showcaseTitle")}</h3>
+    <p set:html={t("processListPage.showcaseBody")} />
+    <UsagePreview tree={processListTree(t)} />
 
     <h3>{t("processListPage.whenTitle")}</h3>
     <ul>
@@ -53,6 +52,33 @@ const styles = `@import "@skryensya/core/components/process-list.css";
       <li set:html={t("processListPage.contractItem4")} />
       <li set:html={t("processListPage.contractItem5")} />
     </ul>
+
+    <h3>{t("component.anatomy")}</h3>
+    <p set:html={t("processListPage.anatomyBody")} />
+    <ComponentPreview
+      tree={processListAnatomyTree(t)}
+      css={annotationDemoCss}
+      label={t("processListPage.anatomyPreviewLabel")}
+      screens={false}
+      hideSource
+      chrome={false}
+    />
+  </Fragment>
+
+  <Fragment slot="guidelines">
+    <p class="lede" set:html={t("processListPage.guidelinesLede")} />
+    <DoDont
+      canvas
+      title={t("processListPage.dd.order.title")}
+      do={{ tree: processListDoShortTree(t), caption: t("processListPage.dd.order.do") }}
+      dont={{ tree: processListDontUnorderedTree(t), caption: t("processListPage.dd.order.dont") }}
+    />
+    <DoDont
+      canvas
+      title={t("processListPage.dd.short.title")}
+      do={{ tree: processListDoShortTree(t), caption: t("processListPage.dd.short.do") }}
+      dont={{ tree: processListDontLongTree(t), caption: t("processListPage.dd.short.dont") }}
+    />
   </Fragment>
 
   <Fragment slot="install">
