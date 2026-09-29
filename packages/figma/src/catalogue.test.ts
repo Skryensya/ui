@@ -284,3 +284,14 @@ describe("PasswordInput", () => {
     expect(glyphs(trigger)).toEqual(["visibility"]);
   });
 });
+
+describe("NumberField", () => {
+  it("shows its value centred in the field, between its two steppers", () => {
+    const set = manifest.components.find((c): c is ComponentSet => c.kind === "component-set" && c.id === "number-field/plain")!;
+    const [control] = manifest.styles.layers[set.cells[0].layers];
+    const layers = control.kind === "frame" ? control.layers : [];
+    expect(layers.map((l) => l.slot)).toEqual(["decrement", "input", "increment"]);
+    const field = layers[1];
+    expect(field.kind === "frame" && field.layers[0]).toMatchObject({ kind: "text", slot: "value", fill: true, text: { align: "CENTER" } });
+  });
+});

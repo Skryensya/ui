@@ -96,8 +96,11 @@ export type Realization = {
           icon?: string;
           hidden?: true;
           option?: string;
-          /** `placeholder`: the option's text is the host's own `::placeholder` (an Input), drawn in it. */
-          pseudo?: "placeholder";
+          /**
+           * `placeholder`: the option's text is the field's own `::placeholder` (an Input), drawn in it.
+           * `value`: it is the field's value (a NumberField's number), in the field's own look.
+           */
+          pseudo?: "placeholder" | "value";
           /** Set by the compiler: this text is an item of that collection, not a slot of the signature. */
           item?: string;
           /**

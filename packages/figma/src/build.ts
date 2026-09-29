@@ -749,16 +749,32 @@ async function compileRealization(authored: Realization, shared: Shared): Promis
           if (slide) sized.set("padding-left", `calc(${sized.get("padding-left") ?? "0px"} + ${slide})`);
           const trackWidth = fixedTrack ? lengthOf(track, child) : undefined;
           // A field inside (a PasswordInput's input) shows its placeholder, in its `::placeholder` look.
-          const placeholderSlot = Object.entries(realization.slots).find(([, spec]) => spec.holds === "text" && spec.pseudo === "placeholder")?.[0];
+          const fieldSlot = (kind: "placeholder" | "value") =>
+            Object.entries(realization.slots).find(([, spec]) => spec.holds === "text" && spec.pseudo === kind)?.[0];
+          const placeholderSlot = fieldSlot("placeholder");
+          const valueSlot = fieldSlot("value");
           // With no `::placeholder` rule of its own, the browser's: the field's colour, dimmed.
           const ownColor = cascaded.get(child)!.get("color") ?? (inherited as Record<string, string>).color;
           const shown =
             placeholderSlot && child.hasAttribute("placeholder")
               ? (pseudo.get(child)?.placeholder ?? new Map([...cascaded.get(child)!, ["color", `color-mix(in oklab, ${ownColor} 54%, transparent)`]]))
               : undefined;
-          const placeholderLayers: Layer[] = shown
-            ? [{ kind: "text", slot: placeholderSlot!, textProperty: placeholderSlot!, ...(requiredSlot(placeholderSlot!) ? {} : { visibleProperty: `show ${placeholderSlot}` }), text: textOf(ctxOf(shown)) }]
-            : [];
+          // A field's text spans the field, so its own alignment (a NumberField's centred number) shows.
+          const fieldText = (slot: string, look: Computed): Layer => ({
+            kind: "text",
+            slot,
+            textProperty: slot,
+            ...(requiredSlot(slot) ? {} : { visibleProperty: `show ${slot}` }),
+            fill: true,
+            text: textOf(ctxOf(look)),
+          });
+          // A value shows instead of the placeholder, as a field does once it holds one.
+          const placeholderLayers: Layer[] =
+            valueSlot && /^(input|textarea)$/.test(child.localName) && child.getAttribute("value")
+              ? [fieldText(valueSlot, cascaded.get(child)!)]
+              : shown
+                ? [fieldText(placeholderSlot!, shown)]
+                : [];
           const onlyText = child.children.length === 0;
           if (onlyText && !fixedTrack && !fixedRow && !paints(ctxOf(sized))) {
             const flat = nestedLayers(child, inner);

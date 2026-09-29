@@ -57339,10 +57339,10 @@
       "cells": [
         {
           "box": "b9b9e302aa47bb67",
-          "hash": "ffd2aa0a24e54da3",
+          "hash": "8479ac56de660da1",
           "id": "password-input/plain/state=rest",
           "key": "state=rest",
-          "layers": "8ecefd23926c3c4a",
+          "layers": "1aa433affe0afaa1",
           "props": {
             "state": "rest"
           },
@@ -57350,10 +57350,10 @@
         },
         {
           "box": "b9b9e302aa47bb67",
-          "hash": "66611d9fbfc2588b",
+          "hash": "c49dfc621ccde7ff",
           "id": "password-input/plain/state=focus",
           "key": "state=focus",
-          "layers": "8ecefd23926c3c4a",
+          "layers": "1aa433affe0afaa1",
           "props": {
             "state": "focus"
           },
@@ -57361,10 +57361,10 @@
         },
         {
           "box": "b9b9e302aa47bb67",
-          "hash": "57df40c401f356eb",
+          "hash": "e44eed00ab0d58e2",
           "id": "password-input/plain/state=disabled",
           "key": "state=disabled",
-          "layers": "a7fa56d092aa513b",
+          "layers": "14cbfa8ce149d4e8",
           "props": {
             "state": "disabled"
           },
@@ -57372,10 +57372,10 @@
         },
         {
           "box": "b9b9e302aa47bb67",
-          "hash": "ca6832311dce145b",
+          "hash": "01772ead0e94e4d6",
           "id": "password-input/plain/state=invalid",
           "key": "state=invalid",
-          "layers": "224bf90f1578424f",
+          "layers": "d45f5fcef37eda78",
           "props": {
             "state": "invalid"
           },
@@ -57421,7 +57421,7 @@
         },
         "columns": []
       },
-      "visualHash": "97c730789247c39a"
+      "visualHash": "d2ee7c2220af8e19"
     },
     {
       "axes": [
@@ -57438,10 +57438,10 @@
       "cells": [
         {
           "box": "b9b9e302aa47bb67",
-          "hash": "ee27ea350a82c13b",
+          "hash": "67a4ff20e83d93b9",
           "id": "password-input/brutalist/state=rest",
           "key": "state=rest",
-          "layers": "e316a4eca7e77dc2",
+          "layers": "52e27daffc8ab7fd",
           "props": {
             "state": "rest"
           },
@@ -57449,10 +57449,10 @@
         },
         {
           "box": "b9b9e302aa47bb67",
-          "hash": "300468c6afc48671",
+          "hash": "177ad215702b7f5b",
           "id": "password-input/brutalist/state=focus",
           "key": "state=focus",
-          "layers": "e316a4eca7e77dc2",
+          "layers": "52e27daffc8ab7fd",
           "props": {
             "state": "focus"
           },
@@ -57460,10 +57460,10 @@
         },
         {
           "box": "b9b9e302aa47bb67",
-          "hash": "a0964505418c5eca",
+          "hash": "3c24f2cdaaea4855",
           "id": "password-input/brutalist/state=disabled",
           "key": "state=disabled",
-          "layers": "63bc69e5b59bde58",
+          "layers": "89429a240e94dd43",
           "props": {
             "state": "disabled"
           },
@@ -57471,10 +57471,10 @@
         },
         {
           "box": "b9b9e302aa47bb67",
-          "hash": "55cf701a30a8a0ac",
+          "hash": "b41720b738176d42",
           "id": "password-input/brutalist/state=invalid",
           "key": "state=invalid",
-          "layers": "a805416f675dfc33",
+          "layers": "9b995245e64bdfb9",
           "props": {
             "state": "invalid"
           },
@@ -57520,7 +57520,7 @@
         },
         "columns": []
       },
-      "visualHash": "0bb59d2cabf7325e"
+      "visualHash": "bdbfeee5e7d79232"
     },
     {
       "axes": [
@@ -57537,10 +57537,10 @@
       "cells": [
         {
           "box": "b9b9e302aa47bb67",
-          "hash": "faa4802e941188b4",
+          "hash": "1315c2380a5f4362",
           "id": "password-input/frosted/state=rest",
           "key": "state=rest",
-          "layers": "0d456da68648a478",
+          "layers": "808bde89a4a6babd",
           "props": {
             "state": "rest"
           },
@@ -57548,10 +57548,10 @@
         },
         {
           "box": "b9b9e302aa47bb67",
-          "hash": "22f75ab57124a151",
+          "hash": "758e6dad083c018e",
           "id": "password-input/frosted/state=focus",
           "key": "state=focus",
-          "layers": "0d456da68648a478",
+          "layers": "808bde89a4a6babd",
           "props": {
             "state": "focus"
           },
@@ -57559,10 +57559,10 @@
         },
         {
           "box": "b9b9e302aa47bb67",
-          "hash": "d328f9cedd30d5cd",
+          "hash": "f9fcb288bbfa59fe",
           "id": "password-input/frosted/state=disabled",
           "key": "state=disabled",
-          "layers": "4a3446ee205be8e3",
+          "layers": "6fdc69c21319ced3",
           "props": {
             "state": "disabled"
           },
@@ -57570,10 +57570,10 @@
         },
         {
           "box": "b9b9e302aa47bb67",
-          "hash": "1e8e5166e5943e7e",
+          "hash": "24e02610d15fbeea",
           "id": "password-input/frosted/state=invalid",
           "key": "state=invalid",
-          "layers": "a73e19e276d83ff6",
+          "layers": "1b81e2029cb5371c",
           "props": {
             "state": "invalid"
           },
@@ -57619,7 +57619,265 @@
         },
         "columns": []
       },
-      "visualHash": "26edd8d369217c6d"
+      "visualHash": "1d0fa8194b44b9bf"
+    },
+    {
+      "axes": [
+        {
+          "name": "state",
+          "values": [
+            "rest",
+            "focus",
+            "invalid"
+          ]
+        }
+      ],
+      "cells": [
+        {
+          "box": "705730e8c7071cad",
+          "hash": "48a4a291656bea2b",
+          "id": "number-field/plain/state=rest",
+          "key": "state=rest",
+          "layers": "d4893eabc03f23bc",
+          "props": {
+            "state": "rest"
+          },
+          "surface": "fa0b643878e9242d"
+        },
+        {
+          "box": "705730e8c7071cad",
+          "hash": "c390164075ba5427",
+          "id": "number-field/plain/state=focus",
+          "key": "state=focus",
+          "layers": "d4893eabc03f23bc",
+          "props": {
+            "state": "focus"
+          },
+          "surface": "fa0b643878e9242d"
+        },
+        {
+          "box": "705730e8c7071cad",
+          "hash": "72c28d109e4b89c3",
+          "id": "number-field/plain/state=invalid",
+          "key": "state=invalid",
+          "layers": "beabf97063de33e7",
+          "props": {
+            "state": "invalid"
+          },
+          "surface": "fa0b643878e9242d"
+        }
+      ],
+      "contractHash": "62765e948f8ffa10",
+      "defaultCell": "state=rest",
+      "grid": {
+        "columns": [
+          {
+            "name": "state",
+            "values": [
+              "rest",
+              "focus",
+              "invalid"
+            ]
+          }
+        ],
+        "rows": []
+      },
+      "id": "number-field/plain",
+      "interactions": [],
+      "kind": "component-set",
+      "name": "Number Field / plain",
+      "page": "skryensya",
+      "properties": [
+        {
+          "default": "12",
+          "name": "value",
+          "type": "TEXT"
+        },
+        {
+          "default": true,
+          "name": "show value",
+          "type": "BOOLEAN"
+        }
+      ],
+      "showcase": {
+        "base": {
+          "state": "rest"
+        },
+        "columns": []
+      },
+      "visualHash": "1af833a3d0f397be"
+    },
+    {
+      "axes": [
+        {
+          "name": "state",
+          "values": [
+            "rest",
+            "focus",
+            "invalid"
+          ]
+        }
+      ],
+      "cells": [
+        {
+          "box": "705730e8c7071cad",
+          "hash": "d9dc0f8bee9f121d",
+          "id": "number-field/brutalist/state=rest",
+          "key": "state=rest",
+          "layers": "777db82b939d3e7b",
+          "props": {
+            "state": "rest"
+          },
+          "surface": "fa0b643878e9242d"
+        },
+        {
+          "box": "705730e8c7071cad",
+          "hash": "828378044e8cc6be",
+          "id": "number-field/brutalist/state=focus",
+          "key": "state=focus",
+          "layers": "777db82b939d3e7b",
+          "props": {
+            "state": "focus"
+          },
+          "surface": "fa0b643878e9242d"
+        },
+        {
+          "box": "705730e8c7071cad",
+          "hash": "9004e628a3ef3435",
+          "id": "number-field/brutalist/state=invalid",
+          "key": "state=invalid",
+          "layers": "1d148f7d4daa8578",
+          "props": {
+            "state": "invalid"
+          },
+          "surface": "fa0b643878e9242d"
+        }
+      ],
+      "contractHash": "62765e948f8ffa10",
+      "defaultCell": "state=rest",
+      "grid": {
+        "columns": [
+          {
+            "name": "state",
+            "values": [
+              "rest",
+              "focus",
+              "invalid"
+            ]
+          }
+        ],
+        "rows": []
+      },
+      "id": "number-field/brutalist",
+      "interactions": [],
+      "kind": "component-set",
+      "name": "Number Field / brutalist",
+      "page": "skryensya",
+      "properties": [
+        {
+          "default": "12",
+          "name": "value",
+          "type": "TEXT"
+        },
+        {
+          "default": true,
+          "name": "show value",
+          "type": "BOOLEAN"
+        }
+      ],
+      "showcase": {
+        "base": {
+          "state": "rest"
+        },
+        "columns": []
+      },
+      "visualHash": "06bc2441708c8d95"
+    },
+    {
+      "axes": [
+        {
+          "name": "state",
+          "values": [
+            "rest",
+            "focus",
+            "invalid"
+          ]
+        }
+      ],
+      "cells": [
+        {
+          "box": "705730e8c7071cad",
+          "hash": "929ec45590ced50b",
+          "id": "number-field/frosted/state=rest",
+          "key": "state=rest",
+          "layers": "04607979a48abec4",
+          "props": {
+            "state": "rest"
+          },
+          "surface": "fa0b643878e9242d"
+        },
+        {
+          "box": "705730e8c7071cad",
+          "hash": "0093658fb523522e",
+          "id": "number-field/frosted/state=focus",
+          "key": "state=focus",
+          "layers": "04607979a48abec4",
+          "props": {
+            "state": "focus"
+          },
+          "surface": "fa0b643878e9242d"
+        },
+        {
+          "box": "705730e8c7071cad",
+          "hash": "cdf738045bcec0d3",
+          "id": "number-field/frosted/state=invalid",
+          "key": "state=invalid",
+          "layers": "e77be7d724db90c0",
+          "props": {
+            "state": "invalid"
+          },
+          "surface": "fa0b643878e9242d"
+        }
+      ],
+      "contractHash": "62765e948f8ffa10",
+      "defaultCell": "state=rest",
+      "grid": {
+        "columns": [
+          {
+            "name": "state",
+            "values": [
+              "rest",
+              "focus",
+              "invalid"
+            ]
+          }
+        ],
+        "rows": []
+      },
+      "id": "number-field/frosted",
+      "interactions": [],
+      "kind": "component-set",
+      "name": "Number Field / frosted",
+      "page": "skryensya",
+      "properties": [
+        {
+          "default": "12",
+          "name": "value",
+          "type": "TEXT"
+        },
+        {
+          "default": true,
+          "name": "show value",
+          "type": "BOOLEAN"
+        }
+      ],
+      "showcase": {
+        "base": {
+          "state": "rest"
+        },
+        "columns": []
+      },
+      "visualHash": "1b7d59813e313ae9"
     }
   ],
   "diagnostics": [
@@ -57706,6 +57964,18 @@
       "message": "11 rule(s) under a condition the evaluation context does not hold",
       "severity": "info",
       "subject": "components/button.css @media (forced-colors: active)"
+    },
+    {
+      "code": "CONDITION_SKIPPED",
+      "message": "11 rule(s) under a condition the evaluation context does not hold",
+      "severity": "info",
+      "subject": "components/button.css @media (forced-colors: active)"
+    },
+    {
+      "code": "CONDITION_SKIPPED",
+      "message": "1 rule(s) under a condition the evaluation context does not hold",
+      "severity": "info",
+      "subject": "components/button.css @media (prefers-reduced-motion: reduce)"
     },
     {
       "code": "CONDITION_SKIPPED",
@@ -57814,6 +58084,12 @@
       "message": "1 rule(s) under a condition the evaluation context does not hold",
       "severity": "info",
       "subject": "components/meter.css @media (prefers-reduced-motion: reduce)"
+    },
+    {
+      "code": "CONDITION_SKIPPED",
+      "message": "2 rule(s) under a condition the evaluation context does not hold",
+      "severity": "info",
+      "subject": "components/number-field.css @media (forced-colors: active)"
     },
     {
       "code": "CONDITION_SKIPPED",
@@ -58060,6 +58336,18 @@
       "message": "1 rule(s) under a condition the evaluation context does not hold",
       "severity": "info",
       "subject": "patterns/state-layer.css @media (prefers-reduced-motion: reduce)"
+    },
+    {
+      "code": "CONDITION_SKIPPED",
+      "message": "1 rule(s) under a condition the evaluation context does not hold",
+      "severity": "info",
+      "subject": "patterns/state-layer.css @media (prefers-reduced-motion: reduce)"
+    },
+    {
+      "code": "CONDITION_SKIPPED",
+      "message": "0 rule(s) under a condition the evaluation context does not hold",
+      "severity": "info",
+      "subject": "patterns/state-layer.css @property --state-layer-opacity"
     },
     {
       "code": "CONDITION_SKIPPED",
@@ -58397,6 +58685,27 @@
           "tone"
         ]
       },
+      "number-field": {
+        "excluded": [
+          "required"
+        ],
+        "nonVisual": [
+          "name",
+          "defaultValue",
+          "locale",
+          "min",
+          "max",
+          "step",
+          "disabled",
+          "readOnly",
+          "decrementLabel",
+          "incrementLabel"
+        ],
+        "visual": [
+          "invalid",
+          "appearance"
+        ]
+      },
       "pagination": {
         "excluded": [],
         "nonVisual": [
@@ -58611,11 +58920,11 @@
     },
     "tokens": {
       "catalogueAdded": 306,
-      "componentVariables": 391,
+      "componentVariables": 403,
       "modeValuesBySource": {
         "alias": 203,
-        "evaluated": 761,
-        "literal": 750
+        "evaluated": 773,
+        "literal": 762
       },
       "reached": 201,
       "reachedAsVariables": 152,
@@ -58634,8 +58943,8 @@
       "variables": 466
     },
     "variants": {
-      "components": 87,
-      "componentSets": 86,
+      "components": 90,
+      "componentSets": 89,
       "naiveAllOptions": {
         "accordion": 32,
         "avatar": 8,
@@ -58656,6 +58965,7 @@
         "labelled-separator": 12,
         "link": 2,
         "meter": 4,
+        "number-field": 48,
         "pagination": 4,
         "password-input": 384,
         "progress": 4,
@@ -58695,6 +59005,7 @@
         "labelled-separator": 3,
         "link": 2,
         "meter": 4,
+        "number-field": 6,
         "pagination": 4,
         "password-input": 12,
         "progress": 4,
@@ -59058,13 +59369,25 @@
         {
           "set": "password-input/frosted",
           "variants": 4
+        },
+        {
+          "set": "number-field/plain",
+          "variants": 3
+        },
+        {
+          "set": "number-field/brutalist",
+          "variants": 3
+        },
+        {
+          "set": "number-field/frosted",
+          "variants": 3
         }
       ],
-      "variantsTotal": 3515
+      "variantsTotal": 3524
     }
   },
   "schemaVersion": 1,
-  "sourceHash": "44c3718992c0fe23",
+  "sourceHash": "e304a5cf7b1c53a5",
   "stage": {
     "background": {
       "variable": "--color-bg-surface"
@@ -60635,6 +60958,50 @@
           "variable": "--size-control-lg"
         }
       },
+      "522db0b7d2ae4e7e": {
+        "clipsContent": true,
+        "crossAlign": "CENTER",
+        "direction": "HORIZONTAL",
+        "gap": {
+          "variable": "--space-inline-sm"
+        },
+        "height": {
+          "variable": "--size-control-sm"
+        },
+        "mainAlign": "CENTER",
+        "minHeight": {
+          "variable": "--size-control-sm"
+        },
+        "minWidth": {
+          "expression": "0",
+          "value": 0
+        },
+        "padding": {
+          "bottom": {
+            "expression": "0",
+            "value": 0
+          },
+          "left": {
+            "variable": "number-field:sk-button-padding-x:33a3c91b44"
+          },
+          "right": {
+            "variable": "number-field:sk-button-padding-x:33a3c91b44"
+          },
+          "top": {
+            "expression": "0",
+            "value": 0
+          }
+        },
+        "radius": {
+          "variable": "--radius-control"
+        },
+        "strokeWeight": {
+          "variable": "number-field:sk-button-border-width:5feceb66ff"
+        },
+        "width": {
+          "variable": "--size-control-sm"
+        }
+      },
       "54803c321dd28f33": {
         "clipsContent": false,
         "corners": {
@@ -61457,6 +61824,40 @@
           "variable": "kbd:border-width:93e20626bf"
         }
       },
+      "705730e8c7071cad": {
+        "clipsContent": false,
+        "crossAlign": "MIN",
+        "direction": "VERTICAL",
+        "gap": {
+          "variable": "--space-stack-xs"
+        },
+        "mainAlign": "MIN",
+        "minWidth": {
+          "variable": "number-field:min-inline-size:04d0579dae"
+        },
+        "padding": {
+          "bottom": {
+            "expression": "0",
+            "value": 0
+          },
+          "left": {
+            "expression": "0",
+            "value": 0
+          },
+          "right": {
+            "expression": "0",
+            "value": 0
+          },
+          "top": {
+            "expression": "0",
+            "value": 0
+          }
+        },
+        "width": {
+          "expression": "200px",
+          "value": 200
+        }
+      },
       "7257c78ef04891e6": {
         "clipsContent": false,
         "crossAlign": "MIN",
@@ -62067,6 +62468,37 @@
           }
         },
         "stretch": true
+      },
+      "8e917c247c76f34d": {
+        "clipsContent": false,
+        "crossAlign": "CENTER",
+        "direction": "HORIZONTAL",
+        "mainAlign": "MIN",
+        "padding": {
+          "bottom": {
+            "expression": "0",
+            "value": 0
+          },
+          "left": {
+            "expression": "0",
+            "value": 0
+          },
+          "right": {
+            "expression": "0",
+            "value": 0
+          },
+          "top": {
+            "expression": "0",
+            "value": 0
+          }
+        },
+        "radius": {
+          "variable": "--radius-control"
+        },
+        "stretch": true,
+        "strokeWeight": {
+          "variable": "number-field:border-width:93e20626bf"
+        }
       },
       "90a8ecd71f31ec2d": {
         "clipsContent": true,
@@ -64996,6 +65428,122 @@
           "visibleProperty": "post"
         }
       ],
+      "04607979a48abec4": [
+        {
+          "box": "8e917c247c76f34d",
+          "kind": "frame",
+          "layers": [
+            {
+              "box": "522db0b7d2ae4e7e",
+              "kind": "frame",
+              "layers": [
+                {
+                  "fills": [
+                    {
+                      "color": {
+                        "variable": "number-field:state-layer:2898638ebc"
+                      },
+                      "type": "SOLID"
+                    }
+                  ],
+                  "kind": "overlay",
+                  "slot": "state layer"
+                },
+                {
+                  "default": "remove",
+                  "icon": {
+                    "color": {
+                      "color": {
+                        "variable": "--color-text-secondary"
+                      },
+                      "type": "SOLID"
+                    },
+                    "size": {
+                      "variable": "--size-icon-md"
+                    }
+                  },
+                  "kind": "icon",
+                  "slot": "decrement"
+                }
+              ],
+              "slot": "decrement",
+              "surface": "b1ab85825e70c025"
+            },
+            {
+              "box": "b6ba7a1b55bba1c3",
+              "kind": "frame",
+              "layers": [
+                {
+                  "fill": true,
+                  "kind": "text",
+                  "slot": "value",
+                  "text": {
+                    "align": "CENTER",
+                    "fill": {
+                      "color": {
+                        "variable": "--color-text-primary"
+                      },
+                      "type": "SOLID"
+                    },
+                    "fontFamily": {
+                      "variable": "--font-family-body"
+                    },
+                    "fontSize": {
+                      "variable": "--font-size-body"
+                    },
+                    "fontWeight": {
+                      "variable": "--font-weight-body"
+                    },
+                    "lineHeight": 150
+                  },
+                  "textProperty": "value",
+                  "visibleProperty": "show value"
+                }
+              ],
+              "slot": "input",
+              "surface": "a39c603f0591c36b"
+            },
+            {
+              "box": "522db0b7d2ae4e7e",
+              "kind": "frame",
+              "layers": [
+                {
+                  "fills": [
+                    {
+                      "color": {
+                        "variable": "number-field:state-layer:2898638ebc"
+                      },
+                      "type": "SOLID"
+                    }
+                  ],
+                  "kind": "overlay",
+                  "slot": "state layer"
+                },
+                {
+                  "default": "add",
+                  "icon": {
+                    "color": {
+                      "color": {
+                        "variable": "--color-text-secondary"
+                      },
+                      "type": "SOLID"
+                    },
+                    "size": {
+                      "variable": "--size-icon-md"
+                    }
+                  },
+                  "kind": "icon",
+                  "slot": "increment"
+                }
+              ],
+              "slot": "increment",
+              "surface": "b1ab85825e70c025"
+            }
+          ],
+          "slot": "control",
+          "surface": "7affdfc99cdba142"
+        }
+      ],
       "05e84cc2c8b4cd29": [
         {
           "fills": [
@@ -65506,92 +66054,6 @@
           "width": {
             "variable": "--focus-ring-width"
           }
-        }
-      ],
-      "0d456da68648a478": [
-        {
-          "box": "f3073a4759656820",
-          "kind": "frame",
-          "layers": [
-            {
-              "box": "b6ba7a1b55bba1c3",
-              "kind": "frame",
-              "layers": [
-                {
-                  "kind": "text",
-                  "slot": "placeholder",
-                  "text": {
-                    "fill": {
-                      "color": {
-                        "variable": "password-input:fg:575016ba18"
-                      },
-                      "type": "SOLID"
-                    },
-                    "fontFamily": {
-                      "variable": "--font-family-body"
-                    },
-                    "fontSize": {
-                      "variable": "--font-size-body"
-                    },
-                    "fontWeight": {
-                      "variable": "--font-weight-body"
-                    },
-                    "lineHeight": 150
-                  },
-                  "textProperty": "placeholder",
-                  "visibleProperty": "show placeholder"
-                }
-              ],
-              "slot": "input",
-              "surface": "a39c603f0591c36b"
-            },
-            {
-              "box": "11f2fe644e88f14c",
-              "kind": "frame",
-              "layers": [
-                {
-                  "fills": [
-                    {
-                      "color": {
-                        "variable": "password-input:state-layer:2898638ebc"
-                      },
-                      "type": "SOLID"
-                    }
-                  ],
-                  "kind": "overlay",
-                  "slot": "state layer"
-                },
-                {
-                  "box": "672cd06398be5f4b",
-                  "kind": "frame",
-                  "layers": [
-                    {
-                      "default": "visibility",
-                      "icon": {
-                        "color": {
-                          "color": {
-                            "variable": "--color-text-secondary"
-                          },
-                          "type": "SOLID"
-                        },
-                        "size": {
-                          "variable": "--size-icon-md"
-                        }
-                      },
-                      "kind": "icon",
-                      "slot": "icon"
-                    }
-                  ],
-                  "slot": "span",
-                  "surface": "fa0b643878e9242d"
-                }
-              ],
-              "slot": "visibilityTrigger",
-              "surface": "ef3956c2e9b301c9"
-            }
-          ],
-          "slot": "control",
-          "surface": "8cb2756dfd571d57"
         }
       ],
       "0da8a679fa57f5e9": [
@@ -66725,6 +67187,93 @@
           "visibleProperty": "post"
         }
       ],
+      "14cbfa8ce149d4e8": [
+        {
+          "box": "f3073a4759656820",
+          "kind": "frame",
+          "layers": [
+            {
+              "box": "b6ba7a1b55bba1c3",
+              "kind": "frame",
+              "layers": [
+                {
+                  "fill": true,
+                  "kind": "text",
+                  "slot": "placeholder",
+                  "text": {
+                    "fill": {
+                      "color": {
+                        "variable": "password-input:fg:f238178532"
+                      },
+                      "type": "SOLID"
+                    },
+                    "fontFamily": {
+                      "variable": "--font-family-body"
+                    },
+                    "fontSize": {
+                      "variable": "--font-size-body"
+                    },
+                    "fontWeight": {
+                      "variable": "--font-weight-body"
+                    },
+                    "lineHeight": 150
+                  },
+                  "textProperty": "placeholder",
+                  "visibleProperty": "show placeholder"
+                }
+              ],
+              "slot": "input",
+              "surface": "a39c603f0591c36b"
+            },
+            {
+              "box": "11f2fe644e88f14c",
+              "kind": "frame",
+              "layers": [
+                {
+                  "fills": [
+                    {
+                      "color": {
+                        "variable": "password-input:state-layer:2898638ebc"
+                      },
+                      "type": "SOLID"
+                    }
+                  ],
+                  "kind": "overlay",
+                  "slot": "state layer"
+                },
+                {
+                  "box": "672cd06398be5f4b",
+                  "kind": "frame",
+                  "layers": [
+                    {
+                      "default": "visibility",
+                      "icon": {
+                        "color": {
+                          "color": {
+                            "variable": "--color-text-secondary"
+                          },
+                          "type": "SOLID"
+                        },
+                        "size": {
+                          "variable": "--size-icon-md"
+                        }
+                      },
+                      "kind": "icon",
+                      "slot": "icon"
+                    }
+                  ],
+                  "slot": "span",
+                  "surface": "fa0b643878e9242d"
+                }
+              ],
+              "slot": "visibilityTrigger",
+              "surface": "ef3956c2e9b301c9"
+            }
+          ],
+          "slot": "control",
+          "surface": "531c78c45ff2f131"
+        }
+      ],
       "1665f7cb928eaf31": [
         {
           "fills": [
@@ -67224,6 +67773,93 @@
           "surface": "a39c603f0591c36b"
         }
       ],
+      "1aa433affe0afaa1": [
+        {
+          "box": "f3073a4759656820",
+          "kind": "frame",
+          "layers": [
+            {
+              "box": "b6ba7a1b55bba1c3",
+              "kind": "frame",
+              "layers": [
+                {
+                  "fill": true,
+                  "kind": "text",
+                  "slot": "placeholder",
+                  "text": {
+                    "fill": {
+                      "color": {
+                        "variable": "password-input:fg:575016ba18"
+                      },
+                      "type": "SOLID"
+                    },
+                    "fontFamily": {
+                      "variable": "--font-family-body"
+                    },
+                    "fontSize": {
+                      "variable": "--font-size-body"
+                    },
+                    "fontWeight": {
+                      "variable": "--font-weight-body"
+                    },
+                    "lineHeight": 150
+                  },
+                  "textProperty": "placeholder",
+                  "visibleProperty": "show placeholder"
+                }
+              ],
+              "slot": "input",
+              "surface": "a39c603f0591c36b"
+            },
+            {
+              "box": "11f2fe644e88f14c",
+              "kind": "frame",
+              "layers": [
+                {
+                  "fills": [
+                    {
+                      "color": {
+                        "variable": "password-input:state-layer:2898638ebc"
+                      },
+                      "type": "SOLID"
+                    }
+                  ],
+                  "kind": "overlay",
+                  "slot": "state layer"
+                },
+                {
+                  "box": "672cd06398be5f4b",
+                  "kind": "frame",
+                  "layers": [
+                    {
+                      "default": "visibility",
+                      "icon": {
+                        "color": {
+                          "color": {
+                            "variable": "--color-text-secondary"
+                          },
+                          "type": "SOLID"
+                        },
+                        "size": {
+                          "variable": "--size-icon-md"
+                        }
+                      },
+                      "kind": "icon",
+                      "slot": "icon"
+                    }
+                  ],
+                  "slot": "span",
+                  "surface": "fa0b643878e9242d"
+                }
+              ],
+              "slot": "visibilityTrigger",
+              "surface": "ef3956c2e9b301c9"
+            }
+          ],
+          "slot": "control",
+          "surface": "531c78c45ff2f131"
+        }
+      ],
       "1ac020bada76f1e1": [
         {
           "box": "33649eab81bb9407",
@@ -67344,6 +67980,93 @@
           "width": {
             "variable": "--focus-ring-width"
           }
+        }
+      ],
+      "1b81e2029cb5371c": [
+        {
+          "box": "f3073a4759656820",
+          "kind": "frame",
+          "layers": [
+            {
+              "box": "b6ba7a1b55bba1c3",
+              "kind": "frame",
+              "layers": [
+                {
+                  "fill": true,
+                  "kind": "text",
+                  "slot": "placeholder",
+                  "text": {
+                    "fill": {
+                      "color": {
+                        "variable": "password-input:fg:575016ba18"
+                      },
+                      "type": "SOLID"
+                    },
+                    "fontFamily": {
+                      "variable": "--font-family-body"
+                    },
+                    "fontSize": {
+                      "variable": "--font-size-body"
+                    },
+                    "fontWeight": {
+                      "variable": "--font-weight-body"
+                    },
+                    "lineHeight": 150
+                  },
+                  "textProperty": "placeholder",
+                  "visibleProperty": "show placeholder"
+                }
+              ],
+              "slot": "input",
+              "surface": "a39c603f0591c36b"
+            },
+            {
+              "box": "11f2fe644e88f14c",
+              "kind": "frame",
+              "layers": [
+                {
+                  "fills": [
+                    {
+                      "color": {
+                        "variable": "password-input:state-layer:2898638ebc"
+                      },
+                      "type": "SOLID"
+                    }
+                  ],
+                  "kind": "overlay",
+                  "slot": "state layer"
+                },
+                {
+                  "box": "672cd06398be5f4b",
+                  "kind": "frame",
+                  "layers": [
+                    {
+                      "default": "visibility",
+                      "icon": {
+                        "color": {
+                          "color": {
+                            "variable": "--color-text-secondary"
+                          },
+                          "type": "SOLID"
+                        },
+                        "size": {
+                          "variable": "--size-icon-md"
+                        }
+                      },
+                      "kind": "icon",
+                      "slot": "icon"
+                    }
+                  ],
+                  "slot": "span",
+                  "surface": "fa0b643878e9242d"
+                }
+              ],
+              "slot": "visibilityTrigger",
+              "surface": "ef3956c2e9b301c9"
+            }
+          ],
+          "slot": "control",
+          "surface": "3bd0c0946b302cbf"
         }
       ],
       "1bb7ca23597f2d23": [
@@ -67523,6 +68246,122 @@
           },
           "textProperty": "change",
           "visibleProperty": "show change"
+        }
+      ],
+      "1d148f7d4daa8578": [
+        {
+          "box": "8e917c247c76f34d",
+          "kind": "frame",
+          "layers": [
+            {
+              "box": "522db0b7d2ae4e7e",
+              "kind": "frame",
+              "layers": [
+                {
+                  "fills": [
+                    {
+                      "color": {
+                        "variable": "number-field:state-layer:2898638ebc"
+                      },
+                      "type": "SOLID"
+                    }
+                  ],
+                  "kind": "overlay",
+                  "slot": "state layer"
+                },
+                {
+                  "default": "remove",
+                  "icon": {
+                    "color": {
+                      "color": {
+                        "variable": "--color-text-secondary"
+                      },
+                      "type": "SOLID"
+                    },
+                    "size": {
+                      "variable": "--size-icon-md"
+                    }
+                  },
+                  "kind": "icon",
+                  "slot": "decrement"
+                }
+              ],
+              "slot": "decrement",
+              "surface": "b1ab85825e70c025"
+            },
+            {
+              "box": "b6ba7a1b55bba1c3",
+              "kind": "frame",
+              "layers": [
+                {
+                  "fill": true,
+                  "kind": "text",
+                  "slot": "value",
+                  "text": {
+                    "align": "CENTER",
+                    "fill": {
+                      "color": {
+                        "variable": "--color-text-primary"
+                      },
+                      "type": "SOLID"
+                    },
+                    "fontFamily": {
+                      "variable": "--font-family-body"
+                    },
+                    "fontSize": {
+                      "variable": "--font-size-body"
+                    },
+                    "fontWeight": {
+                      "variable": "--font-weight-body"
+                    },
+                    "lineHeight": 150
+                  },
+                  "textProperty": "value",
+                  "visibleProperty": "show value"
+                }
+              ],
+              "slot": "input",
+              "surface": "a39c603f0591c36b"
+            },
+            {
+              "box": "522db0b7d2ae4e7e",
+              "kind": "frame",
+              "layers": [
+                {
+                  "fills": [
+                    {
+                      "color": {
+                        "variable": "number-field:state-layer:2898638ebc"
+                      },
+                      "type": "SOLID"
+                    }
+                  ],
+                  "kind": "overlay",
+                  "slot": "state layer"
+                },
+                {
+                  "default": "add",
+                  "icon": {
+                    "color": {
+                      "color": {
+                        "variable": "--color-text-secondary"
+                      },
+                      "type": "SOLID"
+                    },
+                    "size": {
+                      "variable": "--size-icon-md"
+                    }
+                  },
+                  "kind": "icon",
+                  "slot": "increment"
+                }
+              ],
+              "slot": "increment",
+              "surface": "b1ab85825e70c025"
+            }
+          ],
+          "slot": "control",
+          "surface": "953df31db78465db"
         }
       ],
       "1d5f3274ec41cf5b": [
@@ -67944,92 +68783,6 @@
           },
           "textProperty": "children",
           "visibleProperty": "show children"
-        }
-      ],
-      "224bf90f1578424f": [
-        {
-          "box": "f3073a4759656820",
-          "kind": "frame",
-          "layers": [
-            {
-              "box": "b6ba7a1b55bba1c3",
-              "kind": "frame",
-              "layers": [
-                {
-                  "kind": "text",
-                  "slot": "placeholder",
-                  "text": {
-                    "fill": {
-                      "color": {
-                        "variable": "password-input:fg:575016ba18"
-                      },
-                      "type": "SOLID"
-                    },
-                    "fontFamily": {
-                      "variable": "--font-family-body"
-                    },
-                    "fontSize": {
-                      "variable": "--font-size-body"
-                    },
-                    "fontWeight": {
-                      "variable": "--font-weight-body"
-                    },
-                    "lineHeight": 150
-                  },
-                  "textProperty": "placeholder",
-                  "visibleProperty": "show placeholder"
-                }
-              ],
-              "slot": "input",
-              "surface": "a39c603f0591c36b"
-            },
-            {
-              "box": "11f2fe644e88f14c",
-              "kind": "frame",
-              "layers": [
-                {
-                  "fills": [
-                    {
-                      "color": {
-                        "variable": "password-input:state-layer:2898638ebc"
-                      },
-                      "type": "SOLID"
-                    }
-                  ],
-                  "kind": "overlay",
-                  "slot": "state layer"
-                },
-                {
-                  "box": "672cd06398be5f4b",
-                  "kind": "frame",
-                  "layers": [
-                    {
-                      "default": "visibility",
-                      "icon": {
-                        "color": {
-                          "color": {
-                            "variable": "--color-text-secondary"
-                          },
-                          "type": "SOLID"
-                        },
-                        "size": {
-                          "variable": "--size-icon-md"
-                        }
-                      },
-                      "kind": "icon",
-                      "slot": "icon"
-                    }
-                  ],
-                  "slot": "span",
-                  "surface": "fa0b643878e9242d"
-                }
-              ],
-              "slot": "visibilityTrigger",
-              "surface": "ef3956c2e9b301c9"
-            }
-          ],
-          "slot": "control",
-          "surface": "86ed77ef1186c65e"
         }
       ],
       "23a40221c2b89065": [
@@ -72163,92 +72916,6 @@
           "textProperty": "children"
         }
       ],
-      "4a3446ee205be8e3": [
-        {
-          "box": "f3073a4759656820",
-          "kind": "frame",
-          "layers": [
-            {
-              "box": "b6ba7a1b55bba1c3",
-              "kind": "frame",
-              "layers": [
-                {
-                  "kind": "text",
-                  "slot": "placeholder",
-                  "text": {
-                    "fill": {
-                      "color": {
-                        "variable": "password-input:fg:f238178532"
-                      },
-                      "type": "SOLID"
-                    },
-                    "fontFamily": {
-                      "variable": "--font-family-body"
-                    },
-                    "fontSize": {
-                      "variable": "--font-size-body"
-                    },
-                    "fontWeight": {
-                      "variable": "--font-weight-body"
-                    },
-                    "lineHeight": 150
-                  },
-                  "textProperty": "placeholder",
-                  "visibleProperty": "show placeholder"
-                }
-              ],
-              "slot": "input",
-              "surface": "a39c603f0591c36b"
-            },
-            {
-              "box": "11f2fe644e88f14c",
-              "kind": "frame",
-              "layers": [
-                {
-                  "fills": [
-                    {
-                      "color": {
-                        "variable": "password-input:state-layer:2898638ebc"
-                      },
-                      "type": "SOLID"
-                    }
-                  ],
-                  "kind": "overlay",
-                  "slot": "state layer"
-                },
-                {
-                  "box": "672cd06398be5f4b",
-                  "kind": "frame",
-                  "layers": [
-                    {
-                      "default": "visibility",
-                      "icon": {
-                        "color": {
-                          "color": {
-                            "variable": "--color-text-secondary"
-                          },
-                          "type": "SOLID"
-                        },
-                        "size": {
-                          "variable": "--size-icon-md"
-                        }
-                      },
-                      "kind": "icon",
-                      "slot": "icon"
-                    }
-                  ],
-                  "slot": "span",
-                  "surface": "fa0b643878e9242d"
-                }
-              ],
-              "slot": "visibilityTrigger",
-              "surface": "ef3956c2e9b301c9"
-            }
-          ],
-          "slot": "control",
-          "surface": "8cb2756dfd571d57"
-        }
-      ],
       "4a4d941ccc95a9d3": [
         {
           "fills": [
@@ -73454,6 +74121,93 @@
           "kind": "icon",
           "slot": "post",
           "visibleProperty": "post"
+        }
+      ],
+      "52e27daffc8ab7fd": [
+        {
+          "box": "f3073a4759656820",
+          "kind": "frame",
+          "layers": [
+            {
+              "box": "b6ba7a1b55bba1c3",
+              "kind": "frame",
+              "layers": [
+                {
+                  "fill": true,
+                  "kind": "text",
+                  "slot": "placeholder",
+                  "text": {
+                    "fill": {
+                      "color": {
+                        "variable": "password-input:fg:575016ba18"
+                      },
+                      "type": "SOLID"
+                    },
+                    "fontFamily": {
+                      "variable": "--font-family-body"
+                    },
+                    "fontSize": {
+                      "variable": "--font-size-body"
+                    },
+                    "fontWeight": {
+                      "variable": "--font-weight-body"
+                    },
+                    "lineHeight": 150
+                  },
+                  "textProperty": "placeholder",
+                  "visibleProperty": "show placeholder"
+                }
+              ],
+              "slot": "input",
+              "surface": "a39c603f0591c36b"
+            },
+            {
+              "box": "11f2fe644e88f14c",
+              "kind": "frame",
+              "layers": [
+                {
+                  "fills": [
+                    {
+                      "color": {
+                        "variable": "password-input:state-layer:2898638ebc"
+                      },
+                      "type": "SOLID"
+                    }
+                  ],
+                  "kind": "overlay",
+                  "slot": "state layer"
+                },
+                {
+                  "box": "672cd06398be5f4b",
+                  "kind": "frame",
+                  "layers": [
+                    {
+                      "default": "visibility",
+                      "icon": {
+                        "color": {
+                          "color": {
+                            "variable": "--color-text-secondary"
+                          },
+                          "type": "SOLID"
+                        },
+                        "size": {
+                          "variable": "--size-icon-md"
+                        }
+                      },
+                      "kind": "icon",
+                      "slot": "icon"
+                    }
+                  ],
+                  "slot": "span",
+                  "surface": "fa0b643878e9242d"
+                }
+              ],
+              "slot": "visibilityTrigger",
+              "surface": "ef3956c2e9b301c9"
+            }
+          ],
+          "slot": "control",
+          "surface": "9c17a9afe5f055bb"
         }
       ],
       "55700aa6f2bbacdd": [
@@ -75096,92 +75850,6 @@
           "textProperty": "children"
         }
       ],
-      "63bc69e5b59bde58": [
-        {
-          "box": "f3073a4759656820",
-          "kind": "frame",
-          "layers": [
-            {
-              "box": "b6ba7a1b55bba1c3",
-              "kind": "frame",
-              "layers": [
-                {
-                  "kind": "text",
-                  "slot": "placeholder",
-                  "text": {
-                    "fill": {
-                      "color": {
-                        "variable": "password-input:fg:f238178532"
-                      },
-                      "type": "SOLID"
-                    },
-                    "fontFamily": {
-                      "variable": "--font-family-body"
-                    },
-                    "fontSize": {
-                      "variable": "--font-size-body"
-                    },
-                    "fontWeight": {
-                      "variable": "--font-weight-body"
-                    },
-                    "lineHeight": 150
-                  },
-                  "textProperty": "placeholder",
-                  "visibleProperty": "show placeholder"
-                }
-              ],
-              "slot": "input",
-              "surface": "a39c603f0591c36b"
-            },
-            {
-              "box": "11f2fe644e88f14c",
-              "kind": "frame",
-              "layers": [
-                {
-                  "fills": [
-                    {
-                      "color": {
-                        "variable": "password-input:state-layer:2898638ebc"
-                      },
-                      "type": "SOLID"
-                    }
-                  ],
-                  "kind": "overlay",
-                  "slot": "state layer"
-                },
-                {
-                  "box": "672cd06398be5f4b",
-                  "kind": "frame",
-                  "layers": [
-                    {
-                      "default": "visibility",
-                      "icon": {
-                        "color": {
-                          "color": {
-                            "variable": "--color-text-secondary"
-                          },
-                          "type": "SOLID"
-                        },
-                        "size": {
-                          "variable": "--size-icon-md"
-                        }
-                      },
-                      "kind": "icon",
-                      "slot": "icon"
-                    }
-                  ],
-                  "slot": "span",
-                  "surface": "fa0b643878e9242d"
-                }
-              ],
-              "slot": "visibilityTrigger",
-              "surface": "ef3956c2e9b301c9"
-            }
-          ],
-          "slot": "control",
-          "surface": "9c17a9afe5f055bb"
-        }
-      ],
       "64689de2f4ad7384": [
         {
           "box": "adcfc730e28da95b",
@@ -76485,6 +77153,93 @@
           "surface": "fa0b643878e9242d"
         }
       ],
+      "6fdc69c21319ced3": [
+        {
+          "box": "f3073a4759656820",
+          "kind": "frame",
+          "layers": [
+            {
+              "box": "b6ba7a1b55bba1c3",
+              "kind": "frame",
+              "layers": [
+                {
+                  "fill": true,
+                  "kind": "text",
+                  "slot": "placeholder",
+                  "text": {
+                    "fill": {
+                      "color": {
+                        "variable": "password-input:fg:f238178532"
+                      },
+                      "type": "SOLID"
+                    },
+                    "fontFamily": {
+                      "variable": "--font-family-body"
+                    },
+                    "fontSize": {
+                      "variable": "--font-size-body"
+                    },
+                    "fontWeight": {
+                      "variable": "--font-weight-body"
+                    },
+                    "lineHeight": 150
+                  },
+                  "textProperty": "placeholder",
+                  "visibleProperty": "show placeholder"
+                }
+              ],
+              "slot": "input",
+              "surface": "a39c603f0591c36b"
+            },
+            {
+              "box": "11f2fe644e88f14c",
+              "kind": "frame",
+              "layers": [
+                {
+                  "fills": [
+                    {
+                      "color": {
+                        "variable": "password-input:state-layer:2898638ebc"
+                      },
+                      "type": "SOLID"
+                    }
+                  ],
+                  "kind": "overlay",
+                  "slot": "state layer"
+                },
+                {
+                  "box": "672cd06398be5f4b",
+                  "kind": "frame",
+                  "layers": [
+                    {
+                      "default": "visibility",
+                      "icon": {
+                        "color": {
+                          "color": {
+                            "variable": "--color-text-secondary"
+                          },
+                          "type": "SOLID"
+                        },
+                        "size": {
+                          "variable": "--size-icon-md"
+                        }
+                      },
+                      "kind": "icon",
+                      "slot": "icon"
+                    }
+                  ],
+                  "slot": "span",
+                  "surface": "fa0b643878e9242d"
+                }
+              ],
+              "slot": "visibilityTrigger",
+              "surface": "ef3956c2e9b301c9"
+            }
+          ],
+          "slot": "control",
+          "surface": "8cb2756dfd571d57"
+        }
+      ],
       "70035836190a68b0": [
         {
           "box": "620a2846109d1846",
@@ -77371,6 +78126,122 @@
           "kind": "icon",
           "slot": "post",
           "visibleProperty": "post"
+        }
+      ],
+      "777db82b939d3e7b": [
+        {
+          "box": "8e917c247c76f34d",
+          "kind": "frame",
+          "layers": [
+            {
+              "box": "522db0b7d2ae4e7e",
+              "kind": "frame",
+              "layers": [
+                {
+                  "fills": [
+                    {
+                      "color": {
+                        "variable": "number-field:state-layer:2898638ebc"
+                      },
+                      "type": "SOLID"
+                    }
+                  ],
+                  "kind": "overlay",
+                  "slot": "state layer"
+                },
+                {
+                  "default": "remove",
+                  "icon": {
+                    "color": {
+                      "color": {
+                        "variable": "--color-text-secondary"
+                      },
+                      "type": "SOLID"
+                    },
+                    "size": {
+                      "variable": "--size-icon-md"
+                    }
+                  },
+                  "kind": "icon",
+                  "slot": "decrement"
+                }
+              ],
+              "slot": "decrement",
+              "surface": "b1ab85825e70c025"
+            },
+            {
+              "box": "b6ba7a1b55bba1c3",
+              "kind": "frame",
+              "layers": [
+                {
+                  "fill": true,
+                  "kind": "text",
+                  "slot": "value",
+                  "text": {
+                    "align": "CENTER",
+                    "fill": {
+                      "color": {
+                        "variable": "--color-text-primary"
+                      },
+                      "type": "SOLID"
+                    },
+                    "fontFamily": {
+                      "variable": "--font-family-body"
+                    },
+                    "fontSize": {
+                      "variable": "--font-size-body"
+                    },
+                    "fontWeight": {
+                      "variable": "--font-weight-body"
+                    },
+                    "lineHeight": 150
+                  },
+                  "textProperty": "value",
+                  "visibleProperty": "show value"
+                }
+              ],
+              "slot": "input",
+              "surface": "a39c603f0591c36b"
+            },
+            {
+              "box": "522db0b7d2ae4e7e",
+              "kind": "frame",
+              "layers": [
+                {
+                  "fills": [
+                    {
+                      "color": {
+                        "variable": "number-field:state-layer:2898638ebc"
+                      },
+                      "type": "SOLID"
+                    }
+                  ],
+                  "kind": "overlay",
+                  "slot": "state layer"
+                },
+                {
+                  "default": "add",
+                  "icon": {
+                    "color": {
+                      "color": {
+                        "variable": "--color-text-secondary"
+                      },
+                      "type": "SOLID"
+                    },
+                    "size": {
+                      "variable": "--size-icon-md"
+                    }
+                  },
+                  "kind": "icon",
+                  "slot": "increment"
+                }
+              ],
+              "slot": "increment",
+              "surface": "b1ab85825e70c025"
+            }
+          ],
+          "slot": "control",
+          "surface": "240b0fd2cf54952f"
         }
       ],
       "77b6d44e3d405795": [
@@ -78509,6 +79380,93 @@
           "width": {
             "variable": "--focus-ring-width"
           }
+        }
+      ],
+      "808bde89a4a6babd": [
+        {
+          "box": "f3073a4759656820",
+          "kind": "frame",
+          "layers": [
+            {
+              "box": "b6ba7a1b55bba1c3",
+              "kind": "frame",
+              "layers": [
+                {
+                  "fill": true,
+                  "kind": "text",
+                  "slot": "placeholder",
+                  "text": {
+                    "fill": {
+                      "color": {
+                        "variable": "password-input:fg:575016ba18"
+                      },
+                      "type": "SOLID"
+                    },
+                    "fontFamily": {
+                      "variable": "--font-family-body"
+                    },
+                    "fontSize": {
+                      "variable": "--font-size-body"
+                    },
+                    "fontWeight": {
+                      "variable": "--font-weight-body"
+                    },
+                    "lineHeight": 150
+                  },
+                  "textProperty": "placeholder",
+                  "visibleProperty": "show placeholder"
+                }
+              ],
+              "slot": "input",
+              "surface": "a39c603f0591c36b"
+            },
+            {
+              "box": "11f2fe644e88f14c",
+              "kind": "frame",
+              "layers": [
+                {
+                  "fills": [
+                    {
+                      "color": {
+                        "variable": "password-input:state-layer:2898638ebc"
+                      },
+                      "type": "SOLID"
+                    }
+                  ],
+                  "kind": "overlay",
+                  "slot": "state layer"
+                },
+                {
+                  "box": "672cd06398be5f4b",
+                  "kind": "frame",
+                  "layers": [
+                    {
+                      "default": "visibility",
+                      "icon": {
+                        "color": {
+                          "color": {
+                            "variable": "--color-text-secondary"
+                          },
+                          "type": "SOLID"
+                        },
+                        "size": {
+                          "variable": "--size-icon-md"
+                        }
+                      },
+                      "kind": "icon",
+                      "slot": "icon"
+                    }
+                  ],
+                  "slot": "span",
+                  "surface": "fa0b643878e9242d"
+                }
+              ],
+              "slot": "visibilityTrigger",
+              "surface": "ef3956c2e9b301c9"
+            }
+          ],
+          "slot": "control",
+          "surface": "8cb2756dfd571d57"
         }
       ],
       "80e380277c6ff336": [
@@ -79893,6 +80851,93 @@
           }
         }
       ],
+      "89429a240e94dd43": [
+        {
+          "box": "f3073a4759656820",
+          "kind": "frame",
+          "layers": [
+            {
+              "box": "b6ba7a1b55bba1c3",
+              "kind": "frame",
+              "layers": [
+                {
+                  "fill": true,
+                  "kind": "text",
+                  "slot": "placeholder",
+                  "text": {
+                    "fill": {
+                      "color": {
+                        "variable": "password-input:fg:f238178532"
+                      },
+                      "type": "SOLID"
+                    },
+                    "fontFamily": {
+                      "variable": "--font-family-body"
+                    },
+                    "fontSize": {
+                      "variable": "--font-size-body"
+                    },
+                    "fontWeight": {
+                      "variable": "--font-weight-body"
+                    },
+                    "lineHeight": 150
+                  },
+                  "textProperty": "placeholder",
+                  "visibleProperty": "show placeholder"
+                }
+              ],
+              "slot": "input",
+              "surface": "a39c603f0591c36b"
+            },
+            {
+              "box": "11f2fe644e88f14c",
+              "kind": "frame",
+              "layers": [
+                {
+                  "fills": [
+                    {
+                      "color": {
+                        "variable": "password-input:state-layer:2898638ebc"
+                      },
+                      "type": "SOLID"
+                    }
+                  ],
+                  "kind": "overlay",
+                  "slot": "state layer"
+                },
+                {
+                  "box": "672cd06398be5f4b",
+                  "kind": "frame",
+                  "layers": [
+                    {
+                      "default": "visibility",
+                      "icon": {
+                        "color": {
+                          "color": {
+                            "variable": "--color-text-secondary"
+                          },
+                          "type": "SOLID"
+                        },
+                        "size": {
+                          "variable": "--size-icon-md"
+                        }
+                      },
+                      "kind": "icon",
+                      "slot": "icon"
+                    }
+                  ],
+                  "slot": "span",
+                  "surface": "fa0b643878e9242d"
+                }
+              ],
+              "slot": "visibilityTrigger",
+              "surface": "ef3956c2e9b301c9"
+            }
+          ],
+          "slot": "control",
+          "surface": "9c17a9afe5f055bb"
+        }
+      ],
       "89c3d7a5e3634bf5": [
         {
           "fills": [
@@ -80565,92 +81610,6 @@
           "kind": "icon",
           "slot": "post",
           "visibleProperty": "post"
-        }
-      ],
-      "8ecefd23926c3c4a": [
-        {
-          "box": "f3073a4759656820",
-          "kind": "frame",
-          "layers": [
-            {
-              "box": "b6ba7a1b55bba1c3",
-              "kind": "frame",
-              "layers": [
-                {
-                  "kind": "text",
-                  "slot": "placeholder",
-                  "text": {
-                    "fill": {
-                      "color": {
-                        "variable": "password-input:fg:575016ba18"
-                      },
-                      "type": "SOLID"
-                    },
-                    "fontFamily": {
-                      "variable": "--font-family-body"
-                    },
-                    "fontSize": {
-                      "variable": "--font-size-body"
-                    },
-                    "fontWeight": {
-                      "variable": "--font-weight-body"
-                    },
-                    "lineHeight": 150
-                  },
-                  "textProperty": "placeholder",
-                  "visibleProperty": "show placeholder"
-                }
-              ],
-              "slot": "input",
-              "surface": "a39c603f0591c36b"
-            },
-            {
-              "box": "11f2fe644e88f14c",
-              "kind": "frame",
-              "layers": [
-                {
-                  "fills": [
-                    {
-                      "color": {
-                        "variable": "password-input:state-layer:2898638ebc"
-                      },
-                      "type": "SOLID"
-                    }
-                  ],
-                  "kind": "overlay",
-                  "slot": "state layer"
-                },
-                {
-                  "box": "672cd06398be5f4b",
-                  "kind": "frame",
-                  "layers": [
-                    {
-                      "default": "visibility",
-                      "icon": {
-                        "color": {
-                          "color": {
-                            "variable": "--color-text-secondary"
-                          },
-                          "type": "SOLID"
-                        },
-                        "size": {
-                          "variable": "--size-icon-md"
-                        }
-                      },
-                      "kind": "icon",
-                      "slot": "icon"
-                    }
-                  ],
-                  "slot": "span",
-                  "surface": "fa0b643878e9242d"
-                }
-              ],
-              "slot": "visibilityTrigger",
-              "surface": "ef3956c2e9b301c9"
-            }
-          ],
-          "slot": "control",
-          "surface": "531c78c45ff2f131"
         }
       ],
       "8ee7f572091d9f9d": [
@@ -82292,6 +83251,93 @@
           "surface": "79b142c692cc5c86"
         }
       ],
+      "9b995245e64bdfb9": [
+        {
+          "box": "f3073a4759656820",
+          "kind": "frame",
+          "layers": [
+            {
+              "box": "b6ba7a1b55bba1c3",
+              "kind": "frame",
+              "layers": [
+                {
+                  "fill": true,
+                  "kind": "text",
+                  "slot": "placeholder",
+                  "text": {
+                    "fill": {
+                      "color": {
+                        "variable": "password-input:fg:575016ba18"
+                      },
+                      "type": "SOLID"
+                    },
+                    "fontFamily": {
+                      "variable": "--font-family-body"
+                    },
+                    "fontSize": {
+                      "variable": "--font-size-body"
+                    },
+                    "fontWeight": {
+                      "variable": "--font-weight-body"
+                    },
+                    "lineHeight": 150
+                  },
+                  "textProperty": "placeholder",
+                  "visibleProperty": "show placeholder"
+                }
+              ],
+              "slot": "input",
+              "surface": "a39c603f0591c36b"
+            },
+            {
+              "box": "11f2fe644e88f14c",
+              "kind": "frame",
+              "layers": [
+                {
+                  "fills": [
+                    {
+                      "color": {
+                        "variable": "password-input:state-layer:2898638ebc"
+                      },
+                      "type": "SOLID"
+                    }
+                  ],
+                  "kind": "overlay",
+                  "slot": "state layer"
+                },
+                {
+                  "box": "672cd06398be5f4b",
+                  "kind": "frame",
+                  "layers": [
+                    {
+                      "default": "visibility",
+                      "icon": {
+                        "color": {
+                          "color": {
+                            "variable": "--color-text-secondary"
+                          },
+                          "type": "SOLID"
+                        },
+                        "size": {
+                          "variable": "--size-icon-md"
+                        }
+                      },
+                      "kind": "icon",
+                      "slot": "icon"
+                    }
+                  ],
+                  "slot": "span",
+                  "surface": "fa0b643878e9242d"
+                }
+              ],
+              "slot": "visibilityTrigger",
+              "surface": "ef3956c2e9b301c9"
+            }
+          ],
+          "slot": "control",
+          "surface": "153cee4512ec68ce"
+        }
+      ],
       "9c04470dce0b9195": [
         {
           "kind": "text",
@@ -83621,92 +84667,6 @@
           "surface": "a39c603f0591c36b"
         }
       ],
-      "a73e19e276d83ff6": [
-        {
-          "box": "f3073a4759656820",
-          "kind": "frame",
-          "layers": [
-            {
-              "box": "b6ba7a1b55bba1c3",
-              "kind": "frame",
-              "layers": [
-                {
-                  "kind": "text",
-                  "slot": "placeholder",
-                  "text": {
-                    "fill": {
-                      "color": {
-                        "variable": "password-input:fg:575016ba18"
-                      },
-                      "type": "SOLID"
-                    },
-                    "fontFamily": {
-                      "variable": "--font-family-body"
-                    },
-                    "fontSize": {
-                      "variable": "--font-size-body"
-                    },
-                    "fontWeight": {
-                      "variable": "--font-weight-body"
-                    },
-                    "lineHeight": 150
-                  },
-                  "textProperty": "placeholder",
-                  "visibleProperty": "show placeholder"
-                }
-              ],
-              "slot": "input",
-              "surface": "a39c603f0591c36b"
-            },
-            {
-              "box": "11f2fe644e88f14c",
-              "kind": "frame",
-              "layers": [
-                {
-                  "fills": [
-                    {
-                      "color": {
-                        "variable": "password-input:state-layer:2898638ebc"
-                      },
-                      "type": "SOLID"
-                    }
-                  ],
-                  "kind": "overlay",
-                  "slot": "state layer"
-                },
-                {
-                  "box": "672cd06398be5f4b",
-                  "kind": "frame",
-                  "layers": [
-                    {
-                      "default": "visibility",
-                      "icon": {
-                        "color": {
-                          "color": {
-                            "variable": "--color-text-secondary"
-                          },
-                          "type": "SOLID"
-                        },
-                        "size": {
-                          "variable": "--size-icon-md"
-                        }
-                      },
-                      "kind": "icon",
-                      "slot": "icon"
-                    }
-                  ],
-                  "slot": "span",
-                  "surface": "fa0b643878e9242d"
-                }
-              ],
-              "slot": "visibilityTrigger",
-              "surface": "ef3956c2e9b301c9"
-            }
-          ],
-          "slot": "control",
-          "surface": "3bd0c0946b302cbf"
-        }
-      ],
       "a77060f4c9054b39": [
         {
           "fills": [
@@ -83801,178 +84761,6 @@
             "lineHeight": 150
           },
           "textProperty": "children"
-        }
-      ],
-      "a7fa56d092aa513b": [
-        {
-          "box": "f3073a4759656820",
-          "kind": "frame",
-          "layers": [
-            {
-              "box": "b6ba7a1b55bba1c3",
-              "kind": "frame",
-              "layers": [
-                {
-                  "kind": "text",
-                  "slot": "placeholder",
-                  "text": {
-                    "fill": {
-                      "color": {
-                        "variable": "password-input:fg:f238178532"
-                      },
-                      "type": "SOLID"
-                    },
-                    "fontFamily": {
-                      "variable": "--font-family-body"
-                    },
-                    "fontSize": {
-                      "variable": "--font-size-body"
-                    },
-                    "fontWeight": {
-                      "variable": "--font-weight-body"
-                    },
-                    "lineHeight": 150
-                  },
-                  "textProperty": "placeholder",
-                  "visibleProperty": "show placeholder"
-                }
-              ],
-              "slot": "input",
-              "surface": "a39c603f0591c36b"
-            },
-            {
-              "box": "11f2fe644e88f14c",
-              "kind": "frame",
-              "layers": [
-                {
-                  "fills": [
-                    {
-                      "color": {
-                        "variable": "password-input:state-layer:2898638ebc"
-                      },
-                      "type": "SOLID"
-                    }
-                  ],
-                  "kind": "overlay",
-                  "slot": "state layer"
-                },
-                {
-                  "box": "672cd06398be5f4b",
-                  "kind": "frame",
-                  "layers": [
-                    {
-                      "default": "visibility",
-                      "icon": {
-                        "color": {
-                          "color": {
-                            "variable": "--color-text-secondary"
-                          },
-                          "type": "SOLID"
-                        },
-                        "size": {
-                          "variable": "--size-icon-md"
-                        }
-                      },
-                      "kind": "icon",
-                      "slot": "icon"
-                    }
-                  ],
-                  "slot": "span",
-                  "surface": "fa0b643878e9242d"
-                }
-              ],
-              "slot": "visibilityTrigger",
-              "surface": "ef3956c2e9b301c9"
-            }
-          ],
-          "slot": "control",
-          "surface": "531c78c45ff2f131"
-        }
-      ],
-      "a805416f675dfc33": [
-        {
-          "box": "f3073a4759656820",
-          "kind": "frame",
-          "layers": [
-            {
-              "box": "b6ba7a1b55bba1c3",
-              "kind": "frame",
-              "layers": [
-                {
-                  "kind": "text",
-                  "slot": "placeholder",
-                  "text": {
-                    "fill": {
-                      "color": {
-                        "variable": "password-input:fg:575016ba18"
-                      },
-                      "type": "SOLID"
-                    },
-                    "fontFamily": {
-                      "variable": "--font-family-body"
-                    },
-                    "fontSize": {
-                      "variable": "--font-size-body"
-                    },
-                    "fontWeight": {
-                      "variable": "--font-weight-body"
-                    },
-                    "lineHeight": 150
-                  },
-                  "textProperty": "placeholder",
-                  "visibleProperty": "show placeholder"
-                }
-              ],
-              "slot": "input",
-              "surface": "a39c603f0591c36b"
-            },
-            {
-              "box": "11f2fe644e88f14c",
-              "kind": "frame",
-              "layers": [
-                {
-                  "fills": [
-                    {
-                      "color": {
-                        "variable": "password-input:state-layer:2898638ebc"
-                      },
-                      "type": "SOLID"
-                    }
-                  ],
-                  "kind": "overlay",
-                  "slot": "state layer"
-                },
-                {
-                  "box": "672cd06398be5f4b",
-                  "kind": "frame",
-                  "layers": [
-                    {
-                      "default": "visibility",
-                      "icon": {
-                        "color": {
-                          "color": {
-                            "variable": "--color-text-secondary"
-                          },
-                          "type": "SOLID"
-                        },
-                        "size": {
-                          "variable": "--size-icon-md"
-                        }
-                      },
-                      "kind": "icon",
-                      "slot": "icon"
-                    }
-                  ],
-                  "slot": "span",
-                  "surface": "fa0b643878e9242d"
-                }
-              ],
-              "slot": "visibilityTrigger",
-              "surface": "ef3956c2e9b301c9"
-            }
-          ],
-          "slot": "control",
-          "surface": "153cee4512ec68ce"
         }
       ],
       "a81e1c81fdfaf570": [
@@ -85880,6 +86668,122 @@
           "visibleProperty": "show children"
         }
       ],
+      "beabf97063de33e7": [
+        {
+          "box": "8e917c247c76f34d",
+          "kind": "frame",
+          "layers": [
+            {
+              "box": "522db0b7d2ae4e7e",
+              "kind": "frame",
+              "layers": [
+                {
+                  "fills": [
+                    {
+                      "color": {
+                        "variable": "number-field:state-layer:2898638ebc"
+                      },
+                      "type": "SOLID"
+                    }
+                  ],
+                  "kind": "overlay",
+                  "slot": "state layer"
+                },
+                {
+                  "default": "remove",
+                  "icon": {
+                    "color": {
+                      "color": {
+                        "variable": "--color-text-secondary"
+                      },
+                      "type": "SOLID"
+                    },
+                    "size": {
+                      "variable": "--size-icon-md"
+                    }
+                  },
+                  "kind": "icon",
+                  "slot": "decrement"
+                }
+              ],
+              "slot": "decrement",
+              "surface": "b1ab85825e70c025"
+            },
+            {
+              "box": "b6ba7a1b55bba1c3",
+              "kind": "frame",
+              "layers": [
+                {
+                  "fill": true,
+                  "kind": "text",
+                  "slot": "value",
+                  "text": {
+                    "align": "CENTER",
+                    "fill": {
+                      "color": {
+                        "variable": "--color-text-primary"
+                      },
+                      "type": "SOLID"
+                    },
+                    "fontFamily": {
+                      "variable": "--font-family-body"
+                    },
+                    "fontSize": {
+                      "variable": "--font-size-body"
+                    },
+                    "fontWeight": {
+                      "variable": "--font-weight-body"
+                    },
+                    "lineHeight": 150
+                  },
+                  "textProperty": "value",
+                  "visibleProperty": "show value"
+                }
+              ],
+              "slot": "input",
+              "surface": "a39c603f0591c36b"
+            },
+            {
+              "box": "522db0b7d2ae4e7e",
+              "kind": "frame",
+              "layers": [
+                {
+                  "fills": [
+                    {
+                      "color": {
+                        "variable": "number-field:state-layer:2898638ebc"
+                      },
+                      "type": "SOLID"
+                    }
+                  ],
+                  "kind": "overlay",
+                  "slot": "state layer"
+                },
+                {
+                  "default": "add",
+                  "icon": {
+                    "color": {
+                      "color": {
+                        "variable": "--color-text-secondary"
+                      },
+                      "type": "SOLID"
+                    },
+                    "size": {
+                      "variable": "--size-icon-md"
+                    }
+                  },
+                  "kind": "icon",
+                  "slot": "increment"
+                }
+              ],
+              "slot": "increment",
+              "surface": "b1ab85825e70c025"
+            }
+          ],
+          "slot": "control",
+          "surface": "86ed77ef1186c65e"
+        }
+      ],
       "bf7aa08599c16252": [
         {
           "fills": [
@@ -87581,6 +88485,209 @@
           "textProperty": "children"
         }
       ],
+      "d45f5fcef37eda78": [
+        {
+          "box": "f3073a4759656820",
+          "kind": "frame",
+          "layers": [
+            {
+              "box": "b6ba7a1b55bba1c3",
+              "kind": "frame",
+              "layers": [
+                {
+                  "fill": true,
+                  "kind": "text",
+                  "slot": "placeholder",
+                  "text": {
+                    "fill": {
+                      "color": {
+                        "variable": "password-input:fg:575016ba18"
+                      },
+                      "type": "SOLID"
+                    },
+                    "fontFamily": {
+                      "variable": "--font-family-body"
+                    },
+                    "fontSize": {
+                      "variable": "--font-size-body"
+                    },
+                    "fontWeight": {
+                      "variable": "--font-weight-body"
+                    },
+                    "lineHeight": 150
+                  },
+                  "textProperty": "placeholder",
+                  "visibleProperty": "show placeholder"
+                }
+              ],
+              "slot": "input",
+              "surface": "a39c603f0591c36b"
+            },
+            {
+              "box": "11f2fe644e88f14c",
+              "kind": "frame",
+              "layers": [
+                {
+                  "fills": [
+                    {
+                      "color": {
+                        "variable": "password-input:state-layer:2898638ebc"
+                      },
+                      "type": "SOLID"
+                    }
+                  ],
+                  "kind": "overlay",
+                  "slot": "state layer"
+                },
+                {
+                  "box": "672cd06398be5f4b",
+                  "kind": "frame",
+                  "layers": [
+                    {
+                      "default": "visibility",
+                      "icon": {
+                        "color": {
+                          "color": {
+                            "variable": "--color-text-secondary"
+                          },
+                          "type": "SOLID"
+                        },
+                        "size": {
+                          "variable": "--size-icon-md"
+                        }
+                      },
+                      "kind": "icon",
+                      "slot": "icon"
+                    }
+                  ],
+                  "slot": "span",
+                  "surface": "fa0b643878e9242d"
+                }
+              ],
+              "slot": "visibilityTrigger",
+              "surface": "ef3956c2e9b301c9"
+            }
+          ],
+          "slot": "control",
+          "surface": "86ed77ef1186c65e"
+        }
+      ],
+      "d4893eabc03f23bc": [
+        {
+          "box": "8e917c247c76f34d",
+          "kind": "frame",
+          "layers": [
+            {
+              "box": "522db0b7d2ae4e7e",
+              "kind": "frame",
+              "layers": [
+                {
+                  "fills": [
+                    {
+                      "color": {
+                        "variable": "number-field:state-layer:2898638ebc"
+                      },
+                      "type": "SOLID"
+                    }
+                  ],
+                  "kind": "overlay",
+                  "slot": "state layer"
+                },
+                {
+                  "default": "remove",
+                  "icon": {
+                    "color": {
+                      "color": {
+                        "variable": "--color-text-secondary"
+                      },
+                      "type": "SOLID"
+                    },
+                    "size": {
+                      "variable": "--size-icon-md"
+                    }
+                  },
+                  "kind": "icon",
+                  "slot": "decrement"
+                }
+              ],
+              "slot": "decrement",
+              "surface": "b1ab85825e70c025"
+            },
+            {
+              "box": "b6ba7a1b55bba1c3",
+              "kind": "frame",
+              "layers": [
+                {
+                  "fill": true,
+                  "kind": "text",
+                  "slot": "value",
+                  "text": {
+                    "align": "CENTER",
+                    "fill": {
+                      "color": {
+                        "variable": "--color-text-primary"
+                      },
+                      "type": "SOLID"
+                    },
+                    "fontFamily": {
+                      "variable": "--font-family-body"
+                    },
+                    "fontSize": {
+                      "variable": "--font-size-body"
+                    },
+                    "fontWeight": {
+                      "variable": "--font-weight-body"
+                    },
+                    "lineHeight": 150
+                  },
+                  "textProperty": "value",
+                  "visibleProperty": "show value"
+                }
+              ],
+              "slot": "input",
+              "surface": "a39c603f0591c36b"
+            },
+            {
+              "box": "522db0b7d2ae4e7e",
+              "kind": "frame",
+              "layers": [
+                {
+                  "fills": [
+                    {
+                      "color": {
+                        "variable": "number-field:state-layer:2898638ebc"
+                      },
+                      "type": "SOLID"
+                    }
+                  ],
+                  "kind": "overlay",
+                  "slot": "state layer"
+                },
+                {
+                  "default": "add",
+                  "icon": {
+                    "color": {
+                      "color": {
+                        "variable": "--color-text-secondary"
+                      },
+                      "type": "SOLID"
+                    },
+                    "size": {
+                      "variable": "--size-icon-md"
+                    }
+                  },
+                  "kind": "icon",
+                  "slot": "increment"
+                }
+              ],
+              "slot": "increment",
+              "surface": "b1ab85825e70c025"
+            }
+          ],
+          "slot": "control",
+          "surface": "531c78c45ff2f131"
+        }
+      ],
       "d62bbc9d422dccdc": [
         {
           "kind": "text",
@@ -88911,92 +90018,6 @@
           "textProperty": "children 1"
         }
       ],
-      "e316a4eca7e77dc2": [
-        {
-          "box": "f3073a4759656820",
-          "kind": "frame",
-          "layers": [
-            {
-              "box": "b6ba7a1b55bba1c3",
-              "kind": "frame",
-              "layers": [
-                {
-                  "kind": "text",
-                  "slot": "placeholder",
-                  "text": {
-                    "fill": {
-                      "color": {
-                        "variable": "password-input:fg:575016ba18"
-                      },
-                      "type": "SOLID"
-                    },
-                    "fontFamily": {
-                      "variable": "--font-family-body"
-                    },
-                    "fontSize": {
-                      "variable": "--font-size-body"
-                    },
-                    "fontWeight": {
-                      "variable": "--font-weight-body"
-                    },
-                    "lineHeight": 150
-                  },
-                  "textProperty": "placeholder",
-                  "visibleProperty": "show placeholder"
-                }
-              ],
-              "slot": "input",
-              "surface": "a39c603f0591c36b"
-            },
-            {
-              "box": "11f2fe644e88f14c",
-              "kind": "frame",
-              "layers": [
-                {
-                  "fills": [
-                    {
-                      "color": {
-                        "variable": "password-input:state-layer:2898638ebc"
-                      },
-                      "type": "SOLID"
-                    }
-                  ],
-                  "kind": "overlay",
-                  "slot": "state layer"
-                },
-                {
-                  "box": "672cd06398be5f4b",
-                  "kind": "frame",
-                  "layers": [
-                    {
-                      "default": "visibility",
-                      "icon": {
-                        "color": {
-                          "color": {
-                            "variable": "--color-text-secondary"
-                          },
-                          "type": "SOLID"
-                        },
-                        "size": {
-                          "variable": "--size-icon-md"
-                        }
-                      },
-                      "kind": "icon",
-                      "slot": "icon"
-                    }
-                  ],
-                  "slot": "span",
-                  "surface": "fa0b643878e9242d"
-                }
-              ],
-              "slot": "visibilityTrigger",
-              "surface": "ef3956c2e9b301c9"
-            }
-          ],
-          "slot": "control",
-          "surface": "9c17a9afe5f055bb"
-        }
-      ],
       "e361a9845d0b5823": [
         {
           "fills": [
@@ -89425,6 +90446,122 @@
           "kind": "icon",
           "slot": "post",
           "visibleProperty": "post"
+        }
+      ],
+      "e77be7d724db90c0": [
+        {
+          "box": "8e917c247c76f34d",
+          "kind": "frame",
+          "layers": [
+            {
+              "box": "522db0b7d2ae4e7e",
+              "kind": "frame",
+              "layers": [
+                {
+                  "fills": [
+                    {
+                      "color": {
+                        "variable": "number-field:state-layer:2898638ebc"
+                      },
+                      "type": "SOLID"
+                    }
+                  ],
+                  "kind": "overlay",
+                  "slot": "state layer"
+                },
+                {
+                  "default": "remove",
+                  "icon": {
+                    "color": {
+                      "color": {
+                        "variable": "--color-text-secondary"
+                      },
+                      "type": "SOLID"
+                    },
+                    "size": {
+                      "variable": "--size-icon-md"
+                    }
+                  },
+                  "kind": "icon",
+                  "slot": "decrement"
+                }
+              ],
+              "slot": "decrement",
+              "surface": "b1ab85825e70c025"
+            },
+            {
+              "box": "b6ba7a1b55bba1c3",
+              "kind": "frame",
+              "layers": [
+                {
+                  "fill": true,
+                  "kind": "text",
+                  "slot": "value",
+                  "text": {
+                    "align": "CENTER",
+                    "fill": {
+                      "color": {
+                        "variable": "--color-text-primary"
+                      },
+                      "type": "SOLID"
+                    },
+                    "fontFamily": {
+                      "variable": "--font-family-body"
+                    },
+                    "fontSize": {
+                      "variable": "--font-size-body"
+                    },
+                    "fontWeight": {
+                      "variable": "--font-weight-body"
+                    },
+                    "lineHeight": 150
+                  },
+                  "textProperty": "value",
+                  "visibleProperty": "show value"
+                }
+              ],
+              "slot": "input",
+              "surface": "a39c603f0591c36b"
+            },
+            {
+              "box": "522db0b7d2ae4e7e",
+              "kind": "frame",
+              "layers": [
+                {
+                  "fills": [
+                    {
+                      "color": {
+                        "variable": "number-field:state-layer:2898638ebc"
+                      },
+                      "type": "SOLID"
+                    }
+                  ],
+                  "kind": "overlay",
+                  "slot": "state layer"
+                },
+                {
+                  "default": "add",
+                  "icon": {
+                    "color": {
+                      "color": {
+                        "variable": "--color-text-secondary"
+                      },
+                      "type": "SOLID"
+                    },
+                    "size": {
+                      "variable": "--size-icon-md"
+                    }
+                  },
+                  "kind": "icon",
+                  "slot": "increment"
+                }
+              ],
+              "slot": "increment",
+              "surface": "b1ab85825e70c025"
+            }
+          ],
+          "slot": "control",
+          "surface": "501d571ed85da00d"
         }
       ],
       "e8703f9559a07fb9": [
@@ -93965,6 +95102,46 @@
           }
         ]
       },
+      "240b0fd2cf54952f": {
+        "effects": [
+          {
+            "blur": {
+              "expression": "0",
+              "value": 0
+            },
+            "color": {
+              "variable": "number-field:brutalist-black:b75258c11d"
+            },
+            "spread": {
+              "expression": "0",
+              "value": 0
+            },
+            "type": "DROP_SHADOW",
+            "x": {
+              "variable": "number-field:shadow-1-x:c3c63cdd74"
+            },
+            "y": {
+              "variable": "number-field:field-brutalist-offset:ac33ff9105"
+            }
+          }
+        ],
+        "fills": [
+          {
+            "color": {
+              "variable": "--color-bg-surface-sunken"
+            },
+            "type": "SOLID"
+          }
+        ],
+        "strokes": [
+          {
+            "color": {
+              "variable": "number-field:brutalist-black:b75258c11d"
+            },
+            "type": "SOLID"
+          }
+        ]
+      },
       "28c72f4d9a7ad535": {
         "effects": [],
         "fills": [
@@ -95787,6 +96964,55 @@
           {
             "color": {
               "variable": "--color-action-accent"
+            },
+            "type": "SOLID"
+          }
+        ]
+      },
+      "501d571ed85da00d": {
+        "effects": [
+          {
+            "blur": {
+              "expression": "2px",
+              "value": 2
+            },
+            "color": {
+              "variable": "--shadow-sm"
+            },
+            "spread": {
+              "expression": "0",
+              "value": 0
+            },
+            "type": "INNER_SHADOW",
+            "x": {
+              "expression": "0",
+              "value": 0
+            },
+            "y": {
+              "expression": "1px",
+              "value": 1
+            }
+          },
+          {
+            "radius": {
+              "expression": "10px",
+              "value": 10
+            },
+            "type": "BACKGROUND_BLUR"
+          }
+        ],
+        "fills": [
+          {
+            "color": {
+              "variable": "number-field:frost-glass:84cf990c6e"
+            },
+            "type": "SOLID"
+          }
+        ],
+        "strokes": [
+          {
+            "color": {
+              "variable": "--color-border-danger"
             },
             "type": "SOLID"
           }
@@ -98452,6 +99678,55 @@
           }
         ]
       },
+      "7affdfc99cdba142": {
+        "effects": [
+          {
+            "blur": {
+              "expression": "2px",
+              "value": 2
+            },
+            "color": {
+              "variable": "--shadow-sm"
+            },
+            "spread": {
+              "expression": "0",
+              "value": 0
+            },
+            "type": "INNER_SHADOW",
+            "x": {
+              "expression": "0",
+              "value": 0
+            },
+            "y": {
+              "expression": "1px",
+              "value": 1
+            }
+          },
+          {
+            "radius": {
+              "expression": "10px",
+              "value": 10
+            },
+            "type": "BACKGROUND_BLUR"
+          }
+        ],
+        "fills": [
+          {
+            "color": {
+              "variable": "number-field:frost-glass:84cf990c6e"
+            },
+            "type": "SOLID"
+          }
+        ],
+        "strokes": [
+          {
+            "color": {
+              "variable": "number-field:border-color:74589dbcff"
+            },
+            "type": "SOLID"
+          }
+        ]
+      },
       "7b19230da8a49881": {
         "effects": [
           {
@@ -99683,6 +100958,46 @@
           {
             "color": {
               "variable": "button:border-color:1686a30d8c"
+            },
+            "type": "SOLID"
+          }
+        ]
+      },
+      "953df31db78465db": {
+        "effects": [
+          {
+            "blur": {
+              "expression": "0",
+              "value": 0
+            },
+            "color": {
+              "variable": "number-field:brutalist-black:b75258c11d"
+            },
+            "spread": {
+              "expression": "0",
+              "value": 0
+            },
+            "type": "DROP_SHADOW",
+            "x": {
+              "variable": "number-field:shadow-1-x:c3c63cdd74"
+            },
+            "y": {
+              "variable": "number-field:field-brutalist-offset:ac33ff9105"
+            }
+          }
+        ],
+        "fills": [
+          {
+            "color": {
+              "variable": "--color-bg-surface-sunken"
+            },
+            "type": "SOLID"
+          }
+        ],
+        "strokes": [
+          {
+            "color": {
+              "variable": "--color-border-danger"
             },
             "type": "SOLID"
           }
@@ -101678,6 +102993,25 @@
           {
             "color": {
               "variable": "button:border-color:c9ec997892"
+            },
+            "type": "SOLID"
+          }
+        ]
+      },
+      "b1ab85825e70c025": {
+        "effects": [],
+        "fills": [
+          {
+            "color": {
+              "variable": "number-field:sk-button-bg:10e9f5602d"
+            },
+            "type": "SOLID"
+          }
+        ],
+        "strokes": [
+          {
+            "color": {
+              "variable": "number-field:sk-button-border-color:10e9f5602d"
             },
             "type": "SOLID"
           }
@@ -113103,6 +114437,330 @@
         "light": {
           "kind": "literal",
           "value": 2
+        }
+      }
+    },
+    {
+      "codeSyntax": "var(--sk-number-field-border-color)",
+      "collection": "component",
+      "expression": "color-mix(in oklab, var(--color-text-primary) 24%, transparent)",
+      "id": "number-field:border-color:74589dbcff",
+      "name": "number-field/border-color/frosted",
+      "source": {
+        "dark": "evaluated",
+        "light": "evaluated"
+      },
+      "type": "COLOR",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": {
+            "a": 0.24,
+            "b": 0.9579,
+            "g": 0.9609,
+            "r": 0.9609
+          }
+        },
+        "light": {
+          "kind": "literal",
+          "value": {
+            "a": 0.24,
+            "b": 0.0903,
+            "g": 0.098,
+            "r": 0.1095
+          }
+        }
+      }
+    },
+    {
+      "codeSyntax": "var(--sk-number-field-border-width)",
+      "collection": "component",
+      "expression": "1px",
+      "id": "number-field:border-width:93e20626bf",
+      "name": "number-field/border-width",
+      "source": {
+        "dark": "literal",
+        "light": "literal"
+      },
+      "type": "FLOAT",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": 1
+        },
+        "light": {
+          "kind": "literal",
+          "value": 1
+        }
+      }
+    },
+    {
+      "codeSyntax": "var(--brutalist-black)",
+      "collection": "component",
+      "expression": "oklch(from var(--shadow-lg) l c h / 1)",
+      "id": "number-field:brutalist-black:b75258c11d",
+      "name": "number-field/brutalist-black/brutalist",
+      "source": {
+        "dark": "evaluated",
+        "light": "evaluated"
+      },
+      "type": "COLOR",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": {
+            "a": 1,
+            "b": 0,
+            "g": 0,
+            "r": 0
+          }
+        },
+        "light": {
+          "kind": "literal",
+          "value": {
+            "a": 1,
+            "b": 0,
+            "g": 0,
+            "r": 0
+          }
+        }
+      }
+    },
+    {
+      "codeSyntax": "var(--field-brutalist-offset)",
+      "collection": "component",
+      "expression": "3px",
+      "id": "number-field:field-brutalist-offset:ac33ff9105",
+      "name": "number-field/field-brutalist-offset/brutalist",
+      "source": {
+        "dark": "literal",
+        "light": "literal"
+      },
+      "type": "FLOAT",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": 3
+        },
+        "light": {
+          "kind": "literal",
+          "value": 3
+        }
+      }
+    },
+    {
+      "codeSyntax": "var(--frost-glass)",
+      "collection": "component",
+      "expression": "var(--frost-on) color-mix(in oklab, var(--color-bg-surface-sunken) 60%, transparent)",
+      "id": "number-field:frost-glass:84cf990c6e",
+      "name": "number-field/frost-glass/frosted",
+      "source": {
+        "dark": "evaluated",
+        "light": "evaluated"
+      },
+      "type": "COLOR",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": {
+            "a": 0.6,
+            "b": 0.0355,
+            "g": 0.0394,
+            "r": 0.047
+          }
+        },
+        "light": {
+          "kind": "literal",
+          "value": {
+            "a": 0.6,
+            "b": 0.9579,
+            "g": 0.9609,
+            "r": 0.9609
+          }
+        }
+      }
+    },
+    {
+      "codeSyntax": "var(--sk-number-field-min-inline-size)",
+      "collection": "component",
+      "expression": "10rem",
+      "id": "number-field:min-inline-size:04d0579dae",
+      "name": "number-field/min-inline-size",
+      "source": {
+        "dark": "evaluated",
+        "light": "evaluated"
+      },
+      "type": "FLOAT",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": 160
+        },
+        "light": {
+          "kind": "literal",
+          "value": 160
+        }
+      }
+    },
+    {
+      "codeSyntax": "",
+      "collection": "component",
+      "expression": "calc(3px * 1)",
+      "id": "number-field:shadow-1-x:c3c63cdd74",
+      "name": "number-field/shadow-1-x/brutalist",
+      "source": {
+        "dark": "evaluated",
+        "light": "evaluated"
+      },
+      "type": "FLOAT",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": 3
+        },
+        "light": {
+          "kind": "literal",
+          "value": 3
+        }
+      }
+    },
+    {
+      "codeSyntax": "var(--sk-button-bg)",
+      "collection": "component",
+      "expression": "transparent",
+      "id": "number-field:sk-button-bg:10e9f5602d",
+      "name": "number-field/sk-button-bg",
+      "source": {
+        "dark": "literal",
+        "light": "literal"
+      },
+      "type": "COLOR",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": {
+            "a": 0,
+            "b": 0,
+            "g": 0,
+            "r": 0
+          }
+        },
+        "light": {
+          "kind": "literal",
+          "value": {
+            "a": 0,
+            "b": 0,
+            "g": 0,
+            "r": 0
+          }
+        }
+      }
+    },
+    {
+      "codeSyntax": "var(--sk-button-border-color)",
+      "collection": "component",
+      "expression": "transparent",
+      "id": "number-field:sk-button-border-color:10e9f5602d",
+      "name": "number-field/sk-button-border-color",
+      "source": {
+        "dark": "literal",
+        "light": "literal"
+      },
+      "type": "COLOR",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": {
+            "a": 0,
+            "b": 0,
+            "g": 0,
+            "r": 0
+          }
+        },
+        "light": {
+          "kind": "literal",
+          "value": {
+            "a": 0,
+            "b": 0,
+            "g": 0,
+            "r": 0
+          }
+        }
+      }
+    },
+    {
+      "codeSyntax": "var(--sk-button-border-width)",
+      "collection": "component",
+      "expression": "0",
+      "id": "number-field:sk-button-border-width:5feceb66ff",
+      "name": "number-field/sk-button-border-width",
+      "source": {
+        "dark": "literal",
+        "light": "literal"
+      },
+      "type": "FLOAT",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": 0
+        },
+        "light": {
+          "kind": "literal",
+          "value": 0
+        }
+      }
+    },
+    {
+      "codeSyntax": "var(--sk-button-padding-x)",
+      "collection": "component",
+      "expression": "0px",
+      "id": "number-field:sk-button-padding-x:33a3c91b44",
+      "name": "number-field/sk-button-padding-x",
+      "source": {
+        "dark": "literal",
+        "light": "literal"
+      },
+      "type": "FLOAT",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": 0
+        },
+        "light": {
+          "kind": "literal",
+          "value": 0
+        }
+      }
+    },
+    {
+      "codeSyntax": "",
+      "collection": "component",
+      "expression": "color-mix( in srgb, var(--color-text-secondary) calc(0 * 100%), transparent )",
+      "id": "number-field:state-layer:2898638ebc",
+      "name": "number-field/state-layer",
+      "source": {
+        "dark": "evaluated",
+        "light": "evaluated"
+      },
+      "type": "COLOR",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": {
+            "a": 0,
+            "b": 0,
+            "g": 0,
+            "r": 0
+          }
+        },
+        "light": {
+          "kind": "literal",
+          "value": {
+            "a": 0,
+            "b": 0,
+            "g": 0,
+            "r": 0
+          }
         }
       }
     },
