@@ -366,3 +366,10 @@ describe("Steps' connectors", () => {
     for (const item of items("steps/segments", "horizontal")) expect(item.kind === "frame" && item.layers.map((l) => l.slot)).toEqual(["marker"]);
   });
 });
+
+describe("Segmented's options", () => {
+  it("fill the control's height, as a flex row of set height stretches them", () => {
+    const set = manifest.components.find((c): c is ComponentSet => c.kind === "component-set" && c.id === "segmented/plain")!;
+    for (const option of manifest.styles.layers[set.cells[0].layers]) expect(option.kind === "frame" && manifest.styles.boxes[option.box].stretch).toBe(true);
+  });
+});

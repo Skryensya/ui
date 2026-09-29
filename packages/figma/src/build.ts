@@ -744,7 +744,13 @@ async function compileRealization(authored: Realization, shared: Shared): Promis
         const crossAlign = /grid/.test(display) ? computed.get("justify-items") : computed.get("align-items");
         // Children laid down a column (a flex column, a grid of one track); stacking when it stretches them.
         const downward = (/flex/.test(display) && /column/.test(computed.get("flex-direction") ?? "")) || (/grid/.test(display) && tracks.length <= 1);
-        const stacking = downward && (crossAlign === undefined || crossAlign === "normal" || crossAlign === "stretch");
+        const stretchy = crossAlign === undefined || crossAlign === "normal" || crossAlign === "stretch";
+        const stacking = downward && stretchy;
+        // A flex row stretches its items to its height unless told otherwise (a Segmented's options).
+        // Drawn only where that height is set: in Figma, items filling a row that hugs them would leave
+        // it nothing to hug.
+        const rowHeight = computed.get("height");
+        const rowStretches = !downward && /flex/.test(display) && stretchy && rowHeight !== undefined && rowHeight !== "auto" && !/%/.test(rowHeight);
         // A flex row whose children all grow share its known width evenly (Steps: `flex: 1 1 0` each).
         const growing = Array.from(el.children).filter((c) => !clipped(c) && cascaded.get(c)?.get("position") !== "absolute");
         const share =
@@ -869,7 +875,9 @@ async function compileRealization(authored: Realization, shared: Shared): Promis
           // Placed by its insets rather than laid out (a timeline's marker): where they come to.
           const placed = own.get("position") === "absolute" ? { x: lengthOf(own.get("left") ?? "0", child), y: lengthOf(own.get("top") ?? "0", child) } : undefined;
           const absolute = placed && placed.x !== undefined && placed.y !== undefined ? { x: placed.x, y: placed.y } : undefined;
-          const frameBox = absolute ? { ...measured, absolute } : stretch ? { ...measured, stretch: true as const } : measured;
+          const selfAlign = own.get("align-self");
+          const filled = rowStretches && !measured.height && (selfAlign === undefined || selfAlign === "auto" || selfAlign === "stretch");
+          const frameBox = absolute ? { ...measured, absolute } : stretch || filled ? { ...measured, stretch: true as const } : measured;
           const box = track && /fr\b/.test(track) ? { ...frameBox, grow: true as const } : frameBox;
           const slot = unique(partOf(child) ?? child.localName);
           // Drawn at a width, a block down a column spans it, as CSS stretches it by default; so does

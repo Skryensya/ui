@@ -1567,7 +1567,10 @@ async function drawShowcaseRow(
   const { run } = ctx;
   const combo = layout.rows[row];
   const order = spec.axes.map((a) => a.name);
-  const props = { ...combo, ...spec.showcase.base };
+  // An axis neither the row nor the showcase names (an Avatar's sizes, laid across) takes the set's
+  // default: the showcase is drawn from the default variant of each row.
+  const fallback = Object.fromEntries(spec.defaultCell.split(", ").map((pair) => pair.split("=") as [string, string]));
+  const props = { ...fallback, ...combo, ...spec.showcase.base };
   const main = cells.get(order.map((a) => `${a}=${props[a]}`).join(", "));
   if (!main) return;
   for (const [col, column] of spec.showcase.columns.entries()) {
@@ -1702,7 +1705,8 @@ async function syncSet(ctx: SetCtx, spec: M.ComponentSet, found: Map<string, Sce
         placed = true;
       }
       if (node.width > layout.cellW + 0.5 || node.height > layout.cellH + 0.5) outgrown = true;
-      move(run, node, layout.colX[col], layout.rowY[row]);
+      // Centred in its row, so a small variant beside a big one (an Avatar's sizes) sits level with it.
+      move(run, node, layout.colX[col], Math.round(layout.rowY[row] + (layout.cellH - node.height) / 2));
       cellsByKey.set(c.key, node);
       keys ??= ensureProperties(ctx, set, spec.properties, spec.name);
       bindReferences(ctx, node, c, keys, samples);
@@ -1751,7 +1755,7 @@ async function syncSet(ctx: SetCtx, spec: M.ComponentSet, found: Map<string, Sce
       placeSet(run, frame, s, layout);
       for (const { cell, row, col } of queue) {
         const node = nodes.get(cell!.key);
-        if (node && row >= 0) move(run, node, layout.colX[col], layout.rowY[row]);
+        if (node && row >= 0) move(run, node, layout.colX[col], Math.round(layout.rowY[row] + (layout.cellH - node.height) / 2));
       }
       for (let row = 0; row < layout.rows.length; row++) {
         await drawShowcaseRow(ctx, frame, spec, layout, row, nodes, keys, showcaseIn(frame), new Set());
