@@ -3,8 +3,21 @@
 # `surface` is the shape of the contract the last time somebody reviewed it. If the compiler says it
 # does not match, something a consumer depends on has moved: write the entry and paste in the new
 # hash.
-surface: "f91549c36afb6b75"
+surface: "f0953c37d22eda18"
 entries:
+  - date: 2026-09-29
+    kind: feature
+    target: linkTone
+    es:
+      title: linkTone acepta "neutral"
+      body: >-
+        <code>linkTone</code> declara <code>neutral</code> junto a <code>accent</code>, así el tono del texto
+        que rodea al enlace se puede pedir por nombre. Sin <code>data-tone</code> el enlace sigue pintándose neutral.
+    en:
+      title: linkTone accepts "neutral"
+      body: >-
+        <code>linkTone</code> declares <code>neutral</code> beside <code>accent</code>, so the surrounding
+        text colour can be asked for by name. Without <code>data-tone</code> the link still paints neutral.
   - date: 2026-09-17
     kind: feature
     es:

@@ -24,9 +24,9 @@ export type HeadingSize =
   | "md"
   | "lg"
   | "display";
-export type LinkTone = "accent";
+export type LinkTone = "neutral" | "accent";
 /* A text link is always underlined, the only WCAG 1.4.1-safe treatment, so there is no underline
- * option to choose. Default paint matches surrounding prose; `accent` is the brand-colored call-out.
+ * option to choose. `neutral` matches surrounding prose; `accent` is the brand-colored call-out.
  * Standalone links that don't need an underline aren't `sk-link` (see typography.css). */
 
 export const typographyParts = {
@@ -110,13 +110,13 @@ export const typographyContract = {
     /** Space-separated ids of the inputs an Output's result is calculated from. `htmlFor` in React. */
     outputFor: { type: "string", attr: "for", prop: "htmlFor" },
     /**
-     * Link's accent. Spelled `linkTone` here because Text already owns `tone` over a wider enum;
-     * the binding still calls it `tone` / `data-tone`. Only `accent`; a link is either the
-     * surrounding text colour or the action colour, never a status colour.
+     * Link's tone. Spelled `linkTone` here because Text already owns `tone` over a wider enum;
+     * the binding still calls it `tone` / `data-tone`. `neutral` is the surrounding text colour;
+     * `accent` is the action colour. A link never takes status colours.
      */
     linkTone: {
       type: "enum",
-      values: ["accent"],
+      values: ["neutral", "accent"],
       attr: "data-tone",
       prop: "tone",
     },
