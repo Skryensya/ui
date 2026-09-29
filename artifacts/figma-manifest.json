@@ -42470,6 +42470,88 @@
         "columns": []
       },
       "visualHash": "1dbea29f8e2d1eef"
+    },
+    {
+      "axes": [
+        {
+          "name": "state",
+          "values": [
+            "rest",
+            "hover",
+            "focus"
+          ]
+        }
+      ],
+      "cells": [
+        {
+          "box": "dd4fdfe0a77a66cd",
+          "hash": "285d765320cfe004",
+          "id": "state-button/state=rest",
+          "key": "state=rest",
+          "layers": "44c2b7cca29d3e7d",
+          "props": {
+            "state": "rest"
+          },
+          "surface": "2f033f00071272d0"
+        },
+        {
+          "box": "dd4fdfe0a77a66cd",
+          "hash": "468cb04bbe4257c1",
+          "id": "state-button/state=hover",
+          "key": "state=hover",
+          "layers": "8e0c066fe382d027",
+          "props": {
+            "state": "hover"
+          },
+          "surface": "2f033f00071272d0"
+        },
+        {
+          "box": "4910d43a5841f857",
+          "hash": "8227ec2aa1b633ee",
+          "id": "state-button/state=focus",
+          "key": "state=focus",
+          "layers": "450108c2e496a826",
+          "props": {
+            "state": "focus"
+          },
+          "surface": "2f033f00071272d0"
+        }
+      ],
+      "contractHash": "a120f0fb179c71e1",
+      "defaultCell": "state=rest",
+      "grid": {
+        "columns": [
+          {
+            "name": "state",
+            "values": [
+              "rest",
+              "hover",
+              "focus"
+            ]
+          }
+        ],
+        "rows": []
+      },
+      "id": "state-button",
+      "interactions": [
+        {
+          "axis": "state",
+          "from": "rest",
+          "to": "hover",
+          "trigger": "ON_HOVER"
+        }
+      ],
+      "kind": "component-set",
+      "name": "State Button",
+      "page": "skryensya",
+      "properties": [],
+      "showcase": {
+        "base": {
+          "state": "rest"
+        },
+        "columns": []
+      },
+      "visualHash": "55e0888ba090f080"
     }
   ],
   "diagnostics": [
@@ -42568,6 +42650,18 @@
       "message": "11 rule(s) under a condition the evaluation context does not hold",
       "severity": "info",
       "subject": "components/button.css @media (forced-colors: active)"
+    },
+    {
+      "code": "CONDITION_SKIPPED",
+      "message": "11 rule(s) under a condition the evaluation context does not hold",
+      "severity": "info",
+      "subject": "components/button.css @media (forced-colors: active)"
+    },
+    {
+      "code": "CONDITION_SKIPPED",
+      "message": "1 rule(s) under a condition the evaluation context does not hold",
+      "severity": "info",
+      "subject": "components/button.css @media (prefers-reduced-motion: reduce)"
     },
     {
       "code": "CONDITION_SKIPPED",
@@ -42826,6 +42920,12 @@
       "message": "15 rule(s) under a condition the evaluation context does not hold",
       "severity": "info",
       "subject": "components/select.css @supports (appearance: base-select) and selector(select::picker(select))"
+    },
+    {
+      "code": "CONDITION_SKIPPED",
+      "message": "0 rule(s) under a condition the evaluation context does not hold",
+      "severity": "info",
+      "subject": "components/state-button.css @import url(\"../patterns/icon-toggle.css\")"
     },
     {
       "code": "CONDITION_SKIPPED",
@@ -43171,6 +43271,18 @@
     },
     {
       "code": "CONDITION_SKIPPED",
+      "message": "1 rule(s) under a condition the evaluation context does not hold",
+      "severity": "info",
+      "subject": "patterns/icon-toggle.css @media (prefers-reduced-motion: reduce)"
+    },
+    {
+      "code": "CONDITION_SKIPPED",
+      "message": "0 rule(s) under a condition the evaluation context does not hold",
+      "severity": "info",
+      "subject": "patterns/icon-toggle.css @property --sk-icon-toggle-on"
+    },
+    {
+      "code": "CONDITION_SKIPPED",
       "message": "0 rule(s) under a condition the evaluation context does not hold",
       "severity": "info",
       "subject": "patterns/icon-toggle.css @property --sk-icon-toggle-on"
@@ -43324,6 +43436,18 @@
       "message": "1 rule(s) under a condition the evaluation context does not hold",
       "severity": "info",
       "subject": "patterns/state-layer.css @media (prefers-reduced-motion: reduce)"
+    },
+    {
+      "code": "CONDITION_SKIPPED",
+      "message": "1 rule(s) under a condition the evaluation context does not hold",
+      "severity": "info",
+      "subject": "patterns/state-layer.css @media (prefers-reduced-motion: reduce)"
+    },
+    {
+      "code": "CONDITION_SKIPPED",
+      "message": "0 rule(s) under a condition the evaluation context does not hold",
+      "severity": "info",
+      "subject": "patterns/state-layer.css @property --state-layer-opacity"
     },
     {
       "code": "CONDITION_SKIPPED",
@@ -43912,6 +44036,13 @@
           "trend"
         ]
       },
+      "state-button": {
+        "excluded": [],
+        "nonVisual": [
+          "current"
+        ],
+        "visual": []
+      },
       "steps": {
         "excluded": [],
         "nonVisual": [],
@@ -44074,11 +44205,11 @@
     },
     "tokens": {
       "catalogueAdded": 303,
-      "componentVariables": 449,
+      "componentVariables": 455,
       "modeValuesBySource": {
         "alias": 203,
-        "evaluated": 843,
-        "literal": 784
+        "evaluated": 853,
+        "literal": 786
       },
       "reached": 204,
       "reachedAsVariables": 155,
@@ -44097,8 +44228,8 @@
       "variables": 466
     },
     "variants": {
-      "components": 119,
-      "componentSets": 118,
+      "components": 120,
+      "componentSets": 119,
       "naiveAllOptions": {
         "accordion": 32,
         "avatar": 8,
@@ -44135,6 +44266,7 @@
         "separator": 48,
         "skip-link": 1,
         "stat": 6,
+        "state-button": 1,
         "steps": 4,
         "strong": 1,
         "switch": 16,
@@ -44186,6 +44318,7 @@
         "separator": 3,
         "skip-link": 1,
         "stat": 3,
+        "state-button": 1,
         "steps": 4,
         "strong": 1,
         "switch": 16,
@@ -44673,13 +44806,17 @@
         {
           "set": "tooltip",
           "variants": 1
+        },
+        {
+          "set": "state-button",
+          "variants": 3
         }
       ],
-      "variantsTotal": 2444
+      "variantsTotal": 2447
     }
   },
   "schemaVersion": 1,
-  "sourceHash": "7a93c871e2131237",
+  "sourceHash": "f71e2e5a038ecc5e",
   "stage": {
     "background": {
       "variable": "--color-bg-surface"
@@ -46468,6 +46605,52 @@
         "width": {
           "expression": "240px",
           "value": 240
+        }
+      },
+      "4910d43a5841f857": {
+        "clipsContent": false,
+        "crossAlign": "CENTER",
+        "direction": "VERTICAL",
+        "gap": {
+          "variable": "--space-inline-sm"
+        },
+        "height": {
+          "variable": "state-button:sk-button-height:2dce2436e5"
+        },
+        "mainAlign": "CENTER",
+        "minHeight": {
+          "variable": "state-button:sk-button-height:2dce2436e5"
+        },
+        "minWidth": {
+          "expression": "0",
+          "value": 0
+        },
+        "padding": {
+          "bottom": {
+            "expression": "0",
+            "value": 0
+          },
+          "left": {
+            "expression": "0",
+            "value": 0
+          },
+          "right": {
+            "expression": "0",
+            "value": 0
+          },
+          "top": {
+            "expression": "0",
+            "value": 0
+          }
+        },
+        "radius": {
+          "variable": "--radius-control"
+        },
+        "strokeWeight": {
+          "variable": "state-button:sk-button-border-width:93e20626bf"
+        },
+        "width": {
+          "variable": "state-button:sk-button-height:2dce2436e5"
         }
       },
       "4b26bab7a6a063ce": {
@@ -50450,6 +50633,52 @@
           "variable": "list:row-radius:5feceb66ff"
         },
         "stretch": true
+      },
+      "dd4fdfe0a77a66cd": {
+        "clipsContent": true,
+        "crossAlign": "CENTER",
+        "direction": "VERTICAL",
+        "gap": {
+          "variable": "--space-inline-sm"
+        },
+        "height": {
+          "variable": "state-button:sk-button-height:2dce2436e5"
+        },
+        "mainAlign": "CENTER",
+        "minHeight": {
+          "variable": "state-button:sk-button-height:2dce2436e5"
+        },
+        "minWidth": {
+          "expression": "0",
+          "value": 0
+        },
+        "padding": {
+          "bottom": {
+            "expression": "0",
+            "value": 0
+          },
+          "left": {
+            "expression": "0",
+            "value": 0
+          },
+          "right": {
+            "expression": "0",
+            "value": 0
+          },
+          "top": {
+            "expression": "0",
+            "value": 0
+          }
+        },
+        "radius": {
+          "variable": "--radius-control"
+        },
+        "strokeWeight": {
+          "variable": "state-button:sk-button-border-width:93e20626bf"
+        },
+        "width": {
+          "variable": "state-button:sk-button-height:2dce2436e5"
+        }
       },
       "deac9910275d8594": {
         "clipsContent": false,
@@ -60919,6 +61148,36 @@
           "textProperty": "children"
         }
       ],
+      "44c2b7cca29d3e7d": [
+        {
+          "fills": [
+            {
+              "color": {
+                "variable": "state-button:state-layer:a8bbbce668"
+              },
+              "type": "SOLID"
+            }
+          ],
+          "kind": "overlay",
+          "slot": "state layer"
+        },
+        {
+          "default": "mode-light",
+          "icon": {
+            "color": {
+              "color": {
+                "variable": "--color-text-primary"
+              },
+              "type": "SOLID"
+            },
+            "size": {
+              "variable": "--size-icon-lg"
+            }
+          },
+          "kind": "icon",
+          "slot": "root"
+        }
+      ],
       "44e487e9be6b4953": [
         {
           "kind": "text",
@@ -60942,6 +61201,55 @@
             "lineHeight": 120
           },
           "textProperty": "children"
+        }
+      ],
+      "450108c2e496a826": [
+        {
+          "fills": [
+            {
+              "color": {
+                "variable": "state-button:state-layer:bfba8c3497"
+              },
+              "type": "SOLID"
+            }
+          ],
+          "kind": "overlay",
+          "slot": "state layer"
+        },
+        {
+          "default": "mode-light",
+          "icon": {
+            "color": {
+              "color": {
+                "variable": "--color-text-primary"
+              },
+              "type": "SOLID"
+            },
+            "size": {
+              "variable": "--size-icon-lg"
+            }
+          },
+          "kind": "icon",
+          "slot": "root"
+        },
+        {
+          "color": {
+            "color": {
+              "variable": "--focus-ring-color"
+            },
+            "type": "SOLID"
+          },
+          "kind": "ring",
+          "offset": {
+            "variable": "--focus-ring-offset"
+          },
+          "radius": {
+            "variable": "state-button:outline-radius:9325831be9"
+          },
+          "slot": "focus ring",
+          "width": {
+            "variable": "--focus-ring-width"
+          }
         }
       ],
       "47248aeee21d724a": [
@@ -70105,6 +70413,36 @@
           "kind": "icon",
           "slot": "post",
           "visibleProperty": "post"
+        }
+      ],
+      "8e0c066fe382d027": [
+        {
+          "fills": [
+            {
+              "color": {
+                "variable": "state-button:state-layer:9652c98e0a"
+              },
+              "type": "SOLID"
+            }
+          ],
+          "kind": "overlay",
+          "slot": "state layer"
+        },
+        {
+          "default": "mode-light",
+          "icon": {
+            "color": {
+              "color": {
+                "variable": "--color-text-primary"
+              },
+              "type": "SOLID"
+            },
+            "size": {
+              "variable": "--size-icon-lg"
+            }
+          },
+          "kind": "icon",
+          "slot": "root"
         }
       ],
       "8e1a3357befe60d3": [
@@ -108373,6 +108711,168 @@
         "light": {
           "kind": "literal",
           "value": 1
+        }
+      }
+    },
+    {
+      "codeSyntax": "",
+      "collection": "component",
+      "expression": "calc(var(--radius-control) + var(--focus-ring-offset))",
+      "id": "state-button:outline-radius:9325831be9",
+      "name": "state-button/outline-radius/focus",
+      "source": {
+        "dark": "evaluated",
+        "light": "evaluated"
+      },
+      "type": "FLOAT",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": 10
+        },
+        "light": {
+          "kind": "literal",
+          "value": 10
+        }
+      }
+    },
+    {
+      "codeSyntax": "var(--sk-button-border-width)",
+      "collection": "component",
+      "expression": "1px",
+      "id": "state-button:sk-button-border-width:93e20626bf",
+      "name": "state-button/sk-button-border-width",
+      "source": {
+        "dark": "literal",
+        "light": "literal"
+      },
+      "type": "FLOAT",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": 1
+        },
+        "light": {
+          "kind": "literal",
+          "value": 1
+        }
+      }
+    },
+    {
+      "codeSyntax": "var(--sk-button-height)",
+      "collection": "component",
+      "expression": "max(var(--size-control-md), var(--size-touch-target))",
+      "id": "state-button:sk-button-height:2dce2436e5",
+      "name": "state-button/sk-button-height",
+      "source": {
+        "dark": "evaluated",
+        "light": "evaluated"
+      },
+      "type": "FLOAT",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": 44
+        },
+        "light": {
+          "kind": "literal",
+          "value": 44
+        }
+      }
+    },
+    {
+      "codeSyntax": "",
+      "collection": "component",
+      "expression": "color-mix( in srgb, var(--color-text-primary) calc(var(--state-layer-focus-opacity) * 100%), transparent )",
+      "id": "state-button:state-layer:bfba8c3497",
+      "name": "state-button/state-layer/focus",
+      "source": {
+        "dark": "evaluated",
+        "light": "evaluated"
+      },
+      "type": "COLOR",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": {
+            "a": 0.16,
+            "b": 0.9579,
+            "g": 0.9609,
+            "r": 0.9609
+          }
+        },
+        "light": {
+          "kind": "literal",
+          "value": {
+            "a": 0.16,
+            "b": 0.0903,
+            "g": 0.098,
+            "r": 0.1095
+          }
+        }
+      }
+    },
+    {
+      "codeSyntax": "",
+      "collection": "component",
+      "expression": "color-mix( in srgb, var(--color-text-primary) calc(var(--state-layer-hover-opacity) * 100%), transparent )",
+      "id": "state-button:state-layer:9652c98e0a",
+      "name": "state-button/state-layer/hover",
+      "source": {
+        "dark": "evaluated",
+        "light": "evaluated"
+      },
+      "type": "COLOR",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": {
+            "a": 0.12,
+            "b": 0.9579,
+            "g": 0.9609,
+            "r": 0.9609
+          }
+        },
+        "light": {
+          "kind": "literal",
+          "value": {
+            "a": 0.12,
+            "b": 0.0903,
+            "g": 0.098,
+            "r": 0.1095
+          }
+        }
+      }
+    },
+    {
+      "codeSyntax": "",
+      "collection": "component",
+      "expression": "color-mix( in srgb, var(--color-text-primary) calc(0 * 100%), transparent )",
+      "id": "state-button:state-layer:a8bbbce668",
+      "name": "state-button/state-layer/rest",
+      "source": {
+        "dark": "evaluated",
+        "light": "evaluated"
+      },
+      "type": "COLOR",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": {
+            "a": 0,
+            "b": 0,
+            "g": 0,
+            "r": 0
+          }
+        },
+        "light": {
+          "kind": "literal",
+          "value": {
+            "a": 0,
+            "b": 0,
+            "g": 0,
+            "r": 0
+          }
         }
       }
     },

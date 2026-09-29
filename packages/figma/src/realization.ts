@@ -71,7 +71,8 @@ export type Realization = {
         /** The items are markup only, never drawn (a Select's closed list): no text properties. */
         undrawn?: true;
         /** `more`: the item's other text slots (a tab's panel), each a property `<slot> <n>`. */
-        items: readonly { options?: Readonly<Record<string, string | boolean>>; text: string; more?: Readonly<Record<string, string>> }[];
+        /** `text` is left out for items that hold none (a StateButton's faces are an icon each). */
+        items: readonly { options?: Readonly<Record<string, string | boolean>>; text?: string; more?: Readonly<Record<string, string>> }[];
       }
     >
   >;

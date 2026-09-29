@@ -466,3 +466,11 @@ describe("Tooltip", () => {
     expect(manifest.styles.layers[set.cells[0].layers].map((l) => l.slot)).toEqual(["content"]);
   });
 });
+
+describe("StateButton", () => {
+  it("shows only its current face", () => {
+    const set = manifest.components.find((c): c is ComponentSet => c.kind === "component-set" && c.id === "state-button")!;
+    const icons = manifest.styles.layers[set.cells[0].layers].filter((l) => l.kind === "icon");
+    expect(icons.map((l) => l.kind === "icon" && l.default)).toEqual(["mode-light"]);
+  });
+});
