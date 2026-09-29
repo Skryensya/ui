@@ -8,6 +8,11 @@ export const segmentedMessages = {
     "segmentedPage.description": "SegmentedControl: elección única y visible sobre un grupo pequeño, con semántica radiogroup.",
     "segmentedPage.lede":
       'SegmentedControl es una elección única de un conjunto pequeño y fijo, mostrado de una vez: un radiogroup con ropa de barra de botones. Para navegar entre paneles usa <a href="/es/componentes/tabs">Tabs</a>; para muchas opciones o texto libre, <a href="/es/componentes/select">Select</a>.',
+    "segmentedPage.prop.size.title": "Tamaño",
+    "segmentedPage.prop.size.body": 'El <code>size</code> de SegmentedControl sigue la escala de Button: la altura del riel, el tipo y el relleno de las opciones cambian juntos.',
+    "segmentedPage.prop.size.sm": 'Usa <code>sm</code>, el default, junto a un botón pequeño: un control más en una fila de herramientas.',
+    "segmentedPage.prop.size.md": 'Usa <code>md</code> cuando el control acompaña a campos de formulario de tamaño normal.',
+    "segmentedPage.prop.size.lg": 'Usa <code>lg</code> cuando el control es lo que se lee, como el selector de valores de estas vistas previas.',
     "segmentedPage.body":
       "El enhancer vanilla selecciona con click y con flechas; <code>Home</code> y <code>End</code> saltan al primer y último segmento. La opción elegida queda en <code>data-value</code> y se anuncia con <code>aria-checked</code>. Cada segmento pinta a <code>--size-control-sm</code> y conserva un hit de <code>44px</code> vía <code>::after</code> (el indicador sigue la caja pintada).",
     "segmentedPage.anatomyBody":
@@ -29,6 +34,11 @@ export const segmentedMessages = {
     "segmentedPage.description": "SegmentedControl: a single, visible choice over a small group, with radiogroup semantics.",
     "segmentedPage.lede":
       'SegmentedControl is a single choice from a small, fixed set, shown all at once: a radiogroup dressed as a button bar. To navigate between panels use <a href="/components/tabs">Tabs</a>; for many options or free text, <a href="/components/select">Select</a>.',
+    "segmentedPage.prop.size.title": "Size",
+    "segmentedPage.prop.size.body": 'SegmentedControl <code>size</code> follows Button\'s scale: the track\'s height, the type and the options\' padding change together.',
+    "segmentedPage.prop.size.sm": 'Use <code>sm</code>, the default, beside a small button: one more control in a toolbar row.',
+    "segmentedPage.prop.size.md": 'Use <code>md</code> when the control sits with regular-size form fields.',
+    "segmentedPage.prop.size.lg": 'Use <code>lg</code> when the control is what is being read, like the value switcher of these previews.',
     "segmentedPage.body":
       "The vanilla enhancer selects on click and with arrows; <code>Home</code> and <code>End</code> jump to the first and last segment. The chosen option lands in <code>data-value</code> and announces through <code>aria-checked</code>. Every segment paints at <code>--size-control-sm</code> and keeps a <code>44px</code> hit target through <code>::after</code> (the indicator follows the painted box).",
     "segmentedPage.anatomyBody":

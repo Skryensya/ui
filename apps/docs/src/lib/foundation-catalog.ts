@@ -80,10 +80,6 @@ const foundationDescriptions = {
     es: "Congela el scroll detrás de un dialog modal y reserva el gutter de la scrollbar para evitar saltos.",
     en: "Freezes scroll behind a modal dialog and reserves the scrollbar gutter to prevent layout shift.",
   },
-  "/gradients": {
-    es: "Protege tipografía sobre fotos con un wash del tamaño del texto teñido con accent.",
-    en: "Protects type on photos with a text-sized gradient wash tinted by accent.",
-  },
   "/transparency": {
     es: "La política de toda superficie translúcida: base opaca, blur progresivo y reducción de transparencia.",
     en: "The policy behind every translucent surface: opaque baseline, progressive blur, reduced transparency.",

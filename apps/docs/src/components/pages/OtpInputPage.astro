@@ -1,0 +1,79 @@
+---
+import "@skryensya/core/components/otp-input.css";
+import "@skryensya/core/patterns/layout.css";
+/* Structure diagram: Annotated specimen; a preview frame only copies styles THIS page loaded. */
+import "@skryensya/core/components/annotation.css";
+import ComponentPageShell from "./ComponentPageShell.astro";
+import CodeBlock from "../CodeBlock.astro";
+import ComponentPreview from "../ComponentPreview.astro";
+import {
+  otpInputAlphanumericTree,
+  otpInputAnatomyTree,
+  otpInputPinTree,
+  otpInputSmsTree,
+  otpInputStatesTree,
+} from "../../demos/otp-input";
+import { annotationDemoCss } from "../../demos/annotation";
+import { getLocale, useTranslations } from "../../i18n";
+
+const t = useTranslations(getLocale(Astro.url));
+const styles = `@import "@skryensya/core/components/otp-input.css";`;
+---
+
+<ComponentPageShell
+  title="OtpInput"
+  description={t("otpInput.description")}
+  badge={t("otpInput.betaBadge")}
+  contractId="otp-input"
+  testFiles={["packages/react/src/components/otp-input.test.tsx", "packages/vanilla/src/components/otp-input.test.ts"]}
+>
+  <Fragment slot="anatomy">
+    <p set:html={t("otpInput.anatomyBody")} />
+    <ComponentPreview
+      tree={otpInputAnatomyTree(t)}
+      css={annotationDemoCss}
+      label={t("otpInput.anatomyPreviewLabel")}
+      screens={false}
+      hideSource
+      chrome={false}
+    />
+  </Fragment>
+
+  <Fragment slot="usage">
+    <p class="lede" set:html={t("otpInput.lede")} />
+
+    <h3>{t("otpInput.whenTitle")}</h3>
+    <ul>
+      <li set:html={t("otpInput.whenItem1")} />
+      <li set:html={t("otpInput.whenItem2")} />
+      <li set:html={t("otpInput.whenItem3")} />
+    </ul>
+
+    <h3>{t("otpInput.smsTitle")}</h3>
+    <p set:html={t("otpInput.smsBody")} />
+    <ComponentPreview tree={otpInputSmsTree(t)} label={t("otpInput.smsPreviewLabel")} />
+
+    <h3>{t("otpInput.alphanumericTitle")}</h3>
+    <p set:html={t("otpInput.alphanumericBody")} />
+    <ComponentPreview tree={otpInputAlphanumericTree(t)} label={t("otpInput.alphanumericPreviewLabel")} />
+
+    <h3>{t("otpInput.pinTitle")}</h3>
+    <p set:html={t("otpInput.pinBody")} />
+    <ComponentPreview tree={otpInputPinTree(t)} label={t("otpInput.pinPreviewLabel")} />
+
+    <h3>{t("otpInput.statesTitle")}</h3>
+    <p set:html={t("otpInput.statesBody")} />
+    <ComponentPreview tree={otpInputStatesTree(t)} label={t("otpInput.statesPreviewLabel")} />
+
+    <h3>{t("otpInput.eventsTitle")}</h3>
+    <p set:html={t("otpInput.eventsBody")} />
+  </Fragment>
+
+  <Fragment slot="install">
+    <CodeBlock code={styles} label="CSS" lang="css" />
+  </Fragment>
+
+  <Fragment slot="a11y">
+    <p set:html={t("otpInput.a11yBody")} />
+  </Fragment>
+</ComponentPageShell>

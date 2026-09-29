@@ -47,7 +47,7 @@ emitter does on the React side: `emitReactSource` writes `menu-items.ts` beside 
 the docs page shows it as its own tab, so the demo source and the snippet a reader copies are
 organised the same way.
 
-The playground globs `../demos/*.ts`, one level only, so nothing in `data/` is mistaken for a demo.
+The storybook generators glob `demos/*.ts`, one level only, so nothing in `data/` is mistaken for a demo.
 
 The rule for `t` is the same one as above: a list of proper nouns (plan names, endonyms, file names)
 is a plain constant, and only a list with words in it is a function of the translator.

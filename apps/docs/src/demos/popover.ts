@@ -255,7 +255,7 @@ export const popoverPlacementTree = (t: Translate): UsageTree => ({
  * not a second component, it is `Popover.bare`, the same contract one signature down. Two pages for
  * one contract meant a reader had to find out which of the two described what they already had, and
  * the catalogue counted the family twice. The section merged into the Popover page; these trees
- * moved here with it, so the playground groups them under Popover like every other signature.
+ * moved here with it, so they group under Popover like every other signature.
  * ------------------------------------------------------------------------------------------- */
 
 /*

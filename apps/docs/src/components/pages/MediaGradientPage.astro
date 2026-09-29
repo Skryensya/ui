@@ -1,0 +1,83 @@
+---
+import "@skryensya/core/patterns/media-gradient.css";
+import "@skryensya/core/patterns/image-frame.css";
+import "@skryensya/core/patterns/box.css";
+import "@skryensya/core/patterns/layout.css";
+import "@skryensya/core/components/typography.css";
+/* Structure diagram: Annotated specimen; a preview frame only copies styles THIS page loaded. */
+import "@skryensya/core/components/annotation.css";
+import ComponentPageShell from "./ComponentPageShell.astro";
+import CodeBlock from "../CodeBlock.astro";
+import ComponentPreview from "../ComponentPreview.astro";
+import {
+  mediaGradientAnatomyTree,
+  mediaGradientCardTree,
+  mediaGradientEdgesTree,
+  mediaGradientStrengthsTree,
+} from "../../demos/media-gradient";
+import { annotationDemoCss } from "../../demos/annotation";
+import { getLocale, useTranslations } from "../../i18n";
+
+const t = useTranslations(getLocale(Astro.url));
+const styles = `@import "@skryensya/core/patterns/image-frame.css";
+@import "@skryensya/core/patterns/media-gradient.css";`;
+const tint = `.hero-media .sk-media-gradient {
+  --sk-media-gradient-mix: 48%;
+  --sk-media-gradient-opacity: 88%;
+}`;
+---
+
+<ComponentPageShell
+  title="MediaGradient"
+  description={t("mediaGradient.description")}
+  badge={t("mediaGradient.betaBadge")}
+  contractId="media-gradient"
+  testFiles={["packages/react/src/components/media-gradient.test.tsx"]}
+>
+  <Fragment slot="anatomy">
+    <p set:html={t("mediaGradient.anatomyBody")} />
+    <ComponentPreview
+      tree={mediaGradientAnatomyTree(t)}
+      css={annotationDemoCss}
+      label={t("mediaGradient.anatomyPreviewLabel")}
+      screens={false}
+      hideSource
+      chrome={false}
+    />
+  </Fragment>
+
+  <Fragment slot="usage">
+    <p class="lede" set:html={t("mediaGradient.lede")} />
+
+    <h3>{t("mediaGradient.whenTitle")}</h3>
+    <ul>
+      <li set:html={t("mediaGradient.whenItem1")} />
+      <li set:html={t("mediaGradient.whenItem2")} />
+      <li set:html={t("mediaGradient.whenItem3")} />
+    </ul>
+
+    <h3>{t("mediaGradient.cardTitle")}</h3>
+    <p set:html={t("mediaGradient.cardBody")} />
+    <ComponentPreview tree={mediaGradientCardTree(t)} label={t("mediaGradient.cardPreviewLabel")} />
+
+    <h3>{t("mediaGradient.edgesTitle")}</h3>
+    <p set:html={t("mediaGradient.edgesBody")} />
+    <ComponentPreview tree={mediaGradientEdgesTree()} label={t("mediaGradient.edgesPreviewLabel")} />
+
+    <h3>{t("mediaGradient.strengthTitle")}</h3>
+    <p set:html={t("mediaGradient.strengthBody")} />
+    <ComponentPreview tree={mediaGradientStrengthsTree()} label={t("mediaGradient.strengthPreviewLabel")} />
+
+    <h3>{t("mediaGradient.tintTitle")}</h3>
+    <p set:html={t("mediaGradient.tintBody")} />
+    <CodeBlock code={tint} label="CSS" lang="css" />
+  </Fragment>
+
+  <Fragment slot="install">
+    <CodeBlock code={styles} label="CSS" lang="css" />
+  </Fragment>
+
+  <Fragment slot="a11y">
+    <p set:html={t("mediaGradient.a11yBody")} />
+  </Fragment>
+</ComponentPageShell>

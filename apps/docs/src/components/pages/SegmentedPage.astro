@@ -6,6 +6,7 @@ import ComponentPageShell from "./ComponentPageShell.astro";
 import AppearanceMenu from "../AppearanceMenu.astro";
 import CodeBlock from "../CodeBlock.astro";
 import ComponentPreview from "../ComponentPreview.astro";
+import UsagePreview from "../UsagePreview.astro";
 import { segmentedAnatomyTree, segmentedTree } from "../../demos/segmented";
 import { annotationDemoCss } from "../../demos/annotation";
 import { getLocale, useTranslations } from "../../i18n";
@@ -45,6 +46,14 @@ await initComponents();`;
     <p class="lede" set:html={t("segmentedPage.lede")} />
     <ComponentPreview tree={segmentedTree(t)} label="Segmented" />
     <p set:html={t("segmentedPage.body")} />
+    <UsagePreview
+      tree={segmentedTree(t)}
+      optionName="size"
+      title={t("segmentedPage.prop.size.title")}
+      description={t("segmentedPage.prop.size.body")}
+      explain={{ sm: t("segmentedPage.prop.size.sm"), md: t("segmentedPage.prop.size.md"), lg: t("segmentedPage.prop.size.lg") }}
+      labels={{ sm: "sm", md: "md", lg: "lg" }}
+    />
     <p set:html={t("component.reactNote")} />
     <p set:html={t("segmentedPage.reactBody")} />
   </Fragment>

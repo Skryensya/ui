@@ -95,6 +95,16 @@ const apply = `{
     land inside a heading or a button.
   </p>
 
+  <h2>The bar</h2>
+  <p>
+    Every command is a word in the <a href="/components/app-bar">AppBar</a> across the top: File (new,
+    close, export, publish), Edit (undo, redo, select the parent, and the actions on the selection),
+    View (edit or interact, the stage width, the preview, zoom, the panels), Page, Insert and Help.
+    The width and the zoom are also on its right, next to whether the project is saved. The open
+    projects are tabs under it. Clicking a blank part of a page selects the page itself (its Main), so
+    after a section fills the page, the next insert goes below it.
+  </p>
+
   <h2>The stage is a real browser</h2>
   <p>
     The page renders in its own document with the real React binding, as wide as the width you pick
@@ -117,9 +127,10 @@ const apply = `{
     options; the inspector suggests the site's paths, and a link to a path no page has is pending.
   </p>
 
-  <h2>Keyboard</h2>
-  <p>With the layers panel focused, every structural action has a shortcut, and the toolbar at the top of the inspector runs exactly the same actions.</p>
+  <h2 id="keyboard">Keyboard</h2>
+  <p>With the layers panel focused, every structural action has a shortcut, and the toolbar at the top of the inspector and the bar's Edit menu run exactly the same actions.</p>
   <ul>
+    <li><kbd class="sk-kbd">Esc</kbd>: select the container of what is selected, up to the page's Main, then nothing. With Main selected, whatever you insert goes to the end of the page.</li>
     <li><kbd class="sk-kbd">Alt</kbd> + <kbd class="sk-kbd">↑</kbd> / <kbd class="sk-kbd">↓</kbd>: move before the previous or after the next sibling.</li>
     <li><kbd class="sk-kbd">Alt</kbd> + <kbd class="sk-kbd">←</kbd>: move out of the container; <kbd class="sk-kbd">Alt</kbd> + <kbd class="sk-kbd">→</kbd>: into the previous one.</li>
     <li><kbd class="sk-kbd">⌘G</kbd> wraps in a Stack, <kbd class="sk-kbd">⌘⇧G</kbd> unwraps, <kbd class="sk-kbd">⌘D</kbd> duplicates, <kbd class="sk-kbd">Delete</kbd> removes.</li>

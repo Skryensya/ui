@@ -105,8 +105,8 @@ export function useTranslations(locale: Locale): Translate {
 
 /**
  * The locale a `t` translates into. A demo factory whose output depends on the locale (a country
- * list, a time format) defaults to it, so `demo(t)` alone is already the right tree: the playground
- * calls every demo that way and has no second argument to hand in.
+ * list, a time format) defaults to it, so `demo(t)` alone is already the right tree, with no second
+ * argument to hand in.
  */
 export function localeOf(t: Translate): Locale {
   return (t as Translate & { locale?: Locale }).locale ?? defaultLocale;

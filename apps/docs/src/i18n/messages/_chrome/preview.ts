@@ -2,7 +2,6 @@ export const previewMessages = {
   es: {
 
     "preview.reloadAction": "Recargar",
-    "preview.playgroundAction": "Playground",
     "preview.storybookReactAction": "Storybook (React)",
     "preview.storybookVanillaAction": "Storybook (Vanilla)",
     "preview.moreActions": "Más acciones: {name}",
@@ -31,7 +30,6 @@ export const previewMessages = {
   en: {
 
     "preview.reloadAction": "Reload",
-    "preview.playgroundAction": "Playground",
     "preview.storybookReactAction": "Storybook (React)",
     "preview.storybookVanillaAction": "Storybook (Vanilla)",
     "preview.moreActions": "More actions: {name}",

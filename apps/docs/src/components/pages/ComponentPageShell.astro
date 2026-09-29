@@ -60,6 +60,12 @@ interface Props {
   badge?: string;
   /** Selector for the roots this page's appearance menu retunes. Scoped to this page's previews. */
   appearanceTargetSelector?: string;
+  /**
+   * The code blocks this shell writes for the page (the generated Vanilla install) come without a
+   * title bar: the language shows in the highlighting, and a one-line command reads cleaner without
+   * a strip saying "terminal" above it. Off by default while pages move over one at a time.
+   */
+  untitledCode?: boolean;
 }
 
 const {
@@ -72,6 +78,7 @@ const {
   hideVanillaMount = true,
   badge,
   appearanceTargetSelector,
+  untitledCode = false,
 } = Astro.props;
 const t = useTranslations(getLocale(Astro.url));
 const hasContract = Boolean(contractId);
@@ -139,6 +146,15 @@ const canToggleInstall = hasInstall && (hasVanillaInstall || vanillaStyleImports
 
 const hasStyle = derivedStyleGroups.length > 0 || Astro.slots.has("style");
 const hasAnatomy = Astro.slots.has("anatomy");
+/*
+ * DO'S AND DON'TS GET A "USAGE GUIDE" TAB. A page that passes `guidelines` splits what used to be
+ * one panel in two: the first tab keeps its content and becomes the Overview (what it is, what it
+ * looks like, how to install it), and the Usage guide is how to use it well, the do's and don'ts. The first
+ * tab keeps its internal value, `usage`, so every existing link (`?tab=usage#…`) and the scripts that
+ * default to it still open the same panel; only its label changes. A page without the slot is
+ * exactly as before.
+ */
+const hasGuidelines = Astro.slots.has("guidelines");
 const hasA11y = Astro.slots.has("a11y");
 const hasTests = tests.length > 0 || (testFiles?.length ?? 0) > 0;
 const hasAppearanceControl = Astro.slots.has("appearance");
@@ -315,7 +331,14 @@ const markMarkup = findComponentIconMarkup(Astro.url.pathname, { className: "doc
     </div>
     <div class="sk-tabs" data-orientation="horizontal" data-activation-mode="automatic" data-value="usage" data-sk-tabs>
       <div class="sk-tabs__list docs-component-hero-tabs" data-sk-tabs-list aria-label={t("component.tabsAriaLabel", { name: title })}>
-        <button class="sk-tabs__trigger sk-interactive" data-sk-tabs-trigger data-value="usage" type="button">{t("component.tabUsage")}</button>
+        <button class="sk-tabs__trigger sk-interactive" data-sk-tabs-trigger data-value="usage" type="button">{hasGuidelines ? t("component.tabOverview") : t("component.tabUsage")}</button>
+        {
+          hasGuidelines && (
+            <button class="sk-tabs__trigger sk-interactive" data-sk-tabs-trigger data-value="guidelines" type="button">
+              {t("component.tabGuidelines")}
+            </button>
+          )
+        }
         {
           hasContract && (
             <button class="sk-tabs__trigger sk-interactive" data-sk-tabs-trigger data-value="contract" type="button">
@@ -356,7 +379,7 @@ const markMarkup = findComponentIconMarkup(Astro.url.pathname, { className: "doc
       <div class="sk-tabs__content sk-layout-grid" data-sk-tabs-content data-value="usage">
         {/* Visually hidden: the tab strip right above already says "Uso"/"Usage" out loud. Exists so
             the document outline has a real h2 to hang the slot's h3s off of. */}
-        <h2 class="sk-visually-hidden">{t("component.tabUsage")}</h2>
+        <h2 class="sk-visually-hidden">{hasGuidelines ? t("component.tabOverview") : t("component.tabUsage")}</h2>
         <slot name="usage" />
 
         {/*
@@ -402,14 +425,14 @@ const markMarkup = findComponentIconMarkup(Astro.url.pathname, { className: "doc
               ) : (
                 <>
                   <p>{t("install.vanillaGenerated")}</p>
-                  <CodeBlock code={vanillaInstallCommand} label="terminal" />
+                  <CodeBlock code={vanillaInstallCommand} label={untitledCode ? undefined : "terminal"} lang="bash" />
                   {vanillaStyleImports.length > 0 && (
-                    <CodeBlock code={vanillaStyleImports} label="CSS" lang="css" />
+                    <CodeBlock code={vanillaStyleImports} label={untitledCode ? undefined : "CSS"} lang="css" />
                   )}
                   {vanillaMountSnippet ? (
                     <>
                       <p set:html={t("install.vanillaMount", { name: vanillaMount!.name })} />
-                      <CodeBlock code={vanillaMountSnippet} label="JavaScript" />
+                      <CodeBlock code={vanillaMountSnippet} label={untitledCode ? undefined : "JavaScript"} lang="ts" />
                     </>
                   ) : (
                     <p>{t("install.vanillaNoMount")}</p>
@@ -423,6 +446,14 @@ const markMarkup = findComponentIconMarkup(Astro.url.pathname, { className: "doc
         }
       </div>
 
+      {
+        hasGuidelines && (
+          <div class="sk-tabs__content sk-layout-grid" data-sk-tabs-content data-value="guidelines">
+            <h2 class="sk-visually-hidden">{t("component.tabGuidelines")}</h2>
+            <slot name="guidelines" />
+          </div>
+        )
+      }
       {
         hasContract && contractId && (
           <div class="sk-tabs__content sk-layout-grid" data-sk-tabs-content data-value="contract">

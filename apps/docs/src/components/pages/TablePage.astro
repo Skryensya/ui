@@ -14,7 +14,6 @@ import {
   tableStickyHeaderTree,
   tableTree,
   tableDensityTree,
-  tablePagerTree,
 } from "../../demos/table";
 import { annotationDemoCss } from "../../demos/annotation";
 import { getLocale, useTranslations } from "../../i18n";
@@ -62,7 +61,6 @@ const install = `pnpm add @skryensya/core @skryensya/react`;
 
     <h3>{t("tablePage.pagerTitle")}</h3>
     <p set:html={t("tablePage.pagerBody")} />
-    <ComponentPreview tree={tablePagerTree(t)} label={t("tablePage.pagerLabel")} />
 
     <h3>{t("tablePage.boxTitle")}</h3>
     <p set:html={t("tablePage.boxBody")} />

@@ -77,6 +77,9 @@ import { clipboardMessages } from "./messages/components/clipboard";
 import { listboxMessages } from "./messages/components/listbox";
 import { presenceMessages } from "./messages/components/presence";
 import { passwordInputMessages } from "./messages/components/password-input";
+import { otpInputMessages } from "./messages/components/otp-input";
+import { tablePagerMessages } from "./messages/components/table-pager";
+import { mediaGradientMessages } from "./messages/components/media-gradient";
 import { qrCodeMessages } from "./messages/components/qr-code";
 import { feedMessages } from "./messages/components/feed";
 import { fileUploadMessages } from "./messages/components/file-upload";
@@ -146,11 +149,9 @@ import { userSelectMessages } from "./messages/components/user-select";
 import { wrapperMessages } from "./messages/components/wrapper";
 import { foundationsMessages } from "./messages/foundations";
 import { appearanceMessages } from "./messages/appearance";
-import { gradientsMessages } from "./messages/gradients";
 import { indexMessages } from "./messages/index";
 import { navListMessages } from "./messages/nav-list";
 import { notFoundMessages } from "./messages/not-found";
-import { playgroundMessages } from "./messages/playground";
 import { densityMessages } from "./messages/density";
 import { releaseNotesMessages } from "./messages/release-notes";
 import { scrollbarMessages } from "./messages/scrollbar";
@@ -224,6 +225,9 @@ export const ui = {
     ...listboxMessages.es,
     ...presenceMessages.es,
     ...passwordInputMessages.es,
+    ...otpInputMessages.es,
+    ...tablePagerMessages.es,
+    ...mediaGradientMessages.es,
     ...qrCodeMessages.es,
     ...feedMessages.es,
     ...fileUploadMessages.es,
@@ -295,11 +299,9 @@ export const ui = {
     ...wrapperMessages.es,
     ...foundationsMessages.es,
     ...appearanceMessages.es,
-    ...gradientsMessages.es,
     ...indexMessages.es,
     ...navListMessages.es,
     ...notFoundMessages.es,
-    ...playgroundMessages.es,
     ...densityMessages.es,
     ...releaseNotesMessages.es,
     ...scrollbarMessages.es,
@@ -368,6 +370,9 @@ export const ui = {
     ...listboxMessages.en,
     ...presenceMessages.en,
     ...passwordInputMessages.en,
+    ...otpInputMessages.en,
+    ...tablePagerMessages.en,
+    ...mediaGradientMessages.en,
     ...qrCodeMessages.en,
     ...feedMessages.en,
     ...fileUploadMessages.en,
@@ -439,11 +444,9 @@ export const ui = {
     ...wrapperMessages.en,
     ...foundationsMessages.en,
     ...appearanceMessages.en,
-    ...gradientsMessages.en,
     ...indexMessages.en,
     ...navListMessages.en,
     ...notFoundMessages.en,
-    ...playgroundMessages.en,
     ...densityMessages.en,
     ...releaseNotesMessages.en,
     ...scrollbarMessages.en,
@@ -478,7 +481,6 @@ export const navLabel: Record<Locale, Partial<Record<string, string>>> = {
     "/zoom": "Zoom and reflow",
     "/keyboard": "Keyboard navigation",
     "/density": "Component density",
-    "/gradients": "Gradients",
     "/transparency": "Transparency",
     "/icons": "Iconography",
     "/typography": "Typography",
