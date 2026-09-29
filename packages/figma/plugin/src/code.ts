@@ -416,30 +416,103 @@ function combos(axes: { name: string; values: string[] }[]): Record<string, stri
   return axes.reduce<Record<string, string>[]>((acc, a) => acc.flatMap((c) => a.values.map((v) => ({ ...c, [a.name]: v }))), [{}]);
 }
 
-/** Place `cells` on a grid of `cols` × `rows` slots, `slotOf` saying where each goes. Writes only moves. */
-function placeOnGrid(run: Run, set: ComponentSetNode, cells: ComponentNode[], slotOf: (c: ComponentNode) => [number, number] | null) {
-  if (!cells.length) return;
-  const cellW = Math.max(...cells.map((c) => c.width)) + 24;
-  const cellH = Math.max(...cells.map((c) => c.height)) + 24;
-  let cols = 0;
-  let rows = 0;
-  for (const cell of cells) {
-    const slot = slotOf(cell);
-    if (!slot) continue;
-    const [col, row] = slot;
-    cols = Math.max(cols, col + 1);
-    rows = Math.max(rows, row + 1);
-    const x = 24 + col * cellW;
-    const y = 24 + row * cellH;
-    if (cell.x !== x || cell.y !== y) run.write(() => ((cell.x = x), (cell.y = y)));
+const ownCells = (set: ComponentSetNode | undefined) =>
+  (set?.children ?? []).filter((c): c is ComponentNode => c.type === "COMPONENT" && getTag(c, "orphaned") !== "true");
+
+/** Offsets along one axis of the grid: `size` per slot, `gap` between, `group` more where `groupOf` changes. */
+function offsets(count: number, size: number, gap: number, group: number, groupOf: (i: number) => string, start: number) {
+  const out: number[] = [];
+  let at = start;
+  for (let i = 0; i < count; i++) {
+    if (i > 0) at += size + gap + (groupOf(i) !== groupOf(i - 1) ? group : 0);
+    out.push(at);
   }
-  const w = 48 + cols * cellW;
-  const h = 48 + rows * cellH;
-  if (set.width !== w || set.height !== h) run.write(() => set.resizeWithoutConstraints(w, h));
+  return out;
 }
 
-const ownCells = (set: ComponentSetNode | undefined) =>
-  (set?.children ?? []).filter((c): c is ComponentNode => c.type === "COMPONENT");
+function move(run: Run, node: SceneNode, x: number, y: number) {
+  if (node.x !== x || node.y !== y) run.write(() => ((node.x = x), (node.y = y)));
+}
+
+function resizeTo(run: Run, node: FrameNode | ComponentSetNode, w: number, h: number) {
+  if (Math.abs(node.width - w) > 0.5 || Math.abs(node.height - h) > 0.5) run.write(() => node.resizeWithoutConstraints(w, h));
+}
+
+/* ── the stage: pages, frames, labels ───────────────────────────────────────────────────────── */
+
+const FRAME_PAD = 48;
+const LABEL_GAP = 24;
+
+type Label = { font: FontName; size: number; color: Paint };
+
+/** The kit's own label style: family, weight, size and colour all from the stage's variables. */
+async function labelStyle(ctx: Ctx, weight?: number, size?: number): Promise<Label> {
+  const { label } = manifest.stage;
+  const font = await fontFor(ctx.run, String(valueOf(label.fontFamily)), weight ?? Number(valueOf(label.fontWeight)));
+  return { font, size: size ?? Number(valueOf(label.fontSize)), color: toPaint(ctx, { type: "SOLID", color: label.color }) };
+}
+
+/** A text of ours inside `parent`, found by its label key. Writes only what differs. */
+function ensureLabel(ctx: Ctx, parent: FrameNode, key: string, chars: string, style: Label): TextNode {
+  const { run } = ctx;
+  let text = parent.children.find((n): n is TextNode => n.type === "TEXT" && getTag(n, "label") === key);
+  if (!text) {
+    run.write(() => {
+      text = figma.createText();
+      text.fontName = style.font;
+      text.fontSize = style.size;
+      text.fills = [style.color];
+      text.characters = chars;
+      text.name = chars;
+      text.setSharedPluginData(NS, "label", key);
+      parent.appendChild(text);
+    });
+    return text!;
+  }
+  const t = text;
+  const font = t.fontName as FontName;
+  if (font.family !== style.font.family || font.style !== style.font.style) run.write(() => (t.fontName = style.font));
+  if (t.fontSize !== style.size) run.write(() => (t.fontSize = style.size));
+  if (t.characters !== chars) run.write(() => ((t.characters = chars), (t.name = chars)));
+  return t;
+}
+
+/** Remove our own label texts that the layout no longer draws. Labels are chrome, not components. */
+function pruneLabels(ctx: Ctx, parent: FrameNode, keep: Set<string>) {
+  for (const node of [...parent.children]) {
+    if (node.type === "TEXT" && getTag(node, "label") && !keep.has(getTag(node, "label"))) ctx.run.write(() => node.remove());
+  }
+}
+
+/** Bound to the stage's variable: the docs preview's own background, in whichever mode the file shows. */
+function paintStage(ctx: Ctx, frame: FrameNode) {
+  const fill = (frame.fills as readonly Paint[])[0];
+  const bound = fill?.type === "SOLID" ? fill.boundVariables?.color?.id : undefined;
+  const want = "variable" in manifest.stage.background ? variableFor(ctx, manifest.stage.background).id : undefined;
+  if (!bound || bound !== want) ctx.run.write(() => (frame.fills = [toPaint(ctx, { type: "SOLID", color: manifest.stage.background })]));
+}
+
+/** The documentation frame a drawing lives in, on the stage's background. */
+function ensureFrame(ctx: Ctx, id: string, name: string, page: PageNode, found: Map<string, SceneNode>): FrameNode | undefined {
+  const { run } = ctx;
+  let frame = found.get(`frame:${id}`) as FrameNode | undefined;
+  if (!frame) {
+    run.log("CREATE", `frame ${name}`);
+    if (!run.apply) return undefined;
+    frame = figma.createFrame();
+    frame.name = name;
+    frame.clipsContent = false;
+    frame.cornerRadius = 16;
+    page.appendChild(frame);
+    found.set(`frame:${id}`, frame);
+  }
+  const f = frame;
+  if (f.parent !== page) run.write(() => page.appendChild(f));
+  if (f.name !== name) run.write(() => (f.name = name));
+  paintStage(ctx, f);
+  tag(run, f, provenance("frame", `frame:${id}`));
+  return f;
+}
 
 /* ── the Icon set ───────────────────────────────────────────────────────────────────────────── */
 
@@ -462,12 +535,47 @@ function drawIcon(node: ComponentNode, icon: M.IconSet["icons"][number], spec: M
   glyph.constraints = { horizontal: "SCALE", vertical: "SCALE" };
 }
 
-async function syncIconSet(ctx: Ctx, spec: M.IconSet, found: Map<string, SceneNode>, page: PageNode): Promise<IconCtx | undefined> {
+/** Icons on a grid, each named underneath. */
+async function layoutIcons(ctx: Ctx, frame: FrameNode, set: ComponentSetNode, spec: M.IconSet) {
+  const { run } = ctx;
+  if (set.parent !== frame) run.write(() => frame.appendChild(set));
+  const title = ensureLabel(ctx, frame, "title", spec.name, await labelStyle(ctx, 600, 24));
+  move(run, title, FRAME_PAD, FRAME_PAD);
+  const style = await labelStyle(ctx);
+  const columns = 11;
+  const slot = 96;
+  const order = new Map(spec.icons.map((icon, i) => [`${spec.axis}=${icon.name}`, i]));
+  const cells = ownCells(set);
+  const keep = new Set(["title"]);
+  const lineH = style.size * 1.4;
+  const rowH = spec.size + 8 + lineH + 24;
+  const setX = FRAME_PAD;
+  const setY = FRAME_PAD + title.height + LABEL_GAP;
+  for (const cell of cells) {
+    const i = order.get(getTag(cell, "cell"));
+    if (i === undefined) continue;
+    const col = i % columns;
+    const row = Math.floor(i / columns);
+    move(run, cell, col * slot + (slot - spec.size) / 2, row * rowH);
+    const name = parseKey(getTag(cell, "cell"))[spec.axis];
+    const key = `icon:${name}`;
+    keep.add(key);
+    const text = ensureLabel(ctx, frame, key, name, style);
+    move(run, text, Math.round(setX + col * slot + (slot - text.width) / 2), setY + row * rowH + spec.size + 8);
+  }
+  const rows = Math.ceil(spec.icons.length / columns);
+  resizeTo(run, set, columns * slot, rows * rowH);
+  move(run, set, setX, setY);
+  pruneLabels(ctx, frame, keep);
+  resizeTo(run, frame, setX + set.width + FRAME_PAD, setY + set.height + FRAME_PAD);
+}
+
+async function syncIconSet(ctx: Ctx, spec: M.IconSet, found: Map<string, SceneNode>, page: PageNode | undefined): Promise<IconCtx | undefined> {
   const { run, progress } = ctx;
   progress.start("icons");
+  const frame = page ? ensureFrame(ctx, spec.id, spec.name, page, found) : undefined;
   let set = found.get(spec.id) as ComponentSetNode | undefined;
   const existing = new Map(ownCells(set).map((c) => [getTag(c, "cell"), c]));
-  const created: ComponentNode[] = [];
   const counts = { created: 0, updated: 0, unchanged: 0, orphaned: 0 };
 
   for (const icon of spec.icons) {
@@ -475,12 +583,14 @@ async function syncIconSet(ctx: Ctx, spec: M.IconSet, found: Map<string, SceneNo
     const node = existing.get(key);
     if (!node) {
       counts.created++;
-      if (run.write(() => void 0)) {
+      if (run.write(() => void 0) && frame) {
         const fresh = figma.createComponent();
         drawIcon(fresh, icon, spec);
         fresh.setSharedPluginData(NS, "cell", key);
         fresh.setSharedPluginData(NS, "hash", icon.hash);
-        created.push(fresh);
+        // Into the set at once, so an interrupted run never leaves loose components on the page.
+        if (!set) set = figma.combineAsVariants([fresh], frame);
+        else set.appendChild(fresh);
       }
     } else if (getTag(node, "hash") !== icon.hash) {
       counts.updated++;
@@ -493,7 +603,7 @@ async function syncIconSet(ctx: Ctx, spec: M.IconSet, found: Map<string, SceneNo
   }
   const wanted = new Set(spec.icons.map((i) => `${spec.axis}=${i.name}`));
   for (const [key, node] of existing) {
-    if (wanted.has(key) || getTag(node, "orphaned") === "true") continue;
+    if (wanted.has(key)) continue;
     counts.orphaned++;
     run.log("ORPHANED", `${spec.name}: ${key}`, "no longer drawn; kept");
     run.write(() => node.setSharedPluginData(NS, "orphaned", "true"));
@@ -501,25 +611,20 @@ async function syncIconSet(ctx: Ctx, spec: M.IconSet, found: Map<string, SceneNo
   if (counts.created) run.log("CREATE", `${spec.name}: ${counts.created} icons`, spec.source);
   if (counts.updated) run.log("UPDATE", `${spec.name}: ${counts.updated} icons`, "in place");
   if (counts.unchanged) run.log("NOOP", `${spec.name}: ${counts.unchanged} icons`);
+
+  if (!set || !frame) {
+    progress.finish("icons", summarize(counts));
+    return undefined;
+  }
+  const s = set;
+  if (s.name !== spec.name) run.write(() => (s.name = spec.name));
+  tag(run, s, { ...provenance("icon-set", spec.id), hash: spec.hash });
+  // Layout reads sizes of nodes a dry run never drew, so only a real sync lays out.
+  if (run.apply) await layoutIcons(ctx, frame, s, spec);
+  found.set(spec.id, s);
   progress.finish("icons", summarize(counts));
-
-  if (!run.apply) return undefined;
-  if (!set) set = figma.combineAsVariants(created, page);
-  else for (const node of created) set.appendChild(node);
-  if (set.name !== spec.name) run.write(() => (set!.name = spec.name));
-  tag(run, set, { ...provenance("icon-set", spec.id), hash: spec.hash });
-
-  const cells = ownCells(set).filter((c) => getTag(c, "orphaned") !== "true");
-  const order = new Map(spec.icons.map((icon, i) => [`${spec.axis}=${icon.name}`, i]));
-  const columns = 11;
-  placeOnGrid(run, set, cells, (c) => {
-    const i = order.get(getTag(c, "cell"));
-    return i === undefined ? null : [i % columns, Math.floor(i / columns)];
-  });
-  found.set(spec.id, set);
-
-  const byName = new Map(cells.map((c) => [parseKey(getTag(c, "cell"))[spec.axis], c]));
-  return { set, byName, spec };
+  const byName = new Map(ownCells(s).map((c) => [parseKey(getTag(c, "cell"))[spec.axis], c]));
+  return { set: s, byName, spec };
 }
 
 /* ── the component sets ─────────────────────────────────────────────────────────────────────── */
@@ -660,26 +765,99 @@ function bindReferences(ctx: SetCtx, node: ComponentNode, cell: M.Cell, keys: Re
   }
 }
 
-async function syncSet(ctx: SetCtx, spec: M.ComponentSet, found: Map<string, SceneNode>, page: PageNode) {
+/**
+ * A component set in its documentation frame: one row per button, one column per state, a larger
+ * gap wherever the outermost axis changes, and every row and column named in the kit's own type.
+ */
+async function layoutSet(ctx: SetCtx, frame: FrameNode, set: ComponentSetNode, spec: M.ComponentSet) {
+  const { run } = ctx;
+  if (set.parent !== frame) run.write(() => frame.appendChild(set));
+  const cells = ownCells(set);
+  if (!cells.length) return;
+  const cellW = Math.max(...cells.map((c) => c.width));
+  const cellH = Math.max(...cells.map((c) => c.height));
+  const GAP = 16;
+  const GROUP = 40;
+  const INNER = 24;
+  const cols = combos(spec.grid.columns);
+  const rows = combos(spec.grid.rows);
+  const outerCol = spec.grid.columns[0].name;
+  const outerRow = spec.grid.rows[0].name;
+  const colX = offsets(cols.length, cellW, GAP, GROUP, (i) => cols[i][outerCol], INNER);
+  const rowY = offsets(rows.length, cellH, GAP, GROUP, (i) => rows[i][outerRow], INNER);
+
+  const matches = (combo: Record<string, string>, props: Record<string, string>) => Object.entries(combo).every(([k, v]) => props[k] === v);
+  for (const cell of cells) {
+    const props = parseKey(getTag(cell, "cell"));
+    const col = cols.findIndex((combo) => matches(combo, props));
+    const row = rows.findIndex((combo) => matches(combo, props));
+    if (col >= 0 && row >= 0) move(run, cell, colX[col], rowY[row]);
+  }
+  resizeTo(run, set, colX[colX.length - 1] + cellW + INNER, rowY[rowY.length - 1] + cellH + INNER);
+  // The default variant is Figma's top-left one: the grid draws each axis default-first.
+  const first = cells.find((c) => getTag(c, "cell") === spec.defaultCell);
+  if (first && set.children[0] !== first) run.write(() => set.insertChild(0, first));
+
+  // Labels: the title, a name per row, a state per column and a heading per column group.
+  const keep = new Set<string>();
+  const title = ensureLabel(ctx, frame, "title", spec.name, await labelStyle(ctx, 600, 24));
+  keep.add("title");
+  const style = await labelStyle(ctx);
+  const strong = await labelStyle(ctx, 600);
+  const word = (axis: string, value: string) => (value === "true" || value === "false" ? `${axis}: ${value}` : value);
+
+  const rowLabels = rows.map((row, r) => {
+    const key = `row:${Object.values(row).join(",")}`;
+    keep.add(key);
+    return ensureLabel(ctx, frame, key, Object.entries(row).map(([a, v]) => word(a, v)).join(" · "), style);
+  });
+  const labelW = Math.max(...rowLabels.map((t) => t.width));
+  const lineH = Math.ceil(style.size * 1.4);
+  const setX = FRAME_PAD + labelW + LABEL_GAP;
+  const setY = FRAME_PAD + title.height + LABEL_GAP + 2 * (lineH + 8);
+  move(run, title, FRAME_PAD, FRAME_PAD);
+  move(run, set, setX, setY);
+  rowLabels.forEach((text, r) => move(run, text, FRAME_PAD, Math.round(setY + rowY[r] + (cellH - text.height) / 2)));
+
+  cols.forEach((col, i) => {
+    const inner = Object.entries(col).filter(([axis]) => axis !== outerCol);
+    const key = `col:${Object.values(col).join(",")}`;
+    keep.add(key);
+    const text = ensureLabel(ctx, frame, key, inner.map(([a, v]) => word(a, v)).join(" · "), style);
+    move(run, text, setX + colX[i], setY - lineH - 8);
+    if (i === 0 || cols[i - 1][outerCol] !== col[outerCol]) {
+      const groupKey = `colgroup:${col[outerCol]}`;
+      keep.add(groupKey);
+      const group = ensureLabel(ctx, frame, groupKey, word(outerCol, col[outerCol]), strong);
+      move(run, group, setX + colX[i], setY - 2 * (lineH + 8));
+    }
+  });
+  pruneLabels(ctx, frame, keep);
+  resizeTo(run, frame, setX + set.width + FRAME_PAD, setY + set.height + FRAME_PAD);
+}
+
+async function syncSet(ctx: SetCtx, spec: M.ComponentSet, found: Map<string, SceneNode>, page: PageNode | undefined) {
   const { run, progress } = ctx;
   progress.start(spec.id);
+  const frame = page ? ensureFrame(ctx, spec.id, spec.name, page, found) : undefined;
   let set = found.get(spec.id) as ComponentSetNode | undefined;
   const existing = new Map(ownCells(set).map((c) => [getTag(c, "cell"), c]));
   const samples: Record<string, string> = {};
   for (const p of spec.properties) if (p.type === "TEXT") samples[p.name] = p.default;
 
-  const created: ComponentNode[] = [];
   const counts = { created: 0, updated: 0, unchanged: 0, orphaned: 0 };
   for (const cell of spec.cells) {
     const node = existing.get(cell.key);
     if (!node) {
       counts.created++;
-      if (run.write(() => void 0)) {
+      if (run.write(() => void 0) && frame) {
         const fresh = figma.createComponent();
         await applyCell(ctx, fresh, cell, samples);
         fresh.setSharedPluginData(NS, "cell", cell.key);
         fresh.setSharedPluginData(NS, "hash", cell.hash);
-        created.push(fresh);
+        // Into the set at once, so an interrupted run never leaves loose components on the page.
+        if (!set) set = figma.combineAsVariants([fresh], frame);
+        else set.appendChild(fresh);
       }
     } else if (getTag(node, "hash") !== cell.hash) {
       counts.updated++;
@@ -693,7 +871,7 @@ async function syncSet(ctx: SetCtx, spec: M.ComponentSet, found: Map<string, Sce
 
   const wanted = new Set(spec.cells.map((c) => c.key));
   for (const [key, node] of existing) {
-    if (wanted.has(key) || getTag(node, "orphaned") === "true") continue;
+    if (wanted.has(key)) continue;
     counts.orphaned++;
     run.log("ORPHANED", `${spec.name}: ${key}`, "no longer in the manifest; kept");
     run.write(() => node.setSharedPluginData(NS, "orphaned", "true"));
@@ -702,57 +880,42 @@ async function syncSet(ctx: SetCtx, spec: M.ComponentSet, found: Map<string, Sce
   if (counts.updated) run.log("UPDATE", `${spec.name}: ${counts.updated} variants`, "in place");
   if (counts.unchanged) run.log("NOOP", `${spec.name}: ${counts.unchanged} variants`);
 
-  if (!run.apply) {
+  if (!set || !frame) {
     if (!set) run.log("CREATE", `component set ${spec.name}`);
     progress.finish(spec.id, summarize(counts));
     return;
   }
-  if (!set) set = figma.combineAsVariants(created, page);
-  else for (const node of created) set.appendChild(node);
-  if (set.name !== spec.name) run.write(() => (set!.name = spec.name));
-
-  if (getTag(set, "contractHash") && getTag(set, "contractHash") !== spec.contractHash) {
-    run.log("UPDATE", `${spec.name}: contract`, `surface ${getTag(set, "contractHash")} → ${spec.contractHash}, reconciled in place`);
+  const s = set;
+  if (s.name !== spec.name) run.write(() => (s.name = spec.name));
+  if (getTag(s, "contractHash") && getTag(s, "contractHash") !== spec.contractHash) {
+    run.log("UPDATE", `${spec.name}: contract`, `surface ${getTag(s, "contractHash")} → ${spec.contractHash}, reconciled in place`);
   }
-  tag(run, set, { ...provenance("component-set", spec.id), contractHash: spec.contractHash, visualHash: spec.visualHash });
+  tag(run, s, { ...provenance("component-set", spec.id), contractHash: spec.contractHash, visualHash: spec.visualHash });
 
-  const keys = ensureProperties(ctx, set, spec.properties);
+  const keys = ensureProperties(ctx, s, spec.properties);
+  const byKey = new Map(ownCells(s).map((c) => [getTag(c, "cell"), c]));
   for (const cell of spec.cells) {
-    const node = ownCells(set).find((c) => getTag(c, "cell") === cell.key);
+    const node = byKey.get(cell.key);
     if (node) bindReferences(ctx, node, cell, keys);
   }
-
-  // The default variant is Figma's top-left one: the grid draws each axis default-first.
-  const cols = combos(spec.grid.columns);
-  const rows = combos(spec.grid.rows);
-  const matches = (combo: Record<string, string>, props: Record<string, string>) => Object.entries(combo).every(([k, v]) => props[k] === v);
-  const cells = ownCells(set).filter((c) => getTag(c, "orphaned") !== "true");
-  placeOnGrid(run, set, cells, (c) => {
-    const props = parseKey(getTag(c, "cell"));
-    const col = cols.findIndex((combo) => matches(combo, props));
-    const row = rows.findIndex((combo) => matches(combo, props));
-    return col < 0 || row < 0 ? null : [col, row];
-  });
-  const first = cells.find((c) => getTag(c, "cell") === spec.defaultCell);
-  if (first && set.children[0] !== first) run.write(() => set!.insertChild(0, first));
-  found.set(spec.id, set);
+  if (run.apply) await layoutSet(ctx, frame, s, spec);
+  found.set(spec.id, s);
   progress.finish(spec.id, summarize(counts));
 }
 
 /* ── the specimen: the docs previews, as instances ──────────────────────────────────────────── */
 
-async function syncSpecimen(ctx: SetCtx, found: Map<string, SceneNode>, page: PageNode) {
+async function syncSpecimen(ctx: SetCtx, found: Map<string, SceneNode>, page: PageNode | undefined) {
   const { run, progress } = ctx;
   progress.start("specimen");
   let frame = found.get("specimen") as FrameNode | undefined;
   if (!frame) {
     run.log("CREATE", "specimen frame");
-    if (!run.apply) {
+    if (!run.apply || !page) {
       progress.finish("specimen", `${manifest.specimen.length} to create`);
       return;
     }
     frame = figma.createFrame();
-    frame.name = "Specimen (docs previews)";
     frame.layoutMode = "HORIZONTAL";
     frame.layoutWrap = "WRAP";
     frame.primaryAxisSizingMode = "FIXED";
@@ -760,16 +923,20 @@ async function syncSpecimen(ctx: SetCtx, found: Map<string, SceneNode>, page: Pa
     frame.resize(1400, 100);
     frame.itemSpacing = 32;
     frame.counterAxisSpacing = 32;
-    frame.paddingTop = frame.paddingBottom = frame.paddingLeft = frame.paddingRight = 40;
-    frame.fills = [{ type: "SOLID", color: { r: 1, g: 1, b: 1 } }];
+    frame.paddingTop = frame.paddingBottom = frame.paddingLeft = frame.paddingRight = FRAME_PAD;
+    frame.cornerRadius = 16;
     page.appendChild(frame);
   }
-  tag(run, frame, provenance("specimen", "specimen"));
-  // Registered here so `arrange` places it below the sets instead of leaving it at the origin.
-  found.set("specimen", frame);
+  const f = frame;
+  if (page && f.parent !== page) run.write(() => page.appendChild(f));
+  if (f.name !== "Specimen (docs previews)") run.write(() => (f.name = "Specimen (docs previews)"));
+  paintStage(ctx, f);
+  tag(run, f, provenance("specimen", "specimen"));
+  found.set("specimen", f);
 
-  const entries = new Map(frame.children.map((c) => [getTag(c, "specimen"), c as FrameNode]));
+  const entries = new Map(f.children.map((c) => [getTag(c, "specimen"), c as FrameNode]));
   const counts = { created: 0, updated: 0, unchanged: 0 };
+  const captionStyle = await labelStyle(ctx);
   for (const [index, entry] of manifest.specimen.entries()) {
     await progress.tick("specimen");
     const set = found.get(entry.set) as ComponentSetNode | undefined;
@@ -777,7 +944,7 @@ async function syncSpecimen(ctx: SetCtx, found: Map<string, SceneNode>, page: Pa
     if (!set || !main) continue;
     const hash = JSON.stringify(entry);
     let wrapper = entries.get(entry.id);
-    if (wrapper && getTag(wrapper, "hash") === hash && frame.children[index] === wrapper) {
+    if (wrapper && getTag(wrapper, "hash") === hash && f.children[index] === wrapper) {
       counts.unchanged++;
       continue;
     }
@@ -795,18 +962,11 @@ async function syncSpecimen(ctx: SetCtx, found: Map<string, SceneNode>, page: Pa
       wrapper.counterAxisSizingMode = "AUTO";
       wrapper.itemSpacing = 8;
       wrapper.fills = [];
-      const caption = figma.createText();
-      await figma.loadFontAsync({ family: "Inter", style: "Regular" });
-      caption.fontName = { family: "Inter", style: "Regular" };
-      caption.fontSize = 11;
-      caption.name = "caption";
-      wrapper.appendChild(caption);
       wrapper.setSharedPluginData(NS, "specimen", entry.id);
     } else counts.updated++;
-    frame.insertChild(index, wrapper);
-    const caption = wrapper.findChild((n) => n.name === "caption") as TextNode;
-    await figma.loadFontAsync(caption.fontName as FontName);
-    caption.characters = `${entry.id}\n${entry.set.split("/")[1]} · ${entry.cell}`;
+    f.insertChild(index, wrapper);
+    const caption = ensureLabel(ctx, wrapper, "caption", `${entry.id}\n${entry.set.split("/")[1]} · ${entry.cell}`, captionStyle);
+    if (wrapper.children[0] !== caption) wrapper.insertChild(0, caption);
     let instance = wrapper.findChild((n) => n.name === "instance") as InstanceNode | null;
     if (!instance) {
       instance = main.createInstance();
@@ -838,30 +998,97 @@ async function syncSpecimen(ctx: SetCtx, found: Map<string, SceneNode>, page: Pa
 
 /* ── the run ────────────────────────────────────────────────────────────────────────────────── */
 
-async function ownPage(run: Run): Promise<PageNode | undefined> {
-  let page = figma.root.children.find((p) => getTag(p, "id") === "page");
-  if (!page) {
-    run.log("CREATE", "page Skryensya");
-    if (!run.apply) return undefined;
-    page = figma.createPage();
-    page.name = "Skryensya";
+/** One page per component, found by tag. The first sync's single page is left as it is. */
+async function ensurePages(run: Run): Promise<Map<string, PageNode>> {
+  const out = new Map<string, PageNode>();
+  for (const spec of manifest.pages) {
+    const id = `page:${spec.id}`;
+    let page = figma.root.children.find((p) => getTag(p, "id") === id);
+    if (!page) {
+      run.log("CREATE", `page ${spec.name}`);
+      if (!run.apply) continue;
+      page = figma.createPage();
+      page.name = spec.name;
+    }
+    tag(run, page, provenance("page", id));
+    await page.loadAsync();
+    out.set(spec.id, page);
   }
-  tag(run, page, provenance("page", "page"));
-  await page.loadAsync();
-  // New nodes land on the current page before they are moved anywhere; make that this one.
-  if (run.apply && figma.currentPage !== page) await figma.setCurrentPageAsync(page);
-  return page;
+  return out;
 }
 
-/** Stack the Icon set, the Button sets and the specimen top to bottom. Writes only what moved. */
-function arrange(run: Run, found: Map<string, SceneNode>) {
-  let y = 0;
-  const order = [...manifest.components.map((c) => c.id), "specimen"];
-  for (const id of order) {
-    const node = found.get(id);
-    if (!node) continue;
-    if (node.x !== 0 || node.y !== y) run.write(() => ((node.x = 0), (node.y = y)));
-    y += node.height + 160;
+/** Everything of ours on every page of ours, by id, at any depth: a set now lives inside its frame. */
+async function findOwn(): Promise<{ found: Map<string, SceneNode>; pages: PageNode[] }> {
+  const pages = figma.root.children.filter((p) => getTag(p, "id").startsWith("page"));
+  const found = new Map<string, SceneNode>();
+  for (const page of pages) {
+    await page.loadAsync();
+    for (const node of page.findAllWithCriteria({ sharedPluginData: { namespace: NS, keys: ["id"] } })) {
+      if (!found.has(getTag(node, "id"))) found.set(getTag(node, "id"), node);
+    }
+  }
+  return { found, pages };
+}
+
+/**
+ * What is ours but no longer has a place: a top-level object the manifest dropped (the first icon
+ * placeholder) or a variant left loose by an interrupted run. Moved into one frame per page, tagged,
+ * never deleted: a designer decides.
+ */
+function collectOrphans(run: Run, pages: PageNode[], found: Map<string, SceneNode>) {
+  const known = new Set<string>([
+    ...manifest.components.flatMap((c) => [c.id, `frame:${c.id}`]),
+    "specimen",
+    ...manifest.pages.map((p) => `page:${p.id}`),
+  ]);
+  for (const page of pages) {
+    const loose = page.children.filter(
+      (n) =>
+        getTag(n, "id") !== "orphans" &&
+        ((n.type === "COMPONENT" && getTag(n, "cell")) || (getTag(n, "id") && !known.has(getTag(n, "id")))),
+    );
+    if (!loose.length) continue;
+    run.log("ORPHANED", `${loose.length} loose object(s) on ${page.name}`, "moved into “Orphaned”, safe to delete");
+    run.write(() => {
+      let frame = page.children.find((n) => getTag(n, "id") === "orphans") as FrameNode | undefined;
+      if (!frame) {
+        frame = figma.createFrame();
+        frame.name = "Orphaned (safe to delete)";
+        frame.layoutMode = "HORIZONTAL";
+        frame.layoutWrap = "WRAP";
+        frame.primaryAxisSizingMode = "FIXED";
+        frame.counterAxisSizingMode = "AUTO";
+        frame.resize(1200, 100);
+        frame.itemSpacing = 16;
+        frame.counterAxisSpacing = 16;
+        frame.paddingTop = frame.paddingBottom = frame.paddingLeft = frame.paddingRight = 24;
+        frame.setSharedPluginData(NS, "id", "orphans");
+        page.appendChild(frame);
+      }
+      for (const node of loose) {
+        node.setSharedPluginData(NS, "orphaned", "true");
+        frame.appendChild(node);
+      }
+    });
+  }
+}
+
+/** Stack each page's frames top to bottom, in manifest order. Writes only what moved. */
+function arrange(run: Run, pages: Map<string, PageNode>, found: Map<string, SceneNode>) {
+  for (const [pageId, page] of pages) {
+    let y = 0;
+    const ids = [
+      ...manifest.components.filter((c) => c.page === pageId).map((c) => `frame:${c.id}`),
+      ...(manifest.specimenPage === pageId ? ["specimen"] : []),
+    ];
+    for (const id of ids) {
+      const node = found.get(id);
+      if (!node || node.parent !== page) continue;
+      move(run, node, 0, y);
+      y += node.height + 160;
+    }
+    const orphans = page.children.find((n) => getTag(n, "id") === "orphans");
+    if (orphans) move(run, orphans, 0, y);
   }
 }
 
@@ -878,43 +1105,23 @@ async function reconcile(apply: boolean) {
   ]);
 
   const vars = await syncVariables(run, progress);
-  const page = await ownPage(run);
-  const found = new Map<string, SceneNode>();
-  if (page) {
-    for (const node of page.findAllWithCriteria({ sharedPluginData: { namespace: NS, keys: ["id"] } })) {
-      if (node.parent === page) found.set(getTag(node, "id"), node);
-    }
-  }
-  // Top-level objects of ours the manifest no longer has (the old icon placeholder): kept, tagged.
-  const known = new Set([...manifest.components.map((c) => c.id), "specimen"]);
-  for (const [id, node] of found) {
-    if (known.has(id) || getTag(node, "orphaned") === "true") continue;
-    run.log("ORPHANED", `${node.name}`, "no longer in the manifest; kept");
-    run.write(() => node.setSharedPluginData(NS, "orphaned", "true"));
-  }
-
+  const pages = await ensurePages(run);
+  const { found, pages: ownPages } = await findOwn();
   const ctx: Ctx = { run, progress, vars };
-  const icons = page ? await syncIconSet(ctx, iconSpec, found, page) : undefined;
-  if (page) {
-    // A dry run never draws a cell, so it walks the sets without the Icon set it would have made.
-    const setCtx: SetCtx = { ...ctx, icons: icons as IconCtx };
-    for (const spec of setSpecs) await syncSet(setCtx, spec, found, page);
-    await syncSpecimen(setCtx, found, page);
-    arrange(run, found);
-  } else {
-    // Dry run on a file with nothing yet: everything after the variables would be created.
-    if (!page) progress.finish("icons", `${iconSpec.icons.length} to create`);
-    for (const spec of setSpecs) {
-      run.log("CREATE", `component set ${spec.name}`, `${spec.cells.length} variants`);
-      progress.finish(spec.id, `${spec.cells.length} to create`);
-    }
-    run.log("CREATE", "specimen frame");
-    progress.finish("specimen", `${manifest.specimen.length} to create`);
-  }
+
+  const icons = await syncIconSet(ctx, iconSpec, found, pages.get(iconSpec.page));
+  // A dry run never draws a cell, so it walks the sets without the Icon set it would have made.
+  const setCtx: SetCtx = { ...ctx, icons: icons as IconCtx };
+  for (const spec of setSpecs) await syncSet(setCtx, spec, found, pages.get(spec.page));
+  await syncSpecimen(setCtx, found, pages.get(manifest.specimenPage));
+  collectOrphans(run, ownPages, found);
+  arrange(run, pages, found);
 
   if (figma.root.getSharedPluginData(NS, "sourceHash") !== manifest.sourceHash) {
     run.write(() => figma.root.setSharedPluginData(NS, "sourceHash", manifest.sourceHash));
   }
+  const landing = pages.get(manifest.specimenPage);
+  if (apply && landing && figma.currentPage !== landing) await figma.setCurrentPageAsync(landing);
 
   const counts: Record<string, number> = {};
   for (const e of run.entries) counts[e.action] = (counts[e.action] ?? 0) + 1;
