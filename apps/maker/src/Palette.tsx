@@ -35,15 +35,43 @@ import type { Maker } from "./state";
  */
 
 const compiled = index as unknown as Parameters<typeof discover>[0];
+const makerHiddenContracts = new Set(["annotation", "chart", "diagram"]);
+const makerVisible = (ref: SignatureRef) => !makerHiddenContracts.has(ref.contract);
+const thumbnailSrc = (ref: SignatureRef, scheme: "light" | "dark") => `/component-thumbnails/${ref.contract}-${ref.signature.replace(/[^a-z0-9]+/gi, "-")}-${scheme}.png`;
+
+/** Where an insert lands: inside the selected container, after the selected node, or at the page's end. */
+export function insertionFor(maker: Maker): Place {
+  const root = maker.page.root;
+  return (maker.view.selected ? insertionPlace(root, maker.view.selected) : undefined) ?? { parent: root.id, slot: "children", index: childrenOf(root, "children").length };
+}
+
+/**
+ * The signatures a quick insert (the bar's Insert menu) offers, among those the contract allows at
+ * the insertion place: `undefined` where it may not go, so the menu shows it unavailable rather than
+ * inserting somewhere the palette would not.
+ */
+export function quickInserts(maker: Maker, signatures: readonly string[]): readonly { signature: string; insert?: () => void }[] {
+  const place = insertionFor(maker);
+  const allowed = insertable(maker.page.root, place, (ref) => presetFor(ref, () => "preview"));
+  return signatures.map((signature) => {
+    const ref = allowed.find((entry) => entry.signature === signature);
+    return {
+      signature,
+      insert: ref
+        ? () => {
+            const child = presetFor(ref, randomId)!;
+            maker.gesture([{ type: "insert", at: place, child }], child.id);
+          }
+        : undefined,
+    };
+  });
+}
 
 export function Palette({ maker, drag }: { maker: Maker; drag: Drag }) {
   const [tab, setTab] = useState<"components" | "sections">("components");
   const [query, setQuery] = useState("");
   const root = maker.page.root;
-  const place: Place = useMemo(
-    () => (maker.view.selected ? insertionPlace(root, maker.view.selected) : undefined) ?? { parent: root.id, slot: "children", index: childrenOf(root, "children").length },
-    [root, maker.view.selected],
-  );
+  const place: Place = useMemo(() => insertionFor(maker), [root, maker.view.selected]);
 
   /* Said in words, since it is not always "inside the selection": after a heading, it is below it. */
   const whereItGoes = useMemo(() => {
@@ -56,7 +84,7 @@ export function Palette({ maker, drag }: { maker: Maker; drag: Drag }) {
     return parent?.id === root.id ? "at the end of the page" : `inside ${parentName}, at the end`;
   }, [root, place, maker.view.selected]);
 
-  const allowed = useMemo(() => insertable(root, place, (ref) => presetFor(ref, () => "preview")), [root, place]);
+  const allowed = useMemo(() => insertable(root, place, (ref) => presetFor(ref, () => "preview")).filter(makerVisible), [root, place]);
 
   const shown: readonly SignatureRef[] = useMemo(() => {
     if (!query.trim()) return allowed;
@@ -112,7 +140,9 @@ export function Palette({ maker, drag }: { maker: Maker; drag: Drag }) {
   return (
     <div className="maker-palette">
       <SegmentedControl
+        className="maker-palette__tabs"
         label="Palette"
+        size="md"
         value={tab}
         onValueChange={(value) => setTab(value as typeof tab)}
         options={[
@@ -138,9 +168,9 @@ export function Palette({ maker, drag }: { maker: Maker; drag: Drag }) {
                     const make = () => presetFor(ref, randomId)!;
                     return (
                       <li key={`${ref.contract}/${ref.signature}`}>
-                        <button type="button" className="maker-palette__item" onClick={() => insert(make)} onPointerDown={pressToDrag(make)}>
-                          <MakerIcon icon={{ glyph: glyphFor(ref.signature) ?? "component" }} />
-                          <span>{ref.signature}</span>
+                        <button type="button" className="maker-palette__item maker-palette__item--component" onClick={() => insert(make)} onPointerDown={pressToDrag(make)}>
+                          <span className="maker-palette__label">{ref.signature}</span>
+                          <ComponentThumbnail ref_={ref} />
                         </button>
                       </li>
                     );
@@ -169,5 +199,18 @@ export function Palette({ maker, drag }: { maker: Maker; drag: Drag }) {
         </div>
       )}
     </div>
+  );
+}
+
+function ComponentThumbnail({ ref_ }: { ref_: SignatureRef }) {
+  const category = resolve(ref_)?.contract.category ?? "other";
+  return (
+    <span className="maker-palette__thumb" data-category={category} aria-hidden="true">
+      <img className="maker-palette__thumb-image maker-palette__thumb-image--light" src={thumbnailSrc(ref_, "light")} alt="" loading="lazy" onError={(event) => (event.currentTarget.hidden = true)} />
+      <img className="maker-palette__thumb-image maker-palette__thumb-image--dark" src={thumbnailSrc(ref_, "dark")} alt="" loading="lazy" onError={(event) => (event.currentTarget.hidden = true)} />
+      <span className="maker-palette__thumb-fallback">
+        <MakerIcon icon={{ glyph: glyphFor(ref_.signature) ?? "component" }} />
+      </span>
+    </span>
   );
 }

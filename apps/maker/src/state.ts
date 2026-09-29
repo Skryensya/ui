@@ -5,6 +5,7 @@ import {
   commitSite,
   createSite,
   isNode,
+  locate,
   onPage,
   parseSite,
   pending,
@@ -41,6 +42,7 @@ export type View = {
   /** The page open on the stage. */
   readonly page: string;
   readonly selected?: string;
+  readonly selectedIds: readonly string[];
   readonly width: StageWidth;
   readonly mode: "edit" | "interact";
   readonly scheme: "light" | "dark";
@@ -74,7 +76,9 @@ const VIEW_KEY = "skryensya-maker:view";
 function settle(site: MakerSite, view: View): View {
   const page = site.pages.some((entry) => entry.id === view.page) ? view.page : site.pages[0]!.id;
   const root = site.pages.find((entry) => entry.id === page)!.root;
-  return { ...view, page, selected: page === view.page ? keep(root, view.selected) : undefined };
+  const selected = page === view.page ? keep(root, view.selected) : undefined;
+  const selectedIds = page === view.page ? view.selectedIds.filter((id) => keep(root, id)) : [];
+  return { ...view, page, selected, selectedIds: selected ? (selectedIds.includes(selected) ? selectedIds : [selected, ...selectedIds]) : selectedIds };
 }
 
 function reducer(state: State, action: Action): State {
@@ -82,7 +86,12 @@ function reducer(state: State, action: Action): State {
     case "gesture": {
       const result = commitSite(state.history, action.operations);
       if (!result.ok) return { ...state, notice: { text: result.reason, at: Date.now() } };
-      const view = { ...state.view, page: action.page ?? state.view.page, selected: action.select ?? state.view.selected };
+      const view = {
+        ...state.view,
+        page: action.page ?? state.view.page,
+        selected: action.select ?? state.view.selected,
+        ...(action.select !== undefined ? { selectedIds: action.select ? [action.select] : [] } : {}),
+      };
       return { ...state, history: result.history, view: settle(result.history.present, view) };
     }
     case "undo": {
@@ -97,7 +106,7 @@ function reducer(state: State, action: Action): State {
       return {
         ...state,
         history: startHistory(action.site),
-        view: settle(action.site, { ...state.view, page: action.site.pages[0]!.id, selected: undefined }),
+        view: settle(action.site, { ...state.view, page: action.site.pages[0]!.id, selected: undefined, selectedIds: [] }),
         notice: action.notice ? { text: action.notice, at: Date.now() } : undefined,
       };
     case "remote": {
@@ -105,8 +114,13 @@ function reducer(state: State, action: Action): State {
       const history = { past: [...state.history.past, state.history.present], present: action.site, future: [] };
       return { ...state, history, view: settle(action.site, state.view), notice: action.notice ? { text: action.notice, at: Date.now() } : state.notice };
     }
-    case "view":
-      return { ...state, view: settle(state.history.present, { ...state.view, ...action.change }) };
+    case "view": {
+      const change =
+        "selected" in action.change && !("selectedIds" in action.change)
+          ? { ...action.change, selectedIds: action.change.selected ? [action.change.selected] : [] }
+          : action.change;
+      return { ...state, view: settle(state.history.present, { ...state.view, ...change }) };
+    }
     case "notice":
       return { ...state, notice: { text: action.text, at: Date.now() } };
   }
@@ -144,7 +158,7 @@ const CATALOGUE_MOVED = "The catalogue changed since this site was saved; anythi
 /** The view preferences a person carries from project to project: width, mode, theme. */
 function savedPreferences(): Partial<View> {
   try {
-    const { page: _page, selected: _selected, ...rest } = JSON.parse(readStorage(VIEW_KEY) ?? "{}") as Partial<View>;
+    const { page: _page, selected: _selected, selectedIds: _selectedIds, ...rest } = JSON.parse(readStorage(VIEW_KEY) ?? "{}") as Partial<View>;
     return rest;
   } catch {
     return {};
@@ -166,7 +180,7 @@ function initialState(given?: MakerSite): State {
   } else {
     catalogueChanged = given!.sourceHash !== CATALOGUE_HASH;
   }
-  const view: View = { page: site.pages[0]!.id, width: "fit", mode: "edit", scheme: "light", contrast: false, density: "default", radius: "md", ...savedPreferences() };
+  const view: View = { page: site.pages[0]!.id, selectedIds: [], width: "fit", mode: "edit", scheme: "light", contrast: false, density: "default", radius: "md", ...savedPreferences() };
   return {
     history: startHistory(site),
     view: settle(site, view),
@@ -276,6 +290,18 @@ export function useMaker(projectId: string) {
 }
 
 export type Maker = ReturnType<typeof useMaker>;
+
+/**
+ * One step up the tree, the way a design tool's Escape does: from a node to the container it sits
+ * in, from the page's Main to nothing. It is how the person gets back to Main after a section fills
+ * the page, to put the next one below it.
+ */
+export function selectParent(maker: Maker): void {
+  const id = maker.view.selected;
+  if (!id) return;
+  const at = locate(maker.page.root, id);
+  maker.setView({ selected: at?.parent.id });
+}
 
 /*
  * WHAT THE STAGE RENDERS, which is the page plus two things that are about viewing it and are never

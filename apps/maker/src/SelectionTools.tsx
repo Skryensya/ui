@@ -8,24 +8,38 @@ import type { Maker } from "./state";
  * keyboard sends, each disabled exactly when the model would refuse it.
  */
 export function SelectionTools({ maker }: { maker: Maker }) {
-  const root = maker.page.root;
-  const selected = maker.view.selected;
   return (
     <Toolbar label="Selection" className="maker__selection-tools">
-      {actions.map((action) => {
-        const gesture = allowed(root, selected, action);
-        return (
-          <IconButton
-            key={action.id}
-            icon={action.icon}
-            label={action.label}
-            shortcut={shortcutOf(action)}
-            disabled={!gesture}
-            tone={action.id === "remove" ? "danger" : undefined}
-            onClick={() => gesture && maker.gesture(gesture.operations, gesture.select)}
-          />
-        );
-      })}
+      <SelectionActionButtons maker={maker} appearance="tactile" />
     </Toolbar>
   );
+}
+
+export function SelectionActionButtons({
+  maker,
+  appearance,
+  size,
+}: {
+  maker: Maker;
+  appearance?: "plain" | "tactile" | "brutalist" | "frosted";
+  size?: "xs" | "sm" | "md" | "lg";
+}) {
+  const root = maker.page.root;
+  const selected = maker.view.selected;
+  return actions.map((action) => {
+    const gesture = allowed(root, selected, action);
+    return (
+      <IconButton
+        key={action.id}
+        icon={action.icon}
+        label={action.label}
+        shortcut={shortcutOf(action)}
+        appearance={appearance}
+        size={size}
+        disabled={!gesture}
+        tone={action.id === "remove" ? "danger" : undefined}
+        onClick={() => gesture && maker.gesture(gesture.operations, gesture.select)}
+      />
+    );
+  });
 }

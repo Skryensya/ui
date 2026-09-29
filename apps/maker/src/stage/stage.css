@@ -26,7 +26,37 @@ body {
   outline-offset: -1px;
 }
 
+/*
+ * THE PAGE ITSELF is as tall as the shortest artboard (Artboard.tsx's MIN_HEIGHT, 40rem), so the
+ * blank part of a short page is still the page: a click there selects Main and a drop lands in it.
+ * A fixed floor, never `100vh`: the artboard grows to fit this document, and a floor measured from
+ * the artboard would only ever grow with it. An empty page shows nothing at all, no dashed edge and
+ * no words: blank is what an empty page looks like.
+ */
+#stage > [data-maker-node] {
+  min-block-size: 40rem;
+}
+
+#stage > [data-maker-node]:empty {
+  outline: none;
+}
+
 /* In edit mode nothing in the page reacts to the pointer on its own: a click selects. */
 html[data-maker-mode="edit"] #stage * {
   cursor: default;
+}
+
+html[data-maker-mode="edit"] [data-maker-editing] {
+  cursor: text;
+  outline: 2px solid var(--color-border-accent);
+  outline-offset: 2px;
+  user-select: text;
+}
+
+html[data-maker-panning],
+html[data-maker-panning] body,
+html[data-maker-panning] #stage,
+html[data-maker-panning] #stage * {
+  cursor: grabbing !important;
+  user-select: none;
 }

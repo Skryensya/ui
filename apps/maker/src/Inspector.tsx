@@ -77,9 +77,7 @@ export function Inspector({ maker }: { maker: Maker }) {
           </Heading>
           <PageSettings maker={maker} />
           <Text size="sm" tone="secondary">
-            {childrenOf(root, "children").length === 0
-              ? "This page is empty. Add a Wrapper from Insert on the left to start a page column, or open Sections for a ready-made hero."
-              : "Click something on the canvas or in the layers to edit it; double-click text to type in it."}
+            Click something on the canvas or in the layers to edit it; double-click text to type in it.
           </Text>
         </Stack>
       </div>
@@ -96,7 +94,7 @@ export function Inspector({ maker }: { maker: Maker }) {
         <Stack gap="md">
           <Header title="Text" role={role} onParent={(parent) => maker.setView({ selected: parent })} />
           <SelectionTools maker={maker} />
-          <CommitField label="Text" value={child.text} multiline onCommit={(text) => gesture([{ type: "setText", node: id, slot: "children", text }])} />
+          <CommitField label="Text" value={child.text} multiline liveKey={`${id}:${locate(root, id)?.slot ?? "children"}`} onCommit={(text) => gesture([{ type: "setText", node: id, slot: "children", text }])} />
           <Actions maker={maker} id={id} node={undefined} at={at !== undefined} />
         </Stack>
       </div>
@@ -339,9 +337,25 @@ function OptionField({
   suggestions?: readonly string[];
 }) {
   const label = humanize(name);
-  const fallback = option.default === undefined ? "not set" : `default: ${String(option.default)}`;
+  const fallback = option.default === undefined ? "not set" : "default";
   if (option.type === "enum" || option.type === "boolean") {
-    const values = option.type === "enum" ? (option.values ?? []) : ["true", "false"];
+    const values = option.type === "enum" ? (option.values ?? []) : ["false", "true"];
+    const binary = values.length === 2;
+    if (binary) {
+      const defaultValue = option.default === undefined ? undefined : String(option.default);
+      const current = value === undefined ? (defaultValue ?? values[0] ?? "") : String(value);
+      return (
+        <FormField label={label}>
+          <SegmentedControl
+            className="maker-inspector__segmented"
+            label={label}
+            value={current}
+            onValueChange={(raw) => onChange(raw === defaultValue ? undefined : option.type === "boolean" ? raw === "true" : raw)}
+            options={values.map((v) => ({ value: v, label: v }))}
+          />
+        </FormField>
+      );
+    }
     return (
       <FormField label={label}>
         <NativeSelect
@@ -374,6 +388,8 @@ export function CommitField({
   multiline,
   type = "text",
   suggestions,
+  emptyFallback,
+  liveKey,
 }: {
   label: string;
   value: string;
@@ -381,12 +397,28 @@ export function CommitField({
   multiline?: boolean;
   type?: "text" | "number";
   suggestions?: readonly string[];
+  emptyFallback?: string;
+  liveKey?: string;
 }) {
-  const [draft, setDraft] = useState(value);
+  const shown = value.trim() === "" && emptyFallback ? emptyFallback : value;
+  const [draft, setDraft] = useState(shown);
   const listId = useId();
-  useEffect(() => setDraft(value), [value]);
+  useEffect(() => setDraft(shown), [shown]);
+  useEffect(() => {
+    if (!liveKey) return;
+    const onDraft = (event: Event) => {
+      const detail = (event as CustomEvent<{ key: string; value: string }>).detail;
+      if (detail?.key === liveKey) setDraft(detail.value);
+    };
+    window.addEventListener("maker:inline-text-draft", onDraft);
+    return () => window.removeEventListener("maker:inline-text-draft", onDraft);
+  }, [liveKey]);
   const commit = () => {
-    if (draft !== value) onCommit(draft);
+    const next = draft.trim() === "" && emptyFallback ? emptyFallback : draft;
+    if (next !== value) {
+      setDraft(next);
+      onCommit(next);
+    }
   };
   return (
     <FormField label={label}>
@@ -432,6 +464,7 @@ function SlotsSection({ maker, node }: { maker: Maker; node: MakerNode }) {
     return slot.accepts === "node" && held.length === 1 && !isNode(held[0]!);
   });
   if (fields.length === 0) return null;
+  const fallbackFor = (name: string, index?: number) => `${humanize(name)}${index === undefined ? "" : ` ${index + 1}`}`;
   return (
     <section aria-label="Content" data-content="">
       <Stack gap="sm">
@@ -459,6 +492,8 @@ function SlotsSection({ maker, node }: { maker: Maker; node: MakerNode }) {
                 key={name}
                 label={humanize(name)}
                 value={held?.kind === "text" ? held.text : ""}
+                emptyFallback={fallbackFor(name)}
+                liveKey={`${node.id}:${name}`}
                 onCommit={(text) => maker.gesture([{ type: "setText", node: node.id, slot: name, text }])}
               />
             );
@@ -469,6 +504,8 @@ function SlotsSection({ maker, node }: { maker: Maker; node: MakerNode }) {
               key={name}
               label={humanize(name)}
               value={"text" in run ? run.text : ""}
+              emptyFallback={fallbackFor(name)}
+              liveKey={`${run.id}:${name}`}
               onCommit={(text) => maker.gesture([{ type: "setText", node: run.id, slot: name, text }])}
             />
           );
@@ -506,7 +543,8 @@ function ItemsField({
                   key={slot}
                   label={`${slot} ${index + 1}`}
                   value={typeof item.slots[slot] === "string" ? (item.slots[slot] as string) : ""}
-                  onCommit={(text) => replace(index, { ...item, slots: { ...item.slots, [slot]: text } })}
+                  emptyFallback={`${humanize(slot)} ${index + 1}`}
+                  onCommit={(text) => replace(index, { ...item, slots: { ...item.slots, [slot]: text.trim() === "" ? `${humanize(slot)} ${index + 1}` : text } })}
                 />
               ))}
               {Object.entries(itemOptions)

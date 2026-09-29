@@ -288,6 +288,7 @@ dos bindings (ADR-0015) y verde en `ai-gates`.
 - [ ] Un campo de prompt dentro del propio Maker (necesitaría un modelo accesible desde la app).
 - [ ] Edición inline de texto sobre el stage.
 - [x] Espacio de trabajo tipo Figma: un canvas con pan (espacio, botón central o arrastrar el fondo) y zoom (rueda con Ctrl/⌘, `⌘=`/`⌘−`, `Shift+1` todas las páginas, `Shift+2` la abierta) donde cada página del sitio es un artboard a su ancho CSS exacto; un click en otra página la abre. Paneles flotantes y plegables (Layers/Insert a la izquierda, inspector a la derecha, recordados en el navegador). La cámara nunca se guarda.
+- [x] La AppBar arriba con cada comando como texto (Maker, File, Edit, View, Page, Insert, Help; a la derecha, guardado, ancho y zoom), las pestañas de proyectos debajo, y sin controles flotantes sobre el canvas salvo los dos paneles. Esc sube al contenedor, hasta Main y luego a nada; un click en una parte vacía de la página selecciona Main, así que lo siguiente va debajo. Una página vacía no muestra texto.
 - [x] Varias páginas (**Maker site**): nombre y ruta únicos por página, cada una con su árbol; operaciones de sitio (add, remove, rename, setPagePath, movePage, edit) en el mismo historial; enlaces entre páginas con sugerencias de rutas, enlaces rotos como Pending, y en modo Interact un enlace interno abre su página; export de todas las páginas y del sitio; el formato de una página abre como sitio de una página.
 - [ ] Piezas compartidas entre páginas (navbar/footer editados una vez).
 - [ ] Persistencia en backend.

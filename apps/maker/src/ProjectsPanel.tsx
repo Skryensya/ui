@@ -150,30 +150,59 @@ function TemplateGallery({ workspace, onCreated }: { workspace: Workspace; onCre
   };
 
   return (
-    <details className="maker-templates" onToggle={(event) => setOpen(event.currentTarget.open)}>
-      <summary>Start from a template</summary>
+    <section className="maker-templates" aria-labelledby="maker-templates-title">
       <Stack gap="sm">
-        <FormField label="Language">
-          <NativeSelect
-            value={locale}
-            onChange={(event) => setLocale(event.currentTarget.value as TemplateLocale)}
-            options={[
-              { value: "es", label: "Español" },
-              { value: "en", label: "English" },
-            ]}
-          />
-        </FormField>
-        <ul className="maker-templates__list" aria-label="Templates">
-          {templates.map((template) => (
-            <li key={template.id}>
-              <button type="button" className="maker-projects__open" disabled={busy !== undefined} onClick={() => void start(template.id)}>
-                <span className="maker-projects__name">{busy === template.id ? "Creating…" : template.title}</span>
-                <span className="maker-projects__meta">{template.description}</span>
-              </button>
-            </li>
-          ))}
-        </ul>
+        <Inline justify="between" align="center" gap="sm">
+          <span>
+            <Heading as="h3" size="h6" id="maker-templates-title">
+              Templates
+            </Heading>
+            <Text size="sm" tone="tertiary">
+              Start faster with a ready-made site.
+            </Text>
+          </span>
+          <Button
+            variant="ghost"
+            size="sm"
+            pressed={open}
+            aria-expanded={open}
+            aria-controls="maker-templates-list"
+            onClick={() => setOpen((value) => !value)}
+          >
+            {open ? "Hide" : "Browse"}
+          </Button>
+        </Inline>
+        {open ? (
+          <Stack gap="sm" id="maker-templates-list">
+            <FormField label="Language">
+              <NativeSelect
+                value={locale}
+                onChange={(event) => setLocale(event.currentTarget.value as TemplateLocale)}
+                options={[
+                  { value: "es", label: "Español" },
+                  { value: "en", label: "English" },
+                ]}
+              />
+            </FormField>
+            {templates.length === 0 ? (
+              <Text size="sm" tone="secondary">
+                Loading templates…
+              </Text>
+            ) : (
+              <ul className="maker-templates__list" aria-label="Templates">
+                {templates.map((template) => (
+                  <li key={template.id}>
+                    <Button className="maker-templates__card" variant="ghost" size="sm" disabled={busy !== undefined} onClick={() => void start(template.id)}>
+                      <span className="maker-projects__name">{busy === template.id ? "Creating…" : template.title}</span>
+                      <span className="maker-projects__meta">{template.description}</span>
+                    </Button>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </Stack>
+        ) : null}
       </Stack>
-    </details>
+    </section>
   );
 }
