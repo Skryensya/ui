@@ -41,8 +41,10 @@ function fontSizeOf(value: string, ctx: Context): string {
  * value stops being a binding, which is what an em measure is anyway, relative to its text.
  */
 function withoutEm(value: string, ctx: Context): string {
-  const text = /var\(/.test(value) ? substituted(value, ctx) : value;
-  if (!EM.test(text)) return value;
+  const substitutedText = /var\(/.test(value) ? substituted(value, ctx) : value;
+  // `ch`, the width of a "0", taken as half an em: what a body face's zero comes to.
+  const text = substitutedText.replace(/(^|[^\w.])(\d*\.?\d+)ch\b/g, (_, before: string, n: string) => `${before}${Number(n) / 2}em`);
+  if (!EM.test(text)) return text === substitutedText ? value : text;
   EM.lastIndex = 0;
   // The element's own size, itself possibly in em of its parent's (Code: 0.9em, padding 0.3em).
   const size = evalQuantity(substituted(fontSizeOf(prop(ctx, "font-size") ?? ctx.inherited?.["font-size"] ?? "16px", ctx), ctx));
