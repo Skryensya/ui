@@ -30910,6 +30910,783 @@
         "title": "with other initials"
       },
       "visualHash": "25c34722cbaf8cf0"
+    },
+    {
+      "axes": [
+        {
+          "name": "tone",
+          "values": [
+            "primary",
+            "secondary",
+            "tertiary",
+            "danger"
+          ]
+        },
+        {
+          "name": "size",
+          "values": [
+            "caption",
+            "sm",
+            "body",
+            "lg"
+          ]
+        }
+      ],
+      "cells": [
+        {
+          "box": "672cd06398be5f4b",
+          "hash": "c38b5e8500f32c09",
+          "id": "text/body/size=caption,tone=primary",
+          "key": "tone=primary, size=caption",
+          "layers": "63856bade7ea452e",
+          "props": {
+            "size": "caption",
+            "tone": "primary"
+          },
+          "surface": "fa0b643878e9242d"
+        },
+        {
+          "box": "672cd06398be5f4b",
+          "hash": "e6f59a8469d8d37e",
+          "id": "text/body/size=sm,tone=primary",
+          "key": "tone=primary, size=sm",
+          "layers": "fd8f52df4fbb479e",
+          "props": {
+            "size": "sm",
+            "tone": "primary"
+          },
+          "surface": "fa0b643878e9242d"
+        },
+        {
+          "box": "672cd06398be5f4b",
+          "hash": "87ff9ca5898850b8",
+          "id": "text/body/size=body,tone=primary",
+          "key": "tone=primary, size=body",
+          "layers": "b8db489f911ed7e3",
+          "props": {
+            "size": "body",
+            "tone": "primary"
+          },
+          "surface": "fa0b643878e9242d"
+        },
+        {
+          "box": "672cd06398be5f4b",
+          "hash": "4c51d3e53be3cac0",
+          "id": "text/body/size=lg,tone=primary",
+          "key": "tone=primary, size=lg",
+          "layers": "250dd3172825caa9",
+          "props": {
+            "size": "lg",
+            "tone": "primary"
+          },
+          "surface": "fa0b643878e9242d"
+        },
+        {
+          "box": "672cd06398be5f4b",
+          "hash": "f8ad41ea6f7d7532",
+          "id": "text/body/size=caption,tone=secondary",
+          "key": "tone=secondary, size=caption",
+          "layers": "c790af071b65e880",
+          "props": {
+            "size": "caption",
+            "tone": "secondary"
+          },
+          "surface": "fa0b643878e9242d"
+        },
+        {
+          "box": "672cd06398be5f4b",
+          "hash": "08c2c0c33eb2795d",
+          "id": "text/body/size=sm,tone=secondary",
+          "key": "tone=secondary, size=sm",
+          "layers": "39ae173a25e1a07f",
+          "props": {
+            "size": "sm",
+            "tone": "secondary"
+          },
+          "surface": "fa0b643878e9242d"
+        },
+        {
+          "box": "672cd06398be5f4b",
+          "hash": "9c1f8201b3c054b4",
+          "id": "text/body/size=body,tone=secondary",
+          "key": "tone=secondary, size=body",
+          "layers": "5dd2ca160a653f7f",
+          "props": {
+            "size": "body",
+            "tone": "secondary"
+          },
+          "surface": "fa0b643878e9242d"
+        },
+        {
+          "box": "672cd06398be5f4b",
+          "hash": "f0abd3ea934991b1",
+          "id": "text/body/size=lg,tone=secondary",
+          "key": "tone=secondary, size=lg",
+          "layers": "0b114fb9b7976656",
+          "props": {
+            "size": "lg",
+            "tone": "secondary"
+          },
+          "surface": "fa0b643878e9242d"
+        },
+        {
+          "box": "672cd06398be5f4b",
+          "hash": "c3f60a57199c4f42",
+          "id": "text/body/size=caption,tone=tertiary",
+          "key": "tone=tertiary, size=caption",
+          "layers": "4d0365619e420941",
+          "props": {
+            "size": "caption",
+            "tone": "tertiary"
+          },
+          "surface": "fa0b643878e9242d"
+        },
+        {
+          "box": "672cd06398be5f4b",
+          "hash": "62ca47f22da08339",
+          "id": "text/body/size=sm,tone=tertiary",
+          "key": "tone=tertiary, size=sm",
+          "layers": "8af2ef709afa8fe4",
+          "props": {
+            "size": "sm",
+            "tone": "tertiary"
+          },
+          "surface": "fa0b643878e9242d"
+        },
+        {
+          "box": "672cd06398be5f4b",
+          "hash": "0c4c1a02f9649e61",
+          "id": "text/body/size=body,tone=tertiary",
+          "key": "tone=tertiary, size=body",
+          "layers": "5690eba9f9def45f",
+          "props": {
+            "size": "body",
+            "tone": "tertiary"
+          },
+          "surface": "fa0b643878e9242d"
+        },
+        {
+          "box": "672cd06398be5f4b",
+          "hash": "e093a599690bb8c9",
+          "id": "text/body/size=lg,tone=tertiary",
+          "key": "tone=tertiary, size=lg",
+          "layers": "499c2d0e829099f8",
+          "props": {
+            "size": "lg",
+            "tone": "tertiary"
+          },
+          "surface": "fa0b643878e9242d"
+        },
+        {
+          "box": "672cd06398be5f4b",
+          "hash": "2185e2d68ebaaad9",
+          "id": "text/body/size=caption,tone=danger",
+          "key": "tone=danger, size=caption",
+          "layers": "b4e1beed34e91e52",
+          "props": {
+            "size": "caption",
+            "tone": "danger"
+          },
+          "surface": "fa0b643878e9242d"
+        },
+        {
+          "box": "672cd06398be5f4b",
+          "hash": "e30ceec3651492ba",
+          "id": "text/body/size=sm,tone=danger",
+          "key": "tone=danger, size=sm",
+          "layers": "ec2b6f20f5622822",
+          "props": {
+            "size": "sm",
+            "tone": "danger"
+          },
+          "surface": "fa0b643878e9242d"
+        },
+        {
+          "box": "672cd06398be5f4b",
+          "hash": "13f9c0ff9e3dd915",
+          "id": "text/body/size=body,tone=danger",
+          "key": "tone=danger, size=body",
+          "layers": "d3bc43ffc2e5f11c",
+          "props": {
+            "size": "body",
+            "tone": "danger"
+          },
+          "surface": "fa0b643878e9242d"
+        },
+        {
+          "box": "672cd06398be5f4b",
+          "hash": "514b53908af20727",
+          "id": "text/body/size=lg,tone=danger",
+          "key": "tone=danger, size=lg",
+          "layers": "a3ed43822d59b96f",
+          "props": {
+            "size": "lg",
+            "tone": "danger"
+          },
+          "surface": "fa0b643878e9242d"
+        }
+      ],
+      "contractHash": "f0953c37d22eda18",
+      "defaultCell": "tone=primary, size=body",
+      "grid": {
+        "columns": [
+          {
+            "name": "size",
+            "values": [
+              "caption",
+              "sm",
+              "body",
+              "lg"
+            ]
+          }
+        ],
+        "rows": [
+          {
+            "name": "tone",
+            "values": [
+              "primary",
+              "secondary",
+              "tertiary",
+              "danger"
+            ]
+          }
+        ]
+      },
+      "id": "text/body",
+      "interactions": [],
+      "kind": "component-set",
+      "name": "Text / body",
+      "page": "skryensya",
+      "properties": [
+        {
+          "default": "The quick brown fox",
+          "name": "children",
+          "type": "TEXT"
+        }
+      ],
+      "showcase": {
+        "base": {},
+        "columns": []
+      },
+      "visualHash": "8d3cc2c9147b59f9"
+    },
+    {
+      "axes": [
+        {
+          "name": "tone",
+          "values": [
+            "primary",
+            "secondary",
+            "tertiary",
+            "danger"
+          ]
+        },
+        {
+          "name": "size",
+          "values": [
+            "caption",
+            "sm",
+            "body",
+            "lg"
+          ]
+        }
+      ],
+      "cells": [
+        {
+          "box": "672cd06398be5f4b",
+          "hash": "a072c369c4bcac72",
+          "id": "text/emphasis/size=caption,tone=primary",
+          "key": "tone=primary, size=caption",
+          "layers": "78d61afb6fce2123",
+          "props": {
+            "size": "caption",
+            "tone": "primary"
+          },
+          "surface": "fa0b643878e9242d"
+        },
+        {
+          "box": "672cd06398be5f4b",
+          "hash": "447f95aa8572f15b",
+          "id": "text/emphasis/size=sm,tone=primary",
+          "key": "tone=primary, size=sm",
+          "layers": "0ecf2d934753ffca",
+          "props": {
+            "size": "sm",
+            "tone": "primary"
+          },
+          "surface": "fa0b643878e9242d"
+        },
+        {
+          "box": "672cd06398be5f4b",
+          "hash": "f1e7505b7af332e9",
+          "id": "text/emphasis/size=body,tone=primary",
+          "key": "tone=primary, size=body",
+          "layers": "446e9169f6887c04",
+          "props": {
+            "size": "body",
+            "tone": "primary"
+          },
+          "surface": "fa0b643878e9242d"
+        },
+        {
+          "box": "672cd06398be5f4b",
+          "hash": "6b48a28b2a78173d",
+          "id": "text/emphasis/size=lg,tone=primary",
+          "key": "tone=primary, size=lg",
+          "layers": "248b25db808aee11",
+          "props": {
+            "size": "lg",
+            "tone": "primary"
+          },
+          "surface": "fa0b643878e9242d"
+        },
+        {
+          "box": "672cd06398be5f4b",
+          "hash": "531d3fa1362f6c76",
+          "id": "text/emphasis/size=caption,tone=secondary",
+          "key": "tone=secondary, size=caption",
+          "layers": "4cbe7e4722500955",
+          "props": {
+            "size": "caption",
+            "tone": "secondary"
+          },
+          "surface": "fa0b643878e9242d"
+        },
+        {
+          "box": "672cd06398be5f4b",
+          "hash": "49556fb77c6095d3",
+          "id": "text/emphasis/size=sm,tone=secondary",
+          "key": "tone=secondary, size=sm",
+          "layers": "03befd312e55b217",
+          "props": {
+            "size": "sm",
+            "tone": "secondary"
+          },
+          "surface": "fa0b643878e9242d"
+        },
+        {
+          "box": "672cd06398be5f4b",
+          "hash": "cdaf267a90675604",
+          "id": "text/emphasis/size=body,tone=secondary",
+          "key": "tone=secondary, size=body",
+          "layers": "944187ee74dcc663",
+          "props": {
+            "size": "body",
+            "tone": "secondary"
+          },
+          "surface": "fa0b643878e9242d"
+        },
+        {
+          "box": "672cd06398be5f4b",
+          "hash": "babd8c786c901fd4",
+          "id": "text/emphasis/size=lg,tone=secondary",
+          "key": "tone=secondary, size=lg",
+          "layers": "572e86d9df59f2c3",
+          "props": {
+            "size": "lg",
+            "tone": "secondary"
+          },
+          "surface": "fa0b643878e9242d"
+        },
+        {
+          "box": "672cd06398be5f4b",
+          "hash": "70bf40478b43e0d4",
+          "id": "text/emphasis/size=caption,tone=tertiary",
+          "key": "tone=tertiary, size=caption",
+          "layers": "a2d034f386446779",
+          "props": {
+            "size": "caption",
+            "tone": "tertiary"
+          },
+          "surface": "fa0b643878e9242d"
+        },
+        {
+          "box": "672cd06398be5f4b",
+          "hash": "431d3197d3268240",
+          "id": "text/emphasis/size=sm,tone=tertiary",
+          "key": "tone=tertiary, size=sm",
+          "layers": "4d2561a797075319",
+          "props": {
+            "size": "sm",
+            "tone": "tertiary"
+          },
+          "surface": "fa0b643878e9242d"
+        },
+        {
+          "box": "672cd06398be5f4b",
+          "hash": "116b1e2192558df5",
+          "id": "text/emphasis/size=body,tone=tertiary",
+          "key": "tone=tertiary, size=body",
+          "layers": "b73fa259b52a60f9",
+          "props": {
+            "size": "body",
+            "tone": "tertiary"
+          },
+          "surface": "fa0b643878e9242d"
+        },
+        {
+          "box": "672cd06398be5f4b",
+          "hash": "ceda5a4ad9b36604",
+          "id": "text/emphasis/size=lg,tone=tertiary",
+          "key": "tone=tertiary, size=lg",
+          "layers": "7633bffce4e77370",
+          "props": {
+            "size": "lg",
+            "tone": "tertiary"
+          },
+          "surface": "fa0b643878e9242d"
+        },
+        {
+          "box": "672cd06398be5f4b",
+          "hash": "193e7e721e9a117a",
+          "id": "text/emphasis/size=caption,tone=danger",
+          "key": "tone=danger, size=caption",
+          "layers": "23a40221c2b89065",
+          "props": {
+            "size": "caption",
+            "tone": "danger"
+          },
+          "surface": "fa0b643878e9242d"
+        },
+        {
+          "box": "672cd06398be5f4b",
+          "hash": "f488bd492c43c14b",
+          "id": "text/emphasis/size=sm,tone=danger",
+          "key": "tone=danger, size=sm",
+          "layers": "62eefb39a19b85ab",
+          "props": {
+            "size": "sm",
+            "tone": "danger"
+          },
+          "surface": "fa0b643878e9242d"
+        },
+        {
+          "box": "672cd06398be5f4b",
+          "hash": "dbd28ca56679a9c2",
+          "id": "text/emphasis/size=body,tone=danger",
+          "key": "tone=danger, size=body",
+          "layers": "a81e1c81fdfaf570",
+          "props": {
+            "size": "body",
+            "tone": "danger"
+          },
+          "surface": "fa0b643878e9242d"
+        },
+        {
+          "box": "672cd06398be5f4b",
+          "hash": "379c4c4359dc04df",
+          "id": "text/emphasis/size=lg,tone=danger",
+          "key": "tone=danger, size=lg",
+          "layers": "01c85aa52eb870d8",
+          "props": {
+            "size": "lg",
+            "tone": "danger"
+          },
+          "surface": "fa0b643878e9242d"
+        }
+      ],
+      "contractHash": "f0953c37d22eda18",
+      "defaultCell": "tone=primary, size=body",
+      "grid": {
+        "columns": [
+          {
+            "name": "size",
+            "values": [
+              "caption",
+              "sm",
+              "body",
+              "lg"
+            ]
+          }
+        ],
+        "rows": [
+          {
+            "name": "tone",
+            "values": [
+              "primary",
+              "secondary",
+              "tertiary",
+              "danger"
+            ]
+          }
+        ]
+      },
+      "id": "text/emphasis",
+      "interactions": [],
+      "kind": "component-set",
+      "name": "Text / emphasis",
+      "page": "skryensya",
+      "properties": [
+        {
+          "default": "The quick brown fox",
+          "name": "children",
+          "type": "TEXT"
+        }
+      ],
+      "showcase": {
+        "base": {},
+        "columns": []
+      },
+      "visualHash": "270bb07d926d1a55"
+    },
+    {
+      "axes": [
+        {
+          "name": "tone",
+          "values": [
+            "primary",
+            "secondary",
+            "tertiary",
+            "danger"
+          ]
+        },
+        {
+          "name": "size",
+          "values": [
+            "caption",
+            "sm",
+            "body",
+            "lg"
+          ]
+        }
+      ],
+      "cells": [
+        {
+          "box": "672cd06398be5f4b",
+          "hash": "0aeb964b7b35b3ba",
+          "id": "text/label/size=caption,tone=primary",
+          "key": "tone=primary, size=caption",
+          "layers": "1c59cf64bf4ce7b3",
+          "props": {
+            "size": "caption",
+            "tone": "primary"
+          },
+          "surface": "fa0b643878e9242d"
+        },
+        {
+          "box": "672cd06398be5f4b",
+          "hash": "9cfddc12350c92d7",
+          "id": "text/label/size=sm,tone=primary",
+          "key": "tone=primary, size=sm",
+          "layers": "a77ad5e5f9c0df92",
+          "props": {
+            "size": "sm",
+            "tone": "primary"
+          },
+          "surface": "fa0b643878e9242d"
+        },
+        {
+          "box": "672cd06398be5f4b",
+          "hash": "bcfd0e0d30a51f6e",
+          "id": "text/label/size=body,tone=primary",
+          "key": "tone=primary, size=body",
+          "layers": "691eda67bd2ba4d3",
+          "props": {
+            "size": "body",
+            "tone": "primary"
+          },
+          "surface": "fa0b643878e9242d"
+        },
+        {
+          "box": "672cd06398be5f4b",
+          "hash": "50ee4ac66b75ffaf",
+          "id": "text/label/size=lg,tone=primary",
+          "key": "tone=primary, size=lg",
+          "layers": "1e5f85a360af3739",
+          "props": {
+            "size": "lg",
+            "tone": "primary"
+          },
+          "surface": "fa0b643878e9242d"
+        },
+        {
+          "box": "672cd06398be5f4b",
+          "hash": "ab20c0344338c1eb",
+          "id": "text/label/size=caption,tone=secondary",
+          "key": "tone=secondary, size=caption",
+          "layers": "75c66180c1e23c5b",
+          "props": {
+            "size": "caption",
+            "tone": "secondary"
+          },
+          "surface": "fa0b643878e9242d"
+        },
+        {
+          "box": "672cd06398be5f4b",
+          "hash": "603e73808e5035ef",
+          "id": "text/label/size=sm,tone=secondary",
+          "key": "tone=secondary, size=sm",
+          "layers": "3099da84f1f5cfb8",
+          "props": {
+            "size": "sm",
+            "tone": "secondary"
+          },
+          "surface": "fa0b643878e9242d"
+        },
+        {
+          "box": "672cd06398be5f4b",
+          "hash": "1bea06d19800afd2",
+          "id": "text/label/size=body,tone=secondary",
+          "key": "tone=secondary, size=body",
+          "layers": "6dd1252f542db2ee",
+          "props": {
+            "size": "body",
+            "tone": "secondary"
+          },
+          "surface": "fa0b643878e9242d"
+        },
+        {
+          "box": "672cd06398be5f4b",
+          "hash": "0ff575a29558cb7f",
+          "id": "text/label/size=lg,tone=secondary",
+          "key": "tone=secondary, size=lg",
+          "layers": "215cdd7f437c8048",
+          "props": {
+            "size": "lg",
+            "tone": "secondary"
+          },
+          "surface": "fa0b643878e9242d"
+        },
+        {
+          "box": "672cd06398be5f4b",
+          "hash": "5cbc4bfa6ae854f5",
+          "id": "text/label/size=caption,tone=tertiary",
+          "key": "tone=tertiary, size=caption",
+          "layers": "da705d41fd46c805",
+          "props": {
+            "size": "caption",
+            "tone": "tertiary"
+          },
+          "surface": "fa0b643878e9242d"
+        },
+        {
+          "box": "672cd06398be5f4b",
+          "hash": "f430c2b6e6c7133b",
+          "id": "text/label/size=sm,tone=tertiary",
+          "key": "tone=tertiary, size=sm",
+          "layers": "ae37cc71588f53fe",
+          "props": {
+            "size": "sm",
+            "tone": "tertiary"
+          },
+          "surface": "fa0b643878e9242d"
+        },
+        {
+          "box": "672cd06398be5f4b",
+          "hash": "fe72086b010ba30e",
+          "id": "text/label/size=body,tone=tertiary",
+          "key": "tone=tertiary, size=body",
+          "layers": "0b3d414a703d1e5f",
+          "props": {
+            "size": "body",
+            "tone": "tertiary"
+          },
+          "surface": "fa0b643878e9242d"
+        },
+        {
+          "box": "672cd06398be5f4b",
+          "hash": "334d126bb3fe90ac",
+          "id": "text/label/size=lg,tone=tertiary",
+          "key": "tone=tertiary, size=lg",
+          "layers": "d62bbc9d422dccdc",
+          "props": {
+            "size": "lg",
+            "tone": "tertiary"
+          },
+          "surface": "fa0b643878e9242d"
+        },
+        {
+          "box": "672cd06398be5f4b",
+          "hash": "a93b5277db464f7e",
+          "id": "text/label/size=caption,tone=danger",
+          "key": "tone=danger, size=caption",
+          "layers": "f5abbfe0d742e74f",
+          "props": {
+            "size": "caption",
+            "tone": "danger"
+          },
+          "surface": "fa0b643878e9242d"
+        },
+        {
+          "box": "672cd06398be5f4b",
+          "hash": "4353a420a18886ce",
+          "id": "text/label/size=sm,tone=danger",
+          "key": "tone=danger, size=sm",
+          "layers": "56bab98097b91402",
+          "props": {
+            "size": "sm",
+            "tone": "danger"
+          },
+          "surface": "fa0b643878e9242d"
+        },
+        {
+          "box": "672cd06398be5f4b",
+          "hash": "37a57aa6b4830818",
+          "id": "text/label/size=body,tone=danger",
+          "key": "tone=danger, size=body",
+          "layers": "018d9bae8c35a147",
+          "props": {
+            "size": "body",
+            "tone": "danger"
+          },
+          "surface": "fa0b643878e9242d"
+        },
+        {
+          "box": "672cd06398be5f4b",
+          "hash": "e5edadefa46a052b",
+          "id": "text/label/size=lg,tone=danger",
+          "key": "tone=danger, size=lg",
+          "layers": "d8de5a823ca9d7f2",
+          "props": {
+            "size": "lg",
+            "tone": "danger"
+          },
+          "surface": "fa0b643878e9242d"
+        }
+      ],
+      "contractHash": "f0953c37d22eda18",
+      "defaultCell": "tone=primary, size=body",
+      "grid": {
+        "columns": [
+          {
+            "name": "size",
+            "values": [
+              "caption",
+              "sm",
+              "body",
+              "lg"
+            ]
+          }
+        ],
+        "rows": [
+          {
+            "name": "tone",
+            "values": [
+              "primary",
+              "secondary",
+              "tertiary",
+              "danger"
+            ]
+          }
+        ]
+      },
+      "id": "text/label",
+      "interactions": [],
+      "kind": "component-set",
+      "name": "Text / label",
+      "page": "skryensya",
+      "properties": [
+        {
+          "default": "The quick brown fox",
+          "name": "children",
+          "type": "TEXT"
+        }
+      ],
+      "showcase": {
+        "base": {},
+        "columns": []
+      },
+      "visualHash": "e3966308a46e5fee"
     }
   ],
   "diagnostics": [
@@ -31118,18 +31895,30 @@
           "tone",
           "appearance"
         ]
+      },
+      "text": {
+        "excluded": [
+          "textElement",
+          "textRole"
+        ],
+        "nonVisual": [],
+        "visual": [
+          "tone",
+          "size",
+          "weight"
+        ]
       }
     },
     "tokens": {
-      "catalogueAdded": 337,
+      "catalogueAdded": 334,
       "componentVariables": 203,
       "modeValuesBySource": {
         "alias": 203,
         "evaluated": 449,
         "literal": 686
       },
-      "reached": 135,
-      "reachedAsVariables": 105,
+      "reached": 140,
+      "reachedAsVariables": 110,
       "reachedButNotVariables": [
         "--elevation-flat",
         "--elevation-raised",
@@ -31141,15 +31930,16 @@
       "variables": 466
     },
     "variants": {
-      "components": 14,
-      "componentSets": 13,
+      "components": 17,
+      "componentSets": 16,
       "naiveAllOptions": {
         "avatar": 8,
         "badge:Badge": 20,
         "badge:BadgeDot": 10,
         "button": 27648,
         "kbd": 4,
-        "tag": 20
+        "tag": 20,
+        "text": 288
       },
       "naiveVisualOptions": {
         "avatar": 8,
@@ -31157,7 +31947,8 @@
         "badge:BadgeDot": 5,
         "button": 2304,
         "kbd": 4,
-        "tag": 10
+        "tag": 10,
+        "text": 48
       },
       "variantsPerSet": [
         {
@@ -31211,13 +32002,25 @@
         {
           "set": "avatar/brutalist",
           "variants": 4
+        },
+        {
+          "set": "text/body",
+          "variants": 16
+        },
+        {
+          "set": "text/emphasis",
+          "variants": 16
+        },
+        {
+          "set": "text/label",
+          "variants": 16
         }
       ],
-      "variantsTotal": 1967
+      "variantsTotal": 2015
     }
   },
   "schemaVersion": 1,
-  "sourceHash": "325824df18ef0ed9",
+  "sourceHash": "f92374a4bde488bf",
   "stage": {
     "background": {
       "variable": "--color-bg-surface"
@@ -31745,6 +32548,30 @@
         },
         "width": {
           "variable": "avatar:size:e021220bb1"
+        }
+      },
+      "672cd06398be5f4b": {
+        "clipsContent": false,
+        "crossAlign": "MIN",
+        "direction": "HORIZONTAL",
+        "mainAlign": "MIN",
+        "padding": {
+          "bottom": {
+            "expression": "0",
+            "value": 0
+          },
+          "left": {
+            "expression": "0",
+            "value": 0
+          },
+          "right": {
+            "expression": "0",
+            "value": 0
+          },
+          "top": {
+            "expression": "0",
+            "value": 0
+          }
         }
       },
       "6a095059331b2b08": {
@@ -32496,6 +33323,56 @@
           }
         }
       ],
+      "018d9bae8c35a147": [
+        {
+          "kind": "text",
+          "slot": "children",
+          "text": {
+            "fill": {
+              "color": {
+                "variable": "--color-text-danger"
+              },
+              "type": "SOLID"
+            },
+            "fontFamily": {
+              "variable": "--font-family-body"
+            },
+            "fontSize": {
+              "variable": "--font-size-body"
+            },
+            "fontWeight": {
+              "variable": "--font-weight-label"
+            },
+            "lineHeight": 150
+          },
+          "textProperty": "children"
+        }
+      ],
+      "01c85aa52eb870d8": [
+        {
+          "kind": "text",
+          "slot": "children",
+          "text": {
+            "fill": {
+              "color": {
+                "variable": "--color-text-danger"
+              },
+              "type": "SOLID"
+            },
+            "fontFamily": {
+              "variable": "--font-family-body"
+            },
+            "fontSize": {
+              "variable": "--font-size-body-lg"
+            },
+            "fontWeight": {
+              "variable": "--font-weight-emphasis"
+            },
+            "lineHeight": 150
+          },
+          "textProperty": "children"
+        }
+      ],
       "0386c2833a242fff": [
         {
           "fills": [
@@ -32584,6 +33461,31 @@
           "width": {
             "variable": "--focus-ring-width"
           }
+        }
+      ],
+      "03befd312e55b217": [
+        {
+          "kind": "text",
+          "slot": "children",
+          "text": {
+            "fill": {
+              "color": {
+                "variable": "--color-text-secondary"
+              },
+              "type": "SOLID"
+            },
+            "fontFamily": {
+              "variable": "--font-family-body"
+            },
+            "fontSize": {
+              "variable": "--font-size-body-sm"
+            },
+            "fontWeight": {
+              "variable": "--font-weight-emphasis"
+            },
+            "lineHeight": 150
+          },
+          "textProperty": "children"
         }
       ],
       "040ddae6e3fc9cc6": [
@@ -32985,6 +33887,56 @@
           "visibleProperty": "post"
         }
       ],
+      "0b114fb9b7976656": [
+        {
+          "kind": "text",
+          "slot": "children",
+          "text": {
+            "fill": {
+              "color": {
+                "variable": "--color-text-secondary"
+              },
+              "type": "SOLID"
+            },
+            "fontFamily": {
+              "variable": "--font-family-body"
+            },
+            "fontSize": {
+              "variable": "--font-size-body-lg"
+            },
+            "fontWeight": {
+              "variable": "--font-weight-body"
+            },
+            "lineHeight": 150
+          },
+          "textProperty": "children"
+        }
+      ],
+      "0b3d414a703d1e5f": [
+        {
+          "kind": "text",
+          "slot": "children",
+          "text": {
+            "fill": {
+              "color": {
+                "variable": "--color-text-tertiary"
+              },
+              "type": "SOLID"
+            },
+            "fontFamily": {
+              "variable": "--font-family-body"
+            },
+            "fontSize": {
+              "variable": "--font-size-body"
+            },
+            "fontWeight": {
+              "variable": "--font-weight-label"
+            },
+            "lineHeight": 150
+          },
+          "textProperty": "children"
+        }
+      ],
       "0e9ca0df5a6afe60": [
         {
           "fills": [
@@ -33054,6 +34006,31 @@
           "kind": "icon",
           "slot": "post",
           "visibleProperty": "post"
+        }
+      ],
+      "0ecf2d934753ffca": [
+        {
+          "kind": "text",
+          "slot": "children",
+          "text": {
+            "fill": {
+              "color": {
+                "variable": "--color-text-primary"
+              },
+              "type": "SOLID"
+            },
+            "fontFamily": {
+              "variable": "--font-family-body"
+            },
+            "fontSize": {
+              "variable": "--font-size-body-sm"
+            },
+            "fontWeight": {
+              "variable": "--font-weight-emphasis"
+            },
+            "lineHeight": 150
+          },
+          "textProperty": "children"
         }
       ],
       "0ee0f66e4d5fe40f": [
@@ -33594,6 +34571,31 @@
           "visibleProperty": "post"
         }
       ],
+      "1c59cf64bf4ce7b3": [
+        {
+          "kind": "text",
+          "slot": "children",
+          "text": {
+            "fill": {
+              "color": {
+                "variable": "--color-text-primary"
+              },
+              "type": "SOLID"
+            },
+            "fontFamily": {
+              "variable": "--font-family-body"
+            },
+            "fontSize": {
+              "variable": "--font-size-caption"
+            },
+            "fontWeight": {
+              "variable": "--font-weight-label"
+            },
+            "lineHeight": 150
+          },
+          "textProperty": "children"
+        }
+      ],
       "1d5f3274ec41cf5b": [
         {
           "kind": "text",
@@ -33688,6 +34690,31 @@
           "kind": "icon",
           "slot": "post",
           "visibleProperty": "post"
+        }
+      ],
+      "1e5f85a360af3739": [
+        {
+          "kind": "text",
+          "slot": "children",
+          "text": {
+            "fill": {
+              "color": {
+                "variable": "--color-text-primary"
+              },
+              "type": "SOLID"
+            },
+            "fontFamily": {
+              "variable": "--font-family-body"
+            },
+            "fontSize": {
+              "variable": "--font-size-body-lg"
+            },
+            "fontWeight": {
+              "variable": "--font-weight-label"
+            },
+            "lineHeight": 150
+          },
+          "textProperty": "children"
         }
       ],
       "1f4aecb28525fe05": [
@@ -33835,6 +34862,56 @@
           "kind": "icon",
           "slot": "post",
           "visibleProperty": "post"
+        }
+      ],
+      "215cdd7f437c8048": [
+        {
+          "kind": "text",
+          "slot": "children",
+          "text": {
+            "fill": {
+              "color": {
+                "variable": "--color-text-secondary"
+              },
+              "type": "SOLID"
+            },
+            "fontFamily": {
+              "variable": "--font-family-body"
+            },
+            "fontSize": {
+              "variable": "--font-size-body-lg"
+            },
+            "fontWeight": {
+              "variable": "--font-weight-label"
+            },
+            "lineHeight": 150
+          },
+          "textProperty": "children"
+        }
+      ],
+      "23a40221c2b89065": [
+        {
+          "kind": "text",
+          "slot": "children",
+          "text": {
+            "fill": {
+              "color": {
+                "variable": "--color-text-danger"
+              },
+              "type": "SOLID"
+            },
+            "fontFamily": {
+              "variable": "--font-family-body"
+            },
+            "fontSize": {
+              "variable": "--font-size-caption"
+            },
+            "fontWeight": {
+              "variable": "--font-weight-emphasis"
+            },
+            "lineHeight": 150
+          },
+          "textProperty": "children"
         }
       ],
       "241e55ab118c7342": [
@@ -34010,6 +35087,31 @@
           }
         }
       ],
+      "248b25db808aee11": [
+        {
+          "kind": "text",
+          "slot": "children",
+          "text": {
+            "fill": {
+              "color": {
+                "variable": "--color-text-primary"
+              },
+              "type": "SOLID"
+            },
+            "fontFamily": {
+              "variable": "--font-family-body"
+            },
+            "fontSize": {
+              "variable": "--font-size-body-lg"
+            },
+            "fontWeight": {
+              "variable": "--font-weight-emphasis"
+            },
+            "lineHeight": 150
+          },
+          "textProperty": "children"
+        }
+      ],
       "24925e442373198d": [
         {
           "fills": [
@@ -34079,6 +35181,31 @@
           "kind": "icon",
           "slot": "post",
           "visibleProperty": "post"
+        }
+      ],
+      "250dd3172825caa9": [
+        {
+          "kind": "text",
+          "slot": "children",
+          "text": {
+            "fill": {
+              "color": {
+                "variable": "--color-text-primary"
+              },
+              "type": "SOLID"
+            },
+            "fontFamily": {
+              "variable": "--font-family-body"
+            },
+            "fontSize": {
+              "variable": "--font-size-body-lg"
+            },
+            "fontWeight": {
+              "variable": "--font-weight-body"
+            },
+            "lineHeight": 150
+          },
+          "textProperty": "children"
         }
       ],
       "26874bd79acb9085": [
@@ -34448,6 +35575,31 @@
           "visibleProperty": "post"
         }
       ],
+      "3099da84f1f5cfb8": [
+        {
+          "kind": "text",
+          "slot": "children",
+          "text": {
+            "fill": {
+              "color": {
+                "variable": "--color-text-secondary"
+              },
+              "type": "SOLID"
+            },
+            "fontFamily": {
+              "variable": "--font-family-body"
+            },
+            "fontSize": {
+              "variable": "--font-size-body-sm"
+            },
+            "fontWeight": {
+              "variable": "--font-weight-label"
+            },
+            "lineHeight": 150
+          },
+          "textProperty": "children"
+        }
+      ],
       "32c61385462a3b62": [
         {
           "fills": [
@@ -34804,6 +35956,31 @@
         }
       ],
       "37517e5f3dc66819": [],
+      "39ae173a25e1a07f": [
+        {
+          "kind": "text",
+          "slot": "children",
+          "text": {
+            "fill": {
+              "color": {
+                "variable": "--color-text-secondary"
+              },
+              "type": "SOLID"
+            },
+            "fontFamily": {
+              "variable": "--font-family-body"
+            },
+            "fontSize": {
+              "variable": "--font-size-body-sm"
+            },
+            "fontWeight": {
+              "variable": "--font-weight-body"
+            },
+            "lineHeight": 150
+          },
+          "textProperty": "children"
+        }
+      ],
       "39bb26b5844f848a": [
         {
           "fills": [
@@ -35265,6 +36442,56 @@
           }
         }
       ],
+      "446e9169f6887c04": [
+        {
+          "kind": "text",
+          "slot": "children",
+          "text": {
+            "fill": {
+              "color": {
+                "variable": "--color-text-primary"
+              },
+              "type": "SOLID"
+            },
+            "fontFamily": {
+              "variable": "--font-family-body"
+            },
+            "fontSize": {
+              "variable": "--font-size-body"
+            },
+            "fontWeight": {
+              "variable": "--font-weight-emphasis"
+            },
+            "lineHeight": 150
+          },
+          "textProperty": "children"
+        }
+      ],
+      "499c2d0e829099f8": [
+        {
+          "kind": "text",
+          "slot": "children",
+          "text": {
+            "fill": {
+              "color": {
+                "variable": "--color-text-tertiary"
+              },
+              "type": "SOLID"
+            },
+            "fontFamily": {
+              "variable": "--font-family-body"
+            },
+            "fontSize": {
+              "variable": "--font-size-body-lg"
+            },
+            "fontWeight": {
+              "variable": "--font-weight-body"
+            },
+            "lineHeight": 150
+          },
+          "textProperty": "children"
+        }
+      ],
       "4a4d941ccc95a9d3": [
         {
           "fills": [
@@ -35502,6 +36729,31 @@
           "visibleProperty": "post"
         }
       ],
+      "4cbe7e4722500955": [
+        {
+          "kind": "text",
+          "slot": "children",
+          "text": {
+            "fill": {
+              "color": {
+                "variable": "--color-text-secondary"
+              },
+              "type": "SOLID"
+            },
+            "fontFamily": {
+              "variable": "--font-family-body"
+            },
+            "fontSize": {
+              "variable": "--font-size-caption"
+            },
+            "fontWeight": {
+              "variable": "--font-weight-emphasis"
+            },
+            "lineHeight": 150
+          },
+          "textProperty": "children"
+        }
+      ],
       "4cea464594086351": [
         {
           "fills": [
@@ -35564,6 +36816,56 @@
           "kind": "icon",
           "slot": "post",
           "visibleProperty": "post"
+        }
+      ],
+      "4d0365619e420941": [
+        {
+          "kind": "text",
+          "slot": "children",
+          "text": {
+            "fill": {
+              "color": {
+                "variable": "--color-text-tertiary"
+              },
+              "type": "SOLID"
+            },
+            "fontFamily": {
+              "variable": "--font-family-body"
+            },
+            "fontSize": {
+              "variable": "--font-size-caption"
+            },
+            "fontWeight": {
+              "variable": "--font-weight-body"
+            },
+            "lineHeight": 150
+          },
+          "textProperty": "children"
+        }
+      ],
+      "4d2561a797075319": [
+        {
+          "kind": "text",
+          "slot": "children",
+          "text": {
+            "fill": {
+              "color": {
+                "variable": "--color-text-tertiary"
+              },
+              "type": "SOLID"
+            },
+            "fontFamily": {
+              "variable": "--font-family-body"
+            },
+            "fontSize": {
+              "variable": "--font-size-body-sm"
+            },
+            "fontWeight": {
+              "variable": "--font-weight-emphasis"
+            },
+            "lineHeight": 150
+          },
+          "textProperty": "children"
         }
       ],
       "4ef0e5808c495f00": [
@@ -35925,6 +37227,81 @@
           "visibleProperty": "post"
         }
       ],
+      "5690eba9f9def45f": [
+        {
+          "kind": "text",
+          "slot": "children",
+          "text": {
+            "fill": {
+              "color": {
+                "variable": "--color-text-tertiary"
+              },
+              "type": "SOLID"
+            },
+            "fontFamily": {
+              "variable": "--font-family-body"
+            },
+            "fontSize": {
+              "variable": "--font-size-body"
+            },
+            "fontWeight": {
+              "variable": "--font-weight-body"
+            },
+            "lineHeight": 150
+          },
+          "textProperty": "children"
+        }
+      ],
+      "56bab98097b91402": [
+        {
+          "kind": "text",
+          "slot": "children",
+          "text": {
+            "fill": {
+              "color": {
+                "variable": "--color-text-danger"
+              },
+              "type": "SOLID"
+            },
+            "fontFamily": {
+              "variable": "--font-family-body"
+            },
+            "fontSize": {
+              "variable": "--font-size-body-sm"
+            },
+            "fontWeight": {
+              "variable": "--font-weight-label"
+            },
+            "lineHeight": 150
+          },
+          "textProperty": "children"
+        }
+      ],
+      "572e86d9df59f2c3": [
+        {
+          "kind": "text",
+          "slot": "children",
+          "text": {
+            "fill": {
+              "color": {
+                "variable": "--color-text-secondary"
+              },
+              "type": "SOLID"
+            },
+            "fontFamily": {
+              "variable": "--font-family-body"
+            },
+            "fontSize": {
+              "variable": "--font-size-body-lg"
+            },
+            "fontWeight": {
+              "variable": "--font-weight-emphasis"
+            },
+            "lineHeight": 150
+          },
+          "textProperty": "children"
+        }
+      ],
       "574922ab0039bd65": [
         {
           "fills": [
@@ -36226,6 +37603,31 @@
           "kind": "icon",
           "slot": "post",
           "visibleProperty": "post"
+        }
+      ],
+      "5dd2ca160a653f7f": [
+        {
+          "kind": "text",
+          "slot": "children",
+          "text": {
+            "fill": {
+              "color": {
+                "variable": "--color-text-secondary"
+              },
+              "type": "SOLID"
+            },
+            "fontFamily": {
+              "variable": "--font-family-body"
+            },
+            "fontSize": {
+              "variable": "--font-size-body"
+            },
+            "fontWeight": {
+              "variable": "--font-weight-body"
+            },
+            "lineHeight": 150
+          },
+          "textProperty": "children"
         }
       ],
       "5fdbaa4997625068": [
@@ -36588,6 +37990,56 @@
           "visibleProperty": "post"
         }
       ],
+      "62eefb39a19b85ab": [
+        {
+          "kind": "text",
+          "slot": "children",
+          "text": {
+            "fill": {
+              "color": {
+                "variable": "--color-text-danger"
+              },
+              "type": "SOLID"
+            },
+            "fontFamily": {
+              "variable": "--font-family-body"
+            },
+            "fontSize": {
+              "variable": "--font-size-body-sm"
+            },
+            "fontWeight": {
+              "variable": "--font-weight-emphasis"
+            },
+            "lineHeight": 150
+          },
+          "textProperty": "children"
+        }
+      ],
+      "63856bade7ea452e": [
+        {
+          "kind": "text",
+          "slot": "children",
+          "text": {
+            "fill": {
+              "color": {
+                "variable": "--color-text-primary"
+              },
+              "type": "SOLID"
+            },
+            "fontFamily": {
+              "variable": "--font-family-body"
+            },
+            "fontSize": {
+              "variable": "--font-size-caption"
+            },
+            "fontWeight": {
+              "variable": "--font-weight-body"
+            },
+            "lineHeight": 150
+          },
+          "textProperty": "children"
+        }
+      ],
       "64f2bfa154077f92": [
         {
           "kind": "text",
@@ -36776,6 +38228,31 @@
             },
             "fontSize": {
               "variable": "--font-size-caption"
+            },
+            "fontWeight": {
+              "variable": "--font-weight-label"
+            },
+            "lineHeight": 150
+          },
+          "textProperty": "children"
+        }
+      ],
+      "691eda67bd2ba4d3": [
+        {
+          "kind": "text",
+          "slot": "children",
+          "text": {
+            "fill": {
+              "color": {
+                "variable": "--color-text-primary"
+              },
+              "type": "SOLID"
+            },
+            "fontFamily": {
+              "variable": "--font-family-body"
+            },
+            "fontSize": {
+              "variable": "--font-size-body"
             },
             "fontWeight": {
               "variable": "--font-weight-label"
@@ -37022,6 +38499,31 @@
           }
         }
       ],
+      "6dd1252f542db2ee": [
+        {
+          "kind": "text",
+          "slot": "children",
+          "text": {
+            "fill": {
+              "color": {
+                "variable": "--color-text-secondary"
+              },
+              "type": "SOLID"
+            },
+            "fontFamily": {
+              "variable": "--font-family-body"
+            },
+            "fontSize": {
+              "variable": "--font-size-body"
+            },
+            "fontWeight": {
+              "variable": "--font-weight-label"
+            },
+            "lineHeight": 150
+          },
+          "textProperty": "children"
+        }
+      ],
       "6f1c89cfc853c3f5": [
         {
           "fills": [
@@ -37189,6 +38691,31 @@
           "textProperty": "children"
         }
       ],
+      "7633bffce4e77370": [
+        {
+          "kind": "text",
+          "slot": "children",
+          "text": {
+            "fill": {
+              "color": {
+                "variable": "--color-text-tertiary"
+              },
+              "type": "SOLID"
+            },
+            "fontFamily": {
+              "variable": "--font-family-body"
+            },
+            "fontSize": {
+              "variable": "--font-size-body-lg"
+            },
+            "fontWeight": {
+              "variable": "--font-weight-emphasis"
+            },
+            "lineHeight": 150
+          },
+          "textProperty": "children"
+        }
+      ],
       "7718871bbeecc2ff": [
         {
           "fills": [
@@ -37258,6 +38785,31 @@
           "kind": "icon",
           "slot": "post",
           "visibleProperty": "post"
+        }
+      ],
+      "78d61afb6fce2123": [
+        {
+          "kind": "text",
+          "slot": "children",
+          "text": {
+            "fill": {
+              "color": {
+                "variable": "--color-text-primary"
+              },
+              "type": "SOLID"
+            },
+            "fontFamily": {
+              "variable": "--font-family-body"
+            },
+            "fontSize": {
+              "variable": "--font-size-caption"
+            },
+            "fontWeight": {
+              "variable": "--font-weight-emphasis"
+            },
+            "lineHeight": 150
+          },
+          "textProperty": "children"
         }
       ],
       "78f40546dc22608b": [
@@ -38010,6 +39562,31 @@
           "visibleProperty": "post"
         }
       ],
+      "8af2ef709afa8fe4": [
+        {
+          "kind": "text",
+          "slot": "children",
+          "text": {
+            "fill": {
+              "color": {
+                "variable": "--color-text-tertiary"
+              },
+              "type": "SOLID"
+            },
+            "fontFamily": {
+              "variable": "--font-family-body"
+            },
+            "fontSize": {
+              "variable": "--font-size-body-sm"
+            },
+            "fontWeight": {
+              "variable": "--font-weight-body"
+            },
+            "lineHeight": 150
+          },
+          "textProperty": "children"
+        }
+      ],
       "8bb965f688601f99": [
         {
           "fills": [
@@ -38476,6 +40053,31 @@
           "kind": "icon",
           "slot": "post",
           "visibleProperty": "post"
+        }
+      ],
+      "944187ee74dcc663": [
+        {
+          "kind": "text",
+          "slot": "children",
+          "text": {
+            "fill": {
+              "color": {
+                "variable": "--color-text-secondary"
+              },
+              "type": "SOLID"
+            },
+            "fontFamily": {
+              "variable": "--font-family-body"
+            },
+            "fontSize": {
+              "variable": "--font-size-body"
+            },
+            "fontWeight": {
+              "variable": "--font-weight-emphasis"
+            },
+            "lineHeight": 150
+          },
+          "textProperty": "children"
         }
       ],
       "945ce8ce3ba026d2": [
@@ -39205,6 +40807,56 @@
           "visibleProperty": "post"
         }
       ],
+      "a2d034f386446779": [
+        {
+          "kind": "text",
+          "slot": "children",
+          "text": {
+            "fill": {
+              "color": {
+                "variable": "--color-text-tertiary"
+              },
+              "type": "SOLID"
+            },
+            "fontFamily": {
+              "variable": "--font-family-body"
+            },
+            "fontSize": {
+              "variable": "--font-size-caption"
+            },
+            "fontWeight": {
+              "variable": "--font-weight-emphasis"
+            },
+            "lineHeight": 150
+          },
+          "textProperty": "children"
+        }
+      ],
+      "a3ed43822d59b96f": [
+        {
+          "kind": "text",
+          "slot": "children",
+          "text": {
+            "fill": {
+              "color": {
+                "variable": "--color-text-danger"
+              },
+              "type": "SOLID"
+            },
+            "fontFamily": {
+              "variable": "--font-family-body"
+            },
+            "fontSize": {
+              "variable": "--font-size-body-lg"
+            },
+            "fontWeight": {
+              "variable": "--font-weight-body"
+            },
+            "lineHeight": 150
+          },
+          "textProperty": "children"
+        }
+      ],
       "a4ef7abd89653fed": [
         {
           "fills": [
@@ -39409,6 +41061,56 @@
           "kind": "icon",
           "slot": "post",
           "visibleProperty": "post"
+        }
+      ],
+      "a77ad5e5f9c0df92": [
+        {
+          "kind": "text",
+          "slot": "children",
+          "text": {
+            "fill": {
+              "color": {
+                "variable": "--color-text-primary"
+              },
+              "type": "SOLID"
+            },
+            "fontFamily": {
+              "variable": "--font-family-body"
+            },
+            "fontSize": {
+              "variable": "--font-size-body-sm"
+            },
+            "fontWeight": {
+              "variable": "--font-weight-label"
+            },
+            "lineHeight": 150
+          },
+          "textProperty": "children"
+        }
+      ],
+      "a81e1c81fdfaf570": [
+        {
+          "kind": "text",
+          "slot": "children",
+          "text": {
+            "fill": {
+              "color": {
+                "variable": "--color-text-danger"
+              },
+              "type": "SOLID"
+            },
+            "fontFamily": {
+              "variable": "--font-family-body"
+            },
+            "fontSize": {
+              "variable": "--font-size-body"
+            },
+            "fontWeight": {
+              "variable": "--font-weight-emphasis"
+            },
+            "lineHeight": 150
+          },
+          "textProperty": "children"
         }
       ],
       "a8a4d5a3ac138783": [
@@ -39629,6 +41331,31 @@
           }
         }
       ],
+      "ae37cc71588f53fe": [
+        {
+          "kind": "text",
+          "slot": "children",
+          "text": {
+            "fill": {
+              "color": {
+                "variable": "--color-text-tertiary"
+              },
+              "type": "SOLID"
+            },
+            "fontFamily": {
+              "variable": "--font-family-body"
+            },
+            "fontSize": {
+              "variable": "--font-size-body-sm"
+            },
+            "fontWeight": {
+              "variable": "--font-weight-label"
+            },
+            "lineHeight": 150
+          },
+          "textProperty": "children"
+        }
+      ],
       "b365e0a068bcc4db": [
         {
           "fills": [
@@ -39691,6 +41418,31 @@
           "kind": "icon",
           "slot": "post",
           "visibleProperty": "post"
+        }
+      ],
+      "b4e1beed34e91e52": [
+        {
+          "kind": "text",
+          "slot": "children",
+          "text": {
+            "fill": {
+              "color": {
+                "variable": "--color-text-danger"
+              },
+              "type": "SOLID"
+            },
+            "fontFamily": {
+              "variable": "--font-family-body"
+            },
+            "fontSize": {
+              "variable": "--font-size-caption"
+            },
+            "fontWeight": {
+              "variable": "--font-weight-body"
+            },
+            "lineHeight": 150
+          },
+          "textProperty": "children"
         }
       ],
       "b5f8fbb27f087e79": [
@@ -39821,6 +41573,31 @@
           "visibleProperty": "post"
         }
       ],
+      "b73fa259b52a60f9": [
+        {
+          "kind": "text",
+          "slot": "children",
+          "text": {
+            "fill": {
+              "color": {
+                "variable": "--color-text-tertiary"
+              },
+              "type": "SOLID"
+            },
+            "fontFamily": {
+              "variable": "--font-family-body"
+            },
+            "fontSize": {
+              "variable": "--font-size-body"
+            },
+            "fontWeight": {
+              "variable": "--font-weight-emphasis"
+            },
+            "lineHeight": 150
+          },
+          "textProperty": "children"
+        }
+      ],
       "b7af5e6baa688300": [
         {
           "fills": [
@@ -39883,6 +41660,31 @@
           "kind": "icon",
           "slot": "post",
           "visibleProperty": "post"
+        }
+      ],
+      "b8db489f911ed7e3": [
+        {
+          "kind": "text",
+          "slot": "children",
+          "text": {
+            "fill": {
+              "color": {
+                "variable": "--color-text-primary"
+              },
+              "type": "SOLID"
+            },
+            "fontFamily": {
+              "variable": "--font-family-body"
+            },
+            "fontSize": {
+              "variable": "--font-size-body"
+            },
+            "fontWeight": {
+              "variable": "--font-weight-body"
+            },
+            "lineHeight": 150
+          },
+          "textProperty": "children"
         }
       ],
       "b95975afbbd81c0d": [
@@ -40430,6 +42232,31 @@
           "visibleProperty": "post"
         }
       ],
+      "c790af071b65e880": [
+        {
+          "kind": "text",
+          "slot": "children",
+          "text": {
+            "fill": {
+              "color": {
+                "variable": "--color-text-secondary"
+              },
+              "type": "SOLID"
+            },
+            "fontFamily": {
+              "variable": "--font-family-body"
+            },
+            "fontSize": {
+              "variable": "--font-size-caption"
+            },
+            "fontWeight": {
+              "variable": "--font-weight-body"
+            },
+            "lineHeight": 150
+          },
+          "textProperty": "children"
+        }
+      ],
       "cb15ba0f22e3ce38": [
         {
           "kind": "text",
@@ -40801,6 +42628,56 @@
           }
         }
       ],
+      "d3bc43ffc2e5f11c": [
+        {
+          "kind": "text",
+          "slot": "children",
+          "text": {
+            "fill": {
+              "color": {
+                "variable": "--color-text-danger"
+              },
+              "type": "SOLID"
+            },
+            "fontFamily": {
+              "variable": "--font-family-body"
+            },
+            "fontSize": {
+              "variable": "--font-size-body"
+            },
+            "fontWeight": {
+              "variable": "--font-weight-body"
+            },
+            "lineHeight": 150
+          },
+          "textProperty": "children"
+        }
+      ],
+      "d62bbc9d422dccdc": [
+        {
+          "kind": "text",
+          "slot": "children",
+          "text": {
+            "fill": {
+              "color": {
+                "variable": "--color-text-tertiary"
+              },
+              "type": "SOLID"
+            },
+            "fontFamily": {
+              "variable": "--font-family-body"
+            },
+            "fontSize": {
+              "variable": "--font-size-body-lg"
+            },
+            "fontWeight": {
+              "variable": "--font-weight-label"
+            },
+            "lineHeight": 150
+          },
+          "textProperty": "children"
+        }
+      ],
       "d7e772710b62c8d5": [
         {
           "fills": [
@@ -40884,6 +42761,31 @@
           }
         }
       ],
+      "d8de5a823ca9d7f2": [
+        {
+          "kind": "text",
+          "slot": "children",
+          "text": {
+            "fill": {
+              "color": {
+                "variable": "--color-text-danger"
+              },
+              "type": "SOLID"
+            },
+            "fontFamily": {
+              "variable": "--font-family-body"
+            },
+            "fontSize": {
+              "variable": "--font-size-body-lg"
+            },
+            "fontWeight": {
+              "variable": "--font-weight-label"
+            },
+            "lineHeight": 150
+          },
+          "textProperty": "children"
+        }
+      ],
       "d959712858adfbc1": [
         {
           "fills": [
@@ -40953,6 +42855,31 @@
           "kind": "icon",
           "slot": "post",
           "visibleProperty": "post"
+        }
+      ],
+      "da705d41fd46c805": [
+        {
+          "kind": "text",
+          "slot": "children",
+          "text": {
+            "fill": {
+              "color": {
+                "variable": "--color-text-tertiary"
+              },
+              "type": "SOLID"
+            },
+            "fontFamily": {
+              "variable": "--font-family-body"
+            },
+            "fontSize": {
+              "variable": "--font-size-caption"
+            },
+            "fontWeight": {
+              "variable": "--font-weight-label"
+            },
+            "lineHeight": 150
+          },
+          "textProperty": "children"
         }
       ],
       "dc1e9d5685418463": [
@@ -41661,6 +43588,31 @@
           }
         }
       ],
+      "ec2b6f20f5622822": [
+        {
+          "kind": "text",
+          "slot": "children",
+          "text": {
+            "fill": {
+              "color": {
+                "variable": "--color-text-danger"
+              },
+              "type": "SOLID"
+            },
+            "fontFamily": {
+              "variable": "--font-family-body"
+            },
+            "fontSize": {
+              "variable": "--font-size-body-sm"
+            },
+            "fontWeight": {
+              "variable": "--font-weight-body"
+            },
+            "lineHeight": 150
+          },
+          "textProperty": "children"
+        }
+      ],
       "f364d6e4eea7f0af": [
         {
           "fills": [
@@ -41906,6 +43858,31 @@
               "variable": "--font-weight-label"
             },
             "lineHeight": 100
+          },
+          "textProperty": "children"
+        }
+      ],
+      "fd8f52df4fbb479e": [
+        {
+          "kind": "text",
+          "slot": "children",
+          "text": {
+            "fill": {
+              "color": {
+                "variable": "--color-text-primary"
+              },
+              "type": "SOLID"
+            },
+            "fontFamily": {
+              "variable": "--font-family-body"
+            },
+            "fontSize": {
+              "variable": "--font-size-body-sm"
+            },
+            "fontWeight": {
+              "variable": "--font-weight-body"
+            },
+            "lineHeight": 150
           },
           "textProperty": "children"
         }
@@ -50651,6 +52628,11 @@
             "type": "SOLID"
           }
         ]
+      },
+      "fa0b643878e9242d": {
+        "effects": [],
+        "fills": [],
+        "strokes": []
       },
       "fa76c879896292f8": {
         "effects": [

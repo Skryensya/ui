@@ -8,6 +8,11 @@ export type Realization = {
   /** The contract, by id. */
   contract: string;
   /**
+   * What its sets are called, when the contract's name is not it: `typography` draws Text, Heading
+   * and Link, each its own component in Figma. Absent, the contract's id.
+   */
+  id?: string;
+  /**
    * The one signature drawn. Figma draws no host element, so signatures that differ only in their
    * host (a `<button>` and an `<a>` with the same paint) are one drawing.
    */

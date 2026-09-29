@@ -199,7 +199,7 @@ export async function buildFigmaManifest(input: Realization | readonly Realizati
   const bySource = { alias: 0, literal: 0, evaluated: 0 };
   for (const v of variables) for (const s of Object.values(v.source)) bySource[s]++;
   // A realization's key in the report: its contract, or contract and signature when one contract has several.
-  const keyOf = (r: Realization) => (realizations.filter((x) => x.contract === r.contract).length > 1 ? `${r.contract}:${r.signature}` : r.contract);
+  const keyOf = (r: Realization) => r.id ?? (realizations.filter((x) => x.contract === r.contract && !x.id).length > 1 ? `${r.contract}:${r.signature}` : r.contract);
   const report = {
     options: Object.fromEntries(realizations.map((r, i) => [keyOf(r), compiled[i].options])),
     variants: {
@@ -309,7 +309,8 @@ async function compileRealization(realization: Realization, shared: Shared): Pro
   if (realization.splitBy && split?.type !== "enum") throw new Error(`splitBy ${realization.splitBy} is not an enum option`);
   // One set per value of the split, or one set for the whole signature when nothing splits it.
   const splitValues: (string | undefined)[] = split ? [...(split.values ?? [])] : [undefined];
-  const setIdOf = (splitValue: string | undefined) => `${realization.contract}/${splitValue ?? signatureWord(contract.id, realization.signature)}`;
+  const setBase = realization.id ?? realization.contract;
+  const setIdOf = (splitValue: string | undefined) => `${setBase}/${splitValue ?? signatureWord(contract.id, realization.signature)}`;
   const stateOptions = realization.state.options.filter((name) => visual.includes(name));
   const axes: Axis[] = [];
   for (const name of visual) {
@@ -461,7 +462,7 @@ async function compileRealization(realization: Realization, shared: Shared): Pro
     sets.push({
       kind: "component-set",
       id: setIdOf(splitValue),
-      name: `${titleOf(contract.id)} / ${splitValue ?? titleOf(signatureWord(contract.id, realization.signature))}`,
+      name: `${titleOf(setBase)} / ${splitValue ?? titleOf(signatureWord(contract.id, realization.signature))}`,
       page: PAGE.id,
       axes: setAxes,
       grid,

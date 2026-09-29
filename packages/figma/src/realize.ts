@@ -173,7 +173,8 @@ function effects(ctx: Context): Effect[] {
 /* ── the frame ────────────────────────────────────────────────────────────────────────────────── */
 
 export function frameOf(ctx: Context): Frame {
-  const display = prop(ctx, "display") ?? "";
+  // No `display` declared is the element's own: block for a `<p>` or an `<hr>`, drawn the same.
+  const display = prop(ctx, "display") || "block";
   /*
    * A flex host maps to auto layout directly. A block or inline-block host (a Badge) lays its content
    * out as lines of text, which for one line is the same thing as a horizontal auto layout hugging it,
