@@ -483,3 +483,14 @@ describe("CopyButton", () => {
     expect([glyphs(cell("rest")), glyphs(cell("copied"))]).toEqual([["copy"], ["check"]]);
   });
 });
+
+describe("SplitButton", () => {
+  it("welds its action to the menu's chevron, the action's label a property", () => {
+    const set = manifest.components.find((c): c is ComponentSet => c.kind === "component-set" && c.id === "split-button")!;
+    expect(set.properties.map((p) => p.name)).toEqual(["action 1"]);
+    const [button, menu] = manifest.styles.layers[set.cells[0].layers];
+    const corners = (l: Layer) => (l.kind === "frame" ? manifest.styles.boxes[l.box].corners : undefined);
+    expect(corners(button)?.topRight).toEqual({ value: 0, expression: "0" });
+    expect(JSON.stringify(menu)).toContain('"default":"chevron-down"');
+  });
+});
