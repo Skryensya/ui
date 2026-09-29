@@ -964,6 +964,9 @@ type Layout = {
   strong: Label;
   heading: Label;
   keep: Set<string>;
+  /** Where each showcase column starts, and how wide it is. */
+  showX: number[];
+  showW: number[];
 };
 
 const word = (axis: string, value: string) => (value === "true" || value === "false" ? `${axis}: ${value}` : value);
@@ -1007,7 +1010,22 @@ async function planLayout(ctx: Ctx, frame: FrameNode, spec: M.ComponentSet, cell
       move(run, ensureLabel(ctx, frame, groupKey, word(outerCol, col[outerCol]), strong), setX + colX[i], setY - 2 * (lineH + 8));
     }
   });
-  return { cols, rows, colX, rowY, cellW, cellH, setX, setY, sections, sectionAxis, lineH, style, strong, heading, keep };
+  // The showcase's columns, right of the set, with their headings: known before any row is drawn.
+  const showW = showcaseWidths(spec, cellW);
+  const showX: number[] = [];
+  let x = setX + colX[colX.length - 1] + cellW + INNER + GROUP;
+  spec.showcase.columns.forEach((column, i) => {
+    showX.push(x);
+    const header = `showcase:${column.slot}`;
+    keep.add(header);
+    move(run, ensureLabel(ctx, frame, header, `${column.slot}: on`, style), Math.round(x), setY - lineH - 8);
+    if (i === 0) {
+      keep.add("showcase:group");
+      move(run, ensureLabel(ctx, frame, "showcase:group", "with icon", strong), Math.round(x), setY - 2 * (lineH + 8));
+    }
+    x += showW[i] + 24;
+  });
+  return { cols, rows, colX, rowY, cellW, cellH, setX, setY, sections, sectionAxis, lineH, style, strong, heading, keep, showX, showW };
 }
 
 /** The variant drawn first: the first row across the first column, the widest in the set. */
@@ -1048,22 +1066,26 @@ async function measureFirst(ctx: Ctx, spec: M.ComponentSet, set: ComponentSetNod
   return { w: Math.ceil(Number(valueOf(box.padding.left)) + textW + Number(valueOf(box.padding.right))), h: cellH };
 }
 
-/** The showcase's width: each column is the first variant with that slot's icon and the gap before it. */
-function showcaseWidth(spec: M.ComponentSet, cellW: number): number {
+/** Each showcase column's width: the first variant with that slot's icon and the gap before it. */
+function showcaseWidths(spec: M.ComponentSet, cellW: number): number[] {
   const first = firstCellOf(spec);
-  if (!first || !spec.showcase.columns.length) return 0;
+  if (!first) return spec.showcase.columns.map(() => cellW);
   const box = manifest.styles.boxes[first.box];
   const gap = box.gap ? Number(valueOf(box.gap)) : 0;
-  const widths = spec.showcase.columns.map((column) => {
+  return spec.showcase.columns.map((column) => {
     const icon = manifest.styles.layers[first.layers].find((l) => l.kind === "icon" && l.slot === column.slot);
-    return cellW + (icon?.kind === "icon" ? gap + Number(valueOf(icon.icon.size)) : 0);
+    return Math.ceil(cellW + (icon?.kind === "icon" ? gap + Number(valueOf(icon.icon.size)) : 0));
   });
-  return widths.reduce((a, b) => a + b, 0) + 24 * (widths.length - 1);
 }
 
+/** Where a set's frame content ends on the right: the showcase's last column, or the set. */
+const contentRight = (layout: Layout) =>
+  layout.showX.length
+    ? layout.showX[layout.showX.length - 1] + layout.showW[layout.showW.length - 1]
+    : layout.setX + layout.colX[layout.colX.length - 1] + layout.cellW + INNER;
+
 /** A set's frame width, from its layout, before anything in it is drawn. */
-const plannedWidth = (spec: M.ComponentSet, layout: Layout) =>
-  layout.setX + layout.colX[layout.colX.length - 1] + layout.cellW + INNER + GROUP + showcaseWidth(spec, layout.cellW) + 16 + FRAME_PAD;
+const plannedWidth = (_spec: M.ComponentSet, layout: Layout) => contentRight(layout) + 16 + FRAME_PAD;
 
 /** The set in its frame, at its final place and size, before its variants fill it. */
 function placeSet(run: Run, frame: FrameNode, set: ComponentSetNode, layout: Layout) {
@@ -1077,9 +1099,8 @@ async function finishLayout(ctx: SetCtx, frame: FrameNode, set: ComponentSetNode
   const { run } = ctx;
   const first = ownCells(set).find((c) => getTag(c, "cell") === spec.defaultCell);
   if (first && set.children[0] !== first) run.write(() => set.insertChild(0, first));
-  const { rows, rowY, cellH, setX, setY, lineH, style, strong, heading, keep } = layout;
-  const showcaseRight = await layoutShowcase(ctx, frame, set, spec, rows, rowY, cellH, setX + set.width + GROUP, setY, lineH, style, strong, keep);
-  const right = Math.max(setX + set.width, showcaseRight);
+  const { rowY, cellH, setX, setY, heading, keep } = layout;
+  const right = Math.max(setX + set.width, contentRight(layout));
   for (const section of layout.sections) {
     const headKey = `section:${section.value}`;
     const outlineKey = `outline:${section.value}`;
@@ -1094,84 +1115,57 @@ async function finishLayout(ctx: SetCtx, frame: FrameNode, set: ComponentSetNode
   resizeTo(run, frame, right + 16 + FRAME_PAD, setY + set.height + FRAME_PAD);
 }
 
-/** Instances of each row's rest variant with one optional slot on, in columns right of the set. */
-async function layoutShowcase(
+/** The showcase instances already in a frame, by their tag: `<row values>:<slot>`. */
+const showcaseIn = (frame: FrameNode) =>
+  new Map(frame.children.filter((n): n is InstanceNode => n.type === "INSTANCE" && getTag(n, "showcase") !== "").map((n) => [getTag(n, "showcase"), n]));
+
+/**
+ * One row's showcase, drawn as soon as that row's variants exist: its rest variant with each
+ * optional icon slot switched on, each in its column. Writes only what differs.
+ */
+async function drawShowcaseRow(
   ctx: SetCtx,
   frame: FrameNode,
-  set: ComponentSetNode,
   spec: M.ComponentSet,
-  rows: Record<string, string>[],
-  rowY: number[],
-  cellH: number,
-  left: number,
-  setY: number,
-  lineH: number,
-  style: Label,
-  strong: Label,
-  keep: Set<string>,
-): Promise<number> {
+  layout: Layout,
+  row: number,
+  cells: Map<string, ComponentNode>,
+  keys: Record<string, string>,
+  existing: Map<string, InstanceNode>,
+  drawn: Set<string>,
+) {
   const { run } = ctx;
-  const byKey = new Map(ownCells(set).map((c) => [getTag(c, "cell"), c]));
-  const axisOrder = spec.axes.map((a) => a.name);
-  const defs = set.componentPropertyDefinitions;
-  const keyOf = (name: string) => Object.keys(defs).find((k) => k.split("#")[0] === name && defs[k].type === "BOOLEAN");
-  const existing = new Map(
-    frame.children.filter((n): n is InstanceNode => n.type === "INSTANCE" && getTag(n, "showcase") !== "").map((n) => [getTag(n, "showcase"), n]),
-  );
-  const drawn = new Set<string>();
-  const instances: { node: InstanceNode; col: number; row: number }[] = [];
-
+  const combo = layout.rows[row];
+  const order = spec.axes.map((a) => a.name);
+  const props = { ...combo, ...spec.showcase.base };
+  const main = cells.get(order.map((a) => `${a}=${props[a]}`).join(", "));
+  if (!main) return;
   for (const [col, column] of spec.showcase.columns.entries()) {
-    for (const [row, combo] of rows.entries()) {
-      const props = { ...combo, ...spec.showcase.base };
-      const cellKey = axisOrder.map((a) => `${a}=${props[a]}`).join(", ");
-      const main = byKey.get(cellKey);
-      if (!main) continue;
-      const tagKey = `${Object.values(combo).join(",")}:${column.slot}`;
-      drawn.add(tagKey);
-      let node = existing.get(tagKey);
-      if (!node) {
-        run.write(() => {
-          node = main.createInstance();
-          node.setSharedPluginData(NS, "showcase", tagKey);
-          frame.appendChild(node);
-        });
-      } else if ((await node.getMainComponentAsync())?.id !== main.id) {
-        const n = node;
-        run.write(() => n.swapComponent(main));
-      }
-      if (!node) continue;
+    const tagKey = `${Object.values(combo).join(",")}:${column.slot}`;
+    drawn.add(tagKey);
+    let node = existing.get(tagKey);
+    if (!node) {
+      run.write(() => {
+        node = main.createInstance();
+        node.setSharedPluginData(NS, "showcase", tagKey);
+        frame.appendChild(node);
+      });
+    } else if ((await node.getMainComponentAsync())?.id !== main.id) {
       const n = node;
-      const want: Record<string, boolean> = {};
-      for (const [name, value] of Object.entries(column.properties)) {
-        const key = keyOf(name);
-        if (key && n.componentProperties[key]?.value !== value) want[key] = value;
-      }
-      if (Object.keys(want).length) run.write(() => n.setProperties(want));
-      const name = `${column.slot} · ${Object.values(combo).join(" · ")}`;
-      if (n.name !== name) run.write(() => (n.name = name));
-      instances.push({ node: n, col, row });
+      run.write(() => n.swapComponent(main));
     }
-  }
-  for (const [key, node] of existing) if (!drawn.has(key)) run.write(() => node.remove());
-
-  // Column by column, each as wide as its widest instance; rows aligned with the set's rows.
-  let x = left;
-  for (const [col, column] of spec.showcase.columns.entries()) {
-    const inCol = instances.filter((i) => i.col === col);
-    if (!inCol.length) continue;
-    const width = Math.max(...inCol.map((i) => i.node.width));
-    for (const { node, row } of inCol) move(run, node, Math.round(x), Math.round(setY + rowY[row] + (cellH - node.height) / 2));
-    const header = `showcase:${column.slot}`;
-    keep.add(header);
-    move(run, ensureLabel(ctx, frame, header, `${column.slot}: on`, style), Math.round(x), setY - lineH - 8);
-    if (col === 0) {
-      keep.add("showcase:group");
-      move(run, ensureLabel(ctx, frame, "showcase:group", "with icon", strong), Math.round(x), setY - 2 * (lineH + 8));
+    if (!node) continue;
+    const n = node;
+    const want: Record<string, boolean> = {};
+    for (const [name, value] of Object.entries(column.properties)) {
+      const key = keys[name];
+      if (key && n.componentProperties[key]?.value !== value) want[key] = value;
     }
-    x += width + 24;
+    if (Object.keys(want).length) run.write(() => n.setProperties(want));
+    const name = `${column.slot} · ${Object.values(combo).join(" · ")}`;
+    if (n.name !== name) run.write(() => (n.name = name));
+    move(run, n, Math.round(layout.showX[col]), Math.round(layout.setY + layout.rowY[row] + (layout.cellH - n.height) / 2));
   }
-  return x - 24;
 }
 
 /** Prototype reactions: each rest cell changes to its hover sibling while hovered. Writes only what differs. */
@@ -1229,6 +1223,13 @@ async function syncSet(ctx: SetCtx, spec: M.ComponentSet, found: Map<string, Sce
   let layout = planned;
   let placed = false;
   let outgrown = false;
+  // Component properties exist from the moment the set does, so every variant is bound as it is made
+  // and each row's showcase can switch its icons on right away.
+  let keys: Record<string, string> | undefined;
+  const cellsByKey = new Map(ownCells(set).map((c) => [getTag(c, "cell"), c]));
+  const showExisting = frame ? showcaseIn(frame) : new Map<string, InstanceNode>();
+  const showDrawn = new Set<string>();
+  const lastCol = combos(spec.grid.columns).length - 1;
   const counts = { created: 0, updated: 0, unchanged: 0, orphaned: 0 };
   const partCounts: Record<Part, number> = { box: 0, surface: 0, layers: 0 };
   for (const { cell, row, col } of queue) {
@@ -1263,6 +1264,11 @@ async function syncSet(ctx: SetCtx, spec: M.ComponentSet, found: Map<string, Sce
       }
       if (node.width > layout.cellW + 0.5 || node.height > layout.cellH + 0.5) outgrown = true;
       move(run, node, layout.colX[col], layout.rowY[row]);
+      cellsByKey.set(c.key, node);
+      keys ??= ensureProperties(ctx, set, spec.properties);
+      bindReferences(ctx, node, c, keys, samples);
+      // The row is done: its showcase goes beside it now, not after every row.
+      if (col === lastCol) await drawShowcaseRow(ctx, frame, spec, layout, row, cellsByKey, keys, showExisting, showDrawn);
     }
     await progress.tick(spec.id);
   }
@@ -1293,12 +1299,13 @@ async function syncSet(ctx: SetCtx, spec: M.ComponentSet, found: Map<string, Sce
   }
   tag(run, s, { ...provenance("component-set", spec.id), contractHash: spec.contractHash, visualHash: spec.visualHash });
 
-  const keys = ensureProperties(ctx, s, spec.properties);
+  keys ??= ensureProperties(ctx, s, spec.properties);
   const nodes = new Map(ownCells(s).map((c) => [getTag(c, "cell"), c]));
   for (const cell of spec.cells) {
     const node = nodes.get(cell.key);
     if (node) bindReferences(ctx, node, cell, keys, samples);
   }
+  if (frame && run.apply) for (const [key, node] of showExisting) if (!showDrawn.has(key)) run.write(() => node.remove());
   if (run.apply && layout) {
     // Only if a variant came out bigger than the first one measured: lay the grid out again.
     if (outgrown) {
@@ -1308,6 +1315,9 @@ async function syncSet(ctx: SetCtx, spec: M.ComponentSet, found: Map<string, Sce
       for (const { cell, row, col } of queue) {
         const node = nodes.get(cell!.key);
         if (node && row >= 0) move(run, node, layout.colX[col], layout.rowY[row]);
+      }
+      for (let row = 0; row < layout.rows.length; row++) {
+        await drawShowcaseRow(ctx, frame, spec, layout, row, nodes, keys, showcaseIn(frame), new Set());
       }
       run.log("UPDATE", `${spec.name}: grid`, "a variant was wider than the first; laid out again");
     }
