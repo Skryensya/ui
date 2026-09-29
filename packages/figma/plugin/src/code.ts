@@ -969,7 +969,7 @@ type Layout = {
 const word = (axis: string, value: string) => (value === "true" || value === "false" ? `${axis}: ${value}` : value);
 
 /** The frame's chrome (title, row and column labels) placed, and every slot's position computed. */
-async function planLayout(ctx: SetCtx, frame: FrameNode, spec: M.ComponentSet, cellW: number, cellH: number): Promise<Layout> {
+async function planLayout(ctx: Ctx, frame: FrameNode, spec: M.ComponentSet, cellW: number, cellH: number): Promise<Layout> {
   const { run } = ctx;
   const cols = combos(spec.grid.columns);
   const rows = combos(spec.grid.rows);
@@ -1009,6 +1009,61 @@ async function planLayout(ctx: SetCtx, frame: FrameNode, spec: M.ComponentSet, c
   });
   return { cols, rows, colX, rowY, cellW, cellH, setX, setY, sections, sectionAxis, lineH, style, strong, heading, keep };
 }
+
+/** The variant drawn first: the first row across the first column, the widest in the set. */
+function firstCellOf(spec: M.ComponentSet): M.Cell | undefined {
+  const order = spec.axes.map((a) => a.name);
+  const props = { ...combos(spec.grid.rows)[0], ...combos(spec.grid.columns)[0] };
+  const key = order.map((a) => `${a}=${props[a]}`).join(", ");
+  return spec.cells.find((c) => c.key === key);
+}
+
+/**
+ * The first variant's size before it is drawn: read off it when it exists (so a sync with nothing to
+ * change writes nothing), otherwise its padding plus its label, measured on a text made and removed.
+ */
+async function measureFirst(ctx: Ctx, spec: M.ComponentSet, set: ComponentSetNode | undefined): Promise<{ w: number; h: number }> {
+  const cellH = cellHeightOf(spec);
+  const first = firstCellOf(spec);
+  if (!first) return { w: 0, h: cellH };
+  const node = ownCells(set).find((c) => getTag(c, "cell") === first.key);
+  if (node) return { w: Math.ceil(node.width), h: Math.max(cellH, Math.ceil(node.height)) };
+  const box = manifest.styles.boxes[first.box];
+  const label = manifest.styles.layers[first.layers].find((l) => l.kind === "text");
+  const sample = spec.properties.find((p) => p.type === "TEXT" && label && p.name === label.slot)?.default;
+  let textW = 0;
+  if (label?.kind === "text" && typeof sample === "string") {
+    const font = await fontFor(ctx.run, String(valueOf(label.text.fontFamily)), Number(valueOf(label.text.fontWeight)));
+    ctx.run.write(() => {
+      const probe = figma.createText();
+      probe.fontName = font;
+      probe.fontSize = Number(valueOf(label.text.fontSize));
+      probe.lineHeight = { unit: "PERCENT", value: label.text.lineHeight };
+      probe.textAutoResize = "WIDTH_AND_HEIGHT";
+      probe.characters = sample;
+      textW = probe.width;
+      probe.remove();
+    });
+  }
+  return { w: Math.ceil(Number(valueOf(box.padding.left)) + textW + Number(valueOf(box.padding.right))), h: cellH };
+}
+
+/** The showcase's width: each column is the first variant with that slot's icon and the gap before it. */
+function showcaseWidth(spec: M.ComponentSet, cellW: number): number {
+  const first = firstCellOf(spec);
+  if (!first || !spec.showcase.columns.length) return 0;
+  const box = manifest.styles.boxes[first.box];
+  const gap = box.gap ? Number(valueOf(box.gap)) : 0;
+  const widths = spec.showcase.columns.map((column) => {
+    const icon = manifest.styles.layers[first.layers].find((l) => l.kind === "icon" && l.slot === column.slot);
+    return cellW + (icon?.kind === "icon" ? gap + Number(valueOf(icon.icon.size)) : 0);
+  });
+  return widths.reduce((a, b) => a + b, 0) + 24 * (widths.length - 1);
+}
+
+/** A set's frame width, from its layout, before anything in it is drawn. */
+const plannedWidth = (spec: M.ComponentSet, layout: Layout) =>
+  layout.setX + layout.colX[layout.colX.length - 1] + layout.cellW + INNER + GROUP + showcaseWidth(spec, layout.cellW) + 16 + FRAME_PAD;
 
 /** The set in its frame, at its final place and size, before its variants fill it. */
 function placeSet(run: Run, frame: FrameNode, set: ComponentSetNode, layout: Layout) {
@@ -1148,7 +1203,7 @@ async function wireInteractions(ctx: SetCtx, set: ComponentSetNode, spec: M.Comp
   }
 }
 
-async function syncSet(ctx: SetCtx, spec: M.ComponentSet, found: Map<string, SceneNode>, page: PageNode | undefined) {
+async function syncSet(ctx: SetCtx, spec: M.ComponentSet, found: Map<string, SceneNode>, page: PageNode | undefined, planned?: Layout) {
   const { run, progress } = ctx;
   progress.start(spec.id);
   const frame = page ? ensureFrame(ctx, spec.id, spec.name, page, found) : undefined;
@@ -1171,7 +1226,8 @@ async function syncSet(ctx: SetCtx, spec: M.ComponentSet, found: Map<string, Sce
   // Row height is known before anything is drawn: the manifest gives each size's height.
   const cellH = cellHeightOf(spec);
 
-  let layout: Layout | undefined;
+  let layout = planned;
+  let placed = false;
   let outgrown = false;
   const counts = { created: 0, updated: 0, unchanged: 0, orphaned: 0 };
   const partCounts: Record<Part, number> = { box: 0, surface: 0, layers: 0 };
@@ -1200,9 +1256,10 @@ async function syncSet(ctx: SetCtx, spec: M.ComponentSet, found: Map<string, Sce
 
     // In place at once: the first variant fixes the layout, every later one goes straight to its slot.
     if (run.apply && frame && set && node && row >= 0) {
-      if (!layout) {
-        layout = await planLayout(ctx, frame, spec, Math.ceil(node.width), Math.max(cellH, Math.ceil(node.height)));
+      if (!layout) layout = await planLayout(ctx, frame, spec, Math.ceil(node.width), Math.max(cellH, Math.ceil(node.height)));
+      if (!placed) {
         placeSet(run, frame, set, layout);
+        placed = true;
       }
       if (node.width > layout.cellW + 0.5 || node.height > layout.cellH + 0.5) outgrown = true;
       move(run, node, layout.colX[col], layout.rowY[row]);
@@ -1353,6 +1410,9 @@ function collectOrphans(run: Run, pages: PageNode[], found: Map<string, SceneNod
  * render bounds, so anything that overflows a frame pushes the next one down instead of under it.
  * With `check`, report a frame whose height is not the one planned for it, or that overflows.
  */
+/** The width each frame was given before it was filled, to check against what it ended up as. */
+const frameWidths = new Map<string, number>();
+
 function arrange(run: Run, pages: Map<string, PageNode>, found: Map<string, SceneNode>, check = false) {
   for (const [pageId, page] of pages) {
     let y = 0;
@@ -1368,6 +1428,8 @@ function arrange(run: Run, pages: Map<string, PageNode>, found: Map<string, Scen
       if (!check) continue;
       const planned = plannedHeight(spec);
       if (Math.abs(node.height - planned) > 1) run.log("WARN", `frame ${spec.name}`, `height ${Math.round(node.height)}, planned ${planned}`);
+      const width = frameWidths.get(spec.id);
+      if (width !== undefined && Math.abs(node.width - width) > 1) run.log("WARN", `frame ${spec.name}`, `width ${Math.round(node.width)}, planned ${width}`);
       if (shown - node.height > 1 || above > 0) {
         run.log("WARN", `frame ${spec.name}`, `content overflows it: ${Math.round(above)}px above, ${Math.round(shown - node.height - above)}px below`);
       }
@@ -1396,13 +1458,25 @@ async function reconcile(apply: boolean) {
   const { found, pages: ownPages } = await findOwn();
   const ctx: Ctx = { run, progress, vars };
 
-  // Every frame first, at its final size and place: nothing is drawn until the page is laid out.
+  // Every frame first, at its final size and place, with its labels: the grid of each set is worked
+  // out here, once, and the variants later only fill it.
+  const layouts = new Map<string, Layout>();
   if (apply) {
     for (const spec of manifest.components) {
       const page = pages.get(spec.page);
       if (!page) continue;
       const frame = ensureFrame(ctx, spec.id, spec.name, page, found);
-      if (frame) resizeTo(run, frame, Math.max(frame.width, 400), plannedHeight(spec));
+      if (!frame) continue;
+      if (spec.kind === "icon-set") {
+        frameWidths.set(spec.id, FRAME_PAD + ICON_COLUMNS * ICON_SLOT + FRAME_PAD);
+        resizeTo(run, frame, frameWidths.get(spec.id)!, plannedHeight(spec));
+        continue;
+      }
+      const { w, h } = await measureFirst(ctx, spec, found.get(spec.id) as ComponentSetNode | undefined);
+      const layout = await planLayout(ctx, frame, spec, w, h);
+      layouts.set(spec.id, layout);
+      frameWidths.set(spec.id, Math.ceil(plannedWidth(spec, layout)));
+      resizeTo(run, frame, frameWidths.get(spec.id)!, plannedHeight(spec));
     }
     arrange(run, pages, found);
   }
@@ -1412,7 +1486,7 @@ async function reconcile(apply: boolean) {
   // Restacked after each frame fills, so a frame that came out taller never sits on the next one.
   if (apply) arrange(run, pages, found);
   for (const spec of setSpecs) {
-    await syncSet(setCtx, spec, found, pages.get(spec.page));
+    await syncSet(setCtx, spec, found, pages.get(spec.page), layouts.get(spec.id));
     if (apply) arrange(run, pages, found);
   }
   // The specimen is gone from the manifest. Its frame held only this plugin's own instances, so it goes too.
