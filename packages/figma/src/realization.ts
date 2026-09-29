@@ -42,6 +42,8 @@ export type Realization = {
      * values of the same axis: an Input's `aria-invalid="true"`, its `readonly`.
      */
     attributes?: readonly { name: string; attrs: Readonly<Record<string, string>> }[];
+    /** A state option's value on the axis, when its name reads badly there (`defaultChecked` → `checked`). */
+    names?: Readonly<Record<string, string>>;
   };
   /**
    * Collection slots, drawn with these items (a Breadcrumb's trail): each item's options, and the

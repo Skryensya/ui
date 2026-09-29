@@ -347,6 +347,25 @@ async function compileRealization(authored: Realization, shared: Shared): Promis
   const rules: RuleSet = readRules(sheets, MEDIA_HOLDS, [...interactions.map((i) => i.pseudo), ...held]);
   const unmatchable = new Set<string>();
 
+  // The element the signature calls its host (`host: true` in the template), found by its part.
+  const hostPart = (() => {
+    const find = (node: unknown): string | undefined => {
+      if (!node || typeof node !== "object") return undefined;
+      const n = node as { host?: boolean; part?: string; children?: unknown[] };
+      if (n.host && n.part) return n.part;
+      for (const child of n.children ?? []) {
+        const found = find(child);
+        if (found) return found;
+      }
+      return undefined;
+    };
+    return find(signature.template);
+  })();
+  const signatureHost = (root: Element) => {
+    const cls = hostPart ? contract.parts[hostPart] : undefined;
+    return (cls && !root.classList.contains(cls) && root.querySelector(`.${cls}`)) || root;
+  };
+
   const computeCell = (input: CellInput, simulated: readonly string[] = [], attrs: Readonly<Record<string, string>> = {}) => {
     const markup = mounted(emitMarkup(treeFor(realization, input, iconName), { fillDefaults: true }), iconContract);
     const host = elementFrom(markup);
@@ -360,7 +379,14 @@ async function compileRealization(authored: Realization, shared: Shared): Promis
       if (!el) throw new Error(`marks: nothing matches ${selector}`);
       for (const [name, value] of Object.entries(marks)) el.setAttribute(name, value);
     }
-    for (const pseudo of [...held, ...simulated]) host.setAttribute(markerOf(pseudo), "");
+    // A pseudo-class is held by the signature's own host (a Checkbox's input, inside its label); a
+    // hover or press is also every ancestor's, as the browser's is.
+    const target = signatureHost(host);
+    for (const pseudo of [...held, ...simulated]) {
+      for (let el: Element | null = target; el; el = /^:(hover|active)$/.test(pseudo) && el !== host ? el.parentElement : null) {
+        el.setAttribute(markerOf(pseudo), "");
+      }
+    }
     for (const [name, value] of Object.entries(attrs)) host.setAttribute(name, value);
     const tree = computeTree(host, rules, unmatchable);
     return { host, styles: tree.styles, pseudo: tree.pseudo };
@@ -392,6 +418,7 @@ async function compileRealization(authored: Realization, shared: Shared): Promis
   const alone = !realization.splitBy && word === setBase;
   const setIdOf = (splitValue: string | undefined) => (alone ? setBase : `${setBase}/${splitValue ?? word}`);
   const stateOptions = realization.state.options.filter((name) => visual.includes(name));
+  const stateName = (option: string) => realization.state.names?.[option] ?? option;
   const axes: Axis[] = [];
   for (const name of visual) {
     if (name === realization.splitBy || stateOptions.includes(name)) continue;
@@ -403,7 +430,12 @@ async function compileRealization(authored: Realization, shared: Shared): Promis
   }
   const stateAxis: Axis = {
     name: realization.state.axis,
-    values: [realization.state.rest, ...interactions.map((i) => i.name), ...stateOptions, ...(realization.state.attributes ?? []).map((a) => a.name)],
+    values: [
+      realization.state.rest,
+      ...interactions.map((i) => i.name),
+      ...stateOptions.map(stateName),
+      ...(realization.state.attributes ?? []).map((a) => a.name),
+    ],
   };
   // A component with no states (a Badge is never pressed) gets no state axis: `state=rest` alone
   // would be a variant property with nothing to pick.
@@ -510,7 +542,7 @@ async function compileRealization(authored: Realization, shared: Shared): Promis
         else options[axis.name] = option.type === "boolean" ? props[axis.name] === "true" : props[axis.name];
       }
       for (const name of stateOptions) {
-        if (props[stateAxis.name] === name) options[name] = true;
+        if (props[stateAxis.name] === stateName(name)) options[name] = true;
         else if (contract.options[name].default === undefined) delete options[name];
         else options[name] = false;
       }
@@ -541,7 +573,11 @@ async function compileRealization(authored: Realization, shared: Shared): Promis
       const slotOfPart = (part: string | undefined) => (part ? Object.entries(slotPart).find(([, p]) => p === part)?.[0] : undefined);
       const clipped = (el: Element) => {
         const c = cascaded.get(el)!;
-        return /^(1px|0)$/.test(c.get("width") ?? "") && /^(1px|0)$/.test(c.get("height") ?? "") && /hidden|clip/.test(c.get("overflow") ?? c.get("clip-path") ?? "");
+        return (
+          /^(1px|0)$/.test(c.get("width") ?? "") &&
+          /^(1px|0)$/.test(c.get("height") ?? "") &&
+          (/hidden|clip/.test(c.get("overflow") ?? "") || /inset\(50%\)/.test(c.get("clip-path") ?? ""))
+        );
       };
       const paints = (el: Context) => {
         const { strokes, fills, effects, ...box } = frameOf(el);
@@ -592,6 +628,19 @@ async function compileRealization(authored: Realization, shared: Shared): Promis
         if (heightPercent !== undefined) sized.delete("height");
         const stretch = (heightPercent === 100 && !downward) || (widthPercent === 100 && downward);
         return { computed: sized, across, stretch };
+      };
+
+      /** A part's own state layer (a checkbox's control is the one that is hovered), under its content. */
+      const overlaysOf = (el: Element): Layer[] =>
+        (Object.entries(realization.overlays) as ["before" | "after", string][]).flatMap(([which, name]) => {
+          const generated = pseudo.get(el)?.[which];
+          const paint = generated && overlayOf(ctxOf(generated));
+          return paint?.length ? [{ kind: "overlay" as const, slot: name, fills: paint }] : [];
+        });
+      /** A part's own focus ring (a checkbox's control, outlined while its input has focus), over it. */
+      const ringsOf = (el: Element): Layer[] => {
+        const ring = ringOf(ctx(el));
+        return ring ? [{ kind: "ring" as const, slot: realization.ring, ...ring }] : [];
       };
 
       /** The bars an element's pseudo-elements paint along its edges, drawn over its content. */
@@ -672,6 +721,8 @@ async function compileRealization(authored: Realization, shared: Shared): Promis
           // Not drawn until a script shows it (a Segmented's sliding indicator): not drawn here either.
           const own = cascaded.get(child)!;
           if (own.get("visibility") === "hidden" || own.get("display") === "none" || child.hasAttribute("hidden")) continue;
+          // Present but see-through (the indicator a checkbox's state does not show): not drawn.
+          if (/^0(\.0*)?$/.test(own.get("opacity") ?? "")) continue;
           const { computed: sized, across, stretch } = sizing(child, inner, downward);
           // Its column, in a grid laid across: an `fr` one fills the row, a length one sets its width
           // (a DescriptionList's 10rem term), `auto` leaves it hugging.
@@ -706,7 +757,12 @@ async function compileRealization(authored: Realization, shared: Shared): Promis
             slot,
             box: intern(styles.boxes, spans ? { ...box, stretch: true as const } : box),
             surface: intern(styles.surfaces, { strokes, fills, effects }),
-            layers: [...nestedLayers(child, innerOf(child, across ?? trackWidth ?? (spans || frameBox.stretch ? inner : undefined))), ...edgesOf(child)],
+            layers: [
+              ...overlaysOf(child),
+              ...nestedLayers(child, innerOf(child, across ?? trackWidth ?? (spans || frameBox.stretch ? inner : undefined))),
+              ...edgesOf(child),
+              ...ringsOf(child),
+            ],
           });
         }
         // Only a text alone in its block, or down a column, has the block's width to fill: beside

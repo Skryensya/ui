@@ -37041,6 +37041,534 @@
         "columns": []
       },
       "visualHash": "2da5657bea123196"
+    },
+    {
+      "axes": [
+        {
+          "name": "state",
+          "values": [
+            "unchecked",
+            "hover",
+            "focus",
+            "indeterminate",
+            "checked",
+            "disabled"
+          ]
+        }
+      ],
+      "cells": [
+        {
+          "box": "9d7fb4db8fbe6340",
+          "hash": "3ff2192633879957",
+          "id": "checkbox/plain/state=unchecked",
+          "key": "state=unchecked",
+          "layers": "20eeb2afb912019a",
+          "props": {
+            "state": "unchecked"
+          },
+          "surface": "fa0b643878e9242d"
+        },
+        {
+          "box": "9d7fb4db8fbe6340",
+          "hash": "f2bfc7a8c62a89b4",
+          "id": "checkbox/plain/state=hover",
+          "key": "state=hover",
+          "layers": "60b0274437465e16",
+          "props": {
+            "state": "hover"
+          },
+          "surface": "fa0b643878e9242d"
+        },
+        {
+          "box": "9d7fb4db8fbe6340",
+          "hash": "5ac05414c8e210ff",
+          "id": "checkbox/plain/state=focus",
+          "key": "state=focus",
+          "layers": "b1b42163e5364152",
+          "props": {
+            "state": "focus"
+          },
+          "surface": "fa0b643878e9242d"
+        },
+        {
+          "box": "9d7fb4db8fbe6340",
+          "hash": "bf728590fb18d0d0",
+          "id": "checkbox/plain/state=indeterminate",
+          "key": "state=indeterminate",
+          "layers": "93abacfdeb4728ff",
+          "props": {
+            "state": "indeterminate"
+          },
+          "surface": "fa0b643878e9242d"
+        },
+        {
+          "box": "9d7fb4db8fbe6340",
+          "hash": "71254aa92a7c9f3b",
+          "id": "checkbox/plain/state=checked",
+          "key": "state=checked",
+          "layers": "2a648739a7cbbcf6",
+          "props": {
+            "state": "checked"
+          },
+          "surface": "fa0b643878e9242d"
+        },
+        {
+          "box": "9d7fb4db8fbe6340",
+          "hash": "29f3e4dcc63fe050",
+          "id": "checkbox/plain/state=disabled",
+          "key": "state=disabled",
+          "layers": "27c83f1f89ea8b28",
+          "props": {
+            "state": "disabled"
+          },
+          "surface": "fa0b643878e9242d"
+        }
+      ],
+      "contractHash": "dd63c3b6ec4f11cc",
+      "defaultCell": "state=unchecked",
+      "grid": {
+        "columns": [
+          {
+            "name": "state",
+            "values": [
+              "unchecked",
+              "hover",
+              "focus",
+              "indeterminate",
+              "checked",
+              "disabled"
+            ]
+          }
+        ],
+        "rows": []
+      },
+      "id": "checkbox/plain",
+      "interactions": [
+        {
+          "axis": "state",
+          "from": "unchecked",
+          "to": "hover",
+          "trigger": "ON_HOVER"
+        }
+      ],
+      "kind": "component-set",
+      "name": "Checkbox / plain",
+      "page": "skryensya",
+      "properties": [
+        {
+          "default": "Email me updates",
+          "name": "children",
+          "type": "TEXT"
+        },
+        {
+          "default": true,
+          "name": "show children",
+          "type": "BOOLEAN"
+        }
+      ],
+      "showcase": {
+        "base": {
+          "state": "unchecked"
+        },
+        "columns": []
+      },
+      "visualHash": "dd7c38c93f5282ed"
+    },
+    {
+      "axes": [
+        {
+          "name": "state",
+          "values": [
+            "unchecked",
+            "hover",
+            "focus",
+            "indeterminate",
+            "checked",
+            "disabled"
+          ]
+        }
+      ],
+      "cells": [
+        {
+          "box": "9d7fb4db8fbe6340",
+          "hash": "247ad6cd2a69065a",
+          "id": "checkbox/tactile/state=unchecked",
+          "key": "state=unchecked",
+          "layers": "0fd59c401e000622",
+          "props": {
+            "state": "unchecked"
+          },
+          "surface": "fa0b643878e9242d"
+        },
+        {
+          "box": "9d7fb4db8fbe6340",
+          "hash": "ab2044b47d31e1d8",
+          "id": "checkbox/tactile/state=hover",
+          "key": "state=hover",
+          "layers": "95be87bc079d5898",
+          "props": {
+            "state": "hover"
+          },
+          "surface": "fa0b643878e9242d"
+        },
+        {
+          "box": "9d7fb4db8fbe6340",
+          "hash": "f1ab77ae0497bfa1",
+          "id": "checkbox/tactile/state=focus",
+          "key": "state=focus",
+          "layers": "1ac020bada76f1e1",
+          "props": {
+            "state": "focus"
+          },
+          "surface": "fa0b643878e9242d"
+        },
+        {
+          "box": "9d7fb4db8fbe6340",
+          "hash": "e561f164a89cffa8",
+          "id": "checkbox/tactile/state=indeterminate",
+          "key": "state=indeterminate",
+          "layers": "7a2864291146287a",
+          "props": {
+            "state": "indeterminate"
+          },
+          "surface": "fa0b643878e9242d"
+        },
+        {
+          "box": "9d7fb4db8fbe6340",
+          "hash": "85a56021fb583560",
+          "id": "checkbox/tactile/state=checked",
+          "key": "state=checked",
+          "layers": "3eeec587572bb78f",
+          "props": {
+            "state": "checked"
+          },
+          "surface": "fa0b643878e9242d"
+        },
+        {
+          "box": "9d7fb4db8fbe6340",
+          "hash": "1ba5635a20e86b9e",
+          "id": "checkbox/tactile/state=disabled",
+          "key": "state=disabled",
+          "layers": "fbaf5b619e254d78",
+          "props": {
+            "state": "disabled"
+          },
+          "surface": "fa0b643878e9242d"
+        }
+      ],
+      "contractHash": "dd63c3b6ec4f11cc",
+      "defaultCell": "state=unchecked",
+      "grid": {
+        "columns": [
+          {
+            "name": "state",
+            "values": [
+              "unchecked",
+              "hover",
+              "focus",
+              "indeterminate",
+              "checked",
+              "disabled"
+            ]
+          }
+        ],
+        "rows": []
+      },
+      "id": "checkbox/tactile",
+      "interactions": [
+        {
+          "axis": "state",
+          "from": "unchecked",
+          "to": "hover",
+          "trigger": "ON_HOVER"
+        }
+      ],
+      "kind": "component-set",
+      "name": "Checkbox / tactile",
+      "page": "skryensya",
+      "properties": [
+        {
+          "default": "Email me updates",
+          "name": "children",
+          "type": "TEXT"
+        },
+        {
+          "default": true,
+          "name": "show children",
+          "type": "BOOLEAN"
+        }
+      ],
+      "showcase": {
+        "base": {
+          "state": "unchecked"
+        },
+        "columns": []
+      },
+      "visualHash": "330c3e10a15c8b0f"
+    },
+    {
+      "axes": [
+        {
+          "name": "state",
+          "values": [
+            "unchecked",
+            "hover",
+            "focus",
+            "indeterminate",
+            "checked",
+            "disabled"
+          ]
+        }
+      ],
+      "cells": [
+        {
+          "box": "9d7fb4db8fbe6340",
+          "hash": "c0568e840811f6f3",
+          "id": "checkbox/brutalist/state=unchecked",
+          "key": "state=unchecked",
+          "layers": "b70a648d3c8d11ef",
+          "props": {
+            "state": "unchecked"
+          },
+          "surface": "fa0b643878e9242d"
+        },
+        {
+          "box": "9d7fb4db8fbe6340",
+          "hash": "c808ada1387235ac",
+          "id": "checkbox/brutalist/state=hover",
+          "key": "state=hover",
+          "layers": "b6a8b964d7417891",
+          "props": {
+            "state": "hover"
+          },
+          "surface": "fa0b643878e9242d"
+        },
+        {
+          "box": "9d7fb4db8fbe6340",
+          "hash": "51b33921a42d5e7b",
+          "id": "checkbox/brutalist/state=focus",
+          "key": "state=focus",
+          "layers": "005bd029c51b6c31",
+          "props": {
+            "state": "focus"
+          },
+          "surface": "fa0b643878e9242d"
+        },
+        {
+          "box": "9d7fb4db8fbe6340",
+          "hash": "fbf2836995bbaa81",
+          "id": "checkbox/brutalist/state=indeterminate",
+          "key": "state=indeterminate",
+          "layers": "199d007ac616d5b2",
+          "props": {
+            "state": "indeterminate"
+          },
+          "surface": "fa0b643878e9242d"
+        },
+        {
+          "box": "9d7fb4db8fbe6340",
+          "hash": "2935ad8effde8564",
+          "id": "checkbox/brutalist/state=checked",
+          "key": "state=checked",
+          "layers": "be5da717f9c26676",
+          "props": {
+            "state": "checked"
+          },
+          "surface": "fa0b643878e9242d"
+        },
+        {
+          "box": "9d7fb4db8fbe6340",
+          "hash": "3c194655e89fbb45",
+          "id": "checkbox/brutalist/state=disabled",
+          "key": "state=disabled",
+          "layers": "17e390783d242859",
+          "props": {
+            "state": "disabled"
+          },
+          "surface": "fa0b643878e9242d"
+        }
+      ],
+      "contractHash": "dd63c3b6ec4f11cc",
+      "defaultCell": "state=unchecked",
+      "grid": {
+        "columns": [
+          {
+            "name": "state",
+            "values": [
+              "unchecked",
+              "hover",
+              "focus",
+              "indeterminate",
+              "checked",
+              "disabled"
+            ]
+          }
+        ],
+        "rows": []
+      },
+      "id": "checkbox/brutalist",
+      "interactions": [
+        {
+          "axis": "state",
+          "from": "unchecked",
+          "to": "hover",
+          "trigger": "ON_HOVER"
+        }
+      ],
+      "kind": "component-set",
+      "name": "Checkbox / brutalist",
+      "page": "skryensya",
+      "properties": [
+        {
+          "default": "Email me updates",
+          "name": "children",
+          "type": "TEXT"
+        },
+        {
+          "default": true,
+          "name": "show children",
+          "type": "BOOLEAN"
+        }
+      ],
+      "showcase": {
+        "base": {
+          "state": "unchecked"
+        },
+        "columns": []
+      },
+      "visualHash": "dd6e74e4cc150117"
+    },
+    {
+      "axes": [
+        {
+          "name": "state",
+          "values": [
+            "unchecked",
+            "hover",
+            "focus",
+            "indeterminate",
+            "checked",
+            "disabled"
+          ]
+        }
+      ],
+      "cells": [
+        {
+          "box": "9d7fb4db8fbe6340",
+          "hash": "ae23f2f036c86331",
+          "id": "checkbox/frosted/state=unchecked",
+          "key": "state=unchecked",
+          "layers": "84b4cb45c6a90e28",
+          "props": {
+            "state": "unchecked"
+          },
+          "surface": "fa0b643878e9242d"
+        },
+        {
+          "box": "9d7fb4db8fbe6340",
+          "hash": "78f40a046d89551b",
+          "id": "checkbox/frosted/state=hover",
+          "key": "state=hover",
+          "layers": "88b6f1c460a56cc0",
+          "props": {
+            "state": "hover"
+          },
+          "surface": "fa0b643878e9242d"
+        },
+        {
+          "box": "9d7fb4db8fbe6340",
+          "hash": "0b7aace121a89827",
+          "id": "checkbox/frosted/state=focus",
+          "key": "state=focus",
+          "layers": "4938f6471fc73b6e",
+          "props": {
+            "state": "focus"
+          },
+          "surface": "fa0b643878e9242d"
+        },
+        {
+          "box": "9d7fb4db8fbe6340",
+          "hash": "3b86754d24255216",
+          "id": "checkbox/frosted/state=indeterminate",
+          "key": "state=indeterminate",
+          "layers": "af9646b554c78582",
+          "props": {
+            "state": "indeterminate"
+          },
+          "surface": "fa0b643878e9242d"
+        },
+        {
+          "box": "9d7fb4db8fbe6340",
+          "hash": "6f6481410a40869d",
+          "id": "checkbox/frosted/state=checked",
+          "key": "state=checked",
+          "layers": "118b122d8193e1be",
+          "props": {
+            "state": "checked"
+          },
+          "surface": "fa0b643878e9242d"
+        },
+        {
+          "box": "9d7fb4db8fbe6340",
+          "hash": "bd83094fd5ef2ff5",
+          "id": "checkbox/frosted/state=disabled",
+          "key": "state=disabled",
+          "layers": "e598a5e33111a5f1",
+          "props": {
+            "state": "disabled"
+          },
+          "surface": "fa0b643878e9242d"
+        }
+      ],
+      "contractHash": "dd63c3b6ec4f11cc",
+      "defaultCell": "state=unchecked",
+      "grid": {
+        "columns": [
+          {
+            "name": "state",
+            "values": [
+              "unchecked",
+              "hover",
+              "focus",
+              "indeterminate",
+              "checked",
+              "disabled"
+            ]
+          }
+        ],
+        "rows": []
+      },
+      "id": "checkbox/frosted",
+      "interactions": [
+        {
+          "axis": "state",
+          "from": "unchecked",
+          "to": "hover",
+          "trigger": "ON_HOVER"
+        }
+      ],
+      "kind": "component-set",
+      "name": "Checkbox / frosted",
+      "page": "skryensya",
+      "properties": [
+        {
+          "default": "Email me updates",
+          "name": "children",
+          "type": "TEXT"
+        },
+        {
+          "default": true,
+          "name": "show children",
+          "type": "BOOLEAN"
+        }
+      ],
+      "showcase": {
+        "base": {
+          "state": "unchecked"
+        },
+        "columns": []
+      },
+      "visualHash": "99e7b63fc34ac2a6"
     }
   ],
   "diagnostics": [
@@ -37133,6 +37661,12 @@
       "message": "4 rule(s) under a condition the evaluation context does not hold",
       "severity": "info",
       "subject": "components/callout.css @media (forced-colors: active)"
+    },
+    {
+      "code": "CONDITION_SKIPPED",
+      "message": "3 rule(s) under a condition the evaluation context does not hold",
+      "severity": "info",
+      "subject": "components/checkbox.css @media (forced-colors: active)"
     },
     {
       "code": "CONDITION_SKIPPED",
@@ -37352,6 +37886,18 @@
     },
     {
       "code": "CONDITION_SKIPPED",
+      "message": "1 rule(s) under a condition the evaluation context does not hold",
+      "severity": "info",
+      "subject": "patterns/state-layer.css @media (prefers-reduced-motion: reduce)"
+    },
+    {
+      "code": "CONDITION_SKIPPED",
+      "message": "0 rule(s) under a condition the evaluation context does not hold",
+      "severity": "info",
+      "subject": "patterns/state-layer.css @property --state-layer-opacity"
+    },
+    {
+      "code": "CONDITION_SKIPPED",
       "message": "0 rule(s) under a condition the evaluation context does not hold",
       "severity": "info",
       "subject": "patterns/state-layer.css @property --state-layer-opacity"
@@ -37531,6 +38077,21 @@
         "nonVisual": [],
         "visual": [
           "tone",
+          "appearance"
+        ]
+      },
+      "checkbox": {
+        "excluded": [
+          "required",
+          "defaultIndeterminate"
+        ],
+        "nonVisual": [
+          "name",
+          "value"
+        ],
+        "visual": [
+          "defaultChecked",
+          "disabled",
           "appearance"
         ]
       },
@@ -37762,11 +38323,11 @@
     },
     "tokens": {
       "catalogueAdded": 309,
-      "componentVariables": 312,
+      "componentVariables": 329,
       "modeValuesBySource": {
         "alias": 203,
-        "evaluated": 629,
-        "literal": 724
+        "evaluated": 661,
+        "literal": 726
       },
       "reached": 200,
       "reachedAsVariables": 149,
@@ -37785,8 +38346,8 @@
       "variables": 466
     },
     "variants": {
-      "components": 63,
-      "componentSets": 62,
+      "components": 67,
+      "componentSets": 66,
       "naiveAllOptions": {
         "accordion": 32,
         "avatar": 8,
@@ -37796,6 +38357,7 @@
         "breadcrumb": 1,
         "button": 27648,
         "callout": 15,
+        "checkbox": 64,
         "code": 1,
         "description-list": 4,
         "empty-state": 1,
@@ -37828,6 +38390,7 @@
         "breadcrumb": 1,
         "button": 2304,
         "callout": 15,
+        "checkbox": 16,
         "code": 1,
         "description-list": 4,
         "empty-state": 1,
@@ -38099,13 +38662,29 @@
         {
           "set": "steps/segments",
           "variants": 2
+        },
+        {
+          "set": "checkbox/plain",
+          "variants": 6
+        },
+        {
+          "set": "checkbox/tactile",
+          "variants": 6
+        },
+        {
+          "set": "checkbox/brutalist",
+          "variants": 6
+        },
+        {
+          "set": "checkbox/frosted",
+          "variants": 6
         }
       ],
-      "variantsTotal": 2239
+      "variantsTotal": 2263
     }
   },
   "schemaVersion": 1,
-  "sourceHash": "809bd09f5a91bc26",
+  "sourceHash": "f936125fc4a5b569",
   "stage": {
     "background": {
       "variable": "--color-bg-surface"
@@ -39024,6 +39603,42 @@
         "width": {
           "expression": "360px",
           "value": 360
+        }
+      },
+      "33649eab81bb9407": {
+        "clipsContent": false,
+        "crossAlign": "CENTER",
+        "direction": "VERTICAL",
+        "height": {
+          "variable": "--size-icon-md"
+        },
+        "mainAlign": "CENTER",
+        "padding": {
+          "bottom": {
+            "expression": "0",
+            "value": 0
+          },
+          "left": {
+            "expression": "0",
+            "value": 0
+          },
+          "right": {
+            "expression": "0",
+            "value": 0
+          },
+          "top": {
+            "expression": "0",
+            "value": 0
+          }
+        },
+        "radius": {
+          "variable": "--radius-control"
+        },
+        "strokeWeight": {
+          "variable": "checkbox:border-width:93e20626bf"
+        },
+        "width": {
+          "variable": "--size-icon-md"
         }
       },
       "34416faa47e8ba55": {
@@ -41021,6 +41636,33 @@
           "value": 360
         }
       },
+      "9d7fb4db8fbe6340": {
+        "clipsContent": false,
+        "crossAlign": "CENTER",
+        "direction": "HORIZONTAL",
+        "gap": {
+          "variable": "--space-inline-sm"
+        },
+        "mainAlign": "MIN",
+        "padding": {
+          "bottom": {
+            "expression": "0",
+            "value": 0
+          },
+          "left": {
+            "expression": "0",
+            "value": 0
+          },
+          "right": {
+            "expression": "0",
+            "value": 0
+          },
+          "top": {
+            "expression": "0",
+            "value": 0
+          }
+        }
+      },
       "a0415ba087192cc0": {
         "clipsContent": false,
         "crossAlign": "MIN",
@@ -42877,6 +43519,30 @@
             "value": 0
           }
         }
+      },
+      "fed71eadc8de5842": {
+        "clipsContent": false,
+        "crossAlign": "CENTER",
+        "direction": "VERTICAL",
+        "mainAlign": "CENTER",
+        "padding": {
+          "bottom": {
+            "expression": "0",
+            "value": 0
+          },
+          "left": {
+            "expression": "0",
+            "value": 0
+          },
+          "right": {
+            "expression": "0",
+            "value": 0
+          },
+          "top": {
+            "expression": "0",
+            "value": 0
+          }
+        }
       }
     },
     "layers": {
@@ -42949,6 +43615,71 @@
           "kind": "icon",
           "slot": "post",
           "visibleProperty": "post"
+        }
+      ],
+      "005bd029c51b6c31": [
+        {
+          "box": "33649eab81bb9407",
+          "kind": "frame",
+          "layers": [
+            {
+              "fills": [
+                {
+                  "color": {
+                    "variable": "checkbox:state-layer:bfba8c3497"
+                  },
+                  "type": "SOLID"
+                }
+              ],
+              "kind": "overlay",
+              "slot": "state layer"
+            },
+            {
+              "color": {
+                "color": {
+                  "variable": "--focus-ring-color"
+                },
+                "type": "SOLID"
+              },
+              "kind": "ring",
+              "offset": {
+                "variable": "--focus-ring-offset"
+              },
+              "radius": {
+                "variable": "checkbox:outline-radius:9325831be9"
+              },
+              "slot": "focus ring",
+              "width": {
+                "variable": "--focus-ring-width"
+              }
+            }
+          ],
+          "slot": "checkboxControl",
+          "surface": "3b4b23714ff9fbec"
+        },
+        {
+          "kind": "text",
+          "slot": "children",
+          "text": {
+            "fill": {
+              "color": {
+                "variable": "--color-text-primary"
+              },
+              "type": "SOLID"
+            },
+            "fontFamily": {
+              "variable": "--font-family-body"
+            },
+            "fontSize": {
+              "variable": "--font-size-body"
+            },
+            "fontWeight": {
+              "variable": "--font-weight-body"
+            },
+            "lineHeight": 150
+          },
+          "textProperty": "children",
+          "visibleProperty": "show children"
         }
       ],
       "0116db4dca0f49b6": [
@@ -43941,6 +44672,52 @@
           "visibleProperty": "post"
         }
       ],
+      "0fd59c401e000622": [
+        {
+          "box": "33649eab81bb9407",
+          "kind": "frame",
+          "layers": [
+            {
+              "fills": [
+                {
+                  "color": {
+                    "variable": "checkbox:state-layer:a8bbbce668"
+                  },
+                  "type": "SOLID"
+                }
+              ],
+              "kind": "overlay",
+              "slot": "state layer"
+            }
+          ],
+          "slot": "checkboxControl",
+          "surface": "f30b966e023c0cfc"
+        },
+        {
+          "kind": "text",
+          "slot": "children",
+          "text": {
+            "fill": {
+              "color": {
+                "variable": "--color-text-primary"
+              },
+              "type": "SOLID"
+            },
+            "fontFamily": {
+              "variable": "--font-family-body"
+            },
+            "fontSize": {
+              "variable": "--font-size-body"
+            },
+            "fontWeight": {
+              "variable": "--font-weight-body"
+            },
+            "lineHeight": 150
+          },
+          "textProperty": "children",
+          "visibleProperty": "show children"
+        }
+      ],
       "10216f4ce839ef51": [
         {
           "fills": [
@@ -44319,6 +45096,76 @@
           ],
           "slot": "content",
           "surface": "fa0b643878e9242d"
+        }
+      ],
+      "118b122d8193e1be": [
+        {
+          "box": "33649eab81bb9407",
+          "kind": "frame",
+          "layers": [
+            {
+              "fills": [
+                {
+                  "color": {
+                    "variable": "checkbox:state-layer:634151876a"
+                  },
+                  "type": "SOLID"
+                }
+              ],
+              "kind": "overlay",
+              "slot": "state layer"
+            },
+            {
+              "box": "fed71eadc8de5842",
+              "kind": "frame",
+              "layers": [
+                {
+                  "default": "check",
+                  "icon": {
+                    "color": {
+                      "color": {
+                        "variable": "--color-text-on-accent"
+                      },
+                      "type": "SOLID"
+                    },
+                    "size": {
+                      "variable": "--size-icon-sm"
+                    }
+                  },
+                  "kind": "icon",
+                  "slot": "checkboxIndicator"
+                }
+              ],
+              "slot": "checkboxIndicator",
+              "surface": "fa0b643878e9242d"
+            }
+          ],
+          "slot": "checkboxControl",
+          "surface": "2c03e395ff6a9e61"
+        },
+        {
+          "kind": "text",
+          "slot": "children",
+          "text": {
+            "fill": {
+              "color": {
+                "variable": "--color-text-primary"
+              },
+              "type": "SOLID"
+            },
+            "fontFamily": {
+              "variable": "--font-family-body"
+            },
+            "fontSize": {
+              "variable": "--font-size-body"
+            },
+            "fontWeight": {
+              "variable": "--font-weight-body"
+            },
+            "lineHeight": 150
+          },
+          "textProperty": "children",
+          "visibleProperty": "show children"
         }
       ],
       "11bf55685ee0fb17": [
@@ -44854,6 +45701,122 @@
           "textProperty": "children"
         }
       ],
+      "17e390783d242859": [
+        {
+          "box": "33649eab81bb9407",
+          "kind": "frame",
+          "layers": [
+            {
+              "fills": [
+                {
+                  "color": {
+                    "variable": "checkbox:state-layer:b8efc6b2f3"
+                  },
+                  "type": "SOLID"
+                }
+              ],
+              "kind": "overlay",
+              "slot": "state layer"
+            }
+          ],
+          "slot": "checkboxControl",
+          "surface": "f11bf56fb785a952"
+        },
+        {
+          "kind": "text",
+          "slot": "children",
+          "text": {
+            "fill": {
+              "color": {
+                "variable": "--color-text-disabled"
+              },
+              "type": "SOLID"
+            },
+            "fontFamily": {
+              "variable": "--font-family-body"
+            },
+            "fontSize": {
+              "variable": "--font-size-body"
+            },
+            "fontWeight": {
+              "variable": "--font-weight-body"
+            },
+            "lineHeight": 150
+          },
+          "textProperty": "children",
+          "visibleProperty": "show children"
+        }
+      ],
+      "199d007ac616d5b2": [
+        {
+          "box": "33649eab81bb9407",
+          "kind": "frame",
+          "layers": [
+            {
+              "fills": [
+                {
+                  "color": {
+                    "variable": "checkbox:state-layer:634151876a"
+                  },
+                  "type": "SOLID"
+                }
+              ],
+              "kind": "overlay",
+              "slot": "state layer"
+            },
+            {
+              "box": "fed71eadc8de5842",
+              "kind": "frame",
+              "layers": [
+                {
+                  "default": "remove",
+                  "icon": {
+                    "color": {
+                      "color": {
+                        "variable": "--color-text-on-accent"
+                      },
+                      "type": "SOLID"
+                    },
+                    "size": {
+                      "variable": "--size-icon-sm"
+                    }
+                  },
+                  "kind": "icon",
+                  "slot": "checkboxIndicator"
+                }
+              ],
+              "slot": "checkboxIndicator",
+              "surface": "fa0b643878e9242d"
+            }
+          ],
+          "slot": "checkboxControl",
+          "surface": "4b7b57888dcfa08b"
+        },
+        {
+          "kind": "text",
+          "slot": "children",
+          "text": {
+            "fill": {
+              "color": {
+                "variable": "--color-text-primary"
+              },
+              "type": "SOLID"
+            },
+            "fontFamily": {
+              "variable": "--font-family-body"
+            },
+            "fontSize": {
+              "variable": "--font-size-body"
+            },
+            "fontWeight": {
+              "variable": "--font-weight-body"
+            },
+            "lineHeight": 150
+          },
+          "textProperty": "children",
+          "visibleProperty": "show children"
+        }
+      ],
       "19c03d8ae761741b": [
         {
           "box": "fde207980689ef65",
@@ -45050,6 +46013,71 @@
           ],
           "slot": "option 3",
           "surface": "a39c603f0591c36b"
+        }
+      ],
+      "1ac020bada76f1e1": [
+        {
+          "box": "33649eab81bb9407",
+          "kind": "frame",
+          "layers": [
+            {
+              "fills": [
+                {
+                  "color": {
+                    "variable": "checkbox:state-layer:bfba8c3497"
+                  },
+                  "type": "SOLID"
+                }
+              ],
+              "kind": "overlay",
+              "slot": "state layer"
+            },
+            {
+              "color": {
+                "color": {
+                  "variable": "--focus-ring-color"
+                },
+                "type": "SOLID"
+              },
+              "kind": "ring",
+              "offset": {
+                "variable": "--focus-ring-offset"
+              },
+              "radius": {
+                "variable": "checkbox:outline-radius:9325831be9"
+              },
+              "slot": "focus ring",
+              "width": {
+                "variable": "--focus-ring-width"
+              }
+            }
+          ],
+          "slot": "checkboxControl",
+          "surface": "f30b966e023c0cfc"
+        },
+        {
+          "kind": "text",
+          "slot": "children",
+          "text": {
+            "fill": {
+              "color": {
+                "variable": "--color-text-primary"
+              },
+              "type": "SOLID"
+            },
+            "fontFamily": {
+              "variable": "--font-family-body"
+            },
+            "fontSize": {
+              "variable": "--font-size-body"
+            },
+            "fontWeight": {
+              "variable": "--font-weight-body"
+            },
+            "lineHeight": 150
+          },
+          "textProperty": "children",
+          "visibleProperty": "show children"
         }
       ],
       "1ae9f6856446b47b": [
@@ -45472,6 +46500,52 @@
           "kind": "icon",
           "slot": "post",
           "visibleProperty": "post"
+        }
+      ],
+      "20eeb2afb912019a": [
+        {
+          "box": "33649eab81bb9407",
+          "kind": "frame",
+          "layers": [
+            {
+              "fills": [
+                {
+                  "color": {
+                    "variable": "checkbox:state-layer:a8bbbce668"
+                  },
+                  "type": "SOLID"
+                }
+              ],
+              "kind": "overlay",
+              "slot": "state layer"
+            }
+          ],
+          "slot": "checkboxControl",
+          "surface": "00cf0b88bc2a682e"
+        },
+        {
+          "kind": "text",
+          "slot": "children",
+          "text": {
+            "fill": {
+              "color": {
+                "variable": "--color-text-primary"
+              },
+              "type": "SOLID"
+            },
+            "fontFamily": {
+              "variable": "--font-family-body"
+            },
+            "fontSize": {
+              "variable": "--font-size-body"
+            },
+            "fontWeight": {
+              "variable": "--font-weight-body"
+            },
+            "lineHeight": 150
+          },
+          "textProperty": "children",
+          "visibleProperty": "show children"
         }
       ],
       "215cdd7f437c8048": [
@@ -46251,6 +47325,52 @@
           "textProperty": "children 1"
         }
       ],
+      "27c83f1f89ea8b28": [
+        {
+          "box": "33649eab81bb9407",
+          "kind": "frame",
+          "layers": [
+            {
+              "fills": [
+                {
+                  "color": {
+                    "variable": "checkbox:state-layer:b8efc6b2f3"
+                  },
+                  "type": "SOLID"
+                }
+              ],
+              "kind": "overlay",
+              "slot": "state layer"
+            }
+          ],
+          "slot": "checkboxControl",
+          "surface": "f52a39492e335a70"
+        },
+        {
+          "kind": "text",
+          "slot": "children",
+          "text": {
+            "fill": {
+              "color": {
+                "variable": "--color-text-disabled"
+              },
+              "type": "SOLID"
+            },
+            "fontFamily": {
+              "variable": "--font-family-body"
+            },
+            "fontSize": {
+              "variable": "--font-size-body"
+            },
+            "fontWeight": {
+              "variable": "--font-weight-body"
+            },
+            "lineHeight": 150
+          },
+          "textProperty": "children",
+          "visibleProperty": "show children"
+        }
+      ],
       "28092b152f7ba64d": [
         {
           "box": "5172aea031630ba5",
@@ -46562,6 +47682,76 @@
           "kind": "icon",
           "slot": "post",
           "visibleProperty": "post"
+        }
+      ],
+      "2a648739a7cbbcf6": [
+        {
+          "box": "33649eab81bb9407",
+          "kind": "frame",
+          "layers": [
+            {
+              "fills": [
+                {
+                  "color": {
+                    "variable": "checkbox:state-layer:634151876a"
+                  },
+                  "type": "SOLID"
+                }
+              ],
+              "kind": "overlay",
+              "slot": "state layer"
+            },
+            {
+              "box": "fed71eadc8de5842",
+              "kind": "frame",
+              "layers": [
+                {
+                  "default": "check",
+                  "icon": {
+                    "color": {
+                      "color": {
+                        "variable": "--color-text-on-accent"
+                      },
+                      "type": "SOLID"
+                    },
+                    "size": {
+                      "variable": "--size-icon-sm"
+                    }
+                  },
+                  "kind": "icon",
+                  "slot": "checkboxIndicator"
+                }
+              ],
+              "slot": "checkboxIndicator",
+              "surface": "fa0b643878e9242d"
+            }
+          ],
+          "slot": "checkboxControl",
+          "surface": "4302d6b465113eb5"
+        },
+        {
+          "kind": "text",
+          "slot": "children",
+          "text": {
+            "fill": {
+              "color": {
+                "variable": "--color-text-primary"
+              },
+              "type": "SOLID"
+            },
+            "fontFamily": {
+              "variable": "--font-family-body"
+            },
+            "fontSize": {
+              "variable": "--font-size-body"
+            },
+            "fontWeight": {
+              "variable": "--font-weight-body"
+            },
+            "lineHeight": 150
+          },
+          "textProperty": "children",
+          "visibleProperty": "show children"
         }
       ],
       "2c43b8d0491d870f": [
@@ -48277,6 +49467,76 @@
           "surface": "fa0b643878e9242d"
         }
       ],
+      "3eeec587572bb78f": [
+        {
+          "box": "33649eab81bb9407",
+          "kind": "frame",
+          "layers": [
+            {
+              "fills": [
+                {
+                  "color": {
+                    "variable": "checkbox:state-layer:634151876a"
+                  },
+                  "type": "SOLID"
+                }
+              ],
+              "kind": "overlay",
+              "slot": "state layer"
+            },
+            {
+              "box": "fed71eadc8de5842",
+              "kind": "frame",
+              "layers": [
+                {
+                  "default": "check",
+                  "icon": {
+                    "color": {
+                      "color": {
+                        "variable": "--color-text-on-accent"
+                      },
+                      "type": "SOLID"
+                    },
+                    "size": {
+                      "variable": "--size-icon-sm"
+                    }
+                  },
+                  "kind": "icon",
+                  "slot": "checkboxIndicator"
+                }
+              ],
+              "slot": "checkboxIndicator",
+              "surface": "fa0b643878e9242d"
+            }
+          ],
+          "slot": "checkboxControl",
+          "surface": "4f3ba7b72975c3fc"
+        },
+        {
+          "kind": "text",
+          "slot": "children",
+          "text": {
+            "fill": {
+              "color": {
+                "variable": "--color-text-primary"
+              },
+              "type": "SOLID"
+            },
+            "fontFamily": {
+              "variable": "--font-family-body"
+            },
+            "fontSize": {
+              "variable": "--font-size-body"
+            },
+            "fontWeight": {
+              "variable": "--font-weight-body"
+            },
+            "lineHeight": 150
+          },
+          "textProperty": "children",
+          "visibleProperty": "show children"
+        }
+      ],
       "3f9fd0c86668d599": [
         {
           "fills": [
@@ -48975,6 +50235,71 @@
           },
           "textProperty": "change",
           "visibleProperty": "show change"
+        }
+      ],
+      "4938f6471fc73b6e": [
+        {
+          "box": "33649eab81bb9407",
+          "kind": "frame",
+          "layers": [
+            {
+              "fills": [
+                {
+                  "color": {
+                    "variable": "checkbox:state-layer:bfba8c3497"
+                  },
+                  "type": "SOLID"
+                }
+              ],
+              "kind": "overlay",
+              "slot": "state layer"
+            },
+            {
+              "color": {
+                "color": {
+                  "variable": "--focus-ring-color"
+                },
+                "type": "SOLID"
+              },
+              "kind": "ring",
+              "offset": {
+                "variable": "--focus-ring-offset"
+              },
+              "radius": {
+                "variable": "checkbox:outline-radius:9325831be9"
+              },
+              "slot": "focus ring",
+              "width": {
+                "variable": "--focus-ring-width"
+              }
+            }
+          ],
+          "slot": "checkboxControl",
+          "surface": "b566e4f5e45d1014"
+        },
+        {
+          "kind": "text",
+          "slot": "children",
+          "text": {
+            "fill": {
+              "color": {
+                "variable": "--color-text-primary"
+              },
+              "type": "SOLID"
+            },
+            "fontFamily": {
+              "variable": "--font-family-body"
+            },
+            "fontSize": {
+              "variable": "--font-size-body"
+            },
+            "fontWeight": {
+              "variable": "--font-weight-body"
+            },
+            "lineHeight": 150
+          },
+          "textProperty": "children",
+          "visibleProperty": "show children"
         }
       ],
       "499c2d0e829099f8": [
@@ -51315,6 +52640,52 @@
           "width": {
             "variable": "--focus-ring-width"
           }
+        }
+      ],
+      "60b0274437465e16": [
+        {
+          "box": "33649eab81bb9407",
+          "kind": "frame",
+          "layers": [
+            {
+              "fills": [
+                {
+                  "color": {
+                    "variable": "checkbox:state-layer:9652c98e0a"
+                  },
+                  "type": "SOLID"
+                }
+              ],
+              "kind": "overlay",
+              "slot": "state layer"
+            }
+          ],
+          "slot": "checkboxControl",
+          "surface": "00cf0b88bc2a682e"
+        },
+        {
+          "kind": "text",
+          "slot": "children",
+          "text": {
+            "fill": {
+              "color": {
+                "variable": "--color-text-primary"
+              },
+              "type": "SOLID"
+            },
+            "fontFamily": {
+              "variable": "--font-family-body"
+            },
+            "fontSize": {
+              "variable": "--font-size-body"
+            },
+            "fontWeight": {
+              "variable": "--font-weight-body"
+            },
+            "lineHeight": 150
+          },
+          "textProperty": "children",
+          "visibleProperty": "show children"
         }
       ],
       "61343162d56bb011": [
@@ -54045,6 +55416,76 @@
           "visibleProperty": "post"
         }
       ],
+      "7a2864291146287a": [
+        {
+          "box": "33649eab81bb9407",
+          "kind": "frame",
+          "layers": [
+            {
+              "fills": [
+                {
+                  "color": {
+                    "variable": "checkbox:state-layer:634151876a"
+                  },
+                  "type": "SOLID"
+                }
+              ],
+              "kind": "overlay",
+              "slot": "state layer"
+            },
+            {
+              "box": "fed71eadc8de5842",
+              "kind": "frame",
+              "layers": [
+                {
+                  "default": "remove",
+                  "icon": {
+                    "color": {
+                      "color": {
+                        "variable": "--color-text-on-accent"
+                      },
+                      "type": "SOLID"
+                    },
+                    "size": {
+                      "variable": "--size-icon-sm"
+                    }
+                  },
+                  "kind": "icon",
+                  "slot": "checkboxIndicator"
+                }
+              ],
+              "slot": "checkboxIndicator",
+              "surface": "fa0b643878e9242d"
+            }
+          ],
+          "slot": "checkboxControl",
+          "surface": "4f3ba7b72975c3fc"
+        },
+        {
+          "kind": "text",
+          "slot": "children",
+          "text": {
+            "fill": {
+              "color": {
+                "variable": "--color-text-primary"
+              },
+              "type": "SOLID"
+            },
+            "fontFamily": {
+              "variable": "--font-family-body"
+            },
+            "fontSize": {
+              "variable": "--font-size-body"
+            },
+            "fontWeight": {
+              "variable": "--font-weight-body"
+            },
+            "lineHeight": 150
+          },
+          "textProperty": "children",
+          "visibleProperty": "show children"
+        }
+      ],
       "7a596365a7b14e71": [
         {
           "kind": "text",
@@ -55048,6 +56489,52 @@
           "textProperty": "children 1"
         }
       ],
+      "84b4cb45c6a90e28": [
+        {
+          "box": "33649eab81bb9407",
+          "kind": "frame",
+          "layers": [
+            {
+              "fills": [
+                {
+                  "color": {
+                    "variable": "checkbox:state-layer:a8bbbce668"
+                  },
+                  "type": "SOLID"
+                }
+              ],
+              "kind": "overlay",
+              "slot": "state layer"
+            }
+          ],
+          "slot": "checkboxControl",
+          "surface": "b566e4f5e45d1014"
+        },
+        {
+          "kind": "text",
+          "slot": "children",
+          "text": {
+            "fill": {
+              "color": {
+                "variable": "--color-text-primary"
+              },
+              "type": "SOLID"
+            },
+            "fontFamily": {
+              "variable": "--font-family-body"
+            },
+            "fontSize": {
+              "variable": "--font-size-body"
+            },
+            "fontWeight": {
+              "variable": "--font-weight-body"
+            },
+            "lineHeight": 150
+          },
+          "textProperty": "children",
+          "visibleProperty": "show children"
+        }
+      ],
       "854229a3a9b352b1": [
         {
           "box": "f5111b8dfa344b73",
@@ -55725,6 +57212,52 @@
           "kind": "icon",
           "slot": "post",
           "visibleProperty": "post"
+        }
+      ],
+      "88b6f1c460a56cc0": [
+        {
+          "box": "33649eab81bb9407",
+          "kind": "frame",
+          "layers": [
+            {
+              "fills": [
+                {
+                  "color": {
+                    "variable": "checkbox:state-layer:9652c98e0a"
+                  },
+                  "type": "SOLID"
+                }
+              ],
+              "kind": "overlay",
+              "slot": "state layer"
+            }
+          ],
+          "slot": "checkboxControl",
+          "surface": "b566e4f5e45d1014"
+        },
+        {
+          "kind": "text",
+          "slot": "children",
+          "text": {
+            "fill": {
+              "color": {
+                "variable": "--color-text-primary"
+              },
+              "type": "SOLID"
+            },
+            "fontFamily": {
+              "variable": "--font-family-body"
+            },
+            "fontSize": {
+              "variable": "--font-size-body"
+            },
+            "fontWeight": {
+              "variable": "--font-weight-body"
+            },
+            "lineHeight": 150
+          },
+          "textProperty": "children",
+          "visibleProperty": "show children"
         }
       ],
       "89c3d7a5e3634bf5": [
@@ -57144,6 +58677,76 @@
           "surface": "79b142c692cc5c86"
         }
       ],
+      "93abacfdeb4728ff": [
+        {
+          "box": "33649eab81bb9407",
+          "kind": "frame",
+          "layers": [
+            {
+              "fills": [
+                {
+                  "color": {
+                    "variable": "checkbox:state-layer:634151876a"
+                  },
+                  "type": "SOLID"
+                }
+              ],
+              "kind": "overlay",
+              "slot": "state layer"
+            },
+            {
+              "box": "fed71eadc8de5842",
+              "kind": "frame",
+              "layers": [
+                {
+                  "default": "remove",
+                  "icon": {
+                    "color": {
+                      "color": {
+                        "variable": "--color-text-on-accent"
+                      },
+                      "type": "SOLID"
+                    },
+                    "size": {
+                      "variable": "--size-icon-sm"
+                    }
+                  },
+                  "kind": "icon",
+                  "slot": "checkboxIndicator"
+                }
+              ],
+              "slot": "checkboxIndicator",
+              "surface": "fa0b643878e9242d"
+            }
+          ],
+          "slot": "checkboxControl",
+          "surface": "4302d6b465113eb5"
+        },
+        {
+          "kind": "text",
+          "slot": "children",
+          "text": {
+            "fill": {
+              "color": {
+                "variable": "--color-text-primary"
+              },
+              "type": "SOLID"
+            },
+            "fontFamily": {
+              "variable": "--font-family-body"
+            },
+            "fontSize": {
+              "variable": "--font-size-body"
+            },
+            "fontWeight": {
+              "variable": "--font-weight-body"
+            },
+            "lineHeight": 150
+          },
+          "textProperty": "children",
+          "visibleProperty": "show children"
+        }
+      ],
       "93e01a82a7719a91": [
         {
           "fills": [
@@ -57328,6 +58931,52 @@
           "width": {
             "variable": "--focus-ring-width"
           }
+        }
+      ],
+      "95be87bc079d5898": [
+        {
+          "box": "33649eab81bb9407",
+          "kind": "frame",
+          "layers": [
+            {
+              "fills": [
+                {
+                  "color": {
+                    "variable": "checkbox:state-layer:9652c98e0a"
+                  },
+                  "type": "SOLID"
+                }
+              ],
+              "kind": "overlay",
+              "slot": "state layer"
+            }
+          ],
+          "slot": "checkboxControl",
+          "surface": "f30b966e023c0cfc"
+        },
+        {
+          "kind": "text",
+          "slot": "children",
+          "text": {
+            "fill": {
+              "color": {
+                "variable": "--color-text-primary"
+              },
+              "type": "SOLID"
+            },
+            "fontFamily": {
+              "variable": "--font-family-body"
+            },
+            "fontSize": {
+              "variable": "--font-size-body"
+            },
+            "fontWeight": {
+              "variable": "--font-weight-body"
+            },
+            "lineHeight": 150
+          },
+          "textProperty": "children",
+          "visibleProperty": "show children"
         }
       ],
       "95cca210cc21bcdb": [
@@ -59539,6 +61188,141 @@
           "textProperty": "children"
         }
       ],
+      "af9646b554c78582": [
+        {
+          "box": "33649eab81bb9407",
+          "kind": "frame",
+          "layers": [
+            {
+              "fills": [
+                {
+                  "color": {
+                    "variable": "checkbox:state-layer:634151876a"
+                  },
+                  "type": "SOLID"
+                }
+              ],
+              "kind": "overlay",
+              "slot": "state layer"
+            },
+            {
+              "box": "fed71eadc8de5842",
+              "kind": "frame",
+              "layers": [
+                {
+                  "default": "remove",
+                  "icon": {
+                    "color": {
+                      "color": {
+                        "variable": "--color-text-on-accent"
+                      },
+                      "type": "SOLID"
+                    },
+                    "size": {
+                      "variable": "--size-icon-sm"
+                    }
+                  },
+                  "kind": "icon",
+                  "slot": "checkboxIndicator"
+                }
+              ],
+              "slot": "checkboxIndicator",
+              "surface": "fa0b643878e9242d"
+            }
+          ],
+          "slot": "checkboxControl",
+          "surface": "2c03e395ff6a9e61"
+        },
+        {
+          "kind": "text",
+          "slot": "children",
+          "text": {
+            "fill": {
+              "color": {
+                "variable": "--color-text-primary"
+              },
+              "type": "SOLID"
+            },
+            "fontFamily": {
+              "variable": "--font-family-body"
+            },
+            "fontSize": {
+              "variable": "--font-size-body"
+            },
+            "fontWeight": {
+              "variable": "--font-weight-body"
+            },
+            "lineHeight": 150
+          },
+          "textProperty": "children",
+          "visibleProperty": "show children"
+        }
+      ],
+      "b1b42163e5364152": [
+        {
+          "box": "33649eab81bb9407",
+          "kind": "frame",
+          "layers": [
+            {
+              "fills": [
+                {
+                  "color": {
+                    "variable": "checkbox:state-layer:bfba8c3497"
+                  },
+                  "type": "SOLID"
+                }
+              ],
+              "kind": "overlay",
+              "slot": "state layer"
+            },
+            {
+              "color": {
+                "color": {
+                  "variable": "--focus-ring-color"
+                },
+                "type": "SOLID"
+              },
+              "kind": "ring",
+              "offset": {
+                "variable": "--focus-ring-offset"
+              },
+              "radius": {
+                "variable": "checkbox:outline-radius:9325831be9"
+              },
+              "slot": "focus ring",
+              "width": {
+                "variable": "--focus-ring-width"
+              }
+            }
+          ],
+          "slot": "checkboxControl",
+          "surface": "00cf0b88bc2a682e"
+        },
+        {
+          "kind": "text",
+          "slot": "children",
+          "text": {
+            "fill": {
+              "color": {
+                "variable": "--color-text-primary"
+              },
+              "type": "SOLID"
+            },
+            "fontFamily": {
+              "variable": "--font-family-body"
+            },
+            "fontSize": {
+              "variable": "--font-size-body"
+            },
+            "fontWeight": {
+              "variable": "--font-weight-body"
+            },
+            "lineHeight": 150
+          },
+          "textProperty": "children",
+          "visibleProperty": "show children"
+        }
+      ],
       "b365e0a068bcc4db": [
         {
           "fills": [
@@ -59754,6 +61538,98 @@
           "kind": "icon",
           "slot": "post",
           "visibleProperty": "post"
+        }
+      ],
+      "b6a8b964d7417891": [
+        {
+          "box": "33649eab81bb9407",
+          "kind": "frame",
+          "layers": [
+            {
+              "fills": [
+                {
+                  "color": {
+                    "variable": "checkbox:state-layer:9652c98e0a"
+                  },
+                  "type": "SOLID"
+                }
+              ],
+              "kind": "overlay",
+              "slot": "state layer"
+            }
+          ],
+          "slot": "checkboxControl",
+          "surface": "3b4b23714ff9fbec"
+        },
+        {
+          "kind": "text",
+          "slot": "children",
+          "text": {
+            "fill": {
+              "color": {
+                "variable": "--color-text-primary"
+              },
+              "type": "SOLID"
+            },
+            "fontFamily": {
+              "variable": "--font-family-body"
+            },
+            "fontSize": {
+              "variable": "--font-size-body"
+            },
+            "fontWeight": {
+              "variable": "--font-weight-body"
+            },
+            "lineHeight": 150
+          },
+          "textProperty": "children",
+          "visibleProperty": "show children"
+        }
+      ],
+      "b70a648d3c8d11ef": [
+        {
+          "box": "33649eab81bb9407",
+          "kind": "frame",
+          "layers": [
+            {
+              "fills": [
+                {
+                  "color": {
+                    "variable": "checkbox:state-layer:a8bbbce668"
+                  },
+                  "type": "SOLID"
+                }
+              ],
+              "kind": "overlay",
+              "slot": "state layer"
+            }
+          ],
+          "slot": "checkboxControl",
+          "surface": "3b4b23714ff9fbec"
+        },
+        {
+          "kind": "text",
+          "slot": "children",
+          "text": {
+            "fill": {
+              "color": {
+                "variable": "--color-text-primary"
+              },
+              "type": "SOLID"
+            },
+            "fontFamily": {
+              "variable": "--font-family-body"
+            },
+            "fontSize": {
+              "variable": "--font-size-body"
+            },
+            "fontWeight": {
+              "variable": "--font-weight-body"
+            },
+            "lineHeight": 150
+          },
+          "textProperty": "children",
+          "visibleProperty": "show children"
         }
       ],
       "b73fa259b52a60f9": [
@@ -60454,6 +62330,76 @@
             "lineHeight": 150
           },
           "textProperty": "children"
+        }
+      ],
+      "be5da717f9c26676": [
+        {
+          "box": "33649eab81bb9407",
+          "kind": "frame",
+          "layers": [
+            {
+              "fills": [
+                {
+                  "color": {
+                    "variable": "checkbox:state-layer:634151876a"
+                  },
+                  "type": "SOLID"
+                }
+              ],
+              "kind": "overlay",
+              "slot": "state layer"
+            },
+            {
+              "box": "fed71eadc8de5842",
+              "kind": "frame",
+              "layers": [
+                {
+                  "default": "check",
+                  "icon": {
+                    "color": {
+                      "color": {
+                        "variable": "--color-text-on-accent"
+                      },
+                      "type": "SOLID"
+                    },
+                    "size": {
+                      "variable": "--size-icon-sm"
+                    }
+                  },
+                  "kind": "icon",
+                  "slot": "checkboxIndicator"
+                }
+              ],
+              "slot": "checkboxIndicator",
+              "surface": "fa0b643878e9242d"
+            }
+          ],
+          "slot": "checkboxControl",
+          "surface": "4b7b57888dcfa08b"
+        },
+        {
+          "kind": "text",
+          "slot": "children",
+          "text": {
+            "fill": {
+              "color": {
+                "variable": "--color-text-primary"
+              },
+              "type": "SOLID"
+            },
+            "fontFamily": {
+              "variable": "--font-family-body"
+            },
+            "fontSize": {
+              "variable": "--font-size-body"
+            },
+            "fontWeight": {
+              "variable": "--font-weight-body"
+            },
+            "lineHeight": 150
+          },
+          "textProperty": "children",
+          "visibleProperty": "show children"
         }
       ],
       "bf7aa08599c16252": [
@@ -63251,6 +65197,52 @@
           "visibleProperty": "post"
         }
       ],
+      "e598a5e33111a5f1": [
+        {
+          "box": "33649eab81bb9407",
+          "kind": "frame",
+          "layers": [
+            {
+              "fills": [
+                {
+                  "color": {
+                    "variable": "checkbox:state-layer:b8efc6b2f3"
+                  },
+                  "type": "SOLID"
+                }
+              ],
+              "kind": "overlay",
+              "slot": "state layer"
+            }
+          ],
+          "slot": "checkboxControl",
+          "surface": "89e5f5d5433148d0"
+        },
+        {
+          "kind": "text",
+          "slot": "children",
+          "text": {
+            "fill": {
+              "color": {
+                "variable": "--color-text-disabled"
+              },
+              "type": "SOLID"
+            },
+            "fontFamily": {
+              "variable": "--font-family-body"
+            },
+            "fontSize": {
+              "variable": "--font-size-body"
+            },
+            "fontWeight": {
+              "variable": "--font-weight-body"
+            },
+            "lineHeight": 150
+          },
+          "textProperty": "children",
+          "visibleProperty": "show children"
+        }
+      ],
       "e6b4c46d1eafa774": [
         {
           "box": "9b7bdd4e4a98637c",
@@ -64746,6 +66738,52 @@
           "surface": "b68355fcdbfd9d27"
         }
       ],
+      "fbaf5b619e254d78": [
+        {
+          "box": "33649eab81bb9407",
+          "kind": "frame",
+          "layers": [
+            {
+              "fills": [
+                {
+                  "color": {
+                    "variable": "checkbox:state-layer:b8efc6b2f3"
+                  },
+                  "type": "SOLID"
+                }
+              ],
+              "kind": "overlay",
+              "slot": "state layer"
+            }
+          ],
+          "slot": "checkboxControl",
+          "surface": "42c9f74f503ec425"
+        },
+        {
+          "kind": "text",
+          "slot": "children",
+          "text": {
+            "fill": {
+              "color": {
+                "variable": "--color-text-disabled"
+              },
+              "type": "SOLID"
+            },
+            "fontFamily": {
+              "variable": "--font-family-body"
+            },
+            "fontSize": {
+              "variable": "--font-size-body"
+            },
+            "fontWeight": {
+              "variable": "--font-weight-body"
+            },
+            "lineHeight": 150
+          },
+          "textProperty": "children",
+          "visibleProperty": "show children"
+        }
+      ],
       "fc2ffa82f1c34156": [
         {
           "box": "510093bda9fbe74a",
@@ -65461,6 +67499,25 @@
       ]
     },
     "surfaces": {
+      "00cf0b88bc2a682e": {
+        "effects": [],
+        "fills": [
+          {
+            "color": {
+              "variable": "--color-bg-surface-raised"
+            },
+            "type": "SOLID"
+          }
+        ],
+        "strokes": [
+          {
+            "color": {
+              "variable": "--color-border-default"
+            },
+            "type": "SOLID"
+          }
+        ]
+      },
       "014428170c515b87": {
         "effects": [
           {
@@ -67553,6 +69610,33 @@
           }
         ]
       },
+      "2c03e395ff6a9e61": {
+        "effects": [
+          {
+            "radius": {
+              "expression": "6px",
+              "value": 6
+            },
+            "type": "BACKGROUND_BLUR"
+          }
+        ],
+        "fills": [
+          {
+            "color": {
+              "variable": "checkbox:frost-glass:aa8a908751"
+            },
+            "type": "SOLID"
+          }
+        ],
+        "strokes": [
+          {
+            "color": {
+              "variable": "--color-action-accent"
+            },
+            "type": "SOLID"
+          }
+        ]
+      },
       "2f033f00071272d0": {
         "effects": [
           {
@@ -68185,6 +70269,47 @@
           }
         ]
       },
+      "3b4b23714ff9fbec": {
+        "effects": [
+          {
+            "blur": {
+              "expression": "0",
+              "value": 0
+            },
+            "color": {
+              "variable": "checkbox:brutalist-black:b75258c11d"
+            },
+            "spread": {
+              "expression": "0",
+              "value": 0
+            },
+            "type": "DROP_SHADOW",
+            "x": {
+              "variable": "checkbox:shadow-1-x:2ad8d54226"
+            },
+            "y": {
+              "expression": "2px",
+              "value": 2
+            }
+          }
+        ],
+        "fills": [
+          {
+            "color": {
+              "variable": "--color-bg-surface-raised"
+            },
+            "type": "SOLID"
+          }
+        ],
+        "strokes": [
+          {
+            "color": {
+              "variable": "checkbox:brutalist-black:b75258c11d"
+            },
+            "type": "SOLID"
+          }
+        ]
+      },
       "3f1b5a36ec0b9519": {
         "effects": [
           {
@@ -68225,6 +70350,73 @@
           }
         ]
       },
+      "42c9f74f503ec425": {
+        "effects": [
+          {
+            "blur": {
+              "expression": "0",
+              "value": 0
+            },
+            "color": {
+              "variable": "checkbox:checkbox-ledge:ceaedd5b74"
+            },
+            "spread": {
+              "expression": "0",
+              "value": 0
+            },
+            "type": "DROP_SHADOW",
+            "x": {
+              "expression": "0",
+              "value": 0
+            },
+            "y": {
+              "expression": "2px",
+              "value": 2
+            }
+          }
+        ],
+        "fills": [
+          {
+            "color": {
+              "variable": "--color-action-disabled"
+            },
+            "type": "SOLID"
+          },
+          {
+            "angle": 180,
+            "expression": "linear-gradient( to bottom, light-dark(color-mix(in oklab, white 16%, transparent), color-mix(in oklab, white 6%, transparent)), transparent 60% )",
+            "stops": [
+              {
+                "color": {
+                  "a": 0.16,
+                  "b": 1,
+                  "g": 1,
+                  "r": 1
+                },
+                "position": 0
+              },
+              {
+                "color": {
+                  "a": 0,
+                  "b": 0,
+                  "g": 0,
+                  "r": 0
+                },
+                "position": 0.6
+              }
+            ],
+            "type": "GRADIENT_LINEAR"
+          }
+        ],
+        "strokes": [
+          {
+            "color": {
+              "variable": "--color-border-subtle"
+            },
+            "type": "SOLID"
+          }
+        ]
+      },
       "42f12be04d1bb822": {
         "effects": [],
         "fills": [
@@ -68239,6 +70431,25 @@
           {
             "color": {
               "variable": "--color-border-info"
+            },
+            "type": "SOLID"
+          }
+        ]
+      },
+      "4302d6b465113eb5": {
+        "effects": [],
+        "fills": [
+          {
+            "color": {
+              "variable": "--color-action-accent"
+            },
+            "type": "SOLID"
+          }
+        ],
+        "strokes": [
+          {
+            "color": {
+              "variable": "--color-action-accent"
             },
             "type": "SOLID"
           }
@@ -68616,6 +70827,47 @@
           }
         ]
       },
+      "4b7b57888dcfa08b": {
+        "effects": [
+          {
+            "blur": {
+              "expression": "0",
+              "value": 0
+            },
+            "color": {
+              "variable": "checkbox:brutalist-black:b75258c11d"
+            },
+            "spread": {
+              "expression": "0",
+              "value": 0
+            },
+            "type": "DROP_SHADOW",
+            "x": {
+              "variable": "checkbox:shadow-1-x:2ad8d54226"
+            },
+            "y": {
+              "expression": "2px",
+              "value": 2
+            }
+          }
+        ],
+        "fills": [
+          {
+            "color": {
+              "variable": "--color-action-accent"
+            },
+            "type": "SOLID"
+          }
+        ],
+        "strokes": [
+          {
+            "color": {
+              "variable": "checkbox:brutalist-black:b75258c11d"
+            },
+            "type": "SOLID"
+          }
+        ]
+      },
       "4bbfb05e76cd7924": {
         "effects": [
           {
@@ -68743,6 +70995,73 @@
           {
             "color": {
               "variable": "button:frost-edge:8ef0c882b9"
+            },
+            "type": "SOLID"
+          }
+        ]
+      },
+      "4f3ba7b72975c3fc": {
+        "effects": [
+          {
+            "blur": {
+              "expression": "0",
+              "value": 0
+            },
+            "color": {
+              "variable": "checkbox:checkbox-ledge:5d98b2b770"
+            },
+            "spread": {
+              "expression": "0",
+              "value": 0
+            },
+            "type": "DROP_SHADOW",
+            "x": {
+              "expression": "0",
+              "value": 0
+            },
+            "y": {
+              "expression": "2px",
+              "value": 2
+            }
+          }
+        ],
+        "fills": [
+          {
+            "color": {
+              "variable": "--color-action-accent"
+            },
+            "type": "SOLID"
+          },
+          {
+            "angle": 180,
+            "expression": "linear-gradient( to bottom, light-dark(color-mix(in oklab, white 16%, transparent), color-mix(in oklab, white 6%, transparent)), transparent 60% )",
+            "stops": [
+              {
+                "color": {
+                  "a": 0.16,
+                  "b": 1,
+                  "g": 1,
+                  "r": 1
+                },
+                "position": 0
+              },
+              {
+                "color": {
+                  "a": 0,
+                  "b": 0,
+                  "g": 0,
+                  "r": 0
+                },
+                "position": 0.6
+              }
+            ],
+            "type": "GRADIENT_LINEAR"
+          }
+        ],
+        "strokes": [
+          {
+            "color": {
+              "variable": "--color-action-accent"
             },
             "type": "SOLID"
           }
@@ -71633,6 +73952,33 @@
           }
         ]
       },
+      "89e5f5d5433148d0": {
+        "effects": [
+          {
+            "radius": {
+              "expression": "6px",
+              "value": 6
+            },
+            "type": "BACKGROUND_BLUR"
+          }
+        ],
+        "fills": [
+          {
+            "color": {
+              "variable": "checkbox:frost-glass:2272a565ed"
+            },
+            "type": "SOLID"
+          }
+        ],
+        "strokes": [
+          {
+            "color": {
+              "variable": "checkbox:border-color:905594b5e2"
+            },
+            "type": "SOLID"
+          }
+        ]
+      },
       "8b4b066af54a9c49": {
         "effects": [
           {
@@ -74061,6 +76407,33 @@
           {
             "color": {
               "variable": "--color-border-strong"
+            },
+            "type": "SOLID"
+          }
+        ]
+      },
+      "b566e4f5e45d1014": {
+        "effects": [
+          {
+            "radius": {
+              "expression": "6px",
+              "value": 6
+            },
+            "type": "BACKGROUND_BLUR"
+          }
+        ],
+        "fills": [
+          {
+            "color": {
+              "variable": "checkbox:frost-glass:96c47889c2"
+            },
+            "type": "SOLID"
+          }
+        ],
+        "strokes": [
+          {
+            "color": {
+              "variable": "checkbox:border-color:1207894e6a"
             },
             "type": "SOLID"
           }
@@ -76864,6 +79237,47 @@
           }
         ]
       },
+      "f11bf56fb785a952": {
+        "effects": [
+          {
+            "blur": {
+              "expression": "0",
+              "value": 0
+            },
+            "color": {
+              "variable": "checkbox:brutalist-black:b75258c11d"
+            },
+            "spread": {
+              "expression": "0",
+              "value": 0
+            },
+            "type": "DROP_SHADOW",
+            "x": {
+              "variable": "checkbox:shadow-1-x:2ad8d54226"
+            },
+            "y": {
+              "expression": "2px",
+              "value": 2
+            }
+          }
+        ],
+        "fills": [
+          {
+            "color": {
+              "variable": "--color-action-disabled"
+            },
+            "type": "SOLID"
+          }
+        ],
+        "strokes": [
+          {
+            "color": {
+              "variable": "checkbox:brutalist-black:b75258c11d"
+            },
+            "type": "SOLID"
+          }
+        ]
+      },
       "f1eab8c17c586300": {
         "effects": [
           {
@@ -76899,6 +79313,73 @@
           {
             "color": {
               "variable": "button:brutalist-black:b75258c11d"
+            },
+            "type": "SOLID"
+          }
+        ]
+      },
+      "f30b966e023c0cfc": {
+        "effects": [
+          {
+            "blur": {
+              "expression": "0",
+              "value": 0
+            },
+            "color": {
+              "variable": "checkbox:checkbox-ledge:f27e542ec9"
+            },
+            "spread": {
+              "expression": "0",
+              "value": 0
+            },
+            "type": "DROP_SHADOW",
+            "x": {
+              "expression": "0",
+              "value": 0
+            },
+            "y": {
+              "expression": "2px",
+              "value": 2
+            }
+          }
+        ],
+        "fills": [
+          {
+            "color": {
+              "variable": "--color-bg-surface-raised"
+            },
+            "type": "SOLID"
+          },
+          {
+            "angle": 180,
+            "expression": "linear-gradient( to bottom, light-dark(color-mix(in oklab, white 16%, transparent), color-mix(in oklab, white 6%, transparent)), transparent 60% )",
+            "stops": [
+              {
+                "color": {
+                  "a": 0.16,
+                  "b": 1,
+                  "g": 1,
+                  "r": 1
+                },
+                "position": 0
+              },
+              {
+                "color": {
+                  "a": 0,
+                  "b": 0,
+                  "g": 0,
+                  "r": 0
+                },
+                "position": 0.6
+              }
+            ],
+            "type": "GRADIENT_LINEAR"
+          }
+        ],
+        "strokes": [
+          {
+            "color": {
+              "variable": "--color-border-default"
             },
             "type": "SOLID"
           }
@@ -83960,6 +86441,520 @@
         "light": {
           "kind": "literal",
           "value": 4
+        }
+      }
+    },
+    {
+      "codeSyntax": "",
+      "collection": "component",
+      "expression": "color-mix(in oklab, var(--color-text-primary) 30%, transparent)",
+      "id": "checkbox:border-color:1207894e6a",
+      "name": "checkbox/border-color/frosted",
+      "source": {
+        "dark": "evaluated",
+        "light": "evaluated"
+      },
+      "type": "COLOR",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": {
+            "a": 0.3,
+            "b": 0.9579,
+            "g": 0.9609,
+            "r": 0.9609
+          }
+        },
+        "light": {
+          "kind": "literal",
+          "value": {
+            "a": 0.3,
+            "b": 0.0903,
+            "g": 0.098,
+            "r": 0.1095
+          }
+        }
+      }
+    },
+    {
+      "codeSyntax": "",
+      "collection": "component",
+      "expression": "color-mix(in oklab, var(--color-text-disabled) 30%, transparent)",
+      "id": "checkbox:border-color:905594b5e2",
+      "name": "checkbox/border-color/frosted/disabled",
+      "source": {
+        "dark": "evaluated",
+        "light": "evaluated"
+      },
+      "type": "COLOR",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": {
+            "a": 0.3,
+            "b": 0.3022,
+            "g": 0.3247,
+            "r": 0.3427
+          }
+        },
+        "light": {
+          "kind": "literal",
+          "value": {
+            "a": 0.3,
+            "b": 0.6089,
+            "g": 0.6262,
+            "r": 0.6521
+          }
+        }
+      }
+    },
+    {
+      "codeSyntax": "var(--sk-checkbox-border-width)",
+      "collection": "component",
+      "expression": "1px",
+      "id": "checkbox:border-width:93e20626bf",
+      "name": "checkbox/border-width",
+      "source": {
+        "dark": "literal",
+        "light": "literal"
+      },
+      "type": "FLOAT",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": 1
+        },
+        "light": {
+          "kind": "literal",
+          "value": 1
+        }
+      }
+    },
+    {
+      "codeSyntax": "var(--brutalist-black)",
+      "collection": "component",
+      "expression": "oklch(from var(--shadow-lg) l c h / 1)",
+      "id": "checkbox:brutalist-black:b75258c11d",
+      "name": "checkbox/brutalist-black/brutalist",
+      "source": {
+        "dark": "evaluated",
+        "light": "evaluated"
+      },
+      "type": "COLOR",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": {
+            "a": 1,
+            "b": 0,
+            "g": 0,
+            "r": 0
+          }
+        },
+        "light": {
+          "kind": "literal",
+          "value": {
+            "a": 1,
+            "b": 0,
+            "g": 0,
+            "r": 0
+          }
+        }
+      }
+    },
+    {
+      "codeSyntax": "var(--checkbox-ledge)",
+      "collection": "component",
+      "expression": "light-dark( color-mix(in oklab, var(--color-action-accent) 72%, var(--color-text-primary)), color-mix(in oklab, var(--color-action-accent) 64%, var(--color-bg-surface-sunken)) )",
+      "id": "checkbox:checkbox-ledge:5d98b2b770",
+      "name": "checkbox/checkbox-ledge/tactile",
+      "source": {
+        "dark": "evaluated",
+        "light": "evaluated"
+      },
+      "type": "COLOR",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": {
+            "a": 1,
+            "b": 0.626,
+            "g": 0.3224,
+            "r": 0.141
+          }
+        },
+        "light": {
+          "kind": "literal",
+          "value": {
+            "a": 1,
+            "b": 0.7114,
+            "g": 0.2983,
+            "r": 0.1145
+          }
+        }
+      }
+    },
+    {
+      "codeSyntax": "var(--checkbox-ledge)",
+      "collection": "component",
+      "expression": "light-dark( color-mix(in oklab, var(--color-bg-surface-raised) 72%, var(--color-text-primary)), color-mix(in oklab, var(--color-bg-surface-raised) 64%, var(--color-bg-surface-sunken)) )",
+      "id": "checkbox:checkbox-ledge:f27e542ec9",
+      "name": "checkbox/checkbox-ledge/tactile-2",
+      "source": {
+        "dark": "evaluated",
+        "light": "evaluated"
+      },
+      "type": "COLOR",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": {
+            "a": 1,
+            "b": 0.1005,
+            "g": 0.1047,
+            "r": 0.1184
+          }
+        },
+        "light": {
+          "kind": "literal",
+          "value": {
+            "a": 1,
+            "b": 0.7151,
+            "g": 0.7181,
+            "r": 0.7226
+          }
+        }
+      }
+    },
+    {
+      "codeSyntax": "var(--checkbox-ledge)",
+      "collection": "component",
+      "expression": "light-dark( color-mix(in oklab, var(--color-action-disabled) 72%, var(--color-text-primary)), color-mix(in oklab, var(--color-action-disabled) 64%, var(--color-bg-surface-sunken)) )",
+      "id": "checkbox:checkbox-ledge:ceaedd5b74",
+      "name": "checkbox/checkbox-ledge/tactile/disabled",
+      "source": {
+        "dark": "evaluated",
+        "light": "evaluated"
+      },
+      "type": "COLOR",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": {
+            "a": 1,
+            "b": 0.1005,
+            "g": 0.1047,
+            "r": 0.1184
+          }
+        },
+        "light": {
+          "kind": "literal",
+          "value": {
+            "a": 1,
+            "b": 0.5921,
+            "g": 0.6012,
+            "r": 0.6148
+          }
+        }
+      }
+    },
+    {
+      "codeSyntax": "var(--frost-glass)",
+      "collection": "component",
+      "expression": "var(--frost-on) color-mix(in oklab, var(--color-bg-surface-raised) 60%, transparent)",
+      "id": "checkbox:frost-glass:96c47889c2",
+      "name": "checkbox/frost-glass/frosted",
+      "source": {
+        "dark": "evaluated",
+        "light": "evaluated"
+      },
+      "type": "COLOR",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": {
+            "a": 0.6,
+            "b": 0.1398,
+            "g": 0.1442,
+            "r": 0.1616
+          }
+        },
+        "light": {
+          "kind": "literal",
+          "value": {
+            "a": 0.6,
+            "b": 1,
+            "g": 1,
+            "r": 1
+          }
+        }
+      }
+    },
+    {
+      "codeSyntax": "var(--frost-glass)",
+      "collection": "component",
+      "expression": "var(--frost-on) color-mix(in oklab, var(--color-action-accent) 60%, transparent)",
+      "id": "checkbox:frost-glass:aa8a908751",
+      "name": "checkbox/frost-glass/frosted-2",
+      "source": {
+        "dark": "evaluated",
+        "light": "evaluated"
+      },
+      "type": "COLOR",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": {
+            "a": 0.6,
+            "b": 1,
+            "g": 0.498,
+            "r": 0.1693
+          }
+        },
+        "light": {
+          "kind": "literal",
+          "value": {
+            "a": 0.6,
+            "b": 0.9863,
+            "g": 0.3644,
+            "r": 0.0836
+          }
+        }
+      }
+    },
+    {
+      "codeSyntax": "var(--frost-glass)",
+      "collection": "component",
+      "expression": "var(--frost-on) color-mix(in oklab, var(--color-action-disabled) 60%, transparent)",
+      "id": "checkbox:frost-glass:2272a565ed",
+      "name": "checkbox/frost-glass/frosted/disabled",
+      "source": {
+        "dark": "evaluated",
+        "light": "evaluated"
+      },
+      "type": "COLOR",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": {
+            "a": 0.6,
+            "b": 0.1398,
+            "g": 0.1442,
+            "r": 0.1616
+          }
+        },
+        "light": {
+          "kind": "literal",
+          "value": {
+            "a": 0.6,
+            "b": 0.8184,
+            "g": 0.8275,
+            "r": 0.8412
+          }
+        }
+      }
+    },
+    {
+      "codeSyntax": "",
+      "collection": "component",
+      "expression": "calc(var(--radius-control) + var(--focus-ring-offset))",
+      "id": "checkbox:outline-radius:9325831be9",
+      "name": "checkbox/outline-radius/focus",
+      "source": {
+        "dark": "evaluated",
+        "light": "evaluated"
+      },
+      "type": "FLOAT",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": 10
+        },
+        "light": {
+          "kind": "literal",
+          "value": 10
+        }
+      }
+    },
+    {
+      "codeSyntax": "",
+      "collection": "component",
+      "expression": "calc(2px * 1)",
+      "id": "checkbox:shadow-1-x:2ad8d54226",
+      "name": "checkbox/shadow-1-x/brutalist",
+      "source": {
+        "dark": "evaluated",
+        "light": "evaluated"
+      },
+      "type": "FLOAT",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": 2
+        },
+        "light": {
+          "kind": "literal",
+          "value": 2
+        }
+      }
+    },
+    {
+      "codeSyntax": "",
+      "collection": "component",
+      "expression": "color-mix( in srgb, var(--color-text-on-accent) calc(0 * 100%), transparent )",
+      "id": "checkbox:state-layer:634151876a",
+      "name": "checkbox/state-layer",
+      "source": {
+        "dark": "evaluated",
+        "light": "evaluated"
+      },
+      "type": "COLOR",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": {
+            "a": 0,
+            "b": 0,
+            "g": 0,
+            "r": 0
+          }
+        },
+        "light": {
+          "kind": "literal",
+          "value": {
+            "a": 0,
+            "b": 0,
+            "g": 0,
+            "r": 0
+          }
+        }
+      }
+    },
+    {
+      "codeSyntax": "",
+      "collection": "component",
+      "expression": "color-mix( in srgb, var(--color-text-disabled) calc(var(--state-layer-disabled-opacity) * 100%), transparent )",
+      "id": "checkbox:state-layer:b8efc6b2f3",
+      "name": "checkbox/state-layer/disabled",
+      "source": {
+        "dark": "evaluated",
+        "light": "evaluated"
+      },
+      "type": "COLOR",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": {
+            "a": 0,
+            "b": 0,
+            "g": 0,
+            "r": 0
+          }
+        },
+        "light": {
+          "kind": "literal",
+          "value": {
+            "a": 0,
+            "b": 0,
+            "g": 0,
+            "r": 0
+          }
+        }
+      }
+    },
+    {
+      "codeSyntax": "",
+      "collection": "component",
+      "expression": "color-mix( in srgb, var(--color-text-primary) calc(var(--state-layer-focus-opacity) * 100%), transparent )",
+      "id": "checkbox:state-layer:bfba8c3497",
+      "name": "checkbox/state-layer/focus",
+      "source": {
+        "dark": "evaluated",
+        "light": "evaluated"
+      },
+      "type": "COLOR",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": {
+            "a": 0.16,
+            "b": 0.9579,
+            "g": 0.9609,
+            "r": 0.9609
+          }
+        },
+        "light": {
+          "kind": "literal",
+          "value": {
+            "a": 0.16,
+            "b": 0.0903,
+            "g": 0.098,
+            "r": 0.1095
+          }
+        }
+      }
+    },
+    {
+      "codeSyntax": "",
+      "collection": "component",
+      "expression": "color-mix( in srgb, var(--color-text-primary) calc(var(--state-layer-hover-opacity) * 100%), transparent )",
+      "id": "checkbox:state-layer:9652c98e0a",
+      "name": "checkbox/state-layer/hover",
+      "source": {
+        "dark": "evaluated",
+        "light": "evaluated"
+      },
+      "type": "COLOR",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": {
+            "a": 0.12,
+            "b": 0.9579,
+            "g": 0.9609,
+            "r": 0.9609
+          }
+        },
+        "light": {
+          "kind": "literal",
+          "value": {
+            "a": 0.12,
+            "b": 0.0903,
+            "g": 0.098,
+            "r": 0.1095
+          }
+        }
+      }
+    },
+    {
+      "codeSyntax": "",
+      "collection": "component",
+      "expression": "color-mix( in srgb, var(--color-text-primary) calc(0 * 100%), transparent )",
+      "id": "checkbox:state-layer:a8bbbce668",
+      "name": "checkbox/state-layer/unchecked",
+      "source": {
+        "dark": "evaluated",
+        "light": "evaluated"
+      },
+      "type": "COLOR",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": {
+            "a": 0,
+            "b": 0,
+            "g": 0,
+            "r": 0
+          }
+        },
+        "light": {
+          "kind": "literal",
+          "value": {
+            "a": 0,
+            "b": 0,
+            "g": 0,
+            "r": 0
+          }
         }
       }
     },
