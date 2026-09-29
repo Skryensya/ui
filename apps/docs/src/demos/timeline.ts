@@ -182,3 +182,45 @@ export const timelineTonesTree = (t: Translate): UsageTree => ({
     },
   ],
 });
+
+const timelineEvent = (heading: string, time: string | undefined, tone?: "success" | "warning" | "danger" | "accent"): UsageTree => ({
+  contract: "timeline",
+  signature: "TimelineItem",
+  ...(tone ? { options: { tone } } : {}),
+  slots: { ...(time ? { time } : {}), heading },
+});
+
+/* Do/Don't: each event with its time, or a list of events with none. */
+export const timelineDoTimeTree = (t: Translate): UsageTree => ({
+  contract: "timeline",
+  signature: "Timeline",
+  attrs: { "aria-label": t("demo.timeline.label") },
+  children: [
+    timelineEvent(t("demo.timeline.dd.delivered"), t("demo.timeline.dd.time3"), "success"),
+    timelineEvent(t("demo.timeline.dd.shipped"), t("demo.timeline.dd.time2")),
+    timelineEvent(t("demo.timeline.dd.ordered"), t("demo.timeline.dd.time1")),
+  ],
+});
+
+export const timelineDontTimeTree = (t: Translate): UsageTree => ({
+  contract: "timeline",
+  signature: "Timeline",
+  attrs: { "aria-label": t("demo.timeline.label") },
+  children: [
+    timelineEvent(t("demo.timeline.dd.delivered"), undefined, "success"),
+    timelineEvent(t("demo.timeline.dd.shipped"), undefined),
+    timelineEvent(t("demo.timeline.dd.ordered"), undefined),
+  ],
+});
+
+/* Don't: every event in a tone, so none of them stands out. */
+export const timelineDontToneTree = (t: Translate): UsageTree => ({
+  contract: "timeline",
+  signature: "Timeline",
+  attrs: { "aria-label": t("demo.timeline.label") },
+  children: [
+    timelineEvent(t("demo.timeline.dd.delivered"), t("demo.timeline.dd.time3"), "success"),
+    timelineEvent(t("demo.timeline.dd.shipped"), t("demo.timeline.dd.time2"), "accent"),
+    timelineEvent(t("demo.timeline.dd.ordered"), t("demo.timeline.dd.time1"), "warning"),
+  ],
+});

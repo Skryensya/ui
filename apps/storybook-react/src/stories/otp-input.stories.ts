@@ -3,6 +3,8 @@
 import "@skryensya/core/components/annotation.css";
 import "@skryensya/core/components/button.css";
 import "@skryensya/core/components/canvas.css";
+import "@skryensya/core/components/form-field.css";
+import "@skryensya/core/components/input.css";
 import "@skryensya/core/components/otp-input.css";
 import "@skryensya/core/patterns/layout.css";
 import * as demos from "@docs/demos/otp-input";
@@ -16,3 +18,7 @@ export const Sms: StoryObj = treeStory(demos.otpInputSmsTree);
 export const Alphanumeric: StoryObj = treeStory(demos.otpInputAlphanumericTree);
 export const Pin: StoryObj = treeStory(demos.otpInputPinTree);
 export const States: StoryObj = treeStory(demos.otpInputStatesTree);
+export const Single: StoryObj = treeStory(demos.otpInputSingleTree);
+export const DontNoHint: StoryObj = treeStory(demos.otpInputDontNoHintTree);
+export const DontLong: StoryObj = treeStory(demos.otpInputDontLongTree);
+export const DoLong: StoryObj = treeStory(demos.otpInputDoLongTree);

@@ -112,3 +112,18 @@ export const ratingAnatomyTree = (t: Translate): UsageTree => ({
     ],
   },
 });
+
+/* Don't: an average with no count, so a single review reads like a thousand. */
+export const ratingDontNoCountTree = (t: Translate): UsageTree => ({
+  contract: "rating",
+  signature: "RatingDisplay",
+  options: { value: 4.3, label: t("demo.rating.displayLabel") },
+  slots: { valueText: "4,3" },
+});
+
+/* Don't: an average drawn with the input, which invites a click that changes nothing it should. */
+export const ratingDontInputAverageTree = (t: Translate): UsageTree => ({
+  contract: "rating",
+  signature: "Rating",
+  options: { label: t("demo.rating.displayLabel"), name: "average", defaultValue: 4 },
+});

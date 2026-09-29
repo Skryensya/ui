@@ -89,3 +89,48 @@ export const passwordInputStatesTree = (t: Translate): UsageTree => ({
     },
   ],
 });
+
+/* One field, the specimen the `appearance` and `disabled` previews vary. */
+export const passwordInputSingleTree = (t: Translate): UsageTree => ({
+  contract: "password-input",
+  signature: "PasswordInput",
+  options: { name: "single-password", ...toggleLabels(t) },
+  attrs: { style: "inline-size: min(100%, 20rem)" },
+  slots: { label: t("passwordInput.signInLabel") },
+});
+
+/* Don't: the rule a new password must meet, left out until it fails. */
+export const passwordInputDontNoHintTree = (t: Translate): UsageTree => ({
+  contract: "password-input",
+  signature: "PasswordInput",
+  options: { name: "new-password-nohint", autoComplete: "new-password", required: true, ...toggleLabels(t) },
+  attrs: { style: "inline-size: 18rem" },
+  slots: { label: t("passwordInput.signUpLabel") },
+});
+
+export const passwordInputDoHintTree = (t: Translate): UsageTree => ({
+  ...passwordInputSignUpTree(t),
+  attrs: { style: "inline-size: 18rem" },
+});
+
+/* Don't: a second field to type it again, where the toggle already lets people check it. */
+export const passwordInputDontRepeatTree = (t: Translate): UsageTree => ({
+  contract: "layout",
+  signature: "Stack",
+  options: { gap: "md" },
+  attrs: { style: "inline-size: 18rem" },
+  children: [
+    {
+      contract: "password-input",
+      signature: "PasswordInput",
+      options: { name: "new-password-a", autoComplete: "new-password", ...toggleLabels(t) },
+      slots: { label: t("passwordInput.signUpLabel") },
+    },
+    {
+      contract: "password-input",
+      signature: "PasswordInput",
+      options: { name: "new-password-b", autoComplete: "new-password", ...toggleLabels(t) },
+      slots: { label: t("passwordInput.dd.repeatLabel") },
+    },
+  ],
+});

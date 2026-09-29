@@ -16,3 +16,5 @@ export const Display: StoryObj = treeStory(demos.ratingDisplayTree);
 export const Input: StoryObj = treeStory(demos.ratingInputTree);
 export const Fractions: StoryObj = treeStory(demos.ratingFractionsTree);
 export const Sizes: StoryObj = treeStory(demos.ratingSizesTree);
+export const DontNoCount: StoryObj = treeStory(demos.ratingDontNoCountTree);
+export const DontInputAverage: StoryObj = treeStory(demos.ratingDontInputAverageTree);

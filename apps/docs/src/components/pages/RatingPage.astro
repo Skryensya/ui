@@ -5,9 +5,13 @@ import "@skryensya/core/components/annotation.css";
 import ComponentPageShell from "./ComponentPageShell.astro";
 import CodeBlock from "../CodeBlock.astro";
 import ComponentPreview from "../ComponentPreview.astro";
+import UsagePreview from "../UsagePreview.astro";
+import DoDont from "../DoDont.astro";
 import {
   ratingAnatomyTree,
   ratingDisplayTree,
+  ratingDontInputAverageTree,
+  ratingDontNoCountTree,
   ratingFractionsTree,
   ratingInputTree,
   ratingSizesTree,
@@ -22,6 +26,10 @@ const symbolSwap = `/* The symbol is a mask, so a heart is one declaration. */
 .reviews {
   --sk-rating-symbol: url("data:image/svg+xml,%3Csvg …heart… %3E");
 }`;
+
+/* What each value of a property is for, read from this page's messages. Same model Badge uses. */
+const explain = (option: string, values: readonly string[]) =>
+  Object.fromEntries(values.map((value) => [value, t(`ratingPage.prop.${option}.${value}` as Parameters<typeof t>[0])]));
 ---
 
 <ComponentPageShell
@@ -35,7 +43,52 @@ const symbolSwap = `/* The symbol is a mask, so a heart is one declaration. */
     "packages/vanilla/src/components/rating.test.ts",
   ]}
 >
-  <Fragment slot="anatomy">
+  <Fragment slot="usage">
+    <p class="lede" set:html={t("ratingPage.lede")} />
+
+    <UsagePreview
+      tree={ratingDisplayTree(t)}
+      optionName="symbolSize"
+      title={t("ratingPage.prop.symbolSize.title")}
+      description={t("ratingPage.prop.symbolSize.body")}
+      explain={explain("symbolSize", ["sm", "md", "lg"])}
+      stageMinBlockSize="7rem"
+      labels={{ sm: "sm", md: "md", lg: "lg" }}
+    />
+
+    <UsagePreview
+      tree={ratingInputTree(t)}
+      optionName="disabled"
+      title={t("ratingPage.prop.disabled.title")}
+      description={t("ratingPage.prop.disabled.body")}
+      explain={explain("disabled", ["false", "true"])}
+      stageMinBlockSize="7rem"
+      labels={{ false: t("ratingPage.prop.disabled.falseLabel"), true: t("ratingPage.prop.disabled.trueLabel") }}
+    />
+
+    <h3>{t("ratingPage.showcaseTitle")}</h3>
+    <p set:html={t("ratingPage.showcaseBody")} />
+    <UsagePreview tree={ratingDisplayTree(t)} />
+
+    <h3>{t("ratingPage.inputTitle")}</h3>
+    <p set:html={t("ratingPage.inputBody")} />
+    <UsagePreview tree={ratingInputTree(t)} />
+
+    <h3>{t("ratingPage.fractionTitle")}</h3>
+    <p set:html={t("ratingPage.fractionBody")} />
+    <UsagePreview tree={ratingFractionsTree(t)} />
+    <p set:html={t("ratingPage.asymmetryBody")} />
+    <h3>{t("ratingPage.symbolTitle")}</h3>
+    <p set:html={t("ratingPage.symbolBody")} />
+    <CodeBlock code={symbolSwap} label="CSS" />
+
+    <h3>{t("ratingPage.sizeTitle")}</h3>
+    <p set:html={t("ratingPage.sizeBody")} />
+    <UsagePreview tree={ratingSizesTree(t)} />
+
+    <p set:html={t("component.reactNote")} />
+
+    <h3>{t("component.anatomy")}</h3>
     <p set:html={t("ratingPage.anatomyBody")} />
     <ComponentPreview
       tree={ratingAnatomyTree(t)}
@@ -47,27 +100,18 @@ const symbolSwap = `/* The symbol is a mask, so a heart is one declaration. */
     />
   </Fragment>
 
-  <Fragment slot="usage">
-    <p class="lede" set:html={t("ratingPage.lede")} />
-    <ComponentPreview tree={ratingDisplayTree(t)} label="RatingDisplay" />
-
-    <h3>{t("ratingPage.inputTitle")}</h3>
-    <p set:html={t("ratingPage.inputBody")} />
-    <ComponentPreview tree={ratingInputTree(t)} label="Rating" />
-
-    <h3>{t("ratingPage.fractionTitle")}</h3>
-    <p set:html={t("ratingPage.fractionBody")} />
-    <ComponentPreview tree={ratingFractionsTree(t)} label={t("ratingPage.fractionPreviewLabel")} />
-    <p set:html={t("ratingPage.asymmetryBody")} />
-    <h3>{t("ratingPage.symbolTitle")}</h3>
-    <p set:html={t("ratingPage.symbolBody")} />
-    <CodeBlock code={symbolSwap} label="CSS" />
-
-    <h3>{t("ratingPage.sizeTitle")}</h3>
-    <p set:html={t("ratingPage.sizeBody")} />
-    <ComponentPreview tree={ratingSizesTree(t)} label={t("ratingPage.sizePreviewLabel")} />
-
-    <p set:html={t("component.reactNote")} />
+  <Fragment slot="guidelines">
+    <p class="lede" set:html={t("ratingPage.guidelinesLede")} />
+    <DoDont
+      title={t("ratingPage.dd.count.title")}
+      do={{ tree: ratingDisplayTree(t), caption: t("ratingPage.dd.count.do") }}
+      dont={{ tree: ratingDontNoCountTree(t), caption: t("ratingPage.dd.count.dont") }}
+    />
+    <DoDont
+      title={t("ratingPage.dd.display.title")}
+      do={{ tree: ratingDisplayTree(t), caption: t("ratingPage.dd.display.do") }}
+      dont={{ tree: ratingDontInputAverageTree(t), caption: t("ratingPage.dd.display.dont") }}
+    />
   </Fragment>
 
   <Fragment slot="install">

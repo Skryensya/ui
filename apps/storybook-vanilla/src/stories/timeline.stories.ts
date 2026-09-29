@@ -15,3 +15,6 @@ export default { title: "Components/Content/Timeline", tags: ["autodocs"] } sati
 export const Anatomy: StoryObj = treeStory(demos.timelineAnatomyTree, { decorators: [withCss(annotationDemoCss)] });
 export const Default: StoryObj = treeStory(demos.timelineTree);
 export const Tones: StoryObj = treeStory(demos.timelineTonesTree);
+export const DoTime: StoryObj = treeStory(demos.timelineDoTimeTree);
+export const DontTime: StoryObj = treeStory(demos.timelineDontTimeTree);
+export const DontTone: StoryObj = treeStory(demos.timelineDontToneTree);

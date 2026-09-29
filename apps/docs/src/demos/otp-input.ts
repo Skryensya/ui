@@ -78,3 +78,35 @@ export const otpInputStatesTree = (t: Translate): UsageTree => ({
     },
   ],
 });
+
+/* One code, the specimen the `mask` and `invalid` previews vary: filled, so masking shows. */
+export const otpInputSingleTree = (t: Translate): UsageTree => ({
+  contract: "otp-input",
+  signature: "OtpInput",
+  options: { name: "single-code", defaultValue: "482913", ...segmentLabel(t) },
+  slots: { label: t("otpInput.smsLabel") },
+});
+
+/* Don't: a code with nothing saying where it was sent. */
+export const otpInputDontNoHintTree = (t: Translate): UsageTree => ({
+  contract: "otp-input",
+  signature: "OtpInput",
+  options: { name: "sms-code-nohint", ...segmentLabel(t) },
+  slots: { label: t("otpInput.smsLabel") },
+});
+
+/* Don't: a long key cut into sixteen boxes. */
+export const otpInputDontLongTree = (t: Translate): UsageTree => ({
+  contract: "otp-input",
+  signature: "OtpInput",
+  options: { name: "license-key", type: "alphanumeric", otp: false, count: 16, ...segmentLabel(t) },
+  slots: { label: t("otpInput.dd.licenseLabel") },
+});
+
+export const otpInputDoLongTree = (t: Translate): UsageTree => ({
+  contract: "form-field",
+  signature: "FormField",
+  slots: { label: t("otpInput.dd.licenseLabel") },
+  children: { contract: "input", signature: "Input", options: { name: "license-key-input", placeholder: "XXXX-XXXX-XXXX-XXXX" } },
+  attrs: { style: "inline-size: 16rem" },
+});

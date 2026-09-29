@@ -85,3 +85,25 @@ export const quoteTestimonialTree = (t: Translate): UsageTree => ({
     },
   ],
 });
+
+/* Don't: a pull quote a paragraph long. */
+export const quoteDontLongPullTree = (t: Translate): UsageTree => ({
+  contract: "quote",
+  signature: "Quote",
+  options: { variant: "pull" },
+  slots: { children: t("demo.quote.dd.long"), attribution: t("demo.quote.pull.attribution") },
+});
+
+/* Don't: the quotation mark lent to a reminder nobody said. */
+export const quoteDontNoticeTree = (t: Translate): UsageTree => ({
+  contract: "quote",
+  signature: "Quote",
+  slots: { children: t("demo.quote.dd.notice") },
+});
+
+export const quoteDoNoticeTree = (t: Translate): UsageTree => ({
+  contract: "callout",
+  signature: "Callout",
+  options: { tone: "info" },
+  children: t("demo.quote.dd.notice"),
+});
