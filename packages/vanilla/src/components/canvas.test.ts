@@ -1,4 +1,4 @@
-import { canvasAttrs, canvasParts } from "@skryensya/core/canvas";
+import { CANVAS_ZOOM_STEP, canvasAttrs, canvasParts } from "@skryensya/core/canvas";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import { connectCanvas } from "./canvas.js";
 
@@ -73,6 +73,10 @@ const partsOf = (root: HTMLElement) => ({
 });
 
 /** A touch event carrying the given finger positions, which jsdom cannot construct natively. */
+/* One zoom step up from the fitted 50%, as the level reads it: derived, so a retuned step does not
+   leave this file asserting the old one. */
+const oneStepIn = `${Math.round(0.5 * CANVAS_ZOOM_STEP * 100)}%`;
+
 const touch = (type: string, points: readonly [number, number][]): Event => {
   const event = new Event(type, { bubbles: true, cancelable: true });
   const touches = points.map(([clientX, clientY]) => ({ clientX, clientY }));
@@ -101,7 +105,7 @@ describe("connectCanvas", () => {
     const { level, button } = partsOf(root);
 
     button("zoom-in").click();
-    expect(level.textContent).toBe("63%");
+    expect(level.textContent).toBe(oneStepIn);
     expect(root.hasAttribute(canvasAttrs.zoomed)).toBe(true);
 
     button("fit").click();
@@ -174,7 +178,7 @@ describe("connectCanvas", () => {
     };
 
     key({ key: "+" });
-    expect(level.textContent).toBe("63%");
+    expect(level.textContent).toBe(oneStepIn);
     key({ key: "0" });
     expect(level.textContent).toBe("50%");
 
