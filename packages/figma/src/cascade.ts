@@ -149,6 +149,10 @@ function expand(decls: readonly (readonly [string, string])[]): (readonly [strin
         out.push(["flex-grow", grow]);
         break;
       }
+      case "gap":
+        // `gap: row column`, or one value for both.
+        out.push(["gap", value], ["row-gap", parts[0]], ["column-gap", parts[1] ?? parts[0]]);
+        break;
       case "place-items":
         out.push(["align-items", parts[0]], ["justify-items", parts[1] ?? parts[0]]);
         break;
