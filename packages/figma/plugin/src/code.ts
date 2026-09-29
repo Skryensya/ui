@@ -846,6 +846,8 @@ async function applyCell(ctx: SetCtx, node: ComponentNode, cell: M.Cell, sample:
     setNumber(ctx, node, "width", box.width);
     setNumber(ctx, node, "height", box.height);
     node.strokeAlign = "INSIDE";
+    // `box-sizing: border-box`: the border takes room in the layout, as it does in the browser.
+    node.strokesIncludedInLayout = true;
     setNumber(ctx, node, "strokeWeight", box.strokeWeight, 0);
     node.clipsContent = box.clipsContent;
   }
@@ -1065,7 +1067,10 @@ async function measureFirst(ctx: Ctx, spec: M.ComponentSet, set: ComponentSetNod
       probe.remove();
     });
   }
-  return { w: Math.ceil(Number(valueOf(box.padding.left)) + textW + Number(valueOf(box.padding.right))), h: cellH };
+  // The border counts too: a cell lays its stroke out like CSS's border-box does.
+  const stroked = manifest.styles.surfaces[first.surface].strokes.length > 0 && box.strokeWeight;
+  const border = stroked ? 2 * Number(valueOf(box.strokeWeight!)) : 0;
+  return { w: Math.ceil(Number(valueOf(box.padding.left)) + textW + Number(valueOf(box.padding.right)) + border), h: cellH };
 }
 
 /** Each showcase column's width: the first variant with that slot's icon and the gap before it. */
