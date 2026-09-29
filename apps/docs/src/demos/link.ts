@@ -5,6 +5,13 @@ import { anatomyCanvas, anatomyHints, namePart } from "./annotation-parts";
 
 /* Link demos shared by both locales. Locale-owned hrefs come from the pages. */
 
+export const linkSingleTree = (t: Translate, href: string = PLACEHOLDER_HREF): UsageTree => ({
+  contract: "typography",
+  signature: "Link",
+  options: { href },
+  children: t("demo.link.neutral"),
+});
+
 /** Two links in a paragraph: underline always, tone optional. */
 export const linkTree = (t: Translate, href: string = PLACEHOLDER_HREF): UsageTree => ({
   contract: "typography",

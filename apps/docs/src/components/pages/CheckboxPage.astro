@@ -11,11 +11,15 @@ import ComponentPageShell from "./ComponentPageShell.astro";
 import AppearanceMenu from "../AppearanceMenu.astro";
 import CodeBlock from "../CodeBlock.astro";
 import ComponentPreview from "../ComponentPreview.astro";
+import UsagePreview from "../UsagePreview.astro";
+import DoDont from "../DoDont.astro";
 import { checkboxAnatomyTree, checkboxGroupTree, checkboxScaleTree, checkboxTree, tileCheckboxTree } from "../../demos/checkbox";
 import { annotationDemoCss } from "../../demos/annotation";
 import { getLocale, useTranslations } from "../../i18n";
 
 const t = useTranslations(getLocale(Astro.url));
+const explain = (option: string, values: readonly string[]) =>
+  Object.fromEntries(values.map((value) => [value, t(`checkbox.prop.${option}.${value}` as Parameters<typeof t>[0])]));
 
 const tileCheckboxVanilla = `import { initComponents } from "@skryensya/vanilla/auto";
 import { mountIcons } from "@skryensya/vanilla/icon";
@@ -50,40 +54,58 @@ for (const root of document.querySelectorAll(
     <AppearanceMenu label={t("prefs.appearance")} />
   </Fragment>
 
-  <Fragment slot="anatomy">
-    <p set:html={t("checkbox.anatomyBody")} />
-    <ComponentPreview
-      tree={checkboxAnatomyTree(t)}
-      css={annotationDemoCss}
-      label={t("checkbox.anatomyPreviewLabel")}
-      screens={false}
-      hideSource
-      chrome={false}
-    />
-  </Fragment>
-
   <Fragment slot="usage">
     <p class="lede" set:html={t("checkbox.lede")} />
-    <ComponentPreview tree={checkboxTree(t)} label="Checkbox" />
-    <p set:html={t("checkbox.body")} />
 
-    <h3>{t("checkbox.groupTitle")}</h3>
-    <p set:html={t("checkbox.groupBody1")} />
-    <ComponentPreview
-      tree={checkboxGroupTree(t)}
-      label="CheckboxGroup"
-      note={t("checkbox.groupNote")}
+    <UsagePreview
+      tree={checkboxTree(t)}
+      optionName="defaultChecked"
+      title={t("checkbox.prop.defaultChecked.title")}
+      description={t("checkbox.prop.defaultChecked.body")}
+      explain={explain("defaultChecked", ["false", "true"])}
+      labels={{ false: t("checkbox.prop.defaultChecked.falseLabel"), true: t("checkbox.prop.defaultChecked.trueLabel") }}
+      stageMinBlockSize="7rem"
     />
+
+    <UsagePreview
+      tree={checkboxTree(t)}
+      optionName="defaultIndeterminate"
+      title={t("checkbox.prop.defaultIndeterminate.title")}
+      description={t("checkbox.prop.defaultIndeterminate.body")}
+      explain={explain("defaultIndeterminate", ["false", "true"])}
+      labels={{ false: t("checkbox.prop.defaultIndeterminate.falseLabel"), true: t("checkbox.prop.defaultIndeterminate.trueLabel") }}
+      stageMinBlockSize="7rem"
+    />
+
+    <UsagePreview
+      tree={checkboxTree(t)}
+      optionName="disabled"
+      title={t("checkbox.prop.disabled.title")}
+      description={t("checkbox.prop.disabled.body")}
+      explain={explain("disabled", ["false", "true"])}
+      labels={{ false: t("checkbox.prop.disabled.falseLabel"), true: t("checkbox.prop.disabled.trueLabel") }}
+      stageMinBlockSize="7rem"
+    />
+
+    <UsagePreview
+      tree={checkboxTree(t)}
+      optionName="appearance"
+      title={t("checkbox.prop.appearance.title")}
+      description={t("checkbox.prop.appearance.body")}
+      explain={explain("appearance", ["plain", "tactile", "brutalist", "frosted"])}
+      stageMinBlockSize="7rem"
+    />
+
+    <h3>{t("checkbox.showcaseTitle")}</h3>
+    <p set:html={t("checkbox.showcaseBody")} />
+    <UsagePreview tree={checkboxTree(t)} title="Checkbox" description={t("checkbox.body")} />
+    <UsagePreview tree={checkboxGroupTree(t)} title={t("checkbox.groupTitle")} description={t("checkbox.groupBody1")} caption={t("checkbox.groupNote")} />
     <p set:html={t("checkbox.groupBody2")} />
     <p set:html={t("checkbox.groupBody3")} />
 
-    <h3>{t("checkbox.tileTitle")}</h3>
-    <p set:html={t("checkbox.tileBody1")} />
-    <ComponentPreview tree={tileCheckboxTree(t)} label="TileCheckbox" />
+    <UsagePreview tree={tileCheckboxTree(t)} title={t("checkbox.tileTitle")} description={t("checkbox.tileBody1")} />
 
-    <h3>{t("checkboxPage.scaleTitle")}</h3>
-    <p set:html={t("checkboxPage.scaleBody")} />
-    <ComponentPreview tree={checkboxScaleTree(t)} label={t("checkboxPage.scaleLabel")} />
+    <UsagePreview tree={checkboxScaleTree(t)} title={t("checkboxPage.scaleTitle")} description={t("checkboxPage.scaleBody")} caption={t("checkboxPage.scaleLabel")} />
     <p set:html={t("checkbox.tileBody2")} />
     <CodeBlock code={tileCheckboxVanilla} label="JavaScript" />
 
@@ -99,5 +121,30 @@ for (const root of document.querySelectorAll(
       <li set:html={t("checkbox.contractItem6")} />
       <li set:html={t("checkbox.contractItem7")} />
     </ul>
+
+    <h3>{t("component.anatomy")}</h3>
+    <p set:html={t("checkbox.anatomyBody")} />
+    <ComponentPreview
+      tree={checkboxAnatomyTree(t)}
+      css={annotationDemoCss}
+      label={t("checkbox.anatomyPreviewLabel")}
+      screens={false}
+      hideSource
+      chrome={false}
+    />
+  </Fragment>
+
+  <Fragment slot="guidelines">
+    <p class="lede" set:html={t("checkbox.guidelinesLede")} />
+    <DoDont
+      title={t("checkbox.dd.independent.title")}
+      do={{ tree: checkboxGroupTree(t), caption: t("checkbox.dd.independent.do") }}
+      dont={{ tree: checkboxScaleTree(t), caption: t("checkbox.dd.independent.dont") }}
+    />
+    <DoDont
+      title={t("checkbox.dd.surface.title")}
+      do={{ tree: tileCheckboxTree(t), caption: t("checkbox.dd.surface.do") }}
+      dont={{ tree: checkboxTree(t), caption: t("checkbox.dd.surface.dont") }}
+    />
   </Fragment>
 </ComponentPageShell>

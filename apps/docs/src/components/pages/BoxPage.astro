@@ -5,8 +5,10 @@ import { annotationDemoCss } from "../../demos/annotation";
 import { boxAnatomyTree } from "../../demos/layout-anatomy";
 import ComponentPageShell from "./ComponentPageShell.astro";
 import ComponentPreview from "../ComponentPreview.astro";
+import UsagePreview from "../UsagePreview.astro";
+import DoDont from "../DoDont.astro";
 import AppearanceMenu from "../AppearanceMenu.astro";
-import { boxAppearanceTree, boxTree } from "../../demos/layout";
+import { boxControlsTree, boxSurfacesTree, boxTree } from "../../demos/layout";
 import { getLocale, useTranslations } from "../../i18n";
 /* The sheet itself, not only its source: the Style hooks table resolves each hook
    against a real element, and a page that never loads `patterns/box.css` would show every
@@ -14,6 +16,8 @@ import { getLocale, useTranslations } from "../../i18n";
 import "@skryensya/core/patterns/box.css";
 
 const t = useTranslations(getLocale(Astro.url));
+const explain = (option: string, values: readonly string[]) =>
+  Object.fromEntries(values.map((value) => [value, t(`box.prop.${option}.${value}` as Parameters<typeof t>[0])]));
 ---
 
 <ComponentPageShell
@@ -42,7 +46,64 @@ const t = useTranslations(getLocale(Astro.url));
     />
   </Fragment>
 
-  <Fragment slot="anatomy">
+  <Fragment slot="usage">
+    <p class="lede" set:html={t("box.lede")} />
+
+    <UsagePreview
+      tree={boxTree(t)}
+      optionName="surface"
+      title={t("box.prop.surface.title")}
+      description={t("box.prop.surface.body")}
+      explain={explain("surface", ["none", "sunken", "surface", "raised"])}
+      stageMinBlockSize="11rem"
+    />
+
+    <UsagePreview
+      tree={boxTree(t)}
+      optionName="border"
+      title={t("box.prop.border.title")}
+      description={t("box.prop.border.body")}
+      explain={explain("border", ["none", "subtle", "default"])}
+      stageMinBlockSize="11rem"
+    />
+
+    <UsagePreview
+      tree={boxTree(t)}
+      optionName="padding"
+      title={t("box.prop.padding.title")}
+      description={t("box.prop.padding.body")}
+      explain={explain("padding", ["none", "xs", "sm", "md", "lg", "xl"])}
+      labels={{ none: t("box.prop.padding.noneLabel"), xs: "xs", sm: "sm", md: "md", lg: "lg", xl: "xl" }}
+      stageMinBlockSize="13rem"
+    />
+
+    <UsagePreview
+      tree={boxTree(t)}
+      optionName="appearance"
+      title={t("box.prop.appearance.title")}
+      description={t("box.prop.appearance.body")}
+      explain={explain("appearance", ["plain", "brutalist", "frosted"])}
+      stageMinBlockSize="14rem"
+    />
+
+    <h3>{t("box.showcaseTitle")}</h3>
+    <p set:html={t("box.showcaseBody")} />
+    <UsagePreview tree={boxTree(t)} title={t("box.htmlTitle")} description={t("box.htmlBody")} />
+    <UsagePreview tree={boxSurfacesTree(t)} title={t("box.surfacesTitle")} description={t("box.surfacesBody")} />
+    <UsagePreview tree={boxControlsTree(t)} title={t("box.controlsTitle")} description={t("box.controlsBody")} />
+
+    <p set:html={t("component.reactNote")} />
+
+    <h3>{t("component.contractNotesTitle")}</h3>
+    <ul>
+      <li set:html={t("box.contractItem1")} />
+      <li set:html={t("box.contractItem2")} />
+      <li set:html={t("box.contractItem3")} />
+      <li set:html={t("box.contractItem4")} />
+      <li set:html={t("box.contractItem5")} />
+    </ul>
+
+    <h3>{t("component.anatomy")}</h3>
     <p set:html={t("box.anatomyBody")} />
     <ComponentPreview
       tree={boxAnatomyTree(t)}
@@ -54,28 +115,17 @@ const t = useTranslations(getLocale(Astro.url));
     />
   </Fragment>
 
-  <Fragment slot="usage">
-    <p class="lede" set:html={t("box.lede")} />
-    <h3>{t("box.whenTitle")}</h3>
-    <p set:html={t("box.whenBody1")} />
-    <p set:html={t("box.whenBody2")} />
-    <p set:html={t("box.whenBody3")} />
-
-    <h3>{t("box.htmlTitle")}</h3>
-    <ComponentPreview tree={boxTree(t)} label="Box" />
-    <p set:html={t("component.reactNote")} />
-
-    <h3>{t("box.appearanceTitle")}</h3>
-    <p set:html={t("box.appearanceBody")} />
-    <ComponentPreview tree={boxAppearanceTree(t)} label={t("box.appearanceLabel")} />
-
-    <h3>{t("component.contractNotesTitle")}</h3>
-    <ul>
-      <li set:html={t("box.contractItem1")} />
-      <li set:html={t("box.contractItem2")} />
-      <li set:html={t("box.contractItem3")} />
-      <li set:html={t("box.contractItem4")} />
-      <li set:html={t("box.contractItem5")} />
-    </ul>
+  <Fragment slot="guidelines">
+    <p class="lede" set:html={t("box.guidelinesLede")} />
+    <DoDont
+      title={t("box.dd.controls.title")}
+      do={{ tree: boxControlsTree(t), caption: t("box.dd.controls.do") }}
+      dont={{ tree: boxTree(t), caption: t("box.dd.controls.dont") }}
+    />
+    <DoDont
+      title={t("box.dd.surface.title")}
+      do={{ tree: boxSurfacesTree(t), caption: t("box.dd.surface.do") }}
+      dont={{ tree: { ...boxTree(t), options: { padding: "lg" } }, caption: t("box.dd.surface.dont") }}
+    />
   </Fragment>
 </ComponentPageShell>

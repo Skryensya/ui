@@ -55,7 +55,7 @@
   flex-wrap: wrap;
   align-items: center;
   justify-content: center;
-  min-block-size: 7rem;
+  min-block-size: var(--sk-preview-card-stage-min-block-size, 7rem);
   padding-block: var(--space-stack-sm);
 }
 

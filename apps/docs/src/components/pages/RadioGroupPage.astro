@@ -13,11 +13,15 @@ import ComponentPageShell from "./ComponentPageShell.astro";
 import AppearanceMenu from "../AppearanceMenu.astro";
 import CodeBlock from "../CodeBlock.astro";
 import ComponentPreview from "../ComponentPreview.astro";
+import UsagePreview from "../UsagePreview.astro";
+import DoDont from "../DoDont.astro";
 import { radioGroupAnatomyTree, radioGroupLikertTree, radioGroupMatrixTree, radioGroupTree, tileRadioGroupTree } from "../../demos/radio-group";
 import { annotationDemoCss } from "../../demos/annotation";
 import { getLocale, useTranslations } from "../../i18n";
 
 const t = useTranslations(getLocale(Astro.url));
+const explain = (option: string, values: readonly string[]) =>
+  Object.fromEntries(values.map((value) => [value, t(`radioGroupPage.prop.${option}.${value}` as Parameters<typeof t>[0])]));
 
 const tileRadioGroupVanilla = `import { initComponents } from "@skryensya/vanilla/auto";
 
@@ -44,33 +48,43 @@ root.addEventListener("sk:tilevaluechange", (event) => {
     <AppearanceMenu label={t("prefs.appearance")} />
   </Fragment>
 
-  <Fragment slot="anatomy">
-    <p set:html={t("radioGroupPage.anatomyBody")} />
-    <ComponentPreview
-      tree={radioGroupAnatomyTree(t)}
-      css={annotationDemoCss}
-      label={t("radioGroupPage.anatomyPreviewLabel")}
-      screens={false}
-      hideSource
-      chrome={false}
-    />
-  </Fragment>
-
   <Fragment slot="usage">
     <p class="lede" set:html={t("radioGroupPage.lede")} />
-    <ComponentPreview tree={radioGroupTree(t)} label="RadioGroup" />
 
-    <h3>{t("radioGroupPage.likertTitle")}</h3>
-    <p set:html={t("radioGroupPage.likertBody")} />
-    <ComponentPreview tree={radioGroupLikertTree(t)} label={t("radioGroupPage.likertLabel")} />
+    <UsagePreview
+      tree={radioGroupTree(t)}
+      optionName="orientation"
+      title={t("radioGroupPage.prop.orientation.title")}
+      description={t("radioGroupPage.prop.orientation.body")}
+      explain={explain("orientation", ["vertical", "horizontal"])}
+      stageMinBlockSize="11rem"
+    />
 
-    <h3>{t("radioGroupPage.matrixTitle")}</h3>
-    <p set:html={t("radioGroupPage.matrixTable")} />
-    <ComponentPreview tree={radioGroupMatrixTree(t)} label={t("radioGroupPage.matrixLabel")} />
+    <UsagePreview
+      tree={radioGroupTree(t)}
+      optionName="spread"
+      title={t("radioGroupPage.prop.spread.title")}
+      description={t("radioGroupPage.prop.spread.body")}
+      explain={explain("spread", ["false", "true"])}
+      labels={{ false: t("radioGroupPage.prop.spread.falseLabel"), true: t("radioGroupPage.prop.spread.trueLabel") }}
+      stageMinBlockSize="11rem"
+    />
 
-    <h3>{t("radioGroupPage.tileTitle")}</h3>
-    <p set:html={t("radioGroupPage.tileBody1")} />
-    <ComponentPreview tree={tileRadioGroupTree(t)} label="TileRadioGroup" />
+    <UsagePreview
+      tree={radioGroupTree(t)}
+      optionName="appearance"
+      title={t("radioGroupPage.prop.appearance.title")}
+      description={t("radioGroupPage.prop.appearance.body")}
+      explain={explain("appearance", ["plain", "tactile", "brutalist", "frosted"])}
+      stageMinBlockSize="11rem"
+    />
+
+    <h3>{t("radioGroupPage.showcaseTitle")}</h3>
+    <p set:html={t("radioGroupPage.showcaseBody")} />
+    <UsagePreview tree={radioGroupTree(t)} title="RadioGroup" description={t("radioGroupPage.basicBody")} />
+    <UsagePreview tree={radioGroupLikertTree(t)} title={t("radioGroupPage.likertTitle")} description={t("radioGroupPage.likertBody")} caption={t("radioGroupPage.likertLabel")} />
+    <UsagePreview tree={radioGroupMatrixTree(t)} title={t("radioGroupPage.matrixTitle")} description={t("radioGroupPage.matrixTable")} caption={t("radioGroupPage.matrixLabel")} />
+    <UsagePreview tree={tileRadioGroupTree(t)} title={t("radioGroupPage.tileTitle")} description={t("radioGroupPage.tileBody1")} />
     <p set:html={t("radioGroupPage.tileBody2")} />
     <p set:html={t("radioGroupPage.tileBody3")} />
     <CodeBlock code={tileRadioGroupVanilla} label="JavaScript" />
@@ -85,5 +99,30 @@ root.addEventListener("sk:tilevaluechange", (event) => {
       <li set:html={t("radioGroupPage.contractItem3")} />
       <li set:html={t("radioGroupPage.contractItem4")} />
     </ul>
+
+    <h3>{t("component.anatomy")}</h3>
+    <p set:html={t("radioGroupPage.anatomyBody")} />
+    <ComponentPreview
+      tree={radioGroupAnatomyTree(t)}
+      css={annotationDemoCss}
+      label={t("radioGroupPage.anatomyPreviewLabel")}
+      screens={false}
+      hideSource
+      chrome={false}
+    />
+  </Fragment>
+
+  <Fragment slot="guidelines">
+    <p class="lede" set:html={t("radioGroupPage.guidelinesLede")} />
+    <DoDont
+      title={t("radioGroupPage.dd.exclusive.title")}
+      do={{ tree: radioGroupTree(t), caption: t("radioGroupPage.dd.exclusive.do") }}
+      dont={{ tree: radioGroupLikertTree(t), caption: t("radioGroupPage.dd.exclusive.dont") }}
+    />
+    <DoDont
+      title={t("radioGroupPage.dd.surface.title")}
+      do={{ tree: tileRadioGroupTree(t), caption: t("radioGroupPage.dd.surface.do") }}
+      dont={{ tree: radioGroupMatrixTree(t), caption: t("radioGroupPage.dd.surface.dont") }}
+    />
   </Fragment>
 </ComponentPageShell>

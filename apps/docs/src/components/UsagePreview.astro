@@ -38,12 +38,14 @@ interface Props {
   explain?: Record<string, string>;
   /** A segment's label per value. Absent, the value itself, capitalized ("neutral" -> "Neutral"). */
   labels?: Record<string, string>;
+  /** Reserve vertical room for examples whose live values have different heights, avoiding CLS. */
+  stageMinBlockSize?: string;
   /** Same pair `ComponentPreview` takes (`lib/navigation.ts`). Omit either and no code link renders. */
   storybookTitle?: string;
   storybookStory?: string;
 }
 
-const { tree, optionName, title, description, caption, explain, labels, storybookTitle, storybookStory } = Astro.props;
+const { tree, optionName, title, description, caption, explain, labels, stageMinBlockSize, storybookTitle, storybookStory } = Astro.props;
 const t = useTranslations(getLocale(Astro.url));
 
 let values: readonly string[] = [];
@@ -76,7 +78,7 @@ const id = title ? `usage-${title.toLowerCase().replace(/[^a-z0-9]+/g, "-")}` : 
 <section class:list={["sk-preview-section", optionName && "sk-usage-preview--controlled"]} {...(id ? { "aria-labelledby": id } : {})}>
   {title && <h3 id={id}>{title}</h3>}
   {description && <p class="sk-preview-section__description" set:html={description} />}
-  <div class="sk-preview-card">
+  <div class="sk-preview-card" style={stageMinBlockSize ? `--sk-preview-card-stage-min-block-size: ${stageMinBlockSize};` : undefined}>
     {
       codeHref && (
         <a class="sk-preview-card__code-link" href={codeHref} rel="noreferrer" target="_blank" aria-label={`${t("preview.viewCode")} (${optionName})`}>

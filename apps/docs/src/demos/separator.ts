@@ -30,6 +30,12 @@ export const separatorAnatomyTree = (t: Translate): UsageTree => ({
   },
 });
 
+export const separatorSingleTree = (): UsageTree => ({
+  contract: "separator",
+  signature: "Separator",
+  attrs: { style: "inline-size: 12rem; block-size: 4rem;" },
+});
+
 /** THE CASE THE COMPONENT WAS BUILT FOR: a rule between two blocks about different things. */
 export const separatorTree = (t: Translate): UsageTree => ({
   contract: "layout",

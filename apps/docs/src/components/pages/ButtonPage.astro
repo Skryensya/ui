@@ -7,6 +7,8 @@ import ComponentPageShell from "./ComponentPageShell.astro";
 import AppearanceMenu from "../AppearanceMenu.astro";
 import CodeBlock from "../CodeBlock.astro";
 import ComponentPreview from "../ComponentPreview.astro";
+import UsagePreview from "../UsagePreview.astro";
+import DoDont from "../DoDont.astro";
 import {
   buttonAnatomyTree,
   buttonAppearanceTree,
@@ -33,6 +35,8 @@ import { annotationDemoCss } from "../../demos/annotation";
 import { getLocale, useTranslations } from "../../i18n";
 
 const t = useTranslations(getLocale(Astro.url));
+const explain = (option: string, values: readonly string[]) =>
+  Object.fromEntries(values.map((value) => [value, t(`button.prop.${option}.${value}` as Parameters<typeof t>[0])]));
 /* The link demo points at a real docs page, and that page's path differs per locale, which is
    what this resolves: a Spanish reader clicking the demo used to land on the English page. */
 const LINK_HREF = "https://example.com/news";
@@ -65,44 +69,77 @@ button.addEventListener("click", runDeployment);`;
     <AppearanceMenu label={t("prefs.appearance")} />
   </Fragment>
 
-  <Fragment slot="anatomy">
-    <p set:html={t("button.anatomyBody")} />
-    <ComponentPreview
-      tree={buttonAnatomyTree(t)}
-      css={annotationDemoCss}
-      label={t("button.anatomyPreviewLabel")}
-      screens={false}
-      hideSource
-      chrome={false}
-    />
-  </Fragment>
-
   <Fragment slot="usage">
     <p class="lede" set:html={t("button.lede")} />
-    <h3>{t("button.defaultTitle")}</h3>
-    <p set:html={t("button.defaultBody")} />
-    <ComponentPreview tree={buttonDefaultTree(t)} label={t("button.defaultLabel")} />
 
-    <h3>{t("button.sizesTitle")}</h3>
-    <ComponentPreview tree={buttonSizesTree(t)} label={t("button.sizesLabel")} />
+    <UsagePreview
+      tree={buttonDefaultTree(t)}
+      optionName="variant"
+      title={t("button.prop.variant.title")}
+      description={t("button.prop.variant.body")}
+      explain={explain("variant", ["solid", "soft", "ghost", "translucent"])}
+      stageMinBlockSize="8rem"
+    />
+
+    <UsagePreview
+      tree={buttonDefaultTree(t)}
+      optionName="tone"
+      title={t("button.prop.tone.title")}
+      description={t("button.prop.tone.body")}
+      explain={explain("tone", ["neutral", "accent", "danger"])}
+      stageMinBlockSize="8rem"
+    />
+
+    <UsagePreview
+      tree={buttonDefaultTree(t)}
+      optionName="size"
+      title={t("button.prop.size.title")}
+      description={t("button.prop.size.body")}
+      explain={explain("size", ["xs", "sm", "md", "lg"])}
+      stageMinBlockSize="8rem"
+    />
+
+    <UsagePreview
+      tree={buttonDefaultTree(t)}
+      optionName="appearance"
+      title={t("button.prop.appearance.title")}
+      description={t("button.prop.appearance.body")}
+      explain={explain("appearance", ["plain", "tactile", "brutalist", "frosted"])}
+      stageMinBlockSize="8rem"
+    />
+
+    <UsagePreview
+      tree={buttonDefaultTree(t)}
+      optionName="disabled"
+      title={t("button.prop.disabled.title")}
+      description={t("button.prop.disabled.body")}
+      explain={explain("disabled", ["false", "true"])}
+      labels={{ false: t("button.prop.disabled.falseLabel"), true: t("button.prop.disabled.trueLabel") }}
+      stageMinBlockSize="8rem"
+    />
+
+    <h3>{t("button.showcaseTitle")}</h3>
+    <p set:html={t("button.showcaseBody")} />
+    <UsagePreview tree={buttonDefaultTree(t)} title={t("button.defaultTitle")} description={t("button.defaultBody")} />
+    <UsagePreview tree={buttonSizesTree(t)} title={t("button.sizesTitle")} description={t("button.sizesBody")} />
     <h3>{t("button.iconTitle")}</h3>
     <p set:html={t("button.iconBody")} />
-    <ComponentPreview tree={buttonIconTree(t)} label={t("button.iconLabel")} />
+    <UsagePreview tree={buttonIconTree(t)} caption={t("button.iconLabel")} />
 
     <h3>{t("button.iconOnlyTitle")}</h3>
-    <ComponentPreview tree={buttonIconOnlyTree(t)} label={t("button.iconOnlyLabel")} />
+    <UsagePreview tree={buttonIconOnlyTree(t)} caption={t("button.iconOnlyLabel")} />
 
     <h3>{t("button.variantsTitle")}</h3>
     <p set:html={t("button.variantsBody")} />
-    <ComponentPreview tree={buttonVariantTree(t)} label={t("button.variantsLabel")} />
+    <UsagePreview tree={buttonVariantTree(t)} caption={t("button.variantsLabel")} />
 
     <h3>{t("button.destructiveTitle")}</h3>
     <p set:html={t("button.destructiveBody")} />
-    <ComponentPreview tree={buttonDestructivePairTree(t)} label={t("button.destructiveLabel")} />
+    <UsagePreview tree={buttonDestructivePairTree(t)} caption={t("button.destructiveLabel")} />
 
     <h3>{t("button.linkTitle")}</h3>
     <p set:html={t("button.linkBody")} />
-    <ComponentPreview tree={buttonAsLinkTree(t, LINK_HREF)} label={t("button.linkLabel")} />
+    <UsagePreview tree={buttonAsLinkTree(t, LINK_HREF)} caption={t("button.linkLabel")} />
 
     <h3>{t("button.appearanceTitle")}</h3>
     <p set:html={t("button.appearanceBody")} />
@@ -143,8 +180,33 @@ button.addEventListener("click", runDeployment);`;
 
     <h3>{t("button.tileTitle")}</h3>
     <p set:html={t("button.tileBody")} />
-    <ComponentPreview tree={tileButtonTree(t)} label={t("button.tileLabel")} />
+    <UsagePreview tree={tileButtonTree(t)} caption={t("button.tileLabel")} />
     <CodeBlock code={tileButtonVanilla} label="JavaScript" />
+
+    <h3>{t("component.anatomy")}</h3>
+    <p set:html={t("button.anatomyBody")} />
+    <ComponentPreview
+      tree={buttonAnatomyTree(t)}
+      css={annotationDemoCss}
+      label={t("button.anatomyPreviewLabel")}
+      screens={false}
+      hideSource
+      chrome={false}
+    />
+  </Fragment>
+
+  <Fragment slot="guidelines">
+    <p class="lede" set:html={t("button.guidelinesLede")} />
+    <DoDont
+      title={t("button.dd.emphasis.title")}
+      do={{ tree: buttonDestructivePairTree(t), caption: t("button.dd.emphasis.do") }}
+      dont={{ tree: buttonVariantTree(t), caption: t("button.dd.emphasis.dont") }}
+    />
+    <DoDont
+      title={t("button.dd.icon.title")}
+      do={{ tree: buttonIconTree(t), caption: t("button.dd.icon.do") }}
+      dont={{ tree: buttonIconOnlyTree(t), caption: t("button.dd.icon.dont") }}
+    />
   </Fragment>
 
   <Fragment slot="install">

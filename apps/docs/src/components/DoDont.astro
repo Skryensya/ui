@@ -49,11 +49,18 @@ const { title, canvas = false, do: good, dont: bad } = Astro.props;
 const t = useTranslations(getLocale(Astro.url));
 
 /* The example, on a canvas that only fits: something to look at, not to explore. */
+const inertTree = (tree: UsageTree): UsageTree => ({
+  contract: "layout",
+  signature: "Stack",
+  attrs: { inert: "", style: "padding: var(--space-inset-lg); box-sizing: border-box;" },
+  children: tree,
+});
+
 const onCanvas = (tree: UsageTree, label: string): UsageTree => ({
   contract: "canvas",
   signature: "Canvas",
   options: { fitOnly: true, label: title ? `${label}: ${title}` : label },
-  children: tree,
+  children: inertTree(tree),
 });
 const halves = [
   { kind: "do", label: t("component.do"), icon: iconMarkup("check", { size: "sm" }), half: good },
@@ -76,7 +83,7 @@ const halves = [
               canvas ? (
                 <Fragment set:html={emitMarkup(onCanvas(half.tree, label))} />
               ) : (
-                <div class="sk-do-dont__frame" set:html={emitMarkup(half.tree)} />
+                <div class="sk-do-dont__frame" inert set:html={emitMarkup(half.tree)} />
               )
             }
           </div>
@@ -154,6 +161,13 @@ const halves = [
     padding-inline-end: var(--sk-do-dont-offset);
   }
 
+  /* Do/Don't examples are specimens, never controls. This is global for every page using this
+     component: the page may enhance widgets around them, but the pair itself stays read-only. */
+  .sk-do-dont__card :global(.sk-canvas__content),
+  .sk-do-dont__frame {
+    pointer-events: none;
+  }
+
   .sk-do-dont__card :global(.sk-canvas),
   .sk-do-dont__frame {
     --sk-canvas-border-color: var(--sk-do-dont-color);
@@ -176,7 +190,7 @@ const halves = [
     place-items: center;
     aspect-ratio: 4 / 3;
     box-sizing: border-box;
-    padding: var(--space-inset-md);
+    padding: var(--space-inset-lg);
     overflow: hidden;
     border: 1px solid var(--sk-do-dont-color);
     border-radius: var(--radius-surface);

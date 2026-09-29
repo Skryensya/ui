@@ -6,11 +6,15 @@ import { stackAnatomyTree } from "../../demos/layout-anatomy";
 import ComponentPageShell from "./ComponentPageShell.astro";
 import CodeBlock from "../CodeBlock.astro";
 import ComponentPreview from "../ComponentPreview.astro";
+import UsagePreview from "../UsagePreview.astro";
+import DoDont from "../DoDont.astro";
 import { stackTree } from "../../demos/layout";
 import { getLocale, useTranslations } from "../../i18n";
 
 const install = `pnpm add @skryensya/core @skryensya/react`;
 const t = useTranslations(getLocale(Astro.url));
+const explain = (option: string, values: readonly string[]) =>
+  Object.fromEntries(values.map((value) => [value, t(`stackPage.prop.${option}.${value}` as Parameters<typeof t>[0])]));
 ---
 
 <ComponentPageShell
@@ -29,21 +33,31 @@ const t = useTranslations(getLocale(Astro.url));
     },
   ]}
 >
-  <Fragment slot="anatomy">
-    <p set:html={t("stackPage.anatomyBody")} />
-    <ComponentPreview
-      tree={stackAnatomyTree(t)}
-      css={annotationDemoCss}
-      label={t("stackPage.anatomyPreviewLabel")}
-      screens={false}
-      hideSource
-      chrome={false}
-    />
-  </Fragment>
-
   <Fragment slot="usage">
     <p class="lede" set:html={t("stackPage.lede")} />
-    <ComponentPreview tree={stackTree(t, "/components/stack")} label="Stack" />
+
+    <UsagePreview
+      tree={stackTree(t, "/components/stack")}
+      optionName="gap"
+      title={t("stackPage.prop.gap.title")}
+      description={t("stackPage.prop.gap.body")}
+      explain={explain("gap", ["none", "xs", "sm", "md", "lg", "xl"])}
+      stageMinBlockSize="16rem"
+    />
+
+    <UsagePreview
+      tree={stackTree(t, "/components/stack")}
+      optionName="align"
+      title={t("stackPage.prop.align.title")}
+      description={t("stackPage.prop.align.body")}
+      explain={explain("align", ["start", "center", "end", "stretch"])}
+      stageMinBlockSize="16rem"
+    />
+
+    <h3>{t("stackPage.showcaseTitle")}</h3>
+    <p set:html={t("stackPage.showcaseBody")} />
+    <UsagePreview tree={stackTree(t, "/components/stack")} title="Stack" description={t("stackPage.htmlBody")} />
+
     <h3>{t("stackPage.htmlTitle")}</h3>
     <p set:html={t("stackPage.htmlBody")} />
 
@@ -57,6 +71,26 @@ const t = useTranslations(getLocale(Astro.url));
       <li set:html={t("stackPage.contractItem3")} />
       <li set:html={t("stackPage.contractItem4")} />
     </ul>
+
+    <h3>{t("component.anatomy")}</h3>
+    <p set:html={t("stackPage.anatomyBody")} />
+    <ComponentPreview
+      tree={stackAnatomyTree(t)}
+      css={annotationDemoCss}
+      label={t("stackPage.anatomyPreviewLabel")}
+      screens={false}
+      hideSource
+      chrome={false}
+    />
+  </Fragment>
+
+  <Fragment slot="guidelines">
+    <p class="lede" set:html={t("stackPage.guidelinesLede")} />
+    <DoDont
+      title={t("stackPage.dd.axis.title")}
+      do={{ tree: stackTree(t, "/components/stack"), caption: t("stackPage.dd.axis.do") }}
+      dont={{ tree: stackTree(t, "/components/stack"), caption: t("stackPage.dd.axis.dont") }}
+    />
   </Fragment>
 
   <Fragment slot="install">

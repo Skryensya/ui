@@ -2,12 +2,16 @@
 import ComponentPageShell from "./ComponentPageShell.astro";
 import CodeBlock from "../CodeBlock.astro";
 import ComponentPreview from "../ComponentPreview.astro";
+import UsagePreview from "../UsagePreview.astro";
+import DoDont from "../DoDont.astro";
 import { annotationDemoCss } from "../../demos/annotation";
-import { iconAnatomyTree, iconSizeTree, iconTree } from "../../demos/icon";
+import { iconAnatomyTree, iconSingleTree, iconSizeTree, iconTree } from "../../demos/icon";
 import { getLocale, useTranslations } from "../../i18n";
 import "@skryensya/core/components/annotation.css";
 
 const t = useTranslations(getLocale(Astro.url));
+const explain = (option: string, values: readonly string[]) =>
+  Object.fromEntries(values.map((value) => [value, t(`iconPage.prop.${option}.${value}` as Parameters<typeof t>[0])]));
 
 const vanilla = `<!-- Geometry outside the set: you write it. -->
 <svg
@@ -63,21 +67,22 @@ const sizesCss = `/* another size? you re-declare the hook, like every
   contractId="icon"
   testFiles={["packages/react/src/components/icon.test.tsx"]}}
 >
-  <Fragment slot="anatomy">
-    <p set:html={t("iconPage.anatomyBody")} />
-    <ComponentPreview
-      tree={iconAnatomyTree(t)}
-      css={annotationDemoCss}
-      label={t("iconPage.anatomyPreviewLabel")}
-      screens={false}
-      hideSource
-      chrome={false}
-    />
-  </Fragment>
-
   <Fragment slot="usage">
     <p class="lede" set:html={t("iconPage.lede")} />
-    <ComponentPreview tree={iconTree} label="Icon" />
+
+    <UsagePreview
+      tree={iconSingleTree}
+      optionName="size"
+      title={t("iconPage.prop.size.title")}
+      description={t("iconPage.prop.size.body")}
+      explain={explain("size", ["sm", "md", "lg"])}
+      stageMinBlockSize="7rem"
+    />
+
+    <h3>{t("iconPage.showcaseTitle")}</h3>
+    <p set:html={t("iconPage.showcaseBody")} />
+    <UsagePreview tree={iconTree} title={t("iconPage.vocabularyTitle")} description={t("iconPage.vocabularyBody")} />
+    <UsagePreview tree={iconSizeTree} title={t("iconPage.sizeTitle")} description={t("iconPage.sizeBody")} />
 
     <h3>{t("iconPage.reactTitle")}</h3>
     <p set:html={t("iconPage.reactBody1")} />
@@ -92,10 +97,34 @@ const sizesCss = `/* another size? you re-declare the hook, like every
     <p set:html={t("iconPage.vanillaBody2")} />
     <CodeBlock code={vanilla} label={t("iconPage.vanillaRawLabel")} note={t("iconPage.vanillaRawNote")} />
 
-    <h3>{t("iconPage.sizeTitle")}</h3>
-    <p set:html={t("iconPage.sizeBody")} />
-    <ComponentPreview tree={iconSizeTree} label={t("iconPage.sizeLabel")} />
-    <CodeBlock code={sizesCss} label="tamaño arbitrario" note={t("iconPage.sizeNote")} />
+    <h3>{t("iconPage.customSizeTitle")}</h3>
+    <p set:html={t("iconPage.customSizeBody")} />
+    <CodeBlock code={sizesCss} label={t("iconPage.customSizeLabel")} note={t("iconPage.sizeNote")} />
+
+    <h3>{t("component.anatomy")}</h3>
+    <p set:html={t("iconPage.anatomyBody")} />
+    <ComponentPreview
+      tree={iconAnatomyTree(t)}
+      css={annotationDemoCss}
+      label={t("iconPage.anatomyPreviewLabel")}
+      screens={false}
+      hideSource
+      chrome={false}
+    />
+  </Fragment>
+
+  <Fragment slot="guidelines">
+    <p class="lede" set:html={t("iconPage.guidelinesLede")} />
+    <DoDont
+      title={t("iconPage.dd.decorative.title")}
+      do={{ tree: iconTree, caption: t("iconPage.dd.decorative.do") }}
+      dont={{ tree: iconSingleTree, caption: t("iconPage.dd.decorative.dont") }}
+    />
+    <DoDont
+      title={t("iconPage.dd.size.title")}
+      do={{ tree: iconSizeTree, caption: t("iconPage.dd.size.do") }}
+      dont={{ tree: iconTree, caption: t("iconPage.dd.size.dont") }}
+    />
   </Fragment>
 
   <Fragment slot="a11y">
