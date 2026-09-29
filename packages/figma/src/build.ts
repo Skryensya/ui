@@ -343,15 +343,22 @@ async function compileRealization(realization: Realization, shared: Shared): Pro
     if (!vocabulary.includes(name)) throw new Error(`slot ${slot}: ${name} is not a stable icon name`);
     return name;
   };
-  // Beside each row: its button at rest, with each optional icon slot switched on in turn.
-  const showcase = {
+  // Beside each row: its variant at rest, with each optional icon slot switched on in turn, or, for a
+  // realization that names samples, holding each sample text.
+  const samples = realization.samples;
+  if (samples && realization.slots[samples.slot]?.holds !== "text") throw new Error(`samples: ${samples.slot} is not a text slot`);
+  const showcase: ComponentSet["showcase"] = {
     base: {
       ...(hasStates ? { [realization.state.axis]: realization.state.rest } : {}),
       ...(iconWhen ? { [iconWhen]: "false" } : {}),
     },
-    columns: Object.entries(realization.slots)
-      .filter(([slot, spec]) => spec.holds === "icon" && !signature.slots[slot]?.required)
-      .map(([slot]) => ({ slot, properties: { [slot]: true } })),
+    ...(samples ? { title: samples.title } : {}),
+    columns: [
+      ...Object.entries(realization.slots)
+        .filter(([slot, spec]) => spec.holds === "icon" && !signature.slots[slot]?.required)
+        .map(([slot]) => ({ slot, properties: { [slot]: true } })),
+      ...(samples?.values ?? []).map((value) => ({ slot: `${samples!.slot}=${value}`, label: value, properties: { [samples!.slot]: value } })),
+    ],
   };
 
   // Where each slot lands, read off the part template: `pre`, the label, `post`.
