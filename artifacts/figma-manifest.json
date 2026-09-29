@@ -4416,6 +4416,15 @@
         ],
         "rows": [
           {
+            "name": "size",
+            "values": [
+              "lg",
+              "md",
+              "sm",
+              "xs"
+            ]
+          },
+          {
             "name": "variant",
             "values": [
               "solid",
@@ -4430,15 +4439,6 @@
               "neutral",
               "accent",
               "danger"
-            ]
-          },
-          {
-            "name": "size",
-            "values": [
-              "md",
-              "xs",
-              "sm",
-              "lg"
             ]
           }
         ]
@@ -4484,7 +4484,7 @@
           }
         ]
       },
-      "visualHash": "044446a2692d56cb"
+      "visualHash": "a63a581b3ba9dc83"
     },
     {
       "axes": [
@@ -8586,6 +8586,15 @@
         ],
         "rows": [
           {
+            "name": "size",
+            "values": [
+              "lg",
+              "md",
+              "sm",
+              "xs"
+            ]
+          },
+          {
             "name": "variant",
             "values": [
               "solid",
@@ -8600,15 +8609,6 @@
               "neutral",
               "accent",
               "danger"
-            ]
-          },
-          {
-            "name": "size",
-            "values": [
-              "md",
-              "xs",
-              "sm",
-              "lg"
             ]
           }
         ]
@@ -8654,7 +8654,7 @@
           }
         ]
       },
-      "visualHash": "b84ab0146b5c1335"
+      "visualHash": "70150e0544490ca6"
     },
     {
       "axes": [
@@ -12756,6 +12756,15 @@
         ],
         "rows": [
           {
+            "name": "size",
+            "values": [
+              "lg",
+              "md",
+              "sm",
+              "xs"
+            ]
+          },
+          {
             "name": "variant",
             "values": [
               "solid",
@@ -12770,15 +12779,6 @@
               "neutral",
               "accent",
               "danger"
-            ]
-          },
-          {
-            "name": "size",
-            "values": [
-              "md",
-              "xs",
-              "sm",
-              "lg"
             ]
           }
         ]
@@ -12824,7 +12824,7 @@
           }
         ]
       },
-      "visualHash": "e957bb07802c282e"
+      "visualHash": "0389f4bf1d26be8b"
     },
     {
       "axes": [
@@ -16926,6 +16926,15 @@
         ],
         "rows": [
           {
+            "name": "size",
+            "values": [
+              "lg",
+              "md",
+              "sm",
+              "xs"
+            ]
+          },
+          {
             "name": "variant",
             "values": [
               "solid",
@@ -16940,15 +16949,6 @@
               "neutral",
               "accent",
               "danger"
-            ]
-          },
-          {
-            "name": "size",
-            "values": [
-              "md",
-              "xs",
-              "sm",
-              "lg"
             ]
           }
         ]
@@ -16994,7 +16994,7 @@
           }
         ]
       },
-      "visualHash": "3ff4e1487fbd9a7e"
+      "visualHash": "3f69463d623c904b"
     }
   ],
   "diagnostics": [
@@ -17126,7 +17126,7 @@
     }
   },
   "schemaVersion": 1,
-  "sourceHash": "92ad5b95b0c6ef38",
+  "sourceHash": "dc00cd0ffdb3cd54",
   "specimen": [
     {
       "cell": "variant=solid, tone=neutral, size=md, state=rest, iconOnly=false",
@@ -17496,6 +17496,9 @@
   "stage": {
     "background": {
       "variable": "--color-bg-surface"
+    },
+    "divider": {
+      "variable": "--color-border-subtle"
     },
     "label": {
       "color": {
