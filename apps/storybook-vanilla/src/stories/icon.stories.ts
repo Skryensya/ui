@@ -12,5 +12,6 @@ import { treeStory, withCss, type Meta, type StoryObj } from "../tree-story";
 export default { title: "Components/Content/Icon", tags: ["autodocs"] } satisfies Meta;
 
 export const Anatomy: StoryObj = treeStory(demos.iconAnatomyTree, { decorators: [withCss(annotationDemoCss)] });
+export const Single: StoryObj = treeStory(() => demos.iconSingleTree);
 export const Default: StoryObj = treeStory(() => demos.iconTree);
 export const Size: StoryObj = treeStory(() => demos.iconSizeTree);

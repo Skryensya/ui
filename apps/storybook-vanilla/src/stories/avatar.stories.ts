@@ -16,6 +16,7 @@ export default { title: "Components/Content/Avatar", tags: ["autodocs"] } satisf
 
 export const Anatomy: StoryObj = treeStory(demos.avatarAnatomyTree, { decorators: [withCss(annotationDemoCss)] });
 export const GroupAnatomy: StoryObj = treeStory(demos.avatarGroupAnatomyTree, { decorators: [withCss(annotationDemoCss)] });
+export const Single: StoryObj = treeStory((t) => demos.avatarSingleTree());
 export const Image: StoryObj = treeStory(demos.avatarImageTree);
 export const Sizes: StoryObj = treeStory(demos.avatarSizesTree);
 export const Colors: StoryObj = treeStory(demos.avatarColorsTree);

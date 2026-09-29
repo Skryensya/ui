@@ -17,3 +17,6 @@ export default { title: "Components/Content/ProcessList", tags: ["autodocs"] } s
 
 export const Anatomy: StoryObj = treeStory(demos.processListAnatomyTree, { decorators: [withCss(annotationDemoCss)] });
 export const Default: StoryObj = treeStory(demos.processListTree);
+export const DoShort: StoryObj = treeStory(demos.processListDoShortTree);
+export const DontUnordered: StoryObj = treeStory(demos.processListDontUnorderedTree);
+export const DontLong: StoryObj = treeStory(demos.processListDontLongTree);

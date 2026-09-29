@@ -14,5 +14,6 @@ import { treeStory, withCss, type Meta, type StoryObj } from "../tree-story";
 export default { title: "Components/Navigation/Link", tags: ["autodocs"] } satisfies Meta;
 
 export const Anatomy: StoryObj = treeStory(demos.linkAnatomyTree, { decorators: [withCss(annotationDemoCss)] });
+export const Single: StoryObj = treeStory(demos.linkSingleTree);
 export const Default: StoryObj = treeStory(demos.linkTree);
 export const TileLink: StoryObj = treeStory(demos.tileLinkTree);

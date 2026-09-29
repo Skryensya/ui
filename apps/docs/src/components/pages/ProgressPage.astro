@@ -5,12 +5,26 @@ import "@skryensya/core/components/annotation.css";
 import ComponentPageShell from "./ComponentPageShell.astro";
 import CodeBlock from "../CodeBlock.astro";
 import ComponentPreview from "../ComponentPreview.astro";
-import { progressAnatomyTree, progressTree } from "../../demos/progress";
+import UsagePreview from "../UsagePreview.astro";
+import DoDont from "../DoDont.astro";
+import {
+  progressAnatomyTree,
+  progressDoRunningTree,
+  progressDoTaskTree,
+  progressDontMeasureTree,
+  progressDontRunningTree,
+  progressSingleTree,
+  progressTree,
+} from "../../demos/progress";
 import { annotationDemoCss } from "../../demos/annotation";
 import { getLocale, useTranslations } from "../../i18n";
 
 const t = useTranslations(getLocale(Astro.url));
 const install = `pnpm add @skryensya/core @skryensya/react`;
+
+/* What each value of a property is for, read from this page's messages. Same model Badge uses. */
+const explain = (option: string, values: readonly string[]) =>
+  Object.fromEntries(values.map((value) => [value, t(`progressPage.prop.${option}.${value}` as Parameters<typeof t>[0])]));
 ---
 
 <ComponentPageShell
@@ -19,7 +33,25 @@ const install = `pnpm add @skryensya/core @skryensya/react`;
   contractId="progress"
   testFiles={["packages/react/src/components/progress.test.tsx"]}}
 >
-  <Fragment slot="anatomy">
+  <Fragment slot="usage">
+    <p class="lede" set:html={t("progressPage.lede")} />
+
+    <UsagePreview
+      tree={progressSingleTree(t)}
+      optionName="tone"
+      title={t("progressPage.prop.tone.title")}
+      description={t("progressPage.prop.tone.body")}
+      explain={explain("tone", ["accent", "success", "warning", "danger"])}
+      stageMinBlockSize="7rem"
+    />
+
+    <h3>{t("progressPage.showcaseTitle")}</h3>
+    <p set:html={t("progressPage.showcaseBody")} />
+    <UsagePreview tree={progressTree(t)} />
+    <p set:html={t("progressPage.body")} />
+    <p set:html={t("component.reactNote")} />
+
+    <h3>{t("component.anatomy")}</h3>
     <p set:html={t("progressPage.anatomyBody")} />
     <ComponentPreview
       tree={progressAnatomyTree(t)}
@@ -31,11 +63,18 @@ const install = `pnpm add @skryensya/core @skryensya/react`;
     />
   </Fragment>
 
-  <Fragment slot="usage">
-    <p class="lede" set:html={t("progressPage.lede")} />
-    <ComponentPreview tree={progressTree(t)} label="Progress" />
-    <p set:html={t("progressPage.body")} />
-    <p set:html={t("component.reactNote")} />
+  <Fragment slot="guidelines">
+    <p class="lede" set:html={t("progressPage.guidelinesLede")} />
+    <DoDont
+      title={t("progressPage.dd.tone.title")}
+      do={{ tree: progressDoRunningTree(t), caption: t("progressPage.dd.tone.do") }}
+      dont={{ tree: progressDontRunningTree(t), caption: t("progressPage.dd.tone.dont") }}
+    />
+    <DoDont
+      title={t("progressPage.dd.task.title")}
+      do={{ tree: progressDoTaskTree(t), caption: t("progressPage.dd.task.do") }}
+      dont={{ tree: progressDontMeasureTree(t), caption: t("progressPage.dd.task.dont") }}
+    />
   </Fragment>
 
   <Fragment slot="install">

@@ -6,7 +6,15 @@ import ComponentPageShell from "./ComponentPageShell.astro";
 import AppearanceMenu from "../AppearanceMenu.astro";
 import CodeBlock from "../CodeBlock.astro";
 import ComponentPreview from "../ComponentPreview.astro";
-import { paginationAnatomyTree, paginationTree } from "../../demos/pagination";
+import UsagePreview from "../UsagePreview.astro";
+import DoDont from "../DoDont.astro";
+import {
+  paginationAnatomyTree,
+  paginationDoBelowTree,
+  paginationDontAboveTree,
+  paginationDontFewTree,
+  paginationTree,
+} from "../../demos/pagination";
 import { annotationDemoCss } from "../../demos/annotation";
 import { getLocale, useTranslations } from "../../i18n";
 
@@ -17,6 +25,10 @@ const rangeExample = `import { paginationRange } from "@skryensya/core/paginatio
 
 paginationRange(5, 20);
 // → [1, "ellipsis", 4, 5, 6, "ellipsis", 20]`;
+
+/* What each value of a property is for, read from this page's messages. Same model Badge uses. */
+const explain = (option: string, values: readonly string[]) =>
+  Object.fromEntries(values.map((value) => [value, t(`paginationPage.prop.${option}.${value}` as Parameters<typeof t>[0])]));
 ---
 
 <ComponentPageShell
@@ -30,7 +42,31 @@ paginationRange(5, 20);
     <AppearanceMenu label={t("prefs.appearance")} />
   </Fragment>
 
-  <Fragment slot="anatomy">
+  <Fragment slot="usage">
+    <p class="lede" set:html={t("paginationPage.lede")} />
+
+    <UsagePreview
+      tree={paginationTree(t)}
+      optionName="appearance"
+      title={t("paginationPage.prop.appearance.title")}
+      description={t("paginationPage.prop.appearance.body")}
+      explain={explain("appearance", ["plain", "tactile", "brutalist", "frosted"])}
+      stageMinBlockSize="6rem"
+    />
+
+    <h3>{t("paginationPage.showcaseTitle")}</h3>
+    <p set:html={t("paginationPage.showcaseBody")} />
+    <UsagePreview tree={paginationTree(t)} />
+    <p set:html={t("paginationPage.body")} />
+
+    <h3>{t("paginationPage.rangeTitle")}</h3>
+    <p set:html={t("paginationPage.rangeBody")} />
+    <CodeBlock code={rangeExample} lang="ts" label="@skryensya/core/pagination" />
+
+    <p set:html={t("component.reactNote")} />
+    <p set:html={t("paginationPage.reactBody")} />
+
+    <h3>{t("component.anatomy")}</h3>
     <p set:html={t("paginationPage.anatomyBody")} />
     <ComponentPreview
       tree={paginationAnatomyTree(t)}
@@ -42,17 +78,18 @@ paginationRange(5, 20);
     />
   </Fragment>
 
-  <Fragment slot="usage">
-    <p class="lede" set:html={t("paginationPage.lede")} />
-    <ComponentPreview tree={paginationTree(t)} label="Pagination" />
-    <p set:html={t("paginationPage.body")} />
-
-    <h3>{t("paginationPage.rangeTitle")}</h3>
-    <p set:html={t("paginationPage.rangeBody")} />
-    <CodeBlock code={rangeExample} lang="ts" label="@skryensya/core/pagination" />
-
-    <p set:html={t("component.reactNote")} />
-    <p set:html={t("paginationPage.reactBody")} />
+  <Fragment slot="guidelines">
+    <p class="lede" set:html={t("paginationPage.guidelinesLede")} />
+    <DoDont
+      title={t("paginationPage.dd.few.title")}
+      do={{ tree: paginationTree(t), caption: t("paginationPage.dd.few.do") }}
+      dont={{ tree: paginationDontFewTree(t), caption: t("paginationPage.dd.few.dont") }}
+    />
+    <DoDont
+      title={t("paginationPage.dd.below.title")}
+      do={{ tree: paginationDoBelowTree(t), caption: t("paginationPage.dd.below.do") }}
+      dont={{ tree: paginationDontAboveTree(t), caption: t("paginationPage.dd.below.dont") }}
+    />
   </Fragment>
 
   <Fragment slot="install">

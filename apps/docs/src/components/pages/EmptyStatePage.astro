@@ -1,7 +1,13 @@
 ---
 import ComponentPageShell from "./ComponentPageShell.astro";
 import ComponentPreview from "../ComponentPreview.astro";
-import { emptyStateAnatomyTree, emptyStateTree } from "../../demos/empty-state";
+import UsagePreview from "../UsagePreview.astro";
+import DoDont from "../DoDont.astro";
+import {
+  emptyStateAnatomyTree,
+  emptyStateDontVagueTree,
+  emptyStateTree,
+} from "../../demos/empty-state";
 import { annotationDemoCss } from "../../demos/annotation";
 import { getLocale, useTranslations } from "../../i18n";
 import "@skryensya/core/components/empty-state.css";
@@ -18,7 +24,17 @@ const t = useTranslations(getLocale(Astro.url));
   contractId="empty-state"
   testFiles={["packages/react/src/components/empty-state.test.tsx"]}}
 >
-  <Fragment slot="anatomy">
+  <Fragment slot="usage">
+    <p class="lede" set:html={t("emptyState.description")} />
+
+    <h3>{t("emptyState.showcaseTitle")}</h3>
+    <p set:html={t("emptyState.showcaseBody")} />
+    <UsagePreview tree={emptyStateTree(t)} />
+
+    <h3>{t("component.contractNotesTitle")}</h3>
+    <p set:html={t("emptyState.contractBody")} />
+
+    <h3>{t("component.anatomy")}</h3>
     <p set:html={t("emptyState.anatomyBody")} />
     <ComponentPreview
       tree={emptyStateAnatomyTree(t)}
@@ -30,12 +46,13 @@ const t = useTranslations(getLocale(Astro.url));
     />
   </Fragment>
 
-  <Fragment slot="usage">
-    <p class="lede" set:html={t("emptyState.description")} />
-    <ComponentPreview tree={emptyStateTree(t)} label="Empty State" />
-
-    <h3>{t("component.contractNotesTitle")}</h3>
-    <p set:html={t("emptyState.contractBody")} />
+  <Fragment slot="guidelines">
+    <p class="lede" set:html={t("emptyState.guidelinesLede")} />
+    <DoDont
+      title={t("emptyState.dd.next.title")}
+      do={{ tree: emptyStateTree(t), caption: t("emptyState.dd.next.do") }}
+      dont={{ tree: emptyStateDontVagueTree(t), caption: t("emptyState.dd.next.dont") }}
+    />
   </Fragment>
 
   <Fragment slot="a11y">

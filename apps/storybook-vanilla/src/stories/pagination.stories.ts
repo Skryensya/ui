@@ -4,6 +4,8 @@ import "@skryensya/core/components/annotation.css";
 import "@skryensya/core/components/button.css";
 import "@skryensya/core/components/canvas.css";
 import "@skryensya/core/components/pagination.css";
+import "@skryensya/core/components/typography.css";
+import "@skryensya/core/patterns/layout.css";
 import * as demos from "@docs/demos/pagination";
 import { annotationDemoCss } from "@docs/demos/annotation";
 import { treeStory, withCss, type Meta, type StoryObj } from "../tree-story";
@@ -12,3 +14,6 @@ export default { title: "Components/Navigation/Pagination", tags: ["autodocs"] }
 
 export const Anatomy: StoryObj = treeStory(demos.paginationAnatomyTree, { decorators: [withCss(annotationDemoCss)] });
 export const Default: StoryObj = treeStory(demos.paginationTree);
+export const DontFew: StoryObj = treeStory(demos.paginationDontFewTree);
+export const DoBelow: StoryObj = treeStory(demos.paginationDoBelowTree);
+export const DontAbove: StoryObj = treeStory(demos.paginationDontAboveTree);

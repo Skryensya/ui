@@ -12,3 +12,7 @@ import { treeStory, type Meta, type StoryObj } from "../tree-story";
 export default { title: "Components/Overlays/Tooltip", tags: ["autodocs"] } satisfies Meta;
 
 export const Default: StoryObj = treeStory(demos.tooltipTree);
+export const Single: StoryObj = treeStory(demos.tooltipSingleTree);
+export const DoIcon: StoryObj = treeStory(demos.tooltipDoIconTree);
+export const DontLong: StoryObj = treeStory(demos.tooltipDontLongTree);
+export const DontRepeat: StoryObj = treeStory(demos.tooltipDontRepeatTree);

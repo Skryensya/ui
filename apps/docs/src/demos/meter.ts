@@ -71,3 +71,34 @@ export const meterTree = (t: Translate): UsageTree => ({
     },
   ],
 });
+
+/* One meter, the specimen the `tone` preview varies. */
+export const meterSingleTree = (t: Translate): UsageTree => ({
+  contract: "meter",
+  signature: "Meter",
+  options: { value: 68, label: t("demo.meter.battery"), valueText: t("demo.meter.batteryText") },
+  attrs: { style: "inline-size: min(100%, 20rem)" },
+});
+
+/* Do/Don't: the tone agrees with what the value means, or contradicts it. */
+export const meterDoToneTree = (t: Translate): UsageTree => ({
+  contract: "meter",
+  signature: "Meter",
+  options: { value: 92, tone: "danger", label: t("demo.meter.disk"), valueText: t("demo.meter.diskText") },
+  attrs: { style: "inline-size: min(100%, 16rem)" },
+});
+
+export const meterDontToneTree = (t: Translate): UsageTree => ({
+  contract: "meter",
+  signature: "Meter",
+  options: { value: 92, tone: "success", label: t("demo.meter.disk"), valueText: t("demo.meter.diskText") },
+  attrs: { style: "inline-size: min(100%, 16rem)" },
+});
+
+/* Don't: a task's progress drawn as a measurement. */
+export const meterDontTaskTree = (t: Translate): UsageTree => ({
+  contract: "meter",
+  signature: "Meter",
+  options: { value: 40, label: t("demo.meter.dd.upload"), valueText: "40%" },
+  attrs: { style: "inline-size: min(100%, 16rem)" },
+});

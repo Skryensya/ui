@@ -13,3 +13,8 @@ export default { title: "Components/Feedback/Progress", tags: ["autodocs"] } sat
 
 export const Anatomy: StoryObj = treeStory(demos.progressAnatomyTree, { decorators: [withCss(annotationDemoCss)] });
 export const Default: StoryObj = treeStory(demos.progressTree);
+export const Single: StoryObj = treeStory(demos.progressSingleTree);
+export const DoRunning: StoryObj = treeStory(demos.progressDoRunningTree);
+export const DontRunning: StoryObj = treeStory(demos.progressDontRunningTree);
+export const DontMeasure: StoryObj = treeStory(demos.progressDontMeasureTree);
+export const DoTask: StoryObj = treeStory(demos.progressDoTaskTree);

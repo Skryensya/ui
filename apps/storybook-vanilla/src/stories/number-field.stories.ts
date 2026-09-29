@@ -12,3 +12,5 @@ export default { title: "Components/Forms/NumberField", tags: ["autodocs"] } sat
 
 export const Anatomy: StoryObj = treeStory(demos.numberFieldAnatomyTree, { decorators: [withCss(annotationDemoCss)] });
 export const Default: StoryObj = treeStory(demos.numberFieldTree);
+export const Single: StoryObj = treeStory(demos.numberFieldSingleTree);
+export const DontApprox: StoryObj = treeStory(demos.numberFieldDontApproxTree);

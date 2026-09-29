@@ -4,6 +4,7 @@ import "@skryensya/core/components/annotation.css";
 import "@skryensya/core/components/button.css";
 import "@skryensya/core/components/canvas.css";
 import "@skryensya/core/components/stat.css";
+import "@skryensya/core/components/typography.css";
 import "@skryensya/core/patterns/box.css";
 import "@skryensya/core/patterns/icon.css";
 import "@skryensya/core/patterns/layout.css";
@@ -14,5 +15,9 @@ import { treeStory, withCss, localeOf, type Meta, type StoryObj } from "../tree-
 export default { title: "Components/Data/Stat", tags: ["autodocs"] } satisfies Meta;
 
 export const Anatomy: StoryObj = treeStory(demos.statAnatomyTree, { decorators: [withCss(annotationDemoCss)] });
-export const Cards: StoryObj = treeStory((t) => demos.statCardsTree(t, localeOf(t)));
 export const Animated: StoryObj = treeStory((t) => demos.statAnimatedTree(t, localeOf(t)));
+export const Cards: StoryObj = treeStory((t) => demos.statCardsTree(t, localeOf(t)));
+export const Single: StoryObj = treeStory(demos.statSingleTree);
+export const DoContext: StoryObj = treeStory(demos.statDoContextTree);
+export const DontContext: StoryObj = treeStory(demos.statDontContextTree);
+export const DontWall: StoryObj = treeStory(demos.statDontWallTree);

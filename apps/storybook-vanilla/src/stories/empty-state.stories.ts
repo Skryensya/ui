@@ -13,3 +13,4 @@ export default { title: "Components/Feedback/EmptyState", tags: ["autodocs"] } s
 
 export const Anatomy: StoryObj = treeStory(demos.emptyStateAnatomyTree, { decorators: [withCss(annotationDemoCss)] });
 export const Default: StoryObj = treeStory(demos.emptyStateTree);
+export const DontVague: StoryObj = treeStory(demos.emptyStateDontVagueTree);

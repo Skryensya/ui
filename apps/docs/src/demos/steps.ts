@@ -39,3 +39,24 @@ export const stepsVerticalTree = (t: Translate): UsageTree => ({
   options: { orientation: "vertical" },
   slots: { items: stepsVerticalItems(t) },
 });
+
+/* Don't: a flow cut into so many stages that none of them reads. */
+export const stepsDontManyTree = (t: Translate): UsageTree => ({
+  contract: "steps",
+  signature: "Steps",
+  slots: {
+    items: Array.from({ length: 8 }, (_, i) => ({
+      options: { status: i < 3 ? "complete" : i === 3 ? "current" : "upcoming" },
+      slots: { marker: String(i + 1), label: `${t("demo.steps.dd.step")} ${i + 1}` },
+    })),
+  },
+});
+
+/* Don't: a finished stage told apart from the rest by colour alone, its number kept. */
+export const stepsDontColorTree = (t: Translate): UsageTree => ({
+  contract: "steps",
+  signature: "Steps",
+  slots: {
+    items: stepsItems(t).map((item, i) => (i === 0 ? { ...item, slots: { ...item.slots, marker: "1" } } : item)),
+  },
+});

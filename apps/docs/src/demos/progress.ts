@@ -52,3 +52,41 @@ export const progressTree = (t: Translate): UsageTree => ({
     },
   ],
 });
+
+/* One bar, the specimen the `tone` preview varies. */
+export const progressSingleTree = (t: Translate): UsageTree => ({
+  contract: "progress",
+  signature: "Progress",
+  options: { value: 68, label: t("demo.progress.upload") },
+  attrs: { style: "inline-size: min(100%, 20rem)" },
+});
+
+/* Do/Don't: a task still running, in the neutral accent, or already painted as done. */
+export const progressDoRunningTree = (t: Translate): UsageTree => ({
+  contract: "progress",
+  signature: "Progress",
+  options: { value: 30, label: t("demo.progress.upload") },
+  attrs: { style: "inline-size: min(100%, 16rem)" },
+});
+
+export const progressDontRunningTree = (t: Translate): UsageTree => ({
+  contract: "progress",
+  signature: "Progress",
+  options: { value: 30, tone: "success", label: t("demo.progress.upload") },
+  attrs: { style: "inline-size: min(100%, 16rem)" },
+});
+
+/* Don't: a measurement (a battery) drawn as a task. */
+export const progressDontMeasureTree = (t: Translate): UsageTree => ({
+  contract: "progress",
+  signature: "Progress",
+  options: { value: 68, label: t("demo.progress.dd.battery") },
+  attrs: { style: "inline-size: min(100%, 16rem)" },
+});
+
+export const progressDoTaskTree = (t: Translate): UsageTree => ({
+  contract: "progress",
+  signature: "Progress",
+  options: { value: 68, label: t("demo.progress.upload") },
+  attrs: { style: "inline-size: min(100%, 16rem)" },
+});

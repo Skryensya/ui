@@ -4,6 +4,7 @@ import "@skryensya/core/components/annotation.css";
 import "@skryensya/core/components/button.css";
 import "@skryensya/core/components/canvas.css";
 import "@skryensya/core/components/kbd.css";
+import "@skryensya/core/components/typography.css";
 import "@skryensya/core/patterns/layout.css";
 import * as demos from "@docs/demos/kbd";
 import { annotationDemoCss } from "@docs/demos/annotation";
@@ -14,3 +15,9 @@ export default { title: "Components/Content/Kbd", tags: ["autodocs"] } satisfies
 export const Anatomy: StoryObj = treeStory(demos.kbdAnatomyTree, { decorators: [withCss(annotationDemoCss)] });
 export const Default: StoryObj = treeStory(() => demos.kbdTree);
 export const Accent: StoryObj = treeStory(() => demos.kbdAccentTree);
+export const Single: StoryObj = treeStory(() => demos.kbdSingleTree);
+export const DoInline: StoryObj = treeStory(demos.kbdDoInlineTree);
+export const DontAlone: StoryObj = treeStory(() => demos.kbdDontAloneTree);
+export const DontChord: StoryObj = treeStory(() => demos.kbdDontChordTree);
+export const DoChord: StoryObj = treeStory(() => demos.kbdDoChordTree);
+export const DontAccent: StoryObj = treeStory(() => demos.kbdDontAccentTree);
