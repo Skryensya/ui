@@ -138,6 +138,21 @@ describe("the Icon set", () => {
   });
 });
 
+describe("the stage", () => {
+  it("stands on the docs preview's own background, resolved through its cascade", () => {
+    const authored = parseTokens().files.find((f) => f.rel === "components/component-preview.css")!;
+    const hook = /--sk-component-preview-bg:\s*var\((--[\w-]+)\)/.exec(authored.css)![1];
+    expect(manifest.stage.background).toEqual({ variable: hook });
+  });
+
+  it("puts one button per row and its states across the columns", () => {
+    const grid = sets[0].grid;
+    expect(grid.rows.map((a) => a.name)).toEqual(["variant", "tone", "size"]);
+    expect(grid.columns.map((a) => a.name)).toEqual(["iconOnly", "state"]);
+    expect(sets.every((s) => s.page === "button")).toBe(true);
+  });
+});
+
 describe("representation", () => {
   it("stays far below the naive product", () => {
     const report = manifest.report as { variants: { naiveAllOptions: number; variantsTotal: number } };

@@ -138,10 +138,19 @@ export type Styles = {
   layers: Record<string, Layer[]>;
 };
 
+export type Page = { id: string; name: string };
+
+/** What every drawing stands on, and how its labels are set. */
+export type Stage = {
+  background: Bound<Rgba>;
+  label: { color: Bound<Rgba>; fontFamily: Bound<string>; fontSize: Bound<number>; fontWeight: Bound<number> };
+};
+
 export type ComponentSet = {
   kind: "component-set";
   id: string;
   name: string;
+  page: string;
   axes: { name: string; values: string[] }[];
   /**
    * Which axes run across the grid and which run down it, each with its values in drawing order:
@@ -165,6 +174,7 @@ export type IconSet = {
   kind: "icon-set";
   id: string;
   name: string;
+  page: string;
   /** The contract option the variants run along. */
   axis: string;
   /** The icon set that draws them, by package. */
@@ -205,8 +215,11 @@ export type FigmaManifest = {
   evaluationContext: Record<string, string>;
   collections: Collection[];
   variables: Variable[];
+  pages: Page[];
+  stage: Stage;
   components: (IconSet | ComponentSet)[];
   styles: Styles;
+  specimenPage: string;
   specimen: SpecimenEntry[];
   diagnostics: Diagnostic[];
   report: Record<string, unknown>;
