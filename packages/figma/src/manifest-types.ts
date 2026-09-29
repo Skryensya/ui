@@ -82,6 +82,8 @@ export type Box = {
   /** Inside its parent's auto layout: `flex-grow` fills the main axis, `align-self: stretch` the cross one. */
   grow?: true;
   stretch?: true;
+  /** Out of its parent's auto layout, at this offset from its top-left (a timeline's marker on its rail). */
+  absolute?: { x: number; y: number };
   padding: { top: Bound<number>; right: Bound<number>; bottom: Bound<number>; left: Bound<number> };
   gap?: Bound<number>;
   radius?: Bound<number>;

@@ -321,3 +321,13 @@ describe("NavList", () => {
     expect(a?.kind === "frame" && b?.kind === "frame" && a.surface !== b.surface).toBe(true);
   });
 });
+
+describe("Timeline", () => {
+  it("places each event's marker on the rail where its insets put it, its texts as properties", () => {
+    const set = manifest.components.find((c): c is ComponentSet => c.kind === "component-set" && c.id === "timeline")!;
+    expect(set.properties.map((p) => p.name).slice(0, 3)).toEqual(["time 1", "heading 1", "body 1"]);
+    const [item] = manifest.styles.layers[set.cells[0].layers];
+    const marker = item.kind === "frame" ? item.layers[0] : undefined;
+    expect(marker?.kind === "frame" && manifest.styles.boxes[marker.box].absolute).toEqual({ x: 8, y: -3 });
+  });
+});

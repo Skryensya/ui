@@ -581,7 +581,7 @@ function nestedSize(
       return { w: layer.fill && room ? room : w, h: lines * lineOfText(layer.text) };
     }
     if (layer.kind === "icon") return { w: Number(valueOf(layer.icon.size)), h: Number(valueOf(layer.icon.size)) };
-    if (layer.kind === "frame") return nestedSize(manifest.styles.boxes[layer.box], layer.layers, widthOf, room);
+    if (layer.kind === "frame") return manifest.styles.boxes[layer.box].absolute ? undefined : nestedSize(manifest.styles.boxes[layer.box], layer.layers, widthOf, room);
     return undefined;
   };
   // Along a row, what fills gets what the rest leave; down a column, it gets the whole width.
@@ -1172,8 +1172,16 @@ async function applyLayers(
       const box = manifest.styles.boxes[layer.box];
       applyBox(ctx, frame, box);
       applySurface(ctx, frame, manifest.styles.surfaces[layer.surface]);
-      frame.layoutGrow = box.grow ? 1 : 0;
-      frame.layoutAlign = box.stretch ? "STRETCH" : "INHERIT";
+      if (box.absolute) {
+        // Out of the parent's auto layout, where its insets put it.
+        frame.layoutPositioning = "ABSOLUTE";
+        frame.x = box.absolute.x;
+        frame.y = box.absolute.y;
+      } else {
+        frame.layoutPositioning = "AUTO";
+        frame.layoutGrow = box.grow ? 1 : 0;
+        frame.layoutAlign = box.stretch ? "STRETCH" : "INHERIT";
+      }
       await applyLayers(ctx, frame, { id }, layer.layers, cellKey, sample);
       // A part's own state layer and focus ring cover it, once its content has laid out.
       for (const cover of layer.layers) {
