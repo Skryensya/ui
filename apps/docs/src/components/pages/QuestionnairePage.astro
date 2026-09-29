@@ -22,6 +22,7 @@ import "@skryensya/core/components/steps.css";
 import ComponentPageShell from "./ComponentPageShell.astro";
 import CodeBlock from "../CodeBlock.astro";
 import ComponentPreview from "../ComponentPreview.astro";
+import UsagePreview from "../UsagePreview.astro";
 import "@skryensya/core/components/annotation.css";
 import { annotationDemoCss } from "../../demos/annotation";
 import {
@@ -55,7 +56,68 @@ const t = useTranslations(getLocale(Astro.url));
     "packages/vanilla/src/components/questionnaire.test.ts",
   ]}
 >
-  <Fragment slot="anatomy">
+  <Fragment slot="usage">
+    <p class="lede" set:html={t("questionnairePage.lede")} />
+
+    <h3>{t("questionnairePage.showcaseTitle")}</h3>
+    <p set:html={t("questionnairePage.showcaseBody")} />
+
+    <UsagePreview tree={questionnaireTree(t)} />
+    <p set:html={t("component.reactNote")} />
+
+    <h3>{t("questionnairePage.stateTitle")}</h3>
+    <p set:html={t("questionnairePage.stateBody")} />
+
+    <h3>{t("questionnairePage.choicesOnlyTitle")}</h3>
+    <p set:html={t("questionnairePage.choicesOnlyBody")} />
+    <UsagePreview tree={questionnaireChoicesOnlyTree(t)} />
+
+    <h3>{t("questionnairePage.likertTitle")}</h3>
+    <p set:html={t("questionnairePage.likertBody")} />
+    <UsagePreview tree={questionnaireLikertTree(t)} />
+
+    <h3>{t("questionnairePage.branchTitle")}</h3>
+    <p set:html={t("questionnairePage.branchBody")} />
+    <UsagePreview tree={questionnaireBranchingTree(t)} />
+
+    <h3>{t("questionnairePage.followUpTitle")}</h3>
+    <p set:html={t("questionnairePage.followUpBody")} />
+    <UsagePreview tree={questionnaireFollowUpTree(t)} />
+
+    <h3>{t("questionnairePage.controlTitle")}</h3>
+    <p set:html={t("questionnairePage.controlBody")} />
+    <UsagePreview tree={questionnaireControlTree(t)} />
+
+    <h3>{t("questionnairePage.progressTitle")}</h3>
+    <p set:html={t("questionnairePage.progressBody")} />
+    <UsagePreview tree={questionnaireBarTree(t)} />
+    <UsagePreview tree={questionnaireStepsTree(t)} />
+    <UsagePreview tree={questionnaireSegmentsTree(t)} />
+
+    <h3>{t("questionnairePage.railTitle")}</h3>
+    <p set:html={t("questionnairePage.railBody")} />
+    <!--
+      PINNED TO A FRAME WIDE ENOUGH TO SHOW ITS OWN SUBJECT. The two columns need 746px and the page
+      default is Tablet, whose frame is 805px but whose questionnaire falls back below `desktop`
+      (832px). A Free frame is ~974px and clears it, so the section documenting the side rail shows
+      the side rail rather than its fallback. Same reason Vaul pins Mobile, at the other end.
+    -->
+    <UsagePreview tree={questionnaireRailTree(t)} />
+
+    <h3>{t("questionnairePage.heightTitle")}</h3>
+    <p set:html={t("questionnairePage.heightBody")} />
+
+    <h3>{t("questionnairePage.keyboardTitle")}</h3>
+    <p set:html={t("questionnairePage.keyboardBody")} />
+    <UsagePreview tree={questionnaireShortcutsTree(t)} />
+
+    <h3>{t("questionnairePage.skipTitle")}</h3>
+    <p set:html={t("questionnairePage.skipBody")} />
+
+    <h3>{t("questionnairePage.noScriptTitle")}</h3>
+    <p set:html={t("questionnairePage.noScriptBody")} />
+
+    <h3>{t("component.anatomy")}</h3>
     <p set:html={t("questionnairePage.anatomyBody")} />
     <ComponentPreview
       tree={questionnaireAnatomyTree(t)}
@@ -67,108 +129,13 @@ const t = useTranslations(getLocale(Astro.url));
     />
   </Fragment>
 
-  <Fragment slot="usage">
-    <p class="lede" set:html={t("questionnairePage.lede")} />
-
-    <ComponentPreview
-      tree={questionnaireTree(t)}
-      label={t("questionnairePage.basicLabel")}
-      defaultScreen="tablet"
-    />
-    <p set:html={t("component.reactNote")} />
-
-    <h3>{t("questionnairePage.stateTitle")}</h3>
-    <p set:html={t("questionnairePage.stateBody")} />
-
-    <h3>{t("questionnairePage.choicesOnlyTitle")}</h3>
-    <p set:html={t("questionnairePage.choicesOnlyBody")} />
-    <ComponentPreview
-      tree={questionnaireChoicesOnlyTree(t)}
-      label={t("questionnairePage.choicesOnlyLabel")}
-      defaultScreen="tablet"
-    />
-
-    <h3>{t("questionnairePage.likertTitle")}</h3>
-    <p set:html={t("questionnairePage.likertBody")} />
-    <ComponentPreview
-      tree={questionnaireLikertTree(t)}
-      label={t("questionnairePage.likertLabel")}
-      defaultScreen="tablet"
-    />
-
-    <h3>{t("questionnairePage.branchTitle")}</h3>
-    <p set:html={t("questionnairePage.branchBody")} />
-    <ComponentPreview
-      tree={questionnaireBranchingTree(t)}
-      label={t("questionnairePage.branchLabel")}
-      defaultScreen="tablet"
-    />
-
-    <h3>{t("questionnairePage.followUpTitle")}</h3>
-    <p set:html={t("questionnairePage.followUpBody")} />
-    <ComponentPreview
-      tree={questionnaireFollowUpTree(t)}
-      label={t("questionnairePage.followUpLabel")}
-      defaultScreen="tablet"
-    />
-
-    <h3>{t("questionnairePage.controlTitle")}</h3>
-    <p set:html={t("questionnairePage.controlBody")} />
-    <ComponentPreview
-      tree={questionnaireControlTree(t)}
-      label={t("questionnairePage.controlLabel")}
-      defaultScreen="tablet"
-    />
-
-    <h3>{t("questionnairePage.progressTitle")}</h3>
-    <p set:html={t("questionnairePage.progressBody")} />
-    <ComponentPreview
-      tree={questionnaireBarTree(t)}
-      label={t("questionnairePage.barLabel")}
-      defaultScreen="tablet"
-    />
-    <ComponentPreview
-      tree={questionnaireStepsTree(t)}
-      label={t("questionnairePage.stepsLabel")}
-      defaultScreen="tablet"
-    />
-    <ComponentPreview
-      tree={questionnaireSegmentsTree(t)}
-      label={t("questionnairePage.segmentsLabel")}
-      defaultScreen="tablet"
-    />
-
-    <h3>{t("questionnairePage.railTitle")}</h3>
-    <p set:html={t("questionnairePage.railBody")} />
-    <!--
-      PINNED TO A FRAME WIDE ENOUGH TO SHOW ITS OWN SUBJECT. The two columns need 746px and the page
-      default is Tablet, whose frame is 805px but whose questionnaire falls back below `desktop`
-      (832px). A Free frame is ~974px and clears it, so the section documenting the side rail shows
-      the side rail rather than its fallback. Same reason Vaul pins Mobile, at the other end.
-    -->
-    <ComponentPreview
-      tree={questionnaireRailTree(t)}
-      label={t("questionnairePage.railLabel")}
-      screenScope="local"
-      defaultScreen="free"
-    />
-
-    <h3>{t("questionnairePage.heightTitle")}</h3>
-    <p set:html={t("questionnairePage.heightBody")} />
-
-    <h3>{t("questionnairePage.keyboardTitle")}</h3>
-    <p set:html={t("questionnairePage.keyboardBody")} />
-    <ComponentPreview
-      tree={questionnaireShortcutsTree(t)}
-      label={t("questionnairePage.shortcutsLabel")}
-      defaultScreen="tablet"
-    />
-
-    <h3>{t("questionnairePage.skipTitle")}</h3>
-    <p set:html={t("questionnairePage.skipBody")} />
-
-    <h3>{t("questionnairePage.noScriptTitle")}</h3>
-    <p set:html={t("questionnairePage.noScriptBody")} />
+  <Fragment slot="guidelines">
+    <p class="lede" set:html={t("questionnairePage.guidelinesLede")} />
+    <ul>
+      <li set:html={t("questionnairePage.guide.item1")} />
+      <li set:html={t("questionnairePage.guide.item2")} />
+      <li set:html={t("questionnairePage.guide.item3")} />
+    </ul>
   </Fragment>
 
   <Fragment slot="install">

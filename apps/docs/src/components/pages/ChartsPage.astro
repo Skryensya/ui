@@ -17,6 +17,7 @@ import "@skryensya/core/components/annotation.css";
 import CodeBlock from "../CodeBlock.astro";
 import ComponentPageShell from "./ComponentPageShell.astro";
 import ComponentPreview from "../ComponentPreview.astro";
+import UsagePreview from "../UsagePreview.astro";
 import { ChartAnalyticsCardDemo } from "../react-demos/chart-card";
 import { ChartsAreaDemo, ChartsLineDemo } from "../react-demos/charts";
 import { ChartGalleryDemo, ChartPeriodCardDemo } from "../react-demos/chart-integrations";
@@ -181,20 +182,11 @@ const tanstackSource = `import { TanStackChart } from "@skryensya/charts/react/t
   badge={t("chartsPage.betaBadge")}
   testFiles={["packages/charts/src/react/chart.test.tsx", "apps/docs/src/components/pages/ChartsPage.test.ts"]}}
 >
-  <Fragment slot="anatomy">
-    <p set:html={t("chartsPage.anatomyBody")} />
-    <ComponentPreview
-      tree={chartsAnatomyTree(t)}
-      css={chartsAnatomyCss}
-      label={t("chartsPage.anatomyPreviewLabel")}
-      screens={false}
-      hideSource
-      chrome={false}
-    />
-  </Fragment>
-
   <Fragment slot="usage">
     <p class="lede" set:html={t("chartsPage.lede")} />
+
+    <h3>{t("chartsPage.showcaseTitle")}</h3>
+    <p set:html={t("chartsPage.showcaseBody")} />
     <div class="sk-callout" data-tone="info">
       <div class="sk-callout__content">
         <div class="sk-callout__description" set:html={t("chartsPage.calloutBody")} />
@@ -395,6 +387,26 @@ const tanstackSource = `import { TanStackChart } from "@skryensya/charts/react/t
 
     <h3>{t("chartsPage.implTitle")}</h3>
     <p set:html={t("chartsPage.implBody")} />
+
+    <h3>{t("component.anatomy")}</h3>
+    <p set:html={t("chartsPage.anatomyBody")} />
+    <ComponentPreview
+      tree={chartsAnatomyTree(t)}
+      css={chartsAnatomyCss}
+      label={t("chartsPage.anatomyPreviewLabel")}
+      screens={false}
+      hideSource
+      chrome={false}
+    />
+  </Fragment>
+
+  <Fragment slot="guidelines">
+    <p class="lede" set:html={t("chartsPage.guidelinesLede")} />
+    <ul>
+      <li set:html={t("chartsPage.guide.item1")} />
+      <li set:html={t("chartsPage.guide.item2")} />
+      <li set:html={t("chartsPage.guide.item3")} />
+    </ul>
   </Fragment>
 
   <Fragment slot="install">

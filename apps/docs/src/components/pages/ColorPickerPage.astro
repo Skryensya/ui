@@ -4,6 +4,7 @@ import "@skryensya/core/components/annotation.css";
 import ComponentPageShell from "./ComponentPageShell.astro";
 import CodeBlock from "../CodeBlock.astro";
 import ComponentPreview from "../ComponentPreview.astro";
+import UsagePreview from "../UsagePreview.astro";
 import {
   colorPickerAnatomyCss,
   colorPickerAnatomyHtml,
@@ -37,23 +38,14 @@ const styles = `@import "@skryensya/core/patterns/anchored.css";
   ]}
   testFiles={["packages/vanilla/src/components/color-picker.svelte.test.ts"]}}
 >
-  <Fragment slot="anatomy">
-    <p set:html={t("colorPicker.anatomyBody")} />
-    <ComponentPreview
-      html={colorPickerAnatomyHtml(t)}
-      css={colorPickerAnatomyCss}
-      label={t("colorPicker.anatomyPreviewLabel")}
-      screens={false}
-      hideSource
-      chrome={false}
-    />
-  </Fragment>
-
   <Fragment slot="usage">
     <p class="lede" set:html={t("colorPicker.lede")} />
+
+    <h3>{t("colorPicker.showcaseTitle")}</h3>
+    <p set:html={t("colorPicker.showcaseBody")} />
     <h3>{t("colorPicker.nativeTitle")}</h3>
     <p set:html={t("colorPicker.nativeBody")} />
-    <ComponentPreview tree={nativeColorPickerTree(t)} label={t("demo.colorPicker.nativeLabel")} />
+    <UsagePreview tree={nativeColorPickerTree(t)} />
 
     <h3>{t("colorPicker.customTitle")}</h3>
     <p set:html={t("colorPicker.customBody")} />
@@ -68,13 +60,27 @@ const styles = `@import "@skryensya/core/patterns/anchored.css";
     <ComponentPreview tree={presetsColorPickerTree(t)} label={t("demo.colorPicker.presetsLabel")} viewport="overlay" />
 
     <h3>{t("colorPicker.disabledTitle")}</h3>
-    <ComponentPreview tree={disabledColorPickerTree(t)} label={t("colorPicker.disabledLabel")} />
-
-    <h3>{t("colorPicker.whichTitle")}</h3>
-    <p set:html={t("colorPicker.whichBody")} />
+    <UsagePreview tree={disabledColorPickerTree(t)} />
 
     <h3>{t("component.contractNotesTitle")}</h3>
     <p set:html={t("colorPicker.contractBody")} />
+
+    <h3>{t("component.anatomy")}</h3>
+    <p set:html={t("colorPicker.anatomyBody")} />
+    <ComponentPreview
+      html={colorPickerAnatomyHtml(t)}
+      css={colorPickerAnatomyCss}
+      label={t("colorPicker.anatomyPreviewLabel")}
+      screens={false}
+      hideSource
+      chrome={false}
+    />
+  </Fragment>
+
+  <Fragment slot="guidelines">
+    <p class="lede" set:html={t("colorPicker.guidelinesLede")} />
+    <h3>{t("colorPicker.whichTitle")}</h3>
+    <p set:html={t("colorPicker.whichBody")} />
   </Fragment>
 
   <Fragment slot="install">

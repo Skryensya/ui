@@ -2,6 +2,7 @@
 import ComponentPageShell from "./ComponentPageShell.astro";
 import CodeBlock from "../CodeBlock.astro";
 import ComponentPreview from "../ComponentPreview.astro";
+import UsagePreview from "../UsagePreview.astro";
 import {
   commentAnatomyTree,
   commentActionsTree,
@@ -182,30 +183,14 @@ thread.addEventListener(commentThreadEvents.reply, async (event) => {
   ]}
   testFiles={["packages/react/src/components/comment-thread.test.tsx", "packages/vanilla/src/components/comment-thread.test.ts"]}}
 >
-  <Fragment slot="anatomy">
-    <p set:html={t("commentThread.anatomyBody")} />
-    <ComponentPreview
-      tree={commentAnatomyTree(t)}
-      css={annotationDemoCss}
-      label={t("commentThread.anatomyPreviewLabel")}
-      screens={false}
-      hideSource
-      chrome={false}
-    />
-  </Fragment>
-
   <Fragment slot="usage">
     <p class="lede" set:html={t("commentThread.lede")} />
-    <h3>{t("commentThread.whenTitle")}</h3>
-    <p set:html={t("commentThread.whenBody1")} />
-    <p set:html={t("commentThread.whenBody2")} />
 
-    {/* The ladder, simplest first: one comment, that comment with a row, the composer taking
-        different controls, and only then the whole set. */}
-    {/* The ladder, simplest first: one comment, its action row, a short thread, then depth. */}
+    <h3>{t("commentThread.showcaseTitle")}</h3>
+    <p set:html={t("commentThread.showcaseBody")} />
     <h3>{t("commentThread.demoTitle")}</h3>
     <p set:html={t("commentThread.demoBody")} />
-    <ComponentPreview tree={commentAloneTree(t)} label={t("commentThread.demoAloneLabel")} />
+    <UsagePreview tree={commentAloneTree(t)} />
 
     <h4>{t("commentThread.demoActionsTitle")}</h4>
     <p set:html={t("commentThread.demoActionsBody")} />
@@ -232,7 +217,7 @@ thread.addEventListener(commentThreadEvents.reply, async (event) => {
 
     <h4>{t("commentThread.demoSkeletonTitle")}</h4>
     <p set:html={t("commentThread.demoSkeletonBody")} />
-    <ComponentPreview tree={commentSkeletonTree(t)} label={t("commentThread.demoSkeletonLabel")} />
+    <UsagePreview tree={commentSkeletonTree(t)} />
 
     <h4>{t("commentThread.demoInfiniteTitle")}</h4>
     <p set:html={t("commentThread.demoInfiniteBody")} />
@@ -263,6 +248,28 @@ thread.addEventListener(commentThreadEvents.reply, async (event) => {
       <li set:html={t("commentThread.contractItem2")} />
       <li set:html={t("commentThread.contractItem3")} />
     </ul>
+
+    <h3>{t("component.anatomy")}</h3>
+    <p set:html={t("commentThread.anatomyBody")} />
+    <ComponentPreview
+      tree={commentAnatomyTree(t)}
+      css={annotationDemoCss}
+      label={t("commentThread.anatomyPreviewLabel")}
+      screens={false}
+      hideSource
+      chrome={false}
+    />
+  </Fragment>
+
+  <Fragment slot="guidelines">
+    <p class="lede" set:html={t("commentThread.guidelinesLede")} />
+    <h3>{t("commentThread.whenTitle")}</h3>
+    <p set:html={t("commentThread.whenBody1")} />
+    <p set:html={t("commentThread.whenBody2")} />
+
+    {/* The ladder, simplest first: one comment, that comment with a row, the composer taking
+        different controls, and only then the whole set. */}
+    {/* The ladder, simplest first: one comment, its action row, a short thread, then depth. */}
   </Fragment>
 
   <Fragment slot="install">

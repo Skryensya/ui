@@ -10,6 +10,7 @@ import ComponentPageShell from "./ComponentPageShell.astro";
 import AppearanceMenu from "../AppearanceMenu.astro";
 import CodeBlock from "../CodeBlock.astro";
 import ComponentPreview from "../ComponentPreview.astro";
+import UsagePreview from "../UsagePreview.astro";
 import "@skryensya/core/components/annotation.css";
 import { windowAnatomyCss, windowAnatomyTree, windowFixedTree, windowTree } from "../../demos/window";
 import { getLocale, useTranslations } from "../../i18n";
@@ -45,7 +46,21 @@ const keys = [
     <AppearanceMenu label={t("prefs.appearance")} />
   </Fragment>
 
-  <Fragment slot="anatomy">
+  <Fragment slot="usage">
+    <p class="lede" set:html={t("windowPage.lede")} />
+
+    <h3>{t("windowPage.showcaseTitle")}</h3>
+    <p set:html={t("windowPage.showcaseBody")} />
+    <ComponentPreview tree={windowTree(t)} js={js} label="Window" viewport="overlay" />
+
+    <h3>{t("windowPage.fixedTitle")}</h3>
+    <p set:html={t("windowPage.fixedBody")} />
+    <ComponentPreview tree={windowFixedTree(t)} js={js} label={t("windowPage.fixedLabel")} viewport="overlay" />
+
+    <h3>{t("component.contractNotesTitle")}</h3>
+    <p set:html={t("windowPage.contractBody")} />
+
+    <h3>{t("component.anatomy")}</h3>
     <p set:html={t("windowPage.anatomyBody")} />
     <ComponentPreview
       tree={windowAnatomyTree(t)}
@@ -57,16 +72,13 @@ const keys = [
     />
   </Fragment>
 
-  <Fragment slot="usage">
-    <p class="lede" set:html={t("windowPage.lede")} />
-    <ComponentPreview tree={windowTree(t)} js={js} label="Window" viewport="overlay" />
-
-    <h3>{t("windowPage.fixedTitle")}</h3>
-    <p set:html={t("windowPage.fixedBody")} />
-    <ComponentPreview tree={windowFixedTree(t)} js={js} label={t("windowPage.fixedLabel")} viewport="overlay" />
-
-    <h3>{t("component.contractNotesTitle")}</h3>
-    <p set:html={t("windowPage.contractBody")} />
+  <Fragment slot="guidelines">
+    <p class="lede" set:html={t("windowPage.guidelinesLede")} />
+    <ul>
+      <li set:html={t("windowPage.guide.item1")} />
+      <li set:html={t("windowPage.guide.item2")} />
+      <li set:html={t("windowPage.guide.item3")} />
+    </ul>
   </Fragment>
 
   <Fragment slot="install">

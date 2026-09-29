@@ -25,13 +25,13 @@ export default { title: "Components/Forms/Questionnaire", tags: ["autodocs"] } s
 
 export const Anatomy: StoryObj = treeStory(demos.questionnaireAnatomyTree, { decorators: [withCss(annotationDemoCss)] });
 export const Default: StoryObj = treeStory(demos.questionnaireTree);
-export const ChoicesOnly: StoryObj = treeStory(demos.questionnaireChoicesOnlyTree);
-export const Likert: StoryObj = treeStory(demos.questionnaireLikertTree);
-export const Branching: StoryObj = treeStory(demos.questionnaireBranchingTree);
-export const FollowUp: StoryObj = treeStory(demos.questionnaireFollowUpTree);
-export const Control: StoryObj = treeStory(demos.questionnaireControlTree);
 export const Bar: StoryObj = treeStory(demos.questionnaireBarTree);
 export const Steps: StoryObj = treeStory(demos.questionnaireStepsTree);
+export const Shortcuts: StoryObj = treeStory(demos.questionnaireShortcutsTree);
+export const ChoicesOnly: StoryObj = treeStory(demos.questionnaireChoicesOnlyTree);
+export const Likert: StoryObj = treeStory(demos.questionnaireLikertTree);
+export const FollowUp: StoryObj = treeStory(demos.questionnaireFollowUpTree);
+export const Control: StoryObj = treeStory(demos.questionnaireControlTree);
 export const Segments: StoryObj = treeStory(demos.questionnaireSegmentsTree);
 export const Rail: StoryObj = treeStory(demos.questionnaireRailTree);
-export const Shortcuts: StoryObj = treeStory(demos.questionnaireShortcutsTree);
+export const Branching: StoryObj = treeStory(demos.questionnaireBranchingTree);

@@ -76,6 +76,11 @@ export const tourMessages = {
     "tour.demo.step3Body": "Crea un proyecto desde cero. Nada se crea hasta que lo confirmes.",
     "tour.demo.step4Title": "Repetir el recorrido",
     "tour.demo.step4Body": "Este botón vuelve a abrir el recorrido cuando quieras, desde el primer paso.",
+    "tour.showcaseTitle": "Showcases",
+    "tour.showcaseBody": "Un recorrido por pasos sobre la interfaz, y qué pasa cuando falta un destino.",
+    "tour.guidelinesLede": "Tour guía a alguien por partes de la interfaz, paso a paso.",
+    "tour.guide.item1": "Úsalo para mostrar algo nuevo o poco obvio, no para explicar toda la interfaz.",
+    "tour.guide.item2": "Pocos pasos, y siempre una forma de salir.",
   },
   en: {
     "tour.description": "Walks through an interface step by step, highlighting one element at a time without blocking the page.",
@@ -154,5 +159,10 @@ export const tourMessages = {
     "tour.demo.step3Body": "Create a project from scratch. Nothing is created until you confirm.",
     "tour.demo.step4Title": "Repeat the tour",
     "tour.demo.step4Body": "This button opens the tour again whenever you like, from the first step.",
+    "tour.showcaseTitle": "Showcases",
+    "tour.showcaseBody": "A step-by-step walkthrough over the interface, and what happens when a target is missing.",
+    "tour.guidelinesLede": "Tour guides someone through parts of the interface, step by step.",
+    "tour.guide.item1": "Use it to show something new or not obvious, not to explain the whole interface.",
+    "tour.guide.item2": "Few steps, and always a way out.",
   },
 } as const;
