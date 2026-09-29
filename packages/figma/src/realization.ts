@@ -24,9 +24,10 @@ export type Realization = {
   /**
    * What each slot holds in Figma. The contract says a slot accepts "node"; which node a designer
    * places there is the realization's choice. `iconWhen` names the boolean option under which the
-   * slot holds an icon instead of text.
+   * slot holds an icon instead of text. `icon` is the stable name the slot shows by default, so a
+   * designer who switches a slot on sees a glyph that fits that side, not a stand-in.
    */
-  slots: Readonly<Record<string, { holds: "icon" } | { holds: "text"; sample: string; iconWhen?: string }>>;
+  slots: Readonly<Record<string, { holds: "icon"; icon: string } | { holds: "text"; sample: string; iconWhen?: string; icon?: string }>>;
   /**
    * The icon set that draws the Icon contract in Figma, as a module and export. A set is a brand the
    * consumer picks (decision 15), so Figma draws with the one the docs draw with.
