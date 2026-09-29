@@ -33,6 +33,7 @@
 <div class="row">
   <button class="primary" id="sync">Sync Button</button>
   <button id="dry">Dry run</button>
+  <button id="copy" hidden>Copy report</button>
   <span class="spacer"></span>
   <span class="muted" id="source">…</span>
 </div>
@@ -55,9 +56,22 @@
     mode = type;
     busy(true);
     $("details").hidden = true;
+    $("copy").hidden = true;
     $("status").className = "";
     $("status").textContent = type === "sync" ? "Syncing…" : "Dry run…";
     parent.postMessage({ pluginMessage: { type } }, "*");
+  };
+  // Figma's plugin frame blocks the async clipboard API; a selected textarea and execCommand is what works there.
+  let reportText = "";
+  $("copy").onclick = () => {
+    const area = document.createElement("textarea");
+    area.value = reportText;
+    document.body.append(area);
+    area.select();
+    const ok = document.execCommand("copy");
+    area.remove();
+    $("copy").textContent = ok ? "Copied" : "Copy failed: select the log below";
+    setTimeout(() => ($("copy").textContent = "Copy report"), 1500);
   };
   $("sync").onclick = () => start("sync");
   $("dry").onclick = () => start("dry-run");
@@ -99,6 +113,8 @@
     if (m.type === "progress") renderProgress(m);
     if (m.type === "error") {
       busy(false);
+      reportText = `ERROR\n${m.text}`;
+      $("copy").hidden = false;
       $("status").className = "error";
       $("status").textContent = "Stopped with an error";
       $("details").hidden = false;
@@ -121,6 +137,13 @@
         "",
         ...m.entries.map((e) => `${e.action.padEnd(8)} ${e.subject}${e.detail ? `  (${e.detail})` : ""}`),
       ].join("\n");
+      // The report as pasted: the phases with their summaries, then the full log.
+      reportText = [
+        ...m.phases.map((p) => `${p.label}: ${p.summary ?? ""}`),
+        "",
+        $("log").textContent,
+      ].join("\n");
+      $("copy").hidden = false;
     }
   };
 </script>
