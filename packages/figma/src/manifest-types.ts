@@ -116,7 +116,8 @@ export type IconSlot = { size: Bound<number>; color: Paint };
  */
 export type Layer =
   | { kind: "icon"; slot: string; visibleProperty?: string; default: string; icon: IconSlot }
-  | { kind: "text"; slot: string; textProperty: string; text: Text }
+  /** `visibleProperty`: an optional text slot's boolean (Stat's change), shown by default. */
+  | { kind: "text"; slot: string; textProperty: string; visibleProperty?: string; text: Text }
   /** A pseudo-element with paint (the state layer): covers the host, under its content, same corners. */
   | { kind: "overlay"; slot: string; fills: Paint[] }
   /** An outline: a stroke `width` wide drawn `offset` outside the host, following its corners. */

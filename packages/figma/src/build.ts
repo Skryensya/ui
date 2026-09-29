@@ -378,15 +378,18 @@ async function compileRealization(realization: Realization, shared: Shared): Pro
   // And the icon parts, in the same walk, so each layer lands where the template puts it.
   const drawnParts = realization.parts ?? {};
   const layerOrder: { kind: "slot" | "part"; name: string }[] = [];
-  const walkTemplate = (node: unknown) => {
+  // Which part holds each slot, read off the template: the text is styled by that element.
+  const slotPart: Record<string, string> = {};
+  const walkTemplate = (node: unknown, holder?: string) => {
     if (!node || typeof node !== "object") return;
     const n = node as { slot?: string; part?: string; children?: unknown[] };
+    if (n.slot && (n.part ?? holder)) slotPart[n.slot] = (n.part ?? holder)!;
     if (n.part && drawnParts[n.part] && !layerOrder.some((l) => l.kind === "part" && l.name === n.part)) layerOrder.push({ kind: "part", name: n.part });
     if (n.slot && realization.slots[n.slot] && !slotOrder.includes(n.slot)) {
       slotOrder.push(n.slot);
       layerOrder.push({ kind: "slot", name: n.slot });
     }
-    for (const child of n.children ?? []) walkTemplate(child);
+    for (const child of n.children ?? []) walkTemplate(child, n.part ?? holder);
   };
   walkTemplate(signature.template);
   const unplaced = Object.keys(realization.slots).filter((slot) => !slotOrder.includes(slot));
@@ -461,9 +464,9 @@ async function compileRealization(realization: Realization, shared: Shared): Pro
             });
           } else {
             // Styled by the element that holds the text: a label part when there is one, else the host.
-            const labelPart = contract.parts[`${slot}`] ?? (slot === "children" ? contract.parts.label : undefined);
-            const textHolder = (labelPart && host.querySelector(`.${labelPart}`)) || host;
-            layers.push({ kind: "text", slot, textProperty: slot, text: textOf(ctx(textHolder)) });
+            const holderPart = slotPart[slot] && slotPart[slot] !== "root" ? contract.parts[slotPart[slot]] : undefined;
+            const textHolder = (holderPart && host.querySelector(`.${holderPart}`)) || host;
+            layers.push({ kind: "text", slot, textProperty: slot, ...(optional ? { visibleProperty: `show ${slot}` } : {}), text: textOf(ctx(textHolder)) });
           }
         }
         // An outline draws over everything, last.
@@ -484,7 +487,11 @@ async function compileRealization(realization: Realization, shared: Shared): Pro
     for (const [slot, spec] of Object.entries(realization.slots)) {
       if (spec.holds === "text" && spec.hidden) continue;
       if (spec.holds === "text") properties.push({ name: slot, type: "TEXT", default: spec.sample });
-      if (!signature.slots[slot]?.required) properties.push({ name: slot, type: "BOOLEAN", default: false });
+      // An optional icon slot starts off (Button's pre/post); an optional text starts shown, under
+      // its own name so it does not collide with the text property beside it.
+      if (!signature.slots[slot]?.required) {
+        properties.push(spec.holds === "text" ? { name: `show ${slot}`, type: "BOOLEAN", default: true } : { name: slot, type: "BOOLEAN", default: false });
+      }
     }
     const setAxes = axes.map((a) => ({ name: a.name, values: a.values }));
     const defaultOf = (axis: Axis) =>
