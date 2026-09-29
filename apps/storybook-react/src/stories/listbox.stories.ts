@@ -14,3 +14,5 @@ export const Anatomy: StoryObj = treeStory(demos.listboxAnatomyTree, { decorator
 export const Single: StoryObj = treeStory(demos.listboxSingleTree);
 export const Multiple: StoryObj = treeStory(demos.listboxMultipleTree);
 export const Horizontal: StoryObj = treeStory(demos.listboxHorizontalTree);
+export const Plain: StoryObj = treeStory(demos.listboxPlainTree);
+export const DontActions: StoryObj = treeStory(demos.listboxDontActionsTree);

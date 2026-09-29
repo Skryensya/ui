@@ -4,6 +4,7 @@ import "@skryensya/core/components/annotation.css";
 import "@skryensya/core/components/button.css";
 import "@skryensya/core/components/calendar.css";
 import "@skryensya/core/components/canvas.css";
+import "@skryensya/core/patterns/layout.css";
 import * as demos from "@docs/demos/calendar";
 import { annotationDemoCss } from "@docs/demos/annotation";
 import { treeStory, withCss, type Meta, type StoryObj } from "../tree-story";
@@ -14,3 +15,4 @@ export const Anatomy: StoryObj = treeStory(demos.calendarAnatomyTree, { decorato
 export const Default: StoryObj = treeStory(demos.calendarTree);
 export const Range: StoryObj = treeStory(demos.calendarRangeTree);
 export const MinMax: StoryObj = treeStory(demos.calendarMinMaxTree);
+export const DontTwo: StoryObj = treeStory(demos.calendarDontTwoTree);

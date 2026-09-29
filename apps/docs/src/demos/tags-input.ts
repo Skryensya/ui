@@ -112,3 +112,22 @@ export const tagsInputFieldTree = (t: Translate): UsageTree => ({
     },
   },
 });
+
+/* Don't: sentences as tags, which wrap and stop reading as tags. */
+export const tagsInputDontLongTree = (t: Translate): UsageTree => ({
+  contract: "tags-input",
+  signature: "TagsInput",
+  options: {
+    label: t("demo.tagsInput.label"),
+    placeholder: t("demo.tagsInput.placeholder"),
+    removeLabel: t("demo.tagsInput.removeLabel"),
+    name: "topics-long",
+  },
+  attrs: { style: "inline-size: 18rem" },
+  slots: { items: [tag(t, "demo.tagsInput.dd.long1"), tag(t, "demo.tagsInput.dd.long2")] },
+});
+
+export const tagsInputDoShortTree = (t: Translate): UsageTree => ({
+  ...tagsInputTree(t),
+  attrs: { style: "inline-size: 18rem" },
+});

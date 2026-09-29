@@ -14,6 +14,7 @@ import "@skryensya/core/components/annotation.css";
 import CodeBlock from "../CodeBlock.astro";
 import ComponentPageShell from "./ComponentPageShell.astro";
 import ComponentPreview from "../ComponentPreview.astro";
+import UsagePreview from "../UsagePreview.astro";
 import {
   userSelectAnatomyCss,
   userSelectAnatomyHtml,
@@ -71,18 +72,6 @@ const reactSource = `<UserSelect
   ]}
   testFiles={["packages/react/src/components/user-select.test.tsx", "packages/vanilla/src/components/user-select.test.ts"]}
 >
-  <Fragment slot="anatomy">
-    <p set:html={t("userSelectPage.anatomyBody")} />
-    <ComponentPreview
-      html={userSelectAnatomyHtml(t)}
-      css={userSelectAnatomyCss}
-      label={t("userSelectPage.anatomyPreviewLabel")}
-      screens={false}
-      hideSource
-      chrome={false}
-    />
-  </Fragment>
-
   <Fragment slot="usage">
     <p class="lede" set:html={t("userSelectPage.lede")} />
 
@@ -127,6 +116,27 @@ const reactSource = `<UserSelect
 
     <h3>{t("userSelectPage.reactTitle")}</h3>
     <p set:html={t("userSelectPage.reactBody")} />
+
+    <h3>{t("component.anatomy")}</h3>
+    <p set:html={t("userSelectPage.anatomyBody")} />
+    <ComponentPreview
+      html={userSelectAnatomyHtml(t)}
+      css={userSelectAnatomyCss}
+      label={t("userSelectPage.anatomyPreviewLabel")}
+      screens={false}
+      hideSource
+      chrome={false}
+    />
+  </Fragment>
+
+  <Fragment slot="guidelines">
+    <p class="lede" set:html={t("userSelectPage.guidelinesLede")} />
+    <ul>
+      <li set:html={t("userSelectPage.guide.use1")} />
+      <li set:html={t("userSelectPage.guide.use2")} />
+      <li set:html={t("userSelectPage.guide.avoid1")} />
+      <li set:html={t("userSelectPage.guide.avoid2")} />
+    </ul>
   </Fragment>
 
   <Fragment slot="install">

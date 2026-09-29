@@ -115,3 +115,36 @@ export const selectAnatomyCss = `.sk-annotated-figure {
 .sk-annotated__subject {
   text-align: center;
 }`;
+
+/* One select, the specimen the `variant` and `appearance` previews vary. */
+export const selectSingleTree = (t: Translate): UsageTree => ({
+  ...selectTree(t),
+  attrs: { style: "inline-size: min(100%, 16rem)" },
+});
+
+/* Don't: two choices hidden behind a click, where both could be on screen. */
+export const selectDontTwoTree = (t: Translate): UsageTree => ({
+  contract: "select",
+  signature: "Select",
+  options: { name: "billing", value: "monthly" },
+  attrs: { style: "inline-size: 14rem" },
+  slots: {
+    label: t("demo.select.dd.billing"),
+    items: [
+      { options: { value: "monthly" }, slots: { label: t("demo.select.dd.monthly") } },
+      { options: { value: "yearly" }, slots: { label: t("demo.select.dd.yearly") } },
+    ],
+  },
+});
+
+export const selectDoTwoTree = (t: Translate): UsageTree => ({
+  contract: "radio-group",
+  signature: "RadioGroup",
+  options: { name: "billing-radio", value: "monthly", label: t("demo.select.dd.billing") },
+  slots: {
+    items: [
+      { options: { value: "monthly" }, slots: { label: t("demo.select.dd.monthly") } },
+      { options: { value: "yearly" }, slots: { label: t("demo.select.dd.yearly") } },
+    ],
+  },
+});

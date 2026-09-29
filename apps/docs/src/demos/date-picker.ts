@@ -160,3 +160,28 @@ export const datePickerAnatomyCss = `.sk-annotated-figure {
 .sk-annotated__subject {
   text-align: center;
 }`;
+
+/* One field, the specimen the `appearance` and `disabled` previews vary. */
+export const datePickerSingleTree = (t: Translate): UsageTree => ({
+  ...datePickerTree(t),
+  attrs: { style: "inline-size: min(100%, 18rem)" },
+});
+
+/* Do/Don't: a stay as one range, or as two pickers that know nothing of each other. */
+export const datePickerDoRangeTree = (t: Translate): UsageTree => ({
+  ...datePickerTree(t),
+  options: { ...datePickerTree(t).options, name: "stay", selectionMode: "range" },
+  attrs: { style: "inline-size: 18rem" },
+  slots: { label: t("demo.datePicker.dd.stay") },
+});
+
+export const datePickerDontRangeTree = (t: Translate): UsageTree => ({
+  contract: "layout",
+  signature: "Stack",
+  options: { gap: "md" },
+  attrs: { style: "inline-size: 18rem" },
+  children: [
+    { ...datePickerTree(t), options: { ...datePickerTree(t).options, name: "stay-start" }, slots: { label: t("demo.datePicker.dd.start") } },
+    { ...datePickerTree(t), options: { ...datePickerTree(t).options, name: "stay-end" }, slots: { label: t("demo.datePicker.dd.end") } },
+  ],
+});

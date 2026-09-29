@@ -11,8 +11,12 @@ import ComponentPageShell from "./ComponentPageShell.astro";
 import AppearanceMenu from "../AppearanceMenu.astro";
 import CodeBlock from "../CodeBlock.astro";
 import ComponentPreview from "../ComponentPreview.astro";
+import UsagePreview from "../UsagePreview.astro";
+import DoDont from "../DoDont.astro";
 import {
   tagsInputAnatomyTree,
+  tagsInputDoShortTree,
+  tagsInputDontLongTree,
   tagsInputEmptyTree,
   tagsInputFieldTree,
   tagsInputMaxTree,
@@ -28,6 +32,10 @@ const styles = `@import "@skryensya/core/components/tags-input.css";
 /* The chip is a Tag, and its remove control is a Button. */
 @import "@skryensya/core/components/tag.css";
 @import "@skryensya/core/components/button.css";`;
+
+/* What each value of a property is for, read from this page's messages. Same model Badge uses. */
+const explain = (option: string, values: readonly string[]) =>
+  Object.fromEntries(values.map((value) => [value, t(`tagsInputPage.prop.${option}.${value}` as Parameters<typeof t>[0])]));
 ---
 
 <ComponentPageShell
@@ -44,7 +52,63 @@ const styles = `@import "@skryensya/core/components/tags-input.css";
     <AppearanceMenu label={t("prefs.appearance")} values={["plain", "brutalist", "frosted"]} unavailable={{ tactile: t("prefs.appearanceTactileUnavailable") }} />
   </Fragment>
 
-  <Fragment slot="anatomy">
+  <Fragment slot="usage">
+    <p class="lede" set:html={t("tagsInputPage.lede")} />
+
+    <UsagePreview
+      tree={tagsInputDoShortTree(t)}
+      optionName="appearance"
+      title={t("tagsInputPage.prop.appearance.title")}
+      description={t("tagsInputPage.prop.appearance.body")}
+      explain={explain("appearance", ["plain", "brutalist", "frosted"])}
+      stageMinBlockSize="9rem"
+    />
+
+    <UsagePreview
+      tree={tagsInputDoShortTree(t)}
+      optionName="invalid"
+      title={t("tagsInputPage.prop.invalid.title")}
+      description={t("tagsInputPage.prop.invalid.body")}
+      explain={explain("invalid", ["false", "true"])}
+      stageMinBlockSize="9rem"
+      labels={{ false: t("tagsInputPage.prop.invalid.falseLabel"), true: t("tagsInputPage.prop.invalid.trueLabel") }}
+    />
+
+    <h3>{t("tagsInputPage.showcaseTitle")}</h3>
+    <p set:html={t("tagsInputPage.showcaseBody")} />
+    <UsagePreview tree={tagsInputTree(t)} />
+
+    <h3>{t("tagsInputPage.composesTitle")}</h3>
+    <p set:html={t("tagsInputPage.composesBody")} />
+
+    <h3>{t("tagsInputPage.markupTitle")}</h3>
+    <p set:html={t("tagsInputPage.markupBody")} />
+
+    <h3>{t("tagsInputPage.emptyTitle")}</h3>
+    <p set:html={t("tagsInputPage.emptyBody")} />
+    <UsagePreview tree={tagsInputEmptyTree(t)} />
+
+    <h3>{t("tagsInputPage.maxTitle")}</h3>
+    <p set:html={t("tagsInputPage.maxBody")} />
+    <UsagePreview tree={tagsInputMaxTree(t)} />
+
+    <h3>{t("tagsInputPage.readOnlyTitle")}</h3>
+    <p set:html={t("tagsInputPage.readOnlyBody")} />
+    <UsagePreview tree={tagsInputReadOnlyTree(t)} />
+
+    <h3>{t("tagsInputPage.fieldTitle")}</h3>
+    <p set:html={t("tagsInputPage.fieldBody")} />
+    <UsagePreview tree={tagsInputFieldTree(t)} />
+
+    <h3>{t("component.contractNotesTitle")}</h3>
+    <ul>
+      <li set:html={t("tagsInputPage.contractItem1")} />
+      <li set:html={t("tagsInputPage.contractItem2")} />
+      <li set:html={t("tagsInputPage.contractItem3")} />
+      <li set:html={t("tagsInputPage.contractItem4")} />
+    </ul>
+
+    <h3>{t("component.anatomy")}</h3>
     <p set:html={t("tagsInputPage.anatomyBody")} />
     <ComponentPreview
       tree={tagsInputAnatomyTree(t)}
@@ -56,32 +120,8 @@ const styles = `@import "@skryensya/core/components/tags-input.css";
     />
   </Fragment>
 
-  <Fragment slot="usage">
-    <p class="lede" set:html={t("tagsInputPage.lede")} />
-    <ComponentPreview tree={tagsInputTree(t)} label="TagsInput" />
-
-    <h3>{t("tagsInputPage.composesTitle")}</h3>
-    <p set:html={t("tagsInputPage.composesBody")} />
-
-    <h3>{t("tagsInputPage.markupTitle")}</h3>
-    <p set:html={t("tagsInputPage.markupBody")} />
-
-    <h3>{t("tagsInputPage.emptyTitle")}</h3>
-    <p set:html={t("tagsInputPage.emptyBody")} />
-    <ComponentPreview tree={tagsInputEmptyTree(t)} label={t("tagsInputPage.emptyPreviewLabel")} />
-
-    <h3>{t("tagsInputPage.maxTitle")}</h3>
-    <p set:html={t("tagsInputPage.maxBody")} />
-    <ComponentPreview tree={tagsInputMaxTree(t)} label={t("tagsInputPage.maxPreviewLabel")} />
-
-    <h3>{t("tagsInputPage.readOnlyTitle")}</h3>
-    <p set:html={t("tagsInputPage.readOnlyBody")} />
-    <ComponentPreview tree={tagsInputReadOnlyTree(t)} label={t("tagsInputPage.readOnlyPreviewLabel")} />
-
-    <h3>{t("tagsInputPage.fieldTitle")}</h3>
-    <p set:html={t("tagsInputPage.fieldBody")} />
-    <ComponentPreview tree={tagsInputFieldTree(t)} label={t("tagsInputPage.fieldPreviewLabel")} />
-
+  <Fragment slot="guidelines">
+    <p class="lede" set:html={t("tagsInputPage.guidelinesLede")} />
     <h3>{t("tagsInputPage.whenTitle")}</h3>
     <ul>
       <li set:html={t("tagsInputPage.whenItem1")} />
@@ -89,14 +129,11 @@ const styles = `@import "@skryensya/core/components/tags-input.css";
       <li set:html={t("tagsInputPage.whenItem3")} />
       <li set:html={t("tagsInputPage.whenItem4")} />
     </ul>
-
-    <h3>{t("component.contractNotesTitle")}</h3>
-    <ul>
-      <li set:html={t("tagsInputPage.contractItem1")} />
-      <li set:html={t("tagsInputPage.contractItem2")} />
-      <li set:html={t("tagsInputPage.contractItem3")} />
-      <li set:html={t("tagsInputPage.contractItem4")} />
-    </ul>
+    <DoDont
+      title={t("tagsInputPage.dd.short.title")}
+      do={{ tree: tagsInputDoShortTree(t), caption: t("tagsInputPage.dd.short.do") }}
+      dont={{ tree: tagsInputDontLongTree(t), caption: t("tagsInputPage.dd.short.dont") }}
+    />
   </Fragment>
 
   <Fragment slot="install">

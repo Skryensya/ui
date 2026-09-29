@@ -2,11 +2,15 @@
 import ComponentPageShell from "./ComponentPageShell.astro";
 import CodeBlock from "../CodeBlock.astro";
 import ComponentPreview from "../ComponentPreview.astro";
+import UsagePreview from "../UsagePreview.astro";
+import DoDont from "../DoDont.astro";
 import { annotationDemoCss } from "../../demos/annotation";
 import {
   listboxAnatomyTree,
+  listboxDontActionsTree,
   listboxHorizontalTree,
   listboxMultipleTree,
+  listboxPlainTree,
   listboxSingleTree,
 } from "../../demos/listbox";
 import { getLocale, useTranslations } from "../../i18n";
@@ -29,6 +33,10 @@ import "@skryensya/core/components/listbox.css";
 const vanilla = `document.addEventListener("sk:listboxvaluechange", (event) => {
   setFilters(event.detail.value);
 });`;
+
+/* What each value of a property is for, read from this page's messages. Same model Badge uses. */
+const explain = (option: string, values: readonly string[]) =>
+  Object.fromEntries(values.map((value) => [value, t(`listbox.prop.${option}.${value}` as Parameters<typeof t>[0])]));
 ---
 
 <ComponentPageShell
@@ -42,39 +50,41 @@ const vanilla = `document.addEventListener("sk:listboxvaluechange", (event) => {
     "packages/react/src/components/listbox.test.tsx",
   ]}
 >
-  <Fragment slot="anatomy">
-    <p set:html={t("listbox.anatomyBody")} />
-    <ComponentPreview
-      tree={listboxAnatomyTree(t)}
-      css={annotationDemoCss}
-      label={t("listbox.anatomyPreviewLabel")}
-      screens={false}
-      hideSource
-      chrome={false}
-    />
-  </Fragment>
-
   <Fragment slot="usage">
     <p class="lede" set:html={t("listbox.lede")} />
 
-    <h3>{t("listbox.whenTitle")}</h3>
-    <ul>
-      <li set:html={t("listbox.whenItem1")} />
-      <li set:html={t("listbox.whenItem2")} />
-      <li set:html={t("listbox.whenItem3")} />
-    </ul>
+    <UsagePreview
+      tree={listboxPlainTree(t)}
+      optionName="selectionMode"
+      title={t("listbox.prop.selectionMode.title")}
+      description={t("listbox.prop.selectionMode.body")}
+      explain={explain("selectionMode", ["single", "multiple", "extended"])}
+      stageMinBlockSize="12rem"
+    />
+
+    <UsagePreview
+      tree={listboxPlainTree(t)}
+      optionName="orientation"
+      title={t("listbox.prop.orientation.title")}
+      description={t("listbox.prop.orientation.body")}
+      explain={explain("orientation", ["vertical", "horizontal"])}
+      stageMinBlockSize="12rem"
+    />
+
+    <h3>{t("listbox.showcaseTitle")}</h3>
+    <p set:html={t("listbox.showcaseBody")} />
 
     <h3>{t("listbox.singleTitle")}</h3>
     <p set:html={t("listbox.singleBody")} />
-    <ComponentPreview tree={listboxSingleTree(t)} label={t("listbox.singleLabel")} />
+    <UsagePreview tree={listboxSingleTree(t)} />
 
     <h3>{t("listbox.multipleTitle")}</h3>
     <p set:html={t("listbox.multipleBody")} />
-    <ComponentPreview tree={listboxMultipleTree(t)} label={t("listbox.multipleLabel")} />
+    <UsagePreview tree={listboxMultipleTree(t)} />
 
     <h3>{t("listbox.horizontalTitle")}</h3>
     <p set:html={t("listbox.horizontalBody")} />
-    <ComponentPreview tree={listboxHorizontalTree(t)} label={t("listbox.horizontalLabel")} />
+    <UsagePreview tree={listboxHorizontalTree(t)} />
 
     <h3>{t("listbox.keyboardTitle")}</h3>
     <ul>
@@ -87,5 +97,31 @@ const vanilla = `document.addEventListener("sk:listboxvaluechange", (event) => {
     <p set:html={t("listbox.eventsBody")} />
     <CodeBlock code={react} label="React" lang="tsx" />
     <CodeBlock code={vanilla} label="JavaScript" lang="ts" />
+
+    <h3>{t("component.anatomy")}</h3>
+    <p set:html={t("listbox.anatomyBody")} />
+    <ComponentPreview
+      tree={listboxAnatomyTree(t)}
+      css={annotationDemoCss}
+      label={t("listbox.anatomyPreviewLabel")}
+      screens={false}
+      hideSource
+      chrome={false}
+    />
+  </Fragment>
+
+  <Fragment slot="guidelines">
+    <p class="lede" set:html={t("listbox.guidelinesLede")} />
+    <h3>{t("listbox.whenTitle")}</h3>
+    <ul>
+      <li set:html={t("listbox.whenItem1")} />
+      <li set:html={t("listbox.whenItem2")} />
+      <li set:html={t("listbox.whenItem3")} />
+    </ul>
+    <DoDont
+      title={t("listbox.dd.actions.title")}
+      do={{ tree: listboxPlainTree(t), caption: t("listbox.dd.actions.do") }}
+      dont={{ tree: listboxDontActionsTree(t), caption: t("listbox.dd.actions.dont") }}
+    />
   </Fragment>
 </ComponentPageShell>

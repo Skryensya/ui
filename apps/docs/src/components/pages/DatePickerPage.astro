@@ -3,10 +3,15 @@ import ComponentPageShell from "./ComponentPageShell.astro";
 import AppearanceMenu from "../AppearanceMenu.astro";
 import CodeBlock from "../CodeBlock.astro";
 import ComponentPreview from "../ComponentPreview.astro";
+import UsagePreview from "../UsagePreview.astro";
+import DoDont from "../DoDont.astro";
 import {
   datePickerAnatomyCss,
   datePickerAnatomyHtml,
   datePickerDisabledTree,
+  datePickerDoRangeTree,
+  datePickerDontRangeTree,
+  datePickerSingleTree,
   datePickerTree,
   nativeDatePickerTree,
 } from "../../demos/date-picker";
@@ -20,6 +25,10 @@ const t = useTranslations(getLocale(Astro.url));
 const styles = `@import "@skryensya/core/patterns/anchored.css";
 @import "@skryensya/core/components/button.css";
 @import "@skryensya/core/components/date-picker.css";`;
+
+/* What each value of a property is for, read from this page's messages. Same model Badge uses. */
+const explain = (option: string, values: readonly string[]) =>
+  Object.fromEntries(values.map((value) => [value, t(`datePicker.prop.${option}.${value}` as Parameters<typeof t>[0])]));
 ---
 
 <ComponentPageShell
@@ -39,7 +48,53 @@ const styles = `@import "@skryensya/core/patterns/anchored.css";
     <AppearanceMenu label={t("prefs.appearance")} values={["plain", "brutalist", "frosted"]} unavailable={{ tactile: t("prefs.appearanceTactileUnavailable") }} />
   </Fragment>
 
-  <Fragment slot="anatomy">
+  <Fragment slot="usage">
+    <p class="lede" set:html={t("datePicker.lede")} />
+
+    <UsagePreview
+      tree={datePickerSingleTree(t)}
+      optionName="appearance"
+      title={t("datePicker.prop.appearance.title")}
+      description={t("datePicker.prop.appearance.body")}
+      explain={explain("appearance", ["plain", "brutalist", "frosted"])}
+      stageMinBlockSize="9rem"
+    />
+
+    <UsagePreview
+      tree={datePickerSingleTree(t)}
+      optionName="disabled"
+      title={t("datePicker.prop.disabled.title")}
+      description={t("datePicker.prop.disabled.body")}
+      explain={explain("disabled", ["false", "true"])}
+      stageMinBlockSize="9rem"
+      labels={{ false: t("datePicker.prop.disabled.falseLabel"), true: t("datePicker.prop.disabled.trueLabel") }}
+    />
+
+    <h3>{t("datePicker.showcaseTitle")}</h3>
+    <p set:html={t("datePicker.showcaseBody")} />
+    <h3>{t("datePicker.nativeTitle")}</h3>
+    <p set:html={t("datePicker.nativeBody")} />
+    <UsagePreview tree={nativeDatePickerTree(t)} />
+
+    <h3>{t("datePicker.customTitle")}</h3>
+    <p set:html={t("datePicker.customBody")} />
+    {/* `overlay` (~24rem): the calendar reserves the height of its six rows inside the frame. */}
+    <ComponentPreview tree={datePickerTree(t)} label={t("datePicker.customLabel")} viewport="overlay" />
+
+    <h3>{t("datePicker.disabledTitle")}</h3>
+    <p set:html={t("datePicker.disabledBody")} />
+    <UsagePreview tree={datePickerDisabledTree(t)} />
+
+    <h3>{t("datePicker.whichTitle")}</h3>
+    <p set:html={t("datePicker.whichBody")} />
+
+    <h3>{t("component.contractNotesTitle")}</h3>
+    <p set:html={t("datePicker.contractBody")} />
+
+    <h3>{t("datePicker.mobileTitle")}</h3>
+    <p set:html={t("datePicker.mobileBody")} />
+
+    <h3>{t("component.anatomy")}</h3>
     <p set:html={t("datePicker.anatomyBody")} />
     <ComponentPreview
       html={datePickerAnatomyHtml(t)}
@@ -51,29 +106,13 @@ const styles = `@import "@skryensya/core/patterns/anchored.css";
     />
   </Fragment>
 
-  <Fragment slot="usage">
-    <p class="lede" set:html={t("datePicker.lede")} />
-    <h3>{t("datePicker.nativeTitle")}</h3>
-    <p set:html={t("datePicker.nativeBody")} />
-    <ComponentPreview tree={nativeDatePickerTree(t)} label={t("datePicker.nativeLabel")} />
-
-    <h3>{t("datePicker.customTitle")}</h3>
-    <p set:html={t("datePicker.customBody")} />
-    {/* `overlay` (~24rem): the calendar reserves the height of its six rows inside the frame. */}
-    <ComponentPreview tree={datePickerTree(t)} label={t("datePicker.customLabel")} viewport="overlay" />
-
-    <h3>{t("datePicker.disabledTitle")}</h3>
-    <p set:html={t("datePicker.disabledBody")} />
-    <ComponentPreview tree={datePickerDisabledTree(t)} label={t("datePicker.disabledLabel")} />
-
-    <h3>{t("datePicker.whichTitle")}</h3>
-    <p set:html={t("datePicker.whichBody")} />
-
-    <h3>{t("component.contractNotesTitle")}</h3>
-    <p set:html={t("datePicker.contractBody")} />
-
-    <h3>{t("datePicker.mobileTitle")}</h3>
-    <p set:html={t("datePicker.mobileBody")} />
+  <Fragment slot="guidelines">
+    <p class="lede" set:html={t("datePicker.guidelinesLede")} />
+    <DoDont
+      title={t("datePicker.dd.range.title")}
+      do={{ tree: datePickerDoRangeTree(t), caption: t("datePicker.dd.range.do") }}
+      dont={{ tree: datePickerDontRangeTree(t), caption: t("datePicker.dd.range.dont") }}
+    />
   </Fragment>
 
   <Fragment slot="install">

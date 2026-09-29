@@ -3,9 +3,13 @@
 import "@skryensya/core/components/annotation.css";
 import ComponentPageShell from "./ComponentPageShell.astro";
 import ComponentPreview from "../ComponentPreview.astro";
+import UsagePreview from "../UsagePreview.astro";
+import DoDont from "../DoDont.astro";
 import {
   fileUploadAnatomyCss,
   fileUploadAnatomyHtml,
+  fileUploadDoLimitsTree,
+  fileUploadDontLimitsTree,
   fileUploadPageDropTree,
   fileUploadTree,
 } from "../../demos/file-upload";
@@ -16,6 +20,10 @@ import "@skryensya/core/components/button.css";
 import "@skryensya/core/patterns/icon.css";
 
 const t = useTranslations(getLocale(Astro.url));
+
+/* What each value of a property is for, read from this page's messages. Same model Badge uses. */
+const explain = (option: string, values: readonly string[]) =>
+  Object.fromEntries(values.map((value) => [value, t(`fileUploadPage.prop.${option}.${value}` as Parameters<typeof t>[0])]));
 ---
 
 <ComponentPageShell
@@ -28,25 +36,22 @@ const t = useTranslations(getLocale(Astro.url));
     "packages/react/src/components/file-upload.test.tsx",
   ]}
 >
-  <Fragment slot="anatomy">
-    <ComponentPreview
-      html={fileUploadAnatomyHtml(t)}
-      css={fileUploadAnatomyCss}
-      label={t("fileUploadPage.anatomyPreviewLabel")}
-      screens={false}
-      hideSource
-      chrome={false}
-      width="breakout"
-    />
-  </Fragment>
-
   <Fragment slot="usage">
     <p class="lede" set:html={t("fileUploadPage.description")} />
 
-    <p set:html={t("fileUploadPage.anatomyBody")} />
-    {/* Ten labels need the whole track, and `breakout` is how a preview asks for it. It was a no-op
-        until the `justify-self` rule in site.css: the panel placed every preview on that track and
-        then centred it, so the room was there and nothing took it. */}
+    <UsagePreview
+      tree={fileUploadTree(t)}
+      optionName="disabled"
+      title={t("fileUploadPage.prop.disabled.title")}
+      description={t("fileUploadPage.prop.disabled.body")}
+      explain={explain("disabled", ["false", "true"])}
+      stageMinBlockSize="20rem"
+      labels={{ false: t("fileUploadPage.prop.disabled.falseLabel"), true: t("fileUploadPage.prop.disabled.trueLabel") }}
+    />
+
+    <h3>{t("fileUploadPage.showcaseTitle")}</h3>
+    <p set:html={t("fileUploadPage.showcaseBody")} />
+
     {/*
       * A FLOOR, NOT A MEASUREMENT. `preview-heights.json` reserves what a demo settles at, and this
       * one settles EMPTY: the whole point of the control is that you add files to it, and each row
@@ -83,6 +88,31 @@ const t = useTranslations(getLocale(Astro.url));
 
     <h3>{t("component.contractNotesTitle")}</h3>
     <p set:html={t("fileUploadPage.contractBody")} />
+
+    <h3>{t("component.anatomy")}</h3>
+    <p set:html={t("fileUploadPage.anatomyBody")} />
+    {/* Ten labels need the whole track, and `breakout` is how a preview asks for it. It was a no-op
+        until the `justify-self` rule in site.css: the panel placed every preview on that track and
+        then centred it, so the room was there and nothing took it. */}
+    <ComponentPreview
+      html={fileUploadAnatomyHtml(t)}
+      css={fileUploadAnatomyCss}
+      label={t("fileUploadPage.anatomyPreviewLabel")}
+      screens={false}
+      hideSource
+      chrome={false}
+      width="breakout"
+    />
+  </Fragment>
+
+  <Fragment slot="guidelines">
+    <p class="lede" set:html={t("fileUploadPage.guidelinesLede")} />
+    <DoDont
+      canvas
+      title={t("fileUploadPage.dd.limits.title")}
+      do={{ tree: fileUploadDoLimitsTree(t), caption: t("fileUploadPage.dd.limits.do") }}
+      dont={{ tree: fileUploadDontLimitsTree(t), caption: t("fileUploadPage.dd.limits.dont") }}
+    />
   </Fragment>
 
   <Fragment slot="a11y">

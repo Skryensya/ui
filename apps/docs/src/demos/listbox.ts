@@ -90,3 +90,33 @@ export const listboxHorizontalTree = (t: Translate): UsageTree => ({
     ),
   },
 });
+
+/* One list, the specimen the `selectionMode` and `orientation` previews vary. */
+export const listboxPlainTree = (t: Translate): UsageTree => ({
+  contract: "listbox",
+  signature: "Listbox",
+  attrs: { style: "inline-size: min(100%, 16rem)" },
+  slots: {
+    label: t("listbox.demoViewLabel"),
+    items: [
+      option("list", t("listbox.demoViewList"), { defaultSelected: true }),
+      option("board", t("listbox.demoViewBoard")),
+      option("calendar", t("listbox.demoViewCalendar")),
+    ],
+  },
+});
+
+/* Don't: commands in a listbox, which reads as a choice that stays chosen. */
+export const listboxDontActionsTree = (t: Translate): UsageTree => ({
+  contract: "listbox",
+  signature: "Listbox",
+  attrs: { style: "inline-size: 14rem" },
+  slots: {
+    label: t("listbox.dd.actionsLabel"),
+    items: [
+      option("duplicate", t("listbox.dd.duplicate")),
+      option("rename", t("listbox.dd.rename")),
+      option("delete", t("listbox.dd.delete")),
+    ],
+  },
+});

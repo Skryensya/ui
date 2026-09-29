@@ -14,3 +14,5 @@ export const Default: StoryObj = treeStory(demos.timeFieldTree);
 export const Forced24: StoryObj = treeStory(demos.timeFieldForced24Tree);
 export const QuarterHour: StoryObj = treeStory(demos.timeFieldQuarterHourTree);
 export const Native: StoryObj = treeStory(demos.timeFieldNativeTree);
+export const DontCycle: StoryObj = treeStory(demos.timeFieldDontCycleTree);
+export const DoCycle: StoryObj = treeStory(demos.timeFieldDoCycleTree);

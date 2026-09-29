@@ -179,3 +179,11 @@ export const timeFieldNativeTree = (
     options: { type: "time", name: opts.name },
   },
 });
+
+/* Don't: a twelve-hour clock forced on a locale that reads twenty-four. */
+export const timeFieldDontCycleTree = (t: Translate): UsageTree => ({
+  ...timeFieldTree(t, { locale: "es", name: "forced-h12" }),
+  options: { ...timeFieldTree(t, { locale: "es", name: "forced-h12" }).options, hourCycle: "h12" },
+});
+
+export const timeFieldDoCycleTree = (t: Translate): UsageTree => timeFieldTree(t, { locale: "es", name: "locale-cycle" });

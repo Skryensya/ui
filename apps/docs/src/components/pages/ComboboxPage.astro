@@ -3,7 +3,15 @@ import ComponentPageShell from "./ComponentPageShell.astro";
 import AppearanceMenu from "../AppearanceMenu.astro";
 import CodeBlock from "../CodeBlock.astro";
 import ComponentPreview from "../ComponentPreview.astro";
-import { comboboxAnatomyCss, comboboxAnatomyHtml, comboboxTree } from "../../demos/combobox";
+import UsagePreview from "../UsagePreview.astro";
+import DoDont from "../DoDont.astro";
+import {
+  comboboxAnatomyCss,
+  comboboxAnatomyHtml,
+  comboboxDontFewTree,
+  comboboxSingleTree,
+  comboboxTree,
+} from "../../demos/combobox";
 import { getLocale, useTranslations } from "../../i18n";
 import "@skryensya/core/components/combobox.css";
 import "@skryensya/core/components/form-field.css";
@@ -27,6 +35,10 @@ import { initComponents } from "@skryensya/vanilla/auto";
 
 mountIcons(document, lucideIcons);
 initComponents();`;
+
+/* What each value of a property is for, read from this page's messages. Same model Badge uses. */
+const explain = (option: string, values: readonly string[]) =>
+  Object.fromEntries(values.map((value) => [value, t(`combobox.prop.${option}.${value}` as Parameters<typeof t>[0])]));
 ---
 
 <ComponentPageShell
@@ -46,7 +58,37 @@ initComponents();`;
     <AppearanceMenu label={t("prefs.appearance")} values={["plain", "brutalist", "frosted"]} unavailable={{ tactile: t("prefs.appearanceTactileUnavailable") }} />
   </Fragment>
 
-  <Fragment slot="anatomy">
+  <Fragment slot="usage">
+    <p class="lede" set:html={t("combobox.lede")} />
+
+    <UsagePreview
+      tree={comboboxSingleTree(t, locale)}
+      optionName="appearance"
+      title={t("combobox.prop.appearance.title")}
+      description={t("combobox.prop.appearance.body")}
+      explain={explain("appearance", ["plain", "brutalist", "frosted"])}
+      stageMinBlockSize="9rem"
+    />
+
+    <UsagePreview
+      tree={comboboxSingleTree(t, locale)}
+      optionName="disabled"
+      title={t("combobox.prop.disabled.title")}
+      description={t("combobox.prop.disabled.body")}
+      explain={explain("disabled", ["false", "true"])}
+      stageMinBlockSize="9rem"
+      labels={{ false: t("combobox.prop.disabled.falseLabel"), true: t("combobox.prop.disabled.trueLabel") }}
+    />
+
+    <h3>{t("combobox.showcaseTitle")}</h3>
+    <p set:html={t("combobox.showcaseBody")} />
+    <ComponentPreview tree={comboboxTree(t, locale)} js={js} label="Combobox" viewport="menu" />
+
+    <h3>{t("component.contractNotesTitle")}</h3>
+    <p set:html={t("combobox.contractBody1")} />
+    <p set:html={t("combobox.contractBody2")} />
+
+    <h3>{t("component.anatomy")}</h3>
     <p set:html={t("combobox.anatomyBody")} />
     <ComponentPreview
       html={comboboxAnatomyHtml(t)}
@@ -58,13 +100,13 @@ initComponents();`;
     />
   </Fragment>
 
-  <Fragment slot="usage">
-    <p class="lede" set:html={t("combobox.lede")} />
-    <ComponentPreview tree={comboboxTree(t, locale)} js={js} label="Combobox" viewport="menu" />
-
-    <h3>{t("component.contractNotesTitle")}</h3>
-    <p set:html={t("combobox.contractBody1")} />
-    <p set:html={t("combobox.contractBody2")} />
+  <Fragment slot="guidelines">
+    <p class="lede" set:html={t("combobox.guidelinesLede")} />
+    <DoDont
+      title={t("combobox.dd.many.title")}
+      do={{ tree: comboboxSingleTree(t, locale), caption: t("combobox.dd.many.do") }}
+      dont={{ tree: comboboxDontFewTree(t), caption: t("combobox.dd.many.dont") }}
+    />
   </Fragment>
 
   <Fragment slot="install">

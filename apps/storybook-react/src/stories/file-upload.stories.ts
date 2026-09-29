@@ -9,3 +9,5 @@ export default { title: "Components/Forms/FileUpload", tags: ["autodocs"] } sati
 
 export const Default: StoryObj = treeStory(demos.fileUploadTree);
 export const PageDrop: StoryObj = treeStory(demos.fileUploadPageDropTree);
+export const DoLimits: StoryObj = treeStory(demos.fileUploadDoLimitsTree);
+export const DontLimits: StoryObj = treeStory(demos.fileUploadDontLimitsTree);

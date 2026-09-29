@@ -14,5 +14,7 @@ import { treeStory, withCss, type Meta, type StoryObj } from "../tree-story";
 export default { title: "Components/Forms/FormField", tags: ["autodocs"] } satisfies Meta;
 
 export const Anatomy: StoryObj = treeStory(demos.formFieldAnatomyTree, { decorators: [withCss(annotationDemoCss)] });
-export const Default: StoryObj = treeStory(demos.formFieldTree);
 export const AroundSelect: StoryObj = treeStory(demos.formFieldAroundSelectTree);
+export const Default: StoryObj = treeStory(demos.formFieldTree);
+export const DoHint: StoryObj = treeStory(demos.formFieldDoHintTree);
+export const DontHint: StoryObj = treeStory(demos.formFieldDontHintTree);

@@ -18,3 +18,5 @@ export const Empty: StoryObj = treeStory(demos.tagsInputEmptyTree);
 export const Max: StoryObj = treeStory(demos.tagsInputMaxTree);
 export const ReadOnly: StoryObj = treeStory(demos.tagsInputReadOnlyTree);
 export const Field: StoryObj = treeStory(demos.tagsInputFieldTree);
+export const DontLong: StoryObj = treeStory(demos.tagsInputDontLongTree);
+export const DoShort: StoryObj = treeStory(demos.tagsInputDoShortTree);

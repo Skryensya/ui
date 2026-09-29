@@ -140,3 +140,11 @@ export const fileUploadPageDropTree = (t: Translate): UsageTree => ({
     triggerLabel: t("demo.fileUpload.trigger"),
   },
 });
+
+/* Do/Don't: limits the control states before choosing, or none, so they are discovered on upload. */
+export const fileUploadDoLimitsTree = (t: Translate): UsageTree => fileUploadTree(t);
+
+export const fileUploadDontLimitsTree = (t: Translate): UsageTree => ({
+  ...fileUploadTree(t),
+  options: { multiple: true, name: "attachments-unbounded" },
+});
