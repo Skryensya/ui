@@ -82,8 +82,12 @@ export type Box = {
   /** Inside its parent's auto layout: `flex-grow` fills the main axis, `align-self: stretch` the cross one. */
   grow?: true;
   stretch?: true;
-  /** Out of its parent's auto layout, at this offset from its top-left (a timeline's marker on its rail). */
-  absolute?: { x: number; y: number };
+  /**
+   * Out of its parent's auto layout, at this offset from its top-left (a timeline's marker on its
+   * rail). `reach`: it runs on to that edge of its parent, however big the parent grows (a vertical
+   * step's connector, `100%` less the marker).
+   */
+  absolute?: { x: number; y: number; reach?: "bottom" | "right" };
   padding: { top: Bound<number>; right: Bound<number>; bottom: Bound<number>; left: Bound<number> };
   gap?: Bound<number>;
   radius?: Bound<number>;

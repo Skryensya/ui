@@ -1196,10 +1196,11 @@ async function applyLayers(
       applyBox(ctx, frame, box);
       applySurface(ctx, frame, manifest.styles.surfaces[layer.surface]);
       if (box.absolute) {
-        // Out of the parent's auto layout, where its insets put it.
+        // Out of the parent's auto layout, where its insets put it (sized on to an edge further down).
         frame.layoutPositioning = "ABSOLUTE";
         frame.x = box.absolute.x;
         frame.y = box.absolute.y;
+        frame.constraints = { horizontal: "MIN", vertical: box.absolute.reach === "bottom" ? "STRETCH" : "MIN" };
       } else {
         frame.layoutPositioning = "AUTO";
         frame.layoutGrow = box.grow ? 1 : 0;
@@ -1213,6 +1214,18 @@ async function applyLayers(
         applyCover(ctx, frame, pickLayer(frame.children, { id }, cover.slot) as RectangleNode, cover, box);
       }
     }
+  }
+  // A part that runs on to its parent's far edge is sized once the parent has laid out.
+  for (const layer of layers) {
+    if (layer.kind !== "frame") continue;
+    const reach = manifest.styles.boxes[layer.box].absolute?.reach;
+    if (!reach) continue;
+    const frame = pickLayer(parent.children, owner, layer.slot) as FrameNode;
+    // Fixed on both axes first: an empty frame left to hug would snap back to nothing.
+    frame.primaryAxisSizingMode = "FIXED";
+    frame.counterAxisSizingMode = "FIXED";
+    if (reach === "bottom") frame.resize(Math.max(0.01, frame.width), Math.max(0.01, parent.height - frame.y));
+    else frame.resize(Math.max(0.01, parent.width - frame.x), Math.max(0.01, frame.height));
   }
   // Edges are placed off their parent's size, so once everything in it has laid out.
   for (const layer of layers) {

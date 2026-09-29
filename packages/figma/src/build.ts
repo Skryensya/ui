@@ -26,13 +26,14 @@ import {
   type Diagnostic,
   type FigmaManifest,
   type Layer,
+  type Box,
   type Bound,
   type Rgba,
   type Stage,
   type Styles,
 } from "./manifest-types.js";
 import type { Realization } from "./realization.js";
-import { edgeOf, frameOf, gridTracks, iconOf, overlayOf, ringOf, textOf } from "./realize.js";
+import { backgroundOf, edgeOf, frameOf, gridTracks, iconOf, overlayOf, ringOf, textOf } from "./realize.js";
 import { evaluateAs, Registry, resolve, substituted, type CellProps, type Context } from "./resolve.js";
 
 const hash = (value: unknown) => createHash("sha256").update(canonical(value)).digest("hex").slice(0, 16);
@@ -475,11 +476,18 @@ async function compileRealization(authored: Realization, shared: Shared): Promis
       ...(hasStates ? { [realization.state.axis]: realization.state.rest } : {}),
       ...(iconWhen ? { [iconWhen]: "false" } : {}),
     },
-    ...(samples ? { title: samples.title } : {}),
+    ...(samples
+      ? { title: samples.title }
+      : Object.values(realization.slots).some((spec) => spec.holds === "icon" && spec.shown)
+        ? { title: "without icon" }
+        : {}),
     columns: [
       ...Object.entries(realization.slots)
         .filter(([slot, spec]) => spec.holds === "icon" && !requiredSlot(slot))
-        .map(([slot]) => ({ slot, properties: { [slot]: true } })),
+        // Beside the default, the other way: switched on where it starts off, off where it starts on.
+        .map(([slot, spec]) =>
+          spec.holds === "icon" && spec.shown ? { slot, label: `${slot}: off`, properties: { [slot]: false } } : { slot, properties: { [slot]: true } },
+        ),
       ...(samples?.values ?? []).map((value) => ({ slot: `${samples!.slot}=${value}`, label: value, properties: { [samples!.slot]: value } })),
     ],
   };
@@ -651,6 +659,50 @@ async function compileRealization(authored: Realization, shared: Shared): Promis
         return ring ? [{ kind: "ring" as const, slot: realization.ring, ...ring }] : [];
       };
 
+      /**
+       * A pseudo-element placed absolutely that paints (a step's connector to the next step): a frame
+       * out of auto layout, its insets and size resolved against the element's box, a percentage of a
+       * size that is known in pixels, and a `100%` of one that is not running on to that edge.
+       */
+      const paintedPseudosOf = (el: Element, width: number | undefined, height: number | undefined): Layer[] =>
+        (["before", "after"] as const).flatMap((which) => {
+          const generated = pseudo.get(el)?.[which];
+          if (!generated || generated.get("content") === undefined || generated.get("content") === "none") return [];
+          if (generated.get("position") !== "absolute" || generated.get("background") === undefined) return [];
+          const c = ctxOf(generated);
+          if (edgeOf(c) || overlayOf(c)) return [];
+          const paint = backgroundOf(c, "fill");
+          if (!paint.length) return [];
+          const at = (name: string, base: number | undefined): number | "reach" | undefined => {
+            const raw = generated.get(name);
+            if (raw === undefined || raw === "auto") return undefined;
+            const text = substituted(raw, c);
+            if (/%/.test(text)) {
+              if (base === undefined) return /^(calc\()?\s*100%/.test(text) ? "reach" : undefined;
+              return lengthOf(text.replace(/(-?\d*\.?\d+)%/g, (_, n) => `${(Number(n) * base) / 100}px`), el);
+            }
+            return lengthOf(text, el);
+          };
+          const x = at("left", width) ?? 0;
+          const y = at("top", height) ?? 0;
+          const w = at("width", width);
+          const h = at("height", height);
+          if (x === "reach" || y === "reach" || typeof w !== "number" || h === undefined) return [];
+          const px = (n: number) => ({ value: n, expression: `${n}px` });
+          const zero = { value: 0, expression: "0" };
+          const box: Box = {
+            direction: "HORIZONTAL",
+            mainAlign: "MIN",
+            crossAlign: "MIN",
+            width: px(w),
+            ...(typeof h === "number" ? { height: px(h) } : {}),
+            padding: { top: zero, right: zero, bottom: zero, left: zero },
+            clipsContent: false,
+            absolute: { x, y, ...(h === "reach" ? { reach: "bottom" as const } : {}) },
+          };
+          return [{ kind: "frame" as const, slot: which, box: intern(styles.boxes, box), surface: intern(styles.surfaces, { strokes: [], fills: paint, effects: [] }), layers: [] }];
+        });
+
       /** The bars an element's pseudo-elements paint along its edges, drawn over its content. */
       const edgesOf = (el: Element): Layer[] =>
         (["before", "after"] as const).flatMap((which) => {
@@ -693,6 +745,12 @@ async function compileRealization(authored: Realization, shared: Shared): Promis
         // Children laid down a column (a flex column, a grid of one track); stacking when it stretches them.
         const downward = (/flex/.test(display) && /column/.test(computed.get("flex-direction") ?? "")) || (/grid/.test(display) && tracks.length <= 1);
         const stacking = downward && (crossAlign === undefined || crossAlign === "normal" || crossAlign === "stretch");
+        // A flex row whose children all grow share its known width evenly (Steps: `flex: 1 1 0` each).
+        const growing = Array.from(el.children).filter((c) => !clipped(c) && cascaded.get(c)?.get("position") !== "absolute");
+        const share =
+          inner !== undefined && !downward && /flex/.test(display) && growing.length > 0 && growing.every((c) => Number(cascaded.get(c)?.get("flex-grow") ?? 0) > 0)
+            ? (inner - (pixels(el, cascaded.get(el)!.has("column-gap") ? "column-gap" : "gap") ?? 0) * (growing.length - 1)) / growing.length
+            : undefined;
         // Siblings of one part (LabelledSeparator's two rules) are told apart by number: `rule`, `rule 2`.
         const seen = new Map<string, number>();
         const unique = (slot: string) => {
@@ -820,13 +878,19 @@ async function compileRealization(authored: Realization, shared: Shared): Promis
           const inFlow = !/flex|grid/.test(display) && blockLevel(display || undefined) && blockLevel(cascaded.get(child)!.get("display"));
           const spans = realization.width && inner !== undefined && (stacking || inFlow) && !box.width && !absolute;
           // A part that holds nothing but an optional icon comes and goes with it, box and all.
+          const ownWidth = across ?? trackWidth ?? share ?? (spans || frameBox.stretch ? inner : undefined);
+          const ownHeight = box.height && "value" in box.height ? box.height.value : undefined;
           const inside = [
+            ...paintedPseudosOf(child, ownWidth, ownHeight),
             ...overlaysOf(child),
             ...placeholderLayers,
-            ...nestedLayers(child, innerOf(child, across ?? trackWidth ?? (spans || frameBox.stretch ? inner : undefined))),
+            ...nestedLayers(child, innerOf(child, ownWidth)),
             ...edgesOf(child),
             ...ringsOf(child),
           ];
+          // A box with nothing in it that paints nothing and sizes nothing (segments' hidden labels'
+          // wrapper) is not drawn: auto layout would still give it a gap.
+          if (!inside.length && !strokes.length && !fills.length && !effects.length && !box.width && !box.height && !absolute) continue;
           const lone = inside.length === 1 && inside[0].kind === "icon" && inside[0].visibleProperty ? inside[0] : undefined;
           out.push({
             kind: "frame",
