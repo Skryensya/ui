@@ -66,3 +66,35 @@ export const tileSwitchRealization: Realization = {
   given: { name: "alerts", value: "on" },
   content: { trees: { children: [content("Email alerts", "A note when something needs you")] } },
 };
+
+/* ExpandableTile: one disclosure card, closed and open, its chevron turned as the binding turns it. */
+export const expandableTileRealization: Realization = {
+  ...tileLinkRealization,
+  id: "expandable-tile",
+  signature: "ExpandableTile",
+  state: {
+    axis: "state",
+    rest: "closed",
+    options: ["disabled"],
+    interactions: [
+      { name: "hover", pseudo: ":hover", trigger: "ON_HOVER" },
+      { name: "focus", pseudo: ":focus-visible" },
+    ],
+    attributes: [{ name: "open", attrs: { "data-state": "open", "aria-expanded": "true" }, on: ".sk-tile__trigger", given: { defaultOpen: true } }],
+  },
+  exclude: ["padding", "defaultOpen"],
+  given: {},
+  content: {
+    trees: {
+      children: [
+        {
+          contract: "tile",
+          signature: "ExpandableTileTrigger",
+          children: [content("Shipping", "Where and how fast we deliver"), { contract: "tile", signature: "TileChevron" }],
+        },
+        { contract: "tile", signature: "ExpandableTileContent", children: "Orders ship within two working days." },
+      ],
+    },
+    names: { "ExpandableTileContent.children": "answer" },
+  },
+};

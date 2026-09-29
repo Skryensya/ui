@@ -576,6 +576,7 @@ async function compileRealization(authored: Realization, shared: Shared): Promis
       const iconChildren = iconWhen !== undefined && options[iconWhen] === true;
       const interaction = interactions.find((i) => i.name === props[stateAxis.name]);
       const attributed = realization.state.attributes?.find((a) => a.name === props[stateAxis.name]);
+      if (attributed?.given) Object.assign(options, attributed.given);
       const { host, styles: cascaded, pseudo } = computeCell({ options, icons: true, iconChildren }, interaction ? [interaction.pseudo] : [], attributed?.attrs, attributed?.on);
       const cellProps: CellProps = { ...(realization.splitBy && splitValue ? { [realization.splitBy]: splitValue } : {}), ...props };
       const inherited = {

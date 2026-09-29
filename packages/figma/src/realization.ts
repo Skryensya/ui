@@ -42,7 +42,13 @@ export type Realization = {
      * values of the same axis: an Input's `aria-invalid="true"`, its `readonly`. `on`: a selector for
      * the element that carries them, when not the host (a TileCheckbox's inner input).
      */
-    attributes?: readonly { name: string; attrs: Readonly<Record<string, string>>; on?: string }[];
+    attributes?: readonly {
+      name: string;
+      attrs: Readonly<Record<string, string>>;
+      on?: string;
+      /** Options set with them (an ExpandableTile open: `defaultOpen`, and the trigger the binding marks). */
+      given?: Readonly<Record<string, string | boolean>>;
+    }[];
     /** A state option's value on the axis, when its name reads badly there (`defaultChecked` → `checked`). */
     names?: Readonly<Record<string, string>>;
   };
