@@ -222,6 +222,15 @@ export type Tree = { styles: Map<Element, Computed>; pseudo: Map<Element, Pseudo
  * The declared values on `element` and every descendant, custom properties inherited the way CSS
  * inherits them, and the same for each pseudo-element they generate.
  */
+/**
+ * WHAT THE BROWSER'S STYLESHEET GIVES an element before any of ours applies, for the few a component
+ * leans on: Strong is a `<strong>`, bold because the user agent says so, with no rule of its own.
+ */
+const USER_AGENT: Record<string, readonly (readonly [string, string])[]> = {
+  strong: [["font-weight", "700"]],
+  b: [["font-weight", "700"]],
+};
+
 export function computeTree(element: Element, rules: RuleSet, unmatchable: Set<string>): Tree {
   const styles = new Map<Element, Computed>();
   const pseudo = new Map<Element, Pseudo>();
@@ -236,6 +245,8 @@ export function computeTree(element: Element, rules: RuleSet, unmatchable: Set<s
       }
     }).sort(bySpecificityThenOrder);
     const computed = inherit(parent);
+    // The browser's own sheet, first, for the few elements whose look comes from it alone.
+    for (const [prop, value] of USER_AGENT[el.localName] ?? []) computed.set(prop, value);
     for (const rule of matched) if (!rule.pseudo) for (const [prop, value] of rule.decls) computed.set(prop, value);
     styles.set(el, computed);
 
