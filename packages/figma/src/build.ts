@@ -14,7 +14,7 @@ import { surfaceHash } from "@skryensya/ai-compiler/surface";
 import type { ComponentContract, ContractOption } from "@skryensya/core/contract";
 import { parseTokens } from "@skryensya/core/parse";
 import { getContract } from "@skryensya/core/registry";
-import type { UsageTree } from "@skryensya/core/usage-tree";
+import type { ItemInput, UsageTree } from "@skryensya/core/usage-tree";
 import { computeTree, elementFrom, markerOf, readRules, type Computed, type RuleSet } from "./cascade.js";
 import { Unsupported } from "./evaluate.js";
 import {
@@ -94,10 +94,15 @@ function treeFor(realization: Realization, input: CellInput, iconName: string): 
   for (const [slot, spec] of Object.entries(realization.slots)) {
     if (spec.holds === "icon") {
       if (input.icons) slots[slot] = icon;
-    } else if (spec.option) printed[spec.option] = spec.sample;
+    } else if (spec.item) continue;
+    else if (spec.option) printed[spec.option] = spec.sample;
     else slots[slot] = input.iconChildren ? icon : spec.sample;
   }
-  return { contract: realization.contract, signature: realization.signature, options: { ...realization.given, ...printed, ...input.options }, slots };
+  const collections: Record<string, ItemInput[]> = {};
+  for (const [name, collection] of Object.entries(realization.collections ?? {})) {
+    collections[name] = collection.items.map((item) => ({ options: { ...item.options }, slots: { [collection.slot]: item.text } }));
+  }
+  return { contract: realization.contract, signature: realization.signature, options: { ...realization.given, ...printed, ...input.options }, slots: { ...slots, ...collections } };
 }
 
 /**
@@ -257,7 +262,19 @@ export async function buildFigmaManifest(input: Realization | readonly Realizati
   return { ...body, sourceHash: hash(body) } as FigmaManifest;
 }
 
-async function compileRealization(realization: Realization, shared: Shared): Promise<Compiled> {
+/**
+ * A collection's item texts as text slots of their own (`items 1`, `items 2`…), so each is found by
+ * its sample, drawn as a text layer and exposed as a text property like any other.
+ */
+function withItemSlots(realization: Realization): Realization {
+  const items = Object.entries(realization.collections ?? {}).flatMap(([name, collection]) =>
+    collection.items.map((item, i) => [`${name} ${i + 1}`, { holds: "text" as const, sample: item.text, item: name }] as const),
+  );
+  return items.length ? { ...realization, slots: { ...realization.slots, ...Object.fromEntries(items) } } : realization;
+}
+
+async function compileRealization(authored: Realization, shared: Shared): Promise<Compiled> {
+  const realization = withItemSlots(authored);
   const { corpus, registry, styles, diagnostics, iconContract } = shared;
   const contract = getContract(realization.contract);
   if (!contract) throw new Error(`unknown contract ${realization.contract}`);
@@ -267,6 +284,8 @@ async function compileRealization(realization: Realization, shared: Shared): Pro
   const requiredSlot = (slot: string) => {
     const spec = realization.slots[slot];
     const option = spec?.holds === "text" ? spec.option : undefined;
+    // An item's text is what the item is: always there.
+    if (spec?.holds === "text" && spec.item) return true;
     return option ? ((signature.requires ?? []) as readonly string[]).includes(option) : !!signature.slots[slot]?.required;
   };
   const iconName = (iconContract.options.name as { values: readonly string[] }).values[0];
@@ -402,6 +421,16 @@ async function compileRealization(realization: Realization, shared: Shared): Pro
       ? Object.entries(realization.slots).find(([, spec]) => spec.holds === "text" && spec.option === raw.textFromOption)?.[0]
       : undefined;
     const n = printedBy ? { ...raw, slot: printedBy } : raw;
+    // A repeated node places every item text of its collection, in order.
+    const repeat = (node as { repeat?: string }).repeat;
+    if (repeat && realization.collections?.[repeat]) {
+      for (const [slot, spec] of Object.entries(realization.slots)) {
+        if (spec.holds !== "text" || spec.item !== repeat || slotOrder.includes(slot)) continue;
+        slotPart[slot] = n.part ?? holder ?? "root";
+        slotOrder.push(slot);
+        layerOrder.push({ kind: "slot", name: slot });
+      }
+    }
     // A placeholder is the host's own text, drawn where the host is.
     if (raw.part === "root" || (holder === undefined && raw.part === undefined)) {
       for (const [slot, spec] of Object.entries(realization.slots)) {
@@ -557,6 +586,8 @@ async function compileRealization(realization: Realization, shared: Shared): Pro
               textProperty: slot,
               ...(optional ? { visibleProperty: `show ${slot}` } : {}),
               ...(wraps ? { fill: true as const } : {}),
+              // Text of the template's own (a Breadcrumb's "/"), not a slot: drawn as written.
+              ...(spec ? {} : { characters: text }),
               text: textOf(ctx(el)),
             });
             continue;

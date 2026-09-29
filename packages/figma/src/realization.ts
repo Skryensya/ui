@@ -42,6 +42,11 @@ export type Realization = {
      */
     attributes?: readonly { name: string; attrs: Readonly<Record<string, string>> }[];
   };
+  /**
+   * Collection slots, drawn with these items (a Breadcrumb's trail): each item's options, and the
+   * text of its `slot`. Every item's text is a text property of its own, `<collection> <n>`.
+   */
+  collections?: Readonly<Record<string, { slot: string; items: readonly { options?: Readonly<Record<string, string | boolean>>; text: string }[] }>>;
   /** Layer names for pseudo-elements that paint: `before` is the state layer, not "::before". */
   overlays: Readonly<Partial<Record<"before" | "after", string>>>;
   /** The layer name an outline is drawn as. */
@@ -72,6 +77,8 @@ export type Realization = {
           option?: string;
           /** `placeholder`: the option's text is the host's own `::placeholder` (an Input), drawn in it. */
           pseudo?: "placeholder";
+          /** Set by the compiler: this text is an item of that collection, not a slot of the signature. */
+          item?: string;
         }
     >
   >;

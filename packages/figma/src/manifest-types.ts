@@ -127,7 +127,7 @@ export type Layer =
    * `visibleProperty`: an optional text slot's boolean (Stat's change), shown by default. `fill`: it
    * spans its parent and wraps (a Quote's quotation), instead of running on one line.
    */
-  | { kind: "text"; slot: string; textProperty: string; visibleProperty?: string; fill?: true; text: Text }
+  | { kind: "text"; slot: string; textProperty: string; visibleProperty?: string; fill?: true; characters?: string; text: Text }
   /** A pseudo-element with paint (the state layer): covers the host, under its content, same corners. */
   | { kind: "overlay"; slot: string; fills: Paint[] }
   /** An outline: a stroke `width` wide drawn `offset` outside the host, following its corners. */

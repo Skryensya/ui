@@ -121,3 +121,13 @@ describe("Input", () => {
     expect(manifest.styles.boxes[cell("rest").box].crossAlign).toBe("CENTER");
   });
 });
+
+describe("Breadcrumb", () => {
+  it("draws each item's label as a text property of its own, with the template's separators as written", () => {
+    const set = manifest.components.find((c): c is ComponentSet => c.kind === "component-set" && c.id === "breadcrumb")!;
+    expect(set.properties.map((p) => p.name)).toEqual(["items 1", "items 2", "items 3"]);
+    const [list] = manifest.styles.layers[set.cells[0].layers];
+    const [first] = list.kind === "frame" ? list.layers : [];
+    expect(first.kind === "frame" && first.layers.map((l) => (l.kind === "text" ? (l.characters ?? l.slot) : l.slot))).toEqual(["items 1", "/"]);
+  });
+});
