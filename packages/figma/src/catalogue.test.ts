@@ -273,3 +273,14 @@ describe("Select", () => {
     expect(manifest.styles.layers[set.cells[0].layers].map((l) => l.slot)).toEqual(["control"]);
   });
 });
+
+describe("PasswordInput", () => {
+  it("holds its placeholder in the field and shows only the eye its state offers", () => {
+    const set = manifest.components.find((c): c is ComponentSet => c.kind === "component-set" && c.id === "password-input/plain")!;
+    const [control] = manifest.styles.layers[set.cells[0].layers];
+    const [field, trigger] = control.kind === "frame" ? control.layers : [];
+    expect(field.kind === "frame" && field.layers.map((l) => l.slot)).toEqual(["placeholder"]);
+    const glyphs = (l: typeof trigger): string[] => (l.kind === "icon" ? [l.default] : l.kind === "frame" ? l.layers.flatMap(glyphs) : []);
+    expect(glyphs(trigger)).toEqual(["visibility"]);
+  });
+});

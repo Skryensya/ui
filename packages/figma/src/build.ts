@@ -730,7 +730,8 @@ async function compileRealization(authored: Realization, shared: Shared): Promis
           const own = cascaded.get(child)!;
           if (own.get("visibility") === "hidden" || own.get("display") === "none" || child.hasAttribute("hidden")) continue;
           // Present but see-through (the indicator a checkbox's state does not show): not drawn.
-          if (/^0(\.0*)?$/.test(own.get("opacity") ?? "")) continue;
+          const opacity = own.get("opacity");
+          if (opacity !== undefined && lengthOf(opacity, child) === 0) continue;
           const { computed: sized, across, stretch } = sizing(child, inner, downward);
           // Its column, in a grid laid across: an `fr` one fills the row, a length one sets its width
           // (a DescriptionList's 10rem term), `auto` leaves it hugging.
@@ -747,6 +748,17 @@ async function compileRealization(authored: Realization, shared: Shared): Promis
           const slide = only && /^translateX\((.+)\)$/.exec(cascaded.get(only)?.get("transform") ?? "")?.[1];
           if (slide) sized.set("padding-left", `calc(${sized.get("padding-left") ?? "0px"} + ${slide})`);
           const trackWidth = fixedTrack ? lengthOf(track, child) : undefined;
+          // A field inside (a PasswordInput's input) shows its placeholder, in its `::placeholder` look.
+          const placeholderSlot = Object.entries(realization.slots).find(([, spec]) => spec.holds === "text" && spec.pseudo === "placeholder")?.[0];
+          // With no `::placeholder` rule of its own, the browser's: the field's colour, dimmed.
+          const ownColor = cascaded.get(child)!.get("color") ?? (inherited as Record<string, string>).color;
+          const shown =
+            placeholderSlot && child.hasAttribute("placeholder")
+              ? (pseudo.get(child)?.placeholder ?? new Map([...cascaded.get(child)!, ["color", `color-mix(in oklab, ${ownColor} 54%, transparent)`]]))
+              : undefined;
+          const placeholderLayers: Layer[] = shown
+            ? [{ kind: "text", slot: placeholderSlot!, textProperty: placeholderSlot!, ...(requiredSlot(placeholderSlot!) ? {} : { visibleProperty: `show ${placeholderSlot}` }), text: textOf(ctxOf(shown)) }]
+            : [];
           const onlyText = child.children.length === 0;
           if (onlyText && !fixedTrack && !fixedRow && !paints(ctxOf(sized))) {
             const flat = nestedLayers(child, inner);
@@ -772,6 +784,7 @@ async function compileRealization(authored: Realization, shared: Shared): Promis
             surface: intern(styles.surfaces, { strokes, fills, effects }),
             layers: [
               ...overlaysOf(child),
+              ...placeholderLayers,
               ...nestedLayers(child, innerOf(child, across ?? trackWidth ?? (spans || frameBox.stretch ? inner : undefined))),
               ...edgesOf(child),
               ...ringsOf(child),
