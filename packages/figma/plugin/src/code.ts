@@ -442,6 +442,65 @@ function resizeTo(run: Run, node: FrameNode | ComponentSetNode, w: number, h: nu
 
 const FRAME_PAD = 48;
 const LABEL_GAP = 24;
+const TITLE_SIZE = 24;
+const GAP = 16;
+const GROUP = 40;
+const INNER = 24;
+
+/*
+ * Every label's line is fixed, not left to the font: a fixed line is what lets a frame's height be
+ * known before anything in it is drawn, so frames can be made and stacked first.
+ */
+const lineOf = (size: number) => Math.ceil(size * 1.4);
+const labelSize = () => Number(valueOf(manifest.stage.label.fontSize));
+const headingSize = () => Math.round(labelSize() * 1.5);
+
+/** The tallest variant of a set: each size's height, read from the manifest. */
+const cellHeightOf = (spec: M.ComponentSet) =>
+  Math.max(
+    ...spec.cells.map((c) => {
+      const box = manifest.styles.boxes[c.box];
+      const h = box.height ?? box.minHeight;
+      return h ? Number(valueOf(h)) : 0;
+    }),
+  );
+
+/** Row offsets inside a set: a heading's space opens each section, a group gap each group within it. */
+function rowOffsets(spec: M.ComponentSet, cellH: number) {
+  const rows = combos(spec.grid.rows);
+  const [sectionAxis, groupAxis] = spec.grid.rows.map((a) => a.name);
+  const headH = lineOf(headingSize()) + 16;
+  const rowY: number[] = [];
+  const sections: { value: string; top: number; last: number }[] = [];
+  let y = INNER;
+  rows.forEach((row, i) => {
+    if (i > 0) y += cellH + GAP;
+    if (i === 0 || row[sectionAxis] !== rows[i - 1][sectionAxis]) {
+      if (i > 0) y += GROUP;
+      sections.push({ value: row[sectionAxis], top: y, last: i });
+      y += headH;
+    } else if (groupAxis && row[groupAxis] !== rows[i - 1][groupAxis]) y += GAP;
+    sections[sections.length - 1].last = i;
+    rowY.push(y);
+  });
+  return { rows, rowY, sections, sectionAxis };
+}
+
+/** Where a set starts in its frame, below the title and the two lines of column headings. */
+const setTop = () => FRAME_PAD + lineOf(TITLE_SIZE) + LABEL_GAP + 2 * (lineOf(labelSize()) + 8);
+
+const ICON_SLOT = 96;
+const ICON_COLUMNS = 11;
+const iconRowOf = (spec: M.IconSet) => spec.size + 8 + lineOf(labelSize()) + 24;
+const iconTop = () => FRAME_PAD + lineOf(TITLE_SIZE) + LABEL_GAP;
+
+/** A frame's height, known before it holds anything. */
+function plannedHeight(spec: M.IconSet | M.ComponentSet): number {
+  if (spec.kind === "icon-set") return iconTop() + Math.ceil(spec.icons.length / ICON_COLUMNS) * iconRowOf(spec) + FRAME_PAD;
+  const cellH = cellHeightOf(spec);
+  const { rowY } = rowOffsets(spec, cellH);
+  return setTop() + rowY[rowY.length - 1] + cellH + INNER + FRAME_PAD;
+}
 
 type Label = { font: FontName; size: number; color: Paint };
 
@@ -461,6 +520,7 @@ function ensureLabel(ctx: Ctx, parent: FrameNode, key: string, chars: string, st
       text = figma.createText();
       text.fontName = style.font;
       text.fontSize = style.size;
+      text.lineHeight = { unit: "PIXELS", value: lineOf(style.size) };
       text.fills = [style.color];
       text.characters = chars;
       text.name = chars;
@@ -473,6 +533,8 @@ function ensureLabel(ctx: Ctx, parent: FrameNode, key: string, chars: string, st
   const font = t.fontName as FontName;
   if (font.family !== style.font.family || font.style !== style.font.style) run.write(() => (t.fontName = style.font));
   if (t.fontSize !== style.size) run.write(() => (t.fontSize = style.size));
+  const line = t.lineHeight as LineHeight;
+  if (line.unit !== "PIXELS" || line.value !== lineOf(style.size)) run.write(() => (t.lineHeight = { unit: "PIXELS", value: lineOf(style.size) }));
   if (t.characters !== chars) run.write(() => ((t.characters = chars), (t.name = chars)));
   return t;
 }
@@ -572,15 +634,15 @@ function drawIcon(node: ComponentNode, icon: M.IconSet["icons"][number], spec: M
 type IconLayout = { setX: number; setY: number; slot: number; rowH: number; columns: number; style: Label; keep: Set<string> };
 
 async function planIcons(ctx: Ctx, frame: FrameNode, spec: M.IconSet): Promise<IconLayout> {
-  const title = ensureLabel(ctx, frame, "title", spec.name, await labelStyle(ctx, 600, 24));
+  const title = ensureLabel(ctx, frame, "title", spec.name, await labelStyle(ctx, 600, TITLE_SIZE));
   move(ctx.run, title, FRAME_PAD, FRAME_PAD);
   const style = await labelStyle(ctx);
   return {
     setX: FRAME_PAD,
-    setY: FRAME_PAD + title.height + LABEL_GAP,
-    slot: 96,
-    rowH: Math.ceil(spec.size + 8 + style.size * 1.4 + 24),
-    columns: 11,
+    setY: iconTop(),
+    slot: ICON_SLOT,
+    rowH: iconRowOf(spec),
+    columns: ICON_COLUMNS,
     style,
     keep: new Set(["title"]),
   };
@@ -898,9 +960,6 @@ type Layout = {
   keep: Set<string>;
 };
 
-const GAP = 16;
-const GROUP = 40;
-const INNER = 24;
 const word = (axis: string, value: string) => (value === "true" || value === "false" ? `${axis}: ${value}` : value);
 
 /** The frame's chrome (title, row and column labels) placed, and every slot's position computed. */
@@ -909,29 +968,14 @@ async function planLayout(ctx: SetCtx, frame: FrameNode, spec: M.ComponentSet, c
   const cols = combos(spec.grid.columns);
   const rows = combos(spec.grid.rows);
   const outerCol = spec.grid.columns[0].name;
-  const [sectionAxis, groupAxis] = spec.grid.rows.map((a) => a.name);
+  const sectionAxis = spec.grid.rows[0].name;
   const keep = new Set<string>(["title"]);
-  const title = ensureLabel(ctx, frame, "title", spec.name, await labelStyle(ctx, 600, 24));
+  const title = ensureLabel(ctx, frame, "title", spec.name, await labelStyle(ctx, 600, TITLE_SIZE));
   const style = await labelStyle(ctx);
   const strong = await labelStyle(ctx, 600);
-  const heading = await labelStyle(ctx, 600, Math.round(Number(valueOf(manifest.stage.label.fontSize)) * 1.5));
-  const lineH = Math.ceil(style.size * 1.4);
-  const headH = Math.ceil(heading.size * 1.4) + 16;
-
-  // Rows: a heading's worth of space opens each section, a group gap opens each group inside it.
-  const rowY: number[] = [];
-  const sections: Layout["sections"] = [];
-  let y = INNER;
-  rows.forEach((row, i) => {
-    if (i > 0) y += cellH + GAP;
-    if (i === 0 || row[sectionAxis] !== rows[i - 1][sectionAxis]) {
-      if (i > 0) y += GROUP;
-      sections.push({ value: row[sectionAxis], top: y, last: i });
-      y += headH;
-    } else if (groupAxis && row[groupAxis] !== rows[i - 1][groupAxis]) y += GAP;
-    sections[sections.length - 1].last = i;
-    rowY.push(y);
-  });
+  const heading = await labelStyle(ctx, 600, headingSize());
+  const lineH = lineOf(style.size);
+  const { rowY, sections } = rowOffsets(spec, cellH);
   const colX = offsets(cols.length, cellW, GAP, GROUP, (i) => cols[i][outerCol], INNER);
 
   // A row names what the section heading does not already say.
@@ -943,7 +987,7 @@ async function planLayout(ctx: SetCtx, frame: FrameNode, spec: M.ComponentSet, c
   });
   const labelW = Math.max(...rowLabels.map((t) => t.width));
   const setX = FRAME_PAD + 16 + labelW + LABEL_GAP;
-  const setY = FRAME_PAD + title.height + LABEL_GAP + 2 * (lineH + 8);
+  const setY = setTop();
   move(run, title, FRAME_PAD, FRAME_PAD);
   rowLabels.forEach((text, r) => move(run, text, FRAME_PAD + 16, Math.round(setY + rowY[r] + (cellH - text.height) / 2)));
   cols.forEach((col, i) => {
@@ -1118,13 +1162,7 @@ async function syncSet(ctx: SetCtx, spec: M.ComponentSet, found: Map<string, Sce
   const onGrid = new Set(grid.map((g) => g.cell?.key));
   const queue = [...grid.filter((g) => g.cell), ...spec.cells.filter((c) => !onGrid.has(c.key)).map((cell) => ({ cell, row: -1, col: -1 }))];
   // Row height is known before anything is drawn: the manifest gives each size's height.
-  const cellH = Math.max(
-    ...spec.cells.map((c) => {
-      const box = manifest.styles.boxes[c.box];
-      const h = box.height ?? box.minHeight;
-      return h ? Number(valueOf(h)) : 0;
-    }),
-  );
+  const cellH = cellHeightOf(spec);
 
   let layout: Layout | undefined;
   let outgrown = false;
@@ -1339,6 +1377,16 @@ async function reconcile(apply: boolean) {
   const { found, pages: ownPages } = await findOwn();
   const ctx: Ctx = { run, progress, vars };
 
+  // Every frame first, at its final size and place: nothing is drawn until the page is laid out.
+  if (apply) {
+    for (const spec of manifest.components) {
+      const page = pages.get(spec.page);
+      if (!page) continue;
+      const frame = ensureFrame(ctx, spec.id, spec.name, page, found);
+      if (frame) resizeTo(run, frame, Math.max(frame.width, 400), plannedHeight(spec));
+    }
+    arrange(run, pages, found);
+  }
   const icons = await syncIconSet(ctx, iconSpec, found, pages.get(iconSpec.page));
   // A dry run never draws a cell, so it walks the sets without the Icon set it would have made.
   const setCtx: SetCtx = { ...ctx, icons: icons as IconCtx };
