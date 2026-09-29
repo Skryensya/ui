@@ -394,3 +394,12 @@ describe("Accordion's triggers", () => {
     expect([open, closed].map((l) => (l.kind === "frame" ? glyphs(l.layers) : []))).toEqual([["chevron-up"], ["chevron-down"]]);
   });
 });
+
+describe("TileLink", () => {
+  it("holds its title over its description, ringed on focus", () => {
+    const set = manifest.components.find((c): c is ComponentSet => c.kind === "component-set" && c.id === "tile-link/plain")!;
+    expect(set.properties.map((p) => p.name)).toEqual(["title 1", "description 1"]);
+    const focus = manifest.styles.layers[set.cells.find((c) => c.props.state === "focus")!.layers];
+    expect(focus.some((l) => l.kind === "ring")).toBe(true);
+  });
+});

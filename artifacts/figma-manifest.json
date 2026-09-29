@@ -40049,6 +40049,378 @@
         "columns": []
       },
       "visualHash": "ea31940f2b843169"
+    },
+    {
+      "axes": [
+        {
+          "name": "state",
+          "values": [
+            "rest",
+            "hover",
+            "focus"
+          ]
+        }
+      ],
+      "cells": [
+        {
+          "box": "01582d957508aa39",
+          "hash": "d310451eab229ada",
+          "id": "tile-link/plain/state=rest",
+          "key": "state=rest",
+          "layers": "1b9cc103b18f58b9",
+          "props": {
+            "state": "rest"
+          },
+          "surface": "82d94bda55e9390f"
+        },
+        {
+          "box": "01582d957508aa39",
+          "hash": "50b778623a2e91c8",
+          "id": "tile-link/plain/state=hover",
+          "key": "state=hover",
+          "layers": "8e9c68d5df25b744",
+          "props": {
+            "state": "hover"
+          },
+          "surface": "82d94bda55e9390f"
+        },
+        {
+          "box": "d4726437c88aa938",
+          "hash": "2a13088dbb690b96",
+          "id": "tile-link/plain/state=focus",
+          "key": "state=focus",
+          "layers": "4fd3b0b5b5475a71",
+          "props": {
+            "state": "focus"
+          },
+          "surface": "82d94bda55e9390f"
+        }
+      ],
+      "contractHash": "7087b4e1f89e3813",
+      "defaultCell": "state=rest",
+      "grid": {
+        "columns": [
+          {
+            "name": "state",
+            "values": [
+              "rest",
+              "hover",
+              "focus"
+            ]
+          }
+        ],
+        "rows": []
+      },
+      "id": "tile-link/plain",
+      "interactions": [
+        {
+          "axis": "state",
+          "from": "rest",
+          "to": "hover",
+          "trigger": "ON_HOVER"
+        }
+      ],
+      "kind": "component-set",
+      "name": "Tile Link / plain",
+      "page": "skryensya",
+      "properties": [
+        {
+          "default": "Billing",
+          "name": "title 1",
+          "type": "TEXT"
+        },
+        {
+          "default": "Invoices, payment methods and receipts",
+          "name": "description 1",
+          "type": "TEXT"
+        }
+      ],
+      "showcase": {
+        "base": {
+          "state": "rest"
+        },
+        "columns": []
+      },
+      "visualHash": "7d346a1c53c686ad"
+    },
+    {
+      "axes": [
+        {
+          "name": "state",
+          "values": [
+            "rest",
+            "hover",
+            "focus"
+          ]
+        }
+      ],
+      "cells": [
+        {
+          "box": "01582d957508aa39",
+          "hash": "581a7e604dd7a285",
+          "id": "tile-link/tactile/state=rest",
+          "key": "state=rest",
+          "layers": "1b9cc103b18f58b9",
+          "props": {
+            "state": "rest"
+          },
+          "surface": "956debe3aca94ba9"
+        },
+        {
+          "box": "01582d957508aa39",
+          "hash": "938951ac460e0e64",
+          "id": "tile-link/tactile/state=hover",
+          "key": "state=hover",
+          "layers": "8e9c68d5df25b744",
+          "props": {
+            "state": "hover"
+          },
+          "surface": "e75320bbf65966dd"
+        },
+        {
+          "box": "d4726437c88aa938",
+          "hash": "07a3240cf331603a",
+          "id": "tile-link/tactile/state=focus",
+          "key": "state=focus",
+          "layers": "4fd3b0b5b5475a71",
+          "props": {
+            "state": "focus"
+          },
+          "surface": "956debe3aca94ba9"
+        }
+      ],
+      "contractHash": "7087b4e1f89e3813",
+      "defaultCell": "state=rest",
+      "grid": {
+        "columns": [
+          {
+            "name": "state",
+            "values": [
+              "rest",
+              "hover",
+              "focus"
+            ]
+          }
+        ],
+        "rows": []
+      },
+      "id": "tile-link/tactile",
+      "interactions": [
+        {
+          "axis": "state",
+          "from": "rest",
+          "to": "hover",
+          "trigger": "ON_HOVER"
+        }
+      ],
+      "kind": "component-set",
+      "name": "Tile Link / tactile",
+      "page": "skryensya",
+      "properties": [
+        {
+          "default": "Billing",
+          "name": "title 1",
+          "type": "TEXT"
+        },
+        {
+          "default": "Invoices, payment methods and receipts",
+          "name": "description 1",
+          "type": "TEXT"
+        }
+      ],
+      "showcase": {
+        "base": {
+          "state": "rest"
+        },
+        "columns": []
+      },
+      "visualHash": "2d9ad5c6c8015ceb"
+    },
+    {
+      "axes": [
+        {
+          "name": "state",
+          "values": [
+            "rest",
+            "hover",
+            "focus"
+          ]
+        }
+      ],
+      "cells": [
+        {
+          "box": "01582d957508aa39",
+          "hash": "52b75b261159c1a8",
+          "id": "tile-link/brutalist/state=rest",
+          "key": "state=rest",
+          "layers": "1b9cc103b18f58b9",
+          "props": {
+            "state": "rest"
+          },
+          "surface": "2fc29be39f4b4449"
+        },
+        {
+          "box": "01582d957508aa39",
+          "hash": "639c7db652522c01",
+          "id": "tile-link/brutalist/state=hover",
+          "key": "state=hover",
+          "layers": "8e9c68d5df25b744",
+          "props": {
+            "state": "hover"
+          },
+          "surface": "24cba86042643773"
+        },
+        {
+          "box": "d4726437c88aa938",
+          "hash": "d71ca7d74c71717d",
+          "id": "tile-link/brutalist/state=focus",
+          "key": "state=focus",
+          "layers": "4fd3b0b5b5475a71",
+          "props": {
+            "state": "focus"
+          },
+          "surface": "2fc29be39f4b4449"
+        }
+      ],
+      "contractHash": "7087b4e1f89e3813",
+      "defaultCell": "state=rest",
+      "grid": {
+        "columns": [
+          {
+            "name": "state",
+            "values": [
+              "rest",
+              "hover",
+              "focus"
+            ]
+          }
+        ],
+        "rows": []
+      },
+      "id": "tile-link/brutalist",
+      "interactions": [
+        {
+          "axis": "state",
+          "from": "rest",
+          "to": "hover",
+          "trigger": "ON_HOVER"
+        }
+      ],
+      "kind": "component-set",
+      "name": "Tile Link / brutalist",
+      "page": "skryensya",
+      "properties": [
+        {
+          "default": "Billing",
+          "name": "title 1",
+          "type": "TEXT"
+        },
+        {
+          "default": "Invoices, payment methods and receipts",
+          "name": "description 1",
+          "type": "TEXT"
+        }
+      ],
+      "showcase": {
+        "base": {
+          "state": "rest"
+        },
+        "columns": []
+      },
+      "visualHash": "3e4e067602fd353a"
+    },
+    {
+      "axes": [
+        {
+          "name": "state",
+          "values": [
+            "rest",
+            "hover",
+            "focus"
+          ]
+        }
+      ],
+      "cells": [
+        {
+          "box": "01582d957508aa39",
+          "hash": "a4303e4c7a6e5ce4",
+          "id": "tile-link/frosted/state=rest",
+          "key": "state=rest",
+          "layers": "1b9cc103b18f58b9",
+          "props": {
+            "state": "rest"
+          },
+          "surface": "cd25c830288883dc"
+        },
+        {
+          "box": "01582d957508aa39",
+          "hash": "bfc189adac2fdf0f",
+          "id": "tile-link/frosted/state=hover",
+          "key": "state=hover",
+          "layers": "8e9c68d5df25b744",
+          "props": {
+            "state": "hover"
+          },
+          "surface": "cd25c830288883dc"
+        },
+        {
+          "box": "d4726437c88aa938",
+          "hash": "e6f8b17b52afd55d",
+          "id": "tile-link/frosted/state=focus",
+          "key": "state=focus",
+          "layers": "4fd3b0b5b5475a71",
+          "props": {
+            "state": "focus"
+          },
+          "surface": "cd25c830288883dc"
+        }
+      ],
+      "contractHash": "7087b4e1f89e3813",
+      "defaultCell": "state=rest",
+      "grid": {
+        "columns": [
+          {
+            "name": "state",
+            "values": [
+              "rest",
+              "hover",
+              "focus"
+            ]
+          }
+        ],
+        "rows": []
+      },
+      "id": "tile-link/frosted",
+      "interactions": [
+        {
+          "axis": "state",
+          "from": "rest",
+          "to": "hover",
+          "trigger": "ON_HOVER"
+        }
+      ],
+      "kind": "component-set",
+      "name": "Tile Link / frosted",
+      "page": "skryensya",
+      "properties": [
+        {
+          "default": "Billing",
+          "name": "title 1",
+          "type": "TEXT"
+        },
+        {
+          "default": "Invoices, payment methods and receipts",
+          "name": "description 1",
+          "type": "TEXT"
+        }
+      ],
+      "showcase": {
+        "base": {
+          "state": "rest"
+        },
+        "columns": []
+      },
+      "visualHash": "83ddef5353b7190f"
     }
   ],
   "diagnostics": [
@@ -40171,6 +40543,12 @@
       "message": "4 rule(s) under a condition the evaluation context does not hold",
       "severity": "info",
       "subject": "components/callout.css @media (forced-colors: active)"
+    },
+    {
+      "code": "CONDITION_SKIPPED",
+      "message": "3 rule(s) under a condition the evaluation context does not hold",
+      "severity": "info",
+      "subject": "components/checkbox.css @media (forced-colors: active)"
     },
     {
       "code": "CONDITION_SKIPPED",
@@ -40384,6 +40762,12 @@
     },
     {
       "code": "CONDITION_SKIPPED",
+      "message": "4 rule(s) under a condition the evaluation context does not hold",
+      "severity": "info",
+      "subject": "components/switch.css @media (forced-colors: active)"
+    },
+    {
+      "code": "CONDITION_SKIPPED",
       "message": "1 rule(s) under a condition the evaluation context does not hold",
       "severity": "info",
       "subject": "components/tabs.css @media (forced-colors: active)"
@@ -40416,6 +40800,12 @@
       "code": "CONDITION_SKIPPED",
       "message": "2 rule(s) under a condition the evaluation context does not hold",
       "severity": "info",
+      "subject": "components/tile.css @keyframes sk-tile-collapse"
+    },
+    {
+      "code": "CONDITION_SKIPPED",
+      "message": "2 rule(s) under a condition the evaluation context does not hold",
+      "severity": "info",
       "subject": "components/tile.css @keyframes sk-tile-content-in"
     },
     {
@@ -40423,6 +40813,18 @@
       "message": "2 rule(s) under a condition the evaluation context does not hold",
       "severity": "info",
       "subject": "components/tile.css @keyframes sk-tile-content-in"
+    },
+    {
+      "code": "CONDITION_SKIPPED",
+      "message": "2 rule(s) under a condition the evaluation context does not hold",
+      "severity": "info",
+      "subject": "components/tile.css @keyframes sk-tile-content-in"
+    },
+    {
+      "code": "CONDITION_SKIPPED",
+      "message": "2 rule(s) under a condition the evaluation context does not hold",
+      "severity": "info",
+      "subject": "components/tile.css @keyframes sk-tile-expand"
     },
     {
       "code": "CONDITION_SKIPPED",
@@ -40447,6 +40849,18 @@
       "message": "7 rule(s) under a condition the evaluation context does not hold",
       "severity": "info",
       "subject": "components/tile.css @media (forced-colors: active)"
+    },
+    {
+      "code": "CONDITION_SKIPPED",
+      "message": "7 rule(s) under a condition the evaluation context does not hold",
+      "severity": "info",
+      "subject": "components/tile.css @media (forced-colors: active)"
+    },
+    {
+      "code": "CONDITION_SKIPPED",
+      "message": "1 rule(s) under a condition the evaluation context does not hold",
+      "severity": "info",
+      "subject": "components/tile.css @media (prefers-reduced-motion: reduce)"
     },
     {
       "code": "CONDITION_SKIPPED",
@@ -40603,6 +41017,18 @@
       "message": "1 rule(s) under a condition the evaluation context does not hold",
       "severity": "info",
       "subject": "patterns/state-layer.css @media (prefers-reduced-motion: reduce)"
+    },
+    {
+      "code": "CONDITION_SKIPPED",
+      "message": "1 rule(s) under a condition the evaluation context does not hold",
+      "severity": "info",
+      "subject": "patterns/state-layer.css @media (prefers-reduced-motion: reduce)"
+    },
+    {
+      "code": "CONDITION_SKIPPED",
+      "message": "0 rule(s) under a condition the evaluation context does not hold",
+      "severity": "info",
+      "subject": "patterns/state-layer.css @property --state-layer-opacity"
     },
     {
       "code": "CONDITION_SKIPPED",
@@ -41192,6 +41618,17 @@
           "appearance"
         ]
       },
+      "tile-link": {
+        "excluded": [
+          "padding"
+        ],
+        "nonVisual": [
+          "href"
+        ],
+        "visual": [
+          "appearance"
+        ]
+      },
       "timeline": {
         "excluded": [],
         "nonVisual": [],
@@ -41200,10 +41637,10 @@
     },
     "tokens": {
       "catalogueAdded": 305,
-      "componentVariables": 419,
+      "componentVariables": 436,
       "modeValuesBySource": {
         "alias": 203,
-        "evaluated": 793,
+        "evaluated": 827,
         "literal": 774
       },
       "reached": 202,
@@ -41223,8 +41660,8 @@
       "variables": 466
     },
     "variants": {
-      "components": 90,
-      "componentSets": 89,
+      "components": 94,
+      "componentSets": 93,
       "naiveAllOptions": {
         "accordion": 32,
         "avatar": 8,
@@ -41266,6 +41703,7 @@
         "tag-link": 10,
         "text": 288,
         "textarea": 18,
+        "tile-link": 24,
         "timeline": 1
       },
       "naiveVisualOptions": {
@@ -41309,6 +41747,7 @@
         "tag-link": 10,
         "text": 48,
         "textarea": 18,
+        "tile-link": 4,
         "timeline": 1
       },
       "variantsPerSet": [
@@ -41667,13 +42106,29 @@
         {
           "set": "details/frosted",
           "variants": 2
+        },
+        {
+          "set": "tile-link/plain",
+          "variants": 3
+        },
+        {
+          "set": "tile-link/tactile",
+          "variants": 3
+        },
+        {
+          "set": "tile-link/brutalist",
+          "variants": 3
+        },
+        {
+          "set": "tile-link/frosted",
+          "variants": 3
         }
       ],
-      "variantsTotal": 2363
+      "variantsTotal": 2375
     }
   },
   "schemaVersion": 1,
-  "sourceHash": "a7ca43ba404c75e3",
+  "sourceHash": "e2c316f44e5ba026",
   "stage": {
     "background": {
       "variable": "--color-bg-surface"
@@ -41731,6 +42186,47 @@
         "width": {
           "expression": "360px",
           "value": 360
+        }
+      },
+      "01582d957508aa39": {
+        "clipsContent": true,
+        "crossAlign": "MIN",
+        "direction": "VERTICAL",
+        "gap": {
+          "variable": "--space-inline-md"
+        },
+        "mainAlign": "MIN",
+        "minHeight": {
+          "variable": "--size-control-lg"
+        },
+        "minWidth": {
+          "expression": "0",
+          "value": 0
+        },
+        "padding": {
+          "bottom": {
+            "variable": "--space-inset-md"
+          },
+          "left": {
+            "variable": "--space-inset-md"
+          },
+          "right": {
+            "variable": "--space-inset-md"
+          },
+          "top": {
+            "variable": "--space-inset-md"
+          }
+        },
+        "radius": {
+          "variable": "--radius-surface"
+        },
+        "strokeWeight": {
+          "expression": "1px",
+          "value": 1
+        },
+        "width": {
+          "expression": "320px",
+          "value": 320
         }
       },
       "015dc53e9d20146a": {
@@ -46862,6 +47358,47 @@
           }
         }
       },
+      "d4726437c88aa938": {
+        "clipsContent": false,
+        "crossAlign": "MIN",
+        "direction": "VERTICAL",
+        "gap": {
+          "variable": "--space-inline-md"
+        },
+        "mainAlign": "MIN",
+        "minHeight": {
+          "variable": "--size-control-lg"
+        },
+        "minWidth": {
+          "expression": "0",
+          "value": 0
+        },
+        "padding": {
+          "bottom": {
+            "variable": "--space-inset-md"
+          },
+          "left": {
+            "variable": "--space-inset-md"
+          },
+          "right": {
+            "variable": "--space-inset-md"
+          },
+          "top": {
+            "variable": "--space-inset-md"
+          }
+        },
+        "radius": {
+          "variable": "--radius-surface"
+        },
+        "strokeWeight": {
+          "expression": "1px",
+          "value": 1
+        },
+        "width": {
+          "expression": "320px",
+          "value": 320
+        }
+      },
       "d4c70d0523e30a03": {
         "clipsContent": false,
         "crossAlign": "CENTER",
@@ -47503,6 +48040,38 @@
           "expression": "360px",
           "value": 360
         }
+      },
+      "fad10820225a01de": {
+        "clipsContent": false,
+        "crossAlign": "MIN",
+        "direction": "VERTICAL",
+        "gap": {
+          "variable": "--space-inset-sm"
+        },
+        "mainAlign": "MIN",
+        "minWidth": {
+          "expression": "0",
+          "value": 0
+        },
+        "padding": {
+          "bottom": {
+            "expression": "0",
+            "value": 0
+          },
+          "left": {
+            "expression": "0",
+            "value": 0
+          },
+          "right": {
+            "expression": "0",
+            "value": 0
+          },
+          "top": {
+            "expression": "0",
+            "value": 0
+          }
+        },
+        "stretch": true
       },
       "fae1e4184834244b": {
         "clipsContent": false,
@@ -51571,6 +52140,76 @@
           ],
           "slot": "control",
           "surface": "3bd0c0946b302cbf"
+        }
+      ],
+      "1b9cc103b18f58b9": [
+        {
+          "fills": [
+            {
+              "color": {
+                "variable": "tile:state-layer:a8bbbce668"
+              },
+              "type": "SOLID"
+            }
+          ],
+          "kind": "overlay",
+          "slot": "state layer"
+        },
+        {
+          "box": "fad10820225a01de",
+          "kind": "frame",
+          "layers": [
+            {
+              "fill": true,
+              "kind": "text",
+              "slot": "title 1",
+              "text": {
+                "fill": {
+                  "color": {
+                    "variable": "--color-text-primary"
+                  },
+                  "type": "SOLID"
+                },
+                "fontFamily": {
+                  "variable": "--font-family-body"
+                },
+                "fontSize": {
+                  "variable": "--font-size-heading-sm"
+                },
+                "fontWeight": {
+                  "variable": "--font-weight-heading"
+                },
+                "lineHeight": 150
+              },
+              "textProperty": "title 1"
+            },
+            {
+              "fill": true,
+              "kind": "text",
+              "slot": "description 1",
+              "text": {
+                "fill": {
+                  "color": {
+                    "variable": "--color-text-secondary"
+                  },
+                  "type": "SOLID"
+                },
+                "fontFamily": {
+                  "variable": "--font-family-body"
+                },
+                "fontSize": {
+                  "variable": "--font-size-body-sm"
+                },
+                "fontWeight": {
+                  "variable": "--font-weight-body"
+                },
+                "lineHeight": 150
+              },
+              "textProperty": "description 1"
+            }
+          ],
+          "slot": "content",
+          "surface": "fa0b643878e9242d"
         }
       ],
       "1bb7ca23597f2d23": [
@@ -56975,6 +57614,95 @@
           "kind": "icon",
           "slot": "post",
           "visibleProperty": "post"
+        }
+      ],
+      "4fd3b0b5b5475a71": [
+        {
+          "fills": [
+            {
+              "color": {
+                "variable": "tile:state-layer:bfba8c3497"
+              },
+              "type": "SOLID"
+            }
+          ],
+          "kind": "overlay",
+          "slot": "state layer"
+        },
+        {
+          "box": "fad10820225a01de",
+          "kind": "frame",
+          "layers": [
+            {
+              "fill": true,
+              "kind": "text",
+              "slot": "title 1",
+              "text": {
+                "fill": {
+                  "color": {
+                    "variable": "--color-text-primary"
+                  },
+                  "type": "SOLID"
+                },
+                "fontFamily": {
+                  "variable": "--font-family-body"
+                },
+                "fontSize": {
+                  "variable": "--font-size-heading-sm"
+                },
+                "fontWeight": {
+                  "variable": "--font-weight-heading"
+                },
+                "lineHeight": 150
+              },
+              "textProperty": "title 1"
+            },
+            {
+              "fill": true,
+              "kind": "text",
+              "slot": "description 1",
+              "text": {
+                "fill": {
+                  "color": {
+                    "variable": "--color-text-secondary"
+                  },
+                  "type": "SOLID"
+                },
+                "fontFamily": {
+                  "variable": "--font-family-body"
+                },
+                "fontSize": {
+                  "variable": "--font-size-body-sm"
+                },
+                "fontWeight": {
+                  "variable": "--font-weight-body"
+                },
+                "lineHeight": 150
+              },
+              "textProperty": "description 1"
+            }
+          ],
+          "slot": "content",
+          "surface": "fa0b643878e9242d"
+        },
+        {
+          "color": {
+            "color": {
+              "variable": "--focus-ring-color"
+            },
+            "type": "SOLID"
+          },
+          "kind": "ring",
+          "offset": {
+            "variable": "--focus-ring-offset"
+          },
+          "radius": {
+            "variable": "tile:outline-radius:a1a8e339a3"
+          },
+          "slot": "focus ring",
+          "width": {
+            "variable": "--focus-ring-width"
+          }
         }
       ],
       "50c07d78c3ef5da9": [
@@ -64437,6 +65165,76 @@
           "width": {
             "variable": "--focus-ring-width"
           }
+        }
+      ],
+      "8e9c68d5df25b744": [
+        {
+          "fills": [
+            {
+              "color": {
+                "variable": "tile:state-layer:9652c98e0a"
+              },
+              "type": "SOLID"
+            }
+          ],
+          "kind": "overlay",
+          "slot": "state layer"
+        },
+        {
+          "box": "fad10820225a01de",
+          "kind": "frame",
+          "layers": [
+            {
+              "fill": true,
+              "kind": "text",
+              "slot": "title 1",
+              "text": {
+                "fill": {
+                  "color": {
+                    "variable": "--color-text-primary"
+                  },
+                  "type": "SOLID"
+                },
+                "fontFamily": {
+                  "variable": "--font-family-body"
+                },
+                "fontSize": {
+                  "variable": "--font-size-heading-sm"
+                },
+                "fontWeight": {
+                  "variable": "--font-weight-heading"
+                },
+                "lineHeight": 150
+              },
+              "textProperty": "title 1"
+            },
+            {
+              "fill": true,
+              "kind": "text",
+              "slot": "description 1",
+              "text": {
+                "fill": {
+                  "color": {
+                    "variable": "--color-text-secondary"
+                  },
+                  "type": "SOLID"
+                },
+                "fontFamily": {
+                  "variable": "--font-family-body"
+                },
+                "fontSize": {
+                  "variable": "--font-size-body-sm"
+                },
+                "fontWeight": {
+                  "variable": "--font-weight-body"
+                },
+                "lineHeight": 150
+              },
+              "textProperty": "description 1"
+            }
+          ],
+          "slot": "content",
+          "surface": "fa0b643878e9242d"
         }
       ],
       "8ea31f4307ec30db": [
@@ -77153,6 +77951,46 @@
           }
         ]
       },
+      "24cba86042643773": {
+        "effects": [
+          {
+            "blur": {
+              "expression": "0",
+              "value": 0
+            },
+            "color": {
+              "variable": "tile:brutalist-black:b75258c11d"
+            },
+            "spread": {
+              "expression": "0",
+              "value": 0
+            },
+            "type": "DROP_SHADOW",
+            "x": {
+              "variable": "tile:shadow-1-x:bbcba656e0"
+            },
+            "y": {
+              "variable": "tile:brutalist-shadow-block:4870d7ded7"
+            }
+          }
+        ],
+        "fills": [
+          {
+            "color": {
+              "variable": "--color-bg-surface"
+            },
+            "type": "SOLID"
+          }
+        ],
+        "strokes": [
+          {
+            "color": {
+              "variable": "tile:brutalist-black:b75258c11d"
+            },
+            "type": "SOLID"
+          }
+        ]
+      },
       "28c72f4d9a7ad535": {
         "effects": [],
         "fills": [
@@ -77493,6 +78331,46 @@
           {
             "color": {
               "variable": "button:brutalist-black:b75258c11d"
+            },
+            "type": "SOLID"
+          }
+        ]
+      },
+      "2fc29be39f4b4449": {
+        "effects": [
+          {
+            "blur": {
+              "expression": "0",
+              "value": 0
+            },
+            "color": {
+              "variable": "tile:brutalist-black:b75258c11d"
+            },
+            "spread": {
+              "expression": "0",
+              "value": 0
+            },
+            "type": "DROP_SHADOW",
+            "x": {
+              "variable": "tile:shadow-1-x:8edd00c9c2"
+            },
+            "y": {
+              "variable": "tile:brutalist-shadow-block:2542062955"
+            }
+          }
+        ],
+        "fills": [
+          {
+            "color": {
+              "variable": "--color-bg-surface"
+            },
+            "type": "SOLID"
+          }
+        ],
+        "strokes": [
+          {
+            "color": {
+              "variable": "tile:brutalist-black:b75258c11d"
             },
             "type": "SOLID"
           }
@@ -83039,6 +83917,102 @@
           }
         ]
       },
+      "956debe3aca94ba9": {
+        "effects": [
+          {
+            "blur": {
+              "expression": "0",
+              "value": 0
+            },
+            "color": {
+              "variable": "tile:tactile-ledge:daf4014241"
+            },
+            "spread": {
+              "expression": "0",
+              "value": 0
+            },
+            "type": "DROP_SHADOW",
+            "x": {
+              "expression": "0",
+              "value": 0
+            },
+            "y": {
+              "variable": "tile:tactile-drop:e2c9ce981c"
+            }
+          },
+          {
+            "blur": {
+              "expression": "4px",
+              "value": 4
+            },
+            "color": {
+              "variable": "tile:tactile-haze:191bf2b884"
+            },
+            "spread": {
+              "expression": "0",
+              "value": 0
+            },
+            "type": "DROP_SHADOW",
+            "x": {
+              "expression": "0",
+              "value": 0
+            },
+            "y": {
+              "variable": "tile:shadow-2-y:c07527a9d7"
+            }
+          }
+        ],
+        "fills": [
+          {
+            "color": {
+              "variable": "--color-bg-surface"
+            },
+            "type": "SOLID"
+          },
+          {
+            "angle": 180,
+            "expression": "linear-gradient( to bottom, light-dark(color-mix(in oklab, white 10%, transparent), color-mix(in oklab, white 6%, transparent)), transparent 55%, light-dark(color-mix(in oklab, black 5%, transparent), color-mix(in oklab, black 8%, transparent)) )",
+            "stops": [
+              {
+                "color": {
+                  "a": 0.1,
+                  "b": 1,
+                  "g": 1,
+                  "r": 1
+                },
+                "position": 0
+              },
+              {
+                "color": {
+                  "a": 0,
+                  "b": 0,
+                  "g": 0,
+                  "r": 0
+                },
+                "position": 0.55
+              },
+              {
+                "color": {
+                  "a": 0.05,
+                  "b": 0,
+                  "g": 0,
+                  "r": 0
+                },
+                "position": 1
+              }
+            ],
+            "type": "GRADIENT_LINEAR"
+          }
+        ],
+        "strokes": [
+          {
+            "color": {
+              "variable": "--color-border-subtle"
+            },
+            "type": "SOLID"
+          }
+        ]
+      },
       "95b90686dc373bd7": {
         "effects": [
           {
@@ -86435,6 +87409,102 @@
           }
         ]
       },
+      "cd25c830288883dc": {
+        "effects": [
+          {
+            "blur": {
+              "expression": "0",
+              "value": 0
+            },
+            "color": {
+              "variable": "--frost-highlight"
+            },
+            "spread": {
+              "expression": "0",
+              "value": 0
+            },
+            "type": "INNER_SHADOW",
+            "x": {
+              "expression": "0",
+              "value": 0
+            },
+            "y": {
+              "expression": "1px",
+              "value": 1
+            }
+          },
+          {
+            "blur": {
+              "expression": "2px",
+              "value": 2
+            },
+            "color": {
+              "variable": "--shadow-sm"
+            },
+            "spread": {
+              "expression": "0",
+              "value": 0
+            },
+            "type": "DROP_SHADOW",
+            "x": {
+              "expression": "0",
+              "value": 0
+            },
+            "y": {
+              "expression": "1px",
+              "value": 1
+            }
+          },
+          {
+            "radius": {
+              "expression": "16px",
+              "value": 16
+            },
+            "type": "BACKGROUND_BLUR"
+          }
+        ],
+        "fills": [
+          {
+            "color": {
+              "variable": "tile:frost-glass:ddcb59710b"
+            },
+            "type": "SOLID"
+          },
+          {
+            "angle": 180,
+            "expression": "linear-gradient(to bottom, color-mix(in oklab, var(--frost-highlight) 45%, transparent), transparent 40%)",
+            "stops": [
+              {
+                "color": {
+                  "a": 0.315,
+                  "b": 1,
+                  "g": 1,
+                  "r": 1
+                },
+                "position": 0
+              },
+              {
+                "color": {
+                  "a": 0,
+                  "b": 0,
+                  "g": 0,
+                  "r": 0
+                },
+                "position": 0.4
+              }
+            ],
+            "type": "GRADIENT_LINEAR"
+          }
+        ],
+        "strokes": [
+          {
+            "color": {
+              "variable": "tile:border-color:dfa846e305"
+            },
+            "type": "SOLID"
+          }
+        ]
+      },
       "cda8c44948781281": {
         "effects": [
           {
@@ -87912,6 +88982,102 @@
           {
             "color": {
               "variable": "button:border-color:3674d0e37e"
+            },
+            "type": "SOLID"
+          }
+        ]
+      },
+      "e75320bbf65966dd": {
+        "effects": [
+          {
+            "blur": {
+              "expression": "0",
+              "value": 0
+            },
+            "color": {
+              "variable": "tile:tactile-ledge:daf4014241"
+            },
+            "spread": {
+              "expression": "0",
+              "value": 0
+            },
+            "type": "DROP_SHADOW",
+            "x": {
+              "expression": "0",
+              "value": 0
+            },
+            "y": {
+              "variable": "tile:tactile-drop:aa626ee689"
+            }
+          },
+          {
+            "blur": {
+              "expression": "4px",
+              "value": 4
+            },
+            "color": {
+              "variable": "tile:tactile-haze:191bf2b884"
+            },
+            "spread": {
+              "expression": "0",
+              "value": 0
+            },
+            "type": "DROP_SHADOW",
+            "x": {
+              "expression": "0",
+              "value": 0
+            },
+            "y": {
+              "variable": "tile:shadow-2-y:27df996986"
+            }
+          }
+        ],
+        "fills": [
+          {
+            "color": {
+              "variable": "--color-bg-surface"
+            },
+            "type": "SOLID"
+          },
+          {
+            "angle": 180,
+            "expression": "linear-gradient( to bottom, light-dark(color-mix(in oklab, white 10%, transparent), color-mix(in oklab, white 6%, transparent)), transparent 55%, light-dark(color-mix(in oklab, black 5%, transparent), color-mix(in oklab, black 8%, transparent)) )",
+            "stops": [
+              {
+                "color": {
+                  "a": 0.1,
+                  "b": 1,
+                  "g": 1,
+                  "r": 1
+                },
+                "position": 0
+              },
+              {
+                "color": {
+                  "a": 0,
+                  "b": 0,
+                  "g": 0,
+                  "r": 0
+                },
+                "position": 0.55
+              },
+              {
+                "color": {
+                  "a": 0.05,
+                  "b": 0,
+                  "g": 0,
+                  "r": 0
+                },
+                "position": 1
+              }
+            ],
+            "type": "GRADIENT_LINEAR"
+          }
+        ],
+        "strokes": [
+          {
+            "color": {
+              "variable": "--color-border-subtle"
             },
             "type": "SOLID"
           }
@@ -100539,6 +101705,460 @@
             "b": 0,
             "g": 0,
             "r": 0
+          }
+        }
+      }
+    },
+    {
+      "codeSyntax": "var(--sk-tile-border-color)",
+      "collection": "component",
+      "expression": "color-mix(in oklab, var(--color-text-primary) 18%, transparent)",
+      "id": "tile:border-color:dfa846e305",
+      "name": "tile/border-color/frosted",
+      "source": {
+        "dark": "evaluated",
+        "light": "evaluated"
+      },
+      "type": "COLOR",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": {
+            "a": 0.18,
+            "b": 0.9579,
+            "g": 0.9609,
+            "r": 0.9609
+          }
+        },
+        "light": {
+          "kind": "literal",
+          "value": {
+            "a": 0.18,
+            "b": 0.0903,
+            "g": 0.098,
+            "r": 0.1095
+          }
+        }
+      }
+    },
+    {
+      "codeSyntax": "var(--brutalist-black)",
+      "collection": "component",
+      "expression": "oklch(from var(--shadow-lg) l c h / 1)",
+      "id": "tile:brutalist-black:b75258c11d",
+      "name": "tile/brutalist-black/brutalist",
+      "source": {
+        "dark": "evaluated",
+        "light": "evaluated"
+      },
+      "type": "COLOR",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": {
+            "a": 1,
+            "b": 0,
+            "g": 0,
+            "r": 0
+          }
+        },
+        "light": {
+          "kind": "literal",
+          "value": {
+            "a": 1,
+            "b": 0,
+            "g": 0,
+            "r": 0
+          }
+        }
+      }
+    },
+    {
+      "codeSyntax": "var(--brutalist-shadow-block)",
+      "collection": "component",
+      "expression": "max( min(round(nearest, calc(5px * 1), 1px), 1px), round(nearest, calc(round(nearest, calc(5px * 1), 1px) * (1 - 0)), 1px) )",
+      "id": "tile:brutalist-shadow-block:2542062955",
+      "name": "tile/brutalist-shadow-block/brutalist",
+      "source": {
+        "dark": "evaluated",
+        "light": "evaluated"
+      },
+      "type": "FLOAT",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": 5
+        },
+        "light": {
+          "kind": "literal",
+          "value": 5
+        }
+      }
+    },
+    {
+      "codeSyntax": "var(--brutalist-shadow-block)",
+      "collection": "component",
+      "expression": "max( min(round(nearest, calc(5px * 1), 1px), 1px), round(nearest, calc(round(nearest, calc(5px * 1), 1px) * (1 - -0.25)), 1px) )",
+      "id": "tile:brutalist-shadow-block:4870d7ded7",
+      "name": "tile/brutalist-shadow-block/brutalist/hover",
+      "source": {
+        "dark": "evaluated",
+        "light": "evaluated"
+      },
+      "type": "FLOAT",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": 6
+        },
+        "light": {
+          "kind": "literal",
+          "value": 6
+        }
+      }
+    },
+    {
+      "codeSyntax": "var(--frost-glass)",
+      "collection": "component",
+      "expression": "var(--frost-on) color-mix(in oklab, var(--color-bg-surface) 72%, transparent)",
+      "id": "tile:frost-glass:ddcb59710b",
+      "name": "tile/frost-glass/frosted",
+      "source": {
+        "dark": "evaluated",
+        "light": "evaluated"
+      },
+      "type": "COLOR",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": {
+            "a": 0.72,
+            "b": 0.0903,
+            "g": 0.098,
+            "r": 0.1095
+          }
+        },
+        "light": {
+          "kind": "literal",
+          "value": {
+            "a": 0.72,
+            "b": 1,
+            "g": 1,
+            "r": 1
+          }
+        }
+      }
+    },
+    {
+      "codeSyntax": "",
+      "collection": "component",
+      "expression": "calc(var(--radius-surface) + var(--focus-ring-offset))",
+      "id": "tile:outline-radius:a1a8e339a3",
+      "name": "tile/outline-radius/focus",
+      "source": {
+        "dark": "evaluated",
+        "light": "evaluated"
+      },
+      "type": "FLOAT",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": 14
+        },
+        "light": {
+          "kind": "literal",
+          "value": 14
+        }
+      }
+    },
+    {
+      "codeSyntax": "",
+      "collection": "component",
+      "expression": "calc(max( min(round(nearest, calc(5px * 1), 1px), 1px), round(nearest, calc(round(nearest, calc(5px * 1), 1px) * (1 - 0)), 1px) ) * 1)",
+      "id": "tile:shadow-1-x:8edd00c9c2",
+      "name": "tile/shadow-1-x/brutalist",
+      "source": {
+        "dark": "evaluated",
+        "light": "evaluated"
+      },
+      "type": "FLOAT",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": 5
+        },
+        "light": {
+          "kind": "literal",
+          "value": 5
+        }
+      }
+    },
+    {
+      "codeSyntax": "",
+      "collection": "component",
+      "expression": "calc(max( min(round(nearest, calc(5px * 1), 1px), 1px), round(nearest, calc(round(nearest, calc(5px * 1), 1px) * (1 - -0.25)), 1px) ) * 1)",
+      "id": "tile:shadow-1-x:bbcba656e0",
+      "name": "tile/shadow-1-x/brutalist/hover",
+      "source": {
+        "dark": "evaluated",
+        "light": "evaluated"
+      },
+      "type": "FLOAT",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": 6
+        },
+        "light": {
+          "kind": "literal",
+          "value": 6
+        }
+      }
+    },
+    {
+      "codeSyntax": "",
+      "collection": "component",
+      "expression": "calc(calc(4px * (1 - 0)) + 1px)",
+      "id": "tile:shadow-2-y:c07527a9d7",
+      "name": "tile/shadow-2-y/tactile",
+      "source": {
+        "dark": "evaluated",
+        "light": "evaluated"
+      },
+      "type": "FLOAT",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": 5
+        },
+        "light": {
+          "kind": "literal",
+          "value": 5
+        }
+      }
+    },
+    {
+      "codeSyntax": "",
+      "collection": "component",
+      "expression": "calc(calc(4px * (1 - 0.18)) + 1px)",
+      "id": "tile:shadow-2-y:27df996986",
+      "name": "tile/shadow-2-y/tactile/hover",
+      "source": {
+        "dark": "evaluated",
+        "light": "evaluated"
+      },
+      "type": "FLOAT",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": 4.28
+        },
+        "light": {
+          "kind": "literal",
+          "value": 4.28
+        }
+      }
+    },
+    {
+      "codeSyntax": "",
+      "collection": "component",
+      "expression": "color-mix( in srgb, var(--color-text-primary) calc(var(--state-layer-focus-opacity) * 100%), transparent )",
+      "id": "tile:state-layer:bfba8c3497",
+      "name": "tile/state-layer/focus",
+      "source": {
+        "dark": "evaluated",
+        "light": "evaluated"
+      },
+      "type": "COLOR",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": {
+            "a": 0.16,
+            "b": 0.9579,
+            "g": 0.9609,
+            "r": 0.9609
+          }
+        },
+        "light": {
+          "kind": "literal",
+          "value": {
+            "a": 0.16,
+            "b": 0.0903,
+            "g": 0.098,
+            "r": 0.1095
+          }
+        }
+      }
+    },
+    {
+      "codeSyntax": "",
+      "collection": "component",
+      "expression": "color-mix( in srgb, var(--color-text-primary) calc(var(--state-layer-hover-opacity) * 100%), transparent )",
+      "id": "tile:state-layer:9652c98e0a",
+      "name": "tile/state-layer/hover",
+      "source": {
+        "dark": "evaluated",
+        "light": "evaluated"
+      },
+      "type": "COLOR",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": {
+            "a": 0.12,
+            "b": 0.9579,
+            "g": 0.9609,
+            "r": 0.9609
+          }
+        },
+        "light": {
+          "kind": "literal",
+          "value": {
+            "a": 0.12,
+            "b": 0.0903,
+            "g": 0.098,
+            "r": 0.1095
+          }
+        }
+      }
+    },
+    {
+      "codeSyntax": "",
+      "collection": "component",
+      "expression": "color-mix( in srgb, var(--color-text-primary) calc(0 * 100%), transparent )",
+      "id": "tile:state-layer:a8bbbce668",
+      "name": "tile/state-layer/rest",
+      "source": {
+        "dark": "evaluated",
+        "light": "evaluated"
+      },
+      "type": "COLOR",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": {
+            "a": 0,
+            "b": 0,
+            "g": 0,
+            "r": 0
+          }
+        },
+        "light": {
+          "kind": "literal",
+          "value": {
+            "a": 0,
+            "b": 0,
+            "g": 0,
+            "r": 0
+          }
+        }
+      }
+    },
+    {
+      "codeSyntax": "var(--tactile-drop)",
+      "collection": "component",
+      "expression": "calc(4px * (1 - 0))",
+      "id": "tile:tactile-drop:e2c9ce981c",
+      "name": "tile/tactile-drop/tactile",
+      "source": {
+        "dark": "evaluated",
+        "light": "evaluated"
+      },
+      "type": "FLOAT",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": 4
+        },
+        "light": {
+          "kind": "literal",
+          "value": 4
+        }
+      }
+    },
+    {
+      "codeSyntax": "var(--tactile-drop)",
+      "collection": "component",
+      "expression": "calc(4px * (1 - 0.18))",
+      "id": "tile:tactile-drop:aa626ee689",
+      "name": "tile/tactile-drop/tactile/hover",
+      "source": {
+        "dark": "evaluated",
+        "light": "evaluated"
+      },
+      "type": "FLOAT",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": 3.28
+        },
+        "light": {
+          "kind": "literal",
+          "value": 3.28
+        }
+      }
+    },
+    {
+      "codeSyntax": "var(--tactile-haze)",
+      "collection": "component",
+      "expression": "light-dark( color-mix(in oklab, var(--color-text-primary) 14%, transparent), color-mix(in oklab, var(--color-bg-surface-sunken) 44%, transparent) )",
+      "id": "tile:tactile-haze:191bf2b884",
+      "name": "tile/tactile-haze/tactile",
+      "source": {
+        "dark": "evaluated",
+        "light": "evaluated"
+      },
+      "type": "COLOR",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": {
+            "a": 0.44,
+            "b": 0.0355,
+            "g": 0.0394,
+            "r": 0.047
+          }
+        },
+        "light": {
+          "kind": "literal",
+          "value": {
+            "a": 0.14,
+            "b": 0.0903,
+            "g": 0.098,
+            "r": 0.1095
+          }
+        }
+      }
+    },
+    {
+      "codeSyntax": "var(--tactile-ledge)",
+      "collection": "component",
+      "expression": "light-dark( color-mix(in oklab, var(--color-bg-surface) 76%, var(--color-text-primary)), color-mix(in oklab, var(--color-bg-surface-sunken) 55%, black) )",
+      "id": "tile:tactile-ledge:daf4014241",
+      "name": "tile/tactile-ledge/tactile",
+      "source": {
+        "dark": "evaluated",
+        "light": "evaluated"
+      },
+      "type": "COLOR",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": {
+            "a": 1,
+            "b": 0.0059,
+            "g": 0.0065,
+            "r": 0.0079
+          }
+        },
+        "light": {
+          "kind": "literal",
+          "value": {
+            "a": 1,
+            "b": 0.7547,
+            "g": 0.7572,
+            "r": 0.7611
           }
         }
       }
