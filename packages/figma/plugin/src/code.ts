@@ -537,17 +537,19 @@ const cellHeightOf = (spec: M.ComponentSet) =>
   Math.max(
     ...spec.cells.map((c) => {
       const box = manifest.styles.boxes[c.box];
-      const h = box.height ?? box.minHeight;
-      if (h) return Number(valueOf(h));
+      if (box.height) return Number(valueOf(box.height));
+      const floor = box.minHeight ? Number(valueOf(box.minHeight)) : 0;
       const layers = manifest.styles.layers[c.layers];
-      const text = layers.find((l): l is Extract<M.Layer, { kind: "text" }> => l.kind === "text");
-      // Nested, or with no text to size it (a Separator's rule is its border): built up from the parts.
-      if (!text || layers.some((l) => l.kind === "frame")) return Math.ceil(nestedSize(box, layers, (l) => roughWidth(spec, l)).h);
+      const texts = layers.filter((l): l is Extract<M.Layer, { kind: "text" }> => l.kind === "text");
+      const text = texts[0];
+      // Nested, with several texts (Stat's three, stacked), or with no text to size it (a Separator's
+      // rule is its border): built up from the parts, as auto layout will.
+      if (texts.length !== 1 || layers.some((l) => l.kind === "frame")) return Math.ceil(nestedSize(box, layers, (l) => roughWidth(spec, l)).h);
       // Auto leading is the font's own; 120% is what a body face's comes to.
       const line = (Number(valueOf(text.text.fontSize)) * (text.text.lineHeight === "auto" ? 120 : text.text.lineHeight)) / 100;
       const padding = Number(valueOf(box.padding.top)) + Number(valueOf(box.padding.bottom));
       const border = box.strokeWeight ? 2 * Number(valueOf(box.strokeWeight)) : 0;
-      return Math.ceil(line + padding + border);
+      return Math.ceil(Math.max(floor, line + padding + border));
     }),
   );
 
@@ -669,9 +671,12 @@ const iconRowOf = (spec: M.IconSet) => spec.size + 8 + lineOf(labelSize()) + 24;
 const iconTop = () => FRAME_PAD + lineOf(TITLE_SIZE) + LABEL_GAP;
 
 /** A frame's height, known before it holds anything. */
+/** The cell height each set was planned with (measured off its drawn variants when it has them). */
+const plannedCellH = new Map<string, number>();
+
 function plannedHeight(spec: M.IconSet | M.ComponentSet): number {
   if (spec.kind === "icon-set") return iconTop() + Math.ceil(spec.icons.length / ICON_COLUMNS) * iconRowOf(spec) + FRAME_PAD;
-  const cellH = cellHeightOf(spec);
+  const cellH = plannedCellH.get(spec.id) ?? cellHeightOf(spec);
   const { rowY } = rowOffsets(spec, cellH);
   return setTop() + rowY[rowY.length - 1] + cellH + INNER + FRAME_PAD;
 }
@@ -1236,22 +1241,22 @@ async function applyCell(ctx: SetCtx, node: ComponentNode, cell: M.Cell, sample:
  * The set's component properties, by name → Figma's generated key. Adds, fixes, and removes the
  * ones the manifest no longer declares: they are part of the definition, not placed objects.
  */
-function ensureProperties(ctx: SetCtx, set: ComponentSetNode, properties: M.ComponentProperty[]) {
+function ensureProperties(ctx: SetCtx, set: ComponentSetNode, properties: M.ComponentProperty[], name = set.name) {
   const keys: Record<string, string> = {};
   const wanted = new Set(properties.map((p) => p.name));
   for (const [key, def] of Object.entries(set.componentPropertyDefinitions)) {
     if (def.type === "VARIANT" || wanted.has(key.split("#")[0])) continue;
-    ctx.run.log("UPDATE", `${set.name}: property ${key.split("#")[0]}`, "removed, no longer in the manifest");
+    ctx.run.log("UPDATE", `${name}: property ${key.split("#")[0]}`, "removed, no longer in the manifest");
     ctx.run.write(() => set.deleteComponentProperty(key));
   }
   for (const property of properties) {
     const defs = set.componentPropertyDefinitions;
     let key = Object.keys(defs).find((k) => k.split("#")[0] === property.name && defs[k].type === property.type);
     if (!key) {
-      ctx.run.log("UPDATE", `${set.name}: property ${property.name}`, "added");
+      ctx.run.log("UPDATE", `${name}: property ${property.name}`, "added");
       ctx.run.write(() => (key = set.addComponentProperty(property.name, property.type, property.default)));
     } else if (defs[key].defaultValue !== property.default) {
-      ctx.run.log("UPDATE", `${set.name}: property ${property.name}`, "default changed");
+      ctx.run.log("UPDATE", `${name}: property ${property.name}`, "default changed");
       ctx.run.write(() => (key = set.editComponentProperty(key!, { defaultValue: property.default })));
     }
     if (key) keys[property.name] = key;
@@ -1394,8 +1399,12 @@ async function measureFirst(ctx: Ctx, spec: M.ComponentSet, set: ComponentSetNod
   const cellH = cellHeightOf(spec);
   const first = firstCellOf(spec);
   if (!first) return { w: 0, h: cellH };
-  const node = ownCells(set).find((c) => getTag(c, "cell") === first.key);
-  if (node) return { w: Math.ceil(node.width), h: Math.max(cellH, Math.ceil(node.height)) };
+  // Drawn before: the grid is as wide and tall as its widest and tallest variant already is, which is
+  // what laying it out again would make it (so a sync with nothing to change plans it exactly).
+  const drawn = ownCells(set);
+  if (drawn.some((c) => getTag(c, "cell") === first.key)) {
+    return { w: Math.ceil(Math.max(...drawn.map((c) => c.width))), h: Math.max(cellH, Math.ceil(Math.max(...drawn.map((c) => c.height)))) };
+  }
   if (manifest.styles.layers[first.layers].some((l) => l.kind === "frame")) {
     const size = await measureNested(ctx, spec, first);
     return { w: size.w, h: Math.max(cellH, size.h) };
@@ -1667,7 +1676,7 @@ async function syncSet(ctx: SetCtx, spec: M.ComponentSet, found: Map<string, Sce
       if (node.width > layout.cellW + 0.5 || node.height > layout.cellH + 0.5) outgrown = true;
       move(run, node, layout.colX[col], layout.rowY[row]);
       cellsByKey.set(c.key, node);
-      keys ??= ensureProperties(ctx, set, spec.properties);
+      keys ??= ensureProperties(ctx, set, spec.properties, spec.name);
       bindReferences(ctx, node, c, keys, samples);
       // The row is done: its showcase goes beside it now, not after every row.
       if (col === lastCol) await drawShowcaseRow(ctx, frame, spec, layout, row, cellsByKey, keys, showExisting, showDrawn);
@@ -1699,7 +1708,7 @@ async function syncSet(ctx: SetCtx, spec: M.ComponentSet, found: Map<string, Sce
   }
   tag(run, s, { ...provenance("component-set", spec.id), contractHash: spec.contractHash, visualHash: spec.visualHash });
 
-  keys ??= ensureProperties(ctx, s, spec.properties);
+  keys ??= ensureProperties(ctx, s, spec.properties, spec.name);
   const nodes = new Map(ownCells(s).map((c) => [getTag(c, "cell"), c]));
   for (const cell of spec.cells) {
     const node = nodes.get(cell.key);
@@ -1971,6 +1980,7 @@ async function reconcileRun(run: Run, apply: boolean, started: number, chosen: S
         continue;
       }
       const { w, h } = await measureFirst(ctx, spec, setOf(run, spec, found));
+      plannedCellH.set(spec.id, h);
       const layout = await planLayout(ctx, frame, spec, w, h);
       layouts.set(spec.id, layout);
       frameWidths.set(spec.id, Math.ceil(plannedWidth(spec, layout)));
