@@ -1134,9 +1134,10 @@ const staleParts = (node: ComponentNode, cell: M.Cell): Part[] => PARTS.filter((
 /*
  * How the plugin draws, versioned: a fix to the drawing itself (a column's sizing axes, v2) changes
  * no manifest hash, so the tags carry this too, and a cell drawn by an older plugin is drawn again.
- * Surface is drawn the same as ever; box and layers were fixed in v2.
+ * Surface is drawn the same as ever; box and layers were fixed in v2 (a column's sizing axes) and v3
+ * (an empty frame sized to its padding and border rather than left at 100).
  */
-const DRAWING = "v2";
+const DRAWING = "v3";
 const drawnTag = (cell: M.Cell, part: Part | "hash") => (part === "surface" ? cell.surface : `${cell[part]}@${DRAWING}`);
 
 /** A frame's auto layout, padding, corners and size: the host's, or a part's inside it. */
@@ -1309,6 +1310,19 @@ async function applyLayers(
     if (reach === "bottom") frame.resize(Math.max(0.01, frame.width), Math.max(0.01, parent.height - frame.y));
     else frame.resize(Math.max(0.01, parent.width - frame.x), Math.max(0.01, frame.height));
   }
+  // A frame with nothing laid out in it does not hug in Figma: it keeps whatever size it had (100 when
+  // new). Sized here to what CSS gives an empty box: its padding and its border (a Separator's rule,
+  // a Navbar's spacer across).
+  if (!parent.children.some((c) => "layoutPositioning" in c && c.layoutPositioning === "AUTO")) {
+    const side = (field: "paddingTop" | "paddingBottom" | "paddingLeft" | "paddingRight" | "strokeTopWeight" | "strokeBottomWeight" | "strokeLeftWeight" | "strokeRightWeight") =>
+      typeof parent[field] === "number" ? (parent[field] as number) : 0;
+    const across = parent.layoutMode === "HORIZONTAL";
+    const hugW = (across ? parent.primaryAxisSizingMode : parent.counterAxisSizingMode) === "AUTO" && parent.layoutSizingHorizontal === "HUG";
+    const hugH = (across ? parent.counterAxisSizingMode : parent.primaryAxisSizingMode) === "AUTO" && parent.layoutSizingVertical === "HUG";
+    const w = side("paddingLeft") + side("paddingRight") + side("strokeLeftWeight") + side("strokeRightWeight");
+    const h = side("paddingTop") + side("paddingBottom") + side("strokeTopWeight") + side("strokeBottomWeight");
+    if (hugW || hugH) parent.resize(Math.max(0.01, hugW ? w : parent.width), Math.max(0.01, hugH ? h : parent.height));
+  }
   // Edges are placed off their parent's size, so once everything in it has laid out.
   for (const layer of layers) {
     if (layer.kind !== "edge") continue;
@@ -1370,7 +1384,14 @@ function ensureProperties(ctx: SetCtx, set: ComponentSetNode, properties: M.Comp
   return keys;
 }
 
-function bindReferences(ctx: SetCtx, node: ComponentNode, cell: M.Cell, keys: Record<string, string>, defaults: Record<string, string | boolean>) {
+function bindReferences(
+  ctx: SetCtx,
+  node: ComponentNode,
+  cell: M.Cell,
+  keys: Record<string, string>,
+  defaults: Record<string, string | boolean>,
+  quiet = false,
+) {
   eachLayer(node, cell, manifest.styles.layers[cell.layers], (child, layer, owner) => {
     const refs: Record<string, string> = {};
     if (layer.kind === "frame") {
@@ -1393,6 +1414,9 @@ function bindReferences(ctx: SetCtx, node: ComponentNode, cell: M.Cell, keys: Re
     try {
       ctx.run.write(() => (child.componentPropertyReferences = refs));
     } catch (error) {
+      // Right after a set is made Figma can refuse a binding it takes a moment later: the first pass
+      // stays quiet and the set's closing pass, which binds every variant again, reports what is left.
+      if (quiet) return;
       // One layer Figma will not bind is reported, not fatal: the rest of the set still syncs.
       const path = [];
       for (let n: BaseNode | null = child; n && n !== node; n = n.parent) path.unshift(n.name);
@@ -1791,7 +1815,7 @@ async function syncSet(ctx: SetCtx, spec: M.ComponentSet, found: Map<string, Sce
       move(run, node, layout.colX[col], Math.round(layout.rowY[row] + (layout.cellH - node.height) / 2));
       cellsByKey.set(c.key, node);
       keys ??= ensureProperties(ctx, set, spec.properties, spec.name);
-      bindReferences(ctx, node, c, keys, samples);
+      bindReferences(ctx, node, c, keys, samples, true);
       // The row is done: its showcase goes beside it now, not after every row.
       if (col === lastCol) await drawShowcaseRow(ctx, frame, spec, layout, row, cellsByKey, keys, showExisting, showDrawn);
     }
@@ -1845,6 +1869,10 @@ async function syncSet(ctx: SetCtx, spec: M.ComponentSet, found: Map<string, Sce
       run.log("UPDATE", `${spec.name}: grid`, "a variant was wider than the first; laid out again");
     }
     await finishLayout(ctx, frame, s, spec, layout);
+    // What the frame was laid out as in the end, so the closing check measures against that and
+    // not against the estimate made before anything was drawn.
+    plannedCellH.set(spec.id, layout.cellH);
+    frameWidths.set(spec.id, Math.ceil(frame.width));
     await wireInteractions(ctx, s, spec);
   }
   found.set(spec.id, s);
