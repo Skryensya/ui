@@ -99,7 +99,7 @@ function sampleSlot(
     );
     return { kind: "nodes", children };
   }
-  if (slot.accepts === "node") return { kind: "nodes", children: [{ id: newId(), text: humanize(ref.signature) }] };
+  if (slot.accepts === "node" && !layout) return { kind: "nodes", children: [{ id: newId(), text: humanize(ref.signature) }] };
   return { kind: "nodes", children: [] };
 }
 
@@ -117,9 +117,32 @@ function sampleSignatureChild(
   if (!signature) return undefined;
   const childRef = resolveChildRef(ref.contract, signature);
   if (!childRef) return undefined;
-  const child = presetForInner(childRef, newId, depth + 1, [...stack, `${ref.contract}/${ref.signature}`]);
+  let child = presetForInner(childRef, newId, depth + 1, [...stack, `${ref.contract}/${ref.signature}`]);
+  if (child) child = withSlotRestrictions(child, slot);
   if (child && slot.uniqueChildOption) return { ...child, options: { ...child.options, [slot.uniqueChildOption]: `item-${n}` } };
   return child;
+}
+
+/*
+ * A slot can narrow an option on the child it holds (SplitButton's action must weld its end to the
+ * menu: `weldEnd` is `true` there, whatever Button's default). The child's own preset knows nothing
+ * of where it goes, so the first allowed value is written here, when the default is not one of them.
+ */
+function withSlotRestrictions(child: MakerNode, slot: ContractSlot): MakerNode {
+  const restrictions = slot.restrictOptions;
+  if (!restrictions) return child;
+  const contract = getContract(child.contract);
+  const signature = contract && getSignature(contract, child.signature);
+  if (!contract || !signature) return child;
+  const options: Record<string, OptionInput> = { ...child.options };
+  for (const [name, allowed] of Object.entries(restrictions)) {
+    if (!signature.options.includes(name) || !allowed[0]) continue;
+    const option = contract.options[name];
+    const current = options[name] ?? option?.default;
+    if (current !== undefined && allowed.includes(String(current))) continue;
+    options[name] = option?.type === "boolean" ? allowed[0] === "true" : allowed[0];
+  }
+  return { ...child, options };
 }
 
 function resolveChildRef(contract: string, signature: string): SignatureRef | undefined {
@@ -160,7 +183,7 @@ function addDisplayDefaults(
   }
   for (const [name, slot] of Object.entries(signature.slots)) {
     if (name in slots) continue;
-    if (slot.accepts === "node" && /(children|content|body|label|title|description|caption|actions)$/i.test(name)) {
+    if (slot.accepts === "node" && !(contract.category === "layout" && name === "children") && /(children|content|body|label|title|description|caption|actions)$/i.test(name)) {
       slots[name] = { kind: "nodes", children: [{ id: newId(), text: humanize(ref.signature) }] };
     }
     if (slot.accepts === "signature" && /(children|content|body|actions|icon|logo|caption)$/i.test(name)) {
