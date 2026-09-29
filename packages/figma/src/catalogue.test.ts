@@ -458,3 +458,11 @@ describe("TileRadioGroup", () => {
     expect(dots).toEqual([false, true, false]);
   });
 });
+
+describe("Tooltip", () => {
+  it("draws the open bubble alone, its hint the one property", () => {
+    const set = manifest.components.find((c): c is ComponentSet => c.kind === "component-set" && c.id === "tooltip")!;
+    expect(set.properties.map((p) => p.name)).toEqual(["content"]);
+    expect(manifest.styles.layers[set.cells[0].layers].map((l) => l.slot)).toEqual(["content"]);
+  });
+});

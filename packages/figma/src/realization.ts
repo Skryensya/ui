@@ -130,6 +130,11 @@ export type Realization = {
    */
   nested?: true;
   /**
+   * Draw from this element instead of the host (a Tooltip's bubble, without the control it points
+   * at): the whole markup is still cascaded, only this part becomes the component.
+   */
+  drawFrom?: string;
+  /**
    * How wide a component that fills its container (`inline-size: 100%`) is drawn: alone on a page it
    * has nothing to fill. Instances are stretched to their container as usual.
    */

@@ -409,7 +409,9 @@ async function compileRealization(authored: Realization, shared: Shared): Promis
     if (!carrier) throw new Error(`state attributes: nothing matches ${on}`);
     for (const [name, value] of Object.entries(attrs)) carrier.setAttribute(name, value);
     const tree = computeTree(host, rules, unmatchable);
-    return { host, styles: tree.styles, pseudo: tree.pseudo };
+    const drawn = realization.drawFrom ? host.querySelector(realization.drawFrom) : host;
+    if (!drawn) throw new Error(`drawFrom: nothing matches ${realization.drawFrom}`);
+    return { host: drawn, styles: tree.styles, pseudo: tree.pseudo };
   };
   const fingerprint = (tree: Map<Element, Computed>) => canonical([...tree.values()].map((c) => Object.fromEntries(c)));
 
@@ -1053,8 +1055,18 @@ async function compileRealization(authored: Realization, shared: Shared): Promis
     }
 
     const properties: ComponentProperty[] = [];
+    // Texts inside composed content that no variant draws (a Tooltip's trigger) get no property.
+    const drawnTexts = new Set<string>();
+    const collectTexts = (layers: readonly Layer[]) => {
+      for (const layer of layers) {
+        if (layer.kind === "text") drawnTexts.add(layer.slot);
+        if (layer.kind === "frame") collectTexts(layer.layers);
+      }
+    };
+    for (const cell of cells) collectTexts(styles.layers[cell.layers]);
     for (const [slot, spec] of Object.entries(realization.slots)) {
       if (spec.holds === "text" && spec.hidden) continue;
+      if (spec.holds === "text" && spec.item && !drawnTexts.has(slot)) continue;
       if (spec.holds === "text") properties.push({ name: slot, type: "TEXT", default: spec.sample });
       // An optional icon slot starts off (Button's pre/post); an optional text starts shown, under
       // its own name so it does not collide with the text property beside it.

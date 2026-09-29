@@ -36351,18 +36351,8 @@
           "type": "TEXT"
         },
         {
-          "default": "Every change, newest first.",
-          "name": "children 2",
-          "type": "TEXT"
-        },
-        {
           "default": "Settings",
           "name": "items 3",
-          "type": "TEXT"
-        },
-        {
-          "default": "Preferences for this account.",
-          "name": "children 3",
           "type": "TEXT"
         }
       ],
@@ -36370,7 +36360,7 @@
         "base": {},
         "columns": []
       },
-      "visualHash": "4a9eae4bcb865dea"
+      "visualHash": "8bd911d99a1cc1a8"
     },
     {
       "axes": [],
@@ -36423,11 +36413,6 @@
           "type": "TEXT"
         },
         {
-          "default": "Your plan runs to the end of the period.",
-          "name": "answer 2",
-          "type": "TEXT"
-        },
-        {
           "default": "Exporting",
           "name": "title 3",
           "type": "TEXT"
@@ -36436,18 +36421,13 @@
           "default": "Taking your data with you",
           "name": "description 3",
           "type": "TEXT"
-        },
-        {
-          "default": "Every record can be exported as CSV or JSON.",
-          "name": "answer 3",
-          "type": "TEXT"
         }
       ],
       "showcase": {
         "base": {},
         "columns": []
       },
-      "visualHash": "f555d186a286b0c7"
+      "visualHash": "aa60ae30fbaf42ad"
     },
     {
       "axes": [],
@@ -36500,11 +36480,6 @@
           "type": "TEXT"
         },
         {
-          "default": "Your plan runs to the end of the period.",
-          "name": "answer 2",
-          "type": "TEXT"
-        },
-        {
           "default": "Exporting",
           "name": "title 3",
           "type": "TEXT"
@@ -36513,18 +36488,13 @@
           "default": "Taking your data with you",
           "name": "description 3",
           "type": "TEXT"
-        },
-        {
-          "default": "Every record can be exported as CSV or JSON.",
-          "name": "answer 3",
-          "type": "TEXT"
         }
       ],
       "showcase": {
         "base": {},
         "columns": []
       },
-      "visualHash": "ebade2ed076be463"
+      "visualHash": "eaff5f227d8a8b27"
     },
     {
       "axes": [],
@@ -36577,11 +36547,6 @@
           "type": "TEXT"
         },
         {
-          "default": "Your plan runs to the end of the period.",
-          "name": "answer 2",
-          "type": "TEXT"
-        },
-        {
           "default": "Exporting",
           "name": "title 3",
           "type": "TEXT"
@@ -36590,18 +36555,13 @@
           "default": "Taking your data with you",
           "name": "description 3",
           "type": "TEXT"
-        },
-        {
-          "default": "Every record can be exported as CSV or JSON.",
-          "name": "answer 3",
-          "type": "TEXT"
         }
       ],
       "showcase": {
         "base": {},
         "columns": []
       },
-      "visualHash": "0bb3ca42e605d3be"
+      "visualHash": "e40c2f695bc7b98e"
     },
     {
       "axes": [],
@@ -36654,11 +36614,6 @@
           "type": "TEXT"
         },
         {
-          "default": "Your plan runs to the end of the period.",
-          "name": "answer 2",
-          "type": "TEXT"
-        },
-        {
           "default": "Exporting",
           "name": "title 3",
           "type": "TEXT"
@@ -36667,18 +36622,13 @@
           "default": "Taking your data with you",
           "name": "description 3",
           "type": "TEXT"
-        },
-        {
-          "default": "Every record can be exported as CSV or JSON.",
-          "name": "answer 3",
-          "type": "TEXT"
         }
       ],
       "showcase": {
         "base": {},
         "columns": []
       },
-      "visualHash": "69be77fa48c0c2a3"
+      "visualHash": "de764128fc1d47eb"
     },
     {
       "axes": [],
@@ -36963,58 +36913,12 @@
       "kind": "component-set",
       "name": "Steps / segments",
       "page": "skryensya",
-      "properties": [
-        {
-          "default": "Account",
-          "name": "items 1",
-          "type": "TEXT"
-        },
-        {
-          "default": "1",
-          "name": "marker 1",
-          "type": "TEXT"
-        },
-        {
-          "default": "Your details",
-          "name": "description 1",
-          "type": "TEXT"
-        },
-        {
-          "default": "Plan",
-          "name": "items 2",
-          "type": "TEXT"
-        },
-        {
-          "default": "2",
-          "name": "marker 2",
-          "type": "TEXT"
-        },
-        {
-          "default": "Pick a plan",
-          "name": "description 2",
-          "type": "TEXT"
-        },
-        {
-          "default": "Payment",
-          "name": "items 3",
-          "type": "TEXT"
-        },
-        {
-          "default": "3",
-          "name": "marker 3",
-          "type": "TEXT"
-        },
-        {
-          "default": "Card or invoice",
-          "name": "description 3",
-          "type": "TEXT"
-        }
-      ],
+      "properties": [],
       "showcase": {
         "base": {},
         "columns": []
       },
-      "visualHash": "95a5293aba8df006"
+      "visualHash": "01bed8e5c1f3f085"
     },
     {
       "axes": [
@@ -42529,6 +42433,43 @@
         "columns": []
       },
       "visualHash": "7a46411e8fc29988"
+    },
+    {
+      "axes": [],
+      "cells": [
+        {
+          "box": "fd6f73fec478c6d8",
+          "hash": "07b6b7ddf8b489e2",
+          "id": "tooltip/",
+          "key": "",
+          "layers": "fddb91b1177b22cb",
+          "props": {},
+          "surface": "44c5619cc9d6307e"
+        }
+      ],
+      "contractHash": "ea6bdc9c9a9c24ea",
+      "defaultCell": "",
+      "grid": {
+        "columns": [],
+        "rows": []
+      },
+      "id": "tooltip",
+      "interactions": [],
+      "kind": "component-set",
+      "name": "Tooltip",
+      "page": "skryensya",
+      "properties": [
+        {
+          "default": "Copy link",
+          "name": "content",
+          "type": "TEXT"
+        }
+      ],
+      "showcase": {
+        "base": {},
+        "columns": []
+      },
+      "visualHash": "1dbea29f8e2d1eef"
     }
   ],
   "diagnostics": [
@@ -42621,6 +42562,18 @@
       "message": "11 rule(s) under a condition the evaluation context does not hold",
       "severity": "info",
       "subject": "components/button.css @media (forced-colors: active)"
+    },
+    {
+      "code": "CONDITION_SKIPPED",
+      "message": "11 rule(s) under a condition the evaluation context does not hold",
+      "severity": "info",
+      "subject": "components/button.css @media (forced-colors: active)"
+    },
+    {
+      "code": "CONDITION_SKIPPED",
+      "message": "1 rule(s) under a condition the evaluation context does not hold",
+      "severity": "info",
+      "subject": "components/button.css @media (prefers-reduced-motion: reduce)"
     },
     {
       "code": "CONDITION_SKIPPED",
@@ -43176,6 +43129,30 @@
     },
     {
       "code": "CONDITION_SKIPPED",
+      "message": "1 rule(s) under a condition the evaluation context does not hold",
+      "severity": "info",
+      "subject": "components/tooltip.css @media (forced-colors: active)"
+    },
+    {
+      "code": "CONDITION_SKIPPED",
+      "message": "2 rule(s) under a condition the evaluation context does not hold",
+      "severity": "info",
+      "subject": "components/tooltip.css @media (prefers-reduced-motion: reduce)"
+    },
+    {
+      "code": "CONDITION_SKIPPED",
+      "message": "1 rule(s) under a condition the evaluation context does not hold",
+      "severity": "info",
+      "subject": "components/tooltip.css @starting-style "
+    },
+    {
+      "code": "CONDITION_SKIPPED",
+      "message": "6 rule(s) under a condition the evaluation context does not hold",
+      "severity": "info",
+      "subject": "patterns/anchored.css @supports (anchor-name: --a)"
+    },
+    {
+      "code": "CONDITION_SKIPPED",
       "message": "6 rule(s) under a condition the evaluation context does not hold",
       "severity": "info",
       "subject": "patterns/anchored.css @supports (anchor-name: --a)"
@@ -43341,6 +43318,18 @@
       "message": "1 rule(s) under a condition the evaluation context does not hold",
       "severity": "info",
       "subject": "patterns/state-layer.css @media (prefers-reduced-motion: reduce)"
+    },
+    {
+      "code": "CONDITION_SKIPPED",
+      "message": "1 rule(s) under a condition the evaluation context does not hold",
+      "severity": "info",
+      "subject": "patterns/state-layer.css @media (prefers-reduced-motion: reduce)"
+    },
+    {
+      "code": "CONDITION_SKIPPED",
+      "message": "0 rule(s) under a condition the evaluation context does not hold",
+      "severity": "info",
+      "subject": "patterns/state-layer.css @property --state-layer-opacity"
     },
     {
       "code": "CONDITION_SKIPPED",
@@ -44067,18 +44056,32 @@
         "excluded": [],
         "nonVisual": [],
         "visual": []
+      },
+      "tooltip": {
+        "excluded": [
+          "placement",
+          "arrow",
+          "interactive",
+          "disabled",
+          "defaultOpen"
+        ],
+        "nonVisual": [
+          "openDelay",
+          "closeDelay"
+        ],
+        "visual": []
       }
     },
     "tokens": {
-      "catalogueAdded": 305,
+      "catalogueAdded": 303,
       "componentVariables": 449,
       "modeValuesBySource": {
         "alias": 203,
         "evaluated": 843,
         "literal": 784
       },
-      "reached": 203,
-      "reachedAsVariables": 153,
+      "reached": 204,
+      "reachedAsVariables": 155,
       "reachedButNotVariables": [
         "--elevation-flat",
         "--elevation-overlay",
@@ -44094,8 +44097,8 @@
       "variables": 466
     },
     "variants": {
-      "components": 118,
-      "componentSets": 117,
+      "components": 119,
+      "componentSets": 118,
       "naiveAllOptions": {
         "accordion": 32,
         "avatar": 8,
@@ -44144,7 +44147,8 @@
         "tile-link": 24,
         "tile-radio-group": 192,
         "tile-switch": 192,
-        "timeline": 1
+        "timeline": 1,
+        "tooltip": 64
       },
       "naiveVisualOptions": {
         "accordion": 4,
@@ -44194,7 +44198,8 @@
         "tile-link": 4,
         "tile-radio-group": 4,
         "tile-switch": 4,
-        "timeline": 1
+        "timeline": 1,
+        "tooltip": 1
       },
       "variantsPerSet": [
         {
@@ -44664,13 +44669,17 @@
         {
           "set": "tile-radio-group/frosted",
           "variants": 1
+        },
+        {
+          "set": "tooltip",
+          "variants": 1
         }
       ],
-      "variantsTotal": 2443
+      "variantsTotal": 2444
     }
   },
   "schemaVersion": 1,
-  "sourceHash": "17e84b2990a6a2c5",
+  "sourceHash": "7a93c871e2131237",
   "stage": {
     "background": {
       "variable": "--color-bg-surface"
@@ -51171,6 +51180,29 @@
           "variable": "--radius-surface"
         },
         "stretch": true
+      },
+      "fd6f73fec478c6d8": {
+        "clipsContent": false,
+        "crossAlign": "MIN",
+        "direction": "HORIZONTAL",
+        "mainAlign": "MIN",
+        "padding": {
+          "bottom": {
+            "variable": "--space-inset-sm"
+          },
+          "left": {
+            "variable": "--space-inset-sm"
+          },
+          "right": {
+            "variable": "--space-inset-sm"
+          },
+          "top": {
+            "variable": "--space-inset-sm"
+          }
+        },
+        "radius": {
+          "variable": "--radius-control"
+        }
       },
       "fde207980689ef65": {
         "clipsContent": false,
@@ -82937,6 +82969,31 @@
           "textProperty": "children"
         }
       ],
+      "fddb91b1177b22cb": [
+        {
+          "kind": "text",
+          "slot": "content",
+          "text": {
+            "fill": {
+              "color": {
+                "variable": "--color-text-inverse"
+              },
+              "type": "SOLID"
+            },
+            "fontFamily": {
+              "variable": "--font-family-body"
+            },
+            "fontSize": {
+              "variable": "--font-size-body-sm"
+            },
+            "fontWeight": {
+              "variable": "--font-weight-body"
+            },
+            "lineHeight": 150
+          },
+          "textProperty": "content"
+        }
+      ],
       "fe6044f752a1d531": [
         {
           "box": "f5111b8dfa344b73",
@@ -86843,6 +86900,69 @@
             "type": "SOLID"
           }
         ]
+      },
+      "44c5619cc9d6307e": {
+        "effects": [
+          {
+            "blur": {
+              "expression": "2px",
+              "value": 2
+            },
+            "color": {
+              "variable": "--shadow-sm"
+            },
+            "spread": {
+              "expression": "0",
+              "value": 0
+            },
+            "type": "DROP_SHADOW",
+            "x": {
+              "expression": "0",
+              "value": 0
+            },
+            "y": {
+              "expression": "1px",
+              "value": 1
+            }
+          },
+          {
+            "blur": {
+              "expression": "3px",
+              "value": 3
+            },
+            "color": {
+              "variable": "--shadow-sm"
+            },
+            "spread": {
+              "expression": "0",
+              "value": 0
+            },
+            "type": "DROP_SHADOW",
+            "x": {
+              "expression": "0",
+              "value": 0
+            },
+            "y": {
+              "expression": "1px",
+              "value": 1
+            }
+          }
+        ],
+        "fills": [
+          {
+            "color": {
+              "variable": "--color-bg-inverse"
+            },
+            "type": "SOLID"
+          },
+          {
+            "color": {
+              "variable": "--elevation-tint-raised"
+            },
+            "type": "SOLID"
+          }
+        ],
+        "strokes": []
       },
       "458d02e9d184cf23": {
         "effects": [],
