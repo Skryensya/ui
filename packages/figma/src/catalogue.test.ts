@@ -265,3 +265,11 @@ describe("Radio", () => {
     expect(focus?.kind === "frame" && focus.layers.some((l) => l.kind === "ring")).toBe(true);
   });
 });
+
+describe("Select", () => {
+  it("draws its closed trigger holding the value the binding writes, and not the hidden list", () => {
+    const set = manifest.components.find((c): c is ComponentSet => c.kind === "component-set" && c.id === "select/plain")!;
+    expect(set.properties.map((p) => p.name)).toEqual(["value"]);
+    expect(manifest.styles.layers[set.cells[0].layers].map((l) => l.slot)).toEqual(["control"]);
+  });
+});

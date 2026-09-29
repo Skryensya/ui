@@ -61,6 +61,8 @@ export type Realization = {
       string,
       {
         slot: string;
+        /** The items are markup only, never drawn (a Select's closed list): no text properties. */
+        undrawn?: true;
         /** `more`: the item's other text slots (a tab's panel), each a property `<slot> <n>`. */
         items: readonly { options?: Readonly<Record<string, string | boolean>>; text: string; more?: Readonly<Record<string, string>> }[];
       }
@@ -98,6 +100,11 @@ export type Realization = {
           pseudo?: "placeholder";
           /** Set by the compiler: this text is an item of that collection, not a slot of the signature. */
           item?: string;
+          /**
+           * The text the binding writes into this selector when it mounts (a Select's chosen value), not
+           * a slot of the signature. Drawn and exposed the same way.
+           */
+          mountedIn?: string;
         }
     >
   >;

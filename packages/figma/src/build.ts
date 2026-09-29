@@ -94,7 +94,7 @@ function treeFor(realization: Realization, input: CellInput, iconName: string): 
   for (const [slot, spec] of Object.entries(realization.slots)) {
     if (spec.holds === "icon") {
       if (input.icons) slots[slot] = icon;
-    } else if (spec.item) continue;
+    } else if (spec.item || spec.mountedIn) continue;
     else if (spec.option) printed[spec.option] = spec.sample;
     else slots[slot] = input.iconChildren ? icon : spec.sample;
   }
@@ -277,7 +277,9 @@ const UNSET = "default";
  * its sample, drawn as a text layer and exposed as a text property like any other.
  */
 function withItemSlots(realization: Realization): Realization {
-  const items: (readonly [string, { holds: "text"; sample: string; item: string }])[] = Object.entries(realization.collections ?? {}).flatMap(
+  const items: (readonly [string, { holds: "text"; sample: string; item: string }])[] = Object.entries(realization.collections ?? {})
+    .filter(([, collection]) => !collection.undrawn)
+    .flatMap(
     ([name, collection]) =>
       collection.items.flatMap((item, i) => [
         [`${name} ${i + 1}`, { holds: "text" as const, sample: item.text, item: name }] as const,
@@ -315,7 +317,7 @@ async function compileRealization(authored: Realization, shared: Shared): Promis
     const spec = realization.slots[slot];
     const option = spec?.holds === "text" ? spec.option : undefined;
     // An item's text is what the item is: always there.
-    if (spec?.holds === "text" && spec.item) return true;
+    if (spec?.holds === "text" && (spec.item || spec.mountedIn)) return true;
     return option ? ((signature.requires ?? []) as readonly string[]).includes(option) : !!signature.slots[slot]?.required;
   };
   const iconName = (iconContract.options.name as { values: readonly string[] }).values[0];
@@ -373,6 +375,12 @@ async function compileRealization(authored: Realization, shared: Shared): Promis
       const el = host.classList.contains(contract.parts[part]) ? host : host.querySelector(`.${contract.parts[part]}`);
       if (!el) throw new Error(`mounted: no part ${part} in the markup`);
       el.setAttribute("style", `${el.getAttribute("style") ?? ""}; ${style}`.replace(/^; /, ""));
+    }
+    for (const spec of Object.values(realization.slots)) {
+      if (spec.holds !== "text" || !spec.mountedIn) continue;
+      const el = host.querySelector(spec.mountedIn);
+      if (!el) throw new Error(`mountedIn: nothing matches ${spec.mountedIn}`);
+      el.textContent = spec.sample;
     }
     for (const [selector, marks] of Object.entries(realization.marks ?? {})) {
       const el = host.matches(selector) ? host : host.querySelector(selector);
@@ -521,7 +529,7 @@ async function compileRealization(authored: Realization, shared: Shared): Promis
   walkTemplate(signature.template);
   // Content texts sit inside other signatures' templates: found in the markup, not placed by this one.
   const unplaced = Object.entries(realization.slots)
-    .filter(([slot, spec]) => !slotOrder.includes(slot) && !(spec.holds === "text" && spec.item === "content"))
+    .filter(([slot, spec]) => !slotOrder.includes(slot) && !(spec.holds === "text" && (spec.item === "content" || spec.mountedIn)))
     .map(([slot]) => slot);
   if (unplaced.length) throw new Error(`slots the template never places: ${unplaced.join(", ")}`);
 
