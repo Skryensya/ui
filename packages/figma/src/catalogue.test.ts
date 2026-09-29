@@ -239,3 +239,14 @@ describe("Checkbox", () => {
     expect(layersOf("unchecked").some((l) => l.kind === "ring")).toBe(false);
   });
 });
+
+describe("Switch", () => {
+  it("slides its thumb to the end when on, as the track's leading padding", () => {
+    const set = manifest.components.find((c): c is ComponentSet => c.kind === "component-set" && c.id === "switch/plain")!;
+    const lead = (state: string) => {
+      const [control] = manifest.styles.layers[set.cells.find((c) => c.props.state === state)!.layers];
+      return control.kind === "frame" ? manifest.styles.boxes[control.box].padding.left : undefined;
+    };
+    expect(lead("on")).not.toEqual(lead("off"));
+  });
+});
