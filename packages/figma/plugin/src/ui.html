@@ -35,6 +35,7 @@
   #pick-list label[data-forced] { opacity: .75; }
   #pick-list label[hidden] { display: none; }
   #pick-empty { margin: 0; }
+  .option { display: flex; gap: 8px; align-items: center; margin-block-end: 12px; }
 
   details { margin-block-start: 14px; }
   summary { cursor: pointer; }
@@ -52,6 +53,11 @@
   <div id="pick-list"></div>
   <p id="pick-empty" class="muted" hidden>No component matches.</p>
 </fieldset>
+
+<label class="option">
+  <input type="checkbox" id="dark-demo" checked />
+  <span>Dark demo beside each frame <span class="muted">(-demo)</span></span>
+</label>
 
 <div class="row">
   <button class="primary" id="sync">Sync</button>
@@ -79,6 +85,7 @@
     // The pick is locked while a run works from it.
 
     $("components").disabled = on;
+    $("dark-demo").disabled = on;
     if (!on) refreshPick();
     // Stop exists only while something runs: idle, there is nothing for it to act on.
     $("stop").hidden = !on;
@@ -91,56 +98,82 @@
   /*
    * THE PICK. Every component starts checked; the Icon set is checked and locked whenever something
    * checked draws icons (a Button's slots show them), and says which ones need it.
+   *
+   * Rows are held by reference, never looked up by a built id: a component called `list` would make
+   * `pick-list`, the list's own id, and every lookup after it would break.
    */
   let components = [];
-  const checked = () => components.filter((c) => $(`pick-${c.id}`)?.checked).map((c) => c.id);
+  const rows = new Map();
+  const checked = () => components.filter((c) => rows.get(c.id).box.checked).map((c) => c.id);
   function refreshPick() {
     const chosen = new Set(checked());
     const icons = components.find((c) => c.icons);
     if (icons) {
       const users = components.filter((c) => c.needsIcons && chosen.has(c.id)).map((c) => c.name);
-      const box = $(`pick-${icons.id}`);
-      const label = box.closest("label");
+      const { box, label, why } = rows.get(icons.id);
       box.disabled = users.length > 0;
       if (users.length) box.checked = true;
       label.toggleAttribute("data-forced", users.length > 0);
-      label.querySelector(".why").textContent = users.length ? `used by ${users.join(", ")}` : `${icons.variants} icons`;
+      why.textContent = users.length ? `used by ${users.length > 3 ? `${users.slice(0, 3).join(", ")} +${users.length - 3}` : users.join(", ")}` : `${icons.variants} icons`;
+      why.title = users.join(", ");
     }
-    $("pick-count").textContent = `(${checked().length} of ${components.length})`;
+    const shown = components.filter((c) => !rows.get(c.id).label.hidden).length;
+    $("pick-count").textContent = `(${checked().length} of ${components.length}${shown < components.length ? ` · ${shown} shown` : ""})`;
     // Nothing picked, nothing to run.
     if (!$("sync").dataset.running) buttons.forEach((b) => (b.disabled = checked().length === 0));
   }
+  /* Case and accents do not count, and every word typed has to match: "tile sw" finds Tile switch. */
+  const fold = (text) => text.normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase();
   /* The search only hides rows: what is checked stays checked, found or not. */
   function filterPick() {
-    const query = $("search").value.trim().toLowerCase();
+    const words = fold($("search").value).split(/[\s/·-]+/).filter(Boolean);
     let shown = 0;
     for (const c of components) {
-      const label = $(`pick-${c.id}`).closest("label");
-      label.hidden = query !== "" && !c.name.toLowerCase().includes(query) && !c.id.includes(query);
+      const { label, haystack } = rows.get(c.id);
+      label.hidden = !words.every((w) => haystack.includes(w));
       if (!label.hidden) shown++;
     }
     $("pick-empty").hidden = shown > 0;
+    refreshPick();
   }
   /* All and None act on what the search shows, so "search button, All" picks just those. */
   function pickShown(on) {
     for (const c of components) {
-      const box = $(`pick-${c.id}`);
-      if (!box.closest("label").hidden && !box.disabled) box.checked = on;
+      const { box, label } = rows.get(c.id);
+      if (!label.hidden && !box.disabled) box.checked = on;
     }
     refreshPick();
   }
   function renderPick(list) {
-    components = list;
-    for (const c of list) {
+    // Alphabetical, the way a designer looks for one.
+    components = [...list].sort((a, b) => a.name.localeCompare(b.name, undefined, { sensitivity: "base", numeric: true }));
+    $("pick-list").replaceChildren();
+    rows.clear();
+    for (const c of components) {
       const label = document.createElement("label");
-      label.innerHTML = `<input type="checkbox" id="pick-${c.id}" checked><span>${c.name}</span><span class="why muted">${c.icons ? `${c.variants} icons` : `${c.variants} variants`}</span>`;
+      const box = document.createElement("input");
+      box.type = "checkbox";
+      box.checked = true;
+      const name = document.createElement("span");
+      name.textContent = c.name;
+      const why = document.createElement("span");
+      why.className = "why muted";
+      why.textContent = c.icons ? `${c.variants} icons` : `${c.variants} variants`;
+      label.append(box, name, why);
       $("pick-list").append(label);
+      rows.set(c.id, { box, label, why, haystack: fold(`${c.name} ${c.id}`) });
     }
-    $("pick-list").addEventListener("change", refreshPick);
-    $("search").addEventListener("input", filterPick);
+    $("pick-list").onchange = refreshPick;
+    $("search").oninput = filterPick;
+    $("search").onkeydown = (e) => {
+      if (e.key !== "Escape" || !$("search").value) return;
+      e.preventDefault();
+      $("search").value = "";
+      filterPick();
+    };
     $("pick-all").onclick = () => pickShown(true);
     $("pick-none").onclick = () => pickShown(false);
-    refreshPick();
+    filterPick();
   }
 
   let mode = "";
@@ -151,7 +184,7 @@
     $("copy").hidden = true;
     $("status").className = "";
     $("status").textContent = type === "sync" ? "Syncing…" : "Dry run…";
-    parent.postMessage({ pluginMessage: { type, only: checked() } }, "*");
+    parent.postMessage({ pluginMessage: { type, only: checked(), darkDemo: $("dark-demo").checked } }, "*");
   };
   // Figma's plugin frame blocks the async clipboard API; a selected textarea and execCommand is what works there.
   let reportText = "";

@@ -45,11 +45,11 @@ const hash = (value: unknown) => createHash("sha256").update(canonical(value)).d
 const PAGE = { id: "skryensya", name: "Skryensya" };
 
 /*
- * ONE MODE per collection. A Starter file holds one, so the collections declare `light` only and the
- * plugin never asks for more. Every variable still carries its dark value, evaluated from the same
- * light-dark() the CSS ships: adding `dark` here is the whole change for a file that can hold it.
+ * BOTH MODES per collection, the same variables in each: the dark value is evaluated from the same
+ * light-dark() the CSS ships. A Starter file holds one mode, so there the plugin keeps `light` on the
+ * real collections and draws dark from `-demo` ones instead (see the plugin's dark demo).
  */
-const FILE_MODES = ["light"] as const;
+const FILE_MODES = ["light", "dark"] as const;
 
 /** The vocabulary's own name for a stand-in glyph: what an icon slot shows before anyone picks one. */
 const DEFAULT_ICON = "placeholder";
@@ -573,10 +573,17 @@ async function compileRealization(authored: Realization, shared: Shared): Promis
     table[id] = value;
     return id;
   };
+  const everyAxis = axes;
   for (const splitValue of splitValues) {
+    // What the contract excludes for this set's value (Steps' segments take no orientation): not an
+    // axis of this set, and the option left out of its every cell.
+    const excludes = (signature as { excludes?: Record<string, readonly string[]> }).excludes ?? {};
+    const excluded = realization.splitBy && splitValue ? (excludes[`${realization.splitBy}=${splitValue}`] ?? []) : [];
+    const axes = everyAxis.filter((a) => !excluded.includes(a.name));
     const cells: Cell[] = [];
     for (const props of combos(axes)) {
       const options: Record<string, string | boolean> = { ...defaults, ...(realization.splitBy && splitValue ? { [realization.splitBy]: splitValue } : {}) };
+      for (const name of excluded) delete options[name];
       for (const axis of axes) {
         if (axis === stateAxis) continue;
         const option = contract.options[axis.name];
@@ -865,8 +872,10 @@ async function compileRealization(authored: Realization, shared: Shared): Promis
             // A run of text is a grid item too: it takes its column, and an `fr` one it fills.
             const textTrack = tracks.length > 1 ? tracks[column++] : undefined;
             const inFr = textTrack !== undefined && /fr\b/.test(textTrack);
-            // Only a block whose width is known has one to wrap in: a tab's label hugs its tab.
-            const wraps = inFr || (realization.width && inner !== undefined && computed.get("white-space") !== "nowrap");
+            // Only a block whose width is known has one to wrap in: a tab's label hugs its tab. And not
+            // one that centres its content (a step's disc): there the text sits centred, at its size.
+            const centres = /center/.test(crossAlign ?? "") || /center/.test(computed.get("justify-content") ?? "");
+            const wraps = inFr || (realization.width && inner !== undefined && computed.get("white-space") !== "nowrap" && !centres);
             out.push({
               kind: "text",
               slot,
@@ -977,7 +986,13 @@ async function compileRealization(authored: Realization, shared: Shared): Promis
             continue;
           }
           const { strokes, fills, effects, ...laid } = frameOf(ctxOf(sized));
-          const flowed = blockFlow(child) ? { ...laid, direction: "VERTICAL" as const } : laid;
+          const stacked = blockFlow(child) ? { ...laid, direction: "VERTICAL" as const } : laid;
+          // A column whose lines are centred (`text-align: center`, a step's label and description)
+          // centres what it holds: its texts hug, so centring them is what centring their lines does.
+          const flowed =
+            stacked.direction === "VERTICAL" && stacked.crossAlign === "MIN" && cascaded.get(child)!.get("text-align") === "center"
+              ? { ...stacked, crossAlign: "CENTER" as const }
+              : stacked;
           const overlap = overlapOf(child);
           const measured = overlap ? { ...flowed, gap: overlap } : flowed;
           // Placed by its insets rather than laid out (a timeline's marker): where they come to.
@@ -1185,7 +1200,8 @@ async function compileRealization(authored: Realization, shared: Shared): Promis
       if (!axis) throw new Error(`grid axis ${name} is not an axis`);
       return { name, values: realization.grid.descending.includes(name) ? [...axis.values].reverse() : [...axis.values] };
     };
-    const grid = { columns: realization.grid.columns.map(drawn), rows: realization.grid.rows.map(drawn) };
+    const kept = (name: string) => !excluded.includes(name);
+    const grid = { columns: realization.grid.columns.filter(kept).map(drawn), rows: realization.grid.rows.filter(kept).map(drawn) };
     const defaultCell = axes.map((a) => `${a.name}=${defaultOf(a)}`).join(", ");
     sets.push({
       kind: "component-set",

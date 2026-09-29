@@ -363,7 +363,10 @@ describe("Steps' connectors", () => {
   });
 
   it("draws segments as bars alone, their hidden labels leaving no empty box", () => {
-    for (const item of items("steps/segments", "horizontal")) expect(item.kind === "frame" && item.layers.map((l) => l.slot)).toEqual(["marker"]);
+    const set = manifest.components.find((c): c is ComponentSet => c.kind === "component-set" && c.id === "steps/segments")!;
+    // Segments has no orientation: one row of bars, no vertical.
+    expect(set.axes).toEqual([]);
+    for (const item of manifest.styles.layers[set.cells[0].layers]) expect(item.kind === "frame" && item.layers.map((l) => l.slot)).toEqual(["marker"]);
   });
 });
 
@@ -656,5 +659,25 @@ describe("Window", () => {
     expect(text).toContain('"default":"maximize"');
     expect(text).not.toContain('"default":"restore"');
     expect(text).toContain('"slot":"close"');
+  });
+});
+
+describe("Steps' markers", () => {
+  const cell = (orientation: string) => {
+    const set = manifest.components.find((c): c is ComponentSet => c.kind === "component-set" && c.id === "steps/markers")!;
+    return manifest.styles.layers[set.cells.find((c) => c.props.orientation === orientation)!.layers];
+  };
+
+  it("centre each step's label and description under its disc", () => {
+    const [first] = cell("horizontal");
+    const text = first.kind === "frame" ? first.layers.find((l) => l.slot === "span") : undefined;
+    expect(text?.kind === "frame" && manifest.styles.boxes[text.box].crossAlign).toBe("CENTER");
+  });
+
+  it("keep the number centred in its disc, not stretched across it", () => {
+    const [first] = cell("vertical");
+    const marker = first.kind === "frame" ? first.layers.find((l) => l.slot === "marker") : undefined;
+    const number = marker?.kind === "frame" ? marker.layers[0] : undefined;
+    expect(number?.kind === "text" && number.fill).toBeFalsy();
   });
 });
