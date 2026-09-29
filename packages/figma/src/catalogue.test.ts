@@ -647,3 +647,14 @@ describe("ProcessList", () => {
     expect(content?.kind === "frame" && manifest.styles.boxes[content.box].grow).toBe(true);
   });
 });
+
+describe("Window", () => {
+  it("draws its open panel with minimize, maximize and close, restore hidden until maximized", () => {
+    const set = manifest.components.find((c): c is ComponentSet => c.kind === "component-set" && c.id.startsWith("window"))!;
+    const text = JSON.stringify(manifest.styles.layers[set.cells[0].layers]);
+    expect(text).toContain('"default":"minimize"');
+    expect(text).toContain('"default":"maximize"');
+    expect(text).not.toContain('"default":"restore"');
+    expect(text).toContain('"slot":"close"');
+  });
+});
