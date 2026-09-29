@@ -1,3 +1,4 @@
+import type { UsageTree } from "@skryensya/core/usage-tree";
 /*
  * THE FIGMA REALIZATION: what a Contract cannot say about becoming Figma structure, and nothing it
  * can. Every field below exists because the answer is a Figma decision, not a fact Core declares.
@@ -46,6 +47,12 @@ export type Realization = {
    * Collection slots, drawn with these items (a Breadcrumb's trail): each item's options, and the
    * text of its `slot`. Every item's text is a text property of its own, `<collection> <n>`.
    */
+  /**
+   * Slots filled with other signatures (a DescriptionList's DescriptionItems), drawn as they nest.
+   * Every text inside is a text property of its own, `<slot> <n>` by the slot it fills, renamed
+   * through `names` (`{ children: "details" }`).
+   */
+  content?: { trees: Readonly<Record<string, readonly UsageTree[]>>; names?: Readonly<Record<string, string>> };
   collections?: Readonly<Record<string, { slot: string; items: readonly { options?: Readonly<Record<string, string | boolean>>; text: string }[] }>>;
   /** Layer names for pseudo-elements that paint: `before` is the state layer, not "::before". */
   overlays: Readonly<Partial<Record<"before" | "after", string>>>;

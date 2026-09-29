@@ -102,7 +102,12 @@ function treeFor(realization: Realization, input: CellInput, iconName: string): 
   for (const [name, collection] of Object.entries(realization.collections ?? {})) {
     collections[name] = collection.items.map((item) => ({ options: { ...item.options }, slots: { [collection.slot]: item.text } }));
   }
-  return { contract: realization.contract, signature: realization.signature, options: { ...realization.given, ...printed, ...input.options }, slots: { ...slots, ...collections } };
+  return {
+    contract: realization.contract,
+    signature: realization.signature,
+    options: { ...realization.given, ...printed, ...input.options },
+    slots: { ...slots, ...collections, ...realization.content?.trees },
+  };
 }
 
 /**
@@ -262,14 +267,33 @@ export async function buildFigmaManifest(input: Realization | readonly Realizati
   return { ...body, sourceHash: hash(body) } as FigmaManifest;
 }
 
+/** The value of an optional enum's axis that leaves the option out. */
+const UNSET = "default";
+
 /**
  * A collection's item texts as text slots of their own (`items 1`, `items 2`…), so each is found by
  * its sample, drawn as a text layer and exposed as a text property like any other.
  */
 function withItemSlots(realization: Realization): Realization {
-  const items = Object.entries(realization.collections ?? {}).flatMap(([name, collection]) =>
-    collection.items.map((item, i) => [`${name} ${i + 1}`, { holds: "text" as const, sample: item.text, item: name }] as const),
+  const items: (readonly [string, { holds: "text"; sample: string; item: string }])[] = Object.entries(realization.collections ?? {}).flatMap(
+    ([name, collection]) => collection.items.map((item, i) => [`${name} ${i + 1}`, { holds: "text" as const, sample: item.text, item: name }] as const),
   );
+  // Every text inside the content trees, numbered by the slot it fills.
+  const counts = new Map<string, number>();
+  const visit = (tree: UsageTree) => {
+    for (const [slot, value] of Object.entries(tree.slots ?? {})) {
+      const values = Array.isArray(value) ? value : [value];
+      for (const entry of values) {
+        if (typeof entry === "string") {
+          const name = realization.content?.names?.[slot] ?? slot;
+          const n = (counts.get(name) ?? 0) + 1;
+          counts.set(name, n);
+          items.push([`${name} ${n}`, { holds: "text", sample: entry, item: "content" }]);
+        } else if (entry && typeof entry === "object" && "contract" in entry) visit(entry as UsageTree);
+      }
+    }
+  };
+  for (const trees of Object.values(realization.content?.trees ?? {})) trees.forEach(visit);
   return items.length ? { ...realization, slots: { ...realization.slots, ...Object.fromEntries(items) } } : realization;
 }
 
@@ -360,7 +384,9 @@ async function compileRealization(authored: Realization, shared: Shared): Promis
   for (const name of visual) {
     if (name === realization.splitBy || stateOptions.includes(name)) continue;
     const option = contract.options[name];
-    if (option.type === "enum") axes.push({ name, values: [...(option.values ?? [])] });
+    // An enum with no default and one value (a DescriptionList's `density: compact`) is on or off:
+    // `default` is the option left out.
+    if (option.type === "enum") axes.push({ name, values: option.default === undefined && option.values?.length === 1 ? [UNSET, ...option.values] : [...(option.values ?? [])] });
     else if (option.type === "boolean") axes.push({ name, values: ["false", "true"] });
   }
   const stateAxis: Axis = {
@@ -449,7 +475,10 @@ async function compileRealization(authored: Realization, shared: Shared): Promis
     for (const child of n.children ?? []) walkTemplate(child, n.part ?? holder);
   };
   walkTemplate(signature.template);
-  const unplaced = Object.keys(realization.slots).filter((slot) => !slotOrder.includes(slot));
+  // Content texts sit inside other signatures' templates: found in the markup, not placed by this one.
+  const unplaced = Object.entries(realization.slots)
+    .filter(([slot, spec]) => !slotOrder.includes(slot) && !(spec.holds === "text" && spec.item === "content"))
+    .map(([slot]) => slot);
   if (unplaced.length) throw new Error(`slots the template never places: ${unplaced.join(", ")}`);
 
   const sets: ComponentSet[] = [];
@@ -465,7 +494,8 @@ async function compileRealization(authored: Realization, shared: Shared): Promis
       for (const axis of axes) {
         if (axis === stateAxis) continue;
         const option = contract.options[axis.name];
-        options[axis.name] = option.type === "boolean" ? props[axis.name] === "true" : props[axis.name];
+        if (props[axis.name] === UNSET) delete options[axis.name];
+        else options[axis.name] = option.type === "boolean" ? props[axis.name] === "true" : props[axis.name];
       }
       for (const name of stateOptions) {
         if (props[stateAxis.name] === name) options[name] = true;
@@ -557,6 +587,7 @@ async function compileRealization(authored: Realization, shared: Shared): Promis
         // In a grid laid across, a child in an `fr` column fills the row, as flex-grow does.
         const tracks = gridTracks(ctx(el));
         let column = 0;
+        const filling = new Set<Layer>();
         const computed = ctx(el).computed;
         const display = computed.get("display") ?? "";
         const crossAlign = /grid/.test(display) ? computed.get("justify-items") : computed.get("align-items");
@@ -605,14 +636,25 @@ async function compileRealization(authored: Realization, shared: Shared): Promis
           }
           if (clipped(child)) continue;
           const { computed: sized, across, stretch } = sizing(child, inner, downward);
+          // Its column, in a grid laid across: an `fr` one fills the row, a length one sets its width
+          // (a DescriptionList's 10rem term), `auto` leaves it hugging.
+          const track = tracks.length > 1 ? tracks[column++] : undefined;
+          const fixedTrack = track !== undefined && !/fr\b|^auto$|content/.test(track);
+          if (fixedTrack) sized.set("width", track);
           const onlyText = child.children.length === 0;
-          if (onlyText && !paints(ctxOf(sized))) {
-            out.push(...nestedLayers(child, inner));
+          if (onlyText && !fixedTrack && !paints(ctxOf(sized))) {
+            const flat = nestedLayers(child, inner);
+            // Its text fills the `fr` column it stands in (a DescriptionList's value beside its term).
+            const fills = track !== undefined && /fr\b/.test(track);
+            for (const layer of flat) {
+              const kept = fills && layer.kind === "text" ? { ...layer, fill: true as const } : layer;
+              if (fills) filling.add(kept);
+              out.push(kept);
+            }
             continue;
           }
           const { strokes, fills, effects, ...measured } = frameOf(ctxOf(sized));
           const frameBox = stretch ? { ...measured, stretch: true as const } : measured;
-          const track = tracks.length > 1 ? tracks[column++] : undefined;
           const box = track && /fr\b/.test(track) ? { ...frameBox, grow: true as const } : frameBox;
           const slot = unique(partOf(child) ?? child.localName);
           // Drawn at a width, a block down a column spans it, as CSS stretches it by default.
@@ -629,7 +671,8 @@ async function compileRealization(authored: Realization, shared: Shared): Promis
         // others in a row (an attribution and its source) each keeps its own. Down a column that
         // centres its items (an EmptyState), a line still wraps at the column's width, and its
         // centring is the text's own alignment.
-        if (!downward && out.length > 1) return out.map((layer) => (layer.kind === "text" && layer.fill ? { ...layer, fill: undefined } : layer));
+        if (!downward && out.length > 1)
+          return out.map((layer) => (layer.kind === "text" && layer.fill && !filling.has(layer) ? { ...layer, fill: undefined } : layer));
         return out;
       };
 

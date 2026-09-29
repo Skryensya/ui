@@ -131,3 +131,22 @@ describe("Breadcrumb", () => {
     expect(first.kind === "frame" && first.layers.map((l) => (l.kind === "text" ? (l.characters ?? l.slot) : l.slot))).toEqual(["items 1", "/"]);
   });
 });
+
+describe("DescriptionList", () => {
+  const set = (layout: string) => manifest.components.find((c): c is ComponentSet => c.kind === "component-set" && c.id === `description-list/${layout}`)!;
+
+  it("exposes every term and value of its items as text properties", () => {
+    expect(set("stacked").properties.map((p) => p.name)).toEqual(["term 1", "details 1", "term 2", "details 2", "term 3", "details 3"]);
+  });
+
+  it("draws density as on or off", () => {
+    expect(set("stacked").axes.find((a) => a.name === "density")?.values).toEqual(["default", "compact"]);
+  });
+
+  it("sets the term column's width and lets the value fill the rest", () => {
+    const [group] = manifest.styles.layers[set("columns").cells[0].layers];
+    const [term, details] = group.kind === "frame" ? group.layers : [];
+    expect(term.kind === "frame" && manifest.styles.boxes[term.box].width).toMatchObject({ value: 160 });
+    expect(details).toMatchObject({ kind: "text", fill: true });
+  });
+});
