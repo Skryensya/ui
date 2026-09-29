@@ -403,3 +403,12 @@ describe("TileLink", () => {
     expect(focus.some((l) => l.kind === "ring")).toBe(true);
   });
 });
+
+describe("TileCheckbox", () => {
+  it("checks its box and edges the card in the accent when its input is checked", () => {
+    const set = manifest.components.find((c): c is ComponentSet => c.kind === "component-set" && c.id === "tile-checkbox/plain")!;
+    const cell = (state: string) => set.cells.find((c) => c.props.state === state)!;
+    expect(manifest.styles.surfaces[cell("checked").surface].strokes[0]).toMatchObject({ color: { variable: "--color-border-accent" } });
+    expect(cell("checked").surface).not.toBe(cell("unchecked").surface);
+  });
+});

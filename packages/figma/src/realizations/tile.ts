@@ -35,3 +35,24 @@ export const tileLinkRealization: Realization = {
   grid: { columns: ["state"], rows: [], descending: [] },
   stage,
 };
+
+/* TileCheckbox: a card picked by its checkbox, checked and disabled among its states. */
+export const tileCheckboxRealization: Realization = {
+  ...tileLinkRealization,
+  id: "tile-checkbox",
+  signature: "TileCheckbox",
+  state: {
+    axis: "state",
+    rest: "unchecked",
+    options: ["disabled"],
+    interactions: [
+      { name: "hover", pseudo: ":hover", trigger: "ON_HOVER" },
+      { name: "focus", pseudo: ":focus-visible" },
+    ],
+    // Checked is the input's, written by the binding from `defaultChecked`.
+    attributes: [{ name: "checked", attrs: { checked: "" }, on: "input" }],
+  },
+  exclude: ["padding", "required", "defaultChecked"],
+  given: { name: "plan", value: "team" },
+  content: { trees: { children: [content("Team plan", "Up to 20 members, shared billing")] } },
+};

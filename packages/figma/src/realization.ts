@@ -39,9 +39,10 @@ export type Realization = {
     interactions: readonly { name: string; pseudo: string; trigger?: "ON_HOVER" | "ON_PRESS" }[];
     /**
      * States set by attributes the signature forwards rather than options it declares, drawn as more
-     * values of the same axis: an Input's `aria-invalid="true"`, its `readonly`.
+     * values of the same axis: an Input's `aria-invalid="true"`, its `readonly`. `on`: a selector for
+     * the element that carries them, when not the host (a TileCheckbox's inner input).
      */
-    attributes?: readonly { name: string; attrs: Readonly<Record<string, string>> }[];
+    attributes?: readonly { name: string; attrs: Readonly<Record<string, string>>; on?: string }[];
     /** A state option's value on the axis, when its name reads badly there (`defaultChecked` → `checked`). */
     names?: Readonly<Record<string, string>>;
   };
