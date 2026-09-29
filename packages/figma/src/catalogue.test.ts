@@ -564,3 +564,11 @@ describe("Dialog", () => {
     expect(set.properties.map((p) => p.name)).toEqual(["title", "children", "action 1", "action 2"]);
   });
 });
+
+describe("Menu", () => {
+  it("draws its open list alone, one row per command", () => {
+    const set = manifest.components.find((c): c is ComponentSet => c.kind === "component-set" && c.id === "menu")!;
+    expect(set.axes.map((a) => a.name)).toEqual(["density"]);
+    expect(manifest.styles.layers[set.cells[0].layers].map((l) => l.slot)).toEqual(["item", "item 2", "item 3"]);
+  });
+});
