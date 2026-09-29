@@ -324,6 +324,23 @@ function evalOklab(text: string): Oklab {
   const mix = calls(t, "color-mix")[0];
   if (mix && mix.start === 0 && mix.end === t.length) return evalMix(mix.inner);
 
+  // rgb()/rgba(), both syntaxes: `rgb(0 0 0 / 6%)` (a fallback in Code's sheet) and `rgb(0, 0, 0)`.
+  const rgb = calls(t, "rgb")[0] ?? calls(t, "rgba")[0];
+  if (rgb && rgb.start === 0 && rgb.end === t.length) {
+    const inner = rgb.inner.includes(",") && !rgb.inner.includes("/")
+      ? (() => {
+          const parts = rgb.inner.split(",").map((p) => p.trim());
+          return parts.length === 4 ? `${parts.slice(0, 3).join(" ")} / ${parts[3]}` : parts.join(" ");
+        })()
+      : rgb.inner;
+    const [channels, alpha] = splitAlpha(inner);
+    const parts = splitSpaces(channels.replaceAll(",", " "));
+    if (parts.length !== 3) throw new Unsupported(`rgb(): ${t}`);
+    const [r, g, b] = parts.map((p) => (p.endsWith("%") ? parseFloat(p) / 100 : parseFloat(p) / 255));
+    if ([r, g, b].some(Number.isNaN)) throw new Unsupported(`rgb(): ${t}`);
+    return { ...srgbToOklab(r, g, b), alpha: alphaOf(alpha) };
+  }
+
   throw new Unsupported(`not a colour this evaluator reads: ${t}`);
 }
 

@@ -401,7 +401,10 @@ async function compileRealization(realization: Realization, shared: Shared): Pro
       const interaction = interactions.find((i) => i.name === props[stateAxis.name]);
       const { host, styles: cascaded, pseudo } = computeCell({ options, icons: true, iconChildren }, interaction ? [interaction.pseudo] : []);
       const cellProps: CellProps = { ...(realization.splitBy && splitValue ? { [realization.splitBy]: splitValue } : {}), ...props };
-      const inherited = { "font-family": `var(${realization.stage.label.fontFamily})` };
+      const inherited = {
+        "font-family": `var(${realization.stage.label.fontFamily})`,
+        ...Object.fromEntries(Object.entries(realization.stage.inherit ?? {}).map(([name, token]) => [name, `var(${token})`])),
+      };
       const ctxOf = (computed: Computed): Context => ({ computed, registry, cell: cellProps, hookPrefix, component: realization.contract, inherited });
       const ctx = (el: Element): Context => ctxOf(cascaded.get(el)!);
 
