@@ -56,6 +56,9 @@ export const stateButtonMessages = {
       "El <code>states</code> es un array de {name, icon, ariaLabel}: cada estado tiene su propio ícono y su propia etiqueta accesible.",
     "stateButtonPage.contractItem4":
       "El <code>variant</code> y el <code>size</code> vienen de Button: el primitivo no tiene opinión sobre aspecto.",
+    "stateButtonPage.showcaseTitle": "Showcases",
+    "stateButtonPage.showcaseBody": "Un botón con tres estados, un selector de tema y el estado de una copia.",
+    "stateButtonPage.guidelinesLede": "StateButton es un botón de ícono que muestra uno de varios estados con nombre.",
   },
   en: {
     "stateButtonPage.anatomyLabel": "StateButton anatomy",
@@ -114,5 +117,8 @@ export const stateButtonMessages = {
       "The <code>states</code> is an array of {name, icon, ariaLabel}: each state has its own icon and its own accessible label.",
     "stateButtonPage.contractItem4":
       "The <code>variant</code> and <code>size</code> come from Button: the primitive has no opinion about appearance.",
+    "stateButtonPage.showcaseTitle": "Showcases",
+    "stateButtonPage.showcaseBody": "A button with three states, a theme toggle, and a copy status.",
+    "stateButtonPage.guidelinesLede": "StateButton is an icon button showing one of several named states.",
   },
 };

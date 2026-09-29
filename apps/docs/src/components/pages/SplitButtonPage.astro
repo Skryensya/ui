@@ -7,6 +7,7 @@ import ComponentPageShell from "./ComponentPageShell.astro";
 import AppearanceMenu from "../AppearanceMenu.astro";
 import CodeBlock from "../CodeBlock.astro";
 import ComponentPreview from "../ComponentPreview.astro";
+import UsagePreview from "../UsagePreview.astro";
 import {
   splitButtonAnatomyTree,
   splitButtonTree,
@@ -50,20 +51,11 @@ initComponents();`;
     <AppearanceMenu label={t("prefs.appearance")} />
   </Fragment>
 
-  <Fragment slot="anatomy">
-    <p set:html={t("splitButtonPage.anatomyBody")} />
-    <ComponentPreview
-      tree={splitButtonAnatomyTree(t)}
-      css={annotationDemoCss}
-      label={t("splitButtonPage.anatomyPreviewLabel")}
-      screens={false}
-      hideSource
-      chrome={false}
-    />
-  </Fragment>
-
   <Fragment slot="usage">
     <p class="lede" set:html={t("splitButtonPage.description")} />
+
+    <h3>{t("splitButtonPage.showcaseTitle")}</h3>
+    <p set:html={t("splitButtonPage.showcaseBody")} />
     <ComponentPreview tree={splitButtonTree(t)} js={js} label="SplitButton" viewport="menu" />
 
     <h3>{t("splitButtonPage.smallTitle")}</h3>
@@ -122,6 +114,26 @@ initComponents();`;
 
     <h3>{t("component.contractNotesTitle")}</h3>
     <p set:html={t("splitButtonPage.contractBody")} />
+
+    <h3>{t("component.anatomy")}</h3>
+    <p set:html={t("splitButtonPage.anatomyBody")} />
+    <ComponentPreview
+      tree={splitButtonAnatomyTree(t)}
+      css={annotationDemoCss}
+      label={t("splitButtonPage.anatomyPreviewLabel")}
+      screens={false}
+      hideSource
+      chrome={false}
+    />
+  </Fragment>
+
+  <Fragment slot="guidelines">
+    <p class="lede" set:html={t("splitButtonPage.guidelinesLede")} />
+    <ul>
+      <li set:html={t("splitButtonPage.guide.use1")} />
+      <li set:html={t("splitButtonPage.guide.avoid1")} />
+      <li set:html={t("splitButtonPage.guide.avoid2")} />
+    </ul>
   </Fragment>
 
   <Fragment slot="install">

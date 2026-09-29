@@ -6,6 +6,7 @@ import ComponentPageShell from "./ComponentPageShell.astro";
 import AppearanceMenu from "../AppearanceMenu.astro";
 import CodeBlock from "../CodeBlock.astro";
 import ComponentPreview from "../ComponentPreview.astro";
+import UsagePreview from "../UsagePreview.astro";
 import {
   stateButtonAnatomyTree,
   stateButtonBasicTree,
@@ -32,20 +33,11 @@ const styles = `@import "@skryensya/core/components/state-button.css";`;
     <AppearanceMenu label={t("prefs.appearance")} />
   </Fragment>
 
-  <Fragment slot="anatomy">
-    <p set:html={t("stateButtonPage.anatomyDiagramBody")} />
-    <ComponentPreview
-      tree={stateButtonAnatomyTree(t)}
-      css={annotationDemoCss}
-      label={t("stateButtonPage.anatomyPreviewLabel")}
-      screens={false}
-      hideSource
-      chrome={false}
-    />
-  </Fragment>
-
   <Fragment slot="usage">
     <p class="lede" set:html={t("stateButtonPage.lede")} />
+
+    <h3>{t("stateButtonPage.showcaseTitle")}</h3>
+    <p set:html={t("stateButtonPage.showcaseBody")} />
 
     <h3>{t("stateButtonPage.anatomyTitle")}</h3>
     <p set:html={t("stateButtonPage.anatomyBody")} />
@@ -80,27 +72,40 @@ const styles = `@import "@skryensya/core/components/state-button.css";`;
       label="StateButton for copy status"
     />
 
-    <h3>{t("stateButtonPage.whenTitle")}</h3>
-    <ul>
-      <li set:html={t("stateButtonPage.whenItem1")} />
-      <li set:html={t("stateButtonPage.whenItem2")} />
-      <li set:html={t("stateButtonPage.whenItem3")} />
-    </ul>
-
-    <h3>{t("stateButtonPage.avoidTitle")}</h3>
-    <ul>
-      <li set:html={t("stateButtonPage.avoidItem1")} />
-      <li set:html={t("stateButtonPage.avoidItem2")} />
-      <li set:html={t("stateButtonPage.avoidItem3")} />
-      <li set:html={t("stateButtonPage.avoidItem4")} />
-    </ul>
-
     <h3>{t("component.contractNotesTitle")}</h3>
     <ul>
       <li set:html={t("stateButtonPage.contractItem1")} />
       <li set:html={t("stateButtonPage.contractItem2")} />
       <li set:html={t("stateButtonPage.contractItem3")} />
       <li set:html={t("stateButtonPage.contractItem4")} />
+    </ul>
+
+    <h3>{t("component.anatomy")}</h3>
+    <p set:html={t("stateButtonPage.anatomyDiagramBody")} />
+    <ComponentPreview
+      tree={stateButtonAnatomyTree(t)}
+      css={annotationDemoCss}
+      label={t("stateButtonPage.anatomyPreviewLabel")}
+      screens={false}
+      hideSource
+      chrome={false}
+    />
+  </Fragment>
+
+  <Fragment slot="guidelines">
+    <p class="lede" set:html={t("stateButtonPage.guidelinesLede")} />
+    <h3>{t("stateButtonPage.whenTitle")}</h3>
+    <ul>
+      <li set:html={t("stateButtonPage.whenItem1")} />
+      <li set:html={t("stateButtonPage.whenItem2")} />
+      <li set:html={t("stateButtonPage.whenItem3")} />
+    </ul>
+    <h3>{t("stateButtonPage.avoidTitle")}</h3>
+    <ul>
+      <li set:html={t("stateButtonPage.avoidItem1")} />
+      <li set:html={t("stateButtonPage.avoidItem2")} />
+      <li set:html={t("stateButtonPage.avoidItem3")} />
+      <li set:html={t("stateButtonPage.avoidItem4")} />
     </ul>
   </Fragment>
 

@@ -7,6 +7,7 @@ import "@skryensya/core/components/annotation.css";
 import ComponentPageShell from "./ComponentPageShell.astro";
 import CodeBlock from "../CodeBlock.astro";
 import ComponentPreview from "../ComponentPreview.astro";
+import UsagePreview from "../UsagePreview.astro";
 import { megamenuAnatomyCss, megamenuAnatomyHtml, megamenuTree } from "../../demos/megamenu";
 import { getLocale, useTranslations } from "../../i18n";
 
@@ -37,7 +38,17 @@ const hrefs = { overview: "#", pricing: "#", integrations: "#", teams: "#", ente
   ]}
   testFiles={["packages/vanilla/src/components/megamenu.test.ts", "packages/react/src/components/megamenu.test.tsx"]}}
 >
-  <Fragment slot="anatomy">
+  <Fragment slot="usage">
+    <p class="lede" set:html={t("megamenuPage.description")} />
+
+    <h3>{t("megamenuPage.showcaseTitle")}</h3>
+    <p set:html={t("megamenuPage.showcaseBody")} />
+    <ComponentPreview tree={megamenuTree(t, hrefs)} js={js} label="Megamenu" viewport="overlay" flush />
+
+    <h3>{t("component.contractNotesTitle")}</h3>
+    <p set:html={t("megamenuPage.contractBody")} />
+
+    <h3>{t("component.anatomy")}</h3>
     <p set:html={t("megamenuPage.anatomyBody")} />
     <ComponentPreview
       html={megamenuAnatomyHtml(t)}
@@ -49,12 +60,14 @@ const hrefs = { overview: "#", pricing: "#", integrations: "#", teams: "#", ente
     />
   </Fragment>
 
-  <Fragment slot="usage">
-    <p class="lede" set:html={t("megamenuPage.description")} />
-    <ComponentPreview tree={megamenuTree(t, hrefs)} js={js} label="Megamenu" viewport="overlay" flush />
-
-    <h3>{t("component.contractNotesTitle")}</h3>
-    <p set:html={t("megamenuPage.contractBody")} />
+  <Fragment slot="guidelines">
+    <p class="lede" set:html={t("megamenuPage.guidelinesLede")} />
+    <ul>
+      <li set:html={t("megamenuPage.guide.use1")} />
+      <li set:html={t("megamenuPage.guide.avoid1")} />
+      <li set:html={t("megamenuPage.guide.avoid2")} />
+      <li set:html={t("megamenuPage.guide.avoid3")} />
+    </ul>
   </Fragment>
 
   <Fragment slot="install">

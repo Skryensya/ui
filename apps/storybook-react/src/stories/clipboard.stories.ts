@@ -18,3 +18,5 @@ export const Anatomy: StoryObj = treeStory(demos.clipboardAnatomyTree, { decorat
 export const Target: StoryObj = treeStory(demos.clipboardTargetTree);
 export const Field: StoryObj = treeStory(demos.clipboardFieldTree);
 export const Sizes: StoryObj = treeStory(demos.clipboardSizesTree);
+export const Button: StoryObj = treeStory(demos.clipboardButtonTree);
+export const DontBlind: StoryObj = treeStory(demos.clipboardDontBlindTree);

@@ -376,3 +376,10 @@ export const popupAnatomyCss = `.sk-annotated-figure {
 .sk-annotated__subject {
   text-align: center;
 }`;
+
+/* The property previews' specimen: its own panel id per preview, since two popovers sharing one id
+   would each open the other's panel. */
+export const popoverSpecimenTree = (t: Translate, panelId: string): UsageTree => ({
+  ...popoverTree(t),
+  options: { ...popoverTree(t).options, panelId },
+});

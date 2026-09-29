@@ -13,3 +13,4 @@ export default { title: "Components/Actions/Menubar", tags: ["autodocs"] } satis
 export const Default: StoryObj = treeStory(demos.menubarTree);
 export const Submenu: StoryObj = treeStory(demos.menubarSubmenuTree);
 export const Nav: StoryObj = treeStory(demos.menubarNavTree);
+export const DontSingle: StoryObj = treeStory(demos.menubarDontSingleTree);

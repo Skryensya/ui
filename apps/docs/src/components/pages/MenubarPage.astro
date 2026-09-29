@@ -7,7 +7,16 @@ import "@skryensya/core/components/annotation.css";
 import ComponentPageShell from "./ComponentPageShell.astro";
 import CodeBlock from "../CodeBlock.astro";
 import ComponentPreview from "../ComponentPreview.astro";
-import { menubarAnatomyCss, menubarAnatomyHtml, menubarNavTree, menubarSubmenuTree, menubarTree } from "../../demos/menubar";
+import UsagePreview from "../UsagePreview.astro";
+import DoDont from "../DoDont.astro";
+import {
+  menubarAnatomyCss,
+  menubarAnatomyHtml,
+  menubarDontSingleTree,
+  menubarNavTree,
+  menubarSubmenuTree,
+  menubarTree,
+} from "../../demos/menubar";
 import { getLocale, useTranslations } from "../../i18n";
 
 const t = useTranslations(getLocale(Astro.url));
@@ -32,20 +41,11 @@ initComponents();`;
   ]}
   testFiles={["packages/core/src/menubar.test.ts", "packages/react/src/components/menubar.test.tsx", "packages/vanilla/src/components/menubar.svelte.test.ts"]}}
 >
-  <Fragment slot="anatomy">
-    <p set:html={t("menubarPage.anatomyBody")} />
-    <ComponentPreview
-      html={menubarAnatomyHtml(t)}
-      css={menubarAnatomyCss}
-      label={t("menubarPage.anatomyPreviewLabel")}
-      screens={false}
-      hideSource
-      chrome={false}
-    />
-  </Fragment>
-
   <Fragment slot="usage">
     <p class="lede" set:html={t("menubarPage.lede")} />
+
+    <h3>{t("menubarPage.showcaseTitle")}</h3>
+    <p set:html={t("menubarPage.showcaseBody")} />
     <ComponentPreview tree={menubarTree(t)} js={js} label={t("menubarPage.label")} viewport="menu" />
 
     <h3>{t("component.contractNotesTitle")}</h3>
@@ -67,6 +67,26 @@ initComponents();`;
       js={js}
       label={t("menubarPage.navSkinTitle")}
       viewport="menu"
+    />
+
+    <h3>{t("component.anatomy")}</h3>
+    <p set:html={t("menubarPage.anatomyBody")} />
+    <ComponentPreview
+      html={menubarAnatomyHtml(t)}
+      css={menubarAnatomyCss}
+      label={t("menubarPage.anatomyPreviewLabel")}
+      screens={false}
+      hideSource
+      chrome={false}
+    />
+  </Fragment>
+
+  <Fragment slot="guidelines">
+    <p class="lede" set:html={t("menubarPage.guidelinesLede")} />
+    <DoDont
+      title={t("menubarPage.dd.single.title")}
+      do={{ tree: menubarTree(t), caption: t("menubarPage.dd.single.do") }}
+      dont={{ tree: menubarDontSingleTree(t), caption: t("menubarPage.dd.single.dont") }}
     />
   </Fragment>
 

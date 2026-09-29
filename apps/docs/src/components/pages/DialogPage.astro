@@ -18,6 +18,7 @@ import CodeBlock from "../CodeBlock.astro";
 import ComponentPageShell from "./ComponentPageShell.astro";
 import AppearanceMenu from "../AppearanceMenu.astro";
 import ComponentPreview from "../ComponentPreview.astro";
+import UsagePreview from "../UsagePreview.astro";
 import {
   dialogAnatomyCss,
   dialogAnatomyTree,
@@ -72,20 +73,11 @@ await initComponents();`;
     <AppearanceMenu label={t("prefs.appearance")} values={["plain", "brutalist", "frosted"]} unavailable={{ tactile: t("prefs.appearanceTactileUnavailable") }} />
   </Fragment>
 
-  <Fragment slot="anatomy">
-    <p set:html={t("dialog.anatomyBody")} />
-    <ComponentPreview
-      tree={dialogAnatomyTree(t)}
-      css={dialogAnatomyCss}
-      label={t("dialog.anatomyPreviewLabel")}
-      screens={false}
-      hideSource
-      chrome={false}
-    />
-  </Fragment>
-
   <Fragment slot="usage">
     <p class="lede" set:html={t("dialog.lede")} />
+
+    <h3>{t("dialog.showcaseTitle")}</h3>
+    <p set:html={t("dialog.showcaseBody")} />
     <h3>{t("dialog.confirmTitle")}</h3>
     <p set:html={t("dialog.confirmAnatomy")} />
     <ComponentPreview tree={dialogConfirmTree(t)} previewScript={dialogConfirmScript} label="Confirm" viewport="overlay" />
@@ -115,6 +107,28 @@ await initComponents();`;
       <li set:html={t("dialog.vaulAddsItem2")} />
       <li set:html={t("dialog.vaulAddsItem3")} />
       <li set:html={t("dialog.vaulAddsItem4")} />
+    </ul>
+
+    <h3>{t("component.anatomy")}</h3>
+    <p set:html={t("dialog.anatomyBody")} />
+    <ComponentPreview
+      tree={dialogAnatomyTree(t)}
+      css={dialogAnatomyCss}
+      label={t("dialog.anatomyPreviewLabel")}
+      screens={false}
+      hideSource
+      chrome={false}
+    />
+  </Fragment>
+
+  <Fragment slot="guidelines">
+    <p class="lede" set:html={t("dialog.guidelinesLede")} />
+    <ul>
+      <li set:html={t("dialog.guide.use1")} />
+      <li set:html={t("dialog.guide.use2")} />
+      <li set:html={t("dialog.guide.avoid1")} />
+      <li set:html={t("dialog.guide.avoid2")} />
+      <li set:html={t("dialog.guide.avoid3")} />
     </ul>
   </Fragment>
 
