@@ -38037,7 +38037,7 @@
         {
           "box": "5eefcdf034c45d09",
           "hash": "c20d53b8d3bc5380",
-          "id": "radio-group/plain/state=unchecked",
+          "id": "radio/plain/state=unchecked",
           "key": "state=unchecked",
           "layers": "1ca8259a2c438dc1",
           "props": {
@@ -38048,7 +38048,7 @@
         {
           "box": "5eefcdf034c45d09",
           "hash": "434ae74aa9e95124",
-          "id": "radio-group/plain/state=hover",
+          "id": "radio/plain/state=hover",
           "key": "state=hover",
           "layers": "1ca8259a2c438dc1",
           "props": {
@@ -38059,7 +38059,7 @@
         {
           "box": "5eefcdf034c45d09",
           "hash": "c9543fea636ca8af",
-          "id": "radio-group/plain/state=focus",
+          "id": "radio/plain/state=focus",
           "key": "state=focus",
           "layers": "e8ae521ab5d25faf",
           "props": {
@@ -38070,7 +38070,7 @@
         {
           "box": "5eefcdf034c45d09",
           "hash": "4715a31d40879d7c",
-          "id": "radio-group/plain/state=checked",
+          "id": "radio/plain/state=checked",
           "key": "state=checked",
           "layers": "9895800f5767db30",
           "props": {
@@ -38081,7 +38081,7 @@
         {
           "box": "5eefcdf034c45d09",
           "hash": "92735e2707ab60bb",
-          "id": "radio-group/plain/state=disabled",
+          "id": "radio/plain/state=disabled",
           "key": "state=disabled",
           "layers": "0a9a58a32e941ab3",
           "props": {
@@ -38107,7 +38107,7 @@
         ],
         "rows": []
       },
-      "id": "radio-group/plain",
+      "id": "radio/plain",
       "interactions": [
         {
           "axis": "state",
@@ -38117,7 +38117,7 @@
         }
       ],
       "kind": "component-set",
-      "name": "Radio Group / plain",
+      "name": "Radio / plain",
       "page": "skryensya",
       "properties": [
         {
@@ -38156,7 +38156,7 @@
         {
           "box": "5eefcdf034c45d09",
           "hash": "d7e84a1d4ee6eef7",
-          "id": "radio-group/tactile/state=unchecked",
+          "id": "radio/tactile/state=unchecked",
           "key": "state=unchecked",
           "layers": "e4197f961586ddc4",
           "props": {
@@ -38167,7 +38167,7 @@
         {
           "box": "5eefcdf034c45d09",
           "hash": "e48bed9760192c85",
-          "id": "radio-group/tactile/state=hover",
+          "id": "radio/tactile/state=hover",
           "key": "state=hover",
           "layers": "e4197f961586ddc4",
           "props": {
@@ -38178,7 +38178,7 @@
         {
           "box": "5eefcdf034c45d09",
           "hash": "42bbb57e2d415b66",
-          "id": "radio-group/tactile/state=focus",
+          "id": "radio/tactile/state=focus",
           "key": "state=focus",
           "layers": "c3d3a69bf39eb898",
           "props": {
@@ -38189,7 +38189,7 @@
         {
           "box": "5eefcdf034c45d09",
           "hash": "226849c0cf8b36a2",
-          "id": "radio-group/tactile/state=checked",
+          "id": "radio/tactile/state=checked",
           "key": "state=checked",
           "layers": "6bace70f82a578dc",
           "props": {
@@ -38200,7 +38200,7 @@
         {
           "box": "5eefcdf034c45d09",
           "hash": "66743b497b66f3d8",
-          "id": "radio-group/tactile/state=disabled",
+          "id": "radio/tactile/state=disabled",
           "key": "state=disabled",
           "layers": "a94250aac57a96ff",
           "props": {
@@ -38226,7 +38226,7 @@
         ],
         "rows": []
       },
-      "id": "radio-group/tactile",
+      "id": "radio/tactile",
       "interactions": [
         {
           "axis": "state",
@@ -38236,7 +38236,7 @@
         }
       ],
       "kind": "component-set",
-      "name": "Radio Group / tactile",
+      "name": "Radio / tactile",
       "page": "skryensya",
       "properties": [
         {
@@ -38275,7 +38275,7 @@
         {
           "box": "5eefcdf034c45d09",
           "hash": "dc8b39c92a14a897",
-          "id": "radio-group/brutalist/state=unchecked",
+          "id": "radio/brutalist/state=unchecked",
           "key": "state=unchecked",
           "layers": "1e057360ae49b1cb",
           "props": {
@@ -38286,7 +38286,7 @@
         {
           "box": "5eefcdf034c45d09",
           "hash": "bf9eb4a2a2962909",
-          "id": "radio-group/brutalist/state=hover",
+          "id": "radio/brutalist/state=hover",
           "key": "state=hover",
           "layers": "1e057360ae49b1cb",
           "props": {
@@ -38297,7 +38297,7 @@
         {
           "box": "5eefcdf034c45d09",
           "hash": "558f68ce6931cebc",
-          "id": "radio-group/brutalist/state=focus",
+          "id": "radio/brutalist/state=focus",
           "key": "state=focus",
           "layers": "c151334ff175f416",
           "props": {
@@ -38308,7 +38308,7 @@
         {
           "box": "5eefcdf034c45d09",
           "hash": "6a25f6e467b796fa",
-          "id": "radio-group/brutalist/state=checked",
+          "id": "radio/brutalist/state=checked",
           "key": "state=checked",
           "layers": "ab229ebb9f37fb2b",
           "props": {
@@ -38319,7 +38319,7 @@
         {
           "box": "5eefcdf034c45d09",
           "hash": "2e1ba24063d3b5f0",
-          "id": "radio-group/brutalist/state=disabled",
+          "id": "radio/brutalist/state=disabled",
           "key": "state=disabled",
           "layers": "cee0d49fb600f3cf",
           "props": {
@@ -38345,7 +38345,7 @@
         ],
         "rows": []
       },
-      "id": "radio-group/brutalist",
+      "id": "radio/brutalist",
       "interactions": [
         {
           "axis": "state",
@@ -38355,7 +38355,7 @@
         }
       ],
       "kind": "component-set",
-      "name": "Radio Group / brutalist",
+      "name": "Radio / brutalist",
       "page": "skryensya",
       "properties": [
         {
@@ -38394,7 +38394,7 @@
         {
           "box": "5eefcdf034c45d09",
           "hash": "df868602cae8f391",
-          "id": "radio-group/frosted/state=unchecked",
+          "id": "radio/frosted/state=unchecked",
           "key": "state=unchecked",
           "layers": "67385e8e9edccd0b",
           "props": {
@@ -38405,7 +38405,7 @@
         {
           "box": "5eefcdf034c45d09",
           "hash": "e4f47e5a2c564f87",
-          "id": "radio-group/frosted/state=hover",
+          "id": "radio/frosted/state=hover",
           "key": "state=hover",
           "layers": "67385e8e9edccd0b",
           "props": {
@@ -38416,7 +38416,7 @@
         {
           "box": "5eefcdf034c45d09",
           "hash": "e4dedaf7cd28114e",
-          "id": "radio-group/frosted/state=focus",
+          "id": "radio/frosted/state=focus",
           "key": "state=focus",
           "layers": "7ae21129dbd06232",
           "props": {
@@ -38427,7 +38427,7 @@
         {
           "box": "5eefcdf034c45d09",
           "hash": "3d2b799f7edc6deb",
-          "id": "radio-group/frosted/state=checked",
+          "id": "radio/frosted/state=checked",
           "key": "state=checked",
           "layers": "f1f0eff1ca3b2253",
           "props": {
@@ -38438,7 +38438,7 @@
         {
           "box": "5eefcdf034c45d09",
           "hash": "276f80286922c8b2",
-          "id": "radio-group/frosted/state=disabled",
+          "id": "radio/frosted/state=disabled",
           "key": "state=disabled",
           "layers": "489042c7fb6e585b",
           "props": {
@@ -38464,7 +38464,7 @@
         ],
         "rows": []
       },
-      "id": "radio-group/frosted",
+      "id": "radio/frosted",
       "interactions": [
         {
           "axis": "state",
@@ -38474,7 +38474,7 @@
         }
       ],
       "kind": "component-set",
-      "name": "Radio Group / frosted",
+      "name": "Radio / frosted",
       "page": "skryensya",
       "properties": [
         {
@@ -38495,6 +38495,310 @@
         "columns": []
       },
       "visualHash": "2ece817a2a15d31a"
+    },
+    {
+      "axes": [
+        {
+          "name": "orientation",
+          "values": [
+            "vertical",
+            "horizontal"
+          ]
+        }
+      ],
+      "cells": [
+        {
+          "box": "61278edee5186127",
+          "hash": "24df6b9b9da61e60",
+          "id": "radio-group/plain/orientation=vertical",
+          "key": "orientation=vertical",
+          "layers": "9c5899c9b12b69f3",
+          "props": {
+            "orientation": "vertical"
+          },
+          "surface": "fa0b643878e9242d"
+        },
+        {
+          "box": "61278edee5186127",
+          "hash": "ef4f7e22a0e2f561",
+          "id": "radio-group/plain/orientation=horizontal",
+          "key": "orientation=horizontal",
+          "layers": "9c5899c9b12b69f3",
+          "props": {
+            "orientation": "horizontal"
+          },
+          "surface": "fa0b643878e9242d"
+        }
+      ],
+      "contractHash": "446ec6c35f923296",
+      "defaultCell": "orientation=vertical",
+      "grid": {
+        "columns": [],
+        "rows": [
+          {
+            "name": "orientation",
+            "values": [
+              "vertical",
+              "horizontal"
+            ]
+          }
+        ]
+      },
+      "id": "radio-group/plain",
+      "interactions": [],
+      "kind": "component-set",
+      "name": "Radio Group / plain",
+      "page": "skryensya",
+      "properties": [
+        {
+          "default": "Monthly",
+          "name": "items 1",
+          "type": "TEXT"
+        },
+        {
+          "default": "Yearly",
+          "name": "items 2",
+          "type": "TEXT"
+        },
+        {
+          "default": "Lifetime",
+          "name": "items 3",
+          "type": "TEXT"
+        }
+      ],
+      "showcase": {
+        "base": {},
+        "columns": []
+      },
+      "visualHash": "b507a7ff477bfd72"
+    },
+    {
+      "axes": [
+        {
+          "name": "orientation",
+          "values": [
+            "vertical",
+            "horizontal"
+          ]
+        }
+      ],
+      "cells": [
+        {
+          "box": "61278edee5186127",
+          "hash": "876ad6328be0091d",
+          "id": "radio-group/tactile/orientation=vertical",
+          "key": "orientation=vertical",
+          "layers": "bf28246bcad1e97e",
+          "props": {
+            "orientation": "vertical"
+          },
+          "surface": "fa0b643878e9242d"
+        },
+        {
+          "box": "61278edee5186127",
+          "hash": "5059208dcdfbd65c",
+          "id": "radio-group/tactile/orientation=horizontal",
+          "key": "orientation=horizontal",
+          "layers": "bf28246bcad1e97e",
+          "props": {
+            "orientation": "horizontal"
+          },
+          "surface": "fa0b643878e9242d"
+        }
+      ],
+      "contractHash": "446ec6c35f923296",
+      "defaultCell": "orientation=vertical",
+      "grid": {
+        "columns": [],
+        "rows": [
+          {
+            "name": "orientation",
+            "values": [
+              "vertical",
+              "horizontal"
+            ]
+          }
+        ]
+      },
+      "id": "radio-group/tactile",
+      "interactions": [],
+      "kind": "component-set",
+      "name": "Radio Group / tactile",
+      "page": "skryensya",
+      "properties": [
+        {
+          "default": "Monthly",
+          "name": "items 1",
+          "type": "TEXT"
+        },
+        {
+          "default": "Yearly",
+          "name": "items 2",
+          "type": "TEXT"
+        },
+        {
+          "default": "Lifetime",
+          "name": "items 3",
+          "type": "TEXT"
+        }
+      ],
+      "showcase": {
+        "base": {},
+        "columns": []
+      },
+      "visualHash": "6a88eb3610a0dc9f"
+    },
+    {
+      "axes": [
+        {
+          "name": "orientation",
+          "values": [
+            "vertical",
+            "horizontal"
+          ]
+        }
+      ],
+      "cells": [
+        {
+          "box": "61278edee5186127",
+          "hash": "35bc371551d3ca2e",
+          "id": "radio-group/brutalist/orientation=vertical",
+          "key": "orientation=vertical",
+          "layers": "c27765b84ab81701",
+          "props": {
+            "orientation": "vertical"
+          },
+          "surface": "fa0b643878e9242d"
+        },
+        {
+          "box": "61278edee5186127",
+          "hash": "9b4fc0ab892b03da",
+          "id": "radio-group/brutalist/orientation=horizontal",
+          "key": "orientation=horizontal",
+          "layers": "c27765b84ab81701",
+          "props": {
+            "orientation": "horizontal"
+          },
+          "surface": "fa0b643878e9242d"
+        }
+      ],
+      "contractHash": "446ec6c35f923296",
+      "defaultCell": "orientation=vertical",
+      "grid": {
+        "columns": [],
+        "rows": [
+          {
+            "name": "orientation",
+            "values": [
+              "vertical",
+              "horizontal"
+            ]
+          }
+        ]
+      },
+      "id": "radio-group/brutalist",
+      "interactions": [],
+      "kind": "component-set",
+      "name": "Radio Group / brutalist",
+      "page": "skryensya",
+      "properties": [
+        {
+          "default": "Monthly",
+          "name": "items 1",
+          "type": "TEXT"
+        },
+        {
+          "default": "Yearly",
+          "name": "items 2",
+          "type": "TEXT"
+        },
+        {
+          "default": "Lifetime",
+          "name": "items 3",
+          "type": "TEXT"
+        }
+      ],
+      "showcase": {
+        "base": {},
+        "columns": []
+      },
+      "visualHash": "59e3c9488e611981"
+    },
+    {
+      "axes": [
+        {
+          "name": "orientation",
+          "values": [
+            "vertical",
+            "horizontal"
+          ]
+        }
+      ],
+      "cells": [
+        {
+          "box": "61278edee5186127",
+          "hash": "563ab18335be7196",
+          "id": "radio-group/frosted/orientation=vertical",
+          "key": "orientation=vertical",
+          "layers": "e0a5dc9335c2a6d8",
+          "props": {
+            "orientation": "vertical"
+          },
+          "surface": "fa0b643878e9242d"
+        },
+        {
+          "box": "61278edee5186127",
+          "hash": "c0c4cc76fbe5b78d",
+          "id": "radio-group/frosted/orientation=horizontal",
+          "key": "orientation=horizontal",
+          "layers": "e0a5dc9335c2a6d8",
+          "props": {
+            "orientation": "horizontal"
+          },
+          "surface": "fa0b643878e9242d"
+        }
+      ],
+      "contractHash": "446ec6c35f923296",
+      "defaultCell": "orientation=vertical",
+      "grid": {
+        "columns": [],
+        "rows": [
+          {
+            "name": "orientation",
+            "values": [
+              "vertical",
+              "horizontal"
+            ]
+          }
+        ]
+      },
+      "id": "radio-group/frosted",
+      "interactions": [],
+      "kind": "component-set",
+      "name": "Radio Group / frosted",
+      "page": "skryensya",
+      "properties": [
+        {
+          "default": "Monthly",
+          "name": "items 1",
+          "type": "TEXT"
+        },
+        {
+          "default": "Yearly",
+          "name": "items 2",
+          "type": "TEXT"
+        },
+        {
+          "default": "Lifetime",
+          "name": "items 3",
+          "type": "TEXT"
+        }
+      ],
+      "showcase": {
+        "base": {},
+        "columns": []
+      },
+      "visualHash": "834d214de9af67bd"
     },
     {
       "axes": [
@@ -42006,6 +42310,12 @@
     },
     {
       "code": "CONDITION_SKIPPED",
+      "message": "3 rule(s) under a condition the evaluation context does not hold",
+      "severity": "info",
+      "subject": "components/radio-group.css @media (forced-colors: active)"
+    },
+    {
+      "code": "CONDITION_SKIPPED",
       "message": "7 rule(s) under a condition the evaluation context does not hold",
       "severity": "info",
       "subject": "components/segmented.css @media (forced-colors: active)"
@@ -42928,7 +43238,7 @@
           "variant"
         ]
       },
-      "radio-group": {
+      "radio": {
         "excluded": [
           "required"
         ],
@@ -42939,6 +43249,22 @@
         "visual": [
           "radioDefaultChecked",
           "disabled",
+          "appearance"
+        ]
+      },
+      "radio-group": {
+        "excluded": [
+          "spread",
+          "disabled",
+          "required",
+          "label"
+        ],
+        "nonVisual": [
+          "name",
+          "value"
+        ],
+        "visual": [
+          "orientation",
           "appearance"
         ]
       },
@@ -43133,11 +43459,11 @@
     },
     "tokens": {
       "catalogueAdded": 305,
-      "componentVariables": 446,
+      "componentVariables": 449,
       "modeValuesBySource": {
         "alias": 203,
         "evaluated": 843,
-        "literal": 778
+        "literal": 784
       },
       "reached": 203,
       "reachedAsVariables": 153,
@@ -43156,8 +43482,8 @@
       "variables": 466
     },
     "variants": {
-      "components": 106,
-      "componentSets": 105,
+      "components": 110,
+      "componentSets": 109,
       "naiveAllOptions": {
         "accordion": 32,
         "avatar": 8,
@@ -43186,7 +43512,8 @@
         "password-input": 384,
         "progress": 4,
         "quote": 2,
-        "radio-group": 32,
+        "radio": 32,
+        "radio-group": 64,
         "segmented": 12,
         "select": 24,
         "separator": 48,
@@ -43233,7 +43560,8 @@
         "password-input": 12,
         "progress": 4,
         "quote": 2,
-        "radio-group": 16,
+        "radio": 16,
+        "radio-group": 8,
         "segmented": 12,
         "select": 6,
         "separator": 3,
@@ -43530,20 +43858,36 @@
           "variants": 5
         },
         {
-          "set": "radio-group/plain",
+          "set": "radio/plain",
           "variants": 5
+        },
+        {
+          "set": "radio/tactile",
+          "variants": 5
+        },
+        {
+          "set": "radio/brutalist",
+          "variants": 5
+        },
+        {
+          "set": "radio/frosted",
+          "variants": 5
+        },
+        {
+          "set": "radio-group/plain",
+          "variants": 2
         },
         {
           "set": "radio-group/tactile",
-          "variants": 5
+          "variants": 2
         },
         {
           "set": "radio-group/brutalist",
-          "variants": 5
+          "variants": 2
         },
         {
           "set": "radio-group/frosted",
-          "variants": 5
+          "variants": 2
         },
         {
           "set": "select/plain",
@@ -43674,11 +44018,11 @@
           "variants": 4
         }
       ],
-      "variantsTotal": 2423
+      "variantsTotal": 2431
     }
   },
   "schemaVersion": 1,
-  "sourceHash": "556c5e38ad990d8e",
+  "sourceHash": "61ac28a50b93a335",
   "stage": {
     "background": {
       "variable": "--color-bg-surface"
@@ -48435,6 +48779,42 @@
         "width": {
           "expression": "480px",
           "value": 480
+        }
+      },
+      "b3e30aa891a0dd07": {
+        "clipsContent": false,
+        "crossAlign": "CENTER",
+        "direction": "VERTICAL",
+        "height": {
+          "variable": "--size-icon-md"
+        },
+        "mainAlign": "CENTER",
+        "padding": {
+          "bottom": {
+            "expression": "0",
+            "value": 0
+          },
+          "left": {
+            "expression": "0",
+            "value": 0
+          },
+          "right": {
+            "expression": "0",
+            "value": 0
+          },
+          "top": {
+            "expression": "0",
+            "value": 0
+          }
+        },
+        "radius": {
+          "variable": "--radius-pill"
+        },
+        "strokeWeight": {
+          "variable": "radio-group:sk-radio-border-width:93e20626bf"
+        },
+        "width": {
+          "variable": "--size-icon-md"
         }
       },
       "b5ec9ced019b3552": {
@@ -69586,6 +69966,154 @@
           "textProperty": "children"
         }
       ],
+      "9c5899c9b12b69f3": [
+        {
+          "box": "5eefcdf034c45d09",
+          "kind": "frame",
+          "layers": [
+            {
+              "box": "18ec589e6ef81baa",
+              "kind": "frame",
+              "layers": [
+                {
+                  "box": "b3e30aa891a0dd07",
+                  "kind": "frame",
+                  "layers": [
+                    {
+                      "box": "e671c14b50206cd7",
+                      "kind": "frame",
+                      "layers": [],
+                      "slot": "radioIndicator",
+                      "surface": "c469968984f9fd00"
+                    }
+                  ],
+                  "slot": "before",
+                  "surface": "a9f184a490483683"
+                }
+              ],
+              "slot": "radioControl",
+              "surface": "fa0b643878e9242d"
+            },
+            {
+              "kind": "text",
+              "slot": "items 1",
+              "text": {
+                "fill": {
+                  "color": {
+                    "variable": "--color-text-primary"
+                  },
+                  "type": "SOLID"
+                },
+                "fontFamily": {
+                  "variable": "--font-family-body"
+                },
+                "fontSize": {
+                  "variable": "--font-size-body"
+                },
+                "fontWeight": {
+                  "variable": "--font-weight-body"
+                },
+                "lineHeight": 150
+              },
+              "textProperty": "items 1"
+            }
+          ],
+          "slot": "radio",
+          "surface": "fa0b643878e9242d"
+        },
+        {
+          "box": "5eefcdf034c45d09",
+          "kind": "frame",
+          "layers": [
+            {
+              "box": "18ec589e6ef81baa",
+              "kind": "frame",
+              "layers": [
+                {
+                  "box": "b3e30aa891a0dd07",
+                  "kind": "frame",
+                  "layers": [],
+                  "slot": "before",
+                  "surface": "2bf210e601b5b8cf"
+                }
+              ],
+              "slot": "radioControl",
+              "surface": "fa0b643878e9242d"
+            },
+            {
+              "kind": "text",
+              "slot": "items 2",
+              "text": {
+                "fill": {
+                  "color": {
+                    "variable": "--color-text-primary"
+                  },
+                  "type": "SOLID"
+                },
+                "fontFamily": {
+                  "variable": "--font-family-body"
+                },
+                "fontSize": {
+                  "variable": "--font-size-body"
+                },
+                "fontWeight": {
+                  "variable": "--font-weight-body"
+                },
+                "lineHeight": 150
+              },
+              "textProperty": "items 2"
+            }
+          ],
+          "slot": "radio 2",
+          "surface": "fa0b643878e9242d"
+        },
+        {
+          "box": "5eefcdf034c45d09",
+          "kind": "frame",
+          "layers": [
+            {
+              "box": "18ec589e6ef81baa",
+              "kind": "frame",
+              "layers": [
+                {
+                  "box": "b3e30aa891a0dd07",
+                  "kind": "frame",
+                  "layers": [],
+                  "slot": "before",
+                  "surface": "99001cc7a89f0aac"
+                }
+              ],
+              "slot": "radioControl",
+              "surface": "fa0b643878e9242d"
+            },
+            {
+              "kind": "text",
+              "slot": "items 3",
+              "text": {
+                "fill": {
+                  "color": {
+                    "variable": "--color-text-disabled"
+                  },
+                  "type": "SOLID"
+                },
+                "fontFamily": {
+                  "variable": "--font-family-body"
+                },
+                "fontSize": {
+                  "variable": "--font-size-body"
+                },
+                "fontWeight": {
+                  "variable": "--font-weight-body"
+                },
+                "lineHeight": 150
+              },
+              "textProperty": "items 3"
+            }
+          ],
+          "slot": "radio 3",
+          "surface": "fa0b643878e9242d"
+        }
+      ],
       "9cac0e03c9a9ad80": [
         {
           "fills": [
@@ -73757,6 +74285,154 @@
           "surface": "86ed77ef1186c65e"
         }
       ],
+      "bf28246bcad1e97e": [
+        {
+          "box": "5eefcdf034c45d09",
+          "kind": "frame",
+          "layers": [
+            {
+              "box": "18ec589e6ef81baa",
+              "kind": "frame",
+              "layers": [
+                {
+                  "box": "b3e30aa891a0dd07",
+                  "kind": "frame",
+                  "layers": [
+                    {
+                      "box": "e671c14b50206cd7",
+                      "kind": "frame",
+                      "layers": [],
+                      "slot": "radioIndicator",
+                      "surface": "c469968984f9fd00"
+                    }
+                  ],
+                  "slot": "before",
+                  "surface": "dde3b323a1a6b207"
+                }
+              ],
+              "slot": "radioControl",
+              "surface": "fa0b643878e9242d"
+            },
+            {
+              "kind": "text",
+              "slot": "items 1",
+              "text": {
+                "fill": {
+                  "color": {
+                    "variable": "--color-text-primary"
+                  },
+                  "type": "SOLID"
+                },
+                "fontFamily": {
+                  "variable": "--font-family-body"
+                },
+                "fontSize": {
+                  "variable": "--font-size-body"
+                },
+                "fontWeight": {
+                  "variable": "--font-weight-body"
+                },
+                "lineHeight": 150
+              },
+              "textProperty": "items 1"
+            }
+          ],
+          "slot": "radio",
+          "surface": "fa0b643878e9242d"
+        },
+        {
+          "box": "5eefcdf034c45d09",
+          "kind": "frame",
+          "layers": [
+            {
+              "box": "18ec589e6ef81baa",
+              "kind": "frame",
+              "layers": [
+                {
+                  "box": "b3e30aa891a0dd07",
+                  "kind": "frame",
+                  "layers": [],
+                  "slot": "before",
+                  "surface": "1982ee3912ad8f44"
+                }
+              ],
+              "slot": "radioControl",
+              "surface": "fa0b643878e9242d"
+            },
+            {
+              "kind": "text",
+              "slot": "items 2",
+              "text": {
+                "fill": {
+                  "color": {
+                    "variable": "--color-text-primary"
+                  },
+                  "type": "SOLID"
+                },
+                "fontFamily": {
+                  "variable": "--font-family-body"
+                },
+                "fontSize": {
+                  "variable": "--font-size-body"
+                },
+                "fontWeight": {
+                  "variable": "--font-weight-body"
+                },
+                "lineHeight": 150
+              },
+              "textProperty": "items 2"
+            }
+          ],
+          "slot": "radio 2",
+          "surface": "fa0b643878e9242d"
+        },
+        {
+          "box": "5eefcdf034c45d09",
+          "kind": "frame",
+          "layers": [
+            {
+              "box": "18ec589e6ef81baa",
+              "kind": "frame",
+              "layers": [
+                {
+                  "box": "b3e30aa891a0dd07",
+                  "kind": "frame",
+                  "layers": [],
+                  "slot": "before",
+                  "surface": "c297745ef49e0c1a"
+                }
+              ],
+              "slot": "radioControl",
+              "surface": "fa0b643878e9242d"
+            },
+            {
+              "kind": "text",
+              "slot": "items 3",
+              "text": {
+                "fill": {
+                  "color": {
+                    "variable": "--color-text-disabled"
+                  },
+                  "type": "SOLID"
+                },
+                "fontFamily": {
+                  "variable": "--font-family-body"
+                },
+                "fontSize": {
+                  "variable": "--font-size-body"
+                },
+                "fontWeight": {
+                  "variable": "--font-weight-body"
+                },
+                "lineHeight": 150
+              },
+              "textProperty": "items 3"
+            }
+          ],
+          "slot": "radio 3",
+          "surface": "fa0b643878e9242d"
+        }
+      ],
       "bf7aa08599c16252": [
         {
           "fills": [
@@ -73846,6 +74522,154 @@
           },
           "textProperty": "children",
           "visibleProperty": "show children"
+        }
+      ],
+      "c27765b84ab81701": [
+        {
+          "box": "5eefcdf034c45d09",
+          "kind": "frame",
+          "layers": [
+            {
+              "box": "18ec589e6ef81baa",
+              "kind": "frame",
+              "layers": [
+                {
+                  "box": "b3e30aa891a0dd07",
+                  "kind": "frame",
+                  "layers": [
+                    {
+                      "box": "e671c14b50206cd7",
+                      "kind": "frame",
+                      "layers": [],
+                      "slot": "radioIndicator",
+                      "surface": "c469968984f9fd00"
+                    }
+                  ],
+                  "slot": "before",
+                  "surface": "160070ac7d1e8ee0"
+                }
+              ],
+              "slot": "radioControl",
+              "surface": "fa0b643878e9242d"
+            },
+            {
+              "kind": "text",
+              "slot": "items 1",
+              "text": {
+                "fill": {
+                  "color": {
+                    "variable": "--color-text-primary"
+                  },
+                  "type": "SOLID"
+                },
+                "fontFamily": {
+                  "variable": "--font-family-body"
+                },
+                "fontSize": {
+                  "variable": "--font-size-body"
+                },
+                "fontWeight": {
+                  "variable": "--font-weight-body"
+                },
+                "lineHeight": 150
+              },
+              "textProperty": "items 1"
+            }
+          ],
+          "slot": "radio",
+          "surface": "fa0b643878e9242d"
+        },
+        {
+          "box": "5eefcdf034c45d09",
+          "kind": "frame",
+          "layers": [
+            {
+              "box": "18ec589e6ef81baa",
+              "kind": "frame",
+              "layers": [
+                {
+                  "box": "b3e30aa891a0dd07",
+                  "kind": "frame",
+                  "layers": [],
+                  "slot": "before",
+                  "surface": "160070ac7d1e8ee0"
+                }
+              ],
+              "slot": "radioControl",
+              "surface": "fa0b643878e9242d"
+            },
+            {
+              "kind": "text",
+              "slot": "items 2",
+              "text": {
+                "fill": {
+                  "color": {
+                    "variable": "--color-text-primary"
+                  },
+                  "type": "SOLID"
+                },
+                "fontFamily": {
+                  "variable": "--font-family-body"
+                },
+                "fontSize": {
+                  "variable": "--font-size-body"
+                },
+                "fontWeight": {
+                  "variable": "--font-weight-body"
+                },
+                "lineHeight": 150
+              },
+              "textProperty": "items 2"
+            }
+          ],
+          "slot": "radio 2",
+          "surface": "fa0b643878e9242d"
+        },
+        {
+          "box": "5eefcdf034c45d09",
+          "kind": "frame",
+          "layers": [
+            {
+              "box": "18ec589e6ef81baa",
+              "kind": "frame",
+              "layers": [
+                {
+                  "box": "b3e30aa891a0dd07",
+                  "kind": "frame",
+                  "layers": [],
+                  "slot": "before",
+                  "surface": "160070ac7d1e8ee0"
+                }
+              ],
+              "slot": "radioControl",
+              "surface": "fa0b643878e9242d"
+            },
+            {
+              "kind": "text",
+              "slot": "items 3",
+              "text": {
+                "fill": {
+                  "color": {
+                    "variable": "--color-text-disabled"
+                  },
+                  "type": "SOLID"
+                },
+                "fontFamily": {
+                  "variable": "--font-family-body"
+                },
+                "fontSize": {
+                  "variable": "--font-size-body"
+                },
+                "fontWeight": {
+                  "variable": "--font-weight-body"
+                },
+                "lineHeight": 150
+              },
+              "textProperty": "items 3"
+            }
+          ],
+          "slot": "radio 3",
+          "surface": "fa0b643878e9242d"
         }
       ],
       "c288c90213ccc9e9": [
@@ -76757,6 +77581,154 @@
           },
           "textProperty": "children",
           "visibleProperty": "show children"
+        }
+      ],
+      "e0a5dc9335c2a6d8": [
+        {
+          "box": "5eefcdf034c45d09",
+          "kind": "frame",
+          "layers": [
+            {
+              "box": "18ec589e6ef81baa",
+              "kind": "frame",
+              "layers": [
+                {
+                  "box": "b3e30aa891a0dd07",
+                  "kind": "frame",
+                  "layers": [
+                    {
+                      "box": "e671c14b50206cd7",
+                      "kind": "frame",
+                      "layers": [],
+                      "slot": "radioIndicator",
+                      "surface": "c469968984f9fd00"
+                    }
+                  ],
+                  "slot": "before",
+                  "surface": "7b9a271467fb79e6"
+                }
+              ],
+              "slot": "radioControl",
+              "surface": "fa0b643878e9242d"
+            },
+            {
+              "kind": "text",
+              "slot": "items 1",
+              "text": {
+                "fill": {
+                  "color": {
+                    "variable": "--color-text-primary"
+                  },
+                  "type": "SOLID"
+                },
+                "fontFamily": {
+                  "variable": "--font-family-body"
+                },
+                "fontSize": {
+                  "variable": "--font-size-body"
+                },
+                "fontWeight": {
+                  "variable": "--font-weight-body"
+                },
+                "lineHeight": 150
+              },
+              "textProperty": "items 1"
+            }
+          ],
+          "slot": "radio",
+          "surface": "fa0b643878e9242d"
+        },
+        {
+          "box": "5eefcdf034c45d09",
+          "kind": "frame",
+          "layers": [
+            {
+              "box": "18ec589e6ef81baa",
+              "kind": "frame",
+              "layers": [
+                {
+                  "box": "b3e30aa891a0dd07",
+                  "kind": "frame",
+                  "layers": [],
+                  "slot": "before",
+                  "surface": "1e961bd6f890d56c"
+                }
+              ],
+              "slot": "radioControl",
+              "surface": "fa0b643878e9242d"
+            },
+            {
+              "kind": "text",
+              "slot": "items 2",
+              "text": {
+                "fill": {
+                  "color": {
+                    "variable": "--color-text-primary"
+                  },
+                  "type": "SOLID"
+                },
+                "fontFamily": {
+                  "variable": "--font-family-body"
+                },
+                "fontSize": {
+                  "variable": "--font-size-body"
+                },
+                "fontWeight": {
+                  "variable": "--font-weight-body"
+                },
+                "lineHeight": 150
+              },
+              "textProperty": "items 2"
+            }
+          ],
+          "slot": "radio 2",
+          "surface": "fa0b643878e9242d"
+        },
+        {
+          "box": "5eefcdf034c45d09",
+          "kind": "frame",
+          "layers": [
+            {
+              "box": "18ec589e6ef81baa",
+              "kind": "frame",
+              "layers": [
+                {
+                  "box": "b3e30aa891a0dd07",
+                  "kind": "frame",
+                  "layers": [],
+                  "slot": "before",
+                  "surface": "cda8c44948781281"
+                }
+              ],
+              "slot": "radioControl",
+              "surface": "fa0b643878e9242d"
+            },
+            {
+              "kind": "text",
+              "slot": "items 3",
+              "text": {
+                "fill": {
+                  "color": {
+                    "variable": "--color-text-disabled"
+                  },
+                  "type": "SOLID"
+                },
+                "fontFamily": {
+                  "variable": "--font-family-body"
+                },
+                "fontSize": {
+                  "variable": "--font-size-body"
+                },
+                "fontWeight": {
+                  "variable": "--font-weight-body"
+                },
+                "lineHeight": 150
+              },
+              "textProperty": "items 3"
+            }
+          ],
+          "slot": "radio 3",
+          "surface": "fa0b643878e9242d"
         }
       ],
       "e2631681b6676c06": [
@@ -81198,6 +82170,25 @@
           {
             "color": {
               "variable": "kbd:border-color:51a5efff99"
+            },
+            "type": "SOLID"
+          }
+        ]
+      },
+      "2bf210e601b5b8cf": {
+        "effects": [],
+        "fills": [
+          {
+            "color": {
+              "variable": "radio-group:sk-radio-bg:10e9f5602d"
+            },
+            "type": "SOLID"
+          }
+        ],
+        "strokes": [
+          {
+            "color": {
+              "variable": "--color-border-strong"
             },
             "type": "SOLID"
           }
@@ -87452,6 +88443,25 @@
           }
         ]
       },
+      "99001cc7a89f0aac": {
+        "effects": [],
+        "fills": [
+          {
+            "color": {
+              "variable": "radio-group:sk-radio-disabled-bg:10e9f5602d"
+            },
+            "type": "SOLID"
+          }
+        ],
+        "strokes": [
+          {
+            "color": {
+              "variable": "--color-border-subtle"
+            },
+            "type": "SOLID"
+          }
+        ]
+      },
       "9aeec70d2c3c435e": {
         "effects": [
           {
@@ -88836,6 +89846,25 @@
           {
             "color": {
               "variable": "button:frost-edge:ace691964d"
+            },
+            "type": "SOLID"
+          }
+        ]
+      },
+      "a9f184a490483683": {
+        "effects": [],
+        "fills": [
+          {
+            "color": {
+              "variable": "radio-group:sk-radio-selected-bg:10e9f5602d"
+            },
+            "type": "SOLID"
+          }
+        ],
+        "strokes": [
+          {
+            "color": {
+              "variable": "--color-border-accent"
             },
             "type": "SOLID"
           }
@@ -102692,6 +103721,92 @@
       "expression": "transparent",
       "id": "radio-group:sk-radio-bg:10e9f5602d",
       "name": "radio-group/sk-radio-bg/plain",
+      "source": {
+        "dark": "literal",
+        "light": "literal"
+      },
+      "type": "COLOR",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": {
+            "a": 0,
+            "b": 0,
+            "g": 0,
+            "r": 0
+          }
+        },
+        "light": {
+          "kind": "literal",
+          "value": {
+            "a": 0,
+            "b": 0,
+            "g": 0,
+            "r": 0
+          }
+        }
+      }
+    },
+    {
+      "codeSyntax": "var(--sk-radio-border-width)",
+      "collection": "component",
+      "expression": "1px",
+      "id": "radio-group:sk-radio-border-width:93e20626bf",
+      "name": "radio-group/sk-radio-border-width",
+      "source": {
+        "dark": "literal",
+        "light": "literal"
+      },
+      "type": "FLOAT",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": 1
+        },
+        "light": {
+          "kind": "literal",
+          "value": 1
+        }
+      }
+    },
+    {
+      "codeSyntax": "var(--sk-radio-disabled-bg)",
+      "collection": "component",
+      "expression": "transparent",
+      "id": "radio-group:sk-radio-disabled-bg:10e9f5602d",
+      "name": "radio-group/sk-radio-disabled-bg/plain",
+      "source": {
+        "dark": "literal",
+        "light": "literal"
+      },
+      "type": "COLOR",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": {
+            "a": 0,
+            "b": 0,
+            "g": 0,
+            "r": 0
+          }
+        },
+        "light": {
+          "kind": "literal",
+          "value": {
+            "a": 0,
+            "b": 0,
+            "g": 0,
+            "r": 0
+          }
+        }
+      }
+    },
+    {
+      "codeSyntax": "var(--sk-radio-selected-bg)",
+      "collection": "component",
+      "expression": "transparent",
+      "id": "radio-group:sk-radio-selected-bg:10e9f5602d",
+      "name": "radio-group/sk-radio-selected-bg/plain",
       "source": {
         "dark": "literal",
         "light": "literal"

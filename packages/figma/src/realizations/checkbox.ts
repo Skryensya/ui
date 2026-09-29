@@ -30,3 +30,31 @@ export const checkboxRealization: Realization = {
   grid: { columns: ["state"], rows: [], descending: [] },
   stage,
 };
+
+/* CheckboxGroup: a labelled set of three options, two of them checked, laid down and across. */
+export const checkboxGroupRealization: Realization = {
+  contract: "checkbox",
+  id: "checkbox-group",
+  signature: "CheckboxGroup",
+  splitBy: "appearance",
+  nested: true,
+  state: { axis: "state", rest: "rest", options: [], interactions: [] },
+  overlays: { before: "state layer" },
+  ring: "focus ring",
+  exclude: ["disabled", "required"],
+  given: { name: "topics" },
+  slots: { label: { holds: "text", sample: "Topics" } },
+  collections: {
+    items: {
+      slot: "label",
+      items: [
+        { options: { value: "product", defaultChecked: true }, text: "Product news" },
+        { options: { value: "events", defaultChecked: true }, text: "Events" },
+        { options: { value: "research" }, text: "Research" },
+      ],
+    },
+  },
+  icons,
+  grid: { columns: [], rows: ["orientation"], descending: [] },
+  stage,
+};

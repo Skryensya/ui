@@ -253,7 +253,7 @@ describe("Switch", () => {
 
 describe("Radio", () => {
   it("draws its circle from the ::before its dot sits centred in, ringed on focus", () => {
-    const set = manifest.components.find((c): c is ComponentSet => c.kind === "component-set" && c.id === "radio-group/plain")!;
+    const set = manifest.components.find((c): c is ComponentSet => c.kind === "component-set" && c.id === "radio/plain")!;
     const circle = (state: string) => {
       const [control] = manifest.styles.layers[set.cells.find((c) => c.props.state === state)!.layers];
       return control.kind === "frame" ? control.layers[0] : undefined;
@@ -429,5 +429,13 @@ describe("ExpandableTile", () => {
     const cell = (state: string) => manifest.styles.layers[set.cells.find((c) => c.props.state === state)!.layers];
     expect([glyphs(cell("closed")), glyphs(cell("open"))]).toEqual([["chevron-down"], ["chevron-up"]]);
     expect(cell("open").length).toBe(cell("closed").length + 1);
+  });
+});
+
+describe("RadioGroup", () => {
+  it("dots the chosen option only", () => {
+    const set = manifest.components.find((c): c is ComponentSet => c.kind === "component-set" && c.id === "radio-group/plain")!;
+    const dots = manifest.styles.layers[set.cells[0].layers].map((radio) => JSON.stringify(radio).includes('"radioIndicator"'));
+    expect(dots).toEqual([true, false, false]);
   });
 });
