@@ -459,10 +459,9 @@ async function compileRealization(realization: Realization, shared: Shared): Pro
         const computed = ctx(el).computed;
         const display = computed.get("display") ?? "";
         const crossAlign = /grid/.test(display) ? computed.get("justify-items") : computed.get("align-items");
-        // Children laid down a column that spans them: a flex column or a grid of one track, left to stretch.
-        const stacking =
-          ((/flex/.test(display) && /column/.test(computed.get("flex-direction") ?? "")) || (/grid/.test(display) && tracks.length <= 1)) &&
-          (crossAlign === undefined || crossAlign === "normal" || crossAlign === "stretch");
+        // Children laid down a column (a flex column, a grid of one track); stacking when it stretches them.
+        const downward = (/flex/.test(display) && /column/.test(computed.get("flex-direction") ?? "")) || (/grid/.test(display) && tracks.length <= 1);
+        const stacking = downward && (crossAlign === undefined || crossAlign === "normal" || crossAlign === "stretch");
         // Siblings of one part (LabelledSeparator's two rules) are told apart by number: `rule`, `rule 2`.
         const seen = new Map<string, number>();
         const unique = (slot: string) => {
@@ -522,8 +521,10 @@ async function compileRealization(realization: Realization, shared: Shared): Pro
           });
         }
         // Only a text alone in its block, or down a column, has the block's width to fill: beside
-        // others in a row (an attribution and its source) each keeps its own.
-        if (!stacking && out.length > 1) return out.map((layer) => (layer.kind === "text" && layer.fill ? { ...layer, fill: undefined } : layer));
+        // others in a row (an attribution and its source) each keeps its own. Down a column that
+        // centres its items (an EmptyState), a line still wraps at the column's width, and its
+        // centring is the text's own alignment.
+        if (!downward && out.length > 1) return out.map((layer) => (layer.kind === "text" && layer.fill ? { ...layer, fill: undefined } : layer));
         return out;
       };
 

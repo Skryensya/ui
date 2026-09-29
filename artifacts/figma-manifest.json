@@ -33213,6 +33213,65 @@
         "columns": []
       },
       "visualHash": "f78ff5177a141ffb"
+    },
+    {
+      "axes": [],
+      "cells": [
+        {
+          "box": "c7d198775a6d7eee",
+          "hash": "1eaf9427bfaa3861",
+          "id": "empty-state/",
+          "key": "",
+          "layers": "fda16af5e5c53541",
+          "props": {},
+          "surface": "fa0b643878e9242d"
+        }
+      ],
+      "contractHash": "d626aa1663b563c5",
+      "defaultCell": "",
+      "grid": {
+        "columns": [],
+        "rows": []
+      },
+      "id": "empty-state",
+      "interactions": [],
+      "kind": "component-set",
+      "name": "Empty State",
+      "page": "skryensya",
+      "properties": [
+        {
+          "default": false,
+          "name": "icon",
+          "type": "BOOLEAN"
+        },
+        {
+          "default": "Nothing here yet",
+          "name": "title",
+          "type": "TEXT"
+        },
+        {
+          "default": "Items you add will show up here, newest first.",
+          "name": "description",
+          "type": "TEXT"
+        },
+        {
+          "default": true,
+          "name": "show description",
+          "type": "BOOLEAN"
+        }
+      ],
+      "showcase": {
+        "base": {},
+        "columns": [
+          {
+            "properties": {
+              "icon": true
+            },
+            "slot": "icon"
+          }
+        ]
+      },
+      "visualHash": "54d192fa76b08429"
     }
   ],
   "diagnostics": [
@@ -33480,6 +33539,11 @@
         "nonVisual": [],
         "visual": []
       },
+      "empty-state": {
+        "excluded": [],
+        "nonVisual": [],
+        "visual": []
+      },
       "heading": {
         "excluded": [
           "headingElement",
@@ -33588,15 +33652,15 @@
       }
     },
     "tokens": {
-      "catalogueAdded": 313,
-      "componentVariables": 240,
+      "catalogueAdded": 311,
+      "componentVariables": 241,
       "modeValuesBySource": {
         "alias": 203,
-        "evaluated": 515,
+        "evaluated": 517,
         "literal": 694
       },
-      "reached": 191,
-      "reachedAsVariables": 145,
+      "reached": 194,
+      "reachedAsVariables": 147,
       "reachedButNotVariables": [
         "--elevation-flat",
         "--elevation-overlay",
@@ -33610,8 +33674,8 @@
       "variables": 466
     },
     "variants": {
-      "components": 33,
-      "componentSets": 32,
+      "components": 34,
+      "componentSets": 33,
       "naiveAllOptions": {
         "avatar": 8,
         "back-to-top": 4,
@@ -33620,6 +33684,7 @@
         "button": 27648,
         "callout": 15,
         "code": 1,
+        "empty-state": 1,
         "heading": 156,
         "kbd": 4,
         "labelled-separator": 12,
@@ -33640,6 +33705,7 @@
         "button": 2304,
         "callout": 15,
         "code": 1,
+        "empty-state": 1,
         "heading": 13,
         "kbd": 4,
         "labelled-separator": 3,
@@ -33780,13 +33846,17 @@
         {
           "set": "quote",
           "variants": 2
+        },
+        {
+          "set": "empty-state",
+          "variants": 1
         }
       ],
-      "variantsTotal": 2075
+      "variantsTotal": 2076
     }
   },
   "schemaVersion": 1,
-  "sourceHash": "7a73b727ba1620aa",
+  "sourceHash": "a1e0ae6c57b3d4e1",
   "stage": {
     "background": {
       "variable": "--color-bg-surface"
@@ -34093,6 +34163,39 @@
         },
         "width": {
           "variable": "--size-control-lg"
+        }
+      },
+      "447705b4b5b975d9": {
+        "clipsContent": false,
+        "crossAlign": "CENTER",
+        "direction": "VERTICAL",
+        "height": {
+          "variable": "empty-state:icon-size:10a69be6e0"
+        },
+        "mainAlign": "CENTER",
+        "padding": {
+          "bottom": {
+            "expression": "0",
+            "value": 0
+          },
+          "left": {
+            "expression": "0",
+            "value": 0
+          },
+          "right": {
+            "expression": "0",
+            "value": 0
+          },
+          "top": {
+            "expression": "0",
+            "value": 0
+          }
+        },
+        "radius": {
+          "variable": "--radius-pill"
+        },
+        "width": {
+          "variable": "empty-state:icon-size:10a69be6e0"
         }
       },
       "46e0bd873fc3899f": {
@@ -35252,6 +35355,33 @@
         "strokeWeight": {
           "expression": "1px",
           "value": 1
+        }
+      },
+      "c7d198775a6d7eee": {
+        "clipsContent": false,
+        "crossAlign": "CENTER",
+        "direction": "VERTICAL",
+        "gap": {
+          "variable": "--space-stack-sm"
+        },
+        "mainAlign": "MIN",
+        "padding": {
+          "bottom": {
+            "variable": "--space-inset-xl"
+          },
+          "left": {
+            "variable": "--space-inset-xl"
+          },
+          "right": {
+            "variable": "--space-inset-xl"
+          },
+          "top": {
+            "variable": "--space-inset-xl"
+          }
+        },
+        "width": {
+          "expression": "360px",
+          "value": 360
         }
       },
       "d4c70d0523e30a03": {
@@ -47701,6 +47831,85 @@
             "lineHeight": 150
           },
           "textProperty": "children"
+        }
+      ],
+      "fda16af5e5c53541": [
+        {
+          "box": "447705b4b5b975d9",
+          "kind": "frame",
+          "layers": [
+            {
+              "default": "folder",
+              "icon": {
+                "color": {
+                  "color": {
+                    "variable": "--color-text-secondary"
+                  },
+                  "type": "SOLID"
+                },
+                "size": {
+                  "variable": "--size-icon-md"
+                }
+              },
+              "kind": "icon",
+              "slot": "icon",
+              "visibleProperty": "icon"
+            }
+          ],
+          "slot": "icon",
+          "surface": "7a4b6cee075f78d9"
+        },
+        {
+          "fill": true,
+          "kind": "text",
+          "slot": "title",
+          "text": {
+            "align": "CENTER",
+            "fill": {
+              "color": {
+                "variable": "--color-text-primary"
+              },
+              "type": "SOLID"
+            },
+            "fontFamily": {
+              "variable": "--font-family-body"
+            },
+            "fontSize": {
+              "variable": "--font-size-heading-sm"
+            },
+            "fontWeight": {
+              "expression": "700",
+              "value": 700
+            },
+            "lineHeight": 135
+          },
+          "textProperty": "title"
+        },
+        {
+          "fill": true,
+          "kind": "text",
+          "slot": "description",
+          "text": {
+            "align": "CENTER",
+            "fill": {
+              "color": {
+                "variable": "--color-text-secondary"
+              },
+              "type": "SOLID"
+            },
+            "fontFamily": {
+              "variable": "--font-family-body"
+            },
+            "fontSize": {
+              "variable": "--font-size-body"
+            },
+            "fontWeight": {
+              "variable": "--font-weight-body"
+            },
+            "lineHeight": 150
+          },
+          "textProperty": "description",
+          "visibleProperty": "show description"
         }
       ],
       "fed4e41fe9594e72": [
@@ -63940,6 +64149,28 @@
         "light": {
           "kind": "literal",
           "value": 4
+        }
+      }
+    },
+    {
+      "codeSyntax": "var(--sk-empty-state-icon-size)",
+      "collection": "component",
+      "expression": "calc(var(--size-icon-lg) * 2)",
+      "id": "empty-state:icon-size:10a69be6e0",
+      "name": "empty-state/icon-size",
+      "source": {
+        "dark": "evaluated",
+        "light": "evaluated"
+      },
+      "type": "FLOAT",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": 48
+        },
+        "light": {
+          "kind": "literal",
+          "value": 48
         }
       }
     },

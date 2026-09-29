@@ -72,3 +72,14 @@ describe("Quote, drawn at a reading width", () => {
     expect(attribution.kind === "frame" && attribution.layers.every((l) => l.kind === "text" && !l.fill)).toBe(true);
   });
 });
+
+describe("EmptyState", () => {
+  it("centres a bold title and a wrapping description down its column", () => {
+    const set = manifest.components.find((c): c is ComponentSet => c.kind === "component-set" && c.id === "empty-state")!;
+    const layers = manifest.styles.layers[set.cells[0].layers];
+    expect(layers.map((l) => `${l.kind} ${l.slot}`)).toEqual(["frame icon", "text title", "text description"]);
+    const title = layers[1];
+    expect(title.kind === "text" && title.text).toMatchObject({ fontWeight: { value: 700 }, align: "CENTER" });
+    expect(layers[2]).toMatchObject({ fill: true, text: { align: "CENTER" } });
+  });
+});
