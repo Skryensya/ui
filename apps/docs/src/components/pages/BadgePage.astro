@@ -63,6 +63,7 @@ const explain = (option: string, values: readonly string[]) =>
       title={t("badge.prop.tone.title")}
       description={t("badge.prop.tone.body")}
       explain={explain("tone", ["neutral", "accent", "success", "warning", "danger"])}
+      stageMinBlockSize="8rem"
       storybookTitle={storybookTitle}
       storybookStory="Label"
     />
@@ -74,6 +75,7 @@ const explain = (option: string, values: readonly string[]) =>
       description={t("badge.prop.size.body")}
       explain={explain("size", ["sm", "md"])}
       labels={{ sm: "sm", md: "md" }}
+      stageMinBlockSize="8rem"
       storybookTitle={storybookTitle}
       storybookStory="Label"
     />
@@ -84,6 +86,7 @@ const explain = (option: string, values: readonly string[]) =>
       title={t("badge.prop.appearance.title")}
       description={t("badge.prop.appearance.body")}
       explain={explain("appearance", ["plain", "brutalist"])}
+      stageMinBlockSize="8rem"
       storybookTitle={storybookTitle}
       storybookStory="Label"
     />
@@ -95,6 +98,7 @@ const explain = (option: string, values: readonly string[]) =>
       description={t("badge.prop.pulse.body")}
       explain={explain("pulse", ["false", "true"])}
       labels={{ false: t("badge.prop.pulse.falseLabel"), true: t("badge.prop.pulse.trueLabel") }}
+      stageMinBlockSize="8rem"
       storybookTitle={storybookTitle}
       storybookStory="LoneDot"
     />

@@ -206,6 +206,14 @@ export const avatarGroupAnatomyTree = (t: Translate): UsageTree => ({
   },
 });
 
+export const avatarSingleTree = (): UsageTree => ({
+  contract: "avatar",
+  signature: "Avatar.initials",
+  options: { name: "Ada Lovelace" },
+  attrs: { style: AVATAR_FALLBACK_STYLE },
+  children: "AL",
+});
+
 /** Photo identities, cropped by ImageFrame inside the Avatar contract. */
 export const avatarImageTree = (t: Translate): UsageTree => ({
   contract: "layout",

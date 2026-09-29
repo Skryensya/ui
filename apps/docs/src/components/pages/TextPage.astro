@@ -2,6 +2,8 @@
 import ComponentPageShell from "./ComponentPageShell.astro";
 import CodeBlock from "../CodeBlock.astro";
 import ComponentPreview from "../ComponentPreview.astro";
+import UsagePreview from "../UsagePreview.astro";
+import DoDont from "../DoDont.astro";
 import {
   codeTree,
   outputTree,
@@ -17,6 +19,8 @@ import "@skryensya/core/components/annotation.css";
 
 const install = `pnpm add @skryensya/core @skryensya/react`;
 const t = useTranslations(getLocale(Astro.url));
+const explain = (option: string, values: readonly string[]) =>
+  Object.fromEntries(values.map((value) => [value, t(`textPage.prop.${option}.${value}` as Parameters<typeof t>[0])]));
 ---
 
 <ComponentPageShell
@@ -32,44 +36,54 @@ const t = useTranslations(getLocale(Astro.url));
     },
   ]}
 >
-  <Fragment slot="anatomy">
-    <p set:html={t("textPage.anatomyBody")} />
-    <ComponentPreview
-      tree={textAnatomyTree(t)}
-      css={annotationDemoCss}
-      label={t("textPage.anatomyPreviewLabel")}
-      screens={false}
-      hideSource
-      chrome={false}
-    />
-  </Fragment>
-
   <Fragment slot="usage">
     <p class="lede" set:html={t("textPage.lede")} />
 
-    <h3>{t("textPage.titleBlockTitle")}</h3>
-    <p set:html={t("textPage.titleBlockBody")} />
-    <ComponentPreview tree={textTitleTree(t)} label={t("textPage.titleBlockLabel")} />
+    <UsagePreview
+      tree={textInlineTree(t)}
+      optionName="size"
+      title={t("textPage.prop.size.title")}
+      description={t("textPage.prop.size.description")}
+      explain={explain("size", ["caption", "sm", "body", "lg"])}
+      labels={{ caption: t("textPage.prop.size.captionLabel"), sm: "sm", body: t("textPage.prop.size.bodyLabel"), lg: "lg" }}
+      stageMinBlockSize="8rem"
+    />
 
-    <h3>{t("textPage.readingTitle")}</h3>
-    <p set:html={t("textPage.readingBody")} />
-    <ComponentPreview tree={textReadingTree(t)} label={t("textPage.readingLabel")} />
+    <UsagePreview
+      tree={textInlineTree(t)}
+      optionName="tone"
+      title={t("textPage.prop.tone.title")}
+      description={t("textPage.prop.tone.description")}
+      explain={explain("tone", ["primary", "secondary", "tertiary", "danger"])}
+      stageMinBlockSize="8rem"
+    />
 
-    <h3>{t("textPage.inlineTitle")}</h3>
-    <p set:html={t("textPage.inlineBody")} />
-    <ComponentPreview tree={textInlineTree(t)} label={t("textPage.inlineLabel")} />
+    <UsagePreview
+      tree={textInlineTree(t)}
+      optionName="weight"
+      title={t("textPage.prop.weight.title")}
+      description={t("textPage.prop.weight.description")}
+      explain={explain("weight", ["body", "emphasis", "label"])}
+      labels={{ body: t("textPage.prop.weight.bodyLabel"), emphasis: t("textPage.prop.weight.emphasisLabel"), label: t("textPage.prop.weight.labelLabel") }}
+      stageMinBlockSize="8rem"
+    />
 
-    <h3>{t("textPage.feedbackTitle")}</h3>
-    <p set:html={t("textPage.feedbackBody")} />
-    <ComponentPreview tree={textFeedbackTree(t)} label={t("textPage.feedbackLabel")} />
+    <UsagePreview
+      tree={textInlineTree(t)}
+      optionName="textRole"
+      title={t("textPage.prop.textRole.title")}
+      description={t("textPage.prop.textRole.description")}
+      explain={explain("textRole", ["eyebrow", "subtitle"])}
+      labels={{ eyebrow: t("textPage.prop.textRole.eyebrowLabel"), subtitle: t("textPage.prop.textRole.subtitleLabel") }}
+      stageMinBlockSize="8rem"
+    />
 
-    <h3>{t("textPage.codeTitle")}</h3>
-    <p set:html={t("textPage.codeBody")} />
-    <ComponentPreview tree={codeTree(t)} label={t("textPage.codeLabel")} />
-
-    <h3>{t("textPage.outputTitle")}</h3>
-    <p set:html={t("textPage.outputBody")} />
-    <ComponentPreview tree={outputTree(t)} label={t("textPage.outputLabel")} />
+    <h3>{t("textPage.showcaseTitle")}</h3>
+    <p set:html={t("textPage.showcaseBody")} />
+    <UsagePreview tree={textTitleTree(t)} title={t("textPage.titleBlockTitle")} description={t("textPage.titleBlockBody")} />
+    <UsagePreview tree={textReadingTree(t)} title={t("textPage.readingTitle")} description={t("textPage.readingBody")} />
+    <UsagePreview tree={codeTree(t)} title={t("textPage.codeTitle")} description={t("textPage.codeBody")} />
+    <UsagePreview tree={outputTree(t)} title={t("textPage.outputTitle")} description={t("textPage.outputBody")} />
 
     <p set:html={t("component.reactNote")} />
 
@@ -83,6 +97,31 @@ const t = useTranslations(getLocale(Astro.url));
       <li set:html={t("textPage.contractItem6")} />
       <li set:html={t("textPage.contractItem7")} />
     </ul>
+
+    <h3>{t("component.anatomy")}</h3>
+    <p set:html={t("textPage.anatomyBody")} />
+    <ComponentPreview
+      tree={textAnatomyTree(t)}
+      css={annotationDemoCss}
+      label={t("textPage.anatomyPreviewLabel")}
+      screens={false}
+      hideSource
+      chrome={false}
+    />
+  </Fragment>
+
+  <Fragment slot="guidelines">
+    <p class="lede" set:html={t("textPage.guidelinesLede")} />
+    <DoDont
+      title={t("textPage.dd.hierarchy.title")}
+      do={{ tree: textReadingTree(t), caption: t("textPage.dd.hierarchy.do") }}
+      dont={{ tree: textFeedbackTree(t), caption: t("textPage.dd.hierarchy.dont") }}
+    />
+    <DoDont
+      title={t("textPage.dd.inline.title")}
+      do={{ tree: textInlineTree(t), caption: t("textPage.dd.inline.do") }}
+      dont={{ tree: codeTree(t), caption: t("textPage.dd.inline.dont") }}
+    />
   </Fragment>
 
   <Fragment slot="install">

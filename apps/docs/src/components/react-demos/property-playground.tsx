@@ -57,7 +57,7 @@ export function PropertyPlayground({ tree, optionName, values, boolean, defaultV
       ) : (
         <div className="sk-property-playground__control-slot" aria-hidden="true" />
       )}
-      <div className="sk-preview-card__stage">{render ? render(liveTree) : null}</div>
+      <div className="sk-preview-card__stage" key={value}>{render ? render(liveTree) : null}</div>
       {/*
         * EVERY explanation is rendered, stacked in one grid cell, and only the chosen one shows. Two
         * things follow from that: the cell is always as tall as the longest of them, so the card

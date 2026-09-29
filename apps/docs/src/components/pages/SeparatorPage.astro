@@ -9,10 +9,13 @@ import "@skryensya/core/patterns/layout.css";
 import ComponentPageShell from "./ComponentPageShell.astro";
 import CodeBlock from "../CodeBlock.astro";
 import ComponentPreview from "../ComponentPreview.astro";
+import UsagePreview from "../UsagePreview.astro";
+import DoDont from "../DoDont.astro";
 import {
   separatorAnatomyTree,
   separatorLabelledTree,
   separatorTonesTree,
+  separatorSingleTree,
   separatorTree,
   separatorVerticalTree,
 } from "../../demos/separator";
@@ -21,6 +24,8 @@ import { getLocale, useTranslations } from "../../i18n";
 
 const t = useTranslations(getLocale(Astro.url));
 const install = `pnpm add @skryensya/core @skryensya/react`;
+const explain = (option: string, values: readonly string[]) =>
+  Object.fromEntries(values.map((value) => [value, t(`separatorPage.prop.${option}.${value}` as Parameters<typeof t>[0])]));
 const styles = `@import "@skryensya/core/components/separator.css";`;
 ---
 
@@ -30,36 +35,42 @@ const styles = `@import "@skryensya/core/components/separator.css";`;
   contractId="separator"
   testFiles={["packages/react/src/components/separator.test.tsx"]}
 >
-  <Fragment slot="anatomy">
-    <p set:html={t("separatorPage.anatomyBody")} />
-    <ComponentPreview
-      tree={separatorAnatomyTree(t)}
-      css={annotationDemoCss}
-      label={t("separatorPage.anatomyPreviewLabel")}
-      screens={false}
-      hideSource
-      chrome={false}
-    />
-  </Fragment>
-
   <Fragment slot="usage">
     <p class="lede" set:html={t("separatorPage.lede")} />
-    <ComponentPreview tree={separatorTree(t)} label="Separator" />
 
-    <h3>{t("separatorPage.meaningTitle")}</h3>
-    <p set:html={t("separatorPage.meaningBody")} />
+    <UsagePreview
+      tree={separatorSingleTree()}
+      optionName="tone"
+      title={t("separatorPage.prop.tone.title")}
+      description={t("separatorPage.prop.tone.body")}
+      explain={explain("tone", ["subtle", "default", "strong"])}
+      stageMinBlockSize="8rem"
+    />
 
-    <h3>{t("separatorPage.tonesTitle")}</h3>
-    <p set:html={t("separatorPage.tonesBody")} />
-    <ComponentPreview tree={separatorTonesTree(t)} label={t("separatorPage.tonesPreviewLabel")} />
+    <UsagePreview
+      tree={separatorSingleTree()}
+      optionName="spacing"
+      title={t("separatorPage.prop.spacing.title")}
+      description={t("separatorPage.prop.spacing.body")}
+      explain={explain("spacing", ["none", "sm", "md", "lg"])}
+      stageMinBlockSize="8rem"
+    />
 
-    <h3>{t("separatorPage.verticalTitle")}</h3>
-    <p set:html={t("separatorPage.verticalBody")} />
-    <ComponentPreview tree={separatorVerticalTree(t)} label={t("separatorPage.verticalPreviewLabel")} />
+    <UsagePreview
+      tree={separatorSingleTree()}
+      optionName="orientation"
+      title={t("separatorPage.prop.orientation.title")}
+      description={t("separatorPage.prop.orientation.body")}
+      explain={explain("orientation", ["horizontal", "vertical"])}
+      stageMinBlockSize="8rem"
+    />
 
-    <h3>{t("separatorPage.labelledTitle")}</h3>
-    <p set:html={t("separatorPage.labelledBody")} />
-    <ComponentPreview tree={separatorLabelledTree(t)} label={t("separatorPage.labelledPreviewLabel")} />
+    <h3>{t("separatorPage.showcaseTitle")}</h3>
+    <p set:html={t("separatorPage.showcaseBody")} />
+    <UsagePreview tree={separatorTree(t)} title="Separator" description={t("separatorPage.meaningBody")} />
+    <UsagePreview tree={separatorTonesTree(t)} title={t("separatorPage.tonesTitle")} description={t("separatorPage.tonesBody")} />
+    <UsagePreview tree={separatorVerticalTree(t)} title={t("separatorPage.verticalTitle")} description={t("separatorPage.verticalBody")} />
+    <UsagePreview tree={separatorLabelledTree(t)} title={t("separatorPage.labelledTitle")} description={t("separatorPage.labelledBody")} />
 
     <h3>{t("separatorPage.whenTitle")}</h3>
     <ul>
@@ -76,6 +87,31 @@ const styles = `@import "@skryensya/core/components/separator.css";`;
       <li set:html={t("separatorPage.contractItem3")} />
       <li set:html={t("separatorPage.contractItem4")} />
     </ul>
+
+    <h3>{t("component.anatomy")}</h3>
+    <p set:html={t("separatorPage.anatomyBody")} />
+    <ComponentPreview
+      tree={separatorAnatomyTree(t)}
+      css={annotationDemoCss}
+      label={t("separatorPage.anatomyPreviewLabel")}
+      screens={false}
+      hideSource
+      chrome={false}
+    />
+  </Fragment>
+
+  <Fragment slot="guidelines">
+    <p class="lede" set:html={t("separatorPage.guidelinesLede")} />
+    <DoDont
+      title={t("separatorPage.dd.meaning.title")}
+      do={{ tree: separatorTree(t), caption: t("separatorPage.dd.meaning.do") }}
+      dont={{ tree: separatorTonesTree(t), caption: t("separatorPage.dd.meaning.dont") }}
+    />
+    <DoDont
+      title={t("separatorPage.dd.label.title")}
+      do={{ tree: separatorLabelledTree(t), caption: t("separatorPage.dd.label.do") }}
+      dont={{ tree: separatorVerticalTree(t), caption: t("separatorPage.dd.label.dont") }}
+    />
   </Fragment>
 
   <Fragment slot="install">

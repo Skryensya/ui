@@ -21,41 +21,17 @@ import { anatomyCanvas, anatomyHints } from "./annotation-parts";
  * content: the page compares them, and a comparison over different copy compares nothing.
  */
 const sectionBody = (t: Translate, value: string): UsageTree => ({
-  contract: "layout",
-  signature: "Stack",
-  options: { gap: "sm" },
-  children: [
-    {
-      contract: "typography",
-      signature: "Text",
-      options: { tone: "secondary" },
-      children: t(`demo.accordion.${value}.p1` as never),
-    },
-    {
-      contract: "typography",
-      signature: "Text",
-      options: { tone: "secondary" },
-      children:
-        value === "runtime"
-          ? [
-              t("demo.accordion.runtime.p2a"),
-              {
-                contract: "typography",
-                signature: "Code",
-                children: t("demo.accordion.runtime.p2code"),
-              },
-              t("demo.accordion.runtime.p2b"),
-            ]
-          : t(`demo.accordion.${value}.p2` as never),
-    },
-  ],
+  contract: "typography",
+  signature: "Text",
+  options: { tone: "secondary" },
+  children: t(`demo.accordion.${value}.short` as never),
 });
 
 /** One section: the trigger's copy and mark, then the body. */
-const item = (t: Translate, value: string): UsageTree => ({
+const item = (t: Translate, value: string, defaultOpen = true): UsageTree => ({
   contract: "accordion",
   signature: "Accordion.Item",
-  options: { value },
+  options: { value, ...(defaultOpen ? { defaultOpen: true } : {}) },
   children: [
     {
       contract: "accordion",
@@ -82,30 +58,84 @@ const item = (t: Translate, value: string): UsageTree => ({
   ],
 });
 
-const deployment = ["runtime", "rollout", "rollback"];
+const demoWidth = "inline-size: min(100%, 26rem); min-block-size: 9rem;";
+
+const deployment = ["runtime", "rollout"];
 
 /** One section on its own: the smallest thing an accordion can be. */
 export const accordionSingleTree = (t: Translate): UsageTree => ({
   contract: "accordion",
   signature: "Accordion",
+  attrs: { style: demoWidth },
   options: { type: "single", collapsible: true },
   children: [item(t, "environment")],
 });
 
-/** Three sections, one open at a time: what `type: "single"` buys. */
+/** Two sections, one open at a time: what `type: "single"` buys. */
 export const accordionExclusiveTree = (t: Translate): UsageTree => ({
   contract: "accordion",
   signature: "Accordion",
+  attrs: { style: demoWidth },
   options: { type: "single", collapsible: true },
   children: deployment.map((value) => item(t, value)),
 });
 
-/** The same three, any number open at once. */
+/** The same two, any number open at once. */
 export const accordionMultipleTree = (t: Translate): UsageTree => ({
   contract: "accordion",
   signature: "Accordion",
+  attrs: { style: demoWidth },
   options: { type: "multiple" },
   children: deployment.map((value) => item(t, value)),
+});
+
+export const accordionClosedTree = (t: Translate): UsageTree => ({
+  contract: "accordion",
+  signature: "Accordion",
+  attrs: { style: demoWidth },
+  options: { type: "single", collapsible: true },
+  children: deployment.map((value) => item(t, value, false)),
+});
+
+export const accordionDontVerboseTree = (t: Translate): UsageTree => ({
+  contract: "accordion",
+  signature: "Accordion",
+  attrs: { style: demoWidth },
+  options: { type: "single", collapsible: true },
+  children: [
+    {
+      contract: "accordion",
+      signature: "Accordion.Item",
+      options: { value: "verbose", defaultOpen: true },
+      children: [
+        {
+          contract: "accordion",
+          signature: "Accordion.Trigger",
+          children: [
+            {
+              contract: "tile",
+              signature: "TileContent",
+              slots: {
+                title: t("demo.accordion.verbose.title"),
+                description: t("demo.accordion.verbose.description"),
+              },
+            },
+            { contract: "tile", signature: "TileChevron" },
+          ],
+        },
+        {
+          contract: "accordion",
+          signature: "Accordion.Content",
+          children: {
+            contract: "typography",
+            signature: "Text",
+            options: { tone: "secondary" },
+            children: t("demo.accordion.verbose.body"),
+          },
+        },
+      ],
+    },
+  ],
 });
 
 /*
@@ -188,7 +218,7 @@ export const detailsAnatomyTree = (t: Translate): UsageTree => ({
               contract: "typography",
               signature: "Text",
               options: { tone: "secondary" },
-              children: t(`demo.accordion.${value}.p1` as never),
+              children: t(`demo.accordion.${value}.short` as never),
             },
           },
         ],
@@ -244,10 +274,11 @@ export const detailsAnatomyTree = (t: Translate): UsageTree => ({
  */
 export const accordionAnatomyCss = `.sk-annotated-figure {
   --sk-annotation-font-family: var(--font-family-code);
+  --sk-canvas-min-block-size: 11rem;
 }
 
 .sk-annotated__subject > :is(.sk-accordion, .sk-details-group) {
-  inline-size: 24rem;
+  inline-size: min(28rem, 100%);
 }`;
 
 /* `name` is the browser's exclusivity key across the whole DOCUMENT, not the group: two groups on
@@ -255,11 +286,11 @@ export const accordionAnatomyCss = `.sk-annotated-figure {
 export const detailsGroupTree = (t: Translate, name = "deployment"): UsageTree => ({
   contract: "accordion",
   signature: "DetailsGroup",
-  attrs: { "aria-label": t("demo.accordion.detailsLabel") },
-  children: deployment.map((value, i) => ({
+  attrs: { "aria-label": t("demo.accordion.detailsLabel"), style: demoWidth },
+  children: deployment.map((value) => ({
     contract: "accordion",
     signature: "Details",
-    options: { name, ...(i === 0 ? { open: true } : {}) },
+    options: { name, open: true },
     children: [
       {
         contract: "accordion",

@@ -6,12 +6,16 @@ import ComponentPageShell from "./ComponentPageShell.astro";
 import AppearanceMenu from "../AppearanceMenu.astro";
 import CodeBlock from "../CodeBlock.astro";
 import ComponentPreview from "../ComponentPreview.astro";
+import UsagePreview from "../UsagePreview.astro";
+import DoDont from "../DoDont.astro";
 import { tagAnatomyTree, tagLinksTree, tagRemovableTree, tagSimpleTree, tagTonesTree } from "../../demos/tag";
 import { annotationDemoCss } from "../../demos/annotation";
 import { getLocale, useTranslations } from "../../i18n";
 
 const t = useTranslations(getLocale(Astro.url));
 const install = `pnpm add @skryensya/core @skryensya/react`;
+const explain = (option: string, values: readonly string[]) =>
+  Object.fromEntries(values.map((value) => [value, t(`tagPage.prop.${option}.${value}` as Parameters<typeof t>[0])]));
 ---
 
 <ComponentPageShell
@@ -25,7 +29,45 @@ const install = `pnpm add @skryensya/core @skryensya/react`;
     <AppearanceMenu label={t("prefs.appearance")} values={["plain", "brutalist"]} unavailable={{ tactile: t("prefs.appearanceTactileUnavailable"), frosted: t("prefs.appearanceFrostedUnavailable") }} />
   </Fragment>
 
-  <Fragment slot="anatomy">
+  <Fragment slot="usage">
+    <p class="lede" set:html={t("tagPage.lede")} />
+
+    <UsagePreview
+      tree={tagSimpleTree(t)}
+      optionName="tone"
+      title={t("tagPage.prop.tone.title")}
+      description={t("tagPage.prop.tone.body")}
+      explain={explain("tone", ["neutral", "accent", "success", "warning", "danger"])}
+      stageMinBlockSize="7rem"
+    />
+
+    <UsagePreview
+      tree={tagSimpleTree(t)}
+      optionName="appearance"
+      title={t("tagPage.prop.appearance.title")}
+      description={t("tagPage.prop.appearance.body")}
+      explain={explain("appearance", ["plain", "brutalist"])}
+      stageMinBlockSize="7rem"
+    />
+
+    <UsagePreview
+      tree={tagSimpleTree(t)}
+      optionName="removable"
+      title={t("tagPage.prop.removable.title")}
+      description={t("tagPage.prop.removable.body")}
+      explain={explain("removable", ["false", "true"])}
+      labels={{ false: t("tagPage.prop.removable.falseLabel"), true: t("tagPage.prop.removable.trueLabel") }}
+      stageMinBlockSize="7rem"
+    />
+
+    <h3>{t("tagPage.showcaseTitle")}</h3>
+    <p set:html={t("tagPage.showcaseBody")} />
+    <UsagePreview tree={tagSimpleTree(t)} title={t("tagPage.simpleTitle")} description={t("tagPage.simpleBody")} />
+    <UsagePreview tree={tagTonesTree(t)} title={t("tagPage.tonesTitle")} description={t("tagPage.tonesBody")} />
+    <UsagePreview tree={tagLinksTree(t)} title={t("tagPage.linksTitle")} description={t("tagPage.linksBody")} />
+    <UsagePreview tree={tagRemovableTree(t)} title={t("tagPage.removableTitle")} description={t("tagPage.removableBody")} />
+
+    <h3>{t("component.anatomy")}</h3>
     <p set:html={t("tagPage.anatomyBody")} />
     <ComponentPreview
       tree={tagAnatomyTree(t)}
@@ -37,24 +79,18 @@ const install = `pnpm add @skryensya/core @skryensya/react`;
     />
   </Fragment>
 
-  <Fragment slot="usage">
-    <p class="lede" set:html={t("tagPage.lede")} />
-    <h3>{t("tagPage.simpleTitle")}</h3>
-    <p set:html={t("tagPage.simpleBody")} />
-    <ComponentPreview tree={tagSimpleTree(t)} label={t("tagPage.simpleLabel")} />
-
-    <h3>{t("tagPage.tonesTitle")}</h3>
-    <p set:html={t("tagPage.tonesBody")} />
-    <ComponentPreview tree={tagTonesTree(t)} label={t("tagPage.tonesLabel")} />
-
-    <h3>{t("tagPage.linksTitle")}</h3>
-    <p set:html={t("tagPage.linksBody")} />
-    <ComponentPreview tree={tagLinksTree(t)} label={t("tagPage.linksLabel")} />
-
-    <h3>{t("tagPage.removableTitle")}</h3>
-    <p set:html={t("tagPage.removableBody")} />
-    <ComponentPreview tree={tagRemovableTree(t)} label={t("tagPage.removableLabel")} />
-
+  <Fragment slot="guidelines">
+    <p class="lede" set:html={t("tagPage.guidelinesLede")} />
+    <DoDont
+      title={t("tagPage.dd.job.title")}
+      do={{ tree: tagRemovableTree(t), caption: t("tagPage.dd.job.do") }}
+      dont={{ tree: tagTonesTree(t), caption: t("tagPage.dd.job.dont") }}
+    />
+    <DoDont
+      title={t("tagPage.dd.link.title")}
+      do={{ tree: tagLinksTree(t), caption: t("tagPage.dd.link.do") }}
+      dont={{ tree: tagRemovableTree(t), caption: t("tagPage.dd.link.dont") }}
+    />
   </Fragment>
 
   <Fragment slot="install">

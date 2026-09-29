@@ -8,6 +8,12 @@ import type { Translate } from "../i18n";
  */
 
 /** Five roles at large size: the vocabulary, not the drawings. */
+export const iconSingleTree: UsageTree = {
+  contract: "icon",
+  signature: "Icon",
+  options: { name: "check" },
+};
+
 export const iconTree: UsageTree = {
   contract: "layout",
   signature: "Inline",

@@ -8,10 +8,13 @@ import ComponentPageShell from "./ComponentPageShell.astro";
 import AppearanceMenu from "../AppearanceMenu.astro";
 import CodeBlock from "../CodeBlock.astro";
 import ComponentPreview from "../ComponentPreview.astro";
+import UsagePreview from "../UsagePreview.astro";
+import DoDont from "../DoDont.astro";
 import {
   avatarAnatomyTree,
   avatarGroupAnatomyTree,
   avatarImageTree,
+  avatarSingleTree,
   avatarSizesTree,
   avatarColorsTree,
   avatarGroupTree,
@@ -21,6 +24,8 @@ import { annotationDemoCss } from "../../demos/annotation";
 import { getLocale, useTranslations } from "../../i18n";
 
 const t = useTranslations(getLocale(Astro.url));
+const explain = (option: string, values: readonly string[]) =>
+  Object.fromEntries(values.map((value) => [value, t(`avatar.prop.${option}.${value}` as Parameters<typeof t>[0])]));
 
 const install = `pnpm add @skryensya/core @skryensya/react`;
 
@@ -115,36 +120,38 @@ window.addEventListener("pagehide", () => observer.disconnect(), { once: true })
     />
   </Fragment>
 
-  <Fragment slot="anatomy">
-    <p set:html={t("avatar.anatomyBody")} />
-    <ComponentPreview
-      tree={avatarAnatomyTree(t)}
-      css={annotationDemoCss}
-      label={t("avatar.anatomyPreviewLabel")}
-      previewScript={previewScript}
-      screens={false}
-      hideSource
-      chrome={false}
-    />
-  </Fragment>
-
   <Fragment slot="usage">
     <p class="lede" set:html={t("avatar.lede")} />
-    <h3>{t("avatar.imagesTitle")}</h3>
-    <p set:html={t("avatar.imagesBody")} />
-    <ComponentPreview
-      tree={avatarImageTree(t)}
-      previewScript={previewScript}
-      label={t("avatar.imagesTitle")}
+
+    <UsagePreview
+      tree={avatarSingleTree()}
+      optionName="size"
+      title={t("avatar.prop.size.title")}
+      description={t("avatar.prop.size.body")}
+      explain={explain("size", ["sm", "md", "lg", "xl"])}
+      stageMinBlockSize="8rem"
     />
 
-    <h3>{t("avatar.sizesTitle")}</h3>
-    <p set:html={t("avatar.sizesBody")} />
-    <ComponentPreview tree={avatarSizesTree(t)} label={t("avatar.sizesTitle")} />
+    <UsagePreview
+      tree={avatarSingleTree()}
+      optionName="appearance"
+      title={t("avatar.prop.appearance.title")}
+      description={t("avatar.prop.appearance.body")}
+      explain={explain("appearance", ["plain", "brutalist"])}
+      stageMinBlockSize="8rem"
+    />
 
-    <h3>{t("avatar.colorsTitle")}</h3>
-    <p set:html={t("avatar.colorsBody")} />
-    <ComponentPreview tree={avatarColorsTree(t)} label={t("avatar.colorsTitle")} />
+    <h3>{t("avatar.showcaseTitle")}</h3>
+    <p set:html={t("avatar.showcaseBody")} />
+    <UsagePreview
+      tree={avatarImageTree(t)}
+      title={t("avatar.imagesTitle")}
+      description={t("avatar.imagesBody")}
+    />
+
+    <UsagePreview tree={avatarSizesTree(t)} title={t("avatar.sizesTitle")} description={t("avatar.sizesBody")} />
+
+    <UsagePreview tree={avatarColorsTree(t)} title={t("avatar.colorsTitle")} description={t("avatar.colorsBody")} />
 
     <h3>{t("avatar.groupTitle")}</h3>
     <p set:html={t("avatar.groupBody")} />
@@ -160,16 +167,40 @@ window.addEventListener("pagehide", () => observer.disconnect(), { once: true })
       hideSource
       chrome={false}
     />
-    <ComponentPreview tree={avatarGroupTree(t)} label={t("avatar.groupTitle")} />
+    <UsagePreview tree={avatarGroupTree(t)} caption={t("avatar.groupTitle")} />
     <p set:html={t("avatar.groupMaxBody")} />
     <CodeBlock code={groupMax} label="React" lang="tsx" note={t("avatar.groupMaxNote")} />
 
-    <h3>{t("avatar.profileTitle")}</h3>
-    <p set:html={t("avatar.profileBody")} />
-    <ComponentPreview tree={avatarProfileTree(t)} label={t("avatar.profileTitle")} />
+    <UsagePreview tree={avatarProfileTree(t)} title={t("avatar.profileTitle")} description={t("avatar.profileBody")} />
 
     <p set:html={t("avatar.body")} />
     <p set:html={t("component.reactNote")} />
+
+    <h3>{t("component.anatomy")}</h3>
+    <p set:html={t("avatar.anatomyBody")} />
+    <ComponentPreview
+      tree={avatarAnatomyTree(t)}
+      css={annotationDemoCss}
+      label={t("avatar.anatomyPreviewLabel")}
+      previewScript={previewScript}
+      screens={false}
+      hideSource
+      chrome={false}
+    />
+  </Fragment>
+
+  <Fragment slot="guidelines">
+    <p class="lede" set:html={t("avatar.guidelinesLede")} />
+    <DoDont
+      title={t("avatar.dd.identity.title")}
+      do={{ tree: avatarProfileTree(t), caption: t("avatar.dd.identity.do") }}
+      dont={{ tree: avatarColorsTree(t), caption: t("avatar.dd.identity.dont") }}
+    />
+    <DoDont
+      title={t("avatar.dd.group.title")}
+      do={{ tree: avatarGroupTree(t), caption: t("avatar.dd.group.do") }}
+      dont={{ tree: avatarSizesTree(t), caption: t("avatar.dd.group.dont") }}
+    />
   </Fragment>
 
   <Fragment slot="install">
