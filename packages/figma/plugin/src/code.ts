@@ -1062,8 +1062,8 @@ function applyBox(ctx: SetCtx, node: ComponentNode | FrameNode, box: M.Box) {
   setNumber(ctx, node, "paddingBottom", box.padding.bottom);
   setNumber(ctx, node, "paddingLeft", box.padding.left);
   setNumber(ctx, node, "itemSpacing", box.gap, 0);
-  for (const corner of ["topLeftRadius", "topRightRadius", "bottomLeftRadius", "bottomRightRadius"] as const) {
-    setNumber(ctx, node, corner, box.radius, 0);
+  for (const corner of ["topLeft", "topRight", "bottomLeft", "bottomRight"] as const) {
+    setNumber(ctx, node, `${corner}Radius`, box.corners ? box.corners[corner] : box.radius, 0);
   }
   setNumber(ctx, node, "minHeight", box.minHeight);
   setNumber(ctx, node, "minWidth", box.minWidth);
@@ -1087,7 +1087,28 @@ function applySurface(ctx: SetCtx, node: ComponentNode | FrameNode, surface: M.S
   node.effects = surface.effects.map((e) => toEffect(ctx, e));
 }
 
-const KIND_NODE = { icon: "INSTANCE", text: "TEXT", frame: "FRAME", overlay: "RECTANGLE", ring: "RECTANGLE" } as const;
+const KIND_NODE = { icon: "INSTANCE", text: "TEXT", frame: "FRAME", overlay: "RECTANGLE", ring: "RECTANGLE", edge: "RECTANGLE" } as const;
+
+/**
+ * A bar along one edge of `parent`, outside its auto layout: the edge's full length, `size` thick,
+ * `offset` from the edge as CSS's inset puts it, and pinned there when the parent resizes.
+ */
+function applyEdge(ctx: SetCtx, parent: ComponentNode | FrameNode, rect: RectangleNode, layer: Extract<M.Layer, { kind: "edge" }>) {
+  rect.layoutPositioning = "ABSOLUTE";
+  rect.fills = layer.fills.map((p) => toPaint(ctx, p));
+  rect.strokes = [];
+  const size = Number(valueOf(layer.size));
+  const offset = Number(valueOf(layer.offset));
+  const across = layer.side === "top" || layer.side === "bottom";
+  rect.resize(Math.max(0.01, across ? parent.width : size), Math.max(0.01, across ? size : parent.height));
+  rect.x = layer.side === "left" ? offset : layer.side === "right" ? parent.width - size - offset : 0;
+  rect.y = layer.side === "top" ? offset : layer.side === "bottom" ? parent.height - size - offset : 0;
+  rect.constraints = {
+    horizontal: across ? "STRETCH" : layer.side === "right" ? "MAX" : "MIN",
+    vertical: across ? (layer.side === "bottom" ? "MAX" : "MIN") : "STRETCH",
+  };
+  setNumber(ctx, rect, across ? "height" : "width", layer.size);
+}
 
 /**
  * `parent`'s layers in order, each found by its id under `owner` (else, drawn before ids, by its
@@ -1153,6 +1174,12 @@ async function applyLayers(
       frame.layoutAlign = box.stretch ? "STRETCH" : "INHERIT";
       await applyLayers(ctx, frame, { id }, layer.layers, cellKey, sample);
     }
+  }
+  // Edges are placed off their parent's size, so once everything in it has laid out.
+  for (const layer of layers) {
+    if (layer.kind !== "edge") continue;
+    const rect = pickLayer(parent.children, owner, layer.slot) as RectangleNode;
+    applyEdge(ctx, parent, rect, layer);
   }
 }
 

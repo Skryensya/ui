@@ -6,7 +6,7 @@
 
 import { evalQuantity, pickMode, splitSpaces, substitute, Unsupported } from "./evaluate.js";
 import { splitTopLevel } from "@skryensya/core/parse";
-import type { Bound, Box, Effect, Frame, Paint, Rgba, Text } from "./manifest-types.js";
+import type { Bound, Box, Effect, Frame, Layer, Paint, Rgba, Text } from "./manifest-types.js";
 import { evaluateAs, expandComposite, resolve, substituted, type Context } from "./resolve.js";
 
 const asNumber = (b: Bound<unknown> | undefined) => b as Bound<number> | undefined;
@@ -192,6 +192,26 @@ export function gridTracks(ctx: Context): string[] {
   return splitSpaces(text).filter(Boolean);
 }
 
+const CORNER_NAMES = { topLeft: "top-left", topRight: "top-right", bottomRight: "bottom-right", bottomLeft: "bottom-left" } as const;
+
+/**
+ * The corners: one radius when all four are the same, as nearly every component's are; each its own
+ * when they differ (a tab rounded on top only).
+ */
+function radii(ctx: Context): Pick<Box, "radius" | "corners"> {
+  const values = Object.values(CORNER_NAMES).map((corner) => prop(ctx, `border-${corner}-radius`));
+  if (values.every((v) => v === values[0])) return { radius: values[0] === undefined ? undefined : number(ctx, "border-top-left-radius", "radius") };
+  const corner = (name: string) => number(ctx, `border-${name}-radius`, `radius-${name}`) ?? ZERO;
+  return {
+    corners: {
+      topLeft: corner(CORNER_NAMES.topLeft),
+      topRight: corner(CORNER_NAMES.topRight),
+      bottomRight: corner(CORNER_NAMES.bottomRight),
+      bottomLeft: corner(CORNER_NAMES.bottomLeft),
+    },
+  };
+}
+
 const zeroAsHug = (bound: Bound<number> | undefined) => (bound && "value" in bound && bound.value === 0 ? undefined : bound);
 
 const SIDE_NAMES = ["top", "right", "bottom", "left"] as const;
@@ -265,7 +285,7 @@ export function frameOf(ctx: Context): Frame {
     ...(prop(ctx, "align-self") === "stretch" ? { stretch: true as const } : {}),
     padding: { top: padding("top"), right: padding("right"), bottom: padding("bottom"), left: padding("left") },
     gap: number(ctx, "gap", "gap"),
-    radius: number(ctx, "border-radius", "radius"),
+    ...radii(ctx),
     strokeWeight: strokeColor && !sides ? number(ctx, "border-width", "border-width") : undefined,
     ...(sides ? { strokeSides: sides.weights } : {}),
     strokes: strokeColor ? [{ type: "SOLID", color: strokeColor }] : [],
@@ -319,6 +339,31 @@ export function iconOf(ctx: Context) {
  * a background. Drawn as a layer covering the host under its content. `undefined` for one that does
  * not paint (a hit area).
  */
+/**
+ * A pseudo-element that paints a bar along one edge of its element (a tab's indicator): absolutely
+ * placed, spanning one axis (`inset-inline: 0`), a set thickness on the other, pinned to one side.
+ * Undefined for anything else, or one made invisible (`opacity: 0`, a tab not selected).
+ */
+export function edgeOf(ctx: Context): Omit<Extract<Layer, { kind: "edge" }>, "slot" | "kind"> | undefined {
+  if (prop(ctx, "content") === undefined || prop(ctx, "position") !== "absolute") return undefined;
+  if (prop(ctx, "background") === undefined || /^0(\.0*)?$/.test(prop(ctx, "opacity") ?? "1")) return undefined;
+  const zero = (side: string) => /^0(px)?$/.test(prop(ctx, side) ?? "");
+  const set = (side: string) => {
+    const value = prop(ctx, side);
+    return value !== undefined && value !== "auto";
+  };
+  const pick = (along: "height" | "width", sides: readonly ["top" | "left", "bottom" | "right"]) => {
+    const size = number(ctx, along, "edge-size");
+    const side = set(sides[1]) ? sides[1] : set(sides[0]) ? sides[0] : undefined;
+    if (!size || !side) return undefined;
+    const paints = fills(ctx, "edge");
+    return { side, size, offset: number(ctx, side, "edge-offset") ?? ZERO, fills: paints };
+  };
+  if (zero("left") && zero("right")) return pick("height", ["top", "bottom"]);
+  if (zero("top") && zero("bottom")) return pick("width", ["left", "right"]);
+  return undefined;
+}
+
 export function overlayOf(ctx: Context): Paint[] | undefined {
   if (prop(ctx, "content") === undefined || prop(ctx, "position") !== "absolute") return undefined;
   if (!/^0(px)?$/.test(prop(ctx, "inset") ?? "")) return undefined;

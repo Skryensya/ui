@@ -130,6 +130,14 @@ const SIDES: Record<string, string> = {
   "inline-end": "right",
 };
 
+/** Logical corners as physical ones, in horizontal-tb, left to right. */
+const CORNERS: Record<string, string> = {
+  "border-start-start-radius": "border-top-left-radius",
+  "border-start-end-radius": "border-top-right-radius",
+  "border-end-start-radius": "border-bottom-left-radius",
+  "border-end-end-radius": "border-bottom-right-radius",
+};
+
 function expand(decls: readonly (readonly [string, string])[]): (readonly [string, string])[] {
   const out: (readonly [string, string])[] = [];
   for (const [prop, value] of decls) {
@@ -213,6 +221,42 @@ function expand(decls: readonly (readonly [string, string])[]): (readonly [strin
         if (style) out.push([`border-${side}-style`, style]);
         if (rest.length === 2) out.push([`border-${side}-width`, rest[0]], [`border-${side}-color`, rest[1]]);
         else if (!style) out.push([prop, value]);
+        break;
+      }
+      case "border-radius": {
+        // Each corner too, so a later corner of its own (a tab's rounded top) overrides just that one.
+        out.push([prop, value]);
+        if (value.includes("/")) break;
+        const [tl, tr = tl, br = tl, bl = tr] = parts;
+        out.push(["border-top-left-radius", tl], ["border-top-right-radius", tr], ["border-bottom-right-radius", br], ["border-bottom-left-radius", bl]);
+        break;
+      }
+      case "border-start-start-radius":
+      case "border-start-end-radius":
+      case "border-end-start-radius":
+      case "border-end-end-radius":
+        out.push([CORNERS[prop], value]);
+        break;
+      case "inset":
+      case "inset-inline":
+      case "inset-block":
+      case "inset-inline-start":
+      case "inset-inline-end":
+      case "inset-block-start":
+      case "inset-block-end": {
+        // As the physical sides too, so a bar pinned to one edge (a tab's indicator) can be read.
+        if (prop === "inset") out.push([prop, value]);
+        const [a, b = a, c = a, d = b] = parts;
+        const sides: Record<string, [string, string][]> = {
+          inset: [["top", a], ["right", b], ["bottom", c], ["left", d]],
+          "inset-inline": [["left", a], ["right", b]],
+          "inset-block": [["top", a], ["bottom", b]],
+          "inset-inline-start": [["left", a]],
+          "inset-inline-end": [["right", a]],
+          "inset-block-start": [["top", a]],
+          "inset-block-end": [["bottom", a]],
+        };
+        for (const [side, v] of sides[prop]) out.push([side, v]);
         break;
       }
       case "font": {

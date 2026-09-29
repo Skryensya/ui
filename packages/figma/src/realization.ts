@@ -53,7 +53,16 @@ export type Realization = {
    * through `names` (`{ children: "details" }`).
    */
   content?: { trees: Readonly<Record<string, readonly UsageTree[]>>; names?: Readonly<Record<string, string>> };
-  collections?: Readonly<Record<string, { slot: string; items: readonly { options?: Readonly<Record<string, string | boolean>>; text: string }[] }>>;
+  collections?: Readonly<
+    Record<
+      string,
+      {
+        slot: string;
+        /** `more`: the item's other text slots (a tab's panel), each a property `<slot> <n>`. */
+        items: readonly { options?: Readonly<Record<string, string | boolean>>; text: string; more?: Readonly<Record<string, string>> }[];
+      }
+    >
+  >;
   /** Layer names for pseudo-elements that paint: `before` is the state layer, not "::before". */
   overlays: Readonly<Partial<Record<"before" | "after", string>>>;
   /** The layer name an outline is drawn as. */

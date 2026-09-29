@@ -160,3 +160,32 @@ describe("Segmented", () => {
     expect(chosen.kind === "frame" && other.kind === "frame" && chosen.surface !== other.surface).toBe(true);
   });
 });
+
+describe("Tabs", () => {
+  const cell = (orientation: string, variant: string) => {
+    const set = manifest.components.find((c): c is ComponentSet => c.kind === "component-set" && c.id === "tabs/plain")!;
+    return set.cells.find((c) => c.props.orientation === orientation && c.props.variant === variant && c.props.size === "md")!;
+  };
+  const triggers = (orientation: string, variant: string) => {
+    const [list] = manifest.styles.layers[cell(orientation, variant).layers];
+    return list.kind === "frame" ? list.layers : [];
+  };
+
+  it("marks the selected tab with its indicator on the edge its variant and orientation put it", () => {
+    const edge = (o: string, v: string) => triggers(o, v)[0].kind === "frame" && (triggers(o, v)[0] as { layers: { kind: string; side?: string }[] }).layers.find((l) => l.kind === "edge")?.side;
+    expect([edge("horizontal", "underline"), edge("horizontal", "hanging"), edge("vertical", "underline"), edge("vertical", "hanging")]).toEqual(["bottom", "top", "right", "left"]);
+    const other = triggers("horizontal", "underline")[1];
+    expect(other.kind === "frame" && other.layers.some((l) => l.kind === "edge")).toBe(false);
+  });
+
+  it("rounds a tab on the side away from its list's rule", () => {
+    const [first] = triggers("horizontal", "underline");
+    const box = first.kind === "frame" ? manifest.styles.boxes[first.box] : undefined;
+    expect(box?.corners?.bottomLeft).toEqual({ value: 0, expression: "0" });
+    expect(box?.corners?.topLeft).toEqual({ variable: "--radius-control" });
+  });
+
+  it("shows only the selected tab's panel", () => {
+    expect(manifest.styles.layers[cell("horizontal", "underline").layers].map((l) => l.slot)).toEqual(["list", "content"]);
+  });
+});

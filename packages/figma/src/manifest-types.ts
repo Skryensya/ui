@@ -85,6 +85,8 @@ export type Box = {
   padding: { top: Bound<number>; right: Bound<number>; bottom: Bound<number>; left: Bound<number> };
   gap?: Bound<number>;
   radius?: Bound<number>;
+  /** Corners that differ (a tab rounded on top only), in place of `radius`. */
+  corners?: { topLeft: Bound<number>; topRight: Bound<number>; bottomRight: Bound<number>; bottomLeft: Bound<number> };
   strokeWeight?: Bound<number>;
   /** A border on some sides only: each side's weight, 0 where it draws none (a Separator's rule). */
   strokeSides?: { top: Bound<number>; right: Bound<number>; bottom: Bound<number>; left: Bound<number> };
@@ -136,7 +138,12 @@ export type Layer =
    * A part of the component that lays out or paints on its own (Callout's content column, a
    * separator's rule): a frame with its own box and surface, by id in `styles`, holding its layers.
    */
-  | { kind: "frame"; slot: string; box: string; surface: string; layers: Layer[] };
+  | { kind: "frame"; slot: string; box: string; surface: string; layers: Layer[] }
+  /**
+   * A bar along one edge of its frame, outside auto layout (a tab's indicator): `size` thick, the full
+   * length of that edge, `offset` from it outward as CSS's negative inset puts it.
+   */
+  | { kind: "edge"; slot: string; side: "top" | "right" | "bottom" | "left"; size: Bound<number>; offset: Bound<number>; fills: Paint[] };
 
 export type ComponentProperty =
   | { name: string; type: "TEXT"; default: string }
