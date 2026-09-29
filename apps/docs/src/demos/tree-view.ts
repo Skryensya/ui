@@ -157,3 +157,13 @@ export const treeViewEventsTree = (t: Translate): UsageTree => ({
 });
 
 export { default as treeViewEventsScript } from "./scripts/tree-view-events.ts?raw";
+
+/* Don't: a tree with nothing nested, which is a list with extra keyboard rules. */
+export const treeViewDontFlatTree = (t: Translate): UsageTree => ({
+  contract: "tree-view",
+  signature: "TreeView",
+  options: { label: t("demo.treeView.label") },
+  slots: {
+    items: ["index.ts", "app.ts", "styles.css", "README.md"].map((name) => ({ options: { id: name }, slots: { label: name } })),
+  },
+});

@@ -14,8 +14,9 @@ import { treeStory, withCss, type Meta, type StoryObj } from "../tree-story";
 export default { title: "Components/Navigation/TreeView", tags: ["autodocs"] } satisfies Meta;
 
 export const Anatomy: StoryObj = treeStory(demos.treeViewAnatomyTree, { decorators: [withCss(annotationDemoCss)] });
+export const Events: StoryObj = treeStory(demos.treeViewEventsTree);
 export const Minimal: StoryObj = treeStory(demos.treeViewMinimalTree);
 export const Initial: StoryObj = treeStory(demos.treeViewInitialTree);
 export const Multiple: StoryObj = treeStory(demos.treeViewMultipleTree);
 export const Disabled: StoryObj = treeStory(demos.treeViewDisabledTree);
-export const Events: StoryObj = treeStory(demos.treeViewEventsTree);
+export const DontFlat: StoryObj = treeStory(demos.treeViewDontFlatTree);

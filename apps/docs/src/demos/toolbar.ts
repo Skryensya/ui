@@ -143,3 +143,37 @@ export const nestedToolbarTree = (t: Translate): UsageTree => ({
     },
   ],
 });
+
+const plainIconButton = (label: string, icon: string): UsageTree => ({
+  contract: "button",
+  signature: "Button.action",
+  options: { iconOnly: true, size: "sm", variant: "ghost" },
+  attrs: { "aria-label": label },
+  children: { contract: "icon", signature: "Icon", options: { name: icon } },
+});
+
+/* Don't: every action in one flat row, with nothing grouping the related ones. */
+export const toolbarDontFlatTree = (t: Translate): UsageTree => ({
+  contract: "toolbar",
+  signature: "Toolbar",
+  options: { label: t("demo.toolbar.actions") },
+  children: [
+    plainIconButton(t("demo.toolbar.edit"), "edit"),
+    plainIconButton(t("demo.toolbar.delete"), "delete"),
+    plainIconButton(t("demo.toolbar.copy"), "copy"),
+    plainIconButton(t("demo.toolbar.dd.upload"), "upload"),
+    plainIconButton(t("demo.toolbar.dd.download"), "download"),
+    plainIconButton(t("demo.toolbar.dd.settings"), "settings"),
+    plainIconButton(t("demo.toolbar.dd.search"), "search"),
+  ],
+});
+
+/* Don't: a toolbar around one button, a stop in the tab order that holds nothing to move between. */
+export const toolbarDontSingleTree = (t: Translate): UsageTree => ({
+  contract: "toolbar",
+  signature: "Toolbar",
+  options: { label: t("demo.toolbar.actions") },
+  children: [plainIconButton(t("demo.toolbar.edit"), "edit")],
+});
+
+export const toolbarDoSingleTree = (t: Translate): UsageTree => plainIconButton(t("demo.toolbar.edit"), "edit");

@@ -107,3 +107,27 @@ export const tabsHangingTree = (t: Translate): UsageTree => ({
 });
 
 export { default as tabsAdvancedScript } from "./scripts/tabs-status.ts?raw";
+
+const simpleTabs = (labels: readonly string[], body: string, label: string): UsageTree => ({
+  contract: "tabs",
+  signature: "Tabs",
+  options: { value: "tab-0" },
+  attrs: { "aria-label": label },
+  slots: { items: labels.map((text, i) => ({ options: { value: `tab-${i}` }, slots: { label: text, children: body } })) },
+});
+
+/* Don't: so many tabs that the row runs off the edge. */
+export const tabsDontManyTree = (t: Translate): UsageTree =>
+  simpleTabs(
+    ["dd.general", "dd.members", "dd.billing", "dd.security", "dd.alerts", "dd.integrations", "dd.api", "dd.logs"].map((key) => t(`demo.tabs.${key}` as never)),
+    t("demo.tabs.basic.summaryBody"),
+    t("demo.tabs.basic.label"),
+  );
+
+/* Don't: steps of a sequence laid out as tabs, which can be opened in any order. */
+export const tabsDontStepsTree = (t: Translate): UsageTree =>
+  simpleTabs(
+    [t("demo.tabs.dd.step1"), t("demo.tabs.dd.step2"), t("demo.tabs.dd.step3")],
+    t("demo.tabs.dd.stepBody"),
+    t("demo.tabs.basic.label"),
+  );

@@ -8,7 +8,14 @@ import "@skryensya/core/components/annotation.css";
 import ComponentPageShell from "./ComponentPageShell.astro";
 import CodeBlock from "../CodeBlock.astro";
 import ComponentPreview from "../ComponentPreview.astro";
-import { tablePagerAnatomyTree, tablePagerMinimalTree, tablePagerTree } from "../../demos/table-pager";
+import UsagePreview from "../UsagePreview.astro";
+import DoDont from "../DoDont.astro";
+import {
+  tablePagerAnatomyTree,
+  tablePagerDontDetachedTree,
+  tablePagerMinimalTree,
+  tablePagerTree,
+} from "../../demos/table-pager";
 import { annotationDemoCss } from "../../demos/annotation";
 import { getLocale, useTranslations } from "../../i18n";
 
@@ -25,7 +32,24 @@ const styles = `@import "@skryensya/core/components/table.css";
   contractId="table-pager"
   testFiles={["packages/react/src/components/pagination.test.tsx", "packages/vanilla/src/components/table-pager.test.ts"]}
 >
-  <Fragment slot="anatomy">
+  <Fragment slot="usage">
+    <p class="lede" set:html={t("tablePager.lede")} />
+
+    <h3>{t("tablePager.showcaseTitle")}</h3>
+    <p set:html={t("tablePager.showcaseBody")} />
+
+    <h3>{t("tablePager.fullTitle")}</h3>
+    <p set:html={t("tablePager.fullBody")} />
+    <UsagePreview tree={tablePagerTree(t)} />
+
+    <h3>{t("tablePager.minimalTitle")}</h3>
+    <p set:html={t("tablePager.minimalBody")} />
+    <UsagePreview tree={tablePagerMinimalTree(t)} />
+
+    <h3>{t("tablePager.eventsTitle")}</h3>
+    <p set:html={t("tablePager.eventsBody")} />
+
+    <h3>{t("component.anatomy")}</h3>
     <p set:html={t("tablePager.anatomyBody")} />
     <ComponentPreview
       tree={tablePagerAnatomyTree(t)}
@@ -37,26 +61,20 @@ const styles = `@import "@skryensya/core/components/table.css";
     />
   </Fragment>
 
-  <Fragment slot="usage">
-    <p class="lede" set:html={t("tablePager.lede")} />
-
+  <Fragment slot="guidelines">
+    <p class="lede" set:html={t("tablePager.guidelinesLede")} />
     <h3>{t("tablePager.whenTitle")}</h3>
     <ul>
       <li set:html={t("tablePager.whenItem1")} />
       <li set:html={t("tablePager.whenItem2")} />
       <li set:html={t("tablePager.whenItem3")} />
     </ul>
-
-    <h3>{t("tablePager.fullTitle")}</h3>
-    <p set:html={t("tablePager.fullBody")} />
-    <ComponentPreview tree={tablePagerTree(t)} label={t("tablePager.fullPreviewLabel")} />
-
-    <h3>{t("tablePager.minimalTitle")}</h3>
-    <p set:html={t("tablePager.minimalBody")} />
-    <ComponentPreview tree={tablePagerMinimalTree(t)} label={t("tablePager.minimalPreviewLabel")} />
-
-    <h3>{t("tablePager.eventsTitle")}</h3>
-    <p set:html={t("tablePager.eventsBody")} />
+    <DoDont
+      canvas
+      title={t("tablePager.dd.attached.title")}
+      do={{ tree: tablePagerMinimalTree(t), caption: t("tablePager.dd.attached.do") }}
+      dont={{ tree: tablePagerDontDetachedTree(t), caption: t("tablePager.dd.attached.dont") }}
+    />
   </Fragment>
 
   <Fragment slot="install">

@@ -6,7 +6,9 @@ import "@skryensya/core/components/canvas.css";
 import "@skryensya/core/components/pagination.css";
 import "@skryensya/core/components/select.css";
 import "@skryensya/core/components/table.css";
+import "@skryensya/core/components/typography.css";
 import "@skryensya/core/patterns/anchored.css";
+import "@skryensya/core/patterns/layout.css";
 import "@skryensya/core/patterns/table-pager.css";
 import * as demos from "@docs/demos/table-pager";
 import { annotationDemoCss } from "@docs/demos/annotation";
@@ -17,3 +19,4 @@ export default { title: "Components/Data/TablePager", tags: ["autodocs"] } satis
 export const Anatomy: StoryObj = treeStory(demos.tablePagerAnatomyTree, { decorators: [withCss(annotationDemoCss)] });
 export const Default: StoryObj = treeStory(demos.tablePagerTree);
 export const Minimal: StoryObj = treeStory(demos.tablePagerMinimalTree);
+export const DontDetached: StoryObj = treeStory(demos.tablePagerDontDetachedTree);

@@ -14,3 +14,4 @@ export default { title: "Components/Data/Treegrid", tags: ["autodocs"] } satisfi
 export const Anatomy: StoryObj = treeStory(demos.treegridAnatomyTree, { decorators: [withCss(annotationDemoCss)] });
 export const Inbox: StoryObj = treeStory(demos.treegridInboxTree);
 export const Stress: StoryObj = treeStory(demos.treegridStressTree);
+export const DontOneColumn: StoryObj = treeStory(demos.treegridDontOneColumnTree);

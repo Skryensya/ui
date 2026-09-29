@@ -32,6 +32,13 @@ export const tablePagerMessages = {
 
     "tablePager.a11yBody":
       "El <code>nav</code> lleva <code>aria-label</code> (<code>navLabel</code>) y la página actual se marca con <code>aria-current=\"page\"</code>. Los botones de anterior y siguiente se nombran con <code>previousLabel</code> y <code>nextLabel</code>, y cada número con <code>pageLabel</code>; sus valores por defecto están en inglés, así que en otra lengua hay que traducirlos. El rango es <code>role=\"status\"</code>, así que un lector de pantalla anuncia el nuevo rango al cambiar de página.",
+    "demo.tablePager.dd.between": "Estas cifras se actualizan cada hora.",
+    "tablePager.showcaseTitle": "Showcases",
+    "tablePager.showcaseBody": "El paginador completo, y el mínimo con solo la navegación.",
+    "tablePager.guidelinesLede": "TablePager pagina una tabla y dice qué filas estás viendo.",
+    "tablePager.dd.attached.title": "Pegado a su tabla",
+    "tablePager.dd.attached.do": "La barra va justo debajo de la tabla que pagina.",
+    "tablePager.dd.attached.dont": "Separada por otro contenido, no queda claro qué pagina.",
   },
   en: {
     "tablePager.description": "Pages a hand-written table's rows on the client, with an optional page size.",
@@ -66,5 +73,12 @@ export const tablePagerMessages = {
 
     "tablePager.a11yBody":
       "The <code>nav</code> carries <code>aria-label</code> (<code>navLabel</code>) and the current page is marked <code>aria-current=\"page\"</code>. The previous and next buttons are named by <code>previousLabel</code> and <code>nextLabel</code>, and each number by <code>pageLabel</code>; their defaults are English, so in another language they have to be translated. The range is <code>role=\"status\"</code>, so a screen reader announces the new range when the page changes.",
+    "demo.tablePager.dd.between": "These figures update every hour.",
+    "tablePager.showcaseTitle": "Showcases",
+    "tablePager.showcaseBody": "The full pager, and the minimal one with only the navigation.",
+    "tablePager.guidelinesLede": "TablePager pages a table and says which rows you are looking at.",
+    "tablePager.dd.attached.title": "Attached to its table",
+    "tablePager.dd.attached.do": "The bar sits right under the table it pages.",
+    "tablePager.dd.attached.dont": "Separated by other content, it is unclear what it pages.",
   },
 } as const;

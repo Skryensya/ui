@@ -23,3 +23,17 @@ export const wrapperTree = (t: Translate): UsageTree => ({
     ],
   },
 });
+
+/* Do/Don't: the surface as a Box inside the Wrapper, or painted onto the Wrapper itself. */
+export const wrapperDoBoxTree = (t: Translate): UsageTree => wrapperTree(t);
+
+export const wrapperDontPaintTree = (t: Translate): UsageTree => ({
+  contract: "wrapper",
+  signature: "Wrapper",
+  options: { wrapperSize: "sm" },
+  attrs: { style: "background: var(--color-surface-raised); border: 1px solid var(--color-border-subtle); padding-block: var(--space-inset-lg);" },
+  children: [
+    { contract: "typography", signature: "Heading", children: t("demo.wrapper.title") },
+    { contract: "typography", signature: "Text", children: t("demo.wrapper.body") },
+  ],
+});

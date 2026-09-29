@@ -17,3 +17,6 @@ export default { title: "Components/Actions/Toolbar", tags: ["autodocs"] } satis
 export const Anatomy: StoryObj = treeStory(demos.toolbarAnatomyTree, { decorators: [withCss(annotationDemoCss)] });
 export const Default: StoryObj = treeStory(demos.toolbarTree);
 export const NestedToolbar: StoryObj = treeStory(demos.nestedToolbarTree);
+export const DontFlat: StoryObj = treeStory(demos.toolbarDontFlatTree);
+export const DontSingle: StoryObj = treeStory(demos.toolbarDontSingleTree);
+export const DoSingle: StoryObj = treeStory(demos.toolbarDoSingleTree);

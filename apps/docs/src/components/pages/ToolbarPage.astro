@@ -10,7 +10,16 @@ import ComponentPageShell from "./ComponentPageShell.astro";
 import AppearanceMenu from "../AppearanceMenu.astro";
 import CodeBlock from "../CodeBlock.astro";
 import ComponentPreview from "../ComponentPreview.astro";
-import { nestedToolbarTree, toolbarAnatomyTree, toolbarTree } from "../../demos/toolbar";
+import UsagePreview from "../UsagePreview.astro";
+import DoDont from "../DoDont.astro";
+import {
+  nestedToolbarTree,
+  toolbarAnatomyTree,
+  toolbarDoSingleTree,
+  toolbarDontFlatTree,
+  toolbarDontSingleTree,
+  toolbarTree,
+} from "../../demos/toolbar";
 import { annotationDemoCss } from "../../demos/annotation";
 import { getLocale, useTranslations } from "../../i18n";
 
@@ -23,6 +32,10 @@ import { initComponents } from "@skryensya/vanilla/auto";
 
 mountIcons(document, lucideIcons);
 initComponents();`;
+
+/* What each value of a property is for, read from this page's messages. Same model Badge uses. */
+const explain = (option: string, values: readonly string[]) =>
+  Object.fromEntries(values.map((value) => [value, t(`toolbarPage.prop.${option}.${value}` as Parameters<typeof t>[0])]));
 ---
 
 <ComponentPageShell
@@ -36,20 +49,29 @@ initComponents();`;
     <AppearanceMenu label={t("prefs.appearance")} />
   </Fragment>
 
-  <Fragment slot="anatomy">
-    <p set:html={t("toolbarPage.anatomyBody")} />
-    <ComponentPreview
-      tree={toolbarAnatomyTree(t)}
-      css={annotationDemoCss}
-      label={t("toolbarPage.anatomyPreviewLabel")}
-      screens={false}
-      hideSource
-      chrome={false}
-    />
-  </Fragment>
-
   <Fragment slot="usage">
     <p class="lede" set:html={t("toolbarPage.description")} />
+
+    <UsagePreview
+      tree={toolbarTree(t)}
+      optionName="orientation"
+      title={t("toolbarPage.prop.orientation.title")}
+      description={t("toolbarPage.prop.orientation.body")}
+      explain={explain("orientation", ["horizontal", "vertical"])}
+      stageMinBlockSize="12rem"
+    />
+
+    <UsagePreview
+      tree={toolbarTree(t)}
+      optionName="appearance"
+      title={t("toolbarPage.prop.appearance.title")}
+      description={t("toolbarPage.prop.appearance.body")}
+      explain={explain("appearance", ["plain", "tactile", "brutalist", "frosted"])}
+      stageMinBlockSize="8rem"
+    />
+
+    <h3>{t("toolbarPage.showcaseTitle")}</h3>
+    <p set:html={t("toolbarPage.showcaseBody")} />
     <ComponentPreview tree={toolbarTree(t)} js={js} label="Toolbar" viewport="auto" />
 
     <h3>{t("component.contractNotesTitle")}</h3>
@@ -61,6 +83,31 @@ initComponents();`;
 
     <h3>{t("toolbarPage.wysiwygTitle")}</h3>
     <p set:html={t("toolbarPage.wysiwygBody")} />
+
+    <h3>{t("component.anatomy")}</h3>
+    <p set:html={t("toolbarPage.anatomyBody")} />
+    <ComponentPreview
+      tree={toolbarAnatomyTree(t)}
+      css={annotationDemoCss}
+      label={t("toolbarPage.anatomyPreviewLabel")}
+      screens={false}
+      hideSource
+      chrome={false}
+    />
+  </Fragment>
+
+  <Fragment slot="guidelines">
+    <p class="lede" set:html={t("toolbarPage.guidelinesLede")} />
+    <DoDont
+      title={t("toolbarPage.dd.group.title")}
+      do={{ tree: toolbarTree(t), caption: t("toolbarPage.dd.group.do") }}
+      dont={{ tree: toolbarDontFlatTree(t), caption: t("toolbarPage.dd.group.dont") }}
+    />
+    <DoDont
+      title={t("toolbarPage.dd.single.title")}
+      do={{ tree: toolbarDoSingleTree(t), caption: t("toolbarPage.dd.single.do") }}
+      dont={{ tree: toolbarDontSingleTree(t), caption: t("toolbarPage.dd.single.dont") }}
+    />
   </Fragment>
 
   <Fragment slot="install">

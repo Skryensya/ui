@@ -6,11 +6,15 @@ import ComponentPageShell from "./ComponentPageShell.astro";
 import AppearanceMenu from "../AppearanceMenu.astro";
 import CodeBlock from "../CodeBlock.astro";
 import ComponentPreview from "../ComponentPreview.astro";
+import UsagePreview from "../UsagePreview.astro";
+import DoDont from "../DoDont.astro";
 import {
   tabsAdvancedScript,
   tabsAdvancedTree,
   tabsAnatomyTree,
   tabsBasicTree,
+  tabsDontManyTree,
+  tabsDontStepsTree,
   tabsHangingTree,
   tabsSizeTree,
   tabsStatesTree,
@@ -33,6 +37,10 @@ mountIcons(document, lucideIcons);
 await initComponents();`;
 
 const t = useTranslations(getLocale(Astro.url));
+
+/* What each value of a property is for, read from this page's messages. Same model Badge uses. */
+const explain = (option: string, values: readonly string[]) =>
+  Object.fromEntries(values.map((value) => [value, t(`tabsPage.prop.${option}.${value}` as Parameters<typeof t>[0])]));
 ---
 
 <ComponentPageShell
@@ -46,27 +54,55 @@ const t = useTranslations(getLocale(Astro.url));
     <AppearanceMenu label={t("prefs.appearance")} />
   </Fragment>
 
-  <Fragment slot="anatomy">
-    <p set:html={t("tabsPage.anatomyBody")} />
-    <ComponentPreview
-      tree={tabsAnatomyTree(t)}
-      css={annotationDemoCss}
-      label={t("tabsPage.anatomyPreviewLabel")}
-      screens={false}
-      hideSource
-      chrome={false}
-    />
-  </Fragment>
-
   <Fragment slot="usage">
     <p class="lede" set:html={t("tabsPage.lede")} />
+
+    <UsagePreview
+      tree={tabsBasicTree(t)}
+      optionName="variant"
+      title={t("tabsPage.prop.variant.title")}
+      description={t("tabsPage.prop.variant.body")}
+      explain={explain("variant", ["underline", "hanging"])}
+      stageMinBlockSize="12rem"
+    />
+
+    <UsagePreview
+      tree={tabsBasicTree(t)}
+      optionName="size"
+      title={t("tabsPage.prop.size.title")}
+      description={t("tabsPage.prop.size.body")}
+      explain={explain("size", ["sm", "md"])}
+      stageMinBlockSize="12rem"
+      labels={{ sm: "sm", md: "md" }}
+    />
+
+    <UsagePreview
+      tree={tabsBasicTree(t)}
+      optionName="orientation"
+      title={t("tabsPage.prop.orientation.title")}
+      description={t("tabsPage.prop.orientation.body")}
+      explain={explain("orientation", ["horizontal", "vertical"])}
+      stageMinBlockSize="14rem"
+    />
+
+    <UsagePreview
+      tree={tabsBasicTree(t)}
+      optionName="appearance"
+      title={t("tabsPage.prop.appearance.title")}
+      description={t("tabsPage.prop.appearance.body")}
+      explain={explain("appearance", ["plain", "tactile", "brutalist", "frosted"])}
+      stageMinBlockSize="12rem"
+    />
+
+    <h3>{t("tabsPage.showcaseTitle")}</h3>
+    <p set:html={t("tabsPage.showcaseBody")} />
     <h3>{t("tabsPage.basicTitle")}</h3>
     <p set:html={t("tabsPage.basicBody")} />
-    <ComponentPreview tree={tabsBasicTree(t)} label={t("tabsPage.basicLabel")} />
+    <UsagePreview tree={tabsBasicTree(t)} />
 
     <h3>{t("tabsPage.statesTitle")}</h3>
     <p set:html={t("tabsPage.statesBody")} />
-    <ComponentPreview tree={tabsStatesTree(t)} label={t("tabsPage.statesLabel")} />
+    <UsagePreview tree={tabsStatesTree(t)} />
 
     <h3>{t("tabsPage.advancedTitle")}</h3>
     <p set:html={t("tabsPage.advancedBody")} />
@@ -74,11 +110,11 @@ const t = useTranslations(getLocale(Astro.url));
 
     <h3>{t("tabsPage.sizeTitle")}</h3>
     <p set:html={t("tabsPage.sizeBody")} />
-    <ComponentPreview tree={tabsSizeTree(t)} label={t("tabsPage.sizeLabel")} />
+    <UsagePreview tree={tabsSizeTree(t)} />
 
     <h3>{t("tabsPage.hangingTitle")}</h3>
     <p set:html={t("tabsPage.hangingBody")} />
-    <ComponentPreview tree={tabsHangingTree(t)} label={t("tabsPage.hangingLabel")} />
+    <UsagePreview tree={tabsHangingTree(t)} />
 
     <h3>{t("component.contractNotesTitle")}</h3>
     <ul>
@@ -91,6 +127,32 @@ const t = useTranslations(getLocale(Astro.url));
     </ul>
 
     <p set:html={t("tabsPage.reactBody")} />
+
+    <h3>{t("component.anatomy")}</h3>
+    <p set:html={t("tabsPage.anatomyBody")} />
+    <ComponentPreview
+      tree={tabsAnatomyTree(t)}
+      css={annotationDemoCss}
+      label={t("tabsPage.anatomyPreviewLabel")}
+      screens={false}
+      hideSource
+      chrome={false}
+    />
+  </Fragment>
+
+  <Fragment slot="guidelines">
+    <p class="lede" set:html={t("tabsPage.guidelinesLede")} />
+    <DoDont
+      canvas
+      title={t("tabsPage.dd.few.title")}
+      do={{ tree: tabsBasicTree(t), caption: t("tabsPage.dd.few.do") }}
+      dont={{ tree: tabsDontManyTree(t), caption: t("tabsPage.dd.few.dont") }}
+    />
+    <DoDont
+      title={t("tabsPage.dd.steps.title")}
+      do={{ tree: tabsBasicTree(t), caption: t("tabsPage.dd.steps.do") }}
+      dont={{ tree: tabsDontStepsTree(t), caption: t("tabsPage.dd.steps.dont") }}
+    />
   </Fragment>
 
   <Fragment slot="install">
