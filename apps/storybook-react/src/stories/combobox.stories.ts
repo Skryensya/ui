@@ -11,3 +11,5 @@ import { treeStory, localeOf, type Meta, type StoryObj } from "../tree-story";
 export default { title: "Components/Forms/Combobox", tags: ["autodocs"] } satisfies Meta;
 
 export const Default: StoryObj = treeStory((t) => demos.comboboxTree(t, localeOf(t)));
+export const Single: StoryObj = treeStory((t) => demos.comboboxSingleTree(t, localeOf(t)));
+export const DontFew: StoryObj = treeStory(demos.comboboxDontFewTree);

@@ -4,11 +4,15 @@ import "@skryensya/core/components/button.css";
 import "@skryensya/core/components/calendar.css";
 import "@skryensya/core/components/date-picker.css";
 import "@skryensya/core/patterns/anchored.css";
+import "@skryensya/core/patterns/layout.css";
 import * as demos from "@docs/demos/date-picker";
 import { treeStory, type Meta, type StoryObj } from "../tree-story";
 
 export default { title: "Components/Forms/DatePicker", tags: ["autodocs"] } satisfies Meta;
 
-export const NativeDatePicker: StoryObj = treeStory(demos.nativeDatePickerTree);
 export const Default: StoryObj = treeStory(demos.datePickerTree);
 export const Disabled: StoryObj = treeStory(demos.datePickerDisabledTree);
+export const NativeDatePicker: StoryObj = treeStory(demos.nativeDatePickerTree);
+export const Single: StoryObj = treeStory(demos.datePickerSingleTree);
+export const DoRange: StoryObj = treeStory(demos.datePickerDoRangeTree);
+export const DontRange: StoryObj = treeStory(demos.datePickerDontRangeTree);

@@ -5,7 +5,17 @@ import "@skryensya/core/components/annotation.css";
 import ComponentPageShell from "./ComponentPageShell.astro";
 import CodeBlock from "../CodeBlock.astro";
 import ComponentPreview from "../ComponentPreview.astro";
-import { calendarAnatomyTree, calendarMonthAnatomyHtml, calendarYearAnatomyHtml, calendarMinMaxTree, calendarRangeTree, calendarTree } from "../../demos/calendar";
+import UsagePreview from "../UsagePreview.astro";
+import DoDont from "../DoDont.astro";
+import {
+  calendarAnatomyTree,
+  calendarDontTwoTree,
+  calendarMinMaxTree,
+  calendarMonthAnatomyHtml,
+  calendarRangeTree,
+  calendarTree,
+  calendarYearAnatomyHtml,
+} from "../../demos/calendar";
 import { annotationDemoCss } from "../../demos/annotation";
 import { getLocale, useTranslations } from "../../i18n";
 
@@ -13,6 +23,10 @@ const t = useTranslations(getLocale(Astro.url));
 
 const install = `pnpm add @skryensya/core @skryensya/vanilla`;
 const styles = `@import "@skryensya/core/components/calendar.css";`;
+
+/* What each value of a property is for, read from this page's messages. Same model Badge uses. */
+const explain = (option: string, values: readonly string[]) =>
+  Object.fromEntries(values.map((value) => [value, t(`calendar.prop.${option}.${value}` as Parameters<typeof t>[0])]));
 ---
 
 <ComponentPageShell
@@ -22,40 +36,30 @@ const styles = `@import "@skryensya/core/components/calendar.css";`;
   contractId="calendar"
   testFiles={["packages/vanilla/src/components/calendar.svelte.test.ts"]}}
 >
-  <Fragment slot="anatomy">
-    <p set:html={t("calendar.anatomyBody")} />
-    <ComponentPreview
-      tree={calendarAnatomyTree(t)}
-      css={annotationDemoCss}
-      label={t("calendar.anatomyPreviewLabel")}
-      screens={false}
-      hideSource
-      chrome={false}
-    />
-  </Fragment>
-
   <Fragment slot="usage">
     <p class="lede" set:html={t("calendar.lede")} />
-    <p set:html={t("calendar.anatomyMonthBody")} />
-    <ComponentPreview
-      html={calendarMonthAnatomyHtml(t)}
-      css={annotationDemoCss}
-      label={t("calendar.anatomyMonthPreviewLabel")}
-      screens={false}
-      hideSource
-      chrome={false}
+
+    <UsagePreview
+      tree={calendarTree(t)}
+      optionName="selectionMode"
+      title={t("calendar.prop.selectionMode.title")}
+      description={t("calendar.prop.selectionMode.body")}
+      explain={explain("selectionMode", ["single", "range"])}
+      stageMinBlockSize="22rem"
     />
 
-    <p set:html={t("calendar.anatomyYearBody")} />
-    <ComponentPreview
-      html={calendarYearAnatomyHtml(t)}
-      css={annotationDemoCss}
-      label={t("calendar.anatomyYearPreviewLabel")}
-      screens={false}
-      hideSource
-      chrome={false}
+    <UsagePreview
+      tree={calendarTree(t)}
+      optionName="disabled"
+      title={t("calendar.prop.disabled.title")}
+      description={t("calendar.prop.disabled.body")}
+      explain={explain("disabled", ["false", "true"])}
+      stageMinBlockSize="22rem"
+      labels={{ false: t("calendar.prop.disabled.falseLabel"), true: t("calendar.prop.disabled.trueLabel") }}
     />
 
+    <h3>{t("calendar.showcaseTitle")}</h3>
+    <p set:html={t("calendar.showcaseBody")} />
     <h3>{t("calendar.gridTitle")}</h3>
     <p set:html={t("calendar.gridBody")} />
     <ComponentPreview tree={calendarTree(t)} label={t("calendar.gridLabel")} viewport="auto" />
@@ -80,6 +84,47 @@ const styles = `@import "@skryensya/core/components/calendar.css";`;
       <li set:html={t("calendar.contractItem2")} />
       <li set:html={t("calendar.contractItem3")} />
     </ul>
+
+    <h3>{t("component.anatomy")}</h3>
+    <p set:html={t("calendar.anatomyBody")} />
+    <ComponentPreview
+      tree={calendarAnatomyTree(t)}
+      css={annotationDemoCss}
+      label={t("calendar.anatomyPreviewLabel")}
+      screens={false}
+      hideSource
+      chrome={false}
+    />
+
+    <p set:html={t("calendar.anatomyMonthBody")} />
+    <ComponentPreview
+      html={calendarMonthAnatomyHtml(t)}
+      css={annotationDemoCss}
+      label={t("calendar.anatomyMonthPreviewLabel")}
+      screens={false}
+      hideSource
+      chrome={false}
+    />
+
+    <p set:html={t("calendar.anatomyYearBody")} />
+    <ComponentPreview
+      html={calendarYearAnatomyHtml(t)}
+      css={annotationDemoCss}
+      label={t("calendar.anatomyYearPreviewLabel")}
+      screens={false}
+      hideSource
+      chrome={false}
+    />
+  </Fragment>
+
+  <Fragment slot="guidelines">
+    <p class="lede" set:html={t("calendar.guidelinesLede")} />
+    <DoDont
+      canvas
+      title={t("calendar.dd.range.title")}
+      do={{ tree: calendarRangeTree(t), caption: t("calendar.dd.range.do") }}
+      dont={{ tree: calendarDontTwoTree(t), caption: t("calendar.dd.range.dont") }}
+    />
   </Fragment>
 
   <Fragment slot="install">

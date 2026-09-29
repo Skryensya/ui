@@ -7,7 +7,15 @@ import "@skryensya/core/components/annotation.css";
 import ComponentPageShell from "./ComponentPageShell.astro";
 import CodeBlock from "../CodeBlock.astro";
 import ComponentPreview from "../ComponentPreview.astro";
-import { formFieldAnatomyTree, formFieldAroundSelectTree, formFieldTree } from "../../demos/form-field";
+import UsagePreview from "../UsagePreview.astro";
+import DoDont from "../DoDont.astro";
+import {
+  formFieldAnatomyTree,
+  formFieldAroundSelectTree,
+  formFieldDoHintTree,
+  formFieldDontHintTree,
+  formFieldTree,
+} from "../../demos/form-field";
 import { annotationDemoCss } from "../../demos/annotation";
 import { getLocale, useTranslations } from "../../i18n";
 
@@ -16,6 +24,10 @@ const t = useTranslations(getLocale(Astro.url));
 
 const css = `@import "@skryensya/core/tokens.scss";
 @import "@skryensya/core/components/form-field.css";`;
+
+/* What each value of a property is for, read from this page's messages. Same model Badge uses. */
+const explain = (option: string, values: readonly string[]) =>
+  Object.fromEntries(values.map((value) => [value, t(`formFieldPage.prop.${option}.${value}` as Parameters<typeof t>[0])]));
 ---
 
 <ComponentPageShell
@@ -24,21 +36,32 @@ const css = `@import "@skryensya/core/tokens.scss";
   contractId="form-field"
   testFiles={["packages/react/src/components/form-field.test.tsx"]}}
 >
-  <Fragment slot="anatomy">
-    <p set:html={t("formFieldPage.anatomyBody")} />
-    <ComponentPreview
-      tree={formFieldAnatomyTree(t)}
-      css={annotationDemoCss}
-      label={t("formFieldPage.anatomyPreviewLabel")}
-      screens={false}
-      hideSource
-      chrome={false}
-    />
-  </Fragment>
-
   <Fragment slot="usage">
     <p class="lede" set:html={t("formFieldPage.lede")} />
-    <ComponentPreview tree={formFieldTree(t)} label="FormField" />
+
+    <UsagePreview
+      tree={formFieldTree(t)}
+      optionName="required"
+      title={t("formFieldPage.prop.required.title")}
+      description={t("formFieldPage.prop.required.body")}
+      explain={explain("required", ["false", "true"])}
+      stageMinBlockSize="10rem"
+      labels={{ false: t("formFieldPage.prop.required.falseLabel"), true: t("formFieldPage.prop.required.trueLabel") }}
+    />
+
+    <UsagePreview
+      tree={formFieldTree(t)}
+      optionName="labelHidden"
+      title={t("formFieldPage.prop.labelHidden.title")}
+      description={t("formFieldPage.prop.labelHidden.body")}
+      explain={explain("labelHidden", ["false", "true"])}
+      stageMinBlockSize="10rem"
+      labels={{ false: t("formFieldPage.prop.labelHidden.falseLabel"), true: t("formFieldPage.prop.labelHidden.trueLabel") }}
+    />
+
+    <h3>{t("formFieldPage.showcaseTitle")}</h3>
+    <p set:html={t("formFieldPage.showcaseBody")} />
+    <UsagePreview tree={formFieldTree(t)} />
 
     <h3>{t("formFieldPage.wiringTitle")}</h3>
     <p set:html={t("formFieldPage.wiringBody")} />
@@ -55,6 +78,26 @@ const css = `@import "@skryensya/core/tokens.scss";
 
     <p set:html={t("formFieldPage.reactBody")} />
     <p set:html={t("component.reactNote")} />
+
+    <h3>{t("component.anatomy")}</h3>
+    <p set:html={t("formFieldPage.anatomyBody")} />
+    <ComponentPreview
+      tree={formFieldAnatomyTree(t)}
+      css={annotationDemoCss}
+      label={t("formFieldPage.anatomyPreviewLabel")}
+      screens={false}
+      hideSource
+      chrome={false}
+    />
+  </Fragment>
+
+  <Fragment slot="guidelines">
+    <p class="lede" set:html={t("formFieldPage.guidelinesLede")} />
+    <DoDont
+      title={t("formFieldPage.dd.hint.title")}
+      do={{ tree: formFieldDoHintTree(t), caption: t("formFieldPage.dd.hint.do") }}
+      dont={{ tree: formFieldDontHintTree(t), caption: t("formFieldPage.dd.hint.dont") }}
+    />
   </Fragment>
 
   <Fragment slot="install">

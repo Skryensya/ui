@@ -10,9 +10,13 @@ import ComponentPageShell from "./ComponentPageShell.astro";
 import AppearanceMenu from "../AppearanceMenu.astro";
 import CodeBlock from "../CodeBlock.astro";
 import ComponentPreview from "../ComponentPreview.astro";
+import UsagePreview from "../UsagePreview.astro";
+import DoDont from "../DoDont.astro";
 import {
   timeFieldAnatomyCss,
   timeFieldAnatomyHtml,
+  timeFieldDoCycleTree,
+  timeFieldDontCycleTree,
   timeFieldForced24Tree,
   timeFieldNativeTree,
   timeFieldQuarterHourTree,
@@ -31,6 +35,10 @@ const styles = `@import "@skryensya/core/components/button.css";
 const locale = getLocale(Astro.url);
 const t = useTranslations(locale);
 
+
+/* What each value of a property is for, read from this page's messages. Same model Badge uses. */
+const explain = (option: string, values: readonly string[]) =>
+  Object.fromEntries(values.map((value) => [value, t(`timeFieldPage.prop.${option}.${value}` as Parameters<typeof t>[0])]));
 ---
 
 <ComponentPageShell
@@ -48,20 +56,30 @@ const t = useTranslations(locale);
     <AppearanceMenu label={t("prefs.appearance")} values={["plain", "brutalist", "frosted"]} unavailable={{ tactile: t("prefs.appearanceTactileUnavailable") }} />
   </Fragment>
 
-  <Fragment slot="anatomy">
-    <p set:html={t("timeFieldPage.anatomyBody")} />
-    <ComponentPreview
-      html={timeFieldAnatomyHtml(t)}
-      css={timeFieldAnatomyCss}
-      label={t("timeFieldPage.anatomyPreviewLabel")}
-      screens={false}
-      hideSource
-      chrome={false}
-    />
-  </Fragment>
-
   <Fragment slot="usage">
     <p class="lede" set:html={t("timeFieldPage.lede")} />
+
+    <UsagePreview
+      tree={timeFieldDoCycleTree(t)}
+      optionName="appearance"
+      title={t("timeFieldPage.prop.appearance.title")}
+      description={t("timeFieldPage.prop.appearance.body")}
+      explain={explain("appearance", ["plain", "brutalist", "frosted"])}
+      stageMinBlockSize="9rem"
+    />
+
+    <UsagePreview
+      tree={timeFieldDoCycleTree(t)}
+      optionName="hourCycle"
+      title={t("timeFieldPage.prop.hourCycle.title")}
+      description={t("timeFieldPage.prop.hourCycle.body")}
+      explain={explain("hourCycle", ["h12", "h24"])}
+      stageMinBlockSize="9rem"
+      labels={{ h12: "12 h", h24: "24 h" }}
+    />
+
+    <h3>{t("timeFieldPage.showcaseTitle")}</h3>
+    <p set:html={t("timeFieldPage.showcaseBody")} />
     <ComponentPreview tree={timeFieldTree(t, { locale: "es-DO", name: "salida" })} label="TimeField" viewport="menu" />
 
     <h3>{t("component.contractNotesTitle")}</h3>
@@ -109,6 +127,26 @@ const t = useTranslations(locale);
       tree={timeFieldNativeTree(t, { name: "inicio" })}
       label={t("timeFieldPage.nativeLabel")}
       measure="12rem"
+    />
+
+    <h3>{t("component.anatomy")}</h3>
+    <p set:html={t("timeFieldPage.anatomyBody")} />
+    <ComponentPreview
+      html={timeFieldAnatomyHtml(t)}
+      css={timeFieldAnatomyCss}
+      label={t("timeFieldPage.anatomyPreviewLabel")}
+      screens={false}
+      hideSource
+      chrome={false}
+    />
+  </Fragment>
+
+  <Fragment slot="guidelines">
+    <p class="lede" set:html={t("timeFieldPage.guidelinesLede")} />
+    <DoDont
+      title={t("timeFieldPage.dd.cycle.title")}
+      do={{ tree: timeFieldDoCycleTree(t), caption: t("timeFieldPage.dd.cycle.do") }}
+      dont={{ tree: timeFieldDontCycleTree(t), caption: t("timeFieldPage.dd.cycle.dont") }}
     />
   </Fragment>
 

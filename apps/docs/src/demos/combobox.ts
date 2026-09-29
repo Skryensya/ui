@@ -117,3 +117,25 @@ export const comboboxAnatomyCss = `.sk-annotated-figure {
 .sk-annotated__subject {
   text-align: center;
 }`;
+
+/* One field, the specimen the `appearance` and `disabled` previews vary. */
+export const comboboxSingleTree = (t: Translate, locale: Locale = localeOf(t)): UsageTree => ({
+  ...comboboxTree(t, locale),
+  attrs: { style: "inline-size: min(100%, 18rem)" },
+});
+
+/* Don't: three options behind typing, where a select or radios show them all. */
+export const comboboxDontFewTree = (t: Translate): UsageTree => ({
+  contract: "combobox",
+  signature: "Combobox",
+  options: { name: "size", placeholder: t("demo.combobox.dd.sizePlaceholder") },
+  attrs: { style: "inline-size: 16rem" },
+  slots: {
+    label: t("demo.combobox.dd.size"),
+    items: [
+      { options: { value: "s" }, slots: { label: "S" } },
+      { options: { value: "m" }, slots: { label: "M" } },
+      { options: { value: "l" }, slots: { label: "L" } },
+    ],
+  },
+});

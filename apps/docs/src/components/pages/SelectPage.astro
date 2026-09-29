@@ -6,7 +6,17 @@ import ComponentPageShell from "./ComponentPageShell.astro";
 import AppearanceMenu from "../AppearanceMenu.astro";
 import CodeBlock from "../CodeBlock.astro";
 import ComponentPreview from "../ComponentPreview.astro";
-import { selectAnatomyCss, selectAnatomyHtml, selectNativeTree, selectTree } from "../../demos/select";
+import UsagePreview from "../UsagePreview.astro";
+import DoDont from "../DoDont.astro";
+import {
+  selectAnatomyCss,
+  selectAnatomyHtml,
+  selectDoTwoTree,
+  selectDontTwoTree,
+  selectNativeTree,
+  selectSingleTree,
+  selectTree,
+} from "../../demos/select";
 import { getLocale, useTranslations } from "../../i18n";
 
 const install = `pnpm add @skryensya/core @skryensya/vanilla`;
@@ -44,6 +54,10 @@ const forms = `<div
   </select>
   …
 </div>`;
+
+/* What each value of a property is for, read from this page's messages. Same model Badge uses. */
+const explain = (option: string, values: readonly string[]) =>
+  Object.fromEntries(values.map((value) => [value, t(`selectPage.prop.${option}.${value}` as Parameters<typeof t>[0])]));
 ---
 
 <ComponentPageShell
@@ -62,20 +76,29 @@ const forms = `<div
     <AppearanceMenu label={t("prefs.appearance")} values={["plain", "brutalist", "frosted"]} unavailable={{ tactile: t("prefs.appearanceTactileUnavailable") }} />
   </Fragment>
 
-  <Fragment slot="anatomy">
-    <p set:html={t("selectPage.anatomyBody")} />
-    <ComponentPreview
-      html={selectAnatomyHtml(t)}
-      css={selectAnatomyCss}
-      label={t("selectPage.anatomyPreviewLabel")}
-      screens={false}
-      hideSource
-      chrome={false}
-    />
-  </Fragment>
-
   <Fragment slot="usage">
     <p class="lede" set:html={t("selectPage.lede")} />
+
+    <UsagePreview
+      tree={selectSingleTree(t)}
+      optionName="variant"
+      title={t("selectPage.prop.variant.title")}
+      description={t("selectPage.prop.variant.body")}
+      explain={explain("variant", ["outline", "ghost"])}
+      stageMinBlockSize="8rem"
+    />
+
+    <UsagePreview
+      tree={selectSingleTree(t)}
+      optionName="appearance"
+      title={t("selectPage.prop.appearance.title")}
+      description={t("selectPage.prop.appearance.body")}
+      explain={explain("appearance", ["plain", "brutalist", "frosted"])}
+      stageMinBlockSize="8rem"
+    />
+
+    <h3>{t("selectPage.showcaseTitle")}</h3>
+    <p set:html={t("selectPage.showcaseBody")} />
     <p set:html={t("selectPage.nativeLinkBody")} />
     <ComponentPreview tree={selectTree(t)} label={t("selectPage.enhancedLabel")} viewport="menu" />
     <p set:html={t("selectPage.densityBody")} />
@@ -109,6 +132,26 @@ const forms = `<div
       <li set:html={t("selectPage.nativeContractItem3")} />
       <li set:html={t("selectPage.nativeContractItem4")} />
     </ul>
+
+    <h3>{t("component.anatomy")}</h3>
+    <p set:html={t("selectPage.anatomyBody")} />
+    <ComponentPreview
+      html={selectAnatomyHtml(t)}
+      css={selectAnatomyCss}
+      label={t("selectPage.anatomyPreviewLabel")}
+      screens={false}
+      hideSource
+      chrome={false}
+    />
+  </Fragment>
+
+  <Fragment slot="guidelines">
+    <p class="lede" set:html={t("selectPage.guidelinesLede")} />
+    <DoDont
+      title={t("selectPage.dd.two.title")}
+      do={{ tree: selectDoTwoTree(t), caption: t("selectPage.dd.two.do") }}
+      dont={{ tree: selectDontTwoTree(t), caption: t("selectPage.dd.two.dont") }}
+    />
   </Fragment>
 
   <Fragment slot="install">

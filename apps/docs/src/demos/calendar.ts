@@ -243,3 +243,14 @@ export const calendarMinMaxTree = (t: Translate): UsageTree => {
     slots: { label: t("demo.calendar.availability") },
   };
 };
+
+/* Don't: a range picked on two calendars, one per end. */
+export const calendarDontTwoTree = (t: Translate): UsageTree => ({
+  contract: "layout",
+  signature: "Inline",
+  options: { gap: "md", inlineAlign: "start" },
+  children: [
+    { contract: "calendar", signature: "Calendar", options: { locale: t("demo.calendar.locale") }, slots: { label: t("demo.datePicker.dd.start") } },
+    { contract: "calendar", signature: "Calendar", options: { locale: t("demo.calendar.locale") }, slots: { label: t("demo.datePicker.dd.end") } },
+  ],
+});

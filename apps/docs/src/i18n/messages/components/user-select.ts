@@ -48,6 +48,11 @@ export const userSelectMessages = {
     "userSelectPage.reactTitle": "React",
     "userSelectPage.reactBody":
       "Completamente controlado, como <code>Select</code>: <code>value</code>/<code>onValueChange</code> son del consumidor. Reutiliza el mismo <code>@zag-js/select</code> que usa <code>Select</code>, con <code>multiple</code> y <code>composite: false</code>.",
+    "userSelectPage.guidelinesLede": "UserSelect elige personas y las muestra como caras y un total.",
+    "userSelectPage.guide.use1": "Úsalo para asignar personas: responsables, revisores, miembros, destinatarios.",
+    "userSelectPage.guide.use2": "Úsalo cuando la lista es larga y se busca por nombre o correo.",
+    "userSelectPage.guide.avoid1": "Para una sola persona, un <a href=\"/es/componentes/select\">Select</a> o un <a href=\"/es/componentes/combobox\">Combobox</a> con avatares se lee mejor.",
+    "userSelectPage.guide.avoid2": "Si cada persona elegida tiene que verse y quitarse como una etiqueta, usa <a href=\"/es/componentes/tags-input\">TagsInput</a>.",
   },
   en: {
     "userSelectPage.label.term": "users",
@@ -98,5 +103,10 @@ export const userSelectMessages = {
     "userSelectPage.reactTitle": "React",
     "userSelectPage.reactBody":
       "Fully controlled, like <code>Select</code>: <code>value</code>/<code>onValueChange</code> stay the consumer's. It reuses the same <code>@zag-js/select</code> machine <code>Select</code> uses, with <code>multiple</code> and <code>composite: false</code>.",
+    "userSelectPage.guidelinesLede": "UserSelect picks people and shows them as faces and a count.",
+    "userSelectPage.guide.use1": "Use it to assign people: owners, reviewers, members, recipients.",
+    "userSelectPage.guide.use2": "Use it when the list is long and people search it by name or email.",
+    "userSelectPage.guide.avoid1": "For a single person, a <a href=\"/components/select\">Select</a> or a <a href=\"/components/combobox\">Combobox</a> with avatars reads better.",
+    "userSelectPage.guide.avoid2": "When each chosen person must stay visible and removable as a tag, use <a href=\"/components/tags-input\">TagsInput</a>.",
   },
 } as const;

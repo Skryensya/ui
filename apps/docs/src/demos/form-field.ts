@@ -75,3 +75,20 @@ export const formFieldAroundSelectTree = (t: Translate): UsageTree => ({
     slots: { items: planItems },
   },
 });
+
+/* Do/Don't: the format said up front in the hint, or only after it fails. */
+export const formFieldDoHintTree = (t: Translate): UsageTree => ({
+  contract: "form-field",
+  signature: "FormField",
+  slots: { label: t("demo.formField.dd.date"), hint: t("demo.formField.dd.dateHint") },
+  attrs: { style: "inline-size: 16rem" },
+  children: { contract: "input", signature: "Input", options: { name: "date-hint" } },
+});
+
+export const formFieldDontHintTree = (t: Translate): UsageTree => ({
+  contract: "form-field",
+  signature: "FormField",
+  slots: { label: t("demo.formField.dd.date"), error: t("demo.formField.dd.dateError") },
+  attrs: { style: "inline-size: 16rem" },
+  children: { contract: "input", signature: "Input", options: { name: "date-error" } },
+});
