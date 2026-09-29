@@ -68,6 +68,11 @@ export type Realization = {
    */
   nested?: true;
   /**
+   * How wide a component that fills its container (`inline-size: 100%`) is drawn: alone on a page it
+   * has nothing to fill. Instances are stretched to their container as usual.
+   */
+  width?: number;
+  /**
    * Pseudo-classes held on every cell: a SkipLink is drawn focused, the one state anyone sees it in.
    */
   simulate?: readonly string[];
