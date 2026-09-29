@@ -1,0 +1,42 @@
+<!doctype html>
+<meta charset="utf-8" />
+<style>
+  body { font: 12px/1.4 system-ui, sans-serif; margin: 12px; color: var(--figma-color-text); background: var(--figma-color-bg); }
+  .row { display: flex; gap: 8px; margin-block-end: 8px; }
+  button { font: inherit; padding: 6px 12px; border-radius: 6px; border: 1px solid var(--figma-color-border); background: var(--figma-color-bg-secondary); color: inherit; cursor: pointer; }
+  button.primary { background: var(--figma-color-bg-brand); color: var(--figma-color-text-onbrand); border-color: transparent; }
+  button:disabled { opacity: 0.5; cursor: default; }
+  pre { white-space: pre-wrap; margin: 0; font: 11px/1.45 ui-monospace, monospace; }
+  .muted { color: var(--figma-color-text-secondary); }
+</style>
+<p class="muted" id="source">Reading the manifest…</p>
+<div class="row">
+  <button class="primary" id="sync">Sync Button</button>
+  <button id="dry">Dry run</button>
+</div>
+<pre id="out"></pre>
+<script>
+  const out = document.getElementById("out");
+  const buttons = [document.getElementById("sync"), document.getElementById("dry")];
+  const busy = (on) => buttons.forEach((b) => (b.disabled = on));
+  document.getElementById("sync").onclick = () => { busy(true); out.textContent = "Syncing…"; parent.postMessage({ pluginMessage: { type: "sync" } }, "*"); };
+  document.getElementById("dry").onclick = () => { busy(true); out.textContent = "Dry run…"; parent.postMessage({ pluginMessage: { type: "dry-run" } }, "*"); };
+  onmessage = ({ data }) => {
+    const m = data.pluginMessage;
+    if (!m) return;
+    if (m.type === "ready") document.getElementById("source").textContent = `manifest ${m.sourceHash}`;
+    if (m.type === "progress") out.textContent = m.text;
+    if (m.type === "error") { busy(false); out.textContent = `ERROR\n${m.text}`; }
+    if (m.type === "report") {
+      busy(false);
+      const lines = m.entries.map((e) => `${e.action.padEnd(8)} ${e.subject}${e.detail ? `  (${e.detail})` : ""}`);
+      out.textContent = [
+        `${m.apply ? "SYNC" : "DRY RUN"}: ${m.outcome}`,
+        `${m.writes} writes · ${m.seconds}s · manifest ${m.sourceHash}`,
+        Object.entries(m.counts).map(([k, v]) => `${k} ${v}`).join(" · "),
+        "",
+        ...lines,
+      ].join("\n");
+    }
+  };
+</script>
