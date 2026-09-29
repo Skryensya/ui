@@ -2,6 +2,7 @@
 import ComponentPageShell from "./ComponentPageShell.astro";
 import CodeBlock from "../CodeBlock.astro";
 import ComponentPreview from "../ComponentPreview.astro";
+import UsagePreview from "../UsagePreview.astro";
 import {
   marqueeAnatomyTree,
   marqueeAutoplayTree,
@@ -28,6 +29,10 @@ const vanilla = `import "@skryensya/vanilla/auto";`;
 const react = emitReactSource(marqueeAutoplayTree(), {
   component: "MarqueeExample",
 }).component;
+
+/* What each value of a property is for, read from this page's messages. Same model Badge uses. */
+const explain = (option: string, values: readonly string[]) =>
+  Object.fromEntries(values.map((value) => [value, t(`marquee.prop.${option}.${value}` as Parameters<typeof t>[0])]));
 ---
 
 <ComponentPageShell
@@ -37,23 +42,29 @@ const react = emitReactSource(marqueeAutoplayTree(), {
   contractId="marquee"
   testFiles={["packages/react/src/components/marquee.test.tsx", "packages/vanilla/src/components/marquee.test.ts"]}}
 >
-  <Fragment slot="anatomy">
-    <p set:html={t("marquee.anatomyBody")} />
-    <ComponentPreview
-      tree={marqueeAnatomyTree(t)}
-      css={annotationDemoCss}
-      label={t("marquee.anatomyPreviewLabel")}
-      screens={false}
-      hideSource
-      chrome={false}
-    />
-  </Fragment>
-
   <Fragment slot="usage">
     <p class="lede" set:html={t("marquee.lede")} />
-    <h3>{t("marquee.whenTitle")}</h3>
-    <p set:html={t("marquee.whenBody")} />
 
+    <UsagePreview
+      tree={marqueeManualTree(t)}
+      optionName="speed"
+      title={t("marquee.prop.speed.title")}
+      description={t("marquee.prop.speed.body")}
+      explain={explain("speed", ["slow", "normal", "fast"])}
+      stageMinBlockSize="9rem"
+    />
+
+    <UsagePreview
+      tree={marqueeManualTree(t)}
+      optionName="fade"
+      title={t("marquee.prop.fade.title")}
+      description={t("marquee.prop.fade.body")}
+      explain={explain("fade", ["edges", "none"])}
+      stageMinBlockSize="9rem"
+    />
+
+    <h3>{t("marquee.showcaseTitle")}</h3>
+    <p set:html={t("marquee.showcaseBody")} />
     <h3>{t("marquee.manualTitle")}</h3>
     <p set:html={t("marquee.manualBody")} />
     <ComponentPreview tree={marqueeManualTree(t)} label={t("marquee.manualLabel")} minHeight="9rem" />
@@ -91,6 +102,23 @@ const react = emitReactSource(marqueeAutoplayTree(), {
 
     <h3>{t("marquee.optionsTitle")}</h3>
     <p set:html={t("marquee.optionsBody")} />
+
+    <h3>{t("component.anatomy")}</h3>
+    <p set:html={t("marquee.anatomyBody")} />
+    <ComponentPreview
+      tree={marqueeAnatomyTree(t)}
+      css={annotationDemoCss}
+      label={t("marquee.anatomyPreviewLabel")}
+      screens={false}
+      hideSource
+      chrome={false}
+    />
+  </Fragment>
+
+  <Fragment slot="guidelines">
+    <p class="lede" set:html={t("marquee.guidelinesLede")} />
+    <h3>{t("marquee.whenTitle")}</h3>
+    <p set:html={t("marquee.whenBody")} />
   </Fragment>
 
   <Fragment slot="install">

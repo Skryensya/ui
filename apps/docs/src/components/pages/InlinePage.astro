@@ -6,6 +6,7 @@ import { inlineAnatomyTree } from "../../demos/layout-anatomy";
 import ComponentPageShell from "./ComponentPageShell.astro";
 import CodeBlock from "../CodeBlock.astro";
 import ComponentPreview from "../ComponentPreview.astro";
+import UsagePreview from "../UsagePreview.astro";
 import { inlineCardFloorTree, inlineTree } from "../../demos/layout";
 import { getLocale, useTranslations } from "../../i18n";
 
@@ -33,27 +34,15 @@ const t = useTranslations(getLocale(Astro.url));
     },
   ]}
 >
-  <Fragment slot="anatomy">
-    <p set:html={t("inlinePage.anatomyBody")} />
-    <ComponentPreview
-      tree={inlineAnatomyTree(t)}
-      css={annotationDemoCss}
-      label={t("inlinePage.anatomyPreviewLabel")}
-      screens={false}
-      hideSource
-      chrome={false}
-    />
-  </Fragment>
-
   <Fragment slot="usage">
     <p class="lede" set:html={t("inlinePage.lede")} />
+
+    <h3>{t("inlinePage.showcaseTitle")}</h3>
+    <p set:html={t("inlinePage.showcaseBody")} />
     <ComponentPreview tree={inlineTree(t)} label={t("inlinePage.previewLabel")} note={t("inlinePage.previewNote")} />
     <h3>{t("inlinePage.floorTitle")}</h3>
     <p set:html={t("inlinePage.floorBody")} />
     <ComponentPreview tree={inlineCardFloorTree(t)} label={t("inlinePage.floorPreviewLabel")} note={t("inlinePage.floorPreviewNote")} />
-
-    <h3>{t("inlinePage.whereTitle")}</h3>
-    <p set:html={t("inlinePage.whereBody")} />
 
     <h3>{t("inlinePage.htmlTitle")}</h3>
     <p set:html={t("inlinePage.htmlBody")} />
@@ -69,6 +58,23 @@ const t = useTranslations(getLocale(Astro.url));
       <li set:html={t("inlinePage.contractItem5")} />
       <li set:html={t("inlinePage.contractItem6")} />
     </ul>
+
+    <h3>{t("component.anatomy")}</h3>
+    <p set:html={t("inlinePage.anatomyBody")} />
+    <ComponentPreview
+      tree={inlineAnatomyTree(t)}
+      css={annotationDemoCss}
+      label={t("inlinePage.anatomyPreviewLabel")}
+      screens={false}
+      hideSource
+      chrome={false}
+    />
+  </Fragment>
+
+  <Fragment slot="guidelines">
+    <p class="lede" set:html={t("inlinePage.guidelinesLede")} />
+    <h3>{t("inlinePage.whereTitle")}</h3>
+    <p set:html={t("inlinePage.whereBody")} />
   </Fragment>
 
   <Fragment slot="install">

@@ -13,8 +13,8 @@ import { treeStory, withCss, type Meta, type StoryObj } from "../tree-story";
 export default { title: "Components/Content/Sticker", tags: ["autodocs"] } satisfies Meta;
 
 export const Anatomy: StoryObj = treeStory(demos.stickerAnatomyTree, { decorators: [withCss(annotationDemoCss)] });
+export const Placement: StoryObj = treeStory(demos.stickerPlacementTree);
 export const Default: StoryObj = treeStory(demos.stickerTree);
 export const States: StoryObj = treeStory(demos.stickerStatesTree);
-export const Placement: StoryObj = treeStory(demos.stickerPlacementTree);
 export const Origins: StoryObj = treeStory(demos.stickerOriginsTree);
 export const Hooks: StoryObj = treeStory(demos.stickerHooksTree);

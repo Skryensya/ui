@@ -59,6 +59,14 @@ export const stickerMessages = {
       "Con <code>prefers-reduced-motion</code> los estados se mantienen y el recorrido entre ellos desaparece: el cambio ocurre de inmediato.",
     "sticker.notesItem4":
       "Los huecos más angostos que el doble del borde se rellenan, igual que con un troquel real.",
+    "sticker.prop.state.title": "Estado",
+    "sticker.prop.state.body": "El <code>state</code> dice en qué momento está la calcomanía. Aquí cambia la primera.",
+    "sticker.prop.state.idle": "Usa <code>idle</code>, el default, para una calcomanía puesta, sin interacción.",
+    "sticker.prop.state.peeled": "Usa <code>peeled</code> para una esquina levantada que invita a tocarla.",
+    "sticker.prop.state.applied": "Usa <code>applied</code> para el momento en que se pega, con su pequeño rebote.",
+    "sticker.showcaseTitle": "Showcases",
+    "sticker.showcaseBody": "Calcomanías en sus tres estados, pegadas sobre otros elementos, despegadas desde cada esquina y ajustadas con variables.",
+    "sticker.guidelinesLede": "Sticker es un adorno que se despega y se vuelve a pegar.",
   },
   en: {
     "demo.sticker.groupLabel": "Three stickers, one per state",
@@ -119,5 +127,13 @@ export const stickerMessages = {
     "sticker.notesItem3":
       "Under <code>prefers-reduced-motion</code> the states stay and the travel between them goes: the change happens at once.",
     "sticker.notesItem4": "Holes narrower than twice the edge fill in, as they would with a real cutting die.",
+    "sticker.prop.state.title": "State",
+    "sticker.prop.state.body": "<code>state</code> says which moment the sticker is in. Here the first one changes.",
+    "sticker.prop.state.idle": "Use <code>idle</code>, the default, for a sticker at rest, with no interaction.",
+    "sticker.prop.state.peeled": "Use <code>peeled</code> for a lifted corner that invites a touch.",
+    "sticker.prop.state.applied": "Use <code>applied</code> for the moment it sticks, with its small bounce.",
+    "sticker.showcaseTitle": "Showcases",
+    "sticker.showcaseBody": "Stickers in their three states, placed over other elements, peeled from each corner, and tuned with variables.",
+    "sticker.guidelinesLede": "Sticker is a decoration that peels off and sticks back.",
   },
 } as const;

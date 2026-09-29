@@ -5,6 +5,7 @@ import { layoutAnatomyFillCss, layoutGridAnatomyTree } from "../../demos/layout-
 import ComponentPageShell from "./ComponentPageShell.astro";
 import CodeBlock from "../CodeBlock.astro";
 import ComponentPreview from "../ComponentPreview.astro";
+import UsagePreview from "../UsagePreview.astro";
 import { layoutGridTree, layoutGridRailStartTree, layoutGridRailsBothTree, layoutGridTocTree } from "../../demos/layout";
 import { getLocale, useTranslations } from "../../i18n";
 
@@ -112,20 +113,11 @@ const previewCss = `.sk-layout-grid {
     },
   ]}
 >
-  <Fragment slot="anatomy">
-    <p set:html={t("layoutGridPage.anatomyBody")} />
-    <ComponentPreview
-      tree={layoutGridAnatomyTree(t)}
-      css={layoutAnatomyFillCss}
-      label={t("layoutGridPage.anatomyPreviewLabel")}
-      screens={false}
-      hideSource
-      chrome={false}
-    />
-  </Fragment>
-
   <Fragment slot="usage">
     <p class="lede" set:html={t("layoutGridPage.lede")} />
+
+    <h3>{t("layoutGridPage.showcaseTitle")}</h3>
+    <p set:html={t("layoutGridPage.showcaseBody")} />
     <ComponentPreview tree={layoutGridTree(t)} css={previewCss} label="Layout Grid" flush zoomedDesktop />
     <h3>{t("layoutGridPage.levelsTitle")}</h3>
     <p set:html={t("layoutGridPage.levelsBody")} />
@@ -156,6 +148,26 @@ const previewCss = `.sk-layout-grid {
     <h3>{t("layoutGridPage.htmlTitle")}</h3>
     <p set:html={t("layoutGridPage.htmlBody")} />
     <p set:html={t("layoutGridPage.reactBody")} />
+
+    <h3>{t("component.anatomy")}</h3>
+    <p set:html={t("layoutGridPage.anatomyBody")} />
+    <ComponentPreview
+      tree={layoutGridAnatomyTree(t)}
+      css={layoutAnatomyFillCss}
+      label={t("layoutGridPage.anatomyPreviewLabel")}
+      screens={false}
+      hideSource
+      chrome={false}
+    />
+  </Fragment>
+
+  <Fragment slot="guidelines">
+    <p class="lede" set:html={t("layoutGridPage.guidelinesLede")} />
+    <ul>
+      <li set:html={t("layoutGridPage.guide.use1")} />
+      <li set:html={t("layoutGridPage.guide.use2")} />
+      <li set:html={t("layoutGridPage.guide.avoid1")} />
+    </ul>
   </Fragment>
 
   <Fragment slot="install">

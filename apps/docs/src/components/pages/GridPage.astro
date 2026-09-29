@@ -6,6 +6,7 @@ import { gridAnatomyTree } from "../../demos/layout-anatomy";
 import ComponentPageShell from "./ComponentPageShell.astro";
 import CodeBlock from "../CodeBlock.astro";
 import ComponentPreview from "../ComponentPreview.astro";
+import UsagePreview from "../UsagePreview.astro";
 import { gridMulticolTree, gridResponsiveTree, gridTree } from "../../demos/layout";
 import { getLocale, useTranslations } from "../../i18n";
 
@@ -71,6 +72,10 @@ const responsiveCss = `/* data-responsive: la misma progresión de carriles, per
     grid-column: span 2;
   }
 }`;
+
+/* What each value of a property is for, read from this page's messages. Same model Badge uses. */
+const explain = (option: string, values: readonly string[]) =>
+  Object.fromEntries(values.map((value) => [value, t(`grid.prop.${option}.${value}` as Parameters<typeof t>[0])]));
 ---
 
 <ComponentPageShell
@@ -94,33 +99,43 @@ const responsiveCss = `/* data-responsive: la misma progresión de carriles, per
     },
   ]}
 >
-  <Fragment slot="anatomy">
-    <p set:html={t("grid.anatomyBody")} />
-    <ComponentPreview
-      tree={gridAnatomyTree(t)}
-      css={annotationDemoCss}
-      label={t("grid.anatomyPreviewLabel")}
-      screens={false}
-      hideSource
-      chrome={false}
-    />
-  </Fragment>
-
   <Fragment slot="usage">
     <p class="lede" set:html={t("grid.lede")} />
-    <ComponentPreview tree={gridTree(t)} label="Grid" />
+
+    <UsagePreview
+      tree={gridTree(t)}
+      optionName="columns"
+      title={t("grid.prop.columns.title")}
+      description={t("grid.prop.columns.body")}
+      explain={explain("columns", ["1", "2", "3", "4", "5"])}
+      stageMinBlockSize="14rem"
+    />
+
+    <UsagePreview
+      tree={gridTree(t)}
+      optionName="gap"
+      title={t("grid.prop.gap.title")}
+      description={t("grid.prop.gap.body")}
+      explain={explain("gap", ["none", "xs", "sm", "md", "lg", "xl"])}
+      stageMinBlockSize="14rem"
+      labels={{ none: "none", xs: "xs", sm: "sm", md: "md", lg: "lg", xl: "xl" }}
+    />
+
+    <h3>{t("grid.showcaseTitle")}</h3>
+    <p set:html={t("grid.showcaseBody")} />
+    <UsagePreview tree={gridTree(t)} />
     <h3>{t("grid.multicolTitle")}</h3>
     <p set:html={t("grid.multicolBody1")} />
     <p set:html={t("grid.multicolBody2")} />
     <CodeBlock code={multicolCss} label="patterns/layout.css" />
-    <ComponentPreview tree={gridMulticolTree(t)} label={t("grid.multicolLabel")} />
+    <UsagePreview tree={gridMulticolTree(t)} />
     <p set:html={t("grid.multicolBody3")} />
 
     <h3>{t("grid.responsiveTitle")}</h3>
     <p set:html={t("grid.responsiveBody1")} />
     <p set:html={t("grid.responsiveBody2")} />
     <CodeBlock code={responsiveCss} label="patterns/layout.css" />
-    <ComponentPreview tree={gridResponsiveTree(t)} label={t("grid.responsiveLabel")} />
+    <UsagePreview tree={gridResponsiveTree(t)} />
 
     <h3>{t("grid.htmlTitle")}</h3>
     <p set:html={t("grid.htmlBody")} />
@@ -134,6 +149,26 @@ const responsiveCss = `/* data-responsive: la misma progresión de carriles, per
       <li set:html={t("grid.contractItem3")} />
       <li set:html={t("grid.contractItem4")} />
       <li set:html={t("grid.contractItem5")} />
+    </ul>
+
+    <h3>{t("component.anatomy")}</h3>
+    <p set:html={t("grid.anatomyBody")} />
+    <ComponentPreview
+      tree={gridAnatomyTree(t)}
+      css={annotationDemoCss}
+      label={t("grid.anatomyPreviewLabel")}
+      screens={false}
+      hideSource
+      chrome={false}
+    />
+  </Fragment>
+
+  <Fragment slot="guidelines">
+    <p class="lede" set:html={t("grid.guidelinesLede")} />
+    <ul>
+      <li set:html={t("grid.guide.use1")} />
+      <li set:html={t("grid.guide.use2")} />
+      <li set:html={t("grid.guide.avoid1")} />
     </ul>
   </Fragment>
 

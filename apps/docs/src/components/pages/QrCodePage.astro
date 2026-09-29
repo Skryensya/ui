@@ -10,6 +10,7 @@
  */
 import ComponentPageShell from "./ComponentPageShell.astro";
 import ComponentPreview from "../ComponentPreview.astro";
+import UsagePreview from "../UsagePreview.astro";
 import CodeBlock from "../CodeBlock.astro";
 import {
   qrCodeAnatomyTree,
@@ -100,6 +101,10 @@ if (code.hasAttribute("data-sk-qr-error")) showCopyableLinkInstead();`;
 
 const styles = `@import "@skryensya/core/tokens.scss";
 @import "@skryensya/core/components/qr-code.css";`;
+
+/* What each value of a property is for, read from this page's messages. Same model Badge uses. */
+const explain = (option: string, values: readonly string[]) =>
+  Object.fromEntries(values.map((value) => [value, t(`qrCodePage.prop.${option}.${value}` as Parameters<typeof t>[0])]));
 ---
 
 <ComponentPageShell
@@ -113,20 +118,39 @@ const styles = `@import "@skryensya/core/tokens.scss";
     "packages/react/src/components/qr-code.test.tsx",
   ]}}
 >
-  <Fragment slot="anatomy">
-    <p set:html={t("qrCodePage.anatomyBody")} />
-    <ComponentPreview
-      tree={qrCodeAnatomyTree(t, locale)}
-      css={annotationDemoCss}
-      label={t("qrCodePage.anatomyPreviewLabel")}
-      screens={false}
-      hideSource
-      chrome={false}
-    />
-  </Fragment>
-
   <Fragment slot="usage">
     <p class="lede" set:html={t("qrCodePage.lede")} />
+
+    <UsagePreview
+      tree={qrCodeTree(locale)}
+      optionName="moduleShape"
+      title={t("qrCodePage.prop.moduleShape.title")}
+      description={t("qrCodePage.prop.moduleShape.body")}
+      explain={explain("moduleShape", ["square", "dot", "rounded"])}
+      stageMinBlockSize="14rem"
+    />
+
+    <UsagePreview
+      tree={qrCodeTree(locale)}
+      optionName="qrSize"
+      title={t("qrCodePage.prop.qrSize.title")}
+      description={t("qrCodePage.prop.qrSize.body")}
+      explain={explain("qrSize", ["sm", "md", "lg", "xl"])}
+      stageMinBlockSize="18rem"
+      labels={{ sm: "sm", md: "md", lg: "lg", xl: "xl" }}
+    />
+
+    <UsagePreview
+      tree={qrCodeTree(locale)}
+      optionName="tone"
+      title={t("qrCodePage.prop.tone.title")}
+      description={t("qrCodePage.prop.tone.body")}
+      explain={explain("tone", ["neutral", "accent", "success", "warning", "danger", "info"])}
+      stageMinBlockSize="14rem"
+    />
+
+    <h3>{t("qrCodePage.showcaseTitle")}</h3>
+    <p set:html={t("qrCodePage.showcaseBody")} />
     <h3>{t("qrCodePage.basicTitle")}</h3>
     <p set:html={t("qrCodePage.basicBody")} />
     <ComponentPreview tree={qrCodeTree(locale)} label={t("qrCodePage.basicLabel")} note={t("qrCodePage.basicNote")} />
@@ -221,6 +245,26 @@ const styles = `@import "@skryensya/core/tokens.scss";
       <li set:html={t("qrCodePage.limitsItem1")} />
       <li set:html={t("qrCodePage.limitsItem2")} />
       <li set:html={t("qrCodePage.limitsItem3")} />
+    </ul>
+
+    <h3>{t("component.anatomy")}</h3>
+    <p set:html={t("qrCodePage.anatomyBody")} />
+    <ComponentPreview
+      tree={qrCodeAnatomyTree(t, locale)}
+      css={annotationDemoCss}
+      label={t("qrCodePage.anatomyPreviewLabel")}
+      screens={false}
+      hideSource
+      chrome={false}
+    />
+  </Fragment>
+
+  <Fragment slot="guidelines">
+    <p class="lede" set:html={t("qrCodePage.guidelinesLede")} />
+    <ul>
+      <li set:html={t("qrCodePage.guide.use1")} />
+      <li set:html={t("qrCodePage.guide.use2")} />
+      <li set:html={t("qrCodePage.guide.avoid1")} />
     </ul>
   </Fragment>
 

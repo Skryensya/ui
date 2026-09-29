@@ -1,6 +1,7 @@
 ---
 import ComponentPageShell from "./ComponentPageShell.astro";
 import ComponentPreview from "../ComponentPreview.astro";
+import UsagePreview from "../UsagePreview.astro";
 import {
   fadeBottomTree,
   fadeColorTree,
@@ -63,6 +64,10 @@ function sync() {
 range.addEventListener("input", sync);
 sync();
 `;
+
+/* What each value of a property is for, read from this page's messages. Same model Badge uses. */
+const explain = (option: string, values: readonly string[]) =>
+  Object.fromEntries(values.map((value) => [value, t(`fadeEdge.prop.${option}.${value}` as Parameters<typeof t>[0])]));
 ---
 
 <ComponentPageShell
@@ -71,32 +76,25 @@ sync();
   badge={t("fadeEdge.betaBadge")}
   contractId="fade-edge"
 >
-  <Fragment slot="anatomy">
-    <p set:html={t("fadeEdge.anatomyBody")} />
-    <ComponentPreview
-      tree={fadeEdgeAnatomyTree(t)}
-      css={annotationDemoCss}
-      label={t("fadeEdge.anatomyPreviewLabel")}
-      screens={false}
-      hideSource
-      chrome={false}
-    />
-  </Fragment>
-
   <Fragment slot="usage">
     <p class="lede" set:html={t("fadeEdge.lede")} />
 
-    <h3>{t("fadeEdge.whenTitle")}</h3>
-    <ul>
-      <li set:html={t("fadeEdge.whenItem1")} />
-      <li set:html={t("fadeEdge.whenItem2")} />
-      <li set:html={t("fadeEdge.whenItem3")} />
-      <li set:html={t("fadeEdge.whenItem4")} />
-    </ul>
+    <UsagePreview
+      tree={fadeBottomTree}
+      target={["children", 0]}
+      optionName="direction"
+      title={t("fadeEdge.prop.direction.title")}
+      description={t("fadeEdge.prop.direction.body")}
+      explain={explain("direction", ["to-bottom", "to-top", "to-right", "to-left"])}
+      stageMinBlockSize="14rem"
+    />
+
+    <h3>{t("fadeEdge.showcaseTitle")}</h3>
+    <p set:html={t("fadeEdge.showcaseBody")} />
 
     <h3>{t("fadeEdge.bottomTitle")}</h3>
     <p set:html={t("fadeEdge.bottomBody")} />
-    <ComponentPreview tree={fadeBottomTree} label={t("fadeEdge.bottomLabel")} />
+    <UsagePreview tree={fadeBottomTree} />
 
     <h3>{t("fadeEdge.topTitle")}</h3>
     <p set:html={t("fadeEdge.topBody")} />
@@ -104,7 +102,7 @@ sync();
 
     <h3>{t("fadeEdge.rightTitle")}</h3>
     <p set:html={t("fadeEdge.rightBody")} />
-    <ComponentPreview tree={fadeRightTree} label={t("fadeEdge.rightLabel")} />
+    <UsagePreview tree={fadeRightTree} />
 
     <h3>{t("fadeEdge.leftTitle")}</h3>
     <p set:html={t("fadeEdge.leftBody")} />
@@ -112,7 +110,7 @@ sync();
 
     <h3>{t("fadeEdge.colorTitle")}</h3>
     <p set:html={t("fadeEdge.colorBody")} />
-    <ComponentPreview tree={fadeColorTree} label={t("fadeEdge.colorLabel")} />
+    <UsagePreview tree={fadeColorTree} />
 
     <h3>{t("fadeEdge.intensityTitle")}</h3>
     <p set:html={t("fadeEdge.intensityBody")} />
@@ -124,7 +122,7 @@ sync();
 
     <h3>{t("fadeEdge.scrollAwareTitle")}</h3>
     <p set:html={t("fadeEdge.scrollAwareBody")} />
-    <ComponentPreview tree={fadeScrollAwareTree} label={t("fadeEdge.scrollAwareLabel")} />
+    <UsagePreview tree={fadeScrollAwareTree} />
 
     <h3>{t("fadeEdge.apiTitle")}</h3>
     <ul>
@@ -141,6 +139,28 @@ sync();
       <li set:html={t("fadeEdge.notesItem3")} />
       <li set:html={t("fadeEdge.notesItem4")} />
       <li set:html={t("fadeEdge.notesItem5")} />
+    </ul>
+
+    <h3>{t("component.anatomy")}</h3>
+    <p set:html={t("fadeEdge.anatomyBody")} />
+    <ComponentPreview
+      tree={fadeEdgeAnatomyTree(t)}
+      css={annotationDemoCss}
+      label={t("fadeEdge.anatomyPreviewLabel")}
+      screens={false}
+      hideSource
+      chrome={false}
+    />
+  </Fragment>
+
+  <Fragment slot="guidelines">
+    <p class="lede" set:html={t("fadeEdge.guidelinesLede")} />
+    <h3>{t("fadeEdge.whenTitle")}</h3>
+    <ul>
+      <li set:html={t("fadeEdge.whenItem1")} />
+      <li set:html={t("fadeEdge.whenItem2")} />
+      <li set:html={t("fadeEdge.whenItem3")} />
+      <li set:html={t("fadeEdge.whenItem4")} />
     </ul>
   </Fragment>
 </ComponentPageShell>

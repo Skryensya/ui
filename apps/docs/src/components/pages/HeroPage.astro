@@ -2,6 +2,7 @@
 import ComponentPageShell from "./ComponentPageShell.astro";
 import AppearanceMenu from "../AppearanceMenu.astro";
 import ComponentPreview from "../ComponentPreview.astro";
+import UsagePreview from "../UsagePreview.astro";
 import {
   heroAppBadgesTree,
   heroAudienceTabsTree,
@@ -83,6 +84,10 @@ const heroCodeTree = heroCodePreviewTree(t);
 const heroVideoTree = heroVideoDemoTree(t);
 const heroTabsTree = heroAudienceTabsTree(t);
 const heroQuoteTree = heroTestimonialTree(t);
+
+/* What each value of a property is for, read from this page's messages. Same model Badge uses. */
+const explain = (option: string, values: readonly string[]) =>
+  Object.fromEntries(values.map((value) => [value, t(`hero.prop.${option}.${value}` as Parameters<typeof t>[0])]));
 ---
 
 <ComponentPageShell
@@ -112,32 +117,29 @@ const heroQuoteTree = heroTestimonialTree(t);
     <AppearanceMenu label={t("prefs.appearance")} values={["plain", "brutalist", "frosted"]} unavailable={{ tactile: t("prefs.appearanceTactileUnavailable") }} />
   </Fragment>
 
-  <Fragment slot="anatomy">
-    <p set:html={t("hero.anatomyBody")} />
-    <ComponentPreview
-      tree={heroAnatomyTree(t)}
-      css={layoutAnatomyFillCss}
-      label={t("hero.anatomyPreviewLabel")}
-      screens={false}
-      hideSource
-      chrome={false}
-    />
-  </Fragment>
-
   <Fragment slot="usage">
     <p class="lede" set:html={t("hero.lede")} />
 
-    <h3>{t("hero.whenTitle")}</h3>
-    <p set:html={t("hero.whenBody1")} />
-    <p set:html={t("hero.whenBody2")} />
-    <p set:html={t("hero.whenBody3")} />
+    <UsagePreview
+      tree={heroTree(t)}
+      optionName="align"
+      title={t("hero.prop.align.title")}
+      description={t("hero.prop.align.body")}
+      explain={explain("align", ["start", "center"])}
+      stageMinBlockSize="20rem"
+    />
 
-    <h3>{t("hero.contentRulesTitle")}</h3>
-    <ul>
-      <li set:html={t("hero.contentRule1")} />
-      <li set:html={t("hero.contentRule2")} />
-      <li set:html={t("hero.contentRule3")} />
-    </ul>
+    <UsagePreview
+      tree={heroTree(t)}
+      optionName="surface"
+      title={t("hero.prop.surface.title")}
+      description={t("hero.prop.surface.body")}
+      explain={explain("surface", ["none", "sunken", "surface", "raised"])}
+      stageMinBlockSize="20rem"
+    />
+
+    <h3>{t("hero.showcaseTitle")}</h3>
+    <p set:html={t("hero.showcaseBody")} />
 
     <h3>{t("hero.htmlTitle")}</h3>
     {/*
@@ -156,55 +158,55 @@ const heroQuoteTree = heroTestimonialTree(t);
      */}
     <h4>{t("hero.patternPitchTitle")}</h4>
     <p>{t("hero.patternPitchDescription")}</p>
-    <ComponentPreview tree={heroPitchTree} label="Pitch with actions" />
+    <UsagePreview tree={heroPitchTree} />
 
     <h4>{t("hero.patternCenteredTitle")}</h4>
     <p>{t("hero.patternCenteredDescription")}</p>
-    <ComponentPreview tree={heroCenteredMinimalTree} label="Centered, minimal" />
+    <UsagePreview tree={heroCenteredMinimalTree} />
 
     <h4>{t("hero.patternEyebrowTitle")}</h4>
     <p>{t("hero.patternEyebrowDescription")}</p>
-    <ComponentPreview tree={heroEyebrowLabelTree} label="With an eyebrow label" />
+    <UsagePreview tree={heroEyebrowLabelTree} />
 
     <h4>{t("hero.patternSplitTitle")}</h4>
     <p>{t("hero.patternSplitDescription")}</p>
-    <ComponentPreview tree={heroSplitMediaTree} label="Split with media" />
+    <UsagePreview tree={heroSplitMediaTree} />
 
     <h4>{t("hero.patternProofTitle")}</h4>
     <p>{t("hero.patternProofDescription")}</p>
-    <ComponentPreview tree={heroProofTree} label="With social proof" />
+    <UsagePreview tree={heroProofTree} />
 
     <h4>{t("hero.patternEmailTitle")}</h4>
     <p>{t("hero.patternEmailDescription")}</p>
-    <ComponentPreview tree={heroEmailTree} label="With email capture" />
+    <UsagePreview tree={heroEmailTree} />
 
     <h4>{t("hero.patternAppBadgesTitle")}</h4>
     <p>{t("hero.patternAppBadgesDescription")}</p>
-    <ComponentPreview tree={heroAppTree} label="With app store badges" />
+    <UsagePreview tree={heroAppTree} />
 
     <h4>{t("hero.patternLogoWallTitle")}</h4>
     <p>{t("hero.patternLogoWallDescription")}</p>
-    <ComponentPreview tree={heroLogosTree} label="With a logo wall" />
+    <UsagePreview tree={heroLogosTree} />
 
     <h4>{t("hero.patternPricingTitle")}</h4>
     <p>{t("hero.patternPricingDescription")}</p>
-    <ComponentPreview tree={heroPricingTree} label="With a pricing toggle" />
+    <UsagePreview tree={heroPricingTree} />
 
     <h4>{t("hero.patternCodePreviewTitle")}</h4>
     <p>{t("hero.patternCodePreviewDescription")}</p>
-    <ComponentPreview tree={heroCodeTree} label="With a code preview" />
+    <UsagePreview tree={heroCodeTree} />
 
     <h4>{t("hero.patternVideoDemoTitle")}</h4>
     <p>{t("hero.patternVideoDemoDescription")}</p>
-    <ComponentPreview tree={heroVideoTree} label="With a video demo" />
+    <UsagePreview tree={heroVideoTree} />
 
     <h4>{t("hero.patternAudienceTabsTitle")}</h4>
     <p>{t("hero.patternAudienceTabsDescription")}</p>
-    <ComponentPreview tree={heroTabsTree} label="With audience tabs" />
+    <UsagePreview tree={heroTabsTree} />
 
     <h4>{t("hero.patternTestimonialTitle")}</h4>
     <p>{t("hero.patternTestimonialDescription")}</p>
-    <ComponentPreview tree={heroQuoteTree} label="With a testimonial" />
+    <UsagePreview tree={heroQuoteTree} />
 
     <p set:html={t("component.reactNote")} />
 
@@ -215,6 +217,31 @@ const heroQuoteTree = heroTestimonialTree(t);
       <li set:html={t("hero.contractItem3")} />
       <li set:html={t("hero.contractItem4")} />
       <li set:html={t("hero.contractItem5")} />
+    </ul>
+
+    <h3>{t("component.anatomy")}</h3>
+    <p set:html={t("hero.anatomyBody")} />
+    <ComponentPreview
+      tree={heroAnatomyTree(t)}
+      css={layoutAnatomyFillCss}
+      label={t("hero.anatomyPreviewLabel")}
+      screens={false}
+      hideSource
+      chrome={false}
+    />
+  </Fragment>
+
+  <Fragment slot="guidelines">
+    <p class="lede" set:html={t("hero.guidelinesLede")} />
+    <h3>{t("hero.whenTitle")}</h3>
+    <p set:html={t("hero.whenBody1")} />
+    <p set:html={t("hero.whenBody2")} />
+    <p set:html={t("hero.whenBody3")} />
+    <h3>{t("hero.contentRulesTitle")}</h3>
+    <ul>
+      <li set:html={t("hero.contentRule1")} />
+      <li set:html={t("hero.contentRule2")} />
+      <li set:html={t("hero.contentRule3")} />
     </ul>
   </Fragment>
 

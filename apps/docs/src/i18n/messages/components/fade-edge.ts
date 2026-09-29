@@ -72,6 +72,15 @@ export const fadeEdgeMessages = {
       "Ponle <code>overflow: auto</code> (o <code>hidden</code>, si no necesitas scroll) al mismo elemento cuando el contenido interno se desborda, para que no se vea por fuera del área desvanecida",
     "fadeEdge.notesItem5":
       "Para accesibilidad, asegúrate de que el contenido crítico no quede oculto detrás del desvanecido",
+    "fadeEdge.prop.direction.title": "Dirección",
+    "fadeEdge.prop.direction.body": "La <code>direction</code> dice hacia qué borde se desvanece el contenido.",
+    "fadeEdge.prop.direction.to-bottom": "Usa <code>to-bottom</code>, el default, para un texto que sigue más abajo.",
+    "fadeEdge.prop.direction.to-top": "Usa <code>to-top</code> cuando lo nuevo aparece abajo, como en un chat.",
+    "fadeEdge.prop.direction.to-right": "Usa <code>to-right</code> para una fila que sigue hacia el costado.",
+    "fadeEdge.prop.direction.to-left": "Usa <code>to-left</code> cuando la fila ya se desplazó y hay contenido antes.",
+    "fadeEdge.showcaseTitle": "Showcases",
+    "fadeEdge.showcaseBody": "Un desvanecido hacia cada borde, sobre un color, con más intensidad y solo mientras queda contenido.",
+    "fadeEdge.guidelinesLede": "FadeEdge desvanece un borde para decir que hay más contenido más allá.",
   },
   en: {
     "fadeEdge.anatomyLabel": "FadeEdge anatomy",
@@ -146,5 +155,14 @@ export const fadeEdgeMessages = {
       "Give the same element <code>overflow: auto</code> (or <code>hidden</code>, if you need no scrolling) when its content overflows, so nothing shows outside the faded area",
     "fadeEdge.notesItem5":
       "For accessibility, make sure no critical content ends up hidden behind the fade",
+    "fadeEdge.prop.direction.title": "Direction",
+    "fadeEdge.prop.direction.body": "<code>direction</code> says which edge the content fades toward.",
+    "fadeEdge.prop.direction.to-bottom": "Use <code>to-bottom</code>, the default, for text that continues below.",
+    "fadeEdge.prop.direction.to-top": "Use <code>to-top</code> when new content arrives at the bottom, as in a chat.",
+    "fadeEdge.prop.direction.to-right": "Use <code>to-right</code> for a row that continues sideways.",
+    "fadeEdge.prop.direction.to-left": "Use <code>to-left</code> when the row has scrolled and there is content before.",
+    "fadeEdge.showcaseTitle": "Showcases",
+    "fadeEdge.showcaseBody": "A fade toward each edge, over a colour, stronger, and only while there is content left.",
+    "fadeEdge.guidelinesLede": "FadeEdge fades an edge to say there is more content beyond it.",
   },
 } as const;

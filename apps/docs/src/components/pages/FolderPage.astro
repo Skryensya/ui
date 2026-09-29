@@ -13,6 +13,7 @@ import ComponentPageShell from "./ComponentPageShell.astro";
 import AppearanceMenu from "../AppearanceMenu.astro";
 import CodeBlock from "../CodeBlock.astro";
 import ComponentPreview from "../ComponentPreview.astro";
+import UsagePreview from "../UsagePreview.astro";
 import {
   folderActiveTree,
   folderAppearanceTree,
@@ -46,25 +47,15 @@ mountFolder();`;
   appearanceTargetSelector=".sk-folder"
   testFiles={["packages/core/src/folder.test.ts", "packages/react/src/components/folder.test.tsx", "packages/vanilla/src/components/folder.test.ts"]}}
 >
-  <Fragment slot="anatomy">
-    <p set:html={t("folderPage.anatomyBody")} />
-    <ComponentPreview
-      tree={folderAnatomyTree(t)}
-      css={`${annotationDemoCss}\n${folderAnatomyCss}`}
-      js={js}
-      label={t("folderPage.anatomyPreviewLabel")}
-      screens={false}
-      hideSource
-      chrome={false}
-    />
-  </Fragment>
-
   <Fragment slot="appearance">
     <AppearanceMenu label={t("prefs.appearance")} />
   </Fragment>
 
   <Fragment slot="usage">
     <p class="lede" set:html={t("folderPage.lede")} />
+
+    <h3>{t("folderPage.showcaseTitle")}</h3>
+    <p set:html={t("folderPage.showcaseBody")} />
     <ComponentPreview tree={folderTree(t)} js={js} label="FolderStack" viewport="auto" />
 
     <h3>{t("folderPage.revealTitle")}</h3>
@@ -97,6 +88,27 @@ mountFolder();`;
       <li set:html={t("folderPage.contractItem2")} />
       <li set:html={t("folderPage.contractItem3")} />
       <li set:html={t("folderPage.contractItem4")} />
+    </ul>
+
+    <h3>{t("component.anatomy")}</h3>
+    <p set:html={t("folderPage.anatomyBody")} />
+    <ComponentPreview
+      tree={folderAnatomyTree(t)}
+      css={`${annotationDemoCss}\n${folderAnatomyCss}`}
+      js={js}
+      label={t("folderPage.anatomyPreviewLabel")}
+      screens={false}
+      hideSource
+      chrome={false}
+    />
+  </Fragment>
+
+  <Fragment slot="guidelines">
+    <p class="lede" set:html={t("folderPage.guidelinesLede")} />
+    <ul>
+      <li set:html={t("folderPage.guide.use1")} />
+      <li set:html={t("folderPage.guide.use2")} />
+      <li set:html={t("folderPage.guide.avoid1")} />
     </ul>
   </Fragment>
 
