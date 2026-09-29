@@ -102,3 +102,19 @@ export const separatorLabelledTree = (t: Translate): UsageTree => ({
     },
   ],
 });
+
+/* The "spacing" scale's specimen: a rule between two blocks, so the room it takes shows. */
+const separatorBlock: UsageTree = {
+  contract: "box",
+  signature: "Box",
+  options: { surface: "sunken", border: "subtle", padding: "xs" },
+  children: { contract: "typography", signature: "Text", options: { size: "caption" }, children: "Aa" },
+};
+
+export const separatorScaleSpecimenTree = (): UsageTree => ({
+  contract: "layout",
+  signature: "Stack",
+  options: { gap: "none" },
+  attrs: { style: "inline-size: 8rem" },
+  children: [separatorBlock, { contract: "separator", signature: "Separator" }, separatorBlock],
+});

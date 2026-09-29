@@ -132,17 +132,6 @@ const detailsLink = `<a href="#details-nativo">${t("accordion.detailsNativoLabel
       storybookStory="Exclusive"
     />
 
-    <UsagePreview
-      tree={accordionExclusiveTree(t)}
-      optionName="appearance"
-      title={t("accordion.prop.appearance.title")}
-      description={t("accordion.prop.appearance.body")}
-      explain={explain("appearance", ["plain", "tactile", "brutalist", "frosted"])}
-      stageMinBlockSize="18rem"
-      storybookTitle={storybookTitle}
-      storybookStory="Exclusive"
-    />
-
     <h3>{t("accordion.showcaseTitle")}</h3>
     <p set:html={t("accordion.showcaseBody")} />
 
@@ -189,7 +178,6 @@ const detailsLink = `<a href="#details-nativo">${t("accordion.detailsNativoLabel
       storybookTitle={storybookTitle}
       storybookStory="Multiple"
     />
-
 
     {/*
       * Two bullets, where there were seven. The other five said what the Referencia tab now

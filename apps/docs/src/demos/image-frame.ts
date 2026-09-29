@@ -190,3 +190,9 @@ export const imageFrameSingleTree = (t: Translate): UsageTree => ({
   ...imageFrameTree(t),
   attrs: { ...imageFrameTree(t).attrs, style: "inline-size: 14rem" },
 });
+
+/* The `fit` preview's specimen: a square frame around a wide image, so each fit does something visible. */
+export const imageFrameFitSpecimenTree = (t: Translate): UsageTree => ({
+  ...imageFrameSingleTree(t),
+  options: { ...imageFrameSingleTree(t).options, aspect: "1/1" },
+});

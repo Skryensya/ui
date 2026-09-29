@@ -99,25 +99,6 @@ button.addEventListener("click", runDeployment);`;
       stageMinBlockSize="8rem"
     />
 
-    <UsagePreview
-      tree={buttonDefaultTree(t)}
-      optionName="appearance"
-      title={t("button.prop.appearance.title")}
-      description={t("button.prop.appearance.body")}
-      explain={explain("appearance", ["plain", "tactile", "brutalist", "frosted"])}
-      stageMinBlockSize="8rem"
-    />
-
-    <UsagePreview
-      tree={buttonDefaultTree(t)}
-      optionName="disabled"
-      title={t("button.prop.disabled.title")}
-      description={t("button.prop.disabled.body")}
-      explain={explain("disabled", ["false", "true"])}
-      labels={{ false: t("button.prop.disabled.falseLabel"), true: t("button.prop.disabled.trueLabel") }}
-      stageMinBlockSize="8rem"
-    />
-
     <h3>{t("button.showcaseTitle")}</h3>
     <p set:html={t("button.showcaseBody")} />
     <UsagePreview tree={buttonDefaultTree(t)} title={t("button.defaultTitle")} description={t("button.defaultBody")} />

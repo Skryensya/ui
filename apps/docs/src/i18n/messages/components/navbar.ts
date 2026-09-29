@@ -32,11 +32,6 @@ export const navbarMessages = {
     "navbarPage.appBody":
       "En una app las acciones son herramientas, no llamados a la acción: van sólo con ícono, cada una con su nombre accesible, y la cuenta cierra la fila. El avatar es un nodo más en <code>NavbarActions</code>.",
     "navbarPage.test1": "Usa un landmark <code>header</code> y deja la navegación a su hijo NavList.",
-    "navbarPage.prop.appearance.title": "Apariencia",
-    "navbarPage.prop.appearance.body": "La <code>appearance</code> decide cómo se dibuja la barra.",
-    "navbarPage.prop.appearance.plain": "Usa <code>plain</code>, el default, en casi todas partes.",
-    "navbarPage.prop.appearance.brutalist": "Usa <code>brutalist</code> cuando el resto de la página lo es.",
-    "navbarPage.prop.appearance.frosted": "Usa <code>frosted</code> para una barra fija que deja ver el contenido al pasar por debajo.",
     "navbarPage.showcaseTitle": "Showcases",
     "navbarPage.showcaseBody": "Una barra con enlaces, una mínima y una de aplicación.",
     "navbarPage.guidelinesLede": "Navbar es la barra superior con la marca, la navegación principal y las acciones.",
@@ -77,11 +72,6 @@ export const navbarMessages = {
     "navbarPage.appBody":
       "In an app the actions are tools, not calls to action: they go icon-only, each with its own accessible name, and the account closes the row. The avatar is just another node in <code>NavbarActions</code>.",
     "navbarPage.test1": "Uses a header landmark while leaving navigation to its NavList child.",
-    "navbarPage.prop.appearance.title": "Appearance",
-    "navbarPage.prop.appearance.body": "<code>appearance</code> decides how the bar is drawn.",
-    "navbarPage.prop.appearance.plain": "Use <code>plain</code>, the default, almost everywhere.",
-    "navbarPage.prop.appearance.brutalist": "Use <code>brutalist</code> when the rest of the page is.",
-    "navbarPage.prop.appearance.frosted": "Use <code>frosted</code> for a sticky bar that lets content show through as it scrolls under.",
     "navbarPage.showcaseTitle": "Showcases",
     "navbarPage.showcaseBody": "A bar with links, a minimal one, and an application one.",
     "navbarPage.guidelinesLede": "Navbar is the top bar with the brand, the main navigation and the actions.",

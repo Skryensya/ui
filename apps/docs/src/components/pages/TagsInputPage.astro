@@ -32,10 +32,6 @@ const styles = `@import "@skryensya/core/components/tags-input.css";
 /* The chip is a Tag, and its remove control is a Button. */
 @import "@skryensya/core/components/tag.css";
 @import "@skryensya/core/components/button.css";`;
-
-/* What each value of a property is for, read from this page's messages. Same model Badge uses. */
-const explain = (option: string, values: readonly string[]) =>
-  Object.fromEntries(values.map((value) => [value, t(`tagsInputPage.prop.${option}.${value}` as Parameters<typeof t>[0])]));
 ---
 
 <ComponentPageShell
@@ -54,25 +50,6 @@ const explain = (option: string, values: readonly string[]) =>
 
   <Fragment slot="usage">
     <p class="lede" set:html={t("tagsInputPage.lede")} />
-
-    <UsagePreview
-      tree={tagsInputDoShortTree(t)}
-      optionName="appearance"
-      title={t("tagsInputPage.prop.appearance.title")}
-      description={t("tagsInputPage.prop.appearance.body")}
-      explain={explain("appearance", ["plain", "brutalist", "frosted"])}
-      stageMinBlockSize="9rem"
-    />
-
-    <UsagePreview
-      tree={tagsInputDoShortTree(t)}
-      optionName="invalid"
-      title={t("tagsInputPage.prop.invalid.title")}
-      description={t("tagsInputPage.prop.invalid.body")}
-      explain={explain("invalid", ["false", "true"])}
-      stageMinBlockSize="9rem"
-      labels={{ false: t("tagsInputPage.prop.invalid.falseLabel"), true: t("tagsInputPage.prop.invalid.trueLabel") }}
-    />
 
     <h3>{t("tagsInputPage.showcaseTitle")}</h3>
     <p set:html={t("tagsInputPage.showcaseBody")} />

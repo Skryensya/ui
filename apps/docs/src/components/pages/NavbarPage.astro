@@ -9,7 +9,6 @@ import ComponentPageShell from "./ComponentPageShell.astro";
 import AppearanceMenu from "../AppearanceMenu.astro";
 import CodeBlock from "../CodeBlock.astro";
 import ComponentPreview from "../ComponentPreview.astro";
-import UsagePreview from "../UsagePreview.astro";
 import { navbarAnatomyTree, navbarAppTree, navbarBareCss, navbarBareTree, navbarTree } from "../../demos/navbar";
 import { annotationDemoCss } from "../../demos/annotation";
 import { getLocale, useTranslations } from "../../i18n";
@@ -22,10 +21,6 @@ const hrefs = { home: "/", projects: "/proyectos", reports: "/reportes", team: "
 const css = `@import "@skryensya/core/tokens.scss";
 @import "@skryensya/core/components/navbar.css";
 @import "@skryensya/core/patterns/nav-list.css";`;
-
-/* What each value of a property is for, read from this page's messages. Same model Badge uses. */
-const explain = (option: string, values: readonly string[]) =>
-  Object.fromEntries(values.map((value) => [value, t(`navbarPage.prop.${option}.${value}` as Parameters<typeof t>[0])]));
 ---
 
 <ComponentPageShell
@@ -41,15 +36,6 @@ const explain = (option: string, values: readonly string[]) =>
 
   <Fragment slot="usage">
     <p class="lede" set:html={t("navbarPage.lede")} />
-
-    <UsagePreview
-      tree={navbarBareTree(t, hrefs)}
-      optionName="appearance"
-      title={t("navbarPage.prop.appearance.title")}
-      description={t("navbarPage.prop.appearance.body")}
-      explain={explain("appearance", ["plain", "brutalist", "frosted"])}
-      stageMinBlockSize="7rem"
-    />
 
     <h3>{t("navbarPage.showcaseTitle")}</h3>
     <p set:html={t("navbarPage.showcaseBody")} />

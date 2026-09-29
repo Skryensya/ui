@@ -75,15 +75,6 @@ const explain = (option: string, values: readonly string[]) =>
       stageMinBlockSize="6rem"
     />
 
-    <UsagePreview
-      tree={clipboardFieldTree(t)}
-      optionName="appearance"
-      title={t("clipboard.prop.appearance.title")}
-      description={t("clipboard.prop.appearance.body")}
-      explain={explain("appearance", ["plain", "tactile", "brutalist", "frosted"])}
-      stageMinBlockSize="8rem"
-    />
-
     <h3>{t("clipboard.showcaseTitle")}</h3>
     <p set:html={t("clipboard.showcaseBody")} />
 

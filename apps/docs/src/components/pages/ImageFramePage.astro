@@ -9,6 +9,7 @@ import {
   imageFrameAspectTree,
   imageFrameFitTree,
   imageFramePositionTree,
+  imageFrameFitSpecimenTree,
   imageFrameSingleTree,
   imageFrameTree,
 } from "../../demos/image-frame";
@@ -51,6 +52,15 @@ const explain = (option: string, values: readonly string[]) =>
       description={t("imageFrame.prop.aspect.body")}
       explain={explain("aspect", ["auto", "1/1", "4/3", "3/2", "16/9", "3/4", "2/3", "9/16"])}
       stageMinBlockSize="26rem"
+    />
+
+    <UsagePreview
+      tree={imageFrameFitSpecimenTree(t)}
+      optionName="fit"
+      title={t("imageFrame.prop.fit.title")}
+      description={t("imageFrame.prop.fit.body")}
+      explain={explain("fit", ["cover", "contain", "fill", "none", "scale-down"])}
+      stageMinBlockSize="18rem"
     />
 
     <UsagePreview

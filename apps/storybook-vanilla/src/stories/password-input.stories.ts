@@ -17,7 +17,6 @@ export const Anatomy: StoryObj = treeStory(demos.passwordInputAnatomyTree, { dec
 export const SignIn: StoryObj = treeStory(demos.passwordInputSignInTree);
 export const SignUp: StoryObj = treeStory(demos.passwordInputSignUpTree);
 export const States: StoryObj = treeStory(demos.passwordInputStatesTree);
-export const Single: StoryObj = treeStory(demos.passwordInputSingleTree);
 export const DontNoHint: StoryObj = treeStory(demos.passwordInputDontNoHintTree);
 export const DoHint: StoryObj = treeStory(demos.passwordInputDoHintTree);
 export const DontRepeat: StoryObj = treeStory(demos.passwordInputDontRepeatTree);

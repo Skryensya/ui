@@ -281,12 +281,3 @@ export const tilePaddingTree = (t: Translate): UsageTree => ({
     ],
   })),
 });
-
-/* One tile, the specimen the `appearance` and `padding` previews vary. */
-export const tileSingleTree = (t: Translate, href: string = PLACEHOLDER_HREF): UsageTree => ({
-  contract: "tile",
-  signature: "TileLink",
-  options: { href },
-  attrs: { style: "inline-size: min(100%, 18rem)" },
-  children: tileContent(t("demo.tile.hub.guides.title"), t("demo.tile.hub.guides.description")),
-});

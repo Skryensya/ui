@@ -62,15 +62,6 @@ const explain = (option: string, values: readonly string[]) =>
       stageMinBlockSize="14rem"
     />
 
-    <UsagePreview
-      tree={footerSiteTree}
-      optionName="appearance"
-      title={t("footer.prop.appearance.title")}
-      description={t("footer.prop.appearance.body")}
-      explain={explain("appearance", ["plain", "brutalist", "frosted"])}
-      stageMinBlockSize="14rem"
-    />
-
     <h3>{t("footer.showcaseTitle")}</h3>
     <p set:html={t("footer.showcaseBody")} />
 

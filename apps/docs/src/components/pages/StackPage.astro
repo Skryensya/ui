@@ -8,8 +8,9 @@ import CodeBlock from "../CodeBlock.astro";
 import ComponentPreview from "../ComponentPreview.astro";
 import UsagePreview from "../UsagePreview.astro";
 import DoDont from "../DoDont.astro";
-import { stackTree } from "../../demos/layout";
+import { stackTree, stackScaleSpecimenTree } from "../../demos/layout";
 import { getLocale, useTranslations } from "../../i18n";
+import { variantsTree } from "../../demos/variants";
 
 const install = `pnpm add @skryensya/core @skryensya/react`;
 const t = useTranslations(getLocale(Astro.url));
@@ -38,15 +39,6 @@ const explain = (option: string, values: readonly string[]) =>
 
     <UsagePreview
       tree={stackTree(t, "/components/stack")}
-      optionName="gap"
-      title={t("stackPage.prop.gap.title")}
-      description={t("stackPage.prop.gap.body")}
-      explain={explain("gap", ["none", "xs", "sm", "md", "lg", "xl"])}
-      stageMinBlockSize="16rem"
-    />
-
-    <UsagePreview
-      tree={stackTree(t, "/components/stack")}
       optionName="align"
       title={t("stackPage.prop.align.title")}
       description={t("stackPage.prop.align.body")}
@@ -71,6 +63,12 @@ const explain = (option: string, values: readonly string[]) =>
       <li set:html={t("stackPage.contractItem3")} />
       <li set:html={t("stackPage.contractItem4")} />
     </ul>
+
+    <UsagePreview
+      tree={variantsTree(stackScaleSpecimenTree(t), [{ label: "none", options: { gap: "none" } }, { label: "xs", options: { gap: "xs" } }, { label: "sm", options: { gap: "sm" } }, { label: "md", options: { gap: "md" } }, { label: "lg", options: { gap: "lg" } }, { label: "xl", options: { gap: "xl" } }], [], "3")}
+      title={t("component.scaleTitle", { option: "gap" })}
+      description={t("component.scaleBody")}
+    />
 
     <h3>{t("component.anatomy")}</h3>
     <p set:html={t("stackPage.anatomyBody")} />

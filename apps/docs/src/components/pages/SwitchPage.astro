@@ -12,10 +12,9 @@ import DoDont from "../DoDont.astro";
 import { switchAnatomyTree, switchTree, tileSwitchTree } from "../../demos/switch";
 import { annotationDemoCss } from "../../demos/annotation";
 import { getLocale, useTranslations } from "../../i18n";
+import { variantsTree } from "../../demos/variants";
 
 const t = useTranslations(getLocale(Astro.url));
-const explain = (option: string, values: readonly string[]) =>
-  Object.fromEntries(values.map((value) => [value, t(`switchPage.prop.${option}.${value}` as Parameters<typeof t>[0])]));
 
 const tileSwitchVanilla = `import { initComponents } from "@skryensya/vanilla/auto";
 
@@ -48,35 +47,6 @@ for (const root of document.querySelectorAll(
   <Fragment slot="usage">
     <p class="lede" set:html={t("switchPage.lede")} />
 
-    <UsagePreview
-      tree={switchTree(t)}
-      optionName="defaultChecked"
-      title={t("switchPage.prop.defaultChecked.title")}
-      description={t("switchPage.prop.defaultChecked.body")}
-      explain={explain("defaultChecked", ["false", "true"])}
-      labels={{ false: t("switchPage.prop.defaultChecked.falseLabel"), true: t("switchPage.prop.defaultChecked.trueLabel") }}
-      stageMinBlockSize="7rem"
-    />
-
-    <UsagePreview
-      tree={switchTree(t)}
-      optionName="disabled"
-      title={t("switchPage.prop.disabled.title")}
-      description={t("switchPage.prop.disabled.body")}
-      explain={explain("disabled", ["false", "true"])}
-      labels={{ false: t("switchPage.prop.disabled.falseLabel"), true: t("switchPage.prop.disabled.trueLabel") }}
-      stageMinBlockSize="7rem"
-    />
-
-    <UsagePreview
-      tree={switchTree(t)}
-      optionName="appearance"
-      title={t("switchPage.prop.appearance.title")}
-      description={t("switchPage.prop.appearance.body")}
-      explain={explain("appearance", ["plain", "tactile", "brutalist", "frosted"])}
-      stageMinBlockSize="7rem"
-    />
-
     <h3>{t("switchPage.showcaseTitle")}</h3>
     <p set:html={t("switchPage.showcaseBody")} />
     <UsagePreview tree={switchTree(t)} title="Switch" description={t("switchPage.body")} />
@@ -95,6 +65,12 @@ for (const root of document.querySelectorAll(
       <li set:html={t("switchPage.contractItem4")} />
       <li set:html={t("switchPage.contractItem5")} />
     </ul>
+
+    <UsagePreview
+      tree={variantsTree(switchTree(t), [{ label: t("component.state.default"), options: {} }, { label: t("component.state.checked"), options: { defaultChecked: true } }, { label: t("component.state.disabled"), options: { disabled: true } }])}
+      title={t("component.statesTitle")}
+      description={t("component.statesBody")}
+    />
 
     <h3>{t("component.anatomy")}</h3>
     <p set:html={t("switchPage.anatomyBody")} />

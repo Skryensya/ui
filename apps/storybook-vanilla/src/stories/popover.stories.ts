@@ -17,4 +17,3 @@ export const Default: StoryObj = treeStory(demos.popoverTree);
 export const Structured: StoryObj = treeStory(demos.popoverStructuredTree);
 export const Placement: StoryObj = treeStory(demos.popoverPlacementTree);
 export const Popup: StoryObj = treeStory(demos.popupTree);
-export const Specimen: StoryObj = treeStory((t) => demos.popoverSpecimenTree(t, "#"));

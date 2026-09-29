@@ -70,15 +70,6 @@ root.addEventListener("sk:tilevaluechange", (event) => {
       stageMinBlockSize="11rem"
     />
 
-    <UsagePreview
-      tree={radioGroupTree(t)}
-      optionName="appearance"
-      title={t("radioGroupPage.prop.appearance.title")}
-      description={t("radioGroupPage.prop.appearance.body")}
-      explain={explain("appearance", ["plain", "tactile", "brutalist", "frosted"])}
-      stageMinBlockSize="11rem"
-    />
-
     <h3>{t("radioGroupPage.showcaseTitle")}</h3>
     <p set:html={t("radioGroupPage.showcaseBody")} />
     <UsagePreview tree={radioGroupTree(t)} title="RadioGroup" description={t("radioGroupPage.basicBody")} />

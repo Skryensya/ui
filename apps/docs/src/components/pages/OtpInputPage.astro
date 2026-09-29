@@ -50,16 +50,6 @@ const explain = (option: string, values: readonly string[]) =>
       labels={{ false: t("otpInput.prop.mask.falseLabel"), true: t("otpInput.prop.mask.trueLabel") }}
     />
 
-    <UsagePreview
-      tree={otpInputSingleTree(t)}
-      optionName="invalid"
-      title={t("otpInput.prop.invalid.title")}
-      description={t("otpInput.prop.invalid.body")}
-      explain={explain("invalid", ["false", "true"])}
-      stageMinBlockSize="8rem"
-      labels={{ false: t("otpInput.prop.invalid.falseLabel"), true: t("otpInput.prop.invalid.trueLabel") }}
-    />
-
     <h3>{t("otpInput.showcaseTitle")}</h3>
     <p set:html={t("otpInput.showcaseBody")} />
 

@@ -1297,3 +1297,37 @@ export const footerCreditTree = (t: Translate): UsageTree => ({
     },
   ],
 });
+
+/*
+ * THE SCALE SPECIMENS: the smallest picture of each spacing option, for the "scale" showcases that
+ * lay every step side by side. A sunken block marks where the content is, so the space the option
+ * adds is the only thing that changes from one to the next.
+ */
+const spacingBlock = (label: string): UsageTree => ({
+  contract: "box",
+  signature: "Box",
+  options: { surface: "sunken", border: "subtle", padding: "xs" },
+  children: { contract: "typography", signature: "Text", options: { size: "caption" }, children: label },
+});
+
+export const boxScaleSpecimenTree = (t: Translate): UsageTree => ({
+  contract: "box",
+  signature: "Box",
+  options: { surface: "raised", border: "subtle" },
+  children: spacingBlock(t("demo.box.title")),
+});
+
+export const stackScaleSpecimenTree = (_t: Translate): UsageTree => ({
+  contract: "layout",
+  signature: "Stack",
+  attrs: { style: "inline-size: 8rem" },
+  children: ["1", "2", "3"].map(spacingBlock),
+});
+
+export const gridScaleSpecimenTree = (_t: Translate): UsageTree => ({
+  contract: "layout",
+  signature: "Grid",
+  options: { columns: "3" },
+  attrs: { style: "inline-size: 12rem" },
+  children: ["1", "2", "3", "4", "5", "6"].map(spacingBlock),
+});

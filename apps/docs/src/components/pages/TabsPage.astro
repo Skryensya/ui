@@ -85,15 +85,6 @@ const explain = (option: string, values: readonly string[]) =>
       stageMinBlockSize="14rem"
     />
 
-    <UsagePreview
-      tree={tabsBasicTree(t)}
-      optionName="appearance"
-      title={t("tabsPage.prop.appearance.title")}
-      description={t("tabsPage.prop.appearance.body")}
-      explain={explain("appearance", ["plain", "tactile", "brutalist", "frosted"])}
-      stageMinBlockSize="12rem"
-    />
-
     <h3>{t("tabsPage.showcaseTitle")}</h3>
     <p set:html={t("tabsPage.showcaseBody")} />
     <h3>{t("tabsPage.basicTitle")}</h3>

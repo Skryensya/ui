@@ -16,10 +16,9 @@ import DoDont from "../DoDont.astro";
 import { checkboxAnatomyTree, checkboxGroupTree, checkboxScaleTree, checkboxTree, tileCheckboxTree } from "../../demos/checkbox";
 import { annotationDemoCss } from "../../demos/annotation";
 import { getLocale, useTranslations } from "../../i18n";
+import { variantsTree } from "../../demos/variants";
 
 const t = useTranslations(getLocale(Astro.url));
-const explain = (option: string, values: readonly string[]) =>
-  Object.fromEntries(values.map((value) => [value, t(`checkbox.prop.${option}.${value}` as Parameters<typeof t>[0])]));
 
 const tileCheckboxVanilla = `import { initComponents } from "@skryensya/vanilla/auto";
 import { mountIcons } from "@skryensya/vanilla/icon";
@@ -57,45 +56,6 @@ for (const root of document.querySelectorAll(
   <Fragment slot="usage">
     <p class="lede" set:html={t("checkbox.lede")} />
 
-    <UsagePreview
-      tree={checkboxTree(t)}
-      optionName="defaultChecked"
-      title={t("checkbox.prop.defaultChecked.title")}
-      description={t("checkbox.prop.defaultChecked.body")}
-      explain={explain("defaultChecked", ["false", "true"])}
-      labels={{ false: t("checkbox.prop.defaultChecked.falseLabel"), true: t("checkbox.prop.defaultChecked.trueLabel") }}
-      stageMinBlockSize="7rem"
-    />
-
-    <UsagePreview
-      tree={checkboxTree(t)}
-      optionName="defaultIndeterminate"
-      title={t("checkbox.prop.defaultIndeterminate.title")}
-      description={t("checkbox.prop.defaultIndeterminate.body")}
-      explain={explain("defaultIndeterminate", ["false", "true"])}
-      labels={{ false: t("checkbox.prop.defaultIndeterminate.falseLabel"), true: t("checkbox.prop.defaultIndeterminate.trueLabel") }}
-      stageMinBlockSize="7rem"
-    />
-
-    <UsagePreview
-      tree={checkboxTree(t)}
-      optionName="disabled"
-      title={t("checkbox.prop.disabled.title")}
-      description={t("checkbox.prop.disabled.body")}
-      explain={explain("disabled", ["false", "true"])}
-      labels={{ false: t("checkbox.prop.disabled.falseLabel"), true: t("checkbox.prop.disabled.trueLabel") }}
-      stageMinBlockSize="7rem"
-    />
-
-    <UsagePreview
-      tree={checkboxTree(t)}
-      optionName="appearance"
-      title={t("checkbox.prop.appearance.title")}
-      description={t("checkbox.prop.appearance.body")}
-      explain={explain("appearance", ["plain", "tactile", "brutalist", "frosted"])}
-      stageMinBlockSize="7rem"
-    />
-
     <h3>{t("checkbox.showcaseTitle")}</h3>
     <p set:html={t("checkbox.showcaseBody")} />
     <UsagePreview tree={checkboxTree(t)} title="Checkbox" description={t("checkbox.body")} />
@@ -121,6 +81,12 @@ for (const root of document.querySelectorAll(
       <li set:html={t("checkbox.contractItem6")} />
       <li set:html={t("checkbox.contractItem7")} />
     </ul>
+
+    <UsagePreview
+      tree={variantsTree(checkboxTree(t), [{ label: t("component.state.default"), options: {} }, { label: t("component.state.checked"), options: { defaultChecked: true } }, { label: t("component.state.indeterminate"), options: { defaultIndeterminate: true } }, { label: t("component.state.disabled"), options: { disabled: true } }])}
+      title={t("component.statesTitle")}
+      description={t("component.statesBody")}
+    />
 
     <h3>{t("component.anatomy")}</h3>
     <p set:html={t("checkbox.anatomyBody")} />

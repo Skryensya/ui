@@ -14,7 +14,6 @@ import {
   sliderDontExactTree,
   sliderDontTwoTree,
   sliderRangeTree,
-  sliderSingleTree,
   sliderTree,
 } from "../../demos/slider";
 import { annotationDemoCss } from "../../demos/annotation";
@@ -22,10 +21,6 @@ import { getLocale, useTranslations } from "../../i18n";
 
 const install = `pnpm add @skryensya/core @skryensya/vanilla @skryensya/react`;
 const t = useTranslations(getLocale(Astro.url));
-
-/* What each value of a property is for, read from this page's messages. Same model Badge uses. */
-const explain = (option: string, values: readonly string[]) =>
-  Object.fromEntries(values.map((value) => [value, t(`sliderPage.prop.${option}.${value}` as Parameters<typeof t>[0])]));
 ---
 
 <ComponentPageShell
@@ -36,16 +31,6 @@ const explain = (option: string, values: readonly string[]) =>
 >
   <Fragment slot="usage">
     <p class="lede" set:html={t("sliderPage.lede")} />
-
-    <UsagePreview
-      tree={sliderSingleTree(t)}
-      optionName="disabled"
-      title={t("sliderPage.prop.disabled.title")}
-      description={t("sliderPage.prop.disabled.body")}
-      explain={explain("disabled", ["false", "true"])}
-      stageMinBlockSize="6rem"
-      labels={{ false: t("sliderPage.prop.disabled.falseLabel"), true: t("sliderPage.prop.disabled.trueLabel") }}
-    />
 
     <h3>{t("sliderPage.showcaseTitle")}</h3>
     <p set:html={t("sliderPage.showcaseBody")} />

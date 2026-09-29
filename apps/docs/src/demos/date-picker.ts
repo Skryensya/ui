@@ -161,12 +161,6 @@ export const datePickerAnatomyCss = `.sk-annotated-figure {
   text-align: center;
 }`;
 
-/* One field, the specimen the `appearance` and `disabled` previews vary. */
-export const datePickerSingleTree = (t: Translate): UsageTree => ({
-  ...datePickerTree(t),
-  attrs: { style: "inline-size: min(100%, 18rem)" },
-});
-
 /* Do/Don't: a stay as one range, or as two pickers that know nothing of each other. */
 export const datePickerDoRangeTree = (t: Translate): UsageTree => ({
   ...datePickerTree(t),

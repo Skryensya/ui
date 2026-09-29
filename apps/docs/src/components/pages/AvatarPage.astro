@@ -132,15 +132,6 @@ window.addEventListener("pagehide", () => observer.disconnect(), { once: true })
       stageMinBlockSize="8rem"
     />
 
-    <UsagePreview
-      tree={avatarSingleTree()}
-      optionName="appearance"
-      title={t("avatar.prop.appearance.title")}
-      description={t("avatar.prop.appearance.body")}
-      explain={explain("appearance", ["plain", "brutalist"])}
-      stageMinBlockSize="8rem"
-    />
-
     <h3>{t("avatar.showcaseTitle")}</h3>
     <p set:html={t("avatar.showcaseBody")} />
     <UsagePreview

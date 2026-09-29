@@ -18,6 +18,7 @@ import {
 } from "../../demos/rating";
 import { annotationDemoCss } from "../../demos/annotation";
 import { getLocale, useTranslations } from "../../i18n";
+import { variantsTree } from "../../demos/variants";
 
 const t = useTranslations(getLocale(Astro.url));
 const install = `pnpm add @skryensya/core @skryensya/react`;
@@ -56,16 +57,6 @@ const explain = (option: string, values: readonly string[]) =>
       labels={{ sm: "sm", md: "md", lg: "lg" }}
     />
 
-    <UsagePreview
-      tree={ratingInputTree(t)}
-      optionName="disabled"
-      title={t("ratingPage.prop.disabled.title")}
-      description={t("ratingPage.prop.disabled.body")}
-      explain={explain("disabled", ["false", "true"])}
-      stageMinBlockSize="7rem"
-      labels={{ false: t("ratingPage.prop.disabled.falseLabel"), true: t("ratingPage.prop.disabled.trueLabel") }}
-    />
-
     <h3>{t("ratingPage.showcaseTitle")}</h3>
     <p set:html={t("ratingPage.showcaseBody")} />
     <UsagePreview tree={ratingDisplayTree(t)} />
@@ -87,6 +78,12 @@ const explain = (option: string, values: readonly string[]) =>
     <UsagePreview tree={ratingSizesTree(t)} />
 
     <p set:html={t("component.reactNote")} />
+
+    <UsagePreview
+      tree={variantsTree(ratingInputTree(t), [{ label: t("component.state.default"), options: {} }, { label: t("component.state.readOnly"), options: { readOnly: true } }, { label: t("component.state.disabled"), options: { disabled: true } }])}
+      title={t("component.statesTitle")}
+      description={t("component.statesBody")}
+    />
 
     <h3>{t("component.anatomy")}</h3>
     <p set:html={t("ratingPage.anatomyBody")} />

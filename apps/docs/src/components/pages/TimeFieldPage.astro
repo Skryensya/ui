@@ -35,7 +35,6 @@ const styles = `@import "@skryensya/core/components/button.css";
 const locale = getLocale(Astro.url);
 const t = useTranslations(locale);
 
-
 /* What each value of a property is for, read from this page's messages. Same model Badge uses. */
 const explain = (option: string, values: readonly string[]) =>
   Object.fromEntries(values.map((value) => [value, t(`timeFieldPage.prop.${option}.${value}` as Parameters<typeof t>[0])]));
@@ -58,15 +57,6 @@ const explain = (option: string, values: readonly string[]) =>
 
   <Fragment slot="usage">
     <p class="lede" set:html={t("timeFieldPage.lede")} />
-
-    <UsagePreview
-      tree={timeFieldDoCycleTree(t)}
-      optionName="appearance"
-      title={t("timeFieldPage.prop.appearance.title")}
-      description={t("timeFieldPage.prop.appearance.body")}
-      explain={explain("appearance", ["plain", "brutalist", "frosted"])}
-      stageMinBlockSize="9rem"
-    />
 
     <UsagePreview
       tree={timeFieldDoCycleTree(t)}

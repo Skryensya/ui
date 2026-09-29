@@ -3,7 +3,6 @@ import ComponentPageShell from "./ComponentPageShell.astro";
 import AppearanceMenu from "../AppearanceMenu.astro";
 import CodeBlock from "../CodeBlock.astro";
 import ComponentPreview from "../ComponentPreview.astro";
-import UsagePreview from "../UsagePreview.astro";
 import {
   backToTopAnatomyCss,
   backToTopAnatomyTree,
@@ -67,10 +66,6 @@ const pill = `.mi-back-to-top {
   block-size: auto;
   clip-path: none;
 }`;
-
-/* What each value of a property is for, read from this page's messages. Same model Badge uses. */
-const explain = (option: string, values: readonly string[]) =>
-  Object.fromEntries(values.map((value) => [value, t(`backToTop.prop.${option}.${value}` as Parameters<typeof t>[0])]));
 ---
 
 <ComponentPageShell
@@ -87,15 +82,6 @@ const explain = (option: string, values: readonly string[]) =>
 
   <Fragment slot="usage">
     <p class="lede" set:html={t("backToTop.lede")} />
-
-    <UsagePreview
-      tree={backToTopTree(t)}
-      optionName="appearance"
-      title={t("backToTop.prop.appearance.title")}
-      description={t("backToTop.prop.appearance.body")}
-      explain={explain("appearance", ["plain", "tactile", "brutalist", "frosted"])}
-      stageMinBlockSize="7rem"
-    />
 
     <h3>{t("backToTop.showcaseTitle")}</h3>
     <p set:html={t("backToTop.showcaseBody")} />
