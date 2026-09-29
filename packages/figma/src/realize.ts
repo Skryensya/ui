@@ -74,7 +74,7 @@ function gradient(inner: string, ctx: Context, role: string): Paint | undefined 
 }
 
 /** CSS lists the top layer first and the colour under everything; Figma lists bottom first. */
-function fills(ctx: Context): Paint[] {
+function fills(ctx: Context, role = "fill"): Paint[] {
   const raw = prop(ctx, "background");
   if (raw === undefined) return [];
   const text = expandComposite(raw, ctx).trim();
@@ -91,7 +91,7 @@ function fills(ctx: Context): Paint[] {
         continue;
       }
       if (index !== layers.length - 1) throw new Unsupported(`a colour outside the last background layer: ${text}`);
-      const bound = asColor(resolve(piece, "color", ctx, "fill"));
+      const bound = asColor(resolve(piece, "color", ctx, role));
       if (bound) color = { type: "SOLID", color: bound };
     }
   });
@@ -179,7 +179,8 @@ export function frameOf(ctx: Context): Frame {
     strokes: strokeColor ? [{ type: "SOLID", color: strokeColor }] : [],
     fills: fills(ctx),
     effects: effects(ctx),
-    clipsContent: /clip|hidden/.test(prop(ctx, "overflow") ?? ""),
+    // An outline is never clipped by its own element's overflow, so a ringed cell does not clip.
+    clipsContent: /clip|hidden/.test(prop(ctx, "overflow") ?? "") && !hasOutline(ctx),
   };
 }
 
@@ -206,4 +207,34 @@ export function iconOf(ctx: Context) {
   const color = asColor(resolve("currentColor", "color", ctx, "icon-color"));
   if (!size || !color) throw new Unsupported(`icon needs a size and a colour`);
   return { size, color: { type: "SOLID", color } as Paint };
+}
+
+/**
+ * A pseudo-element that paints: generated content, absolutely positioned over the whole host, with
+ * a background. Drawn as a layer covering the host under its content. `undefined` for one that does
+ * not paint (a hit area).
+ */
+export function overlayOf(ctx: Context): Paint[] | undefined {
+  if (prop(ctx, "content") === undefined || prop(ctx, "position") !== "absolute") return undefined;
+  if (!/^0(px)?$/.test(prop(ctx, "inset") ?? "")) return undefined;
+  if (prop(ctx, "background") === undefined) return undefined;
+  return fills(ctx, "state-layer");
+}
+
+const hasOutline = (ctx: Context) => {
+  const style = prop(ctx, "outline-style");
+  return style !== undefined && style !== "none";
+};
+
+/**
+ * An outline, as the ring it draws: `width` wide, `offset` outside the border box, in its colour.
+ * Figma has no outline, so it becomes a layer of its own; the gap the offset leaves stays empty.
+ */
+export function ringOf(ctx: Context): { width: Bound<number>; offset: Bound<number>; color: Paint } | undefined {
+  if (!hasOutline(ctx)) return undefined;
+  const width = asNumber(resolve(prop(ctx, "outline-width") ?? "0px", "number", ctx, "outline-width"));
+  const offset = asNumber(resolve(prop(ctx, "outline-offset") ?? "0px", "number", ctx, "outline-offset")) ?? ZERO;
+  const color = asColor(resolve(prop(ctx, "outline-color") ?? "currentColor", "color", ctx, "outline-color"));
+  if (!width || !color) return undefined;
+  return { width, offset, color: { type: "SOLID", color } };
 }

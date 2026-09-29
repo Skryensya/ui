@@ -8,10 +8,13 @@
  * answers it with the AUTHORED values, so a Figma layer can still bind to the token the hook points at.
  *
  * Scope, stated rather than approximated:
- *   - The element is at rest. jsdom never matches :hover, :active or :focus-visible, so the rules
- *     that only paint interaction simply do not apply, and `:not(:active)` correctly does.
- *   - No media or support condition holds. Every @media / @supports block is skipped and COUNTED,
- *     so the report can say what was left out (forced colours, reduced motion, hover-capable input).
+ *   - jsdom never matches :hover, :active or :focus-visible. The interaction states a realization
+ *     asks for are simulated: their pseudo-class is rewritten to a marker attribute (same
+ *     specificity) and the host is marked. Any other interaction pseudo-class never matches, and
+ *     `:not(:active)` correctly does.
+ *   - Only the media conditions the caller says hold are read (a hover-capable pointer). Every other
+ *     @media / @supports block is skipped and COUNTED, so the report can say what was left out.
+ *   - Pseudo-elements are cascaded separately, onto the element that generates them.
  *   - Left-to-right. Nothing here is direction-aware beyond `:dir()`, which jsdom evaluates.
  */
 
@@ -23,7 +26,9 @@ export type Sheet = { name: string; css: string };
 
 export type StyleRule = {
   sheet: string;
+  /** The selector to match, with any pseudo-element taken off (it lives in `pseudo`). */
   selector: string;
+  pseudo: "before" | "after" | undefined;
   specificity: readonly [number, number, number];
   order: number;
   decls: readonly (readonly [string, string])[];
@@ -39,8 +44,15 @@ export type Computed = Map<string, string>;
 /** Properties that inherit into descendants (the ones a Figma layer reads off a child). */
 const INHERITED = new Set(["color", "font-family", "font-size", "font-weight", "line-height"]);
 
-/** Every style rule of the sheets, in source order, with at-rule blocks other than @layer skipped. */
-export function readRules(sheets: readonly Sheet[]): RuleSet {
+/** The attribute that stands in for an interaction pseudo-class: `:hover` → `data-figma-hover`. */
+export const markerOf = (pseudo: string) => `data-figma-${pseudo.replace(/^:/, "")}`;
+
+/**
+ * Every style rule of the sheets, in source order. `@layer` blocks are read through; a media block
+ * whose condition is in `holds` is too; every other at-rule is skipped and counted. Each pseudo-class
+ * in `simulate` is rewritten to its marker attribute.
+ */
+export function readRules(sheets: readonly Sheet[], holds: readonly string[] = [], simulate: readonly string[] = []): RuleSet {
   const rules: StyleRule[] = [];
   const skipped = new Map<string, SkippedBlock>();
   let order = 0;
@@ -48,7 +60,7 @@ export function readRules(sheets: readonly Sheet[]): RuleSet {
   const visit = (sheet: string, container: Container<ChildNode>) => {
     for (const node of container.nodes ?? []) {
       if (node.type === "atrule") {
-        if (node.name === "layer") {
+        if (node.name === "layer" || (node.name === "media" && holds.includes(node.params.trim()))) {
           visit(sheet, node as Container<ChildNode>);
           continue;
         }
@@ -64,10 +76,14 @@ export function readRules(sheets: readonly Sheet[]): RuleSet {
       const decls = expand(
         node.nodes.filter((d) => d.type === "decl").map((d) => [d.prop, d.value.replace(/\s+/g, " ").trim()] as const),
       );
-      for (const selector of node.selectors) {
-        const [spec] = Specificity.calculate(selector);
+      for (const authored of node.selectors) {
+        let selector = authored;
+        for (const pseudo of simulate) selector = selector.replace(new RegExp(`${pseudo}(?![\\w-])`, "g"), `[${markerOf(pseudo)}]`);
+        const element = /::(before|after)$/.exec(selector);
+        if (element) selector = selector.slice(0, element.index);
+        const [spec] = Specificity.calculate(authored);
         const { a, b, c } = spec.value;
-        rules.push({ sheet, selector, specificity: [a, b, c], order: order++, decls });
+        rules.push({ sheet, selector, pseudo: element?.[1] as StyleRule["pseudo"], specificity: [a, b, c], order: order++, decls });
       }
     }
   };
@@ -129,6 +145,13 @@ function expand(decls: readonly (readonly [string, string])[]): (readonly [strin
       case "max-inline-size":
         out.push(["max-width", value]);
         break;
+      case "outline": {
+        const style = parts.find((p) => BORDER_STYLES.has(p));
+        const rest = parts.filter((p) => p !== style);
+        out.push(["outline-style", style ?? "none"]);
+        if (rest.length === 2) out.push(["outline-width", rest[0]], ["outline-color", rest[1]]);
+        break;
+      }
       case "border": {
         const style = parts.find((p) => BORDER_STYLES.has(p));
         const rest = parts.filter((p) => p !== style);
@@ -166,20 +189,30 @@ const bySpecificityThenOrder = (x: StyleRule, y: StyleRule) => {
   return x.order - y.order;
 };
 
+function inherit(parent: Computed | undefined): Computed {
+  const computed: Computed = new Map();
+  if (parent) {
+    for (const [prop, value] of parent) {
+      if (prop.startsWith("--") || INHERITED.has(prop)) computed.set(prop, value);
+    }
+  }
+  return computed;
+}
+
+/** The pseudo-elements an element generates, each cascaded onto what it inherits from the element. */
+export type Pseudo = Partial<Record<"before" | "after", Computed>>;
+
+export type Tree = { styles: Map<Element, Computed>; pseudo: Map<Element, Pseudo> };
+
 /**
  * The declared values on `element` and every descendant, custom properties inherited the way CSS
- * inherits them. `root` is what `:root` declares: the token graph.
+ * inherits them, and the same for each pseudo-element they generate.
  */
-export function computeTree(element: Element, rules: RuleSet, unmatchable: Set<string>): Map<Element, Computed> {
-  const out = new Map<Element, Computed>();
+export function computeTree(element: Element, rules: RuleSet, unmatchable: Set<string>): Tree {
+  const styles = new Map<Element, Computed>();
+  const pseudo = new Map<Element, Pseudo>();
 
   const visit = (el: Element, parent: Computed | undefined) => {
-    const computed: Computed = new Map();
-    if (parent) {
-      for (const [prop, value] of parent) {
-        if (prop.startsWith("--") || INHERITED.has(prop)) computed.set(prop, value);
-      }
-    }
     const matched = rules.rules.filter((rule) => {
       try {
         return el.matches(rule.selector);
@@ -187,16 +220,23 @@ export function computeTree(element: Element, rules: RuleSet, unmatchable: Set<s
         unmatchable.add(rule.selector);
         return false;
       }
-    });
-    for (const rule of matched.sort(bySpecificityThenOrder)) {
-      for (const [prop, value] of rule.decls) computed.set(prop, value);
+    }).sort(bySpecificityThenOrder);
+    const computed = inherit(parent);
+    for (const rule of matched) if (!rule.pseudo) for (const [prop, value] of rule.decls) computed.set(prop, value);
+    styles.set(el, computed);
+
+    const generated: Pseudo = {};
+    for (const rule of matched) {
+      if (!rule.pseudo) continue;
+      const box = (generated[rule.pseudo] ??= inherit(computed));
+      for (const [prop, value] of rule.decls) box.set(prop, value);
     }
-    out.set(el, computed);
+    pseudo.set(el, generated);
     for (const child of Array.from(el.children)) visit(child, computed);
   };
 
   visit(element, undefined);
-  return out;
+  return { styles, pseudo };
 }
 
 /* One document for every cell: a fresh jsdom per element costs more than the whole cascade does. */

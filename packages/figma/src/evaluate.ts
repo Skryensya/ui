@@ -341,10 +341,30 @@ function mixArg(arg: string): { color: Oklab; pct: number | null } {
   return { color: evalOklab(arg), pct: null };
 }
 
+/* sRGB (gamma-encoded) ↔ Oklab, for `color-mix(in srgb, …)`: the one space the state layer mixes in. */
+const toLinear = (c: number) => (c <= 0.04045 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4);
+
+function srgbToOklab(r: number, g: number, b: number): { L: number; a: number; b: number } {
+  const [lr, lg, lb] = [r, g, b].map(toLinear);
+  const l = Math.cbrt(0.4122214708 * lr + 0.5363325363 * lg + 0.0514459929 * lb);
+  const m = Math.cbrt(0.2119034982 * lr + 0.6806995451 * lg + 0.1073969566 * lb);
+  const s = Math.cbrt(0.0883024619 * lr + 0.2817188376 * lg + 0.6299787005 * lb);
+  return {
+    L: 0.2104542553 * l + 0.793617785 * m - 0.0040720468 * s,
+    a: 1.9779984951 * l - 2.428592205 * m + 0.4505937099 * s,
+    b: 0.0259040371 * l + 0.7827717662 * m - 0.808675766 * s,
+  };
+}
+
+function oklabToSrgb(c: Oklab) {
+  const { L, C, H } = toOklch(c);
+  return oklchToSrgb({ L, C, H, toString: () => "" });
+}
+
 /** CSS Color 5 color-mix(): premultiplied interpolation, and a weight sum under 100% scales alpha. */
 function evalMix(inner: string): Oklab {
   const parts = splitTopLevel(inner);
-  const space = /^in\s+(oklab|oklch)$/.exec(parts[0]?.trim() ?? "");
+  const space = /^in\s+(oklab|oklch|srgb)$/.exec(parts[0]?.trim() ?? "");
   if (parts.length !== 3 || !space) throw new Unsupported(`color-mix(${inner})`);
   const a = mixArg(parts[1]);
   const b = mixArg(parts[2]);
@@ -357,6 +377,13 @@ function evalMix(inner: string): Oklab {
   const scale = Math.min(sum, 100) / 100;
 
   if (alpha === 0) return { L: 0, a: 0, b: 0, alpha: 0 };
+
+  if (space[1] === "srgb") {
+    const ra = oklabToSrgb(a.color);
+    const rb = oklabToSrgb(b.color);
+    const pm = (ch: "r" | "g" | "b") => (ra[ch] * a.color.alpha * (1 - t) + rb[ch] * b.color.alpha * t) / alpha;
+    return { ...srgbToOklab(pm("r"), pm("g"), pm("b")), alpha: alpha * scale };
+  }
 
   if (space[1] === "oklab") {
     const pm = (ch: "L" | "a" | "b") => (a.color[ch] * a.color.alpha * (1 - t) + b.color[ch] * b.color.alpha * t) / alpha;

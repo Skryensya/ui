@@ -144,9 +144,42 @@ describe("the Icon set", () => {
 
   it("orders a cell's layers as the contract's template places its slots", () => {
     const slots = Object.values(manifest.styles.layers).map((layers) => layers.map((l) => l.slot).join(","));
-    expect(new Set(slots)).toEqual(new Set(["pre,children,post"]));
+    expect(new Set(slots)).toEqual(new Set(["state layer,pre,children,post", "state layer,pre,children,post,focus ring"]));
   });
 
+});
+
+describe("interaction states", () => {
+  const cell = (state: string) =>
+    sets[0].cells.find((c) => c.key === `variant=ghost, tone=danger, size=md, state=${state}, iconOnly=false`)!;
+  const alpha = (state: string) => {
+    const layer = manifest.styles.layers[cell(state).layers].find((l) => l.kind === "overlay");
+    if (layer?.kind !== "overlay" || layer.fills[0].type !== "SOLID") throw new Error("no state layer");
+    const bound = layer.fills[0].color;
+    const v = "variable" in bound ? variable(bound.variable)!.values.light : undefined;
+    return v?.kind === "literal" ? (v.value as { a: number }).a : NaN;
+  };
+
+  it("draws the state layer at the opacity its token gives each state", () => {
+    const token = (name: string) => Number(parseTokens().tokens.find((t) => t.name === name)!.value);
+    expect(alpha("rest")).toBe(0);
+    expect(alpha("hover")).toBeCloseTo(token("--state-layer-hover-opacity"), 3);
+    expect(alpha("focus")).toBeCloseTo(token("--state-layer-focus-opacity"), 3);
+  });
+
+  it("rings only the focused cell, bound to the focus ring tokens, and lets it overflow", () => {
+    const ring = (state: string) => manifest.styles.layers[cell(state).layers].find((l) => l.kind === "ring");
+    expect(ring("rest")).toBeUndefined();
+    const focused = ring("focus");
+    if (focused?.kind !== "ring") throw new Error("no ring");
+    expect(focused.offset).toEqual({ variable: "--focus-ring-offset" });
+    expect(focused.width).toEqual({ variable: "--focus-ring-width" });
+    expect(manifest.styles.boxes[cell("focus").box].clipsContent).toBe(false);
+  });
+
+  it("reaches hover from rest in a prototype", () => {
+    expect(sets[0].interactions).toEqual([{ axis: "state", from: "rest", to: "hover", trigger: "ON_HOVER" }]);
+  });
 });
 
 describe("the stage", () => {
@@ -169,7 +202,7 @@ describe("representation", () => {
   it("stays far below the naive product", () => {
     const report = manifest.report as { variants: { naiveAllOptions: number; variantsTotal: number } };
     expect(report.variants.naiveAllOptions).toBe(27648);
-    for (const set of sets) expect(set.cells.length).toBeLessThanOrEqual(300);
+    for (const set of sets) expect(set.cells.length).toBeLessThanOrEqual(500);
     expect(report.variants.variantsTotal).toBe(sets.reduce((n, s) => n + s.cells.length, 0));
   });
 
@@ -179,6 +212,12 @@ describe("the evaluator", () => {
   it("mixes with transparent into alpha, as CSS does", () => {
     expect(evalColor("color-mix(in oklab, oklch(50% 0.1 250) 28%, transparent)").a).toBeCloseTo(0.28, 4);
     expect(evalColor("oklch(from oklch(0% 0 0 / 0.22) l c h / 1)").a).toBe(1);
+  });
+
+  it("mixes in srgb as the state layer does", () => {
+    const c = evalColor("color-mix(in srgb, oklch(0% 0 0) 12%, transparent)");
+    expect(c.a).toBeCloseTo(0.12, 4);
+    expect(c.r).toBeCloseTo(0, 3);
   });
 
   it("does the length maths the tokens use", () => {

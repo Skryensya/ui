@@ -11,7 +11,18 @@ export const buttonRealization: Realization = {
   // An appearance is picked for a product, rarely per instance, and each set stays a size Figma edits.
   splitBy: "appearance",
   // Pressed and disabled at once is unavailable-and-on; the CSS paints it as disabled, so it adds nothing.
-  state: { axis: "state", rest: "rest", options: ["pressed", "disabled"] },
+  state: {
+    axis: "state",
+    rest: "rest",
+    options: ["pressed", "disabled"],
+    // Hover shows on hover in a prototype. Figma has no keyboard focus, so focus is drawn, not reached.
+    interactions: [
+      { name: "hover", pseudo: ":hover", trigger: "ON_HOVER" },
+      { name: "focus", pseudo: ":focus-visible" },
+    ],
+  },
+  overlays: { before: "state layer" },
+  ring: "focus ring",
   // Welding belongs to split buttons and segmented groups, which are not realized yet.
   exclude: ["weldStart", "weldEnd"],
   // Arrows by side: leading points back, trailing points on. A lone icon points on.

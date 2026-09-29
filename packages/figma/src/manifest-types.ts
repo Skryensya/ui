@@ -112,7 +112,11 @@ export type IconSlot = { size: Bound<number>; color: Paint };
  */
 export type Layer =
   | { kind: "icon"; slot: string; visibleProperty?: string; default: string; icon: IconSlot }
-  | { kind: "text"; slot: string; textProperty: string; text: Text };
+  | { kind: "text"; slot: string; textProperty: string; text: Text }
+  /** A pseudo-element with paint (the state layer): covers the host, under its content, same corners. */
+  | { kind: "overlay"; slot: string; fills: Paint[] }
+  /** An outline: a stroke `width` wide drawn `offset` outside the host, following its corners. */
+  | { kind: "ring"; slot: string; width: Bound<number>; offset: Bound<number>; color: Paint };
 
 export type ComponentProperty =
   | { name: string; type: "TEXT"; default: string }
@@ -160,6 +164,11 @@ export type ComponentSet = {
   grid: { columns: { name: string; values: string[] }[]; rows: { name: string; values: string[] }[] };
   /** The cell every default lands on: the set's first child, which Figma offers first. */
   defaultCell: string;
+  /**
+   * Prototype reactions: from each cell at rest to its sibling in `state`, on `trigger`. What makes
+   * hovering a Button in presentation show its state layer.
+   */
+  interactions: { axis: string; from: string; to: string; trigger: "ON_HOVER" | "ON_PRESS" }[];
   /**
    * Instances drawn beside each row: the row's button at `base` with one optional slot switched
    * on. A slot's icon is a component property, not a Figma variant, so only an instance shows it.

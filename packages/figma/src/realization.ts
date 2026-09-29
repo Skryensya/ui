@@ -18,7 +18,20 @@ export type Realization = {
    * Boolean options folded into ONE Figma variant, because they are states of the same control and
    * a designer picks one: `rest` is none of them. Combinations are not drawn.
    */
-  state: { axis: string; rest: string; options: readonly string[] };
+  state: {
+    axis: string;
+    rest: string;
+    options: readonly string[];
+    /**
+     * Interaction states drawn as more values of the same axis: a CSS pseudo-class the cascade
+     * simulates, and the prototype trigger (if any) that shows it from rest.
+     */
+    interactions: readonly { name: string; pseudo: string; trigger?: "ON_HOVER" | "ON_PRESS" }[];
+  };
+  /** Layer names for pseudo-elements that paint: `before` is the state layer, not "::before". */
+  overlays: Readonly<Partial<Record<"before" | "after", string>>>;
+  /** The layer name an outline is drawn as. */
+  ring: string;
   /** Options left out of this realization on purpose, with the reason next to the list. */
   exclude: readonly string[];
   /**
