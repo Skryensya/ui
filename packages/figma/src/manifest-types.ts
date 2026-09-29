@@ -144,6 +144,7 @@ export type Page = { id: string; name: string };
 export type Stage = {
   background: Bound<Rgba>;
   label: { color: Bound<Rgba>; fontFamily: Bound<string>; fontSize: Bound<number>; fontWeight: Bound<number> };
+  divider: Bound<Rgba>;
 };
 
 export type ComponentSet = {
@@ -153,11 +154,11 @@ export type ComponentSet = {
   page: string;
   axes: { name: string; values: string[] }[];
   /**
-   * Which axes run across the grid and which run down it, each with its values in drawing order:
-   * the contract's default first, because Figma's default variant is the top-left one.
+   * Which axes run across the grid and which run down it, outermost first, each with its values in
+   * drawing order. The outermost row axis draws as sections.
    */
   grid: { columns: { name: string; values: string[] }[]; rows: { name: string; values: string[] }[] };
-  /** The cell every default lands on, which the grid puts top-left. */
+  /** The cell every default lands on: the set's first child, which Figma offers first. */
   defaultCell: string;
   /**
    * Instances drawn beside each row: the row's button at `base` with one optional slot switched

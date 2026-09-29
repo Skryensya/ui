@@ -21,7 +21,8 @@ export const buttonRealization: Realization = {
     children: { holds: "text", sample: "Button", iconWhen: "iconOnly", icon: "arrow-right" },
   },
   icons: { module: "@skryensya/icons-lucide", export: "lucideIcons" },
-  grid: { columns: ["iconOnly", "state"], rows: ["variant", "tone", "size"] },
+  // A section per size, largest first; within it a group per variant, a row per tone.
+  grid: { columns: ["iconOnly", "state"], rows: ["size", "variant", "tone"], descending: ["size"] },
   // The docs preview's background, so the frame and the browser show a Button on the same surface.
   stage: {
     contract: "component-preview",
@@ -32,6 +33,7 @@ export const buttonRealization: Realization = {
       fontSize: "--font-size-caption",
       fontWeight: "--font-weight-label",
     },
+    divider: "--color-border-subtle",
   },
   specimen: {
     module: "apps/docs/src/demos/button.ts",

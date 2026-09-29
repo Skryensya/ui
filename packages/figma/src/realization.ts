@@ -35,9 +35,10 @@ export type Realization = {
   icons: { module: string; export: string };
   /**
    * Which axes run across the component set's grid and which run down it, outermost first. A row
-   * is one button; the columns are what it looks like in each state.
+   * is one button; the columns are what it looks like in each state. The outermost row axis draws
+   * as sections. `descending` names the axes drawn in reverse contract order (largest size first).
    */
-  grid: { columns: readonly string[]; rows: readonly string[] };
+  grid: { columns: readonly string[]; rows: readonly string[]; descending: readonly string[] };
   /**
    * What the drawing stands on. The background is a contract's styling hook (the docs preview's
    * own), resolved through the cascade like any other; the labels name the tokens they read.
@@ -46,6 +47,8 @@ export type Realization = {
     contract: string;
     hook: string;
     label: { color: string; fontFamily: string; fontSize: string; fontWeight: string };
+    /** The token a section's outline is drawn in. */
+    divider: string;
   };
   /** The docs previews mirrored on the specimen page, by export name, for the side-by-side check. */
   specimen: { module: string; exports: readonly string[] };

@@ -477,11 +477,39 @@ function ensureLabel(ctx: Ctx, parent: FrameNode, key: string, chars: string, st
   return t;
 }
 
-/** Remove our own label texts that the layout no longer draws. Labels are chrome, not components. */
+/** Remove our own labels and section outlines the layout no longer draws. They are chrome, not components. */
 function pruneLabels(ctx: Ctx, parent: FrameNode, keep: Set<string>) {
   for (const node of [...parent.children]) {
-    if (node.type === "TEXT" && getTag(node, "label") && !keep.has(getTag(node, "label"))) ctx.run.write(() => node.remove());
+    if ((node.type === "TEXT" || node.type === "RECTANGLE") && getTag(node, "label") && !keep.has(getTag(node, "label"))) {
+      ctx.run.write(() => node.remove());
+    }
   }
+}
+
+/** A section's outline: behind everything in the frame, stroked in the stage's divider colour. */
+function ensureOutline(ctx: Ctx, parent: FrameNode, key: string, x: number, y: number, w: number, h: number) {
+  const { run } = ctx;
+  let rect = parent.children.find((n): n is RectangleNode => n.type === "RECTANGLE" && getTag(n, "label") === key);
+  if (!rect) {
+    run.write(() => {
+      rect = figma.createRectangle();
+      rect.name = key;
+      rect.fills = [];
+      rect.cornerRadius = 12;
+      rect.strokeWeight = 1;
+      rect.strokeAlign = "INSIDE";
+      rect.strokes = [toPaint(ctx, { type: "SOLID", color: manifest.stage.divider })];
+      rect.setSharedPluginData(NS, "label", key);
+      parent.insertChild(0, rect);
+    });
+    if (!rect) return;
+  }
+  const r = rect;
+  // Under the set, never over it: an outline drawn above would sit on top of the buttons.
+  const setIndex = parent.children.findIndex((n) => n.type === "COMPONENT_SET");
+  if (setIndex >= 0 && parent.children.indexOf(r) > setIndex) run.write(() => parent.insertChild(0, r));
+  move(run, r, Math.round(x), Math.round(y));
+  if (Math.abs(r.width - w) > 0.5 || Math.abs(r.height - h) > 0.5) run.write(() => r.resize(Math.round(w), Math.round(h)));
 }
 
 /** Bound to the stage's variable: the docs preview's own background, in whichever mode the file shows. */
@@ -798,8 +826,9 @@ function bindReferences(ctx: SetCtx, node: ComponentNode, cell: M.Cell, keys: Re
 }
 
 /**
- * A component set in its documentation frame: one row per button, one column per state, a larger
- * gap wherever the outermost axis changes, and every row and column named in the kit's own type.
+ * A component set in its documentation frame. The outermost row axis draws as sections (a heading
+ * and an outline each), the next one as groups with extra space between, and every row names the
+ * button it is; the columns are its states, then the showcase of its icons.
  */
 async function layoutSet(ctx: SetCtx, frame: FrameNode, set: ComponentSetNode, spec: M.ComponentSet) {
   const { run } = ctx;
@@ -814,9 +843,32 @@ async function layoutSet(ctx: SetCtx, frame: FrameNode, set: ComponentSetNode, s
   const cols = combos(spec.grid.columns);
   const rows = combos(spec.grid.rows);
   const outerCol = spec.grid.columns[0].name;
-  const outerRow = spec.grid.rows[0].name;
+  const [sectionAxis, groupAxis] = spec.grid.rows.map((a) => a.name);
+
+  const keep = new Set<string>();
+  const title = ensureLabel(ctx, frame, "title", spec.name, await labelStyle(ctx, 600, 24));
+  keep.add("title");
+  const style = await labelStyle(ctx);
+  const strong = await labelStyle(ctx, 600);
+  const heading = await labelStyle(ctx, 600, Math.round(Number(valueOf(manifest.stage.label.fontSize)) * 1.5));
+  const lineH = Math.ceil(style.size * 1.4);
+  const headH = Math.ceil(heading.size * 1.4) + 16;
+
+  // Rows: a heading's worth of space opens each section, a group gap opens each group inside it.
+  const rowY: number[] = [];
+  const sections: { value: string; top: number; first: number; last: number }[] = [];
+  let y = INNER;
+  rows.forEach((row, i) => {
+    if (i > 0) y += cellH + GAP;
+    if (i === 0 || row[sectionAxis] !== rows[i - 1][sectionAxis]) {
+      if (i > 0) y += GROUP;
+      sections.push({ value: row[sectionAxis], top: y, first: i, last: i });
+      y += headH;
+    } else if (groupAxis && row[groupAxis] !== rows[i - 1][groupAxis]) y += GAP;
+    sections[sections.length - 1].last = i;
+    rowY.push(y);
+  });
   const colX = offsets(cols.length, cellW, GAP, GROUP, (i) => cols[i][outerCol], INNER);
-  const rowY = offsets(rows.length, cellH, GAP, GROUP, (i) => rows[i][outerRow], INNER);
 
   const matches = (combo: Record<string, string>, props: Record<string, string>) => Object.entries(combo).every(([k, v]) => props[k] === v);
   for (const cell of cells) {
@@ -826,30 +878,23 @@ async function layoutSet(ctx: SetCtx, frame: FrameNode, set: ComponentSetNode, s
     if (col >= 0 && row >= 0) move(run, cell, colX[col], rowY[row]);
   }
   resizeTo(run, set, colX[colX.length - 1] + cellW + INNER, rowY[rowY.length - 1] + cellH + INNER);
-  // The default variant is Figma's top-left one: the grid draws each axis default-first.
   const first = cells.find((c) => getTag(c, "cell") === spec.defaultCell);
   if (first && set.children[0] !== first) run.write(() => set.insertChild(0, first));
 
-  // Labels: the title, a name per row, a state per column and a heading per column group.
-  const keep = new Set<string>();
-  const title = ensureLabel(ctx, frame, "title", spec.name, await labelStyle(ctx, 600, 24));
-  keep.add("title");
-  const style = await labelStyle(ctx);
-  const strong = await labelStyle(ctx, 600);
+  // A row names what the section heading does not already say.
   const word = (axis: string, value: string) => (value === "true" || value === "false" ? `${axis}: ${value}` : value);
-
-  const rowLabels = rows.map((row, r) => {
+  const rowLabels = rows.map((row) => {
     const key = `row:${Object.values(row).join(",")}`;
     keep.add(key);
-    return ensureLabel(ctx, frame, key, Object.entries(row).map(([a, v]) => word(a, v)).join(" · "), style);
+    const inner = Object.entries(row).filter(([axis]) => axis !== sectionAxis);
+    return ensureLabel(ctx, frame, key, inner.map(([a, v]) => word(a, v)).join(" · "), style);
   });
   const labelW = Math.max(...rowLabels.map((t) => t.width));
-  const lineH = Math.ceil(style.size * 1.4);
-  const setX = FRAME_PAD + labelW + LABEL_GAP;
+  const setX = FRAME_PAD + 16 + labelW + LABEL_GAP;
   const setY = FRAME_PAD + title.height + LABEL_GAP + 2 * (lineH + 8);
   move(run, title, FRAME_PAD, FRAME_PAD);
   move(run, set, setX, setY);
-  rowLabels.forEach((text, r) => move(run, text, FRAME_PAD, Math.round(setY + rowY[r] + (cellH - text.height) / 2)));
+  rowLabels.forEach((text, r) => move(run, text, FRAME_PAD + 16, Math.round(setY + rowY[r] + (cellH - text.height) / 2)));
 
   cols.forEach((col, i) => {
     const inner = Object.entries(col).filter(([axis]) => axis !== outerCol);
@@ -864,10 +909,25 @@ async function layoutSet(ctx: SetCtx, frame: FrameNode, set: ComponentSetNode, s
       move(run, group, setX + colX[i], setY - 2 * (lineH + 8));
     }
   });
-  // The showcase: beside each row, that button at rest with one icon slot switched on.
+
   const showcaseRight = await layoutShowcase(ctx, frame, set, spec, rows, rowY, cellH, setX + set.width + GROUP, setY, lineH, style, strong, keep);
+  const right = Math.max(setX + set.width, showcaseRight);
+
+  // Sections: a heading over each, and an outline around its rows, labels and showcase alike.
+  for (const section of sections) {
+    const headKey = `section:${section.value}`;
+    const outlineKey = `outline:${section.value}`;
+    keep.add(headKey);
+    keep.add(outlineKey);
+    const text = ensureLabel(ctx, frame, headKey, word(sectionAxis, section.value), heading);
+    const top = setY + section.top;
+    move(run, text, FRAME_PAD + 16, Math.round(top + 8));
+    const bottom = setY + rowY[section.last] + cellH + 12;
+    ensureOutline(ctx, frame, outlineKey, FRAME_PAD, top - 4, right + 16 - FRAME_PAD, bottom - top + 4);
+  }
+
   pruneLabels(ctx, frame, keep);
-  resizeTo(run, frame, Math.max(setX + set.width, showcaseRight) + FRAME_PAD, setY + set.height + FRAME_PAD);
+  resizeTo(run, frame, right + 16 + FRAME_PAD, setY + set.height + FRAME_PAD);
 }
 
 /** Instances of each row's rest variant with one optional slot on, in columns right of the set. */
