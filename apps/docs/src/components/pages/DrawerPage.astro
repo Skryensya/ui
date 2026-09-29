@@ -7,6 +7,7 @@ import ComponentPageShell from "./ComponentPageShell.astro";
 import AppearanceMenu from "../AppearanceMenu.astro";
 import CodeBlock from "../CodeBlock.astro";
 import ComponentPreview from "../ComponentPreview.astro";
+import UsagePreview from "../UsagePreview.astro";
 import "@skryensya/core/components/annotation.css";
 import { drawerAnatomyTree, drawerScript, drawerTree } from "../../demos/drawer";
 import { vaulAnatomyCss } from "../../demos/vaul";
@@ -96,40 +97,17 @@ trigger?.addEventListener("click", () => {
     <AppearanceMenu label={t("prefs.appearance")} values={["plain", "brutalist", "frosted"]} unavailable={{ tactile: t("prefs.appearanceTactileUnavailable") }} />
   </Fragment>
 
-  <Fragment slot="anatomy">
-    <p set:html={t("drawer.anatomyBody")} />
-    <ComponentPreview
-      tree={drawerAnatomyTree(t)}
-      css={vaulAnatomyCss}
-      label={t("drawer.anatomyPreviewLabel")}
-      screens={false}
-      hideSource
-      chrome={false}
-    />
-  </Fragment>
-
   <Fragment slot="usage">
     <p class="lede" set:html={t("drawer.lede")} />
+
+    <h3>{t("drawer.showcaseTitle")}</h3>
+    <p set:html={t("drawer.showcaseBody")} />
     <ComponentPreview tree={drawerTree(t)} previewScript={drawerScript} label="HTML" viewport="overlay" />
 
     <h3>{t("drawer.hooksTitle")}</h3>
     <p set:html={t("drawer.hooksBody1")} />
     <p set:html={t("drawer.hooksBody2")} />
     <CodeBlock code={tuning} label="CSS" lang="css" />
-
-    <h3>{t("drawer.whenTitle")}</h3>
-    <div class="sk-table-scroll">
-    <table class="sk-table">
-      <thead class="sk-table__head"><tr class="sk-table__row"><th class="sk-table__header">{t("drawer.whenHeadNeed")}</th><th class="sk-table__header">{t("drawer.whenHeadUse")}</th></tr></thead>
-      <tbody class="sk-table__body">
-        <tr class="sk-table__row"><td class="sk-table__cell">{t("drawer.whenRow1Need")}</td><td set:html={t("drawer.whenRow1Use")} class="sk-table__cell" /></tr>
-        <tr class="sk-table__row"><td class="sk-table__cell">{t("drawer.whenRow2Need")}</td><td set:html={t("drawer.whenRow2Use")} class="sk-table__cell" /></tr>
-        <tr class="sk-table__row"><td class="sk-table__cell">{t("drawer.whenRow3Need")}</td><td set:html={t("drawer.whenRow3Use")} class="sk-table__cell" /></tr>
-        <tr class="sk-table__row"><td class="sk-table__cell">{t("drawer.whenRow4Need")}</td><td set:html={t("drawer.whenRow4Use")} class="sk-table__cell" /></tr>
-      </tbody>
-    </table>
-    </div>
-    <p set:html={t("drawer.whenBody")} />
 
     <h3>{t("drawer.markupTitle")}</h3>
     <p set:html={t("drawer.markupBody")} />
@@ -148,6 +126,39 @@ trigger?.addEventListener("click", () => {
       <li set:html={t("drawer.nativeContractItem2")} />
       <li set:html={t("drawer.nativeContractItem3")} />
       <li set:html={t("drawer.nativeContractItem4")} />
+    </ul>
+
+    <h3>{t("component.anatomy")}</h3>
+    <p set:html={t("drawer.anatomyBody")} />
+    <ComponentPreview
+      tree={drawerAnatomyTree(t)}
+      css={vaulAnatomyCss}
+      label={t("drawer.anatomyPreviewLabel")}
+      screens={false}
+      hideSource
+      chrome={false}
+    />
+  </Fragment>
+
+  <Fragment slot="guidelines">
+    <p class="lede" set:html={t("drawer.guidelinesLede")} />
+    <h3>{t("drawer.whenTitle")}</h3>
+    <div class="sk-table-scroll">
+    <table class="sk-table">
+      <thead class="sk-table__head"><tr class="sk-table__row"><th class="sk-table__header">{t("drawer.whenHeadNeed")}</th><th class="sk-table__header">{t("drawer.whenHeadUse")}</th></tr></thead>
+      <tbody class="sk-table__body">
+        <tr class="sk-table__row"><td class="sk-table__cell">{t("drawer.whenRow1Need")}</td><td set:html={t("drawer.whenRow1Use")} class="sk-table__cell" /></tr>
+        <tr class="sk-table__row"><td class="sk-table__cell">{t("drawer.whenRow2Need")}</td><td set:html={t("drawer.whenRow2Use")} class="sk-table__cell" /></tr>
+        <tr class="sk-table__row"><td class="sk-table__cell">{t("drawer.whenRow3Need")}</td><td set:html={t("drawer.whenRow3Use")} class="sk-table__cell" /></tr>
+        <tr class="sk-table__row"><td class="sk-table__cell">{t("drawer.whenRow4Need")}</td><td set:html={t("drawer.whenRow4Use")} class="sk-table__cell" /></tr>
+      </tbody>
+    </table>
+    </div>
+    <p set:html={t("drawer.whenBody")} />
+    <ul>
+      <li set:html={t("drawer.guide.use1")} />
+      <li set:html={t("drawer.guide.avoid1")} />
+      <li set:html={t("drawer.guide.avoid2")} />
     </ul>
   </Fragment>
 

@@ -3,10 +3,14 @@ import ComponentPageShell from "./ComponentPageShell.astro";
 import AppearanceMenu from "../AppearanceMenu.astro";
 import CodeBlock from "../CodeBlock.astro";
 import ComponentPreview from "../ComponentPreview.astro";
+import UsagePreview from "../UsagePreview.astro";
+import DoDont from "../DoDont.astro";
 import "@skryensya/core/components/annotation.css";
 import {
   clipboardAnatomyCss,
   clipboardAnatomyTree,
+  clipboardButtonTree,
+  clipboardDontBlindTree,
   clipboardFieldTree,
   clipboardSizesTree,
   clipboardTargetTree,
@@ -31,6 +35,10 @@ import "@skryensya/core/components/clipboard.css";
 const vanilla = `document.addEventListener("sk:clipboardstatuschange", (event) => {
   if (event.detail.status === "error") reportCopyFailure();
 });`;
+
+/* What each value of a property is for, read from this page's messages. Same model Badge uses. */
+const explain = (option: string, values: readonly string[]) =>
+  Object.fromEntries(values.map((value) => [value, t(`clipboard.prop.${option}.${value}` as Parameters<typeof t>[0])]));
 ---
 
 <ComponentPageShell
@@ -45,39 +53,51 @@ const vanilla = `document.addEventListener("sk:clipboardstatuschange", (event) =
     <AppearanceMenu label={t("prefs.appearance")} />
   </Fragment>
 
-  <Fragment slot="anatomy">
-    <p set:html={t("clipboard.anatomyBody")} />
-    <ComponentPreview
-      tree={clipboardAnatomyTree(t)}
-      css={clipboardAnatomyCss}
-      label={t("clipboard.anatomyPreviewLabel")}
-      screens={false}
-      hideSource
-      chrome={false}
-    />
-  </Fragment>
-
   <Fragment slot="usage">
     <p class="lede" set:html={t("clipboard.lede")} />
 
-    <h3>{t("clipboard.whenTitle")}</h3>
-    <ul>
-      <li set:html={t("clipboard.whenItem1")} />
-      <li set:html={t("clipboard.whenItem2")} />
-      <li set:html={t("clipboard.whenItem3")} />
-    </ul>
+    <UsagePreview
+      tree={clipboardButtonTree(t)}
+      optionName="size"
+      title={t("clipboard.prop.size.title")}
+      description={t("clipboard.prop.size.body")}
+      explain={explain("size", ["xs", "sm", "md"])}
+      stageMinBlockSize="6rem"
+      labels={{ xs: "xs", sm: "sm", md: "md" }}
+    />
+
+    <UsagePreview
+      tree={clipboardButtonTree(t)}
+      optionName="variant"
+      title={t("clipboard.prop.variant.title")}
+      description={t("clipboard.prop.variant.body")}
+      explain={explain("variant", ["soft", "ghost"])}
+      stageMinBlockSize="6rem"
+    />
+
+    <UsagePreview
+      tree={clipboardFieldTree(t)}
+      optionName="appearance"
+      title={t("clipboard.prop.appearance.title")}
+      description={t("clipboard.prop.appearance.body")}
+      explain={explain("appearance", ["plain", "tactile", "brutalist", "frosted"])}
+      stageMinBlockSize="8rem"
+    />
+
+    <h3>{t("clipboard.showcaseTitle")}</h3>
+    <p set:html={t("clipboard.showcaseBody")} />
 
     <h3>{t("clipboard.targetTitle")}</h3>
     <p set:html={t("clipboard.targetBody")} />
-    <ComponentPreview tree={clipboardTargetTree(t)} label={t("clipboard.targetLabel")} />
+    <UsagePreview tree={clipboardTargetTree(t)} />
 
     <h3>{t("clipboard.fieldTitle")}</h3>
     <p set:html={t("clipboard.fieldBody")} />
-    <ComponentPreview tree={clipboardFieldTree(t)} label={t("clipboard.fieldLabel")} />
+    <UsagePreview tree={clipboardFieldTree(t)} />
 
     <h3>{t("clipboard.sizesTitle")}</h3>
     <p set:html={t("clipboard.sizesBody")} />
-    <ComponentPreview tree={clipboardSizesTree(t)} label={t("clipboard.sizesLabel")} />
+    <UsagePreview tree={clipboardSizesTree(t)} />
 
     <h3>{t("clipboard.feedbackTitle")}</h3>
     <ul>
@@ -91,5 +111,31 @@ const vanilla = `document.addEventListener("sk:clipboardstatuschange", (event) =
     <p set:html={t("clipboard.eventsBody")} />
     <CodeBlock code={react} label="React" lang="tsx" />
     <CodeBlock code={vanilla} label="JavaScript" lang="ts" />
+
+    <h3>{t("component.anatomy")}</h3>
+    <p set:html={t("clipboard.anatomyBody")} />
+    <ComponentPreview
+      tree={clipboardAnatomyTree(t)}
+      css={clipboardAnatomyCss}
+      label={t("clipboard.anatomyPreviewLabel")}
+      screens={false}
+      hideSource
+      chrome={false}
+    />
+  </Fragment>
+
+  <Fragment slot="guidelines">
+    <p class="lede" set:html={t("clipboard.guidelinesLede")} />
+    <h3>{t("clipboard.whenTitle")}</h3>
+    <ul>
+      <li set:html={t("clipboard.whenItem1")} />
+      <li set:html={t("clipboard.whenItem2")} />
+      <li set:html={t("clipboard.whenItem3")} />
+    </ul>
+    <DoDont
+      title={t("clipboard.dd.see.title")}
+      do={{ tree: clipboardFieldTree(t), caption: t("clipboard.dd.see.do") }}
+      dont={{ tree: clipboardDontBlindTree(t), caption: t("clipboard.dd.see.dont") }}
+    />
   </Fragment>
 </ComponentPageShell>

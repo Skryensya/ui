@@ -40,6 +40,12 @@ export const menubarMessages = {
     "demo.menubar.undo": "Deshacer",
     "demo.menubar.redo": "Rehacer",
     "demo.menubar.destinations": "Destinos",
+    "menubarPage.showcaseTitle": "Showcases",
+    "menubarPage.showcaseBody": "Una barra de aplicación, una con submenús y la versión para navegación de sitio.",
+    "menubarPage.guidelinesLede": "Menubar es una barra fija de comandos, como Archivo, Editar y Ver en un editor.",
+    "menubarPage.dd.single.title": "Una barra, varias entradas",
+    "menubarPage.dd.single.do": "Usa Menubar para varias entradas que forman la barra de la aplicación.",
+    "menubarPage.dd.single.dont": "Una sola entrada es un botón que abre un <a href=\"/es/componentes/menu\">Menu</a>.",
   },
   en: {
 
@@ -82,5 +88,11 @@ export const menubarMessages = {
     "demo.menubar.undo": "Undo",
     "demo.menubar.redo": "Redo",
     "demo.menubar.destinations": "Destinations",
+    "menubarPage.showcaseTitle": "Showcases",
+    "menubarPage.showcaseBody": "An application bar, one with submenus, and the version for site navigation.",
+    "menubarPage.guidelinesLede": "Menubar is a persistent bar of commands, like File, Edit and View in an editor.",
+    "menubarPage.dd.single.title": "One bar, several entries",
+    "menubarPage.dd.single.do": "Use Menubar for several entries that make up the application's bar.",
+    "menubarPage.dd.single.dont": "A single entry is a button that opens a <a href=\"/components/menu\">Menu</a>.",
   },
 } as const;

@@ -99,3 +99,17 @@ export const clipboardAnatomyCss = `.sk-annotated-figure {
 .sk-annotated__subject .sk-clipboard__label {
   inline-size: fit-content;
 }`;
+
+/* One copy button, the specimen the `size` and `variant` previews vary. */
+export const clipboardButtonTree = (t: Translate): UsageTree => ({
+  contract: "clipboard",
+  signature: "CopyButton",
+  options: { value: "pnpm add @skryensya/core", label: t("clipboard.demoCopy"), ...labels(t) },
+});
+
+/* Don't: a value that has to be checked, copied blind from a lone button. */
+export const clipboardDontBlindTree = (t: Translate): UsageTree => ({
+  contract: "clipboard",
+  signature: "CopyButton",
+  options: { value: "https://ui.skryensya.dev/s/7f3a9c", label: t("clipboard.demoCopyLink"), ...labels(t) },
+});

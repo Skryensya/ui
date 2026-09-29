@@ -65,6 +65,13 @@ export const megamenuMessages = {
     "demo.megamenu.link7": "Guías",
     "demo.megamenu.link8": "Foro",
     "demo.megamenu.link9": "Blog",
+    "megamenuPage.showcaseTitle": "Showcases",
+    "megamenuPage.showcaseBody": "Una barra de sitio con categorías que abren paneles de enlaces.",
+    "megamenuPage.guidelinesLede": "Megamenu es la navegación de un sitio con categorías que despliegan paneles de varias columnas.",
+    "megamenuPage.guide.use1": "Úsalo cuando cada categoría tiene muchos destinos que se agrupan en dos a cuatro columnas.",
+    "megamenuPage.guide.avoid1": "Comandos de aplicación, no destinos, van en un <a href=\"/es/componentes/menu\">Menu</a>.",
+    "megamenuPage.guide.avoid2": "Destinos simples sin panel son una <a href=\"/es/componentes/nav-list\">NavList</a>.",
+    "megamenuPage.guide.avoid3": "Si solo hace falta la barra con la marca y las acciones, es una <a href=\"/es/componentes/navbar\">Navbar</a>.",
   },
   en: {
 
@@ -131,5 +138,12 @@ export const megamenuMessages = {
     "demo.megamenu.link7": "Guides",
     "demo.megamenu.link8": "Forum",
     "demo.megamenu.link9": "Blog",
+    "megamenuPage.showcaseTitle": "Showcases",
+    "megamenuPage.showcaseBody": "A site bar with categories that open panels of links.",
+    "megamenuPage.guidelinesLede": "Megamenu is a site's navigation, with categories that drop down multi-column panels.",
+    "megamenuPage.guide.use1": "Use it when each category has many destinations grouped in two to four columns.",
+    "megamenuPage.guide.avoid1": "Application commands, not destinations, go in a <a href=\"/components/menu\">Menu</a>.",
+    "megamenuPage.guide.avoid2": "Simple destinations with no panel are a <a href=\"/components/nav-list\">NavList</a>.",
+    "megamenuPage.guide.avoid3": "When only the bar with the brand and actions is needed, it is a <a href=\"/components/navbar\">Navbar</a>.",
   },
 } as const;

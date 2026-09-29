@@ -3,6 +3,7 @@ import ComponentPageShell from "./ComponentPageShell.astro";
 import AppearanceMenu from "../AppearanceMenu.astro";
 import CodeBlock from "../CodeBlock.astro";
 import ComponentPreview from "../ComponentPreview.astro";
+import UsagePreview from "../UsagePreview.astro";
 import {
   commandPaletteAnatomyCss,
   commandPaletteAnatomyHtml,
@@ -38,20 +39,11 @@ const hotkeyHint = `<kbd class="sk-kbd" data-sk-command-palette-hint>⌘K</kbd>`
     <AppearanceMenu label={t("prefs.appearance")} values={["plain", "brutalist", "frosted"]} unavailable={{ tactile: t("prefs.appearanceTactileUnavailable") }} />
   </Fragment>
 
-  <Fragment slot="anatomy">
-    <p set:html={t("commandPalette.anatomyBody")} />
-    <ComponentPreview
-      html={commandPaletteAnatomyHtml(t)}
-      css={commandPaletteAnatomyCss}
-      label={t("commandPalette.anatomyPreviewLabel")}
-      screens={false}
-      hideSource
-      chrome={false}
-    />
-  </Fragment>
-
   <Fragment slot="usage">
     <p class="lede" set:html={t("commandPalette.lede", { hotkey: hotkeyHint })} />
+
+    <h3>{t("commandPalette.showcaseTitle")}</h3>
+    <p set:html={t("commandPalette.showcaseBody")} />
     <ComponentPreview
       tree={commandPaletteDemoTree(t)}
       js={commandPaletteDemoScript}
@@ -68,6 +60,27 @@ const hotkeyHint = `<kbd class="sk-kbd" data-sk-command-palette-hint>⌘K</kbd>`
       <li set:html={t("commandPalette.contractItem4")} />
       <li set:html={t("commandPalette.contractItem5")} />
       <li set:html={t("commandPalette.contractItem6")} />
+    </ul>
+
+    <h3>{t("component.anatomy")}</h3>
+    <p set:html={t("commandPalette.anatomyBody")} />
+    <ComponentPreview
+      html={commandPaletteAnatomyHtml(t)}
+      css={commandPaletteAnatomyCss}
+      label={t("commandPalette.anatomyPreviewLabel")}
+      screens={false}
+      hideSource
+      chrome={false}
+    />
+  </Fragment>
+
+  <Fragment slot="guidelines">
+    <p class="lede" set:html={t("commandPalette.guidelinesLede")} />
+    <ul>
+      <li set:html={t("commandPalette.guide.use1")} />
+      <li set:html={t("commandPalette.guide.use2")} />
+      <li set:html={t("commandPalette.guide.avoid1")} />
+      <li set:html={t("commandPalette.guide.avoid2")} />
     </ul>
   </Fragment>
 

@@ -6,6 +6,7 @@ import "@skryensya/core/components/annotation.css";
 import ComponentPageShell from "./ComponentPageShell.astro";
 import CodeBlock from "../CodeBlock.astro";
 import ComponentPreview from "../ComponentPreview.astro";
+import UsagePreview from "../UsagePreview.astro";
 import {
   menuAnatomyCss,
   menuAnatomyHtml,
@@ -104,20 +105,11 @@ const contextMenuReact = `<Menu
   ]}
   testFiles={["packages/vanilla/src/components/menu.test.ts", "packages/react/src/components/menu.test.tsx"]}}
 >
-  <Fragment slot="anatomy">
-    <p set:html={t("menuPage.anatomyBody")} />
-    <ComponentPreview
-      html={menuAnatomyHtml(t)}
-      css={menuAnatomyCss}
-      label={t("menuPage.anatomyPreviewLabel")}
-      screens={false}
-      hideSource
-      chrome={false}
-    />
-  </Fragment>
-
   <Fragment slot="usage">
     <p class="lede" set:html={t("menuPage.description")} />
+
+    <h3>{t("menuPage.showcaseTitle")}</h3>
+    <p set:html={t("menuPage.showcaseBody")} />
     <ComponentPreview tree={menuTree(t)} js={js} label="Menu" viewport="menu" />
 
     <h3>{t("component.contractNotesTitle")}</h3>
@@ -172,6 +164,28 @@ const contextMenuReact = `<Menu
       label={t("menuPage.safetyTitle")}
       viewport="menu-deep"
     />
+
+    <h3>{t("component.anatomy")}</h3>
+    <p set:html={t("menuPage.anatomyBody")} />
+    <ComponentPreview
+      html={menuAnatomyHtml(t)}
+      css={menuAnatomyCss}
+      label={t("menuPage.anatomyPreviewLabel")}
+      screens={false}
+      hideSource
+      chrome={false}
+    />
+  </Fragment>
+
+  <Fragment slot="guidelines">
+    <p class="lede" set:html={t("menuPage.guidelinesLede")} />
+    <ul>
+      <li set:html={t("menuPage.guide.use1")} />
+      <li set:html={t("menuPage.guide.use2")} />
+      <li set:html={t("menuPage.guide.avoid1")} />
+      <li set:html={t("menuPage.guide.avoid2")} />
+      <li set:html={t("menuPage.guide.avoid3")} />
+    </ul>
   </Fragment>
 
   <Fragment slot="install">

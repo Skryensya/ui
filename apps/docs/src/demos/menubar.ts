@@ -223,3 +223,17 @@ export const menubarNavTree = (t: Translate): UsageTree => ({
     ]),
   ],
 });
+
+/* Don't: a bar with one entry, which is a single menu button dressed as an application bar. */
+export const menubarDontSingleTree = (t: Translate): UsageTree => ({
+  contract: "menubar",
+  signature: "Menubar",
+  options: { label: t("demo.menubar.label") },
+  children: [
+    topItem(t("demo.menubar.file"), [
+      dropdownItem("new", t("demo.menubar.new")),
+      dropdownItem("open", t("demo.menubar.open")),
+      dropdownItem("save", t("demo.menubar.save")),
+    ]),
+  ],
+});

@@ -111,6 +111,14 @@ export const menuMessages = {
       "ArrowDown mueve el resaltado por la lista, saltando el item deshabilitado.",
     "menuPage.testReact10":
       "Elegir un item del submenú cierra todo el árbol, padre incluido.",
+    "menuPage.showcaseTitle": "Showcases",
+    "menuPage.showcaseBody": "Un menú de acciones, con submenús, compacto y como menú contextual.",
+    "menuPage.guidelinesLede": "Menu agrupa comandos que actúan sobre algo, detrás de un botón.",
+    "menuPage.guide.use1": "Úsalo cuando las acciones son muchas o secundarias y no conviene mostrarlas todas.",
+    "menuPage.guide.use2": "Nombra cada comando con un verbo y agrupa los relacionados con separadores.",
+    "menuPage.guide.avoid1": "Elegir un valor en un formulario es un <a href=\"/es/componentes/select\">Select</a>.",
+    "menuPage.guide.avoid2": "Una barra de comandos de aplicación, como Archivo y Editar, es un <a href=\"/es/componentes/menubar\">Menubar</a>.",
+    "menuPage.guide.avoid3": "Una navegación de sitio con paneles de varias columnas es un <a href=\"/es/componentes/megamenu\">Megamenu</a>.",
   },
   en: {
     "demo.menu.label": "File actions",
@@ -224,5 +232,13 @@ export const menuMessages = {
       "ArrowDown moves the highlight through the item list, skipping the disabled one.",
     "menuPage.testReact10":
       "Choosing a submenu item closes the whole tree, parent included.",
+    "menuPage.showcaseTitle": "Showcases",
+    "menuPage.showcaseBody": "A menu of actions, one with submenus, a compact one, and a context menu.",
+    "menuPage.guidelinesLede": "Menu groups commands that act on something, behind a button.",
+    "menuPage.guide.use1": "Use it when the actions are many or secondary and showing them all does not pay.",
+    "menuPage.guide.use2": "Name each command with a verb, and group related ones with separators.",
+    "menuPage.guide.avoid1": "Picking a value in a form is a <a href=\"/components/select\">Select</a>.",
+    "menuPage.guide.avoid2": "A bar of application commands, like File and Edit, is a <a href=\"/components/menubar\">Menubar</a>.",
+    "menuPage.guide.avoid3": "Site navigation with multi-column panels is a <a href=\"/components/megamenu\">Megamenu</a>.",
   },
 } as const;
