@@ -44468,6 +44468,246 @@
         "columns": []
       },
       "visualHash": "bc559e020d9cae30"
+    },
+    {
+      "axes": [
+        {
+          "name": "orientation",
+          "values": [
+            "horizontal",
+            "vertical"
+          ]
+        }
+      ],
+      "cells": [
+        {
+          "box": "364c26f96130719c",
+          "hash": "bdda0a685b9d7446",
+          "id": "toolbar/plain/orientation=horizontal",
+          "key": "orientation=horizontal",
+          "layers": "4c06ff062c3f194b",
+          "props": {
+            "orientation": "horizontal"
+          },
+          "surface": "82d94bda55e9390f"
+        },
+        {
+          "box": "a2b779c5384d5db9",
+          "hash": "d781e44de51786b3",
+          "id": "toolbar/plain/orientation=vertical",
+          "key": "orientation=vertical",
+          "layers": "9136434747867da5",
+          "props": {
+            "orientation": "vertical"
+          },
+          "surface": "82d94bda55e9390f"
+        }
+      ],
+      "contractHash": "ca80ed96b5a6d35c",
+      "defaultCell": "orientation=horizontal",
+      "grid": {
+        "columns": [],
+        "rows": [
+          {
+            "name": "orientation",
+            "values": [
+              "horizontal",
+              "vertical"
+            ]
+          }
+        ]
+      },
+      "id": "toolbar/plain",
+      "interactions": [],
+      "kind": "component-set",
+      "name": "Toolbar / plain",
+      "page": "skryensya",
+      "properties": [],
+      "showcase": {
+        "base": {},
+        "columns": []
+      },
+      "visualHash": "e8aec2291467e214"
+    },
+    {
+      "axes": [
+        {
+          "name": "orientation",
+          "values": [
+            "horizontal",
+            "vertical"
+          ]
+        }
+      ],
+      "cells": [
+        {
+          "box": "364c26f96130719c",
+          "hash": "cfb3f4cff07fd9d9",
+          "id": "toolbar/tactile/orientation=horizontal",
+          "key": "orientation=horizontal",
+          "layers": "4c06ff062c3f194b",
+          "props": {
+            "orientation": "horizontal"
+          },
+          "surface": "1f7eb96067da3cc3"
+        },
+        {
+          "box": "a2b779c5384d5db9",
+          "hash": "f294d60eb45e4eee",
+          "id": "toolbar/tactile/orientation=vertical",
+          "key": "orientation=vertical",
+          "layers": "9136434747867da5",
+          "props": {
+            "orientation": "vertical"
+          },
+          "surface": "1f7eb96067da3cc3"
+        }
+      ],
+      "contractHash": "ca80ed96b5a6d35c",
+      "defaultCell": "orientation=horizontal",
+      "grid": {
+        "columns": [],
+        "rows": [
+          {
+            "name": "orientation",
+            "values": [
+              "horizontal",
+              "vertical"
+            ]
+          }
+        ]
+      },
+      "id": "toolbar/tactile",
+      "interactions": [],
+      "kind": "component-set",
+      "name": "Toolbar / tactile",
+      "page": "skryensya",
+      "properties": [],
+      "showcase": {
+        "base": {},
+        "columns": []
+      },
+      "visualHash": "34c05fe1898116ce"
+    },
+    {
+      "axes": [
+        {
+          "name": "orientation",
+          "values": [
+            "horizontal",
+            "vertical"
+          ]
+        }
+      ],
+      "cells": [
+        {
+          "box": "364c26f96130719c",
+          "hash": "960f72996bc81edd",
+          "id": "toolbar/brutalist/orientation=horizontal",
+          "key": "orientation=horizontal",
+          "layers": "09d325f8e6744151",
+          "props": {
+            "orientation": "horizontal"
+          },
+          "surface": "2d736de00ccb6758"
+        },
+        {
+          "box": "a2b779c5384d5db9",
+          "hash": "61c2d81adc10210a",
+          "id": "toolbar/brutalist/orientation=vertical",
+          "key": "orientation=vertical",
+          "layers": "6035534854e6ccf0",
+          "props": {
+            "orientation": "vertical"
+          },
+          "surface": "2d736de00ccb6758"
+        }
+      ],
+      "contractHash": "ca80ed96b5a6d35c",
+      "defaultCell": "orientation=horizontal",
+      "grid": {
+        "columns": [],
+        "rows": [
+          {
+            "name": "orientation",
+            "values": [
+              "horizontal",
+              "vertical"
+            ]
+          }
+        ]
+      },
+      "id": "toolbar/brutalist",
+      "interactions": [],
+      "kind": "component-set",
+      "name": "Toolbar / brutalist",
+      "page": "skryensya",
+      "properties": [],
+      "showcase": {
+        "base": {},
+        "columns": []
+      },
+      "visualHash": "deccd0cbf65eb749"
+    },
+    {
+      "axes": [
+        {
+          "name": "orientation",
+          "values": [
+            "horizontal",
+            "vertical"
+          ]
+        }
+      ],
+      "cells": [
+        {
+          "box": "364c26f96130719c",
+          "hash": "808cc4e54ee666c0",
+          "id": "toolbar/frosted/orientation=horizontal",
+          "key": "orientation=horizontal",
+          "layers": "4c06ff062c3f194b",
+          "props": {
+            "orientation": "horizontal"
+          },
+          "surface": "a992af9898553826"
+        },
+        {
+          "box": "a2b779c5384d5db9",
+          "hash": "0f5afd738ce05592",
+          "id": "toolbar/frosted/orientation=vertical",
+          "key": "orientation=vertical",
+          "layers": "9136434747867da5",
+          "props": {
+            "orientation": "vertical"
+          },
+          "surface": "a992af9898553826"
+        }
+      ],
+      "contractHash": "ca80ed96b5a6d35c",
+      "defaultCell": "orientation=horizontal",
+      "grid": {
+        "columns": [],
+        "rows": [
+          {
+            "name": "orientation",
+            "values": [
+              "horizontal",
+              "vertical"
+            ]
+          }
+        ]
+      },
+      "id": "toolbar/frosted",
+      "interactions": [],
+      "kind": "component-set",
+      "name": "Toolbar / frosted",
+      "page": "skryensya",
+      "properties": [],
+      "showcase": {
+        "base": {},
+        "columns": []
+      },
+      "visualHash": "b7f208e464f05c6e"
     }
   ],
   "diagnostics": [
@@ -44614,6 +44854,18 @@
       "message": "11 rule(s) under a condition the evaluation context does not hold",
       "severity": "info",
       "subject": "components/button.css @media (forced-colors: active)"
+    },
+    {
+      "code": "CONDITION_SKIPPED",
+      "message": "11 rule(s) under a condition the evaluation context does not hold",
+      "severity": "info",
+      "subject": "components/button.css @media (forced-colors: active)"
+    },
+    {
+      "code": "CONDITION_SKIPPED",
+      "message": "1 rule(s) under a condition the evaluation context does not hold",
+      "severity": "info",
+      "subject": "components/button.css @media (prefers-reduced-motion: reduce)"
     },
     {
       "code": "CONDITION_SKIPPED",
@@ -45261,6 +45513,12 @@
       "code": "CONDITION_SKIPPED",
       "message": "1 rule(s) under a condition the evaluation context does not hold",
       "severity": "info",
+      "subject": "components/toolbar.css @media (forced-colors: active)"
+    },
+    {
+      "code": "CONDITION_SKIPPED",
+      "message": "1 rule(s) under a condition the evaluation context does not hold",
+      "severity": "info",
       "subject": "components/tooltip.css @media (forced-colors: active)"
     },
     {
@@ -45514,6 +45772,18 @@
       "message": "1 rule(s) under a condition the evaluation context does not hold",
       "severity": "info",
       "subject": "patterns/state-layer.css @media (prefers-reduced-motion: reduce)"
+    },
+    {
+      "code": "CONDITION_SKIPPED",
+      "message": "1 rule(s) under a condition the evaluation context does not hold",
+      "severity": "info",
+      "subject": "patterns/state-layer.css @media (prefers-reduced-motion: reduce)"
+    },
+    {
+      "code": "CONDITION_SKIPPED",
+      "message": "0 rule(s) under a condition the evaluation context does not hold",
+      "severity": "info",
+      "subject": "patterns/state-layer.css @property --state-layer-opacity"
     },
     {
       "code": "CONDITION_SKIPPED",
@@ -46344,6 +46614,18 @@
         "nonVisual": [],
         "visual": []
       },
+      "toolbar": {
+        "excluded": [
+          "loopFocus"
+        ],
+        "nonVisual": [
+          "label"
+        ],
+        "visual": [
+          "orientation",
+          "appearance"
+        ]
+      },
       "tooltip": {
         "excluded": [
           "placement",
@@ -46361,11 +46643,11 @@
     },
     "tokens": {
       "catalogueAdded": 303,
-      "componentVariables": 504,
+      "componentVariables": 518,
       "modeValuesBySource": {
         "alias": 203,
-        "evaluated": 929,
-        "literal": 808
+        "evaluated": 943,
+        "literal": 822
       },
       "reached": 204,
       "reachedAsVariables": 155,
@@ -46384,8 +46666,8 @@
       "variables": 466
     },
     "variants": {
-      "components": 129,
-      "componentSets": 128,
+      "components": 133,
+      "componentSets": 132,
       "naiveAllOptions": {
         "accordion": 32,
         "avatar": 8,
@@ -46442,6 +46724,7 @@
         "tile-radio-group": 192,
         "tile-switch": 192,
         "timeline": 1,
+        "toolbar": 16,
         "tooltip": 64
       },
       "naiveVisualOptions": {
@@ -46500,6 +46783,7 @@
         "tile-radio-group": 4,
         "tile-switch": 4,
         "timeline": 1,
+        "toolbar": 8,
         "tooltip": 1
       },
       "variantsPerSet": [
@@ -47014,13 +47298,29 @@
         {
           "set": "otp-input",
           "variants": 2
+        },
+        {
+          "set": "toolbar/plain",
+          "variants": 2
+        },
+        {
+          "set": "toolbar/tactile",
+          "variants": 2
+        },
+        {
+          "set": "toolbar/brutalist",
+          "variants": 2
+        },
+        {
+          "set": "toolbar/frosted",
+          "variants": 2
         }
       ],
-      "variantsTotal": 2552
+      "variantsTotal": 2560
     }
   },
   "schemaVersion": 1,
-  "sourceHash": "768784885eb94cd1",
+  "sourceHash": "1e60b43a107373f9",
   "stage": {
     "background": {
       "variable": "--color-bg-surface"
@@ -47743,6 +48043,34 @@
         "width": {
           "expression": "max(round(calc(32px * 1), 2px), 24px)",
           "value": 32
+        }
+      },
+      "1d2944fcc63f302b": {
+        "clipsContent": false,
+        "crossAlign": "MIN",
+        "direction": "VERTICAL",
+        "gap": {
+          "expression": "1px",
+          "value": 1
+        },
+        "mainAlign": "MIN",
+        "padding": {
+          "bottom": {
+            "expression": "0",
+            "value": 0
+          },
+          "left": {
+            "expression": "0",
+            "value": 0
+          },
+          "right": {
+            "expression": "0",
+            "value": 0
+          },
+          "top": {
+            "expression": "0",
+            "value": 0
+          }
         }
       },
       "1d9725b9e6cb63c5": {
@@ -48540,6 +48868,35 @@
         },
         "width": {
           "variable": "--size-control-lg"
+        }
+      },
+      "364c26f96130719c": {
+        "clipsContent": false,
+        "crossAlign": "CENTER",
+        "direction": "HORIZONTAL",
+        "gap": {
+          "variable": "--space-inline-xs"
+        },
+        "mainAlign": "MIN",
+        "padding": {
+          "bottom": {
+            "variable": "--space-inset-xs"
+          },
+          "left": {
+            "variable": "--space-inset-xs"
+          },
+          "right": {
+            "variable": "--space-inset-xs"
+          },
+          "top": {
+            "variable": "--space-inset-xs"
+          }
+        },
+        "radius": {
+          "variable": "--radius-surface"
+        },
+        "strokeWeight": {
+          "variable": "toolbar:border-width:93e20626bf"
         }
       },
       "3b7b5285867526f3": {
@@ -49764,6 +50121,34 @@
         },
         "width": {
           "variable": "avatar:size:e021220bb1"
+        }
+      },
+      "5e2d7722598f75d6": {
+        "clipsContent": false,
+        "crossAlign": "CENTER",
+        "direction": "HORIZONTAL",
+        "gap": {
+          "expression": "1px",
+          "value": 1
+        },
+        "mainAlign": "MIN",
+        "padding": {
+          "bottom": {
+            "expression": "0",
+            "value": 0
+          },
+          "left": {
+            "expression": "0",
+            "value": 0
+          },
+          "right": {
+            "expression": "0",
+            "value": 0
+          },
+          "top": {
+            "expression": "0",
+            "value": 0
+          }
         }
       },
       "5eefcdf034c45d09": {
@@ -51776,6 +52161,35 @@
         },
         "stretch": true
       },
+      "a2b779c5384d5db9": {
+        "clipsContent": false,
+        "crossAlign": "MIN",
+        "direction": "VERTICAL",
+        "gap": {
+          "variable": "--space-inline-xs"
+        },
+        "mainAlign": "MIN",
+        "padding": {
+          "bottom": {
+            "variable": "--space-inset-xs"
+          },
+          "left": {
+            "variable": "--space-inset-xs"
+          },
+          "right": {
+            "variable": "--space-inset-xs"
+          },
+          "top": {
+            "variable": "--space-inset-xs"
+          }
+        },
+        "radius": {
+          "variable": "--radius-surface"
+        },
+        "strokeWeight": {
+          "variable": "toolbar:border-width:93e20626bf"
+        }
+      },
       "a3731f89958225a4": {
         "clipsContent": false,
         "crossAlign": "MIN",
@@ -52353,6 +52767,39 @@
           }
         }
       },
+      "b1f8752aceb7b6af": {
+        "clipsContent": false,
+        "crossAlign": "MIN",
+        "direction": "HORIZONTAL",
+        "height": {
+          "expression": "1px",
+          "value": 1
+        },
+        "mainAlign": "MIN",
+        "minHeight": {
+          "expression": "0",
+          "value": 0
+        },
+        "padding": {
+          "bottom": {
+            "expression": "0",
+            "value": 0
+          },
+          "left": {
+            "expression": "0",
+            "value": 0
+          },
+          "right": {
+            "expression": "0",
+            "value": 0
+          },
+          "top": {
+            "expression": "0",
+            "value": 0
+          }
+        },
+        "stretch": true
+      },
       "b2919ba2f4c4fe07": {
         "clipsContent": false,
         "crossAlign": "MIN",
@@ -52415,6 +52862,38 @@
         },
         "width": {
           "variable": "--size-icon-md"
+        }
+      },
+      "b5794102386060a8": {
+        "clipsContent": false,
+        "crossAlign": "MIN",
+        "direction": "HORIZONTAL",
+        "mainAlign": "MIN",
+        "minHeight": {
+          "variable": "--size-control-sm"
+        },
+        "padding": {
+          "bottom": {
+            "expression": "0",
+            "value": 0
+          },
+          "left": {
+            "expression": "0",
+            "value": 0
+          },
+          "right": {
+            "expression": "0",
+            "value": 0
+          },
+          "top": {
+            "expression": "0",
+            "value": 0
+          }
+        },
+        "stretch": true,
+        "width": {
+          "expression": "1px",
+          "value": 1
         }
       },
       "b5ec9ced019b3552": {
@@ -52986,6 +53465,50 @@
             "expression": "0",
             "value": 0
           }
+        }
+      },
+      "c821b7960093b6c5": {
+        "clipsContent": true,
+        "crossAlign": "CENTER",
+        "direction": "HORIZONTAL",
+        "gap": {
+          "variable": "--space-inline-sm"
+        },
+        "height": {
+          "variable": "--size-control-sm"
+        },
+        "mainAlign": "CENTER",
+        "minHeight": {
+          "variable": "--size-control-sm"
+        },
+        "minWidth": {
+          "expression": "0",
+          "value": 0
+        },
+        "padding": {
+          "bottom": {
+            "expression": "0",
+            "value": 0
+          },
+          "left": {
+            "variable": "toolbar:sk-button-padding-x:33a3c91b44"
+          },
+          "right": {
+            "variable": "toolbar:sk-button-padding-x:33a3c91b44"
+          },
+          "top": {
+            "expression": "0",
+            "value": 0
+          }
+        },
+        "radius": {
+          "variable": "--radius-control"
+        },
+        "strokeWeight": {
+          "variable": "toolbar:sk-button-border-width:93e20626bf"
+        },
+        "width": {
+          "variable": "--size-control-sm"
         }
       },
       "c9deff40b4ba2a17": {
@@ -55947,6 +56470,131 @@
             "lineHeight": 150
           },
           "textProperty": "children"
+        }
+      ],
+      "09d325f8e6744151": [
+        {
+          "box": "5e2d7722598f75d6",
+          "kind": "frame",
+          "layers": [
+            {
+              "box": "c821b7960093b6c5",
+              "kind": "frame",
+              "layers": [
+                {
+                  "fills": [
+                    {
+                      "color": {
+                        "variable": "toolbar:state-layer:a8bbbce668"
+                      },
+                      "type": "SOLID"
+                    }
+                  ],
+                  "kind": "overlay",
+                  "slot": "state layer"
+                },
+                {
+                  "default": "copy",
+                  "icon": {
+                    "color": {
+                      "color": {
+                        "variable": "--color-text-primary"
+                      },
+                      "type": "SOLID"
+                    },
+                    "size": {
+                      "variable": "--size-icon-md"
+                    }
+                  },
+                  "kind": "icon",
+                  "slot": "icon"
+                }
+              ],
+              "slot": "button",
+              "surface": "840dafb080fd7021"
+            },
+            {
+              "box": "c821b7960093b6c5",
+              "kind": "frame",
+              "layers": [
+                {
+                  "fills": [
+                    {
+                      "color": {
+                        "variable": "toolbar:state-layer:a8bbbce668"
+                      },
+                      "type": "SOLID"
+                    }
+                  ],
+                  "kind": "overlay",
+                  "slot": "state layer"
+                },
+                {
+                  "default": "edit",
+                  "icon": {
+                    "color": {
+                      "color": {
+                        "variable": "--color-text-primary"
+                      },
+                      "type": "SOLID"
+                    },
+                    "size": {
+                      "variable": "--size-icon-md"
+                    }
+                  },
+                  "kind": "icon",
+                  "slot": "icon"
+                }
+              ],
+              "slot": "button 2",
+              "surface": "840dafb080fd7021"
+            }
+          ],
+          "slot": "group",
+          "surface": "fa0b643878e9242d"
+        },
+        {
+          "box": "b5794102386060a8",
+          "kind": "frame",
+          "layers": [],
+          "slot": "separator",
+          "surface": "fa92f097d87510f1"
+        },
+        {
+          "box": "c821b7960093b6c5",
+          "kind": "frame",
+          "layers": [
+            {
+              "fills": [
+                {
+                  "color": {
+                    "variable": "toolbar:state-layer:a8bbbce668"
+                  },
+                  "type": "SOLID"
+                }
+              ],
+              "kind": "overlay",
+              "slot": "state layer"
+            },
+            {
+              "default": "delete",
+              "icon": {
+                "color": {
+                  "color": {
+                    "variable": "--color-text-primary"
+                  },
+                  "type": "SOLID"
+                },
+                "size": {
+                  "variable": "--size-icon-md"
+                }
+              },
+              "kind": "icon",
+              "slot": "icon"
+            }
+          ],
+          "slot": "button",
+          "surface": "840dafb080fd7021"
         }
       ],
       "09d9180059dea135": [
@@ -65257,6 +65905,131 @@
           }
         }
       ],
+      "4c06ff062c3f194b": [
+        {
+          "box": "5e2d7722598f75d6",
+          "kind": "frame",
+          "layers": [
+            {
+              "box": "c821b7960093b6c5",
+              "kind": "frame",
+              "layers": [
+                {
+                  "fills": [
+                    {
+                      "color": {
+                        "variable": "toolbar:state-layer:a8bbbce668"
+                      },
+                      "type": "SOLID"
+                    }
+                  ],
+                  "kind": "overlay",
+                  "slot": "state layer"
+                },
+                {
+                  "default": "copy",
+                  "icon": {
+                    "color": {
+                      "color": {
+                        "variable": "--color-text-primary"
+                      },
+                      "type": "SOLID"
+                    },
+                    "size": {
+                      "variable": "--size-icon-md"
+                    }
+                  },
+                  "kind": "icon",
+                  "slot": "icon"
+                }
+              ],
+              "slot": "button",
+              "surface": "840dafb080fd7021"
+            },
+            {
+              "box": "c821b7960093b6c5",
+              "kind": "frame",
+              "layers": [
+                {
+                  "fills": [
+                    {
+                      "color": {
+                        "variable": "toolbar:state-layer:a8bbbce668"
+                      },
+                      "type": "SOLID"
+                    }
+                  ],
+                  "kind": "overlay",
+                  "slot": "state layer"
+                },
+                {
+                  "default": "edit",
+                  "icon": {
+                    "color": {
+                      "color": {
+                        "variable": "--color-text-primary"
+                      },
+                      "type": "SOLID"
+                    },
+                    "size": {
+                      "variable": "--size-icon-md"
+                    }
+                  },
+                  "kind": "icon",
+                  "slot": "icon"
+                }
+              ],
+              "slot": "button 2",
+              "surface": "840dafb080fd7021"
+            }
+          ],
+          "slot": "group",
+          "surface": "fa0b643878e9242d"
+        },
+        {
+          "box": "b5794102386060a8",
+          "kind": "frame",
+          "layers": [],
+          "slot": "separator",
+          "surface": "70ec0030a159137a"
+        },
+        {
+          "box": "c821b7960093b6c5",
+          "kind": "frame",
+          "layers": [
+            {
+              "fills": [
+                {
+                  "color": {
+                    "variable": "toolbar:state-layer:a8bbbce668"
+                  },
+                  "type": "SOLID"
+                }
+              ],
+              "kind": "overlay",
+              "slot": "state layer"
+            },
+            {
+              "default": "delete",
+              "icon": {
+                "color": {
+                  "color": {
+                    "variable": "--color-text-primary"
+                  },
+                  "type": "SOLID"
+                },
+                "size": {
+                  "variable": "--size-icon-md"
+                }
+              },
+              "kind": "icon",
+              "slot": "icon"
+            }
+          ],
+          "slot": "button",
+          "surface": "840dafb080fd7021"
+        }
+      ],
       "4c6b4ae612cbed1a": [
         {
           "fills": [
@@ -67808,6 +68581,131 @@
             "lineHeight": 110.00000000000001
           },
           "textProperty": "children"
+        }
+      ],
+      "6035534854e6ccf0": [
+        {
+          "box": "1d2944fcc63f302b",
+          "kind": "frame",
+          "layers": [
+            {
+              "box": "c821b7960093b6c5",
+              "kind": "frame",
+              "layers": [
+                {
+                  "fills": [
+                    {
+                      "color": {
+                        "variable": "toolbar:state-layer:a8bbbce668"
+                      },
+                      "type": "SOLID"
+                    }
+                  ],
+                  "kind": "overlay",
+                  "slot": "state layer"
+                },
+                {
+                  "default": "copy",
+                  "icon": {
+                    "color": {
+                      "color": {
+                        "variable": "--color-text-primary"
+                      },
+                      "type": "SOLID"
+                    },
+                    "size": {
+                      "variable": "--size-icon-md"
+                    }
+                  },
+                  "kind": "icon",
+                  "slot": "icon"
+                }
+              ],
+              "slot": "button",
+              "surface": "840dafb080fd7021"
+            },
+            {
+              "box": "c821b7960093b6c5",
+              "kind": "frame",
+              "layers": [
+                {
+                  "fills": [
+                    {
+                      "color": {
+                        "variable": "toolbar:state-layer:a8bbbce668"
+                      },
+                      "type": "SOLID"
+                    }
+                  ],
+                  "kind": "overlay",
+                  "slot": "state layer"
+                },
+                {
+                  "default": "edit",
+                  "icon": {
+                    "color": {
+                      "color": {
+                        "variable": "--color-text-primary"
+                      },
+                      "type": "SOLID"
+                    },
+                    "size": {
+                      "variable": "--size-icon-md"
+                    }
+                  },
+                  "kind": "icon",
+                  "slot": "icon"
+                }
+              ],
+              "slot": "button 2",
+              "surface": "840dafb080fd7021"
+            }
+          ],
+          "slot": "group",
+          "surface": "fa0b643878e9242d"
+        },
+        {
+          "box": "b1f8752aceb7b6af",
+          "kind": "frame",
+          "layers": [],
+          "slot": "separator",
+          "surface": "fa92f097d87510f1"
+        },
+        {
+          "box": "c821b7960093b6c5",
+          "kind": "frame",
+          "layers": [
+            {
+              "fills": [
+                {
+                  "color": {
+                    "variable": "toolbar:state-layer:a8bbbce668"
+                  },
+                  "type": "SOLID"
+                }
+              ],
+              "kind": "overlay",
+              "slot": "state layer"
+            },
+            {
+              "default": "delete",
+              "icon": {
+                "color": {
+                  "color": {
+                    "variable": "--color-text-primary"
+                  },
+                  "type": "SOLID"
+                },
+                "size": {
+                  "variable": "--size-icon-md"
+                }
+              },
+              "kind": "icon",
+              "slot": "icon"
+            }
+          ],
+          "slot": "button",
+          "surface": "840dafb080fd7021"
         }
       ],
       "60a9aba8f822358b": [
@@ -74590,6 +75488,131 @@
           "kind": "icon",
           "slot": "post",
           "visibleProperty": "post"
+        }
+      ],
+      "9136434747867da5": [
+        {
+          "box": "1d2944fcc63f302b",
+          "kind": "frame",
+          "layers": [
+            {
+              "box": "c821b7960093b6c5",
+              "kind": "frame",
+              "layers": [
+                {
+                  "fills": [
+                    {
+                      "color": {
+                        "variable": "toolbar:state-layer:a8bbbce668"
+                      },
+                      "type": "SOLID"
+                    }
+                  ],
+                  "kind": "overlay",
+                  "slot": "state layer"
+                },
+                {
+                  "default": "copy",
+                  "icon": {
+                    "color": {
+                      "color": {
+                        "variable": "--color-text-primary"
+                      },
+                      "type": "SOLID"
+                    },
+                    "size": {
+                      "variable": "--size-icon-md"
+                    }
+                  },
+                  "kind": "icon",
+                  "slot": "icon"
+                }
+              ],
+              "slot": "button",
+              "surface": "840dafb080fd7021"
+            },
+            {
+              "box": "c821b7960093b6c5",
+              "kind": "frame",
+              "layers": [
+                {
+                  "fills": [
+                    {
+                      "color": {
+                        "variable": "toolbar:state-layer:a8bbbce668"
+                      },
+                      "type": "SOLID"
+                    }
+                  ],
+                  "kind": "overlay",
+                  "slot": "state layer"
+                },
+                {
+                  "default": "edit",
+                  "icon": {
+                    "color": {
+                      "color": {
+                        "variable": "--color-text-primary"
+                      },
+                      "type": "SOLID"
+                    },
+                    "size": {
+                      "variable": "--size-icon-md"
+                    }
+                  },
+                  "kind": "icon",
+                  "slot": "icon"
+                }
+              ],
+              "slot": "button 2",
+              "surface": "840dafb080fd7021"
+            }
+          ],
+          "slot": "group",
+          "surface": "fa0b643878e9242d"
+        },
+        {
+          "box": "b1f8752aceb7b6af",
+          "kind": "frame",
+          "layers": [],
+          "slot": "separator",
+          "surface": "70ec0030a159137a"
+        },
+        {
+          "box": "c821b7960093b6c5",
+          "kind": "frame",
+          "layers": [
+            {
+              "fills": [
+                {
+                  "color": {
+                    "variable": "toolbar:state-layer:a8bbbce668"
+                  },
+                  "type": "SOLID"
+                }
+              ],
+              "kind": "overlay",
+              "slot": "state layer"
+            },
+            {
+              "default": "delete",
+              "icon": {
+                "color": {
+                  "color": {
+                    "variable": "--color-text-primary"
+                  },
+                  "type": "SOLID"
+                },
+                "size": {
+                  "variable": "--size-icon-md"
+                }
+              },
+              "kind": "icon",
+              "slot": "icon"
+            }
+          ],
+          "slot": "button",
+          "surface": "840dafb080fd7021"
         }
       ],
       "91aea25c85c408f3": [
@@ -90365,6 +91388,116 @@
           }
         ]
       },
+      "1f7eb96067da3cc3": {
+        "effects": [
+          {
+            "blur": {
+              "expression": "0",
+              "value": 0
+            },
+            "color": {
+              "variable": "toolbar:shadow-1-color:d241753413"
+            },
+            "spread": {
+              "expression": "0",
+              "value": 0
+            },
+            "type": "DROP_SHADOW",
+            "x": {
+              "expression": "0",
+              "value": 0
+            },
+            "y": {
+              "variable": "toolbar:depth:356601538d"
+            }
+          },
+          {
+            "blur": {
+              "expression": "2px",
+              "value": 2
+            },
+            "color": {
+              "variable": "--shadow-sm"
+            },
+            "spread": {
+              "expression": "0",
+              "value": 0
+            },
+            "type": "DROP_SHADOW",
+            "x": {
+              "expression": "0",
+              "value": 0
+            },
+            "y": {
+              "expression": "1px",
+              "value": 1
+            }
+          },
+          {
+            "blur": {
+              "expression": "3px",
+              "value": 3
+            },
+            "color": {
+              "variable": "--shadow-sm"
+            },
+            "spread": {
+              "expression": "0",
+              "value": 0
+            },
+            "type": "DROP_SHADOW",
+            "x": {
+              "expression": "0",
+              "value": 0
+            },
+            "y": {
+              "expression": "1px",
+              "value": 1
+            }
+          }
+        ],
+        "fills": [
+          {
+            "color": {
+              "variable": "--color-bg-surface"
+            },
+            "type": "SOLID"
+          },
+          {
+            "angle": 180,
+            "expression": "linear-gradient( to bottom, light-dark(color-mix(in oklab, white 12%, transparent), color-mix(in oklab, white 5%, transparent)), transparent 50% )",
+            "stops": [
+              {
+                "color": {
+                  "a": 0.12,
+                  "b": 1,
+                  "g": 1,
+                  "r": 1
+                },
+                "position": 0
+              },
+              {
+                "color": {
+                  "a": 0,
+                  "b": 0,
+                  "g": 0,
+                  "r": 0
+                },
+                "position": 0.5
+              }
+            ],
+            "type": "GRADIENT_LINEAR"
+          }
+        ],
+        "strokes": [
+          {
+            "color": {
+              "variable": "--color-border-subtle"
+            },
+            "type": "SOLID"
+          }
+        ]
+      },
       "2014978e43004e13": {
         "effects": [],
         "fills": [
@@ -90809,6 +91942,46 @@
           {
             "color": {
               "variable": "--color-action-accent"
+            },
+            "type": "SOLID"
+          }
+        ]
+      },
+      "2d736de00ccb6758": {
+        "effects": [
+          {
+            "blur": {
+              "expression": "0",
+              "value": 0
+            },
+            "color": {
+              "variable": "toolbar:brutalist-black:b75258c11d"
+            },
+            "spread": {
+              "expression": "0",
+              "value": 0
+            },
+            "type": "DROP_SHADOW",
+            "x": {
+              "variable": "toolbar:shadow-1-x:fa8b2735e2"
+            },
+            "y": {
+              "variable": "toolbar:brutalist-offset:356601538d"
+            }
+          }
+        ],
+        "fills": [
+          {
+            "color": {
+              "variable": "--color-bg-surface"
+            },
+            "type": "SOLID"
+          }
+        ],
+        "strokes": [
+          {
+            "color": {
+              "variable": "toolbar:brutalist-black:b75258c11d"
             },
             "type": "SOLID"
           }
@@ -96405,6 +97578,25 @@
           }
         ]
       },
+      "840dafb080fd7021": {
+        "effects": [],
+        "fills": [
+          {
+            "color": {
+              "variable": "toolbar:sk-button-bg:10e9f5602d"
+            },
+            "type": "SOLID"
+          }
+        ],
+        "strokes": [
+          {
+            "color": {
+              "variable": "toolbar:sk-button-border-color:10e9f5602d"
+            },
+            "type": "SOLID"
+          }
+        ]
+      },
       "86ed77ef1186c65e": {
         "effects": [
           {
@@ -99113,6 +100305,77 @@
           {
             "color": {
               "variable": "button:frost-edge:ace691964d"
+            },
+            "type": "SOLID"
+          }
+        ]
+      },
+      "a992af9898553826": {
+        "effects": [
+          {
+            "blur": {
+              "expression": "0",
+              "value": 0
+            },
+            "color": {
+              "variable": "toolbar:shadow-1-color:60171dc5fd"
+            },
+            "spread": {
+              "expression": "0",
+              "value": 0
+            },
+            "type": "INNER_SHADOW",
+            "x": {
+              "expression": "0",
+              "value": 0
+            },
+            "y": {
+              "expression": "1px",
+              "value": 1
+            }
+          },
+          {
+            "blur": {
+              "expression": "2px",
+              "value": 2
+            },
+            "color": {
+              "variable": "--shadow-sm"
+            },
+            "spread": {
+              "expression": "0",
+              "value": 0
+            },
+            "type": "DROP_SHADOW",
+            "x": {
+              "expression": "0",
+              "value": 0
+            },
+            "y": {
+              "expression": "1px",
+              "value": 1
+            }
+          },
+          {
+            "radius": {
+              "expression": "16px",
+              "value": 16
+            },
+            "type": "BACKGROUND_BLUR"
+          }
+        ],
+        "fills": [
+          {
+            "color": {
+              "variable": "toolbar:frost-glass:fe6bfc1410"
+            },
+            "type": "SOLID"
+          }
+        ],
+        "strokes": [
+          {
+            "color": {
+              "variable": "toolbar:border-color:dfa846e305"
             },
             "type": "SOLID"
           }
@@ -103581,6 +104844,18 @@
             "type": "SOLID"
           }
         ]
+      },
+      "fa92f097d87510f1": {
+        "effects": [],
+        "fills": [
+          {
+            "color": {
+              "variable": "toolbar:brutalist-black:b75258c11d"
+            },
+            "type": "SOLID"
+          }
+        ],
+        "strokes": []
       },
       "fd55aa52d2e14efe": {
         "effects": [
@@ -117857,6 +119132,394 @@
         "light": {
           "kind": "literal",
           "value": 40
+        }
+      }
+    },
+    {
+      "codeSyntax": "var(--sk-toolbar-border-color)",
+      "collection": "component",
+      "expression": "color-mix(in oklab, var(--color-text-primary) 18%, transparent)",
+      "id": "toolbar:border-color:dfa846e305",
+      "name": "toolbar/border-color/frosted",
+      "source": {
+        "dark": "evaluated",
+        "light": "evaluated"
+      },
+      "type": "COLOR",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": {
+            "a": 0.18,
+            "b": 0.9579,
+            "g": 0.9609,
+            "r": 0.9609
+          }
+        },
+        "light": {
+          "kind": "literal",
+          "value": {
+            "a": 0.18,
+            "b": 0.0903,
+            "g": 0.098,
+            "r": 0.1095
+          }
+        }
+      }
+    },
+    {
+      "codeSyntax": "var(--sk-toolbar-border-width)",
+      "collection": "component",
+      "expression": "1px",
+      "id": "toolbar:border-width:93e20626bf",
+      "name": "toolbar/border-width",
+      "source": {
+        "dark": "literal",
+        "light": "literal"
+      },
+      "type": "FLOAT",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": 1
+        },
+        "light": {
+          "kind": "literal",
+          "value": 1
+        }
+      }
+    },
+    {
+      "codeSyntax": "var(--brutalist-black)",
+      "collection": "component",
+      "expression": "oklch(from var(--shadow-lg) l c h / 1)",
+      "id": "toolbar:brutalist-black:b75258c11d",
+      "name": "toolbar/brutalist-black/brutalist",
+      "source": {
+        "dark": "evaluated",
+        "light": "evaluated"
+      },
+      "type": "COLOR",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": {
+            "a": 1,
+            "b": 0,
+            "g": 0,
+            "r": 0
+          }
+        },
+        "light": {
+          "kind": "literal",
+          "value": {
+            "a": 1,
+            "b": 0,
+            "g": 0,
+            "r": 0
+          }
+        }
+      }
+    },
+    {
+      "codeSyntax": "var(--sk-toolbar-brutalist-offset)",
+      "collection": "component",
+      "expression": "4px",
+      "id": "toolbar:brutalist-offset:356601538d",
+      "name": "toolbar/brutalist-offset/brutalist",
+      "source": {
+        "dark": "literal",
+        "light": "literal"
+      },
+      "type": "FLOAT",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": 4
+        },
+        "light": {
+          "kind": "literal",
+          "value": 4
+        }
+      }
+    },
+    {
+      "codeSyntax": "var(--sk-toolbar-depth)",
+      "collection": "component",
+      "expression": "4px",
+      "id": "toolbar:depth:356601538d",
+      "name": "toolbar/depth/tactile",
+      "source": {
+        "dark": "literal",
+        "light": "literal"
+      },
+      "type": "FLOAT",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": 4
+        },
+        "light": {
+          "kind": "literal",
+          "value": 4
+        }
+      }
+    },
+    {
+      "codeSyntax": "var(--frost-glass)",
+      "collection": "component",
+      "expression": "var(--frost-on) color-mix(in oklab, var(--color-bg-surface) 70%, transparent)",
+      "id": "toolbar:frost-glass:fe6bfc1410",
+      "name": "toolbar/frost-glass/frosted",
+      "source": {
+        "dark": "evaluated",
+        "light": "evaluated"
+      },
+      "type": "COLOR",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": {
+            "a": 0.7,
+            "b": 0.0903,
+            "g": 0.098,
+            "r": 0.1095
+          }
+        },
+        "light": {
+          "kind": "literal",
+          "value": {
+            "a": 0.7,
+            "b": 1,
+            "g": 1,
+            "r": 1
+          }
+        }
+      }
+    },
+    {
+      "codeSyntax": "",
+      "collection": "component",
+      "expression": "light-dark( color-mix(in oklab, var(--color-bg-surface) 70%, transparent), color-mix(in oklab, var(--color-text-primary) 18%, transparent) )",
+      "id": "toolbar:shadow-1-color:60171dc5fd",
+      "name": "toolbar/shadow-1-color/frosted",
+      "source": {
+        "dark": "evaluated",
+        "light": "evaluated"
+      },
+      "type": "COLOR",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": {
+            "a": 0.18,
+            "b": 0.9579,
+            "g": 0.9609,
+            "r": 0.9609
+          }
+        },
+        "light": {
+          "kind": "literal",
+          "value": {
+            "a": 0.7,
+            "b": 1,
+            "g": 1,
+            "r": 1
+          }
+        }
+      }
+    },
+    {
+      "codeSyntax": "",
+      "collection": "component",
+      "expression": "light-dark( color-mix(in oklab, var(--color-bg-surface) 76%, var(--color-text-primary)), color-mix(in oklab, var(--color-bg-surface) 72%, var(--color-bg-surface-sunken)) )",
+      "id": "toolbar:shadow-1-color:d241753413",
+      "name": "toolbar/shadow-1-color/tactile",
+      "source": {
+        "dark": "evaluated",
+        "light": "evaluated"
+      },
+      "type": "COLOR",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": {
+            "a": 1,
+            "b": 0.0744,
+            "g": 0.081,
+            "r": 0.0914
+          }
+        },
+        "light": {
+          "kind": "literal",
+          "value": {
+            "a": 1,
+            "b": 0.7547,
+            "g": 0.7572,
+            "r": 0.7611
+          }
+        }
+      }
+    },
+    {
+      "codeSyntax": "",
+      "collection": "component",
+      "expression": "calc(4px * 1)",
+      "id": "toolbar:shadow-1-x:fa8b2735e2",
+      "name": "toolbar/shadow-1-x/brutalist",
+      "source": {
+        "dark": "evaluated",
+        "light": "evaluated"
+      },
+      "type": "FLOAT",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": 4
+        },
+        "light": {
+          "kind": "literal",
+          "value": 4
+        }
+      }
+    },
+    {
+      "codeSyntax": "var(--sk-button-bg)",
+      "collection": "component",
+      "expression": "transparent",
+      "id": "toolbar:sk-button-bg:10e9f5602d",
+      "name": "toolbar/sk-button-bg",
+      "source": {
+        "dark": "literal",
+        "light": "literal"
+      },
+      "type": "COLOR",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": {
+            "a": 0,
+            "b": 0,
+            "g": 0,
+            "r": 0
+          }
+        },
+        "light": {
+          "kind": "literal",
+          "value": {
+            "a": 0,
+            "b": 0,
+            "g": 0,
+            "r": 0
+          }
+        }
+      }
+    },
+    {
+      "codeSyntax": "var(--sk-button-border-color)",
+      "collection": "component",
+      "expression": "transparent",
+      "id": "toolbar:sk-button-border-color:10e9f5602d",
+      "name": "toolbar/sk-button-border-color",
+      "source": {
+        "dark": "literal",
+        "light": "literal"
+      },
+      "type": "COLOR",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": {
+            "a": 0,
+            "b": 0,
+            "g": 0,
+            "r": 0
+          }
+        },
+        "light": {
+          "kind": "literal",
+          "value": {
+            "a": 0,
+            "b": 0,
+            "g": 0,
+            "r": 0
+          }
+        }
+      }
+    },
+    {
+      "codeSyntax": "var(--sk-button-border-width)",
+      "collection": "component",
+      "expression": "1px",
+      "id": "toolbar:sk-button-border-width:93e20626bf",
+      "name": "toolbar/sk-button-border-width",
+      "source": {
+        "dark": "literal",
+        "light": "literal"
+      },
+      "type": "FLOAT",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": 1
+        },
+        "light": {
+          "kind": "literal",
+          "value": 1
+        }
+      }
+    },
+    {
+      "codeSyntax": "var(--sk-button-padding-x)",
+      "collection": "component",
+      "expression": "0px",
+      "id": "toolbar:sk-button-padding-x:33a3c91b44",
+      "name": "toolbar/sk-button-padding-x",
+      "source": {
+        "dark": "literal",
+        "light": "literal"
+      },
+      "type": "FLOAT",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": 0
+        },
+        "light": {
+          "kind": "literal",
+          "value": 0
+        }
+      }
+    },
+    {
+      "codeSyntax": "",
+      "collection": "component",
+      "expression": "color-mix( in srgb, var(--color-text-primary) calc(0 * 100%), transparent )",
+      "id": "toolbar:state-layer:a8bbbce668",
+      "name": "toolbar/state-layer",
+      "source": {
+        "dark": "evaluated",
+        "light": "evaluated"
+      },
+      "type": "COLOR",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": {
+            "a": 0,
+            "b": 0,
+            "g": 0,
+            "r": 0
+          }
+        },
+        "light": {
+          "kind": "literal",
+          "value": {
+            "a": 0,
+            "b": 0,
+            "g": 0,
+            "r": 0
+          }
         }
       }
     },
