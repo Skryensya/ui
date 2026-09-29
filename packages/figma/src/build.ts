@@ -348,6 +348,11 @@ async function compileRealization(authored: Realization, shared: Shared): Promis
       if (!el) throw new Error(`mounted: no part ${part} in the markup`);
       el.setAttribute("style", `${el.getAttribute("style") ?? ""}; ${style}`.replace(/^; /, ""));
     }
+    for (const [selector, marks] of Object.entries(realization.marks ?? {})) {
+      const el = host.matches(selector) ? host : host.querySelector(selector);
+      if (!el) throw new Error(`marks: nothing matches ${selector}`);
+      for (const [name, value] of Object.entries(marks)) el.setAttribute(name, value);
+    }
     for (const pseudo of [...held, ...simulated]) host.setAttribute(markerOf(pseudo), "");
     for (const [name, value] of Object.entries(attrs)) host.setAttribute(name, value);
     const tree = computeTree(host, rules, unmatchable);
@@ -635,6 +640,9 @@ async function compileRealization(authored: Realization, shared: Shared): Promis
             continue;
           }
           if (clipped(child)) continue;
+          // Not drawn until a script shows it (a Segmented's sliding indicator): not drawn here either.
+          const own = cascaded.get(child)!;
+          if (own.get("visibility") === "hidden" || own.get("display") === "none") continue;
           const { computed: sized, across, stretch } = sizing(child, inner, downward);
           // Its column, in a grid laid across: an `fr` one fills the row, a length one sets its width
           // (a DescriptionList's 10rem term), `auto` leaves it hugging.

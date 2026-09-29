@@ -115,6 +115,11 @@ export type Realization = {
    */
   mounted?: Readonly<Record<string, string>>;
   /**
+   * Attributes the binding writes when it mounts, by selector: a Segmented's chosen option, which the
+   * static markup marks by presence (`aria-checked`) and the script as `aria-checked="true"`.
+   */
+  marks?: Readonly<Record<string, Readonly<Record<string, string>>>>;
+  /**
    * Pseudo-classes held on every cell: a SkipLink is drawn focused, the one state anyone sees it in.
    */
   simulate?: readonly string[];

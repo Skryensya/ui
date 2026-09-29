@@ -150,3 +150,13 @@ describe("DescriptionList", () => {
     expect(details).toMatchObject({ kind: "text", fill: true });
   });
 });
+
+describe("Segmented", () => {
+  it("draws the chosen option as the binding marks it, and not the indicator it hides until then", () => {
+    const set = manifest.components.find((c): c is ComponentSet => c.kind === "component-set" && c.id === "segmented/plain")!;
+    const layers = manifest.styles.layers[set.cells[0].layers];
+    expect(layers.map((l) => l.slot)).toEqual(["option", "option 2", "option 3"]);
+    const [chosen, other] = layers;
+    expect(chosen.kind === "frame" && other.kind === "frame" && chosen.surface !== other.surface).toBe(true);
+  });
+});
