@@ -1,4 +1,4 @@
-const REPOSITORY_URL = "https://github.com/Skryensya/skryensya-ui";
+const REPOSITORY_URL = "https://github.com/Skryensya/ui";
 
 /*
  * Most contracts live in the Core module named by their id. A few share a source module because

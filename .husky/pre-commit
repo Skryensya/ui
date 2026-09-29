@@ -1,3 +1,31 @@
+# ─────────────────────────────────────────────────────────────────────────────────────────────────
+# IDENTITY. This repo's public history must be authored and committed as Allison Peña
+# <allison.jpb@gmail.com>. Check both author and committer because `git commit --author=...` and
+# environment variables can change one without the other.
+expected_name="Allison Peña"
+expected_email="allison.jpb@gmail.com"
+
+check_ident() {
+  label="$1"
+  ident="$2"
+
+  case "$ident" in
+    "$expected_name <$expected_email>"*) return 0 ;;
+  esac
+
+  echo "pre-commit: refusing commit with non-Allison $label identity." >&2
+  echo "  got:      $ident" >&2
+  echo "  expected: $expected_name <$expected_email>" >&2
+  echo "" >&2
+  echo "  Fix for this repo:" >&2
+  echo "    git config user.name '$expected_name'" >&2
+  echo "    git config user.email '$expected_email'" >&2
+  exit 1
+}
+
+check_ident "author" "$(git var GIT_AUTHOR_IDENT)"
+check_ident "committer" "$(git var GIT_COMMITTER_IDENT)"
+
 # The icon vocabulary (packages/core/src/icon.ts, stableIconNames) has to be complete across the
 # three published sets (CONTEXT.md, "Icon set": "Complete, never partial"). The check ALREADY
 # EXISTS: every icon package does `xIcons: IconSet = generated satisfies IconSet`, so a new role
