@@ -3,8 +3,20 @@
 # `surface` is the shape of the contract the last time somebody reviewed it. If the compiler says it
 # does not match, something a consumer depends on has moved: write the entry and paste in the new
 # hash.
-surface: "4b8688cec4b5d24a"
+surface: "a70dff49b9ae2b5d"
 entries:
+  - date: 2026-09-29
+    kind: breaking
+    es:
+      title: El progreso segments siempre va arriba
+      body: >-
+        Con <code>progress="segments"</code> ya no se da <code>progressOrientation</code>: las barras de Steps son
+        siempre una fila, así que el riel va sobre la pregunta.
+    en:
+      title: Segments progress always sits above
+      body: >-
+        With <code>progress="segments"</code>, <code>progressOrientation</code> is no longer given: Steps' bars are
+        always a row, so the rail sits above the question.
   - date: 2026-09-19
     kind: rework
     target: Questionnaire

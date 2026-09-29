@@ -8058,6 +8058,18 @@
         "date": null,
         "entries": [
           {
+            "date": "2026-09-29",
+            "en": {
+              "body": "With <code>progress=\"segments\"</code>, <code>progressOrientation</code> is no longer given: Steps' bars are always a row, so the rail sits above the question.",
+              "title": "Segments progress always sits above"
+            },
+            "es": {
+              "body": "Con <code>progress=\"segments\"</code> ya no se da <code>progressOrientation</code>: las barras de Steps son siempre una fila, así que el riel va sobre la pregunta.",
+              "title": "El progreso segments siempre va arriba"
+            },
+            "kind": "breaking"
+          },
+          {
             "date": "2026-09-19",
             "en": {
               "body": "The hanging Kbd on a shortcut is a keyboard affordance, and on a touch device it advertised a shortcut nobody can press while taking about 30px of a 390px screen. Worse, the gutter is <code>padding-inline-start</code> on the form, so it also shifted the question and its description. On a device with no hover the key is not drawn and the gutter is not reserved. <code>any-hover: none</code> is the same question the state layer asks to decide whether hover feedback is worth keeping, and it is the honest one available: there is no media query for \"has a keyboard\", so a tablet with one keeps its keys.",
@@ -9925,6 +9937,18 @@
       {
         "date": null,
         "entries": [
+          {
+            "date": "2026-09-29",
+            "en": {
+              "body": "<code>appearance=\"segments\"</code> is always a row of bars: it no longer takes <code>orientation</code> and does not turn into a column below 40rem either. Bars only read as one track laid end to end.",
+              "title": "segments no longer has a vertical version"
+            },
+            "es": {
+              "body": "<code>appearance=\"segments\"</code> es siempre una fila de barras: ya no acepta <code>orientation</code> y tampoco pasa a columna por debajo de 40rem. Las barras solo se leen como una pista cuando van una tras otra.",
+              "title": "segments deja de tener versión vertical"
+            },
+            "kind": "breaking"
+          },
           {
             "date": "2026-09-27",
             "en": {
@@ -40079,6 +40103,11 @@
               "systemOwned": true
             }
           ],
+          "excludes": {
+            "progress=segments": [
+              "progressOrientation"
+            ]
+          },
           "forward": [
             "id",
             "name",
@@ -45089,6 +45118,11 @@
       },
       "signatures": {
         "Steps": {
+          "excludes": {
+            "appearance=segments": [
+              "orientation"
+            ]
+          },
           "host": {
             "element": "ol"
           },
@@ -55082,7 +55116,7 @@
     "working": "0.0.1"
   },
   "schemaVersion": "2.3",
-  "sourceHash": "1b286607eecfc738",
+  "sourceHash": "2db009fdcc7ff98f",
   "vocabulary": {
     "a11y": "When `when` holds, one of `requiresOneOf` must be given: an option, a raw attribute, a filled slot, or a child signature by name.",
     "atLeastOneOf": "At least one member of each group counts: a filled slot, a boolean option set to true, or an option other than its default.",

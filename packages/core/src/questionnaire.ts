@@ -1022,7 +1022,7 @@ export const questionnaireContract = {
      * beside, which is what a long journey needs: eight stages across a reading measure give each
      * one nothing, and the same eight down a column give each one a line.
      *
-     * Only `steps` and `segments` have a rail to orient; the other two ignore it.
+     * Only `steps` has a rail to orient; `segments` is always a row of bars, and the other two ignore it.
      */
     progressOrientation: {
       type: "enum",
@@ -1129,6 +1129,8 @@ export const questionnaireContract = {
     Questionnaire: {
       intent: ["questionnaire", "survey", "one-question-at-a-time", "onboarding-questions", "multi-step-form"],
       host: { element: "form" },
+      /* A segments rail is always a row of bars (Steps has no vertical segments). */
+      excludes: { "progress=segments": ["progressOrientation"] },
       options: [
         "progress",
         "progressOrientation",
