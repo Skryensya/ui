@@ -17,6 +17,8 @@
     "dev": "turbo run dev",
     "dev:docs": "turbo run dev --filter=@skryensya/docs",
     "dev:maker": "turbo run dev --filter=@skryensya/maker",
+    "figma:build": "pnpm --filter @skryensya/figma figma:build",
+    "figma:check": "pnpm --filter @skryensya/figma figma:check",
     "storybook:react": "pnpm --filter @skryensya/storybook-react storybook",
     "storybook:vanilla": "pnpm --filter @skryensya/storybook-vanilla storybook",
     "prepare": "husky"

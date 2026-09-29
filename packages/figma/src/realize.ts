@@ -1,0 +1,209 @@
+/*
+ * CSS → FIGMA, one element at a time. Nothing in here knows it is looking at a Button: it reads the
+ * cascaded declarations of a flex host and says what auto-layout frame, paints and effects draw it.
+ * The component-specific decisions (which slot holds what) are the Figma realization's, not this.
+ */
+
+import { evalQuantity, pickMode, splitSpaces, substitute, Unsupported } from "./evaluate.js";
+import { splitTopLevel } from "@skryensya/core/parse";
+import type { Bound, Effect, Frame, Paint, Rgba, Text } from "./manifest-types.js";
+import { evaluateAs, expandComposite, resolve, type Context } from "./resolve.js";
+
+const asNumber = (b: Bound<unknown> | undefined) => b as Bound<number> | undefined;
+const asColor = (b: Bound<unknown> | undefined) => b as Bound<Rgba> | undefined;
+const ZERO: Bound<number> = { value: 0, expression: "0" };
+
+function prop(ctx: Context, name: string) {
+  return ctx.computed.get(name);
+}
+
+function number(ctx: Context, name: string, role: string): Bound<number> | undefined {
+  const value = prop(ctx, name);
+  return value === undefined ? undefined : asNumber(resolve(value, "number", ctx, role));
+}
+
+const ALIGN: Record<string, Frame["mainAlign"]> = {
+  center: "CENTER",
+  start: "MIN",
+  "flex-start": "MIN",
+  end: "MAX",
+  "flex-end": "MAX",
+  "space-between": "SPACE_BETWEEN",
+};
+
+/* ── background → fills ────────────────────────────────────────────────────────────────────────── */
+
+function gradient(inner: string, ctx: Context, role: string): Paint | undefined {
+  const args = splitTopLevel(inner);
+  let angle = 180;
+  if (/^to\s/.test(args[0])) {
+    const dir: Record<string, number> = { "to top": 0, "to right": 90, "to bottom": 180, "to left": 270 };
+    angle = dir[args.shift()!.trim()] ?? NaN;
+  } else if (/deg$/.test(args[0])) angle = parseFloat(args.shift()!);
+  if (Number.isNaN(angle)) throw new Unsupported(`gradient direction: ${inner}`);
+
+  const stops = args.map((arg) => {
+    const parts = splitSpaces(arg);
+    const last = parts.at(-1)!;
+    return /%$/.test(last) && parts.length > 1
+      ? { color: parts.slice(0, -1).join(" "), position: parseFloat(last) / 100 }
+      : { color: arg.trim(), position: undefined as number | undefined };
+  });
+
+  // Two identical stops and no positions is a flat colour dressed as an image (`--elevation-wash-*`):
+  // it binds like one.
+  if (stops.every((s) => s.color === stops[0].color && s.position === undefined)) {
+    const color = asColor(resolve(stops[0].color, "color", ctx, role));
+    return color && { type: "SOLID", color };
+  }
+
+  const positioned = stops.map((s, i) => ({ ...s, position: s.position ?? i / Math.max(1, stops.length - 1) }));
+  const lookup = (name: string) => ctx.computed.get(name) ?? ctx.registry.rootLookup(name);
+  ctx.registry.diagnose({
+    severity: "info",
+    code: "GRADIENT_LITERAL",
+    subject: role,
+    message: "gradient stops are evaluated in the light mode and not bound to variables",
+  });
+  return {
+    type: "GRADIENT_LINEAR",
+    angle,
+    stops: positioned.map((s) => ({ position: s.position, color: evaluateAs("color", substitute(s.color, lookup), "light") as Rgba })),
+    expression: `linear-gradient(${inner})`,
+  };
+}
+
+/** CSS lists the top layer first and the colour under everything; Figma lists bottom first. */
+function fills(ctx: Context): Paint[] {
+  const raw = prop(ctx, "background");
+  if (raw === undefined) return [];
+  const text = expandComposite(raw, ctx).trim();
+  const layers = splitTopLevel(text);
+  const images: Paint[] = [];
+  let color: Paint | undefined;
+  layers.forEach((layer, index) => {
+    for (const piece of splitSpaces(layer)) {
+      if (piece === "none") continue;
+      const grad = /^linear-gradient\(([\s\S]*)\)$/.exec(piece);
+      if (grad) {
+        const paint = gradient(grad[1], ctx, "wash");
+        if (paint) images.push(paint);
+        continue;
+      }
+      if (index !== layers.length - 1) throw new Unsupported(`a colour outside the last background layer: ${text}`);
+      const bound = asColor(resolve(piece, "color", ctx, "fill"));
+      if (bound) color = { type: "SOLID", color: bound };
+    }
+  });
+  return [...(color ? [color] : []), ...images.reverse()];
+}
+
+/* ── box-shadow / backdrop-filter → effects ─────────────────────────────────────────────────────── */
+
+function isLength(piece: string, ctx: Context): boolean {
+  try {
+    const lookup = (name: string) => ctx.computed.get(name) ?? ctx.registry.rootLookup(name);
+    evalQuantity(pickMode(substitute(piece, lookup), "light"));
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+function effects(ctx: Context): Effect[] {
+  const out: Effect[] = [];
+  const shadow = prop(ctx, "box-shadow");
+  if (shadow !== undefined) {
+    const text = expandComposite(shadow, ctx).trim();
+    if (text && text !== "none") {
+      splitTopLevel(text).forEach((layer, i) => {
+        const pieces = splitSpaces(layer);
+        const inset = pieces.includes("inset");
+        const rest = pieces.filter((p) => p !== "inset");
+        const lengths = rest.filter((p) => isLength(p, ctx));
+        const colors = rest.filter((p) => !lengths.includes(p));
+        if (colors.length !== 1 || lengths.length < 2) {
+          ctx.registry.diagnose({ severity: "warning", code: "SHADOW_UNSUPPORTED", subject: "box-shadow", message: layer });
+          return;
+        }
+        if (colors[0] === "transparent") return;
+        const role = `shadow-${i + 1}`;
+        const color = asColor(resolve(colors[0], "color", ctx, `${role}-color`));
+        const [x, y, blur, spread] = [0, 1, 2, 3].map((n) =>
+          lengths[n] === undefined ? ZERO : asNumber(resolve(lengths[n], "number", ctx, `${role}-${["x", "y", "blur", "spread"][n]}`)),
+        );
+        if (!color || !x || !y || !blur || !spread) return;
+        out.push({ type: inset ? "INNER_SHADOW" : "DROP_SHADOW", x, y, blur, spread, color });
+      });
+    }
+  }
+
+  const backdrop = prop(ctx, "backdrop-filter");
+  if (backdrop !== undefined) {
+    const text = expandComposite(backdrop, ctx).trim();
+    for (const fn of splitSpaces(text)) {
+      const blur = /^blur\(([\s\S]*)\)$/.exec(fn);
+      if (blur) {
+        const radius = asNumber(resolve(blur[1], "number", ctx, "backdrop-blur"));
+        if (radius) out.push({ type: "BACKGROUND_BLUR", radius });
+      } else if (fn && fn !== "none") {
+        ctx.registry.diagnose({ severity: "info", code: "FILTER_UNSUPPORTED", subject: "backdrop-filter", message: `${fn} has no Figma equivalent` });
+      }
+    }
+  }
+  return out;
+}
+
+/* ── the frame ────────────────────────────────────────────────────────────────────────────────── */
+
+export function frameOf(ctx: Context): Frame {
+  const display = prop(ctx, "display") ?? "";
+  if (!/flex/.test(display)) throw new Unsupported(`not a flex host: display ${display}`);
+  const direction = /column/.test(prop(ctx, "flex-direction") ?? "") ? "VERTICAL" : "HORIZONTAL";
+
+  const borderStyle = prop(ctx, "border-style");
+  const strokeColor = borderStyle && borderStyle !== "none" ? asColor(resolve(prop(ctx, "border-color") ?? "currentColor", "color", ctx, "border-color")) : undefined;
+  const padding = (side: string) => number(ctx, `padding-${side}`, `padding-${side}`) ?? ZERO;
+
+  return {
+    direction,
+    mainAlign: ALIGN[prop(ctx, "justify-content") ?? "start"] ?? "MIN",
+    crossAlign: (ALIGN[prop(ctx, "align-items") ?? "start"] ?? "MIN") as Frame["crossAlign"],
+    width: number(ctx, "width", "width"),
+    height: number(ctx, "height", "height"),
+    minHeight: number(ctx, "min-height", "min-height"),
+    padding: { top: padding("top"), right: padding("right"), bottom: padding("bottom"), left: padding("left") },
+    gap: number(ctx, "gap", "gap"),
+    radius: number(ctx, "border-radius", "radius"),
+    strokeWeight: strokeColor ? number(ctx, "border-width", "border-width") : undefined,
+    strokes: strokeColor ? [{ type: "SOLID", color: strokeColor }] : [],
+    fills: fills(ctx),
+    effects: effects(ctx),
+    clipsContent: /clip|hidden/.test(prop(ctx, "overflow") ?? ""),
+  };
+}
+
+export function textOf(ctx: Context): Text {
+  const lineHeight = prop(ctx, "line-height") ?? "normal";
+  if (!/^\d*\.?\d+$/.test(lineHeight)) throw new Unsupported(`line-height ${lineHeight}: only unitless is read`);
+  const family = resolve(prop(ctx, "font-family") ?? "", "string", ctx, "font-family");
+  const weight = resolve(prop(ctx, "font-weight") ?? "400", "number", ctx, "font-weight");
+  const size = resolve(prop(ctx, "font-size") ?? "16px", "number", ctx, "font-size");
+  const color = asColor(resolve(prop(ctx, "color") ?? "", "color", ctx, "fg"));
+  if (!family || !weight || !size || !color) throw new Unsupported(`text needs family, weight, size and colour`);
+  return {
+    fontFamily: family as Bound<string>,
+    fontWeight: weight as Bound<number>,
+    fontSize: size as Bound<number>,
+    lineHeight: parseFloat(lineHeight) * 100,
+    fill: { type: "SOLID", color },
+  };
+}
+
+/** A glyph box: its square size and the colour its strokes take (`currentColor`). */
+export function iconOf(ctx: Context) {
+  const size = number(ctx, "width", "icon-size");
+  const color = asColor(resolve("currentColor", "color", ctx, "icon-color"));
+  if (!size || !color) throw new Unsupported(`icon needs a size and a colour`);
+  return { size, color: { type: "SOLID", color } as Paint };
+}

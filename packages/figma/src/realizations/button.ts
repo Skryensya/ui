@@ -1,0 +1,36 @@
+import type { Realization } from "../realization.js";
+
+/*
+ * Button, as Figma structure. Everything else (the axes, their values, the defaults, the slots, the
+ * paint of every cell) is read from `buttonContract` and `button.css`.
+ */
+export const buttonRealization: Realization = {
+  contract: "button",
+  // Button.navigation paints identically; only its host differs.
+  signature: "Button.action",
+  // An appearance is picked for a product, rarely per instance, and each set stays a size Figma edits.
+  splitBy: "appearance",
+  // Pressed and disabled at once is unavailable-and-on; the CSS paints it as disabled, so it adds nothing.
+  state: { axis: "state", rest: "rest", options: ["pressed", "disabled"] },
+  // Welding belongs to split buttons and segmented groups, which are not realized yet.
+  exclude: ["weldStart", "weldEnd"],
+  slots: {
+    pre: { holds: "icon" },
+    post: { holds: "icon" },
+    children: { holds: "text", sample: "Button", iconWhen: "iconOnly" },
+  },
+  grid: { columns: ["variant", "tone"], rows: ["size", "state", "iconOnly"] },
+  specimen: {
+    module: "apps/docs/src/demos/button.ts",
+    exports: [
+      "buttonVariantTree",
+      "buttonAppearanceTree",
+      "buttonSizesTree",
+      "buttonIconTree",
+      "buttonIconOnlyTree",
+      "buttonDestructivePairTree",
+      // Rest, pressed and disabled; its hover, :active and :focus-visible cells are live-only and draw as rest.
+      "buttonBrutalistStatesTree",
+    ],
+  },
+};
