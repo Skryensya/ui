@@ -274,6 +274,17 @@ const USER_AGENT: Record<string, readonly (readonly [string, string])[]> = {
   ...Object.fromEntries(["h1", "h2", "h3", "h4", "h5", "h6"].map((h) => [h, [["font-weight", "700"]] as const])),
 };
 
+/** `style="a: b; c: d"` as expanded declarations. */
+function inlineStyle(el: Element): (readonly [string, string])[] {
+  const text = el.getAttribute("style");
+  if (!text) return [];
+  const decls = text
+    .split(";")
+    .map((decl) => [decl.slice(0, decl.indexOf(":")).trim(), decl.slice(decl.indexOf(":") + 1).replace(/\s+/g, " ").trim()] as const)
+    .filter(([prop, value]) => prop && value && text.includes(":"));
+  return expand(decls);
+}
+
 export function computeTree(element: Element, rules: RuleSet, unmatchable: Set<string>): Tree {
   const styles = new Map<Element, Computed>();
   const pseudo = new Map<Element, Pseudo>();
@@ -291,6 +302,8 @@ export function computeTree(element: Element, rules: RuleSet, unmatchable: Set<s
     // The browser's own sheet, first, for the few elements whose look comes from it alone.
     for (const [prop, value] of USER_AGENT[el.localName] ?? []) computed.set(prop, value);
     for (const rule of matched) if (!rule.pseudo) for (const [prop, value] of rule.decls) computed.set(prop, value);
+    // The element's own style attribute last, over every rule: a Progress's `--sk-progress-fill`.
+    for (const [prop, value] of inlineStyle(el)) computed.set(prop, value);
     styles.set(el, computed);
 
     const generated: Pseudo = {};
