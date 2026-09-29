@@ -258,3 +258,10 @@ export const loaderAnatomyTree = (t: Translate): UsageTree => ({
     ],
   },
 });
+
+/* One loader, the specimen the `variant`, `size` and `speed` previews vary. */
+export const loaderSingleTree = (t: Translate): UsageTree => ({
+  contract: "loader",
+  signature: "Loader",
+  options: { label: t("demo.loader.dd.loading") },
+});

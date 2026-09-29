@@ -20,5 +20,6 @@ export default { title: "Components/Feedback/Placeholder", tags: ["autodocs"] } 
 export const Anatomy: StoryObj = treeStory(demos.placeholderAnatomyTree, { decorators: [withCss(annotationDemoCss)] });
 export const PublicationPlaceholder: StoryObj = treeStory(demos.publicationPlaceholderTree);
 export const PublicationSwap: StoryObj = treeStory(demos.publicationSwapTree);
-export const Vocabulary: StoryObj = treeStory((t) => demos.placeholderVocabularyTree());
 export const Match: StoryObj = treeStory(demos.placeholderMatchTree);
+export const Vocabulary: StoryObj = treeStory((t) => demos.placeholderVocabularyTree());
+export const Paragraph: StoryObj = treeStory((t) => demos.placeholderParagraphTree());

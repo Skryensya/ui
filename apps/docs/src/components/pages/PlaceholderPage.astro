@@ -7,9 +7,11 @@ import "../../examples/placeholder.css";
 import ComponentPageShell from "./ComponentPageShell.astro";
 import CodeBlock from "../CodeBlock.astro";
 import ComponentPreview from "../ComponentPreview.astro";
+import UsagePreview from "../UsagePreview.astro";
 import {
   placeholderAnatomyTree,
   placeholderMatchTree,
+  placeholderParagraphTree,
   placeholderVocabularyTree,
   publicationPlaceholderTree,
   publicationSwapScript,
@@ -28,6 +30,10 @@ const styles = `@import "@skryensya/core/components/placeholder.css";
 @import "@skryensya/core/components/badge.css";
 @import "@skryensya/core/components/avatar.css";
 @import "@skryensya/core/components/typography.css";`;
+
+/* What each value of a property is for, read from this page's messages. Same model Badge uses. */
+const explain = (option: string, values: readonly string[]) =>
+  Object.fromEntries(values.map((value) => [value, t(`placeholderPage.prop.${option}.${value}` as Parameters<typeof t>[0])]));
 ---
 
 <ComponentPageShell
@@ -36,20 +42,21 @@ const styles = `@import "@skryensya/core/components/placeholder.css";
   contractId="placeholder"
   testFiles={["packages/react/src/components/placeholder.test.tsx"]}}
 >
-  <Fragment slot="anatomy">
-    <p set:html={t("placeholderPage.anatomyBody")} />
-    <ComponentPreview
-      tree={placeholderAnatomyTree(t)}
-      css={annotationDemoCss}
-      label={t("placeholderPage.anatomyPreviewLabel")}
-      screens={false}
-      hideSource
-      chrome={false}
-    />
-  </Fragment>
-
   <Fragment slot="usage">
     <p class="lede" set:html={t("placeholderPage.lede")} />
+
+    <UsagePreview
+      tree={placeholderParagraphTree()}
+      optionName="shimmer"
+      title={t("placeholderPage.prop.shimmer.title")}
+      description={t("placeholderPage.prop.shimmer.body")}
+      explain={explain("shimmer", ["false", "true"])}
+      stageMinBlockSize="8rem"
+      labels={{ false: t("placeholderPage.prop.shimmer.falseLabel"), true: t("placeholderPage.prop.shimmer.trueLabel") }}
+    />
+
+    <h3>{t("placeholderPage.showcaseTitle")}</h3>
+    <p set:html={t("placeholderPage.showcaseBody")} />
     <div class="sk-callout" data-tone="info">
       <div class="sk-callout__content">
         <div class="sk-callout__description" set:html={t("placeholderPage.calloutBody")} />
@@ -78,7 +85,7 @@ const styles = `@import "@skryensya/core/components/placeholder.css";
       <li set:html={t("placeholderPage.shapesItem3")} />
       <li set:html={t("placeholderPage.shapesItem4")} />
     </ul>
-    <ComponentPreview tree={placeholderVocabularyTree()} label={t("placeholderPage.shapesLabel")} />
+    <UsagePreview tree={placeholderVocabularyTree()} />
 
     <h3>{t("placeholderPage.matchTitle")}</h3>
     <p set:html={t("placeholderPage.matchBody")} />
@@ -92,6 +99,26 @@ const styles = `@import "@skryensya/core/components/placeholder.css";
     <p set:html={t("placeholderPage.reducedBody")} />
 
     <p set:html={t("placeholderPage.reactBody")} />
+
+    <h3>{t("component.anatomy")}</h3>
+    <p set:html={t("placeholderPage.anatomyBody")} />
+    <ComponentPreview
+      tree={placeholderAnatomyTree(t)}
+      css={annotationDemoCss}
+      label={t("placeholderPage.anatomyPreviewLabel")}
+      screens={false}
+      hideSource
+      chrome={false}
+    />
+  </Fragment>
+
+  <Fragment slot="guidelines">
+    <p class="lede" set:html={t("placeholderPage.guidelinesLede")} />
+    <ul>
+      <li set:html={t("placeholderPage.guide.use1")} />
+      <li set:html={t("placeholderPage.guide.use2")} />
+      <li set:html={t("placeholderPage.guide.avoid1")} />
+    </ul>
   </Fragment>
 
   <Fragment slot="install">

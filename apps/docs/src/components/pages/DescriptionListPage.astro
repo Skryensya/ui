@@ -8,6 +8,7 @@ import "@skryensya/core/components/typography.css";
 import ComponentPageShell from "./ComponentPageShell.astro";
 import CodeBlock from "../CodeBlock.astro";
 import ComponentPreview from "../ComponentPreview.astro";
+import UsagePreview from "../UsagePreview.astro";
 import {
   descriptionListAnatomyTree,
   descriptionListColumnsTree,
@@ -21,6 +22,10 @@ import { getLocale, useTranslations } from "../../i18n";
 const t = useTranslations(getLocale(Astro.url));
 const install = `pnpm add @skryensya/core @skryensya/react`;
 const styles = `@import "@skryensya/core/components/description-list.css";`;
+
+/* What each value of a property is for, read from this page's messages. Same model Badge uses. */
+const explain = (option: string, values: readonly string[]) =>
+  Object.fromEntries(values.map((value) => [value, t(`descriptionListPage.prop.${option}.${value}` as Parameters<typeof t>[0])]));
 ---
 
 <ComponentPageShell
@@ -29,7 +34,56 @@ const styles = `@import "@skryensya/core/components/description-list.css";`;
   contractId="description-list"
   testFiles={["packages/react/src/components/description-list.test.tsx"]}
 >
-  <Fragment slot="anatomy">
+  <Fragment slot="usage">
+    <p class="lede" set:html={t("descriptionListPage.lede")} />
+
+    <UsagePreview
+      tree={descriptionListTree(t)}
+      optionName="layout"
+      title={t("descriptionListPage.prop.layout.title")}
+      description={t("descriptionListPage.prop.layout.body")}
+      explain={explain("layout", ["stacked", "columns"])}
+      stageMinBlockSize="14rem"
+    />
+
+    <UsagePreview
+      tree={descriptionListTree(t)}
+      optionName="dividers"
+      title={t("descriptionListPage.prop.dividers.title")}
+      description={t("descriptionListPage.prop.dividers.body")}
+      explain={explain("dividers", ["false", "true"])}
+      stageMinBlockSize="14rem"
+      labels={{ false: t("descriptionListPage.prop.dividers.falseLabel"), true: t("descriptionListPage.prop.dividers.trueLabel") }}
+    />
+
+    <h3>{t("descriptionListPage.showcaseTitle")}</h3>
+    <p set:html={t("descriptionListPage.showcaseBody")} />
+    <UsagePreview tree={descriptionListTree(t)} />
+
+    <h3>{t("descriptionListPage.groupTitle")}</h3>
+    <p set:html={t("descriptionListPage.groupBody")} />
+
+    <h3>{t("descriptionListPage.columnsTitle")}</h3>
+    <p set:html={t("descriptionListPage.columnsBody")} />
+    <UsagePreview tree={descriptionListColumnsTree(t)} />
+
+    <h3>{t("descriptionListPage.dividedTitle")}</h3>
+    <p set:html={t("descriptionListPage.dividedBody")} />
+    <UsagePreview tree={descriptionListDividedTree(t)} />
+
+    <h3>{t("descriptionListPage.richTitle")}</h3>
+    <p set:html={t("descriptionListPage.richBody")} />
+    <UsagePreview tree={descriptionListRichTree(t)} />
+
+    <h3>{t("component.contractNotesTitle")}</h3>
+    <ul>
+      <li set:html={t("descriptionListPage.contractItem1")} />
+      <li set:html={t("descriptionListPage.contractItem2")} />
+      <li set:html={t("descriptionListPage.contractItem3")} />
+      <li set:html={t("descriptionListPage.contractItem4")} />
+    </ul>
+
+    <h3>{t("component.anatomy")}</h3>
     <p set:html={t("descriptionListPage.anatomyBody")} />
     <ComponentPreview
       tree={descriptionListAnatomyTree(t)}
@@ -41,45 +95,14 @@ const styles = `@import "@skryensya/core/components/description-list.css";`;
     />
   </Fragment>
 
-  <Fragment slot="usage">
-    <p class="lede" set:html={t("descriptionListPage.lede")} />
-    <ComponentPreview tree={descriptionListTree(t)} label="DescriptionList" />
-
-    <h3>{t("descriptionListPage.groupTitle")}</h3>
-    <p set:html={t("descriptionListPage.groupBody")} />
-
-    <h3>{t("descriptionListPage.columnsTitle")}</h3>
-    <p set:html={t("descriptionListPage.columnsBody")} />
-    <ComponentPreview
-      tree={descriptionListColumnsTree(t)}
-      label={t("descriptionListPage.columnsPreviewLabel")}
-    />
-
-    <h3>{t("descriptionListPage.dividedTitle")}</h3>
-    <p set:html={t("descriptionListPage.dividedBody")} />
-    <ComponentPreview
-      tree={descriptionListDividedTree(t)}
-      label={t("descriptionListPage.dividedPreviewLabel")}
-    />
-
-    <h3>{t("descriptionListPage.richTitle")}</h3>
-    <p set:html={t("descriptionListPage.richBody")} />
-    <ComponentPreview tree={descriptionListRichTree(t)} label={t("descriptionListPage.richPreviewLabel")} />
-
+  <Fragment slot="guidelines">
+    <p class="lede" set:html={t("descriptionListPage.guidelinesLede")} />
     <h3>{t("descriptionListPage.whenTitle")}</h3>
     <ul>
       <li set:html={t("descriptionListPage.whenItem1")} />
       <li set:html={t("descriptionListPage.whenItem2")} />
       <li set:html={t("descriptionListPage.whenItem3")} />
       <li set:html={t("descriptionListPage.whenItem4")} />
-    </ul>
-
-    <h3>{t("component.contractNotesTitle")}</h3>
-    <ul>
-      <li set:html={t("descriptionListPage.contractItem1")} />
-      <li set:html={t("descriptionListPage.contractItem2")} />
-      <li set:html={t("descriptionListPage.contractItem3")} />
-      <li set:html={t("descriptionListPage.contractItem4")} />
     </ul>
   </Fragment>
 

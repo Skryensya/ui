@@ -3,6 +3,7 @@ import "../../examples/loader.css";
 import ComponentPageShell from "./ComponentPageShell.astro";
 import CodeBlock from "../CodeBlock.astro";
 import ComponentPreview from "../ComponentPreview.astro";
+import UsagePreview from "../UsagePreview.astro";
 import HookPlayground from "../HookPlayground.astro";
 import {
   loaderAnatomyTree,
@@ -12,6 +13,7 @@ import {
   loaderPseudoVariantsTree,
   loaderSimulationScript,
   loaderSimulationTree,
+  loaderSingleTree,
   loaderSizesTree,
   loaderSpeedsTree,
   loaderStaggeredVariantsTree,
@@ -27,6 +29,10 @@ const t = useTranslations(getLocale(Astro.url));
 const customSpeed = `.sk-loader.mi-loader {
   --sk-loader-duration: 2s;
 }`;
+
+/* What each value of a property is for, read from this page's messages. Same model Badge uses. */
+const explain = (option: string, values: readonly string[]) =>
+  Object.fromEntries(values.map((value) => [value, t(`loaderPage.prop.${option}.${value}` as Parameters<typeof t>[0])]));
 ---
 
 <ComponentPageShell
@@ -35,20 +41,40 @@ const customSpeed = `.sk-loader.mi-loader {
   contractId="loader"
   testFiles={["packages/react/src/components/loader.test.tsx"]}}
 >
-  <Fragment slot="anatomy">
-    <p set:html={t("loaderPage.anatomyBody")} />
-    <ComponentPreview
-      tree={loaderAnatomyTree(t)}
-      css={annotationDemoCss}
-      label={t("loaderPage.anatomyPreviewLabel")}
-      screens={false}
-      hideSource
-      chrome={false}
-    />
-  </Fragment>
-
   <Fragment slot="usage">
     <p class="lede" set:html={t("loaderPage.lede")} />
+
+    <UsagePreview
+      tree={loaderSingleTree(t)}
+      optionName="variant"
+      title={t("loaderPage.prop.variant.title")}
+      description={t("loaderPage.prop.variant.body")}
+      explain={explain("variant", ["ring", "sweep", "bars", "dots", "arc", "comet", "orbit", "clock", "spokes", "ticks", "compass", "beads"])}
+      stageMinBlockSize="8rem"
+      labels={{ ring: "ring", sweep: "sweep", bars: "bars", dots: "dots", arc: "arc", comet: "comet", orbit: "orbit", clock: "clock", spokes: "spokes", ticks: "ticks", compass: "compass", beads: "beads" }}
+    />
+
+    <UsagePreview
+      tree={loaderSingleTree(t)}
+      optionName="size"
+      title={t("loaderPage.prop.size.title")}
+      description={t("loaderPage.prop.size.body")}
+      explain={explain("size", ["sm", "md", "lg"])}
+      stageMinBlockSize="8rem"
+      labels={{ sm: "sm", md: "md", lg: "lg" }}
+    />
+
+    <UsagePreview
+      tree={loaderSingleTree(t)}
+      optionName="speed"
+      title={t("loaderPage.prop.speed.title")}
+      description={t("loaderPage.prop.speed.body")}
+      explain={explain("speed", ["fast", "normal", "slow"])}
+      stageMinBlockSize="8rem"
+    />
+
+    <h3>{t("loaderPage.showcaseTitle")}</h3>
+    <p set:html={t("loaderPage.showcaseBody")} />
 
     <div class="sk-callout" data-tone="info">
       <div class="sk-callout__content">
@@ -78,10 +104,7 @@ const customSpeed = `.sk-loader.mi-loader {
 
     <h3>{t("loaderPage.variantsTitle")}</h3>
     <p set:html={t("loaderPage.variantsBody")} />
-    <ComponentPreview
-      tree={loaderPseudoVariantsTree(t)}
-      label={t("loaderPage.pseudoVariantsLabel")}
-    />
+    <UsagePreview tree={loaderPseudoVariantsTree(t)} />
     <p set:html={t("loaderPage.staggeredVariantsBody")} />
     <ComponentPreview
       tree={loaderStaggeredVariantsTree(t)}
@@ -91,11 +114,11 @@ const customSpeed = `.sk-loader.mi-loader {
 
     <h3>{t("loaderPage.sizeTitle")}</h3>
     <p set:html={t("loaderPage.sizeBody")} />
-    <ComponentPreview tree={loaderSizesTree(t)} label={t("loaderPage.sizeLabel")} />
+    <UsagePreview tree={loaderSizesTree(t)} />
 
     <h3>{t("loaderPage.speedTitle")}</h3>
     <p set:html={t("loaderPage.speedBody")} />
-    <ComponentPreview tree={loaderSpeedsTree(t)} label={t("loaderPage.speedLabel")} />
+    <UsagePreview tree={loaderSpeedsTree(t)} />
     <CodeBlock code={customSpeed} label={t("loaderPage.speedOverrideLabel")} lang="css" />
 
     <h3>{t("loaderPage.tempoTitle")}</h3>
@@ -113,6 +136,26 @@ const customSpeed = `.sk-loader.mi-loader {
     <p set:html={t("loaderPage.reducedBody")} />
 
     <p set:html={t("loaderPage.reactBody")} />
+
+    <h3>{t("component.anatomy")}</h3>
+    <p set:html={t("loaderPage.anatomyBody")} />
+    <ComponentPreview
+      tree={loaderAnatomyTree(t)}
+      css={annotationDemoCss}
+      label={t("loaderPage.anatomyPreviewLabel")}
+      screens={false}
+      hideSource
+      chrome={false}
+    />
+  </Fragment>
+
+  <Fragment slot="guidelines">
+    <p class="lede" set:html={t("loaderPage.guidelinesLede")} />
+    <ul>
+      <li set:html={t("loaderPage.guide.use1")} />
+      <li set:html={t("loaderPage.guide.avoid1")} />
+      <li set:html={t("loaderPage.guide.avoid2")} />
+    </ul>
   </Fragment>
 
   <Fragment slot="install">

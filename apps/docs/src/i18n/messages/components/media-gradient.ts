@@ -41,6 +41,9 @@ export const mediaGradientMessages = {
     "demo.mediaGradient.title": "Horizonte costero",
     "demo.mediaGradient.caption": "Texto legible sobre la foto.",
     "demo.mediaGradient.body": "Cuerpo de la card debajo de la imagen.",
+    "mediaGradient.showcaseTitle": "Showcases",
+    "mediaGradient.showcaseBody": "Un texto legible sobre una imagen: en una tarjeta, desde cada borde y en tres intensidades.",
+    "mediaGradient.guidelinesLede": "MediaGradient oscurece un borde de una imagen para que el texto encima se lea.",
   },
   en: {
     "mediaGradient.description": "A wash the size of the text, so it reads over a photo.",
@@ -84,5 +87,8 @@ export const mediaGradientMessages = {
     "demo.mediaGradient.title": "Coastal horizon",
     "demo.mediaGradient.caption": "Legible text on the photo.",
     "demo.mediaGradient.body": "Card body below the image.",
+    "mediaGradient.showcaseTitle": "Showcases",
+    "mediaGradient.showcaseBody": "Readable text over an image: on a card, from each edge, and at three strengths.",
+    "mediaGradient.guidelinesLede": "MediaGradient darkens one edge of an image so the text on top can be read.",
   },
 } as const;

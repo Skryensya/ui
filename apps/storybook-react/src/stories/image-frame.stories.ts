@@ -18,3 +18,4 @@ export const Default: StoryObj = treeStory(demos.imageFrameTree);
 export const Aspect: StoryObj = treeStory(demos.imageFrameAspectTree);
 export const Fit: StoryObj = treeStory(demos.imageFrameFitTree);
 export const Position: StoryObj = treeStory(demos.imageFramePositionTree);
+export const Single: StoryObj = treeStory(demos.imageFrameSingleTree);

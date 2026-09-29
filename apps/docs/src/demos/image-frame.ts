@@ -184,3 +184,9 @@ export const imageFramePositionTree = (t: Translate): UsageTree => ({
     specimen(frame({ aspect: "1/1", fit: "cover", position: "bottom-right" }), "bottom-right"),
   ],
 });
+
+/* The property previews' specimen: the same frame at a fixed width, so a tall ratio stays on screen. */
+export const imageFrameSingleTree = (t: Translate): UsageTree => ({
+  ...imageFrameTree(t),
+  attrs: { ...imageFrameTree(t).attrs, style: "inline-size: 14rem" },
+});

@@ -194,3 +194,15 @@ export const listFullTree = (t: Translate, hrefs: readonly string[] = placeholde
     },
   })),
 });
+
+/* Don't: paragraphs as list items, too long to scan down. */
+export const listDontParagraphsTree = (t: Translate): UsageTree => ({
+  contract: "list",
+  signature: "List",
+  attrs: { "aria-label": t("demo.list.integrations") },
+  children: ["demo.list.dd.long1", "demo.list.dd.long2"].map((key) => ({
+    contract: "list",
+    signature: "ListItemPlain",
+    children: t(key as never),
+  })),
+});

@@ -17,8 +17,9 @@ export default { title: "Components/Feedback/Loader", tags: ["autodocs"] } satis
 export const Anatomy: StoryObj = treeStory(demos.loaderAnatomyTree, { decorators: [withCss(annotationDemoCss)] });
 export const Simulation: StoryObj = treeStory(demos.loaderSimulationTree);
 export const Contexts: StoryObj = treeStory(demos.loaderContextsTree);
-export const PseudoVariants: StoryObj = treeStory(demos.loaderPseudoVariantsTree);
 export const StaggeredVariants: StoryObj = treeStory(demos.loaderStaggeredVariantsTree);
 export const Sizes: StoryObj = treeStory(demos.loaderSizesTree);
 export const Speeds: StoryObj = treeStory(demos.loaderSpeedsTree);
+export const PseudoVariants: StoryObj = treeStory(demos.loaderPseudoVariantsTree);
 export const HookPlayground: StoryObj = treeStory(demos.loaderHookPlaygroundTree);
+export const Single: StoryObj = treeStory(demos.loaderSingleTree);
