@@ -124,6 +124,9 @@ function expand(decls: readonly (readonly [string, string])[]): (readonly [strin
   for (const [prop, value] of decls) {
     const parts = topLevelSpaces(value);
     switch (prop) {
+      case "place-items":
+        out.push(["align-items", parts[0]], ["justify-items", parts[1] ?? parts[0]]);
+        break;
       case "padding": {
         // One to four values, as CSS reads them: top, right, bottom, left, each side falling back.
         const [top, right = top, bottom = top, left = right] = parts;
