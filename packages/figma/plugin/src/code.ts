@@ -594,6 +594,8 @@ async function syncIconSet(ctx: Ctx, spec: M.IconSet, found: Map<string, SceneNo
         fresh.setSharedPluginData(NS, "cell", key);
         fresh.setSharedPluginData(NS, "hash", icon.hash);
         // Into the set at once, so an interrupted run never leaves loose components on the page.
+        // Onto the frame's page first: a component is born on whichever page is current.
+        frame.appendChild(fresh);
         if (!set) set = figma.combineAsVariants([fresh], frame);
         else set.appendChild(fresh);
       }
@@ -947,6 +949,8 @@ async function syncSet(ctx: SetCtx, spec: M.ComponentSet, found: Map<string, Sce
         fresh.setSharedPluginData(NS, "cell", cell.key);
         fresh.setSharedPluginData(NS, "hash", cell.hash);
         // Into the set at once, so an interrupted run never leaves loose components on the page.
+        // Onto the frame's page first: a component is born on whichever page is current.
+        frame.appendChild(fresh);
         if (!set) set = figma.combineAsVariants([fresh], frame);
         else set.appendChild(fresh);
       }
@@ -1214,6 +1218,9 @@ async function reconcile(apply: boolean) {
 
   const vars = await syncVariables(run, progress);
   const pages = await ensurePages(run);
+  // New nodes are born on the current page, so work from the one they belong on.
+  const home = pages.get(manifest.specimenPage);
+  if (apply && home && figma.currentPage !== home) await figma.setCurrentPageAsync(home);
   const { found, pages: ownPages } = await findOwn();
   const ctx: Ctx = { run, progress, vars };
 
