@@ -32,8 +32,20 @@ export type Realization = {
    * consumer picks (decision 15), so Figma draws with the one the docs draw with.
    */
   icons: { module: string; export: string };
-  /** Which axes run across the component set's grid and which run down it. */
+  /**
+   * Which axes run across the component set's grid and which run down it, outermost first. A row
+   * is one button; the columns are what it looks like in each state.
+   */
   grid: { columns: readonly string[]; rows: readonly string[] };
+  /**
+   * What the drawing stands on. The background is a contract's styling hook (the docs preview's
+   * own), resolved through the cascade like any other; the labels name the tokens they read.
+   */
+  stage: {
+    contract: string;
+    hook: string;
+    label: { color: string; fontFamily: string; fontSize: string; fontWeight: string };
+  };
   /** The docs previews mirrored on the specimen page, by export name, for the side-by-side check. */
   specimen: { module: string; exports: readonly string[] };
 };

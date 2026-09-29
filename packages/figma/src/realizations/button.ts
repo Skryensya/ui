@@ -20,7 +20,18 @@ export const buttonRealization: Realization = {
     children: { holds: "text", sample: "Button", iconWhen: "iconOnly" },
   },
   icons: { module: "@skryensya/icons-lucide", export: "lucideIcons" },
-  grid: { columns: ["variant", "tone"], rows: ["size", "state", "iconOnly"] },
+  grid: { columns: ["iconOnly", "state"], rows: ["variant", "tone", "size"] },
+  // The docs preview's background, so the frame and the browser show a Button on the same surface.
+  stage: {
+    contract: "component-preview",
+    hook: "--sk-component-preview-bg",
+    label: {
+      color: "--color-text-secondary",
+      fontFamily: "--font-family-body",
+      fontSize: "--font-size-caption",
+      fontWeight: "--font-weight-label",
+    },
+  },
   specimen: {
     module: "apps/docs/src/demos/button.ts",
     exports: [

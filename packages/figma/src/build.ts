@@ -29,12 +29,15 @@ import {
   type Diagnostic,
   type FigmaManifest,
   type Layer,
+  type Bound,
+  type Rgba,
   type SpecimenEntry,
+  type Stage,
   type Styles,
 } from "./manifest-types.js";
 import type { Realization } from "./realization.js";
 import { frameOf, iconOf, textOf } from "./realize.js";
-import { Registry, type CellProps, type Context } from "./resolve.js";
+import { Registry, resolve, type CellProps, type Context } from "./resolve.js";
 
 const hash = (value: unknown) => createHash("sha256").update(canonical(value)).digest("hex").slice(0, 16);
 
@@ -247,7 +250,8 @@ export async function buildFigmaManifest(repoRoot: string, realization: Realizat
     sets.push({
       kind: "component-set",
       id: `${realization.contract}/${splitValue}`,
-      name: `${contract.id[0].toUpperCase()}${contract.id.slice(1)} / ${splitValue}`,
+      name: `${titleOf(contract.id)} / ${splitValue}`,
+      page: contract.id,
       axes: setAxes,
       grid,
       defaultCell,
@@ -258,12 +262,14 @@ export async function buildFigmaManifest(repoRoot: string, realization: Realizat
     });
   }
 
+
+
+  const icon = await iconSetOf(realization, iconContract);
+  const stage = stageOf(realization, corpus.files, registry);
   registry.finalize([realization.splitBy, ...axes.map((a) => a.name)]);
   // A field bound to a component variable that failed to evaluate would point at nothing.
   const dead = [...registry.diagnostics].filter((d) => d.code === "DERIVED_UNSUPPORTED");
   if (dead.length) throw new Error(`component variables failed to evaluate:\n${dead.map((d) => d.message).join("\n")}`);
-
-  const icon = await iconSetOf(realization, iconContract);
 
   const specimen = await specimenOf(repoRoot, realization, contract, sets, stateAxis, diagnostics);
 
@@ -322,13 +328,51 @@ export async function buildFigmaManifest(repoRoot: string, realization: Realizat
       { id: "component" as const, name: `Skryensya / ${sets[0].name.split(" / ")[0]}`, modes: ["light", "dark"] as const },
     ],
     variables,
+    pages: [
+      { id: iconContract.id, name: titleOf(iconContract.id) },
+      { id: contract.id, name: titleOf(contract.id) },
+    ],
+    stage,
     components: [icon, ...sets],
     styles,
+    specimenPage: contract.id,
     specimen,
     diagnostics: allDiagnostics,
     report,
   };
   return { ...body, sourceHash: hash(body) } as FigmaManifest;
+}
+
+const titleOf = (id: string) => id.split("-").map((w) => w[0].toUpperCase() + w.slice(1)).join(" ");
+
+/* ── the stage: a contract's own background, resolved through its cascade ──────────────────────── */
+
+function stageOf(realization: Realization, files: readonly { rel: string; css: string }[], registry: Registry): Stage {
+  const contract = getContract(realization.stage.contract);
+  if (!contract) throw new Error(`unknown contract ${realization.stage.contract}`);
+  const rel = contract.css.replace("@skryensya/core/", "");
+  const file = files.find((f) => f.rel === rel);
+  if (!file) throw new Error(`sheet ${contract.css} not in the token corpus`);
+  const root = elementFrom(`<div class="${contract.parts.root}"></div>`);
+  const computed = computeTree(root, readRules([{ name: rel, css: file.css }]), new Set()).get(root)!;
+  const ctx: Context = { computed, registry, cell: {}, hookPrefix: `--sk-${contract.id}-` };
+  const background = resolve(`var(${realization.stage.hook})`, "color", ctx, "stage");
+  const token = (name: string, kind: "color" | "number" | "string") => {
+    const id = registry.token(name, kind);
+    if (!id) throw new Error(`stage token ${name} is not a ${kind}`);
+    return { variable: id };
+  };
+  if (!background) throw new Error(`${realization.stage.hook} does not resolve to a colour`);
+  const { label } = realization.stage;
+  return {
+    background: background as Bound<Rgba>,
+    label: {
+      color: token(label.color, "color"),
+      fontFamily: token(label.fontFamily, "string"),
+      fontSize: token(label.fontSize, "number"),
+      fontWeight: token(label.fontWeight, "number"),
+    },
+  };
 }
 
 /* ── the Icon contract, drawn by the chosen set ─────────────────────────────────────────────────── */
@@ -359,7 +403,8 @@ async function iconSetOf(realization: Realization, iconContract: ComponentContra
   const body = {
     kind: "icon-set" as const,
     id: iconContract.id,
-    name: `${iconContract.id[0].toUpperCase()}${iconContract.id.slice(1)}`,
+    name: titleOf(iconContract.id),
+    page: iconContract.id,
     axis: "name",
     source: realization.icons.module,
     default: DEFAULT_ICON,
