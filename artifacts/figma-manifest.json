@@ -29,7 +29,7 @@
     {
       "axis": "name",
       "default": "placeholder",
-      "hash": "ff5a746821229e72",
+      "hash": "416af5dca25a1569",
       "icons": [
         {
           "hash": "c22d937d5b192e07",
@@ -310,6 +310,7 @@
       "id": "icon",
       "kind": "icon-set",
       "name": "Icon",
+      "page": "icon",
       "paint": "stroke",
       "size": 24,
       "source": "@skryensya/icons-lucide",
@@ -4398,6 +4399,23 @@
       "grid": {
         "columns": [
           {
+            "name": "iconOnly",
+            "values": [
+              "false",
+              "true"
+            ]
+          },
+          {
+            "name": "state",
+            "values": [
+              "rest",
+              "pressed",
+              "disabled"
+            ]
+          }
+        ],
+        "rows": [
+          {
             "name": "variant",
             "values": [
               "solid",
@@ -4413,9 +4431,7 @@
               "accent",
               "danger"
             ]
-          }
-        ],
-        "rows": [
+          },
           {
             "name": "size",
             "values": [
@@ -4424,27 +4440,13 @@
               "sm",
               "lg"
             ]
-          },
-          {
-            "name": "state",
-            "values": [
-              "rest",
-              "pressed",
-              "disabled"
-            ]
-          },
-          {
-            "name": "iconOnly",
-            "values": [
-              "false",
-              "true"
-            ]
           }
         ]
       },
       "id": "button/plain",
       "kind": "component-set",
       "name": "Button / plain",
+      "page": "button",
       "properties": [
         {
           "default": false,
@@ -4462,7 +4464,7 @@
           "type": "TEXT"
         }
       ],
-      "visualHash": "708717be7c4607f6"
+      "visualHash": "5469cec61a88e5aa"
     },
     {
       "axes": [
@@ -8547,6 +8549,23 @@
       "grid": {
         "columns": [
           {
+            "name": "iconOnly",
+            "values": [
+              "false",
+              "true"
+            ]
+          },
+          {
+            "name": "state",
+            "values": [
+              "rest",
+              "pressed",
+              "disabled"
+            ]
+          }
+        ],
+        "rows": [
+          {
             "name": "variant",
             "values": [
               "solid",
@@ -8562,9 +8581,7 @@
               "accent",
               "danger"
             ]
-          }
-        ],
-        "rows": [
+          },
           {
             "name": "size",
             "values": [
@@ -8573,27 +8590,13 @@
               "sm",
               "lg"
             ]
-          },
-          {
-            "name": "state",
-            "values": [
-              "rest",
-              "pressed",
-              "disabled"
-            ]
-          },
-          {
-            "name": "iconOnly",
-            "values": [
-              "false",
-              "true"
-            ]
           }
         ]
       },
       "id": "button/tactile",
       "kind": "component-set",
       "name": "Button / tactile",
+      "page": "button",
       "properties": [
         {
           "default": false,
@@ -8611,7 +8614,7 @@
           "type": "TEXT"
         }
       ],
-      "visualHash": "e64b8408d850fb5f"
+      "visualHash": "d389c8a7f08fceb4"
     },
     {
       "axes": [
@@ -12696,6 +12699,23 @@
       "grid": {
         "columns": [
           {
+            "name": "iconOnly",
+            "values": [
+              "false",
+              "true"
+            ]
+          },
+          {
+            "name": "state",
+            "values": [
+              "rest",
+              "pressed",
+              "disabled"
+            ]
+          }
+        ],
+        "rows": [
+          {
             "name": "variant",
             "values": [
               "solid",
@@ -12711,9 +12731,7 @@
               "accent",
               "danger"
             ]
-          }
-        ],
-        "rows": [
+          },
           {
             "name": "size",
             "values": [
@@ -12722,27 +12740,13 @@
               "sm",
               "lg"
             ]
-          },
-          {
-            "name": "state",
-            "values": [
-              "rest",
-              "pressed",
-              "disabled"
-            ]
-          },
-          {
-            "name": "iconOnly",
-            "values": [
-              "false",
-              "true"
-            ]
           }
         ]
       },
       "id": "button/brutalist",
       "kind": "component-set",
       "name": "Button / brutalist",
+      "page": "button",
       "properties": [
         {
           "default": false,
@@ -12760,7 +12764,7 @@
           "type": "TEXT"
         }
       ],
-      "visualHash": "0b89c93af5c1af51"
+      "visualHash": "436bf00522132ded"
     },
     {
       "axes": [
@@ -16845,6 +16849,23 @@
       "grid": {
         "columns": [
           {
+            "name": "iconOnly",
+            "values": [
+              "false",
+              "true"
+            ]
+          },
+          {
+            "name": "state",
+            "values": [
+              "rest",
+              "pressed",
+              "disabled"
+            ]
+          }
+        ],
+        "rows": [
+          {
             "name": "variant",
             "values": [
               "solid",
@@ -16860,9 +16881,7 @@
               "accent",
               "danger"
             ]
-          }
-        ],
-        "rows": [
+          },
           {
             "name": "size",
             "values": [
@@ -16871,27 +16890,13 @@
               "sm",
               "lg"
             ]
-          },
-          {
-            "name": "state",
-            "values": [
-              "rest",
-              "pressed",
-              "disabled"
-            ]
-          },
-          {
-            "name": "iconOnly",
-            "values": [
-              "false",
-              "true"
-            ]
           }
         ]
       },
       "id": "button/frosted",
       "kind": "component-set",
       "name": "Button / frosted",
+      "page": "button",
       "properties": [
         {
           "default": false,
@@ -16909,7 +16914,7 @@
           "type": "TEXT"
         }
       ],
-      "visualHash": "74bc0a9396d45695"
+      "visualHash": "bb8d9ef9e8c1e64c"
     }
   ],
   "diagnostics": [
@@ -16954,6 +16959,16 @@
     "rootFontSize": "16px",
     "state": "rest: no :hover, :active or :focus"
   },
+  "pages": [
+    {
+      "id": "icon",
+      "name": "Icon"
+    },
+    {
+      "id": "button",
+      "name": "Button"
+    }
+  ],
   "report": {
     "options": {
       "excluded": [
@@ -16976,13 +16991,12 @@
     "tokens": {
       "componentVariables": 120,
       "modeValuesBySource": {
-        "alias": 42,
+        "alias": 46,
         "evaluated": 240,
-        "literal": 76
+        "literal": 78
       },
-      "reached": 82,
+      "reached": 84,
       "reachedButNotVariables": [
-        "--color-bg-surface",
         "--color-bg-surface-sunken",
         "--elevation-flat",
         "--elevation-raised",
@@ -17007,7 +17021,7 @@
         "--sk-density"
       ],
       "unsupported": 0,
-      "variables": 59
+      "variables": 62
     },
     "variants": {
       "components": 5,
@@ -17036,7 +17050,7 @@
     }
   },
   "schemaVersion": 1,
-  "sourceHash": "0ffc49b877a4c697",
+  "sourceHash": "f76c21ebd3384537",
   "specimen": [
     {
       "cell": "variant=solid, tone=neutral, size=md, state=rest, iconOnly=false",
@@ -17402,6 +17416,26 @@
       "source": "buttonBrutalistStatesTree"
     }
   ],
+  "specimenPage": "button",
+  "stage": {
+    "background": {
+      "variable": "--color-bg-surface"
+    },
+    "label": {
+      "color": {
+        "variable": "--color-text-secondary"
+      },
+      "fontFamily": {
+        "variable": "--font-family-body"
+      },
+      "fontSize": {
+        "variable": "--font-size-caption"
+      },
+      "fontWeight": {
+        "variable": "--font-weight-label"
+      }
+    }
+  },
   "styles": {
     "boxes": {
       "1dc284ebdfb24b60": {
@@ -29576,6 +29610,38 @@
       }
     },
     {
+      "codeSyntax": "var(--palette-stone-700)",
+      "collection": "primitives",
+      "expression": "oklch(37.4% 0.01 67.558)",
+      "id": "--palette-stone-700",
+      "name": "palette/stone-700",
+      "source": {
+        "dark": "literal",
+        "light": "literal"
+      },
+      "type": "COLOR",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": {
+            "a": 1,
+            "b": 0.2323,
+            "g": 0.2504,
+            "r": 0.2685
+          }
+        },
+        "light": {
+          "kind": "literal",
+          "value": {
+            "a": 1,
+            "b": 0.2323,
+            "g": 0.2504,
+            "r": 0.2685
+          }
+        }
+      }
+    },
+    {
       "codeSyntax": "var(--palette-stone-800)",
       "collection": "primitives",
       "expression": "oklch(26.8% 0.007 34.298)",
@@ -30012,6 +30078,28 @@
       }
     },
     {
+      "codeSyntax": "var(--color-bg-surface)",
+      "collection": "semantic",
+      "expression": "light-dark(var(--palette-white), var(--palette-stone-900))",
+      "id": "--color-bg-surface",
+      "name": "color/bg-surface",
+      "source": {
+        "dark": "alias",
+        "light": "alias"
+      },
+      "type": "COLOR",
+      "values": {
+        "dark": {
+          "kind": "alias",
+          "variable": "--palette-stone-900"
+        },
+        "light": {
+          "kind": "alias",
+          "variable": "--palette-white"
+        }
+      }
+    },
+    {
       "codeSyntax": "var(--color-border-default)",
       "collection": "semantic",
       "expression": "light-dark(var(--palette-stone-500), var(--palette-stone-500))",
@@ -30162,6 +30250,28 @@
         "light": {
           "kind": "alias",
           "variable": "--palette-stone-900"
+        }
+      }
+    },
+    {
+      "codeSyntax": "var(--color-text-secondary)",
+      "collection": "semantic",
+      "expression": "light-dark(var(--palette-stone-700), var(--palette-stone-300))",
+      "id": "--color-text-secondary",
+      "name": "color/text-secondary",
+      "source": {
+        "dark": "alias",
+        "light": "alias"
+      },
+      "type": "COLOR",
+      "values": {
+        "dark": {
+          "kind": "alias",
+          "variable": "--palette-stone-300"
+        },
+        "light": {
+          "kind": "alias",
+          "variable": "--palette-stone-700"
         }
       }
     },
