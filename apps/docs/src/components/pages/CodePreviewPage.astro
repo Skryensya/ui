@@ -9,6 +9,7 @@ import ComponentPageShell from "./ComponentPageShell.astro";
 import AppearanceMenu from "../AppearanceMenu.astro";
 import CodeBlock from "../CodeBlock.astro";
 import ComponentPreview from "../ComponentPreview.astro";
+import UsagePreview from "../UsagePreview.astro";
 import { codePreviewAnatomyCss, codePreviewAnatomyHtml } from "../../demos/code-preview";
 import { getLocale, useTranslations } from "../../i18n";
 
@@ -59,20 +60,11 @@ const example = `const registrations = [
     <AppearanceMenu label={t("prefs.appearance")} values={["plain", "brutalist", "frosted"]} unavailable={{ tactile: t("prefs.appearanceTactileUnavailable") }} />
   </Fragment>
 
-  <Fragment slot="anatomy">
-    <p set:html={t("codePreview.anatomyBody")} />
-    <ComponentPreview
-      html={codePreviewAnatomyHtml(t)}
-      css={codePreviewAnatomyCss}
-      label={t("codePreview.anatomyPreviewLabel")}
-      screens={false}
-      hideSource
-      chrome={false}
-    />
-  </Fragment>
-
   <Fragment slot="usage">
     <p class="lede" set:html={t("codePreview.lede")} />
+
+    <h3>{t("codePreview.showcaseTitle")}</h3>
+    <p set:html={t("codePreview.showcaseBody")} />
     <CodeBlock code={example} label="TypeScript" lang="ts" />
     <p set:html={t("codePreview.exampleNote")} />
 
@@ -89,6 +81,26 @@ const example = `const registrations = [
     <h3>{t("codePreview.mountTitle")}</h3>
     <p set:html={t("codePreview.mountBody")} />
     <CodeBlock code={mount} label="TypeScript" lang="ts" />
+
+    <h3>{t("component.anatomy")}</h3>
+    <p set:html={t("codePreview.anatomyBody")} />
+    <ComponentPreview
+      html={codePreviewAnatomyHtml(t)}
+      css={codePreviewAnatomyCss}
+      label={t("codePreview.anatomyPreviewLabel")}
+      screens={false}
+      hideSource
+      chrome={false}
+    />
+  </Fragment>
+
+  <Fragment slot="guidelines">
+    <p class="lede" set:html={t("codePreview.guidelinesLede")} />
+    <ul>
+      <li set:html={t("codePreview.guide.item1")} />
+      <li set:html={t("codePreview.guide.item2")} />
+      <li set:html={t("codePreview.guide.item3")} />
+    </ul>
   </Fragment>
 
   <Fragment slot="install">

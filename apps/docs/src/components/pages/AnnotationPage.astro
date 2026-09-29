@@ -2,6 +2,7 @@
 import ComponentPageShell from "./ComponentPageShell.astro";
 import CodeBlock from "../CodeBlock.astro";
 import ComponentPreview from "../ComponentPreview.astro";
+import UsagePreview from "../UsagePreview.astro";
 import {
   annotationAnatomyTree,
   annotationDemoCss,
@@ -117,24 +118,11 @@ const hooks = `.mi-diagrama.sk-annotated-figure {
   contractId="annotation"
   testFiles={["packages/core/src/annotation.test.ts", "packages/vanilla/src/components/annotation.test.ts", "packages/react/src/components/annotation.test.tsx"]}}
 >
-  <Fragment slot="anatomy">
-    <p set:html={t("annotation.selfAnatomyBody")} />
-    <ComponentPreview
-      tree={annotationSelfAnatomyTree(t)}
-      css={annotationSelfAnatomyCss}
-      label={t("annotation.selfAnatomyPreviewLabel")}
-      screens={false}
-      hideSource
-      chrome={false}
-    />
-  </Fragment>
-
   <Fragment slot="usage">
     <p class="lede" set:html={t("annotation.lede")} />
 
-    <h3>{t("annotation.whenTitle")}</h3>
-    <p set:html={t("annotation.whenBody1")} />
-    <p set:html={t("annotation.whenBody2")} />
+    <h3>{t("annotation.showcaseTitle")}</h3>
+    <p set:html={t("annotation.showcaseBody")} />
 
     <h3>{t("annotation.anatomyTitle")}</h3>
     <p set:html={t("annotation.anatomyBody")} />
@@ -204,6 +192,24 @@ const hooks = `.mi-diagrama.sk-annotated-figure {
       <li set:html={t("annotation.contractItem2")} />
       <li set:html={t("annotation.contractItem3")} />
     </ul>
+
+    <h3>{t("component.anatomy")}</h3>
+    <p set:html={t("annotation.selfAnatomyBody")} />
+    <ComponentPreview
+      tree={annotationSelfAnatomyTree(t)}
+      css={annotationSelfAnatomyCss}
+      label={t("annotation.selfAnatomyPreviewLabel")}
+      screens={false}
+      hideSource
+      chrome={false}
+    />
+  </Fragment>
+
+  <Fragment slot="guidelines">
+    <p class="lede" set:html={t("annotation.guidelinesLede")} />
+    <h3>{t("annotation.whenTitle")}</h3>
+    <p set:html={t("annotation.whenBody1")} />
+    <p set:html={t("annotation.whenBody2")} />
   </Fragment>
 
   <Fragment slot="install">

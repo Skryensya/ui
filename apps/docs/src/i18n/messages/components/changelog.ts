@@ -74,6 +74,9 @@ export const changelogMessages = {
     "changelogPage.test2": "Un release sin fecha se marca «sin publicar» y no renderiza hora alguna.",
     "changelogPage.test3": "El tipo de cambio se dibuja como un Badge.",
     "changelogPage.test4": "Título y descripción se renderizan como partes separadas.",
+    "changelogPage.showcaseTitle": "Showcases",
+    "changelogPage.showcaseBody": "Versiones con sus cambios, cada uno marcado por tipo.",
+    "changelogPage.guidelinesLede": "Changelog lista las versiones de un producto y lo que cambió en cada una.",
   },
   en: {
     /* The dates are written here rather than formatted in the demo: the tree has a `Translate` and
@@ -142,5 +145,8 @@ export const changelogMessages = {
     "changelogPage.test2": "A release with no date is marked unreleased and renders no time at all.",
     "changelogPage.test3": "The kind of change is drawn as a Badge.",
     "changelogPage.test4": "Title and description render as separate parts.",
+    "changelogPage.showcaseTitle": "Showcases",
+    "changelogPage.showcaseBody": "Releases with their changes, each marked by kind.",
+    "changelogPage.guidelinesLede": "Changelog lists a product's releases and what changed in each.",
   },
 } as const;

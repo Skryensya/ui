@@ -208,6 +208,9 @@ export const annotationMessages = {
     "annotation.test69": "Muestra una marca por vez, emparejada con la etiqueta que se está leyendo.",
     "annotation.test70": "También aparece con el foco, así las marcas se alcanzan sin puntero.",
     "annotation.test71": "Dibuja las mismas marcas que el enhancer, con la misma forma.",
+    "annotation.showcaseTitle": "Showcases",
+    "annotation.showcaseBody": "Un diagrama con partes nombradas, y guías que salen hacia cada lado.",
+    "annotation.guidelinesLede": "Annotation nombra las partes de algo con guías y una leyenda.",
   },
   en: {
     "annotation.selfAnatomyLabel": "Annotated anatomy",
@@ -418,5 +421,8 @@ export const annotationMessages = {
     "annotation.test69": "Reveals one mark at a time, paired with the label being read.",
     "annotation.test70": "Reveals on focus too, so the marks are reachable without a pointer.",
     "annotation.test71": "Draws the same marks the enhancer draws, in the same shape.",
+    "annotation.showcaseTitle": "Showcases",
+    "annotation.showcaseBody": "A diagram with named parts, and leaders leaving toward each side.",
+    "annotation.guidelinesLede": "Annotation names the parts of something with leaders and a key.",
   },
 } as const;

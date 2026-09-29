@@ -9,6 +9,7 @@ import "@skryensya/core/components/annotation.css";
 import ComponentPageShell from "./ComponentPageShell.astro";
 import CodeBlock from "../CodeBlock.astro";
 import ComponentPreview from "../ComponentPreview.astro";
+import UsagePreview from "../UsagePreview.astro";
 import { editorAnatomyTree, editorCompactTree, editorTree } from "../../demos/editor";
 import { annotationDemoCss } from "../../demos/annotation";
 import { getLocale, useTranslations } from "../../i18n";
@@ -36,21 +37,11 @@ mountEditor();`;
   badge={t("editorPage.betaBadge")}
   contractId="editor"
 >
-  <Fragment slot="anatomy">
-    <p set:html={t("editorPage.anatomyBody")} />
-    <ComponentPreview
-      tree={editorAnatomyTree(t)}
-      css={annotationDemoCss}
-      js={js}
-      label={t("editorPage.anatomyPreviewLabel")}
-      screens={false}
-      hideSource
-      chrome={false}
-    />
-  </Fragment>
-
   <Fragment slot="usage">
     <p class="lede" set:html={t("editorPage.lede")} />
+
+    <h3>{t("editorPage.showcaseTitle")}</h3>
+    <p set:html={t("editorPage.showcaseBody")} />
     <ComponentPreview tree={editorTree(t)} js={js} label="Editor" viewport="auto" />
 
     <h3>{t("editorPage.formatsTitle")}</h3>
@@ -67,6 +58,26 @@ mountEditor();`;
     <h3>{t("editorPage.compactTitle")}</h3>
     <p set:html={t("editorPage.compactBody")} />
     <ComponentPreview tree={editorCompactTree(t)} js={js} label={t("editorPage.compactLabel")} viewport="auto" />
+
+    <h3>{t("component.anatomy")}</h3>
+    <p set:html={t("editorPage.anatomyBody")} />
+    <ComponentPreview
+      tree={editorAnatomyTree(t)}
+      css={annotationDemoCss}
+      js={js}
+      label={t("editorPage.anatomyPreviewLabel")}
+      screens={false}
+      hideSource
+      chrome={false}
+    />
+  </Fragment>
+
+  <Fragment slot="guidelines">
+    <p class="lede" set:html={t("editorPage.guidelinesLede")} />
+    <ul>
+      <li set:html={t("editorPage.guide.item1")} />
+      <li set:html={t("editorPage.guide.item2")} />
+    </ul>
   </Fragment>
 
   <Fragment slot="install">

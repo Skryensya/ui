@@ -31,6 +31,12 @@ export const codePreviewMessages = {
     "codePreview.test1": "Cambia densidad, expande, colapsa y monta de forma idempotente.",
     "codePreview.test2": "El botón para revelar más sigue disponible aunque el modo Condensado ya sea largo.",
     "codePreview.test3": "Dice el conteo en el idioma del autor, y solo el número cuando no hay uno.",
+    "codePreview.showcaseTitle": "Showcases",
+    "codePreview.showcaseBody": "Un bloque de código con su lenguaje, resaltado y botón para copiar.",
+    "codePreview.guidelinesLede": "CodePreview muestra código para leer y copiar.",
+    "codePreview.guide.item1": "Pon una etiqueta que diga qué es: el lenguaje, el archivo o la terminal.",
+    "codePreview.guide.item2": "Muestra solo lo necesario para el ejemplo; el resto, en un enlace al archivo completo.",
+    "codePreview.guide.item3": "Para una palabra de código dentro de una frase, usa <code>Code</code> en el texto.",
   },
   en: {
 
@@ -64,5 +70,11 @@ export const codePreviewMessages = {
     "codePreview.test1": "Switches density, expands, collapses and mounts idempotently.",
     "codePreview.test2": "Keeps the disclosure control available even when Condensed itself is long.",
     "codePreview.test3": "Says the count in the author's language, and just the number when there is none.",
+    "codePreview.showcaseTitle": "Showcases",
+    "codePreview.showcaseBody": "A code block with its language, highlighting and a copy button.",
+    "codePreview.guidelinesLede": "CodePreview shows code to read and copy.",
+    "codePreview.guide.item1": "Give it a label saying what it is: the language, the file, or the terminal.",
+    "codePreview.guide.item2": "Show only what the example needs; the rest, in a link to the full file.",
+    "codePreview.guide.item3": "For a code word inside a sentence, use <code>Code</code> in the text.",
   },
 } as const;

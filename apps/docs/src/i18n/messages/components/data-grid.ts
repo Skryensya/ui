@@ -38,6 +38,11 @@ export const dataGridMessages = {
     "demo.dataGrid.copy": "Copiar",
     "demo.dataGrid.delete": "Eliminar",
     "demo.dataGrid.more": "Más opciones",
+    "dataGridPage.showcaseTitle": "Showcases",
+    "dataGridPage.showcaseBody": "Una cuadrícula de datos que se recorre con flechas, y una con acciones en las celdas.",
+    "dataGridPage.guidelinesLede": "DataGrid es una tabla que se recorre celda por celda con el teclado.",
+    "dataGridPage.guide.item1": "Úsalo cuando las celdas tienen controles o se editan, y moverse con flechas ayuda.",
+    "dataGridPage.guide.item2": "Para datos que solo se leen, una <a href=\"/es/componentes/table\">Table</a> es más simple y más accesible.",
   },
   en: {
 
@@ -77,5 +82,10 @@ export const dataGridMessages = {
     "demo.dataGrid.copy": "Copy",
     "demo.dataGrid.delete": "Delete",
     "demo.dataGrid.more": "More options",
+    "dataGridPage.showcaseTitle": "Showcases",
+    "dataGridPage.showcaseBody": "A data grid navigated with the arrow keys, and one with actions in its cells.",
+    "dataGridPage.guidelinesLede": "DataGrid is a table navigated cell by cell with the keyboard.",
+    "dataGridPage.guide.item1": "Use it when cells hold controls or are edited, and arrow-key movement helps.",
+    "dataGridPage.guide.item2": "For read-only data, a <a href=\"/components/table\">Table</a> is simpler and more accessible.",
   },
 } as const;
