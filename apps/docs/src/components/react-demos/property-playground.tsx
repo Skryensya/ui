@@ -27,9 +27,11 @@ export interface PropertyPlaygroundProps {
   controlLabel: string;
   /** What each value is for, shown under the example for the one that is chosen. Trusted HTML. */
   explain?: Partial<Record<string, string>>;
+  /** Whether changing the property should remount the specimen. Disable for continuous animations. */
+  remountOnChange?: boolean;
 }
 
-export function PropertyPlayground({ tree, optionName, target = [], values, boolean, defaultValue, labels, controlLabel, explain }: PropertyPlaygroundProps) {
+export function PropertyPlayground({ tree, optionName, target = [], values, boolean, defaultValue, labels, controlLabel, explain, remountOnChange = true }: PropertyPlaygroundProps) {
   const [value, setValue] = useState(defaultValue);
   const render = useRenderedTree(tree);
   /*
@@ -60,7 +62,7 @@ export function PropertyPlayground({ tree, optionName, target = [], values, bool
       ) : (
         <div className="sk-property-playground__control-slot" aria-hidden="true" />
       )}
-      <div className="sk-preview-card__stage" key={value}>{render ? render(liveTree) : null}</div>
+      <div className="sk-preview-card__stage" key={remountOnChange ? value : "stable"}>{render ? render(liveTree) : null}</div>
       {/*
         * EVERY explanation is rendered, stacked in one grid cell, and only the chosen one shows. Two
         * things follow from that: the cell is always as tall as the longest of them, so the card

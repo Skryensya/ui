@@ -52,6 +52,7 @@ const explain = (option: string, values: readonly string[]) =>
       description={t("marquee.prop.speed.body")}
       explain={explain("speed", ["slow", "normal", "fast"])}
       stageMinBlockSize="9rem"
+      remountOnChange={false}
     />
 
     <UsagePreview
