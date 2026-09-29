@@ -210,3 +210,14 @@ describe("Pagination", () => {
     expect(pages).toEqual(["1", "2", "3", "4", "…", "10"]);
   });
 });
+
+describe("Steps", () => {
+  it("stacks each step's marker row over its text, and lays the steps across the row", () => {
+    const set = manifest.components.find((c): c is ComponentSet => c.kind === "component-set" && c.id === "steps/markers")!;
+    const across = set.cells.find((c) => c.props.orientation === "horizontal")!;
+    const [first] = manifest.styles.layers[across.layers];
+    expect(first.kind === "frame" && manifest.styles.boxes[first.box]).toMatchObject({ direction: "VERTICAL", grow: true });
+    expect(first.kind === "frame" && first.layers.map((l) => l.slot)).toEqual(["marker", "span"]);
+    expect(set.cells.find((c) => c.props.orientation === "vertical")).toBeDefined();
+  });
+});

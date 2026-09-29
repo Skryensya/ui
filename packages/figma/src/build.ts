@@ -610,7 +610,9 @@ async function compileRealization(authored: Realization, shared: Shared): Promis
         const out: Layer[] = [];
         // In a grid laid across, a child in an `fr` column fills the row, as flex-grow does.
         const tracks = gridTracks(ctx(el));
+        const rows = /grid/.test(ctx(el).computed.get("display") ?? "") ? gridTracks(ctx(el), "grid-template-rows") : [];
         let column = 0;
+        let row = 0;
         const filling = new Set<Layer>();
         const computed = ctx(el).computed;
         const display = computed.get("display") ?? "";
@@ -676,9 +678,13 @@ async function compileRealization(authored: Realization, shared: Shared): Promis
           const track = tracks.length > 1 ? tracks[column++] : undefined;
           const fixedTrack = track !== undefined && !/fr\b|^auto$|content/.test(track);
           if (fixedTrack) sized.set("width", track);
+          // Down rows, a length row sets its child's height (a step's marker row).
+          const rowTrack = rows.length > 0 && tracks.length <= 1 ? rows[row++] : undefined;
+          const fixedRow = rowTrack !== undefined && !/fr\b|^auto$|content/.test(rowTrack);
+          if (fixedRow) sized.set("height", rowTrack);
           const trackWidth = fixedTrack ? lengthOf(track, child) : undefined;
           const onlyText = child.children.length === 0;
-          if (onlyText && !fixedTrack && !paints(ctxOf(sized))) {
+          if (onlyText && !fixedTrack && !fixedRow && !paints(ctxOf(sized))) {
             const flat = nestedLayers(child, inner);
             // Its text fills the `fr` column it stands in (a DescriptionList's value beside its term).
             const fills = track !== undefined && /fr\b/.test(track);
