@@ -2587,6 +2587,18 @@
         "date": null,
         "entries": [
           {
+            "date": "2026-09-29",
+            "en": {
+              "body": "The trigger is no longer icon-only: beside the swatch it carries <code>sk-color-picker__value</code> with the colour written out. New hooks: <code>--sk-color-picker-field-padding</code>, <code>--sk-color-picker-swatch-size</code> and <code>--sk-color-picker-trigger-inline-size</code>.",
+              "title": "The trigger shows the value"
+            },
+            "es": {
+              "body": "El disparador deja de ser solo ícono: junto a la muestra lleva <code>sk-color-picker__value</code> con el color escrito. Nuevos hooks: <code>--sk-color-picker-field-padding</code>, <code>--sk-color-picker-swatch-size</code> y <code>--sk-color-picker-trigger-inline-size</code>.",
+              "title": "El disparador muestra el valor"
+            },
+            "kind": "feature"
+          },
+          {
             "date": "2026-09-17",
             "en": {
               "body": "Interactive or form host signatures publish <code>forward</code> (<code>id</code>/<code>aria-*</code> and link or form attrs where relevant). An attr outside the list is <code>unknown-attr</code>.",
@@ -12034,6 +12046,19 @@
         "date": null,
         "entries": [
           {
+            "date": "2026-09-29",
+            "en": {
+              "body": "<code>linkTone</code> declares <code>neutral</code> beside <code>accent</code>, so the surrounding text colour can be asked for by name. Without <code>data-tone</code> the link still paints neutral.",
+              "title": "linkTone accepts \"neutral\""
+            },
+            "es": {
+              "body": "<code>linkTone</code> declara <code>neutral</code> junto a <code>accent</code>, así el tono del texto que rodea al enlace se puede pedir por nombre. Sin <code>data-tone</code> el enlace sigue pintándose neutral.",
+              "title": "linkTone acepta \"neutral\""
+            },
+            "kind": "feature",
+            "target": "linkTone"
+          },
+          {
             "date": "2026-09-17",
             "en": {
               "body": "Interactive or form host signatures publish <code>forward</code> (<code>id</code>/<code>aria-*</code> and link or form attrs where relevant). An attr outside the list is <code>unknown-attr</code>.",
@@ -20793,19 +20818,19 @@
           "sheet": "@skryensya/core/patterns/anchored.css"
         },
         "--sk-color-picker-area-block-size": {
-          "default": "8.75rem",
+          "default": "8.5rem",
           "output": false,
           "part": "root",
           "sheet": "@skryensya/core/components/color-picker.css"
         },
         "--sk-color-picker-area-radius": {
-          "default": "calc(var(--radius-control) + 2px)",
+          "default": "calc(var(--radius-surface) - 2px)",
           "output": false,
           "part": "root",
           "sheet": "@skryensya/core/components/color-picker.css"
         },
         "--sk-color-picker-area-thumb-size": {
-          "default": "1.15rem",
+          "default": "1.05rem",
           "output": false,
           "part": "root",
           "sheet": "@skryensya/core/components/color-picker.css"
@@ -20823,13 +20848,13 @@
           "sheet": "@skryensya/core/components/color-picker.css"
         },
         "--sk-color-picker-content-bg": {
-          "default": "color-mix(in oklch, var(--color-bg-surface-overlay) 92%, var(--color-action-accent) 8%)",
+          "default": "var(--color-bg-surface-overlay)",
           "output": false,
           "part": "root",
           "sheet": "@skryensya/core/components/color-picker.css"
         },
         "--sk-color-picker-content-border-color": {
-          "default": "color-mix(in oklch, var(--color-border-subtle) 70%, var(--color-action-accent) 30%)",
+          "default": "var(--color-border-subtle)",
           "output": false,
           "part": "root",
           "sheet": "@skryensya/core/components/color-picker.css"
@@ -20841,7 +20866,7 @@
           "sheet": "@skryensya/core/components/color-picker.css"
         },
         "--sk-color-picker-content-inline-size": {
-          "default": "18rem",
+          "default": "15.5rem",
           "output": false,
           "part": "root",
           "sheet": "@skryensya/core/components/color-picker.css"
@@ -20870,6 +20895,12 @@
           "part": "root",
           "sheet": "@skryensya/core/components/color-picker.css"
         },
+        "--sk-color-picker-field-padding": {
+          "default": "0.25rem",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/color-picker.css"
+        },
         "--sk-color-picker-gap": {
           "default": "var(--space-stack-xs)",
           "output": false,
@@ -20883,7 +20914,7 @@
           "sheet": "@skryensya/core/components/color-picker.css"
         },
         "--sk-color-picker-rail-block-size": {
-          "default": "0.85rem",
+          "default": "0.65rem",
           "output": false,
           "part": "root",
           "sheet": "@skryensya/core/components/color-picker.css"
@@ -20906,6 +20937,12 @@
           "part": "root",
           "sheet": "@skryensya/core/components/color-picker.css"
         },
+        "--sk-color-picker-swatch-size": {
+          "default": "calc(var(--sk-color-picker-trigger-size) - 0.6rem)",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/color-picker.css"
+        },
         "--sk-color-picker-thumb-ring-color": {
           "default": "var(--color-bg-surface)",
           "output": false,
@@ -20920,6 +20957,12 @@
         },
         "--sk-color-picker-thumb-shadow": {
           "default": "0 1px 2px rgb(0 0 0 / 45%), 0 0 0 1px rgb(0 0 0 / 35%)",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/color-picker.css"
+        },
+        "--sk-color-picker-trigger-inline-size": {
+          "default": "13.5rem",
           "output": false,
           "part": "root",
           "sheet": "@skryensya/core/components/color-picker.css"
@@ -20954,15 +20997,18 @@
         "--sk-color-picker-content-radius",
         "--sk-color-picker-content-shadow",
         "--sk-color-picker-content-wash",
+        "--sk-color-picker-field-padding",
         "--sk-color-picker-gap",
         "--sk-color-picker-label-color",
         "--sk-color-picker-rail-block-size",
         "--sk-color-picker-rail-radius",
         "--sk-color-picker-rail-thumb-size",
         "--sk-color-picker-swatch-border-color",
+        "--sk-color-picker-swatch-size",
         "--sk-color-picker-thumb-ring-color",
         "--sk-color-picker-thumb-ring-size",
         "--sk-color-picker-thumb-shadow",
+        "--sk-color-picker-trigger-inline-size",
         "--sk-color-picker-trigger-size"
       ],
       "hookSheets": [
@@ -21047,7 +21093,8 @@
         "swatchGroup": "sk-color-picker__swatch-group",
         "swatchSwatch": "sk-color-picker__swatch-swatch",
         "swatchTrigger": "sk-color-picker__swatch-trigger",
-        "trigger": "sk-color-picker__trigger"
+        "trigger": "sk-color-picker__trigger",
+        "value": "sk-color-picker__value"
       },
       "semantics": {
         "ColorPicker": {
@@ -21174,13 +21221,16 @@
                       "sk-interactive"
                     ],
                     "attrs": {
-                      "data-icon-only": "",
                       "type": "button"
                     },
                     "children": [
                       {
                         "element": "span",
                         "part": "swatch"
+                      },
+                      {
+                        "element": "span",
+                        "part": "value"
                       }
                     ],
                     "element": "button",
@@ -21282,13 +21332,16 @@
                       "sk-interactive"
                     ],
                     "attrs": {
-                      "data-icon-only": "",
                       "type": "button"
                     },
                     "children": [
                       {
                         "element": "span",
                         "part": "swatch"
+                      },
+                      {
+                        "element": "span",
+                        "part": "value"
                       }
                     ],
                     "element": "button",
@@ -52681,6 +52734,7 @@
           "prop": "tone",
           "type": "enum",
           "values": [
+            "neutral",
             "accent"
           ]
         },
@@ -55025,7 +55079,7 @@
     "working": "0.0.1"
   },
   "schemaVersion": "2.3",
-  "sourceHash": "cbe8a68030f8e65a",
+  "sourceHash": "751afaf7ab5d5d82",
   "vocabulary": {
     "a11y": "When `when` holds, one of `requiresOneOf` must be given: an option, a raw attribute, a filled slot, or a child signature by name.",
     "atLeastOneOf": "At least one member of each group counts: a filled slot, a boolean option set to true, or an option other than its default.",
