@@ -1,41 +1,125 @@
 <!doctype html>
 <meta charset="utf-8" />
 <style>
-  body { font: 12px/1.4 system-ui, sans-serif; margin: 12px; color: var(--figma-color-text); background: var(--figma-color-bg); }
-  .row { display: flex; gap: 8px; margin-block-end: 8px; }
+  :root { color-scheme: light dark; }
+  body { font: 12px/1.45 system-ui, sans-serif; margin: 0; padding: 12px; color: var(--figma-color-text); background: var(--figma-color-bg); }
+  .row { display: flex; gap: 8px; align-items: center; }
   button { font: inherit; padding: 6px 12px; border-radius: 6px; border: 1px solid var(--figma-color-border); background: var(--figma-color-bg-secondary); color: inherit; cursor: pointer; }
   button.primary { background: var(--figma-color-bg-brand); color: var(--figma-color-text-onbrand); border-color: transparent; }
   button:disabled { opacity: 0.5; cursor: default; }
-  pre { white-space: pre-wrap; margin: 0; font: 11px/1.45 ui-monospace, monospace; }
   .muted { color: var(--figma-color-text-secondary); }
+  .spacer { flex: 1; }
+
+  #status { margin-block: 14px 6px; font-weight: 600; }
+  .bar { height: 6px; border-radius: 3px; background: var(--figma-color-bg-tertiary, rgba(127,127,127,.2)); overflow: hidden; }
+  .bar > i { display: block; height: 100%; width: 0; background: var(--figma-color-bg-brand); transition: width .15s linear; }
+  #timing { margin-block: 6px 12px; }
+
+  ol { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+  li { display: grid; grid-template-columns: 16px 1fr auto; gap: 2px 8px; align-items: center; }
+  li .mark { text-align: center; }
+  li .count { font-variant-numeric: tabular-nums; }
+  li .bar, li .summary { grid-column: 2 / 4; }
+  li[data-state="pending"] { opacity: .5; }
+  li[data-state="pending"] .bar, li[data-state="done"] .bar { display: none; }
+  li[data-state="running"] .summary { display: none; }
+
+  details { margin-block-start: 14px; }
+  summary { cursor: pointer; }
+  pre { white-space: pre-wrap; margin: 8px 0 0; font: 11px/1.45 ui-monospace, monospace; }
+  .error { color: var(--figma-color-text-danger); }
 </style>
-<p class="muted" id="source">Reading the manifest…</p>
+
 <div class="row">
   <button class="primary" id="sync">Sync Button</button>
   <button id="dry">Dry run</button>
+  <span class="spacer"></span>
+  <span class="muted" id="source">…</span>
 </div>
-<pre id="out"></pre>
+
+<div id="status" class="muted">Dry run shows what would change. Sync applies it.</div>
+<div class="bar" id="overall" hidden><i></i></div>
+<div class="muted" id="timing"></div>
+<ol id="phases"></ol>
+<details id="details" hidden><summary>Everything it did</summary><pre id="log"></pre></details>
+
 <script>
-  const out = document.getElementById("out");
-  const buttons = [document.getElementById("sync"), document.getElementById("dry")];
+  const $ = (id) => document.getElementById(id);
+  const buttons = [$("sync"), $("dry")];
   const busy = (on) => buttons.forEach((b) => (b.disabled = on));
-  document.getElementById("sync").onclick = () => { busy(true); out.textContent = "Syncing…"; parent.postMessage({ pluginMessage: { type: "sync" } }, "*"); };
-  document.getElementById("dry").onclick = () => { busy(true); out.textContent = "Dry run…"; parent.postMessage({ pluginMessage: { type: "dry-run" } }, "*"); };
+  const fmt = (ms) => { const s = Math.round(ms / 1000); return `${Math.floor(s / 60)}:${String(s % 60).padStart(2, "0")}`; };
+  const MARK = { pending: "○", running: "◐", done: "✓" };
+
+  let mode = "";
+  const start = (type) => {
+    mode = type;
+    busy(true);
+    $("details").hidden = true;
+    $("status").className = "";
+    $("status").textContent = type === "sync" ? "Syncing…" : "Dry run…";
+    parent.postMessage({ pluginMessage: { type } }, "*");
+  };
+  $("sync").onclick = () => start("sync");
+  $("dry").onclick = () => start("dry-run");
+
+  function renderPhases(phases) {
+    $("phases").innerHTML = "";
+    for (const p of phases) {
+      const li = document.createElement("li");
+      li.dataset.state = p.state;
+      const pct = p.total ? (100 * p.done) / p.total : 100;
+      li.innerHTML = `
+        <span class="mark">${MARK[p.state]}</span>
+        <span>${p.label}</span>
+        <span class="count muted">${p.state === "done" ? "" : `${p.done.toLocaleString()} / ${p.total.toLocaleString()}`}</span>
+        <div class="bar"><i style="width:${pct}%"></i></div>
+        <span class="summary muted">${p.summary ?? ""}</span>`;
+      $("phases").append(li);
+    }
+  }
+
+  function renderProgress(m) {
+    const total = m.phases.reduce((n, p) => n + p.total, 0);
+    const done = m.phases.reduce((n, p) => n + p.done, 0);
+    const running = m.phases.find((p) => p.state === "running");
+    $("overall").hidden = false;
+    $("overall").firstElementChild.style.width = `${total ? (100 * done) / total : 0}%`;
+    $("status").textContent = `${m.apply ? "Syncing" : "Dry run"}${running ? `: ${running.label}` : "…"}`;
+    // The estimate only once there is a rate worth trusting.
+    const rate = done / Math.max(1, m.elapsed);
+    const left = done > 20 && m.elapsed > 2000 ? ` · about ${fmt((total - done) / rate)} left` : "";
+    $("timing").textContent = `${done.toLocaleString()} of ${total.toLocaleString()} · ${fmt(m.elapsed)} elapsed${left}`;
+    renderPhases(m.phases);
+  }
+
   onmessage = ({ data }) => {
     const m = data.pluginMessage;
     if (!m) return;
-    if (m.type === "ready") document.getElementById("source").textContent = `manifest ${m.sourceHash}`;
-    if (m.type === "progress") out.textContent = m.text;
-    if (m.type === "error") { busy(false); out.textContent = `ERROR\n${m.text}`; }
+    if (m.type === "ready") $("source").textContent = `manifest ${m.sourceHash}`;
+    if (m.type === "progress") renderProgress(m);
+    if (m.type === "error") {
+      busy(false);
+      $("status").className = "error";
+      $("status").textContent = "Stopped with an error";
+      $("details").hidden = false;
+      $("details").open = true;
+      $("log").textContent = m.text;
+    }
     if (m.type === "report") {
       busy(false);
-      const lines = m.entries.map((e) => `${e.action.padEnd(8)} ${e.subject}${e.detail ? `  (${e.detail})` : ""}`);
-      out.textContent = [
-        `${m.apply ? "SYNC" : "DRY RUN"}: ${m.outcome}`,
-        `${m.writes} writes · ${m.seconds}s · manifest ${m.sourceHash}`,
+      renderPhases(m.phases);
+      $("overall").firstElementChild.style.width = "100%";
+      const verdict = { NOOP: "Already current: nothing written", APPLIED: "Synced", "WOULD CHANGE": "Would change" }[m.outcome];
+      $("status").textContent = `${m.apply ? "" : "Dry run: "}${verdict}`;
+      const warnings = m.entries.filter((e) => e.action === "WARN").length;
+      $("timing").textContent = `${m.writes.toLocaleString()} writes · ${m.seconds}s${warnings ? ` · ${warnings} warning${warnings > 1 ? "s" : ""}` : ""}`;
+      $("details").hidden = false;
+      $("details").open = warnings > 0;
+      $("log").textContent = [
+        `${m.apply ? "SYNC" : "DRY RUN"}: ${m.outcome} · ${m.writes} writes · ${m.seconds}s · manifest ${m.sourceHash}`,
         Object.entries(m.counts).map(([k, v]) => `${k} ${v}`).join(" · "),
         "",
-        ...lines,
+        ...m.entries.map((e) => `${e.action.padEnd(8)} ${e.subject}${e.detail ? `  (${e.detail})` : ""}`),
       ].join("\n");
     }
   };

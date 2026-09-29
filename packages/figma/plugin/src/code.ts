@@ -9,9 +9,13 @@
  *     are how it finds its own objects again.
  *   - Missing → CREATE. Present and current → nothing is written. Present and stale → UPDATE IN
  *     PLACE, the same node, so instances elsewhere keep pointing at it.
- *   - Present but no longer in the manifest → tagged ORPHANED and left alone. Nothing is deleted.
+ *   - A component or variable no longer in the manifest → tagged ORPHANED and left alone. Nothing a
+ *     designer could have placed is deleted. (A component PROPERTY the manifest dropped is removed
+ *     from its set: it is part of the definition being reconciled, not an object anyone placed.)
  *
  * "Dry run" walks the same path and writes nothing: every write goes through `run.write`.
+ * Progress is reported per phase while it works, and the work yields regularly so the window can
+ * actually repaint: Figma runs a plugin on the same thread as its own UI.
  */
 
 import manifestJson from "../../../../artifacts/figma-manifest.json";
@@ -40,6 +44,71 @@ class Run {
     return this.apply;
   }
 }
+
+/* ── progress ───────────────────────────────────────────────────────────────────────────────── */
+
+type Phase = { id: string; label: string; total: number; done: number; state: "pending" | "running" | "done"; summary?: string };
+
+class Progress {
+  readonly phases: Phase[];
+  private readonly started = Date.now();
+  private lastPost = 0;
+  private sinceYield = 0;
+
+  constructor(readonly apply: boolean, phases: { id: string; label: string; total: number }[]) {
+    this.phases = phases.map((p) => ({ ...p, done: 0, state: "pending" }));
+    this.post();
+  }
+
+  private phase(id: string) {
+    const phase = this.phases.find((p) => p.id === id);
+    if (!phase) throw new Error(`no phase ${id}`);
+    return phase;
+  }
+
+  start(id: string) {
+    this.phase(id).state = "running";
+    this.post();
+  }
+
+  /** One unit of work done. Posts at most every 120ms, and yields so the window can draw it. */
+  async tick(id: string, n = 1) {
+    const phase = this.phase(id);
+    phase.done = Math.min(phase.total, phase.done + n);
+    this.sinceYield += n;
+    const now = Date.now();
+    if (now - this.lastPost > 120) this.post();
+    if (this.sinceYield >= 6) {
+      this.sinceYield = 0;
+      await new Promise((resolve) => setTimeout(resolve, 0));
+    }
+  }
+
+  finish(id: string, summary: string) {
+    const phase = this.phase(id);
+    phase.done = phase.total;
+    phase.state = "done";
+    phase.summary = summary;
+    this.post();
+  }
+
+  post() {
+    this.lastPost = Date.now();
+    figma.ui.postMessage({ type: "progress", apply: this.apply, elapsed: this.lastPost - this.started, phases: this.phases });
+  }
+}
+
+const summarize = (counts: { created?: number; updated?: number; unchanged?: number; orphaned?: number }) =>
+  [
+    counts.created ? `${counts.created} created` : "",
+    counts.updated ? `${counts.updated} updated` : "",
+    counts.unchanged ? `${counts.unchanged} unchanged` : "",
+    counts.orphaned ? `${counts.orphaned} orphaned` : "",
+  ]
+    .filter(Boolean)
+    .join(" · ") || "nothing to do";
+
+/* ── tags ───────────────────────────────────────────────────────────────────────────────────── */
 
 const getTag = (node: PluginDataMixin, key: string) => node.getSharedPluginData(NS, key);
 
@@ -91,7 +160,8 @@ function sameValue(want: M.VariableValue, figmaHave: unknown, ids: Map<string, V
 
 /* ── variables ──────────────────────────────────────────────────────────────────────────────── */
 
-async function syncVariables(run: Run): Promise<Map<string, Variable>> {
+async function syncVariables(run: Run, progress: Progress): Promise<Map<string, Variable>> {
+  progress.start("variables");
   const collections = await figma.variables.getLocalVariableCollectionsAsync();
   const ownCollections = new Map(collections.filter((c) => getTag(c, "id")).map((c) => [getTag(c, "id"), c]));
   const modeIds = new Map<string, Partial<Record<M.Mode, string>>>();
@@ -148,15 +218,14 @@ async function syncVariables(run: Run): Promise<Map<string, Variable>> {
       continue;
     } else if (variable.name !== spec.name) {
       run.write(() => (variable!.name = spec.name));
-      run.log("UPDATE", `variable ${spec.name}`, "renamed");
     }
     if (variable) out.set(spec.id, variable);
   }
-  if (created.size) run.log("CREATE", `${created.size} variables`);
 
   let updated = 0;
   for (const spec of manifest.variables) {
     const variable = out.get(spec.id);
+    await progress.tick("variables");
     if (!variable) continue;
     let changed = false;
     tag(run, variable, provenance("variable", spec.id));
@@ -186,20 +255,24 @@ async function syncVariables(run: Run): Promise<Map<string, Variable>> {
       run.log("UPDATE", `variable ${spec.name}`);
     }
   }
-  const unchanged = manifest.variables.length - created.size - updated;
-  if (unchanged) run.log("NOOP", `${unchanged} variables`);
 
+  let orphaned = 0;
   for (const [id, variable] of own) {
     if (specs.has(id) || getTag(variable, "orphaned") === "true") continue;
+    orphaned++;
     run.log("ORPHANED", `variable ${variable.name}`);
     run.write(() => variable.setSharedPluginData(NS, "orphaned", "true"));
   }
+  const counts = { created: created.size, updated, unchanged: manifest.variables.length - created.size - updated, orphaned };
+  if (created.size) run.log("CREATE", `${created.size} variables`);
+  if (counts.unchanged) run.log("NOOP", `${counts.unchanged} variables`);
+  progress.finish("variables", summarize(counts));
   return out;
 }
 
 /* ── paints, effects, numbers ───────────────────────────────────────────────────────────────── */
 
-type Ctx = { run: Run; vars: Map<string, Variable> };
+type Ctx = { run: Run; progress: Progress; vars: Map<string, Variable> };
 
 function variableFor(ctx: Ctx, bound: { variable: string }): Variable {
   const v = ctx.vars.get(bound.variable);
@@ -335,50 +408,123 @@ async function fontFor(run: Run, family: string, weight: number): Promise<FontNa
   return loaded.get(key)!;
 }
 
-/* ── the icon placeholder ───────────────────────────────────────────────────────────────────── */
+/* ── grids ──────────────────────────────────────────────────────────────────────────────────── */
 
-function drawIcon(spec: M.Component, node: ComponentNode) {
-  node.name = spec.name;
+const parseKey = (key: string) => Object.fromEntries(key.split(", ").map((pair) => pair.split("=") as [string, string]));
+
+function combos(axes: { name: string; values: string[] }[]): Record<string, string>[] {
+  return axes.reduce<Record<string, string>[]>((acc, a) => acc.flatMap((c) => a.values.map((v) => ({ ...c, [a.name]: v }))), [{}]);
+}
+
+/** Place `cells` on a grid of `cols` × `rows` slots, `slotOf` saying where each goes. Writes only moves. */
+function placeOnGrid(run: Run, set: ComponentSetNode, cells: ComponentNode[], slotOf: (c: ComponentNode) => [number, number] | null) {
+  if (!cells.length) return;
+  const cellW = Math.max(...cells.map((c) => c.width)) + 24;
+  const cellH = Math.max(...cells.map((c) => c.height)) + 24;
+  let cols = 0;
+  let rows = 0;
+  for (const cell of cells) {
+    const slot = slotOf(cell);
+    if (!slot) continue;
+    const [col, row] = slot;
+    cols = Math.max(cols, col + 1);
+    rows = Math.max(rows, row + 1);
+    const x = 24 + col * cellW;
+    const y = 24 + row * cellH;
+    if (cell.x !== x || cell.y !== y) run.write(() => ((cell.x = x), (cell.y = y)));
+  }
+  const w = 48 + cols * cellW;
+  const h = 48 + rows * cellH;
+  if (set.width !== w || set.height !== h) run.write(() => set.resizeWithoutConstraints(w, h));
+}
+
+const ownCells = (set: ComponentSetNode | undefined) =>
+  (set?.children ?? []).filter((c): c is ComponentNode => c.type === "COMPONENT");
+
+/* ── the Icon set ───────────────────────────────────────────────────────────────────────────── */
+
+type IconCtx = { set: ComponentSetNode; byName: Map<string, ComponentNode>; spec: M.IconSet };
+
+/** Import one icon's SVG into `node` as a single flattened `glyph` layer, replacing what was there. */
+function drawIcon(node: ComponentNode, icon: M.IconSet["icons"][number], spec: M.IconSet) {
+  node.name = `${spec.axis}=${icon.name}`;
   node.resize(spec.size, spec.size);
   node.fills = [];
   node.clipsContent = false;
-  let glyph = node.findChild((n) => n.name === "glyph") as EllipseNode | null;
-  if (!glyph) {
-    glyph = figma.createEllipse();
-    glyph.name = "glyph";
-    node.appendChild(glyph);
-  }
-  const inset = spec.size / 6;
-  glyph.resize(spec.size - 2 * inset, spec.size - 2 * inset);
-  glyph.x = inset;
-  glyph.y = inset;
-  glyph.fills = [];
-  const { r, g, b, a } = spec.stroke;
-  glyph.strokes = [{ type: "SOLID", color: { r, g, b }, opacity: a }];
-  glyph.strokeWeight = spec.size / 12;
+  for (const child of [...node.children]) child.remove();
+  const imported = figma.createNodeFromSvg(icon.svg);
+  const parts = [...imported.children];
+  for (const part of parts) node.appendChild(part);
+  imported.remove();
+  // One layer per icon, the same name in every variant, so a host's colour override survives a swap.
+  const glyph = parts.length === 1 && parts[0].type === "VECTOR" ? parts[0] : figma.flatten(parts, node);
+  glyph.name = "glyph";
   glyph.constraints = { horizontal: "SCALE", vertical: "SCALE" };
 }
 
-function syncIcon(run: Run, spec: M.Component, found: Map<string, SceneNode>, page: PageNode): ComponentNode | undefined {
-  let node = found.get(spec.id) as ComponentNode | undefined;
-  if (!node) {
-    run.log("CREATE", `component ${spec.name}`);
-    run.write(() => {
-      node = figma.createComponent();
-      page.appendChild(node);
-      drawIcon(spec, node);
-    });
-  } else if (getTag(node, "hash") !== spec.hash) {
-    run.log("UPDATE", `component ${spec.name}`);
-    run.write(() => drawIcon(spec, node!));
-  } else run.log("NOOP", `component ${spec.name}`);
-  if (node) tag(run, node, { ...provenance("component", spec.id), hash: spec.hash });
-  return node;
+async function syncIconSet(ctx: Ctx, spec: M.IconSet, found: Map<string, SceneNode>, page: PageNode): Promise<IconCtx | undefined> {
+  const { run, progress } = ctx;
+  progress.start("icons");
+  let set = found.get(spec.id) as ComponentSetNode | undefined;
+  const existing = new Map(ownCells(set).map((c) => [getTag(c, "cell"), c]));
+  const created: ComponentNode[] = [];
+  const counts = { created: 0, updated: 0, unchanged: 0, orphaned: 0 };
+
+  for (const icon of spec.icons) {
+    const key = `${spec.axis}=${icon.name}`;
+    const node = existing.get(key);
+    if (!node) {
+      counts.created++;
+      if (run.write(() => void 0)) {
+        const fresh = figma.createComponent();
+        drawIcon(fresh, icon, spec);
+        fresh.setSharedPluginData(NS, "cell", key);
+        fresh.setSharedPluginData(NS, "hash", icon.hash);
+        created.push(fresh);
+      }
+    } else if (getTag(node, "hash") !== icon.hash) {
+      counts.updated++;
+      if (run.write(() => void 0)) {
+        drawIcon(node, icon, spec);
+        node.setSharedPluginData(NS, "hash", icon.hash);
+      }
+    } else counts.unchanged++;
+    await progress.tick("icons");
+  }
+  const wanted = new Set(spec.icons.map((i) => `${spec.axis}=${i.name}`));
+  for (const [key, node] of existing) {
+    if (wanted.has(key) || getTag(node, "orphaned") === "true") continue;
+    counts.orphaned++;
+    run.log("ORPHANED", `${spec.name}: ${key}`, "no longer drawn; kept");
+    run.write(() => node.setSharedPluginData(NS, "orphaned", "true"));
+  }
+  if (counts.created) run.log("CREATE", `${spec.name}: ${counts.created} icons`, spec.source);
+  if (counts.updated) run.log("UPDATE", `${spec.name}: ${counts.updated} icons`, "in place");
+  if (counts.unchanged) run.log("NOOP", `${spec.name}: ${counts.unchanged} icons`);
+  progress.finish("icons", summarize(counts));
+
+  if (!run.apply) return undefined;
+  if (!set) set = figma.combineAsVariants(created, page);
+  else for (const node of created) set.appendChild(node);
+  if (set.name !== spec.name) run.write(() => (set!.name = spec.name));
+  tag(run, set, { ...provenance("icon-set", spec.id), hash: spec.hash });
+
+  const cells = ownCells(set).filter((c) => getTag(c, "orphaned") !== "true");
+  const order = new Map(spec.icons.map((icon, i) => [`${spec.axis}=${icon.name}`, i]));
+  const columns = 11;
+  placeOnGrid(run, set, cells, (c) => {
+    const i = order.get(getTag(c, "cell"));
+    return i === undefined ? null : [i % columns, Math.floor(i / columns)];
+  });
+  found.set(spec.id, set);
+
+  const byName = new Map(cells.map((c) => [parseKey(getTag(c, "cell"))[spec.axis], c]));
+  return { set, byName, spec };
 }
 
 /* ── the component sets ─────────────────────────────────────────────────────────────────────── */
 
-type SetCtx = Ctx & { icon: ComponentNode };
+type SetCtx = Ctx & { icons: IconCtx };
 
 async function applyText(ctx: SetCtx, node: TextNode, text: M.Text, sample: string) {
   const family = String(valueOf(text.fontFamily));
@@ -406,11 +552,23 @@ async function applyText(ctx: SetCtx, node: TextNode, text: M.Text, sample: stri
   }
 }
 
-function applyIcon(ctx: SetCtx, node: InstanceNode, layer: Extract<M.Layer, { kind: "icon" }>) {
+/** An icon slot: an exposed instance of the Icon set, sized by the host and painted in its colour. */
+async function applyIcon(ctx: SetCtx, node: InstanceNode, layer: Extract<M.Layer, { kind: "icon" }>) {
+  const { spec, set, byName } = ctx.icons;
+  const main = await node.getMainComponentAsync();
+  // Anything that is not one of the Icon set's variants (the old placeholder) becomes the default.
+  if (!main || main.parent?.id !== set.id) node.swapComponent(byName.get(spec.default)!);
+  node.isExposedInstance = true;
   setNumber(ctx, node, "width", layer.icon.size);
   setNumber(ctx, node, "height", layer.icon.size);
-  const glyph = node.findOne((n) => n.name === "glyph") as EllipseNode | null;
-  if (glyph) glyph.strokes = [toPaint(ctx, layer.icon.color)];
+  const glyph = node.findOne((n) => n.name === "glyph") as VectorNode | null;
+  if (!glyph) return;
+  const paint = toPaint(ctx, layer.icon.color);
+  if (spec.paint === "stroke") {
+    glyph.strokes = [paint];
+    // Keep the drawing's stroke proportional, as an SVG scaled by its viewBox does.
+    glyph.strokeWeight = (spec.strokeWidth * valueOf(layer.icon.size)) / spec.size;
+  } else glyph.fills = [paint];
 }
 
 /** One cell, in place: geometry, surface, then its layers in slot order. */
@@ -452,28 +610,36 @@ async function applyCell(ctx: SetCtx, node: ComponentNode, cell: M.Cell, sample:
       child = null;
     }
     if (!child) {
-      child = layer.kind === "icon" ? ctx.icon.createInstance() : figma.createText();
+      child = layer.kind === "icon" ? ctx.icons.byName.get(ctx.icons.spec.default)!.createInstance() : figma.createText();
       child.name = layer.slot;
     }
     node.insertChild(index, child);
-    if (layer.kind === "icon") applyIcon(ctx, child as InstanceNode, layer);
+    if (layer.kind === "icon") await applyIcon(ctx, child as InstanceNode, layer);
     else await applyText(ctx, child as TextNode, layer.text, sample[layer.slot] ?? "");
   }
 }
 
-/** The set's component properties, by name → Figma's generated key. Adds or fixes, never removes. */
+/**
+ * The set's component properties, by name → Figma's generated key. Adds, fixes, and removes the
+ * ones the manifest no longer declares: they are part of the definition, not placed objects.
+ */
 function ensureProperties(ctx: SetCtx, set: ComponentSetNode, properties: M.ComponentProperty[]) {
   const keys: Record<string, string> = {};
+  const wanted = new Set(properties.map((p) => p.name));
+  for (const [key, def] of Object.entries(set.componentPropertyDefinitions)) {
+    if (def.type === "VARIANT" || wanted.has(key.split("#")[0])) continue;
+    ctx.run.log("UPDATE", `${set.name}: property ${key.split("#")[0]}`, "removed, no longer in the manifest");
+    ctx.run.write(() => set.deleteComponentProperty(key));
+  }
   for (const property of properties) {
     const defs = set.componentPropertyDefinitions;
-    const want = property.type === "INSTANCE_SWAP" ? ctx.icon.id : property.default;
     let key = Object.keys(defs).find((k) => k.split("#")[0] === property.name && defs[k].type === property.type);
     if (!key) {
       ctx.run.log("UPDATE", `${set.name}: property ${property.name}`, "added");
-      ctx.run.write(() => (key = set.addComponentProperty(property.name, property.type, want)));
-    } else if (defs[key].defaultValue !== want) {
+      ctx.run.write(() => (key = set.addComponentProperty(property.name, property.type, property.default)));
+    } else if (defs[key].defaultValue !== property.default) {
       ctx.run.log("UPDATE", `${set.name}: property ${property.name}`, "default changed");
-      ctx.run.write(() => (key = set.editComponentProperty(key!, { defaultValue: want })));
+      ctx.run.write(() => (key = set.editComponentProperty(key!, { defaultValue: property.default })));
     }
     if (key) keys[property.name] = key;
   }
@@ -486,63 +652,28 @@ function bindReferences(ctx: SetCtx, node: ComponentNode, cell: M.Cell, keys: Re
     if (!child) continue;
     const refs: Record<string, string> = {};
     if (layer.kind === "icon") {
-      if (keys[layer.swapProperty]) refs.mainComponent = keys[layer.swapProperty];
       if (layer.visibleProperty && keys[layer.visibleProperty]) refs.visible = keys[layer.visibleProperty];
     } else if (keys[layer.textProperty]) refs.characters = keys[layer.textProperty];
-    const have = child.componentPropertyReferences ?? {};
-    const same = Object.keys(refs).length === Object.keys(have).length && Object.entries(refs).every(([k, v]) => (have as Record<string, string>)[k] === v);
+    const have = (child.componentPropertyReferences ?? {}) as Record<string, string>;
+    const same = Object.keys(refs).length === Object.keys(have).length && Object.entries(refs).every(([k, v]) => have[k] === v);
     if (!same) ctx.run.write(() => (child.componentPropertyReferences = refs));
   }
 }
 
-const parseKey = (key: string) => Object.fromEntries(key.split(", ").map((pair) => pair.split("=") as [string, string]));
-
-function combos(axes: { name: string; values: string[] }[]): Record<string, string>[] {
-  return axes.reduce<Record<string, string>[]>((acc, a) => acc.flatMap((c) => a.values.map((v) => ({ ...c, [a.name]: v }))), [{}]);
-}
-
-/** Cells on the grid, default top-left. Writes only positions that differ. */
-function layoutSet(ctx: SetCtx, set: ComponentSetNode, spec: M.ComponentSet) {
-  const cols = combos(spec.grid.columns);
-  const rows = combos(spec.grid.rows);
-  const cells = set.children.filter((c): c is ComponentNode => c.type === "COMPONENT" && getTag(c, "orphaned") !== "true");
-  const cellW = Math.max(...cells.map((c) => c.width)) + 24;
-  const cellH = Math.max(...cells.map((c) => c.height)) + 24;
-  const matches = (combo: Record<string, string>, props: Record<string, string>) => Object.entries(combo).every(([k, v]) => props[k] === v);
-  for (const cell of cells) {
-    const props = parseKey(getTag(cell, "cell"));
-    const col = cols.findIndex((c) => matches(c, props));
-    const row = rows.findIndex((r) => matches(r, props));
-    if (col < 0 || row < 0) continue;
-    const x = 24 + col * cellW;
-    const y = 24 + row * cellH;
-    if (cell.x !== x || cell.y !== y) ctx.run.write(() => ((cell.x = x), (cell.y = y)));
-  }
-  // The default variant is the first child as well as the top-left one.
-  const first = cells.find((c) => getTag(c, "cell") === spec.defaultCell);
-  if (first && set.children[0] !== first) ctx.run.write(() => set.insertChild(0, first));
-  const w = 48 + cols.length * cellW;
-  const h = 48 + rows.length * cellH;
-  if (set.width !== w || set.height !== h) ctx.run.write(() => set.resizeWithoutConstraints(w, h));
-}
-
 async function syncSet(ctx: SetCtx, spec: M.ComponentSet, found: Map<string, SceneNode>, page: PageNode) {
-  const { run } = ctx;
+  const { run, progress } = ctx;
+  progress.start(spec.id);
   let set = found.get(spec.id) as ComponentSetNode | undefined;
-  const existing = new Map(
-    (set?.children ?? []).filter((c): c is ComponentNode => c.type === "COMPONENT").map((c) => [getTag(c, "cell"), c]),
-  );
+  const existing = new Map(ownCells(set).map((c) => [getTag(c, "cell"), c]));
   const samples: Record<string, string> = {};
   for (const p of spec.properties) if (p.type === "TEXT") samples[p.name] = p.default;
 
   const created: ComponentNode[] = [];
-  let missing = 0;
-  let updated = 0;
-  let unchanged = 0;
+  const counts = { created: 0, updated: 0, unchanged: 0, orphaned: 0 };
   for (const cell of spec.cells) {
     const node = existing.get(cell.key);
     if (!node) {
-      missing++;
+      counts.created++;
       if (run.write(() => void 0)) {
         const fresh = figma.createComponent();
         await applyCell(ctx, fresh, cell, samples);
@@ -551,32 +682,33 @@ async function syncSet(ctx: SetCtx, spec: M.ComponentSet, found: Map<string, Sce
         created.push(fresh);
       }
     } else if (getTag(node, "hash") !== cell.hash) {
-      updated++;
+      counts.updated++;
       if (run.write(() => void 0)) {
         await applyCell(ctx, node, cell, samples);
         node.setSharedPluginData(NS, "hash", cell.hash);
       }
-    } else unchanged++;
+    } else counts.unchanged++;
+    await progress.tick(spec.id);
   }
-  if (missing) run.log("CREATE", `${spec.name}: ${missing} variants`);
-  if (updated) run.log("UPDATE", `${spec.name}: ${updated} variants`, "in place");
-  if (unchanged) run.log("NOOP", `${spec.name}: ${unchanged} variants`);
 
   const wanted = new Set(spec.cells.map((c) => c.key));
   for (const [key, node] of existing) {
     if (wanted.has(key) || getTag(node, "orphaned") === "true") continue;
+    counts.orphaned++;
     run.log("ORPHANED", `${spec.name}: ${key}`, "no longer in the manifest; kept");
     run.write(() => node.setSharedPluginData(NS, "orphaned", "true"));
   }
+  if (counts.created) run.log("CREATE", `${spec.name}: ${counts.created} variants`);
+  if (counts.updated) run.log("UPDATE", `${spec.name}: ${counts.updated} variants`, "in place");
+  if (counts.unchanged) run.log("NOOP", `${spec.name}: ${counts.unchanged} variants`);
 
   if (!run.apply) {
     if (!set) run.log("CREATE", `component set ${spec.name}`);
+    progress.finish(spec.id, summarize(counts));
     return;
   }
-  if (!set) {
-    set = figma.combineAsVariants(created, page);
-    run.log("CREATE", `component set ${spec.name}`);
-  } else for (const node of created) set.appendChild(node);
+  if (!set) set = figma.combineAsVariants(created, page);
+  else for (const node of created) set.appendChild(node);
   if (set.name !== spec.name) run.write(() => (set!.name = spec.name));
 
   if (getTag(set, "contractHash") && getTag(set, "contractHash") !== spec.contractHash) {
@@ -586,21 +718,39 @@ async function syncSet(ctx: SetCtx, spec: M.ComponentSet, found: Map<string, Sce
 
   const keys = ensureProperties(ctx, set, spec.properties);
   for (const cell of spec.cells) {
-    const node = set.children.find((c) => c.type === "COMPONENT" && getTag(c, "cell") === cell.key) as ComponentNode | undefined;
+    const node = ownCells(set).find((c) => getTag(c, "cell") === cell.key);
     if (node) bindReferences(ctx, node, cell, keys);
   }
-  layoutSet(ctx, set, spec);
+
+  // The default variant is Figma's top-left one: the grid draws each axis default-first.
+  const cols = combos(spec.grid.columns);
+  const rows = combos(spec.grid.rows);
+  const matches = (combo: Record<string, string>, props: Record<string, string>) => Object.entries(combo).every(([k, v]) => props[k] === v);
+  const cells = ownCells(set).filter((c) => getTag(c, "orphaned") !== "true");
+  placeOnGrid(run, set, cells, (c) => {
+    const props = parseKey(getTag(c, "cell"));
+    const col = cols.findIndex((combo) => matches(combo, props));
+    const row = rows.findIndex((combo) => matches(combo, props));
+    return col < 0 || row < 0 ? null : [col, row];
+  });
+  const first = cells.find((c) => getTag(c, "cell") === spec.defaultCell);
+  if (first && set.children[0] !== first) run.write(() => set!.insertChild(0, first));
   found.set(spec.id, set);
+  progress.finish(spec.id, summarize(counts));
 }
 
 /* ── the specimen: the docs previews, as instances ──────────────────────────────────────────── */
 
 async function syncSpecimen(ctx: SetCtx, found: Map<string, SceneNode>, page: PageNode) {
-  const { run } = ctx;
+  const { run, progress } = ctx;
+  progress.start("specimen");
   let frame = found.get("specimen") as FrameNode | undefined;
   if (!frame) {
     run.log("CREATE", "specimen frame");
-    if (!run.apply) return;
+    if (!run.apply) {
+      progress.finish("specimen", `${manifest.specimen.length} to create`);
+      return;
+    }
     frame = figma.createFrame();
     frame.name = "Specimen (docs previews)";
     frame.layoutMode = "HORIZONTAL";
@@ -619,21 +769,25 @@ async function syncSpecimen(ctx: SetCtx, found: Map<string, SceneNode>, page: Pa
   found.set("specimen", frame);
 
   const entries = new Map(frame.children.map((c) => [getTag(c, "specimen"), c as FrameNode]));
-  let created = 0;
-  let updated = 0;
+  const counts = { created: 0, updated: 0, unchanged: 0 };
   for (const [index, entry] of manifest.specimen.entries()) {
+    await progress.tick("specimen");
     const set = found.get(entry.set) as ComponentSetNode | undefined;
-    const main = set?.children.find((c) => getTag(c, "cell") === entry.cell) as ComponentNode | undefined;
+    const main = ownCells(set).find((c) => getTag(c, "cell") === entry.cell);
     if (!set || !main) continue;
     const hash = JSON.stringify(entry);
     let wrapper = entries.get(entry.id);
-    if (wrapper && getTag(wrapper, "hash") === hash && frame.children[index] === wrapper) continue;
-    if (!run.apply) {
-      wrapper ? updated++ : created++;
+    if (wrapper && getTag(wrapper, "hash") === hash && frame.children[index] === wrapper) {
+      counts.unchanged++;
       continue;
     }
+    if (!run.apply) {
+      wrapper ? counts.updated++ : counts.created++;
+      continue;
+    }
+    run.write(() => void 0);
     if (!wrapper) {
-      created++;
+      counts.created++;
       wrapper = figma.createFrame();
       wrapper.name = entry.id;
       wrapper.layoutMode = "VERTICAL";
@@ -648,7 +802,7 @@ async function syncSpecimen(ctx: SetCtx, found: Map<string, SceneNode>, page: Pa
       caption.name = "caption";
       wrapper.appendChild(caption);
       wrapper.setSharedPluginData(NS, "specimen", entry.id);
-    } else updated++;
+    } else counts.updated++;
     frame.insertChild(index, wrapper);
     const caption = wrapper.findChild((n) => n.name === "caption") as TextNode;
     await figma.loadFontAsync(caption.fontName as FontName);
@@ -665,15 +819,21 @@ async function syncSpecimen(ctx: SetCtx, found: Map<string, SceneNode>, page: Pa
       const key = Object.keys(defs).find((k) => k.split("#")[0] === name && defs[k].type !== "VARIANT");
       if (key) props[key] = value;
     }
-    for (const font of instance.findAll((n) => n.type === "TEXT") as TextNode[]) {
-      if (font.fontName !== figma.mixed) await figma.loadFontAsync(font.fontName);
+    for (const text of instance.findAll((n) => n.type === "TEXT") as TextNode[]) {
+      if (text.fontName !== figma.mixed) await figma.loadFontAsync(text.fontName);
     }
     instance.setProperties(props);
+    // The icon each slot shows, picked on the exposed Icon instance the way a designer would.
+    for (const nested of instance.exposedInstances) {
+      const name = entry.icons[nested.name] ?? ctx.icons.spec.default;
+      nested.setProperties({ [ctx.icons.spec.axis]: name });
+    }
     wrapper.setSharedPluginData(NS, "hash", hash);
   }
-  if (created) run.log("CREATE", `specimen: ${created} previews`);
-  if (updated) run.log("UPDATE", `specimen: ${updated} previews`);
-  if (!created && !updated) run.log("NOOP", `specimen: ${manifest.specimen.length} previews`);
+  if (counts.created) run.log("CREATE", `specimen: ${counts.created} previews`);
+  if (counts.updated) run.log("UPDATE", `specimen: ${counts.updated} previews`);
+  if (counts.unchanged) run.log("NOOP", `specimen: ${counts.unchanged} previews`);
+  progress.finish("specimen", summarize(counts));
 }
 
 /* ── the run ────────────────────────────────────────────────────────────────────────────────── */
@@ -693,10 +853,10 @@ async function ownPage(run: Run): Promise<PageNode | undefined> {
   return page;
 }
 
-/** Stack the icon, the sets and the specimen top to bottom. Writes only what moved. */
+/** Stack the Icon set, the Button sets and the specimen top to bottom. Writes only what moved. */
 function arrange(run: Run, found: Map<string, SceneNode>) {
   let y = 0;
-  const order = ["icon-placeholder", ...manifest.components.filter((c) => c.kind === "component-set").map((c) => c.id), "specimen"];
+  const order = [...manifest.components.map((c) => c.id), "specimen"];
   for (const id of order) {
     const node = found.get(id);
     if (!node) continue;
@@ -708,7 +868,16 @@ function arrange(run: Run, found: Map<string, SceneNode>) {
 async function reconcile(apply: boolean) {
   const run = new Run(apply);
   const started = Date.now();
-  const vars = await syncVariables(run);
+  const iconSpec = manifest.components.find((c): c is M.IconSet => c.kind === "icon-set")!;
+  const setSpecs = manifest.components.filter((c): c is M.ComponentSet => c.kind === "component-set");
+  const progress = new Progress(apply, [
+    { id: "variables", label: "Variables", total: manifest.variables.length },
+    { id: "icons", label: `${iconSpec.name} (${iconSpec.source.replace("@skryensya/icons-", "")})`, total: iconSpec.icons.length },
+    ...setSpecs.map((s) => ({ id: s.id, label: s.name, total: s.cells.length })),
+    { id: "specimen", label: "Specimen", total: manifest.specimen.length },
+  ]);
+
+  const vars = await syncVariables(run, progress);
   const page = await ownPage(run);
   const found = new Map<string, SceneNode>();
   if (page) {
@@ -716,22 +885,31 @@ async function reconcile(apply: boolean) {
       if (node.parent === page) found.set(getTag(node, "id"), node);
     }
   }
-  const iconSpec = manifest.components.find((c): c is M.Component => c.kind === "component")!;
-  const icon = page ? syncIcon(run, iconSpec, found, page) : undefined;
-  if (icon) found.set(iconSpec.id, icon);
+  // Top-level objects of ours the manifest no longer has (the old icon placeholder): kept, tagged.
+  const known = new Set([...manifest.components.map((c) => c.id), "specimen"]);
+  for (const [id, node] of found) {
+    if (known.has(id) || getTag(node, "orphaned") === "true") continue;
+    run.log("ORPHANED", `${node.name}`, "no longer in the manifest; kept");
+    run.write(() => node.setSharedPluginData(NS, "orphaned", "true"));
+  }
 
-  if (page && icon) {
-    const ctx: SetCtx = { run, vars, icon };
-    for (const spec of manifest.components) {
-      if (spec.kind !== "component-set") continue;
-      figma.ui.postMessage({ type: "progress", text: `${spec.name}…` });
-      await syncSet(ctx, spec, found, page);
-    }
-    await syncSpecimen(ctx, found, page);
+  const ctx: Ctx = { run, progress, vars };
+  const icons = page ? await syncIconSet(ctx, iconSpec, found, page) : undefined;
+  if (page) {
+    // A dry run never draws a cell, so it walks the sets without the Icon set it would have made.
+    const setCtx: SetCtx = { ...ctx, icons: icons as IconCtx };
+    for (const spec of setSpecs) await syncSet(setCtx, spec, found, page);
+    await syncSpecimen(setCtx, found, page);
     arrange(run, found);
   } else {
-    for (const spec of manifest.components) if (spec.kind === "component-set") run.log("CREATE", `component set ${spec.name}`);
+    // Dry run on a file with nothing yet: everything after the variables would be created.
+    if (!page) progress.finish("icons", `${iconSpec.icons.length} to create`);
+    for (const spec of setSpecs) {
+      run.log("CREATE", `component set ${spec.name}`, `${spec.cells.length} variants`);
+      progress.finish(spec.id, `${spec.cells.length} to create`);
+    }
     run.log("CREATE", "specimen frame");
+    progress.finish("specimen", `${manifest.specimen.length} to create`);
   }
 
   if (figma.root.getSharedPluginData(NS, "sourceHash") !== manifest.sourceHash) {
@@ -749,17 +927,18 @@ async function reconcile(apply: boolean) {
     sourceHash: manifest.sourceHash,
     seconds: Math.round((Date.now() - started) / 100) / 10,
     counts,
+    phases: progress.phases,
     entries: run.entries,
   };
 }
 
-figma.showUI(__html__, { width: 420, height: 520, themeColors: true });
-figma.ui.postMessage({ type: "ready", sourceHash: manifest.sourceHash, report: manifest.report });
+figma.showUI(__html__, { width: 440, height: 600, themeColors: true });
+figma.ui.postMessage({ type: "ready", sourceHash: manifest.sourceHash });
 figma.ui.onmessage = async (message: { type: "sync" | "dry-run" }) => {
   try {
     const report = await reconcile(message.type === "sync");
     figma.ui.postMessage(report);
-    if (message.type === "sync") figma.notify(`Skryensya: ${report.outcome} (${report.writes} writes)`);
+    if (message.type === "sync") figma.notify(`Skryensya: ${report.outcome} (${report.writes} writes, ${report.seconds}s)`);
   } catch (error) {
     figma.ui.postMessage({ type: "error", text: error instanceof Error ? `${error.message}\n${error.stack ?? ""}` : String(error) });
   }
