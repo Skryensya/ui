@@ -189,3 +189,13 @@ describe("Tabs", () => {
     expect(manifest.styles.layers[cell("horizontal", "underline").layers].map((l) => l.slot)).toEqual(["list", "content"]);
   });
 });
+
+describe("Accordion", () => {
+  it("draws its sections through their display: contents headings, the first open", () => {
+    const set = manifest.components.find((c): c is ComponentSet => c.kind === "component-set" && c.id === "accordion/plain")!;
+    expect(set.properties.map((p) => p.name)).toEqual(["heading 1", "answer 1", "heading 2", "answer 2", "heading 3", "answer 3"]);
+    const [first, second] = manifest.styles.layers[set.cells[0].layers];
+    expect(first.kind === "frame" && first.layers.map((l) => l.slot)).toEqual(["trigger", "content"]);
+    expect(second.kind === "frame" && second.layers.map((l) => l.slot)).toEqual(["trigger"]);
+  });
+});

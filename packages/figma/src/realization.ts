@@ -50,7 +50,8 @@ export type Realization = {
   /**
    * Slots filled with other signatures (a DescriptionList's DescriptionItems), drawn as they nest.
    * Every text inside is a text property of its own, `<slot> <n>` by the slot it fills, renamed
-   * through `names` (`{ children: "details" }`).
+   * through `names` by slot (`{ children: "details" }`) or by signature and slot
+   * (`{ "Accordion.Trigger.children": "heading" }`).
    */
   content?: { trees: Readonly<Record<string, readonly UsageTree[]>>; names?: Readonly<Record<string, string>> };
   collections?: Readonly<
