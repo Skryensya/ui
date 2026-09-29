@@ -6,7 +6,14 @@ import "@skryensya/core/components/treegrid.css";
 import ComponentPageShell from "./ComponentPageShell.astro";
 import CodeBlock from "../CodeBlock.astro";
 import ComponentPreview from "../ComponentPreview.astro";
-import { treegridAnatomyTree, treegridInboxTree, treegridStressTree } from "../../demos/treegrid";
+import UsagePreview from "../UsagePreview.astro";
+import DoDont from "../DoDont.astro";
+import {
+  treegridAnatomyTree,
+  treegridDontOneColumnTree,
+  treegridInboxTree,
+  treegridStressTree,
+} from "../../demos/treegrid";
 import { annotationDemoCss } from "../../demos/annotation";
 import { getLocale, useTranslations } from "../../i18n";
 
@@ -40,27 +47,18 @@ const indentHook = `.sk-treegrid {
   ]}
   testFiles={["packages/vanilla/src/components/treegrid.test.ts", "packages/react/src/components/treegrid.test.tsx"]}}
 >
-  <Fragment slot="anatomy">
-    <p set:html={t("treegridPage.anatomyBody")} />
-    <ComponentPreview
-      tree={treegridAnatomyTree(t)}
-      css={annotationDemoCss}
-      label={t("treegridPage.anatomyPreviewLabel")}
-      screens={false}
-      hideSource
-      chrome={false}
-    />
-  </Fragment>
-
   <Fragment slot="usage">
     <p class="lede" set:html={t("treegridPage.lede")} />
+
+    <h3>{t("treegridPage.showcaseTitle")}</h3>
+    <p set:html={t("treegridPage.showcaseBody")} />
     <h3>{t("treegridPage.minimalTitle")}</h3>
     <p set:html={t("treegridPage.minimalBody")} />
-    <ComponentPreview tree={treegridInboxTree(t)} label={t("treegridPage.minimalLabel")} />
+    <UsagePreview tree={treegridInboxTree(t)} />
 
     <h3>{t("treegridPage.stressTitle")}</h3>
     <p set:html={t("treegridPage.stressBody")} />
-    <ComponentPreview tree={treegridStressTree(t)} label={t("treegridPage.stressLabel")} />
+    <UsagePreview tree={treegridStressTree(t)} />
 
     <h3>{t("component.contractNotesTitle")}</h3>
     <ul>
@@ -72,6 +70,27 @@ const indentHook = `.sk-treegrid {
       <li set:html={t("treegridPage.contractItem6")} />
       <li set:html={t("treegridPage.contractItem7")} />
     </ul>
+
+    <h3>{t("component.anatomy")}</h3>
+    <p set:html={t("treegridPage.anatomyBody")} />
+    <ComponentPreview
+      tree={treegridAnatomyTree(t)}
+      css={annotationDemoCss}
+      label={t("treegridPage.anatomyPreviewLabel")}
+      screens={false}
+      hideSource
+      chrome={false}
+    />
+  </Fragment>
+
+  <Fragment slot="guidelines">
+    <p class="lede" set:html={t("treegridPage.guidelinesLede")} />
+    <DoDont
+      canvas
+      title={t("treegridPage.dd.columns.title")}
+      do={{ tree: treegridInboxTree(t), caption: t("treegridPage.dd.columns.do") }}
+      dont={{ tree: treegridDontOneColumnTree(t), caption: t("treegridPage.dd.columns.dont") }}
+    />
   </Fragment>
 
   <Fragment slot="install">

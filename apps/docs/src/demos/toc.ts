@@ -55,3 +55,17 @@ export const tocIconsTree = (t: Translate): UsageTree => ({
   options: { title: t("demo.toc.title") },
   slots: { items: tocIconItems(t) },
 });
+
+/* Don't: entries that are sentences, too long to scan down the side of a page. */
+export const tocDontLongTree = (t: Translate): UsageTree => ({
+  contract: "toc",
+  signature: "Toc",
+  options: { title: t("demo.toc.title") },
+  slots: {
+    items: [
+      { options: { href: "#summary", current: true }, slots: { children: t("demo.toc.dd.long1") } },
+      { options: { href: "#installation" }, slots: { children: t("demo.toc.dd.long2") } },
+      { options: { href: "#reference" }, slots: { children: t("demo.toc.dd.long3") } },
+    ],
+  },
+});

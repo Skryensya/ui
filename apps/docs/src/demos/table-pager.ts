@@ -92,3 +92,19 @@ export const tablePagerMinimalTree = (t: Translate): UsageTree => ({
     },
   ],
 });
+
+/* Don't: the pager separated from its table, a row of numbers with nothing to say what they page. */
+export const tablePagerDontDetachedTree = (t: Translate): UsageTree => ({
+  contract: "layout",
+  signature: "Stack",
+  options: { gap: "xl" },
+  children: [
+    deploymentsTable(t),
+    { contract: "typography", signature: "Text", options: { tone: "secondary" }, children: t("demo.tablePager.dd.between") },
+    {
+      contract: "pagination",
+      signature: "Pagination",
+      options: { page: 1, total: 4, label: t("demo.table.pagination"), previousLabel: t("demo.table.previousPage"), nextLabel: t("demo.table.nextPage") },
+    },
+  ],
+});

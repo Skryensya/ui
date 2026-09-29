@@ -114,3 +114,12 @@ export const treegridAnatomyTree = (t: Translate): UsageTree => ({
   },
 });
 
+
+/* Don't: a single column of names in a treegrid, where a TreeView says the same with less. */
+export const treegridDontOneColumnTree = (t: Translate): UsageTree =>
+  treegridTree(t("demo.treegrid.label"), [t("demo.treegrid.dd.name")], [
+    { value: "docs", level: 1, setSize: 2, posInset: 1, expanded: true, cells: [t("demo.treegrid.dd.docs")] },
+    { value: "guide", level: 2, setSize: 2, posInset: 1, cells: [t("demo.treegrid.dd.guide")] },
+    { value: "faq", level: 2, setSize: 2, posInset: 2, cells: [t("demo.treegrid.dd.faq")] },
+    { value: "assets", level: 1, setSize: 2, posInset: 2, cells: [t("demo.treegrid.dd.assets")] },
+  ]);

@@ -33,6 +33,12 @@ export const wrapperMessages = {
     "wrapperPage.contractItem4":
       'El único hook que un consumidor afina es <code>--sk-wrapper-max</code>, para un ancho que la escala todavía no nombra, sin reimplementar el centrado ni el padding.',
     "wrapperPage.test1": "Renderiza Wrapper como una columna de página sobre la escala de tamaños.",
+    "wrapperPage.showcaseTitle": "Showcases",
+    "wrapperPage.showcaseBody": "Una columna centrada con márgenes a los lados.",
+    "wrapperPage.guidelinesLede": "Wrapper centra el contenido y le pone un ancho máximo. Nada más.",
+    "wrapperPage.dd.surface.title": "Mide, no pinta",
+    "wrapperPage.dd.surface.do": "Si la región necesita fondo o borde, pon un <a href=\"/es/componentes/box\">Box</a> dentro del Wrapper.",
+    "wrapperPage.dd.surface.dont": "Pintar el Wrapper mezcla dos trabajos, y el fondo se corta en el ancho máximo.",
   },
   en: {
 
@@ -68,5 +74,11 @@ export const wrapperMessages = {
     "wrapperPage.contractItem4":
       'The only hook a consumer tunes is <code>--sk-wrapper-max</code>, for a width the scale does not yet name, without reimplementing the centering or the padding.',
     "wrapperPage.test1": "Renders Wrapper as a page column on the size scale.",
+    "wrapperPage.showcaseTitle": "Showcases",
+    "wrapperPage.showcaseBody": "A centred column with gutters on both sides.",
+    "wrapperPage.guidelinesLede": "Wrapper centres content and gives it a maximum width. Nothing else.",
+    "wrapperPage.dd.surface.title": "It measures, it does not paint",
+    "wrapperPage.dd.surface.do": "When the region needs a background or a border, put a <a href=\"/components/box\">Box</a> inside the Wrapper.",
+    "wrapperPage.dd.surface.dont": "Painting the Wrapper mixes two jobs, and the background stops at the maximum width.",
   },
 } as const;

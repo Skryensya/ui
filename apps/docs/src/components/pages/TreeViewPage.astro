@@ -6,9 +6,12 @@ import "@skryensya/core/components/annotation.css";
 import ComponentPageShell from "./ComponentPageShell.astro";
 import CodeBlock from "../CodeBlock.astro";
 import ComponentPreview from "../ComponentPreview.astro";
+import UsagePreview from "../UsagePreview.astro";
+import DoDont from "../DoDont.astro";
 import {
   treeViewAnatomyTree,
   treeViewDisabledTree,
+  treeViewDontFlatTree,
   treeViewEventsScript,
   treeViewEventsTree,
   treeViewInitialTree,
@@ -28,6 +31,10 @@ const indentHook = `.sk-tree-view {
   --sk-tree-row-inset: var(--space-inset-sm);
   --sk-tree-guide-color: transparent;
 }`;
+
+/* What each value of a property is for, read from this page's messages. Same model Badge uses. */
+const explain = (option: string, values: readonly string[]) =>
+  Object.fromEntries(values.map((value) => [value, t(`treeViewPage.prop.${option}.${value}` as Parameters<typeof t>[0])]));
 ---
 
 <ComponentPageShell
@@ -41,35 +48,35 @@ const indentHook = `.sk-tree-view {
   ]}
   testFiles={["packages/vanilla/src/components/tree-view.test.ts", "packages/react/src/components/tree-view.test.tsx"]}}
 >
-  <Fragment slot="anatomy">
-    <p set:html={t("treeViewPage.anatomyBody")} />
-    <ComponentPreview
-      tree={treeViewAnatomyTree(t)}
-      css={annotationDemoCss}
-      label={t("treeViewPage.anatomyPreviewLabel")}
-      screens={false}
-      hideSource
-      chrome={false}
-    />
-  </Fragment>
-
   <Fragment slot="usage">
     <p class="lede" set:html={t("treeViewPage.lede")} />
+
+    <UsagePreview
+      tree={treeViewInitialTree(t)}
+      optionName="selectionMode"
+      title={t("treeViewPage.prop.selectionMode.title")}
+      description={t("treeViewPage.prop.selectionMode.body")}
+      explain={explain("selectionMode", ["single", "multiple"])}
+      stageMinBlockSize="16rem"
+    />
+
+    <h3>{t("treeViewPage.showcaseTitle")}</h3>
+    <p set:html={t("treeViewPage.showcaseBody")} />
     <h3>{t("treeViewPage.minimalTitle")}</h3>
     <p set:html={t("treeViewPage.minimalBody")} />
-    <ComponentPreview tree={treeViewMinimalTree(t)} label={t("treeViewPage.minimalLabel")} />
+    <UsagePreview tree={treeViewMinimalTree(t)} />
 
     <h3>{t("treeViewPage.initialTitle")}</h3>
     <p set:html={t("treeViewPage.initialBody")} />
-    <ComponentPreview tree={treeViewInitialTree(t)} label={t("treeViewPage.initialLabel")} />
+    <UsagePreview tree={treeViewInitialTree(t)} />
 
     <h3>{t("treeViewPage.multipleTitle")}</h3>
     <p set:html={t("treeViewPage.multipleBody")} />
-    <ComponentPreview tree={treeViewMultipleTree(t)} label={t("treeViewPage.multipleLabel")} />
+    <UsagePreview tree={treeViewMultipleTree(t)} />
 
     <h3>{t("treeViewPage.disabledTitle")}</h3>
     <p set:html={t("treeViewPage.disabledBody")} />
-    <ComponentPreview tree={treeViewDisabledTree(t)} label={t("treeViewPage.disabledLabel")} />
+    <UsagePreview tree={treeViewDisabledTree(t)} />
 
     <h3>{t("treeViewPage.eventsTitle")}</h3>
     <p set:html={t("treeViewPage.eventsBody")} />
@@ -89,6 +96,26 @@ const indentHook = `.sk-tree-view {
       <li set:html={t("treeViewPage.contractItem5")} />
       <li set:html={t("treeViewPage.contractItem6")} />
     </ul>
+
+    <h3>{t("component.anatomy")}</h3>
+    <p set:html={t("treeViewPage.anatomyBody")} />
+    <ComponentPreview
+      tree={treeViewAnatomyTree(t)}
+      css={annotationDemoCss}
+      label={t("treeViewPage.anatomyPreviewLabel")}
+      screens={false}
+      hideSource
+      chrome={false}
+    />
+  </Fragment>
+
+  <Fragment slot="guidelines">
+    <p class="lede" set:html={t("treeViewPage.guidelinesLede")} />
+    <DoDont
+      title={t("treeViewPage.dd.nested.title")}
+      do={{ tree: treeViewMinimalTree(t), caption: t("treeViewPage.dd.nested.do") }}
+      dont={{ tree: treeViewDontFlatTree(t), caption: t("treeViewPage.dd.nested.dont") }}
+    />
   </Fragment>
 
   <Fragment slot="install">

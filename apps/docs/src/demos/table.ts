@@ -313,3 +313,26 @@ export const tableDensityTree = (t: Translate, densityFactor: number = 1): Usage
     options: { density: 1, densityFactor },
   };
 };
+
+/* Don't: a one-column table of paragraphs, which is a list wearing a grid. */
+export const tableDontListTree = (t: Translate): UsageTree => ({
+  contract: "table",
+  signature: "TableScroll",
+  children: {
+    contract: "table",
+    signature: "Table",
+    attrs: { "aria-label": t("demo.table.dd.news") },
+    children: [
+      { contract: "table", signature: "TableHead", children: headerRow(t, ["demo.table.dd.news"]) },
+      {
+        contract: "table",
+        signature: "TableBody",
+        children: ["demo.table.dd.news1", "demo.table.dd.news2", "demo.table.dd.news3"].map((key) => ({
+          contract: "table",
+          signature: "TableRow",
+          children: { contract: "table", signature: "TableCell", children: t(key as never) },
+        })),
+      },
+    ],
+  },
+});

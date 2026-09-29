@@ -15,3 +15,4 @@ export const Anatomy: StoryObj = treeStory(demos.tocAnatomyTree, { decorators: [
 export const Plain: StoryObj = treeStory(demos.tocPlainTree);
 export const Nested: StoryObj = treeStory(demos.tocNestedTree);
 export const Icons: StoryObj = treeStory(demos.tocIconsTree);
+export const DontLong: StoryObj = treeStory(demos.tocDontLongTree);

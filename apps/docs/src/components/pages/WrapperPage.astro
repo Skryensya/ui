@@ -5,7 +5,13 @@ import { layoutAnatomyFillCss, wrapperAnatomyTree } from "../../demos/layout-ana
 import ComponentPageShell from "./ComponentPageShell.astro";
 import CodeBlock from "../CodeBlock.astro";
 import ComponentPreview from "../ComponentPreview.astro";
-import { wrapperTree } from "../../demos/wrapper";
+import UsagePreview from "../UsagePreview.astro";
+import DoDont from "../DoDont.astro";
+import {
+  wrapperDoBoxTree,
+  wrapperDontPaintTree,
+  wrapperTree,
+} from "../../demos/wrapper";
 import { getLocale, useTranslations } from "../../i18n";
 /* The sheet itself, not only its source: the Style hooks table resolves each hook
    against a real element, and a page that never loads `patterns/wrapper.css` would show every
@@ -30,20 +36,11 @@ const install = `pnpm add @skryensya/core @skryensya/react`;
     },
   ]}
 >
-  <Fragment slot="anatomy">
-    <p set:html={t("wrapperPage.anatomyBody")} />
-    <ComponentPreview
-      tree={wrapperAnatomyTree(t)}
-      css={layoutAnatomyFillCss}
-      label={t("wrapperPage.anatomyPreviewLabel")}
-      screens={false}
-      hideSource
-      chrome={false}
-    />
-  </Fragment>
-
   <Fragment slot="usage">
     <p class="lede" set:html={t("wrapperPage.lede")} />
+
+    <h3>{t("wrapperPage.showcaseTitle")}</h3>
+    <p set:html={t("wrapperPage.showcaseBody")} />
 
     <h3>{t("wrapperPage.ceilingTitle")}</h3>
     <p set:html={t("wrapperPage.ceilingBody")} />
@@ -75,6 +72,27 @@ const install = `pnpm add @skryensya/core @skryensya/react`;
       <li set:html={t("wrapperPage.contractItem3")} />
       <li set:html={t("wrapperPage.contractItem4")} />
     </ul>
+
+    <h3>{t("component.anatomy")}</h3>
+    <p set:html={t("wrapperPage.anatomyBody")} />
+    <ComponentPreview
+      tree={wrapperAnatomyTree(t)}
+      css={layoutAnatomyFillCss}
+      label={t("wrapperPage.anatomyPreviewLabel")}
+      screens={false}
+      hideSource
+      chrome={false}
+    />
+  </Fragment>
+
+  <Fragment slot="guidelines">
+    <p class="lede" set:html={t("wrapperPage.guidelinesLede")} />
+    <DoDont
+      canvas
+      title={t("wrapperPage.dd.surface.title")}
+      do={{ tree: wrapperDoBoxTree(t), caption: t("wrapperPage.dd.surface.do") }}
+      dont={{ tree: wrapperDontPaintTree(t), caption: t("wrapperPage.dd.surface.dont") }}
+    />
   </Fragment>
 
   <Fragment slot="install">

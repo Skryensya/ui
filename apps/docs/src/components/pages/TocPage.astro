@@ -5,7 +5,15 @@ import "@skryensya/core/components/annotation.css";
 import ComponentPageShell from "./ComponentPageShell.astro";
 import CodeBlock from "../CodeBlock.astro";
 import ComponentPreview from "../ComponentPreview.astro";
-import { tocAnatomyTree, tocIconsTree, tocNestedTree, tocPlainTree } from "../../demos/toc";
+import UsagePreview from "../UsagePreview.astro";
+import DoDont from "../DoDont.astro";
+import {
+  tocAnatomyTree,
+  tocDontLongTree,
+  tocIconsTree,
+  tocNestedTree,
+  tocPlainTree,
+} from "../../demos/toc";
 import { annotationDemoCss } from "../../demos/annotation";
 import { getLocale, useTranslations } from "../../i18n";
 
@@ -53,20 +61,11 @@ const items = headings.map((h) => ({ href: \`#\${h.id}\`, label: h.label, level:
   contractId="toc"
   testFiles={["packages/react/src/components/toc.test.tsx"]}}
 >
-  <Fragment slot="anatomy">
-    <p set:html={t("tocPage.anatomyBody")} />
-    <ComponentPreview
-      tree={tocAnatomyTree(t)}
-      css={annotationDemoCss}
-      label={t("tocPage.anatomyPreviewLabel")}
-      screens={false}
-      hideSource
-      chrome={false}
-    />
-  </Fragment>
-
   <Fragment slot="usage">
     <p class="lede" set:html={t("tocPage.lede")} />
+
+    <h3>{t("tocPage.showcaseTitle")}</h3>
+    <p set:html={t("tocPage.showcaseBody")} />
     {
       /*
        * `minHeight` HERE IS ABOUT CLS, not about a cramped specimen. A stage reserves
@@ -118,5 +117,25 @@ const items = headings.map((h) => ({ href: \`#\${h.id}\`, label: h.label, level:
       <li set:html={t("tocPage.contractItem4")} />
       <li set:html={t("tocPage.contractItem5")} />
     </ul>
+
+    <h3>{t("component.anatomy")}</h3>
+    <p set:html={t("tocPage.anatomyBody")} />
+    <ComponentPreview
+      tree={tocAnatomyTree(t)}
+      css={annotationDemoCss}
+      label={t("tocPage.anatomyPreviewLabel")}
+      screens={false}
+      hideSource
+      chrome={false}
+    />
+  </Fragment>
+
+  <Fragment slot="guidelines">
+    <p class="lede" set:html={t("tocPage.guidelinesLede")} />
+    <DoDont
+      title={t("tocPage.dd.short.title")}
+      do={{ tree: tocPlainTree(t), caption: t("tocPage.dd.short.do") }}
+      dont={{ tree: tocDontLongTree(t), caption: t("tocPage.dd.short.dont") }}
+    />
   </Fragment>
 </ComponentPageShell>
