@@ -31,3 +31,14 @@ export const inputRealization: Realization = {
   grid: { columns: ["state"], rows: ["controlSize"], descending: ["controlSize"] },
   stage,
 };
+
+/* Textarea: the same field, three lines tall at least, its placeholder at the top. */
+export const textareaRealization: Realization = {
+  ...inputRealization,
+  id: "textarea",
+  signature: "Textarea",
+  exclude: [],
+  slots: {
+    placeholder: { holds: "text", sample: "Add a note", option: "placeholder", pseudo: "placeholder" },
+  },
+};
