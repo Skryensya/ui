@@ -365,6 +365,14 @@ export function computeTree(element: Element, rules: RuleSet, unmatchable: Set<s
       const box = (generated[rule.pseudo] ??= inherit(computed));
       for (const [prop, value] of rule.decls) box.set(prop, value);
     }
+    // A generated box inherits from its element, `inherit` included (a radio's circle takes its corners).
+    for (const box of Object.values(generated)) {
+      for (const [prop, value] of box) {
+        if (value !== "inherit") continue;
+        if (computed.has(prop)) box.set(prop, computed.get(prop)!);
+        else box.delete(prop);
+      }
+    }
     pseudo.set(el, generated);
     for (const child of Array.from(el.children)) visit(child, computed);
   };

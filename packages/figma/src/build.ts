@@ -770,6 +770,22 @@ async function compileRealization(authored: Realization, shared: Shared): Promis
             ],
           });
         }
+        // A `::before` laid in the same grid cell as the element's content (a radio's circle, under its
+        // dot) is a box the content sits centred in: drawn as that frame, holding the rest.
+        const under = pseudo.get(el)?.before;
+        if (under && under.get("content") !== undefined && under.get("position") !== "absolute" && /^1\s*\/\s*1$/.test(under.get("grid-area") ?? "")) {
+          const { strokes, fills, effects, ...box } = frameOf(ctxOf(under));
+          const ring = ringOf(ctxOf(under));
+          return [
+            {
+              kind: "frame",
+              slot: "before",
+              box: intern(styles.boxes, { ...box, direction: "VERTICAL", mainAlign: "CENTER", crossAlign: "CENTER" }),
+              surface: intern(styles.surfaces, { strokes, fills, effects }),
+              layers: [...out, ...(ring ? [{ kind: "ring" as const, slot: realization.ring, ...ring }] : [])],
+            },
+          ];
+        }
         // Only a text alone in its block, or down a column, has the block's width to fill: beside
         // others in a row (an attribution and its source) each keeps its own. Down a column that
         // centres its items (an EmptyState), a line still wraps at the column's width, and its
