@@ -486,6 +486,11 @@ function pruneLabels(ctx: Ctx, parent: FrameNode, keep: Set<string>) {
 
 /** Bound to the stage's variable: the docs preview's own background, in whichever mode the file shows. */
 function paintStage(ctx: Ctx, frame: FrameNode) {
+  // A dry run has not created the variables a real sync would; that the fill would change is enough.
+  const stage = manifest.stage.background;
+  if ("variable" in stage && !ctx.vars.has(stage.variable)) {
+    if (!ctx.run.apply) return void ctx.run.write(() => void 0);
+  }
   const fill = (frame.fills as readonly Paint[])[0];
   const bound = fill?.type === "SOLID" ? fill.boundVariables?.color?.id : undefined;
   const want = "variable" in manifest.stage.background ? variableFor(ctx, manifest.stage.background).id : undefined;
@@ -1022,7 +1027,8 @@ async function syncSpecimen(ctx: SetCtx, found: Map<string, SceneNode>, page: Pa
 
   const entries = new Map(f.children.map((c) => [getTag(c, "specimen"), c as FrameNode]));
   const counts = { created: 0, updated: 0, unchanged: 0 };
-  const captionStyle = await labelStyle(ctx);
+  // Only a real sync draws captions, and only it has every variable they bind to.
+  let captionStyle: Label | undefined;
   for (const [index, entry] of manifest.specimen.entries()) {
     await progress.tick("specimen");
     const set = found.get(entry.set) as ComponentSetNode | undefined;
@@ -1052,6 +1058,7 @@ async function syncSpecimen(ctx: SetCtx, found: Map<string, SceneNode>, page: Pa
       wrapper.setSharedPluginData(NS, "specimen", entry.id);
     } else counts.updated++;
     f.insertChild(index, wrapper);
+    captionStyle ??= await labelStyle(ctx);
     const caption = ensureLabel(ctx, wrapper, "caption", `${entry.id}\n${entry.set.split("/")[1]} · ${entry.cell}`, captionStyle);
     if (wrapper.children[0] !== caption) wrapper.insertChild(0, caption);
     let instance = wrapper.findChild((n) => n.name === "instance") as InstanceNode | null;
