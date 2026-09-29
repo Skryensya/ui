@@ -40845,6 +40845,430 @@
         "columns": []
       },
       "visualHash": "d12ecc756b14b49b"
+    },
+    {
+      "axes": [
+        {
+          "name": "state",
+          "values": [
+            "off",
+            "hover",
+            "focus",
+            "on"
+          ]
+        }
+      ],
+      "cells": [
+        {
+          "box": "3195fb3a38ace4d1",
+          "hash": "e6b9153a450dfcb7",
+          "id": "tile-switch/plain/state=off",
+          "key": "state=off",
+          "layers": "1e35a4a745d464ca",
+          "props": {
+            "state": "off"
+          },
+          "surface": "82d94bda55e9390f"
+        },
+        {
+          "box": "3195fb3a38ace4d1",
+          "hash": "69f31ca0e36b50c5",
+          "id": "tile-switch/plain/state=hover",
+          "key": "state=hover",
+          "layers": "389471285bea1328",
+          "props": {
+            "state": "hover"
+          },
+          "surface": "82d94bda55e9390f"
+        },
+        {
+          "box": "78bff85378b3ab3a",
+          "hash": "f2171ae63ec2185b",
+          "id": "tile-switch/plain/state=focus",
+          "key": "state=focus",
+          "layers": "412205ae1a838f6b",
+          "props": {
+            "state": "focus"
+          },
+          "surface": "82d94bda55e9390f"
+        },
+        {
+          "box": "3195fb3a38ace4d1",
+          "hash": "d563762b7e29f40c",
+          "id": "tile-switch/plain/state=on",
+          "key": "state=on",
+          "layers": "d0563ff531a54c4a",
+          "props": {
+            "state": "on"
+          },
+          "surface": "7d24373c27998214"
+        }
+      ],
+      "contractHash": "7087b4e1f89e3813",
+      "defaultCell": "state=off",
+      "grid": {
+        "columns": [
+          {
+            "name": "state",
+            "values": [
+              "off",
+              "hover",
+              "focus",
+              "on"
+            ]
+          }
+        ],
+        "rows": []
+      },
+      "id": "tile-switch/plain",
+      "interactions": [
+        {
+          "axis": "state",
+          "from": "off",
+          "to": "hover",
+          "trigger": "ON_HOVER"
+        }
+      ],
+      "kind": "component-set",
+      "name": "Tile Switch / plain",
+      "page": "skryensya",
+      "properties": [
+        {
+          "default": "Email alerts",
+          "name": "title 1",
+          "type": "TEXT"
+        },
+        {
+          "default": "A note when something needs you",
+          "name": "description 1",
+          "type": "TEXT"
+        }
+      ],
+      "showcase": {
+        "base": {
+          "state": "off"
+        },
+        "columns": []
+      },
+      "visualHash": "0313634a19aea45e"
+    },
+    {
+      "axes": [
+        {
+          "name": "state",
+          "values": [
+            "off",
+            "hover",
+            "focus",
+            "on"
+          ]
+        }
+      ],
+      "cells": [
+        {
+          "box": "3195fb3a38ace4d1",
+          "hash": "160a738eb9b1c635",
+          "id": "tile-switch/tactile/state=off",
+          "key": "state=off",
+          "layers": "1e35a4a745d464ca",
+          "props": {
+            "state": "off"
+          },
+          "surface": "956debe3aca94ba9"
+        },
+        {
+          "box": "3195fb3a38ace4d1",
+          "hash": "b88461ba752eb950",
+          "id": "tile-switch/tactile/state=hover",
+          "key": "state=hover",
+          "layers": "389471285bea1328",
+          "props": {
+            "state": "hover"
+          },
+          "surface": "e75320bbf65966dd"
+        },
+        {
+          "box": "78bff85378b3ab3a",
+          "hash": "21b04a101c66ceb9",
+          "id": "tile-switch/tactile/state=focus",
+          "key": "state=focus",
+          "layers": "412205ae1a838f6b",
+          "props": {
+            "state": "focus"
+          },
+          "surface": "956debe3aca94ba9"
+        },
+        {
+          "box": "3195fb3a38ace4d1",
+          "hash": "db1770a6026f7fba",
+          "id": "tile-switch/tactile/state=on",
+          "key": "state=on",
+          "layers": "d0563ff531a54c4a",
+          "props": {
+            "state": "on"
+          },
+          "surface": "b455a027df6df83e"
+        }
+      ],
+      "contractHash": "7087b4e1f89e3813",
+      "defaultCell": "state=off",
+      "grid": {
+        "columns": [
+          {
+            "name": "state",
+            "values": [
+              "off",
+              "hover",
+              "focus",
+              "on"
+            ]
+          }
+        ],
+        "rows": []
+      },
+      "id": "tile-switch/tactile",
+      "interactions": [
+        {
+          "axis": "state",
+          "from": "off",
+          "to": "hover",
+          "trigger": "ON_HOVER"
+        }
+      ],
+      "kind": "component-set",
+      "name": "Tile Switch / tactile",
+      "page": "skryensya",
+      "properties": [
+        {
+          "default": "Email alerts",
+          "name": "title 1",
+          "type": "TEXT"
+        },
+        {
+          "default": "A note when something needs you",
+          "name": "description 1",
+          "type": "TEXT"
+        }
+      ],
+      "showcase": {
+        "base": {
+          "state": "off"
+        },
+        "columns": []
+      },
+      "visualHash": "6507574934144fc4"
+    },
+    {
+      "axes": [
+        {
+          "name": "state",
+          "values": [
+            "off",
+            "hover",
+            "focus",
+            "on"
+          ]
+        }
+      ],
+      "cells": [
+        {
+          "box": "3195fb3a38ace4d1",
+          "hash": "e4afc02011e16c01",
+          "id": "tile-switch/brutalist/state=off",
+          "key": "state=off",
+          "layers": "1e35a4a745d464ca",
+          "props": {
+            "state": "off"
+          },
+          "surface": "2fc29be39f4b4449"
+        },
+        {
+          "box": "3195fb3a38ace4d1",
+          "hash": "b422695897ae605e",
+          "id": "tile-switch/brutalist/state=hover",
+          "key": "state=hover",
+          "layers": "389471285bea1328",
+          "props": {
+            "state": "hover"
+          },
+          "surface": "24cba86042643773"
+        },
+        {
+          "box": "78bff85378b3ab3a",
+          "hash": "ef91d30d701e39a7",
+          "id": "tile-switch/brutalist/state=focus",
+          "key": "state=focus",
+          "layers": "412205ae1a838f6b",
+          "props": {
+            "state": "focus"
+          },
+          "surface": "2fc29be39f4b4449"
+        },
+        {
+          "box": "3195fb3a38ace4d1",
+          "hash": "8a3424770fe336e3",
+          "id": "tile-switch/brutalist/state=on",
+          "key": "state=on",
+          "layers": "d0563ff531a54c4a",
+          "props": {
+            "state": "on"
+          },
+          "surface": "316a1c8adf23cd43"
+        }
+      ],
+      "contractHash": "7087b4e1f89e3813",
+      "defaultCell": "state=off",
+      "grid": {
+        "columns": [
+          {
+            "name": "state",
+            "values": [
+              "off",
+              "hover",
+              "focus",
+              "on"
+            ]
+          }
+        ],
+        "rows": []
+      },
+      "id": "tile-switch/brutalist",
+      "interactions": [
+        {
+          "axis": "state",
+          "from": "off",
+          "to": "hover",
+          "trigger": "ON_HOVER"
+        }
+      ],
+      "kind": "component-set",
+      "name": "Tile Switch / brutalist",
+      "page": "skryensya",
+      "properties": [
+        {
+          "default": "Email alerts",
+          "name": "title 1",
+          "type": "TEXT"
+        },
+        {
+          "default": "A note when something needs you",
+          "name": "description 1",
+          "type": "TEXT"
+        }
+      ],
+      "showcase": {
+        "base": {
+          "state": "off"
+        },
+        "columns": []
+      },
+      "visualHash": "5c90575bbbdafbf4"
+    },
+    {
+      "axes": [
+        {
+          "name": "state",
+          "values": [
+            "off",
+            "hover",
+            "focus",
+            "on"
+          ]
+        }
+      ],
+      "cells": [
+        {
+          "box": "3195fb3a38ace4d1",
+          "hash": "3ea4536efc2f0152",
+          "id": "tile-switch/frosted/state=off",
+          "key": "state=off",
+          "layers": "1e35a4a745d464ca",
+          "props": {
+            "state": "off"
+          },
+          "surface": "cd25c830288883dc"
+        },
+        {
+          "box": "3195fb3a38ace4d1",
+          "hash": "02dd21accc2a35eb",
+          "id": "tile-switch/frosted/state=hover",
+          "key": "state=hover",
+          "layers": "389471285bea1328",
+          "props": {
+            "state": "hover"
+          },
+          "surface": "cd25c830288883dc"
+        },
+        {
+          "box": "78bff85378b3ab3a",
+          "hash": "3671c03ecd07959c",
+          "id": "tile-switch/frosted/state=focus",
+          "key": "state=focus",
+          "layers": "412205ae1a838f6b",
+          "props": {
+            "state": "focus"
+          },
+          "surface": "cd25c830288883dc"
+        },
+        {
+          "box": "3195fb3a38ace4d1",
+          "hash": "d302e585249aa2e9",
+          "id": "tile-switch/frosted/state=on",
+          "key": "state=on",
+          "layers": "d0563ff531a54c4a",
+          "props": {
+            "state": "on"
+          },
+          "surface": "349527ae5f13a4d3"
+        }
+      ],
+      "contractHash": "7087b4e1f89e3813",
+      "defaultCell": "state=off",
+      "grid": {
+        "columns": [
+          {
+            "name": "state",
+            "values": [
+              "off",
+              "hover",
+              "focus",
+              "on"
+            ]
+          }
+        ],
+        "rows": []
+      },
+      "id": "tile-switch/frosted",
+      "interactions": [
+        {
+          "axis": "state",
+          "from": "off",
+          "to": "hover",
+          "trigger": "ON_HOVER"
+        }
+      ],
+      "kind": "component-set",
+      "name": "Tile Switch / frosted",
+      "page": "skryensya",
+      "properties": [
+        {
+          "default": "Email alerts",
+          "name": "title 1",
+          "type": "TEXT"
+        },
+        {
+          "default": "A note when something needs you",
+          "name": "description 1",
+          "type": "TEXT"
+        }
+      ],
+      "showcase": {
+        "base": {
+          "state": "off"
+        },
+        "columns": []
+      },
+      "visualHash": "61177d7b453d3de2"
     }
   ],
   "diagnostics": [
@@ -40967,6 +41391,12 @@
       "message": "4 rule(s) under a condition the evaluation context does not hold",
       "severity": "info",
       "subject": "components/callout.css @media (forced-colors: active)"
+    },
+    {
+      "code": "CONDITION_SKIPPED",
+      "message": "3 rule(s) under a condition the evaluation context does not hold",
+      "severity": "info",
+      "subject": "components/checkbox.css @media (forced-colors: active)"
     },
     {
       "code": "CONDITION_SKIPPED",
@@ -41204,6 +41634,12 @@
     },
     {
       "code": "CONDITION_SKIPPED",
+      "message": "4 rule(s) under a condition the evaluation context does not hold",
+      "severity": "info",
+      "subject": "components/switch.css @media (forced-colors: active)"
+    },
+    {
+      "code": "CONDITION_SKIPPED",
       "message": "1 rule(s) under a condition the evaluation context does not hold",
       "severity": "info",
       "subject": "components/tabs.css @media (forced-colors: active)"
@@ -41248,7 +41684,7 @@
       "code": "CONDITION_SKIPPED",
       "message": "2 rule(s) under a condition the evaluation context does not hold",
       "severity": "info",
-      "subject": "components/tile.css @keyframes sk-tile-content-in"
+      "subject": "components/tile.css @keyframes sk-tile-collapse"
     },
     {
       "code": "CONDITION_SKIPPED",
@@ -41267,6 +41703,24 @@
       "message": "2 rule(s) under a condition the evaluation context does not hold",
       "severity": "info",
       "subject": "components/tile.css @keyframes sk-tile-content-in"
+    },
+    {
+      "code": "CONDITION_SKIPPED",
+      "message": "2 rule(s) under a condition the evaluation context does not hold",
+      "severity": "info",
+      "subject": "components/tile.css @keyframes sk-tile-content-in"
+    },
+    {
+      "code": "CONDITION_SKIPPED",
+      "message": "2 rule(s) under a condition the evaluation context does not hold",
+      "severity": "info",
+      "subject": "components/tile.css @keyframes sk-tile-content-in"
+    },
+    {
+      "code": "CONDITION_SKIPPED",
+      "message": "2 rule(s) under a condition the evaluation context does not hold",
+      "severity": "info",
+      "subject": "components/tile.css @keyframes sk-tile-expand"
     },
     {
       "code": "CONDITION_SKIPPED",
@@ -41315,6 +41769,18 @@
       "message": "7 rule(s) under a condition the evaluation context does not hold",
       "severity": "info",
       "subject": "components/tile.css @media (forced-colors: active)"
+    },
+    {
+      "code": "CONDITION_SKIPPED",
+      "message": "7 rule(s) under a condition the evaluation context does not hold",
+      "severity": "info",
+      "subject": "components/tile.css @media (forced-colors: active)"
+    },
+    {
+      "code": "CONDITION_SKIPPED",
+      "message": "1 rule(s) under a condition the evaluation context does not hold",
+      "severity": "info",
+      "subject": "components/tile.css @media (prefers-reduced-motion: reduce)"
     },
     {
       "code": "CONDITION_SKIPPED",
@@ -41495,6 +41961,18 @@
       "message": "1 rule(s) under a condition the evaluation context does not hold",
       "severity": "info",
       "subject": "patterns/state-layer.css @media (prefers-reduced-motion: reduce)"
+    },
+    {
+      "code": "CONDITION_SKIPPED",
+      "message": "1 rule(s) under a condition the evaluation context does not hold",
+      "severity": "info",
+      "subject": "patterns/state-layer.css @media (prefers-reduced-motion: reduce)"
+    },
+    {
+      "code": "CONDITION_SKIPPED",
+      "message": "0 rule(s) under a condition the evaluation context does not hold",
+      "severity": "info",
+      "subject": "patterns/state-layer.css @property --state-layer-opacity"
     },
     {
       "code": "CONDITION_SKIPPED",
@@ -42122,6 +42600,21 @@
           "appearance"
         ]
       },
+      "tile-switch": {
+        "excluded": [
+          "padding",
+          "required",
+          "defaultChecked"
+        ],
+        "nonVisual": [
+          "name",
+          "value",
+          "disabled"
+        ],
+        "visual": [
+          "appearance"
+        ]
+      },
       "timeline": {
         "excluded": [],
         "nonVisual": [],
@@ -42130,11 +42623,11 @@
     },
     "tokens": {
       "catalogueAdded": 305,
-      "componentVariables": 440,
+      "componentVariables": 445,
       "modeValuesBySource": {
         "alias": 203,
-        "evaluated": 833,
-        "literal": 776
+        "evaluated": 841,
+        "literal": 778
       },
       "reached": 203,
       "reachedAsVariables": 153,
@@ -42153,8 +42646,8 @@
       "variables": 466
     },
     "variants": {
-      "components": 98,
-      "componentSets": 97,
+      "components": 102,
+      "componentSets": 101,
       "naiveAllOptions": {
         "accordion": 32,
         "avatar": 8,
@@ -42198,6 +42691,7 @@
         "textarea": 18,
         "tile-checkbox": 192,
         "tile-link": 24,
+        "tile-switch": 192,
         "timeline": 1
       },
       "naiveVisualOptions": {
@@ -42243,6 +42737,7 @@
         "textarea": 18,
         "tile-checkbox": 4,
         "tile-link": 4,
+        "tile-switch": 4,
         "timeline": 1
       },
       "variantsPerSet": [
@@ -42633,13 +43128,29 @@
         {
           "set": "tile-checkbox/frosted",
           "variants": 4
+        },
+        {
+          "set": "tile-switch/plain",
+          "variants": 4
+        },
+        {
+          "set": "tile-switch/tactile",
+          "variants": 4
+        },
+        {
+          "set": "tile-switch/brutalist",
+          "variants": 4
+        },
+        {
+          "set": "tile-switch/frosted",
+          "variants": 4
         }
       ],
-      "variantsTotal": 2391
+      "variantsTotal": 2407
     }
   },
   "schemaVersion": 1,
-  "sourceHash": "2ee5525f1534b59b",
+  "sourceHash": "c23b5c86f96481ac",
   "stage": {
     "background": {
       "variable": "--color-bg-surface"
@@ -45833,6 +46344,38 @@
           "value": 320
         }
       },
+      "7920c2331226fe9d": {
+        "clipsContent": false,
+        "crossAlign": "MIN",
+        "direction": "HORIZONTAL",
+        "height": {
+          "variable": "--size-icon-lg"
+        },
+        "mainAlign": "MIN",
+        "padding": {
+          "bottom": {
+            "variable": "--space-inset-xs"
+          },
+          "left": {
+            "variable": "--space-inset-xs"
+          },
+          "right": {
+            "variable": "--space-inset-xs"
+          },
+          "top": {
+            "variable": "--space-inset-xs"
+          }
+        },
+        "radius": {
+          "variable": "--radius-pill"
+        },
+        "strokeWeight": {
+          "variable": "tile:sk-switch-border-width:93e20626bf"
+        },
+        "width": {
+          "variable": "tile:sk-switch-inline-size:7a45f5c3de"
+        }
+      },
       "7af94efbfa0aa0ab": {
         "clipsContent": false,
         "crossAlign": "MIN",
@@ -47453,6 +47996,39 @@
           "value": 160
         }
       },
+      "bd188248d7fc4f7b": {
+        "clipsContent": false,
+        "crossAlign": "MIN",
+        "direction": "HORIZONTAL",
+        "height": {
+          "variable": "tile:height:1d6d3e6942"
+        },
+        "mainAlign": "MIN",
+        "padding": {
+          "bottom": {
+            "expression": "0",
+            "value": 0
+          },
+          "left": {
+            "expression": "0",
+            "value": 0
+          },
+          "right": {
+            "expression": "0",
+            "value": 0
+          },
+          "top": {
+            "expression": "0",
+            "value": 0
+          }
+        },
+        "radius": {
+          "variable": "--radius-pill"
+        },
+        "width": {
+          "variable": "tile:width:1d6d3e6942"
+        }
+      },
       "bd7bcb60e3e7fe82": {
         "clipsContent": false,
         "crossAlign": "CENTER",
@@ -48738,6 +49314,38 @@
         },
         "strokeWeight": {
           "variable": "button:border-width:93e20626bf"
+        }
+      },
+      "fbecd9e1ede61d19": {
+        "clipsContent": false,
+        "crossAlign": "MIN",
+        "direction": "HORIZONTAL",
+        "height": {
+          "variable": "--size-icon-lg"
+        },
+        "mainAlign": "MIN",
+        "padding": {
+          "bottom": {
+            "variable": "--space-inset-xs"
+          },
+          "left": {
+            "variable": "tile:padding-left:a478314d38"
+          },
+          "right": {
+            "variable": "--space-inset-xs"
+          },
+          "top": {
+            "variable": "--space-inset-xs"
+          }
+        },
+        "radius": {
+          "variable": "--radius-pill"
+        },
+        "strokeWeight": {
+          "variable": "tile:sk-switch-border-width:93e20626bf"
+        },
+        "width": {
+          "variable": "tile:sk-switch-inline-size:7a45f5c3de"
         }
       },
       "fc107d9292f44799": {
@@ -53357,6 +53965,99 @@
           "visibleProperty": "show children"
         }
       ],
+      "1e35a4a745d464ca": [
+        {
+          "fills": [
+            {
+              "color": {
+                "variable": "tile:state-layer:a8bbbce668"
+              },
+              "type": "SOLID"
+            }
+          ],
+          "kind": "overlay",
+          "slot": "state layer"
+        },
+        {
+          "box": "ca2c48dce21edc97",
+          "kind": "frame",
+          "layers": [
+            {
+              "box": "fad10820225a01de",
+              "kind": "frame",
+              "layers": [
+                {
+                  "fill": true,
+                  "kind": "text",
+                  "slot": "title 1",
+                  "text": {
+                    "fill": {
+                      "color": {
+                        "variable": "--color-text-primary"
+                      },
+                      "type": "SOLID"
+                    },
+                    "fontFamily": {
+                      "variable": "--font-family-body"
+                    },
+                    "fontSize": {
+                      "variable": "--font-size-heading-sm"
+                    },
+                    "fontWeight": {
+                      "variable": "--font-weight-heading"
+                    },
+                    "lineHeight": 150
+                  },
+                  "textProperty": "title 1"
+                },
+                {
+                  "fill": true,
+                  "kind": "text",
+                  "slot": "description 1",
+                  "text": {
+                    "fill": {
+                      "color": {
+                        "variable": "--color-text-secondary"
+                      },
+                      "type": "SOLID"
+                    },
+                    "fontFamily": {
+                      "variable": "--font-family-body"
+                    },
+                    "fontSize": {
+                      "variable": "--font-size-body-sm"
+                    },
+                    "fontWeight": {
+                      "variable": "--font-weight-body"
+                    },
+                    "lineHeight": 150
+                  },
+                  "textProperty": "description 1"
+                }
+              ],
+              "slot": "content",
+              "surface": "fa0b643878e9242d"
+            }
+          ],
+          "slot": "content",
+          "surface": "fa0b643878e9242d"
+        },
+        {
+          "box": "7920c2331226fe9d",
+          "kind": "frame",
+          "layers": [
+            {
+              "box": "bd188248d7fc4f7b",
+              "kind": "frame",
+              "layers": [],
+              "slot": "thumb",
+              "surface": "fe4b04d4da9ef80e"
+            }
+          ],
+          "slot": "control",
+          "surface": "56450dc026afd09d"
+        }
+      ],
       "1e5f85a360af3739": [
         {
           "kind": "text",
@@ -56357,6 +57058,99 @@
         }
       ],
       "37517e5f3dc66819": [],
+      "389471285bea1328": [
+        {
+          "fills": [
+            {
+              "color": {
+                "variable": "tile:state-layer:9652c98e0a"
+              },
+              "type": "SOLID"
+            }
+          ],
+          "kind": "overlay",
+          "slot": "state layer"
+        },
+        {
+          "box": "ca2c48dce21edc97",
+          "kind": "frame",
+          "layers": [
+            {
+              "box": "fad10820225a01de",
+              "kind": "frame",
+              "layers": [
+                {
+                  "fill": true,
+                  "kind": "text",
+                  "slot": "title 1",
+                  "text": {
+                    "fill": {
+                      "color": {
+                        "variable": "--color-text-primary"
+                      },
+                      "type": "SOLID"
+                    },
+                    "fontFamily": {
+                      "variable": "--font-family-body"
+                    },
+                    "fontSize": {
+                      "variable": "--font-size-heading-sm"
+                    },
+                    "fontWeight": {
+                      "variable": "--font-weight-heading"
+                    },
+                    "lineHeight": 150
+                  },
+                  "textProperty": "title 1"
+                },
+                {
+                  "fill": true,
+                  "kind": "text",
+                  "slot": "description 1",
+                  "text": {
+                    "fill": {
+                      "color": {
+                        "variable": "--color-text-secondary"
+                      },
+                      "type": "SOLID"
+                    },
+                    "fontFamily": {
+                      "variable": "--font-family-body"
+                    },
+                    "fontSize": {
+                      "variable": "--font-size-body-sm"
+                    },
+                    "fontWeight": {
+                      "variable": "--font-weight-body"
+                    },
+                    "lineHeight": 150
+                  },
+                  "textProperty": "description 1"
+                }
+              ],
+              "slot": "content",
+              "surface": "fa0b643878e9242d"
+            }
+          ],
+          "slot": "content",
+          "surface": "fa0b643878e9242d"
+        },
+        {
+          "box": "7920c2331226fe9d",
+          "kind": "frame",
+          "layers": [
+            {
+              "box": "bd188248d7fc4f7b",
+              "kind": "frame",
+              "layers": [],
+              "slot": "thumb",
+              "surface": "fe4b04d4da9ef80e"
+            }
+          ],
+          "slot": "control",
+          "surface": "56450dc026afd09d"
+        }
+      ],
       "39ae173a25e1a07f": [
         {
           "kind": "text",
@@ -57153,6 +57947,118 @@
             "lineHeight": 100
           },
           "textProperty": "children"
+        }
+      ],
+      "412205ae1a838f6b": [
+        {
+          "fills": [
+            {
+              "color": {
+                "variable": "tile:state-layer:bfba8c3497"
+              },
+              "type": "SOLID"
+            }
+          ],
+          "kind": "overlay",
+          "slot": "state layer"
+        },
+        {
+          "box": "ca2c48dce21edc97",
+          "kind": "frame",
+          "layers": [
+            {
+              "box": "fad10820225a01de",
+              "kind": "frame",
+              "layers": [
+                {
+                  "fill": true,
+                  "kind": "text",
+                  "slot": "title 1",
+                  "text": {
+                    "fill": {
+                      "color": {
+                        "variable": "--color-text-primary"
+                      },
+                      "type": "SOLID"
+                    },
+                    "fontFamily": {
+                      "variable": "--font-family-body"
+                    },
+                    "fontSize": {
+                      "variable": "--font-size-heading-sm"
+                    },
+                    "fontWeight": {
+                      "variable": "--font-weight-heading"
+                    },
+                    "lineHeight": 150
+                  },
+                  "textProperty": "title 1"
+                },
+                {
+                  "fill": true,
+                  "kind": "text",
+                  "slot": "description 1",
+                  "text": {
+                    "fill": {
+                      "color": {
+                        "variable": "--color-text-secondary"
+                      },
+                      "type": "SOLID"
+                    },
+                    "fontFamily": {
+                      "variable": "--font-family-body"
+                    },
+                    "fontSize": {
+                      "variable": "--font-size-body-sm"
+                    },
+                    "fontWeight": {
+                      "variable": "--font-weight-body"
+                    },
+                    "lineHeight": 150
+                  },
+                  "textProperty": "description 1"
+                }
+              ],
+              "slot": "content",
+              "surface": "fa0b643878e9242d"
+            }
+          ],
+          "slot": "content",
+          "surface": "fa0b643878e9242d"
+        },
+        {
+          "box": "7920c2331226fe9d",
+          "kind": "frame",
+          "layers": [
+            {
+              "box": "bd188248d7fc4f7b",
+              "kind": "frame",
+              "layers": [],
+              "slot": "thumb",
+              "surface": "fe4b04d4da9ef80e"
+            }
+          ],
+          "slot": "control",
+          "surface": "56450dc026afd09d"
+        },
+        {
+          "color": {
+            "color": {
+              "variable": "--focus-ring-color"
+            },
+            "type": "SOLID"
+          },
+          "kind": "ring",
+          "offset": {
+            "variable": "--focus-ring-offset"
+          },
+          "radius": {
+            "variable": "tile:outline-radius:a1a8e339a3"
+          },
+          "slot": "focus ring",
+          "width": {
+            "variable": "--focus-ring-width"
+          }
         }
       ],
       "434e1ec60536cdfc": [
@@ -72937,6 +73843,99 @@
           "kind": "icon",
           "slot": "post",
           "visibleProperty": "post"
+        }
+      ],
+      "d0563ff531a54c4a": [
+        {
+          "fills": [
+            {
+              "color": {
+                "variable": "tile:state-layer:57a24a48f5"
+              },
+              "type": "SOLID"
+            }
+          ],
+          "kind": "overlay",
+          "slot": "state layer"
+        },
+        {
+          "box": "ca2c48dce21edc97",
+          "kind": "frame",
+          "layers": [
+            {
+              "box": "fad10820225a01de",
+              "kind": "frame",
+              "layers": [
+                {
+                  "fill": true,
+                  "kind": "text",
+                  "slot": "title 1",
+                  "text": {
+                    "fill": {
+                      "color": {
+                        "variable": "--color-text-primary"
+                      },
+                      "type": "SOLID"
+                    },
+                    "fontFamily": {
+                      "variable": "--font-family-body"
+                    },
+                    "fontSize": {
+                      "variable": "--font-size-heading-sm"
+                    },
+                    "fontWeight": {
+                      "variable": "--font-weight-heading"
+                    },
+                    "lineHeight": 150
+                  },
+                  "textProperty": "title 1"
+                },
+                {
+                  "fill": true,
+                  "kind": "text",
+                  "slot": "description 1",
+                  "text": {
+                    "fill": {
+                      "color": {
+                        "variable": "--color-text-secondary"
+                      },
+                      "type": "SOLID"
+                    },
+                    "fontFamily": {
+                      "variable": "--font-family-body"
+                    },
+                    "fontSize": {
+                      "variable": "--font-size-body-sm"
+                    },
+                    "fontWeight": {
+                      "variable": "--font-weight-body"
+                    },
+                    "lineHeight": 150
+                  },
+                  "textProperty": "description 1"
+                }
+              ],
+              "slot": "content",
+              "surface": "fa0b643878e9242d"
+            }
+          ],
+          "slot": "content",
+          "surface": "fa0b643878e9242d"
+        },
+        {
+          "box": "fbecd9e1ede61d19",
+          "kind": "frame",
+          "layers": [
+            {
+              "box": "bd188248d7fc4f7b",
+              "kind": "frame",
+              "layers": [],
+              "slot": "thumb",
+              "surface": "fe4b04d4da9ef80e"
+            }
+          ],
+          "slot": "control",
+          "surface": "4302d6b465113eb5"
         }
       ],
       "d0f4725ee9fb9715": [
@@ -103167,6 +104166,28 @@
     {
       "codeSyntax": "",
       "collection": "component",
+      "expression": "calc(var(--size-icon-lg) - (var(--space-inset-xs) * 2) - (1px * 2))",
+      "id": "tile:height:1d6d3e6942",
+      "name": "tile/height",
+      "source": {
+        "dark": "evaluated",
+        "light": "evaluated"
+      },
+      "type": "FLOAT",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": 14
+        },
+        "light": {
+          "kind": "literal",
+          "value": 14
+        }
+      }
+    },
+    {
+      "codeSyntax": "",
+      "collection": "component",
       "expression": "calc(var(--radius-surface) + var(--focus-ring-offset))",
       "id": "tile:outline-radius:a1a8e339a3",
       "name": "tile/outline-radius/focus",
@@ -103183,6 +104204,28 @@
         "light": {
           "kind": "literal",
           "value": 14
+        }
+      }
+    },
+    {
+      "codeSyntax": "",
+      "collection": "component",
+      "expression": "calc(var(--space-inset-xs) + calc(calc(var(--size-icon-lg) * 1.75) - var(--size-icon-lg)))",
+      "id": "tile:padding-left:a478314d38",
+      "name": "tile/padding-left/on",
+      "source": {
+        "dark": "evaluated",
+        "light": "evaluated"
+      },
+      "type": "FLOAT",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": 22
+        },
+        "light": {
+          "kind": "literal",
+          "value": 22
         }
       }
     },
@@ -103297,34 +104340,46 @@
       }
     },
     {
-      "codeSyntax": "",
+      "codeSyntax": "var(--sk-switch-border-width)",
       "collection": "component",
-      "expression": "color-mix( in srgb, var(--color-text-primary) calc(0 * 100%), transparent )",
-      "id": "tile:state-layer:a8bbbce668",
-      "name": "tile/state-layer",
+      "expression": "1px",
+      "id": "tile:sk-switch-border-width:93e20626bf",
+      "name": "tile/sk-switch-border-width",
+      "source": {
+        "dark": "literal",
+        "light": "literal"
+      },
+      "type": "FLOAT",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": 1
+        },
+        "light": {
+          "kind": "literal",
+          "value": 1
+        }
+      }
+    },
+    {
+      "codeSyntax": "var(--sk-switch-inline-size)",
+      "collection": "component",
+      "expression": "calc(var(--size-icon-lg) * 1.75)",
+      "id": "tile:sk-switch-inline-size:7a45f5c3de",
+      "name": "tile/sk-switch-inline-size",
       "source": {
         "dark": "evaluated",
         "light": "evaluated"
       },
-      "type": "COLOR",
+      "type": "FLOAT",
       "values": {
         "dark": {
           "kind": "literal",
-          "value": {
-            "a": 0,
-            "b": 0,
-            "g": 0,
-            "r": 0
-          }
+          "value": 42
         },
         "light": {
           "kind": "literal",
-          "value": {
-            "a": 0,
-            "b": 0,
-            "g": 0,
-            "r": 0
-          }
+          "value": 42
         }
       }
     },
@@ -103333,7 +104388,7 @@
       "collection": "component",
       "expression": "color-mix( in srgb, var(--color-text-primary) calc(var(--state-layer-selected-opacity) * 100%), transparent )",
       "id": "tile:state-layer:57a24a48f5",
-      "name": "tile/state-layer/checked",
+      "name": "tile/state-layer",
       "source": {
         "dark": "evaluated",
         "light": "evaluated"
@@ -103363,9 +104418,41 @@
     {
       "codeSyntax": "",
       "collection": "component",
+      "expression": "color-mix( in srgb, var(--color-text-primary) calc(0 * 100%), transparent )",
+      "id": "tile:state-layer:a8bbbce668",
+      "name": "tile/state-layer-2",
+      "source": {
+        "dark": "evaluated",
+        "light": "evaluated"
+      },
+      "type": "COLOR",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": {
+            "a": 0,
+            "b": 0,
+            "g": 0,
+            "r": 0
+          }
+        },
+        "light": {
+          "kind": "literal",
+          "value": {
+            "a": 0,
+            "b": 0,
+            "g": 0,
+            "r": 0
+          }
+        }
+      }
+    },
+    {
+      "codeSyntax": "",
+      "collection": "component",
       "expression": "color-mix( in srgb, var(--color-text-on-accent) calc(0 * 100%), transparent )",
       "id": "tile:state-layer:634151876a",
-      "name": "tile/state-layer/checked-2",
+      "name": "tile/state-layer/checked",
       "source": {
         "dark": "evaluated",
         "light": "evaluated"
@@ -103535,9 +104622,41 @@
     {
       "codeSyntax": "var(--tactile-ledge)",
       "collection": "component",
+      "expression": "light-dark( color-mix(in oklab, var(--color-border-accent) 72%, var(--color-text-primary)), color-mix(in oklab, var(--color-border-accent) 56%, black) )",
+      "id": "tile:tactile-ledge:0345610bc7",
+      "name": "tile/tactile-ledge/tactile",
+      "source": {
+        "dark": "evaluated",
+        "light": "evaluated"
+      },
+      "type": "COLOR",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": {
+            "a": 1,
+            "b": 0.4671,
+            "g": 0.2129,
+            "r": 0.0537
+          }
+        },
+        "light": {
+          "kind": "literal",
+          "value": {
+            "a": 1,
+            "b": 0.7114,
+            "g": 0.2983,
+            "r": 0.1145
+          }
+        }
+      }
+    },
+    {
+      "codeSyntax": "var(--tactile-ledge)",
+      "collection": "component",
       "expression": "light-dark( color-mix(in oklab, var(--color-bg-surface) 76%, var(--color-text-primary)), color-mix(in oklab, var(--color-bg-surface-sunken) 55%, black) )",
       "id": "tile:tactile-ledge:daf4014241",
-      "name": "tile/tactile-ledge/tactile",
+      "name": "tile/tactile-ledge/tactile-2",
       "source": {
         "dark": "evaluated",
         "light": "evaluated"
@@ -103565,34 +104684,24 @@
       }
     },
     {
-      "codeSyntax": "var(--tactile-ledge)",
+      "codeSyntax": "",
       "collection": "component",
-      "expression": "light-dark( color-mix(in oklab, var(--color-border-accent) 72%, var(--color-text-primary)), color-mix(in oklab, var(--color-border-accent) 56%, black) )",
-      "id": "tile:tactile-ledge:0345610bc7",
-      "name": "tile/tactile-ledge/tactile/checked",
+      "expression": "calc(var(--size-icon-lg) - (var(--space-inset-xs) * 2) - (1px * 2))",
+      "id": "tile:width:1d6d3e6942",
+      "name": "tile/width",
       "source": {
         "dark": "evaluated",
         "light": "evaluated"
       },
-      "type": "COLOR",
+      "type": "FLOAT",
       "values": {
         "dark": {
           "kind": "literal",
-          "value": {
-            "a": 1,
-            "b": 0.4671,
-            "g": 0.2129,
-            "r": 0.0537
-          }
+          "value": 14
         },
         "light": {
           "kind": "literal",
-          "value": {
-            "a": 1,
-            "b": 0.7114,
-            "g": 0.2983,
-            "r": 0.1145
-          }
+          "value": 14
         }
       }
     },

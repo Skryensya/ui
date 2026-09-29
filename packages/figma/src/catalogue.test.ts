@@ -412,3 +412,12 @@ describe("TileCheckbox", () => {
     expect(cell("checked").surface).not.toBe(cell("unchecked").surface);
   });
 });
+
+describe("TileSwitch", () => {
+  it("fills its track and slides its thumb when on", () => {
+    const set = manifest.components.find((c): c is ComponentSet => c.kind === "component-set" && c.id === "tile-switch/plain")!;
+    const track = (state: string) => manifest.styles.layers[set.cells.find((c) => c.props.state === state)!.layers].find((l) => l.slot === "control");
+    const on = track("on"), off = track("off");
+    expect(on?.kind === "frame" && off?.kind === "frame" && manifest.styles.boxes[on.box].padding.left).not.toEqual(off?.kind === "frame" && manifest.styles.boxes[off.box].padding.left);
+  });
+});
