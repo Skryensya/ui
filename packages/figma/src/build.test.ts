@@ -64,15 +64,18 @@ describe("derived from the contract", () => {
     expect(report.options.visual).toContain("disabled");
   });
 
-  it("puts the contract's defaults top-left", () => {
+  it("names the cell every default lands on", () => {
     const defaults = buttonContract.options;
     expect(sets[0].defaultCell).toBe(
       `variant=${defaults.variant.default}, tone=${defaults.tone.default}, size=${defaults.size.default}, state=rest, iconOnly=false`,
     );
-    for (const axis of [...sets[0].grid.columns, ...sets[0].grid.rows]) {
-      const d = axis.name in defaults ? String((defaults as Record<string, { default?: unknown }>)[axis.name].default) : "rest";
-      expect(axis.values[0]).toBe(d === "undefined" ? "rest" : d);
-    }
+  });
+
+  it("draws sizes largest first and every other axis in contract order", () => {
+    const rows = Object.fromEntries(sets[0].grid.rows.map((a) => [a.name, a.values]));
+    expect(rows.size).toEqual(enumValues("size").reverse());
+    expect(rows.variant).toEqual(enumValues("variant"));
+    expect(rows.tone).toEqual(enumValues("tone"));
   });
 
   it("restates no option value in the Figma realization", () => {
@@ -159,7 +162,7 @@ describe("the stage", () => {
 
   it("puts one button per row and its states across the columns", () => {
     const grid = sets[0].grid;
-    expect(grid.rows.map((a) => a.name)).toEqual(["variant", "tone", "size"]);
+    expect(grid.rows.map((a) => a.name)).toEqual(["size", "variant", "tone"]);
     expect(grid.columns.map((a) => a.name)).toEqual(["iconOnly", "state"]);
     expect(manifest.pages).toHaveLength(1);
     expect(manifest.components.every((c) => c.page === manifest.pages[0].id)).toBe(true);

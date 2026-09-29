@@ -276,11 +276,11 @@ export async function buildFigmaManifest(repoRoot: string, realization: Realizat
     const setAxes = axes.map((a) => ({ name: a.name, values: a.values }));
     const defaultOf = (axis: Axis) =>
       axis === stateAxis ? realization.state.rest : String(defaults[axis.name] ?? axis.values[0]);
+    // The contract's own order, largest first for the axes the realization reads that way.
     const drawn = (name: string) => {
       const axis = axes.find((a) => a.name === name);
       if (!axis) throw new Error(`grid axis ${name} is not an axis`);
-      const first = defaultOf(axis);
-      return { name, values: [first, ...axis.values.filter((v) => v !== first)] };
+      return { name, values: realization.grid.descending.includes(name) ? [...axis.values].reverse() : [...axis.values] };
     };
     const grid = { columns: realization.grid.columns.map(drawn), rows: realization.grid.rows.map(drawn) };
     const defaultCell = axes.map((a) => `${a.name}=${defaultOf(a)}`).join(", ");
@@ -407,6 +407,7 @@ function stageOf(realization: Realization, files: readonly { rel: string; css: s
       fontSize: token(label.fontSize, "number"),
       fontWeight: token(label.fontWeight, "number"),
     },
+    divider: token(realization.stage.divider, "color"),
   };
 }
 
