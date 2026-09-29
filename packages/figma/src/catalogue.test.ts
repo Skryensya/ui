@@ -503,3 +503,11 @@ describe("FormField", () => {
     expect(JSON.stringify(cell("true")[0])).toContain('"characters":"*"');
   });
 });
+
+describe("AvatarGroup", () => {
+  it("stacks its avatars a third over one another, as a negative gap", () => {
+    const set = manifest.components.find((c): c is ComponentSet => c.kind === "component-set" && c.id === "avatar-group")!;
+    expect(manifest.styles.boxes[set.cells[0].box].gap).toMatchObject({ value: -13.333 });
+    expect(manifest.styles.layers[set.cells[0].layers]).toHaveLength(4);
+  });
+});
