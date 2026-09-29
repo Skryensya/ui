@@ -37547,6 +37547,330 @@
     {
       "axes": [
         {
+          "name": "orientation",
+          "values": [
+            "vertical",
+            "horizontal"
+          ]
+        }
+      ],
+      "cells": [
+        {
+          "box": "61278edee5186127",
+          "hash": "e5787ba4235fd3fe",
+          "id": "checkbox-group/plain/orientation=vertical",
+          "key": "orientation=vertical",
+          "layers": "379e1c7a431c6c38",
+          "props": {
+            "orientation": "vertical"
+          },
+          "surface": "fa0b643878e9242d"
+        },
+        {
+          "box": "61278edee5186127",
+          "hash": "7cceed531bfde64c",
+          "id": "checkbox-group/plain/orientation=horizontal",
+          "key": "orientation=horizontal",
+          "layers": "83d32ddf0bbaa861",
+          "props": {
+            "orientation": "horizontal"
+          },
+          "surface": "fa0b643878e9242d"
+        }
+      ],
+      "contractHash": "dd63c3b6ec4f11cc",
+      "defaultCell": "orientation=vertical",
+      "grid": {
+        "columns": [],
+        "rows": [
+          {
+            "name": "orientation",
+            "values": [
+              "vertical",
+              "horizontal"
+            ]
+          }
+        ]
+      },
+      "id": "checkbox-group/plain",
+      "interactions": [],
+      "kind": "component-set",
+      "name": "Checkbox Group / plain",
+      "page": "skryensya",
+      "properties": [
+        {
+          "default": "Topics",
+          "name": "label",
+          "type": "TEXT"
+        },
+        {
+          "default": "Product news",
+          "name": "items 1",
+          "type": "TEXT"
+        },
+        {
+          "default": "Events",
+          "name": "items 2",
+          "type": "TEXT"
+        },
+        {
+          "default": "Research",
+          "name": "items 3",
+          "type": "TEXT"
+        }
+      ],
+      "showcase": {
+        "base": {},
+        "columns": []
+      },
+      "visualHash": "9e1f1d86f4648a12"
+    },
+    {
+      "axes": [
+        {
+          "name": "orientation",
+          "values": [
+            "vertical",
+            "horizontal"
+          ]
+        }
+      ],
+      "cells": [
+        {
+          "box": "61278edee5186127",
+          "hash": "c20c64d92ba4e945",
+          "id": "checkbox-group/tactile/orientation=vertical",
+          "key": "orientation=vertical",
+          "layers": "c55d6111c2ec63af",
+          "props": {
+            "orientation": "vertical"
+          },
+          "surface": "fa0b643878e9242d"
+        },
+        {
+          "box": "61278edee5186127",
+          "hash": "c71af3c1ae08ed52",
+          "id": "checkbox-group/tactile/orientation=horizontal",
+          "key": "orientation=horizontal",
+          "layers": "0371620634df1971",
+          "props": {
+            "orientation": "horizontal"
+          },
+          "surface": "fa0b643878e9242d"
+        }
+      ],
+      "contractHash": "dd63c3b6ec4f11cc",
+      "defaultCell": "orientation=vertical",
+      "grid": {
+        "columns": [],
+        "rows": [
+          {
+            "name": "orientation",
+            "values": [
+              "vertical",
+              "horizontal"
+            ]
+          }
+        ]
+      },
+      "id": "checkbox-group/tactile",
+      "interactions": [],
+      "kind": "component-set",
+      "name": "Checkbox Group / tactile",
+      "page": "skryensya",
+      "properties": [
+        {
+          "default": "Topics",
+          "name": "label",
+          "type": "TEXT"
+        },
+        {
+          "default": "Product news",
+          "name": "items 1",
+          "type": "TEXT"
+        },
+        {
+          "default": "Events",
+          "name": "items 2",
+          "type": "TEXT"
+        },
+        {
+          "default": "Research",
+          "name": "items 3",
+          "type": "TEXT"
+        }
+      ],
+      "showcase": {
+        "base": {},
+        "columns": []
+      },
+      "visualHash": "d0da5d616baeda42"
+    },
+    {
+      "axes": [
+        {
+          "name": "orientation",
+          "values": [
+            "vertical",
+            "horizontal"
+          ]
+        }
+      ],
+      "cells": [
+        {
+          "box": "61278edee5186127",
+          "hash": "5508e65505c1f2f0",
+          "id": "checkbox-group/brutalist/orientation=vertical",
+          "key": "orientation=vertical",
+          "layers": "5fe3e5e3a8620458",
+          "props": {
+            "orientation": "vertical"
+          },
+          "surface": "fa0b643878e9242d"
+        },
+        {
+          "box": "61278edee5186127",
+          "hash": "fd9df790873bc1d4",
+          "id": "checkbox-group/brutalist/orientation=horizontal",
+          "key": "orientation=horizontal",
+          "layers": "ea2ed16bf3044f08",
+          "props": {
+            "orientation": "horizontal"
+          },
+          "surface": "fa0b643878e9242d"
+        }
+      ],
+      "contractHash": "dd63c3b6ec4f11cc",
+      "defaultCell": "orientation=vertical",
+      "grid": {
+        "columns": [],
+        "rows": [
+          {
+            "name": "orientation",
+            "values": [
+              "vertical",
+              "horizontal"
+            ]
+          }
+        ]
+      },
+      "id": "checkbox-group/brutalist",
+      "interactions": [],
+      "kind": "component-set",
+      "name": "Checkbox Group / brutalist",
+      "page": "skryensya",
+      "properties": [
+        {
+          "default": "Topics",
+          "name": "label",
+          "type": "TEXT"
+        },
+        {
+          "default": "Product news",
+          "name": "items 1",
+          "type": "TEXT"
+        },
+        {
+          "default": "Events",
+          "name": "items 2",
+          "type": "TEXT"
+        },
+        {
+          "default": "Research",
+          "name": "items 3",
+          "type": "TEXT"
+        }
+      ],
+      "showcase": {
+        "base": {},
+        "columns": []
+      },
+      "visualHash": "468c18a350b46347"
+    },
+    {
+      "axes": [
+        {
+          "name": "orientation",
+          "values": [
+            "vertical",
+            "horizontal"
+          ]
+        }
+      ],
+      "cells": [
+        {
+          "box": "61278edee5186127",
+          "hash": "70bf1406a19a36ef",
+          "id": "checkbox-group/frosted/orientation=vertical",
+          "key": "orientation=vertical",
+          "layers": "33793cef76df16eb",
+          "props": {
+            "orientation": "vertical"
+          },
+          "surface": "fa0b643878e9242d"
+        },
+        {
+          "box": "61278edee5186127",
+          "hash": "fc41ca45c1a4b08e",
+          "id": "checkbox-group/frosted/orientation=horizontal",
+          "key": "orientation=horizontal",
+          "layers": "a3d58522ffbc2e65",
+          "props": {
+            "orientation": "horizontal"
+          },
+          "surface": "fa0b643878e9242d"
+        }
+      ],
+      "contractHash": "dd63c3b6ec4f11cc",
+      "defaultCell": "orientation=vertical",
+      "grid": {
+        "columns": [],
+        "rows": [
+          {
+            "name": "orientation",
+            "values": [
+              "vertical",
+              "horizontal"
+            ]
+          }
+        ]
+      },
+      "id": "checkbox-group/frosted",
+      "interactions": [],
+      "kind": "component-set",
+      "name": "Checkbox Group / frosted",
+      "page": "skryensya",
+      "properties": [
+        {
+          "default": "Topics",
+          "name": "label",
+          "type": "TEXT"
+        },
+        {
+          "default": "Product news",
+          "name": "items 1",
+          "type": "TEXT"
+        },
+        {
+          "default": "Events",
+          "name": "items 2",
+          "type": "TEXT"
+        },
+        {
+          "default": "Research",
+          "name": "items 3",
+          "type": "TEXT"
+        }
+      ],
+      "showcase": {
+        "base": {},
+        "columns": []
+      },
+      "visualHash": "d3e9059c6e9c441b"
+    },
+    {
+      "axes": [
+        {
           "name": "state",
           "values": [
             "off",
@@ -42178,6 +42502,12 @@
     },
     {
       "code": "CONDITION_SKIPPED",
+      "message": "3 rule(s) under a condition the evaluation context does not hold",
+      "severity": "info",
+      "subject": "components/checkbox.css @media (forced-colors: active)"
+    },
+    {
+      "code": "CONDITION_SKIPPED",
       "message": "1 rule(s) under a condition the evaluation context does not hold",
       "severity": "info",
       "subject": "components/description-list.css @media (width < 36rem)"
@@ -42772,6 +43102,18 @@
     },
     {
       "code": "CONDITION_SKIPPED",
+      "message": "1 rule(s) under a condition the evaluation context does not hold",
+      "severity": "info",
+      "subject": "patterns/state-layer.css @media (prefers-reduced-motion: reduce)"
+    },
+    {
+      "code": "CONDITION_SKIPPED",
+      "message": "0 rule(s) under a condition the evaluation context does not hold",
+      "severity": "info",
+      "subject": "patterns/state-layer.css @property --state-layer-opacity"
+    },
+    {
+      "code": "CONDITION_SKIPPED",
       "message": "0 rule(s) under a condition the evaluation context does not hold",
       "severity": "info",
       "subject": "patterns/state-layer.css @property --state-layer-opacity"
@@ -43038,6 +43380,19 @@
         "visual": [
           "defaultChecked",
           "disabled",
+          "appearance"
+        ]
+      },
+      "checkbox-group": {
+        "excluded": [
+          "disabled",
+          "required"
+        ],
+        "nonVisual": [
+          "name"
+        ],
+        "visual": [
+          "orientation",
           "appearance"
         ]
       },
@@ -43482,8 +43837,8 @@
       "variables": 466
     },
     "variants": {
-      "components": 110,
-      "componentSets": 109,
+      "components": 114,
+      "componentSets": 113,
       "naiveAllOptions": {
         "accordion": 32,
         "avatar": 8,
@@ -43494,6 +43849,7 @@
         "button": 27648,
         "callout": 15,
         "checkbox": 64,
+        "checkbox-group": 32,
         "code": 1,
         "description-list": 4,
         "details": 8,
@@ -43542,6 +43898,7 @@
         "button": 2304,
         "callout": 15,
         "checkbox": 16,
+        "checkbox-group": 8,
         "code": 1,
         "description-list": 4,
         "details": 8,
@@ -43842,6 +44199,22 @@
           "variants": 6
         },
         {
+          "set": "checkbox-group/plain",
+          "variants": 2
+        },
+        {
+          "set": "checkbox-group/tactile",
+          "variants": 2
+        },
+        {
+          "set": "checkbox-group/brutalist",
+          "variants": 2
+        },
+        {
+          "set": "checkbox-group/frosted",
+          "variants": 2
+        },
+        {
           "set": "switch/plain",
           "variants": 5
         },
@@ -44018,11 +44391,11 @@
           "variants": 4
         }
       ],
-      "variantsTotal": 2431
+      "variantsTotal": 2439
     }
   },
   "schemaVersion": 1,
-  "sourceHash": "61ac28a50b93a335",
+  "sourceHash": "948c44c32c6e0bb6",
   "stage": {
     "background": {
       "variable": "--color-bg-surface"
@@ -49388,6 +49761,33 @@
           }
         }
       },
+      "cce3b2e1cbb577f5": {
+        "clipsContent": false,
+        "crossAlign": "MIN",
+        "direction": "HORIZONTAL",
+        "gap": {
+          "variable": "--space-inline-md"
+        },
+        "mainAlign": "MIN",
+        "padding": {
+          "bottom": {
+            "expression": "0",
+            "value": 0
+          },
+          "left": {
+            "expression": "0",
+            "value": 0
+          },
+          "right": {
+            "expression": "0",
+            "value": 0
+          },
+          "top": {
+            "expression": "0",
+            "value": 0
+          }
+        }
+      },
       "cee491adaf309004": {
         "clipsContent": false,
         "crossAlign": "MIN",
@@ -50852,6 +51252,268 @@
             "underline": true
           },
           "textProperty": "children"
+        }
+      ],
+      "0371620634df1971": [
+        {
+          "box": "9d7fb4db8fbe6340",
+          "kind": "frame",
+          "layers": [
+            {
+              "box": "33649eab81bb9407",
+              "kind": "frame",
+              "layers": [
+                {
+                  "fills": [
+                    {
+                      "color": {
+                        "variable": "checkbox:state-layer:a8bbbce668"
+                      },
+                      "type": "SOLID"
+                    }
+                  ],
+                  "kind": "overlay",
+                  "slot": "state layer"
+                }
+              ],
+              "slot": "checkboxControl",
+              "surface": "f30b966e023c0cfc"
+            },
+            {
+              "kind": "text",
+              "slot": "label",
+              "text": {
+                "fill": {
+                  "color": {
+                    "variable": "--color-text-primary"
+                  },
+                  "type": "SOLID"
+                },
+                "fontFamily": {
+                  "variable": "--font-family-body"
+                },
+                "fontSize": {
+                  "variable": "--font-size-body"
+                },
+                "fontWeight": {
+                  "variable": "--font-weight-body"
+                },
+                "lineHeight": 150
+              },
+              "textProperty": "label"
+            }
+          ],
+          "slot": "checkbox",
+          "surface": "fa0b643878e9242d"
+        },
+        {
+          "box": "cce3b2e1cbb577f5",
+          "kind": "frame",
+          "layers": [
+            {
+              "box": "9d7fb4db8fbe6340",
+              "kind": "frame",
+              "layers": [
+                {
+                  "box": "33649eab81bb9407",
+                  "kind": "frame",
+                  "layers": [
+                    {
+                      "fills": [
+                        {
+                          "color": {
+                            "variable": "checkbox:state-layer:634151876a"
+                          },
+                          "type": "SOLID"
+                        }
+                      ],
+                      "kind": "overlay",
+                      "slot": "state layer"
+                    },
+                    {
+                      "box": "fed71eadc8de5842",
+                      "kind": "frame",
+                      "layers": [
+                        {
+                          "default": "check",
+                          "icon": {
+                            "color": {
+                              "color": {
+                                "variable": "--color-text-on-accent"
+                              },
+                              "type": "SOLID"
+                            },
+                            "size": {
+                              "variable": "--size-icon-sm"
+                            }
+                          },
+                          "kind": "icon",
+                          "slot": "checkboxIndicator"
+                        }
+                      ],
+                      "slot": "checkboxIndicator",
+                      "surface": "fa0b643878e9242d"
+                    }
+                  ],
+                  "slot": "checkboxControl",
+                  "surface": "4f3ba7b72975c3fc"
+                },
+                {
+                  "kind": "text",
+                  "slot": "items 1",
+                  "text": {
+                    "fill": {
+                      "color": {
+                        "variable": "--color-text-primary"
+                      },
+                      "type": "SOLID"
+                    },
+                    "fontFamily": {
+                      "variable": "--font-family-body"
+                    },
+                    "fontSize": {
+                      "variable": "--font-size-body"
+                    },
+                    "fontWeight": {
+                      "variable": "--font-weight-body"
+                    },
+                    "lineHeight": 150
+                  },
+                  "textProperty": "items 1"
+                }
+              ],
+              "slot": "checkbox",
+              "surface": "fa0b643878e9242d"
+            },
+            {
+              "box": "9d7fb4db8fbe6340",
+              "kind": "frame",
+              "layers": [
+                {
+                  "box": "33649eab81bb9407",
+                  "kind": "frame",
+                  "layers": [
+                    {
+                      "fills": [
+                        {
+                          "color": {
+                            "variable": "checkbox:state-layer:634151876a"
+                          },
+                          "type": "SOLID"
+                        }
+                      ],
+                      "kind": "overlay",
+                      "slot": "state layer"
+                    },
+                    {
+                      "box": "fed71eadc8de5842",
+                      "kind": "frame",
+                      "layers": [
+                        {
+                          "default": "check",
+                          "icon": {
+                            "color": {
+                              "color": {
+                                "variable": "--color-text-on-accent"
+                              },
+                              "type": "SOLID"
+                            },
+                            "size": {
+                              "variable": "--size-icon-sm"
+                            }
+                          },
+                          "kind": "icon",
+                          "slot": "checkboxIndicator"
+                        }
+                      ],
+                      "slot": "checkboxIndicator",
+                      "surface": "fa0b643878e9242d"
+                    }
+                  ],
+                  "slot": "checkboxControl",
+                  "surface": "4f3ba7b72975c3fc"
+                },
+                {
+                  "kind": "text",
+                  "slot": "items 2",
+                  "text": {
+                    "fill": {
+                      "color": {
+                        "variable": "--color-text-primary"
+                      },
+                      "type": "SOLID"
+                    },
+                    "fontFamily": {
+                      "variable": "--font-family-body"
+                    },
+                    "fontSize": {
+                      "variable": "--font-size-body"
+                    },
+                    "fontWeight": {
+                      "variable": "--font-weight-body"
+                    },
+                    "lineHeight": 150
+                  },
+                  "textProperty": "items 2"
+                }
+              ],
+              "slot": "checkbox 2",
+              "surface": "fa0b643878e9242d"
+            },
+            {
+              "box": "9d7fb4db8fbe6340",
+              "kind": "frame",
+              "layers": [
+                {
+                  "box": "33649eab81bb9407",
+                  "kind": "frame",
+                  "layers": [
+                    {
+                      "fills": [
+                        {
+                          "color": {
+                            "variable": "checkbox:state-layer:a8bbbce668"
+                          },
+                          "type": "SOLID"
+                        }
+                      ],
+                      "kind": "overlay",
+                      "slot": "state layer"
+                    }
+                  ],
+                  "slot": "checkboxControl",
+                  "surface": "f30b966e023c0cfc"
+                },
+                {
+                  "kind": "text",
+                  "slot": "items 3",
+                  "text": {
+                    "fill": {
+                      "color": {
+                        "variable": "--color-text-primary"
+                      },
+                      "type": "SOLID"
+                    },
+                    "fontFamily": {
+                      "variable": "--font-family-body"
+                    },
+                    "fontSize": {
+                      "variable": "--font-size-body"
+                    },
+                    "fontWeight": {
+                      "variable": "--font-weight-body"
+                    },
+                    "lineHeight": 150
+                  },
+                  "textProperty": "items 3"
+                }
+              ],
+              "slot": "checkbox 3",
+              "surface": "fa0b643878e9242d"
+            }
+          ],
+          "slot": "checkboxGroupItems",
+          "surface": "fa0b643878e9242d"
         }
       ],
       "0386c2833a242fff": [
@@ -57677,6 +58339,268 @@
           "visibleProperty": "post"
         }
       ],
+      "33793cef76df16eb": [
+        {
+          "box": "9d7fb4db8fbe6340",
+          "kind": "frame",
+          "layers": [
+            {
+              "box": "33649eab81bb9407",
+              "kind": "frame",
+              "layers": [
+                {
+                  "fills": [
+                    {
+                      "color": {
+                        "variable": "checkbox:state-layer:a8bbbce668"
+                      },
+                      "type": "SOLID"
+                    }
+                  ],
+                  "kind": "overlay",
+                  "slot": "state layer"
+                }
+              ],
+              "slot": "checkboxControl",
+              "surface": "b566e4f5e45d1014"
+            },
+            {
+              "kind": "text",
+              "slot": "label",
+              "text": {
+                "fill": {
+                  "color": {
+                    "variable": "--color-text-primary"
+                  },
+                  "type": "SOLID"
+                },
+                "fontFamily": {
+                  "variable": "--font-family-body"
+                },
+                "fontSize": {
+                  "variable": "--font-size-body"
+                },
+                "fontWeight": {
+                  "variable": "--font-weight-body"
+                },
+                "lineHeight": 150
+              },
+              "textProperty": "label"
+            }
+          ],
+          "slot": "checkbox",
+          "surface": "fa0b643878e9242d"
+        },
+        {
+          "box": "61278edee5186127",
+          "kind": "frame",
+          "layers": [
+            {
+              "box": "9d7fb4db8fbe6340",
+              "kind": "frame",
+              "layers": [
+                {
+                  "box": "33649eab81bb9407",
+                  "kind": "frame",
+                  "layers": [
+                    {
+                      "fills": [
+                        {
+                          "color": {
+                            "variable": "checkbox:state-layer:634151876a"
+                          },
+                          "type": "SOLID"
+                        }
+                      ],
+                      "kind": "overlay",
+                      "slot": "state layer"
+                    },
+                    {
+                      "box": "fed71eadc8de5842",
+                      "kind": "frame",
+                      "layers": [
+                        {
+                          "default": "check",
+                          "icon": {
+                            "color": {
+                              "color": {
+                                "variable": "--color-text-on-accent"
+                              },
+                              "type": "SOLID"
+                            },
+                            "size": {
+                              "variable": "--size-icon-sm"
+                            }
+                          },
+                          "kind": "icon",
+                          "slot": "checkboxIndicator"
+                        }
+                      ],
+                      "slot": "checkboxIndicator",
+                      "surface": "fa0b643878e9242d"
+                    }
+                  ],
+                  "slot": "checkboxControl",
+                  "surface": "2c03e395ff6a9e61"
+                },
+                {
+                  "kind": "text",
+                  "slot": "items 1",
+                  "text": {
+                    "fill": {
+                      "color": {
+                        "variable": "--color-text-primary"
+                      },
+                      "type": "SOLID"
+                    },
+                    "fontFamily": {
+                      "variable": "--font-family-body"
+                    },
+                    "fontSize": {
+                      "variable": "--font-size-body"
+                    },
+                    "fontWeight": {
+                      "variable": "--font-weight-body"
+                    },
+                    "lineHeight": 150
+                  },
+                  "textProperty": "items 1"
+                }
+              ],
+              "slot": "checkbox",
+              "surface": "fa0b643878e9242d"
+            },
+            {
+              "box": "9d7fb4db8fbe6340",
+              "kind": "frame",
+              "layers": [
+                {
+                  "box": "33649eab81bb9407",
+                  "kind": "frame",
+                  "layers": [
+                    {
+                      "fills": [
+                        {
+                          "color": {
+                            "variable": "checkbox:state-layer:634151876a"
+                          },
+                          "type": "SOLID"
+                        }
+                      ],
+                      "kind": "overlay",
+                      "slot": "state layer"
+                    },
+                    {
+                      "box": "fed71eadc8de5842",
+                      "kind": "frame",
+                      "layers": [
+                        {
+                          "default": "check",
+                          "icon": {
+                            "color": {
+                              "color": {
+                                "variable": "--color-text-on-accent"
+                              },
+                              "type": "SOLID"
+                            },
+                            "size": {
+                              "variable": "--size-icon-sm"
+                            }
+                          },
+                          "kind": "icon",
+                          "slot": "checkboxIndicator"
+                        }
+                      ],
+                      "slot": "checkboxIndicator",
+                      "surface": "fa0b643878e9242d"
+                    }
+                  ],
+                  "slot": "checkboxControl",
+                  "surface": "2c03e395ff6a9e61"
+                },
+                {
+                  "kind": "text",
+                  "slot": "items 2",
+                  "text": {
+                    "fill": {
+                      "color": {
+                        "variable": "--color-text-primary"
+                      },
+                      "type": "SOLID"
+                    },
+                    "fontFamily": {
+                      "variable": "--font-family-body"
+                    },
+                    "fontSize": {
+                      "variable": "--font-size-body"
+                    },
+                    "fontWeight": {
+                      "variable": "--font-weight-body"
+                    },
+                    "lineHeight": 150
+                  },
+                  "textProperty": "items 2"
+                }
+              ],
+              "slot": "checkbox 2",
+              "surface": "fa0b643878e9242d"
+            },
+            {
+              "box": "9d7fb4db8fbe6340",
+              "kind": "frame",
+              "layers": [
+                {
+                  "box": "33649eab81bb9407",
+                  "kind": "frame",
+                  "layers": [
+                    {
+                      "fills": [
+                        {
+                          "color": {
+                            "variable": "checkbox:state-layer:a8bbbce668"
+                          },
+                          "type": "SOLID"
+                        }
+                      ],
+                      "kind": "overlay",
+                      "slot": "state layer"
+                    }
+                  ],
+                  "slot": "checkboxControl",
+                  "surface": "b566e4f5e45d1014"
+                },
+                {
+                  "kind": "text",
+                  "slot": "items 3",
+                  "text": {
+                    "fill": {
+                      "color": {
+                        "variable": "--color-text-primary"
+                      },
+                      "type": "SOLID"
+                    },
+                    "fontFamily": {
+                      "variable": "--font-family-body"
+                    },
+                    "fontSize": {
+                      "variable": "--font-size-body"
+                    },
+                    "fontWeight": {
+                      "variable": "--font-weight-body"
+                    },
+                    "lineHeight": 150
+                  },
+                  "textProperty": "items 3"
+                }
+              ],
+              "slot": "checkbox 3",
+              "surface": "fa0b643878e9242d"
+            }
+          ],
+          "slot": "checkboxGroupItems",
+          "surface": "fa0b643878e9242d"
+        }
+      ],
       "338e9c162e4cf4f6": [
         {
           "box": "620a2846109d1846",
@@ -58012,6 +58936,268 @@
         }
       ],
       "37517e5f3dc66819": [],
+      "379e1c7a431c6c38": [
+        {
+          "box": "9d7fb4db8fbe6340",
+          "kind": "frame",
+          "layers": [
+            {
+              "box": "33649eab81bb9407",
+              "kind": "frame",
+              "layers": [
+                {
+                  "fills": [
+                    {
+                      "color": {
+                        "variable": "checkbox:state-layer:a8bbbce668"
+                      },
+                      "type": "SOLID"
+                    }
+                  ],
+                  "kind": "overlay",
+                  "slot": "state layer"
+                }
+              ],
+              "slot": "checkboxControl",
+              "surface": "00cf0b88bc2a682e"
+            },
+            {
+              "kind": "text",
+              "slot": "label",
+              "text": {
+                "fill": {
+                  "color": {
+                    "variable": "--color-text-primary"
+                  },
+                  "type": "SOLID"
+                },
+                "fontFamily": {
+                  "variable": "--font-family-body"
+                },
+                "fontSize": {
+                  "variable": "--font-size-body"
+                },
+                "fontWeight": {
+                  "variable": "--font-weight-body"
+                },
+                "lineHeight": 150
+              },
+              "textProperty": "label"
+            }
+          ],
+          "slot": "checkbox",
+          "surface": "fa0b643878e9242d"
+        },
+        {
+          "box": "61278edee5186127",
+          "kind": "frame",
+          "layers": [
+            {
+              "box": "9d7fb4db8fbe6340",
+              "kind": "frame",
+              "layers": [
+                {
+                  "box": "33649eab81bb9407",
+                  "kind": "frame",
+                  "layers": [
+                    {
+                      "fills": [
+                        {
+                          "color": {
+                            "variable": "checkbox:state-layer:634151876a"
+                          },
+                          "type": "SOLID"
+                        }
+                      ],
+                      "kind": "overlay",
+                      "slot": "state layer"
+                    },
+                    {
+                      "box": "fed71eadc8de5842",
+                      "kind": "frame",
+                      "layers": [
+                        {
+                          "default": "check",
+                          "icon": {
+                            "color": {
+                              "color": {
+                                "variable": "--color-text-on-accent"
+                              },
+                              "type": "SOLID"
+                            },
+                            "size": {
+                              "variable": "--size-icon-sm"
+                            }
+                          },
+                          "kind": "icon",
+                          "slot": "checkboxIndicator"
+                        }
+                      ],
+                      "slot": "checkboxIndicator",
+                      "surface": "fa0b643878e9242d"
+                    }
+                  ],
+                  "slot": "checkboxControl",
+                  "surface": "4302d6b465113eb5"
+                },
+                {
+                  "kind": "text",
+                  "slot": "items 1",
+                  "text": {
+                    "fill": {
+                      "color": {
+                        "variable": "--color-text-primary"
+                      },
+                      "type": "SOLID"
+                    },
+                    "fontFamily": {
+                      "variable": "--font-family-body"
+                    },
+                    "fontSize": {
+                      "variable": "--font-size-body"
+                    },
+                    "fontWeight": {
+                      "variable": "--font-weight-body"
+                    },
+                    "lineHeight": 150
+                  },
+                  "textProperty": "items 1"
+                }
+              ],
+              "slot": "checkbox",
+              "surface": "fa0b643878e9242d"
+            },
+            {
+              "box": "9d7fb4db8fbe6340",
+              "kind": "frame",
+              "layers": [
+                {
+                  "box": "33649eab81bb9407",
+                  "kind": "frame",
+                  "layers": [
+                    {
+                      "fills": [
+                        {
+                          "color": {
+                            "variable": "checkbox:state-layer:634151876a"
+                          },
+                          "type": "SOLID"
+                        }
+                      ],
+                      "kind": "overlay",
+                      "slot": "state layer"
+                    },
+                    {
+                      "box": "fed71eadc8de5842",
+                      "kind": "frame",
+                      "layers": [
+                        {
+                          "default": "check",
+                          "icon": {
+                            "color": {
+                              "color": {
+                                "variable": "--color-text-on-accent"
+                              },
+                              "type": "SOLID"
+                            },
+                            "size": {
+                              "variable": "--size-icon-sm"
+                            }
+                          },
+                          "kind": "icon",
+                          "slot": "checkboxIndicator"
+                        }
+                      ],
+                      "slot": "checkboxIndicator",
+                      "surface": "fa0b643878e9242d"
+                    }
+                  ],
+                  "slot": "checkboxControl",
+                  "surface": "4302d6b465113eb5"
+                },
+                {
+                  "kind": "text",
+                  "slot": "items 2",
+                  "text": {
+                    "fill": {
+                      "color": {
+                        "variable": "--color-text-primary"
+                      },
+                      "type": "SOLID"
+                    },
+                    "fontFamily": {
+                      "variable": "--font-family-body"
+                    },
+                    "fontSize": {
+                      "variable": "--font-size-body"
+                    },
+                    "fontWeight": {
+                      "variable": "--font-weight-body"
+                    },
+                    "lineHeight": 150
+                  },
+                  "textProperty": "items 2"
+                }
+              ],
+              "slot": "checkbox 2",
+              "surface": "fa0b643878e9242d"
+            },
+            {
+              "box": "9d7fb4db8fbe6340",
+              "kind": "frame",
+              "layers": [
+                {
+                  "box": "33649eab81bb9407",
+                  "kind": "frame",
+                  "layers": [
+                    {
+                      "fills": [
+                        {
+                          "color": {
+                            "variable": "checkbox:state-layer:a8bbbce668"
+                          },
+                          "type": "SOLID"
+                        }
+                      ],
+                      "kind": "overlay",
+                      "slot": "state layer"
+                    }
+                  ],
+                  "slot": "checkboxControl",
+                  "surface": "00cf0b88bc2a682e"
+                },
+                {
+                  "kind": "text",
+                  "slot": "items 3",
+                  "text": {
+                    "fill": {
+                      "color": {
+                        "variable": "--color-text-primary"
+                      },
+                      "type": "SOLID"
+                    },
+                    "fontFamily": {
+                      "variable": "--font-family-body"
+                    },
+                    "fontSize": {
+                      "variable": "--font-size-body"
+                    },
+                    "fontWeight": {
+                      "variable": "--font-weight-body"
+                    },
+                    "lineHeight": 150
+                  },
+                  "textProperty": "items 3"
+                }
+              ],
+              "slot": "checkbox 3",
+              "surface": "fa0b643878e9242d"
+            }
+          ],
+          "slot": "checkboxGroupItems",
+          "surface": "fa0b643878e9242d"
+        }
+      ],
       "389471285bea1328": [
         {
           "fills": [
@@ -61942,6 +63128,268 @@
           "kind": "icon",
           "slot": "post",
           "visibleProperty": "post"
+        }
+      ],
+      "5fe3e5e3a8620458": [
+        {
+          "box": "9d7fb4db8fbe6340",
+          "kind": "frame",
+          "layers": [
+            {
+              "box": "33649eab81bb9407",
+              "kind": "frame",
+              "layers": [
+                {
+                  "fills": [
+                    {
+                      "color": {
+                        "variable": "checkbox:state-layer:a8bbbce668"
+                      },
+                      "type": "SOLID"
+                    }
+                  ],
+                  "kind": "overlay",
+                  "slot": "state layer"
+                }
+              ],
+              "slot": "checkboxControl",
+              "surface": "3b4b23714ff9fbec"
+            },
+            {
+              "kind": "text",
+              "slot": "label",
+              "text": {
+                "fill": {
+                  "color": {
+                    "variable": "--color-text-primary"
+                  },
+                  "type": "SOLID"
+                },
+                "fontFamily": {
+                  "variable": "--font-family-body"
+                },
+                "fontSize": {
+                  "variable": "--font-size-body"
+                },
+                "fontWeight": {
+                  "variable": "--font-weight-body"
+                },
+                "lineHeight": 150
+              },
+              "textProperty": "label"
+            }
+          ],
+          "slot": "checkbox",
+          "surface": "fa0b643878e9242d"
+        },
+        {
+          "box": "61278edee5186127",
+          "kind": "frame",
+          "layers": [
+            {
+              "box": "9d7fb4db8fbe6340",
+              "kind": "frame",
+              "layers": [
+                {
+                  "box": "33649eab81bb9407",
+                  "kind": "frame",
+                  "layers": [
+                    {
+                      "fills": [
+                        {
+                          "color": {
+                            "variable": "checkbox:state-layer:634151876a"
+                          },
+                          "type": "SOLID"
+                        }
+                      ],
+                      "kind": "overlay",
+                      "slot": "state layer"
+                    },
+                    {
+                      "box": "fed71eadc8de5842",
+                      "kind": "frame",
+                      "layers": [
+                        {
+                          "default": "check",
+                          "icon": {
+                            "color": {
+                              "color": {
+                                "variable": "--color-text-on-accent"
+                              },
+                              "type": "SOLID"
+                            },
+                            "size": {
+                              "variable": "--size-icon-sm"
+                            }
+                          },
+                          "kind": "icon",
+                          "slot": "checkboxIndicator"
+                        }
+                      ],
+                      "slot": "checkboxIndicator",
+                      "surface": "fa0b643878e9242d"
+                    }
+                  ],
+                  "slot": "checkboxControl",
+                  "surface": "4b7b57888dcfa08b"
+                },
+                {
+                  "kind": "text",
+                  "slot": "items 1",
+                  "text": {
+                    "fill": {
+                      "color": {
+                        "variable": "--color-text-primary"
+                      },
+                      "type": "SOLID"
+                    },
+                    "fontFamily": {
+                      "variable": "--font-family-body"
+                    },
+                    "fontSize": {
+                      "variable": "--font-size-body"
+                    },
+                    "fontWeight": {
+                      "variable": "--font-weight-body"
+                    },
+                    "lineHeight": 150
+                  },
+                  "textProperty": "items 1"
+                }
+              ],
+              "slot": "checkbox",
+              "surface": "fa0b643878e9242d"
+            },
+            {
+              "box": "9d7fb4db8fbe6340",
+              "kind": "frame",
+              "layers": [
+                {
+                  "box": "33649eab81bb9407",
+                  "kind": "frame",
+                  "layers": [
+                    {
+                      "fills": [
+                        {
+                          "color": {
+                            "variable": "checkbox:state-layer:634151876a"
+                          },
+                          "type": "SOLID"
+                        }
+                      ],
+                      "kind": "overlay",
+                      "slot": "state layer"
+                    },
+                    {
+                      "box": "fed71eadc8de5842",
+                      "kind": "frame",
+                      "layers": [
+                        {
+                          "default": "check",
+                          "icon": {
+                            "color": {
+                              "color": {
+                                "variable": "--color-text-on-accent"
+                              },
+                              "type": "SOLID"
+                            },
+                            "size": {
+                              "variable": "--size-icon-sm"
+                            }
+                          },
+                          "kind": "icon",
+                          "slot": "checkboxIndicator"
+                        }
+                      ],
+                      "slot": "checkboxIndicator",
+                      "surface": "fa0b643878e9242d"
+                    }
+                  ],
+                  "slot": "checkboxControl",
+                  "surface": "4b7b57888dcfa08b"
+                },
+                {
+                  "kind": "text",
+                  "slot": "items 2",
+                  "text": {
+                    "fill": {
+                      "color": {
+                        "variable": "--color-text-primary"
+                      },
+                      "type": "SOLID"
+                    },
+                    "fontFamily": {
+                      "variable": "--font-family-body"
+                    },
+                    "fontSize": {
+                      "variable": "--font-size-body"
+                    },
+                    "fontWeight": {
+                      "variable": "--font-weight-body"
+                    },
+                    "lineHeight": 150
+                  },
+                  "textProperty": "items 2"
+                }
+              ],
+              "slot": "checkbox 2",
+              "surface": "fa0b643878e9242d"
+            },
+            {
+              "box": "9d7fb4db8fbe6340",
+              "kind": "frame",
+              "layers": [
+                {
+                  "box": "33649eab81bb9407",
+                  "kind": "frame",
+                  "layers": [
+                    {
+                      "fills": [
+                        {
+                          "color": {
+                            "variable": "checkbox:state-layer:a8bbbce668"
+                          },
+                          "type": "SOLID"
+                        }
+                      ],
+                      "kind": "overlay",
+                      "slot": "state layer"
+                    }
+                  ],
+                  "slot": "checkboxControl",
+                  "surface": "3b4b23714ff9fbec"
+                },
+                {
+                  "kind": "text",
+                  "slot": "items 3",
+                  "text": {
+                    "fill": {
+                      "color": {
+                        "variable": "--color-text-primary"
+                      },
+                      "type": "SOLID"
+                    },
+                    "fontFamily": {
+                      "variable": "--font-family-body"
+                    },
+                    "fontSize": {
+                      "variable": "--font-size-body"
+                    },
+                    "fontWeight": {
+                      "variable": "--font-weight-body"
+                    },
+                    "lineHeight": 150
+                  },
+                  "textProperty": "items 3"
+                }
+              ],
+              "slot": "checkbox 3",
+              "surface": "fa0b643878e9242d"
+            }
+          ],
+          "slot": "checkboxGroupItems",
+          "surface": "fa0b643878e9242d"
         }
       ],
       "5ff449d27a478b71": [
@@ -66005,6 +67453,268 @@
           "kind": "icon",
           "slot": "post",
           "visibleProperty": "post"
+        }
+      ],
+      "83d32ddf0bbaa861": [
+        {
+          "box": "9d7fb4db8fbe6340",
+          "kind": "frame",
+          "layers": [
+            {
+              "box": "33649eab81bb9407",
+              "kind": "frame",
+              "layers": [
+                {
+                  "fills": [
+                    {
+                      "color": {
+                        "variable": "checkbox:state-layer:a8bbbce668"
+                      },
+                      "type": "SOLID"
+                    }
+                  ],
+                  "kind": "overlay",
+                  "slot": "state layer"
+                }
+              ],
+              "slot": "checkboxControl",
+              "surface": "00cf0b88bc2a682e"
+            },
+            {
+              "kind": "text",
+              "slot": "label",
+              "text": {
+                "fill": {
+                  "color": {
+                    "variable": "--color-text-primary"
+                  },
+                  "type": "SOLID"
+                },
+                "fontFamily": {
+                  "variable": "--font-family-body"
+                },
+                "fontSize": {
+                  "variable": "--font-size-body"
+                },
+                "fontWeight": {
+                  "variable": "--font-weight-body"
+                },
+                "lineHeight": 150
+              },
+              "textProperty": "label"
+            }
+          ],
+          "slot": "checkbox",
+          "surface": "fa0b643878e9242d"
+        },
+        {
+          "box": "cce3b2e1cbb577f5",
+          "kind": "frame",
+          "layers": [
+            {
+              "box": "9d7fb4db8fbe6340",
+              "kind": "frame",
+              "layers": [
+                {
+                  "box": "33649eab81bb9407",
+                  "kind": "frame",
+                  "layers": [
+                    {
+                      "fills": [
+                        {
+                          "color": {
+                            "variable": "checkbox:state-layer:634151876a"
+                          },
+                          "type": "SOLID"
+                        }
+                      ],
+                      "kind": "overlay",
+                      "slot": "state layer"
+                    },
+                    {
+                      "box": "fed71eadc8de5842",
+                      "kind": "frame",
+                      "layers": [
+                        {
+                          "default": "check",
+                          "icon": {
+                            "color": {
+                              "color": {
+                                "variable": "--color-text-on-accent"
+                              },
+                              "type": "SOLID"
+                            },
+                            "size": {
+                              "variable": "--size-icon-sm"
+                            }
+                          },
+                          "kind": "icon",
+                          "slot": "checkboxIndicator"
+                        }
+                      ],
+                      "slot": "checkboxIndicator",
+                      "surface": "fa0b643878e9242d"
+                    }
+                  ],
+                  "slot": "checkboxControl",
+                  "surface": "4302d6b465113eb5"
+                },
+                {
+                  "kind": "text",
+                  "slot": "items 1",
+                  "text": {
+                    "fill": {
+                      "color": {
+                        "variable": "--color-text-primary"
+                      },
+                      "type": "SOLID"
+                    },
+                    "fontFamily": {
+                      "variable": "--font-family-body"
+                    },
+                    "fontSize": {
+                      "variable": "--font-size-body"
+                    },
+                    "fontWeight": {
+                      "variable": "--font-weight-body"
+                    },
+                    "lineHeight": 150
+                  },
+                  "textProperty": "items 1"
+                }
+              ],
+              "slot": "checkbox",
+              "surface": "fa0b643878e9242d"
+            },
+            {
+              "box": "9d7fb4db8fbe6340",
+              "kind": "frame",
+              "layers": [
+                {
+                  "box": "33649eab81bb9407",
+                  "kind": "frame",
+                  "layers": [
+                    {
+                      "fills": [
+                        {
+                          "color": {
+                            "variable": "checkbox:state-layer:634151876a"
+                          },
+                          "type": "SOLID"
+                        }
+                      ],
+                      "kind": "overlay",
+                      "slot": "state layer"
+                    },
+                    {
+                      "box": "fed71eadc8de5842",
+                      "kind": "frame",
+                      "layers": [
+                        {
+                          "default": "check",
+                          "icon": {
+                            "color": {
+                              "color": {
+                                "variable": "--color-text-on-accent"
+                              },
+                              "type": "SOLID"
+                            },
+                            "size": {
+                              "variable": "--size-icon-sm"
+                            }
+                          },
+                          "kind": "icon",
+                          "slot": "checkboxIndicator"
+                        }
+                      ],
+                      "slot": "checkboxIndicator",
+                      "surface": "fa0b643878e9242d"
+                    }
+                  ],
+                  "slot": "checkboxControl",
+                  "surface": "4302d6b465113eb5"
+                },
+                {
+                  "kind": "text",
+                  "slot": "items 2",
+                  "text": {
+                    "fill": {
+                      "color": {
+                        "variable": "--color-text-primary"
+                      },
+                      "type": "SOLID"
+                    },
+                    "fontFamily": {
+                      "variable": "--font-family-body"
+                    },
+                    "fontSize": {
+                      "variable": "--font-size-body"
+                    },
+                    "fontWeight": {
+                      "variable": "--font-weight-body"
+                    },
+                    "lineHeight": 150
+                  },
+                  "textProperty": "items 2"
+                }
+              ],
+              "slot": "checkbox 2",
+              "surface": "fa0b643878e9242d"
+            },
+            {
+              "box": "9d7fb4db8fbe6340",
+              "kind": "frame",
+              "layers": [
+                {
+                  "box": "33649eab81bb9407",
+                  "kind": "frame",
+                  "layers": [
+                    {
+                      "fills": [
+                        {
+                          "color": {
+                            "variable": "checkbox:state-layer:a8bbbce668"
+                          },
+                          "type": "SOLID"
+                        }
+                      ],
+                      "kind": "overlay",
+                      "slot": "state layer"
+                    }
+                  ],
+                  "slot": "checkboxControl",
+                  "surface": "00cf0b88bc2a682e"
+                },
+                {
+                  "kind": "text",
+                  "slot": "items 3",
+                  "text": {
+                    "fill": {
+                      "color": {
+                        "variable": "--color-text-primary"
+                      },
+                      "type": "SOLID"
+                    },
+                    "fontFamily": {
+                      "variable": "--font-family-body"
+                    },
+                    "fontSize": {
+                      "variable": "--font-size-body"
+                    },
+                    "fontWeight": {
+                      "variable": "--font-weight-body"
+                    },
+                    "lineHeight": 150
+                  },
+                  "textProperty": "items 3"
+                }
+              ],
+              "slot": "checkbox 3",
+              "surface": "fa0b643878e9242d"
+            }
+          ],
+          "slot": "checkboxGroupItems",
+          "surface": "fa0b643878e9242d"
         }
       ],
       "83e00beb09c00373": [
@@ -71358,6 +73068,268 @@
           "textProperty": "children"
         }
       ],
+      "a3d58522ffbc2e65": [
+        {
+          "box": "9d7fb4db8fbe6340",
+          "kind": "frame",
+          "layers": [
+            {
+              "box": "33649eab81bb9407",
+              "kind": "frame",
+              "layers": [
+                {
+                  "fills": [
+                    {
+                      "color": {
+                        "variable": "checkbox:state-layer:a8bbbce668"
+                      },
+                      "type": "SOLID"
+                    }
+                  ],
+                  "kind": "overlay",
+                  "slot": "state layer"
+                }
+              ],
+              "slot": "checkboxControl",
+              "surface": "b566e4f5e45d1014"
+            },
+            {
+              "kind": "text",
+              "slot": "label",
+              "text": {
+                "fill": {
+                  "color": {
+                    "variable": "--color-text-primary"
+                  },
+                  "type": "SOLID"
+                },
+                "fontFamily": {
+                  "variable": "--font-family-body"
+                },
+                "fontSize": {
+                  "variable": "--font-size-body"
+                },
+                "fontWeight": {
+                  "variable": "--font-weight-body"
+                },
+                "lineHeight": 150
+              },
+              "textProperty": "label"
+            }
+          ],
+          "slot": "checkbox",
+          "surface": "fa0b643878e9242d"
+        },
+        {
+          "box": "cce3b2e1cbb577f5",
+          "kind": "frame",
+          "layers": [
+            {
+              "box": "9d7fb4db8fbe6340",
+              "kind": "frame",
+              "layers": [
+                {
+                  "box": "33649eab81bb9407",
+                  "kind": "frame",
+                  "layers": [
+                    {
+                      "fills": [
+                        {
+                          "color": {
+                            "variable": "checkbox:state-layer:634151876a"
+                          },
+                          "type": "SOLID"
+                        }
+                      ],
+                      "kind": "overlay",
+                      "slot": "state layer"
+                    },
+                    {
+                      "box": "fed71eadc8de5842",
+                      "kind": "frame",
+                      "layers": [
+                        {
+                          "default": "check",
+                          "icon": {
+                            "color": {
+                              "color": {
+                                "variable": "--color-text-on-accent"
+                              },
+                              "type": "SOLID"
+                            },
+                            "size": {
+                              "variable": "--size-icon-sm"
+                            }
+                          },
+                          "kind": "icon",
+                          "slot": "checkboxIndicator"
+                        }
+                      ],
+                      "slot": "checkboxIndicator",
+                      "surface": "fa0b643878e9242d"
+                    }
+                  ],
+                  "slot": "checkboxControl",
+                  "surface": "2c03e395ff6a9e61"
+                },
+                {
+                  "kind": "text",
+                  "slot": "items 1",
+                  "text": {
+                    "fill": {
+                      "color": {
+                        "variable": "--color-text-primary"
+                      },
+                      "type": "SOLID"
+                    },
+                    "fontFamily": {
+                      "variable": "--font-family-body"
+                    },
+                    "fontSize": {
+                      "variable": "--font-size-body"
+                    },
+                    "fontWeight": {
+                      "variable": "--font-weight-body"
+                    },
+                    "lineHeight": 150
+                  },
+                  "textProperty": "items 1"
+                }
+              ],
+              "slot": "checkbox",
+              "surface": "fa0b643878e9242d"
+            },
+            {
+              "box": "9d7fb4db8fbe6340",
+              "kind": "frame",
+              "layers": [
+                {
+                  "box": "33649eab81bb9407",
+                  "kind": "frame",
+                  "layers": [
+                    {
+                      "fills": [
+                        {
+                          "color": {
+                            "variable": "checkbox:state-layer:634151876a"
+                          },
+                          "type": "SOLID"
+                        }
+                      ],
+                      "kind": "overlay",
+                      "slot": "state layer"
+                    },
+                    {
+                      "box": "fed71eadc8de5842",
+                      "kind": "frame",
+                      "layers": [
+                        {
+                          "default": "check",
+                          "icon": {
+                            "color": {
+                              "color": {
+                                "variable": "--color-text-on-accent"
+                              },
+                              "type": "SOLID"
+                            },
+                            "size": {
+                              "variable": "--size-icon-sm"
+                            }
+                          },
+                          "kind": "icon",
+                          "slot": "checkboxIndicator"
+                        }
+                      ],
+                      "slot": "checkboxIndicator",
+                      "surface": "fa0b643878e9242d"
+                    }
+                  ],
+                  "slot": "checkboxControl",
+                  "surface": "2c03e395ff6a9e61"
+                },
+                {
+                  "kind": "text",
+                  "slot": "items 2",
+                  "text": {
+                    "fill": {
+                      "color": {
+                        "variable": "--color-text-primary"
+                      },
+                      "type": "SOLID"
+                    },
+                    "fontFamily": {
+                      "variable": "--font-family-body"
+                    },
+                    "fontSize": {
+                      "variable": "--font-size-body"
+                    },
+                    "fontWeight": {
+                      "variable": "--font-weight-body"
+                    },
+                    "lineHeight": 150
+                  },
+                  "textProperty": "items 2"
+                }
+              ],
+              "slot": "checkbox 2",
+              "surface": "fa0b643878e9242d"
+            },
+            {
+              "box": "9d7fb4db8fbe6340",
+              "kind": "frame",
+              "layers": [
+                {
+                  "box": "33649eab81bb9407",
+                  "kind": "frame",
+                  "layers": [
+                    {
+                      "fills": [
+                        {
+                          "color": {
+                            "variable": "checkbox:state-layer:a8bbbce668"
+                          },
+                          "type": "SOLID"
+                        }
+                      ],
+                      "kind": "overlay",
+                      "slot": "state layer"
+                    }
+                  ],
+                  "slot": "checkboxControl",
+                  "surface": "b566e4f5e45d1014"
+                },
+                {
+                  "kind": "text",
+                  "slot": "items 3",
+                  "text": {
+                    "fill": {
+                      "color": {
+                        "variable": "--color-text-primary"
+                      },
+                      "type": "SOLID"
+                    },
+                    "fontFamily": {
+                      "variable": "--font-family-body"
+                    },
+                    "fontSize": {
+                      "variable": "--font-size-body"
+                    },
+                    "fontWeight": {
+                      "variable": "--font-weight-body"
+                    },
+                    "lineHeight": 150
+                  },
+                  "textProperty": "items 3"
+                }
+              ],
+              "slot": "checkbox 3",
+              "surface": "fa0b643878e9242d"
+            }
+          ],
+          "slot": "checkboxGroupItems",
+          "surface": "fa0b643878e9242d"
+        }
+      ],
       "a3ed43822d59b96f": [
         {
           "kind": "text",
@@ -74866,6 +76838,268 @@
           "kind": "icon",
           "slot": "post",
           "visibleProperty": "post"
+        }
+      ],
+      "c55d6111c2ec63af": [
+        {
+          "box": "9d7fb4db8fbe6340",
+          "kind": "frame",
+          "layers": [
+            {
+              "box": "33649eab81bb9407",
+              "kind": "frame",
+              "layers": [
+                {
+                  "fills": [
+                    {
+                      "color": {
+                        "variable": "checkbox:state-layer:a8bbbce668"
+                      },
+                      "type": "SOLID"
+                    }
+                  ],
+                  "kind": "overlay",
+                  "slot": "state layer"
+                }
+              ],
+              "slot": "checkboxControl",
+              "surface": "f30b966e023c0cfc"
+            },
+            {
+              "kind": "text",
+              "slot": "label",
+              "text": {
+                "fill": {
+                  "color": {
+                    "variable": "--color-text-primary"
+                  },
+                  "type": "SOLID"
+                },
+                "fontFamily": {
+                  "variable": "--font-family-body"
+                },
+                "fontSize": {
+                  "variable": "--font-size-body"
+                },
+                "fontWeight": {
+                  "variable": "--font-weight-body"
+                },
+                "lineHeight": 150
+              },
+              "textProperty": "label"
+            }
+          ],
+          "slot": "checkbox",
+          "surface": "fa0b643878e9242d"
+        },
+        {
+          "box": "61278edee5186127",
+          "kind": "frame",
+          "layers": [
+            {
+              "box": "9d7fb4db8fbe6340",
+              "kind": "frame",
+              "layers": [
+                {
+                  "box": "33649eab81bb9407",
+                  "kind": "frame",
+                  "layers": [
+                    {
+                      "fills": [
+                        {
+                          "color": {
+                            "variable": "checkbox:state-layer:634151876a"
+                          },
+                          "type": "SOLID"
+                        }
+                      ],
+                      "kind": "overlay",
+                      "slot": "state layer"
+                    },
+                    {
+                      "box": "fed71eadc8de5842",
+                      "kind": "frame",
+                      "layers": [
+                        {
+                          "default": "check",
+                          "icon": {
+                            "color": {
+                              "color": {
+                                "variable": "--color-text-on-accent"
+                              },
+                              "type": "SOLID"
+                            },
+                            "size": {
+                              "variable": "--size-icon-sm"
+                            }
+                          },
+                          "kind": "icon",
+                          "slot": "checkboxIndicator"
+                        }
+                      ],
+                      "slot": "checkboxIndicator",
+                      "surface": "fa0b643878e9242d"
+                    }
+                  ],
+                  "slot": "checkboxControl",
+                  "surface": "4f3ba7b72975c3fc"
+                },
+                {
+                  "kind": "text",
+                  "slot": "items 1",
+                  "text": {
+                    "fill": {
+                      "color": {
+                        "variable": "--color-text-primary"
+                      },
+                      "type": "SOLID"
+                    },
+                    "fontFamily": {
+                      "variable": "--font-family-body"
+                    },
+                    "fontSize": {
+                      "variable": "--font-size-body"
+                    },
+                    "fontWeight": {
+                      "variable": "--font-weight-body"
+                    },
+                    "lineHeight": 150
+                  },
+                  "textProperty": "items 1"
+                }
+              ],
+              "slot": "checkbox",
+              "surface": "fa0b643878e9242d"
+            },
+            {
+              "box": "9d7fb4db8fbe6340",
+              "kind": "frame",
+              "layers": [
+                {
+                  "box": "33649eab81bb9407",
+                  "kind": "frame",
+                  "layers": [
+                    {
+                      "fills": [
+                        {
+                          "color": {
+                            "variable": "checkbox:state-layer:634151876a"
+                          },
+                          "type": "SOLID"
+                        }
+                      ],
+                      "kind": "overlay",
+                      "slot": "state layer"
+                    },
+                    {
+                      "box": "fed71eadc8de5842",
+                      "kind": "frame",
+                      "layers": [
+                        {
+                          "default": "check",
+                          "icon": {
+                            "color": {
+                              "color": {
+                                "variable": "--color-text-on-accent"
+                              },
+                              "type": "SOLID"
+                            },
+                            "size": {
+                              "variable": "--size-icon-sm"
+                            }
+                          },
+                          "kind": "icon",
+                          "slot": "checkboxIndicator"
+                        }
+                      ],
+                      "slot": "checkboxIndicator",
+                      "surface": "fa0b643878e9242d"
+                    }
+                  ],
+                  "slot": "checkboxControl",
+                  "surface": "4f3ba7b72975c3fc"
+                },
+                {
+                  "kind": "text",
+                  "slot": "items 2",
+                  "text": {
+                    "fill": {
+                      "color": {
+                        "variable": "--color-text-primary"
+                      },
+                      "type": "SOLID"
+                    },
+                    "fontFamily": {
+                      "variable": "--font-family-body"
+                    },
+                    "fontSize": {
+                      "variable": "--font-size-body"
+                    },
+                    "fontWeight": {
+                      "variable": "--font-weight-body"
+                    },
+                    "lineHeight": 150
+                  },
+                  "textProperty": "items 2"
+                }
+              ],
+              "slot": "checkbox 2",
+              "surface": "fa0b643878e9242d"
+            },
+            {
+              "box": "9d7fb4db8fbe6340",
+              "kind": "frame",
+              "layers": [
+                {
+                  "box": "33649eab81bb9407",
+                  "kind": "frame",
+                  "layers": [
+                    {
+                      "fills": [
+                        {
+                          "color": {
+                            "variable": "checkbox:state-layer:a8bbbce668"
+                          },
+                          "type": "SOLID"
+                        }
+                      ],
+                      "kind": "overlay",
+                      "slot": "state layer"
+                    }
+                  ],
+                  "slot": "checkboxControl",
+                  "surface": "f30b966e023c0cfc"
+                },
+                {
+                  "kind": "text",
+                  "slot": "items 3",
+                  "text": {
+                    "fill": {
+                      "color": {
+                        "variable": "--color-text-primary"
+                      },
+                      "type": "SOLID"
+                    },
+                    "fontFamily": {
+                      "variable": "--font-family-body"
+                    },
+                    "fontSize": {
+                      "variable": "--font-size-body"
+                    },
+                    "fontWeight": {
+                      "variable": "--font-weight-body"
+                    },
+                    "lineHeight": 150
+                  },
+                  "textProperty": "items 3"
+                }
+              ],
+              "slot": "checkbox 3",
+              "surface": "fa0b643878e9242d"
+            }
+          ],
+          "slot": "checkboxGroupItems",
+          "surface": "fa0b643878e9242d"
         }
       ],
       "c790af071b65e880": [
@@ -78402,6 +80636,268 @@
           "width": {
             "variable": "--focus-ring-width"
           }
+        }
+      ],
+      "ea2ed16bf3044f08": [
+        {
+          "box": "9d7fb4db8fbe6340",
+          "kind": "frame",
+          "layers": [
+            {
+              "box": "33649eab81bb9407",
+              "kind": "frame",
+              "layers": [
+                {
+                  "fills": [
+                    {
+                      "color": {
+                        "variable": "checkbox:state-layer:a8bbbce668"
+                      },
+                      "type": "SOLID"
+                    }
+                  ],
+                  "kind": "overlay",
+                  "slot": "state layer"
+                }
+              ],
+              "slot": "checkboxControl",
+              "surface": "3b4b23714ff9fbec"
+            },
+            {
+              "kind": "text",
+              "slot": "label",
+              "text": {
+                "fill": {
+                  "color": {
+                    "variable": "--color-text-primary"
+                  },
+                  "type": "SOLID"
+                },
+                "fontFamily": {
+                  "variable": "--font-family-body"
+                },
+                "fontSize": {
+                  "variable": "--font-size-body"
+                },
+                "fontWeight": {
+                  "variable": "--font-weight-body"
+                },
+                "lineHeight": 150
+              },
+              "textProperty": "label"
+            }
+          ],
+          "slot": "checkbox",
+          "surface": "fa0b643878e9242d"
+        },
+        {
+          "box": "cce3b2e1cbb577f5",
+          "kind": "frame",
+          "layers": [
+            {
+              "box": "9d7fb4db8fbe6340",
+              "kind": "frame",
+              "layers": [
+                {
+                  "box": "33649eab81bb9407",
+                  "kind": "frame",
+                  "layers": [
+                    {
+                      "fills": [
+                        {
+                          "color": {
+                            "variable": "checkbox:state-layer:634151876a"
+                          },
+                          "type": "SOLID"
+                        }
+                      ],
+                      "kind": "overlay",
+                      "slot": "state layer"
+                    },
+                    {
+                      "box": "fed71eadc8de5842",
+                      "kind": "frame",
+                      "layers": [
+                        {
+                          "default": "check",
+                          "icon": {
+                            "color": {
+                              "color": {
+                                "variable": "--color-text-on-accent"
+                              },
+                              "type": "SOLID"
+                            },
+                            "size": {
+                              "variable": "--size-icon-sm"
+                            }
+                          },
+                          "kind": "icon",
+                          "slot": "checkboxIndicator"
+                        }
+                      ],
+                      "slot": "checkboxIndicator",
+                      "surface": "fa0b643878e9242d"
+                    }
+                  ],
+                  "slot": "checkboxControl",
+                  "surface": "4b7b57888dcfa08b"
+                },
+                {
+                  "kind": "text",
+                  "slot": "items 1",
+                  "text": {
+                    "fill": {
+                      "color": {
+                        "variable": "--color-text-primary"
+                      },
+                      "type": "SOLID"
+                    },
+                    "fontFamily": {
+                      "variable": "--font-family-body"
+                    },
+                    "fontSize": {
+                      "variable": "--font-size-body"
+                    },
+                    "fontWeight": {
+                      "variable": "--font-weight-body"
+                    },
+                    "lineHeight": 150
+                  },
+                  "textProperty": "items 1"
+                }
+              ],
+              "slot": "checkbox",
+              "surface": "fa0b643878e9242d"
+            },
+            {
+              "box": "9d7fb4db8fbe6340",
+              "kind": "frame",
+              "layers": [
+                {
+                  "box": "33649eab81bb9407",
+                  "kind": "frame",
+                  "layers": [
+                    {
+                      "fills": [
+                        {
+                          "color": {
+                            "variable": "checkbox:state-layer:634151876a"
+                          },
+                          "type": "SOLID"
+                        }
+                      ],
+                      "kind": "overlay",
+                      "slot": "state layer"
+                    },
+                    {
+                      "box": "fed71eadc8de5842",
+                      "kind": "frame",
+                      "layers": [
+                        {
+                          "default": "check",
+                          "icon": {
+                            "color": {
+                              "color": {
+                                "variable": "--color-text-on-accent"
+                              },
+                              "type": "SOLID"
+                            },
+                            "size": {
+                              "variable": "--size-icon-sm"
+                            }
+                          },
+                          "kind": "icon",
+                          "slot": "checkboxIndicator"
+                        }
+                      ],
+                      "slot": "checkboxIndicator",
+                      "surface": "fa0b643878e9242d"
+                    }
+                  ],
+                  "slot": "checkboxControl",
+                  "surface": "4b7b57888dcfa08b"
+                },
+                {
+                  "kind": "text",
+                  "slot": "items 2",
+                  "text": {
+                    "fill": {
+                      "color": {
+                        "variable": "--color-text-primary"
+                      },
+                      "type": "SOLID"
+                    },
+                    "fontFamily": {
+                      "variable": "--font-family-body"
+                    },
+                    "fontSize": {
+                      "variable": "--font-size-body"
+                    },
+                    "fontWeight": {
+                      "variable": "--font-weight-body"
+                    },
+                    "lineHeight": 150
+                  },
+                  "textProperty": "items 2"
+                }
+              ],
+              "slot": "checkbox 2",
+              "surface": "fa0b643878e9242d"
+            },
+            {
+              "box": "9d7fb4db8fbe6340",
+              "kind": "frame",
+              "layers": [
+                {
+                  "box": "33649eab81bb9407",
+                  "kind": "frame",
+                  "layers": [
+                    {
+                      "fills": [
+                        {
+                          "color": {
+                            "variable": "checkbox:state-layer:a8bbbce668"
+                          },
+                          "type": "SOLID"
+                        }
+                      ],
+                      "kind": "overlay",
+                      "slot": "state layer"
+                    }
+                  ],
+                  "slot": "checkboxControl",
+                  "surface": "3b4b23714ff9fbec"
+                },
+                {
+                  "kind": "text",
+                  "slot": "items 3",
+                  "text": {
+                    "fill": {
+                      "color": {
+                        "variable": "--color-text-primary"
+                      },
+                      "type": "SOLID"
+                    },
+                    "fontFamily": {
+                      "variable": "--font-family-body"
+                    },
+                    "fontSize": {
+                      "variable": "--font-size-body"
+                    },
+                    "fontWeight": {
+                      "variable": "--font-weight-body"
+                    },
+                    "lineHeight": 150
+                  },
+                  "textProperty": "items 3"
+                }
+              ],
+              "slot": "checkbox 3",
+              "surface": "fa0b643878e9242d"
+            }
+          ],
+          "slot": "checkboxGroupItems",
+          "surface": "fa0b643878e9242d"
         }
       ],
       "ea85e32c1653dbde": [
@@ -101450,6 +103946,38 @@
     {
       "codeSyntax": "",
       "collection": "component",
+      "expression": "color-mix( in srgb, var(--color-text-primary) calc(0 * 100%), transparent )",
+      "id": "checkbox:state-layer:a8bbbce668",
+      "name": "checkbox/state-layer-2",
+      "source": {
+        "dark": "evaluated",
+        "light": "evaluated"
+      },
+      "type": "COLOR",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": {
+            "a": 0,
+            "b": 0,
+            "g": 0,
+            "r": 0
+          }
+        },
+        "light": {
+          "kind": "literal",
+          "value": {
+            "a": 0,
+            "b": 0,
+            "g": 0,
+            "r": 0
+          }
+        }
+      }
+    },
+    {
+      "codeSyntax": "",
+      "collection": "component",
       "expression": "color-mix( in srgb, var(--color-text-disabled) calc(var(--state-layer-disabled-opacity) * 100%), transparent )",
       "id": "checkbox:state-layer:b8efc6b2f3",
       "name": "checkbox/state-layer/disabled",
@@ -101539,38 +104067,6 @@
             "b": 0.0903,
             "g": 0.098,
             "r": 0.1095
-          }
-        }
-      }
-    },
-    {
-      "codeSyntax": "",
-      "collection": "component",
-      "expression": "color-mix( in srgb, var(--color-text-primary) calc(0 * 100%), transparent )",
-      "id": "checkbox:state-layer:a8bbbce668",
-      "name": "checkbox/state-layer/unchecked",
-      "source": {
-        "dark": "evaluated",
-        "light": "evaluated"
-      },
-      "type": "COLOR",
-      "values": {
-        "dark": {
-          "kind": "literal",
-          "value": {
-            "a": 0,
-            "b": 0,
-            "g": 0,
-            "r": 0
-          }
-        },
-        "light": {
-          "kind": "literal",
-          "value": {
-            "a": 0,
-            "b": 0,
-            "g": 0,
-            "r": 0
           }
         }
       }

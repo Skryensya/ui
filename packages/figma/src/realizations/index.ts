@@ -27,7 +27,7 @@ import { tabsRealization } from "./tabs.js";
 import { accordionRealization } from "./accordion.js";
 import { paginationRealization } from "./pagination.js";
 import { stepsRealization } from "./steps.js";
-import { checkboxRealization } from "./checkbox.js";
+import { checkboxGroupRealization, checkboxRealization } from "./checkbox.js";
 import { switchRealization } from "./switch.js";
 import { radioGroupRealization, radioRealization } from "./radio.js";
 import { selectRealization } from "./select.js";
@@ -43,4 +43,4 @@ import { expandableTileRealization, tileCheckboxRealization, tileLinkRealization
  * EVERY CONTRACT FIGMA DRAWS, in the order their columns stand on the page. Adding a component is a
  * realization file and one line here; `catalogue.test.ts` holds each one to compiling clean.
  */
-export const catalogue: readonly Realization[] = [buttonRealization, badgeRealization, badgeDotRealization, kbdRealization, tagRealization, tagLinkRealization, avatarRealization, textRealization, headingRealization, linkRealization, codeRealization, strongRealization, skipLinkRealization, backToTopRealization, statRealization, calloutRealization, separatorRealization, labelledSeparatorRealization, quoteRealization, emptyStateRealization, progressRealization, meterRealization, inputRealization, textareaRealization, breadcrumbRealization, descriptionListRealization, segmentedRealization, tabsRealization, accordionRealization, paginationRealization, stepsRealization, checkboxRealization, switchRealization, radioRealization, radioGroupRealization, selectRealization, passwordInputRealization, numberFieldRealization, listRealization, navListRealization, timelineRealization, detailsRealization, tileLinkRealization, tileCheckboxRealization, tileSwitchRealization, expandableTileRealization];
+export const catalogue: readonly Realization[] = [buttonRealization, badgeRealization, badgeDotRealization, kbdRealization, tagRealization, tagLinkRealization, avatarRealization, textRealization, headingRealization, linkRealization, codeRealization, strongRealization, skipLinkRealization, backToTopRealization, statRealization, calloutRealization, separatorRealization, labelledSeparatorRealization, quoteRealization, emptyStateRealization, progressRealization, meterRealization, inputRealization, textareaRealization, breadcrumbRealization, descriptionListRealization, segmentedRealization, tabsRealization, accordionRealization, paginationRealization, stepsRealization, checkboxRealization, checkboxGroupRealization, switchRealization, radioRealization, radioGroupRealization, selectRealization, passwordInputRealization, numberFieldRealization, listRealization, navListRealization, timelineRealization, detailsRealization, tileLinkRealization, tileCheckboxRealization, tileSwitchRealization, expandableTileRealization];
