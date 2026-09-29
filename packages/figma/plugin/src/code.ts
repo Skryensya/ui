@@ -1363,6 +1363,15 @@ async function applyCell(ctx: SetCtx, node: ComponentNode, cell: M.Cell, sample:
  */
 function ensureProperties(ctx: SetCtx, set: ComponentSetNode, properties: M.ComponentProperty[], name = set.name) {
   const keys: Record<string, string> = {};
+  try {
+    void set.componentPropertyDefinitions;
+  } catch (error) {
+    // Figma refuses to read a set it holds in error; say which one, and the way out.
+    throw new Error(
+      `${name}: Figma reports this component set has errors (${String(error)}). Open it in Figma to see ` +
+        `which variants clash, or delete the set and sync again to draw it anew.`,
+    );
+  }
   const wanted = new Set(properties.map((p) => p.name));
   for (const [key, def] of Object.entries(set.componentPropertyDefinitions)) {
     if (def.type === "VARIANT" || wanted.has(key.split("#")[0])) continue;
@@ -1737,11 +1746,45 @@ async function wireInteractions(ctx: SetCtx, set: ComponentSetNode, spec: M.Comp
   }
 }
 
+/**
+ * Variants whose properties are not this set's axes (a set whose id now belongs to another
+ * component: Radio's old sets are RadioGroup's), taken out of the set before anything reads it.
+ * Figma holds a set whose variants disagree on their properties in error, and refuses to read or
+ * change its properties at all. They go to the page, marked orphaned, and on to "Orphaned". A
+ * variant from before an axis was added (its properties a subset of the axes) stays: it is adopted.
+ */
+function ejectMisfits(run: Run, spec: M.ComponentSet, set: ComponentSetNode | undefined): ComponentSetNode | undefined {
+  if (!set) return set;
+  const axes = new Set(spec.axes.map((a) => a.name));
+  const page = set.parent?.parent;
+  const misfits = set.children.filter((child) => {
+    if (child.type !== "COMPONENT") return false;
+    const keys = Object.keys(parseKey(getTag(child, "cell") || child.name)).filter(Boolean);
+    return keys.some((k) => !axes.has(k));
+  });
+  if (!misfits.length || !page || page.type !== "PAGE") return set;
+  // A dry run moves nothing, so it leaves this set unread rather than read one Figma holds in error.
+  if (!run.apply) {
+    run.log("ORPHANED", `${spec.name}: ${misfits.length} variant(s)`, "their properties are another component's; would be moved out");
+    return undefined;
+  }
+  run.log("ORPHANED", `${spec.name}: ${misfits.length} variant(s)`, "their properties are another component's; moved out of the set");
+  run.write(() => {
+    for (const node of misfits) {
+      node.setSharedPluginData(NS, "orphaned", "true");
+      page.appendChild(node);
+    }
+  });
+  // A set left with no variants is gone: drawn anew below.
+  return set.removed ? undefined : set;
+}
+
 async function syncSet(ctx: SetCtx, spec: M.ComponentSet, found: Map<string, SceneNode>, page: PageNode | undefined, planned?: Layout) {
   const { run, progress } = ctx;
   progress.start(spec.id);
   const frame = page ? ensureFrame(ctx, spec.id, spec.name, page, found) : undefined;
   let set = setOf(run, spec, found);
+  set = ejectMisfits(run, spec, set);
   const identities = new Identities(ownCells(set));
   const axisDefaults = parseKey(spec.defaultCell);
   // Each property's default: a text slot's sample, and whether an optional slot shows.
