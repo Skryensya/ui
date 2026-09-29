@@ -535,7 +535,7 @@ const cellHeightOf = (spec: M.ComponentSet) =>
       const layers = manifest.styles.layers[c.layers];
       const text = layers.find((l): l is Extract<M.Layer, { kind: "text" }> => l.kind === "text");
       // Nested, or with no text to size it (a Separator's rule is its border): built up from the parts.
-      if (!text || layers.some((l) => l.kind === "frame")) return Math.ceil(nestedSize(box, layers, () => 0).h);
+      if (!text || layers.some((l) => l.kind === "frame")) return Math.ceil(nestedSize(box, layers, (l) => roughWidth(spec, l)).h);
       // Auto leading is the font's own; 120% is what a body face's comes to.
       const line = (Number(valueOf(text.text.fontSize)) * (text.text.lineHeight === "auto" ? 120 : text.text.lineHeight)) / 100;
       const padding = Number(valueOf(box.padding.top)) + Number(valueOf(box.padding.bottom));
@@ -544,33 +544,60 @@ const cellHeightOf = (spec: M.ComponentSet) =>
     }),
   );
 
+/** A text's width before any is measured: its sample at half an em a character, near a body face's. */
+const roughWidth = (spec: M.ComponentSet, layer: Extract<M.Layer, { kind: "text" }>) => {
+  const sample = spec.properties.find((p) => p.type === "TEXT" && p.name === layer.textProperty)?.default;
+  return typeof sample === "string" ? sample.length * 0.5 * Number(valueOf(layer.text.fontSize)) : 0;
+};
+
 /** A text layer's line box: auto leading is the font's own, and 120% is what a body face's comes to. */
 const lineOfText = (text: M.Text) => (Number(valueOf(text.fontSize)) * (text.lineHeight === "auto" ? 120 : text.lineHeight)) / 100;
 
 /**
  * What auto layout will make of a box holding `layers`, down through its frames: padding and border
- * around its children, summed along its direction with the gaps and the largest across. Texts are one
- * line, `widthOf` wide (measured by the caller, or 0 where only the height matters).
+ * around its children, summed along its direction with the gaps and the largest across. A text is one
+ * line `widthOf` wide, or, when it fills, as many lines of the width it is given as that takes.
  */
-function nestedSize(box: M.Box, layers: readonly M.Layer[], widthOf: (layer: Extract<M.Layer, { kind: "text" }>) => number): { w: number; h: number } {
-  const sizes = layers.flatMap((layer) => {
-    if (layer.kind === "text") return [{ w: widthOf(layer), h: lineOfText(layer.text) }];
-    if (layer.kind === "icon") return [{ w: Number(valueOf(layer.icon.size)), h: Number(valueOf(layer.icon.size)) }];
-    if (layer.kind === "frame") return [nestedSize(manifest.styles.boxes[layer.box], layer.layers, widthOf)];
-    return [];
-  });
-  const gap = box.gap && sizes.length > 1 ? Number(valueOf(box.gap)) * (sizes.length - 1) : 0;
-  const along = (pick: (size: { w: number; h: number }) => number) => sizes.reduce((sum, size) => sum + pick(size), 0) + gap;
-  const across = (pick: (size: { w: number; h: number }) => number) => Math.max(0, ...sizes.map(pick));
-  const horizontal = box.direction === "HORIZONTAL";
+function nestedSize(
+  box: M.Box,
+  layers: readonly M.Layer[],
+  widthOf: (layer: Extract<M.Layer, { kind: "text" }>) => number,
+  avail?: number,
+): { w: number; h: number } {
   const side = (bound: M.Bound<number> | undefined) => (bound ? Number(valueOf(bound)) : 0);
   const border = box.strokeSides ? 0 : box.strokeWeight ? 2 * Number(valueOf(box.strokeWeight)) : 0;
   const borderW = box.strokeSides ? side(box.strokeSides.left) + side(box.strokeSides.right) : border;
   const borderH = box.strokeSides ? side(box.strokeSides.top) + side(box.strokeSides.bottom) : border;
-  const w = (horizontal ? along((s) => s.w) : across((s) => s.w)) + Number(valueOf(box.padding.left)) + Number(valueOf(box.padding.right)) + borderW;
-  const h = (horizontal ? across((s) => s.h) : along((s) => s.h)) + Number(valueOf(box.padding.top)) + Number(valueOf(box.padding.bottom)) + borderH;
+  const horizontal = box.direction === "HORIZONTAL";
+  const outer = box.width ? Number(valueOf(box.width)) : avail;
+  const inner = outer === undefined ? undefined : outer - side(box.padding.left) - side(box.padding.right) - borderW;
+  const gap = box.gap && layers.length > 1 ? Number(valueOf(box.gap)) * (layers.length - 1) : 0;
+  const fills = (layer: M.Layer) =>
+    layer.kind === "text" ? !!layer.fill : layer.kind === "frame" && !!(horizontal ? manifest.styles.boxes[layer.box].grow : manifest.styles.boxes[layer.box].stretch);
+  const sizeOf = (layer: M.Layer, room: number | undefined): { w: number; h: number } | undefined => {
+    if (layer.kind === "text") {
+      const w = widthOf(layer);
+      const lines = layer.fill && room ? Math.max(1, Math.ceil(w / room)) : 1;
+      return { w: layer.fill && room ? room : w, h: lines * lineOfText(layer.text) };
+    }
+    if (layer.kind === "icon") return { w: Number(valueOf(layer.icon.size)), h: Number(valueOf(layer.icon.size)) };
+    if (layer.kind === "frame") return nestedSize(manifest.styles.boxes[layer.box], layer.layers, widthOf, room);
+    return undefined;
+  };
+  // Along a row, what fills gets what the rest leave; down a column, it gets the whole width.
+  const fixed = new Map(layers.filter((l) => !fills(l)).map((l) => [l, sizeOf(l, undefined)]));
+  const taken = [...fixed.values()].reduce((sum, size) => sum + (size?.w ?? 0), 0);
+  const room = inner === undefined ? undefined : horizontal ? Math.max(0, inner - taken - gap) : inner;
+  const sizes = layers.flatMap((l) => {
+    const size = fixed.has(l) ? fixed.get(l) : sizeOf(l, room);
+    return size ? [size] : [];
+  });
+  const along = (pick: (size: { w: number; h: number }) => number) => sizes.reduce((sum, size) => sum + pick(size), 0) + gap;
+  const across = (pick: (size: { w: number; h: number }) => number) => Math.max(0, ...sizes.map(pick));
+  const w = (horizontal ? along((s) => s.w) : across((s) => s.w)) + side(box.padding.left) + side(box.padding.right) + borderW;
+  const h = (horizontal ? across((s) => s.h) : along((s) => s.h)) + side(box.padding.top) + side(box.padding.bottom) + borderH;
   const floor = (bound: M.Bound<number> | undefined, size: number) => (bound ? Math.max(Number(valueOf(bound)), size) : size);
-  return { w: box.width ? Number(valueOf(box.width)) : floor(box.minWidth, w), h: box.height ? Number(valueOf(box.height)) : floor(box.minHeight, h) };
+  return { w: outer ?? floor(box.minWidth, w), h: box.height ? Number(valueOf(box.height)) : floor(box.minHeight, h) };
 }
 
 /** Every text layer of a nested cell, measured holding its sample, then the cell's size from them. */
@@ -1106,8 +1133,15 @@ async function applyLayers(
       await applyIcon(ctx, child as InstanceNode, layer);
       // Born with the visibility its property defaults to: an optional slot is hidden until switched on.
       if (layer.visibleProperty) child.visible = sample[layer.visibleProperty] !== false;
-    } else if (layer.kind === "text") await applyText(ctx, child as TextNode, layer.text, String(sample[layer.slot] ?? ""));
-    else if (layer.kind === "frame") {
+    } else if (layer.kind === "text") {
+      const text = child as TextNode;
+      await applyText(ctx, text, layer.text, String(sample[layer.slot] ?? ""));
+      // A text that fills spans its parent (grows along a row, stretches down a column) and wraps.
+      if (layer.fill) text.textAutoResize = "HEIGHT";
+      const across = parent.layoutMode === "HORIZONTAL";
+      text.layoutGrow = layer.fill && across ? 1 : 0;
+      text.layoutAlign = layer.fill && !across ? "STRETCH" : "INHERIT";
+    } else if (layer.kind === "frame") {
       const frame = child as FrameNode;
       const box = manifest.styles.boxes[layer.box];
       applyBox(ctx, frame, box);

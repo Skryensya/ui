@@ -456,6 +456,13 @@ async function compileRealization(realization: Realization, shared: Shared): Pro
         // In a grid laid across, a child in an `fr` column fills the row, as flex-grow does.
         const tracks = gridTracks(ctx(el));
         let column = 0;
+        const computed = ctx(el).computed;
+        const display = computed.get("display") ?? "";
+        const crossAlign = /grid/.test(display) ? computed.get("justify-items") : computed.get("align-items");
+        // Children laid down a column that spans them: a flex column or a grid of one track, left to stretch.
+        const stacking =
+          ((/flex/.test(display) && /column/.test(computed.get("flex-direction") ?? "")) || (/grid/.test(display) && tracks.length <= 1)) &&
+          (crossAlign === undefined || crossAlign === "normal" || crossAlign === "stretch");
         // Siblings of one part (LabelledSeparator's two rules) are told apart by number: `rule`, `rule 2`.
         const seen = new Map<string, number>();
         const unique = (slot: string) => {
@@ -471,7 +478,16 @@ async function compileRealization(realization: Realization, shared: Shared): Pro
             const spec = realization.slots[slot];
             if (spec?.holds === "text" && spec.hidden) continue;
             const optional = spec ? !signature.slots[slot]?.required : false;
-            out.push({ kind: "text", slot, textProperty: slot, ...(optional ? { visibleProperty: `show ${slot}` } : {}), text: textOf(ctx(el)) });
+            // Drawn at a width, running text wraps inside its block unless it is told not to.
+            const wraps = realization.width && computed.get("white-space") !== "nowrap";
+            out.push({
+              kind: "text",
+              slot,
+              textProperty: slot,
+              ...(optional ? { visibleProperty: `show ${slot}` } : {}),
+              ...(wraps ? { fill: true as const } : {}),
+              text: textOf(ctx(el)),
+            });
             continue;
           }
           if (node.nodeType !== 1) continue;
@@ -495,14 +511,19 @@ async function compileRealization(realization: Realization, shared: Shared): Pro
           const track = tracks.length > 1 ? tracks[column++] : undefined;
           const box = track && /fr\b/.test(track) ? { ...frameBox, grow: true as const } : frameBox;
           const slot = unique(partOf(child) ?? child.localName);
+          // Drawn at a width, a block down a column spans it, as CSS stretches it by default.
+          const spans = realization.width && stacking && !box.width;
           out.push({
             kind: "frame",
             slot,
-            box: intern(styles.boxes, box),
+            box: intern(styles.boxes, spans ? { ...box, stretch: true as const } : box),
             surface: intern(styles.surfaces, { strokes, fills, effects }),
             layers: nestedLayers(child),
           });
         }
+        // Only a text alone in its block, or down a column, has the block's width to fill: beside
+        // others in a row (an attribution and its source) each keeps its own.
+        if (!stacking && out.length > 1) return out.map((layer) => (layer.kind === "text" && layer.fill ? { ...layer, fill: undefined } : layer));
         return out;
       };
 

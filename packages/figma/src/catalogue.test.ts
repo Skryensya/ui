@@ -60,3 +60,15 @@ describe("Separator", () => {
     for (const layer of layers) if (layer.kind === "frame") expect(manifest.styles.boxes[layer.box].grow).toBe(true);
   });
 });
+
+describe("Quote, drawn at a reading width", () => {
+  it("wraps the quotation inside the rule, and keeps the attribution and its source on their own widths", () => {
+    const set = manifest.components.find((c): c is ComponentSet => c.kind === "component-set" && c.id === "quote")!;
+    const cell = set.cells.find((c) => c.props.variant === "block")!;
+    const [body, attribution] = manifest.styles.layers[cell.layers];
+    expect(body.kind === "frame" && manifest.styles.boxes[body.box].stretch).toBe(true);
+    expect(body.kind === "frame" && body.layers[0]).toMatchObject({ kind: "text", slot: "children", fill: true });
+    expect(body.kind === "frame" && manifest.styles.boxes[body.box].padding.left).not.toEqual({ value: 0, expression: "0" });
+    expect(attribution.kind === "frame" && attribution.layers.every((l) => l.kind === "text" && !l.fill)).toBe(true);
+  });
+});
