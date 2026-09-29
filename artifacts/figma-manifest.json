@@ -29,7 +29,7 @@
     {
       "axis": "name",
       "default": "placeholder",
-      "hash": "416af5dca25a1569",
+      "hash": "eed24630a2d933d9",
       "icons": [
         {
           "hash": "c22d937d5b192e07",
@@ -310,7 +310,7 @@
       "id": "icon",
       "kind": "icon-set",
       "name": "Icon",
-      "page": "icon",
+      "page": "skryensya",
       "paint": "stroke",
       "size": 24,
       "source": "@skryensya/icons-lucide",
@@ -4446,7 +4446,7 @@
       "id": "button/plain",
       "kind": "component-set",
       "name": "Button / plain",
-      "page": "button",
+      "page": "skryensya",
       "properties": [
         {
           "default": false,
@@ -8616,7 +8616,7 @@
       "id": "button/tactile",
       "kind": "component-set",
       "name": "Button / tactile",
-      "page": "button",
+      "page": "skryensya",
       "properties": [
         {
           "default": false,
@@ -12786,7 +12786,7 @@
       "id": "button/brutalist",
       "kind": "component-set",
       "name": "Button / brutalist",
-      "page": "button",
+      "page": "skryensya",
       "properties": [
         {
           "default": false,
@@ -16956,7 +16956,7 @@
       "id": "button/frosted",
       "kind": "component-set",
       "name": "Button / frosted",
-      "page": "button",
+      "page": "skryensya",
       "properties": [
         {
           "default": false,
@@ -17041,12 +17041,8 @@
   },
   "pages": [
     {
-      "id": "icon",
-      "name": "Icon"
-    },
-    {
-      "id": "button",
-      "name": "Button"
+      "id": "skryensya",
+      "name": "Skryensya"
     }
   ],
   "report": {
@@ -17130,7 +17126,7 @@
     }
   },
   "schemaVersion": 1,
-  "sourceHash": "7d4a70949e2c5db8",
+  "sourceHash": "538e020bf12add86",
   "specimen": [
     {
       "cell": "variant=solid, tone=neutral, size=md, state=rest, iconOnly=false",
@@ -17496,7 +17492,7 @@
       "source": "buttonBrutalistStatesTree"
     }
   ],
-  "specimenPage": "button",
+  "specimenPage": "skryensya",
   "stage": {
     "background": {
       "variable": "--color-bg-surface"
