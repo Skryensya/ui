@@ -32594,6 +32594,387 @@
         "columns": []
       },
       "visualHash": "cc1b01b1660def9a"
+    },
+    {
+      "axes": [
+        {
+          "name": "tone",
+          "values": [
+            "neutral",
+            "info",
+            "success",
+            "warning",
+            "danger"
+          ]
+        }
+      ],
+      "cells": [
+        {
+          "box": "63d21d370fc94e09",
+          "hash": "25f10731d9152475",
+          "id": "callout/plain/tone=neutral",
+          "key": "tone=neutral",
+          "layers": "51d0f5ed0ecee2b2",
+          "props": {
+            "tone": "neutral"
+          },
+          "surface": "82d94bda55e9390f"
+        },
+        {
+          "box": "63d21d370fc94e09",
+          "hash": "149c11bffce1d785",
+          "id": "callout/plain/tone=info",
+          "key": "tone=info",
+          "layers": "a0b665e95d448cf9",
+          "props": {
+            "tone": "info"
+          },
+          "surface": "42f12be04d1bb822"
+        },
+        {
+          "box": "63d21d370fc94e09",
+          "hash": "4e03bbe72252c00c",
+          "id": "callout/plain/tone=success",
+          "key": "tone=success",
+          "layers": "51dade891e917361",
+          "props": {
+            "tone": "success"
+          },
+          "surface": "9609efa0264964e9"
+        },
+        {
+          "box": "63d21d370fc94e09",
+          "hash": "adac6bce470518ea",
+          "id": "callout/plain/tone=warning",
+          "key": "tone=warning",
+          "layers": "95cca210cc21bcdb",
+          "props": {
+            "tone": "warning"
+          },
+          "surface": "d0c8879eae3f0cb7"
+        },
+        {
+          "box": "63d21d370fc94e09",
+          "hash": "f6b73d23f26de2be",
+          "id": "callout/plain/tone=danger",
+          "key": "tone=danger",
+          "layers": "23bd5fcb9b03c26d",
+          "props": {
+            "tone": "danger"
+          },
+          "surface": "13908e18407599d6"
+        }
+      ],
+      "contractHash": "f775ee85aa62e902",
+      "defaultCell": "tone=neutral",
+      "grid": {
+        "columns": [],
+        "rows": [
+          {
+            "name": "tone",
+            "values": [
+              "neutral",
+              "info",
+              "success",
+              "warning",
+              "danger"
+            ]
+          }
+        ]
+      },
+      "id": "callout/plain",
+      "interactions": [],
+      "kind": "component-set",
+      "name": "Callout / plain",
+      "page": "skryensya",
+      "properties": [
+        {
+          "default": false,
+          "name": "icon",
+          "type": "BOOLEAN"
+        },
+        {
+          "default": "Heads up",
+          "name": "title",
+          "type": "TEXT"
+        },
+        {
+          "default": true,
+          "name": "show title",
+          "type": "BOOLEAN"
+        },
+        {
+          "default": "Your changes are saved as a draft until you publish them.",
+          "name": "children",
+          "type": "TEXT"
+        }
+      ],
+      "showcase": {
+        "base": {},
+        "columns": [
+          {
+            "properties": {
+              "icon": true
+            },
+            "slot": "icon"
+          }
+        ]
+      },
+      "visualHash": "6d1dcf5010a6a10c"
+    },
+    {
+      "axes": [
+        {
+          "name": "tone",
+          "values": [
+            "neutral",
+            "info",
+            "success",
+            "warning",
+            "danger"
+          ]
+        }
+      ],
+      "cells": [
+        {
+          "box": "63d21d370fc94e09",
+          "hash": "31ccddd8049e5421",
+          "id": "callout/brutalist/tone=neutral",
+          "key": "tone=neutral",
+          "layers": "51d0f5ed0ecee2b2",
+          "props": {
+            "tone": "neutral"
+          },
+          "surface": "96d74ebe168a8e3a"
+        },
+        {
+          "box": "63d21d370fc94e09",
+          "hash": "717904c8a77bf904",
+          "id": "callout/brutalist/tone=info",
+          "key": "tone=info",
+          "layers": "a0b665e95d448cf9",
+          "props": {
+            "tone": "info"
+          },
+          "surface": "5391dd22d79b268b"
+        },
+        {
+          "box": "63d21d370fc94e09",
+          "hash": "f88e05d38ab3b5c9",
+          "id": "callout/brutalist/tone=success",
+          "key": "tone=success",
+          "layers": "51dade891e917361",
+          "props": {
+            "tone": "success"
+          },
+          "surface": "95b90686dc373bd7"
+        },
+        {
+          "box": "63d21d370fc94e09",
+          "hash": "1188abcb195d7698",
+          "id": "callout/brutalist/tone=warning",
+          "key": "tone=warning",
+          "layers": "95cca210cc21bcdb",
+          "props": {
+            "tone": "warning"
+          },
+          "surface": "f84d7e6c17f0c26d"
+        },
+        {
+          "box": "63d21d370fc94e09",
+          "hash": "a29396f028589046",
+          "id": "callout/brutalist/tone=danger",
+          "key": "tone=danger",
+          "layers": "23bd5fcb9b03c26d",
+          "props": {
+            "tone": "danger"
+          },
+          "surface": "139dfb1c9e8b7978"
+        }
+      ],
+      "contractHash": "f775ee85aa62e902",
+      "defaultCell": "tone=neutral",
+      "grid": {
+        "columns": [],
+        "rows": [
+          {
+            "name": "tone",
+            "values": [
+              "neutral",
+              "info",
+              "success",
+              "warning",
+              "danger"
+            ]
+          }
+        ]
+      },
+      "id": "callout/brutalist",
+      "interactions": [],
+      "kind": "component-set",
+      "name": "Callout / brutalist",
+      "page": "skryensya",
+      "properties": [
+        {
+          "default": false,
+          "name": "icon",
+          "type": "BOOLEAN"
+        },
+        {
+          "default": "Heads up",
+          "name": "title",
+          "type": "TEXT"
+        },
+        {
+          "default": true,
+          "name": "show title",
+          "type": "BOOLEAN"
+        },
+        {
+          "default": "Your changes are saved as a draft until you publish them.",
+          "name": "children",
+          "type": "TEXT"
+        }
+      ],
+      "showcase": {
+        "base": {},
+        "columns": [
+          {
+            "properties": {
+              "icon": true
+            },
+            "slot": "icon"
+          }
+        ]
+      },
+      "visualHash": "ccc202fad44d3471"
+    },
+    {
+      "axes": [
+        {
+          "name": "tone",
+          "values": [
+            "neutral",
+            "info",
+            "success",
+            "warning",
+            "danger"
+          ]
+        }
+      ],
+      "cells": [
+        {
+          "box": "63d21d370fc94e09",
+          "hash": "ee271f7f083c6486",
+          "id": "callout/frosted/tone=neutral",
+          "key": "tone=neutral",
+          "layers": "51d0f5ed0ecee2b2",
+          "props": {
+            "tone": "neutral"
+          },
+          "surface": "8cf31f757ebfdf35"
+        },
+        {
+          "box": "63d21d370fc94e09",
+          "hash": "b4d2acc9689f04df",
+          "id": "callout/frosted/tone=info",
+          "key": "tone=info",
+          "layers": "a0b665e95d448cf9",
+          "props": {
+            "tone": "info"
+          },
+          "surface": "b691e994776f6065"
+        },
+        {
+          "box": "63d21d370fc94e09",
+          "hash": "340312e40a1ae433",
+          "id": "callout/frosted/tone=success",
+          "key": "tone=success",
+          "layers": "51dade891e917361",
+          "props": {
+            "tone": "success"
+          },
+          "surface": "fea3e9ebef4d5df8"
+        },
+        {
+          "box": "63d21d370fc94e09",
+          "hash": "9b741c1ed5fead2c",
+          "id": "callout/frosted/tone=warning",
+          "key": "tone=warning",
+          "layers": "95cca210cc21bcdb",
+          "props": {
+            "tone": "warning"
+          },
+          "surface": "212addf0c0f3121d"
+        },
+        {
+          "box": "63d21d370fc94e09",
+          "hash": "dd470a3a6a3a9cf4",
+          "id": "callout/frosted/tone=danger",
+          "key": "tone=danger",
+          "layers": "23bd5fcb9b03c26d",
+          "props": {
+            "tone": "danger"
+          },
+          "surface": "9bcd01a0d3cff6bf"
+        }
+      ],
+      "contractHash": "f775ee85aa62e902",
+      "defaultCell": "tone=neutral",
+      "grid": {
+        "columns": [],
+        "rows": [
+          {
+            "name": "tone",
+            "values": [
+              "neutral",
+              "info",
+              "success",
+              "warning",
+              "danger"
+            ]
+          }
+        ]
+      },
+      "id": "callout/frosted",
+      "interactions": [],
+      "kind": "component-set",
+      "name": "Callout / frosted",
+      "page": "skryensya",
+      "properties": [
+        {
+          "default": false,
+          "name": "icon",
+          "type": "BOOLEAN"
+        },
+        {
+          "default": "Heads up",
+          "name": "title",
+          "type": "TEXT"
+        },
+        {
+          "default": true,
+          "name": "show title",
+          "type": "BOOLEAN"
+        },
+        {
+          "default": "Your changes are saved as a draft until you publish them.",
+          "name": "children",
+          "type": "TEXT"
+        }
+      ],
+      "showcase": {
+        "base": {},
+        "columns": [
+          {
+            "properties": {
+              "icon": true
+            },
+            "slot": "icon"
+          }
+        ]
+      },
+      "visualHash": "6ba7ec60ccd4d118"
     }
   ],
   "diagnostics": [
@@ -32674,6 +33055,12 @@
       "message": "1 rule(s) under a condition the evaluation context does not hold",
       "severity": "info",
       "subject": "components/button.css @media (prefers-reduced-motion: reduce)"
+    },
+    {
+      "code": "CONDITION_SKIPPED",
+      "message": "4 rule(s) under a condition the evaluation context does not hold",
+      "severity": "info",
+      "subject": "components/callout.css @media (forced-colors: active)"
     },
     {
       "code": "CONDITION_SKIPPED",
@@ -32842,6 +33229,14 @@
           "disabled"
         ]
       },
+      "callout": {
+        "excluded": [],
+        "nonVisual": [],
+        "visual": [
+          "tone",
+          "appearance"
+        ]
+      },
       "code": {
         "excluded": [],
         "nonVisual": [],
@@ -32926,15 +33321,15 @@
       }
     },
     "tokens": {
-      "catalogueAdded": 320,
-      "componentVariables": 221,
+      "catalogueAdded": 316,
+      "componentVariables": 235,
       "modeValuesBySource": {
         "alias": 203,
-        "evaluated": 485,
-        "literal": 686
+        "evaluated": 511,
+        "literal": 688
       },
-      "reached": 173,
-      "reachedAsVariables": 132,
+      "reached": 184,
+      "reachedAsVariables": 142,
       "reachedButNotVariables": [
         "--elevation-flat",
         "--elevation-overlay",
@@ -32948,14 +33343,15 @@
       "variables": 466
     },
     "variants": {
-      "components": 27,
-      "componentSets": 26,
+      "components": 30,
+      "componentSets": 29,
       "naiveAllOptions": {
         "avatar": 8,
         "back-to-top": 4,
         "badge:Badge": 20,
         "badge:BadgeDot": 10,
         "button": 27648,
+        "callout": 15,
         "code": 1,
         "heading": 156,
         "kbd": 4,
@@ -32972,6 +33368,7 @@
         "badge:Badge": 20,
         "badge:BadgeDot": 5,
         "button": 2304,
+        "callout": 15,
         "code": 1,
         "heading": 13,
         "kbd": 4,
@@ -33086,13 +33483,25 @@
         {
           "set": "stat",
           "variants": 3
+        },
+        {
+          "set": "callout/plain",
+          "variants": 5
+        },
+        {
+          "set": "callout/brutalist",
+          "variants": 5
+        },
+        {
+          "set": "callout/frosted",
+          "variants": 5
         }
       ],
-      "variantsTotal": 2052
+      "variantsTotal": 2067
     }
   },
   "schemaVersion": 1,
-  "sourceHash": "dfad44746992c63e",
+  "sourceHash": "e3c8eaf1652e4522",
   "stage": {
     "background": {
       "variable": "--color-bg-surface"
@@ -33234,6 +33643,38 @@
         },
         "width": {
           "variable": "button:height:2dce2436e5"
+        }
+      },
+      "18b731c0211c34eb": {
+        "clipsContent": false,
+        "crossAlign": "CENTER",
+        "direction": "HORIZONTAL",
+        "height": {
+          "expression": "2.25rem",
+          "value": 36
+        },
+        "mainAlign": "CENTER",
+        "padding": {
+          "bottom": {
+            "expression": "0",
+            "value": 0
+          },
+          "left": {
+            "expression": "0",
+            "value": 0
+          },
+          "right": {
+            "expression": "0",
+            "value": 0
+          },
+          "top": {
+            "expression": "0",
+            "value": 0
+          }
+        },
+        "width": {
+          "expression": "2.25rem",
+          "value": 36
         }
       },
       "34416faa47e8ba55": {
@@ -33647,6 +34088,33 @@
             "expression": "0",
             "value": 0
           }
+        }
+      },
+      "63d21d370fc94e09": {
+        "clipsContent": false,
+        "crossAlign": "MIN",
+        "direction": "HORIZONTAL",
+        "mainAlign": "MIN",
+        "padding": {
+          "bottom": {
+            "variable": "--space-inset-md"
+          },
+          "left": {
+            "variable": "--space-inset-md"
+          },
+          "right": {
+            "variable": "--space-inset-md"
+          },
+          "top": {
+            "variable": "--space-inset-md"
+          }
+        },
+        "radius": {
+          "variable": "--radius-surface"
+        },
+        "strokeWeight": {
+          "expression": "1px",
+          "value": 1
         }
       },
       "672cd06398be5f4b": {
@@ -34212,6 +34680,38 @@
         "strokeWeight": {
           "expression": "1px",
           "value": 1
+        }
+      },
+      "b0b2134cd4344f72": {
+        "clipsContent": false,
+        "crossAlign": "MIN",
+        "direction": "VERTICAL",
+        "gap": {
+          "variable": "callout:content-gap:e53fcdb082"
+        },
+        "grow": true,
+        "mainAlign": "MIN",
+        "minWidth": {
+          "expression": "0",
+          "value": 0
+        },
+        "padding": {
+          "bottom": {
+            "expression": "0",
+            "value": 0
+          },
+          "left": {
+            "expression": "0",
+            "value": 0
+          },
+          "right": {
+            "expression": "0",
+            "value": 0
+          },
+          "top": {
+            "expression": "0",
+            "value": 0
+          }
         }
       },
       "c4995ee588113697": {
@@ -36300,6 +36800,88 @@
             "lineHeight": 150
           },
           "textProperty": "children"
+        }
+      ],
+      "23bd5fcb9b03c26d": [
+        {
+          "box": "18b731c0211c34eb",
+          "kind": "frame",
+          "layers": [
+            {
+              "default": "info",
+              "icon": {
+                "color": {
+                  "color": {
+                    "variable": "--color-text-danger"
+                  },
+                  "type": "SOLID"
+                },
+                "size": {
+                  "variable": "--size-icon-md"
+                }
+              },
+              "kind": "icon",
+              "slot": "icon",
+              "visibleProperty": "icon"
+            }
+          ],
+          "slot": "icon",
+          "surface": "fa0b643878e9242d"
+        },
+        {
+          "box": "b0b2134cd4344f72",
+          "kind": "frame",
+          "layers": [
+            {
+              "kind": "text",
+              "slot": "title",
+              "text": {
+                "fill": {
+                  "color": {
+                    "variable": "--color-text-danger"
+                  },
+                  "type": "SOLID"
+                },
+                "fontFamily": {
+                  "variable": "--font-family-body"
+                },
+                "fontSize": {
+                  "variable": "--font-size-body"
+                },
+                "fontWeight": {
+                  "variable": "--font-weight-label"
+                },
+                "lineHeight": 150
+              },
+              "textProperty": "title",
+              "visibleProperty": "show title"
+            },
+            {
+              "kind": "text",
+              "slot": "children",
+              "text": {
+                "fill": {
+                  "color": {
+                    "variable": "--color-text-secondary"
+                  },
+                  "type": "SOLID"
+                },
+                "fontFamily": {
+                  "variable": "--font-family-body"
+                },
+                "fontSize": {
+                  "variable": "--font-size-body-sm"
+                },
+                "fontWeight": {
+                  "variable": "--font-weight-body"
+                },
+                "lineHeight": 150
+              },
+              "textProperty": "children"
+            }
+          ],
+          "slot": "content",
+          "surface": "fa0b643878e9242d"
         }
       ],
       "241e55ab118c7342": [
@@ -38575,6 +39157,170 @@
           "kind": "icon",
           "slot": "post",
           "visibleProperty": "post"
+        }
+      ],
+      "51d0f5ed0ecee2b2": [
+        {
+          "box": "18b731c0211c34eb",
+          "kind": "frame",
+          "layers": [
+            {
+              "default": "info",
+              "icon": {
+                "color": {
+                  "color": {
+                    "variable": "--color-text-primary"
+                  },
+                  "type": "SOLID"
+                },
+                "size": {
+                  "variable": "--size-icon-md"
+                }
+              },
+              "kind": "icon",
+              "slot": "icon",
+              "visibleProperty": "icon"
+            }
+          ],
+          "slot": "icon",
+          "surface": "fa0b643878e9242d"
+        },
+        {
+          "box": "b0b2134cd4344f72",
+          "kind": "frame",
+          "layers": [
+            {
+              "kind": "text",
+              "slot": "title",
+              "text": {
+                "fill": {
+                  "color": {
+                    "variable": "--color-text-primary"
+                  },
+                  "type": "SOLID"
+                },
+                "fontFamily": {
+                  "variable": "--font-family-body"
+                },
+                "fontSize": {
+                  "variable": "--font-size-body"
+                },
+                "fontWeight": {
+                  "variable": "--font-weight-label"
+                },
+                "lineHeight": 150
+              },
+              "textProperty": "title",
+              "visibleProperty": "show title"
+            },
+            {
+              "kind": "text",
+              "slot": "children",
+              "text": {
+                "fill": {
+                  "color": {
+                    "variable": "--color-text-secondary"
+                  },
+                  "type": "SOLID"
+                },
+                "fontFamily": {
+                  "variable": "--font-family-body"
+                },
+                "fontSize": {
+                  "variable": "--font-size-body-sm"
+                },
+                "fontWeight": {
+                  "variable": "--font-weight-body"
+                },
+                "lineHeight": 150
+              },
+              "textProperty": "children"
+            }
+          ],
+          "slot": "content",
+          "surface": "fa0b643878e9242d"
+        }
+      ],
+      "51dade891e917361": [
+        {
+          "box": "18b731c0211c34eb",
+          "kind": "frame",
+          "layers": [
+            {
+              "default": "info",
+              "icon": {
+                "color": {
+                  "color": {
+                    "variable": "--color-text-success"
+                  },
+                  "type": "SOLID"
+                },
+                "size": {
+                  "variable": "--size-icon-md"
+                }
+              },
+              "kind": "icon",
+              "slot": "icon",
+              "visibleProperty": "icon"
+            }
+          ],
+          "slot": "icon",
+          "surface": "fa0b643878e9242d"
+        },
+        {
+          "box": "b0b2134cd4344f72",
+          "kind": "frame",
+          "layers": [
+            {
+              "kind": "text",
+              "slot": "title",
+              "text": {
+                "fill": {
+                  "color": {
+                    "variable": "--color-text-success"
+                  },
+                  "type": "SOLID"
+                },
+                "fontFamily": {
+                  "variable": "--font-family-body"
+                },
+                "fontSize": {
+                  "variable": "--font-size-body"
+                },
+                "fontWeight": {
+                  "variable": "--font-weight-label"
+                },
+                "lineHeight": 150
+              },
+              "textProperty": "title",
+              "visibleProperty": "show title"
+            },
+            {
+              "kind": "text",
+              "slot": "children",
+              "text": {
+                "fill": {
+                  "color": {
+                    "variable": "--color-text-secondary"
+                  },
+                  "type": "SOLID"
+                },
+                "fontFamily": {
+                  "variable": "--font-family-body"
+                },
+                "fontSize": {
+                  "variable": "--font-size-body-sm"
+                },
+                "fontWeight": {
+                  "variable": "--font-weight-body"
+                },
+                "lineHeight": 150
+              },
+              "textProperty": "children"
+            }
+          ],
+          "slot": "content",
+          "surface": "fa0b643878e9242d"
         }
       ],
       "524c3bf48d5c534f": [
@@ -41981,6 +42727,88 @@
           }
         }
       ],
+      "95cca210cc21bcdb": [
+        {
+          "box": "18b731c0211c34eb",
+          "kind": "frame",
+          "layers": [
+            {
+              "default": "info",
+              "icon": {
+                "color": {
+                  "color": {
+                    "variable": "--color-text-warning"
+                  },
+                  "type": "SOLID"
+                },
+                "size": {
+                  "variable": "--size-icon-md"
+                }
+              },
+              "kind": "icon",
+              "slot": "icon",
+              "visibleProperty": "icon"
+            }
+          ],
+          "slot": "icon",
+          "surface": "fa0b643878e9242d"
+        },
+        {
+          "box": "b0b2134cd4344f72",
+          "kind": "frame",
+          "layers": [
+            {
+              "kind": "text",
+              "slot": "title",
+              "text": {
+                "fill": {
+                  "color": {
+                    "variable": "--color-text-warning"
+                  },
+                  "type": "SOLID"
+                },
+                "fontFamily": {
+                  "variable": "--font-family-body"
+                },
+                "fontSize": {
+                  "variable": "--font-size-body"
+                },
+                "fontWeight": {
+                  "variable": "--font-weight-label"
+                },
+                "lineHeight": 150
+              },
+              "textProperty": "title",
+              "visibleProperty": "show title"
+            },
+            {
+              "kind": "text",
+              "slot": "children",
+              "text": {
+                "fill": {
+                  "color": {
+                    "variable": "--color-text-secondary"
+                  },
+                  "type": "SOLID"
+                },
+                "fontFamily": {
+                  "variable": "--font-family-body"
+                },
+                "fontSize": {
+                  "variable": "--font-size-body-sm"
+                },
+                "fontWeight": {
+                  "variable": "--font-weight-body"
+                },
+                "lineHeight": 150
+              },
+              "textProperty": "children"
+            }
+          ],
+          "slot": "content",
+          "surface": "fa0b643878e9242d"
+        }
+      ],
       "974a0068b280a05e": [
         {
           "fills": [
@@ -42352,6 +43180,88 @@
           "kind": "icon",
           "slot": "post",
           "visibleProperty": "post"
+        }
+      ],
+      "a0b665e95d448cf9": [
+        {
+          "box": "18b731c0211c34eb",
+          "kind": "frame",
+          "layers": [
+            {
+              "default": "info",
+              "icon": {
+                "color": {
+                  "color": {
+                    "variable": "--color-text-info"
+                  },
+                  "type": "SOLID"
+                },
+                "size": {
+                  "variable": "--size-icon-md"
+                }
+              },
+              "kind": "icon",
+              "slot": "icon",
+              "visibleProperty": "icon"
+            }
+          ],
+          "slot": "icon",
+          "surface": "fa0b643878e9242d"
+        },
+        {
+          "box": "b0b2134cd4344f72",
+          "kind": "frame",
+          "layers": [
+            {
+              "kind": "text",
+              "slot": "title",
+              "text": {
+                "fill": {
+                  "color": {
+                    "variable": "--color-text-info"
+                  },
+                  "type": "SOLID"
+                },
+                "fontFamily": {
+                  "variable": "--font-family-body"
+                },
+                "fontSize": {
+                  "variable": "--font-size-body"
+                },
+                "fontWeight": {
+                  "variable": "--font-weight-label"
+                },
+                "lineHeight": 150
+              },
+              "textProperty": "title",
+              "visibleProperty": "show title"
+            },
+            {
+              "kind": "text",
+              "slot": "children",
+              "text": {
+                "fill": {
+                  "color": {
+                    "variable": "--color-text-secondary"
+                  },
+                  "type": "SOLID"
+                },
+                "fontFamily": {
+                  "variable": "--font-family-body"
+                },
+                "fontSize": {
+                  "variable": "--font-size-body-sm"
+                },
+                "fontWeight": {
+                  "variable": "--font-weight-body"
+                },
+                "lineHeight": 150
+              },
+              "textProperty": "children"
+            }
+          ],
+          "slot": "content",
+          "surface": "fa0b643878e9242d"
         }
       ],
       "a1bbeb97eadbe42b": [
@@ -46780,6 +47690,65 @@
           }
         ]
       },
+      "13908e18407599d6": {
+        "effects": [],
+        "fills": [
+          {
+            "color": {
+              "variable": "--color-bg-danger-subtle"
+            },
+            "type": "SOLID"
+          }
+        ],
+        "strokes": [
+          {
+            "color": {
+              "variable": "--color-border-danger"
+            },
+            "type": "SOLID"
+          }
+        ]
+      },
+      "139dfb1c9e8b7978": {
+        "effects": [
+          {
+            "blur": {
+              "expression": "0",
+              "value": 0
+            },
+            "color": {
+              "variable": "callout:brutalist-black:b75258c11d"
+            },
+            "spread": {
+              "expression": "0",
+              "value": 0
+            },
+            "type": "DROP_SHADOW",
+            "x": {
+              "variable": "callout:shadow-1-x:fa8b2735e2"
+            },
+            "y": {
+              "variable": "callout:callout-brutalist-offset:356601538d"
+            }
+          }
+        ],
+        "fills": [
+          {
+            "color": {
+              "variable": "--color-bg-danger-subtle"
+            },
+            "type": "SOLID"
+          }
+        ],
+        "strokes": [
+          {
+            "color": {
+              "variable": "callout:brutalist-black:b75258c11d"
+            },
+            "type": "SOLID"
+          }
+        ]
+      },
       "168782ebffcf7e8b": {
         "effects": [
           {
@@ -47467,6 +48436,77 @@
           {
             "color": {
               "variable": "button:frost-edge:bba0977a5c"
+            },
+            "type": "SOLID"
+          }
+        ]
+      },
+      "212addf0c0f3121d": {
+        "effects": [
+          {
+            "blur": {
+              "expression": "0",
+              "value": 0
+            },
+            "color": {
+              "variable": "--frost-highlight"
+            },
+            "spread": {
+              "expression": "0",
+              "value": 0
+            },
+            "type": "INNER_SHADOW",
+            "x": {
+              "expression": "0",
+              "value": 0
+            },
+            "y": {
+              "expression": "1px",
+              "value": 1
+            }
+          },
+          {
+            "blur": {
+              "expression": "2px",
+              "value": 2
+            },
+            "color": {
+              "variable": "--shadow-sm"
+            },
+            "spread": {
+              "expression": "0",
+              "value": 0
+            },
+            "type": "DROP_SHADOW",
+            "x": {
+              "expression": "0",
+              "value": 0
+            },
+            "y": {
+              "expression": "1px",
+              "value": 1
+            }
+          },
+          {
+            "radius": {
+              "expression": "16px",
+              "value": 16
+            },
+            "type": "BACKGROUND_BLUR"
+          }
+        ],
+        "fills": [
+          {
+            "color": {
+              "variable": "callout:frost-glass:8821b29986"
+            },
+            "type": "SOLID"
+          }
+        ],
+        "strokes": [
+          {
+            "color": {
+              "variable": "callout:border-color:f8a79787fb"
             },
             "type": "SOLID"
           }
@@ -48239,6 +49279,25 @@
           }
         ]
       },
+      "42f12be04d1bb822": {
+        "effects": [],
+        "fills": [
+          {
+            "color": {
+              "variable": "--color-bg-info-subtle"
+            },
+            "type": "SOLID"
+          }
+        ],
+        "strokes": [
+          {
+            "color": {
+              "variable": "--color-border-info"
+            },
+            "type": "SOLID"
+          }
+        ]
+      },
       "44339213f69f0d89": {
         "effects": [
           {
@@ -48726,6 +49785,46 @@
           {
             "color": {
               "variable": "button:frost-edge:8ef0c882b9"
+            },
+            "type": "SOLID"
+          }
+        ]
+      },
+      "5391dd22d79b268b": {
+        "effects": [
+          {
+            "blur": {
+              "expression": "0",
+              "value": 0
+            },
+            "color": {
+              "variable": "callout:brutalist-black:b75258c11d"
+            },
+            "spread": {
+              "expression": "0",
+              "value": 0
+            },
+            "type": "DROP_SHADOW",
+            "x": {
+              "variable": "callout:shadow-1-x:fa8b2735e2"
+            },
+            "y": {
+              "variable": "callout:callout-brutalist-offset:356601538d"
+            }
+          }
+        ],
+        "fills": [
+          {
+            "color": {
+              "variable": "--color-bg-info-subtle"
+            },
+            "type": "SOLID"
+          }
+        ],
+        "strokes": [
+          {
+            "color": {
+              "variable": "callout:brutalist-black:b75258c11d"
             },
             "type": "SOLID"
           }
@@ -50723,6 +51822,25 @@
           }
         ]
       },
+      "82d94bda55e9390f": {
+        "effects": [],
+        "fills": [
+          {
+            "color": {
+              "variable": "--color-bg-surface"
+            },
+            "type": "SOLID"
+          }
+        ],
+        "strokes": [
+          {
+            "color": {
+              "variable": "--color-border-subtle"
+            },
+            "type": "SOLID"
+          }
+        ]
+      },
       "8334d2181ea663d1": {
         "effects": [
           {
@@ -50832,6 +51950,77 @@
           {
             "color": {
               "variable": "--color-border-subtle"
+            },
+            "type": "SOLID"
+          }
+        ]
+      },
+      "8cf31f757ebfdf35": {
+        "effects": [
+          {
+            "blur": {
+              "expression": "0",
+              "value": 0
+            },
+            "color": {
+              "variable": "--frost-highlight"
+            },
+            "spread": {
+              "expression": "0",
+              "value": 0
+            },
+            "type": "INNER_SHADOW",
+            "x": {
+              "expression": "0",
+              "value": 0
+            },
+            "y": {
+              "expression": "1px",
+              "value": 1
+            }
+          },
+          {
+            "blur": {
+              "expression": "2px",
+              "value": 2
+            },
+            "color": {
+              "variable": "--shadow-sm"
+            },
+            "spread": {
+              "expression": "0",
+              "value": 0
+            },
+            "type": "DROP_SHADOW",
+            "x": {
+              "expression": "0",
+              "value": 0
+            },
+            "y": {
+              "expression": "1px",
+              "value": 1
+            }
+          },
+          {
+            "radius": {
+              "expression": "16px",
+              "value": 16
+            },
+            "type": "BACKGROUND_BLUR"
+          }
+        ],
+        "fills": [
+          {
+            "color": {
+              "variable": "callout:frost-glass:ddcb59710b"
+            },
+            "type": "SOLID"
+          }
+        ],
+        "strokes": [
+          {
+            "color": {
+              "variable": "callout:border-color:dfa846e305"
             },
             "type": "SOLID"
           }
@@ -51265,6 +52454,105 @@
           }
         ]
       },
+      "95b90686dc373bd7": {
+        "effects": [
+          {
+            "blur": {
+              "expression": "0",
+              "value": 0
+            },
+            "color": {
+              "variable": "callout:brutalist-black:b75258c11d"
+            },
+            "spread": {
+              "expression": "0",
+              "value": 0
+            },
+            "type": "DROP_SHADOW",
+            "x": {
+              "variable": "callout:shadow-1-x:fa8b2735e2"
+            },
+            "y": {
+              "variable": "callout:callout-brutalist-offset:356601538d"
+            }
+          }
+        ],
+        "fills": [
+          {
+            "color": {
+              "variable": "--color-bg-success-subtle"
+            },
+            "type": "SOLID"
+          }
+        ],
+        "strokes": [
+          {
+            "color": {
+              "variable": "callout:brutalist-black:b75258c11d"
+            },
+            "type": "SOLID"
+          }
+        ]
+      },
+      "9609efa0264964e9": {
+        "effects": [],
+        "fills": [
+          {
+            "color": {
+              "variable": "--color-bg-success-subtle"
+            },
+            "type": "SOLID"
+          }
+        ],
+        "strokes": [
+          {
+            "color": {
+              "variable": "--color-border-success"
+            },
+            "type": "SOLID"
+          }
+        ]
+      },
+      "96d74ebe168a8e3a": {
+        "effects": [
+          {
+            "blur": {
+              "expression": "0",
+              "value": 0
+            },
+            "color": {
+              "variable": "callout:brutalist-black:b75258c11d"
+            },
+            "spread": {
+              "expression": "0",
+              "value": 0
+            },
+            "type": "DROP_SHADOW",
+            "x": {
+              "variable": "callout:shadow-1-x:fa8b2735e2"
+            },
+            "y": {
+              "variable": "callout:callout-brutalist-offset:356601538d"
+            }
+          }
+        ],
+        "fills": [
+          {
+            "color": {
+              "variable": "--color-bg-surface"
+            },
+            "type": "SOLID"
+          }
+        ],
+        "strokes": [
+          {
+            "color": {
+              "variable": "callout:brutalist-black:b75258c11d"
+            },
+            "type": "SOLID"
+          }
+        ]
+      },
       "96fb2d77c6998c91": {
         "effects": [
           {
@@ -51544,6 +52832,77 @@
           {
             "color": {
               "variable": "button:brutalist-black:b75258c11d"
+            },
+            "type": "SOLID"
+          }
+        ]
+      },
+      "9bcd01a0d3cff6bf": {
+        "effects": [
+          {
+            "blur": {
+              "expression": "0",
+              "value": 0
+            },
+            "color": {
+              "variable": "--frost-highlight"
+            },
+            "spread": {
+              "expression": "0",
+              "value": 0
+            },
+            "type": "INNER_SHADOW",
+            "x": {
+              "expression": "0",
+              "value": 0
+            },
+            "y": {
+              "expression": "1px",
+              "value": 1
+            }
+          },
+          {
+            "blur": {
+              "expression": "2px",
+              "value": 2
+            },
+            "color": {
+              "variable": "--shadow-sm"
+            },
+            "spread": {
+              "expression": "0",
+              "value": 0
+            },
+            "type": "DROP_SHADOW",
+            "x": {
+              "expression": "0",
+              "value": 0
+            },
+            "y": {
+              "expression": "1px",
+              "value": 1
+            }
+          },
+          {
+            "radius": {
+              "expression": "16px",
+              "value": 16
+            },
+            "type": "BACKGROUND_BLUR"
+          }
+        ],
+        "fills": [
+          {
+            "color": {
+              "variable": "callout:frost-glass:827c17a94d"
+            },
+            "type": "SOLID"
+          }
+        ],
+        "strokes": [
+          {
+            "color": {
+              "variable": "callout:border-color:e23daa4b81"
             },
             "type": "SOLID"
           }
@@ -52708,6 +54067,77 @@
         ],
         "strokes": []
       },
+      "b691e994776f6065": {
+        "effects": [
+          {
+            "blur": {
+              "expression": "0",
+              "value": 0
+            },
+            "color": {
+              "variable": "--frost-highlight"
+            },
+            "spread": {
+              "expression": "0",
+              "value": 0
+            },
+            "type": "INNER_SHADOW",
+            "x": {
+              "expression": "0",
+              "value": 0
+            },
+            "y": {
+              "expression": "1px",
+              "value": 1
+            }
+          },
+          {
+            "blur": {
+              "expression": "2px",
+              "value": 2
+            },
+            "color": {
+              "variable": "--shadow-sm"
+            },
+            "spread": {
+              "expression": "0",
+              "value": 0
+            },
+            "type": "DROP_SHADOW",
+            "x": {
+              "expression": "0",
+              "value": 0
+            },
+            "y": {
+              "expression": "1px",
+              "value": 1
+            }
+          },
+          {
+            "radius": {
+              "expression": "16px",
+              "value": 16
+            },
+            "type": "BACKGROUND_BLUR"
+          }
+        ],
+        "fills": [
+          {
+            "color": {
+              "variable": "callout:frost-glass:5a6c9e73d7"
+            },
+            "type": "SOLID"
+          }
+        ],
+        "strokes": [
+          {
+            "color": {
+              "variable": "callout:border-color:537c92f802"
+            },
+            "type": "SOLID"
+          }
+        ]
+      },
       "b7fa8d33a8494781": {
         "effects": [
           {
@@ -53626,6 +55056,25 @@
           {
             "color": {
               "variable": "button:brutalist-black:b75258c11d"
+            },
+            "type": "SOLID"
+          }
+        ]
+      },
+      "d0c8879eae3f0cb7": {
+        "effects": [],
+        "fills": [
+          {
+            "color": {
+              "variable": "--color-bg-warning-subtle"
+            },
+            "type": "SOLID"
+          }
+        ],
+        "strokes": [
+          {
+            "color": {
+              "variable": "--color-border-warning"
             },
             "type": "SOLID"
           }
@@ -54938,6 +56387,46 @@
           }
         ]
       },
+      "f84d7e6c17f0c26d": {
+        "effects": [
+          {
+            "blur": {
+              "expression": "0",
+              "value": 0
+            },
+            "color": {
+              "variable": "callout:brutalist-black:b75258c11d"
+            },
+            "spread": {
+              "expression": "0",
+              "value": 0
+            },
+            "type": "DROP_SHADOW",
+            "x": {
+              "variable": "callout:shadow-1-x:fa8b2735e2"
+            },
+            "y": {
+              "variable": "callout:callout-brutalist-offset:356601538d"
+            }
+          }
+        ],
+        "fills": [
+          {
+            "color": {
+              "variable": "--color-bg-warning-subtle"
+            },
+            "type": "SOLID"
+          }
+        ],
+        "strokes": [
+          {
+            "color": {
+              "variable": "callout:brutalist-black:b75258c11d"
+            },
+            "type": "SOLID"
+          }
+        ]
+      },
       "f8dd11a69c3abe7a": {
         "effects": [
           {
@@ -55301,6 +56790,77 @@
           {
             "color": {
               "variable": "button:frost-edge:74589dbcff"
+            },
+            "type": "SOLID"
+          }
+        ]
+      },
+      "fea3e9ebef4d5df8": {
+        "effects": [
+          {
+            "blur": {
+              "expression": "0",
+              "value": 0
+            },
+            "color": {
+              "variable": "--frost-highlight"
+            },
+            "spread": {
+              "expression": "0",
+              "value": 0
+            },
+            "type": "INNER_SHADOW",
+            "x": {
+              "expression": "0",
+              "value": 0
+            },
+            "y": {
+              "expression": "1px",
+              "value": 1
+            }
+          },
+          {
+            "blur": {
+              "expression": "2px",
+              "value": 2
+            },
+            "color": {
+              "variable": "--shadow-sm"
+            },
+            "spread": {
+              "expression": "0",
+              "value": 0
+            },
+            "type": "DROP_SHADOW",
+            "x": {
+              "expression": "0",
+              "value": 0
+            },
+            "y": {
+              "expression": "1px",
+              "value": 1
+            }
+          },
+          {
+            "radius": {
+              "expression": "16px",
+              "value": 16
+            },
+            "type": "BACKGROUND_BLUR"
+          }
+        ],
+        "fills": [
+          {
+            "color": {
+              "variable": "callout:frost-glass:f6e026ce9e"
+            },
+            "type": "SOLID"
+          }
+        ],
+        "strokes": [
+          {
+            "color": {
+              "variable": "callout:border-color:630ae2faea"
             },
             "type": "SOLID"
           }
@@ -61021,6 +62581,424 @@
             "g": 0.098,
             "r": 0.1095
           }
+        }
+      }
+    },
+    {
+      "codeSyntax": "",
+      "collection": "component",
+      "expression": "color-mix(in oklab, var(--color-text-danger) 18%, transparent)",
+      "id": "callout:border-color:e23daa4b81",
+      "name": "callout/border-color/frosted/danger",
+      "source": {
+        "dark": "evaluated",
+        "light": "evaluated"
+      },
+      "type": "COLOR",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": {
+            "a": 0.18,
+            "b": 0.6364,
+            "g": 0.6347,
+            "r": 1
+          }
+        },
+        "light": {
+          "kind": "literal",
+          "value": {
+            "a": 0.18,
+            "b": 0.0288,
+            "g": 0,
+            "r": 0.7569
+          }
+        }
+      }
+    },
+    {
+      "codeSyntax": "",
+      "collection": "component",
+      "expression": "color-mix(in oklab, var(--color-text-info) 18%, transparent)",
+      "id": "callout:border-color:537c92f802",
+      "name": "callout/border-color/frosted/info",
+      "source": {
+        "dark": "evaluated",
+        "light": "evaluated"
+      },
+      "type": "COLOR",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": {
+            "a": 0.18,
+            "b": 1,
+            "g": 0.8317,
+            "r": 0.4532
+          }
+        },
+        "light": {
+          "kind": "literal",
+          "value": {
+            "a": 0.18,
+            "b": 0.6603,
+            "g": 0.4116,
+            "r": 0
+          }
+        }
+      }
+    },
+    {
+      "codeSyntax": "",
+      "collection": "component",
+      "expression": "color-mix(in oklab, var(--color-text-primary) 18%, transparent)",
+      "id": "callout:border-color:dfa846e305",
+      "name": "callout/border-color/frosted/neutral",
+      "source": {
+        "dark": "evaluated",
+        "light": "evaluated"
+      },
+      "type": "COLOR",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": {
+            "a": 0.18,
+            "b": 0.9579,
+            "g": 0.9609,
+            "r": 0.9609
+          }
+        },
+        "light": {
+          "kind": "literal",
+          "value": {
+            "a": 0.18,
+            "b": 0.0903,
+            "g": 0.098,
+            "r": 0.1095
+          }
+        }
+      }
+    },
+    {
+      "codeSyntax": "",
+      "collection": "component",
+      "expression": "color-mix(in oklab, var(--color-text-success) 18%, transparent)",
+      "id": "callout:border-color:630ae2faea",
+      "name": "callout/border-color/frosted/success",
+      "source": {
+        "dark": "evaluated",
+        "light": "evaluated"
+      },
+      "type": "COLOR",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": {
+            "a": 0.18,
+            "b": 0.7088,
+            "g": 0.9151,
+            "r": 0.3699
+          }
+        },
+        "light": {
+          "kind": "literal",
+          "value": {
+            "a": 0.18,
+            "b": 0.2706,
+            "g": 0.3777,
+            "r": 0
+          }
+        }
+      }
+    },
+    {
+      "codeSyntax": "",
+      "collection": "component",
+      "expression": "color-mix(in oklab, var(--color-text-warning) 18%, transparent)",
+      "id": "callout:border-color:f8a79787fb",
+      "name": "callout/border-color/frosted/warning",
+      "source": {
+        "dark": "evaluated",
+        "light": "evaluated"
+      },
+      "type": "COLOR",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": {
+            "a": 0.18,
+            "b": 0.1876,
+            "g": 0.8238,
+            "r": 1
+          }
+        },
+        "light": {
+          "kind": "literal",
+          "value": {
+            "a": 0.18,
+            "b": 0,
+            "g": 0.2338,
+            "r": 0.5903
+          }
+        }
+      }
+    },
+    {
+      "codeSyntax": "var(--brutalist-black)",
+      "collection": "component",
+      "expression": "oklch(from var(--shadow-lg) l c h / 1)",
+      "id": "callout:brutalist-black:b75258c11d",
+      "name": "callout/brutalist-black/brutalist",
+      "source": {
+        "dark": "evaluated",
+        "light": "evaluated"
+      },
+      "type": "COLOR",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": {
+            "a": 1,
+            "b": 0,
+            "g": 0,
+            "r": 0
+          }
+        },
+        "light": {
+          "kind": "literal",
+          "value": {
+            "a": 1,
+            "b": 0,
+            "g": 0,
+            "r": 0
+          }
+        }
+      }
+    },
+    {
+      "codeSyntax": "var(--callout-brutalist-offset)",
+      "collection": "component",
+      "expression": "4px",
+      "id": "callout:callout-brutalist-offset:356601538d",
+      "name": "callout/callout-brutalist-offset/brutalist",
+      "source": {
+        "dark": "literal",
+        "light": "literal"
+      },
+      "type": "FLOAT",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": 4
+        },
+        "light": {
+          "kind": "literal",
+          "value": 4
+        }
+      }
+    },
+    {
+      "codeSyntax": "var(--sk-callout-content-gap)",
+      "collection": "component",
+      "expression": "0.25rem",
+      "id": "callout:content-gap:e53fcdb082",
+      "name": "callout/content-gap",
+      "source": {
+        "dark": "evaluated",
+        "light": "evaluated"
+      },
+      "type": "FLOAT",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": 4
+        },
+        "light": {
+          "kind": "literal",
+          "value": 4
+        }
+      }
+    },
+    {
+      "codeSyntax": "var(--frost-glass)",
+      "collection": "component",
+      "expression": "var(--frost-on) color-mix(in oklab, var(--color-bg-danger-subtle) 94%, transparent)",
+      "id": "callout:frost-glass:827c17a94d",
+      "name": "callout/frost-glass/frosted/danger",
+      "source": {
+        "dark": "evaluated",
+        "light": "evaluated"
+      },
+      "type": "COLOR",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": {
+            "a": 0.94,
+            "b": 0.0345,
+            "g": 0.0316,
+            "r": 0.2754
+          }
+        },
+        "light": {
+          "kind": "literal",
+          "value": {
+            "a": 0.94,
+            "b": 0.9496,
+            "g": 0.9496,
+            "r": 0.9968
+          }
+        }
+      }
+    },
+    {
+      "codeSyntax": "var(--frost-glass)",
+      "collection": "component",
+      "expression": "var(--frost-on) color-mix(in oklab, var(--color-bg-info-subtle) 94%, transparent)",
+      "id": "callout:frost-glass:5a6c9e73d7",
+      "name": "callout/frost-glass/frosted/info",
+      "source": {
+        "dark": "evaluated",
+        "light": "evaluated"
+      },
+      "type": "COLOR",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": {
+            "a": 0.94,
+            "b": 0.2906,
+            "g": 0.1839,
+            "r": 0.0198
+          }
+        },
+        "light": {
+          "kind": "literal",
+          "value": {
+            "a": 0.94,
+            "b": 1,
+            "g": 0.9766,
+            "r": 0.9398
+          }
+        }
+      }
+    },
+    {
+      "codeSyntax": "var(--frost-glass)",
+      "collection": "component",
+      "expression": "var(--frost-on) color-mix(in oklab, var(--color-bg-surface) 72%, transparent)",
+      "id": "callout:frost-glass:ddcb59710b",
+      "name": "callout/frost-glass/frosted/neutral",
+      "source": {
+        "dark": "evaluated",
+        "light": "evaluated"
+      },
+      "type": "COLOR",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": {
+            "a": 0.72,
+            "b": 0.0903,
+            "g": 0.098,
+            "r": 0.1095
+          }
+        },
+        "light": {
+          "kind": "literal",
+          "value": {
+            "a": 0.72,
+            "b": 1,
+            "g": 1,
+            "r": 1
+          }
+        }
+      }
+    },
+    {
+      "codeSyntax": "var(--frost-glass)",
+      "collection": "component",
+      "expression": "var(--frost-on) color-mix(in oklab, var(--color-bg-success-subtle) 94%, transparent)",
+      "id": "callout:frost-glass:f6e026ce9e",
+      "name": "callout/frost-glass/frosted/success",
+      "source": {
+        "dark": "evaluated",
+        "light": "evaluated"
+      },
+      "type": "COLOR",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": {
+            "a": 0.94,
+            "b": 0.1328,
+            "g": 0.1736,
+            "r": 0
+          }
+        },
+        "light": {
+          "kind": "literal",
+          "value": {
+            "a": 0.94,
+            "b": 0.9602,
+            "g": 0.992,
+            "r": 0.9243
+          }
+        }
+      }
+    },
+    {
+      "codeSyntax": "var(--frost-glass)",
+      "collection": "component",
+      "expression": "var(--frost-on) color-mix(in oklab, var(--color-bg-warning-subtle) 94%, transparent)",
+      "id": "callout:frost-glass:8821b29986",
+      "name": "callout/frost-glass/frosted/warning",
+      "source": {
+        "dark": "evaluated",
+        "light": "evaluated"
+      },
+      "type": "COLOR",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": {
+            "a": 0.94,
+            "b": 0.0047,
+            "g": 0.0985,
+            "r": 0.2741
+          }
+        },
+        "light": {
+          "kind": "literal",
+          "value": {
+            "a": 0.94,
+            "b": 0.92,
+            "g": 0.9845,
+            "r": 1
+          }
+        }
+      }
+    },
+    {
+      "codeSyntax": "",
+      "collection": "component",
+      "expression": "calc(4px * 1)",
+      "id": "callout:shadow-1-x:fa8b2735e2",
+      "name": "callout/shadow-1-x/brutalist",
+      "source": {
+        "dark": "evaluated",
+        "light": "evaluated"
+      },
+      "type": "FLOAT",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": 4
+        },
+        "light": {
+          "kind": "literal",
+          "value": 4
         }
       }
     },

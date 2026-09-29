@@ -532,6 +532,8 @@ const cellHeightOf = (spec: M.ComponentSet) =>
       const box = manifest.styles.boxes[c.box];
       const h = box.height ?? box.minHeight;
       if (h) return Number(valueOf(h));
+      const layers = manifest.styles.layers[c.layers];
+      if (layers.some((l) => l.kind === "frame")) return Math.ceil(nestedSize(box, layers, () => 0).h);
       const text = manifest.styles.layers[c.layers].find((l): l is Extract<M.Layer, { kind: "text" }> => l.kind === "text");
       if (!text) return 0;
       // Auto leading is the font's own; 120% is what a body face's comes to.
@@ -541,6 +543,62 @@ const cellHeightOf = (spec: M.ComponentSet) =>
       return Math.ceil(line + padding + border);
     }),
   );
+
+/** A text layer's line box: auto leading is the font's own, and 120% is what a body face's comes to. */
+const lineOfText = (text: M.Text) => (Number(valueOf(text.fontSize)) * (text.lineHeight === "auto" ? 120 : text.lineHeight)) / 100;
+
+/**
+ * What auto layout will make of a box holding `layers`, down through its frames: padding and border
+ * around its children, summed along its direction with the gaps and the largest across. Texts are one
+ * line, `widthOf` wide (measured by the caller, or 0 where only the height matters).
+ */
+function nestedSize(box: M.Box, layers: readonly M.Layer[], widthOf: (layer: Extract<M.Layer, { kind: "text" }>) => number): { w: number; h: number } {
+  const sizes = layers.flatMap((layer) => {
+    if (layer.kind === "text") return [{ w: widthOf(layer), h: lineOfText(layer.text) }];
+    if (layer.kind === "icon") return [{ w: Number(valueOf(layer.icon.size)), h: Number(valueOf(layer.icon.size)) }];
+    if (layer.kind === "frame") return [nestedSize(manifest.styles.boxes[layer.box], layer.layers, widthOf)];
+    return [];
+  });
+  const gap = box.gap && sizes.length > 1 ? Number(valueOf(box.gap)) * (sizes.length - 1) : 0;
+  const along = (pick: (size: { w: number; h: number }) => number) => sizes.reduce((sum, size) => sum + pick(size), 0) + gap;
+  const across = (pick: (size: { w: number; h: number }) => number) => Math.max(0, ...sizes.map(pick));
+  const horizontal = box.direction === "HORIZONTAL";
+  const border = box.strokeWeight ? 2 * Number(valueOf(box.strokeWeight)) : 0;
+  const w = (horizontal ? along((s) => s.w) : across((s) => s.w)) + Number(valueOf(box.padding.left)) + Number(valueOf(box.padding.right)) + border;
+  const h = (horizontal ? across((s) => s.h) : along((s) => s.h)) + Number(valueOf(box.padding.top)) + Number(valueOf(box.padding.bottom)) + border;
+  const floor = (bound: M.Bound<number> | undefined, size: number) => (bound ? Math.max(Number(valueOf(bound)), size) : size);
+  return { w: box.width ? Number(valueOf(box.width)) : floor(box.minWidth, w), h: box.height ? Number(valueOf(box.height)) : floor(box.minHeight, h) };
+}
+
+/** Every text layer of a nested cell, measured holding its sample, then the cell's size from them. */
+async function measureNested(ctx: Ctx, spec: M.ComponentSet, cell: M.Cell): Promise<{ w: number; h: number }> {
+  const widths = new Map<M.Layer, number>();
+  const texts = (layers: readonly M.Layer[]): Extract<M.Layer, { kind: "text" }>[] =>
+    layers.flatMap((l) => (l.kind === "text" ? [l] : l.kind === "frame" ? texts(l.layers) : []));
+  for (const layer of texts(manifest.styles.layers[cell.layers])) {
+    const sample = spec.properties.find((p) => p.type === "TEXT" && p.name === layer.textProperty)?.default;
+    widths.set(layer, typeof sample === "string" ? await textWidth(ctx, layer.text, sample) : 0);
+  }
+  const size = nestedSize(manifest.styles.boxes[cell.box], manifest.styles.layers[cell.layers], (layer) => widths.get(layer) ?? 0);
+  return { w: Math.ceil(size.w), h: Math.ceil(size.h) };
+}
+
+/** `chars` set in `text`'s face, on one line, measured on a text made and removed. */
+async function textWidth(ctx: Ctx, text: M.Text, chars: string): Promise<number> {
+  const font = await fontFor(ctx.run, String(valueOf(text.fontFamily)), Number(valueOf(text.fontWeight)));
+  let w = 0;
+  ctx.run.write(() => {
+    const probe = figma.createText();
+    probe.fontName = font;
+    probe.fontSize = Number(valueOf(text.fontSize));
+    probe.lineHeight = text.lineHeight === "auto" ? { unit: "AUTO" } : { unit: "PERCENT", value: text.lineHeight };
+    probe.textAutoResize = "WIDTH_AND_HEIGHT";
+    probe.characters = chars;
+    w = probe.width;
+    probe.remove();
+  });
+  return w;
+}
 
 /** Row offsets inside a set: a heading's space opens each section, a group gap each group within it. */
 function rowOffsets(spec: M.ComponentSet, cellH: number) {
@@ -933,9 +991,26 @@ const layerOf = (node: ComponentNode, cell: M.Cell, slot: string): SceneNode | n
  * synced before ids exist is tagged once, and from then on each layer is found by it.
  */
 function tagLayers(run: Run, node: ComponentNode, cell: M.Cell) {
-  for (const layer of manifest.styles.layers[cell.layers] ?? []) {
-    const child = layerOf(node, cell, layer.slot);
-    if (child && getTag(child, "id") !== layerId(cell, layer.slot)) run.write(() => child.setSharedPluginData(NS, "id", layerId(cell, layer.slot)));
+  eachLayer(node, cell, manifest.styles.layers[cell.layers] ?? [], (child, layer, owner) => {
+    if (getTag(child, "id") !== layerId(owner, layer.slot)) run.write(() => child.setSharedPluginData(NS, "id", layerId(owner, layer.slot)));
+  });
+}
+
+/**
+ * Every drawn layer of a cell, down through its frames. A frame's layers are owned by the frame: their
+ * ids are the frame's id plus their slot, so Callout's `content/title` never meets a top-level title.
+ */
+function eachLayer(
+  parent: ChildrenMixin,
+  owner: { id: string },
+  layers: readonly M.Layer[],
+  visit: (child: SceneNode, layer: M.Layer, owner: { id: string }) => void,
+) {
+  for (const layer of layers) {
+    const child = pickLayer(parent.children, owner, layer.slot);
+    if (!child) continue;
+    visit(child, layer, owner);
+    if (layer.kind === "frame" && child.type === "FRAME") eachLayer(child, { id: layerId(owner, layer.slot) }, layer.layers, visit);
   }
 }
 
@@ -944,6 +1019,98 @@ const PARTS: readonly Part[] = ["box", "surface", "layers"];
 /** Which parts of an existing cell differ from the manifest. A cell from before parts were tagged has all stale. */
 const staleParts = (node: ComponentNode, cell: M.Cell): Part[] => PARTS.filter((part) => getTag(node, part) !== cell[part]);
 
+/** A frame's auto layout, padding, corners and size: the host's, or a part's inside it. */
+function applyBox(ctx: SetCtx, node: ComponentNode | FrameNode, box: M.Box) {
+  node.layoutMode = box.direction;
+  node.primaryAxisAlignItems = box.mainAlign;
+  node.counterAxisAlignItems = box.crossAlign;
+  node.primaryAxisSizingMode = box.width ? "FIXED" : "AUTO";
+  node.counterAxisSizingMode = box.height ? "FIXED" : "AUTO";
+  setNumber(ctx, node, "paddingTop", box.padding.top);
+  setNumber(ctx, node, "paddingRight", box.padding.right);
+  setNumber(ctx, node, "paddingBottom", box.padding.bottom);
+  setNumber(ctx, node, "paddingLeft", box.padding.left);
+  setNumber(ctx, node, "itemSpacing", box.gap, 0);
+  for (const corner of ["topLeftRadius", "topRightRadius", "bottomLeftRadius", "bottomRightRadius"] as const) {
+    setNumber(ctx, node, corner, box.radius, 0);
+  }
+  setNumber(ctx, node, "minHeight", box.minHeight);
+  setNumber(ctx, node, "minWidth", box.minWidth);
+  setNumber(ctx, node, "width", box.width);
+  setNumber(ctx, node, "height", box.height);
+  node.strokeAlign = "INSIDE";
+  // `box-sizing: border-box`: the border takes room in the layout, as it does in the browser.
+  node.strokesIncludedInLayout = true;
+  setNumber(ctx, node, "strokeWeight", box.strokeWeight, 0);
+  node.clipsContent = box.clipsContent;
+}
+
+function applySurface(ctx: SetCtx, node: ComponentNode | FrameNode, surface: M.Surface) {
+  node.strokes = surface.strokes.map((p) => toPaint(ctx, p));
+  node.fills = surface.fills.map((p) => toPaint(ctx, p));
+  node.effects = surface.effects.map((e) => toEffect(ctx, e));
+}
+
+const KIND_NODE = { icon: "INSTANCE", text: "TEXT", frame: "FRAME", overlay: "RECTANGLE", ring: "RECTANGLE" } as const;
+
+/**
+ * `parent`'s layers in order, each found by its id under `owner` (else, drawn before ids, by its
+ * slot's name: a layer a designer renamed is still the same layer, and is named back). A frame layer
+ * is drawn with its own box and surface, then its layers inside it, owned by it.
+ */
+async function applyLayers(
+  ctx: SetCtx,
+  parent: ComponentNode | FrameNode,
+  owner: { id: string },
+  layers: readonly M.Layer[],
+  cellKey: string,
+  sample: Record<string, string | boolean>,
+) {
+  const matched = new Map(layers.map((layer) => [layer.slot, pickLayer(parent.children, owner, layer.slot)]));
+  const keep = new Set([...matched.values()].filter(Boolean));
+  // A layer this cell no longer draws (a focus ring after the state changed) goes: it is ours.
+  for (const child of [...parent.children]) if (!keep.has(child)) child.remove();
+  for (const [index, layer] of layers.entries()) {
+    let child = matched.get(layer.slot) ?? null;
+    if (child && child.name !== layer.slot) child.name = layer.slot;
+    const wanted = KIND_NODE[layer.kind];
+    if (child && child.type !== wanted) {
+      ctx.run.log("UPDATE", `layer ${layer.slot} of ${cellKey}`, `replaced: ${child.type} → ${wanted}`);
+      child.remove();
+      child = null;
+    }
+    if (!child) {
+      child =
+        layer.kind === "icon"
+          ? (ctx.icons.byName.get(layer.default) ?? ctx.icons.byName.get(ctx.icons.spec.default)!).createInstance()
+          : layer.kind === "text"
+            ? figma.createText()
+            : layer.kind === "frame"
+              ? figma.createFrame()
+              : figma.createRectangle();
+      child.name = layer.slot;
+    }
+    const id = layerId(owner, layer.slot);
+    if (getTag(child, "id") !== id) child.setSharedPluginData(NS, "id", id);
+    // Move only a layer that is out of place: reinserting an in-place child is still a write.
+    if (parent.children[index] !== child) parent.insertChild(index, child);
+    if (layer.kind === "icon") {
+      await applyIcon(ctx, child as InstanceNode, layer);
+      // Born with the visibility its property defaults to: an optional slot is hidden until switched on.
+      if (layer.visibleProperty) child.visible = sample[layer.visibleProperty] !== false;
+    } else if (layer.kind === "text") await applyText(ctx, child as TextNode, layer.text, String(sample[layer.slot] ?? ""));
+    else if (layer.kind === "frame") {
+      const frame = child as FrameNode;
+      const box = manifest.styles.boxes[layer.box];
+      applyBox(ctx, frame, box);
+      applySurface(ctx, frame, manifest.styles.surfaces[layer.surface]);
+      frame.layoutGrow = box.grow ? 1 : 0;
+      frame.layoutAlign = box.stretch ? "STRETCH" : "INHERIT";
+      await applyLayers(ctx, frame, { id }, layer.layers, cellKey, sample);
+    }
+  }
+}
+
 /**
  * One cell, in place, rewriting only `parts`: its geometry, its surface, or its layers in the
  * template's slot order. A cell whose surface alone changed keeps every layer untouched.
@@ -951,74 +1118,12 @@ const staleParts = (node: ComponentNode, cell: M.Cell): Part[] => PARTS.filter((
 async function applyCell(ctx: SetCtx, node: ComponentNode, cell: M.Cell, sample: Record<string, string | boolean>, parts: readonly Part[] = PARTS) {
   if (node.name !== cell.key) node.name = cell.key;
 
-  if (parts.includes("box")) {
-    const box = manifest.styles.boxes[cell.box];
-    node.layoutMode = box.direction;
-    node.primaryAxisAlignItems = box.mainAlign;
-    node.counterAxisAlignItems = box.crossAlign;
-    node.primaryAxisSizingMode = box.width ? "FIXED" : "AUTO";
-    node.counterAxisSizingMode = box.height ? "FIXED" : "AUTO";
-    setNumber(ctx, node, "paddingTop", box.padding.top);
-    setNumber(ctx, node, "paddingRight", box.padding.right);
-    setNumber(ctx, node, "paddingBottom", box.padding.bottom);
-    setNumber(ctx, node, "paddingLeft", box.padding.left);
-    setNumber(ctx, node, "itemSpacing", box.gap, 0);
-    for (const corner of ["topLeftRadius", "topRightRadius", "bottomLeftRadius", "bottomRightRadius"] as const) {
-      setNumber(ctx, node, corner, box.radius, 0);
-    }
-    setNumber(ctx, node, "minHeight", box.minHeight);
-    setNumber(ctx, node, "minWidth", box.minWidth);
-    setNumber(ctx, node, "width", box.width);
-    setNumber(ctx, node, "height", box.height);
-    node.strokeAlign = "INSIDE";
-    // `box-sizing: border-box`: the border takes room in the layout, as it does in the browser.
-    node.strokesIncludedInLayout = true;
-    setNumber(ctx, node, "strokeWeight", box.strokeWeight, 0);
-    node.clipsContent = box.clipsContent;
-  }
-
-  if (parts.includes("surface")) {
-    const surface = manifest.styles.surfaces[cell.surface];
-    node.strokes = surface.strokes.map((p) => toPaint(ctx, p));
-    node.fills = surface.fills.map((p) => toPaint(ctx, p));
-    node.effects = surface.effects.map((e) => toEffect(ctx, e));
-  }
+  if (parts.includes("box")) applyBox(ctx, node, manifest.styles.boxes[cell.box]);
+  if (parts.includes("surface")) applySurface(ctx, node, manifest.styles.surfaces[cell.surface]);
 
   if (parts.includes("layers")) {
     const layers = manifest.styles.layers[cell.layers];
-    // Each layer found by its id, else (drawn before ids) by its slot's name: a layer a designer
-    // renamed is still the same layer, and is named back.
-    const matched = new Map(layers.map((layer) => [layer.slot, layerOf(node, cell, layer.slot)]));
-    const keep = new Set([...matched.values()].filter(Boolean));
-    // A layer this cell no longer draws (a focus ring after the state changed) goes: it is ours.
-    for (const child of [...node.children]) if (!keep.has(child)) child.remove();
-    for (const [index, layer] of layers.entries()) {
-      let child = matched.get(layer.slot) ?? null;
-      if (child && child.name !== layer.slot) child.name = layer.slot;
-      const wanted = layer.kind === "icon" ? "INSTANCE" : layer.kind === "text" ? "TEXT" : "RECTANGLE";
-      if (child && child.type !== wanted) {
-        ctx.run.log("UPDATE", `layer ${layer.slot} of ${cell.key}`, `replaced: ${child.type} → ${wanted}`);
-        child.remove();
-        child = null;
-      }
-      if (!child) {
-        child =
-          layer.kind === "icon"
-            ? (ctx.icons.byName.get(layer.default) ?? ctx.icons.byName.get(ctx.icons.spec.default)!).createInstance()
-            : layer.kind === "text"
-              ? figma.createText()
-              : figma.createRectangle();
-        child.name = layer.slot;
-      }
-      if (getTag(child, "id") !== layerId(cell, layer.slot)) child.setSharedPluginData(NS, "id", layerId(cell, layer.slot));
-      // Move only a layer that is out of place: reinserting an in-place child is still a write.
-      if (node.children[index] !== child) node.insertChild(index, child);
-      if (layer.kind === "icon") {
-        await applyIcon(ctx, child as InstanceNode, layer);
-        // Born with the visibility its property defaults to: an optional slot is hidden until switched on.
-        if (layer.visibleProperty) child.visible = sample[layer.visibleProperty] !== false;
-      } else if (layer.kind === "text") await applyText(ctx, child as TextNode, layer.text, String(sample[layer.slot] ?? ""));
-    }
+    await applyLayers(ctx, node, cell, layers, cell.key, sample);
     // Overlays and rings are sized off the host, so they go last, once its content has laid out.
     const box = manifest.styles.boxes[cell.box];
     for (const layer of layers) {
@@ -1060,9 +1165,8 @@ function ensureProperties(ctx: SetCtx, set: ComponentSetNode, properties: M.Comp
 }
 
 function bindReferences(ctx: SetCtx, node: ComponentNode, cell: M.Cell, keys: Record<string, string>, defaults: Record<string, string | boolean>) {
-  for (const layer of manifest.styles.layers[cell.layers]) {
-    const child = layerOf(node, cell, layer.slot);
-    if (!child) continue;
+  eachLayer(node, cell, manifest.styles.layers[cell.layers], (child, layer) => {
+    if (layer.kind === "frame") return;
     const refs: Record<string, string> = {};
     if (layer.kind === "icon") {
       if (layer.visibleProperty && keys[layer.visibleProperty]) refs.visible = keys[layer.visibleProperty];
@@ -1076,7 +1180,7 @@ function bindReferences(ctx: SetCtx, node: ComponentNode, cell: M.Cell, keys: Re
     const have = (child.componentPropertyReferences ?? {}) as Record<string, string>;
     const same = Object.keys(refs).length === Object.keys(have).length && Object.entries(refs).every(([k, v]) => have[k] === v);
     if (!same) ctx.run.write(() => (child.componentPropertyReferences = refs));
-  }
+  });
 }
 
 /**
@@ -1184,6 +1288,10 @@ async function measureFirst(ctx: Ctx, spec: M.ComponentSet, set: ComponentSetNod
   if (!first) return { w: 0, h: cellH };
   const node = ownCells(set).find((c) => getTag(c, "cell") === first.key);
   if (node) return { w: Math.ceil(node.width), h: Math.max(cellH, Math.ceil(node.height)) };
+  if (manifest.styles.layers[first.layers].some((l) => l.kind === "frame")) {
+    const size = await measureNested(ctx, spec, first);
+    return { w: size.w, h: Math.max(cellH, size.h) };
+  }
   const box = manifest.styles.boxes[first.box];
   const label = manifest.styles.layers[first.layers].find((l) => l.kind === "text");
   const sample = spec.properties.find((p) => p.type === "TEXT" && label && p.name === label.slot)?.default;

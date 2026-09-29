@@ -326,7 +326,9 @@ export function resolve(text: string, kind: Kind, ctx: Context, role: string): B
   }
 
   // No number to bind: auto, none, and the content-sized widths (Figma's hug, which a frame already is).
-  if (/^(auto|none|normal|fit-content|max-content|min-content)$/.test(current)) return undefined;
+  // `100%` too: a Callout fills whatever holds it, and a component drawn alone has nothing to fill,
+  // so it hugs until an instance is stretched.
+  if (/^(auto|none|normal|fit-content|max-content|min-content|100%)$/.test(current)) return undefined;
 
   try {
     const touchesVars = /var\(|light-dark\(|currentcolor/i.test(current);
