@@ -33460,6 +33460,768 @@
         "columns": []
       },
       "visualHash": "c944f39ba911f7f0"
+    },
+    {
+      "axes": [
+        {
+          "name": "controlSize",
+          "values": [
+            "sm",
+            "md",
+            "lg"
+          ]
+        },
+        {
+          "name": "state",
+          "values": [
+            "rest",
+            "focus",
+            "disabled",
+            "invalid",
+            "read-only"
+          ]
+        }
+      ],
+      "cells": [
+        {
+          "box": "11203dc14bb87635",
+          "hash": "cc3b475e33b03efc",
+          "id": "input/plain/controlSize=sm,state=rest",
+          "key": "controlSize=sm, state=rest",
+          "layers": "f93b85fd108e9a25",
+          "props": {
+            "controlSize": "sm",
+            "state": "rest"
+          },
+          "surface": "531c78c45ff2f131"
+        },
+        {
+          "box": "11203dc14bb87635",
+          "hash": "0797274d12e88189",
+          "id": "input/plain/controlSize=sm,state=focus",
+          "key": "controlSize=sm, state=focus",
+          "layers": "fe62eb476a422cc0",
+          "props": {
+            "controlSize": "sm",
+            "state": "focus"
+          },
+          "surface": "531c78c45ff2f131"
+        },
+        {
+          "box": "11203dc14bb87635",
+          "hash": "cf29bd74f1dac26f",
+          "id": "input/plain/controlSize=sm,state=disabled",
+          "key": "controlSize=sm, state=disabled",
+          "layers": "f93b85fd108e9a25",
+          "props": {
+            "controlSize": "sm",
+            "state": "disabled"
+          },
+          "surface": "7ea5a7347d847678"
+        },
+        {
+          "box": "11203dc14bb87635",
+          "hash": "90c30dc367ef70b1",
+          "id": "input/plain/controlSize=sm,state=invalid",
+          "key": "controlSize=sm, state=invalid",
+          "layers": "f93b85fd108e9a25",
+          "props": {
+            "controlSize": "sm",
+            "state": "invalid"
+          },
+          "surface": "86ed77ef1186c65e"
+        },
+        {
+          "box": "11203dc14bb87635",
+          "hash": "f5853171da864f0f",
+          "id": "input/plain/controlSize=sm,state=read-only",
+          "key": "controlSize=sm, state=read-only",
+          "layers": "f93b85fd108e9a25",
+          "props": {
+            "controlSize": "sm",
+            "state": "read-only"
+          },
+          "surface": "7ea5a7347d847678"
+        },
+        {
+          "box": "bd7bcb60e3e7fe82",
+          "hash": "07078741186902c9",
+          "id": "input/plain/controlSize=md,state=rest",
+          "key": "controlSize=md, state=rest",
+          "layers": "709d119febc5dfbc",
+          "props": {
+            "controlSize": "md",
+            "state": "rest"
+          },
+          "surface": "531c78c45ff2f131"
+        },
+        {
+          "box": "bd7bcb60e3e7fe82",
+          "hash": "68ea2f30fa1c5d2f",
+          "id": "input/plain/controlSize=md,state=focus",
+          "key": "controlSize=md, state=focus",
+          "layers": "6825bedf5b87556e",
+          "props": {
+            "controlSize": "md",
+            "state": "focus"
+          },
+          "surface": "531c78c45ff2f131"
+        },
+        {
+          "box": "bd7bcb60e3e7fe82",
+          "hash": "da77512966e53572",
+          "id": "input/plain/controlSize=md,state=disabled",
+          "key": "controlSize=md, state=disabled",
+          "layers": "709d119febc5dfbc",
+          "props": {
+            "controlSize": "md",
+            "state": "disabled"
+          },
+          "surface": "7ea5a7347d847678"
+        },
+        {
+          "box": "bd7bcb60e3e7fe82",
+          "hash": "a05508573e6fd47a",
+          "id": "input/plain/controlSize=md,state=invalid",
+          "key": "controlSize=md, state=invalid",
+          "layers": "709d119febc5dfbc",
+          "props": {
+            "controlSize": "md",
+            "state": "invalid"
+          },
+          "surface": "86ed77ef1186c65e"
+        },
+        {
+          "box": "bd7bcb60e3e7fe82",
+          "hash": "f6e9d35fcc09b6bb",
+          "id": "input/plain/controlSize=md,state=read-only",
+          "key": "controlSize=md, state=read-only",
+          "layers": "709d119febc5dfbc",
+          "props": {
+            "controlSize": "md",
+            "state": "read-only"
+          },
+          "surface": "7ea5a7347d847678"
+        },
+        {
+          "box": "b5ec9ced019b3552",
+          "hash": "50d5588dff8ecfd5",
+          "id": "input/plain/controlSize=lg,state=rest",
+          "key": "controlSize=lg, state=rest",
+          "layers": "4415fc9c09795ef7",
+          "props": {
+            "controlSize": "lg",
+            "state": "rest"
+          },
+          "surface": "531c78c45ff2f131"
+        },
+        {
+          "box": "b5ec9ced019b3552",
+          "hash": "ed8c17876eb4ca03",
+          "id": "input/plain/controlSize=lg,state=focus",
+          "key": "controlSize=lg, state=focus",
+          "layers": "6e049357ee366236",
+          "props": {
+            "controlSize": "lg",
+            "state": "focus"
+          },
+          "surface": "531c78c45ff2f131"
+        },
+        {
+          "box": "b5ec9ced019b3552",
+          "hash": "d1998d1b6ad5efc0",
+          "id": "input/plain/controlSize=lg,state=disabled",
+          "key": "controlSize=lg, state=disabled",
+          "layers": "4415fc9c09795ef7",
+          "props": {
+            "controlSize": "lg",
+            "state": "disabled"
+          },
+          "surface": "7ea5a7347d847678"
+        },
+        {
+          "box": "b5ec9ced019b3552",
+          "hash": "a00d3e03b2ea9124",
+          "id": "input/plain/controlSize=lg,state=invalid",
+          "key": "controlSize=lg, state=invalid",
+          "layers": "4415fc9c09795ef7",
+          "props": {
+            "controlSize": "lg",
+            "state": "invalid"
+          },
+          "surface": "86ed77ef1186c65e"
+        },
+        {
+          "box": "b5ec9ced019b3552",
+          "hash": "a410ad02bb51bd8f",
+          "id": "input/plain/controlSize=lg,state=read-only",
+          "key": "controlSize=lg, state=read-only",
+          "layers": "4415fc9c09795ef7",
+          "props": {
+            "controlSize": "lg",
+            "state": "read-only"
+          },
+          "surface": "7ea5a7347d847678"
+        }
+      ],
+      "contractHash": "d232c38d4a3c0cc8",
+      "defaultCell": "controlSize=sm, state=rest",
+      "grid": {
+        "columns": [
+          {
+            "name": "state",
+            "values": [
+              "rest",
+              "focus",
+              "disabled",
+              "invalid",
+              "read-only"
+            ]
+          }
+        ],
+        "rows": [
+          {
+            "name": "controlSize",
+            "values": [
+              "lg",
+              "md",
+              "sm"
+            ]
+          }
+        ]
+      },
+      "id": "input/plain",
+      "interactions": [],
+      "kind": "component-set",
+      "name": "Input / plain",
+      "page": "skryensya",
+      "properties": [
+        {
+          "default": "Email address",
+          "name": "placeholder",
+          "type": "TEXT"
+        },
+        {
+          "default": true,
+          "name": "show placeholder",
+          "type": "BOOLEAN"
+        }
+      ],
+      "showcase": {
+        "base": {
+          "state": "rest"
+        },
+        "columns": []
+      },
+      "visualHash": "eed90e185c4b4497"
+    },
+    {
+      "axes": [
+        {
+          "name": "controlSize",
+          "values": [
+            "sm",
+            "md",
+            "lg"
+          ]
+        },
+        {
+          "name": "state",
+          "values": [
+            "rest",
+            "focus",
+            "disabled",
+            "invalid",
+            "read-only"
+          ]
+        }
+      ],
+      "cells": [
+        {
+          "box": "11203dc14bb87635",
+          "hash": "191b12f3f2cc10e5",
+          "id": "input/brutalist/controlSize=sm,state=rest",
+          "key": "controlSize=sm, state=rest",
+          "layers": "f93b85fd108e9a25",
+          "props": {
+            "controlSize": "sm",
+            "state": "rest"
+          },
+          "surface": "72677660210810a6"
+        },
+        {
+          "box": "11203dc14bb87635",
+          "hash": "a78440ebb2aebff1",
+          "id": "input/brutalist/controlSize=sm,state=focus",
+          "key": "controlSize=sm, state=focus",
+          "layers": "fe62eb476a422cc0",
+          "props": {
+            "controlSize": "sm",
+            "state": "focus"
+          },
+          "surface": "72677660210810a6"
+        },
+        {
+          "box": "11203dc14bb87635",
+          "hash": "ec104f3d03217ac7",
+          "id": "input/brutalist/controlSize=sm,state=disabled",
+          "key": "controlSize=sm, state=disabled",
+          "layers": "f93b85fd108e9a25",
+          "props": {
+            "controlSize": "sm",
+            "state": "disabled"
+          },
+          "surface": "82d94bda55e9390f"
+        },
+        {
+          "box": "11203dc14bb87635",
+          "hash": "7d69be2f90de0562",
+          "id": "input/brutalist/controlSize=sm,state=invalid",
+          "key": "controlSize=sm, state=invalid",
+          "layers": "f93b85fd108e9a25",
+          "props": {
+            "controlSize": "sm",
+            "state": "invalid"
+          },
+          "surface": "a396cb44c60ec362"
+        },
+        {
+          "box": "11203dc14bb87635",
+          "hash": "8dba1fd0557d17df",
+          "id": "input/brutalist/controlSize=sm,state=read-only",
+          "key": "controlSize=sm, state=read-only",
+          "layers": "f93b85fd108e9a25",
+          "props": {
+            "controlSize": "sm",
+            "state": "read-only"
+          },
+          "surface": "cdb4b9ced90da0f5"
+        },
+        {
+          "box": "bd7bcb60e3e7fe82",
+          "hash": "020432a0821785e3",
+          "id": "input/brutalist/controlSize=md,state=rest",
+          "key": "controlSize=md, state=rest",
+          "layers": "709d119febc5dfbc",
+          "props": {
+            "controlSize": "md",
+            "state": "rest"
+          },
+          "surface": "72677660210810a6"
+        },
+        {
+          "box": "bd7bcb60e3e7fe82",
+          "hash": "33d08ca800db8b29",
+          "id": "input/brutalist/controlSize=md,state=focus",
+          "key": "controlSize=md, state=focus",
+          "layers": "6825bedf5b87556e",
+          "props": {
+            "controlSize": "md",
+            "state": "focus"
+          },
+          "surface": "72677660210810a6"
+        },
+        {
+          "box": "bd7bcb60e3e7fe82",
+          "hash": "4b75210bae1d614d",
+          "id": "input/brutalist/controlSize=md,state=disabled",
+          "key": "controlSize=md, state=disabled",
+          "layers": "709d119febc5dfbc",
+          "props": {
+            "controlSize": "md",
+            "state": "disabled"
+          },
+          "surface": "82d94bda55e9390f"
+        },
+        {
+          "box": "bd7bcb60e3e7fe82",
+          "hash": "85061fce243a32d9",
+          "id": "input/brutalist/controlSize=md,state=invalid",
+          "key": "controlSize=md, state=invalid",
+          "layers": "709d119febc5dfbc",
+          "props": {
+            "controlSize": "md",
+            "state": "invalid"
+          },
+          "surface": "a396cb44c60ec362"
+        },
+        {
+          "box": "bd7bcb60e3e7fe82",
+          "hash": "3e846aa1a0447693",
+          "id": "input/brutalist/controlSize=md,state=read-only",
+          "key": "controlSize=md, state=read-only",
+          "layers": "709d119febc5dfbc",
+          "props": {
+            "controlSize": "md",
+            "state": "read-only"
+          },
+          "surface": "cdb4b9ced90da0f5"
+        },
+        {
+          "box": "b5ec9ced019b3552",
+          "hash": "e62a553d4b6852fc",
+          "id": "input/brutalist/controlSize=lg,state=rest",
+          "key": "controlSize=lg, state=rest",
+          "layers": "4415fc9c09795ef7",
+          "props": {
+            "controlSize": "lg",
+            "state": "rest"
+          },
+          "surface": "72677660210810a6"
+        },
+        {
+          "box": "b5ec9ced019b3552",
+          "hash": "ad65122e8f418b09",
+          "id": "input/brutalist/controlSize=lg,state=focus",
+          "key": "controlSize=lg, state=focus",
+          "layers": "6e049357ee366236",
+          "props": {
+            "controlSize": "lg",
+            "state": "focus"
+          },
+          "surface": "72677660210810a6"
+        },
+        {
+          "box": "b5ec9ced019b3552",
+          "hash": "035dfbf386ca6326",
+          "id": "input/brutalist/controlSize=lg,state=disabled",
+          "key": "controlSize=lg, state=disabled",
+          "layers": "4415fc9c09795ef7",
+          "props": {
+            "controlSize": "lg",
+            "state": "disabled"
+          },
+          "surface": "82d94bda55e9390f"
+        },
+        {
+          "box": "b5ec9ced019b3552",
+          "hash": "4cabcfd044c706e5",
+          "id": "input/brutalist/controlSize=lg,state=invalid",
+          "key": "controlSize=lg, state=invalid",
+          "layers": "4415fc9c09795ef7",
+          "props": {
+            "controlSize": "lg",
+            "state": "invalid"
+          },
+          "surface": "a396cb44c60ec362"
+        },
+        {
+          "box": "b5ec9ced019b3552",
+          "hash": "f22bc8b7b7a7e49f",
+          "id": "input/brutalist/controlSize=lg,state=read-only",
+          "key": "controlSize=lg, state=read-only",
+          "layers": "4415fc9c09795ef7",
+          "props": {
+            "controlSize": "lg",
+            "state": "read-only"
+          },
+          "surface": "cdb4b9ced90da0f5"
+        }
+      ],
+      "contractHash": "d232c38d4a3c0cc8",
+      "defaultCell": "controlSize=sm, state=rest",
+      "grid": {
+        "columns": [
+          {
+            "name": "state",
+            "values": [
+              "rest",
+              "focus",
+              "disabled",
+              "invalid",
+              "read-only"
+            ]
+          }
+        ],
+        "rows": [
+          {
+            "name": "controlSize",
+            "values": [
+              "lg",
+              "md",
+              "sm"
+            ]
+          }
+        ]
+      },
+      "id": "input/brutalist",
+      "interactions": [],
+      "kind": "component-set",
+      "name": "Input / brutalist",
+      "page": "skryensya",
+      "properties": [
+        {
+          "default": "Email address",
+          "name": "placeholder",
+          "type": "TEXT"
+        },
+        {
+          "default": true,
+          "name": "show placeholder",
+          "type": "BOOLEAN"
+        }
+      ],
+      "showcase": {
+        "base": {
+          "state": "rest"
+        },
+        "columns": []
+      },
+      "visualHash": "c95e8ef2dccebded"
+    },
+    {
+      "axes": [
+        {
+          "name": "controlSize",
+          "values": [
+            "sm",
+            "md",
+            "lg"
+          ]
+        },
+        {
+          "name": "state",
+          "values": [
+            "rest",
+            "focus",
+            "disabled",
+            "invalid",
+            "read-only"
+          ]
+        }
+      ],
+      "cells": [
+        {
+          "box": "11203dc14bb87635",
+          "hash": "cb03e39311b2c08a",
+          "id": "input/frosted/controlSize=sm,state=rest",
+          "key": "controlSize=sm, state=rest",
+          "layers": "f93b85fd108e9a25",
+          "props": {
+            "controlSize": "sm",
+            "state": "rest"
+          },
+          "surface": "75ed1c23eefadec1"
+        },
+        {
+          "box": "11203dc14bb87635",
+          "hash": "62e7b9c90e6bbc2a",
+          "id": "input/frosted/controlSize=sm,state=focus",
+          "key": "controlSize=sm, state=focus",
+          "layers": "fe62eb476a422cc0",
+          "props": {
+            "controlSize": "sm",
+            "state": "focus"
+          },
+          "surface": "75ed1c23eefadec1"
+        },
+        {
+          "box": "11203dc14bb87635",
+          "hash": "54ef3bfff6846737",
+          "id": "input/frosted/controlSize=sm,state=disabled",
+          "key": "controlSize=sm, state=disabled",
+          "layers": "f93b85fd108e9a25",
+          "props": {
+            "controlSize": "sm",
+            "state": "disabled"
+          },
+          "surface": "82e98874ac2a6a3d"
+        },
+        {
+          "box": "11203dc14bb87635",
+          "hash": "849b746f2ed82d34",
+          "id": "input/frosted/controlSize=sm,state=invalid",
+          "key": "controlSize=sm, state=invalid",
+          "layers": "f93b85fd108e9a25",
+          "props": {
+            "controlSize": "sm",
+            "state": "invalid"
+          },
+          "surface": "89a78262b9ed8cf9"
+        },
+        {
+          "box": "11203dc14bb87635",
+          "hash": "2a14a0d8f8bdd0ec",
+          "id": "input/frosted/controlSize=sm,state=read-only",
+          "key": "controlSize=sm, state=read-only",
+          "layers": "f93b85fd108e9a25",
+          "props": {
+            "controlSize": "sm",
+            "state": "read-only"
+          },
+          "surface": "82e98874ac2a6a3d"
+        },
+        {
+          "box": "bd7bcb60e3e7fe82",
+          "hash": "50d2647094b80f37",
+          "id": "input/frosted/controlSize=md,state=rest",
+          "key": "controlSize=md, state=rest",
+          "layers": "709d119febc5dfbc",
+          "props": {
+            "controlSize": "md",
+            "state": "rest"
+          },
+          "surface": "75ed1c23eefadec1"
+        },
+        {
+          "box": "bd7bcb60e3e7fe82",
+          "hash": "d6c04eed97c97274",
+          "id": "input/frosted/controlSize=md,state=focus",
+          "key": "controlSize=md, state=focus",
+          "layers": "6825bedf5b87556e",
+          "props": {
+            "controlSize": "md",
+            "state": "focus"
+          },
+          "surface": "75ed1c23eefadec1"
+        },
+        {
+          "box": "bd7bcb60e3e7fe82",
+          "hash": "63f6d89fb89957db",
+          "id": "input/frosted/controlSize=md,state=disabled",
+          "key": "controlSize=md, state=disabled",
+          "layers": "709d119febc5dfbc",
+          "props": {
+            "controlSize": "md",
+            "state": "disabled"
+          },
+          "surface": "82e98874ac2a6a3d"
+        },
+        {
+          "box": "bd7bcb60e3e7fe82",
+          "hash": "3ba6ee94df3afb33",
+          "id": "input/frosted/controlSize=md,state=invalid",
+          "key": "controlSize=md, state=invalid",
+          "layers": "709d119febc5dfbc",
+          "props": {
+            "controlSize": "md",
+            "state": "invalid"
+          },
+          "surface": "89a78262b9ed8cf9"
+        },
+        {
+          "box": "bd7bcb60e3e7fe82",
+          "hash": "93bc4f7392513c36",
+          "id": "input/frosted/controlSize=md,state=read-only",
+          "key": "controlSize=md, state=read-only",
+          "layers": "709d119febc5dfbc",
+          "props": {
+            "controlSize": "md",
+            "state": "read-only"
+          },
+          "surface": "82e98874ac2a6a3d"
+        },
+        {
+          "box": "b5ec9ced019b3552",
+          "hash": "855afb96d4ea97f5",
+          "id": "input/frosted/controlSize=lg,state=rest",
+          "key": "controlSize=lg, state=rest",
+          "layers": "4415fc9c09795ef7",
+          "props": {
+            "controlSize": "lg",
+            "state": "rest"
+          },
+          "surface": "75ed1c23eefadec1"
+        },
+        {
+          "box": "b5ec9ced019b3552",
+          "hash": "f9628b64d8220517",
+          "id": "input/frosted/controlSize=lg,state=focus",
+          "key": "controlSize=lg, state=focus",
+          "layers": "6e049357ee366236",
+          "props": {
+            "controlSize": "lg",
+            "state": "focus"
+          },
+          "surface": "75ed1c23eefadec1"
+        },
+        {
+          "box": "b5ec9ced019b3552",
+          "hash": "a9a7cdf8f7157420",
+          "id": "input/frosted/controlSize=lg,state=disabled",
+          "key": "controlSize=lg, state=disabled",
+          "layers": "4415fc9c09795ef7",
+          "props": {
+            "controlSize": "lg",
+            "state": "disabled"
+          },
+          "surface": "82e98874ac2a6a3d"
+        },
+        {
+          "box": "b5ec9ced019b3552",
+          "hash": "440cef3408aed68b",
+          "id": "input/frosted/controlSize=lg,state=invalid",
+          "key": "controlSize=lg, state=invalid",
+          "layers": "4415fc9c09795ef7",
+          "props": {
+            "controlSize": "lg",
+            "state": "invalid"
+          },
+          "surface": "89a78262b9ed8cf9"
+        },
+        {
+          "box": "b5ec9ced019b3552",
+          "hash": "53bc86128e91b918",
+          "id": "input/frosted/controlSize=lg,state=read-only",
+          "key": "controlSize=lg, state=read-only",
+          "layers": "4415fc9c09795ef7",
+          "props": {
+            "controlSize": "lg",
+            "state": "read-only"
+          },
+          "surface": "82e98874ac2a6a3d"
+        }
+      ],
+      "contractHash": "d232c38d4a3c0cc8",
+      "defaultCell": "controlSize=sm, state=rest",
+      "grid": {
+        "columns": [
+          {
+            "name": "state",
+            "values": [
+              "rest",
+              "focus",
+              "disabled",
+              "invalid",
+              "read-only"
+            ]
+          }
+        ],
+        "rows": [
+          {
+            "name": "controlSize",
+            "values": [
+              "lg",
+              "md",
+              "sm"
+            ]
+          }
+        ]
+      },
+      "id": "input/frosted",
+      "interactions": [],
+      "kind": "component-set",
+      "name": "Input / frosted",
+      "page": "skryensya",
+      "properties": [
+        {
+          "default": "Email address",
+          "name": "placeholder",
+          "type": "TEXT"
+        },
+        {
+          "default": true,
+          "name": "show placeholder",
+          "type": "BOOLEAN"
+        }
+      ],
+      "showcase": {
+        "base": {
+          "state": "rest"
+        },
+        "columns": []
+      },
+      "visualHash": "ae2e1faf2dc238f6"
     }
   ],
   "diagnostics": [
@@ -33546,6 +34308,12 @@
       "message": "4 rule(s) under a condition the evaluation context does not hold",
       "severity": "info",
       "subject": "components/callout.css @media (forced-colors: active)"
+    },
+    {
+      "code": "CONDITION_SKIPPED",
+      "message": "3 rule(s) under a condition the evaluation context does not hold",
+      "severity": "info",
+      "subject": "components/input.css @media (forced-colors: active)"
     },
     {
       "code": "CONDITION_SKIPPED",
@@ -33766,6 +34534,23 @@
           "headingSize"
         ]
       },
+      "input": {
+        "excluded": [
+          "format",
+          "country",
+          "errorLabel"
+        ],
+        "nonVisual": [
+          "type",
+          "name",
+          "placeholder"
+        ],
+        "visual": [
+          "controlSize",
+          "disabled",
+          "appearance"
+        ]
+      },
       "kbd": {
         "excluded": [],
         "nonVisual": [],
@@ -33888,21 +34673,23 @@
       }
     },
     "tokens": {
-      "catalogueAdded": 311,
-      "componentVariables": 241,
+      "catalogueAdded": 310,
+      "componentVariables": 252,
       "modeValuesBySource": {
         "alias": 203,
-        "evaluated": 517,
-        "literal": 694
+        "evaluated": 535,
+        "literal": 698
       },
-      "reached": 194,
-      "reachedAsVariables": 147,
+      "reached": 198,
+      "reachedAsVariables": 148,
       "reachedButNotVariables": [
         "--elevation-flat",
         "--elevation-overlay",
         "--elevation-raised",
+        "--elevation-sunken",
         "--elevation-wash-overlay",
         "--elevation-wash-raised",
+        "--elevation-wash-sunken",
         "--frost-on",
         "--state-layer-color"
       ],
@@ -33910,8 +34697,8 @@
       "variables": 466
     },
     "variants": {
-      "components": 36,
-      "componentSets": 35,
+      "components": 39,
+      "componentSets": 38,
       "naiveAllOptions": {
         "avatar": 8,
         "back-to-top": 4,
@@ -33922,6 +34709,7 @@
         "code": 1,
         "empty-state": 1,
         "heading": 156,
+        "input": 72,
         "kbd": 4,
         "labelled-separator": 12,
         "link": 2,
@@ -33945,6 +34733,7 @@
         "code": 1,
         "empty-state": 1,
         "heading": 13,
+        "input": 18,
         "kbd": 4,
         "labelled-separator": 3,
         "link": 2,
@@ -34098,13 +34887,25 @@
         {
           "set": "meter",
           "variants": 4
+        },
+        {
+          "set": "input/plain",
+          "variants": 15
+        },
+        {
+          "set": "input/brutalist",
+          "variants": 15
+        },
+        {
+          "set": "input/frosted",
+          "variants": 15
         }
       ],
-      "variantsTotal": 2084
+      "variantsTotal": 2129
     }
   },
   "schemaVersion": 1,
-  "sourceHash": "55cefa90799b5f5d",
+  "sourceHash": "366e7ee8f415e4eb",
   "stage": {
     "background": {
       "variable": "--color-bg-surface"
@@ -34261,6 +35062,39 @@
         },
         "strokeWeight": {
           "variable": "button:border-width:93e20626bf"
+        }
+      },
+      "11203dc14bb87635": {
+        "clipsContent": false,
+        "crossAlign": "CENTER",
+        "direction": "HORIZONTAL",
+        "height": {
+          "variable": "input:height:7b441eeb29"
+        },
+        "mainAlign": "MIN",
+        "padding": {
+          "bottom": {
+            "variable": "--space-inset-xs"
+          },
+          "left": {
+            "variable": "--space-inset-xs"
+          },
+          "right": {
+            "variable": "--space-inset-xs"
+          },
+          "top": {
+            "variable": "--space-inset-xs"
+          }
+        },
+        "radius": {
+          "variable": "--radius-control"
+        },
+        "strokeWeight": {
+          "variable": "input:border-width:93e20626bf"
+        },
+        "width": {
+          "expression": "240px",
+          "value": 240
         }
       },
       "144298541abec291": {
@@ -35702,6 +36536,72 @@
             "expression": "0",
             "value": 0
           }
+        }
+      },
+      "b5ec9ced019b3552": {
+        "clipsContent": false,
+        "crossAlign": "CENTER",
+        "direction": "HORIZONTAL",
+        "height": {
+          "variable": "input:height:d92dbdc181"
+        },
+        "mainAlign": "MIN",
+        "padding": {
+          "bottom": {
+            "variable": "--space-inset-xs"
+          },
+          "left": {
+            "variable": "--space-inset-md"
+          },
+          "right": {
+            "variable": "--space-inset-md"
+          },
+          "top": {
+            "variable": "--space-inset-xs"
+          }
+        },
+        "radius": {
+          "variable": "--radius-control"
+        },
+        "strokeWeight": {
+          "variable": "input:border-width:93e20626bf"
+        },
+        "width": {
+          "expression": "240px",
+          "value": 240
+        }
+      },
+      "bd7bcb60e3e7fe82": {
+        "clipsContent": false,
+        "crossAlign": "CENTER",
+        "direction": "HORIZONTAL",
+        "height": {
+          "variable": "input:height:2dce2436e5"
+        },
+        "mainAlign": "MIN",
+        "padding": {
+          "bottom": {
+            "variable": "--space-inset-xs"
+          },
+          "left": {
+            "variable": "--space-inset-sm"
+          },
+          "right": {
+            "variable": "--space-inset-sm"
+          },
+          "top": {
+            "variable": "--space-inset-xs"
+          }
+        },
+        "radius": {
+          "variable": "--radius-control"
+        },
+        "strokeWeight": {
+          "variable": "input:border-width:93e20626bf"
+        },
+        "width": {
+          "expression": "240px",
+          "value": 240
         }
       },
       "c4995ee588113697": {
@@ -39766,6 +40666,32 @@
           "surface": "fa0b643878e9242d"
         }
       ],
+      "4415fc9c09795ef7": [
+        {
+          "kind": "text",
+          "slot": "placeholder",
+          "text": {
+            "fill": {
+              "color": {
+                "variable": "--color-text-tertiary"
+              },
+              "type": "SOLID"
+            },
+            "fontFamily": {
+              "variable": "--font-family-body"
+            },
+            "fontSize": {
+              "variable": "--font-size-body-lg"
+            },
+            "fontWeight": {
+              "variable": "--font-weight-body"
+            },
+            "lineHeight": 150
+          },
+          "textProperty": "placeholder",
+          "visibleProperty": "show placeholder"
+        }
+      ],
       "446e9169f6887c04": [
         {
           "kind": "text",
@@ -42032,6 +42958,51 @@
           "textProperty": "children"
         }
       ],
+      "6825bedf5b87556e": [
+        {
+          "kind": "text",
+          "slot": "placeholder",
+          "text": {
+            "fill": {
+              "color": {
+                "variable": "--color-text-tertiary"
+              },
+              "type": "SOLID"
+            },
+            "fontFamily": {
+              "variable": "--font-family-body"
+            },
+            "fontSize": {
+              "variable": "--font-size-body"
+            },
+            "fontWeight": {
+              "variable": "--font-weight-body"
+            },
+            "lineHeight": 150
+          },
+          "textProperty": "placeholder",
+          "visibleProperty": "show placeholder"
+        },
+        {
+          "color": {
+            "color": {
+              "variable": "--focus-ring-color"
+            },
+            "type": "SOLID"
+          },
+          "kind": "ring",
+          "offset": {
+            "variable": "--focus-ring-offset"
+          },
+          "radius": {
+            "variable": "input:outline-radius:9325831be9"
+          },
+          "slot": "focus ring",
+          "width": {
+            "variable": "--focus-ring-width"
+          }
+        }
+      ],
       "691eda67bd2ba4d3": [
         {
           "kind": "text",
@@ -42319,6 +43290,51 @@
           "textProperty": "children"
         }
       ],
+      "6e049357ee366236": [
+        {
+          "kind": "text",
+          "slot": "placeholder",
+          "text": {
+            "fill": {
+              "color": {
+                "variable": "--color-text-tertiary"
+              },
+              "type": "SOLID"
+            },
+            "fontFamily": {
+              "variable": "--font-family-body"
+            },
+            "fontSize": {
+              "variable": "--font-size-body-lg"
+            },
+            "fontWeight": {
+              "variable": "--font-weight-body"
+            },
+            "lineHeight": 150
+          },
+          "textProperty": "placeholder",
+          "visibleProperty": "show placeholder"
+        },
+        {
+          "color": {
+            "color": {
+              "variable": "--focus-ring-color"
+            },
+            "type": "SOLID"
+          },
+          "kind": "ring",
+          "offset": {
+            "variable": "--focus-ring-offset"
+          },
+          "radius": {
+            "variable": "input:outline-radius:9325831be9"
+          },
+          "slot": "focus ring",
+          "width": {
+            "variable": "--focus-ring-width"
+          }
+        }
+      ],
       "6f1c89cfc853c3f5": [
         {
           "fills": [
@@ -42388,6 +43404,32 @@
           "kind": "icon",
           "slot": "post",
           "visibleProperty": "post"
+        }
+      ],
+      "709d119febc5dfbc": [
+        {
+          "kind": "text",
+          "slot": "placeholder",
+          "text": {
+            "fill": {
+              "color": {
+                "variable": "--color-text-tertiary"
+              },
+              "type": "SOLID"
+            },
+            "fontFamily": {
+              "variable": "--font-family-body"
+            },
+            "fontSize": {
+              "variable": "--font-size-body"
+            },
+            "fontWeight": {
+              "variable": "--font-weight-body"
+            },
+            "lineHeight": 150
+          },
+          "textProperty": "placeholder",
+          "visibleProperty": "show placeholder"
         }
       ],
       "710e3af9b5cf1231": [
@@ -48333,6 +49375,32 @@
           "visibleProperty": "post"
         }
       ],
+      "f93b85fd108e9a25": [
+        {
+          "kind": "text",
+          "slot": "placeholder",
+          "text": {
+            "fill": {
+              "color": {
+                "variable": "--color-text-tertiary"
+              },
+              "type": "SOLID"
+            },
+            "fontFamily": {
+              "variable": "--font-family-body"
+            },
+            "fontSize": {
+              "variable": "--font-size-body-sm"
+            },
+            "fontWeight": {
+              "variable": "--font-weight-body"
+            },
+            "lineHeight": 150
+          },
+          "textProperty": "placeholder",
+          "visibleProperty": "show placeholder"
+        }
+      ],
       "f9b40393b740482c": [
         {
           "box": "f5111b8dfa344b73",
@@ -48661,6 +49729,51 @@
           ],
           "slot": "track",
           "surface": "7a4b6cee075f78d9"
+        }
+      ],
+      "fe62eb476a422cc0": [
+        {
+          "kind": "text",
+          "slot": "placeholder",
+          "text": {
+            "fill": {
+              "color": {
+                "variable": "--color-text-tertiary"
+              },
+              "type": "SOLID"
+            },
+            "fontFamily": {
+              "variable": "--font-family-body"
+            },
+            "fontSize": {
+              "variable": "--font-size-body-sm"
+            },
+            "fontWeight": {
+              "variable": "--font-weight-body"
+            },
+            "lineHeight": 150
+          },
+          "textProperty": "placeholder",
+          "visibleProperty": "show placeholder"
+        },
+        {
+          "color": {
+            "color": {
+              "variable": "--focus-ring-color"
+            },
+            "type": "SOLID"
+          },
+          "kind": "ring",
+          "offset": {
+            "variable": "--focus-ring-offset"
+          },
+          "radius": {
+            "variable": "input:outline-radius:9325831be9"
+          },
+          "slot": "focus ring",
+          "width": {
+            "variable": "--focus-ring-width"
+          }
         }
       ],
       "fed4e41fe9594e72": [
@@ -51664,6 +52777,54 @@
           }
         ]
       },
+      "531c78c45ff2f131": {
+        "effects": [
+          {
+            "blur": {
+              "expression": "2px",
+              "value": 2
+            },
+            "color": {
+              "variable": "--shadow-sm"
+            },
+            "spread": {
+              "expression": "0",
+              "value": 0
+            },
+            "type": "INNER_SHADOW",
+            "x": {
+              "expression": "0",
+              "value": 0
+            },
+            "y": {
+              "expression": "1px",
+              "value": 1
+            }
+          }
+        ],
+        "fills": [
+          {
+            "color": {
+              "variable": "--color-bg-surface-sunken"
+            },
+            "type": "SOLID"
+          },
+          {
+            "color": {
+              "variable": "--elevation-tint-sunken"
+            },
+            "type": "SOLID"
+          }
+        ],
+        "strokes": [
+          {
+            "color": {
+              "variable": "--color-border-default"
+            },
+            "type": "SOLID"
+          }
+        ]
+      },
       "5391dd22d79b268b": {
         "effects": [
           {
@@ -53094,6 +54255,46 @@
           }
         ]
       },
+      "72677660210810a6": {
+        "effects": [
+          {
+            "blur": {
+              "expression": "0",
+              "value": 0
+            },
+            "color": {
+              "variable": "input:brutalist-black:b75258c11d"
+            },
+            "spread": {
+              "expression": "0",
+              "value": 0
+            },
+            "type": "DROP_SHADOW",
+            "x": {
+              "variable": "input:shadow-1-x:c3c63cdd74"
+            },
+            "y": {
+              "variable": "input:input-brutalist-offset:ac33ff9105"
+            }
+          }
+        ],
+        "fills": [
+          {
+            "color": {
+              "variable": "--color-bg-surface-sunken"
+            },
+            "type": "SOLID"
+          }
+        ],
+        "strokes": [
+          {
+            "color": {
+              "variable": "input:brutalist-black:b75258c11d"
+            },
+            "type": "SOLID"
+          }
+        ]
+      },
       "730d2f73636b5a48": {
         "effects": [
           {
@@ -53279,6 +54480,55 @@
           {
             "color": {
               "variable": "button:border-color:ec90fe9143"
+            },
+            "type": "SOLID"
+          }
+        ]
+      },
+      "75ed1c23eefadec1": {
+        "effects": [
+          {
+            "blur": {
+              "expression": "2px",
+              "value": 2
+            },
+            "color": {
+              "variable": "--shadow-sm"
+            },
+            "spread": {
+              "expression": "0",
+              "value": 0
+            },
+            "type": "INNER_SHADOW",
+            "x": {
+              "expression": "0",
+              "value": 0
+            },
+            "y": {
+              "expression": "1px",
+              "value": 1
+            }
+          },
+          {
+            "radius": {
+              "expression": "10px",
+              "value": 10
+            },
+            "type": "BACKGROUND_BLUR"
+          }
+        ],
+        "fills": [
+          {
+            "color": {
+              "variable": "input:frost-glass:84cf990c6e"
+            },
+            "type": "SOLID"
+          }
+        ],
+        "strokes": [
+          {
+            "color": {
+              "variable": "input:border-color:74589dbcff"
             },
             "type": "SOLID"
           }
@@ -53732,12 +54982,109 @@
           }
         ]
       },
+      "7ea5a7347d847678": {
+        "effects": [
+          {
+            "blur": {
+              "expression": "2px",
+              "value": 2
+            },
+            "color": {
+              "variable": "--shadow-sm"
+            },
+            "spread": {
+              "expression": "0",
+              "value": 0
+            },
+            "type": "INNER_SHADOW",
+            "x": {
+              "expression": "0",
+              "value": 0
+            },
+            "y": {
+              "expression": "1px",
+              "value": 1
+            }
+          }
+        ],
+        "fills": [
+          {
+            "color": {
+              "variable": "--color-bg-surface"
+            },
+            "type": "SOLID"
+          },
+          {
+            "color": {
+              "variable": "--elevation-tint-sunken"
+            },
+            "type": "SOLID"
+          }
+        ],
+        "strokes": [
+          {
+            "color": {
+              "variable": "--color-border-subtle"
+            },
+            "type": "SOLID"
+          }
+        ]
+      },
       "82d94bda55e9390f": {
         "effects": [],
         "fills": [
           {
             "color": {
               "variable": "--color-bg-surface"
+            },
+            "type": "SOLID"
+          }
+        ],
+        "strokes": [
+          {
+            "color": {
+              "variable": "--color-border-subtle"
+            },
+            "type": "SOLID"
+          }
+        ]
+      },
+      "82e98874ac2a6a3d": {
+        "effects": [
+          {
+            "blur": {
+              "expression": "2px",
+              "value": 2
+            },
+            "color": {
+              "variable": "--shadow-sm"
+            },
+            "spread": {
+              "expression": "0",
+              "value": 0
+            },
+            "type": "INNER_SHADOW",
+            "x": {
+              "expression": "0",
+              "value": 0
+            },
+            "y": {
+              "expression": "1px",
+              "value": 1
+            }
+          },
+          {
+            "radius": {
+              "expression": "10px",
+              "value": 10
+            },
+            "type": "BACKGROUND_BLUR"
+          }
+        ],
+        "fills": [
+          {
+            "color": {
+              "variable": "input:frost-glass:ccb95588c9"
             },
             "type": "SOLID"
           }
@@ -53846,6 +55193,54 @@
           }
         ]
       },
+      "86ed77ef1186c65e": {
+        "effects": [
+          {
+            "blur": {
+              "expression": "2px",
+              "value": 2
+            },
+            "color": {
+              "variable": "--shadow-sm"
+            },
+            "spread": {
+              "expression": "0",
+              "value": 0
+            },
+            "type": "INNER_SHADOW",
+            "x": {
+              "expression": "0",
+              "value": 0
+            },
+            "y": {
+              "expression": "1px",
+              "value": 1
+            }
+          }
+        ],
+        "fills": [
+          {
+            "color": {
+              "variable": "--color-bg-surface-sunken"
+            },
+            "type": "SOLID"
+          },
+          {
+            "color": {
+              "variable": "--elevation-tint-sunken"
+            },
+            "type": "SOLID"
+          }
+        ],
+        "strokes": [
+          {
+            "color": {
+              "variable": "--color-border-danger"
+            },
+            "type": "SOLID"
+          }
+        ]
+      },
       "886ecf9dbae388c1": {
         "effects": [],
         "fills": [
@@ -53860,6 +55255,55 @@
           {
             "color": {
               "variable": "--color-border-subtle"
+            },
+            "type": "SOLID"
+          }
+        ]
+      },
+      "89a78262b9ed8cf9": {
+        "effects": [
+          {
+            "blur": {
+              "expression": "2px",
+              "value": 2
+            },
+            "color": {
+              "variable": "--shadow-sm"
+            },
+            "spread": {
+              "expression": "0",
+              "value": 0
+            },
+            "type": "INNER_SHADOW",
+            "x": {
+              "expression": "0",
+              "value": 0
+            },
+            "y": {
+              "expression": "1px",
+              "value": 1
+            }
+          },
+          {
+            "radius": {
+              "expression": "10px",
+              "value": 10
+            },
+            "type": "BACKGROUND_BLUR"
+          }
+        ],
+        "fills": [
+          {
+            "color": {
+              "variable": "input:frost-glass:84cf990c6e"
+            },
+            "type": "SOLID"
+          }
+        ],
+        "strokes": [
+          {
+            "color": {
+              "variable": "--color-border-danger"
             },
             "type": "SOLID"
           }
@@ -55156,6 +56600,46 @@
           {
             "color": {
               "variable": "button:border-color:629851b9e3"
+            },
+            "type": "SOLID"
+          }
+        ]
+      },
+      "a396cb44c60ec362": {
+        "effects": [
+          {
+            "blur": {
+              "expression": "0",
+              "value": 0
+            },
+            "color": {
+              "variable": "input:brutalist-black:b75258c11d"
+            },
+            "spread": {
+              "expression": "0",
+              "value": 0
+            },
+            "type": "DROP_SHADOW",
+            "x": {
+              "variable": "input:shadow-1-x:c3c63cdd74"
+            },
+            "y": {
+              "variable": "input:input-brutalist-offset:ac33ff9105"
+            }
+          }
+        ],
+        "fills": [
+          {
+            "color": {
+              "variable": "--color-bg-surface-sunken"
+            },
+            "type": "SOLID"
+          }
+        ],
+        "strokes": [
+          {
+            "color": {
+              "variable": "--color-border-danger"
             },
             "type": "SOLID"
           }
@@ -56916,6 +58400,46 @@
           {
             "color": {
               "variable": "back-to-top:brutalist-black:b75258c11d"
+            },
+            "type": "SOLID"
+          }
+        ]
+      },
+      "cdb4b9ced90da0f5": {
+        "effects": [
+          {
+            "blur": {
+              "expression": "0",
+              "value": 0
+            },
+            "color": {
+              "variable": "input:brutalist-black:b75258c11d"
+            },
+            "spread": {
+              "expression": "0",
+              "value": 0
+            },
+            "type": "DROP_SHADOW",
+            "x": {
+              "variable": "input:shadow-1-x:c3c63cdd74"
+            },
+            "y": {
+              "variable": "input:input-brutalist-offset:ac33ff9105"
+            }
+          }
+        ],
+        "fills": [
+          {
+            "color": {
+              "variable": "--color-bg-surface"
+            },
+            "type": "SOLID"
+          }
+        ],
+        "strokes": [
+          {
+            "color": {
+              "variable": "--color-border-subtle"
             },
             "type": "SOLID"
           }
@@ -64979,6 +66503,288 @@
         "light": {
           "kind": "literal",
           "value": 48
+        }
+      }
+    },
+    {
+      "codeSyntax": "var(--sk-input-border-color)",
+      "collection": "component",
+      "expression": "color-mix(in oklab, var(--color-text-primary) 24%, transparent)",
+      "id": "input:border-color:74589dbcff",
+      "name": "input/border-color/frosted",
+      "source": {
+        "dark": "evaluated",
+        "light": "evaluated"
+      },
+      "type": "COLOR",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": {
+            "a": 0.24,
+            "b": 0.9579,
+            "g": 0.9609,
+            "r": 0.9609
+          }
+        },
+        "light": {
+          "kind": "literal",
+          "value": {
+            "a": 0.24,
+            "b": 0.0903,
+            "g": 0.098,
+            "r": 0.1095
+          }
+        }
+      }
+    },
+    {
+      "codeSyntax": "var(--sk-input-border-width)",
+      "collection": "component",
+      "expression": "1px",
+      "id": "input:border-width:93e20626bf",
+      "name": "input/border-width",
+      "source": {
+        "dark": "literal",
+        "light": "literal"
+      },
+      "type": "FLOAT",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": 1
+        },
+        "light": {
+          "kind": "literal",
+          "value": 1
+        }
+      }
+    },
+    {
+      "codeSyntax": "var(--brutalist-black)",
+      "collection": "component",
+      "expression": "oklch(from var(--shadow-lg) l c h / 1)",
+      "id": "input:brutalist-black:b75258c11d",
+      "name": "input/brutalist-black/brutalist",
+      "source": {
+        "dark": "evaluated",
+        "light": "evaluated"
+      },
+      "type": "COLOR",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": {
+            "a": 1,
+            "b": 0,
+            "g": 0,
+            "r": 0
+          }
+        },
+        "light": {
+          "kind": "literal",
+          "value": {
+            "a": 1,
+            "b": 0,
+            "g": 0,
+            "r": 0
+          }
+        }
+      }
+    },
+    {
+      "codeSyntax": "var(--frost-glass)",
+      "collection": "component",
+      "expression": "var(--frost-on) color-mix(in oklab, var(--color-bg-surface-sunken) 60%, transparent)",
+      "id": "input:frost-glass:84cf990c6e",
+      "name": "input/frost-glass/frosted",
+      "source": {
+        "dark": "evaluated",
+        "light": "evaluated"
+      },
+      "type": "COLOR",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": {
+            "a": 0.6,
+            "b": 0.0355,
+            "g": 0.0394,
+            "r": 0.047
+          }
+        },
+        "light": {
+          "kind": "literal",
+          "value": {
+            "a": 0.6,
+            "b": 0.9579,
+            "g": 0.9609,
+            "r": 0.9609
+          }
+        }
+      }
+    },
+    {
+      "codeSyntax": "var(--frost-glass)",
+      "collection": "component",
+      "expression": "var(--frost-on) color-mix(in oklab, var(--color-bg-surface) 60%, transparent)",
+      "id": "input:frost-glass:ccb95588c9",
+      "name": "input/frost-glass/frosted-2",
+      "source": {
+        "dark": "evaluated",
+        "light": "evaluated"
+      },
+      "type": "COLOR",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": {
+            "a": 0.6,
+            "b": 0.0903,
+            "g": 0.098,
+            "r": 0.1095
+          }
+        },
+        "light": {
+          "kind": "literal",
+          "value": {
+            "a": 0.6,
+            "b": 1,
+            "g": 1,
+            "r": 1
+          }
+        }
+      }
+    },
+    {
+      "codeSyntax": "var(--sk-input-height)",
+      "collection": "component",
+      "expression": "max(var(--size-control-lg), var(--size-touch-target))",
+      "id": "input:height:d92dbdc181",
+      "name": "input/height/lg",
+      "source": {
+        "dark": "evaluated",
+        "light": "evaluated"
+      },
+      "type": "FLOAT",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": 48
+        },
+        "light": {
+          "kind": "literal",
+          "value": 48
+        }
+      }
+    },
+    {
+      "codeSyntax": "var(--sk-input-height)",
+      "collection": "component",
+      "expression": "max(var(--size-control-md), var(--size-touch-target))",
+      "id": "input:height:2dce2436e5",
+      "name": "input/height/md",
+      "source": {
+        "dark": "evaluated",
+        "light": "evaluated"
+      },
+      "type": "FLOAT",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": 44
+        },
+        "light": {
+          "kind": "literal",
+          "value": 44
+        }
+      }
+    },
+    {
+      "codeSyntax": "var(--sk-input-height)",
+      "collection": "component",
+      "expression": "max(var(--size-control-sm), var(--size-touch-target))",
+      "id": "input:height:7b441eeb29",
+      "name": "input/height/sm",
+      "source": {
+        "dark": "evaluated",
+        "light": "evaluated"
+      },
+      "type": "FLOAT",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": 44
+        },
+        "light": {
+          "kind": "literal",
+          "value": 44
+        }
+      }
+    },
+    {
+      "codeSyntax": "var(--input-brutalist-offset)",
+      "collection": "component",
+      "expression": "3px",
+      "id": "input:input-brutalist-offset:ac33ff9105",
+      "name": "input/input-brutalist-offset/brutalist",
+      "source": {
+        "dark": "literal",
+        "light": "literal"
+      },
+      "type": "FLOAT",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": 3
+        },
+        "light": {
+          "kind": "literal",
+          "value": 3
+        }
+      }
+    },
+    {
+      "codeSyntax": "",
+      "collection": "component",
+      "expression": "calc(var(--radius-control) + var(--focus-ring-offset))",
+      "id": "input:outline-radius:9325831be9",
+      "name": "input/outline-radius/focus",
+      "source": {
+        "dark": "evaluated",
+        "light": "evaluated"
+      },
+      "type": "FLOAT",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": 10
+        },
+        "light": {
+          "kind": "literal",
+          "value": 10
+        }
+      }
+    },
+    {
+      "codeSyntax": "",
+      "collection": "component",
+      "expression": "calc(3px * 1)",
+      "id": "input:shadow-1-x:c3c63cdd74",
+      "name": "input/shadow-1-x/brutalist",
+      "source": {
+        "dark": "evaluated",
+        "light": "evaluated"
+      },
+      "type": "FLOAT",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": 3
+        },
+        "light": {
+          "kind": "literal",
+          "value": 3
         }
       }
     },
