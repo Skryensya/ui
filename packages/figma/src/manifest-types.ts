@@ -111,7 +111,7 @@ export type IconSlot = { size: Bound<number>; color: Paint };
  * icon layer is an exposed instance of the Icon set, so its `name` is picked from the host's panel.
  */
 export type Layer =
-  | { kind: "icon"; slot: string; visibleProperty?: string; icon: IconSlot }
+  | { kind: "icon"; slot: string; visibleProperty?: string; default: string; icon: IconSlot }
   | { kind: "text"; slot: string; textProperty: string; text: Text };
 
 export type ComponentProperty =
@@ -159,6 +159,11 @@ export type ComponentSet = {
   grid: { columns: { name: string; values: string[] }[]; rows: { name: string; values: string[] }[] };
   /** The cell every default lands on, which the grid puts top-left. */
   defaultCell: string;
+  /**
+   * Instances drawn beside each row: the row's button at `base` with one optional slot switched
+   * on. A slot's icon is a component property, not a Figma variant, so only an instance shows it.
+   */
+  showcase: { base: Record<string, string>; columns: { slot: string; properties: Record<string, boolean> }[] };
   properties: ComponentProperty[];
   cells: Cell[];
   contractHash: string;

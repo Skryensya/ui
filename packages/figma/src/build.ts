@@ -175,6 +175,24 @@ export async function buildFigmaManifest(repoRoot: string, realization: Realizat
   const combos = (list: Axis[]): CellProps[] =>
     list.reduce<CellProps[]>((acc, axis) => acc.flatMap((c) => axis.values.map((v) => ({ ...c, [axis.name]: v }))), [{}]);
 
+  // The glyph a slot shows by default, checked against the vocabulary rather than trusted.
+  const vocabulary = (iconContract.options.name as { values: readonly string[] }).values;
+  const iconDefault = (slot: string) => {
+    const name = realization.slots[slot]?.icon ?? DEFAULT_ICON;
+    if (!vocabulary.includes(name)) throw new Error(`slot ${slot}: ${name} is not a stable icon name`);
+    return name;
+  };
+  // Beside each row: its button at rest, with each optional icon slot switched on in turn.
+  const showcase = {
+    base: {
+      [realization.state.axis]: realization.state.rest,
+      ...(iconWhen ? { [iconWhen]: "false" } : {}),
+    },
+    columns: Object.entries(realization.slots)
+      .filter(([slot, spec]) => spec.holds === "icon" && !signature.slots[slot]?.required)
+      .map(([slot]) => ({ slot, properties: { [slot]: true } })),
+  };
+
   const sets: ComponentSet[] = [];
   const styles: Styles = { boxes: {}, surfaces: {}, layers: {} };
   const intern = <T>(table: Record<string, T>, value: T) => {
@@ -215,6 +233,7 @@ export async function buildFigmaManifest(repoRoot: string, realization: Realizat
               kind: "icon",
               slot,
               ...(optional ? { visibleProperty: slot } : {}),
+              default: iconDefault(slot),
               icon: iconOf(ctx(glyph)),
             });
           } else {
@@ -255,10 +274,11 @@ export async function buildFigmaManifest(repoRoot: string, realization: Realizat
       axes: setAxes,
       grid,
       defaultCell,
+      showcase,
       properties,
       cells,
       contractHash: surfaceHash(contract),
-      visualHash: hash({ axes: setAxes, grid, defaultCell, properties, cells: cells.map((c) => c.hash) }),
+      visualHash: hash({ axes: setAxes, grid, defaultCell, showcase, properties, cells: cells.map((c) => c.hash) }),
     });
   }
 

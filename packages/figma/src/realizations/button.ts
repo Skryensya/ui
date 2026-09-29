@@ -14,10 +14,11 @@ export const buttonRealization: Realization = {
   state: { axis: "state", rest: "rest", options: ["pressed", "disabled"] },
   // Welding belongs to split buttons and segmented groups, which are not realized yet.
   exclude: ["weldStart", "weldEnd"],
+  // Arrows by side: leading points back, trailing points on. A lone icon points on.
   slots: {
-    pre: { holds: "icon" },
-    post: { holds: "icon" },
-    children: { holds: "text", sample: "Button", iconWhen: "iconOnly" },
+    pre: { holds: "icon", icon: "arrow-left" },
+    post: { holds: "icon", icon: "arrow-right" },
+    children: { holds: "text", sample: "Button", iconWhen: "iconOnly", icon: "arrow-right" },
   },
   icons: { module: "@skryensya/icons-lucide", export: "lucideIcons" },
   grid: { columns: ["iconOnly", "state"], rows: ["variant", "tone", "size"] },

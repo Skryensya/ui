@@ -133,6 +133,13 @@ describe("the Icon set", () => {
     expect(icons.icons.map((i) => i.name)).toContain(icons.default);
   });
 
+  it("gives each icon slot an arrow by side, and draws both beside every row", () => {
+    const layers = Object.values(manifest.styles.layers).flat();
+    const defaults = new Set(layers.flatMap((l) => (l.kind === "icon" ? [`${l.slot}:${l.default}`] : [])));
+    expect([...defaults].sort()).toEqual(["children:arrow-right", "post:arrow-right", "pre:arrow-left"]);
+    expect(sets[0].showcase.columns.map((c) => c.slot)).toEqual(["pre", "post"]);
+  });
+
   it("names the icon a docs preview puts in a slot", () => {
     expect(manifest.specimen.find((e) => e.source === "buttonIconTree")?.icons).toEqual({ pre: "download" });
   });
