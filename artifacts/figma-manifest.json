@@ -44390,6 +44390,84 @@
         "columns": []
       },
       "visualHash": "7d055bcdbfaa14d6"
+    },
+    {
+      "axes": [
+        {
+          "name": "state",
+          "values": [
+            "rest",
+            "invalid"
+          ]
+        }
+      ],
+      "cells": [
+        {
+          "box": "61278edee5186127",
+          "hash": "249d57a3d1b53468",
+          "id": "otp-input/state=rest",
+          "key": "state=rest",
+          "layers": "4656cdd8c0186bb6",
+          "props": {
+            "state": "rest"
+          },
+          "surface": "fa0b643878e9242d"
+        },
+        {
+          "box": "61278edee5186127",
+          "hash": "2bd0a4e87da0469f",
+          "id": "otp-input/state=invalid",
+          "key": "state=invalid",
+          "layers": "ed28c1ff12365a59",
+          "props": {
+            "state": "invalid"
+          },
+          "surface": "fa0b643878e9242d"
+        }
+      ],
+      "contractHash": "abfd697515bb08d7",
+      "defaultCell": "state=rest",
+      "grid": {
+        "columns": [
+          {
+            "name": "state",
+            "values": [
+              "rest",
+              "invalid"
+            ]
+          }
+        ],
+        "rows": []
+      },
+      "id": "otp-input",
+      "interactions": [],
+      "kind": "component-set",
+      "name": "Otp Input",
+      "page": "skryensya",
+      "properties": [
+        {
+          "default": "Verification code",
+          "name": "label",
+          "type": "TEXT"
+        },
+        {
+          "default": "○",
+          "name": "placeholder",
+          "type": "TEXT"
+        },
+        {
+          "default": true,
+          "name": "show placeholder",
+          "type": "BOOLEAN"
+        }
+      ],
+      "showcase": {
+        "base": {
+          "state": "rest"
+        },
+        "columns": []
+      },
+      "visualHash": "bc559e020d9cae30"
     }
   ],
   "diagnostics": [
@@ -44788,6 +44866,12 @@
       "message": "2 rule(s) under a condition the evaluation context does not hold",
       "severity": "info",
       "subject": "components/number-field.css @media (forced-colors: active)"
+    },
+    {
+      "code": "CONDITION_SKIPPED",
+      "message": "2 rule(s) under a condition the evaluation context does not hold",
+      "severity": "info",
+      "subject": "components/otp-input.css @media (forced-colors: active)"
     },
     {
       "code": "CONDITION_SKIPPED",
@@ -45427,6 +45511,18 @@
     },
     {
       "code": "CONDITION_SKIPPED",
+      "message": "1 rule(s) under a condition the evaluation context does not hold",
+      "severity": "info",
+      "subject": "patterns/state-layer.css @media (prefers-reduced-motion: reduce)"
+    },
+    {
+      "code": "CONDITION_SKIPPED",
+      "message": "0 rule(s) under a condition the evaluation context does not hold",
+      "severity": "info",
+      "subject": "patterns/state-layer.css @property --state-layer-opacity"
+    },
+    {
+      "code": "CONDITION_SKIPPED",
       "message": "0 rule(s) under a condition the evaluation context does not hold",
       "severity": "info",
       "subject": "patterns/state-layer.css @property --state-layer-opacity"
@@ -45927,6 +46023,26 @@
           "appearance"
         ]
       },
+      "otp-input": {
+        "excluded": [
+          "type",
+          "mask",
+          "otp",
+          "readOnly",
+          "required"
+        ],
+        "nonVisual": [
+          "count",
+          "placeholder",
+          "name",
+          "defaultValue",
+          "disabled",
+          "segmentLabel"
+        ],
+        "visual": [
+          "invalid"
+        ]
+      },
       "pagination": {
         "excluded": [],
         "nonVisual": [
@@ -46245,10 +46361,10 @@
     },
     "tokens": {
       "catalogueAdded": 303,
-      "componentVariables": 502,
+      "componentVariables": 504,
       "modeValuesBySource": {
         "alias": 203,
-        "evaluated": 925,
+        "evaluated": 929,
         "literal": 808
       },
       "reached": 204,
@@ -46268,8 +46384,8 @@
       "variables": 466
     },
     "variants": {
-      "components": 128,
-      "componentSets": 127,
+      "components": 129,
+      "componentSets": 128,
       "naiveAllOptions": {
         "accordion": 32,
         "avatar": 8,
@@ -46299,6 +46415,7 @@
         "meter": 4,
         "nav-list": 2,
         "number-field": 48,
+        "otp-input": 128,
         "pagination": 4,
         "password-input": 384,
         "progress": 4,
@@ -46356,6 +46473,7 @@
         "meter": 4,
         "nav-list": 2,
         "number-field": 6,
+        "otp-input": 2,
         "pagination": 4,
         "password-input": 12,
         "progress": 4,
@@ -46892,13 +47010,17 @@
         {
           "set": "form-field",
           "variants": 4
+        },
+        {
+          "set": "otp-input",
+          "variants": 2
         }
       ],
-      "variantsTotal": 2550
+      "variantsTotal": 2552
     }
   },
   "schemaVersion": 1,
-  "sourceHash": "72e3690e28ce9f42",
+  "sourceHash": "768784885eb94cd1",
   "stage": {
     "background": {
       "variable": "--color-bg-surface"
@@ -47873,6 +47995,33 @@
           }
         },
         "stretch": true
+      },
+      "241c20b806197b25": {
+        "clipsContent": false,
+        "crossAlign": "MIN",
+        "direction": "HORIZONTAL",
+        "gap": {
+          "variable": "--space-inline-xs"
+        },
+        "mainAlign": "MIN",
+        "padding": {
+          "bottom": {
+            "expression": "0",
+            "value": 0
+          },
+          "left": {
+            "expression": "0",
+            "value": 0
+          },
+          "right": {
+            "expression": "0",
+            "value": 0
+          },
+          "top": {
+            "expression": "0",
+            "value": 0
+          }
+        }
       },
       "2451e927826de958": {
         "clipsContent": false,
@@ -49839,6 +49988,43 @@
         "width": {
           "expression": "240px",
           "value": 240
+        }
+      },
+      "64450411d25c1256": {
+        "clipsContent": false,
+        "crossAlign": "CENTER",
+        "direction": "HORIZONTAL",
+        "height": {
+          "variable": "--size-touch-target"
+        },
+        "mainAlign": "MIN",
+        "padding": {
+          "bottom": {
+            "expression": "0",
+            "value": 0
+          },
+          "left": {
+            "expression": "0",
+            "value": 0
+          },
+          "right": {
+            "expression": "0",
+            "value": 0
+          },
+          "top": {
+            "expression": "0",
+            "value": 0
+          }
+        },
+        "radius": {
+          "variable": "--radius-control"
+        },
+        "strokeWeight": {
+          "expression": "1px",
+          "value": 1
+        },
+        "width": {
+          "variable": "--size-touch-target"
         }
       },
       "64593ab0206b2a98": {
@@ -64236,6 +64422,175 @@
           "width": {
             "variable": "--focus-ring-width"
           }
+        }
+      ],
+      "4656cdd8c0186bb6": [
+        {
+          "kind": "text",
+          "slot": "label",
+          "text": {
+            "fill": {
+              "color": {
+                "variable": "--color-text-secondary"
+              },
+              "type": "SOLID"
+            },
+            "fontFamily": {
+              "variable": "--font-family-body"
+            },
+            "fontSize": {
+              "variable": "--font-size-body-sm"
+            },
+            "fontWeight": {
+              "variable": "--font-weight-label"
+            },
+            "lineHeight": 150
+          },
+          "textProperty": "label"
+        },
+        {
+          "box": "241c20b806197b25",
+          "kind": "frame",
+          "layers": [
+            {
+              "box": "64450411d25c1256",
+              "kind": "frame",
+              "layers": [
+                {
+                  "fill": true,
+                  "kind": "text",
+                  "slot": "placeholder",
+                  "text": {
+                    "align": "CENTER",
+                    "fill": {
+                      "color": {
+                        "variable": "otp-input:fg:575016ba18"
+                      },
+                      "type": "SOLID"
+                    },
+                    "fontFamily": {
+                      "variable": "--font-family-body"
+                    },
+                    "fontSize": {
+                      "variable": "--font-size-heading-sm"
+                    },
+                    "fontWeight": {
+                      "variable": "--font-weight-body"
+                    },
+                    "lineHeight": 150
+                  },
+                  "textProperty": "placeholder",
+                  "visibleProperty": "show placeholder"
+                }
+              ],
+              "slot": "segment",
+              "surface": "954ad0aaaba49bb6"
+            },
+            {
+              "box": "64450411d25c1256",
+              "kind": "frame",
+              "layers": [
+                {
+                  "fill": true,
+                  "kind": "text",
+                  "slot": "placeholder",
+                  "text": {
+                    "align": "CENTER",
+                    "fill": {
+                      "color": {
+                        "variable": "otp-input:fg:575016ba18"
+                      },
+                      "type": "SOLID"
+                    },
+                    "fontFamily": {
+                      "variable": "--font-family-body"
+                    },
+                    "fontSize": {
+                      "variable": "--font-size-heading-sm"
+                    },
+                    "fontWeight": {
+                      "variable": "--font-weight-body"
+                    },
+                    "lineHeight": 150
+                  },
+                  "textProperty": "placeholder",
+                  "visibleProperty": "show placeholder"
+                }
+              ],
+              "slot": "segment 2",
+              "surface": "954ad0aaaba49bb6"
+            },
+            {
+              "box": "64450411d25c1256",
+              "kind": "frame",
+              "layers": [
+                {
+                  "fill": true,
+                  "kind": "text",
+                  "slot": "placeholder",
+                  "text": {
+                    "align": "CENTER",
+                    "fill": {
+                      "color": {
+                        "variable": "otp-input:fg:575016ba18"
+                      },
+                      "type": "SOLID"
+                    },
+                    "fontFamily": {
+                      "variable": "--font-family-body"
+                    },
+                    "fontSize": {
+                      "variable": "--font-size-heading-sm"
+                    },
+                    "fontWeight": {
+                      "variable": "--font-weight-body"
+                    },
+                    "lineHeight": 150
+                  },
+                  "textProperty": "placeholder",
+                  "visibleProperty": "show placeholder"
+                }
+              ],
+              "slot": "segment 3",
+              "surface": "954ad0aaaba49bb6"
+            },
+            {
+              "box": "64450411d25c1256",
+              "kind": "frame",
+              "layers": [
+                {
+                  "fill": true,
+                  "kind": "text",
+                  "slot": "placeholder",
+                  "text": {
+                    "align": "CENTER",
+                    "fill": {
+                      "color": {
+                        "variable": "otp-input:fg:575016ba18"
+                      },
+                      "type": "SOLID"
+                    },
+                    "fontFamily": {
+                      "variable": "--font-family-body"
+                    },
+                    "fontSize": {
+                      "variable": "--font-size-heading-sm"
+                    },
+                    "fontWeight": {
+                      "variable": "--font-weight-body"
+                    },
+                    "lineHeight": 150
+                  },
+                  "textProperty": "placeholder",
+                  "visibleProperty": "show placeholder"
+                }
+              ],
+              "slot": "segment 4",
+              "surface": "954ad0aaaba49bb6"
+            }
+          ],
+          "slot": "control",
+          "surface": "fa0b643878e9242d"
         }
       ],
       "47248aeee21d724a": [
@@ -86040,6 +86395,175 @@
           }
         }
       ],
+      "ed28c1ff12365a59": [
+        {
+          "kind": "text",
+          "slot": "label",
+          "text": {
+            "fill": {
+              "color": {
+                "variable": "--color-text-secondary"
+              },
+              "type": "SOLID"
+            },
+            "fontFamily": {
+              "variable": "--font-family-body"
+            },
+            "fontSize": {
+              "variable": "--font-size-body-sm"
+            },
+            "fontWeight": {
+              "variable": "--font-weight-label"
+            },
+            "lineHeight": 150
+          },
+          "textProperty": "label"
+        },
+        {
+          "box": "241c20b806197b25",
+          "kind": "frame",
+          "layers": [
+            {
+              "box": "64450411d25c1256",
+              "kind": "frame",
+              "layers": [
+                {
+                  "fill": true,
+                  "kind": "text",
+                  "slot": "placeholder",
+                  "text": {
+                    "align": "CENTER",
+                    "fill": {
+                      "color": {
+                        "variable": "otp-input:fg:575016ba18"
+                      },
+                      "type": "SOLID"
+                    },
+                    "fontFamily": {
+                      "variable": "--font-family-body"
+                    },
+                    "fontSize": {
+                      "variable": "--font-size-heading-sm"
+                    },
+                    "fontWeight": {
+                      "variable": "--font-weight-body"
+                    },
+                    "lineHeight": 150
+                  },
+                  "textProperty": "placeholder",
+                  "visibleProperty": "show placeholder"
+                }
+              ],
+              "slot": "segment",
+              "surface": "49ee410d37abb56f"
+            },
+            {
+              "box": "64450411d25c1256",
+              "kind": "frame",
+              "layers": [
+                {
+                  "fill": true,
+                  "kind": "text",
+                  "slot": "placeholder",
+                  "text": {
+                    "align": "CENTER",
+                    "fill": {
+                      "color": {
+                        "variable": "otp-input:fg:575016ba18"
+                      },
+                      "type": "SOLID"
+                    },
+                    "fontFamily": {
+                      "variable": "--font-family-body"
+                    },
+                    "fontSize": {
+                      "variable": "--font-size-heading-sm"
+                    },
+                    "fontWeight": {
+                      "variable": "--font-weight-body"
+                    },
+                    "lineHeight": 150
+                  },
+                  "textProperty": "placeholder",
+                  "visibleProperty": "show placeholder"
+                }
+              ],
+              "slot": "segment 2",
+              "surface": "49ee410d37abb56f"
+            },
+            {
+              "box": "64450411d25c1256",
+              "kind": "frame",
+              "layers": [
+                {
+                  "fill": true,
+                  "kind": "text",
+                  "slot": "placeholder",
+                  "text": {
+                    "align": "CENTER",
+                    "fill": {
+                      "color": {
+                        "variable": "otp-input:fg:575016ba18"
+                      },
+                      "type": "SOLID"
+                    },
+                    "fontFamily": {
+                      "variable": "--font-family-body"
+                    },
+                    "fontSize": {
+                      "variable": "--font-size-heading-sm"
+                    },
+                    "fontWeight": {
+                      "variable": "--font-weight-body"
+                    },
+                    "lineHeight": 150
+                  },
+                  "textProperty": "placeholder",
+                  "visibleProperty": "show placeholder"
+                }
+              ],
+              "slot": "segment 3",
+              "surface": "49ee410d37abb56f"
+            },
+            {
+              "box": "64450411d25c1256",
+              "kind": "frame",
+              "layers": [
+                {
+                  "fill": true,
+                  "kind": "text",
+                  "slot": "placeholder",
+                  "text": {
+                    "align": "CENTER",
+                    "fill": {
+                      "color": {
+                        "variable": "otp-input:fg:575016ba18"
+                      },
+                      "type": "SOLID"
+                    },
+                    "fontFamily": {
+                      "variable": "--font-family-body"
+                    },
+                    "fontSize": {
+                      "variable": "--font-size-heading-sm"
+                    },
+                    "fontWeight": {
+                      "variable": "--font-weight-body"
+                    },
+                    "lineHeight": 150
+                  },
+                  "textProperty": "placeholder",
+                  "visibleProperty": "show placeholder"
+                }
+              ],
+              "slot": "segment 4",
+              "surface": "49ee410d37abb56f"
+            }
+          ],
+          "slot": "control",
+          "surface": "fa0b643878e9242d"
+        }
+      ],
       "edf64206097a32e5": [
         {
           "fills": [
@@ -91881,6 +92405,25 @@
           }
         ]
       },
+      "49ee410d37abb56f": {
+        "effects": [],
+        "fills": [
+          {
+            "color": {
+              "variable": "--color-bg-surface-sunken"
+            },
+            "type": "SOLID"
+          }
+        ],
+        "strokes": [
+          {
+            "color": {
+              "variable": "--color-border-danger"
+            },
+            "type": "SOLID"
+          }
+        ]
+      },
       "4b002f3e3833797f": {
         "effects": [
           {
@@ -96794,6 +97337,25 @@
           {
             "color": {
               "variable": "--color-border-danger"
+            },
+            "type": "SOLID"
+          }
+        ]
+      },
+      "954ad0aaaba49bb6": {
+        "effects": [],
+        "fills": [
+          {
+            "color": {
+              "variable": "--color-bg-surface-sunken"
+            },
+            "type": "SOLID"
+          }
+        ],
+        "strokes": [
+          {
+            "color": {
+              "variable": "--color-border-default"
             },
             "type": "SOLID"
           }
@@ -112746,6 +113308,70 @@
       "expression": "color-mix( in srgb, var(--color-text-secondary) calc(0 * 100%), transparent )",
       "id": "number-field:state-layer:2898638ebc",
       "name": "number-field/state-layer",
+      "source": {
+        "dark": "evaluated",
+        "light": "evaluated"
+      },
+      "type": "COLOR",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": {
+            "a": 0,
+            "b": 0,
+            "g": 0,
+            "r": 0
+          }
+        },
+        "light": {
+          "kind": "literal",
+          "value": {
+            "a": 0,
+            "b": 0,
+            "g": 0,
+            "r": 0
+          }
+        }
+      }
+    },
+    {
+      "codeSyntax": "",
+      "collection": "component",
+      "expression": "color-mix(in oklab, var(--color-text-primary) 54%, transparent)",
+      "id": "otp-input:fg:575016ba18",
+      "name": "otp-input/fg",
+      "source": {
+        "dark": "evaluated",
+        "light": "evaluated"
+      },
+      "type": "COLOR",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": {
+            "a": 0.54,
+            "b": 0.9579,
+            "g": 0.9609,
+            "r": 0.9609
+          }
+        },
+        "light": {
+          "kind": "literal",
+          "value": {
+            "a": 0.54,
+            "b": 0.0903,
+            "g": 0.098,
+            "r": 0.1095
+          }
+        }
+      }
+    },
+    {
+      "codeSyntax": "",
+      "collection": "component",
+      "expression": "color-mix( in srgb, var(--color-text-primary) calc(0 * 100%), transparent )",
+      "id": "otp-input:state-layer:a8bbbce668",
+      "name": "otp-input/state-layer",
       "source": {
         "dark": "evaluated",
         "light": "evaluated"
