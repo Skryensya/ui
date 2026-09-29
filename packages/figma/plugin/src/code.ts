@@ -238,11 +238,36 @@ async function syncVariables(run: Run, progress: Progress): Promise<Map<string, 
   const created = new Set<string>();
 
   // First every variable exists, so an alias always has a target.
+  // A variable already named as a new one would be (a formula changed, so its id did, not its name;
+  // or one made before ids) is that variable: adopted and re-tagged, never a duplicate Figma refuses.
+  const wanted = new Set(manifest.variables.map((v) => v.id));
+  const byName = new Map<string, Variable>();
+  for (const v of existing) {
+    const id = getTag(v, "id");
+    if (id && wanted.has(id)) continue;
+    byName.set(`${v.variableCollectionId}::${v.name}`, v);
+  }
   for (const spec of manifest.variables) {
     let variable = own.get(spec.id);
+    const collection = byCollection.get(spec.collection);
+    const namesake = !variable && collection ? byName.get(`${collection.id}::${spec.name}`) : undefined;
+    if (namesake && namesake.resolvedType === spec.type) {
+      variable = namesake;
+      byName.delete(`${collection!.id}::${spec.name}`);
+      // Its old id leaves the list first, so it is not reported orphaned below.
+      own.delete(getTag(namesake, "id"));
+      run.log("UPDATE", `variable ${spec.name}`, "adopted: same name, new id");
+      run.write(() => {
+        namesake.setSharedPluginData(NS, "id", spec.id);
+        namesake.setSharedPluginData(NS, "orphaned", "");
+      });
+    } else if (namesake) {
+      // Same name, other type: moved out of the way, so the new one can take the name.
+      run.log("UPDATE", `variable ${spec.name}`, `the old ${namesake.resolvedType} one renamed aside`);
+      run.write(() => (namesake.name = `${spec.name} (old ${namesake.resolvedType.toLowerCase()})`));
+    }
     if (!variable) {
       created.add(spec.id);
-      const collection = byCollection.get(spec.collection);
       if (!collection) continue;
       run.write(() => (variable = figma.variables.createVariable(spec.name, collection, spec.type)));
     } else if (variable.resolvedType !== spec.type) {
