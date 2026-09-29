@@ -32172,6 +32172,334 @@
         "columns": []
       },
       "visualHash": "1ee2fef4550d2a37"
+    },
+    {
+      "axes": [
+        {
+          "name": "state",
+          "values": [
+            "rest",
+            "hover",
+            "focus"
+          ]
+        }
+      ],
+      "cells": [
+        {
+          "box": "a727286d0fbdf164",
+          "hash": "190fde318be7a987",
+          "id": "back-to-top/plain/state=rest",
+          "key": "state=rest",
+          "layers": "663fcb4ed453f2d0",
+          "props": {
+            "state": "rest"
+          },
+          "surface": "7a89522ab5126bb3"
+        },
+        {
+          "box": "a727286d0fbdf164",
+          "hash": "97ed40ea83338dbd",
+          "id": "back-to-top/plain/state=hover",
+          "key": "state=hover",
+          "layers": "bf7aa08599c16252",
+          "props": {
+            "state": "hover"
+          },
+          "surface": "7a89522ab5126bb3"
+        },
+        {
+          "box": "a727286d0fbdf164",
+          "hash": "8e667cb3c183895e",
+          "id": "back-to-top/plain/state=focus",
+          "key": "state=focus",
+          "layers": "5e567c04bb5a66b8",
+          "props": {
+            "state": "focus"
+          },
+          "surface": "7a89522ab5126bb3"
+        }
+      ],
+      "contractHash": "cd5f2393a2a1087c",
+      "defaultCell": "state=rest",
+      "grid": {
+        "columns": [
+          {
+            "name": "state",
+            "values": [
+              "rest",
+              "hover",
+              "focus"
+            ]
+          }
+        ],
+        "rows": []
+      },
+      "id": "back-to-top/plain",
+      "interactions": [
+        {
+          "axis": "state",
+          "from": "rest",
+          "to": "hover",
+          "trigger": "ON_HOVER"
+        }
+      ],
+      "kind": "component-set",
+      "name": "Back To Top / plain",
+      "page": "skryensya",
+      "properties": [],
+      "showcase": {
+        "base": {
+          "state": "rest"
+        },
+        "columns": []
+      },
+      "visualHash": "f7b221616745dc30"
+    },
+    {
+      "axes": [
+        {
+          "name": "state",
+          "values": [
+            "rest",
+            "hover",
+            "focus"
+          ]
+        }
+      ],
+      "cells": [
+        {
+          "box": "a727286d0fbdf164",
+          "hash": "f6a1c12cb61f2da8",
+          "id": "back-to-top/tactile/state=rest",
+          "key": "state=rest",
+          "layers": "663fcb4ed453f2d0",
+          "props": {
+            "state": "rest"
+          },
+          "surface": "9dd15b2397a5bca6"
+        },
+        {
+          "box": "a727286d0fbdf164",
+          "hash": "f02f1c43d7830886",
+          "id": "back-to-top/tactile/state=hover",
+          "key": "state=hover",
+          "layers": "bf7aa08599c16252",
+          "props": {
+            "state": "hover"
+          },
+          "surface": "9dd15b2397a5bca6"
+        },
+        {
+          "box": "a727286d0fbdf164",
+          "hash": "d359c151b25a52cc",
+          "id": "back-to-top/tactile/state=focus",
+          "key": "state=focus",
+          "layers": "5e567c04bb5a66b8",
+          "props": {
+            "state": "focus"
+          },
+          "surface": "9dd15b2397a5bca6"
+        }
+      ],
+      "contractHash": "cd5f2393a2a1087c",
+      "defaultCell": "state=rest",
+      "grid": {
+        "columns": [
+          {
+            "name": "state",
+            "values": [
+              "rest",
+              "hover",
+              "focus"
+            ]
+          }
+        ],
+        "rows": []
+      },
+      "id": "back-to-top/tactile",
+      "interactions": [
+        {
+          "axis": "state",
+          "from": "rest",
+          "to": "hover",
+          "trigger": "ON_HOVER"
+        }
+      ],
+      "kind": "component-set",
+      "name": "Back To Top / tactile",
+      "page": "skryensya",
+      "properties": [],
+      "showcase": {
+        "base": {
+          "state": "rest"
+        },
+        "columns": []
+      },
+      "visualHash": "ed3af3d490a94170"
+    },
+    {
+      "axes": [
+        {
+          "name": "state",
+          "values": [
+            "rest",
+            "hover",
+            "focus"
+          ]
+        }
+      ],
+      "cells": [
+        {
+          "box": "a727286d0fbdf164",
+          "hash": "930486d5e9938587",
+          "id": "back-to-top/brutalist/state=rest",
+          "key": "state=rest",
+          "layers": "663fcb4ed453f2d0",
+          "props": {
+            "state": "rest"
+          },
+          "surface": "cbb1349f898aa272"
+        },
+        {
+          "box": "a727286d0fbdf164",
+          "hash": "175d58a1f008a3a4",
+          "id": "back-to-top/brutalist/state=hover",
+          "key": "state=hover",
+          "layers": "bf7aa08599c16252",
+          "props": {
+            "state": "hover"
+          },
+          "surface": "cbb1349f898aa272"
+        },
+        {
+          "box": "a727286d0fbdf164",
+          "hash": "b0b52bbbd1eb59c3",
+          "id": "back-to-top/brutalist/state=focus",
+          "key": "state=focus",
+          "layers": "5e567c04bb5a66b8",
+          "props": {
+            "state": "focus"
+          },
+          "surface": "cbb1349f898aa272"
+        }
+      ],
+      "contractHash": "cd5f2393a2a1087c",
+      "defaultCell": "state=rest",
+      "grid": {
+        "columns": [
+          {
+            "name": "state",
+            "values": [
+              "rest",
+              "hover",
+              "focus"
+            ]
+          }
+        ],
+        "rows": []
+      },
+      "id": "back-to-top/brutalist",
+      "interactions": [
+        {
+          "axis": "state",
+          "from": "rest",
+          "to": "hover",
+          "trigger": "ON_HOVER"
+        }
+      ],
+      "kind": "component-set",
+      "name": "Back To Top / brutalist",
+      "page": "skryensya",
+      "properties": [],
+      "showcase": {
+        "base": {
+          "state": "rest"
+        },
+        "columns": []
+      },
+      "visualHash": "0316e7992c13404c"
+    },
+    {
+      "axes": [
+        {
+          "name": "state",
+          "values": [
+            "rest",
+            "hover",
+            "focus"
+          ]
+        }
+      ],
+      "cells": [
+        {
+          "box": "a727286d0fbdf164",
+          "hash": "54ccd042f1674e01",
+          "id": "back-to-top/frosted/state=rest",
+          "key": "state=rest",
+          "layers": "663fcb4ed453f2d0",
+          "props": {
+            "state": "rest"
+          },
+          "surface": "482899945ccdf2aa"
+        },
+        {
+          "box": "a727286d0fbdf164",
+          "hash": "bb8d1dcb2887bad1",
+          "id": "back-to-top/frosted/state=hover",
+          "key": "state=hover",
+          "layers": "bf7aa08599c16252",
+          "props": {
+            "state": "hover"
+          },
+          "surface": "482899945ccdf2aa"
+        },
+        {
+          "box": "a727286d0fbdf164",
+          "hash": "ddc6b97d87d08836",
+          "id": "back-to-top/frosted/state=focus",
+          "key": "state=focus",
+          "layers": "5e567c04bb5a66b8",
+          "props": {
+            "state": "focus"
+          },
+          "surface": "482899945ccdf2aa"
+        }
+      ],
+      "contractHash": "cd5f2393a2a1087c",
+      "defaultCell": "state=rest",
+      "grid": {
+        "columns": [
+          {
+            "name": "state",
+            "values": [
+              "rest",
+              "hover",
+              "focus"
+            ]
+          }
+        ],
+        "rows": []
+      },
+      "id": "back-to-top/frosted",
+      "interactions": [
+        {
+          "axis": "state",
+          "from": "rest",
+          "to": "hover",
+          "trigger": "ON_HOVER"
+        }
+      ],
+      "kind": "component-set",
+      "name": "Back To Top / frosted",
+      "page": "skryensya",
+      "properties": [],
+      "showcase": {
+        "base": {
+          "state": "rest"
+        },
+        "columns": []
+      },
+      "visualHash": "3420e1f47937e39c"
     }
   ],
   "diagnostics": [
@@ -32180,6 +32508,18 @@
       "message": "1 rule(s) under a condition the evaluation context does not hold",
       "severity": "info",
       "subject": "components/avatar.css @media (forced-colors: active)"
+    },
+    {
+      "code": "CONDITION_SKIPPED",
+      "message": "2 rule(s) under a condition the evaluation context does not hold",
+      "severity": "info",
+      "subject": "components/back-to-top.css @media (forced-colors: active)"
+    },
+    {
+      "code": "CONDITION_SKIPPED",
+      "message": "1 rule(s) under a condition the evaluation context does not hold",
+      "severity": "info",
+      "subject": "components/back-to-top.css @media (prefers-reduced-motion: reduce)"
     },
     {
       "code": "CONDITION_SKIPPED",
@@ -32279,6 +32619,18 @@
     },
     {
       "code": "CONDITION_SKIPPED",
+      "message": "1 rule(s) under a condition the evaluation context does not hold",
+      "severity": "info",
+      "subject": "patterns/state-layer.css @media (prefers-reduced-motion: reduce)"
+    },
+    {
+      "code": "CONDITION_SKIPPED",
+      "message": "0 rule(s) under a condition the evaluation context does not hold",
+      "severity": "info",
+      "subject": "patterns/state-layer.css @property --state-layer-opacity"
+    },
+    {
+      "code": "CONDITION_SKIPPED",
       "message": "0 rule(s) under a condition the evaluation context does not hold",
       "severity": "info",
       "subject": "patterns/state-layer.css @property --state-layer-opacity"
@@ -32345,6 +32697,17 @@
         ],
         "visual": [
           "size",
+          "appearance"
+        ]
+      },
+      "back-to-top": {
+        "excluded": [],
+        "nonVisual": [
+          "threshold",
+          "scroller",
+          "target"
+        ],
+        "visual": [
           "appearance"
         ]
       },
@@ -32456,10 +32819,10 @@
     },
     "tokens": {
       "catalogueAdded": 322,
-      "componentVariables": 210,
+      "componentVariables": 221,
       "modeValuesBySource": {
         "alias": 203,
-        "evaluated": 463,
+        "evaluated": 485,
         "literal": 686
       },
       "reached": 170,
@@ -32477,10 +32840,11 @@
       "variables": 466
     },
     "variants": {
-      "components": 22,
-      "componentSets": 21,
+      "components": 26,
+      "componentSets": 25,
       "naiveAllOptions": {
         "avatar": 8,
+        "back-to-top": 4,
         "badge:Badge": 20,
         "badge:BadgeDot": 10,
         "button": 27648,
@@ -32495,6 +32859,7 @@
       },
       "naiveVisualOptions": {
         "avatar": 8,
+        "back-to-top": 4,
         "badge:Badge": 20,
         "badge:BadgeDot": 5,
         "button": 2304,
@@ -32591,13 +32956,29 @@
         {
           "set": "skip-link",
           "variants": 1
+        },
+        {
+          "set": "back-to-top/plain",
+          "variants": 3
+        },
+        {
+          "set": "back-to-top/tactile",
+          "variants": 3
+        },
+        {
+          "set": "back-to-top/brutalist",
+          "variants": 3
+        },
+        {
+          "set": "back-to-top/frosted",
+          "variants": 3
         }
       ],
-      "variantsTotal": 2037
+      "variantsTotal": 2049
     }
   },
   "schemaVersion": 1,
-  "sourceHash": "fcb8de840f6d38e5",
+  "sourceHash": "89ef7b2b4bec2e2b",
   "stage": {
     "background": {
       "variable": "--color-bg-surface"
@@ -33611,6 +33992,46 @@
         },
         "width": {
           "variable": "badge:dot-size:558b9f364b"
+        }
+      },
+      "a727286d0fbdf164": {
+        "clipsContent": false,
+        "crossAlign": "CENTER",
+        "direction": "VERTICAL",
+        "gap": {
+          "variable": "--space-inline-sm"
+        },
+        "height": {
+          "variable": "--size-control-md"
+        },
+        "mainAlign": "CENTER",
+        "padding": {
+          "bottom": {
+            "expression": "0",
+            "value": 0
+          },
+          "left": {
+            "expression": "0",
+            "value": 0
+          },
+          "right": {
+            "expression": "0",
+            "value": 0
+          },
+          "top": {
+            "expression": "0",
+            "value": 0
+          }
+        },
+        "radius": {
+          "variable": "--radius-pill"
+        },
+        "strokeWeight": {
+          "expression": "1px",
+          "value": 1
+        },
+        "width": {
+          "variable": "--size-control-md"
         }
       },
       "aa30715c9f4705d4": {
@@ -38434,6 +38855,55 @@
           "textProperty": "children"
         }
       ],
+      "5e567c04bb5a66b8": [
+        {
+          "fills": [
+            {
+              "color": {
+                "variable": "back-to-top:state-layer:bfba8c3497"
+              },
+              "type": "SOLID"
+            }
+          ],
+          "kind": "overlay",
+          "slot": "state layer"
+        },
+        {
+          "default": "chevron-up",
+          "icon": {
+            "color": {
+              "color": {
+                "variable": "--color-text-primary"
+              },
+              "type": "SOLID"
+            },
+            "size": {
+              "variable": "--size-icon-sm"
+            }
+          },
+          "kind": "icon",
+          "slot": "icon"
+        },
+        {
+          "color": {
+            "color": {
+              "variable": "--focus-ring-color"
+            },
+            "type": "SOLID"
+          },
+          "kind": "ring",
+          "offset": {
+            "variable": "--focus-ring-offset"
+          },
+          "radius": {
+            "variable": "back-to-top:outline-radius:e858680b2e"
+          },
+          "slot": "focus ring",
+          "width": {
+            "variable": "--focus-ring-width"
+          }
+        }
+      ],
       "5fdbaa4997625068": [
         {
           "fills": [
@@ -39039,6 +39509,36 @@
           "width": {
             "variable": "--focus-ring-width"
           }
+        }
+      ],
+      "663fcb4ed453f2d0": [
+        {
+          "fills": [
+            {
+              "color": {
+                "variable": "back-to-top:state-layer:a8bbbce668"
+              },
+              "type": "SOLID"
+            }
+          ],
+          "kind": "overlay",
+          "slot": "state layer"
+        },
+        {
+          "default": "chevron-up",
+          "icon": {
+            "color": {
+              "color": {
+                "variable": "--color-text-primary"
+              },
+              "type": "SOLID"
+            },
+            "size": {
+              "variable": "--size-icon-sm"
+            }
+          },
+          "kind": "icon",
+          "slot": "icon"
         }
       ],
       "66c4165220fe45f7": [
@@ -43125,6 +43625,36 @@
             "lineHeight": 150
           },
           "textProperty": "children"
+        }
+      ],
+      "bf7aa08599c16252": [
+        {
+          "fills": [
+            {
+              "color": {
+                "variable": "back-to-top:state-layer:9652c98e0a"
+              },
+              "type": "SOLID"
+            }
+          ],
+          "kind": "overlay",
+          "slot": "state layer"
+        },
+        {
+          "default": "chevron-up",
+          "icon": {
+            "color": {
+              "color": {
+                "variable": "--color-text-primary"
+              },
+              "type": "SOLID"
+            },
+            "size": {
+              "variable": "--size-icon-sm"
+            }
+          },
+          "kind": "icon",
+          "slot": "icon"
         }
       ],
       "c288c90213ccc9e9": [
@@ -47411,6 +47941,99 @@
           }
         ]
       },
+      "482899945ccdf2aa": {
+        "effects": [
+          {
+            "blur": {
+              "expression": "0",
+              "value": 0
+            },
+            "color": {
+              "variable": "--frost-highlight"
+            },
+            "spread": {
+              "expression": "0",
+              "value": 0
+            },
+            "type": "INNER_SHADOW",
+            "x": {
+              "expression": "0",
+              "value": 0
+            },
+            "y": {
+              "expression": "1px",
+              "value": 1
+            }
+          },
+          {
+            "blur": {
+              "expression": "6px",
+              "value": 6
+            },
+            "color": {
+              "variable": "--shadow-md"
+            },
+            "spread": {
+              "expression": "-2px",
+              "value": -2
+            },
+            "type": "DROP_SHADOW",
+            "x": {
+              "expression": "0",
+              "value": 0
+            },
+            "y": {
+              "expression": "4px",
+              "value": 4
+            }
+          },
+          {
+            "blur": {
+              "expression": "15px",
+              "value": 15
+            },
+            "color": {
+              "variable": "--shadow-md"
+            },
+            "spread": {
+              "expression": "-3px",
+              "value": -3
+            },
+            "type": "DROP_SHADOW",
+            "x": {
+              "expression": "0",
+              "value": 0
+            },
+            "y": {
+              "expression": "10px",
+              "value": 10
+            }
+          },
+          {
+            "radius": {
+              "expression": "12px",
+              "value": 12
+            },
+            "type": "BACKGROUND_BLUR"
+          }
+        ],
+        "fills": [
+          {
+            "color": {
+              "variable": "back-to-top:frost-glass:6b38752b38"
+            },
+            "type": "SOLID"
+          }
+        ],
+        "strokes": [
+          {
+            "color": {
+              "variable": "back-to-top:border-color:27a5a4c85c"
+            },
+            "type": "SOLID"
+          }
+        ]
+      },
       "494588e4de591927": {
         "effects": [
           {
@@ -49529,6 +50152,76 @@
         ],
         "strokes": []
       },
+      "7a89522ab5126bb3": {
+        "effects": [
+          {
+            "blur": {
+              "expression": "6px",
+              "value": 6
+            },
+            "color": {
+              "variable": "--shadow-md"
+            },
+            "spread": {
+              "expression": "-2px",
+              "value": -2
+            },
+            "type": "DROP_SHADOW",
+            "x": {
+              "expression": "0",
+              "value": 0
+            },
+            "y": {
+              "expression": "4px",
+              "value": 4
+            }
+          },
+          {
+            "blur": {
+              "expression": "15px",
+              "value": 15
+            },
+            "color": {
+              "variable": "--shadow-md"
+            },
+            "spread": {
+              "expression": "-3px",
+              "value": -3
+            },
+            "type": "DROP_SHADOW",
+            "x": {
+              "expression": "0",
+              "value": 0
+            },
+            "y": {
+              "expression": "10px",
+              "value": 10
+            }
+          }
+        ],
+        "fills": [
+          {
+            "color": {
+              "variable": "--color-bg-surface-overlay"
+            },
+            "type": "SOLID"
+          },
+          {
+            "color": {
+              "variable": "--elevation-tint-overlay"
+            },
+            "type": "SOLID"
+          }
+        ],
+        "strokes": [
+          {
+            "color": {
+              "variable": "--color-border-default"
+            },
+            "type": "SOLID"
+          }
+        ]
+      },
       "7b19230da8a49881": {
         "effects": [
           {
@@ -50564,6 +51257,97 @@
           {
             "color": {
               "variable": "button:border-color:10e9f5602d"
+            },
+            "type": "SOLID"
+          }
+        ]
+      },
+      "9dd15b2397a5bca6": {
+        "effects": [
+          {
+            "blur": {
+              "expression": "0",
+              "value": 0
+            },
+            "color": {
+              "variable": "back-to-top:tactile-ledge:4b4d2fe730"
+            },
+            "spread": {
+              "expression": "0",
+              "value": 0
+            },
+            "type": "DROP_SHADOW",
+            "x": {
+              "expression": "0",
+              "value": 0
+            },
+            "y": {
+              "variable": "back-to-top:shadow-1-y:b529e198dd"
+            }
+          },
+          {
+            "blur": {
+              "expression": "6px",
+              "value": 6
+            },
+            "color": {
+              "variable": "--shadow-md"
+            },
+            "spread": {
+              "expression": "-2px",
+              "value": -2
+            },
+            "type": "DROP_SHADOW",
+            "x": {
+              "expression": "0",
+              "value": 0
+            },
+            "y": {
+              "expression": "4px",
+              "value": 4
+            }
+          },
+          {
+            "blur": {
+              "expression": "15px",
+              "value": 15
+            },
+            "color": {
+              "variable": "--shadow-md"
+            },
+            "spread": {
+              "expression": "-3px",
+              "value": -3
+            },
+            "type": "DROP_SHADOW",
+            "x": {
+              "expression": "0",
+              "value": 0
+            },
+            "y": {
+              "expression": "10px",
+              "value": 10
+            }
+          }
+        ],
+        "fills": [
+          {
+            "color": {
+              "variable": "--color-bg-surface-overlay"
+            },
+            "type": "SOLID"
+          },
+          {
+            "color": {
+              "variable": "--elevation-tint-overlay"
+            },
+            "type": "SOLID"
+          }
+        ],
+        "strokes": [
+          {
+            "color": {
+              "variable": "--color-border-default"
             },
             "type": "SOLID"
           }
@@ -52359,6 +53143,46 @@
           {
             "color": {
               "variable": "--color-border-subtle"
+            },
+            "type": "SOLID"
+          }
+        ]
+      },
+      "cbb1349f898aa272": {
+        "effects": [
+          {
+            "blur": {
+              "expression": "0",
+              "value": 0
+            },
+            "color": {
+              "variable": "back-to-top:brutalist-black:b75258c11d"
+            },
+            "spread": {
+              "expression": "0",
+              "value": 0
+            },
+            "type": "DROP_SHADOW",
+            "x": {
+              "variable": "back-to-top:shadow-1-x:dcab1c8a8f"
+            },
+            "y": {
+              "variable": "back-to-top:shadow-1-y:e2c9ce981c"
+            }
+          }
+        ],
+        "fills": [
+          {
+            "color": {
+              "variable": "--color-bg-surface-overlay"
+            },
+            "type": "SOLID"
+          }
+        ],
+        "strokes": [
+          {
+            "color": {
+              "variable": "back-to-top:brutalist-black:b75258c11d"
             },
             "type": "SOLID"
           }
@@ -54374,6 +55198,318 @@
         "light": {
           "kind": "literal",
           "value": 64
+        }
+      }
+    },
+    {
+      "codeSyntax": "var(--sk-back-to-top-border-color)",
+      "collection": "component",
+      "expression": "color-mix(in oklab, var(--color-text-primary) 22%, transparent)",
+      "id": "back-to-top:border-color:27a5a4c85c",
+      "name": "back-to-top/border-color/frosted",
+      "source": {
+        "dark": "evaluated",
+        "light": "evaluated"
+      },
+      "type": "COLOR",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": {
+            "a": 0.22,
+            "b": 0.9579,
+            "g": 0.9609,
+            "r": 0.9609
+          }
+        },
+        "light": {
+          "kind": "literal",
+          "value": {
+            "a": 0.22,
+            "b": 0.0903,
+            "g": 0.098,
+            "r": 0.1095
+          }
+        }
+      }
+    },
+    {
+      "codeSyntax": "var(--brutalist-black)",
+      "collection": "component",
+      "expression": "oklch(from var(--shadow-lg) l c h / 1)",
+      "id": "back-to-top:brutalist-black:b75258c11d",
+      "name": "back-to-top/brutalist-black/brutalist",
+      "source": {
+        "dark": "evaluated",
+        "light": "evaluated"
+      },
+      "type": "COLOR",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": {
+            "a": 1,
+            "b": 0,
+            "g": 0,
+            "r": 0
+          }
+        },
+        "light": {
+          "kind": "literal",
+          "value": {
+            "a": 1,
+            "b": 0,
+            "g": 0,
+            "r": 0
+          }
+        }
+      }
+    },
+    {
+      "codeSyntax": "var(--frost-glass)",
+      "collection": "component",
+      "expression": "var(--frost-on) color-mix(in oklab, var(--color-bg-surface-overlay) 72%, transparent)",
+      "id": "back-to-top:frost-glass:6b38752b38",
+      "name": "back-to-top/frost-glass/frosted",
+      "source": {
+        "dark": "evaluated",
+        "light": "evaluated"
+      },
+      "type": "COLOR",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": {
+            "a": 0.72,
+            "b": 0.1533,
+            "g": 0.1593,
+            "r": 0.1776
+          }
+        },
+        "light": {
+          "kind": "literal",
+          "value": {
+            "a": 0.72,
+            "b": 1,
+            "g": 1,
+            "r": 1
+          }
+        }
+      }
+    },
+    {
+      "codeSyntax": "",
+      "collection": "component",
+      "expression": "calc(var(--radius-pill) + var(--focus-ring-offset))",
+      "id": "back-to-top:outline-radius:e858680b2e",
+      "name": "back-to-top/outline-radius/focus",
+      "source": {
+        "dark": "evaluated",
+        "light": "evaluated"
+      },
+      "type": "FLOAT",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": 10001
+        },
+        "light": {
+          "kind": "literal",
+          "value": 10001
+        }
+      }
+    },
+    {
+      "codeSyntax": "",
+      "collection": "component",
+      "expression": "calc(4px * (1 - 0) * 1)",
+      "id": "back-to-top:shadow-1-x:dcab1c8a8f",
+      "name": "back-to-top/shadow-1-x/brutalist",
+      "source": {
+        "dark": "evaluated",
+        "light": "evaluated"
+      },
+      "type": "FLOAT",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": 4
+        },
+        "light": {
+          "kind": "literal",
+          "value": 4
+        }
+      }
+    },
+    {
+      "codeSyntax": "",
+      "collection": "component",
+      "expression": "calc(4px * (1 - 0))",
+      "id": "back-to-top:shadow-1-y:e2c9ce981c",
+      "name": "back-to-top/shadow-1-y/brutalist",
+      "source": {
+        "dark": "evaluated",
+        "light": "evaluated"
+      },
+      "type": "FLOAT",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": 4
+        },
+        "light": {
+          "kind": "literal",
+          "value": 4
+        }
+      }
+    },
+    {
+      "codeSyntax": "",
+      "collection": "component",
+      "expression": "calc(5px * (1 - 0))",
+      "id": "back-to-top:shadow-1-y:b529e198dd",
+      "name": "back-to-top/shadow-1-y/tactile",
+      "source": {
+        "dark": "evaluated",
+        "light": "evaluated"
+      },
+      "type": "FLOAT",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": 5
+        },
+        "light": {
+          "kind": "literal",
+          "value": 5
+        }
+      }
+    },
+    {
+      "codeSyntax": "",
+      "collection": "component",
+      "expression": "color-mix( in srgb, var(--color-text-primary) calc(var(--state-layer-focus-opacity) * 100%), transparent )",
+      "id": "back-to-top:state-layer:bfba8c3497",
+      "name": "back-to-top/state-layer/focus",
+      "source": {
+        "dark": "evaluated",
+        "light": "evaluated"
+      },
+      "type": "COLOR",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": {
+            "a": 0.16,
+            "b": 0.9579,
+            "g": 0.9609,
+            "r": 0.9609
+          }
+        },
+        "light": {
+          "kind": "literal",
+          "value": {
+            "a": 0.16,
+            "b": 0.0903,
+            "g": 0.098,
+            "r": 0.1095
+          }
+        }
+      }
+    },
+    {
+      "codeSyntax": "",
+      "collection": "component",
+      "expression": "color-mix( in srgb, var(--color-text-primary) calc(var(--state-layer-hover-opacity) * 100%), transparent )",
+      "id": "back-to-top:state-layer:9652c98e0a",
+      "name": "back-to-top/state-layer/hover",
+      "source": {
+        "dark": "evaluated",
+        "light": "evaluated"
+      },
+      "type": "COLOR",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": {
+            "a": 0.12,
+            "b": 0.9579,
+            "g": 0.9609,
+            "r": 0.9609
+          }
+        },
+        "light": {
+          "kind": "literal",
+          "value": {
+            "a": 0.12,
+            "b": 0.0903,
+            "g": 0.098,
+            "r": 0.1095
+          }
+        }
+      }
+    },
+    {
+      "codeSyntax": "",
+      "collection": "component",
+      "expression": "color-mix( in srgb, var(--color-text-primary) calc(0 * 100%), transparent )",
+      "id": "back-to-top:state-layer:a8bbbce668",
+      "name": "back-to-top/state-layer/rest",
+      "source": {
+        "dark": "evaluated",
+        "light": "evaluated"
+      },
+      "type": "COLOR",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": {
+            "a": 0,
+            "b": 0,
+            "g": 0,
+            "r": 0
+          }
+        },
+        "light": {
+          "kind": "literal",
+          "value": {
+            "a": 0,
+            "b": 0,
+            "g": 0,
+            "r": 0
+          }
+        }
+      }
+    },
+    {
+      "codeSyntax": "var(--tactile-ledge)",
+      "collection": "component",
+      "expression": "light-dark( color-mix(in oklab, var(--color-bg-surface-overlay) 76%, var(--color-text-primary)), color-mix(in oklab, var(--color-bg-surface-overlay) 72%, var(--color-bg-surface-sunken)) )",
+      "id": "back-to-top:tactile-ledge:4b4d2fe730",
+      "name": "back-to-top/tactile-ledge/tactile",
+      "source": {
+        "dark": "evaluated",
+        "light": "evaluated"
+      },
+      "type": "COLOR",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": {
+            "a": 1,
+            "b": 0.1184,
+            "g": 0.1239,
+            "r": 0.1389
+          }
+        },
+        "light": {
+          "kind": "literal",
+          "value": {
+            "a": 1,
+            "b": 0.7547,
+            "g": 0.7572,
+            "r": 0.7611
+          }
         }
       }
     },
