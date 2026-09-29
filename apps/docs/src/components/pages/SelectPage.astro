@@ -88,15 +88,6 @@ const explain = (option: string, values: readonly string[]) =>
       stageMinBlockSize="8rem"
     />
 
-    <UsagePreview
-      tree={selectSingleTree(t)}
-      optionName="appearance"
-      title={t("selectPage.prop.appearance.title")}
-      description={t("selectPage.prop.appearance.body")}
-      explain={explain("appearance", ["plain", "brutalist", "frosted"])}
-      stageMinBlockSize="8rem"
-    />
-
     <h3>{t("selectPage.showcaseTitle")}</h3>
     <p set:html={t("selectPage.showcaseBody")} />
     <p set:html={t("selectPage.nativeLinkBody")} />

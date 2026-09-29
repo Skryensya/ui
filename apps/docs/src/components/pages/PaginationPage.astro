@@ -25,10 +25,6 @@ const rangeExample = `import { paginationRange } from "@skryensya/core/paginatio
 
 paginationRange(5, 20);
 // → [1, "ellipsis", 4, 5, 6, "ellipsis", 20]`;
-
-/* What each value of a property is for, read from this page's messages. Same model Badge uses. */
-const explain = (option: string, values: readonly string[]) =>
-  Object.fromEntries(values.map((value) => [value, t(`paginationPage.prop.${option}.${value}` as Parameters<typeof t>[0])]));
 ---
 
 <ComponentPageShell
@@ -44,15 +40,6 @@ const explain = (option: string, values: readonly string[]) =>
 
   <Fragment slot="usage">
     <p class="lede" set:html={t("paginationPage.lede")} />
-
-    <UsagePreview
-      tree={paginationTree(t)}
-      optionName="appearance"
-      title={t("paginationPage.prop.appearance.title")}
-      description={t("paginationPage.prop.appearance.body")}
-      explain={explain("appearance", ["plain", "tactile", "brutalist", "frosted"])}
-      stageMinBlockSize="6rem"
-    />
 
     <h3>{t("paginationPage.showcaseTitle")}</h3>
     <p set:html={t("paginationPage.showcaseBody")} />

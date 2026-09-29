@@ -18,6 +18,7 @@ import {
 } from "../../demos/calendar";
 import { annotationDemoCss } from "../../demos/annotation";
 import { getLocale, useTranslations } from "../../i18n";
+import { variantsTree } from "../../demos/variants";
 
 const t = useTranslations(getLocale(Astro.url));
 
@@ -48,16 +49,6 @@ const explain = (option: string, values: readonly string[]) =>
       stageMinBlockSize="22rem"
     />
 
-    <UsagePreview
-      tree={calendarTree(t)}
-      optionName="disabled"
-      title={t("calendar.prop.disabled.title")}
-      description={t("calendar.prop.disabled.body")}
-      explain={explain("disabled", ["false", "true"])}
-      stageMinBlockSize="22rem"
-      labels={{ false: t("calendar.prop.disabled.falseLabel"), true: t("calendar.prop.disabled.trueLabel") }}
-    />
-
     <h3>{t("calendar.showcaseTitle")}</h3>
     <p set:html={t("calendar.showcaseBody")} />
     <h3>{t("calendar.gridTitle")}</h3>
@@ -84,6 +75,12 @@ const explain = (option: string, values: readonly string[]) =>
       <li set:html={t("calendar.contractItem2")} />
       <li set:html={t("calendar.contractItem3")} />
     </ul>
+
+    <UsagePreview
+      tree={variantsTree(calendarTree(t), [{ label: t("component.state.default"), options: {} }, { label: t("component.state.disabled"), options: { disabled: true } }])}
+      title={t("component.statesTitle")}
+      description={t("component.statesBody")}
+    />
 
     <h3>{t("component.anatomy")}</h3>
     <p set:html={t("calendar.anatomyBody")} />

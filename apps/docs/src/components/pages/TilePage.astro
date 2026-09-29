@@ -22,7 +22,6 @@ import {
   tileLinkGridTree,
   tilePaddingTree,
   tileRadioGroupTree,
-  tileSingleTree,
   tileSwitchTree,
   tileVersusBoxTree,
 } from "../../demos/tile";
@@ -33,10 +32,6 @@ const t = useTranslations(locale);
 /* Every internal link resolves in the locale being read: a hardcoded `/components/x` sends a
    Spanish reader to the English page, which is the bug this page had thirteen times. */
 const href = (path: string) => localizePath(path, locale);
-
-/* What each value of a property is for, read from this page's messages. Same model Badge uses. */
-const explain = (option: string, values: readonly string[]) =>
-  Object.fromEntries(values.map((value) => [value, t(`tilePage.prop.${option}.${value}` as Parameters<typeof t>[0])]));
 ---
 
 <ComponentPageShell
@@ -52,25 +47,6 @@ const explain = (option: string, values: readonly string[]) =>
 
   <Fragment slot="usage">
     <p class="lede" set:html={t("tilePage.lede")} />
-
-    <UsagePreview
-      tree={tileSingleTree(t)}
-      optionName="appearance"
-      title={t("tilePage.prop.appearance.title")}
-      description={t("tilePage.prop.appearance.body")}
-      explain={explain("appearance", ["plain", "tactile", "brutalist", "frosted"])}
-      stageMinBlockSize="10rem"
-    />
-
-    <UsagePreview
-      tree={tileSingleTree(t)}
-      optionName="padding"
-      title={t("tilePage.prop.padding.title")}
-      description={t("tilePage.prop.padding.body")}
-      explain={explain("padding", ["none", "xs", "sm", "md", "lg", "xl"])}
-      stageMinBlockSize="12rem"
-      labels={{ none: "none", xs: "xs", sm: "sm", md: "md", lg: "lg", xl: "xl" }}
-    />
 
     <h3>{t("tilePage.showcaseTitle")}</h3>
     <p set:html={t("tilePage.showcaseBody")} />

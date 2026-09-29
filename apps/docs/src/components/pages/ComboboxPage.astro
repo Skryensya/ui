@@ -18,6 +18,7 @@ import "@skryensya/core/components/form-field.css";
 import "@skryensya/core/patterns/scrollbar.css";
 /* Structure diagram: Annotated specimen; a preview frame only copies styles THIS page loaded. */
 import "@skryensya/core/components/annotation.css";
+import { variantsTree } from "../../demos/variants";
 
 const locale = getLocale(Astro.url);
 const t = useTranslations(locale);
@@ -35,10 +36,6 @@ import { initComponents } from "@skryensya/vanilla/auto";
 
 mountIcons(document, lucideIcons);
 initComponents();`;
-
-/* What each value of a property is for, read from this page's messages. Same model Badge uses. */
-const explain = (option: string, values: readonly string[]) =>
-  Object.fromEntries(values.map((value) => [value, t(`combobox.prop.${option}.${value}` as Parameters<typeof t>[0])]));
 ---
 
 <ComponentPageShell
@@ -61,25 +58,6 @@ const explain = (option: string, values: readonly string[]) =>
   <Fragment slot="usage">
     <p class="lede" set:html={t("combobox.lede")} />
 
-    <UsagePreview
-      tree={comboboxSingleTree(t, locale)}
-      optionName="appearance"
-      title={t("combobox.prop.appearance.title")}
-      description={t("combobox.prop.appearance.body")}
-      explain={explain("appearance", ["plain", "brutalist", "frosted"])}
-      stageMinBlockSize="9rem"
-    />
-
-    <UsagePreview
-      tree={comboboxSingleTree(t, locale)}
-      optionName="disabled"
-      title={t("combobox.prop.disabled.title")}
-      description={t("combobox.prop.disabled.body")}
-      explain={explain("disabled", ["false", "true"])}
-      stageMinBlockSize="9rem"
-      labels={{ false: t("combobox.prop.disabled.falseLabel"), true: t("combobox.prop.disabled.trueLabel") }}
-    />
-
     <h3>{t("combobox.showcaseTitle")}</h3>
     <p set:html={t("combobox.showcaseBody")} />
     <ComponentPreview tree={comboboxTree(t, locale)} js={js} label="Combobox" viewport="menu" />
@@ -87,6 +65,12 @@ const explain = (option: string, values: readonly string[]) =>
     <h3>{t("component.contractNotesTitle")}</h3>
     <p set:html={t("combobox.contractBody1")} />
     <p set:html={t("combobox.contractBody2")} />
+
+    <UsagePreview
+      tree={variantsTree(comboboxSingleTree(t, locale), [{ label: t("component.state.default"), options: {} }, { label: t("component.state.disabled"), options: { disabled: true } }, { label: t("component.state.invalid"), options: { invalid: true } }])}
+      title={t("component.statesTitle")}
+      description={t("component.statesBody")}
+    />
 
     <h3>{t("component.anatomy")}</h3>
     <p set:html={t("combobox.anatomyBody")} />

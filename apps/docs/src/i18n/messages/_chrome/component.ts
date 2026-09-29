@@ -23,6 +23,16 @@ export const componentMessages = {
     /* The hand-written "what the contract says that Referencia's JSON doesn't" subsection every
        page's Uso tab carries (see AccordionPage/DialogPage): one heading word, not N copies. */
     "component.contractNotesTitle": "Contrato",
+    "component.statesTitle": "Estados",
+    "component.statesBody": "El mismo control en cada estado, uno al lado del otro.",
+    "component.state.default": "Por defecto",
+    "component.state.disabled": "Deshabilitado",
+    "component.state.checked": "Marcado",
+    "component.state.indeterminate": "Indeterminado",
+    "component.state.readOnly": "Solo lectura",
+    "component.state.invalid": "Inválido",
+    "component.scaleTitle": "Escala de {option}",
+    "component.scaleBody": "Cada paso de la escala, del más chico al más grande.",
   },
   en: {
 
@@ -39,5 +49,15 @@ export const componentMessages = {
     "component.tabsAriaLabel": "{name} reference",
     "component.reactNote": "The code is in the preview's <strong>React</strong> tab.",
     "component.contractNotesTitle": "Contract",
+    "component.statesTitle": "States",
+    "component.statesBody": "The same control in each state, side by side.",
+    "component.state.default": "Default",
+    "component.state.disabled": "Disabled",
+    "component.state.checked": "Checked",
+    "component.state.indeterminate": "Indeterminate",
+    "component.state.readOnly": "Read-only",
+    "component.state.invalid": "Invalid",
+    "component.scaleTitle": "{option} scale",
+    "component.scaleBody": "Each step of the scale, from smallest to largest.",
   },
 } as const;

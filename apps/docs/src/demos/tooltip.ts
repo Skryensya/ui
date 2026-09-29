@@ -147,17 +147,6 @@ export const tooltipTree = (t: Translate): UsageTree => ({
   ],
 });
 
-/* One tooltip, the specimen the `placement` and `arrow` previews vary: hover or focus it to open. */
-export const tooltipSingleTree = (t: Translate): UsageTree => ({
-  contract: "tooltip",
-  signature: "Tooltip",
-  options: { arrow: true },
-  slots: {
-    content: t("demo.tooltip.export.content"),
-    children: iconTrigger("download", t("demo.tooltip.export.label")),
-  },
-});
-
 /*
  * THE DO/DON'T PICTURES ARE DRAWN, NOT OPENED. A tooltip's machine closes it on scroll, so one held
  * open with `defaultOpen` is gone by the time a reader scrolls to the pair. Each picture is the

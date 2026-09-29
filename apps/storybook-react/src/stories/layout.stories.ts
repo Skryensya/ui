@@ -53,3 +53,6 @@ export const GridMulticol: StoryObj = treeStory(demos.gridMulticolTree);
 export const GridResponsive: StoryObj = treeStory(demos.gridResponsiveTree);
 export const FooterColumns: StoryObj = treeStory(demos.footerColumnsTree);
 export const FooterCredit: StoryObj = treeStory(demos.footerCreditTree);
+export const BoxScaleSpecimen: StoryObj = treeStory(demos.boxScaleSpecimenTree);
+export const StackScaleSpecimen: StoryObj = treeStory(demos.stackScaleSpecimenTree);
+export const GridScaleSpecimen: StoryObj = treeStory(demos.gridScaleSpecimenTree);

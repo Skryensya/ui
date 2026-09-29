@@ -20,6 +20,7 @@ import {
   textareaTree,
 } from "../../demos/input";
 import { getLocale, useTranslations } from "../../i18n";
+import { variantsTree } from "../../demos/variants";
 
 const install = `pnpm add @skryensya/core @skryensya/react`;
 const t = useTranslations(getLocale(Astro.url));
@@ -62,33 +63,12 @@ const explain = (option: string, values: readonly string[]) =>
 
     <UsagePreview
       tree={inputSingleTree(t)}
-      optionName="appearance"
-      title={t("inputPage.prop.appearance.title")}
-      description={t("inputPage.prop.appearance.body")}
-      explain={explain("appearance", ["plain", "brutalist", "frosted"])}
-      stageMinBlockSize="8rem"
-      target={["children"]}
-    />
-
-    <UsagePreview
-      tree={inputSingleTree(t)}
       optionName="controlSize"
       title={t("inputPage.prop.controlSize.title")}
       description={t("inputPage.prop.controlSize.body")}
       explain={explain("controlSize", ["sm", "md", "lg"])}
       stageMinBlockSize="8rem"
       labels={{ sm: "sm", md: "md", lg: "lg" }}
-      target={["children"]}
-    />
-
-    <UsagePreview
-      tree={inputSingleTree(t)}
-      optionName="disabled"
-      title={t("inputPage.prop.disabled.title")}
-      description={t("inputPage.prop.disabled.body")}
-      explain={explain("disabled", ["false", "true"])}
-      stageMinBlockSize="8rem"
-      labels={{ false: t("inputPage.prop.disabled.falseLabel"), true: t("inputPage.prop.disabled.trueLabel") }}
       target={["children"]}
     />
 
@@ -120,6 +100,12 @@ const explain = (option: string, values: readonly string[]) =>
     <p set:html={t("inputPage.nativeBody")} />
 
     <p set:html={t("component.reactNote")} />
+
+    <UsagePreview
+      tree={variantsTree(inputSingleTree(t), [{ label: t("component.state.default"), options: {} }, { label: t("component.state.disabled"), options: { disabled: true } }], ["children"])}
+      title={t("component.statesTitle")}
+      description={t("component.statesBody")}
+    />
 
     <h3>{t("component.anatomy")}</h3>
     <p set:html={t("inputPage.anatomyBody")} />

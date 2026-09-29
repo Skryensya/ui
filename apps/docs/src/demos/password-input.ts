@@ -90,15 +90,6 @@ export const passwordInputStatesTree = (t: Translate): UsageTree => ({
   ],
 });
 
-/* One field, the specimen the `appearance` and `disabled` previews vary. */
-export const passwordInputSingleTree = (t: Translate): UsageTree => ({
-  contract: "password-input",
-  signature: "PasswordInput",
-  options: { name: "single-password", ...toggleLabels(t) },
-  attrs: { style: "inline-size: min(100%, 20rem)" },
-  slots: { label: t("passwordInput.signInLabel") },
-});
-
 /* Don't: the rule a new password must meet, left out until it fails. */
 export const passwordInputDontNoHintTree = (t: Translate): UsageTree => ({
   contract: "password-input",

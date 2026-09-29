@@ -18,15 +18,12 @@ import {
 } from "../../demos/number-field";
 import { annotationDemoCss } from "../../demos/annotation";
 import { getLocale, useTranslations } from "../../i18n";
+import { variantsTree } from "../../demos/variants";
 
 const t = useTranslations(getLocale(Astro.url));
 const styles = `@import "@skryensya/core/patterns/state-layer.css";
 @import "@skryensya/core/components/button.css";
 @import "@skryensya/core/components/number-field.css";`;
-
-/* What each value of a property is for, read from this page's messages. Same model Badge uses. */
-const explain = (option: string, values: readonly string[]) =>
-  Object.fromEntries(values.map((value) => [value, t(`numberFieldPage.prop.${option}.${value}` as Parameters<typeof t>[0])]));
 ---
 
 <ComponentPageShell
@@ -43,31 +40,18 @@ const explain = (option: string, values: readonly string[]) =>
   <Fragment slot="usage">
     <p class="lede" set:html={t("numberFieldPage.description")} />
 
-    <UsagePreview
-      tree={numberFieldSingleTree(t)}
-      optionName="appearance"
-      title={t("numberFieldPage.prop.appearance.title")}
-      description={t("numberFieldPage.prop.appearance.body")}
-      explain={explain("appearance", ["plain", "brutalist", "frosted"])}
-      stageMinBlockSize="8rem"
-    />
-
-    <UsagePreview
-      tree={numberFieldSingleTree(t)}
-      optionName="disabled"
-      title={t("numberFieldPage.prop.disabled.title")}
-      description={t("numberFieldPage.prop.disabled.body")}
-      explain={explain("disabled", ["false", "true"])}
-      stageMinBlockSize="8rem"
-      labels={{ false: t("numberFieldPage.prop.disabled.falseLabel"), true: t("numberFieldPage.prop.disabled.trueLabel") }}
-    />
-
     <h3>{t("numberFieldPage.showcaseTitle")}</h3>
     <p set:html={t("numberFieldPage.showcaseBody")} />
     <ComponentPreview tree={numberFieldTree(t)} label="NumberField" viewport="auto" />
 
     <h3>{t("component.contractNotesTitle")}</h3>
     <p set:html={t("numberFieldPage.contractBody")} />
+
+    <UsagePreview
+      tree={variantsTree(numberFieldSingleTree(t), [{ label: t("component.state.default"), options: {} }, { label: t("component.state.readOnly"), options: { readOnly: true } }, { label: t("component.state.invalid"), options: { invalid: true } }, { label: t("component.state.disabled"), options: { disabled: true } }])}
+      title={t("component.statesTitle")}
+      description={t("component.statesBody")}
+    />
 
     <h3>{t("component.anatomy")}</h3>
     <p set:html={t("numberFieldPage.anatomyBody")} />

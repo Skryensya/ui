@@ -13,6 +13,5 @@ export default { title: "Components/Forms/DatePicker", tags: ["autodocs"] } sati
 export const Default: StoryObj = treeStory(demos.datePickerTree);
 export const Disabled: StoryObj = treeStory(demos.datePickerDisabledTree);
 export const NativeDatePicker: StoryObj = treeStory(demos.nativeDatePickerTree);
-export const Single: StoryObj = treeStory(demos.datePickerSingleTree);
 export const DoRange: StoryObj = treeStory(demos.datePickerDoRangeTree);
 export const DontRange: StoryObj = treeStory(demos.datePickerDontRangeTree);

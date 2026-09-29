@@ -41,16 +41,6 @@ const explain = (option: string, values: readonly string[]) =>
 
     <UsagePreview
       tree={formFieldTree(t)}
-      optionName="required"
-      title={t("formFieldPage.prop.required.title")}
-      description={t("formFieldPage.prop.required.body")}
-      explain={explain("required", ["false", "true"])}
-      stageMinBlockSize="10rem"
-      labels={{ false: t("formFieldPage.prop.required.falseLabel"), true: t("formFieldPage.prop.required.trueLabel") }}
-    />
-
-    <UsagePreview
-      tree={formFieldTree(t)}
       optionName="labelHidden"
       title={t("formFieldPage.prop.labelHidden.title")}
       description={t("formFieldPage.prop.labelHidden.body")}

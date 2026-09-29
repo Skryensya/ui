@@ -24,4 +24,3 @@ export const LinkGrid: StoryObj = treeStory(demos.tileLinkGridTree);
 export const ButtonGroup: StoryObj = treeStory(demos.tileButtonGroupTree);
 export const VersusBox: StoryObj = treeStory(demos.tileVersusBoxTree);
 export const Padding: StoryObj = treeStory(demos.tilePaddingTree);
-export const Single: StoryObj = treeStory(demos.tileSingleTree);

@@ -18,9 +18,11 @@ import {
   separatorSingleTree,
   separatorTree,
   separatorVerticalTree,
+  separatorScaleSpecimenTree,
 } from "../../demos/separator";
 import { annotationDemoCss } from "../../demos/annotation";
 import { getLocale, useTranslations } from "../../i18n";
+import { variantsTree } from "../../demos/variants";
 
 const t = useTranslations(getLocale(Astro.url));
 const install = `pnpm add @skryensya/core @skryensya/react`;
@@ -44,15 +46,6 @@ const styles = `@import "@skryensya/core/components/separator.css";`;
       title={t("separatorPage.prop.tone.title")}
       description={t("separatorPage.prop.tone.body")}
       explain={explain("tone", ["subtle", "default", "strong"])}
-      stageMinBlockSize="8rem"
-    />
-
-    <UsagePreview
-      tree={separatorSingleTree()}
-      optionName="spacing"
-      title={t("separatorPage.prop.spacing.title")}
-      description={t("separatorPage.prop.spacing.body")}
-      explain={explain("spacing", ["none", "sm", "md", "lg"])}
       stageMinBlockSize="8rem"
     />
 
@@ -87,6 +80,12 @@ const styles = `@import "@skryensya/core/components/separator.css";`;
       <li set:html={t("separatorPage.contractItem3")} />
       <li set:html={t("separatorPage.contractItem4")} />
     </ul>
+
+    <UsagePreview
+      tree={variantsTree(separatorScaleSpecimenTree(), [{ label: "none", options: { spacing: "none" } }, { label: "sm", options: { spacing: "sm" } }, { label: "md", options: { spacing: "md" } }, { label: "lg", options: { spacing: "lg" } }], ["children", 1])}
+      title={t("component.scaleTitle", { option: "spacing" })}
+      description={t("component.scaleBody")}
+    />
 
     <h3>{t("component.anatomy")}</h3>
     <p set:html={t("separatorPage.anatomyBody")} />

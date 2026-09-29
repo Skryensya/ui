@@ -14,7 +14,6 @@ export default { title: "Components/Forms/Slider", tags: ["autodocs"] } satisfie
 export const Anatomy: StoryObj = treeStory(demos.sliderAnatomyTree, { decorators: [withCss(annotationDemoCss)] });
 export const Default: StoryObj = treeStory(demos.sliderTree);
 export const Range: StoryObj = treeStory(demos.sliderRangeTree);
-export const Single: StoryObj = treeStory(demos.sliderSingleTree);
 export const DontTwo: StoryObj = treeStory(demos.sliderDontTwoTree);
 export const DoRange: StoryObj = treeStory(demos.sliderDoRangeTree);
 export const DontExact: StoryObj = treeStory(demos.sliderDontExactTree);

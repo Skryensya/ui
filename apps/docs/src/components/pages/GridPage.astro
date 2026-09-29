@@ -7,8 +7,9 @@ import ComponentPageShell from "./ComponentPageShell.astro";
 import CodeBlock from "../CodeBlock.astro";
 import ComponentPreview from "../ComponentPreview.astro";
 import UsagePreview from "../UsagePreview.astro";
-import { gridMulticolTree, gridResponsiveTree, gridTree } from "../../demos/layout";
+import { gridMulticolTree, gridResponsiveTree, gridTree, gridScaleSpecimenTree } from "../../demos/layout";
 import { getLocale, useTranslations } from "../../i18n";
+import { variantsTree } from "../../demos/variants";
 
 const install = `pnpm add @skryensya/core @skryensya/react`;
 const t = useTranslations(getLocale(Astro.url));
@@ -111,16 +112,6 @@ const explain = (option: string, values: readonly string[]) =>
       stageMinBlockSize="14rem"
     />
 
-    <UsagePreview
-      tree={gridTree(t)}
-      optionName="gap"
-      title={t("grid.prop.gap.title")}
-      description={t("grid.prop.gap.body")}
-      explain={explain("gap", ["none", "xs", "sm", "md", "lg", "xl"])}
-      stageMinBlockSize="14rem"
-      labels={{ none: "none", xs: "xs", sm: "sm", md: "md", lg: "lg", xl: "xl" }}
-    />
-
     <h3>{t("grid.showcaseTitle")}</h3>
     <p set:html={t("grid.showcaseBody")} />
     <UsagePreview tree={gridTree(t)} />
@@ -150,6 +141,12 @@ const explain = (option: string, values: readonly string[]) =>
       <li set:html={t("grid.contractItem4")} />
       <li set:html={t("grid.contractItem5")} />
     </ul>
+
+    <UsagePreview
+      tree={variantsTree(gridScaleSpecimenTree(t), [{ label: "none", options: { gap: "none" } }, { label: "xs", options: { gap: "xs" } }, { label: "sm", options: { gap: "sm" } }, { label: "md", options: { gap: "md" } }, { label: "lg", options: { gap: "lg" } }, { label: "xl", options: { gap: "xl" } }], [], "3")}
+      title={t("component.scaleTitle", { option: "gap" })}
+      description={t("component.scaleBody")}
+    />
 
     <h3>{t("component.anatomy")}</h3>
     <p set:html={t("grid.anatomyBody")} />

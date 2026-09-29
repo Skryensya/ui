@@ -46,16 +46,6 @@ const explain = (option: string, values: readonly string[]) =>
 
     <UsagePreview
       tree={loaderSingleTree(t)}
-      optionName="variant"
-      title={t("loaderPage.prop.variant.title")}
-      description={t("loaderPage.prop.variant.body")}
-      explain={explain("variant", ["ring", "sweep", "bars", "dots", "arc", "comet", "orbit", "clock", "spokes", "ticks", "compass", "beads"])}
-      stageMinBlockSize="8rem"
-      labels={{ ring: "ring", sweep: "sweep", bars: "bars", dots: "dots", arc: "arc", comet: "comet", orbit: "orbit", clock: "clock", spokes: "spokes", ticks: "ticks", compass: "compass", beads: "beads" }}
-    />
-
-    <UsagePreview
-      tree={loaderSingleTree(t)}
       optionName="size"
       title={t("loaderPage.prop.size.title")}
       description={t("loaderPage.prop.size.body")}

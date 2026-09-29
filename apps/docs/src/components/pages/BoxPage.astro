@@ -8,12 +8,13 @@ import ComponentPreview from "../ComponentPreview.astro";
 import UsagePreview from "../UsagePreview.astro";
 import DoDont from "../DoDont.astro";
 import AppearanceMenu from "../AppearanceMenu.astro";
-import { boxControlsTree, boxSurfacesTree, boxTree } from "../../demos/layout";
+import { boxControlsTree, boxSurfacesTree, boxTree, boxScaleSpecimenTree } from "../../demos/layout";
 import { getLocale, useTranslations } from "../../i18n";
 /* The sheet itself, not only its source: the Style hooks table resolves each hook
    against a real element, and a page that never loads `patterns/box.css` would show every
    value blank. */
 import "@skryensya/core/patterns/box.css";
+import { variantsTree } from "../../demos/variants";
 
 const t = useTranslations(getLocale(Astro.url));
 const explain = (option: string, values: readonly string[]) =>
@@ -67,25 +68,6 @@ const explain = (option: string, values: readonly string[]) =>
       stageMinBlockSize="11rem"
     />
 
-    <UsagePreview
-      tree={boxTree(t)}
-      optionName="padding"
-      title={t("box.prop.padding.title")}
-      description={t("box.prop.padding.body")}
-      explain={explain("padding", ["none", "xs", "sm", "md", "lg", "xl"])}
-      labels={{ none: t("box.prop.padding.noneLabel"), xs: "xs", sm: "sm", md: "md", lg: "lg", xl: "xl" }}
-      stageMinBlockSize="13rem"
-    />
-
-    <UsagePreview
-      tree={boxTree(t)}
-      optionName="appearance"
-      title={t("box.prop.appearance.title")}
-      description={t("box.prop.appearance.body")}
-      explain={explain("appearance", ["plain", "brutalist", "frosted"])}
-      stageMinBlockSize="14rem"
-    />
-
     <h3>{t("box.showcaseTitle")}</h3>
     <p set:html={t("box.showcaseBody")} />
     <UsagePreview tree={boxTree(t)} title={t("box.htmlTitle")} description={t("box.htmlBody")} />
@@ -102,6 +84,12 @@ const explain = (option: string, values: readonly string[]) =>
       <li set:html={t("box.contractItem4")} />
       <li set:html={t("box.contractItem5")} />
     </ul>
+
+    <UsagePreview
+      tree={variantsTree(boxScaleSpecimenTree(t), [{ label: "none", options: { padding: "none" } }, { label: "xs", options: { padding: "xs" } }, { label: "sm", options: { padding: "sm" } }, { label: "md", options: { padding: "md" } }, { label: "lg", options: { padding: "lg" } }, { label: "xl", options: { padding: "xl" } }], [], "3")}
+      title={t("component.scaleTitle", { option: "padding" })}
+      description={t("component.scaleBody")}
+    />
 
     <h3>{t("component.anatomy")}</h3>
     <p set:html={t("box.anatomyBody")} />

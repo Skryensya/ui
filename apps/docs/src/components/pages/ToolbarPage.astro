@@ -61,15 +61,6 @@ const explain = (option: string, values: readonly string[]) =>
       stageMinBlockSize="12rem"
     />
 
-    <UsagePreview
-      tree={toolbarTree(t)}
-      optionName="appearance"
-      title={t("toolbarPage.prop.appearance.title")}
-      description={t("toolbarPage.prop.appearance.body")}
-      explain={explain("appearance", ["plain", "tactile", "brutalist", "frosted"])}
-      stageMinBlockSize="8rem"
-    />
-
     <h3>{t("toolbarPage.showcaseTitle")}</h3>
     <p set:html={t("toolbarPage.showcaseBody")} />
     <ComponentPreview tree={toolbarTree(t)} js={js} label="Toolbar" viewport="auto" />

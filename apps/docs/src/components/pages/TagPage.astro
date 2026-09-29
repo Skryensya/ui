@@ -43,15 +43,6 @@ const explain = (option: string, values: readonly string[]) =>
 
     <UsagePreview
       tree={tagSimpleTree(t)}
-      optionName="appearance"
-      title={t("tagPage.prop.appearance.title")}
-      description={t("tagPage.prop.appearance.body")}
-      explain={explain("appearance", ["plain", "brutalist"])}
-      stageMinBlockSize="7rem"
-    />
-
-    <UsagePreview
-      tree={tagSimpleTree(t)}
       optionName="removable"
       title={t("tagPage.prop.removable.title")}
       description={t("tagPage.prop.removable.body")}

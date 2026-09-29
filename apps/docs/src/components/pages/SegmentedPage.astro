@@ -44,20 +44,6 @@ await initComponents();`;
       stageMinBlockSize="7rem"
     />
 
-    <UsagePreview
-      tree={segmentedTree(t)}
-      optionName="appearance"
-      title={t("segmentedPage.prop.appearance.title")}
-      description={t("segmentedPage.prop.appearance.body")}
-      explain={{
-        plain: t("segmentedPage.prop.appearance.plain"),
-        tactile: t("segmentedPage.prop.appearance.tactile"),
-        brutalist: t("segmentedPage.prop.appearance.brutalist"),
-        frosted: t("segmentedPage.prop.appearance.frosted"),
-      }}
-      stageMinBlockSize="7rem"
-    />
-
     <h3>{t("segmentedPage.showcaseTitle")}</h3>
     <p set:html={t("segmentedPage.showcaseBody")} />
     <ComponentPreview tree={segmentedTree(t)} label="Segmented" />

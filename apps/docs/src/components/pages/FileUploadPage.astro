@@ -18,12 +18,9 @@ import "@skryensya/core/components/file-upload.css";
 import "@skryensya/core/components/button.css";
 /* The rows draw the kit's own ghost icon button and two icon glyphs. */
 import "@skryensya/core/patterns/icon.css";
+import { variantsTree } from "../../demos/variants";
 
 const t = useTranslations(getLocale(Astro.url));
-
-/* What each value of a property is for, read from this page's messages. Same model Badge uses. */
-const explain = (option: string, values: readonly string[]) =>
-  Object.fromEntries(values.map((value) => [value, t(`fileUploadPage.prop.${option}.${value}` as Parameters<typeof t>[0])]));
 ---
 
 <ComponentPageShell
@@ -38,16 +35,6 @@ const explain = (option: string, values: readonly string[]) =>
 >
   <Fragment slot="usage">
     <p class="lede" set:html={t("fileUploadPage.description")} />
-
-    <UsagePreview
-      tree={fileUploadTree(t)}
-      optionName="disabled"
-      title={t("fileUploadPage.prop.disabled.title")}
-      description={t("fileUploadPage.prop.disabled.body")}
-      explain={explain("disabled", ["false", "true"])}
-      stageMinBlockSize="20rem"
-      labels={{ false: t("fileUploadPage.prop.disabled.falseLabel"), true: t("fileUploadPage.prop.disabled.trueLabel") }}
-    />
 
     <h3>{t("fileUploadPage.showcaseTitle")}</h3>
     <p set:html={t("fileUploadPage.showcaseBody")} />
@@ -88,6 +75,12 @@ const explain = (option: string, values: readonly string[]) =>
 
     <h3>{t("component.contractNotesTitle")}</h3>
     <p set:html={t("fileUploadPage.contractBody")} />
+
+    <UsagePreview
+      tree={variantsTree(fileUploadTree(t), [{ label: t("component.state.default"), options: {} }, { label: t("component.state.disabled"), options: { disabled: true } }])}
+      title={t("component.statesTitle")}
+      description={t("component.statesBody")}
+    />
 
     <h3>{t("component.anatomy")}</h3>
     <p set:html={t("fileUploadPage.anatomyBody")} />

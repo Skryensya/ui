@@ -11,7 +11,6 @@ import {
   datePickerDisabledTree,
   datePickerDoRangeTree,
   datePickerDontRangeTree,
-  datePickerSingleTree,
   datePickerTree,
   nativeDatePickerTree,
 } from "../../demos/date-picker";
@@ -25,10 +24,6 @@ const t = useTranslations(getLocale(Astro.url));
 const styles = `@import "@skryensya/core/patterns/anchored.css";
 @import "@skryensya/core/components/button.css";
 @import "@skryensya/core/components/date-picker.css";`;
-
-/* What each value of a property is for, read from this page's messages. Same model Badge uses. */
-const explain = (option: string, values: readonly string[]) =>
-  Object.fromEntries(values.map((value) => [value, t(`datePicker.prop.${option}.${value}` as Parameters<typeof t>[0])]));
 ---
 
 <ComponentPageShell
@@ -50,25 +45,6 @@ const explain = (option: string, values: readonly string[]) =>
 
   <Fragment slot="usage">
     <p class="lede" set:html={t("datePicker.lede")} />
-
-    <UsagePreview
-      tree={datePickerSingleTree(t)}
-      optionName="appearance"
-      title={t("datePicker.prop.appearance.title")}
-      description={t("datePicker.prop.appearance.body")}
-      explain={explain("appearance", ["plain", "brutalist", "frosted"])}
-      stageMinBlockSize="9rem"
-    />
-
-    <UsagePreview
-      tree={datePickerSingleTree(t)}
-      optionName="disabled"
-      title={t("datePicker.prop.disabled.title")}
-      description={t("datePicker.prop.disabled.body")}
-      explain={explain("disabled", ["false", "true"])}
-      stageMinBlockSize="9rem"
-      labels={{ false: t("datePicker.prop.disabled.falseLabel"), true: t("datePicker.prop.disabled.trueLabel") }}
-    />
 
     <h3>{t("datePicker.showcaseTitle")}</h3>
     <p set:html={t("datePicker.showcaseBody")} />

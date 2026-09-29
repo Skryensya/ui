@@ -72,14 +72,6 @@ export const sliderRangeTree = (t: Translate): UsageTree => ({
   attrs: { style: "inline-size: min(100%, 22rem)" },
 });
 
-/* One slider, the specimen the `disabled` preview varies. */
-export const sliderSingleTree = (t: Translate): UsageTree => ({
-  contract: "slider",
-  signature: "Slider",
-  options: { value: 65 },
-  attrs: { "aria-label": t("demo.slider.volume"), style: "inline-size: min(100%, 18rem)" },
-});
-
 /* Don't: a minimum and a maximum as two unrelated sliders. */
 export const sliderDontTwoTree = (t: Translate): UsageTree => ({
   contract: "layout",
