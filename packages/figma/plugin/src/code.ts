@@ -1201,7 +1201,11 @@ async function measureFirst(ctx: Ctx, spec: M.ComponentSet, set: ComponentSetNod
   // The border counts too: a cell lays its stroke out like CSS's border-box does.
   const stroked = manifest.styles.surfaces[first.surface].strokes.length > 0 && box.strokeWeight;
   const border = stroked ? 2 * Number(valueOf(box.strokeWeight!)) : 0;
-  return { w: Math.ceil(Number(valueOf(box.padding.left)) + textW + Number(valueOf(box.padding.right)) + border), h: cellH };
+  const hugged = Number(valueOf(box.padding.left)) + textW + Number(valueOf(box.padding.right)) + border;
+  // A box with a width of its own (an Avatar's disc, BackToTop's square) is that wide, whatever it holds.
+  const fixed = box.width ? Number(valueOf(box.width)) : 0;
+  const floor = box.minWidth ? Number(valueOf(box.minWidth)) : 0;
+  return { w: Math.ceil(Math.max(hugged, fixed, floor)), h: cellH };
 }
 
 /**
