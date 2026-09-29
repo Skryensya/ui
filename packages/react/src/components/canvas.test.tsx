@@ -1,5 +1,5 @@
 import { annotationParts } from "@skryensya/core/annotation";
-import { canvasAttrs, canvasParts } from "@skryensya/core/canvas";
+import { CANVAS_ZOOM_STEP, canvasAttrs, canvasParts } from "@skryensya/core/canvas";
 import { act, render } from "@testing-library/react";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import { Annotated } from "./annotation.js";
@@ -85,7 +85,8 @@ describe("Canvas", () => {
     expect(level.textContent).toBe("50%");
 
     act(() => root.querySelector<HTMLButtonElement>('[data-canvas-action="zoom-in"]')!.click());
-    expect(level.textContent).toBe("63%");
+    /* One step up from the fitted 50%, derived so a retuned step does not leave this asserting the old one. */
+    expect(level.textContent).toBe(`${Math.round(0.5 * CANVAS_ZOOM_STEP * 100)}%`);
     expect(root.hasAttribute(canvasAttrs.zoomed)).toBe(true);
   });
 });
