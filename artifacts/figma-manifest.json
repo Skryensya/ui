@@ -31896,6 +31896,148 @@
         "columns": []
       },
       "visualHash": "b0f754f6d2bf9b26"
+    },
+    {
+      "axes": [
+        {
+          "name": "linkTone",
+          "values": [
+            "neutral",
+            "accent"
+          ]
+        },
+        {
+          "name": "state",
+          "values": [
+            "rest",
+            "hover",
+            "focus"
+          ]
+        }
+      ],
+      "cells": [
+        {
+          "box": "7cbbf436c588fa22",
+          "hash": "d72497743abe95d3",
+          "id": "link/linkTone=neutral,state=rest",
+          "key": "linkTone=neutral, state=rest",
+          "layers": "33ef2bc59b6e1f9d",
+          "props": {
+            "linkTone": "neutral",
+            "state": "rest"
+          },
+          "surface": "fa0b643878e9242d"
+        },
+        {
+          "box": "7cbbf436c588fa22",
+          "hash": "7cee788df090d5b7",
+          "id": "link/linkTone=neutral,state=hover",
+          "key": "linkTone=neutral, state=hover",
+          "layers": "09d23a5ba1577fe3",
+          "props": {
+            "linkTone": "neutral",
+            "state": "hover"
+          },
+          "surface": "fa0b643878e9242d"
+        },
+        {
+          "box": "7cbbf436c588fa22",
+          "hash": "2270edc3dcf83868",
+          "id": "link/linkTone=neutral,state=focus",
+          "key": "linkTone=neutral, state=focus",
+          "layers": "2e67421f3b36e875",
+          "props": {
+            "linkTone": "neutral",
+            "state": "focus"
+          },
+          "surface": "fa0b643878e9242d"
+        },
+        {
+          "box": "7cbbf436c588fa22",
+          "hash": "6d787c954bba6db7",
+          "id": "link/linkTone=accent,state=rest",
+          "key": "linkTone=accent, state=rest",
+          "layers": "0b71eee9ac92d9d3",
+          "props": {
+            "linkTone": "accent",
+            "state": "rest"
+          },
+          "surface": "fa0b643878e9242d"
+        },
+        {
+          "box": "7cbbf436c588fa22",
+          "hash": "69455b6fa1b2e87f",
+          "id": "link/linkTone=accent,state=hover",
+          "key": "linkTone=accent, state=hover",
+          "layers": "a9f9611ec1eb6379",
+          "props": {
+            "linkTone": "accent",
+            "state": "hover"
+          },
+          "surface": "fa0b643878e9242d"
+        },
+        {
+          "box": "7cbbf436c588fa22",
+          "hash": "007032dde217a185",
+          "id": "link/linkTone=accent,state=focus",
+          "key": "linkTone=accent, state=focus",
+          "layers": "c1e95ed0918aac8d",
+          "props": {
+            "linkTone": "accent",
+            "state": "focus"
+          },
+          "surface": "fa0b643878e9242d"
+        }
+      ],
+      "contractHash": "f0953c37d22eda18",
+      "defaultCell": "linkTone=neutral, state=rest",
+      "grid": {
+        "columns": [
+          {
+            "name": "state",
+            "values": [
+              "rest",
+              "hover",
+              "focus"
+            ]
+          }
+        ],
+        "rows": [
+          {
+            "name": "linkTone",
+            "values": [
+              "neutral",
+              "accent"
+            ]
+          }
+        ]
+      },
+      "id": "link",
+      "interactions": [
+        {
+          "axis": "state",
+          "from": "rest",
+          "to": "hover",
+          "trigger": "ON_HOVER"
+        }
+      ],
+      "kind": "component-set",
+      "name": "Link",
+      "page": "skryensya",
+      "properties": [
+        {
+          "default": "Read the guide",
+          "name": "children",
+          "type": "TEXT"
+        }
+      ],
+      "showcase": {
+        "base": {
+          "state": "rest"
+        },
+        "columns": []
+      },
+      "visualHash": "4961a88aaacbfcd5"
     }
   ],
   "diagnostics": [
@@ -31988,6 +32130,18 @@
       "message": "1 rule(s) under a condition the evaluation context does not hold",
       "severity": "info",
       "subject": "patterns/state-layer.css @media (prefers-reduced-motion: reduce)"
+    },
+    {
+      "code": "CONDITION_SKIPPED",
+      "message": "1 rule(s) under a condition the evaluation context does not hold",
+      "severity": "info",
+      "subject": "patterns/state-layer.css @media (prefers-reduced-motion: reduce)"
+    },
+    {
+      "code": "CONDITION_SKIPPED",
+      "message": "0 rule(s) under a condition the evaluation context does not hold",
+      "severity": "info",
+      "subject": "patterns/state-layer.css @property --state-layer-opacity"
     },
     {
       "code": "CONDITION_SKIPPED",
@@ -32103,6 +32257,15 @@
           "appearance"
         ]
       },
+      "link": {
+        "excluded": [],
+        "nonVisual": [
+          "href"
+        ],
+        "visual": [
+          "linkTone"
+        ]
+      },
       "tag": {
         "excluded": [
           "removable"
@@ -32129,15 +32292,15 @@
       }
     },
     "tokens": {
-      "catalogueAdded": 328,
-      "componentVariables": 203,
+      "catalogueAdded": 327,
+      "componentVariables": 210,
       "modeValuesBySource": {
         "alias": 203,
-        "evaluated": 449,
+        "evaluated": 463,
         "literal": 686
       },
-      "reached": 161,
-      "reachedAsVariables": 123,
+      "reached": 162,
+      "reachedAsVariables": 124,
       "reachedButNotVariables": [
         "--elevation-flat",
         "--elevation-raised",
@@ -32149,8 +32312,8 @@
       "variables": 466
     },
     "variants": {
-      "components": 18,
-      "componentSets": 17,
+      "components": 19,
+      "componentSets": 18,
       "naiveAllOptions": {
         "avatar": 8,
         "badge:Badge": 20,
@@ -32158,6 +32321,7 @@
         "button": 27648,
         "heading": 156,
         "kbd": 4,
+        "link": 2,
         "tag": 20,
         "text": 288
       },
@@ -32168,6 +32332,7 @@
         "button": 2304,
         "heading": 13,
         "kbd": 4,
+        "link": 2,
         "tag": 10,
         "text": 48
       },
@@ -32239,13 +32404,17 @@
         {
           "set": "heading",
           "variants": 13
+        },
+        {
+          "set": "link",
+          "variants": 6
         }
       ],
-      "variantsTotal": 2028
+      "variantsTotal": 2034
     }
   },
   "schemaVersion": 1,
-  "sourceHash": "4478ddc56f442c12",
+  "sourceHash": "b9881818a3aae2ce",
   "stage": {
     "background": {
       "variable": "--color-bg-surface"
@@ -32996,6 +33165,33 @@
         },
         "width": {
           "variable": "avatar:size:e021220bb1"
+        }
+      },
+      "7cbbf436c588fa22": {
+        "clipsContent": false,
+        "crossAlign": "MIN",
+        "direction": "HORIZONTAL",
+        "mainAlign": "MIN",
+        "padding": {
+          "bottom": {
+            "expression": "0",
+            "value": 0
+          },
+          "left": {
+            "expression": "0",
+            "value": 0
+          },
+          "right": {
+            "expression": "0",
+            "value": 0
+          },
+          "top": {
+            "expression": "0",
+            "value": 0
+          }
+        },
+        "radius": {
+          "variable": "--radius-control"
         }
       },
       "80710812d38ee0b3": {
@@ -34016,6 +34212,46 @@
           "visibleProperty": "post"
         }
       ],
+      "09d23a5ba1577fe3": [
+        {
+          "fills": [
+            {
+              "color": {
+                "variable": "typography:state-layer:9652c98e0a"
+              },
+              "type": "SOLID"
+            }
+          ],
+          "kind": "overlay",
+          "slot": "state layer"
+        },
+        {
+          "kind": "text",
+          "slot": "children",
+          "text": {
+            "fill": {
+              "color": {
+                "variable": "--color-text-primary"
+              },
+              "type": "SOLID"
+            },
+            "fontFamily": {
+              "variable": "--font-family-body"
+            },
+            "fontSize": {
+              "expression": "16px",
+              "value": 16
+            },
+            "fontWeight": {
+              "expression": "400",
+              "value": 400
+            },
+            "lineHeight": "auto",
+            "underline": true
+          },
+          "textProperty": "children"
+        }
+      ],
       "09d9180059dea135": [
         {
           "kind": "text",
@@ -34158,6 +34394,46 @@
               "variable": "--font-weight-label"
             },
             "lineHeight": 150
+          },
+          "textProperty": "children"
+        }
+      ],
+      "0b71eee9ac92d9d3": [
+        {
+          "fills": [
+            {
+              "color": {
+                "variable": "typography:state-layer:af9eda8930"
+              },
+              "type": "SOLID"
+            }
+          ],
+          "kind": "overlay",
+          "slot": "state layer"
+        },
+        {
+          "kind": "text",
+          "slot": "children",
+          "text": {
+            "fill": {
+              "color": {
+                "variable": "--color-text-link"
+              },
+              "type": "SOLID"
+            },
+            "fontFamily": {
+              "variable": "--font-family-body"
+            },
+            "fontSize": {
+              "expression": "16px",
+              "value": 16
+            },
+            "fontWeight": {
+              "expression": "400",
+              "value": 400
+            },
+            "lineHeight": "auto",
+            "underline": true
           },
           "textProperty": "children"
         }
@@ -35736,6 +36012,65 @@
           "visibleProperty": "post"
         }
       ],
+      "2e67421f3b36e875": [
+        {
+          "fills": [
+            {
+              "color": {
+                "variable": "typography:state-layer:bfba8c3497"
+              },
+              "type": "SOLID"
+            }
+          ],
+          "kind": "overlay",
+          "slot": "state layer"
+        },
+        {
+          "kind": "text",
+          "slot": "children",
+          "text": {
+            "fill": {
+              "color": {
+                "variable": "--color-text-primary"
+              },
+              "type": "SOLID"
+            },
+            "fontFamily": {
+              "variable": "--font-family-body"
+            },
+            "fontSize": {
+              "expression": "16px",
+              "value": 16
+            },
+            "fontWeight": {
+              "expression": "400",
+              "value": 400
+            },
+            "lineHeight": "auto",
+            "underline": true
+          },
+          "textProperty": "children"
+        },
+        {
+          "color": {
+            "color": {
+              "variable": "--focus-ring-color"
+            },
+            "type": "SOLID"
+          },
+          "kind": "ring",
+          "offset": {
+            "variable": "--focus-ring-offset"
+          },
+          "radius": {
+            "variable": "typography:outline-radius:9325831be9"
+          },
+          "slot": "focus ring",
+          "width": {
+            "variable": "--focus-ring-width"
+          }
+        }
+      ],
       "2ebf99888ba88f36": [
         {
           "fills": [
@@ -35965,6 +36300,46 @@
           "kind": "icon",
           "slot": "post",
           "visibleProperty": "post"
+        }
+      ],
+      "33ef2bc59b6e1f9d": [
+        {
+          "fills": [
+            {
+              "color": {
+                "variable": "typography:state-layer:a8bbbce668"
+              },
+              "type": "SOLID"
+            }
+          ],
+          "kind": "overlay",
+          "slot": "state layer"
+        },
+        {
+          "kind": "text",
+          "slot": "children",
+          "text": {
+            "fill": {
+              "color": {
+                "variable": "--color-text-primary"
+              },
+              "type": "SOLID"
+            },
+            "fontFamily": {
+              "variable": "--font-family-body"
+            },
+            "fontSize": {
+              "expression": "16px",
+              "value": 16
+            },
+            "fontWeight": {
+              "expression": "400",
+              "value": 400
+            },
+            "lineHeight": "auto",
+            "underline": true
+          },
+          "textProperty": "children"
         }
       ],
       "353b3acb89cc3701": [
@@ -41534,6 +41909,46 @@
           "visibleProperty": "post"
         }
       ],
+      "a9f9611ec1eb6379": [
+        {
+          "fills": [
+            {
+              "color": {
+                "variable": "typography:state-layer:7704f60a48"
+              },
+              "type": "SOLID"
+            }
+          ],
+          "kind": "overlay",
+          "slot": "state layer"
+        },
+        {
+          "kind": "text",
+          "slot": "children",
+          "text": {
+            "fill": {
+              "color": {
+                "variable": "--color-text-link"
+              },
+              "type": "SOLID"
+            },
+            "fontFamily": {
+              "variable": "--font-family-body"
+            },
+            "fontSize": {
+              "expression": "16px",
+              "value": 16
+            },
+            "fontWeight": {
+              "expression": "400",
+              "value": 400
+            },
+            "lineHeight": "auto",
+            "underline": true
+          },
+          "textProperty": "children"
+        }
+      ],
       "aa61e33c42a15252": [
         {
           "kind": "text",
@@ -42470,6 +42885,65 @@
           "kind": "icon",
           "slot": "post",
           "visibleProperty": "post"
+        }
+      ],
+      "c1e95ed0918aac8d": [
+        {
+          "fills": [
+            {
+              "color": {
+                "variable": "typography:state-layer:76b20c89fb"
+              },
+              "type": "SOLID"
+            }
+          ],
+          "kind": "overlay",
+          "slot": "state layer"
+        },
+        {
+          "kind": "text",
+          "slot": "children",
+          "text": {
+            "fill": {
+              "color": {
+                "variable": "--color-text-link"
+              },
+              "type": "SOLID"
+            },
+            "fontFamily": {
+              "variable": "--font-family-body"
+            },
+            "fontSize": {
+              "expression": "16px",
+              "value": 16
+            },
+            "fontWeight": {
+              "expression": "400",
+              "value": 400
+            },
+            "lineHeight": "auto",
+            "underline": true
+          },
+          "textProperty": "children"
+        },
+        {
+          "color": {
+            "color": {
+              "variable": "--focus-ring-color"
+            },
+            "type": "SOLID"
+          },
+          "kind": "ring",
+          "offset": {
+            "variable": "--focus-ring-offset"
+          },
+          "radius": {
+            "variable": "typography:outline-radius:9325831be9"
+          },
+          "slot": "focus ring",
+          "width": {
+            "variable": "--focus-ring-width"
+          }
         }
       ],
       "c288c90213ccc9e9": [
@@ -59132,6 +59606,220 @@
         "light": {
           "kind": "literal",
           "value": 2
+        }
+      }
+    },
+    {
+      "codeSyntax": "",
+      "collection": "component",
+      "expression": "calc(var(--radius-control) + var(--focus-ring-offset))",
+      "id": "typography:outline-radius:9325831be9",
+      "name": "typography/outline-radius/focus",
+      "source": {
+        "dark": "evaluated",
+        "light": "evaluated"
+      },
+      "type": "FLOAT",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": 10
+        },
+        "light": {
+          "kind": "literal",
+          "value": 10
+        }
+      }
+    },
+    {
+      "codeSyntax": "",
+      "collection": "component",
+      "expression": "color-mix( in srgb, var(--color-text-link) calc(var(--state-layer-focus-opacity) * 100%), transparent )",
+      "id": "typography:state-layer:76b20c89fb",
+      "name": "typography/state-layer/accent/focus",
+      "source": {
+        "dark": "evaluated",
+        "light": "evaluated"
+      },
+      "type": "COLOR",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": {
+            "a": 0.16,
+            "b": 1,
+            "g": 0.6356,
+            "r": 0.3158
+          }
+        },
+        "light": {
+          "kind": "literal",
+          "value": {
+            "a": 0.16,
+            "b": 0.9018,
+            "g": 0.2791,
+            "r": 0.0779
+          }
+        }
+      }
+    },
+    {
+      "codeSyntax": "",
+      "collection": "component",
+      "expression": "color-mix( in srgb, var(--color-text-link) calc(var(--state-layer-hover-opacity) * 100%), transparent )",
+      "id": "typography:state-layer:7704f60a48",
+      "name": "typography/state-layer/accent/hover",
+      "source": {
+        "dark": "evaluated",
+        "light": "evaluated"
+      },
+      "type": "COLOR",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": {
+            "a": 0.12,
+            "b": 1,
+            "g": 0.6356,
+            "r": 0.3158
+          }
+        },
+        "light": {
+          "kind": "literal",
+          "value": {
+            "a": 0.12,
+            "b": 0.9018,
+            "g": 0.2791,
+            "r": 0.0779
+          }
+        }
+      }
+    },
+    {
+      "codeSyntax": "",
+      "collection": "component",
+      "expression": "color-mix( in srgb, var(--color-text-link) calc(0 * 100%), transparent )",
+      "id": "typography:state-layer:af9eda8930",
+      "name": "typography/state-layer/accent/rest",
+      "source": {
+        "dark": "evaluated",
+        "light": "evaluated"
+      },
+      "type": "COLOR",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": {
+            "a": 0,
+            "b": 0,
+            "g": 0,
+            "r": 0
+          }
+        },
+        "light": {
+          "kind": "literal",
+          "value": {
+            "a": 0,
+            "b": 0,
+            "g": 0,
+            "r": 0
+          }
+        }
+      }
+    },
+    {
+      "codeSyntax": "",
+      "collection": "component",
+      "expression": "color-mix( in srgb, var(--color-text-primary) calc(var(--state-layer-focus-opacity) * 100%), transparent )",
+      "id": "typography:state-layer:bfba8c3497",
+      "name": "typography/state-layer/neutral/focus",
+      "source": {
+        "dark": "evaluated",
+        "light": "evaluated"
+      },
+      "type": "COLOR",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": {
+            "a": 0.16,
+            "b": 0.9579,
+            "g": 0.9609,
+            "r": 0.9609
+          }
+        },
+        "light": {
+          "kind": "literal",
+          "value": {
+            "a": 0.16,
+            "b": 0.0903,
+            "g": 0.098,
+            "r": 0.1095
+          }
+        }
+      }
+    },
+    {
+      "codeSyntax": "",
+      "collection": "component",
+      "expression": "color-mix( in srgb, var(--color-text-primary) calc(var(--state-layer-hover-opacity) * 100%), transparent )",
+      "id": "typography:state-layer:9652c98e0a",
+      "name": "typography/state-layer/neutral/hover",
+      "source": {
+        "dark": "evaluated",
+        "light": "evaluated"
+      },
+      "type": "COLOR",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": {
+            "a": 0.12,
+            "b": 0.9579,
+            "g": 0.9609,
+            "r": 0.9609
+          }
+        },
+        "light": {
+          "kind": "literal",
+          "value": {
+            "a": 0.12,
+            "b": 0.0903,
+            "g": 0.098,
+            "r": 0.1095
+          }
+        }
+      }
+    },
+    {
+      "codeSyntax": "",
+      "collection": "component",
+      "expression": "color-mix( in srgb, var(--color-text-primary) calc(0 * 100%), transparent )",
+      "id": "typography:state-layer:a8bbbce668",
+      "name": "typography/state-layer/neutral/rest",
+      "source": {
+        "dark": "evaluated",
+        "light": "evaluated"
+      },
+      "type": "COLOR",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": {
+            "a": 0,
+            "b": 0,
+            "g": 0,
+            "r": 0
+          }
+        },
+        "light": {
+          "kind": "literal",
+          "value": {
+            "a": 0,
+            "b": 0,
+            "g": 0,
+            "r": 0
+          }
         }
       }
     },
