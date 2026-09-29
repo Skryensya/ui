@@ -116,7 +116,7 @@ export type Layer =
   /** A pseudo-element with paint (the state layer): covers the host, under its content, same corners. */
   | { kind: "overlay"; slot: string; fills: Paint[] }
   /** An outline: a stroke `width` wide drawn `offset` outside the host, following its corners. */
-  | { kind: "ring"; slot: string; width: Bound<number>; offset: Bound<number>; color: Paint };
+  | { kind: "ring"; slot: string; width: Bound<number>; offset: Bound<number>; radius: Bound<number>; color: Paint };
 
 export type ComponentProperty =
   | { name: string; type: "TEXT"; default: string }

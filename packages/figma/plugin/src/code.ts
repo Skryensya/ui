@@ -806,8 +806,10 @@ function applyCover(ctx: SetCtx, host: ComponentNode, rect: RectangleNode, layer
     rect.strokes = [toPaint(ctx, layer.color)];
     rect.strokeAlign = "OUTSIDE";
     setNumber(ctx, rect, "strokeWeight", layer.width);
-    // An outline's corners follow the border's, grown by the offset: a sum no variable holds.
-    rect.cornerRadius = (box.radius ? Number(valueOf(box.radius)) : 0) + offset;
+    // The border's corners grown by the offset, bound: a radius token change reaches the ring too.
+    for (const corner of ["topLeftRadius", "topRightRadius", "bottomLeftRadius", "bottomRightRadius"] as const) {
+      setNumber(ctx, rect, corner, layer.radius, 0);
+    }
   }
 }
 

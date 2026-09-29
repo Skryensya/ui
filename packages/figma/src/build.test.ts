@@ -174,6 +174,9 @@ describe("interaction states", () => {
     if (focused?.kind !== "ring") throw new Error("no ring");
     expect(focused.offset).toEqual({ variable: "--focus-ring-offset" });
     expect(focused.width).toEqual({ variable: "--focus-ring-width" });
+    // Its corners are a variable too, so a radius token change reaches the ring.
+    const radius = "variable" in focused.radius ? variable(focused.radius.variable) : undefined;
+    expect(radius?.expression).toMatch(/--radius-control.*--focus-ring-offset|--focus-ring-offset.*--radius-control/);
     expect(manifest.styles.boxes[cell("focus").box].clipsContent).toBe(false);
   });
 
