@@ -10,10 +10,13 @@ import { useEffect, useState } from "react";
 import { SegmentedControl } from "@skryensya/react/segmented";
 import type { UsageTree } from "@skryensya/core/usage-tree";
 import { useRenderedTree } from "./use-rendered-tree";
+import { withOptionAt, type TreePath } from "./usage-tree-path";
 
 export interface PropertyPlaygroundProps {
   tree: UsageTree;
   optionName: string;
+  /** Where the option lives, when it is not on the root (`usage-tree-path.ts`). */
+  target?: TreePath;
   /** The option's values as strings; a boolean option arrives as `["false", "true"]`. */
   values: readonly string[];
   /** Whether the option is a boolean, so the chosen string goes into the tree as `true`/`false`. */
@@ -26,7 +29,7 @@ export interface PropertyPlaygroundProps {
   explain?: Partial<Record<string, string>>;
 }
 
-export function PropertyPlayground({ tree, optionName, values, boolean, defaultValue, labels, controlLabel, explain }: PropertyPlaygroundProps) {
+export function PropertyPlayground({ tree, optionName, target = [], values, boolean, defaultValue, labels, controlLabel, explain }: PropertyPlaygroundProps) {
   const [value, setValue] = useState(defaultValue);
   const render = useRenderedTree(tree);
   /*
@@ -40,7 +43,7 @@ export function PropertyPlayground({ tree, optionName, values, boolean, defaultV
   const [hydrated, setHydrated] = useState(false);
   useEffect(() => setHydrated(true), []);
 
-  const liveTree: UsageTree = { ...tree, options: { ...tree.options, [optionName]: boolean ? value === "true" : value } };
+  const liveTree: UsageTree = withOptionAt(tree, target, optionName, boolean ? value === "true" : value);
   const explanation = explain?.[value];
 
   return (

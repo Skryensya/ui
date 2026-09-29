@@ -18,6 +18,7 @@ import { signatureOptions } from "@skryensya/core/contract";
 import type { UsageTree } from "@skryensya/core/usage-tree";
 import { ExampleStage } from "./react-demos/example-stage";
 import { PropertyPlayground } from "./react-demos/property-playground";
+import { nodeAt, type TreePath } from "./react-demos/usage-tree-path";
 import { iconMarkup } from "../icons";
 import { storybookDocsUrl, storybookReactUrl } from "../lib/navigation";
 import { getLocale, useTranslations } from "../i18n";
@@ -28,6 +29,8 @@ interface Props {
   tree: UsageTree;
   /** The one option this preview varies: an enum, or a boolean (played as its two values). Omit for a fixed example. */
   optionName?: string;
+  /** Where `optionName` lives when it is not on the root: a path of keys and indices (`usage-tree-path.ts`). */
+  target?: TreePath;
   /** The preview's heading. Omit it when the page already titled this example. */
   title?: string;
   /** What the preview shows, above the card. Trusted HTML from the page's messages. */
@@ -45,7 +48,7 @@ interface Props {
   storybookStory?: string;
 }
 
-const { tree, optionName, title, description, caption, explain, labels, stageMinBlockSize, storybookTitle, storybookStory } = Astro.props;
+const { tree, optionName, target = [], title, description, caption, explain, labels, stageMinBlockSize, storybookTitle, storybookStory } = Astro.props;
 const t = useTranslations(getLocale(Astro.url));
 
 let values: readonly string[] = [];
@@ -53,20 +56,22 @@ let defaultValue = "";
 let segmentLabels: Record<string, string> = {};
 let isBoolean = false;
 if (optionName) {
-  const contract = getContract(tree.contract);
-  if (!contract) throw new Error(`UsagePreview: no contract "${tree.contract}".`);
-  const signature = getSignature(contract, tree.signature);
-  if (!signature) throw new Error(`UsagePreview: no signature "${tree.signature}" on "${tree.contract}".`);
+  const node = nodeAt(tree, target);
+  if (!node) throw new Error(`UsagePreview: the target path ${JSON.stringify(target)} leaves the tree.`);
+  const contract = getContract(node.contract);
+  if (!contract) throw new Error(`UsagePreview: no contract "${node.contract}".`);
+  const signature = getSignature(contract, node.signature);
+  if (!signature) throw new Error(`UsagePreview: no signature "${node.signature}" on "${node.contract}".`);
 
   const found = signatureOptions(contract, signature).find(([name]) => name === optionName);
-  if (!found) throw new Error(`UsagePreview: "${tree.signature}" declares no option "${optionName}".`);
+  if (!found) throw new Error(`UsagePreview: "${node.signature}" declares no option "${optionName}".`);
   const [, option] = found;
   isBoolean = option.type === "boolean";
   if (!isBoolean && (option.type !== "enum" || !option.values)) {
     throw new Error(`UsagePreview: "${optionName}" is a "${option.type}" option, neither an enum nor a boolean.`);
   }
   values = isBoolean ? ["false", "true"] : option.values!;
-  defaultValue = String(tree.options?.[optionName] ?? option.default ?? values[0]);
+  defaultValue = String(node.options?.[optionName] ?? option.default ?? values[0]);
   segmentLabels = Object.fromEntries(values.map((value) => [value, labels?.[value] ?? value.charAt(0).toUpperCase() + value.slice(1)]));
 }
 
@@ -92,6 +97,7 @@ const id = title ? `usage-${title.toLowerCase().replace(/[^a-z0-9]+/g, "-")}` : 
           client:visible
           tree={tree}
           optionName={optionName}
+          target={target}
           values={values}
           boolean={isBoolean}
           defaultValue={defaultValue}
