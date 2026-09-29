@@ -11,8 +11,8 @@
  *     values are evaluated per mode and it still says which tokens it mixes.
  *   - it never touched a var                     → a literal, with the CSS it came from.
  *
- * Tokens become variables here and only here, on first use, which is what makes the variable set
- * exactly the tokens Button reaches rather than the catalogue's 1,900.
+ * Tokens become variables here, on first use by a component, and then the rest of the catalogue that
+ * Figma can hold (`catalogue`): a file carries every token, not only the ones its components reach.
  */
 
 import { createHash } from "node:crypto";
@@ -74,7 +74,7 @@ const isLiteralText = (kind: Kind, text: string) =>
 /** A cell's identity, for naming the component variables it produces. */
 export type CellProps = Record<string, string>;
 
-type Derived = { base: string; expression: string; kind: Kind; hook: string | undefined; cells: CellProps[] };
+type Derived = { component: string; base: string; expression: string; kind: Kind; hook: string | undefined; cells: CellProps[] };
 
 export class Registry {
   readonly variables = new Map<string, Variable>();
@@ -86,7 +86,6 @@ export class Registry {
     /** What :root declares: the token graph. */
     readonly root: ReadonlyMap<string, string>,
     readonly tierOf: (name: string) => "primitive" | "semantic" | undefined,
-    readonly componentName: string,
   ) {}
 
   /** :root lookup that remembers every token the component reached, bound or inlined. */
@@ -144,21 +143,47 @@ export class Registry {
     return name;
   }
 
+  /**
+   * The kind a token is as a Figma variable, or `undefined` when it is none of them (a shadow list, an
+   * easing curve, a percentage): its light value, fully substituted, read as a colour, then a number.
+   * A font stack is a string. Reads :root without counting the token as reached by a component.
+   */
+  kindOf(name: string): Kind | undefined {
+    const raw = this.root.get(name);
+    if (raw === undefined) return undefined;
+    if (/font-family/.test(name)) return "string";
+    try {
+      const text = substitute(pickMode(raw, "light").trim(), (n) => this.root.get(n));
+      for (const kind of ["color", "number"] as const) {
+        try {
+          evaluateAs(kind, text, "light");
+          return kind;
+        } catch {
+          // Not this kind: try the next.
+        }
+      }
+    } catch {
+      // A value that does not even substitute (a reference to a component hook) is no variable.
+    }
+    return undefined;
+  }
+
   /** A component variable for a formula a hook holds; named once every cell has been seen. */
-  derive(base: string, expression: string, kind: Kind, cell: CellProps, hook: string | undefined): string {
+  derive(component: string, base: string, expression: string, kind: Kind, cell: CellProps, hook: string | undefined): string {
     // Short and stable: the formula decides the identity, and the variable carries it in full.
-    const id = `${this.componentName}:${base}:${createHash("sha256").update(expression).digest("hex").slice(0, 10)}`;
-    const entry = this.derived.get(id) ?? { base, expression, kind, hook, cells: [] };
+    const id = `${component}:${base}:${createHash("sha256").update(expression).digest("hex").slice(0, 10)}`;
+    const entry = this.derived.get(id) ?? { component, base, expression, kind, hook, cells: [] };
     entry.cells.push(cell);
     this.derived.set(id, entry);
     return id;
   }
 
   /**
-   * Evaluate and name every component variable. The name is the hook plus the cell values every
-   * cell holding that value agrees on: `bg/soft/danger/rest`, not an index nobody can read.
+   * Evaluate and name every component variable. The name is the component, the hook, and the cell
+   * values every cell holding that value agrees on: `button/bg/soft/danger/rest`, not an index
+   * nobody can read. Each component names its cells along its own axes.
    */
-  finalize(axisOrder: readonly string[]) {
+  finalize(axisOrders: Readonly<Record<string, readonly string[]>>) {
     const taken = new Set<string>();
     for (const [id, entry] of [...this.derived].sort(([a], [b]) => a.localeCompare(b))) {
       const values = {} as Record<Mode, VariableValue>;
@@ -174,15 +199,16 @@ export class Registry {
         this.diagnose({ severity: "warning", code: "DERIVED_UNSUPPORTED", subject: entry.base, message: `${entry.expression} → ${error.message}` });
         continue;
       }
-      const shared = axisOrder.filter((axis) => {
+      const shared = (axisOrders[entry.component] ?? []).filter((axis) => {
         const first = entry.cells[0][axis];
         return first !== undefined && entry.cells.every((c) => c[axis] === first);
       });
       // A boolean axis reads as its name (`iconOnly`), not as a bare `true`.
       const word = (axis: string, value: string) => (value === "true" ? axis : value === "false" ? `no-${axis}` : value);
       const tail = shared.map((axis) => word(axis, entry.cells[0][axis])).join("/");
-      let name = tail ? `${entry.base}/${tail}` : entry.base;
-      for (let n = 2; taken.has(name); n++) name = `${tail ? `${entry.base}/${tail}` : entry.base}-${n}`;
+      const stem = `${entry.component}/${entry.base}`;
+      let name = tail ? `${stem}/${tail}` : stem;
+      for (let n = 2; taken.has(name); n++) name = `${tail ? `${stem}/${tail}` : stem}-${n}`;
       taken.add(name);
       this.variables.set(id, {
         id,
@@ -211,9 +237,19 @@ export type Context = {
   cell: CellProps;
   /** Strips the component's hook prefix for naming: `--sk-button-bg` → `bg`. */
   hookPrefix: string;
+  /** The contract whose component variables this element's formulas become. */
+  component: string;
+  /**
+   * What an inherited property is when the component's own sheets never set it: the page's, which
+   * the realization's stage names (a Badge takes its font from the page it sits on).
+   */
+  inherited?: Readonly<Record<string, string>>;
 };
 
 const lookupIn = (ctx: Context): Lookup => (name) => ctx.computed.get(name) ?? ctx.registry.rootLookup(name);
+
+/** A property's value with every var() substituted, in `light` mode: for a field Figma holds as a plain value. */
+export const substituted = (text: string, ctx: Context): string => pickMode(substitute(text, lookupIn(ctx)), "light").trim();
 
 /** Replace `currentColor` with the element's own `color`, as the browser's used value does. */
 function withCurrentColor(text: string, ctx: Context): string {
@@ -309,7 +345,7 @@ export function resolve(text: string, kind: Kind, ctx: Context, role: string): B
       const base = hook ? hookBase(hook, ctx) : role;
       // Validate now, so a field never points at a variable that will not exist.
       for (const mode of MODES) evaluateAs(kind, substitute(expression, ctx.registry.rootLookup), mode);
-      return { variable: ctx.registry.derive(base, expression, kind, ctx.cell, hook) };
+      return { variable: ctx.registry.derive(ctx.component, base, expression, kind, ctx.cell, hook) };
     }
     return { value: evaluateAs(kind, current, "light"), expression: current };
   } catch (error) {

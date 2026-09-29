@@ -110,13 +110,35 @@ function mounted(markup: string, iconContract: ComponentContract): string {
 
 /* ── the compiler ───────────────────────────────────────────────────────────────────────────── */
 
-export async function buildFigmaManifest(realization: Realization): Promise<FigmaManifest> {
-  const contract = getContract(realization.contract);
+/** What every realization in one manifest shares: the token graph, its variables, the styles table. */
+type Shared = {
+  corpus: ReturnType<typeof parseTokens>;
+  registry: Registry;
+  styles: Styles;
+  diagnostics: Diagnostic[];
+  iconContract: ComponentContract;
+};
+
+/** One realization's component sets, and what the manifest's report says about them. */
+type Compiled = {
+  sets: ComponentSet[];
+  /** The axes its component variables are named along, outermost first. */
+  axisOrder: string[];
+  options: { visual: string[]; nonVisual: string[]; excluded: string[] };
+  naive: { allOptions: number; visualOptions: number };
+};
+
+/**
+ * The manifest for every realization at once: one token graph and one set of variables they all
+ * bind, one Icon set, and each contract's component sets after the last. Then every token of the
+ * catalogue Figma can hold, whether a component reached it or not.
+ */
+export async function buildFigmaManifest(input: Realization | readonly Realization[]): Promise<FigmaManifest> {
+  const realizations: readonly Realization[] = Array.isArray(input) ? input : [input as Realization];
+  const [first] = realizations;
+  if (!first) throw new Error("no realization to build");
   const iconContract = getContract("icon");
-  if (!contract || !iconContract) throw new Error(`unknown contract ${realization.contract}`);
-  const signature = contract.signatures[realization.signature];
-  if (!signature) throw new Error(`unknown signature ${realization.signature}`);
-  const iconName = (iconContract.options.name as { values: readonly string[] }).values[0];
+  if (!iconContract) throw new Error("unknown contract icon");
 
   const corpus = parseTokens();
   const root = new Map<string, string>();
@@ -127,6 +149,106 @@ export async function buildFigmaManifest(realization: Realization): Promise<Figm
     tierOf.set(token.name, token.tier);
   }
   for (const [name, value] of Object.entries(CONTEXT_OVERRIDES)) root.set(name, value);
+
+  const registry = new Registry(root, (name) => tierOf.get(name));
+  const shared: Shared = { corpus, registry, styles: { boxes: {}, surfaces: {}, layers: {} }, diagnostics: [], iconContract };
+  const stage = stageOf(first, corpus.files, registry);
+
+  const compiled: Compiled[] = [];
+  for (const realization of realizations) compiled.push(await compileRealization(realization, shared));
+  const sets = compiled.flatMap((c) => c.sets);
+  const icon = await iconSetOf(first, iconContract);
+
+  // What the components reach, counted before the rest of the catalogue is added.
+  const reached = new Set(registry.reached);
+  const reachedVariables = new Set(registry.variables.keys());
+  const catalogue = { added: 0, notAVariable: [] as string[] };
+  for (const name of [...tierOf.keys()].sort()) {
+    if (registry.variables.has(name)) continue;
+    const kind = registry.kindOf(name);
+    if (kind && registry.token(name, kind)) catalogue.added++;
+    else catalogue.notAVariable.push(name);
+  }
+  if (catalogue.notAVariable.length) {
+    shared.diagnostics.push({
+      severity: "info",
+      code: "TOKEN_NOT_A_VARIABLE",
+      subject: `${catalogue.notAVariable.length} tokens`,
+      message: `no Figma variable type holds them (shadows, easings, percentages, keywords): ${catalogue.notAVariable.join(", ")}`,
+    });
+  }
+
+  registry.finalize(Object.fromEntries(realizations.map((r, i) => [r.contract, compiled[i].axisOrder])));
+  // A field bound to a component variable that failed to evaluate would point at nothing.
+  const dead = [...registry.diagnostics].filter((d) => d.code === "DERIVED_UNSUPPORTED");
+  if (dead.length) throw new Error(`component variables failed to evaluate:\n${dead.map((d) => d.message).join("\n")}`);
+
+  const variables = [...registry.variables.values()].sort((a, b) =>
+    a.collection === b.collection ? a.name.localeCompare(b.name) : a.collection.localeCompare(b.collection),
+  );
+  const allDiagnostics = [...registry.diagnostics, ...shared.diagnostics].sort((a, b) =>
+    a.code === b.code ? a.subject.localeCompare(b.subject) || a.message.localeCompare(b.message) : a.code.localeCompare(b.code),
+  );
+
+  const bySource = { alias: 0, literal: 0, evaluated: 0 };
+  for (const v of variables) for (const s of Object.values(v.source)) bySource[s]++;
+  const report = {
+    options: Object.fromEntries(realizations.map((r, i) => [r.contract, compiled[i].options])),
+    variants: {
+      naiveAllOptions: Object.fromEntries(realizations.map((r, i) => [r.contract, compiled[i].naive.allOptions])),
+      naiveVisualOptions: Object.fromEntries(realizations.map((r, i) => [r.contract, compiled[i].naive.visualOptions])),
+      componentSets: sets.length,
+      variantsPerSet: sets.map((s) => ({ set: s.id, variants: s.cells.length })),
+      variantsTotal: sets.reduce((n, s) => n + s.cells.length, 0),
+      components: sets.length + 1,
+    },
+    tokens: {
+      reached: reached.size,
+      reachedAsVariables: [...reachedVariables].filter((id) => variables.some((v) => v.id === id && v.collection !== "component")).length,
+      catalogueAdded: catalogue.added,
+      variables: variables.filter((v) => v.collection !== "component").length,
+      componentVariables: variables.filter((v) => v.collection === "component").length,
+      unsupported: allDiagnostics.filter((d) => d.code === "TOKEN_UNSUPPORTED").length,
+      modeValuesBySource: bySource,
+      reachedButNotVariables: [...reached].filter((n) => !registry.variables.has(n)).sort(),
+    },
+  };
+
+  const body = {
+    schemaVersion: SCHEMA_VERSION,
+    evaluationContext: {
+      modes: "light-dark() first branch is `light`, second is `dark`",
+      "--sk-density": root.get("--sk-density") ?? "",
+      "--radius-multiplier": root.get("--radius-multiplier") ?? "",
+      "--frost-on": "on (empty): backdrop-filter supported, no reduced-transparency preference",
+      rootFontSize: "16px",
+      state: "rest, plus the interaction states each realization draws (:hover, :focus-visible), simulated; :active never",
+      direction: "ltr",
+      conditions: "(any-hover: hover) holds; no other @media or @supports block does",
+    },
+    collections: [
+      { id: "primitives" as const, name: "Skryensya / Primitives", modes: FILE_MODES },
+      { id: "semantic" as const, name: "Skryensya / Semantic", modes: FILE_MODES },
+      { id: "component" as const, name: "Skryensya / Components", modes: FILE_MODES },
+    ],
+    variables,
+    pages: [PAGE],
+    stage,
+    components: [icon, ...sets],
+    styles: shared.styles,
+    diagnostics: allDiagnostics,
+    report,
+  };
+  return { ...body, sourceHash: hash(body) } as FigmaManifest;
+}
+
+async function compileRealization(realization: Realization, shared: Shared): Promise<Compiled> {
+  const { corpus, registry, styles, diagnostics, iconContract } = shared;
+  const contract = getContract(realization.contract);
+  if (!contract) throw new Error(`unknown contract ${realization.contract}`);
+  const signature = contract.signatures[realization.signature];
+  if (!signature) throw new Error(`unknown signature ${realization.signature}`);
+  const iconName = (iconContract.options.name as { values: readonly string[] }).values[0];
 
   // The contract's own sheets, as the tree emitter says a Button needs them; the base bundle first.
   const sample = treeFor(realization, { options: {}, icons: true, iconChildren: false }, iconName);
@@ -189,15 +311,15 @@ export async function buildFigmaManifest(realization: Realization): Promise<Figm
     name: realization.state.axis,
     values: [realization.state.rest, ...interactions.map((i) => i.name), ...stateOptions],
   };
+  // A component with no states (a Badge is never pressed) gets no state axis: `state=rest` alone
+  // would be a variant property with nothing to pick.
+  const hasStates = stateAxis.values.length > 1;
   // The state reads best between the enums and the remaining booleans.
   const firstBoolean = axes.findIndex((a) => contract.options[a.name].type === "boolean");
-  axes.splice(firstBoolean < 0 ? axes.length : firstBoolean, 0, stateAxis);
+  if (hasStates) axes.splice(firstBoolean < 0 ? axes.length : firstBoolean, 0, stateAxis);
 
   const iconWhen = Object.values(realization.slots).find((s) => s.holds === "text")?.iconWhen;
-  const registry = new Registry(root, (name) => tierOf.get(name), realization.contract);
   const hookPrefix = `--sk-${realization.contract}-`;
-  const diagnostics: Diagnostic[] = [];
-  const stage = stageOf(realization, corpus.files, registry);
 
   /* Every cell of every set. */
   const combos = (list: Axis[]): CellProps[] =>
@@ -213,7 +335,7 @@ export async function buildFigmaManifest(realization: Realization): Promise<Figm
   // Beside each row: its button at rest, with each optional icon slot switched on in turn.
   const showcase = {
     base: {
-      [realization.state.axis]: realization.state.rest,
+      ...(hasStates ? { [realization.state.axis]: realization.state.rest } : {}),
       ...(iconWhen ? { [iconWhen]: "false" } : {}),
     },
     columns: Object.entries(realization.slots)
@@ -234,7 +356,6 @@ export async function buildFigmaManifest(realization: Realization): Promise<Figm
   if (unplaced.length) throw new Error(`slots the template never places: ${unplaced.join(", ")}`);
 
   const sets: ComponentSet[] = [];
-  const styles: Styles = { boxes: {}, surfaces: {}, layers: {} };
   const intern = <T>(table: Record<string, T>, value: T) => {
     const id = hash(value);
     table[id] = value;
@@ -258,7 +379,8 @@ export async function buildFigmaManifest(realization: Realization): Promise<Figm
       const interaction = interactions.find((i) => i.name === props[stateAxis.name]);
       const { host, styles: cascaded, pseudo } = computeCell({ options, icons: true, iconChildren }, interaction ? [interaction.pseudo] : []);
       const cellProps: CellProps = { [realization.splitBy]: splitValue, ...props };
-      const ctxOf = (computed: Computed): Context => ({ computed, registry, cell: cellProps, hookPrefix });
+      const inherited = { "font-family": `var(${realization.stage.label.fontFamily})` };
+      const ctxOf = (computed: Computed): Context => ({ computed, registry, cell: cellProps, hookPrefix, component: realization.contract, inherited });
       const ctx = (el: Element): Context => ctxOf(cascaded.get(el)!);
 
       try {
@@ -339,76 +461,21 @@ export async function buildFigmaManifest(realization: Realization): Promise<Figm
 
 
 
-  const icon = await iconSetOf(realization, iconContract);
-  registry.finalize([realization.splitBy, ...axes.map((a) => a.name)]);
-  // A field bound to a component variable that failed to evaluate would point at nothing.
-  const dead = [...registry.diagnostics].filter((d) => d.code === "DERIVED_UNSUPPORTED");
-  if (dead.length) throw new Error(`component variables failed to evaluate:\n${dead.map((d) => d.message).join("\n")}`);
-
-
-  const variables = [...registry.variables.values()].sort((a, b) =>
-    a.collection === b.collection ? a.name.localeCompare(b.name) : a.collection.localeCompare(b.collection),
-  );
   for (const selector of [...unmatchable].sort()) {
-    diagnostics.push({ severity: "info", code: "SELECTOR_UNMATCHABLE", subject: selector, message: "jsdom cannot evaluate it; treated as not matching" });
+    diagnostics.push({ severity: "info", code: "SELECTOR_UNMATCHABLE", subject: `${realization.contract}: ${selector}`, message: "jsdom cannot evaluate it; treated as not matching" });
   }
   for (const block of rules.skipped) {
     diagnostics.push({ severity: "info", code: "CONDITION_SKIPPED", subject: `${block.sheet} ${block.condition}`, message: `${block.rules} rule(s) under a condition the evaluation context does not hold` });
   }
-  const allDiagnostics = [...registry.diagnostics, ...diagnostics].sort((a, b) =>
-    a.code === b.code ? a.subject.localeCompare(b.subject) || a.message.localeCompare(b.message) : a.code.localeCompare(b.code),
-  );
-
-  const naiveAll = signature.options.reduce((n, name) => n * stateCount(contract.options[name]), 1);
-  const naiveVisual = visual.reduce((n, name) => n * stateCount(contract.options[name]), 1);
-  const bySource = { alias: 0, literal: 0, evaluated: 0 };
-  for (const v of variables) for (const s of Object.values(v.source)) bySource[s]++;
-  const report = {
+  return {
+    sets,
+    axisOrder: [realization.splitBy, ...axes.map((a) => a.name)],
     options: { visual, nonVisual, excluded: [...realization.exclude] },
-    variants: {
-      naiveAllOptions: naiveAll,
-      naiveVisualOptions: naiveVisual,
-      componentSets: sets.length,
-      variantsPerSet: sets.map((s) => ({ set: s.id, variants: s.cells.length })),
-      variantsTotal: sets.reduce((n, s) => n + s.cells.length, 0),
-      components: sets.length + 1,
-    },
-    tokens: {
-      reached: registry.reached.size,
-      variables: variables.filter((v) => v.collection !== "component").length,
-      componentVariables: variables.filter((v) => v.collection === "component").length,
-      unsupported: allDiagnostics.filter((d) => d.code === "TOKEN_UNSUPPORTED").length,
-      modeValuesBySource: bySource,
-      reachedButNotVariables: [...registry.reached].filter((n) => !registry.variables.has(n)).sort(),
+    naive: {
+      allOptions: signature.options.reduce((n, name) => n * stateCount(contract.options[name]), 1),
+      visualOptions: visual.reduce((n, name) => n * stateCount(contract.options[name]), 1),
     },
   };
-
-  const body = {
-    schemaVersion: SCHEMA_VERSION,
-    evaluationContext: {
-      modes: "light-dark() first branch is `light`, second is `dark`",
-      "--sk-density": root.get("--sk-density") ?? "",
-      "--radius-multiplier": root.get("--radius-multiplier") ?? "",
-      "--frost-on": "on (empty): backdrop-filter supported, no reduced-transparency preference",
-      rootFontSize: "16px",
-      state: "rest, plus the interaction states the realization draws (:hover, :focus-visible), simulated; :active never",
-      direction: "ltr",
-      conditions: "(any-hover: hover) holds; no other @media or @supports block does",
-    },
-    collections: [
-      { id: "primitives" as const, name: "Skryensya / Primitives", modes: FILE_MODES },
-      { id: "semantic" as const, name: "Skryensya / Semantic", modes: FILE_MODES },
-      { id: "component" as const, name: `Skryensya / ${sets[0].name.split(" / ")[0]}`, modes: FILE_MODES },
-    ],
-    variables,
-    pages: [PAGE],
-    stage,
-    components: [icon, ...sets],
-    styles,
-    diagnostics: allDiagnostics,
-    report,
-  };
-  return { ...body, sourceHash: hash(body) } as FigmaManifest;
 }
 
 const titleOf = (id: string) => id.split("-").map((w) => w[0].toUpperCase() + w.slice(1)).join(" ");
@@ -423,7 +490,7 @@ function stageOf(realization: Realization, files: readonly { rel: string; css: s
   if (!file) throw new Error(`sheet ${contract.css} not in the token corpus`);
   const root = elementFrom(`<div class="${contract.parts.root}"></div>`);
   const computed = computeTree(root, readRules([{ name: rel, css: file.css }]), new Set()).styles.get(root)!;
-  const ctx: Context = { computed, registry, cell: {}, hookPrefix: `--sk-${contract.id}-` };
+  const ctx: Context = { computed, registry, cell: {}, hookPrefix: `--sk-${contract.id}-`, component: contract.id };
   const background = resolve(`var(${realization.stage.hook})`, "color", ctx, "stage");
   const token = (name: string, kind: "color" | "number" | "string") => {
     const id = registry.token(name, kind);

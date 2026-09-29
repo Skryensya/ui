@@ -487,13 +487,23 @@ const lineOf = (size: number) => Math.ceil(size * 1.4);
 const labelSize = () => Number(valueOf(manifest.stage.label.fontSize));
 const headingSize = () => Math.round(labelSize() * 1.5);
 
-/** The tallest variant of a set: each size's height, read from the manifest. */
+/**
+ * The tallest variant of a set, from the manifest: its height or min-height when it has one (a
+ * Button's control size), else, for a box that hugs its text (a Badge), the text's line box plus the
+ * padding and border around it, which is what auto layout will make it.
+ */
 const cellHeightOf = (spec: M.ComponentSet) =>
   Math.max(
     ...spec.cells.map((c) => {
       const box = manifest.styles.boxes[c.box];
       const h = box.height ?? box.minHeight;
-      return h ? Number(valueOf(h)) : 0;
+      if (h) return Number(valueOf(h));
+      const text = manifest.styles.layers[c.layers].find((l): l is Extract<M.Layer, { kind: "text" }> => l.kind === "text");
+      if (!text) return 0;
+      const line = (Number(valueOf(text.text.fontSize)) * text.text.lineHeight) / 100;
+      const padding = Number(valueOf(box.padding.top)) + Number(valueOf(box.padding.bottom));
+      const border = box.strokeWeight ? 2 * Number(valueOf(box.strokeWeight)) : 0;
+      return Math.ceil(line + padding + border);
     }),
   );
 
