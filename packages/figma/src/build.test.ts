@@ -140,6 +140,11 @@ describe("the Icon set", () => {
     expect(sets[0].showcase.columns.map((c) => c.slot)).toEqual(["pre", "post"]);
   });
 
+  it("orders a cell's layers as the contract's template places its slots", () => {
+    const slots = Object.values(manifest.styles.layers).map((layers) => layers.map((l) => l.slot).join(","));
+    expect(new Set(slots)).toEqual(new Set(["pre,children,post"]));
+  });
+
   it("names the icon a docs preview puts in a slot", () => {
     expect(manifest.specimen.find((e) => e.source === "buttonIconTree")?.icons).toEqual({ pre: "download" });
   });
