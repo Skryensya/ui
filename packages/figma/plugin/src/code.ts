@@ -1348,17 +1348,29 @@ function collectOrphans(run: Run, pages: PageNode[], found: Map<string, SceneNod
 }
 
 /** Stack each page's frames top to bottom, in manifest order. Writes only what moved. */
-function arrange(run: Run, pages: Map<string, PageNode>, found: Map<string, SceneNode>) {
+/**
+ * Stack each page's frames top to bottom, in manifest order, by what each one actually shows: its
+ * render bounds, so anything that overflows a frame pushes the next one down instead of under it.
+ * With `check`, report a frame whose height is not the one planned for it, or that overflows.
+ */
+function arrange(run: Run, pages: Map<string, PageNode>, found: Map<string, SceneNode>, check = false) {
   for (const [pageId, page] of pages) {
     let y = 0;
-    const ids = [
-      ...manifest.components.filter((c) => c.page === pageId).map((c) => `frame:${c.id}`),
-    ];
-    for (const id of ids) {
-      const node = found.get(id);
+    for (const spec of manifest.components.filter((c) => c.page === pageId)) {
+      const node = found.get(`frame:${spec.id}`) as FrameNode | undefined;
       if (!node || node.parent !== page) continue;
-      move(run, node, 0, y);
-      y += node.height + 160;
+      const bounds = node.absoluteRenderBounds ?? node.absoluteBoundingBox;
+      const top = node.absoluteTransform[1][2];
+      const above = bounds ? Math.max(0, top - bounds.y) : 0;
+      const shown = bounds ? Math.max(node.height, bounds.height) : node.height;
+      move(run, node, 0, Math.round(y + above));
+      y += Math.ceil(shown) + 160;
+      if (!check) continue;
+      const planned = plannedHeight(spec);
+      if (Math.abs(node.height - planned) > 1) run.log("WARN", `frame ${spec.name}`, `height ${Math.round(node.height)}, planned ${planned}`);
+      if (shown - node.height > 1 || above > 0) {
+        run.log("WARN", `frame ${spec.name}`, `content overflows it: ${Math.round(above)}px above, ${Math.round(shown - node.height - above)}px below`);
+      }
     }
     const orphans = page.children.find((n) => getTag(n, "id") === "orphans");
     if (orphans) move(run, orphans, 0, y);
@@ -1397,7 +1409,12 @@ async function reconcile(apply: boolean) {
   const icons = await syncIconSet(ctx, iconSpec, found, pages.get(iconSpec.page));
   // A dry run never draws a cell, so it walks the sets without the Icon set it would have made.
   const setCtx: SetCtx = { ...ctx, icons: icons as IconCtx };
-  for (const spec of setSpecs) await syncSet(setCtx, spec, found, pages.get(spec.page));
+  // Restacked after each frame fills, so a frame that came out taller never sits on the next one.
+  if (apply) arrange(run, pages, found);
+  for (const spec of setSpecs) {
+    await syncSet(setCtx, spec, found, pages.get(spec.page));
+    if (apply) arrange(run, pages, found);
+  }
   // The specimen is gone from the manifest. Its frame held only this plugin's own instances, so it goes too.
   const specimen = found.get("specimen");
   if (specimen) {
@@ -1406,7 +1423,7 @@ async function reconcile(apply: boolean) {
     found.delete("specimen");
   }
   collectOrphans(run, ownPages, found);
-  arrange(run, pages, found);
+  arrange(run, pages, found, apply);
 
   if (figma.root.getSharedPluginData(NS, "sourceHash") !== manifest.sourceHash) {
     run.write(() => figma.root.setSharedPluginData(NS, "sourceHash", manifest.sourceHash));
