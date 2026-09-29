@@ -19,3 +19,4 @@ export const Leading: StoryObj = treeStory(demos.listLeadingTree);
 export const Trailing: StoryObj = treeStory(demos.listTrailingTree);
 export const Links: StoryObj = treeStory(demos.listLinksTree);
 export const Full: StoryObj = treeStory(demos.listFullTree);
+export const DontParagraphs: StoryObj = treeStory(demos.listDontParagraphsTree);

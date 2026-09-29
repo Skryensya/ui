@@ -21,6 +21,7 @@ import "@skryensya/core/components/stat.css";
 import CodeBlock from "../CodeBlock.astro";
 import ComponentPageShell from "./ComponentPageShell.astro";
 import ComponentPreview from "../ComponentPreview.astro";
+import UsagePreview from "../UsagePreview.astro";
 import { cardCopy } from "../../examples/card-data";
 /* Every rung of the ladder is authored ONCE, as a tree: the markup, the React source and the live
    island all come out of the compiler, so a snippet on this page cannot describe a card the stage
@@ -87,30 +88,14 @@ const chartCardHtml = emitChartWithOverlay(chartAnalyticsCardTree(t), "area", vi
   <Fragment slot="usage">
     <p class="lede" set:html={t("cardPage.lede")} />
 
+    <h3>{t("cardPage.showcaseTitle")}</h3>
+    <p set:html={t("cardPage.showcaseBody")} />
+
     <div class="sk-callout" data-tone="info">
       <div class="sk-callout__content">
         <div class="sk-callout__description" set:html={t("cardPage.calloutBody")} />
       </div>
     </div>
-
-    <h3>{t("cardPage.chooseTitle")}</h3>
-    <p set:html={t("cardPage.chooseBody")} />
-    <div class="sk-table-scroll">
-      <table class="sk-table">
-        <thead class="sk-table__head">
-          <tr class="sk-table__row"><th class="sk-table__header">{t("cardPage.tableHeadSurface")}</th><th class="sk-table__header">{t("cardPage.tableHeadUses")}</th><th class="sk-table__header">{t("cardPage.tableHeadElement")}</th></tr>
-        </thead>
-        <tbody class="sk-table__body">
-          <tr class="sk-table__row"><td class="sk-table__cell">{t("cardPage.tableRow1Surface")}</td><td class="sk-table__cell"><a href={href("/components/box")}>Box</a></td><td set:html={t("cardPage.tableRow1Element")} class="sk-table__cell" /></tr>
-          <tr class="sk-table__row"><td class="sk-table__cell">{t("cardPage.tableRow2Surface")}</td><td class="sk-table__cell"><a href={href("/components/link")}>TileLink</a></td><td set:html={t("cardPage.tableRow2Element")} class="sk-table__cell" /></tr>
-          <tr class="sk-table__row"><td class="sk-table__cell">{t("cardPage.tableRow3Surface")}</td><td class="sk-table__cell"><a href={href("/components/button")}>TileButton</a></td><td set:html={t("cardPage.tableRow3Element")} class="sk-table__cell" /></tr>
-          <tr class="sk-table__row"><td class="sk-table__cell">{t("cardPage.tableRow4Surface")}</td><td class="sk-table__cell"><a href={href("/components/checkbox")}>TileCheckbox</a></td><td set:html={t("cardPage.tableRow4Element")} class="sk-table__cell" /></tr>
-          <tr class="sk-table__row"><td class="sk-table__cell">{t("cardPage.tableRow5Surface")}</td><td class="sk-table__cell"><a href={href("/components/radio-group")}>TileRadioGroup</a></td><td set:html={t("cardPage.tableRow5Element")} class="sk-table__cell" /></tr>
-          <tr class="sk-table__row"><td class="sk-table__cell">{t("cardPage.tableRow6Surface")}</td><td class="sk-table__cell"><a href={href("/components/accordion")}>Accordion</a></td><td set:html={t("cardPage.tableRow6Element")} class="sk-table__cell" /></tr>
-        </tbody>
-      </table>
-    </div>
-    <p set:html={t("cardPage.geometryBody")} />
 
     <h3 id="contenido">{t("cardPage.plainMediaTitle")}</h3>
     <p set:html={t("cardPage.plainMediaBody")} />
@@ -197,6 +182,28 @@ const chartCardHtml = emitChartWithOverlay(chartAnalyticsCardTree(t), "area", vi
 
     <h3>{t("cardPage.implTitle")}</h3>
     <p set:html={t("cardPage.implBody")} />
+  </Fragment>
+
+  <Fragment slot="guidelines">
+    <p class="lede" set:html={t("cardPage.guidelinesLede")} />
+    <h3>{t("cardPage.chooseTitle")}</h3>
+    <p set:html={t("cardPage.chooseBody")} />
+    <div class="sk-table-scroll">
+      <table class="sk-table">
+        <thead class="sk-table__head">
+          <tr class="sk-table__row"><th class="sk-table__header">{t("cardPage.tableHeadSurface")}</th><th class="sk-table__header">{t("cardPage.tableHeadUses")}</th><th class="sk-table__header">{t("cardPage.tableHeadElement")}</th></tr>
+        </thead>
+        <tbody class="sk-table__body">
+          <tr class="sk-table__row"><td class="sk-table__cell">{t("cardPage.tableRow1Surface")}</td><td class="sk-table__cell"><a href={href("/components/box")}>Box</a></td><td set:html={t("cardPage.tableRow1Element")} class="sk-table__cell" /></tr>
+          <tr class="sk-table__row"><td class="sk-table__cell">{t("cardPage.tableRow2Surface")}</td><td class="sk-table__cell"><a href={href("/components/link")}>TileLink</a></td><td set:html={t("cardPage.tableRow2Element")} class="sk-table__cell" /></tr>
+          <tr class="sk-table__row"><td class="sk-table__cell">{t("cardPage.tableRow3Surface")}</td><td class="sk-table__cell"><a href={href("/components/button")}>TileButton</a></td><td set:html={t("cardPage.tableRow3Element")} class="sk-table__cell" /></tr>
+          <tr class="sk-table__row"><td class="sk-table__cell">{t("cardPage.tableRow4Surface")}</td><td class="sk-table__cell"><a href={href("/components/checkbox")}>TileCheckbox</a></td><td set:html={t("cardPage.tableRow4Element")} class="sk-table__cell" /></tr>
+          <tr class="sk-table__row"><td class="sk-table__cell">{t("cardPage.tableRow5Surface")}</td><td class="sk-table__cell"><a href={href("/components/radio-group")}>TileRadioGroup</a></td><td set:html={t("cardPage.tableRow5Element")} class="sk-table__cell" /></tr>
+          <tr class="sk-table__row"><td class="sk-table__cell">{t("cardPage.tableRow6Surface")}</td><td class="sk-table__cell"><a href={href("/components/accordion")}>Accordion</a></td><td set:html={t("cardPage.tableRow6Element")} class="sk-table__cell" /></tr>
+        </tbody>
+      </table>
+    </div>
+    <p set:html={t("cardPage.geometryBody")} />
   </Fragment>
 
   <Fragment slot="install">

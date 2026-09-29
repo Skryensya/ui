@@ -6,6 +6,7 @@ import "@skryensya/core/components/annotation.css";
 import ComponentPageShell from "./ComponentPageShell.astro";
 import CodeBlock from "../CodeBlock.astro";
 import ComponentPreview from "../ComponentPreview.astro";
+import UsagePreview from "../UsagePreview.astro";
 import {
   toastActionTree,
   toastAnatomyCss,
@@ -104,20 +105,11 @@ await initComponents();`;
   styleGroups={[{ file: "components/toast.css", probe: "sk-toast" }]}
   testFiles={["packages/vanilla/src/components/toast.test.ts"]}}
 >
-  <Fragment slot="anatomy">
-    <p set:html={t("toastPage.anatomyBody")} />
-    <ComponentPreview
-      tree={toastAnatomyTree(t)}
-      css={toastAnatomyCss}
-      label={t("toastPage.anatomyPreviewLabel")}
-      screens={false}
-      hideSource
-      chrome={false}
-    />
-  </Fragment>
-
   <Fragment slot="usage">
     <p class="lede" set:html={t("toastPage.lede")} />
+
+    <h3>{t("toastPage.showcaseTitle")}</h3>
+    <p set:html={t("toastPage.showcaseBody")} />
     <h3>{t("toastPage.emitTitle")}</h3>
     <p set:html={t("toastPage.emitBody")} />
     <ComponentPreview
@@ -175,6 +167,27 @@ await initComponents();`;
     <CodeBlock code={vanilla} label="JavaScript" />
 
     <p set:html={t("toastPage.reactBody")} />
+
+    <h3>{t("component.anatomy")}</h3>
+    <p set:html={t("toastPage.anatomyBody")} />
+    <ComponentPreview
+      tree={toastAnatomyTree(t)}
+      css={toastAnatomyCss}
+      label={t("toastPage.anatomyPreviewLabel")}
+      screens={false}
+      hideSource
+      chrome={false}
+    />
+  </Fragment>
+
+  <Fragment slot="guidelines">
+    <p class="lede" set:html={t("toastPage.guidelinesLede")} />
+    <ul>
+      <li set:html={t("toastPage.guide.use1")} />
+      <li set:html={t("toastPage.guide.use2")} />
+      <li set:html={t("toastPage.guide.avoid1")} />
+      <li set:html={t("toastPage.guide.avoid2")} />
+    </ul>
   </Fragment>
 
   <Fragment slot="install">

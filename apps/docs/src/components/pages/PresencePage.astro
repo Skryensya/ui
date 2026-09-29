@@ -2,6 +2,7 @@
 import ComponentPageShell from "./ComponentPageShell.astro";
 import CodeBlock from "../CodeBlock.astro";
 import ComponentPreview from "../ComponentPreview.astro";
+import UsagePreview from "../UsagePreview.astro";
 import {
   presenceAnatomyTree,
   presenceFieldsTree,
@@ -86,27 +87,11 @@ notice.remove();`;
   badge={t("presence.betaBadge")}
   contractId="presence"
 >
-  <Fragment slot="anatomy">
-    <p set:html={t("presence.anatomyBody")} />
-    <ComponentPreview
-      tree={presenceAnatomyTree(t)}
-      css={annotationDemoCss}
-      label={t("presence.anatomyPreviewLabel")}
-      screens={false}
-      hideSource
-      chrome={false}
-    />
-  </Fragment>
-
   <Fragment slot="usage">
     <p class="lede" set:html={t("presence.lede")} />
 
-    <h3>{t("presence.whenTitle")}</h3>
-    <ul>
-      <li set:html={t("presence.whenItem1")} />
-      <li set:html={t("presence.whenItem2")} />
-      <li set:html={t("presence.whenItem3")} />
-    </ul>
+    <h3>{t("presence.showcaseTitle")}</h3>
+    <p set:html={t("presence.showcaseBody")} />
 
     <h3>{t("presence.noticeHeading")}</h3>
     <p set:html={t("presence.noticeIntro")} />
@@ -141,6 +126,27 @@ notice.remove();`;
       <li set:html={t("presence.notesItem2")} />
       <li set:html={t("presence.notesItem3")} />
       <li set:html={t("presence.notesItem4")} />
+    </ul>
+
+    <h3>{t("component.anatomy")}</h3>
+    <p set:html={t("presence.anatomyBody")} />
+    <ComponentPreview
+      tree={presenceAnatomyTree(t)}
+      css={annotationDemoCss}
+      label={t("presence.anatomyPreviewLabel")}
+      screens={false}
+      hideSource
+      chrome={false}
+    />
+  </Fragment>
+
+  <Fragment slot="guidelines">
+    <p class="lede" set:html={t("presence.guidelinesLede")} />
+    <h3>{t("presence.whenTitle")}</h3>
+    <ul>
+      <li set:html={t("presence.whenItem1")} />
+      <li set:html={t("presence.whenItem2")} />
+      <li set:html={t("presence.whenItem3")} />
     </ul>
   </Fragment>
 </ComponentPageShell>

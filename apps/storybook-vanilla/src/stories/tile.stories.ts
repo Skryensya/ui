@@ -16,11 +16,12 @@ import { treeStory, withCss, type Meta, type StoryObj } from "../tree-story";
 export default { title: "Components/Content/Tile", tags: ["autodocs"] } satisfies Meta;
 
 export const Anatomy: StoryObj = treeStory(demos.tileAnatomyTree, { decorators: [withCss(annotationDemoCss)] });
-export const LinkGrid: StoryObj = treeStory(demos.tileLinkGridTree);
-export const ButtonGroup: StoryObj = treeStory(demos.tileButtonGroupTree);
-export const ExpandableTile: StoryObj = treeStory(demos.expandableTileTree);
-export const VersusBox: StoryObj = treeStory(demos.tileVersusBoxTree);
-export const Padding: StoryObj = treeStory(demos.tilePaddingTree);
-export const Appearance: StoryObj = treeStory(demos.tileAppearanceTree);
 export const LinkDemo: StoryObj = treeStory(demos.tileLinkDemoTree);
 export const ButtonDemo: StoryObj = treeStory(demos.tileButtonDemoTree);
+export const ExpandableTile: StoryObj = treeStory(demos.expandableTileTree);
+export const Appearance: StoryObj = treeStory(demos.tileAppearanceTree);
+export const LinkGrid: StoryObj = treeStory(demos.tileLinkGridTree);
+export const ButtonGroup: StoryObj = treeStory(demos.tileButtonGroupTree);
+export const VersusBox: StoryObj = treeStory(demos.tileVersusBoxTree);
+export const Padding: StoryObj = treeStory(demos.tilePaddingTree);
+export const Single: StoryObj = treeStory(demos.tileSingleTree);

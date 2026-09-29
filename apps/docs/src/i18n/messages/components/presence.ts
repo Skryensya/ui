@@ -61,6 +61,9 @@ export const presenceMessages = {
       "El contenedor nunca se desmonta en React: es lo que la hoja anima, así que tiene que existir en el frame en que llega <code>hidden</code>",
     "presence.notesItem4":
       "Mientras sale, el contenido sigue en el árbol de accesibilidad; <code>display: none</code> lo saca cuando la salida termina. Si el botón que lo controla expone <code>aria-expanded</code>, actualízalo en el mismo momento en que cambias <code>hidden</code>",
+    "presence.showcaseTitle": "Showcases",
+    "presence.showcaseBody": "Un aviso que entra y sale, campos que aparecen según una elección y el ajuste de la transición.",
+    "presence.guidelinesLede": "Presence anima la entrada y la salida de algo que aparece y desaparece.",
   },
   en: {
     "presence.anatomyLabel": "Presence anatomy",
@@ -124,5 +127,8 @@ export const presenceMessages = {
       "In React the host is never unmounted: it is what the stylesheet animates, so it has to exist on the frame <code>hidden</code> lands",
     "presence.notesItem4":
       "While it leaves, the content is still in the accessibility tree; <code>display: none</code> removes it once the exit ends. If the button that controls it exposes <code>aria-expanded</code>, update it at the same moment you change <code>hidden</code>",
+    "presence.showcaseTitle": "Showcases",
+    "presence.showcaseBody": "A notice coming and going, fields appearing on a choice, and tuning the transition.",
+    "presence.guidelinesLede": "Presence animates something appearing and disappearing.",
   },
 } as const;

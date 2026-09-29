@@ -11,6 +11,7 @@ import "@skryensya/core/components/annotation.css";
 import ComponentPageShell from "./ComponentPageShell.astro";
 import AppearanceMenu from "../AppearanceMenu.astro";
 import ComponentPreview from "../ComponentPreview.astro";
+import UsagePreview from "../UsagePreview.astro";
 import { annotationDemoCss } from "../../demos/annotation";
 import {
   expandableTileTree,
@@ -21,6 +22,7 @@ import {
   tileLinkGridTree,
   tilePaddingTree,
   tileRadioGroupTree,
+  tileSingleTree,
   tileSwitchTree,
   tileVersusBoxTree,
 } from "../../demos/tile";
@@ -31,6 +33,10 @@ const t = useTranslations(locale);
 /* Every internal link resolves in the locale being read: a hardcoded `/components/x` sends a
    Spanish reader to the English page, which is the bug this page had thirteen times. */
 const href = (path: string) => localizePath(path, locale);
+
+/* What each value of a property is for, read from this page's messages. Same model Badge uses. */
+const explain = (option: string, values: readonly string[]) =>
+  Object.fromEntries(values.map((value) => [value, t(`tilePage.prop.${option}.${value}` as Parameters<typeof t>[0])]));
 ---
 
 <ComponentPageShell
@@ -44,7 +50,83 @@ const href = (path: string) => localizePath(path, locale);
     <AppearanceMenu label={t("prefs.appearance")} />
   </Fragment>
 
-  <Fragment slot="anatomy">
+  <Fragment slot="usage">
+    <p class="lede" set:html={t("tilePage.lede")} />
+
+    <UsagePreview
+      tree={tileSingleTree(t)}
+      optionName="appearance"
+      title={t("tilePage.prop.appearance.title")}
+      description={t("tilePage.prop.appearance.body")}
+      explain={explain("appearance", ["plain", "tactile", "brutalist", "frosted"])}
+      stageMinBlockSize="10rem"
+    />
+
+    <UsagePreview
+      tree={tileSingleTree(t)}
+      optionName="padding"
+      title={t("tilePage.prop.padding.title")}
+      description={t("tilePage.prop.padding.body")}
+      explain={explain("padding", ["none", "xs", "sm", "md", "lg", "xl"])}
+      stageMinBlockSize="12rem"
+      labels={{ none: "none", xs: "xs", sm: "sm", md: "md", lg: "lg", xl: "xl" }}
+    />
+
+    <h3>{t("tilePage.showcaseTitle")}</h3>
+    <p set:html={t("tilePage.showcaseBody")} />
+
+    <h3>{t("tilePage.linkTitle")}</h3>
+    <p set:html={t("tilePage.linkBody")} />
+    <UsagePreview tree={tileLinkGridTree(t)} />
+
+    <h3>{t("tilePage.buttonTitle")}</h3>
+    <p set:html={t("tilePage.buttonBody")} />
+    <UsagePreview tree={tileButtonGroupTree(t)} />
+
+    <h3>{t("tilePage.checkboxTitle")}</h3>
+    <p set:html={t("tilePage.checkboxBody")} />
+    <UsagePreview tree={tileCheckboxTree(t)} />
+
+    <h3>{t("tilePage.switchTitle")}</h3>
+    <p set:html={t("tilePage.switchBody")} />
+    <UsagePreview tree={tileSwitchTree(t)} />
+
+    <h3>{t("tilePage.radioTitle")}</h3>
+    <p set:html={t("tilePage.radioBody")} />
+    <UsagePreview tree={tileRadioGroupTree(t)} />
+
+    <h3>{t("tilePage.expandableTitle")}</h3>
+    <p set:html={t("tilePage.expandableBody")} />
+    <UsagePreview tree={expandableTileTree(t)} />
+
+    <h3>{t("tilePage.versusTitle")}</h3>
+    <p set:html={t("tilePage.versusBody")} />
+    <UsagePreview tree={tileVersusBoxTree(t)} />
+
+    <h3>{t("tilePage.paddingTitle")}</h3>
+    <p set:html={t("tilePage.paddingBody")} />
+    <UsagePreview tree={tilePaddingTree(t)} />
+
+    <h3>{t("tilePage.appearanceTitle")}</h3>
+    <p set:html={t("tilePage.appearanceBody")} />
+    {/* A comparison of appearances: the page-wide appearance switch must not repaint it. */}
+    <div data-docs-appearance-fixed>
+      <UsagePreview tree={tileAppearanceTree(t)} />
+    </div>
+
+    <h3>{t("tilePage.contractsTitle")}</h3>
+    <ul>
+      <li set:html={t("tilePage.contractItem1")} />
+      <li set:html={t("tilePage.contractItem2")} />
+      <li set:html={t("tilePage.contractItem3")} />
+      <li set:html={t("tilePage.contractItem4")} />
+      <li set:html={t("tilePage.contractItem5")} />
+    </ul>
+
+    <p set:html={t("tilePage.body1")} />
+    <p set:html={t("tilePage.body2")} />
+
+    <h3>{t("component.anatomy")}</h3>
     <p set:html={t("tilePage.anatomyBody")} />
     <ComponentPreview
       tree={tileAnatomyTree(t)}
@@ -56,9 +138,8 @@ const href = (path: string) => localizePath(path, locale);
     />
   </Fragment>
 
-  <Fragment slot="usage">
-    <p class="lede" set:html={t("tilePage.lede")} />
-
+  <Fragment slot="guidelines">
+    <p class="lede" set:html={t("tilePage.guidelinesLede")} />
     <h3>{t("tilePage.chooseTitle")}</h3>
     <p set:html={t("tilePage.chooseBody")} />
     <div class="sk-table-scroll">
@@ -77,56 +158,5 @@ const href = (path: string) => localizePath(path, locale);
         </tbody>
       </table>
     </div>
-
-    <h3>{t("tilePage.linkTitle")}</h3>
-    <p set:html={t("tilePage.linkBody")} />
-    <ComponentPreview tree={tileLinkGridTree(t)} label={t("tilePage.linkLabel")} />
-
-    <h3>{t("tilePage.buttonTitle")}</h3>
-    <p set:html={t("tilePage.buttonBody")} />
-    <ComponentPreview tree={tileButtonGroupTree(t)} label={t("tilePage.buttonLabel")} />
-
-    <h3>{t("tilePage.checkboxTitle")}</h3>
-    <p set:html={t("tilePage.checkboxBody")} />
-    <ComponentPreview tree={tileCheckboxTree(t)} label={t("tilePage.checkboxLabel")} />
-
-    <h3>{t("tilePage.switchTitle")}</h3>
-    <p set:html={t("tilePage.switchBody")} />
-    <ComponentPreview tree={tileSwitchTree(t)} label={t("tilePage.switchLabel")} />
-
-    <h3>{t("tilePage.radioTitle")}</h3>
-    <p set:html={t("tilePage.radioBody")} />
-    <ComponentPreview tree={tileRadioGroupTree(t)} label={t("tilePage.radioLabel")} />
-
-    <h3>{t("tilePage.expandableTitle")}</h3>
-    <p set:html={t("tilePage.expandableBody")} />
-    <ComponentPreview tree={expandableTileTree(t)} label={t("tilePage.expandableLabel")} />
-
-    <h3>{t("tilePage.versusTitle")}</h3>
-    <p set:html={t("tilePage.versusBody")} />
-    <ComponentPreview tree={tileVersusBoxTree(t)} label={t("tilePage.versusLabel")} />
-
-    <h3>{t("tilePage.paddingTitle")}</h3>
-    <p set:html={t("tilePage.paddingBody")} />
-    <ComponentPreview tree={tilePaddingTree(t)} label={t("tilePage.paddingLabel")} />
-
-    <h3>{t("tilePage.appearanceTitle")}</h3>
-    <p set:html={t("tilePage.appearanceBody")} />
-    {/* A comparison of appearances: the page-wide appearance switch must not repaint it. */}
-    <div data-docs-appearance-fixed>
-      <ComponentPreview tree={tileAppearanceTree(t)} label={t("tilePage.appearanceLabel")} />
-    </div>
-
-    <h3>{t("tilePage.contractsTitle")}</h3>
-    <ul>
-      <li set:html={t("tilePage.contractItem1")} />
-      <li set:html={t("tilePage.contractItem2")} />
-      <li set:html={t("tilePage.contractItem3")} />
-      <li set:html={t("tilePage.contractItem4")} />
-      <li set:html={t("tilePage.contractItem5")} />
-    </ul>
-
-    <p set:html={t("tilePage.body1")} />
-    <p set:html={t("tilePage.body2")} />
   </Fragment>
 </ComponentPageShell>

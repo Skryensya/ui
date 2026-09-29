@@ -122,6 +122,9 @@ export const cardMessages = {
       "La página importa <code>tile.css</code>, la hoja que TileLink, TileButton y TileCheckbox necesitan y que Base.astro nunca carga de forma global.",
     "cardPage.testImportsCheckbox":
       "La página importa <code>checkbox.css</code>: sin ella cada indicador pinta el visto y el guion a la vez, sin importar el estado.",
+    "cardPage.showcaseTitle": "Showcases",
+    "cardPage.showcaseBody": "Tarjetas de contenido, con metadatos, con una cifra, con un gráfico, enlazadas, con acciones y de producto.",
+    "cardPage.guidelinesLede": "Card agrupa el contenido de una sola cosa en una superficie.",
   },
   en: {
     "demo.card.title": "Desk lamp",
@@ -246,5 +249,8 @@ export const cardMessages = {
       "The page imports <code>tile.css</code>, the sheet TileLink, TileButton and TileCheckbox need and that Base.astro never loads globally.",
     "cardPage.testImportsCheckbox":
       "The page imports <code>checkbox.css</code>: without it every indicator paints the check and the dash at once, regardless of state.",
+    "cardPage.showcaseTitle": "Showcases",
+    "cardPage.showcaseBody": "Content cards, with metadata, with a figure, with a chart, linked, with actions, and product cards.",
+    "cardPage.guidelinesLede": "Card groups the content of one thing on one surface.",
   },
 } as const;

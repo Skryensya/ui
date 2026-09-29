@@ -9,6 +9,7 @@ import "@skryensya/core/components/annotation.css";
 import ComponentPageShell from "./ComponentPageShell.astro";
 import CodeBlock from "../CodeBlock.astro";
 import ComponentPreview from "../ComponentPreview.astro";
+import UsagePreview from "../UsagePreview.astro";
 import {
   mediaGradientAnatomyTree,
   mediaGradientCardTree,
@@ -34,7 +35,29 @@ const tint = `.hero-media .sk-media-gradient {
   contractId="media-gradient"
   testFiles={["packages/react/src/components/media-gradient.test.tsx"]}
 >
-  <Fragment slot="anatomy">
+  <Fragment slot="usage">
+    <p class="lede" set:html={t("mediaGradient.lede")} />
+
+    <h3>{t("mediaGradient.showcaseTitle")}</h3>
+    <p set:html={t("mediaGradient.showcaseBody")} />
+
+    <h3>{t("mediaGradient.cardTitle")}</h3>
+    <p set:html={t("mediaGradient.cardBody")} />
+    <UsagePreview tree={mediaGradientCardTree(t)} />
+
+    <h3>{t("mediaGradient.edgesTitle")}</h3>
+    <p set:html={t("mediaGradient.edgesBody")} />
+    <UsagePreview tree={mediaGradientEdgesTree()} />
+
+    <h3>{t("mediaGradient.strengthTitle")}</h3>
+    <p set:html={t("mediaGradient.strengthBody")} />
+    <UsagePreview tree={mediaGradientStrengthsTree()} />
+
+    <h3>{t("mediaGradient.tintTitle")}</h3>
+    <p set:html={t("mediaGradient.tintBody")} />
+    <CodeBlock code={tint} label="CSS" lang="css" />
+
+    <h3>{t("component.anatomy")}</h3>
     <p set:html={t("mediaGradient.anatomyBody")} />
     <ComponentPreview
       tree={mediaGradientAnatomyTree(t)}
@@ -46,31 +69,14 @@ const tint = `.hero-media .sk-media-gradient {
     />
   </Fragment>
 
-  <Fragment slot="usage">
-    <p class="lede" set:html={t("mediaGradient.lede")} />
-
+  <Fragment slot="guidelines">
+    <p class="lede" set:html={t("mediaGradient.guidelinesLede")} />
     <h3>{t("mediaGradient.whenTitle")}</h3>
     <ul>
       <li set:html={t("mediaGradient.whenItem1")} />
       <li set:html={t("mediaGradient.whenItem2")} />
       <li set:html={t("mediaGradient.whenItem3")} />
     </ul>
-
-    <h3>{t("mediaGradient.cardTitle")}</h3>
-    <p set:html={t("mediaGradient.cardBody")} />
-    <ComponentPreview tree={mediaGradientCardTree(t)} label={t("mediaGradient.cardPreviewLabel")} />
-
-    <h3>{t("mediaGradient.edgesTitle")}</h3>
-    <p set:html={t("mediaGradient.edgesBody")} />
-    <ComponentPreview tree={mediaGradientEdgesTree()} label={t("mediaGradient.edgesPreviewLabel")} />
-
-    <h3>{t("mediaGradient.strengthTitle")}</h3>
-    <p set:html={t("mediaGradient.strengthBody")} />
-    <ComponentPreview tree={mediaGradientStrengthsTree()} label={t("mediaGradient.strengthPreviewLabel")} />
-
-    <h3>{t("mediaGradient.tintTitle")}</h3>
-    <p set:html={t("mediaGradient.tintBody")} />
-    <CodeBlock code={tint} label="CSS" lang="css" />
   </Fragment>
 
   <Fragment slot="install">

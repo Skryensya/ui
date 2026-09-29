@@ -9,14 +9,17 @@ import "@skryensya/core/components/annotation.css";
 import ComponentPageShell from "./ComponentPageShell.astro";
 import CodeBlock from "../CodeBlock.astro";
 import ComponentPreview from "../ComponentPreview.astro";
+import UsagePreview from "../UsagePreview.astro";
+import DoDont from "../DoDont.astro";
 import {
   listAnatomyTree,
+  listDontParagraphsTree,
   listFullTree,
   listLeadingTree,
   listLinksTree,
+  listPlainTree,
   listTitledTree,
   listTrailingTree,
-  listPlainTree,
 } from "../../demos/list";
 import { annotationDemoCss } from "../../demos/annotation";
 import { getLocale, useTranslations } from "../../i18n";
@@ -28,6 +31,10 @@ const TEAM_HREFS = ["/equipo/john-doe", "/equipo/jane-doe", "/equipo/richard-roe
 
 const install = `pnpm add @skryensya/core @skryensya/vanilla`;
 const styles = `@import "@skryensya/core/components/list.css";`;
+
+/* What each value of a property is for, read from this page's messages. Same model Badge uses. */
+const explain = (option: string, values: readonly string[]) =>
+  Object.fromEntries(values.map((value) => [value, t(`listPage.prop.${option}.${value}` as Parameters<typeof t>[0])]));
 ---
 
 <ComponentPageShell
@@ -36,20 +43,21 @@ const styles = `@import "@skryensya/core/components/list.css";`;
   contractId="list"
   testFiles={["packages/react/src/components/list.test.tsx"]}}
 >
-  <Fragment slot="anatomy">
-    <p set:html={t("listPage.anatomyBody")} />
-    <ComponentPreview
-      tree={listAnatomyTree(t)}
-      css={annotationDemoCss}
-      label={t("listPage.anatomyPreviewLabel")}
-      screens={false}
-      hideSource
-      chrome={false}
-    />
-  </Fragment>
-
   <Fragment slot="usage">
     <p class="lede" set:html={t("listPage.lede")} />
+
+    <UsagePreview
+      tree={listPlainTree(t)}
+      optionName="dividers"
+      title={t("listPage.prop.dividers.title")}
+      description={t("listPage.prop.dividers.body")}
+      explain={explain("dividers", ["false", "true"])}
+      stageMinBlockSize="14rem"
+      labels={{ false: t("listPage.prop.dividers.falseLabel"), true: t("listPage.prop.dividers.trueLabel") }}
+    />
+
+    <h3>{t("listPage.showcaseTitle")}</h3>
+    <p set:html={t("listPage.showcaseBody")} />
     <h3>{t("listPage.stepsTitle")}</h3>
     <p set:html={t("listPage.stepsBody")} />
 
@@ -87,6 +95,26 @@ const styles = `@import "@skryensya/core/components/list.css";`;
       <li set:html={t("listPage.contractItem6")} />
       <li set:html={t("listPage.contractItem7")} />
     </ul>
+
+    <h3>{t("component.anatomy")}</h3>
+    <p set:html={t("listPage.anatomyBody")} />
+    <ComponentPreview
+      tree={listAnatomyTree(t)}
+      css={annotationDemoCss}
+      label={t("listPage.anatomyPreviewLabel")}
+      screens={false}
+      hideSource
+      chrome={false}
+    />
+  </Fragment>
+
+  <Fragment slot="guidelines">
+    <p class="lede" set:html={t("listPage.guidelinesLede")} />
+    <DoDont
+      title={t("listPage.dd.short.title")}
+      do={{ tree: listPlainTree(t), caption: t("listPage.dd.short.do") }}
+      dont={{ tree: listDontParagraphsTree(t), caption: t("listPage.dd.short.dont") }}
+    />
   </Fragment>
 
   <Fragment slot="install">

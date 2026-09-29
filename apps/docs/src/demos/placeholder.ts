@@ -327,3 +327,11 @@ export const placeholderVocabularyTree = (): UsageTree => ({
     { contract: "placeholder", signature: "Placeholder.paragraph", options: { lines: 4 } },
   ],
 });
+
+/* One paragraph placeholder, the specimen the `shimmer` preview varies. */
+export const placeholderParagraphTree = (): UsageTree => ({
+  contract: "placeholder",
+  signature: "Placeholder.paragraph",
+  options: { lines: 3 },
+  attrs: { style: "inline-size: min(100%, 20rem)" },
+});
