@@ -32,3 +32,16 @@ export const segmentedTree = (t: Translate): UsageTree => ({
   options: { value: "day", label: t("demo.segmented.label") },
   slots: { items: segmentedItems(t) },
 });
+
+/* Don't: so many options that the rail runs out of room, where a Select holds them in one line. */
+export const segmentedDontManyTree = (t: Translate): UsageTree => ({
+  contract: "segmented",
+  signature: "Segmented",
+  options: { value: "mon", label: t("demo.segmented.label") },
+  slots: {
+    items: ["mon", "tue", "wed", "thu", "fri", "sat", "sun"].map((day) => ({
+      options: { value: day },
+      slots: { label: t(`demo.segmented.dd.${day}` as never) },
+    })),
+  },
+});
