@@ -1,4 +1,5 @@
 import type { Realization } from "../realization.js";
+import { icons, noStates, stage } from "./shared.js";
 
 /*
  * Badge's dot (`BadgeDot`), as Figma structure: the same contract as the labelled Badge, a different
@@ -12,23 +13,13 @@ export const badgeDotRealization: Realization = {
   contract: "badge",
   signature: "BadgeDot",
   // No appearance on the dot: one set.
-  state: { axis: "state", rest: "rest", options: [], interactions: [] },
+  state: noStates,
   overlays: {},
   ring: "focus ring",
   exclude: [],
   slots: {},
-  icons: { module: "@skryensya/icons-lucide", export: "lucideIcons" },
+  icons,
   // Its tones across, in one row.
   grid: { columns: ["tone"], rows: [], descending: [] },
-  stage: {
-    contract: "component-preview",
-    hook: "--sk-component-preview-bg",
-    label: {
-      color: "--color-text-secondary",
-      fontFamily: "--font-family-body",
-      fontSize: "--font-size-caption",
-      fontWeight: "--font-weight-label",
-    },
-    divider: "--color-border-subtle",
-  },
+  stage,
 };
