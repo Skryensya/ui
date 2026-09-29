@@ -1339,7 +1339,8 @@ async function applyLayers(
     // Fixed on both axes first: an empty frame left to hug would snap back to nothing.
     frame.primaryAxisSizingMode = "FIXED";
     frame.counterAxisSizingMode = "FIXED";
-    if (reach === "bottom") frame.resize(Math.max(0.01, frame.width), Math.max(0.01, parent.height - frame.y));
+    const gap = manifest.styles.boxes[layer.box].absolute?.reachGap ?? 0;
+    if (reach === "bottom") frame.resize(Math.max(0.01, frame.width), Math.max(0.01, parent.height - frame.y - gap));
     else frame.resize(Math.max(0.01, parent.width - frame.x), Math.max(0.01, frame.height));
   }
   // A frame with nothing laid out in it does not hug in Figma: it keeps whatever size it had (100 when

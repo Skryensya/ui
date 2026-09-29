@@ -91,6 +91,8 @@ export type Box = {
     x: number;
     y: number;
     reach?: "bottom" | "right";
+    /** How far short of that edge it stops (a Toc's marker, inset top and bottom alike). */
+    reachGap?: number;
     /** Measured from the parent's right or bottom edge instead (a badge pinned to a corner). */
     fromRight?: true;
     fromBottom?: true;
