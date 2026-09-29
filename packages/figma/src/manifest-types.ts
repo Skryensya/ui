@@ -106,15 +106,17 @@ export type Text = {
 /** A square slot that holds an instance of the icon component. */
 export type IconSlot = { size: Bound<number>; color: Paint };
 
-/** One layer inside a cell, in order. `property` names the component property that drives it. */
+/**
+ * One layer inside a cell, in order. `property` names the component property that drives it. An
+ * icon layer is an exposed instance of the Icon set, so its `name` is picked from the host's panel.
+ */
 export type Layer =
-  | { kind: "icon"; slot: string; visibleProperty?: string; swapProperty: string; icon: IconSlot }
+  | { kind: "icon"; slot: string; visibleProperty?: string; icon: IconSlot }
   | { kind: "text"; slot: string; textProperty: string; text: Text };
 
 export type ComponentProperty =
   | { name: string; type: "TEXT"; default: string }
-  | { name: string; type: "BOOLEAN"; default: boolean }
-  | { name: string; type: "INSTANCE_SWAP"; default: string };
+  | { name: string; type: "BOOLEAN"; default: boolean };
 
 /**
  * One Figma variant. Its geometry, surface and layers are shared by many cells, so they live once
@@ -154,13 +156,28 @@ export type ComponentSet = {
   visualHash: string;
 };
 
-/** A plain component, no variants: the icon placeholder the slots swap from. */
-export type Component = {
-  kind: "component";
+/**
+ * The Icon contract as a component set: one Figma variant per stable icon name, each drawn by the
+ * chosen icon set. The geometry is the set's; the colour is the host's (`currentColor`), so a host
+ * overrides the paint of the one flattened `glyph` layer every variant shares.
+ */
+export type IconSet = {
+  kind: "icon-set";
   id: string;
   name: string;
+  /** The contract option the variants run along. */
+  axis: string;
+  /** The icon set that draws them, by package. */
+  source: string;
+  /** The name a slot shows until a designer picks one. */
+  default: string;
+  /** Whether the set draws with strokes (an outline set) or fills (a solid one). */
+  paint: "stroke" | "fill";
+  /** The drawing's own stroke width in viewBox units, so a host can keep it proportional. */
+  strokeWidth: number;
+  /** The viewBox width, the size a variant is drawn at. */
   size: number;
-  stroke: Rgba;
+  icons: { name: string; svg: string; hash: string }[];
   hash: string;
 };
 
@@ -171,6 +188,8 @@ export type SpecimenEntry = {
   set: string;
   cell: string;
   properties: Record<string, string | boolean>;
+  /** The icon each icon slot shows, by stable name. */
+  icons: Record<string, string>;
 };
 
 export type Diagnostic = {
@@ -186,7 +205,7 @@ export type FigmaManifest = {
   evaluationContext: Record<string, string>;
   collections: Collection[];
   variables: Variable[];
-  components: (Component | ComponentSet)[];
+  components: (IconSet | ComponentSet)[];
   styles: Styles;
   specimen: SpecimenEntry[];
   diagnostics: Diagnostic[];

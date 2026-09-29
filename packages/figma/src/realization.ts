@@ -27,6 +27,11 @@ export type Realization = {
    * slot holds an icon instead of text.
    */
   slots: Readonly<Record<string, { holds: "icon" } | { holds: "text"; sample: string; iconWhen?: string }>>;
+  /**
+   * The icon set that draws the Icon contract in Figma, as a module and export. A set is a brand the
+   * consumer picks (decision 15), so Figma draws with the one the docs draw with.
+   */
+  icons: { module: string; export: string };
   /** Which axes run across the component set's grid and which run down it. */
   grid: { columns: readonly string[]; rows: readonly string[] };
   /** The docs previews mirrored on the specimen page, by export name, for the side-by-side check. */

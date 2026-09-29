@@ -23,8 +23,8 @@ import { Unsupported } from "./evaluate.js";
 import {
   SCHEMA_VERSION,
   type Cell,
-  type Component,
   type ComponentProperty,
+  type IconSet,
   type ComponentSet,
   type Diagnostic,
   type FigmaManifest,
@@ -37,6 +37,9 @@ import { frameOf, iconOf, textOf } from "./realize.js";
 import { Registry, type CellProps, type Context } from "./resolve.js";
 
 const hash = (value: unknown) => createHash("sha256").update(canonical(value)).digest("hex").slice(0, 16);
+
+/** The vocabulary's own name for a stand-in glyph: what an icon slot shows before anyone picks one. */
+const DEFAULT_ICON = "placeholder";
 
 /** What the evaluation assumed, beyond what the token graph itself declares. */
 const CONTEXT_OVERRIDES: Record<string, string> = {
@@ -176,7 +179,6 @@ export async function buildFigmaManifest(repoRoot: string, realization: Realizat
     table[id] = value;
     return id;
   };
-  const iconSwap = (slot: string) => `${slot} icon`;
   for (const splitValue of split.values ?? []) {
     const cells: Cell[] = [];
     for (const props of combos(axes)) {
@@ -210,7 +212,6 @@ export async function buildFigmaManifest(repoRoot: string, realization: Realizat
               kind: "icon",
               slot,
               ...(optional ? { visibleProperty: slot } : {}),
-              swapProperty: iconSwap(slot),
               icon: iconOf(ctx(glyph)),
             });
           } else {
@@ -231,7 +232,6 @@ export async function buildFigmaManifest(repoRoot: string, realization: Realizat
     for (const [slot, spec] of Object.entries(realization.slots)) {
       if (spec.holds === "text") properties.push({ name: slot, type: "TEXT", default: spec.sample });
       if (!signature.slots[slot]?.required) properties.push({ name: slot, type: "BOOLEAN", default: false });
-      if (spec.holds === "icon" || spec.iconWhen) properties.push({ name: iconSwap(slot), type: "INSTANCE_SWAP", default: "icon-placeholder" });
     }
     const setAxes = axes.map((a) => ({ name: a.name, values: a.values }));
     const defaultOf = (axis: Axis) =>
@@ -263,15 +263,7 @@ export async function buildFigmaManifest(repoRoot: string, realization: Realizat
   const dead = [...registry.diagnostics].filter((d) => d.code === "DERIVED_UNSUPPORTED");
   if (dead.length) throw new Error(`component variables failed to evaluate:\n${dead.map((d) => d.message).join("\n")}`);
 
-  const icon: Component = {
-    kind: "component",
-    id: "icon-placeholder",
-    name: "Icon placeholder",
-    size: 24,
-    stroke: { r: 0, g: 0, b: 0, a: 1 },
-    hash: "",
-  };
-  icon.hash = hash({ ...icon, hash: undefined });
+  const icon = await iconSetOf(realization, iconContract);
 
   const specimen = await specimenOf(repoRoot, realization, contract, sets, stateAxis, diagnostics);
 
@@ -339,6 +331,46 @@ export async function buildFigmaManifest(repoRoot: string, realization: Realizat
   return { ...body, sourceHash: hash(body) } as FigmaManifest;
 }
 
+/* ── the Icon contract, drawn by the chosen set ─────────────────────────────────────────────────── */
+
+async function iconSetOf(realization: Realization, iconContract: ComponentContract): Promise<IconSet> {
+  const option = iconContract.options.name as { values: readonly string[] };
+  const module = (await import(realization.icons.module)) as Record<string, Record<string, { body: string; viewBox: string; attrs?: Record<string, string> }>>;
+  const set = module[realization.icons.export];
+  if (!set) throw new Error(`${realization.icons.module} has no export ${realization.icons.export}`);
+  if (!option.values.includes(DEFAULT_ICON)) throw new Error(`the icon vocabulary has no ${DEFAULT_ICON}`);
+
+  const first = set[option.values[0]];
+  const attrs = first.attrs ?? {};
+  const paint = attrs.stroke && attrs.stroke !== "none" ? "stroke" : "fill";
+  const [, , width, height] = first.viewBox.split(/\s+/).map(Number);
+
+  const icons = option.values.map((name) => {
+    const data = set[name];
+    if (!data) throw new Error(`${realization.icons.export} does not draw ${name}`);
+    // The set's own presentation attributes, with `currentColor` made concrete: Figma has no inheritance.
+    const presentation = Object.entries(data.attrs ?? {})
+      .map(([k, v]) => `${k}="${v === "currentColor" ? "#000000" : v}"`)
+      .join(" ");
+    const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${data.viewBox}" width="${width}" height="${height}" ${presentation}>${data.body.replaceAll("currentColor", "#000000")}</svg>`;
+    return { name, svg, hash: hash(svg) };
+  });
+
+  const body = {
+    kind: "icon-set" as const,
+    id: iconContract.id,
+    name: `${iconContract.id[0].toUpperCase()}${iconContract.id.slice(1)}`,
+    axis: "name",
+    source: realization.icons.module,
+    default: DEFAULT_ICON,
+    paint: paint as IconSet["paint"],
+    strokeWidth: Number(attrs["stroke-width"] ?? 0),
+    size: width,
+    icons,
+  };
+  return { ...body, hash: hash(body) };
+}
+
 /* ── specimen: the docs previews, as instances ──────────────────────────────────────────────────── */
 
 async function specimenOf(
@@ -381,12 +413,19 @@ async function specimenOf(
       }
       const slots = { ...(node.slots ?? {}), ...(node.children !== undefined ? { children: node.children } : {}) } as Record<string, unknown>;
       const properties: Record<string, string | boolean> = {};
+      const icons: Record<string, string> = {};
+      const iconName = (content: unknown) =>
+        typeof content === "object" && content !== null && (content as UsageTree).contract === "icon"
+          ? String((content as UsageTree).options?.name ?? "")
+          : undefined;
       for (const [slot, spec] of Object.entries(realization.slots)) {
         const content = slots[slot];
         if (spec.holds === "text" && typeof content === "string") properties[slot] = content;
         if (spec.holds === "icon") properties[slot] = content !== undefined;
+        const name = iconName(content);
+        if (name) icons[slot] = name;
       }
-      out.push({ id, source, set: set.id, cell: key, properties });
+      out.push({ id, source, set: set.id, cell: key, properties, icons });
     });
   }
   return out;

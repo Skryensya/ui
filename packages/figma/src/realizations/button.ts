@@ -19,6 +19,7 @@ export const buttonRealization: Realization = {
     post: { holds: "icon" },
     children: { holds: "text", sample: "Button", iconWhen: "iconOnly" },
   },
+  icons: { module: "@skryensya/icons-lucide", export: "lucideIcons" },
   grid: { columns: ["variant", "tone"], rows: ["size", "state", "iconOnly"] },
   specimen: {
     module: "apps/docs/src/demos/button.ts",

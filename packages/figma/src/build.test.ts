@@ -122,6 +122,22 @@ describe("tokens", () => {
   });
 });
 
+describe("the Icon set", () => {
+  it("has one variant per name the icon contract declares, drawn by the chosen set", async () => {
+    const { iconContract } = await import("@skryensya/core/icon");
+    const { lucideIcons } = await import("@skryensya/icons-lucide");
+    const icons = manifest.components.find((c) => c.kind === "icon-set")!;
+    if (icons.kind !== "icon-set") throw new Error("no icon set");
+    expect(icons.icons.map((i) => i.name)).toEqual([...iconContract.options.name.values]);
+    expect(icons.icons[0].svg).toContain(lucideIcons[icons.icons[0].name as keyof typeof lucideIcons].body);
+    expect(icons.icons.map((i) => i.name)).toContain(icons.default);
+  });
+
+  it("names the icon a docs preview puts in a slot", () => {
+    expect(manifest.specimen.find((e) => e.source === "buttonIconTree")?.icons).toEqual({ pre: "download" });
+  });
+});
+
 describe("representation", () => {
   it("stays far below the naive product", () => {
     const report = manifest.report as { variants: { naiveAllOptions: number; variantsTotal: number } };

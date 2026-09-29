@@ -677,6 +677,9 @@ importers:
       '@skryensya/core':
         specifier: workspace:*
         version: link:../core
+      '@skryensya/icons-lucide':
+        specifier: workspace:*
+        version: link:../icons-lucide
       jsdom:
         specifier: ^29.1.1
         version: 29.1.1
