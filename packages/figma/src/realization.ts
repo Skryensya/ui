@@ -54,7 +54,11 @@ export type Realization = {
       string,
       | { holds: "icon"; icon: string }
       /** `hidden`: the slot is an accessible name only, clipped out of sight (BackToTop's label). No layer, no property. */
-      | { holds: "text"; sample: string; iconWhen?: string; icon?: string; hidden?: true }
+      /**
+       * `option`: the text is a string option the template prints (a Meter's label and value), not a
+       * slot of the signature. Drawn and exposed the same way.
+       */
+      | { holds: "text"; sample: string; iconWhen?: string; icon?: string; hidden?: true; option?: string }
     >
   >;
   /**
@@ -77,6 +81,11 @@ export type Realization = {
    * full (`value: 60`), since at its default it shows an empty track.
    */
   given?: Readonly<Record<string, string | number | boolean>>;
+  /**
+   * Inline styles the binding writes when it mounts, by part: a Meter's fill, which its template
+   * leaves to the script (`{ track: "--sk-meter-fill: 68%" }`).
+   */
+  mounted?: Readonly<Record<string, string>>;
   /**
    * Pseudo-classes held on every cell: a SkipLink is drawn focused, the one state anyone sees it in.
    */

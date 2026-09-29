@@ -93,3 +93,14 @@ describe("Progress", () => {
     expect(manifest.styles.boxes[bar.box]).toMatchObject({ width: { value: 144 }, stretch: true, radius: { variable: "--radius-pill" } });
   });
 });
+
+describe("Meter", () => {
+  it("prints its label and value from options, over a track filled as the binding mounts it", () => {
+    const set = manifest.components.find((c): c is ComponentSet => c.kind === "component-set" && c.id === "meter")!;
+    expect(set.properties.map((p) => p.name)).toEqual(["label", "value", "show value"]);
+    const [header, track] = manifest.styles.layers[set.cells[0].layers];
+    expect(header.kind === "frame" && header.layers.map((l) => l.slot)).toEqual(["label", "value"]);
+    const bar = track.kind === "frame" ? track.layers[0] : undefined;
+    expect(bar?.kind === "frame" && manifest.styles.boxes[bar.box].width).toMatchObject({ value: 163.2 });
+  });
+});
