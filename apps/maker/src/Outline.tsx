@@ -16,6 +16,7 @@ import {
 import { DRAG_THRESHOLD, type Drag, type Target } from "./drag";
 import { useHotkey } from "@skryensya/react/hotkey";
 import { actions, type Action } from "./actions";
+import { runCanvasCommand, type CanvasCommand } from "./CanvasMenu";
 import type { Maker } from "./state";
 
 /*
@@ -264,14 +265,8 @@ function ActionHotkey({ spec, action, target, maker }: { spec: string; action: A
   useHotkey(
     spec,
     () => {
-      const selected = maker.view.selected;
-      if (!selected) return;
-      const gesture = action.gesture(maker.page.root, selected);
-      if (!gesture) {
-        maker.say("Nothing to do there: that move has no place the contract allows.");
-        return;
-      }
-      maker.gesture(gesture.operations, gesture.select);
+      if (runCanvasCommand(maker, action.id as CanvasCommand)) return;
+      maker.say("Nothing to do there: that move has no place the contract allows.");
     },
     { target, enabled: target !== null },
   );
