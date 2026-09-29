@@ -822,7 +822,7 @@ const staleParts = (node: ComponentNode, cell: M.Cell): Part[] => PARTS.filter((
  * One cell, in place, rewriting only `parts`: its geometry, its surface, or its layers in the
  * template's slot order. A cell whose surface alone changed keeps every layer untouched.
  */
-async function applyCell(ctx: SetCtx, node: ComponentNode, cell: M.Cell, sample: Record<string, string>, parts: readonly Part[] = PARTS) {
+async function applyCell(ctx: SetCtx, node: ComponentNode, cell: M.Cell, sample: Record<string, string | boolean>, parts: readonly Part[] = PARTS) {
   if (node.name !== cell.key) node.name = cell.key;
 
   if (parts.includes("box")) {
@@ -879,8 +879,11 @@ async function applyCell(ctx: SetCtx, node: ComponentNode, cell: M.Cell, sample:
       }
       // Move only a layer that is out of place: reinserting an in-place child is still a write.
       if (node.children[index] !== child) node.insertChild(index, child);
-      if (layer.kind === "icon") await applyIcon(ctx, child as InstanceNode, layer);
-      else if (layer.kind === "text") await applyText(ctx, child as TextNode, layer.text, sample[layer.slot] ?? "");
+      if (layer.kind === "icon") {
+        await applyIcon(ctx, child as InstanceNode, layer);
+        // Born with the visibility its property defaults to: an optional slot is hidden until switched on.
+        if (layer.visibleProperty) child.visible = sample[layer.visibleProperty] !== false;
+      } else if (layer.kind === "text") await applyText(ctx, child as TextNode, layer.text, String(sample[layer.slot] ?? ""));
     }
     // Overlays and rings are sized off the host, so they go last, once its content has laid out.
     const box = manifest.styles.boxes[cell.box];
@@ -922,13 +925,16 @@ function ensureProperties(ctx: SetCtx, set: ComponentSetNode, properties: M.Comp
   return keys;
 }
 
-function bindReferences(ctx: SetCtx, node: ComponentNode, cell: M.Cell, keys: Record<string, string>) {
+function bindReferences(ctx: SetCtx, node: ComponentNode, cell: M.Cell, keys: Record<string, string>, defaults: Record<string, string | boolean>) {
   for (const layer of manifest.styles.layers[cell.layers]) {
     const child = node.findChild((n) => n.name === layer.slot);
     if (!child) continue;
     const refs: Record<string, string> = {};
     if (layer.kind === "icon") {
       if (layer.visibleProperty && keys[layer.visibleProperty]) refs.visible = keys[layer.visibleProperty];
+      // The component shows its layer as the property's default; binding alone does not change it.
+      const shown = layer.visibleProperty ? defaults[layer.visibleProperty] !== false : true;
+      if (child.visible !== shown) ctx.run.write(() => (child.visible = shown));
     } else if (layer.kind === "text" && keys[layer.textProperty]) refs.characters = keys[layer.textProperty];
     const have = (child.componentPropertyReferences ?? {}) as Record<string, string>;
     const same = Object.keys(refs).length === Object.keys(have).length && Object.entries(refs).every(([k, v]) => have[k] === v);
@@ -1148,8 +1154,9 @@ async function syncSet(ctx: SetCtx, spec: M.ComponentSet, found: Map<string, Sce
   const frame = page ? ensureFrame(ctx, spec.id, spec.name, page, found) : undefined;
   let set = found.get(spec.id) as ComponentSetNode | undefined;
   const existing = new Map(ownCells(set).map((c) => [getTag(c, "cell"), c]));
-  const samples: Record<string, string> = {};
-  for (const p of spec.properties) if (p.type === "TEXT") samples[p.name] = p.default;
+  // Each property's default: a text slot's sample, and whether an optional slot shows.
+  const samples: Record<string, string | boolean> = {};
+  for (const p of spec.properties) samples[p.name] = p.default;
 
   // Drawing order: row by row, each row across its states, so the first variant is the widest and
   // every later one can be placed the moment it exists.
@@ -1233,7 +1240,7 @@ async function syncSet(ctx: SetCtx, spec: M.ComponentSet, found: Map<string, Sce
   const nodes = new Map(ownCells(s).map((c) => [getTag(c, "cell"), c]));
   for (const cell of spec.cells) {
     const node = nodes.get(cell.key);
-    if (node) bindReferences(ctx, node, cell, keys);
+    if (node) bindReferences(ctx, node, cell, keys, samples);
   }
   if (run.apply && layout) {
     // Only if a variant came out bigger than the first one measured: lay the grid out again.
