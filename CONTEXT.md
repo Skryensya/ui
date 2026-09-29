@@ -553,3 +553,27 @@ _Avoid_: template, default node, starter
 What a maker node is to its parent, said in the parent's terms: "item in a wrapping row, sized to
 fit". It comes from the parent and is lost when the node moves.
 _Avoid_: position, placement (the anchored sense), constraints
+
+## Figma
+
+**Figma manifest**:
+The compiled, deterministic description of what a Contract and its tokens become in Figma. Figma is
+downstream of it and never feeds back: the manifest is derived, never authored.
+_Avoid_: Figma schema, Figma spec, design tokens file
+
+**Figma realization**:
+The small authored data about HOW a Contract becomes Figma structure (which options become Figma
+variants, which become booleans, what the system does not project) and never WHAT the Contract says.
+Anything it restates that Core already declares is drift.
+_Avoid_: recipe (a Usage tree was once called that), Figma config, mapping
+
+**Figma variant**:
+Figma's own axis inside a component set. Always qualified, because bare "variant" is Button's
+emphasis option; a Figma variant may carry an option, a state, or neither.
+_Avoid_: variant (unqualified, for Figma's axis)
+
+**Evaluation context**:
+The fixed values a formula token is evaluated against when Figma cannot hold the formula itself
+(density 1, radius multiplier 1). Recorded in the Figma manifest, so an evaluated value always
+names the assumptions that produced it.
+_Avoid_: defaults, baseline, flattening
