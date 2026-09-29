@@ -7,6 +7,7 @@ import "@skryensya/core/components/annotation.css";
 import ComponentPageShell from "./ComponentPageShell.astro";
 import CodeBlock from "../CodeBlock.astro";
 import ComponentPreview from "../ComponentPreview.astro";
+import UsagePreview from "../UsagePreview.astro";
 import { appBarAnatomyCss, appBarAnatomyHtml, appBarMinimalTree, appBarTree } from "../../demos/app-bar";
 import { getLocale, useTranslations } from "../../i18n";
 
@@ -33,20 +34,11 @@ initComponents();`;
   ]}
   testFiles={["packages/core/src/app-bar.test.ts", "packages/react/src/components/app-bar.test.tsx", "packages/vanilla/src/components/app-bar.svelte.test.ts"]}
 >
-  <Fragment slot="anatomy">
-    <p set:html={t("appBarPage.anatomyBody")} />
-    <ComponentPreview
-      html={appBarAnatomyHtml(t)}
-      css={appBarAnatomyCss}
-      label={t("appBarPage.anatomyPreviewLabel")}
-      screens={false}
-      hideSource
-      chrome={false}
-    />
-  </Fragment>
-
   <Fragment slot="usage">
     <p class="lede" set:html={t("appBarPage.lede")} />
+
+    <h3>{t("appBarPage.showcaseTitle")}</h3>
+    <p set:html={t("appBarPage.showcaseBody")} />
     <ComponentPreview tree={appBarTree(t)} js={js} label={t("appBarPage.label")} viewport="menu-deep" />
 
     <h3>{t("appBarPage.intentTitle")}</h3>
@@ -64,6 +56,27 @@ initComponents();`;
     <h3>{t("appBarPage.minimalTitle")}</h3>
     <p set:html={t("appBarPage.minimalBody")} />
     <ComponentPreview tree={appBarMinimalTree(t)} js={js} label={t("appBarPage.minimalTitle")} viewport="menu" />
+
+    <h3>{t("component.anatomy")}</h3>
+    <p set:html={t("appBarPage.anatomyBody")} />
+    <ComponentPreview
+      html={appBarAnatomyHtml(t)}
+      css={appBarAnatomyCss}
+      label={t("appBarPage.anatomyPreviewLabel")}
+      screens={false}
+      hideSource
+      chrome={false}
+    />
+  </Fragment>
+
+  <Fragment slot="guidelines">
+    <p class="lede" set:html={t("appBarPage.guidelinesLede")} />
+    <ul>
+      <li set:html={t("appBarPage.guide.use1")} />
+      <li set:html={t("appBarPage.guide.avoid1")} />
+      <li set:html={t("appBarPage.guide.avoid2")} />
+      <li set:html={t("appBarPage.guide.avoid3")} />
+    </ul>
   </Fragment>
 
   <Fragment slot="install">

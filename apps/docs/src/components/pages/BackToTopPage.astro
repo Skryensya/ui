@@ -3,6 +3,7 @@ import ComponentPageShell from "./ComponentPageShell.astro";
 import AppearanceMenu from "../AppearanceMenu.astro";
 import CodeBlock from "../CodeBlock.astro";
 import ComponentPreview from "../ComponentPreview.astro";
+import UsagePreview from "../UsagePreview.astro";
 import {
   backToTopAnatomyCss,
   backToTopAnatomyTree,
@@ -66,6 +67,10 @@ const pill = `.mi-back-to-top {
   block-size: auto;
   clip-path: none;
 }`;
+
+/* What each value of a property is for, read from this page's messages. Same model Badge uses. */
+const explain = (option: string, values: readonly string[]) =>
+  Object.fromEntries(values.map((value) => [value, t(`backToTop.prop.${option}.${value}` as Parameters<typeof t>[0])]));
 ---
 
 <ComponentPageShell
@@ -80,24 +85,20 @@ const pill = `.mi-back-to-top {
     <AppearanceMenu label={t("prefs.appearance")} />
   </Fragment>
 
-  <Fragment slot="anatomy">
-    <p set:html={t("backToTop.anatomyBody")} />
-    <ComponentPreview
-      tree={backToTopAnatomyTree(t)}
-      css={backToTopAnatomyCss}
-      label={t("backToTop.anatomyPreviewLabel")}
-      screens={false}
-      hideSource
-      chrome={false}
-    />
-  </Fragment>
-
   <Fragment slot="usage">
     <p class="lede" set:html={t("backToTop.lede")} />
-    <h3>{t("backToTop.whenTitle")}</h3>
-    <p set:html={t("backToTop.whenBody1")} />
-    <p set:html={t("backToTop.whenBody2")} />
 
+    <UsagePreview
+      tree={backToTopTree(t)}
+      optionName="appearance"
+      title={t("backToTop.prop.appearance.title")}
+      description={t("backToTop.prop.appearance.body")}
+      explain={explain("appearance", ["plain", "tactile", "brutalist", "frosted"])}
+      stageMinBlockSize="7rem"
+    />
+
+    <h3>{t("backToTop.showcaseTitle")}</h3>
+    <p set:html={t("backToTop.showcaseBody")} />
     <h3>{t("backToTop.demoStaticTitle")}</h3>
     <p set:html={t("backToTop.demoStaticBody")} />
     <ComponentPreview
@@ -142,6 +143,24 @@ const pill = `.mi-back-to-top {
       <li set:html={t("backToTop.contractItem2")} />
       <li set:html={t("backToTop.contractItem3")} />
     </ul>
+
+    <h3>{t("component.anatomy")}</h3>
+    <p set:html={t("backToTop.anatomyBody")} />
+    <ComponentPreview
+      tree={backToTopAnatomyTree(t)}
+      css={backToTopAnatomyCss}
+      label={t("backToTop.anatomyPreviewLabel")}
+      screens={false}
+      hideSource
+      chrome={false}
+    />
+  </Fragment>
+
+  <Fragment slot="guidelines">
+    <p class="lede" set:html={t("backToTop.guidelinesLede")} />
+    <h3>{t("backToTop.whenTitle")}</h3>
+    <p set:html={t("backToTop.whenBody1")} />
+    <p set:html={t("backToTop.whenBody2")} />
   </Fragment>
 
   <Fragment slot="install">
