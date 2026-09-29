@@ -659,10 +659,11 @@ async function applyText(ctx: SetCtx, node: TextNode, text: M.Text, sample: stri
 
 /** An icon slot: an exposed instance of the Icon set, sized by the host and painted in its colour. */
 async function applyIcon(ctx: SetCtx, node: InstanceNode, layer: Extract<M.Layer, { kind: "icon" }>) {
-  const { spec, set, byName } = ctx.icons;
+  const { spec, byName } = ctx.icons;
   const main = await node.getMainComponentAsync();
-  // Anything that is not one of the Icon set's variants (the old placeholder) becomes the default.
-  if (!main || main.parent?.id !== set.id) node.swapComponent(byName.get(spec.default)!);
+  // The component's own slot shows the slot's default glyph; an instance picks another from its panel.
+  const wanted = byName.get(layer.default) ?? byName.get(spec.default)!;
+  if (!main || main.id !== wanted.id) node.swapComponent(wanted);
   node.isExposedInstance = true;
   setNumber(ctx, node, "width", layer.icon.size);
   setNumber(ctx, node, "height", layer.icon.size);
@@ -715,7 +716,10 @@ async function applyCell(ctx: SetCtx, node: ComponentNode, cell: M.Cell, sample:
       child = null;
     }
     if (!child) {
-      child = layer.kind === "icon" ? ctx.icons.byName.get(ctx.icons.spec.default)!.createInstance() : figma.createText();
+      child =
+        layer.kind === "icon"
+          ? (ctx.icons.byName.get(layer.default) ?? ctx.icons.byName.get(ctx.icons.spec.default)!).createInstance()
+          : figma.createText();
       child.name = layer.slot;
     }
     node.insertChild(index, child);
@@ -832,8 +836,90 @@ async function layoutSet(ctx: SetCtx, frame: FrameNode, set: ComponentSetNode, s
       move(run, group, setX + colX[i], setY - 2 * (lineH + 8));
     }
   });
+  // The showcase: beside each row, that button at rest with one icon slot switched on.
+  const showcaseRight = await layoutShowcase(ctx, frame, set, spec, rows, rowY, cellH, setX + set.width + GROUP, setY, lineH, style, strong, keep);
   pruneLabels(ctx, frame, keep);
-  resizeTo(run, frame, setX + set.width + FRAME_PAD, setY + set.height + FRAME_PAD);
+  resizeTo(run, frame, Math.max(setX + set.width, showcaseRight) + FRAME_PAD, setY + set.height + FRAME_PAD);
+}
+
+/** Instances of each row's rest variant with one optional slot on, in columns right of the set. */
+async function layoutShowcase(
+  ctx: SetCtx,
+  frame: FrameNode,
+  set: ComponentSetNode,
+  spec: M.ComponentSet,
+  rows: Record<string, string>[],
+  rowY: number[],
+  cellH: number,
+  left: number,
+  setY: number,
+  lineH: number,
+  style: Label,
+  strong: Label,
+  keep: Set<string>,
+): Promise<number> {
+  const { run } = ctx;
+  const byKey = new Map(ownCells(set).map((c) => [getTag(c, "cell"), c]));
+  const axisOrder = spec.axes.map((a) => a.name);
+  const defs = set.componentPropertyDefinitions;
+  const keyOf = (name: string) => Object.keys(defs).find((k) => k.split("#")[0] === name && defs[k].type === "BOOLEAN");
+  const existing = new Map(
+    frame.children.filter((n): n is InstanceNode => n.type === "INSTANCE" && getTag(n, "showcase") !== "").map((n) => [getTag(n, "showcase"), n]),
+  );
+  const drawn = new Set<string>();
+  const instances: { node: InstanceNode; col: number; row: number }[] = [];
+
+  for (const [col, column] of spec.showcase.columns.entries()) {
+    for (const [row, combo] of rows.entries()) {
+      const props = { ...combo, ...spec.showcase.base };
+      const cellKey = axisOrder.map((a) => `${a}=${props[a]}`).join(", ");
+      const main = byKey.get(cellKey);
+      if (!main) continue;
+      const tagKey = `${Object.values(combo).join(",")}:${column.slot}`;
+      drawn.add(tagKey);
+      let node = existing.get(tagKey);
+      if (!node) {
+        run.write(() => {
+          node = main.createInstance();
+          node.setSharedPluginData(NS, "showcase", tagKey);
+          frame.appendChild(node);
+        });
+      } else if ((await node.getMainComponentAsync())?.id !== main.id) {
+        const n = node;
+        run.write(() => n.swapComponent(main));
+      }
+      if (!node) continue;
+      const n = node;
+      const want: Record<string, boolean> = {};
+      for (const [name, value] of Object.entries(column.properties)) {
+        const key = keyOf(name);
+        if (key && n.componentProperties[key]?.value !== value) want[key] = value;
+      }
+      if (Object.keys(want).length) run.write(() => n.setProperties(want));
+      const name = `${column.slot} · ${Object.values(combo).join(" · ")}`;
+      if (n.name !== name) run.write(() => (n.name = name));
+      instances.push({ node: n, col, row });
+    }
+  }
+  for (const [key, node] of existing) if (!drawn.has(key)) run.write(() => node.remove());
+
+  // Column by column, each as wide as its widest instance; rows aligned with the set's rows.
+  let x = left;
+  for (const [col, column] of spec.showcase.columns.entries()) {
+    const inCol = instances.filter((i) => i.col === col);
+    if (!inCol.length) continue;
+    const width = Math.max(...inCol.map((i) => i.node.width));
+    for (const { node, row } of inCol) move(run, node, Math.round(x), Math.round(setY + rowY[row] + (cellH - node.height) / 2));
+    const header = `showcase:${column.slot}`;
+    keep.add(header);
+    move(run, ensureLabel(ctx, frame, header, `${column.slot}: on`, style), Math.round(x), setY - lineH - 8);
+    if (col === 0) {
+      keep.add("showcase:group");
+      move(run, ensureLabel(ctx, frame, "showcase:group", "with icon", strong), Math.round(x), setY - 2 * (lineH + 8));
+    }
+    x += width + 24;
+  }
+  return x - 24;
 }
 
 async function syncSet(ctx: SetCtx, spec: M.ComponentSet, found: Map<string, SceneNode>, page: PageNode | undefined) {
@@ -942,7 +1028,8 @@ async function syncSpecimen(ctx: SetCtx, found: Map<string, SceneNode>, page: Pa
     const set = found.get(entry.set) as ComponentSetNode | undefined;
     const main = ownCells(set).find((c) => getTag(c, "cell") === entry.cell);
     if (!set || !main) continue;
-    const hash = JSON.stringify(entry);
+    // The preview is stale when its entry OR the variant it shows changed.
+    const hash = JSON.stringify({ entry, cell: getTag(main, "hash") });
     let wrapper = entries.get(entry.id);
     if (wrapper && getTag(wrapper, "hash") === hash && f.children[index] === wrapper) {
       counts.unchanged++;
@@ -984,8 +1071,12 @@ async function syncSpecimen(ctx: SetCtx, found: Map<string, SceneNode>, page: Pa
     }
     instance.setProperties(props);
     // The icon each slot shows, picked on the exposed Icon instance the way a designer would.
+    const cellSpec = (manifest.components.find((c) => c.id === entry.set) as M.ComponentSet).cells.find((c) => c.key === entry.cell)!;
+    const slotDefault = new Map(
+      manifest.styles.layers[cellSpec.layers].flatMap((l) => (l.kind === "icon" ? [[l.slot, l.default] as const] : [])),
+    );
     for (const nested of instance.exposedInstances) {
-      const name = entry.icons[nested.name] ?? ctx.icons.spec.default;
+      const name = entry.icons[nested.name] ?? slotDefault.get(nested.name) ?? ctx.icons.spec.default;
       nested.setProperties({ [ctx.icons.spec.axis]: name });
     }
     wrapper.setSharedPluginData(NS, "hash", hash);
