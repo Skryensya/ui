@@ -199,6 +199,18 @@ export async function buildFigmaManifest(repoRoot: string, realization: Realizat
       .map(([slot]) => ({ slot, properties: { [slot]: true } })),
   };
 
+  // Where each slot lands, read off the part template: `pre`, the label, `post`.
+  const slotOrder: string[] = [];
+  const walkTemplate = (node: unknown) => {
+    if (!node || typeof node !== "object") return;
+    const n = node as { slot?: string; children?: unknown[] };
+    if (n.slot && realization.slots[n.slot] && !slotOrder.includes(n.slot)) slotOrder.push(n.slot);
+    for (const child of n.children ?? []) walkTemplate(child);
+  };
+  walkTemplate(signature.template);
+  const unplaced = Object.keys(realization.slots).filter((slot) => !slotOrder.includes(slot));
+  if (unplaced.length) throw new Error(`slots the template never places: ${unplaced.join(", ")}`);
+
   const sets: ComponentSet[] = [];
   const styles: Styles = { boxes: {}, surfaces: {}, layers: {} };
   const intern = <T>(table: Record<string, T>, value: T) => {
@@ -227,8 +239,8 @@ export async function buildFigmaManifest(repoRoot: string, realization: Realizat
 
       try {
         const layers: Layer[] = [];
-        // Slots in template order: the element that carries a slot's part, or the host itself.
-        for (const [slot, spec] of Object.entries(realization.slots)) {
+        // Slots in the order the contract's template places them, never the realization's key order.
+        for (const [slot, spec] of slotOrder.map((slot) => [slot, realization.slots[slot]] as const)) {
           const part = contract.parts[slot];
           const holder = part ? host.querySelector(`.${part}`) : host;
           const optional = !signature.slots[slot]?.required;
