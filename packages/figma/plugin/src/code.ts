@@ -686,6 +686,8 @@ async function ownPage(run: Run): Promise<PageNode | undefined> {
   }
   tag(run, page, provenance("page", "page"));
   await page.loadAsync();
+  // New nodes land on the current page before they are moved anywhere; make that this one.
+  if (run.apply && figma.currentPage !== page) await figma.setCurrentPageAsync(page);
   return page;
 }
 
