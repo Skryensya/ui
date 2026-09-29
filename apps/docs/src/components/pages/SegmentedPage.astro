@@ -7,7 +7,8 @@ import AppearanceMenu from "../AppearanceMenu.astro";
 import CodeBlock from "../CodeBlock.astro";
 import ComponentPreview from "../ComponentPreview.astro";
 import UsagePreview from "../UsagePreview.astro";
-import { segmentedAnatomyTree, segmentedTree } from "../../demos/segmented";
+import DoDont from "../DoDont.astro";
+import { segmentedAnatomyTree, segmentedTree, segmentedDontManyTree } from "../../demos/segmented";
 import { annotationDemoCss } from "../../demos/annotation";
 import { getLocale, useTranslations } from "../../i18n";
 
@@ -30,7 +31,41 @@ await initComponents();`;
     <AppearanceMenu label={t("prefs.appearance")} />
   </Fragment>
 
-  <Fragment slot="anatomy">
+  <Fragment slot="usage">
+    <p class="lede" set:html={t("segmentedPage.lede")} />
+
+    <UsagePreview
+      tree={segmentedTree(t)}
+      optionName="size"
+      title={t("segmentedPage.prop.size.title")}
+      description={t("segmentedPage.prop.size.body")}
+      explain={{ sm: t("segmentedPage.prop.size.sm"), md: t("segmentedPage.prop.size.md"), lg: t("segmentedPage.prop.size.lg") }}
+      labels={{ sm: "sm", md: "md", lg: "lg" }}
+      stageMinBlockSize="7rem"
+    />
+
+    <UsagePreview
+      tree={segmentedTree(t)}
+      optionName="appearance"
+      title={t("segmentedPage.prop.appearance.title")}
+      description={t("segmentedPage.prop.appearance.body")}
+      explain={{
+        plain: t("segmentedPage.prop.appearance.plain"),
+        tactile: t("segmentedPage.prop.appearance.tactile"),
+        brutalist: t("segmentedPage.prop.appearance.brutalist"),
+        frosted: t("segmentedPage.prop.appearance.frosted"),
+      }}
+      stageMinBlockSize="7rem"
+    />
+
+    <h3>{t("segmentedPage.showcaseTitle")}</h3>
+    <p set:html={t("segmentedPage.showcaseBody")} />
+    <ComponentPreview tree={segmentedTree(t)} label="Segmented" />
+    <p set:html={t("segmentedPage.body")} />
+    <p set:html={t("component.reactNote")} />
+    <p set:html={t("segmentedPage.reactBody")} />
+
+    <h3>{t("component.anatomy")}</h3>
     <p set:html={t("segmentedPage.anatomyBody")} />
     <ComponentPreview
       tree={segmentedAnatomyTree(t)}
@@ -42,20 +77,13 @@ await initComponents();`;
     />
   </Fragment>
 
-  <Fragment slot="usage">
-    <p class="lede" set:html={t("segmentedPage.lede")} />
-    <ComponentPreview tree={segmentedTree(t)} label="Segmented" />
-    <p set:html={t("segmentedPage.body")} />
-    <UsagePreview
-      tree={segmentedTree(t)}
-      optionName="size"
-      title={t("segmentedPage.prop.size.title")}
-      description={t("segmentedPage.prop.size.body")}
-      explain={{ sm: t("segmentedPage.prop.size.sm"), md: t("segmentedPage.prop.size.md"), lg: t("segmentedPage.prop.size.lg") }}
-      labels={{ sm: "sm", md: "md", lg: "lg" }}
+  <Fragment slot="guidelines">
+    <p class="lede" set:html={t("segmentedPage.guidelinesLede")} />
+    <DoDont
+      title={t("segmentedPage.dd.few.title")}
+      do={{ tree: segmentedTree(t), caption: t("segmentedPage.dd.few.do") }}
+      dont={{ tree: segmentedDontManyTree(t), caption: t("segmentedPage.dd.few.dont") }}
     />
-    <p set:html={t("component.reactNote")} />
-    <p set:html={t("segmentedPage.reactBody")} />
   </Fragment>
 
   <Fragment slot="install">

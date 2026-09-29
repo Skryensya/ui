@@ -12,3 +12,4 @@ export default { title: "Components/Forms/SegmentedControl", tags: ["autodocs"] 
 
 export const Anatomy: StoryObj = treeStory(demos.segmentedAnatomyTree, { decorators: [withCss(annotationDemoCss)] });
 export const Default: StoryObj = treeStory(demos.segmentedTree);
+export const DontMany: StoryObj = treeStory(demos.segmentedDontManyTree);
