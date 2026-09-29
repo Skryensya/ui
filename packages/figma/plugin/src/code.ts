@@ -1081,106 +1081,6 @@ async function syncSet(ctx: SetCtx, spec: M.ComponentSet, found: Map<string, Sce
   progress.finish(spec.id, summarize(counts));
 }
 
-/* ── the specimen: the docs previews, as instances ──────────────────────────────────────────── */
-
-async function syncSpecimen(ctx: SetCtx, found: Map<string, SceneNode>, page: PageNode | undefined) {
-  const { run, progress } = ctx;
-  progress.start("specimen");
-  let frame = found.get("specimen") as FrameNode | undefined;
-  if (!frame) {
-    run.log("CREATE", "specimen frame");
-    if (!run.apply || !page) {
-      progress.finish("specimen", `${manifest.specimen.length} to create`);
-      return;
-    }
-    frame = figma.createFrame();
-    frame.layoutMode = "HORIZONTAL";
-    frame.layoutWrap = "WRAP";
-    frame.primaryAxisSizingMode = "FIXED";
-    frame.counterAxisSizingMode = "AUTO";
-    frame.resize(1400, 100);
-    frame.itemSpacing = 32;
-    frame.counterAxisSpacing = 32;
-    frame.paddingTop = frame.paddingBottom = frame.paddingLeft = frame.paddingRight = FRAME_PAD;
-    frame.cornerRadius = 16;
-    page.appendChild(frame);
-  }
-  const f = frame;
-  if (page && f.parent !== page) run.write(() => page.appendChild(f));
-  if (f.name !== "Specimen (docs previews)") run.write(() => (f.name = "Specimen (docs previews)"));
-  paintStage(ctx, f);
-  tag(run, f, provenance("specimen", "specimen"));
-  found.set("specimen", f);
-
-  const entries = new Map(f.children.map((c) => [getTag(c, "specimen"), c as FrameNode]));
-  const counts = { created: 0, updated: 0, unchanged: 0 };
-  // Only a real sync draws captions, and only it has every variable they bind to.
-  let captionStyle: Label | undefined;
-  for (const [index, entry] of manifest.specimen.entries()) {
-    await progress.tick("specimen");
-    const set = found.get(entry.set) as ComponentSetNode | undefined;
-    const main = ownCells(set).find((c) => getTag(c, "cell") === entry.cell);
-    if (!set || !main) continue;
-    // The preview is stale when its entry OR the variant it shows changed.
-    const hash = JSON.stringify({ entry, cell: getTag(main, "hash") });
-    let wrapper = entries.get(entry.id);
-    if (wrapper && getTag(wrapper, "hash") === hash && f.children[index] === wrapper) {
-      counts.unchanged++;
-      continue;
-    }
-    if (!run.apply) {
-      wrapper ? counts.updated++ : counts.created++;
-      continue;
-    }
-    run.write(() => void 0);
-    if (!wrapper) {
-      counts.created++;
-      wrapper = figma.createFrame();
-      wrapper.name = entry.id;
-      wrapper.layoutMode = "VERTICAL";
-      wrapper.primaryAxisSizingMode = "AUTO";
-      wrapper.counterAxisSizingMode = "AUTO";
-      wrapper.itemSpacing = 8;
-      wrapper.fills = [];
-      wrapper.setSharedPluginData(NS, "specimen", entry.id);
-    } else counts.updated++;
-    f.insertChild(index, wrapper);
-    captionStyle ??= await labelStyle(ctx);
-    const caption = ensureLabel(ctx, wrapper, "caption", `${entry.id}\n${entry.set.split("/")[1]} · ${entry.cell}`, captionStyle);
-    if (wrapper.children[0] !== caption) wrapper.insertChild(0, caption);
-    let instance = wrapper.findChild((n) => n.name === "instance") as InstanceNode | null;
-    if (!instance) {
-      instance = main.createInstance();
-      instance.name = "instance";
-      wrapper.appendChild(instance);
-    } else if ((await instance.getMainComponentAsync())?.id !== main.id) instance.swapComponent(main);
-    const defs = set.componentPropertyDefinitions;
-    const props: Record<string, string | boolean> = {};
-    for (const [name, value] of Object.entries(entry.properties)) {
-      const key = Object.keys(defs).find((k) => k.split("#")[0] === name && defs[k].type !== "VARIANT");
-      if (key) props[key] = value;
-    }
-    for (const text of instance.findAll((n) => n.type === "TEXT") as TextNode[]) {
-      if (text.fontName !== figma.mixed) await figma.loadFontAsync(text.fontName);
-    }
-    instance.setProperties(props);
-    // The icon each slot shows, picked on the exposed Icon instance the way a designer would.
-    const cellSpec = (manifest.components.find((c) => c.id === entry.set) as M.ComponentSet).cells.find((c) => c.key === entry.cell)!;
-    const slotDefault = new Map(
-      manifest.styles.layers[cellSpec.layers].flatMap((l) => (l.kind === "icon" ? [[l.slot, l.default] as const] : [])),
-    );
-    for (const nested of instance.exposedInstances) {
-      const name = entry.icons[nested.name] ?? slotDefault.get(nested.name) ?? ctx.icons.spec.default;
-      nested.setProperties({ [ctx.icons.spec.axis]: name });
-    }
-    wrapper.setSharedPluginData(NS, "hash", hash);
-  }
-  if (counts.created) run.log("CREATE", `specimen: ${counts.created} previews`);
-  if (counts.updated) run.log("UPDATE", `specimen: ${counts.updated} previews`);
-  if (counts.unchanged) run.log("NOOP", `specimen: ${counts.unchanged} previews`);
-  progress.finish("specimen", summarize(counts));
-}
-
 /* ── the run ────────────────────────────────────────────────────────────────────────────────── */
 
 /**
@@ -1233,7 +1133,6 @@ async function findOwn(): Promise<{ found: Map<string, SceneNode>; pages: PageNo
 function collectOrphans(run: Run, pages: PageNode[], found: Map<string, SceneNode>) {
   const known = new Set<string>([
     ...manifest.components.flatMap((c) => [c.id, `frame:${c.id}`]),
-    "specimen",
     ...manifest.pages.map((p) => `page:${p.id}`),
   ]);
   for (const page of pages) {
@@ -1274,7 +1173,6 @@ function arrange(run: Run, pages: Map<string, PageNode>, found: Map<string, Scen
     let y = 0;
     const ids = [
       ...manifest.components.filter((c) => c.page === pageId).map((c) => `frame:${c.id}`),
-      ...(manifest.specimenPage === pageId ? ["specimen"] : []),
     ];
     for (const id of ids) {
       const node = found.get(id);
@@ -1296,13 +1194,12 @@ async function reconcile(apply: boolean) {
     { id: "variables", label: "Variables", total: manifest.variables.length },
     { id: "icons", label: `${iconSpec.name} (${iconSpec.source.replace("@skryensya/icons-", "")})`, total: iconSpec.icons.length },
     ...setSpecs.map((s) => ({ id: s.id, label: s.name, total: s.cells.length })),
-    { id: "specimen", label: "Specimen", total: manifest.specimen.length },
   ]);
 
   const vars = await syncVariables(run, progress);
   const pages = await ensurePages(run);
   // New nodes are born on the current page, so work from the one they belong on.
-  const home = pages.get(manifest.specimenPage);
+  const home = pages.get(manifest.pages[0].id);
   if (apply && home && figma.currentPage !== home) await figma.setCurrentPageAsync(home);
   const { found, pages: ownPages } = await findOwn();
   const ctx: Ctx = { run, progress, vars };
@@ -1311,14 +1208,20 @@ async function reconcile(apply: boolean) {
   // A dry run never draws a cell, so it walks the sets without the Icon set it would have made.
   const setCtx: SetCtx = { ...ctx, icons: icons as IconCtx };
   for (const spec of setSpecs) await syncSet(setCtx, spec, found, pages.get(spec.page));
-  await syncSpecimen(setCtx, found, pages.get(manifest.specimenPage));
+  // The specimen is gone from the manifest. Its frame held only this plugin's own instances, so it goes too.
+  const specimen = found.get("specimen");
+  if (specimen) {
+    run.log("UPDATE", "specimen frame", "removed, no longer in the manifest");
+    run.write(() => specimen.remove());
+    found.delete("specimen");
+  }
   collectOrphans(run, ownPages, found);
   arrange(run, pages, found);
 
   if (figma.root.getSharedPluginData(NS, "sourceHash") !== manifest.sourceHash) {
     run.write(() => figma.root.setSharedPluginData(NS, "sourceHash", manifest.sourceHash));
   }
-  const landing = pages.get(manifest.specimenPage);
+  const landing = pages.get(manifest.pages[0].id);
   if (apply && landing && figma.currentPage !== landing) await figma.setCurrentPageAsync(landing);
 
   const counts: Record<string, number> = {};

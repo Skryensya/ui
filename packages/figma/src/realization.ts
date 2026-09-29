@@ -50,6 +50,4 @@ export type Realization = {
     /** The token a section's outline is drawn in. */
     divider: string;
   };
-  /** The docs previews mirrored on the specimen page, by export name, for the side-by-side check. */
-  specimen: { module: string; exports: readonly string[] };
 };

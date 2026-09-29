@@ -197,17 +197,6 @@ export type IconSet = {
   hash: string;
 };
 
-export type SpecimenEntry = {
-  id: string;
-  /** The docs preview it came from. */
-  source: string;
-  set: string;
-  cell: string;
-  properties: Record<string, string | boolean>;
-  /** The icon each icon slot shows, by stable name. */
-  icons: Record<string, string>;
-};
-
 export type Diagnostic = {
   severity: "info" | "warning";
   code: string;
@@ -225,8 +214,6 @@ export type FigmaManifest = {
   stage: Stage;
   components: (IconSet | ComponentSet)[];
   styles: Styles;
-  specimenPage: string;
-  specimen: SpecimenEntry[];
   diagnostics: Diagnostic[];
   report: Record<string, unknown>;
 };
