@@ -294,10 +294,18 @@ export function resolve(text: string, kind: Kind, ctx: Context, role: string): B
   try {
     const touchesVars = /var\(|light-dark\(|currentcolor/i.test(current);
     if (touchesVars || hook) {
-      // Inline the component's own hooks; keep tokens as var() so the formula still names them.
-      const expression = substitute(withCurrentColor(current, ctx), (name) => ctx.computed.get(name), (name) =>
-        !ctx.computed.has(name) && ctx.registry.root.has(name),
-      ).trim();
+      // Inline the component's own hooks; keep tokens as var() so the formula still names them. A
+      // token that IS `currentColor` (the state layer's colour) means this element's colour, so it
+      // is inlined too, and resolved against the element rather than :root.
+      const keepToken = (name: string) =>
+        !ctx.computed.has(name) && ctx.registry.root.has(name) && !/currentcolor/i.test(ctx.registry.root.get(name) ?? "");
+      const lookup = (name: string) => ctx.computed.get(name) ?? ctx.registry.rootLookup(name);
+      // Substituting can surface a new `currentColor` (from that token), so repeat until none is left.
+      let expression = current;
+      for (let pass = 0; pass < 4; pass++) {
+        expression = substitute(withCurrentColor(expression, ctx), lookup, keepToken).trim();
+        if (!/currentcolor/i.test(expression)) break;
+      }
       const base = hook ? hookBase(hook, ctx) : role;
       // Validate now, so a field never points at a variable that will not exist.
       for (const mode of MODES) evaluateAs(kind, substitute(expression, ctx.registry.rootLookup), mode);

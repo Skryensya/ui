@@ -15,7 +15,7 @@ import type { ComponentContract, ContractOption } from "@skryensya/core/contract
 import { parseTokens } from "@skryensya/core/parse";
 import { getContract } from "@skryensya/core/registry";
 import type { UsageTree } from "@skryensya/core/usage-tree";
-import { computeTree, elementFrom, readRules, type Computed, type RuleSet } from "./cascade.js";
+import { computeTree, elementFrom, markerOf, readRules, type Computed, type RuleSet } from "./cascade.js";
 import { Unsupported } from "./evaluate.js";
 import {
   SCHEMA_VERSION,
@@ -32,7 +32,7 @@ import {
   type Styles,
 } from "./manifest-types.js";
 import type { Realization } from "./realization.js";
-import { frameOf, iconOf, textOf } from "./realize.js";
+import { frameOf, iconOf, overlayOf, ringOf, textOf } from "./realize.js";
 import { Registry, resolve, type CellProps, type Context } from "./resolve.js";
 
 const hash = (value: unknown) => createHash("sha256").update(canonical(value)).digest("hex").slice(0, 16);
@@ -54,6 +54,9 @@ const FILE_MODES = ["light"] as const;
 const DEFAULT_ICON = "placeholder";
 
 /** What the evaluation assumed, beyond what the token graph itself declares. */
+/** Media conditions the evaluation holds true: a desktop pointer, which is what hover needs. */
+const MEDIA_HOLDS = ["(any-hover: hover)"];
+
 const CONTEXT_OVERRIDES: Record<string, string> = {
   // The frosted material is on: backdrop-filter supported and no reduced-transparency preference.
   "--frost-on": "",
@@ -135,13 +138,25 @@ export async function buildFigmaManifest(realization: Realization): Promise<Figm
     if (!file) throw new Error(`sheet ${name} not in the token corpus`);
     return { name: rel, css: file.css };
   });
-  const rules: RuleSet = readRules(sheets);
+  // A class the tree uses that none of those sheets defines comes from the base bundle
+  // (`sk-interactive` is the state layer's): find the sheet that does, and read it first.
+  for (const cls of sheetsForTree(sample).classes) {
+    // The sheet that declares the class on its own (`.sk-interactive {`), not one that restyles it.
+    const defines = new RegExp(`(^|[{};,]\\s*)\\.${cls}\\s*\\{`, "m");
+    if (sheets.some((sheet) => defines.test(sheet.css))) continue;
+    const file = corpus.files.find((f) => f.tier === "component" && defines.test(f.css));
+    if (file) sheets.unshift({ name: file.rel, css: file.css });
+  }
+  const interactions = realization.state.interactions;
+  const rules: RuleSet = readRules(sheets, MEDIA_HOLDS, interactions.map((i) => i.pseudo));
   const unmatchable = new Set<string>();
 
-  const computeCell = (input: CellInput) => {
+  const computeCell = (input: CellInput, simulated: readonly string[] = []) => {
     const markup = mounted(emitMarkup(treeFor(realization, input, iconName), { fillDefaults: true }), iconContract);
     const host = elementFrom(markup);
-    return { host, styles: computeTree(host, rules, unmatchable) };
+    for (const pseudo of simulated) host.setAttribute(markerOf(pseudo), "");
+    const tree = computeTree(host, rules, unmatchable);
+    return { host, styles: tree.styles, pseudo: tree.pseudo };
   };
   const fingerprint = (tree: Map<Element, Computed>) => canonical([...tree.values()].map((c) => Object.fromEntries(c)));
 
@@ -170,7 +185,10 @@ export async function buildFigmaManifest(realization: Realization): Promise<Figm
     if (option.type === "enum") axes.push({ name, values: [...(option.values ?? [])] });
     else if (option.type === "boolean") axes.push({ name, values: ["false", "true"] });
   }
-  const stateAxis: Axis = { name: realization.state.axis, values: [realization.state.rest, ...stateOptions] };
+  const stateAxis: Axis = {
+    name: realization.state.axis,
+    values: [realization.state.rest, ...interactions.map((i) => i.name), ...stateOptions],
+  };
   // The state reads best between the enums and the remaining booleans.
   const firstBoolean = axes.findIndex((a) => contract.options[a.name].type === "boolean");
   axes.splice(firstBoolean < 0 ? axes.length : firstBoolean, 0, stateAxis);
@@ -179,6 +197,7 @@ export async function buildFigmaManifest(realization: Realization): Promise<Figm
   const registry = new Registry(root, (name) => tierOf.get(name), realization.contract);
   const hookPrefix = `--sk-${realization.contract}-`;
   const diagnostics: Diagnostic[] = [];
+  const stage = stageOf(realization, corpus.files, registry);
 
   /* Every cell of every set. */
   const combos = (list: Axis[]): CellProps[] =>
@@ -236,12 +255,20 @@ export async function buildFigmaManifest(realization: Realization): Promise<Figm
         else options[name] = false;
       }
       const iconChildren = iconWhen !== undefined && options[iconWhen] === true;
-      const { host, styles: cascaded } = computeCell({ options, icons: true, iconChildren });
+      const interaction = interactions.find((i) => i.name === props[stateAxis.name]);
+      const { host, styles: cascaded, pseudo } = computeCell({ options, icons: true, iconChildren }, interaction ? [interaction.pseudo] : []);
       const cellProps: CellProps = { [realization.splitBy]: splitValue, ...props };
-      const ctx = (el: Element): Context => ({ computed: cascaded.get(el)!, registry, cell: cellProps, hookPrefix });
+      const ctxOf = (computed: Computed): Context => ({ computed, registry, cell: cellProps, hookPrefix });
+      const ctx = (el: Element): Context => ctxOf(cascaded.get(el)!);
 
       try {
         const layers: Layer[] = [];
+        // Pseudo-elements that paint go under the content, first.
+        for (const [which, name] of Object.entries(realization.overlays) as ["before" | "after", string][]) {
+          const box = pseudo.get(host)?.[which];
+          const fills = box && overlayOf(ctxOf(box));
+          if (fills?.length) layers.push({ kind: "overlay", slot: name, fills });
+        }
         // Slots in the order the contract's template places them, never the realization's key order.
         for (const [slot, spec] of slotOrder.map((slot) => [slot, realization.slots[slot]] as const)) {
           const part = contract.parts[slot];
@@ -261,6 +288,9 @@ export async function buildFigmaManifest(realization: Realization): Promise<Figm
             layers.push({ kind: "text", slot, textProperty: slot, text: textOf(ctx(host)) });
           }
         }
+        // An outline draws over everything, last.
+        const ring = ringOf(ctx(host));
+        if (ring) layers.push({ kind: "ring", slot: realization.ring, ...ring });
         const { strokes, fills, effects, ...box } = frameOf(ctx(host));
         const key = Object.entries(props).map(([k, v]) => `${k}=${v}`).join(", ");
         const body = { key, props, box: intern(styles.boxes, box), surface: intern(styles.surfaces, { strokes, fills, effects }), layers: intern(styles.layers, layers) };
@@ -295,6 +325,9 @@ export async function buildFigmaManifest(realization: Realization): Promise<Figm
       axes: setAxes,
       grid,
       defaultCell,
+      interactions: interactions.flatMap((i) =>
+        i.trigger ? [{ axis: stateAxis.name, from: realization.state.rest, to: i.name, trigger: i.trigger }] : [],
+      ),
       showcase,
       properties,
       cells,
@@ -306,7 +339,6 @@ export async function buildFigmaManifest(realization: Realization): Promise<Figm
 
 
   const icon = await iconSetOf(realization, iconContract);
-  const stage = stageOf(realization, corpus.files, registry);
   registry.finalize([realization.splitBy, ...axes.map((a) => a.name)]);
   // A field bound to a component variable that failed to evaluate would point at nothing.
   const dead = [...registry.diagnostics].filter((d) => d.code === "DERIVED_UNSUPPORTED");
@@ -358,9 +390,9 @@ export async function buildFigmaManifest(realization: Realization): Promise<Figm
       "--radius-multiplier": root.get("--radius-multiplier") ?? "",
       "--frost-on": "on (empty): backdrop-filter supported, no reduced-transparency preference",
       rootFontSize: "16px",
-      state: "rest: no :hover, :active or :focus",
+      state: "rest, plus the interaction states the realization draws (:hover, :focus-visible), simulated; :active never",
       direction: "ltr",
-      conditions: "no @media or @supports block holds",
+      conditions: "(any-hover: hover) holds; no other @media or @supports block does",
     },
     collections: [
       { id: "primitives" as const, name: "Skryensya / Primitives", modes: FILE_MODES },
@@ -389,7 +421,7 @@ function stageOf(realization: Realization, files: readonly { rel: string; css: s
   const file = files.find((f) => f.rel === rel);
   if (!file) throw new Error(`sheet ${contract.css} not in the token corpus`);
   const root = elementFrom(`<div class="${contract.parts.root}"></div>`);
-  const computed = computeTree(root, readRules([{ name: rel, css: file.css }]), new Set()).get(root)!;
+  const computed = computeTree(root, readRules([{ name: rel, css: file.css }]), new Set()).styles.get(root)!;
   const ctx: Context = { computed, registry, cell: {}, hookPrefix: `--sk-${contract.id}-` };
   const background = resolve(`var(${realization.stage.hook})`, "color", ctx, "stage");
   const token = (name: string, kind: "color" | "number" | "string") => {
