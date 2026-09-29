@@ -74,10 +74,12 @@ describe("ColorPicker", () => {
     expect(document.querySelectorAll(".sk-color-picker__swatch-trigger")).toHaveLength(3);
   });
 
-  it("renders a real hidden input carrying the field's name", () => {
+  it("renders a field-like trigger with a preview swatch and text value", () => {
     const ui = render(<ColorPicker defaultValue="#3366ff" label="Color" name="brand" />);
     const hidden = ui.container.querySelector('input[name="brand"]');
     expect(hidden).toBeTruthy();
+    expect(ui.container.querySelector(".sk-color-picker__swatch")).toBeTruthy();
+    expect(ui.container.querySelector(".sk-color-picker__value")?.textContent).toBe("rgba(51, 102, 255, 1)");
   });
 
   it("a consumer's own triggerLabel overrides Zag's color-describing default", () => {
