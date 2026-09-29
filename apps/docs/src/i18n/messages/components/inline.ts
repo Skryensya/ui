@@ -40,6 +40,9 @@ export const inlineMessages = {
       '<code>blockStart</code> acepta <code>none</code>, <code>xs</code>, <code>sm</code>, <code>md</code>, <code>lg</code>, <code>xl</code> o <code>auto</code>; por defecto es <code>none</code>. En HTML es <code>data-block-start</code>. <code>auto</code> sienta la fila en el piso de una card.',
     "inlinePage.test1": "Renderiza Stack, Inline y Grid según los contratos de layout documentados.",
     "inlinePage.test2": "Escribe <code>data-block-start=\"none\"</code> para el aire por defecto, igual que el markup emitido.",
+    "inlinePage.showcaseTitle": "Showcases",
+    "inlinePage.showcaseBody": "Una fila de elementos que se envuelve, y una fila con un piso de ancho para tarjetas.",
+    "inlinePage.guidelinesLede": "Inline pone elementos en fila, cada uno con su propio ancho, y los envuelve si no caben.",
   },
   en: {
     "demo.inline.title": "Project Atlas",
@@ -82,5 +85,8 @@ export const inlineMessages = {
       '<code>blockStart</code> accepts <code>none</code>, <code>xs</code>, <code>sm</code>, <code>md</code>, <code>lg</code>, <code>xl</code>, or <code>auto</code>; the default is <code>none</code>. In HTML it is <code>data-block-start</code>. <code>auto</code> sits the row on a card\'s floor.',
     "inlinePage.test1": "Renders Stack, Inline and Grid as the documented layout contracts.",
     "inlinePage.test2": "Writes <code>data-block-start=\"none\"</code> for the default space above, as the emitted markup does.",
+    "inlinePage.showcaseTitle": "Showcases",
+    "inlinePage.showcaseBody": "A row of items that wraps, and a row with a width floor for cards.",
+    "inlinePage.guidelinesLede": "Inline puts items in a row, each at its own width, and wraps them when they do not fit.",
   },
 } as const;

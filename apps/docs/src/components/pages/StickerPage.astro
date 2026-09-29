@@ -2,6 +2,7 @@
 import ComponentPageShell from "./ComponentPageShell.astro";
 import CodeBlock from "../CodeBlock.astro";
 import ComponentPreview from "../ComponentPreview.astro";
+import UsagePreview from "../UsagePreview.astro";
 import {
   stickerAnatomyTree,
   stickerHooksTree,
@@ -49,6 +50,10 @@ const html = `<span class="sk-sticker" data-state="idle" data-peel-origin="block
 </span>`;
 
 const vanilla = `document.querySelector(".sk-sticker").setAttribute("data-state", "applied");`;
+
+/* What each value of a property is for, read from this page's messages. Same model Badge uses. */
+const explain = (option: string, values: readonly string[]) =>
+  Object.fromEntries(values.map((value) => [value, t(`sticker.prop.${option}.${value}` as Parameters<typeof t>[0])]));
 ---
 
 <ComponentPageShell
@@ -58,32 +63,26 @@ const vanilla = `document.querySelector(".sk-sticker").setAttribute("data-state"
   contractId="sticker"
   testFiles={["packages/react/src/components/sticker.test.tsx"]}
 >
-  <Fragment slot="anatomy">
-    <p set:html={t("sticker.anatomyBody")} />
-    <ComponentPreview
-      tree={stickerAnatomyTree(t)}
-      css={annotationDemoCss}
-      label={t("sticker.anatomyPreviewLabel")}
-      screens={false}
-      hideSource
-      chrome={false}
-    />
-  </Fragment>
-
   <Fragment slot="usage">
     <p class="lede" set:html={t("sticker.lede")} />
-    <ComponentPreview tree={stickerTree(t)} label="Sticker" />
 
-    <h3>{t("sticker.whenTitle")}</h3>
-    <ul>
-      <li set:html={t("sticker.whenItem1")} />
-      <li set:html={t("sticker.whenItem2")} />
-      <li set:html={t("sticker.whenItem3")} />
-    </ul>
+    <UsagePreview
+      tree={stickerTree(t)}
+      optionName="state"
+      title={t("sticker.prop.state.title")}
+      description={t("sticker.prop.state.body")}
+      explain={explain("state", ["idle", "peeled", "applied"])}
+      stageMinBlockSize="10rem"
+      target={["children", 0]}
+    />
+
+    <h3>{t("sticker.showcaseTitle")}</h3>
+    <p set:html={t("sticker.showcaseBody")} />
+    <UsagePreview tree={stickerTree(t)} />
 
     <h3>{t("sticker.statesHeading")}</h3>
     <p set:html={t("sticker.statesIntro")} />
-    <ComponentPreview tree={stickerStatesTree(t)} label={t("sticker.statesLabel")} />
+    <UsagePreview tree={stickerStatesTree(t)} />
 
     <h3>{t("sticker.placementHeading")}</h3>
     <p set:html={t("sticker.placementIntro")} />
@@ -91,11 +90,11 @@ const vanilla = `document.querySelector(".sk-sticker").setAttribute("data-state"
 
     <h3>{t("sticker.originsHeading")}</h3>
     <p set:html={t("sticker.originsIntro")} />
-    <ComponentPreview tree={stickerOriginsTree(t)} label={t("sticker.originsLabel")} />
+    <UsagePreview tree={stickerOriginsTree(t)} />
 
     <h3>{t("sticker.hooksHeading")}</h3>
     <p set:html={t("sticker.hooksIntro")} />
-    <ComponentPreview tree={stickerHooksTree(t)} label={t("sticker.hooksLabel")} />
+    <UsagePreview tree={stickerHooksTree(t)} />
 
     <h3>{t("sticker.reactTitle")}</h3>
     <p set:html={t("sticker.reactBody")} />
@@ -112,6 +111,27 @@ const vanilla = `document.querySelector(".sk-sticker").setAttribute("data-state"
       <li set:html={t("sticker.notesItem2")} />
       <li set:html={t("sticker.notesItem3")} />
       <li set:html={t("sticker.notesItem4")} />
+    </ul>
+
+    <h3>{t("component.anatomy")}</h3>
+    <p set:html={t("sticker.anatomyBody")} />
+    <ComponentPreview
+      tree={stickerAnatomyTree(t)}
+      css={annotationDemoCss}
+      label={t("sticker.anatomyPreviewLabel")}
+      screens={false}
+      hideSource
+      chrome={false}
+    />
+  </Fragment>
+
+  <Fragment slot="guidelines">
+    <p class="lede" set:html={t("sticker.guidelinesLede")} />
+    <h3>{t("sticker.whenTitle")}</h3>
+    <ul>
+      <li set:html={t("sticker.whenItem1")} />
+      <li set:html={t("sticker.whenItem2")} />
+      <li set:html={t("sticker.whenItem3")} />
     </ul>
   </Fragment>
 </ComponentPageShell>

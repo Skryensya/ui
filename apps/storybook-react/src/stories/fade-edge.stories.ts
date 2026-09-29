@@ -18,10 +18,10 @@ import { treeStory, withCss, type Meta, type StoryObj } from "../tree-story";
 export default { title: "Components/Layout/FadeEdge", tags: ["autodocs"] } satisfies Meta;
 
 export const Anatomy: StoryObj = treeStory(demos.fadeEdgeAnatomyTree, { decorators: [withCss(annotationDemoCss)] });
-export const FadeBottom: StoryObj = treeStory(() => demos.fadeBottomTree);
 export const FadeTop: StoryObj = treeStory(() => demos.fadeTopTree);
-export const FadeRight: StoryObj = treeStory(() => demos.fadeRightTree);
 export const FadeLeft: StoryObj = treeStory(() => demos.fadeLeftTree);
-export const FadeColor: StoryObj = treeStory(() => demos.fadeColorTree);
 export const FadeIntensity: StoryObj = treeStory(() => demos.fadeIntensityTree);
+export const FadeBottom: StoryObj = treeStory(() => demos.fadeBottomTree);
+export const FadeRight: StoryObj = treeStory(() => demos.fadeRightTree);
+export const FadeColor: StoryObj = treeStory(() => demos.fadeColorTree);
 export const FadeScrollAware: StoryObj = treeStory(() => demos.fadeScrollAwareTree);

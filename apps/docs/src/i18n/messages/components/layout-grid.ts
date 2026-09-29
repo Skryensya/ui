@@ -59,6 +59,12 @@ export const layoutGridMessages = {
       "Conserva <code>narrow ≤ content ≤ breakout</code>. Los tracks intermedios se calculan a partir de esas diferencias; invertir el orden no describe una medida válida.",
     "layoutGridPage.test1":
       "Renderiza LayoutGrid sin apropiarse de la semántica ni de data-width de sus hijos.",
+    "layoutGridPage.showcaseTitle": "Showcases",
+    "layoutGridPage.showcaseBody": "Una página con anchos por nivel, y con un riel al costado, a cada lado o a los dos.",
+    "layoutGridPage.guidelinesLede": "LayoutGrid arma la página: una columna de lectura con elementos que pueden salir más anchos.",
+    "layoutGridPage.guide.use1": "Úsalo para la estructura de una página de contenido, con imágenes o tablas que se salen de la columna.",
+    "layoutGridPage.guide.use2": "Pon el índice o la navegación en un riel, y deja el texto en la columna central.",
+    "layoutGridPage.guide.avoid1": "Para centrar un bloque con un ancho máximo, basta un <a href=\"/es/componentes/wrapper\">Wrapper</a>.",
   },
   en: {
     "demo.layoutGrid.narrow": "narrow. Summaries, focused-reading forms.",
@@ -120,5 +126,11 @@ export const layoutGridMessages = {
       "Keep <code>narrow ≤ content ≤ breakout</code>. Intermediate tracks are calculated from those differences; reversing their order does not describe a valid measure.",
     "layoutGridPage.test1":
       "Renders LayoutGrid without taking over its children's semantics or data-width.",
+    "layoutGridPage.showcaseTitle": "Showcases",
+    "layoutGridPage.showcaseBody": "A page with widths per level, and with a rail on one side, the other, or both.",
+    "layoutGridPage.guidelinesLede": "LayoutGrid lays out the page: a reading column with elements that can break out wider.",
+    "layoutGridPage.guide.use1": "Use it for a content page's structure, with images or tables that break out of the column.",
+    "layoutGridPage.guide.use2": "Put the index or the navigation in a rail, and keep the text in the centre column.",
+    "layoutGridPage.guide.avoid1": "To centre a block with a maximum width, a <a href=\"/components/wrapper\">Wrapper</a> is enough.",
   },
 } as const;
