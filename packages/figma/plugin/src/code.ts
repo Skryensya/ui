@@ -712,6 +712,33 @@ async function applyIcon(ctx: SetCtx, node: InstanceNode, layer: Extract<M.Layer
   } else glyph.fills = [paint];
 }
 
+/**
+ * A layer that covers the host, outside auto layout: the state layer exactly over it with the same
+ * corners, or the focus ring `offset` outside it, stroked, with corners grown by the offset.
+ */
+function applyCover(ctx: SetCtx, host: ComponentNode, rect: RectangleNode, layer: Extract<M.Layer, { kind: "overlay" | "ring" }>, box: M.Box) {
+  rect.layoutPositioning = "ABSOLUTE";
+  const offset = layer.kind === "ring" ? Number(valueOf(layer.offset)) : 0;
+  rect.x = -offset;
+  rect.y = -offset;
+  rect.resize(Math.max(0.01, host.width + 2 * offset), Math.max(0.01, host.height + 2 * offset));
+  rect.constraints = { horizontal: "STRETCH", vertical: "STRETCH" };
+  if (layer.kind === "overlay") {
+    rect.fills = layer.fills.map((p) => toPaint(ctx, p));
+    rect.strokes = [];
+    for (const corner of ["topLeftRadius", "topRightRadius", "bottomLeftRadius", "bottomRightRadius"] as const) {
+      setNumber(ctx, rect, corner, box.radius, 0);
+    }
+  } else {
+    rect.fills = [];
+    rect.strokes = [toPaint(ctx, layer.color)];
+    rect.strokeAlign = "OUTSIDE";
+    setNumber(ctx, rect, "strokeWeight", layer.width);
+    // An outline's corners follow the border's, grown by the offset: a sum no variable holds.
+    rect.cornerRadius = (box.radius ? Number(valueOf(box.radius)) : 0) + offset;
+  }
+}
+
 /** The three parts a cell points at, each by content hash: what a cell can change independently. */
 type Part = "box" | "surface" | "layers";
 const PARTS: readonly Part[] = ["box", "surface", "layers"];
@@ -758,9 +785,12 @@ async function applyCell(ctx: SetCtx, node: ComponentNode, cell: M.Cell, sample:
 
   if (parts.includes("layers")) {
     const layers = manifest.styles.layers[cell.layers];
+    // A layer this cell no longer draws (a focus ring after the state changed) goes: it is ours.
+    const names = new Set(layers.map((l) => l.slot));
+    for (const child of [...node.children]) if (!names.has(child.name)) child.remove();
     for (const [index, layer] of layers.entries()) {
       let child = node.findChild((n) => n.name === layer.slot);
-      const wanted = layer.kind === "icon" ? "INSTANCE" : "TEXT";
+      const wanted = layer.kind === "icon" ? "INSTANCE" : layer.kind === "text" ? "TEXT" : "RECTANGLE";
       if (child && child.type !== wanted) {
         ctx.run.log("UPDATE", `layer ${layer.slot} of ${cell.key}`, `replaced: ${child.type} → ${wanted}`);
         child.remove();
@@ -770,13 +800,22 @@ async function applyCell(ctx: SetCtx, node: ComponentNode, cell: M.Cell, sample:
         child =
           layer.kind === "icon"
             ? (ctx.icons.byName.get(layer.default) ?? ctx.icons.byName.get(ctx.icons.spec.default)!).createInstance()
-            : figma.createText();
+            : layer.kind === "text"
+              ? figma.createText()
+              : figma.createRectangle();
         child.name = layer.slot;
       }
       // Move only a layer that is out of place: reinserting an in-place child is still a write.
       if (node.children[index] !== child) node.insertChild(index, child);
       if (layer.kind === "icon") await applyIcon(ctx, child as InstanceNode, layer);
-      else await applyText(ctx, child as TextNode, layer.text, sample[layer.slot] ?? "");
+      else if (layer.kind === "text") await applyText(ctx, child as TextNode, layer.text, sample[layer.slot] ?? "");
+    }
+    // Overlays and rings are sized off the host, so they go last, once its content has laid out.
+    const box = manifest.styles.boxes[cell.box];
+    for (const layer of layers) {
+      if (layer.kind !== "overlay" && layer.kind !== "ring") continue;
+      const rect = node.findChild((n) => n.name === layer.slot) as RectangleNode;
+      applyCover(ctx, node, rect, layer, box);
     }
   }
 
@@ -818,7 +857,7 @@ function bindReferences(ctx: SetCtx, node: ComponentNode, cell: M.Cell, keys: Re
     const refs: Record<string, string> = {};
     if (layer.kind === "icon") {
       if (layer.visibleProperty && keys[layer.visibleProperty]) refs.visible = keys[layer.visibleProperty];
-    } else if (keys[layer.textProperty]) refs.characters = keys[layer.textProperty];
+    } else if (layer.kind === "text" && keys[layer.textProperty]) refs.characters = keys[layer.textProperty];
     const have = (child.componentPropertyReferences ?? {}) as Record<string, string>;
     const same = Object.keys(refs).length === Object.keys(have).length && Object.entries(refs).every(([k, v]) => have[k] === v);
     if (!same) ctx.run.write(() => (child.componentPropertyReferences = refs));
@@ -1010,6 +1049,35 @@ async function layoutShowcase(
   return x - 24;
 }
 
+/** Prototype reactions: each rest cell changes to its hover sibling while hovered. Writes only what differs. */
+async function wireInteractions(ctx: SetCtx, set: ComponentSetNode, spec: M.ComponentSet) {
+  const byKey = new Map(ownCells(set).map((c) => [getTag(c, "cell"), c]));
+  const order = spec.axes.map((a) => a.name);
+  const keyOf = (props: Record<string, string>) => order.map((a) => `${a}=${props[a]}`).join(", ");
+  const wanted = new Map<ComponentNode, Reaction[]>();
+  for (const interaction of spec.interactions) {
+    for (const [key, node] of byKey) {
+      const props = parseKey(key);
+      if (props[interaction.axis] !== interaction.from) continue;
+      const target = byKey.get(keyOf({ ...props, [interaction.axis]: interaction.to }));
+      if (!target) continue;
+      const list = wanted.get(node) ?? [];
+      list.push({
+        trigger: { type: interaction.trigger } as Trigger,
+        actions: [{ type: "NODE", destinationId: target.id, navigation: "CHANGE_TO", transition: null }],
+      });
+      wanted.set(node, list);
+    }
+  }
+  const signature = (reactions: readonly Reaction[]) =>
+    JSON.stringify(reactions.map((r) => [r.trigger?.type, (r.actions ?? []).map((a) => (a.type === "NODE" ? a.destinationId : a.type))]));
+  for (const [node, reactions] of wanted) {
+    if (signature(node.reactions) === signature(reactions)) continue;
+    ctx.run.write(() => void 0);
+    await node.setReactionsAsync(reactions);
+  }
+}
+
 async function syncSet(ctx: SetCtx, spec: M.ComponentSet, found: Map<string, SceneNode>, page: PageNode | undefined) {
   const { run, progress } = ctx;
   progress.start(spec.id);
@@ -1076,7 +1144,10 @@ async function syncSet(ctx: SetCtx, spec: M.ComponentSet, found: Map<string, Sce
     const node = byKey.get(cell.key);
     if (node) bindReferences(ctx, node, cell, keys);
   }
-  if (run.apply) await layoutSet(ctx, frame, s, spec);
+  if (run.apply) {
+    await layoutSet(ctx, frame, s, spec);
+    await wireInteractions(ctx, s, spec);
+  }
   found.set(spec.id, s);
   progress.finish(spec.id, summarize(counts));
 }
