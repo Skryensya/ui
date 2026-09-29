@@ -83,7 +83,8 @@ export type Realization = {
   slots: Readonly<
     Record<
       string,
-      | { holds: "icon"; icon: string }
+      /** `shown`: an optional icon that starts on (a Callout's), where most start off. */
+      | { holds: "icon"; icon: string; shown?: true }
       /** `hidden`: the slot is an accessible name only, clipped out of sight (BackToTop's label). No layer, no property. */
       /**
        * `option`: the text is a string option the template prints (a Meter's label and value), not a

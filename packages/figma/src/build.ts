@@ -670,6 +670,22 @@ async function compileRealization(authored: Realization, shared: Shared): Promis
         const rows = /grid/.test(ctx(el).computed.get("display") ?? "") ? gridTracks(ctx(el), "grid-template-rows") : [];
         let column = 0;
         let row = 0;
+        // What the fixed columns leave for the `fr` one, when the width is known: each other column's
+        // own width (a track length, or its child's width), less the gaps between them.
+        const frRoom = (() => {
+          if (inner === undefined || tracks.length < 2) return undefined;
+          const kids = Array.from(el.children).filter((c) => !clipped(c) && cascaded.get(c)?.get("position") !== "absolute");
+          let taken = 0;
+          for (const [i, track] of tracks.entries()) {
+            if (/fr\b/.test(track)) continue;
+            const kid = kids[i];
+            const width = !/^auto$|content/.test(track) ? lengthOf(track, el) : kid ? pixels(kid, "width") : undefined;
+            if (width === undefined) return undefined;
+            taken += width;
+          }
+          const gap = pixels(el, cascaded.get(el)!.has("column-gap") ? "column-gap" : "gap") ?? 0;
+          return Math.max(0, inner - taken - gap * (tracks.length - 1));
+        })();
         const filling = new Set<Layer>();
         const computed = ctx(el).computed;
         const display = computed.get("display") ?? "";
@@ -750,7 +766,8 @@ async function compileRealization(authored: Realization, shared: Shared): Promis
           const only = child.children.length === 1 ? child.children[0] : undefined;
           const slide = only && /^translateX\((.+)\)$/.exec(cascaded.get(only)?.get("transform") ?? "")?.[1];
           if (slide) sized.set("padding-left", `calc(${sized.get("padding-left") ?? "0px"} + ${slide})`);
-          const trackWidth = fixedTrack ? lengthOf(track, child) : undefined;
+          // An `fr` column gets what the other columns and the gaps leave of a known width.
+          const trackWidth = fixedTrack ? lengthOf(track, child) : track !== undefined && /fr\b/.test(track) ? frRoom : undefined;
           // A field inside (a PasswordInput's input) shows its placeholder, in its `::placeholder` look.
           const fieldSlot = (kind: "placeholder" | "value") =>
             Object.entries(realization.slots).find(([, spec]) => spec.holds === "text" && spec.pseudo === kind)?.[0];
@@ -802,19 +819,23 @@ async function compileRealization(authored: Realization, shared: Shared): Promis
           const blockLevel = (d: string | undefined) => d === undefined || /^(block|flex|grid|list-item)$/.test(d);
           const inFlow = !/flex|grid/.test(display) && blockLevel(display || undefined) && blockLevel(cascaded.get(child)!.get("display"));
           const spans = realization.width && inner !== undefined && (stacking || inFlow) && !box.width && !absolute;
+          // A part that holds nothing but an optional icon comes and goes with it, box and all.
+          const inside = [
+            ...overlaysOf(child),
+            ...placeholderLayers,
+            ...nestedLayers(child, innerOf(child, across ?? trackWidth ?? (spans || frameBox.stretch ? inner : undefined))),
+            ...edgesOf(child),
+            ...ringsOf(child),
+          ];
+          const lone = inside.length === 1 && inside[0].kind === "icon" && inside[0].visibleProperty ? inside[0] : undefined;
           out.push({
             kind: "frame",
             slot,
+            ...(lone ? { visibleProperty: lone.visibleProperty } : {}),
             // Down a column it stretches across; in a block laid as a row it grows along it.
             box: intern(styles.boxes, spans ? (downward ? { ...box, stretch: true as const } : { ...box, grow: true as const }) : box),
             surface: intern(styles.surfaces, { strokes, fills, effects }),
-            layers: [
-              ...overlaysOf(child),
-              ...placeholderLayers,
-              ...nestedLayers(child, innerOf(child, across ?? trackWidth ?? (spans || frameBox.stretch ? inner : undefined))),
-              ...edgesOf(child),
-              ...ringsOf(child),
-            ],
+            layers: lone ? [{ ...lone, visibleProperty: undefined }] : inside,
           });
         }
         // A `::before` laid in the same grid cell as the element's content (a radio's circle, under its
@@ -911,7 +932,9 @@ async function compileRealization(authored: Realization, shared: Shared): Promis
       // An optional icon slot starts off (Button's pre/post); an optional text starts shown, under
       // its own name so it does not collide with the text property beside it.
       if (!requiredSlot(slot)) {
-        properties.push(spec.holds === "text" ? { name: `show ${slot}`, type: "BOOLEAN", default: true } : { name: slot, type: "BOOLEAN", default: false });
+        properties.push(
+          spec.holds === "text" ? { name: `show ${slot}`, type: "BOOLEAN", default: true } : { name: slot, type: "BOOLEAN", default: spec.shown === true },
+        );
       }
     }
     const setAxes = axes.map((a) => ({ name: a.name, values: a.values }));

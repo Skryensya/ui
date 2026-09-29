@@ -297,7 +297,8 @@ export function frameOf(ctx: Context): Frame {
     ...(Number(prop(ctx, "flex-grow") ?? 0) > 0 ? { grow: true as const } : {}),
     ...(prop(ctx, "align-self") === "stretch" ? { stretch: true as const } : {}),
     padding: { top: padding("top"), right: padding("right"), bottom: padding("bottom"), left: padding("left") },
-    gap: number(ctx, "gap", "gap"),
+    // The gap along the direction drawn: `column-gap` across a row, `row-gap` down a column, else `gap`.
+    gap: (direction === "HORIZONTAL" ? number(ctx, "column-gap", "gap") : number(ctx, "row-gap", "gap")) ?? number(ctx, "gap", "gap"),
     ...radii(ctx),
     strokeWeight: strokeColor && !sides ? number(ctx, "border-width", "border-width") : undefined,
     ...(sides ? { strokeSides: sides.weights } : {}),

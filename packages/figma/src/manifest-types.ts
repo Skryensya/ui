@@ -140,7 +140,8 @@ export type Layer =
    * A part of the component that lays out or paints on its own (Callout's content column, a
    * separator's rule): a frame with its own box and surface, by id in `styles`, holding its layers.
    */
-  | { kind: "frame"; slot: string; box: string; surface: string; layers: Layer[] }
+  /** `visibleProperty`: a part holding only an optional icon (a Callout's) shows and hides with it. */
+  | { kind: "frame"; slot: string; box: string; surface: string; layers: Layer[]; visibleProperty?: string }
   /**
    * A bar along one edge of its frame, outside auto layout (a tab's indicator): `size` thick, the full
    * length of that edge, `offset` from it outward as CSS's negative inset puts it.
