@@ -53,7 +53,7 @@ class Progress {
   readonly phases: Phase[];
   private readonly started = Date.now();
   private lastPost = 0;
-  private sinceYield = 0;
+  private lastYield = 0;
 
   constructor(readonly apply: boolean, phases: { id: string; label: string; total: number }[]) {
     this.phases = phases.map((p) => ({ ...p, done: 0, state: "pending" }));
@@ -71,15 +71,15 @@ class Progress {
     this.post();
   }
 
-  /** One unit of work done. Posts at most every 120ms, and yields so the window can draw it. */
+  /** One unit of work done. Posts at most every 120ms, and yields every 50ms so the window can draw it. */
   async tick(id: string, n = 1) {
     const phase = this.phase(id);
     phase.done = Math.min(phase.total, phase.done + n);
-    this.sinceYield += n;
     const now = Date.now();
     if (now - this.lastPost > 120) this.post();
-    if (this.sinceYield >= 6) {
-      this.sinceYield = 0;
+    // Yield by time, not by count: often enough for the window to repaint, rarely enough to cost little.
+    if (now - this.lastYield > 50) {
+      this.lastYield = now;
       await new Promise((resolve) => setTimeout(resolve, 0));
     }
   }
@@ -568,39 +568,40 @@ function drawIcon(node: ComponentNode, icon: M.IconSet["icons"][number], spec: M
   glyph.constraints = { horizontal: "SCALE", vertical: "SCALE" };
 }
 
-/** Icons on a grid, each named underneath. */
-async function layoutIcons(ctx: Ctx, frame: FrameNode, set: ComponentSetNode, spec: M.IconSet) {
-  const { run } = ctx;
-  if (set.parent !== frame) run.write(() => frame.appendChild(set));
+/** Icons on a grid, each named underneath: every slot is fixed, so each icon is placed as it is made. */
+type IconLayout = { setX: number; setY: number; slot: number; rowH: number; columns: number; style: Label; keep: Set<string> };
+
+async function planIcons(ctx: Ctx, frame: FrameNode, spec: M.IconSet): Promise<IconLayout> {
   const title = ensureLabel(ctx, frame, "title", spec.name, await labelStyle(ctx, 600, 24));
-  move(run, title, FRAME_PAD, FRAME_PAD);
+  move(ctx.run, title, FRAME_PAD, FRAME_PAD);
   const style = await labelStyle(ctx);
-  const columns = 11;
-  const slot = 96;
-  const order = new Map(spec.icons.map((icon, i) => [`${spec.axis}=${icon.name}`, i]));
-  const cells = ownCells(set);
-  const keep = new Set(["title"]);
-  const lineH = style.size * 1.4;
-  const rowH = spec.size + 8 + lineH + 24;
-  const setX = FRAME_PAD;
-  const setY = FRAME_PAD + title.height + LABEL_GAP;
-  for (const cell of cells) {
-    const i = order.get(getTag(cell, "cell"));
-    if (i === undefined) continue;
-    const col = i % columns;
-    const row = Math.floor(i / columns);
-    move(run, cell, col * slot + (slot - spec.size) / 2, row * rowH);
-    const name = parseKey(getTag(cell, "cell"))[spec.axis];
-    const key = `icon:${name}`;
-    keep.add(key);
-    const text = ensureLabel(ctx, frame, key, name, style);
-    move(run, text, Math.round(setX + col * slot + (slot - text.width) / 2), setY + row * rowH + spec.size + 8);
-  }
-  const rows = Math.ceil(spec.icons.length / columns);
-  resizeTo(run, set, columns * slot, rows * rowH);
-  move(run, set, setX, setY);
-  pruneLabels(ctx, frame, keep);
-  resizeTo(run, frame, setX + set.width + FRAME_PAD, setY + set.height + FRAME_PAD);
+  return {
+    setX: FRAME_PAD,
+    setY: FRAME_PAD + title.height + LABEL_GAP,
+    slot: 96,
+    rowH: Math.ceil(spec.size + 8 + style.size * 1.4 + 24),
+    columns: 11,
+    style,
+    keep: new Set(["title"]),
+  };
+}
+
+function placeIconSet(run: Run, frame: FrameNode, set: ComponentSetNode, spec: M.IconSet, layout: IconLayout) {
+  if (set.parent !== frame) run.write(() => frame.appendChild(set));
+  move(run, set, layout.setX, layout.setY);
+  const rows = Math.ceil(spec.icons.length / layout.columns);
+  resizeTo(run, set, layout.columns * layout.slot, rows * layout.rowH);
+  resizeTo(run, frame, layout.setX + layout.columns * layout.slot + FRAME_PAD, layout.setY + rows * layout.rowH + FRAME_PAD);
+}
+
+function placeIcon(ctx: Ctx, frame: FrameNode, layout: IconLayout, node: ComponentNode, index: number, name: string, size: number) {
+  const col = index % layout.columns;
+  const row = Math.floor(index / layout.columns);
+  move(ctx.run, node, col * layout.slot + (layout.slot - size) / 2, row * layout.rowH);
+  const key = `icon:${name}`;
+  layout.keep.add(key);
+  const text = ensureLabel(ctx, frame, key, name, layout.style);
+  move(ctx.run, text, Math.round(layout.setX + col * layout.slot + (layout.slot - text.width) / 2), layout.setY + row * layout.rowH + size + 8);
 }
 
 async function syncIconSet(ctx: Ctx, spec: M.IconSet, found: Map<string, SceneNode>, page: PageNode | undefined): Promise<IconCtx | undefined> {
@@ -611,9 +612,10 @@ async function syncIconSet(ctx: Ctx, spec: M.IconSet, found: Map<string, SceneNo
   const existing = new Map(ownCells(set).map((c) => [getTag(c, "cell"), c]));
   const counts = { created: 0, updated: 0, unchanged: 0, orphaned: 0 };
 
-  for (const icon of spec.icons) {
+  let layout: IconLayout | undefined;
+  for (const [index, icon] of spec.icons.entries()) {
     const key = `${spec.axis}=${icon.name}`;
-    const node = existing.get(key);
+    let node = existing.get(key);
     if (!node) {
       counts.created++;
       if (run.write(() => void 0) && frame) {
@@ -626,6 +628,7 @@ async function syncIconSet(ctx: Ctx, spec: M.IconSet, found: Map<string, SceneNo
         frame.appendChild(fresh);
         if (!set) set = figma.combineAsVariants([fresh], frame);
         else set.appendChild(fresh);
+        node = fresh;
       }
     } else if (getTag(node, "hash") !== icon.hash) {
       counts.updated++;
@@ -634,6 +637,14 @@ async function syncIconSet(ctx: Ctx, spec: M.IconSet, found: Map<string, SceneNo
         node.setSharedPluginData(NS, "hash", icon.hash);
       }
     } else counts.unchanged++;
+    // In place at once: every slot is known before the first icon is drawn.
+    if (run.apply && frame && set && node) {
+      if (!layout) {
+        layout = await planIcons(ctx, frame, spec);
+        placeIconSet(run, frame, set, spec, layout);
+      }
+      placeIcon(ctx, frame, layout, node, index, icon.name, spec.size);
+    }
     await progress.tick("icons");
   }
   const wanted = new Set(spec.icons.map((i) => `${spec.axis}=${i.name}`));
@@ -654,8 +665,7 @@ async function syncIconSet(ctx: Ctx, spec: M.IconSet, found: Map<string, SceneNo
   const s = set;
   if (s.name !== spec.name) run.write(() => (s.name = spec.name));
   tag(run, s, { ...provenance("icon-set", spec.id), hash: spec.hash });
-  // Layout reads sizes of nodes a dry run never drew, so only a real sync lays out.
-  if (run.apply) await layoutIcons(ctx, frame, s, spec);
+  if (layout) pruneLabels(ctx, frame, layout.keep);
   found.set(spec.id, s);
   progress.finish("icons", summarize(counts));
   const byName = new Map(ownCells(s).map((c) => [parseKey(getTag(c, "cell"))[spec.axis], c]));
@@ -865,28 +875,43 @@ function bindReferences(ctx: SetCtx, node: ComponentNode, cell: M.Cell, keys: Re
 }
 
 /**
- * A component set in its documentation frame. The outermost row axis draws as sections (a heading
- * and an outline each), the next one as groups with extra space between, and every row names the
- * button it is; the columns are its states, then the showcase of its icons.
+ * Where everything in a set's documentation frame goes, worked out BEFORE the variants are drawn so
+ * each one lands in place as it is made. Rows take the height the manifest gives each size; columns
+ * take the width of the first variant drawn, which is the widest (largest size, with its label).
+ * The outermost row axis draws as sections, the next as groups with extra space between.
  */
-async function layoutSet(ctx: SetCtx, frame: FrameNode, set: ComponentSetNode, spec: M.ComponentSet) {
+type Layout = {
+  cols: Record<string, string>[];
+  rows: Record<string, string>[];
+  colX: number[];
+  rowY: number[];
+  cellW: number;
+  cellH: number;
+  setX: number;
+  setY: number;
+  sections: { value: string; top: number; last: number }[];
+  sectionAxis: string;
+  lineH: number;
+  style: Label;
+  strong: Label;
+  heading: Label;
+  keep: Set<string>;
+};
+
+const GAP = 16;
+const GROUP = 40;
+const INNER = 24;
+const word = (axis: string, value: string) => (value === "true" || value === "false" ? `${axis}: ${value}` : value);
+
+/** The frame's chrome (title, row and column labels) placed, and every slot's position computed. */
+async function planLayout(ctx: SetCtx, frame: FrameNode, spec: M.ComponentSet, cellW: number, cellH: number): Promise<Layout> {
   const { run } = ctx;
-  if (set.parent !== frame) run.write(() => frame.appendChild(set));
-  const cells = ownCells(set);
-  if (!cells.length) return;
-  const cellW = Math.max(...cells.map((c) => c.width));
-  const cellH = Math.max(...cells.map((c) => c.height));
-  const GAP = 16;
-  const GROUP = 40;
-  const INNER = 24;
   const cols = combos(spec.grid.columns);
   const rows = combos(spec.grid.rows);
   const outerCol = spec.grid.columns[0].name;
   const [sectionAxis, groupAxis] = spec.grid.rows.map((a) => a.name);
-
-  const keep = new Set<string>();
+  const keep = new Set<string>(["title"]);
   const title = ensureLabel(ctx, frame, "title", spec.name, await labelStyle(ctx, 600, 24));
-  keep.add("title");
   const style = await labelStyle(ctx);
   const strong = await labelStyle(ctx, 600);
   const heading = await labelStyle(ctx, 600, Math.round(Number(valueOf(manifest.stage.label.fontSize)) * 1.5));
@@ -895,13 +920,13 @@ async function layoutSet(ctx: SetCtx, frame: FrameNode, set: ComponentSetNode, s
 
   // Rows: a heading's worth of space opens each section, a group gap opens each group inside it.
   const rowY: number[] = [];
-  const sections: { value: string; top: number; first: number; last: number }[] = [];
+  const sections: Layout["sections"] = [];
   let y = INNER;
   rows.forEach((row, i) => {
     if (i > 0) y += cellH + GAP;
     if (i === 0 || row[sectionAxis] !== rows[i - 1][sectionAxis]) {
       if (i > 0) y += GROUP;
-      sections.push({ value: row[sectionAxis], top: y, first: i, last: i });
+      sections.push({ value: row[sectionAxis], top: y, last: i });
       y += headH;
     } else if (groupAxis && row[groupAxis] !== rows[i - 1][groupAxis]) y += GAP;
     sections[sections.length - 1].last = i;
@@ -909,19 +934,7 @@ async function layoutSet(ctx: SetCtx, frame: FrameNode, set: ComponentSetNode, s
   });
   const colX = offsets(cols.length, cellW, GAP, GROUP, (i) => cols[i][outerCol], INNER);
 
-  const matches = (combo: Record<string, string>, props: Record<string, string>) => Object.entries(combo).every(([k, v]) => props[k] === v);
-  for (const cell of cells) {
-    const props = parseKey(getTag(cell, "cell"));
-    const col = cols.findIndex((combo) => matches(combo, props));
-    const row = rows.findIndex((combo) => matches(combo, props));
-    if (col >= 0 && row >= 0) move(run, cell, colX[col], rowY[row]);
-  }
-  resizeTo(run, set, colX[colX.length - 1] + cellW + INNER, rowY[rowY.length - 1] + cellH + INNER);
-  const first = cells.find((c) => getTag(c, "cell") === spec.defaultCell);
-  if (first && set.children[0] !== first) run.write(() => set.insertChild(0, first));
-
   // A row names what the section heading does not already say.
-  const word = (axis: string, value: string) => (value === "true" || value === "false" ? `${axis}: ${value}` : value);
   const rowLabels = rows.map((row) => {
     const key = `row:${Object.values(row).join(",")}`;
     keep.add(key);
@@ -932,39 +945,46 @@ async function layoutSet(ctx: SetCtx, frame: FrameNode, set: ComponentSetNode, s
   const setX = FRAME_PAD + 16 + labelW + LABEL_GAP;
   const setY = FRAME_PAD + title.height + LABEL_GAP + 2 * (lineH + 8);
   move(run, title, FRAME_PAD, FRAME_PAD);
-  move(run, set, setX, setY);
   rowLabels.forEach((text, r) => move(run, text, FRAME_PAD + 16, Math.round(setY + rowY[r] + (cellH - text.height) / 2)));
-
   cols.forEach((col, i) => {
     const inner = Object.entries(col).filter(([axis]) => axis !== outerCol);
     const key = `col:${Object.values(col).join(",")}`;
     keep.add(key);
-    const text = ensureLabel(ctx, frame, key, inner.map(([a, v]) => word(a, v)).join(" · "), style);
-    move(run, text, setX + colX[i], setY - lineH - 8);
+    move(run, ensureLabel(ctx, frame, key, inner.map(([a, v]) => word(a, v)).join(" · "), style), setX + colX[i], setY - lineH - 8);
     if (i === 0 || cols[i - 1][outerCol] !== col[outerCol]) {
       const groupKey = `colgroup:${col[outerCol]}`;
       keep.add(groupKey);
-      const group = ensureLabel(ctx, frame, groupKey, word(outerCol, col[outerCol]), strong);
-      move(run, group, setX + colX[i], setY - 2 * (lineH + 8));
+      move(run, ensureLabel(ctx, frame, groupKey, word(outerCol, col[outerCol]), strong), setX + colX[i], setY - 2 * (lineH + 8));
     }
   });
+  return { cols, rows, colX, rowY, cellW, cellH, setX, setY, sections, sectionAxis, lineH, style, strong, heading, keep };
+}
 
+/** The set in its frame, at its final place and size, before its variants fill it. */
+function placeSet(run: Run, frame: FrameNode, set: ComponentSetNode, layout: Layout) {
+  if (set.parent !== frame) run.write(() => frame.appendChild(set));
+  move(run, set, layout.setX, layout.setY);
+  resizeTo(run, set, layout.colX[layout.colX.length - 1] + layout.cellW + INNER, layout.rowY[layout.rowY.length - 1] + layout.cellH + INNER);
+}
+
+/** What needs every variant: the default first, the showcase beside the rows, and the section outlines. */
+async function finishLayout(ctx: SetCtx, frame: FrameNode, set: ComponentSetNode, spec: M.ComponentSet, layout: Layout) {
+  const { run } = ctx;
+  const first = ownCells(set).find((c) => getTag(c, "cell") === spec.defaultCell);
+  if (first && set.children[0] !== first) run.write(() => set.insertChild(0, first));
+  const { rows, rowY, cellH, setX, setY, lineH, style, strong, heading, keep } = layout;
   const showcaseRight = await layoutShowcase(ctx, frame, set, spec, rows, rowY, cellH, setX + set.width + GROUP, setY, lineH, style, strong, keep);
   const right = Math.max(setX + set.width, showcaseRight);
-
-  // Sections: a heading over each, and an outline around its rows, labels and showcase alike.
-  for (const section of sections) {
+  for (const section of layout.sections) {
     const headKey = `section:${section.value}`;
     const outlineKey = `outline:${section.value}`;
     keep.add(headKey);
     keep.add(outlineKey);
-    const text = ensureLabel(ctx, frame, headKey, word(sectionAxis, section.value), heading);
     const top = setY + section.top;
-    move(run, text, FRAME_PAD + 16, Math.round(top + 8));
+    move(run, ensureLabel(ctx, frame, headKey, word(layout.sectionAxis, section.value), heading), FRAME_PAD + 16, Math.round(top + 8));
     const bottom = setY + rowY[section.last] + cellH + 12;
     ensureOutline(ctx, frame, outlineKey, FRAME_PAD, top - 4, right + 16 - FRAME_PAD, bottom - top + 4);
   }
-
   pruneLabels(ctx, frame, keep);
   resizeTo(run, frame, right + 16 + FRAME_PAD, setY + set.height + FRAME_PAD);
 }
@@ -1087,28 +1107,61 @@ async function syncSet(ctx: SetCtx, spec: M.ComponentSet, found: Map<string, Sce
   const samples: Record<string, string> = {};
   for (const p of spec.properties) if (p.type === "TEXT") samples[p.name] = p.default;
 
+  // Drawing order: row by row, each row across its states, so the first variant is the widest and
+  // every later one can be placed the moment it exists.
+  const byKey = new Map(spec.cells.map((c) => [c.key, c]));
+  const order = spec.axes.map((a) => a.name);
+  const keyOf = (props: Record<string, string>) => order.map((a) => `${a}=${props[a]}`).join(", ");
+  const grid = combos(spec.grid.rows).flatMap((row, r) =>
+    combos(spec.grid.columns).map((col, c) => ({ cell: byKey.get(keyOf({ ...row, ...col })), row: r, col: c })),
+  );
+  const onGrid = new Set(grid.map((g) => g.cell?.key));
+  const queue = [...grid.filter((g) => g.cell), ...spec.cells.filter((c) => !onGrid.has(c.key)).map((cell) => ({ cell, row: -1, col: -1 }))];
+  // Row height is known before anything is drawn: the manifest gives each size's height.
+  const cellH = Math.max(
+    ...spec.cells.map((c) => {
+      const box = manifest.styles.boxes[c.box];
+      const h = box.height ?? box.minHeight;
+      return h ? Number(valueOf(h)) : 0;
+    }),
+  );
+
+  let layout: Layout | undefined;
+  let outgrown = false;
   const counts = { created: 0, updated: 0, unchanged: 0, orphaned: 0 };
   const partCounts: Record<Part, number> = { box: 0, surface: 0, layers: 0 };
-  for (const cell of spec.cells) {
-    const node = existing.get(cell.key);
+  for (const { cell, row, col } of queue) {
+    const c = cell!;
+    let node = existing.get(c.key);
     if (!node) {
       counts.created++;
       if (run.write(() => void 0) && frame) {
         const fresh = figma.createComponent();
-        await applyCell(ctx, fresh, cell, samples);
-        fresh.setSharedPluginData(NS, "cell", cell.key);
+        await applyCell(ctx, fresh, c, samples);
+        fresh.setSharedPluginData(NS, "cell", c.key);
         // Into the set at once, so an interrupted run never leaves loose components on the page.
         // Onto the frame's page first: a component is born on whichever page is current.
         frame.appendChild(fresh);
         if (!set) set = figma.combineAsVariants([fresh], frame);
         else set.appendChild(fresh);
+        node = fresh;
       }
-    } else if (getTag(node, "hash") !== cell.hash) {
+    } else if (getTag(node, "hash") !== c.hash) {
       counts.updated++;
-      const parts = staleParts(node, cell);
+      const parts = staleParts(node, c);
       for (const part of parts) partCounts[part]++;
-      if (run.write(() => void 0)) await applyCell(ctx, node, cell, samples, parts);
+      if (run.write(() => void 0)) await applyCell(ctx, node, c, samples, parts);
     } else counts.unchanged++;
+
+    // In place at once: the first variant fixes the layout, every later one goes straight to its slot.
+    if (run.apply && frame && set && node && row >= 0) {
+      if (!layout) {
+        layout = await planLayout(ctx, frame, spec, Math.ceil(node.width), Math.max(cellH, Math.ceil(node.height)));
+        placeSet(run, frame, set, layout);
+      }
+      if (node.width > layout.cellW + 0.5 || node.height > layout.cellH + 0.5) outgrown = true;
+      move(run, node, layout.colX[col], layout.rowY[row]);
+    }
     await progress.tick(spec.id);
   }
 
@@ -1139,13 +1192,24 @@ async function syncSet(ctx: SetCtx, spec: M.ComponentSet, found: Map<string, Sce
   tag(run, s, { ...provenance("component-set", spec.id), contractHash: spec.contractHash, visualHash: spec.visualHash });
 
   const keys = ensureProperties(ctx, s, spec.properties);
-  const byKey = new Map(ownCells(s).map((c) => [getTag(c, "cell"), c]));
+  const nodes = new Map(ownCells(s).map((c) => [getTag(c, "cell"), c]));
   for (const cell of spec.cells) {
-    const node = byKey.get(cell.key);
+    const node = nodes.get(cell.key);
     if (node) bindReferences(ctx, node, cell, keys);
   }
-  if (run.apply) {
-    await layoutSet(ctx, frame, s, spec);
+  if (run.apply && layout) {
+    // Only if a variant came out bigger than the first one measured: lay the grid out again.
+    if (outgrown) {
+      const cells = ownCells(s);
+      layout = await planLayout(ctx, frame, spec, Math.max(...cells.map((c) => Math.ceil(c.width))), Math.max(...cells.map((c) => Math.ceil(c.height))));
+      placeSet(run, frame, s, layout);
+      for (const { cell, row, col } of queue) {
+        const node = nodes.get(cell!.key);
+        if (node && row >= 0) move(run, node, layout.colX[col], layout.rowY[row]);
+      }
+      run.log("UPDATE", `${spec.name}: grid`, "a variant was wider than the first; laid out again");
+    }
+    await finishLayout(ctx, frame, s, spec, layout);
     await wireInteractions(ctx, s, spec);
   }
   found.set(spec.id, s);
