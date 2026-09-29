@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { appBarContract, resolveAppBarKey, shouldSwitchOnPointer } from "./app-bar.js";
+import { appBarContract, appBarItemShape, resolveAppBarKey, shouldSwitchOnPointer } from "./app-bar.js";
 
 /* A bar of three menus: the application's own, "File" and "View". */
 const resolve = (key: string, index: number, open = false) => resolveAppBarKey({ key, index, count: 3, open });
@@ -50,5 +50,26 @@ describe("appBarContract", () => {
     expect(text.whenMissing).toBe("items");
     expect(trigger.whenGiven).toBe("items");
     expect("role" in trigger.attrs).toBe(false);
+  });
+});
+
+describe("appBarItemShape", () => {
+  it("holds actions only: no kind (checkbox, radio, separator) and no radio group", () => {
+    expect(Object.keys(appBarItemShape.options).sort()).toEqual(["disabled", "href", "tone", "value"]);
+    /* Submenus stay: the same shape, one level down, as deep as the data goes. */
+    expect(appBarItemShape.slots.children).toMatchObject({ accepts: "items", recursive: true });
+    for (const signature of ["AppBarMenu", "AppBarStatus"] as const) {
+      expect(appBarContract.signatures[signature].slots.items.item).toBe(appBarItemShape);
+    }
+  });
+
+  it("draws a popup that names no kind anywhere: no indicator, no separator, no test for one", () => {
+    const dropdown = appBarContract.signatures.AppBarMenu.template.children[1];
+    const text = JSON.stringify(dropdown);
+    expect(text).not.toContain('"kind"');
+    expect(text).not.toContain('"group"');
+    /* What makes it Menu's stays: the command, the link, and the nested submenu that recurses. */
+    expect(text).toContain('"recurse":"entry"');
+    expect(text).toContain('"whenItemGiven":"href"');
   });
 });

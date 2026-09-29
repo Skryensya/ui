@@ -1281,6 +1281,23 @@ const signatureTrees: readonly Canonical[] = [
     },
   },
   {
+    // The large track: the size a documentation preview's value switcher uses, where the control is
+    // the thing being read rather than one more control beside a small button.
+    name: "segmented/large",
+    enhanced: true,
+    tree: {
+      contract: "segmented",
+      signature: "Segmented",
+      options: { value: "border", label: "Variante", size: "lg" },
+      slots: {
+        items: [
+          { options: { value: "default" }, slots: { label: "Default" } },
+          { options: { value: "border" }, slots: { label: "Border" } },
+        ],
+      },
+    },
+  },
+  {
     name: "segmented/view-switcher-brutalist",
     enhanced: true,
     tree: {

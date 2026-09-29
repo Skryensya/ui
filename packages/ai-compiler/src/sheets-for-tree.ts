@@ -1,7 +1,7 @@
 /*
  * WHICH STYLESHEETS A USAGE TREE NEEDS, read off the contracts the tree touches.
  *
- * The question every stage asks (docs frame, gates harness, eval-viewer, playground) and that each
+ * The question every stage asks (docs frame, gates harness, eval-viewer, Storybook) and that each
  * used to answer by a different guess. The classes the emitter writes come from `parts` and from
  * template `also` lists (including nested nodes: Toast's dismiss borrows `sk-button`). A sheet is
  * "placed" when it is the contract's own `css`, a `hookSheets` entry, or the unique owner of an

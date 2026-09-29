@@ -18,8 +18,10 @@ AppBar:
 
 AppBarMenu:
   useWhen:
-    - "one menu of the bar. With `items` (Menu's own item shape: commands, checkbox/radio, separators, nested submenus) it opens a dropdown; without, it is a command that acts at once"
+    - "one menu of the bar. With `items` (actions only: commands, links, disabled commands and submenus two or three levels deep) it opens a dropdown; without, it is a command that acts at once"
     - "`strong` for the application's own menu, the first one, drawn in bold"
+  avoidWhen:
+    - "the menu would toggle or choose something (a checkbox, a radio set, a view setting); the bar holds actions only, so that belongs in the application's own panel or inspector"
 
 AppBarStatus:
   useWhen:

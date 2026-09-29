@@ -141,4 +141,29 @@ describe("AppBar", () => {
     expect(ui.container.querySelectorAll("[data-sk-app-bar-menu]")).toHaveLength(4);
     expect(ui.container.querySelectorAll("[data-sk-app-bar-trigger]")).toHaveLength(5);
   });
+
+  it("keeps menus rendered through a wrapper component in document order, one tab stop among them", async () => {
+    const Wrapped = ({ label }: { label: string }) => <AppBarMenu items={[{ value: label, label: `${label} 1` }]}>{label}</AppBarMenu>;
+    const ui = render(
+      <AppBar label="Maker">
+        <Wrapped label="Uno" />
+        <>
+          <Wrapped label="Dos" />
+        </>
+        {["Tres"].map((label) => (
+          <Wrapped key={label} label={label} />
+        ))}
+      </AppBar>,
+    );
+    const [uno, dos, tres] = ui.getAllByRole("menuitem");
+    expect([uno, dos, tres].map((title) => title!.tabIndex)).toEqual([0, -1, -1]);
+    uno!.focus();
+    fireEvent.keyDown(uno!, { key: "ArrowRight" });
+    await tick();
+    expect(document.activeElement).toBe(dos);
+    fireEvent.keyDown(dos!, { key: "End" });
+    await tick();
+    expect(document.activeElement).toBe(tres);
+    expect([uno, dos, tres].map((title) => title!.tabIndex)).toEqual([-1, -1, 0]);
+  });
 });

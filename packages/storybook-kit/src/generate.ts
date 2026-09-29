@@ -40,8 +40,8 @@ const helperModules = new Set(["anatomy-subject", "annotation-parts"]);
  * HOW A FACTORY IS CALLED is read off its declaration, not guessed: a demo takes the translator, the
  * page's locale, the card copy for that locale, or a locale-owned href, and a story has to hand it
  * the same thing the page does. Each parameter type maps to the expression the story writes and the
- * value this script validates with. A trailing optional parameter is left out, which is what the
- * playground does too (`lib/placeholder-hrefs.ts` is its default).
+ * value this script validates with. A trailing optional parameter is left out
+ * (`lib/placeholder-hrefs.ts` is its default).
  *
  * A required parameter of any other type is an href in some shape: the same shapes
  * `demos/trees.test.ts` tries, first one that validates wins.

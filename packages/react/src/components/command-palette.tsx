@@ -54,9 +54,8 @@ export type CommandPaletteProps = {
    * What activating a result means, when it is not "go to its address".
    *
    * Without it, Enter and a click do what the Vanilla enhancer does and what an index of links
-   * implies: navigate to `entry.href`. With it, the host decides instead - the Playground's own
-   * palette selects an example inside a tool that is already running, where a navigation would
-   * throw away the sandbox and the reader's edits with it. The dialog closes either way, because
+   * implies: navigate to `entry.href`. With it, the host decides instead: a tool that is already
+   * running selects the result in place, where a navigation would throw away its state. The dialog closes either way, because
    * the palette's job ends the moment a choice is made.
    */
   onSelect?: (entry: CommandPaletteEntry) => void;
@@ -122,7 +121,7 @@ export function CommandPalette({
 
   /* The open-watcher below is bound once, for the life of the component, so it reaches the current
    * filter through a ref: the closure it would otherwise capture holds the index as it was on the
-   * first render, and a palette whose index arrives later (the Playground's does: it is fetched)
+   * first render, and a palette whose index arrives later (fetched, say)
    * would reopen filtering against nothing. */
   const runQueryRef = useRef(runQuery);
   runQueryRef.current = runQuery;

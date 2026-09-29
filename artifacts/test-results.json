@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-26T14:40:50.444Z",
+  "generatedAt": "2026-09-28T11:04:14.165Z",
   "results": {
     "apps/docs/src/components/pages/CardPage.test.ts": {
       "imports tile.css, which Base.astro never loads globally": "passed",
@@ -1960,6 +1960,32 @@
       "moves between states from the outside without remounting the artwork": "passed",
       "does not change its own state on click: that decision is the consumer's": "passed",
       "passes ordinary host props through and merges the class": "passed"
+    },
+    "packages/core/src/app-bar.test.ts": {
+      "moves between menus with Left/Right and wraps at both ends": "passed",
+      "carries an open dropdown along to the neighbour": "passed",
+      "gives Home/End to the bar only while nothing is open": "passed",
+      "leaves every other key to the dropdown": "passed",
+      "switches only once a menu of the bar is already open, and not to itself": "passed",
+      "names the menubar, not the bar around it": "passed",
+      "gives a status item no control unless it has a menu": "passed"
+    },
+    "packages/react/src/components/app-bar.test.tsx": {
+      "names the menubar, keeps one tab stop across the menus, and leaves status outside it": "passed",
+      "draws the application's own menu in bold, and a chevron only where something opens": "passed",
+      "nests submenus to a third level inside a dropdown, as Menu does": "passed",
+      "moves between menus with Left/Right, wrapping, without opening anything": "passed",
+      "carries an open dropdown to the neighbour with Right": "passed",
+      "switches menus by pointing once one is open, and never opens on pointing alone": "passed",
+      "fires onSelect for a dropdown command and onActivate for a plain one": "passed",
+      "stamps the mounts the vanilla enhancers key on": "passed"
+    },
+    "packages/vanilla/src/components/app-bar.svelte.test.ts": {
+      "gives the menus exactly one tab stop and leaves the status menu its own": "passed",
+      "moves between menus with Left/Right, wrapping, without opening anything": "passed",
+      "carries an open dropdown to the neighbour with Right": "passed",
+      "switches by pointing once a menu is open, across to the status side, and never opens on pointing alone": "passed",
+      "a click on another trigger closes the open menu first": "passed"
     }
   }
 }

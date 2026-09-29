@@ -4,7 +4,7 @@ import { useLayoutEffect, useRef, useState, type HTMLAttributes, type KeyboardEv
 const cx = (base: string, className: string | undefined) => (className ? `${base} ${className}` : base);
 
 /* Derived, never restated: the values and the default live in the contract. */
-const { appearance: appearanceOption } = segmentedContract.options;
+const { appearance: appearanceOption, size: sizeOption } = segmentedContract.options;
 
 export type SegmentedControlProps = Omit<
   HTMLAttributes<HTMLDivElement>,
@@ -18,6 +18,8 @@ export type SegmentedControlProps = Omit<
   label: string;
   /** How the control is drawn: `plain`, `tactile`, `brutalist` or `frosted`. */
   appearance?: (typeof appearanceOption.values)[number];
+  /** The track's size on Button's scale: `sm` (the default, beside a small button), `md` or `lg`. */
+  size?: (typeof sizeOption.values)[number];
 };
 
 export function SegmentedControl({
@@ -27,6 +29,7 @@ export function SegmentedControl({
   label,
   onValueChange,
   options,
+  size = sizeOption.default,
   value,
   ...props
 }: SegmentedControlProps) {
@@ -99,6 +102,7 @@ export function SegmentedControl({
       aria-label={label}
       className={cx(segmentedParts.root, className)}
       data-appearance={appearance}
+      data-size={size}
       data-sk-segmented=""
       data-value={selected}
       ref={rootRef}

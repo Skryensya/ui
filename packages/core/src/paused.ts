@@ -15,7 +15,6 @@
  *                      the component index, the landing page and the search index with it.
  *   MCP catalogue      `ai-compiler`'s `buildManifest` leaves it out of both compiled artifacts, so
  *                      `get_catalog` never lists it and `get_contract` cannot be asked for it.
- *   playground         `playground-catalogue.ts` skips its demos, so it is not a preset to open.
  *   package barrels    `@skryensya/react` and `@skryensya/vanilla` stop re-exporting it. The deep
  *                      subpath (`@skryensya/react/data-grid`) still resolves, which is what keeps
  *                      the docs page and the previews rendering while the entry is paused.
@@ -65,9 +64,3 @@ export const isPausedFamily = (family: string): boolean => pausedFamilies.has(fa
 
 /** Is this docs route paused? Takes the canonical (default locale) path, as `navigation.ts` writes it. */
 export const isPausedRoute = (href: string): boolean => pausedRoutes.has(href);
-
-/**
- * Is this component slug paused? The slug is the last segment of a component route, which is also
- * how the demos directory names its modules, so the playground can ask without holding a route.
- */
-export const isPausedSlug = (slug: string): boolean => pausedRoutes.has(`/components/${slug}`);
