@@ -315,8 +315,16 @@ export function textOf(ctx: Context): Text {
   // What the element does not set it takes from the page it sits on (the stage's inherited values):
   // Code and Strong live inside prose and set almost nothing of their own.
   const read = (name: string, fallback: string) => prop(ctx, name) ?? ctx.inherited?.[name] ?? fallback;
-  const authored = read("line-height", "normal");
-  const lineHeight = /var\(/.test(authored) ? substituted(authored, ctx) : authored;
+  let authored = read("line-height", "normal");
+  let lineHeight: string;
+  try {
+    lineHeight = /var\(/.test(authored) ? substituted(authored, ctx) : authored;
+  } catch {
+    // A var() nothing declares, with no fallback, leaves the property unset: it inherits, as the
+    // browser does (List's title names a line-height token that does not exist).
+    authored = ctx.inherited?.["line-height"] ?? "normal";
+    lineHeight = /var\(/.test(authored) ? substituted(authored, ctx) : authored;
+  }
   // `normal` (a Link inherits it) is the font's own leading: Figma's Auto.
   if (lineHeight !== "normal" && !/^\d*\.?\d+$/.test(lineHeight)) throw new Unsupported(`line-height ${authored}: only unitless is read`);
   const decoration = `${prop(ctx, "text-decoration-line") ?? ""} ${prop(ctx, "text-decoration") ?? ""}`;

@@ -295,3 +295,15 @@ describe("NumberField", () => {
     expect(field.kind === "frame" && field.layers[0]).toMatchObject({ kind: "text", slot: "value", fill: true, text: { align: "CENTER" } });
   });
 });
+
+describe("List", () => {
+  it("draws its rows with their icons, and dividers between them only when on", () => {
+    const set = manifest.components.find((c): c is ComponentSet => c.kind === "component-set" && c.id === "list")!;
+    const rules = (dividers: string) =>
+      manifest.styles.layers[set.cells.find((c) => c.props.dividers === dividers && c.props.density === "default")!.layers].map((l) =>
+        l.kind === "frame" ? manifest.styles.surfaces[l.surface].strokes.length : 0,
+      );
+    expect(rules("true")).toEqual([0, 1, 1]);
+    expect(rules("false")).toEqual([0, 0, 0]);
+  });
+});
