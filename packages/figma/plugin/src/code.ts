@@ -684,55 +684,76 @@ async function applyIcon(ctx: SetCtx, node: InstanceNode, layer: Extract<M.Layer
   } else glyph.fills = [paint];
 }
 
-/** One cell, in place: geometry, surface, then its layers in slot order. */
-async function applyCell(ctx: SetCtx, node: ComponentNode, cell: M.Cell, sample: Record<string, string>) {
-  const box = manifest.styles.boxes[cell.box];
-  const surface = manifest.styles.surfaces[cell.surface];
-  const layers = manifest.styles.layers[cell.layers];
+/** The three parts a cell points at, each by content hash: what a cell can change independently. */
+type Part = "box" | "surface" | "layers";
+const PARTS: readonly Part[] = ["box", "surface", "layers"];
 
-  node.name = cell.key;
-  node.layoutMode = box.direction;
-  node.primaryAxisAlignItems = box.mainAlign;
-  node.counterAxisAlignItems = box.crossAlign;
-  node.primaryAxisSizingMode = box.width ? "FIXED" : "AUTO";
-  node.counterAxisSizingMode = box.height ? "FIXED" : "AUTO";
-  setNumber(ctx, node, "paddingTop", box.padding.top);
-  setNumber(ctx, node, "paddingRight", box.padding.right);
-  setNumber(ctx, node, "paddingBottom", box.padding.bottom);
-  setNumber(ctx, node, "paddingLeft", box.padding.left);
-  setNumber(ctx, node, "itemSpacing", box.gap, 0);
-  for (const corner of ["topLeftRadius", "topRightRadius", "bottomLeftRadius", "bottomRightRadius"] as const) {
-    setNumber(ctx, node, corner, box.radius, 0);
-  }
-  setNumber(ctx, node, "minHeight", box.minHeight);
-  setNumber(ctx, node, "width", box.width);
-  setNumber(ctx, node, "height", box.height);
-  node.strokes = surface.strokes.map((p) => toPaint(ctx, p));
-  node.strokeAlign = "INSIDE";
-  setNumber(ctx, node, "strokeWeight", box.strokeWeight, 0);
-  node.fills = surface.fills.map((p) => toPaint(ctx, p));
-  node.effects = surface.effects.map((e) => toEffect(ctx, e));
-  node.clipsContent = box.clipsContent;
+/** Which parts of an existing cell differ from the manifest. A cell from before parts were tagged has all stale. */
+const staleParts = (node: ComponentNode, cell: M.Cell): Part[] => PARTS.filter((part) => getTag(node, part) !== cell[part]);
 
-  for (const [index, layer] of layers.entries()) {
-    let child = node.findChild((n) => n.name === layer.slot);
-    const wanted = layer.kind === "icon" ? "INSTANCE" : "TEXT";
-    if (child && child.type !== wanted) {
-      ctx.run.log("UPDATE", `layer ${layer.slot} of ${cell.key}`, `replaced: ${child.type} → ${wanted}`);
-      child.remove();
-      child = null;
+/**
+ * One cell, in place, rewriting only `parts`: its geometry, its surface, or its layers in the
+ * template's slot order. A cell whose surface alone changed keeps every layer untouched.
+ */
+async function applyCell(ctx: SetCtx, node: ComponentNode, cell: M.Cell, sample: Record<string, string>, parts: readonly Part[] = PARTS) {
+  if (node.name !== cell.key) node.name = cell.key;
+
+  if (parts.includes("box")) {
+    const box = manifest.styles.boxes[cell.box];
+    node.layoutMode = box.direction;
+    node.primaryAxisAlignItems = box.mainAlign;
+    node.counterAxisAlignItems = box.crossAlign;
+    node.primaryAxisSizingMode = box.width ? "FIXED" : "AUTO";
+    node.counterAxisSizingMode = box.height ? "FIXED" : "AUTO";
+    setNumber(ctx, node, "paddingTop", box.padding.top);
+    setNumber(ctx, node, "paddingRight", box.padding.right);
+    setNumber(ctx, node, "paddingBottom", box.padding.bottom);
+    setNumber(ctx, node, "paddingLeft", box.padding.left);
+    setNumber(ctx, node, "itemSpacing", box.gap, 0);
+    for (const corner of ["topLeftRadius", "topRightRadius", "bottomLeftRadius", "bottomRightRadius"] as const) {
+      setNumber(ctx, node, corner, box.radius, 0);
     }
-    if (!child) {
-      child =
-        layer.kind === "icon"
-          ? (ctx.icons.byName.get(layer.default) ?? ctx.icons.byName.get(ctx.icons.spec.default)!).createInstance()
-          : figma.createText();
-      child.name = layer.slot;
-    }
-    node.insertChild(index, child);
-    if (layer.kind === "icon") await applyIcon(ctx, child as InstanceNode, layer);
-    else await applyText(ctx, child as TextNode, layer.text, sample[layer.slot] ?? "");
+    setNumber(ctx, node, "minHeight", box.minHeight);
+    setNumber(ctx, node, "width", box.width);
+    setNumber(ctx, node, "height", box.height);
+    node.strokeAlign = "INSIDE";
+    setNumber(ctx, node, "strokeWeight", box.strokeWeight, 0);
+    node.clipsContent = box.clipsContent;
   }
+
+  if (parts.includes("surface")) {
+    const surface = manifest.styles.surfaces[cell.surface];
+    node.strokes = surface.strokes.map((p) => toPaint(ctx, p));
+    node.fills = surface.fills.map((p) => toPaint(ctx, p));
+    node.effects = surface.effects.map((e) => toEffect(ctx, e));
+  }
+
+  if (parts.includes("layers")) {
+    const layers = manifest.styles.layers[cell.layers];
+    for (const [index, layer] of layers.entries()) {
+      let child = node.findChild((n) => n.name === layer.slot);
+      const wanted = layer.kind === "icon" ? "INSTANCE" : "TEXT";
+      if (child && child.type !== wanted) {
+        ctx.run.log("UPDATE", `layer ${layer.slot} of ${cell.key}`, `replaced: ${child.type} → ${wanted}`);
+        child.remove();
+        child = null;
+      }
+      if (!child) {
+        child =
+          layer.kind === "icon"
+            ? (ctx.icons.byName.get(layer.default) ?? ctx.icons.byName.get(ctx.icons.spec.default)!).createInstance()
+            : figma.createText();
+        child.name = layer.slot;
+      }
+      // Move only a layer that is out of place: reinserting an in-place child is still a write.
+      if (node.children[index] !== child) node.insertChild(index, child);
+      if (layer.kind === "icon") await applyIcon(ctx, child as InstanceNode, layer);
+      else await applyText(ctx, child as TextNode, layer.text, sample[layer.slot] ?? "");
+    }
+  }
+
+  for (const part of parts) node.setSharedPluginData(NS, part, cell[part]);
+  node.setSharedPluginData(NS, "hash", cell.hash);
 }
 
 /**
@@ -939,6 +960,7 @@ async function syncSet(ctx: SetCtx, spec: M.ComponentSet, found: Map<string, Sce
   for (const p of spec.properties) if (p.type === "TEXT") samples[p.name] = p.default;
 
   const counts = { created: 0, updated: 0, unchanged: 0, orphaned: 0 };
+  const partCounts: Record<Part, number> = { box: 0, surface: 0, layers: 0 };
   for (const cell of spec.cells) {
     const node = existing.get(cell.key);
     if (!node) {
@@ -947,7 +969,6 @@ async function syncSet(ctx: SetCtx, spec: M.ComponentSet, found: Map<string, Sce
         const fresh = figma.createComponent();
         await applyCell(ctx, fresh, cell, samples);
         fresh.setSharedPluginData(NS, "cell", cell.key);
-        fresh.setSharedPluginData(NS, "hash", cell.hash);
         // Into the set at once, so an interrupted run never leaves loose components on the page.
         // Onto the frame's page first: a component is born on whichever page is current.
         frame.appendChild(fresh);
@@ -956,10 +977,9 @@ async function syncSet(ctx: SetCtx, spec: M.ComponentSet, found: Map<string, Sce
       }
     } else if (getTag(node, "hash") !== cell.hash) {
       counts.updated++;
-      if (run.write(() => void 0)) {
-        await applyCell(ctx, node, cell, samples);
-        node.setSharedPluginData(NS, "hash", cell.hash);
-      }
+      const parts = staleParts(node, cell);
+      for (const part of parts) partCounts[part]++;
+      if (run.write(() => void 0)) await applyCell(ctx, node, cell, samples, parts);
     } else counts.unchanged++;
     await progress.tick(spec.id);
   }
@@ -972,7 +992,10 @@ async function syncSet(ctx: SetCtx, spec: M.ComponentSet, found: Map<string, Sce
     run.write(() => node.setSharedPluginData(NS, "orphaned", "true"));
   }
   if (counts.created) run.log("CREATE", `${spec.name}: ${counts.created} variants`);
-  if (counts.updated) run.log("UPDATE", `${spec.name}: ${counts.updated} variants`, "in place");
+  if (counts.updated) {
+    const which = PARTS.filter((p) => partCounts[p]).map((p) => `${p} ${partCounts[p]}`).join(", ");
+    run.log("UPDATE", `${spec.name}: ${counts.updated} variants`, `in place; rewrote ${which || "names only"}`);
+  }
   if (counts.unchanged) run.log("NOOP", `${spec.name}: ${counts.unchanged} variants`);
 
   if (!set || !frame) {
