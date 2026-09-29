@@ -572,3 +572,10 @@ describe("Menu", () => {
     expect(manifest.styles.layers[set.cells[0].layers].map((l) => l.slot)).toEqual(["item", "item 2", "item 3"]);
   });
 });
+
+describe("Popover", () => {
+  it("draws its open panel alone, held open as :popover-open", () => {
+    const set = manifest.components.find((c): c is ComponentSet => c.kind === "component-set" && c.id === "popover/plain")!;
+    expect(manifest.styles.layers[set.cells[0].layers].map((l) => l.slot)).toEqual(["title", "description", "children", "close"]);
+  });
+});

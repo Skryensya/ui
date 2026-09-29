@@ -45514,6 +45514,177 @@
         "columns": []
       },
       "visualHash": "6ac40d43fb5dde53"
+    },
+    {
+      "axes": [],
+      "cells": [
+        {
+          "box": "772bfc4add38aa02",
+          "hash": "beeb028e41cfbefe",
+          "id": "popover/plain/",
+          "key": "",
+          "layers": "e452d830189e5bc7",
+          "props": {},
+          "surface": "f955e8c9b3a1bb2b"
+        }
+      ],
+      "contractHash": "d75c29f8f816fb0c",
+      "defaultCell": "",
+      "grid": {
+        "columns": [],
+        "rows": []
+      },
+      "id": "popover/plain",
+      "interactions": [],
+      "kind": "component-set",
+      "name": "Popover / plain",
+      "page": "skryensya",
+      "properties": [
+        {
+          "default": "Storage",
+          "name": "title",
+          "type": "TEXT"
+        },
+        {
+          "default": true,
+          "name": "show title",
+          "type": "BOOLEAN"
+        },
+        {
+          "default": "You are using 7.4 GB of 10 GB.",
+          "name": "description",
+          "type": "TEXT"
+        },
+        {
+          "default": true,
+          "name": "show description",
+          "type": "BOOLEAN"
+        },
+        {
+          "default": "Upgrade for more room.",
+          "name": "children",
+          "type": "TEXT"
+        }
+      ],
+      "showcase": {
+        "base": {},
+        "columns": []
+      },
+      "visualHash": "9e9777686d4e364f"
+    },
+    {
+      "axes": [],
+      "cells": [
+        {
+          "box": "772bfc4add38aa02",
+          "hash": "9eed6243f5715211",
+          "id": "popover/brutalist/",
+          "key": "",
+          "layers": "e452d830189e5bc7",
+          "props": {},
+          "surface": "7854c25dba7c612c"
+        }
+      ],
+      "contractHash": "d75c29f8f816fb0c",
+      "defaultCell": "",
+      "grid": {
+        "columns": [],
+        "rows": []
+      },
+      "id": "popover/brutalist",
+      "interactions": [],
+      "kind": "component-set",
+      "name": "Popover / brutalist",
+      "page": "skryensya",
+      "properties": [
+        {
+          "default": "Storage",
+          "name": "title",
+          "type": "TEXT"
+        },
+        {
+          "default": true,
+          "name": "show title",
+          "type": "BOOLEAN"
+        },
+        {
+          "default": "You are using 7.4 GB of 10 GB.",
+          "name": "description",
+          "type": "TEXT"
+        },
+        {
+          "default": true,
+          "name": "show description",
+          "type": "BOOLEAN"
+        },
+        {
+          "default": "Upgrade for more room.",
+          "name": "children",
+          "type": "TEXT"
+        }
+      ],
+      "showcase": {
+        "base": {},
+        "columns": []
+      },
+      "visualHash": "af951842e2bcc302"
+    },
+    {
+      "axes": [],
+      "cells": [
+        {
+          "box": "772bfc4add38aa02",
+          "hash": "eec06b0d8a46f4b1",
+          "id": "popover/frosted/",
+          "key": "",
+          "layers": "e452d830189e5bc7",
+          "props": {},
+          "surface": "53ec0f48a73818dc"
+        }
+      ],
+      "contractHash": "d75c29f8f816fb0c",
+      "defaultCell": "",
+      "grid": {
+        "columns": [],
+        "rows": []
+      },
+      "id": "popover/frosted",
+      "interactions": [],
+      "kind": "component-set",
+      "name": "Popover / frosted",
+      "page": "skryensya",
+      "properties": [
+        {
+          "default": "Storage",
+          "name": "title",
+          "type": "TEXT"
+        },
+        {
+          "default": true,
+          "name": "show title",
+          "type": "BOOLEAN"
+        },
+        {
+          "default": "You are using 7.4 GB of 10 GB.",
+          "name": "description",
+          "type": "TEXT"
+        },
+        {
+          "default": true,
+          "name": "show description",
+          "type": "BOOLEAN"
+        },
+        {
+          "default": "Upgrade for more room.",
+          "name": "children",
+          "type": "TEXT"
+        }
+      ],
+      "showcase": {
+        "base": {},
+        "columns": []
+      },
+      "visualHash": "4804bc2935cc5643"
     }
   ],
   "diagnostics": [
@@ -45684,6 +45855,18 @@
       "message": "11 rule(s) under a condition the evaluation context does not hold",
       "severity": "info",
       "subject": "components/button.css @media (forced-colors: active)"
+    },
+    {
+      "code": "CONDITION_SKIPPED",
+      "message": "11 rule(s) under a condition the evaluation context does not hold",
+      "severity": "info",
+      "subject": "components/button.css @media (forced-colors: active)"
+    },
+    {
+      "code": "CONDITION_SKIPPED",
+      "message": "1 rule(s) under a condition the evaluation context does not hold",
+      "severity": "info",
+      "subject": "components/button.css @media (prefers-reduced-motion: reduce)"
     },
     {
       "code": "CONDITION_SKIPPED",
@@ -46020,6 +46203,30 @@
       "message": "2 rule(s) under a condition the evaluation context does not hold",
       "severity": "info",
       "subject": "components/password-input.css @media (forced-colors: active)"
+    },
+    {
+      "code": "CONDITION_SKIPPED",
+      "message": "2 rule(s) under a condition the evaluation context does not hold",
+      "severity": "info",
+      "subject": "components/popover.css @media (forced-colors: active)"
+    },
+    {
+      "code": "CONDITION_SKIPPED",
+      "message": "2 rule(s) under a condition the evaluation context does not hold",
+      "severity": "info",
+      "subject": "components/popover.css @media (prefers-reduced-motion: reduce)"
+    },
+    {
+      "code": "CONDITION_SKIPPED",
+      "message": "1 rule(s) under a condition the evaluation context does not hold",
+      "severity": "info",
+      "subject": "components/popover.css @starting-style "
+    },
+    {
+      "code": "CONDITION_SKIPPED",
+      "message": "1 rule(s) under a condition the evaluation context does not hold",
+      "severity": "info",
+      "subject": "components/popover.css @supports not (anchor-name: --a)"
     },
     {
       "code": "CONDITION_SKIPPED",
@@ -46467,6 +46674,12 @@
     },
     {
       "code": "CONDITION_SKIPPED",
+      "message": "6 rule(s) under a condition the evaluation context does not hold",
+      "severity": "info",
+      "subject": "patterns/anchored.css @supports (anchor-name: --a)"
+    },
+    {
+      "code": "CONDITION_SKIPPED",
       "message": "14 rule(s) under a condition the evaluation context does not hold",
       "severity": "info",
       "subject": "patterns/dialog-vaul.css @media (max-width: 52rem)"
@@ -46716,6 +46929,18 @@
       "message": "1 rule(s) under a condition the evaluation context does not hold",
       "severity": "info",
       "subject": "patterns/state-layer.css @media (prefers-reduced-motion: reduce)"
+    },
+    {
+      "code": "CONDITION_SKIPPED",
+      "message": "1 rule(s) under a condition the evaluation context does not hold",
+      "severity": "info",
+      "subject": "patterns/state-layer.css @media (prefers-reduced-motion: reduce)"
+    },
+    {
+      "code": "CONDITION_SKIPPED",
+      "message": "0 rule(s) under a condition the evaluation context does not hold",
+      "severity": "info",
+      "subject": "patterns/state-layer.css @property --state-layer-opacity"
     },
     {
       "code": "CONDITION_SKIPPED",
@@ -47337,6 +47562,25 @@
           "appearance"
         ]
       },
+      "popover": {
+        "excluded": [
+          "placement",
+          "arrow",
+          "triggerVariant",
+          "triggerTone",
+          "triggerSize",
+          "triggerAppearance",
+          "triggerIconOnly"
+        ],
+        "nonVisual": [
+          "panelId",
+          "closeLabel",
+          "triggerLabel"
+        ],
+        "visual": [
+          "appearance"
+        ]
+      },
       "progress": {
         "excluded": [],
         "nonVisual": [
@@ -47653,11 +47897,11 @@
     },
     "tokens": {
       "catalogueAdded": 301,
-      "componentVariables": 557,
+      "componentVariables": 565,
       "modeValuesBySource": {
         "alias": 203,
-        "evaluated": 989,
-        "literal": 854
+        "evaluated": 1001,
+        "literal": 858
       },
       "reached": 207,
       "reachedAsVariables": 157,
@@ -47678,8 +47922,8 @@
       "variables": 466
     },
     "variants": {
-      "components": 140,
-      "componentSets": 139,
+      "components": 143,
+      "componentSets": 142,
       "naiveAllOptions": {
         "accordion": 32,
         "avatar": 8,
@@ -47714,6 +47958,7 @@
         "otp-input": 128,
         "pagination": 4,
         "password-input": 384,
+        "popover": 48,
         "progress": 4,
         "quote": 2,
         "radio": 32,
@@ -47776,6 +48021,7 @@
         "otp-input": 2,
         "pagination": 4,
         "password-input": 12,
+        "popover": 3,
         "progress": 4,
         "quote": 2,
         "radio": 16,
@@ -48360,13 +48606,25 @@
         {
           "set": "menu",
           "variants": 2
+        },
+        {
+          "set": "popover/plain",
+          "variants": 1
+        },
+        {
+          "set": "popover/brutalist",
+          "variants": 1
+        },
+        {
+          "set": "popover/frosted",
+          "variants": 1
         }
       ],
-      "variantsTotal": 2590
+      "variantsTotal": 2593
     }
   },
   "schemaVersion": 1,
-  "sourceHash": "2ede6d926be8d933",
+  "sourceHash": "4abf9d62276be4bc",
   "stage": {
     "background": {
       "variable": "--color-bg-surface"
@@ -52289,6 +52547,37 @@
           "variable": "--size-control-sm"
         }
       },
+      "772bfc4add38aa02": {
+        "clipsContent": false,
+        "crossAlign": "MIN",
+        "direction": "VERTICAL",
+        "mainAlign": "MIN",
+        "padding": {
+          "bottom": {
+            "variable": "--space-inset-md"
+          },
+          "left": {
+            "variable": "--space-inset-md"
+          },
+          "right": {
+            "variable": "--space-inset-md"
+          },
+          "top": {
+            "variable": "--space-inset-md"
+          }
+        },
+        "radius": {
+          "variable": "--radius-surface"
+        },
+        "strokeWeight": {
+          "expression": "1px",
+          "value": 1
+        },
+        "width": {
+          "expression": "280px",
+          "value": 280
+        }
+      },
       "77e54b74d1e9ce0f": {
         "clipsContent": true,
         "crossAlign": "CENTER",
@@ -53007,6 +53296,45 @@
         "width": {
           "expression": "144px",
           "value": 144
+        }
+      },
+      "87e0757b39584cf8": {
+        "clipsContent": true,
+        "crossAlign": "CENTER",
+        "direction": "HORIZONTAL",
+        "gap": {
+          "variable": "--space-inline-sm"
+        },
+        "mainAlign": "CENTER",
+        "minHeight": {
+          "variable": "popover:sk-button-height:2dce2436e5"
+        },
+        "minWidth": {
+          "expression": "0",
+          "value": 0
+        },
+        "padding": {
+          "bottom": {
+            "expression": "0",
+            "value": 0
+          },
+          "left": {
+            "variable": "--space-inset-md"
+          },
+          "right": {
+            "variable": "--space-inset-md"
+          },
+          "top": {
+            "expression": "0",
+            "value": 0
+          }
+        },
+        "radius": {
+          "variable": "--radius-control"
+        },
+        "stretch": true,
+        "strokeWeight": {
+          "variable": "popover:sk-button-border-width:93e20626bf"
         }
       },
       "884598a7f476f29a": {
@@ -90115,6 +90443,126 @@
           "visibleProperty": "show children"
         }
       ],
+      "e452d830189e5bc7": [
+        {
+          "fill": true,
+          "kind": "text",
+          "slot": "title",
+          "text": {
+            "fill": {
+              "color": {
+                "variable": "--color-text-primary"
+              },
+              "type": "SOLID"
+            },
+            "fontFamily": {
+              "variable": "--font-family-body"
+            },
+            "fontSize": {
+              "variable": "--font-size-body"
+            },
+            "fontWeight": {
+              "variable": "--font-weight-label"
+            },
+            "lineHeight": 150
+          },
+          "textProperty": "title",
+          "visibleProperty": "show title"
+        },
+        {
+          "fill": true,
+          "kind": "text",
+          "slot": "description",
+          "text": {
+            "fill": {
+              "color": {
+                "variable": "--color-text-secondary"
+              },
+              "type": "SOLID"
+            },
+            "fontFamily": {
+              "variable": "--font-family-body"
+            },
+            "fontSize": {
+              "variable": "--font-size-body-sm"
+            },
+            "fontWeight": {
+              "variable": "--font-weight-body"
+            },
+            "lineHeight": 150
+          },
+          "textProperty": "description",
+          "visibleProperty": "show description"
+        },
+        {
+          "fill": true,
+          "kind": "text",
+          "slot": "children",
+          "text": {
+            "fill": {
+              "color": {
+                "variable": "--color-text-primary"
+              },
+              "type": "SOLID"
+            },
+            "fontFamily": {
+              "variable": "--font-family-body"
+            },
+            "fontSize": {
+              "variable": "--font-size-body"
+            },
+            "fontWeight": {
+              "variable": "--font-weight-body"
+            },
+            "lineHeight": 150
+          },
+          "textProperty": "children"
+        },
+        {
+          "box": "87e0757b39584cf8",
+          "kind": "frame",
+          "layers": [
+            {
+              "fills": [
+                {
+                  "color": {
+                    "variable": "popover:state-layer:a8bbbce668"
+                  },
+                  "type": "SOLID"
+                }
+              ],
+              "kind": "overlay",
+              "slot": "state layer"
+            },
+            {
+              "characters": "Close",
+              "kind": "text",
+              "slot": "text",
+              "text": {
+                "fill": {
+                  "color": {
+                    "variable": "--color-text-primary"
+                  },
+                  "type": "SOLID"
+                },
+                "fontFamily": {
+                  "variable": "--font-family-body"
+                },
+                "fontSize": {
+                  "variable": "--font-size-body"
+                },
+                "fontWeight": {
+                  "variable": "--font-weight-label"
+                },
+                "lineHeight": 100
+              },
+              "textProperty": "text"
+            }
+          ],
+          "slot": "close",
+          "surface": "2f033f00071272d0"
+        }
+      ],
       "e5523808c0c548bb": [
         {
           "fills": [
@@ -98333,6 +98781,99 @@
           }
         ]
       },
+      "53ec0f48a73818dc": {
+        "effects": [
+          {
+            "blur": {
+              "expression": "0",
+              "value": 0
+            },
+            "color": {
+              "variable": "--frost-highlight"
+            },
+            "spread": {
+              "expression": "0",
+              "value": 0
+            },
+            "type": "INNER_SHADOW",
+            "x": {
+              "expression": "0",
+              "value": 0
+            },
+            "y": {
+              "expression": "1px",
+              "value": 1
+            }
+          },
+          {
+            "blur": {
+              "expression": "6px",
+              "value": 6
+            },
+            "color": {
+              "variable": "--shadow-md"
+            },
+            "spread": {
+              "expression": "-2px",
+              "value": -2
+            },
+            "type": "DROP_SHADOW",
+            "x": {
+              "expression": "0",
+              "value": 0
+            },
+            "y": {
+              "expression": "4px",
+              "value": 4
+            }
+          },
+          {
+            "blur": {
+              "expression": "15px",
+              "value": 15
+            },
+            "color": {
+              "variable": "--shadow-md"
+            },
+            "spread": {
+              "expression": "-3px",
+              "value": -3
+            },
+            "type": "DROP_SHADOW",
+            "x": {
+              "expression": "0",
+              "value": 0
+            },
+            "y": {
+              "expression": "10px",
+              "value": 10
+            }
+          },
+          {
+            "radius": {
+              "expression": "20px",
+              "value": 20
+            },
+            "type": "BACKGROUND_BLUR"
+          }
+        ],
+        "fills": [
+          {
+            "color": {
+              "variable": "popover:frost-glass:c8f1f4cca7"
+            },
+            "type": "SOLID"
+          }
+        ],
+        "strokes": [
+          {
+            "color": {
+              "variable": "popover:border-color:dfa846e305"
+            },
+            "type": "SOLID"
+          }
+        ]
+      },
       "53eefa61016f76c3": {
         "effects": [
           {
@@ -100792,6 +101333,46 @@
           }
         ],
         "strokes": []
+      },
+      "7854c25dba7c612c": {
+        "effects": [
+          {
+            "blur": {
+              "expression": "0",
+              "value": 0
+            },
+            "color": {
+              "variable": "popover:brutalist-black:b75258c11d"
+            },
+            "spread": {
+              "expression": "0",
+              "value": 0
+            },
+            "type": "DROP_SHADOW",
+            "x": {
+              "variable": "popover:shadow-1-x:8ffed190ec"
+            },
+            "y": {
+              "variable": "popover:popover-brutalist-offset:3772b3a113"
+            }
+          }
+        ],
+        "fills": [
+          {
+            "color": {
+              "variable": "--color-bg-surface-overlay"
+            },
+            "type": "SOLID"
+          }
+        ],
+        "strokes": [
+          {
+            "color": {
+              "variable": "popover:brutalist-black:b75258c11d"
+            },
+            "type": "SOLID"
+          }
+        ]
       },
       "79b142c692cc5c86": {
         "effects": [],
@@ -120157,6 +120738,222 @@
       "expression": "color-mix( in srgb, var(--color-text-secondary) calc(0 * 100%), transparent )",
       "id": "password-input:state-layer:2898638ebc",
       "name": "password-input/state-layer",
+      "source": {
+        "dark": "evaluated",
+        "light": "evaluated"
+      },
+      "type": "COLOR",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": {
+            "a": 0,
+            "b": 0,
+            "g": 0,
+            "r": 0
+          }
+        },
+        "light": {
+          "kind": "literal",
+          "value": {
+            "a": 0,
+            "b": 0,
+            "g": 0,
+            "r": 0
+          }
+        }
+      }
+    },
+    {
+      "codeSyntax": "var(--sk-popover-border-color)",
+      "collection": "component",
+      "expression": "color-mix(in oklab, var(--color-text-primary) 18%, transparent)",
+      "id": "popover:border-color:dfa846e305",
+      "name": "popover/border-color/frosted",
+      "source": {
+        "dark": "evaluated",
+        "light": "evaluated"
+      },
+      "type": "COLOR",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": {
+            "a": 0.18,
+            "b": 0.9579,
+            "g": 0.9609,
+            "r": 0.9609
+          }
+        },
+        "light": {
+          "kind": "literal",
+          "value": {
+            "a": 0.18,
+            "b": 0.0903,
+            "g": 0.098,
+            "r": 0.1095
+          }
+        }
+      }
+    },
+    {
+      "codeSyntax": "var(--brutalist-black)",
+      "collection": "component",
+      "expression": "oklch(from var(--shadow-lg) l c h / 1)",
+      "id": "popover:brutalist-black:b75258c11d",
+      "name": "popover/brutalist-black/brutalist",
+      "source": {
+        "dark": "evaluated",
+        "light": "evaluated"
+      },
+      "type": "COLOR",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": {
+            "a": 1,
+            "b": 0,
+            "g": 0,
+            "r": 0
+          }
+        },
+        "light": {
+          "kind": "literal",
+          "value": {
+            "a": 1,
+            "b": 0,
+            "g": 0,
+            "r": 0
+          }
+        }
+      }
+    },
+    {
+      "codeSyntax": "var(--frost-glass)",
+      "collection": "component",
+      "expression": "var(--frost-on) color-mix(in oklab, var(--color-bg-surface-overlay) 75%, transparent)",
+      "id": "popover:frost-glass:c8f1f4cca7",
+      "name": "popover/frost-glass/frosted",
+      "source": {
+        "dark": "evaluated",
+        "light": "evaluated"
+      },
+      "type": "COLOR",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": {
+            "a": 0.75,
+            "b": 0.1533,
+            "g": 0.1593,
+            "r": 0.1776
+          }
+        },
+        "light": {
+          "kind": "literal",
+          "value": {
+            "a": 0.75,
+            "b": 1,
+            "g": 1,
+            "r": 1
+          }
+        }
+      }
+    },
+    {
+      "codeSyntax": "var(--popover-brutalist-offset)",
+      "collection": "component",
+      "expression": "5px",
+      "id": "popover:popover-brutalist-offset:3772b3a113",
+      "name": "popover/popover-brutalist-offset/brutalist",
+      "source": {
+        "dark": "literal",
+        "light": "literal"
+      },
+      "type": "FLOAT",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": 5
+        },
+        "light": {
+          "kind": "literal",
+          "value": 5
+        }
+      }
+    },
+    {
+      "codeSyntax": "",
+      "collection": "component",
+      "expression": "calc(5px * 1)",
+      "id": "popover:shadow-1-x:8ffed190ec",
+      "name": "popover/shadow-1-x/brutalist",
+      "source": {
+        "dark": "evaluated",
+        "light": "evaluated"
+      },
+      "type": "FLOAT",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": 5
+        },
+        "light": {
+          "kind": "literal",
+          "value": 5
+        }
+      }
+    },
+    {
+      "codeSyntax": "var(--sk-button-border-width)",
+      "collection": "component",
+      "expression": "1px",
+      "id": "popover:sk-button-border-width:93e20626bf",
+      "name": "popover/sk-button-border-width",
+      "source": {
+        "dark": "literal",
+        "light": "literal"
+      },
+      "type": "FLOAT",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": 1
+        },
+        "light": {
+          "kind": "literal",
+          "value": 1
+        }
+      }
+    },
+    {
+      "codeSyntax": "var(--sk-button-height)",
+      "collection": "component",
+      "expression": "max(var(--size-control-md), var(--size-touch-target))",
+      "id": "popover:sk-button-height:2dce2436e5",
+      "name": "popover/sk-button-height",
+      "source": {
+        "dark": "evaluated",
+        "light": "evaluated"
+      },
+      "type": "FLOAT",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": 44
+        },
+        "light": {
+          "kind": "literal",
+          "value": 44
+        }
+      }
+    },
+    {
+      "codeSyntax": "",
+      "collection": "component",
+      "expression": "color-mix( in srgb, var(--color-text-primary) calc(0 * 100%), transparent )",
+      "id": "popover:state-layer:a8bbbce668",
+      "name": "popover/state-layer",
       "source": {
         "dark": "evaluated",
         "light": "evaluated"
