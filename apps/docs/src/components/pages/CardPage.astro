@@ -1,76 +1,40 @@
 ---
 /*
  * A composition guide, not a component page: there is no `sk-card`, no `@skryensya/react/card` and
- * no compiled contract to publish, on purpose (see the callout below). The shell runs with no
- * `contractId`, so Referencia and Cambios drop out. There is no single compiled artifact for
- * "Box + Tile + ImageFrame + Stack" to read either tab from, same as Primitivas. Instalación,
- * Estilo, Accesibilidad and Tests are all independent of `contractId`, so they still run: Estilo
- * reads the REAL published hooks of the pieces Card composes (Box, Tile, Checkbox, ImageFrame),
- * and Tests reads two real files written for this page (see their own comments).
+ * no compiled contract to publish. This page therefore teaches the decision rule, not a gallery of
+ * every card-looking thing the system can compose.
  */
-/* Box, Stack, ImageFrame and typography ride in globally through Base.astro's own
- * `patterns/layout.css` (which itself pulls box.css and image-frame.css) and `components/typography.css`.
- * Tile and Checkbox do not: every other page that uses TileLink/TileButton/TileCheckbox imports
- * these explicitly, and the card examples that sit on them (link, action, select, mediaLink) need
- * them too. Without checkbox.css, EVERY indicator painted both the check and the dash glyph at
- * once: the state-scoped visibility rule that hides one of them never loaded. */
 import "@skryensya/core/components/tile.css";
 import "@skryensya/core/components/checkbox.css";
-import "@skryensya/core/components/chart.css";
-import "@skryensya/core/components/stat.css";
 import CodeBlock from "../CodeBlock.astro";
 import ComponentPageShell from "./ComponentPageShell.astro";
-import ComponentPreview from "../ComponentPreview.astro";
+import UsagePreview from "../UsagePreview.astro";
 import { cardCopy } from "../../examples/card-data";
-/* Every rung of the ladder is authored ONCE, as a tree: the markup, the React source and the live
-   island all come out of the compiler, so a snippet on this page cannot describe a card the stage
-   beside it is not rendering. See `demos/card.ts`. */
 import {
   cardActionTree,
   cardBasicTree,
-  cardGradientTree,
   cardLinkTree,
-  cardMediaLinkTree,
-  cardMediaTree,
-  cardMetaTree,
   cardPlainMediaTree,
   cardProductTree,
   cardSelectTree,
-  cardStatTree,
 } from "../../demos/card";
-import { ChartCardDemo } from "../react-demos/chart-card";
-import { chartAnalyticsCardSource, chartAnalyticsCardTree } from "../../demos/charts";
-import { emitChartWithOverlay } from "../../demos/chart-overlay";
-import { visitsPerWeek } from "../../demos/data/charts";
 import { getLocale, localizePath, useTranslations } from "../../i18n";
 
-/* The eleven examples are a LADDER: each rung adds one decision to the one before it, and every
- * rung is shown as a grid of three, because a card that only looks right on its own is a card whose
- * height, media and footer were never tested against its siblings. */
 const locale = getLocale(Astro.url);
 const t = useTranslations(locale);
-/* Every internal link resolves in the locale being read: a hardcoded `/components/x` sends a
-   Spanish reader to the English page, which is the bug this page had six times. */
 const href = (path: string) => localizePath(path, locale);
 const copy = cardCopy[locale];
+const explain = (option: string, values: readonly string[]) =>
+  Object.fromEntries(values.map((value) => [value, t(`cardPage.prop.${option}.${value}` as Parameters<typeof t>[0])]));
 
-/* Same snippet Primitivas installs: Card asks nothing beyond the two packages every example here
- * already imports from. */
-const install = `pnpm add @skryensya/core @skryensya/react`;
-/*
- * THE CHART CARD, in BOTH bindings, from the same tree the Charts page uses.
- *
- * It was React-only: no `html`, so `ComponentPreview` rendered no Vanilla stage at all and the card
- * was the one rung of this ladder a reader could not copy as markup. The source shown beside it was
- * hand-typed too, and had drifted - it described a `Badge` and a `Text` where the live demo rendered
- * a `Stat`.
- *
- * `emitChartWithOverlay` is what makes the Vanilla half possible: a `chart` tree emits the correct
- * anatomy but leaves the overlay div empty, because the area path is a React-only prop of
- * `@skryensya/charts`. That helper splices in the SAME geometry the React renderer draws, computed
- * at build time (see `demos/chart-overlay.ts`). Exactly how `/components/charts` renders this card.
- */
-const chartCardHtml = emitChartWithOverlay(chartAnalyticsCardTree(t), "area", visitsPerWeek);
+const install = `# There is no Card package.
+pnpm add @skryensya/core @skryensya/react
+
+# Import the pieces your composition actually uses, for example:
+@import "@skryensya/core/patterns/box.css";
+@import "@skryensya/core/components/tile.css";
+@import "@skryensya/core/components/checkbox.css";
+@import "@skryensya/core/patterns/image-frame.css";`;
 ---
 
 <ComponentPageShell
@@ -81,14 +45,14 @@ const chartCardHtml = emitChartWithOverlay(chartAnalyticsCardTree(t), "area", vi
     { file: "components/tile.css", probe: "sk-tile", title: "Tile" },
     { file: "components/checkbox.css", probe: "sk-checkbox", title: "Checkbox" },
     { file: "patterns/image-frame.css", probe: "sk-image-frame", title: "ImageFrame" },
+    { file: "components/badge.css", probe: "sk-badge", title: "Badge" },
+    { file: "components/button.css", probe: "sk-button", title: "Button" },
+    { file: "components/link.css", probe: "sk-link", title: "Link" },
   ]}
   testFiles={["apps/docs/src/examples/card-sources.test.ts", "apps/docs/src/components/pages/CardPage.test.ts"]}}
 >
   <Fragment slot="usage">
     <p class="lede" set:html={t("cardPage.lede")} />
-
-    <h3>{t("cardPage.showcaseTitle")}</h3>
-    <p set:html={t("cardPage.showcaseBody")} />
 
     <div class="sk-callout" data-tone="info">
       <div class="sk-callout__content">
@@ -96,95 +60,6 @@ const chartCardHtml = emitChartWithOverlay(chartAnalyticsCardTree(t), "area", vi
       </div>
     </div>
 
-    <h3 id="contenido">{t("cardPage.plainMediaTitle")}</h3>
-    <p set:html={t("cardPage.plainMediaBody")} />
-    <ComponentPreview tree={cardPlainMediaTree(copy)} label={copy.labels.plainMedia} note={t("cardPage.plainMediaNote")} />
-
-    <h3 id="basic">{t("cardPage.basicTitle")}</h3>
-    <p set:html={t("cardPage.basicBody")} />
-    <ComponentPreview tree={cardBasicTree(copy)} label={copy.labels.basic} note={t("cardPage.basicNote")} />
-
-    <h3 id="meta">{t("cardPage.metaTitle")}</h3>
-    <p set:html={t("cardPage.metaBody")} />
-    <ComponentPreview tree={cardMetaTree(copy)} label={copy.labels.meta} note={t("cardPage.metaNote")} />
-
-    <h3 id="stat-card">{t("cardPage.statTitle")}</h3>
-    <p set:html={t("cardPage.statBody")} />
-    <ComponentPreview tree={cardStatTree(copy)} label={copy.labels.stat} note={t("cardPage.statNote")} />
-
-    <h3 id="chart-card">{t("cardPage.chartTitle")}</h3>
-    <p set:html={t("cardPage.chartBody")} />
-    <ComponentPreview html={chartCardHtml} react={chartAnalyticsCardSource} label={t("cardPage.chartLabel")} note={t("cardPage.chartNote")} minHeight="25rem">
-      <Fragment slot="react">
-        <ChartCardDemo client:visible lang={locale} />
-      </Fragment>
-    </ComponentPreview>
-    <p set:html={t("cardPage.chartMore")} />
-
-    <h3 id="enlace">{t("cardPage.linkTitle")}</h3>
-    <p set:html={t("cardPage.linkBody")} />
-    <ComponentPreview tree={cardLinkTree(copy)} label={copy.labels.link} note={t("cardPage.linkNote")} width="breakout" />
-
-    <h3 id="accion">{t("cardPage.actionTitle")}</h3>
-    <p set:html={t("cardPage.actionBody")} />
-    <ComponentPreview tree={cardActionTree(copy)} label={copy.labels.action} note={t("cardPage.actionNote")} width="breakout" />
-
-    <h3 id="seleccion">{t("cardPage.selectTitle")}</h3>
-    <p set:html={t("cardPage.selectBody")} />
-    <ComponentPreview tree={cardSelectTree(copy)} label={copy.labels.select} note={t("cardPage.selectNote")} width="breakout" />
-
-    <h3 id="imagen">{t("cardPage.mediaTitle")}</h3>
-    <p set:html={t("cardPage.mediaBody")} />
-    <ComponentPreview tree={cardMediaTree(copy)} label={copy.labels.media} note={t("cardPage.mediaNote")} width="breakout" />
-
-    <h3 id="gradiente">{t("cardPage.gradientTitle")}</h3>
-    <p set:html={t("cardPage.gradientBody")} />
-    <ComponentPreview tree={cardGradientTree(copy)} label={copy.labels.gradient} note={t("cardPage.gradientNote")} width="breakout" />
-
-    <h3 id="imagen-enlace">{t("cardPage.mediaLinkTitle")}</h3>
-    <p set:html={t("cardPage.mediaLinkBody")} />
-    <ComponentPreview tree={cardMediaLinkTree(copy)} label={copy.labels.mediaLink} note={t("cardPage.mediaLinkNote")} width="breakout" />
-
-    <h3 id="producto">{t("cardPage.productTitle")}</h3>
-    <p set:html={t("cardPage.productBody")} />
-    <ComponentPreview tree={cardProductTree(copy)} label={copy.labels.product} note={t("cardPage.productNote")} width="breakout" />
-
-    <h3>Do &amp; Don't</h3>
-    <div class="sk-grid" data-columns="2" data-gap="md" data-multicol>
-      <section class="sk-box" data-surface="surface" data-border="subtle" data-padding="lg">
-        <div class="sk-stack" data-gap="sm">
-          <span class="sk-badge" data-tone="success">{t("cardPage.doTitle")}</span>
-          <h4 class="sk-heading" data-size="h4">{t("cardPage.doHeading")}</h4>
-          <ul>
-            <li set:html={t("cardPage.doItem1")} />
-            <li set:html={t("cardPage.doItem2")} />
-            <li set:html={t("cardPage.doItem3")} />
-            <li set:html={t("cardPage.doItem4")} />
-            <li set:html={t("cardPage.doItem5")} />
-          </ul>
-        </div>
-      </section>
-      <section class="sk-box" data-surface="surface" data-border="subtle" data-padding="lg">
-        <div class="sk-stack" data-gap="sm">
-          <span class="sk-badge" data-tone="danger">{t("cardPage.dontTitle")}</span>
-          <h4 class="sk-heading" data-size="h4">{t("cardPage.dontHeading")}</h4>
-          <ul>
-            <li set:html={t("cardPage.dontItem1")} />
-            <li set:html={t("cardPage.dontItem2")} />
-            <li set:html={t("cardPage.dontItem3")} />
-            <li set:html={t("cardPage.dontItem4")} />
-            <li set:html={t("cardPage.dontItem5")} />
-          </ul>
-        </div>
-      </section>
-    </div>
-
-    <h3>{t("cardPage.implTitle")}</h3>
-    <p set:html={t("cardPage.implBody")} />
-  </Fragment>
-
-  <Fragment slot="guidelines">
-    <p class="lede" set:html={t("cardPage.guidelinesLede")} />
     <h3>{t("cardPage.chooseTitle")}</h3>
     <p set:html={t("cardPage.chooseBody")} />
     <div class="sk-table-scroll">
@@ -202,7 +77,110 @@ const chartCardHtml = emitChartWithOverlay(chartAnalyticsCardTree(t), "area", vi
         </tbody>
       </table>
     </div>
+
+    <h3>{t("cardPage.showcaseTitle")}</h3>
+    <p set:html={t("cardPage.showcaseBody")} />
+
+    <UsagePreview
+      tree={cardPlainMediaTree(copy)}
+      title={t("cardPage.plainMediaTitle")}
+      description={t("cardPage.plainMediaBody")}
+      caption={t("cardPage.plainMediaNote")}
+    />
+
+    <UsagePreview
+      tree={cardBasicTree(copy)}
+      optionName="surface"
+      target={["children", 0]}
+      title={t("cardPage.prop.surface.title")}
+      description={t("cardPage.prop.surface.body")}
+      explain={explain("surface", ["none", "sunken", "surface", "raised"])}
+      stageMinBlockSize="18rem"
+    />
+
+    <UsagePreview
+      tree={cardBasicTree(copy)}
+      optionName="padding"
+      target={["children", 0]}
+      title={t("cardPage.prop.padding.title")}
+      description={t("cardPage.prop.padding.body")}
+      explain={explain("padding", ["none", "xs", "sm", "md", "lg", "xl"])}
+      stageMinBlockSize="18rem"
+    />
+
+    <UsagePreview
+      tree={cardLinkTree(copy)}
+      optionName="appearance"
+      target={["children", 0]}
+      title={t("cardPage.prop.appearance.title")}
+      description={t("cardPage.prop.appearance.body")}
+      explain={explain("appearance", ["plain", "tactile", "brutalist", "frosted"])}
+      stageMinBlockSize="18rem"
+    />
+
+    <UsagePreview
+      tree={cardActionTree(copy)}
+      title={t("cardPage.actionTitle")}
+      description={t("cardPage.actionBody")}
+      caption={t("cardPage.actionNote")}
+    />
+
+    <UsagePreview
+      tree={cardSelectTree(copy)}
+      optionName="defaultChecked"
+      target={["children", 0]}
+      title={t("cardPage.prop.defaultChecked.title")}
+      description={t("cardPage.prop.defaultChecked.body")}
+      explain={explain("defaultChecked", ["false", "true"])}
+      labels={{ false: t("cardPage.prop.defaultChecked.falseLabel"), true: t("cardPage.prop.defaultChecked.trueLabel") }}
+      stageMinBlockSize="18rem"
+    />
+
+    <UsagePreview
+      tree={cardProductTree(copy)}
+      title={t("cardPage.productTitle")}
+      description={t("cardPage.productBody")}
+      caption={t("cardPage.productNote")}
+    />
+  </Fragment>
+
+  <Fragment slot="guidelines">
+    <p class="lede" set:html={t("cardPage.guidelinesLede")} />
+
+    <div class="sk-grid" data-columns="2" data-gap="md" data-multicol>
+      <section class="sk-box" data-surface="surface" data-border="subtle" data-padding="lg">
+        <div class="sk-stack" data-gap="sm">
+          <span class="sk-badge" data-tone="success">{t("cardPage.doTitle")}</span>
+          <h3 class="sk-heading" data-size="h4">{t("cardPage.doHeading")}</h3>
+          <ul>
+            <li set:html={t("cardPage.doItem1")} />
+            <li set:html={t("cardPage.doItem2")} />
+            <li set:html={t("cardPage.doItem3")} />
+            <li set:html={t("cardPage.doItem4")} />
+            <li set:html={t("cardPage.doItem5")} />
+          </ul>
+        </div>
+      </section>
+      <section class="sk-box" data-surface="surface" data-border="subtle" data-padding="lg">
+        <div class="sk-stack" data-gap="sm">
+          <span class="sk-badge" data-tone="danger">{t("cardPage.dontTitle")}</span>
+          <h3 class="sk-heading" data-size="h4">{t("cardPage.dontHeading")}</h3>
+          <ul>
+            <li set:html={t("cardPage.dontItem1")} />
+            <li set:html={t("cardPage.dontItem2")} />
+            <li set:html={t("cardPage.dontItem3")} />
+            <li set:html={t("cardPage.dontItem4")} />
+            <li set:html={t("cardPage.dontItem5")} />
+          </ul>
+        </div>
+      </section>
+    </div>
+
+    <h3>{t("cardPage.geometryTitle")}</h3>
     <p set:html={t("cardPage.geometryBody")} />
+
+    <h3>{t("cardPage.implTitle")}</h3>
+    <p set:html={t("cardPage.implBody")} />
   </Fragment>
 
   <Fragment slot="install">

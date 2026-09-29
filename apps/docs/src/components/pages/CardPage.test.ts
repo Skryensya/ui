@@ -3,17 +3,11 @@ import { fileURLToPath } from "node:url";
 import { describe, expect, it } from "vitest";
 
 /*
- * Box, Stack, ImageFrame and typography ride in globally through Base.astro. Tile and Checkbox do
- * not, and Card composes both (TileLink, TileButton, TileCheckbox). Reading the page's own source
- * text is enough to prove the import survives: no Astro render, no browser needed for a rule this
- * mechanical, and this is exactly the class of bug that would otherwise ship silently, since
- * `astro check` has no way to know a `.sk-tile` class needs `tile.css` loaded somewhere.
+ * Card is a composition guide, not a component page. These tests protect the mechanical bits that
+ * make that guide render correctly and keep the page from drifting back into a chart/dashboard
+ * gallery instead of teaching the root-decision rule.
  */
 const source = readFileSync(fileURLToPath(new URL("./CardPage.astro", import.meta.url)), "utf8");
-const chartDemoSource = readFileSync(
-  fileURLToPath(new URL("../react-demos/chart-card.tsx", import.meta.url)),
-  "utf8",
-);
 
 describe("CardPage.astro", () => {
   it("imports tile.css, which Base.astro never loads globally", () => {
@@ -24,10 +18,19 @@ describe("CardPage.astro", () => {
     expect(source).toContain('import "@skryensya/core/components/checkbox.css"');
   });
 
-  it("keeps the optional chart card a Box composition instead of inventing sk-card", () => {
-    expect(chartDemoSource).toContain('<Box as="article"');
-    expect(chartDemoSource).toContain("<Chart");
-    expect(chartDemoSource).not.toContain("sk-card");
-    expect(chartDemoSource).not.toContain("BarChart");
+  it("uses property-driven UsagePreview cards instead of old source-heavy ComponentPreview cards", () => {
+    expect(source).toContain('import UsagePreview from "../UsagePreview.astro"');
+    expect(source).not.toContain('import ComponentPreview from "../ComponentPreview.astro"');
+    expect(source).toContain('optionName="surface"');
+    expect(source).toContain('optionName="padding"');
+    expect(source).toContain('optionName="appearance"');
+    expect(source).toContain('optionName="defaultChecked"');
+  });
+
+  it("keeps Card as a composition guide, not a chart showcase", () => {
+    expect(source).not.toContain("ChartCardDemo");
+    expect(source).not.toContain("emitChartWithOverlay");
+    expect(source).not.toContain("cardStatTree");
+    expect(source).not.toContain("cardMetaTree");
   });
 });
