@@ -948,8 +948,24 @@ async function compileRealization(authored: Realization, shared: Shared): Promis
           const overlap = overlapOf(child);
           const measured = overlap ? { ...flowed, gap: overlap } : flowed;
           // Placed by its insets rather than laid out (a timeline's marker): where they come to.
-          const placed = own.get("position") === "absolute" ? { x: lengthOf(own.get("left") ?? "0", child), y: lengthOf(own.get("top") ?? "0", child) } : undefined;
-          const absolute = placed && placed.x !== undefined && placed.y !== undefined ? { x: placed.x, y: placed.y } : undefined;
+          const absolute = (() => {
+            if (own.get("position") !== "absolute") return undefined;
+            const side = (name: string) => {
+              const raw = own.get(name);
+              return raw === undefined || raw === "auto" ? undefined : lengthOf(raw, child);
+            };
+            const left = side("left"), right = side("right"), top = side("top"), bottom = side("bottom");
+            const fromRight = left === undefined && right !== undefined;
+            const fromBottom = top === undefined && bottom !== undefined;
+            const x = fromRight ? right : (left ?? 0);
+            const y = fromBottom ? bottom : (top ?? 0);
+            if (x === undefined || y === undefined) return undefined;
+            // `translate: 35% -35%`: shares of its own size, applied once it is measured.
+            const [tx = "0", ty = "0"] = (own.get("translate") ?? "").split(/\s+/).filter(Boolean);
+            const share = (t: string) => (/%$/.test(t) ? Number.parseFloat(t) / 100 : 0);
+            const shift = share(tx) || share(ty) ? { shift: { x: share(tx), y: share(ty) } } : {};
+            return { x, y, ...(fromRight ? { fromRight: true as const } : {}), ...(fromBottom ? { fromBottom: true as const } : {}), ...shift };
+          })();
           const selfAlign = own.get("align-self");
           const filled = rowStretches && !measured.height && (selfAlign === undefined || selfAlign === "auto" || selfAlign === "stretch");
           const frameBox = absolute ? { ...measured, absolute } : stretch || filled ? { ...measured, stretch: true as const } : measured;

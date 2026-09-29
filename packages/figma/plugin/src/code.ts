@@ -1215,6 +1215,17 @@ async function applyLayers(
       }
     }
   }
+  // A part pinned to the right or bottom, or shifted by a share of its size (a holder's badge), is
+  // placed once the parent and it have their sizes.
+  for (const layer of layers) {
+    if (layer.kind !== "frame") continue;
+    const at = manifest.styles.boxes[layer.box].absolute;
+    if (!at || (!at.fromRight && !at.fromBottom && !at.shift)) continue;
+    const frame = pickLayer(parent.children, owner, layer.slot) as FrameNode;
+    frame.x = (at.fromRight ? parent.width - frame.width - at.x : at.x) + (at.shift?.x ?? 0) * frame.width;
+    frame.y = (at.fromBottom ? parent.height - frame.height - at.y : at.y) + (at.shift?.y ?? 0) * frame.height;
+    frame.constraints = { horizontal: at.fromRight ? "MAX" : "MIN", vertical: at.fromBottom ? "MAX" : "MIN" };
+  }
   // A part that runs on to its parent's far edge is sized once the parent has laid out.
   for (const layer of layers) {
     if (layer.kind !== "frame") continue;
