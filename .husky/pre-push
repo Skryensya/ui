@@ -1,3 +1,49 @@
+# ─────────────────────────────────────────────────────────────────────────────────────────────────
+# IDENTITY. Block publishing any commit whose author or committer is not Allison Peña
+# <allison.jpb@gmail.com>. This catches commits created with --no-verify, rebases, cherry-picks,
+# imported history, and accidental local config changes before they reach GitHub.
+expected_name="Allison Peña"
+expected_email="allison.jpb@gmail.com"
+zero_sha="0000000000000000000000000000000000000000"
+identity_failed=0
+
+while read -r local_ref local_sha remote_ref remote_sha; do
+  [ -z "$local_ref" ] && continue
+  [ "$local_sha" = "$zero_sha" ] && continue
+
+  if [ "$remote_sha" = "$zero_sha" ]; then
+    range="$local_sha"
+  else
+    range="$remote_sha..$local_sha"
+  fi
+
+  for commit in $(git rev-list "$range"); do
+    ident_line="$(git show -s --format='%an <%ae>|%cn <%ce>|%h %s' "$commit")"
+    author="${ident_line%%|*}"
+    rest="${ident_line#*|}"
+    committer="${rest%%|*}"
+    summary="${rest#*|}"
+
+    if [ "$author" != "$expected_name <$expected_email>" ] || [ "$committer" != "$expected_name <$expected_email>" ]; then
+      if [ "$identity_failed" -eq 0 ]; then
+        echo "pre-push: refusing to publish commits with non-Allison identity." >&2
+        echo "  expected author and committer: $expected_name <$expected_email>" >&2
+        echo "" >&2
+      fi
+      identity_failed=1
+      echo "  $summary" >&2
+      echo "    author:    $author" >&2
+      echo "    committer: $committer" >&2
+    fi
+  done
+done
+
+if [ "$identity_failed" -ne 0 ]; then
+  echo "" >&2
+  echo "  Rewrite/fix those commits before pushing." >&2
+  exit 1
+fi
+
 # THE FIRST LINE OF DEFENSE, not the only one. Since `.github/workflows/check.yml` exists there is
 # CI, and it runs these same checks on every pull request: it was needed because a PR from a fork runs
 # no hook from this machine. This hook still matters just as much, because failing here in seconds is

@@ -7,7 +7,7 @@
  * plain link - no API call, no token, no dependency on this repo publishing issue templates. The
  * reader still reviews and submits on GitHub; this never files anything on their behalf.
  */
-const REPO = "Skryensya/skryensya-ui";
+const REPO = "Skryensya/ui";
 
 export function reportIssueUrl(pageTitle: string, body: string): string {
   const params = new URLSearchParams({
