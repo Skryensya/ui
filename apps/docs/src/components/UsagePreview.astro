@@ -43,12 +43,14 @@ interface Props {
   labels?: Record<string, string>;
   /** Reserve vertical room for examples whose live values have different heights, avoiding CLS. */
   stageMinBlockSize?: string;
+  /** Remount the specimen when the value changes. Disable for continuous animations like Marquee. */
+  remountOnChange?: boolean;
   /** Same pair `ComponentPreview` takes (`lib/navigation.ts`). Omit either and no code link renders. */
   storybookTitle?: string;
   storybookStory?: string;
 }
 
-const { tree, optionName, target = [], title, description, caption, explain, labels, stageMinBlockSize, storybookTitle, storybookStory } = Astro.props;
+const { tree, optionName, target = [], title, description, caption, explain, labels, stageMinBlockSize, remountOnChange, storybookTitle, storybookStory } = Astro.props;
 const t = useTranslations(getLocale(Astro.url));
 
 let values: readonly string[] = [];
@@ -104,6 +106,7 @@ const id = title ? `usage-${title.toLowerCase().replace(/[^a-z0-9]+/g, "-")}` : 
           labels={segmentLabels}
           controlLabel={title ?? optionName}
           explain={explain}
+          remountOnChange={remountOnChange}
         />
       ) : (
         <>
