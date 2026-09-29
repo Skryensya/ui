@@ -56,7 +56,7 @@
 
 <label class="option">
   <input type="checkbox" id="dark-demo" checked />
-  <span>Dark demo beside each frame <span class="muted">(-demo)</span></span>
+  <span>Dark version under each frame <span class="muted">(-demo)</span></span>
 </label>
 
 <div class="row">
@@ -138,11 +138,14 @@
   }
   /* All and None act on what the search shows, so "search button, All" picks just those. */
   function pickShown(on) {
-    for (const c of components) {
-      const { box, label } = rows.get(c.id);
-      if (!label.hidden && !box.disabled) box.checked = on;
+    // Twice: None unticks Button first, which is what unlocks the Icon set for the second pass.
+    for (let pass = 0; pass < 2; pass++) {
+      for (const c of components) {
+        const { box, label } = rows.get(c.id);
+        if (!label.hidden && !box.disabled) box.checked = on;
+      }
+      refreshPick();
     }
-    refreshPick();
   }
   function renderPick(list) {
     // Alphabetical, the way a designer looks for one.

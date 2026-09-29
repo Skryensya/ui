@@ -1973,7 +1973,7 @@ async function syncSet(ctx: SetCtx, spec: M.ComponentSet, found: Map<string, Sce
 /* ── the dark demo ──────────────────────────────────────────────────────────────────────────── */
 
 /*
- * DARK IS THE SAME TOKENS IN ANOTHER MODE. Beside each frame goes a copy of it, `-demo`, drawn from
+ * DARK IS THE SAME TOKENS IN ANOTHER MODE. Under each frame goes a copy of it, `-demo`, drawn from
  * instances of the same variants, so it is never a second definition of anything:
  *
  *   - Where the file holds a Dark mode, the copy only switches its collections to Dark.
@@ -2119,7 +2119,7 @@ function demoSignature(spec: M.ComponentSet, frame: FrameNode, set: ComponentSet
   return [spec.visualHash, spec.contractHash, size(frame), size(set), layout, darkModes.size ? "mode" : `demo:${swap.size}`].join("|");
 }
 
-/** The set's frame, again, in dark: beside it, built from instances of its variants. Writes only when stale. */
+/** The set's frame, again, in dark: under it, built from instances of its variants. Writes only when stale. */
 async function syncDemo(ctx: Ctx, spec: M.ComponentSet, found: Map<string, SceneNode>, page: PageNode | undefined, darkModes: DarkModes, swap: DemoSwap) {
   const { run } = ctx;
   const frame = found.get(`frame:${spec.id}`) as FrameNode | undefined;
@@ -2337,10 +2337,13 @@ function arrange(run: Run, pages: Map<string, PageNode>, found: Map<string, Scen
         move(run, node, x, Math.round(y + above));
         y += Math.ceil(shown) + 160;
         const wide = Math.ceil(bounds ? Math.max(node.width, bounds.width) : node.width);
-        // Its dark demo sits beside it, level with it: the column holds the pair.
+        // Its dark demo sits right under it: the same frame, light and then dark, down the column.
         const demo = found.get(`frame:${spec.id}${DEMO}`);
-        if (demo && demo.parent === page) move(run, demo, x + wide + 80, node.y);
-        columnWidth = Math.max(columnWidth, demo && demo.parent === page ? wide + 80 + Math.ceil(demo.width) : wide);
+        if (demo && demo.parent === page) {
+          move(run, demo, x, Math.round(y - 160 + 48));
+          y += Math.ceil(demo.height) + 48;
+        }
+        columnWidth = Math.max(columnWidth, wide, demo && demo.parent === page ? Math.ceil(demo.width) : 0);
         if (!check) continue;
         const planned = plannedHeight(spec);
         if (Math.abs(node.height - planned) > 1) run.log("WARN", `frame ${spec.name}`, `height ${Math.round(node.height)}, planned ${planned}`);
