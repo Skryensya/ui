@@ -30680,9 +30680,245 @@
         "columns": []
       },
       "visualHash": "104249683aa4839d"
+    },
+    {
+      "axes": [
+        {
+          "name": "size",
+          "values": [
+            "sm",
+            "md",
+            "lg",
+            "xl"
+          ]
+        }
+      ],
+      "cells": [
+        {
+          "box": "914885b9bb7cdb32",
+          "hash": "7a0fd48af8519c46",
+          "id": "avatar/plain/size=sm",
+          "key": "size=sm",
+          "layers": "1672fc4983c40e57",
+          "props": {
+            "size": "sm"
+          },
+          "surface": "7a4b6cee075f78d9"
+        },
+        {
+          "box": "90a8ecd71f31ec2d",
+          "hash": "9eacf9599887654a",
+          "id": "avatar/plain/size=md",
+          "key": "size=md",
+          "layers": "1672fc4983c40e57",
+          "props": {
+            "size": "md"
+          },
+          "surface": "7a4b6cee075f78d9"
+        },
+        {
+          "box": "34416faa47e8ba55",
+          "hash": "965032c6aad54088",
+          "id": "avatar/plain/size=lg",
+          "key": "size=lg",
+          "layers": "407ce0a931d926c9",
+          "props": {
+            "size": "lg"
+          },
+          "surface": "7a4b6cee075f78d9"
+        },
+        {
+          "box": "5dcb543b89b3cc76",
+          "hash": "4737fdb2847876ef",
+          "id": "avatar/plain/size=xl",
+          "key": "size=xl",
+          "layers": "faf76df2e0e11376",
+          "props": {
+            "size": "xl"
+          },
+          "surface": "7a4b6cee075f78d9"
+        }
+      ],
+      "contractHash": "924379c3e48ad4db",
+      "defaultCell": "size=md",
+      "grid": {
+        "columns": [
+          {
+            "name": "size",
+            "values": [
+              "xl",
+              "lg",
+              "md",
+              "sm"
+            ]
+          }
+        ],
+        "rows": []
+      },
+      "id": "avatar/plain",
+      "interactions": [],
+      "kind": "component-set",
+      "name": "Avatar / plain",
+      "page": "skryensya",
+      "properties": [
+        {
+          "default": "AS",
+          "name": "children",
+          "type": "TEXT"
+        }
+      ],
+      "showcase": {
+        "base": {},
+        "columns": [
+          {
+            "label": "A",
+            "properties": {
+              "children": "A"
+            },
+            "slot": "children=A"
+          },
+          {
+            "label": "MJ",
+            "properties": {
+              "children": "MJ"
+            },
+            "slot": "children=MJ"
+          },
+          {
+            "label": "LR",
+            "properties": {
+              "children": "LR"
+            },
+            "slot": "children=LR"
+          }
+        ],
+        "title": "with other initials"
+      },
+      "visualHash": "c1c9a54e54257152"
+    },
+    {
+      "axes": [
+        {
+          "name": "size",
+          "values": [
+            "sm",
+            "md",
+            "lg",
+            "xl"
+          ]
+        }
+      ],
+      "cells": [
+        {
+          "box": "5cf1567d636276e6",
+          "hash": "a8272271ac2c8034",
+          "id": "avatar/brutalist/size=sm",
+          "key": "size=sm",
+          "layers": "1672fc4983c40e57",
+          "props": {
+            "size": "sm"
+          },
+          "surface": "da8a93af1c7aaefb"
+        },
+        {
+          "box": "0b4b090ec74bd714",
+          "hash": "1947363053a4b16d",
+          "id": "avatar/brutalist/size=md",
+          "key": "size=md",
+          "layers": "1672fc4983c40e57",
+          "props": {
+            "size": "md"
+          },
+          "surface": "4bbfb05e76cd7924"
+        },
+        {
+          "box": "51e8525787d9447f",
+          "hash": "d82ca4d85ed50284",
+          "id": "avatar/brutalist/size=lg",
+          "key": "size=lg",
+          "layers": "407ce0a931d926c9",
+          "props": {
+            "size": "lg"
+          },
+          "surface": "2a8ee70a8a104433"
+        },
+        {
+          "box": "7ca2ebfef306b01b",
+          "hash": "f11b62e18e683934",
+          "id": "avatar/brutalist/size=xl",
+          "key": "size=xl",
+          "layers": "faf76df2e0e11376",
+          "props": {
+            "size": "xl"
+          },
+          "surface": "a08f7da24e92d487"
+        }
+      ],
+      "contractHash": "924379c3e48ad4db",
+      "defaultCell": "size=md",
+      "grid": {
+        "columns": [
+          {
+            "name": "size",
+            "values": [
+              "xl",
+              "lg",
+              "md",
+              "sm"
+            ]
+          }
+        ],
+        "rows": []
+      },
+      "id": "avatar/brutalist",
+      "interactions": [],
+      "kind": "component-set",
+      "name": "Avatar / brutalist",
+      "page": "skryensya",
+      "properties": [
+        {
+          "default": "AS",
+          "name": "children",
+          "type": "TEXT"
+        }
+      ],
+      "showcase": {
+        "base": {},
+        "columns": [
+          {
+            "label": "A",
+            "properties": {
+              "children": "A"
+            },
+            "slot": "children=A"
+          },
+          {
+            "label": "MJ",
+            "properties": {
+              "children": "MJ"
+            },
+            "slot": "children=MJ"
+          },
+          {
+            "label": "LR",
+            "properties": {
+              "children": "LR"
+            },
+            "slot": "children=LR"
+          }
+        ],
+        "title": "with other initials"
+      },
+      "visualHash": "25c34722cbaf8cf0"
     }
   ],
   "diagnostics": [
+    {
+      "code": "CONDITION_SKIPPED",
+      "message": "1 rule(s) under a condition the evaluation context does not hold",
+      "severity": "info",
+      "subject": "components/avatar.css @media (forced-colors: active)"
+    },
     {
       "code": "CONDITION_SKIPPED",
       "message": "2 rule(s) under a condition the evaluation context does not hold",
@@ -30816,6 +31052,16 @@
   ],
   "report": {
     "options": {
+      "avatar": {
+        "excluded": [],
+        "nonVisual": [
+          "name"
+        ],
+        "visual": [
+          "size",
+          "appearance"
+        ]
+      },
       "badge:Badge": {
         "excluded": [],
         "nonVisual": [],
@@ -30875,15 +31121,15 @@
       }
     },
     "tokens": {
-      "catalogueAdded": 340,
-      "componentVariables": 193,
+      "catalogueAdded": 337,
+      "componentVariables": 203,
       "modeValuesBySource": {
         "alias": 203,
-        "evaluated": 437,
-        "literal": 678
+        "evaluated": 449,
+        "literal": 686
       },
-      "reached": 133,
-      "reachedAsVariables": 101,
+      "reached": 135,
+      "reachedAsVariables": 105,
       "reachedButNotVariables": [
         "--elevation-flat",
         "--elevation-raised",
@@ -30895,9 +31141,10 @@
       "variables": 466
     },
     "variants": {
-      "components": 12,
-      "componentSets": 11,
+      "components": 14,
+      "componentSets": 13,
       "naiveAllOptions": {
+        "avatar": 8,
         "badge:Badge": 20,
         "badge:BadgeDot": 10,
         "button": 27648,
@@ -30905,6 +31152,7 @@
         "tag": 20
       },
       "naiveVisualOptions": {
+        "avatar": 8,
         "badge:Badge": 20,
         "badge:BadgeDot": 5,
         "button": 2304,
@@ -30955,13 +31203,21 @@
         {
           "set": "tag/brutalist",
           "variants": 5
+        },
+        {
+          "set": "avatar/plain",
+          "variants": 4
+        },
+        {
+          "set": "avatar/brutalist",
+          "variants": 4
         }
       ],
-      "variantsTotal": 1959
+      "variantsTotal": 1967
     }
   },
   "schemaVersion": 1,
-  "sourceHash": "136f1dbd3cc08fbb",
+  "sourceHash": "325824df18ef0ed9",
   "stage": {
     "background": {
       "variable": "--color-bg-surface"
@@ -30986,6 +31242,43 @@
   },
   "styles": {
     "boxes": {
+      "0b4b090ec74bd714": {
+        "clipsContent": true,
+        "crossAlign": "CENTER",
+        "direction": "VERTICAL",
+        "height": {
+          "variable": "--size-control-md"
+        },
+        "mainAlign": "CENTER",
+        "padding": {
+          "bottom": {
+            "expression": "0",
+            "value": 0
+          },
+          "left": {
+            "expression": "0",
+            "value": 0
+          },
+          "right": {
+            "expression": "0",
+            "value": 0
+          },
+          "top": {
+            "expression": "0",
+            "value": 0
+          }
+        },
+        "radius": {
+          "variable": "--radius-pill"
+        },
+        "strokeWeight": {
+          "expression": "1px",
+          "value": 1
+        },
+        "width": {
+          "variable": "--size-control-md"
+        }
+      },
       "0c57917c3764fd52": {
         "clipsContent": false,
         "crossAlign": "CENTER",
@@ -31066,6 +31359,39 @@
         },
         "width": {
           "variable": "button:height:2dce2436e5"
+        }
+      },
+      "34416faa47e8ba55": {
+        "clipsContent": true,
+        "crossAlign": "CENTER",
+        "direction": "VERTICAL",
+        "height": {
+          "variable": "--size-control-lg"
+        },
+        "mainAlign": "CENTER",
+        "padding": {
+          "bottom": {
+            "expression": "0",
+            "value": 0
+          },
+          "left": {
+            "expression": "0",
+            "value": 0
+          },
+          "right": {
+            "expression": "0",
+            "value": 0
+          },
+          "top": {
+            "expression": "0",
+            "value": 0
+          }
+        },
+        "radius": {
+          "variable": "--radius-pill"
+        },
+        "width": {
+          "variable": "--size-control-lg"
         }
       },
       "46e0bd873fc3899f": {
@@ -31194,6 +31520,43 @@
           "variable": "button:border-width:93e20626bf"
         }
       },
+      "51e8525787d9447f": {
+        "clipsContent": true,
+        "crossAlign": "CENTER",
+        "direction": "VERTICAL",
+        "height": {
+          "variable": "--size-control-lg"
+        },
+        "mainAlign": "CENTER",
+        "padding": {
+          "bottom": {
+            "expression": "0",
+            "value": 0
+          },
+          "left": {
+            "expression": "0",
+            "value": 0
+          },
+          "right": {
+            "expression": "0",
+            "value": 0
+          },
+          "top": {
+            "expression": "0",
+            "value": 0
+          }
+        },
+        "radius": {
+          "variable": "--radius-pill"
+        },
+        "strokeWeight": {
+          "expression": "1px",
+          "value": 1
+        },
+        "width": {
+          "variable": "--size-control-lg"
+        }
+      },
       "580eb51a5c3428a7": {
         "clipsContent": true,
         "crossAlign": "CENTER",
@@ -31230,6 +31593,43 @@
         },
         "strokeWeight": {
           "variable": "button:border-width:93e20626bf"
+        }
+      },
+      "5cf1567d636276e6": {
+        "clipsContent": true,
+        "crossAlign": "CENTER",
+        "direction": "VERTICAL",
+        "height": {
+          "variable": "--size-control-sm"
+        },
+        "mainAlign": "CENTER",
+        "padding": {
+          "bottom": {
+            "expression": "0",
+            "value": 0
+          },
+          "left": {
+            "expression": "0",
+            "value": 0
+          },
+          "right": {
+            "expression": "0",
+            "value": 0
+          },
+          "top": {
+            "expression": "0",
+            "value": 0
+          }
+        },
+        "radius": {
+          "variable": "--radius-pill"
+        },
+        "strokeWeight": {
+          "expression": "1px",
+          "value": 1
+        },
+        "width": {
+          "variable": "--size-control-sm"
         }
       },
       "5d11bf7bd2ec2d5c": {
@@ -31312,6 +31712,39 @@
         },
         "width": {
           "variable": "button:height:2dce2436e5"
+        }
+      },
+      "5dcb543b89b3cc76": {
+        "clipsContent": true,
+        "crossAlign": "CENTER",
+        "direction": "VERTICAL",
+        "height": {
+          "variable": "avatar:size:e021220bb1"
+        },
+        "mainAlign": "CENTER",
+        "padding": {
+          "bottom": {
+            "expression": "0",
+            "value": 0
+          },
+          "left": {
+            "expression": "0",
+            "value": 0
+          },
+          "right": {
+            "expression": "0",
+            "value": 0
+          },
+          "top": {
+            "expression": "0",
+            "value": 0
+          }
+        },
+        "radius": {
+          "variable": "--radius-pill"
+        },
+        "width": {
+          "variable": "avatar:size:e021220bb1"
         }
       },
       "6a095059331b2b08": {
@@ -31476,6 +31909,43 @@
           "variable": "--size-control-sm"
         }
       },
+      "7ca2ebfef306b01b": {
+        "clipsContent": true,
+        "crossAlign": "CENTER",
+        "direction": "VERTICAL",
+        "height": {
+          "variable": "avatar:size:e021220bb1"
+        },
+        "mainAlign": "CENTER",
+        "padding": {
+          "bottom": {
+            "expression": "0",
+            "value": 0
+          },
+          "left": {
+            "expression": "0",
+            "value": 0
+          },
+          "right": {
+            "expression": "0",
+            "value": 0
+          },
+          "top": {
+            "expression": "0",
+            "value": 0
+          }
+        },
+        "radius": {
+          "variable": "--radius-pill"
+        },
+        "strokeWeight": {
+          "expression": "1px",
+          "value": 1
+        },
+        "width": {
+          "variable": "avatar:size:e021220bb1"
+        }
+      },
       "80710812d38ee0b3": {
         "clipsContent": false,
         "crossAlign": "CENTER",
@@ -31518,6 +31988,72 @@
         },
         "width": {
           "variable": "button:height:d92dbdc181"
+        }
+      },
+      "90a8ecd71f31ec2d": {
+        "clipsContent": true,
+        "crossAlign": "CENTER",
+        "direction": "VERTICAL",
+        "height": {
+          "variable": "--size-control-md"
+        },
+        "mainAlign": "CENTER",
+        "padding": {
+          "bottom": {
+            "expression": "0",
+            "value": 0
+          },
+          "left": {
+            "expression": "0",
+            "value": 0
+          },
+          "right": {
+            "expression": "0",
+            "value": 0
+          },
+          "top": {
+            "expression": "0",
+            "value": 0
+          }
+        },
+        "radius": {
+          "variable": "--radius-pill"
+        },
+        "width": {
+          "variable": "--size-control-md"
+        }
+      },
+      "914885b9bb7cdb32": {
+        "clipsContent": true,
+        "crossAlign": "CENTER",
+        "direction": "VERTICAL",
+        "height": {
+          "variable": "--size-control-sm"
+        },
+        "mainAlign": "CENTER",
+        "padding": {
+          "bottom": {
+            "expression": "0",
+            "value": 0
+          },
+          "left": {
+            "expression": "0",
+            "value": 0
+          },
+          "right": {
+            "expression": "0",
+            "value": 0
+          },
+          "top": {
+            "expression": "0",
+            "value": 0
+          }
+        },
+        "radius": {
+          "variable": "--radius-pill"
+        },
+        "width": {
+          "variable": "--size-control-sm"
         }
       },
       "962f997fe32366bb": {
@@ -32878,6 +33414,31 @@
           "kind": "icon",
           "slot": "post",
           "visibleProperty": "post"
+        }
+      ],
+      "1672fc4983c40e57": [
+        {
+          "kind": "text",
+          "slot": "children",
+          "text": {
+            "fill": {
+              "color": {
+                "variable": "--color-text-primary"
+              },
+              "type": "SOLID"
+            },
+            "fontFamily": {
+              "variable": "--font-family-body"
+            },
+            "fontSize": {
+              "variable": "--font-size-caption"
+            },
+            "fontWeight": {
+              "variable": "--font-weight-label"
+            },
+            "lineHeight": 100
+          },
+          "textProperty": "children"
         }
       ],
       "170aaeebe56f111d": [
@@ -34594,6 +35155,31 @@
           "kind": "icon",
           "slot": "post",
           "visibleProperty": "post"
+        }
+      ],
+      "407ce0a931d926c9": [
+        {
+          "kind": "text",
+          "slot": "children",
+          "text": {
+            "fill": {
+              "color": {
+                "variable": "--color-text-primary"
+              },
+              "type": "SOLID"
+            },
+            "fontFamily": {
+              "variable": "--font-family-body"
+            },
+            "fontSize": {
+              "variable": "--font-size-body"
+            },
+            "fontWeight": {
+              "variable": "--font-weight-label"
+            },
+            "lineHeight": 100
+          },
+          "textProperty": "children"
         }
       ],
       "434e1ec60536cdfc": [
@@ -41299,6 +41885,31 @@
           "visibleProperty": "post"
         }
       ],
+      "faf76df2e0e11376": [
+        {
+          "kind": "text",
+          "slot": "children",
+          "text": {
+            "fill": {
+              "color": {
+                "variable": "--color-text-primary"
+              },
+              "type": "SOLID"
+            },
+            "fontFamily": {
+              "variable": "--font-family-body"
+            },
+            "fontSize": {
+              "variable": "--font-size-heading-h3"
+            },
+            "fontWeight": {
+              "variable": "--font-weight-label"
+            },
+            "lineHeight": 100
+          },
+          "textProperty": "children"
+        }
+      ],
       "fed4e41fe9594e72": [
         {
           "fills": [
@@ -42927,6 +43538,46 @@
           }
         ]
       },
+      "2a8ee70a8a104433": {
+        "effects": [
+          {
+            "blur": {
+              "expression": "0",
+              "value": 0
+            },
+            "color": {
+              "variable": "avatar:brutalist-edge:b75258c11d"
+            },
+            "spread": {
+              "expression": "0",
+              "value": 0
+            },
+            "type": "DROP_SHADOW",
+            "x": {
+              "variable": "avatar:shadow-1-x:fa8b2735e2"
+            },
+            "y": {
+              "variable": "avatar:brutalist-offset-block:356601538d"
+            }
+          }
+        ],
+        "fills": [
+          {
+            "color": {
+              "variable": "--color-bg-surface-sunken"
+            },
+            "type": "SOLID"
+          }
+        ],
+        "strokes": [
+          {
+            "color": {
+              "variable": "avatar:brutalist-edge:b75258c11d"
+            },
+            "type": "SOLID"
+          }
+        ]
+      },
       "2bc9ff5bf64e0efb": {
         "effects": [],
         "fills": [
@@ -43836,6 +44487,46 @@
           {
             "color": {
               "variable": "button:frost-edge:3e489bb3af"
+            },
+            "type": "SOLID"
+          }
+        ]
+      },
+      "4bbfb05e76cd7924": {
+        "effects": [
+          {
+            "blur": {
+              "expression": "0",
+              "value": 0
+            },
+            "color": {
+              "variable": "avatar:brutalist-edge:b75258c11d"
+            },
+            "spread": {
+              "expression": "0",
+              "value": 0
+            },
+            "type": "DROP_SHADOW",
+            "x": {
+              "variable": "avatar:shadow-1-x:c3c63cdd74"
+            },
+            "y": {
+              "variable": "avatar:brutalist-offset-block:ac33ff9105"
+            }
+          }
+        ],
+        "fills": [
+          {
+            "color": {
+              "variable": "--color-bg-surface-sunken"
+            },
+            "type": "SOLID"
+          }
+        ],
+        "strokes": [
+          {
+            "color": {
+              "variable": "avatar:brutalist-edge:b75258c11d"
             },
             "type": "SOLID"
           }
@@ -45699,6 +46390,18 @@
         ],
         "strokes": []
       },
+      "7a4b6cee075f78d9": {
+        "effects": [],
+        "fills": [
+          {
+            "color": {
+              "variable": "--color-bg-surface-sunken"
+            },
+            "type": "SOLID"
+          }
+        ],
+        "strokes": []
+      },
       "7b19230da8a49881": {
         "effects": [
           {
@@ -46734,6 +47437,46 @@
           {
             "color": {
               "variable": "button:border-color:10e9f5602d"
+            },
+            "type": "SOLID"
+          }
+        ]
+      },
+      "a08f7da24e92d487": {
+        "effects": [
+          {
+            "blur": {
+              "expression": "0",
+              "value": 0
+            },
+            "color": {
+              "variable": "avatar:brutalist-edge:b75258c11d"
+            },
+            "spread": {
+              "expression": "0",
+              "value": 0
+            },
+            "type": "DROP_SHADOW",
+            "x": {
+              "variable": "avatar:shadow-1-x:8ffed190ec"
+            },
+            "y": {
+              "variable": "avatar:brutalist-offset-block:3772b3a113"
+            }
+          }
+        ],
+        "fills": [
+          {
+            "color": {
+              "variable": "--color-bg-surface-sunken"
+            },
+            "type": "SOLID"
+          }
+        ],
+        "strokes": [
+          {
+            "color": {
+              "variable": "avatar:brutalist-edge:b75258c11d"
             },
             "type": "SOLID"
           }
@@ -49112,6 +49855,46 @@
           }
         ]
       },
+      "da8a93af1c7aaefb": {
+        "effects": [
+          {
+            "blur": {
+              "expression": "0",
+              "value": 0
+            },
+            "color": {
+              "variable": "avatar:brutalist-edge:b75258c11d"
+            },
+            "spread": {
+              "expression": "0",
+              "value": 0
+            },
+            "type": "DROP_SHADOW",
+            "x": {
+              "variable": "avatar:shadow-1-x:2ad8d54226"
+            },
+            "y": {
+              "variable": "avatar:brutalist-offset-block:747614001f"
+            }
+          }
+        ],
+        "fills": [
+          {
+            "color": {
+              "variable": "--color-bg-surface-sunken"
+            },
+            "type": "SOLID"
+          }
+        ],
+        "strokes": [
+          {
+            "color": {
+              "variable": "avatar:brutalist-edge:b75258c11d"
+            },
+            "type": "SOLID"
+          }
+        ]
+      },
       "db9b811f99de917a": {
         "effects": [
           {
@@ -50144,6 +50927,236 @@
     }
   },
   "variables": [
+    {
+      "codeSyntax": "var(--sk-avatar-brutalist-edge)",
+      "collection": "component",
+      "expression": "oklch(from var(--shadow-lg) l c h / 1)",
+      "id": "avatar:brutalist-edge:b75258c11d",
+      "name": "avatar/brutalist-edge/brutalist",
+      "source": {
+        "dark": "evaluated",
+        "light": "evaluated"
+      },
+      "type": "COLOR",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": {
+            "a": 1,
+            "b": 0,
+            "g": 0,
+            "r": 0
+          }
+        },
+        "light": {
+          "kind": "literal",
+          "value": {
+            "a": 1,
+            "b": 0,
+            "g": 0,
+            "r": 0
+          }
+        }
+      }
+    },
+    {
+      "codeSyntax": "var(--sk-avatar-brutalist-offset-block)",
+      "collection": "component",
+      "expression": "4px",
+      "id": "avatar:brutalist-offset-block:356601538d",
+      "name": "avatar/brutalist-offset-block/brutalist/lg",
+      "source": {
+        "dark": "literal",
+        "light": "literal"
+      },
+      "type": "FLOAT",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": 4
+        },
+        "light": {
+          "kind": "literal",
+          "value": 4
+        }
+      }
+    },
+    {
+      "codeSyntax": "var(--sk-avatar-brutalist-offset-block)",
+      "collection": "component",
+      "expression": "3px",
+      "id": "avatar:brutalist-offset-block:ac33ff9105",
+      "name": "avatar/brutalist-offset-block/brutalist/md",
+      "source": {
+        "dark": "literal",
+        "light": "literal"
+      },
+      "type": "FLOAT",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": 3
+        },
+        "light": {
+          "kind": "literal",
+          "value": 3
+        }
+      }
+    },
+    {
+      "codeSyntax": "var(--sk-avatar-brutalist-offset-block)",
+      "collection": "component",
+      "expression": "2px",
+      "id": "avatar:brutalist-offset-block:747614001f",
+      "name": "avatar/brutalist-offset-block/brutalist/sm",
+      "source": {
+        "dark": "literal",
+        "light": "literal"
+      },
+      "type": "FLOAT",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": 2
+        },
+        "light": {
+          "kind": "literal",
+          "value": 2
+        }
+      }
+    },
+    {
+      "codeSyntax": "var(--sk-avatar-brutalist-offset-block)",
+      "collection": "component",
+      "expression": "5px",
+      "id": "avatar:brutalist-offset-block:3772b3a113",
+      "name": "avatar/brutalist-offset-block/brutalist/xl",
+      "source": {
+        "dark": "literal",
+        "light": "literal"
+      },
+      "type": "FLOAT",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": 5
+        },
+        "light": {
+          "kind": "literal",
+          "value": 5
+        }
+      }
+    },
+    {
+      "codeSyntax": "",
+      "collection": "component",
+      "expression": "calc(4px * 1)",
+      "id": "avatar:shadow-1-x:fa8b2735e2",
+      "name": "avatar/shadow-1-x/brutalist/lg",
+      "source": {
+        "dark": "evaluated",
+        "light": "evaluated"
+      },
+      "type": "FLOAT",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": 4
+        },
+        "light": {
+          "kind": "literal",
+          "value": 4
+        }
+      }
+    },
+    {
+      "codeSyntax": "",
+      "collection": "component",
+      "expression": "calc(3px * 1)",
+      "id": "avatar:shadow-1-x:c3c63cdd74",
+      "name": "avatar/shadow-1-x/brutalist/md",
+      "source": {
+        "dark": "evaluated",
+        "light": "evaluated"
+      },
+      "type": "FLOAT",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": 3
+        },
+        "light": {
+          "kind": "literal",
+          "value": 3
+        }
+      }
+    },
+    {
+      "codeSyntax": "",
+      "collection": "component",
+      "expression": "calc(2px * 1)",
+      "id": "avatar:shadow-1-x:2ad8d54226",
+      "name": "avatar/shadow-1-x/brutalist/sm",
+      "source": {
+        "dark": "evaluated",
+        "light": "evaluated"
+      },
+      "type": "FLOAT",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": 2
+        },
+        "light": {
+          "kind": "literal",
+          "value": 2
+        }
+      }
+    },
+    {
+      "codeSyntax": "",
+      "collection": "component",
+      "expression": "calc(5px * 1)",
+      "id": "avatar:shadow-1-x:8ffed190ec",
+      "name": "avatar/shadow-1-x/brutalist/xl",
+      "source": {
+        "dark": "evaluated",
+        "light": "evaluated"
+      },
+      "type": "FLOAT",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": 5
+        },
+        "light": {
+          "kind": "literal",
+          "value": 5
+        }
+      }
+    },
+    {
+      "codeSyntax": "var(--sk-avatar-size)",
+      "collection": "component",
+      "expression": "calc(var(--size-control-lg) * 4 / 3)",
+      "id": "avatar:size:e021220bb1",
+      "name": "avatar/size/xl",
+      "source": {
+        "dark": "evaluated",
+        "light": "evaluated"
+      },
+      "type": "FLOAT",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": 64
+        },
+        "light": {
+          "kind": "literal",
+          "value": 64
+        }
+      }
+    },
     {
       "codeSyntax": "var(--sk-badge-bg)",
       "collection": "component",

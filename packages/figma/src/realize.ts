@@ -180,8 +180,18 @@ export function frameOf(ctx: Context): Frame {
    * so it is drawn as one. A grid, or a table, has no auto-layout equivalent.
    */
   const flex = /flex/.test(display);
-  if (!flex && !/^(inline-block|block|inline)$/.test(display)) throw new Unsupported(`no auto-layout equivalent: display ${display}`);
-  const direction = flex && /column/.test(prop(ctx, "flex-direction") ?? "") ? "VERTICAL" : "HORIZONTAL";
+  /*
+   * An IMPLICIT grid (no template of columns or rows) stacks its items one per row and places each
+   * in its cell by `align-items` (down) and `justify-items` (across): a vertical auto layout aligned
+   * the same way. An Avatar is one: `place-items: center` on a single initials run. A grid with a
+   * template has tracks, which auto layout does not.
+   */
+  const grid = /grid/.test(display);
+  if (grid && (prop(ctx, "grid-template-columns") || prop(ctx, "grid-template-rows") || prop(ctx, "grid-template"))) {
+    throw new Unsupported(`no auto-layout equivalent: a grid with tracks`);
+  }
+  if (!flex && !grid && !/^(inline-block|block|inline)$/.test(display)) throw new Unsupported(`no auto-layout equivalent: display ${display}`);
+  const direction = grid || (flex && /column/.test(prop(ctx, "flex-direction") ?? "")) ? "VERTICAL" : "HORIZONTAL";
 
   const borderStyle = prop(ctx, "border-style");
   const strokeColor = borderStyle && borderStyle !== "none" ? asColor(resolve(prop(ctx, "border-color") ?? "currentColor", "color", ctx, "border-color")) : undefined;
@@ -189,8 +199,9 @@ export function frameOf(ctx: Context): Frame {
 
   return {
     direction,
-    mainAlign: ALIGN[prop(ctx, "justify-content") ?? "start"] ?? "MIN",
-    crossAlign: (ALIGN[prop(ctx, "align-items") ?? "start"] ?? "MIN") as Frame["crossAlign"],
+    // A grid's items sit by align-items down its column and justify-items across it.
+    mainAlign: ALIGN[(grid ? prop(ctx, "align-items") : prop(ctx, "justify-content")) ?? "start"] ?? "MIN",
+    crossAlign: (ALIGN[(grid ? prop(ctx, "justify-items") : prop(ctx, "align-items")) ?? "start"] ?? "MIN") as Frame["crossAlign"],
     width: number(ctx, "width", "width"),
     height: number(ctx, "height", "height"),
     minHeight: number(ctx, "min-height", "min-height"),
