@@ -196,7 +196,7 @@ function sameValue(want: M.VariableValue, figmaHave: unknown, ids: Map<string, V
 /* ── variables ──────────────────────────────────────────────────────────────────────────────── */
 
 /** Each collection's Dark mode, where the file could hold one: what a dark demo frame switches to. */
-type DarkModes = Map<string, { collection: VariableCollection; modeId: string }>;
+type DarkModes = Map<string, { collection: VariableCollection; modeId: string; lightModeId?: string }>;
 
 async function syncVariables(run: Run, progress: Progress): Promise<{ vars: Map<string, Variable>; darkModes: DarkModes }> {
   progress.start("variables");
@@ -242,7 +242,7 @@ async function syncVariables(run: Run, progress: Progress): Promise<{ vars: Map<
         col.setSharedPluginData(NS, "modeLimit", String(col.modes.length));
       }
     });
-    if (ids.dark) darkModes.set(spec.id, { collection: col, modeId: ids.dark });
+    if (ids.dark) darkModes.set(spec.id, { collection: col, modeId: ids.dark, lightModeId: ids.light });
     modeIds.set(spec.id, ids);
     byCollection.set(spec.id, col);
   }
@@ -2116,7 +2116,8 @@ function rebindToDemo(root: FrameNode, swap: DemoSwap) {
 function demoSignature(spec: M.ComponentSet, frame: FrameNode, set: ComponentSetNode, darkModes: DarkModes, swap: DemoSwap) {
   const size = (n: SceneNode) => `${Math.round(n.width)}x${Math.round(n.height)}`;
   const layout = frame.children.map((c) => `${Math.round(c.x)},${Math.round(c.y)},${size(c)}`).join(";");
-  return [spec.visualHash, spec.contractHash, size(frame), size(set), layout, darkModes.size ? "mode" : `demo:${swap.size}`].join("|");
+  // `v2`: the Dark mode is set on every node of the copy, not only its frame.
+  return ["v2", spec.visualHash, spec.contractHash, size(frame), size(set), layout, darkModes.size ? "mode" : `demo:${swap.size}`].join("|");
 }
 
 /** The set's frame, again, in dark: under it, built from instances of its variants. Writes only when stale. */
@@ -2125,7 +2126,7 @@ async function syncDemo(ctx: Ctx, spec: M.ComponentSet, found: Map<string, Scene
   const frame = found.get(`frame:${spec.id}`) as FrameNode | undefined;
   const set = found.get(spec.id) as ComponentSetNode | undefined;
   const id = `frame:${spec.id}${DEMO}`;
-  const name = `${spec.name} · dark ${DEMO}`;
+  const name = `${spec.name} · dark`;
   let demo = found.get(id) as FrameNode | undefined;
   if (!frame || !set || !page) {
     if (!demo) run.log("CREATE", `frame ${name}`);
@@ -2170,8 +2171,25 @@ async function syncDemo(ctx: Ctx, spec: M.ComponentSet, found: Map<string, Scene
     }
     await ctx.progress.tick("dark", 0);
   }
-  for (const { collection, modeId } of darkModes.values()) d.setExplicitVariableModeForCollection(collection, modeId);
+  // Dark on the frame AND on every instance and copied frame in it: an instance can be held to its
+  // main component's mode and not inherit the frame's, so each one is told outright.
+  let set_ = 0;
+  for (const node of [d, ...d.findAll((n) => "setExplicitVariableModeForCollection" in n)]) {
+    for (const { collection, modeId } of darkModes.values()) {
+      (node as FrameNode).setExplicitVariableModeForCollection(collection, modeId);
+    }
+    set_++;
+  }
+  // And the light frame is held in Light, so neither one depends on the page's own mode.
+  for (const { collection, lightModeId } of darkModes.values()) {
+    if (lightModeId && frame.explicitVariableModes[collection.id] !== lightModeId) frame.setExplicitVariableModeForCollection(collection, lightModeId);
+  }
   if (swap.size) rebindToDemo(d, swap);
+  run.log(
+    "UPDATE",
+    `frame ${name}`,
+    darkModes.size ? `Dark mode set on ${set_} nodes across ${darkModes.size} collections` : `rebound to ${swap.size} dark variables (this file holds no Dark mode)`,
+  );
   d.setSharedPluginData(NS, "signature", signature);
 }
 
@@ -2462,6 +2480,9 @@ async function reconcileRun(
   if (darkDemo && setSpecs.length) {
     progress.start("dark");
     const swap = await syncDemoVariables(run, vars, darkModes);
+    if (!darkModes.size && !swap.size) {
+      run.log("WARN", "dark versions", "no Dark mode and no dark variables to rebind to: the copies would draw light");
+    }
     const before = run.writes;
     for (const spec of setSpecs) {
       await syncDemo(ctx, spec, found, pages.get(spec.page), darkModes, swap);
