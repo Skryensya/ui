@@ -86,6 +86,8 @@ export type Box = {
   gap?: Bound<number>;
   radius?: Bound<number>;
   strokeWeight?: Bound<number>;
+  /** A border on some sides only: each side's weight, 0 where it draws none (a Separator's rule). */
+  strokeSides?: { top: Bound<number>; right: Bound<number>; bottom: Bound<number>; left: Bound<number> };
   clipsContent: boolean;
 };
 

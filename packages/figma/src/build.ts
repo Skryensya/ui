@@ -456,6 +456,13 @@ async function compileRealization(realization: Realization, shared: Shared): Pro
         // In a grid laid across, a child in an `fr` column fills the row, as flex-grow does.
         const tracks = gridTracks(ctx(el));
         let column = 0;
+        // Siblings of one part (LabelledSeparator's two rules) are told apart by number: `rule`, `rule 2`.
+        const seen = new Map<string, number>();
+        const unique = (slot: string) => {
+          const n = (seen.get(slot) ?? 0) + 1;
+          seen.set(slot, n);
+          return n === 1 ? slot : `${slot} ${n}`;
+        };
         for (const node of Array.from(el.childNodes)) {
           if (node.nodeType === 3) {
             const text = (node.textContent ?? "").trim();
@@ -487,7 +494,7 @@ async function compileRealization(realization: Realization, shared: Shared): Pro
           const { strokes, fills, effects, ...frameBox } = frameOf(ctx(child));
           const track = tracks.length > 1 ? tracks[column++] : undefined;
           const box = track && /fr\b/.test(track) ? { ...frameBox, grow: true as const } : frameBox;
-          const slot = partOf(child) ?? child.localName;
+          const slot = unique(partOf(child) ?? child.localName);
           out.push({
             kind: "frame",
             slot,
@@ -546,7 +553,8 @@ async function compileRealization(realization: Realization, shared: Shared): Pro
         // An outline draws over everything, last.
         const ring = ringOf(ctx(host));
         if (ring) layers.push({ kind: "ring", slot: realization.ring, ...ring });
-        const { strokes, fills, effects, ...box } = frameOf(ctx(host));
+        const { strokes, fills, effects, ...hostBox } = frameOf(ctx(host));
+        const box = realization.width && !hostBox.width ? { ...hostBox, width: { value: realization.width, expression: `${realization.width}px` } } : hostBox;
         const key = Object.entries(props).map(([k, v]) => `${k}=${v}`).join(", ");
         const body = { key, props, box: intern(styles.boxes, box), surface: intern(styles.surfaces, { strokes, fills, effects }), layers: intern(styles.layers, layers) };
         // The id is not hashed: it says WHICH cell this is, the hash says whether it is current.

@@ -6,7 +6,7 @@
 
 import { evalQuantity, pickMode, splitSpaces, substitute, Unsupported } from "./evaluate.js";
 import { splitTopLevel } from "@skryensya/core/parse";
-import type { Bound, Effect, Frame, Paint, Rgba, Text } from "./manifest-types.js";
+import type { Bound, Box, Effect, Frame, Paint, Rgba, Text } from "./manifest-types.js";
 import { evaluateAs, expandComposite, resolve, substituted, type Context } from "./resolve.js";
 
 const asNumber = (b: Bound<unknown> | undefined) => b as Bound<number> | undefined;
@@ -192,6 +192,30 @@ export function gridTracks(ctx: Context): string[] {
   return splitSpaces(text).filter(Boolean);
 }
 
+const zeroAsHug = (bound: Bound<number> | undefined) => (bound && "value" in bound && bound.value === 0 ? undefined : bound);
+
+const SIDE_NAMES = ["top", "right", "bottom", "left"] as const;
+
+/**
+ * A border on some sides only (a Separator's `border-block-start`): each side's weight, zero where it
+ * draws none, in the one colour they share. Undefined when no side has a border of its own, so a
+ * uniform border keeps its single weight.
+ */
+function sidedBorder(ctx: Context): { color: Bound<Rgba>; weights: NonNullable<Box["strokeSides"]> } | undefined {
+  const drawn = SIDE_NAMES.filter((side) => {
+    const style = prop(ctx, `border-${side}-style`);
+    return style !== undefined && style !== "none";
+  });
+  if (drawn.length === 0) return undefined;
+  const colors = new Set(drawn.map((side) => prop(ctx, `border-${side}-color`) ?? "currentColor"));
+  if (colors.size > 1) throw new Unsupported(`sides with borders of different colours`);
+  const color = asColor(resolve([...colors][0], "color", ctx, "border-color"));
+  if (!color) return undefined;
+  const weight = (side: (typeof SIDE_NAMES)[number]) =>
+    drawn.includes(side) ? (number(ctx, `border-${side}-width`, `border-${side}-width`) ?? ZERO) : ZERO;
+  return { color, weights: { top: weight("top"), right: weight("right"), bottom: weight("bottom"), left: weight("left") } };
+}
+
 export function frameOf(ctx: Context): Frame {
   // No `display` declared is the element's own: block for a `<p>` or an `<hr>`, drawn the same.
   const display = prop(ctx, "display") || "block";
@@ -217,8 +241,13 @@ export function frameOf(ctx: Context): Frame {
   if (!flex && !grid && !/^(inline-block|block|inline)$/.test(display)) throw new Unsupported(`no auto-layout equivalent: display ${display}`);
   const direction = across ? "HORIZONTAL" : grid || (flex && /column/.test(prop(ctx, "flex-direction") ?? "")) ? "VERTICAL" : "HORIZONTAL";
 
+  const sides = sidedBorder(ctx);
   const borderStyle = prop(ctx, "border-style");
-  const strokeColor = borderStyle && borderStyle !== "none" ? asColor(resolve(prop(ctx, "border-color") ?? "currentColor", "color", ctx, "border-color")) : undefined;
+  const strokeColor = sides
+    ? sides.color
+    : borderStyle && borderStyle !== "none"
+      ? asColor(resolve(prop(ctx, "border-color") ?? "currentColor", "color", ctx, "border-color"))
+      : undefined;
   const padding = (side: string) => number(ctx, `padding-${side}`, `padding-${side}`) ?? ZERO;
 
   return {
@@ -228,7 +257,8 @@ export function frameOf(ctx: Context): Frame {
     mainAlign: ALIGN[(grid && !across ? prop(ctx, "align-items") : prop(ctx, "justify-content")) ?? "start"] ?? "MIN",
     crossAlign: (ALIGN[(grid && !across ? prop(ctx, "justify-items") : prop(ctx, "align-items")) ?? "start"] ?? "MIN") as Frame["crossAlign"],
     width: number(ctx, "width", "width"),
-    height: number(ctx, "height", "height"),
+    // `block-size: 0` with a border (a Separator's rule) is as tall as the border: what a hug makes it.
+    height: zeroAsHug(number(ctx, "height", "height")),
     minHeight: number(ctx, "min-height", "min-height"),
     minWidth: number(ctx, "min-width", "min-width"),
     ...(Number(prop(ctx, "flex-grow") ?? 0) > 0 ? { grow: true as const } : {}),
@@ -236,7 +266,8 @@ export function frameOf(ctx: Context): Frame {
     padding: { top: padding("top"), right: padding("right"), bottom: padding("bottom"), left: padding("left") },
     gap: number(ctx, "gap", "gap"),
     radius: number(ctx, "border-radius", "radius"),
-    strokeWeight: strokeColor ? number(ctx, "border-width", "border-width") : undefined,
+    strokeWeight: strokeColor && !sides ? number(ctx, "border-width", "border-width") : undefined,
+    ...(sides ? { strokeSides: sides.weights } : {}),
     strokes: strokeColor ? [{ type: "SOLID", color: strokeColor }] : [],
     fills: fills(ctx),
     effects: effects(ctx),

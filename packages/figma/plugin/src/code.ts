@@ -533,9 +533,9 @@ const cellHeightOf = (spec: M.ComponentSet) =>
       const h = box.height ?? box.minHeight;
       if (h) return Number(valueOf(h));
       const layers = manifest.styles.layers[c.layers];
-      if (layers.some((l) => l.kind === "frame")) return Math.ceil(nestedSize(box, layers, () => 0).h);
-      const text = manifest.styles.layers[c.layers].find((l): l is Extract<M.Layer, { kind: "text" }> => l.kind === "text");
-      if (!text) return 0;
+      const text = layers.find((l): l is Extract<M.Layer, { kind: "text" }> => l.kind === "text");
+      // Nested, or with no text to size it (a Separator's rule is its border): built up from the parts.
+      if (!text || layers.some((l) => l.kind === "frame")) return Math.ceil(nestedSize(box, layers, () => 0).h);
       // Auto leading is the font's own; 120% is what a body face's comes to.
       const line = (Number(valueOf(text.text.fontSize)) * (text.text.lineHeight === "auto" ? 120 : text.text.lineHeight)) / 100;
       const padding = Number(valueOf(box.padding.top)) + Number(valueOf(box.padding.bottom));
@@ -563,9 +563,12 @@ function nestedSize(box: M.Box, layers: readonly M.Layer[], widthOf: (layer: Ext
   const along = (pick: (size: { w: number; h: number }) => number) => sizes.reduce((sum, size) => sum + pick(size), 0) + gap;
   const across = (pick: (size: { w: number; h: number }) => number) => Math.max(0, ...sizes.map(pick));
   const horizontal = box.direction === "HORIZONTAL";
-  const border = box.strokeWeight ? 2 * Number(valueOf(box.strokeWeight)) : 0;
-  const w = (horizontal ? along((s) => s.w) : across((s) => s.w)) + Number(valueOf(box.padding.left)) + Number(valueOf(box.padding.right)) + border;
-  const h = (horizontal ? across((s) => s.h) : along((s) => s.h)) + Number(valueOf(box.padding.top)) + Number(valueOf(box.padding.bottom)) + border;
+  const side = (bound: M.Bound<number> | undefined) => (bound ? Number(valueOf(bound)) : 0);
+  const border = box.strokeSides ? 0 : box.strokeWeight ? 2 * Number(valueOf(box.strokeWeight)) : 0;
+  const borderW = box.strokeSides ? side(box.strokeSides.left) + side(box.strokeSides.right) : border;
+  const borderH = box.strokeSides ? side(box.strokeSides.top) + side(box.strokeSides.bottom) : border;
+  const w = (horizontal ? along((s) => s.w) : across((s) => s.w)) + Number(valueOf(box.padding.left)) + Number(valueOf(box.padding.right)) + borderW;
+  const h = (horizontal ? across((s) => s.h) : along((s) => s.h)) + Number(valueOf(box.padding.top)) + Number(valueOf(box.padding.bottom)) + borderH;
   const floor = (bound: M.Bound<number> | undefined, size: number) => (bound ? Math.max(Number(valueOf(bound)), size) : size);
   return { w: box.width ? Number(valueOf(box.width)) : floor(box.minWidth, w), h: box.height ? Number(valueOf(box.height)) : floor(box.minHeight, h) };
 }
@@ -1041,7 +1044,12 @@ function applyBox(ctx: SetCtx, node: ComponentNode | FrameNode, box: M.Box) {
   node.strokeAlign = "INSIDE";
   // `box-sizing: border-box`: the border takes room in the layout, as it does in the browser.
   node.strokesIncludedInLayout = true;
-  setNumber(ctx, node, "strokeWeight", box.strokeWeight, 0);
+  if (box.strokeSides) {
+    setNumber(ctx, node, "strokeTopWeight", box.strokeSides.top, 0);
+    setNumber(ctx, node, "strokeRightWeight", box.strokeSides.right, 0);
+    setNumber(ctx, node, "strokeBottomWeight", box.strokeSides.bottom, 0);
+    setNumber(ctx, node, "strokeLeftWeight", box.strokeSides.left, 0);
+  } else setNumber(ctx, node, "strokeWeight", box.strokeWeight, 0);
   node.clipsContent = box.clipsContent;
 }
 

@@ -119,6 +119,17 @@ function topLevelSpaces(value: string): string[] {
  * The shorthands a component sheet uses on its host, to the longhands a Figma layer reads. Logical
  * properties resolve left-to-right. Anything not listed passes through under its own name.
  */
+const SIDES: Record<string, string> = {
+  top: "top",
+  right: "right",
+  bottom: "bottom",
+  left: "left",
+  "block-start": "top",
+  "block-end": "bottom",
+  "inline-start": "left",
+  "inline-end": "right",
+};
+
 function expand(decls: readonly (readonly [string, string])[]): (readonly [string, string])[] {
   const out: (readonly [string, string])[] = [];
   for (const [prop, value] of decls) {
@@ -178,6 +189,23 @@ function expand(decls: readonly (readonly [string, string])[]): (readonly [strin
         if (style) out.push(["border-style", style]);
         if (rest.length === 2) out.push(["border-width", rest[0]], ["border-color", rest[1]]);
         else out.push(["border", value]);
+        break;
+      }
+      case "border-top":
+      case "border-right":
+      case "border-bottom":
+      case "border-left":
+      case "border-block-start":
+      case "border-block-end":
+      case "border-inline-start":
+      case "border-inline-end": {
+        // One side's border (a Separator's rule), as that side's longhands, in horizontal-tb.
+        const side = SIDES[prop.replace("border-", "")];
+        const style = parts.find((p) => BORDER_STYLES.has(p));
+        const rest = parts.filter((p) => p !== style);
+        if (style) out.push([`border-${side}-style`, style]);
+        if (rest.length === 2) out.push([`border-${side}-width`, rest[0]], [`border-${side}-color`, rest[1]]);
+        else if (!style) out.push([prop, value]);
         break;
       }
       case "font": {
