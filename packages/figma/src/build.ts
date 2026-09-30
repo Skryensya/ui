@@ -409,7 +409,10 @@ async function compileRealization(authored: Realization, shared: Shared): Promis
     // A pseudo-class is held by the signature's own host (a Checkbox's input, inside its label); a
     // hover or press is also every ancestor's, as the browser's is.
     const target = signatureHost(host);
-    for (const pseudo of [...held, ...simulated]) {
+    const heldOn = realization.simulateOn ? host.querySelector(realization.simulateOn) : null;
+    if (realization.simulateOn && !heldOn) throw new Error(`simulateOn: nothing matches ${realization.simulateOn}`);
+    for (const pseudo of held) if (heldOn) heldOn.setAttribute(markerOf(pseudo), "");
+    for (const pseudo of [...(heldOn ? [] : held), ...simulated]) {
       for (let el: Element | null = target; el; el = /^:(hover|active)$/.test(pseudo) && el !== host ? el.parentElement : null) {
         el.setAttribute(markerOf(pseudo), "");
       }

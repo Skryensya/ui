@@ -159,6 +159,8 @@ export type Realization = {
    * Pseudo-classes held on every cell: a SkipLink is drawn focused, the one state anyone sees it in.
    */
   simulate?: readonly string[];
+  /** Where `simulate`'s pseudo-classes are held, when not the host (a Popover's panel, `:popover-open`). */
+  simulateOn?: string;
   /**
    * Texts a slot is shown with beside each row, as instances of the row's own variant: the labels a
    * component really carries (a Kbd's ⌘, Esc, Enter), so the set shows how it holds each, not only
