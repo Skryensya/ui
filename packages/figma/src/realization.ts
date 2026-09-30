@@ -73,6 +73,11 @@ export type Realization = {
    */
   width?: number;
   /**
+   * Option values every cell is drawn with, for options that are not axes: a Progress drawn part
+   * full (`value: 60`), since at its default it shows an empty track.
+   */
+  given?: Readonly<Record<string, string | number | boolean>>;
+  /**
    * Pseudo-classes held on every cell: a SkipLink is drawn focused, the one state anyone sees it in.
    */
   simulate?: readonly string[];

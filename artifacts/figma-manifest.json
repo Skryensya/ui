@@ -33272,6 +33272,92 @@
         ]
       },
       "visualHash": "54d192fa76b08429"
+    },
+    {
+      "axes": [
+        {
+          "name": "tone",
+          "values": [
+            "accent",
+            "success",
+            "warning",
+            "danger"
+          ]
+        }
+      ],
+      "cells": [
+        {
+          "box": "c9deff40b4ba2a17",
+          "hash": "f051fc21c4460f02",
+          "id": "progress/tone=accent",
+          "key": "tone=accent",
+          "layers": "fff64af9a21ee4b8",
+          "props": {
+            "tone": "accent"
+          },
+          "surface": "7a4b6cee075f78d9"
+        },
+        {
+          "box": "c9deff40b4ba2a17",
+          "hash": "036c70150c602ac5",
+          "id": "progress/tone=success",
+          "key": "tone=success",
+          "layers": "4c75e61c4565939d",
+          "props": {
+            "tone": "success"
+          },
+          "surface": "7a4b6cee075f78d9"
+        },
+        {
+          "box": "c9deff40b4ba2a17",
+          "hash": "17b33ae3cc6f171a",
+          "id": "progress/tone=warning",
+          "key": "tone=warning",
+          "layers": "c95abaaad901420d",
+          "props": {
+            "tone": "warning"
+          },
+          "surface": "7a4b6cee075f78d9"
+        },
+        {
+          "box": "c9deff40b4ba2a17",
+          "hash": "315fba26525fe6fe",
+          "id": "progress/tone=danger",
+          "key": "tone=danger",
+          "layers": "3176790248f21173",
+          "props": {
+            "tone": "danger"
+          },
+          "surface": "7a4b6cee075f78d9"
+        }
+      ],
+      "contractHash": "4a0d2f5261f02fb6",
+      "defaultCell": "tone=accent",
+      "grid": {
+        "columns": [],
+        "rows": [
+          {
+            "name": "tone",
+            "values": [
+              "accent",
+              "success",
+              "warning",
+              "danger"
+            ]
+          }
+        ]
+      },
+      "id": "progress",
+      "interactions": [],
+      "kind": "component-set",
+      "name": "Progress",
+      "page": "skryensya",
+      "properties": [],
+      "showcase": {
+        "base": {},
+        "columns": []
+      },
+      "visualHash": "416a101f8c271c55"
     }
   ],
   "diagnostics": [
@@ -33364,6 +33450,18 @@
       "message": "1 rule(s) under a condition the evaluation context does not hold",
       "severity": "info",
       "subject": "components/kbd.css @media (forced-colors: active)"
+    },
+    {
+      "code": "CONDITION_SKIPPED",
+      "message": "2 rule(s) under a condition the evaluation context does not hold",
+      "severity": "info",
+      "subject": "components/progress.css @media (forced-colors: active)"
+    },
+    {
+      "code": "CONDITION_SKIPPED",
+      "message": "1 rule(s) under a condition the evaluation context does not hold",
+      "severity": "info",
+      "subject": "components/progress.css @media (prefers-reduced-motion: reduce)"
     },
     {
       "code": "CONDITION_SKIPPED",
@@ -33580,6 +33678,17 @@
           "linkTone"
         ]
       },
+      "progress": {
+        "excluded": [],
+        "nonVisual": [
+          "value",
+          "max",
+          "label"
+        ],
+        "visual": [
+          "tone"
+        ]
+      },
       "quote": {
         "excluded": [
           "cite"
@@ -33674,8 +33783,8 @@
       "variables": 466
     },
     "variants": {
-      "components": 34,
-      "componentSets": 33,
+      "components": 35,
+      "componentSets": 34,
       "naiveAllOptions": {
         "avatar": 8,
         "back-to-top": 4,
@@ -33689,6 +33798,7 @@
         "kbd": 4,
         "labelled-separator": 12,
         "link": 2,
+        "progress": 4,
         "quote": 2,
         "separator": 48,
         "skip-link": 1,
@@ -33710,6 +33820,7 @@
         "kbd": 4,
         "labelled-separator": 3,
         "link": 2,
+        "progress": 4,
         "quote": 2,
         "separator": 3,
         "skip-link": 1,
@@ -33850,13 +33961,17 @@
         {
           "set": "empty-state",
           "variants": 1
+        },
+        {
+          "set": "progress",
+          "variants": 4
         }
       ],
-      "variantsTotal": 2076
+      "variantsTotal": 2080
     }
   },
   "schemaVersion": 1,
-  "sourceHash": "a1e0ae6c57b3d4e1",
+  "sourceHash": "bc9df0141e6f09d6",
   "stage": {
     "background": {
       "variable": "--color-bg-surface"
@@ -34923,6 +35038,38 @@
           "variable": "button:height:d92dbdc181"
         }
       },
+      "87dfdc58c7fd5a51": {
+        "clipsContent": false,
+        "crossAlign": "MIN",
+        "direction": "HORIZONTAL",
+        "mainAlign": "MIN",
+        "padding": {
+          "bottom": {
+            "expression": "0",
+            "value": 0
+          },
+          "left": {
+            "expression": "0",
+            "value": 0
+          },
+          "right": {
+            "expression": "0",
+            "value": 0
+          },
+          "top": {
+            "expression": "0",
+            "value": 0
+          }
+        },
+        "radius": {
+          "variable": "--radius-pill"
+        },
+        "stretch": true,
+        "width": {
+          "expression": "144px",
+          "value": 144
+        }
+      },
       "884598a7f476f29a": {
         "clipsContent": false,
         "crossAlign": "MIN",
@@ -35382,6 +35529,40 @@
         "width": {
           "expression": "360px",
           "value": 360
+        }
+      },
+      "c9deff40b4ba2a17": {
+        "clipsContent": true,
+        "crossAlign": "MIN",
+        "direction": "HORIZONTAL",
+        "height": {
+          "variable": "--space-inset-sm"
+        },
+        "mainAlign": "MIN",
+        "padding": {
+          "bottom": {
+            "expression": "0",
+            "value": 0
+          },
+          "left": {
+            "expression": "0",
+            "value": 0
+          },
+          "right": {
+            "expression": "0",
+            "value": 0
+          },
+          "top": {
+            "expression": "0",
+            "value": 0
+          }
+        },
+        "radius": {
+          "variable": "--radius-pill"
+        },
+        "width": {
+          "expression": "240px",
+          "value": 240
         }
       },
       "d4c70d0523e30a03": {
@@ -38350,6 +38531,15 @@
           "textProperty": "children"
         }
       ],
+      "3176790248f21173": [
+        {
+          "box": "87dfdc58c7fd5a51",
+          "kind": "frame",
+          "layers": [],
+          "slot": "bar",
+          "surface": "6196dc9492178c36"
+        }
+      ],
       "32c61385462a3b62": [
         {
           "fills": [
@@ -39703,6 +39893,15 @@
           "kind": "icon",
           "slot": "post",
           "visibleProperty": "post"
+        }
+      ],
+      "4c75e61c4565939d": [
+        {
+          "box": "87dfdc58c7fd5a51",
+          "kind": "frame",
+          "layers": [],
+          "slot": "bar",
+          "surface": "ba3a4092f359c280"
         }
       ],
       "4cbe7e4722500955": [
@@ -45993,6 +46192,15 @@
           "textProperty": "children"
         }
       ],
+      "c95abaaad901420d": [
+        {
+          "box": "87dfdc58c7fd5a51",
+          "kind": "frame",
+          "layers": [],
+          "slot": "bar",
+          "surface": "28c72f4d9a7ad535"
+        }
+      ],
       "cb15ba0f22e3ce38": [
         {
           "kind": "text",
@@ -47994,6 +48202,15 @@
             "variable": "--focus-ring-width"
           }
         }
+      ],
+      "fff64af9a21ee4b8": [
+        {
+          "box": "87dfdc58c7fd5a51",
+          "kind": "frame",
+          "layers": [],
+          "slot": "bar",
+          "surface": "c469968984f9fd00"
+        }
       ]
     },
     "surfaces": {
@@ -49641,6 +49858,18 @@
             "type": "SOLID"
           }
         ]
+      },
+      "28c72f4d9a7ad535": {
+        "effects": [],
+        "fills": [
+          {
+            "color": {
+              "variable": "--color-text-warning"
+            },
+            "type": "SOLID"
+          }
+        ],
+        "strokes": []
       },
       "2901357362e6928e": {
         "effects": [
@@ -51657,6 +51886,18 @@
             "type": "SOLID"
           }
         ]
+      },
+      "6196dc9492178c36": {
+        "effects": [],
+        "fills": [
+          {
+            "color": {
+              "variable": "--color-text-danger"
+            },
+            "type": "SOLID"
+          }
+        ],
+        "strokes": []
       },
       "61abf87765de42cd": {
         "effects": [
@@ -55494,6 +55735,18 @@
           }
         ]
       },
+      "ba3a4092f359c280": {
+        "effects": [],
+        "fills": [
+          {
+            "color": {
+              "variable": "--color-text-success"
+            },
+            "type": "SOLID"
+          }
+        ],
+        "strokes": []
+      },
       "bc61d4b6067db6c9": {
         "effects": [
           {
@@ -55884,6 +56137,18 @@
             "type": "SOLID"
           }
         ]
+      },
+      "c469968984f9fd00": {
+        "effects": [],
+        "fills": [
+          {
+            "color": {
+              "variable": "--color-action-accent"
+            },
+            "type": "SOLID"
+          }
+        ],
+        "strokes": []
       },
       "c55599df46068e07": {
         "effects": [

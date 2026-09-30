@@ -33,7 +33,7 @@ import {
 } from "./manifest-types.js";
 import type { Realization } from "./realization.js";
 import { frameOf, gridTracks, iconOf, overlayOf, ringOf, textOf } from "./realize.js";
-import { Registry, resolve, type CellProps, type Context } from "./resolve.js";
+import { Registry, resolve, substituted, type CellProps, type Context } from "./resolve.js";
 
 const hash = (value: unknown) => createHash("sha256").update(canonical(value)).digest("hex").slice(0, 16);
 
@@ -95,7 +95,7 @@ function treeFor(realization: Realization, input: CellInput, iconName: string): 
       if (input.icons) slots[slot] = icon;
     } else slots[slot] = input.iconChildren ? icon : spec.sample;
   }
-  return { contract: realization.contract, signature: realization.signature, options: input.options, slots };
+  return { contract: realization.contract, signature: realization.signature, options: { ...realization.given, ...input.options }, slots };
 }
 
 /**
@@ -443,15 +443,58 @@ async function compileRealization(realization: Realization, shared: Shared): Pro
         const c = cascaded.get(el)!;
         return /^(1px|0)$/.test(c.get("width") ?? "") && /^(1px|0)$/.test(c.get("height") ?? "") && /hidden|clip/.test(c.get("overflow") ?? c.get("clip-path") ?? "");
       };
-      const paints = (el: Element) => {
-        const { strokes, fills, effects, ...box } = frameOf(ctx(el));
+      const paints = (el: Context) => {
+        const { strokes, fills, effects, ...box } = frameOf(el);
         const zero = (b: Bound<number> | undefined) => !b || ("value" in b && b.value === 0);
         return (
           strokes.length > 0 || fills.length > 0 || effects.length > 0 || box.width !== undefined || box.height !== undefined ||
           box.grow === true || !zero(box.padding.top) || !zero(box.padding.left) || !zero(box.padding.bottom) || !zero(box.padding.right)
         );
       };
-      const nestedLayers = (el: Element): Layer[] => {
+      /** A length as the pixels it comes to, when it is plain ones (a padding token is); else undefined. */
+      const pixels = (el: Element, name: string): number | undefined => {
+        const match = /^(-?\d*\.?\d+)(px)?$/.exec(substituted(cascaded.get(el)!.get(name) ?? "0", ctx(el)));
+        return match ? Number(match[1]) : undefined;
+      };
+      /** A width or height given as a percentage (`inline-size: var(--sk-progress-fill)`), as that number. */
+      const percent = (el: Element, name: string): number | undefined => {
+        const raw = cascaded.get(el)!.get(name);
+        const match = raw ? /^(-?\d*\.?\d+)%$/.exec(substituted(raw, ctx(el))) : null;
+        return match ? Number(match[1]) : undefined;
+      };
+      /** The room inside an element `outer` wide, when its side padding is plain pixels. */
+      const innerOf = (el: Element, outer: number | undefined) => {
+        const left = pixels(el, "padding-left");
+        const right = pixels(el, "padding-right");
+        return outer === undefined || left === undefined || right === undefined ? undefined : outer - left - right;
+      };
+
+      /**
+       * A child's declarations as its frame reads them. A percentage is of the parent's width: pixels
+       * when that is known, the whole of it (a stretch) at 100%, hug otherwise; a full height across a
+       * row stretches it too. `inherit` takes the parent's value (a Progress bar's corners).
+       */
+      const sizing = (child: Element, inner: number | undefined, downward: boolean) => {
+        const sized = new Map(cascaded.get(child)!);
+        const parent = child.parentElement ? cascaded.get(child.parentElement) : undefined;
+        for (const [name, value] of sized) if (value === "inherit" && parent?.get(name) !== undefined) sized.set(name, parent.get(name)!);
+        const widthPercent = percent(child, "width");
+        const heightPercent = percent(child, "height");
+        const across = widthPercent !== undefined && widthPercent !== 100 && inner !== undefined ? (inner * widthPercent) / 100 : undefined;
+        if (widthPercent !== undefined) {
+          if (across !== undefined) sized.set("width", `${across}px`);
+          else sized.delete("width");
+        }
+        if (heightPercent !== undefined) sized.delete("height");
+        const stretch = (heightPercent === 100 && !downward) || (widthPercent === 100 && downward);
+        return { computed: sized, across, stretch };
+      };
+
+      /**
+       * `inner`: the width inside `el`, when it is known (the realization's drawing width, carried down
+       * through fixed widths and spanning blocks), for children sized as a percentage of it.
+       */
+      const nestedLayers = (el: Element, inner?: number): Layer[] => {
         const out: Layer[] = [];
         // In a grid laid across, a child in an `fr` column fills the row, as flex-grow does.
         const tracks = gridTracks(ctx(el));
@@ -501,12 +544,14 @@ async function compileRealization(realization: Realization, shared: Shared): Pro
             continue;
           }
           if (clipped(child)) continue;
+          const { computed: sized, across, stretch } = sizing(child, inner, downward);
           const onlyText = child.children.length === 0;
-          if (onlyText && !paints(child)) {
-            out.push(...nestedLayers(child));
+          if (onlyText && !paints(ctxOf(sized))) {
+            out.push(...nestedLayers(child, inner));
             continue;
           }
-          const { strokes, fills, effects, ...frameBox } = frameOf(ctx(child));
+          const { strokes, fills, effects, ...measured } = frameOf(ctxOf(sized));
+          const frameBox = stretch ? { ...measured, stretch: true as const } : measured;
           const track = tracks.length > 1 ? tracks[column++] : undefined;
           const box = track && /fr\b/.test(track) ? { ...frameBox, grow: true as const } : frameBox;
           const slot = unique(partOf(child) ?? child.localName);
@@ -517,7 +562,7 @@ async function compileRealization(realization: Realization, shared: Shared): Pro
             slot,
             box: intern(styles.boxes, spans ? { ...box, stretch: true as const } : box),
             surface: intern(styles.surfaces, { strokes, fills, effects }),
-            layers: nestedLayers(child),
+            layers: nestedLayers(child, innerOf(child, across ?? (spans || frameBox.stretch ? inner : undefined))),
           });
         }
         // Only a text alone in its block, or down a column, has the block's width to fill: beside
@@ -536,7 +581,7 @@ async function compileRealization(realization: Realization, shared: Shared): Pro
           const fills = box && overlayOf(ctxOf(box));
           if (fills?.length) layers.push({ kind: "overlay", slot: name, fills });
         }
-        if (realization.nested) layers.push(...nestedLayers(host));
+        if (realization.nested) layers.push(...nestedLayers(host, innerOf(host, realization.width)));
         // Slots in the order the contract's template places them, never the realization's key order.
         else for (const entry of layerOrder) {
           if (entry.kind === "part") {

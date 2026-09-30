@@ -83,3 +83,13 @@ describe("EmptyState", () => {
     expect(layers[2]).toMatchObject({ fill: true, text: { align: "CENTER" } });
   });
 });
+
+describe("Progress", () => {
+  it("draws its bar as the given share of the track, full height, in the track's corners", () => {
+    const set = manifest.components.find((c): c is ComponentSet => c.kind === "component-set" && c.id === "progress")!;
+    const [bar] = manifest.styles.layers[set.cells[0].layers];
+    expect(bar.kind).toBe("frame");
+    if (bar.kind !== "frame") return;
+    expect(manifest.styles.boxes[bar.box]).toMatchObject({ width: { value: 144 }, stretch: true, radius: { variable: "--radius-pill" } });
+  });
+});
