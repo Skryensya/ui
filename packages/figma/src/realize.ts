@@ -19,7 +19,23 @@ function prop(ctx: Context, name: string) {
 
 function number(ctx: Context, name: string, role: string): Bound<number> | undefined {
   const value = prop(ctx, name);
-  return value === undefined ? undefined : asNumber(resolve(value, "number", ctx, role));
+  return value === undefined ? undefined : asNumber(resolve(withoutEm(value, ctx), "number", ctx, role));
+}
+
+const EM = /(^|[^\w.])(\d*\.?\d+)em\b/g;
+
+/**
+ * `em` is the element's own font size, a unit Figma has no equivalent for (a Kbd's `min-height:
+ * 1.6em` keeps a key square at any text size). Made pixels here, as the browser computes it: the
+ * value stops being a binding, which is what an em measure is anyway, relative to its text.
+ */
+function withoutEm(value: string, ctx: Context): string {
+  const text = /var\(/.test(value) ? substituted(value, ctx) : value;
+  if (!EM.test(text)) return value;
+  EM.lastIndex = 0;
+  const size = evalQuantity(substituted(prop(ctx, "font-size") ?? "16px", ctx));
+  if (size.unit !== "px") throw new Unsupported(`font-size ${size.value}${size.unit} for an em measure`);
+  return text.replace(EM, (_, before: string, n: string) => `${before}${Number(n) * size.value}px`);
 }
 
 const ALIGN: Record<string, Frame["mainAlign"]> = {

@@ -2,9 +2,7 @@ import { readFileSync, writeFileSync } from "node:fs";
 import { join, resolve } from "node:path";
 import { canonical } from "@skryensya/ai-compiler/manifest";
 import { buildFigmaManifest } from "./build.js";
-import { badgeDotRealization } from "./realizations/badge-dot.js";
-import { badgeRealization } from "./realizations/badge.js";
-import { buttonRealization } from "./realizations/button.js";
+import { catalogue } from "./realizations/index.js";
 
 /*
  * `figma:build` writes artifacts/figma-manifest.json; `figma:check` rebuilds it in memory and fails
@@ -16,7 +14,7 @@ const root = resolve(rootArg);
 const out = join(root, "artifacts", "figma-manifest.json");
 
 /* Every contract Figma draws, in the order its frames stack on the page. */
-const manifest = await buildFigmaManifest([buttonRealization, badgeRealization, badgeDotRealization]);
+const manifest = await buildFigmaManifest(catalogue);
 const text = canonical(manifest);
 
 if (command === "check") {
