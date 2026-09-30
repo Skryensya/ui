@@ -61,6 +61,9 @@ const ALIGN: Record<string, Frame["mainAlign"]> = {
 
 /* ── background → fills ────────────────────────────────────────────────────────────────────────── */
 
+/** A gradient stop placed at a length rather than a percentage. */
+class LengthStop extends Error {}
+
 function gradient(inner: string, ctx: Context, role: string): Paint | undefined {
   const args = splitTopLevel(inner);
   let angle = 180;
@@ -73,6 +76,8 @@ function gradient(inner: string, ctx: Context, role: string): Paint | undefined 
   const stops = args.map((arg) => {
     const parts = splitSpaces(arg);
     const last = parts.at(-1)!;
+    // A stop at a length is a share of the element's own height, which is only known once it lays out.
+    if (parts.length > 1 && /^-?\d*\.?\d+(px|rem|em)$/.test(last)) throw new LengthStop(inner);
     return /%$/.test(last) && parts.length > 1
       ? { color: parts.slice(0, -1).join(" "), position: parseFloat(last) / 100 }
       : { color: arg.trim(), position: undefined as number | undefined };
@@ -114,8 +119,14 @@ function fills(ctx: Context, role = "fill"): Paint[] {
       if (piece === "none") continue;
       const grad = /^linear-gradient\(([\s\S]*)\)$/.exec(piece);
       if (grad) {
-        const paint = gradient(grad[1], ctx, "wash");
-        if (paint) images.push(paint);
+        try {
+          const paint = gradient(grad[1], ctx, "wash");
+          if (paint) images.push(paint);
+        } catch (error) {
+          if (!(error instanceof LengthStop)) throw error;
+          // A sheen over the surface, not the surface: left out, the rest of the paint still draws.
+          ctx.registry.diagnose({ severity: "info", code: "GRADIENT_LENGTH_STOP", subject: role, message: `left out: ${error.message}` });
+        }
         continue;
       }
       if (index !== layers.length - 1) throw new Unsupported(`a colour outside the last background layer: ${text}`);

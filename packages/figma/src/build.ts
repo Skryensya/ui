@@ -289,7 +289,7 @@ function withItemSlots(realization: Realization): Realization {
       const values = Array.isArray(value) ? value : [value];
       for (const entry of values) {
         if (typeof entry === "string") {
-          const name = realization.content?.names?.[slot] ?? slot;
+          const name = realization.content?.names?.[`${tree.signature}.${slot}`] ?? realization.content?.names?.[slot] ?? slot;
           const n = (counts.get(name) ?? 0) + 1;
           counts.set(name, n);
           items.push([`${name} ${n}`, { holds: "text", sample: entry, item: "content" }]);
@@ -622,7 +622,12 @@ async function compileRealization(authored: Realization, shared: Shared): Promis
           seen.set(slot, n);
           return n === 1 ? slot : `${slot} ${n}`;
         };
-        for (const node of Array.from(el.childNodes)) {
+        // An element with `display: contents` is no box: its children lay out as the parent's own.
+        const laidOut = (parent: Element): ChildNode[] =>
+          Array.from(parent.childNodes).flatMap((node) =>
+            node.nodeType === 1 && cascaded.get(node as Element)?.get("display") === "contents" ? laidOut(node as Element) : [node],
+          );
+        for (const node of laidOut(el)) {
           if (node.nodeType === 3) {
             const text = (node.textContent ?? "").trim();
             if (!text) continue;

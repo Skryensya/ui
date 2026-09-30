@@ -350,6 +350,13 @@ export function computeTree(element: Element, rules: RuleSet, unmatchable: Set<s
     for (const rule of matched) if (!rule.pseudo) for (const [prop, value] of rule.decls) computed.set(prop, value);
     // The element's own style attribute last, over every rule: a Progress's `--sk-progress-fill`.
     for (const [prop, value] of inlineStyle(el)) computed.set(prop, value);
+    // `inherit` is the parent's computed value, whatever the property (an accordion trigger's colour).
+    for (const [prop, value] of computed) {
+      if (value !== "inherit") continue;
+      const from = parent?.get(prop);
+      if (from === undefined) computed.delete(prop);
+      else computed.set(prop, from);
+    }
     styles.set(el, computed);
 
     const generated: Pseudo = {};
