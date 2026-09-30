@@ -446,7 +446,8 @@ async function compileRealization(authored: Realization, shared: Shared): Promis
   const setBase = realization.id ?? realization.contract;
   const word = signatureWord(contract.id, realization.signature);
   // Unsplit and named after its own signature (Heading), the set is just that name.
-  const alone = !realization.splitBy && word === setBase;
+  // Also when the realization's own id already says it (AvatarGroup as `avatar-group`, not `avatar-group/group`).
+  const alone = !realization.splitBy && (word === setBase || setBase.endsWith(`-${word}`));
   const setIdOf = (splitValue: string | undefined) => (alone ? setBase : `${setBase}/${splitValue ?? word}`);
   const stateOptions = realization.state.options.filter((name) => visual.includes(name));
   const stateName = (option: string) => realization.state.names?.[option] ?? option;
@@ -740,6 +741,20 @@ async function compileRealization(authored: Realization, shared: Shared): Promis
         });
 
       /**
+       * Siblings pulled over one another by a shared negative leading margin (an AvatarGroup's
+       * stack): that overlap, as the negative gap Figma's auto layout draws it with.
+       */
+      const overlapOf = (el: Element): Bound<number> | undefined => {
+        const kids = Array.from(el.children).filter((c) => !clipped(c) && cascaded.get(c)?.get("display") !== "none");
+        if (kids.length < 2) return undefined;
+        const lead = (c: Element) => cascaded.get(c)?.get("margin-inline-start") ?? cascaded.get(c)?.get("margin-left");
+        const raw = lead(kids[1]);
+        if (raw === undefined || kids.slice(1).some((c) => lead(c) !== raw)) return undefined;
+        const value = lengthOf(raw, kids[1]);
+        return value !== undefined && value < 0 ? { value, expression: raw } : undefined;
+      };
+
+      /**
        * Whether `el` lays its content out as plain block flow with blocks in it (a `<details>`: its
        * summary over its content): then they stack down, where a block of inline content reads across.
        */
@@ -929,7 +944,9 @@ async function compileRealization(authored: Realization, shared: Shared): Promis
             continue;
           }
           const { strokes, fills, effects, ...laid } = frameOf(ctxOf(sized));
-          const measured = blockFlow(child) ? { ...laid, direction: "VERTICAL" as const } : laid;
+          const flowed = blockFlow(child) ? { ...laid, direction: "VERTICAL" as const } : laid;
+          const overlap = overlapOf(child);
+          const measured = overlap ? { ...flowed, gap: overlap } : flowed;
           // Placed by its insets rather than laid out (a timeline's marker): where they come to.
           const placed = own.get("position") === "absolute" ? { x: lengthOf(own.get("left") ?? "0", child), y: lengthOf(own.get("top") ?? "0", child) } : undefined;
           const absolute = placed && placed.x !== undefined && placed.y !== undefined ? { x: placed.x, y: placed.y } : undefined;
@@ -1057,7 +1074,9 @@ async function compileRealization(authored: Realization, shared: Shared): Promis
         const ring = ringOf(ctx(host));
         if (ring) layers.push({ kind: "ring", slot: realization.ring, ...ring });
         const { strokes, fills, effects, ...hostLaid } = frameOf(ctx(host));
-        const hostBox = realization.nested && blockFlow(host) ? { ...hostLaid, direction: "VERTICAL" as const } : hostLaid;
+        const hostFlow = realization.nested && blockFlow(host) ? { ...hostLaid, direction: "VERTICAL" as const } : hostLaid;
+        const hostOverlap = realization.nested ? overlapOf(host) : undefined;
+        const hostBox = hostOverlap ? { ...hostFlow, gap: hostOverlap } : hostFlow;
         const box = realization.width && !hostBox.width ? { ...hostBox, width: { value: realization.width, expression: `${realization.width}px` } } : hostBox;
         const key = Object.entries(props).map(([k, v]) => `${k}=${v}`).join(", ");
         const body = { key, props, box: intern(styles.boxes, box), surface: intern(styles.surfaces, { strokes, fills, effects }), layers: intern(styles.layers, layers) };
