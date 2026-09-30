@@ -30137,6 +30137,105 @@
         "columns": []
       },
       "visualHash": "8ecd77431df83445"
+    },
+    {
+      "axes": [
+        {
+          "name": "tone",
+          "values": [
+            "neutral",
+            "accent",
+            "success",
+            "warning",
+            "danger"
+          ]
+        }
+      ],
+      "cells": [
+        {
+          "box": "a0415ba087192cc0",
+          "hash": "6869fb75e1f59940",
+          "id": "badge/dot/tone=neutral",
+          "key": "tone=neutral",
+          "layers": "37517e5f3dc66819",
+          "props": {
+            "tone": "neutral"
+          },
+          "surface": "08fed234795b4830"
+        },
+        {
+          "box": "a0415ba087192cc0",
+          "hash": "e151fe6849b2c49e",
+          "id": "badge/dot/tone=accent",
+          "key": "tone=accent",
+          "layers": "37517e5f3dc66819",
+          "props": {
+            "tone": "accent"
+          },
+          "surface": "d64186f7c47d33fe"
+        },
+        {
+          "box": "a0415ba087192cc0",
+          "hash": "af4bbefff21e0e78",
+          "id": "badge/dot/tone=success",
+          "key": "tone=success",
+          "layers": "37517e5f3dc66819",
+          "props": {
+            "tone": "success"
+          },
+          "surface": "b630a2579ceb0d13"
+        },
+        {
+          "box": "a0415ba087192cc0",
+          "hash": "a2cfbaca95a0c3d5",
+          "id": "badge/dot/tone=warning",
+          "key": "tone=warning",
+          "layers": "37517e5f3dc66819",
+          "props": {
+            "tone": "warning"
+          },
+          "surface": "37858cd71362012f"
+        },
+        {
+          "box": "a0415ba087192cc0",
+          "hash": "442ef63302e1e2af",
+          "id": "badge/dot/tone=danger",
+          "key": "tone=danger",
+          "layers": "37517e5f3dc66819",
+          "props": {
+            "tone": "danger"
+          },
+          "surface": "782f6d9c078a09bf"
+        }
+      ],
+      "contractHash": "d9fde7683e0b24d0",
+      "defaultCell": "tone=neutral",
+      "grid": {
+        "columns": [
+          {
+            "name": "tone",
+            "values": [
+              "neutral",
+              "accent",
+              "success",
+              "warning",
+              "danger"
+            ]
+          }
+        ],
+        "rows": []
+      },
+      "id": "badge/dot",
+      "interactions": [],
+      "kind": "component-set",
+      "name": "Badge / Dot",
+      "page": "skryensya",
+      "properties": [],
+      "showcase": {
+        "base": {},
+        "columns": []
+      },
+      "visualHash": "08163f2b5b2375da"
     }
   ],
   "diagnostics": [
@@ -30148,9 +30247,27 @@
     },
     {
       "code": "CONDITION_SKIPPED",
+      "message": "2 rule(s) under a condition the evaluation context does not hold",
+      "severity": "info",
+      "subject": "components/badge.css @keyframes sk-badge-pulse"
+    },
+    {
+      "code": "CONDITION_SKIPPED",
       "message": "3 rule(s) under a condition the evaluation context does not hold",
       "severity": "info",
       "subject": "components/badge.css @media (forced-colors: active)"
+    },
+    {
+      "code": "CONDITION_SKIPPED",
+      "message": "3 rule(s) under a condition the evaluation context does not hold",
+      "severity": "info",
+      "subject": "components/badge.css @media (forced-colors: active)"
+    },
+    {
+      "code": "CONDITION_SKIPPED",
+      "message": "1 rule(s) under a condition the evaluation context does not hold",
+      "severity": "info",
+      "subject": "components/badge.css @media (prefers-reduced-motion: reduce)"
     },
     {
       "code": "CONDITION_SKIPPED",
@@ -30219,13 +30336,23 @@
   ],
   "report": {
     "options": {
-      "badge": {
+      "badge:Badge": {
         "excluded": [],
         "nonVisual": [],
         "visual": [
           "tone",
           "size",
           "appearance"
+        ]
+      },
+      "badge:BadgeDot": {
+        "excluded": [],
+        "nonVisual": [
+          "label",
+          "pulse"
+        ],
+        "visual": [
+          "tone"
         ]
       },
       "button": {
@@ -30248,15 +30375,15 @@
       }
     },
     "tokens": {
-      "catalogueAdded": 347,
-      "componentVariables": 176,
+      "catalogueAdded": 343,
+      "componentVariables": 177,
       "modeValuesBySource": {
         "alias": 203,
-        "evaluated": 409,
+        "evaluated": 411,
         "literal": 672
       },
-      "reached": 120,
-      "reachedAsVariables": 90,
+      "reached": 128,
+      "reachedAsVariables": 98,
       "reachedButNotVariables": [
         "--elevation-flat",
         "--elevation-raised",
@@ -30268,14 +30395,16 @@
       "variables": 466
     },
     "variants": {
-      "components": 7,
-      "componentSets": 6,
+      "components": 8,
+      "componentSets": 7,
       "naiveAllOptions": {
-        "badge": 20,
+        "badge:Badge": 20,
+        "badge:BadgeDot": 10,
         "button": 27648
       },
       "naiveVisualOptions": {
-        "badge": 20,
+        "badge:Badge": 20,
+        "badge:BadgeDot": 5,
         "button": 2304
       },
       "variantsPerSet": [
@@ -30302,13 +30431,17 @@
         {
           "set": "badge/brutalist",
           "variants": 10
+        },
+        {
+          "set": "badge/dot",
+          "variants": 5
         }
       ],
-      "variantsTotal": 1940
+      "variantsTotal": 1945
     }
   },
   "schemaVersion": 1,
-  "sourceHash": "92be82e687bbcdbd",
+  "sourceHash": "064effa72d984748",
   "stage": {
     "background": {
       "variable": "--color-bg-surface"
@@ -30627,6 +30760,39 @@
         },
         "width": {
           "variable": "--size-control-sm"
+        }
+      },
+      "a0415ba087192cc0": {
+        "clipsContent": false,
+        "crossAlign": "MIN",
+        "direction": "HORIZONTAL",
+        "height": {
+          "variable": "badge:dot-size:558b9f364b"
+        },
+        "mainAlign": "MIN",
+        "padding": {
+          "bottom": {
+            "expression": "0",
+            "value": 0
+          },
+          "left": {
+            "expression": "0",
+            "value": 0
+          },
+          "right": {
+            "expression": "0",
+            "value": 0
+          },
+          "top": {
+            "expression": "0",
+            "value": 0
+          }
+        },
+        "radius": {
+          "variable": "--radius-pill"
+        },
+        "width": {
+          "variable": "badge:dot-size:558b9f364b"
         }
       },
       "aa555c66d1692191": {
@@ -33417,6 +33583,7 @@
           "visibleProperty": "post"
         }
       ],
+      "37517e5f3dc66819": [],
       "39bb26b5844f848a": [
         {
           "fills": [
@@ -40912,6 +41079,18 @@
           }
         ]
       },
+      "08fed234795b4830": {
+        "effects": [],
+        "fills": [
+          {
+            "color": {
+              "variable": "--color-text-secondary"
+            },
+            "type": "SOLID"
+          }
+        ],
+        "strokes": []
+      },
       "09447afcaa06ffc8": {
         "effects": [
           {
@@ -42496,6 +42675,18 @@
             "type": "SOLID"
           }
         ]
+      },
+      "37858cd71362012f": {
+        "effects": [],
+        "fills": [
+          {
+            "color": {
+              "variable": "--color-border-warning"
+            },
+            "type": "SOLID"
+          }
+        ],
+        "strokes": []
       },
       "3b47044f32454d8b": {
         "effects": [
@@ -44467,6 +44658,18 @@
           }
         ]
       },
+      "782f6d9c078a09bf": {
+        "effects": [],
+        "fills": [
+          {
+            "color": {
+              "variable": "--color-border-danger"
+            },
+            "type": "SOLID"
+          }
+        ],
+        "strokes": []
+      },
       "7b19230da8a49881": {
         "effects": [
           {
@@ -46434,6 +46637,18 @@
           }
         ]
       },
+      "b630a2579ceb0d13": {
+        "effects": [],
+        "fills": [
+          {
+            "color": {
+              "variable": "--color-border-success"
+            },
+            "type": "SOLID"
+          }
+        ],
+        "strokes": []
+      },
       "b7fa8d33a8494781": {
         "effects": [
           {
@@ -47321,6 +47536,18 @@
             "type": "SOLID"
           }
         ]
+      },
+      "d64186f7c47d33fe": {
+        "effects": [],
+        "fills": [
+          {
+            "color": {
+              "variable": "--color-border-accent"
+            },
+            "type": "SOLID"
+          }
+        ],
+        "strokes": []
       },
       "d79f206d3df812a6": {
         "effects": [
@@ -48897,6 +49124,28 @@
         "light": {
           "kind": "literal",
           "value": 2
+        }
+      }
+    },
+    {
+      "codeSyntax": "var(--sk-badge-dot-size)",
+      "collection": "component",
+      "expression": "0.5rem",
+      "id": "badge:dot-size:558b9f364b",
+      "name": "badge/dot-size",
+      "source": {
+        "dark": "evaluated",
+        "light": "evaluated"
+      },
+      "type": "FLOAT",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": 8
+        },
+        "light": {
+          "kind": "literal",
+          "value": 8
         }
       }
     },

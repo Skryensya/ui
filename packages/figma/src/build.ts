@@ -178,7 +178,13 @@ export async function buildFigmaManifest(input: Realization | readonly Realizati
     });
   }
 
-  registry.finalize(Object.fromEntries(realizations.map((r, i) => [r.contract, compiled[i].axisOrder])));
+  // Component variables are named per contract; a contract drawn by several signatures names them
+  // along all of its axes.
+  const axisOrders: Record<string, string[]> = {};
+  realizations.forEach((r, i) => {
+    axisOrders[r.contract] = [...new Set([...(axisOrders[r.contract] ?? []), ...compiled[i].axisOrder])];
+  });
+  registry.finalize(axisOrders);
   // A field bound to a component variable that failed to evaluate would point at nothing.
   const dead = [...registry.diagnostics].filter((d) => d.code === "DERIVED_UNSUPPORTED");
   if (dead.length) throw new Error(`component variables failed to evaluate:\n${dead.map((d) => d.message).join("\n")}`);
@@ -192,11 +198,13 @@ export async function buildFigmaManifest(input: Realization | readonly Realizati
 
   const bySource = { alias: 0, literal: 0, evaluated: 0 };
   for (const v of variables) for (const s of Object.values(v.source)) bySource[s]++;
+  // A realization's key in the report: its contract, or contract and signature when one contract has several.
+  const keyOf = (r: Realization) => (realizations.filter((x) => x.contract === r.contract).length > 1 ? `${r.contract}:${r.signature}` : r.contract);
   const report = {
-    options: Object.fromEntries(realizations.map((r, i) => [r.contract, compiled[i].options])),
+    options: Object.fromEntries(realizations.map((r, i) => [keyOf(r), compiled[i].options])),
     variants: {
-      naiveAllOptions: Object.fromEntries(realizations.map((r, i) => [r.contract, compiled[i].naive.allOptions])),
-      naiveVisualOptions: Object.fromEntries(realizations.map((r, i) => [r.contract, compiled[i].naive.visualOptions])),
+      naiveAllOptions: Object.fromEntries(realizations.map((r, i) => [keyOf(r), compiled[i].naive.allOptions])),
+      naiveVisualOptions: Object.fromEntries(realizations.map((r, i) => [keyOf(r), compiled[i].naive.visualOptions])),
       componentSets: sets.length,
       variantsPerSet: sets.map((s) => ({ set: s.id, variants: s.cells.length })),
       variantsTotal: sets.reduce((n, s) => n + s.cells.length, 0),
@@ -297,8 +305,11 @@ async function compileRealization(realization: Realization, shared: Shared): Pro
   const nonVisual = candidates.filter((name) => !visual.includes(name));
 
   /* The axes: enums as they are, the state booleans folded into one, the rest as true/false. */
-  const split = contract.options[realization.splitBy];
-  if (split?.type !== "enum") throw new Error(`splitBy ${realization.splitBy} is not an enum option`);
+  const split = realization.splitBy ? contract.options[realization.splitBy] : undefined;
+  if (realization.splitBy && split?.type !== "enum") throw new Error(`splitBy ${realization.splitBy} is not an enum option`);
+  // One set per value of the split, or one set for the whole signature when nothing splits it.
+  const splitValues: (string | undefined)[] = split ? [...(split.values ?? [])] : [undefined];
+  const setIdOf = (splitValue: string | undefined) => `${realization.contract}/${splitValue ?? signatureWord(contract.id, realization.signature)}`;
   const stateOptions = realization.state.options.filter((name) => visual.includes(name));
   const axes: Axis[] = [];
   for (const name of visual) {
@@ -361,10 +372,10 @@ async function compileRealization(realization: Realization, shared: Shared): Pro
     table[id] = value;
     return id;
   };
-  for (const splitValue of split.values ?? []) {
+  for (const splitValue of splitValues) {
     const cells: Cell[] = [];
     for (const props of combos(axes)) {
-      const options: Record<string, string | boolean> = { ...defaults, [realization.splitBy]: splitValue };
+      const options: Record<string, string | boolean> = { ...defaults, ...(realization.splitBy && splitValue ? { [realization.splitBy]: splitValue } : {}) };
       for (const axis of axes) {
         if (axis === stateAxis) continue;
         const option = contract.options[axis.name];
@@ -378,7 +389,7 @@ async function compileRealization(realization: Realization, shared: Shared): Pro
       const iconChildren = iconWhen !== undefined && options[iconWhen] === true;
       const interaction = interactions.find((i) => i.name === props[stateAxis.name]);
       const { host, styles: cascaded, pseudo } = computeCell({ options, icons: true, iconChildren }, interaction ? [interaction.pseudo] : []);
-      const cellProps: CellProps = { [realization.splitBy]: splitValue, ...props };
+      const cellProps: CellProps = { ...(realization.splitBy && splitValue ? { [realization.splitBy]: splitValue } : {}), ...props };
       const inherited = { "font-family": `var(${realization.stage.label.fontFamily})` };
       const ctxOf = (computed: Computed): Context => ({ computed, registry, cell: cellProps, hookPrefix, component: realization.contract, inherited });
       const ctx = (el: Element): Context => ctxOf(cascaded.get(el)!);
@@ -417,10 +428,10 @@ async function compileRealization(realization: Realization, shared: Shared): Pro
         const key = Object.entries(props).map(([k, v]) => `${k}=${v}`).join(", ");
         const body = { key, props, box: intern(styles.boxes, box), surface: intern(styles.surfaces, { strokes, fills, effects }), layers: intern(styles.layers, layers) };
         // The id is not hashed: it says WHICH cell this is, the hash says whether it is current.
-        cells.push({ id: cellId(`${realization.contract}/${splitValue}`, props), ...body, hash: hash(body) });
+        cells.push({ id: cellId(setIdOf(splitValue), props), ...body, hash: hash(body) });
       } catch (error) {
         if (!(error instanceof Unsupported)) throw error;
-        diagnostics.push({ severity: "warning", code: "CELL_UNSUPPORTED", subject: `${splitValue}: ${JSON.stringify(props)}`, message: error.message });
+        diagnostics.push({ severity: "warning", code: "CELL_UNSUPPORTED", subject: `${setIdOf(splitValue)}: ${JSON.stringify(props)}`, message: error.message });
       }
     }
 
@@ -442,8 +453,8 @@ async function compileRealization(realization: Realization, shared: Shared): Pro
     const defaultCell = axes.map((a) => `${a.name}=${defaultOf(a)}`).join(", ");
     sets.push({
       kind: "component-set",
-      id: `${realization.contract}/${splitValue}`,
-      name: `${titleOf(contract.id)} / ${splitValue}`,
+      id: setIdOf(splitValue),
+      name: `${titleOf(contract.id)} / ${splitValue ?? titleOf(signatureWord(contract.id, realization.signature))}`,
       page: PAGE.id,
       axes: setAxes,
       grid,
@@ -469,7 +480,7 @@ async function compileRealization(realization: Realization, shared: Shared): Pro
   }
   return {
     sets,
-    axisOrder: [realization.splitBy, ...axes.map((a) => a.name)],
+    axisOrder: [...(realization.splitBy ? [realization.splitBy] : []), ...axes.map((a) => a.name)],
     options: { visual, nonVisual, excluded: [...realization.exclude] },
     naive: {
       allOptions: signature.options.reduce((n, name) => n * stateCount(contract.options[name]), 1),
@@ -479,6 +490,13 @@ async function compileRealization(realization: Realization, shared: Shared): Pro
 }
 
 const titleOf = (id: string) => id.split("-").map((w) => w[0].toUpperCase() + w.slice(1)).join(" ");
+
+/** What a signature adds to its contract's name, as a word: `BadgeDot` of `badge` is `dot`. */
+function signatureWord(contractId: string, signature: string): string {
+  const base = titleOf(contractId).replaceAll(" ", "");
+  const rest = signature.startsWith(base) && signature.length > base.length ? signature.slice(base.length) : signature;
+  return rest.replace(/\./g, "-").replace(/([a-z])([A-Z])/g, "$1-$2").toLowerCase();
+}
 
 /* ── the stage: a contract's own background, resolved through its cascade ──────────────────────── */
 
