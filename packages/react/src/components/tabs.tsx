@@ -3,7 +3,7 @@ import { tabs } from "@skryensya/core/machines";
 import { normalizeProps, useMachine } from "@zag-js/react";
 import { useId, type ReactNode } from "react";
 
-const { appearance: appearanceOption, size: sizeOption, variant: variantOption } = tabsContract.options;
+const { size: sizeOption, variant: variantOption } = tabsContract.options;
 
 export type TabsItem = {
   value: string;
@@ -28,8 +28,6 @@ export type TabsProps = TabsOptions & {
   size?: TabsSize;
   /** Which edge the strip hangs from. CSS-only like `size`: it lands straight on `data-variant`. */
   variant?: TabsVariant;
-  /** How the strip is drawn, worn by the selected tab. CSS-only: it lands straight on `data-appearance`. */
-  appearance?: (typeof appearanceOption.values)[number];
 };
 
 export function Tabs({
@@ -37,7 +35,6 @@ export function Tabs({
   items,
   "aria-label": ariaLabel,
   "aria-labelledby": ariaLabelledBy,
-  appearance = appearanceOption.default,
   size = sizeOption.default,
   variant = variantOption.default,
   ...options
@@ -52,7 +49,6 @@ export function Tabs({
       className={tabsParts.root}
       data-activation-mode={options.activationMode ?? "automatic"}
       data-sk-tabs=""
-      data-appearance={appearance}
       data-size={size}
       data-value={api.value}
       data-variant={variant}
