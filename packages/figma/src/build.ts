@@ -297,7 +297,9 @@ function withItemSlots(realization: Realization): Realization {
   // Every text inside the content trees, numbered by the slot it fills.
   const counts = new Map<string, number>();
   const visit = (tree: UsageTree) => {
-    for (const [slot, value] of Object.entries(tree.slots ?? {})) {
+    const direct = (tree as { children?: unknown }).children;
+    const slots = { ...(direct === undefined ? {} : { children: direct }), ...tree.slots };
+    for (const [slot, value] of Object.entries(slots)) {
       const values = Array.isArray(value) ? value : [value];
       for (const entry of values) {
         if (typeof entry === "string") {
@@ -589,6 +591,11 @@ async function compileRealization(authored: Realization, shared: Shared): Promis
        */
       const partOf = (el: Element) => {
         for (const [part, cls] of Object.entries(contract.parts)) if (el.classList.contains(cls)) return part;
+        // A part of another contract composed in (a Tile's content inside an Accordion): its BEM name.
+        for (const cls of Array.from(el.classList)) {
+          const bem = /^sk-[a-z-]+__([a-z-]+)$/.exec(cls);
+          if (bem) return bem[1];
+        }
         return undefined;
       };
       const slotOfText = (text: string) =>

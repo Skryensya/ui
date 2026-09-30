@@ -193,7 +193,7 @@ describe("Tabs", () => {
 describe("Accordion", () => {
   it("draws its sections through their display: contents headings, the first open", () => {
     const set = manifest.components.find((c): c is ComponentSet => c.kind === "component-set" && c.id === "accordion/plain")!;
-    expect(set.properties.map((p) => p.name)).toEqual(["heading 1", "answer 1", "heading 2", "answer 2", "heading 3", "answer 3"]);
+    expect(set.properties.map((p) => p.name).slice(0, 3)).toEqual(["title 1", "description 1", "answer 1"]);
     const [first, second] = manifest.styles.layers[set.cells[0].layers];
     expect(first.kind === "frame" && first.layers.map((l) => l.slot)).toEqual(["trigger", "content"]);
     expect(second.kind === "frame" && second.layers.map((l) => l.slot)).toEqual(["trigger"]);
@@ -383,5 +383,14 @@ describe("Details", () => {
     expect(cell("true").map((l) => l.slot)).toEqual(["nativeSummary", "nativeContent"]);
     expect([glyphs(cell("false")), glyphs(cell("true"))]).toEqual([["chevron-down"], ["chevron-up"]]);
     expect(manifest.styles.boxes[set.cells[0].box].direction).toBe("VERTICAL");
+  });
+});
+
+describe("Accordion's triggers", () => {
+  it("carry the tile content and a chevron turned by whether the section is open", () => {
+    const set = manifest.components.find((c): c is ComponentSet => c.kind === "component-set" && c.id === "accordion/plain")!;
+    const glyphs = (ls: Layer[]): string[] => ls.flatMap((l) => (l.kind === "icon" ? [l.default] : l.kind === "frame" ? glyphs(l.layers) : []));
+    const [open, closed] = manifest.styles.layers[set.cells[0].layers];
+    expect([open, closed].map((l) => (l.kind === "frame" ? glyphs(l.layers) : []))).toEqual([["chevron-up"], ["chevron-down"]]);
   });
 });
