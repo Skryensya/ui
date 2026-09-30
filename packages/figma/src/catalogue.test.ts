@@ -221,3 +221,21 @@ describe("Steps", () => {
     expect(set.cells.find((c) => c.props.orientation === "vertical")).toBeDefined();
   });
 });
+
+describe("Checkbox", () => {
+  const layersOf = (state: string) => {
+    const set = manifest.components.find((c): c is ComponentSet => c.kind === "component-set" && c.id === "checkbox/plain")!;
+    const [control] = manifest.styles.layers[set.cells.find((c) => c.props.state === state)!.layers];
+    return control.kind === "frame" ? control.layers : [];
+  };
+  const glyph = (state: string) => layersOf(state).flatMap((l) => (l.kind === "frame" ? l.layers.flatMap((i) => (i.kind === "icon" ? [i.default] : [])) : []));
+
+  it("hides its native input and shows only the glyph its state calls for", () => {
+    expect([glyph("unchecked"), glyph("checked"), glyph("indeterminate")]).toEqual([[], ["check"], ["remove"]]);
+  });
+
+  it("rings the box, not the label, when its input has focus", () => {
+    expect(layersOf("focus").some((l) => l.kind === "ring")).toBe(true);
+    expect(layersOf("unchecked").some((l) => l.kind === "ring")).toBe(false);
+  });
+});

@@ -987,7 +987,7 @@ async function applyIcon(ctx: SetCtx, node: InstanceNode, layer: Extract<M.Layer
  * A layer that covers the host, outside auto layout: the state layer exactly over it with the same
  * corners, or the focus ring `offset` outside it, stroked, with corners grown by the offset.
  */
-function applyCover(ctx: SetCtx, host: ComponentNode, rect: RectangleNode, layer: Extract<M.Layer, { kind: "overlay" | "ring" }>, box: M.Box) {
+function applyCover(ctx: SetCtx, host: ComponentNode | FrameNode, rect: RectangleNode, layer: Extract<M.Layer, { kind: "overlay" | "ring" }>, box: M.Box) {
   rect.layoutPositioning = "ABSOLUTE";
   const offset = layer.kind === "ring" ? Number(valueOf(layer.offset)) : 0;
   rect.x = -offset;
@@ -1173,6 +1173,11 @@ async function applyLayers(
       frame.layoutGrow = box.grow ? 1 : 0;
       frame.layoutAlign = box.stretch ? "STRETCH" : "INHERIT";
       await applyLayers(ctx, frame, { id }, layer.layers, cellKey, sample);
+      // A part's own state layer and focus ring cover it, once its content has laid out.
+      for (const cover of layer.layers) {
+        if (cover.kind !== "overlay" && cover.kind !== "ring") continue;
+        applyCover(ctx, frame, pickLayer(frame.children, { id }, cover.slot) as RectangleNode, cover, box);
+      }
     }
   }
   // Edges are placed off their parent's size, so once everything in it has laid out.
