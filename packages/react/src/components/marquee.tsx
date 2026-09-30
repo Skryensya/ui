@@ -148,7 +148,7 @@ function MarqueeRoot({
         </div>
       </div>
       {/* A real Button, not a button-shaped lookalike: the state layer, the focus ring and the touch
-          target come with it, and `translucent` is the variant for a control sitting on a busy
+          target come with it, and `soft` is the variant for a control sitting on a busy
           surface. The glyph is its own element because Button's own pseudos are already spoken for;
           the name comes from whichever label is not hidden. */}
       {control ? (
@@ -160,7 +160,7 @@ function MarqueeRoot({
            * well as announcing it, so the look and the announcement cannot drift apart. */
           pressed={playing}
           size="sm"
-          variant="translucent"
+          variant="soft"
         >
           <span aria-hidden="true" className={marqueeParts.glyph} />
           <span

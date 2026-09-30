@@ -13,7 +13,7 @@ import {
   splitButtonSmallTree,
   splitButtonMenuFirstTree,
   splitButtonSubtleTree,
-  splitButtonTranslucentTree,
+  splitButtonOverMediaTree,
   splitButtonGhostTree,
   splitButtonDangerTree,
 } from "../../demos/split-button";
@@ -84,12 +84,12 @@ initComponents();`;
       viewport="menu"
     />
 
-    <h3>{t("splitButtonPage.translucentTitle")}</h3>
-    <p set:html={t("splitButtonPage.translucentBody")} />
+    <h3>{t("splitButtonPage.overMediaTitle")}</h3>
+    <p set:html={t("splitButtonPage.overMediaBody")} />
     <ComponentPreview
-      tree={splitButtonTranslucentTree(t)}
+      tree={splitButtonOverMediaTree(t)}
       js={js}
-      label={t("splitButtonPage.translucentLabel")}
+      label={t("splitButtonPage.overMediaLabel")}
       viewport="menu"
     />
 

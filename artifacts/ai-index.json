@@ -550,7 +550,7 @@
             "it is THE action of the view: `tone: accent`, and one per region",
             "a delete inside a row of actions: `variant: ghost` + `tone: danger`, which reads as destructive without becoming the confirm button",
             "the confirm that delete opens: `variant: solid` + `tone: danger`, one per dialog",
-            "it sits on media or on a surface of unknown color: `variant: translucent`",
+            "it sits on media or on a surface of unknown color: `variant: soft`",
             "the button stays on: `pressed`, a real toggle (bold in a toolbar, a vote, play/pause). Absent when it is not a toggle; `false` when it is one and it is off"
           ]
         },
@@ -5517,5 +5517,5 @@
     }
   ],
   "schemaVersion": "2.3",
-  "sourceHash": "924d221f40f4e382"
+  "sourceHash": "1b286607eecfc738"
 }

@@ -8013,7 +8013,7 @@
                                         "contract": "button",
                                         "signature": "Button.action",
                                         "options": {
-                                          "variant": "translucent",
+                                          "variant": "soft",
                                           "size": "sm"
                                         },
                                         "children": [
@@ -8413,7 +8413,7 @@
                                         "contract": "button",
                                         "signature": "Button.action",
                                         "options": {
-                                          "variant": "translucent",
+                                          "variant": "soft",
                                           "size": "sm"
                                         },
                                         "children": [

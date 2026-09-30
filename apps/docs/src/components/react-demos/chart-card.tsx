@@ -91,7 +91,7 @@ export const ChartAnalyticsCardDemo = framed(
                 value={es ? "418,2 K" : "418.2K"}
               />
             </Stack>
-            <Button size="sm" type="button" variant="translucent">
+            <Button size="sm" type="button" variant="soft">
               {es ? "Ver analítica" : "View Analytics"}
             </Button>
           </Inline>

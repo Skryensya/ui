@@ -3,7 +3,7 @@ import type { Translate } from "../i18n";
 import {
   splitButtonMenuItems,
   splitButtonSubtleMenuItems,
-  splitButtonTranslucentMenuItems,
+  splitButtonOverMediaMenuItems,
   splitButtonGhostMenuItems,
   splitButtonDangerMenuItems,
 } from "./data/split-button";
@@ -162,32 +162,32 @@ export const splitButtonSubtleTree = (t: Translate): UsageTree => ({
   },
 });
 
-/** Same pairing as `splitButtonTree`, `variant: "translucent"` on both halves. Content swapped
- *  to Download: `translucent` reads as glass over media, and a download action over a photo or
+/** Same pairing as `splitButtonTree`, `variant: "soft"` on both halves. Content swapped
+ *  to Download: `soft` lets the media behind it show through, and a download action over a photo or
  *  hero backdrop is the case it was built for. */
-export const splitButtonTranslucentTree = (t: Translate): UsageTree => ({
+export const splitButtonOverMediaTree = (t: Translate): UsageTree => ({
   contract: "split-button",
   signature: "SplitButton",
   slots: {
     action: {
       contract: "button",
       signature: "Button.action",
-      options: { variant: "translucent", size: "md", weldEnd: true },
-      slots: { children: t("demo.splitButton.translucentPrimary") },
+      options: { variant: "soft", size: "md", weldEnd: true },
+      slots: { children: t("demo.splitButton.overMediaPrimary") },
     },
     menu: {
       contract: "menu",
       signature: "Menu",
       options: {
-        label: t("demo.splitButton.translucentMenuLabel"),
-        triggerLabel: t("demo.splitButton.translucentMenuLabel"),
-        triggerVariant: "translucent",
+        label: t("demo.splitButton.overMediaMenuLabel"),
+        triggerLabel: t("demo.splitButton.overMediaMenuLabel"),
+        triggerVariant: "soft",
         triggerSize: "md",
         triggerIconOnly: true,
         triggerWeldStart: true,
       },
       slots: {
-        items: splitButtonTranslucentMenuItems(t),
+        items: splitButtonOverMediaMenuItems(t),
       },
     },
   },

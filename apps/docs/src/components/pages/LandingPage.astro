@@ -141,7 +141,7 @@ const settingsRowTree = (translate: Translate): UsageTree => ({
   ],
 });
 
-/** An error that gives the reader a way forward: `actions` restricts `variant` to `translucent`/
+/** An error that gives the reader a way forward: `actions` restricts `variant` to `soft`/
  *  `danger` on purpose, so the recovery button never out-competes the callout's own color. */
 const alertRetryTree = (translate: Translate): UsageTree => ({
   contract: "callout",
@@ -153,7 +153,7 @@ const alertRetryTree = (translate: Translate): UsageTree => ({
     actions: {
       contract: "button",
       signature: "Button.action",
-      options: { variant: "translucent" },
+      options: { variant: "soft" },
       children: translate("demo.alertRetry.action"),
     },
   },

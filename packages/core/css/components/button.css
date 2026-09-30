@@ -250,7 +250,7 @@
    * of those neutral, which is the whole bug this selector shape exists to prevent. The same reason
    * marquee's fade reads `:not([data-fade="none"])`.
    */
-  .sk-button:not(:disabled):not([aria-disabled="true"]):not([data-variant="soft"], [data-variant="ghost"], [data-variant="translucent"]):is(
+  .sk-button:not(:disabled):not([aria-disabled="true"]):not([data-variant="soft"], [data-variant="ghost"]):is(
       [data-tone="accent"],
       [data-tone="danger"]
     ) {
@@ -260,45 +260,34 @@
   }
 
   /*
-   * SOFT. A fill that recedes rather than competes. Neutral soft is the old `subtle`: the same
-   * neutral fill as solid, with the base's mid-grey ring dropped one step, because that ring is
-   * sized for a button standing alone on canvas and reads as hard on a busier surface (a code
-   * panel, a coloured card). CopyButton over highlighted code is the case that asked for it.
+   * SOFT. A fill that recedes rather than competes, and one that holds up on ANY surface: canvas, a
+   * coloured card, a photograph. The fill is semi-transparent, so it blends with whatever sits
+   * behind it instead of laying an opaque panel over it, and on plain canvas it still reads as a
+   * quiet grey step. (It absorbed `translucent`, which was this same paint under a second name.)
    *
-   * A TONED soft is a wash of its own accent instead: present, unmistakably destructive or primary,
-   * and still clearly quieter than the confirm it sits next to.
+   * A TONED soft is a wash of its own accent, mixed into transparent rather than into the page's
+   * surface for the same reason: present, unmistakably destructive or primary, still quieter than
+   * the confirm it sits next to, and just as at home on a coloured card as on canvas.
+   *
+   * Tier-2 tokens only, never `--palette-*`: a hook that names a palette bypasses the semantic layer,
+   * so the mode-aware substitution has to happen through semantic tokens.
    */
   .sk-button[data-variant="soft"] {
-    --sk-button-border-color: var(--color-border-subtle);
-  }
-
-  .sk-button:not(:disabled):not([aria-disabled="true"])[data-variant="soft"]:is([data-tone="accent"], [data-tone="danger"]) {
-    --sk-button-bg: color-mix(in oklab, var(--sk-button-accent) 14%, var(--color-bg-surface));
-    --sk-button-fg: var(--sk-button-ink);
-    --sk-button-border-color: color-mix(in oklab, var(--sk-button-accent) 28%, transparent);
-  }
-
-  /*
-   * TRANSLUCENT. Soft, but for an UNKNOWN surface behind: over media, over a coloured card. A
-   * semi-transparent fill that blends with whatever it sits on rather than layering a panel over it.
-   *
-   * Both halves read TIER-2 tokens, never `--palette-*`. A hook that names a palette bypasses the
-   * semantic layer, so the mode-aware substitution has to happen through semantic tokens.
-   */
-  .sk-button[data-variant="translucent"] {
     --sk-button-bg: light-dark(
-      color-mix(in oklab, var(--color-bg-surface-sunken) 45%, transparent),
-      color-mix(in oklab, var(--color-action-neutral) 36%, transparent)
+      color-mix(in oklab, var(--color-bg-surface-sunken) 60%, transparent),
+      color-mix(in oklab, var(--color-action-neutral) 42%, transparent)
     );
     --sk-button-fg: var(--color-text-primary);
     --sk-button-border-color: light-dark(
-      color-mix(in oklab, var(--color-border-subtle) 50%, transparent),
-      color-mix(in oklab, var(--color-border-subtle) 60%, transparent)
+      color-mix(in oklab, var(--color-border-subtle) 60%, transparent),
+      color-mix(in oklab, var(--color-border-subtle) 70%, transparent)
     );
   }
 
-  .sk-button:not(:disabled):not([aria-disabled="true"])[data-variant="translucent"]:is([data-tone="accent"], [data-tone="danger"]) {
+  .sk-button:not(:disabled):not([aria-disabled="true"])[data-variant="soft"]:is([data-tone="accent"], [data-tone="danger"]) {
+    --sk-button-bg: color-mix(in oklab, var(--sk-button-accent) 14%, transparent);
     --sk-button-fg: var(--sk-button-ink);
+    --sk-button-border-color: color-mix(in oklab, var(--sk-button-accent) 28%, transparent);
   }
 
   /*
@@ -352,8 +341,19 @@
     translate: 0 0;
   }
 
+  /* SOFT: a shorter key, cast in see-through shadow, so the depth reads over any surface as the
+   * fill does. */
   .sk-button[data-appearance="tactile"][data-variant="soft"] {
     --sk-button-depth: 4px;
+    box-shadow:
+      0 var(--sk-button-depth) 0 light-dark(
+        color-mix(in oklab, var(--color-border-subtle) 56%, transparent),
+        color-mix(in oklab, var(--color-action-neutral) 48%, transparent)
+      ),
+      0 calc(var(--sk-button-depth) + 1px) 4px light-dark(
+        color-mix(in oklab, var(--color-text-primary) 14%, transparent),
+        color-mix(in oklab, var(--color-bg-surface-sunken) 44%, transparent)
+      );
   }
 
   .sk-button[data-appearance="tactile"][data-variant="ghost"] {
@@ -368,17 +368,7 @@
       0 calc(var(--sk-button-depth) + 1px) 3px color-mix(in oklab, currentColor 10%, transparent);
   }
 
-  .sk-button[data-appearance="tactile"][data-variant="translucent"] {
-    box-shadow:
-      0 var(--sk-button-depth) 0 light-dark(
-        color-mix(in oklab, var(--color-border-subtle) 56%, transparent),
-        color-mix(in oklab, var(--color-action-neutral) 48%, transparent)
-      ),
-      0 calc(var(--sk-button-depth) + 1px) 4px light-dark(
-        color-mix(in oklab, var(--color-text-primary) 14%, transparent),
-        color-mix(in oklab, var(--color-bg-surface-sunken) 44%, transparent)
-      );
-  }
+
 
   @media (any-hover: hover) {
     .sk-button[data-appearance="tactile"]:hover:not(:disabled):not([aria-disabled="true"]) {
@@ -459,7 +449,7 @@
    * solid accent button made it lighter than its unpressed self, which reads as released. Matched
    * by absence for the same reason the solid rules above are; `solid` is the default nobody writes.
    */
-  .sk-button:not(:disabled):not([aria-disabled="true"]):not([data-variant="soft"], [data-variant="ghost"], [data-variant="translucent"])[aria-pressed="true"]:is(
+  .sk-button:not(:disabled):not([aria-disabled="true"]):not([data-variant="soft"], [data-variant="ghost"])[aria-pressed="true"]:is(
       [data-tone="accent"],
       [data-tone="danger"]
     ) {
@@ -500,17 +490,7 @@
       0 calc(var(--sk-button-depth) + 1px) 3px color-mix(in oklab, currentColor 10%, transparent);
   }
 
-  .sk-button[data-appearance="tactile"][data-variant="translucent"] {
-    box-shadow:
-      0 var(--sk-button-depth) 0 light-dark(
-        color-mix(in oklab, var(--color-border-subtle) 56%, transparent),
-        color-mix(in oklab, var(--color-action-neutral) 48%, transparent)
-      ),
-      0 calc(var(--sk-button-depth) + 1px) 4px light-dark(
-        color-mix(in oklab, var(--color-text-primary) 14%, transparent),
-        color-mix(in oklab, var(--color-bg-surface-sunken) 44%, transparent)
-      );
-  }
+
 
   @media (any-hover: hover) {
     .sk-button[data-appearance="tactile"]:hover:not(:disabled):not([aria-disabled="true"]) {
@@ -526,18 +506,6 @@
       translate: 0 calc(var(--sk-button-depth) * 0.18);
     }
 
-    .sk-button[data-appearance="tactile"][data-variant="soft"]:hover:not(:disabled):not([aria-disabled="true"]) {
-      box-shadow:
-        0 calc(var(--sk-button-depth) * 0.8) 0 light-dark(
-          color-mix(in oklab, var(--sk-button-bg) 82%, var(--sk-button-ink)),
-          color-mix(in oklab, var(--sk-button-bg) 76%, var(--color-bg-surface-sunken))
-        ),
-        0 calc(var(--sk-button-depth) * 0.8 + 1px) 3px light-dark(
-          color-mix(in oklab, var(--color-text-primary) 11%, transparent),
-          color-mix(in oklab, var(--color-bg-surface-sunken) 32%, transparent)
-        );
-      translate: 0 calc(var(--sk-button-depth) * 0.2);
-    }
 
     .sk-button[data-appearance="tactile"][data-variant="ghost"]:hover:not(:disabled):not([aria-disabled="true"]) {
       /* Ghost is already almost transparent, so changing its cast shadow on hover reads as the
@@ -550,7 +518,7 @@
       translate: 0 calc(var(--sk-button-depth) * 0.12);
     }
 
-    .sk-button[data-appearance="tactile"][data-variant="translucent"]:hover:not(:disabled):not([aria-disabled="true"]) {
+    .sk-button[data-appearance="tactile"][data-variant="soft"]:hover:not(:disabled):not([aria-disabled="true"]) {
       box-shadow:
         0 calc(var(--sk-button-depth) * 0.82) 0 light-dark(
           color-mix(in oklab, var(--color-border-subtle) 54%, transparent),
@@ -574,15 +542,6 @@
     scale: 1;
   }
 
-  .sk-button[data-appearance="tactile"][data-variant="soft"]:active:not(:disabled):not([aria-disabled="true"]) {
-    box-shadow:
-      0 calc(var(--sk-button-depth) * 0.14) 0 light-dark(
-        color-mix(in oklab, var(--sk-button-bg) 82%, var(--sk-button-ink)),
-        color-mix(in oklab, var(--sk-button-bg) 76%, var(--color-bg-surface-sunken))
-      );
-    translate: 0 calc(var(--sk-button-depth) * 0.86);
-    scale: 1;
-  }
 
   .sk-button[data-appearance="tactile"][data-variant="ghost"]:active:not(:disabled):not([aria-disabled="true"]) {
     box-shadow: 0 calc(var(--sk-button-depth) * 0.14) 0 color-mix(in oklab, currentColor 16%, transparent);
@@ -590,7 +549,7 @@
     scale: 1;
   }
 
-  .sk-button[data-appearance="tactile"][data-variant="translucent"]:active:not(:disabled):not([aria-disabled="true"]) {
+  .sk-button[data-appearance="tactile"][data-variant="soft"]:active:not(:disabled):not([aria-disabled="true"]) {
     box-shadow:
       0 calc(var(--sk-button-depth) * 0.14) 0 light-dark(
         color-mix(in oklab, var(--color-border-subtle) 52%, transparent),
@@ -714,12 +673,6 @@
     --sk-button-brutalist-offset-block: 2px;
   }
 
-  /* TRANSLUCENT keeps its see-through face; only the construction is added, in the same black and a
-   * shorter offset. */
-  .sk-button[data-appearance="brutalist"][data-variant="translucent"] {
-    --sk-button-brutalist-offset-inline: 4px;
-    --sk-button-brutalist-offset-block: 4px;
-  }
 
   /* Hover reaches a notch further: the same hard offset, one pixel longer. No glow, no lift. */
   @media (any-hover: hover) {
@@ -749,9 +702,9 @@
    *   MATERIAL (only while the system's `--frost-on` switch is on: semantic/_frost.scss)
    *                      the same face at `--frost-opacity`, over a blurred and saturated backdrop.
    *
-   * FROSTED IS NOT `variant="translucent"`. That variant is emphasis: a paint that lets an unknown
-   * surface show through. Frosted is how the material processes that surface, and it composes with
-   * every variant, translucent included: see the translucent rule below for how the two resolve.
+   * FROSTED IS NOT `variant="soft"`. That variant is emphasis: a paint that lets an unknown surface
+   * show through. Frosted is how the material processes that surface, and it composes with every
+   * variant, soft included: see the soft rule below for how the two resolve.
    *
    * No new tone, no new geometry: the face is whatever `--sk-button-bg` the variant and tone
    * resolved, the edge is the button's own ink, and radius/density/size are never touched, so the
@@ -761,7 +714,7 @@
    * THE OPACITIES ARE A CONTRAST FLOOR, NOT TASTE. A face over an unknown backdrop has to keep its
    * label legible over the worst one (black under a light face, white under a dark one);
    * button-frosted.spec.ts measures EVERY variant and tone at 4.5:1 over both, in both modes, at rest
-   * and pressed. That includes ghost and translucent, which promise nothing in plain: frosted gives
+   * and pressed. That includes ghost and soft, which promise nothing in plain: frosted gives
    * them a real sheet, so frosted is the one appearance whose label is legible over anything.
    *
    * All internal (`--frost-*`, not hooks): the material is not tunable. Opacity, blur, density, floor
@@ -771,7 +724,7 @@
     --frost-opacity: 84%;
     --frost-blur: 16px;
     /* What the material is tinted with, and the opaque baseline. The resolved face by default; ghost
-     * and translucent swap it (below). */
+     * and soft swap it (below). */
     --frost-face: var(--sk-button-bg);
     /* Added by hover/active. A minimum opacity raised by pressed/disabled. */
     --frost-density: 0%;
@@ -797,9 +750,19 @@
 
   /* SOLID is the base above: the densest face, the tone at full strength, the backdrop a trace. */
 
-  /* SOFT recedes by being thinner, over the same material. */
+  /* SOFT recedes by being thinner, over the same material. Its plain paint is see-through, so the
+   * material is tinted with that paint laid over the page's surface instead, and carries the same
+   * floor as ghost: a neutral label from about 66%. */
   .sk-button[data-appearance="frosted"][data-variant="soft"] {
-    --frost-opacity: 76%;
+    --frost-opacity: 68%;
+    --frost-face: light-dark(
+      var(--color-bg-surface-sunken),
+      color-mix(in oklab, var(--color-action-neutral) 36%, var(--color-bg-surface))
+    );
+  }
+
+  .sk-button[data-appearance="frosted"][data-variant="soft"]:is([data-tone="accent"], [data-tone="danger"]) {
+    --frost-face: color-mix(in oklab, var(--sk-button-accent) 14%, var(--color-bg-surface));
   }
 
   /*
@@ -809,10 +772,7 @@
    * lets through a trace of the backdrop and the material reads mostly in its edge, highlight and
    * blurred tint. That is the honest cost of promising a legible label over an unknown surface.
    */
-  .sk-button[data-appearance="frosted"]:is([data-tone="accent"], [data-tone="danger"]):not(
-      [data-variant="ghost"],
-      [data-variant="translucent"]
-    ) {
+  .sk-button[data-appearance="frosted"]:is([data-tone="accent"], [data-tone="danger"]):not([data-variant="ghost"]) {
     --frost-opacity: 94%;
   }
 
@@ -830,18 +790,8 @@
     --sk-button-wash: none;
   }
 
-  /* TRANSLUCENT keeps its variant's neutral tint, made opaque (the translucent paint laid over the
-   * page's surface) so the material can carry the same floor as ghost: a neutral label from about 66%,
-   * a toned one from about 90%. It still reads as translucent's grey, a step denser than ghost. */
-  .sk-button[data-appearance="frosted"][data-variant="translucent"] {
-    --frost-opacity: 68%;
-    --frost-face: light-dark(
-      var(--color-bg-surface-sunken),
-      color-mix(in oklab, var(--color-action-neutral) 36%, var(--color-bg-surface))
-    );
-  }
 
-  .sk-button[data-appearance="frosted"]:is([data-variant="ghost"], [data-variant="translucent"]):is(
+  .sk-button[data-appearance="frosted"][data-variant="ghost"]:is(
       [data-tone="accent"],
       [data-tone="danger"]
     ) {
@@ -910,7 +860,7 @@
    * WELDING. A button glued to a neighbor on one (or both) sides loses that edge's own rounding
    * AND that edge's own border color, a THIRD axis again, orthogonal to variant/size/icon-only:
    * any button can be welded. The border matters as much as the radius: `neutral`/`subtle`/
-   * `translucent` all paint a real border, and leaving it on the welded edge sits a second line
+   * `soft` all paint a real border, and leaving it on the welded edge sits a second line
    * right next to whatever the neighbor paints on ITS OWN touching edge. Two competing lines at
    * one seam instead of one. `primary`/`danger`/`ghost` never showed this (their own border is
    * already transparent), which is exactly why it went unnoticed until a `neutral`-on-`neutral`
@@ -1114,7 +1064,7 @@
      * palette has one "this is the emphasized thing" pair (Highlight/HighlightText) and no separate
      * destructive colour, so accent and danger land on the same one rather than inventing a
      * difference the user's own palette does not have. */
-    .sk-button:not(:disabled):not([aria-disabled="true"]):not([data-variant="soft"], [data-variant="ghost"], [data-variant="translucent"]):is(
+    .sk-button:not(:disabled):not([aria-disabled="true"]):not([data-variant="soft"], [data-variant="ghost"]):is(
         [data-tone="accent"],
         [data-tone="danger"]
       ) {

@@ -202,7 +202,7 @@ const contentTrack = {
 const toggleAttrs = {
   type: "button",
   "data-appearance": "plain",
-  "data-variant": "translucent",
+  "data-variant": "soft",
   "data-tone": "neutral",
   "data-size": "sm",
   "data-icon-only": "",

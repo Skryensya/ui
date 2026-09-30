@@ -100,12 +100,12 @@ export const calloutContract = {
          * secondary way forward beside a message, never to plant a second call to action competing
          * with the page's real one. A Callout that wants to look urgent already has its own `tone`.
          *
-         * It used to narrow `variant` to `translucent`/`danger`, which was the same rule said in the
-         * vocabulary Button had at the time: one enum carried both how loud a button is and what it
-         * means, so "no competing CTA" could only be spelled by banning the accent FILL. Now that
+         * It used to narrow `variant` to `translucent`/`danger` (translucent is now `soft`), which was
+         * the same rule said in the vocabulary Button had at the time: one enum carried both how loud
+         * a button is and what it means, so "no competing CTA" could only be spelled by banning the accent FILL. Now that
          * the two are separate axes, the rule is stated as what it always was about, and the
          * emphasis is left open: a destructive action here can be `solid` so it stands out, and a
-         * neutral one can be `translucent` so it blends into the callout's own colour.
+         * neutral one can be `soft` so it blends into the callout's own colour.
          */
         actions: {
           accepts: "signature",

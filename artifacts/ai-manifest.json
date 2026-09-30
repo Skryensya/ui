@@ -1279,6 +1279,19 @@
         "date": null,
         "entries": [
           {
+            "date": "2026-09-29",
+            "en": {
+              "body": "<code>variant</code> is now <code>solid</code>, <code>soft</code> and <code>ghost</code>. <code>soft</code> takes <code>translucent</code>'s see-through paint: on canvas it reads as a quiet grey, over a coloured card or a photo it blends instead of covering. Toned, it is a wash of its accent mixed into transparent. Where you wrote <code>variant=\"translucent\"</code>, write <code>variant=\"soft\"</code>.",
+              "title": "translucent folds into a better soft"
+            },
+            "es": {
+              "body": "<code>variant</code> queda en <code>solid</code>, <code>soft</code> y <code>ghost</code>. <code>soft</code> toma la pintura semitransparente de <code>translucent</code>: sobre el lienzo se lee como un gris suave y sobre un fondo de color o una foto se funde en vez de tapar. Con tono es un lavado de su acento mezclado con transparente. Donde decía <code>variant=\"translucent\"</code>, escribe <code>variant=\"soft\"</code>.",
+              "title": "translucent se funde en un soft mejor"
+            },
+            "kind": "breaking",
+            "target": "variant"
+          },
+          {
             "date": "2026-09-27",
             "en": {
               "body": "With <code>appearance=\"frosted\"</code>, ghost and translucent are no longer nearly clear: they carry a sheet of the surface (65% neutral, 68% translucent, 90% toned) so the label holds 4.5:1 over any backdrop, and pressed raises its floor to 96%. Without the material, their baseline is that face, opaque.",
@@ -16747,8 +16760,7 @@
           "values": [
             "solid",
             "soft",
-            "ghost",
-            "translucent"
+            "ghost"
           ]
         },
         "weldEnd": {
@@ -16793,7 +16805,7 @@
             "it is THE action of the view: `tone: accent`, and one per region",
             "a delete inside a row of actions: `variant: ghost` + `tone: danger`, which reads as destructive without becoming the confirm button",
             "the confirm that delete opens: `variant: solid` + `tone: danger`, one per dialog",
-            "it sits on media or on a surface of unknown color: `variant: translucent`",
+            "it sits on media or on a surface of unknown color: `variant: soft`",
             "the button stays on: `pressed`, a real toggle (bold in a toolbar, a vote, play/pause). Absent when it is not a toggle; `false` when it is one and it is off"
           ]
         },
@@ -33301,7 +33313,7 @@
                   "data-size": "sm",
                   "data-sk-button": "",
                   "data-tone": "neutral",
-                  "data-variant": "translucent",
+                  "data-variant": "soft",
                   "type": "button"
                 },
                 "children": [
@@ -33435,7 +33447,7 @@
                   "data-size": "sm",
                   "data-sk-button": "",
                   "data-tone": "neutral",
-                  "data-variant": "translucent",
+                  "data-variant": "soft",
                   "type": "button"
                 },
                 "children": [
@@ -55070,7 +55082,7 @@
     "working": "0.0.1"
   },
   "schemaVersion": "2.3",
-  "sourceHash": "924d221f40f4e382",
+  "sourceHash": "1b286607eecfc738",
   "vocabulary": {
     "a11y": "When `when` holds, one of `requiresOneOf` must be given: an option, a raw attribute, a filled slot, or a child signature by name.",
     "atLeastOneOf": "At least one member of each group counts: a filled slot, a boolean option set to true, or an option other than its default.",

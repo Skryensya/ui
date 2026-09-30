@@ -18,6 +18,6 @@ export const Default: StoryObj = treeStory(demos.splitButtonTree);
 export const Small: StoryObj = treeStory(demos.splitButtonSmallTree);
 export const MenuFirst: StoryObj = treeStory(demos.splitButtonMenuFirstTree);
 export const Subtle: StoryObj = treeStory(demos.splitButtonSubtleTree);
-export const Translucent: StoryObj = treeStory(demos.splitButtonTranslucentTree);
+export const OverMedia: StoryObj = treeStory(demos.splitButtonOverMediaTree);
 export const Ghost: StoryObj = treeStory(demos.splitButtonGhostTree);
 export const Danger: StoryObj = treeStory(demos.splitButtonDangerTree);

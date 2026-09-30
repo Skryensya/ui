@@ -642,7 +642,7 @@ const compactCount = (n) =>
           value="418.2K"
         />
       </Stack>
-      <Button size="sm" variant="translucent">
+      <Button size="sm" variant="soft">
         View Analytics
       </Button>
     </Inline>
@@ -713,7 +713,7 @@ export const chartAnalyticsCardTree = (t: Translate): UsageTree => ({
           {
             contract: "button",
             signature: "Button.action",
-            options: { variant: "translucent", size: "sm" },
+            options: { variant: "soft", size: "sm" },
             children: t("demo.charts.analytics.button"),
           },
         ],

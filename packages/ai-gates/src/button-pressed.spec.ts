@@ -20,7 +20,7 @@ const CELLS = [
   { variant: "soft", tone: "neutral" },
   { variant: "solid", tone: "accent" },
   { variant: "solid", tone: "danger" },
-  { variant: "translucent", tone: "neutral" },
+  { variant: "soft", tone: "accent" },
 ] as const;
 
 test("a pressed button differs from an unpressed one, in every emphasis and tone", async ({ page }) => {

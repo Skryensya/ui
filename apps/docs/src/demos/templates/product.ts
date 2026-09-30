@@ -11,7 +11,7 @@ import { blankImage } from "../../examples/card-data";
  *     and the physical travel says "this did something" before the cart count does;
  *   - "Save" is `variant: "soft"`: a real action, but a secondary one, so it gets a tinted face
  *     instead of competing with the solid accent beside it;
- *   - "View all photos" sits ON the photo, so it is `variant: "translucent"`, the one variant made
+ *   - "View all photos" sits ON the photo, so it is `variant: "soft"`, the one variant made
  *     for a surface whose colour nobody knows in advance. It lives in the frame's `MediaCaption`,
  *     with a `MediaGradient` under it so it keeps its contrast whatever the photo turns out to be;
  *   - the long-form detail is `Tabs` with `variant: "hanging"`. Three panels of different content
@@ -90,7 +90,7 @@ export const productTree = (t: Translate, locale: "es" | "en"): UsageTree => {
                               {
                                 contract: "button",
                                 signature: "Button.action",
-                                options: { variant: "translucent", size: "sm" },
+                                options: { variant: "soft", size: "sm" },
                                 children: [
                                   {
                                     contract: "icon",

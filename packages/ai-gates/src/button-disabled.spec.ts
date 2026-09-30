@@ -13,14 +13,15 @@ import { waitForStage } from "./fixtures.js";
  * most specific argument, so `.sk-button:not([data-variant=…]):is([data-tone=…])` resolves at
  * (0,3,0) while `.sk-button:disabled` is a plain (0,2,0). A disabled `solid`/`danger` button painted
  * the full danger red on white ink - pixel-identical to the enabled "Delete project" beside it - and
- * the only thing distinguishing them was the cursor. `soft` and `translucent` were wrong in the same
- * direction; `ghost` was the one cell that happened to come out right, which is what kept it hidden.
+ * the only thing distinguishing them was the cursor. `soft` (and `translucent`, since merged into
+ * it) were wrong in the same direction; `ghost` was the one cell that happened to come out right,
+ * which is what kept it hidden.
  *
  * The assertion is deliberately "every cell paints what NEUTRAL disabled paints" rather than "the
  * disabled one differs from the enabled one". Differing is too weak: a cell that greys its fill but
  * keeps danger-red ink (translucent did exactly that) differs from enabled and is still wrong.
  */
-const VARIANTS = ["solid", "soft", "ghost", "translucent"] as const;
+const VARIANTS = ["solid", "soft", "ghost"] as const;
 const TONES = ["neutral", "accent", "danger"] as const;
 
 type Paint = { bg: string; fg: string; border: string };

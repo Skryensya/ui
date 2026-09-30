@@ -38,7 +38,7 @@ export const calloutAnatomyTree = (t: Translate): UsageTree => ({
         actions: {
           contract: "button",
           signature: "Button.action",
-          options: { variant: "translucent" },
+          options: { variant: "soft" },
           children: t("anatomy.action"),
         },
       },
@@ -135,7 +135,7 @@ export const calloutWarningTree = (t: Translate): UsageTree => ({
   children: t("demo.callout.warning.body"),
 });
 
-/** A recovery action as a Button: `translucent`, which blends with the callout's colored background. */
+/** A recovery action as a Button: `soft`, which blends with the callout's colored background. */
 export const calloutSuccessTree = (t: Translate): UsageTree => ({
   contract: "callout",
   signature: "Callout",
@@ -145,7 +145,7 @@ export const calloutSuccessTree = (t: Translate): UsageTree => ({
     actions: {
       contract: "button",
       signature: "Button.action",
-      options: { variant: "translucent" },
+      options: { variant: "soft" },
       children: t("demo.callout.success.action"),
     },
   },
