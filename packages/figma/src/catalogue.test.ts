@@ -519,3 +519,12 @@ describe("BadgeHolder", () => {
     expect(badge.kind === "frame" && manifest.styles.boxes[badge.box].absolute).toEqual({ x: 0, y: 0, fromRight: true, shift: { x: 0.35, y: -0.35 } });
   });
 });
+
+describe("OtpInput", () => {
+  it("draws its label over four segments, each holding the placeholder", () => {
+    const set = manifest.components.find((c): c is ComponentSet => c.kind === "component-set" && c.id === "otp-input")!;
+    const [label, control] = manifest.styles.layers[set.cells[0].layers];
+    expect(label.slot).toBe("label");
+    expect(control.kind === "frame" && control.layers.map((l) => (l.kind === "frame" ? l.layers[0]?.slot : undefined))).toEqual(["placeholder", "placeholder", "placeholder", "placeholder"]);
+  });
+});
