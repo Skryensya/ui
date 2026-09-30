@@ -53,6 +53,11 @@ minimumReleaseAge: 43200
 # the cooldown again. Verified by removing them and reinstalling: nothing changes today. They are
 # insurance for the next `pnpm install` that does have to resolve, not a patch for something broken now.
 minimumReleaseAgeExclude:
+  # DELETE AFTER 2026-10-04, when undici 7.29.1 (2026-09-04) is 30 days old.
+  # `undici < 7.29.1` carries two HIGH advisories (a WebSocket subprotocol denial of service and a
+  # TLS validation bypass in BalancedPool), reached through apps/docs > astro > unifont. The fix is
+  # the override in package.json; this lets it resolve inside the window.
+  - "undici"
   # DELETE WHEN astro 7.2.x IS 30 DAYS OLD.
   # `astro < 7.2.8` carries a CRITICAL advisory (remote code execution through AVIF image
   # optimization), which is the one case this quarantine must not be allowed to sit on. Getting onto
