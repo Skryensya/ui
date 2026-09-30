@@ -32098,6 +32098,43 @@
         "title": "holding"
       },
       "visualHash": "7197e324dd457be7"
+    },
+    {
+      "axes": [],
+      "cells": [
+        {
+          "box": "672cd06398be5f4b",
+          "hash": "00860e9bc94557d1",
+          "id": "strong/",
+          "key": "",
+          "layers": "be1f7fee120b86b3",
+          "props": {},
+          "surface": "fa0b643878e9242d"
+        }
+      ],
+      "contractHash": "f0953c37d22eda18",
+      "defaultCell": "",
+      "grid": {
+        "columns": [],
+        "rows": []
+      },
+      "id": "strong",
+      "interactions": [],
+      "kind": "component-set",
+      "name": "Strong",
+      "page": "skryensya",
+      "properties": [
+        {
+          "default": "Important",
+          "name": "children",
+          "type": "TEXT"
+        }
+      ],
+      "showcase": {
+        "base": {},
+        "columns": []
+      },
+      "visualHash": "3b8b1d5ea3c3b5b4"
     }
   ],
   "diagnostics": [
@@ -32331,6 +32368,11 @@
           "linkTone"
         ]
       },
+      "strong": {
+        "excluded": [],
+        "nonVisual": [],
+        "visual": []
+      },
       "tag": {
         "excluded": [
           "removable"
@@ -32377,8 +32419,8 @@
       "variables": 466
     },
     "variants": {
-      "components": 20,
-      "componentSets": 19,
+      "components": 21,
+      "componentSets": 20,
       "naiveAllOptions": {
         "avatar": 8,
         "badge:Badge": 20,
@@ -32388,6 +32430,7 @@
         "heading": 156,
         "kbd": 4,
         "link": 2,
+        "strong": 1,
         "tag": 20,
         "text": 288
       },
@@ -32400,6 +32443,7 @@
         "heading": 13,
         "kbd": 4,
         "link": 2,
+        "strong": 1,
         "tag": 10,
         "text": 48
       },
@@ -32479,13 +32523,17 @@
         {
           "set": "code",
           "variants": 1
+        },
+        {
+          "set": "strong",
+          "variants": 1
         }
       ],
-      "variantsTotal": 2035
+      "variantsTotal": 2036
     }
   },
   "schemaVersion": 1,
-  "sourceHash": "bc1849aec0cab4d2",
+  "sourceHash": "39bab6ca57430955",
   "stage": {
     "background": {
       "variable": "--color-bg-surface"
@@ -42960,6 +43008,32 @@
           "kind": "icon",
           "slot": "post",
           "visibleProperty": "post"
+        }
+      ],
+      "be1f7fee120b86b3": [
+        {
+          "kind": "text",
+          "slot": "children",
+          "text": {
+            "fill": {
+              "color": {
+                "variable": "--color-text-primary"
+              },
+              "type": "SOLID"
+            },
+            "fontFamily": {
+              "variable": "--font-family-body"
+            },
+            "fontSize": {
+              "variable": "--font-size-body"
+            },
+            "fontWeight": {
+              "expression": "700",
+              "value": 700
+            },
+            "lineHeight": 150
+          },
+          "textProperty": "children"
         }
       ],
       "c288c90213ccc9e9": [
