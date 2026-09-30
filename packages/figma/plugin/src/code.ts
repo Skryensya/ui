@@ -682,8 +682,10 @@ async function labelStyle(ctx: Ctx, weight?: number, size?: number): Promise<Lab
 const labelId = (parent: FrameNode, key: string) => `${getTag(parent, "id")}/label/${key}`;
 
 /** A text of ours inside `parent`, found by its label key. Writes only what differs. */
-function ensureLabel(ctx: Ctx, parent: FrameNode, key: string, chars: string, style: Label): TextNode {
+function ensureLabel(ctx: Ctx, parent: FrameNode, key: string, given: string | undefined, style: Label): TextNode {
   const { run } = ctx;
+  // Figma refuses an undefined text outright; a label with nothing to say is empty instead.
+  const chars = given ?? "";
   let text = parent.children.find((n): n is TextNode => n.type === "TEXT" && getTag(n, "label") === key);
   if (!text) {
     run.write(() => {
@@ -1318,12 +1320,13 @@ async function planLayout(ctx: Ctx, frame: FrameNode, spec: M.ComponentSet, cell
   const setY = setTop();
   move(run, title, FRAME_PAD, FRAME_PAD);
   rowLabels.forEach((text, r) => move(run, text, FRAME_PAD + 16, Math.round(setY + rowY[r] + (cellH - text.height) / 2)));
-  cols.forEach((col, i) => {
+  // A set with no column axes (Quote, Separator) has one unnamed column: nothing to label over it.
+  if (spec.grid.columns.length) cols.forEach((col, i) => {
     const inner = Object.entries(col).filter(([axis]) => axis !== outerCol);
     const key = `col:${Object.values(col).join(",")}`;
     keep.add(key);
     move(run, ensureLabel(ctx, frame, key, inner.map(([a, v]) => word(a, v)).join(" · "), style), setX + colX[i], setY - lineH - 8);
-    if (i === 0 || cols[i - 1][outerCol] !== col[outerCol]) {
+    if (outerCol && (i === 0 || cols[i - 1][outerCol] !== col[outerCol])) {
       const groupKey = `colgroup:${col[outerCol]}`;
       keep.add(groupKey);
       move(run, ensureLabel(ctx, frame, groupKey, word(outerCol, col[outerCol]), strong), setX + colX[i], setY - 2 * (lineH + 8));
