@@ -199,3 +199,14 @@ describe("Accordion", () => {
     expect(second.kind === "frame" && second.layers.map((l) => l.slot)).toEqual(["trigger"]);
   });
 });
+
+describe("Pagination", () => {
+  it("draws the window around the current page, with the template's own arrows", () => {
+    const set = manifest.components.find((c): c is ComponentSet => c.kind === "component-set" && c.id === "pagination/plain")!;
+    const layers = manifest.styles.layers[set.cells[0].layers];
+    const glyphs = layers.flatMap((l) => (l.kind === "frame" ? l.layers.flatMap((i) => (i.kind === "icon" ? [i.default] : [])) : []));
+    expect(glyphs).toEqual(["chevron-left", "chevron-right"]);
+    const pages = layers.flatMap((l) => (l.kind === "frame" ? l.layers.flatMap((t) => (t.kind === "text" ? [t.characters] : [])) : []));
+    expect(pages).toEqual(["1", "2", "3", "4", "…", "10"]);
+  });
+});

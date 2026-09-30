@@ -121,7 +121,9 @@ function mounted(markup: string, iconContract: ComponentContract): string {
   // vanilla mount writes it: a template's fixed icon (BackToTop's chevron) is sized that way.
   return markup.replace(new RegExp(`<span[^>]*\\b${attr}="[^"]*"[^>]*></span>`, "g"), (span) => {
     const size = /data-sk-icon-size="([^"]*)"/.exec(span)?.[1];
-    return `<svg class="${root}"${size ? ` data-size="${size}"` : ""}></svg>`;
+    // The glyph it names travels too, as `data-glyph`: a template's own arrow is drawn as that arrow.
+    const glyph = new RegExp(`\\b${attr}="([^"]*)"`).exec(span)?.[1];
+    return `<svg class="${root}"${size ? ` data-size="${size}"` : ""}${glyph ? ` data-glyph="${glyph}"` : ""}></svg>`;
   });
 }
 
@@ -331,7 +333,8 @@ async function compileRealization(authored: Realization, shared: Shared): Promis
   // A class the tree uses that none of those sheets defines comes from the base bundle
   // (`sk-interactive` is the state layer's): find the sheet that does, and read it first.
   // A template's own icon (a part, not a slot) is in no tree, so its box's sheet is asked for here.
-  const iconClass = realization.parts && Object.keys(realization.parts).length ? [iconContract.parts.root] : [];
+  // Drawn nested, any baked icon in the markup (Pagination's arrows) is drawn, so its sheet is read too.
+  const iconClass = (realization.parts && Object.keys(realization.parts).length) || realization.nested ? [iconContract.parts.root] : [];
   for (const cls of [...sheetsForTree(sample).classes, ...iconClass]) {
     // The sheet that declares the class on its own (`.sk-interactive {`), not one that restyles it.
     const defines = new RegExp(`(^|[{};,]\\s*)\\.${cls}\\s*\\{`, "m");
@@ -655,7 +658,9 @@ async function compileRealization(authored: Realization, shared: Shared): Promis
           if (child.classList.contains(iconContract.parts.root)) {
             const part = partOf(el);
             const slot = slotOfPart(part) ?? part ?? "icon";
-            const named = realization.slots[slot]?.icon ?? (part ? drawnParts[part]?.icon : undefined) ?? DEFAULT_ICON;
+            const baked = child.getAttribute("data-glyph");
+            const named =
+              realization.slots[slot]?.icon ?? (part ? drawnParts[part]?.icon : undefined) ?? (baked && vocabulary.includes(baked) ? baked : DEFAULT_ICON);
             if (!vocabulary.includes(named)) throw new Error(`icon ${slot}: ${named} is not a stable icon name`);
             const optional = realization.slots[slot] ? !requiredSlot(slot) : false;
             out.push({ kind: "icon", slot, ...(optional ? { visibleProperty: slot } : {}), default: named, icon: iconOf(ctx(child)) });
