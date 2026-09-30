@@ -33,6 +33,7 @@
 <div class="row">
   <button class="primary" id="sync">Sync Button</button>
   <button id="dry">Dry run</button>
+  <button id="stop" hidden>Stop</button>
   <button id="copy" hidden>Copy report</button>
   <span class="spacer"></span>
   <span class="muted" id="source">…</span>
@@ -47,7 +48,15 @@
 <script>
   const $ = (id) => document.getElementById(id);
   const buttons = [$("sync"), $("dry")];
-  const busy = (on) => buttons.forEach((b) => (b.disabled = on));
+  let stopping = false;
+  const busy = (on) => {
+    stopping = false;
+    buttons.forEach((b) => (b.disabled = on));
+    // Stop exists only while something runs: idle, there is nothing for it to act on.
+    $("stop").hidden = !on;
+    $("stop").disabled = false;
+    $("stop").textContent = "Stop";
+  };
   const fmt = (ms) => { const s = Math.round(ms / 1000); return `${Math.floor(s / 60)}:${String(s % 60).padStart(2, "0")}`; };
   const MARK = { pending: "○", running: "◐", done: "✓" };
 
@@ -75,6 +84,14 @@
   };
   $("sync").onclick = () => start("sync");
   $("dry").onclick = () => start("dry-run");
+  // The run finishes the unit it is on (a variable, an icon, a variant) and stops at the next one.
+  $("stop").onclick = () => {
+    stopping = true;
+    $("stop").disabled = true;
+    $("stop").textContent = "Stopping…";
+    $("status").textContent = "Stopping after the current item…";
+    parent.postMessage({ pluginMessage: { type: "stop" } }, "*");
+  };
 
   function renderPhases(phases) {
     $("phases").innerHTML = "";
@@ -98,7 +115,8 @@
     const running = m.phases.find((p) => p.state === "running");
     $("overall").hidden = false;
     $("overall").firstElementChild.style.width = `${total ? (100 * done) / total : 0}%`;
-    $("status").textContent = `${m.apply ? "Syncing" : "Dry run"}${running ? `: ${running.label}` : "…"}`;
+    // A tick that lands after Stop was pressed does not take the status back to "Syncing".
+    if (!stopping) $("status").textContent = `${m.apply ? "Syncing" : "Dry run"}${running ? `: ${running.label}` : "…"}`;
     // The estimate only once there is a rate worth trusting.
     const rate = done / Math.max(1, m.elapsed);
     const left = done > 20 && m.elapsed > 2000 ? ` · about ${fmt((total - done) / rate)} left` : "";
@@ -125,7 +143,12 @@
       busy(false);
       renderPhases(m.phases);
       $("overall").firstElementChild.style.width = "100%";
-      const verdict = { NOOP: "Already current: nothing written", APPLIED: "Synced", "WOULD CHANGE": "Would change" }[m.outcome];
+      const verdict = {
+        NOOP: "Already current: nothing written",
+        APPLIED: "Synced",
+        "WOULD CHANGE": "Would change",
+        STOPPED: "Stopped: what was written stays, sync again to finish",
+      }[m.outcome];
       $("status").textContent = `${m.apply ? "" : "Dry run: "}${verdict}`;
       const warnings = m.entries.filter((e) => e.action === "WARN").length;
       $("timing").textContent = `${m.writes.toLocaleString()} writes · ${m.seconds}s${warnings ? ` · ${warnings} warning${warnings > 1 ? "s" : ""}` : ""}`;

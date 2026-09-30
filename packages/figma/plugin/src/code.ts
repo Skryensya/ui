@@ -45,6 +45,22 @@ class Run {
   }
 }
 
+/* ── stopping ───────────────────────────────────────────────────────────────────────────────── */
+
+/*
+ * STOP IS CHECKED WHERE THE RUN ALREADY YIELDS, not anywhere in between. A tick comes after a whole
+ * unit (a variable, an icon, a variant): each variant is appended to its set the moment it exists,
+ * so stopping there leaves nothing half-made. What was written stays; the file is not stamped with
+ * the manifest's hash, so the next sync reconciles the rest and reports it.
+ */
+class Stopped extends Error {
+  constructor() {
+    super("stopped");
+  }
+}
+
+let stopRequested = false;
+
 /* ── progress ───────────────────────────────────────────────────────────────────────────────── */
 
 type Phase = { id: string; label: string; total: number; done: number; state: "pending" | "running" | "done"; summary?: string };
@@ -82,6 +98,8 @@ class Progress {
       this.lastYield = now;
       await new Promise((resolve) => setTimeout(resolve, 0));
     }
+    // After the yield: that is when a Stop from the window has had the chance to arrive.
+    if (stopRequested) throw new Stopped();
   }
 
   finish(id: string, summary: string) {
@@ -1459,6 +1477,38 @@ function arrange(run: Run, pages: Map<string, PageNode>, found: Map<string, Scen
 async function reconcile(apply: boolean) {
   const run = new Run(apply);
   const started = Date.now();
+  let progress: Progress | undefined;
+  try {
+    return await reconcileRun(run, apply, started, (p) => (progress = p));
+  } catch (error) {
+    if (!(error instanceof Stopped)) throw error;
+    const running = progress?.phases.find((phase) => phase.state === "running");
+    if (running) {
+      running.state = "done";
+      running.summary = `stopped at ${running.done.toLocaleString()} of ${running.total.toLocaleString()}`;
+    }
+    run.log("WARN", "stopped", `by request${running ? `, during ${running.label}` : ""}; what was written stays, the next sync reconciles the rest`);
+    return report(run, apply, started, progress?.phases ?? [], "STOPPED");
+  }
+}
+
+function report(run: Run, apply: boolean, started: number, phases: Phase[], outcome?: "STOPPED") {
+  const counts: Record<string, number> = {};
+  for (const e of run.entries) counts[e.action] = (counts[e.action] ?? 0) + 1;
+  return {
+    type: "report",
+    apply,
+    outcome: outcome ?? (run.writes === 0 ? "NOOP" : apply ? "APPLIED" : "WOULD CHANGE"),
+    writes: run.writes,
+    sourceHash: manifest.sourceHash,
+    seconds: Math.round((Date.now() - started) / 100) / 10,
+    counts,
+    phases,
+    entries: run.entries,
+  };
+}
+
+async function reconcileRun(run: Run, apply: boolean, started: number, onProgress: (progress: Progress) => void) {
   const iconSpec = manifest.components.find((c): c is M.IconSet => c.kind === "icon-set")!;
   const setSpecs = manifest.components.filter((c): c is M.ComponentSet => c.kind === "component-set");
   const progress = new Progress(apply, [
@@ -1466,6 +1516,7 @@ async function reconcile(apply: boolean) {
     { id: "icons", label: `${iconSpec.name} (${iconSpec.source.replace("@skryensya/icons-", "")})`, total: iconSpec.icons.length },
     ...setSpecs.map((s) => ({ id: s.id, label: s.name, total: s.cells.length })),
   ]);
+  onProgress(progress);
 
   const vars = await syncVariables(run, progress);
   const pages = await ensurePages(run);
@@ -1522,30 +1573,29 @@ async function reconcile(apply: boolean) {
   const landing = pages.get(manifest.pages[0].id);
   if (apply && landing && figma.currentPage !== landing) await figma.setCurrentPageAsync(landing);
 
-  const counts: Record<string, number> = {};
-  for (const e of run.entries) counts[e.action] = (counts[e.action] ?? 0) + 1;
-  const outcome = run.writes === 0 ? "NOOP" : apply ? "APPLIED" : "WOULD CHANGE";
-  return {
-    type: "report",
-    apply,
-    outcome,
-    writes: run.writes,
-    sourceHash: manifest.sourceHash,
-    seconds: Math.round((Date.now() - started) / 100) / 10,
-    counts,
-    phases: progress.phases,
-    entries: run.entries,
-  };
+  return report(run, apply, started, progress.phases);
 }
 
 figma.showUI(__html__, { width: 440, height: 600, themeColors: true });
 figma.ui.postMessage({ type: "ready", sourceHash: manifest.sourceHash });
-figma.ui.onmessage = async (message: { type: "sync" | "dry-run" }) => {
+let running = false;
+figma.ui.onmessage = async (message: { type: "sync" | "dry-run" | "stop" }) => {
+  // Handled while a run is awaiting its next tick: the run is what notices the flag and stops.
+  if (message.type === "stop") {
+    if (running) stopRequested = true;
+    return;
+  }
+  if (running) return;
+  running = true;
+  stopRequested = false;
   try {
-    const report = await reconcile(message.type === "sync");
-    figma.ui.postMessage(report);
-    if (message.type === "sync") figma.notify(`Skryensya: ${report.outcome} (${report.writes} writes, ${report.seconds}s)`);
+    const result = await reconcile(message.type === "sync");
+    figma.ui.postMessage(result);
+    if (message.type === "sync") figma.notify(`Skryensya: ${result.outcome} (${result.writes} writes, ${result.seconds}s)`);
   } catch (error) {
     figma.ui.postMessage({ type: "error", text: error instanceof Error ? `${error.message}\n${error.stack ?? ""}` : String(error) });
+  } finally {
+    running = false;
+    stopRequested = false;
   }
 };
