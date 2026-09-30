@@ -15,6 +15,14 @@ export const stage: Realization["stage"] = {
     fontWeight: "--font-weight-label",
   },
   divider: "--color-border-subtle",
+  // Body copy, as a docs page sets it.
+  inherit: {
+    "font-family": "--font-family-body",
+    color: "--color-text-primary",
+    "font-size": "--font-size-body",
+    "font-weight": "--font-weight-body",
+    "line-height": "--font-line-height-body",
+  },
 };
 
 export const icons: Realization["icons"] = { module: "@skryensya/icons-lucide", export: "lucideIcons" };

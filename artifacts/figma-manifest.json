@@ -30250,10 +30250,10 @@
       "cells": [
         {
           "box": "70072d8ced6c7f90",
-          "hash": "8488a8c701a1ef4e",
+          "hash": "afc14ddb4c90243f",
           "id": "kbd/plain/tone=neutral",
           "key": "tone=neutral",
-          "layers": "89344dd3bad51035",
+          "layers": "7dcb162facf91462",
           "props": {
             "tone": "neutral"
           },
@@ -30261,10 +30261,10 @@
         },
         {
           "box": "70072d8ced6c7f90",
-          "hash": "4f3b27b34cfc5074",
+          "hash": "99f2586ddce15d58",
           "id": "kbd/plain/tone=accent",
           "key": "tone=accent",
-          "layers": "deb4cbec8c0e5a6d",
+          "layers": "7a596365a7b14e71",
           "props": {
             "tone": "accent"
           },
@@ -30352,7 +30352,7 @@
         ],
         "title": "as other keys"
       },
-      "visualHash": "90f39682d44d9555"
+      "visualHash": "5037c347e100b404"
     },
     {
       "axes": [
@@ -30367,10 +30367,10 @@
       "cells": [
         {
           "box": "70072d8ced6c7f90",
-          "hash": "99c15ad75fb788d8",
+          "hash": "adf03f2c359a96df",
           "id": "kbd/brutalist/tone=neutral",
           "key": "tone=neutral",
-          "layers": "89344dd3bad51035",
+          "layers": "7dcb162facf91462",
           "props": {
             "tone": "neutral"
           },
@@ -30378,10 +30378,10 @@
         },
         {
           "box": "70072d8ced6c7f90",
-          "hash": "fe0435548866860e",
+          "hash": "8210ea85375f9006",
           "id": "kbd/brutalist/tone=accent",
           "key": "tone=accent",
-          "layers": "deb4cbec8c0e5a6d",
+          "layers": "7a596365a7b14e71",
           "props": {
             "tone": "accent"
           },
@@ -30469,7 +30469,7 @@
         ],
         "title": "as other keys"
       },
-      "visualHash": "71f6ae74359f6273"
+      "visualHash": "d73996c9724ed275"
     },
     {
       "axes": [
@@ -31918,10 +31918,10 @@
       "cells": [
         {
           "box": "7cbbf436c588fa22",
-          "hash": "d72497743abe95d3",
+          "hash": "dc5e21eca94a497b",
           "id": "link/linkTone=neutral,state=rest",
           "key": "linkTone=neutral, state=rest",
-          "layers": "33ef2bc59b6e1f9d",
+          "layers": "710e3af9b5cf1231",
           "props": {
             "linkTone": "neutral",
             "state": "rest"
@@ -31930,10 +31930,10 @@
         },
         {
           "box": "7cbbf436c588fa22",
-          "hash": "7cee788df090d5b7",
+          "hash": "3782a2543c6de1ef",
           "id": "link/linkTone=neutral,state=hover",
           "key": "linkTone=neutral, state=hover",
-          "layers": "09d23a5ba1577fe3",
+          "layers": "80e380277c6ff336",
           "props": {
             "linkTone": "neutral",
             "state": "hover"
@@ -31942,10 +31942,10 @@
         },
         {
           "box": "7cbbf436c588fa22",
-          "hash": "2270edc3dcf83868",
+          "hash": "c2eba32a2f8e6246",
           "id": "link/linkTone=neutral,state=focus",
           "key": "linkTone=neutral, state=focus",
-          "layers": "2e67421f3b36e875",
+          "layers": "fae870cabc14b727",
           "props": {
             "linkTone": "neutral",
             "state": "focus"
@@ -31954,10 +31954,10 @@
         },
         {
           "box": "7cbbf436c588fa22",
-          "hash": "6d787c954bba6db7",
+          "hash": "8ea6311e6eabc227",
           "id": "link/linkTone=accent,state=rest",
           "key": "linkTone=accent, state=rest",
-          "layers": "0b71eee9ac92d9d3",
+          "layers": "ef6277d4902d17fe",
           "props": {
             "linkTone": "accent",
             "state": "rest"
@@ -31966,10 +31966,10 @@
         },
         {
           "box": "7cbbf436c588fa22",
-          "hash": "69455b6fa1b2e87f",
+          "hash": "1b78964fdcc27aba",
           "id": "link/linkTone=accent,state=hover",
           "key": "linkTone=accent, state=hover",
-          "layers": "a9f9611ec1eb6379",
+          "layers": "02df48f0cf121d4d",
           "props": {
             "linkTone": "accent",
             "state": "hover"
@@ -31978,10 +31978,10 @@
         },
         {
           "box": "7cbbf436c588fa22",
-          "hash": "007032dde217a185",
+          "hash": "aac669e6b7b2561c",
           "id": "link/linkTone=accent,state=focus",
           "key": "linkTone=accent, state=focus",
-          "layers": "c1e95ed0918aac8d",
+          "layers": "1ae9f6856446b47b",
           "props": {
             "linkTone": "accent",
             "state": "focus"
@@ -32037,7 +32037,67 @@
         },
         "columns": []
       },
-      "visualHash": "4961a88aaacbfcd5"
+      "visualHash": "f620f9458a690d0b"
+    },
+    {
+      "axes": [],
+      "cells": [
+        {
+          "box": "93b3b5c2e086d7ee",
+          "hash": "85bd97fd4c248735",
+          "id": "code/",
+          "key": "",
+          "layers": "de28cecd951e737d",
+          "props": {},
+          "surface": "e53c9c10903c3b97"
+        }
+      ],
+      "contractHash": "f0953c37d22eda18",
+      "defaultCell": "",
+      "grid": {
+        "columns": [],
+        "rows": []
+      },
+      "id": "code",
+      "interactions": [],
+      "kind": "component-set",
+      "name": "Code",
+      "page": "skryensya",
+      "properties": [
+        {
+          "default": "useState",
+          "name": "children",
+          "type": "TEXT"
+        }
+      ],
+      "showcase": {
+        "base": {},
+        "columns": [
+          {
+            "label": "npm install",
+            "properties": {
+              "children": "npm install"
+            },
+            "slot": "children=npm install"
+          },
+          {
+            "label": "--color-bg",
+            "properties": {
+              "children": "--color-bg"
+            },
+            "slot": "children=--color-bg"
+          },
+          {
+            "label": "<Button>",
+            "properties": {
+              "children": "<Button>"
+            },
+            "slot": "children=<Button>"
+          }
+        ],
+        "title": "holding"
+      },
+      "visualHash": "7197e324dd457be7"
     }
   ],
   "diagnostics": [
@@ -32239,6 +32299,11 @@
           "disabled"
         ]
       },
+      "code": {
+        "excluded": [],
+        "nonVisual": [],
+        "visual": []
+      },
       "heading": {
         "excluded": [
           "headingElement",
@@ -32292,15 +32357,15 @@
       }
     },
     "tokens": {
-      "catalogueAdded": 327,
+      "catalogueAdded": 326,
       "componentVariables": 210,
       "modeValuesBySource": {
         "alias": 203,
         "evaluated": 463,
         "literal": 686
       },
-      "reached": 162,
-      "reachedAsVariables": 124,
+      "reached": 164,
+      "reachedAsVariables": 126,
       "reachedButNotVariables": [
         "--elevation-flat",
         "--elevation-raised",
@@ -32312,13 +32377,14 @@
       "variables": 466
     },
     "variants": {
-      "components": 19,
-      "componentSets": 18,
+      "components": 20,
+      "componentSets": 19,
       "naiveAllOptions": {
         "avatar": 8,
         "badge:Badge": 20,
         "badge:BadgeDot": 10,
         "button": 27648,
+        "code": 1,
         "heading": 156,
         "kbd": 4,
         "link": 2,
@@ -32330,6 +32396,7 @@
         "badge:Badge": 20,
         "badge:BadgeDot": 5,
         "button": 2304,
+        "code": 1,
         "heading": 13,
         "kbd": 4,
         "link": 2,
@@ -32408,13 +32475,17 @@
         {
           "set": "link",
           "variants": 6
+        },
+        {
+          "set": "code",
+          "variants": 1
         }
       ],
-      "variantsTotal": 2034
+      "variantsTotal": 2035
     }
   },
   "schemaVersion": 1,
-  "sourceHash": "b9881818a3aae2ce",
+  "sourceHash": "bc1849aec0cab4d2",
   "stage": {
     "background": {
       "variable": "--color-bg-surface"
@@ -33304,6 +33375,34 @@
           "variable": "--size-control-sm"
         }
       },
+      "93b3b5c2e086d7ee": {
+        "clipsContent": false,
+        "crossAlign": "MIN",
+        "direction": "HORIZONTAL",
+        "mainAlign": "MIN",
+        "padding": {
+          "bottom": {
+            "expression": "1.4400000000000002px",
+            "value": 1.44
+          },
+          "left": {
+            "expression": "4.32px",
+            "value": 4.32
+          },
+          "right": {
+            "expression": "4.32px",
+            "value": 4.32
+          },
+          "top": {
+            "expression": "1.4400000000000002px",
+            "value": 1.44
+          }
+        },
+        "radius": {
+          "expression": "0.25rem",
+          "value": 4
+        }
+      },
       "962f997fe32366bb": {
         "clipsContent": false,
         "crossAlign": "CENTER",
@@ -33794,6 +33893,44 @@
           "textProperty": "children"
         }
       ],
+      "02df48f0cf121d4d": [
+        {
+          "fills": [
+            {
+              "color": {
+                "variable": "typography:state-layer:7704f60a48"
+              },
+              "type": "SOLID"
+            }
+          ],
+          "kind": "overlay",
+          "slot": "state layer"
+        },
+        {
+          "kind": "text",
+          "slot": "children",
+          "text": {
+            "fill": {
+              "color": {
+                "variable": "--color-text-link"
+              },
+              "type": "SOLID"
+            },
+            "fontFamily": {
+              "variable": "--font-family-body"
+            },
+            "fontSize": {
+              "variable": "--font-size-body"
+            },
+            "fontWeight": {
+              "variable": "--font-weight-body"
+            },
+            "lineHeight": 150,
+            "underline": true
+          },
+          "textProperty": "children"
+        }
+      ],
       "0386c2833a242fff": [
         {
           "fills": [
@@ -34212,46 +34349,6 @@
           "visibleProperty": "post"
         }
       ],
-      "09d23a5ba1577fe3": [
-        {
-          "fills": [
-            {
-              "color": {
-                "variable": "typography:state-layer:9652c98e0a"
-              },
-              "type": "SOLID"
-            }
-          ],
-          "kind": "overlay",
-          "slot": "state layer"
-        },
-        {
-          "kind": "text",
-          "slot": "children",
-          "text": {
-            "fill": {
-              "color": {
-                "variable": "--color-text-primary"
-              },
-              "type": "SOLID"
-            },
-            "fontFamily": {
-              "variable": "--font-family-body"
-            },
-            "fontSize": {
-              "expression": "16px",
-              "value": 16
-            },
-            "fontWeight": {
-              "expression": "400",
-              "value": 400
-            },
-            "lineHeight": "auto",
-            "underline": true
-          },
-          "textProperty": "children"
-        }
-      ],
       "09d9180059dea135": [
         {
           "kind": "text",
@@ -34394,46 +34491,6 @@
               "variable": "--font-weight-label"
             },
             "lineHeight": 150
-          },
-          "textProperty": "children"
-        }
-      ],
-      "0b71eee9ac92d9d3": [
-        {
-          "fills": [
-            {
-              "color": {
-                "variable": "typography:state-layer:af9eda8930"
-              },
-              "type": "SOLID"
-            }
-          ],
-          "kind": "overlay",
-          "slot": "state layer"
-        },
-        {
-          "kind": "text",
-          "slot": "children",
-          "text": {
-            "fill": {
-              "color": {
-                "variable": "--color-text-link"
-              },
-              "type": "SOLID"
-            },
-            "fontFamily": {
-              "variable": "--font-family-body"
-            },
-            "fontSize": {
-              "expression": "16px",
-              "value": 16
-            },
-            "fontWeight": {
-              "expression": "400",
-              "value": 400
-            },
-            "lineHeight": "auto",
-            "underline": true
           },
           "textProperty": "children"
         }
@@ -35070,6 +35127,63 @@
           "kind": "icon",
           "slot": "post",
           "visibleProperty": "post"
+        }
+      ],
+      "1ae9f6856446b47b": [
+        {
+          "fills": [
+            {
+              "color": {
+                "variable": "typography:state-layer:76b20c89fb"
+              },
+              "type": "SOLID"
+            }
+          ],
+          "kind": "overlay",
+          "slot": "state layer"
+        },
+        {
+          "kind": "text",
+          "slot": "children",
+          "text": {
+            "fill": {
+              "color": {
+                "variable": "--color-text-link"
+              },
+              "type": "SOLID"
+            },
+            "fontFamily": {
+              "variable": "--font-family-body"
+            },
+            "fontSize": {
+              "variable": "--font-size-body"
+            },
+            "fontWeight": {
+              "variable": "--font-weight-body"
+            },
+            "lineHeight": 150,
+            "underline": true
+          },
+          "textProperty": "children"
+        },
+        {
+          "color": {
+            "color": {
+              "variable": "--focus-ring-color"
+            },
+            "type": "SOLID"
+          },
+          "kind": "ring",
+          "offset": {
+            "variable": "--focus-ring-offset"
+          },
+          "radius": {
+            "variable": "typography:outline-radius:9325831be9"
+          },
+          "slot": "focus ring",
+          "width": {
+            "variable": "--focus-ring-width"
+          }
         }
       ],
       "1c59cf64bf4ce7b3": [
@@ -36012,65 +36126,6 @@
           "visibleProperty": "post"
         }
       ],
-      "2e67421f3b36e875": [
-        {
-          "fills": [
-            {
-              "color": {
-                "variable": "typography:state-layer:bfba8c3497"
-              },
-              "type": "SOLID"
-            }
-          ],
-          "kind": "overlay",
-          "slot": "state layer"
-        },
-        {
-          "kind": "text",
-          "slot": "children",
-          "text": {
-            "fill": {
-              "color": {
-                "variable": "--color-text-primary"
-              },
-              "type": "SOLID"
-            },
-            "fontFamily": {
-              "variable": "--font-family-body"
-            },
-            "fontSize": {
-              "expression": "16px",
-              "value": 16
-            },
-            "fontWeight": {
-              "expression": "400",
-              "value": 400
-            },
-            "lineHeight": "auto",
-            "underline": true
-          },
-          "textProperty": "children"
-        },
-        {
-          "color": {
-            "color": {
-              "variable": "--focus-ring-color"
-            },
-            "type": "SOLID"
-          },
-          "kind": "ring",
-          "offset": {
-            "variable": "--focus-ring-offset"
-          },
-          "radius": {
-            "variable": "typography:outline-radius:9325831be9"
-          },
-          "slot": "focus ring",
-          "width": {
-            "variable": "--focus-ring-width"
-          }
-        }
-      ],
       "2ebf99888ba88f36": [
         {
           "fills": [
@@ -36300,46 +36355,6 @@
           "kind": "icon",
           "slot": "post",
           "visibleProperty": "post"
-        }
-      ],
-      "33ef2bc59b6e1f9d": [
-        {
-          "fills": [
-            {
-              "color": {
-                "variable": "typography:state-layer:a8bbbce668"
-              },
-              "type": "SOLID"
-            }
-          ],
-          "kind": "overlay",
-          "slot": "state layer"
-        },
-        {
-          "kind": "text",
-          "slot": "children",
-          "text": {
-            "fill": {
-              "color": {
-                "variable": "--color-text-primary"
-              },
-              "type": "SOLID"
-            },
-            "fontFamily": {
-              "variable": "--font-family-body"
-            },
-            "fontSize": {
-              "expression": "16px",
-              "value": 16
-            },
-            "fontWeight": {
-              "expression": "400",
-              "value": 400
-            },
-            "lineHeight": "auto",
-            "underline": true
-          },
-          "textProperty": "children"
         }
       ],
       "353b3acb89cc3701": [
@@ -39270,6 +39285,44 @@
           "visibleProperty": "post"
         }
       ],
+      "710e3af9b5cf1231": [
+        {
+          "fills": [
+            {
+              "color": {
+                "variable": "typography:state-layer:a8bbbce668"
+              },
+              "type": "SOLID"
+            }
+          ],
+          "kind": "overlay",
+          "slot": "state layer"
+        },
+        {
+          "kind": "text",
+          "slot": "children",
+          "text": {
+            "fill": {
+              "color": {
+                "variable": "--color-text-primary"
+              },
+              "type": "SOLID"
+            },
+            "fontFamily": {
+              "variable": "--font-family-body"
+            },
+            "fontSize": {
+              "variable": "--font-size-body"
+            },
+            "fontWeight": {
+              "variable": "--font-weight-body"
+            },
+            "lineHeight": 150,
+            "underline": true
+          },
+          "textProperty": "children"
+        }
+      ],
       "747ebd22c56f88b4": [
         {
           "fills": [
@@ -39622,6 +39675,31 @@
           "visibleProperty": "post"
         }
       ],
+      "7a596365a7b14e71": [
+        {
+          "kind": "text",
+          "slot": "children",
+          "text": {
+            "fill": {
+              "color": {
+                "variable": "--color-text-accent"
+              },
+              "type": "SOLID"
+            },
+            "fontFamily": {
+              "variable": "--font-family-body"
+            },
+            "fontSize": {
+              "variable": "--font-size-body-sm"
+            },
+            "fontWeight": {
+              "variable": "--font-weight-body"
+            },
+            "lineHeight": 110.00000000000001
+          },
+          "textProperty": "children"
+        }
+      ],
       "7d2d7e9beef4d29e": [
         {
           "fills": [
@@ -39684,6 +39762,31 @@
           "kind": "icon",
           "slot": "post",
           "visibleProperty": "post"
+        }
+      ],
+      "7dcb162facf91462": [
+        {
+          "kind": "text",
+          "slot": "children",
+          "text": {
+            "fill": {
+              "color": {
+                "variable": "--color-text-secondary"
+              },
+              "type": "SOLID"
+            },
+            "fontFamily": {
+              "variable": "--font-family-body"
+            },
+            "fontSize": {
+              "variable": "--font-size-body-sm"
+            },
+            "fontWeight": {
+              "variable": "--font-weight-body"
+            },
+            "lineHeight": 110.00000000000001
+          },
+          "textProperty": "children"
         }
       ],
       "7f21e15c2854da6e": [
@@ -39831,6 +39934,44 @@
           "width": {
             "variable": "--focus-ring-width"
           }
+        }
+      ],
+      "80e380277c6ff336": [
+        {
+          "fills": [
+            {
+              "color": {
+                "variable": "typography:state-layer:9652c98e0a"
+              },
+              "type": "SOLID"
+            }
+          ],
+          "kind": "overlay",
+          "slot": "state layer"
+        },
+        {
+          "kind": "text",
+          "slot": "children",
+          "text": {
+            "fill": {
+              "color": {
+                "variable": "--color-text-primary"
+              },
+              "type": "SOLID"
+            },
+            "fontFamily": {
+              "variable": "--font-family-body"
+            },
+            "fontSize": {
+              "variable": "--font-size-body"
+            },
+            "fontWeight": {
+              "variable": "--font-weight-body"
+            },
+            "lineHeight": 150,
+            "underline": true
+          },
+          "textProperty": "children"
         }
       ],
       "81a55687605f0fbb": [
@@ -40055,32 +40196,6 @@
           "kind": "icon",
           "slot": "post",
           "visibleProperty": "post"
-        }
-      ],
-      "89344dd3bad51035": [
-        {
-          "kind": "text",
-          "slot": "children",
-          "text": {
-            "fill": {
-              "color": {
-                "variable": "--color-text-secondary"
-              },
-              "type": "SOLID"
-            },
-            "fontFamily": {
-              "variable": "--font-family-body"
-            },
-            "fontSize": {
-              "variable": "--font-size-body-sm"
-            },
-            "fontWeight": {
-              "expression": "400",
-              "value": 400
-            },
-            "lineHeight": 110.00000000000001
-          },
-          "textProperty": "children"
         }
       ],
       "89c3d7a5e3634bf5": [
@@ -41909,46 +42024,6 @@
           "visibleProperty": "post"
         }
       ],
-      "a9f9611ec1eb6379": [
-        {
-          "fills": [
-            {
-              "color": {
-                "variable": "typography:state-layer:7704f60a48"
-              },
-              "type": "SOLID"
-            }
-          ],
-          "kind": "overlay",
-          "slot": "state layer"
-        },
-        {
-          "kind": "text",
-          "slot": "children",
-          "text": {
-            "fill": {
-              "color": {
-                "variable": "--color-text-link"
-              },
-              "type": "SOLID"
-            },
-            "fontFamily": {
-              "variable": "--font-family-body"
-            },
-            "fontSize": {
-              "expression": "16px",
-              "value": 16
-            },
-            "fontWeight": {
-              "expression": "400",
-              "value": 400
-            },
-            "lineHeight": "auto",
-            "underline": true
-          },
-          "textProperty": "children"
-        }
-      ],
       "aa61e33c42a15252": [
         {
           "kind": "text",
@@ -42885,65 +42960,6 @@
           "kind": "icon",
           "slot": "post",
           "visibleProperty": "post"
-        }
-      ],
-      "c1e95ed0918aac8d": [
-        {
-          "fills": [
-            {
-              "color": {
-                "variable": "typography:state-layer:76b20c89fb"
-              },
-              "type": "SOLID"
-            }
-          ],
-          "kind": "overlay",
-          "slot": "state layer"
-        },
-        {
-          "kind": "text",
-          "slot": "children",
-          "text": {
-            "fill": {
-              "color": {
-                "variable": "--color-text-link"
-              },
-              "type": "SOLID"
-            },
-            "fontFamily": {
-              "variable": "--font-family-body"
-            },
-            "fontSize": {
-              "expression": "16px",
-              "value": 16
-            },
-            "fontWeight": {
-              "expression": "400",
-              "value": 400
-            },
-            "lineHeight": "auto",
-            "underline": true
-          },
-          "textProperty": "children"
-        },
-        {
-          "color": {
-            "color": {
-              "variable": "--focus-ring-color"
-            },
-            "type": "SOLID"
-          },
-          "kind": "ring",
-          "offset": {
-            "variable": "--focus-ring-offset"
-          },
-          "radius": {
-            "variable": "typography:outline-radius:9325831be9"
-          },
-          "slot": "focus ring",
-          "width": {
-            "variable": "--focus-ring-width"
-          }
         }
       ],
       "c288c90213ccc9e9": [
@@ -44000,28 +44016,28 @@
           "visibleProperty": "post"
         }
       ],
-      "deb4cbec8c0e5a6d": [
+      "de28cecd951e737d": [
         {
           "kind": "text",
           "slot": "children",
           "text": {
             "fill": {
               "color": {
-                "variable": "--color-text-accent"
+                "variable": "--color-text-primary"
               },
               "type": "SOLID"
             },
             "fontFamily": {
-              "variable": "--font-family-body"
+              "variable": "--font-family-code"
             },
             "fontSize": {
-              "variable": "--font-size-body-sm"
+              "expression": "14.4px",
+              "value": 14.4
             },
             "fontWeight": {
-              "expression": "400",
-              "value": 400
+              "variable": "--font-weight-body"
             },
-            "lineHeight": 110.00000000000001
+            "lineHeight": 150
           },
           "textProperty": "children"
         }
@@ -44487,6 +44503,44 @@
           "textProperty": "children"
         }
       ],
+      "ef6277d4902d17fe": [
+        {
+          "fills": [
+            {
+              "color": {
+                "variable": "typography:state-layer:af9eda8930"
+              },
+              "type": "SOLID"
+            }
+          ],
+          "kind": "overlay",
+          "slot": "state layer"
+        },
+        {
+          "kind": "text",
+          "slot": "children",
+          "text": {
+            "fill": {
+              "color": {
+                "variable": "--color-text-link"
+              },
+              "type": "SOLID"
+            },
+            "fontFamily": {
+              "variable": "--font-family-body"
+            },
+            "fontSize": {
+              "variable": "--font-size-body"
+            },
+            "fontWeight": {
+              "variable": "--font-weight-body"
+            },
+            "lineHeight": 150,
+            "underline": true
+          },
+          "textProperty": "children"
+        }
+      ],
       "f364d6e4eea7f0af": [
         {
           "fills": [
@@ -44709,6 +44763,63 @@
           "kind": "icon",
           "slot": "post",
           "visibleProperty": "post"
+        }
+      ],
+      "fae870cabc14b727": [
+        {
+          "fills": [
+            {
+              "color": {
+                "variable": "typography:state-layer:bfba8c3497"
+              },
+              "type": "SOLID"
+            }
+          ],
+          "kind": "overlay",
+          "slot": "state layer"
+        },
+        {
+          "kind": "text",
+          "slot": "children",
+          "text": {
+            "fill": {
+              "color": {
+                "variable": "--color-text-primary"
+              },
+              "type": "SOLID"
+            },
+            "fontFamily": {
+              "variable": "--font-family-body"
+            },
+            "fontSize": {
+              "variable": "--font-size-body"
+            },
+            "fontWeight": {
+              "variable": "--font-weight-body"
+            },
+            "lineHeight": 150,
+            "underline": true
+          },
+          "textProperty": "children"
+        },
+        {
+          "color": {
+            "color": {
+              "variable": "--focus-ring-color"
+            },
+            "type": "SOLID"
+          },
+          "kind": "ring",
+          "offset": {
+            "variable": "--focus-ring-offset"
+          },
+          "radius": {
+            "variable": "typography:outline-radius:9325831be9"
+          },
+          "slot": "focus ring",
+          "width": {
+            "variable": "--focus-ring-width"
+          }
         }
       ],
       "faf76df2e0e11376": [
@@ -53023,6 +53134,24 @@
             "type": "SOLID"
           }
         ]
+      },
+      "e53c9c10903c3b97": {
+        "effects": [],
+        "fills": [
+          {
+            "color": {
+              "expression": "rgb(0 0 0 / 6%)",
+              "value": {
+                "a": 0.06,
+                "b": 0,
+                "g": 0,
+                "r": 0
+              }
+            },
+            "type": "SOLID"
+          }
+        ],
+        "strokes": []
       },
       "e5715f37b45b7660": {
         "effects": [],

@@ -24,6 +24,17 @@ function number(ctx: Context, name: string, role: string): Bound<number> | undef
 
 const EM = /(^|[^\w.])(\d*\.?\d+)em\b/g;
 
+/** A font size in `em` is the PARENT's font size times it (Code's 0.9em): the page's, as inherited. */
+function fontSizeOf(value: string, ctx: Context): string {
+  const text = /var\(/.test(value) ? substituted(value, ctx) : value;
+  EM.lastIndex = 0;
+  if (!EM.test(text)) return value;
+  EM.lastIndex = 0;
+  const parent = evalQuantity(substituted(ctx.inherited?.["font-size"] ?? "16px", ctx));
+  if (parent.unit !== "px") throw new Unsupported(`inherited font-size ${parent.value}${parent.unit} for an em size`);
+  return text.replace(EM, (_, before: string, n: string) => `${before}${Number(n) * parent.value}px`);
+}
+
 /**
  * `em` is the element's own font size, a unit Figma has no equivalent for (a Kbd's `min-height:
  * 1.6em` keeps a key square at any text size). Made pixels here, as the browser computes it: the
@@ -33,7 +44,8 @@ function withoutEm(value: string, ctx: Context): string {
   const text = /var\(/.test(value) ? substituted(value, ctx) : value;
   if (!EM.test(text)) return value;
   EM.lastIndex = 0;
-  const size = evalQuantity(substituted(prop(ctx, "font-size") ?? "16px", ctx));
+  // The element's own size, itself possibly in em of its parent's (Code: 0.9em, padding 0.3em).
+  const size = evalQuantity(substituted(fontSizeOf(prop(ctx, "font-size") ?? ctx.inherited?.["font-size"] ?? "16px", ctx), ctx));
   if (size.unit !== "px") throw new Unsupported(`font-size ${size.value}${size.unit} for an em measure`);
   return text.replace(EM, (_, before: string, n: string) => `${before}${Number(n) * size.value}px`);
 }
@@ -222,15 +234,18 @@ export function frameOf(ctx: Context): Frame {
 export function textOf(ctx: Context): Text {
   // Through its hooks and tokens (`var(--sk-badge-line-height)` is `var(--scale-line-height-normal)`):
   // Figma stores a line height as a plain percentage, so it is read as the number it comes to.
-  const authored = prop(ctx, "line-height") ?? "normal";
+  // What the element does not set it takes from the page it sits on (the stage's inherited values):
+  // Code and Strong live inside prose and set almost nothing of their own.
+  const read = (name: string, fallback: string) => prop(ctx, name) ?? ctx.inherited?.[name] ?? fallback;
+  const authored = read("line-height", "normal");
   const lineHeight = /var\(/.test(authored) ? substituted(authored, ctx) : authored;
   // `normal` (a Link inherits it) is the font's own leading: Figma's Auto.
   if (lineHeight !== "normal" && !/^\d*\.?\d+$/.test(lineHeight)) throw new Unsupported(`line-height ${authored}: only unitless is read`);
   const decoration = `${prop(ctx, "text-decoration-line") ?? ""} ${prop(ctx, "text-decoration") ?? ""}`;
-  const family = resolve(prop(ctx, "font-family") ?? ctx.inherited?.["font-family"] ?? "", "string", ctx, "font-family");
-  const weight = resolve(prop(ctx, "font-weight") ?? "400", "number", ctx, "font-weight");
-  const size = resolve(prop(ctx, "font-size") ?? "16px", "number", ctx, "font-size");
-  const color = asColor(resolve(prop(ctx, "color") ?? "", "color", ctx, "fg"));
+  const family = resolve(read("font-family", ""), "string", ctx, "font-family");
+  const weight = resolve(read("font-weight", "400"), "number", ctx, "font-weight");
+  const size = resolve(fontSizeOf(read("font-size", "16px"), ctx), "number", ctx, "font-size");
+  const color = asColor(resolve(read("color", ""), "color", ctx, "fg"));
   if (!family || !weight || !size || !color) throw new Unsupported(`text needs family, weight, size and colour`);
   return {
     fontFamily: family as Bound<string>,

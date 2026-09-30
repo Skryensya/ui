@@ -75,6 +75,11 @@ export type Realization = {
     contract: string;
     hook: string;
     label: { color: string; fontFamily: string; fontSize: string; fontWeight: string };
+    /**
+     * The page's own text, by token: what a component inherits for a property its sheets never set
+     * (Code and Strong take their colour and size from the prose around them).
+     */
+    inherit?: Readonly<Partial<Record<"font-family" | "color" | "font-size" | "font-weight" | "line-height", string>>>;
     /** The token a section's outline is drawn in. */
     divider: string;
   };
