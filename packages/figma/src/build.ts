@@ -294,7 +294,8 @@ export async function buildFigmaManifest(realization: Realization): Promise<Figm
         const { strokes, fills, effects, ...box } = frameOf(ctx(host));
         const key = Object.entries(props).map(([k, v]) => `${k}=${v}`).join(", ");
         const body = { key, props, box: intern(styles.boxes, box), surface: intern(styles.surfaces, { strokes, fills, effects }), layers: intern(styles.layers, layers) };
-        cells.push({ ...body, hash: hash(body) });
+        // The id is not hashed: it says WHICH cell this is, the hash says whether it is current.
+        cells.push({ id: cellId(`${realization.contract}/${splitValue}`, props), ...body, hash: hash(body) });
       } catch (error) {
         if (!(error instanceof Unsupported)) throw error;
         diagnostics.push({ severity: "warning", code: "CELL_UNSUPPORTED", subject: `${splitValue}: ${JSON.stringify(props)}`, message: error.message });
@@ -443,6 +444,17 @@ function stageOf(realization: Realization, files: readonly { rel: string; css: s
   };
 }
 
+/**
+ * A cell's deterministic id: its set, then every axis with its value in alphabetical order. The same
+ * props always give the same id, whatever order the realization lists its axes in.
+ */
+export function cellId(setId: string, props: Record<string, string>): string {
+  const pairs = Object.keys(props)
+    .sort()
+    .map((axis) => `${axis}=${props[axis]}`);
+  return `${setId}/${pairs.join(",")}`;
+}
+
 /* ── the Icon contract, drawn by the chosen set ─────────────────────────────────────────────────── */
 
 async function iconSetOf(realization: Realization, iconContract: ComponentContract): Promise<IconSet> {
@@ -465,7 +477,7 @@ async function iconSetOf(realization: Realization, iconContract: ComponentContra
       .map(([k, v]) => `${k}="${v === "currentColor" ? "#000000" : v}"`)
       .join(" ");
     const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${data.viewBox}" width="${width}" height="${height}" ${presentation}>${data.body.replaceAll("currentColor", "#000000")}</svg>`;
-    return { name, svg, hash: hash(svg) };
+    return { id: `${iconContract.id}/${name}`, name, svg, hash: hash(svg) };
   });
 
   const body = {

@@ -13,6 +13,20 @@
  *     designer could have placed is deleted. (A component PROPERTY the manifest dropped is removed
  *     from its set: it is part of the definition being reconciled, not an object anyone placed.)
  *
+ * IDS ARE DETERMINISTIC, and every node the plugin owns carries one in its `id` tag, readable, so a
+ * script or an agent can find any of them without Figma's own node ids:
+ *
+ *   page:<id> · frame:<set id> · <set id>                     pages, frames, component and icon sets
+ *   <set id>/<axis>=<value>,…  (axes alphabetical)             a variant, from the manifest's `Cell.id`
+ *   <set id>/<axis>=<value>,…/<slot>                           a layer inside a variant
+ *   icon/<name> · icon/<name>/glyph                            an icon's component, and its one vector
+ *   <set id>/showcase/<row values>:<slot>                      a showcase instance beside a row
+ *   frame:<set id>/label/<key>                                 a label or section outline in a frame
+ *
+ * A node is found by its id first. Files synced before ids existed are adopted by their older keys
+ * (the variant name, the layer name) and tagged, and a variant survives a new axis: it is adopted as
+ * the new axis's default. So an update rewrites the same node, and instances keep pointing at it.
+ *
  * "Dry run" walks the same path and writes nothing: every write goes through `run.write`.
  * Progress is reported per phase while it works, and the work yields regularly so the window can
  * actually repaint: Figma runs a plugin on the same thread as its own UI.
@@ -20,9 +34,9 @@
 
 import manifestJson from "../../../../artifacts/figma-manifest.json";
 import type * as M from "../../src/manifest-types";
+import { adoptAcrossNewAxes, Identities, layerId, NS, parseKey, pickLayer } from "./identity";
 
 const manifest = manifestJson as unknown as M.FigmaManifest;
-const NS = "skryensya";
 
 /* ── the run: what happened, and the one door every write goes through ──────────────────────── */
 
@@ -428,7 +442,6 @@ async function fontFor(run: Run, family: string, weight: number): Promise<FontNa
 
 /* ── grids ──────────────────────────────────────────────────────────────────────────────────── */
 
-const parseKey = (key: string) => Object.fromEntries(key.split(", ").map((pair) => pair.split("=") as [string, string]));
 
 function combos(axes: { name: string; values: string[] }[]): Record<string, string>[] {
   return axes.reduce<Record<string, string>[]>((acc, a) => acc.flatMap((c) => a.values.map((v) => ({ ...c, [a.name]: v }))), [{}]);
@@ -436,6 +449,7 @@ function combos(axes: { name: string; values: string[] }[]): Record<string, stri
 
 const ownCells = (set: ComponentSetNode | undefined) =>
   (set?.children ?? []).filter((c): c is ComponentNode => c.type === "COMPONENT" && getTag(c, "orphaned") !== "true");
+
 
 /** Offsets along one axis of the grid: `size` per slot, `gap` between, `group` more where `groupOf` changes. */
 function offsets(count: number, size: number, gap: number, group: number, groupOf: (i: number) => string, start: number) {
@@ -529,6 +543,9 @@ async function labelStyle(ctx: Ctx, weight?: number, size?: number): Promise<Lab
   return { font, size: size ?? Number(valueOf(label.fontSize)), color: toPaint(ctx, { type: "SOLID", color: label.color }) };
 }
 
+/** A label's or outline's id: its frame's, then the key the layout draws it under. */
+const labelId = (parent: FrameNode, key: string) => `${getTag(parent, "id")}/label/${key}`;
+
 /** A text of ours inside `parent`, found by its label key. Writes only what differs. */
 function ensureLabel(ctx: Ctx, parent: FrameNode, key: string, chars: string, style: Label): TextNode {
   const { run } = ctx;
@@ -543,11 +560,13 @@ function ensureLabel(ctx: Ctx, parent: FrameNode, key: string, chars: string, st
       text.characters = chars;
       text.name = chars;
       text.setSharedPluginData(NS, "label", key);
+      text.setSharedPluginData(NS, "id", labelId(parent, key));
       parent.appendChild(text);
     });
     return text!;
   }
   const t = text;
+  tag(run, t, { id: labelId(parent, key) });
   const font = t.fontName as FontName;
   if (font.family !== style.font.family || font.style !== style.font.style) run.write(() => (t.fontName = style.font));
   if (t.fontSize !== style.size) run.write(() => (t.fontSize = style.size));
@@ -580,11 +599,13 @@ function ensureOutline(ctx: Ctx, parent: FrameNode, key: string, x: number, y: n
       rect.strokeAlign = "INSIDE";
       rect.strokes = [toPaint(ctx, { type: "SOLID", color: manifest.stage.divider })];
       rect.setSharedPluginData(NS, "label", key);
+      rect.setSharedPluginData(NS, "id", labelId(parent, key));
       parent.insertChild(0, rect);
     });
     if (!rect) return;
   }
   const r = rect;
+  tag(run, r, { id: labelId(parent, key) });
   // Under the set, never over it: an outline drawn above would sit on top of the buttons.
   const setIndex = parent.children.findIndex((n) => n.type === "COMPONENT_SET");
   if (setIndex >= 0 && parent.children.indexOf(r) > setIndex) run.write(() => parent.insertChild(0, r));
@@ -631,21 +652,42 @@ function ensureFrame(ctx: Ctx, id: string, name: string, page: PageNode, found: 
 
 type IconCtx = { set: ComponentSetNode; byName: Map<string, ComponentNode>; spec: M.IconSet };
 
-/** Import one icon's SVG into `node` as a single flattened `glyph` layer, replacing what was there. */
-function drawIcon(node: ComponentNode, icon: M.IconSet["icons"][number], spec: M.IconSet) {
+/**
+ * Draw one icon into `node` as a single flattened `glyph` vector. When the icon already has its
+ * glyph, the new drawing is poured INTO that vector (its geometry and paint) rather than swapped for
+ * a new node: the glyph keeps its id, so whatever points at it (an override, a script, an agent)
+ * still does. Only a component with no glyph vector yet gets one made.
+ */
+async function drawIcon(node: ComponentNode, icon: M.IconSet["icons"][number], spec: M.IconSet) {
   node.name = `${spec.axis}=${icon.name}`;
   node.resize(spec.size, spec.size);
   node.fills = [];
   node.clipsContent = false;
-  for (const child of [...node.children]) child.remove();
   const imported = figma.createNodeFromSvg(icon.svg);
   const parts = [...imported.children];
   for (const part of parts) node.appendChild(part);
   imported.remove();
+  const drawn = parts.length === 1 && parts[0].type === "VECTOR" ? parts[0] : figma.flatten(parts, node);
+  const glyph = node.children.find((n): n is VectorNode => n.type === "VECTOR" && n !== drawn && (getTag(n, "id") === `${icon.id}/glyph` || n.name === "glyph"));
+  if (glyph) {
+    await glyph.setVectorNetworkAsync(drawn.vectorNetwork);
+    glyph.x = drawn.x;
+    glyph.y = drawn.y;
+    glyph.fills = drawn.fills;
+    glyph.strokes = drawn.strokes;
+    // A flattened drawing can report `mixed` for these, which cannot be assigned: keep the glyph's own then.
+    if (drawn.strokeWeight !== figma.mixed) glyph.strokeWeight = drawn.strokeWeight;
+    if (drawn.strokeCap !== figma.mixed) glyph.strokeCap = drawn.strokeCap;
+    if (drawn.strokeJoin !== figma.mixed) glyph.strokeJoin = drawn.strokeJoin;
+    drawn.remove();
+  }
+  const kept = glyph ?? drawn;
+  // Anything else in the component was a stray from an older drawing: the icon is its one glyph.
+  for (const child of [...node.children]) if (child !== kept) child.remove();
   // One layer per icon, the same name in every variant, so a host's colour override survives a swap.
-  const glyph = parts.length === 1 && parts[0].type === "VECTOR" ? parts[0] : figma.flatten(parts, node);
-  glyph.name = "glyph";
-  glyph.constraints = { horizontal: "SCALE", vertical: "SCALE" };
+  kept.name = "glyph";
+  kept.constraints = { horizontal: "SCALE", vertical: "SCALE" };
+  if (getTag(kept, "id") !== `${icon.id}/glyph`) kept.setSharedPluginData(NS, "id", `${icon.id}/glyph`);
 }
 
 /** Icons on a grid, each named underneath: every slot is fixed, so each icon is placed as it is made. */
@@ -689,19 +731,18 @@ async function syncIconSet(ctx: Ctx, spec: M.IconSet, found: Map<string, SceneNo
   progress.start("icons");
   const frame = page ? ensureFrame(ctx, spec.id, spec.name, page, found) : undefined;
   let set = found.get(spec.id) as ComponentSetNode | undefined;
-  const existing = new Map(ownCells(set).map((c) => [getTag(c, "cell"), c]));
+  const identities = new Identities(ownCells(set));
   const counts = { created: 0, updated: 0, unchanged: 0, orphaned: 0 };
 
   let layout: IconLayout | undefined;
   for (const [index, icon] of spec.icons.entries()) {
     const key = `${spec.axis}=${icon.name}`;
-    let node = existing.get(key);
+    let node = identities.take(icon.id, key);
     if (!node) {
       counts.created++;
       if (run.write(() => void 0) && frame) {
         const fresh = figma.createComponent();
-        drawIcon(fresh, icon, spec);
-        fresh.setSharedPluginData(NS, "cell", key);
+        await drawIcon(fresh, icon, spec);
         fresh.setSharedPluginData(NS, "hash", icon.hash);
         // Into the set at once, so an interrupted run never leaves loose components on the page.
         // Onto the frame's page first: a component is born on whichever page is current.
@@ -713,10 +754,15 @@ async function syncIconSet(ctx: Ctx, spec: M.IconSet, found: Map<string, SceneNo
     } else if (getTag(node, "hash") !== icon.hash) {
       counts.updated++;
       if (run.write(() => void 0)) {
-        drawIcon(node, icon, spec);
+        await drawIcon(node, icon, spec);
         node.setSharedPluginData(NS, "hash", icon.hash);
       }
     } else counts.unchanged++;
+    if (node) {
+      tag(run, node, { id: icon.id, cell: key });
+      const glyph = node.children.find((n) => n.type === "VECTOR" && n.name === "glyph");
+      if (glyph && getTag(glyph, "id") !== `${icon.id}/glyph`) run.write(() => glyph.setSharedPluginData(NS, "id", `${icon.id}/glyph`));
+    }
     // In place at once: every slot is known before the first icon is drawn.
     if (run.apply && frame && set && node) {
       if (!layout) {
@@ -727,11 +773,9 @@ async function syncIconSet(ctx: Ctx, spec: M.IconSet, found: Map<string, SceneNo
     }
     await progress.tick("icons");
   }
-  const wanted = new Set(spec.icons.map((i) => `${spec.axis}=${i.name}`));
-  for (const [key, node] of existing) {
-    if (wanted.has(key)) continue;
+  for (const node of identities.rest()) {
     counts.orphaned++;
-    run.log("ORPHANED", `${spec.name}: ${key}`, "no longer drawn; kept");
+    run.log("ORPHANED", `${spec.name}: ${getTag(node, "cell")}`, "no longer drawn; kept");
     run.write(() => node.setSharedPluginData(NS, "orphaned", "true"));
   }
   if (counts.created) run.log("CREATE", `${spec.name}: ${counts.created} icons`, spec.source);
@@ -833,6 +877,20 @@ function applyCover(ctx: SetCtx, host: ComponentNode, rect: RectangleNode, layer
 
 /** The three parts a cell points at, each by content hash: what a cell can change independently. */
 type Part = "box" | "surface" | "layers";
+/** A cell's layer for `slot`, by id first: see `pickLayer`. */
+const layerOf = (node: ComponentNode, cell: M.Cell, slot: string): SceneNode | null => pickLayer(node.children, cell, slot);
+
+/**
+ * Every layer of a cell that is already current gets its id, without redrawing anything: a file
+ * synced before ids exist is tagged once, and from then on each layer is found by it.
+ */
+function tagLayers(run: Run, node: ComponentNode, cell: M.Cell) {
+  for (const layer of manifest.styles.layers[cell.layers] ?? []) {
+    const child = layerOf(node, cell, layer.slot);
+    if (child && getTag(child, "id") !== layerId(cell, layer.slot)) run.write(() => child.setSharedPluginData(NS, "id", layerId(cell, layer.slot)));
+  }
+}
+
 const PARTS: readonly Part[] = ["box", "surface", "layers"];
 
 /** Which parts of an existing cell differ from the manifest. A cell from before parts were tagged has all stale. */
@@ -879,11 +937,15 @@ async function applyCell(ctx: SetCtx, node: ComponentNode, cell: M.Cell, sample:
 
   if (parts.includes("layers")) {
     const layers = manifest.styles.layers[cell.layers];
+    // Each layer found by its id, else (drawn before ids) by its slot's name: a layer a designer
+    // renamed is still the same layer, and is named back.
+    const matched = new Map(layers.map((layer) => [layer.slot, layerOf(node, cell, layer.slot)]));
+    const keep = new Set([...matched.values()].filter(Boolean));
     // A layer this cell no longer draws (a focus ring after the state changed) goes: it is ours.
-    const names = new Set(layers.map((l) => l.slot));
-    for (const child of [...node.children]) if (!names.has(child.name)) child.remove();
+    for (const child of [...node.children]) if (!keep.has(child)) child.remove();
     for (const [index, layer] of layers.entries()) {
-      let child = node.findChild((n) => n.name === layer.slot);
+      let child = matched.get(layer.slot) ?? null;
+      if (child && child.name !== layer.slot) child.name = layer.slot;
       const wanted = layer.kind === "icon" ? "INSTANCE" : layer.kind === "text" ? "TEXT" : "RECTANGLE";
       if (child && child.type !== wanted) {
         ctx.run.log("UPDATE", `layer ${layer.slot} of ${cell.key}`, `replaced: ${child.type} → ${wanted}`);
@@ -899,6 +961,7 @@ async function applyCell(ctx: SetCtx, node: ComponentNode, cell: M.Cell, sample:
               : figma.createRectangle();
         child.name = layer.slot;
       }
+      if (getTag(child, "id") !== layerId(cell, layer.slot)) child.setSharedPluginData(NS, "id", layerId(cell, layer.slot));
       // Move only a layer that is out of place: reinserting an in-place child is still a write.
       if (node.children[index] !== child) node.insertChild(index, child);
       if (layer.kind === "icon") {
@@ -911,7 +974,7 @@ async function applyCell(ctx: SetCtx, node: ComponentNode, cell: M.Cell, sample:
     const box = manifest.styles.boxes[cell.box];
     for (const layer of layers) {
       if (layer.kind !== "overlay" && layer.kind !== "ring") continue;
-      const rect = node.findChild((n) => n.name === layer.slot) as RectangleNode;
+      const rect = layerOf(node, cell, layer.slot) as RectangleNode;
       applyCover(ctx, node, rect, layer, box);
     }
   }
@@ -949,7 +1012,7 @@ function ensureProperties(ctx: SetCtx, set: ComponentSetNode, properties: M.Comp
 
 function bindReferences(ctx: SetCtx, node: ComponentNode, cell: M.Cell, keys: Record<string, string>, defaults: Record<string, string | boolean>) {
   for (const layer of manifest.styles.layers[cell.layers]) {
-    const child = node.findChild((n) => n.name === layer.slot);
+    const child = layerOf(node, cell, layer.slot);
     if (!child) continue;
     const refs: Record<string, string> = {};
     if (layer.kind === "icon") {
@@ -1181,6 +1244,7 @@ async function drawShowcaseRow(
     }
     if (!node) continue;
     const n = node;
+    tag(run, n, { id: `${spec.id}/showcase/${tagKey}` });
     const want: Record<string, boolean> = {};
     for (const [name, value] of Object.entries(column.properties)) {
       const key = keys[name];
@@ -1227,7 +1291,8 @@ async function syncSet(ctx: SetCtx, spec: M.ComponentSet, found: Map<string, Sce
   progress.start(spec.id);
   const frame = page ? ensureFrame(ctx, spec.id, spec.name, page, found) : undefined;
   let set = found.get(spec.id) as ComponentSetNode | undefined;
-  const existing = new Map(ownCells(set).map((c) => [getTag(c, "cell"), c]));
+  const identities = new Identities(ownCells(set));
+  const axisDefaults = parseKey(spec.defaultCell);
   // Each property's default: a text slot's sample, and whether an optional slot shows.
   const samples: Record<string, string | boolean> = {};
   for (const p of spec.properties) samples[p.name] = p.default;
@@ -1259,13 +1324,15 @@ async function syncSet(ctx: SetCtx, spec: M.ComponentSet, found: Map<string, Sce
   const partCounts: Record<Part, number> = { box: 0, surface: 0, layers: 0 };
   for (const { cell, row, col } of queue) {
     const c = cell!;
-    let node = existing.get(c.key);
+    let node = identities.take(c.id, c.key, adoptAcrossNewAxes(c, axisDefaults));
+    if (node && getTag(node, "id") !== c.id && getTag(node, "cell") !== c.key) {
+      run.log("UPDATE", `${spec.name}: ${getTag(node, "cell")}`, `kept as ${c.key}: a new axis, at its default`);
+    }
     if (!node) {
       counts.created++;
       if (run.write(() => void 0) && frame) {
         const fresh = figma.createComponent();
         await applyCell(ctx, fresh, c, samples);
-        fresh.setSharedPluginData(NS, "cell", c.key);
         // Into the set at once, so an interrupted run never leaves loose components on the page.
         // Onto the frame's page first: a component is born on whichever page is current.
         frame.appendChild(fresh);
@@ -1279,6 +1346,11 @@ async function syncSet(ctx: SetCtx, spec: M.ComponentSet, found: Map<string, Sce
       for (const part of parts) partCounts[part]++;
       if (run.write(() => void 0)) await applyCell(ctx, node, c, samples, parts);
     } else counts.unchanged++;
+    // Who it is, written only where it differs: a file synced before ids gets them once, then never.
+    if (node) {
+      tag(run, node, { id: c.id, cell: c.key, props: JSON.stringify(c.props) });
+      tagLayers(run, node, c);
+    }
 
     // In place at once: the first variant fixes the layout, every later one goes straight to its slot.
     if (run.apply && frame && set && node && row >= 0) {
@@ -1298,11 +1370,9 @@ async function syncSet(ctx: SetCtx, spec: M.ComponentSet, found: Map<string, Sce
     await progress.tick(spec.id);
   }
 
-  const wanted = new Set(spec.cells.map((c) => c.key));
-  for (const [key, node] of existing) {
-    if (wanted.has(key)) continue;
+  for (const node of identities.rest()) {
     counts.orphaned++;
-    run.log("ORPHANED", `${spec.name}: ${key}`, "no longer in the manifest; kept");
+    run.log("ORPHANED", `${spec.name}: ${getTag(node, "cell")}`, "no longer in the manifest; kept");
     run.write(() => node.setSharedPluginData(NS, "orphaned", "true"));
   }
   if (counts.created) run.log("CREATE", `${spec.name}: ${counts.created} variants`);
