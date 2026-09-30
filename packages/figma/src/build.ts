@@ -90,12 +90,14 @@ type CellInput = { options: Record<string, string | boolean>; icons: boolean; ic
 function treeFor(realization: Realization, input: CellInput, iconName: string): UsageTree {
   const icon: UsageTree = { contract: "icon", signature: "Icon", options: { name: iconName } };
   const slots: Record<string, UsageTree | string> = {};
+  const printed: Record<string, string> = {};
   for (const [slot, spec] of Object.entries(realization.slots)) {
     if (spec.holds === "icon") {
       if (input.icons) slots[slot] = icon;
-    } else slots[slot] = input.iconChildren ? icon : spec.sample;
+    } else if (spec.option) printed[spec.option] = spec.sample;
+    else slots[slot] = input.iconChildren ? icon : spec.sample;
   }
-  return { contract: realization.contract, signature: realization.signature, options: { ...realization.given, ...input.options }, slots };
+  return { contract: realization.contract, signature: realization.signature, options: { ...realization.given, ...printed, ...input.options }, slots };
 }
 
 /**
@@ -261,6 +263,12 @@ async function compileRealization(realization: Realization, shared: Shared): Pro
   if (!contract) throw new Error(`unknown contract ${realization.contract}`);
   const signature = contract.signatures[realization.signature];
   if (!signature) throw new Error(`unknown signature ${realization.signature}`);
+  // Whether a text or icon must be given: a slot the signature requires, or an option it requires.
+  const requiredSlot = (slot: string) => {
+    const spec = realization.slots[slot];
+    const option = spec?.holds === "text" ? spec.option : undefined;
+    return option ? ((signature.requires ?? []) as readonly string[]).includes(option) : !!signature.slots[slot]?.required;
+  };
   const iconName = (iconContract.options.name as { values: readonly string[] }).values[0];
 
   // The contract's own sheets, as the tree emitter says a Button needs them; the base bundle first.
@@ -292,6 +300,11 @@ async function compileRealization(realization: Realization, shared: Shared): Pro
   const computeCell = (input: CellInput, simulated: readonly string[] = []) => {
     const markup = mounted(emitMarkup(treeFor(realization, input, iconName), { fillDefaults: true }), iconContract);
     const host = elementFrom(markup);
+    for (const [part, style] of Object.entries(realization.mounted ?? {})) {
+      const el = host.classList.contains(contract.parts[part]) ? host : host.querySelector(`.${contract.parts[part]}`);
+      if (!el) throw new Error(`mounted: no part ${part} in the markup`);
+      el.setAttribute("style", `${el.getAttribute("style") ?? ""}; ${style}`.replace(/^; /, ""));
+    }
     for (const pseudo of [...held, ...simulated]) host.setAttribute(markerOf(pseudo), "");
     const tree = computeTree(host, rules, unmatchable);
     return { host, styles: tree.styles, pseudo: tree.pseudo };
@@ -367,7 +380,7 @@ async function compileRealization(realization: Realization, shared: Shared): Pro
     ...(samples ? { title: samples.title } : {}),
     columns: [
       ...Object.entries(realization.slots)
-        .filter(([slot, spec]) => spec.holds === "icon" && !signature.slots[slot]?.required)
+        .filter(([slot, spec]) => spec.holds === "icon" && !requiredSlot(slot))
         .map(([slot]) => ({ slot, properties: { [slot]: true } })),
       ...(samples?.values ?? []).map((value) => ({ slot: `${samples!.slot}=${value}`, label: value, properties: { [samples!.slot]: value } })),
     ],
@@ -382,7 +395,12 @@ async function compileRealization(realization: Realization, shared: Shared): Pro
   const slotPart: Record<string, string> = {};
   const walkTemplate = (node: unknown, holder?: string) => {
     if (!node || typeof node !== "object") return;
-    const n = node as { slot?: string; part?: string; children?: unknown[] };
+    const raw = node as { slot?: string; part?: string; textFromOption?: string; children?: unknown[] };
+    // A text the template prints from an option is placed as the slot that names that option.
+    const printedBy = raw.textFromOption
+      ? Object.entries(realization.slots).find(([, spec]) => spec.holds === "text" && spec.option === raw.textFromOption)?.[0]
+      : undefined;
+    const n = printedBy ? { ...raw, slot: printedBy } : raw;
     if (n.slot && (n.part ?? holder)) slotPart[n.slot] = (n.part ?? holder)!;
     if (n.part && drawnParts[n.part] && !layerOrder.some((l) => l.kind === "part" && l.name === n.part)) layerOrder.push({ kind: "part", name: n.part });
     if (n.slot && realization.slots[n.slot] && !slotOrder.includes(n.slot)) {
@@ -519,7 +537,7 @@ async function compileRealization(realization: Realization, shared: Shared): Pro
             const slot = slotOfText(text) ?? slotOfPart(partOf(el)) ?? "text";
             const spec = realization.slots[slot];
             if (spec?.holds === "text" && spec.hidden) continue;
-            const optional = spec ? !signature.slots[slot]?.required : false;
+            const optional = spec ? !requiredSlot(slot) : false;
             // Drawn at a width, running text wraps inside its block unless it is told not to.
             const wraps = realization.width && computed.get("white-space") !== "nowrap";
             out.push({
@@ -539,7 +557,7 @@ async function compileRealization(realization: Realization, shared: Shared): Pro
             const slot = slotOfPart(part) ?? part ?? "icon";
             const named = realization.slots[slot]?.icon ?? (part ? drawnParts[part]?.icon : undefined) ?? DEFAULT_ICON;
             if (!vocabulary.includes(named)) throw new Error(`icon ${slot}: ${named} is not a stable icon name`);
-            const optional = realization.slots[slot] ? !signature.slots[slot]?.required : false;
+            const optional = realization.slots[slot] ? !requiredSlot(slot) : false;
             out.push({ kind: "icon", slot, ...(optional ? { visibleProperty: slot } : {}), default: named, icon: iconOf(ctx(child)) });
             continue;
           }
@@ -599,7 +617,7 @@ async function compileRealization(realization: Realization, shared: Shared): Pro
           if (spec.holds === "text" && spec.hidden) continue;
           const part = contract.parts[slot];
           const holder = part ? host.querySelector(`.${part}`) : host;
-          const optional = !signature.slots[slot]?.required;
+          const optional = !requiredSlot(slot);
           if (spec.holds === "icon" || iconChildren) {
             const glyph = holder?.querySelector(`.${iconContract.parts.root}`);
             if (!glyph) throw new Unsupported(`no icon in slot ${slot}`);
@@ -638,7 +656,7 @@ async function compileRealization(realization: Realization, shared: Shared): Pro
       if (spec.holds === "text") properties.push({ name: slot, type: "TEXT", default: spec.sample });
       // An optional icon slot starts off (Button's pre/post); an optional text starts shown, under
       // its own name so it does not collide with the text property beside it.
-      if (!signature.slots[slot]?.required) {
+      if (!requiredSlot(slot)) {
         properties.push(spec.holds === "text" ? { name: `show ${slot}`, type: "BOOLEAN", default: true } : { name: slot, type: "BOOLEAN", default: false });
       }
     }
