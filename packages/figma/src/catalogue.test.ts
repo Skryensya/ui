@@ -587,3 +587,11 @@ describe("Hero", () => {
     expect(new Set(set.cells.map((c) => c.surface)).size).toBeGreaterThan(1);
   });
 });
+
+describe("Footer", () => {
+  it("draws its credit on each surface, with and without its divider", () => {
+    const set = manifest.components.find((c): c is ComponentSet => c.kind === "component-set" && c.id === "footer")!;
+    expect(set.properties.map((p) => p.name)).toEqual(["credit 1"]);
+    expect(set.axes.map((a) => a.name)).toEqual(["surface", "divider"]);
+  });
+});
