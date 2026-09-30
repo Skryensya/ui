@@ -30368,6 +30368,216 @@
         "columns": []
       },
       "visualHash": "31aebb96ce26266c"
+    },
+    {
+      "axes": [
+        {
+          "name": "tone",
+          "values": [
+            "neutral",
+            "accent",
+            "success",
+            "warning",
+            "danger"
+          ]
+        }
+      ],
+      "cells": [
+        {
+          "box": "8daac78bc9d07748",
+          "hash": "d7ff9b326183d254",
+          "id": "tag/plain/tone=neutral",
+          "key": "tone=neutral",
+          "layers": "75c66180c1e23c5b",
+          "props": {
+            "tone": "neutral"
+          },
+          "surface": "59379c0d9342d880"
+        },
+        {
+          "box": "8daac78bc9d07748",
+          "hash": "d0c5f6134ec753c6",
+          "id": "tag/plain/tone=accent",
+          "key": "tone=accent",
+          "layers": "66c4165220fe45f7",
+          "props": {
+            "tone": "accent"
+          },
+          "surface": "e5715f37b45b7660"
+        },
+        {
+          "box": "8daac78bc9d07748",
+          "hash": "7dff1013be5eeffd",
+          "id": "tag/plain/tone=success",
+          "key": "tone=success",
+          "layers": "81ef7c0acdc463a6",
+          "props": {
+            "tone": "success"
+          },
+          "surface": "766ed865583fc743"
+        },
+        {
+          "box": "8daac78bc9d07748",
+          "hash": "4be2fe39942898ac",
+          "id": "tag/plain/tone=warning",
+          "key": "tone=warning",
+          "layers": "1d5f3274ec41cf5b",
+          "props": {
+            "tone": "warning"
+          },
+          "surface": "92f576eb8c62ca57"
+        },
+        {
+          "box": "8daac78bc9d07748",
+          "hash": "3663449a7daa3b5f",
+          "id": "tag/plain/tone=danger",
+          "key": "tone=danger",
+          "layers": "f5abbfe0d742e74f",
+          "props": {
+            "tone": "danger"
+          },
+          "surface": "4e52eef86cca829a"
+        }
+      ],
+      "contractHash": "10fe80228571c744",
+      "defaultCell": "tone=neutral",
+      "grid": {
+        "columns": [
+          {
+            "name": "tone",
+            "values": [
+              "neutral",
+              "accent",
+              "success",
+              "warning",
+              "danger"
+            ]
+          }
+        ],
+        "rows": []
+      },
+      "id": "tag/plain",
+      "interactions": [],
+      "kind": "component-set",
+      "name": "Tag / plain",
+      "page": "skryensya",
+      "properties": [
+        {
+          "default": "Tag",
+          "name": "children",
+          "type": "TEXT"
+        }
+      ],
+      "showcase": {
+        "base": {},
+        "columns": []
+      },
+      "visualHash": "d992c30a48e91312"
+    },
+    {
+      "axes": [
+        {
+          "name": "tone",
+          "values": [
+            "neutral",
+            "accent",
+            "success",
+            "warning",
+            "danger"
+          ]
+        }
+      ],
+      "cells": [
+        {
+          "box": "8daac78bc9d07748",
+          "hash": "c757319bb158f801",
+          "id": "tag/brutalist/tone=neutral",
+          "key": "tone=neutral",
+          "layers": "75c66180c1e23c5b",
+          "props": {
+            "tone": "neutral"
+          },
+          "surface": "fa76c879896292f8"
+        },
+        {
+          "box": "8daac78bc9d07748",
+          "hash": "612af7b25905c579",
+          "id": "tag/brutalist/tone=accent",
+          "key": "tone=accent",
+          "layers": "66c4165220fe45f7",
+          "props": {
+            "tone": "accent"
+          },
+          "surface": "d2d9f1714d5631d1"
+        },
+        {
+          "box": "8daac78bc9d07748",
+          "hash": "9525d84215f4bd71",
+          "id": "tag/brutalist/tone=success",
+          "key": "tone=success",
+          "layers": "81ef7c0acdc463a6",
+          "props": {
+            "tone": "success"
+          },
+          "surface": "605ff8ece538fe6e"
+        },
+        {
+          "box": "8daac78bc9d07748",
+          "hash": "6fb745ce6d0a141e",
+          "id": "tag/brutalist/tone=warning",
+          "key": "tone=warning",
+          "layers": "1d5f3274ec41cf5b",
+          "props": {
+            "tone": "warning"
+          },
+          "surface": "22de062121a61238"
+        },
+        {
+          "box": "8daac78bc9d07748",
+          "hash": "5d90ad2fffd785d7",
+          "id": "tag/brutalist/tone=danger",
+          "key": "tone=danger",
+          "layers": "f5abbfe0d742e74f",
+          "props": {
+            "tone": "danger"
+          },
+          "surface": "5c7060fe8e74d2be"
+        }
+      ],
+      "contractHash": "10fe80228571c744",
+      "defaultCell": "tone=neutral",
+      "grid": {
+        "columns": [
+          {
+            "name": "tone",
+            "values": [
+              "neutral",
+              "accent",
+              "success",
+              "warning",
+              "danger"
+            ]
+          }
+        ],
+        "rows": []
+      },
+      "id": "tag/brutalist",
+      "interactions": [],
+      "kind": "component-set",
+      "name": "Tag / brutalist",
+      "page": "skryensya",
+      "properties": [
+        {
+          "default": "Tag",
+          "name": "children",
+          "type": "TEXT"
+        }
+      ],
+      "showcase": {
+        "base": {},
+        "columns": []
+      },
+      "visualHash": "eda78da816314763"
     }
   ],
   "diagnostics": [
@@ -30415,6 +30625,18 @@
     },
     {
       "code": "CONDITION_SKIPPED",
+      "message": "11 rule(s) under a condition the evaluation context does not hold",
+      "severity": "info",
+      "subject": "components/button.css @media (forced-colors: active)"
+    },
+    {
+      "code": "CONDITION_SKIPPED",
+      "message": "1 rule(s) under a condition the evaluation context does not hold",
+      "severity": "info",
+      "subject": "components/button.css @media (prefers-reduced-motion: reduce)"
+    },
+    {
+      "code": "CONDITION_SKIPPED",
       "message": "1 rule(s) under a condition the evaluation context does not hold",
       "severity": "info",
       "subject": "components/button.css @media (prefers-reduced-motion: reduce)"
@@ -30427,9 +30649,27 @@
     },
     {
       "code": "CONDITION_SKIPPED",
+      "message": "2 rule(s) under a condition the evaluation context does not hold",
+      "severity": "info",
+      "subject": "components/tag.css @media (forced-colors: active)"
+    },
+    {
+      "code": "CONDITION_SKIPPED",
       "message": "1 rule(s) under a condition the evaluation context does not hold",
       "severity": "info",
       "subject": "patterns/state-layer.css @media (prefers-reduced-motion: reduce)"
+    },
+    {
+      "code": "CONDITION_SKIPPED",
+      "message": "1 rule(s) under a condition the evaluation context does not hold",
+      "severity": "info",
+      "subject": "patterns/state-layer.css @media (prefers-reduced-motion: reduce)"
+    },
+    {
+      "code": "CONDITION_SKIPPED",
+      "message": "0 rule(s) under a condition the evaluation context does not hold",
+      "severity": "info",
+      "subject": "patterns/state-layer.css @property --state-layer-opacity"
     },
     {
       "code": "CONDITION_SKIPPED",
@@ -30518,18 +30758,30 @@
           "tone",
           "appearance"
         ]
+      },
+      "tag": {
+        "excluded": [
+          "removable"
+        ],
+        "nonVisual": [
+          "removeLabel"
+        ],
+        "visual": [
+          "tone",
+          "appearance"
+        ]
       }
     },
     "tokens": {
-      "catalogueAdded": 341,
-      "componentVariables": 183,
+      "catalogueAdded": 340,
+      "componentVariables": 193,
       "modeValuesBySource": {
         "alias": 203,
-        "evaluated": 419,
-        "literal": 676
+        "evaluated": 437,
+        "literal": 678
       },
       "reached": 133,
-      "reachedAsVariables": 100,
+      "reachedAsVariables": 101,
       "reachedButNotVariables": [
         "--elevation-flat",
         "--elevation-raised",
@@ -30541,19 +30793,21 @@
       "variables": 466
     },
     "variants": {
-      "components": 10,
-      "componentSets": 9,
+      "components": 12,
+      "componentSets": 11,
       "naiveAllOptions": {
         "badge:Badge": 20,
         "badge:BadgeDot": 10,
         "button": 27648,
-        "kbd": 4
+        "kbd": 4,
+        "tag": 20
       },
       "naiveVisualOptions": {
         "badge:Badge": 20,
         "badge:BadgeDot": 5,
         "button": 2304,
-        "kbd": 4
+        "kbd": 4,
+        "tag": 10
       },
       "variantsPerSet": [
         {
@@ -30591,13 +30845,21 @@
         {
           "set": "kbd/brutalist",
           "variants": 2
+        },
+        {
+          "set": "tag/plain",
+          "variants": 5
+        },
+        {
+          "set": "tag/brutalist",
+          "variants": 5
         }
       ],
-      "variantsTotal": 1949
+      "variantsTotal": 1959
     }
   },
   "schemaVersion": 1,
-  "sourceHash": "1f831a64ef9b0286",
+  "sourceHash": "39f2b9e393a1dc9b",
   "stage": {
     "background": {
       "variable": "--color-bg-surface"
@@ -30876,6 +31138,41 @@
         },
         "width": {
           "variable": "button:height:d92dbdc181"
+        }
+      },
+      "8daac78bc9d07748": {
+        "clipsContent": false,
+        "crossAlign": "CENTER",
+        "direction": "HORIZONTAL",
+        "gap": {
+          "variable": "tag:gap:c07648aa2d"
+        },
+        "mainAlign": "MIN",
+        "minHeight": {
+          "variable": "tag:height:672ca1c737"
+        },
+        "padding": {
+          "bottom": {
+            "expression": "0",
+            "value": 0
+          },
+          "left": {
+            "variable": "--space-inset-sm"
+          },
+          "right": {
+            "variable": "--space-inset-sm"
+          },
+          "top": {
+            "expression": "0",
+            "value": 0
+          }
+        },
+        "radius": {
+          "variable": "--radius-control"
+        },
+        "strokeWeight": {
+          "expression": "1px",
+          "value": 1
         }
       },
       "98606d5652a050dd": {
@@ -36105,6 +36402,31 @@
           "kind": "icon",
           "slot": "post",
           "visibleProperty": "post"
+        }
+      ],
+      "75c66180c1e23c5b": [
+        {
+          "kind": "text",
+          "slot": "children",
+          "text": {
+            "fill": {
+              "color": {
+                "variable": "--color-text-secondary"
+              },
+              "type": "SOLID"
+            },
+            "fontFamily": {
+              "variable": "--font-family-body"
+            },
+            "fontSize": {
+              "variable": "--font-size-caption"
+            },
+            "fontWeight": {
+              "variable": "--font-weight-label"
+            },
+            "lineHeight": 150
+          },
+          "textProperty": "children"
         }
       ],
       "7718871bbeecc2ff": [
@@ -42351,6 +42673,46 @@
           }
         ]
       },
+      "22de062121a61238": {
+        "effects": [
+          {
+            "blur": {
+              "expression": "0",
+              "value": 0
+            },
+            "color": {
+              "variable": "tag:brutalist-black:b75258c11d"
+            },
+            "spread": {
+              "expression": "0",
+              "value": 0
+            },
+            "type": "DROP_SHADOW",
+            "x": {
+              "variable": "tag:shadow-1-x:2ad8d54226"
+            },
+            "y": {
+              "variable": "tag:brutalist-offset:747614001f"
+            }
+          }
+        ],
+        "fills": [
+          {
+            "color": {
+              "variable": "--color-bg-warning-subtle"
+            },
+            "type": "SOLID"
+          }
+        ],
+        "strokes": [
+          {
+            "color": {
+              "variable": "tag:brutalist-black:b75258c11d"
+            },
+            "type": "SOLID"
+          }
+        ]
+      },
       "2901357362e6928e": {
         "effects": [
           {
@@ -43305,6 +43667,25 @@
           }
         ]
       },
+      "4e52eef86cca829a": {
+        "effects": [],
+        "fills": [
+          {
+            "color": {
+              "variable": "--color-bg-danger-subtle"
+            },
+            "type": "SOLID"
+          }
+        ],
+        "strokes": [
+          {
+            "color": {
+              "variable": "tag:border:8017ca380b"
+            },
+            "type": "SOLID"
+          }
+        ]
+      },
       "4eb1946c706627e5": {
         "effects": [
           {
@@ -43926,6 +44307,65 @@
           }
         ]
       },
+      "59379c0d9342d880": {
+        "effects": [],
+        "fills": [
+          {
+            "color": {
+              "variable": "--color-bg-surface-sunken"
+            },
+            "type": "SOLID"
+          }
+        ],
+        "strokes": [
+          {
+            "color": {
+              "variable": "tag:border:db64b37eca"
+            },
+            "type": "SOLID"
+          }
+        ]
+      },
+      "5c7060fe8e74d2be": {
+        "effects": [
+          {
+            "blur": {
+              "expression": "0",
+              "value": 0
+            },
+            "color": {
+              "variable": "tag:brutalist-black:b75258c11d"
+            },
+            "spread": {
+              "expression": "0",
+              "value": 0
+            },
+            "type": "DROP_SHADOW",
+            "x": {
+              "variable": "tag:shadow-1-x:2ad8d54226"
+            },
+            "y": {
+              "variable": "tag:brutalist-offset:747614001f"
+            }
+          }
+        ],
+        "fills": [
+          {
+            "color": {
+              "variable": "--color-bg-danger-subtle"
+            },
+            "type": "SOLID"
+          }
+        ],
+        "strokes": [
+          {
+            "color": {
+              "variable": "tag:brutalist-black:b75258c11d"
+            },
+            "type": "SOLID"
+          }
+        ]
+      },
       "5cd3e1b4b0c5d20e": {
         "effects": [],
         "fills": [
@@ -43988,6 +44428,46 @@
           {
             "color": {
               "variable": "--color-border-subtle"
+            },
+            "type": "SOLID"
+          }
+        ]
+      },
+      "605ff8ece538fe6e": {
+        "effects": [
+          {
+            "blur": {
+              "expression": "0",
+              "value": 0
+            },
+            "color": {
+              "variable": "tag:brutalist-black:b75258c11d"
+            },
+            "spread": {
+              "expression": "0",
+              "value": 0
+            },
+            "type": "DROP_SHADOW",
+            "x": {
+              "variable": "tag:shadow-1-x:2ad8d54226"
+            },
+            "y": {
+              "variable": "tag:brutalist-offset:747614001f"
+            }
+          }
+        ],
+        "fills": [
+          {
+            "color": {
+              "variable": "--color-bg-success-subtle"
+            },
+            "type": "SOLID"
+          }
+        ],
+        "strokes": [
+          {
+            "color": {
+              "variable": "tag:brutalist-black:b75258c11d"
             },
             "type": "SOLID"
           }
@@ -44823,6 +45303,25 @@
           }
         ]
       },
+      "766ed865583fc743": {
+        "effects": [],
+        "fills": [
+          {
+            "color": {
+              "variable": "--color-bg-success-subtle"
+            },
+            "type": "SOLID"
+          }
+        ],
+        "strokes": [
+          {
+            "color": {
+              "variable": "tag:border:a64ed0ea95"
+            },
+            "type": "SOLID"
+          }
+        ]
+      },
       "767efad25442c992": {
         "effects": [
           {
@@ -45456,6 +45955,25 @@
           {
             "color": {
               "variable": "button:border-color:3674d0e37e"
+            },
+            "type": "SOLID"
+          }
+        ]
+      },
+      "92f576eb8c62ca57": {
+        "effects": [],
+        "fills": [
+          {
+            "color": {
+              "variable": "--color-bg-warning-subtle"
+            },
+            "type": "SOLID"
+          }
+        ],
+        "strokes": [
+          {
+            "color": {
+              "variable": "tag:border:3b02fb0feb"
             },
             "type": "SOLID"
           }
@@ -48009,6 +48527,46 @@
           }
         ]
       },
+      "d2d9f1714d5631d1": {
+        "effects": [
+          {
+            "blur": {
+              "expression": "0",
+              "value": 0
+            },
+            "color": {
+              "variable": "tag:brutalist-black:b75258c11d"
+            },
+            "spread": {
+              "expression": "0",
+              "value": 0
+            },
+            "type": "DROP_SHADOW",
+            "x": {
+              "variable": "tag:shadow-1-x:2ad8d54226"
+            },
+            "y": {
+              "variable": "tag:brutalist-offset:747614001f"
+            }
+          }
+        ],
+        "fills": [
+          {
+            "color": {
+              "variable": "--color-bg-accent-subtle"
+            },
+            "type": "SOLID"
+          }
+        ],
+        "strokes": [
+          {
+            "color": {
+              "variable": "tag:brutalist-black:b75258c11d"
+            },
+            "type": "SOLID"
+          }
+        ]
+      },
       "d64186f7c47d33fe": {
         "effects": [],
         "fills": [
@@ -48658,6 +49216,25 @@
           }
         ]
       },
+      "e5715f37b45b7660": {
+        "effects": [],
+        "fills": [
+          {
+            "color": {
+              "variable": "--color-bg-accent-subtle"
+            },
+            "type": "SOLID"
+          }
+        ],
+        "strokes": [
+          {
+            "color": {
+              "variable": "tag:border:a449d48447"
+            },
+            "type": "SOLID"
+          }
+        ]
+      },
       "e5ccc049379d01bd": {
         "effects": [
           {
@@ -49113,6 +49690,46 @@
           {
             "color": {
               "variable": "button:brutalist-black:b75258c11d"
+            },
+            "type": "SOLID"
+          }
+        ]
+      },
+      "fa76c879896292f8": {
+        "effects": [
+          {
+            "blur": {
+              "expression": "0",
+              "value": 0
+            },
+            "color": {
+              "variable": "tag:brutalist-black:b75258c11d"
+            },
+            "spread": {
+              "expression": "0",
+              "value": 0
+            },
+            "type": "DROP_SHADOW",
+            "x": {
+              "variable": "tag:shadow-1-x:2ad8d54226"
+            },
+            "y": {
+              "variable": "tag:brutalist-offset:747614001f"
+            }
+          }
+        ],
+        "fills": [
+          {
+            "color": {
+              "variable": "--color-bg-surface-sunken"
+            },
+            "type": "SOLID"
+          }
+        ],
+        "strokes": [
+          {
+            "color": {
+              "variable": "tag:brutalist-black:b75258c11d"
             },
             "type": "SOLID"
           }
@@ -54653,6 +55270,286 @@
       "expression": "calc(2px * 1)",
       "id": "kbd:shadow-1-x:2ad8d54226",
       "name": "kbd/shadow-1-x/brutalist",
+      "source": {
+        "dark": "evaluated",
+        "light": "evaluated"
+      },
+      "type": "FLOAT",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": 2
+        },
+        "light": {
+          "kind": "literal",
+          "value": 2
+        }
+      }
+    },
+    {
+      "codeSyntax": "var(--sk-tag-border)",
+      "collection": "component",
+      "expression": "color-mix(in oklab, var(--color-text-accent) 22%, transparent)",
+      "id": "tag:border:a449d48447",
+      "name": "tag/border/plain/accent",
+      "source": {
+        "dark": "evaluated",
+        "light": "evaluated"
+      },
+      "type": "COLOR",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": {
+            "a": 0.22,
+            "b": 1,
+            "g": 0.6356,
+            "r": 0.3158
+          }
+        },
+        "light": {
+          "kind": "literal",
+          "value": {
+            "a": 0.22,
+            "b": 0.9018,
+            "g": 0.2791,
+            "r": 0.0779
+          }
+        }
+      }
+    },
+    {
+      "codeSyntax": "var(--sk-tag-border)",
+      "collection": "component",
+      "expression": "color-mix(in oklab, var(--color-text-danger) 22%, transparent)",
+      "id": "tag:border:8017ca380b",
+      "name": "tag/border/plain/danger",
+      "source": {
+        "dark": "evaluated",
+        "light": "evaluated"
+      },
+      "type": "COLOR",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": {
+            "a": 0.22,
+            "b": 0.6364,
+            "g": 0.6347,
+            "r": 1
+          }
+        },
+        "light": {
+          "kind": "literal",
+          "value": {
+            "a": 0.22,
+            "b": 0.0288,
+            "g": 0,
+            "r": 0.7569
+          }
+        }
+      }
+    },
+    {
+      "codeSyntax": "var(--sk-tag-border)",
+      "collection": "component",
+      "expression": "color-mix(in oklab, var(--color-text-secondary) 22%, transparent)",
+      "id": "tag:border:db64b37eca",
+      "name": "tag/border/plain/neutral",
+      "source": {
+        "dark": "evaluated",
+        "light": "evaluated"
+      },
+      "type": "COLOR",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": {
+            "a": 0.22,
+            "b": 0.8184,
+            "g": 0.8275,
+            "r": 0.8412
+          }
+        },
+        "light": {
+          "kind": "literal",
+          "value": {
+            "a": 0.22,
+            "b": 0.2323,
+            "g": 0.2504,
+            "r": 0.2685
+          }
+        }
+      }
+    },
+    {
+      "codeSyntax": "var(--sk-tag-border)",
+      "collection": "component",
+      "expression": "color-mix(in oklab, var(--color-text-success) 22%, transparent)",
+      "id": "tag:border:a64ed0ea95",
+      "name": "tag/border/plain/success",
+      "source": {
+        "dark": "evaluated",
+        "light": "evaluated"
+      },
+      "type": "COLOR",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": {
+            "a": 0.22,
+            "b": 0.7088,
+            "g": 0.9151,
+            "r": 0.3699
+          }
+        },
+        "light": {
+          "kind": "literal",
+          "value": {
+            "a": 0.22,
+            "b": 0.2706,
+            "g": 0.3777,
+            "r": 0
+          }
+        }
+      }
+    },
+    {
+      "codeSyntax": "var(--sk-tag-border)",
+      "collection": "component",
+      "expression": "color-mix(in oklab, var(--color-text-warning) 22%, transparent)",
+      "id": "tag:border:3b02fb0feb",
+      "name": "tag/border/plain/warning",
+      "source": {
+        "dark": "evaluated",
+        "light": "evaluated"
+      },
+      "type": "COLOR",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": {
+            "a": 0.22,
+            "b": 0.1876,
+            "g": 0.8238,
+            "r": 1
+          }
+        },
+        "light": {
+          "kind": "literal",
+          "value": {
+            "a": 0.22,
+            "b": 0,
+            "g": 0.2338,
+            "r": 0.5903
+          }
+        }
+      }
+    },
+    {
+      "codeSyntax": "var(--brutalist-black)",
+      "collection": "component",
+      "expression": "oklch(from var(--shadow-lg) l c h / 1)",
+      "id": "tag:brutalist-black:b75258c11d",
+      "name": "tag/brutalist-black/brutalist",
+      "source": {
+        "dark": "evaluated",
+        "light": "evaluated"
+      },
+      "type": "COLOR",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": {
+            "a": 1,
+            "b": 0,
+            "g": 0,
+            "r": 0
+          }
+        },
+        "light": {
+          "kind": "literal",
+          "value": {
+            "a": 1,
+            "b": 0,
+            "g": 0,
+            "r": 0
+          }
+        }
+      }
+    },
+    {
+      "codeSyntax": "var(--brutalist-offset)",
+      "collection": "component",
+      "expression": "2px",
+      "id": "tag:brutalist-offset:747614001f",
+      "name": "tag/brutalist-offset/brutalist",
+      "source": {
+        "dark": "literal",
+        "light": "literal"
+      },
+      "type": "FLOAT",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": 2
+        },
+        "light": {
+          "kind": "literal",
+          "value": 2
+        }
+      }
+    },
+    {
+      "codeSyntax": "var(--sk-tag-gap)",
+      "collection": "component",
+      "expression": "calc(var(--space-inline-xs) * 1.5)",
+      "id": "tag:gap:c07648aa2d",
+      "name": "tag/gap",
+      "source": {
+        "dark": "evaluated",
+        "light": "evaluated"
+      },
+      "type": "FLOAT",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": 6
+        },
+        "light": {
+          "kind": "literal",
+          "value": 6
+        }
+      }
+    },
+    {
+      "codeSyntax": "var(--sk-tag-height)",
+      "collection": "component",
+      "expression": "1.75rem",
+      "id": "tag:height:672ca1c737",
+      "name": "tag/height",
+      "source": {
+        "dark": "evaluated",
+        "light": "evaluated"
+      },
+      "type": "FLOAT",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": 28
+        },
+        "light": {
+          "kind": "literal",
+          "value": 28
+        }
+      }
+    },
+    {
+      "codeSyntax": "",
+      "collection": "component",
+      "expression": "calc(2px * 1)",
+      "id": "tag:shadow-1-x:2ad8d54226",
+      "name": "tag/shadow-1-x/brutalist",
       "source": {
         "dark": "evaluated",
         "light": "evaluated"
