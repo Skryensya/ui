@@ -1,6 +1,6 @@
 import { beforeAll, describe, expect, it } from "vitest";
 import { buildFigmaManifest } from "./build.js";
-import type { ComponentSet, FigmaManifest } from "./manifest-types.js";
+import type { ComponentSet, FigmaManifest, Layer } from "./manifest-types.js";
 import { catalogue } from "./realizations/index.js";
 
 let manifest: FigmaManifest;
@@ -217,7 +217,7 @@ describe("Steps", () => {
     const across = set.cells.find((c) => c.props.orientation === "horizontal")!;
     const [first] = manifest.styles.layers[across.layers];
     expect(first.kind === "frame" && manifest.styles.boxes[first.box]).toMatchObject({ direction: "VERTICAL", grow: true });
-    expect(first.kind === "frame" && first.layers.map((l) => l.slot)).toEqual(["marker", "span"]);
+    expect(first.kind === "frame" && first.layers.map((l) => l.slot)).toEqual(["after", "marker", "span"]);
     expect(set.cells.find((c) => c.props.orientation === "vertical")).toBeDefined();
   });
 });
@@ -340,5 +340,29 @@ describe("Callout, at a width", () => {
     expect(icon).toMatchObject({ kind: "frame", slot: "icon", visibleProperty: "icon" });
     expect(content.kind === "frame" && content.layers.every((l) => l.kind === "text" && l.fill)).toBe(true);
     expect(manifest.styles.boxes[set.cells[0].box].gap).toBeDefined();
+  });
+});
+
+describe("Steps' connectors", () => {
+  const items = (id: string, orientation: string) => {
+    const set = manifest.components.find((c): c is ComponentSet => c.kind === "component-set" && c.id === id)!;
+    return manifest.styles.layers[set.cells.find((c) => c.props.orientation === orientation)!.layers];
+  };
+  const connector = (item: Layer) => (item.kind === "frame" ? item.layers.find((l) => l.slot === "after") : undefined);
+
+  it("joins each marker to the next, from the step's centre across its width", () => {
+    const [first, , last] = items("steps/markers", "horizontal");
+    const line = connector(first);
+    expect(line?.kind === "frame" && manifest.styles.boxes[line.box]).toMatchObject({ absolute: { x: 80 }, width: { value: 160 } });
+    expect(connector(last)).toBeUndefined();
+  });
+
+  it("runs down to the step's bottom edge when vertical", () => {
+    const line = connector(items("steps/markers", "vertical")[0]);
+    expect(line?.kind === "frame" && manifest.styles.boxes[line.box].absolute?.reach).toBe("bottom");
+  });
+
+  it("draws segments as bars alone, their hidden labels leaving no empty box", () => {
+    for (const item of items("steps/segments", "horizontal")) expect(item.kind === "frame" && item.layers.map((l) => l.slot)).toEqual(["marker"]);
   });
 });

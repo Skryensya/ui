@@ -107,6 +107,11 @@ function gradient(inner: string, ctx: Context, role: string): Paint | undefined 
 }
 
 /** CSS lists the top layer first and the colour under everything; Figma lists bottom first. */
+/** An element's background as Figma fills: the colour under, images over. */
+export function backgroundOf(ctx: Context, role = "fill"): Paint[] {
+  return fills(ctx, role);
+}
+
 function fills(ctx: Context, role = "fill"): Paint[] {
   const raw = prop(ctx, "background");
   if (raw === undefined) return [];
