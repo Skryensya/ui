@@ -733,6 +733,11 @@ async function compileRealization(authored: Realization, shared: Shared): Promis
           const rowTrack = rows.length > 0 && tracks.length <= 1 ? rows[row++] : undefined;
           const fixedRow = rowTrack !== undefined && !/fr\b|^auto$|content/.test(rowTrack);
           if (fixedRow) sized.set("height", rowTrack);
+          // An only child slid along by `translateX` (a switch's thumb, on) sits that much further in:
+          // what auto layout says with the parent's leading padding.
+          const only = child.children.length === 1 ? child.children[0] : undefined;
+          const slide = only && /^translateX\((.+)\)$/.exec(cascaded.get(only)?.get("transform") ?? "")?.[1];
+          if (slide) sized.set("padding-left", `calc(${sized.get("padding-left") ?? "0px"} + ${slide})`);
           const trackWidth = fixedTrack ? lengthOf(track, child) : undefined;
           const onlyText = child.children.length === 0;
           if (onlyText && !fixedTrack && !fixedRow && !paints(ctxOf(sized))) {

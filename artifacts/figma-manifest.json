@@ -37569,6 +37569,482 @@
         "columns": []
       },
       "visualHash": "99e7b63fc34ac2a6"
+    },
+    {
+      "axes": [
+        {
+          "name": "state",
+          "values": [
+            "off",
+            "hover",
+            "focus",
+            "on",
+            "disabled"
+          ]
+        }
+      ],
+      "cells": [
+        {
+          "box": "9d7fb4db8fbe6340",
+          "hash": "3146855cf432ece7",
+          "id": "switch/plain/state=off",
+          "key": "state=off",
+          "layers": "0da8a679fa57f5e9",
+          "props": {
+            "state": "off"
+          },
+          "surface": "fa0b643878e9242d"
+        },
+        {
+          "box": "9d7fb4db8fbe6340",
+          "hash": "592ce5b85621947a",
+          "id": "switch/plain/state=hover",
+          "key": "state=hover",
+          "layers": "0da8a679fa57f5e9",
+          "props": {
+            "state": "hover"
+          },
+          "surface": "fa0b643878e9242d"
+        },
+        {
+          "box": "9d7fb4db8fbe6340",
+          "hash": "03cc046704527a0f",
+          "id": "switch/plain/state=focus",
+          "key": "state=focus",
+          "layers": "d7186049ed1f7f09",
+          "props": {
+            "state": "focus"
+          },
+          "surface": "fa0b643878e9242d"
+        },
+        {
+          "box": "9d7fb4db8fbe6340",
+          "hash": "cbb6b30acb25d499",
+          "id": "switch/plain/state=on",
+          "key": "state=on",
+          "layers": "345549fed6d3f059",
+          "props": {
+            "state": "on"
+          },
+          "surface": "fa0b643878e9242d"
+        },
+        {
+          "box": "9d7fb4db8fbe6340",
+          "hash": "2bbacaf0ae5dfc45",
+          "id": "switch/plain/state=disabled",
+          "key": "state=disabled",
+          "layers": "83e00beb09c00373",
+          "props": {
+            "state": "disabled"
+          },
+          "surface": "fa0b643878e9242d"
+        }
+      ],
+      "contractHash": "1fcefb32ea77badd",
+      "defaultCell": "state=off",
+      "grid": {
+        "columns": [
+          {
+            "name": "state",
+            "values": [
+              "off",
+              "hover",
+              "focus",
+              "on",
+              "disabled"
+            ]
+          }
+        ],
+        "rows": []
+      },
+      "id": "switch/plain",
+      "interactions": [
+        {
+          "axis": "state",
+          "from": "off",
+          "to": "hover",
+          "trigger": "ON_HOVER"
+        }
+      ],
+      "kind": "component-set",
+      "name": "Switch / plain",
+      "page": "skryensya",
+      "properties": [
+        {
+          "default": "Notifications",
+          "name": "children",
+          "type": "TEXT"
+        },
+        {
+          "default": true,
+          "name": "show children",
+          "type": "BOOLEAN"
+        }
+      ],
+      "showcase": {
+        "base": {
+          "state": "off"
+        },
+        "columns": []
+      },
+      "visualHash": "26dcd69b74ffea68"
+    },
+    {
+      "axes": [
+        {
+          "name": "state",
+          "values": [
+            "off",
+            "hover",
+            "focus",
+            "on",
+            "disabled"
+          ]
+        }
+      ],
+      "cells": [
+        {
+          "box": "9d7fb4db8fbe6340",
+          "hash": "cea0ccc81c60b62d",
+          "id": "switch/tactile/state=off",
+          "key": "state=off",
+          "layers": "df1321ffd4c80a12",
+          "props": {
+            "state": "off"
+          },
+          "surface": "fa0b643878e9242d"
+        },
+        {
+          "box": "9d7fb4db8fbe6340",
+          "hash": "1469a1a530b9e6f5",
+          "id": "switch/tactile/state=hover",
+          "key": "state=hover",
+          "layers": "df1321ffd4c80a12",
+          "props": {
+            "state": "hover"
+          },
+          "surface": "fa0b643878e9242d"
+        },
+        {
+          "box": "9d7fb4db8fbe6340",
+          "hash": "eb0e88347f3d9803",
+          "id": "switch/tactile/state=focus",
+          "key": "state=focus",
+          "layers": "62925c72ac0fd2ed",
+          "props": {
+            "state": "focus"
+          },
+          "surface": "fa0b643878e9242d"
+        },
+        {
+          "box": "9d7fb4db8fbe6340",
+          "hash": "21f702af55acca84",
+          "id": "switch/tactile/state=on",
+          "key": "state=on",
+          "layers": "dfd7d08c61f95ec9",
+          "props": {
+            "state": "on"
+          },
+          "surface": "fa0b643878e9242d"
+        },
+        {
+          "box": "9d7fb4db8fbe6340",
+          "hash": "3382e0fec9c10a4f",
+          "id": "switch/tactile/state=disabled",
+          "key": "state=disabled",
+          "layers": "1bb7ca23597f2d23",
+          "props": {
+            "state": "disabled"
+          },
+          "surface": "fa0b643878e9242d"
+        }
+      ],
+      "contractHash": "1fcefb32ea77badd",
+      "defaultCell": "state=off",
+      "grid": {
+        "columns": [
+          {
+            "name": "state",
+            "values": [
+              "off",
+              "hover",
+              "focus",
+              "on",
+              "disabled"
+            ]
+          }
+        ],
+        "rows": []
+      },
+      "id": "switch/tactile",
+      "interactions": [
+        {
+          "axis": "state",
+          "from": "off",
+          "to": "hover",
+          "trigger": "ON_HOVER"
+        }
+      ],
+      "kind": "component-set",
+      "name": "Switch / tactile",
+      "page": "skryensya",
+      "properties": [
+        {
+          "default": "Notifications",
+          "name": "children",
+          "type": "TEXT"
+        },
+        {
+          "default": true,
+          "name": "show children",
+          "type": "BOOLEAN"
+        }
+      ],
+      "showcase": {
+        "base": {
+          "state": "off"
+        },
+        "columns": []
+      },
+      "visualHash": "28fca7f3f77dd20e"
+    },
+    {
+      "axes": [
+        {
+          "name": "state",
+          "values": [
+            "off",
+            "hover",
+            "focus",
+            "on",
+            "disabled"
+          ]
+        }
+      ],
+      "cells": [
+        {
+          "box": "9d7fb4db8fbe6340",
+          "hash": "6de923a31a8c2571",
+          "id": "switch/brutalist/state=off",
+          "key": "state=off",
+          "layers": "223c4d9b85cf6db9",
+          "props": {
+            "state": "off"
+          },
+          "surface": "fa0b643878e9242d"
+        },
+        {
+          "box": "9d7fb4db8fbe6340",
+          "hash": "48d9251e5fc02e43",
+          "id": "switch/brutalist/state=hover",
+          "key": "state=hover",
+          "layers": "223c4d9b85cf6db9",
+          "props": {
+            "state": "hover"
+          },
+          "surface": "fa0b643878e9242d"
+        },
+        {
+          "box": "9d7fb4db8fbe6340",
+          "hash": "6fae3be2c9b4dd89",
+          "id": "switch/brutalist/state=focus",
+          "key": "state=focus",
+          "layers": "aa074eed838e2b19",
+          "props": {
+            "state": "focus"
+          },
+          "surface": "fa0b643878e9242d"
+        },
+        {
+          "box": "9d7fb4db8fbe6340",
+          "hash": "4e3f65ad2a15f410",
+          "id": "switch/brutalist/state=on",
+          "key": "state=on",
+          "layers": "70b535fd7f3e4349",
+          "props": {
+            "state": "on"
+          },
+          "surface": "fa0b643878e9242d"
+        },
+        {
+          "box": "9d7fb4db8fbe6340",
+          "hash": "3a39d8edb72480cc",
+          "id": "switch/brutalist/state=disabled",
+          "key": "state=disabled",
+          "layers": "39b20f282cae9778",
+          "props": {
+            "state": "disabled"
+          },
+          "surface": "fa0b643878e9242d"
+        }
+      ],
+      "contractHash": "1fcefb32ea77badd",
+      "defaultCell": "state=off",
+      "grid": {
+        "columns": [
+          {
+            "name": "state",
+            "values": [
+              "off",
+              "hover",
+              "focus",
+              "on",
+              "disabled"
+            ]
+          }
+        ],
+        "rows": []
+      },
+      "id": "switch/brutalist",
+      "interactions": [
+        {
+          "axis": "state",
+          "from": "off",
+          "to": "hover",
+          "trigger": "ON_HOVER"
+        }
+      ],
+      "kind": "component-set",
+      "name": "Switch / brutalist",
+      "page": "skryensya",
+      "properties": [
+        {
+          "default": "Notifications",
+          "name": "children",
+          "type": "TEXT"
+        },
+        {
+          "default": true,
+          "name": "show children",
+          "type": "BOOLEAN"
+        }
+      ],
+      "showcase": {
+        "base": {
+          "state": "off"
+        },
+        "columns": []
+      },
+      "visualHash": "b219ece04305998d"
+    },
+    {
+      "axes": [
+        {
+          "name": "state",
+          "values": [
+            "off",
+            "hover",
+            "focus",
+            "on",
+            "disabled"
+          ]
+        }
+      ],
+      "cells": [
+        {
+          "box": "9d7fb4db8fbe6340",
+          "hash": "daf02a61a13145df",
+          "id": "switch/frosted/state=off",
+          "key": "state=off",
+          "layers": "338e9c162e4cf4f6",
+          "props": {
+            "state": "off"
+          },
+          "surface": "fa0b643878e9242d"
+        },
+        {
+          "box": "9d7fb4db8fbe6340",
+          "hash": "48e4ecd4a9d66f81",
+          "id": "switch/frosted/state=hover",
+          "key": "state=hover",
+          "layers": "338e9c162e4cf4f6",
+          "props": {
+            "state": "hover"
+          },
+          "surface": "fa0b643878e9242d"
+        },
+        {
+          "box": "9d7fb4db8fbe6340",
+          "hash": "78153991c6ad0855",
+          "id": "switch/frosted/state=focus",
+          "key": "state=focus",
+          "layers": "70035836190a68b0",
+          "props": {
+            "state": "focus"
+          },
+          "surface": "fa0b643878e9242d"
+        },
+        {
+          "box": "9d7fb4db8fbe6340",
+          "hash": "6e63b251c17e6114",
+          "id": "switch/frosted/state=on",
+          "key": "state=on",
+          "layers": "2c12e9bddcb916d0",
+          "props": {
+            "state": "on"
+          },
+          "surface": "fa0b643878e9242d"
+        },
+        {
+          "box": "9d7fb4db8fbe6340",
+          "hash": "a39d706b69894b8f",
+          "id": "switch/frosted/state=disabled",
+          "key": "state=disabled",
+          "layers": "c7b0ebe656e6e67d",
+          "props": {
+            "state": "disabled"
+          },
+          "surface": "fa0b643878e9242d"
+        }
+      ],
+      "contractHash": "1fcefb32ea77badd",
+      "defaultCell": "state=off",
+      "grid": {
+        "columns": [
+          {
+            "name": "state",
+            "values": [
+              "off",
+              "hover",
+              "focus",
+              "on",
+              "disabled"
+            ]
+          }
+        ],
+        "rows": []
+      },
+      "id": "switch/frosted",
+      "interactions": [
+        {
+          "axis": "state",
+          "from": "off",
+          "to": "hover",
+          "trigger": "ON_HOVER"
+        }
+      ],
+      "kind": "component-set",
+      "name": "Switch / frosted",
+      "page": "skryensya",
+      "properties": [
+        {
+          "default": "Notifications",
+          "name": "children",
+          "type": "TEXT"
+        },
+        {
+          "default": true,
+          "name": "show children",
+          "type": "BOOLEAN"
+        }
+      ],
+      "showcase": {
+        "base": {
+          "state": "off"
+        },
+        "columns": []
+      },
+      "visualHash": "679917fcf5ab0bbc"
     }
   ],
   "diagnostics": [
@@ -37781,6 +38257,12 @@
       "message": "7 rule(s) under a condition the evaluation context does not hold",
       "severity": "info",
       "subject": "components/steps.css @media (width < 36rem)"
+    },
+    {
+      "code": "CONDITION_SKIPPED",
+      "message": "4 rule(s) under a condition the evaluation context does not hold",
+      "severity": "info",
+      "subject": "components/switch.css @media (forced-colors: active)"
     },
     {
       "code": "CONDITION_SKIPPED",
@@ -38270,6 +38752,18 @@
         "nonVisual": [],
         "visual": []
       },
+      "switch": {
+        "excluded": [],
+        "nonVisual": [
+          "name",
+          "value"
+        ],
+        "visual": [
+          "defaultChecked",
+          "disabled",
+          "appearance"
+        ]
+      },
       "tabs": {
         "excluded": [
           "activationMode"
@@ -38322,15 +38816,15 @@
       }
     },
     "tokens": {
-      "catalogueAdded": 309,
-      "componentVariables": 329,
+      "catalogueAdded": 308,
+      "componentVariables": 345,
       "modeValuesBySource": {
         "alias": 203,
-        "evaluated": 661,
-        "literal": 726
+        "evaluated": 689,
+        "literal": 730
       },
-      "reached": 200,
-      "reachedAsVariables": 149,
+      "reached": 201,
+      "reachedAsVariables": 150,
       "reachedButNotVariables": [
         "--elevation-flat",
         "--elevation-overlay",
@@ -38346,8 +38840,8 @@
       "variables": 466
     },
     "variants": {
-      "components": 67,
-      "componentSets": 66,
+      "components": 71,
+      "componentSets": 70,
       "naiveAllOptions": {
         "accordion": 32,
         "avatar": 8,
@@ -38376,6 +38870,7 @@
         "stat": 6,
         "steps": 4,
         "strong": 1,
+        "switch": 16,
         "tabs": 64,
         "tag": 20,
         "text": 288,
@@ -38409,6 +38904,7 @@
         "stat": 3,
         "steps": 4,
         "strong": 1,
+        "switch": 16,
         "tabs": 32,
         "tag": 10,
         "text": 48,
@@ -38678,13 +39174,29 @@
         {
           "set": "checkbox/frosted",
           "variants": 6
+        },
+        {
+          "set": "switch/plain",
+          "variants": 5
+        },
+        {
+          "set": "switch/tactile",
+          "variants": 5
+        },
+        {
+          "set": "switch/brutalist",
+          "variants": 5
+        },
+        {
+          "set": "switch/frosted",
+          "variants": 5
         }
       ],
-      "variantsTotal": 2263
+      "variantsTotal": 2283
     }
   },
   "schemaVersion": 1,
-  "sourceHash": "f936125fc4a5b569",
+  "sourceHash": "cdd2b2a8ae73262a",
   "stage": {
     "background": {
       "variable": "--color-bg-surface"
@@ -38742,6 +39254,43 @@
         "width": {
           "expression": "360px",
           "value": 360
+        }
+      },
+      "0930eb55e7cd4388": {
+        "clipsContent": false,
+        "crossAlign": "MIN",
+        "direction": "HORIZONTAL",
+        "height": {
+          "variable": "switch:height:1d6d3e6942"
+        },
+        "mainAlign": "MIN",
+        "padding": {
+          "bottom": {
+            "expression": "0",
+            "value": 0
+          },
+          "left": {
+            "expression": "0",
+            "value": 0
+          },
+          "right": {
+            "expression": "0",
+            "value": 0
+          },
+          "top": {
+            "expression": "0",
+            "value": 0
+          }
+        },
+        "radius": {
+          "variable": "--radius-pill"
+        },
+        "strokeWeight": {
+          "expression": "1px",
+          "value": 1
+        },
+        "width": {
+          "variable": "switch:width:1d6d3e6942"
         }
       },
       "098ee3a6c211d167": {
@@ -40034,6 +40583,38 @@
           }
         }
       },
+      "510803535dd37bc0": {
+        "clipsContent": false,
+        "crossAlign": "MIN",
+        "direction": "HORIZONTAL",
+        "height": {
+          "variable": "--size-icon-lg"
+        },
+        "mainAlign": "MIN",
+        "padding": {
+          "bottom": {
+            "variable": "--space-inset-xs"
+          },
+          "left": {
+            "variable": "switch:padding-left:a478314d38"
+          },
+          "right": {
+            "variable": "--space-inset-xs"
+          },
+          "top": {
+            "variable": "--space-inset-xs"
+          }
+        },
+        "radius": {
+          "variable": "--radius-pill"
+        },
+        "strokeWeight": {
+          "variable": "switch:border-width:93e20626bf"
+        },
+        "width": {
+          "variable": "switch:inline-size:7a45f5c3de"
+        }
+      },
       "5172aea031630ba5": {
         "clipsContent": false,
         "crossAlign": "CENTER",
@@ -40219,6 +40800,39 @@
         "width": {
           "expression": "480px",
           "value": 480
+        }
+      },
+      "5a77ef77d86af815": {
+        "clipsContent": false,
+        "crossAlign": "MIN",
+        "direction": "HORIZONTAL",
+        "height": {
+          "variable": "switch:height:1d6d3e6942"
+        },
+        "mainAlign": "MIN",
+        "padding": {
+          "bottom": {
+            "expression": "0",
+            "value": 0
+          },
+          "left": {
+            "expression": "0",
+            "value": 0
+          },
+          "right": {
+            "expression": "0",
+            "value": 0
+          },
+          "top": {
+            "expression": "0",
+            "value": 0
+          }
+        },
+        "radius": {
+          "variable": "--radius-pill"
+        },
+        "width": {
+          "variable": "switch:width:1d6d3e6942"
         }
       },
       "5cf1567d636276e6": {
@@ -40504,6 +41118,38 @@
             "expression": "0",
             "value": 0
           }
+        }
+      },
+      "620a2846109d1846": {
+        "clipsContent": false,
+        "crossAlign": "MIN",
+        "direction": "HORIZONTAL",
+        "height": {
+          "variable": "--size-icon-lg"
+        },
+        "mainAlign": "MIN",
+        "padding": {
+          "bottom": {
+            "variable": "--space-inset-xs"
+          },
+          "left": {
+            "variable": "--space-inset-xs"
+          },
+          "right": {
+            "variable": "--space-inset-xs"
+          },
+          "top": {
+            "variable": "--space-inset-xs"
+          }
+        },
+        "radius": {
+          "variable": "--radius-pill"
+        },
+        "strokeWeight": {
+          "variable": "switch:border-width:93e20626bf"
+        },
+        "width": {
+          "variable": "switch:inline-size:7a45f5c3de"
         }
       },
       "620ea04baa3172a1": {
@@ -44512,6 +45158,47 @@
           "textProperty": "children"
         }
       ],
+      "0da8a679fa57f5e9": [
+        {
+          "box": "620a2846109d1846",
+          "kind": "frame",
+          "layers": [
+            {
+              "box": "5a77ef77d86af815",
+              "kind": "frame",
+              "layers": [],
+              "slot": "switchThumb",
+              "surface": "fe4b04d4da9ef80e"
+            }
+          ],
+          "slot": "switchControl",
+          "surface": "56450dc026afd09d"
+        },
+        {
+          "kind": "text",
+          "slot": "children",
+          "text": {
+            "fill": {
+              "color": {
+                "variable": "--color-text-primary"
+              },
+              "type": "SOLID"
+            },
+            "fontFamily": {
+              "variable": "--font-family-body"
+            },
+            "fontSize": {
+              "variable": "--font-size-body"
+            },
+            "fontWeight": {
+              "variable": "--font-weight-body"
+            },
+            "lineHeight": 150
+          },
+          "textProperty": "children",
+          "visibleProperty": "show children"
+        }
+      ],
       "0e9ca0df5a6afe60": [
         {
           "fills": [
@@ -46137,6 +46824,47 @@
           }
         }
       ],
+      "1bb7ca23597f2d23": [
+        {
+          "box": "620a2846109d1846",
+          "kind": "frame",
+          "layers": [
+            {
+              "box": "5a77ef77d86af815",
+              "kind": "frame",
+              "layers": [],
+              "slot": "switchThumb",
+              "surface": "b5c98a69f3b59b5b"
+            }
+          ],
+          "slot": "switchControl",
+          "surface": "61b4cb2607f3b0f7"
+        },
+        {
+          "kind": "text",
+          "slot": "children",
+          "text": {
+            "fill": {
+              "color": {
+                "variable": "--color-text-disabled"
+              },
+              "type": "SOLID"
+            },
+            "fontFamily": {
+              "variable": "--font-family-body"
+            },
+            "fontSize": {
+              "variable": "--font-size-body"
+            },
+            "fontWeight": {
+              "variable": "--font-weight-body"
+            },
+            "lineHeight": 150
+          },
+          "textProperty": "children",
+          "visibleProperty": "show children"
+        }
+      ],
       "1c59cf64bf4ce7b3": [
         {
           "kind": "text",
@@ -46571,6 +47299,47 @@
             "lineHeight": 150
           },
           "textProperty": "children"
+        }
+      ],
+      "223c4d9b85cf6db9": [
+        {
+          "box": "620a2846109d1846",
+          "kind": "frame",
+          "layers": [
+            {
+              "box": "0930eb55e7cd4388",
+              "kind": "frame",
+              "layers": [],
+              "slot": "switchThumb",
+              "surface": "87214de7a5205d5a"
+            }
+          ],
+          "slot": "switchControl",
+          "surface": "2014978e43004e13"
+        },
+        {
+          "kind": "text",
+          "slot": "children",
+          "text": {
+            "fill": {
+              "color": {
+                "variable": "--color-text-primary"
+              },
+              "type": "SOLID"
+            },
+            "fontFamily": {
+              "variable": "--font-family-body"
+            },
+            "fontSize": {
+              "variable": "--font-size-body"
+            },
+            "fontWeight": {
+              "variable": "--font-weight-body"
+            },
+            "lineHeight": 150
+          },
+          "textProperty": "children",
+          "visibleProperty": "show children"
         }
       ],
       "23a40221c2b89065": [
@@ -47754,6 +48523,47 @@
           "visibleProperty": "show children"
         }
       ],
+      "2c12e9bddcb916d0": [
+        {
+          "box": "510803535dd37bc0",
+          "kind": "frame",
+          "layers": [
+            {
+              "box": "5a77ef77d86af815",
+              "kind": "frame",
+              "layers": [],
+              "slot": "switchThumb",
+              "surface": "fe4b04d4da9ef80e"
+            }
+          ],
+          "slot": "switchControl",
+          "surface": "4857a6d722b3ce4b"
+        },
+        {
+          "kind": "text",
+          "slot": "children",
+          "text": {
+            "fill": {
+              "color": {
+                "variable": "--color-text-primary"
+              },
+              "type": "SOLID"
+            },
+            "fontFamily": {
+              "variable": "--font-family-body"
+            },
+            "fontSize": {
+              "variable": "--font-size-body"
+            },
+            "fontWeight": {
+              "variable": "--font-weight-body"
+            },
+            "lineHeight": 150
+          },
+          "textProperty": "children",
+          "visibleProperty": "show children"
+        }
+      ],
       "2c43b8d0491d870f": [
         {
           "fills": [
@@ -48397,6 +49207,88 @@
           "visibleProperty": "post"
         }
       ],
+      "338e9c162e4cf4f6": [
+        {
+          "box": "620a2846109d1846",
+          "kind": "frame",
+          "layers": [
+            {
+              "box": "5a77ef77d86af815",
+              "kind": "frame",
+              "layers": [],
+              "slot": "switchThumb",
+              "surface": "fe4b04d4da9ef80e"
+            }
+          ],
+          "slot": "switchControl",
+          "surface": "2f31fa60ac554c18"
+        },
+        {
+          "kind": "text",
+          "slot": "children",
+          "text": {
+            "fill": {
+              "color": {
+                "variable": "--color-text-primary"
+              },
+              "type": "SOLID"
+            },
+            "fontFamily": {
+              "variable": "--font-family-body"
+            },
+            "fontSize": {
+              "variable": "--font-size-body"
+            },
+            "fontWeight": {
+              "variable": "--font-weight-body"
+            },
+            "lineHeight": 150
+          },
+          "textProperty": "children",
+          "visibleProperty": "show children"
+        }
+      ],
+      "345549fed6d3f059": [
+        {
+          "box": "510803535dd37bc0",
+          "kind": "frame",
+          "layers": [
+            {
+              "box": "5a77ef77d86af815",
+              "kind": "frame",
+              "layers": [],
+              "slot": "switchThumb",
+              "surface": "fe4b04d4da9ef80e"
+            }
+          ],
+          "slot": "switchControl",
+          "surface": "4302d6b465113eb5"
+        },
+        {
+          "kind": "text",
+          "slot": "children",
+          "text": {
+            "fill": {
+              "color": {
+                "variable": "--color-text-primary"
+              },
+              "type": "SOLID"
+            },
+            "fontFamily": {
+              "variable": "--font-family-body"
+            },
+            "fontSize": {
+              "variable": "--font-size-body"
+            },
+            "fontWeight": {
+              "variable": "--font-weight-body"
+            },
+            "lineHeight": 150
+          },
+          "textProperty": "children",
+          "visibleProperty": "show children"
+        }
+      ],
       "34c68786f6f300c5": [
         {
           "box": "fde207980689ef65",
@@ -48828,6 +49720,47 @@
             "lineHeight": 150
           },
           "textProperty": "children"
+        }
+      ],
+      "39b20f282cae9778": [
+        {
+          "box": "620a2846109d1846",
+          "kind": "frame",
+          "layers": [
+            {
+              "box": "0930eb55e7cd4388",
+              "kind": "frame",
+              "layers": [],
+              "slot": "switchThumb",
+              "surface": "6d332ce107d239da"
+            }
+          ],
+          "slot": "switchControl",
+          "surface": "48a93ecce4bc1a75"
+        },
+        {
+          "kind": "text",
+          "slot": "children",
+          "text": {
+            "fill": {
+              "color": {
+                "variable": "--color-text-disabled"
+              },
+              "type": "SOLID"
+            },
+            "fontFamily": {
+              "variable": "--font-family-body"
+            },
+            "fontSize": {
+              "variable": "--font-size-body"
+            },
+            "fontWeight": {
+              "variable": "--font-weight-body"
+            },
+            "lineHeight": 150
+          },
+          "textProperty": "children",
+          "visibleProperty": "show children"
         }
       ],
       "39bb26b5844f848a": [
@@ -53064,6 +53997,66 @@
           "visibleProperty": "post"
         }
       ],
+      "62925c72ac0fd2ed": [
+        {
+          "box": "620a2846109d1846",
+          "kind": "frame",
+          "layers": [
+            {
+              "box": "5a77ef77d86af815",
+              "kind": "frame",
+              "layers": [],
+              "slot": "switchThumb",
+              "surface": "66fec65dd7a88039"
+            },
+            {
+              "color": {
+                "color": {
+                  "variable": "--focus-ring-color"
+                },
+                "type": "SOLID"
+              },
+              "kind": "ring",
+              "offset": {
+                "variable": "--focus-ring-offset"
+              },
+              "radius": {
+                "variable": "switch:outline-radius:e858680b2e"
+              },
+              "slot": "focus ring",
+              "width": {
+                "variable": "--focus-ring-width"
+              }
+            }
+          ],
+          "slot": "switchControl",
+          "surface": "a81ab7430cadea35"
+        },
+        {
+          "kind": "text",
+          "slot": "children",
+          "text": {
+            "fill": {
+              "color": {
+                "variable": "--color-text-primary"
+              },
+              "type": "SOLID"
+            },
+            "fontFamily": {
+              "variable": "--font-family-body"
+            },
+            "fontSize": {
+              "variable": "--font-size-body"
+            },
+            "fontWeight": {
+              "variable": "--font-weight-body"
+            },
+            "lineHeight": 150
+          },
+          "textProperty": "children",
+          "visibleProperty": "show children"
+        }
+      ],
       "62eefb39a19b85ab": [
         {
           "kind": "text",
@@ -54204,6 +55197,66 @@
           "visibleProperty": "post"
         }
       ],
+      "70035836190a68b0": [
+        {
+          "box": "620a2846109d1846",
+          "kind": "frame",
+          "layers": [
+            {
+              "box": "5a77ef77d86af815",
+              "kind": "frame",
+              "layers": [],
+              "slot": "switchThumb",
+              "surface": "fe4b04d4da9ef80e"
+            },
+            {
+              "color": {
+                "color": {
+                  "variable": "--focus-ring-color"
+                },
+                "type": "SOLID"
+              },
+              "kind": "ring",
+              "offset": {
+                "variable": "--focus-ring-offset"
+              },
+              "radius": {
+                "variable": "switch:outline-radius:e858680b2e"
+              },
+              "slot": "focus ring",
+              "width": {
+                "variable": "--focus-ring-width"
+              }
+            }
+          ],
+          "slot": "switchControl",
+          "surface": "2f31fa60ac554c18"
+        },
+        {
+          "kind": "text",
+          "slot": "children",
+          "text": {
+            "fill": {
+              "color": {
+                "variable": "--color-text-primary"
+              },
+              "type": "SOLID"
+            },
+            "fontFamily": {
+              "variable": "--font-family-body"
+            },
+            "fontSize": {
+              "variable": "--font-size-body"
+            },
+            "fontWeight": {
+              "variable": "--font-weight-body"
+            },
+            "lineHeight": 150
+          },
+          "textProperty": "children",
+          "visibleProperty": "show children"
+        }
+      ],
       "709d119febc5dfbc": [
         {
           "kind": "text",
@@ -54228,6 +55281,47 @@
           },
           "textProperty": "placeholder",
           "visibleProperty": "show placeholder"
+        }
+      ],
+      "70b535fd7f3e4349": [
+        {
+          "box": "510803535dd37bc0",
+          "kind": "frame",
+          "layers": [
+            {
+              "box": "0930eb55e7cd4388",
+              "kind": "frame",
+              "layers": [],
+              "slot": "switchThumb",
+              "surface": "87214de7a5205d5a"
+            }
+          ],
+          "slot": "switchControl",
+          "surface": "75e02b1e1cb12b01"
+        },
+        {
+          "kind": "text",
+          "slot": "children",
+          "text": {
+            "fill": {
+              "color": {
+                "variable": "--color-text-primary"
+              },
+              "type": "SOLID"
+            },
+            "fontFamily": {
+              "variable": "--font-family-body"
+            },
+            "fontSize": {
+              "variable": "--font-size-body"
+            },
+            "fontWeight": {
+              "variable": "--font-weight-body"
+            },
+            "lineHeight": 150
+          },
+          "textProperty": "children",
+          "visibleProperty": "show children"
         }
       ],
       "70e3099e98a262f2": [
@@ -56357,6 +57451,47 @@
           "kind": "icon",
           "slot": "post",
           "visibleProperty": "post"
+        }
+      ],
+      "83e00beb09c00373": [
+        {
+          "box": "620a2846109d1846",
+          "kind": "frame",
+          "layers": [
+            {
+              "box": "5a77ef77d86af815",
+              "kind": "frame",
+              "layers": [],
+              "slot": "switchThumb",
+              "surface": "b5c98a69f3b59b5b"
+            }
+          ],
+          "slot": "switchControl",
+          "surface": "f52a39492e335a70"
+        },
+        {
+          "kind": "text",
+          "slot": "children",
+          "text": {
+            "fill": {
+              "color": {
+                "variable": "--color-text-disabled"
+              },
+              "type": "SOLID"
+            },
+            "fontFamily": {
+              "variable": "--font-family-body"
+            },
+            "fontSize": {
+              "variable": "--font-size-body"
+            },
+            "fontWeight": {
+              "variable": "--font-weight-body"
+            },
+            "lineHeight": 150
+          },
+          "textProperty": "children",
+          "visibleProperty": "show children"
         }
       ],
       "84851c1a83ea035a": [
@@ -60991,6 +62126,66 @@
           "surface": "fa0b643878e9242d"
         }
       ],
+      "aa074eed838e2b19": [
+        {
+          "box": "620a2846109d1846",
+          "kind": "frame",
+          "layers": [
+            {
+              "box": "0930eb55e7cd4388",
+              "kind": "frame",
+              "layers": [],
+              "slot": "switchThumb",
+              "surface": "87214de7a5205d5a"
+            },
+            {
+              "color": {
+                "color": {
+                  "variable": "--focus-ring-color"
+                },
+                "type": "SOLID"
+              },
+              "kind": "ring",
+              "offset": {
+                "variable": "--focus-ring-offset"
+              },
+              "radius": {
+                "variable": "switch:outline-radius:e858680b2e"
+              },
+              "slot": "focus ring",
+              "width": {
+                "variable": "--focus-ring-width"
+              }
+            }
+          ],
+          "slot": "switchControl",
+          "surface": "2014978e43004e13"
+        },
+        {
+          "kind": "text",
+          "slot": "children",
+          "text": {
+            "fill": {
+              "color": {
+                "variable": "--color-text-primary"
+              },
+              "type": "SOLID"
+            },
+            "fontFamily": {
+              "variable": "--font-family-body"
+            },
+            "fontSize": {
+              "variable": "--font-size-body"
+            },
+            "fontWeight": {
+              "variable": "--font-weight-body"
+            },
+            "lineHeight": 150
+          },
+          "textProperty": "children",
+          "visibleProperty": "show children"
+        }
+      ],
       "aa61e33c42a15252": [
         {
           "kind": "text",
@@ -62687,6 +63882,47 @@
           "textProperty": "children"
         }
       ],
+      "c7b0ebe656e6e67d": [
+        {
+          "box": "620a2846109d1846",
+          "kind": "frame",
+          "layers": [
+            {
+              "box": "5a77ef77d86af815",
+              "kind": "frame",
+              "layers": [],
+              "slot": "switchThumb",
+              "surface": "b5c98a69f3b59b5b"
+            }
+          ],
+          "slot": "switchControl",
+          "surface": "a3bacdc6537dfd50"
+        },
+        {
+          "kind": "text",
+          "slot": "children",
+          "text": {
+            "fill": {
+              "color": {
+                "variable": "--color-text-disabled"
+              },
+              "type": "SOLID"
+            },
+            "fontFamily": {
+              "variable": "--font-family-body"
+            },
+            "fontSize": {
+              "variable": "--font-size-body"
+            },
+            "fontWeight": {
+              "variable": "--font-weight-body"
+            },
+            "lineHeight": 150
+          },
+          "textProperty": "children",
+          "visibleProperty": "show children"
+        }
+      ],
       "c877850c72c94b8c": [
         {
           "box": "bf6304235ae64254",
@@ -63887,6 +65123,66 @@
           "textProperty": "children"
         }
       ],
+      "d7186049ed1f7f09": [
+        {
+          "box": "620a2846109d1846",
+          "kind": "frame",
+          "layers": [
+            {
+              "box": "5a77ef77d86af815",
+              "kind": "frame",
+              "layers": [],
+              "slot": "switchThumb",
+              "surface": "fe4b04d4da9ef80e"
+            },
+            {
+              "color": {
+                "color": {
+                  "variable": "--focus-ring-color"
+                },
+                "type": "SOLID"
+              },
+              "kind": "ring",
+              "offset": {
+                "variable": "--focus-ring-offset"
+              },
+              "radius": {
+                "variable": "switch:outline-radius:e858680b2e"
+              },
+              "slot": "focus ring",
+              "width": {
+                "variable": "--focus-ring-width"
+              }
+            }
+          ],
+          "slot": "switchControl",
+          "surface": "56450dc026afd09d"
+        },
+        {
+          "kind": "text",
+          "slot": "children",
+          "text": {
+            "fill": {
+              "color": {
+                "variable": "--color-text-primary"
+              },
+              "type": "SOLID"
+            },
+            "fontFamily": {
+              "variable": "--font-family-body"
+            },
+            "fontSize": {
+              "variable": "--font-size-body"
+            },
+            "fontWeight": {
+              "variable": "--font-weight-body"
+            },
+            "lineHeight": 150
+          },
+          "textProperty": "children",
+          "visibleProperty": "show children"
+        }
+      ],
       "d7e772710b62c8d5": [
         {
           "fills": [
@@ -64621,6 +65917,47 @@
           "textProperty": "children"
         }
       ],
+      "df1321ffd4c80a12": [
+        {
+          "box": "620a2846109d1846",
+          "kind": "frame",
+          "layers": [
+            {
+              "box": "5a77ef77d86af815",
+              "kind": "frame",
+              "layers": [],
+              "slot": "switchThumb",
+              "surface": "66fec65dd7a88039"
+            }
+          ],
+          "slot": "switchControl",
+          "surface": "a81ab7430cadea35"
+        },
+        {
+          "kind": "text",
+          "slot": "children",
+          "text": {
+            "fill": {
+              "color": {
+                "variable": "--color-text-primary"
+              },
+              "type": "SOLID"
+            },
+            "fontFamily": {
+              "variable": "--font-family-body"
+            },
+            "fontSize": {
+              "variable": "--font-size-body"
+            },
+            "fontWeight": {
+              "variable": "--font-weight-body"
+            },
+            "lineHeight": 150
+          },
+          "textProperty": "children",
+          "visibleProperty": "show children"
+        }
+      ],
       "df92f32f630d0a35": [
         {
           "fills": [
@@ -64683,6 +66020,47 @@
           "kind": "icon",
           "slot": "post",
           "visibleProperty": "post"
+        }
+      ],
+      "dfd7d08c61f95ec9": [
+        {
+          "box": "510803535dd37bc0",
+          "kind": "frame",
+          "layers": [
+            {
+              "box": "5a77ef77d86af815",
+              "kind": "frame",
+              "layers": [],
+              "slot": "switchThumb",
+              "surface": "66fec65dd7a88039"
+            }
+          ],
+          "slot": "switchControl",
+          "surface": "4bc3d30754482c68"
+        },
+        {
+          "kind": "text",
+          "slot": "children",
+          "text": {
+            "fill": {
+              "color": {
+                "variable": "--color-text-primary"
+              },
+              "type": "SOLID"
+            },
+            "fontFamily": {
+              "variable": "--font-family-body"
+            },
+            "fontSize": {
+              "variable": "--font-size-body"
+            },
+            "fontWeight": {
+              "variable": "--font-weight-body"
+            },
+            "lineHeight": 150
+          },
+          "textProperty": "children",
+          "visibleProperty": "show children"
         }
       ],
       "e1ada017138b2975": [
@@ -69306,6 +70684,25 @@
           }
         ]
       },
+      "2014978e43004e13": {
+        "effects": [],
+        "fills": [
+          {
+            "color": {
+              "variable": "--color-border-default"
+            },
+            "type": "SOLID"
+          }
+        ],
+        "strokes": [
+          {
+            "color": {
+              "variable": "switch:brutalist-black:b75258c11d"
+            },
+            "type": "SOLID"
+          }
+        ]
+      },
       "212addf0c0f3121d": {
         "effects": [
           {
@@ -69702,6 +71099,33 @@
           {
             "color": {
               "variable": "--color-border-default"
+            },
+            "type": "SOLID"
+          }
+        ]
+      },
+      "2f31fa60ac554c18": {
+        "effects": [
+          {
+            "radius": {
+              "expression": "8px",
+              "value": 8
+            },
+            "type": "BACKGROUND_BLUR"
+          }
+        ],
+        "fills": [
+          {
+            "color": {
+              "variable": "switch:frost-glass:624e771577"
+            },
+            "type": "SOLID"
+          }
+        ],
+        "strokes": [
+          {
+            "color": {
+              "variable": "switch:border-color:27a5a4c85c"
             },
             "type": "SOLID"
           }
@@ -70607,6 +72031,33 @@
           }
         ]
       },
+      "4857a6d722b3ce4b": {
+        "effects": [
+          {
+            "radius": {
+              "expression": "8px",
+              "value": 8
+            },
+            "type": "BACKGROUND_BLUR"
+          }
+        ],
+        "fills": [
+          {
+            "color": {
+              "variable": "switch:frost-glass:6dbab8d227"
+            },
+            "type": "SOLID"
+          }
+        ],
+        "strokes": [
+          {
+            "color": {
+              "variable": "switch:border-color:27a5a4c85c"
+            },
+            "type": "SOLID"
+          }
+        ]
+      },
       "4898a15a72d71bcd": {
         "effects": [],
         "fills": [
@@ -70618,6 +72069,25 @@
           }
         ],
         "strokes": []
+      },
+      "48a93ecce4bc1a75": {
+        "effects": [],
+        "fills": [
+          {
+            "color": {
+              "variable": "--color-action-disabled"
+            },
+            "type": "SOLID"
+          }
+        ],
+        "strokes": [
+          {
+            "color": {
+              "variable": "switch:brutalist-black:b75258c11d"
+            },
+            "type": "SOLID"
+          }
+        ]
       },
       "494588e4de591927": {
         "effects": [
@@ -70903,6 +72373,48 @@
           {
             "color": {
               "variable": "avatar:brutalist-edge:b75258c11d"
+            },
+            "type": "SOLID"
+          }
+        ]
+      },
+      "4bc3d30754482c68": {
+        "effects": [
+          {
+            "blur": {
+              "expression": "3px",
+              "value": 3
+            },
+            "color": {
+              "variable": "switch:shadow-1-color:c51a9349f8"
+            },
+            "spread": {
+              "expression": "0",
+              "value": 0
+            },
+            "type": "INNER_SHADOW",
+            "x": {
+              "expression": "0",
+              "value": 0
+            },
+            "y": {
+              "expression": "2px",
+              "value": 2
+            }
+          }
+        ],
+        "fills": [
+          {
+            "color": {
+              "variable": "--color-action-accent"
+            },
+            "type": "SOLID"
+          }
+        ],
+        "strokes": [
+          {
+            "color": {
+              "variable": "--color-action-accent"
             },
             "type": "SOLID"
           }
@@ -71607,6 +73119,25 @@
           }
         ]
       },
+      "56450dc026afd09d": {
+        "effects": [],
+        "fills": [
+          {
+            "color": {
+              "variable": "--color-border-default"
+            },
+            "type": "SOLID"
+          }
+        ],
+        "strokes": [
+          {
+            "color": {
+              "variable": "--color-border-default"
+            },
+            "type": "SOLID"
+          }
+        ]
+      },
       "568aa071547170e2": {
         "effects": [
           {
@@ -72146,6 +73677,48 @@
           }
         ]
       },
+      "61b4cb2607f3b0f7": {
+        "effects": [
+          {
+            "blur": {
+              "expression": "3px",
+              "value": 3
+            },
+            "color": {
+              "variable": "switch:shadow-1-color:c51a9349f8"
+            },
+            "spread": {
+              "expression": "0",
+              "value": 0
+            },
+            "type": "INNER_SHADOW",
+            "x": {
+              "expression": "0",
+              "value": 0
+            },
+            "y": {
+              "expression": "2px",
+              "value": 2
+            }
+          }
+        ],
+        "fills": [
+          {
+            "color": {
+              "variable": "--color-action-disabled"
+            },
+            "type": "SOLID"
+          }
+        ],
+        "strokes": [
+          {
+            "color": {
+              "variable": "--color-border-subtle"
+            },
+            "type": "SOLID"
+          }
+        ]
+      },
       "6277c40e8a290767": {
         "effects": [
           {
@@ -72278,6 +73851,85 @@
             "type": "SOLID"
           }
         ]
+      },
+      "66fec65dd7a88039": {
+        "effects": [
+          {
+            "blur": {
+              "expression": "0",
+              "value": 0
+            },
+            "color": {
+              "variable": "switch:shadow-1-color:d5a8986302"
+            },
+            "spread": {
+              "expression": "0",
+              "value": 0
+            },
+            "type": "DROP_SHADOW",
+            "x": {
+              "expression": "0",
+              "value": 0
+            },
+            "y": {
+              "expression": "2px",
+              "value": 2
+            }
+          },
+          {
+            "blur": {
+              "expression": "2px",
+              "value": 2
+            },
+            "color": {
+              "variable": "--shadow-sm"
+            },
+            "spread": {
+              "expression": "0",
+              "value": 0
+            },
+            "type": "DROP_SHADOW",
+            "x": {
+              "expression": "0",
+              "value": 0
+            },
+            "y": {
+              "expression": "1px",
+              "value": 1
+            }
+          },
+          {
+            "blur": {
+              "expression": "3px",
+              "value": 3
+            },
+            "color": {
+              "variable": "--shadow-sm"
+            },
+            "spread": {
+              "expression": "0",
+              "value": 0
+            },
+            "type": "DROP_SHADOW",
+            "x": {
+              "expression": "0",
+              "value": 0
+            },
+            "y": {
+              "expression": "1px",
+              "value": 1
+            }
+          }
+        ],
+        "fills": [
+          {
+            "color": {
+              "variable": "--color-text-on-media"
+            },
+            "type": "SOLID"
+          }
+        ],
+        "strokes": []
       },
       "68032abd42858e53": {
         "effects": [
@@ -72565,6 +74217,25 @@
           {
             "color": {
               "variable": "button:brutalist-black:b75258c11d"
+            },
+            "type": "SOLID"
+          }
+        ]
+      },
+      "6d332ce107d239da": {
+        "effects": [],
+        "fills": [
+          {
+            "color": {
+              "variable": "--color-text-disabled"
+            },
+            "type": "SOLID"
+          }
+        ],
+        "strokes": [
+          {
+            "color": {
+              "variable": "switch:brutalist-black:b75258c11d"
             },
             "type": "SOLID"
           }
@@ -73104,6 +74775,25 @@
           {
             "color": {
               "variable": "button:border-color:ec90fe9143"
+            },
+            "type": "SOLID"
+          }
+        ]
+      },
+      "75e02b1e1cb12b01": {
+        "effects": [],
+        "fills": [
+          {
+            "color": {
+              "variable": "--color-action-accent"
+            },
+            "type": "SOLID"
+          }
+        ],
+        "strokes": [
+          {
+            "color": {
+              "variable": "switch:brutalist-black:b75258c11d"
             },
             "type": "SOLID"
           }
@@ -73879,6 +75569,46 @@
           {
             "color": {
               "variable": "--color-border-danger"
+            },
+            "type": "SOLID"
+          }
+        ]
+      },
+      "87214de7a5205d5a": {
+        "effects": [
+          {
+            "blur": {
+              "expression": "0",
+              "value": 0
+            },
+            "color": {
+              "variable": "switch:brutalist-black:b75258c11d"
+            },
+            "spread": {
+              "expression": "0",
+              "value": 0
+            },
+            "type": "DROP_SHADOW",
+            "x": {
+              "variable": "switch:shadow-1-x:2ad8d54226"
+            },
+            "y": {
+              "variable": "switch:switch-brutalist-offset:747614001f"
+            }
+          }
+        ],
+        "fills": [
+          {
+            "color": {
+              "variable": "--color-text-on-media"
+            },
+            "type": "SOLID"
+          }
+        ],
+        "strokes": [
+          {
+            "color": {
+              "variable": "switch:brutalist-black:b75258c11d"
             },
             "type": "SOLID"
           }
@@ -75437,6 +77167,33 @@
         ],
         "strokes": []
       },
+      "a3bacdc6537dfd50": {
+        "effects": [
+          {
+            "radius": {
+              "expression": "8px",
+              "value": 8
+            },
+            "type": "BACKGROUND_BLUR"
+          }
+        ],
+        "fills": [
+          {
+            "color": {
+              "variable": "switch:frost-glass:761a511757"
+            },
+            "type": "SOLID"
+          }
+        ],
+        "strokes": [
+          {
+            "color": {
+              "variable": "switch:border-color:5bdd7e4b56"
+            },
+            "type": "SOLID"
+          }
+        ]
+      },
       "a49f81703a5f9890": {
         "effects": [
           {
@@ -75708,6 +77465,48 @@
           {
             "color": {
               "variable": "button:frost-edge:4de4a161c4"
+            },
+            "type": "SOLID"
+          }
+        ]
+      },
+      "a81ab7430cadea35": {
+        "effects": [
+          {
+            "blur": {
+              "expression": "3px",
+              "value": 3
+            },
+            "color": {
+              "variable": "switch:shadow-1-color:c51a9349f8"
+            },
+            "spread": {
+              "expression": "0",
+              "value": 0
+            },
+            "type": "INNER_SHADOW",
+            "x": {
+              "expression": "0",
+              "value": 0
+            },
+            "y": {
+              "expression": "2px",
+              "value": 2
+            }
+          }
+        ],
+        "fills": [
+          {
+            "color": {
+              "variable": "--color-border-default"
+            },
+            "type": "SOLID"
+          }
+        ],
+        "strokes": [
+          {
+            "color": {
+              "variable": "--color-border-default"
             },
             "type": "SOLID"
           }
@@ -76438,6 +78237,18 @@
             "type": "SOLID"
           }
         ]
+      },
+      "b5c98a69f3b59b5b": {
+        "effects": [],
+        "fills": [
+          {
+            "color": {
+              "variable": "--color-text-disabled"
+            },
+            "type": "SOLID"
+          }
+        ],
+        "strokes": []
       },
       "b60e9642e96222d0": {
         "effects": [
@@ -79756,6 +81567,63 @@
             "type": "SOLID"
           }
         ]
+      },
+      "fe4b04d4da9ef80e": {
+        "effects": [
+          {
+            "blur": {
+              "expression": "2px",
+              "value": 2
+            },
+            "color": {
+              "variable": "--shadow-sm"
+            },
+            "spread": {
+              "expression": "0",
+              "value": 0
+            },
+            "type": "DROP_SHADOW",
+            "x": {
+              "expression": "0",
+              "value": 0
+            },
+            "y": {
+              "expression": "1px",
+              "value": 1
+            }
+          },
+          {
+            "blur": {
+              "expression": "3px",
+              "value": 3
+            },
+            "color": {
+              "variable": "--shadow-sm"
+            },
+            "spread": {
+              "expression": "0",
+              "value": 0
+            },
+            "type": "DROP_SHADOW",
+            "x": {
+              "expression": "0",
+              "value": 0
+            },
+            "y": {
+              "expression": "1px",
+              "value": 1
+            }
+          }
+        ],
+        "fills": [
+          {
+            "color": {
+              "variable": "--color-text-on-media"
+            },
+            "type": "SOLID"
+          }
+        ],
+        "strokes": []
       },
       "fe6159e59492dbe1": {
         "effects": [
@@ -88579,6 +90447,438 @@
             "g": 0.3644,
             "r": 0.0836
           }
+        }
+      }
+    },
+    {
+      "codeSyntax": "",
+      "collection": "component",
+      "expression": "color-mix(in oklab, var(--color-text-primary) 22%, transparent)",
+      "id": "switch:border-color:27a5a4c85c",
+      "name": "switch/border-color/frosted",
+      "source": {
+        "dark": "evaluated",
+        "light": "evaluated"
+      },
+      "type": "COLOR",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": {
+            "a": 0.22,
+            "b": 0.9579,
+            "g": 0.9609,
+            "r": 0.9609
+          }
+        },
+        "light": {
+          "kind": "literal",
+          "value": {
+            "a": 0.22,
+            "b": 0.0903,
+            "g": 0.098,
+            "r": 0.1095
+          }
+        }
+      }
+    },
+    {
+      "codeSyntax": "",
+      "collection": "component",
+      "expression": "color-mix(in oklab, var(--color-text-disabled) 22%, transparent)",
+      "id": "switch:border-color:5bdd7e4b56",
+      "name": "switch/border-color/frosted/disabled",
+      "source": {
+        "dark": "evaluated",
+        "light": "evaluated"
+      },
+      "type": "COLOR",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": {
+            "a": 0.22,
+            "b": 0.3022,
+            "g": 0.3247,
+            "r": 0.3427
+          }
+        },
+        "light": {
+          "kind": "literal",
+          "value": {
+            "a": 0.22,
+            "b": 0.6089,
+            "g": 0.6262,
+            "r": 0.6521
+          }
+        }
+      }
+    },
+    {
+      "codeSyntax": "var(--sk-switch-border-width)",
+      "collection": "component",
+      "expression": "1px",
+      "id": "switch:border-width:93e20626bf",
+      "name": "switch/border-width",
+      "source": {
+        "dark": "literal",
+        "light": "literal"
+      },
+      "type": "FLOAT",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": 1
+        },
+        "light": {
+          "kind": "literal",
+          "value": 1
+        }
+      }
+    },
+    {
+      "codeSyntax": "var(--brutalist-black)",
+      "collection": "component",
+      "expression": "oklch(from var(--shadow-lg) l c h / 1)",
+      "id": "switch:brutalist-black:b75258c11d",
+      "name": "switch/brutalist-black/brutalist",
+      "source": {
+        "dark": "evaluated",
+        "light": "evaluated"
+      },
+      "type": "COLOR",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": {
+            "a": 1,
+            "b": 0,
+            "g": 0,
+            "r": 0
+          }
+        },
+        "light": {
+          "kind": "literal",
+          "value": {
+            "a": 1,
+            "b": 0,
+            "g": 0,
+            "r": 0
+          }
+        }
+      }
+    },
+    {
+      "codeSyntax": "var(--frost-glass)",
+      "collection": "component",
+      "expression": "var(--frost-on) color-mix(in oklab, var(--color-border-default) 55%, transparent)",
+      "id": "switch:frost-glass:624e771577",
+      "name": "switch/frost-glass/frosted",
+      "source": {
+        "dark": "evaluated",
+        "light": "evaluated"
+      },
+      "type": "COLOR",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": {
+            "a": 0.55,
+            "b": 0.42,
+            "g": 0.442,
+            "r": 0.4727
+          }
+        },
+        "light": {
+          "kind": "literal",
+          "value": {
+            "a": 0.55,
+            "b": 0.42,
+            "g": 0.442,
+            "r": 0.4727
+          }
+        }
+      }
+    },
+    {
+      "codeSyntax": "var(--frost-glass)",
+      "collection": "component",
+      "expression": "var(--frost-on) color-mix(in oklab, var(--color-action-disabled) 55%, transparent)",
+      "id": "switch:frost-glass:761a511757",
+      "name": "switch/frost-glass/frosted/disabled",
+      "source": {
+        "dark": "evaluated",
+        "light": "evaluated"
+      },
+      "type": "COLOR",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": {
+            "a": 0.55,
+            "b": 0.1398,
+            "g": 0.1442,
+            "r": 0.1616
+          }
+        },
+        "light": {
+          "kind": "literal",
+          "value": {
+            "a": 0.55,
+            "b": 0.8184,
+            "g": 0.8275,
+            "r": 0.8412
+          }
+        }
+      }
+    },
+    {
+      "codeSyntax": "var(--frost-glass)",
+      "collection": "component",
+      "expression": "var(--frost-on) color-mix(in oklab, var(--color-action-accent) 55%, transparent)",
+      "id": "switch:frost-glass:6dbab8d227",
+      "name": "switch/frost-glass/frosted/on",
+      "source": {
+        "dark": "evaluated",
+        "light": "evaluated"
+      },
+      "type": "COLOR",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": {
+            "a": 0.55,
+            "b": 1,
+            "g": 0.498,
+            "r": 0.1693
+          }
+        },
+        "light": {
+          "kind": "literal",
+          "value": {
+            "a": 0.55,
+            "b": 0.9863,
+            "g": 0.3644,
+            "r": 0.0836
+          }
+        }
+      }
+    },
+    {
+      "codeSyntax": "",
+      "collection": "component",
+      "expression": "calc(var(--size-icon-lg) - (var(--space-inset-xs) * 2) - (1px * 2))",
+      "id": "switch:height:1d6d3e6942",
+      "name": "switch/height",
+      "source": {
+        "dark": "evaluated",
+        "light": "evaluated"
+      },
+      "type": "FLOAT",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": 14
+        },
+        "light": {
+          "kind": "literal",
+          "value": 14
+        }
+      }
+    },
+    {
+      "codeSyntax": "var(--sk-switch-inline-size)",
+      "collection": "component",
+      "expression": "calc(var(--size-icon-lg) * 1.75)",
+      "id": "switch:inline-size:7a45f5c3de",
+      "name": "switch/inline-size",
+      "source": {
+        "dark": "evaluated",
+        "light": "evaluated"
+      },
+      "type": "FLOAT",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": 42
+        },
+        "light": {
+          "kind": "literal",
+          "value": 42
+        }
+      }
+    },
+    {
+      "codeSyntax": "",
+      "collection": "component",
+      "expression": "calc(var(--radius-pill) + var(--focus-ring-offset))",
+      "id": "switch:outline-radius:e858680b2e",
+      "name": "switch/outline-radius/focus",
+      "source": {
+        "dark": "evaluated",
+        "light": "evaluated"
+      },
+      "type": "FLOAT",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": 10001
+        },
+        "light": {
+          "kind": "literal",
+          "value": 10001
+        }
+      }
+    },
+    {
+      "codeSyntax": "",
+      "collection": "component",
+      "expression": "calc(var(--space-inset-xs) + calc(calc(var(--size-icon-lg) * 1.75) - var(--size-icon-lg)))",
+      "id": "switch:padding-left:a478314d38",
+      "name": "switch/padding-left/on",
+      "source": {
+        "dark": "evaluated",
+        "light": "evaluated"
+      },
+      "type": "FLOAT",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": 22
+        },
+        "light": {
+          "kind": "literal",
+          "value": 22
+        }
+      }
+    },
+    {
+      "codeSyntax": "",
+      "collection": "component",
+      "expression": "light-dark( color-mix(in oklab, var(--color-text-primary) 18%, transparent), color-mix(in oklab, var(--color-bg-surface-sunken) 70%, transparent) )",
+      "id": "switch:shadow-1-color:c51a9349f8",
+      "name": "switch/shadow-1-color/tactile",
+      "source": {
+        "dark": "evaluated",
+        "light": "evaluated"
+      },
+      "type": "COLOR",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": {
+            "a": 0.7,
+            "b": 0.0355,
+            "g": 0.0394,
+            "r": 0.047
+          }
+        },
+        "light": {
+          "kind": "literal",
+          "value": {
+            "a": 0.18,
+            "b": 0.0903,
+            "g": 0.098,
+            "r": 0.1095
+          }
+        }
+      }
+    },
+    {
+      "codeSyntax": "",
+      "collection": "component",
+      "expression": "light-dark( color-mix(in oklab, var(--color-text-on-media) 70%, var(--color-text-primary)), color-mix(in oklab, var(--color-text-on-media) 60%, var(--color-bg-surface-sunken)) )",
+      "id": "switch:shadow-1-color:d5a8986302",
+      "name": "switch/shadow-1-color/tactile-2",
+      "source": {
+        "dark": "evaluated",
+        "light": "evaluated"
+      },
+      "type": "COLOR",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": {
+            "a": 1,
+            "b": 0.568,
+            "g": 0.5702,
+            "r": 0.5747
+          }
+        },
+        "light": {
+          "kind": "literal",
+          "value": {
+            "a": 1,
+            "b": 0.6955,
+            "g": 0.6986,
+            "r": 0.7034
+          }
+        }
+      }
+    },
+    {
+      "codeSyntax": "",
+      "collection": "component",
+      "expression": "calc(2px * 1)",
+      "id": "switch:shadow-1-x:2ad8d54226",
+      "name": "switch/shadow-1-x/brutalist",
+      "source": {
+        "dark": "evaluated",
+        "light": "evaluated"
+      },
+      "type": "FLOAT",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": 2
+        },
+        "light": {
+          "kind": "literal",
+          "value": 2
+        }
+      }
+    },
+    {
+      "codeSyntax": "var(--switch-brutalist-offset)",
+      "collection": "component",
+      "expression": "2px",
+      "id": "switch:switch-brutalist-offset:747614001f",
+      "name": "switch/switch-brutalist-offset/brutalist",
+      "source": {
+        "dark": "literal",
+        "light": "literal"
+      },
+      "type": "FLOAT",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": 2
+        },
+        "light": {
+          "kind": "literal",
+          "value": 2
+        }
+      }
+    },
+    {
+      "codeSyntax": "",
+      "collection": "component",
+      "expression": "calc(var(--size-icon-lg) - (var(--space-inset-xs) * 2) - (1px * 2))",
+      "id": "switch:width:1d6d3e6942",
+      "name": "switch/width",
+      "source": {
+        "dark": "evaluated",
+        "light": "evaluated"
+      },
+      "type": "FLOAT",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": 14
+        },
+        "light": {
+          "kind": "literal",
+          "value": 14
         }
       }
     },
