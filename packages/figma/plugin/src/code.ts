@@ -450,6 +450,40 @@ function combos(axes: { name: string; values: string[] }[]): Record<string, stri
 const ownCells = (set: ComponentSetNode | undefined) =>
   (set?.children ?? []).filter((c): c is ComponentNode => c.type === "COMPONENT" && getTag(c, "orphaned") !== "true");
 
+/**
+ * A set of ours: by its id, else (a run stopped before the set was tagged, as every run before this
+ * fix tagged it last) the set sitting in its own frame, which is tagged from the start. With more
+ * than one there (each stopped run used to make another), the fullest is the set; the rest are marked
+ * orphaned, never deleted, so a designer can remove them. Whatever is found is tagged at once.
+ */
+function setOf(run: Run, spec: M.IconSet | M.ComponentSet, found: Map<string, SceneNode>): ComponentSetNode | undefined {
+  const tagged = found.get(spec.id);
+  if (tagged?.type === "COMPONENT_SET") return tagged;
+  const frame = found.get(`frame:${spec.id}`);
+  if (!frame || frame.type !== "FRAME") return undefined;
+  const candidates = frame.children
+    .filter((n): n is ComponentSetNode => n.type === "COMPONENT_SET" && getTag(n, "orphaned") !== "true")
+    .sort((a, b) => b.children.length - a.children.length);
+  const [set, ...extra] = candidates;
+  if (!set) return undefined;
+  run.log("UPDATE", `${spec.name}`, "adopted the set a stopped run left untagged; its variants are kept");
+  tag(run, set, provenance(spec.kind, spec.id));
+  for (const duplicate of extra) {
+    run.log("ORPHANED", `${spec.name}: a duplicate set (${duplicate.children.length} variants)`, "left by an earlier stopped run; kept, safe to delete");
+    run.write(() => duplicate.setSharedPluginData(NS, "orphaned", "true"));
+  }
+  found.set(spec.id, set);
+  return set;
+}
+
+/** A set made this run: tagged the moment it exists, so a run stopped halfway still finds it next time. */
+function newSet(first: ComponentNode, frame: FrameNode, spec: M.IconSet | M.ComponentSet, found: Map<string, SceneNode>): ComponentSetNode {
+  const set = figma.combineAsVariants([first], frame);
+  for (const [key, value] of Object.entries(provenance(spec.kind, spec.id))) set.setSharedPluginData(NS, key, value);
+  found.set(spec.id, set);
+  return set;
+}
+
 
 /** Offsets along one axis of the grid: `size` per slot, `gap` between, `group` more where `groupOf` changes. */
 function offsets(count: number, size: number, gap: number, group: number, groupOf: (i: number) => string, start: number) {
@@ -742,7 +776,7 @@ async function syncIconSet(ctx: Ctx, spec: M.IconSet, found: Map<string, SceneNo
   const { run, progress } = ctx;
   progress.start("icons");
   const frame = page ? ensureFrame(ctx, spec.id, spec.name, page, found) : undefined;
-  let set = found.get(spec.id) as ComponentSetNode | undefined;
+  let set = setOf(run, spec, found);
   const identities = new Identities(ownCells(set));
   const counts = { created: 0, updated: 0, unchanged: 0, orphaned: 0 };
 
@@ -759,7 +793,7 @@ async function syncIconSet(ctx: Ctx, spec: M.IconSet, found: Map<string, SceneNo
         // Into the set at once, so an interrupted run never leaves loose components on the page.
         // Onto the frame's page first: a component is born on whichever page is current.
         frame.appendChild(fresh);
-        if (!set) set = figma.combineAsVariants([fresh], frame);
+        if (!set) set = newSet(fresh, frame, spec, found);
         else set.appendChild(fresh);
         node = fresh;
       }
@@ -1302,7 +1336,7 @@ async function syncSet(ctx: SetCtx, spec: M.ComponentSet, found: Map<string, Sce
   const { run, progress } = ctx;
   progress.start(spec.id);
   const frame = page ? ensureFrame(ctx, spec.id, spec.name, page, found) : undefined;
-  let set = found.get(spec.id) as ComponentSetNode | undefined;
+  let set = setOf(run, spec, found);
   const identities = new Identities(ownCells(set));
   const axisDefaults = parseKey(spec.defaultCell);
   // Each property's default: a text slot's sample, and whether an optional slot shows.
@@ -1348,7 +1382,7 @@ async function syncSet(ctx: SetCtx, spec: M.ComponentSet, found: Map<string, Sce
         // Into the set at once, so an interrupted run never leaves loose components on the page.
         // Onto the frame's page first: a component is born on whichever page is current.
         frame.appendChild(fresh);
-        if (!set) set = figma.combineAsVariants([fresh], frame);
+        if (!set) set = newSet(fresh, frame, spec, found);
         else set.appendChild(fresh);
         node = fresh;
       }
@@ -1677,7 +1711,7 @@ async function reconcileRun(run: Run, apply: boolean, started: number, chosen: S
         resizeTo(run, frame, frameWidths.get(spec.id)!, plannedHeight(spec));
         continue;
       }
-      const { w, h } = await measureFirst(ctx, spec, found.get(spec.id) as ComponentSetNode | undefined);
+      const { w, h } = await measureFirst(ctx, spec, setOf(run, spec, found));
       const layout = await planLayout(ctx, frame, spec, w, h);
       layouts.set(spec.id, layout);
       frameWidths.set(spec.id, Math.ceil(plannedWidth(spec, layout)));
