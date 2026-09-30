@@ -297,7 +297,7 @@ async function compileRealization(realization: Realization, shared: Shared): Pro
   const rules: RuleSet = readRules(sheets, MEDIA_HOLDS, [...interactions.map((i) => i.pseudo), ...held]);
   const unmatchable = new Set<string>();
 
-  const computeCell = (input: CellInput, simulated: readonly string[] = []) => {
+  const computeCell = (input: CellInput, simulated: readonly string[] = [], attrs: Readonly<Record<string, string>> = {}) => {
     const markup = mounted(emitMarkup(treeFor(realization, input, iconName), { fillDefaults: true }), iconContract);
     const host = elementFrom(markup);
     for (const [part, style] of Object.entries(realization.mounted ?? {})) {
@@ -306,6 +306,7 @@ async function compileRealization(realization: Realization, shared: Shared): Pro
       el.setAttribute("style", `${el.getAttribute("style") ?? ""}; ${style}`.replace(/^; /, ""));
     }
     for (const pseudo of [...held, ...simulated]) host.setAttribute(markerOf(pseudo), "");
+    for (const [name, value] of Object.entries(attrs)) host.setAttribute(name, value);
     const tree = computeTree(host, rules, unmatchable);
     return { host, styles: tree.styles, pseudo: tree.pseudo };
   };
@@ -345,7 +346,7 @@ async function compileRealization(realization: Realization, shared: Shared): Pro
   }
   const stateAxis: Axis = {
     name: realization.state.axis,
-    values: [realization.state.rest, ...interactions.map((i) => i.name), ...stateOptions],
+    values: [realization.state.rest, ...interactions.map((i) => i.name), ...stateOptions, ...(realization.state.attributes ?? []).map((a) => a.name)],
   };
   // A component with no states (a Badge is never pressed) gets no state axis: `state=rest` alone
   // would be a variant property with nothing to pick.
@@ -401,6 +402,15 @@ async function compileRealization(realization: Realization, shared: Shared): Pro
       ? Object.entries(realization.slots).find(([, spec]) => spec.holds === "text" && spec.option === raw.textFromOption)?.[0]
       : undefined;
     const n = printedBy ? { ...raw, slot: printedBy } : raw;
+    // A placeholder is the host's own text, drawn where the host is.
+    if (raw.part === "root" || (holder === undefined && raw.part === undefined)) {
+      for (const [slot, spec] of Object.entries(realization.slots)) {
+        if (spec.holds !== "text" || !spec.pseudo || slotOrder.includes(slot)) continue;
+        slotPart[slot] = "root";
+        slotOrder.push(slot);
+        layerOrder.push({ kind: "slot", name: slot });
+      }
+    }
     if (n.slot && (n.part ?? holder)) slotPart[n.slot] = (n.part ?? holder)!;
     if (n.part && drawnParts[n.part] && !layerOrder.some((l) => l.kind === "part" && l.name === n.part)) layerOrder.push({ kind: "part", name: n.part });
     if (n.slot && realization.slots[n.slot] && !slotOrder.includes(n.slot)) {
@@ -435,7 +445,8 @@ async function compileRealization(realization: Realization, shared: Shared): Pro
       }
       const iconChildren = iconWhen !== undefined && options[iconWhen] === true;
       const interaction = interactions.find((i) => i.name === props[stateAxis.name]);
-      const { host, styles: cascaded, pseudo } = computeCell({ options, icons: true, iconChildren }, interaction ? [interaction.pseudo] : []);
+      const attributed = realization.state.attributes?.find((a) => a.name === props[stateAxis.name]);
+      const { host, styles: cascaded, pseudo } = computeCell({ options, icons: true, iconChildren }, interaction ? [interaction.pseudo] : [], attributed?.attrs);
       const cellProps: CellProps = { ...(realization.splitBy && splitValue ? { [realization.splitBy]: splitValue } : {}), ...props };
       const inherited = {
         "font-family": `var(${realization.stage.label.fontFamily})`,
@@ -632,7 +643,10 @@ async function compileRealization(realization: Realization, shared: Shared): Pro
             // Styled by the element that holds the text: a label part when there is one, else the host.
             const holderPart = slotPart[slot] && slotPart[slot] !== "root" ? contract.parts[slotPart[slot]] : undefined;
             const textHolder = (holderPart && host.querySelector(`.${holderPart}`)) || host;
-            layers.push({ kind: "text", slot, textProperty: slot, ...(optional ? { visibleProperty: `show ${slot}` } : {}), text: textOf(ctx(textHolder)) });
+            // A placeholder takes its look from the host's `::placeholder`, cascaded onto the host's own.
+            const placeholder = spec.pseudo ? pseudo.get(host)?.placeholder : undefined;
+            const text = textOf(placeholder ? ctxOf(placeholder) : ctx(textHolder));
+            layers.push({ kind: "text", slot, textProperty: slot, ...(optional ? { visibleProperty: `show ${slot}` } : {}), text });
           }
         }
         // An outline draws over everything, last.

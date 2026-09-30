@@ -104,3 +104,20 @@ describe("Meter", () => {
     expect(bar?.kind === "frame" && manifest.styles.boxes[bar.box].width).toMatchObject({ value: 163.2 });
   });
 });
+
+describe("Input", () => {
+  const cell = (state: string) => {
+    const set = manifest.components.find((c): c is ComponentSet => c.kind === "component-set" && c.id === "input/plain")!;
+    return set.cells.find((c) => c.props.state === state && c.props.controlSize === "md")!;
+  };
+
+  it("draws the attribute states the signature forwards", () => {
+    expect(manifest.styles.surfaces[cell("invalid").surface].strokes[0]).toMatchObject({ color: { variable: "--color-border-danger" } });
+  });
+
+  it("holds its placeholder, centred in its height, in the placeholder's colour", () => {
+    const [text] = manifest.styles.layers[cell("rest").layers];
+    expect(text).toMatchObject({ kind: "text", slot: "placeholder", text: { fill: { color: { variable: "--color-text-tertiary" } } } });
+    expect(manifest.styles.boxes[cell("rest").box].crossAlign).toBe("CENTER");
+  });
+});

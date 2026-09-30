@@ -28,7 +28,7 @@ export type StyleRule = {
   sheet: string;
   /** The selector to match, with any pseudo-element taken off (it lives in `pseudo`). */
   selector: string;
-  pseudo: "before" | "after" | undefined;
+  pseudo: "before" | "after" | "placeholder" | undefined;
   specificity: readonly [number, number, number];
   order: number;
   decls: readonly (readonly [string, string])[];
@@ -79,7 +79,7 @@ export function readRules(sheets: readonly Sheet[], holds: readonly string[] = [
       for (const authored of node.selectors) {
         let selector = authored;
         for (const pseudo of simulate) selector = selector.replace(new RegExp(`${pseudo}(?![\\w-])`, "g"), `[${markerOf(pseudo)}]`);
-        const element = /::(before|after)$/.exec(selector);
+        const element = /::(before|after|placeholder)$/.exec(selector);
         if (element) selector = selector.slice(0, element.index);
         const [spec] = Specificity.calculate(authored);
         const { a, b, c } = spec.value;
@@ -255,7 +255,7 @@ function inherit(parent: Computed | undefined): Computed {
 }
 
 /** The pseudo-elements an element generates, each cascaded onto what it inherits from the element. */
-export type Pseudo = Partial<Record<"before" | "after", Computed>>;
+export type Pseudo = Partial<Record<"before" | "after" | "placeholder", Computed>>;
 
 export type Tree = { styles: Map<Element, Computed>; pseudo: Map<Element, Pseudo> };
 
@@ -270,6 +270,8 @@ export type Tree = { styles: Map<Element, Computed>; pseudo: Map<Element, Pseudo
 const USER_AGENT: Record<string, readonly (readonly [string, string])[]> = {
   strong: [["font-weight", "700"]],
   b: [["font-weight", "700"]],
+  // A single-line field centres its text in its height.
+  input: [["align-items", "center"]],
   // Headings are bold where no sheet says otherwise: an EmptyState's h2 title.
   ...Object.fromEntries(["h1", "h2", "h3", "h4", "h5", "h6"].map((h) => [h, [["font-weight", "700"]] as const])),
 };

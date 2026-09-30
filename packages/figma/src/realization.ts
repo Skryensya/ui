@@ -36,6 +36,11 @@ export type Realization = {
      * simulates, and the prototype trigger (if any) that shows it from rest.
      */
     interactions: readonly { name: string; pseudo: string; trigger?: "ON_HOVER" | "ON_PRESS" }[];
+    /**
+     * States set by attributes the signature forwards rather than options it declares, drawn as more
+     * values of the same axis: an Input's `aria-invalid="true"`, its `readonly`.
+     */
+    attributes?: readonly { name: string; attrs: Readonly<Record<string, string>> }[];
   };
   /** Layer names for pseudo-elements that paint: `before` is the state layer, not "::before". */
   overlays: Readonly<Partial<Record<"before" | "after", string>>>;
@@ -58,7 +63,16 @@ export type Realization = {
        * `option`: the text is a string option the template prints (a Meter's label and value), not a
        * slot of the signature. Drawn and exposed the same way.
        */
-      | { holds: "text"; sample: string; iconWhen?: string; icon?: string; hidden?: true; option?: string }
+      | {
+          holds: "text";
+          sample: string;
+          iconWhen?: string;
+          icon?: string;
+          hidden?: true;
+          option?: string;
+          /** `placeholder`: the option's text is the host's own `::placeholder` (an Input), drawn in it. */
+          pseudo?: "placeholder";
+        }
     >
   >;
   /**
