@@ -57323,6 +57323,303 @@
         "columns": []
       },
       "visualHash": "067ec10d042b28f9"
+    },
+    {
+      "axes": [
+        {
+          "name": "state",
+          "values": [
+            "rest",
+            "focus",
+            "disabled",
+            "invalid"
+          ]
+        }
+      ],
+      "cells": [
+        {
+          "box": "b9b9e302aa47bb67",
+          "hash": "ffd2aa0a24e54da3",
+          "id": "password-input/plain/state=rest",
+          "key": "state=rest",
+          "layers": "8ecefd23926c3c4a",
+          "props": {
+            "state": "rest"
+          },
+          "surface": "fa0b643878e9242d"
+        },
+        {
+          "box": "b9b9e302aa47bb67",
+          "hash": "66611d9fbfc2588b",
+          "id": "password-input/plain/state=focus",
+          "key": "state=focus",
+          "layers": "8ecefd23926c3c4a",
+          "props": {
+            "state": "focus"
+          },
+          "surface": "fa0b643878e9242d"
+        },
+        {
+          "box": "b9b9e302aa47bb67",
+          "hash": "57df40c401f356eb",
+          "id": "password-input/plain/state=disabled",
+          "key": "state=disabled",
+          "layers": "a7fa56d092aa513b",
+          "props": {
+            "state": "disabled"
+          },
+          "surface": "fa0b643878e9242d"
+        },
+        {
+          "box": "b9b9e302aa47bb67",
+          "hash": "ca6832311dce145b",
+          "id": "password-input/plain/state=invalid",
+          "key": "state=invalid",
+          "layers": "224bf90f1578424f",
+          "props": {
+            "state": "invalid"
+          },
+          "surface": "fa0b643878e9242d"
+        }
+      ],
+      "contractHash": "283fefd617a47637",
+      "defaultCell": "state=rest",
+      "grid": {
+        "columns": [
+          {
+            "name": "state",
+            "values": [
+              "rest",
+              "focus",
+              "disabled",
+              "invalid"
+            ]
+          }
+        ],
+        "rows": []
+      },
+      "id": "password-input/plain",
+      "interactions": [],
+      "kind": "component-set",
+      "name": "Password Input / plain",
+      "page": "skryensya",
+      "properties": [
+        {
+          "default": "Password",
+          "name": "placeholder",
+          "type": "TEXT"
+        },
+        {
+          "default": true,
+          "name": "show placeholder",
+          "type": "BOOLEAN"
+        }
+      ],
+      "showcase": {
+        "base": {
+          "state": "rest"
+        },
+        "columns": []
+      },
+      "visualHash": "97c730789247c39a"
+    },
+    {
+      "axes": [
+        {
+          "name": "state",
+          "values": [
+            "rest",
+            "focus",
+            "disabled",
+            "invalid"
+          ]
+        }
+      ],
+      "cells": [
+        {
+          "box": "b9b9e302aa47bb67",
+          "hash": "ee27ea350a82c13b",
+          "id": "password-input/brutalist/state=rest",
+          "key": "state=rest",
+          "layers": "e316a4eca7e77dc2",
+          "props": {
+            "state": "rest"
+          },
+          "surface": "fa0b643878e9242d"
+        },
+        {
+          "box": "b9b9e302aa47bb67",
+          "hash": "300468c6afc48671",
+          "id": "password-input/brutalist/state=focus",
+          "key": "state=focus",
+          "layers": "e316a4eca7e77dc2",
+          "props": {
+            "state": "focus"
+          },
+          "surface": "fa0b643878e9242d"
+        },
+        {
+          "box": "b9b9e302aa47bb67",
+          "hash": "a0964505418c5eca",
+          "id": "password-input/brutalist/state=disabled",
+          "key": "state=disabled",
+          "layers": "63bc69e5b59bde58",
+          "props": {
+            "state": "disabled"
+          },
+          "surface": "fa0b643878e9242d"
+        },
+        {
+          "box": "b9b9e302aa47bb67",
+          "hash": "55cf701a30a8a0ac",
+          "id": "password-input/brutalist/state=invalid",
+          "key": "state=invalid",
+          "layers": "a805416f675dfc33",
+          "props": {
+            "state": "invalid"
+          },
+          "surface": "fa0b643878e9242d"
+        }
+      ],
+      "contractHash": "283fefd617a47637",
+      "defaultCell": "state=rest",
+      "grid": {
+        "columns": [
+          {
+            "name": "state",
+            "values": [
+              "rest",
+              "focus",
+              "disabled",
+              "invalid"
+            ]
+          }
+        ],
+        "rows": []
+      },
+      "id": "password-input/brutalist",
+      "interactions": [],
+      "kind": "component-set",
+      "name": "Password Input / brutalist",
+      "page": "skryensya",
+      "properties": [
+        {
+          "default": "Password",
+          "name": "placeholder",
+          "type": "TEXT"
+        },
+        {
+          "default": true,
+          "name": "show placeholder",
+          "type": "BOOLEAN"
+        }
+      ],
+      "showcase": {
+        "base": {
+          "state": "rest"
+        },
+        "columns": []
+      },
+      "visualHash": "0bb59d2cabf7325e"
+    },
+    {
+      "axes": [
+        {
+          "name": "state",
+          "values": [
+            "rest",
+            "focus",
+            "disabled",
+            "invalid"
+          ]
+        }
+      ],
+      "cells": [
+        {
+          "box": "b9b9e302aa47bb67",
+          "hash": "faa4802e941188b4",
+          "id": "password-input/frosted/state=rest",
+          "key": "state=rest",
+          "layers": "0d456da68648a478",
+          "props": {
+            "state": "rest"
+          },
+          "surface": "fa0b643878e9242d"
+        },
+        {
+          "box": "b9b9e302aa47bb67",
+          "hash": "22f75ab57124a151",
+          "id": "password-input/frosted/state=focus",
+          "key": "state=focus",
+          "layers": "0d456da68648a478",
+          "props": {
+            "state": "focus"
+          },
+          "surface": "fa0b643878e9242d"
+        },
+        {
+          "box": "b9b9e302aa47bb67",
+          "hash": "d328f9cedd30d5cd",
+          "id": "password-input/frosted/state=disabled",
+          "key": "state=disabled",
+          "layers": "4a3446ee205be8e3",
+          "props": {
+            "state": "disabled"
+          },
+          "surface": "fa0b643878e9242d"
+        },
+        {
+          "box": "b9b9e302aa47bb67",
+          "hash": "1e8e5166e5943e7e",
+          "id": "password-input/frosted/state=invalid",
+          "key": "state=invalid",
+          "layers": "a73e19e276d83ff6",
+          "props": {
+            "state": "invalid"
+          },
+          "surface": "fa0b643878e9242d"
+        }
+      ],
+      "contractHash": "283fefd617a47637",
+      "defaultCell": "state=rest",
+      "grid": {
+        "columns": [
+          {
+            "name": "state",
+            "values": [
+              "rest",
+              "focus",
+              "disabled",
+              "invalid"
+            ]
+          }
+        ],
+        "rows": []
+      },
+      "id": "password-input/frosted",
+      "interactions": [],
+      "kind": "component-set",
+      "name": "Password Input / frosted",
+      "page": "skryensya",
+      "properties": [
+        {
+          "default": "Password",
+          "name": "placeholder",
+          "type": "TEXT"
+        },
+        {
+          "default": true,
+          "name": "show placeholder",
+          "type": "BOOLEAN"
+        }
+      ],
+      "showcase": {
+        "base": {
+          "state": "rest"
+        },
+        "columns": []
+      },
+      "visualHash": "26edd8d369217c6d"
     }
   ],
   "diagnostics": [
@@ -57403,6 +57700,18 @@
       "message": "11 rule(s) under a condition the evaluation context does not hold",
       "severity": "info",
       "subject": "components/button.css @media (forced-colors: active)"
+    },
+    {
+      "code": "CONDITION_SKIPPED",
+      "message": "11 rule(s) under a condition the evaluation context does not hold",
+      "severity": "info",
+      "subject": "components/button.css @media (forced-colors: active)"
+    },
+    {
+      "code": "CONDITION_SKIPPED",
+      "message": "1 rule(s) under a condition the evaluation context does not hold",
+      "severity": "info",
+      "subject": "components/button.css @media (prefers-reduced-motion: reduce)"
     },
     {
       "code": "CONDITION_SKIPPED",
@@ -57511,6 +57820,12 @@
       "message": "6 rule(s) under a condition the evaluation context does not hold",
       "severity": "info",
       "subject": "components/pagination.css @media (forced-colors: active)"
+    },
+    {
+      "code": "CONDITION_SKIPPED",
+      "message": "2 rule(s) under a condition the evaluation context does not hold",
+      "severity": "info",
+      "subject": "components/password-input.css @media (forced-colors: active)"
     },
     {
       "code": "CONDITION_SKIPPED",
@@ -57654,7 +57969,13 @@
       "code": "CONDITION_SKIPPED",
       "message": "1 rule(s) under a condition the evaluation context does not hold",
       "severity": "info",
-      "subject": "patterns/state-layer.css @media (prefers-reduced-motion: reduce)"
+      "subject": "patterns/icon-toggle.css @media (prefers-reduced-motion: reduce)"
+    },
+    {
+      "code": "CONDITION_SKIPPED",
+      "message": "0 rule(s) under a condition the evaluation context does not hold",
+      "severity": "info",
+      "subject": "patterns/icon-toggle.css @property --sk-icon-toggle-on"
     },
     {
       "code": "CONDITION_SKIPPED",
@@ -57727,6 +58048,24 @@
       "message": "1 rule(s) under a condition the evaluation context does not hold",
       "severity": "info",
       "subject": "patterns/state-layer.css @media (prefers-reduced-motion: reduce)"
+    },
+    {
+      "code": "CONDITION_SKIPPED",
+      "message": "1 rule(s) under a condition the evaluation context does not hold",
+      "severity": "info",
+      "subject": "patterns/state-layer.css @media (prefers-reduced-motion: reduce)"
+    },
+    {
+      "code": "CONDITION_SKIPPED",
+      "message": "1 rule(s) under a condition the evaluation context does not hold",
+      "severity": "info",
+      "subject": "patterns/state-layer.css @media (prefers-reduced-motion: reduce)"
+    },
+    {
+      "code": "CONDITION_SKIPPED",
+      "message": "0 rule(s) under a condition the evaluation context does not hold",
+      "severity": "info",
+      "subject": "patterns/state-layer.css @property --state-layer-opacity"
     },
     {
       "code": "CONDITION_SKIPPED",
@@ -57823,6 +58162,12 @@
       "message": "gradient stops are evaluated in the light mode and not bound to variables",
       "severity": "info",
       "subject": "wash"
+    },
+    {
+      "code": "SELECTOR_UNMATCHABLE",
+      "message": "jsdom cannot evaluate it; treated as not matching",
+      "severity": "info",
+      "subject": "password-input: .sk-password-input__input::-ms-reveal"
     },
     {
       "code": "TOKEN_NOT_A_VARIABLE",
@@ -58066,6 +58411,26 @@
           "appearance"
         ]
       },
+      "password-input": {
+        "excluded": [
+          "required",
+          "defaultVisible"
+        ],
+        "nonVisual": [
+          "name",
+          "autoComplete",
+          "placeholder",
+          "ignorePasswordManagers",
+          "readOnly",
+          "showLabel",
+          "hideLabel"
+        ],
+        "visual": [
+          "disabled",
+          "invalid",
+          "appearance"
+        ]
+      },
       "progress": {
         "excluded": [],
         "nonVisual": [
@@ -58245,15 +58610,15 @@
       }
     },
     "tokens": {
-      "catalogueAdded": 308,
-      "componentVariables": 378,
+      "catalogueAdded": 306,
+      "componentVariables": 391,
       "modeValuesBySource": {
         "alias": 203,
-        "evaluated": 745,
-        "literal": 740
+        "evaluated": 761,
+        "literal": 750
       },
       "reached": 201,
-      "reachedAsVariables": 150,
+      "reachedAsVariables": 152,
       "reachedButNotVariables": [
         "--elevation-flat",
         "--elevation-overlay",
@@ -58269,8 +58634,8 @@
       "variables": 466
     },
     "variants": {
-      "components": 84,
-      "componentSets": 83,
+      "components": 87,
+      "componentSets": 86,
       "naiveAllOptions": {
         "accordion": 32,
         "avatar": 8,
@@ -58292,6 +58657,7 @@
         "link": 2,
         "meter": 4,
         "pagination": 4,
+        "password-input": 384,
         "progress": 4,
         "quote": 2,
         "radio-group": 32,
@@ -58330,6 +58696,7 @@
         "link": 2,
         "meter": 4,
         "pagination": 4,
+        "password-input": 12,
         "progress": 4,
         "quote": 2,
         "radio-group": 16,
@@ -58679,13 +59046,25 @@
         {
           "set": "select/frosted",
           "variants": 6
+        },
+        {
+          "set": "password-input/plain",
+          "variants": 4
+        },
+        {
+          "set": "password-input/brutalist",
+          "variants": 4
+        },
+        {
+          "set": "password-input/frosted",
+          "variants": 4
         }
       ],
-      "variantsTotal": 3503
+      "variantsTotal": 3515
     }
   },
   "schemaVersion": 1,
-  "sourceHash": "4c88390e196f801d",
+  "sourceHash": "44c3718992c0fe23",
   "stage": {
     "background": {
       "variable": "--color-bg-surface"
@@ -58972,6 +59351,52 @@
         "width": {
           "expression": "240px",
           "value": 240
+        }
+      },
+      "11f2fe644e88f14c": {
+        "clipsContent": true,
+        "crossAlign": "CENTER",
+        "direction": "VERTICAL",
+        "gap": {
+          "variable": "--space-inline-sm"
+        },
+        "height": {
+          "variable": "--size-control-sm"
+        },
+        "mainAlign": "CENTER",
+        "minHeight": {
+          "variable": "--size-control-sm"
+        },
+        "minWidth": {
+          "expression": "0",
+          "value": 0
+        },
+        "padding": {
+          "bottom": {
+            "expression": "0",
+            "value": 0
+          },
+          "left": {
+            "expression": "0",
+            "value": 0
+          },
+          "right": {
+            "expression": "0",
+            "value": 0
+          },
+          "top": {
+            "expression": "0",
+            "value": 0
+          }
+        },
+        "radius": {
+          "variable": "--radius-control"
+        },
+        "strokeWeight": {
+          "variable": "password-input:sk-button-border-width:5feceb66ff"
+        },
+        "width": {
+          "variable": "--size-control-sm"
         }
       },
       "130fe63156630ed0": {
@@ -62503,6 +62928,70 @@
           "value": 240
         }
       },
+      "b6ba7a1b55bba1c3": {
+        "clipsContent": false,
+        "crossAlign": "CENTER",
+        "direction": "HORIZONTAL",
+        "grow": true,
+        "mainAlign": "MIN",
+        "minHeight": {
+          "variable": "--size-touch-target"
+        },
+        "minWidth": {
+          "expression": "0",
+          "value": 0
+        },
+        "padding": {
+          "bottom": {
+            "expression": "0",
+            "value": 0
+          },
+          "left": {
+            "variable": "--space-inset-sm"
+          },
+          "right": {
+            "variable": "--space-inset-sm"
+          },
+          "top": {
+            "expression": "0",
+            "value": 0
+          }
+        }
+      },
+      "b9b9e302aa47bb67": {
+        "clipsContent": false,
+        "crossAlign": "MIN",
+        "direction": "VERTICAL",
+        "gap": {
+          "variable": "--space-stack-xs"
+        },
+        "mainAlign": "MIN",
+        "minWidth": {
+          "variable": "password-input:min-inline-size:2f2f4a6cfd"
+        },
+        "padding": {
+          "bottom": {
+            "expression": "0",
+            "value": 0
+          },
+          "left": {
+            "expression": "0",
+            "value": 0
+          },
+          "right": {
+            "expression": "0",
+            "value": 0
+          },
+          "top": {
+            "expression": "0",
+            "value": 0
+          }
+        },
+        "width": {
+          "expression": "240px",
+          "value": 240
+        }
+      },
       "bd7bcb60e3e7fe82": {
         "clipsContent": false,
         "crossAlign": "CENTER",
@@ -63686,6 +64175,37 @@
           }
         },
         "stretch": true
+      },
+      "f3073a4759656820": {
+        "clipsContent": false,
+        "crossAlign": "CENTER",
+        "direction": "HORIZONTAL",
+        "mainAlign": "MIN",
+        "padding": {
+          "bottom": {
+            "expression": "0",
+            "value": 0
+          },
+          "left": {
+            "expression": "0",
+            "value": 0
+          },
+          "right": {
+            "expression": "0",
+            "value": 0
+          },
+          "top": {
+            "expression": "0",
+            "value": 0
+          }
+        },
+        "radius": {
+          "variable": "--radius-control"
+        },
+        "stretch": true,
+        "strokeWeight": {
+          "variable": "password-input:border-width:93e20626bf"
+        }
       },
       "f5111b8dfa344b73": {
         "clipsContent": false,
@@ -64986,6 +65506,92 @@
           "width": {
             "variable": "--focus-ring-width"
           }
+        }
+      ],
+      "0d456da68648a478": [
+        {
+          "box": "f3073a4759656820",
+          "kind": "frame",
+          "layers": [
+            {
+              "box": "b6ba7a1b55bba1c3",
+              "kind": "frame",
+              "layers": [
+                {
+                  "kind": "text",
+                  "slot": "placeholder",
+                  "text": {
+                    "fill": {
+                      "color": {
+                        "variable": "password-input:fg:575016ba18"
+                      },
+                      "type": "SOLID"
+                    },
+                    "fontFamily": {
+                      "variable": "--font-family-body"
+                    },
+                    "fontSize": {
+                      "variable": "--font-size-body"
+                    },
+                    "fontWeight": {
+                      "variable": "--font-weight-body"
+                    },
+                    "lineHeight": 150
+                  },
+                  "textProperty": "placeholder",
+                  "visibleProperty": "show placeholder"
+                }
+              ],
+              "slot": "input",
+              "surface": "a39c603f0591c36b"
+            },
+            {
+              "box": "11f2fe644e88f14c",
+              "kind": "frame",
+              "layers": [
+                {
+                  "fills": [
+                    {
+                      "color": {
+                        "variable": "password-input:state-layer:2898638ebc"
+                      },
+                      "type": "SOLID"
+                    }
+                  ],
+                  "kind": "overlay",
+                  "slot": "state layer"
+                },
+                {
+                  "box": "672cd06398be5f4b",
+                  "kind": "frame",
+                  "layers": [
+                    {
+                      "default": "visibility",
+                      "icon": {
+                        "color": {
+                          "color": {
+                            "variable": "--color-text-secondary"
+                          },
+                          "type": "SOLID"
+                        },
+                        "size": {
+                          "variable": "--size-icon-md"
+                        }
+                      },
+                      "kind": "icon",
+                      "slot": "icon"
+                    }
+                  ],
+                  "slot": "span",
+                  "surface": "fa0b643878e9242d"
+                }
+              ],
+              "slot": "visibilityTrigger",
+              "surface": "ef3956c2e9b301c9"
+            }
+          ],
+          "slot": "control",
+          "surface": "8cb2756dfd571d57"
         }
       ],
       "0da8a679fa57f5e9": [
@@ -67338,6 +67944,92 @@
           },
           "textProperty": "children",
           "visibleProperty": "show children"
+        }
+      ],
+      "224bf90f1578424f": [
+        {
+          "box": "f3073a4759656820",
+          "kind": "frame",
+          "layers": [
+            {
+              "box": "b6ba7a1b55bba1c3",
+              "kind": "frame",
+              "layers": [
+                {
+                  "kind": "text",
+                  "slot": "placeholder",
+                  "text": {
+                    "fill": {
+                      "color": {
+                        "variable": "password-input:fg:575016ba18"
+                      },
+                      "type": "SOLID"
+                    },
+                    "fontFamily": {
+                      "variable": "--font-family-body"
+                    },
+                    "fontSize": {
+                      "variable": "--font-size-body"
+                    },
+                    "fontWeight": {
+                      "variable": "--font-weight-body"
+                    },
+                    "lineHeight": 150
+                  },
+                  "textProperty": "placeholder",
+                  "visibleProperty": "show placeholder"
+                }
+              ],
+              "slot": "input",
+              "surface": "a39c603f0591c36b"
+            },
+            {
+              "box": "11f2fe644e88f14c",
+              "kind": "frame",
+              "layers": [
+                {
+                  "fills": [
+                    {
+                      "color": {
+                        "variable": "password-input:state-layer:2898638ebc"
+                      },
+                      "type": "SOLID"
+                    }
+                  ],
+                  "kind": "overlay",
+                  "slot": "state layer"
+                },
+                {
+                  "box": "672cd06398be5f4b",
+                  "kind": "frame",
+                  "layers": [
+                    {
+                      "default": "visibility",
+                      "icon": {
+                        "color": {
+                          "color": {
+                            "variable": "--color-text-secondary"
+                          },
+                          "type": "SOLID"
+                        },
+                        "size": {
+                          "variable": "--size-icon-md"
+                        }
+                      },
+                      "kind": "icon",
+                      "slot": "icon"
+                    }
+                  ],
+                  "slot": "span",
+                  "surface": "fa0b643878e9242d"
+                }
+              ],
+              "slot": "visibilityTrigger",
+              "surface": "ef3956c2e9b301c9"
+            }
+          ],
+          "slot": "control",
+          "surface": "86ed77ef1186c65e"
         }
       ],
       "23a40221c2b89065": [
@@ -71471,6 +72163,92 @@
           "textProperty": "children"
         }
       ],
+      "4a3446ee205be8e3": [
+        {
+          "box": "f3073a4759656820",
+          "kind": "frame",
+          "layers": [
+            {
+              "box": "b6ba7a1b55bba1c3",
+              "kind": "frame",
+              "layers": [
+                {
+                  "kind": "text",
+                  "slot": "placeholder",
+                  "text": {
+                    "fill": {
+                      "color": {
+                        "variable": "password-input:fg:f238178532"
+                      },
+                      "type": "SOLID"
+                    },
+                    "fontFamily": {
+                      "variable": "--font-family-body"
+                    },
+                    "fontSize": {
+                      "variable": "--font-size-body"
+                    },
+                    "fontWeight": {
+                      "variable": "--font-weight-body"
+                    },
+                    "lineHeight": 150
+                  },
+                  "textProperty": "placeholder",
+                  "visibleProperty": "show placeholder"
+                }
+              ],
+              "slot": "input",
+              "surface": "a39c603f0591c36b"
+            },
+            {
+              "box": "11f2fe644e88f14c",
+              "kind": "frame",
+              "layers": [
+                {
+                  "fills": [
+                    {
+                      "color": {
+                        "variable": "password-input:state-layer:2898638ebc"
+                      },
+                      "type": "SOLID"
+                    }
+                  ],
+                  "kind": "overlay",
+                  "slot": "state layer"
+                },
+                {
+                  "box": "672cd06398be5f4b",
+                  "kind": "frame",
+                  "layers": [
+                    {
+                      "default": "visibility",
+                      "icon": {
+                        "color": {
+                          "color": {
+                            "variable": "--color-text-secondary"
+                          },
+                          "type": "SOLID"
+                        },
+                        "size": {
+                          "variable": "--size-icon-md"
+                        }
+                      },
+                      "kind": "icon",
+                      "slot": "icon"
+                    }
+                  ],
+                  "slot": "span",
+                  "surface": "fa0b643878e9242d"
+                }
+              ],
+              "slot": "visibilityTrigger",
+              "surface": "ef3956c2e9b301c9"
+            }
+          ],
+          "slot": "control",
+          "surface": "8cb2756dfd571d57"
+        }
+      ],
       "4a4d941ccc95a9d3": [
         {
           "fills": [
@@ -74316,6 +75094,92 @@
             "lineHeight": 150
           },
           "textProperty": "children"
+        }
+      ],
+      "63bc69e5b59bde58": [
+        {
+          "box": "f3073a4759656820",
+          "kind": "frame",
+          "layers": [
+            {
+              "box": "b6ba7a1b55bba1c3",
+              "kind": "frame",
+              "layers": [
+                {
+                  "kind": "text",
+                  "slot": "placeholder",
+                  "text": {
+                    "fill": {
+                      "color": {
+                        "variable": "password-input:fg:f238178532"
+                      },
+                      "type": "SOLID"
+                    },
+                    "fontFamily": {
+                      "variable": "--font-family-body"
+                    },
+                    "fontSize": {
+                      "variable": "--font-size-body"
+                    },
+                    "fontWeight": {
+                      "variable": "--font-weight-body"
+                    },
+                    "lineHeight": 150
+                  },
+                  "textProperty": "placeholder",
+                  "visibleProperty": "show placeholder"
+                }
+              ],
+              "slot": "input",
+              "surface": "a39c603f0591c36b"
+            },
+            {
+              "box": "11f2fe644e88f14c",
+              "kind": "frame",
+              "layers": [
+                {
+                  "fills": [
+                    {
+                      "color": {
+                        "variable": "password-input:state-layer:2898638ebc"
+                      },
+                      "type": "SOLID"
+                    }
+                  ],
+                  "kind": "overlay",
+                  "slot": "state layer"
+                },
+                {
+                  "box": "672cd06398be5f4b",
+                  "kind": "frame",
+                  "layers": [
+                    {
+                      "default": "visibility",
+                      "icon": {
+                        "color": {
+                          "color": {
+                            "variable": "--color-text-secondary"
+                          },
+                          "type": "SOLID"
+                        },
+                        "size": {
+                          "variable": "--size-icon-md"
+                        }
+                      },
+                      "kind": "icon",
+                      "slot": "icon"
+                    }
+                  ],
+                  "slot": "span",
+                  "surface": "fa0b643878e9242d"
+                }
+              ],
+              "slot": "visibilityTrigger",
+              "surface": "ef3956c2e9b301c9"
+            }
+          ],
+          "slot": "control",
+          "surface": "9c17a9afe5f055bb"
         }
       ],
       "64689de2f4ad7384": [
@@ -79703,6 +80567,92 @@
           "visibleProperty": "post"
         }
       ],
+      "8ecefd23926c3c4a": [
+        {
+          "box": "f3073a4759656820",
+          "kind": "frame",
+          "layers": [
+            {
+              "box": "b6ba7a1b55bba1c3",
+              "kind": "frame",
+              "layers": [
+                {
+                  "kind": "text",
+                  "slot": "placeholder",
+                  "text": {
+                    "fill": {
+                      "color": {
+                        "variable": "password-input:fg:575016ba18"
+                      },
+                      "type": "SOLID"
+                    },
+                    "fontFamily": {
+                      "variable": "--font-family-body"
+                    },
+                    "fontSize": {
+                      "variable": "--font-size-body"
+                    },
+                    "fontWeight": {
+                      "variable": "--font-weight-body"
+                    },
+                    "lineHeight": 150
+                  },
+                  "textProperty": "placeholder",
+                  "visibleProperty": "show placeholder"
+                }
+              ],
+              "slot": "input",
+              "surface": "a39c603f0591c36b"
+            },
+            {
+              "box": "11f2fe644e88f14c",
+              "kind": "frame",
+              "layers": [
+                {
+                  "fills": [
+                    {
+                      "color": {
+                        "variable": "password-input:state-layer:2898638ebc"
+                      },
+                      "type": "SOLID"
+                    }
+                  ],
+                  "kind": "overlay",
+                  "slot": "state layer"
+                },
+                {
+                  "box": "672cd06398be5f4b",
+                  "kind": "frame",
+                  "layers": [
+                    {
+                      "default": "visibility",
+                      "icon": {
+                        "color": {
+                          "color": {
+                            "variable": "--color-text-secondary"
+                          },
+                          "type": "SOLID"
+                        },
+                        "size": {
+                          "variable": "--size-icon-md"
+                        }
+                      },
+                      "kind": "icon",
+                      "slot": "icon"
+                    }
+                  ],
+                  "slot": "span",
+                  "surface": "fa0b643878e9242d"
+                }
+              ],
+              "slot": "visibilityTrigger",
+              "surface": "ef3956c2e9b301c9"
+            }
+          ],
+          "slot": "control",
+          "surface": "531c78c45ff2f131"
+        }
+      ],
       "8ee7f572091d9f9d": [
         {
           "box": "c5e0c9bb13e58cc6",
@@ -82671,6 +83621,92 @@
           "surface": "a39c603f0591c36b"
         }
       ],
+      "a73e19e276d83ff6": [
+        {
+          "box": "f3073a4759656820",
+          "kind": "frame",
+          "layers": [
+            {
+              "box": "b6ba7a1b55bba1c3",
+              "kind": "frame",
+              "layers": [
+                {
+                  "kind": "text",
+                  "slot": "placeholder",
+                  "text": {
+                    "fill": {
+                      "color": {
+                        "variable": "password-input:fg:575016ba18"
+                      },
+                      "type": "SOLID"
+                    },
+                    "fontFamily": {
+                      "variable": "--font-family-body"
+                    },
+                    "fontSize": {
+                      "variable": "--font-size-body"
+                    },
+                    "fontWeight": {
+                      "variable": "--font-weight-body"
+                    },
+                    "lineHeight": 150
+                  },
+                  "textProperty": "placeholder",
+                  "visibleProperty": "show placeholder"
+                }
+              ],
+              "slot": "input",
+              "surface": "a39c603f0591c36b"
+            },
+            {
+              "box": "11f2fe644e88f14c",
+              "kind": "frame",
+              "layers": [
+                {
+                  "fills": [
+                    {
+                      "color": {
+                        "variable": "password-input:state-layer:2898638ebc"
+                      },
+                      "type": "SOLID"
+                    }
+                  ],
+                  "kind": "overlay",
+                  "slot": "state layer"
+                },
+                {
+                  "box": "672cd06398be5f4b",
+                  "kind": "frame",
+                  "layers": [
+                    {
+                      "default": "visibility",
+                      "icon": {
+                        "color": {
+                          "color": {
+                            "variable": "--color-text-secondary"
+                          },
+                          "type": "SOLID"
+                        },
+                        "size": {
+                          "variable": "--size-icon-md"
+                        }
+                      },
+                      "kind": "icon",
+                      "slot": "icon"
+                    }
+                  ],
+                  "slot": "span",
+                  "surface": "fa0b643878e9242d"
+                }
+              ],
+              "slot": "visibilityTrigger",
+              "surface": "ef3956c2e9b301c9"
+            }
+          ],
+          "slot": "control",
+          "surface": "3bd0c0946b302cbf"
+        }
+      ],
       "a77060f4c9054b39": [
         {
           "fills": [
@@ -82765,6 +83801,178 @@
             "lineHeight": 150
           },
           "textProperty": "children"
+        }
+      ],
+      "a7fa56d092aa513b": [
+        {
+          "box": "f3073a4759656820",
+          "kind": "frame",
+          "layers": [
+            {
+              "box": "b6ba7a1b55bba1c3",
+              "kind": "frame",
+              "layers": [
+                {
+                  "kind": "text",
+                  "slot": "placeholder",
+                  "text": {
+                    "fill": {
+                      "color": {
+                        "variable": "password-input:fg:f238178532"
+                      },
+                      "type": "SOLID"
+                    },
+                    "fontFamily": {
+                      "variable": "--font-family-body"
+                    },
+                    "fontSize": {
+                      "variable": "--font-size-body"
+                    },
+                    "fontWeight": {
+                      "variable": "--font-weight-body"
+                    },
+                    "lineHeight": 150
+                  },
+                  "textProperty": "placeholder",
+                  "visibleProperty": "show placeholder"
+                }
+              ],
+              "slot": "input",
+              "surface": "a39c603f0591c36b"
+            },
+            {
+              "box": "11f2fe644e88f14c",
+              "kind": "frame",
+              "layers": [
+                {
+                  "fills": [
+                    {
+                      "color": {
+                        "variable": "password-input:state-layer:2898638ebc"
+                      },
+                      "type": "SOLID"
+                    }
+                  ],
+                  "kind": "overlay",
+                  "slot": "state layer"
+                },
+                {
+                  "box": "672cd06398be5f4b",
+                  "kind": "frame",
+                  "layers": [
+                    {
+                      "default": "visibility",
+                      "icon": {
+                        "color": {
+                          "color": {
+                            "variable": "--color-text-secondary"
+                          },
+                          "type": "SOLID"
+                        },
+                        "size": {
+                          "variable": "--size-icon-md"
+                        }
+                      },
+                      "kind": "icon",
+                      "slot": "icon"
+                    }
+                  ],
+                  "slot": "span",
+                  "surface": "fa0b643878e9242d"
+                }
+              ],
+              "slot": "visibilityTrigger",
+              "surface": "ef3956c2e9b301c9"
+            }
+          ],
+          "slot": "control",
+          "surface": "531c78c45ff2f131"
+        }
+      ],
+      "a805416f675dfc33": [
+        {
+          "box": "f3073a4759656820",
+          "kind": "frame",
+          "layers": [
+            {
+              "box": "b6ba7a1b55bba1c3",
+              "kind": "frame",
+              "layers": [
+                {
+                  "kind": "text",
+                  "slot": "placeholder",
+                  "text": {
+                    "fill": {
+                      "color": {
+                        "variable": "password-input:fg:575016ba18"
+                      },
+                      "type": "SOLID"
+                    },
+                    "fontFamily": {
+                      "variable": "--font-family-body"
+                    },
+                    "fontSize": {
+                      "variable": "--font-size-body"
+                    },
+                    "fontWeight": {
+                      "variable": "--font-weight-body"
+                    },
+                    "lineHeight": 150
+                  },
+                  "textProperty": "placeholder",
+                  "visibleProperty": "show placeholder"
+                }
+              ],
+              "slot": "input",
+              "surface": "a39c603f0591c36b"
+            },
+            {
+              "box": "11f2fe644e88f14c",
+              "kind": "frame",
+              "layers": [
+                {
+                  "fills": [
+                    {
+                      "color": {
+                        "variable": "password-input:state-layer:2898638ebc"
+                      },
+                      "type": "SOLID"
+                    }
+                  ],
+                  "kind": "overlay",
+                  "slot": "state layer"
+                },
+                {
+                  "box": "672cd06398be5f4b",
+                  "kind": "frame",
+                  "layers": [
+                    {
+                      "default": "visibility",
+                      "icon": {
+                        "color": {
+                          "color": {
+                            "variable": "--color-text-secondary"
+                          },
+                          "type": "SOLID"
+                        },
+                        "size": {
+                          "variable": "--size-icon-md"
+                        }
+                      },
+                      "kind": "icon",
+                      "slot": "icon"
+                    }
+                  ],
+                  "slot": "span",
+                  "surface": "fa0b643878e9242d"
+                }
+              ],
+              "slot": "visibilityTrigger",
+              "surface": "ef3956c2e9b301c9"
+            }
+          ],
+          "slot": "control",
+          "surface": "153cee4512ec68ce"
         }
       ],
       "a81e1c81fdfaf570": [
@@ -87703,6 +88911,92 @@
           "textProperty": "children 1"
         }
       ],
+      "e316a4eca7e77dc2": [
+        {
+          "box": "f3073a4759656820",
+          "kind": "frame",
+          "layers": [
+            {
+              "box": "b6ba7a1b55bba1c3",
+              "kind": "frame",
+              "layers": [
+                {
+                  "kind": "text",
+                  "slot": "placeholder",
+                  "text": {
+                    "fill": {
+                      "color": {
+                        "variable": "password-input:fg:575016ba18"
+                      },
+                      "type": "SOLID"
+                    },
+                    "fontFamily": {
+                      "variable": "--font-family-body"
+                    },
+                    "fontSize": {
+                      "variable": "--font-size-body"
+                    },
+                    "fontWeight": {
+                      "variable": "--font-weight-body"
+                    },
+                    "lineHeight": 150
+                  },
+                  "textProperty": "placeholder",
+                  "visibleProperty": "show placeholder"
+                }
+              ],
+              "slot": "input",
+              "surface": "a39c603f0591c36b"
+            },
+            {
+              "box": "11f2fe644e88f14c",
+              "kind": "frame",
+              "layers": [
+                {
+                  "fills": [
+                    {
+                      "color": {
+                        "variable": "password-input:state-layer:2898638ebc"
+                      },
+                      "type": "SOLID"
+                    }
+                  ],
+                  "kind": "overlay",
+                  "slot": "state layer"
+                },
+                {
+                  "box": "672cd06398be5f4b",
+                  "kind": "frame",
+                  "layers": [
+                    {
+                      "default": "visibility",
+                      "icon": {
+                        "color": {
+                          "color": {
+                            "variable": "--color-text-secondary"
+                          },
+                          "type": "SOLID"
+                        },
+                        "size": {
+                          "variable": "--size-icon-md"
+                        }
+                      },
+                      "kind": "icon",
+                      "slot": "icon"
+                    }
+                  ],
+                  "slot": "span",
+                  "surface": "fa0b643878e9242d"
+                }
+              ],
+              "slot": "visibilityTrigger",
+              "surface": "ef3956c2e9b301c9"
+            }
+          ],
+          "slot": "control",
+          "surface": "9c17a9afe5f055bb"
+        }
+      ],
       "e361a9845d0b5823": [
         {
           "fills": [
@@ -91662,6 +92956,46 @@
           }
         ]
       },
+      "153cee4512ec68ce": {
+        "effects": [
+          {
+            "blur": {
+              "expression": "0",
+              "value": 0
+            },
+            "color": {
+              "variable": "password-input:brutalist-black:b75258c11d"
+            },
+            "spread": {
+              "expression": "0",
+              "value": 0
+            },
+            "type": "DROP_SHADOW",
+            "x": {
+              "variable": "password-input:shadow-1-x:c3c63cdd74"
+            },
+            "y": {
+              "variable": "password-input:field-brutalist-offset:ac33ff9105"
+            }
+          }
+        ],
+        "fills": [
+          {
+            "color": {
+              "variable": "--color-bg-surface-sunken"
+            },
+            "type": "SOLID"
+          }
+        ],
+        "strokes": [
+          {
+            "color": {
+              "variable": "--color-border-danger"
+            },
+            "type": "SOLID"
+          }
+        ]
+      },
       "160070ac7d1e8ee0": {
         "effects": [
           {
@@ -93534,6 +94868,55 @@
           {
             "color": {
               "variable": "checkbox:brutalist-black:b75258c11d"
+            },
+            "type": "SOLID"
+          }
+        ]
+      },
+      "3bd0c0946b302cbf": {
+        "effects": [
+          {
+            "blur": {
+              "expression": "2px",
+              "value": 2
+            },
+            "color": {
+              "variable": "--shadow-sm"
+            },
+            "spread": {
+              "expression": "0",
+              "value": 0
+            },
+            "type": "INNER_SHADOW",
+            "x": {
+              "expression": "0",
+              "value": 0
+            },
+            "y": {
+              "expression": "1px",
+              "value": 1
+            }
+          },
+          {
+            "radius": {
+              "expression": "10px",
+              "value": 10
+            },
+            "type": "BACKGROUND_BLUR"
+          }
+        ],
+        "fills": [
+          {
+            "color": {
+              "variable": "password-input:frost-glass:84cf990c6e"
+            },
+            "type": "SOLID"
+          }
+        ],
+        "strokes": [
+          {
+            "color": {
+              "variable": "--color-border-danger"
             },
             "type": "SOLID"
           }
@@ -97693,6 +99076,55 @@
           }
         ]
       },
+      "8cb2756dfd571d57": {
+        "effects": [
+          {
+            "blur": {
+              "expression": "2px",
+              "value": 2
+            },
+            "color": {
+              "variable": "--shadow-sm"
+            },
+            "spread": {
+              "expression": "0",
+              "value": 0
+            },
+            "type": "INNER_SHADOW",
+            "x": {
+              "expression": "0",
+              "value": 0
+            },
+            "y": {
+              "expression": "1px",
+              "value": 1
+            }
+          },
+          {
+            "radius": {
+              "expression": "10px",
+              "value": 10
+            },
+            "type": "BACKGROUND_BLUR"
+          }
+        ],
+        "fills": [
+          {
+            "color": {
+              "variable": "password-input:frost-glass:84cf990c6e"
+            },
+            "type": "SOLID"
+          }
+        ],
+        "strokes": [
+          {
+            "color": {
+              "variable": "password-input:border-color:74589dbcff"
+            },
+            "type": "SOLID"
+          }
+        ]
+      },
       "8cf31f757ebfdf35": {
         "effects": [
           {
@@ -98775,6 +100207,46 @@
           {
             "color": {
               "variable": "button:border-color:10e9f5602d"
+            },
+            "type": "SOLID"
+          }
+        ]
+      },
+      "9c17a9afe5f055bb": {
+        "effects": [
+          {
+            "blur": {
+              "expression": "0",
+              "value": 0
+            },
+            "color": {
+              "variable": "password-input:brutalist-black:b75258c11d"
+            },
+            "spread": {
+              "expression": "0",
+              "value": 0
+            },
+            "type": "DROP_SHADOW",
+            "x": {
+              "variable": "password-input:shadow-1-x:c3c63cdd74"
+            },
+            "y": {
+              "variable": "password-input:field-brutalist-offset:ac33ff9105"
+            }
+          }
+        ],
+        "fills": [
+          {
+            "color": {
+              "variable": "--color-bg-surface-sunken"
+            },
+            "type": "SOLID"
+          }
+        ],
+        "strokes": [
+          {
+            "color": {
+              "variable": "password-input:brutalist-black:b75258c11d"
             },
             "type": "SOLID"
           }
@@ -103216,6 +104688,25 @@
           {
             "color": {
               "variable": "tabs:brutalist-black:b75258c11d"
+            },
+            "type": "SOLID"
+          }
+        ]
+      },
+      "ef3956c2e9b301c9": {
+        "effects": [],
+        "fills": [
+          {
+            "color": {
+              "variable": "password-input:sk-button-bg:10e9f5602d"
+            },
+            "type": "SOLID"
+          }
+        ],
+        "strokes": [
+          {
+            "color": {
+              "variable": "password-input:sk-button-border-color:10e9f5602d"
             },
             "type": "SOLID"
           }
@@ -111988,6 +113479,372 @@
         "light": {
           "kind": "literal",
           "value": 3
+        }
+      }
+    },
+    {
+      "codeSyntax": "var(--sk-password-input-border-color)",
+      "collection": "component",
+      "expression": "color-mix(in oklab, var(--color-text-primary) 24%, transparent)",
+      "id": "password-input:border-color:74589dbcff",
+      "name": "password-input/border-color/frosted",
+      "source": {
+        "dark": "evaluated",
+        "light": "evaluated"
+      },
+      "type": "COLOR",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": {
+            "a": 0.24,
+            "b": 0.9579,
+            "g": 0.9609,
+            "r": 0.9609
+          }
+        },
+        "light": {
+          "kind": "literal",
+          "value": {
+            "a": 0.24,
+            "b": 0.0903,
+            "g": 0.098,
+            "r": 0.1095
+          }
+        }
+      }
+    },
+    {
+      "codeSyntax": "var(--sk-password-input-border-width)",
+      "collection": "component",
+      "expression": "1px",
+      "id": "password-input:border-width:93e20626bf",
+      "name": "password-input/border-width",
+      "source": {
+        "dark": "literal",
+        "light": "literal"
+      },
+      "type": "FLOAT",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": 1
+        },
+        "light": {
+          "kind": "literal",
+          "value": 1
+        }
+      }
+    },
+    {
+      "codeSyntax": "var(--brutalist-black)",
+      "collection": "component",
+      "expression": "oklch(from var(--shadow-lg) l c h / 1)",
+      "id": "password-input:brutalist-black:b75258c11d",
+      "name": "password-input/brutalist-black/brutalist",
+      "source": {
+        "dark": "evaluated",
+        "light": "evaluated"
+      },
+      "type": "COLOR",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": {
+            "a": 1,
+            "b": 0,
+            "g": 0,
+            "r": 0
+          }
+        },
+        "light": {
+          "kind": "literal",
+          "value": {
+            "a": 1,
+            "b": 0,
+            "g": 0,
+            "r": 0
+          }
+        }
+      }
+    },
+    {
+      "codeSyntax": "",
+      "collection": "component",
+      "expression": "color-mix(in oklab, var(--color-text-primary) 54%, transparent)",
+      "id": "password-input:fg:575016ba18",
+      "name": "password-input/fg",
+      "source": {
+        "dark": "evaluated",
+        "light": "evaluated"
+      },
+      "type": "COLOR",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": {
+            "a": 0.54,
+            "b": 0.9579,
+            "g": 0.9609,
+            "r": 0.9609
+          }
+        },
+        "light": {
+          "kind": "literal",
+          "value": {
+            "a": 0.54,
+            "b": 0.0903,
+            "g": 0.098,
+            "r": 0.1095
+          }
+        }
+      }
+    },
+    {
+      "codeSyntax": "",
+      "collection": "component",
+      "expression": "color-mix(in oklab, var(--color-text-disabled) 54%, transparent)",
+      "id": "password-input:fg:f238178532",
+      "name": "password-input/fg/disabled",
+      "source": {
+        "dark": "evaluated",
+        "light": "evaluated"
+      },
+      "type": "COLOR",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": {
+            "a": 0.54,
+            "b": 0.3022,
+            "g": 0.3247,
+            "r": 0.3427
+          }
+        },
+        "light": {
+          "kind": "literal",
+          "value": {
+            "a": 0.54,
+            "b": 0.6089,
+            "g": 0.6262,
+            "r": 0.6521
+          }
+        }
+      }
+    },
+    {
+      "codeSyntax": "var(--field-brutalist-offset)",
+      "collection": "component",
+      "expression": "3px",
+      "id": "password-input:field-brutalist-offset:ac33ff9105",
+      "name": "password-input/field-brutalist-offset/brutalist",
+      "source": {
+        "dark": "literal",
+        "light": "literal"
+      },
+      "type": "FLOAT",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": 3
+        },
+        "light": {
+          "kind": "literal",
+          "value": 3
+        }
+      }
+    },
+    {
+      "codeSyntax": "var(--frost-glass)",
+      "collection": "component",
+      "expression": "var(--frost-on) color-mix(in oklab, var(--color-bg-surface-sunken) 60%, transparent)",
+      "id": "password-input:frost-glass:84cf990c6e",
+      "name": "password-input/frost-glass/frosted",
+      "source": {
+        "dark": "evaluated",
+        "light": "evaluated"
+      },
+      "type": "COLOR",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": {
+            "a": 0.6,
+            "b": 0.0355,
+            "g": 0.0394,
+            "r": 0.047
+          }
+        },
+        "light": {
+          "kind": "literal",
+          "value": {
+            "a": 0.6,
+            "b": 0.9579,
+            "g": 0.9609,
+            "r": 0.9609
+          }
+        }
+      }
+    },
+    {
+      "codeSyntax": "var(--sk-password-input-min-inline-size)",
+      "collection": "component",
+      "expression": "12rem",
+      "id": "password-input:min-inline-size:2f2f4a6cfd",
+      "name": "password-input/min-inline-size",
+      "source": {
+        "dark": "evaluated",
+        "light": "evaluated"
+      },
+      "type": "FLOAT",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": 192
+        },
+        "light": {
+          "kind": "literal",
+          "value": 192
+        }
+      }
+    },
+    {
+      "codeSyntax": "",
+      "collection": "component",
+      "expression": "calc(3px * 1)",
+      "id": "password-input:shadow-1-x:c3c63cdd74",
+      "name": "password-input/shadow-1-x/brutalist",
+      "source": {
+        "dark": "evaluated",
+        "light": "evaluated"
+      },
+      "type": "FLOAT",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": 3
+        },
+        "light": {
+          "kind": "literal",
+          "value": 3
+        }
+      }
+    },
+    {
+      "codeSyntax": "var(--sk-button-bg)",
+      "collection": "component",
+      "expression": "transparent",
+      "id": "password-input:sk-button-bg:10e9f5602d",
+      "name": "password-input/sk-button-bg",
+      "source": {
+        "dark": "literal",
+        "light": "literal"
+      },
+      "type": "COLOR",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": {
+            "a": 0,
+            "b": 0,
+            "g": 0,
+            "r": 0
+          }
+        },
+        "light": {
+          "kind": "literal",
+          "value": {
+            "a": 0,
+            "b": 0,
+            "g": 0,
+            "r": 0
+          }
+        }
+      }
+    },
+    {
+      "codeSyntax": "var(--sk-button-border-color)",
+      "collection": "component",
+      "expression": "transparent",
+      "id": "password-input:sk-button-border-color:10e9f5602d",
+      "name": "password-input/sk-button-border-color",
+      "source": {
+        "dark": "literal",
+        "light": "literal"
+      },
+      "type": "COLOR",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": {
+            "a": 0,
+            "b": 0,
+            "g": 0,
+            "r": 0
+          }
+        },
+        "light": {
+          "kind": "literal",
+          "value": {
+            "a": 0,
+            "b": 0,
+            "g": 0,
+            "r": 0
+          }
+        }
+      }
+    },
+    {
+      "codeSyntax": "var(--sk-button-border-width)",
+      "collection": "component",
+      "expression": "0",
+      "id": "password-input:sk-button-border-width:5feceb66ff",
+      "name": "password-input/sk-button-border-width",
+      "source": {
+        "dark": "literal",
+        "light": "literal"
+      },
+      "type": "FLOAT",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": 0
+        },
+        "light": {
+          "kind": "literal",
+          "value": 0
+        }
+      }
+    },
+    {
+      "codeSyntax": "",
+      "collection": "component",
+      "expression": "color-mix( in srgb, var(--color-text-secondary) calc(0 * 100%), transparent )",
+      "id": "password-input:state-layer:2898638ebc",
+      "name": "password-input/state-layer",
+      "source": {
+        "dark": "evaluated",
+        "light": "evaluated"
+      },
+      "type": "COLOR",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": {
+            "a": 0,
+            "b": 0,
+            "g": 0,
+            "r": 0
+          }
+        },
+        "light": {
+          "kind": "literal",
+          "value": {
+            "a": 0,
+            "b": 0,
+            "g": 0,
+            "r": 0
+          }
         }
       }
     },
