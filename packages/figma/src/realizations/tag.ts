@@ -19,3 +19,23 @@ export const tagRealization: Realization = {
   grid: { columns: ["tone"], rows: [], descending: [] },
   stage,
 };
+
+/* Tag.link: a chip that navigates, so it is hovered and focused. */
+export const tagLinkRealization: Realization = {
+  ...tagRealization,
+  id: "tag-link",
+  signature: "Tag.link",
+  state: {
+    axis: "state",
+    rest: "rest",
+    options: [],
+    interactions: [
+      { name: "hover", pseudo: ":hover", trigger: "ON_HOVER" },
+      { name: "focus", pseudo: ":focus-visible" },
+    ],
+  },
+  overlays: { before: "state layer" },
+  exclude: [],
+  given: { href: "#" },
+  grid: { columns: ["state"], rows: ["tone"], descending: [] },
+};
