@@ -22,9 +22,9 @@ export const PlainMedia: StoryObj = treeStory((t) => demos.cardPlainMediaTree(ca
 export const Basic: StoryObj = treeStory((t) => demos.cardBasicTree(cardCopy[localeOf(t)]));
 export const MetaStory: StoryObj = treeStory((t) => demos.cardMetaTree(cardCopy[localeOf(t)]));
 export const Stat: StoryObj = treeStory((t) => demos.cardStatTree(cardCopy[localeOf(t)]));
+export const Select: StoryObj = treeStory((t) => demos.cardSelectTree(cardCopy[localeOf(t)]));
 export const Link: StoryObj = treeStory((t) => demos.cardLinkTree(cardCopy[localeOf(t)]));
 export const Action: StoryObj = treeStory((t) => demos.cardActionTree(cardCopy[localeOf(t)]));
-export const Select: StoryObj = treeStory((t) => demos.cardSelectTree(cardCopy[localeOf(t)]));
 export const Media: StoryObj = treeStory((t) => demos.cardMediaTree(cardCopy[localeOf(t)]));
 export const Gradient: StoryObj = treeStory((t) => demos.cardGradientTree(cardCopy[localeOf(t)]));
 export const MediaLink: StoryObj = treeStory((t) => demos.cardMediaLinkTree(cardCopy[localeOf(t)]));
