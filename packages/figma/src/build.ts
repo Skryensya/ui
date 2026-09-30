@@ -101,7 +101,10 @@ function treeFor(realization: Realization, input: CellInput, iconName: string): 
   }
   const collections: Record<string, ItemInput[]> = {};
   for (const [name, collection] of Object.entries(realization.collections ?? {})) {
-    collections[name] = collection.items.map((item) => ({ options: { ...item.options }, slots: { ...item.more, [collection.slot]: item.text } }));
+    collections[name] = collection.items.map((item) => ({
+      options: { ...item.options },
+      slots: { ...item.more, ...(item.text === undefined ? {} : { [collection.slot]: item.text }) },
+    }));
   }
   return {
     contract: realization.contract,
@@ -124,7 +127,13 @@ function mounted(markup: string, iconContract: ComponentContract): string {
     const size = /data-sk-icon-size="([^"]*)"/.exec(span)?.[1];
     // The glyph it names travels too, as `data-glyph`: a template's own arrow is drawn as that arrow.
     const glyph = new RegExp(`\\b${attr}="([^"]*)"`).exec(span)?.[1];
-    return `<svg class="${root}"${size ? ` data-size="${size}"` : ""}${glyph ? ` data-glyph="${glyph}"` : ""}></svg>`;
+    // Every other attribute stays on the mounted icon, as the enhancer leaves it: a StateButton's
+    // `data-face` and `data-active` are what its sheet shows one face by.
+    const kept = [...span.matchAll(/\s([\w:-]+)(?:="([^"]*)")?/g)]
+      .filter(([, name]) => name !== attr && name !== "data-sk-icon-size" && name !== "class")
+      .map(([, name, value]) => (value === undefined ? ` ${name}` : ` ${name}="${value}"`))
+      .join("");
+    return `<svg class="${root}"${size ? ` data-size="${size}"` : ""}${glyph ? ` data-glyph="${glyph}"` : ""}${kept}></svg>`;
   });
 }
 
@@ -290,7 +299,7 @@ function withItemSlots(realization: Realization): Realization {
     .flatMap(
     ([name, collection]) =>
       collection.items.flatMap((item, i) => [
-        [`${name} ${i + 1}`, { holds: "text" as const, sample: item.text, item: name }] as const,
+        ...(item.text === undefined ? [] : [[`${name} ${i + 1}`, { holds: "text" as const, sample: item.text, item: name }] as const]),
         ...Object.entries(item.more ?? {}).map(([slot, text]) => [`${slot} ${i + 1}`, { holds: "text" as const, sample: text, item: name }] as const),
       ]),
   );
@@ -837,6 +846,11 @@ async function compileRealization(authored: Realization, shared: Shared): Promis
           }
           if (node.nodeType !== 1) continue;
           const child = node as Element;
+          // Not shown (hidden, or see-through: the face a toggle is not on): not drawn, icons included.
+          const shownStyle = cascaded.get(child)!;
+          if (shownStyle.get("visibility") === "hidden" || shownStyle.get("display") === "none" || child.hasAttribute("hidden")) continue;
+          const seeThrough = shownStyle.get("opacity");
+          if (seeThrough !== undefined && lengthOf(seeThrough, child) === 0) continue;
           if (child.classList.contains(iconContract.parts.root)) {
             const part = partOf(el);
             const slot = slotOfPart(part) ?? part ?? "icon";
@@ -845,7 +859,8 @@ async function compileRealization(authored: Realization, shared: Shared): Promis
               realization.slots[slot]?.icon ?? (part ? drawnParts[part]?.icon : undefined) ?? (baked && vocabulary.includes(baked) ? baked : DEFAULT_ICON);
             if (!vocabulary.includes(named)) throw new Error(`icon ${slot}: ${named} is not a stable icon name`);
             const optional = realization.slots[slot] ? !requiredSlot(slot) : false;
-            out.push({ kind: "icon", slot, ...(optional ? { visibleProperty: slot } : {}), default: named, icon: iconOf(ctx(child)) });
+            // Two icons in one part are two layers: `root`, `root 2`.
+            out.push({ kind: "icon", slot: unique(slot), ...(optional ? { visibleProperty: slot } : {}), default: named, icon: iconOf(ctx(child)) });
             continue;
           }
           if (clipped(child)) continue;
