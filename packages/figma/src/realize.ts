@@ -184,6 +184,14 @@ function effects(ctx: Context): Effect[] {
 
 /* ── the frame ────────────────────────────────────────────────────────────────────────────────── */
 
+/** An element's column tracks (`auto minmax(0, 1fr)` is two), substituted; none when it declares none. */
+export function gridTracks(ctx: Context): string[] {
+  const template = prop(ctx, "grid-template-columns");
+  if (!template || template === "none") return [];
+  const text = /var\(/.test(template) ? substituted(template, ctx) : template;
+  return splitSpaces(text).filter(Boolean);
+}
+
 export function frameOf(ctx: Context): Frame {
   // No `display` declared is the element's own: block for a `<p>` or an `<hr>`, drawn the same.
   const display = prop(ctx, "display") || "block";
@@ -200,11 +208,14 @@ export function frameOf(ctx: Context): Frame {
    * template has tracks, which auto layout does not.
    */
   const grid = /grid/.test(display);
-  if (grid && (prop(ctx, "grid-template-columns") || prop(ctx, "grid-template-rows") || prop(ctx, "grid-template"))) {
-    throw new Unsupported(`no auto-layout equivalent: a grid with tracks`);
+  if (grid && (prop(ctx, "grid-template-rows") || prop(ctx, "grid-template"))) {
+    throw new Unsupported(`no auto-layout equivalent: a grid with row tracks`);
   }
+  // Column tracks: one is the implicit stack again; several, laid across in one row (Callout's
+  // icon then content), are a horizontal auto layout whose `fr` columns fill (see gridTracks).
+  const across = grid && gridTracks(ctx).length > 1;
   if (!flex && !grid && !/^(inline-block|block|inline)$/.test(display)) throw new Unsupported(`no auto-layout equivalent: display ${display}`);
-  const direction = grid || (flex && /column/.test(prop(ctx, "flex-direction") ?? "")) ? "VERTICAL" : "HORIZONTAL";
+  const direction = across ? "HORIZONTAL" : grid || (flex && /column/.test(prop(ctx, "flex-direction") ?? "")) ? "VERTICAL" : "HORIZONTAL";
 
   const borderStyle = prop(ctx, "border-style");
   const strokeColor = borderStyle && borderStyle !== "none" ? asColor(resolve(prop(ctx, "border-color") ?? "currentColor", "color", ctx, "border-color")) : undefined;
@@ -212,13 +223,16 @@ export function frameOf(ctx: Context): Frame {
 
   return {
     direction,
-    // A grid's items sit by align-items down its column and justify-items across it.
-    mainAlign: ALIGN[(grid ? prop(ctx, "align-items") : prop(ctx, "justify-content")) ?? "start"] ?? "MIN",
-    crossAlign: (ALIGN[(grid ? prop(ctx, "justify-items") : prop(ctx, "align-items")) ?? "start"] ?? "MIN") as Frame["crossAlign"],
+    // A stacking grid's items sit by align-items down its column and justify-items across it; a grid
+    // laid across aligns them down its row by align-items, as flex does.
+    mainAlign: ALIGN[(grid && !across ? prop(ctx, "align-items") : prop(ctx, "justify-content")) ?? "start"] ?? "MIN",
+    crossAlign: (ALIGN[(grid && !across ? prop(ctx, "justify-items") : prop(ctx, "align-items")) ?? "start"] ?? "MIN") as Frame["crossAlign"],
     width: number(ctx, "width", "width"),
     height: number(ctx, "height", "height"),
     minHeight: number(ctx, "min-height", "min-height"),
     minWidth: number(ctx, "min-width", "min-width"),
+    ...(Number(prop(ctx, "flex-grow") ?? 0) > 0 ? { grow: true as const } : {}),
+    ...(prop(ctx, "align-self") === "stretch" ? { stretch: true as const } : {}),
     padding: { top: padding("top"), right: padding("right"), bottom: padding("bottom"), left: padding("left") },
     gap: number(ctx, "gap", "gap"),
     radius: number(ctx, "border-radius", "radius"),

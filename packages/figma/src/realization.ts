@@ -63,6 +63,11 @@ export type Realization = {
    */
   parts?: Readonly<Record<string, { holds: "icon"; icon: string }>>;
   /**
+   * Draw the component as its markup nests (a frame per part that lays out or paints, texts and icons
+   * where they sit) instead of one flat row of slot layers. Callout's icon beside its content column.
+   */
+  nested?: true;
+  /**
    * Pseudo-classes held on every cell: a SkipLink is drawn focused, the one state anyone sees it in.
    */
   simulate?: readonly string[];

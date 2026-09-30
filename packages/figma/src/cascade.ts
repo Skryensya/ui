@@ -124,6 +124,12 @@ function expand(decls: readonly (readonly [string, string])[]): (readonly [strin
   for (const [prop, value] of decls) {
     const parts = topLevelSpaces(value);
     switch (prop) {
+      case "flex": {
+        // `flex: 1`, `flex: 1 1 0`, `flex: none`: only the grow factor is read.
+        const grow = value.trim() === "none" ? "0" : value.trim() === "auto" ? "1" : parts[0];
+        out.push(["flex-grow", grow]);
+        break;
+      }
       case "place-items":
         out.push(["align-items", parts[0]], ["justify-items", parts[1] ?? parts[0]]);
         break;

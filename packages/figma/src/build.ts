@@ -32,7 +32,7 @@ import {
   type Styles,
 } from "./manifest-types.js";
 import type { Realization } from "./realization.js";
-import { frameOf, iconOf, overlayOf, ringOf, textOf } from "./realize.js";
+import { frameOf, gridTracks, iconOf, overlayOf, ringOf, textOf } from "./realize.js";
 import { Registry, resolve, type CellProps, type Context } from "./resolve.js";
 
 const hash = (value: unknown) => createHash("sha256").update(canonical(value)).digest("hex").slice(0, 16);
@@ -426,6 +426,79 @@ async function compileRealization(realization: Realization, shared: Shared): Pro
       const ctxOf = (computed: Computed): Context => ({ computed, registry, cell: cellProps, hookPrefix, component: realization.contract, inherited });
       const ctx = (el: Element): Context => ctxOf(cascaded.get(el)!);
 
+      /*
+       * THE NESTED DRAWING: the element's own children, in document order. A text run is its slot's
+       * layer (known by the sample it was emitted with), a mounted icon an icon layer, an element that
+       * lays out or paints a frame holding its own layers, and a wrapper that does neither is looked
+       * through. What is clipped to an accessible name only is not drawn.
+       */
+      const partOf = (el: Element) => {
+        for (const [part, cls] of Object.entries(contract.parts)) if (el.classList.contains(cls)) return part;
+        return undefined;
+      };
+      const slotOfText = (text: string) =>
+        Object.entries(realization.slots).find(([, spec]) => spec.holds === "text" && spec.sample === text)?.[0];
+      const slotOfPart = (part: string | undefined) => (part ? Object.entries(slotPart).find(([, p]) => p === part)?.[0] : undefined);
+      const clipped = (el: Element) => {
+        const c = cascaded.get(el)!;
+        return /^(1px|0)$/.test(c.get("width") ?? "") && /^(1px|0)$/.test(c.get("height") ?? "") && /hidden|clip/.test(c.get("overflow") ?? c.get("clip-path") ?? "");
+      };
+      const paints = (el: Element) => {
+        const { strokes, fills, effects, ...box } = frameOf(ctx(el));
+        const zero = (b: Bound<number> | undefined) => !b || ("value" in b && b.value === 0);
+        return (
+          strokes.length > 0 || fills.length > 0 || effects.length > 0 || box.width !== undefined || box.height !== undefined ||
+          box.grow === true || !zero(box.padding.top) || !zero(box.padding.left) || !zero(box.padding.bottom) || !zero(box.padding.right)
+        );
+      };
+      const nestedLayers = (el: Element): Layer[] => {
+        const out: Layer[] = [];
+        // In a grid laid across, a child in an `fr` column fills the row, as flex-grow does.
+        const tracks = gridTracks(ctx(el));
+        let column = 0;
+        for (const node of Array.from(el.childNodes)) {
+          if (node.nodeType === 3) {
+            const text = (node.textContent ?? "").trim();
+            if (!text) continue;
+            const slot = slotOfText(text) ?? slotOfPart(partOf(el)) ?? "text";
+            const spec = realization.slots[slot];
+            if (spec?.holds === "text" && spec.hidden) continue;
+            const optional = spec ? !signature.slots[slot]?.required : false;
+            out.push({ kind: "text", slot, textProperty: slot, ...(optional ? { visibleProperty: `show ${slot}` } : {}), text: textOf(ctx(el)) });
+            continue;
+          }
+          if (node.nodeType !== 1) continue;
+          const child = node as Element;
+          if (child.classList.contains(iconContract.parts.root)) {
+            const part = partOf(el);
+            const slot = slotOfPart(part) ?? part ?? "icon";
+            const named = realization.slots[slot]?.icon ?? (part ? drawnParts[part]?.icon : undefined) ?? DEFAULT_ICON;
+            if (!vocabulary.includes(named)) throw new Error(`icon ${slot}: ${named} is not a stable icon name`);
+            const optional = realization.slots[slot] ? !signature.slots[slot]?.required : false;
+            out.push({ kind: "icon", slot, ...(optional ? { visibleProperty: slot } : {}), default: named, icon: iconOf(ctx(child)) });
+            continue;
+          }
+          if (clipped(child)) continue;
+          const onlyText = child.children.length === 0;
+          if (onlyText && !paints(child)) {
+            out.push(...nestedLayers(child));
+            continue;
+          }
+          const { strokes, fills, effects, ...frameBox } = frameOf(ctx(child));
+          const track = tracks.length > 1 ? tracks[column++] : undefined;
+          const box = track && /fr\b/.test(track) ? { ...frameBox, grow: true as const } : frameBox;
+          const slot = partOf(child) ?? child.localName;
+          out.push({
+            kind: "frame",
+            slot,
+            box: intern(styles.boxes, box),
+            surface: intern(styles.surfaces, { strokes, fills, effects }),
+            layers: nestedLayers(child),
+          });
+        }
+        return out;
+      };
+
       try {
         const layers: Layer[] = [];
         // Pseudo-elements that paint go under the content, first.
@@ -434,8 +507,9 @@ async function compileRealization(realization: Realization, shared: Shared): Pro
           const fills = box && overlayOf(ctxOf(box));
           if (fills?.length) layers.push({ kind: "overlay", slot: name, fills });
         }
+        if (realization.nested) layers.push(...nestedLayers(host));
         // Slots in the order the contract's template places them, never the realization's key order.
-        for (const entry of layerOrder) {
+        else for (const entry of layerOrder) {
           if (entry.kind === "part") {
             // A fixed icon of the template's own: always shown, showing what the realization names.
             const holder = host.querySelector(`.${contract.parts[entry.name]}`);

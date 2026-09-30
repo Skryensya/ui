@@ -79,6 +79,9 @@ export type Box = {
   minHeight?: Bound<number>;
   /** `min-inline-size`: a Kbd's floor, so a one-glyph key stays square. */
   minWidth?: Bound<number>;
+  /** Inside its parent's auto layout: `flex-grow` fills the main axis, `align-self: stretch` the cross one. */
+  grow?: true;
+  stretch?: true;
   padding: { top: Bound<number>; right: Bound<number>; bottom: Bound<number>; left: Bound<number> };
   gap?: Bound<number>;
   radius?: Bound<number>;
@@ -121,7 +124,12 @@ export type Layer =
   /** A pseudo-element with paint (the state layer): covers the host, under its content, same corners. */
   | { kind: "overlay"; slot: string; fills: Paint[] }
   /** An outline: a stroke `width` wide drawn `offset` outside the host, following its corners. */
-  | { kind: "ring"; slot: string; width: Bound<number>; offset: Bound<number>; radius: Bound<number>; color: Paint };
+  | { kind: "ring"; slot: string; width: Bound<number>; offset: Bound<number>; radius: Bound<number>; color: Paint }
+  /**
+   * A part of the component that lays out or paints on its own (Callout's content column, a
+   * separator's rule): a frame with its own box and surface, by id in `styles`, holding its layers.
+   */
+  | { kind: "frame"; slot: string; box: string; surface: string; layers: Layer[] };
 
 export type ComponentProperty =
   | { name: string; type: "TEXT"; default: string }

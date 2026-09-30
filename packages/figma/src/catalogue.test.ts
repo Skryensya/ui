@@ -24,3 +24,19 @@ describe("the catalogue", () => {
     for (const set of sets) expect(set.cells.length).toBeGreaterThan(0);
   });
 });
+
+/* A nested realization draws the markup's own structure, not a flat row of slots. */
+describe("Callout, drawn as it nests", () => {
+  it("puts the icon beside a content column that fills the row", () => {
+    const set = manifest.components.find((c): c is ComponentSet => c.kind === "component-set" && c.id.startsWith("callout/"))!;
+    const cell = set.cells[0];
+    const host = manifest.styles.boxes[cell.box];
+    const layers = manifest.styles.layers[cell.layers];
+    expect(host.direction).toBe("HORIZONTAL");
+    const content = layers.find((l) => l.kind === "frame" && l.slot === "content");
+    expect(content?.kind).toBe("frame");
+    if (content?.kind !== "frame") return;
+    expect(manifest.styles.boxes[content.box]).toMatchObject({ direction: "VERTICAL", grow: true });
+    expect(content.layers.map((l) => `${l.kind} ${l.slot}`)).toEqual(["text title", "text children"]);
+  });
+});
