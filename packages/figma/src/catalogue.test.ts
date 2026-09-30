@@ -307,3 +307,17 @@ describe("List", () => {
     expect(rules("false")).toEqual([0, 0, 0]);
   });
 });
+
+describe("NavList", () => {
+  it("labels its group and fills each item with its link, the current one marked", () => {
+    const set = manifest.components.find((c): c is ComponentSet => c.kind === "component-set" && c.id === "nav-list")!;
+    expect(set.properties.map((p) => p.name)).toEqual(["group 1", "link 1", "link 2", "link 3"]);
+    const [group] = manifest.styles.layers[set.cells.find((c) => c.props.orientation === "vertical")!.layers];
+    const list = group.kind === "frame" ? group.layers[1] : undefined;
+    const [first, second] = list?.kind === "frame" ? list.layers : [];
+    const link = (item: typeof first) => (item?.kind === "frame" ? item.layers[0] : undefined);
+    const a = link(first), b = link(second);
+    expect(a?.kind === "frame" && manifest.styles.boxes[a.box].grow).toBe(true);
+    expect(a?.kind === "frame" && b?.kind === "frame" && a.surface !== b.surface).toBe(true);
+  });
+});
