@@ -216,6 +216,11 @@ function expand(decls: readonly (readonly [string, string])[]): (readonly [strin
       case "border-inline-end": {
         // One side's border (a Separator's rule), as that side's longhands, in horizontal-tb.
         const side = SIDES[prop.replace("border-", "")];
+        // `0` or `none` clears that side (a List without dividers).
+        if (parts.length === 1 && (parts[0] === "0" || parts[0] === "none")) {
+          out.push([`border-${side}-style`, "none"], [`border-${side}-width`, "0"]);
+          break;
+        }
         const style = parts.find((p) => BORDER_STYLES.has(p));
         const rest = parts.filter((p) => p !== style);
         if (style) out.push([`border-${side}-style`, style]);
