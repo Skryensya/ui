@@ -1153,9 +1153,10 @@ const staleParts = (node: ComponentNode, cell: M.Cell): Part[] => PARTS.filter((
  * How the plugin draws, versioned: a fix to the drawing itself (a column's sizing axes, v2) changes
  * no manifest hash, so the tags carry this too, and a cell drawn by an older plugin is drawn again.
  * Surface is drawn the same as ever; box and layers were fixed in v2 (a column's sizing axes) and v3
- * (an empty frame sized to its padding and border rather than left at 100).
+ * (an empty frame sized to its padding and border rather than left at 100) and v4 (a stretched or
+ * growing part set to fill, so a row stretched down a column takes its width).
  */
-const DRAWING = "v3";
+const DRAWING = "v4";
 const drawnTag = (cell: M.Cell, part: Part | "hash") => (part === "surface" ? cell.surface : `${cell[part]}@${DRAWING}`);
 
 /** A frame's auto layout, padding, corners and size: the host's, or a part's inside it. */
@@ -1279,6 +1280,8 @@ async function applyLayers(
       const across = parent.layoutMode === "HORIZONTAL";
       text.layoutGrow = layer.fill && across && !huggingAlong(parent) ? 1 : 0;
       text.layoutAlign = layer.fill && !across ? "STRETCH" : "INHERIT";
+      // Filling is the text's width either way: along a row it grows, down a column it stretches.
+      if (layer.fill && (!across || !huggingAlong(parent))) text.layoutSizingHorizontal = "FILL";
     } else if (layer.kind === "frame") {
       const frame = child as FrameNode;
       const box = manifest.styles.boxes[layer.box];
@@ -1295,6 +1298,17 @@ async function applyLayers(
         // Growing only means something along a parent of set size; in one that hugs, it hugs too.
         frame.layoutGrow = box.grow && !huggingAlong(parent) ? 1 : 0;
         frame.layoutAlign = box.stretch ? "STRETCH" : "INHERIT";
+        // Said as sizing too: a row set to stretch down a column otherwise keeps hugging its own
+        // content (its hug is along the same axis), so it never took its parent's width.
+        const rowParent = parent.layoutMode === "HORIZONTAL";
+        if (box.stretch) {
+          if (rowParent) frame.layoutSizingVertical = "FILL";
+          else frame.layoutSizingHorizontal = "FILL";
+        }
+        if (box.grow && !huggingAlong(parent)) {
+          if (rowParent) frame.layoutSizingHorizontal = "FILL";
+          else frame.layoutSizingVertical = "FILL";
+        }
       }
       await applyLayers(ctx, frame, { id }, layer.layers, cellKey, sample);
       if (layer.visibleProperty) frame.visible = sample[layer.visibleProperty] !== false;
