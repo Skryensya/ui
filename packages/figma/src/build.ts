@@ -310,7 +310,10 @@ async function compileRealization(realization: Realization, shared: Shared): Pro
   // One set per value of the split, or one set for the whole signature when nothing splits it.
   const splitValues: (string | undefined)[] = split ? [...(split.values ?? [])] : [undefined];
   const setBase = realization.id ?? realization.contract;
-  const setIdOf = (splitValue: string | undefined) => `${setBase}/${splitValue ?? signatureWord(contract.id, realization.signature)}`;
+  const word = signatureWord(contract.id, realization.signature);
+  // Unsplit and named after its own signature (Heading), the set is just that name.
+  const alone = !realization.splitBy && word === setBase;
+  const setIdOf = (splitValue: string | undefined) => (alone ? setBase : `${setBase}/${splitValue ?? word}`);
   const stateOptions = realization.state.options.filter((name) => visual.includes(name));
   const axes: Axis[] = [];
   for (const name of visual) {
@@ -462,7 +465,7 @@ async function compileRealization(realization: Realization, shared: Shared): Pro
     sets.push({
       kind: "component-set",
       id: setIdOf(splitValue),
-      name: `${titleOf(setBase)} / ${splitValue ?? titleOf(signatureWord(contract.id, realization.signature))}`,
+      name: alone ? titleOf(setBase) : `${titleOf(setBase)} / ${splitValue ?? titleOf(word)}`,
       page: PAGE.id,
       axes: setAxes,
       grid,

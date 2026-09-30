@@ -17,7 +17,8 @@ describe("the catalogue", () => {
 
   it.each(catalogue.map((r) => [`${r.contract} ${r.signature}`, r] as const))("draws %s", (_, realization) => {
     const sets = manifest.components.filter(
-      (c): c is ComponentSet => c.kind === "component-set" && c.id.startsWith(`${realization.id ?? realization.contract}/`),
+      (c): c is ComponentSet =>
+        c.kind === "component-set" && (c.id === (realization.id ?? realization.contract) || c.id.startsWith(`${realization.id ?? realization.contract}/`)),
     );
     expect(sets.length).toBeGreaterThan(0);
     for (const set of sets) expect(set.cells.length).toBeGreaterThan(0);

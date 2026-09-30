@@ -100,9 +100,11 @@ export type Text = {
   fontFamily: Bound<string>;
   fontWeight: Bound<number>;
   fontSize: Bound<number>;
-  /** Percent of the font size; CSS `line-height: 1` is 100. */
-  lineHeight: number;
+  /** Percent of the font size; CSS `line-height: 1` is 100. `auto` is CSS `normal`: the font's own. */
+  lineHeight: number | "auto";
   fill: Paint;
+  /** `text-decoration-line: underline` (a Link's permanent affordance). Absent, none. */
+  underline?: true;
 };
 
 /** A square slot that holds an instance of the icon component. */
