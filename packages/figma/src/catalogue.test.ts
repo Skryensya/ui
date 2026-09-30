@@ -250,3 +250,18 @@ describe("Switch", () => {
     expect(lead("on")).not.toEqual(lead("off"));
   });
 });
+
+describe("Radio", () => {
+  it("draws its circle from the ::before its dot sits centred in, ringed on focus", () => {
+    const set = manifest.components.find((c): c is ComponentSet => c.kind === "component-set" && c.id === "radio-group/plain")!;
+    const circle = (state: string) => {
+      const [control] = manifest.styles.layers[set.cells.find((c) => c.props.state === state)!.layers];
+      return control.kind === "frame" ? control.layers[0] : undefined;
+    };
+    expect(circle("checked")?.kind === "frame" && circle("checked")!.slot).toBe("before");
+    const checked = circle("checked");
+    expect(checked?.kind === "frame" && checked.layers.map((l) => l.slot)).toEqual(["radioIndicator"]);
+    const focus = circle("focus");
+    expect(focus?.kind === "frame" && focus.layers.some((l) => l.kind === "ring")).toBe(true);
+  });
+});
