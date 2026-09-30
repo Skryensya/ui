@@ -44128,6 +44128,43 @@
         "columns": []
       },
       "visualHash": "82284cde04007154"
+    },
+    {
+      "axes": [],
+      "cells": [
+        {
+          "box": "7cbbf436c588fa22",
+          "hash": "e61c73e3d3820a07",
+          "id": "split-button/",
+          "key": "",
+          "layers": "105f4c580aec0c44",
+          "props": {},
+          "surface": "0096c262f090f926"
+        }
+      ],
+      "contractHash": "594d5184e745718f",
+      "defaultCell": "",
+      "grid": {
+        "columns": [],
+        "rows": []
+      },
+      "id": "split-button",
+      "interactions": [],
+      "kind": "component-set",
+      "name": "Split Button",
+      "page": "skryensya",
+      "properties": [
+        {
+          "default": "Save",
+          "name": "action 1",
+          "type": "TEXT"
+        }
+      ],
+      "showcase": {
+        "base": {},
+        "columns": []
+      },
+      "visualHash": "5d522feae7b3bc3e"
     }
   ],
   "diagnostics": [
@@ -44238,6 +44275,18 @@
       "message": "11 rule(s) under a condition the evaluation context does not hold",
       "severity": "info",
       "subject": "components/button.css @media (forced-colors: active)"
+    },
+    {
+      "code": "CONDITION_SKIPPED",
+      "message": "11 rule(s) under a condition the evaluation context does not hold",
+      "severity": "info",
+      "subject": "components/button.css @media (forced-colors: active)"
+    },
+    {
+      "code": "CONDITION_SKIPPED",
+      "message": "1 rule(s) under a condition the evaluation context does not hold",
+      "severity": "info",
+      "subject": "components/button.css @media (prefers-reduced-motion: reduce)"
     },
     {
       "code": "CONDITION_SKIPPED",
@@ -44433,9 +44482,27 @@
     },
     {
       "code": "CONDITION_SKIPPED",
+      "message": "1 rule(s) under a condition the evaluation context does not hold",
+      "severity": "info",
+      "subject": "components/menu.css @media (forced-colors: active)"
+    },
+    {
+      "code": "CONDITION_SKIPPED",
       "message": "2 rule(s) under a condition the evaluation context does not hold",
       "severity": "info",
       "subject": "components/menu.css @media (prefers-reduced-motion: reduce)"
+    },
+    {
+      "code": "CONDITION_SKIPPED",
+      "message": "2 rule(s) under a condition the evaluation context does not hold",
+      "severity": "info",
+      "subject": "components/menu.css @media (prefers-reduced-motion: reduce)"
+    },
+    {
+      "code": "CONDITION_SKIPPED",
+      "message": "1 rule(s) under a condition the evaluation context does not hold",
+      "severity": "info",
+      "subject": "components/menu.css @starting-style "
     },
     {
       "code": "CONDITION_SKIPPED",
@@ -44532,6 +44599,12 @@
       "message": "15 rule(s) under a condition the evaluation context does not hold",
       "severity": "info",
       "subject": "components/select.css @supports (appearance: base-select) and selector(select::picker(select))"
+    },
+    {
+      "code": "CONDITION_SKIPPED",
+      "message": "1 rule(s) under a condition the evaluation context does not hold",
+      "severity": "info",
+      "subject": "components/split-button.css @media (forced-colors: active)"
     },
     {
       "code": "CONDITION_SKIPPED",
@@ -44883,6 +44956,12 @@
     },
     {
       "code": "CONDITION_SKIPPED",
+      "message": "6 rule(s) under a condition the evaluation context does not hold",
+      "severity": "info",
+      "subject": "patterns/anchored.css @supports (anchor-name: --a)"
+    },
+    {
+      "code": "CONDITION_SKIPPED",
       "message": "1 rule(s) under a condition the evaluation context does not hold",
       "severity": "info",
       "subject": "patterns/icon-toggle.css @media (prefers-reduced-motion: reduce)"
@@ -45078,6 +45157,18 @@
       "message": "1 rule(s) under a condition the evaluation context does not hold",
       "severity": "info",
       "subject": "patterns/state-layer.css @media (prefers-reduced-motion: reduce)"
+    },
+    {
+      "code": "CONDITION_SKIPPED",
+      "message": "1 rule(s) under a condition the evaluation context does not hold",
+      "severity": "info",
+      "subject": "patterns/state-layer.css @media (prefers-reduced-motion: reduce)"
+    },
+    {
+      "code": "CONDITION_SKIPPED",
+      "message": "0 rule(s) under a condition the evaluation context does not hold",
+      "severity": "info",
+      "subject": "patterns/state-layer.css @property --state-layer-opacity"
     },
     {
       "code": "CONDITION_SKIPPED",
@@ -45681,6 +45772,13 @@
         ],
         "visual": []
       },
+      "split-button": {
+        "excluded": [
+          "label"
+        ],
+        "nonVisual": [],
+        "visual": []
+      },
       "stat": {
         "excluded": [
           "animate"
@@ -45864,11 +45962,11 @@
     },
     "tokens": {
       "catalogueAdded": 303,
-      "componentVariables": 495,
+      "componentVariables": 499,
       "modeValuesBySource": {
         "alias": 203,
-        "evaluated": 919,
-        "literal": 800
+        "evaluated": 923,
+        "literal": 804
       },
       "reached": 204,
       "reachedAsVariables": 155,
@@ -45887,8 +45985,8 @@
       "variables": 466
     },
     "variants": {
-      "components": 124,
-      "componentSets": 123,
+      "components": 125,
+      "componentSets": 124,
       "naiveAllOptions": {
         "accordion": 32,
         "avatar": 8,
@@ -45925,6 +46023,7 @@
         "select": 24,
         "separator": 48,
         "skip-link": 1,
+        "split-button": 1,
         "stat": 6,
         "state-button": 1,
         "steps": 4,
@@ -45978,6 +46077,7 @@
         "select": 6,
         "separator": 3,
         "skip-link": 1,
+        "split-button": 1,
         "stat": 3,
         "state-button": 1,
         "steps": 4,
@@ -46487,13 +46587,17 @@
         {
           "set": "copy-button/frosted",
           "variants": 24
+        },
+        {
+          "set": "split-button",
+          "variants": 1
         }
       ],
-      "variantsTotal": 2543
+      "variantsTotal": 2544
     }
   },
   "schemaVersion": 1,
-  "sourceHash": "a150fe39a078cf92",
+  "sourceHash": "a2cabb33fbbf4bc6",
   "stage": {
     "background": {
       "variable": "--color-bg-surface"
@@ -50351,6 +50455,57 @@
           }
         }
       },
+      "83f8e036ce460cb3": {
+        "clipsContent": true,
+        "corners": {
+          "bottomLeft": {
+            "variable": "--radius-control"
+          },
+          "bottomRight": {
+            "expression": "0",
+            "value": 0
+          },
+          "topLeft": {
+            "variable": "--radius-control"
+          },
+          "topRight": {
+            "expression": "0",
+            "value": 0
+          }
+        },
+        "crossAlign": "CENTER",
+        "direction": "HORIZONTAL",
+        "gap": {
+          "variable": "--space-inline-sm"
+        },
+        "mainAlign": "CENTER",
+        "minHeight": {
+          "variable": "split-button:sk-button-height:2dce2436e5"
+        },
+        "minWidth": {
+          "expression": "0",
+          "value": 0
+        },
+        "padding": {
+          "bottom": {
+            "expression": "0",
+            "value": 0
+          },
+          "left": {
+            "variable": "--space-inset-md"
+          },
+          "right": {
+            "variable": "--space-inset-md"
+          },
+          "top": {
+            "expression": "0",
+            "value": 0
+          }
+        },
+        "strokeWeight": {
+          "variable": "split-button:sk-button-border-width:93e20626bf"
+        }
+      },
       "84782746251d0fef": {
         "clipsContent": true,
         "crossAlign": "MIN",
@@ -51653,6 +51808,63 @@
             "expression": "0",
             "value": 0
           }
+        }
+      },
+      "b99ba5ccad67aac5": {
+        "clipsContent": true,
+        "corners": {
+          "bottomLeft": {
+            "expression": "0",
+            "value": 0
+          },
+          "bottomRight": {
+            "variable": "--radius-control"
+          },
+          "topLeft": {
+            "expression": "0",
+            "value": 0
+          },
+          "topRight": {
+            "variable": "--radius-control"
+          }
+        },
+        "crossAlign": "CENTER",
+        "direction": "HORIZONTAL",
+        "gap": {
+          "variable": "--space-inline-sm"
+        },
+        "height": {
+          "variable": "split-button:sk-button-height:2dce2436e5"
+        },
+        "mainAlign": "CENTER",
+        "minHeight": {
+          "variable": "split-button:sk-button-height:2dce2436e5"
+        },
+        "minWidth": {
+          "expression": "0",
+          "value": 0
+        },
+        "padding": {
+          "bottom": {
+            "expression": "0",
+            "value": 0
+          },
+          "left": {
+            "variable": "split-button:sk-button-padding-x:33a3c91b44"
+          },
+          "right": {
+            "variable": "split-button:sk-button-padding-x:33a3c91b44"
+          },
+          "top": {
+            "expression": "0",
+            "value": 0
+          }
+        },
+        "strokeWeight": {
+          "variable": "split-button:sk-button-border-width:93e20626bf"
+        },
+        "width": {
+          "variable": "split-button:sk-button-height:2dce2436e5"
         }
       },
       "b9b9e302aa47bb67": {
@@ -55633,6 +55845,103 @@
           "kind": "icon",
           "slot": "post",
           "visibleProperty": "post"
+        }
+      ],
+      "105f4c580aec0c44": [
+        {
+          "box": "83f8e036ce460cb3",
+          "kind": "frame",
+          "layers": [
+            {
+              "fills": [
+                {
+                  "color": {
+                    "variable": "split-button:state-layer:a8bbbce668"
+                  },
+                  "type": "SOLID"
+                }
+              ],
+              "kind": "overlay",
+              "slot": "state layer"
+            },
+            {
+              "kind": "text",
+              "slot": "action 1",
+              "text": {
+                "fill": {
+                  "color": {
+                    "variable": "--color-text-primary"
+                  },
+                  "type": "SOLID"
+                },
+                "fontFamily": {
+                  "variable": "--font-family-body"
+                },
+                "fontSize": {
+                  "variable": "--font-size-body"
+                },
+                "fontWeight": {
+                  "variable": "--font-weight-label"
+                },
+                "lineHeight": 100
+              },
+              "textProperty": "action 1"
+            }
+          ],
+          "slot": "button",
+          "surface": "55c2d7635f502039"
+        },
+        {
+          "box": "672cd06398be5f4b",
+          "kind": "frame",
+          "layers": [
+            {
+              "box": "b99ba5ccad67aac5",
+              "kind": "frame",
+              "layers": [
+                {
+                  "fills": [
+                    {
+                      "color": {
+                        "variable": "split-button:state-layer:a8bbbce668"
+                      },
+                      "type": "SOLID"
+                    }
+                  ],
+                  "kind": "overlay",
+                  "slot": "state layer"
+                },
+                {
+                  "box": "672cd06398be5f4b",
+                  "kind": "frame",
+                  "layers": [
+                    {
+                      "default": "chevron-down",
+                      "icon": {
+                        "color": {
+                          "color": {
+                            "variable": "--color-text-primary"
+                          },
+                          "type": "SOLID"
+                        },
+                        "size": {
+                          "variable": "--size-icon-lg"
+                        }
+                      },
+                      "kind": "icon",
+                      "slot": "icon"
+                    }
+                  ],
+                  "slot": "span",
+                  "surface": "fa0b643878e9242d"
+                }
+              ],
+              "slot": "trigger",
+              "surface": "55c2d7635f502039"
+            }
+          ],
+          "slot": "div",
+          "surface": "fa0b643878e9242d"
         }
       ],
       "108f79bbb5167bd2": [
@@ -86286,6 +86595,75 @@
       ]
     },
     "surfaces": {
+      "0096c262f090f926": {
+        "effects": [
+          {
+            "blur": {
+              "expression": "2px",
+              "value": 2
+            },
+            "color": {
+              "variable": "--shadow-sm"
+            },
+            "spread": {
+              "expression": "0",
+              "value": 0
+            },
+            "type": "DROP_SHADOW",
+            "x": {
+              "expression": "0",
+              "value": 0
+            },
+            "y": {
+              "expression": "1px",
+              "value": 1
+            }
+          },
+          {
+            "blur": {
+              "expression": "3px",
+              "value": 3
+            },
+            "color": {
+              "variable": "--shadow-sm"
+            },
+            "spread": {
+              "expression": "0",
+              "value": 0
+            },
+            "type": "DROP_SHADOW",
+            "x": {
+              "expression": "0",
+              "value": 0
+            },
+            "y": {
+              "expression": "1px",
+              "value": 1
+            }
+          }
+        ],
+        "fills": [
+          {
+            "color": {
+              "expression": "transparent",
+              "value": {
+                "a": 0,
+                "b": 0,
+                "g": 0,
+                "r": 0
+              }
+            },
+            "type": "SOLID"
+          },
+          {
+            "color": {
+              "variable": "--elevation-tint-raised"
+            },
+            "type": "SOLID"
+          }
+        ],
+        "strokes": []
+      },
       "00cf0b88bc2a682e": {
         "effects": [],
         "fills": [
@@ -91465,6 +91843,31 @@
           {
             "color": {
               "variable": "button:frost-edge:74589dbcff"
+            },
+            "type": "SOLID"
+          }
+        ]
+      },
+      "55c2d7635f502039": {
+        "effects": [],
+        "fills": [
+          {
+            "color": {
+              "variable": "--color-action-neutral"
+            },
+            "type": "SOLID"
+          },
+          {
+            "color": {
+              "variable": "--elevation-tint-raised"
+            },
+            "type": "SOLID"
+          }
+        ],
+        "strokes": [
+          {
+            "color": {
+              "variable": "--color-border-default"
             },
             "type": "SOLID"
           }
@@ -113146,6 +113549,104 @@
         "light": {
           "kind": "literal",
           "value": 1
+        }
+      }
+    },
+    {
+      "codeSyntax": "var(--sk-button-border-width)",
+      "collection": "component",
+      "expression": "1px",
+      "id": "split-button:sk-button-border-width:93e20626bf",
+      "name": "split-button/sk-button-border-width",
+      "source": {
+        "dark": "literal",
+        "light": "literal"
+      },
+      "type": "FLOAT",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": 1
+        },
+        "light": {
+          "kind": "literal",
+          "value": 1
+        }
+      }
+    },
+    {
+      "codeSyntax": "var(--sk-button-height)",
+      "collection": "component",
+      "expression": "max(var(--size-control-md), var(--size-touch-target))",
+      "id": "split-button:sk-button-height:2dce2436e5",
+      "name": "split-button/sk-button-height",
+      "source": {
+        "dark": "evaluated",
+        "light": "evaluated"
+      },
+      "type": "FLOAT",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": 44
+        },
+        "light": {
+          "kind": "literal",
+          "value": 44
+        }
+      }
+    },
+    {
+      "codeSyntax": "var(--sk-button-padding-x)",
+      "collection": "component",
+      "expression": "0px",
+      "id": "split-button:sk-button-padding-x:33a3c91b44",
+      "name": "split-button/sk-button-padding-x",
+      "source": {
+        "dark": "literal",
+        "light": "literal"
+      },
+      "type": "FLOAT",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": 0
+        },
+        "light": {
+          "kind": "literal",
+          "value": 0
+        }
+      }
+    },
+    {
+      "codeSyntax": "",
+      "collection": "component",
+      "expression": "color-mix( in srgb, var(--color-text-primary) calc(0 * 100%), transparent )",
+      "id": "split-button:state-layer:a8bbbce668",
+      "name": "split-button/state-layer",
+      "source": {
+        "dark": "evaluated",
+        "light": "evaluated"
+      },
+      "type": "COLOR",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": {
+            "a": 0,
+            "b": 0,
+            "g": 0,
+            "r": 0
+          }
+        },
+        "light": {
+          "kind": "literal",
+          "value": {
+            "a": 0,
+            "b": 0,
+            "g": 0,
+            "r": 0
+          }
         }
       }
     },
