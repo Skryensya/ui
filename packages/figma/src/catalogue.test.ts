@@ -327,7 +327,7 @@ describe("Timeline", () => {
     const set = manifest.components.find((c): c is ComponentSet => c.kind === "component-set" && c.id === "timeline")!;
     expect(set.properties.map((p) => p.name).slice(0, 3)).toEqual(["time 1", "heading 1", "body 1"]);
     const [item] = manifest.styles.layers[set.cells[0].layers];
-    const marker = item.kind === "frame" ? item.layers[0] : undefined;
+    const marker = item.kind === "frame" ? item.layers.find((l) => l.slot === "marker") : undefined;
     expect(marker?.kind === "frame" && manifest.styles.boxes[marker.box].absolute).toEqual({ x: 8, y: -3 });
   });
 });
@@ -611,5 +611,24 @@ describe("Sidebar", () => {
     const set = manifest.components.find((c): c is ComponentSet => c.kind === "component-set" && c.id === "sidebar/plain")!;
     expect(manifest.styles.layers[set.cells[0].layers].map((l) => l.slot)).toEqual(["header", "content", "separator", "footer"]);
     expect(set.properties.map((p) => p.name)).toEqual(["group 1", "link 1", "link 2", "link 3", "footer 1"]);
+  });
+});
+
+describe("Toc", () => {
+  it("marks the current entry with its gutter rule and indents the h3 ones", () => {
+    const set = manifest.components.find((c): c is ComponentSet => c.kind === "component-set" && c.id === "toc")!;
+    expect(set.properties.map((p) => p.name)).toEqual(["title", "items 1", "items 2", "items 3", "items 4"]);
+    const text = JSON.stringify(manifest.styles.layers[set.cells[0].layers]);
+    expect(text.match(/"slot":"after"/g)?.length).toBe(1);
+  });
+});
+
+describe("Timeline's connector", () => {
+  it("runs from each marker down past the event, centred on the rail", () => {
+    const set = manifest.components.find((c): c is ComponentSet => c.kind === "component-set" && c.id === "timeline")!;
+    const [first, , last] = manifest.styles.layers[set.cells[0].layers];
+    const line = first.kind === "frame" ? first.layers.find((l) => l.slot === "after") : undefined;
+    expect(line?.kind === "frame" && manifest.styles.boxes[line.box].absolute).toMatchObject({ x: 19, reach: "bottom" });
+    expect(last.kind === "frame" && last.layers.some((l) => l.slot === "after")).toBe(false);
   });
 });

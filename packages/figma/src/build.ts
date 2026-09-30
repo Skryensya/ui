@@ -703,8 +703,13 @@ async function compileRealization(authored: Realization, shared: Shared): Promis
           if (generated.get("position") !== "absolute" || generated.get("background") === undefined) return [];
           const c = ctxOf(generated);
           if (edgeOf(c) || overlayOf(c)) return [];
+          // See-through (a tab's indicator while not selected): nothing to draw.
+          const opacity = generated.get("opacity");
+          if (opacity !== undefined && lengthOf(opacity, el) === 0) return [];
           const paint = backgroundOf(c, "fill");
-          if (!paint.length) return [];
+          // Clear paint draws nothing (a Toc entry that is not the current one): no layer for it.
+          const clear = (p: (typeof paint)[number]) => p.type === "SOLID" && "value" in p.color && p.color.value.a === 0;
+          if (!paint.length || paint.every(clear)) return [];
           const at = (name: string, base: number | undefined): number | "reach" | undefined => {
             const raw = generated.get(name);
             if (raw === undefined || raw === "auto") return undefined;
@@ -718,8 +723,14 @@ async function compileRealization(authored: Realization, shared: Shared): Promis
           const x = at("left", width) ?? 0;
           const y = at("top", height) ?? 0;
           const w = at("width", width);
-          const h = at("height", height);
+          // No height, but pinned top and bottom (a Toc's marker): it runs down to the bottom inset.
+          const bottom = at("bottom", height);
+          const h = at("height", height) ?? (typeof bottom === "number" ? "reach" : undefined);
+          const reachGap = at("height", height) === undefined && typeof bottom === "number" ? bottom : 0;
           if (x === "reach" || y === "reach" || typeof w !== "number" || h === undefined) return [];
+          // `translate: -50% 0` (a Timeline's connector, centred on its rail): a share of its own width.
+          const [tx = "0"] = (generated.get("translate") ?? "").split(/\s+/).filter(Boolean);
+          const shiftX = /%$/.test(tx) ? (Number.parseFloat(tx) / 100) * w : 0;
           const px = (n: number) => ({ value: n, expression: `${n}px` });
           const zero = { value: 0, expression: "0" };
           const box: Box = {
@@ -730,7 +741,7 @@ async function compileRealization(authored: Realization, shared: Shared): Promis
             ...(typeof h === "number" ? { height: px(h) } : {}),
             padding: { top: zero, right: zero, bottom: zero, left: zero },
             clipsContent: false,
-            absolute: { x, y, ...(h === "reach" ? { reach: "bottom" as const } : {}) },
+            absolute: { x: x + shiftX, y, ...(h === "reach" ? { reach: "bottom" as const, ...(reachGap ? { reachGap } : {}) } : {}) },
           };
           return [{ kind: "frame" as const, slot: which, box: intern(styles.boxes, box), surface: intern(styles.surfaces, { strokes: [], fills: paint, effects: [] }), layers: [] }];
         });
