@@ -238,44 +238,85 @@ async function syncVariables(run: Run, progress: Progress): Promise<Map<string, 
   const created = new Set<string>();
 
   // First every variable exists, so an alias always has a target.
-  // A variable already named as a new one would be (a formula changed, so its id did, not its name;
-  // or one made before ids) is that variable: adopted and re-tagged, never a duplicate Figma refuses.
+  /*
+   * Names are unique within a collection, and Figma refuses a duplicate even for a moment, so the
+   * variables are matched first and named after, in two steps:
+   *   1. each spec finds its variable: by id, else one already carrying its name that no spec claims
+   *      by id (a formula changed, so its id did but not its name; or one made before ids), adopted;
+   *   2. every name a spec wants is cleared (a stale holder is renamed aside, a variable changing
+   *      name is parked under a temporary one), then each takes its own.
+   */
   const wanted = new Set(manifest.variables.map((v) => v.id));
-  const byName = new Map<string, Variable>();
+  const key = (collectionId: string, name: string) => `${collectionId}::${name}`;
+  const unclaimed = new Map<string, Variable>();
   for (const v of existing) {
     const id = getTag(v, "id");
-    if (id && wanted.has(id)) continue;
-    byName.set(`${v.variableCollectionId}::${v.name}`, v);
+    if (!(id && wanted.has(id))) unclaimed.set(key(v.variableCollectionId, v.name), v);
   }
+  const matched: { spec: M.Variable; variable: Variable }[] = [];
+  const toCreate: { spec: M.Variable; collection: VariableCollection }[] = [];
   for (const spec of manifest.variables) {
-    let variable = own.get(spec.id);
     const collection = byCollection.get(spec.collection);
-    const namesake = !variable && collection ? byName.get(`${collection.id}::${spec.name}`) : undefined;
-    if (namesake && namesake.resolvedType === spec.type) {
-      variable = namesake;
-      byName.delete(`${collection!.id}::${spec.name}`);
-      // Its old id leaves the list first, so it is not reported orphaned below.
-      own.delete(getTag(namesake, "id"));
-      run.log("UPDATE", `variable ${spec.name}`, "adopted: same name, new id");
-      run.write(() => {
-        namesake.setSharedPluginData(NS, "id", spec.id);
-        namesake.setSharedPluginData(NS, "orphaned", "");
-      });
-    } else if (namesake) {
-      // Same name, other type: moved out of the way, so the new one can take the name.
-      run.log("UPDATE", `variable ${spec.name}`, `the old ${namesake.resolvedType} one renamed aside`);
-      run.write(() => (namesake.name = `${spec.name} (old ${namesake.resolvedType.toLowerCase()})`));
+    let variable = own.get(spec.id);
+    if (!variable && collection) {
+      const namesake = unclaimed.get(key(collection.id, spec.name));
+      if (namesake && namesake.resolvedType === spec.type) {
+        variable = namesake;
+        unclaimed.delete(key(collection.id, spec.name));
+        // Its old id leaves the list first, so it is not reported orphaned below.
+        own.delete(getTag(namesake, "id"));
+        run.log("UPDATE", `variable ${spec.name}`, "adopted: same name, new id");
+        run.write(() => {
+          namesake.setSharedPluginData(NS, "id", spec.id);
+          namesake.setSharedPluginData(NS, "orphaned", "");
+        });
+      }
     }
     if (!variable) {
       created.add(spec.id);
-      if (!collection) continue;
-      run.write(() => (variable = figma.variables.createVariable(spec.name, collection, spec.type)));
-    } else if (variable.resolvedType !== spec.type) {
+      if (collection) toCreate.push({ spec, collection });
+      continue;
+    }
+    if (variable.resolvedType !== spec.type) {
       run.log("WARN", `variable ${spec.name}`, `is ${variable.resolvedType}, the manifest says ${spec.type}; left alone`);
       continue;
-    } else if (variable.name !== spec.name) {
-      run.write(() => (variable!.name = spec.name));
     }
+    matched.push({ spec, variable });
+  }
+
+  // Every name some spec will hold, and who holds each name now.
+  const claimed = new Set<string>();
+  for (const { spec, variable } of matched) claimed.add(key(variable.variableCollectionId, spec.name));
+  for (const { spec, collection } of toCreate) claimed.add(key(collection.id, spec.name));
+  const taken = new Set(existing.map((v) => key(v.variableCollectionId, v.name)));
+  const aside = (v: Variable, base: string) => {
+    let n = 1;
+    let name = `${base} (old)`;
+    while (taken.has(key(v.variableCollectionId, name)) || claimed.has(key(v.variableCollectionId, name))) name = `${base} (old ${++n})`;
+    taken.add(key(v.variableCollectionId, name));
+    return name;
+  };
+  // A holder no spec matched moves aside; a matched variable changing name is parked meanwhile.
+  const moving = new Set(matched.filter(({ spec, variable }) => variable.name !== spec.name).map(({ variable }) => variable));
+  const mine = new Set(matched.map(({ variable }) => variable));
+  for (const v of existing) {
+    if (!claimed.has(key(v.variableCollectionId, v.name)) || mine.has(v)) continue;
+    const name = aside(v, v.name);
+    run.log("UPDATE", `variable ${v.name}`, `renamed aside to ${name}: its name belongs to another now`);
+    run.write(() => (v.name = name));
+  }
+  let parked = 0;
+  for (const v of moving) {
+    const name = `__sk-renaming-${parked++}`;
+    run.write(() => (v.name = name));
+  }
+  for (const { spec, variable } of matched) {
+    if (variable.name !== spec.name) run.write(() => (variable.name = spec.name));
+    out.set(spec.id, variable);
+  }
+  for (const { spec, collection } of toCreate) {
+    let variable: Variable | undefined;
+    run.write(() => (variable = figma.variables.createVariable(spec.name, collection, spec.type)));
     if (variable) out.set(spec.id, variable);
   }
 
