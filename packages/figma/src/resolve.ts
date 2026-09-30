@@ -255,7 +255,17 @@ export const substituted = (text: string, ctx: Context): string => pickMode(subs
 function withCurrentColor(text: string, ctx: Context): string {
   if (!/currentcolor/i.test(text)) return text;
   // Not set by the component's sheets, it is the page's (the stage's inherited colour).
-  const color = ctx.computed.get("color") ?? ctx.inherited?.color;
+  // `color: currentColor` is the inherited colour, and replacing it with itself would never end.
+  const own = ctx.computed.get("color");
+  const loops = (value: string) => {
+    if (/currentcolor/i.test(value)) return true;
+    try {
+      return /currentcolor/i.test(substitute(value, lookupIn(ctx)));
+    } catch {
+      return false;
+    }
+  };
+  const color = own !== undefined && !loops(own) ? own : ctx.inherited?.color;
   if (color === undefined) throw new Unsupported(`currentColor with no color on the element`);
   return text.replace(/currentcolor/gi, color);
 }
