@@ -1260,7 +1260,7 @@ function ensureProperties(ctx: SetCtx, set: ComponentSetNode, properties: M.Comp
 }
 
 function bindReferences(ctx: SetCtx, node: ComponentNode, cell: M.Cell, keys: Record<string, string>, defaults: Record<string, string | boolean>) {
-  eachLayer(node, cell, manifest.styles.layers[cell.layers], (child, layer) => {
+  eachLayer(node, cell, manifest.styles.layers[cell.layers], (child, layer, owner) => {
     if (layer.kind === "frame") return;
     const refs: Record<string, string> = {};
     if (layer.kind === "icon") {
@@ -1274,7 +1274,19 @@ function bindReferences(ctx: SetCtx, node: ComponentNode, cell: M.Cell, keys: Re
     }
     const have = (child.componentPropertyReferences ?? {}) as Record<string, string>;
     const same = Object.keys(refs).length === Object.keys(have).length && Object.entries(refs).every(([k, v]) => have[k] === v);
-    if (!same) ctx.run.write(() => (child.componentPropertyReferences = refs));
+    if (same) return;
+    try {
+      ctx.run.write(() => (child.componentPropertyReferences = refs));
+    } catch (error) {
+      // One layer Figma will not bind is reported, not fatal: the rest of the set still syncs.
+      const path = [];
+      for (let n: BaseNode | null = child; n && n !== node; n = n.parent) path.unshift(n.name);
+      ctx.run.log(
+        "WARN",
+        `${cell.key} › ${path.join(" › ")}`,
+        `not bound to ${Object.entries(refs).map(([k, v]) => `${k}=${v}`).join(", ")} (${child.type}, in ${owner.id}): ${String(error)}`,
+      );
+    }
   });
 }
 
