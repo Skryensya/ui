@@ -1063,15 +1063,25 @@ function eachLayer(
 const PARTS: readonly Part[] = ["box", "surface", "layers"];
 
 /** Which parts of an existing cell differ from the manifest. A cell from before parts were tagged has all stale. */
-const staleParts = (node: ComponentNode, cell: M.Cell): Part[] => PARTS.filter((part) => getTag(node, part) !== cell[part]);
+const staleParts = (node: ComponentNode, cell: M.Cell): Part[] => PARTS.filter((part) => getTag(node, part) !== drawnTag(cell, part));
+
+/*
+ * How the plugin draws, versioned: a fix to the drawing itself (a column's sizing axes, v2) changes
+ * no manifest hash, so the tags carry this too, and a cell drawn by an older plugin is drawn again.
+ * Surface is drawn the same as ever; box and layers were fixed in v2.
+ */
+const DRAWING = "v2";
+const drawnTag = (cell: M.Cell, part: Part | "hash") => (part === "surface" ? cell.surface : `${cell[part]}@${DRAWING}`);
 
 /** A frame's auto layout, padding, corners and size: the host's, or a part's inside it. */
 function applyBox(ctx: SetCtx, node: ComponentNode | FrameNode, box: M.Box) {
   node.layoutMode = box.direction;
   node.primaryAxisAlignItems = box.mainAlign;
   node.counterAxisAlignItems = box.crossAlign;
-  node.primaryAxisSizingMode = box.width ? "FIXED" : "AUTO";
-  node.counterAxisSizingMode = box.height ? "FIXED" : "AUTO";
+  // The primary axis runs along the direction: a row's is its width, a column's its height.
+  const across = box.direction === "HORIZONTAL";
+  node.primaryAxisSizingMode = (across ? box.width : box.height) ? "FIXED" : "AUTO";
+  node.counterAxisSizingMode = (across ? box.height : box.width) ? "FIXED" : "AUTO";
   setNumber(ctx, node, "paddingTop", box.padding.top);
   setNumber(ctx, node, "paddingRight", box.padding.right);
   setNumber(ctx, node, "paddingBottom", box.padding.bottom);
@@ -1234,8 +1244,8 @@ async function applyCell(ctx: SetCtx, node: ComponentNode, cell: M.Cell, sample:
     }
   }
 
-  for (const part of parts) node.setSharedPluginData(NS, part, cell[part]);
-  node.setSharedPluginData(NS, "hash", cell.hash);
+  for (const part of parts) node.setSharedPluginData(NS, part, drawnTag(cell, part));
+  node.setSharedPluginData(NS, "hash", drawnTag(cell, "hash"));
 }
 
 /**
@@ -1659,7 +1669,7 @@ async function syncSet(ctx: SetCtx, spec: M.ComponentSet, found: Map<string, Sce
         else set.appendChild(fresh);
         node = fresh;
       }
-    } else if (getTag(node, "hash") !== c.hash) {
+    } else if (getTag(node, "hash") !== drawnTag(c, "hash")) {
       counts.updated++;
       const parts = staleParts(node, c);
       for (const part of parts) partCounts[part]++;
