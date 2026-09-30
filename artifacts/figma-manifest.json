@@ -34222,6 +34222,768 @@
         "columns": []
       },
       "visualHash": "ae2e1faf2dc238f6"
+    },
+    {
+      "axes": [
+        {
+          "name": "controlSize",
+          "values": [
+            "sm",
+            "md",
+            "lg"
+          ]
+        },
+        {
+          "name": "state",
+          "values": [
+            "rest",
+            "focus",
+            "disabled",
+            "invalid",
+            "read-only"
+          ]
+        }
+      ],
+      "cells": [
+        {
+          "box": "627c3eff7da695b4",
+          "hash": "9fdcc2f4145e8205",
+          "id": "textarea/plain/controlSize=sm,state=rest",
+          "key": "controlSize=sm, state=rest",
+          "layers": "f93b85fd108e9a25",
+          "props": {
+            "controlSize": "sm",
+            "state": "rest"
+          },
+          "surface": "531c78c45ff2f131"
+        },
+        {
+          "box": "627c3eff7da695b4",
+          "hash": "0cbd5cb72eeb3838",
+          "id": "textarea/plain/controlSize=sm,state=focus",
+          "key": "controlSize=sm, state=focus",
+          "layers": "fe62eb476a422cc0",
+          "props": {
+            "controlSize": "sm",
+            "state": "focus"
+          },
+          "surface": "531c78c45ff2f131"
+        },
+        {
+          "box": "627c3eff7da695b4",
+          "hash": "35f0926dd0f8d86c",
+          "id": "textarea/plain/controlSize=sm,state=disabled",
+          "key": "controlSize=sm, state=disabled",
+          "layers": "f93b85fd108e9a25",
+          "props": {
+            "controlSize": "sm",
+            "state": "disabled"
+          },
+          "surface": "7ea5a7347d847678"
+        },
+        {
+          "box": "627c3eff7da695b4",
+          "hash": "86f49c97814c77e0",
+          "id": "textarea/plain/controlSize=sm,state=invalid",
+          "key": "controlSize=sm, state=invalid",
+          "layers": "f93b85fd108e9a25",
+          "props": {
+            "controlSize": "sm",
+            "state": "invalid"
+          },
+          "surface": "86ed77ef1186c65e"
+        },
+        {
+          "box": "627c3eff7da695b4",
+          "hash": "07bb4245489115aa",
+          "id": "textarea/plain/controlSize=sm,state=read-only",
+          "key": "controlSize=sm, state=read-only",
+          "layers": "f93b85fd108e9a25",
+          "props": {
+            "controlSize": "sm",
+            "state": "read-only"
+          },
+          "surface": "7ea5a7347d847678"
+        },
+        {
+          "box": "207df60cec981bd0",
+          "hash": "f9392452bbf63243",
+          "id": "textarea/plain/controlSize=md,state=rest",
+          "key": "controlSize=md, state=rest",
+          "layers": "709d119febc5dfbc",
+          "props": {
+            "controlSize": "md",
+            "state": "rest"
+          },
+          "surface": "531c78c45ff2f131"
+        },
+        {
+          "box": "207df60cec981bd0",
+          "hash": "1cf491d9bba63140",
+          "id": "textarea/plain/controlSize=md,state=focus",
+          "key": "controlSize=md, state=focus",
+          "layers": "6825bedf5b87556e",
+          "props": {
+            "controlSize": "md",
+            "state": "focus"
+          },
+          "surface": "531c78c45ff2f131"
+        },
+        {
+          "box": "207df60cec981bd0",
+          "hash": "b456519ae2592e36",
+          "id": "textarea/plain/controlSize=md,state=disabled",
+          "key": "controlSize=md, state=disabled",
+          "layers": "709d119febc5dfbc",
+          "props": {
+            "controlSize": "md",
+            "state": "disabled"
+          },
+          "surface": "7ea5a7347d847678"
+        },
+        {
+          "box": "207df60cec981bd0",
+          "hash": "afa08caa95599433",
+          "id": "textarea/plain/controlSize=md,state=invalid",
+          "key": "controlSize=md, state=invalid",
+          "layers": "709d119febc5dfbc",
+          "props": {
+            "controlSize": "md",
+            "state": "invalid"
+          },
+          "surface": "86ed77ef1186c65e"
+        },
+        {
+          "box": "207df60cec981bd0",
+          "hash": "76e784edea579d84",
+          "id": "textarea/plain/controlSize=md,state=read-only",
+          "key": "controlSize=md, state=read-only",
+          "layers": "709d119febc5dfbc",
+          "props": {
+            "controlSize": "md",
+            "state": "read-only"
+          },
+          "surface": "7ea5a7347d847678"
+        },
+        {
+          "box": "aebdf1ba0f4a56fb",
+          "hash": "b28456e23005120f",
+          "id": "textarea/plain/controlSize=lg,state=rest",
+          "key": "controlSize=lg, state=rest",
+          "layers": "4415fc9c09795ef7",
+          "props": {
+            "controlSize": "lg",
+            "state": "rest"
+          },
+          "surface": "531c78c45ff2f131"
+        },
+        {
+          "box": "aebdf1ba0f4a56fb",
+          "hash": "c97cc5697f3cdbbf",
+          "id": "textarea/plain/controlSize=lg,state=focus",
+          "key": "controlSize=lg, state=focus",
+          "layers": "6e049357ee366236",
+          "props": {
+            "controlSize": "lg",
+            "state": "focus"
+          },
+          "surface": "531c78c45ff2f131"
+        },
+        {
+          "box": "aebdf1ba0f4a56fb",
+          "hash": "12567a50e4ea0892",
+          "id": "textarea/plain/controlSize=lg,state=disabled",
+          "key": "controlSize=lg, state=disabled",
+          "layers": "4415fc9c09795ef7",
+          "props": {
+            "controlSize": "lg",
+            "state": "disabled"
+          },
+          "surface": "7ea5a7347d847678"
+        },
+        {
+          "box": "aebdf1ba0f4a56fb",
+          "hash": "7b76f122015c9bc5",
+          "id": "textarea/plain/controlSize=lg,state=invalid",
+          "key": "controlSize=lg, state=invalid",
+          "layers": "4415fc9c09795ef7",
+          "props": {
+            "controlSize": "lg",
+            "state": "invalid"
+          },
+          "surface": "86ed77ef1186c65e"
+        },
+        {
+          "box": "aebdf1ba0f4a56fb",
+          "hash": "8f1082bcc46c6dc8",
+          "id": "textarea/plain/controlSize=lg,state=read-only",
+          "key": "controlSize=lg, state=read-only",
+          "layers": "4415fc9c09795ef7",
+          "props": {
+            "controlSize": "lg",
+            "state": "read-only"
+          },
+          "surface": "7ea5a7347d847678"
+        }
+      ],
+      "contractHash": "d232c38d4a3c0cc8",
+      "defaultCell": "controlSize=sm, state=rest",
+      "grid": {
+        "columns": [
+          {
+            "name": "state",
+            "values": [
+              "rest",
+              "focus",
+              "disabled",
+              "invalid",
+              "read-only"
+            ]
+          }
+        ],
+        "rows": [
+          {
+            "name": "controlSize",
+            "values": [
+              "lg",
+              "md",
+              "sm"
+            ]
+          }
+        ]
+      },
+      "id": "textarea/plain",
+      "interactions": [],
+      "kind": "component-set",
+      "name": "Textarea / plain",
+      "page": "skryensya",
+      "properties": [
+        {
+          "default": "Add a note",
+          "name": "placeholder",
+          "type": "TEXT"
+        },
+        {
+          "default": true,
+          "name": "show placeholder",
+          "type": "BOOLEAN"
+        }
+      ],
+      "showcase": {
+        "base": {
+          "state": "rest"
+        },
+        "columns": []
+      },
+      "visualHash": "f4fd7d01df7e73de"
+    },
+    {
+      "axes": [
+        {
+          "name": "controlSize",
+          "values": [
+            "sm",
+            "md",
+            "lg"
+          ]
+        },
+        {
+          "name": "state",
+          "values": [
+            "rest",
+            "focus",
+            "disabled",
+            "invalid",
+            "read-only"
+          ]
+        }
+      ],
+      "cells": [
+        {
+          "box": "627c3eff7da695b4",
+          "hash": "b7c4f432a0315238",
+          "id": "textarea/brutalist/controlSize=sm,state=rest",
+          "key": "controlSize=sm, state=rest",
+          "layers": "f93b85fd108e9a25",
+          "props": {
+            "controlSize": "sm",
+            "state": "rest"
+          },
+          "surface": "72677660210810a6"
+        },
+        {
+          "box": "627c3eff7da695b4",
+          "hash": "951231971696fb56",
+          "id": "textarea/brutalist/controlSize=sm,state=focus",
+          "key": "controlSize=sm, state=focus",
+          "layers": "fe62eb476a422cc0",
+          "props": {
+            "controlSize": "sm",
+            "state": "focus"
+          },
+          "surface": "72677660210810a6"
+        },
+        {
+          "box": "627c3eff7da695b4",
+          "hash": "f0db27eb59a34a29",
+          "id": "textarea/brutalist/controlSize=sm,state=disabled",
+          "key": "controlSize=sm, state=disabled",
+          "layers": "f93b85fd108e9a25",
+          "props": {
+            "controlSize": "sm",
+            "state": "disabled"
+          },
+          "surface": "82d94bda55e9390f"
+        },
+        {
+          "box": "627c3eff7da695b4",
+          "hash": "c62a34e7c5343d2f",
+          "id": "textarea/brutalist/controlSize=sm,state=invalid",
+          "key": "controlSize=sm, state=invalid",
+          "layers": "f93b85fd108e9a25",
+          "props": {
+            "controlSize": "sm",
+            "state": "invalid"
+          },
+          "surface": "a396cb44c60ec362"
+        },
+        {
+          "box": "627c3eff7da695b4",
+          "hash": "3e2861c34c3f35c8",
+          "id": "textarea/brutalist/controlSize=sm,state=read-only",
+          "key": "controlSize=sm, state=read-only",
+          "layers": "f93b85fd108e9a25",
+          "props": {
+            "controlSize": "sm",
+            "state": "read-only"
+          },
+          "surface": "cdb4b9ced90da0f5"
+        },
+        {
+          "box": "207df60cec981bd0",
+          "hash": "3a2b23ed0fe4c5a2",
+          "id": "textarea/brutalist/controlSize=md,state=rest",
+          "key": "controlSize=md, state=rest",
+          "layers": "709d119febc5dfbc",
+          "props": {
+            "controlSize": "md",
+            "state": "rest"
+          },
+          "surface": "72677660210810a6"
+        },
+        {
+          "box": "207df60cec981bd0",
+          "hash": "6e9a749945ff8c84",
+          "id": "textarea/brutalist/controlSize=md,state=focus",
+          "key": "controlSize=md, state=focus",
+          "layers": "6825bedf5b87556e",
+          "props": {
+            "controlSize": "md",
+            "state": "focus"
+          },
+          "surface": "72677660210810a6"
+        },
+        {
+          "box": "207df60cec981bd0",
+          "hash": "0a13b37ffddbc020",
+          "id": "textarea/brutalist/controlSize=md,state=disabled",
+          "key": "controlSize=md, state=disabled",
+          "layers": "709d119febc5dfbc",
+          "props": {
+            "controlSize": "md",
+            "state": "disabled"
+          },
+          "surface": "82d94bda55e9390f"
+        },
+        {
+          "box": "207df60cec981bd0",
+          "hash": "7607e313b7670c02",
+          "id": "textarea/brutalist/controlSize=md,state=invalid",
+          "key": "controlSize=md, state=invalid",
+          "layers": "709d119febc5dfbc",
+          "props": {
+            "controlSize": "md",
+            "state": "invalid"
+          },
+          "surface": "a396cb44c60ec362"
+        },
+        {
+          "box": "207df60cec981bd0",
+          "hash": "fec0bce162001ebb",
+          "id": "textarea/brutalist/controlSize=md,state=read-only",
+          "key": "controlSize=md, state=read-only",
+          "layers": "709d119febc5dfbc",
+          "props": {
+            "controlSize": "md",
+            "state": "read-only"
+          },
+          "surface": "cdb4b9ced90da0f5"
+        },
+        {
+          "box": "aebdf1ba0f4a56fb",
+          "hash": "31eb6e617501802f",
+          "id": "textarea/brutalist/controlSize=lg,state=rest",
+          "key": "controlSize=lg, state=rest",
+          "layers": "4415fc9c09795ef7",
+          "props": {
+            "controlSize": "lg",
+            "state": "rest"
+          },
+          "surface": "72677660210810a6"
+        },
+        {
+          "box": "aebdf1ba0f4a56fb",
+          "hash": "467ad86551736a76",
+          "id": "textarea/brutalist/controlSize=lg,state=focus",
+          "key": "controlSize=lg, state=focus",
+          "layers": "6e049357ee366236",
+          "props": {
+            "controlSize": "lg",
+            "state": "focus"
+          },
+          "surface": "72677660210810a6"
+        },
+        {
+          "box": "aebdf1ba0f4a56fb",
+          "hash": "b3c63f76a59fce5c",
+          "id": "textarea/brutalist/controlSize=lg,state=disabled",
+          "key": "controlSize=lg, state=disabled",
+          "layers": "4415fc9c09795ef7",
+          "props": {
+            "controlSize": "lg",
+            "state": "disabled"
+          },
+          "surface": "82d94bda55e9390f"
+        },
+        {
+          "box": "aebdf1ba0f4a56fb",
+          "hash": "dedb1438d27e28a2",
+          "id": "textarea/brutalist/controlSize=lg,state=invalid",
+          "key": "controlSize=lg, state=invalid",
+          "layers": "4415fc9c09795ef7",
+          "props": {
+            "controlSize": "lg",
+            "state": "invalid"
+          },
+          "surface": "a396cb44c60ec362"
+        },
+        {
+          "box": "aebdf1ba0f4a56fb",
+          "hash": "31e90bd120ed4a8e",
+          "id": "textarea/brutalist/controlSize=lg,state=read-only",
+          "key": "controlSize=lg, state=read-only",
+          "layers": "4415fc9c09795ef7",
+          "props": {
+            "controlSize": "lg",
+            "state": "read-only"
+          },
+          "surface": "cdb4b9ced90da0f5"
+        }
+      ],
+      "contractHash": "d232c38d4a3c0cc8",
+      "defaultCell": "controlSize=sm, state=rest",
+      "grid": {
+        "columns": [
+          {
+            "name": "state",
+            "values": [
+              "rest",
+              "focus",
+              "disabled",
+              "invalid",
+              "read-only"
+            ]
+          }
+        ],
+        "rows": [
+          {
+            "name": "controlSize",
+            "values": [
+              "lg",
+              "md",
+              "sm"
+            ]
+          }
+        ]
+      },
+      "id": "textarea/brutalist",
+      "interactions": [],
+      "kind": "component-set",
+      "name": "Textarea / brutalist",
+      "page": "skryensya",
+      "properties": [
+        {
+          "default": "Add a note",
+          "name": "placeholder",
+          "type": "TEXT"
+        },
+        {
+          "default": true,
+          "name": "show placeholder",
+          "type": "BOOLEAN"
+        }
+      ],
+      "showcase": {
+        "base": {
+          "state": "rest"
+        },
+        "columns": []
+      },
+      "visualHash": "3b6387565476d7eb"
+    },
+    {
+      "axes": [
+        {
+          "name": "controlSize",
+          "values": [
+            "sm",
+            "md",
+            "lg"
+          ]
+        },
+        {
+          "name": "state",
+          "values": [
+            "rest",
+            "focus",
+            "disabled",
+            "invalid",
+            "read-only"
+          ]
+        }
+      ],
+      "cells": [
+        {
+          "box": "627c3eff7da695b4",
+          "hash": "f1a7c0c22e65b149",
+          "id": "textarea/frosted/controlSize=sm,state=rest",
+          "key": "controlSize=sm, state=rest",
+          "layers": "f93b85fd108e9a25",
+          "props": {
+            "controlSize": "sm",
+            "state": "rest"
+          },
+          "surface": "75ed1c23eefadec1"
+        },
+        {
+          "box": "627c3eff7da695b4",
+          "hash": "03e4235ea8c0fe5c",
+          "id": "textarea/frosted/controlSize=sm,state=focus",
+          "key": "controlSize=sm, state=focus",
+          "layers": "fe62eb476a422cc0",
+          "props": {
+            "controlSize": "sm",
+            "state": "focus"
+          },
+          "surface": "75ed1c23eefadec1"
+        },
+        {
+          "box": "627c3eff7da695b4",
+          "hash": "7cc15212307a85bf",
+          "id": "textarea/frosted/controlSize=sm,state=disabled",
+          "key": "controlSize=sm, state=disabled",
+          "layers": "f93b85fd108e9a25",
+          "props": {
+            "controlSize": "sm",
+            "state": "disabled"
+          },
+          "surface": "82e98874ac2a6a3d"
+        },
+        {
+          "box": "627c3eff7da695b4",
+          "hash": "a1c60ffac8ddad82",
+          "id": "textarea/frosted/controlSize=sm,state=invalid",
+          "key": "controlSize=sm, state=invalid",
+          "layers": "f93b85fd108e9a25",
+          "props": {
+            "controlSize": "sm",
+            "state": "invalid"
+          },
+          "surface": "89a78262b9ed8cf9"
+        },
+        {
+          "box": "627c3eff7da695b4",
+          "hash": "6bee42ef9d1af695",
+          "id": "textarea/frosted/controlSize=sm,state=read-only",
+          "key": "controlSize=sm, state=read-only",
+          "layers": "f93b85fd108e9a25",
+          "props": {
+            "controlSize": "sm",
+            "state": "read-only"
+          },
+          "surface": "82e98874ac2a6a3d"
+        },
+        {
+          "box": "207df60cec981bd0",
+          "hash": "63e3ee3636566adc",
+          "id": "textarea/frosted/controlSize=md,state=rest",
+          "key": "controlSize=md, state=rest",
+          "layers": "709d119febc5dfbc",
+          "props": {
+            "controlSize": "md",
+            "state": "rest"
+          },
+          "surface": "75ed1c23eefadec1"
+        },
+        {
+          "box": "207df60cec981bd0",
+          "hash": "11dc87480124cf2e",
+          "id": "textarea/frosted/controlSize=md,state=focus",
+          "key": "controlSize=md, state=focus",
+          "layers": "6825bedf5b87556e",
+          "props": {
+            "controlSize": "md",
+            "state": "focus"
+          },
+          "surface": "75ed1c23eefadec1"
+        },
+        {
+          "box": "207df60cec981bd0",
+          "hash": "c291632aedc8d9e6",
+          "id": "textarea/frosted/controlSize=md,state=disabled",
+          "key": "controlSize=md, state=disabled",
+          "layers": "709d119febc5dfbc",
+          "props": {
+            "controlSize": "md",
+            "state": "disabled"
+          },
+          "surface": "82e98874ac2a6a3d"
+        },
+        {
+          "box": "207df60cec981bd0",
+          "hash": "b26831c45c80f460",
+          "id": "textarea/frosted/controlSize=md,state=invalid",
+          "key": "controlSize=md, state=invalid",
+          "layers": "709d119febc5dfbc",
+          "props": {
+            "controlSize": "md",
+            "state": "invalid"
+          },
+          "surface": "89a78262b9ed8cf9"
+        },
+        {
+          "box": "207df60cec981bd0",
+          "hash": "857b6f58861ef5e1",
+          "id": "textarea/frosted/controlSize=md,state=read-only",
+          "key": "controlSize=md, state=read-only",
+          "layers": "709d119febc5dfbc",
+          "props": {
+            "controlSize": "md",
+            "state": "read-only"
+          },
+          "surface": "82e98874ac2a6a3d"
+        },
+        {
+          "box": "aebdf1ba0f4a56fb",
+          "hash": "dc2ee46ef4a3a9d5",
+          "id": "textarea/frosted/controlSize=lg,state=rest",
+          "key": "controlSize=lg, state=rest",
+          "layers": "4415fc9c09795ef7",
+          "props": {
+            "controlSize": "lg",
+            "state": "rest"
+          },
+          "surface": "75ed1c23eefadec1"
+        },
+        {
+          "box": "aebdf1ba0f4a56fb",
+          "hash": "e634142bce7b72db",
+          "id": "textarea/frosted/controlSize=lg,state=focus",
+          "key": "controlSize=lg, state=focus",
+          "layers": "6e049357ee366236",
+          "props": {
+            "controlSize": "lg",
+            "state": "focus"
+          },
+          "surface": "75ed1c23eefadec1"
+        },
+        {
+          "box": "aebdf1ba0f4a56fb",
+          "hash": "327b7dea5d7502e8",
+          "id": "textarea/frosted/controlSize=lg,state=disabled",
+          "key": "controlSize=lg, state=disabled",
+          "layers": "4415fc9c09795ef7",
+          "props": {
+            "controlSize": "lg",
+            "state": "disabled"
+          },
+          "surface": "82e98874ac2a6a3d"
+        },
+        {
+          "box": "aebdf1ba0f4a56fb",
+          "hash": "38f92932d21ec038",
+          "id": "textarea/frosted/controlSize=lg,state=invalid",
+          "key": "controlSize=lg, state=invalid",
+          "layers": "4415fc9c09795ef7",
+          "props": {
+            "controlSize": "lg",
+            "state": "invalid"
+          },
+          "surface": "89a78262b9ed8cf9"
+        },
+        {
+          "box": "aebdf1ba0f4a56fb",
+          "hash": "603546390d3d6236",
+          "id": "textarea/frosted/controlSize=lg,state=read-only",
+          "key": "controlSize=lg, state=read-only",
+          "layers": "4415fc9c09795ef7",
+          "props": {
+            "controlSize": "lg",
+            "state": "read-only"
+          },
+          "surface": "82e98874ac2a6a3d"
+        }
+      ],
+      "contractHash": "d232c38d4a3c0cc8",
+      "defaultCell": "controlSize=sm, state=rest",
+      "grid": {
+        "columns": [
+          {
+            "name": "state",
+            "values": [
+              "rest",
+              "focus",
+              "disabled",
+              "invalid",
+              "read-only"
+            ]
+          }
+        ],
+        "rows": [
+          {
+            "name": "controlSize",
+            "values": [
+              "lg",
+              "md",
+              "sm"
+            ]
+          }
+        ]
+      },
+      "id": "textarea/frosted",
+      "interactions": [],
+      "kind": "component-set",
+      "name": "Textarea / frosted",
+      "page": "skryensya",
+      "properties": [
+        {
+          "default": "Add a note",
+          "name": "placeholder",
+          "type": "TEXT"
+        },
+        {
+          "default": true,
+          "name": "show placeholder",
+          "type": "BOOLEAN"
+        }
+      ],
+      "showcase": {
+        "base": {
+          "state": "rest"
+        },
+        "columns": []
+      },
+      "visualHash": "554336eef5fc9382"
     }
   ],
   "diagnostics": [
@@ -34308,6 +35070,12 @@
       "message": "4 rule(s) under a condition the evaluation context does not hold",
       "severity": "info",
       "subject": "components/callout.css @media (forced-colors: active)"
+    },
+    {
+      "code": "CONDITION_SKIPPED",
+      "message": "3 rule(s) under a condition the evaluation context does not hold",
+      "severity": "info",
+      "subject": "components/input.css @media (forced-colors: active)"
     },
     {
       "code": "CONDITION_SKIPPED",
@@ -34670,14 +35438,26 @@
           "size",
           "weight"
         ]
+      },
+      "textarea": {
+        "excluded": [],
+        "nonVisual": [
+          "name",
+          "placeholder"
+        ],
+        "visual": [
+          "controlSize",
+          "disabled",
+          "appearance"
+        ]
       }
     },
     "tokens": {
       "catalogueAdded": 310,
-      "componentVariables": 252,
+      "componentVariables": 255,
       "modeValuesBySource": {
         "alias": 203,
-        "evaluated": 535,
+        "evaluated": 541,
         "literal": 698
       },
       "reached": 198,
@@ -34697,8 +35477,8 @@
       "variables": 466
     },
     "variants": {
-      "components": 39,
-      "componentSets": 38,
+      "components": 42,
+      "componentSets": 41,
       "naiveAllOptions": {
         "avatar": 8,
         "back-to-top": 4,
@@ -34721,7 +35501,8 @@
         "stat": 6,
         "strong": 1,
         "tag": 20,
-        "text": 288
+        "text": 288,
+        "textarea": 18
       },
       "naiveVisualOptions": {
         "avatar": 8,
@@ -34745,7 +35526,8 @@
         "stat": 3,
         "strong": 1,
         "tag": 10,
-        "text": 48
+        "text": 48,
+        "textarea": 18
       },
       "variantsPerSet": [
         {
@@ -34899,13 +35681,25 @@
         {
           "set": "input/frosted",
           "variants": 15
+        },
+        {
+          "set": "textarea/plain",
+          "variants": 15
+        },
+        {
+          "set": "textarea/brutalist",
+          "variants": 15
+        },
+        {
+          "set": "textarea/frosted",
+          "variants": 15
         }
       ],
-      "variantsTotal": 2129
+      "variantsTotal": 2174
     }
   },
   "schemaVersion": 1,
-  "sourceHash": "366e7ee8f415e4eb",
+  "sourceHash": "a095f212c0a5ad54",
   "stage": {
     "background": {
       "variable": "--color-bg-surface"
@@ -35171,6 +35965,39 @@
         "width": {
           "expression": "2.25rem",
           "value": 36
+        }
+      },
+      "207df60cec981bd0": {
+        "clipsContent": false,
+        "crossAlign": "MIN",
+        "direction": "HORIZONTAL",
+        "mainAlign": "MIN",
+        "minHeight": {
+          "variable": "input:min-height:97000944f5"
+        },
+        "padding": {
+          "bottom": {
+            "variable": "--space-inset-xs"
+          },
+          "left": {
+            "variable": "--space-inset-sm"
+          },
+          "right": {
+            "variable": "--space-inset-sm"
+          },
+          "top": {
+            "variable": "--space-inset-xs"
+          }
+        },
+        "radius": {
+          "variable": "--radius-control"
+        },
+        "strokeWeight": {
+          "variable": "input:border-width:93e20626bf"
+        },
+        "width": {
+          "expression": "240px",
+          "value": 240
         }
       },
       "219620697d21e518": {
@@ -35689,6 +36516,39 @@
             "expression": "0",
             "value": 0
           }
+        }
+      },
+      "627c3eff7da695b4": {
+        "clipsContent": false,
+        "crossAlign": "MIN",
+        "direction": "HORIZONTAL",
+        "mainAlign": "MIN",
+        "minHeight": {
+          "variable": "input:min-height:e516090848"
+        },
+        "padding": {
+          "bottom": {
+            "variable": "--space-inset-xs"
+          },
+          "left": {
+            "variable": "--space-inset-xs"
+          },
+          "right": {
+            "variable": "--space-inset-xs"
+          },
+          "top": {
+            "variable": "--space-inset-xs"
+          }
+        },
+        "radius": {
+          "variable": "--radius-control"
+        },
+        "strokeWeight": {
+          "variable": "input:border-width:93e20626bf"
+        },
+        "width": {
+          "expression": "240px",
+          "value": 240
         }
       },
       "63d21d370fc94e09": {
@@ -36460,6 +37320,39 @@
           }
         },
         "stretch": true
+      },
+      "aebdf1ba0f4a56fb": {
+        "clipsContent": false,
+        "crossAlign": "MIN",
+        "direction": "HORIZONTAL",
+        "mainAlign": "MIN",
+        "minHeight": {
+          "variable": "input:min-height:0ce01f272a"
+        },
+        "padding": {
+          "bottom": {
+            "variable": "--space-inset-xs"
+          },
+          "left": {
+            "variable": "--space-inset-md"
+          },
+          "right": {
+            "variable": "--space-inset-md"
+          },
+          "top": {
+            "variable": "--space-inset-xs"
+          }
+        },
+        "radius": {
+          "variable": "--radius-control"
+        },
+        "strokeWeight": {
+          "variable": "input:border-width:93e20626bf"
+        },
+        "width": {
+          "expression": "240px",
+          "value": 240
+        }
       },
       "af05b625605b74b5": {
         "clipsContent": false,
@@ -66741,6 +67634,72 @@
         "light": {
           "kind": "literal",
           "value": 3
+        }
+      }
+    },
+    {
+      "codeSyntax": "",
+      "collection": "component",
+      "expression": "calc(max(var(--size-control-lg), var(--size-touch-target)) * 3)",
+      "id": "input:min-height:0ce01f272a",
+      "name": "input/min-height/lg",
+      "source": {
+        "dark": "evaluated",
+        "light": "evaluated"
+      },
+      "type": "FLOAT",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": 144
+        },
+        "light": {
+          "kind": "literal",
+          "value": 144
+        }
+      }
+    },
+    {
+      "codeSyntax": "",
+      "collection": "component",
+      "expression": "calc(max(var(--size-control-md), var(--size-touch-target)) * 3)",
+      "id": "input:min-height:97000944f5",
+      "name": "input/min-height/md",
+      "source": {
+        "dark": "evaluated",
+        "light": "evaluated"
+      },
+      "type": "FLOAT",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": 132
+        },
+        "light": {
+          "kind": "literal",
+          "value": 132
+        }
+      }
+    },
+    {
+      "codeSyntax": "",
+      "collection": "component",
+      "expression": "calc(max(var(--size-control-sm), var(--size-touch-target)) * 3)",
+      "id": "input:min-height:e516090848",
+      "name": "input/min-height/sm",
+      "source": {
+        "dark": "evaluated",
+        "light": "evaluated"
+      },
+      "type": "FLOAT",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": 132
+        },
+        "light": {
+          "kind": "literal",
+          "value": 132
         }
       }
     },
