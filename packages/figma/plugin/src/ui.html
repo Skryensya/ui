@@ -24,10 +24,17 @@
   li[data-state="pending"] .bar, li[data-state="done"] .bar { display: none; }
   li[data-state="running"] .summary { display: none; }
 
-  #components { border: 1px solid var(--figma-color-border); border-radius: 6px; padding: 8px 10px; margin-block-end: 12px; display: grid; gap: 6px; }
+  #components { border: 1px solid var(--figma-color-border); border-radius: 6px; padding: 8px 10px; margin-block-end: 12px; display: grid; gap: 8px; }
   #components legend { padding: 0 4px; }
-  #components label { display: grid; grid-template-columns: 16px 1fr auto; gap: 8px; align-items: center; }
-  #components label[data-forced] { opacity: .75; }
+  .pick-tools { display: flex; gap: 8px; align-items: center; }
+  #search { flex: 1; font: inherit; padding: 5px 8px; border-radius: 6px; border: 1px solid var(--figma-color-border); background: var(--figma-color-bg); color: inherit; }
+  .pick-tools button { padding: 4px 8px; }
+  /* The list scrolls on its own, so a long catalogue never pushes the buttons out of the window. */
+  #pick-list { display: grid; gap: 6px; max-height: 180px; overflow-y: auto; padding-inline-end: 4px; }
+  #pick-list label { display: grid; grid-template-columns: 16px 1fr auto; gap: 8px; align-items: center; }
+  #pick-list label[data-forced] { opacity: .75; }
+  #pick-list label[hidden] { display: none; }
+  #pick-empty { margin: 0; }
 
   details { margin-block-start: 14px; }
   summary { cursor: pointer; }
@@ -36,7 +43,14 @@
 </style>
 
 <fieldset id="components">
-  <legend class="muted">Components to import</legend>
+  <legend class="muted">Components to import <span id="pick-count"></span></legend>
+  <div class="pick-tools">
+    <input id="search" type="search" placeholder="Search components" aria-label="Search components" />
+    <button type="button" id="pick-all">All</button>
+    <button type="button" id="pick-none">None</button>
+  </div>
+  <div id="pick-list"></div>
+  <p id="pick-empty" class="muted" hidden>No component matches.</p>
 </fieldset>
 
 <div class="row">
@@ -63,7 +77,7 @@
     buttons.forEach((b) => (b.disabled = on));
     $("sync").dataset.running = on ? "true" : "";
     // The pick is locked while a run works from it.
-    document.querySelectorAll("#components input").forEach((box) => (box.dataset.locked = on ? "true" : ""));
+
     $("components").disabled = on;
     if (!on) refreshPick();
     // Stop exists only while something runs: idle, there is nothing for it to act on.
@@ -92,17 +106,40 @@
       label.toggleAttribute("data-forced", users.length > 0);
       label.querySelector(".why").textContent = users.length ? `used by ${users.join(", ")}` : `${icons.variants} icons`;
     }
+    $("pick-count").textContent = `(${checked().length} of ${components.length})`;
     // Nothing picked, nothing to run.
     if (!$("sync").dataset.running) buttons.forEach((b) => (b.disabled = checked().length === 0));
+  }
+  /* The search only hides rows: what is checked stays checked, found or not. */
+  function filterPick() {
+    const query = $("search").value.trim().toLowerCase();
+    let shown = 0;
+    for (const c of components) {
+      const label = $(`pick-${c.id}`).closest("label");
+      label.hidden = query !== "" && !c.name.toLowerCase().includes(query) && !c.id.includes(query);
+      if (!label.hidden) shown++;
+    }
+    $("pick-empty").hidden = shown > 0;
+  }
+  /* All and None act on what the search shows, so "search button, All" picks just those. */
+  function pickShown(on) {
+    for (const c of components) {
+      const box = $(`pick-${c.id}`);
+      if (!box.closest("label").hidden && !box.disabled) box.checked = on;
+    }
+    refreshPick();
   }
   function renderPick(list) {
     components = list;
     for (const c of list) {
       const label = document.createElement("label");
       label.innerHTML = `<input type="checkbox" id="pick-${c.id}" checked><span>${c.name}</span><span class="why muted">${c.icons ? `${c.variants} icons` : `${c.variants} variants`}</span>`;
-      $("components").append(label);
+      $("pick-list").append(label);
     }
-    $("components").addEventListener("change", refreshPick);
+    $("pick-list").addEventListener("change", refreshPick);
+    $("search").addEventListener("input", filterPick);
+    $("pick-all").onclick = () => pickShown(true);
+    $("pick-none").onclick = () => pickShown(false);
     refreshPick();
   }
 
