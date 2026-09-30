@@ -421,3 +421,13 @@ describe("TileSwitch", () => {
     expect(on?.kind === "frame" && off?.kind === "frame" && manifest.styles.boxes[on.box].padding.left).not.toEqual(off?.kind === "frame" && manifest.styles.boxes[off.box].padding.left);
   });
 });
+
+describe("ExpandableTile", () => {
+  it("opens to show its content, its chevron turned", () => {
+    const set = manifest.components.find((c): c is ComponentSet => c.kind === "component-set" && c.id === "expandable-tile/plain")!;
+    const glyphs = (ls: Layer[]): string[] => ls.flatMap((l) => (l.kind === "icon" ? [l.default] : l.kind === "frame" ? glyphs(l.layers) : []));
+    const cell = (state: string) => manifest.styles.layers[set.cells.find((c) => c.props.state === state)!.layers];
+    expect([glyphs(cell("closed")), glyphs(cell("open"))]).toEqual([["chevron-down"], ["chevron-up"]]);
+    expect(cell("open").length).toBe(cell("closed").length + 1);
+  });
+});

@@ -41269,6 +41269,450 @@
         "columns": []
       },
       "visualHash": "61177d7b453d3de2"
+    },
+    {
+      "axes": [
+        {
+          "name": "state",
+          "values": [
+            "closed",
+            "hover",
+            "focus",
+            "open"
+          ]
+        }
+      ],
+      "cells": [
+        {
+          "box": "1f6afe38f8bbcc8e",
+          "hash": "7b88462dfbaa1217",
+          "id": "expandable-tile/plain/state=closed",
+          "key": "state=closed",
+          "layers": "f5bafa2356eea7e1",
+          "props": {
+            "state": "closed"
+          },
+          "surface": "82d94bda55e9390f"
+        },
+        {
+          "box": "1f6afe38f8bbcc8e",
+          "hash": "b771e868256a4b78",
+          "id": "expandable-tile/plain/state=hover",
+          "key": "state=hover",
+          "layers": "f5bafa2356eea7e1",
+          "props": {
+            "state": "hover"
+          },
+          "surface": "82d94bda55e9390f"
+        },
+        {
+          "box": "1f6afe38f8bbcc8e",
+          "hash": "fb3a9cd5b44f8b58",
+          "id": "expandable-tile/plain/state=focus",
+          "key": "state=focus",
+          "layers": "f5bafa2356eea7e1",
+          "props": {
+            "state": "focus"
+          },
+          "surface": "82d94bda55e9390f"
+        },
+        {
+          "box": "1f6afe38f8bbcc8e",
+          "hash": "30ca4d3761bea914",
+          "id": "expandable-tile/plain/state=open",
+          "key": "state=open",
+          "layers": "6f79d2eb420ad081",
+          "props": {
+            "state": "open"
+          },
+          "surface": "82d94bda55e9390f"
+        }
+      ],
+      "contractHash": "7087b4e1f89e3813",
+      "defaultCell": "state=closed",
+      "grid": {
+        "columns": [
+          {
+            "name": "state",
+            "values": [
+              "closed",
+              "hover",
+              "focus",
+              "open"
+            ]
+          }
+        ],
+        "rows": []
+      },
+      "id": "expandable-tile/plain",
+      "interactions": [
+        {
+          "axis": "state",
+          "from": "closed",
+          "to": "hover",
+          "trigger": "ON_HOVER"
+        }
+      ],
+      "kind": "component-set",
+      "name": "Expandable Tile / plain",
+      "page": "skryensya",
+      "properties": [
+        {
+          "default": "Shipping",
+          "name": "title 1",
+          "type": "TEXT"
+        },
+        {
+          "default": "Where and how fast we deliver",
+          "name": "description 1",
+          "type": "TEXT"
+        },
+        {
+          "default": "Orders ship within two working days.",
+          "name": "answer 1",
+          "type": "TEXT"
+        }
+      ],
+      "showcase": {
+        "base": {
+          "state": "closed"
+        },
+        "columns": []
+      },
+      "visualHash": "5e1f56263b6330e3"
+    },
+    {
+      "axes": [
+        {
+          "name": "state",
+          "values": [
+            "closed",
+            "hover",
+            "focus",
+            "open"
+          ]
+        }
+      ],
+      "cells": [
+        {
+          "box": "1f6afe38f8bbcc8e",
+          "hash": "72a96f80a5b6c08c",
+          "id": "expandable-tile/tactile/state=closed",
+          "key": "state=closed",
+          "layers": "f5bafa2356eea7e1",
+          "props": {
+            "state": "closed"
+          },
+          "surface": "956debe3aca94ba9"
+        },
+        {
+          "box": "1f6afe38f8bbcc8e",
+          "hash": "b08e228ab7ac8b59",
+          "id": "expandable-tile/tactile/state=hover",
+          "key": "state=hover",
+          "layers": "f5bafa2356eea7e1",
+          "props": {
+            "state": "hover"
+          },
+          "surface": "956debe3aca94ba9"
+        },
+        {
+          "box": "1f6afe38f8bbcc8e",
+          "hash": "25c600df51d157ea",
+          "id": "expandable-tile/tactile/state=focus",
+          "key": "state=focus",
+          "layers": "f5bafa2356eea7e1",
+          "props": {
+            "state": "focus"
+          },
+          "surface": "956debe3aca94ba9"
+        },
+        {
+          "box": "1f6afe38f8bbcc8e",
+          "hash": "79177134e1ad4276",
+          "id": "expandable-tile/tactile/state=open",
+          "key": "state=open",
+          "layers": "6f79d2eb420ad081",
+          "props": {
+            "state": "open"
+          },
+          "surface": "956debe3aca94ba9"
+        }
+      ],
+      "contractHash": "7087b4e1f89e3813",
+      "defaultCell": "state=closed",
+      "grid": {
+        "columns": [
+          {
+            "name": "state",
+            "values": [
+              "closed",
+              "hover",
+              "focus",
+              "open"
+            ]
+          }
+        ],
+        "rows": []
+      },
+      "id": "expandable-tile/tactile",
+      "interactions": [
+        {
+          "axis": "state",
+          "from": "closed",
+          "to": "hover",
+          "trigger": "ON_HOVER"
+        }
+      ],
+      "kind": "component-set",
+      "name": "Expandable Tile / tactile",
+      "page": "skryensya",
+      "properties": [
+        {
+          "default": "Shipping",
+          "name": "title 1",
+          "type": "TEXT"
+        },
+        {
+          "default": "Where and how fast we deliver",
+          "name": "description 1",
+          "type": "TEXT"
+        },
+        {
+          "default": "Orders ship within two working days.",
+          "name": "answer 1",
+          "type": "TEXT"
+        }
+      ],
+      "showcase": {
+        "base": {
+          "state": "closed"
+        },
+        "columns": []
+      },
+      "visualHash": "1bf7f9f05b0bb1d1"
+    },
+    {
+      "axes": [
+        {
+          "name": "state",
+          "values": [
+            "closed",
+            "hover",
+            "focus",
+            "open"
+          ]
+        }
+      ],
+      "cells": [
+        {
+          "box": "1f6afe38f8bbcc8e",
+          "hash": "d3c359a41c9b7401",
+          "id": "expandable-tile/brutalist/state=closed",
+          "key": "state=closed",
+          "layers": "f5bafa2356eea7e1",
+          "props": {
+            "state": "closed"
+          },
+          "surface": "2fc29be39f4b4449"
+        },
+        {
+          "box": "1f6afe38f8bbcc8e",
+          "hash": "c78c05c1b39c2a37",
+          "id": "expandable-tile/brutalist/state=hover",
+          "key": "state=hover",
+          "layers": "f5bafa2356eea7e1",
+          "props": {
+            "state": "hover"
+          },
+          "surface": "2fc29be39f4b4449"
+        },
+        {
+          "box": "1f6afe38f8bbcc8e",
+          "hash": "81bb421654c1b39d",
+          "id": "expandable-tile/brutalist/state=focus",
+          "key": "state=focus",
+          "layers": "f5bafa2356eea7e1",
+          "props": {
+            "state": "focus"
+          },
+          "surface": "2fc29be39f4b4449"
+        },
+        {
+          "box": "1f6afe38f8bbcc8e",
+          "hash": "99c9f368f911d31a",
+          "id": "expandable-tile/brutalist/state=open",
+          "key": "state=open",
+          "layers": "6f79d2eb420ad081",
+          "props": {
+            "state": "open"
+          },
+          "surface": "2fc29be39f4b4449"
+        }
+      ],
+      "contractHash": "7087b4e1f89e3813",
+      "defaultCell": "state=closed",
+      "grid": {
+        "columns": [
+          {
+            "name": "state",
+            "values": [
+              "closed",
+              "hover",
+              "focus",
+              "open"
+            ]
+          }
+        ],
+        "rows": []
+      },
+      "id": "expandable-tile/brutalist",
+      "interactions": [
+        {
+          "axis": "state",
+          "from": "closed",
+          "to": "hover",
+          "trigger": "ON_HOVER"
+        }
+      ],
+      "kind": "component-set",
+      "name": "Expandable Tile / brutalist",
+      "page": "skryensya",
+      "properties": [
+        {
+          "default": "Shipping",
+          "name": "title 1",
+          "type": "TEXT"
+        },
+        {
+          "default": "Where and how fast we deliver",
+          "name": "description 1",
+          "type": "TEXT"
+        },
+        {
+          "default": "Orders ship within two working days.",
+          "name": "answer 1",
+          "type": "TEXT"
+        }
+      ],
+      "showcase": {
+        "base": {
+          "state": "closed"
+        },
+        "columns": []
+      },
+      "visualHash": "546c0ad02f5f2648"
+    },
+    {
+      "axes": [
+        {
+          "name": "state",
+          "values": [
+            "closed",
+            "hover",
+            "focus",
+            "open"
+          ]
+        }
+      ],
+      "cells": [
+        {
+          "box": "1f6afe38f8bbcc8e",
+          "hash": "d911531695ecdda3",
+          "id": "expandable-tile/frosted/state=closed",
+          "key": "state=closed",
+          "layers": "f5bafa2356eea7e1",
+          "props": {
+            "state": "closed"
+          },
+          "surface": "cd25c830288883dc"
+        },
+        {
+          "box": "1f6afe38f8bbcc8e",
+          "hash": "b564538b7b7294f0",
+          "id": "expandable-tile/frosted/state=hover",
+          "key": "state=hover",
+          "layers": "f5bafa2356eea7e1",
+          "props": {
+            "state": "hover"
+          },
+          "surface": "cd25c830288883dc"
+        },
+        {
+          "box": "1f6afe38f8bbcc8e",
+          "hash": "bfeb88ce2bde9758",
+          "id": "expandable-tile/frosted/state=focus",
+          "key": "state=focus",
+          "layers": "f5bafa2356eea7e1",
+          "props": {
+            "state": "focus"
+          },
+          "surface": "cd25c830288883dc"
+        },
+        {
+          "box": "1f6afe38f8bbcc8e",
+          "hash": "d3b444ffe6b7707a",
+          "id": "expandable-tile/frosted/state=open",
+          "key": "state=open",
+          "layers": "8ede4313eda49c65",
+          "props": {
+            "state": "open"
+          },
+          "surface": "cd25c830288883dc"
+        }
+      ],
+      "contractHash": "7087b4e1f89e3813",
+      "defaultCell": "state=closed",
+      "grid": {
+        "columns": [
+          {
+            "name": "state",
+            "values": [
+              "closed",
+              "hover",
+              "focus",
+              "open"
+            ]
+          }
+        ],
+        "rows": []
+      },
+      "id": "expandable-tile/frosted",
+      "interactions": [
+        {
+          "axis": "state",
+          "from": "closed",
+          "to": "hover",
+          "trigger": "ON_HOVER"
+        }
+      ],
+      "kind": "component-set",
+      "name": "Expandable Tile / frosted",
+      "page": "skryensya",
+      "properties": [
+        {
+          "default": "Shipping",
+          "name": "title 1",
+          "type": "TEXT"
+        },
+        {
+          "default": "Where and how fast we deliver",
+          "name": "description 1",
+          "type": "TEXT"
+        },
+        {
+          "default": "Orders ship within two working days.",
+          "name": "answer 1",
+          "type": "TEXT"
+        }
+      ],
+      "showcase": {
+        "base": {
+          "state": "closed"
+        },
+        "columns": []
+      },
+      "visualHash": "f5d553e2bdaab147"
     }
   ],
   "diagnostics": [
@@ -41391,6 +41835,12 @@
       "message": "4 rule(s) under a condition the evaluation context does not hold",
       "severity": "info",
       "subject": "components/callout.css @media (forced-colors: active)"
+    },
+    {
+      "code": "CONDITION_SKIPPED",
+      "message": "3 rule(s) under a condition the evaluation context does not hold",
+      "severity": "info",
+      "subject": "components/checkbox.css @media (forced-colors: active)"
     },
     {
       "code": "CONDITION_SKIPPED",
@@ -41640,6 +42090,12 @@
     },
     {
       "code": "CONDITION_SKIPPED",
+      "message": "4 rule(s) under a condition the evaluation context does not hold",
+      "severity": "info",
+      "subject": "components/switch.css @media (forced-colors: active)"
+    },
+    {
+      "code": "CONDITION_SKIPPED",
       "message": "1 rule(s) under a condition the evaluation context does not hold",
       "severity": "info",
       "subject": "components/tabs.css @media (forced-colors: active)"
@@ -41690,7 +42146,7 @@
       "code": "CONDITION_SKIPPED",
       "message": "2 rule(s) under a condition the evaluation context does not hold",
       "severity": "info",
-      "subject": "components/tile.css @keyframes sk-tile-content-in"
+      "subject": "components/tile.css @keyframes sk-tile-collapse"
     },
     {
       "code": "CONDITION_SKIPPED",
@@ -41715,6 +42171,24 @@
       "message": "2 rule(s) under a condition the evaluation context does not hold",
       "severity": "info",
       "subject": "components/tile.css @keyframes sk-tile-content-in"
+    },
+    {
+      "code": "CONDITION_SKIPPED",
+      "message": "2 rule(s) under a condition the evaluation context does not hold",
+      "severity": "info",
+      "subject": "components/tile.css @keyframes sk-tile-content-in"
+    },
+    {
+      "code": "CONDITION_SKIPPED",
+      "message": "2 rule(s) under a condition the evaluation context does not hold",
+      "severity": "info",
+      "subject": "components/tile.css @keyframes sk-tile-content-in"
+    },
+    {
+      "code": "CONDITION_SKIPPED",
+      "message": "2 rule(s) under a condition the evaluation context does not hold",
+      "severity": "info",
+      "subject": "components/tile.css @keyframes sk-tile-expand"
     },
     {
       "code": "CONDITION_SKIPPED",
@@ -41775,6 +42249,18 @@
       "message": "7 rule(s) under a condition the evaluation context does not hold",
       "severity": "info",
       "subject": "components/tile.css @media (forced-colors: active)"
+    },
+    {
+      "code": "CONDITION_SKIPPED",
+      "message": "7 rule(s) under a condition the evaluation context does not hold",
+      "severity": "info",
+      "subject": "components/tile.css @media (forced-colors: active)"
+    },
+    {
+      "code": "CONDITION_SKIPPED",
+      "message": "1 rule(s) under a condition the evaluation context does not hold",
+      "severity": "info",
+      "subject": "components/tile.css @media (prefers-reduced-motion: reduce)"
     },
     {
       "code": "CONDITION_SKIPPED",
@@ -41967,6 +42453,18 @@
       "message": "1 rule(s) under a condition the evaluation context does not hold",
       "severity": "info",
       "subject": "patterns/state-layer.css @media (prefers-reduced-motion: reduce)"
+    },
+    {
+      "code": "CONDITION_SKIPPED",
+      "message": "1 rule(s) under a condition the evaluation context does not hold",
+      "severity": "info",
+      "subject": "patterns/state-layer.css @media (prefers-reduced-motion: reduce)"
+    },
+    {
+      "code": "CONDITION_SKIPPED",
+      "message": "0 rule(s) under a condition the evaluation context does not hold",
+      "severity": "info",
+      "subject": "patterns/state-layer.css @property --state-layer-opacity"
     },
     {
       "code": "CONDITION_SKIPPED",
@@ -42261,6 +42759,18 @@
         "excluded": [],
         "nonVisual": [],
         "visual": []
+      },
+      "expandable-tile": {
+        "excluded": [
+          "padding",
+          "defaultOpen"
+        ],
+        "nonVisual": [
+          "disabled"
+        ],
+        "visual": [
+          "appearance"
+        ]
       },
       "heading": {
         "excluded": [
@@ -42623,10 +43133,10 @@
     },
     "tokens": {
       "catalogueAdded": 305,
-      "componentVariables": 445,
+      "componentVariables": 446,
       "modeValuesBySource": {
         "alias": 203,
-        "evaluated": 841,
+        "evaluated": 843,
         "literal": 778
       },
       "reached": 203,
@@ -42646,8 +43156,8 @@
       "variables": 466
     },
     "variants": {
-      "components": 102,
-      "componentSets": 101,
+      "components": 106,
+      "componentSets": 105,
       "naiveAllOptions": {
         "accordion": 32,
         "avatar": 8,
@@ -42662,6 +43172,7 @@
         "description-list": 4,
         "details": 8,
         "empty-state": 1,
+        "expandable-tile": 96,
         "heading": 156,
         "input": 72,
         "kbd": 4,
@@ -42708,6 +43219,7 @@
         "description-list": 4,
         "details": 8,
         "empty-state": 1,
+        "expandable-tile": 4,
         "heading": 13,
         "input": 18,
         "kbd": 4,
@@ -43144,13 +43656,29 @@
         {
           "set": "tile-switch/frosted",
           "variants": 4
+        },
+        {
+          "set": "expandable-tile/plain",
+          "variants": 4
+        },
+        {
+          "set": "expandable-tile/tactile",
+          "variants": 4
+        },
+        {
+          "set": "expandable-tile/brutalist",
+          "variants": 4
+        },
+        {
+          "set": "expandable-tile/frosted",
+          "variants": 4
         }
       ],
-      "variantsTotal": 2407
+      "variantsTotal": 2423
     }
   },
   "schemaVersion": 1,
-  "sourceHash": "c23b5c86f96481ac",
+  "sourceHash": "556c5e38ad990d8e",
   "stage": {
     "background": {
       "variable": "--color-bg-surface"
@@ -43919,6 +44447,52 @@
           }
         },
         "stretch": true
+      },
+      "1f6afe38f8bbcc8e": {
+        "clipsContent": true,
+        "crossAlign": "MIN",
+        "direction": "VERTICAL",
+        "gap": {
+          "expression": "0",
+          "value": 0
+        },
+        "mainAlign": "MIN",
+        "minHeight": {
+          "variable": "--size-control-lg"
+        },
+        "minWidth": {
+          "expression": "0",
+          "value": 0
+        },
+        "padding": {
+          "bottom": {
+            "expression": "0",
+            "value": 0
+          },
+          "left": {
+            "expression": "0",
+            "value": 0
+          },
+          "right": {
+            "expression": "0",
+            "value": 0
+          },
+          "top": {
+            "expression": "0",
+            "value": 0
+          }
+        },
+        "radius": {
+          "variable": "--radius-surface"
+        },
+        "strokeWeight": {
+          "expression": "1px",
+          "value": 1
+        },
+        "width": {
+          "expression": "320px",
+          "value": 320
+        }
       },
       "207df60cec981bd0": {
         "clipsContent": false,
@@ -62609,6 +63183,148 @@
           "visibleProperty": "post"
         }
       ],
+      "6f79d2eb420ad081": [
+        {
+          "box": "60373d25c42a4d6a",
+          "kind": "frame",
+          "layers": [
+            {
+              "fills": [
+                {
+                  "color": {
+                    "variable": "tile:state-layer:a8bbbce668"
+                  },
+                  "type": "SOLID"
+                }
+              ],
+              "kind": "overlay",
+              "slot": "state layer"
+            },
+            {
+              "box": "ca2c48dce21edc97",
+              "kind": "frame",
+              "layers": [
+                {
+                  "fill": true,
+                  "kind": "text",
+                  "slot": "title 1",
+                  "text": {
+                    "fill": {
+                      "color": {
+                        "variable": "--color-text-primary"
+                      },
+                      "type": "SOLID"
+                    },
+                    "fontFamily": {
+                      "variable": "--font-family-body"
+                    },
+                    "fontSize": {
+                      "variable": "--font-size-heading-sm"
+                    },
+                    "fontWeight": {
+                      "variable": "--font-weight-heading"
+                    },
+                    "lineHeight": 150
+                  },
+                  "textProperty": "title 1"
+                },
+                {
+                  "fill": true,
+                  "kind": "text",
+                  "slot": "description 1",
+                  "text": {
+                    "fill": {
+                      "color": {
+                        "variable": "--color-text-secondary"
+                      },
+                      "type": "SOLID"
+                    },
+                    "fontFamily": {
+                      "variable": "--font-family-body"
+                    },
+                    "fontSize": {
+                      "variable": "--font-size-body-sm"
+                    },
+                    "fontWeight": {
+                      "variable": "--font-weight-body"
+                    },
+                    "lineHeight": 150
+                  },
+                  "textProperty": "description 1"
+                }
+              ],
+              "slot": "content",
+              "surface": "fa0b643878e9242d"
+            },
+            {
+              "box": "780b36e72f6c9780",
+              "kind": "frame",
+              "layers": [
+                {
+                  "box": "6dd29220634a85e2",
+                  "kind": "frame",
+                  "layers": [
+                    {
+                      "default": "chevron-up",
+                      "icon": {
+                        "color": {
+                          "color": {
+                            "variable": "--color-text-primary"
+                          },
+                          "type": "SOLID"
+                        },
+                        "size": {
+                          "variable": "--size-icon-lg"
+                        }
+                      },
+                      "kind": "icon",
+                      "slot": "icon"
+                    }
+                  ],
+                  "slot": "span",
+                  "surface": "fa0b643878e9242d"
+                }
+              ],
+              "slot": "chevron",
+              "surface": "fa0b643878e9242d"
+            }
+          ],
+          "slot": "interactive",
+          "surface": "a39c603f0591c36b"
+        },
+        {
+          "box": "83b840de67127430",
+          "kind": "frame",
+          "layers": [
+            {
+              "fill": true,
+              "kind": "text",
+              "slot": "answer 1",
+              "text": {
+                "fill": {
+                  "color": {
+                    "variable": "--color-text-secondary"
+                  },
+                  "type": "SOLID"
+                },
+                "fontFamily": {
+                  "variable": "--font-family-body"
+                },
+                "fontSize": {
+                  "variable": "--font-size-body-sm"
+                },
+                "fontWeight": {
+                  "variable": "--font-weight-body"
+                },
+                "lineHeight": 150
+              },
+              "textProperty": "answer 1"
+            }
+          ],
+          "slot": "expandableContent",
+          "surface": "ff51bbe0d0c21c09"
+        }
+      ],
       "6fbdb10895e5d21c": [
         {
           "box": "c37c77851c7ad134",
@@ -66932,6 +67648,148 @@
           "kind": "icon",
           "slot": "post",
           "visibleProperty": "post"
+        }
+      ],
+      "8ede4313eda49c65": [
+        {
+          "box": "60373d25c42a4d6a",
+          "kind": "frame",
+          "layers": [
+            {
+              "fills": [
+                {
+                  "color": {
+                    "variable": "tile:state-layer:a8bbbce668"
+                  },
+                  "type": "SOLID"
+                }
+              ],
+              "kind": "overlay",
+              "slot": "state layer"
+            },
+            {
+              "box": "ca2c48dce21edc97",
+              "kind": "frame",
+              "layers": [
+                {
+                  "fill": true,
+                  "kind": "text",
+                  "slot": "title 1",
+                  "text": {
+                    "fill": {
+                      "color": {
+                        "variable": "--color-text-primary"
+                      },
+                      "type": "SOLID"
+                    },
+                    "fontFamily": {
+                      "variable": "--font-family-body"
+                    },
+                    "fontSize": {
+                      "variable": "--font-size-heading-sm"
+                    },
+                    "fontWeight": {
+                      "variable": "--font-weight-heading"
+                    },
+                    "lineHeight": 150
+                  },
+                  "textProperty": "title 1"
+                },
+                {
+                  "fill": true,
+                  "kind": "text",
+                  "slot": "description 1",
+                  "text": {
+                    "fill": {
+                      "color": {
+                        "variable": "--color-text-secondary"
+                      },
+                      "type": "SOLID"
+                    },
+                    "fontFamily": {
+                      "variable": "--font-family-body"
+                    },
+                    "fontSize": {
+                      "variable": "--font-size-body-sm"
+                    },
+                    "fontWeight": {
+                      "variable": "--font-weight-body"
+                    },
+                    "lineHeight": 150
+                  },
+                  "textProperty": "description 1"
+                }
+              ],
+              "slot": "content",
+              "surface": "fa0b643878e9242d"
+            },
+            {
+              "box": "780b36e72f6c9780",
+              "kind": "frame",
+              "layers": [
+                {
+                  "box": "6dd29220634a85e2",
+                  "kind": "frame",
+                  "layers": [
+                    {
+                      "default": "chevron-up",
+                      "icon": {
+                        "color": {
+                          "color": {
+                            "variable": "--color-text-primary"
+                          },
+                          "type": "SOLID"
+                        },
+                        "size": {
+                          "variable": "--size-icon-lg"
+                        }
+                      },
+                      "kind": "icon",
+                      "slot": "icon"
+                    }
+                  ],
+                  "slot": "span",
+                  "surface": "fa0b643878e9242d"
+                }
+              ],
+              "slot": "chevron",
+              "surface": "fa0b643878e9242d"
+            }
+          ],
+          "slot": "interactive",
+          "surface": "a39c603f0591c36b"
+        },
+        {
+          "box": "83b840de67127430",
+          "kind": "frame",
+          "layers": [
+            {
+              "fill": true,
+              "kind": "text",
+              "slot": "answer 1",
+              "text": {
+                "fill": {
+                  "color": {
+                    "variable": "--color-text-secondary"
+                  },
+                  "type": "SOLID"
+                },
+                "fontFamily": {
+                  "variable": "--font-family-body"
+                },
+                "fontSize": {
+                  "variable": "--font-size-body-sm"
+                },
+                "fontWeight": {
+                  "variable": "--font-weight-body"
+                },
+                "lineHeight": 150
+              },
+              "textProperty": "answer 1"
+            }
+          ],
+          "slot": "expandableContent",
+          "surface": "9cd5afac6a58b695"
         }
       ],
       "902af82fed43fa45": [
@@ -77244,6 +78102,116 @@
           "textProperty": "children"
         }
       ],
+      "f5bafa2356eea7e1": [
+        {
+          "box": "60373d25c42a4d6a",
+          "kind": "frame",
+          "layers": [
+            {
+              "fills": [
+                {
+                  "color": {
+                    "variable": "tile:state-layer:a8bbbce668"
+                  },
+                  "type": "SOLID"
+                }
+              ],
+              "kind": "overlay",
+              "slot": "state layer"
+            },
+            {
+              "box": "ca2c48dce21edc97",
+              "kind": "frame",
+              "layers": [
+                {
+                  "fill": true,
+                  "kind": "text",
+                  "slot": "title 1",
+                  "text": {
+                    "fill": {
+                      "color": {
+                        "variable": "--color-text-primary"
+                      },
+                      "type": "SOLID"
+                    },
+                    "fontFamily": {
+                      "variable": "--font-family-body"
+                    },
+                    "fontSize": {
+                      "variable": "--font-size-heading-sm"
+                    },
+                    "fontWeight": {
+                      "variable": "--font-weight-heading"
+                    },
+                    "lineHeight": 150
+                  },
+                  "textProperty": "title 1"
+                },
+                {
+                  "fill": true,
+                  "kind": "text",
+                  "slot": "description 1",
+                  "text": {
+                    "fill": {
+                      "color": {
+                        "variable": "--color-text-secondary"
+                      },
+                      "type": "SOLID"
+                    },
+                    "fontFamily": {
+                      "variable": "--font-family-body"
+                    },
+                    "fontSize": {
+                      "variable": "--font-size-body-sm"
+                    },
+                    "fontWeight": {
+                      "variable": "--font-weight-body"
+                    },
+                    "lineHeight": 150
+                  },
+                  "textProperty": "description 1"
+                }
+              ],
+              "slot": "content",
+              "surface": "fa0b643878e9242d"
+            },
+            {
+              "box": "780b36e72f6c9780",
+              "kind": "frame",
+              "layers": [
+                {
+                  "box": "6dd29220634a85e2",
+                  "kind": "frame",
+                  "layers": [
+                    {
+                      "default": "chevron-down",
+                      "icon": {
+                        "color": {
+                          "color": {
+                            "variable": "--color-text-secondary"
+                          },
+                          "type": "SOLID"
+                        },
+                        "size": {
+                          "variable": "--size-icon-lg"
+                        }
+                      },
+                      "kind": "icon",
+                      "slot": "icon"
+                    }
+                  ],
+                  "slot": "span",
+                  "surface": "fa0b643878e9242d"
+                }
+              ],
+              "slot": "chevron",
+              "surface": "fa0b643878e9242d"
+            }
+          ],
+          "slot": "interactive",
+          "surface": "a39c603f0591c36b"
+        }
+      ],
       "f5bc3bbe70b1f870": [
         {
           "fills": [
@@ -86802,6 +87770,25 @@
           {
             "color": {
               "variable": "password-input:brutalist-black:b75258c11d"
+            },
+            "type": "SOLID"
+          }
+        ]
+      },
+      "9cd5afac6a58b695": {
+        "effects": [],
+        "fills": [
+          {
+            "color": {
+              "variable": "tile:frost-glass:185786acab"
+            },
+            "type": "SOLID"
+          }
+        ],
+        "strokes": [
+          {
+            "color": {
+              "variable": "--color-border-subtle"
             },
             "type": "SOLID"
           }
@@ -104159,6 +105146,38 @@
             "b": 1,
             "g": 1,
             "r": 1
+          }
+        }
+      }
+    },
+    {
+      "codeSyntax": "var(--frost-glass)",
+      "collection": "component",
+      "expression": "var(--frost-on) color-mix(in oklab, var(--color-bg-surface-sunken) 55%, transparent)",
+      "id": "tile:frost-glass:185786acab",
+      "name": "tile/frost-glass/frosted/open",
+      "source": {
+        "dark": "evaluated",
+        "light": "evaluated"
+      },
+      "type": "COLOR",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": {
+            "a": 0.55,
+            "b": 0.0355,
+            "g": 0.0394,
+            "r": 0.047
+          }
+        },
+        "light": {
+          "kind": "literal",
+          "value": {
+            "a": 0.55,
+            "b": 0.9579,
+            "g": 0.9609,
+            "r": 0.9609
           }
         }
       }
