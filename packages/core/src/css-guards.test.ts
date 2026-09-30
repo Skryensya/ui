@@ -107,8 +107,8 @@ describe("steps bars are written twice and must say the same thing", () => {
 
     for (const { selector, body, inside } of flatRules(css)) {
       const phone = inside.some((at) => /@media[^{]*width\s*<\s*36rem/.test(at));
-      // `(?!\[)` drops `[data-appearance="segments"][data-orientation="vertical"]`, which turns the
-      // bar on its side. That is the appearance's own variant and has no rail twin by design.
+      // `(?!\[)` keeps to the appearance's own rules: a compound selector on the same element would
+      // be a variant of it with no rail twin (there is none now; segments has no vertical).
       const appearance = selector.match(/^\.sk-steps\[data-appearance="segments"\](?!\[)(.*)$/s);
       const rail = selector.match(/^\.sk-steps\[data-orientation="horizontal"\](.*)$/s);
       if (!phone && appearance) byAppearance.set(appearance[1].trim(), declarations(body));

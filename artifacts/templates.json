@@ -7437,8 +7437,7 @@
                           "contract": "steps",
                           "signature": "Steps",
                           "options": {
-                            "appearance": "segments",
-                            "orientation": "horizontal"
+                            "appearance": "segments"
                           },
                           "slots": {
                             "items": [
@@ -7710,8 +7709,7 @@
                           "contract": "steps",
                           "signature": "Steps",
                           "options": {
-                            "appearance": "segments",
-                            "orientation": "horizontal"
+                            "appearance": "segments"
                           },
                           "slots": {
                             "items": [

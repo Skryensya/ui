@@ -64,7 +64,8 @@ export const stepsContract = {
   options: {
     /**
      * The rail's direction. Absent, it is horizontal and turns vertical below 40rem (steps.css); set
-     * either value to pin it. React has always taken this as `data-orientation`.
+     * either value to pin it. React has always taken this as `data-orientation`. Not for
+     * `appearance="segments"`: a row of bars is always a row.
      */
     orientation: { type: "enum", values: ["horizontal", "vertical"], attr: "data-orientation", prop: "data-orientation" },
     /*
@@ -85,6 +86,8 @@ export const stepsContract = {
       intent: ["progress-through-stages", "checkout-progress", "wizard-position"],
       host: { element: "ol" },
       options: ["orientation", "appearance"],
+      /* Bars read as one track only laid end to end: segments has no vertical, and no orientation. */
+      excludes: { "appearance=segments": ["orientation"] },
       slots: {
         items: {
           accepts: "items",

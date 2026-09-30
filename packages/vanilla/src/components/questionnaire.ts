@@ -207,7 +207,8 @@ function connect(root: HTMLElement): () => void {
 
   const shortcuts = (form.dataset.shortcuts ?? "none") as QuestionnaireShortcutMode;
   const progressMode = form.dataset.progress ?? "text";
-  const railOrientation = form.dataset.progressOrientation === "vertical" ? "vertical" : "horizontal";
+  // Segments is always a row of bars: it has no vertical.
+  const railOrientation = form.dataset.progressOrientation === "vertical" && form.dataset.progress !== "segments" ? "vertical" : "horizontal";
   const labels = {
     position: labelOf(form, "data-position-label", questionnaireDefaultLabels.positionLabel),
     progress: labelOf(form, "data-progress-label", questionnaireDefaultLabels.progressLabel),

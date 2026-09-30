@@ -3,8 +3,20 @@
 # `surface` is the shape of the contract the last time somebody reviewed it. If the compiler says it
 # does not match, something a consumer depends on has moved: write the entry and paste in the new
 # hash.
-surface: "dbb5f4bc94783f48"
+surface: "1785285a07c3b9f7"
 entries:
+  - date: 2026-09-29
+    kind: breaking
+    es:
+      title: segments deja de tener versión vertical
+      body: >-
+        <code>appearance="segments"</code> es siempre una fila de barras: ya no acepta <code>orientation</code> y
+        tampoco pasa a columna por debajo de 40rem. Las barras solo se leen como una pista cuando van una tras otra.
+    en:
+      title: segments no longer has a vertical version
+      body: >-
+        <code>appearance="segments"</code> is always a row of bars: it no longer takes <code>orientation</code> and
+        does not turn into a column below 40rem either. Bars only read as one track laid end to end.
   - date: 2026-09-27
     kind: bugfix
     target: Steps

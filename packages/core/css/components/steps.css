@@ -165,7 +165,8 @@
   }
 
   /* The rail layout applies whenever the step is explicitly vertical, and also below 40rem unless
-   * the consumer pins `data-orientation="horizontal"` (opting out of the mobile fallback). Repeated
+   * the consumer pins `data-orientation="horizontal"` (opting out of the mobile fallback) or draws
+   * segments, which are always a row of bars. Repeated
    * under the media query because a media condition can't join a selector list with a plain one. */
   .sk-steps[data-orientation="vertical"] {
     flex-direction: column;
@@ -203,11 +204,11 @@
   }
 
   @media (max-width: 40rem) {
-    .sk-steps:not([data-orientation="horizontal"]) {
+    .sk-steps:not([data-orientation="horizontal"], [data-appearance="segments"]) {
       flex-direction: column;
     }
 
-    .sk-steps:not([data-orientation="horizontal"]) .sk-steps__item {
+    .sk-steps:not([data-orientation="horizontal"], [data-appearance="segments"]) .sk-steps__item {
       grid-template-columns: var(--sk-steps-marker-size) minmax(0, 1fr);
       grid-template-rows: auto;
       justify-items: start;
@@ -216,11 +217,11 @@
       text-align: start;
     }
 
-    .sk-steps:not([data-orientation="horizontal"]) .sk-steps__item > :not(.sk-steps__marker) {
+    .sk-steps:not([data-orientation="horizontal"], [data-appearance="segments"]) .sk-steps__item > :not(.sk-steps__marker) {
       padding-block-start: 2px;
     }
 
-    .sk-steps:not([data-orientation="horizontal"]) .sk-steps__item:not(:last-child)::after {
+    .sk-steps:not([data-orientation="horizontal"], [data-appearance="segments"]) .sk-steps__item:not(:last-child)::after {
       inset-block-start: var(--sk-steps-marker-size);
       /*
        * Same geometry as explicit vertical: the marker lives inside the padded grid content, while
@@ -233,7 +234,7 @@
       block-size: calc(100% - var(--sk-steps-marker-size));
     }
 
-    .sk-steps:not([data-orientation="horizontal"]) .sk-steps__item:last-child {
+    .sk-steps:not([data-orientation="horizontal"], [data-appearance="segments"]) .sk-steps__item:last-child {
       padding-block-end: var(--space-inset-xs);
     }
   }
@@ -331,11 +332,6 @@
     box-shadow: inset 0 0 0 var(--sk-steps-connector-size) var(--color-border-accent);
   }
 
-  .sk-steps[data-appearance="segments"][data-orientation="vertical"] .sk-steps__marker {
-    inline-size: var(--sk-steps-segment-size);
-    block-size: 100%;
-    min-block-size: var(--size-control-sm);
-  }
 
   /*
    * A PINNED HORIZONTAL RAIL ON A PHONE DRAWS AS SEGMENTS.

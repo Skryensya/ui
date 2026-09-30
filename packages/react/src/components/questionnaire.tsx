@@ -416,7 +416,7 @@ export function Questionnaire({
             <Steps
               aria-label={progressLabel}
               appearance={progress === "segments" ? "segments" : "markers"}
-              data-orientation={progressOrientation}
+              data-orientation={progress === "segments" ? "horizontal" : progressOrientation}
               data-window-after={stepsWindow.hasAfter ? "" : undefined}
               data-window-before={stepsWindow.hasBefore ? "" : undefined}
               steps={stepsWindow.steps.map((step) => ({
