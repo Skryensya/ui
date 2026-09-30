@@ -697,6 +697,9 @@ async function compileRealization(authored: Realization, shared: Shared): Promis
             const spec = realization.slots[slot];
             if (spec?.holds === "text" && spec.hidden) continue;
             const optional = spec ? !requiredSlot(slot) : false;
+            // Text set at no size at all (a segmented step's number, hidden that way) is not drawn.
+            const look = textOf(ctx(el));
+            if ("value" in look.fontSize && look.fontSize.value === 0) continue;
             // Drawn at a width, running text wraps inside its block unless it is told not to.
             // Only a block whose width is known has one to wrap in: a tab's label hugs its tab.
             const wraps = realization.width && inner !== undefined && computed.get("white-space") !== "nowrap";
@@ -708,7 +711,7 @@ async function compileRealization(authored: Realization, shared: Shared): Promis
               ...(wraps ? { fill: true as const } : {}),
               // Text of the template's own (a Breadcrumb's "/"), not a slot: drawn as written.
               ...(spec ? {} : { characters: text }),
-              text: textOf(ctx(el)),
+              text: look,
             });
             continue;
           }

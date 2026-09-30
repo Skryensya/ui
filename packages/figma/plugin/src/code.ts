@@ -620,7 +620,7 @@ async function textWidth(ctx: Ctx, text: M.Text, chars: string): Promise<number>
   ctx.run.write(() => {
     const probe = figma.createText();
     probe.fontName = font;
-    probe.fontSize = Number(valueOf(text.fontSize));
+    probe.fontSize = Math.max(1, Number(valueOf(text.fontSize)));
     probe.lineHeight = text.lineHeight === "auto" ? { unit: "AUTO" } : { unit: "PERCENT", value: text.lineHeight };
     probe.textAutoResize = "WIDTH_AND_HEIGHT";
     probe.characters = chars;
@@ -948,7 +948,8 @@ async function applyText(ctx: SetCtx, node: TextNode, text: M.Text, sample: stri
   node.lineHeight = text.lineHeight === "auto" ? { unit: "AUTO" } : { unit: "PERCENT", value: text.lineHeight };
   node.textDecoration = text.underline ? "UNDERLINE" : "NONE";
   node.textAlignHorizontal = text.align ?? "LEFT";
-  node.fontSize = Number(valueOf(text.fontSize));
+  // Figma holds no text under 1px; anything smaller is drawn at 1.
+  node.fontSize = Math.max(1, Number(valueOf(text.fontSize)));
   node.fills = [toPaint(ctx, text.fill)];
   const binds: [VariableBindableTextField, M.Bound<unknown>][] = [
     ["fontSize", text.fontSize],
@@ -1389,7 +1390,7 @@ async function measureFirst(ctx: Ctx, spec: M.ComponentSet, set: ComponentSetNod
     ctx.run.write(() => {
       const probe = figma.createText();
       probe.fontName = font;
-      probe.fontSize = Number(valueOf(label.text.fontSize));
+      probe.fontSize = Math.max(1, Number(valueOf(label.text.fontSize)));
       probe.lineHeight = label.text.lineHeight === "auto" ? { unit: "AUTO" } : { unit: "PERCENT", value: label.text.lineHeight };
       probe.textAutoResize = "WIDTH_AND_HEIGHT";
       probe.characters = sample;
@@ -1439,7 +1440,7 @@ async function widthWith(ctx: Ctx, cell: M.Cell, box: M.Box, chars: string): Pro
   ctx.run.write(() => {
     const probe = figma.createText();
     probe.fontName = font;
-    probe.fontSize = Number(valueOf(label.text.fontSize));
+    probe.fontSize = Math.max(1, Number(valueOf(label.text.fontSize)));
     probe.textAutoResize = "WIDTH_AND_HEIGHT";
     probe.characters = chars;
     textW = probe.width;

@@ -55325,10 +55325,10 @@
       "cells": [
         {
           "box": "5a14bd50f7d8c387",
-          "hash": "3c60b923bda35a5d",
+          "hash": "b0bd2079b9e06f6c",
           "id": "steps/segments/orientation=horizontal",
           "key": "orientation=horizontal",
-          "layers": "4a890e8387755ae8",
+          "layers": "2c1d17337ab8ee96",
           "props": {
             "orientation": "horizontal"
           },
@@ -55336,10 +55336,10 @@
         },
         {
           "box": "cee491adaf309004",
-          "hash": "5ffbd4a3700148bc",
+          "hash": "b5e4d8119a0cec89",
           "id": "steps/segments/orientation=vertical",
           "key": "orientation=vertical",
-          "layers": "e1ada017138b2975",
+          "layers": "36b897b13158ccf7",
           "props": {
             "orientation": "vertical"
           },
@@ -55416,7 +55416,7 @@
         "base": {},
         "columns": []
       },
-      "visualHash": "2da5657bea123196"
+      "visualHash": "9c6e46a2e909cfe4"
     },
     {
       "axes": [
@@ -59756,7 +59756,7 @@
     }
   },
   "schemaVersion": 1,
-  "sourceHash": "b65c338d921532cf",
+  "sourceHash": "cd5e4624656004aa",
   "stage": {
     "background": {
       "variable": "--color-bg-surface"
@@ -72030,6 +72030,74 @@
           "visibleProperty": "show children"
         }
       ],
+      "2c1d17337ab8ee96": [
+        {
+          "box": "10d10997412c512c",
+          "kind": "frame",
+          "layers": [
+            {
+              "box": "6c64ea5eab6fdfac",
+              "kind": "frame",
+              "layers": [],
+              "slot": "marker",
+              "surface": "c469968984f9fd00"
+            },
+            {
+              "box": "1456568e51680119",
+              "kind": "frame",
+              "layers": [],
+              "slot": "span",
+              "surface": "fa0b643878e9242d"
+            }
+          ],
+          "slot": "item",
+          "surface": "fa0b643878e9242d"
+        },
+        {
+          "box": "10d10997412c512c",
+          "kind": "frame",
+          "layers": [
+            {
+              "box": "6c64ea5eab6fdfac",
+              "kind": "frame",
+              "layers": [],
+              "slot": "marker",
+              "surface": "09930e7c9f2e840b"
+            },
+            {
+              "box": "1456568e51680119",
+              "kind": "frame",
+              "layers": [],
+              "slot": "span",
+              "surface": "fa0b643878e9242d"
+            }
+          ],
+          "slot": "item 2",
+          "surface": "fa0b643878e9242d"
+        },
+        {
+          "box": "10d10997412c512c",
+          "kind": "frame",
+          "layers": [
+            {
+              "box": "6c64ea5eab6fdfac",
+              "kind": "frame",
+              "layers": [],
+              "slot": "marker",
+              "surface": "70ec0030a159137a"
+            },
+            {
+              "box": "1456568e51680119",
+              "kind": "frame",
+              "layers": [],
+              "slot": "span",
+              "surface": "fa0b643878e9242d"
+            }
+          ],
+          "slot": "item 3",
+          "surface": "fa0b643878e9242d"
+        }
+      ],
       "2c43b8d0491d870f": [
         {
           "fills": [
@@ -72934,6 +73002,74 @@
           "kind": "icon",
           "slot": "post",
           "visibleProperty": "post"
+        }
+      ],
+      "36b897b13158ccf7": [
+        {
+          "box": "fc1fbb16735fa7ff",
+          "kind": "frame",
+          "layers": [
+            {
+              "box": "1cb9a077fa855113",
+              "kind": "frame",
+              "layers": [],
+              "slot": "marker",
+              "surface": "c469968984f9fd00"
+            },
+            {
+              "box": "95d1458ace735b74",
+              "kind": "frame",
+              "layers": [],
+              "slot": "span",
+              "surface": "fa0b643878e9242d"
+            }
+          ],
+          "slot": "item",
+          "surface": "fa0b643878e9242d"
+        },
+        {
+          "box": "fc1fbb16735fa7ff",
+          "kind": "frame",
+          "layers": [
+            {
+              "box": "1cb9a077fa855113",
+              "kind": "frame",
+              "layers": [],
+              "slot": "marker",
+              "surface": "09930e7c9f2e840b"
+            },
+            {
+              "box": "95d1458ace735b74",
+              "kind": "frame",
+              "layers": [],
+              "slot": "span",
+              "surface": "fa0b643878e9242d"
+            }
+          ],
+          "slot": "item 2",
+          "surface": "fa0b643878e9242d"
+        },
+        {
+          "box": "41cadd298bfce34b",
+          "kind": "frame",
+          "layers": [
+            {
+              "box": "1cb9a077fa855113",
+              "kind": "frame",
+              "layers": [],
+              "slot": "marker",
+              "surface": "70ec0030a159137a"
+            },
+            {
+              "box": "95d1458ace735b74",
+              "kind": "frame",
+              "layers": [],
+              "slot": "span",
+              "surface": "fa0b643878e9242d"
+            }
+          ],
+          "slot": "item 3",
+          "surface": "fa0b643878e9242d"
         }
       ],
       "374a54b98cccd62f": [
@@ -74664,170 +74800,6 @@
           "width": {
             "variable": "--focus-ring-width"
           }
-        }
-      ],
-      "4a890e8387755ae8": [
-        {
-          "box": "10d10997412c512c",
-          "kind": "frame",
-          "layers": [
-            {
-              "box": "6c64ea5eab6fdfac",
-              "kind": "frame",
-              "layers": [
-                {
-                  "kind": "text",
-                  "slot": "marker 1",
-                  "text": {
-                    "align": "CENTER",
-                    "fill": {
-                      "color": {
-                        "expression": "transparent",
-                        "value": {
-                          "a": 0,
-                          "b": 0,
-                          "g": 0,
-                          "r": 0
-                        }
-                      },
-                      "type": "SOLID"
-                    },
-                    "fontFamily": {
-                      "variable": "--font-family-body"
-                    },
-                    "fontSize": {
-                      "expression": "0",
-                      "value": 0
-                    },
-                    "fontWeight": {
-                      "variable": "--font-weight-label"
-                    },
-                    "lineHeight": 100
-                  },
-                  "textProperty": "marker 1"
-                }
-              ],
-              "slot": "marker",
-              "surface": "c469968984f9fd00"
-            },
-            {
-              "box": "1456568e51680119",
-              "kind": "frame",
-              "layers": [],
-              "slot": "span",
-              "surface": "fa0b643878e9242d"
-            }
-          ],
-          "slot": "item",
-          "surface": "fa0b643878e9242d"
-        },
-        {
-          "box": "10d10997412c512c",
-          "kind": "frame",
-          "layers": [
-            {
-              "box": "6c64ea5eab6fdfac",
-              "kind": "frame",
-              "layers": [
-                {
-                  "kind": "text",
-                  "slot": "marker 2",
-                  "text": {
-                    "align": "CENTER",
-                    "fill": {
-                      "color": {
-                        "expression": "transparent",
-                        "value": {
-                          "a": 0,
-                          "b": 0,
-                          "g": 0,
-                          "r": 0
-                        }
-                      },
-                      "type": "SOLID"
-                    },
-                    "fontFamily": {
-                      "variable": "--font-family-body"
-                    },
-                    "fontSize": {
-                      "expression": "0",
-                      "value": 0
-                    },
-                    "fontWeight": {
-                      "variable": "--font-weight-label"
-                    },
-                    "lineHeight": 100
-                  },
-                  "textProperty": "marker 2"
-                }
-              ],
-              "slot": "marker",
-              "surface": "09930e7c9f2e840b"
-            },
-            {
-              "box": "1456568e51680119",
-              "kind": "frame",
-              "layers": [],
-              "slot": "span",
-              "surface": "fa0b643878e9242d"
-            }
-          ],
-          "slot": "item 2",
-          "surface": "fa0b643878e9242d"
-        },
-        {
-          "box": "10d10997412c512c",
-          "kind": "frame",
-          "layers": [
-            {
-              "box": "6c64ea5eab6fdfac",
-              "kind": "frame",
-              "layers": [
-                {
-                  "kind": "text",
-                  "slot": "marker 3",
-                  "text": {
-                    "align": "CENTER",
-                    "fill": {
-                      "color": {
-                        "expression": "transparent",
-                        "value": {
-                          "a": 0,
-                          "b": 0,
-                          "g": 0,
-                          "r": 0
-                        }
-                      },
-                      "type": "SOLID"
-                    },
-                    "fontFamily": {
-                      "variable": "--font-family-body"
-                    },
-                    "fontSize": {
-                      "expression": "0",
-                      "value": 0
-                    },
-                    "fontWeight": {
-                      "variable": "--font-weight-label"
-                    },
-                    "lineHeight": 100
-                  },
-                  "textProperty": "marker 3"
-                }
-              ],
-              "slot": "marker",
-              "surface": "70ec0030a159137a"
-            },
-            {
-              "box": "1456568e51680119",
-              "kind": "frame",
-              "layers": [],
-              "slot": "span",
-              "surface": "fa0b643878e9242d"
-            }
-          ],
-          "slot": "item 3",
-          "surface": "fa0b643878e9242d"
         }
       ],
       "4b5adfcfd48e6a98": [
@@ -92865,170 +92837,6 @@
           },
           "textProperty": "children",
           "visibleProperty": "show children"
-        }
-      ],
-      "e1ada017138b2975": [
-        {
-          "box": "fc1fbb16735fa7ff",
-          "kind": "frame",
-          "layers": [
-            {
-              "box": "1cb9a077fa855113",
-              "kind": "frame",
-              "layers": [
-                {
-                  "fill": true,
-                  "kind": "text",
-                  "slot": "marker 1",
-                  "text": {
-                    "fill": {
-                      "color": {
-                        "expression": "transparent",
-                        "value": {
-                          "a": 0,
-                          "b": 0,
-                          "g": 0,
-                          "r": 0
-                        }
-                      },
-                      "type": "SOLID"
-                    },
-                    "fontFamily": {
-                      "variable": "--font-family-body"
-                    },
-                    "fontSize": {
-                      "expression": "0",
-                      "value": 0
-                    },
-                    "fontWeight": {
-                      "variable": "--font-weight-label"
-                    },
-                    "lineHeight": 100
-                  },
-                  "textProperty": "marker 1"
-                }
-              ],
-              "slot": "marker",
-              "surface": "c469968984f9fd00"
-            },
-            {
-              "box": "95d1458ace735b74",
-              "kind": "frame",
-              "layers": [],
-              "slot": "span",
-              "surface": "fa0b643878e9242d"
-            }
-          ],
-          "slot": "item",
-          "surface": "fa0b643878e9242d"
-        },
-        {
-          "box": "fc1fbb16735fa7ff",
-          "kind": "frame",
-          "layers": [
-            {
-              "box": "1cb9a077fa855113",
-              "kind": "frame",
-              "layers": [
-                {
-                  "fill": true,
-                  "kind": "text",
-                  "slot": "marker 2",
-                  "text": {
-                    "fill": {
-                      "color": {
-                        "expression": "transparent",
-                        "value": {
-                          "a": 0,
-                          "b": 0,
-                          "g": 0,
-                          "r": 0
-                        }
-                      },
-                      "type": "SOLID"
-                    },
-                    "fontFamily": {
-                      "variable": "--font-family-body"
-                    },
-                    "fontSize": {
-                      "expression": "0",
-                      "value": 0
-                    },
-                    "fontWeight": {
-                      "variable": "--font-weight-label"
-                    },
-                    "lineHeight": 100
-                  },
-                  "textProperty": "marker 2"
-                }
-              ],
-              "slot": "marker",
-              "surface": "09930e7c9f2e840b"
-            },
-            {
-              "box": "95d1458ace735b74",
-              "kind": "frame",
-              "layers": [],
-              "slot": "span",
-              "surface": "fa0b643878e9242d"
-            }
-          ],
-          "slot": "item 2",
-          "surface": "fa0b643878e9242d"
-        },
-        {
-          "box": "41cadd298bfce34b",
-          "kind": "frame",
-          "layers": [
-            {
-              "box": "1cb9a077fa855113",
-              "kind": "frame",
-              "layers": [
-                {
-                  "fill": true,
-                  "kind": "text",
-                  "slot": "marker 3",
-                  "text": {
-                    "fill": {
-                      "color": {
-                        "expression": "transparent",
-                        "value": {
-                          "a": 0,
-                          "b": 0,
-                          "g": 0,
-                          "r": 0
-                        }
-                      },
-                      "type": "SOLID"
-                    },
-                    "fontFamily": {
-                      "variable": "--font-family-body"
-                    },
-                    "fontSize": {
-                      "expression": "0",
-                      "value": 0
-                    },
-                    "fontWeight": {
-                      "variable": "--font-weight-label"
-                    },
-                    "lineHeight": 100
-                  },
-                  "textProperty": "marker 3"
-                }
-              ],
-              "slot": "marker",
-              "surface": "70ec0030a159137a"
-            },
-            {
-              "box": "95d1458ace735b74",
-              "kind": "frame",
-              "layers": [],
-              "slot": "span",
-              "surface": "fa0b643878e9242d"
-            }
-          ],
-          "slot": "item 3",
-          "surface": "fa0b643878e9242d"
         }
       ],
       "e2631681b6676c06": [
