@@ -547,3 +547,12 @@ describe("TagsInput", () => {
     expect(JSON.stringify(control)).toContain('"slot":"remove"');
   });
 });
+
+describe("Tag, removable", () => {
+  it("adds its close button when removable", () => {
+    const set = manifest.components.find((c): c is ComponentSet => c.kind === "component-set" && c.id === "tag/plain")!;
+    const cell = (removable: string) => manifest.styles.layers[set.cells.find((c) => c.props.removable === removable && c.props.tone === "neutral")!.layers];
+    expect(cell("false").map((l) => l.slot)).toEqual(["children"]);
+    expect(JSON.stringify(cell("true"))).toContain('"default":"close"');
+  });
+});

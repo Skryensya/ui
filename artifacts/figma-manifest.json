@@ -30524,67 +30524,139 @@
             "warning",
             "danger"
           ]
+        },
+        {
+          "name": "removable",
+          "values": [
+            "false",
+            "true"
+          ]
         }
       ],
       "cells": [
         {
           "box": "aa30715c9f4705d4",
-          "hash": "ccbe11f4509c8aad",
-          "id": "tag/plain/tone=neutral",
-          "key": "tone=neutral",
+          "hash": "e0b3cfcdcc2579b8",
+          "id": "tag/plain/removable=false,tone=neutral",
+          "key": "tone=neutral, removable=false",
           "layers": "75c66180c1e23c5b",
           "props": {
+            "removable": "false",
             "tone": "neutral"
           },
           "surface": "59379c0d9342d880"
         },
         {
           "box": "aa30715c9f4705d4",
-          "hash": "908e51611a91fe9b",
-          "id": "tag/plain/tone=accent",
-          "key": "tone=accent",
+          "hash": "f4da4d755074cb47",
+          "id": "tag/plain/removable=true,tone=neutral",
+          "key": "tone=neutral, removable=true",
+          "layers": "6eb61101eab3c277",
+          "props": {
+            "removable": "true",
+            "tone": "neutral"
+          },
+          "surface": "59379c0d9342d880"
+        },
+        {
+          "box": "aa30715c9f4705d4",
+          "hash": "8ad4eff402539af4",
+          "id": "tag/plain/removable=false,tone=accent",
+          "key": "tone=accent, removable=false",
           "layers": "66c4165220fe45f7",
           "props": {
+            "removable": "false",
             "tone": "accent"
           },
           "surface": "e5715f37b45b7660"
         },
         {
           "box": "aa30715c9f4705d4",
-          "hash": "3c2603a567fb9b99",
-          "id": "tag/plain/tone=success",
-          "key": "tone=success",
+          "hash": "c31ee6b0953af6bb",
+          "id": "tag/plain/removable=true,tone=accent",
+          "key": "tone=accent, removable=true",
+          "layers": "0f7fb665291d7756",
+          "props": {
+            "removable": "true",
+            "tone": "accent"
+          },
+          "surface": "e5715f37b45b7660"
+        },
+        {
+          "box": "aa30715c9f4705d4",
+          "hash": "c701b491a9e1ea78",
+          "id": "tag/plain/removable=false,tone=success",
+          "key": "tone=success, removable=false",
           "layers": "81ef7c0acdc463a6",
           "props": {
+            "removable": "false",
             "tone": "success"
           },
           "surface": "766ed865583fc743"
         },
         {
           "box": "aa30715c9f4705d4",
-          "hash": "a1c96105c43a2125",
-          "id": "tag/plain/tone=warning",
-          "key": "tone=warning",
+          "hash": "c91d25194b7159f9",
+          "id": "tag/plain/removable=true,tone=success",
+          "key": "tone=success, removable=true",
+          "layers": "eb7be57187bd74e8",
+          "props": {
+            "removable": "true",
+            "tone": "success"
+          },
+          "surface": "766ed865583fc743"
+        },
+        {
+          "box": "aa30715c9f4705d4",
+          "hash": "dfbe3cc6f13aba7c",
+          "id": "tag/plain/removable=false,tone=warning",
+          "key": "tone=warning, removable=false",
           "layers": "1d5f3274ec41cf5b",
           "props": {
+            "removable": "false",
             "tone": "warning"
           },
           "surface": "92f576eb8c62ca57"
         },
         {
           "box": "aa30715c9f4705d4",
-          "hash": "c6b2c5f1d5b8d85d",
-          "id": "tag/plain/tone=danger",
-          "key": "tone=danger",
+          "hash": "230788ac3560ca78",
+          "id": "tag/plain/removable=true,tone=warning",
+          "key": "tone=warning, removable=true",
+          "layers": "edf50327a7dbdb1a",
+          "props": {
+            "removable": "true",
+            "tone": "warning"
+          },
+          "surface": "92f576eb8c62ca57"
+        },
+        {
+          "box": "aa30715c9f4705d4",
+          "hash": "8afa4b9232404cb6",
+          "id": "tag/plain/removable=false,tone=danger",
+          "key": "tone=danger, removable=false",
           "layers": "f5abbfe0d742e74f",
           "props": {
+            "removable": "false",
+            "tone": "danger"
+          },
+          "surface": "4e52eef86cca829a"
+        },
+        {
+          "box": "aa30715c9f4705d4",
+          "hash": "4f7d677bfdc5c742",
+          "id": "tag/plain/removable=true,tone=danger",
+          "key": "tone=danger, removable=true",
+          "layers": "2e20bc2dc5b04c00",
+          "props": {
+            "removable": "true",
             "tone": "danger"
           },
           "surface": "4e52eef86cca829a"
         }
       ],
       "contractHash": "10fe80228571c744",
-      "defaultCell": "tone=neutral",
+      "defaultCell": "tone=neutral, removable=false",
       "grid": {
         "columns": [
           {
@@ -30598,7 +30670,15 @@
             ]
           }
         ],
-        "rows": []
+        "rows": [
+          {
+            "name": "removable",
+            "values": [
+              "false",
+              "true"
+            ]
+          }
+        ]
       },
       "id": "tag/plain",
       "interactions": [],
@@ -30616,7 +30696,7 @@
         "base": {},
         "columns": []
       },
-      "visualHash": "a5caf8e86a354377"
+      "visualHash": "3772cb3da8cd1355"
     },
     {
       "axes": [
@@ -30629,67 +30709,139 @@
             "warning",
             "danger"
           ]
+        },
+        {
+          "name": "removable",
+          "values": [
+            "false",
+            "true"
+          ]
         }
       ],
       "cells": [
         {
           "box": "aa30715c9f4705d4",
-          "hash": "65ab1e28ce82bd26",
-          "id": "tag/brutalist/tone=neutral",
-          "key": "tone=neutral",
+          "hash": "4f94f41f113dfbcc",
+          "id": "tag/brutalist/removable=false,tone=neutral",
+          "key": "tone=neutral, removable=false",
           "layers": "75c66180c1e23c5b",
           "props": {
+            "removable": "false",
             "tone": "neutral"
           },
           "surface": "fa76c879896292f8"
         },
         {
           "box": "aa30715c9f4705d4",
-          "hash": "3172ac0e8ae60e78",
-          "id": "tag/brutalist/tone=accent",
-          "key": "tone=accent",
+          "hash": "37ec437e7dc185c3",
+          "id": "tag/brutalist/removable=true,tone=neutral",
+          "key": "tone=neutral, removable=true",
+          "layers": "6eb61101eab3c277",
+          "props": {
+            "removable": "true",
+            "tone": "neutral"
+          },
+          "surface": "fa76c879896292f8"
+        },
+        {
+          "box": "aa30715c9f4705d4",
+          "hash": "116f0fd03e68a3e2",
+          "id": "tag/brutalist/removable=false,tone=accent",
+          "key": "tone=accent, removable=false",
           "layers": "66c4165220fe45f7",
           "props": {
+            "removable": "false",
             "tone": "accent"
           },
           "surface": "d2d9f1714d5631d1"
         },
         {
           "box": "aa30715c9f4705d4",
-          "hash": "c58a1bcd71819a11",
-          "id": "tag/brutalist/tone=success",
-          "key": "tone=success",
+          "hash": "aea9e4ba69939172",
+          "id": "tag/brutalist/removable=true,tone=accent",
+          "key": "tone=accent, removable=true",
+          "layers": "0f7fb665291d7756",
+          "props": {
+            "removable": "true",
+            "tone": "accent"
+          },
+          "surface": "d2d9f1714d5631d1"
+        },
+        {
+          "box": "aa30715c9f4705d4",
+          "hash": "6f9406d19889b660",
+          "id": "tag/brutalist/removable=false,tone=success",
+          "key": "tone=success, removable=false",
           "layers": "81ef7c0acdc463a6",
           "props": {
+            "removable": "false",
             "tone": "success"
           },
           "surface": "605ff8ece538fe6e"
         },
         {
           "box": "aa30715c9f4705d4",
-          "hash": "151c30c7190cd0c8",
-          "id": "tag/brutalist/tone=warning",
-          "key": "tone=warning",
+          "hash": "6351f12f9fe2b863",
+          "id": "tag/brutalist/removable=true,tone=success",
+          "key": "tone=success, removable=true",
+          "layers": "eb7be57187bd74e8",
+          "props": {
+            "removable": "true",
+            "tone": "success"
+          },
+          "surface": "605ff8ece538fe6e"
+        },
+        {
+          "box": "aa30715c9f4705d4",
+          "hash": "5a087605327b8228",
+          "id": "tag/brutalist/removable=false,tone=warning",
+          "key": "tone=warning, removable=false",
           "layers": "1d5f3274ec41cf5b",
           "props": {
+            "removable": "false",
             "tone": "warning"
           },
           "surface": "22de062121a61238"
         },
         {
           "box": "aa30715c9f4705d4",
-          "hash": "34d5a6b368792920",
-          "id": "tag/brutalist/tone=danger",
-          "key": "tone=danger",
+          "hash": "99500753ea5ab7ea",
+          "id": "tag/brutalist/removable=true,tone=warning",
+          "key": "tone=warning, removable=true",
+          "layers": "edf50327a7dbdb1a",
+          "props": {
+            "removable": "true",
+            "tone": "warning"
+          },
+          "surface": "22de062121a61238"
+        },
+        {
+          "box": "aa30715c9f4705d4",
+          "hash": "5467cdbeaf29245f",
+          "id": "tag/brutalist/removable=false,tone=danger",
+          "key": "tone=danger, removable=false",
           "layers": "f5abbfe0d742e74f",
           "props": {
+            "removable": "false",
+            "tone": "danger"
+          },
+          "surface": "5c7060fe8e74d2be"
+        },
+        {
+          "box": "aa30715c9f4705d4",
+          "hash": "cf3f3bd454ea140c",
+          "id": "tag/brutalist/removable=true,tone=danger",
+          "key": "tone=danger, removable=true",
+          "layers": "2e20bc2dc5b04c00",
+          "props": {
+            "removable": "true",
             "tone": "danger"
           },
           "surface": "5c7060fe8e74d2be"
         }
       ],
       "contractHash": "10fe80228571c744",
-      "defaultCell": "tone=neutral",
+      "defaultCell": "tone=neutral, removable=false",
       "grid": {
         "columns": [
           {
@@ -30703,7 +30855,15 @@
             ]
           }
         ],
-        "rows": []
+        "rows": [
+          {
+            "name": "removable",
+            "values": [
+              "false",
+              "true"
+            ]
+          }
+        ]
       },
       "id": "tag/brutalist",
       "interactions": [],
@@ -30721,7 +30881,7 @@
         "base": {},
         "columns": []
       },
-      "visualHash": "104249683aa4839d"
+      "visualHash": "49754fd2dd3ce164"
     },
     {
       "axes": [
@@ -46871,14 +47031,13 @@
         ]
       },
       "tag": {
-        "excluded": [
-          "removable"
-        ],
+        "excluded": [],
         "nonVisual": [
           "removeLabel"
         ],
         "visual": [
           "tone",
+          "removable",
           "appearance"
         ]
       },
@@ -47027,11 +47186,11 @@
     },
     "tokens": {
       "catalogueAdded": 303,
-      "componentVariables": 536,
+      "componentVariables": 543,
       "modeValuesBySource": {
         "alias": 203,
-        "evaluated": 967,
-        "literal": 834
+        "evaluated": 973,
+        "literal": 842
       },
       "reached": 204,
       "reachedAsVariables": 155,
@@ -47159,7 +47318,7 @@
         "strong": 1,
         "switch": 16,
         "tabs": 8,
-        "tag": 10,
+        "tag": 20,
         "tag-link": 10,
         "tags-input": 12,
         "text": 48,
@@ -47215,11 +47374,11 @@
         },
         {
           "set": "tag/plain",
-          "variants": 5
+          "variants": 10
         },
         {
           "set": "tag/brutalist",
-          "variants": 5
+          "variants": 10
         },
         {
           "set": "tag-link/plain",
@@ -47714,11 +47873,11 @@
           "variants": 4
         }
       ],
-      "variantsTotal": 2572
+      "variantsTotal": 2582
     }
   },
   "schemaVersion": 1,
-  "sourceHash": "f18d6adafb200a7d",
+  "sourceHash": "be06e8e363ebac07",
   "stage": {
     "background": {
       "variable": "--color-bg-surface"
@@ -52576,6 +52735,50 @@
             "expression": "0",
             "value": 0
           }
+        }
+      },
+      "9f1ef756c63a224d": {
+        "clipsContent": true,
+        "crossAlign": "CENTER",
+        "direction": "HORIZONTAL",
+        "gap": {
+          "variable": "--space-inline-sm"
+        },
+        "height": {
+          "variable": "tag:remove-size:b81aec4635"
+        },
+        "mainAlign": "CENTER",
+        "minHeight": {
+          "variable": "tag:remove-size:b81aec4635"
+        },
+        "minWidth": {
+          "expression": "0",
+          "value": 0
+        },
+        "padding": {
+          "bottom": {
+            "expression": "0",
+            "value": 0
+          },
+          "left": {
+            "variable": "tag:sk-button-padding-x:33a3c91b44"
+          },
+          "right": {
+            "variable": "tag:sk-button-padding-x:33a3c91b44"
+          },
+          "top": {
+            "expression": "0",
+            "value": 0
+          }
+        },
+        "radius": {
+          "variable": "--radius-pill"
+        },
+        "strokeWeight": {
+          "variable": "tag:sk-button-border-width:5feceb66ff"
+        },
+        "width": {
+          "variable": "tag:remove-size:b81aec4635"
         }
       },
       "a0415ba087192cc0": {
@@ -57817,6 +58020,55 @@
           "kind": "icon",
           "slot": "post",
           "visibleProperty": "post"
+        }
+      ],
+      "0f7fb665291d7756": [
+        {
+          "kind": "text",
+          "slot": "children",
+          "text": {
+            "fill": {
+              "color": {
+                "variable": "--color-text-accent"
+              },
+              "type": "SOLID"
+            },
+            "fontFamily": {
+              "variable": "--font-family-body"
+            },
+            "fontSize": {
+              "variable": "--font-size-caption"
+            },
+            "fontWeight": {
+              "variable": "--font-weight-label"
+            },
+            "lineHeight": 150
+          },
+          "textProperty": "children"
+        },
+        {
+          "box": "9f1ef756c63a224d",
+          "kind": "frame",
+          "layers": [
+            {
+              "default": "close",
+              "icon": {
+                "color": {
+                  "color": {
+                    "variable": "tag:sk-button-fg:abb6a57d7a"
+                  },
+                  "type": "SOLID"
+                },
+                "size": {
+                  "variable": "--size-icon-md"
+                }
+              },
+              "kind": "icon",
+              "slot": "remove"
+            }
+          ],
+          "slot": "remove",
+          "surface": "e1f6292d65b563de"
         }
       ],
       "0fd59c401e000622": [
@@ -63196,6 +63448,55 @@
           "kind": "icon",
           "slot": "post",
           "visibleProperty": "post"
+        }
+      ],
+      "2e20bc2dc5b04c00": [
+        {
+          "kind": "text",
+          "slot": "children",
+          "text": {
+            "fill": {
+              "color": {
+                "variable": "--color-text-danger"
+              },
+              "type": "SOLID"
+            },
+            "fontFamily": {
+              "variable": "--font-family-body"
+            },
+            "fontSize": {
+              "variable": "--font-size-caption"
+            },
+            "fontWeight": {
+              "variable": "--font-weight-label"
+            },
+            "lineHeight": 150
+          },
+          "textProperty": "children"
+        },
+        {
+          "box": "9f1ef756c63a224d",
+          "kind": "frame",
+          "layers": [
+            {
+              "default": "close",
+              "icon": {
+                "color": {
+                  "color": {
+                    "variable": "tag:sk-button-fg:abb6a57d7a"
+                  },
+                  "type": "SOLID"
+                },
+                "size": {
+                  "variable": "--size-icon-md"
+                }
+              },
+              "kind": "icon",
+              "slot": "remove"
+            }
+          ],
+          "slot": "remove",
+          "surface": "e1f6292d65b563de"
         }
       ],
       "2ebf99888ba88f36": [
@@ -71645,6 +71946,55 @@
           "width": {
             "variable": "--focus-ring-width"
           }
+        }
+      ],
+      "6eb61101eab3c277": [
+        {
+          "kind": "text",
+          "slot": "children",
+          "text": {
+            "fill": {
+              "color": {
+                "variable": "--color-text-secondary"
+              },
+              "type": "SOLID"
+            },
+            "fontFamily": {
+              "variable": "--font-family-body"
+            },
+            "fontSize": {
+              "variable": "--font-size-caption"
+            },
+            "fontWeight": {
+              "variable": "--font-weight-label"
+            },
+            "lineHeight": 150
+          },
+          "textProperty": "children"
+        },
+        {
+          "box": "9f1ef756c63a224d",
+          "kind": "frame",
+          "layers": [
+            {
+              "default": "close",
+              "icon": {
+                "color": {
+                  "color": {
+                    "variable": "tag:sk-button-fg:abb6a57d7a"
+                  },
+                  "type": "SOLID"
+                },
+                "size": {
+                  "variable": "--size-icon-md"
+                }
+              },
+              "kind": "icon",
+              "slot": "remove"
+            }
+          ],
+          "slot": "remove",
+          "surface": "e1f6292d65b563de"
         }
       ],
       "6f1c89cfc853c3f5": [
@@ -89259,6 +89609,55 @@
           "textProperty": "children"
         }
       ],
+      "eb7be57187bd74e8": [
+        {
+          "kind": "text",
+          "slot": "children",
+          "text": {
+            "fill": {
+              "color": {
+                "variable": "--color-text-success"
+              },
+              "type": "SOLID"
+            },
+            "fontFamily": {
+              "variable": "--font-family-body"
+            },
+            "fontSize": {
+              "variable": "--font-size-caption"
+            },
+            "fontWeight": {
+              "variable": "--font-weight-label"
+            },
+            "lineHeight": 150
+          },
+          "textProperty": "children"
+        },
+        {
+          "box": "9f1ef756c63a224d",
+          "kind": "frame",
+          "layers": [
+            {
+              "default": "close",
+              "icon": {
+                "color": {
+                  "color": {
+                    "variable": "tag:sk-button-fg:abb6a57d7a"
+                  },
+                  "type": "SOLID"
+                },
+                "size": {
+                  "variable": "--size-icon-md"
+                }
+              },
+              "kind": "icon",
+              "slot": "remove"
+            }
+          ],
+          "slot": "remove",
+          "surface": "e1f6292d65b563de"
+        }
+      ],
       "ec2b6f20f5622822": [
         {
           "kind": "text",
@@ -89508,6 +89907,55 @@
           ],
           "slot": "control",
           "surface": "fa0b643878e9242d"
+        }
+      ],
+      "edf50327a7dbdb1a": [
+        {
+          "kind": "text",
+          "slot": "children",
+          "text": {
+            "fill": {
+              "color": {
+                "variable": "--color-text-warning"
+              },
+              "type": "SOLID"
+            },
+            "fontFamily": {
+              "variable": "--font-family-body"
+            },
+            "fontSize": {
+              "variable": "--font-size-caption"
+            },
+            "fontWeight": {
+              "variable": "--font-weight-label"
+            },
+            "lineHeight": 150
+          },
+          "textProperty": "children"
+        },
+        {
+          "box": "9f1ef756c63a224d",
+          "kind": "frame",
+          "layers": [
+            {
+              "default": "close",
+              "icon": {
+                "color": {
+                  "color": {
+                    "variable": "tag:sk-button-fg:abb6a57d7a"
+                  },
+                  "type": "SOLID"
+                },
+                "size": {
+                  "variable": "--size-icon-md"
+                }
+              },
+              "kind": "icon",
+              "slot": "remove"
+            }
+          ],
+          "slot": "remove",
+          "surface": "e1f6292d65b563de"
         }
       ],
       "edf64206097a32e5": [
@@ -105842,6 +106290,25 @@
           }
         ]
       },
+      "e1f6292d65b563de": {
+        "effects": [],
+        "fills": [
+          {
+            "color": {
+              "variable": "tag:sk-button-bg:10e9f5602d"
+            },
+            "type": "SOLID"
+          }
+        ],
+        "strokes": [
+          {
+            "color": {
+              "variable": "tag:sk-button-border-color:10e9f5602d"
+            },
+            "type": "SOLID"
+          }
+        ]
+      },
       "e23af0dbce36489a": {
         "effects": [
           {
@@ -120042,6 +120509,28 @@
       }
     },
     {
+      "codeSyntax": "var(--sk-tag-remove-size)",
+      "collection": "component",
+      "expression": "1.5rem",
+      "id": "tag:remove-size:b81aec4635",
+      "name": "tag/remove-size/removable",
+      "source": {
+        "dark": "evaluated",
+        "light": "evaluated"
+      },
+      "type": "FLOAT",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": 24
+        },
+        "light": {
+          "kind": "literal",
+          "value": 24
+        }
+      }
+    },
+    {
       "codeSyntax": "",
       "collection": "component",
       "expression": "calc(2px * 1)",
@@ -120060,6 +120549,146 @@
         "light": {
           "kind": "literal",
           "value": 2
+        }
+      }
+    },
+    {
+      "codeSyntax": "var(--sk-button-bg)",
+      "collection": "component",
+      "expression": "transparent",
+      "id": "tag:sk-button-bg:10e9f5602d",
+      "name": "tag/sk-button-bg/removable",
+      "source": {
+        "dark": "literal",
+        "light": "literal"
+      },
+      "type": "COLOR",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": {
+            "a": 0,
+            "b": 0,
+            "g": 0,
+            "r": 0
+          }
+        },
+        "light": {
+          "kind": "literal",
+          "value": {
+            "a": 0,
+            "b": 0,
+            "g": 0,
+            "r": 0
+          }
+        }
+      }
+    },
+    {
+      "codeSyntax": "var(--sk-button-border-color)",
+      "collection": "component",
+      "expression": "transparent",
+      "id": "tag:sk-button-border-color:10e9f5602d",
+      "name": "tag/sk-button-border-color/removable",
+      "source": {
+        "dark": "literal",
+        "light": "literal"
+      },
+      "type": "COLOR",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": {
+            "a": 0,
+            "b": 0,
+            "g": 0,
+            "r": 0
+          }
+        },
+        "light": {
+          "kind": "literal",
+          "value": {
+            "a": 0,
+            "b": 0,
+            "g": 0,
+            "r": 0
+          }
+        }
+      }
+    },
+    {
+      "codeSyntax": "var(--sk-button-border-width)",
+      "collection": "component",
+      "expression": "0",
+      "id": "tag:sk-button-border-width:5feceb66ff",
+      "name": "tag/sk-button-border-width/removable",
+      "source": {
+        "dark": "literal",
+        "light": "literal"
+      },
+      "type": "FLOAT",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": 0
+        },
+        "light": {
+          "kind": "literal",
+          "value": 0
+        }
+      }
+    },
+    {
+      "codeSyntax": "var(--sk-button-fg)",
+      "collection": "component",
+      "expression": "var(--color-text-primary)",
+      "id": "tag:sk-button-fg:abb6a57d7a",
+      "name": "tag/sk-button-fg/removable",
+      "source": {
+        "dark": "evaluated",
+        "light": "evaluated"
+      },
+      "type": "COLOR",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": {
+            "a": 1,
+            "b": 0.9579,
+            "g": 0.9609,
+            "r": 0.9609
+          }
+        },
+        "light": {
+          "kind": "literal",
+          "value": {
+            "a": 1,
+            "b": 0.0903,
+            "g": 0.098,
+            "r": 0.1095
+          }
+        }
+      }
+    },
+    {
+      "codeSyntax": "var(--sk-button-padding-x)",
+      "collection": "component",
+      "expression": "0px",
+      "id": "tag:sk-button-padding-x:33a3c91b44",
+      "name": "tag/sk-button-padding-x/removable",
+      "source": {
+        "dark": "literal",
+        "light": "literal"
+      },
+      "type": "FLOAT",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": 0
+        },
+        "light": {
+          "kind": "literal",
+          "value": 0
         }
       }
     },
@@ -120325,6 +120954,38 @@
       "expression": "color-mix( in srgb, var(--color-text-secondary) calc(0 * 100%), transparent )",
       "id": "tag:state-layer:2898638ebc",
       "name": "tag/state-layer/neutral/rest",
+      "source": {
+        "dark": "evaluated",
+        "light": "evaluated"
+      },
+      "type": "COLOR",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": {
+            "a": 0,
+            "b": 0,
+            "g": 0,
+            "r": 0
+          }
+        },
+        "light": {
+          "kind": "literal",
+          "value": {
+            "a": 0,
+            "b": 0,
+            "g": 0,
+            "r": 0
+          }
+        }
+      }
+    },
+    {
+      "codeSyntax": "",
+      "collection": "component",
+      "expression": "color-mix( in srgb, var(--color-text-primary) calc(0 * 100%), transparent )",
+      "id": "tag:state-layer:a8bbbce668",
+      "name": "tag/state-layer/removable",
       "source": {
         "dark": "evaluated",
         "light": "evaluated"
