@@ -34984,6 +34984,53 @@
         "columns": []
       },
       "visualHash": "554336eef5fc9382"
+    },
+    {
+      "axes": [],
+      "cells": [
+        {
+          "box": "672cd06398be5f4b",
+          "hash": "f81052b10640f836",
+          "id": "breadcrumb/",
+          "key": "",
+          "layers": "73836fb17105a844",
+          "props": {},
+          "surface": "fa0b643878e9242d"
+        }
+      ],
+      "contractHash": "068affdb24a8dacf",
+      "defaultCell": "",
+      "grid": {
+        "columns": [],
+        "rows": []
+      },
+      "id": "breadcrumb",
+      "interactions": [],
+      "kind": "component-set",
+      "name": "Breadcrumb",
+      "page": "skryensya",
+      "properties": [
+        {
+          "default": "Home",
+          "name": "items 1",
+          "type": "TEXT"
+        },
+        {
+          "default": "Projects",
+          "name": "items 2",
+          "type": "TEXT"
+        },
+        {
+          "default": "Settings",
+          "name": "items 3",
+          "type": "TEXT"
+        }
+      ],
+      "showcase": {
+        "base": {},
+        "columns": []
+      },
+      "visualHash": "d8e9be327558ba4e"
     }
   ],
   "diagnostics": [
@@ -35091,6 +35138,24 @@
     },
     {
       "code": "CONDITION_SKIPPED",
+      "message": "1 rule(s) under a condition the evaluation context does not hold",
+      "severity": "info",
+      "subject": "components/menu.css @media (forced-colors: active)"
+    },
+    {
+      "code": "CONDITION_SKIPPED",
+      "message": "2 rule(s) under a condition the evaluation context does not hold",
+      "severity": "info",
+      "subject": "components/menu.css @media (prefers-reduced-motion: reduce)"
+    },
+    {
+      "code": "CONDITION_SKIPPED",
+      "message": "1 rule(s) under a condition the evaluation context does not hold",
+      "severity": "info",
+      "subject": "components/menu.css @starting-style "
+    },
+    {
+      "code": "CONDITION_SKIPPED",
       "message": "2 rule(s) under a condition the evaluation context does not hold",
       "severity": "info",
       "subject": "components/meter.css @media (forced-colors: active)"
@@ -35118,6 +35183,12 @@
       "message": "2 rule(s) under a condition the evaluation context does not hold",
       "severity": "info",
       "subject": "components/tag.css @media (forced-colors: active)"
+    },
+    {
+      "code": "CONDITION_SKIPPED",
+      "message": "6 rule(s) under a condition the evaluation context does not hold",
+      "severity": "info",
+      "subject": "patterns/anchored.css @supports (anchor-name: --a)"
     },
     {
       "code": "CONDITION_SKIPPED",
@@ -35255,6 +35326,14 @@
         "visual": [
           "tone"
         ]
+      },
+      "breadcrumb": {
+        "excluded": [
+          "label",
+          "collapsedLabel"
+        ],
+        "nonVisual": [],
+        "visual": []
       },
       "button": {
         "excluded": [
@@ -35477,13 +35556,14 @@
       "variables": 466
     },
     "variants": {
-      "components": 42,
-      "componentSets": 41,
+      "components": 43,
+      "componentSets": 42,
       "naiveAllOptions": {
         "avatar": 8,
         "back-to-top": 4,
         "badge:Badge": 20,
         "badge:BadgeDot": 10,
+        "breadcrumb": 1,
         "button": 27648,
         "callout": 15,
         "code": 1,
@@ -35509,6 +35589,7 @@
         "back-to-top": 4,
         "badge:Badge": 20,
         "badge:BadgeDot": 5,
+        "breadcrumb": 1,
         "button": 2304,
         "callout": 15,
         "code": 1,
@@ -35693,13 +35774,17 @@
         {
           "set": "textarea/frosted",
           "variants": 15
+        },
+        {
+          "set": "breadcrumb",
+          "variants": 1
         }
       ],
-      "variantsTotal": 2174
+      "variantsTotal": 2175
     }
   },
   "schemaVersion": 1,
-  "sourceHash": "a095f212c0a5ad54",
+  "sourceHash": "98030d444d864a84",
   "stage": {
     "background": {
       "variable": "--color-bg-surface"
@@ -36489,6 +36574,33 @@
         },
         "width": {
           "variable": "avatar:size:e021220bb1"
+        }
+      },
+      "5eefcdf034c45d09": {
+        "clipsContent": false,
+        "crossAlign": "CENTER",
+        "direction": "HORIZONTAL",
+        "gap": {
+          "variable": "--space-inline-xs"
+        },
+        "mainAlign": "MIN",
+        "padding": {
+          "bottom": {
+            "expression": "0",
+            "value": 0
+          },
+          "left": {
+            "expression": "0",
+            "value": 0
+          },
+          "right": {
+            "expression": "0",
+            "value": 0
+          },
+          "top": {
+            "expression": "0",
+            "value": 0
+          }
         }
       },
       "61278edee5186127": {
@@ -37583,6 +37695,37 @@
         "width": {
           "expression": "240px",
           "value": 240
+        }
+      },
+      "d3e9058449137881": {
+        "clipsContent": false,
+        "crossAlign": "CENTER",
+        "direction": "HORIZONTAL",
+        "gap": {
+          "variable": "--space-inline-xs"
+        },
+        "mainAlign": "MIN",
+        "minWidth": {
+          "expression": "0",
+          "value": 0
+        },
+        "padding": {
+          "bottom": {
+            "expression": "0",
+            "value": 0
+          },
+          "left": {
+            "expression": "0",
+            "value": 0
+          },
+          "right": {
+            "expression": "0",
+            "value": 0
+          },
+          "top": {
+            "expression": "0",
+            "value": 0
+          }
         }
       },
       "d4c70d0523e30a03": {
@@ -44361,6 +44504,157 @@
             "underline": true
           },
           "textProperty": "children"
+        }
+      ],
+      "73836fb17105a844": [
+        {
+          "box": "5eefcdf034c45d09",
+          "kind": "frame",
+          "layers": [
+            {
+              "box": "d3e9058449137881",
+              "kind": "frame",
+              "layers": [
+                {
+                  "kind": "text",
+                  "slot": "items 1",
+                  "text": {
+                    "fill": {
+                      "color": {
+                        "variable": "--color-text-secondary"
+                      },
+                      "type": "SOLID"
+                    },
+                    "fontFamily": {
+                      "variable": "--font-family-body"
+                    },
+                    "fontSize": {
+                      "variable": "--font-size-body"
+                    },
+                    "fontWeight": {
+                      "variable": "--font-weight-body"
+                    },
+                    "lineHeight": 150
+                  },
+                  "textProperty": "items 1"
+                },
+                {
+                  "characters": "/",
+                  "kind": "text",
+                  "slot": "separator",
+                  "text": {
+                    "fill": {
+                      "color": {
+                        "variable": "--color-text-tertiary"
+                      },
+                      "type": "SOLID"
+                    },
+                    "fontFamily": {
+                      "variable": "--font-family-body"
+                    },
+                    "fontSize": {
+                      "variable": "--font-size-body"
+                    },
+                    "fontWeight": {
+                      "variable": "--font-weight-body"
+                    },
+                    "lineHeight": 150
+                  },
+                  "textProperty": "separator"
+                }
+              ],
+              "slot": "item",
+              "surface": "fa0b643878e9242d"
+            },
+            {
+              "box": "d3e9058449137881",
+              "kind": "frame",
+              "layers": [
+                {
+                  "kind": "text",
+                  "slot": "items 2",
+                  "text": {
+                    "fill": {
+                      "color": {
+                        "variable": "--color-text-secondary"
+                      },
+                      "type": "SOLID"
+                    },
+                    "fontFamily": {
+                      "variable": "--font-family-body"
+                    },
+                    "fontSize": {
+                      "variable": "--font-size-body"
+                    },
+                    "fontWeight": {
+                      "variable": "--font-weight-body"
+                    },
+                    "lineHeight": 150
+                  },
+                  "textProperty": "items 2"
+                },
+                {
+                  "characters": "/",
+                  "kind": "text",
+                  "slot": "separator",
+                  "text": {
+                    "fill": {
+                      "color": {
+                        "variable": "--color-text-tertiary"
+                      },
+                      "type": "SOLID"
+                    },
+                    "fontFamily": {
+                      "variable": "--font-family-body"
+                    },
+                    "fontSize": {
+                      "variable": "--font-size-body"
+                    },
+                    "fontWeight": {
+                      "variable": "--font-weight-body"
+                    },
+                    "lineHeight": 150
+                  },
+                  "textProperty": "separator"
+                }
+              ],
+              "slot": "item 2",
+              "surface": "fa0b643878e9242d"
+            },
+            {
+              "box": "d3e9058449137881",
+              "kind": "frame",
+              "layers": [
+                {
+                  "kind": "text",
+                  "slot": "items 3",
+                  "text": {
+                    "fill": {
+                      "color": {
+                        "variable": "--color-text-primary"
+                      },
+                      "type": "SOLID"
+                    },
+                    "fontFamily": {
+                      "variable": "--font-family-body"
+                    },
+                    "fontSize": {
+                      "variable": "--font-size-body"
+                    },
+                    "fontWeight": {
+                      "variable": "--font-weight-label"
+                    },
+                    "lineHeight": 150
+                  },
+                  "textProperty": "items 3"
+                }
+              ],
+              "slot": "item 3",
+              "surface": "fa0b643878e9242d"
+            }
+          ],
+          "slot": "list",
+          "surface": "fa0b643878e9242d"
         }
       ],
       "747ebd22c56f88b4": [

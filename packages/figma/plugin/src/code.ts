@@ -546,7 +546,7 @@ const cellHeightOf = (spec: M.ComponentSet) =>
 
 /** A text's width before any is measured: its sample at half an em a character, near a body face's. */
 const roughWidth = (spec: M.ComponentSet, layer: Extract<M.Layer, { kind: "text" }>) => {
-  const sample = spec.properties.find((p) => p.type === "TEXT" && p.name === layer.textProperty)?.default;
+  const sample = layer.characters ?? spec.properties.find((p) => p.type === "TEXT" && p.name === layer.textProperty)?.default;
   return typeof sample === "string" ? sample.length * 0.5 * Number(valueOf(layer.text.fontSize)) : 0;
 };
 
@@ -606,7 +606,7 @@ async function measureNested(ctx: Ctx, spec: M.ComponentSet, cell: M.Cell): Prom
   const texts = (layers: readonly M.Layer[]): Extract<M.Layer, { kind: "text" }>[] =>
     layers.flatMap((l) => (l.kind === "text" ? [l] : l.kind === "frame" ? texts(l.layers) : []));
   for (const layer of texts(manifest.styles.layers[cell.layers])) {
-    const sample = spec.properties.find((p) => p.type === "TEXT" && p.name === layer.textProperty)?.default;
+    const sample = layer.characters ?? spec.properties.find((p) => p.type === "TEXT" && p.name === layer.textProperty)?.default;
     widths.set(layer, typeof sample === "string" ? await textWidth(ctx, layer.text, sample) : 0);
   }
   const size = nestedSize(manifest.styles.boxes[cell.box], manifest.styles.layers[cell.layers], (layer) => widths.get(layer) ?? 0);
@@ -1136,7 +1136,9 @@ async function applyLayers(
       if (layer.visibleProperty) child.visible = sample[layer.visibleProperty] !== false;
     } else if (layer.kind === "text") {
       const text = child as TextNode;
-      await applyText(ctx, text, layer.text, String(sample[layer.slot] ?? ""));
+      await applyText(ctx, text, layer.text, layer.characters ?? String(sample[layer.slot] ?? ""));
+      // The template's own text is not the designer's to edit: kept as written.
+      if (layer.characters !== undefined && text.characters !== layer.characters) text.characters = layer.characters;
       // A text that fills spans its parent (grows along a row, stretches down a column) and wraps.
       if (layer.fill) text.textAutoResize = "HEIGHT";
       const across = parent.layoutMode === "HORIZONTAL";
