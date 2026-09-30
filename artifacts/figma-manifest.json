@@ -39296,6 +39296,93 @@
         "columns": []
       },
       "visualHash": "393650ba669967bb"
+    },
+    {
+      "axes": [
+        {
+          "name": "appearance",
+          "values": [
+            "plain",
+            "tactile",
+            "brutalist",
+            "frosted"
+          ]
+        }
+      ],
+      "cells": [
+        {
+          "box": "7989cb2aa996dcf7",
+          "hash": "341207b4197ada52",
+          "id": "window/appearance=plain",
+          "key": "appearance=plain",
+          "layers": "521d1b8e84c0c0f3",
+          "props": {
+            "appearance": "plain"
+          },
+          "surface": "4da51b78c68b523d"
+        },
+        {
+          "box": "7989cb2aa996dcf7",
+          "hash": "441316c3a03b1309",
+          "id": "window/appearance=tactile",
+          "key": "appearance=tactile",
+          "layers": "4d7121bb54cbe2e7",
+          "props": {
+            "appearance": "tactile"
+          },
+          "surface": "1751baf2d6c6c9ac"
+        },
+        {
+          "box": "7989cb2aa996dcf7",
+          "hash": "4b5b8ecedab86de0",
+          "id": "window/appearance=brutalist",
+          "key": "appearance=brutalist",
+          "layers": "d34151ac83681f4e",
+          "props": {
+            "appearance": "brutalist"
+          },
+          "surface": "ba5c965a7a199e8a"
+        },
+        {
+          "box": "7989cb2aa996dcf7",
+          "hash": "5b9d5da4b243a5a0",
+          "id": "window/appearance=frosted",
+          "key": "appearance=frosted",
+          "layers": "5dd17051036be46d",
+          "props": {
+            "appearance": "frosted"
+          },
+          "surface": "1985966040712cd0"
+        }
+      ],
+      "contractHash": "3dc3ff3715a6203f",
+      "defaultCell": "appearance=plain",
+      "grid": {
+        "columns": [],
+        "rows": []
+      },
+      "id": "window",
+      "interactions": [],
+      "kind": "component-set",
+      "name": "Window",
+      "page": "skryensya",
+      "properties": [
+        {
+          "default": "Notes",
+          "name": "title",
+          "type": "TEXT"
+        },
+        {
+          "default": "Drag the header to move the window; its edges resize it.",
+          "name": "children",
+          "type": "TEXT"
+        }
+      ],
+      "showcase": {
+        "base": {},
+        "columns": []
+      },
+      "visualHash": "b39354ea4f7de5e6"
     }
   ],
   "diagnostics": [
@@ -39484,6 +39571,18 @@
       "message": "11 rule(s) under a condition the evaluation context does not hold",
       "severity": "info",
       "subject": "components/button.css @media (forced-colors: active)"
+    },
+    {
+      "code": "CONDITION_SKIPPED",
+      "message": "11 rule(s) under a condition the evaluation context does not hold",
+      "severity": "info",
+      "subject": "components/button.css @media (forced-colors: active)"
+    },
+    {
+      "code": "CONDITION_SKIPPED",
+      "message": "1 rule(s) under a condition the evaluation context does not hold",
+      "severity": "info",
+      "subject": "components/button.css @media (prefers-reduced-motion: reduce)"
     },
     {
       "code": "CONDITION_SKIPPED",
@@ -40309,6 +40408,18 @@
     },
     {
       "code": "CONDITION_SKIPPED",
+      "message": "4 rule(s) under a condition the evaluation context does not hold",
+      "severity": "info",
+      "subject": "components/window.css @media (forced-colors: active)"
+    },
+    {
+      "code": "CONDITION_SKIPPED",
+      "message": "1 rule(s) under a condition the evaluation context does not hold",
+      "severity": "info",
+      "subject": "components/window.css @media (prefers-reduced-motion: reduce)"
+    },
+    {
+      "code": "CONDITION_SKIPPED",
       "message": "6 rule(s) under a condition the evaluation context does not hold",
       "severity": "info",
       "subject": "patterns/anchored.css @supports (anchor-name: --a)"
@@ -40753,6 +40864,18 @@
     },
     {
       "code": "CONDITION_SKIPPED",
+      "message": "1 rule(s) under a condition the evaluation context does not hold",
+      "severity": "info",
+      "subject": "patterns/state-layer.css @media (prefers-reduced-motion: reduce)"
+    },
+    {
+      "code": "CONDITION_SKIPPED",
+      "message": "0 rule(s) under a condition the evaluation context does not hold",
+      "severity": "info",
+      "subject": "patterns/state-layer.css @property --state-layer-opacity"
+    },
+    {
+      "code": "CONDITION_SKIPPED",
       "message": "0 rule(s) under a condition the evaluation context does not hold",
       "severity": "info",
       "subject": "patterns/state-layer.css @property --state-layer-opacity"
@@ -40970,6 +41093,12 @@
     {
       "code": "FILTER_UNSUPPORTED",
       "message": "saturate(150%) has no Figma equivalent",
+      "severity": "info",
+      "subject": "backdrop-filter"
+    },
+    {
+      "code": "FILTER_UNSUPPORTED",
+      "message": "saturate(160%) has no Figma equivalent",
       "severity": "info",
       "subject": "backdrop-filter"
     },
@@ -41791,15 +41920,43 @@
           "closeDelay"
         ],
         "visual": []
+      },
+      "window": {
+        "excluded": [
+          "resizable",
+          "triggerIconOnly"
+        ],
+        "nonVisual": [
+          "defaultOpen",
+          "draggable",
+          "closeOnEscape",
+          "persistRect",
+          "defaultWidth",
+          "defaultHeight",
+          "minWidth",
+          "minHeight",
+          "closeLabel",
+          "minimizeLabel",
+          "maximizeLabel",
+          "restoreLabel",
+          "triggerLabel",
+          "triggerVariant",
+          "triggerTone",
+          "triggerSize",
+          "triggerAppearance"
+        ],
+        "visual": [
+          "appearance"
+        ]
       }
     },
     "tokens": {
       "catalogueAdded": 301,
-      "componentVariables": 598,
+      "componentVariables": 614,
       "modeValuesBySource": {
         "alias": 203,
-        "evaluated": 1031,
-        "literal": 894
+        "evaluated": 1053,
+        "literal": 904
       },
       "reached": 207,
       "reachedAsVariables": 157,
@@ -41820,8 +41977,8 @@
       "variables": 466
     },
     "variants": {
-      "components": 153,
-      "componentSets": 152,
+      "components": 154,
+      "componentSets": 153,
       "naiveAllOptions": {
         "accordion": 32,
         "avatar": 8,
@@ -41889,7 +42046,8 @@
         "timeline": 1,
         "toc": 1,
         "toolbar": 16,
-        "tooltip": 64
+        "tooltip": 64,
+        "window": 256
       },
       "naiveVisualOptions": {
         "accordion": 4,
@@ -41958,7 +42116,8 @@
         "timeline": 1,
         "toc": 1,
         "toolbar": 8,
-        "tooltip": 1
+        "tooltip": 1,
+        "window": 4
       },
       "variantsPerSet": [
         {
@@ -42568,13 +42727,17 @@
         {
           "set": "process-list",
           "variants": 1
+        },
+        {
+          "set": "window",
+          "variants": 4
         }
       ],
-      "variantsTotal": 2137
+      "variantsTotal": 2141
     }
   },
   "schemaVersion": 1,
-  "sourceHash": "5c94f3af26cf9373",
+  "sourceHash": "eebf52c1ed323efe",
   "stage": {
     "background": {
       "variable": "--color-bg-surface"
@@ -42735,6 +42898,35 @@
           }
         },
         "stretch": true
+      },
+      "0574cb9f55962628": {
+        "clipsContent": true,
+        "crossAlign": "MIN",
+        "direction": "HORIZONTAL",
+        "grow": true,
+        "mainAlign": "MIN",
+        "minWidth": {
+          "expression": "0",
+          "value": 0
+        },
+        "padding": {
+          "bottom": {
+            "expression": "0",
+            "value": 0
+          },
+          "left": {
+            "expression": "0",
+            "value": 0
+          },
+          "right": {
+            "expression": "0",
+            "value": 0
+          },
+          "top": {
+            "expression": "0",
+            "value": 0
+          }
+        }
       },
       "087a87487955328f": {
         "clipsContent": false,
@@ -43210,6 +43402,50 @@
             "expression": "0",
             "value": 0
           }
+        }
+      },
+      "16db5871b379c664": {
+        "clipsContent": true,
+        "crossAlign": "CENTER",
+        "direction": "HORIZONTAL",
+        "gap": {
+          "variable": "--space-inline-sm"
+        },
+        "height": {
+          "variable": "--size-control-sm"
+        },
+        "mainAlign": "CENTER",
+        "minHeight": {
+          "variable": "--size-control-sm"
+        },
+        "minWidth": {
+          "expression": "0",
+          "value": 0
+        },
+        "padding": {
+          "bottom": {
+            "expression": "0",
+            "value": 0
+          },
+          "left": {
+            "variable": "window:sk-button-padding-x:33a3c91b44"
+          },
+          "right": {
+            "variable": "window:sk-button-padding-x:33a3c91b44"
+          },
+          "top": {
+            "expression": "0",
+            "value": 0
+          }
+        },
+        "radius": {
+          "variable": "--radius-control"
+        },
+        "strokeWeight": {
+          "variable": "window:sk-button-border-width:93e20626bf"
+        },
+        "width": {
+          "variable": "--size-control-sm"
         }
       },
       "175d77c07b0dac66": {
@@ -44968,6 +45204,48 @@
           }
         }
       },
+      "48ddbaa066f48646": {
+        "clipsContent": false,
+        "crossAlign": "CENTER",
+        "direction": "HORIZONTAL",
+        "gap": {
+          "variable": "--space-inline-sm"
+        },
+        "grow": true,
+        "mainAlign": "MIN",
+        "padding": {
+          "bottom": {
+            "variable": "--space-inset-xs"
+          },
+          "left": {
+            "variable": "--space-inset-md"
+          },
+          "right": {
+            "variable": "--space-inset-xs"
+          },
+          "top": {
+            "variable": "--space-inset-xs"
+          }
+        },
+        "strokeSides": {
+          "bottom": {
+            "expression": "1px",
+            "value": 1
+          },
+          "left": {
+            "expression": "0",
+            "value": 0
+          },
+          "right": {
+            "expression": "0",
+            "value": 0
+          },
+          "top": {
+            "expression": "0",
+            "value": 0
+          }
+        }
+      },
       "4910d43a5841f857": {
         "clipsContent": false,
         "crossAlign": "CENTER",
@@ -45729,6 +46007,36 @@
         },
         "width": {
           "variable": "switch:width:1d6d3e6942"
+        }
+      },
+      "5b2beaf730b04086": {
+        "clipsContent": false,
+        "crossAlign": "MIN",
+        "direction": "HORIZONTAL",
+        "height": {
+          "variable": "window:height:36de71fad9"
+        },
+        "mainAlign": "MIN",
+        "padding": {
+          "bottom": {
+            "expression": "0",
+            "value": 0
+          },
+          "left": {
+            "expression": "0",
+            "value": 0
+          },
+          "right": {
+            "expression": "0",
+            "value": 0
+          },
+          "top": {
+            "expression": "0",
+            "value": 0
+          }
+        },
+        "width": {
+          "variable": "window:width:36de71fad9"
         }
       },
       "5cf1567d636276e6": {
@@ -47288,6 +47596,41 @@
         "width": {
           "expression": "220px",
           "value": 220
+        }
+      },
+      "7989cb2aa996dcf7": {
+        "clipsContent": true,
+        "crossAlign": "MIN",
+        "direction": "VERTICAL",
+        "mainAlign": "MIN",
+        "padding": {
+          "bottom": {
+            "expression": "0",
+            "value": 0
+          },
+          "left": {
+            "expression": "0",
+            "value": 0
+          },
+          "right": {
+            "expression": "0",
+            "value": 0
+          },
+          "top": {
+            "expression": "0",
+            "value": 0
+          }
+        },
+        "radius": {
+          "variable": "--radius-surface"
+        },
+        "strokeWeight": {
+          "expression": "1px",
+          "value": 1
+        },
+        "width": {
+          "expression": "360px",
+          "value": 360
         }
       },
       "7af94efbfa0aa0ab": {
@@ -49440,6 +49783,34 @@
           }
         }
       },
+      "b82eb603455a1470": {
+        "clipsContent": false,
+        "crossAlign": "MIN",
+        "direction": "HORIZONTAL",
+        "height": {
+          "variable": "window:handle-size:558b9f364b"
+        },
+        "mainAlign": "MIN",
+        "padding": {
+          "bottom": {
+            "expression": "0",
+            "value": 0
+          },
+          "left": {
+            "expression": "0",
+            "value": 0
+          },
+          "right": {
+            "expression": "0",
+            "value": 0
+          },
+          "top": {
+            "expression": "0",
+            "value": 0
+          }
+        },
+        "stretch": true
+      },
       "b99ba5ccad67aac5": {
         "clipsContent": true,
         "corners": {
@@ -51523,6 +51894,59 @@
           "top": {
             "expression": "max(0px, calc((max(round(calc(32px * 1), 2px), 24px) - 19.2px) / 2))",
             "value": 6.4
+          }
+        },
+        "stretch": true
+      },
+      "f609138d4b036dda": {
+        "clipsContent": false,
+        "crossAlign": "MIN",
+        "direction": "HORIZONTAL",
+        "mainAlign": "MIN",
+        "padding": {
+          "bottom": {
+            "expression": "0",
+            "value": 0
+          },
+          "left": {
+            "expression": "0",
+            "value": 0
+          },
+          "right": {
+            "expression": "0",
+            "value": 0
+          },
+          "top": {
+            "expression": "0",
+            "value": 0
+          }
+        },
+        "width": {
+          "variable": "window:handle-size:558b9f364b"
+        }
+      },
+      "f943e897635cc860": {
+        "clipsContent": false,
+        "crossAlign": "MIN",
+        "direction": "HORIZONTAL",
+        "grow": true,
+        "mainAlign": "MIN",
+        "minHeight": {
+          "expression": "0",
+          "value": 0
+        },
+        "padding": {
+          "bottom": {
+            "variable": "--space-inset-md"
+          },
+          "left": {
+            "variable": "--space-inset-md"
+          },
+          "right": {
+            "variable": "--space-inset-md"
+          },
+          "top": {
+            "variable": "--space-inset-md"
           }
         },
         "stretch": true
@@ -65311,6 +65735,259 @@
           "surface": "531c78c45ff2f131"
         }
       ],
+      "4d7121bb54cbe2e7": [
+        {
+          "box": "a1cebf7e9c137591",
+          "kind": "frame",
+          "layers": [
+            {
+              "box": "48ddbaa066f48646",
+              "kind": "frame",
+              "layers": [
+                {
+                  "box": "0574cb9f55962628",
+                  "kind": "frame",
+                  "layers": [
+                    {
+                      "kind": "text",
+                      "slot": "title",
+                      "text": {
+                        "fill": {
+                          "color": {
+                            "variable": "--color-text-primary"
+                          },
+                          "type": "SOLID"
+                        },
+                        "fontFamily": {
+                          "variable": "--font-family-body"
+                        },
+                        "fontSize": {
+                          "variable": "--font-size-body"
+                        },
+                        "fontWeight": {
+                          "variable": "--font-weight-label"
+                        },
+                        "lineHeight": 150
+                      },
+                      "textProperty": "title"
+                    }
+                  ],
+                  "slot": "title",
+                  "surface": "fa0b643878e9242d"
+                },
+                {
+                  "box": "5eefcdf034c45d09",
+                  "kind": "frame",
+                  "layers": [
+                    {
+                      "box": "16db5871b379c664",
+                      "kind": "frame",
+                      "layers": [
+                        {
+                          "fills": [
+                            {
+                              "color": {
+                                "variable": "window:state-layer:a8bbbce668"
+                              },
+                              "type": "SOLID"
+                            }
+                          ],
+                          "kind": "overlay",
+                          "slot": "state layer"
+                        },
+                        {
+                          "default": "minimize",
+                          "icon": {
+                            "color": {
+                              "color": {
+                                "variable": "--color-text-primary"
+                              },
+                              "type": "SOLID"
+                            },
+                            "size": {
+                              "variable": "--size-icon-md"
+                            }
+                          },
+                          "kind": "icon",
+                          "slot": "stage"
+                        }
+                      ],
+                      "slot": "stage",
+                      "surface": "7cc8a2f48c087541"
+                    },
+                    {
+                      "box": "16db5871b379c664",
+                      "kind": "frame",
+                      "layers": [
+                        {
+                          "fills": [
+                            {
+                              "color": {
+                                "variable": "window:state-layer:a8bbbce668"
+                              },
+                              "type": "SOLID"
+                            }
+                          ],
+                          "kind": "overlay",
+                          "slot": "state layer"
+                        },
+                        {
+                          "default": "maximize",
+                          "icon": {
+                            "color": {
+                              "color": {
+                                "variable": "--color-text-primary"
+                              },
+                              "type": "SOLID"
+                            },
+                            "size": {
+                              "variable": "--size-icon-md"
+                            }
+                          },
+                          "kind": "icon",
+                          "slot": "stage"
+                        }
+                      ],
+                      "slot": "stage 2",
+                      "surface": "7cc8a2f48c087541"
+                    },
+                    {
+                      "box": "16db5871b379c664",
+                      "kind": "frame",
+                      "layers": [
+                        {
+                          "fills": [
+                            {
+                              "color": {
+                                "variable": "window:state-layer:a8bbbce668"
+                              },
+                              "type": "SOLID"
+                            }
+                          ],
+                          "kind": "overlay",
+                          "slot": "state layer"
+                        },
+                        {
+                          "default": "close",
+                          "icon": {
+                            "color": {
+                              "color": {
+                                "variable": "--color-text-primary"
+                              },
+                              "type": "SOLID"
+                            },
+                            "size": {
+                              "variable": "--size-icon-md"
+                            }
+                          },
+                          "kind": "icon",
+                          "slot": "close"
+                        }
+                      ],
+                      "slot": "close",
+                      "surface": "7cc8a2f48c087541"
+                    }
+                  ],
+                  "slot": "controls",
+                  "surface": "fa0b643878e9242d"
+                }
+              ],
+              "slot": "header",
+              "surface": "7cb899fbbb05f8eb"
+            }
+          ],
+          "slot": "drag",
+          "surface": "fa0b643878e9242d"
+        },
+        {
+          "box": "f943e897635cc860",
+          "kind": "frame",
+          "layers": [
+            {
+              "fill": true,
+              "kind": "text",
+              "slot": "children",
+              "text": {
+                "fill": {
+                  "color": {
+                    "variable": "--color-text-primary"
+                  },
+                  "type": "SOLID"
+                },
+                "fontFamily": {
+                  "variable": "--font-family-body"
+                },
+                "fontSize": {
+                  "variable": "--font-size-body"
+                },
+                "fontWeight": {
+                  "variable": "--font-weight-body"
+                },
+                "lineHeight": 150
+              },
+              "textProperty": "children"
+            }
+          ],
+          "slot": "body",
+          "surface": "fa0b643878e9242d"
+        },
+        {
+          "box": "b82eb603455a1470",
+          "kind": "frame",
+          "layers": [],
+          "slot": "resize",
+          "surface": "fa0b643878e9242d"
+        },
+        {
+          "box": "f609138d4b036dda",
+          "kind": "frame",
+          "layers": [],
+          "slot": "resize 2",
+          "surface": "fa0b643878e9242d"
+        },
+        {
+          "box": "b82eb603455a1470",
+          "kind": "frame",
+          "layers": [],
+          "slot": "resize 3",
+          "surface": "fa0b643878e9242d"
+        },
+        {
+          "box": "f609138d4b036dda",
+          "kind": "frame",
+          "layers": [],
+          "slot": "resize 4",
+          "surface": "fa0b643878e9242d"
+        },
+        {
+          "box": "5b2beaf730b04086",
+          "kind": "frame",
+          "layers": [],
+          "slot": "resize 5",
+          "surface": "fa0b643878e9242d"
+        },
+        {
+          "box": "5b2beaf730b04086",
+          "kind": "frame",
+          "layers": [],
+          "slot": "resize 6",
+          "surface": "fa0b643878e9242d"
+        },
+        {
+          "box": "5b2beaf730b04086",
+          "kind": "frame",
+          "layers": [],
+          "slot": "resize 7",
+          "surface": "fa0b643878e9242d"
+        },
+        {
+          "box": "5b2beaf730b04086",
+          "kind": "frame",
+          "layers": [],
+          "slot": "resize 8",
+          "surface": "fa0b643878e9242d"
+        }
+      ],
       "4ef0e5808c495f00": [
         {
           "kind": "text",
@@ -65622,6 +66299,259 @@
           "kind": "icon",
           "slot": "post",
           "visibleProperty": "post"
+        }
+      ],
+      "521d1b8e84c0c0f3": [
+        {
+          "box": "a1cebf7e9c137591",
+          "kind": "frame",
+          "layers": [
+            {
+              "box": "48ddbaa066f48646",
+              "kind": "frame",
+              "layers": [
+                {
+                  "box": "0574cb9f55962628",
+                  "kind": "frame",
+                  "layers": [
+                    {
+                      "kind": "text",
+                      "slot": "title",
+                      "text": {
+                        "fill": {
+                          "color": {
+                            "variable": "--color-text-primary"
+                          },
+                          "type": "SOLID"
+                        },
+                        "fontFamily": {
+                          "variable": "--font-family-body"
+                        },
+                        "fontSize": {
+                          "variable": "--font-size-body"
+                        },
+                        "fontWeight": {
+                          "variable": "--font-weight-label"
+                        },
+                        "lineHeight": 150
+                      },
+                      "textProperty": "title"
+                    }
+                  ],
+                  "slot": "title",
+                  "surface": "fa0b643878e9242d"
+                },
+                {
+                  "box": "5eefcdf034c45d09",
+                  "kind": "frame",
+                  "layers": [
+                    {
+                      "box": "16db5871b379c664",
+                      "kind": "frame",
+                      "layers": [
+                        {
+                          "fills": [
+                            {
+                              "color": {
+                                "variable": "window:state-layer:a8bbbce668"
+                              },
+                              "type": "SOLID"
+                            }
+                          ],
+                          "kind": "overlay",
+                          "slot": "state layer"
+                        },
+                        {
+                          "default": "minimize",
+                          "icon": {
+                            "color": {
+                              "color": {
+                                "variable": "--color-text-primary"
+                              },
+                              "type": "SOLID"
+                            },
+                            "size": {
+                              "variable": "--size-icon-md"
+                            }
+                          },
+                          "kind": "icon",
+                          "slot": "stage"
+                        }
+                      ],
+                      "slot": "stage",
+                      "surface": "7cc8a2f48c087541"
+                    },
+                    {
+                      "box": "16db5871b379c664",
+                      "kind": "frame",
+                      "layers": [
+                        {
+                          "fills": [
+                            {
+                              "color": {
+                                "variable": "window:state-layer:a8bbbce668"
+                              },
+                              "type": "SOLID"
+                            }
+                          ],
+                          "kind": "overlay",
+                          "slot": "state layer"
+                        },
+                        {
+                          "default": "maximize",
+                          "icon": {
+                            "color": {
+                              "color": {
+                                "variable": "--color-text-primary"
+                              },
+                              "type": "SOLID"
+                            },
+                            "size": {
+                              "variable": "--size-icon-md"
+                            }
+                          },
+                          "kind": "icon",
+                          "slot": "stage"
+                        }
+                      ],
+                      "slot": "stage 2",
+                      "surface": "7cc8a2f48c087541"
+                    },
+                    {
+                      "box": "16db5871b379c664",
+                      "kind": "frame",
+                      "layers": [
+                        {
+                          "fills": [
+                            {
+                              "color": {
+                                "variable": "window:state-layer:a8bbbce668"
+                              },
+                              "type": "SOLID"
+                            }
+                          ],
+                          "kind": "overlay",
+                          "slot": "state layer"
+                        },
+                        {
+                          "default": "close",
+                          "icon": {
+                            "color": {
+                              "color": {
+                                "variable": "--color-text-primary"
+                              },
+                              "type": "SOLID"
+                            },
+                            "size": {
+                              "variable": "--size-icon-md"
+                            }
+                          },
+                          "kind": "icon",
+                          "slot": "close"
+                        }
+                      ],
+                      "slot": "close",
+                      "surface": "7cc8a2f48c087541"
+                    }
+                  ],
+                  "slot": "controls",
+                  "surface": "fa0b643878e9242d"
+                }
+              ],
+              "slot": "header",
+              "surface": "7b86a6e3c6e593a0"
+            }
+          ],
+          "slot": "drag",
+          "surface": "fa0b643878e9242d"
+        },
+        {
+          "box": "f943e897635cc860",
+          "kind": "frame",
+          "layers": [
+            {
+              "fill": true,
+              "kind": "text",
+              "slot": "children",
+              "text": {
+                "fill": {
+                  "color": {
+                    "variable": "--color-text-primary"
+                  },
+                  "type": "SOLID"
+                },
+                "fontFamily": {
+                  "variable": "--font-family-body"
+                },
+                "fontSize": {
+                  "variable": "--font-size-body"
+                },
+                "fontWeight": {
+                  "variable": "--font-weight-body"
+                },
+                "lineHeight": 150
+              },
+              "textProperty": "children"
+            }
+          ],
+          "slot": "body",
+          "surface": "fa0b643878e9242d"
+        },
+        {
+          "box": "b82eb603455a1470",
+          "kind": "frame",
+          "layers": [],
+          "slot": "resize",
+          "surface": "fa0b643878e9242d"
+        },
+        {
+          "box": "f609138d4b036dda",
+          "kind": "frame",
+          "layers": [],
+          "slot": "resize 2",
+          "surface": "fa0b643878e9242d"
+        },
+        {
+          "box": "b82eb603455a1470",
+          "kind": "frame",
+          "layers": [],
+          "slot": "resize 3",
+          "surface": "fa0b643878e9242d"
+        },
+        {
+          "box": "f609138d4b036dda",
+          "kind": "frame",
+          "layers": [],
+          "slot": "resize 4",
+          "surface": "fa0b643878e9242d"
+        },
+        {
+          "box": "5b2beaf730b04086",
+          "kind": "frame",
+          "layers": [],
+          "slot": "resize 5",
+          "surface": "fa0b643878e9242d"
+        },
+        {
+          "box": "5b2beaf730b04086",
+          "kind": "frame",
+          "layers": [],
+          "slot": "resize 6",
+          "surface": "fa0b643878e9242d"
+        },
+        {
+          "box": "5b2beaf730b04086",
+          "kind": "frame",
+          "layers": [],
+          "slot": "resize 7",
+          "surface": "fa0b643878e9242d"
+        },
+        {
+          "box": "5b2beaf730b04086",
+          "kind": "frame",
+          "layers": [],
+          "slot": "resize 8",
+          "surface": "fa0b643878e9242d"
         }
       ],
       "524c3bf48d5c534f": [
@@ -66617,6 +67547,259 @@
           "kind": "icon",
           "slot": "post",
           "visibleProperty": "post"
+        }
+      ],
+      "5dd17051036be46d": [
+        {
+          "box": "a1cebf7e9c137591",
+          "kind": "frame",
+          "layers": [
+            {
+              "box": "48ddbaa066f48646",
+              "kind": "frame",
+              "layers": [
+                {
+                  "box": "0574cb9f55962628",
+                  "kind": "frame",
+                  "layers": [
+                    {
+                      "kind": "text",
+                      "slot": "title",
+                      "text": {
+                        "fill": {
+                          "color": {
+                            "variable": "--color-text-primary"
+                          },
+                          "type": "SOLID"
+                        },
+                        "fontFamily": {
+                          "variable": "--font-family-body"
+                        },
+                        "fontSize": {
+                          "variable": "--font-size-body"
+                        },
+                        "fontWeight": {
+                          "variable": "--font-weight-label"
+                        },
+                        "lineHeight": 150
+                      },
+                      "textProperty": "title"
+                    }
+                  ],
+                  "slot": "title",
+                  "surface": "fa0b643878e9242d"
+                },
+                {
+                  "box": "5eefcdf034c45d09",
+                  "kind": "frame",
+                  "layers": [
+                    {
+                      "box": "16db5871b379c664",
+                      "kind": "frame",
+                      "layers": [
+                        {
+                          "fills": [
+                            {
+                              "color": {
+                                "variable": "window:state-layer:a8bbbce668"
+                              },
+                              "type": "SOLID"
+                            }
+                          ],
+                          "kind": "overlay",
+                          "slot": "state layer"
+                        },
+                        {
+                          "default": "minimize",
+                          "icon": {
+                            "color": {
+                              "color": {
+                                "variable": "--color-text-primary"
+                              },
+                              "type": "SOLID"
+                            },
+                            "size": {
+                              "variable": "--size-icon-md"
+                            }
+                          },
+                          "kind": "icon",
+                          "slot": "stage"
+                        }
+                      ],
+                      "slot": "stage",
+                      "surface": "7cc8a2f48c087541"
+                    },
+                    {
+                      "box": "16db5871b379c664",
+                      "kind": "frame",
+                      "layers": [
+                        {
+                          "fills": [
+                            {
+                              "color": {
+                                "variable": "window:state-layer:a8bbbce668"
+                              },
+                              "type": "SOLID"
+                            }
+                          ],
+                          "kind": "overlay",
+                          "slot": "state layer"
+                        },
+                        {
+                          "default": "maximize",
+                          "icon": {
+                            "color": {
+                              "color": {
+                                "variable": "--color-text-primary"
+                              },
+                              "type": "SOLID"
+                            },
+                            "size": {
+                              "variable": "--size-icon-md"
+                            }
+                          },
+                          "kind": "icon",
+                          "slot": "stage"
+                        }
+                      ],
+                      "slot": "stage 2",
+                      "surface": "7cc8a2f48c087541"
+                    },
+                    {
+                      "box": "16db5871b379c664",
+                      "kind": "frame",
+                      "layers": [
+                        {
+                          "fills": [
+                            {
+                              "color": {
+                                "variable": "window:state-layer:a8bbbce668"
+                              },
+                              "type": "SOLID"
+                            }
+                          ],
+                          "kind": "overlay",
+                          "slot": "state layer"
+                        },
+                        {
+                          "default": "close",
+                          "icon": {
+                            "color": {
+                              "color": {
+                                "variable": "--color-text-primary"
+                              },
+                              "type": "SOLID"
+                            },
+                            "size": {
+                              "variable": "--size-icon-md"
+                            }
+                          },
+                          "kind": "icon",
+                          "slot": "close"
+                        }
+                      ],
+                      "slot": "close",
+                      "surface": "7cc8a2f48c087541"
+                    }
+                  ],
+                  "slot": "controls",
+                  "surface": "fa0b643878e9242d"
+                }
+              ],
+              "slot": "header",
+              "surface": "495240f8c06cc1c0"
+            }
+          ],
+          "slot": "drag",
+          "surface": "fa0b643878e9242d"
+        },
+        {
+          "box": "f943e897635cc860",
+          "kind": "frame",
+          "layers": [
+            {
+              "fill": true,
+              "kind": "text",
+              "slot": "children",
+              "text": {
+                "fill": {
+                  "color": {
+                    "variable": "--color-text-primary"
+                  },
+                  "type": "SOLID"
+                },
+                "fontFamily": {
+                  "variable": "--font-family-body"
+                },
+                "fontSize": {
+                  "variable": "--font-size-body"
+                },
+                "fontWeight": {
+                  "variable": "--font-weight-body"
+                },
+                "lineHeight": 150
+              },
+              "textProperty": "children"
+            }
+          ],
+          "slot": "body",
+          "surface": "fa0b643878e9242d"
+        },
+        {
+          "box": "b82eb603455a1470",
+          "kind": "frame",
+          "layers": [],
+          "slot": "resize",
+          "surface": "fa0b643878e9242d"
+        },
+        {
+          "box": "f609138d4b036dda",
+          "kind": "frame",
+          "layers": [],
+          "slot": "resize 2",
+          "surface": "fa0b643878e9242d"
+        },
+        {
+          "box": "b82eb603455a1470",
+          "kind": "frame",
+          "layers": [],
+          "slot": "resize 3",
+          "surface": "fa0b643878e9242d"
+        },
+        {
+          "box": "f609138d4b036dda",
+          "kind": "frame",
+          "layers": [],
+          "slot": "resize 4",
+          "surface": "fa0b643878e9242d"
+        },
+        {
+          "box": "5b2beaf730b04086",
+          "kind": "frame",
+          "layers": [],
+          "slot": "resize 5",
+          "surface": "fa0b643878e9242d"
+        },
+        {
+          "box": "5b2beaf730b04086",
+          "kind": "frame",
+          "layers": [],
+          "slot": "resize 6",
+          "surface": "fa0b643878e9242d"
+        },
+        {
+          "box": "5b2beaf730b04086",
+          "kind": "frame",
+          "layers": [],
+          "slot": "resize 7",
+          "surface": "fa0b643878e9242d"
+        },
+        {
+          "box": "5b2beaf730b04086",
+          "kind": "frame",
+          "layers": [],
+          "slot": "resize 8",
+          "surface": "fa0b643878e9242d"
         }
       ],
       "5dd2ca160a653f7f": [
@@ -84280,6 +85463,259 @@
           }
         }
       ],
+      "d34151ac83681f4e": [
+        {
+          "box": "a1cebf7e9c137591",
+          "kind": "frame",
+          "layers": [
+            {
+              "box": "48ddbaa066f48646",
+              "kind": "frame",
+              "layers": [
+                {
+                  "box": "0574cb9f55962628",
+                  "kind": "frame",
+                  "layers": [
+                    {
+                      "kind": "text",
+                      "slot": "title",
+                      "text": {
+                        "fill": {
+                          "color": {
+                            "variable": "--color-text-primary"
+                          },
+                          "type": "SOLID"
+                        },
+                        "fontFamily": {
+                          "variable": "--font-family-body"
+                        },
+                        "fontSize": {
+                          "variable": "--font-size-body"
+                        },
+                        "fontWeight": {
+                          "variable": "--font-weight-label"
+                        },
+                        "lineHeight": 150
+                      },
+                      "textProperty": "title"
+                    }
+                  ],
+                  "slot": "title",
+                  "surface": "fa0b643878e9242d"
+                },
+                {
+                  "box": "5eefcdf034c45d09",
+                  "kind": "frame",
+                  "layers": [
+                    {
+                      "box": "16db5871b379c664",
+                      "kind": "frame",
+                      "layers": [
+                        {
+                          "fills": [
+                            {
+                              "color": {
+                                "variable": "window:state-layer:a8bbbce668"
+                              },
+                              "type": "SOLID"
+                            }
+                          ],
+                          "kind": "overlay",
+                          "slot": "state layer"
+                        },
+                        {
+                          "default": "minimize",
+                          "icon": {
+                            "color": {
+                              "color": {
+                                "variable": "--color-text-primary"
+                              },
+                              "type": "SOLID"
+                            },
+                            "size": {
+                              "variable": "--size-icon-md"
+                            }
+                          },
+                          "kind": "icon",
+                          "slot": "stage"
+                        }
+                      ],
+                      "slot": "stage",
+                      "surface": "7cc8a2f48c087541"
+                    },
+                    {
+                      "box": "16db5871b379c664",
+                      "kind": "frame",
+                      "layers": [
+                        {
+                          "fills": [
+                            {
+                              "color": {
+                                "variable": "window:state-layer:a8bbbce668"
+                              },
+                              "type": "SOLID"
+                            }
+                          ],
+                          "kind": "overlay",
+                          "slot": "state layer"
+                        },
+                        {
+                          "default": "maximize",
+                          "icon": {
+                            "color": {
+                              "color": {
+                                "variable": "--color-text-primary"
+                              },
+                              "type": "SOLID"
+                            },
+                            "size": {
+                              "variable": "--size-icon-md"
+                            }
+                          },
+                          "kind": "icon",
+                          "slot": "stage"
+                        }
+                      ],
+                      "slot": "stage 2",
+                      "surface": "7cc8a2f48c087541"
+                    },
+                    {
+                      "box": "16db5871b379c664",
+                      "kind": "frame",
+                      "layers": [
+                        {
+                          "fills": [
+                            {
+                              "color": {
+                                "variable": "window:state-layer:a8bbbce668"
+                              },
+                              "type": "SOLID"
+                            }
+                          ],
+                          "kind": "overlay",
+                          "slot": "state layer"
+                        },
+                        {
+                          "default": "close",
+                          "icon": {
+                            "color": {
+                              "color": {
+                                "variable": "--color-text-primary"
+                              },
+                              "type": "SOLID"
+                            },
+                            "size": {
+                              "variable": "--size-icon-md"
+                            }
+                          },
+                          "kind": "icon",
+                          "slot": "close"
+                        }
+                      ],
+                      "slot": "close",
+                      "surface": "7cc8a2f48c087541"
+                    }
+                  ],
+                  "slot": "controls",
+                  "surface": "fa0b643878e9242d"
+                }
+              ],
+              "slot": "header",
+              "surface": "77a5a45897fd4e67"
+            }
+          ],
+          "slot": "drag",
+          "surface": "fa0b643878e9242d"
+        },
+        {
+          "box": "f943e897635cc860",
+          "kind": "frame",
+          "layers": [
+            {
+              "fill": true,
+              "kind": "text",
+              "slot": "children",
+              "text": {
+                "fill": {
+                  "color": {
+                    "variable": "--color-text-primary"
+                  },
+                  "type": "SOLID"
+                },
+                "fontFamily": {
+                  "variable": "--font-family-body"
+                },
+                "fontSize": {
+                  "variable": "--font-size-body"
+                },
+                "fontWeight": {
+                  "variable": "--font-weight-body"
+                },
+                "lineHeight": 150
+              },
+              "textProperty": "children"
+            }
+          ],
+          "slot": "body",
+          "surface": "fa0b643878e9242d"
+        },
+        {
+          "box": "b82eb603455a1470",
+          "kind": "frame",
+          "layers": [],
+          "slot": "resize",
+          "surface": "fa0b643878e9242d"
+        },
+        {
+          "box": "f609138d4b036dda",
+          "kind": "frame",
+          "layers": [],
+          "slot": "resize 2",
+          "surface": "fa0b643878e9242d"
+        },
+        {
+          "box": "b82eb603455a1470",
+          "kind": "frame",
+          "layers": [],
+          "slot": "resize 3",
+          "surface": "fa0b643878e9242d"
+        },
+        {
+          "box": "f609138d4b036dda",
+          "kind": "frame",
+          "layers": [],
+          "slot": "resize 4",
+          "surface": "fa0b643878e9242d"
+        },
+        {
+          "box": "5b2beaf730b04086",
+          "kind": "frame",
+          "layers": [],
+          "slot": "resize 5",
+          "surface": "fa0b643878e9242d"
+        },
+        {
+          "box": "5b2beaf730b04086",
+          "kind": "frame",
+          "layers": [],
+          "slot": "resize 6",
+          "surface": "fa0b643878e9242d"
+        },
+        {
+          "box": "5b2beaf730b04086",
+          "kind": "frame",
+          "layers": [],
+          "slot": "resize 7",
+          "surface": "fa0b643878e9242d"
+        },
+        {
+          "box": "5b2beaf730b04086",
+          "kind": "frame",
+          "layers": [],
+          "slot": "resize 8",
+          "surface": "fa0b643878e9242d"
+        }
+      ],
       "d347b016d032cfa6": [
         {
           "fills": [
@@ -91107,6 +92543,116 @@
           }
         ]
       },
+      "1751baf2d6c6c9ac": {
+        "effects": [
+          {
+            "blur": {
+              "expression": "0",
+              "value": 0
+            },
+            "color": {
+              "variable": "window:tactile-ledge:4b4d2fe730"
+            },
+            "spread": {
+              "expression": "0",
+              "value": 0
+            },
+            "type": "DROP_SHADOW",
+            "x": {
+              "expression": "0",
+              "value": 0
+            },
+            "y": {
+              "variable": "window:depth:7adef6a048"
+            }
+          },
+          {
+            "blur": {
+              "expression": "10px",
+              "value": 10
+            },
+            "color": {
+              "variable": "--shadow-lg"
+            },
+            "spread": {
+              "expression": "-6px",
+              "value": -6
+            },
+            "type": "DROP_SHADOW",
+            "x": {
+              "expression": "0",
+              "value": 0
+            },
+            "y": {
+              "expression": "8px",
+              "value": 8
+            }
+          },
+          {
+            "blur": {
+              "expression": "25px",
+              "value": 25
+            },
+            "color": {
+              "variable": "--shadow-lg"
+            },
+            "spread": {
+              "expression": "-5px",
+              "value": -5
+            },
+            "type": "DROP_SHADOW",
+            "x": {
+              "expression": "0",
+              "value": 0
+            },
+            "y": {
+              "expression": "20px",
+              "value": 20
+            }
+          }
+        ],
+        "fills": [
+          {
+            "color": {
+              "variable": "--color-bg-surface-overlay"
+            },
+            "type": "SOLID"
+          },
+          {
+            "angle": 180,
+            "expression": "linear-gradient( to bottom, light-dark(color-mix(in oklab, white 10%, transparent), color-mix(in oklab, white 5%, transparent)), transparent 40% )",
+            "stops": [
+              {
+                "color": {
+                  "a": 0.1,
+                  "b": 1,
+                  "g": 1,
+                  "r": 1
+                },
+                "position": 0
+              },
+              {
+                "color": {
+                  "a": 0,
+                  "b": 0,
+                  "g": 0,
+                  "r": 0
+                },
+                "position": 0.4
+              }
+            ],
+            "type": "GRADIENT_LINEAR"
+          }
+        ],
+        "strokes": [
+          {
+            "color": {
+              "variable": "--color-border-subtle"
+            },
+            "type": "SOLID"
+          }
+        ]
+      },
       "17d6831a13be38a1": {
         "effects": [
           {
@@ -91204,6 +92750,99 @@
           {
             "color": {
               "variable": "--color-border-strong"
+            },
+            "type": "SOLID"
+          }
+        ]
+      },
+      "1985966040712cd0": {
+        "effects": [
+          {
+            "blur": {
+              "expression": "0",
+              "value": 0
+            },
+            "color": {
+              "variable": "--frost-highlight"
+            },
+            "spread": {
+              "expression": "0",
+              "value": 0
+            },
+            "type": "INNER_SHADOW",
+            "x": {
+              "expression": "0",
+              "value": 0
+            },
+            "y": {
+              "expression": "1px",
+              "value": 1
+            }
+          },
+          {
+            "blur": {
+              "expression": "10px",
+              "value": 10
+            },
+            "color": {
+              "variable": "--shadow-lg"
+            },
+            "spread": {
+              "expression": "-6px",
+              "value": -6
+            },
+            "type": "DROP_SHADOW",
+            "x": {
+              "expression": "0",
+              "value": 0
+            },
+            "y": {
+              "expression": "8px",
+              "value": 8
+            }
+          },
+          {
+            "blur": {
+              "expression": "25px",
+              "value": 25
+            },
+            "color": {
+              "variable": "--shadow-lg"
+            },
+            "spread": {
+              "expression": "-5px",
+              "value": -5
+            },
+            "type": "DROP_SHADOW",
+            "x": {
+              "expression": "0",
+              "value": 0
+            },
+            "y": {
+              "expression": "20px",
+              "value": 20
+            }
+          },
+          {
+            "radius": {
+              "expression": "24px",
+              "value": 24
+            },
+            "type": "BACKGROUND_BLUR"
+          }
+        ],
+        "fills": [
+          {
+            "color": {
+              "variable": "window:frost-glass:a9de677104"
+            },
+            "type": "SOLID"
+          }
+        ],
+        "strokes": [
+          {
+            "color": {
+              "variable": "window:border-color:dfa846e305"
             },
             "type": "SOLID"
           }
@@ -94380,6 +96019,25 @@
           }
         ]
       },
+      "495240f8c06cc1c0": {
+        "effects": [],
+        "fills": [
+          {
+            "color": {
+              "variable": "window:frost-glass:1a00c0a6f5"
+            },
+            "type": "SOLID"
+          }
+        ],
+        "strokes": [
+          {
+            "color": {
+              "variable": "--color-border-subtle"
+            },
+            "type": "SOLID"
+          }
+        ]
+      },
       "49ee410d37abb56f": {
         "effects": [],
         "fills": [
@@ -94576,6 +96234,76 @@
           {
             "color": {
               "variable": "clipboard:brutalist-black:b75258c11d"
+            },
+            "type": "SOLID"
+          }
+        ]
+      },
+      "4da51b78c68b523d": {
+        "effects": [
+          {
+            "blur": {
+              "expression": "10px",
+              "value": 10
+            },
+            "color": {
+              "variable": "--shadow-lg"
+            },
+            "spread": {
+              "expression": "-6px",
+              "value": -6
+            },
+            "type": "DROP_SHADOW",
+            "x": {
+              "expression": "0",
+              "value": 0
+            },
+            "y": {
+              "expression": "8px",
+              "value": 8
+            }
+          },
+          {
+            "blur": {
+              "expression": "25px",
+              "value": 25
+            },
+            "color": {
+              "variable": "--shadow-lg"
+            },
+            "spread": {
+              "expression": "-5px",
+              "value": -5
+            },
+            "type": "DROP_SHADOW",
+            "x": {
+              "expression": "0",
+              "value": 0
+            },
+            "y": {
+              "expression": "20px",
+              "value": 20
+            }
+          }
+        ],
+        "fills": [
+          {
+            "color": {
+              "variable": "--color-bg-surface-overlay"
+            },
+            "type": "SOLID"
+          },
+          {
+            "color": {
+              "variable": "--elevation-tint-overlay"
+            },
+            "type": "SOLID"
+          }
+        ],
+        "strokes": [
+          {
+            "color": {
+              "variable": "--color-border-subtle"
             },
             "type": "SOLID"
           }
@@ -97614,6 +99342,25 @@
           }
         ]
       },
+      "77a5a45897fd4e67": {
+        "effects": [],
+        "fills": [
+          {
+            "color": {
+              "variable": "--color-bg-surface-raised"
+            },
+            "type": "SOLID"
+          }
+        ],
+        "strokes": [
+          {
+            "color": {
+              "variable": "window:brutalist-edge:b75258c11d"
+            },
+            "type": "SOLID"
+          }
+        ]
+      },
       "782f6d9c078a09bf": {
         "effects": [],
         "fills": [
@@ -97931,6 +99678,25 @@
           }
         ]
       },
+      "7b86a6e3c6e593a0": {
+        "effects": [],
+        "fills": [
+          {
+            "color": {
+              "variable": "--color-bg-surface-raised"
+            },
+            "type": "SOLID"
+          }
+        ],
+        "strokes": [
+          {
+            "color": {
+              "variable": "--color-border-subtle"
+            },
+            "type": "SOLID"
+          }
+        ]
+      },
       "7b9a271467fb79e6": {
         "effects": [
           {
@@ -97953,6 +99719,69 @@
           {
             "color": {
               "variable": "--color-border-accent"
+            },
+            "type": "SOLID"
+          }
+        ]
+      },
+      "7cb899fbbb05f8eb": {
+        "effects": [],
+        "fills": [
+          {
+            "color": {
+              "variable": "--color-bg-surface-raised"
+            },
+            "type": "SOLID"
+          },
+          {
+            "angle": 180,
+            "expression": "linear-gradient( to bottom, light-dark(color-mix(in oklab, white 12%, transparent), color-mix(in oklab, white 6%, transparent)), light-dark(color-mix(in oklab, black 4%, transparent), color-mix(in oklab, black 8%, transparent)) )",
+            "stops": [
+              {
+                "color": {
+                  "a": 0.12,
+                  "b": 1,
+                  "g": 1,
+                  "r": 1
+                },
+                "position": 0
+              },
+              {
+                "color": {
+                  "a": 0.04,
+                  "b": 0,
+                  "g": 0,
+                  "r": 0
+                },
+                "position": 1
+              }
+            ],
+            "type": "GRADIENT_LINEAR"
+          }
+        ],
+        "strokes": [
+          {
+            "color": {
+              "variable": "--color-border-subtle"
+            },
+            "type": "SOLID"
+          }
+        ]
+      },
+      "7cc8a2f48c087541": {
+        "effects": [],
+        "fills": [
+          {
+            "color": {
+              "variable": "window:sk-button-bg:10e9f5602d"
+            },
+            "type": "SOLID"
+          }
+        ],
+        "strokes": [
+          {
+            "color": {
+              "variable": "window:sk-button-border-color:10e9f5602d"
             },
             "type": "SOLID"
           }
@@ -102175,6 +104004,46 @@
           }
         ],
         "strokes": []
+      },
+      "ba5c965a7a199e8a": {
+        "effects": [
+          {
+            "blur": {
+              "expression": "0",
+              "value": 0
+            },
+            "color": {
+              "variable": "window:brutalist-edge:b75258c11d"
+            },
+            "spread": {
+              "expression": "0",
+              "value": 0
+            },
+            "type": "DROP_SHADOW",
+            "x": {
+              "variable": "window:shadow-1-x:659242e1f7"
+            },
+            "y": {
+              "variable": "window:shadow-1-y:6b8ad63056"
+            }
+          }
+        ],
+        "fills": [
+          {
+            "color": {
+              "variable": "--color-bg-surface-overlay"
+            },
+            "type": "SOLID"
+          }
+        ],
+        "strokes": [
+          {
+            "color": {
+              "variable": "window:brutalist-edge:b75258c11d"
+            },
+            "type": "SOLID"
+          }
+        ]
       },
       "bb36b99a66a9012b": {
         "effects": [
@@ -123018,6 +124887,438 @@
             "g": 0,
             "r": 0
           }
+        }
+      }
+    },
+    {
+      "codeSyntax": "var(--sk-window-border-color)",
+      "collection": "component",
+      "expression": "color-mix(in oklab, var(--color-text-primary) 18%, transparent)",
+      "id": "window:border-color:dfa846e305",
+      "name": "window/border-color/frosted",
+      "source": {
+        "dark": "evaluated",
+        "light": "evaluated"
+      },
+      "type": "COLOR",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": {
+            "a": 0.18,
+            "b": 0.9579,
+            "g": 0.9609,
+            "r": 0.9609
+          }
+        },
+        "light": {
+          "kind": "literal",
+          "value": {
+            "a": 0.18,
+            "b": 0.0903,
+            "g": 0.098,
+            "r": 0.1095
+          }
+        }
+      }
+    },
+    {
+      "codeSyntax": "var(--sk-window-brutalist-edge)",
+      "collection": "component",
+      "expression": "oklch(from var(--shadow-lg) l c h / 1)",
+      "id": "window:brutalist-edge:b75258c11d",
+      "name": "window/brutalist-edge/brutalist",
+      "source": {
+        "dark": "evaluated",
+        "light": "evaluated"
+      },
+      "type": "COLOR",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": {
+            "a": 1,
+            "b": 0,
+            "g": 0,
+            "r": 0
+          }
+        },
+        "light": {
+          "kind": "literal",
+          "value": {
+            "a": 1,
+            "b": 0,
+            "g": 0,
+            "r": 0
+          }
+        }
+      }
+    },
+    {
+      "codeSyntax": "var(--sk-window-depth)",
+      "collection": "component",
+      "expression": "6px",
+      "id": "window:depth:7adef6a048",
+      "name": "window/depth/tactile",
+      "source": {
+        "dark": "literal",
+        "light": "literal"
+      },
+      "type": "FLOAT",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": 6
+        },
+        "light": {
+          "kind": "literal",
+          "value": 6
+        }
+      }
+    },
+    {
+      "codeSyntax": "var(--frost-glass)",
+      "collection": "component",
+      "expression": "var(--frost-on) color-mix(in oklab, var(--color-bg-surface-raised) 40%, transparent)",
+      "id": "window:frost-glass:1a00c0a6f5",
+      "name": "window/frost-glass/frosted",
+      "source": {
+        "dark": "evaluated",
+        "light": "evaluated"
+      },
+      "type": "COLOR",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": {
+            "a": 0.4,
+            "b": 0.1398,
+            "g": 0.1442,
+            "r": 0.1616
+          }
+        },
+        "light": {
+          "kind": "literal",
+          "value": {
+            "a": 0.4,
+            "b": 1,
+            "g": 1,
+            "r": 1
+          }
+        }
+      }
+    },
+    {
+      "codeSyntax": "var(--frost-glass)",
+      "collection": "component",
+      "expression": "var(--frost-on) color-mix(in oklab, var(--color-bg-surface-overlay) 78%, transparent)",
+      "id": "window:frost-glass:a9de677104",
+      "name": "window/frost-glass/frosted-2",
+      "source": {
+        "dark": "evaluated",
+        "light": "evaluated"
+      },
+      "type": "COLOR",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": {
+            "a": 0.78,
+            "b": 0.1533,
+            "g": 0.1593,
+            "r": 0.1776
+          }
+        },
+        "light": {
+          "kind": "literal",
+          "value": {
+            "a": 0.78,
+            "b": 1,
+            "g": 1,
+            "r": 1
+          }
+        }
+      }
+    },
+    {
+      "codeSyntax": "var(--sk-window-handle-size)",
+      "collection": "component",
+      "expression": "0.5rem",
+      "id": "window:handle-size:558b9f364b",
+      "name": "window/handle-size",
+      "source": {
+        "dark": "evaluated",
+        "light": "evaluated"
+      },
+      "type": "FLOAT",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": 8
+        },
+        "light": {
+          "kind": "literal",
+          "value": 8
+        }
+      }
+    },
+    {
+      "codeSyntax": "",
+      "collection": "component",
+      "expression": "calc(0.5rem * 2)",
+      "id": "window:height:36de71fad9",
+      "name": "window/height",
+      "source": {
+        "dark": "evaluated",
+        "light": "evaluated"
+      },
+      "type": "FLOAT",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": 16
+        },
+        "light": {
+          "kind": "literal",
+          "value": 16
+        }
+      }
+    },
+    {
+      "codeSyntax": "",
+      "collection": "component",
+      "expression": "calc(8px * 1 * 1)",
+      "id": "window:shadow-1-x:659242e1f7",
+      "name": "window/shadow-1-x/brutalist",
+      "source": {
+        "dark": "evaluated",
+        "light": "evaluated"
+      },
+      "type": "FLOAT",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": 8
+        },
+        "light": {
+          "kind": "literal",
+          "value": 8
+        }
+      }
+    },
+    {
+      "codeSyntax": "",
+      "collection": "component",
+      "expression": "calc(8px * 1)",
+      "id": "window:shadow-1-y:6b8ad63056",
+      "name": "window/shadow-1-y/brutalist",
+      "source": {
+        "dark": "evaluated",
+        "light": "evaluated"
+      },
+      "type": "FLOAT",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": 8
+        },
+        "light": {
+          "kind": "literal",
+          "value": 8
+        }
+      }
+    },
+    {
+      "codeSyntax": "var(--sk-button-bg)",
+      "collection": "component",
+      "expression": "transparent",
+      "id": "window:sk-button-bg:10e9f5602d",
+      "name": "window/sk-button-bg",
+      "source": {
+        "dark": "literal",
+        "light": "literal"
+      },
+      "type": "COLOR",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": {
+            "a": 0,
+            "b": 0,
+            "g": 0,
+            "r": 0
+          }
+        },
+        "light": {
+          "kind": "literal",
+          "value": {
+            "a": 0,
+            "b": 0,
+            "g": 0,
+            "r": 0
+          }
+        }
+      }
+    },
+    {
+      "codeSyntax": "var(--sk-button-border-color)",
+      "collection": "component",
+      "expression": "transparent",
+      "id": "window:sk-button-border-color:10e9f5602d",
+      "name": "window/sk-button-border-color",
+      "source": {
+        "dark": "literal",
+        "light": "literal"
+      },
+      "type": "COLOR",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": {
+            "a": 0,
+            "b": 0,
+            "g": 0,
+            "r": 0
+          }
+        },
+        "light": {
+          "kind": "literal",
+          "value": {
+            "a": 0,
+            "b": 0,
+            "g": 0,
+            "r": 0
+          }
+        }
+      }
+    },
+    {
+      "codeSyntax": "var(--sk-button-border-width)",
+      "collection": "component",
+      "expression": "1px",
+      "id": "window:sk-button-border-width:93e20626bf",
+      "name": "window/sk-button-border-width",
+      "source": {
+        "dark": "literal",
+        "light": "literal"
+      },
+      "type": "FLOAT",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": 1
+        },
+        "light": {
+          "kind": "literal",
+          "value": 1
+        }
+      }
+    },
+    {
+      "codeSyntax": "var(--sk-button-padding-x)",
+      "collection": "component",
+      "expression": "0px",
+      "id": "window:sk-button-padding-x:33a3c91b44",
+      "name": "window/sk-button-padding-x",
+      "source": {
+        "dark": "literal",
+        "light": "literal"
+      },
+      "type": "FLOAT",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": 0
+        },
+        "light": {
+          "kind": "literal",
+          "value": 0
+        }
+      }
+    },
+    {
+      "codeSyntax": "",
+      "collection": "component",
+      "expression": "color-mix( in srgb, var(--color-text-primary) calc(0 * 100%), transparent )",
+      "id": "window:state-layer:a8bbbce668",
+      "name": "window/state-layer",
+      "source": {
+        "dark": "evaluated",
+        "light": "evaluated"
+      },
+      "type": "COLOR",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": {
+            "a": 0,
+            "b": 0,
+            "g": 0,
+            "r": 0
+          }
+        },
+        "light": {
+          "kind": "literal",
+          "value": {
+            "a": 0,
+            "b": 0,
+            "g": 0,
+            "r": 0
+          }
+        }
+      }
+    },
+    {
+      "codeSyntax": "var(--tactile-ledge)",
+      "collection": "component",
+      "expression": "light-dark( color-mix(in oklab, var(--color-bg-surface-overlay) 76%, var(--color-text-primary)), color-mix(in oklab, var(--color-bg-surface-overlay) 72%, var(--color-bg-surface-sunken)) )",
+      "id": "window:tactile-ledge:4b4d2fe730",
+      "name": "window/tactile-ledge/tactile",
+      "source": {
+        "dark": "evaluated",
+        "light": "evaluated"
+      },
+      "type": "COLOR",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": {
+            "a": 1,
+            "b": 0.1184,
+            "g": 0.1239,
+            "r": 0.1389
+          }
+        },
+        "light": {
+          "kind": "literal",
+          "value": {
+            "a": 1,
+            "b": 0.7547,
+            "g": 0.7572,
+            "r": 0.7611
+          }
+        }
+      }
+    },
+    {
+      "codeSyntax": "",
+      "collection": "component",
+      "expression": "calc(0.5rem * 2)",
+      "id": "window:width:36de71fad9",
+      "name": "window/width",
+      "source": {
+        "dark": "evaluated",
+        "light": "evaluated"
+      },
+      "type": "FLOAT",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": 16
+        },
+        "light": {
+          "kind": "literal",
+          "value": 16
         }
       }
     },
