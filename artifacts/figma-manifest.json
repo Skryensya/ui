@@ -36829,6 +36829,218 @@
         "columns": []
       },
       "visualHash": "474381802bb7fc52"
+    },
+    {
+      "axes": [
+        {
+          "name": "orientation",
+          "values": [
+            "horizontal",
+            "vertical"
+          ]
+        }
+      ],
+      "cells": [
+        {
+          "box": "40aad6ae45420d5c",
+          "hash": "ade8f19922c8726f",
+          "id": "steps/markers/orientation=horizontal",
+          "key": "orientation=horizontal",
+          "layers": "cda6d8731ab01c49",
+          "props": {
+            "orientation": "horizontal"
+          },
+          "surface": "fa0b643878e9242d"
+        },
+        {
+          "box": "b2919ba2f4c4fe07",
+          "hash": "373306fee6100962",
+          "id": "steps/markers/orientation=vertical",
+          "key": "orientation=vertical",
+          "layers": "7e101bc04d28b41a",
+          "props": {
+            "orientation": "vertical"
+          },
+          "surface": "fa0b643878e9242d"
+        }
+      ],
+      "contractHash": "dbb5f4bc94783f48",
+      "defaultCell": "orientation=horizontal",
+      "grid": {
+        "columns": [],
+        "rows": [
+          {
+            "name": "orientation",
+            "values": [
+              "horizontal",
+              "vertical"
+            ]
+          }
+        ]
+      },
+      "id": "steps/markers",
+      "interactions": [],
+      "kind": "component-set",
+      "name": "Steps / markers",
+      "page": "skryensya",
+      "properties": [
+        {
+          "default": "Account",
+          "name": "items 1",
+          "type": "TEXT"
+        },
+        {
+          "default": "1",
+          "name": "marker 1",
+          "type": "TEXT"
+        },
+        {
+          "default": "Your details",
+          "name": "description 1",
+          "type": "TEXT"
+        },
+        {
+          "default": "Plan",
+          "name": "items 2",
+          "type": "TEXT"
+        },
+        {
+          "default": "2",
+          "name": "marker 2",
+          "type": "TEXT"
+        },
+        {
+          "default": "Pick a plan",
+          "name": "description 2",
+          "type": "TEXT"
+        },
+        {
+          "default": "Payment",
+          "name": "items 3",
+          "type": "TEXT"
+        },
+        {
+          "default": "3",
+          "name": "marker 3",
+          "type": "TEXT"
+        },
+        {
+          "default": "Card or invoice",
+          "name": "description 3",
+          "type": "TEXT"
+        }
+      ],
+      "showcase": {
+        "base": {},
+        "columns": []
+      },
+      "visualHash": "d462bc5d44496de4"
+    },
+    {
+      "axes": [
+        {
+          "name": "orientation",
+          "values": [
+            "horizontal",
+            "vertical"
+          ]
+        }
+      ],
+      "cells": [
+        {
+          "box": "5a14bd50f7d8c387",
+          "hash": "3c60b923bda35a5d",
+          "id": "steps/segments/orientation=horizontal",
+          "key": "orientation=horizontal",
+          "layers": "4a890e8387755ae8",
+          "props": {
+            "orientation": "horizontal"
+          },
+          "surface": "fa0b643878e9242d"
+        },
+        {
+          "box": "cee491adaf309004",
+          "hash": "5ffbd4a3700148bc",
+          "id": "steps/segments/orientation=vertical",
+          "key": "orientation=vertical",
+          "layers": "e1ada017138b2975",
+          "props": {
+            "orientation": "vertical"
+          },
+          "surface": "fa0b643878e9242d"
+        }
+      ],
+      "contractHash": "dbb5f4bc94783f48",
+      "defaultCell": "orientation=horizontal",
+      "grid": {
+        "columns": [],
+        "rows": [
+          {
+            "name": "orientation",
+            "values": [
+              "horizontal",
+              "vertical"
+            ]
+          }
+        ]
+      },
+      "id": "steps/segments",
+      "interactions": [],
+      "kind": "component-set",
+      "name": "Steps / segments",
+      "page": "skryensya",
+      "properties": [
+        {
+          "default": "Account",
+          "name": "items 1",
+          "type": "TEXT"
+        },
+        {
+          "default": "1",
+          "name": "marker 1",
+          "type": "TEXT"
+        },
+        {
+          "default": "Your details",
+          "name": "description 1",
+          "type": "TEXT"
+        },
+        {
+          "default": "Plan",
+          "name": "items 2",
+          "type": "TEXT"
+        },
+        {
+          "default": "2",
+          "name": "marker 2",
+          "type": "TEXT"
+        },
+        {
+          "default": "Pick a plan",
+          "name": "description 2",
+          "type": "TEXT"
+        },
+        {
+          "default": "Payment",
+          "name": "items 3",
+          "type": "TEXT"
+        },
+        {
+          "default": "3",
+          "name": "marker 3",
+          "type": "TEXT"
+        },
+        {
+          "default": "Card or invoice",
+          "name": "description 3",
+          "type": "TEXT"
+        }
+      ],
+      "showcase": {
+        "base": {},
+        "columns": []
+      },
+      "visualHash": "2da5657bea123196"
     }
   ],
   "diagnostics": [
@@ -37017,6 +37229,24 @@
       "message": "7 rule(s) under a condition the evaluation context does not hold",
       "severity": "info",
       "subject": "components/segmented.css @media (forced-colors: active)"
+    },
+    {
+      "code": "CONDITION_SKIPPED",
+      "message": "5 rule(s) under a condition the evaluation context does not hold",
+      "severity": "info",
+      "subject": "components/steps.css @media (forced-colors: active)"
+    },
+    {
+      "code": "CONDITION_SKIPPED",
+      "message": "5 rule(s) under a condition the evaluation context does not hold",
+      "severity": "info",
+      "subject": "components/steps.css @media (max-width: 40rem)"
+    },
+    {
+      "code": "CONDITION_SKIPPED",
+      "message": "7 rule(s) under a condition the evaluation context does not hold",
+      "severity": "info",
+      "subject": "components/steps.css @media (width < 36rem)"
     },
     {
       "code": "CONDITION_SKIPPED",
@@ -37466,6 +37696,14 @@
           "trend"
         ]
       },
+      "steps": {
+        "excluded": [],
+        "nonVisual": [],
+        "visual": [
+          "orientation",
+          "appearance"
+        ]
+      },
       "strong": {
         "excluded": [],
         "nonVisual": [],
@@ -37524,11 +37762,11 @@
     },
     "tokens": {
       "catalogueAdded": 309,
-      "componentVariables": 309,
+      "componentVariables": 312,
       "modeValuesBySource": {
         "alias": 203,
-        "evaluated": 625,
-        "literal": 722
+        "evaluated": 629,
+        "literal": 724
       },
       "reached": 200,
       "reachedAsVariables": 149,
@@ -37547,8 +37785,8 @@
       "variables": 466
     },
     "variants": {
-      "components": 61,
-      "componentSets": 60,
+      "components": 63,
+      "componentSets": 62,
       "naiveAllOptions": {
         "accordion": 32,
         "avatar": 8,
@@ -37574,6 +37812,7 @@
         "separator": 48,
         "skip-link": 1,
         "stat": 6,
+        "steps": 4,
         "strong": 1,
         "tabs": 64,
         "tag": 20,
@@ -37605,6 +37844,7 @@
         "separator": 3,
         "skip-link": 1,
         "stat": 3,
+        "steps": 4,
         "strong": 1,
         "tabs": 32,
         "tag": 10,
@@ -37851,13 +38091,21 @@
         {
           "set": "pagination/frosted",
           "variants": 1
+        },
+        {
+          "set": "steps/markers",
+          "variants": 2
+        },
+        {
+          "set": "steps/segments",
+          "variants": 2
         }
       ],
-      "variantsTotal": 2235
+      "variantsTotal": 2239
     }
   },
   "schemaVersion": 1,
-  "sourceHash": "ebfd177cd5e010d1",
+  "sourceHash": "809bd09f5a91bc26",
   "stage": {
     "background": {
       "variable": "--color-bg-surface"
@@ -38041,6 +38289,41 @@
           "variable": "segmented:radius:e4b312d73a"
         }
       },
+      "10d10997412c512c": {
+        "clipsContent": false,
+        "crossAlign": "CENTER",
+        "direction": "VERTICAL",
+        "gap": {
+          "variable": "--space-stack-xs"
+        },
+        "grow": true,
+        "mainAlign": "MIN",
+        "minWidth": {
+          "expression": "0",
+          "value": 0
+        },
+        "padding": {
+          "bottom": {
+            "expression": "0",
+            "value": 0
+          },
+          "left": {
+            "expression": "0",
+            "value": 0
+          },
+          "right": {
+            "expression": "0",
+            "value": 0
+          },
+          "top": {
+            "expression": "0",
+            "value": 0
+          }
+        },
+        "radius": {
+          "variable": "--radius-surface"
+        }
+      },
       "11203dc14bb87635": {
         "clipsContent": false,
         "crossAlign": "CENTER",
@@ -38164,6 +38447,38 @@
         },
         "width": {
           "variable": "button:height:2dce2436e5"
+        }
+      },
+      "1456568e51680119": {
+        "clipsContent": false,
+        "crossAlign": "MIN",
+        "direction": "VERTICAL",
+        "gap": {
+          "expression": "2px",
+          "value": 2
+        },
+        "mainAlign": "MIN",
+        "minWidth": {
+          "expression": "0",
+          "value": 0
+        },
+        "padding": {
+          "bottom": {
+            "expression": "0",
+            "value": 0
+          },
+          "left": {
+            "expression": "0",
+            "value": 0
+          },
+          "right": {
+            "expression": "0",
+            "value": 0
+          },
+          "top": {
+            "expression": "0",
+            "value": 0
+          }
         }
       },
       "175d77c07b0dac66": {
@@ -38303,6 +38618,41 @@
             "expression": "0",
             "value": 0
           }
+        }
+      },
+      "1cb9a077fa855113": {
+        "clipsContent": false,
+        "crossAlign": "CENTER",
+        "direction": "VERTICAL",
+        "mainAlign": "CENTER",
+        "minHeight": {
+          "variable": "--size-control-sm"
+        },
+        "padding": {
+          "bottom": {
+            "expression": "0",
+            "value": 0
+          },
+          "left": {
+            "expression": "0",
+            "value": 0
+          },
+          "right": {
+            "expression": "0",
+            "value": 0
+          },
+          "top": {
+            "expression": "0",
+            "value": 0
+          }
+        },
+        "radius": {
+          "variable": "--radius-pill"
+        },
+        "stretch": true,
+        "width": {
+          "expression": "max(round(calc(32px * 1), 2px), 24px)",
+          "value": 32
         }
       },
       "1d9725b9e6cb63c5": {
@@ -38480,6 +38830,44 @@
             "expression": "1px",
             "value": 1
           }
+        }
+      },
+      "2451e927826de958": {
+        "clipsContent": false,
+        "crossAlign": "CENTER",
+        "direction": "VERTICAL",
+        "height": {
+          "expression": "max(round(calc(32px * 1), 2px), 24px)",
+          "value": 32
+        },
+        "mainAlign": "CENTER",
+        "padding": {
+          "bottom": {
+            "expression": "0",
+            "value": 0
+          },
+          "left": {
+            "expression": "0",
+            "value": 0
+          },
+          "right": {
+            "expression": "0",
+            "value": 0
+          },
+          "top": {
+            "expression": "0",
+            "value": 0
+          }
+        },
+        "radius": {
+          "variable": "--radius-pill"
+        },
+        "strokeWeight": {
+          "expression": "2px",
+          "value": 2
+        },
+        "width": {
+          "variable": "--size-control-sm"
         }
       },
       "250c84036f0e5ba0": {
@@ -38729,6 +39117,69 @@
           "top": {
             "variable": "description-list:row-padding-y:33a3c91b44"
           }
+        },
+        "stretch": true
+      },
+      "40aad6ae45420d5c": {
+        "clipsContent": false,
+        "crossAlign": "MIN",
+        "direction": "HORIZONTAL",
+        "mainAlign": "MIN",
+        "padding": {
+          "bottom": {
+            "expression": "0",
+            "value": 0
+          },
+          "left": {
+            "expression": "0",
+            "value": 0
+          },
+          "right": {
+            "expression": "0",
+            "value": 0
+          },
+          "top": {
+            "expression": "0",
+            "value": 0
+          }
+        },
+        "width": {
+          "expression": "480px",
+          "value": 480
+        }
+      },
+      "41cadd298bfce34b": {
+        "clipsContent": false,
+        "crossAlign": "MIN",
+        "direction": "HORIZONTAL",
+        "gap": {
+          "variable": "--space-stack-xs"
+        },
+        "grow": true,
+        "mainAlign": "MIN",
+        "minWidth": {
+          "expression": "0",
+          "value": 0
+        },
+        "padding": {
+          "bottom": {
+            "variable": "--space-inset-xs"
+          },
+          "left": {
+            "expression": "0",
+            "value": 0
+          },
+          "right": {
+            "expression": "0",
+            "value": 0
+          },
+          "top": {
+            "expression": "0",
+            "value": 0
+          }
+        },
+        "radius": {
+          "variable": "--radius-surface"
         },
         "stretch": true
       },
@@ -39122,6 +39573,37 @@
         },
         "strokeWeight": {
           "variable": "button:border-width:93e20626bf"
+        }
+      },
+      "5a14bd50f7d8c387": {
+        "clipsContent": false,
+        "crossAlign": "MIN",
+        "direction": "HORIZONTAL",
+        "gap": {
+          "variable": "--space-inline-xs"
+        },
+        "mainAlign": "MIN",
+        "padding": {
+          "bottom": {
+            "expression": "0",
+            "value": 0
+          },
+          "left": {
+            "expression": "0",
+            "value": 0
+          },
+          "right": {
+            "expression": "0",
+            "value": 0
+          },
+          "top": {
+            "expression": "0",
+            "value": 0
+          }
+        },
+        "width": {
+          "expression": "480px",
+          "value": 480
         }
       },
       "5cf1567d636276e6": {
@@ -39582,6 +40064,38 @@
         },
         "stretch": true
       },
+      "69123b296383e1d0": {
+        "clipsContent": false,
+        "crossAlign": "MIN",
+        "direction": "HORIZONTAL",
+        "gap": {
+          "variable": "--space-stack-xs"
+        },
+        "grow": true,
+        "mainAlign": "MIN",
+        "minWidth": {
+          "expression": "0",
+          "value": 0
+        },
+        "padding": {
+          "bottom": {
+            "variable": "--space-stack-md"
+          },
+          "left": {
+            "variable": "--space-inset-xs"
+          },
+          "right": {
+            "variable": "--space-inset-xs"
+          },
+          "top": {
+            "variable": "--space-inset-xs"
+          }
+        },
+        "radius": {
+          "variable": "--radius-surface"
+        },
+        "stretch": true
+      },
       "6a095059331b2b08": {
         "clipsContent": true,
         "crossAlign": "CENTER",
@@ -39619,6 +40133,37 @@
         "strokeWeight": {
           "variable": "button:border-width:93e20626bf"
         }
+      },
+      "6c64ea5eab6fdfac": {
+        "clipsContent": false,
+        "crossAlign": "CENTER",
+        "direction": "VERTICAL",
+        "height": {
+          "variable": "--space-inset-sm"
+        },
+        "mainAlign": "CENTER",
+        "padding": {
+          "bottom": {
+            "expression": "0",
+            "value": 0
+          },
+          "left": {
+            "expression": "0",
+            "value": 0
+          },
+          "right": {
+            "expression": "0",
+            "value": 0
+          },
+          "top": {
+            "expression": "0",
+            "value": 0
+          }
+        },
+        "radius": {
+          "variable": "--radius-pill"
+        },
+        "stretch": true
       },
       "6f2a537ede96cd5a": {
         "clipsContent": false,
@@ -40182,6 +40727,37 @@
           "value": 1
         }
       },
+      "8d27ee46a475e70a": {
+        "clipsContent": false,
+        "crossAlign": "CENTER",
+        "direction": "VERTICAL",
+        "gap": {
+          "variable": "--space-stack-xs"
+        },
+        "grow": true,
+        "mainAlign": "MIN",
+        "minWidth": {
+          "expression": "0",
+          "value": 0
+        },
+        "padding": {
+          "bottom": {
+            "variable": "--space-inset-xs"
+          },
+          "left": {
+            "variable": "--space-inset-xs"
+          },
+          "right": {
+            "variable": "--space-inset-xs"
+          },
+          "top": {
+            "variable": "--space-inset-xs"
+          }
+        },
+        "radius": {
+          "variable": "--radius-surface"
+        }
+      },
       "8e3ce739b1d07f5b": {
         "clipsContent": false,
         "crossAlign": "MIN",
@@ -40304,6 +40880,39 @@
         "radius": {
           "expression": "0.25rem",
           "value": 4
+        }
+      },
+      "95d1458ace735b74": {
+        "clipsContent": false,
+        "crossAlign": "MIN",
+        "direction": "VERTICAL",
+        "gap": {
+          "expression": "2px",
+          "value": 2
+        },
+        "grow": true,
+        "mainAlign": "MIN",
+        "minWidth": {
+          "expression": "0",
+          "value": 0
+        },
+        "padding": {
+          "bottom": {
+            "expression": "0",
+            "value": 0
+          },
+          "left": {
+            "expression": "0",
+            "value": 0
+          },
+          "right": {
+            "expression": "0",
+            "value": 0
+          },
+          "top": {
+            "expression": "2px",
+            "value": 2
+          }
         }
       },
       "962f997fe32366bb": {
@@ -40629,6 +41238,44 @@
           "value": 1
         }
       },
+      "aa90919e3c7cd9c2": {
+        "clipsContent": false,
+        "crossAlign": "CENTER",
+        "direction": "VERTICAL",
+        "height": {
+          "variable": "--size-control-sm"
+        },
+        "mainAlign": "CENTER",
+        "padding": {
+          "bottom": {
+            "expression": "0",
+            "value": 0
+          },
+          "left": {
+            "expression": "0",
+            "value": 0
+          },
+          "right": {
+            "expression": "0",
+            "value": 0
+          },
+          "top": {
+            "expression": "0",
+            "value": 0
+          }
+        },
+        "radius": {
+          "variable": "--radius-pill"
+        },
+        "strokeWeight": {
+          "expression": "2px",
+          "value": 2
+        },
+        "width": {
+          "expression": "max(round(calc(32px * 1), 2px), 24px)",
+          "value": 32
+        }
+      },
       "ab004206026bd9fb": {
         "clipsContent": false,
         "crossAlign": "MIN",
@@ -40826,6 +41473,34 @@
             "expression": "0",
             "value": 0
           }
+        }
+      },
+      "b2919ba2f4c4fe07": {
+        "clipsContent": false,
+        "crossAlign": "MIN",
+        "direction": "VERTICAL",
+        "mainAlign": "MIN",
+        "padding": {
+          "bottom": {
+            "expression": "0",
+            "value": 0
+          },
+          "left": {
+            "expression": "0",
+            "value": 0
+          },
+          "right": {
+            "expression": "0",
+            "value": 0
+          },
+          "top": {
+            "expression": "0",
+            "value": 0
+          }
+        },
+        "width": {
+          "expression": "480px",
+          "value": 480
         }
       },
       "b3c0448242380c78": {
@@ -41075,6 +41750,38 @@
           "expression": "1px",
           "value": 1
         }
+      },
+      "c4e4211da6dfc395": {
+        "clipsContent": false,
+        "crossAlign": "MIN",
+        "direction": "HORIZONTAL",
+        "gap": {
+          "variable": "--space-stack-xs"
+        },
+        "grow": true,
+        "mainAlign": "MIN",
+        "minWidth": {
+          "expression": "0",
+          "value": 0
+        },
+        "padding": {
+          "bottom": {
+            "variable": "--space-inset-xs"
+          },
+          "left": {
+            "variable": "--space-inset-xs"
+          },
+          "right": {
+            "variable": "--space-inset-xs"
+          },
+          "top": {
+            "variable": "--space-inset-xs"
+          }
+        },
+        "radius": {
+          "variable": "--radius-surface"
+        },
+        "stretch": true
       },
       "c5e0c9bb13e58cc6": {
         "clipsContent": false,
@@ -41388,6 +42095,37 @@
         "width": {
           "expression": "240px",
           "value": 240
+        }
+      },
+      "cee491adaf309004": {
+        "clipsContent": false,
+        "crossAlign": "MIN",
+        "direction": "VERTICAL",
+        "gap": {
+          "variable": "--space-inline-xs"
+        },
+        "mainAlign": "MIN",
+        "padding": {
+          "bottom": {
+            "expression": "0",
+            "value": 0
+          },
+          "left": {
+            "expression": "0",
+            "value": 0
+          },
+          "right": {
+            "expression": "0",
+            "value": 0
+          },
+          "top": {
+            "expression": "0",
+            "value": 0
+          }
+        },
+        "width": {
+          "expression": "480px",
+          "value": 480
         }
       },
       "d0b4bf814d2b1c85": {
@@ -42073,6 +42811,42 @@
             "expression": "0",
             "value": 0
           }
+        },
+        "stretch": true
+      },
+      "fc1fbb16735fa7ff": {
+        "clipsContent": false,
+        "crossAlign": "MIN",
+        "direction": "HORIZONTAL",
+        "gap": {
+          "variable": "--space-stack-xs"
+        },
+        "grow": true,
+        "mainAlign": "MIN",
+        "minWidth": {
+          "expression": "0",
+          "value": 0
+        },
+        "padding": {
+          "bottom": {
+            "expression": "0",
+            "value": 0
+          },
+          "left": {
+            "expression": "0",
+            "value": 0
+          },
+          "right": {
+            "expression": "0",
+            "value": 0
+          },
+          "top": {
+            "expression": "0",
+            "value": 0
+          }
+        },
+        "radius": {
+          "variable": "--radius-surface"
         },
         "stretch": true
       },
@@ -48311,6 +49085,170 @@
           }
         }
       ],
+      "4a890e8387755ae8": [
+        {
+          "box": "10d10997412c512c",
+          "kind": "frame",
+          "layers": [
+            {
+              "box": "6c64ea5eab6fdfac",
+              "kind": "frame",
+              "layers": [
+                {
+                  "kind": "text",
+                  "slot": "marker 1",
+                  "text": {
+                    "align": "CENTER",
+                    "fill": {
+                      "color": {
+                        "expression": "transparent",
+                        "value": {
+                          "a": 0,
+                          "b": 0,
+                          "g": 0,
+                          "r": 0
+                        }
+                      },
+                      "type": "SOLID"
+                    },
+                    "fontFamily": {
+                      "variable": "--font-family-body"
+                    },
+                    "fontSize": {
+                      "expression": "0",
+                      "value": 0
+                    },
+                    "fontWeight": {
+                      "variable": "--font-weight-label"
+                    },
+                    "lineHeight": 100
+                  },
+                  "textProperty": "marker 1"
+                }
+              ],
+              "slot": "marker",
+              "surface": "c469968984f9fd00"
+            },
+            {
+              "box": "1456568e51680119",
+              "kind": "frame",
+              "layers": [],
+              "slot": "span",
+              "surface": "fa0b643878e9242d"
+            }
+          ],
+          "slot": "item",
+          "surface": "fa0b643878e9242d"
+        },
+        {
+          "box": "10d10997412c512c",
+          "kind": "frame",
+          "layers": [
+            {
+              "box": "6c64ea5eab6fdfac",
+              "kind": "frame",
+              "layers": [
+                {
+                  "kind": "text",
+                  "slot": "marker 2",
+                  "text": {
+                    "align": "CENTER",
+                    "fill": {
+                      "color": {
+                        "expression": "transparent",
+                        "value": {
+                          "a": 0,
+                          "b": 0,
+                          "g": 0,
+                          "r": 0
+                        }
+                      },
+                      "type": "SOLID"
+                    },
+                    "fontFamily": {
+                      "variable": "--font-family-body"
+                    },
+                    "fontSize": {
+                      "expression": "0",
+                      "value": 0
+                    },
+                    "fontWeight": {
+                      "variable": "--font-weight-label"
+                    },
+                    "lineHeight": 100
+                  },
+                  "textProperty": "marker 2"
+                }
+              ],
+              "slot": "marker",
+              "surface": "09930e7c9f2e840b"
+            },
+            {
+              "box": "1456568e51680119",
+              "kind": "frame",
+              "layers": [],
+              "slot": "span",
+              "surface": "fa0b643878e9242d"
+            }
+          ],
+          "slot": "item 2",
+          "surface": "fa0b643878e9242d"
+        },
+        {
+          "box": "10d10997412c512c",
+          "kind": "frame",
+          "layers": [
+            {
+              "box": "6c64ea5eab6fdfac",
+              "kind": "frame",
+              "layers": [
+                {
+                  "kind": "text",
+                  "slot": "marker 3",
+                  "text": {
+                    "align": "CENTER",
+                    "fill": {
+                      "color": {
+                        "expression": "transparent",
+                        "value": {
+                          "a": 0,
+                          "b": 0,
+                          "g": 0,
+                          "r": 0
+                        }
+                      },
+                      "type": "SOLID"
+                    },
+                    "fontFamily": {
+                      "variable": "--font-family-body"
+                    },
+                    "fontSize": {
+                      "expression": "0",
+                      "value": 0
+                    },
+                    "fontWeight": {
+                      "variable": "--font-weight-label"
+                    },
+                    "lineHeight": 100
+                  },
+                  "textProperty": "marker 3"
+                }
+              ],
+              "slot": "marker",
+              "surface": "70ec0030a159137a"
+            },
+            {
+              "box": "1456568e51680119",
+              "kind": "frame",
+              "layers": [],
+              "slot": "span",
+              "surface": "fa0b643878e9242d"
+            }
+          ],
+          "slot": "item 3",
+          "surface": "fa0b643878e9242d"
+        }
+      ],
       "4b5adfcfd48e6a98": [
         {
           "fills": [
@@ -53219,6 +54157,290 @@
             "lineHeight": 110.00000000000001
           },
           "textProperty": "children"
+        }
+      ],
+      "7e101bc04d28b41a": [
+        {
+          "box": "69123b296383e1d0",
+          "kind": "frame",
+          "layers": [
+            {
+              "box": "aa90919e3c7cd9c2",
+              "kind": "frame",
+              "layers": [
+                {
+                  "fill": true,
+                  "kind": "text",
+                  "slot": "marker 1",
+                  "text": {
+                    "fill": {
+                      "color": {
+                        "variable": "--color-text-accent"
+                      },
+                      "type": "SOLID"
+                    },
+                    "fontFamily": {
+                      "variable": "--font-family-body"
+                    },
+                    "fontSize": {
+                      "variable": "--font-size-caption"
+                    },
+                    "fontWeight": {
+                      "variable": "--font-weight-label"
+                    },
+                    "lineHeight": 100
+                  },
+                  "textProperty": "marker 1"
+                }
+              ],
+              "slot": "marker",
+              "surface": "6b01d16d4f6ec1af"
+            },
+            {
+              "box": "95d1458ace735b74",
+              "kind": "frame",
+              "layers": [
+                {
+                  "kind": "text",
+                  "slot": "items 1",
+                  "text": {
+                    "fill": {
+                      "color": {
+                        "variable": "--color-text-primary"
+                      },
+                      "type": "SOLID"
+                    },
+                    "fontFamily": {
+                      "variable": "--font-family-body"
+                    },
+                    "fontSize": {
+                      "variable": "--font-size-body-sm"
+                    },
+                    "fontWeight": {
+                      "variable": "--font-weight-label"
+                    },
+                    "lineHeight": 150
+                  },
+                  "textProperty": "items 1"
+                },
+                {
+                  "kind": "text",
+                  "slot": "description 1",
+                  "text": {
+                    "fill": {
+                      "color": {
+                        "variable": "--color-text-tertiary"
+                      },
+                      "type": "SOLID"
+                    },
+                    "fontFamily": {
+                      "variable": "--font-family-body"
+                    },
+                    "fontSize": {
+                      "variable": "--font-size-caption"
+                    },
+                    "fontWeight": {
+                      "variable": "--font-weight-body"
+                    },
+                    "lineHeight": 150
+                  },
+                  "textProperty": "description 1"
+                }
+              ],
+              "slot": "span",
+              "surface": "fa0b643878e9242d"
+            }
+          ],
+          "slot": "item",
+          "surface": "fa0b643878e9242d"
+        },
+        {
+          "box": "69123b296383e1d0",
+          "kind": "frame",
+          "layers": [
+            {
+              "box": "aa90919e3c7cd9c2",
+              "kind": "frame",
+              "layers": [
+                {
+                  "fill": true,
+                  "kind": "text",
+                  "slot": "marker 2",
+                  "text": {
+                    "fill": {
+                      "color": {
+                        "variable": "--color-text-accent"
+                      },
+                      "type": "SOLID"
+                    },
+                    "fontFamily": {
+                      "variable": "--font-family-body"
+                    },
+                    "fontSize": {
+                      "variable": "--font-size-caption"
+                    },
+                    "fontWeight": {
+                      "variable": "--font-weight-label"
+                    },
+                    "lineHeight": 100
+                  },
+                  "textProperty": "marker 2"
+                }
+              ],
+              "slot": "marker",
+              "surface": "94b2a53ebb136403"
+            },
+            {
+              "box": "95d1458ace735b74",
+              "kind": "frame",
+              "layers": [
+                {
+                  "kind": "text",
+                  "slot": "items 2",
+                  "text": {
+                    "fill": {
+                      "color": {
+                        "variable": "--color-text-primary"
+                      },
+                      "type": "SOLID"
+                    },
+                    "fontFamily": {
+                      "variable": "--font-family-body"
+                    },
+                    "fontSize": {
+                      "variable": "--font-size-body-sm"
+                    },
+                    "fontWeight": {
+                      "variable": "--font-weight-emphasis"
+                    },
+                    "lineHeight": 150
+                  },
+                  "textProperty": "items 2"
+                },
+                {
+                  "kind": "text",
+                  "slot": "description 2",
+                  "text": {
+                    "fill": {
+                      "color": {
+                        "variable": "--color-text-tertiary"
+                      },
+                      "type": "SOLID"
+                    },
+                    "fontFamily": {
+                      "variable": "--font-family-body"
+                    },
+                    "fontSize": {
+                      "variable": "--font-size-caption"
+                    },
+                    "fontWeight": {
+                      "variable": "--font-weight-body"
+                    },
+                    "lineHeight": 150
+                  },
+                  "textProperty": "description 2"
+                }
+              ],
+              "slot": "span",
+              "surface": "fa0b643878e9242d"
+            }
+          ],
+          "slot": "item 2",
+          "surface": "fa0b643878e9242d"
+        },
+        {
+          "box": "c4e4211da6dfc395",
+          "kind": "frame",
+          "layers": [
+            {
+              "box": "aa90919e3c7cd9c2",
+              "kind": "frame",
+              "layers": [
+                {
+                  "fill": true,
+                  "kind": "text",
+                  "slot": "marker 3",
+                  "text": {
+                    "fill": {
+                      "color": {
+                        "variable": "--color-text-secondary"
+                      },
+                      "type": "SOLID"
+                    },
+                    "fontFamily": {
+                      "variable": "--font-family-body"
+                    },
+                    "fontSize": {
+                      "variable": "--font-size-caption"
+                    },
+                    "fontWeight": {
+                      "variable": "--font-weight-label"
+                    },
+                    "lineHeight": 100
+                  },
+                  "textProperty": "marker 3"
+                }
+              ],
+              "slot": "marker",
+              "surface": "5335621568edee9b"
+            },
+            {
+              "box": "95d1458ace735b74",
+              "kind": "frame",
+              "layers": [
+                {
+                  "kind": "text",
+                  "slot": "items 3",
+                  "text": {
+                    "fill": {
+                      "color": {
+                        "variable": "--color-text-secondary"
+                      },
+                      "type": "SOLID"
+                    },
+                    "fontFamily": {
+                      "variable": "--font-family-body"
+                    },
+                    "fontSize": {
+                      "variable": "--font-size-body-sm"
+                    },
+                    "fontWeight": {
+                      "variable": "--font-weight-label"
+                    },
+                    "lineHeight": 150
+                  },
+                  "textProperty": "items 3"
+                },
+                {
+                  "kind": "text",
+                  "slot": "description 3",
+                  "text": {
+                    "fill": {
+                      "color": {
+                        "variable": "--color-text-tertiary"
+                      },
+                      "type": "SOLID"
+                    },
+                    "fontFamily": {
+                      "variable": "--font-family-body"
+                    },
+                    "fontSize": {
+                      "variable": "--font-size-caption"
+                    },
+                    "fontWeight": {
+                      "variable": "--font-weight-body"
+                    },
+                    "lineHeight": 150
+                  },
+                  "textProperty": "description 3"
+                }
+              ],
+              "slot": "span",
+              "surface": "fa0b643878e9242d"
+            }
+          ],
+          "slot": "item 3",
+          "surface": "fa0b643878e9242d"
         }
       ],
       "7f21e15c2854da6e": [
@@ -60200,6 +61422,296 @@
           "visibleProperty": "post"
         }
       ],
+      "cda6d8731ab01c49": [
+        {
+          "box": "8d27ee46a475e70a",
+          "kind": "frame",
+          "layers": [
+            {
+              "box": "2451e927826de958",
+              "kind": "frame",
+              "layers": [
+                {
+                  "kind": "text",
+                  "slot": "marker 1",
+                  "text": {
+                    "align": "CENTER",
+                    "fill": {
+                      "color": {
+                        "variable": "--color-text-accent"
+                      },
+                      "type": "SOLID"
+                    },
+                    "fontFamily": {
+                      "variable": "--font-family-body"
+                    },
+                    "fontSize": {
+                      "variable": "--font-size-caption"
+                    },
+                    "fontWeight": {
+                      "variable": "--font-weight-label"
+                    },
+                    "lineHeight": 100
+                  },
+                  "textProperty": "marker 1"
+                }
+              ],
+              "slot": "marker",
+              "surface": "6b01d16d4f6ec1af"
+            },
+            {
+              "box": "1456568e51680119",
+              "kind": "frame",
+              "layers": [
+                {
+                  "kind": "text",
+                  "slot": "items 1",
+                  "text": {
+                    "align": "CENTER",
+                    "fill": {
+                      "color": {
+                        "variable": "--color-text-primary"
+                      },
+                      "type": "SOLID"
+                    },
+                    "fontFamily": {
+                      "variable": "--font-family-body"
+                    },
+                    "fontSize": {
+                      "variable": "--font-size-body-sm"
+                    },
+                    "fontWeight": {
+                      "variable": "--font-weight-label"
+                    },
+                    "lineHeight": 150
+                  },
+                  "textProperty": "items 1"
+                },
+                {
+                  "kind": "text",
+                  "slot": "description 1",
+                  "text": {
+                    "align": "CENTER",
+                    "fill": {
+                      "color": {
+                        "variable": "--color-text-tertiary"
+                      },
+                      "type": "SOLID"
+                    },
+                    "fontFamily": {
+                      "variable": "--font-family-body"
+                    },
+                    "fontSize": {
+                      "variable": "--font-size-caption"
+                    },
+                    "fontWeight": {
+                      "variable": "--font-weight-body"
+                    },
+                    "lineHeight": 150
+                  },
+                  "textProperty": "description 1"
+                }
+              ],
+              "slot": "span",
+              "surface": "fa0b643878e9242d"
+            }
+          ],
+          "slot": "item",
+          "surface": "fa0b643878e9242d"
+        },
+        {
+          "box": "8d27ee46a475e70a",
+          "kind": "frame",
+          "layers": [
+            {
+              "box": "2451e927826de958",
+              "kind": "frame",
+              "layers": [
+                {
+                  "kind": "text",
+                  "slot": "marker 2",
+                  "text": {
+                    "align": "CENTER",
+                    "fill": {
+                      "color": {
+                        "variable": "--color-text-accent"
+                      },
+                      "type": "SOLID"
+                    },
+                    "fontFamily": {
+                      "variable": "--font-family-body"
+                    },
+                    "fontSize": {
+                      "variable": "--font-size-caption"
+                    },
+                    "fontWeight": {
+                      "variable": "--font-weight-label"
+                    },
+                    "lineHeight": 100
+                  },
+                  "textProperty": "marker 2"
+                }
+              ],
+              "slot": "marker",
+              "surface": "94b2a53ebb136403"
+            },
+            {
+              "box": "1456568e51680119",
+              "kind": "frame",
+              "layers": [
+                {
+                  "kind": "text",
+                  "slot": "items 2",
+                  "text": {
+                    "align": "CENTER",
+                    "fill": {
+                      "color": {
+                        "variable": "--color-text-primary"
+                      },
+                      "type": "SOLID"
+                    },
+                    "fontFamily": {
+                      "variable": "--font-family-body"
+                    },
+                    "fontSize": {
+                      "variable": "--font-size-body-sm"
+                    },
+                    "fontWeight": {
+                      "variable": "--font-weight-emphasis"
+                    },
+                    "lineHeight": 150
+                  },
+                  "textProperty": "items 2"
+                },
+                {
+                  "kind": "text",
+                  "slot": "description 2",
+                  "text": {
+                    "align": "CENTER",
+                    "fill": {
+                      "color": {
+                        "variable": "--color-text-tertiary"
+                      },
+                      "type": "SOLID"
+                    },
+                    "fontFamily": {
+                      "variable": "--font-family-body"
+                    },
+                    "fontSize": {
+                      "variable": "--font-size-caption"
+                    },
+                    "fontWeight": {
+                      "variable": "--font-weight-body"
+                    },
+                    "lineHeight": 150
+                  },
+                  "textProperty": "description 2"
+                }
+              ],
+              "slot": "span",
+              "surface": "fa0b643878e9242d"
+            }
+          ],
+          "slot": "item 2",
+          "surface": "fa0b643878e9242d"
+        },
+        {
+          "box": "8d27ee46a475e70a",
+          "kind": "frame",
+          "layers": [
+            {
+              "box": "2451e927826de958",
+              "kind": "frame",
+              "layers": [
+                {
+                  "kind": "text",
+                  "slot": "marker 3",
+                  "text": {
+                    "align": "CENTER",
+                    "fill": {
+                      "color": {
+                        "variable": "--color-text-secondary"
+                      },
+                      "type": "SOLID"
+                    },
+                    "fontFamily": {
+                      "variable": "--font-family-body"
+                    },
+                    "fontSize": {
+                      "variable": "--font-size-caption"
+                    },
+                    "fontWeight": {
+                      "variable": "--font-weight-label"
+                    },
+                    "lineHeight": 100
+                  },
+                  "textProperty": "marker 3"
+                }
+              ],
+              "slot": "marker",
+              "surface": "5335621568edee9b"
+            },
+            {
+              "box": "1456568e51680119",
+              "kind": "frame",
+              "layers": [
+                {
+                  "kind": "text",
+                  "slot": "items 3",
+                  "text": {
+                    "align": "CENTER",
+                    "fill": {
+                      "color": {
+                        "variable": "--color-text-secondary"
+                      },
+                      "type": "SOLID"
+                    },
+                    "fontFamily": {
+                      "variable": "--font-family-body"
+                    },
+                    "fontSize": {
+                      "variable": "--font-size-body-sm"
+                    },
+                    "fontWeight": {
+                      "variable": "--font-weight-label"
+                    },
+                    "lineHeight": 150
+                  },
+                  "textProperty": "items 3"
+                },
+                {
+                  "kind": "text",
+                  "slot": "description 3",
+                  "text": {
+                    "align": "CENTER",
+                    "fill": {
+                      "color": {
+                        "variable": "--color-text-tertiary"
+                      },
+                      "type": "SOLID"
+                    },
+                    "fontFamily": {
+                      "variable": "--font-family-body"
+                    },
+                    "fontSize": {
+                      "variable": "--font-size-caption"
+                    },
+                    "fontWeight": {
+                      "variable": "--font-weight-body"
+                    },
+                    "lineHeight": 150
+                  },
+                  "textProperty": "description 3"
+                }
+              ],
+              "slot": "span",
+              "surface": "fa0b643878e9242d"
+            }
+          ],
+          "slot": "item 3",
+          "surface": "fa0b643878e9242d"
+        }
+      ],
       "cf48c6ea5f15e46d": [
         {
           "kind": "text",
@@ -61225,6 +62737,170 @@
           "kind": "icon",
           "slot": "post",
           "visibleProperty": "post"
+        }
+      ],
+      "e1ada017138b2975": [
+        {
+          "box": "fc1fbb16735fa7ff",
+          "kind": "frame",
+          "layers": [
+            {
+              "box": "1cb9a077fa855113",
+              "kind": "frame",
+              "layers": [
+                {
+                  "fill": true,
+                  "kind": "text",
+                  "slot": "marker 1",
+                  "text": {
+                    "fill": {
+                      "color": {
+                        "expression": "transparent",
+                        "value": {
+                          "a": 0,
+                          "b": 0,
+                          "g": 0,
+                          "r": 0
+                        }
+                      },
+                      "type": "SOLID"
+                    },
+                    "fontFamily": {
+                      "variable": "--font-family-body"
+                    },
+                    "fontSize": {
+                      "expression": "0",
+                      "value": 0
+                    },
+                    "fontWeight": {
+                      "variable": "--font-weight-label"
+                    },
+                    "lineHeight": 100
+                  },
+                  "textProperty": "marker 1"
+                }
+              ],
+              "slot": "marker",
+              "surface": "c469968984f9fd00"
+            },
+            {
+              "box": "95d1458ace735b74",
+              "kind": "frame",
+              "layers": [],
+              "slot": "span",
+              "surface": "fa0b643878e9242d"
+            }
+          ],
+          "slot": "item",
+          "surface": "fa0b643878e9242d"
+        },
+        {
+          "box": "fc1fbb16735fa7ff",
+          "kind": "frame",
+          "layers": [
+            {
+              "box": "1cb9a077fa855113",
+              "kind": "frame",
+              "layers": [
+                {
+                  "fill": true,
+                  "kind": "text",
+                  "slot": "marker 2",
+                  "text": {
+                    "fill": {
+                      "color": {
+                        "expression": "transparent",
+                        "value": {
+                          "a": 0,
+                          "b": 0,
+                          "g": 0,
+                          "r": 0
+                        }
+                      },
+                      "type": "SOLID"
+                    },
+                    "fontFamily": {
+                      "variable": "--font-family-body"
+                    },
+                    "fontSize": {
+                      "expression": "0",
+                      "value": 0
+                    },
+                    "fontWeight": {
+                      "variable": "--font-weight-label"
+                    },
+                    "lineHeight": 100
+                  },
+                  "textProperty": "marker 2"
+                }
+              ],
+              "slot": "marker",
+              "surface": "09930e7c9f2e840b"
+            },
+            {
+              "box": "95d1458ace735b74",
+              "kind": "frame",
+              "layers": [],
+              "slot": "span",
+              "surface": "fa0b643878e9242d"
+            }
+          ],
+          "slot": "item 2",
+          "surface": "fa0b643878e9242d"
+        },
+        {
+          "box": "41cadd298bfce34b",
+          "kind": "frame",
+          "layers": [
+            {
+              "box": "1cb9a077fa855113",
+              "kind": "frame",
+              "layers": [
+                {
+                  "fill": true,
+                  "kind": "text",
+                  "slot": "marker 3",
+                  "text": {
+                    "fill": {
+                      "color": {
+                        "expression": "transparent",
+                        "value": {
+                          "a": 0,
+                          "b": 0,
+                          "g": 0,
+                          "r": 0
+                        }
+                      },
+                      "type": "SOLID"
+                    },
+                    "fontFamily": {
+                      "variable": "--font-family-body"
+                    },
+                    "fontSize": {
+                      "expression": "0",
+                      "value": 0
+                    },
+                    "fontWeight": {
+                      "variable": "--font-weight-label"
+                    },
+                    "lineHeight": 100
+                  },
+                  "textProperty": "marker 3"
+                }
+              ],
+              "slot": "marker",
+              "surface": "70ec0030a159137a"
+            },
+            {
+              "box": "95d1458ace735b74",
+              "kind": "frame",
+              "layers": [],
+              "slot": "span",
+              "surface": "fa0b643878e9242d"
+            }
+          ],
+          "slot": "item 3",
+          "surface": "fa0b643878e9242d"
         }
       ],
       "e2631681b6676c06": [
@@ -64308,6 +65984,40 @@
           }
         ]
       },
+      "09930e7c9f2e840b": {
+        "effects": [
+          {
+            "blur": {
+              "expression": "0",
+              "value": 0
+            },
+            "color": {
+              "variable": "--color-border-accent"
+            },
+            "spread": {
+              "variable": "steps:connector-size:747614001f"
+            },
+            "type": "INNER_SHADOW",
+            "x": {
+              "expression": "0",
+              "value": 0
+            },
+            "y": {
+              "expression": "0",
+              "value": 0
+            }
+          }
+        ],
+        "fills": [
+          {
+            "color": {
+              "variable": "--color-bg-surface-sunken"
+            },
+            "type": "SOLID"
+          }
+        ],
+        "strokes": []
+      },
       "0b92dae65c5271dd": {
         "effects": [
           {
@@ -67216,6 +68926,48 @@
           }
         ]
       },
+      "5335621568edee9b": {
+        "effects": [
+          {
+            "blur": {
+              "expression": "0",
+              "value": 0
+            },
+            "color": {
+              "variable": "--color-bg-surface"
+            },
+            "spread": {
+              "expression": "3px",
+              "value": 3
+            },
+            "type": "DROP_SHADOW",
+            "x": {
+              "expression": "0",
+              "value": 0
+            },
+            "y": {
+              "expression": "0",
+              "value": 0
+            }
+          }
+        ],
+        "fills": [
+          {
+            "color": {
+              "variable": "--color-bg-surface"
+            },
+            "type": "SOLID"
+          }
+        ],
+        "strokes": [
+          {
+            "color": {
+              "variable": "--color-border-default"
+            },
+            "type": "SOLID"
+          }
+        ]
+      },
       "5391dd22d79b268b": {
         "effects": [
           {
@@ -68412,6 +70164,48 @@
           {
             "color": {
               "variable": "button:frost-edge:3e489bb3af"
+            },
+            "type": "SOLID"
+          }
+        ]
+      },
+      "6b01d16d4f6ec1af": {
+        "effects": [
+          {
+            "blur": {
+              "expression": "0",
+              "value": 0
+            },
+            "color": {
+              "variable": "--color-bg-surface"
+            },
+            "spread": {
+              "expression": "3px",
+              "value": 3
+            },
+            "type": "DROP_SHADOW",
+            "x": {
+              "expression": "0",
+              "value": 0
+            },
+            "y": {
+              "expression": "0",
+              "value": 0
+            }
+          }
+        ],
+        "fills": [
+          {
+            "color": {
+              "variable": "--color-bg-surface"
+            },
+            "type": "SOLID"
+          }
+        ],
+        "strokes": [
+          {
+            "color": {
+              "variable": "steps:border-color:e2f7e72c39"
             },
             "type": "SOLID"
           }
@@ -70277,6 +72071,70 @@
           {
             "color": {
               "variable": "button:brutalist-black:b75258c11d"
+            },
+            "type": "SOLID"
+          }
+        ]
+      },
+      "94b2a53ebb136403": {
+        "effects": [
+          {
+            "blur": {
+              "expression": "0",
+              "value": 0
+            },
+            "color": {
+              "variable": "--color-bg-surface"
+            },
+            "spread": {
+              "expression": "3px",
+              "value": 3
+            },
+            "type": "DROP_SHADOW",
+            "x": {
+              "expression": "0",
+              "value": 0
+            },
+            "y": {
+              "expression": "0",
+              "value": 0
+            }
+          },
+          {
+            "blur": {
+              "expression": "0",
+              "value": 0
+            },
+            "color": {
+              "variable": "steps:shadow-2-color:b4f255e018"
+            },
+            "spread": {
+              "expression": "5px",
+              "value": 5
+            },
+            "type": "DROP_SHADOW",
+            "x": {
+              "expression": "0",
+              "value": 0
+            },
+            "y": {
+              "expression": "0",
+              "value": 0
+            }
+          }
+        ],
+        "fills": [
+          {
+            "color": {
+              "variable": "--color-bg-surface"
+            },
+            "type": "SOLID"
+          }
+        ],
+        "strokes": [
+          {
+            "color": {
+              "variable": "--color-action-accent"
             },
             "type": "SOLID"
           }
@@ -83640,6 +85498,92 @@
         "light": {
           "kind": "literal",
           "value": 1
+        }
+      }
+    },
+    {
+      "codeSyntax": "",
+      "collection": "component",
+      "expression": "color-mix(in oklab, var(--color-action-accent) 55%, var(--color-border-default))",
+      "id": "steps:border-color:e2f7e72c39",
+      "name": "steps/border-color/markers",
+      "source": {
+        "dark": "evaluated",
+        "light": "evaluated"
+      },
+      "type": "COLOR",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": {
+            "a": 1,
+            "b": 0.7539,
+            "g": 0.4905,
+            "r": 0.3392
+          }
+        },
+        "light": {
+          "kind": "literal",
+          "value": {
+            "a": 1,
+            "b": 0.7387,
+            "g": 0.4309,
+            "r": 0.2888
+          }
+        }
+      }
+    },
+    {
+      "codeSyntax": "var(--sk-steps-connector-size)",
+      "collection": "component",
+      "expression": "2px",
+      "id": "steps:connector-size:747614001f",
+      "name": "steps/connector-size/segments",
+      "source": {
+        "dark": "literal",
+        "light": "literal"
+      },
+      "type": "FLOAT",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": 2
+        },
+        "light": {
+          "kind": "literal",
+          "value": 2
+        }
+      }
+    },
+    {
+      "codeSyntax": "",
+      "collection": "component",
+      "expression": "color-mix(in oklab, var(--color-action-accent) 18%, transparent)",
+      "id": "steps:shadow-2-color:b4f255e018",
+      "name": "steps/shadow-2-color/markers",
+      "source": {
+        "dark": "evaluated",
+        "light": "evaluated"
+      },
+      "type": "COLOR",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": {
+            "a": 0.18,
+            "b": 1,
+            "g": 0.498,
+            "r": 0.1693
+          }
+        },
+        "light": {
+          "kind": "literal",
+          "value": {
+            "a": 0.18,
+            "b": 0.9863,
+            "g": 0.3644,
+            "r": 0.0836
+          }
         }
       }
     },

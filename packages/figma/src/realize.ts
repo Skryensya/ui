@@ -196,8 +196,8 @@ function effects(ctx: Context): Effect[] {
 /* ── the frame ────────────────────────────────────────────────────────────────────────────────── */
 
 /** An element's column tracks (`auto minmax(0, 1fr)` is two), substituted; none when it declares none. */
-export function gridTracks(ctx: Context): string[] {
-  const template = prop(ctx, "grid-template-columns");
+export function gridTracks(ctx: Context, name = "grid-template-columns"): string[] {
+  const template = prop(ctx, name);
   if (!template || template === "none") return [];
   const text = /var\(/.test(template) ? substituted(template, ctx) : template;
   return splitSpaces(text).filter(Boolean);
@@ -263,8 +263,10 @@ export function frameOf(ctx: Context): Frame {
    * template has tracks, which auto layout does not.
    */
   const grid = /grid/.test(display);
-  if (grid && (prop(ctx, "grid-template-rows") || prop(ctx, "grid-template"))) {
-    throw new Unsupported(`no auto-layout equivalent: a grid with row tracks`);
+  // Row tracks down a single column (a step's marker row, then its text) are the stack again, each
+  // length row sizing its child; rows AND columns are a real grid, which auto layout is not.
+  if (grid && (prop(ctx, "grid-template") || (gridTracks(ctx, "grid-template-rows").length > 1 && gridTracks(ctx).length > 1))) {
+    throw new Unsupported(`no auto-layout equivalent: a grid with row and column tracks`);
   }
   // Column tracks: one is the implicit stack again; several, laid across in one row (Callout's
   // icon then content), are a horizontal auto layout whose `fr` columns fill (see gridTracks).
