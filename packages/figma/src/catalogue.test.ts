@@ -511,3 +511,11 @@ describe("AvatarGroup", () => {
     expect(manifest.styles.layers[set.cells[0].layers]).toHaveLength(4);
   });
 });
+
+describe("BadgeHolder", () => {
+  it("pins its badge to the avatar's top right corner, shifted out by a third of itself", () => {
+    const set = manifest.components.find((c): c is ComponentSet => c.kind === "component-set" && c.id === "badge-holder")!;
+    const badge = manifest.styles.layers[set.cells[0].layers][1];
+    expect(badge.kind === "frame" && manifest.styles.boxes[badge.box].absolute).toEqual({ x: 0, y: 0, fromRight: true, shift: { x: 0.35, y: -0.35 } });
+  });
+});

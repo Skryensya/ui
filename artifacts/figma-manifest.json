@@ -30139,6 +30139,48 @@
       "visualHash": "8ecd77431df83445"
     },
     {
+      "axes": [],
+      "cells": [
+        {
+          "box": "672cd06398be5f4b",
+          "hash": "fe3a184121134e74",
+          "id": "badge-holder/",
+          "key": "",
+          "layers": "bdf12f51982f4e5b",
+          "props": {},
+          "surface": "fa0b643878e9242d"
+        }
+      ],
+      "contractHash": "d9fde7683e0b24d0",
+      "defaultCell": "",
+      "grid": {
+        "columns": [],
+        "rows": []
+      },
+      "id": "badge-holder",
+      "interactions": [],
+      "kind": "component-set",
+      "name": "Badge Holder",
+      "page": "skryensya",
+      "properties": [
+        {
+          "default": "AS",
+          "name": "initials 1",
+          "type": "TEXT"
+        },
+        {
+          "default": "3",
+          "name": "count 1",
+          "type": "TEXT"
+        }
+      ],
+      "showcase": {
+        "base": {},
+        "columns": []
+      },
+      "visualHash": "7629ce0162013563"
+    },
+    {
       "axes": [
         {
           "name": "tone",
@@ -44377,6 +44419,12 @@
     },
     {
       "code": "CONDITION_SKIPPED",
+      "message": "1 rule(s) under a condition the evaluation context does not hold",
+      "severity": "info",
+      "subject": "components/avatar.css @media (forced-colors: active)"
+    },
+    {
+      "code": "CONDITION_SKIPPED",
       "message": "2 rule(s) under a condition the evaluation context does not hold",
       "severity": "info",
       "subject": "components/back-to-top.css @media (forced-colors: active)"
@@ -44401,6 +44449,12 @@
     },
     {
       "code": "CONDITION_SKIPPED",
+      "message": "2 rule(s) under a condition the evaluation context does not hold",
+      "severity": "info",
+      "subject": "components/badge.css @keyframes sk-badge-pulse"
+    },
+    {
+      "code": "CONDITION_SKIPPED",
       "message": "3 rule(s) under a condition the evaluation context does not hold",
       "severity": "info",
       "subject": "components/badge.css @media (forced-colors: active)"
@@ -44410,6 +44464,18 @@
       "message": "3 rule(s) under a condition the evaluation context does not hold",
       "severity": "info",
       "subject": "components/badge.css @media (forced-colors: active)"
+    },
+    {
+      "code": "CONDITION_SKIPPED",
+      "message": "3 rule(s) under a condition the evaluation context does not hold",
+      "severity": "info",
+      "subject": "components/badge.css @media (forced-colors: active)"
+    },
+    {
+      "code": "CONDITION_SKIPPED",
+      "message": "1 rule(s) under a condition the evaluation context does not hold",
+      "severity": "info",
+      "subject": "components/badge.css @media (prefers-reduced-motion: reduce)"
     },
     {
       "code": "CONDITION_SKIPPED",
@@ -45605,6 +45671,11 @@
           "appearance"
         ]
       },
+      "badge-holder": {
+        "excluded": [],
+        "nonVisual": [],
+        "visual": []
+      },
       "badge:Badge": {
         "excluded": [],
         "nonVisual": [],
@@ -46174,11 +46245,11 @@
     },
     "tokens": {
       "catalogueAdded": 303,
-      "componentVariables": 501,
+      "componentVariables": 502,
       "modeValuesBySource": {
         "alias": 203,
         "evaluated": 925,
-        "literal": 806
+        "literal": 808
       },
       "reached": 204,
       "reachedAsVariables": 155,
@@ -46197,13 +46268,14 @@
       "variables": 466
     },
     "variants": {
-      "components": 127,
-      "componentSets": 126,
+      "components": 128,
+      "componentSets": 127,
       "naiveAllOptions": {
         "accordion": 32,
         "avatar": 8,
         "avatar-group": 1,
         "back-to-top": 4,
+        "badge-holder": 1,
         "badge:Badge": 20,
         "badge:BadgeDot": 10,
         "breadcrumb": 1,
@@ -46260,6 +46332,7 @@
         "avatar": 8,
         "avatar-group": 1,
         "back-to-top": 4,
+        "badge-holder": 1,
         "badge:Badge": 20,
         "badge:BadgeDot": 5,
         "breadcrumb": 1,
@@ -46335,6 +46408,10 @@
         {
           "set": "badge/brutalist",
           "variants": 10
+        },
+        {
+          "set": "badge-holder",
+          "variants": 1
         },
         {
           "set": "badge/dot",
@@ -46817,11 +46894,11 @@
           "variants": 4
         }
       ],
-      "variantsTotal": 2549
+      "variantsTotal": 2550
     }
   },
   "schemaVersion": 1,
-  "sourceHash": "1f74edcfa106e2b5",
+  "sourceHash": "72e3690e28ce9f42",
   "stage": {
     "background": {
       "variable": "--color-bg-surface"
@@ -47944,6 +48021,42 @@
         },
         "radius": {
           "variable": "--radius-control"
+        }
+      },
+      "2a2628b25b40cf4c": {
+        "absolute": {
+          "fromRight": true,
+          "shift": {
+            "x": 0.35,
+            "y": -0.35
+          },
+          "x": 0,
+          "y": 0
+        },
+        "clipsContent": false,
+        "crossAlign": "MIN",
+        "direction": "HORIZONTAL",
+        "mainAlign": "MIN",
+        "padding": {
+          "bottom": {
+            "variable": "--space-inset-xs"
+          },
+          "left": {
+            "variable": "--space-inset-sm"
+          },
+          "right": {
+            "variable": "--space-inset-sm"
+          },
+          "top": {
+            "variable": "--space-inset-xs"
+          }
+        },
+        "radius": {
+          "variable": "--radius-pill"
+        },
+        "strokeWeight": {
+          "expression": "1px",
+          "value": 1
         }
       },
       "2b4d7ac95eea85fc": {
@@ -80566,6 +80679,70 @@
           "visibleProperty": "post"
         }
       ],
+      "bdf12f51982f4e5b": [
+        {
+          "box": "34416faa47e8ba55",
+          "kind": "frame",
+          "layers": [
+            {
+              "kind": "text",
+              "slot": "initials 1",
+              "text": {
+                "fill": {
+                  "color": {
+                    "variable": "--color-text-primary"
+                  },
+                  "type": "SOLID"
+                },
+                "fontFamily": {
+                  "variable": "--font-family-body"
+                },
+                "fontSize": {
+                  "variable": "--font-size-body"
+                },
+                "fontWeight": {
+                  "variable": "--font-weight-label"
+                },
+                "lineHeight": 100
+              },
+              "textProperty": "initials 1"
+            }
+          ],
+          "slot": "span",
+          "surface": "7a4b6cee075f78d9"
+        },
+        {
+          "box": "2a2628b25b40cf4c",
+          "kind": "frame",
+          "layers": [
+            {
+              "kind": "text",
+              "slot": "count 1",
+              "text": {
+                "fill": {
+                  "color": {
+                    "variable": "--color-text-danger"
+                  },
+                  "type": "SOLID"
+                },
+                "fontFamily": {
+                  "variable": "--font-family-body"
+                },
+                "fontSize": {
+                  "variable": "--font-size-caption"
+                },
+                "fontWeight": {
+                  "variable": "--font-weight-label"
+                },
+                "lineHeight": 150
+              },
+              "textProperty": "count 1"
+            }
+          ],
+          "slot": "root",
+          "surface": "351ff281447b0d5b"
+        }
+      ],
       "be1f7fee120b86b3": [
         {
           "kind": "text",
@@ -90655,6 +90832,47 @@
           {
             "color": {
               "variable": "--color-border-accent"
+            },
+            "type": "SOLID"
+          }
+        ]
+      },
+      "351ff281447b0d5b": {
+        "effects": [
+          {
+            "blur": {
+              "expression": "0",
+              "value": 0
+            },
+            "color": {
+              "variable": "--color-bg-surface"
+            },
+            "spread": {
+              "variable": "badge:dot-ring-width:747614001f"
+            },
+            "type": "DROP_SHADOW",
+            "x": {
+              "expression": "0",
+              "value": 0
+            },
+            "y": {
+              "expression": "0",
+              "value": 0
+            }
+          }
+        ],
+        "fills": [
+          {
+            "color": {
+              "variable": "--color-bg-danger-subtle"
+            },
+            "type": "SOLID"
+          }
+        ],
+        "strokes": [
+          {
+            "color": {
+              "variable": "badge:border:8017ca380b"
             },
             "type": "SOLID"
           }
@@ -104241,6 +104459,38 @@
     {
       "codeSyntax": "var(--sk-badge-border)",
       "collection": "component",
+      "expression": "color-mix(in oklab, var(--color-text-danger) 22%, transparent)",
+      "id": "badge:border:8017ca380b",
+      "name": "badge/border",
+      "source": {
+        "dark": "evaluated",
+        "light": "evaluated"
+      },
+      "type": "COLOR",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": {
+            "a": 0.22,
+            "b": 0.6364,
+            "g": 0.6347,
+            "r": 1
+          }
+        },
+        "light": {
+          "kind": "literal",
+          "value": {
+            "a": 0.22,
+            "b": 0.0288,
+            "g": 0,
+            "r": 0.7569
+          }
+        }
+      }
+    },
+    {
+      "codeSyntax": "var(--sk-badge-border)",
+      "collection": "component",
       "expression": "color-mix(in oklab, var(--color-text-accent) 22%, transparent)",
       "id": "badge:border:a449d48447",
       "name": "badge/border/plain/accent",
@@ -104266,38 +104516,6 @@
             "b": 0.9018,
             "g": 0.2791,
             "r": 0.0779
-          }
-        }
-      }
-    },
-    {
-      "codeSyntax": "var(--sk-badge-border)",
-      "collection": "component",
-      "expression": "color-mix(in oklab, var(--color-text-danger) 22%, transparent)",
-      "id": "badge:border:8017ca380b",
-      "name": "badge/border/plain/danger",
-      "source": {
-        "dark": "evaluated",
-        "light": "evaluated"
-      },
-      "type": "COLOR",
-      "values": {
-        "dark": {
-          "kind": "literal",
-          "value": {
-            "a": 0.22,
-            "b": 0.6364,
-            "g": 0.6347,
-            "r": 1
-          }
-        },
-        "light": {
-          "kind": "literal",
-          "value": {
-            "a": 0.22,
-            "b": 0.0288,
-            "g": 0,
-            "r": 0.7569
           }
         }
       }
@@ -104436,6 +104654,28 @@
       "expression": "2px",
       "id": "badge:brutalist-offset:747614001f",
       "name": "badge/brutalist-offset/brutalist",
+      "source": {
+        "dark": "literal",
+        "light": "literal"
+      },
+      "type": "FLOAT",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": 2
+        },
+        "light": {
+          "kind": "literal",
+          "value": 2
+        }
+      }
+    },
+    {
+      "codeSyntax": "var(--sk-badge-dot-ring-width)",
+      "collection": "component",
+      "expression": "2px",
+      "id": "badge:dot-ring-width:747614001f",
+      "name": "badge/dot-ring-width",
       "source": {
         "dark": "literal",
         "light": "literal"

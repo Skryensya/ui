@@ -24,3 +24,28 @@ export const badgeRealization: Realization = {
   grid: { columns: ["tone"], rows: ["size"], descending: ["size"] },
   stage,
 };
+
+/* BadgeHolder: a count pinned to the corner of the avatar it sits on, as the sheet shifts it out. */
+export const badgeHolderRealization: Realization = {
+  contract: "badge",
+  id: "badge-holder",
+  signature: "BadgeHolder",
+  nested: true,
+  state: noStates,
+  overlays: {},
+  ring: "focus ring",
+  exclude: [],
+  slots: {},
+  content: {
+    trees: {
+      children: [
+        { contract: "avatar", signature: "Avatar.initials", options: { size: "lg" }, slots: { children: "AS" } },
+        { contract: "badge", signature: "Badge", options: { tone: "danger" }, slots: { children: "3" } },
+      ],
+    },
+    names: { "Avatar.initials.children": "initials", "Badge.children": "count" },
+  },
+  icons,
+  grid: { columns: [], rows: [], descending: [] },
+  stage,
+};

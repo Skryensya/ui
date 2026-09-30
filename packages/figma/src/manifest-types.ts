@@ -87,7 +87,16 @@ export type Box = {
    * rail). `reach`: it runs on to that edge of its parent, however big the parent grows (a vertical
    * step's connector, `100%` less the marker).
    */
-  absolute?: { x: number; y: number; reach?: "bottom" | "right" };
+  absolute?: {
+    x: number;
+    y: number;
+    reach?: "bottom" | "right";
+    /** Measured from the parent's right or bottom edge instead (a badge pinned to a corner). */
+    fromRight?: true;
+    fromBottom?: true;
+    /** `translate` in shares of its own size (a holder's badge, `35% -35%`). */
+    shift?: { x: number; y: number };
+  };
   padding: { top: Bound<number>; right: Bound<number>; bottom: Bound<number>; left: Bound<number> };
   gap?: Bound<number>;
   radius?: Bound<number>;
