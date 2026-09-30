@@ -1089,7 +1089,10 @@ async function compileRealization(authored: Realization, shared: Shared): Promis
         // An outline draws over everything, last.
         const ring = ringOf(ctx(host));
         if (ring) layers.push({ kind: "ring", slot: realization.ring, ...ring });
-        const { strokes, fills, effects, ...hostLaid } = frameOf(ctx(host));
+        // Drawn at a width of its own, the host's authored one (a Dialog's, off the viewport) is not read.
+        const hostStyle = new Map(cascaded.get(host)!);
+        if (realization.width) hostStyle.delete("width");
+        const { strokes, fills, effects, ...hostLaid } = frameOf(ctxOf(hostStyle));
         const hostFlow = realization.nested && blockFlow(host) ? { ...hostLaid, direction: "VERTICAL" as const } : hostLaid;
         const hostOverlap = realization.nested ? overlapOf(host) : undefined;
         const hostBox = hostOverlap ? { ...hostFlow, gap: hostOverlap } : hostFlow;

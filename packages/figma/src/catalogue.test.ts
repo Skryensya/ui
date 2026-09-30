@@ -556,3 +556,11 @@ describe("Tag, removable", () => {
     expect(JSON.stringify(cell("true"))).toContain('"default":"close"');
   });
 });
+
+describe("Dialog", () => {
+  it("draws the open panel: header with its close button, the message, and a footer of actions", () => {
+    const set = manifest.components.find((c): c is ComponentSet => c.kind === "component-set" && c.id === "dialog/plain")!;
+    expect(manifest.styles.layers[set.cells[0].layers].map((l) => l.slot)).toEqual(["header", "body", "footer"]);
+    expect(set.properties.map((p) => p.name)).toEqual(["title", "children", "action 1", "action 2"]);
+  });
+});
