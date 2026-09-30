@@ -1528,38 +1528,88 @@ function collectOrphans(run: Run, pages: PageNode[], found: Map<string, SceneNod
 /** The width each frame was given before it was filled, to check against what it ended up as. */
 const frameWidths = new Map<string, number>();
 
+/* ── components: what a designer picks to import ───────────────────────────────────────────────── */
+
+/**
+ * One contract as the window lists it: the Icon set, Button, Badge. A contract drawn as several sets
+ * (Button, one per appearance) is still one choice, and one column on the page.
+ */
+type Group = { id: string; name: string; sets: string[]; variants: number; needsIcons: boolean };
+
+const contractOf = (spec: M.IconSet | M.ComponentSet) => (spec.kind === "icon-set" ? spec.id : spec.id.split("/")[0]);
+
+const groups: Group[] = (() => {
+  const out = new Map<string, Group>();
+  for (const spec of manifest.components) {
+    const id = contractOf(spec);
+    const group = out.get(id) ?? { id, name: spec.name.split(" / ")[0], sets: [], variants: 0, needsIcons: false };
+    group.sets.push(spec.id);
+    group.variants += spec.kind === "icon-set" ? spec.icons.length : spec.cells.length;
+    if (spec.kind === "component-set") {
+      group.needsIcons ||= spec.cells.some((cell) => manifest.styles.layers[cell.layers].some((layer) => layer.kind === "icon"));
+    }
+    out.set(id, group);
+  }
+  return [...out.values()];
+})();
+
+const iconGroup = () => manifest.components.find((c): c is M.IconSet => c.kind === "icon-set");
+
+/** The contracts a run works on: what was picked, plus the Icon set whenever something picked draws icons. */
+function picked(only: readonly string[] | undefined): Set<string> {
+  const out = new Set(only ?? groups.map((g) => g.id));
+  const icons = iconGroup();
+  if (icons && groups.some((g) => out.has(g.id) && g.needsIcons)) out.add(icons.id);
+  return out;
+}
+
+/* ── the page ───────────────────────────────────────────────────────────────────────────────── */
+
+/**
+ * One column per contract, side by side in manifest order, each contract's frames stacked inside its
+ * column: Button's appearances under one another, Badge beside them. A column is as wide as its
+ * widest frame. Writes only what moved.
+ */
 function arrange(run: Run, pages: Map<string, PageNode>, found: Map<string, SceneNode>, check = false) {
   for (const [pageId, page] of pages) {
-    let y = 0;
-    for (const spec of manifest.components.filter((c) => c.page === pageId)) {
-      const node = found.get(`frame:${spec.id}`) as FrameNode | undefined;
-      if (!node || node.parent !== page) continue;
-      const bounds = node.absoluteRenderBounds ?? node.absoluteBoundingBox;
-      const top = node.absoluteTransform[1][2];
-      const above = bounds ? Math.max(0, top - bounds.y) : 0;
-      const shown = bounds ? Math.max(node.height, bounds.height) : node.height;
-      move(run, node, 0, Math.round(y + above));
-      y += Math.ceil(shown) + 160;
-      if (!check) continue;
-      const planned = plannedHeight(spec);
-      if (Math.abs(node.height - planned) > 1) run.log("WARN", `frame ${spec.name}`, `height ${Math.round(node.height)}, planned ${planned}`);
-      const width = frameWidths.get(spec.id);
-      if (width !== undefined && Math.abs(node.width - width) > 1) run.log("WARN", `frame ${spec.name}`, `width ${Math.round(node.width)}, planned ${width}`);
-      if (shown - node.height > 1 || above > 0) {
-        run.log("WARN", `frame ${spec.name}`, `content overflows it: ${Math.round(above)}px above, ${Math.round(shown - node.height - above)}px below`);
+    let x = 0;
+    let bottom = 0;
+    for (const group of groups) {
+      let y = 0;
+      let columnWidth = 0;
+      for (const spec of manifest.components.filter((c) => c.page === pageId && contractOf(c) === group.id)) {
+        const node = found.get(`frame:${spec.id}`) as FrameNode | undefined;
+        if (!node || node.parent !== page) continue;
+        const bounds = node.absoluteRenderBounds ?? node.absoluteBoundingBox;
+        const top = node.absoluteTransform[1][2];
+        const above = bounds ? Math.max(0, top - bounds.y) : 0;
+        const shown = bounds ? Math.max(node.height, bounds.height) : node.height;
+        move(run, node, x, Math.round(y + above));
+        y += Math.ceil(shown) + 160;
+        columnWidth = Math.max(columnWidth, Math.ceil(bounds ? Math.max(node.width, bounds.width) : node.width));
+        if (!check) continue;
+        const planned = plannedHeight(spec);
+        if (Math.abs(node.height - planned) > 1) run.log("WARN", `frame ${spec.name}`, `height ${Math.round(node.height)}, planned ${planned}`);
+        const width = frameWidths.get(spec.id);
+        if (width !== undefined && Math.abs(node.width - width) > 1) run.log("WARN", `frame ${spec.name}`, `width ${Math.round(node.width)}, planned ${width}`);
+        if (shown - node.height > 1 || above > 0) {
+          run.log("WARN", `frame ${spec.name}`, `content overflows it: ${Math.round(above)}px above, ${Math.round(shown - node.height - above)}px below`);
+        }
       }
+      if (columnWidth) x += columnWidth + 160;
+      bottom = Math.max(bottom, y);
     }
     const orphans = page.children.find((n) => getTag(n, "id") === "orphans");
-    if (orphans) move(run, orphans, 0, y);
+    if (orphans) move(run, orphans, 0, bottom);
   }
 }
 
-async function reconcile(apply: boolean) {
+async function reconcile(apply: boolean, only?: readonly string[]) {
   const run = new Run(apply);
   const started = Date.now();
   let progress: Progress | undefined;
   try {
-    return await reconcileRun(run, apply, started, (p) => (progress = p));
+    return await reconcileRun(run, apply, started, picked(only), (p) => (progress = p));
   } catch (error) {
     if (!(error instanceof Stopped)) throw error;
     const running = progress?.phases.find((phase) => phase.state === "running");
@@ -1588,12 +1638,17 @@ function report(run: Run, apply: boolean, started: number, phases: Phase[], outc
   };
 }
 
-async function reconcileRun(run: Run, apply: boolean, started: number, onProgress: (progress: Progress) => void) {
+async function reconcileRun(run: Run, apply: boolean, started: number, chosen: Set<string>, onProgress: (progress: Progress) => void) {
   const iconSpec = manifest.components.find((c): c is M.IconSet => c.kind === "icon-set")!;
-  const setSpecs = manifest.components.filter((c): c is M.ComponentSet => c.kind === "component-set");
+  // Only what was picked is drawn. What was not keeps its place in the columns but is not redrawn, and
+  // it is still in the manifest, so nothing of it is orphaned either.
+  const withIcons = chosen.has(iconSpec.id);
+  const setSpecs = manifest.components.filter((c): c is M.ComponentSet => c.kind === "component-set" && chosen.has(contractOf(c)));
+  const specs = manifest.components.filter((c) => chosen.has(contractOf(c)));
   const progress = new Progress(apply, [
+    // Every token, always: they are the file's variables whichever components bind them.
     { id: "variables", label: "Variables", total: manifest.variables.length },
-    { id: "icons", label: `${iconSpec.name} (${iconSpec.source.replace("@skryensya/icons-", "")})`, total: iconSpec.icons.length },
+    ...(withIcons ? [{ id: "icons", label: `${iconSpec.name} (${iconSpec.source.replace("@skryensya/icons-", "")})`, total: iconSpec.icons.length }] : []),
     ...setSpecs.map((s) => ({ id: s.id, label: s.name, total: s.cells.length })),
   ]);
   onProgress(progress);
@@ -1610,7 +1665,7 @@ async function reconcileRun(run: Run, apply: boolean, started: number, onProgres
   // out here, once, and the variants later only fill it.
   const layouts = new Map<string, Layout>();
   if (apply) {
-    for (const spec of manifest.components) {
+    for (const spec of specs) {
       const page = pages.get(spec.page);
       if (!page) continue;
       const frame = ensureFrame(ctx, spec.id, spec.name, page, found);
@@ -1628,7 +1683,7 @@ async function reconcileRun(run: Run, apply: boolean, started: number, onProgres
     }
     arrange(run, pages, found);
   }
-  const icons = await syncIconSet(ctx, iconSpec, found, pages.get(iconSpec.page));
+  const icons = withIcons ? await syncIconSet(ctx, iconSpec, found, pages.get(iconSpec.page)) : undefined;
   // A dry run never draws a cell, so it walks the sets without the Icon set it would have made.
   const setCtx: SetCtx = { ...ctx, icons: icons as IconCtx };
   // Restacked after each frame fills, so a frame that came out taller never sits on the next one.
@@ -1647,7 +1702,9 @@ async function reconcileRun(run: Run, apply: boolean, started: number, onProgres
   collectOrphans(run, ownPages, found);
   arrange(run, pages, found, apply);
 
-  if (figma.root.getSharedPluginData(NS, "sourceHash") !== manifest.sourceHash) {
+  // The file is stamped current only when everything was synced: a partial import is not the manifest.
+  const everything = groups.every((g) => chosen.has(g.id));
+  if (everything && figma.root.getSharedPluginData(NS, "sourceHash") !== manifest.sourceHash) {
     run.write(() => figma.root.setSharedPluginData(NS, "sourceHash", manifest.sourceHash));
   }
   const landing = pages.get(manifest.pages[0].id);
@@ -1657,9 +1714,13 @@ async function reconcileRun(run: Run, apply: boolean, started: number, onProgres
 }
 
 figma.showUI(__html__, { width: 440, height: 600, themeColors: true });
-figma.ui.postMessage({ type: "ready", sourceHash: manifest.sourceHash });
+figma.ui.postMessage({
+  type: "ready",
+  sourceHash: manifest.sourceHash,
+  components: groups.map(({ id, name, variants, needsIcons }) => ({ id, name, variants, needsIcons, icons: id === iconGroup()?.id })),
+});
 let running = false;
-figma.ui.onmessage = async (message: { type: "sync" | "dry-run" | "stop" }) => {
+figma.ui.onmessage = async (message: { type: "sync" | "dry-run" | "stop"; only?: string[] }) => {
   // Handled while a run is awaiting its next tick: the run is what notices the flag and stops.
   if (message.type === "stop") {
     if (running) stopRequested = true;
@@ -1669,7 +1730,7 @@ figma.ui.onmessage = async (message: { type: "sync" | "dry-run" | "stop" }) => {
   running = true;
   stopRequested = false;
   try {
-    const result = await reconcile(message.type === "sync");
+    const result = await reconcile(message.type === "sync", message.only);
     figma.ui.postMessage(result);
     if (message.type === "sync") figma.notify(`Skryensya: ${result.outcome} (${result.writes} writes, ${result.seconds}s)`);
   } catch (error) {
