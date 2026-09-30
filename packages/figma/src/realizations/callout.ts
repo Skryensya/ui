@@ -15,8 +15,10 @@ export const calloutRealization: Realization = {
   overlays: {},
   ring: "focus ring",
   exclude: [],
+  // It fills its container; drawn alone, at a width its message wraps in.
+  width: 360,
   slots: {
-    icon: { holds: "icon", icon: "info" },
+    icon: { holds: "icon", icon: "info", shown: true },
     title: { holds: "text", sample: "Heads up" },
     children: { holds: "text", sample: "Your changes are saved as a draft until you publish them." },
   },

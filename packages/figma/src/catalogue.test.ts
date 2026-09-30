@@ -163,7 +163,7 @@ describe("Segmented", () => {
 
 describe("Tabs", () => {
   const cell = (orientation: string, variant: string) => {
-    const set = manifest.components.find((c): c is ComponentSet => c.kind === "component-set" && c.id === "tabs/plain")!;
+    const set = manifest.components.find((c): c is ComponentSet => c.kind === "component-set" && c.id === "tabs")!;
     return set.cells.find((c) => c.props.orientation === orientation && c.props.variant === variant && c.props.size === "md")!;
   };
   const triggers = (orientation: string, variant: string) => {
@@ -329,5 +329,16 @@ describe("Timeline", () => {
     const [item] = manifest.styles.layers[set.cells[0].layers];
     const marker = item.kind === "frame" ? item.layers[0] : undefined;
     expect(marker?.kind === "frame" && manifest.styles.boxes[marker.box].absolute).toEqual({ x: 8, y: -3 });
+  });
+});
+
+describe("Callout, at a width", () => {
+  it("wraps its message beside the icon, the icon's box shown and hidden with it", () => {
+    const set = manifest.components.find((c): c is ComponentSet => c.kind === "component-set" && c.id === "callout/plain")!;
+    expect(set.properties.find((p) => p.name === "icon")?.default).toBe(true);
+    const [icon, content] = manifest.styles.layers[set.cells[0].layers];
+    expect(icon).toMatchObject({ kind: "frame", slot: "icon", visibleProperty: "icon" });
+    expect(content.kind === "frame" && content.layers.every((l) => l.kind === "text" && l.fill)).toBe(true);
+    expect(manifest.styles.boxes[set.cells[0].box].gap).toBeDefined();
   });
 });

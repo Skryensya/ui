@@ -16,7 +16,7 @@ export const emptyStateRealization: Realization = {
   exclude: [],
   width: 360,
   slots: {
-    icon: { holds: "icon", icon: "folder" },
+    icon: { holds: "icon", icon: "folder", shown: true },
     title: { holds: "text", sample: "Nothing here yet" },
     description: { holds: "text", sample: "Items you add will show up here, newest first." },
   },

@@ -1169,7 +1169,7 @@ async function applyLayers(
     if (layer.kind === "icon") {
       await applyIcon(ctx, child as InstanceNode, layer);
       // Born with the visibility its property defaults to: an optional slot is hidden until switched on.
-      if (layer.visibleProperty) child.visible = sample[layer.visibleProperty] !== false;
+      child.visible = layer.visibleProperty ? sample[layer.visibleProperty] !== false : true;
     } else if (layer.kind === "text") {
       const text = child as TextNode;
       await applyText(ctx, text, layer.text, layer.characters ?? String(sample[layer.slot] ?? ""));
@@ -1196,6 +1196,7 @@ async function applyLayers(
         frame.layoutAlign = box.stretch ? "STRETCH" : "INHERIT";
       }
       await applyLayers(ctx, frame, { id }, layer.layers, cellKey, sample);
+      if (layer.visibleProperty) frame.visible = sample[layer.visibleProperty] !== false;
       // A part's own state layer and focus ring cover it, once its content has laid out.
       for (const cover of layer.layers) {
         if (cover.kind !== "overlay" && cover.kind !== "ring") continue;
@@ -1266,9 +1267,13 @@ function ensureProperties(ctx: SetCtx, set: ComponentSetNode, properties: M.Comp
 
 function bindReferences(ctx: SetCtx, node: ComponentNode, cell: M.Cell, keys: Record<string, string>, defaults: Record<string, string | boolean>) {
   eachLayer(node, cell, manifest.styles.layers[cell.layers], (child, layer, owner) => {
-    if (layer.kind === "frame") return;
     const refs: Record<string, string> = {};
-    if (layer.kind === "icon") {
+    if (layer.kind === "frame") {
+      if (!layer.visibleProperty) return;
+      if (keys[layer.visibleProperty]) refs.visible = keys[layer.visibleProperty];
+      const shown = defaults[layer.visibleProperty] !== false;
+      if (child.visible !== shown) ctx.run.write(() => (child.visible = shown));
+    } else if (layer.kind === "icon") {
       if (layer.visibleProperty && keys[layer.visibleProperty]) refs.visible = keys[layer.visibleProperty];
       // The component shows its layer as the property's default; binding alone does not change it.
       const shown = layer.visibleProperty ? defaults[layer.visibleProperty] !== false : true;
