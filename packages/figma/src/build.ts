@@ -95,7 +95,7 @@ function treeFor(realization: Realization, input: CellInput, iconName: string): 
   for (const [slot, spec] of Object.entries(realization.slots)) {
     if (spec.holds === "icon") {
       if (input.icons) slots[slot] = icon;
-    } else if (spec.item || spec.mountedIn) continue;
+    } else if (spec.item || spec.mountedIn || (spec.pseudo && !spec.option)) continue;
     else if (spec.option) printed[spec.option] = spec.sample;
     else slots[slot] = input.iconChildren ? icon : spec.sample;
   }

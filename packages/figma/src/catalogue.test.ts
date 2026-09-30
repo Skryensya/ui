@@ -494,3 +494,12 @@ describe("SplitButton", () => {
     expect(JSON.stringify(menu)).toContain('"default":"chevron-down"');
   });
 });
+
+describe("FormField", () => {
+  it("labels an Input, starring the label when required", () => {
+    const set = manifest.components.find((c): c is ComponentSet => c.kind === "component-set" && c.id === "form-field")!;
+    const cell = (required: string) => manifest.styles.layers[set.cells.find((c) => c.props.required === required && c.props.disabled === "false")!.layers];
+    expect(cell("false").map((l) => l.slot)).toEqual(["label", "hint", "input"]);
+    expect(JSON.stringify(cell("true")[0])).toContain('"characters":"*"');
+  });
+});

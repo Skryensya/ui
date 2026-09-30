@@ -44165,6 +44165,132 @@
         "columns": []
       },
       "visualHash": "5d522feae7b3bc3e"
+    },
+    {
+      "axes": [
+        {
+          "name": "required",
+          "values": [
+            "false",
+            "true"
+          ]
+        },
+        {
+          "name": "disabled",
+          "values": [
+            "false",
+            "true"
+          ]
+        }
+      ],
+      "cells": [
+        {
+          "box": "4c697c7b0a2aa11b",
+          "hash": "69ca5be0493ebec7",
+          "id": "form-field/disabled=false,required=false",
+          "key": "required=false, disabled=false",
+          "layers": "4d6856edb6cfa640",
+          "props": {
+            "disabled": "false",
+            "required": "false"
+          },
+          "surface": "fa0b643878e9242d"
+        },
+        {
+          "box": "4c697c7b0a2aa11b",
+          "hash": "cce762c306c60a54",
+          "id": "form-field/disabled=true,required=false",
+          "key": "required=false, disabled=true",
+          "layers": "d65e1a69e72251f9",
+          "props": {
+            "disabled": "true",
+            "required": "false"
+          },
+          "surface": "fa0b643878e9242d"
+        },
+        {
+          "box": "4c697c7b0a2aa11b",
+          "hash": "3f6c6dccec9f6f5b",
+          "id": "form-field/disabled=false,required=true",
+          "key": "required=true, disabled=false",
+          "layers": "a90853d681e82cd6",
+          "props": {
+            "disabled": "false",
+            "required": "true"
+          },
+          "surface": "fa0b643878e9242d"
+        },
+        {
+          "box": "4c697c7b0a2aa11b",
+          "hash": "2e7f91bfff6bdd7a",
+          "id": "form-field/disabled=true,required=true",
+          "key": "required=true, disabled=true",
+          "layers": "7a26cbd36d9fe1ef",
+          "props": {
+            "disabled": "true",
+            "required": "true"
+          },
+          "surface": "fa0b643878e9242d"
+        }
+      ],
+      "contractHash": "bbfd4ccb15c83e7a",
+      "defaultCell": "required=false, disabled=false",
+      "grid": {
+        "columns": [
+          {
+            "name": "required",
+            "values": [
+              "false",
+              "true"
+            ]
+          },
+          {
+            "name": "disabled",
+            "values": [
+              "false",
+              "true"
+            ]
+          }
+        ],
+        "rows": []
+      },
+      "id": "form-field",
+      "interactions": [],
+      "kind": "component-set",
+      "name": "Form Field",
+      "page": "skryensya",
+      "properties": [
+        {
+          "default": "Email",
+          "name": "label",
+          "type": "TEXT"
+        },
+        {
+          "default": "We only use it to send receipts.",
+          "name": "hint",
+          "type": "TEXT"
+        },
+        {
+          "default": true,
+          "name": "show hint",
+          "type": "BOOLEAN"
+        },
+        {
+          "default": "name@example.com",
+          "name": "placeholder",
+          "type": "TEXT"
+        },
+        {
+          "default": true,
+          "name": "show placeholder",
+          "type": "BOOLEAN"
+        }
+      ],
+      "showcase": {
+        "base": {},
+        "columns": []
+      },
+      "visualHash": "7d055bcdbfaa14d6"
     }
   ],
   "diagnostics": [
@@ -44449,6 +44575,12 @@
       "message": "2 rule(s) under a condition the evaluation context does not hold",
       "severity": "info",
       "subject": "components/details.css @supports (interpolate-size: allow-keywords)"
+    },
+    {
+      "code": "CONDITION_SKIPPED",
+      "message": "3 rule(s) under a condition the evaluation context does not hold",
+      "severity": "info",
+      "subject": "components/input.css @media (forced-colors: active)"
     },
     {
       "code": "CONDITION_SKIPPED",
@@ -45542,6 +45674,16 @@
           "appearance"
         ]
       },
+      "form-field": {
+        "excluded": [
+          "labelHidden"
+        ],
+        "nonVisual": [],
+        "visual": [
+          "required",
+          "disabled"
+        ]
+      },
       "heading": {
         "excluded": [
           "headingElement",
@@ -45962,11 +46104,11 @@
     },
     "tokens": {
       "catalogueAdded": 303,
-      "componentVariables": 499,
+      "componentVariables": 501,
       "modeValuesBySource": {
         "alias": 203,
-        "evaluated": 923,
-        "literal": 804
+        "evaluated": 925,
+        "literal": 806
       },
       "reached": 204,
       "reachedAsVariables": 155,
@@ -45985,8 +46127,8 @@
       "variables": 466
     },
     "variants": {
-      "components": 125,
-      "componentSets": 124,
+      "components": 126,
+      "componentSets": 125,
       "naiveAllOptions": {
         "accordion": 32,
         "avatar": 8,
@@ -46004,6 +46146,7 @@
         "details": 8,
         "empty-state": 1,
         "expandable-tile": 96,
+        "form-field": 8,
         "heading": 156,
         "input": 72,
         "kbd": 4,
@@ -46058,6 +46201,7 @@
         "details": 8,
         "empty-state": 1,
         "expandable-tile": 4,
+        "form-field": 4,
         "heading": 13,
         "input": 18,
         "kbd": 4,
@@ -46591,13 +46735,17 @@
         {
           "set": "split-button",
           "variants": 1
+        },
+        {
+          "set": "form-field",
+          "variants": 4
         }
       ],
-      "variantsTotal": 2544
+      "variantsTotal": 2548
     }
   },
   "schemaVersion": 1,
-  "sourceHash": "a2cabb33fbbf4bc6",
+  "sourceHash": "cbd15a69800475c0",
   "stage": {
     "background": {
       "variable": "--color-bg-surface"
@@ -48616,6 +48764,37 @@
           "variable": "--size-control-xs"
         }
       },
+      "4c697c7b0a2aa11b": {
+        "clipsContent": false,
+        "crossAlign": "MIN",
+        "direction": "VERTICAL",
+        "gap": {
+          "variable": "--space-stack-xs"
+        },
+        "mainAlign": "MIN",
+        "padding": {
+          "bottom": {
+            "expression": "0",
+            "value": 0
+          },
+          "left": {
+            "expression": "0",
+            "value": 0
+          },
+          "right": {
+            "expression": "0",
+            "value": 0
+          },
+          "top": {
+            "expression": "0",
+            "value": 0
+          }
+        },
+        "width": {
+          "expression": "320px",
+          "value": 320
+        }
+      },
       "4f254e80bed80d1a": {
         "clipsContent": true,
         "crossAlign": "CENTER",
@@ -49443,6 +49622,36 @@
         "width": {
           "expression": "240px",
           "value": 240
+        }
+      },
+      "64593ab0206b2a98": {
+        "clipsContent": false,
+        "crossAlign": "CENTER",
+        "direction": "HORIZONTAL",
+        "height": {
+          "variable": "form-field:sk-input-height:2dce2436e5"
+        },
+        "mainAlign": "MIN",
+        "padding": {
+          "bottom": {
+            "variable": "--space-inset-xs"
+          },
+          "left": {
+            "variable": "--space-inset-sm"
+          },
+          "right": {
+            "variable": "--space-inset-sm"
+          },
+          "top": {
+            "variable": "--space-inset-xs"
+          }
+        },
+        "radius": {
+          "variable": "--radius-control"
+        },
+        "stretch": true,
+        "strokeWeight": {
+          "variable": "form-field:sk-input-border-width:93e20626bf"
         }
       },
       "64995428ec69191f": {
@@ -51094,6 +51303,31 @@
           },
           "left": {
             "variable": "quote:padding-left:fd13bc6365"
+          },
+          "right": {
+            "expression": "0",
+            "value": 0
+          },
+          "top": {
+            "expression": "0",
+            "value": 0
+          }
+        },
+        "stretch": true
+      },
+      "a1cebf7e9c137591": {
+        "clipsContent": false,
+        "crossAlign": "MIN",
+        "direction": "HORIZONTAL",
+        "mainAlign": "MIN",
+        "padding": {
+          "bottom": {
+            "expression": "0",
+            "value": 0
+          },
+          "left": {
+            "expression": "0",
+            "value": 0
           },
           "right": {
             "expression": "0",
@@ -64694,6 +64928,90 @@
           "textProperty": "children"
         }
       ],
+      "4d6856edb6cfa640": [
+        {
+          "fill": true,
+          "kind": "text",
+          "slot": "label",
+          "text": {
+            "fill": {
+              "color": {
+                "variable": "--color-text-primary"
+              },
+              "type": "SOLID"
+            },
+            "fontFamily": {
+              "variable": "--font-family-body"
+            },
+            "fontSize": {
+              "variable": "--font-size-body-sm"
+            },
+            "fontWeight": {
+              "variable": "--font-weight-label"
+            },
+            "lineHeight": 150
+          },
+          "textProperty": "label"
+        },
+        {
+          "fill": true,
+          "kind": "text",
+          "slot": "hint",
+          "text": {
+            "fill": {
+              "color": {
+                "variable": "--color-text-secondary"
+              },
+              "type": "SOLID"
+            },
+            "fontFamily": {
+              "variable": "--font-family-body"
+            },
+            "fontSize": {
+              "variable": "--font-size-caption"
+            },
+            "fontWeight": {
+              "variable": "--font-weight-body"
+            },
+            "lineHeight": 150
+          },
+          "textProperty": "hint",
+          "visibleProperty": "show hint"
+        },
+        {
+          "box": "64593ab0206b2a98",
+          "kind": "frame",
+          "layers": [
+            {
+              "fill": true,
+              "kind": "text",
+              "slot": "placeholder",
+              "text": {
+                "fill": {
+                  "color": {
+                    "variable": "--color-text-tertiary"
+                  },
+                  "type": "SOLID"
+                },
+                "fontFamily": {
+                  "variable": "--font-family-body"
+                },
+                "fontSize": {
+                  "variable": "--font-size-body"
+                },
+                "fontWeight": {
+                  "variable": "--font-weight-body"
+                },
+                "lineHeight": 150
+              },
+              "textProperty": "placeholder",
+              "visibleProperty": "show placeholder"
+            }
+          ],
+          "slot": "input",
+          "surface": "531c78c45ff2f131"
+        }
+      ],
       "4ef0e5808c495f00": [
         {
           "kind": "text",
@@ -70006,6 +70324,121 @@
           "kind": "icon",
           "slot": "post",
           "visibleProperty": "post"
+        }
+      ],
+      "7a26cbd36d9fe1ef": [
+        {
+          "box": "a1cebf7e9c137591",
+          "kind": "frame",
+          "layers": [
+            {
+              "kind": "text",
+              "slot": "label",
+              "text": {
+                "fill": {
+                  "color": {
+                    "variable": "--color-text-disabled"
+                  },
+                  "type": "SOLID"
+                },
+                "fontFamily": {
+                  "variable": "--font-family-body"
+                },
+                "fontSize": {
+                  "variable": "--font-size-body-sm"
+                },
+                "fontWeight": {
+                  "variable": "--font-weight-label"
+                },
+                "lineHeight": 150
+              },
+              "textProperty": "label"
+            },
+            {
+              "characters": "*",
+              "kind": "text",
+              "slot": "text",
+              "text": {
+                "fill": {
+                  "color": {
+                    "variable": "--color-text-danger"
+                  },
+                  "type": "SOLID"
+                },
+                "fontFamily": {
+                  "variable": "--font-family-body"
+                },
+                "fontSize": {
+                  "variable": "--font-size-body-sm"
+                },
+                "fontWeight": {
+                  "variable": "--font-weight-label"
+                },
+                "lineHeight": 150
+              },
+              "textProperty": "text"
+            }
+          ],
+          "slot": "label",
+          "surface": "fa0b643878e9242d"
+        },
+        {
+          "fill": true,
+          "kind": "text",
+          "slot": "hint",
+          "text": {
+            "fill": {
+              "color": {
+                "variable": "--color-text-disabled"
+              },
+              "type": "SOLID"
+            },
+            "fontFamily": {
+              "variable": "--font-family-body"
+            },
+            "fontSize": {
+              "variable": "--font-size-caption"
+            },
+            "fontWeight": {
+              "variable": "--font-weight-body"
+            },
+            "lineHeight": 150
+          },
+          "textProperty": "hint",
+          "visibleProperty": "show hint"
+        },
+        {
+          "box": "64593ab0206b2a98",
+          "kind": "frame",
+          "layers": [
+            {
+              "fill": true,
+              "kind": "text",
+              "slot": "placeholder",
+              "text": {
+                "fill": {
+                  "color": {
+                    "variable": "--color-text-tertiary"
+                  },
+                  "type": "SOLID"
+                },
+                "fontFamily": {
+                  "variable": "--font-family-body"
+                },
+                "fontSize": {
+                  "variable": "--font-size-body"
+                },
+                "fontWeight": {
+                  "variable": "--font-weight-body"
+                },
+                "lineHeight": 150
+              },
+              "textProperty": "placeholder",
+              "visibleProperty": "show placeholder"
+            }
+          ],
+          "slot": "input",
+          "surface": "7ea5a7347d847678"
         }
       ],
       "7a2864291146287a": [
@@ -77633,6 +78066,121 @@
           "surface": "fa0b643878e9242d"
         }
       ],
+      "a90853d681e82cd6": [
+        {
+          "box": "a1cebf7e9c137591",
+          "kind": "frame",
+          "layers": [
+            {
+              "kind": "text",
+              "slot": "label",
+              "text": {
+                "fill": {
+                  "color": {
+                    "variable": "--color-text-primary"
+                  },
+                  "type": "SOLID"
+                },
+                "fontFamily": {
+                  "variable": "--font-family-body"
+                },
+                "fontSize": {
+                  "variable": "--font-size-body-sm"
+                },
+                "fontWeight": {
+                  "variable": "--font-weight-label"
+                },
+                "lineHeight": 150
+              },
+              "textProperty": "label"
+            },
+            {
+              "characters": "*",
+              "kind": "text",
+              "slot": "text",
+              "text": {
+                "fill": {
+                  "color": {
+                    "variable": "--color-text-danger"
+                  },
+                  "type": "SOLID"
+                },
+                "fontFamily": {
+                  "variable": "--font-family-body"
+                },
+                "fontSize": {
+                  "variable": "--font-size-body-sm"
+                },
+                "fontWeight": {
+                  "variable": "--font-weight-label"
+                },
+                "lineHeight": 150
+              },
+              "textProperty": "text"
+            }
+          ],
+          "slot": "label",
+          "surface": "fa0b643878e9242d"
+        },
+        {
+          "fill": true,
+          "kind": "text",
+          "slot": "hint",
+          "text": {
+            "fill": {
+              "color": {
+                "variable": "--color-text-secondary"
+              },
+              "type": "SOLID"
+            },
+            "fontFamily": {
+              "variable": "--font-family-body"
+            },
+            "fontSize": {
+              "variable": "--font-size-caption"
+            },
+            "fontWeight": {
+              "variable": "--font-weight-body"
+            },
+            "lineHeight": 150
+          },
+          "textProperty": "hint",
+          "visibleProperty": "show hint"
+        },
+        {
+          "box": "64593ab0206b2a98",
+          "kind": "frame",
+          "layers": [
+            {
+              "fill": true,
+              "kind": "text",
+              "slot": "placeholder",
+              "text": {
+                "fill": {
+                  "color": {
+                    "variable": "--color-text-tertiary"
+                  },
+                  "type": "SOLID"
+                },
+                "fontFamily": {
+                  "variable": "--font-family-body"
+                },
+                "fontSize": {
+                  "variable": "--font-size-body"
+                },
+                "fontWeight": {
+                  "variable": "--font-weight-body"
+                },
+                "lineHeight": 150
+              },
+              "textProperty": "placeholder",
+              "visibleProperty": "show placeholder"
+            }
+          ],
+          "slot": "input",
+          "surface": "531c78c45ff2f131"
+        }
+      ],
       "a9354b05cfc97bc4": [
         {
           "box": "c5e0c9bb13e58cc6",
@@ -82278,6 +82826,90 @@
             "lineHeight": 150
           },
           "textProperty": "children"
+        }
+      ],
+      "d65e1a69e72251f9": [
+        {
+          "fill": true,
+          "kind": "text",
+          "slot": "label",
+          "text": {
+            "fill": {
+              "color": {
+                "variable": "--color-text-disabled"
+              },
+              "type": "SOLID"
+            },
+            "fontFamily": {
+              "variable": "--font-family-body"
+            },
+            "fontSize": {
+              "variable": "--font-size-body-sm"
+            },
+            "fontWeight": {
+              "variable": "--font-weight-label"
+            },
+            "lineHeight": 150
+          },
+          "textProperty": "label"
+        },
+        {
+          "fill": true,
+          "kind": "text",
+          "slot": "hint",
+          "text": {
+            "fill": {
+              "color": {
+                "variable": "--color-text-disabled"
+              },
+              "type": "SOLID"
+            },
+            "fontFamily": {
+              "variable": "--font-family-body"
+            },
+            "fontSize": {
+              "variable": "--font-size-caption"
+            },
+            "fontWeight": {
+              "variable": "--font-weight-body"
+            },
+            "lineHeight": 150
+          },
+          "textProperty": "hint",
+          "visibleProperty": "show hint"
+        },
+        {
+          "box": "64593ab0206b2a98",
+          "kind": "frame",
+          "layers": [
+            {
+              "fill": true,
+              "kind": "text",
+              "slot": "placeholder",
+              "text": {
+                "fill": {
+                  "color": {
+                    "variable": "--color-text-tertiary"
+                  },
+                  "type": "SOLID"
+                },
+                "fontFamily": {
+                  "variable": "--font-family-body"
+                },
+                "fontSize": {
+                  "variable": "--font-size-body"
+                },
+                "fontWeight": {
+                  "variable": "--font-weight-body"
+                },
+                "lineHeight": 150
+              },
+              "textProperty": "placeholder",
+              "visibleProperty": "show placeholder"
+            }
+          ],
+          "slot": "input",
+          "surface": "7ea5a7347d847678"
         }
       ],
       "d7186049ed1f7f09": [
@@ -110483,6 +111115,50 @@
         "light": {
           "kind": "literal",
           "value": 48
+        }
+      }
+    },
+    {
+      "codeSyntax": "var(--sk-input-border-width)",
+      "collection": "component",
+      "expression": "1px",
+      "id": "form-field:sk-input-border-width:93e20626bf",
+      "name": "form-field/sk-input-border-width",
+      "source": {
+        "dark": "literal",
+        "light": "literal"
+      },
+      "type": "FLOAT",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": 1
+        },
+        "light": {
+          "kind": "literal",
+          "value": 1
+        }
+      }
+    },
+    {
+      "codeSyntax": "var(--sk-input-height)",
+      "collection": "component",
+      "expression": "max(var(--size-control-md), var(--size-touch-target))",
+      "id": "form-field:sk-input-height:2dce2436e5",
+      "name": "form-field/sk-input-height",
+      "source": {
+        "dark": "evaluated",
+        "light": "evaluated"
+      },
+      "type": "FLOAT",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": 44
+        },
+        "light": {
+          "kind": "literal",
+          "value": 44
         }
       }
     },
