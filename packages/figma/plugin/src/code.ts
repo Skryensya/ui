@@ -390,6 +390,13 @@ type Bindable = SceneNode & { setBoundVariable(field: VariableBindableNodeField,
 function setNumber(ctx: Ctx, node: Bindable, field: VariableBindableNodeField, bound: M.Bound<number> | undefined, fallback?: number) {
   const record = node as unknown as Record<string, unknown>;
   const boundVars = (node.boundVariables ?? {}) as Record<string, unknown>;
+  // A min or max of 0 (`min-inline-size: 0`), or none at all, is no limit: Figma says that with null
+  // and refuses a 0.
+  if (/^(min|max)(Width|Height)$/.test(field) && (bound === undefined || valueOf<number>(bound) === 0)) {
+    if (boundVars[field]) node.setBoundVariable(field, null);
+    if (record[field] !== null) record[field] = null;
+    return;
+  }
   if (bound && "variable" in bound) {
     const value = valueOf<number>(bound);
     if (field === "width" || field === "height") resizeField(node, field, value);
