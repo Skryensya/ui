@@ -77,6 +77,8 @@ export type Box = {
   width?: Bound<number>;
   height?: Bound<number>;
   minHeight?: Bound<number>;
+  /** `min-inline-size`: a Kbd's floor, so a one-glyph key stays square. */
+  minWidth?: Bound<number>;
   padding: { top: Bound<number>; right: Bound<number>; bottom: Bound<number>; left: Bound<number> };
   gap?: Bound<number>;
   radius?: Bound<number>;
@@ -180,7 +182,16 @@ export type ComponentSet = {
    * Instances drawn beside each row: the row's button at `base` with one optional slot switched
    * on. A slot's icon is a component property, not a Figma variant, so only an instance shows it.
    */
-  showcase: { base: Record<string, string>; columns: { slot: string; properties: Record<string, boolean> }[] };
+  showcase: {
+    base: Record<string, string>;
+    /** The heading over the columns; absent, they switch icons on ("with icon"). */
+    title?: string;
+    /**
+     * One instance per column: `properties` set on it (an icon slot switched on, or a text slot given
+     * a sample). `slot` keys the instance; `label` heads the column, absent `<slot>: on`.
+     */
+    columns: { slot: string; label?: string; properties: Record<string, boolean | string> }[];
+  };
   properties: ComponentProperty[];
   cells: Cell[];
   contractHash: string;

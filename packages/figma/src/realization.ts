@@ -46,6 +46,12 @@ export type Realization = {
    */
   slots: Readonly<Record<string, { holds: "icon"; icon: string } | { holds: "text"; sample: string; iconWhen?: string; icon?: string }>>;
   /**
+   * Texts a slot is shown with beside each row, as instances of the row's own variant: the labels a
+   * component really carries (a Kbd's ⌘, Esc, Enter), so the set shows how it holds each, not only
+   * its one sample. `title` heads those columns.
+   */
+  samples?: { slot: string; title: string; values: readonly string[] };
+  /**
    * The icon set that draws the Icon contract in Figma, as a module and export. A set is a brand the
    * consumer picks (decision 15), so Figma draws with the one the docs draw with.
    */

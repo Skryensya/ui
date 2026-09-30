@@ -965,6 +965,7 @@ async function applyCell(ctx: SetCtx, node: ComponentNode, cell: M.Cell, sample:
       setNumber(ctx, node, corner, box.radius, 0);
     }
     setNumber(ctx, node, "minHeight", box.minHeight);
+    setNumber(ctx, node, "minWidth", box.minWidth);
     setNumber(ctx, node, "width", box.width);
     setNumber(ctx, node, "height", box.height);
     node.strokeAlign = "INSIDE";
@@ -1142,17 +1143,17 @@ async function planLayout(ctx: Ctx, frame: FrameNode, spec: M.ComponentSet, cell
     }
   });
   // The showcase's columns, right of the set, with their headings: known before any row is drawn.
-  const showW = showcaseWidths(spec, cellW);
+  const showW = await showcaseWidths(ctx, spec, cellW);
   const showX: number[] = [];
   let x = setX + colX[colX.length - 1] + cellW + INNER + GROUP;
   spec.showcase.columns.forEach((column, i) => {
     showX.push(x);
     const header = `showcase:${column.slot}`;
     keep.add(header);
-    move(run, ensureLabel(ctx, frame, header, `${column.slot}: on`, style), Math.round(x), setY - lineH - 8);
+    move(run, ensureLabel(ctx, frame, header, column.label ?? `${column.slot}: on`, style), Math.round(x), setY - lineH - 8);
     if (i === 0) {
       keep.add("showcase:group");
-      move(run, ensureLabel(ctx, frame, "showcase:group", "with icon", strong), Math.round(x), setY - 2 * (lineH + 8));
+      move(run, ensureLabel(ctx, frame, "showcase:group", spec.showcase.title ?? "with icon", strong), Math.round(x), setY - 2 * (lineH + 8));
     }
     x += showW[i] + 24;
   });
@@ -1200,16 +1201,48 @@ async function measureFirst(ctx: Ctx, spec: M.ComponentSet, set: ComponentSetNod
   return { w: Math.ceil(Number(valueOf(box.padding.left)) + textW + Number(valueOf(box.padding.right)) + border), h: cellH };
 }
 
-/** Each showcase column's width: the first variant with that slot's icon and the gap before it. */
-function showcaseWidths(spec: M.ComponentSet, cellW: number): number[] {
+/**
+ * Each showcase column's width: the first variant with that slot's icon and the gap before it, or,
+ * for a text sample, the variant as wide as that text makes it (its padding, border and the text
+ * measured), never narrower than the variant itself.
+ */
+async function showcaseWidths(ctx: Ctx, spec: M.ComponentSet, cellW: number): Promise<number[]> {
   const first = firstCellOf(spec);
   if (!first) return spec.showcase.columns.map(() => cellW);
   const box = manifest.styles.boxes[first.box];
   const gap = box.gap ? Number(valueOf(box.gap)) : 0;
-  return spec.showcase.columns.map((column) => {
+  const out: number[] = [];
+  for (const column of spec.showcase.columns) {
+    const text = Object.entries(column.properties).find((entry): entry is [string, string] => typeof entry[1] === "string");
+    if (text) {
+      out.push(Math.max(cellW, await widthWith(ctx, first, box, text[1])));
+      continue;
+    }
     const icon = manifest.styles.layers[first.layers].find((l) => l.kind === "icon" && l.slot === column.slot);
-    return Math.ceil(cellW + (icon?.kind === "icon" ? gap + Number(valueOf(icon.icon.size)) : 0));
+    out.push(Math.ceil(cellW + (icon?.kind === "icon" ? gap + Number(valueOf(icon.icon.size)) : 0)));
+  }
+  return out;
+}
+
+/** A variant's width holding `chars` in its text layer: padding, border and the text, measured. */
+async function widthWith(ctx: Ctx, cell: M.Cell, box: M.Box, chars: string): Promise<number> {
+  const label = manifest.styles.layers[cell.layers].find((l): l is Extract<M.Layer, { kind: "text" }> => l.kind === "text");
+  if (!label) return 0;
+  const font = await fontFor(ctx.run, String(valueOf(label.text.fontFamily)), Number(valueOf(label.text.fontWeight)));
+  let textW = 0;
+  ctx.run.write(() => {
+    const probe = figma.createText();
+    probe.fontName = font;
+    probe.fontSize = Number(valueOf(label.text.fontSize));
+    probe.textAutoResize = "WIDTH_AND_HEIGHT";
+    probe.characters = chars;
+    textW = probe.width;
+    probe.remove();
   });
+  const stroked = manifest.styles.surfaces[cell.surface].strokes.length > 0 && box.strokeWeight;
+  const border = stroked ? 2 * Number(valueOf(box.strokeWeight!)) : 0;
+  const minWidth = box.minWidth && Number(valueOf(box.minWidth));
+  return Math.ceil(Math.max(Number(valueOf(box.padding.left)) + textW + Number(valueOf(box.padding.right)) + border, minWidth || 0));
 }
 
 /** Where a set's frame content ends on the right: the showcase's last column, or the set. */
@@ -1291,13 +1324,13 @@ async function drawShowcaseRow(
     if (!node) continue;
     const n = node;
     tag(run, n, { id: `${spec.id}/showcase/${tagKey}` });
-    const want: Record<string, boolean> = {};
+    const want: Record<string, boolean | string> = {};
     for (const [name, value] of Object.entries(column.properties)) {
       const key = keys[name];
       if (key && n.componentProperties[key]?.value !== value) want[key] = value;
     }
     if (Object.keys(want).length) run.write(() => n.setProperties(want));
-    const name = `${column.slot} · ${Object.values(combo).join(" · ")}`;
+    const name = `${column.label ?? column.slot} · ${Object.values(combo).join(" · ")}`;
     if (n.name !== name) run.write(() => (n.name = name));
     move(run, n, Math.round(layout.showX[col]), Math.round(layout.setY + layout.rowY[row] + (layout.cellH - n.height) / 2));
   }

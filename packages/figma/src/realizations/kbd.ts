@@ -1,7 +1,10 @@
 import type { Realization } from "../realization.js";
 import { icons, noStates, stage } from "./shared.js";
 
-/* Kbd, as Figma structure: a drawn key. One set per appearance, its tones across. */
+/*
+ * Kbd, as Figma structure: a drawn key. One set per appearance, its tones across, and beside each
+ * tone the same key holding the labels a shortcut really uses.
+ */
 export const kbdRealization: Realization = {
   contract: "kbd",
   signature: "Kbd",
@@ -12,6 +15,8 @@ export const kbdRealization: Realization = {
   ring: "focus ring",
   exclude: [],
   slots: { children: { holds: "text", sample: "K" } },
+  // The keys a shortcut really shows: glyphs that stay square, and words that widen the key.
+  samples: { slot: "children", title: "as other keys", values: ["⌘", "⇧", "⌥", "Esc", "Enter", "↵", "Space"] },
   icons,
   grid: { columns: ["tone"], rows: [], descending: [] },
   stage,

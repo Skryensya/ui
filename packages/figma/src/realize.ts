@@ -194,6 +194,7 @@ export function frameOf(ctx: Context): Frame {
     width: number(ctx, "width", "width"),
     height: number(ctx, "height", "height"),
     minHeight: number(ctx, "min-height", "min-height"),
+    minWidth: number(ctx, "min-width", "min-width"),
     padding: { top: padding("top"), right: padding("right"), bottom: padding("bottom"), left: padding("left") },
     gap: number(ctx, "gap", "gap"),
     radius: number(ctx, "border-radius", "radius"),
