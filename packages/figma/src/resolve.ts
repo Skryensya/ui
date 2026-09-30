@@ -254,7 +254,8 @@ export const substituted = (text: string, ctx: Context): string => pickMode(subs
 /** Replace `currentColor` with the element's own `color`, as the browser's used value does. */
 function withCurrentColor(text: string, ctx: Context): string {
   if (!/currentcolor/i.test(text)) return text;
-  const color = ctx.computed.get("color");
+  // Not set by the component's sheets, it is the page's (the stage's inherited colour).
+  const color = ctx.computed.get("color") ?? ctx.inherited?.color;
   if (color === undefined) throw new Unsupported(`currentColor with no color on the element`);
   return text.replace(/currentcolor/gi, color);
 }
