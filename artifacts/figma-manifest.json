@@ -42552,6 +42552,1582 @@
         "columns": []
       },
       "visualHash": "55e0888ba090f080"
+    },
+    {
+      "axes": [
+        {
+          "name": "size",
+          "values": [
+            "xs",
+            "sm",
+            "md"
+          ]
+        },
+        {
+          "name": "variant",
+          "values": [
+            "soft",
+            "ghost"
+          ]
+        },
+        {
+          "name": "state",
+          "values": [
+            "rest",
+            "hover",
+            "focus",
+            "copied"
+          ]
+        }
+      ],
+      "cells": [
+        {
+          "box": "df3fc23057fa8317",
+          "hash": "0b6caaa95a4e79f6",
+          "id": "copy-button/plain/size=xs,state=rest,variant=soft",
+          "key": "size=xs, variant=soft, state=rest",
+          "layers": "e810be693b99a617",
+          "props": {
+            "size": "xs",
+            "state": "rest",
+            "variant": "soft"
+          },
+          "surface": "bfedcb8630222331"
+        },
+        {
+          "box": "df3fc23057fa8317",
+          "hash": "1af2eba09899b99a",
+          "id": "copy-button/plain/size=xs,state=hover,variant=soft",
+          "key": "size=xs, variant=soft, state=hover",
+          "layers": "3c3332f11abcb9ba",
+          "props": {
+            "size": "xs",
+            "state": "hover",
+            "variant": "soft"
+          },
+          "surface": "bfedcb8630222331"
+        },
+        {
+          "box": "64995428ec69191f",
+          "hash": "51d1d1d00ad3ff99",
+          "id": "copy-button/plain/size=xs,state=focus,variant=soft",
+          "key": "size=xs, variant=soft, state=focus",
+          "layers": "1d0cae70209d3df9",
+          "props": {
+            "size": "xs",
+            "state": "focus",
+            "variant": "soft"
+          },
+          "surface": "bfedcb8630222331"
+        },
+        {
+          "box": "df3fc23057fa8317",
+          "hash": "b2b7721b5926718d",
+          "id": "copy-button/plain/size=xs,state=copied,variant=soft",
+          "key": "size=xs, variant=soft, state=copied",
+          "layers": "a9debe6156810f17",
+          "props": {
+            "size": "xs",
+            "state": "copied",
+            "variant": "soft"
+          },
+          "surface": "bfedcb8630222331"
+        },
+        {
+          "box": "df3fc23057fa8317",
+          "hash": "daea1b2a816cad32",
+          "id": "copy-button/plain/size=xs,state=rest,variant=ghost",
+          "key": "size=xs, variant=ghost, state=rest",
+          "layers": "e810be693b99a617",
+          "props": {
+            "size": "xs",
+            "state": "rest",
+            "variant": "ghost"
+          },
+          "surface": "4c1139c8cf941d76"
+        },
+        {
+          "box": "df3fc23057fa8317",
+          "hash": "f8ea3096456677b2",
+          "id": "copy-button/plain/size=xs,state=hover,variant=ghost",
+          "key": "size=xs, variant=ghost, state=hover",
+          "layers": "3c3332f11abcb9ba",
+          "props": {
+            "size": "xs",
+            "state": "hover",
+            "variant": "ghost"
+          },
+          "surface": "4c1139c8cf941d76"
+        },
+        {
+          "box": "64995428ec69191f",
+          "hash": "bc1960990ca4f5ba",
+          "id": "copy-button/plain/size=xs,state=focus,variant=ghost",
+          "key": "size=xs, variant=ghost, state=focus",
+          "layers": "1d0cae70209d3df9",
+          "props": {
+            "size": "xs",
+            "state": "focus",
+            "variant": "ghost"
+          },
+          "surface": "4c1139c8cf941d76"
+        },
+        {
+          "box": "df3fc23057fa8317",
+          "hash": "7b02076061f6df2e",
+          "id": "copy-button/plain/size=xs,state=copied,variant=ghost",
+          "key": "size=xs, variant=ghost, state=copied",
+          "layers": "a9debe6156810f17",
+          "props": {
+            "size": "xs",
+            "state": "copied",
+            "variant": "ghost"
+          },
+          "surface": "4c1139c8cf941d76"
+        },
+        {
+          "box": "43929b9379d0a7c5",
+          "hash": "ac870dc6cbe00242",
+          "id": "copy-button/plain/size=sm,state=rest,variant=soft",
+          "key": "size=sm, variant=soft, state=rest",
+          "layers": "2282b85430703904",
+          "props": {
+            "size": "sm",
+            "state": "rest",
+            "variant": "soft"
+          },
+          "surface": "bfedcb8630222331"
+        },
+        {
+          "box": "43929b9379d0a7c5",
+          "hash": "8812df96f1570cf2",
+          "id": "copy-button/plain/size=sm,state=hover,variant=soft",
+          "key": "size=sm, variant=soft, state=hover",
+          "layers": "47984525024c607e",
+          "props": {
+            "size": "sm",
+            "state": "hover",
+            "variant": "soft"
+          },
+          "surface": "bfedcb8630222331"
+        },
+        {
+          "box": "3cf875a226ebbbaf",
+          "hash": "3eca3d67b2765d95",
+          "id": "copy-button/plain/size=sm,state=focus,variant=soft",
+          "key": "size=sm, variant=soft, state=focus",
+          "layers": "ed205a61b6fc078d",
+          "props": {
+            "size": "sm",
+            "state": "focus",
+            "variant": "soft"
+          },
+          "surface": "bfedcb8630222331"
+        },
+        {
+          "box": "43929b9379d0a7c5",
+          "hash": "8faf62c3b65c0a45",
+          "id": "copy-button/plain/size=sm,state=copied,variant=soft",
+          "key": "size=sm, variant=soft, state=copied",
+          "layers": "72d193586fc89874",
+          "props": {
+            "size": "sm",
+            "state": "copied",
+            "variant": "soft"
+          },
+          "surface": "bfedcb8630222331"
+        },
+        {
+          "box": "43929b9379d0a7c5",
+          "hash": "0f3e7475a50b0597",
+          "id": "copy-button/plain/size=sm,state=rest,variant=ghost",
+          "key": "size=sm, variant=ghost, state=rest",
+          "layers": "2282b85430703904",
+          "props": {
+            "size": "sm",
+            "state": "rest",
+            "variant": "ghost"
+          },
+          "surface": "4c1139c8cf941d76"
+        },
+        {
+          "box": "43929b9379d0a7c5",
+          "hash": "fd4d97e4d6d83d1e",
+          "id": "copy-button/plain/size=sm,state=hover,variant=ghost",
+          "key": "size=sm, variant=ghost, state=hover",
+          "layers": "47984525024c607e",
+          "props": {
+            "size": "sm",
+            "state": "hover",
+            "variant": "ghost"
+          },
+          "surface": "4c1139c8cf941d76"
+        },
+        {
+          "box": "3cf875a226ebbbaf",
+          "hash": "cebed649af9fbc7b",
+          "id": "copy-button/plain/size=sm,state=focus,variant=ghost",
+          "key": "size=sm, variant=ghost, state=focus",
+          "layers": "ed205a61b6fc078d",
+          "props": {
+            "size": "sm",
+            "state": "focus",
+            "variant": "ghost"
+          },
+          "surface": "4c1139c8cf941d76"
+        },
+        {
+          "box": "43929b9379d0a7c5",
+          "hash": "48916987912723aa",
+          "id": "copy-button/plain/size=sm,state=copied,variant=ghost",
+          "key": "size=sm, variant=ghost, state=copied",
+          "layers": "72d193586fc89874",
+          "props": {
+            "size": "sm",
+            "state": "copied",
+            "variant": "ghost"
+          },
+          "surface": "4c1139c8cf941d76"
+        },
+        {
+          "box": "3b7b5285867526f3",
+          "hash": "7e368b7ac262a1e0",
+          "id": "copy-button/plain/size=md,state=rest,variant=soft",
+          "key": "size=md, variant=soft, state=rest",
+          "layers": "0dd62506d4d8c66a",
+          "props": {
+            "size": "md",
+            "state": "rest",
+            "variant": "soft"
+          },
+          "surface": "bfedcb8630222331"
+        },
+        {
+          "box": "3b7b5285867526f3",
+          "hash": "487405c3a6629eac",
+          "id": "copy-button/plain/size=md,state=hover,variant=soft",
+          "key": "size=md, variant=soft, state=hover",
+          "layers": "288b48c117704667",
+          "props": {
+            "size": "md",
+            "state": "hover",
+            "variant": "soft"
+          },
+          "surface": "bfedcb8630222331"
+        },
+        {
+          "box": "e16b1cd972055eff",
+          "hash": "68decb0773ca000c",
+          "id": "copy-button/plain/size=md,state=focus,variant=soft",
+          "key": "size=md, variant=soft, state=focus",
+          "layers": "a13e72f50fc8dbba",
+          "props": {
+            "size": "md",
+            "state": "focus",
+            "variant": "soft"
+          },
+          "surface": "bfedcb8630222331"
+        },
+        {
+          "box": "3b7b5285867526f3",
+          "hash": "364009a6ac9f3f97",
+          "id": "copy-button/plain/size=md,state=copied,variant=soft",
+          "key": "size=md, variant=soft, state=copied",
+          "layers": "e192b7d44d0bf3ee",
+          "props": {
+            "size": "md",
+            "state": "copied",
+            "variant": "soft"
+          },
+          "surface": "bfedcb8630222331"
+        },
+        {
+          "box": "3b7b5285867526f3",
+          "hash": "655fe4cddb7ef39e",
+          "id": "copy-button/plain/size=md,state=rest,variant=ghost",
+          "key": "size=md, variant=ghost, state=rest",
+          "layers": "0dd62506d4d8c66a",
+          "props": {
+            "size": "md",
+            "state": "rest",
+            "variant": "ghost"
+          },
+          "surface": "4c1139c8cf941d76"
+        },
+        {
+          "box": "3b7b5285867526f3",
+          "hash": "2acdb52a4dd0e39f",
+          "id": "copy-button/plain/size=md,state=hover,variant=ghost",
+          "key": "size=md, variant=ghost, state=hover",
+          "layers": "288b48c117704667",
+          "props": {
+            "size": "md",
+            "state": "hover",
+            "variant": "ghost"
+          },
+          "surface": "4c1139c8cf941d76"
+        },
+        {
+          "box": "e16b1cd972055eff",
+          "hash": "cfbb91de9a40b493",
+          "id": "copy-button/plain/size=md,state=focus,variant=ghost",
+          "key": "size=md, variant=ghost, state=focus",
+          "layers": "a13e72f50fc8dbba",
+          "props": {
+            "size": "md",
+            "state": "focus",
+            "variant": "ghost"
+          },
+          "surface": "4c1139c8cf941d76"
+        },
+        {
+          "box": "3b7b5285867526f3",
+          "hash": "53501605c1d176bb",
+          "id": "copy-button/plain/size=md,state=copied,variant=ghost",
+          "key": "size=md, variant=ghost, state=copied",
+          "layers": "e192b7d44d0bf3ee",
+          "props": {
+            "size": "md",
+            "state": "copied",
+            "variant": "ghost"
+          },
+          "surface": "4c1139c8cf941d76"
+        }
+      ],
+      "contractHash": "7dbc5d593c102ab9",
+      "defaultCell": "size=sm, variant=soft, state=rest",
+      "grid": {
+        "columns": [
+          {
+            "name": "variant",
+            "values": [
+              "soft",
+              "ghost"
+            ]
+          },
+          {
+            "name": "state",
+            "values": [
+              "rest",
+              "hover",
+              "focus",
+              "copied"
+            ]
+          }
+        ],
+        "rows": [
+          {
+            "name": "size",
+            "values": [
+              "md",
+              "sm",
+              "xs"
+            ]
+          }
+        ]
+      },
+      "id": "copy-button/plain",
+      "interactions": [
+        {
+          "axis": "state",
+          "from": "rest",
+          "to": "hover",
+          "trigger": "ON_HOVER"
+        }
+      ],
+      "kind": "component-set",
+      "name": "Copy Button / plain",
+      "page": "skryensya",
+      "properties": [],
+      "showcase": {
+        "base": {
+          "state": "rest"
+        },
+        "columns": []
+      },
+      "visualHash": "6b6b002a88c9e676"
+    },
+    {
+      "axes": [
+        {
+          "name": "size",
+          "values": [
+            "xs",
+            "sm",
+            "md"
+          ]
+        },
+        {
+          "name": "variant",
+          "values": [
+            "soft",
+            "ghost"
+          ]
+        },
+        {
+          "name": "state",
+          "values": [
+            "rest",
+            "hover",
+            "focus",
+            "copied"
+          ]
+        }
+      ],
+      "cells": [
+        {
+          "box": "df3fc23057fa8317",
+          "hash": "91c3b7e2defb4508",
+          "id": "copy-button/tactile/size=xs,state=rest,variant=soft",
+          "key": "size=xs, variant=soft, state=rest",
+          "layers": "e810be693b99a617",
+          "props": {
+            "size": "xs",
+            "state": "rest",
+            "variant": "soft"
+          },
+          "surface": "b295581db084eec5"
+        },
+        {
+          "box": "df3fc23057fa8317",
+          "hash": "edf46c1b1bab2e91",
+          "id": "copy-button/tactile/size=xs,state=hover,variant=soft",
+          "key": "size=xs, variant=soft, state=hover",
+          "layers": "3c3332f11abcb9ba",
+          "props": {
+            "size": "xs",
+            "state": "hover",
+            "variant": "soft"
+          },
+          "surface": "6c12acb129310976"
+        },
+        {
+          "box": "64995428ec69191f",
+          "hash": "2397f4e5545743fe",
+          "id": "copy-button/tactile/size=xs,state=focus,variant=soft",
+          "key": "size=xs, variant=soft, state=focus",
+          "layers": "1d0cae70209d3df9",
+          "props": {
+            "size": "xs",
+            "state": "focus",
+            "variant": "soft"
+          },
+          "surface": "b295581db084eec5"
+        },
+        {
+          "box": "df3fc23057fa8317",
+          "hash": "2f6fd7b2bbfab028",
+          "id": "copy-button/tactile/size=xs,state=copied,variant=soft",
+          "key": "size=xs, variant=soft, state=copied",
+          "layers": "a9debe6156810f17",
+          "props": {
+            "size": "xs",
+            "state": "copied",
+            "variant": "soft"
+          },
+          "surface": "b295581db084eec5"
+        },
+        {
+          "box": "df3fc23057fa8317",
+          "hash": "a28b7352985da29d",
+          "id": "copy-button/tactile/size=xs,state=rest,variant=ghost",
+          "key": "size=xs, variant=ghost, state=rest",
+          "layers": "e810be693b99a617",
+          "props": {
+            "size": "xs",
+            "state": "rest",
+            "variant": "ghost"
+          },
+          "surface": "389d6ceb72c2412f"
+        },
+        {
+          "box": "df3fc23057fa8317",
+          "hash": "e102b08f79dd3884",
+          "id": "copy-button/tactile/size=xs,state=hover,variant=ghost",
+          "key": "size=xs, variant=ghost, state=hover",
+          "layers": "5268eb46d84ea73a",
+          "props": {
+            "size": "xs",
+            "state": "hover",
+            "variant": "ghost"
+          },
+          "surface": "389d6ceb72c2412f"
+        },
+        {
+          "box": "64995428ec69191f",
+          "hash": "9dfbf1c9ec78d602",
+          "id": "copy-button/tactile/size=xs,state=focus,variant=ghost",
+          "key": "size=xs, variant=ghost, state=focus",
+          "layers": "1d0cae70209d3df9",
+          "props": {
+            "size": "xs",
+            "state": "focus",
+            "variant": "ghost"
+          },
+          "surface": "389d6ceb72c2412f"
+        },
+        {
+          "box": "df3fc23057fa8317",
+          "hash": "e479d79a40917405",
+          "id": "copy-button/tactile/size=xs,state=copied,variant=ghost",
+          "key": "size=xs, variant=ghost, state=copied",
+          "layers": "a9debe6156810f17",
+          "props": {
+            "size": "xs",
+            "state": "copied",
+            "variant": "ghost"
+          },
+          "surface": "389d6ceb72c2412f"
+        },
+        {
+          "box": "43929b9379d0a7c5",
+          "hash": "4cf4d6796fe98fab",
+          "id": "copy-button/tactile/size=sm,state=rest,variant=soft",
+          "key": "size=sm, variant=soft, state=rest",
+          "layers": "2282b85430703904",
+          "props": {
+            "size": "sm",
+            "state": "rest",
+            "variant": "soft"
+          },
+          "surface": "b295581db084eec5"
+        },
+        {
+          "box": "43929b9379d0a7c5",
+          "hash": "631b206a6bfc18c8",
+          "id": "copy-button/tactile/size=sm,state=hover,variant=soft",
+          "key": "size=sm, variant=soft, state=hover",
+          "layers": "47984525024c607e",
+          "props": {
+            "size": "sm",
+            "state": "hover",
+            "variant": "soft"
+          },
+          "surface": "6c12acb129310976"
+        },
+        {
+          "box": "3cf875a226ebbbaf",
+          "hash": "79b31927d4635270",
+          "id": "copy-button/tactile/size=sm,state=focus,variant=soft",
+          "key": "size=sm, variant=soft, state=focus",
+          "layers": "ed205a61b6fc078d",
+          "props": {
+            "size": "sm",
+            "state": "focus",
+            "variant": "soft"
+          },
+          "surface": "b295581db084eec5"
+        },
+        {
+          "box": "43929b9379d0a7c5",
+          "hash": "9704f7f591fb9eb5",
+          "id": "copy-button/tactile/size=sm,state=copied,variant=soft",
+          "key": "size=sm, variant=soft, state=copied",
+          "layers": "72d193586fc89874",
+          "props": {
+            "size": "sm",
+            "state": "copied",
+            "variant": "soft"
+          },
+          "surface": "b295581db084eec5"
+        },
+        {
+          "box": "43929b9379d0a7c5",
+          "hash": "5b2cd8373af4df47",
+          "id": "copy-button/tactile/size=sm,state=rest,variant=ghost",
+          "key": "size=sm, variant=ghost, state=rest",
+          "layers": "2282b85430703904",
+          "props": {
+            "size": "sm",
+            "state": "rest",
+            "variant": "ghost"
+          },
+          "surface": "389d6ceb72c2412f"
+        },
+        {
+          "box": "43929b9379d0a7c5",
+          "hash": "031c5210fdd861f5",
+          "id": "copy-button/tactile/size=sm,state=hover,variant=ghost",
+          "key": "size=sm, variant=ghost, state=hover",
+          "layers": "7299ad248120151a",
+          "props": {
+            "size": "sm",
+            "state": "hover",
+            "variant": "ghost"
+          },
+          "surface": "389d6ceb72c2412f"
+        },
+        {
+          "box": "3cf875a226ebbbaf",
+          "hash": "58b0ce811940b89d",
+          "id": "copy-button/tactile/size=sm,state=focus,variant=ghost",
+          "key": "size=sm, variant=ghost, state=focus",
+          "layers": "ed205a61b6fc078d",
+          "props": {
+            "size": "sm",
+            "state": "focus",
+            "variant": "ghost"
+          },
+          "surface": "389d6ceb72c2412f"
+        },
+        {
+          "box": "43929b9379d0a7c5",
+          "hash": "1236daea7aabfabf",
+          "id": "copy-button/tactile/size=sm,state=copied,variant=ghost",
+          "key": "size=sm, variant=ghost, state=copied",
+          "layers": "72d193586fc89874",
+          "props": {
+            "size": "sm",
+            "state": "copied",
+            "variant": "ghost"
+          },
+          "surface": "389d6ceb72c2412f"
+        },
+        {
+          "box": "3b7b5285867526f3",
+          "hash": "48ffccd6158906ee",
+          "id": "copy-button/tactile/size=md,state=rest,variant=soft",
+          "key": "size=md, variant=soft, state=rest",
+          "layers": "0dd62506d4d8c66a",
+          "props": {
+            "size": "md",
+            "state": "rest",
+            "variant": "soft"
+          },
+          "surface": "b295581db084eec5"
+        },
+        {
+          "box": "3b7b5285867526f3",
+          "hash": "c3910a8c4c9b431a",
+          "id": "copy-button/tactile/size=md,state=hover,variant=soft",
+          "key": "size=md, variant=soft, state=hover",
+          "layers": "288b48c117704667",
+          "props": {
+            "size": "md",
+            "state": "hover",
+            "variant": "soft"
+          },
+          "surface": "6c12acb129310976"
+        },
+        {
+          "box": "e16b1cd972055eff",
+          "hash": "8896d37e976a18ed",
+          "id": "copy-button/tactile/size=md,state=focus,variant=soft",
+          "key": "size=md, variant=soft, state=focus",
+          "layers": "a13e72f50fc8dbba",
+          "props": {
+            "size": "md",
+            "state": "focus",
+            "variant": "soft"
+          },
+          "surface": "b295581db084eec5"
+        },
+        {
+          "box": "3b7b5285867526f3",
+          "hash": "38d8b18c550cbdb5",
+          "id": "copy-button/tactile/size=md,state=copied,variant=soft",
+          "key": "size=md, variant=soft, state=copied",
+          "layers": "e192b7d44d0bf3ee",
+          "props": {
+            "size": "md",
+            "state": "copied",
+            "variant": "soft"
+          },
+          "surface": "b295581db084eec5"
+        },
+        {
+          "box": "3b7b5285867526f3",
+          "hash": "34881a3644b30833",
+          "id": "copy-button/tactile/size=md,state=rest,variant=ghost",
+          "key": "size=md, variant=ghost, state=rest",
+          "layers": "0dd62506d4d8c66a",
+          "props": {
+            "size": "md",
+            "state": "rest",
+            "variant": "ghost"
+          },
+          "surface": "389d6ceb72c2412f"
+        },
+        {
+          "box": "3b7b5285867526f3",
+          "hash": "9d0bd85344688c5d",
+          "id": "copy-button/tactile/size=md,state=hover,variant=ghost",
+          "key": "size=md, variant=ghost, state=hover",
+          "layers": "b267ac9961328b26",
+          "props": {
+            "size": "md",
+            "state": "hover",
+            "variant": "ghost"
+          },
+          "surface": "389d6ceb72c2412f"
+        },
+        {
+          "box": "e16b1cd972055eff",
+          "hash": "98858e693684ca77",
+          "id": "copy-button/tactile/size=md,state=focus,variant=ghost",
+          "key": "size=md, variant=ghost, state=focus",
+          "layers": "a13e72f50fc8dbba",
+          "props": {
+            "size": "md",
+            "state": "focus",
+            "variant": "ghost"
+          },
+          "surface": "389d6ceb72c2412f"
+        },
+        {
+          "box": "3b7b5285867526f3",
+          "hash": "d4254e707437b9ed",
+          "id": "copy-button/tactile/size=md,state=copied,variant=ghost",
+          "key": "size=md, variant=ghost, state=copied",
+          "layers": "e192b7d44d0bf3ee",
+          "props": {
+            "size": "md",
+            "state": "copied",
+            "variant": "ghost"
+          },
+          "surface": "389d6ceb72c2412f"
+        }
+      ],
+      "contractHash": "7dbc5d593c102ab9",
+      "defaultCell": "size=sm, variant=soft, state=rest",
+      "grid": {
+        "columns": [
+          {
+            "name": "variant",
+            "values": [
+              "soft",
+              "ghost"
+            ]
+          },
+          {
+            "name": "state",
+            "values": [
+              "rest",
+              "hover",
+              "focus",
+              "copied"
+            ]
+          }
+        ],
+        "rows": [
+          {
+            "name": "size",
+            "values": [
+              "md",
+              "sm",
+              "xs"
+            ]
+          }
+        ]
+      },
+      "id": "copy-button/tactile",
+      "interactions": [
+        {
+          "axis": "state",
+          "from": "rest",
+          "to": "hover",
+          "trigger": "ON_HOVER"
+        }
+      ],
+      "kind": "component-set",
+      "name": "Copy Button / tactile",
+      "page": "skryensya",
+      "properties": [],
+      "showcase": {
+        "base": {
+          "state": "rest"
+        },
+        "columns": []
+      },
+      "visualHash": "2e2f69b7b613f299"
+    },
+    {
+      "axes": [
+        {
+          "name": "size",
+          "values": [
+            "xs",
+            "sm",
+            "md"
+          ]
+        },
+        {
+          "name": "variant",
+          "values": [
+            "soft",
+            "ghost"
+          ]
+        },
+        {
+          "name": "state",
+          "values": [
+            "rest",
+            "hover",
+            "focus",
+            "copied"
+          ]
+        }
+      ],
+      "cells": [
+        {
+          "box": "df3fc23057fa8317",
+          "hash": "1f4ca0a3a8081bb0",
+          "id": "copy-button/brutalist/size=xs,state=rest,variant=soft",
+          "key": "size=xs, variant=soft, state=rest",
+          "layers": "e810be693b99a617",
+          "props": {
+            "size": "xs",
+            "state": "rest",
+            "variant": "soft"
+          },
+          "surface": "f7f8f07a39852f45"
+        },
+        {
+          "box": "df3fc23057fa8317",
+          "hash": "f708d536f973dd3f",
+          "id": "copy-button/brutalist/size=xs,state=hover,variant=soft",
+          "key": "size=xs, variant=soft, state=hover",
+          "layers": "3c3332f11abcb9ba",
+          "props": {
+            "size": "xs",
+            "state": "hover",
+            "variant": "soft"
+          },
+          "surface": "1dcaf973d66538de"
+        },
+        {
+          "box": "64995428ec69191f",
+          "hash": "ceb172a06372a051",
+          "id": "copy-button/brutalist/size=xs,state=focus,variant=soft",
+          "key": "size=xs, variant=soft, state=focus",
+          "layers": "1d0cae70209d3df9",
+          "props": {
+            "size": "xs",
+            "state": "focus",
+            "variant": "soft"
+          },
+          "surface": "f7f8f07a39852f45"
+        },
+        {
+          "box": "df3fc23057fa8317",
+          "hash": "d5c4287b5e4c192d",
+          "id": "copy-button/brutalist/size=xs,state=copied,variant=soft",
+          "key": "size=xs, variant=soft, state=copied",
+          "layers": "a9debe6156810f17",
+          "props": {
+            "size": "xs",
+            "state": "copied",
+            "variant": "soft"
+          },
+          "surface": "f7f8f07a39852f45"
+        },
+        {
+          "box": "df3fc23057fa8317",
+          "hash": "66c48d9679f8bd09",
+          "id": "copy-button/brutalist/size=xs,state=rest,variant=ghost",
+          "key": "size=xs, variant=ghost, state=rest",
+          "layers": "e810be693b99a617",
+          "props": {
+            "size": "xs",
+            "state": "rest",
+            "variant": "ghost"
+          },
+          "surface": "4d92c52440cdfee3"
+        },
+        {
+          "box": "df3fc23057fa8317",
+          "hash": "f396df0329902d4f",
+          "id": "copy-button/brutalist/size=xs,state=hover,variant=ghost",
+          "key": "size=xs, variant=ghost, state=hover",
+          "layers": "3c3332f11abcb9ba",
+          "props": {
+            "size": "xs",
+            "state": "hover",
+            "variant": "ghost"
+          },
+          "surface": "edb0bb8089a4916c"
+        },
+        {
+          "box": "64995428ec69191f",
+          "hash": "6ab26cc91541daee",
+          "id": "copy-button/brutalist/size=xs,state=focus,variant=ghost",
+          "key": "size=xs, variant=ghost, state=focus",
+          "layers": "1d0cae70209d3df9",
+          "props": {
+            "size": "xs",
+            "state": "focus",
+            "variant": "ghost"
+          },
+          "surface": "4d92c52440cdfee3"
+        },
+        {
+          "box": "df3fc23057fa8317",
+          "hash": "81f76fbf531a0a2e",
+          "id": "copy-button/brutalist/size=xs,state=copied,variant=ghost",
+          "key": "size=xs, variant=ghost, state=copied",
+          "layers": "a9debe6156810f17",
+          "props": {
+            "size": "xs",
+            "state": "copied",
+            "variant": "ghost"
+          },
+          "surface": "4d92c52440cdfee3"
+        },
+        {
+          "box": "43929b9379d0a7c5",
+          "hash": "c123a609618d1033",
+          "id": "copy-button/brutalist/size=sm,state=rest,variant=soft",
+          "key": "size=sm, variant=soft, state=rest",
+          "layers": "2282b85430703904",
+          "props": {
+            "size": "sm",
+            "state": "rest",
+            "variant": "soft"
+          },
+          "surface": "f7f8f07a39852f45"
+        },
+        {
+          "box": "43929b9379d0a7c5",
+          "hash": "44169a6e5e7e4377",
+          "id": "copy-button/brutalist/size=sm,state=hover,variant=soft",
+          "key": "size=sm, variant=soft, state=hover",
+          "layers": "47984525024c607e",
+          "props": {
+            "size": "sm",
+            "state": "hover",
+            "variant": "soft"
+          },
+          "surface": "1dcaf973d66538de"
+        },
+        {
+          "box": "3cf875a226ebbbaf",
+          "hash": "b87f94215e74cc31",
+          "id": "copy-button/brutalist/size=sm,state=focus,variant=soft",
+          "key": "size=sm, variant=soft, state=focus",
+          "layers": "ed205a61b6fc078d",
+          "props": {
+            "size": "sm",
+            "state": "focus",
+            "variant": "soft"
+          },
+          "surface": "f7f8f07a39852f45"
+        },
+        {
+          "box": "43929b9379d0a7c5",
+          "hash": "29dbe5de609413a5",
+          "id": "copy-button/brutalist/size=sm,state=copied,variant=soft",
+          "key": "size=sm, variant=soft, state=copied",
+          "layers": "72d193586fc89874",
+          "props": {
+            "size": "sm",
+            "state": "copied",
+            "variant": "soft"
+          },
+          "surface": "f7f8f07a39852f45"
+        },
+        {
+          "box": "43929b9379d0a7c5",
+          "hash": "7868d6a05dce1e98",
+          "id": "copy-button/brutalist/size=sm,state=rest,variant=ghost",
+          "key": "size=sm, variant=ghost, state=rest",
+          "layers": "2282b85430703904",
+          "props": {
+            "size": "sm",
+            "state": "rest",
+            "variant": "ghost"
+          },
+          "surface": "4d92c52440cdfee3"
+        },
+        {
+          "box": "43929b9379d0a7c5",
+          "hash": "dc5772d037006f6c",
+          "id": "copy-button/brutalist/size=sm,state=hover,variant=ghost",
+          "key": "size=sm, variant=ghost, state=hover",
+          "layers": "47984525024c607e",
+          "props": {
+            "size": "sm",
+            "state": "hover",
+            "variant": "ghost"
+          },
+          "surface": "edb0bb8089a4916c"
+        },
+        {
+          "box": "3cf875a226ebbbaf",
+          "hash": "34363942874ec320",
+          "id": "copy-button/brutalist/size=sm,state=focus,variant=ghost",
+          "key": "size=sm, variant=ghost, state=focus",
+          "layers": "ed205a61b6fc078d",
+          "props": {
+            "size": "sm",
+            "state": "focus",
+            "variant": "ghost"
+          },
+          "surface": "4d92c52440cdfee3"
+        },
+        {
+          "box": "43929b9379d0a7c5",
+          "hash": "0ee196ba954fa51f",
+          "id": "copy-button/brutalist/size=sm,state=copied,variant=ghost",
+          "key": "size=sm, variant=ghost, state=copied",
+          "layers": "72d193586fc89874",
+          "props": {
+            "size": "sm",
+            "state": "copied",
+            "variant": "ghost"
+          },
+          "surface": "4d92c52440cdfee3"
+        },
+        {
+          "box": "3b7b5285867526f3",
+          "hash": "3a3e536423ed4224",
+          "id": "copy-button/brutalist/size=md,state=rest,variant=soft",
+          "key": "size=md, variant=soft, state=rest",
+          "layers": "0dd62506d4d8c66a",
+          "props": {
+            "size": "md",
+            "state": "rest",
+            "variant": "soft"
+          },
+          "surface": "f7f8f07a39852f45"
+        },
+        {
+          "box": "3b7b5285867526f3",
+          "hash": "a1e8b0fe78bb8b0e",
+          "id": "copy-button/brutalist/size=md,state=hover,variant=soft",
+          "key": "size=md, variant=soft, state=hover",
+          "layers": "288b48c117704667",
+          "props": {
+            "size": "md",
+            "state": "hover",
+            "variant": "soft"
+          },
+          "surface": "1dcaf973d66538de"
+        },
+        {
+          "box": "e16b1cd972055eff",
+          "hash": "42b7817482e855aa",
+          "id": "copy-button/brutalist/size=md,state=focus,variant=soft",
+          "key": "size=md, variant=soft, state=focus",
+          "layers": "a13e72f50fc8dbba",
+          "props": {
+            "size": "md",
+            "state": "focus",
+            "variant": "soft"
+          },
+          "surface": "f7f8f07a39852f45"
+        },
+        {
+          "box": "3b7b5285867526f3",
+          "hash": "a9161f35abaaaeaf",
+          "id": "copy-button/brutalist/size=md,state=copied,variant=soft",
+          "key": "size=md, variant=soft, state=copied",
+          "layers": "e192b7d44d0bf3ee",
+          "props": {
+            "size": "md",
+            "state": "copied",
+            "variant": "soft"
+          },
+          "surface": "f7f8f07a39852f45"
+        },
+        {
+          "box": "3b7b5285867526f3",
+          "hash": "dbaa2603f42cba46",
+          "id": "copy-button/brutalist/size=md,state=rest,variant=ghost",
+          "key": "size=md, variant=ghost, state=rest",
+          "layers": "0dd62506d4d8c66a",
+          "props": {
+            "size": "md",
+            "state": "rest",
+            "variant": "ghost"
+          },
+          "surface": "4d92c52440cdfee3"
+        },
+        {
+          "box": "3b7b5285867526f3",
+          "hash": "e00140c7e6a5987d",
+          "id": "copy-button/brutalist/size=md,state=hover,variant=ghost",
+          "key": "size=md, variant=ghost, state=hover",
+          "layers": "288b48c117704667",
+          "props": {
+            "size": "md",
+            "state": "hover",
+            "variant": "ghost"
+          },
+          "surface": "edb0bb8089a4916c"
+        },
+        {
+          "box": "e16b1cd972055eff",
+          "hash": "9e1de55be89e280c",
+          "id": "copy-button/brutalist/size=md,state=focus,variant=ghost",
+          "key": "size=md, variant=ghost, state=focus",
+          "layers": "a13e72f50fc8dbba",
+          "props": {
+            "size": "md",
+            "state": "focus",
+            "variant": "ghost"
+          },
+          "surface": "4d92c52440cdfee3"
+        },
+        {
+          "box": "3b7b5285867526f3",
+          "hash": "06641ee1d9c00eb1",
+          "id": "copy-button/brutalist/size=md,state=copied,variant=ghost",
+          "key": "size=md, variant=ghost, state=copied",
+          "layers": "e192b7d44d0bf3ee",
+          "props": {
+            "size": "md",
+            "state": "copied",
+            "variant": "ghost"
+          },
+          "surface": "4d92c52440cdfee3"
+        }
+      ],
+      "contractHash": "7dbc5d593c102ab9",
+      "defaultCell": "size=sm, variant=soft, state=rest",
+      "grid": {
+        "columns": [
+          {
+            "name": "variant",
+            "values": [
+              "soft",
+              "ghost"
+            ]
+          },
+          {
+            "name": "state",
+            "values": [
+              "rest",
+              "hover",
+              "focus",
+              "copied"
+            ]
+          }
+        ],
+        "rows": [
+          {
+            "name": "size",
+            "values": [
+              "md",
+              "sm",
+              "xs"
+            ]
+          }
+        ]
+      },
+      "id": "copy-button/brutalist",
+      "interactions": [
+        {
+          "axis": "state",
+          "from": "rest",
+          "to": "hover",
+          "trigger": "ON_HOVER"
+        }
+      ],
+      "kind": "component-set",
+      "name": "Copy Button / brutalist",
+      "page": "skryensya",
+      "properties": [],
+      "showcase": {
+        "base": {
+          "state": "rest"
+        },
+        "columns": []
+      },
+      "visualHash": "1366a73a21130a84"
+    },
+    {
+      "axes": [
+        {
+          "name": "size",
+          "values": [
+            "xs",
+            "sm",
+            "md"
+          ]
+        },
+        {
+          "name": "variant",
+          "values": [
+            "soft",
+            "ghost"
+          ]
+        },
+        {
+          "name": "state",
+          "values": [
+            "rest",
+            "hover",
+            "focus",
+            "copied"
+          ]
+        }
+      ],
+      "cells": [
+        {
+          "box": "df3fc23057fa8317",
+          "hash": "69ef409120055444",
+          "id": "copy-button/frosted/size=xs,state=rest,variant=soft",
+          "key": "size=xs, variant=soft, state=rest",
+          "layers": "e810be693b99a617",
+          "props": {
+            "size": "xs",
+            "state": "rest",
+            "variant": "soft"
+          },
+          "surface": "7dbca653044dd003"
+        },
+        {
+          "box": "df3fc23057fa8317",
+          "hash": "1e1ddbe0ae2d9529",
+          "id": "copy-button/frosted/size=xs,state=hover,variant=soft",
+          "key": "size=xs, variant=soft, state=hover",
+          "layers": "3c3332f11abcb9ba",
+          "props": {
+            "size": "xs",
+            "state": "hover",
+            "variant": "soft"
+          },
+          "surface": "4fed53f567c5bd36"
+        },
+        {
+          "box": "64995428ec69191f",
+          "hash": "49a92ee806e3af93",
+          "id": "copy-button/frosted/size=xs,state=focus,variant=soft",
+          "key": "size=xs, variant=soft, state=focus",
+          "layers": "1d0cae70209d3df9",
+          "props": {
+            "size": "xs",
+            "state": "focus",
+            "variant": "soft"
+          },
+          "surface": "7dbca653044dd003"
+        },
+        {
+          "box": "df3fc23057fa8317",
+          "hash": "1c8fa6f6689d5370",
+          "id": "copy-button/frosted/size=xs,state=copied,variant=soft",
+          "key": "size=xs, variant=soft, state=copied",
+          "layers": "a9debe6156810f17",
+          "props": {
+            "size": "xs",
+            "state": "copied",
+            "variant": "soft"
+          },
+          "surface": "7dbca653044dd003"
+        },
+        {
+          "box": "df3fc23057fa8317",
+          "hash": "ace4bf24fe1129bd",
+          "id": "copy-button/frosted/size=xs,state=rest,variant=ghost",
+          "key": "size=xs, variant=ghost, state=rest",
+          "layers": "e810be693b99a617",
+          "props": {
+            "size": "xs",
+            "state": "rest",
+            "variant": "ghost"
+          },
+          "surface": "dd031d03a3a609f4"
+        },
+        {
+          "box": "df3fc23057fa8317",
+          "hash": "ec5033babe6fe941",
+          "id": "copy-button/frosted/size=xs,state=hover,variant=ghost",
+          "key": "size=xs, variant=ghost, state=hover",
+          "layers": "3c3332f11abcb9ba",
+          "props": {
+            "size": "xs",
+            "state": "hover",
+            "variant": "ghost"
+          },
+          "surface": "5f0c1c6208e0437d"
+        },
+        {
+          "box": "64995428ec69191f",
+          "hash": "115a568866183365",
+          "id": "copy-button/frosted/size=xs,state=focus,variant=ghost",
+          "key": "size=xs, variant=ghost, state=focus",
+          "layers": "1d0cae70209d3df9",
+          "props": {
+            "size": "xs",
+            "state": "focus",
+            "variant": "ghost"
+          },
+          "surface": "dd031d03a3a609f4"
+        },
+        {
+          "box": "df3fc23057fa8317",
+          "hash": "99f80821df51ab3f",
+          "id": "copy-button/frosted/size=xs,state=copied,variant=ghost",
+          "key": "size=xs, variant=ghost, state=copied",
+          "layers": "a9debe6156810f17",
+          "props": {
+            "size": "xs",
+            "state": "copied",
+            "variant": "ghost"
+          },
+          "surface": "dd031d03a3a609f4"
+        },
+        {
+          "box": "43929b9379d0a7c5",
+          "hash": "be6a0a16381a4199",
+          "id": "copy-button/frosted/size=sm,state=rest,variant=soft",
+          "key": "size=sm, variant=soft, state=rest",
+          "layers": "2282b85430703904",
+          "props": {
+            "size": "sm",
+            "state": "rest",
+            "variant": "soft"
+          },
+          "surface": "7dbca653044dd003"
+        },
+        {
+          "box": "43929b9379d0a7c5",
+          "hash": "a072453a7083d4b6",
+          "id": "copy-button/frosted/size=sm,state=hover,variant=soft",
+          "key": "size=sm, variant=soft, state=hover",
+          "layers": "47984525024c607e",
+          "props": {
+            "size": "sm",
+            "state": "hover",
+            "variant": "soft"
+          },
+          "surface": "4fed53f567c5bd36"
+        },
+        {
+          "box": "3cf875a226ebbbaf",
+          "hash": "7214015d9d142b09",
+          "id": "copy-button/frosted/size=sm,state=focus,variant=soft",
+          "key": "size=sm, variant=soft, state=focus",
+          "layers": "ed205a61b6fc078d",
+          "props": {
+            "size": "sm",
+            "state": "focus",
+            "variant": "soft"
+          },
+          "surface": "7dbca653044dd003"
+        },
+        {
+          "box": "43929b9379d0a7c5",
+          "hash": "6d55e62ff58d7ec2",
+          "id": "copy-button/frosted/size=sm,state=copied,variant=soft",
+          "key": "size=sm, variant=soft, state=copied",
+          "layers": "72d193586fc89874",
+          "props": {
+            "size": "sm",
+            "state": "copied",
+            "variant": "soft"
+          },
+          "surface": "7dbca653044dd003"
+        },
+        {
+          "box": "43929b9379d0a7c5",
+          "hash": "ec38379236494deb",
+          "id": "copy-button/frosted/size=sm,state=rest,variant=ghost",
+          "key": "size=sm, variant=ghost, state=rest",
+          "layers": "2282b85430703904",
+          "props": {
+            "size": "sm",
+            "state": "rest",
+            "variant": "ghost"
+          },
+          "surface": "dd031d03a3a609f4"
+        },
+        {
+          "box": "43929b9379d0a7c5",
+          "hash": "10ed6c1d2d6331f6",
+          "id": "copy-button/frosted/size=sm,state=hover,variant=ghost",
+          "key": "size=sm, variant=ghost, state=hover",
+          "layers": "47984525024c607e",
+          "props": {
+            "size": "sm",
+            "state": "hover",
+            "variant": "ghost"
+          },
+          "surface": "5f0c1c6208e0437d"
+        },
+        {
+          "box": "3cf875a226ebbbaf",
+          "hash": "45ee5fa006f153c3",
+          "id": "copy-button/frosted/size=sm,state=focus,variant=ghost",
+          "key": "size=sm, variant=ghost, state=focus",
+          "layers": "ed205a61b6fc078d",
+          "props": {
+            "size": "sm",
+            "state": "focus",
+            "variant": "ghost"
+          },
+          "surface": "dd031d03a3a609f4"
+        },
+        {
+          "box": "43929b9379d0a7c5",
+          "hash": "c55494d589202bb3",
+          "id": "copy-button/frosted/size=sm,state=copied,variant=ghost",
+          "key": "size=sm, variant=ghost, state=copied",
+          "layers": "72d193586fc89874",
+          "props": {
+            "size": "sm",
+            "state": "copied",
+            "variant": "ghost"
+          },
+          "surface": "dd031d03a3a609f4"
+        },
+        {
+          "box": "3b7b5285867526f3",
+          "hash": "d1caedcf5df958a3",
+          "id": "copy-button/frosted/size=md,state=rest,variant=soft",
+          "key": "size=md, variant=soft, state=rest",
+          "layers": "0dd62506d4d8c66a",
+          "props": {
+            "size": "md",
+            "state": "rest",
+            "variant": "soft"
+          },
+          "surface": "7dbca653044dd003"
+        },
+        {
+          "box": "3b7b5285867526f3",
+          "hash": "ead8a9728dcb03f3",
+          "id": "copy-button/frosted/size=md,state=hover,variant=soft",
+          "key": "size=md, variant=soft, state=hover",
+          "layers": "288b48c117704667",
+          "props": {
+            "size": "md",
+            "state": "hover",
+            "variant": "soft"
+          },
+          "surface": "4fed53f567c5bd36"
+        },
+        {
+          "box": "e16b1cd972055eff",
+          "hash": "d3bdf91b70f59617",
+          "id": "copy-button/frosted/size=md,state=focus,variant=soft",
+          "key": "size=md, variant=soft, state=focus",
+          "layers": "a13e72f50fc8dbba",
+          "props": {
+            "size": "md",
+            "state": "focus",
+            "variant": "soft"
+          },
+          "surface": "7dbca653044dd003"
+        },
+        {
+          "box": "3b7b5285867526f3",
+          "hash": "d129fe626f4b83f2",
+          "id": "copy-button/frosted/size=md,state=copied,variant=soft",
+          "key": "size=md, variant=soft, state=copied",
+          "layers": "e192b7d44d0bf3ee",
+          "props": {
+            "size": "md",
+            "state": "copied",
+            "variant": "soft"
+          },
+          "surface": "7dbca653044dd003"
+        },
+        {
+          "box": "3b7b5285867526f3",
+          "hash": "584a7b8868eba981",
+          "id": "copy-button/frosted/size=md,state=rest,variant=ghost",
+          "key": "size=md, variant=ghost, state=rest",
+          "layers": "0dd62506d4d8c66a",
+          "props": {
+            "size": "md",
+            "state": "rest",
+            "variant": "ghost"
+          },
+          "surface": "dd031d03a3a609f4"
+        },
+        {
+          "box": "3b7b5285867526f3",
+          "hash": "6f4a8ffe0d2e41ef",
+          "id": "copy-button/frosted/size=md,state=hover,variant=ghost",
+          "key": "size=md, variant=ghost, state=hover",
+          "layers": "288b48c117704667",
+          "props": {
+            "size": "md",
+            "state": "hover",
+            "variant": "ghost"
+          },
+          "surface": "5f0c1c6208e0437d"
+        },
+        {
+          "box": "e16b1cd972055eff",
+          "hash": "a923fcb88828ad69",
+          "id": "copy-button/frosted/size=md,state=focus,variant=ghost",
+          "key": "size=md, variant=ghost, state=focus",
+          "layers": "a13e72f50fc8dbba",
+          "props": {
+            "size": "md",
+            "state": "focus",
+            "variant": "ghost"
+          },
+          "surface": "dd031d03a3a609f4"
+        },
+        {
+          "box": "3b7b5285867526f3",
+          "hash": "870adfb8f52bb621",
+          "id": "copy-button/frosted/size=md,state=copied,variant=ghost",
+          "key": "size=md, variant=ghost, state=copied",
+          "layers": "e192b7d44d0bf3ee",
+          "props": {
+            "size": "md",
+            "state": "copied",
+            "variant": "ghost"
+          },
+          "surface": "dd031d03a3a609f4"
+        }
+      ],
+      "contractHash": "7dbc5d593c102ab9",
+      "defaultCell": "size=sm, variant=soft, state=rest",
+      "grid": {
+        "columns": [
+          {
+            "name": "variant",
+            "values": [
+              "soft",
+              "ghost"
+            ]
+          },
+          {
+            "name": "state",
+            "values": [
+              "rest",
+              "hover",
+              "focus",
+              "copied"
+            ]
+          }
+        ],
+        "rows": [
+          {
+            "name": "size",
+            "values": [
+              "md",
+              "sm",
+              "xs"
+            ]
+          }
+        ]
+      },
+      "id": "copy-button/frosted",
+      "interactions": [
+        {
+          "axis": "state",
+          "from": "rest",
+          "to": "hover",
+          "trigger": "ON_HOVER"
+        }
+      ],
+      "kind": "component-set",
+      "name": "Copy Button / frosted",
+      "page": "skryensya",
+      "properties": [],
+      "showcase": {
+        "base": {
+          "state": "rest"
+        },
+        "columns": []
+      },
+      "visualHash": "82284cde04007154"
     }
   ],
   "diagnostics": [
@@ -42659,6 +44235,18 @@
     },
     {
       "code": "CONDITION_SKIPPED",
+      "message": "11 rule(s) under a condition the evaluation context does not hold",
+      "severity": "info",
+      "subject": "components/button.css @media (forced-colors: active)"
+    },
+    {
+      "code": "CONDITION_SKIPPED",
+      "message": "1 rule(s) under a condition the evaluation context does not hold",
+      "severity": "info",
+      "subject": "components/button.css @media (prefers-reduced-motion: reduce)"
+    },
+    {
+      "code": "CONDITION_SKIPPED",
       "message": "1 rule(s) under a condition the evaluation context does not hold",
       "severity": "info",
       "subject": "components/button.css @media (prefers-reduced-motion: reduce)"
@@ -42746,6 +44334,30 @@
       "message": "3 rule(s) under a condition the evaluation context does not hold",
       "severity": "info",
       "subject": "components/checkbox.css @media (forced-colors: active)"
+    },
+    {
+      "code": "CONDITION_SKIPPED",
+      "message": "0 rule(s) under a condition the evaluation context does not hold",
+      "severity": "info",
+      "subject": "components/clipboard.css @import url(\"./copy-button.css\")"
+    },
+    {
+      "code": "CONDITION_SKIPPED",
+      "message": "0 rule(s) under a condition the evaluation context does not hold",
+      "severity": "info",
+      "subject": "components/copy-button.css @import url(\"../patterns/icon-toggle.css\")"
+    },
+    {
+      "code": "CONDITION_SKIPPED",
+      "message": "1 rule(s) under a condition the evaluation context does not hold",
+      "severity": "info",
+      "subject": "components/copy-button.css @media (prefers-reduced-motion: reduce)"
+    },
+    {
+      "code": "CONDITION_SKIPPED",
+      "message": "1 rule(s) under a condition the evaluation context does not hold",
+      "severity": "info",
+      "subject": "components/copy-button.css @supports not (anchor-name: --a)"
     },
     {
       "code": "CONDITION_SKIPPED",
@@ -43265,6 +44877,12 @@
     },
     {
       "code": "CONDITION_SKIPPED",
+      "message": "6 rule(s) under a condition the evaluation context does not hold",
+      "severity": "info",
+      "subject": "patterns/anchored.css @supports (anchor-name: --a)"
+    },
+    {
+      "code": "CONDITION_SKIPPED",
       "message": "1 rule(s) under a condition the evaluation context does not hold",
       "severity": "info",
       "subject": "patterns/icon-toggle.css @media (prefers-reduced-motion: reduce)"
@@ -43274,6 +44892,18 @@
       "message": "1 rule(s) under a condition the evaluation context does not hold",
       "severity": "info",
       "subject": "patterns/icon-toggle.css @media (prefers-reduced-motion: reduce)"
+    },
+    {
+      "code": "CONDITION_SKIPPED",
+      "message": "1 rule(s) under a condition the evaluation context does not hold",
+      "severity": "info",
+      "subject": "patterns/icon-toggle.css @media (prefers-reduced-motion: reduce)"
+    },
+    {
+      "code": "CONDITION_SKIPPED",
+      "message": "0 rule(s) under a condition the evaluation context does not hold",
+      "severity": "info",
+      "subject": "patterns/icon-toggle.css @property --sk-icon-toggle-on"
     },
     {
       "code": "CONDITION_SKIPPED",
@@ -43442,6 +45072,18 @@
       "message": "1 rule(s) under a condition the evaluation context does not hold",
       "severity": "info",
       "subject": "patterns/state-layer.css @media (prefers-reduced-motion: reduce)"
+    },
+    {
+      "code": "CONDITION_SKIPPED",
+      "message": "1 rule(s) under a condition the evaluation context does not hold",
+      "severity": "info",
+      "subject": "patterns/state-layer.css @media (prefers-reduced-motion: reduce)"
+    },
+    {
+      "code": "CONDITION_SKIPPED",
+      "message": "0 rule(s) under a condition the evaluation context does not hold",
+      "severity": "info",
+      "subject": "patterns/state-layer.css @property --state-layer-opacity"
     },
     {
       "code": "CONDITION_SKIPPED",
@@ -43755,6 +45397,23 @@
         "excluded": [],
         "nonVisual": [],
         "visual": []
+      },
+      "copy-button": {
+        "excluded": [
+          "timeout"
+        ],
+        "nonVisual": [
+          "value",
+          "target",
+          "label",
+          "copiedLabel",
+          "errorLabel"
+        ],
+        "visual": [
+          "size",
+          "variant",
+          "appearance"
+        ]
       },
       "description-list": {
         "excluded": [],
@@ -44205,11 +45864,11 @@
     },
     "tokens": {
       "catalogueAdded": 303,
-      "componentVariables": 455,
+      "componentVariables": 495,
       "modeValuesBySource": {
         "alias": 203,
-        "evaluated": 853,
-        "literal": 786
+        "evaluated": 919,
+        "literal": 800
       },
       "reached": 204,
       "reachedAsVariables": 155,
@@ -44228,8 +45887,8 @@
       "variables": 466
     },
     "variants": {
-      "components": 120,
-      "componentSets": 119,
+      "components": 124,
+      "componentSets": 123,
       "naiveAllOptions": {
         "accordion": 32,
         "avatar": 8,
@@ -44242,6 +45901,7 @@
         "checkbox": 64,
         "checkbox-group": 32,
         "code": 1,
+        "copy-button": 24,
         "description-list": 4,
         "details": 8,
         "empty-state": 1,
@@ -44294,6 +45954,7 @@
         "checkbox": 16,
         "checkbox-group": 8,
         "code": 1,
+        "copy-button": 24,
         "description-list": 4,
         "details": 8,
         "empty-state": 1,
@@ -44810,13 +46471,29 @@
         {
           "set": "state-button",
           "variants": 3
+        },
+        {
+          "set": "copy-button/plain",
+          "variants": 24
+        },
+        {
+          "set": "copy-button/tactile",
+          "variants": 24
+        },
+        {
+          "set": "copy-button/brutalist",
+          "variants": 24
+        },
+        {
+          "set": "copy-button/frosted",
+          "variants": 24
         }
       ],
-      "variantsTotal": 2447
+      "variantsTotal": 2543
     }
   },
   "schemaVersion": 1,
-  "sourceHash": "f71e2e5a038ecc5e",
+  "sourceHash": "a150fe39a078cf92",
   "stage": {
     "background": {
       "variable": "--color-bg-surface"
@@ -46275,6 +47952,98 @@
           "variable": "--size-control-lg"
         }
       },
+      "3b7b5285867526f3": {
+        "clipsContent": true,
+        "crossAlign": "CENTER",
+        "direction": "VERTICAL",
+        "gap": {
+          "variable": "--space-inline-sm"
+        },
+        "height": {
+          "variable": "clipboard:sk-button-height:2dce2436e5"
+        },
+        "mainAlign": "CENTER",
+        "minHeight": {
+          "variable": "clipboard:sk-button-height:2dce2436e5"
+        },
+        "minWidth": {
+          "expression": "0",
+          "value": 0
+        },
+        "padding": {
+          "bottom": {
+            "expression": "0",
+            "value": 0
+          },
+          "left": {
+            "expression": "0",
+            "value": 0
+          },
+          "right": {
+            "expression": "0",
+            "value": 0
+          },
+          "top": {
+            "expression": "0",
+            "value": 0
+          }
+        },
+        "radius": {
+          "variable": "--radius-control"
+        },
+        "strokeWeight": {
+          "variable": "clipboard:sk-button-border-width:93e20626bf"
+        },
+        "width": {
+          "variable": "clipboard:sk-button-height:2dce2436e5"
+        }
+      },
+      "3cf875a226ebbbaf": {
+        "clipsContent": false,
+        "crossAlign": "CENTER",
+        "direction": "VERTICAL",
+        "gap": {
+          "variable": "--space-inline-sm"
+        },
+        "height": {
+          "variable": "--size-control-sm"
+        },
+        "mainAlign": "CENTER",
+        "minHeight": {
+          "variable": "--size-control-sm"
+        },
+        "minWidth": {
+          "expression": "0",
+          "value": 0
+        },
+        "padding": {
+          "bottom": {
+            "expression": "0",
+            "value": 0
+          },
+          "left": {
+            "expression": "0",
+            "value": 0
+          },
+          "right": {
+            "expression": "0",
+            "value": 0
+          },
+          "top": {
+            "expression": "0",
+            "value": 0
+          }
+        },
+        "radius": {
+          "variable": "--radius-control"
+        },
+        "strokeWeight": {
+          "variable": "clipboard:sk-button-border-width:93e20626bf"
+        },
+        "width": {
+          "variable": "--size-control-sm"
+        }
+      },
       "3d306c0d464e5ea9": {
         "clipsContent": false,
         "crossAlign": "MIN",
@@ -46464,6 +48233,52 @@
             "expression": "1px",
             "value": 1
           }
+        }
+      },
+      "43929b9379d0a7c5": {
+        "clipsContent": true,
+        "crossAlign": "CENTER",
+        "direction": "VERTICAL",
+        "gap": {
+          "variable": "--space-inline-sm"
+        },
+        "height": {
+          "variable": "--size-control-sm"
+        },
+        "mainAlign": "CENTER",
+        "minHeight": {
+          "variable": "--size-control-sm"
+        },
+        "minWidth": {
+          "expression": "0",
+          "value": 0
+        },
+        "padding": {
+          "bottom": {
+            "expression": "0",
+            "value": 0
+          },
+          "left": {
+            "expression": "0",
+            "value": 0
+          },
+          "right": {
+            "expression": "0",
+            "value": 0
+          },
+          "top": {
+            "expression": "0",
+            "value": 0
+          }
+        },
+        "radius": {
+          "variable": "--radius-control"
+        },
+        "strokeWeight": {
+          "variable": "clipboard:sk-button-border-width:93e20626bf"
+        },
+        "width": {
+          "variable": "--size-control-sm"
         }
       },
       "447705b4b5b975d9": {
@@ -47524,6 +49339,52 @@
         "width": {
           "expression": "240px",
           "value": 240
+        }
+      },
+      "64995428ec69191f": {
+        "clipsContent": false,
+        "crossAlign": "CENTER",
+        "direction": "VERTICAL",
+        "gap": {
+          "variable": "--space-inline-sm"
+        },
+        "height": {
+          "variable": "--size-control-xs"
+        },
+        "mainAlign": "CENTER",
+        "minHeight": {
+          "variable": "--size-control-xs"
+        },
+        "minWidth": {
+          "expression": "0",
+          "value": 0
+        },
+        "padding": {
+          "bottom": {
+            "expression": "0",
+            "value": 0
+          },
+          "left": {
+            "expression": "0",
+            "value": 0
+          },
+          "right": {
+            "expression": "0",
+            "value": 0
+          },
+          "top": {
+            "expression": "0",
+            "value": 0
+          }
+        },
+        "radius": {
+          "variable": "--radius-control"
+        },
+        "strokeWeight": {
+          "variable": "clipboard:sk-button-border-width:93e20626bf"
+        },
+        "width": {
+          "variable": "--size-control-xs"
         }
       },
       "672cd06398be5f4b": {
@@ -50714,6 +52575,52 @@
         },
         "stretch": true
       },
+      "df3fc23057fa8317": {
+        "clipsContent": true,
+        "crossAlign": "CENTER",
+        "direction": "VERTICAL",
+        "gap": {
+          "variable": "--space-inline-sm"
+        },
+        "height": {
+          "variable": "--size-control-xs"
+        },
+        "mainAlign": "CENTER",
+        "minHeight": {
+          "variable": "--size-control-xs"
+        },
+        "minWidth": {
+          "expression": "0",
+          "value": 0
+        },
+        "padding": {
+          "bottom": {
+            "expression": "0",
+            "value": 0
+          },
+          "left": {
+            "expression": "0",
+            "value": 0
+          },
+          "right": {
+            "expression": "0",
+            "value": 0
+          },
+          "top": {
+            "expression": "0",
+            "value": 0
+          }
+        },
+        "radius": {
+          "variable": "--radius-control"
+        },
+        "strokeWeight": {
+          "variable": "clipboard:sk-button-border-width:93e20626bf"
+        },
+        "width": {
+          "variable": "--size-control-xs"
+        }
+      },
       "dfd0f6e54c80adbf": {
         "clipsContent": false,
         "crossAlign": "CENTER",
@@ -50764,6 +52671,52 @@
         "width": {
           "expression": "10rem",
           "value": 160
+        }
+      },
+      "e16b1cd972055eff": {
+        "clipsContent": false,
+        "crossAlign": "CENTER",
+        "direction": "VERTICAL",
+        "gap": {
+          "variable": "--space-inline-sm"
+        },
+        "height": {
+          "variable": "clipboard:sk-button-height:2dce2436e5"
+        },
+        "mainAlign": "CENTER",
+        "minHeight": {
+          "variable": "clipboard:sk-button-height:2dce2436e5"
+        },
+        "minWidth": {
+          "expression": "0",
+          "value": 0
+        },
+        "padding": {
+          "bottom": {
+            "expression": "0",
+            "value": 0
+          },
+          "left": {
+            "expression": "0",
+            "value": 0
+          },
+          "right": {
+            "expression": "0",
+            "value": 0
+          },
+          "top": {
+            "expression": "0",
+            "value": 0
+          }
+        },
+        "radius": {
+          "variable": "--radius-control"
+        },
+        "strokeWeight": {
+          "variable": "clipboard:sk-button-border-width:93e20626bf"
+        },
+        "width": {
+          "variable": "clipboard:sk-button-height:2dce2436e5"
         }
       },
       "e19455bb6cc1ec06": {
@@ -53365,6 +55318,44 @@
           },
           "textProperty": "children",
           "visibleProperty": "show children"
+        }
+      ],
+      "0dd62506d4d8c66a": [
+        {
+          "fills": [
+            {
+              "color": {
+                "variable": "clipboard:state-layer:a8bbbce668"
+              },
+              "type": "SOLID"
+            }
+          ],
+          "kind": "overlay",
+          "slot": "state layer"
+        },
+        {
+          "box": "672cd06398be5f4b",
+          "kind": "frame",
+          "layers": [
+            {
+              "default": "copy",
+              "icon": {
+                "color": {
+                  "color": {
+                    "variable": "--color-text-primary"
+                  },
+                  "type": "SOLID"
+                },
+                "size": {
+                  "variable": "--size-icon-lg"
+                }
+              },
+              "kind": "icon",
+              "slot": "face"
+            }
+          ],
+          "slot": "face",
+          "surface": "fa0b643878e9242d"
         }
       ],
       "0e9ca0df5a6afe60": [
@@ -55978,6 +57969,63 @@
           "visibleProperty": "show change"
         }
       ],
+      "1d0cae70209d3df9": [
+        {
+          "fills": [
+            {
+              "color": {
+                "variable": "clipboard:state-layer:bfba8c3497"
+              },
+              "type": "SOLID"
+            }
+          ],
+          "kind": "overlay",
+          "slot": "state layer"
+        },
+        {
+          "box": "672cd06398be5f4b",
+          "kind": "frame",
+          "layers": [
+            {
+              "default": "copy",
+              "icon": {
+                "color": {
+                  "color": {
+                    "variable": "--color-text-primary"
+                  },
+                  "type": "SOLID"
+                },
+                "size": {
+                  "variable": "--size-icon-sm"
+                }
+              },
+              "kind": "icon",
+              "slot": "face"
+            }
+          ],
+          "slot": "face",
+          "surface": "fa0b643878e9242d"
+        },
+        {
+          "color": {
+            "color": {
+              "variable": "--focus-ring-color"
+            },
+            "type": "SOLID"
+          },
+          "kind": "ring",
+          "offset": {
+            "variable": "--focus-ring-offset"
+          },
+          "radius": {
+            "variable": "clipboard:outline-radius:9325831be9"
+          },
+          "slot": "focus ring",
+          "width": {
+            "variable": "--focus-ring-width"
+          }
+        }
+      ],
       "1d148f7d4daa8578": [
         {
           "box": "8e917c247c76f34d",
@@ -56910,6 +58958,44 @@
           },
           "textProperty": "children",
           "visibleProperty": "show children"
+        }
+      ],
+      "2282b85430703904": [
+        {
+          "fills": [
+            {
+              "color": {
+                "variable": "clipboard:state-layer:a8bbbce668"
+              },
+              "type": "SOLID"
+            }
+          ],
+          "kind": "overlay",
+          "slot": "state layer"
+        },
+        {
+          "box": "672cd06398be5f4b",
+          "kind": "frame",
+          "layers": [
+            {
+              "default": "copy",
+              "icon": {
+                "color": {
+                  "color": {
+                    "variable": "--color-text-primary"
+                  },
+                  "type": "SOLID"
+                },
+                "size": {
+                  "variable": "--size-icon-md"
+                }
+              },
+              "kind": "icon",
+              "slot": "face"
+            }
+          ],
+          "slot": "face",
+          "surface": "fa0b643878e9242d"
         }
       ],
       "23a40221c2b89065": [
@@ -58076,6 +60162,44 @@
           ],
           "slot": "next",
           "surface": "79b142c692cc5c86"
+        }
+      ],
+      "288b48c117704667": [
+        {
+          "fills": [
+            {
+              "color": {
+                "variable": "clipboard:state-layer:9652c98e0a"
+              },
+              "type": "SOLID"
+            }
+          ],
+          "kind": "overlay",
+          "slot": "state layer"
+        },
+        {
+          "box": "672cd06398be5f4b",
+          "kind": "frame",
+          "layers": [
+            {
+              "default": "copy",
+              "icon": {
+                "color": {
+                  "color": {
+                    "variable": "--color-text-primary"
+                  },
+                  "type": "SOLID"
+                },
+                "size": {
+                  "variable": "--size-icon-lg"
+                }
+              },
+              "kind": "icon",
+              "slot": "face"
+            }
+          ],
+          "slot": "face",
+          "surface": "fa0b643878e9242d"
         }
       ],
       "29ad7763577fcab3": [
@@ -60161,6 +62285,44 @@
           "visibleProperty": "post"
         }
       ],
+      "3c3332f11abcb9ba": [
+        {
+          "fills": [
+            {
+              "color": {
+                "variable": "clipboard:state-layer:9652c98e0a"
+              },
+              "type": "SOLID"
+            }
+          ],
+          "kind": "overlay",
+          "slot": "state layer"
+        },
+        {
+          "box": "672cd06398be5f4b",
+          "kind": "frame",
+          "layers": [
+            {
+              "default": "copy",
+              "icon": {
+                "color": {
+                  "color": {
+                    "variable": "--color-text-primary"
+                  },
+                  "type": "SOLID"
+                },
+                "size": {
+                  "variable": "--size-icon-sm"
+                }
+              },
+              "kind": "icon",
+              "slot": "face"
+            }
+          ],
+          "slot": "face",
+          "surface": "fa0b643878e9242d"
+        }
+      ],
       "3c7a1bb3c89c7739": [
         {
           "fills": [
@@ -61407,6 +63569,44 @@
           "surface": "fa0b643878e9242d"
         }
       ],
+      "47984525024c607e": [
+        {
+          "fills": [
+            {
+              "color": {
+                "variable": "clipboard:state-layer:9652c98e0a"
+              },
+              "type": "SOLID"
+            }
+          ],
+          "kind": "overlay",
+          "slot": "state layer"
+        },
+        {
+          "box": "672cd06398be5f4b",
+          "kind": "frame",
+          "layers": [
+            {
+              "default": "copy",
+              "icon": {
+                "color": {
+                  "color": {
+                    "variable": "--color-text-primary"
+                  },
+                  "type": "SOLID"
+                },
+                "size": {
+                  "variable": "--size-icon-md"
+                }
+              },
+              "kind": "icon",
+              "slot": "face"
+            }
+          ],
+          "slot": "face",
+          "surface": "fa0b643878e9242d"
+        }
+      ],
       "481fef854581b6a8": [
         {
           "kind": "text",
@@ -62560,6 +64760,44 @@
           "kind": "icon",
           "slot": "post",
           "visibleProperty": "post"
+        }
+      ],
+      "5268eb46d84ea73a": [
+        {
+          "fills": [
+            {
+              "color": {
+                "variable": "clipboard:state-layer:d8289eeef8"
+              },
+              "type": "SOLID"
+            }
+          ],
+          "kind": "overlay",
+          "slot": "state layer"
+        },
+        {
+          "box": "672cd06398be5f4b",
+          "kind": "frame",
+          "layers": [
+            {
+              "default": "copy",
+              "icon": {
+                "color": {
+                  "color": {
+                    "variable": "--color-text-primary"
+                  },
+                  "type": "SOLID"
+                },
+                "size": {
+                  "variable": "--size-icon-sm"
+                }
+              },
+              "kind": "icon",
+              "slot": "face"
+            }
+          ],
+          "slot": "face",
+          "surface": "fa0b643878e9242d"
         }
       ],
       "52d15e462a7bada9": [
@@ -66381,6 +68619,82 @@
             "underline": true
           },
           "textProperty": "children"
+        }
+      ],
+      "7299ad248120151a": [
+        {
+          "fills": [
+            {
+              "color": {
+                "variable": "clipboard:state-layer:d8289eeef8"
+              },
+              "type": "SOLID"
+            }
+          ],
+          "kind": "overlay",
+          "slot": "state layer"
+        },
+        {
+          "box": "672cd06398be5f4b",
+          "kind": "frame",
+          "layers": [
+            {
+              "default": "copy",
+              "icon": {
+                "color": {
+                  "color": {
+                    "variable": "--color-text-primary"
+                  },
+                  "type": "SOLID"
+                },
+                "size": {
+                  "variable": "--size-icon-md"
+                }
+              },
+              "kind": "icon",
+              "slot": "face"
+            }
+          ],
+          "slot": "face",
+          "surface": "fa0b643878e9242d"
+        }
+      ],
+      "72d193586fc89874": [
+        {
+          "fills": [
+            {
+              "color": {
+                "variable": "clipboard:state-layer:a8bbbce668"
+              },
+              "type": "SOLID"
+            }
+          ],
+          "kind": "overlay",
+          "slot": "state layer"
+        },
+        {
+          "box": "672cd06398be5f4b",
+          "kind": "frame",
+          "layers": [
+            {
+              "default": "check",
+              "icon": {
+                "color": {
+                  "color": {
+                    "variable": "--color-text-primary"
+                  },
+                  "type": "SOLID"
+                },
+                "size": {
+                  "variable": "--size-icon-md"
+                }
+              },
+              "kind": "icon",
+              "slot": "face"
+            }
+          ],
+          "slot": "face",
+          "surface": "fa0b643878e9242d"
         }
       ],
       "73836fb17105a844": [
@@ -73340,6 +75654,63 @@
           "visibleProperty": "post"
         }
       ],
+      "a13e72f50fc8dbba": [
+        {
+          "fills": [
+            {
+              "color": {
+                "variable": "clipboard:state-layer:bfba8c3497"
+              },
+              "type": "SOLID"
+            }
+          ],
+          "kind": "overlay",
+          "slot": "state layer"
+        },
+        {
+          "box": "672cd06398be5f4b",
+          "kind": "frame",
+          "layers": [
+            {
+              "default": "copy",
+              "icon": {
+                "color": {
+                  "color": {
+                    "variable": "--color-text-primary"
+                  },
+                  "type": "SOLID"
+                },
+                "size": {
+                  "variable": "--size-icon-lg"
+                }
+              },
+              "kind": "icon",
+              "slot": "face"
+            }
+          ],
+          "slot": "face",
+          "surface": "fa0b643878e9242d"
+        },
+        {
+          "color": {
+            "color": {
+              "variable": "--focus-ring-color"
+            },
+            "type": "SOLID"
+          },
+          "kind": "ring",
+          "offset": {
+            "variable": "--focus-ring-offset"
+          },
+          "radius": {
+            "variable": "clipboard:outline-radius:9325831be9"
+          },
+          "slot": "focus ring",
+          "width": {
+            "variable": "--focus-ring-width"
+          }
+        }
+      ],
       "a17d71b3b16dd289": [
         {
           "box": "c37c77851c7ad134",
@@ -75149,6 +77520,44 @@
           "visibleProperty": "show children"
         }
       ],
+      "a9debe6156810f17": [
+        {
+          "fills": [
+            {
+              "color": {
+                "variable": "clipboard:state-layer:a8bbbce668"
+              },
+              "type": "SOLID"
+            }
+          ],
+          "kind": "overlay",
+          "slot": "state layer"
+        },
+        {
+          "box": "672cd06398be5f4b",
+          "kind": "frame",
+          "layers": [
+            {
+              "default": "check",
+              "icon": {
+                "color": {
+                  "color": {
+                    "variable": "--color-text-primary"
+                  },
+                  "type": "SOLID"
+                },
+                "size": {
+                  "variable": "--size-icon-sm"
+                }
+              },
+              "kind": "icon",
+              "slot": "face"
+            }
+          ],
+          "slot": "face",
+          "surface": "fa0b643878e9242d"
+        }
+      ],
       "aa074eed838e2b19": [
         {
           "box": "620a2846109d1846",
@@ -75944,6 +78353,44 @@
           },
           "textProperty": "children",
           "visibleProperty": "show children"
+        }
+      ],
+      "b267ac9961328b26": [
+        {
+          "fills": [
+            {
+              "color": {
+                "variable": "clipboard:state-layer:d8289eeef8"
+              },
+              "type": "SOLID"
+            }
+          ],
+          "kind": "overlay",
+          "slot": "state layer"
+        },
+        {
+          "box": "672cd06398be5f4b",
+          "kind": "frame",
+          "layers": [
+            {
+              "default": "copy",
+              "icon": {
+                "color": {
+                  "color": {
+                    "variable": "--color-text-primary"
+                  },
+                  "type": "SOLID"
+                },
+                "size": {
+                  "variable": "--size-icon-lg"
+                }
+              },
+              "kind": "icon",
+              "slot": "face"
+            }
+          ],
+          "slot": "face",
+          "surface": "fa0b643878e9242d"
         }
       ],
       "b365e0a068bcc4db": [
@@ -81050,6 +83497,44 @@
           "surface": "fa0b643878e9242d"
         }
       ],
+      "e192b7d44d0bf3ee": [
+        {
+          "fills": [
+            {
+              "color": {
+                "variable": "clipboard:state-layer:a8bbbce668"
+              },
+              "type": "SOLID"
+            }
+          ],
+          "kind": "overlay",
+          "slot": "state layer"
+        },
+        {
+          "box": "672cd06398be5f4b",
+          "kind": "frame",
+          "layers": [
+            {
+              "default": "check",
+              "icon": {
+                "color": {
+                  "color": {
+                    "variable": "--color-text-primary"
+                  },
+                  "type": "SOLID"
+                },
+                "size": {
+                  "variable": "--size-icon-lg"
+                }
+              },
+              "kind": "icon",
+              "slot": "face"
+            }
+          ],
+          "slot": "face",
+          "surface": "fa0b643878e9242d"
+        }
+      ],
       "e2631681b6676c06": [
         {
           "fills": [
@@ -81572,6 +84057,44 @@
           "surface": "501d571ed85da00d"
         }
       ],
+      "e810be693b99a617": [
+        {
+          "fills": [
+            {
+              "color": {
+                "variable": "clipboard:state-layer:a8bbbce668"
+              },
+              "type": "SOLID"
+            }
+          ],
+          "kind": "overlay",
+          "slot": "state layer"
+        },
+        {
+          "box": "672cd06398be5f4b",
+          "kind": "frame",
+          "layers": [
+            {
+              "default": "copy",
+              "icon": {
+                "color": {
+                  "color": {
+                    "variable": "--color-text-primary"
+                  },
+                  "type": "SOLID"
+                },
+                "size": {
+                  "variable": "--size-icon-sm"
+                }
+              },
+              "kind": "icon",
+              "slot": "face"
+            }
+          ],
+          "slot": "face",
+          "surface": "fa0b643878e9242d"
+        }
+      ],
       "e8ae521ab5d25faf": [
         {
           "box": "18ec589e6ef81baa",
@@ -82045,6 +84568,63 @@
             "lineHeight": 150
           },
           "textProperty": "children"
+        }
+      ],
+      "ed205a61b6fc078d": [
+        {
+          "fills": [
+            {
+              "color": {
+                "variable": "clipboard:state-layer:bfba8c3497"
+              },
+              "type": "SOLID"
+            }
+          ],
+          "kind": "overlay",
+          "slot": "state layer"
+        },
+        {
+          "box": "672cd06398be5f4b",
+          "kind": "frame",
+          "layers": [
+            {
+              "default": "copy",
+              "icon": {
+                "color": {
+                  "color": {
+                    "variable": "--color-text-primary"
+                  },
+                  "type": "SOLID"
+                },
+                "size": {
+                  "variable": "--size-icon-md"
+                }
+              },
+              "kind": "icon",
+              "slot": "face"
+            }
+          ],
+          "slot": "face",
+          "surface": "fa0b643878e9242d"
+        },
+        {
+          "color": {
+            "color": {
+              "variable": "--focus-ring-color"
+            },
+            "type": "SOLID"
+          },
+          "kind": "ring",
+          "offset": {
+            "variable": "--focus-ring-offset"
+          },
+          "radius": {
+            "variable": "clipboard:outline-radius:9325831be9"
+          },
+          "slot": "focus ring",
+          "width": {
+            "variable": "--focus-ring-width"
+          }
         }
       ],
       "edf64206097a32e5": [
@@ -85582,6 +88162,46 @@
           }
         ]
       },
+      "1dcaf973d66538de": {
+        "effects": [
+          {
+            "blur": {
+              "expression": "0",
+              "value": 0
+            },
+            "color": {
+              "variable": "clipboard:brutalist-black:b75258c11d"
+            },
+            "spread": {
+              "expression": "0",
+              "value": 0
+            },
+            "type": "DROP_SHADOW",
+            "x": {
+              "variable": "clipboard:shadow-1-x:7d492f8ac7"
+            },
+            "y": {
+              "variable": "clipboard:brutalist-shadow-block:c9e6ad26b2"
+            }
+          }
+        ],
+        "fills": [
+          {
+            "color": {
+              "variable": "--color-action-neutral"
+            },
+            "type": "SOLID"
+          }
+        ],
+        "strokes": [
+          {
+            "color": {
+              "variable": "clipboard:brutalist-black:b75258c11d"
+            },
+            "type": "SOLID"
+          }
+        ]
+      },
       "1e961bd6f890d56c": {
         "effects": [
           {
@@ -86899,6 +89519,102 @@
         ],
         "strokes": []
       },
+      "389d6ceb72c2412f": {
+        "effects": [
+          {
+            "blur": {
+              "expression": "0",
+              "value": 0
+            },
+            "color": {
+              "variable": "clipboard:shadow-1-color:07dd8f25d7"
+            },
+            "spread": {
+              "expression": "0",
+              "value": 0
+            },
+            "type": "DROP_SHADOW",
+            "x": {
+              "expression": "0",
+              "value": 0
+            },
+            "y": {
+              "variable": "clipboard:sk-button-depth:ac33ff9105"
+            }
+          },
+          {
+            "blur": {
+              "expression": "3px",
+              "value": 3
+            },
+            "color": {
+              "variable": "clipboard:shadow-2-color:ff6347ec6d"
+            },
+            "spread": {
+              "expression": "0",
+              "value": 0
+            },
+            "type": "DROP_SHADOW",
+            "x": {
+              "expression": "0",
+              "value": 0
+            },
+            "y": {
+              "variable": "clipboard:shadow-2-y:c9167968de"
+            }
+          }
+        ],
+        "fills": [
+          {
+            "color": {
+              "variable": "clipboard:fill:a59b4030b3"
+            },
+            "type": "SOLID"
+          },
+          {
+            "angle": 180,
+            "expression": "linear-gradient( to bottom, light-dark(color-mix(in oklab, white 10%, transparent), color-mix(in oklab, white 6%, transparent)), transparent 55%, light-dark(color-mix(in oklab, black 5%, transparent), color-mix(in oklab, black 8%, transparent)) )",
+            "stops": [
+              {
+                "color": {
+                  "a": 0.1,
+                  "b": 1,
+                  "g": 1,
+                  "r": 1
+                },
+                "position": 0
+              },
+              {
+                "color": {
+                  "a": 0,
+                  "b": 0,
+                  "g": 0,
+                  "r": 0
+                },
+                "position": 0.55
+              },
+              {
+                "color": {
+                  "a": 0.05,
+                  "b": 0,
+                  "g": 0,
+                  "r": 0
+                },
+                "position": 1
+              }
+            ],
+            "type": "GRADIENT_LINEAR"
+          }
+        ],
+        "strokes": [
+          {
+            "color": {
+              "variable": "clipboard:sk-button-border-color:dfa846e305"
+            },
+            "type": "SOLID"
+          }
+        ]
+      },
       "3b47044f32454d8b": {
         "effects": [
           {
@@ -87803,6 +90519,65 @@
           }
         ]
       },
+      "4c1139c8cf941d76": {
+        "effects": [],
+        "fills": [
+          {
+            "color": {
+              "variable": "clipboard:sk-button-bg:10e9f5602d"
+            },
+            "type": "SOLID"
+          }
+        ],
+        "strokes": [
+          {
+            "color": {
+              "variable": "clipboard:sk-button-border-color:10e9f5602d"
+            },
+            "type": "SOLID"
+          }
+        ]
+      },
+      "4d92c52440cdfee3": {
+        "effects": [
+          {
+            "blur": {
+              "expression": "0",
+              "value": 0
+            },
+            "color": {
+              "variable": "clipboard:brutalist-black:b75258c11d"
+            },
+            "spread": {
+              "expression": "0",
+              "value": 0
+            },
+            "type": "DROP_SHADOW",
+            "x": {
+              "variable": "clipboard:shadow-1-x:e7d21ee051"
+            },
+            "y": {
+              "variable": "clipboard:brutalist-shadow-block:173a4f280d"
+            }
+          }
+        ],
+        "fills": [
+          {
+            "color": {
+              "variable": "clipboard:sk-button-bg:10e9f5602d"
+            },
+            "type": "SOLID"
+          }
+        ],
+        "strokes": [
+          {
+            "color": {
+              "variable": "clipboard:brutalist-black:b75258c11d"
+            },
+            "type": "SOLID"
+          }
+        ]
+      },
       "4e52eef86cca829a": {
         "effects": [],
         "fills": [
@@ -87957,6 +90732,101 @@
           {
             "color": {
               "variable": "--color-action-accent"
+            },
+            "type": "SOLID"
+          }
+        ]
+      },
+      "4fed53f567c5bd36": {
+        "effects": [
+          {
+            "blur": {
+              "expression": "0",
+              "value": 0
+            },
+            "color": {
+              "variable": "--frost-highlight"
+            },
+            "spread": {
+              "expression": "0",
+              "value": 0
+            },
+            "type": "INNER_SHADOW",
+            "x": {
+              "expression": "0",
+              "value": 0
+            },
+            "y": {
+              "expression": "1px",
+              "value": 1
+            }
+          },
+          {
+            "blur": {
+              "expression": "2px",
+              "value": 2
+            },
+            "color": {
+              "variable": "--shadow-sm"
+            },
+            "spread": {
+              "expression": "0",
+              "value": 0
+            },
+            "type": "DROP_SHADOW",
+            "x": {
+              "expression": "0",
+              "value": 0
+            },
+            "y": {
+              "expression": "1px",
+              "value": 1
+            }
+          },
+          {
+            "radius": {
+              "variable": "clipboard:frost-blur:67931646dc"
+            },
+            "type": "BACKGROUND_BLUR"
+          }
+        ],
+        "fills": [
+          {
+            "color": {
+              "variable": "clipboard:fill:44b21d3134"
+            },
+            "type": "SOLID"
+          },
+          {
+            "angle": 180,
+            "expression": "linear-gradient( to bottom, color-mix(in oklab, var(--frost-highlight) 55%, transparent), transparent 50% )",
+            "stops": [
+              {
+                "color": {
+                  "a": 0.385,
+                  "b": 1,
+                  "g": 1,
+                  "r": 1
+                },
+                "position": 0
+              },
+              {
+                "color": {
+                  "a": 0,
+                  "b": 0,
+                  "g": 0,
+                  "r": 0
+                },
+                "position": 0.5
+              }
+            ],
+            "type": "GRADIENT_LINEAR"
+          }
+        ],
+        "strokes": [
+          {
+            "color": {
+              "variable": "clipboard:frost-edge:74589dbcff"
             },
             "type": "SOLID"
           }
@@ -89000,6 +91870,54 @@
           }
         ]
       },
+      "5f0c1c6208e0437d": {
+        "effects": [
+          {
+            "blur": {
+              "expression": "0",
+              "value": 0
+            },
+            "color": {
+              "variable": "--frost-highlight"
+            },
+            "spread": {
+              "expression": "0",
+              "value": 0
+            },
+            "type": "INNER_SHADOW",
+            "x": {
+              "expression": "0",
+              "value": 0
+            },
+            "y": {
+              "expression": "1px",
+              "value": 1
+            }
+          },
+          {
+            "radius": {
+              "variable": "clipboard:frost-blur:eb4ebe481c"
+            },
+            "type": "BACKGROUND_BLUR"
+          }
+        ],
+        "fills": [
+          {
+            "color": {
+              "variable": "clipboard:fill:252485b376"
+            },
+            "type": "SOLID"
+          }
+        ],
+        "strokes": [
+          {
+            "color": {
+              "variable": "clipboard:frost-edge:6bca62367e"
+            },
+            "type": "SOLID"
+          }
+        ]
+      },
       "5f5fae4c45cf3e5f": {
         "effects": [
           {
@@ -89674,6 +92592,108 @@
           }
         ],
         "strokes": []
+      },
+      "6c12acb129310976": {
+        "effects": [
+          {
+            "blur": {
+              "expression": "0",
+              "value": 0
+            },
+            "color": {
+              "variable": "clipboard:shadow-1-color:6693e18984"
+            },
+            "spread": {
+              "expression": "0",
+              "value": 0
+            },
+            "type": "DROP_SHADOW",
+            "x": {
+              "expression": "0",
+              "value": 0
+            },
+            "y": {
+              "variable": "clipboard:shadow-1-y:ff68aeb38f"
+            }
+          },
+          {
+            "blur": {
+              "expression": "3px",
+              "value": 3
+            },
+            "color": {
+              "variable": "clipboard:shadow-2-color:250dedc386"
+            },
+            "spread": {
+              "expression": "0",
+              "value": 0
+            },
+            "type": "DROP_SHADOW",
+            "x": {
+              "expression": "0",
+              "value": 0
+            },
+            "y": {
+              "variable": "clipboard:shadow-2-y:bbb2559352"
+            }
+          }
+        ],
+        "fills": [
+          {
+            "color": {
+              "variable": "--color-action-neutral"
+            },
+            "type": "SOLID"
+          },
+          {
+            "color": {
+              "variable": "--elevation-tint-raised"
+            },
+            "type": "SOLID"
+          },
+          {
+            "angle": 180,
+            "expression": "linear-gradient( to bottom, light-dark(color-mix(in oklab, white 10%, transparent), color-mix(in oklab, white 6%, transparent)), transparent 55%, light-dark(color-mix(in oklab, black 5%, transparent), color-mix(in oklab, black 8%, transparent)) )",
+            "stops": [
+              {
+                "color": {
+                  "a": 0.1,
+                  "b": 1,
+                  "g": 1,
+                  "r": 1
+                },
+                "position": 0
+              },
+              {
+                "color": {
+                  "a": 0,
+                  "b": 0,
+                  "g": 0,
+                  "r": 0
+                },
+                "position": 0.55
+              },
+              {
+                "color": {
+                  "a": 0.05,
+                  "b": 0,
+                  "g": 0,
+                  "r": 0
+                },
+                "position": 1
+              }
+            ],
+            "type": "GRADIENT_LINEAR"
+          }
+        ],
+        "strokes": [
+          {
+            "color": {
+              "variable": "--color-border-subtle"
+            },
+            "type": "SOLID"
+          }
+        ]
       },
       "6d048a90523343b0": {
         "effects": [
@@ -90948,6 +93968,101 @@
           {
             "color": {
               "variable": "--color-border-accent"
+            },
+            "type": "SOLID"
+          }
+        ]
+      },
+      "7dbca653044dd003": {
+        "effects": [
+          {
+            "blur": {
+              "expression": "0",
+              "value": 0
+            },
+            "color": {
+              "variable": "--frost-highlight"
+            },
+            "spread": {
+              "expression": "0",
+              "value": 0
+            },
+            "type": "INNER_SHADOW",
+            "x": {
+              "expression": "0",
+              "value": 0
+            },
+            "y": {
+              "expression": "1px",
+              "value": 1
+            }
+          },
+          {
+            "blur": {
+              "expression": "2px",
+              "value": 2
+            },
+            "color": {
+              "variable": "--shadow-sm"
+            },
+            "spread": {
+              "expression": "0",
+              "value": 0
+            },
+            "type": "DROP_SHADOW",
+            "x": {
+              "expression": "0",
+              "value": 0
+            },
+            "y": {
+              "expression": "1px",
+              "value": 1
+            }
+          },
+          {
+            "radius": {
+              "variable": "clipboard:frost-blur:67931646dc"
+            },
+            "type": "BACKGROUND_BLUR"
+          }
+        ],
+        "fills": [
+          {
+            "color": {
+              "variable": "clipboard:fill:6a40972298"
+            },
+            "type": "SOLID"
+          },
+          {
+            "angle": 180,
+            "expression": "linear-gradient( to bottom, color-mix(in oklab, var(--frost-highlight) 55%, transparent), transparent 50% )",
+            "stops": [
+              {
+                "color": {
+                  "a": 0.385,
+                  "b": 1,
+                  "g": 1,
+                  "r": 1
+                },
+                "position": 0
+              },
+              {
+                "color": {
+                  "a": 0,
+                  "b": 0,
+                  "g": 0,
+                  "r": 0
+                },
+                "position": 0.5
+              }
+            ],
+            "type": "GRADIENT_LINEAR"
+          }
+        ],
+        "strokes": [
+          {
+            "color": {
+              "variable": "clipboard:frost-edge:74589dbcff"
             },
             "type": "SOLID"
           }
@@ -94320,6 +97435,108 @@
           }
         ]
       },
+      "b295581db084eec5": {
+        "effects": [
+          {
+            "blur": {
+              "expression": "0",
+              "value": 0
+            },
+            "color": {
+              "variable": "clipboard:shadow-1-color:7d4d3881a2"
+            },
+            "spread": {
+              "expression": "0",
+              "value": 0
+            },
+            "type": "DROP_SHADOW",
+            "x": {
+              "expression": "0",
+              "value": 0
+            },
+            "y": {
+              "variable": "clipboard:sk-button-depth:356601538d"
+            }
+          },
+          {
+            "blur": {
+              "expression": "4px",
+              "value": 4
+            },
+            "color": {
+              "variable": "clipboard:shadow-2-color:191bf2b884"
+            },
+            "spread": {
+              "expression": "0",
+              "value": 0
+            },
+            "type": "DROP_SHADOW",
+            "x": {
+              "expression": "0",
+              "value": 0
+            },
+            "y": {
+              "variable": "clipboard:shadow-2-y:d5e9f08ba1"
+            }
+          }
+        ],
+        "fills": [
+          {
+            "color": {
+              "variable": "--color-action-neutral"
+            },
+            "type": "SOLID"
+          },
+          {
+            "color": {
+              "variable": "--elevation-tint-raised"
+            },
+            "type": "SOLID"
+          },
+          {
+            "angle": 180,
+            "expression": "linear-gradient( to bottom, light-dark(color-mix(in oklab, white 10%, transparent), color-mix(in oklab, white 6%, transparent)), transparent 55%, light-dark(color-mix(in oklab, black 5%, transparent), color-mix(in oklab, black 8%, transparent)) )",
+            "stops": [
+              {
+                "color": {
+                  "a": 0.1,
+                  "b": 1,
+                  "g": 1,
+                  "r": 1
+                },
+                "position": 0
+              },
+              {
+                "color": {
+                  "a": 0,
+                  "b": 0,
+                  "g": 0,
+                  "r": 0
+                },
+                "position": 0.55
+              },
+              {
+                "color": {
+                  "a": 0.05,
+                  "b": 0,
+                  "g": 0,
+                  "r": 0
+                },
+                "position": 1
+              }
+            ],
+            "type": "GRADIENT_LINEAR"
+          }
+        ],
+        "strokes": [
+          {
+            "color": {
+              "variable": "--color-border-subtle"
+            },
+            "type": "SOLID"
+          }
+        ]
+      },
       "b455a027df6df83e": {
         "effects": [
           {
@@ -96886,6 +100103,54 @@
           }
         ]
       },
+      "dd031d03a3a609f4": {
+        "effects": [
+          {
+            "blur": {
+              "expression": "0",
+              "value": 0
+            },
+            "color": {
+              "variable": "--frost-highlight"
+            },
+            "spread": {
+              "expression": "0",
+              "value": 0
+            },
+            "type": "INNER_SHADOW",
+            "x": {
+              "expression": "0",
+              "value": 0
+            },
+            "y": {
+              "expression": "1px",
+              "value": 1
+            }
+          },
+          {
+            "radius": {
+              "variable": "clipboard:frost-blur:eb4ebe481c"
+            },
+            "type": "BACKGROUND_BLUR"
+          }
+        ],
+        "fills": [
+          {
+            "color": {
+              "variable": "clipboard:fill:bac85d81e3"
+            },
+            "type": "SOLID"
+          }
+        ],
+        "strokes": [
+          {
+            "color": {
+              "variable": "clipboard:frost-edge:6bca62367e"
+            },
+            "type": "SOLID"
+          }
+        ]
+      },
       "dd90083c377662c2": {
         "effects": [
           {
@@ -97583,6 +100848,46 @@
           }
         ]
       },
+      "edb0bb8089a4916c": {
+        "effects": [
+          {
+            "blur": {
+              "expression": "0",
+              "value": 0
+            },
+            "color": {
+              "variable": "clipboard:brutalist-black:b75258c11d"
+            },
+            "spread": {
+              "expression": "0",
+              "value": 0
+            },
+            "type": "DROP_SHADOW",
+            "x": {
+              "variable": "clipboard:shadow-1-x:ce04e18242"
+            },
+            "y": {
+              "variable": "clipboard:brutalist-shadow-block:032cd8d071"
+            }
+          }
+        ],
+        "fills": [
+          {
+            "color": {
+              "variable": "clipboard:sk-button-bg:10e9f5602d"
+            },
+            "type": "SOLID"
+          }
+        ],
+        "strokes": [
+          {
+            "color": {
+              "variable": "clipboard:brutalist-black:b75258c11d"
+            },
+            "type": "SOLID"
+          }
+        ]
+      },
       "ef3956c2e9b301c9": {
         "effects": [],
         "fills": [
@@ -97844,6 +101149,46 @@
           {
             "color": {
               "variable": "--color-border-subtle"
+            },
+            "type": "SOLID"
+          }
+        ]
+      },
+      "f7f8f07a39852f45": {
+        "effects": [
+          {
+            "blur": {
+              "expression": "0",
+              "value": 0
+            },
+            "color": {
+              "variable": "clipboard:brutalist-black:b75258c11d"
+            },
+            "spread": {
+              "expression": "0",
+              "value": 0
+            },
+            "type": "DROP_SHADOW",
+            "x": {
+              "variable": "clipboard:shadow-1-x:46d7ea6a5a"
+            },
+            "y": {
+              "variable": "clipboard:brutalist-shadow-block:ebb9cc003f"
+            }
+          }
+        ],
+        "fills": [
+          {
+            "color": {
+              "variable": "--color-action-neutral"
+            },
+            "type": "SOLID"
+          }
+        ],
+        "strokes": [
+          {
+            "color": {
+              "variable": "clipboard:brutalist-black:b75258c11d"
             },
             "type": "SOLID"
           }
@@ -105575,6 +108920,1096 @@
           "kind": "literal",
           "value": {
             "a": 0.12,
+            "b": 0.0903,
+            "g": 0.098,
+            "r": 0.1095
+          }
+        }
+      }
+    },
+    {
+      "codeSyntax": "var(--brutalist-black)",
+      "collection": "component",
+      "expression": "oklch(from var(--shadow-lg) l c h / 1)",
+      "id": "clipboard:brutalist-black:b75258c11d",
+      "name": "clipboard/brutalist-black/brutalist",
+      "source": {
+        "dark": "evaluated",
+        "light": "evaluated"
+      },
+      "type": "COLOR",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": {
+            "a": 1,
+            "b": 0,
+            "g": 0,
+            "r": 0
+          }
+        },
+        "light": {
+          "kind": "literal",
+          "value": {
+            "a": 1,
+            "b": 0,
+            "g": 0,
+            "r": 0
+          }
+        }
+      }
+    },
+    {
+      "codeSyntax": "var(--brutalist-shadow-block)",
+      "collection": "component",
+      "expression": "max( min(round(nearest, calc(2px * 1), 1px), 1px), round(nearest, calc(round(nearest, calc(2px * 1), 1px) * (1 - 0)), 1px) )",
+      "id": "clipboard:brutalist-shadow-block:173a4f280d",
+      "name": "clipboard/brutalist-shadow-block/brutalist/ghost",
+      "source": {
+        "dark": "evaluated",
+        "light": "evaluated"
+      },
+      "type": "FLOAT",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": 2
+        },
+        "light": {
+          "kind": "literal",
+          "value": 2
+        }
+      }
+    },
+    {
+      "codeSyntax": "var(--brutalist-shadow-block)",
+      "collection": "component",
+      "expression": "max( min(round(nearest, calc(2px * 1), 1px), 1px), round(nearest, calc(round(nearest, calc(2px * 1), 1px) * (1 - -0.25)), 1px) )",
+      "id": "clipboard:brutalist-shadow-block:032cd8d071",
+      "name": "clipboard/brutalist-shadow-block/brutalist/ghost/hover",
+      "source": {
+        "dark": "evaluated",
+        "light": "evaluated"
+      },
+      "type": "FLOAT",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": 3
+        },
+        "light": {
+          "kind": "literal",
+          "value": 3
+        }
+      }
+    },
+    {
+      "codeSyntax": "var(--brutalist-shadow-block)",
+      "collection": "component",
+      "expression": "max( min(round(nearest, calc(4px * 1), 1px), 1px), round(nearest, calc(round(nearest, calc(4px * 1), 1px) * (1 - 0)), 1px) )",
+      "id": "clipboard:brutalist-shadow-block:ebb9cc003f",
+      "name": "clipboard/brutalist-shadow-block/brutalist/soft",
+      "source": {
+        "dark": "evaluated",
+        "light": "evaluated"
+      },
+      "type": "FLOAT",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": 4
+        },
+        "light": {
+          "kind": "literal",
+          "value": 4
+        }
+      }
+    },
+    {
+      "codeSyntax": "var(--brutalist-shadow-block)",
+      "collection": "component",
+      "expression": "max( min(round(nearest, calc(4px * 1), 1px), 1px), round(nearest, calc(round(nearest, calc(4px * 1), 1px) * (1 - -0.25)), 1px) )",
+      "id": "clipboard:brutalist-shadow-block:c9e6ad26b2",
+      "name": "clipboard/brutalist-shadow-block/brutalist/soft/hover",
+      "source": {
+        "dark": "evaluated",
+        "light": "evaluated"
+      },
+      "type": "FLOAT",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": 5
+        },
+        "light": {
+          "kind": "literal",
+          "value": 5
+        }
+      }
+    },
+    {
+      "codeSyntax": "",
+      "collection": "component",
+      "expression": "color-mix( in oklab, var(--color-bg-surface) max(0%, min(100%, 65% + 0%)), transparent )",
+      "id": "clipboard:fill:bac85d81e3",
+      "name": "clipboard/fill/frosted/ghost",
+      "source": {
+        "dark": "evaluated",
+        "light": "evaluated"
+      },
+      "type": "COLOR",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": {
+            "a": 0.65,
+            "b": 0.0903,
+            "g": 0.098,
+            "r": 0.1095
+          }
+        },
+        "light": {
+          "kind": "literal",
+          "value": {
+            "a": 0.65,
+            "b": 1,
+            "g": 1,
+            "r": 1
+          }
+        }
+      }
+    },
+    {
+      "codeSyntax": "",
+      "collection": "component",
+      "expression": "color-mix( in oklab, var(--color-bg-surface) max(0%, min(100%, 65% + 6%)), transparent )",
+      "id": "clipboard:fill:252485b376",
+      "name": "clipboard/fill/frosted/ghost/hover",
+      "source": {
+        "dark": "evaluated",
+        "light": "evaluated"
+      },
+      "type": "COLOR",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": {
+            "a": 0.71,
+            "b": 0.0903,
+            "g": 0.098,
+            "r": 0.1095
+          }
+        },
+        "light": {
+          "kind": "literal",
+          "value": {
+            "a": 0.71,
+            "b": 1,
+            "g": 1,
+            "r": 1
+          }
+        }
+      }
+    },
+    {
+      "codeSyntax": "",
+      "collection": "component",
+      "expression": "color-mix( in oklab, var(--color-action-neutral) max(0%, min(100%, 76% + 0%)), transparent )",
+      "id": "clipboard:fill:6a40972298",
+      "name": "clipboard/fill/frosted/soft",
+      "source": {
+        "dark": "evaluated",
+        "light": "evaluated"
+      },
+      "type": "COLOR",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": {
+            "a": 0.76,
+            "b": 0.1398,
+            "g": 0.1442,
+            "r": 0.1616
+          }
+        },
+        "light": {
+          "kind": "literal",
+          "value": {
+            "a": 0.76,
+            "b": 0.9579,
+            "g": 0.9609,
+            "r": 0.9609
+          }
+        }
+      }
+    },
+    {
+      "codeSyntax": "",
+      "collection": "component",
+      "expression": "color-mix( in oklab, var(--color-action-neutral) max(0%, min(100%, 76% + 6%)), transparent )",
+      "id": "clipboard:fill:44b21d3134",
+      "name": "clipboard/fill/frosted/soft/hover",
+      "source": {
+        "dark": "evaluated",
+        "light": "evaluated"
+      },
+      "type": "COLOR",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": {
+            "a": 0.82,
+            "b": 0.1398,
+            "g": 0.1442,
+            "r": 0.1616
+          }
+        },
+        "light": {
+          "kind": "literal",
+          "value": {
+            "a": 0.82,
+            "b": 0.9579,
+            "g": 0.9609,
+            "r": 0.9609
+          }
+        }
+      }
+    },
+    {
+      "codeSyntax": "",
+      "collection": "component",
+      "expression": "color-mix(in oklab, var(--color-text-primary) 6%, transparent)",
+      "id": "clipboard:fill:a59b4030b3",
+      "name": "clipboard/fill/tactile/ghost",
+      "source": {
+        "dark": "evaluated",
+        "light": "evaluated"
+      },
+      "type": "COLOR",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": {
+            "a": 0.06,
+            "b": 0.9579,
+            "g": 0.9609,
+            "r": 0.9609
+          }
+        },
+        "light": {
+          "kind": "literal",
+          "value": {
+            "a": 0.06,
+            "b": 0.0903,
+            "g": 0.098,
+            "r": 0.1095
+          }
+        }
+      }
+    },
+    {
+      "codeSyntax": "var(--frost-blur)",
+      "collection": "component",
+      "expression": "8px",
+      "id": "clipboard:frost-blur:eb4ebe481c",
+      "name": "clipboard/frost-blur/frosted/ghost",
+      "source": {
+        "dark": "literal",
+        "light": "literal"
+      },
+      "type": "FLOAT",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": 8
+        },
+        "light": {
+          "kind": "literal",
+          "value": 8
+        }
+      }
+    },
+    {
+      "codeSyntax": "var(--frost-blur)",
+      "collection": "component",
+      "expression": "16px",
+      "id": "clipboard:frost-blur:67931646dc",
+      "name": "clipboard/frost-blur/frosted/soft",
+      "source": {
+        "dark": "literal",
+        "light": "literal"
+      },
+      "type": "FLOAT",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": 16
+        },
+        "light": {
+          "kind": "literal",
+          "value": 16
+        }
+      }
+    },
+    {
+      "codeSyntax": "var(--frost-edge)",
+      "collection": "component",
+      "expression": "color-mix(in oklab, var(--color-text-primary) 16%, transparent)",
+      "id": "clipboard:frost-edge:6bca62367e",
+      "name": "clipboard/frost-edge/frosted/ghost",
+      "source": {
+        "dark": "evaluated",
+        "light": "evaluated"
+      },
+      "type": "COLOR",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": {
+            "a": 0.16,
+            "b": 0.9579,
+            "g": 0.9609,
+            "r": 0.9609
+          }
+        },
+        "light": {
+          "kind": "literal",
+          "value": {
+            "a": 0.16,
+            "b": 0.0903,
+            "g": 0.098,
+            "r": 0.1095
+          }
+        }
+      }
+    },
+    {
+      "codeSyntax": "var(--frost-edge)",
+      "collection": "component",
+      "expression": "color-mix(in oklab, var(--color-text-primary) 24%, transparent)",
+      "id": "clipboard:frost-edge:74589dbcff",
+      "name": "clipboard/frost-edge/frosted/soft",
+      "source": {
+        "dark": "evaluated",
+        "light": "evaluated"
+      },
+      "type": "COLOR",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": {
+            "a": 0.24,
+            "b": 0.9579,
+            "g": 0.9609,
+            "r": 0.9609
+          }
+        },
+        "light": {
+          "kind": "literal",
+          "value": {
+            "a": 0.24,
+            "b": 0.0903,
+            "g": 0.098,
+            "r": 0.1095
+          }
+        }
+      }
+    },
+    {
+      "codeSyntax": "",
+      "collection": "component",
+      "expression": "calc(var(--radius-control) + var(--focus-ring-offset))",
+      "id": "clipboard:outline-radius:9325831be9",
+      "name": "clipboard/outline-radius/focus",
+      "source": {
+        "dark": "evaluated",
+        "light": "evaluated"
+      },
+      "type": "FLOAT",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": 10
+        },
+        "light": {
+          "kind": "literal",
+          "value": 10
+        }
+      }
+    },
+    {
+      "codeSyntax": "",
+      "collection": "component",
+      "expression": "color-mix(in oklab, var(--color-text-primary) 20%, transparent)",
+      "id": "clipboard:shadow-1-color:07dd8f25d7",
+      "name": "clipboard/shadow-1-color/tactile/ghost",
+      "source": {
+        "dark": "evaluated",
+        "light": "evaluated"
+      },
+      "type": "COLOR",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": {
+            "a": 0.2,
+            "b": 0.9579,
+            "g": 0.9609,
+            "r": 0.9609
+          }
+        },
+        "light": {
+          "kind": "literal",
+          "value": {
+            "a": 0.2,
+            "b": 0.0903,
+            "g": 0.098,
+            "r": 0.1095
+          }
+        }
+      }
+    },
+    {
+      "codeSyntax": "",
+      "collection": "component",
+      "expression": "light-dark( color-mix(in oklab, var(--color-action-neutral) 76%, var(--color-text-primary)), color-mix(in oklab, var(--color-action-neutral) 72%, var(--color-bg-surface-sunken)) )",
+      "id": "clipboard:shadow-1-color:7d4d3881a2",
+      "name": "clipboard/shadow-1-color/tactile/soft",
+      "source": {
+        "dark": "evaluated",
+        "light": "evaluated"
+      },
+      "type": "COLOR",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": {
+            "a": 1,
+            "b": 0.1091,
+            "g": 0.1133,
+            "r": 0.1279
+          }
+        },
+        "light": {
+          "kind": "literal",
+          "value": {
+            "a": 1,
+            "b": 0.7243,
+            "g": 0.729,
+            "r": 0.7329
+          }
+        }
+      }
+    },
+    {
+      "codeSyntax": "",
+      "collection": "component",
+      "expression": "light-dark( color-mix(in oklab, var(--color-action-neutral) 82%, var(--color-text-primary)), color-mix(in oklab, var(--color-action-neutral) 76%, var(--color-bg-surface-sunken)) )",
+      "id": "clipboard:shadow-1-color:6693e18984",
+      "name": "clipboard/shadow-1-color/tactile/soft/hover",
+      "source": {
+        "dark": "evaluated",
+        "light": "evaluated"
+      },
+      "type": "COLOR",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": {
+            "a": 1,
+            "b": 0.1134,
+            "g": 0.1177,
+            "r": 0.1326
+          }
+        },
+        "light": {
+          "kind": "literal",
+          "value": {
+            "a": 1,
+            "b": 0.7816,
+            "g": 0.7858,
+            "r": 0.7888
+          }
+        }
+      }
+    },
+    {
+      "codeSyntax": "",
+      "collection": "component",
+      "expression": "calc(max( min(round(nearest, calc(2px * 1), 1px), 1px), round(nearest, calc(round(nearest, calc(2px * 1), 1px) * (1 - 0)), 1px) ) * 1)",
+      "id": "clipboard:shadow-1-x:e7d21ee051",
+      "name": "clipboard/shadow-1-x/brutalist/ghost",
+      "source": {
+        "dark": "evaluated",
+        "light": "evaluated"
+      },
+      "type": "FLOAT",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": 2
+        },
+        "light": {
+          "kind": "literal",
+          "value": 2
+        }
+      }
+    },
+    {
+      "codeSyntax": "",
+      "collection": "component",
+      "expression": "calc(max( min(round(nearest, calc(2px * 1), 1px), 1px), round(nearest, calc(round(nearest, calc(2px * 1), 1px) * (1 - -0.25)), 1px) ) * 1)",
+      "id": "clipboard:shadow-1-x:ce04e18242",
+      "name": "clipboard/shadow-1-x/brutalist/ghost/hover",
+      "source": {
+        "dark": "evaluated",
+        "light": "evaluated"
+      },
+      "type": "FLOAT",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": 3
+        },
+        "light": {
+          "kind": "literal",
+          "value": 3
+        }
+      }
+    },
+    {
+      "codeSyntax": "",
+      "collection": "component",
+      "expression": "calc(max( min(round(nearest, calc(4px * 1), 1px), 1px), round(nearest, calc(round(nearest, calc(4px * 1), 1px) * (1 - 0)), 1px) ) * 1)",
+      "id": "clipboard:shadow-1-x:46d7ea6a5a",
+      "name": "clipboard/shadow-1-x/brutalist/soft",
+      "source": {
+        "dark": "evaluated",
+        "light": "evaluated"
+      },
+      "type": "FLOAT",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": 4
+        },
+        "light": {
+          "kind": "literal",
+          "value": 4
+        }
+      }
+    },
+    {
+      "codeSyntax": "",
+      "collection": "component",
+      "expression": "calc(max( min(round(nearest, calc(4px * 1), 1px), 1px), round(nearest, calc(round(nearest, calc(4px * 1), 1px) * (1 - -0.25)), 1px) ) * 1)",
+      "id": "clipboard:shadow-1-x:7d492f8ac7",
+      "name": "clipboard/shadow-1-x/brutalist/soft/hover",
+      "source": {
+        "dark": "evaluated",
+        "light": "evaluated"
+      },
+      "type": "FLOAT",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": 5
+        },
+        "light": {
+          "kind": "literal",
+          "value": 5
+        }
+      }
+    },
+    {
+      "codeSyntax": "",
+      "collection": "component",
+      "expression": "calc(4px * 0.8)",
+      "id": "clipboard:shadow-1-y:ff68aeb38f",
+      "name": "clipboard/shadow-1-y/tactile/soft/hover",
+      "source": {
+        "dark": "evaluated",
+        "light": "evaluated"
+      },
+      "type": "FLOAT",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": 3.2
+        },
+        "light": {
+          "kind": "literal",
+          "value": 3.2
+        }
+      }
+    },
+    {
+      "codeSyntax": "",
+      "collection": "component",
+      "expression": "color-mix(in oklab, var(--color-text-primary) 10%, transparent)",
+      "id": "clipboard:shadow-2-color:ff6347ec6d",
+      "name": "clipboard/shadow-2-color/tactile/ghost",
+      "source": {
+        "dark": "evaluated",
+        "light": "evaluated"
+      },
+      "type": "COLOR",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": {
+            "a": 0.1,
+            "b": 0.9579,
+            "g": 0.9609,
+            "r": 0.9609
+          }
+        },
+        "light": {
+          "kind": "literal",
+          "value": {
+            "a": 0.1,
+            "b": 0.0903,
+            "g": 0.098,
+            "r": 0.1095
+          }
+        }
+      }
+    },
+    {
+      "codeSyntax": "",
+      "collection": "component",
+      "expression": "light-dark( color-mix(in oklab, var(--color-text-primary) 14%, transparent), color-mix(in oklab, var(--color-bg-surface-sunken) 44%, transparent) )",
+      "id": "clipboard:shadow-2-color:191bf2b884",
+      "name": "clipboard/shadow-2-color/tactile/soft",
+      "source": {
+        "dark": "evaluated",
+        "light": "evaluated"
+      },
+      "type": "COLOR",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": {
+            "a": 0.44,
+            "b": 0.0355,
+            "g": 0.0394,
+            "r": 0.047
+          }
+        },
+        "light": {
+          "kind": "literal",
+          "value": {
+            "a": 0.14,
+            "b": 0.0903,
+            "g": 0.098,
+            "r": 0.1095
+          }
+        }
+      }
+    },
+    {
+      "codeSyntax": "",
+      "collection": "component",
+      "expression": "light-dark( color-mix(in oklab, var(--color-text-primary) 11%, transparent), color-mix(in oklab, var(--color-bg-surface-sunken) 32%, transparent) )",
+      "id": "clipboard:shadow-2-color:250dedc386",
+      "name": "clipboard/shadow-2-color/tactile/soft/hover",
+      "source": {
+        "dark": "evaluated",
+        "light": "evaluated"
+      },
+      "type": "COLOR",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": {
+            "a": 0.32,
+            "b": 0.0355,
+            "g": 0.0394,
+            "r": 0.047
+          }
+        },
+        "light": {
+          "kind": "literal",
+          "value": {
+            "a": 0.11,
+            "b": 0.0903,
+            "g": 0.098,
+            "r": 0.1095
+          }
+        }
+      }
+    },
+    {
+      "codeSyntax": "",
+      "collection": "component",
+      "expression": "calc(3px + 1px)",
+      "id": "clipboard:shadow-2-y:c9167968de",
+      "name": "clipboard/shadow-2-y/tactile/ghost",
+      "source": {
+        "dark": "evaluated",
+        "light": "evaluated"
+      },
+      "type": "FLOAT",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": 4
+        },
+        "light": {
+          "kind": "literal",
+          "value": 4
+        }
+      }
+    },
+    {
+      "codeSyntax": "",
+      "collection": "component",
+      "expression": "calc(4px + 1px)",
+      "id": "clipboard:shadow-2-y:d5e9f08ba1",
+      "name": "clipboard/shadow-2-y/tactile/soft",
+      "source": {
+        "dark": "evaluated",
+        "light": "evaluated"
+      },
+      "type": "FLOAT",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": 5
+        },
+        "light": {
+          "kind": "literal",
+          "value": 5
+        }
+      }
+    },
+    {
+      "codeSyntax": "",
+      "collection": "component",
+      "expression": "calc(4px * 0.8 + 1px)",
+      "id": "clipboard:shadow-2-y:bbb2559352",
+      "name": "clipboard/shadow-2-y/tactile/soft/hover",
+      "source": {
+        "dark": "evaluated",
+        "light": "evaluated"
+      },
+      "type": "FLOAT",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": 4.2
+        },
+        "light": {
+          "kind": "literal",
+          "value": 4.2
+        }
+      }
+    },
+    {
+      "codeSyntax": "var(--sk-button-bg)",
+      "collection": "component",
+      "expression": "transparent",
+      "id": "clipboard:sk-button-bg:10e9f5602d",
+      "name": "clipboard/sk-button-bg/ghost",
+      "source": {
+        "dark": "literal",
+        "light": "literal"
+      },
+      "type": "COLOR",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": {
+            "a": 0,
+            "b": 0,
+            "g": 0,
+            "r": 0
+          }
+        },
+        "light": {
+          "kind": "literal",
+          "value": {
+            "a": 0,
+            "b": 0,
+            "g": 0,
+            "r": 0
+          }
+        }
+      }
+    },
+    {
+      "codeSyntax": "var(--sk-button-border-color)",
+      "collection": "component",
+      "expression": "transparent",
+      "id": "clipboard:sk-button-border-color:10e9f5602d",
+      "name": "clipboard/sk-button-border-color/plain/ghost",
+      "source": {
+        "dark": "literal",
+        "light": "literal"
+      },
+      "type": "COLOR",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": {
+            "a": 0,
+            "b": 0,
+            "g": 0,
+            "r": 0
+          }
+        },
+        "light": {
+          "kind": "literal",
+          "value": {
+            "a": 0,
+            "b": 0,
+            "g": 0,
+            "r": 0
+          }
+        }
+      }
+    },
+    {
+      "codeSyntax": "var(--sk-button-border-color)",
+      "collection": "component",
+      "expression": "color-mix(in oklab, var(--color-text-primary) 18%, transparent)",
+      "id": "clipboard:sk-button-border-color:dfa846e305",
+      "name": "clipboard/sk-button-border-color/tactile/ghost",
+      "source": {
+        "dark": "evaluated",
+        "light": "evaluated"
+      },
+      "type": "COLOR",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": {
+            "a": 0.18,
+            "b": 0.9579,
+            "g": 0.9609,
+            "r": 0.9609
+          }
+        },
+        "light": {
+          "kind": "literal",
+          "value": {
+            "a": 0.18,
+            "b": 0.0903,
+            "g": 0.098,
+            "r": 0.1095
+          }
+        }
+      }
+    },
+    {
+      "codeSyntax": "var(--sk-button-border-width)",
+      "collection": "component",
+      "expression": "1px",
+      "id": "clipboard:sk-button-border-width:93e20626bf",
+      "name": "clipboard/sk-button-border-width",
+      "source": {
+        "dark": "literal",
+        "light": "literal"
+      },
+      "type": "FLOAT",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": 1
+        },
+        "light": {
+          "kind": "literal",
+          "value": 1
+        }
+      }
+    },
+    {
+      "codeSyntax": "var(--sk-button-depth)",
+      "collection": "component",
+      "expression": "3px",
+      "id": "clipboard:sk-button-depth:ac33ff9105",
+      "name": "clipboard/sk-button-depth/tactile/ghost",
+      "source": {
+        "dark": "literal",
+        "light": "literal"
+      },
+      "type": "FLOAT",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": 3
+        },
+        "light": {
+          "kind": "literal",
+          "value": 3
+        }
+      }
+    },
+    {
+      "codeSyntax": "var(--sk-button-depth)",
+      "collection": "component",
+      "expression": "4px",
+      "id": "clipboard:sk-button-depth:356601538d",
+      "name": "clipboard/sk-button-depth/tactile/soft",
+      "source": {
+        "dark": "literal",
+        "light": "literal"
+      },
+      "type": "FLOAT",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": 4
+        },
+        "light": {
+          "kind": "literal",
+          "value": 4
+        }
+      }
+    },
+    {
+      "codeSyntax": "var(--sk-button-height)",
+      "collection": "component",
+      "expression": "max(var(--size-control-md), var(--size-touch-target))",
+      "id": "clipboard:sk-button-height:2dce2436e5",
+      "name": "clipboard/sk-button-height/md",
+      "source": {
+        "dark": "evaluated",
+        "light": "evaluated"
+      },
+      "type": "FLOAT",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": 44
+        },
+        "light": {
+          "kind": "literal",
+          "value": 44
+        }
+      }
+    },
+    {
+      "codeSyntax": "",
+      "collection": "component",
+      "expression": "color-mix( in srgb, var(--color-text-primary) calc(0 * 100%), transparent )",
+      "id": "clipboard:state-layer:a8bbbce668",
+      "name": "clipboard/state-layer",
+      "source": {
+        "dark": "evaluated",
+        "light": "evaluated"
+      },
+      "type": "COLOR",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": {
+            "a": 0,
+            "b": 0,
+            "g": 0,
+            "r": 0
+          }
+        },
+        "light": {
+          "kind": "literal",
+          "value": {
+            "a": 0,
+            "b": 0,
+            "g": 0,
+            "r": 0
+          }
+        }
+      }
+    },
+    {
+      "codeSyntax": "",
+      "collection": "component",
+      "expression": "color-mix( in srgb, var(--color-text-primary) calc(var(--state-layer-focus-opacity) * 100%), transparent )",
+      "id": "clipboard:state-layer:bfba8c3497",
+      "name": "clipboard/state-layer/focus",
+      "source": {
+        "dark": "evaluated",
+        "light": "evaluated"
+      },
+      "type": "COLOR",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": {
+            "a": 0.16,
+            "b": 0.9579,
+            "g": 0.9609,
+            "r": 0.9609
+          }
+        },
+        "light": {
+          "kind": "literal",
+          "value": {
+            "a": 0.16,
+            "b": 0.0903,
+            "g": 0.098,
+            "r": 0.1095
+          }
+        }
+      }
+    },
+    {
+      "codeSyntax": "",
+      "collection": "component",
+      "expression": "color-mix( in srgb, var(--color-text-primary) calc(var(--state-layer-hover-opacity) * 100%), transparent )",
+      "id": "clipboard:state-layer:9652c98e0a",
+      "name": "clipboard/state-layer/hover",
+      "source": {
+        "dark": "evaluated",
+        "light": "evaluated"
+      },
+      "type": "COLOR",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": {
+            "a": 0.12,
+            "b": 0.9579,
+            "g": 0.9609,
+            "r": 0.9609
+          }
+        },
+        "light": {
+          "kind": "literal",
+          "value": {
+            "a": 0.12,
+            "b": 0.0903,
+            "g": 0.098,
+            "r": 0.1095
+          }
+        }
+      }
+    },
+    {
+      "codeSyntax": "",
+      "collection": "component",
+      "expression": "color-mix( in srgb, var(--color-text-primary) calc(0.04 * 100%), transparent )",
+      "id": "clipboard:state-layer:d8289eeef8",
+      "name": "clipboard/state-layer/tactile/ghost/hover",
+      "source": {
+        "dark": "evaluated",
+        "light": "evaluated"
+      },
+      "type": "COLOR",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": {
+            "a": 0.04,
+            "b": 0.9579,
+            "g": 0.9609,
+            "r": 0.9609
+          }
+        },
+        "light": {
+          "kind": "literal",
+          "value": {
+            "a": 0.04,
             "b": 0.0903,
             "g": 0.098,
             "r": 0.1095
