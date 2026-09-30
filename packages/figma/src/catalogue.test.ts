@@ -439,3 +439,12 @@ describe("RadioGroup", () => {
     expect(dots).toEqual([true, false, false]);
   });
 });
+
+describe("CheckboxGroup", () => {
+  it("draws its labelled parent over its options, the given ones checked", () => {
+    const set = manifest.components.find((c): c is ComponentSet => c.kind === "component-set" && c.id === "checkbox-group/plain")!;
+    expect(set.properties.map((p) => p.name)).toEqual(["label", "items 1", "items 2", "items 3"]);
+    const text = JSON.stringify(manifest.styles.layers[set.cells[0].layers]);
+    expect(text.match(/"default":"check"/g)?.length).toBe(2);
+  });
+});
