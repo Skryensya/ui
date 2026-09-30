@@ -579,3 +579,11 @@ describe("Popover", () => {
     expect(manifest.styles.layers[set.cells[0].layers].map((l) => l.slot)).toEqual(["title", "description", "children", "close"]);
   });
 });
+
+describe("Hero", () => {
+  it("holds a heading, a line and an action on each surface", () => {
+    const set = manifest.components.find((c): c is ComponentSet => c.kind === "component-set" && c.id === "hero")!;
+    expect(set.properties.map((p) => p.name)).toEqual(["title 1", "lede 1", "action 1"]);
+    expect(new Set(set.cells.map((c) => c.surface)).size).toBeGreaterThan(1);
+  });
+});

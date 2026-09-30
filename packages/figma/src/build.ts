@@ -834,7 +834,8 @@ async function compileRealization(authored: Realization, shared: Shared): Promis
           );
         for (const node of laidOut(el)) {
           if (node.nodeType === 3) {
-            const text = (node.textContent ?? "").trim();
+            // White space collapses, as HTML renders it: the emitter wraps long text across lines.
+            const text = (node.textContent ?? "").replace(/\s+/g, " ").trim();
             if (!text) continue;
             const slot = slotOfText(text) ?? slotOfPart(partOf(el)) ?? "text";
             const spec = realization.slots[slot];
