@@ -448,3 +448,13 @@ describe("CheckboxGroup", () => {
     expect(text.match(/"default":"check"/g)?.length).toBe(2);
   });
 });
+
+describe("TileRadioGroup", () => {
+  it("picks one card, edged in the accent with a dot in its indicator", () => {
+    const set = manifest.components.find((c): c is ComponentSet => c.kind === "component-set" && c.id === "tile-radio-group/plain")!;
+    const dots = manifest.styles.layers[set.cells[0].layers].map((card) =>
+      card.kind === "frame" ? card.layers.some((l) => l.kind === "frame" && l.slot === "selectionIndicator" && l.layers.length > 0) : false,
+    );
+    expect(dots).toEqual([false, true, false]);
+  });
+});

@@ -951,6 +951,19 @@ async function compileRealization(authored: Realization, shared: Shared): Promis
             layers: lone ? [{ ...lone, visibleProperty: undefined }] : inside,
           });
         }
+        // An in-flow `::before` or `::after` that paints (a picked tile's dot) is a box of its own,
+        // first or last among the element's content.
+        for (const which of ["before", "after"] as const) {
+          const generated = pseudo.get(el)?.[which];
+          if (!generated || generated.get("content") === undefined || generated.get("content") === "none") continue;
+          if (generated.get("position") === "absolute" || generated.get("position") === "fixed") continue;
+          if (/^1\s*\/\s*1$/.test(generated.get("grid-area") ?? "")) continue;
+          const { strokes, fills, effects, ...box } = frameOf(ctxOf(generated));
+          if (!fills.length && !strokes.length) continue;
+          const layer: Layer = { kind: "frame", slot: which, box: intern(styles.boxes, box), surface: intern(styles.surfaces, { strokes, fills, effects }), layers: [] };
+          if (which === "before") out.unshift(layer);
+          else out.push(layer);
+        }
         // A `::before` laid in the same grid cell as the element's content (a radio's circle, under its
         // dot) is a box the content sits centred in: drawn as that frame, holding the rest.
         const under = pseudo.get(el)?.before;

@@ -98,3 +98,33 @@ export const expandableTileRealization: Realization = {
     names: { "ExpandableTileContent.children": "answer" },
   },
 };
+
+/* TileRadioGroup: three plan cards, the middle one picked as the binding checks it. */
+export const tileRadioGroupRealization: Realization = {
+  contract: "tile",
+  id: "tile-radio-group",
+  signature: "TileRadioGroup",
+  splitBy: "appearance",
+  nested: true,
+  state: { axis: "state", rest: "rest", options: [], interactions: [] },
+  overlays: { before: "state layer" },
+  ring: "focus ring",
+  exclude: ["padding", "disabled", "required"],
+  width: 480,
+  given: { name: "plan", defaultValue: "team" },
+  marks: { 'input[value="team"]': { checked: "" } },
+  slots: {},
+  collections: {
+    items: {
+      slot: "label",
+      items: [
+        { options: { value: "solo" }, text: "Solo" },
+        { options: { value: "team" }, text: "Team" },
+        { options: { value: "company" }, text: "Company" },
+      ],
+    },
+  },
+  icons,
+  grid: { columns: [], rows: [], descending: [] },
+  stage,
+};
