@@ -110,6 +110,8 @@ export type Text = {
   fill: Paint;
   /** `text-decoration-line: underline` (a Link's permanent affordance). Absent, none. */
   underline?: true;
+  /** `text-align` other than start: an EmptyState's centred lines. */
+  align?: "CENTER" | "RIGHT" | "JUSTIFIED";
 };
 
 /** A square slot that holds an instance of the icon component. */

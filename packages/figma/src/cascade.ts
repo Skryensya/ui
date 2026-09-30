@@ -42,7 +42,7 @@ export type RuleSet = { rules: StyleRule[]; skipped: SkippedBlock[] };
 export type Computed = Map<string, string>;
 
 /** Properties that inherit into descendants (the ones a Figma layer reads off a child). */
-const INHERITED = new Set(["color", "font-family", "font-size", "font-weight", "line-height"]);
+const INHERITED = new Set(["color", "font-family", "font-size", "font-weight", "line-height", "text-align", "white-space"]);
 
 /** The attribute that stands in for an interaction pseudo-class: `:hover` → `data-figma-hover`. */
 export const markerOf = (pseudo: string) => `data-figma-${pseudo.replace(/^:/, "")}`;
@@ -270,6 +270,8 @@ export type Tree = { styles: Map<Element, Computed>; pseudo: Map<Element, Pseudo
 const USER_AGENT: Record<string, readonly (readonly [string, string])[]> = {
   strong: [["font-weight", "700"]],
   b: [["font-weight", "700"]],
+  // Headings are bold where no sheet says otherwise: an EmptyState's h2 title.
+  ...Object.fromEntries(["h1", "h2", "h3", "h4", "h5", "h6"].map((h) => [h, [["font-weight", "700"]] as const])),
 };
 
 export function computeTree(element: Element, rules: RuleSet, unmatchable: Set<string>): Tree {

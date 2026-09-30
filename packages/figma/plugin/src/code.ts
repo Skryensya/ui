@@ -945,6 +945,7 @@ async function applyText(ctx: SetCtx, node: TextNode, text: M.Text, sample: stri
   node.textAutoResize = "WIDTH_AND_HEIGHT";
   node.lineHeight = text.lineHeight === "auto" ? { unit: "AUTO" } : { unit: "PERCENT", value: text.lineHeight };
   node.textDecoration = text.underline ? "UNDERLINE" : "NONE";
+  node.textAlignHorizontal = text.align ?? "LEFT";
   node.fontSize = Number(valueOf(text.fontSize));
   node.fills = [toPaint(ctx, text.fill)];
   const binds: [VariableBindableTextField, M.Bound<unknown>][] = [

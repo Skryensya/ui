@@ -299,8 +299,12 @@ export function textOf(ctx: Context): Text {
     lineHeight: lineHeight === "normal" ? "auto" : parseFloat(lineHeight) * 100,
     fill: { type: "SOLID", color },
     ...(/underline/.test(decoration) ? { underline: true as const } : {}),
+    ...(TEXT_ALIGN[prop(ctx, "text-align") ?? ""] ? { align: TEXT_ALIGN[prop(ctx, "text-align")!] } : {}),
   };
 }
+
+/** `text-align` as Figma's horizontal alignment; start (the default) is left out. */
+const TEXT_ALIGN: Record<string, Text["align"]> = { center: "CENTER", end: "RIGHT", right: "RIGHT", justify: "JUSTIFIED" };
 
 /** A glyph box: its square size and the colour its strokes take (`currentColor`). */
 export function iconOf(ctx: Context) {
