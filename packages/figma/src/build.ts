@@ -270,6 +270,13 @@ export async function buildFigmaManifest(input: Realization | readonly Realizati
   return { ...body, sourceHash: hash(body) } as FigmaManifest;
 }
 
+/** Elements that are blocks with no display declared: the browser's own sheet says so. */
+const BLOCK_TAGS = new Set([
+  "div", "p", "section", "article", "aside", "header", "footer", "nav", "main", "ul", "ol", "li", "dl", "dt", "dd",
+  "figure", "figcaption", "blockquote", "details", "summary", "form", "fieldset", "h1", "h2", "h3", "h4", "h5", "h6",
+  "hr", "pre", "address", "table",
+]);
+
 /** The value of an optional enum's axis that leaves the option out. */
 const UNSET = "default";
 
@@ -712,6 +719,22 @@ async function compileRealization(authored: Realization, shared: Shared): Promis
         });
 
       /**
+       * Whether `el` lays its content out as plain block flow with blocks in it (a `<details>`: its
+       * summary over its content): then they stack down, where a block of inline content reads across.
+       */
+      const blockFlow = (el: Element) => {
+        const own = cascaded.get(el)?.get("display");
+        if (own !== undefined && own !== "block" && own !== "list-item") return false;
+        const blocks = Array.from(el.children).filter((c) => {
+          const style = cascaded.get(c);
+          if (!style || clipped(c) || style.get("position") === "absolute" || style.get("display") === "none") return false;
+          const d = style.get("display");
+          return d !== undefined ? /^(block|flex|grid|list-item|table)$/.test(d) : BLOCK_TAGS.has(c.localName);
+        });
+        return blocks.length >= 2;
+      };
+
+      /**
        * `inner`: the width inside `el`, when it is known (the realization's drawing width, carried down
        * through fixed widths and spanning blocks), for children sized as a percentage of it.
        */
@@ -743,7 +766,8 @@ async function compileRealization(authored: Realization, shared: Shared): Promis
         const display = computed.get("display") ?? "";
         const crossAlign = /grid/.test(display) ? computed.get("justify-items") : computed.get("align-items");
         // Children laid down a column (a flex column, a grid of one track); stacking when it stretches them.
-        const downward = (/flex/.test(display) && /column/.test(computed.get("flex-direction") ?? "")) || (/grid/.test(display) && tracks.length <= 1);
+        const downward =
+          (/flex/.test(display) && /column/.test(computed.get("flex-direction") ?? "")) || (/grid/.test(display) && tracks.length <= 1) || blockFlow(el);
         const stretchy = crossAlign === undefined || crossAlign === "normal" || crossAlign === "stretch";
         const stacking = downward && stretchy;
         // A flex row stretches its items to its height unless told otherwise (a Segmented's options).
@@ -781,8 +805,11 @@ async function compileRealization(authored: Realization, shared: Shared): Promis
             const look = textOf(ctx(el));
             if ("value" in look.fontSize && look.fontSize.value === 0) continue;
             // Drawn at a width, running text wraps inside its block unless it is told not to.
+            // A run of text is a grid item too: it takes its column, and an `fr` one it fills.
+            const textTrack = tracks.length > 1 ? tracks[column++] : undefined;
+            const inFr = textTrack !== undefined && /fr\b/.test(textTrack);
             // Only a block whose width is known has one to wrap in: a tab's label hugs its tab.
-            const wraps = realization.width && inner !== undefined && computed.get("white-space") !== "nowrap";
+            const wraps = inFr || (realization.width && inner !== undefined && computed.get("white-space") !== "nowrap");
             out.push({
               kind: "text",
               slot,
@@ -793,6 +820,7 @@ async function compileRealization(authored: Realization, shared: Shared): Promis
               ...(spec ? {} : { characters: text }),
               text: look,
             });
+            if (inFr) filling.add(out[out.length - 1]);
             continue;
           }
           if (node.nodeType !== 1) continue;
@@ -812,6 +840,8 @@ async function compileRealization(authored: Realization, shared: Shared): Promis
           // Not drawn until a script shows it (a Segmented's sliding indicator): not drawn here either.
           const own = cascaded.get(child)!;
           if (own.get("visibility") === "hidden" || own.get("display") === "none" || child.hasAttribute("hidden")) continue;
+          // A closed `<details>` shows its summary alone, as the browser's own sheet has it.
+          if (el.localName === "details" && !el.hasAttribute("open") && child.localName !== "summary") continue;
           // Present but see-through (the indicator a checkbox's state does not show): not drawn.
           const opacity = own.get("opacity");
           if (opacity !== undefined && lengthOf(opacity, child) === 0) continue;
@@ -871,7 +901,8 @@ async function compileRealization(authored: Realization, shared: Shared): Promis
             }
             continue;
           }
-          const { strokes, fills, effects, ...measured } = frameOf(ctxOf(sized));
+          const { strokes, fills, effects, ...laid } = frameOf(ctxOf(sized));
+          const measured = blockFlow(child) ? { ...laid, direction: "VERTICAL" as const } : laid;
           // Placed by its insets rather than laid out (a timeline's marker): where they come to.
           const placed = own.get("position") === "absolute" ? { x: lengthOf(own.get("left") ?? "0", child), y: lengthOf(own.get("top") ?? "0", child) } : undefined;
           const absolute = placed && placed.x !== undefined && placed.y !== undefined ? { x: placed.x, y: placed.y } : undefined;
@@ -985,7 +1016,8 @@ async function compileRealization(authored: Realization, shared: Shared): Promis
         // An outline draws over everything, last.
         const ring = ringOf(ctx(host));
         if (ring) layers.push({ kind: "ring", slot: realization.ring, ...ring });
-        const { strokes, fills, effects, ...hostBox } = frameOf(ctx(host));
+        const { strokes, fills, effects, ...hostLaid } = frameOf(ctx(host));
+        const hostBox = realization.nested && blockFlow(host) ? { ...hostLaid, direction: "VERTICAL" as const } : hostLaid;
         const box = realization.width && !hostBox.width ? { ...hostBox, width: { value: realization.width, expression: `${realization.width}px` } } : hostBox;
         const key = Object.entries(props).map(([k, v]) => `${k}=${v}`).join(", ");
         const body = { key, props, box: intern(styles.boxes, box), surface: intern(styles.surfaces, { strokes, fills, effects }), layers: intern(styles.layers, layers) };

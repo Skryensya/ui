@@ -373,3 +373,15 @@ describe("Segmented's options", () => {
     for (const option of manifest.styles.layers[set.cells[0].layers]) expect(option.kind === "frame" && manifest.styles.boxes[option.box].stretch).toBe(true);
   });
 });
+
+describe("Details", () => {
+  it("shows its summary alone when closed, the answer under it when open, with the matching chevron", () => {
+    const set = manifest.components.find((c): c is ComponentSet => c.kind === "component-set" && c.id === "details/plain")!;
+    const glyphs = (ls: Layer[]): string[] => ls.flatMap((l) => (l.kind === "icon" ? [l.default] : l.kind === "frame" ? glyphs(l.layers) : []));
+    const cell = (open: string) => manifest.styles.layers[set.cells.find((c) => c.props.open === open)!.layers];
+    expect(cell("false").map((l) => l.slot)).toEqual(["nativeSummary"]);
+    expect(cell("true").map((l) => l.slot)).toEqual(["nativeSummary", "nativeContent"]);
+    expect([glyphs(cell("false")), glyphs(cell("true"))]).toEqual([["chevron-down"], ["chevron-up"]]);
+    expect(manifest.styles.boxes[set.cells[0].box].direction).toBe("VERTICAL");
+  });
+});
