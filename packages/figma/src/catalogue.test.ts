@@ -528,3 +528,13 @@ describe("OtpInput", () => {
     expect(control.kind === "frame" && control.layers.map((l) => (l.kind === "frame" ? l.layers[0]?.slot : undefined))).toEqual(["placeholder", "placeholder", "placeholder", "placeholder"]);
   });
 });
+
+describe("Toolbar", () => {
+  it("groups two tools, a separator, and a third, each tool its own glyph", () => {
+    const set = manifest.components.find((c): c is ComponentSet => c.kind === "component-set" && c.id === "toolbar/plain")!;
+    const layers = manifest.styles.layers[set.cells[0].layers];
+    expect(layers.map((l) => l.slot)).toEqual(["group", "separator", "button"]);
+    const glyphs = (ls: Layer[]): string[] => ls.flatMap((l) => (l.kind === "icon" ? [l.default] : l.kind === "frame" ? glyphs(l.layers) : []));
+    expect(glyphs(layers)).toEqual(["copy", "edit", "delete"]);
+  });
+});
