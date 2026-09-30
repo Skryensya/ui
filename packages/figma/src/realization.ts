@@ -49,7 +49,23 @@ export type Realization = {
    * slot holds an icon instead of text. `icon` is the stable name the slot shows by default, so a
    * designer who switches a slot on sees a glyph that fits that side, not a stand-in.
    */
-  slots: Readonly<Record<string, { holds: "icon"; icon: string } | { holds: "text"; sample: string; iconWhen?: string; icon?: string }>>;
+  slots: Readonly<
+    Record<
+      string,
+      | { holds: "icon"; icon: string }
+      /** `hidden`: the slot is an accessible name only, clipped out of sight (BackToTop's label). No layer, no property. */
+      | { holds: "text"; sample: string; iconWhen?: string; icon?: string; hidden?: true }
+    >
+  >;
+  /**
+   * Parts of the template that paint an icon of their own, not a slot anyone fills (BackToTop's
+   * chevron). Drawn as icon layers where the template places them, showing `icon`.
+   */
+  parts?: Readonly<Record<string, { holds: "icon"; icon: string }>>;
+  /**
+   * Pseudo-classes held on every cell: a SkipLink is drawn focused, the one state anyone sees it in.
+   */
+  simulate?: readonly string[];
   /**
    * Texts a slot is shown with beside each row, as instances of the row's own variant: the labels a
    * component really carries (a Kbd's ⌘, Esc, Enter), so the set shows how it holds each, not only

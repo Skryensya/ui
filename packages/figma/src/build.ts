@@ -105,7 +105,12 @@ function treeFor(realization: Realization, input: CellInput, iconName: string): 
 function mounted(markup: string, iconContract: ComponentContract): string {
   const attr = (iconContract.options.name as { attr: string }).attr;
   const root = iconContract.parts.root;
-  return markup.replace(new RegExp(`<span[^>]*\\b${attr}="[^"]*"[^>]*></span>`, "g"), `<svg class="${root}"></svg>`);
+  // The placeholder's own size (`data-sk-icon-size`) becomes the mounted box's `data-size`, as the
+  // vanilla mount writes it: a template's fixed icon (BackToTop's chevron) is sized that way.
+  return markup.replace(new RegExp(`<span[^>]*\\b${attr}="[^"]*"[^>]*></span>`, "g"), (span) => {
+    const size = /data-sk-icon-size="([^"]*)"/.exec(span)?.[1];
+    return `<svg class="${root}"${size ? ` data-size="${size}"` : ""}></svg>`;
+  });
 }
 
 /* ── the compiler ───────────────────────────────────────────────────────────────────────────── */
@@ -270,7 +275,9 @@ async function compileRealization(realization: Realization, shared: Shared): Pro
   });
   // A class the tree uses that none of those sheets defines comes from the base bundle
   // (`sk-interactive` is the state layer's): find the sheet that does, and read it first.
-  for (const cls of sheetsForTree(sample).classes) {
+  // A template's own icon (a part, not a slot) is in no tree, so its box's sheet is asked for here.
+  const iconClass = realization.parts && Object.keys(realization.parts).length ? [iconContract.parts.root] : [];
+  for (const cls of [...sheetsForTree(sample).classes, ...iconClass]) {
     // The sheet that declares the class on its own (`.sk-interactive {`), not one that restyles it.
     const defines = new RegExp(`(^|[{};,]\\s*)\\.${cls}\\s*\\{`, "m");
     if (sheets.some((sheet) => defines.test(sheet.css))) continue;
@@ -278,13 +285,14 @@ async function compileRealization(realization: Realization, shared: Shared): Pro
     if (file) sheets.unshift({ name: file.rel, css: file.css });
   }
   const interactions = realization.state.interactions;
-  const rules: RuleSet = readRules(sheets, MEDIA_HOLDS, interactions.map((i) => i.pseudo));
+  const held = realization.simulate ?? [];
+  const rules: RuleSet = readRules(sheets, MEDIA_HOLDS, [...interactions.map((i) => i.pseudo), ...held]);
   const unmatchable = new Set<string>();
 
   const computeCell = (input: CellInput, simulated: readonly string[] = []) => {
     const markup = mounted(emitMarkup(treeFor(realization, input, iconName), { fillDefaults: true }), iconContract);
     const host = elementFrom(markup);
-    for (const pseudo of simulated) host.setAttribute(markerOf(pseudo), "");
+    for (const pseudo of [...held, ...simulated]) host.setAttribute(markerOf(pseudo), "");
     const tree = computeTree(host, rules, unmatchable);
     return { host, styles: tree.styles, pseudo: tree.pseudo };
   };
@@ -367,10 +375,17 @@ async function compileRealization(realization: Realization, shared: Shared): Pro
 
   // Where each slot lands, read off the part template: `pre`, the label, `post`.
   const slotOrder: string[] = [];
+  // And the icon parts, in the same walk, so each layer lands where the template puts it.
+  const drawnParts = realization.parts ?? {};
+  const layerOrder: { kind: "slot" | "part"; name: string }[] = [];
   const walkTemplate = (node: unknown) => {
     if (!node || typeof node !== "object") return;
-    const n = node as { slot?: string; children?: unknown[] };
-    if (n.slot && realization.slots[n.slot] && !slotOrder.includes(n.slot)) slotOrder.push(n.slot);
+    const n = node as { slot?: string; part?: string; children?: unknown[] };
+    if (n.part && drawnParts[n.part] && !layerOrder.some((l) => l.kind === "part" && l.name === n.part)) layerOrder.push({ kind: "part", name: n.part });
+    if (n.slot && realization.slots[n.slot] && !slotOrder.includes(n.slot)) {
+      slotOrder.push(n.slot);
+      layerOrder.push({ kind: "slot", name: n.slot });
+    }
     for (const child of n.children ?? []) walkTemplate(child);
   };
   walkTemplate(signature.template);
@@ -417,7 +432,20 @@ async function compileRealization(realization: Realization, shared: Shared): Pro
           if (fills?.length) layers.push({ kind: "overlay", slot: name, fills });
         }
         // Slots in the order the contract's template places them, never the realization's key order.
-        for (const [slot, spec] of slotOrder.map((slot) => [slot, realization.slots[slot]] as const)) {
+        for (const entry of layerOrder) {
+          if (entry.kind === "part") {
+            // A fixed icon of the template's own: always shown, showing what the realization names.
+            const holder = host.querySelector(`.${contract.parts[entry.name]}`);
+            const glyph = holder?.querySelector(`.${iconContract.parts.root}`);
+            if (!glyph) throw new Unsupported(`no icon in part ${entry.name}`);
+            const name = drawnParts[entry.name].icon;
+            if (!vocabulary.includes(name)) throw new Error(`part ${entry.name}: ${name} is not a stable icon name`);
+            layers.push({ kind: "icon", slot: entry.name, default: name, icon: iconOf(ctx(glyph)) });
+            continue;
+          }
+          const slot = entry.name;
+          const spec = realization.slots[slot];
+          if (spec.holds === "text" && spec.hidden) continue;
           const part = contract.parts[slot];
           const holder = part ? host.querySelector(`.${part}`) : host;
           const optional = !signature.slots[slot]?.required;
@@ -432,7 +460,10 @@ async function compileRealization(realization: Realization, shared: Shared): Pro
               icon: iconOf(ctx(glyph)),
             });
           } else {
-            layers.push({ kind: "text", slot, textProperty: slot, text: textOf(ctx(host)) });
+            // Styled by the element that holds the text: a label part when there is one, else the host.
+            const labelPart = contract.parts[`${slot}`] ?? (slot === "children" ? contract.parts.label : undefined);
+            const textHolder = (labelPart && host.querySelector(`.${labelPart}`)) || host;
+            layers.push({ kind: "text", slot, textProperty: slot, text: textOf(ctx(textHolder)) });
           }
         }
         // An outline draws over everything, last.
@@ -451,6 +482,7 @@ async function compileRealization(realization: Realization, shared: Shared): Pro
 
     const properties: ComponentProperty[] = [];
     for (const [slot, spec] of Object.entries(realization.slots)) {
+      if (spec.holds === "text" && spec.hidden) continue;
       if (spec.holds === "text") properties.push({ name: slot, type: "TEXT", default: spec.sample });
       if (!signature.slots[slot]?.required) properties.push({ name: slot, type: "BOOLEAN", default: false });
     }

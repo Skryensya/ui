@@ -32135,6 +32135,43 @@
         "columns": []
       },
       "visualHash": "3b8b1d5ea3c3b5b4"
+    },
+    {
+      "axes": [],
+      "cells": [
+        {
+          "box": "884598a7f476f29a",
+          "hash": "69e54dba80f65ac7",
+          "id": "skip-link/",
+          "key": "",
+          "layers": "a77ad5e5f9c0df92",
+          "props": {},
+          "surface": "f955e8c9b3a1bb2b"
+        }
+      ],
+      "contractHash": "bc20e3b43199655d",
+      "defaultCell": "",
+      "grid": {
+        "columns": [],
+        "rows": []
+      },
+      "id": "skip-link",
+      "interactions": [],
+      "kind": "component-set",
+      "name": "Skip Link",
+      "page": "skryensya",
+      "properties": [
+        {
+          "default": "Skip to content",
+          "name": "children",
+          "type": "TEXT"
+        }
+      ],
+      "showcase": {
+        "base": {},
+        "columns": []
+      },
+      "visualHash": "1ee2fef4550d2a37"
     }
   ],
   "diagnostics": [
@@ -32233,6 +32270,18 @@
       "message": "1 rule(s) under a condition the evaluation context does not hold",
       "severity": "info",
       "subject": "patterns/state-layer.css @media (prefers-reduced-motion: reduce)"
+    },
+    {
+      "code": "CONDITION_SKIPPED",
+      "message": "1 rule(s) under a condition the evaluation context does not hold",
+      "severity": "info",
+      "subject": "patterns/state-layer.css @media (prefers-reduced-motion: reduce)"
+    },
+    {
+      "code": "CONDITION_SKIPPED",
+      "message": "0 rule(s) under a condition the evaluation context does not hold",
+      "severity": "info",
+      "subject": "patterns/state-layer.css @property --state-layer-opacity"
     },
     {
       "code": "CONDITION_SKIPPED",
@@ -32368,6 +32417,13 @@
           "linkTone"
         ]
       },
+      "skip-link": {
+        "excluded": [],
+        "nonVisual": [
+          "href"
+        ],
+        "visual": []
+      },
       "strong": {
         "excluded": [],
         "nonVisual": [],
@@ -32399,18 +32455,20 @@
       }
     },
     "tokens": {
-      "catalogueAdded": 326,
+      "catalogueAdded": 322,
       "componentVariables": 210,
       "modeValuesBySource": {
         "alias": 203,
         "evaluated": 463,
         "literal": 686
       },
-      "reached": 164,
-      "reachedAsVariables": 126,
+      "reached": 170,
+      "reachedAsVariables": 130,
       "reachedButNotVariables": [
         "--elevation-flat",
+        "--elevation-overlay",
         "--elevation-raised",
+        "--elevation-wash-overlay",
         "--elevation-wash-raised",
         "--frost-on",
         "--state-layer-color"
@@ -32419,8 +32477,8 @@
       "variables": 466
     },
     "variants": {
-      "components": 21,
-      "componentSets": 20,
+      "components": 22,
+      "componentSets": 21,
       "naiveAllOptions": {
         "avatar": 8,
         "badge:Badge": 20,
@@ -32430,6 +32488,7 @@
         "heading": 156,
         "kbd": 4,
         "link": 2,
+        "skip-link": 1,
         "strong": 1,
         "tag": 20,
         "text": 288
@@ -32443,6 +32502,7 @@
         "heading": 13,
         "kbd": 4,
         "link": 2,
+        "skip-link": 1,
         "strong": 1,
         "tag": 10,
         "text": 48
@@ -32527,13 +32587,17 @@
         {
           "set": "strong",
           "variants": 1
+        },
+        {
+          "set": "skip-link",
+          "variants": 1
         }
       ],
-      "variantsTotal": 2036
+      "variantsTotal": 2037
     }
   },
   "schemaVersion": 1,
-  "sourceHash": "39bab6ca57430955",
+  "sourceHash": "fcb8de840f6d38e5",
   "stage": {
     "background": {
       "variable": "--color-bg-surface"
@@ -33355,6 +33419,33 @@
         },
         "width": {
           "variable": "button:height:d92dbdc181"
+        }
+      },
+      "884598a7f476f29a": {
+        "clipsContent": false,
+        "crossAlign": "MIN",
+        "direction": "HORIZONTAL",
+        "mainAlign": "MIN",
+        "padding": {
+          "bottom": {
+            "variable": "--space-inset-sm"
+          },
+          "left": {
+            "variable": "--space-inline-lg"
+          },
+          "right": {
+            "variable": "--space-inline-lg"
+          },
+          "top": {
+            "variable": "--space-inset-sm"
+          }
+        },
+        "radius": {
+          "variable": "--radius-control"
+        },
+        "strokeWeight": {
+          "expression": "1px",
+          "value": 1
         }
       },
       "90a8ecd71f31ec2d": {
@@ -53701,6 +53792,76 @@
           {
             "color": {
               "variable": "button:brutalist-black:b75258c11d"
+            },
+            "type": "SOLID"
+          }
+        ]
+      },
+      "f955e8c9b3a1bb2b": {
+        "effects": [
+          {
+            "blur": {
+              "expression": "6px",
+              "value": 6
+            },
+            "color": {
+              "variable": "--shadow-md"
+            },
+            "spread": {
+              "expression": "-2px",
+              "value": -2
+            },
+            "type": "DROP_SHADOW",
+            "x": {
+              "expression": "0",
+              "value": 0
+            },
+            "y": {
+              "expression": "4px",
+              "value": 4
+            }
+          },
+          {
+            "blur": {
+              "expression": "15px",
+              "value": 15
+            },
+            "color": {
+              "variable": "--shadow-md"
+            },
+            "spread": {
+              "expression": "-3px",
+              "value": -3
+            },
+            "type": "DROP_SHADOW",
+            "x": {
+              "expression": "0",
+              "value": 0
+            },
+            "y": {
+              "expression": "10px",
+              "value": 10
+            }
+          }
+        ],
+        "fills": [
+          {
+            "color": {
+              "variable": "--color-bg-surface-overlay"
+            },
+            "type": "SOLID"
+          },
+          {
+            "color": {
+              "variable": "--elevation-tint-overlay"
+            },
+            "type": "SOLID"
+          }
+        ],
+        "strokes": [
+          {
+            "color": {
+              "variable": "--color-border-subtle"
             },
             "type": "SOLID"
           }
