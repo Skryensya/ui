@@ -124,6 +124,12 @@ function expand(decls: readonly (readonly [string, string])[]): (readonly [strin
   for (const [prop, value] of decls) {
     const parts = topLevelSpaces(value);
     switch (prop) {
+      case "padding": {
+        // One to four values, as CSS reads them: top, right, bottom, left, each side falling back.
+        const [top, right = top, bottom = top, left = right] = parts;
+        out.push(["padding-top", top], ["padding-right", right], ["padding-bottom", bottom], ["padding-left", left]);
+        break;
+      }
       case "padding-inline":
         out.push(["padding-left", parts[0]], ["padding-right", parts[1] ?? parts[0]]);
         break;

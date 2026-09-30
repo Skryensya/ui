@@ -2,6 +2,7 @@ import { readFileSync, writeFileSync } from "node:fs";
 import { join, resolve } from "node:path";
 import { canonical } from "@skryensya/ai-compiler/manifest";
 import { buildFigmaManifest } from "./build.js";
+import { badgeRealization } from "./realizations/badge.js";
 import { buttonRealization } from "./realizations/button.js";
 
 /*
@@ -13,7 +14,8 @@ const [command = "build", rootArg = "."] = process.argv.slice(2);
 const root = resolve(rootArg);
 const out = join(root, "artifacts", "figma-manifest.json");
 
-const manifest = await buildFigmaManifest(buttonRealization);
+/* Every contract Figma draws, in the order its frames stack on the page. */
+const manifest = await buildFigmaManifest([buttonRealization, badgeRealization]);
 const text = canonical(manifest);
 
 if (command === "check") {

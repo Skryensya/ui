@@ -7,7 +7,7 @@
 import { evalQuantity, pickMode, splitSpaces, substitute, Unsupported } from "./evaluate.js";
 import { splitTopLevel } from "@skryensya/core/parse";
 import type { Bound, Effect, Frame, Paint, Rgba, Text } from "./manifest-types.js";
-import { evaluateAs, expandComposite, resolve, type Context } from "./resolve.js";
+import { evaluateAs, expandComposite, resolve, substituted, type Context } from "./resolve.js";
 
 const asNumber = (b: Bound<unknown> | undefined) => b as Bound<number> | undefined;
 const asColor = (b: Bound<unknown> | undefined) => b as Bound<Rgba> | undefined;
@@ -158,8 +158,14 @@ function effects(ctx: Context): Effect[] {
 
 export function frameOf(ctx: Context): Frame {
   const display = prop(ctx, "display") ?? "";
-  if (!/flex/.test(display)) throw new Unsupported(`not a flex host: display ${display}`);
-  const direction = /column/.test(prop(ctx, "flex-direction") ?? "") ? "VERTICAL" : "HORIZONTAL";
+  /*
+   * A flex host maps to auto layout directly. A block or inline-block host (a Badge) lays its content
+   * out as lines of text, which for one line is the same thing as a horizontal auto layout hugging it,
+   * so it is drawn as one. A grid, or a table, has no auto-layout equivalent.
+   */
+  const flex = /flex/.test(display);
+  if (!flex && !/^(inline-block|block|inline)$/.test(display)) throw new Unsupported(`no auto-layout equivalent: display ${display}`);
+  const direction = flex && /column/.test(prop(ctx, "flex-direction") ?? "") ? "VERTICAL" : "HORIZONTAL";
 
   const borderStyle = prop(ctx, "border-style");
   const strokeColor = borderStyle && borderStyle !== "none" ? asColor(resolve(prop(ctx, "border-color") ?? "currentColor", "color", ctx, "border-color")) : undefined;
@@ -185,9 +191,12 @@ export function frameOf(ctx: Context): Frame {
 }
 
 export function textOf(ctx: Context): Text {
-  const lineHeight = prop(ctx, "line-height") ?? "normal";
-  if (!/^\d*\.?\d+$/.test(lineHeight)) throw new Unsupported(`line-height ${lineHeight}: only unitless is read`);
-  const family = resolve(prop(ctx, "font-family") ?? "", "string", ctx, "font-family");
+  // Through its hooks and tokens (`var(--sk-badge-line-height)` is `var(--scale-line-height-normal)`):
+  // Figma stores a line height as a plain percentage, so it is read as the number it comes to.
+  const authored = prop(ctx, "line-height") ?? "normal";
+  const lineHeight = /var\(/.test(authored) ? substituted(authored, ctx) : authored;
+  if (!/^\d*\.?\d+$/.test(lineHeight)) throw new Unsupported(`line-height ${authored}: only unitless is read`);
+  const family = resolve(prop(ctx, "font-family") ?? ctx.inherited?.["font-family"] ?? "", "string", ctx, "font-family");
   const weight = resolve(prop(ctx, "font-weight") ?? "400", "number", ctx, "font-weight");
   const size = resolve(prop(ctx, "font-size") ?? "16px", "number", ctx, "font-size");
   const color = asColor(resolve(prop(ctx, "color") ?? "", "color", ctx, "fg"));

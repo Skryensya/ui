@@ -73,10 +73,10 @@ describe("derived from the contract", () => {
   });
 
   it("finds the non-visual options by the cascade, not by a list", () => {
-    const report = manifest.report as { options: { visual: string[]; nonVisual: string[] } };
-    expect(report.options.nonVisual).toEqual(["type"]);
-    expect(report.options.visual).toContain("pressed");
-    expect(report.options.visual).toContain("disabled");
+    const report = manifest.report as { options: Record<string, { visual: string[]; nonVisual: string[] }> };
+    expect(report.options.button.nonVisual).toEqual(["type"]);
+    expect(report.options.button.visual).toContain("pressed");
+    expect(report.options.button.visual).toContain("disabled");
   });
 
   it("names the cell every default lands on", () => {
@@ -95,8 +95,8 @@ describe("derived from the contract", () => {
 
   it("restates no option value in the Figma realization", () => {
     const source = readFileSync(join(import.meta.dirname, "realizations/button.ts"), "utf8");
-    const report = manifest.report as { options: { visual: string[] } };
-    for (const name of report.options.visual) {
+    const report = manifest.report as { options: Record<string, { visual: string[] }> };
+    for (const name of report.options.button.visual) {
       const option = (buttonContract.options as Record<string, { type: string; values?: readonly string[] }>)[name];
       for (const value of option.values ?? []) expect(source).not.toMatch(new RegExp(`["']${value}["']`));
     }
@@ -121,11 +121,15 @@ describe("tokens", () => {
     expect(v.values.light).toEqual({ kind: "literal", value: 16 });
   });
 
-  it("includes only tokens Button reaches", () => {
+  it("carries every token Figma can hold, not only the ones a component reaches", () => {
     const report = manifest.report as { tokens: { reached: number; variables: number } };
-    expect(report.tokens.variables).toBeLessThanOrEqual(report.tokens.reached);
-    expect(report.tokens.reached).toBeLessThan(parseTokens().tokens.length / 10);
-    expect(variable("--color-bg-accent-subtle")).toBeUndefined();
+    const catalogue = parseTokens().tokens.filter((t) => t.tier !== "component");
+    const left = manifest.diagnostics.find((d) => d.code === "TOKEN_NOT_A_VARIABLE");
+    const notVariables = Number(left?.subject.split(" ")[0] ?? 0);
+    expect(report.tokens.variables).toBeGreaterThan(report.tokens.reached);
+    expect(report.tokens.variables + notVariables).toBe(catalogue.length);
+    // Never reached by Button, and a variable all the same.
+    expect(variable("--color-bg-accent-subtle")?.collection).toBe("semantic");
   });
 
   it("binds a hook to its token rather than copying the value", () => {
@@ -219,8 +223,8 @@ describe("the stage", () => {
 
 describe("representation", () => {
   it("stays far below the naive product", () => {
-    const report = manifest.report as { variants: { naiveAllOptions: number; variantsTotal: number } };
-    expect(report.variants.naiveAllOptions).toBe(27648);
+    const report = manifest.report as { variants: { naiveAllOptions: Record<string, number>; variantsTotal: number } };
+    expect(report.variants.naiveAllOptions.button).toBe(27648);
     for (const set of sets) expect(set.cells.length).toBeLessThanOrEqual(500);
     expect(report.variants.variantsTotal).toBe(sets.reduce((n, s) => n + s.cells.length, 0));
   });
