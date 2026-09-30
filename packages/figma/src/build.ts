@@ -32,8 +32,8 @@ import {
   type Styles,
 } from "./manifest-types.js";
 import type { Realization } from "./realization.js";
-import { frameOf, gridTracks, iconOf, overlayOf, ringOf, textOf } from "./realize.js";
-import { Registry, resolve, substituted, type CellProps, type Context } from "./resolve.js";
+import { edgeOf, frameOf, gridTracks, iconOf, overlayOf, ringOf, textOf } from "./realize.js";
+import { evaluateAs, Registry, resolve, substituted, type CellProps, type Context } from "./resolve.js";
 
 const hash = (value: unknown) => createHash("sha256").update(canonical(value)).digest("hex").slice(0, 16);
 
@@ -100,7 +100,7 @@ function treeFor(realization: Realization, input: CellInput, iconName: string): 
   }
   const collections: Record<string, ItemInput[]> = {};
   for (const [name, collection] of Object.entries(realization.collections ?? {})) {
-    collections[name] = collection.items.map((item) => ({ options: { ...item.options }, slots: { [collection.slot]: item.text } }));
+    collections[name] = collection.items.map((item) => ({ options: { ...item.options }, slots: { ...item.more, [collection.slot]: item.text } }));
   }
   return {
     contract: realization.contract,
@@ -276,7 +276,11 @@ const UNSET = "default";
  */
 function withItemSlots(realization: Realization): Realization {
   const items: (readonly [string, { holds: "text"; sample: string; item: string }])[] = Object.entries(realization.collections ?? {}).flatMap(
-    ([name, collection]) => collection.items.map((item, i) => [`${name} ${i + 1}`, { holds: "text" as const, sample: item.text, item: name }] as const),
+    ([name, collection]) =>
+      collection.items.flatMap((item, i) => [
+        [`${name} ${i + 1}`, { holds: "text" as const, sample: item.text, item: name }] as const,
+        ...Object.entries(item.more ?? {}).map(([slot, text]) => [`${slot} ${i + 1}`, { holds: "text" as const, sample: text, item: name }] as const),
+      ]),
   );
   // Every text inside the content trees, numbered by the slot it fills.
   const counts = new Map<string, number>();
@@ -545,10 +549,14 @@ async function compileRealization(authored: Realization, shared: Shared): Promis
         );
       };
       /** A length as the pixels it comes to, when it is plain ones (a padding token is); else undefined. */
-      const pixels = (el: Element, name: string): number | undefined => {
-        const match = /^(-?\d*\.?\d+)(px)?$/.exec(substituted(cascaded.get(el)!.get(name) ?? "0", ctx(el)));
-        return match ? Number(match[1]) : undefined;
+      const lengthOf = (text: string, el: Element): number | undefined => {
+        try {
+          return Number(evaluateAs("number", substituted(text, ctx(el)), "light"));
+        } catch {
+          return undefined;
+        }
       };
+      const pixels = (el: Element, name: string): number | undefined => lengthOf(cascaded.get(el)!.get(name) ?? "0", el);
       /** A width or height given as a percentage (`inline-size: var(--sk-progress-fill)`), as that number. */
       const percent = (el: Element, name: string): number | undefined => {
         const raw = cascaded.get(el)!.get(name);
@@ -583,6 +591,14 @@ async function compileRealization(authored: Realization, shared: Shared): Promis
         return { computed: sized, across, stretch };
       };
 
+      /** The bars an element's pseudo-elements paint along its edges, drawn over its content. */
+      const edgesOf = (el: Element): Layer[] =>
+        (["before", "after"] as const).flatMap((which) => {
+          const generated = pseudo.get(el)?.[which];
+          const edge = generated && edgeOf(ctxOf(generated));
+          return edge ? [{ kind: "edge" as const, slot: "edge", ...edge }] : [];
+        });
+
       /**
        * `inner`: the width inside `el`, when it is known (the realization's drawing width, carried down
        * through fixed widths and spanning blocks), for children sized as a percentage of it.
@@ -615,7 +631,8 @@ async function compileRealization(authored: Realization, shared: Shared): Promis
             if (spec?.holds === "text" && spec.hidden) continue;
             const optional = spec ? !requiredSlot(slot) : false;
             // Drawn at a width, running text wraps inside its block unless it is told not to.
-            const wraps = realization.width && computed.get("white-space") !== "nowrap";
+            // Only a block whose width is known has one to wrap in: a tab's label hugs its tab.
+            const wraps = realization.width && inner !== undefined && computed.get("white-space") !== "nowrap";
             out.push({
               kind: "text",
               slot,
@@ -642,13 +659,14 @@ async function compileRealization(authored: Realization, shared: Shared): Promis
           if (clipped(child)) continue;
           // Not drawn until a script shows it (a Segmented's sliding indicator): not drawn here either.
           const own = cascaded.get(child)!;
-          if (own.get("visibility") === "hidden" || own.get("display") === "none") continue;
+          if (own.get("visibility") === "hidden" || own.get("display") === "none" || child.hasAttribute("hidden")) continue;
           const { computed: sized, across, stretch } = sizing(child, inner, downward);
           // Its column, in a grid laid across: an `fr` one fills the row, a length one sets its width
           // (a DescriptionList's 10rem term), `auto` leaves it hugging.
           const track = tracks.length > 1 ? tracks[column++] : undefined;
           const fixedTrack = track !== undefined && !/fr\b|^auto$|content/.test(track);
           if (fixedTrack) sized.set("width", track);
+          const trackWidth = fixedTrack ? lengthOf(track, child) : undefined;
           const onlyText = child.children.length === 0;
           if (onlyText && !fixedTrack && !paints(ctxOf(sized))) {
             const flat = nestedLayers(child, inner);
@@ -672,7 +690,7 @@ async function compileRealization(authored: Realization, shared: Shared): Promis
             slot,
             box: intern(styles.boxes, spans ? { ...box, stretch: true as const } : box),
             surface: intern(styles.surfaces, { strokes, fills, effects }),
-            layers: nestedLayers(child, innerOf(child, across ?? (spans || frameBox.stretch ? inner : undefined))),
+            layers: [...nestedLayers(child, innerOf(child, across ?? trackWidth ?? (spans || frameBox.stretch ? inner : undefined))), ...edgesOf(child)],
           });
         }
         // Only a text alone in its block, or down a column, has the block's width to fill: beside
