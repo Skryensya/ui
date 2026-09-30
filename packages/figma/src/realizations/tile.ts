@@ -56,3 +56,13 @@ export const tileCheckboxRealization: Realization = {
   given: { name: "plan", value: "team" },
   content: { trees: { children: [content("Team plan", "Up to 20 members, shared billing")] } },
 };
+
+/* TileSwitch: a card with a switch that turns a setting on, on and disabled among its states. */
+export const tileSwitchRealization: Realization = {
+  ...tileCheckboxRealization,
+  id: "tile-switch",
+  signature: "TileSwitch",
+  state: { ...tileCheckboxRealization.state, rest: "off", attributes: [{ name: "on", attrs: { checked: "" }, on: "input" }] },
+  given: { name: "alerts", value: "on" },
+  content: { trees: { children: [content("Email alerts", "A note when something needs you")] } },
+};

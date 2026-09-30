@@ -37,10 +37,10 @@ import { listRealization } from "./list.js";
 import { navListRealization } from "./nav-list.js";
 import { timelineRealization } from "./timeline.js";
 import { detailsRealization } from "./details.js";
-import { tileCheckboxRealization, tileLinkRealization } from "./tile.js";
+import { tileCheckboxRealization, tileLinkRealization, tileSwitchRealization } from "./tile.js";
 
 /*
  * EVERY CONTRACT FIGMA DRAWS, in the order their columns stand on the page. Adding a component is a
  * realization file and one line here; `catalogue.test.ts` holds each one to compiling clean.
  */
-export const catalogue: readonly Realization[] = [buttonRealization, badgeRealization, badgeDotRealization, kbdRealization, tagRealization, tagLinkRealization, avatarRealization, textRealization, headingRealization, linkRealization, codeRealization, strongRealization, skipLinkRealization, backToTopRealization, statRealization, calloutRealization, separatorRealization, labelledSeparatorRealization, quoteRealization, emptyStateRealization, progressRealization, meterRealization, inputRealization, textareaRealization, breadcrumbRealization, descriptionListRealization, segmentedRealization, tabsRealization, accordionRealization, paginationRealization, stepsRealization, checkboxRealization, switchRealization, radioRealization, selectRealization, passwordInputRealization, numberFieldRealization, listRealization, navListRealization, timelineRealization, detailsRealization, tileLinkRealization, tileCheckboxRealization];
+export const catalogue: readonly Realization[] = [buttonRealization, badgeRealization, badgeDotRealization, kbdRealization, tagRealization, tagLinkRealization, avatarRealization, textRealization, headingRealization, linkRealization, codeRealization, strongRealization, skipLinkRealization, backToTopRealization, statRealization, calloutRealization, separatorRealization, labelledSeparatorRealization, quoteRealization, emptyStateRealization, progressRealization, meterRealization, inputRealization, textareaRealization, breadcrumbRealization, descriptionListRealization, segmentedRealization, tabsRealization, accordionRealization, paginationRealization, stepsRealization, checkboxRealization, switchRealization, radioRealization, selectRealization, passwordInputRealization, numberFieldRealization, listRealization, navListRealization, timelineRealization, detailsRealization, tileLinkRealization, tileCheckboxRealization, tileSwitchRealization];
