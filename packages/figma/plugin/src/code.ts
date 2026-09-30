@@ -1069,7 +1069,10 @@ function bindReferences(ctx: SetCtx, node: ComponentNode, cell: M.Cell, keys: Re
       // The component shows its layer as the property's default; binding alone does not change it.
       const shown = layer.visibleProperty ? defaults[layer.visibleProperty] !== false : true;
       if (child.visible !== shown) ctx.run.write(() => (child.visible = shown));
-    } else if (layer.kind === "text" && keys[layer.textProperty]) refs.characters = keys[layer.textProperty];
+    } else if (layer.kind === "text") {
+      if (keys[layer.textProperty]) refs.characters = keys[layer.textProperty];
+      if (layer.visibleProperty && keys[layer.visibleProperty]) refs.visible = keys[layer.visibleProperty];
+    }
     const have = (child.componentPropertyReferences ?? {}) as Record<string, string>;
     const same = Object.keys(refs).length === Object.keys(have).length && Object.entries(refs).every(([k, v]) => have[k] === v);
     if (!same) ctx.run.write(() => (child.componentPropertyReferences = refs));

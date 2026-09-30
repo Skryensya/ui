@@ -32500,6 +32500,100 @@
         "columns": []
       },
       "visualHash": "3420e1f47937e39c"
+    },
+    {
+      "axes": [
+        {
+          "name": "trend",
+          "values": [
+            "up",
+            "down",
+            "neutral"
+          ]
+        }
+      ],
+      "cells": [
+        {
+          "box": "61278edee5186127",
+          "hash": "a157f6f88d5cd511",
+          "id": "stat/trend=up",
+          "key": "trend=up",
+          "layers": "55700aa6f2bbacdd",
+          "props": {
+            "trend": "up"
+          },
+          "surface": "fa0b643878e9242d"
+        },
+        {
+          "box": "61278edee5186127",
+          "hash": "05792ad825f386ad",
+          "id": "stat/trend=down",
+          "key": "trend=down",
+          "layers": "481fef854581b6a8",
+          "props": {
+            "trend": "down"
+          },
+          "surface": "fa0b643878e9242d"
+        },
+        {
+          "box": "61278edee5186127",
+          "hash": "fd5ca445654eae4d",
+          "id": "stat/trend=neutral",
+          "key": "trend=neutral",
+          "layers": "1ce80b2cdf4e1377",
+          "props": {
+            "trend": "neutral"
+          },
+          "surface": "fa0b643878e9242d"
+        }
+      ],
+      "contractHash": "f0a11f0e56139cc3",
+      "defaultCell": "trend=neutral",
+      "grid": {
+        "columns": [
+          {
+            "name": "trend",
+            "values": [
+              "up",
+              "down",
+              "neutral"
+            ]
+          }
+        ],
+        "rows": []
+      },
+      "id": "stat",
+      "interactions": [],
+      "kind": "component-set",
+      "name": "Stat",
+      "page": "skryensya",
+      "properties": [
+        {
+          "default": "Active users",
+          "name": "label",
+          "type": "TEXT"
+        },
+        {
+          "default": "12,480",
+          "name": "value",
+          "type": "TEXT"
+        },
+        {
+          "default": "+4.2%",
+          "name": "change",
+          "type": "TEXT"
+        },
+        {
+          "default": true,
+          "name": "show change",
+          "type": "BOOLEAN"
+        }
+      ],
+      "showcase": {
+        "base": {},
+        "columns": []
+      },
+      "visualHash": "cc1b01b1660def9a"
     }
   ],
   "diagnostics": [
@@ -32787,6 +32881,20 @@
         ],
         "visual": []
       },
+      "stat": {
+        "excluded": [
+          "animate"
+        ],
+        "nonVisual": [
+          "count",
+          "locale",
+          "suffix",
+          "fractionDigits"
+        ],
+        "visual": [
+          "trend"
+        ]
+      },
       "strong": {
         "excluded": [],
         "nonVisual": [],
@@ -32818,15 +32926,15 @@
       }
     },
     "tokens": {
-      "catalogueAdded": 322,
+      "catalogueAdded": 320,
       "componentVariables": 221,
       "modeValuesBySource": {
         "alias": 203,
         "evaluated": 485,
         "literal": 686
       },
-      "reached": 170,
-      "reachedAsVariables": 130,
+      "reached": 173,
+      "reachedAsVariables": 132,
       "reachedButNotVariables": [
         "--elevation-flat",
         "--elevation-overlay",
@@ -32840,8 +32948,8 @@
       "variables": 466
     },
     "variants": {
-      "components": 26,
-      "componentSets": 25,
+      "components": 27,
+      "componentSets": 26,
       "naiveAllOptions": {
         "avatar": 8,
         "back-to-top": 4,
@@ -32853,6 +32961,7 @@
         "kbd": 4,
         "link": 2,
         "skip-link": 1,
+        "stat": 6,
         "strong": 1,
         "tag": 20,
         "text": 288
@@ -32868,6 +32977,7 @@
         "kbd": 4,
         "link": 2,
         "skip-link": 1,
+        "stat": 3,
         "strong": 1,
         "tag": 10,
         "text": 48
@@ -32972,13 +33082,17 @@
         {
           "set": "back-to-top/frosted",
           "variants": 3
+        },
+        {
+          "set": "stat",
+          "variants": 3
         }
       ],
-      "variantsTotal": 2049
+      "variantsTotal": 2052
     }
   },
   "schemaVersion": 1,
-  "sourceHash": "89ef7b2b4bec2e2b",
+  "sourceHash": "dfad44746992c63e",
   "stage": {
     "background": {
       "variable": "--color-bg-surface"
@@ -33506,6 +33620,33 @@
         },
         "width": {
           "variable": "avatar:size:e021220bb1"
+        }
+      },
+      "61278edee5186127": {
+        "clipsContent": false,
+        "crossAlign": "MIN",
+        "direction": "VERTICAL",
+        "gap": {
+          "variable": "--space-stack-xs"
+        },
+        "mainAlign": "MIN",
+        "padding": {
+          "bottom": {
+            "expression": "0",
+            "value": 0
+          },
+          "left": {
+            "expression": "0",
+            "value": 0
+          },
+          "right": {
+            "expression": "0",
+            "value": 0
+          },
+          "top": {
+            "expression": "0",
+            "value": 0
+          }
         }
       },
       "672cd06398be5f4b": {
@@ -35771,6 +35912,78 @@
           "textProperty": "children"
         }
       ],
+      "1ce80b2cdf4e1377": [
+        {
+          "kind": "text",
+          "slot": "label",
+          "text": {
+            "fill": {
+              "color": {
+                "variable": "--color-text-tertiary"
+              },
+              "type": "SOLID"
+            },
+            "fontFamily": {
+              "variable": "--font-family-body"
+            },
+            "fontSize": {
+              "variable": "--font-size-body-sm"
+            },
+            "fontWeight": {
+              "variable": "--font-weight-body"
+            },
+            "lineHeight": 150
+          },
+          "textProperty": "label"
+        },
+        {
+          "kind": "text",
+          "slot": "value",
+          "text": {
+            "fill": {
+              "color": {
+                "variable": "--color-text-primary"
+              },
+              "type": "SOLID"
+            },
+            "fontFamily": {
+              "variable": "--font-family-code"
+            },
+            "fontSize": {
+              "variable": "--font-size-heading-md"
+            },
+            "fontWeight": {
+              "variable": "--font-weight-heading"
+            },
+            "lineHeight": 135
+          },
+          "textProperty": "value"
+        },
+        {
+          "kind": "text",
+          "slot": "change",
+          "text": {
+            "fill": {
+              "color": {
+                "variable": "--color-text-secondary"
+              },
+              "type": "SOLID"
+            },
+            "fontFamily": {
+              "variable": "--font-family-body"
+            },
+            "fontSize": {
+              "variable": "--font-size-caption"
+            },
+            "fontWeight": {
+              "variable": "--font-weight-label"
+            },
+            "lineHeight": 150
+          },
+          "textProperty": "change",
+          "visibleProperty": "show change"
+        }
+      ],
       "1d5f3274ec41cf5b": [
         {
           "kind": "text",
@@ -37667,6 +37880,78 @@
           "textProperty": "children"
         }
       ],
+      "481fef854581b6a8": [
+        {
+          "kind": "text",
+          "slot": "label",
+          "text": {
+            "fill": {
+              "color": {
+                "variable": "--color-text-tertiary"
+              },
+              "type": "SOLID"
+            },
+            "fontFamily": {
+              "variable": "--font-family-body"
+            },
+            "fontSize": {
+              "variable": "--font-size-body-sm"
+            },
+            "fontWeight": {
+              "variable": "--font-weight-body"
+            },
+            "lineHeight": 150
+          },
+          "textProperty": "label"
+        },
+        {
+          "kind": "text",
+          "slot": "value",
+          "text": {
+            "fill": {
+              "color": {
+                "variable": "--color-text-primary"
+              },
+              "type": "SOLID"
+            },
+            "fontFamily": {
+              "variable": "--font-family-code"
+            },
+            "fontSize": {
+              "variable": "--font-size-heading-md"
+            },
+            "fontWeight": {
+              "variable": "--font-weight-heading"
+            },
+            "lineHeight": 135
+          },
+          "textProperty": "value"
+        },
+        {
+          "kind": "text",
+          "slot": "change",
+          "text": {
+            "fill": {
+              "color": {
+                "variable": "--color-text-danger"
+              },
+              "type": "SOLID"
+            },
+            "fontFamily": {
+              "variable": "--font-family-body"
+            },
+            "fontSize": {
+              "variable": "--font-size-caption"
+            },
+            "fontWeight": {
+              "variable": "--font-weight-label"
+            },
+            "lineHeight": 150
+          },
+          "textProperty": "change",
+          "visibleProperty": "show change"
+        }
+      ],
       "499c2d0e829099f8": [
         {
           "kind": "text",
@@ -38425,6 +38710,78 @@
           "kind": "icon",
           "slot": "post",
           "visibleProperty": "post"
+        }
+      ],
+      "55700aa6f2bbacdd": [
+        {
+          "kind": "text",
+          "slot": "label",
+          "text": {
+            "fill": {
+              "color": {
+                "variable": "--color-text-tertiary"
+              },
+              "type": "SOLID"
+            },
+            "fontFamily": {
+              "variable": "--font-family-body"
+            },
+            "fontSize": {
+              "variable": "--font-size-body-sm"
+            },
+            "fontWeight": {
+              "variable": "--font-weight-body"
+            },
+            "lineHeight": 150
+          },
+          "textProperty": "label"
+        },
+        {
+          "kind": "text",
+          "slot": "value",
+          "text": {
+            "fill": {
+              "color": {
+                "variable": "--color-text-primary"
+              },
+              "type": "SOLID"
+            },
+            "fontFamily": {
+              "variable": "--font-family-code"
+            },
+            "fontSize": {
+              "variable": "--font-size-heading-md"
+            },
+            "fontWeight": {
+              "variable": "--font-weight-heading"
+            },
+            "lineHeight": 135
+          },
+          "textProperty": "value"
+        },
+        {
+          "kind": "text",
+          "slot": "change",
+          "text": {
+            "fill": {
+              "color": {
+                "variable": "--color-text-success"
+              },
+              "type": "SOLID"
+            },
+            "fontFamily": {
+              "variable": "--font-family-body"
+            },
+            "fontSize": {
+              "variable": "--font-size-caption"
+            },
+            "fontWeight": {
+              "variable": "--font-weight-label"
+            },
+            "lineHeight": 150
+          },
+          "textProperty": "change",
+          "visibleProperty": "show change"
         }
       ],
       "5690eba9f9def45f": [
