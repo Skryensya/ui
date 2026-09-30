@@ -153,6 +153,13 @@ function expand(decls: readonly (readonly [string, string])[]): (readonly [strin
       case "padding-inline":
         out.push(["padding-left", parts[0]], ["padding-right", parts[1] ?? parts[0]]);
         break;
+      case "padding-inline-start":
+      case "padding-inline-end":
+      case "padding-block-start":
+      case "padding-block-end":
+        // One logical side, as its physical longhand in horizontal-tb.
+        out.push([`padding-${SIDES[prop.replace("padding-", "")]}`, value]);
+        break;
       case "padding-block":
         out.push(["padding-top", parts[0]], ["padding-bottom", parts[1] ?? parts[0]]);
         break;
