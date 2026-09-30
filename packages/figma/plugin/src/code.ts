@@ -151,6 +151,9 @@ function tag(run: Run, node: PluginDataMixin, data: Record<string, string>) {
   }
 }
 
+/** The suffix of everything the dark demo adds: its frames, and the collections standing in for a Dark mode. */
+const DEMO = "-demo";
+
 const provenance = (kind: string, id: string) => ({ kind, id, schemaVersion: String(manifest.schemaVersion) });
 
 /* ── values ─────────────────────────────────────────────────────────────────────────────────── */
@@ -192,11 +195,15 @@ function sameValue(want: M.VariableValue, figmaHave: unknown, ids: Map<string, V
 
 /* ── variables ──────────────────────────────────────────────────────────────────────────────── */
 
-async function syncVariables(run: Run, progress: Progress): Promise<Map<string, Variable>> {
+/** Each collection's Dark mode, where the file could hold one: what a dark demo frame switches to. */
+type DarkModes = Map<string, { collection: VariableCollection; modeId: string }>;
+
+async function syncVariables(run: Run, progress: Progress): Promise<{ vars: Map<string, Variable>; darkModes: DarkModes }> {
   progress.start("variables");
   const collections = await figma.variables.getLocalVariableCollectionsAsync();
   const ownCollections = new Map(collections.filter((c) => getTag(c, "id")).map((c) => [getTag(c, "id"), c]));
   const modeIds = new Map<string, Partial<Record<M.Mode, string>>>();
+  const darkModes: DarkModes = new Map();
   const byCollection = new Map<string, VariableCollection>();
 
   for (const spec of manifest.collections) {
@@ -221,19 +228,27 @@ async function syncVariables(run: Run, progress: Progress): Promise<Map<string, 
         ids[mode] = found.modeId;
         return;
       }
+      // A file that refused a mode once (a Starter file holds one) is not asked again every run: that
+      // would count as a write, and the sync would never come back "already current".
+      if (getTag(col, "modeLimit") && col.modes.length >= Number(getTag(col, "modeLimit"))) {
+        run.log("NOOP", `mode ${label} in ${spec.name}`, `this file holds ${col.modes.length} mode(s); the dark demo uses the ${DEMO} collections`);
+        return;
+      }
       try {
         run.write(() => (ids[mode] = col.addMode(label)));
         run.log("CREATE", `mode ${label} in ${spec.name}`);
       } catch (error) {
-        run.log("WARN", `mode ${label} in ${spec.name}`, `not created (${String(error)}): its values are not written`);
+        run.log("WARN", `mode ${label} in ${spec.name}`, `not created (${String(error)}); the dark demo uses the ${DEMO} collections`);
+        col.setSharedPluginData(NS, "modeLimit", String(col.modes.length));
       }
     });
+    if (ids.dark) darkModes.set(spec.id, { collection: col, modeId: ids.dark });
     modeIds.set(spec.id, ids);
     byCollection.set(spec.id, col);
   }
 
   const existing = await figma.variables.getLocalVariablesAsync();
-  const own = new Map(existing.filter((v) => getTag(v, "id")).map((v) => [getTag(v, "id"), v]));
+  const own = new Map(existing.filter((v) => getTag(v, "id") && getTag(v, "kind") !== "demo").map((v) => [getTag(v, "id"), v]));
   const out = new Map<string, Variable>();
   const created = new Set<string>();
 
@@ -365,7 +380,7 @@ async function syncVariables(run: Run, progress: Progress): Promise<Map<string, 
   if (created.size) run.log("CREATE", `${created.size} variables`);
   if (counts.unchanged) run.log("NOOP", `${counts.unchanged} variables`);
   progress.finish("variables", summarize(counts));
-  return out;
+  return { vars: out, darkModes };
 }
 
 /* ── paints, effects, numbers ───────────────────────────────────────────────────────────────── */
@@ -1955,6 +1970,211 @@ async function syncSet(ctx: SetCtx, spec: M.ComponentSet, found: Map<string, Sce
   progress.finish(spec.id, summarize(counts));
 }
 
+/* ── the dark demo ──────────────────────────────────────────────────────────────────────────── */
+
+/*
+ * DARK IS THE SAME TOKENS IN ANOTHER MODE. Beside each frame goes a copy of it, `-demo`, drawn from
+ * instances of the same variants, so it is never a second definition of anything:
+ *
+ *   - Where the file holds a Dark mode, the copy only switches its collections to Dark.
+ *   - Where it cannot (a Starter file holds one mode per collection), each collection whose values
+ *     differ in dark gets a `-demo` twin holding just those, and the copy's bindings are overridden
+ *     to point at the twins. The components themselves stay bound to the real tokens.
+ *
+ * The copy is rebuilt whole when what it copies changed, and left alone otherwise.
+ */
+
+/** Real Figma variable id → the `-demo` variable that holds its dark value. Empty where Dark is a mode. */
+type DemoSwap = Map<string, Variable>;
+
+async function syncDemoVariables(run: Run, vars: Map<string, Variable>, darkModes: DarkModes): Promise<DemoSwap> {
+  const swap: DemoSwap = new Map();
+  // Differs in dark: its own value does, or the variable it aliases in dark has a twin itself.
+  const needs = new Map<string, boolean>();
+  const needsDemo = (id: string, depth = 0): boolean => {
+    if (needs.has(id)) return needs.get(id)!;
+    const spec = specs.get(id);
+    let out = false;
+    if (spec && !darkModes.has(spec.collection) && depth < 16) {
+      const { light, dark } = spec.values;
+      out = JSON.stringify(light) !== JSON.stringify(dark) || (dark.kind === "alias" && needsDemo(dark.variable, depth + 1));
+    }
+    needs.set(id, out);
+    return out;
+  };
+  const wanted = manifest.variables.filter((v) => needsDemo(v.id));
+  if (!wanted.length) return swap;
+
+  const collections = await figma.variables.getLocalVariableCollectionsAsync();
+  const existing = await figma.variables.getLocalVariablesAsync();
+  const own = new Map(existing.filter((v) => getTag(v, "kind") === "demo").map((v) => [getTag(v, "id"), v]));
+  const twins = new Map<string, { collection: VariableCollection; modeId: string }>();
+  for (const spec of manifest.collections) {
+    if (!wanted.some((v) => v.collection === spec.id)) continue;
+    const id = `${spec.id}${DEMO}`;
+    const name = `${spec.name} ${DEMO}`;
+    let collection = collections.find((c) => getTag(c, "id") === id);
+    if (!collection) {
+      run.log("CREATE", `collection ${name}`);
+      if (!run.apply) continue;
+      run.write(() => (collection = figma.variables.createVariableCollection(name)));
+    }
+    const col = collection!;
+    if (col.name !== name) run.write(() => (col.name = name));
+    tag(run, col, provenance("demo", id));
+    const mode = col.modes[0];
+    if (mode.name !== "Dark") run.write(() => col.renameMode(mode.modeId, "Dark"));
+    twins.set(spec.id, { collection: col, modeId: mode.modeId });
+  }
+
+  // Every twin exists first, so an alias always has a target.
+  let created = 0;
+  let updated = 0;
+  for (const spec of wanted) {
+    const twin = twins.get(spec.collection);
+    let variable = own.get(`${spec.id}${DEMO}`);
+    if (!variable && twin) {
+      created++;
+      run.write(() => {
+        variable = figma.variables.createVariable(spec.name, twin.collection, spec.type);
+        variable.setSharedPluginData(NS, "id", `${spec.id}${DEMO}`);
+        variable.setSharedPluginData(NS, "kind", "demo");
+      });
+    }
+    const v = variable;
+    if (!v) continue;
+    if (v.name !== spec.name) run.write(() => (v.name = spec.name));
+    // A stand-in, not a token to publish: a library user reaches dark through the real variables.
+    if (!v.hiddenFromPublishing) run.write(() => (v.hiddenFromPublishing = true));
+    const real = vars.get(spec.id);
+    if (real) swap.set(real.id, v);
+  }
+  // What each twin's alias points at: another twin where there is one, the real variable otherwise.
+  const target = new Map([...vars].map(([id, v]) => [id, swap.get(v.id) ?? v]));
+  for (const spec of wanted) {
+    const real = vars.get(spec.id);
+    const v = real && swap.get(real.id);
+    const twin = twins.get(spec.collection);
+    if (!v || !twin) continue;
+    const want = spec.values.dark;
+    if (sameValue(want, v.valuesByMode[twin.modeId], target)) continue;
+    const to = want.kind === "alias" ? target.get(want.variable) : undefined;
+    if (want.kind === "alias" && !to) continue;
+    const value: VariableValue = want.kind === "alias" ? figma.variables.createVariableAlias(to!) : (want.value as RGBA | number | string);
+    run.write(() => v.setValueForMode(twin.modeId, value));
+    if (!created) updated++;
+  }
+  if (created) run.log("CREATE", `${created} ${DEMO} variables`, "the dark values this file cannot hold as a mode");
+  else if (updated) run.log("UPDATE", `${updated} ${DEMO} variables`);
+  return swap;
+}
+
+const EFFECT_FIELDS = ["color", "radius", "spread", "offsetX", "offsetY"] as const;
+
+/** Every binding under `root` that has a `-demo` twin, pointed at the twin. On an instance's layers it is an override. */
+function rebindToDemo(root: FrameNode, swap: DemoSwap) {
+  const twinOf = (alias: VariableAlias | undefined) => (alias ? swap.get(alias.id) : undefined);
+  for (const node of [root, ...root.findAll()]) {
+    for (const field of ["fills", "strokes"] as const) {
+      if (!(field in node)) continue;
+      const paints = (node as GeometryMixin)[field];
+      if (paints === figma.mixed || !Array.isArray(paints)) continue;
+      let changed = false;
+      const next = (paints as Paint[]).map((paint) => {
+        const twin = paint.type === "SOLID" ? twinOf(paint.boundVariables?.color) : undefined;
+        if (!twin) return paint;
+        changed = true;
+        return figma.variables.setBoundVariableForPaint(paint as SolidPaint, "color", twin);
+      });
+      if (changed) (node as GeometryMixin)[field] = next;
+    }
+    if ("effects" in node && node.effects.length) {
+      let changed = false;
+      const next = node.effects.map((effect) => {
+        let out = effect;
+        for (const field of EFFECT_FIELDS) {
+          const bound = "boundVariables" in effect ? (effect.boundVariables as Record<string, VariableAlias | undefined> | undefined) : undefined;
+          const twin = twinOf(bound?.[field]);
+          if (!twin) continue;
+          out = figma.variables.setBoundVariableForEffect(out, field, twin);
+          changed = true;
+        }
+        return out;
+      });
+      if (changed) node.effects = next;
+    }
+    // Numbers and the like: a single alias per field. Lists (fills, strokes, effects) were done above.
+    for (const [field, alias] of Object.entries(node.boundVariables ?? {})) {
+      if (!alias || Array.isArray(alias) || typeof alias !== "object" || !("id" in alias)) continue;
+      const twin = twinOf(alias as VariableAlias);
+      if (twin) (node as Bindable).setBoundVariable(field as VariableBindableNodeField, twin);
+    }
+  }
+}
+
+/** What the demo copies, as a string: when it changes, the demo is rebuilt. */
+function demoSignature(spec: M.ComponentSet, frame: FrameNode, set: ComponentSetNode, darkModes: DarkModes, swap: DemoSwap) {
+  const size = (n: SceneNode) => `${Math.round(n.width)}x${Math.round(n.height)}`;
+  const layout = frame.children.map((c) => `${Math.round(c.x)},${Math.round(c.y)},${size(c)}`).join(";");
+  return [spec.visualHash, spec.contractHash, size(frame), size(set), layout, darkModes.size ? "mode" : `demo:${swap.size}`].join("|");
+}
+
+/** The set's frame, again, in dark: beside it, built from instances of its variants. Writes only when stale. */
+async function syncDemo(ctx: Ctx, spec: M.ComponentSet, found: Map<string, SceneNode>, page: PageNode | undefined, darkModes: DarkModes, swap: DemoSwap) {
+  const { run } = ctx;
+  const frame = found.get(`frame:${spec.id}`) as FrameNode | undefined;
+  const set = found.get(spec.id) as ComponentSetNode | undefined;
+  const id = `frame:${spec.id}${DEMO}`;
+  const name = `${spec.name} · dark ${DEMO}`;
+  let demo = found.get(id) as FrameNode | undefined;
+  if (!frame || !set || !page) {
+    if (!demo) run.log("CREATE", `frame ${name}`);
+    return;
+  }
+  const signature = demoSignature(spec, frame, set, darkModes, swap);
+  if (demo && getTag(demo, "signature") === signature) {
+    const d = demo;
+    if (d.name !== name) run.write(() => (d.name = name));
+    return;
+  }
+  run.log(demo ? "UPDATE" : "CREATE", `frame ${name}`, darkModes.size ? "its collections in Dark" : `bound to the ${DEMO} variables`);
+  if (!run.write(() => void 0)) return;
+  if (!demo) {
+    demo = figma.createFrame();
+    page.appendChild(demo);
+    found.set(id, demo);
+  }
+  const d = demo;
+  // Tagged before it is filled, so a run stopped halfway finds this frame again and rebuilds it.
+  tag(run, d, provenance("demo", id));
+  d.setSharedPluginData(NS, "signature", "");
+  for (const child of [...d.children]) child.remove();
+  d.name = name;
+  d.clipsContent = frame.clipsContent;
+  d.cornerRadius = frame.cornerRadius;
+  d.fills = frame.fills;
+  d.resizeWithoutConstraints(frame.width, frame.height);
+  for (const child of frame.children) {
+    if (child === set) {
+      for (const cell of ownCells(set)) {
+        const instance = cell.createInstance();
+        d.appendChild(instance);
+        instance.x = set.x + cell.x;
+        instance.y = set.y + cell.y;
+      }
+    } else if (child.type !== "COMPONENT" && child.type !== "COMPONENT_SET") {
+      const copy = child.clone();
+      d.appendChild(copy);
+      copy.x = child.x;
+      copy.y = child.y;
+    }
+    await ctx.progress.tick("dark", 0);
+  }
+  for (const { collection, modeId } of darkModes.values()) d.setExplicitVariableModeForCollection(collection, modeId);
+  if (swap.size) rebindToDemo(d, swap);
+  d.setSharedPluginData(NS, "signature", signature);
+}
+
 /* ── the run ────────────────────────────────────────────────────────────────────────────────── */
 
 /**
@@ -1992,7 +2212,15 @@ async function findOwn(): Promise<{ found: Map<string, SceneNode>; pages: PageNo
   const found = new Map<string, SceneNode>();
   for (const page of pages) {
     await page.loadAsync();
-    for (const node of page.findAllWithCriteria({ sharedPluginData: { namespace: NS, keys: ["id"] } })) {
+    const all = page.findAllWithCriteria({ sharedPluginData: { namespace: NS, keys: ["id"] } });
+    // A dark demo is copies of our own nodes, tags and all: only the demo frame itself is found.
+    const copies = new Set<string>();
+    for (const demo of all) {
+      if (getTag(demo, "kind") !== "demo" || demo.type !== "FRAME") continue;
+      for (const n of demo.findAllWithCriteria({ sharedPluginData: { namespace: NS, keys: ["id"] } })) copies.add(n.id);
+    }
+    for (const node of all) {
+      if (copies.has(node.id)) continue;
       if (!found.has(getTag(node, "id"))) found.set(getTag(node, "id"), node);
     }
   }
@@ -2006,7 +2234,7 @@ async function findOwn(): Promise<{ found: Map<string, SceneNode>; pages: PageNo
  */
 function collectOrphans(run: Run, pages: PageNode[], found: Map<string, SceneNode>) {
   const known = new Set<string>([
-    ...manifest.components.flatMap((c) => [c.id, `frame:${c.id}`]),
+    ...manifest.components.flatMap((c) => [c.id, `frame:${c.id}`, `frame:${c.id}${DEMO}`]),
     ...manifest.pages.map((p) => `page:${p.id}`),
   ]);
   for (const page of pages) {
@@ -2108,7 +2336,11 @@ function arrange(run: Run, pages: Map<string, PageNode>, found: Map<string, Scen
         const shown = bounds ? Math.max(node.height, bounds.height) : node.height;
         move(run, node, x, Math.round(y + above));
         y += Math.ceil(shown) + 160;
-        columnWidth = Math.max(columnWidth, Math.ceil(bounds ? Math.max(node.width, bounds.width) : node.width));
+        const wide = Math.ceil(bounds ? Math.max(node.width, bounds.width) : node.width);
+        // Its dark demo sits beside it, level with it: the column holds the pair.
+        const demo = found.get(`frame:${spec.id}${DEMO}`);
+        if (demo && demo.parent === page) move(run, demo, x + wide + 80, node.y);
+        columnWidth = Math.max(columnWidth, demo && demo.parent === page ? wide + 80 + Math.ceil(demo.width) : wide);
         if (!check) continue;
         const planned = plannedHeight(spec);
         if (Math.abs(node.height - planned) > 1) run.log("WARN", `frame ${spec.name}`, `height ${Math.round(node.height)}, planned ${planned}`);
@@ -2126,12 +2358,12 @@ function arrange(run: Run, pages: Map<string, PageNode>, found: Map<string, Scen
   }
 }
 
-async function reconcile(apply: boolean, only?: readonly string[]) {
+async function reconcile(apply: boolean, only?: readonly string[], darkDemo = true) {
   const run = new Run(apply);
   const started = Date.now();
   let progress: Progress | undefined;
   try {
-    return await reconcileRun(run, apply, started, picked(only), (p) => (progress = p));
+    return await reconcileRun(run, apply, started, picked(only), darkDemo, (p) => (progress = p));
   } catch (error) {
     if (!(error instanceof Stopped)) throw error;
     const running = progress?.phases.find((phase) => phase.state === "running");
@@ -2160,7 +2392,14 @@ function report(run: Run, apply: boolean, started: number, phases: Phase[], outc
   };
 }
 
-async function reconcileRun(run: Run, apply: boolean, started: number, chosen: Set<string>, onProgress: (progress: Progress) => void) {
+async function reconcileRun(
+  run: Run,
+  apply: boolean,
+  started: number,
+  chosen: Set<string>,
+  darkDemo: boolean,
+  onProgress: (progress: Progress) => void,
+) {
   missingLogged.clear();
   const iconSpec = manifest.components.find((c): c is M.IconSet => c.kind === "icon-set")!;
   // Only what was picked is drawn. What was not keeps its place in the columns but is not redrawn, and
@@ -2173,10 +2412,11 @@ async function reconcileRun(run: Run, apply: boolean, started: number, chosen: S
     { id: "variables", label: "Variables", total: manifest.variables.length },
     ...(withIcons ? [{ id: "icons", label: `${iconSpec.name} (${iconSpec.source.replace("@skryensya/icons-", "")})`, total: iconSpec.icons.length }] : []),
     ...setSpecs.map((s) => ({ id: s.id, label: s.name, total: s.cells.length })),
+    ...(darkDemo && setSpecs.length ? [{ id: "dark", label: `Dark demos (${DEMO})`, total: setSpecs.length }] : []),
   ]);
   onProgress(progress);
 
-  const vars = await syncVariables(run, progress);
+  const { vars, darkModes } = await syncVariables(run, progress);
   const pages = await ensurePages(run);
   // New nodes are born on the current page, so work from the one they belong on.
   const home = pages.get(manifest.pages[0].id);
@@ -2216,6 +2456,18 @@ async function reconcileRun(run: Run, apply: boolean, started: number, chosen: S
     await syncSet(setCtx, spec, found, pages.get(spec.page), layouts.get(spec.id));
     if (apply) arrange(run, pages, found);
   }
+  if (darkDemo && setSpecs.length) {
+    progress.start("dark");
+    const swap = await syncDemoVariables(run, vars, darkModes);
+    const before = run.writes;
+    for (const spec of setSpecs) {
+      await syncDemo(ctx, spec, found, pages.get(spec.page), darkModes, swap);
+      await progress.tick("dark");
+    }
+    const how = darkModes.size ? "Dark mode" : `${swap.size} ${DEMO} variables`;
+    progress.finish("dark", `${run.writes > before ? "redrawn where stale" : "all current"} · ${how}`);
+    if (apply) arrange(run, pages, found);
+  }
   // The specimen is gone from the manifest. Its frame held only this plugin's own instances, so it goes too.
   const specimen = found.get("specimen");
   if (specimen) {
@@ -2244,7 +2496,7 @@ figma.ui.postMessage({
   components: groups.map(({ id, name, variants, needsIcons }) => ({ id, name, variants, needsIcons, icons: id === iconGroup()?.id })),
 });
 let running = false;
-figma.ui.onmessage = async (message: { type: "sync" | "dry-run" | "stop"; only?: string[] }) => {
+figma.ui.onmessage = async (message: { type: "sync" | "dry-run" | "stop"; only?: string[]; darkDemo?: boolean }) => {
   // Handled while a run is awaiting its next tick: the run is what notices the flag and stops.
   if (message.type === "stop") {
     if (running) stopRequested = true;
@@ -2254,7 +2506,7 @@ figma.ui.onmessage = async (message: { type: "sync" | "dry-run" | "stop"; only?:
   running = true;
   stopRequested = false;
   try {
-    const result = await reconcile(message.type === "sync", message.only);
+    const result = await reconcile(message.type === "sync", message.only, message.darkDemo ?? true);
     figma.ui.postMessage(result);
     if (message.type === "sync") figma.notify(`Skryensya: ${result.outcome} (${result.writes} writes, ${result.seconds}s)`);
   } catch (error) {
