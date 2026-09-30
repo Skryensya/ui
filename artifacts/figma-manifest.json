@@ -58090,6 +58090,83 @@
         "columns": []
       },
       "visualHash": "5330adaea34902a3"
+    },
+    {
+      "axes": [],
+      "cells": [
+        {
+          "box": "015dc53e9d20146a",
+          "hash": "3e9ca0121ca3785c",
+          "id": "timeline/",
+          "key": "",
+          "layers": "5c9a3076dd9e8965",
+          "props": {},
+          "surface": "fa0b643878e9242d"
+        }
+      ],
+      "contractHash": "2271a4ca64053fda",
+      "defaultCell": "",
+      "grid": {
+        "columns": [],
+        "rows": []
+      },
+      "id": "timeline",
+      "interactions": [],
+      "kind": "component-set",
+      "name": "Timeline",
+      "page": "skryensya",
+      "properties": [
+        {
+          "default": "Mar 3",
+          "name": "time 1",
+          "type": "TEXT"
+        },
+        {
+          "default": "Order delivered",
+          "name": "heading 1",
+          "type": "TEXT"
+        },
+        {
+          "default": "Left at the front door.",
+          "name": "body 1",
+          "type": "TEXT"
+        },
+        {
+          "default": "Mar 2",
+          "name": "time 2",
+          "type": "TEXT"
+        },
+        {
+          "default": "Out for delivery",
+          "name": "heading 2",
+          "type": "TEXT"
+        },
+        {
+          "default": "With the local courier.",
+          "name": "body 2",
+          "type": "TEXT"
+        },
+        {
+          "default": "Feb 28",
+          "name": "time 3",
+          "type": "TEXT"
+        },
+        {
+          "default": "Order placed",
+          "name": "heading 3",
+          "type": "TEXT"
+        },
+        {
+          "default": "Payment confirmed.",
+          "name": "body 3",
+          "type": "TEXT"
+        }
+      ],
+      "showcase": {
+        "base": {},
+        "columns": []
+      },
+      "visualHash": "b38473276ef0f52d"
     }
   ],
   "diagnostics": [
@@ -58446,6 +58523,18 @@
       "message": "1 rule(s) under a condition the evaluation context does not hold",
       "severity": "info",
       "subject": "components/tile.css @media (prefers-reduced-motion: reduce)"
+    },
+    {
+      "code": "CONDITION_SKIPPED",
+      "message": "2 rule(s) under a condition the evaluation context does not hold",
+      "severity": "info",
+      "subject": "components/timeline.css @media (forced-colors: active)"
+    },
+    {
+      "code": "CONDITION_SKIPPED",
+      "message": "1 rule(s) under a condition the evaluation context does not hold",
+      "severity": "info",
+      "subject": "components/timeline.css @media (width < 30rem)"
     },
     {
       "code": "CONDITION_SKIPPED",
@@ -59173,14 +59262,19 @@
           "disabled",
           "appearance"
         ]
+      },
+      "timeline": {
+        "excluded": [],
+        "nonVisual": [],
+        "visual": []
       }
     },
     "tokens": {
       "catalogueAdded": 306,
-      "componentVariables": 411,
+      "componentVariables": 413,
       "modeValuesBySource": {
         "alias": 203,
-        "evaluated": 777,
+        "evaluated": 781,
         "literal": 774
       },
       "reached": 201,
@@ -59200,8 +59294,8 @@
       "variables": 466
     },
     "variants": {
-      "components": 92,
-      "componentSets": 91,
+      "components": 93,
+      "componentSets": 92,
       "naiveAllOptions": {
         "accordion": 32,
         "avatar": 8,
@@ -59242,7 +59336,8 @@
         "tag": 20,
         "tag-link": 10,
         "text": 288,
-        "textarea": 18
+        "textarea": 18,
+        "timeline": 1
       },
       "naiveVisualOptions": {
         "accordion": 4,
@@ -59284,7 +59379,8 @@
         "tag": 10,
         "tag-link": 10,
         "text": 48,
-        "textarea": 18
+        "textarea": 18,
+        "timeline": 1
       },
       "variantsPerSet": [
         {
@@ -59650,13 +59746,17 @@
         {
           "set": "nav-list",
           "variants": 2
+        },
+        {
+          "set": "timeline",
+          "variants": 1
         }
       ],
-      "variantsTotal": 3530
+      "variantsTotal": 3531
     }
   },
   "schemaVersion": 1,
-  "sourceHash": "7a796c8f85742180",
+  "sourceHash": "b65c338d921532cf",
   "stage": {
     "background": {
       "variable": "--color-bg-surface"
@@ -61946,6 +62046,37 @@
             "value": 0
           }
         }
+      },
+      "5f5d69f2694f1cea": {
+        "clipsContent": false,
+        "crossAlign": "MIN",
+        "direction": "VERTICAL",
+        "gap": {
+          "variable": "--space-stack-xs"
+        },
+        "mainAlign": "MIN",
+        "minWidth": {
+          "expression": "0",
+          "value": 0
+        },
+        "padding": {
+          "bottom": {
+            "expression": "0",
+            "value": 0
+          },
+          "left": {
+            "variable": "timeline:rail:fb391dd7c4"
+          },
+          "right": {
+            "expression": "0",
+            "value": 0
+          },
+          "top": {
+            "expression": "0",
+            "value": 0
+          }
+        },
+        "stretch": true
       },
       "60373d25c42a4d6a": {
         "clipsContent": false,
@@ -64799,6 +64930,43 @@
         "width": {
           "expression": "480px",
           "value": 480
+        }
+      },
+      "cf36e5bf05b330c2": {
+        "absolute": {
+          "x": 8,
+          "y": -3
+        },
+        "clipsContent": false,
+        "crossAlign": "CENTER",
+        "direction": "VERTICAL",
+        "height": {
+          "variable": "timeline:marker-size:b81aec4635"
+        },
+        "mainAlign": "CENTER",
+        "padding": {
+          "bottom": {
+            "expression": "0",
+            "value": 0
+          },
+          "left": {
+            "expression": "0",
+            "value": 0
+          },
+          "right": {
+            "expression": "0",
+            "value": 0
+          },
+          "top": {
+            "expression": "0",
+            "value": 0
+          }
+        },
+        "radius": {
+          "variable": "--radius-pill"
+        },
+        "width": {
+          "variable": "timeline:marker-size:b81aec4635"
         }
       },
       "d0b4bf814d2b1c85": {
@@ -76402,6 +76570,320 @@
           "kind": "icon",
           "slot": "post",
           "visibleProperty": "post"
+        }
+      ],
+      "5c9a3076dd9e8965": [
+        {
+          "box": "5f5d69f2694f1cea",
+          "kind": "frame",
+          "layers": [
+            {
+              "box": "cf36e5bf05b330c2",
+              "kind": "frame",
+              "layers": [
+                {
+                  "default": "check",
+                  "icon": {
+                    "color": {
+                      "color": {
+                        "variable": "--color-text-on-accent"
+                      },
+                      "type": "SOLID"
+                    },
+                    "size": {
+                      "variable": "--size-icon-sm"
+                    }
+                  },
+                  "kind": "icon",
+                  "slot": "marker"
+                }
+              ],
+              "slot": "marker",
+              "surface": "b630a2579ceb0d13"
+            },
+            {
+              "fill": true,
+              "kind": "text",
+              "slot": "time 1",
+              "text": {
+                "fill": {
+                  "color": {
+                    "variable": "--color-text-tertiary"
+                  },
+                  "type": "SOLID"
+                },
+                "fontFamily": {
+                  "variable": "--font-family-body"
+                },
+                "fontSize": {
+                  "variable": "--font-size-caption"
+                },
+                "fontWeight": {
+                  "variable": "--font-weight-body"
+                },
+                "lineHeight": 150
+              },
+              "textProperty": "time 1"
+            },
+            {
+              "fill": true,
+              "kind": "text",
+              "slot": "heading 1",
+              "text": {
+                "fill": {
+                  "color": {
+                    "variable": "--color-text-primary"
+                  },
+                  "type": "SOLID"
+                },
+                "fontFamily": {
+                  "variable": "--font-family-body"
+                },
+                "fontSize": {
+                  "variable": "--font-size-heading-h4"
+                },
+                "fontWeight": {
+                  "variable": "--font-weight-emphasis"
+                },
+                "lineHeight": 135
+              },
+              "textProperty": "heading 1"
+            },
+            {
+              "fill": true,
+              "kind": "text",
+              "slot": "body 1",
+              "text": {
+                "fill": {
+                  "color": {
+                    "variable": "--color-text-secondary"
+                  },
+                  "type": "SOLID"
+                },
+                "fontFamily": {
+                  "variable": "--font-family-body"
+                },
+                "fontSize": {
+                  "variable": "--font-size-body"
+                },
+                "fontWeight": {
+                  "variable": "--font-weight-body"
+                },
+                "lineHeight": 150
+              },
+              "textProperty": "body 1"
+            }
+          ],
+          "slot": "item",
+          "surface": "fa0b643878e9242d"
+        },
+        {
+          "box": "5f5d69f2694f1cea",
+          "kind": "frame",
+          "layers": [
+            {
+              "box": "cf36e5bf05b330c2",
+              "kind": "frame",
+              "layers": [
+                {
+                  "default": "upload",
+                  "icon": {
+                    "color": {
+                      "color": {
+                        "variable": "--color-text-on-accent"
+                      },
+                      "type": "SOLID"
+                    },
+                    "size": {
+                      "variable": "--size-icon-sm"
+                    }
+                  },
+                  "kind": "icon",
+                  "slot": "marker"
+                }
+              ],
+              "slot": "marker",
+              "surface": "d64186f7c47d33fe"
+            },
+            {
+              "fill": true,
+              "kind": "text",
+              "slot": "time 2",
+              "text": {
+                "fill": {
+                  "color": {
+                    "variable": "--color-text-tertiary"
+                  },
+                  "type": "SOLID"
+                },
+                "fontFamily": {
+                  "variable": "--font-family-body"
+                },
+                "fontSize": {
+                  "variable": "--font-size-caption"
+                },
+                "fontWeight": {
+                  "variable": "--font-weight-body"
+                },
+                "lineHeight": 150
+              },
+              "textProperty": "time 2"
+            },
+            {
+              "fill": true,
+              "kind": "text",
+              "slot": "heading 2",
+              "text": {
+                "fill": {
+                  "color": {
+                    "variable": "--color-text-primary"
+                  },
+                  "type": "SOLID"
+                },
+                "fontFamily": {
+                  "variable": "--font-family-body"
+                },
+                "fontSize": {
+                  "variable": "--font-size-heading-h4"
+                },
+                "fontWeight": {
+                  "variable": "--font-weight-emphasis"
+                },
+                "lineHeight": 135
+              },
+              "textProperty": "heading 2"
+            },
+            {
+              "fill": true,
+              "kind": "text",
+              "slot": "body 2",
+              "text": {
+                "fill": {
+                  "color": {
+                    "variable": "--color-text-secondary"
+                  },
+                  "type": "SOLID"
+                },
+                "fontFamily": {
+                  "variable": "--font-family-body"
+                },
+                "fontSize": {
+                  "variable": "--font-size-body"
+                },
+                "fontWeight": {
+                  "variable": "--font-weight-body"
+                },
+                "lineHeight": 150
+              },
+              "textProperty": "body 2"
+            }
+          ],
+          "slot": "item 2",
+          "surface": "fa0b643878e9242d"
+        },
+        {
+          "box": "5f5d69f2694f1cea",
+          "kind": "frame",
+          "layers": [
+            {
+              "box": "cf36e5bf05b330c2",
+              "kind": "frame",
+              "layers": [
+                {
+                  "default": "clock",
+                  "icon": {
+                    "color": {
+                      "color": {
+                        "variable": "--color-text-on-accent"
+                      },
+                      "type": "SOLID"
+                    },
+                    "size": {
+                      "variable": "--size-icon-sm"
+                    }
+                  },
+                  "kind": "icon",
+                  "slot": "marker"
+                }
+              ],
+              "slot": "marker",
+              "surface": "4898a15a72d71bcd"
+            },
+            {
+              "fill": true,
+              "kind": "text",
+              "slot": "time 3",
+              "text": {
+                "fill": {
+                  "color": {
+                    "variable": "--color-text-tertiary"
+                  },
+                  "type": "SOLID"
+                },
+                "fontFamily": {
+                  "variable": "--font-family-body"
+                },
+                "fontSize": {
+                  "variable": "--font-size-caption"
+                },
+                "fontWeight": {
+                  "variable": "--font-weight-body"
+                },
+                "lineHeight": 150
+              },
+              "textProperty": "time 3"
+            },
+            {
+              "fill": true,
+              "kind": "text",
+              "slot": "heading 3",
+              "text": {
+                "fill": {
+                  "color": {
+                    "variable": "--color-text-primary"
+                  },
+                  "type": "SOLID"
+                },
+                "fontFamily": {
+                  "variable": "--font-family-body"
+                },
+                "fontSize": {
+                  "variable": "--font-size-heading-h4"
+                },
+                "fontWeight": {
+                  "variable": "--font-weight-emphasis"
+                },
+                "lineHeight": 135
+              },
+              "textProperty": "heading 3"
+            },
+            {
+              "fill": true,
+              "kind": "text",
+              "slot": "body 3",
+              "text": {
+                "fill": {
+                  "color": {
+                    "variable": "--color-text-secondary"
+                  },
+                  "type": "SOLID"
+                },
+                "fontFamily": {
+                  "variable": "--font-family-body"
+                },
+                "fontSize": {
+                  "variable": "--font-size-body"
+                },
+                "fontWeight": {
+                  "variable": "--font-weight-body"
+                },
+                "lineHeight": 150
+              },
+              "textProperty": "body 3"
+            }
+          ],
+          "slot": "item 3",
+          "surface": "fa0b643878e9242d"
         }
       ],
       "5dd2ca160a653f7f": [
@@ -120672,6 +121154,50 @@
             "g": 0,
             "r": 0
           }
+        }
+      }
+    },
+    {
+      "codeSyntax": "var(--sk-timeline-marker-size)",
+      "collection": "component",
+      "expression": "1.5rem",
+      "id": "timeline:marker-size:b81aec4635",
+      "name": "timeline/marker-size",
+      "source": {
+        "dark": "evaluated",
+        "light": "evaluated"
+      },
+      "type": "FLOAT",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": 24
+        },
+        "light": {
+          "kind": "literal",
+          "value": 24
+        }
+      }
+    },
+    {
+      "codeSyntax": "var(--sk-timeline-rail)",
+      "collection": "component",
+      "expression": "2.5rem",
+      "id": "timeline:rail:fb391dd7c4",
+      "name": "timeline/rail",
+      "source": {
+        "dark": "evaluated",
+        "light": "evaluated"
+      },
+      "type": "FLOAT",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": 40
+        },
+        "light": {
+          "kind": "literal",
+          "value": 40
         }
       }
     },

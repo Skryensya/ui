@@ -788,14 +788,17 @@ async function compileRealization(authored: Realization, shared: Shared): Promis
             continue;
           }
           const { strokes, fills, effects, ...measured } = frameOf(ctxOf(sized));
-          const frameBox = stretch ? { ...measured, stretch: true as const } : measured;
+          // Placed by its insets rather than laid out (a timeline's marker): where they come to.
+          const placed = own.get("position") === "absolute" ? { x: lengthOf(own.get("left") ?? "0", child), y: lengthOf(own.get("top") ?? "0", child) } : undefined;
+          const absolute = placed && placed.x !== undefined && placed.y !== undefined ? { x: placed.x, y: placed.y } : undefined;
+          const frameBox = absolute ? { ...measured, absolute } : stretch ? { ...measured, stretch: true as const } : measured;
           const box = track && /fr\b/.test(track) ? { ...frameBox, grow: true as const } : frameBox;
           const slot = unique(partOf(child) ?? child.localName);
           // Drawn at a width, a block down a column spans it, as CSS stretches it by default; so does
           // a block inside a plain block (a nav link filling its list item), the one thing on its line.
           const blockLevel = (d: string | undefined) => d === undefined || /^(block|flex|grid|list-item)$/.test(d);
           const inFlow = !/flex|grid/.test(display) && blockLevel(display || undefined) && blockLevel(cascaded.get(child)!.get("display"));
-          const spans = realization.width && inner !== undefined && (stacking || inFlow) && !box.width;
+          const spans = realization.width && inner !== undefined && (stacking || inFlow) && !box.width && !absolute;
           out.push({
             kind: "frame",
             slot,
