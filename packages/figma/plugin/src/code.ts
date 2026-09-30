@@ -529,17 +529,35 @@ const ownCells = (set: ComponentSetNode | undefined) =>
  * than one there (each stopped run used to make another), the fullest is the set; the rest are marked
  * orphaned, never deleted, so a designer can remove them. Whatever is found is tagged at once.
  */
+/** Sets already reported as not found this run: setOf is asked more than once per set. */
+const missingLogged = new Set<string>();
+
 function setOf(run: Run, spec: M.IconSet | M.ComponentSet, found: Map<string, SceneNode>): ComponentSetNode | undefined {
   const tagged = found.get(spec.id);
-  if (tagged?.type === "COMPONENT_SET") return tagged;
+  if (tagged?.type === "COMPONENT_SET" && getTag(tagged, "orphaned") !== "true") return tagged;
   const frame = found.get(`frame:${spec.id}`);
-  if (!frame || frame.type !== "FRAME") return undefined;
-  const candidates = frame.children
-    .filter((n): n is ComponentSetNode => n.type === "COMPONENT_SET" && getTag(n, "orphaned") !== "true")
-    .sort((a, b) => b.children.length - a.children.length);
+  const live = (n: SceneNode): n is ComponentSetNode => n.type === "COMPONENT_SET" && getTag(n, "orphaned") !== "true";
+  let candidates = frame?.type === "FRAME" ? frame.children.filter(live) : [];
+  // Not in its frame: anywhere on the page, by its tag or its name (moved out by hand, or its tag lost),
+  // so a set that exists is always taken up rather than drawn a second time.
+  if (!candidates.length && frame?.parent?.type === "PAGE") {
+    candidates = frame.parent.findAll(
+      (n) => live(n as SceneNode) && (getTag(n, "id") === spec.id || n.name === spec.name),
+    ) as ComponentSetNode[];
+  }
+  candidates.sort((a, b) => b.children.length - a.children.length);
   const [set, ...extra] = candidates;
-  if (!set) return undefined;
-  run.log("UPDATE", `${spec.name}`, "adopted the set a stopped run left untagged; its variants are kept");
+  if (!set) {
+    // Said plainly, so a set drawn anew is never a mystery: what was looked for and where.
+    if (!missingLogged.has(spec.id)) {
+      missingLogged.add(spec.id);
+      const inFrame = frame?.type === "FRAME" ? frame.children.map((n) => n.type).join(", ") || "nothing" : "no frame";
+      run.log("CREATE", `${spec.name}`, `no set tagged ${spec.id} or named "${spec.name}" found; its frame holds: ${inFrame}`);
+    }
+    return undefined;
+  }
+  if (frame?.type === "FRAME" && set.parent !== frame) run.write(() => frame.appendChild(set));
+  run.log("UPDATE", `${spec.name}`, "adopted an existing set found by name, not by its tag; its variants are kept");
   tag(run, set, provenance(spec.kind, spec.id));
   for (const duplicate of extra) {
     run.log("ORPHANED", `${spec.name}: a duplicate set (${duplicate.children.length} variants)`, "left by an earlier stopped run; kept, safe to delete");
@@ -2128,6 +2146,7 @@ function report(run: Run, apply: boolean, started: number, phases: Phase[], outc
 }
 
 async function reconcileRun(run: Run, apply: boolean, started: number, chosen: Set<string>, onProgress: (progress: Progress) => void) {
+  missingLogged.clear();
   const iconSpec = manifest.components.find((c): c is M.IconSet => c.kind === "icon-set")!;
   // Only what was picked is drawn. What was not keeps its place in the columns but is not redrawn, and
   // it is still in the manifest, so nothing of it is orphaned either.
