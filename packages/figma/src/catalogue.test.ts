@@ -632,3 +632,18 @@ describe("Timeline's connector", () => {
     expect(last.kind === "frame" && last.layers.some((l) => l.slot === "after")).toBe(false);
   });
 });
+
+describe("ProcessList", () => {
+  it("numbers each step in its marker, the content filling the rest of the row", () => {
+    const set = manifest.components.find((c): c is ComponentSet => c.kind === "component-set" && c.id === "process-list")!;
+    const steps = manifest.styles.layers[set.cells[0].layers];
+    const numbers = steps.map((step) => {
+      const marker = step.kind === "frame" ? step.layers.find((l) => l.slot === "before") : undefined;
+      const text = marker?.kind === "frame" ? marker.layers[0] : undefined;
+      return text?.kind === "text" ? text.characters : undefined;
+    });
+    expect(numbers).toEqual(["1", "2", "3"]);
+    const content = steps[0].kind === "frame" ? steps[0].layers.find((l) => l.slot === "content") : undefined;
+    expect(content?.kind === "frame" && manifest.styles.boxes[content.box].grow).toBe(true);
+  });
+});

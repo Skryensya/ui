@@ -793,7 +793,13 @@ async function compileRealization(authored: Realization, shared: Shared): Promis
         // In a grid laid across, a child in an `fr` column fills the row, as flex-grow does.
         const tracks = gridTracks(ctx(el));
         const rows = /grid/.test(ctx(el).computed.get("display") ?? "") ? gridTracks(ctx(el), "grid-template-rows") : [];
-        let column = 0;
+        // An in-flow `::before` is the first grid item (a ProcessList's step number): the children
+        // start from the next column.
+        const lead = pseudo.get(el)?.before;
+        let column =
+          lead && lead.get("content") !== undefined && lead.get("content") !== "none" && lead.get("position") !== "absolute" && !/^1\s*\/\s*1$/.test(lead.get("grid-area") ?? "")
+            ? 1
+            : 0;
         let row = 0;
         // What the fixed columns leave for the `fr` one, when the width is known: each other column's
         // own width (a track length, or its child's width), less the gaps between them.
@@ -1037,7 +1043,21 @@ async function compileRealization(authored: Realization, shared: Shared): Promis
           if (/^1\s*\/\s*1$/.test(generated.get("grid-area") ?? "")) continue;
           const { strokes, fills, effects, ...box } = frameOf(ctxOf(generated));
           if (!fills.length && !strokes.length) continue;
-          const layer: Layer = { kind: "frame", slot: which, box: intern(styles.boxes, box), surface: intern(styles.surfaces, { strokes, fills, effects }), layers: [] };
+          // What it says: a string, or a counter (a ProcessList's step number), counted as the
+          // element's place among its siblings of the same kind.
+          const content = generated.get("content") ?? "";
+          const quoted = /^["'](.*)["']$/.exec(content)?.[1];
+          const counted = /^counter\(/.test(content)
+            ? String(Array.from(el.parentElement?.children ?? []).filter((s) => s.className === el.className).indexOf(el) + 1)
+            : undefined;
+          const said = quoted || counted;
+          const layer: Layer = {
+            kind: "frame",
+            slot: which,
+            box: intern(styles.boxes, box),
+            surface: intern(styles.surfaces, { strokes, fills, effects }),
+            layers: said ? [{ kind: "text", slot: "text", textProperty: "text", characters: said, text: textOf(ctxOf(generated)) }] : [],
+          };
           if (which === "before") out.unshift(layer);
           else out.push(layer);
         }
