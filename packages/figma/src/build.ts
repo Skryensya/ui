@@ -378,7 +378,7 @@ async function compileRealization(authored: Realization, shared: Shared): Promis
     return (cls && !root.classList.contains(cls) && root.querySelector(`.${cls}`)) || root;
   };
 
-  const computeCell = (input: CellInput, simulated: readonly string[] = [], attrs: Readonly<Record<string, string>> = {}) => {
+  const computeCell = (input: CellInput, simulated: readonly string[] = [], attrs: Readonly<Record<string, string>> = {}, on?: string) => {
     const markup = mounted(emitMarkup(treeFor(realization, input, iconName), { fillDefaults: true }), iconContract);
     const host = elementFrom(markup);
     for (const [part, style] of Object.entries(realization.mounted ?? {})) {
@@ -405,7 +405,9 @@ async function compileRealization(authored: Realization, shared: Shared): Promis
         el.setAttribute(markerOf(pseudo), "");
       }
     }
-    for (const [name, value] of Object.entries(attrs)) host.setAttribute(name, value);
+    const carrier = on ? host.querySelector(on) : host;
+    if (!carrier) throw new Error(`state attributes: nothing matches ${on}`);
+    for (const [name, value] of Object.entries(attrs)) carrier.setAttribute(name, value);
     const tree = computeTree(host, rules, unmatchable);
     return { host, styles: tree.styles, pseudo: tree.pseudo };
   };
@@ -574,7 +576,7 @@ async function compileRealization(authored: Realization, shared: Shared): Promis
       const iconChildren = iconWhen !== undefined && options[iconWhen] === true;
       const interaction = interactions.find((i) => i.name === props[stateAxis.name]);
       const attributed = realization.state.attributes?.find((a) => a.name === props[stateAxis.name]);
-      const { host, styles: cascaded, pseudo } = computeCell({ options, icons: true, iconChildren }, interaction ? [interaction.pseudo] : [], attributed?.attrs);
+      const { host, styles: cascaded, pseudo } = computeCell({ options, icons: true, iconChildren }, interaction ? [interaction.pseudo] : [], attributed?.attrs, attributed?.on);
       const cellProps: CellProps = { ...(realization.splitBy && splitValue ? { [realization.splitBy]: splitValue } : {}), ...props };
       const inherited = {
         "font-family": `var(${realization.stage.label.fontFamily})`,

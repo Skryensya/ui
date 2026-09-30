@@ -40421,6 +40421,430 @@
         "columns": []
       },
       "visualHash": "83ddef5353b7190f"
+    },
+    {
+      "axes": [
+        {
+          "name": "state",
+          "values": [
+            "unchecked",
+            "hover",
+            "focus",
+            "checked"
+          ]
+        }
+      ],
+      "cells": [
+        {
+          "box": "3195fb3a38ace4d1",
+          "hash": "ef28448884f649d5",
+          "id": "tile-checkbox/plain/state=unchecked",
+          "key": "state=unchecked",
+          "layers": "2467df6a3ea6990f",
+          "props": {
+            "state": "unchecked"
+          },
+          "surface": "82d94bda55e9390f"
+        },
+        {
+          "box": "3195fb3a38ace4d1",
+          "hash": "25588cf33ef3490e",
+          "id": "tile-checkbox/plain/state=hover",
+          "key": "state=hover",
+          "layers": "da4861aaf853fcf9",
+          "props": {
+            "state": "hover"
+          },
+          "surface": "82d94bda55e9390f"
+        },
+        {
+          "box": "78bff85378b3ab3a",
+          "hash": "f6616591e7b67111",
+          "id": "tile-checkbox/plain/state=focus",
+          "key": "state=focus",
+          "layers": "ae940d698f55cb1c",
+          "props": {
+            "state": "focus"
+          },
+          "surface": "82d94bda55e9390f"
+        },
+        {
+          "box": "3195fb3a38ace4d1",
+          "hash": "bee0c42979871f4b",
+          "id": "tile-checkbox/plain/state=checked",
+          "key": "state=checked",
+          "layers": "a5dd2081226ea841",
+          "props": {
+            "state": "checked"
+          },
+          "surface": "7d24373c27998214"
+        }
+      ],
+      "contractHash": "7087b4e1f89e3813",
+      "defaultCell": "state=unchecked",
+      "grid": {
+        "columns": [
+          {
+            "name": "state",
+            "values": [
+              "unchecked",
+              "hover",
+              "focus",
+              "checked"
+            ]
+          }
+        ],
+        "rows": []
+      },
+      "id": "tile-checkbox/plain",
+      "interactions": [
+        {
+          "axis": "state",
+          "from": "unchecked",
+          "to": "hover",
+          "trigger": "ON_HOVER"
+        }
+      ],
+      "kind": "component-set",
+      "name": "Tile Checkbox / plain",
+      "page": "skryensya",
+      "properties": [
+        {
+          "default": "Team plan",
+          "name": "title 1",
+          "type": "TEXT"
+        },
+        {
+          "default": "Up to 20 members, shared billing",
+          "name": "description 1",
+          "type": "TEXT"
+        }
+      ],
+      "showcase": {
+        "base": {
+          "state": "unchecked"
+        },
+        "columns": []
+      },
+      "visualHash": "521a08cbc8c89d1b"
+    },
+    {
+      "axes": [
+        {
+          "name": "state",
+          "values": [
+            "unchecked",
+            "hover",
+            "focus",
+            "checked"
+          ]
+        }
+      ],
+      "cells": [
+        {
+          "box": "3195fb3a38ace4d1",
+          "hash": "a4b10176571dfe72",
+          "id": "tile-checkbox/tactile/state=unchecked",
+          "key": "state=unchecked",
+          "layers": "2467df6a3ea6990f",
+          "props": {
+            "state": "unchecked"
+          },
+          "surface": "956debe3aca94ba9"
+        },
+        {
+          "box": "3195fb3a38ace4d1",
+          "hash": "7eac0b730b3a7497",
+          "id": "tile-checkbox/tactile/state=hover",
+          "key": "state=hover",
+          "layers": "da4861aaf853fcf9",
+          "props": {
+            "state": "hover"
+          },
+          "surface": "e75320bbf65966dd"
+        },
+        {
+          "box": "78bff85378b3ab3a",
+          "hash": "5cc0f63eebaffbd9",
+          "id": "tile-checkbox/tactile/state=focus",
+          "key": "state=focus",
+          "layers": "ae940d698f55cb1c",
+          "props": {
+            "state": "focus"
+          },
+          "surface": "956debe3aca94ba9"
+        },
+        {
+          "box": "3195fb3a38ace4d1",
+          "hash": "36080925b4d456a9",
+          "id": "tile-checkbox/tactile/state=checked",
+          "key": "state=checked",
+          "layers": "a5dd2081226ea841",
+          "props": {
+            "state": "checked"
+          },
+          "surface": "b455a027df6df83e"
+        }
+      ],
+      "contractHash": "7087b4e1f89e3813",
+      "defaultCell": "state=unchecked",
+      "grid": {
+        "columns": [
+          {
+            "name": "state",
+            "values": [
+              "unchecked",
+              "hover",
+              "focus",
+              "checked"
+            ]
+          }
+        ],
+        "rows": []
+      },
+      "id": "tile-checkbox/tactile",
+      "interactions": [
+        {
+          "axis": "state",
+          "from": "unchecked",
+          "to": "hover",
+          "trigger": "ON_HOVER"
+        }
+      ],
+      "kind": "component-set",
+      "name": "Tile Checkbox / tactile",
+      "page": "skryensya",
+      "properties": [
+        {
+          "default": "Team plan",
+          "name": "title 1",
+          "type": "TEXT"
+        },
+        {
+          "default": "Up to 20 members, shared billing",
+          "name": "description 1",
+          "type": "TEXT"
+        }
+      ],
+      "showcase": {
+        "base": {
+          "state": "unchecked"
+        },
+        "columns": []
+      },
+      "visualHash": "46f4ed28ba7272db"
+    },
+    {
+      "axes": [
+        {
+          "name": "state",
+          "values": [
+            "unchecked",
+            "hover",
+            "focus",
+            "checked"
+          ]
+        }
+      ],
+      "cells": [
+        {
+          "box": "3195fb3a38ace4d1",
+          "hash": "b6287cd9d06396c5",
+          "id": "tile-checkbox/brutalist/state=unchecked",
+          "key": "state=unchecked",
+          "layers": "2467df6a3ea6990f",
+          "props": {
+            "state": "unchecked"
+          },
+          "surface": "2fc29be39f4b4449"
+        },
+        {
+          "box": "3195fb3a38ace4d1",
+          "hash": "c2cd9521620d5d80",
+          "id": "tile-checkbox/brutalist/state=hover",
+          "key": "state=hover",
+          "layers": "da4861aaf853fcf9",
+          "props": {
+            "state": "hover"
+          },
+          "surface": "24cba86042643773"
+        },
+        {
+          "box": "78bff85378b3ab3a",
+          "hash": "65643e6bfe2b9e36",
+          "id": "tile-checkbox/brutalist/state=focus",
+          "key": "state=focus",
+          "layers": "ae940d698f55cb1c",
+          "props": {
+            "state": "focus"
+          },
+          "surface": "2fc29be39f4b4449"
+        },
+        {
+          "box": "3195fb3a38ace4d1",
+          "hash": "44fb7aeae7db06ec",
+          "id": "tile-checkbox/brutalist/state=checked",
+          "key": "state=checked",
+          "layers": "a5dd2081226ea841",
+          "props": {
+            "state": "checked"
+          },
+          "surface": "316a1c8adf23cd43"
+        }
+      ],
+      "contractHash": "7087b4e1f89e3813",
+      "defaultCell": "state=unchecked",
+      "grid": {
+        "columns": [
+          {
+            "name": "state",
+            "values": [
+              "unchecked",
+              "hover",
+              "focus",
+              "checked"
+            ]
+          }
+        ],
+        "rows": []
+      },
+      "id": "tile-checkbox/brutalist",
+      "interactions": [
+        {
+          "axis": "state",
+          "from": "unchecked",
+          "to": "hover",
+          "trigger": "ON_HOVER"
+        }
+      ],
+      "kind": "component-set",
+      "name": "Tile Checkbox / brutalist",
+      "page": "skryensya",
+      "properties": [
+        {
+          "default": "Team plan",
+          "name": "title 1",
+          "type": "TEXT"
+        },
+        {
+          "default": "Up to 20 members, shared billing",
+          "name": "description 1",
+          "type": "TEXT"
+        }
+      ],
+      "showcase": {
+        "base": {
+          "state": "unchecked"
+        },
+        "columns": []
+      },
+      "visualHash": "f2d4c4e42da9fe71"
+    },
+    {
+      "axes": [
+        {
+          "name": "state",
+          "values": [
+            "unchecked",
+            "hover",
+            "focus",
+            "checked"
+          ]
+        }
+      ],
+      "cells": [
+        {
+          "box": "3195fb3a38ace4d1",
+          "hash": "4d55c3d14f353335",
+          "id": "tile-checkbox/frosted/state=unchecked",
+          "key": "state=unchecked",
+          "layers": "2467df6a3ea6990f",
+          "props": {
+            "state": "unchecked"
+          },
+          "surface": "cd25c830288883dc"
+        },
+        {
+          "box": "3195fb3a38ace4d1",
+          "hash": "548c3622cfdc52ab",
+          "id": "tile-checkbox/frosted/state=hover",
+          "key": "state=hover",
+          "layers": "da4861aaf853fcf9",
+          "props": {
+            "state": "hover"
+          },
+          "surface": "cd25c830288883dc"
+        },
+        {
+          "box": "78bff85378b3ab3a",
+          "hash": "69fb8722eec64021",
+          "id": "tile-checkbox/frosted/state=focus",
+          "key": "state=focus",
+          "layers": "ae940d698f55cb1c",
+          "props": {
+            "state": "focus"
+          },
+          "surface": "cd25c830288883dc"
+        },
+        {
+          "box": "3195fb3a38ace4d1",
+          "hash": "f3bf1593db5e2d07",
+          "id": "tile-checkbox/frosted/state=checked",
+          "key": "state=checked",
+          "layers": "a5dd2081226ea841",
+          "props": {
+            "state": "checked"
+          },
+          "surface": "349527ae5f13a4d3"
+        }
+      ],
+      "contractHash": "7087b4e1f89e3813",
+      "defaultCell": "state=unchecked",
+      "grid": {
+        "columns": [
+          {
+            "name": "state",
+            "values": [
+              "unchecked",
+              "hover",
+              "focus",
+              "checked"
+            ]
+          }
+        ],
+        "rows": []
+      },
+      "id": "tile-checkbox/frosted",
+      "interactions": [
+        {
+          "axis": "state",
+          "from": "unchecked",
+          "to": "hover",
+          "trigger": "ON_HOVER"
+        }
+      ],
+      "kind": "component-set",
+      "name": "Tile Checkbox / frosted",
+      "page": "skryensya",
+      "properties": [
+        {
+          "default": "Team plan",
+          "name": "title 1",
+          "type": "TEXT"
+        },
+        {
+          "default": "Up to 20 members, shared billing",
+          "name": "description 1",
+          "type": "TEXT"
+        }
+      ],
+      "showcase": {
+        "base": {
+          "state": "unchecked"
+        },
+        "columns": []
+      },
+      "visualHash": "d12ecc756b14b49b"
     }
   ],
   "diagnostics": [
@@ -40543,6 +40967,12 @@
       "message": "4 rule(s) under a condition the evaluation context does not hold",
       "severity": "info",
       "subject": "components/callout.css @media (forced-colors: active)"
+    },
+    {
+      "code": "CONDITION_SKIPPED",
+      "message": "3 rule(s) under a condition the evaluation context does not hold",
+      "severity": "info",
+      "subject": "components/checkbox.css @media (forced-colors: active)"
     },
     {
       "code": "CONDITION_SKIPPED",
@@ -40768,6 +41198,12 @@
     },
     {
       "code": "CONDITION_SKIPPED",
+      "message": "4 rule(s) under a condition the evaluation context does not hold",
+      "severity": "info",
+      "subject": "components/switch.css @media (forced-colors: active)"
+    },
+    {
+      "code": "CONDITION_SKIPPED",
       "message": "1 rule(s) under a condition the evaluation context does not hold",
       "severity": "info",
       "subject": "components/tabs.css @media (forced-colors: active)"
@@ -40806,6 +41242,18 @@
       "code": "CONDITION_SKIPPED",
       "message": "2 rule(s) under a condition the evaluation context does not hold",
       "severity": "info",
+      "subject": "components/tile.css @keyframes sk-tile-collapse"
+    },
+    {
+      "code": "CONDITION_SKIPPED",
+      "message": "2 rule(s) under a condition the evaluation context does not hold",
+      "severity": "info",
+      "subject": "components/tile.css @keyframes sk-tile-content-in"
+    },
+    {
+      "code": "CONDITION_SKIPPED",
+      "message": "2 rule(s) under a condition the evaluation context does not hold",
+      "severity": "info",
       "subject": "components/tile.css @keyframes sk-tile-content-in"
     },
     {
@@ -40819,6 +41267,12 @@
       "message": "2 rule(s) under a condition the evaluation context does not hold",
       "severity": "info",
       "subject": "components/tile.css @keyframes sk-tile-content-in"
+    },
+    {
+      "code": "CONDITION_SKIPPED",
+      "message": "2 rule(s) under a condition the evaluation context does not hold",
+      "severity": "info",
+      "subject": "components/tile.css @keyframes sk-tile-expand"
     },
     {
       "code": "CONDITION_SKIPPED",
@@ -40855,6 +41309,18 @@
       "message": "7 rule(s) under a condition the evaluation context does not hold",
       "severity": "info",
       "subject": "components/tile.css @media (forced-colors: active)"
+    },
+    {
+      "code": "CONDITION_SKIPPED",
+      "message": "7 rule(s) under a condition the evaluation context does not hold",
+      "severity": "info",
+      "subject": "components/tile.css @media (forced-colors: active)"
+    },
+    {
+      "code": "CONDITION_SKIPPED",
+      "message": "1 rule(s) under a condition the evaluation context does not hold",
+      "severity": "info",
+      "subject": "components/tile.css @media (prefers-reduced-motion: reduce)"
     },
     {
       "code": "CONDITION_SKIPPED",
@@ -41023,6 +41489,18 @@
       "message": "1 rule(s) under a condition the evaluation context does not hold",
       "severity": "info",
       "subject": "patterns/state-layer.css @media (prefers-reduced-motion: reduce)"
+    },
+    {
+      "code": "CONDITION_SKIPPED",
+      "message": "1 rule(s) under a condition the evaluation context does not hold",
+      "severity": "info",
+      "subject": "patterns/state-layer.css @media (prefers-reduced-motion: reduce)"
+    },
+    {
+      "code": "CONDITION_SKIPPED",
+      "message": "0 rule(s) under a condition the evaluation context does not hold",
+      "severity": "info",
+      "subject": "patterns/state-layer.css @property --state-layer-opacity"
     },
     {
       "code": "CONDITION_SKIPPED",
@@ -41618,6 +42096,21 @@
           "appearance"
         ]
       },
+      "tile-checkbox": {
+        "excluded": [
+          "padding",
+          "required",
+          "defaultChecked"
+        ],
+        "nonVisual": [
+          "name",
+          "value",
+          "disabled"
+        ],
+        "visual": [
+          "appearance"
+        ]
+      },
       "tile-link": {
         "excluded": [
           "padding"
@@ -41637,13 +42130,13 @@
     },
     "tokens": {
       "catalogueAdded": 305,
-      "componentVariables": 436,
+      "componentVariables": 440,
       "modeValuesBySource": {
         "alias": 203,
-        "evaluated": 827,
-        "literal": 774
+        "evaluated": 833,
+        "literal": 776
       },
-      "reached": 202,
+      "reached": 203,
       "reachedAsVariables": 153,
       "reachedButNotVariables": [
         "--elevation-flat",
@@ -41660,8 +42153,8 @@
       "variables": 466
     },
     "variants": {
-      "components": 94,
-      "componentSets": 93,
+      "components": 98,
+      "componentSets": 97,
       "naiveAllOptions": {
         "accordion": 32,
         "avatar": 8,
@@ -41703,6 +42196,7 @@
         "tag-link": 10,
         "text": 288,
         "textarea": 18,
+        "tile-checkbox": 192,
         "tile-link": 24,
         "timeline": 1
       },
@@ -41747,6 +42241,7 @@
         "tag-link": 10,
         "text": 48,
         "textarea": 18,
+        "tile-checkbox": 4,
         "tile-link": 4,
         "timeline": 1
       },
@@ -42122,13 +42617,29 @@
         {
           "set": "tile-link/frosted",
           "variants": 3
+        },
+        {
+          "set": "tile-checkbox/plain",
+          "variants": 4
+        },
+        {
+          "set": "tile-checkbox/tactile",
+          "variants": 4
+        },
+        {
+          "set": "tile-checkbox/brutalist",
+          "variants": 4
+        },
+        {
+          "set": "tile-checkbox/frosted",
+          "variants": 4
         }
       ],
-      "variantsTotal": 2375
+      "variantsTotal": 2391
     }
   },
   "schemaVersion": 1,
-  "sourceHash": "e2c316f44e5ba026",
+  "sourceHash": "2ee5525f1534b59b",
   "stage": {
     "background": {
       "variable": "--color-bg-surface"
@@ -43430,6 +43941,47 @@
           "variable": "segmented:radius:086e41cc52"
         },
         "stretch": true
+      },
+      "3195fb3a38ace4d1": {
+        "clipsContent": true,
+        "crossAlign": "MIN",
+        "direction": "HORIZONTAL",
+        "gap": {
+          "variable": "--space-inline-md"
+        },
+        "mainAlign": "MIN",
+        "minHeight": {
+          "variable": "--size-control-lg"
+        },
+        "minWidth": {
+          "expression": "0",
+          "value": 0
+        },
+        "padding": {
+          "bottom": {
+            "variable": "--space-inset-md"
+          },
+          "left": {
+            "variable": "--space-inset-md"
+          },
+          "right": {
+            "variable": "--space-inset-md"
+          },
+          "top": {
+            "variable": "--space-inset-md"
+          }
+        },
+        "radius": {
+          "variable": "--radius-surface"
+        },
+        "strokeWeight": {
+          "expression": "1px",
+          "value": 1
+        },
+        "width": {
+          "expression": "320px",
+          "value": 320
+        }
       },
       "33649eab81bb9407": {
         "clipsContent": false,
@@ -45022,6 +45574,42 @@
         },
         "stretch": true
       },
+      "7143abfdc9f8cd43": {
+        "clipsContent": false,
+        "crossAlign": "CENTER",
+        "direction": "VERTICAL",
+        "height": {
+          "variable": "--size-icon-md"
+        },
+        "mainAlign": "CENTER",
+        "padding": {
+          "bottom": {
+            "expression": "0",
+            "value": 0
+          },
+          "left": {
+            "expression": "0",
+            "value": 0
+          },
+          "right": {
+            "expression": "0",
+            "value": 0
+          },
+          "top": {
+            "expression": "0",
+            "value": 0
+          }
+        },
+        "radius": {
+          "variable": "--radius-control"
+        },
+        "strokeWeight": {
+          "variable": "tile:sk-checkbox-border-width:93e20626bf"
+        },
+        "width": {
+          "variable": "--size-icon-md"
+        }
+      },
       "7257c78ef04891e6": {
         "clipsContent": false,
         "crossAlign": "MIN",
@@ -45202,6 +45790,47 @@
         },
         "width": {
           "variable": "--size-control-sm"
+        }
+      },
+      "78bff85378b3ab3a": {
+        "clipsContent": false,
+        "crossAlign": "MIN",
+        "direction": "HORIZONTAL",
+        "gap": {
+          "variable": "--space-inline-md"
+        },
+        "mainAlign": "MIN",
+        "minHeight": {
+          "variable": "--size-control-lg"
+        },
+        "minWidth": {
+          "expression": "0",
+          "value": 0
+        },
+        "padding": {
+          "bottom": {
+            "variable": "--space-inset-md"
+          },
+          "left": {
+            "variable": "--space-inset-md"
+          },
+          "right": {
+            "variable": "--space-inset-md"
+          },
+          "top": {
+            "variable": "--space-inset-md"
+          }
+        },
+        "radius": {
+          "variable": "--radius-surface"
+        },
+        "strokeWeight": {
+          "expression": "1px",
+          "value": 1
+        },
+        "width": {
+          "expression": "320px",
+          "value": 320
         }
       },
       "7af94efbfa0aa0ab": {
@@ -53598,6 +54227,104 @@
           "width": {
             "variable": "--focus-ring-width"
           }
+        }
+      ],
+      "2467df6a3ea6990f": [
+        {
+          "fills": [
+            {
+              "color": {
+                "variable": "tile:state-layer:a8bbbce668"
+              },
+              "type": "SOLID"
+            }
+          ],
+          "kind": "overlay",
+          "slot": "state layer"
+        },
+        {
+          "box": "ca2c48dce21edc97",
+          "kind": "frame",
+          "layers": [
+            {
+              "box": "fad10820225a01de",
+              "kind": "frame",
+              "layers": [
+                {
+                  "fill": true,
+                  "kind": "text",
+                  "slot": "title 1",
+                  "text": {
+                    "fill": {
+                      "color": {
+                        "variable": "--color-text-primary"
+                      },
+                      "type": "SOLID"
+                    },
+                    "fontFamily": {
+                      "variable": "--font-family-body"
+                    },
+                    "fontSize": {
+                      "variable": "--font-size-heading-sm"
+                    },
+                    "fontWeight": {
+                      "variable": "--font-weight-heading"
+                    },
+                    "lineHeight": 150
+                  },
+                  "textProperty": "title 1"
+                },
+                {
+                  "fill": true,
+                  "kind": "text",
+                  "slot": "description 1",
+                  "text": {
+                    "fill": {
+                      "color": {
+                        "variable": "--color-text-secondary"
+                      },
+                      "type": "SOLID"
+                    },
+                    "fontFamily": {
+                      "variable": "--font-family-body"
+                    },
+                    "fontSize": {
+                      "variable": "--font-size-body-sm"
+                    },
+                    "fontWeight": {
+                      "variable": "--font-weight-body"
+                    },
+                    "lineHeight": 150
+                  },
+                  "textProperty": "description 1"
+                }
+              ],
+              "slot": "content",
+              "surface": "fa0b643878e9242d"
+            }
+          ],
+          "slot": "content",
+          "surface": "fa0b643878e9242d"
+        },
+        {
+          "box": "7143abfdc9f8cd43",
+          "kind": "frame",
+          "layers": [
+            {
+              "fills": [
+                {
+                  "color": {
+                    "variable": "tile:state-layer:a8bbbce668"
+                  },
+                  "type": "SOLID"
+                }
+              ],
+              "kind": "overlay",
+              "slot": "state layer"
+            }
+          ],
+          "slot": "control",
+          "surface": "00cf0b88bc2a682e"
         }
       ],
       "248b25db808aee11": [
@@ -68500,6 +69227,128 @@
           "surface": "7a4b6cee075f78d9"
         }
       ],
+      "a5dd2081226ea841": [
+        {
+          "fills": [
+            {
+              "color": {
+                "variable": "tile:state-layer:57a24a48f5"
+              },
+              "type": "SOLID"
+            }
+          ],
+          "kind": "overlay",
+          "slot": "state layer"
+        },
+        {
+          "box": "ca2c48dce21edc97",
+          "kind": "frame",
+          "layers": [
+            {
+              "box": "fad10820225a01de",
+              "kind": "frame",
+              "layers": [
+                {
+                  "fill": true,
+                  "kind": "text",
+                  "slot": "title 1",
+                  "text": {
+                    "fill": {
+                      "color": {
+                        "variable": "--color-text-primary"
+                      },
+                      "type": "SOLID"
+                    },
+                    "fontFamily": {
+                      "variable": "--font-family-body"
+                    },
+                    "fontSize": {
+                      "variable": "--font-size-heading-sm"
+                    },
+                    "fontWeight": {
+                      "variable": "--font-weight-heading"
+                    },
+                    "lineHeight": 150
+                  },
+                  "textProperty": "title 1"
+                },
+                {
+                  "fill": true,
+                  "kind": "text",
+                  "slot": "description 1",
+                  "text": {
+                    "fill": {
+                      "color": {
+                        "variable": "--color-text-secondary"
+                      },
+                      "type": "SOLID"
+                    },
+                    "fontFamily": {
+                      "variable": "--font-family-body"
+                    },
+                    "fontSize": {
+                      "variable": "--font-size-body-sm"
+                    },
+                    "fontWeight": {
+                      "variable": "--font-weight-body"
+                    },
+                    "lineHeight": 150
+                  },
+                  "textProperty": "description 1"
+                }
+              ],
+              "slot": "content",
+              "surface": "fa0b643878e9242d"
+            }
+          ],
+          "slot": "content",
+          "surface": "fa0b643878e9242d"
+        },
+        {
+          "box": "7143abfdc9f8cd43",
+          "kind": "frame",
+          "layers": [
+            {
+              "fills": [
+                {
+                  "color": {
+                    "variable": "tile:state-layer:634151876a"
+                  },
+                  "type": "SOLID"
+                }
+              ],
+              "kind": "overlay",
+              "slot": "state layer"
+            },
+            {
+              "box": "fed71eadc8de5842",
+              "kind": "frame",
+              "layers": [
+                {
+                  "default": "check",
+                  "icon": {
+                    "color": {
+                      "color": {
+                        "variable": "--color-text-on-accent"
+                      },
+                      "type": "SOLID"
+                    },
+                    "size": {
+                      "variable": "--size-icon-sm"
+                    }
+                  },
+                  "kind": "icon",
+                  "slot": "indicator"
+                }
+              ],
+              "slot": "indicator",
+              "surface": "fa0b643878e9242d"
+            }
+          ],
+          "slot": "control",
+          "surface": "4302d6b465113eb5"
+        }
+      ],
       "a67e15bf4493a3ed": [
         {
           "fills": [
@@ -69657,6 +70506,123 @@
             "lineHeight": 150
           },
           "textProperty": "children"
+        }
+      ],
+      "ae940d698f55cb1c": [
+        {
+          "fills": [
+            {
+              "color": {
+                "variable": "tile:state-layer:bfba8c3497"
+              },
+              "type": "SOLID"
+            }
+          ],
+          "kind": "overlay",
+          "slot": "state layer"
+        },
+        {
+          "box": "ca2c48dce21edc97",
+          "kind": "frame",
+          "layers": [
+            {
+              "box": "fad10820225a01de",
+              "kind": "frame",
+              "layers": [
+                {
+                  "fill": true,
+                  "kind": "text",
+                  "slot": "title 1",
+                  "text": {
+                    "fill": {
+                      "color": {
+                        "variable": "--color-text-primary"
+                      },
+                      "type": "SOLID"
+                    },
+                    "fontFamily": {
+                      "variable": "--font-family-body"
+                    },
+                    "fontSize": {
+                      "variable": "--font-size-heading-sm"
+                    },
+                    "fontWeight": {
+                      "variable": "--font-weight-heading"
+                    },
+                    "lineHeight": 150
+                  },
+                  "textProperty": "title 1"
+                },
+                {
+                  "fill": true,
+                  "kind": "text",
+                  "slot": "description 1",
+                  "text": {
+                    "fill": {
+                      "color": {
+                        "variable": "--color-text-secondary"
+                      },
+                      "type": "SOLID"
+                    },
+                    "fontFamily": {
+                      "variable": "--font-family-body"
+                    },
+                    "fontSize": {
+                      "variable": "--font-size-body-sm"
+                    },
+                    "fontWeight": {
+                      "variable": "--font-weight-body"
+                    },
+                    "lineHeight": 150
+                  },
+                  "textProperty": "description 1"
+                }
+              ],
+              "slot": "content",
+              "surface": "fa0b643878e9242d"
+            }
+          ],
+          "slot": "content",
+          "surface": "fa0b643878e9242d"
+        },
+        {
+          "box": "7143abfdc9f8cd43",
+          "kind": "frame",
+          "layers": [
+            {
+              "fills": [
+                {
+                  "color": {
+                    "variable": "tile:state-layer:a8bbbce668"
+                  },
+                  "type": "SOLID"
+                }
+              ],
+              "kind": "overlay",
+              "slot": "state layer"
+            }
+          ],
+          "slot": "control",
+          "surface": "00cf0b88bc2a682e"
+        },
+        {
+          "color": {
+            "color": {
+              "variable": "--focus-ring-color"
+            },
+            "type": "SOLID"
+          },
+          "kind": "ring",
+          "offset": {
+            "variable": "--focus-ring-offset"
+          },
+          "radius": {
+            "variable": "tile:outline-radius:a1a8e339a3"
+          },
+          "slot": "focus ring",
+          "width": {
+            "variable": "--focus-ring-width"
+          }
         }
       ],
       "af9646b554c78582": [
@@ -72795,6 +73761,104 @@
           "kind": "icon",
           "slot": "post",
           "visibleProperty": "post"
+        }
+      ],
+      "da4861aaf853fcf9": [
+        {
+          "fills": [
+            {
+              "color": {
+                "variable": "tile:state-layer:9652c98e0a"
+              },
+              "type": "SOLID"
+            }
+          ],
+          "kind": "overlay",
+          "slot": "state layer"
+        },
+        {
+          "box": "ca2c48dce21edc97",
+          "kind": "frame",
+          "layers": [
+            {
+              "box": "fad10820225a01de",
+              "kind": "frame",
+              "layers": [
+                {
+                  "fill": true,
+                  "kind": "text",
+                  "slot": "title 1",
+                  "text": {
+                    "fill": {
+                      "color": {
+                        "variable": "--color-text-primary"
+                      },
+                      "type": "SOLID"
+                    },
+                    "fontFamily": {
+                      "variable": "--font-family-body"
+                    },
+                    "fontSize": {
+                      "variable": "--font-size-heading-sm"
+                    },
+                    "fontWeight": {
+                      "variable": "--font-weight-heading"
+                    },
+                    "lineHeight": 150
+                  },
+                  "textProperty": "title 1"
+                },
+                {
+                  "fill": true,
+                  "kind": "text",
+                  "slot": "description 1",
+                  "text": {
+                    "fill": {
+                      "color": {
+                        "variable": "--color-text-secondary"
+                      },
+                      "type": "SOLID"
+                    },
+                    "fontFamily": {
+                      "variable": "--font-family-body"
+                    },
+                    "fontSize": {
+                      "variable": "--font-size-body-sm"
+                    },
+                    "fontWeight": {
+                      "variable": "--font-weight-body"
+                    },
+                    "lineHeight": 150
+                  },
+                  "textProperty": "description 1"
+                }
+              ],
+              "slot": "content",
+              "surface": "fa0b643878e9242d"
+            }
+          ],
+          "slot": "content",
+          "surface": "fa0b643878e9242d"
+        },
+        {
+          "box": "7143abfdc9f8cd43",
+          "kind": "frame",
+          "layers": [
+            {
+              "fills": [
+                {
+                  "color": {
+                    "variable": "tile:state-layer:9652c98e0a"
+                  },
+                  "type": "SOLID"
+                }
+              ],
+              "kind": "overlay",
+              "slot": "state layer"
+            }
+          ],
+          "slot": "control",
+          "surface": "00cf0b88bc2a682e"
         }
       ],
       "da705d41fd46c805": [
@@ -78376,6 +79440,46 @@
           }
         ]
       },
+      "316a1c8adf23cd43": {
+        "effects": [
+          {
+            "blur": {
+              "expression": "0",
+              "value": 0
+            },
+            "color": {
+              "variable": "tile:brutalist-black:b75258c11d"
+            },
+            "spread": {
+              "expression": "0",
+              "value": 0
+            },
+            "type": "DROP_SHADOW",
+            "x": {
+              "variable": "tile:shadow-1-x:8edd00c9c2"
+            },
+            "y": {
+              "variable": "tile:brutalist-shadow-block:2542062955"
+            }
+          }
+        ],
+        "fills": [
+          {
+            "color": {
+              "variable": "--color-bg-surface"
+            },
+            "type": "SOLID"
+          }
+        ],
+        "strokes": [
+          {
+            "color": {
+              "variable": "--color-border-accent"
+            },
+            "type": "SOLID"
+          }
+        ]
+      },
       "31a9dde858af4dc3": {
         "effects": [
           {
@@ -78605,6 +79709,102 @@
           {
             "color": {
               "variable": "button:border-color:10e9f5602d"
+            },
+            "type": "SOLID"
+          }
+        ]
+      },
+      "349527ae5f13a4d3": {
+        "effects": [
+          {
+            "blur": {
+              "expression": "0",
+              "value": 0
+            },
+            "color": {
+              "variable": "--frost-highlight"
+            },
+            "spread": {
+              "expression": "0",
+              "value": 0
+            },
+            "type": "INNER_SHADOW",
+            "x": {
+              "expression": "0",
+              "value": 0
+            },
+            "y": {
+              "expression": "1px",
+              "value": 1
+            }
+          },
+          {
+            "blur": {
+              "expression": "2px",
+              "value": 2
+            },
+            "color": {
+              "variable": "--shadow-sm"
+            },
+            "spread": {
+              "expression": "0",
+              "value": 0
+            },
+            "type": "DROP_SHADOW",
+            "x": {
+              "expression": "0",
+              "value": 0
+            },
+            "y": {
+              "expression": "1px",
+              "value": 1
+            }
+          },
+          {
+            "radius": {
+              "expression": "16px",
+              "value": 16
+            },
+            "type": "BACKGROUND_BLUR"
+          }
+        ],
+        "fills": [
+          {
+            "color": {
+              "variable": "tile:frost-glass:ddcb59710b"
+            },
+            "type": "SOLID"
+          },
+          {
+            "angle": 180,
+            "expression": "linear-gradient(to bottom, color-mix(in oklab, var(--frost-highlight) 45%, transparent), transparent 40%)",
+            "stops": [
+              {
+                "color": {
+                  "a": 0.315,
+                  "b": 1,
+                  "g": 1,
+                  "r": 1
+                },
+                "position": 0
+              },
+              {
+                "color": {
+                  "a": 0,
+                  "b": 0,
+                  "g": 0,
+                  "r": 0
+                },
+                "position": 0.4
+              }
+            ],
+            "type": "GRADIENT_LINEAR"
+          }
+        ],
+        "strokes": [
+          {
+            "color": {
+              "variable": "--color-border-accent"
             },
             "type": "SOLID"
           }
@@ -82769,6 +83969,25 @@
           }
         ]
       },
+      "7d24373c27998214": {
+        "effects": [],
+        "fills": [
+          {
+            "color": {
+              "variable": "--color-bg-surface"
+            },
+            "type": "SOLID"
+          }
+        ],
+        "strokes": [
+          {
+            "color": {
+              "variable": "--color-border-accent"
+            },
+            "type": "SOLID"
+          }
+        ]
+      },
       "7ea5a7347d847678": {
         "effects": [
           {
@@ -86074,6 +87293,102 @@
           {
             "color": {
               "variable": "number-field:sk-button-border-color:10e9f5602d"
+            },
+            "type": "SOLID"
+          }
+        ]
+      },
+      "b455a027df6df83e": {
+        "effects": [
+          {
+            "blur": {
+              "expression": "0",
+              "value": 0
+            },
+            "color": {
+              "variable": "tile:tactile-ledge:0345610bc7"
+            },
+            "spread": {
+              "expression": "0",
+              "value": 0
+            },
+            "type": "DROP_SHADOW",
+            "x": {
+              "expression": "0",
+              "value": 0
+            },
+            "y": {
+              "variable": "tile:tactile-drop:e2c9ce981c"
+            }
+          },
+          {
+            "blur": {
+              "expression": "4px",
+              "value": 4
+            },
+            "color": {
+              "variable": "tile:tactile-haze:191bf2b884"
+            },
+            "spread": {
+              "expression": "0",
+              "value": 0
+            },
+            "type": "DROP_SHADOW",
+            "x": {
+              "expression": "0",
+              "value": 0
+            },
+            "y": {
+              "variable": "tile:shadow-2-y:c07527a9d7"
+            }
+          }
+        ],
+        "fills": [
+          {
+            "color": {
+              "variable": "--color-bg-surface"
+            },
+            "type": "SOLID"
+          },
+          {
+            "angle": 180,
+            "expression": "linear-gradient( to bottom, light-dark(color-mix(in oklab, white 10%, transparent), color-mix(in oklab, white 6%, transparent)), transparent 55%, light-dark(color-mix(in oklab, black 5%, transparent), color-mix(in oklab, black 8%, transparent)) )",
+            "stops": [
+              {
+                "color": {
+                  "a": 0.1,
+                  "b": 1,
+                  "g": 1,
+                  "r": 1
+                },
+                "position": 0
+              },
+              {
+                "color": {
+                  "a": 0,
+                  "b": 0,
+                  "g": 0,
+                  "r": 0
+                },
+                "position": 0.55
+              },
+              {
+                "color": {
+                  "a": 0.05,
+                  "b": 0,
+                  "g": 0,
+                  "r": 0
+                },
+                "position": 1
+              }
+            ],
+            "type": "GRADIENT_LINEAR"
+          }
+        ],
+        "strokes": [
+          {
+            "color": {
+              "variable": "--color-border-accent"
             },
             "type": "SOLID"
           }
@@ -101960,6 +103275,124 @@
       }
     },
     {
+      "codeSyntax": "var(--sk-checkbox-border-width)",
+      "collection": "component",
+      "expression": "1px",
+      "id": "tile:sk-checkbox-border-width:93e20626bf",
+      "name": "tile/sk-checkbox-border-width",
+      "source": {
+        "dark": "literal",
+        "light": "literal"
+      },
+      "type": "FLOAT",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": 1
+        },
+        "light": {
+          "kind": "literal",
+          "value": 1
+        }
+      }
+    },
+    {
+      "codeSyntax": "",
+      "collection": "component",
+      "expression": "color-mix( in srgb, var(--color-text-primary) calc(0 * 100%), transparent )",
+      "id": "tile:state-layer:a8bbbce668",
+      "name": "tile/state-layer",
+      "source": {
+        "dark": "evaluated",
+        "light": "evaluated"
+      },
+      "type": "COLOR",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": {
+            "a": 0,
+            "b": 0,
+            "g": 0,
+            "r": 0
+          }
+        },
+        "light": {
+          "kind": "literal",
+          "value": {
+            "a": 0,
+            "b": 0,
+            "g": 0,
+            "r": 0
+          }
+        }
+      }
+    },
+    {
+      "codeSyntax": "",
+      "collection": "component",
+      "expression": "color-mix( in srgb, var(--color-text-primary) calc(var(--state-layer-selected-opacity) * 100%), transparent )",
+      "id": "tile:state-layer:57a24a48f5",
+      "name": "tile/state-layer/checked",
+      "source": {
+        "dark": "evaluated",
+        "light": "evaluated"
+      },
+      "type": "COLOR",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": {
+            "a": 0.08,
+            "b": 0.9579,
+            "g": 0.9609,
+            "r": 0.9609
+          }
+        },
+        "light": {
+          "kind": "literal",
+          "value": {
+            "a": 0.08,
+            "b": 0.0903,
+            "g": 0.098,
+            "r": 0.1095
+          }
+        }
+      }
+    },
+    {
+      "codeSyntax": "",
+      "collection": "component",
+      "expression": "color-mix( in srgb, var(--color-text-on-accent) calc(0 * 100%), transparent )",
+      "id": "tile:state-layer:634151876a",
+      "name": "tile/state-layer/checked-2",
+      "source": {
+        "dark": "evaluated",
+        "light": "evaluated"
+      },
+      "type": "COLOR",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": {
+            "a": 0,
+            "b": 0,
+            "g": 0,
+            "r": 0
+          }
+        },
+        "light": {
+          "kind": "literal",
+          "value": {
+            "a": 0,
+            "b": 0,
+            "g": 0,
+            "r": 0
+          }
+        }
+      }
+    },
+    {
       "codeSyntax": "",
       "collection": "component",
       "expression": "color-mix( in srgb, var(--color-text-primary) calc(var(--state-layer-focus-opacity) * 100%), transparent )",
@@ -102019,38 +103452,6 @@
             "b": 0.0903,
             "g": 0.098,
             "r": 0.1095
-          }
-        }
-      }
-    },
-    {
-      "codeSyntax": "",
-      "collection": "component",
-      "expression": "color-mix( in srgb, var(--color-text-primary) calc(0 * 100%), transparent )",
-      "id": "tile:state-layer:a8bbbce668",
-      "name": "tile/state-layer/rest",
-      "source": {
-        "dark": "evaluated",
-        "light": "evaluated"
-      },
-      "type": "COLOR",
-      "values": {
-        "dark": {
-          "kind": "literal",
-          "value": {
-            "a": 0,
-            "b": 0,
-            "g": 0,
-            "r": 0
-          }
-        },
-        "light": {
-          "kind": "literal",
-          "value": {
-            "a": 0,
-            "b": 0,
-            "g": 0,
-            "r": 0
           }
         }
       }
@@ -102159,6 +103560,38 @@
             "b": 0.7547,
             "g": 0.7572,
             "r": 0.7611
+          }
+        }
+      }
+    },
+    {
+      "codeSyntax": "var(--tactile-ledge)",
+      "collection": "component",
+      "expression": "light-dark( color-mix(in oklab, var(--color-border-accent) 72%, var(--color-text-primary)), color-mix(in oklab, var(--color-border-accent) 56%, black) )",
+      "id": "tile:tactile-ledge:0345610bc7",
+      "name": "tile/tactile-ledge/tactile/checked",
+      "source": {
+        "dark": "evaluated",
+        "light": "evaluated"
+      },
+      "type": "COLOR",
+      "values": {
+        "dark": {
+          "kind": "literal",
+          "value": {
+            "a": 1,
+            "b": 0.4671,
+            "g": 0.2129,
+            "r": 0.0537
+          }
+        },
+        "light": {
+          "kind": "literal",
+          "value": {
+            "a": 1,
+            "b": 0.7114,
+            "g": 0.2983,
+            "r": 0.1145
           }
         }
       }
