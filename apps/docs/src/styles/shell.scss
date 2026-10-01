@@ -177,7 +177,7 @@
     --docs-measure-room: 100%;
   }
 
-  main[data-document-layout="grid"]:has(> .docs-component-shell) .sk-tabs__content.sk-layout-grid {
+  main[data-document-layout="grid"]:has(> .docs-component-shell) :is(.sk-tabs__content, .docs-component-body).sk-layout-grid {
     --sk-layout-gutter: 0px;
   }
 

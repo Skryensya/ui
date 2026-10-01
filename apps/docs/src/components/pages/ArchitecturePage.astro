@@ -3,21 +3,75 @@ import Base from "../../layouts/Base.astro";
 import { getLocale, useTranslations } from "../../i18n";
 
 const t = useTranslations(getLocale(Astro.url));
+const layers = [1, 2, 3, 4, 5, 6] as const;
 ---
 
 <Base title={t("architecture.title")} description={t("architecture.lede")} documentLayout="grid">
-  <h1>{t("architecture.title")}</h1>
+  {/*
+    THE COMPONENT PAGE'S MASTHEAD AND COLUMN WITHOUT ITS TABS (see ComponentPageShell.astro, which
+    documents why each box exists). The body lives INSIDE the shell, in `.docs-component-body`, for
+    the same reason the tab panels do: the sticky hero needs a tall containing block, and the body
+    gets the panel's reading measure instead of the wider default page column.
+    Both wrappers are `data-toc-transparent` so the rail still indexes the body's h2s.
+    Left out on purpose: the tab strip, and the Vanilla/React switch, since this page has no demos.
+  */}
+  <div class="docs-component-shell" data-toc-transparent>
+    <div class="docs-component-head">
+      <div class="docs-component-hero__spacer sk-fx-collapse-header__spacer"></div>
+      <div aria-hidden="true" class="docs-component-hero__backing"></div>
+      <header class="docs-component-hero sk-fx-collapse-header">
+        <p class="docs-component-hero__eyebrow">{t("section.foundations")}</p>
+        <div class="docs-component-hero__title-row">
+          <h1>{t("architecture.title")}</h1>
+        </div>
+      </header>
+    </div>
+
+    <div class="docs-component-body sk-layout-grid" data-toc-transparent>
   <p class="lede" set:html={t("architecture.lede")} />
 
+  <h2>{t("architecture.diagramTitle")}</h2>
+  {/* The numbered flow below is the text alternative, so the figure is one labelled image. */}
+  <figure class="arch" role="img" aria-label={t("architecture.diagram.label")}>
+    <div class="arch__node arch__node--contract">
+      <span class="arch__tag">{t("architecture.diagram.core")}</span>
+      <strong>{t("architecture.diagram.contract")}</strong>
+      <span class="arch__note">{t("architecture.diagram.contractNote")}</span>
+    </div>
+    <span class="arch__arrow" aria-hidden="true">↓</span>
+    <div class="arch__row">
+      <div class="arch__node">
+        <strong>{t("architecture.diagram.react")}</strong>
+        <span class="arch__note">{t("architecture.diagram.reactNote")}</span>
+      </div>
+      <div class="arch__node">
+        <strong>{t("architecture.diagram.vanilla")}</strong>
+        <span class="arch__note">{t("architecture.diagram.vanillaNote")}</span>
+      </div>
+    </div>
+    <span class="arch__arrow" aria-hidden="true">↓</span>
+    <div class="arch__node">
+      <strong>{t("architecture.diagram.machine")}</strong>
+      <span class="arch__note">{t("architecture.diagram.machineNote")}</span>
+    </div>
+    <span class="arch__arrow" aria-hidden="true">↓</span>
+    <div class="arch__node">
+      <strong>{t("architecture.diagram.css")}</strong>
+      <span class="arch__note">{t("architecture.diagram.cssNote")}</span>
+    </div>
+  </figure>
+
   <h2>{t("architecture.layersTitle")}</h2>
-  <ol>
-    <li set:html={t("architecture.layer1")} />
-    <li set:html={t("architecture.layer2")} />
-    <li set:html={t("architecture.layer3")} />
-    <li set:html={t("architecture.layer4")} />
-    <li set:html={t("architecture.layer5")} />
-    <li set:html={t("architecture.layer6")} />
-  </ol>
+  <dl class="arch-terms">
+    {
+      layers.map((n) => (
+        <div class="arch-terms__item">
+          <dt>{t(`architecture.layer${n}.term`)}</dt>
+          <dd set:html={t(`architecture.layer${n}.body`)} />
+        </div>
+      ))
+    }
+  </dl>
 
   <h2>{t("architecture.flowTitle")}</h2>
   <ol>
@@ -37,4 +91,89 @@ const t = useTranslations(getLocale(Astro.url));
   <h2>{t("architecture.exampleTitle")}</h2>
   <p set:html={t("architecture.exampleBody")} />
   <p set:html={t("architecture.nextBody")} />
+    </div>
+  </div>
 </Base>
+
+<style>
+  .arch {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-stack-xs);
+    margin-block: var(--space-stack-md);
+    padding: var(--space-inset-md);
+    background: var(--color-bg-surface-sunken);
+    border: 1px solid var(--color-border-subtle);
+    border-radius: var(--radius-surface);
+  }
+
+  .arch__row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
+    gap: var(--space-stack-xs);
+    width: 100%;
+  }
+
+  .arch__node {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-stack-xs);
+    align-items: center;
+    width: 100%;
+    padding: var(--space-inset-sm) var(--space-inset-md);
+    text-align: center;
+    color: var(--color-text-primary);
+    background: var(--color-bg-surface);
+    border: 1px solid var(--color-border-default);
+    border-radius: var(--radius-surface);
+  }
+
+  .arch__node--contract {
+    border-color: var(--color-border-strong, var(--color-border-default));
+  }
+
+  .arch__tag {
+    font-size: var(--font-size-caption);
+    color: var(--color-text-tertiary);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+
+  .arch__note {
+    font-size: var(--font-size-body-sm);
+    color: var(--color-text-secondary);
+  }
+
+  .arch__arrow {
+    color: var(--color-text-tertiary);
+    line-height: 1;
+  }
+
+  .arch-terms {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-stack-sm);
+    margin: 0;
+  }
+
+  .arch-terms__item {
+    padding-block-end: var(--space-stack-sm);
+    border-bottom: 1px solid var(--color-border-subtle);
+  }
+
+  .arch-terms__item:last-child {
+    border-bottom: 0;
+  }
+
+  .arch-terms dt {
+    font-weight: 600;
+    color: var(--color-text-primary);
+  }
+
+  .arch-terms dd {
+    margin: 0;
+    max-width: none;
+    color: var(--color-text-secondary);
+  }
+</style>

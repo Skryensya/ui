@@ -1531,6 +1531,14 @@ main > :where(h2, h3) {
   display: none;
 }
 
+/* A shell with no tab strip (Arquitectura): the bar the headings clear is just the navbar and the
+   collapsed hero. */
+.docs-component-body :where(h2, h3, h4) {
+  scroll-margin-top: calc(
+    var(--docs-navbar-h, var(--docs-header-block-size)) + var(--sk-fx-collapse-bar-height, 0px) + var(--space-stack-md)
+  );
+}
+
 .docs-component-hero-tabs ~ [data-sk-tabs-content] :where(h2, h3, h4, .sk-component-preview__header[id]) {
   scroll-margin-top: calc(
     var(--docs-navbar-h, var(--docs-header-block-size)) + var(--sk-fx-collapse-bar-height, 0px) +
@@ -1551,7 +1559,7 @@ main > :where(h2, h3) {
   initial-value: 0px;
 }
 
-main[data-document-layout="grid"] .sk-tabs__content.sk-layout-grid {
+main[data-document-layout="grid"] :is(.sk-tabs__content, .docs-component-body).sk-layout-grid {
   --sk-layout-content: 90ch;
   --docs-preview-chrome-measure: 90ch;
   --sk-layout-breakout: min(
@@ -1912,7 +1920,10 @@ main {
 
 
 .docs-page-nav {
-  display: flex;
+  /* Two equal columns: previous and next are the same kind of choice, so neither is sized by its
+     label, and the pair reads as one row of controls rather than two buttons that happen to be near. */
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: var(--space-inline-sm);
   /* `end`: the two buttons share a line even when only one side has its direction label wrap. */
   align-items: end;
@@ -1921,24 +1932,40 @@ main {
   border-top: 1px solid var(--color-border-subtle);
 }
 
-/* `ghost`, not `soft`: the pager is a way off the page, not a control competing with it, so it has no
-   fill until hovered. */
+@media (max-width: 40rem) {
+  .docs-page-nav {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+/* `soft` + `lg`, the same face as "Report an issue" above it: a ghost pager had no fill until hover,
+   so it did not read as a control at rest. The fill is recessed, not the saturated call to action,
+   so it is still a way off the page rather than something competing with it. The link takes its
+   column's full width so the whole fill is the hit area, and the label is allowed to be as long as the
+   destination's name without the buttons changing size. */
 .docs-page-nav__link {
+  inline-size: 100%;
+  justify-content: space-between;
   text-decoration: none;
 }
 
-/* The direction sits ABOVE the button, outside it: Button stays a one-line control. Its text is inset
-   by the button's own inline padding so it starts where the button's content does, not at the edge
-   of a fill that is invisible until hover. */
+/* The direction sits ABOVE the button, outside it: Button stays a one-line control. */
 .docs-page-nav__item {
   display: grid;
   gap: var(--space-stack-xs);
-  justify-items: start;
+  justify-items: stretch;
 }
 
+/* Only the next column lands on the right; its label and arrow follow. */
 .docs-page-nav__item--next {
-  margin-inline-start: auto;
-  justify-items: end;
+  grid-column: 2;
+  text-align: end;
+}
+
+@media (max-width: 40rem) {
+  .docs-page-nav__item--next {
+    grid-column: 1;
+  }
 }
 
 .docs-page-nav__direction {
