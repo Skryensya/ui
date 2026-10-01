@@ -1,5 +1,6 @@
 ---
 import "@skryensya/core/components/feed.css";
+import "@skryensya/core/components/list.css";
 /* Structure diagram: Annotated specimen; a preview frame only copies styles THIS page loaded. */
 import "@skryensya/core/components/annotation.css";
 /* The activity demo composes a real Tag and the loading one a Placeholder; neither sheet is
@@ -10,8 +11,11 @@ import "@skryensya/core/components/tag.css";
 import "@skryensya/core/components/placeholder.css";
 import ComponentPageShell from "./ComponentPageShell.astro";
 import CodeBlock from "../CodeBlock.astro";
-import ComponentPreview from "../ComponentPreview.astro";
 import UsagePreview from "../UsagePreview.astro";
+import DoDont from "../DoDont.astro";
+import WhenToUse from "../WhenToUse.astro";
+import ContentRules from "../ContentRules.astro";
+import A11yNotes from "../A11yNotes.astro";
 import {
   feedActivityTree,
   feedAnatomyTree,
@@ -19,9 +23,15 @@ import {
   feedCommentsTree,
   feedInfiniteTree,
   feedTree,
+  feedDontSpinnerTree,
+  feedDontGenericLabelsTree,
+  feedDontMixedOrderTree,
+  feedGuideTree,
+  feedDontFixedListTree,
+  feedFixedListTree,
 } from "../../demos/feed";
 import { annotationDemoCss } from "../../demos/annotation";
-import { getLocale, useTranslations } from "../../i18n";
+import { getLocale, tList, useTranslations } from "../../i18n";
 import loadMoreScript from "../../demos/scripts/feed-load-more.ts?raw";
 
 const t = useTranslations(getLocale(Astro.url));
@@ -62,93 +72,56 @@ const keyboardReact = `import { Feed, FeedArticle } from "@skryensya/react/feed"
   <Fragment slot="usage">
     <p class="lede" set:html={t("feedPage.lede")} />
 
-    <h3>{t("feedPage.showcaseTitle")}</h3>
-    <p set:html={t("feedPage.showcaseBody")} />
-    {/* The ladder, simplest first: plain text posts, then the composition a real feed is, then
-        the two states the contract always had and the page never showed. */}
-    <h3>{t("feedPage.demoTitle")}</h3>
-    <p set:html={t("feedPage.demoBody")} />
-    <UsagePreview tree={feedTree(t)} />
-    <p set:html={t("feedPage.body")} />
-
-    <h4>{t("feedPage.demoActivityTitle")}</h4>
-    <p set:html={t("feedPage.demoActivityBody")} />
-    <UsagePreview tree={feedActivityTree(t)} />
-
-    <h4>{t("feedPage.demoBusyTitle")}</h4>
-    <p set:html={t("feedPage.demoBusyBody")} />
-    <UsagePreview tree={feedBusyTree(t)} />
-
-    <h4>{t("feedPage.demoInfiniteTitle")}</h4>
+    <h3>{t("component.examplesTitle")}</h3>
+    <UsagePreview tree={feedTree(t)} title={t("feedPage.demoTitle")} description={t("feedPage.demoBody")} storybookTitle="Components/Content/Feed" storybookStory="Default" />
+    <UsagePreview tree={feedActivityTree(t)} title={t("feedPage.demoActivityTitle")} description={t("feedPage.demoActivityBody")} storybookTitle="Components/Content/Feed" storybookStory="Activity" />
+    <UsagePreview tree={feedBusyTree(t)} title={t("feedPage.demoBusyTitle")} description={t("feedPage.demoBusyBody")} storybookTitle="Components/Content/Feed" storybookStory="Busy" />
+    <h3>{t("feedPage.demoInfiniteTitle")}</h3>
     <p set:html={t("feedPage.demoInfiniteBody")} />
-    <ComponentPreview
-      js={loadMoreScript}
-      previewScript={loadMoreScript}
-      tree={feedInfiniteTree(t)}
-      label={t("feedPage.demoInfiniteLabel")}
-    />
+    <UsagePreview script={loadMoreScript} tree={feedInfiniteTree(t)} label={t("feedPage.demoInfiniteLabel")} />
+    <UsagePreview tree={feedCommentsTree(t)} title={t("feedPage.demoCommentsTitle")} description={t("feedPage.demoCommentsBody")} storybookTitle="Components/Content/Feed" storybookStory="Comments" />
 
-    <h4>{t("feedPage.demoCommentsTitle")}</h4>
-    <p set:html={t("feedPage.demoCommentsBody")} />
-    <UsagePreview tree={feedCommentsTree(t)} />
-
-    <h3>{t("feedPage.keyboardTitle")}</h3>
-    <p set:html={t("feedPage.keyboardBody1")} />
-    <p set:html={t("feedPage.keyboardBody2")} />
-    <p set:html={t("feedPage.keyboardBody3")} />
-
-    <table class="sk-table">
-      <caption>{t("feedPage.keyboardTableCaption")}</caption>
-      <thead>
-        <tr>
-          <th scope="col">{t("feedPage.keyboardKey")}</th>
-          <th scope="col">{t("feedPage.keyboardDoes")}</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <th scope="row"><kbd class="sk-kbd">Page Down</kbd></th>
-          <td>{t("feedPage.keyboardPageDown")}</td>
-        </tr>
-        <tr>
-          <th scope="row"><kbd class="sk-kbd">Page Up</kbd></th>
-          <td>{t("feedPage.keyboardPageUp")}</td>
-        </tr>
-        <tr>
-          <th scope="row"><kbd class="sk-kbd">Ctrl</kbd> + <kbd class="sk-kbd">End</kbd></th>
-          <td>{t("feedPage.keyboardCtrlEnd")}</td>
-        </tr>
-        <tr>
-          <th scope="row"><kbd class="sk-kbd">Ctrl</kbd> + <kbd class="sk-kbd">Home</kbd></th>
-          <td>{t("feedPage.keyboardCtrlHome")}</td>
-        </tr>
-      </tbody>
-    </table>
-
+    <h3>{t("component.contractNotesTitle")}</h3>
+    <ul>
+      {tList(t, "feedPage.contract").map((item) => <li set:html={item} />)}
+    </ul>
     <CodeBlock code={keyboardSample} label="HTML" lang="html" />
     <CodeBlock code={keyboardReact} label="React" lang="tsx" />
-
     <p set:html={t("component.reactNote")} />
 
     <h3>{t("component.anatomy")}</h3>
     <p set:html={t("feedPage.anatomyBody")} />
-    <ComponentPreview
-      tree={feedAnatomyTree(t)}
-      css={annotationDemoCss}
-      label={t("feedPage.anatomyPreviewLabel")}
-      screens={false}
-      hideSource
-      chrome={false}
-    />
+    <UsagePreview tree={feedAnatomyTree(t)} css={annotationDemoCss} label={t("feedPage.anatomyPreviewLabel")} bare />
   </Fragment>
 
   <Fragment slot="guidelines">
     <p class="lede" set:html={t("feedPage.guidelinesLede")} />
-    <ul>
-      <li set:html={t("feedPage.guide.item1")} />
-      <li set:html={t("feedPage.guide.item2")} />
-      <li set:html={t("feedPage.guide.item3")} />
-    </ul>
+    <WhenToUse use={tList(t, "feedPage.when")} avoid={tList(t, "feedPage.whenNot")} />
+    <DoDont
+      canvas
+      title={t("feedPage.dd.loading.title")}
+      do={{ tree: feedGuideTree(t, feedBusyTree(t)), caption: t("feedPage.dd.loading.do") }}
+      dont={{ tree: feedGuideTree(t, feedDontSpinnerTree(t)), caption: t("feedPage.dd.loading.dont") }}
+    />
+    <DoDont
+      canvas
+      title={t("feedPage.dd.fixed.title")}
+      do={{ tree: feedGuideTree(t, feedFixedListTree(t), true), caption: t("feedPage.dd.fixed.do") }}
+      dont={{ tree: feedGuideTree(t, feedDontFixedListTree(t), true), caption: t("feedPage.dd.fixed.dont") }}
+    />
+    <DoDont
+      canvas
+      title={t("feedPage.dd.labels.title")}
+      do={{ tree: feedGuideTree(t, feedTree(t)), caption: t("feedPage.dd.labels.do") }}
+      dont={{ tree: feedGuideTree(t, feedDontGenericLabelsTree(t)), caption: t("feedPage.dd.labels.dont") }}
+    />
+    <DoDont
+      canvas
+      title={t("feedPage.dd.order.title")}
+      do={{ tree: feedGuideTree(t, feedTree(t)), caption: t("feedPage.dd.order.do") }}
+      dont={{ tree: feedGuideTree(t, feedDontMixedOrderTree(t)), caption: t("feedPage.dd.order.dont") }}
+    />
+    <ContentRules items={tList(t, "feedPage.content")} />
   </Fragment>
 
   <Fragment slot="install">
@@ -156,6 +129,17 @@ const keyboardReact = `import { Feed, FeedArticle } from "@skryensya/react/feed"
   </Fragment>
 
   <Fragment slot="a11y">
-    <p set:html={t("feedPage.a11yBody")} />
+    <A11yNotes
+      intro={t("feedPage.a11yIntro")}
+      does={tList(t, "feedPage.a11yDoes")}
+      yours={tList(t, "feedPage.a11yYours")}
+      keysNote={t("feedPage.a11yKeysNote")}
+      keys={[
+        { keys: ["PageDown"], action: t("feedPage.keyboardPageDown") },
+        { keys: ["PageUp"], action: t("feedPage.keyboardPageUp") },
+        { keys: [`Ctrl+${t("component.key.end")}`], action: t("feedPage.keyboardCtrlEnd") },
+        { keys: [`Ctrl+${t("component.key.home")}`], action: t("feedPage.keyboardCtrlHome") },
+      ]}
+    />
   </Fragment>
 </ComponentPageShell>

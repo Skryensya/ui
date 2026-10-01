@@ -181,7 +181,7 @@ export async function buildFigmaManifest(input: Realization | readonly Realizati
 
   const registry = new Registry(root, (name) => tierOf.get(name));
   const shared: Shared = { corpus, registry, styles: { boxes: {}, surfaces: {}, layers: {} }, diagnostics: [], iconContract };
-  const stage = stageOf(first, corpus.files, registry);
+  const stage = stageOf(first, registry);
 
   const compiled: Compiled[] = [];
   for (const realization of realizations) compiled.push(await compileRealization(realization, shared));
@@ -1250,27 +1250,17 @@ function signatureWord(contractId: string, signature: string): string {
   return rest.replace(/\./g, "-").replace(/([a-z])([A-Z])/g, "$1-$2").toLowerCase();
 }
 
-/* ── the stage: a contract's own background, resolved through its cascade ──────────────────────── */
+/* ── the stage: the docs preview card's surface, by token ───────────────────────────────────────── */
 
-function stageOf(realization: Realization, files: readonly { rel: string; css: string }[], registry: Registry): Stage {
-  const contract = getContract(realization.stage.contract);
-  if (!contract) throw new Error(`unknown contract ${realization.stage.contract}`);
-  const rel = contract.css.replace("@skryensya/core/", "");
-  const file = files.find((f) => f.rel === rel);
-  if (!file) throw new Error(`sheet ${contract.css} not in the token corpus`);
-  const root = elementFrom(`<div class="${contract.parts.root}"></div>`);
-  const computed = computeTree(root, readRules([{ name: rel, css: file.css }]), new Set()).styles.get(root)!;
-  const ctx: Context = { computed, registry, cell: {}, hookPrefix: `--sk-${contract.id}-`, component: contract.id };
-  const background = resolve(`var(${realization.stage.hook})`, "color", ctx, "stage");
+function stageOf(realization: Realization, registry: Registry): Stage {
   const token = (name: string, kind: "color" | "number" | "string") => {
     const id = registry.token(name, kind);
     if (!id) throw new Error(`stage token ${name} is not a ${kind}`);
     return { variable: id };
   };
-  if (!background) throw new Error(`${realization.stage.hook} does not resolve to a colour`);
   const { label } = realization.stage;
   return {
-    background: background as Bound<Rgba>,
+    background: token(realization.stage.background, "color") as Bound<Rgba>,
     label: {
       color: token(label.color, "color"),
       fontFamily: token(label.fontFamily, "string"),

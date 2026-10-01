@@ -28,7 +28,7 @@
  * that demo by MODULE + EXPORT rather than by passing the function across: a function passed into
  * another realm still closes over the parent's React and would put us back at (2).
  */
-import { componentPreviewParts } from "@skryensya/core/component-preview";
+import { componentPreviewParts } from "../../preview/component-preview";
 import type { ComponentType } from "react";
 import { buildPreviewFrameDocument } from "../../lib/preview-frame";
 
@@ -58,6 +58,8 @@ export type FramedOverrides = Pick<
   FramedOptions,
   "flush" | "scroll" | "viewport" | "minHeight" | "css"
 > & {
+  /** A fixed screen for this stage (`styles/component-preview.css`): its media queries see a phone or a tablet. */
+  screen?: "tablet" | "mobile";
   /**
    * App-only script shared by both tree-rendered bindings, already COMPILED to JavaScript.
    *
@@ -200,6 +202,7 @@ export function framedIn(moduleName: string) {
           }
           data-sk-component-preview-scroll={scroll ? "" : undefined}
           data-sk-component-preview-min-height={minHeight ? "" : undefined}
+          data-sk-component-preview-screen={frameOptions?.screen}
           aria-busy="true"
           data-sk-component-preview-doc={srcDoc}
           title={`Preview renderizado (React): ${title}`}

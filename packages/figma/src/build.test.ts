@@ -206,10 +206,8 @@ describe("interaction states", () => {
 });
 
 describe("the stage", () => {
-  it("stands on the docs preview's own background, resolved through its cascade", () => {
-    const authored = parseTokens().files.find((f) => f.rel === "components/component-preview.css")!;
-    const hook = /--sk-component-preview-bg:\s*var\((--[\w-]+)\)/.exec(authored.css)![1];
-    expect(manifest.stage.background).toEqual({ variable: hook });
+  it("stands on the docs preview card's own surface", () => {
+    expect(manifest.stage.background).toEqual({ variable: "--color-bg-surface" });
   });
 
   it("puts one button per row and its states across the columns", () => {

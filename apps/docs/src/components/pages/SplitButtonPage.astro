@@ -6,19 +6,21 @@ import "@skryensya/core/components/menu.css";
 import ComponentPageShell from "./ComponentPageShell.astro";
 import AppearanceMenu from "../AppearanceMenu.astro";
 import CodeBlock from "../CodeBlock.astro";
-import ComponentPreview from "../ComponentPreview.astro";
+import UsagePreview from "../UsagePreview.astro";
+import WhenToUse from "../WhenToUse.astro";
+import ContentRules from "../ContentRules.astro";
+import A11yNotes from "../A11yNotes.astro";
 import {
   splitButtonAnatomyTree,
   splitButtonTree,
   splitButtonSmallTree,
-  splitButtonMenuFirstTree,
   splitButtonSubtleTree,
   splitButtonOverMediaTree,
   splitButtonGhostTree,
   splitButtonDangerTree,
 } from "../../demos/split-button";
 import { annotationDemoCss } from "../../demos/annotation";
-import { getLocale, useTranslations } from "../../i18n";
+import { getLocale, tList, useTranslations } from "../../i18n";
 
 const t = useTranslations(getLocale(Astro.url));
 
@@ -44,95 +46,42 @@ initComponents();`;
     { file: "components/split-button.css", probe: "sk-split-button", title: "SplitButton" },
     { file: "patterns/anchored.css", probe: "sk-anchored", title: "Heredados de Anclaje" },
   ]}
-  testFiles={["packages/react/src/components/split-button.test.tsx"]}}
+  testFiles={["packages/react/src/components/split-button.test.tsx"]}
 >
   <Fragment slot="appearance">
     <AppearanceMenu label={t("prefs.appearance")} />
   </Fragment>
 
   <Fragment slot="usage">
-    <p class="lede" set:html={t("splitButtonPage.description")} />
+    <p class="lede" set:html={t("splitButtonPage.lede")} />
 
-    <h3>{t("splitButtonPage.showcaseTitle")}</h3>
-    <p set:html={t("splitButtonPage.showcaseBody")} />
-    <ComponentPreview tree={splitButtonTree(t)} js={js} label="SplitButton" viewport="menu" />
-
-    <h3>{t("splitButtonPage.smallTitle")}</h3>
-    <p set:html={t("splitButtonPage.smallBody")} />
-    <ComponentPreview
-      tree={splitButtonSmallTree(t)}
-      js={js}
-      label={t("splitButtonPage.smallLabel")}
-      viewport="menu"
-    />
-
-    <h3>{t("splitButtonPage.menuFirstTitle")}</h3>
-    <p set:html={t("splitButtonPage.menuFirstBody")} />
-    <ComponentPreview
-      tree={splitButtonMenuFirstTree(t)}
-      js={js}
-      label={t("splitButtonPage.menuFirstLabel")}
-      viewport="menu"
-    />
-
-    <h3>{t("splitButtonPage.subtleTitle")}</h3>
-    <p set:html={t("splitButtonPage.subtleBody")} />
-    <ComponentPreview
-      tree={splitButtonSubtleTree(t)}
-      js={js}
-      label={t("splitButtonPage.subtleLabel")}
-      viewport="menu"
-    />
-
-    <h3>{t("splitButtonPage.overMediaTitle")}</h3>
-    <p set:html={t("splitButtonPage.overMediaBody")} />
-    <ComponentPreview
-      tree={splitButtonOverMediaTree(t)}
-      js={js}
-      label={t("splitButtonPage.overMediaLabel")}
-      viewport="menu"
-    />
-
-    <h3>{t("splitButtonPage.ghostTitle")}</h3>
-    <p set:html={t("splitButtonPage.ghostBody")} />
-    <ComponentPreview
-      tree={splitButtonGhostTree(t)}
-      js={js}
-      label={t("splitButtonPage.ghostLabel")}
-      viewport="menu"
-    />
-
-    <h3>{t("splitButtonPage.dangerTitle")}</h3>
-    <p set:html={t("splitButtonPage.dangerBody")} />
-    <ComponentPreview
-      tree={splitButtonDangerTree(t)}
-      js={js}
-      label={t("splitButtonPage.dangerLabel")}
-      viewport="menu"
-    />
+    <h3>{t("component.examplesTitle")}</h3>
+    <UsagePreview tree={splitButtonTree(t)} title={t("splitButtonPage.mainTitle")} description={t("splitButtonPage.mainBody")} viewport="menu" />
+    <UsagePreview tree={splitButtonSmallTree(t)} title={t("splitButtonPage.smallTitle")} description={t("splitButtonPage.smallBody")} viewport="menu" />
+    <UsagePreview tree={splitButtonSubtleTree(t)} title={t("splitButtonPage.subtleTitle")} description={t("splitButtonPage.subtleBody")} viewport="menu" />
+    <UsagePreview tree={splitButtonOverMediaTree(t)} title={t("splitButtonPage.overMediaTitle")} description={t("splitButtonPage.overMediaBody")} viewport="menu" />
+    <UsagePreview tree={splitButtonGhostTree(t)} title={t("splitButtonPage.ghostTitle")} description={t("splitButtonPage.ghostBody")} viewport="menu" />
+    <UsagePreview tree={splitButtonDangerTree(t)} title={t("splitButtonPage.dangerTitle")} description={t("splitButtonPage.dangerBody")} viewport="menu" />
 
     <h3>{t("component.contractNotesTitle")}</h3>
-    <p set:html={t("splitButtonPage.contractBody")} />
+    <ul>
+      {tList(t, "splitButtonPage.contract").map((item) => <li set:html={item} />)}
+    </ul>
 
     <h3>{t("component.anatomy")}</h3>
     <p set:html={t("splitButtonPage.anatomyBody")} />
-    <ComponentPreview
+    <UsagePreview
       tree={splitButtonAnatomyTree(t)}
       css={annotationDemoCss}
       label={t("splitButtonPage.anatomyPreviewLabel")}
-      screens={false}
-      hideSource
-      chrome={false}
+      bare
     />
   </Fragment>
 
   <Fragment slot="guidelines">
     <p class="lede" set:html={t("splitButtonPage.guidelinesLede")} />
-    <ul>
-      <li set:html={t("splitButtonPage.guide.use1")} />
-      <li set:html={t("splitButtonPage.guide.avoid1")} />
-      <li set:html={t("splitButtonPage.guide.avoid2")} />
-    </ul>
+    <WhenToUse use={tList(t, "splitButtonPage.when")} avoid={tList(t, "splitButtonPage.whenNot")} />
+    <ContentRules items={tList(t, "splitButtonPage.content")} />
   </Fragment>
 
   <Fragment slot="install">
@@ -140,6 +89,15 @@ initComponents();`;
   </Fragment>
 
   <Fragment slot="a11y">
-    <p set:html={t("splitButtonPage.a11yBody")} />
+    <A11yNotes
+      intro={t("splitButtonPage.a11yIntro")}
+      does={tList(t, "splitButtonPage.a11yDoes")}
+      yours={tList(t, "splitButtonPage.a11yYours")}
+      keys={[
+        { keys: ["Tab"], action: t("splitButtonPage.key.tab") },
+        { keys: ["Enter", t("component.key.space")], action: t("splitButtonPage.key.run") },
+        { keys: ["↑", "↓"], action: t("splitButtonPage.key.arrows") },
+      ]}
+    />
   </Fragment>
 </ComponentPageShell>

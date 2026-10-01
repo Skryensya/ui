@@ -1,6 +1,6 @@
 import { initComponents } from "@skryensya/vanilla/auto";
 import { mountCodePreview } from "@skryensya/vanilla/code-preview";
-import { mountComponentPreview } from "@skryensya/vanilla/component-preview";
+import { mountComponentPreview } from "../preview/component-preview-enhancer";
 import { mountIcons } from "@skryensya/vanilla/icon";
 import { siteIcons } from "../icons";
 import { initAppearance } from "./appearance";

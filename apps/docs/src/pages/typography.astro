@@ -1,7 +1,7 @@
 ---
 import Base from "../layouts/Base.astro";
 import CodeBlock from "../components/CodeBlock.astro";
-import ComponentPreview from "../components/ComponentPreview.astro";
+import UsagePreview from "../components/UsagePreview.astro";
 import Used from "../components/Used.astro";
 import { headingDisplayTree, headingDocumentTree, textScaleTree, textTitleTree } from "../demos/typography";
 import { getLocale, useTranslations } from "../i18n";
@@ -148,21 +148,21 @@ const usage = `<!-- Document level and visual size are separate -->
     Above the document scale, for heroes and covers. They map to no heading level: a display can be an
     <code>h1</code> or a <code>p</code>.
   </p>
-  <ComponentPreview tree={headingDisplayTree(t)} label="Displays" />
+  <UsagePreview tree={headingDisplayTree(t)} label="Displays" />
 
   <h3>Document headings</h3>
   <p>
     Each rung from h1 to h4 is visible. h5 and h6 reuse the h4 pair: below 18px a section title stops
     standing out from the text it introduces.
   </p>
-  <ComponentPreview tree={headingDocumentTree(t)} label="h1 to h6" />
+  <UsagePreview tree={headingDocumentTree(t)} label="h1 to h6" />
 
   <h3>Reading text</h3>
   <p>
     Four body sizes, all at 1.5 leading. Long-form text can also use
     <code>--font-line-height-body-relaxed</code> (1.7), applied on purpose, not by default.
   </p>
-  <ComponentPreview tree={textScaleTree()} label="caption to lg" />
+  <UsagePreview tree={textScaleTree()} label="caption to lg" />
 
   <h2>Weights: one per role</h2>
   <p>
@@ -200,7 +200,7 @@ const usage = `<!-- Document level and visual size are separate -->
     weight, tracked uppercase) above the title, and <code>subtitle</code> (body-lg, relaxed leading,
     secondary tone) below it. Every hook a role sets can still be overridden.
   </p>
-  <ComponentPreview tree={textTitleTree(t)} label="Eyebrow, title and subtitle" />
+  <UsagePreview tree={textTitleTree(t)} label="Eyebrow, title and subtitle" />
 
   <h2>Usage</h2>
   <p>

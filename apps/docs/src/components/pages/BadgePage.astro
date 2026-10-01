@@ -1,9 +1,11 @@
 ---
 import ComponentPageShell from "./ComponentPageShell.astro";
 import CodeBlock from "../CodeBlock.astro";
-import ComponentPreview from "../ComponentPreview.astro";
 import UsagePreview from "../UsagePreview.astro";
 import DoDont from "../DoDont.astro";
+import WhenToUse from "../WhenToUse.astro";
+import ContentRules from "../ContentRules.astro";
+import A11yNotes from "../A11yNotes.astro";
 import {
   badgeDoAccentOnceTree,
   badgeDoAnchoredDotTree,
@@ -23,7 +25,7 @@ import {
   badgeDontToneTree,
 } from "../../demos/badge";
 import { badgeAnatomyCss, badgeAnatomyTree, badgeHoldersTree, badgeLabelTree, badgeLoneDotTree, badgeTagTree } from "../../demos/badge";
-import { getLocale, useTranslations } from "../../i18n";
+import { getLocale, tList, useTranslations } from "../../i18n";
 /* Structure diagram: Annotated specimen; a preview frame only copies styles THIS page loaded. */
 import "@skryensya/core/components/annotation.css";
 
@@ -52,7 +54,7 @@ const explain = (option: string, values: readonly string[]) =>
   description={t("badge.description")}
   contractId="badge"
   untitledCode
-  testFiles={["packages/react/src/components/badge.test.tsx"]}}
+  testFiles={["packages/react/src/components/badge.test.tsx"]}
 >
   <Fragment slot="usage">
     <p class="lede" set:html={t("badge.lede")} />
@@ -103,6 +105,8 @@ const explain = (option: string, values: readonly string[]) =>
       storybookStory="LoneDot"
     />
 
+    <h3>{t("component.examplesTitle")}</h3>
+
     <UsagePreview
       tree={badgeTagTree(t)}
       title={t("badge.tagTitle")}
@@ -124,18 +128,12 @@ const explain = (option: string, values: readonly string[]) =>
     {/* The anatomy closes the Overview, not the Reference tab: first what Badge is and how it looks, then its parts by name. */}
     <h3>{t("component.anatomy")}</h3>
     <p set:html={t("badge.anatomyBody")} />
-    <ComponentPreview
-      tree={badgeAnatomyTree(t)}
-      css={badgeAnatomyCss}
-      label={t("badge.anatomyPreviewLabel")}
-      screens={false}
-      hideSource
-      chrome={false}
-    />
+    <UsagePreview tree={badgeAnatomyTree(t)} css={badgeAnatomyCss} label={t("badge.anatomyPreviewLabel")} bare />
   </Fragment>
 
   <Fragment slot="guidelines">
     <p class="lede">{t("badge.dd.lede")}</p>
+    <WhenToUse use={tList(t, "badge.when")} avoid={tList(t, "badge.whenNot")} />
     <DoDont
       title={t("badge.dd.tone.title")}
       do={{ tree: badgeDoToneTree(t), caption: t("badge.dd.tone.do") }}
@@ -176,9 +174,14 @@ const explain = (option: string, values: readonly string[]) =>
       do={{ tree: badgeDoPulseTree(t), caption: t("badge.dd.pulse.do") }}
       dont={{ tree: badgeDontPulseTree(t), caption: t("badge.dd.pulse.dont") }}
     />
+    <ContentRules items={tList(t, "badge.content")} />
   </Fragment>
 
   <Fragment slot="install">
     <CodeBlock code={install} lang="bash" />
+  </Fragment>
+
+  <Fragment slot="a11y">
+    <A11yNotes intro={t("badge.a11yIntro")} does={tList(t, "badge.a11yDoes")} yours={tList(t, "badge.a11yYours")} />
   </Fragment>
 </ComponentPageShell>

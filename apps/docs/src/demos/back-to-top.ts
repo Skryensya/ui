@@ -83,6 +83,28 @@ export const backToTopDemoCss = `.sk-back-to-top {
   inset-inline-end: var(--space-inset-md);
   z-index: var(--z-sticky);
 }`;
+/*
+ * PLACEMENT GUIDELINE SPECIMENS. BackToTop leaves placement to the consumer, so the contrast is
+ * about the button's relationship to page content: tucked into a clear corner, or covering the text
+ * people came to read. Static markup keeps the revealed state visible without a scroll machine.
+ */
+export const backToTopPlacementHtml = (t: Translate, obstructing: boolean): string => {
+  const button = `<button class="sk-back-to-top sk-interactive" type="button" aria-label="${t("backToTop.demoLabel")}" style="position: absolute; ${obstructing ? "inset-block-start: 66%; inset-inline-start: 52%; translate: -50% -50%;" : "inset-block-end: var(--space-inset-md); inset-inline-end: var(--space-inset-md);"} display: grid; place-items: center; inline-size: var(--sk-back-to-top-size); block-size: var(--sk-back-to-top-size); border: 0; border-radius: var(--sk-back-to-top-radius); background: var(--sk-back-to-top-wash) var(--sk-back-to-top-bg); color: var(--sk-back-to-top-fg); box-shadow: var(--sk-back-to-top-shadow);"><span class="sk-back-to-top__icon" aria-hidden="true"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 19V5m-7 7 7-7 7 7" /></svg></span></button>`;
+  return `<div style="position: relative; display: grid; grid-template-rows: auto 1fr; inline-size: 100%; block-size: 100%; overflow: hidden; background: var(--color-bg-canvas); color: var(--color-text-primary);">
+  <header style="display: flex; align-items: center; justify-content: space-between; min-block-size: 2.5rem; padding-inline: var(--space-inset-lg); border-block-end: 1px solid var(--color-border-subtle); background: var(--color-bg-surface); font-size: var(--font-size-caption);">
+    <strong>skryensya/ui</strong>
+    <nav style="display: flex; gap: var(--space-inline-md); color: var(--color-text-secondary);"><span>Docs</span><span>Components</span><span>Guides</span></nav>
+  </header>
+  <main style="inline-size: min(24rem, calc(100% - 6rem)); margin-inline-start: var(--space-inset-lg); padding-block: var(--space-inset-md) calc(var(--space-inset-lg) + 2.5rem); font-size: var(--font-size-body-sm);">
+    <p style="margin: 0 0 var(--space-stack-xs); color: var(--color-text-accent); font-size: var(--font-size-caption);">${t("backToTop.dd.mockEyebrow")}</p>
+    <h2 style="margin: 0 0 var(--space-stack-sm); font-size: var(--font-size-heading-sm);">${t("backToTop.dd.mockTitle")}</h2>
+    <p style="margin: 0 0 var(--space-stack-sm); color: var(--color-text-secondary); line-height: 1.55;">${t("backToTop.dd.mockBody1")}</p>
+    <p style="margin: 0 0 var(--space-stack-sm); color: var(--color-text-secondary); line-height: 1.55;">${t("backToTop.dd.mockBody2")}</p>
+  </main>
+  ${button}
+</div>`;
+};
+
 export const backToTopTree = (t: Translate): UsageTree => ({
   contract: "back-to-top",
   signature: "BackToTop",

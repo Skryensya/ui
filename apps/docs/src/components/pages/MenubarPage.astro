@@ -6,17 +6,18 @@ import "@skryensya/core/patterns/state-layer.css";
 import "@skryensya/core/components/annotation.css";
 import ComponentPageShell from "./ComponentPageShell.astro";
 import CodeBlock from "../CodeBlock.astro";
-import ComponentPreview from "../ComponentPreview.astro";
+import UsagePreview from "../UsagePreview.astro";
 import DoDont from "../DoDont.astro";
+import WhenToUse from "../WhenToUse.astro";
+import ContentRules from "../ContentRules.astro";
+import A11yNotes from "../A11yNotes.astro";
 import {
-  menubarAnatomyCss,
-  menubarAnatomyHtml,
   menubarDontSingleTree,
   menubarNavTree,
   menubarSubmenuTree,
   menubarTree,
 } from "../../demos/menubar";
-import { getLocale, useTranslations } from "../../i18n";
+import { getLocale, tList, useTranslations } from "../../i18n";
 
 const t = useTranslations(getLocale(Astro.url));
 
@@ -38,55 +39,40 @@ initComponents();`;
     { file: "components/menubar.css", probe: "sk-menubar", title: "Menubar" },
     { file: "patterns/state-layer.css", probe: "sk-interactive", title: "Heredados de State layer" },
   ]}
-  testFiles={["packages/core/src/menubar.test.ts", "packages/react/src/components/menubar.test.tsx", "packages/vanilla/src/components/menubar.svelte.test.ts"]}}
+  testFiles={["packages/core/src/menubar.test.ts", "packages/react/src/components/menubar.test.tsx", "packages/vanilla/src/components/menubar.svelte.test.ts"]}
 >
   <Fragment slot="usage">
     <p class="lede" set:html={t("menubarPage.lede")} />
 
-    <h3>{t("menubarPage.showcaseTitle")}</h3>
-    <p set:html={t("menubarPage.showcaseBody")} />
-    <ComponentPreview tree={menubarTree(t)} js={js} label={t("menubarPage.label")} viewport="menu" />
-
-    <h3>{t("component.contractNotesTitle")}</h3>
-    <p set:html={t("menubarPage.contractBody")} />
+    <h3>{t("component.examplesTitle")}</h3>
+    <h3>{t("menubarPage.editorTitle")}</h3>
+    <p set:html={t("menubarPage.editorBody")} />
+    <UsagePreview tree={menubarTree(t)} label={t("menubarPage.label")} viewport="menu" />
 
     <h3>{t("menubarPage.submenuTitle")}</h3>
     <p set:html={t("menubarPage.submenuBody")} />
-    <ComponentPreview
-      tree={menubarSubmenuTree(t)}
-      js={js}
-      label={t("menubarPage.submenuTitle")}
-      viewport="menu-deep"
-    />
+    <UsagePreview tree={menubarSubmenuTree(t)} label={t("menubarPage.submenuTitle")} viewport="menu-deep" />
 
     <h3>{t("menubarPage.navSkinTitle")}</h3>
     <p set:html={t("menubarPage.navSkinBody")} />
-    <ComponentPreview
-      tree={menubarNavTree(t)}
-      js={js}
-      label={t("menubarPage.navSkinTitle")}
-      viewport="menu"
-    />
+    <UsagePreview tree={menubarNavTree(t)} label={t("menubarPage.navSkinTitle")} viewport="menu" />
 
-    <h3>{t("component.anatomy")}</h3>
-    <p set:html={t("menubarPage.anatomyBody")} />
-    <ComponentPreview
-      html={menubarAnatomyHtml(t)}
-      css={menubarAnatomyCss}
-      label={t("menubarPage.anatomyPreviewLabel")}
-      screens={false}
-      hideSource
-      chrome={false}
-    />
+    <h3>{t("component.contractNotesTitle")}</h3>
+    <ul>
+      {tList(t, "menubarPage.contract").map((item) => <li set:html={item} />)}
+    </ul>
+
   </Fragment>
 
   <Fragment slot="guidelines">
     <p class="lede" set:html={t("menubarPage.guidelinesLede")} />
+    <WhenToUse use={tList(t, "menubarPage.when")} avoid={tList(t, "menubarPage.whenNot")} />
     <DoDont
       title={t("menubarPage.dd.single.title")}
       do={{ tree: menubarTree(t), caption: t("menubarPage.dd.single.do") }}
       dont={{ tree: menubarDontSingleTree(t), caption: t("menubarPage.dd.single.dont") }}
     />
+    <ContentRules items={tList(t, "menubarPage.content")} />
   </Fragment>
 
   <Fragment slot="install">
@@ -94,6 +80,17 @@ initComponents();`;
   </Fragment>
 
   <Fragment slot="a11y">
-    <p set:html={t("menubarPage.a11yBody")} />
+    <A11yNotes
+      intro={t("menubarPage.a11yIntro")}
+      does={tList(t, "menubarPage.a11yDoes")}
+      yours={tList(t, "menubarPage.a11yYours")}
+      keys={[
+        { keys: ["←", "→"], action: t("menubarPage.key.arrowsH") },
+        { keys: ["Enter", t("component.key.space"), "↓"], action: t("menubarPage.key.open") },
+        { keys: ["↑", "↓"], action: t("menubarPage.key.arrowsV") },
+        { keys: ["Esc"], action: t("menubarPage.key.escape") },
+        { keys: ["Tab"], action: t("menubarPage.key.tab") },
+      ]}
+    />
   </Fragment>
 </ComponentPageShell>

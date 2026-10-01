@@ -67,3 +67,25 @@ export const tileSwitchTree = (t: Translate): UsageTree => ({
     },
   ],
 });
+
+/* Usage guide: a switch that still waits for a Save button, so flipping it does nothing yet. */
+export const switchDontSaveTree = (t: Translate): UsageTree => ({
+  contract: "layout",
+  signature: "Stack",
+  options: { gap: "md", align: "start" },
+  children: [
+    { contract: "switch", signature: "Switch", options: { name: "newsletter" }, children: t("demo.switch.dd.newsletter") },
+    { contract: "button", signature: "Button.action", children: t("demo.switch.dd.save") },
+  ],
+});
+
+/* Usage guide: the save-bound choice as the control that waits for a submit: a checkbox. */
+export const switchDoCheckboxTree = (t: Translate): UsageTree => ({
+  contract: "layout",
+  signature: "Stack",
+  options: { gap: "md", align: "start" },
+  children: [
+    { contract: "checkbox", signature: "Checkbox", options: { name: "newsletter", value: "yes" }, children: t("demo.switch.dd.newsletter") },
+    { contract: "button", signature: "Button.action", children: t("demo.switch.dd.save") },
+  ],
+});

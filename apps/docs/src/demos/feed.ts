@@ -286,3 +286,81 @@ export const feedCommentsTree = (t: Translate): UsageTree => {
     })),
   };
 };
+
+/** Keep the same posts and positions: only the identifying labels disappear. */
+export const feedDontGenericLabelsTree = (t: Translate): UsageTree => {
+  const tree = feedTree(t);
+  return {
+    ...tree,
+    children: (tree.children as UsageTree[]).map((article) => ({
+      ...article,
+      slots: { label: t("demo.feed.genericLabel") },
+    })),
+  };
+};
+
+/** Recent activity with yesterday inserted between two posts from today. */
+export const feedDontMixedOrderTree = (t: Translate): UsageTree => {
+  const tree = feedTree(t);
+  const posts = tree.children as UsageTree[];
+  return {
+    ...tree,
+    children: [posts[0], posts[2], posts[1]].map((article, index) => ({
+      ...article,
+      options: { ...article.options, posInset: index + 1 },
+    })),
+  };
+};
+
+/** Same width and top-aligned context in each half, regardless of the content's height. */
+export const feedGuideTree = (t: Translate, tree: UsageTree, fixed = false): UsageTree => ({
+  contract: "layout",
+  signature: "Stack",
+  options: { gap: "md" },
+  attrs: { style: "inline-size: 24rem; align-content: start;" },
+  children: [
+    {
+      contract: "typography",
+      signature: "Heading",
+      options: { headingSize: "h4", flush: true },
+      children: t(fixed ? "demo.feed.fixedListLabel" : "demo.feed.label"),
+    },
+    tree,
+  ],
+});
+
+/** A fixed sequence belongs in List, not in a stream that implies new posts arrive. */
+export const feedDontFixedListTree = (t: Translate): UsageTree => ({
+  contract: "feed",
+  signature: "Feed",
+  options: { label: t("demo.feed.fixedListLabel") },
+  children: [1, 2, 3].map((position) => ({
+    contract: "feed",
+    signature: "FeedArticle",
+    options: { posInset: position, setSize: 3 },
+    slots: { label: t(`demo.feed.fixed${position}` as "demo.feed.fixed1") },
+    children: t(`demo.feed.fixed${position}Body` as "demo.feed.fixed1Body"),
+  })),
+});
+
+export const feedFixedListTree = (t: Translate): UsageTree => ({
+  contract: "list",
+  signature: "OrderedList",
+  attrs: { "aria-label": t("demo.feed.fixedListLabel") },
+  children: [1, 2, 3].map((position) => ({
+    contract: "list",
+    signature: "ListItem",
+    slots: {
+      title: t(`demo.feed.fixed${position}` as "demo.feed.fixed1"),
+      description: t(`demo.feed.fixed${position}Body` as "demo.feed.fixed1Body"),
+    },
+  })),
+});
+
+/* Loading more, but replacing the already-read posts instead of preserving them. */
+export const feedDontSpinnerTree = (t: Translate): UsageTree => ({
+  contract: "layout",
+  signature: "Stack",
+  options: { gap: "md", align: "center" },
+  children: [{ contract: "loader", signature: "Loader.status", options: { label: t("demo.feed.loadingLabel") } }],
+});

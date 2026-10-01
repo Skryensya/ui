@@ -5,9 +5,11 @@ import "@skryensya/core/components/annotation.css";
 import "@skryensya/core/components/treegrid.css";
 import ComponentPageShell from "./ComponentPageShell.astro";
 import CodeBlock from "../CodeBlock.astro";
-import ComponentPreview from "../ComponentPreview.astro";
 import UsagePreview from "../UsagePreview.astro";
 import DoDont from "../DoDont.astro";
+import WhenToUse from "../WhenToUse.astro";
+import ContentRules from "../ContentRules.astro";
+import A11yNotes from "../A11yNotes.astro";
 import {
   treegridAnatomyTree,
   treegridDontOneColumnTree,
@@ -15,7 +17,7 @@ import {
   treegridStressTree,
 } from "../../demos/treegrid";
 import { annotationDemoCss } from "../../demos/annotation";
-import { getLocale, useTranslations } from "../../i18n";
+import { getLocale, tList, useTranslations } from "../../i18n";
 
 const t = useTranslations(getLocale(Astro.url));
 
@@ -38,59 +40,46 @@ const indentHook = `.sk-treegrid {
 <ComponentPageShell
   title="Treegrid"
   description={t("treegridPage.description")}
-  badge={t("treegridPage.betaBadge")}
   contractId="treegrid"
   styleGroups={[
     { file: "components/table.css", probe: "sk-table", title: "Heredados de Table" },
     { file: "components/treegrid.css", probe: "sk-treegrid", title: "Treegrid" },
     { file: "patterns/state-layer.css", probe: "sk-interactive", title: "Heredados de State layer" },
   ]}
-  testFiles={["packages/vanilla/src/components/treegrid.test.ts", "packages/react/src/components/treegrid.test.tsx"]}}
+  testFiles={["packages/vanilla/src/components/treegrid.test.ts", "packages/react/src/components/treegrid.test.tsx"]}
 >
   <Fragment slot="usage">
     <p class="lede" set:html={t("treegridPage.lede")} />
 
-    <h3>{t("treegridPage.showcaseTitle")}</h3>
-    <p set:html={t("treegridPage.showcaseBody")} />
-    <h3>{t("treegridPage.minimalTitle")}</h3>
-    <p set:html={t("treegridPage.minimalBody")} />
-    <UsagePreview tree={treegridInboxTree(t)} />
-
-    <h3>{t("treegridPage.stressTitle")}</h3>
-    <p set:html={t("treegridPage.stressBody")} />
-    <UsagePreview tree={treegridStressTree(t)} />
+    <h3>{t("component.examplesTitle")}</h3>
+    <UsagePreview tree={treegridInboxTree(t)} title={t("treegridPage.minimalTitle")} description={t("treegridPage.minimalBody")} />
+    <UsagePreview tree={treegridStressTree(t)} title={t("treegridPage.stressTitle")} description={t("treegridPage.stressBody")} />
 
     <h3>{t("component.contractNotesTitle")}</h3>
     <ul>
-      <li set:html={t("treegridPage.contractItem1")} />
-      <li set:html={t("treegridPage.contractItem2")} />
-      <li set:html={t("treegridPage.contractItem3")} />
-      <li set:html={t("treegridPage.contractItem4")} />
-      <li set:html={t("treegridPage.contractItem5")} />
-      <li set:html={t("treegridPage.contractItem6")} />
-      <li set:html={t("treegridPage.contractItem7")} />
+      {tList(t, "treegridPage.contract").map((item) => <li set:html={item} />)}
     </ul>
 
     <h3>{t("component.anatomy")}</h3>
     <p set:html={t("treegridPage.anatomyBody")} />
-    <ComponentPreview
+    <UsagePreview
       tree={treegridAnatomyTree(t)}
       css={annotationDemoCss}
       label={t("treegridPage.anatomyPreviewLabel")}
-      screens={false}
-      hideSource
-      chrome={false}
+      bare
     />
   </Fragment>
 
   <Fragment slot="guidelines">
     <p class="lede" set:html={t("treegridPage.guidelinesLede")} />
+    <WhenToUse use={tList(t, "treegridPage.when")} avoid={tList(t, "treegridPage.whenNot")} />
     <DoDont
       canvas
       title={t("treegridPage.dd.columns.title")}
       do={{ tree: treegridInboxTree(t), caption: t("treegridPage.dd.columns.do") }}
       dont={{ tree: treegridDontOneColumnTree(t), caption: t("treegridPage.dd.columns.dont") }}
     />
+    <ContentRules items={tList(t, "treegridPage.content")} />
   </Fragment>
 
   <Fragment slot="install">
@@ -100,6 +89,16 @@ const indentHook = `.sk-treegrid {
   </Fragment>
 
   <Fragment slot="a11y">
-    <p set:html={t("treegridPage.a11yBody")} />
+    <A11yNotes
+      intro={t("treegridPage.a11yIntro")}
+      does={tList(t, "treegridPage.a11yDoes")}
+      yours={tList(t, "treegridPage.a11yYours")}
+      keys={[
+        { keys: ["↑", "↓"], action: t("treegridPage.key.updown") },
+        { keys: ["→"], action: t("treegridPage.key.right") },
+        { keys: ["←"], action: t("treegridPage.key.left") },
+        { keys: [t("component.key.home"), t("component.key.end")], action: t("treegridPage.key.homeEnd") },
+      ]}
+    />
   </Fragment>
 </ComponentPageShell>

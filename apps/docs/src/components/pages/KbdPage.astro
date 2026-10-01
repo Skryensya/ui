@@ -3,12 +3,15 @@
 import ComponentPageShell from "./ComponentPageShell.astro";
 import AppearanceMenu from "../AppearanceMenu.astro";
 import CodeBlock from "../CodeBlock.astro";
-import ComponentPreview from "../ComponentPreview.astro";
 import UsagePreview from "../UsagePreview.astro";
 import DoDont from "../DoDont.astro";
+import WhenToUse from "../WhenToUse.astro";
+import ContentRules from "../ContentRules.astro";
+import A11yNotes from "../A11yNotes.astro";
 import {
   kbdAccentTree,
   kbdAnatomyTree,
+  kbdDoAccentTree,
   kbdDoChordTree,
   kbdDoInlineTree,
   kbdDontAccentTree,
@@ -17,9 +20,11 @@ import {
   kbdSingleTree,
   kbdTree,
 } from "../../demos/kbd";
-import { getLocale, useTranslations } from "../../i18n";
+import { getLocale, tList, useTranslations } from "../../i18n";
 import { annotationDemoCss } from "../../demos/annotation";
 import "@skryensya/core/components/annotation.css";
+/* Do/Don't specimens use a small surface so the key rows read as examples, not loose glyphs. */
+import "@skryensya/core/patterns/box.css";
 
 const t = useTranslations(getLocale(Astro.url));
 const install = `pnpm add @skryensya/core @skryensya/react`;
@@ -35,7 +40,7 @@ const explain = (option: string, values: readonly string[]) =>
   description={t("kbdPage.description")}
   contractId="kbd"
   appearanceTargetSelector=".sk-kbd"
-  testFiles={["packages/react/src/components/kbd.test.tsx"]}}
+  testFiles={["packages/react/src/components/kbd.test.tsx"]}
 >
   <Fragment slot="appearance">
     <AppearanceMenu label={t("prefs.appearance")} values={["plain", "brutalist"]} unavailable={{ tactile: t("prefs.appearanceTactileUnavailable"), frosted: t("prefs.appearanceFrostedUnavailable") }} />
@@ -61,8 +66,7 @@ const explain = (option: string, values: readonly string[]) =>
       stageMinBlockSize="7rem"
     />
 
-    <h3>{t("kbdPage.showcaseTitle")}</h3>
-    <p set:html={t("kbdPage.showcaseBody")} />
+    <h3>{t("component.examplesTitle")}</h3>
     <UsagePreview
       tree={kbdTree}
       title={t("kbdPage.keysTitle")}
@@ -78,12 +82,9 @@ const explain = (option: string, values: readonly string[]) =>
       storybookStory="Accent"
     />
 
-    <h3>{t("kbdPage.squareTitle")}</h3>
-    <p set:html={t("kbdPage.squareBody")} />
 
     <h3>{t("kbdPage.pressedTitle")}</h3>
     <p set:html={t("kbdPage.pressedBody1")} />
-    <p set:html={t("kbdPage.pressedBody2")} />
     <div class="key-echo" role="group" aria-label={t("kbdPage.echoAriaLabel")}>
       <kbd class="sk-kbd" data-key="meta">⌘</kbd>
       <kbd class="sk-kbd" data-key="control">Ctrl</kbd>
@@ -102,18 +103,12 @@ const explain = (option: string, values: readonly string[]) =>
 
     <h3>{t("component.anatomy")}</h3>
     <p set:html={t("kbdPage.anatomyBody")} />
-    <ComponentPreview
-      tree={kbdAnatomyTree(t)}
-      css={annotationDemoCss}
-      label={t("kbdPage.anatomyPreviewLabel")}
-      screens={false}
-      hideSource
-      chrome={false}
-    />
+    <UsagePreview tree={kbdAnatomyTree(t)} css={annotationDemoCss} label={t("kbdPage.anatomyPreviewLabel")} bare />
   </Fragment>
 
   <Fragment slot="guidelines">
     <p class="lede" set:html={t("kbdPage.guidelinesLede")} />
+    <WhenToUse use={tList(t, "kbdPage.when")} avoid={tList(t, "kbdPage.whenNot")} />
     <DoDont
       title={t("kbdPage.dd.context.title")}
       do={{ tree: kbdDoInlineTree(t), caption: t("kbdPage.dd.context.do") }}
@@ -126,13 +121,17 @@ const explain = (option: string, values: readonly string[]) =>
     />
     <DoDont
       title={t("kbdPage.dd.accent.title")}
-      do={{ tree: kbdTree, caption: t("kbdPage.dd.accent.do") }}
-      dont={{ tree: kbdDontAccentTree, caption: t("kbdPage.dd.accent.dont") }}
+      do={{ tree: kbdDoAccentTree(t), caption: t("kbdPage.dd.accent.do") }}
+      dont={{ tree: kbdDontAccentTree(t), caption: t("kbdPage.dd.accent.dont") }}
     />
+    <ContentRules items={tList(t, "kbdPage.content")} />
   </Fragment>
 
   <Fragment slot="install">
     <CodeBlock code={install} label="terminal" />
+  </Fragment>
+  <Fragment slot="a11y">
+    <A11yNotes intro={t("kbdPage.a11yIntro")} does={tList(t, "kbdPage.a11yDoes")} yours={tList(t, "kbdPage.a11yYours")} />
   </Fragment>
 </ComponentPageShell>
 

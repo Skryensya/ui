@@ -2,7 +2,7 @@ import { readFileSync, readdirSync } from "node:fs";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
 import { pausedComponents } from "@skryensya/core/paused";
-import { componentNavigation } from "./navigation";
+import { componentNavigation, devCommandPaletteOnlyComponentNavigation } from "./navigation";
 
 /*
  * A COMPONENT PAGE IS REACHABLE, AND DESCRIBED.
@@ -66,20 +66,20 @@ describe("the component registries", () => {
 });
 
 /*
- * A PAUSED COMPONENT LEAVES EVERY RAIL AT ONCE.
+ * HIDDEN COMPONENTS LEAVE THE PUBLIC RAILS.
  *
- * Pausing is one filter in `navigation.ts` feeding four renderers, and the reason it is one filter
- * is that a component hidden from the sidebar but still listed in the component index, or still
- * reachable through search, is not hidden: it is inconsistent, which reads as a bug rather than as
- * a decision. `componentNavigation` is the list all four build from, so asserting on it asserts on
- * all four.
+ * Pausing is one filter in `navigation.ts` feeding the public renderers. Dev-only command-palette
+ * pages use a second explicit list: they are hidden from the sidebar/catalogue, but remain jumpable
+ * in development.
  *
  * The route is checked to still EXIST in the same breath. That is the whole difference between
- * pausing and deleting: the page is built, its demos run, and the link still opens. A paused entry
- * whose page had quietly gone away would make this list a graveyard instead of a pause.
+ * hiding and deleting: the page is built, its demos run, and the link still opens.
  */
-describe("a paused component", () => {
+describe("a hidden component", () => {
   const advertised = new Set(componentNavigation.flatMap((group) => group.items.map((i) => i.href)));
+  const devOnly = new Set(
+    devCommandPaletteOnlyComponentNavigation.flatMap((group) => group.items.map((i) => i.href)),
+  );
 
   it.each(pausedComponents.map((component) => component.docs))("%s is not in the navigation", (docs) => {
     expect(advertised.has(docs)).toBe(false);
@@ -89,8 +89,18 @@ describe("a paused component", () => {
     expect(routes.includes(docs) || NOT_COMPONENTS.has(docs)).toBe(true);
   });
 
+  it.each([...devOnly])("%s is not in the public navigation", (docs) => {
+    expect(advertised.has(docs)).toBe(false);
+  });
+
+  it.each([...devOnly])("%s still has its page", (docs) => {
+    expect(routes.includes(docs) || NOT_COMPONENTS.has(docs)).toBe(true);
+  });
+
   it("does not hide anything the catalogue has not decided to hide", () => {
     const paused = new Set(pausedComponents.map((component) => component.docs));
-    expect(routes.filter((href) => !advertised.has(href) && !paused.has(href))).toEqual([]);
+    expect(
+      routes.filter((href) => !advertised.has(href) && !paused.has(href) && !devOnly.has(href)),
+    ).toEqual([]);
   });
 });

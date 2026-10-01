@@ -14,7 +14,7 @@ import "@skryensya/core/components/accordion.css";
 import Base from "../../layouts/Base.astro";
 import AppearanceMenu from "../AppearanceMenu.astro";
 import CodeBlock from "../CodeBlock.astro";
-import ComponentPreview from "../ComponentPreview.astro";
+import UsagePreview from "../UsagePreview.astro";
 import { contracts } from "@skryensya/core/registry";
 import { appearanceSpecimenTree } from "../../demos/appearance";
 import { onAppearanceStage } from "../../lib/frost-stage";
@@ -108,9 +108,9 @@ const hooks = `/* The same families on every component that publishes the value.
 
     <h2>{t("appearancePage.specimenTitle")}</h2>
     <p set:html={t("appearancePage.specimenBody")} />
-    <ComponentPreview tree={appearanceSpecimenTree(t)} label={t("appearancePage.specimenLabel")} />
+    <UsagePreview tree={appearanceSpecimenTree(t)} label={t("appearancePage.specimenLabel")} />
     <p set:html={t("appearancePage.backdropBody")} />
-    <ComponentPreview tree={onAppearanceStage(appearanceSpecimenTree(t))} label={t("appearancePage.backdropLabel")} />
+    <UsagePreview tree={onAppearanceStage(appearanceSpecimenTree(t))} label={t("appearancePage.backdropLabel")} />
 
     <h2>{t("appearancePage.valuesTitle")}</h2>
     <div class="sk-table-scroll">

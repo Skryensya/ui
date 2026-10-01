@@ -7,11 +7,10 @@ import "@skryensya/core/components/canvas.css";
 import "@skryensya/core/components/typography.css";
 import "@skryensya/core/patterns/layout.css";
 import * as demos from "@docs/demos/back-to-top";
-const { backToTopAnatomyCss, backToTopDemoCss } = demos;
-import { treeStory, withCss, type Meta, type StoryObj } from "../tree-story";
+import { treeStory, type Meta, type StoryObj } from "../tree-story";
 
 export default { title: "Components/Navigation/BackToTop", tags: ["autodocs"] } satisfies Meta;
 
-export const Anatomy: StoryObj = treeStory(demos.backToTopAnatomyTree, { decorators: [withCss(backToTopAnatomyCss)] });
-export const Default: StoryObj = treeStory(demos.backToTopTree, { decorators: [withCss(backToTopDemoCss)] });
-export const Scroll: StoryObj = treeStory(demos.backToTopScrollTree, { decorators: [withCss(backToTopDemoCss)] });
+export const Anatomy: StoryObj = treeStory(demos.backToTopAnatomyTree);
+export const Default: StoryObj = treeStory(demos.backToTopTree);
+export const Scroll: StoryObj = treeStory(demos.backToTopScrollTree);

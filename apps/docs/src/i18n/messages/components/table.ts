@@ -35,38 +35,62 @@ export const tableMessages = {
     "demo.table.activity": "Actividad de despliegues",
     "demo.table.page": "Página",
 
-    "tablePage.description": "Tabla nativa legible con scroll horizontal y filas o columnas sticky.",
-    "tablePage.lede":
-      "Table mantiene la semántica nativa de <code>&lt;table&gt;</code>. El wrapper de overflow preserva un ancho legible por columna y desplaza la tabla en vez de comprimirla. Header y primera columna sticky son opt-in y usan el mismo contrato en móvil y desktop.",
+    "tablePage.description": "Muestra datos que se comparan por fila y por columna.",
+
+    "tablePage.key.arrows": "Con el foco en un borde de columna, cambia su ancho.",
+
+    "tablePage.a11yYours3": "No uses una tabla para maquetar: solo para datos.",
+
+    "tablePage.a11yYours2": 'Usa <code>&lt;th scope="row"&gt;</code> para la celda que nombra cada fila.',
+
+    "tablePage.a11yYours1": "Pon un <code>caption</code> o un <code>aria-label</code>.",
+
+    "tablePage.a11yDoes2": "El borde que se arrastra es un <code>separator</code> con teclado.",
+
+    "tablePage.a11yDoes1": "Los encabezados de columna y de fila se asocian a sus celdas.",
+
+    "tablePage.a11yIntro": "Table es una tabla nativa: el lector de pantalla la recorre por celdas.",
+
+    "tablePage.content3": "Alinea los números a la derecha y el texto a la izquierda.",
+
+    "tablePage.content2": "Escribe encabezados cortos, con la unidad si hace falta: «Monto (CLP)».",
+
+    "tablePage.content1": "Nombra la tabla con un <code>caption</code>: «Pedidos de marzo».",
+
+    "tablePage.whenNot3": 'Para pares de nombre y valor de una sola cosa: usa <a href="/es/componentes/description-list">DescriptionList</a>.',
+
+    "tablePage.whenNot2": 'Para ordenar, filtrar o seleccionar filas: usa <a href="/es/componentes/data-grid">DataGrid</a>.',
+
+    "tablePage.whenNot1": 'Para filas que se recorren sin comparar: usa <a href="/es/componentes/list">List</a>.',
+
+    "tablePage.when2": "Para datos exactos: montos, fechas, estados.",
+
+    "tablePage.when1": "Para filas con los mismos campos que se comparan entre sí.",
+
+    "tablePage.contract3": 'Para paginar filas escritas a mano, envuélvela en <a href="/es/componentes/table-pager">TablePager</a>.',
+
+    "tablePage.contract2": "Dentro de <code>.sk-table-scroll</code>, cada columna conserva un ancho mínimo legible y la tabla se desplaza.",
+
+    "tablePage.contract1": "Es un <code>&lt;table&gt;</code> con <code>caption</code>, <code>thead</code>, <code>tbody</code> y <code>tfoot</code>.",
+
+    "tablePage.basicBody": "El <code>caption</code> nombra la tabla; cada fila es un plan con los mismos campos.",
+
+    "tablePage.basicTitle": "Con título: los planes disponibles",
+    "tablePage.lede": "Table muestra datos que se comparan por fila y por columna: pedidos con su fecha y su monto, un plan de precios, un registro. Es un <code>&lt;table&gt;</code> nativo; si no cabe, se desplaza en horizontal en vez de apretar las columnas.",
     "tablePage.anatomyBody":
       "Este diagrama nombra caption, head, body y foot en el orden que HTML exige. El espécimen está congelado; las tablas vivas empiezan abajo.",
     "tablePage.anatomyLabel": "Anatomía de Table",
     "tablePage.anatomyPreviewLabel": "Table, parte por parte",
-    "tablePage.scrollTitle": "Scroll horizontal sin comprimir",
-    "tablePage.scrollBody":
-      'Dentro de <code>.sk-table-scroll</code>, cada celda conserva el piso <code>--sk-table-cell-min-inline-size</code>; los encabezados de fila conservan uno mayor. Una tabla <code>data-layout="fixed"</code> usa además <code>--sk-table-fixed-min-inline-size</code>. En pantallas estrechas aparece scroll, no columnas de 56px ni texto letra por letra. El wrapper admite foco para desplazamiento por teclado y pinta un scrollbar compacto pero visible.',
-    "tablePage.stickyColTitle": "Primera columna sticky",
-    "tablePage.stickyColBody":
-      'Usa <code>data-sticky-column</code> en HTML o <code>stickyColumn</code> en React. La primera celda de cada fila queda congelada y su sombra separa el identificador de los datos que pasan por debajo. Conviene que sea un <code>&lt;th scope="row"&gt;</code>. No depende de un breakpoint: funciona igual con touch, mouse, zoom o una ventana angosta.',
-    "tablePage.stickyColLabel": "Primera columna sticky",
-    "tablePage.stickyHeadTitle": "Header row sticky",
-    "tablePage.stickyHeadBody":
-      "Usa <code>data-sticky-header</code> o <code>stickyHeader</code>. El wrapper gana scroll vertical y un alto máximo de <code>20rem</code>, que puedes sobrescribir como en este ejemplo. El encabezado queda visible tanto en desktop como en móvil; si combinas ambos modifiers, la celda de la esquina queda sobre las dos capas.",
-    "tablePage.stickyHeadLabel": "Fila de encabezado sticky",
-    "tablePage.resizableTitle": "Columnas redimensionables",
-    "tablePage.resizableBody":
-      'Usa <code>data-resizable-columns</code> en HTML o <code>resizableColumns</code> en React, junto con <code>resizeLabel</code> (obligatoria). El binding inserta un separador real (<code>role="separator"</code>) entre cada par de encabezados: el mismo primitivo compartido, <code>@skryensya/core/splitter</code>, que ya usan el separador de <a href="/es/componentes/sidebar">Sidebar</a> y el redimensionador de columnas de <a href="/es/componentes/treegrid">Treegrid</a>. Arrastra el borde de un encabezado, o enfócalo y usa las flechas (Shift para el paso grueso), Home/End para los extremos, Enter o doble click para restablecer el par a un reparto parejo.',
-    "tablePage.resizableLabel": "Rendimiento por región, redimensionable",
-    "tablePage.pagerTitle": "Con paginación",
-    "tablePage.pagerBody":
-      'Para paginar en el cliente las filas de una tabla escrita a mano, con tamaño de página opcional, envuélvela en <a class="sk-link sk-interactive" href="/es/componentes/table-pager">TablePager</a>. Si los datos llegan paginados del servidor, usa <a class="sk-link sk-interactive" href="/es/componentes/pagination">Pagination</a> sola.',
-    "tablePage.boxTitle": "Dentro de un Box",
-    "tablePage.boxBody":
-      "Dentro del <code>padding</code> de un <code>.sk-box</code>, la <code>.sk-table</code> redondea con el radio de elemento anidado (<code>--radius-control</code>) en vez del de superficie: Box aporta la superficie y la tabla es un elemento dentro de ella. Así el radio queda más ajustado, nunca colapsa a una caja cuadrada, y sigue acompañando al eje <code>data-radius</code>.",
-    "tablePage.boxLabel": "Table en Box",
-    "tablePage.densityTitle": "Densidad local",
-    "tablePage.densityBody":
-      "El contrato del scope es solo <code>data-sk-density-scope</code> y un valor de densidad. Aquí <code>--sk-density-factor</code> es relativo al sistema; escribe <code>--sk-density</code> en el mismo nodo si necesitas un valor absoluto. Los números siguen siendo continuos.",
+    "tablePage.stickyColTitle": "Primera columna fija: el identificador a la vista",
+    "tablePage.stickyColBody": "Con <code>stickyColumn</code>, la primera columna queda quieta al desplazar.",
+    "tablePage.stickyHeadTitle": "Encabezado fijo: los nombres a la vista",
+    "tablePage.stickyHeadBody": "Con <code>stickyHeader</code>, el encabezado queda arriba al desplazar las filas.",
+    "tablePage.resizableTitle": "Columnas ajustables: arrastrar el borde",
+    "tablePage.resizableBody": "Con <code>resizableColumns</code> y <code>resizeLabel</code>, cada borde de columna se arrastra o se mueve con las flechas.",
+    "tablePage.boxTitle": "En un Box: una tarjeta con su tabla",
+    "tablePage.boxBody": "Dentro de un Box, la tabla toma el radio de un elemento anidado.",
+    "tablePage.densityTitle": "Densidad: más aire o más filas",
+    "tablePage.densityBody": "<code>data-sk-density-scope</code> cambia la densidad solo en esa tabla.",
     "tablePage.densityWideLabel": "Table amplia · 1.2× del sistema",
     "tablePage.densityCompactLabel": "Table compacta · 0.6× del sistema",
     "tablePage.reactBody": "El binding está en <strong>Vanilla | React</strong>. En Vanilla basta el HTML con <code>data-sk-*</code>; <code>initComponents</code> (y <code>mountIcons</code>) los carga el sitio.",
@@ -76,12 +100,10 @@ export const tableMessages = {
     "demo.table.dd.news1": "Lanzamos una nueva forma de invitar a tu equipo, con permisos por proyecto.",
     "demo.table.dd.news2": "Los reportes ahora se pueden exportar en CSV desde cualquier vista.",
     "demo.table.dd.news3": "Mejoramos la búsqueda: encuentra resultados aunque escribas con errores.",
-    "tablePage.showcaseTitle": "Showcases",
-    "tablePage.showcaseBody": "Una tabla con título, columnas y cabecera fijas, columnas ajustables, dentro de una caja y en dos densidades.",
-    "tablePage.guidelinesLede": "Table muestra datos que se comparan por fila y por columna.",
-    "tablePage.dd.data.title": "Datos que se comparan",
+    "tablePage.guidelinesLede": "Una tabla sirve cuando se compara: la misma pregunta hecha a cada fila.",
+    "tablePage.dd.data.title": "Datos: que se comparan",
     "tablePage.dd.data.do": "Usa una tabla cuando cada fila tiene los mismos campos y se comparan entre sí.",
-    "tablePage.dd.data.dont": "Una sola columna de párrafos es una lista: usa <a href=\"/es/componentes/list\">List</a>.",
+    "tablePage.dd.data.dont": 'Una sola columna de párrafos es una lista: usa <a href="/es/componentes/list">List</a>.',
   },
   en: {
     "demo.table.plans": "Available plans",
@@ -118,38 +140,42 @@ export const tableMessages = {
     "demo.table.range": "{start}–{end} of {total}",
     "demo.table.activity": "Deployment activity",
     "demo.table.page": "Page",
-    "tablePage.description": "Readable native table with horizontal scroll and sticky rows or columns.",
-    "tablePage.lede":
-      "Table keeps native <code>&lt;table&gt;</code> semantics. The overflow wrapper preserves a readable per-column width and scrolls the table instead of compressing it. Sticky header and sticky first column are opt-in and share the same contract on mobile and desktop.",
+    "tablePage.description": "Shows data compared by row and by column.",
+    "tablePage.key.arrows": "With focus on a column edge, changes its width.",
+    "tablePage.a11yYours3": "Do not use a table for layout: only for data.",
+    "tablePage.a11yYours2": 'Use <code>&lt;th scope="row"&gt;</code> for the cell naming each row.',
+    "tablePage.a11yYours1": "Add a <code>caption</code> or an <code>aria-label</code>.",
+    "tablePage.a11yDoes2": "The draggable edge is a <code>separator</code> with a keyboard.",
+    "tablePage.a11yDoes1": "Column and row headers are tied to their cells.",
+    "tablePage.a11yIntro": "Table is a native table: the screen reader moves through it by cell.",
+    "tablePage.content3": "Align numbers right and text left.",
+    "tablePage.content2": "Write short headers, with the unit if needed: “Amount (USD)”.",
+    "tablePage.content1": "Name the table with a <code>caption</code>: “March orders”.",
+    "tablePage.whenNot3": 'For name and value pairs of a single thing: use <a href="/components/description-list">DescriptionList</a>.',
+    "tablePage.whenNot2": 'To sort, filter or select rows: use <a href="/components/data-grid">DataGrid</a>.',
+    "tablePage.whenNot1": 'For rows browsed without comparing: use <a href="/components/list">List</a>.',
+    "tablePage.when2": "For exact data: amounts, dates, statuses.",
+    "tablePage.when1": "For rows with the same fields compared with each other.",
+    "tablePage.contract3": 'To paginate hand-written rows, wrap it in <a href="/components/table-pager">TablePager</a>.',
+    "tablePage.contract2": "Inside <code>.sk-table-scroll</code>, each column keeps a readable minimum width and the table scrolls.",
+    "tablePage.contract1": "It is a <code>&lt;table&gt;</code> with <code>caption</code>, <code>thead</code>, <code>tbody</code> and <code>tfoot</code>.",
+    "tablePage.basicBody": "The <code>caption</code> names the table; each row is a plan with the same fields.",
+    "tablePage.basicTitle": "With a caption: the available plans",
+    "tablePage.lede": "Table shows data compared by row and by column: orders with their date and amount, a pricing plan, a log. It is a native <code>&lt;table&gt;</code>; if it does not fit, it scrolls horizontally instead of squeezing the columns.",
     "tablePage.anatomyBody":
       "This diagram names caption, head, body, and foot in the order HTML requires. The specimen is frozen; the live tables start below.",
     "tablePage.anatomyLabel": "Table anatomy",
     "tablePage.anatomyPreviewLabel": "Table, part by part",
-    "tablePage.scrollTitle": "Horizontal scroll without compressing",
-    "tablePage.scrollBody":
-      'Inside <code>.sk-table-scroll</code>, every cell keeps the <code>--sk-table-cell-min-inline-size</code> floor; row headers keep a larger one. A <code>data-layout="fixed"</code> table also uses <code>--sk-table-fixed-min-inline-size</code>. On narrow screens, scroll appears: not 56px columns or letter-by-letter text. The wrapper accepts focus for keyboard scrolling and paints a compact but visible scrollbar.',
-    "tablePage.stickyColTitle": "Sticky first column",
-    "tablePage.stickyColBody":
-      'Use <code>data-sticky-column</code> in HTML or <code>stickyColumn</code> in React. The first cell of each row stays frozen, and its shadow separates the identifier from the data passing underneath. It should be a <code>&lt;th scope="row"&gt;</code>. It does not depend on a breakpoint: it works the same with touch, mouse, zoom, or a narrow window.',
-    "tablePage.stickyColLabel": "Sticky first column",
-    "tablePage.stickyHeadTitle": "Sticky header row",
-    "tablePage.stickyHeadBody":
-      "Use <code>data-sticky-header</code> or <code>stickyHeader</code>. The wrapper gains vertical scroll and a max height of <code>20rem</code>, which you can override as in this example. The header stays visible on both desktop and mobile; if you combine both modifiers, the corner cell sits above both layers.",
-    "tablePage.stickyHeadLabel": "Sticky header row",
-    "tablePage.resizableTitle": "Resizable columns",
-    "tablePage.resizableBody":
-      'Use <code>data-resizable-columns</code> in HTML or <code>resizableColumns</code> in React, together with <code>resizeLabel</code> (required). The binding inserts a real separator (<code>role="separator"</code>) between every pair of headers: the same shared primitive, <code>@skryensya/core/splitter</code>, that <a href="/components/sidebar">Sidebar</a>\'s own resize handle and <a href="/components/treegrid">Treegrid</a>\'s own column resizer already use. Drag a header\'s edge, or focus it and use the arrow keys (Shift for the coarse step), Home/End for the extremes, Enter or double-click to reset the pair to an even split.',
-    "tablePage.resizableLabel": "Performance by region, resizable",
-    "tablePage.pagerTitle": "With pagination",
-    "tablePage.pagerBody":
-      'To page a hand-written table\'s rows on the client, with an optional page size, wrap it in <a class="sk-link sk-interactive" href="/components/table-pager">TablePager</a>. If the data arrives paged from the server, use <a class="sk-link sk-interactive" href="/components/pagination">Pagination</a> on its own.',
-    "tablePage.boxTitle": "Inside a Box",
-    "tablePage.boxBody":
-      "Inside a <code>.sk-box</code>'s <code>padding</code>, the <code>.sk-table</code> rounds with the nested-element radius (<code>--radius-control</code>) instead of the surface one: Box provides the surface and the table is an element inside it. That keeps the radius tighter, never collapses into a square box, and still follows the <code>data-radius</code> axis.",
-    "tablePage.boxLabel": "Table in Box",
-    "tablePage.densityTitle": "Local density",
-    "tablePage.densityBody":
-      "The scope contract is just <code>data-sk-density-scope</code> and a density value. Here <code>--sk-density-factor</code> is relative to the system; write <code>--sk-density</code> on the same node if you need an absolute value. The numbers stay continuous.",
+    "tablePage.stickyColTitle": "Fixed first column: the identifier in view",
+    "tablePage.stickyColBody": "With <code>stickyColumn</code>, the first column stays put while scrolling.",
+    "tablePage.stickyHeadTitle": "Fixed header: the names in view",
+    "tablePage.stickyHeadBody": "With <code>stickyHeader</code>, the header stays on top while the rows scroll.",
+    "tablePage.resizableTitle": "Adjustable columns: drag the edge",
+    "tablePage.resizableBody": "With <code>resizableColumns</code> and <code>resizeLabel</code>, each column edge is dragged or moved with the arrows.",
+    "tablePage.boxTitle": "In a Box: a card with its table",
+    "tablePage.boxBody": "Inside a Box, the table takes a nested element's radius.",
+    "tablePage.densityTitle": "Density: more air or more rows",
+    "tablePage.densityBody": "<code>data-sk-density-scope</code> changes density in that table only.",
     "tablePage.densityWideLabel": "Wide table · 1.2× system",
     "tablePage.densityCompactLabel": "Compact table · 0.6× system",
     "tablePage.reactBody":
@@ -160,11 +186,9 @@ export const tableMessages = {
     "demo.table.dd.news1": "We launched a new way to invite your team, with permissions per project.",
     "demo.table.dd.news2": "Reports can now be exported as CSV from any view.",
     "demo.table.dd.news3": "We improved search: it finds results even when you mistype.",
-    "tablePage.showcaseTitle": "Showcases",
-    "tablePage.showcaseBody": "A table with a caption, sticky columns and header, resizable columns, inside a box, and in two densities.",
-    "tablePage.guidelinesLede": "Table shows data compared across rows and columns.",
-    "tablePage.dd.data.title": "Data to compare",
+    "tablePage.guidelinesLede": "A table helps when comparing: the same question asked of each row.",
+    "tablePage.dd.data.title": "Data: that is compared",
     "tablePage.dd.data.do": "Use a table when every row has the same fields and they are compared with each other.",
-    "tablePage.dd.data.dont": "A single column of paragraphs is a list: use <a href=\"/components/list\">List</a>.",
+    "tablePage.dd.data.dont": 'A single column of paragraphs is a list: use <a href="/components/list">List</a>.',
   },
 } as const;

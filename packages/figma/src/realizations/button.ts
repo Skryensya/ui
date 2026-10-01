@@ -34,10 +34,9 @@ export const buttonRealization: Realization = {
   icons: { module: "@skryensya/icons-lucide", export: "lucideIcons" },
   // A section per size, largest first; within it a group per variant, a row per tone.
   grid: { columns: ["iconOnly", "state"], rows: ["size", "variant", "tone"], descending: ["size"] },
-  // The docs preview's background, so the frame and the browser show a Button on the same surface.
+  // The docs preview card's surface, so the frame and the browser show a Button on the same one.
   stage: {
-    contract: "component-preview",
-    hook: "--sk-component-preview-bg",
+    background: "--color-bg-surface",
     label: {
       color: "--color-text-secondary",
       fontFamily: "--font-family-body",

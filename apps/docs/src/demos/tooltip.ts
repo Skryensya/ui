@@ -1,7 +1,5 @@
 import type { UsageTree } from "@skryensya/core/usage-tree";
 import type { Translate } from "../i18n";
-import { anatomyFigureHtml } from "./annotation-parts";
-
 
 /*
  * The three cases where a tooltip earns its place, shared by both pages and both bindings.
@@ -20,62 +18,6 @@ import { anatomyFigureHtml } from "./annotation-parts";
  * the demo taught a span. A paragraph inside an inline row reads the same and says something
  * slightly different; it is the smallest lie available until a bare inline-text signature exists.
  */
-
-
-/*
- * THE ANATOMY SPECIMEN: frozen open markup. A live Tooltip dismisses on the first pointer press in
- * an inert frame, and content is `display: none` until `data-state="open"`. No mount attributes so
- * initComponents never claims this tree. The positioner is forced static in `tooltipAnatomyCss`.
- */
-const tooltipAnatomySpecimen = (t: Translate): string => `<div class="sk-tooltip">
-  <span class="sk-tooltip__trigger sk-anchor">
-    <button class="sk-button sk-interactive" type="button" data-variant="ghost" data-icon-only data-size="md" aria-label="${t("demo.tooltip.export.label")}" tabindex="-1">
-      <span aria-hidden="true"><span data-sk-icon="download" data-sk-icon-size="md"></span></span>
-    </button>
-  </span>
-  <div class="sk-tooltip__positioner sk-anchored" data-sk-placement="block-end">
-    <span class="sk-anchored-arrow" aria-hidden="true"></span>
-    <div class="sk-tooltip__content" data-state="open" role="tooltip">${t("demo.tooltip.export.content")}</div>
-  </div>
-</div>`;
-
-
-export const tooltipAnatomyHtml = (t: Translate): string => anatomyFigureHtml(t, {
-  label: t("tooltipPage.anatomyLabel"),
-  specimen: tooltipAnatomySpecimen(t),
-  parts: [
-    { for: ".sk-tooltip", side: "block-start", mark: "bracket", ringPlacement: "offset", ringDistance: 6 },
-    { for: ".sk-tooltip__trigger", side: "inline-start" },
-    { for: ".sk-tooltip__content", side: "inline-end" },
-    { for: ".sk-anchored-arrow", side: "inline-end", ringPlacement: "offset", ringDistance: 2 },
-    { for: ".sk-tooltip__positioner", side: "block-end", ringPlacement: "offset", ringDistance: 4 },
-  ],
-});
-
-export const tooltipAnatomyCss = `.sk-annotated-figure {
-  --sk-annotation-font-family: var(--font-family-code);
-}
-
-.sk-annotated__subject > .sk-tooltip {
-  display: inline-grid;
-  justify-items: center;
-  gap: var(--space-stack-md);
-}
-
-.sk-annotated__subject > .sk-tooltip > .sk-tooltip__positioner {
-  position: static;
-  pointer-events: none;
-  max-inline-size: none;
-}
-
-.sk-annotated__subject > .sk-tooltip > .sk-tooltip__positioner > .sk-tooltip__content {
-  display: block;
-}
-
-.sk-annotated__subject {
-  text-align: center;
-}
-`;
 
 /** An icon-only control whose `aria-label` is the name and whose tooltip is the description. */
 const iconTrigger = (name: string, label: string, size?: "sm"): UsageTree => ({

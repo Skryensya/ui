@@ -6,12 +6,11 @@ import "@skryensya/core/components/canvas.css";
 import "@skryensya/core/patterns/icon.css";
 import "@skryensya/core/patterns/nav-list.css";
 import * as demos from "@docs/demos/nav-list";
-import { annotationDemoCss } from "@docs/demos/annotation";
-import { treeStory, withCss, type Meta, type StoryObj } from "../tree-story";
+import { treeStory, type Meta, type StoryObj } from "../tree-story";
 
 export default { title: "Components/Navigation/Nav list", tags: ["autodocs"] } satisfies Meta;
 
-export const Anatomy: StoryObj = treeStory(demos.navListAnatomyTree, { decorators: [withCss(annotationDemoCss)] });
+export const Anatomy: StoryObj = treeStory(demos.navListAnatomyTree);
 export const Product: StoryObj = treeStory(demos.navListProductTree);
 export const Horizontal: StoryObj = treeStory(demos.navListHorizontalTree);
 export const Collapsible: StoryObj = treeStory(demos.navListCollapsibleTree);

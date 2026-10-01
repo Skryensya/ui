@@ -541,3 +541,78 @@ export const buttonAnatomyTree = (t: Translate): UsageTree => ({
     ],
   },
 });
+
+/*
+ * USAGE GUIDE PAIRS, each a row as it would sit in a real form or dialog footer.
+ */
+const row = (children: UsageTree[]): UsageTree => ({
+  contract: "layout",
+  signature: "Inline",
+  options: { gap: "sm", inlineAlign: "center" },
+  children,
+});
+
+/** One accent per region; the other action steps back to neutral. */
+export const buttonDoOnePrimaryTree = (t: Translate): UsageTree =>
+  row([
+    { contract: "button", signature: "Button.action", options: { variant: "soft" }, children: t("demo.button.cancel") },
+    { contract: "button", signature: "Button.action", options: { tone: "accent" }, children: t("demo.button.saveChanges") },
+  ]);
+
+/** Two solid accents side by side: both claim to be the main action. */
+export const buttonDontTwoPrimaryTree = (t: Translate): UsageTree =>
+  row([
+    { contract: "button", signature: "Button.action", options: { tone: "accent" }, children: t("demo.button.saveDraft") },
+    { contract: "button", signature: "Button.action", options: { tone: "accent" }, children: t("demo.button.saveChanges") },
+  ]);
+
+/** The destructive confirm names what is lost. */
+export const buttonDoCostTree = (t: Translate): UsageTree =>
+  row([
+    { contract: "button", signature: "Button.action", options: { variant: "soft" }, children: t("demo.button.cancel") },
+    { contract: "button", signature: "Button.action", options: { tone: "danger" }, children: t("demo.button.deleteForever") },
+  ]);
+
+/** The same confirm with a label that says nothing about the cost. */
+export const buttonDontOkTree = (t: Translate): UsageTree =>
+  row([
+    { contract: "button", signature: "Button.action", options: { variant: "soft" }, children: t("demo.button.cancel") },
+    { contract: "button", signature: "Button.action", options: { tone: "danger" }, children: t("demo.button.ok") },
+  ]);
+
+/** An irreversible confirmation must carry both danger meaning and solid emphasis. */
+export const buttonDoHardDeleteTree = (t: Translate): UsageTree =>
+  row([
+    { contract: "button", signature: "Button.action", options: { variant: "soft" }, children: t("demo.button.cancel") },
+    { contract: "button", signature: "Button.action", options: { variant: "solid", tone: "danger" }, children: t("demo.button.deleteForever") },
+  ]);
+
+/** A ghost destructive button is too quiet for the final irreversible confirmation. */
+export const buttonDontHardDeleteTree = (t: Translate): UsageTree =>
+  row([
+    { contract: "button", signature: "Button.action", options: { variant: "soft" }, children: t("demo.button.cancel") },
+    { contract: "button", signature: "Button.action", options: { variant: "ghost", tone: "danger" }, children: t("demo.button.deleteForever") },
+  ]);
+
+/** Keep the secondary action first and the primary action at the end of a familiar action row. */
+export const buttonDoPrimaryLastTree = (t: Translate): UsageTree =>
+  row([
+    { contract: "button", signature: "Button.action", options: { variant: "soft" }, children: t("demo.button.cancel") },
+    { contract: "button", signature: "Button.action", options: { tone: "accent" }, children: t("demo.button.saveChanges") },
+  ]);
+
+/** Reversing the row makes the primary action harder to find in the expected place. */
+export const buttonDontPrimaryFirstTree = (t: Translate): UsageTree =>
+  row([
+    { contract: "button", signature: "Button.action", options: { tone: "accent" }, children: t("demo.button.saveChanges") },
+    { contract: "button", signature: "Button.action", options: { variant: "soft" }, children: t("demo.button.cancel") },
+  ]);
+
+/** An icon-only button whose glyph is not universal: the reader has to guess. */
+export const buttonDontAmbiguousIconTree = (t: Translate): UsageTree => ({
+  contract: "button",
+  signature: "Button.action",
+  options: { iconOnly: true, tone: "accent" },
+  attrs: { "aria-label": t("demo.button.moreActions") },
+  children: { contract: "icon", signature: "Icon", options: { name: "more" } },
+});

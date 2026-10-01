@@ -9,12 +9,11 @@ import "@skryensya/core/components/input.css";
 import "@skryensya/core/components/typography.css";
 import "@skryensya/core/patterns/layout.css";
 import * as demos from "@docs/demos/clipboard";
-const { clipboardAnatomyCss } = demos;
-import { treeStory, withCss, type Meta, type StoryObj } from "../tree-story";
+import { treeStory, type Meta, type StoryObj } from "../tree-story";
 
 export default { title: "Components/Actions/Clipboard", tags: ["autodocs"] } satisfies Meta;
 
-export const Anatomy: StoryObj = treeStory(demos.clipboardAnatomyTree, { decorators: [withCss(clipboardAnatomyCss)] });
+export const Anatomy: StoryObj = treeStory(demos.clipboardAnatomyTree);
 export const Target: StoryObj = treeStory(demos.clipboardTargetTree);
 export const Field: StoryObj = treeStory(demos.clipboardFieldTree);
 export const Sizes: StoryObj = treeStory(demos.clipboardSizesTree);

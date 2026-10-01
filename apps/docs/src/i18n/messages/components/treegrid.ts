@@ -1,36 +1,54 @@
 export const treegridMessages = {
   es: {
 
-    "treegridPage.description": "Filas jerárquicas con columnas: expande o colapsa una sin perder el resto de sus valores.",
-    "treegridPage.betaBadge": "Beta",
-    "treegridPage.lede":
-      'Combina jerarquía y columnas a la vez: el patrón WAI-ARIA <code>treegrid</code>. Úsalo cuando cada fila necesita varios valores independientes ADEMÁS de su lugar en la jerarquía (un mensaje con remitente, un archivo con tamaño y fecha). Para una sola columna de texto jerárquico usa <a href="/es/componentes/tree-view">TreeView</a>; para columnas sin jerarquía, <a href="/es/componentes/table">Table</a>.',
-    "treegridPage.minimalTitle": "Bandeja de entrada",
+    "treegridPage.description": "Muestra filas anidadas con columnas: una jerarquía donde cada fila tiene varios datos.",
+
+    "treegridPage.key.homeEnd": "Va a la primera o a la última fila.",
+
+    "treegridPage.key.left": "En una fila abierta, la cierra; si no, pasa a su padre.",
+
+    "treegridPage.key.right": "En una fila cerrada, la abre; si no, pasa a la celda siguiente.",
+
+    "treegridPage.key.updown": "Pasa a la fila anterior o siguiente.",
+
+    "treegridPage.a11yYours1": "Nombra la cuadrícula con <code>label</code>.",
+
+    "treegridPage.a11yDoes3": "La cuadrícula es una sola parada de <kbd>Tab</kbd>; las flechas recorren filas y celdas.",
+
+    "treegridPage.a11yDoes2": "Las filas con hijos anuncian <code>aria-expanded</code>.",
+
+    "treegridPage.a11yDoes1": "Cada fila anuncia su nivel y su posición (<code>aria-level</code>, <code>aria-posinset</code>).",
+
+    "treegridPage.a11yIntro": "Treegrid sigue el patrón treegrid de la APG.",
+
+    "treegridPage.content2": "La primera columna nombra la fila: es la que se sangra.",
+
+    "treegridPage.content1": "Escribe encabezados cortos, con la unidad si hace falta: «Tamaño (MB)».",
+
+    "treegridPage.whenNot2": 'Para filas sin jerarquía: usa <a href="/es/componentes/table">Table</a> o <a href="/es/componentes/data-grid">DataGrid</a>.',
+
+    "treegridPage.whenNot1": 'Para una jerarquía con solo nombres: usa <a href="/es/componentes/tree-view">TreeView</a>.',
+
+    "treegridPage.when2": "Cuando conviene abrir solo las ramas que interesan sin perder las columnas.",
+
+    "treegridPage.when1": "Para una jerarquía donde cada fila tiene varios datos que se comparan.",
+
+    "treegridPage.contract4": "<code>resizableColumns</code> agrega un separador entre encabezados, como en Table.",
+
+    "treegridPage.contract3": "<code>expanded</code> solo va en una fila con hijos; su ausencia la marca como hoja.",
+
+    "treegridPage.contract2": "Las filas se escriben planas, en orden: el nivel lo dice <code>aria-level</code>, no el anidamiento.",
+
+    "treegridPage.contract1": 'Es un <code>&lt;table role="treegrid"&gt;</code> y exige <code>label</code>.',
+    "treegridPage.lede": "Treegrid muestra filas anidadas con columnas: una bandeja con hilos de mensajes, un explorador de archivos con tamaño y fecha, un presupuesto por partidas. Cada fila se abre y se cierra sin perder sus otros datos.",
+    "treegridPage.minimalTitle": "Bandeja: carpetas y mensajes",
     "treegridPage.anatomyBody":
       "Este diagrama nombra el scroll, la tabla, cabecera, cuerpo, filas, celdas y el disclosure. El espécimen está congelado; los Treegrid vivos empiezan abajo.",
     "treegridPage.anatomyLabel": "Anatomía de Treegrid",
     "treegridPage.anatomyPreviewLabel": "Treegrid, parte por parte",
-    "treegridPage.minimalBody":
-      "El ejemplo que la propia especificación WAI-ARIA usa: dos columnas (Asunto, De), una carpeta abierta con dos mensajes, una carpeta colapsada cuyo único mensaje queda oculto, y un mensaje suelto en la raíz.",
-    "treegridPage.minimalLabel": "Bandeja de entrada de ejemplo",
-    "treegridPage.contractItem1":
-      "Casi siempre envuelto en <code>TreegridScroll</code>: misma razón que <code>TableScroll</code>: un flex o un grid le da <code>min-size: auto</code>, y una grilla más ancha que su espacio revienta la superficie si nadie la envuelve.",
-    "treegridPage.contractItem2":
-      '<code>Treegrid</code> es un <code>&lt;table role="treegrid"&gt;</code> que EXIGE <code>label</code>: ese <code>role</code> no trae nombre accesible implícito, a diferencia de una tabla nativa.',
-    "treegridPage.contractItem3":
-      "<code>TreegridHead</code> / <code>TreegridHeadRow</code> / <code>TreegridColumnHeader</code> son encabezados de columna comunes: la misma forma que ya tiene <code>Table</code>.",
-    "treegridPage.contractItem4":
-      "Cada <code>TreegridRow</code> se autora PLANA, en el orden del documento: nunca anidada dentro de otra fila, un <code>&lt;tr&gt;</code> no puede contener otro <code>&lt;tr&gt;</code>. <code>level</code>, <code>setSize</code> y <code>posInset</code> son hechos propios que el autor ya conoce por escribir la fila en ese orden, no algo que el componente deriva.",
-    "treegridPage.contractItem5":
-      "<code>expanded</code> sólo se autoría en una fila que TIENE hijos: su ausencia, no un valor <code>false</code>, es lo que marca una fila como hoja. <code>true</code>/<code>false</code> controla si sus descendientes están visibles en este momento.",
-    "treegridPage.contractItem6":
-      'Cada <code>TreegridCell</code> es un <code>&lt;td role="gridcell"&gt;</code> común; la primera celda de una fila con hijos gana la sangría por CSS y un botón de apertura real que el binding inserta: nunca escrito a mano, y decorativo para el lector de pantalla (<code>aria-expanded</code> en la fila ya anuncia el estado).',
-    "treegridPage.contractItem7":
-      '<code>resizableColumns</code> (apagada por defecto) inserta un separador <code>role="separator"</code> real entre cada par de encabezados: el mismo primitivo compartido de <code>@skryensya/core/splitter</code> que usa el separador de <code>Sidebar</code>. Exige <code>resizeLabel</code>: el separador es binding-insertado, así que nada más lo nombra para un lector de pantalla.',
+    "treegridPage.minimalBody": "Dos columnas, Asunto y De; una carpeta abierta y otra cerrada.",
     "treegridPage.hooksBody":
       "La sangría por nivel y el ancho reservado para el glyph de apertura son hooks: <code>--sk-treegrid-indent</code> y <code>--sk-treegrid-indicator-size</code>.",
-    "treegridPage.a11yBody":
-      'Cada fila lleva <code>role="row"</code> con <code>aria-level</code>/<code>aria-setsize</code>/<code>aria-posinset</code>: hechos ESTÁTICOS que no cambian al colapsar un hermano, sólo la visibilidad cambia: y <code>aria-expanded</code> únicamente si tiene hijos. Cada celda lleva <code>role="gridcell"</code>. El foco es roving: una sola fila o celda es la parada de tabulación en toda la grilla. <kbd class="sk-kbd">→</kbd> expande una rama colapsada o entra a su primera celda; <kbd class="sk-kbd">←</kbd> colapsa una rama abierta o sube a la fila padre; <kbd class="sk-kbd">↑</kbd>/<kbd class="sk-kbd">↓</kbd> mueven entre filas visibles; <kbd class="sk-kbd">Home</kbd>/<kbd class="sk-kbd">End</kbd> y <kbd class="sk-kbd">Ctrl</kbd>+<kbd class="sk-kbd">Home</kbd>/<kbd class="sk-kbd">End</kbd> saltan al principio/final; <kbd class="sk-kbd">Enter</kbd> alterna una rama con foco de fila o activa cualquier otro foco. Esta versión es fiel al ejemplo base de WAI (<code>treegrid-1</code>): celdas de solo texto, sin control interactivo propio dentro de una celda: por eso <kbd class="sk-kbd">Tab</kbd> siempre sale de la grilla, sin nada que interceptar.',
     "treegridPage.testVanilla1":
       "Al montar, esconde el único hijo de la rama que arranca colapsada.",
     "treegridPage.testVanilla2":
@@ -43,10 +61,8 @@ export const treegridMessages = {
       "Flecha izquierda sobre una rama abierta la colapsa y esconde a sus hijos.",
     "treegridPage.testReact3": "Enter activa una fila hoja con foco.",
 
-    "treegridPage.stressTitle": "Explorador de archivos (stress test)",
-    "treegridPage.stressBody":
-      "Cuatro columnas en vez de dos, contenido largo que fuerza el elipsis en más de una columna, siete niveles de profundidad (los cinco primeros con regla CSS propia, el sexto y el séptimo cayendo al tope compartido), ramas colapsadas en más de un nivel a la vez: incluida una en la raíz: y <code>resizableColumns</code>: arrastra o usa las flechas sobre el borde de un encabezado para redimensionar el par de columnas a los lados.",
-    "treegridPage.stressLabel": "Explorador de archivos de ejemplo",
+    "treegridPage.stressTitle": "Explorador: siete niveles y cuatro columnas",
+    "treegridPage.stressBody": "Nombres largos que se cortan, niveles profundos y columnas ajustables.",
 
     "demo.treegrid.label": "Mensajes",
     "demo.treegrid.subject": "Asunto",
@@ -105,45 +121,61 @@ export const treegridMessages = {
     "demo.treegrid.dd.guide": "Guía",
     "demo.treegrid.dd.faq": "Preguntas frecuentes",
     "demo.treegrid.dd.assets": "Recursos",
-    "treegridPage.showcaseTitle": "Showcases",
-    "treegridPage.showcaseBody": "Una bandeja con hilos anidados, y una estructura profunda con columnas ajustables.",
-    "treegridPage.guidelinesLede": "Treegrid es una tabla cuyas filas se anidan: jerarquía y columnas a la vez.",
-    "treegridPage.dd.columns.title": "Solo si hay columnas",
+    "treegridPage.guidelinesLede": "Jerarquía y columnas a la vez: úsalo solo cuando hacen falta las dos.",
+    "treegridPage.dd.columns.title": "Columnas: solo si las hay",
     "treegridPage.dd.columns.do": "Úsalo cuando cada fila tiene varios datos que se comparan en columnas.",
-    "treegridPage.dd.columns.dont": "Una sola columna de nombres es un árbol: usa <a href=\"/es/componentes/tree-view\">TreeView</a>.",
+    "treegridPage.dd.columns.dont": 'Una sola columna de nombres es un árbol: usa <a href="/es/componentes/tree-view">TreeView</a>.',
   },
   en: {
 
-    "treegridPage.description": "Hierarchical rows with columns: expand or collapse one without losing the rest of its values.",
-    "treegridPage.betaBadge": "Beta",
-    "treegridPage.lede":
-      'Combines hierarchy and columns at once: the WAI-ARIA <code>treegrid</code> pattern. Use it when every row needs several independent values IN ADDITION to its place in the hierarchy (a message with a sender, a file with a size and a date). For a single column of hierarchical text use <a href="/components/tree-view">TreeView</a>; for columns with no hierarchy, <a href="/components/table">Table</a>.',
-    "treegridPage.minimalTitle": "Inbox",
+    "treegridPage.description": "Shows nested rows with columns: a hierarchy where each row has several data points.",
+
+    "treegridPage.key.homeEnd": "Goes to the first or last row.",
+
+    "treegridPage.key.left": "On an open row, closes it; otherwise moves to its parent.",
+
+    "treegridPage.key.right": "On a closed row, opens it; otherwise moves to the next cell.",
+
+    "treegridPage.key.updown": "Moves to the previous or next row.",
+
+    "treegridPage.a11yYours1": "Name the grid with <code>label</code>.",
+
+    "treegridPage.a11yDoes3": "The grid is a single <kbd>Tab</kbd> stop; the arrows move through rows and cells.",
+
+    "treegridPage.a11yDoes2": "Rows with children announce <code>aria-expanded</code>.",
+
+    "treegridPage.a11yDoes1": "Each row announces its level and position (<code>aria-level</code>, <code>aria-posinset</code>).",
+
+    "treegridPage.a11yIntro": "Treegrid follows the APG treegrid pattern.",
+
+    "treegridPage.content2": "The first column names the row: it is the one indented.",
+
+    "treegridPage.content1": "Write short headers, with the unit if needed: “Size (MB)”.",
+
+    "treegridPage.whenNot2": 'For rows without hierarchy: use <a href="/components/table">Table</a> or <a href="/components/data-grid">DataGrid</a>.',
+
+    "treegridPage.whenNot1": 'For a hierarchy of names only: use <a href="/components/tree-view">TreeView</a>.',
+
+    "treegridPage.when2": "When it helps to open only the branches of interest without losing the columns.",
+
+    "treegridPage.when1": "For a hierarchy where each row has several data points to compare.",
+
+    "treegridPage.contract4": "<code>resizableColumns</code> adds a separator between headers, as in Table.",
+
+    "treegridPage.contract3": "<code>expanded</code> only goes on a row with children; its absence marks a leaf.",
+
+    "treegridPage.contract2": "Rows are written flat, in order: <code>aria-level</code> gives the level, not nesting.",
+
+    "treegridPage.contract1": 'It is a <code>&lt;table role="treegrid"&gt;</code> and requires a <code>label</code>.',
+    "treegridPage.lede": "Treegrid shows nested rows with columns: an inbox with message threads, a file explorer with size and date, a budget by line item. Each row opens and closes without losing its other data.",
+    "treegridPage.minimalTitle": "Inbox: folders and messages",
     "treegridPage.anatomyBody":
       "This diagram names the scroll, the table, head, body, rows, cells and the disclosure. The specimen is frozen; the live Treegrids begin below.",
     "treegridPage.anatomyLabel": "Treegrid anatomy",
     "treegridPage.anatomyPreviewLabel": "Treegrid, part by part",
-    "treegridPage.minimalBody":
-      "The exact example the WAI-ARIA spec itself uses: two columns (Subject, From), a folder that starts open with two messages, a collapsed folder whose one message stays hidden, and a loose message at the root.",
-    "treegridPage.minimalLabel": "Sample inbox",
-    "treegridPage.contractItem1":
-      "Almost always wrapped in <code>TreegridScroll</code>: the same reason as <code>TableScroll</code>: a flex or grid parent gives it <code>min-size: auto</code>, and a grid wider than its space blows the surface open if nothing wraps it.",
-    "treegridPage.contractItem2":
-      '<code>Treegrid</code> is a <code>&lt;table role="treegrid"&gt;</code> that REQUIRES <code>label</code>: that role carries no implicit accessible name, unlike a native table.',
-    "treegridPage.contractItem3":
-      "<code>TreegridHead</code> / <code>TreegridHeadRow</code> / <code>TreegridColumnHeader</code> are plain column headers: the same shape <code>Table</code> already has.",
-    "treegridPage.contractItem4":
-      "Each <code>TreegridRow</code> is authored FLAT, in document order: never nested inside another row, a <code>&lt;tr&gt;</code> cannot contain a <code>&lt;tr&gt;</code>. <code>level</code>, <code>setSize</code>, and <code>posInset</code> are facts the author already knows from writing the row in that order, not something the component derives.",
-    "treegridPage.contractItem5":
-      "<code>expanded</code> is only authored on a row that HAS children: its absence, not a <code>false</code> value, is what marks a row a leaf. <code>true</code>/<code>false</code> controls whether its descendants are currently visible.",
-    "treegridPage.contractItem6":
-      'Each <code>TreegridCell</code> is a plain <code>&lt;td role="gridcell"&gt;</code>; the first cell of a row with children gets the indent from CSS and a real disclosure button the binding inserts: never authored, and decorative to a screen reader (the row\'s own <code>aria-expanded</code> already announces the state).',
-    "treegridPage.contractItem7":
-      '<code>resizableColumns</code> (off by default) inserts a real <code>role="separator"</code> between every pair of column headers: the same shared <code>@skryensya/core/splitter</code> primitive Sidebar\'s own separator uses. Requires <code>resizeLabel</code>: the separator is binding-inserted, so nothing else names it for a screen reader.',
+    "treegridPage.minimalBody": "Two columns, Subject and From; one folder open and one closed.",
     "treegridPage.hooksBody":
       "Per-level indent and the width reserved for the disclosure glyph are hooks: <code>--sk-treegrid-indent</code> and <code>--sk-treegrid-indicator-size</code>.",
-    "treegridPage.a11yBody":
-      'Every row carries <code>role="row"</code> with <code>aria-level</code>/<code>aria-setsize</code>/<code>aria-posinset</code>: STATIC facts that never change when a sibling collapses, only visibility does: plus <code>aria-expanded</code> only when it has children. Every cell carries <code>role="gridcell"</code>. Focus is roving: a single row or cell is the tab stop for the whole grid. <kbd class="sk-kbd">→</kbd> expands a collapsed branch or enters its first cell; <kbd class="sk-kbd">←</kbd> collapses an open branch or moves up to the parent row; <kbd class="sk-kbd">↑</kbd>/<kbd class="sk-kbd">↓</kbd> move between visible rows; <kbd class="sk-kbd">Home</kbd>/<kbd class="sk-kbd">End</kbd> and <kbd class="sk-kbd">Ctrl</kbd>+<kbd class="sk-kbd">Home</kbd>/<kbd class="sk-kbd">End</kbd> jump to the start/end; <kbd class="sk-kbd">Enter</kbd> toggles a branch with row focus, or activates any other focus. This version is faithful to WAI\'s base example (<code>treegrid-1</code>): text-only cells, no interactive control of its own inside a cell: which is why <kbd class="sk-kbd">Tab</kbd> always just leaves the grid, with nothing to intercept.',
     "treegridPage.testVanilla1":
       "On mount, hides the one child of the branch that starts collapsed.",
     "treegridPage.testVanilla2":
@@ -156,10 +188,8 @@ export const treegridMessages = {
       "Left Arrow on an open branch collapses it and hides its children.",
     "treegridPage.testReact3": "Enter activates a focused leaf row.",
 
-    "treegridPage.stressTitle": "File explorer (stress test)",
-    "treegridPage.stressBody":
-      "Four columns instead of two, long content that forces ellipsis in more than one column, seven levels deep (the first five with their own CSS rule, the sixth and seventh falling back to the shared ceiling), collapsed branches at more than one level at once: including one at the root: and <code>resizableColumns</code>: drag or use the arrow keys on a header's edge to resize the pair of columns on either side.",
-    "treegridPage.stressLabel": "Sample file explorer",
+    "treegridPage.stressTitle": "Explorer: seven levels and four columns",
+    "treegridPage.stressBody": "Long names that truncate, deep levels and adjustable columns.",
 
     "demo.treegrid.label": "Messages",
     "demo.treegrid.subject": "Subject",
@@ -218,11 +248,9 @@ export const treegridMessages = {
     "demo.treegrid.dd.guide": "Guide",
     "demo.treegrid.dd.faq": "FAQ",
     "demo.treegrid.dd.assets": "Assets",
-    "treegridPage.showcaseTitle": "Showcases",
-    "treegridPage.showcaseBody": "An inbox with nested threads, and a deep structure with resizable columns.",
-    "treegridPage.guidelinesLede": "Treegrid is a table whose rows nest: hierarchy and columns at once.",
-    "treegridPage.dd.columns.title": "Only when there are columns",
+    "treegridPage.guidelinesLede": "Hierarchy and columns at once: use it only when both are needed.",
+    "treegridPage.dd.columns.title": "Columns: only if there are some",
     "treegridPage.dd.columns.do": "Use it when each row has several values compared across columns.",
-    "treegridPage.dd.columns.dont": "A single column of names is a tree: use <a href=\"/components/tree-view\">TreeView</a>.",
+    "treegridPage.dd.columns.dont": 'A single column of names is a tree: use <a href="/components/tree-view">TreeView</a>.',
   },
 } as const;

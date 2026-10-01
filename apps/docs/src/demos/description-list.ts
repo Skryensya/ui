@@ -112,3 +112,109 @@ export const descriptionListRichTree = (t: Translate): UsageTree => ({
     },
   ],
 });
+
+/* Usage guide: three orders crammed into one list, so every name repeats and the rows have to be
+   compared across records, which is a table's job. */
+export const descriptionListDontManyTree = (t: Translate): UsageTree => ({
+  contract: "description-list",
+  signature: "DescriptionList",
+  options: { dividers: true },
+  children: ["#4821", "#4822", "#4823"].flatMap((order, index) => [
+    { contract: "description-list", signature: "DescriptionItem", slots: { term: t("demo.descriptionList.order.term"), children: order } },
+    {
+      contract: "description-list",
+      signature: "DescriptionItem",
+      slots: { term: t("demo.descriptionList.total.term"), children: ["$38.990", "$12.400", "$7.250"][index]! },
+    },
+  ]),
+});
+
+/** Long terms need the stacked layout rather than a squeezed shared-looking label column. */
+export const descriptionListLongTermsTree = (t: Translate): UsageTree => ({
+  contract: "description-list",
+  signature: "DescriptionList",
+  children: [
+    item(t, "demo.descriptionList.longTerm1", "demo.descriptionList.longValue1"),
+    item(t, "demo.descriptionList.longTerm2", "demo.descriptionList.longValue2"),
+  ],
+});
+
+export const descriptionListDontLongTermsTree = (t: Translate): UsageTree => ({
+  ...descriptionListLongTermsTree(t),
+  options: { layout: "columns" },
+});
+
+/** Precise values retain their units; naked numbers lose their meaning. */
+export const descriptionListUnitsTree = (t: Translate): UsageTree => ({
+  contract: "description-list",
+  signature: "DescriptionList",
+  children: [item(t, "demo.descriptionList.spec.size.term", "demo.descriptionList.spec.size.value")],
+});
+
+export const descriptionListDontUnitsTree = (t: Translate): UsageTree => ({
+  contract: "description-list",
+  signature: "DescriptionList",
+  children: [{
+    contract: "description-list",
+    signature: "DescriptionItem",
+    slots: { term: t("demo.descriptionList.spec.size.term"), children: t("demo.descriptionList.spec.sizeBare") },
+  }],
+});
+
+/** Explicitly name unavailable data instead of leaving an empty value. */
+export const descriptionListMissingTree = (t: Translate): UsageTree => ({
+  contract: "description-list",
+  signature: "DescriptionList",
+  children: [item(t, "demo.descriptionList.tracking.term", "demo.descriptionList.missingValue")],
+});
+
+export const descriptionListDontMissingTree = (t: Translate): UsageTree => ({
+  contract: "description-list",
+  signature: "DescriptionList",
+  children: [{
+    contract: "description-list",
+    signature: "DescriptionItem",
+    slots: { term: t("demo.descriptionList.tracking.term"), children: "" },
+  }],
+});
+
+/** Keep terms concise so they scan as labels, not as another paragraph. */
+export const descriptionListShortTermsTree = (t: Translate): UsageTree => ({
+  contract: "description-list",
+  signature: "DescriptionList",
+  children: [item(t, "demo.descriptionList.order.term", "demo.descriptionList.order.value")],
+});
+
+export const descriptionListDontLongLabelTree = (t: Translate): UsageTree => ({
+  contract: "description-list",
+  signature: "DescriptionList",
+  children: [{
+    contract: "description-list",
+    signature: "DescriptionItem",
+    slots: { term: t("demo.descriptionList.longLabel"), children: t("demo.descriptionList.order.value") },
+  }],
+});
+
+/** A value can be a real link when it names a destination the reader may follow. */
+export const descriptionListLinkedValueTree = (t: Translate): UsageTree => ({
+  contract: "description-list",
+  signature: "DescriptionList",
+  children: [{
+    contract: "description-list",
+    signature: "DescriptionItem",
+    slots: {
+      term: t("demo.descriptionList.tracking.term"),
+      children: { contract: "typography", signature: "Link", options: { href: "https://example.org/t/4821" }, children: t("demo.descriptionList.tracking.value") },
+    },
+  }],
+});
+
+export const descriptionListDontLinkedValueTree = (t: Translate): UsageTree => ({
+  contract: "description-list",
+  signature: "DescriptionList",
+  children: [{
+    contract: "description-list",
+    signature: "DescriptionItem",
+    slots: { term: t("demo.descriptionList.tracking.term"), children: "https://example.org/t/4821" },
+  }],
+});

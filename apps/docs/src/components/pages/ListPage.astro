@@ -8,11 +8,17 @@ import "@skryensya/core/components/badge.css";
 import "@skryensya/core/components/annotation.css";
 import ComponentPageShell from "./ComponentPageShell.astro";
 import CodeBlock from "../CodeBlock.astro";
-import ComponentPreview from "../ComponentPreview.astro";
 import UsagePreview from "../UsagePreview.astro";
 import DoDont from "../DoDont.astro";
+import WhenToUse from "../WhenToUse.astro";
+import ContentRules from "../ContentRules.astro";
+import A11yNotes from "../A11yNotes.astro";
 import {
   listAnatomyTree,
+  listDoComparableTrailingTree,
+  listDoSameShapeTree,
+  listDontBuriedValuesTree,
+  listDontMixedShapeTree,
   listDontParagraphsTree,
   listFullTree,
   listLeadingTree,
@@ -22,9 +28,15 @@ import {
   listTrailingTree,
 } from "../../demos/list";
 import { annotationDemoCss } from "../../demos/annotation";
-import { getLocale, useTranslations } from "../../i18n";
+import { getLocale, tList, useTranslations } from "../../i18n";
 
+/* The reading measure the old previews set with `measure`: a list row wider than this reads as a table. */
+const listMeasureCss = `.sk-list { max-inline-size: 34rem; margin-inline: auto; }`;
 const t = useTranslations(getLocale(Astro.url));
+const measured = <T extends { attrs?: Record<string, unknown> }>(tree: T): T => ({
+  ...tree,
+  attrs: { ...tree.attrs, style: `${typeof tree.attrs?.style === "string" ? `${tree.attrs.style} ` : ""}inline-size: min(100%, 34rem);` },
+});
 /* Both link demos point at real docs routes, and a docs route differs per locale. */
 const LINK_HREFS = ["/prerequisites", "/first-component", "/presets", "/reference", "/tiers"];
 const TEAM_HREFS = ["/equipo/john-doe", "/equipo/jane-doe", "/equipo/richard-roe", "/equipo/mary-major"];
@@ -41,7 +53,7 @@ const explain = (option: string, values: readonly string[]) =>
   title="List"
   description={t("listPage.description")}
   contractId="list"
-  testFiles={["packages/react/src/components/list.test.tsx"]}}
+  testFiles={["packages/react/src/components/list.test.tsx"]}
 >
   <Fragment slot="usage">
     <p class="lede" set:html={t("listPage.lede")} />
@@ -56,70 +68,60 @@ const explain = (option: string, values: readonly string[]) =>
       labels={{ false: t("listPage.prop.dividers.falseLabel"), true: t("listPage.prop.dividers.trueLabel") }}
     />
 
-    <h3>{t("listPage.showcaseTitle")}</h3>
-    <p set:html={t("listPage.showcaseBody")} />
-    <h3>{t("listPage.stepsTitle")}</h3>
+    <h3>{t("component.examplesTitle")}</h3>
     <p set:html={t("listPage.stepsBody")} />
-
-    <h4>{t("listPage.step1Title")}</h4>
-    <p set:html={t("listPage.step1Body")} />
-    <ComponentPreview tree={listPlainTree(t)} label={t("listPage.step1Title")} note={t("listPage.step1Note")} />
-
-    <h4>{t("listPage.step2Title")}</h4>
-    <p set:html={t("listPage.step2Body")} />
-    <ComponentPreview tree={listTitledTree(t)} label={t("listPage.step2Title")} note={t("listPage.step2Note")} measure="34rem" />
-
-    <h4>{t("listPage.step3Title")}</h4>
-    <p set:html={t("listPage.step3Body")} />
-    <ComponentPreview tree={listLeadingTree(t)} label={t("listPage.step3Title")} note={t("listPage.step3Note")} measure="34rem" />
-
-    <h4>{t("listPage.step4Title")}</h4>
-    <p set:html={t("listPage.step4Body")} />
-    <ComponentPreview tree={listTrailingTree(t)} label={t("listPage.step4Title")} note={t("listPage.step4Note")} measure="34rem" />
-
-    <h4>{t("listPage.step5Title")}</h4>
-    <p set:html={t("listPage.step5Body")} />
-    <ComponentPreview tree={listLinksTree(t, LINK_HREFS)} label={t("listPage.step5Title")} note={t("listPage.step5Note")} measure="34rem" />
-
-    <h4>{t("listPage.step6Title")}</h4>
-    <p set:html={t("listPage.step6Body")} />
-    <ComponentPreview tree={listFullTree(t, TEAM_HREFS)} label={t("listPage.step6Title")} note={t("listPage.step6Note")} measure="34rem" />
+    <UsagePreview tree={listPlainTree(t)} css={listMeasureCss} title={t("listPage.step1Title")} description={t("listPage.step1Body")} />
+    <UsagePreview tree={listTitledTree(t)} css={listMeasureCss} title={t("listPage.step2Title")} description={t("listPage.step2Body")} />
+    <UsagePreview tree={listLeadingTree(t)} css={listMeasureCss} title={t("listPage.step3Title")} description={t("listPage.step3Body")} />
+    <UsagePreview tree={listTrailingTree(t)} css={listMeasureCss} title={t("listPage.step4Title")} description={t("listPage.step4Body")} />
+    <UsagePreview tree={listLinksTree(t, LINK_HREFS)} css={listMeasureCss} title={t("listPage.step5Title")} description={t("listPage.step5Body")} />
+    <UsagePreview tree={listFullTree(t, TEAM_HREFS)} css={listMeasureCss} title={t("listPage.step6Title")} description={t("listPage.step6Body")} />
 
     <h3>{t("component.contractNotesTitle")}</h3>
     <ul>
-      <li set:html={t("listPage.contractItem1")} />
-      <li set:html={t("listPage.contractItem2")} />
-      <li set:html={t("listPage.contractItem3")} />
-      <li set:html={t("listPage.contractItem4")} />
-      <li set:html={t("listPage.contractItem5")} />
-      <li set:html={t("listPage.contractItem6")} />
-      <li set:html={t("listPage.contractItem7")} />
+      {tList(t, "listPage.contract").map((item) => <li set:html={item} />)}
     </ul>
 
     <h3>{t("component.anatomy")}</h3>
     <p set:html={t("listPage.anatomyBody")} />
-    <ComponentPreview
-      tree={listAnatomyTree(t)}
-      css={annotationDemoCss}
-      label={t("listPage.anatomyPreviewLabel")}
-      screens={false}
-      hideSource
-      chrome={false}
-    />
+    <UsagePreview tree={listAnatomyTree(t)} css={annotationDemoCss} label={t("listPage.anatomyPreviewLabel")} bare />
   </Fragment>
 
   <Fragment slot="guidelines">
     <p class="lede" set:html={t("listPage.guidelinesLede")} />
+    <WhenToUse use={tList(t, "listPage.when")} avoid={tList(t, "listPage.whenNot")} />
     <DoDont
       title={t("listPage.dd.short.title")}
-      do={{ tree: listPlainTree(t), caption: t("listPage.dd.short.do") }}
-      dont={{ tree: listDontParagraphsTree(t), caption: t("listPage.dd.short.dont") }}
+      do={{ tree: measured(listTitledTree(t)), caption: t("listPage.dd.short.do") }}
+      dont={{ tree: measured(listDontParagraphsTree(t)), caption: t("listPage.dd.short.dont") }}
     />
+    <DoDont
+      title={t("listPage.dd.shape.title")}
+      do={{ tree: measured(listDoSameShapeTree(t)), caption: t("listPage.dd.shape.do") }}
+      dont={{ tree: measured(listDontMixedShapeTree(t)), caption: t("listPage.dd.shape.dont") }}
+    />
+    <DoDont
+      title={t("listPage.dd.trailing.title")}
+      do={{ tree: measured(listDoComparableTrailingTree(t)), caption: t("listPage.dd.trailing.do") }}
+      dont={{ tree: measured(listDontBuriedValuesTree(t)), caption: t("listPage.dd.trailing.dont") }}
+    />
+    <ContentRules items={tList(t, "listPage.content")} />
   </Fragment>
 
   <Fragment slot="install">
     <CodeBlock code={install} label="terminal" />
     <CodeBlock code={styles} label="CSS" />
+  </Fragment>
+  <Fragment slot="a11y">
+    <A11yNotes
+      intro={t("listPage.a11yIntro")}
+      does={tList(t, "listPage.a11yDoes")}
+      yours={tList(t, "listPage.a11yYours")}
+      keys={[
+        { keys: ["Tab", "Shift+Tab"], action: t("listPage.a11yKeyTab") },
+        { keys: ["Enter"], action: t("listPage.a11yKeyEnter") },
+      ]}
+    />
   </Fragment>
 </ComponentPageShell>
 

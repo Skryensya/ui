@@ -44,6 +44,12 @@
   color: var(--color-text-tertiary);
 }
 
+/* A canvas fills the stage edge to edge, so its zoom bar lands in the very corner the link sits in.
+   Only then does the stage give the link its own row. */
+.sk-preview-section:not(.sk-usage-preview--controlled) .sk-preview-card:has(> .sk-preview-card__code-link) .sk-preview-card__stage:has(.sk-canvas) {
+  padding-block-start: calc(2rem + var(--space-inset-md));
+}
+
 .sk-preview-card .sk-preview-card__code-link:hover {
   background: var(--color-bg-surface-sunken);
   color: var(--color-text-secondary);

@@ -12,12 +12,24 @@ import "@skryensya/core/patterns/image-frame.css";
 import ComponentPageShell from "./ComponentPageShell.astro";
 import AppearanceMenu from "../AppearanceMenu.astro";
 import CodeBlock from "../CodeBlock.astro";
-import ComponentPreview from "../ComponentPreview.astro";
+import UsagePreview from "../UsagePreview.astro";
+import DoDont from "../DoDont.astro";
+import WhenToUse from "../WhenToUse.astro";
+import ContentRules from "../ContentRules.astro";
+import A11yNotes from "../A11yNotes.astro";
 import {
   folderActiveTree,
+  folderAlbumsTree,
   folderAppearanceTree,
   folderAnatomyCss,
   folderAnatomyTree,
+  folderDoCollectionTree,
+  folderDoNamesTree,
+  folderDoSameKindTree,
+  folderDontMixedKindTree,
+  folderDontNamesTree,
+  folderDontSingleTree,
+  folderFilesTree,
   folderPlainTree,
   folderRaisedTree,
   folderSunkenTree,
@@ -25,9 +37,13 @@ import {
 } from "../../demos/folder";
 import { annotationDemoCss } from "../../demos/annotation";
 import { onAppearanceStage } from "../../lib/frost-stage";
-import { getLocale, useTranslations } from "../../i18n";
+import { getLocale, tList, useTranslations } from "../../i18n";
 
 const t = useTranslations(getLocale(Astro.url));
+
+const storybookTitle = "Components/Content/Folder";
+const explain = (option: string, values: readonly string[]) =>
+  Object.fromEntries(values.map((value) => [value, t(`folderPage.prop.${option}.${value}` as Parameters<typeof t>[0])]));
 
 const styles = `@import "@skryensya/core/components/folder.css";
 
@@ -44,7 +60,7 @@ mountFolder();`;
   description={t("folderPage.description")}
   contractId="folder"
   appearanceTargetSelector=".sk-folder"
-  testFiles={["packages/core/src/folder.test.ts", "packages/react/src/components/folder.test.tsx", "packages/vanilla/src/components/folder.test.ts"]}}
+  testFiles={["packages/core/src/folder.test.ts", "packages/react/src/components/folder.test.tsx", "packages/vanilla/src/components/folder.test.ts"]}
 >
   <Fragment slot="appearance">
     <AppearanceMenu label={t("prefs.appearance")} />
@@ -53,62 +69,65 @@ mountFolder();`;
   <Fragment slot="usage">
     <p class="lede" set:html={t("folderPage.lede")} />
 
-    <h3>{t("folderPage.showcaseTitle")}</h3>
-    <p set:html={t("folderPage.showcaseBody")} />
-    <ComponentPreview tree={folderTree(t)} js={js} label="FolderStack" viewport="auto" />
+    <UsagePreview
+      tree={folderAppearanceTree(t)}
+      optionName="active"
+      target={["children", "children", 0]}
+      title={t("folderPage.prop.active.title")}
+      description={t("folderPage.prop.active.body")}
+      explain={explain("active", ["false", "true"])}
+      stageMinBlockSize="18rem"
+      storybookTitle={storybookTitle}
+      storybookStory="Appearance"
+    />
 
-    <h3>{t("folderPage.revealTitle")}</h3>
-    <p set:html={t("folderPage.revealBody")} />
-
-    <h3>{t("folderPage.previewsTitle")}</h3>
-    <p set:html={t("folderPage.previewsBody")} />
-    <ComponentPreview tree={folderPlainTree(t)} js={js} label={t("folderPage.plainLabel")} viewport="auto" />
-
-    <h3>{t("folderPage.touchTitle")}</h3>
-    <p set:html={t("folderPage.touchBody")} />
-    <ComponentPreview tree={folderActiveTree(t)} js={js} label={t("folderPage.touchLabel")} viewport="auto" />
-
-    <h3>{t("folderPage.groundTitle")}</h3>
-    <p set:html={t("folderPage.groundBody")} />
-    <ComponentPreview tree={folderSunkenTree(t)} js={js} label={t("folderPage.groundSunkenLabel")} viewport="auto" />
-    <ComponentPreview tree={folderRaisedTree(t)} js={js} label={t("folderPage.groundRaisedLabel")} viewport="auto" />
-
-    <h3>{t("folderPage.appearanceTitle")}</h3>
-    <p set:html={t("folderPage.appearanceBody")} />
-    {/* The ONE example on a backdrop, for frosted. It follows the appearance switch like the rest. */}
-    <ComponentPreview tree={onAppearanceStage(folderAppearanceTree(t))} js={js} label={t("folderPage.appearanceLabel")} viewport="auto" />
-
-    <h3>{t("folderPage.shapeTitle")}</h3>
-    <p set:html={t("folderPage.shapeBody")} />
+    <h3>{t("component.examplesTitle")}</h3>
+    <UsagePreview tree={folderTree(t)} title={t("folderPage.stackTitle")} description={t("folderPage.stackBody")} stageMinBlockSize="24rem" storybookTitle={storybookTitle} storybookStory="Default" />
+    <UsagePreview tree={folderAlbumsTree(t)} title={t("folderPage.albumsTitle")} description={t("folderPage.albumsBody")} stageMinBlockSize="24rem" />
+    <UsagePreview tree={folderFilesTree(t)} title={t("folderPage.filesTitle")} description={t("folderPage.filesBody")} stageMinBlockSize="22rem" />
+    <UsagePreview tree={folderPlainTree(t)} title={t("folderPage.previewsTitle")} description={t("folderPage.previewsBody")} stageMinBlockSize="22rem" storybookTitle={storybookTitle} storybookStory="Plain" />
+    <UsagePreview tree={folderActiveTree(t)} title={t("folderPage.touchTitle")} description={t("folderPage.touchBody")} stageMinBlockSize="24rem" storybookTitle={storybookTitle} storybookStory="Active" />
+    <UsagePreview tree={folderSunkenTree(t)} title={t("folderPage.groundTitle")} description={t("folderPage.groundBody")} storybookTitle={storybookTitle} storybookStory="Sunken" />
+    <UsagePreview tree={folderRaisedTree(t)} storybookTitle={storybookTitle} storybookStory="Raised" />
+    <UsagePreview tree={onAppearanceStage(folderAppearanceTree(t))} title={t("folderPage.appearanceTitle")} description={t("folderPage.appearanceBody")} stageMinBlockSize="18rem" />
 
     <h3>{t("component.contractNotesTitle")}</h3>
     <ul>
-      <li set:html={t("folderPage.contractItem1")} />
-      <li set:html={t("folderPage.contractItem2")} />
-      <li set:html={t("folderPage.contractItem3")} />
-      <li set:html={t("folderPage.contractItem4")} />
+      {tList(t, "folderPage.contract").map((item) => <li set:html={item} />)}
     </ul>
 
     <h3>{t("component.anatomy")}</h3>
     <p set:html={t("folderPage.anatomyBody")} />
-    <ComponentPreview
+    <UsagePreview
       tree={folderAnatomyTree(t)}
       css={`${annotationDemoCss}\n${folderAnatomyCss}`}
-      js={js}
       label={t("folderPage.anatomyPreviewLabel")}
-      screens={false}
-      hideSource
-      chrome={false}
+      bare
     />
   </Fragment>
 
   <Fragment slot="guidelines">
     <p class="lede" set:html={t("folderPage.guidelinesLede")} />
-    <ul>
-      <li set:html={t("folderPage.guide.use1")} />
-      <li set:html={t("folderPage.guide.use2")} />
-      <li set:html={t("folderPage.guide.avoid1")} />
-    </ul>
+    <WhenToUse use={tList(t, "folderPage.when")} avoid={tList(t, "folderPage.whenNot")} />
+    <DoDont
+      canvas
+      title={t("folderPage.dd.collection.title")}
+      do={{ tree: folderDoCollectionTree(t), caption: t("folderPage.dd.collection.do") }}
+      dont={{ tree: folderDontSingleTree(t), caption: t("folderPage.dd.collection.dont") }}
+    />
+    <DoDont
+      canvas
+      title={t("folderPage.dd.names.title")}
+      do={{ tree: folderDoNamesTree(t), caption: t("folderPage.dd.names.do") }}
+      dont={{ tree: folderDontNamesTree(t), caption: t("folderPage.dd.names.dont") }}
+    />
+    <DoDont
+      canvas
+      title={t("folderPage.dd.kind.title")}
+      do={{ tree: folderDoSameKindTree(t), caption: t("folderPage.dd.kind.do") }}
+      dont={{ tree: folderDontMixedKindTree(t), caption: t("folderPage.dd.kind.dont") }}
+    />
+    <ContentRules items={tList(t, "folderPage.content")} />
   </Fragment>
 
   <Fragment slot="install">
@@ -117,11 +136,6 @@ mountFolder();`;
   </Fragment>
 
   <Fragment slot="a11y">
-    <p set:html={t("folderPage.a11yBody")} />
-    <ul>
-      <li set:html={t("folderPage.a11yItem1")} />
-      <li set:html={t("folderPage.a11yItem2")} />
-      <li set:html={t("folderPage.a11yItem3")} />
-    </ul>
+    <A11yNotes intro={t("folderPage.a11yIntro")} does={tList(t, "folderPage.a11yDoes")} yours={tList(t, "folderPage.a11yYours")} />
   </Fragment>
 </ComponentPageShell>

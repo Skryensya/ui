@@ -4,9 +4,11 @@ import "@skryensya/core/components/slider.css";
 import "@skryensya/core/components/annotation.css";
 import ComponentPageShell from "./ComponentPageShell.astro";
 import CodeBlock from "../CodeBlock.astro";
-import ComponentPreview from "../ComponentPreview.astro";
 import UsagePreview from "../UsagePreview.astro";
 import DoDont from "../DoDont.astro";
+import WhenToUse from "../WhenToUse.astro";
+import ContentRules from "../ContentRules.astro";
+import A11yNotes from "../A11yNotes.astro";
 import {
   sliderAnatomyTree,
   sliderDoApproxTree,
@@ -17,7 +19,7 @@ import {
   sliderTree,
 } from "../../demos/slider";
 import { annotationDemoCss } from "../../demos/annotation";
-import { getLocale, useTranslations } from "../../i18n";
+import { getLocale, tList, useTranslations } from "../../i18n";
 
 const install = `pnpm add @skryensya/core @skryensya/vanilla @skryensya/react`;
 const t = useTranslations(getLocale(Astro.url));
@@ -27,36 +29,34 @@ const t = useTranslations(getLocale(Astro.url));
   title="Slider"
   description={t("sliderPage.description")}
   contractId="slider"
-  testFiles={["packages/react/src/components/slider.test.tsx", "packages/vanilla/src/components/slider.test.ts", "packages/core/src/slider-range.test.ts", "packages/react/src/components/slider-range.test.tsx", "packages/vanilla/src/components/slider-range.test.ts"]}}
+  testFiles={["packages/react/src/components/slider.test.tsx", "packages/vanilla/src/components/slider.test.ts", "packages/core/src/slider-range.test.ts", "packages/react/src/components/slider-range.test.tsx", "packages/vanilla/src/components/slider-range.test.ts"]}
 >
   <Fragment slot="usage">
     <p class="lede" set:html={t("sliderPage.lede")} />
 
-    <h3>{t("sliderPage.showcaseTitle")}</h3>
-    <p set:html={t("sliderPage.showcaseBody")} />
-    <UsagePreview tree={sliderTree(t)} />
-    <p set:html={t("sliderPage.body1")} />
-    <p set:html={t("sliderPage.body2")} />
-    <p set:html={t("component.reactNote")} />
+    <h3>{t("component.examplesTitle")}</h3>
+    <UsagePreview tree={sliderTree(t)} title={t("sliderPage.singleTitle")} description={t("sliderPage.singleBody")} />
+    <UsagePreview tree={sliderRangeTree(t)} title={t("sliderPage.rangeTitle")} description={t("sliderPage.rangeBody")} />
 
-    <h3>{t("sliderPage.rangeTitle")}</h3>
-    <p set:html={t("sliderPage.rangeBody")} />
-    <UsagePreview tree={sliderRangeTree(t)} />
+    <h3>{t("component.contractNotesTitle")}</h3>
+    <ul>
+      {tList(t, "sliderPage.contract").map((item) => <li set:html={item} />)}
+    </ul>
+    <p set:html={t("component.reactNote")} />
 
     <h3>{t("component.anatomy")}</h3>
     <p set:html={t("sliderPage.anatomyBody")} />
-    <ComponentPreview
+    <UsagePreview
       tree={sliderAnatomyTree(t)}
       css={annotationDemoCss}
       label={t("sliderPage.anatomyPreviewLabel")}
-      screens={false}
-      hideSource
-      chrome={false}
+      bare
     />
   </Fragment>
 
   <Fragment slot="guidelines">
     <p class="lede" set:html={t("sliderPage.guidelinesLede")} />
+    <WhenToUse use={tList(t, "sliderPage.when")} avoid={tList(t, "sliderPage.whenNot")} />
     <DoDont
       title={t("sliderPage.dd.approx.title")}
       do={{ tree: sliderDoApproxTree(t), caption: t("sliderPage.dd.approx.do") }}
@@ -67,9 +67,22 @@ const t = useTranslations(getLocale(Astro.url));
       do={{ tree: sliderDoRangeTree(t), caption: t("sliderPage.dd.range.do") }}
       dont={{ tree: sliderDontTwoTree(t), caption: t("sliderPage.dd.range.dont") }}
     />
+    <ContentRules items={tList(t, "sliderPage.content")} />
   </Fragment>
 
   <Fragment slot="install">
     <CodeBlock code={install} label="terminal" />
+  </Fragment>
+  <Fragment slot="a11y">
+    <A11yNotes
+      intro={t("sliderPage.a11yIntro")}
+      does={tList(t, "sliderPage.a11yDoes")}
+      yours={tList(t, "sliderPage.a11yYours")}
+      keys={[
+        { keys: ["←", "→", "↑", "↓"], action: t("sliderPage.key.arrows") },
+        { keys: ["PageUp", "PageDown"], action: t("sliderPage.key.page") },
+        { keys: [t("component.key.home"), t("component.key.end")], action: t("sliderPage.key.homeEnd") },
+      ]}
+    />
   </Fragment>
 </ComponentPageShell>

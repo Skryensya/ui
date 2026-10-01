@@ -100,7 +100,10 @@ export const accordionClosedTree = (t: Translate): UsageTree => ({
 export const accordionDontVerboseTree = (t: Translate): UsageTree => ({
   contract: "accordion",
   signature: "Accordion",
-  attrs: { style: demoWidth },
+  /* Give the deliberately verbose title a full line measure; `min(100%, 26rem)` shrink-wraps to
+     that title's intrinsic width inside Canvas' centered content grid. The fixed max is then fitted
+     down to the same 4:3 frame as the positive example rather than rendering as a tiny card. */
+  attrs: { style: "inline-size: 26rem; max-inline-size: 100%; min-block-size: 9rem;" },
   options: { type: "single", collapsible: true },
   children: [
     {

@@ -1,5 +1,6 @@
 export const calloutMessages = {
   es: {
+    "demo.callout.gotIt": "Entendido",
 
     "demo.callout.neutral.title": "Mantenimiento programado",
     "demo.callout.neutral.body":
@@ -13,66 +14,85 @@ export const calloutMessages = {
     "demo.callout.success.body": "Tus cambios se guardaron.",
     "demo.callout.success.action": "Ver detalle",
 
-    "callout.description":
-      "Callout: mensaje inline persistente con tono (incluido neutral), anuncio accesible y componente React.",
-    "callout.betaBadge": "Beta",
-    "callout.lede1":
-      "Callout es un mensaje inline que permanece en el layout mientras dure su condición. A diferencia de Toast, transitorio y montado en una región flotante, Callout vive en el flujo del contenido. Un solo peso visual, el panel con borde: el tono es la única variable, así que dos Callouts nunca compiten por cuál se ve más urgente.",
-    "callout.lede2":
-      "Es puramente informativo: muestra algo, no ejecuta nada. No tiene cierre; a diferencia de Toast, Callout no se puede descartar, porque nada en la página depende de que desaparezca. La única pieza interactiva que puede llevar es una acción de recuperación, y el contrato la limita a <code>soft</code> o <code>danger</code> para que nunca compita con la acción primaria real de la página.",
-    "callout.anatomyBody":
-      "Un Callout es un panel con dos columnas: el ícono a un lado y <code>sk-callout__content</code> al otro, con el título arriba de la descripción, y las acciones en su propia fila abajo, alineadas con esa columna y nunca al lado del texto. Sólo <code>children</code> es obligatorio; el ícono, el título y las acciones son opcionales y el espécimen los trae todos para poder nombrarlos. Está congelado y en gris: este dibujo es sobre las partes, y los tonos tienen cuatro paneles vivos más abajo.",
+    "callout.description": "Deja un mensaje en la página mientras dure lo que avisa: un error, una advertencia, una confirmación o una nota.",
+
+    "callout.a11yYours3": "Si el mensaje aparece después de cargar la página, muéstralo en un lugar donde la persona lo encuentre: cerca de lo que lo causó.",
+
+    "callout.a11yYours2": "El texto debe decir qué tipo de mensaje es; el color solo lo refuerza (WCAG 2.2, 1.4.1).",
+
+    "callout.a11yYours1": "Usa <code>danger</code> solo para lo que debe interrumpir.",
+
+    "callout.a11yDoes3": "No roba el foco.",
+
+    "callout.a11yDoes2": "El ícono es decorativo.",
+
+    "callout.a11yDoes1": 'Con <code>danger</code> es <code>role="alert"</code> y se anuncia de inmediato; con el resto es <code>role="status"</code> y se anuncia cuando el lector termina.',
+
+    "callout.a11yIntro": "Callout es una región viva: se anuncia sin mover el foco.",
+
+    "callout.content4": "No uses «Error» ni «Atención» como título: el tono ya lo dice.",
+
+    "callout.content3": "Escribe la acción con un verbo que resuelve: «Ver planes», «Reintentar».",
+
+    "callout.content2": "Di en la descripción qué pasa y qué puede hacer la persona, en 1 o 2 oraciones.",
+
+    "callout.content1": "Nombra la condición en el título, en pocas palabras: «Tu plan expira en 3 días».",
+
+    "callout.dd.tone.dont": "<code>danger</code> interrumpe al lector de pantalla y alarma por algo que todavía no es un error.",
+
+    "callout.dd.tone.do": "Un plan que vence pronto pide atención: <code>warning</code>.",
+
+    "callout.dd.tone.title": "Tone: según lo que pasó",
+
+    "callout.whenNot4": 'Para un estado corto junto a un elemento: usa <a href="/es/componentes/badge">Badge</a>.',
+
+    "callout.whenNot3": 'Para el error de un campo: usa el mensaje de <a href="/es/componentes/form-field">FormField</a>, junto al campo.',
+
+    "callout.whenNot2": 'Si la región está vacía por falta de datos: usa <a href="/es/componentes/empty-state">EmptyState</a>.',
+
+    "callout.whenNot1": 'Si el mensaje se va solo o se puede descartar: usa <a href="/es/componentes/toast">Toast</a>.',
+
+    "callout.when2": "Para una nota al margen que la persona no debería pasar por alto.",
+
+    "callout.when1": "Para un error, una advertencia o una confirmación que debe quedar a la vista.",
+
+    "callout.contract3": "<code>actions</code> es el único punto interactivo: un <code>Link</code>, o un <code>Button</code> <code>soft</code> o <code>danger</code>.",
+
+    "callout.contract2": "No hay cierre ni <code>onDismiss</code>: un mensaje que se descarta es un Toast.",
+
+    "callout.contract1": 'Solo <code>danger</code> se anuncia como <code>role="alert"</code>; el resto es <code>role="status"</code>.',
+    "callout.lede1": 'Callout deja un mensaje en la página mientras dure lo que avisa: un error, una advertencia, una confirmación o una nota. Vive en el flujo del contenido y no se cierra; si el mensaje debe irse solo, es un <a href="/es/componentes/toast">Toast</a>.',
+    "callout.anatomyBody": "El ícono a un lado, el contenido (título y descripción) al otro, y las acciones en su propia fila debajo. Solo el contenido es obligatorio.",
     "callout.anatomyLabel": "Anatomía de Callout",
     "callout.anatomyPreviewLabel": "Callout, parte por parte",
-    "callout.tonesTitle": "Tonos",
-    "callout.tonesBody1":
-      'El tono decide si el panel se pinta con color semántico. <code>info</code>, <code>success</code>, <code>warning</code> y <code>danger</code> colorean el mensaje. Solo <code>danger</code> se anuncia como <code>role="alert"</code> (assertive); el resto usa <code>role="status"</code> (polite); es la minoría de casos que de verdad interrumpe, no el nombre del componente, el que decide eso.',
-    "callout.tonesBody2":
-      "Los cuatro leen un <strong>rol de feedback</strong>, nunca el acento: el tono dice qué pasó, así que no puede cambiar cuando cambia la marca. <code>info</code> no tuvo su propia rampa hasta la decisión 26 (<code>docs/decisions/0019-public-palettes-and-constant-semantics.md</code>); antes leía <code>accent</code>, y una marca magenta pintaba de magenta cada aviso informativo.",
-    "callout.neutralTitle": "Neutral",
-    "callout.neutralBody":
-      "El default: superficie y borde, sin pintura semántica. Existe para cuando el color no debería ser la señal prominente, el texto ya carga el mensaje. Úsalo en avisos ordinarios, confirmaciones breves o cualquier caso donde pintar el panel de “éxito” o “info” añadiría urgencia que el contenido no tiene.",
-    "callout.neutralLabel": "Callout neutral",
-    "callout.infoTitle": "Info, con título",
-    "callout.infoBody": "Un título junto al icono nombra la condición en vez de solo describirla en la primera línea.",
-    "callout.infoLabel": "Callout info",
-    "callout.warningTitle": "Warning, con un Link de recuperación",
-    "callout.warningBody": "La acción de recuperación es un <code>Link</code> simple: un destino, no un comando.",
-    "callout.warningLabel": "Callout warning",
-    "callout.successTitle": "Success, con un Button soft",
-    "callout.successBody":
-      'Cuando la acción es un <a href="/es/componentes/button">Button</a>, el slot solo acepta <code>variant="soft"</code> o <code>variant="danger"</code>; nunca <code>accent</code> ni el default <code>neutral</code>: un Callout no es el lugar de la llamada a la acción accent de la página. Usa <code>soft</code> para botones que se mezclan con el fondo coloreado del callout, y <code>danger</code> cuando necesites una acción destructiva que destaque visualmente.',
-    "callout.successLabel": "Callout success",
-    "callout.anatomyTitle": "Anatomía",
-    "callout.anatomyItem1": "<code>sk-callout__icon</code> es decorativo y solo aparece cuando aporta una señal visual.",
-    "callout.anatomyItem2": "<code>sk-callout__content</code> agrupa título opcional y descripción.",
-    "callout.anatomyItem3":
-      "<code>sk-callout__actions</code> aloja la acción de recuperación opcional que pertenece al consumidor; nunca un cierre: Callout no tiene ninguno.",
-    "callout.anatomyItem4":
-      "<code>data-tone</code> acepta <code>neutral</code> (default), <code>info</code>, <code>success</code>, <code>warning</code> o <code>danger</code>.",
-    "callout.reactBody":
-      'El código está en la pestaña <strong>React</strong> de cada ejemplo. <code>actions</code> es el único punto de interactividad: un <code>ReactNode</code> que el consumidor arma con el <code>Link</code> o el <code>Button</code> (<code>soft</code>/<code>danger</code>) que necesite. No hay <code>dismissible</code> ni <code>onDismiss</code>; si necesitas que el mensaje se pueda cerrar, es un <a href="/es/componentes/toast">Toast</a>, no un Callout.',
-    "callout.prop.tone.title": "Tono",
-    "callout.prop.tone.body": "<code>tone</code> comunica qué tipo de mensaje es.",
+    "callout.neutralTitle": "Neutral: el texto carga el mensaje",
+    "callout.neutralBody": "Superficie y borde, sin color semántico, para avisos donde el color agregaría una urgencia que el contenido no tiene.",
+    "callout.infoTitle": "Con título: nombra la condición",
+    "callout.infoBody": "Un título junto al ícono nombra lo que pasa en vez de solo describirlo.",
+    "callout.warningTitle": "Con un enlace: la ruta para resolverlo",
+    "callout.warningBody": "La acción es un <code>Link</code>: lleva adonde se resuelve.",
+    "callout.successTitle": "Con un botón: soft o danger, nunca accent",
+    "callout.successBody": "Un callout no es el lugar de la acción principal de la página, así que el botón es <code>soft</code>, o <code>danger</code> si destruye algo.",
+    "callout.prop.tone.title": "Tone: qué tipo de mensaje es",
+    "callout.prop.tone.body": "El tono dice qué pasó, y decide cómo se anuncia.",
     "callout.prop.tone.neutral": "Usa <code>neutral</code> para avisos comunes sin color semántico.",
     "callout.prop.tone.info": "Usa <code>info</code> para contexto nuevo o adicional.",
     "callout.prop.tone.success": "Usa <code>success</code> para confirmar que algo terminó bien.",
     "callout.prop.tone.warning": "Usa <code>warning</code> para una condición que necesita atención.",
-    "callout.prop.tone.danger": "Usa <code>danger</code> para problemas que deben anunciarse de inmediato.",
-    "callout.showcaseTitle": "Showcases",
-    "callout.showcaseBody": "Callout cubre mensajes simples, mensajes con título y rutas de recuperación.",
-    "callout.guidelinesLede": "Usa Callout para información persistente dentro del flujo de la página.",
-    "callout.dd.persistence.title": "Persistente, no temporal",
-    "callout.dd.persistence.do": "Úsalo para información que debe permanecer visible.",
-    "callout.dd.persistence.dont": "No lo uses como confirmación temporal que debería desaparecer sola.",
-    "callout.dd.recovery.title": "Recuperación clara",
-    "callout.dd.recovery.do": "Incluye una ruta de recuperación cuando el mensaje pide una acción.",
-    "callout.dd.recovery.dont": "No añadas acciones si el texto ya resuelve el aviso.",
-    "callout.test1": "El tono danger se anuncia asertivo (<code>role=\"alert\"</code>); los demás, con cortesía.",
+    "callout.prop.tone.danger": "Usa <code>danger</code> para errores que deben anunciarse de inmediato: es el único que interrumpe al lector de pantalla.",
+    "callout.guidelinesLede": "Un callout avisa algo que sigue siendo cierto mientras la persona está en la página.",
+    "callout.dd.persistence.title": "Duración: lo que sigue siendo cierto",
+    "callout.dd.persistence.do": "La nueva versión sigue disponible hasta que actualices: el aviso se queda.",
+    "callout.dd.persistence.dont": "«Tus cambios se guardaron» deja de importar en segundos: eso es un Toast.",
+    "callout.dd.recovery.title": "Acción: solo si el aviso pide una",
+    "callout.dd.recovery.do": "El plan expira, y «Ver planes» lleva a resolverlo.",
+    "callout.dd.recovery.dont": "«Entendido» no resuelve nada: si el aviso no pide una acción, no agregues un botón.",
+    "callout.test1": 'El tono danger se anuncia asertivo (<code>role="alert"</code>); los demás, con cortesía.',
     "callout.test2": "Nunca renderiza un control para cerrarlo: no es dismissible.",
     "callout.test3": "El icono y las acciones opcionales se renderizan como partes explícitas.",
   },
   en: {
+    "demo.callout.gotIt": "Got it",
 
     "demo.callout.neutral.title": "Scheduled maintenance",
     "demo.callout.neutral.body":
@@ -86,61 +106,79 @@ export const calloutMessages = {
     "demo.callout.success.body": "Your changes have been saved.",
     "demo.callout.success.action": "View details",
 
-    "callout.description":
-      "Callout: persistent inline message with tone (including neutral), an accessible announcement and a React component.",
-    "callout.betaBadge": "Beta",
-    "callout.lede1":
-      "Callout is an inline message that stays in the layout for as long as its condition holds. Unlike Toast, transient and mounted in a floating region, Callout lives in the flow of content. One visual weight, the bordered panel: tone is the only variable, so two Callouts never compete over which looks more urgent.",
-    "callout.lede2":
-      "It is purely informational: it shows something, it runs nothing. It has no dismiss; unlike Toast, a Callout cannot be dismissed, because nothing on the page depends on it going away. The one interactive piece it can carry is a recovery action, and the contract narrows it to <code>soft</code> or <code>danger</code> so it never competes with the page's real accent action.",
-    "callout.anatomyBody":
-      "A Callout is a panel of two columns: the icon on one side and <code>sk-callout__content</code> on the other, the title stacked over the description, and the actions on their own row below, aligned with that column and never beside the text. Only <code>children</code> is required; the icon, the title and the actions are optional, and the specimen carries all of them so each can be named. It is frozen and drained to grey: this drawing is about the parts, and the tones have four live panels further down.",
+    "callout.description": "Keeps a message on the page for as long as what it reports holds: an error, a warning, a confirmation or a note.",
+
+    "callout.a11yYours3": "If the message appears after the page loads, show it where people will find it: near what caused it.",
+
+    "callout.a11yYours2": "The text must say what kind of message it is; color only reinforces it (WCAG 2.2, 1.4.1).",
+
+    "callout.a11yYours1": "Use <code>danger</code> only for what must interrupt.",
+
+    "callout.a11yDoes3": "It does not take focus.",
+
+    "callout.a11yDoes2": "The icon is decorative.",
+
+    "callout.a11yDoes1": 'With <code>danger</code> it is <code>role="alert"</code> and announced at once; with the rest it is <code>role="status"</code> and announced when the reader finishes.',
+
+    "callout.a11yIntro": "Callout is a live region: it is announced without moving focus.",
+
+    "callout.content4": "Do not use “Error” or “Attention” as a title: the tone already says it.",
+
+    "callout.content3": "Write the action with a verb that resolves it: “See plans”, “Try again”.",
+
+    "callout.content2": "Say in the description what is happening and what people can do, in 1 or 2 sentences.",
+
+    "callout.content1": "Name the condition in the title, in a few words: “Your plan expires in 3 days”.",
+
+    "callout.dd.tone.dont": "<code>danger</code> interrupts the screen reader and raises alarm over something that is not an error yet.",
+
+    "callout.dd.tone.do": "A plan expiring soon asks for attention: <code>warning</code>.",
+
+    "callout.dd.tone.title": "Tone: by what happened",
+
+    "callout.whenNot4": 'For a short status beside an element: use <a href="/components/badge">Badge</a>.',
+
+    "callout.whenNot3": 'For a field\'s error: use <a href="/components/form-field">FormField</a>\'s message, beside the field.',
+
+    "callout.whenNot2": 'If the region is empty for lack of data: use <a href="/components/empty-state">EmptyState</a>.',
+
+    "callout.whenNot1": 'If the message goes away on its own or can be dismissed: use <a href="/components/toast">Toast</a>.',
+
+    "callout.when2": "For a side note people should not miss.",
+
+    "callout.when1": "For an error, a warning or a confirmation that must stay in view.",
+
+    "callout.contract3": "<code>actions</code> is the only interactive point: a <code>Link</code>, or a <code>soft</code> or <code>danger</code> <code>Button</code>.",
+
+    "callout.contract2": "There is no close button and no <code>onDismiss</code>: a message that is dismissed is a Toast.",
+
+    "callout.contract1": 'Only <code>danger</code> is announced as <code>role="alert"</code>; the rest are <code>role="status"</code>.',
+    "callout.lede1": 'Callout keeps a message on the page for as long as what it reports holds: an error, a warning, a confirmation or a note. It lives in the flow of the content and does not close; if the message should go away on its own, it is a <a href="/components/toast">Toast</a>.',
+    "callout.anatomyBody": "The icon on one side, the content (title and description) on the other, and the actions on their own row below. Only the content is required.",
     "callout.anatomyLabel": "Callout anatomy",
     "callout.anatomyPreviewLabel": "Callout, part by part",
-    "callout.tonesTitle": "Tones",
-    "callout.tonesBody1":
-      'The tone decides whether the panel paints with semantic color. <code>info</code>, <code>success</code>, <code>warning</code> and <code>danger</code> color the message. Only <code>danger</code> announces as <code>role="alert"</code> (assertive); the rest use <code>role="status"</code> (polite); it is the minority of cases that truly interrupt, not the component\'s name, that decides that.',
-    "callout.tonesBody2":
-      "All four read a <strong>feedback role</strong>, never the accent: tone says what happened, so it cannot change when the brand changes. <code>info</code> only got its own ramp in decision 26 (<code>docs/decisions/0019-public-palettes-and-constant-semantics.md</code>); before, it read <code>accent</code>, and a magenta brand painted every informational notice magenta.",
-    "callout.neutralTitle": "Neutral",
-    "callout.neutralBody":
-      "The default: surface and border, no semantic paint. It exists for when color should not be the prominent signal, because the text already carries the message. Use it for ordinary notices, short confirmations, or any case where painting the panel \"success\" or \"info\" would add urgency the content doesn't have.",
-    "callout.neutralLabel": "Neutral callout",
-    "callout.infoTitle": "Info, with a title",
-    "callout.infoBody": "A title next to the icon names the condition instead of only describing it in the first line.",
-    "callout.infoLabel": "Info callout",
-    "callout.warningTitle": "Warning, with a recovery Link",
-    "callout.warningBody": "The recovery action is a plain <code>Link</code>: a destination, not a command.",
-    "callout.warningLabel": "Warning callout",
-    "callout.successTitle": "Success, with a soft Button",
-    "callout.successBody":
-      'When the action is a <a href="/components/button">Button</a>, the slot only accepts <code>variant="soft"</code> or <code>variant="danger"</code>; never <code>accent</code> nor the default <code>neutral</code>: a Callout is not the place for the page\'s main call to action. Use <code>soft</code> for buttons that blend with the callout\'s colored background, and <code>danger</code> when you need a destructive action to stand out visually.',
-    "callout.successLabel": "Success callout",
-    "callout.anatomyTitle": "Anatomy",
-    "callout.anatomyItem1": "<code>sk-callout__icon</code> is decorative and only appears when it carries a visual signal.",
-    "callout.anatomyItem2": "<code>sk-callout__content</code> groups the optional title and description.",
-    "callout.anatomyItem3":
-      "<code>sk-callout__actions</code> hosts the optional recovery action that belongs to the consumer; never a dismiss control: Callout has none.",
-    "callout.anatomyItem4":
-      "<code>data-tone</code> accepts <code>neutral</code> (default), <code>info</code>, <code>success</code>, <code>warning</code> or <code>danger</code>.",
-    "callout.reactBody":
-      'The code is in the <strong>React</strong> tab of each example. <code>actions</code> is the only point of interactivity: a <code>ReactNode</code> the consumer assembles from whichever <code>Link</code> or <code>Button</code> (<code>soft</code>/<code>danger</code>) it needs. There is no <code>dismissible</code> or <code>onDismiss</code>; if you need the message to be closable, that\'s a <a href="/components/toast">Toast</a>, not a Callout.',
-    "callout.prop.tone.title": "Tone",
-    "callout.prop.tone.body": "<code>tone</code> communicates what kind of message this is.",
+    "callout.neutralTitle": "Neutral: the text carries the message",
+    "callout.neutralBody": "A surface and a border, with no semantic color, for notices where color would add urgency the content does not have.",
+    "callout.infoTitle": "With a title: name the condition",
+    "callout.infoBody": "A title beside the icon names what is happening instead of only describing it.",
+    "callout.warningTitle": "With a link: the way to resolve it",
+    "callout.warningBody": "The action is a <code>Link</code>: it leads to where it gets resolved.",
+    "callout.successTitle": "With a button: soft or danger, never accent",
+    "callout.successBody": "A callout is not where the page's main action lives, so the button is <code>soft</code>, or <code>danger</code> if it destroys something.",
+    "callout.prop.tone.title": "Tone: what kind of message it is",
+    "callout.prop.tone.body": "The tone says what happened, and decides how it is announced.",
     "callout.prop.tone.neutral": "Use <code>neutral</code> for ordinary notices without semantic color.",
     "callout.prop.tone.info": "Use <code>info</code> for new or additional context.",
     "callout.prop.tone.success": "Use <code>success</code> to confirm that something completed.",
     "callout.prop.tone.warning": "Use <code>warning</code> for a condition that needs attention.",
-    "callout.prop.tone.danger": "Use <code>danger</code> for problems that must be announced immediately.",
-    "callout.showcaseTitle": "Showcases",
-    "callout.showcaseBody": "Callout covers simple messages, titled messages, and recovery paths.",
-    "callout.guidelinesLede": "Use Callout for persistent information in the page flow.",
-    "callout.dd.persistence.title": "Persistent, not temporary",
-    "callout.dd.persistence.do": "Use it for information that should remain visible.",
-    "callout.dd.persistence.dont": "Do not use it as a temporary confirmation that should disappear on its own.",
-    "callout.dd.recovery.title": "Clear recovery",
-    "callout.dd.recovery.do": "Include a recovery path when the message asks for action.",
-    "callout.dd.recovery.dont": "Do not add actions when the text already resolves the notice.",
+    "callout.prop.tone.danger": "Use <code>danger</code> for errors that must be announced at once: it is the only tone that interrupts a screen reader.",
+    "callout.guidelinesLede": "A callout reports something that stays true while people are on the page.",
+    "callout.dd.persistence.title": "Duration: what stays true",
+    "callout.dd.persistence.do": "The new version stays available until you update: the notice stays.",
+    "callout.dd.persistence.dont": "“Your changes were saved” stops mattering within seconds: that is a Toast.",
+    "callout.dd.recovery.title": "Action: only if the notice asks for one",
+    "callout.dd.recovery.do": "The plan is expiring, and “See plans” leads to resolving it.",
+    "callout.dd.recovery.dont": "“Got it” resolves nothing: if the notice asks for no action, do not add a button.",
     "callout.test1": 'The danger tone announces assertively (<code>role="alert"</code>); every other tone, politely.',
     "callout.test2": "Never renders a dismiss control: it is not dismissible.",
     "callout.test3": "The icon and optional actions render as explicit parts.",

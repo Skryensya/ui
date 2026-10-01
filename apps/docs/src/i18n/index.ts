@@ -104,6 +104,21 @@ export function useTranslations(locale: Locale): Translate {
 }
 
 /**
+ * A numbered run of messages, `prefix1`, `prefix2`… up to the first one that does not exist: the
+ * bullets of a "When to use" list, a page's content rules. A page adds a bullet by adding a key, and
+ * the list cannot skip or duplicate one the way hand-written `t()` calls can.
+ */
+export function tList(t: Translate, prefix: string): string[] {
+  const items: string[] = [];
+  for (let n = 1; ; n++) {
+    const key = `${prefix}${n}`;
+    const value = t(key as UIKey);
+    if (value === key) return items;
+    items.push(value);
+  }
+}
+
+/**
  * The locale a `t` translates into. A demo factory whose output depends on the locale (a country
  * list, a time format) defaults to it, so `demo(t)` alone is already the right tree, with no second
  * argument to hand in.

@@ -9,7 +9,10 @@ import "@skryensya/core/components/annotation.css";
 import ComponentPageShell from "./ComponentPageShell.astro";
 import AppearanceMenu from "../AppearanceMenu.astro";
 import CodeBlock from "../CodeBlock.astro";
-import ComponentPreview from "../ComponentPreview.astro";
+import UsagePreview from "../UsagePreview.astro";
+import WhenToUse from "../WhenToUse.astro";
+import ContentRules from "../ContentRules.astro";
+import A11yNotes from "../A11yNotes.astro";
 import {
   sidebarAnatomyTree,
   sidebarFloatingTriggerTree,
@@ -17,7 +20,7 @@ import {
   sidebarTree,
 } from "../../demos/sidebar";
 import { annotationDemoCss } from "../../demos/annotation";
-import { getLocale, useTranslations } from "../../i18n";
+import { getLocale, tList, useTranslations } from "../../i18n";
 
 const t = useTranslations(getLocale(Astro.url));
 
@@ -44,7 +47,7 @@ await initComponents();`;
   description={t("sidebarPage.description")}
   contractId="sidebar"
   appearanceTargetSelector=".sk-sidebar"
-  testFiles={["packages/react/src/components/sidebar.test.tsx", "packages/vanilla/src/components/sidebar.test.ts"]}}
+  testFiles={["packages/react/src/components/sidebar.test.tsx", "packages/vanilla/src/components/sidebar.test.ts"]}
 >
   <Fragment slot="appearance">
     <AppearanceMenu label={t("prefs.appearance")} values={["plain", "brutalist", "frosted"]} unavailable={{ tactile: t("prefs.appearanceTactileUnavailable") }} />
@@ -53,73 +56,51 @@ await initComponents();`;
   <Fragment slot="usage">
     <p class="lede" set:html={t("sidebarPage.lede")} />
 
-    <h3>{t("sidebarPage.showcaseTitle")}</h3>
-    <p set:html={t("sidebarPage.showcaseBody")} />
-    <h3>{t("sidebarPage.contentTitle")}</h3>
-    <p set:html={t("sidebarPage.contentBody")} />
-
-    <p set:html={t("sidebarPage.collapseBody")} />
-    {/* The `.app-shell` that wraps the Sidebar is INSIDE the tree, not in a slot around it.
-        A sidebar only reads next to the thing it sits beside: without a main that widens,
-        collapsing shows nothing. */}
-    <ComponentPreview tree={sidebarTree(t, { home: "/", reports: "/reportes" })} label="Sidebar" flush />
-
-
-    <h3>{t("sidebarPage.widthTitle")}</h3>
-    <p set:html={t("sidebarPage.widthBody1")} />
-    <p set:html={t("sidebarPage.widthBody2")} />
-    <p set:html={t("sidebarPage.widthBody3")} />
-    <p set:html={t("sidebarPage.widthBody4")} />
-    <p set:html={t("sidebarPage.widthBody5")} />
-    <p set:html={t("sidebarPage.widthBody6")} />
-    <ComponentPreview tree={sidebarResizableTree(t)} label={t("sidebarPage.resizableLabel")} flush />
-
-    <h3 set:html={t("sidebarPage.detailsTitle")} />
-    <p set:html={t("sidebarPage.detailsBody1")} />
-    <p set:html={t("sidebarPage.detailsBody2")} />
-
-    <h3>{t("sidebarPage.widthStatesTitle")}</h3>
-    <p set:html={t("sidebarPage.widthStatesBody1")} />
-    <p set:html={t("sidebarPage.widthStatesBody2")} />
-    <p set:html={t("sidebarPage.widthStatesBody3")} />
-
-    <h3>{t("sidebarPage.triggerTitle")}</h3>
-    <p set:html={t("sidebarPage.triggerBody")} />
-
-    <h3>{t("sidebarPage.floatingTriggerTitle")}</h3>
-    <p set:html={t("sidebarPage.floatingTriggerBody")} />
-    <ComponentPreview
+    <h3>{t("component.examplesTitle")}</h3>
+    {/* The `.app-shell` around the Sidebar is inside the tree: a rail only reads beside a main
+        that widens when it collapses. */}
+    <UsagePreview tree={sidebarTree(t, { home: "/", reports: "/reportes" })} title={t("sidebarPage.collapseTitle")} description={t("sidebarPage.collapseBody")} flush />
+    <UsagePreview tree={sidebarResizableTree(t)} title={t("sidebarPage.widthTitle")} description={t("sidebarPage.widthBody1")} flush />
+    <UsagePreview
       tree={sidebarFloatingTriggerTree(t, { home: "/", reports: "/reportes" })}
-      label={t("sidebarPage.floatingTriggerLabel")}
+      title={t("sidebarPage.floatingTriggerTitle")}
+      description={t("sidebarPage.floatingTriggerBody")}
       flush
     />
 
-    <h3>{t("sidebarPage.htmlTitle")}</h3>
-    <p set:html={t("sidebarPage.htmlBody1")} />
-    <p set:html={t("sidebarPage.htmlBody2")} />
-
-    <p set:html={t("sidebarPage.reactBody")} />
+    <h3>{t("component.contractNotesTitle")}</h3>
+    <ul>
+      {tList(t, "sidebarPage.contract").map((item) => <li set:html={item} />)}
+    </ul>
 
     <h3>{t("component.anatomy")}</h3>
     <p set:html={t("sidebarPage.anatomyBody")} />
-    <ComponentPreview
+    <UsagePreview
       tree={sidebarAnatomyTree(t)}
       css={annotationDemoCss}
       label={t("sidebarPage.anatomyPreviewLabel")}
-      screens={false}
-      hideSource
-      chrome={false}
+      bare
     />
   </Fragment>
 
   <Fragment slot="guidelines">
     <p class="lede" set:html={t("sidebarPage.guidelinesLede")} />
-    <ul>
-      <li set:html={t("sidebarPage.guide.use1")} />
-      <li set:html={t("sidebarPage.guide.use2")} />
-      <li set:html={t("sidebarPage.guide.avoid1")} />
-      <li set:html={t("sidebarPage.guide.avoid2")} />
-    </ul>
+    <WhenToUse use={tList(t, "sidebarPage.when")} avoid={tList(t, "sidebarPage.whenNot")} />
+    <ContentRules items={tList(t, "sidebarPage.content")} />
+  </Fragment>
+
+  <Fragment slot="a11y">
+    <A11yNotes
+      intro={t("sidebarPage.a11yIntro")}
+      does={tList(t, "sidebarPage.a11yDoes")}
+      yours={tList(t, "sidebarPage.a11yYours")}
+      keys={[
+        { keys: ["Enter", t("component.key.space")], action: t("sidebarPage.key.toggle") },
+        { keys: ["←", "→"], action: t("sidebarPage.key.arrows") },
+        { keys: [t("component.key.home"), t("component.key.end")], action: t("sidebarPage.key.homeEnd") },
+        { keys: ["Enter"], action: t("sidebarPage.key.reset") },
+      ]}
+    />
   </Fragment>
 
   <Fragment slot="install">

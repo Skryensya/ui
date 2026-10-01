@@ -11,13 +11,17 @@ import "@skryensya/core/patterns/box.css";
 import "@skryensya/core/patterns/layout.css";
 import "@skryensya/core/patterns/wrapper.css";
 import * as demos from "@docs/demos/checkbox";
-import { annotationDemoCss } from "@docs/demos/annotation";
-import { treeStory, withCss, type Meta, type StoryObj } from "../tree-story";
+import { treeStory, type Meta, type StoryObj } from "../tree-story";
 
 export default { title: "Components/Forms/Checkbox", tags: ["autodocs"] } satisfies Meta;
 
-export const Anatomy: StoryObj = treeStory(demos.checkboxAnatomyTree, { decorators: [withCss(annotationDemoCss)] });
+export const Anatomy: StoryObj = treeStory(demos.checkboxAnatomyTree);
 export const Default: StoryObj = treeStory(demos.checkboxTree);
 export const Group: StoryObj = treeStory(demos.checkboxGroupTree);
 export const TileCheckbox: StoryObj = treeStory(demos.tileCheckboxTree);
 export const Scale: StoryObj = treeStory(demos.checkboxScaleTree);
+export const DoDescription: StoryObj = treeStory(demos.checkboxDoDescriptionTree);
+export const PositiveLabel: StoryObj = treeStory(demos.checkboxPositiveLabelTree);
+export const NegativeLabel: StoryObj = treeStory(demos.checkboxNegativeLabelTree);
+export const DontExclusive: StoryObj = treeStory(demos.checkboxDontExclusiveTree);
+export const DontLongLabel: StoryObj = treeStory(demos.checkboxDontLongLabelTree);

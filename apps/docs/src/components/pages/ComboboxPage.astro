@@ -2,19 +2,21 @@
 import ComponentPageShell from "./ComponentPageShell.astro";
 import AppearanceMenu from "../AppearanceMenu.astro";
 import CodeBlock from "../CodeBlock.astro";
-import ComponentPreview from "../ComponentPreview.astro";
 import UsagePreview from "../UsagePreview.astro";
 import DoDont from "../DoDont.astro";
+import WhenToUse from "../WhenToUse.astro";
+import ContentRules from "../ContentRules.astro";
+import A11yNotes from "../A11yNotes.astro";
 import {
-  comboboxAnatomyCss,
-  comboboxAnatomyHtml,
-  comboboxDontFewTree,
+  comboboxDoFewTree,
+  comboboxDontFewHtml,
+  comboboxMultipleTree,
   comboboxSingleTree,
-  comboboxTree,
 } from "../../demos/combobox";
-import { getLocale, useTranslations } from "../../i18n";
+import { getLocale, tList, useTranslations } from "../../i18n";
 import "@skryensya/core/components/combobox.css";
 import "@skryensya/core/components/form-field.css";
+import "@skryensya/core/components/radio-group.css";
 import "@skryensya/core/patterns/scrollbar.css";
 /* Structure diagram: Annotated specimen; a preview frame only copies styles THIS page loaded. */
 import "@skryensya/core/components/annotation.css";
@@ -30,18 +32,12 @@ const styles = `@import "@skryensya/core/patterns/anchored.css";
 /* The list scrolls: the rail is painted by the pattern, marked with sk-scrollbar. */
 @import "@skryensya/core/patterns/scrollbar.css";`;
 
-const js = `import { mountIcons } from "@skryensya/vanilla/icon";
-import { lucideIcons } from "@skryensya/icons-lucide";
-import { initComponents } from "@skryensya/vanilla/auto";
-
-mountIcons(document, lucideIcons);
-initComponents();`;
+const storybookTitle = "Components/Forms/Combobox";
 ---
 
 <ComponentPageShell
   title="Combobox"
   description={t("combobox.description")}
-  badge={t("combobox.betaBadge")}
   contractId="combobox"
   appearanceTargetSelector=".sk-combobox"
   styleGroups={[
@@ -49,7 +45,7 @@ initComponents();`;
     { file: "patterns/anchored.css", probe: "sk-anchored", title: "Heredados de Anclaje" },
     { file: "components/button.css", probe: "sk-button", title: "Heredados de Button" },
   ]}
-  testFiles={["packages/react/src/components/combobox.test.tsx", "packages/vanilla/src/components/combobox.test.ts"]}}
+  testFiles={["packages/react/src/components/combobox.test.tsx", "packages/vanilla/src/components/combobox.test.ts"]}
 >
   <Fragment slot="appearance">
     <AppearanceMenu label={t("prefs.appearance")} values={["plain", "brutalist", "frosted"]} unavailable={{ tactile: t("prefs.appearanceTactileUnavailable") }} />
@@ -58,13 +54,14 @@ initComponents();`;
   <Fragment slot="usage">
     <p class="lede" set:html={t("combobox.lede")} />
 
-    <h3>{t("combobox.showcaseTitle")}</h3>
-    <p set:html={t("combobox.showcaseBody")} />
-    <ComponentPreview tree={comboboxTree(t, locale)} js={js} label="Combobox" viewport="menu" />
+    <h3>{t("component.examplesTitle")}</h3>
+    <UsagePreview tree={comboboxSingleTree(t, locale)} title={t("combobox.singleTitle")} description={t("combobox.singleBody")} stageMinBlockSize="22rem" storybookTitle={storybookTitle} storybookStory="Single" />
+    <UsagePreview tree={comboboxMultipleTree(t, locale)} title={t("combobox.multipleTitle")} description={t("combobox.multipleBody")} stageMinBlockSize="22rem" storybookTitle={storybookTitle} storybookStory="Multiple" />
 
     <h3>{t("component.contractNotesTitle")}</h3>
-    <p set:html={t("combobox.contractBody1")} />
-    <p set:html={t("combobox.contractBody2")} />
+    <ul>
+      {tList(t, "combobox.contract").map((item) => <li set:html={item} />)}
+    </ul>
 
     <UsagePreview
       tree={variantsTree(comboboxSingleTree(t, locale), [{ label: t("component.state.default"), options: {} }, { label: t("component.state.disabled"), options: { disabled: true } }, { label: t("component.state.invalid"), options: { invalid: true } }])}
@@ -72,25 +69,17 @@ initComponents();`;
       description={t("component.statesBody")}
     />
 
-    <h3>{t("component.anatomy")}</h3>
-    <p set:html={t("combobox.anatomyBody")} />
-    <ComponentPreview
-      html={comboboxAnatomyHtml(t)}
-      css={comboboxAnatomyCss}
-      label={t("combobox.anatomyPreviewLabel")}
-      screens={false}
-      hideSource
-      chrome={false}
-    />
   </Fragment>
 
   <Fragment slot="guidelines">
     <p class="lede" set:html={t("combobox.guidelinesLede")} />
+    <WhenToUse use={tList(t, "combobox.when")} avoid={tList(t, "combobox.whenNot")} />
     <DoDont
       title={t("combobox.dd.many.title")}
-      do={{ tree: comboboxSingleTree(t, locale), caption: t("combobox.dd.many.do") }}
-      dont={{ tree: comboboxDontFewTree(t), caption: t("combobox.dd.many.dont") }}
+      do={{ tree: comboboxDoFewTree(t), caption: t("combobox.dd.many.do") }}
+      dont={{ html: comboboxDontFewHtml(t), caption: t("combobox.dd.many.dont") }}
     />
+    <ContentRules items={tList(t, "combobox.content")} />
   </Fragment>
 
   <Fragment slot="install">
@@ -98,7 +87,15 @@ initComponents();`;
   </Fragment>
 
   <Fragment slot="a11y">
-    <p set:html={t("combobox.a11yBody1")} />
-    <p set:html={t("combobox.a11yBody2")} />
+    <A11yNotes
+      intro={t("combobox.a11yIntro")}
+      does={tList(t, "combobox.a11yDoes")}
+      yours={tList(t, "combobox.a11yYours")}
+      keys={[
+        { keys: ["↓", "↑"], action: t("combobox.a11yKeyArrows") },
+        { keys: ["Enter"], action: t("combobox.a11yKeyEnter") },
+        { keys: ["Esc"], action: t("combobox.a11yKeyEsc") },
+      ]}
+    />
   </Fragment>
 </ComponentPageShell>

@@ -4,9 +4,11 @@ import "@skryensya/core/components/stat.css";
 import "@skryensya/core/components/annotation.css";
 import ComponentPageShell from "./ComponentPageShell.astro";
 import CodeBlock from "../CodeBlock.astro";
-import ComponentPreview from "../ComponentPreview.astro";
 import UsagePreview from "../UsagePreview.astro";
 import DoDont from "../DoDont.astro";
+import WhenToUse from "../WhenToUse.astro";
+import ContentRules from "../ContentRules.astro";
+import A11yNotes from "../A11yNotes.astro";
 import {
   statAnatomyTree,
   statAnimatedTree,
@@ -17,7 +19,7 @@ import {
   statSingleTree,
 } from "../../demos/stat";
 import { annotationDemoCss } from "../../demos/annotation";
-import { getLocale, useTranslations } from "../../i18n";
+import { getLocale, tList, useTranslations } from "../../i18n";
 
 const locale = getLocale(Astro.url);
 const t = useTranslations(locale);
@@ -32,7 +34,7 @@ const explain = (option: string, values: readonly string[]) =>
   title="Stat"
   description={t("statPage.description")}
   contractId="stat"
-  testFiles={["packages/react/src/components/stat.test.tsx"]}}
+  testFiles={["packages/react/src/components/stat.test.tsx"]}
 >
   <Fragment slot="usage">
     <p class="lede" set:html={t("statPage.lede")} />
@@ -46,32 +48,26 @@ const explain = (option: string, values: readonly string[]) =>
       stageMinBlockSize="8rem"
     />
 
-    <h3>{t("statPage.showcaseTitle")}</h3>
-    <p set:html={t("statPage.showcaseBody")} />
-    <h3>{t("statPage.cardTitle")}</h3>
-    <p set:html={t("statPage.cardBody")} />
-    <UsagePreview tree={statCardsTree(t, locale)} />
-
+    <h3>{t("component.examplesTitle")}</h3>
+    <UsagePreview tree={statCardsTree(t, locale)} title={t("statPage.cardTitle")} description={t("statPage.cardBody")} />
     <h3 id="animar">{t("statPage.animateTitle")}</h3>
     <p set:html={t("statPage.animateBody")} />
-    <ComponentPreview tree={statAnimatedTree(t, locale)} label={t("statPage.animateLabel")} note={t("statPage.animateNote")} />
+    <UsagePreview tree={statAnimatedTree(t, locale)} label={t("statPage.animateLabel")} />
 
+    <h3>{t("component.contractNotesTitle")}</h3>
+    <ul>
+      {tList(t, "statPage.contract").map((item) => <li set:html={item} />)}
+    </ul>
     <p set:html={t("component.reactNote")} />
 
     <h3>{t("component.anatomy")}</h3>
     <p set:html={t("statPage.anatomyBody")} />
-    <ComponentPreview
-      tree={statAnatomyTree(t)}
-      css={annotationDemoCss}
-      label={t("statPage.anatomyPreviewLabel")}
-      screens={false}
-      hideSource
-      chrome={false}
-    />
+    <UsagePreview tree={statAnatomyTree(t)} css={annotationDemoCss} label={t("statPage.anatomyPreviewLabel")} bare />
   </Fragment>
 
   <Fragment slot="guidelines">
     <p class="lede" set:html={t("statPage.guidelinesLede")} />
+    <WhenToUse use={tList(t, "statPage.when")} avoid={tList(t, "statPage.whenNot")} />
     <DoDont
       title={t("statPage.dd.context.title")}
       do={{ tree: statDoContextTree(t), caption: t("statPage.dd.context.do") }}
@@ -83,9 +79,13 @@ const explain = (option: string, values: readonly string[]) =>
       do={{ tree: statCardsTree(t, locale), caption: t("statPage.dd.table.do") }}
       dont={{ tree: statDontWallTree(t), caption: t("statPage.dd.table.dont") }}
     />
+    <ContentRules items={tList(t, "statPage.content")} />
   </Fragment>
 
   <Fragment slot="install">
     <CodeBlock code={install} label="terminal" />
+  </Fragment>
+  <Fragment slot="a11y">
+    <A11yNotes intro={t("statPage.a11yIntro")} does={tList(t, "statPage.a11yDoes")} yours={tList(t, "statPage.a11yYours")} />
   </Fragment>
 </ComponentPageShell>

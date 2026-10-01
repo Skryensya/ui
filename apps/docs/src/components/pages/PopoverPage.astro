@@ -9,18 +9,21 @@ import "@skryensya/core/components/checkbox.css";
 import ComponentPageShell from "./ComponentPageShell.astro";
 import AppearanceMenu from "../AppearanceMenu.astro";
 import CodeBlock from "../CodeBlock.astro";
-import ComponentPreview from "../ComponentPreview.astro";
+import UsagePreview from "../UsagePreview.astro";
+import WhenToUse from "../WhenToUse.astro";
+import ContentRules from "../ContentRules.astro";
+import A11yNotes from "../A11yNotes.astro";
 import {
   popoverAnatomyCss,
-  popoverAnatomyHtml,
+  popoverAnatomyTree,
   popoverTree,
   popoverStructuredTree,
   popoverPlacementTree,
   popupTree,
-  popupAnatomyHtml,
+  popupAnatomyTree,
   popupAnatomyCss,
 } from "../../demos/popover";
-import { getLocale, useTranslations } from "../../i18n";
+import { getLocale, tList, useTranslations } from "../../i18n";
 
 const t = useTranslations(getLocale(Astro.url));
 
@@ -48,19 +51,14 @@ mountIcons(document, lucideIcons);`;
   </Fragment>
 
   <Fragment slot="usage">
-    <p class="lede" set:html={t("popoverPage.description")} />
+    <p class="lede" set:html={t("popoverPage.lede")} />
 
-    <h3>{t("popoverPage.showcaseTitle")}</h3>
-    <p set:html={t("popoverPage.showcaseBody")} />
-    <ComponentPreview tree={popoverTree(t)} js={js} label="Popover" viewport="overlay" />
+    <h3>{t("component.examplesTitle")}</h3>
+    <UsagePreview tree={popoverTree(t)} title={t("popoverPage.simpleTitle")} description={t("popoverPage.simpleBody")} viewport="overlay" />
 
-    <h3>{t("popoverPage.structuredTitle")}</h3>
-    <p set:html={t("popoverPage.structuredBody")} />
-    <ComponentPreview tree={popoverStructuredTree(t)} js={js} label={t("popoverPage.structuredLabel")} viewport="overlay" />
+    <UsagePreview tree={popoverStructuredTree(t)} title={t("popoverPage.structuredTitle")} description={t("popoverPage.structuredBody")} viewport="overlay" />
 
-    <h3>{t("popoverPage.placementTitle")}</h3>
-    <p set:html={t("popoverPage.placementBody")} />
-    <ComponentPreview tree={popoverPlacementTree(t)} js={js} label={t("popoverPage.placementLabel")} viewport="overlay" />
+    <UsagePreview tree={popoverPlacementTree(t)} title={t("popoverPage.placementTitle")} description={t("popoverPage.placementBody")} viewport="overlay" />
 
     {/*
       * POPUP IS THIS FAMILY'S BARE SIGNATURE, not a component of its own, and this section is where
@@ -75,42 +73,36 @@ mountIcons(document, lucideIcons);`;
       */}
     <h3 id="popup">{t("popoverPage.popupTitle")}</h3>
     <p set:html={t("popoverPage.popupBody")} />
-    <ComponentPreview tree={popupTree(t)} js={js} label="Popup" viewport="menu" />
+    <UsagePreview tree={popupTree(t)} label="Popup" viewport="menu" />
 
     <p set:html={t("popoverPage.popupAnatomyBody")} />
-    <ComponentPreview
-      html={popupAnatomyHtml(t)}
+    <UsagePreview
+      tree={popupAnatomyTree(t)}
       css={popupAnatomyCss}
       label={t("popoverPage.popupAnatomyPreviewLabel")}
-      screens={false}
-      hideSource
-      chrome={false}
+      bare
     />
     <p set:html={t("popoverPage.popupContractBody")} />
 
     <h3>{t("component.contractNotesTitle")}</h3>
-    <p set:html={t("popoverPage.contractBody")} />
+    <ul>
+      {tList(t, "popoverPage.contract").map((item) => <li set:html={item} />)}
+    </ul>
 
     <h3>{t("component.anatomy")}</h3>
     <p set:html={t("popoverPage.anatomyBody")} />
-    <ComponentPreview
-      html={popoverAnatomyHtml(t)}
+    <UsagePreview
+      tree={popoverAnatomyTree(t)}
       css={popoverAnatomyCss}
       label={t("popoverPage.anatomyPreviewLabel")}
-      screens={false}
-      hideSource
-      chrome={false}
+      bare
     />
   </Fragment>
 
   <Fragment slot="guidelines">
     <p class="lede" set:html={t("popoverPage.guidelinesLede")} />
-    <ul>
-      <li set:html={t("popoverPage.guide.use1")} />
-      <li set:html={t("popoverPage.guide.avoid1")} />
-      <li set:html={t("popoverPage.guide.avoid2")} />
-      <li set:html={t("popoverPage.guide.avoid3")} />
-    </ul>
+    <WhenToUse use={tList(t, "popoverPage.when")} avoid={tList(t, "popoverPage.whenNot")} />
+    <ContentRules items={tList(t, "popoverPage.content")} />
   </Fragment>
 
   <Fragment slot="install">
@@ -118,7 +110,15 @@ mountIcons(document, lucideIcons);`;
   </Fragment>
 
   <Fragment slot="a11y">
-    <p set:html={t("popoverPage.a11yBody")} />
-    <p set:html={t("popoverPage.popupA11yBody")} />
+    <A11yNotes
+      intro={t("popoverPage.a11yIntro")}
+      does={tList(t, "popoverPage.a11yDoes")}
+      yours={tList(t, "popoverPage.a11yYours")}
+      keys={[
+        { keys: ["Enter", t("component.key.space")], action: t("popoverPage.key.open") },
+        { keys: ["Tab", "Shift+Tab"], action: t("popoverPage.key.tab") },
+        { keys: ["Esc"], action: t("popoverPage.key.escape") },
+      ]}
+    />
   </Fragment>
 </ComponentPageShell>

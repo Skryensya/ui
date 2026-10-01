@@ -311,3 +311,23 @@ describe("UserSelect Vanilla contracts", () => {
     expect(search.value).toBe("");
   });
 });
+
+/* `loading` is a contract option, so Vanilla draws what React draws: the loading row, the list hidden. */
+describe("UserSelect loading", () => {
+  it("shows a loading row with a Loader and hides the list while the root has data-loading", () => {
+    const root = mount(markup().replace("data-sk-user-select ", "data-sk-user-select data-loading "));
+    const row = root.querySelector<HTMLElement>("[data-sk-user-select-loading]")!;
+    expect(row.hidden).toBe(false);
+    expect(row.querySelector(".sk-loader")).not.toBeNull();
+    expect(row.textContent).toContain("Loading");
+    expect(root.querySelector<HTMLElement>("[data-sk-user-select-list]")!.hidden).toBe(true);
+    destroyMount(root);
+  });
+
+  it("keeps the loading row hidden when the roster has arrived", () => {
+    const root = mount(markup());
+    expect(root.querySelector<HTMLElement>("[data-sk-user-select-loading]")!.hidden).toBe(true);
+    expect(root.querySelector<HTMLElement>("[data-sk-user-select-list]")!.hidden).toBe(false);
+    destroyMount(root);
+  });
+});

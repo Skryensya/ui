@@ -4,26 +4,30 @@ import "@skryensya/core/components/calendar.css";
 import "@skryensya/core/components/annotation.css";
 import ComponentPageShell from "./ComponentPageShell.astro";
 import CodeBlock from "../CodeBlock.astro";
-import ComponentPreview from "../ComponentPreview.astro";
 import UsagePreview from "../UsagePreview.astro";
 import DoDont from "../DoDont.astro";
+import WhenToUse from "../WhenToUse.astro";
+import ContentRules from "../ContentRules.astro";
+import A11yNotes from "../A11yNotes.astro";
 import {
   calendarAnatomyTree,
-  calendarDontTwoTree,
+  calendarLimitsGuideHtml,
   calendarMinMaxTree,
-  calendarMonthAnatomyHtml,
+  calendarNoLimitsGuideHtml,
+  calendarRangeGuideHtml,
   calendarRangeTree,
   calendarTree,
-  calendarYearAnatomyHtml,
+  calendarTwoGuideHtml,
 } from "../../demos/calendar";
 import { annotationDemoCss } from "../../demos/annotation";
-import { getLocale, useTranslations } from "../../i18n";
+import { getLocale, tList, useTranslations } from "../../i18n";
 import { variantsTree } from "../../demos/variants";
 
 const t = useTranslations(getLocale(Astro.url));
 
 const install = `pnpm add @skryensya/core @skryensya/vanilla`;
 const styles = `@import "@skryensya/core/components/calendar.css";`;
+const storybookTitle = "Components/Forms/Calendar";
 
 /* What each value of a property is for, read from this page's messages. Same model Badge uses. */
 const explain = (option: string, values: readonly string[]) =>
@@ -33,9 +37,8 @@ const explain = (option: string, values: readonly string[]) =>
 <ComponentPageShell
   title="Calendar"
   description={t("calendar.description")}
-  badge={t("calendar.betaBadge")}
   contractId="calendar"
-  testFiles={["packages/vanilla/src/components/calendar.svelte.test.ts"]}}
+  testFiles={["packages/vanilla/src/components/calendar.svelte.test.ts"]}
 >
   <Fragment slot="usage">
     <p class="lede" set:html={t("calendar.lede")} />
@@ -49,31 +52,14 @@ const explain = (option: string, values: readonly string[]) =>
       stageMinBlockSize="22rem"
     />
 
-    <h3>{t("calendar.showcaseTitle")}</h3>
-    <p set:html={t("calendar.showcaseBody")} />
-    <h3>{t("calendar.gridTitle")}</h3>
-    <p set:html={t("calendar.gridBody")} />
-    <ComponentPreview tree={calendarTree(t)} label={t("calendar.gridLabel")} viewport="auto" />
-
-    <h3>{t("calendar.viewTitle")}</h3>
-    <p set:html={t("calendar.viewBody1")} />
-    <p set:html={t("calendar.viewBody2")} />
-
-    <h3>{t("calendar.rangeTitle")}</h3>
-    <p set:html={t("calendar.rangeBody1")} />
-    <p set:html={t("calendar.rangeBody2")} />
-    <ComponentPreview tree={calendarRangeTree(t)} label={t("calendar.rangeLabel")} viewport="auto" />
-
-    <h3>{t("calendar.minMaxTitle")}</h3>
-    <p set:html={t("calendar.minMaxBody1")} />
-    <p set:html={t("calendar.minMaxBody2")} />
-    <ComponentPreview tree={calendarMinMaxTree(t)} label={t("calendar.minMaxLabel")} viewport="auto" />
+    <h3>{t("component.examplesTitle")}</h3>
+    <UsagePreview tree={calendarTree(t)} title={t("calendar.gridTitle")} description={t("calendar.gridBody")} storybookTitle={storybookTitle} storybookStory="Default" />
+    <UsagePreview tree={calendarRangeTree(t)} title={t("calendar.rangeTitle")} description={t("calendar.rangeBody1")} storybookTitle={storybookTitle} storybookStory="Range" />
+    <UsagePreview tree={calendarMinMaxTree(t)} title={t("calendar.minMaxTitle")} description={t("calendar.minMaxBody1")} storybookTitle={storybookTitle} storybookStory="MinMax" />
 
     <h3>{t("component.contractNotesTitle")}</h3>
     <ul>
-      <li set:html={t("calendar.contractItem1")} />
-      <li set:html={t("calendar.contractItem2")} />
-      <li set:html={t("calendar.contractItem3")} />
+      {tList(t, "calendar.contract").map((item) => <li set:html={item} />)}
     </ul>
 
     <UsagePreview
@@ -84,44 +70,30 @@ const explain = (option: string, values: readonly string[]) =>
 
     <h3>{t("component.anatomy")}</h3>
     <p set:html={t("calendar.anatomyBody")} />
-    <ComponentPreview
+    <UsagePreview
       tree={calendarAnatomyTree(t)}
       css={annotationDemoCss}
       label={t("calendar.anatomyPreviewLabel")}
-      screens={false}
-      hideSource
-      chrome={false}
+      bare
     />
 
-    <p set:html={t("calendar.anatomyMonthBody")} />
-    <ComponentPreview
-      html={calendarMonthAnatomyHtml(t)}
-      css={annotationDemoCss}
-      label={t("calendar.anatomyMonthPreviewLabel")}
-      screens={false}
-      hideSource
-      chrome={false}
-    />
 
-    <p set:html={t("calendar.anatomyYearBody")} />
-    <ComponentPreview
-      html={calendarYearAnatomyHtml(t)}
-      css={annotationDemoCss}
-      label={t("calendar.anatomyYearPreviewLabel")}
-      screens={false}
-      hideSource
-      chrome={false}
-    />
   </Fragment>
 
   <Fragment slot="guidelines">
     <p class="lede" set:html={t("calendar.guidelinesLede")} />
+    <WhenToUse use={tList(t, "calendar.when")} avoid={tList(t, "calendar.whenNot")} />
     <DoDont
-      canvas
       title={t("calendar.dd.range.title")}
-      do={{ tree: calendarRangeTree(t), caption: t("calendar.dd.range.do") }}
-      dont={{ tree: calendarDontTwoTree(t), caption: t("calendar.dd.range.dont") }}
+      do={{ html: calendarRangeGuideHtml(t), caption: t("calendar.dd.range.do") }}
+      dont={{ html: calendarTwoGuideHtml(t), caption: t("calendar.dd.range.dont") }}
     />
+    <DoDont
+      title={t("calendar.dd.limits.title")}
+      do={{ html: calendarLimitsGuideHtml(t), caption: t("calendar.dd.limits.do") }}
+      dont={{ html: calendarNoLimitsGuideHtml(t), caption: t("calendar.dd.limits.dont") }}
+    />
+    <ContentRules items={tList(t, "calendar.content")} />
   </Fragment>
 
   <Fragment slot="install">
@@ -130,6 +102,16 @@ const explain = (option: string, values: readonly string[]) =>
   </Fragment>
 
   <Fragment slot="a11y">
-    <p set:html={t("calendar.a11yBody")} />
+    <A11yNotes
+      intro={t("calendar.a11yIntro")}
+      does={tList(t, "calendar.a11yDoes")}
+      yours={tList(t, "calendar.a11yYours")}
+      keys={[
+        { keys: ["←", "→", "↑", "↓"], action: t("calendar.a11yKeyArrows") },
+        { keys: ["PageUp", "PageDown"], action: t("calendar.a11yKeyPage") },
+        { keys: [t("component.key.home"), t("component.key.end")], action: t("calendar.a11yKeyHomeEnd") },
+        { keys: ["Enter", t("component.key.space")], action: t("calendar.a11yKeyEnter") },
+      ]}
+    />
   </Fragment>
 </ComponentPageShell>

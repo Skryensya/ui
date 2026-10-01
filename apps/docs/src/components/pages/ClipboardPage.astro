@@ -2,9 +2,11 @@
 import ComponentPageShell from "./ComponentPageShell.astro";
 import AppearanceMenu from "../AppearanceMenu.astro";
 import CodeBlock from "../CodeBlock.astro";
-import ComponentPreview from "../ComponentPreview.astro";
 import UsagePreview from "../UsagePreview.astro";
 import DoDont from "../DoDont.astro";
+import WhenToUse from "../WhenToUse.astro";
+import ContentRules from "../ContentRules.astro";
+import A11yNotes from "../A11yNotes.astro";
 import "@skryensya/core/components/annotation.css";
 import {
   clipboardAnatomyCss,
@@ -12,10 +14,9 @@ import {
   clipboardButtonTree,
   clipboardDontBlindTree,
   clipboardFieldTree,
-  clipboardSizesTree,
   clipboardTargetTree,
 } from "../../demos/clipboard";
-import { getLocale, useTranslations } from "../../i18n";
+import { getLocale, tList, useTranslations } from "../../i18n";
 import "@skryensya/core/components/clipboard.css";
 
 const t = useTranslations(getLocale(Astro.url));
@@ -37,6 +38,7 @@ const vanilla = `document.addEventListener("sk:clipboardstatuschange", (event) =
 });`;
 
 /* What each value of a property is for, read from this page's messages. Same model Badge uses. */
+const storybookTitle = "Components/Actions/Clipboard";
 const explain = (option: string, values: readonly string[]) =>
   Object.fromEntries(values.map((value) => [value, t(`clipboard.prop.${option}.${value}` as Parameters<typeof t>[0])]));
 ---
@@ -44,7 +46,6 @@ const explain = (option: string, values: readonly string[]) =>
 <ComponentPageShell
   title="Clipboard"
   description={t("clipboard.description")}
-  badge={t("clipboard.betaBadge")}
   contractId="clipboard"
   appearanceTargetSelector=".sk-clipboard__trigger"
   testFiles={["packages/react/src/components/clipboard.test.tsx", "packages/vanilla/src/components/clipboard.svelte.test.ts"]}
@@ -75,58 +76,47 @@ const explain = (option: string, values: readonly string[]) =>
       stageMinBlockSize="6rem"
     />
 
-    <h3>{t("clipboard.showcaseTitle")}</h3>
-    <p set:html={t("clipboard.showcaseBody")} />
+    <h3>{t("component.examplesTitle")}</h3>
+    <UsagePreview tree={clipboardTargetTree(t)} title={t("clipboard.targetTitle")} description={t("clipboard.targetBody")} storybookTitle={storybookTitle} storybookStory="Target" />
+    <UsagePreview tree={clipboardFieldTree(t)} title={t("clipboard.fieldTitle")} description={t("clipboard.fieldBody")} storybookTitle={storybookTitle} storybookStory="Field" />
 
-    <h3>{t("clipboard.targetTitle")}</h3>
-    <p set:html={t("clipboard.targetBody")} />
-    <UsagePreview tree={clipboardTargetTree(t)} />
-
-    <h3>{t("clipboard.fieldTitle")}</h3>
-    <p set:html={t("clipboard.fieldBody")} />
-    <UsagePreview tree={clipboardFieldTree(t)} />
-
-    <h3>{t("clipboard.sizesTitle")}</h3>
-    <p set:html={t("clipboard.sizesBody")} />
-    <UsagePreview tree={clipboardSizesTree(t)} />
-
-    <h3>{t("clipboard.feedbackTitle")}</h3>
+    <h3>{t("component.contractNotesTitle")}</h3>
     <ul>
-      <li set:html={t("clipboard.feedbackItem1")} />
-      <li set:html={t("clipboard.feedbackItem2")} />
-      <li set:html={t("clipboard.feedbackItem3")} />
-      <li set:html={t("clipboard.feedbackItem4")} />
+      {tList(t, "clipboard.contract").map((item) => <li set:html={item} />)}
     </ul>
-
-    <h3>{t("clipboard.eventsTitle")}</h3>
-    <p set:html={t("clipboard.eventsBody")} />
     <CodeBlock code={react} label="React" lang="tsx" />
     <CodeBlock code={vanilla} label="JavaScript" lang="ts" />
 
     <h3>{t("component.anatomy")}</h3>
     <p set:html={t("clipboard.anatomyBody")} />
-    <ComponentPreview
+    <UsagePreview
       tree={clipboardAnatomyTree(t)}
       css={clipboardAnatomyCss}
       label={t("clipboard.anatomyPreviewLabel")}
-      screens={false}
-      hideSource
-      chrome={false}
+      bare
     />
   </Fragment>
 
   <Fragment slot="guidelines">
     <p class="lede" set:html={t("clipboard.guidelinesLede")} />
-    <h3>{t("clipboard.whenTitle")}</h3>
-    <ul>
-      <li set:html={t("clipboard.whenItem1")} />
-      <li set:html={t("clipboard.whenItem2")} />
-      <li set:html={t("clipboard.whenItem3")} />
-    </ul>
+    <WhenToUse use={tList(t, "clipboard.when")} avoid={tList(t, "clipboard.whenNot")} />
     <DoDont
       title={t("clipboard.dd.see.title")}
       do={{ tree: clipboardFieldTree(t), caption: t("clipboard.dd.see.do") }}
       dont={{ tree: clipboardDontBlindTree(t), caption: t("clipboard.dd.see.dont") }}
+    />
+    <ContentRules items={tList(t, "clipboard.content")} />
+  </Fragment>
+
+  <Fragment slot="a11y">
+    <A11yNotes
+      intro={t("clipboard.a11yIntro")}
+      does={tList(t, "clipboard.a11yDoes")}
+      yours={tList(t, "clipboard.a11yYours")}
+      keys={[
+        { keys: ["Enter", t("component.key.space")], action: t("clipboard.a11yKeyEnter") },
+        { keys: ["Ctrl+C", "⌘+C"], action: t("clipboard.a11yKeyCopy") },
+      ]}
     />
   </Fragment>
 </ComponentPageShell>

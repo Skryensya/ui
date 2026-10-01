@@ -5,9 +5,11 @@ import "@skryensya/core/components/annotation.css";
 import "@skryensya/core/components/code-preview.css";
 import ComponentPageShell from "./ComponentPageShell.astro";
 import CodeBlock from "../CodeBlock.astro";
-import ComponentPreview from "../ComponentPreview.astro";
 import UsagePreview from "../UsagePreview.astro";
 import DoDont from "../DoDont.astro";
+import WhenToUse from "../WhenToUse.astro";
+import ContentRules from "../ContentRules.astro";
+import A11yNotes from "../A11yNotes.astro";
 import {
   processListAnatomyTree,
   processListDoShortTree,
@@ -16,7 +18,7 @@ import {
   processListTree,
 } from "../../demos/process-list";
 import { annotationDemoCss } from "../../demos/annotation";
-import { getLocale, useTranslations } from "../../i18n";
+import { getLocale, tList, useTranslations } from "../../i18n";
 
 const t = useTranslations(getLocale(Astro.url));
 const install = `pnpm add @skryensya/core @skryensya/react`;
@@ -28,45 +30,32 @@ const styles = `@import "@skryensya/core/components/process-list.css";
   title="ProcessList"
   description={t("processListPage.description")}
   contractId="process-list"
-  testFiles={["packages/react/src/components/process-list.test.tsx"]}}
+  testFiles={["packages/react/src/components/process-list.test.tsx"]}
 >
   <Fragment slot="usage">
     <p class="lede" set:html={t("processListPage.lede")} />
 
-    <h3>{t("processListPage.showcaseTitle")}</h3>
-    <p set:html={t("processListPage.showcaseBody")} />
-    <UsagePreview tree={processListTree(t)} />
-
-    <h3>{t("processListPage.whenTitle")}</h3>
-    <ul>
-      <li set:html={t("processListPage.whenItem1")} />
-      <li set:html={t("processListPage.whenItem2")} />
-      <li set:html={t("processListPage.whenItem3")} />
-    </ul>
+    <h3>{t("component.examplesTitle")}</h3>
+    <UsagePreview tree={processListTree(t)} title={t("processListPage.guideTitle")} description={t("processListPage.guideBody")} />
 
     <h3>{t("component.contractNotesTitle")}</h3>
     <ul>
-      <li set:html={t("processListPage.contractItem1")} />
-      <li set:html={t("processListPage.contractItem2")} />
-      <li set:html={t("processListPage.contractItem3")} />
-      <li set:html={t("processListPage.contractItem4")} />
-      <li set:html={t("processListPage.contractItem5")} />
+      {tList(t, "processListPage.contract").map((item) => <li set:html={item} />)}
     </ul>
 
     <h3>{t("component.anatomy")}</h3>
     <p set:html={t("processListPage.anatomyBody")} />
-    <ComponentPreview
+    <UsagePreview
       tree={processListAnatomyTree(t)}
       css={annotationDemoCss}
       label={t("processListPage.anatomyPreviewLabel")}
-      screens={false}
-      hideSource
-      chrome={false}
+      bare
     />
   </Fragment>
 
   <Fragment slot="guidelines">
     <p class="lede" set:html={t("processListPage.guidelinesLede")} />
+    <WhenToUse use={tList(t, "processListPage.when")} avoid={tList(t, "processListPage.whenNot")} />
     <DoDont
       canvas
       title={t("processListPage.dd.order.title")}
@@ -79,10 +68,14 @@ const styles = `@import "@skryensya/core/components/process-list.css";
       do={{ tree: processListDoShortTree(t), caption: t("processListPage.dd.short.do") }}
       dont={{ tree: processListDontLongTree(t), caption: t("processListPage.dd.short.dont") }}
     />
+    <ContentRules items={tList(t, "processListPage.content")} />
   </Fragment>
 
   <Fragment slot="install">
     <CodeBlock code={install} label="terminal" />
     <CodeBlock code={styles} label="CSS" />
+  </Fragment>
+  <Fragment slot="a11y">
+    <A11yNotes intro={t("processListPage.a11yIntro")} does={tList(t, "processListPage.a11yDoes")} yours={tList(t, "processListPage.a11yYours")} />
   </Fragment>
 </ComponentPageShell>

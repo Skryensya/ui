@@ -13,17 +13,19 @@ import "@skryensya/core/components/canvas.css";
 import "@skryensya/core/components/annotation.css";
 import CodeBlock from "../CodeBlock.astro";
 import ComponentPageShell from "./ComponentPageShell.astro";
-import ComponentPreview from "../ComponentPreview.astro";
+import UsagePreview from "../UsagePreview.astro";
+import WhenToUse from "../WhenToUse.astro";
+import ContentRules from "../ContentRules.astro";
+import A11yNotes from "../A11yNotes.astro";
 import {
-  userSelectAnatomyCss,
-  userSelectAnatomyHtml,
-  userSelectEmptyHtml,
-  userSelectHtml,
   userSelectJs,
   userSelectListen,
+  userSelectLoadingTree,
+  userSelectMultipleTree,
+  userSelectTree,
 } from "../../demos/user-select";
-import { UserSelectBasicDemo, UserSelectLoadingDemo } from "../react-demos/user-select";
-import { getLocale, useTranslations } from "../../i18n";
+
+import { getLocale, tList, useTranslations } from "../../i18n";
 
 const locale = getLocale(Astro.url);
 const t = useTranslations(locale);
@@ -59,7 +61,6 @@ const reactSource = `<UserSelect
 <ComponentPageShell
   title="UserSelect"
   description={t("userSelectPage.description")}
-  badge="Beta"
   contractId="user-select"
   styleGroups={[
     { file: "components/user-select.css", probe: "sk-select", title: "UserSelect" },
@@ -74,68 +75,27 @@ const reactSource = `<UserSelect
   <Fragment slot="usage">
     <p class="lede" set:html={t("userSelectPage.lede")} />
 
-    <div class="sk-callout" data-tone="info">
-      <div class="sk-callout__content">
-        <div class="sk-callout__description" set:html={t("userSelectPage.calloutBody")} />
-      </div>
-    </div>
-
+    <h3>{t("component.examplesTitle")}</h3>
     <h3>{t("userSelectPage.basicTitle")}</h3>
     <p set:html={t("userSelectPage.basicBody")} />
-    <ComponentPreview
-      html={userSelectHtml(t)}
-      js={userSelectJs}
-      react={reactSource}
-      label="UserSelect"
-      note={t("userSelectPage.basicBody")}
-      viewport="menu-deep"
-    >
-      <Fragment slot="react">
-        <UserSelectBasicDemo client:visible lang={locale} />
-      </Fragment>
-    </ComponentPreview>
+    <UsagePreview tree={userSelectTree(t)} label="UserSelect" viewport="menu-deep" />
 
     <h3>{t("userSelectPage.statesTitle")}</h3>
     <p set:html={t("userSelectPage.statesBody")} />
-    <ComponentPreview
-      html={userSelectHtml(t).replace('data-value="jane"', 'data-value="jane maria marco john"')}
-      hideSource
-      label="UserSelect (multiple)"
-      viewport="menu"
-    />
-    <ComponentPreview html={userSelectEmptyHtml(t)} hideSource label="UserSelect (empty)" viewport="menu" />
-    <ComponentPreview react={reactSource.replace("<UserSelect", "<UserSelect loading")} hideSource label="UserSelect (loading)" viewport="menu">
-      <Fragment slot="react">
-        <UserSelectLoadingDemo client:visible lang={locale} />
-      </Fragment>
-    </ComponentPreview>
+    <UsagePreview tree={userSelectMultipleTree(t)} label="UserSelect (multiple)" viewport="menu" />
+    <UsagePreview tree={userSelectLoadingTree(t)} label="UserSelect (loading)" viewport="menu" />
 
-    <h3>{t("userSelectPage.vanillaTitle")}</h3>
-    <p set:html={t("userSelectPage.vanillaBody")} />
+    <h3>{t("component.contractNotesTitle")}</h3>
+    <ul>
+      {tList(t, "userSelectPage.contract").map((item) => <li set:html={item} />)}
+    </ul>
 
-    <h3>{t("userSelectPage.reactTitle")}</h3>
-    <p set:html={t("userSelectPage.reactBody")} />
-
-    <h3>{t("component.anatomy")}</h3>
-    <p set:html={t("userSelectPage.anatomyBody")} />
-    <ComponentPreview
-      html={userSelectAnatomyHtml(t)}
-      css={userSelectAnatomyCss}
-      label={t("userSelectPage.anatomyPreviewLabel")}
-      screens={false}
-      hideSource
-      chrome={false}
-    />
   </Fragment>
 
   <Fragment slot="guidelines">
     <p class="lede" set:html={t("userSelectPage.guidelinesLede")} />
-    <ul>
-      <li set:html={t("userSelectPage.guide.use1")} />
-      <li set:html={t("userSelectPage.guide.use2")} />
-      <li set:html={t("userSelectPage.guide.avoid1")} />
-      <li set:html={t("userSelectPage.guide.avoid2")} />
-    </ul>
+    <WhenToUse use={tList(t, "userSelectPage.when")} avoid={tList(t, "userSelectPage.whenNot")} />
+    <ContentRules items={tList(t, "userSelectPage.content")} />
   </Fragment>
 
   <Fragment slot="install">
@@ -154,11 +114,16 @@ const reactSource = `<UserSelect
   </Fragment>
 
   <Fragment slot="a11y">
-    <ul>
-      <li set:html={t("userSelectPage.a11yItem1")} />
-      <li set:html={t("userSelectPage.a11yItem2")} />
-      <li set:html={t("userSelectPage.a11yItem3")} />
-      <li set:html={t("userSelectPage.a11yItem4")} />
-    </ul>
+    <A11yNotes
+      intro={t("userSelectPage.a11yIntro")}
+      does={tList(t, "userSelectPage.a11yDoes")}
+      yours={tList(t, "userSelectPage.a11yYours")}
+      keys={[
+        { keys: ["Enter", t("component.key.space")], action: t("userSelectPage.key.open") },
+        { keys: ["↑", "↓"], action: t("userSelectPage.key.arrows") },
+        { keys: ["Enter"], action: t("userSelectPage.key.enter") },
+        { keys: ["Esc"], action: t("userSelectPage.key.escape") },
+      ]}
+    />
   </Fragment>
 </ComponentPageShell>

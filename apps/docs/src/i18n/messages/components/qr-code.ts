@@ -1,276 +1,166 @@
 export const qrCodeMessages = {
   es: {
-    "qrCodePage.description": "Un texto corto hecho escaneable, dibujado como un solo path SVG.",
-    "qrCodePage.betaBadge": "Beta",
-    "qrCodePage.lede":
-      "QRCode convierte un texto corto  -  casi siempre una URL  -  en un símbolo que una cámara puede leer. El contrato calcula la geometría y la emite como <strong>un solo <code>path</code></strong>, así que el binding Vanilla no necesita JavaScript para pintarlo y los dos bindings dibujan exactamente el mismo símbolo.",
+    "qrCodePage.description": "Convierte un enlace o un texto corto en un código que una cámara puede escanear.",
+    "qrCodePage.a11yYours2": "Escribe el enlace al lado: el código no puede ser el único camino.",
+    "qrCodePage.a11yYours1": "Nunca uses la URL como nombre: un lector de pantalla la deletrea.",
+    "qrCodePage.a11yDoes2": "Los puntos son oscuros sobre claro: el contraste que la cámara necesita.",
+    "qrCodePage.a11yDoes1": 'La raíz es <code>role="img"</code> con <code>label</code> como nombre; el SVG va oculto.',
+    "qrCodePage.a11yIntro": "QRCode es una imagen con nombre.",
+    "qrCodePage.content3": "Deja el margen vacío alrededor: es parte del código.",
+    "qrCodePage.content2": "Di encima qué hacer: «Escanea con la cámara del teléfono».",
+    "qrCodePage.content1": "Escribe el <code>label</code> con lo que se logra: «Abrir esta página en el teléfono», no la URL.",
+    "qrCodePage.dd.link.dont": "Un código solo deja fuera a quien no puede escanearlo.",
+    "qrCodePage.dd.link.do": "El enlace escrito al lado sirve a quien no tiene cámara o lee desde el mismo teléfono.",
+    "qrCodePage.dd.link.title": "Enlace: también en texto",
+    "qrCodePage.whenNot2": "Para un texto largo: un QR denso cuesta leerlo. Comparte un enlace corto.",
+    "qrCodePage.whenNot1": 'Como única forma de llegar a algo en una pantalla donde se puede hacer clic: usa un <a href="/es/componentes/link">Link</a>.',
+    "qrCodePage.when2": "Para un dato que se escanea: una entrada, un pase, un código de pago.",
+    "qrCodePage.when1": "Para llevar un enlace de una pantalla grande o un impreso al teléfono.",
+    "qrCodePage.contract4": "No lee códigos ni trae botón de descarga.",
+    "qrCodePage.contract3": "<code>polarity</code> decide el lado del contraste en modo oscuro; por defecto los puntos siempre son oscuros sobre claro.",
+    "qrCodePage.contract2": "<code>label</code> es obligatorio: nombra lo que se logra al escanear.",
+    "qrCodePage.contract1": "El código se dibuja como un solo <code>path</code> SVG en <code>currentColor</code>.",
+    "qrCodePage.prop.level.H": "Usa <code>H</code> con un logo al centro o en impresos que se gastan.",
+    "qrCodePage.prop.level.Q": "Usa <code>Q</code>, el valor por defecto, casi siempre.",
+    "qrCodePage.prop.level.M": "Usa <code>M</code> para pantallas e impresos cuidados.",
+    "qrCodePage.prop.level.L": "Usa <code>L</code> para un enlace largo en una pantalla limpia.",
+    "qrCodePage.prop.level.body": "Cuánto del código puede taparse o ensuciarse y seguir leyéndose: 7, 15, 25 o 30 %. Más corrección, más puntos.",
+    "qrCodePage.prop.level.title": "Level: cuánto daño resiste",
+    "qrCodePage.lede": "QRCode convierte un enlace o un texto corto en un código que una cámara puede escanear: llevar una página al teléfono, una entrada que se valida en la puerta, un menú en la mesa. Al lado va siempre el enlace escrito, para quien no puede escanear.",
     "qrCodePage.anatomyBody":
       "Este diagrama nombra el root, el frame, los módulos y el logo. El espécimen está congelado; los QRCode vivos empiezan abajo.",
     "qrCodePage.anatomyLabel": "Anatomía de QRCode",
     "qrCodePage.anatomyPreviewLabel": "QRCode, parte por parte",
 
-    "qrCodePage.basicTitle": "Lo mínimo",
-    "qrCodePage.basicBody":
-      "Un <code>value</code> y un <code>label</code>. El resto tiene valores por defecto sensatos: corrección <code>Q</code>, módulos cuadrados y una zona de silencio de 4 módulos, que es la que pide el estándar.",
-    "qrCodePage.basicLabel": "QRCode",
-    "qrCodePage.basicNote": "value + label, todo lo demás por defecto",
 
-    "qrCodePage.labelTitle": "El nombre accesible no es la URL",
-    "qrCodePage.labelBody":
-      "<code>label</code> es obligatorio y describe <strong>qué logra escanear el código</strong>, no qué dice. Un lector de pantalla que anuncia <code>h-t-t-p-s-dos-puntos-barra-barra…</code> es peor que no anunciar nada: por eso el contrato pide la intención (<em>Abrir el menú del día</em>) y nunca deriva el nombre del valor.",
 
-    "qrCodePage.levelsTitle": "Corrección de errores",
-    "qrCodePage.levelsBody":
-      "Cuatro niveles, de <code>L</code> a <code>H</code>, que recuperan aproximadamente 7, 15, 25 y 30 por ciento del símbolo dañado. El default es <code>Q</code> y no el <code>M</code> habitual: este contrato trae logo, tinte y formas de módulo, que son justo las tres cosas que gastan el presupuesto de corrección, así que un default que sólo sirve para el caso sin decorar le tira el fallo encima a quien usa las funciones que el componente promociona. Más corrección significa más módulos, o sea un símbolo más denso para el mismo texto: se ve abajo. Sube el nivel cuando el código se va a imprimir, a doblar o a tapar en parte  -  y obligatoriamente si le vas a poner un logo.",
-    "qrCodePage.levelsLabel": "Niveles de corrección",
-    "qrCodePage.levelsNote": "el mismo texto, cuatro niveles",
 
-    "qrCodePage.shapesTitle": "Forma de los módulos",
-    "qrCodePage.shapesBody":
-      "<code>moduleShape</code> cambia cómo se dibuja cada módulo, nunca qué codifica: los tres símbolos de abajo llevan el mismo texto y escanean igual. <code>square</code> es el de siempre y el que pinta más nítido en tamaños chicos; <code>dot</code> y <code>rounded</code> son decisiones de marca y piden un poco más de tamaño para leerse bien. Con cualquiera de los dos, los tres cuadrados de las esquinas siguen sólidos: son los que una cámara busca para encontrar el código.",
-    "qrCodePage.shapesLabel": "Formas de módulo",
-    "qrCodePage.shapesNote": "mismo payload, tres dibujos",
 
-    "qrCodePage.logoTitle": "Un logo en el centro",
-    "qrCodePage.logoBody":
-      "<code>logoRatio</code> hace dos cosas a la vez, y las dos hacen falta: <strong>vacía</strong> los módulos del centro y dimensiona la caja donde entra el contenido del slot <code>logo</code>. Vaciarlos importa  -  un logo apoyado encima de módulos vivos deja celdas a medio pintar que el escáner lee como ruido, mientras que un agujero limpio es exactamente lo que la corrección de errores sabe recuperar.",
+    "qrCodePage.logoTitle": "Con logo: al centro, con nivel H",
+    "qrCodePage.logoBody": '<code>logoRatio</code> vacía el centro y le da lugar al slot <code>logo</code>: un Icon, un Avatar o una imagen. Usa <code>level="H"</code> para que el código resista el hueco.',
     "qrCodePage.logoBody2":
-      "El slot toma cualquier nodo publicado del kit: un <a href=\"/es/componentes/icon\">Icon</a>, un <a href=\"/es/componentes/avatar\">Avatar</a>, un <a href=\"/es/componentes/image-frame\">ImageFrame</a>. Y el agujero se paga en capacidad, así que un logo pide nivel <code>Q</code> o <code>H</code>: por debajo de eso el contrato avisa.",
-    "qrCodePage.logoLabel": "Con logo",
-    "qrCodePage.logoNote": "nivel H, logoRatio 0.22",
+      'El slot toma cualquier nodo publicado del kit: un <a href="/es/componentes/icon">Icon</a>, un <a href="/es/componentes/avatar">Avatar</a>, un <a href="/es/componentes/image-frame">ImageFrame</a>. Y el agujero se paga en capacidad, así que un logo pide nivel <code>Q</code> o <code>H</code>: por debajo de eso el contrato avisa.',
 
-    "qrCodePage.compositionTitle": "El código no viaja solo",
-    "qrCodePage.compositionBody":
-      "El contrato no trae título, superficie, botón de descarga ni acción de compartir: eso es de lo que lo rodea. Abajo, la composición que sí conviene copiar  -  un <a href=\"/es/componentes/box\">Box</a>, un encabezado y <strong>el mismo enlace escrito</strong>. Ese enlace no es decoración: es lo que hace usable la tarjeta para quien no puede apuntar una cámara, y es el piso de accesibilidad que un QR solo nunca alcanza.",
-    "qrCodePage.compositionLabel": "QR con su enlace escrito",
-    "qrCodePage.compositionNote": "la composición, no una opción del contrato",
+    "qrCodePage.compositionTitle": "En una tarjeta: con el enlace escrito",
+    "qrCodePage.compositionBody": "El código no trae título ni botón: los pone lo que lo rodea. Un Box con un título, el código y el enlace en texto.",
 
-    "qrCodePage.sizesTitle": "Tamaños",
-    "qrCodePage.sizesBody":
-      "<code>size</code> cambia la huella y nada más: los cuatro símbolos de abajo llevan el mismo texto con la misma cantidad de módulos. Elige por distancia de lectura, no por hueco en la maqueta  -  <code>sm</code> sirve en pantalla a un palmo, <code>xl</code> es para proyectar o imprimir. La densidad la fija el nivel de corrección, no esto.",
-    "qrCodePage.sizesLabel": "Tamaños",
-    "qrCodePage.sizesNote": "sm · md · lg · xl",
 
-    "qrCodePage.masksTitle": "Máscaras",
-    "qrCodePage.masksBody":
-      "Antes de dibujarse, al símbolo se le aplica una de las ocho <strong>máscaras</strong> del estándar con un XOR. Los ocho de abajo llevan <strong>exactamente el mismo texto</strong> y escanean igual: el lector deshace la máscara leyéndola del campo de formato, sin que nadie se lo diga. Lo único que cambia es el dibujo.",
-    "qrCodePage.masksBody2":
-      "Existe porque una codificación cruda tiende a producir bloques uniformes grandes y rachas que parecen un patrón de posición, y eso es justo lo que una cámara lee mal. Por eso el codificador arma las ocho, las puntúa con las cuatro reglas de penalización de la norma y se queda con la más tranquila  -  eso es <code>auto</code>, el default. Nombrar una sirve para reproducir un símbolo exacto, o para una fila como esta.",
-    "qrCodePage.masksLabel": "Las ocho máscaras",
-    "qrCodePage.masksNote": "mismo payload, ocho dibujos",
 
-    "qrCodePage.tonesTitle": "Tintes y polaridad",
-    "qrCodePage.tonesBody":
-      "<code>tone</code> pinta los módulos con la misma paleta que usa <a href=\"/es/componentes/charts\">Chart</a>, siempre en un paso oscuro. <code>polarity</code> decide de qué lado está el contraste, en tres valores: <code>auto</code> (por defecto) sigue el esquema de la página y se da vuelta con el tema; <code>light</code> fija módulos oscuros sobre papel claro  -  la polaridad que especifica la norma  -  y <code>dark</code> es la inversión fija, para un afiche o una superficie oscura.",
-    "qrCodePage.tonesBody2":
-      "El símbolo siempre se pinta con los mismos tokens  -  es un SVG inline con <code>fill=\"currentColor\"</code>  -  y lo único que cambia entre los tres valores es qué rama de <code>light-dark()</code> gana, vía <code>color-scheme</code> en la caja. Por eso <code>auto</code> se da vuelta solo y los otros dos no. <strong>Elige <code>light</code> en cuanto el código se vaya de la pantalla</strong>: la norma sólo garantiza oscuro-sobre-claro, así que un símbolo invertido lo leen las cámaras de teléfono actuales  -  iOS y Android lo hacen  -  y no cualquier lector que exista. En pantalla eso alcanza; impreso o proyectado, no.",
-    "qrCodePage.tonesLabel": "Tintes",
-    "qrCodePage.tonesNote": "light, dark y auto",
 
-    "qrCodePage.popoverTitle": "Pasar la página al teléfono",
-    "qrCodePage.popoverBody":
-      "El caso en el que un QR es de verdad la mejor herramienta: quien lee está en el escritorio y quiere llevarse esta página al bolsillo. Va en un <a href=\"/es/componentes/popover\">Popover</a> porque el código es un aparte  -  responde una pregunta que nadie se hizo hasta que se la hizo, y no debería ocupar la maqueta hasta entonces.",
+    "qrCodePage.popoverTitle": "En un Popover: llevar la página al teléfono",
+    "qrCodePage.popoverBody": "Quien lee en el escritorio abre el código y lo escanea con el teléfono.",
     "qrCodePage.popoverLabel": "QR en un popover",
-    "qrCodePage.popoverNote": "ábrelo para ver el código",
 
-    "qrCodePage.ticketTitle": "Cuando el código es el contenido",
-    "qrCodePage.ticketBody":
-      "En una entrada el QR no invita a nada: <em>es</em> lo que se escanea en la puerta. Por eso es lo más grande de la caja y el texto alrededor es la copia legible del mismo dato, incluido el código escrito abajo por si el lector falla. <code>tone</code> y un logo son las dos palancas de marca que una entrada real usa, mostradas juntas en el nivel que aguanta las dos.",
-    "qrCodePage.ticketLabel": "Entrada",
-    "qrCodePage.ticketNote": "nivel H, tone accent, logo",
+    "qrCodePage.ticketTitle": "Una entrada: el código es el contenido",
+    "qrCodePage.ticketBody": "Lo que se escanea en la puerta. Es lo más grande de la tarjeta y el texto de al lado repite el dato.",
 
-    "qrCodePage.exportTitle": "Guardarlo como imagen",
-    "qrCodePage.exportBody":
-      "<code>downloadQrCode</code>, <code>qrCodeToBlob</code>, <code>qrCodeToDataUrl</code> y <code>qrCodeToSvg</code> exportan el QR tal como está dibujado, desde cualquiera de los dos bindings: PNG (por defecto, 1024 px), JPEG, WebP o SVG. Los colores del tono se escriben literales, porque fuera de la página no hay tokens, y el papel se pinta siempre, así que el archivo funciona sobre cualquier fondo. El logo viaja si es un <code>&lt;svg&gt;</code> o una <code>&lt;img&gt;</code> con CORS; si la imagen no lo permite, la exportación falla con un error claro en vez de dejar un hueco sin explicación. <strong>Por defecto el archivo sale oscuro sobre claro aunque la página esté en modo oscuro</strong>: un archivo se imprime o se comparte, y la norma sólo garantiza esa polaridad. <code>polarity: \"as-drawn\"</code> exporta exactamente lo que se ve.",
-    "qrCodePage.runtimeTitle": "Dibujarlo en el navegador",
-    "qrCodePage.runtimeBody":
-      "Cuando el valor sólo se conoce en el navegador (el enlace propio de quien inició sesión), escribe el mismo markup con el <code>path</code> vacío y <code>data-value</code>: el enhancer <code>data-sk-qr-code</code> lo dibuja con el mismo codificador que React y el HTML generado. Si después cambias <code>data-value</code> (o el nivel, la máscara, la forma o la zona de silencio), se vuelve a dibujar solo. Un QR ya dibujado no se codifica de nuevo al cargar. Si el valor no cabe en ningún QR, el dibujo queda vacío y la raíz lleva <code>data-sk-qr-error</code>: nunca sigue mostrando el código anterior, porque ese todavía se escanea. Cambia también el <code>aria-label</code> si el código pasa a hacer otra cosa.",
-    "qrCodePage.limitsTitle": "Qué no hace",
-    "qrCodePage.limitsItem1":
-      "<strong>No hay modo kanji.</strong> El modo byte lleva UTF-8, así que el japonés se codifica y se lee perfecto; el modo kanji sólo lo haría más compacto (13 bits por carácter contra 24). Soportarlo significa mantener una tabla Shift-JIS de 7.000 entradas a cambio de una optimización de tamaño que nadie pidió.",
-    "qrCodePage.limitsItem2":
-      "<strong>No decodifica.</strong> Leer un QR con la cámara es otro problema  -  binarización, detección de perspectiva  -  y no es lo que hace un design system.",
-    "qrCodePage.limitsItem3":
-      "<strong>No trae un botón de descarga.</strong> Guardarlo es una función (<code>downloadQrCode</code>, arriba) que llama el botón de tu página: el contrato sigue sin tener ninguno.",
+    "qrCodePage.exportTitle": "Guardarlo: PNG o SVG",
+    "qrCodePage.exportBody": "<code>downloadQrCode</code> y <code>qrCodeToSvg</code> exportan el código tal como se ve, desde cualquiera de los dos bindings.",
+    "qrCodePage.runtimeTitle": "En el navegador: data-value",
+    "qrCodePage.runtimeBody": "Si el valor solo se conoce en el navegador, escribe el markup con <code>data-value</code> y el enhancer dibuja el código.",
 
-    "qrCodePage.a11yP1":
-      "La raíz es <code>role=\"img\"</code> con el <code>label</code> como nombre accesible, y el <code>&lt;svg&gt;</code> de adentro va <code>aria-hidden</code>: es un dibujo del payload, y exponerlo anunciaría una segunda imagen sin nombre.",
-    "qrCodePage.a11yP2":
-      "Nunca uses el valor como nombre. Un lector de pantalla deletrea una URL carácter por carácter, y quien escucha eso no puede escanear ni entender qué le ofrecen.",
-    "qrCodePage.a11yP3":
-      "Un QR no puede ser el único camino a una acción importante. Escribe el enlace al lado, como en la composición de arriba: hay gente sin cámara, sin una segunda pantalla, o leyendo desde el mismo dispositivo donde está el código.",
-    "qrCodePage.a11yP4":
-      "El contraste aquí es una propiedad de <em>funcionamiento</em>, no de estilo: una cámara necesita módulos oscuros sobre fondo claro, en ese orden. Invertirlo está fuera de especificación y varios lectores lo rechazan, así que en <code>forced-colors</code> la hoja fija los dos colores del sistema en vez de heredar un tema invertido.",
 
-    "qrCodePage.testRoundTrip":
-      "Cada modo que el contrato promete vuelve a leerse: los tests decodifican el símbolo con un lector independiente, porque un QR con los bytes equivocados se ve idéntico a uno correcto.",
-    "qrCodePage.testLogoScans":
-      "El símbolo con el agujero del logo sigue decodificando: por eso los módulos se vacían en vez de taparse.",
-    "qrCodePage.testShapes":
-      "Las tres formas de módulo llevan el mismo payload; la forma es pintura y no puede cambiar lo que el código dice.",
-    "qrCodePage.testSameGeometry":
-      "El binding React pinta exactamente la geometría que emitiría el compilador: un solo codificador, llamado desde los dos lados.",
-    "qrCodePage.prop.moduleShape.title": "Forma de los módulos",
-    "qrCodePage.prop.moduleShape.body": "El <code>moduleShape</code> dibuja cada punto del código.",
-    "qrCodePage.prop.moduleShape.square": "Usa <code>square</code>, el default, para la lectura más segura.",
+    "qrCodePage.prop.moduleShape.title": "Module shape: el dibujo de cada punto",
+    "qrCodePage.prop.moduleShape.body": "Cambia cómo se dibuja cada punto, nunca lo que codifica: los tres se escanean igual.",
+    "qrCodePage.prop.moduleShape.square": "Usa <code>square</code>, el valor por defecto, para la lectura más segura.",
     "qrCodePage.prop.moduleShape.dot": "Usa <code>dot</code> para un código más suave, junto a una marca.",
     "qrCodePage.prop.moduleShape.rounded": "Usa <code>rounded</code> para un punto medio entre los dos.",
-    "qrCodePage.prop.qrSize.title": "Tamaño",
-    "qrCodePage.prop.qrSize.body": "El <code>qrSize</code> fija el lado del código.",
-    "qrCodePage.prop.qrSize.sm": "Usa <code>sm</code> dentro de un menú o una tarjeta chica.",
-    "qrCodePage.prop.qrSize.md": "Usa <code>md</code>, el default, en una tarjeta.",
+    "qrCodePage.prop.qrSize.title": "Size: por la distancia de lectura",
+    "qrCodePage.prop.qrSize.body": "El lado del código. Elige por la distancia desde la que se escanea, no por el hueco que queda.",
+    "qrCodePage.prop.qrSize.sm": "Usa <code>sm</code> dentro de un menú o una tarjeta pequeña.",
+    "qrCodePage.prop.qrSize.md": "Usa <code>md</code>, el valor por defecto, en una tarjeta.",
     "qrCodePage.prop.qrSize.lg": "Usa <code>lg</code> cuando se escanea desde lejos, como en una pantalla.",
     "qrCodePage.prop.qrSize.xl": "Usa <code>xl</code> para un código que es lo principal de la vista.",
-    "qrCodePage.prop.tone.title": "Tono",
-    "qrCodePage.prop.tone.body": "El <code>tone</code> pinta los módulos. El contraste se mantiene para que el lector lo lea.",
-    "qrCodePage.prop.tone.neutral": "Usa <code>neutral</code>, el default, casi siempre.",
+    "qrCodePage.prop.tone.title": "Tone: el color de los puntos",
+    "qrCodePage.prop.tone.body": "Pinta los puntos siempre en un paso oscuro, para que la cámara lo lea.",
+    "qrCodePage.prop.tone.neutral": "Usa <code>neutral</code>, el valor por defecto, casi siempre.",
     "qrCodePage.prop.tone.accent": "Usa <code>accent</code> para que el código siga a la marca.",
     "qrCodePage.prop.tone.success": "Usa <code>success</code> para un código ya validado, como una entrada.",
     "qrCodePage.prop.tone.warning": "Usa <code>warning</code> para un código que vence pronto.",
     "qrCodePage.prop.tone.danger": "Usa <code>danger</code> para un código que ya no sirve.",
     "qrCodePage.prop.tone.info": "Usa <code>info</code> para un código informativo.",
-    "qrCodePage.showcaseTitle": "Showcases",
-    "qrCodePage.showcaseBody": "Un código básico, en tamaños, niveles de corrección, formas, máscaras, tonos y compuesto en tarjetas.",
-    "qrCodePage.guidelinesLede": "QRCode convierte un enlace o un texto en un código que un celular puede escanear.",
-    "qrCodePage.guide.use1": "Pon al lado el enlace en texto, para quien no puede escanear.",
-    "qrCodePage.guide.use2": "Deja espacio vacío alrededor: el margen es parte del código.",
-    "qrCodePage.guide.avoid1": "No lo uses como única forma de llegar a algo en una pantalla donde se puede hacer clic.",
+    "qrCodePage.guidelinesLede": "Un QR sirve para pasar algo de una pantalla o un papel a un teléfono.",
   },
   en: {
-    "qrCodePage.description": "A short string made scannable, drawn as a single SVG path.",
-    "qrCodePage.betaBadge": "Beta",
-    "qrCodePage.lede":
-      "QRCode turns a short string  -  almost always a URL  -  into a symbol a camera can read. The contract computes the geometry and emits it as <strong>one <code>path</code></strong>, so the Vanilla binding needs no JavaScript to paint it and both bindings draw exactly the same symbol.",
+    "qrCodePage.description": "Turns a link or short text into a code a camera can scan.",
+    "qrCodePage.a11yYours2": "Write the link beside it: the code cannot be the only way.",
+    "qrCodePage.a11yYours1": "Never use the URL as the name: a screen reader spells it out.",
+    "qrCodePage.a11yDoes2": "The dots are dark on light: the contrast the camera needs.",
+    "qrCodePage.a11yDoes1": 'The root is <code>role="img"</code> with <code>label</code> as its name; the SVG is hidden.',
+    "qrCodePage.a11yIntro": "QRCode is a named image.",
+    "qrCodePage.content3": "Leave the margin around it empty: it is part of the code.",
+    "qrCodePage.content2": "Say above it what to do: “Scan with your phone's camera”.",
+    "qrCodePage.content1": "Write the <code>label</code> with what is achieved: “Open this page on your phone”, not the URL.",
+    "qrCodePage.dd.link.dont": "A code alone leaves out whoever cannot scan it.",
+    "qrCodePage.dd.link.do": "The written link beside it serves whoever has no camera or reads on the same phone.",
+    "qrCodePage.dd.link.title": "Link: also as text",
+    "qrCodePage.whenNot2": "For long text: a dense QR is hard to read. Share a short link.",
+    "qrCodePage.whenNot1": 'As the only way to reach something on a clickable screen: use a <a href="/components/link">Link</a>.',
+    "qrCodePage.when2": "For data that is scanned: a ticket, a pass, a payment code.",
+    "qrCodePage.when1": "To take a link from a large screen or a print to the phone.",
+    "qrCodePage.contract4": "It does not read codes or bring a download button.",
+    "qrCodePage.contract3": "<code>polarity</code> decides which side the contrast is on in dark mode; by default the dots are always dark on light.",
+    "qrCodePage.contract2": "<code>label</code> is required: it names what scanning achieves.",
+    "qrCodePage.contract1": "The code is drawn as a single SVG <code>path</code> in <code>currentColor</code>.",
+    "qrCodePage.prop.level.H": "Use <code>H</code> with a logo in the center or on prints that wear.",
+    "qrCodePage.prop.level.Q": "Use <code>Q</code>, the default, almost always.",
+    "qrCodePage.prop.level.M": "Use <code>M</code> for screens and careful prints.",
+    "qrCodePage.prop.level.L": "Use <code>L</code> for a long link on a clean screen.",
+    "qrCodePage.prop.level.body": "How much of the code can be covered or dirtied and still read: 7, 15, 25 or 30%. More correction, more dots.",
+    "qrCodePage.prop.level.title": "Level: how much damage it survives",
+    "qrCodePage.lede": "QRCode turns a link or short text into a code a camera can scan: taking a page to the phone, a ticket checked at the door, a menu on the table. The written link always goes beside it, for whoever cannot scan.",
     "qrCodePage.anatomyBody":
       "This diagram names the root, the frame, the modules and the logo. The specimen is frozen; the live QRCodes begin below.",
     "qrCodePage.anatomyLabel": "QRCode anatomy",
     "qrCodePage.anatomyPreviewLabel": "QRCode, part by part",
 
-    "qrCodePage.basicTitle": "The floor",
-    "qrCodePage.basicBody":
-      "A <code>value</code> and a <code>label</code>. Everything else defaults sensibly: <code>Q</code> correction, square modules, and the 4 module quiet zone the standard asks for.",
-    "qrCodePage.basicLabel": "QRCode",
-    "qrCodePage.basicNote": "value + label, everything else defaulted",
 
-    "qrCodePage.labelTitle": "The accessible name is not the URL",
-    "qrCodePage.labelBody":
-      "<code>label</code> is required, and it describes <strong>what scanning the code accomplishes</strong>, not what it says. A screen reader announcing <code>h-t-t-p-s-colon-slash-slash…</code> is worse than announcing nothing, so the contract asks for the intent (<em>Open the menu of the day</em>) and never derives a name from the value.",
 
-    "qrCodePage.levelsTitle": "Error correction",
-    "qrCodePage.levelsBody":
-      "Four levels, <code>L</code> through <code>H</code>, recovering roughly 7, 15, 25 and 30 percent of a damaged symbol. The default is <code>Q</code> rather than the conventional <code>M</code>: this contract ships a logo, a tint and module shapes, which are precisely the three things that spend the error budget, so a default that only holds for the undecorated case pushes the failure onto whoever uses the features the component advertises. More correction means more modules, so a denser symbol for the same text: it is visible below. Raise the level when the code will be printed, folded, or partly covered  -  and always when it carries a logo.",
-    "qrCodePage.levelsLabel": "Correction levels",
-    "qrCodePage.levelsNote": "the same string, four levels",
 
-    "qrCodePage.shapesTitle": "Module shape",
-    "qrCodePage.shapesBody":
-      "<code>moduleShape</code> changes how each module is drawn, never what it encodes: the three symbols below carry the same string and scan alike. <code>square</code> is the conventional one and the crispest at small sizes; <code>dot</code> and <code>rounded</code> are brand decisions and want a little more room to read well. With either, the three corner squares stay solid: they are what a camera looks for to find the code.",
-    "qrCodePage.shapesLabel": "Module shapes",
-    "qrCodePage.shapesNote": "same payload, three drawings",
 
-    "qrCodePage.logoTitle": "A logo in the middle",
-    "qrCodePage.logoBody":
-      "<code>logoRatio</code> does two things at once, and both are needed: it <strong>clears</strong> the modules in the middle and it sizes the box the <code>logo</code> slot's content sits in. Clearing them matters  -  a logo laid over live modules leaves half-painted cells a scanner reads as noise, while a clean hole is exactly what error correction is designed to recover.",
+    "qrCodePage.logoTitle": "With a logo: centered, at level H",
+    "qrCodePage.logoBody": '<code>logoRatio</code> clears the center and makes room for the <code>logo</code> slot: an Icon, an Avatar or an image. Use <code>level="H"</code> so the code survives the gap.',
     "qrCodePage.logoBody2":
-      "The slot takes any published node in the kit: an <a href=\"/components/icon\">Icon</a>, an <a href=\"/components/avatar\">Avatar</a>, an <a href=\"/components/image-frame\">ImageFrame</a>. The hole is paid for in capacity, so a logo wants level <code>Q</code> or <code>H</code>; below that the contract says so.",
-    "qrCodePage.logoLabel": "With a logo",
-    "qrCodePage.logoNote": "level H, logoRatio 0.22",
+      'The slot takes any published node in the kit: an <a href="/components/icon">Icon</a>, an <a href="/components/avatar">Avatar</a>, an <a href="/components/image-frame">ImageFrame</a>. The hole is paid for in capacity, so a logo wants level <code>Q</code> or <code>H</code>; below that the contract says so.',
 
-    "qrCodePage.compositionTitle": "The code does not travel alone",
-    "qrCodePage.compositionBody":
-      "The contract carries no title, surface, download button or share affordance: those belong to whatever holds it. Below is the composition actually worth copying  -  a <a href=\"/components/box\">Box</a>, a heading, and <strong>the same link written out</strong>. That link is not decoration: it is what makes the card usable by someone who cannot point a camera at it, and it is the accessibility floor a QR alone never meets.",
-    "qrCodePage.compositionLabel": "QR beside its written link",
-    "qrCodePage.compositionNote": "a composition, not an option on the contract",
+    "qrCodePage.compositionTitle": "In a card: with the written link",
+    "qrCodePage.compositionBody": "The code brings no title or button: what surrounds it does. A Box with a title, the code and the link as text.",
 
-    "qrCodePage.sizesTitle": "Sizes",
-    "qrCodePage.sizesBody":
-      "<code>size</code> changes the footprint and nothing else: the four symbols below carry the same string with the same module count. Choose by reading distance, not by the hole in the layout  -  <code>sm</code> works on screen at arm's length, <code>xl</code> is for projecting or printing. Density is set by the correction level, not by this.",
-    "qrCodePage.sizesLabel": "Sizes",
-    "qrCodePage.sizesNote": "sm · md · lg · xl",
 
-    "qrCodePage.masksTitle": "Masks",
-    "qrCodePage.masksBody":
-      "Before it is drawn, the symbol has one of the standard's eight <strong>masks</strong> XORed over it. All eight below carry <strong>exactly the same string</strong> and scan alike: a reader undoes the mask by reading it off the format field, without being told. Only the picture changes.",
-    "qrCodePage.masksBody2":
-      "It exists because a raw encoding tends to produce large uniform blocks and runs that look like a finder pattern, and those are what a camera misreads. So the encoder builds all eight, scores them with the standard's four penalty rules and keeps the quietest  -  that is <code>auto</code>, the default. Naming one is for reproducing an exact symbol, or for a row like this.",
-    "qrCodePage.masksLabel": "The eight masks",
-    "qrCodePage.masksNote": "same payload, eight drawings",
 
-    "qrCodePage.tonesTitle": "Tints and polarity",
-    "qrCodePage.tonesBody":
-      "<code>tone</code> paints the modules from the same palette <a href=\"/components/charts\">Chart</a> uses, always at a dark step. <code>polarity</code> decides which way the contrast runs, across three values: <code>auto</code> (the default) follows the page's colour scheme and flips with the theme; <code>light</code> pins dark modules on light paper  -  the polarity the standard specifies  -  and <code>dark</code> is the pinned inversion, for a dark poster or a dark surface.",
-    "qrCodePage.tonesBody2":
-      "The symbol is always painted from the same tokens  -  it is an inline SVG drawing in <code>fill=\"currentColor\"</code>  -  and all three values do is decide which branch of <code>light-dark()</code> wins, through <code>color-scheme</code> on the box. That is why <code>auto</code> flips on its own and the other two do not. <strong>Reach for <code>light</code> the moment the code leaves the screen</strong>: the standard only guarantees dark-on-light, so an inverted symbol is read by current phone cameras  -  iOS and Android both handle it  -  and not by every reader that exists. On screen that is enough; printed or projected, it is not.",
-    "qrCodePage.tonesLabel": "Tints",
-    "qrCodePage.tonesNote": "light, dark and auto",
 
-    "qrCodePage.popoverTitle": "Handing the page to a phone",
-    "qrCodePage.popoverBody":
-      "The case a QR is genuinely best at: the reader is at a desktop and wants to carry this page to the device in their pocket. It goes in a <a href=\"/components/popover\">Popover</a> because the code is an aside  -  it answers a question nobody asked until they asked it, and it should not occupy the layout until then.",
+    "qrCodePage.popoverTitle": "In a Popover: taking the page to the phone",
+    "qrCodePage.popoverBody": "Someone reading on the desktop opens the code and scans it with the phone.",
     "qrCodePage.popoverLabel": "QR in a popover",
-    "qrCodePage.popoverNote": "open it to see the code",
 
-    "qrCodePage.ticketTitle": "When the code is the content",
-    "qrCodePage.ticketBody":
-      "On a ticket the QR invites nothing: it <em>is</em> what gets scanned at the door. So it is the largest thing in the box, and the text around it is the human-readable copy of the same fact, including the code written out in case the reader fails. <code>tone</code> and a logo are the two branding levers a real ticket reaches for, shown together at the level that survives both.",
-    "qrCodePage.ticketLabel": "Ticket",
-    "qrCodePage.ticketNote": "level H, accent tone, logo",
+    "qrCodePage.ticketTitle": "A ticket: the code is the content",
+    "qrCodePage.ticketBody": "What is scanned at the door. It is the largest thing on the card and the text beside it repeats the data.",
 
-    "qrCodePage.exportTitle": "Saving it as an image",
-    "qrCodePage.exportBody":
-      "<code>downloadQrCode</code>, <code>qrCodeToBlob</code>, <code>qrCodeToDataUrl</code> and <code>qrCodeToSvg</code> export the QR as it is drawn, from either binding: PNG (the default, 1024 px), JPEG, WebP or SVG. The tone's colours are written in as literals, because there are no tokens outside the page, and the paper is always painted, so the file works on any background. The logo travels when it is an <code>&lt;svg&gt;</code> or an <code>&lt;img&gt;</code> served with CORS; when the image does not allow it, the export fails with a clear error instead of leaving an unexplained hole. <strong>By default the file comes out dark on light even when the page is in dark mode</strong>: a file gets printed or shared, and the standard only guarantees that polarity. <code>polarity: \"as-drawn\"</code> exports exactly what is on screen.",
-    "qrCodePage.runtimeTitle": "Drawing it in the browser",
-    "qrCodePage.runtimeBody":
-      "When the value is only known in the browser (the signed-in reader's own link), write the same markup with an empty <code>path</code> and a <code>data-value</code>: the <code>data-sk-qr-code</code> enhancer draws it with the same encoder as React and the generated HTML. Change <code>data-value</code> later (or the level, mask, shape or quiet zone) and it redraws itself. A QR that is already drawn is not encoded again on load. When the value fits in no QR at all, the drawing is left empty and the root carries <code>data-sk-qr-error</code>: it never keeps showing the previous code, because that one still scans. Change the <code>aria-label</code> too when the code starts doing something else.",
-    "qrCodePage.limitsTitle": "What it does not do",
-    "qrCodePage.limitsItem1":
-      "<strong>No kanji mode.</strong> Byte mode carries UTF-8, so Japanese encodes and reads back perfectly; kanji mode would only make it denser (13 bits per character against 24). Supporting it means owning a 7,000 entry Shift-JIS table in exchange for a size optimisation nobody asked for.",
-    "qrCodePage.limitsItem2":
-      "<strong>No decoding.</strong> Reading a QR through a camera is a different problem  -  binarisation, perspective detection  -  and not one a design system solves.",
-    "qrCodePage.limitsItem3":
-      "<strong>No download button.</strong> Saving it is a function (<code>downloadQrCode</code>, above) that your page's own button calls: the contract still has none.",
+    "qrCodePage.exportTitle": "Saving it: PNG or SVG",
+    "qrCodePage.exportBody": "<code>downloadQrCode</code> and <code>qrCodeToSvg</code> export the code as it looks, from either binding.",
+    "qrCodePage.runtimeTitle": "In the browser: data-value",
+    "qrCodePage.runtimeBody": "If the value is only known in the browser, write the markup with <code>data-value</code> and the enhancer draws the code.",
 
-    "qrCodePage.a11yP1":
-      "The root is <code>role=\"img\"</code> named by <code>label</code>, and the inner <code>&lt;svg&gt;</code> is <code>aria-hidden</code>: it is a picture of the payload, and exposing it would announce a second, nameless image.",
-    "qrCodePage.a11yP2":
-      "Never use the value as the name. A screen reader spells a URL out character by character, and whoever hears that can neither scan it nor tell what is on offer.",
-    "qrCodePage.a11yP3":
-      "A QR must never be the only route to an important action. Write the link beside it, as in the composition above: some people have no camera, no second screen, or are reading on the very device showing the code.",
-    "qrCodePage.a11yP4":
-      "Contrast here is a <em>functional</em> property, not a stylistic one: a camera needs dark modules on a light ground, in that order. Inverting it is out of spec and several readers refuse it, so under <code>forced-colors</code> the stylesheet pins the two system colours rather than inheriting an inverted theme.",
 
-    "qrCodePage.testRoundTrip":
-      "Every mode the contract promises reads back: the tests decode the symbol with an independent reader, because a QR carrying the wrong bytes looks identical to a correct one.",
-    "qrCodePage.testLogoScans":
-      "The symbol still decodes with the logo hole punched through it, which is why the modules are cleared rather than covered.",
-    "qrCodePage.testShapes":
-      "All three module shapes carry the same payload; shape is paint and cannot change what the code says.",
-    "qrCodePage.testSameGeometry":
-      "The React binding paints exactly the geometry the compiler would emit: one encoder, called from both sides.",
-    "qrCodePage.prop.moduleShape.title": "Module shape",
-    "qrCodePage.prop.moduleShape.body": "<code>moduleShape</code> draws each dot of the code.",
-    "qrCodePage.prop.moduleShape.square": "Use <code>square</code>, the default, for the safest scan.",
+    "qrCodePage.prop.moduleShape.title": "Module shape: how each dot is drawn",
+    "qrCodePage.prop.moduleShape.body": "Changes how each dot is drawn, never what it encodes: all three scan the same.",
+    "qrCodePage.prop.moduleShape.square": "Use <code>square</code>, the default, for the safest reading.",
     "qrCodePage.prop.moduleShape.dot": "Use <code>dot</code> for a softer code beside a brand.",
     "qrCodePage.prop.moduleShape.rounded": "Use <code>rounded</code> for a middle ground between the two.",
-    "qrCodePage.prop.qrSize.title": "Size",
-    "qrCodePage.prop.qrSize.body": "<code>qrSize</code> sets the code's side.",
+    "qrCodePage.prop.qrSize.title": "Size: by reading distance",
+    "qrCodePage.prop.qrSize.body": "The code's side. Choose by the distance it is scanned from, not the gap in the layout.",
     "qrCodePage.prop.qrSize.sm": "Use <code>sm</code> inside a menu or a small card.",
-    "qrCodePage.prop.qrSize.md": "Use <code>md</code>, the default, on a card.",
+    "qrCodePage.prop.qrSize.md": "Use <code>md</code>, the default, in a card.",
     "qrCodePage.prop.qrSize.lg": "Use <code>lg</code> when it is scanned from afar, as on a screen.",
     "qrCodePage.prop.qrSize.xl": "Use <code>xl</code> for a code that is the main thing in the view.",
-    "qrCodePage.prop.tone.title": "Tone",
-    "qrCodePage.prop.tone.body": "<code>tone</code> paints the modules. Contrast is kept so scanners can read it.",
+    "qrCodePage.prop.tone.title": "Tone: the dots' color",
+    "qrCodePage.prop.tone.body": "Paints the dots always in a dark step, so the camera reads it.",
     "qrCodePage.prop.tone.neutral": "Use <code>neutral</code>, the default, almost always.",
     "qrCodePage.prop.tone.accent": "Use <code>accent</code> so the code follows the brand.",
     "qrCodePage.prop.tone.success": "Use <code>success</code> for a code already validated, like a ticket.",
     "qrCodePage.prop.tone.warning": "Use <code>warning</code> for a code that expires soon.",
     "qrCodePage.prop.tone.danger": "Use <code>danger</code> for a code that no longer works.",
     "qrCodePage.prop.tone.info": "Use <code>info</code> for an informational code.",
-    "qrCodePage.showcaseTitle": "Showcases",
-    "qrCodePage.showcaseBody": "A basic code, in sizes, correction levels, shapes, masks, tones, and composed into cards.",
-    "qrCodePage.guidelinesLede": "QRCode turns a link or text into a code a phone can scan.",
-    "qrCodePage.guide.use1": "Put the link as text beside it, for whoever cannot scan.",
-    "qrCodePage.guide.use2": "Leave empty space around it: the margin is part of the code.",
-    "qrCodePage.guide.avoid1": "Do not make it the only way to reach something on a screen where people can click.",
+    "qrCodePage.guidelinesLede": "A QR helps move something from a screen or paper to a phone.",
   },
 } as const;

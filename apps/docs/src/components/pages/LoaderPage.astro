@@ -2,7 +2,12 @@
 import "../../examples/loader.css";
 import ComponentPageShell from "./ComponentPageShell.astro";
 import CodeBlock from "../CodeBlock.astro";
-import ComponentPreview from "../ComponentPreview.astro";
+import WhenToUse from "../WhenToUse.astro";
+import ContentRules from "../ContentRules.astro";
+import A11yNotes from "../A11yNotes.astro";
+import DoDont from "../DoDont.astro";
+import "@skryensya/core/components/progress.css";
+import "@skryensya/core/components/placeholder.css";
 import UsagePreview from "../UsagePreview.astro";
 import HookPlayground from "../HookPlayground.astro";
 import {
@@ -14,21 +19,23 @@ import {
   loaderSimulationScript,
   loaderSimulationTree,
   loaderSingleTree,
-  loaderSizesTree,
-  loaderSpeedsTree,
+  loaderDoTextTree,
+  loaderDontAloneTree,
+  loaderDoProgressTree,
+  loaderDontProgressTree,
+  loaderDoControlTree,
+  loaderDontControlTree,
+  loaderDoShapeTree,
+  loaderDontShapeTree,
   loaderStaggeredVariantsTree,
 } from "../../demos/loader";
-import { getLocale, useTranslations } from "../../i18n";
+import { getLocale, tList, useTranslations } from "../../i18n";
 import { annotationDemoCss } from "../../demos/annotation";
 import "@skryensya/core/components/annotation.css";
 
 const install = `pnpm add @skryensya/core @skryensya/react`;
 const styles = `@import "@skryensya/core/components/loader.css";`;
 const t = useTranslations(getLocale(Astro.url));
-
-const customSpeed = `.sk-loader.mi-loader {
-  --sk-loader-duration: 2s;
-}`;
 
 /* What each value of a property is for, read from this page's messages. Same model Badge uses. */
 const explain = (option: string, values: readonly string[]) =>
@@ -39,7 +46,7 @@ const explain = (option: string, values: readonly string[]) =>
   title="Loader"
   description={t("loaderPage.description")}
   contractId="loader"
-  testFiles={["packages/react/src/components/loader.test.tsx"]}}
+  testFiles={["packages/react/src/components/loader.test.tsx"]}
 >
   <Fragment slot="usage">
     <p class="lede" set:html={t("loaderPage.lede")} />
@@ -63,89 +70,58 @@ const explain = (option: string, values: readonly string[]) =>
       stageMinBlockSize="8rem"
     />
 
-    <h3>{t("loaderPage.showcaseTitle")}</h3>
-    <p set:html={t("loaderPage.showcaseBody")} />
-
-    <div class="sk-callout" data-tone="info">
-      <div class="sk-callout__content">
-        <div class="sk-callout__description" set:html={t("loaderPage.calloutBody")} />
-      </div>
-    </div>
-
+    <h3>{t("component.examplesTitle")}</h3>
     <h3>{t("loaderPage.simTitle")}</h3>
     <p set:html={t("loaderPage.simBody")} />
-    <ComponentPreview
-      tree={loaderSimulationTree(t)}
-      js={loaderSimulationScript}
-      previewScript={loaderSimulationScript}
-      label={t("loaderPage.simLabel")}
-      note={t("loaderPage.simNote")}
-    />
-    <p set:html={t("loaderPage.simBody2")} />
+    <UsagePreview tree={loaderSimulationTree(t)} script={loaderSimulationScript} label={t("loaderPage.simLabel")} />
+    <UsagePreview tree={loaderContextsTree(t)} title={t("loaderPage.contextsTitle")} description={t("loaderPage.contextsBody")} />
+    <UsagePreview tree={loaderPseudoVariantsTree(t)} title={t("loaderPage.variantsTitle")} description={t("loaderPage.variantsBody")} storybookTitle="Components/Feedback/Loader" storybookStory="Default" />
+    <UsagePreview tree={loaderStaggeredVariantsTree(t)} />
 
-    <h3>{t("loaderPage.contextsTitle")}</h3>
-    <p set:html={t("loaderPage.contextsBody")} />
-    <ComponentPreview tree={loaderContextsTree(t)} label={t("loaderPage.contextsLabel")} note={t("loaderPage.contextsNote")} />
+    <h3>{t("component.contractNotesTitle")}</h3>
     <ul>
-      <li set:html={t("loaderPage.contextsItem1")} />
-      <li set:html={t("loaderPage.contextsItem2")} />
-      <li set:html={t("loaderPage.contextsItem3")} />
+      {tList(t, "loaderPage.contract").map((item) => <li set:html={item} />)}
     </ul>
-
-    <h3>{t("loaderPage.variantsTitle")}</h3>
-    <p set:html={t("loaderPage.variantsBody")} />
-    <UsagePreview tree={loaderPseudoVariantsTree(t)} />
-    <p set:html={t("loaderPage.staggeredVariantsBody")} />
-    <ComponentPreview
-      tree={loaderStaggeredVariantsTree(t)}
-      label={t("loaderPage.staggeredVariantsLabel")}
-      note={t("loaderPage.staggeredVariantsNote")}
-    />
-
-    <h3>{t("loaderPage.sizeTitle")}</h3>
-    <p set:html={t("loaderPage.sizeBody")} />
-    <UsagePreview tree={loaderSizesTree(t)} />
-
-    <h3>{t("loaderPage.speedTitle")}</h3>
-    <p set:html={t("loaderPage.speedBody")} />
-    <UsagePreview tree={loaderSpeedsTree(t)} />
-    <CodeBlock code={customSpeed} label={t("loaderPage.speedOverrideLabel")} lang="css" />
-
-    <h3>{t("loaderPage.tempoTitle")}</h3>
-    <p set:html={t("loaderPage.tempoBody")} />
-
-    <h3>{t("loaderPage.semanticsTitle")}</h3>
-    <ul>
-      <li set:html={t("loaderPage.semanticsItem1")} />
-      <li set:html={t("loaderPage.semanticsItem2")} />
-      <li set:html={t("loaderPage.semanticsItem3")} />
-      <li set:html={t("loaderPage.semanticsItem4")} />
-    </ul>
-
-    <h3>{t("loaderPage.reducedTitle")}</h3>
-    <p set:html={t("loaderPage.reducedBody")} />
-
     <p set:html={t("loaderPage.reactBody")} />
 
     <h3>{t("component.anatomy")}</h3>
     <p set:html={t("loaderPage.anatomyBody")} />
-    <ComponentPreview
+    <UsagePreview
       tree={loaderAnatomyTree(t)}
       css={annotationDemoCss}
       label={t("loaderPage.anatomyPreviewLabel")}
-      screens={false}
-      hideSource
-      chrome={false}
+      bare
     />
   </Fragment>
 
   <Fragment slot="guidelines">
     <p class="lede" set:html={t("loaderPage.guidelinesLede")} />
-    <ul>
-      <li set:html={t("loaderPage.guide.use1")} />
-      <li set:html={t("loaderPage.guide.avoid1")} />
-      <li set:html={t("loaderPage.guide.avoid2")} />
-    </ul>
+    <WhenToUse use={tList(t, "loaderPage.when")} avoid={tList(t, "loaderPage.whenNot")} />
+    <DoDont
+      title={t("loaderPage.dd.text.title")}
+      do={{ tree: loaderDoTextTree(t), caption: t("loaderPage.dd.text.do") }}
+      dont={{ tree: loaderDontAloneTree, caption: t("loaderPage.dd.text.dont") }}
+    />
+    <DoDont
+      title={t("loaderPage.dd.progress.title")}
+      do={{ tree: loaderDoProgressTree(t), caption: t("loaderPage.dd.progress.do") }}
+      dont={{ tree: loaderDontProgressTree(t), caption: t("loaderPage.dd.progress.dont") }}
+    />
+    <DoDont
+      title={t("loaderPage.dd.control.title")}
+      do={{ tree: loaderDoControlTree(t), caption: t("loaderPage.dd.control.do") }}
+      dont={{ tree: loaderDontControlTree(t), caption: t("loaderPage.dd.control.dont") }}
+    />
+    <DoDont
+      title={t("loaderPage.dd.shape.title")}
+      do={{ tree: loaderDoShapeTree(t), caption: t("loaderPage.dd.shape.do") }}
+      dont={{ tree: loaderDontShapeTree(t), caption: t("loaderPage.dd.shape.dont") }}
+    />
+    <ContentRules items={tList(t, "loaderPage.content")} />
+  </Fragment>
+
+  <Fragment slot="a11y">
+    <A11yNotes intro={t("loaderPage.a11yIntro")} does={tList(t, "loaderPage.a11yDoes")} yours={tList(t, "loaderPage.a11yYours")} />
   </Fragment>
 
   <Fragment slot="install">

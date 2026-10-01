@@ -2,49 +2,39 @@ export const clipboardMessages = {
   es: {
     "clipboard.anatomyLabel": "Anatomía de Clipboard",
     "clipboard.anatomyPreviewLabel": "Clipboard, parte por parte",
-    "clipboard.anatomyBody": "La forma con campo, que tiene todas las partes de <code>CopyButton</code> más las suyas. Lo que no se dibuja: el segundo ícono (el check) y la burbuja de confirmación sólo aparecen después de copiar, y la etiqueta visible del botón está vacía cuando el botón es sólo ícono.",
+    "clipboard.anatomyBody": "La forma con campo, que tiene las partes de <code>CopyButton</code> más las suyas. El check y la confirmación solo aparecen después de copiar.",
     "clipboard.description": "Copia un valor al portapapeles con un clic y confirma si funcionó.",
-    "clipboard.betaBadge": "Beta",
+    "clipboard.a11yKeyCopy": "Con el campo enfocado y el texto seleccionado, copia el valor.",
+    "clipboard.a11yKeyEnter": "Copia el valor.",
+    "clipboard.a11yYours2": "Un botón solo ícono debe tener <code>label</code>.",
+    "clipboard.a11yYours1": "Si hay varios botones de copiar, cada <code>label</code> debe decir qué copia.",
+    "clipboard.a11yDoes3": "Copiar con el teclado desde el campo también cuenta como copia.",
+    "clipboard.a11yDoes2": "Una región viva cortés anuncia «Copiado» una vez; la etiqueta visible es decorativa, así que no se lee dos veces.",
+    "clipboard.a11yDoes1": "El botón es un <code>&lt;button&gt;</code> con <code>label</code> como nombre accesible.",
+    "clipboard.a11yIntro": "El resultado se anuncia sin mover el foco.",
+    "clipboard.content3": "Si falla, di qué pasó: «No se pudo copiar».",
+    "clipboard.content2": "Confirma con una palabra: «Copiado».",
+    "clipboard.content1": "Di qué se copia en <code>label</code>: «Copiar enlace», no solo «Copiar», sobre todo si hay varios en la página.",
+    "clipboard.whenNot3": 'Si el valor se puede editar: usa un <a href="/es/componentes/input">Input</a> en un <a href="/es/componentes/form-field">FormField</a>.',
+    "clipboard.whenNot2": "Para un valor largo o de varias líneas: muéstralo en un bloque de código con CopyButton.",
+    "clipboard.whenNot1": 'Si la acción hace algo más que copiar (compartir, exportar, descargar): usa un <a href="/es/componentes/button">Button</a> con su propio nombre.',
+    "clipboard.when2": "Para un valor que hay que ver antes de copiar, como un enlace o una clave de API: usa <strong>Clipboard</strong>.",
+    "clipboard.when1": "Para un comando, un token o un bloque de código que se va a pegar en otro lugar: usa <strong>CopyButton</strong>.",
+    "clipboard.contract3": 'En React, <code>onStatusChange</code> recibe <code>"copied"</code>, <code>"error"</code> o <code>"idle"</code>; sin framework, llega en <code>sk:clipboardstatuschange</code>.',
+    "clipboard.contract2": "Si el navegador rechaza la escritura, el botón lleva <code>data-error</code> y dice <code>errorLabel</code>.",
+    "clipboard.contract1": "Al copiar, el ícono cambia a un check y una etiqueta dice <code>copiedLabel</code> durante <code>timeout</code> milisegundos (2000).",
 
-    "clipboard.lede":
-      "Dos formas, una misma máquina (<code>@zag-js/clipboard</code>) en las dos capas. <strong>CopyButton</strong> es el botón solo, al lado de lo que copia. <strong>Clipboard</strong> suma una etiqueta y un campo de solo lectura con el valor, para cuando hay que verlo antes de copiarlo.",
+    "clipboard.lede": "Clipboard copia un valor al portapapeles con un clic y confirma si funcionó: un comando, un enlace para compartir, una clave. <strong>CopyButton</strong> es el botón solo, al lado de lo que copia; <strong>Clipboard</strong> suma un campo de solo lectura para ver el valor antes de copiarlo.",
 
-    "clipboard.whenTitle": "Cuál usar",
-    "clipboard.whenItem1":
-      "<strong>CopyButton</strong> para un comando, un token o un bloque de código que ya está a la vista: copia <code>value</code> o, al momento del clic, el texto del elemento que nombra <code>target</code>",
-    "clipboard.whenItem2":
-      "<strong>Clipboard</strong> para un enlace para compartir, una clave de API o un identificador: el valor se ve, se puede seleccionar y copiar con el teclado, y el botón queda al lado",
-    "clipboard.whenItem3":
-      "Ninguno si la acción hace algo más que copiar (compartir, exportar, descargar): eso es un Button con su propio nombre",
 
-    "clipboard.targetTitle": "Copiar otro elemento",
-    "clipboard.targetBody":
-      "<code>target</code> es el id del elemento cuyo texto se copia, leído en el momento del clic: si el bloque cambió desde que cargó la página, se copia lo que está en pantalla. Un <code>&lt;template&gt;</code> copia su contenido, para texto que no se muestra.",
-    "clipboard.targetLabel": "CopyButton con target",
+    "clipboard.targetTitle": "Copiar otro elemento: target",
+    "clipboard.targetBody": "<code>target</code> es el id del elemento cuyo texto se copia, leído al hacer clic: se copia lo que está en pantalla.",
 
-    "clipboard.fieldTitle": "Un valor que hay que ver",
-    "clipboard.fieldBody":
-      "La etiqueta nombra el campo, y el campo es de solo lectura: se puede seleccionar a mano o copiar con el teclado, y ese Ctrl+C también cuenta como copia para el botón. Un enlace largo se recorta dentro del campo; el botón nunca se achica.",
-    "clipboard.fieldLabel": "Clipboard con enlace para compartir",
+    "clipboard.fieldTitle": "Un valor que hay que ver: Clipboard",
+    "clipboard.fieldBody": "El campo es de solo lectura: se puede seleccionar a mano o copiar con el teclado. Un enlace largo se recorta dentro del campo; el botón no se achica.",
 
-    "clipboard.sizesTitle": "Tamaños y variantes",
-    "clipboard.sizesBody":
-      "<code>size</code> es <code>xs</code>, <code>sm</code> (por defecto) o <code>md</code>, y <code>variant</code> es <code>soft</code> (por defecto) o <code>ghost</code>. No hay <code>solid</code>: copiar nunca es la acción principal de la pantalla. En <code>Clipboard</code> el botón toma la altura del campo, así que estas dos opciones son sólo de <code>CopyButton</code>.",
-    "clipboard.sizesLabel": "Tamaños y variantes de CopyButton",
 
-    "clipboard.feedbackTitle": "Qué ve y qué oye quien copia",
-    "clipboard.feedbackItem1":
-      "El icono cambia a un check y una banderita al lado del botón dice <code>copiedLabel</code> («Copied» por defecto) durante <code>timeout</code> milisegundos (<code>2000</code>)",
-    "clipboard.feedbackItem2":
-      "Una región viva cortés anuncia lo mismo una vez; la banderita es decorativa (<code>aria-hidden</code>), así que no se lee dos veces",
-    "clipboard.feedbackItem3":
-      "Si el navegador rechaza la escritura (sin permiso, contexto inseguro), el botón lleva <code>data-error</code> y dice <code>errorLabel</code> en vez de mostrar «Copiado» igual",
-    "clipboard.feedbackItem4":
-      "<code>label</code> es el nombre accesible del botón en reposo: si la página tiene varios, que diga <em>qué</em> se copia",
 
-    "clipboard.eventsTitle": "Escuchar el resultado",
-    "clipboard.eventsBody":
-      "En React, <code>onStatusChange</code> recibe <code>\"copied\"</code>, <code>\"error\"</code> o <code>\"idle\"</code>. Sin framework, el mismo dato llega en <code>sk:clipboardstatuschange</code>, que burbujea desde la raíz.",
 
     "clipboard.demoCopy": "Copiar",
     "clipboard.demoCopyCommand": "Copiar comando de instalación",
@@ -52,68 +42,56 @@ export const clipboardMessages = {
     "clipboard.demoShareLink": "Enlace para compartir",
     "clipboard.demoCopied": "Copiado",
     "clipboard.demoError": "No se pudo copiar",
-    "clipboard.prop.size.title": "Tamaño",
-    "clipboard.prop.size.body": "El <code>size</code> del botón de copiar sigue la escala de Button.",
+    "clipboard.prop.size.title": "Size: cuánto ocupa el botón",
+    "clipboard.prop.size.body": "Sigue la escala de Button. En <code>Clipboard</code>, el botón toma la altura del campo.",
     "clipboard.prop.size.xs": "Usa <code>xs</code> dentro de una línea de código o una celda.",
-    "clipboard.prop.size.sm": "Usa <code>sm</code>, el default, junto a un bloque de código.",
+    "clipboard.prop.size.sm": "Usa <code>sm</code>, el valor por defecto, junto a un bloque de código.",
     "clipboard.prop.size.md": "Usa <code>md</code> cuando copiar es la acción principal de la vista.",
-    "clipboard.prop.variant.title": "Variante",
-    "clipboard.prop.variant.body": "La <code>variant</code> decide cuánto se nota el botón.",
-    "clipboard.prop.variant.soft": "Usa <code>soft</code>, el default, para que el botón se encuentre sin buscarlo.",
+    "clipboard.prop.variant.title": "Variant: cuánto se nota",
+    "clipboard.prop.variant.body": "No hay <code>solid</code>: copiar nunca es la acción principal de la pantalla.",
+    "clipboard.prop.variant.soft": "Usa <code>soft</code>, el valor por defecto, para que el botón se encuentre sin buscarlo.",
     "clipboard.prop.variant.ghost": "Usa <code>ghost</code> sobre una superficie cargada, donde un fondo sería ruido.",
-    "clipboard.showcaseTitle": "Showcases",
-    "clipboard.showcaseBody": "Copiar un texto que ya está en pantalla, un valor en un campo y los tamaños del botón.",
-    "clipboard.guidelinesLede": "Clipboard copia un valor con un clic y confirma que se copió.",
-    "clipboard.dd.see.title": "Ver antes de copiar",
-    "clipboard.dd.see.do": "Muestra el valor en un campo cuando hay que revisarlo, como un enlace o una clave.",
-    "clipboard.dd.see.dont": "Un botón solo copia a ciegas: no se sabe qué se llevó hasta pegarlo.",
+    "clipboard.guidelinesLede": "Copiar a mano es lento e impreciso; un botón lo hace de una vez y dice si funcionó.",
+    "clipboard.dd.see.title": "Valor: visible cuando hay que verificarlo",
+    "clipboard.dd.see.do": "El campo muestra el enlace exacto: la persona puede revisarlo antes de copiar.",
+    "clipboard.dd.see.dont": "El botón nombra la acción, pero oculta el valor: hay que pegar para comprobar qué salió.",
   },
   en: {
     "clipboard.anatomyLabel": "Clipboard anatomy",
     "clipboard.anatomyPreviewLabel": "Clipboard, part by part",
-    "clipboard.anatomyBody": "The field form, which has every part of <code>CopyButton</code> plus its own. What is not drawn: the second icon (the check) and the confirmation bubble only appear after a copy, and the button's visible label is empty when the button is icon-only.",
+    "clipboard.anatomyBody": "The form with a field, which has <code>CopyButton</code>'s parts plus its own. The check and the confirmation only appear after copying.",
     "clipboard.description": "Copies a value to the clipboard in one click, and confirms whether it worked.",
-    "clipboard.betaBadge": "Beta",
+    "clipboard.a11yKeyCopy": "With the field focused and the text selected, copies the value.",
+    "clipboard.a11yKeyEnter": "Copies the value.",
+    "clipboard.a11yYours2": "An icon-only button must have a <code>label</code>.",
+    "clipboard.a11yYours1": "With several copy buttons, each <code>label</code> must say what it copies.",
+    "clipboard.a11yDoes3": "Copying from the field with the keyboard also counts as a copy.",
+    "clipboard.a11yDoes2": "A polite live region announces “Copied” once; the visible label is decorative, so it is not read twice.",
+    "clipboard.a11yDoes1": "The button is a <code>&lt;button&gt;</code> with <code>label</code> as its accessible name.",
+    "clipboard.a11yIntro": "The result is announced without moving focus.",
+    "clipboard.content3": "If it fails, say what happened: “Could not copy”.",
+    "clipboard.content2": "Confirm in one word: “Copied”.",
+    "clipboard.content1": "Say what is copied in <code>label</code>: “Copy link”, not just “Copy”, especially when there are several on the page.",
+    "clipboard.whenNot3": 'If the value can be edited: use an <a href="/components/input">Input</a> in a <a href="/components/form-field">FormField</a>.',
+    "clipboard.whenNot2": "For a long or multi-line value: show it in a code block with CopyButton.",
+    "clipboard.whenNot1": 'If the action does more than copy (share, export, download): use a <a href="/components/button">Button</a> with its own name.',
+    "clipboard.when2": "For a value that must be seen before copying, like a link or an API key: use <strong>Clipboard</strong>.",
+    "clipboard.when1": "For a command, a token or a code block that will be pasted elsewhere: use <strong>CopyButton</strong>.",
+    "clipboard.contract3": 'In React, <code>onStatusChange</code> receives <code>"copied"</code>, <code>"error"</code> or <code>"idle"</code>; without a framework, it arrives as <code>sk:clipboardstatuschange</code>.',
+    "clipboard.contract2": "If the browser refuses the write, the button carries <code>data-error</code> and says <code>errorLabel</code>.",
+    "clipboard.contract1": "On copy, the icon becomes a check and a label says <code>copiedLabel</code> for <code>timeout</code> milliseconds (2000).",
 
-    "clipboard.lede":
-      "Two shapes, one machine (<code>@zag-js/clipboard</code>) in both bindings. <strong>CopyButton</strong> is the button alone, beside what it copies. <strong>Clipboard</strong> adds a label and a read-only field showing the value, for when the reader should see it before copying.",
+    "clipboard.lede": "Clipboard copies a value to the clipboard in one click and confirms whether it worked: a command, a share link, a key. <strong>CopyButton</strong> is the button alone, beside what it copies; <strong>Clipboard</strong> adds a read-only field to see the value before copying it.",
 
-    "clipboard.whenTitle": "Which one",
-    "clipboard.whenItem1":
-      "<strong>CopyButton</strong> for a command, a token or a code block already on screen: it copies <code>value</code> or, at the moment of the click, the text of the element <code>target</code> names",
-    "clipboard.whenItem2":
-      "<strong>Clipboard</strong> for a share link, an API key or an identifier: the value is visible, can be selected and copied from the keyboard, and the button sits beside it",
-    "clipboard.whenItem3":
-      "Neither when the action does more than copy (share, export, download): that is a Button with its own name",
 
-    "clipboard.targetTitle": "Copying another element",
-    "clipboard.targetBody":
-      "<code>target</code> is the id of the element whose text is copied, read at the moment of the click: if the block changed since the page loaded, what is on screen is what gets copied. A <code>&lt;template&gt;</code> copies its content, for text that is not shown.",
-    "clipboard.targetLabel": "CopyButton with a target",
+    "clipboard.targetTitle": "Copy another element: target",
+    "clipboard.targetBody": "<code>target</code> is the id of the element whose text is copied, read at click time: what is on screen gets copied.",
 
-    "clipboard.fieldTitle": "A value worth seeing",
-    "clipboard.fieldBody":
-      "The label names the field, and the field is read-only: it can be selected by hand or copied from the keyboard, and that Ctrl+C counts as a copy for the button too. A long link truncates inside the field; the button never shrinks.",
-    "clipboard.fieldLabel": "Clipboard with a share link",
+    "clipboard.fieldTitle": "A value to see first: Clipboard",
+    "clipboard.fieldBody": "The field is read-only: it can be selected by hand or copied from the keyboard. A long link is clipped inside the field; the button does not shrink.",
 
-    "clipboard.sizesTitle": "Sizes and variants",
-    "clipboard.sizesBody":
-      "<code>size</code> is <code>xs</code>, <code>sm</code> (default) or <code>md</code>, and <code>variant</code> is <code>soft</code> (default) or <code>ghost</code>. There is no <code>solid</code>: copying is never the screen's primary action. In <code>Clipboard</code> the button takes the field's height, so both options belong to <code>CopyButton</code> only.",
-    "clipboard.sizesLabel": "CopyButton sizes and variants",
 
-    "clipboard.feedbackTitle": "What the person copying sees and hears",
-    "clipboard.feedbackItem1":
-      "The icon turns into a check and a small flag beside the button says <code>copiedLabel</code> (\"Copied\" by default) for <code>timeout</code> milliseconds (<code>2000</code>)",
-    "clipboard.feedbackItem2":
-      "A polite live region announces the same thing once; the flag is decorative (<code>aria-hidden</code>), so it is never read twice",
-    "clipboard.feedbackItem3":
-      "If the browser refuses the write (no permission, an insecure context), the button carries <code>data-error</code> and says <code>errorLabel</code> instead of showing \"Copied\" anyway",
-    "clipboard.feedbackItem4":
-      "<code>label</code> is the button's accessible name at rest: when a page has several, make it say <em>what</em> is copied",
 
-    "clipboard.eventsTitle": "Listening for the result",
-    "clipboard.eventsBody":
-      "In React, <code>onStatusChange</code> receives <code>\"copied\"</code>, <code>\"error\"</code> or <code>\"idle\"</code>. Without a framework, the same value arrives on <code>sk:clipboardstatuschange</code>, bubbling from the root.",
 
     "clipboard.demoCopy": "Copy",
     "clipboard.demoCopyCommand": "Copy the install command",
@@ -121,20 +99,18 @@ export const clipboardMessages = {
     "clipboard.demoShareLink": "Share link",
     "clipboard.demoCopied": "Copied",
     "clipboard.demoError": "Copy failed",
-    "clipboard.prop.size.title": "Size",
-    "clipboard.prop.size.body": "The copy button's <code>size</code> follows Button's scale.",
+    "clipboard.prop.size.title": "Size: how much room the button takes",
+    "clipboard.prop.size.body": "It follows Button's scale. In <code>Clipboard</code>, the button takes the field's height.",
     "clipboard.prop.size.xs": "Use <code>xs</code> inside a line of code or a cell.",
     "clipboard.prop.size.sm": "Use <code>sm</code>, the default, beside a code block.",
     "clipboard.prop.size.md": "Use <code>md</code> when copying is the main action in the view.",
-    "clipboard.prop.variant.title": "Variant",
-    "clipboard.prop.variant.body": "<code>variant</code> decides how much the button stands out.",
-    "clipboard.prop.variant.soft": "Use <code>soft</code>, the default, so the button is found without looking for it.",
+    "clipboard.prop.variant.title": "Variant: how noticeable it is",
+    "clipboard.prop.variant.body": "There is no <code>solid</code>: copying is never the screen's main action.",
+    "clipboard.prop.variant.soft": "Use <code>soft</code>, the default, so the button is found without searching.",
     "clipboard.prop.variant.ghost": "Use <code>ghost</code> on a busy surface, where a fill would be noise.",
-    "clipboard.showcaseTitle": "Showcases",
-    "clipboard.showcaseBody": "Copying text already on screen, a value in a field, and the button's sizes.",
-    "clipboard.guidelinesLede": "Clipboard copies a value in one click and confirms it was copied.",
-    "clipboard.dd.see.title": "See before copying",
-    "clipboard.dd.see.do": "Show the value in a field when it has to be checked, like a link or a key.",
-    "clipboard.dd.see.dont": "A lone button copies blind: nobody knows what they took until they paste it.",
+    "clipboard.guidelinesLede": "Copying by hand is slow and imprecise; a button does it at once and says whether it worked.",
+    "clipboard.dd.see.title": "Value: visible when it must be verified",
+    "clipboard.dd.see.do": "The field shows the exact link: people can check it before copying.",
+    "clipboard.dd.see.dont": "The button names the action, but hides the value: people must paste to check what they got.",
   },
 } as const;

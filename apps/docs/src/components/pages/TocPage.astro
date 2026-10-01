@@ -4,8 +4,11 @@ import "@skryensya/core/components/toc.css";
 import "@skryensya/core/components/annotation.css";
 import ComponentPageShell from "./ComponentPageShell.astro";
 import CodeBlock from "../CodeBlock.astro";
-import ComponentPreview from "../ComponentPreview.astro";
+import UsagePreview from "../UsagePreview.astro";
 import DoDont from "../DoDont.astro";
+import WhenToUse from "../WhenToUse.astro";
+import ContentRules from "../ContentRules.astro";
+import A11yNotes from "../A11yNotes.astro";
 import {
   tocAnatomyTree,
   tocDontLongTree,
@@ -14,7 +17,7 @@ import {
   tocPlainTree,
 } from "../../demos/toc";
 import { annotationDemoCss } from "../../demos/annotation";
-import { getLocale, useTranslations } from "../../i18n";
+import { getLocale, tList, useTranslations } from "../../i18n";
 
 const t = useTranslations(getLocale(Astro.url));
 
@@ -27,13 +30,6 @@ const linkWithIcon = `<a class="sk-toc__link sk-interactive" href="#installation
   </span>
   <span class="sk-toc__label">Instalación</span>
 </a>`;
-
-const markup = `<aside class="sk-toc" data-sk-toc>
-  <nav class="sk-toc__nav" aria-label="En esta página">
-    <h2 class="sk-toc__title">En esta página</h2>
-    <ul class="sk-toc__list" role="list"></ul>
-  </nav>
-</aside>`;
 
 const mount = `import { initComponents } from "@skryensya/vanilla/auto";
 
@@ -58,83 +54,44 @@ const items = headings.map((h) => ({ href: \`#\${h.id}\`, label: h.label, level:
   title="Toc"
   description={t("tocPage.description")}
   contractId="toc"
-  testFiles={["packages/react/src/components/toc.test.tsx"]}}
+  testFiles={["packages/react/src/components/toc.test.tsx"]}
 >
   <Fragment slot="usage">
     <p class="lede" set:html={t("tocPage.lede")} />
 
-    <h3>{t("tocPage.showcaseTitle")}</h3>
-    <p set:html={t("tocPage.showcaseBody")} />
-    {
-      /*
-       * `minHeight` HERE IS ABOUT CLS, not about a cramped specimen. A stage reserves
-       * `--sk-component-preview-stage-min-block-size` (12rem) while its frame loads and then drops
-       * that floor to 0 the moment the frame reports ready, letting the measured content height take
-       * over (`component-preview.css`). Measured on this page: these three settle at 152px, 178px and
-       * 178px, so every one of them COLLAPSES out of the 192px reserve once it is ready. The first
-       * by a full 40px, and everything below it jumps up. Declaring a floor is what
-       * `component-preview.css` already keys `[data-sk-component-preview-min-height]` on to keep the
-       * reserve after ready, the same way `viewport="menu"`/`"overlay"` keep theirs. `12rem` matches
-       * the loading reserve exactly, so the stage is the same height from first paint onward and
-       * there is no shift at all; the slack left under a short index also stops it sitting glued to
-       * the frame's bottom edge.
-       */
-    }
-    <h3 id="texto">{t("tocPage.plainTitle")}</h3>
-    <p set:html={t("tocPage.plainBody")} />
-    <ComponentPreview tree={tocPlainTree(t)} label={t("tocPage.plainLabel")} flush minHeight="12rem" />
-
-    <h3 id="niveles">{t("tocPage.levelsTitle")}</h3>
-    <p set:html={t("tocPage.levelsBody")} />
-    <ComponentPreview tree={tocNestedTree(t)} label={t("tocPage.levelsLabel")} flush minHeight="12rem" />
-
-    <h3 id="iconos">{t("tocPage.iconsTitle")}</h3>
-    <p set:html={t("tocPage.iconsBody")} />
-    <ComponentPreview tree={tocIconsTree(t)} label={t("tocPage.iconsLabel")} flush minHeight="12rem" />
+    <h3>{t("component.examplesTitle")}</h3>
+    {/* `stageMinBlockSize` holds the stage at its loading reserve, so the short indexes do not
+        collapse out of it once ready and shift everything below. */}
+    <UsagePreview tree={tocPlainTree(t)} title={t("tocPage.plainTitle")} description={t("tocPage.plainBody")} flush stageMinBlockSize="12rem" />
+    <UsagePreview tree={tocNestedTree(t)} title={t("tocPage.levelsTitle")} description={t("tocPage.levelsBody")} flush stageMinBlockSize="12rem" />
+    <UsagePreview tree={tocIconsTree(t)} title={t("tocPage.iconsTitle")} description={t("tocPage.iconsBody")} flush stageMinBlockSize="12rem" />
     <CodeBlock code={linkWithIcon} label={t("tocPage.iconsCodeLabel")} />
-
-    <h3 id="una-sola-forma">{t("tocPage.railTitle")}</h3>
-    <p set:html={t("tocPage.railBody1")} />
-    <p set:html={t("tocPage.railBody2")} />
-
-    <h3 id="espacio">{t("tocPage.spaceTitle")}</h3>
-    <p set:html={t("tocPage.spaceBody")} />
-    <CodeBlock code={markup} label="HTML" />
-
-    <h4 id="cls">{t("tocPage.clsTitle")}</h4>
-    <p set:html={t("tocPage.clsBody")} />
-    <CodeBlock code={builder} label={t("tocPage.clsCodeLabel")} lang="html" />
-    <p set:html={t("tocPage.clsBody2")} />
-    <p set:html={t("tocPage.clsBody3")} />
+    <h4>{t("tocPage.spyTitle")}</h4>
+    <p set:html={t("tocPage.spyBody")} />
     <CodeBlock code={mount} label="JavaScript" lang="ts" />
 
     <h3 id="contrato">{t("component.contractNotesTitle")}</h3>
     <ul>
-      <li set:html={t("tocPage.contractItem1")} />
-      <li set:html={t("tocPage.contractItem2")} />
-      <li set:html={t("tocPage.contractItem3")} />
-      <li set:html={t("tocPage.contractItem4")} />
-      <li set:html={t("tocPage.contractItem5")} />
+      {tList(t, "tocPage.contract").map((item) => <li set:html={item} />)}
     </ul>
+    <CodeBlock code={builder} label="Astro" lang="html" />
 
     <h3>{t("component.anatomy")}</h3>
     <p set:html={t("tocPage.anatomyBody")} />
-    <ComponentPreview
-      tree={tocAnatomyTree(t)}
-      css={annotationDemoCss}
-      label={t("tocPage.anatomyPreviewLabel")}
-      screens={false}
-      hideSource
-      chrome={false}
-    />
+    <UsagePreview tree={tocAnatomyTree(t)} css={annotationDemoCss} label={t("tocPage.anatomyPreviewLabel")} bare />
   </Fragment>
 
   <Fragment slot="guidelines">
     <p class="lede" set:html={t("tocPage.guidelinesLede")} />
+    <WhenToUse use={tList(t, "tocPage.when")} avoid={tList(t, "tocPage.whenNot")} />
     <DoDont
       title={t("tocPage.dd.short.title")}
       do={{ tree: tocPlainTree(t), caption: t("tocPage.dd.short.do") }}
       dont={{ tree: tocDontLongTree(t), caption: t("tocPage.dd.short.dont") }}
     />
+    <ContentRules items={tList(t, "tocPage.content")} />
+  </Fragment>
+  <Fragment slot="a11y">
+    <A11yNotes intro={t("tocPage.a11yIntro")} does={tList(t, "tocPage.a11yDoes")} yours={tList(t, "tocPage.a11yYours")} />
   </Fragment>
 </ComponentPageShell>

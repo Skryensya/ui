@@ -15,9 +15,12 @@ import "@skryensya/core/components/annotation.css";
 import CodeBlock from "../CodeBlock.astro";
 import ComponentPageShell from "./ComponentPageShell.astro";
 import AppearanceMenu from "../AppearanceMenu.astro";
-import ComponentPreview from "../ComponentPreview.astro";
-import { tourAnatomyCss, tourAnatomyHtml, tourBasicTree, tourDemoCss, tourMissingTree } from "../../demos/tour";
-import { getLocale, useTranslations } from "../../i18n";
+import UsagePreview from "../UsagePreview.astro";
+import WhenToUse from "../WhenToUse.astro";
+import ContentRules from "../ContentRules.astro";
+import A11yNotes from "../A11yNotes.astro";
+import { tourBasicTree, tourDemoCss, tourMissingTree } from "../../demos/tour";
+import { getLocale, tList, useTranslations } from "../../i18n";
 
 const t = useTranslations(getLocale(Astro.url));
 
@@ -90,12 +93,6 @@ tour?.close();
 document.getElementById("projects")?.addEventListener(tourEvents.statusChange, (event) => {
   console.log(event.detail.status); // "running", "completed", "skipped", "dismissed"
 });`;
-
-const keys = [
-  ["Tab / Shift + Tab", "tour.key.tab"],
-  ["Enter / Space", "tour.key.enter"],
-  ["Esc", "tour.key.escape"],
-] as const;
 ---
 
 <ComponentPageShell
@@ -116,69 +113,28 @@ const keys = [
   <Fragment slot="usage">
     <p class="lede" set:html={t("tour.lede")} />
 
-    <h3>{t("tour.showcaseTitle")}</h3>
-    <p set:html={t("tour.showcaseBody")} />
-
-    <h3>{t("tour.basicTitle")}</h3>
-    <p set:html={t("tour.basicBody")} />
-    <p set:html={t("tour.tryBody")} />
-    <ComponentPreview
-      tree={tourBasicTree(t)}
-      css={tourDemoCss}
-      label={t("tour.demo.label")}
-      minHeight="30rem"
-      defaultScreen="free"
-    />
-
-    <h3>{t("tour.missingTitle")}</h3>
-    <p set:html={t("tour.missingBody")} />
-    <ComponentPreview
-      tree={tourMissingTree(t)}
-      css={tourDemoCss}
-      label={t("tour.demo.missingLabel")}
-      minHeight="30rem"
-      defaultScreen="free"
-    />
-
-    <h3>{t("tour.programmaticTitle")}</h3>
+    <h3>{t("component.examplesTitle")}</h3>
+    <UsagePreview tree={tourBasicTree(t)} css={tourDemoCss} title={t("tour.basicTitle")} description={t("tour.basicBody")} stageMinBlockSize="30rem" />
+    <UsagePreview tree={tourMissingTree(t)} css={tourDemoCss} title={t("tour.missingTitle")} description={t("tour.missingBody")} stageMinBlockSize="30rem" />
+    <h4>{t("tour.programmaticTitle")}</h4>
     <p set:html={t("tour.programmaticBody")} />
     <CodeBlock code={reactSteps} label="React" lang="tsx" />
-
     <h4>{t("tour.vanillaTitle")}</h4>
     <p set:html={t("tour.vanillaBody")} />
     <CodeBlock code={vanillaHtml} label="HTML" lang="html" />
     <CodeBlock code={vanillaJs} label="JavaScript" />
 
-    <h3>{t("tour.memoryTitle")}</h3>
-    <p set:html={t("tour.memoryBody")} />
-
     <h3>{t("component.contractNotesTitle")}</h3>
     <ul>
-      <li set:html={t("tour.contractItem1")} />
-      <li set:html={t("tour.contractItem2")} />
-      <li set:html={t("tour.contractItem3")} />
+      {tList(t, "tour.contract").map((item) => <li set:html={item} />)}
     </ul>
 
-    <h3>{t("component.anatomy")}</h3>
-    <p set:html={t("tour.anatomyBody")} />
-    <ComponentPreview
-      html={tourAnatomyHtml(t)}
-      css={tourAnatomyCss}
-      label={t("tour.anatomyPreviewLabel")}
-      screens={false}
-      hideSource
-      chrome={false}
-    />
   </Fragment>
 
   <Fragment slot="guidelines">
     <p class="lede" set:html={t("tour.guidelinesLede")} />
-    <h3>{t("tour.writingTitle")}</h3>
-    <p set:html={t("tour.writingBody")} />
-    <ul>
-      <li set:html={t("tour.guide.item1")} />
-      <li set:html={t("tour.guide.item2")} />
-    </ul>
+    <WhenToUse use={tList(t, "tour.when")} avoid={tList(t, "tour.whenNot")} />
+    <ContentRules items={tList(t, "tour.content")} />
   </Fragment>
 
   <Fragment slot="install">
@@ -187,30 +143,15 @@ const keys = [
   </Fragment>
 
   <Fragment slot="a11y">
-    <p set:html={t("tour.a11yP1")} />
-    <ul>
-      <li set:html={t("tour.a11yItem1")} />
-      <li set:html={t("tour.a11yItem2")} />
-      <li set:html={t("tour.a11yItem3")} />
-      <li set:html={t("tour.a11yItem4")} />
-      <li set:html={t("tour.a11yItem5")} />
-    </ul>
-    <h3>{t("tour.keyboardTitle")}</h3>
-    <div class="sk-table-scroll">
-      <table class="sk-table">
-        <tbody class="sk-table__body">
-          {
-            keys.map(([combo, key]) => (
-              <tr class="sk-table__row">
-                <th class="sk-table__header" scope="row"><kbd>{combo}</kbd></th>
-                <td class="sk-table__cell" set:html={t(key)} />
-              </tr>
-            ))
-          }
-        </tbody>
-      </table>
-    </div>
-    <h3>{t("tour.verifiedTitle")}</h3>
-    <p set:html={t("tour.verifiedBody")} />
+    <A11yNotes
+      intro={t("tour.a11yIntro")}
+      does={tList(t, "tour.a11yDoes")}
+      yours={tList(t, "tour.a11yYours")}
+      keys={[
+        { keys: ["Tab", "Shift+Tab"], action: t("tour.key.tab") },
+        { keys: ["Enter", t("component.key.space")], action: t("tour.key.enter") },
+        { keys: ["Esc"], action: t("tour.key.escape") },
+      ]}
+    />
   </Fragment>
 </ComponentPageShell>

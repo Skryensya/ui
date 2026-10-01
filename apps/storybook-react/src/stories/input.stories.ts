@@ -5,14 +5,14 @@ import "@skryensya/core/components/button.css";
 import "@skryensya/core/components/canvas.css";
 import "@skryensya/core/components/form-field.css";
 import "@skryensya/core/components/input.css";
+import "@skryensya/core/patterns/box.css";
 import "@skryensya/core/patterns/layout.css";
 import * as demos from "@docs/demos/input";
-import { annotationDemoCss } from "@docs/demos/annotation";
-import { treeStory, withCss, type Meta, type StoryObj } from "../tree-story";
+import { treeStory, type Meta, type StoryObj } from "../tree-story";
 
 export default { title: "Components/Forms/Input", tags: ["autodocs"] } satisfies Meta;
 
-export const Anatomy: StoryObj = treeStory(demos.inputAnatomyTree, { decorators: [withCss(annotationDemoCss)] });
+export const Anatomy: StoryObj = treeStory(demos.inputAnatomyTree);
 export const Default: StoryObj = treeStory(demos.inputTree);
 export const Textarea: StoryObj = treeStory(demos.textareaTree);
 export const Format: StoryObj = treeStory(demos.inputFormatTree);
@@ -21,3 +21,5 @@ export const DontPlaceholder: StoryObj = treeStory(demos.inputDontPlaceholderTre
 export const DoLabel: StoryObj = treeStory(demos.inputDoLabelTree);
 export const DontLong: StoryObj = treeStory(demos.inputDontLongTree);
 export const DoLong: StoryObj = treeStory(demos.inputDoLongTree);
+export const DoFormat: StoryObj = treeStory(demos.inputDoFormatTree);
+export const DontFormat: StoryObj = treeStory(demos.inputDontFormatTree);

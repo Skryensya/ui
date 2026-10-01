@@ -1,7 +1,7 @@
 ---
 import Base from "../../layouts/Base.astro";
 import CodeBlock from "../../components/CodeBlock.astro";
-import ComponentPreview from "../../components/ComponentPreview.astro";
+import UsagePreview from "../../components/UsagePreview.astro";
 import { sidebarResizableTree } from "../../demos/sidebar";
 import { getLocale, useTranslations } from "../../i18n";
 
@@ -129,11 +129,7 @@ const keyboard = [
     El mismo demo que <a href="/es/componentes/sidebar">Sidebar</a>: arrastra el borde del panel con el
     puntero, o enfócalo y usa las flechas.
   </p>
-  <ComponentPreview
-    tree={sidebarResizableTree(t)}
-    label={t("sidebarPage.resizableLabel")}
-    flush
-  />
+  <UsagePreview tree={sidebarResizableTree(t)} label={t("sidebarPage.resizableLabel")} flush />
 
   <h2>Teclado</h2>
   <div class="sk-table-scroll">

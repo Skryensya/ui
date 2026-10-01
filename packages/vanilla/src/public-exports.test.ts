@@ -21,7 +21,6 @@ import { mountCombobox } from "@skryensya/vanilla/combobox";
 import { mountCommandPalette } from "@skryensya/vanilla/command-palette";
 import { mountCommentThread } from "@skryensya/vanilla/comment-thread";
 import { mountQuestionnaire } from "@skryensya/vanilla/questionnaire";
-import { mountComponentPreview } from "@skryensya/vanilla/component-preview";
 import { mountDataGrid } from "@skryensya/vanilla/data-grid";
 import { mountDatePicker } from "@skryensya/vanilla/date-picker";
 import { mountDiagram } from "@skryensya/vanilla/diagram";
@@ -158,7 +157,7 @@ describe("Vanilla public entry points", () => {
   });
 
   /*
-   * Editor sits beside CodePreview/ComponentPreview here for a different reason than either: it IS
+   * Editor sits beside CodePreview here for a different reason than either: it IS
    * part of the default application runtime, conceptually, but `@skryensya/editor` (ProseMirror) is
    * an optional peer dependency, so `runtime/registry.ts`'s auto-loader must never name it - even
    * behind a selector-gated `import()` - or every consumer of `@skryensya/vanilla/auto` would need
@@ -166,7 +165,6 @@ describe("Vanilla public entry points", () => {
    */
   it("publishes documentation previews, Editor, and lifecycle control only through explicit subpaths", () => {
     expect(mountCodePreview).toBeTypeOf("function");
-    expect(mountComponentPreview).toBeTypeOf("function");
     expect(mountEditor).toBeTypeOf("function");
     expect(destroyMount).toBeTypeOf("function");
   });

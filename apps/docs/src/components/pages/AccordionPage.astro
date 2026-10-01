@@ -31,9 +31,11 @@ import "@skryensya/core/components/diagram.css";
 import CodeBlock from "../CodeBlock.astro";
 import ComponentPageShell from "./ComponentPageShell.astro";
 import AppearanceMenu from "../AppearanceMenu.astro";
-import ComponentPreview from "../ComponentPreview.astro";
 import UsagePreview from "../UsagePreview.astro";
 import DoDont from "../DoDont.astro";
+import WhenToUse from "../WhenToUse.astro";
+import ContentRules from "../ContentRules.astro";
+import A11yNotes from "../A11yNotes.astro";
 import VanillaMount from "../VanillaMount.astro";
 import { vanillaMounts } from "../../lib/vanilla-mounts";
 import {
@@ -47,7 +49,7 @@ import {
   detailsGroupTree,
 } from "../../demos/accordion";
 import { annotationAnatomyTree } from "../../demos/annotation";
-import { getLocale, useTranslations } from "../../i18n";
+import { getLocale, tList, useTranslations } from "../../i18n";
 
 const t = useTranslations(getLocale(Astro.url));
 
@@ -81,7 +83,7 @@ const storybookTitle = "Components/Content/Accordion";
 const explain = (option: string, values: readonly string[]) =>
   Object.fromEntries(values.map((value) => [value, t(`accordion.prop.${option}.${value}` as Parameters<typeof t>[0])]));
 
-/* The link inside `accordion.intro` and `accordion.a11yP3`; its LABEL is the only part that
+/* The link inside `accordion.lede`; its LABEL is the only part that
    differs by locale, so it is built here from `accordion.detailsNativoLabel` and spliced into
    those strings as {detailsLink}, the same `set:html` + var pattern the footer uses for `{core}`. */
 const detailsLink = `<a href="#details-nativo">${t("accordion.detailsNativoLabel")}</a>`;
@@ -103,11 +105,7 @@ const detailsLink = `<a href="#details-nativo">${t("accordion.detailsNativoLabel
   </Fragment>
 
   <Fragment slot="usage">
-    <div class="sk-callout" data-tone="info">
-      <div class="sk-callout__content">
-        <p set:html={t("accordion.intro", { detailsLink })} />
-      </div>
-    </div>
+    <p class="lede" set:html={t("accordion.lede", { detailsLink })} />
 
     <UsagePreview
       tree={{ ...accordionExclusiveTree(t), options: { type: "single" } }}
@@ -132,7 +130,7 @@ const detailsLink = `<a href="#details-nativo">${t("accordion.detailsNativoLabel
       storybookStory="Exclusive"
     />
 
-    <h3>{t("accordion.showcaseTitle")}</h3>
+    <h3>{t("component.examplesTitle")}</h3>
     <p set:html={t("accordion.showcaseBody")} />
 
     <UsagePreview
@@ -149,8 +147,7 @@ const detailsLink = `<a href="#details-nativo">${t("accordion.detailsNativoLabel
       * each other rather than one at the top of the page and one at the foot of it.
       *
       * `id="details-nativo"` is load-bearing and stays whatever this heading is called:
-      * `/components/details` is a 301 onto this anchor, and `accordion.intro` / `accordion.a11yP3`
-      * both link to it.
+      * `/components/details` is a 301 onto this anchor, and `accordion.lede` links to it.
       */}
     <h3 id="details-nativo">{t("accordion.nativeTitle")}</h3>
     <p class="lede" set:html={t("accordion.nativeLede")} />
@@ -167,7 +164,6 @@ const detailsLink = `<a href="#details-nativo">${t("accordion.detailsNativoLabel
       <li set:html={t("accordion.nativeContractItem2")} />
       <li set:html={t("accordion.nativeContractItem3")} />
       <li set:html={t("accordion.nativeContractItem4")} />
-      <li set:html={t("accordion.nativeContractItem5")} />
     </ul>
 
     {/* Machine-only, and the table above says why: the platform has no `multiple`. */}
@@ -203,24 +199,20 @@ const detailsLink = `<a href="#details-nativo">${t("accordion.detailsNativoLabel
       * signatures was the gap the merge left behind.
       */}
     <h3>{t("component.anatomy")}</h3>
-    <ComponentPreview
+    <UsagePreview
       tree={annotationAnatomyTree(t)}
       css={accordionAnatomyCss}
       label={t("annotation.anatomyPreviewLabel")}
-      screens={false}
-      hideSource
-      chrome={false}
+      bare
     />
 
     <h4>{t("accordion.nativeAnatomyLabel")}</h4>
     <p set:html={t("accordion.nativeAnatomyBody")} />
-    <ComponentPreview
+    <UsagePreview
       tree={detailsAnatomyTree(t)}
       css={accordionAnatomyCss}
       label={t("accordion.nativeAnatomyPreviewLabel")}
-      screens={false}
-      hideSource
-      chrome={false}
+      bare
     />
   </Fragment>
 
@@ -231,6 +223,9 @@ const detailsLink = `<a href="#details-nativo">${t("accordion.detailsNativoLabel
       * tab answers the product question: which half of the family fits the job?
       */}
     <p class="lede" set:html={t("accordion.guidelinesLede")} />
+
+    <WhenToUse use={tList(t, "accordion.when")} avoid={tList(t, "accordion.whenNot")} />
+
     <h3 id="que-mitad">{t("accordion.choiceTitle")}</h3>
     <p set:html={t("accordion.choiceBody")} />
     <ul>
@@ -265,6 +260,8 @@ const detailsLink = `<a href="#details-nativo">${t("accordion.detailsNativoLabel
       do={{ tree: accordionExclusiveTree(t), caption: t("accordion.dd.initial.do") }}
       dont={{ tree: accordionClosedTree(t), caption: t("accordion.dd.initial.dont") }}
     />
+
+    <ContentRules items={tList(t, "accordion.content")} />
   </Fragment>
 
   {/*
@@ -300,19 +297,15 @@ const detailsLink = `<a href="#details-nativo">${t("accordion.detailsNativoLabel
   </Fragment>
 
   <Fragment slot="a11y">
-    <p class="lede" set:html={t("accordion.a11yIntro")} />
-
-    <h3>{t("accordion.a11ySemanticsTitle")}</h3>
-    <ul>
-      <li set:html={t("accordion.a11ySemanticsItem1")} />
-      <li set:html={t("accordion.a11ySemanticsItem2")} />
-      <li set:html={t("accordion.a11ySemanticsItem3")} />
-    </ul>
-
-    <h3>{t("accordion.a11yKeyboardTitle")}</h3>
-    <p set:html={t("accordion.a11yKeyboardBody")} />
-
-    <h3>{t("accordion.a11yNativeTitle")}</h3>
-    <p set:html={t("accordion.a11yNativeBody")} />
+    <A11yNotes
+      intro={t("accordion.a11yIntro")}
+      does={tList(t, "accordion.a11yDoes")}
+      yours={tList(t, "accordion.a11yYours")}
+      keysNote={t("accordion.a11yKeyNote")}
+      keys={[
+        { keys: ["Tab", "Shift+Tab"], action: t("accordion.a11yKeyTab") },
+        { keys: ["Enter", t("component.key.space")], action: t("accordion.a11yKeyEnter") },
+      ]}
+    />
   </Fragment>
 </ComponentPageShell>

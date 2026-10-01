@@ -6,6 +6,7 @@
     supportsAnchorPositioning,
   } from "@skryensya/core/anchored";
   import { avatarParts } from "@skryensya/core/avatar";
+  import { loaderContract, loaderParts, loaderTicks } from "@skryensya/core/loader";
   import { comboboxParts } from "@skryensya/core/combobox";
   import { select } from "@skryensya/core/machines";
   import { selectAttrs, selectParts, selectPositioning, type SelectOption } from "@skryensya/core/select";
@@ -154,6 +155,36 @@
   // field above and the footer below stay put while the list moves.
   listEl.classList.add("sk-scrollbar");
 
+  /*
+   * LOADING, the same two nodes React renders: a row with a small Loader and the `loading` string
+   * just before the list, and the list hidden while it shows. `data-loading` on the root asks for it,
+   * as the contract's `loading` option writes it.
+   */
+  const loading = root.hasAttribute("data-loading");
+  let loadingEl = root.querySelector<HTMLElement>(own.loading);
+  if (!loadingEl) {
+    loadingEl = document.createElement("div");
+    loadingEl.className = comboboxParts.empty;
+    loadingEl.setAttribute("role", "presentation");
+    loadingEl.setAttribute(userSelectAttrs.loading, "");
+    const spinner = document.createElement("span");
+    const variant = loaderContract.options.variant.default;
+    spinner.className = loaderParts.root;
+    spinner.setAttribute("aria-hidden", "true");
+    spinner.setAttribute("data-size", "sm");
+    spinner.setAttribute("data-speed", loaderContract.options.speed.default);
+    spinner.setAttribute("data-variant", variant);
+    for (let i = 0; i < loaderTicks(variant); i++) {
+      const tick = document.createElement("span");
+      tick.className = loaderParts.tick;
+      spinner.append(tick);
+    }
+    loadingEl.append(spinner, ` ${label("loading")}`);
+    listEl.before(loadingEl);
+  }
+  loadingEl.hidden = !loading;
+  if (loading) listEl.hidden = true;
+
   // Inside the list, after the rows, so "nothing matches" sits in the list's own fixed height
   // instead of under an empty well. `role="presentation"`: a listbox's children are options.
   let emptyEl = root.querySelector<HTMLElement>(own.empty);
@@ -254,6 +285,7 @@
       : label("noResults", { query: query.trim() });
 
   const resultText = (count: number) => {
+    if (loading) return label("loading");
     if (count === 0) return emptyMessage();
     return count === 1 ? label("result") : label("results", { count });
   };

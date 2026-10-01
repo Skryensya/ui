@@ -1,23 +1,44 @@
 ---
 import "@skryensya/core/components/form-field.css";
+/* Do/Don't specimens sit on the same small surface Input uses, so label/hint/error comparisons read as fields, not floating controls. */
+import "@skryensya/core/patterns/box.css";
 /* The "FormField + Select" demo wraps a native Select: its frame only has what this page imports. */
 import "@skryensya/core/components/select.css";
 /* Structure diagram: Annotated specimen; a preview frame only copies styles THIS page loaded. */
 import "@skryensya/core/components/annotation.css";
 import ComponentPageShell from "./ComponentPageShell.astro";
 import CodeBlock from "../CodeBlock.astro";
-import ComponentPreview from "../ComponentPreview.astro";
 import UsagePreview from "../UsagePreview.astro";
 import DoDont from "../DoDont.astro";
+import WhenToUse from "../WhenToUse.astro";
+import ContentRules from "../ContentRules.astro";
+import A11yNotes from "../A11yNotes.astro";
 import {
   formFieldAnatomyTree,
   formFieldAroundSelectTree,
+  formFieldDoErrorTree,
   formFieldDoHintTree,
+  formFieldDoLabelTree,
+  formFieldDoOneQuestionTree,
+  formFieldDoOptionalTree,
+  formFieldDoPurposeTree,
+  formFieldDoRequiredTree,
+  formFieldDoServerErrorTree,
+  formFieldDoTextareaTree,
+  formFieldDontErrorTree,
   formFieldDontHintTree,
+  formFieldDontLabelTree,
+  formFieldDontOneQuestionTree,
+  formFieldDontOptionalTree,
+  formFieldDontPurposeTree,
+  formFieldDontRequiredTree,
+  formFieldDontServerErrorTree,
+  formFieldDontTextareaTree,
   formFieldTree,
 } from "../../demos/form-field";
 import { annotationDemoCss } from "../../demos/annotation";
-import { getLocale, useTranslations } from "../../i18n";
+import { getLocale, tList, useTranslations } from "../../i18n";
+import type { UsageTree } from "@skryensya/core/usage-tree";
 
 const install = `pnpm add @skryensya/core @skryensya/react`;
 const t = useTranslations(getLocale(Astro.url));
@@ -28,13 +49,21 @@ const css = `@import "@skryensya/core/tokens.scss";
 /* What each value of a property is for, read from this page's messages. Same model Badge uses. */
 const explain = (option: string, values: readonly string[]) =>
   Object.fromEntries(values.map((value) => [value, t(`formFieldPage.prop.${option}.${value}` as Parameters<typeof t>[0])]));
+
+const ddField = (tree: UsageTree): UsageTree => ({
+  contract: "box",
+  signature: "Box",
+  options: { surface: "surface", border: "subtle", padding: "md" },
+  attrs: { style: "inline-size: 22rem; max-inline-size: 100%;" },
+  children: tree,
+});
 ---
 
 <ComponentPageShell
   title={t("formFieldPage.title")}
   description={t("formFieldPage.description")}
   contractId="form-field"
-  testFiles={["packages/react/src/components/form-field.test.tsx"]}}
+  testFiles={["packages/react/src/components/form-field.test.tsx"]}
 >
   <Fragment slot="usage">
     <p class="lede" set:html={t("formFieldPage.lede")} />
@@ -49,45 +78,75 @@ const explain = (option: string, values: readonly string[]) =>
       labels={{ false: t("formFieldPage.prop.labelHidden.falseLabel"), true: t("formFieldPage.prop.labelHidden.trueLabel") }}
     />
 
-    <h3>{t("formFieldPage.showcaseTitle")}</h3>
-    <p set:html={t("formFieldPage.showcaseBody")} />
-    <UsagePreview tree={formFieldTree(t)} />
+    <h3>{t("component.examplesTitle")}</h3>
+    <UsagePreview tree={formFieldTree(t)} title={t("formFieldPage.basicTitle")} description={t("formFieldPage.basicBody")} storybookTitle="Components/Forms/FormField" storybookStory="Default" />
+    <UsagePreview tree={formFieldAroundSelectTree(t)} title={t("formFieldPage.independentTitle")} description={t("formFieldPage.independentBody")} stageMinBlockSize="22rem" storybookTitle="Components/Forms/FormField" storybookStory="AroundSelect" />
 
-    <h3>{t("formFieldPage.wiringTitle")}</h3>
-    <p set:html={t("formFieldPage.wiringBody")} />
-
-    <h3>{t("formFieldPage.independentTitle")}</h3>
-    <p set:html={t("formFieldPage.independentBody")} />
-    <ComponentPreview tree={formFieldAroundSelectTree(t)} label="FormField + Select" minHeight="22.5rem" />
-
-    <h3>{t("formFieldPage.errorTitle")}</h3>
-    <p set:html={t("formFieldPage.errorBody")} />
-
-    <h3>{t("formFieldPage.avoidTitle")}</h3>
-    <p set:html={t("formFieldPage.avoidBody")} />
-
-    <p set:html={t("formFieldPage.reactBody")} />
+    <h3>{t("component.contractNotesTitle")}</h3>
+    <ul>
+      {tList(t, "formFieldPage.contract").map((item) => <li set:html={item} />)}
+    </ul>
     <p set:html={t("component.reactNote")} />
 
     <h3>{t("component.anatomy")}</h3>
     <p set:html={t("formFieldPage.anatomyBody")} />
-    <ComponentPreview
+    <UsagePreview
       tree={formFieldAnatomyTree(t)}
       css={annotationDemoCss}
       label={t("formFieldPage.anatomyPreviewLabel")}
-      screens={false}
-      hideSource
-      chrome={false}
+      bare
     />
   </Fragment>
 
   <Fragment slot="guidelines">
     <p class="lede" set:html={t("formFieldPage.guidelinesLede")} />
+    <WhenToUse use={tList(t, "formFieldPage.when")} avoid={tList(t, "formFieldPage.whenNot")} />
+    <DoDont
+      title={t("formFieldPage.dd.label.title")}
+      do={{ tree: ddField(formFieldDoLabelTree(t)), caption: t("formFieldPage.dd.label.do") }}
+      dont={{ tree: ddField(formFieldDontLabelTree(t)), caption: t("formFieldPage.dd.label.dont") }}
+    />
     <DoDont
       title={t("formFieldPage.dd.hint.title")}
-      do={{ tree: formFieldDoHintTree(t), caption: t("formFieldPage.dd.hint.do") }}
-      dont={{ tree: formFieldDontHintTree(t), caption: t("formFieldPage.dd.hint.dont") }}
+      do={{ tree: ddField(formFieldDoHintTree(t)), caption: t("formFieldPage.dd.hint.do") }}
+      dont={{ tree: ddField(formFieldDontHintTree(t)), caption: t("formFieldPage.dd.hint.dont") }}
     />
+    <DoDont
+      title={t("formFieldPage.dd.error.title")}
+      do={{ tree: ddField(formFieldDoErrorTree(t)), caption: t("formFieldPage.dd.error.do") }}
+      dont={{ tree: ddField(formFieldDontErrorTree(t)), caption: t("formFieldPage.dd.error.dont") }}
+    />
+    <DoDont
+      title={t("formFieldPage.dd.required.title")}
+      do={{ tree: ddField(formFieldDoRequiredTree(t)), caption: t("formFieldPage.dd.required.do") }}
+      dont={{ tree: ddField(formFieldDontRequiredTree(t)), caption: t("formFieldPage.dd.required.dont") }}
+    />
+    <DoDont
+      title={t("formFieldPage.dd.oneQuestion.title")}
+      do={{ tree: ddField(formFieldDoOneQuestionTree(t)), caption: t("formFieldPage.dd.oneQuestion.do") }}
+      dont={{ tree: ddField(formFieldDontOneQuestionTree(t)), caption: t("formFieldPage.dd.oneQuestion.dont") }}
+    />
+    <DoDont
+      title={t("formFieldPage.dd.textarea.title")}
+      do={{ tree: ddField(formFieldDoTextareaTree(t)), caption: t("formFieldPage.dd.textarea.do") }}
+      dont={{ tree: ddField(formFieldDontTextareaTree(t)), caption: t("formFieldPage.dd.textarea.dont") }}
+    />
+    <DoDont
+      title={t("formFieldPage.dd.purpose.title")}
+      do={{ tree: ddField(formFieldDoPurposeTree(t)), caption: t("formFieldPage.dd.purpose.do") }}
+      dont={{ tree: ddField(formFieldDontPurposeTree(t)), caption: t("formFieldPage.dd.purpose.dont") }}
+    />
+    <DoDont
+      title={t("formFieldPage.dd.serverError.title")}
+      do={{ tree: ddField(formFieldDoServerErrorTree(t)), caption: t("formFieldPage.dd.serverError.do") }}
+      dont={{ tree: ddField(formFieldDontServerErrorTree(t)), caption: t("formFieldPage.dd.serverError.dont") }}
+    />
+    <DoDont
+      title={t("formFieldPage.dd.optional.title")}
+      do={{ tree: ddField(formFieldDoOptionalTree(t)), caption: t("formFieldPage.dd.optional.do") }}
+      dont={{ tree: ddField(formFieldDontOptionalTree(t)), caption: t("formFieldPage.dd.optional.dont") }}
+    />
+    <ContentRules items={tList(t, "formFieldPage.content")} />
   </Fragment>
 
   <Fragment slot="install">
@@ -96,6 +155,6 @@ const explain = (option: string, values: readonly string[]) =>
   </Fragment>
 
   <Fragment slot="a11y">
-    <p set:html={t("formFieldPage.a11yBody")} />
+    <A11yNotes intro={t("formFieldPage.a11yIntro")} does={tList(t, "formFieldPage.a11yDoes")} yours={tList(t, "formFieldPage.a11yYours")} />
   </Fragment>
 </ComponentPageShell>

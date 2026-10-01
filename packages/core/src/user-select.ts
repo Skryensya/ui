@@ -25,6 +25,8 @@ export const userSelectAttrs = {
   search: "data-sk-user-select-search",
   list: "data-sk-user-select-list",
   empty: "data-sk-user-select-empty",
+  /** The row shown instead of the list while the roster loads: a Loader and the `loading` string. */
+  loading: "data-sk-user-select-loading",
   status: "data-sk-user-select-status",
   footer: "data-sk-user-select-footer",
   count: "data-sk-user-select-count",
@@ -149,6 +151,9 @@ export const userSelectContract = {
     unselectedLabel: { type: "string", attr: "data-unselected-label" },
     /* How many faces the trigger stacks before the rest collapse into "+N". */
     maxAvatars: { type: "number", attr: "data-max-avatars" },
+    /* The roster is still arriving: the open list shows a Loader and the `loading` string instead of
+     * its rows, and the status announces it. Both bindings draw it, so a tree can ask for it. */
+    loading: { type: "boolean", default: false, attr: "data-loading", trueValue: "" },
   },
 
   signatures: {
@@ -166,6 +171,7 @@ export const userSelectContract = {
         "searchPlaceholder",
         "unselectedLabel",
         "maxAvatars",
+        "loading",
       ],
       portals: { container: true },
       forward: ["id", "aria-*"],

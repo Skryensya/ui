@@ -17,7 +17,15 @@ export default { title: "Components/Content/Folder", tags: ["autodocs"] } satisf
 export const Anatomy: StoryObj = treeStory(demos.folderAnatomyTree);
 export const Default: StoryObj = treeStory(demos.folderTree);
 export const Plain: StoryObj = treeStory(demos.folderPlainTree);
-export const Active: StoryObj = treeStory(demos.folderActiveTree);
+export const Albums: StoryObj = treeStory(demos.folderAlbumsTree);
+export const Files: StoryObj = treeStory(demos.folderFilesTree);
+export const DoCollection: StoryObj = treeStory(demos.folderDoCollectionTree);
+export const DontSingle: StoryObj = treeStory(demos.folderDontSingleTree);
+export const DoNames: StoryObj = treeStory(demos.folderDoNamesTree);
+export const DontNames: StoryObj = treeStory(demos.folderDontNamesTree);
+export const DoSameKind: StoryObj = treeStory(demos.folderDoSameKindTree);
+export const DontMixedKind: StoryObj = treeStory(demos.folderDontMixedKindTree);
 export const Sunken: StoryObj = treeStory(demos.folderSunkenTree);
 export const Raised: StoryObj = treeStory(demos.folderRaisedTree);
+export const Active: StoryObj = treeStory(demos.folderActiveTree);
 export const Appearance: StoryObj = treeStory(demos.folderAppearanceTree);

@@ -1,4 +1,4 @@
-import { updateComponentPreviewStageDocument } from "@skryensya/vanilla/component-preview";
+import { updateComponentPreviewStageDocument } from "../preview/component-preview-enhancer";
 import { getPreference, setPreference, subscribePreference } from "@skryensya/vanilla/storage";
 import { appearancePreference } from "../lib/preferences";
 

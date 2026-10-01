@@ -13,64 +13,61 @@ export const separatorMessages = {
     "demo.separator.signInWithKey": "Entrar con ClaveÚnica",
     "demo.separator.signInWithEmail": "Entrar con correo",
 
-    "separatorPage.description":
-      "Separator: la regla entre dos cosas, con o sin una palabra al medio, publicada una vez para todo el kit.",
-    "separatorPage.lede":
-      "Una línea entre dos cosas. Existe porque cuatro familias ya dibujaban la suya en privado - Toolbar, Sidebar, <code>menu.css</code> y la hoja del footer - y fuera de ellas una página que quería una regla entre dos bloques no tenía nada que usar y escribía un <code>&lt;div&gt;</code> con borde.",
+    "separatorPage.description": "Traza una línea entre dos cosas distintas, con o sin una palabra al medio.",
+
+    "separatorPage.a11yYours2": "Si separa secciones, un encabezado las nombra mejor que una línea.",
+
+    "separatorPage.a11yYours1": "Usa <code>decorative</code> cuando la línea es solo forma, como dentro de una tarjeta.",
+
+    "separatorPage.a11yDoes2": "Con <code>decorative</code>, no se anuncia.",
+
+    "separatorPage.a11yDoes1": "Por defecto se anuncia: dice que empieza otro tema.",
+
+    "separatorPage.a11yIntro": "Separator es un <code>&lt;hr&gt;</code> que se anuncia como separador.",
+
+    "separatorPage.content1": "Escribe la etiqueta con una palabra o dos: «o», «desde 2019».",
+
+    "separatorPage.whenNot3": "Entre las filas de una lista o un menú: ya traen su línea.",
+
+    "separatorPage.whenNot2": 'Si la línea se arrastra para cambiar tamaños: usa <a href="/es/splitter">Splitter</a>.',
+
+    "separatorPage.whenNot1": 'Si lo que falta es aire: usa el <code>gap</code> de <a href="/es/componentes/stack">Stack</a>.',
+
+    "separatorPage.when3": "Para una alternativa: «o» entre dos formas de entrar.",
+
+    "separatorPage.when2": "Entre grupos de una fila, en vertical.",
+
+    "separatorPage.when1": "Entre dos bloques sobre temas distintos.",
+
+    "separatorPage.contract3": "Las listas, los menús y las barras dibujan su propia línea: no pongas Separator dentro.",
+
+    "separatorPage.contract2": "<code>decorative</code> lo saca del árbol de accesibilidad cuando la línea no significa nada.",
+
+    "separatorPage.contract1": '<code>Separator</code> es un <code>&lt;hr&gt;</code>; <code>LabelledSeparator</code>, un <code>role="separator"</code> con su etiqueta.',
+    "separatorPage.lede": "Separator traza una línea entre dos cosas distintas: dos secciones de una página, dos grupos de una barra, dos formas de entrar («o»). Si lo que falta es aire y no una línea, usa el <code>gap</code> del contenedor.",
     "separatorPage.anatomyBody":
       "La variante con palabra es la que tiene anatomía que nombrar: dos reglas y la etiqueta entre ellas. La regla desnuda es un <code>&lt;hr&gt;</code> y no tiene partes.",
     "separatorPage.anatomyLabel": "Anatomía de LabelledSeparator",
     "separatorPage.anatomyPreviewLabel": "LabelledSeparator, parte por parte",
-    "separatorPage.meaningTitle": "Por defecto la línea significa algo",
-    "separatorPage.meaningBody":
-      "Un <code>&lt;hr&gt;</code> es un quiebre temático con rol <code>separator</code>: dice que lo de arriba y lo de abajo son sobre cosas distintas. <code>decorative</code> es la salida para la línea que sólo pinta -el borde interno de una tarjeta- y la saca entera del árbol de accesibilidad, porque anunciar «separador» sobre contenido que no está separado es ruido. Las dos formas son reales; lo incorrecto es tener sólo una.",
-    "separatorPage.tonesTitle": "Los tonos",
-    "separatorPage.tonesBody":
-      "Nombrados por rol, como todos los tonos del sistema: <code>subtle</code> es cromo dentro de una superficie, <code>default</code> divide contenido, <code>strong</code> separa secciones que tienen poco que ver.",
-    "separatorPage.tonesPreviewLabel": "Los tres tonos",
-    "separatorPage.verticalTitle": "Vertical",
-    "separatorPage.verticalBody":
-      "Un separador no tiene contenido, así que no tiene de qué sacar su altura: la vertical la toma de lo que la contiene (<code>align-self: stretch</code>). Por eso la fila de abajo es un <code>Inline</code> y no tres elementos sueltos. Una sola opción escribe <code>data-orientation</code> y <code>aria-orientation</code>, así que la hoja y el lector de pantalla no pueden discrepar.",
-    "separatorPage.verticalPreviewLabel": "Separadores verticales en una línea de metadatos",
-    "separatorPage.labelledTitle": "La que lleva una palabra",
-    "separatorPage.labelledBody":
-      "«o», «desde 2019», «más antiguos». Es un <code>&lt;div&gt;</code> con <code>role=\"separator\"</code> explícito, porque un <code>&lt;hr&gt;</code> no puede contener nada. El nombre sale de la etiqueta por <code>aria-labelledby</code> y no del contenido: <code>separator</code> no es un rol que tome el nombre de lo que tiene dentro, así que sin ese cable un lector de pantalla llega y dice «separador», que es justo la palabra que la etiqueta visible venía a reemplazar.",
-    "separatorPage.labelledPreviewLabel": "LabelledSeparator entre dos formas de entrar",
-    "separatorPage.whenTitle": "Cuándo usarlo",
-    "separatorPage.whenItem1":
-      "Una regla divide dos bloques que son sobre cosas distintas, o una hairline vertical separa dos cosas puestas lado a lado.",
-    "separatorPage.whenItem2":
-      "Si la regla se <strong>arrastra</strong> para redimensionar lo que divide, no es esto: es un <a href=\"/es/splitter\">Splitter</a>, que es focusable y tiene teclado propio.",
-    "separatorPage.whenItem3":
-      "Entre filas de una lista, un menú o un toolbar no va acá: esas familias dibujan la suya, con la densidad de su propia anatomía.",
-    "separatorPage.whenItem4":
-      "Si lo que falta es <em>aire</em> y no una línea, eso es el <code>gap</code> de lo que contiene los dos bloques.",
-    "separatorPage.contractItem1":
-      "La línea se pinta como <code>background</code> y no como <code>border</code>: un <code>&lt;hr&gt;</code> ya trae un borde <code>inset</code> del navegador, así que media hairline venía del elemento y media de la idea que el navegador tiene de un surco.",
-    "separatorPage.contractItem2":
-      "<code>decorative</code> escribe <code>role=\"presentation\"</code> y no <code>aria-hidden</code>: el elemento no tiene contenido que esconder, y presentation es la forma de decir «esta caja es pintura» sin tocar el DOM.",
-    "separatorPage.contractItem3":
-      "<code>LabelledSeparator</code> no toma <code>orientation</code>: una etiqueta dentro de una regla vertical es texto rotado, que es otro componente y no una variante de este.",
-    "separatorPage.contractItem4":
-      "No tiene enhancer: el markup está completo por sí solo, así que las dos bindings son el mismo markup dos veces.",
-    "separatorPage.prop.tone.title": "Tono",
-    "separatorPage.prop.tone.body": "<code>tone</code> ajusta la fuerza visual de la línea.",
+    "separatorPage.meaningTitle": "Entre temas: una regla",
+    "separatorPage.meaningBody": "Un <code>&lt;hr&gt;</code> dice que lo de arriba y lo de abajo tratan de cosas distintas.",
+    "separatorPage.verticalTitle": "En una fila: vertical",
+    "separatorPage.verticalBody": "Autor, fecha y tiempo de lectura, separados por líneas del alto de la fila.",
+    "separatorPage.labelledTitle": "Con una palabra: «o»",
+    "separatorPage.labelledBody": "<code>LabelledSeparator</code> pone una palabra entre dos reglas: «o», «más antiguos».",
+    "separatorPage.prop.tone.title": "Tone: cuánto separa",
+    "separatorPage.prop.tone.body": "La fuerza de la línea, según qué tan distintas son las partes.",
     "separatorPage.prop.tone.subtle": "Usa <code>subtle</code> como cromo dentro de una superficie.",
-    "separatorPage.prop.tone.default": "Usa <code>default</code> para dividir bloques relacionados.",
+    "separatorPage.prop.tone.default": "Usa <code>default</code>, el valor por defecto, entre bloques de contenido distintos.",
     "separatorPage.prop.tone.strong": "Usa <code>strong</code> para secciones más separadas.",
-    "separatorPage.prop.orientation.title": "Orientación",
-    "separatorPage.prop.orientation.body": "<code>orientation</code> cambia la dirección de la línea.",
-    "separatorPage.prop.orientation.horizontal": "Usa <code>horizontal</code> entre bloques verticales.",
+    "separatorPage.prop.orientation.title": "Orientation: horizontal o vertical",
+    "separatorPage.prop.orientation.body": "La vertical toma el alto de lo que la contiene.",
+    "separatorPage.prop.orientation.horizontal": "Usa <code>horizontal</code>, el valor por defecto, entre bloques apilados.",
     "separatorPage.prop.orientation.vertical": "Usa <code>vertical</code> entre elementos de una misma línea.",
-    "separatorPage.showcaseTitle": "Showcases",
-    "separatorPage.showcaseBody": "Separator cubre cortes temáticos, líneas verticales y separadores con etiqueta.",
-    "separatorPage.guidelinesLede": "Usa Separator cuando una línea comunica una división real.",
-    "separatorPage.dd.meaning.title": "Línea con significado",
-    "separatorPage.dd.meaning.do": "Usa la regla para separar dos bloques con temas distintos.",
-    "separatorPage.dd.meaning.dont": "No uses tonos fuertes sólo para añadir decoración.",
-    "separatorPage.dd.label.title": "Etiqueta sólo cuando ayuda",
-    "separatorPage.dd.label.do": "Usa LabelledSeparator para nombrar una alternativa clara.",
-    "separatorPage.dd.label.dont": "No pongas etiquetas en separadores verticales; separan elementos en línea.",
+    "separatorPage.guidelinesLede": "Una línea dice que dos cosas son distintas; úsala solo cuando lo son.",
+    "separatorPage.dd.meaning.title": "Relacionadas: espacio, no línea",
+    "separatorPage.dd.meaning.do": "Tres datos de la misma persona se agrupan con espacio.",
+    "separatorPage.dd.meaning.dont": "Una línea entre cada dato los parte en tres cosas que no son.",
   },
   en: {
     "demo.separator.or": "or",
@@ -86,63 +83,60 @@ export const separatorMessages = {
     "demo.separator.signInWithKey": "Sign in with a passkey",
     "demo.separator.signInWithEmail": "Sign in with email",
 
-    "separatorPage.description":
-      "Separator: the rule between two things, with or without a word in the middle, published once for the whole kit.",
-    "separatorPage.lede":
-      "A line between two things. It exists because four families were already drawing their own in private - Toolbar, Sidebar, <code>menu.css</code> and the footer sheet - and outside them a page that wanted a rule between two blocks had nothing to reach for and wrote a <code>&lt;div&gt;</code> with a border.",
+    "separatorPage.description": "Draws a line between two different things, with or without a word in the middle.",
+
+    "separatorPage.a11yYours2": "If it separates sections, a heading names them better than a line.",
+
+    "separatorPage.a11yYours1": "Use <code>decorative</code> when the line is only shape, as inside a card.",
+
+    "separatorPage.a11yDoes2": "With <code>decorative</code>, it is not announced.",
+
+    "separatorPage.a11yDoes1": "By default it is announced: it says another topic begins.",
+
+    "separatorPage.a11yIntro": "Separator is an <code>&lt;hr&gt;</code> announced as a separator.",
+
+    "separatorPage.content1": "Write the label in one or two words: “or”, “since 2019”.",
+
+    "separatorPage.whenNot3": "Between the rows of a list or menu: they bring their own line.",
+
+    "separatorPage.whenNot2": 'If the line is dragged to resize: use <a href="/splitter">Splitter</a>.',
+
+    "separatorPage.whenNot1": 'If space is what is missing: use <a href="/components/stack">Stack</a>\'s <code>gap</code>.',
+
+    "separatorPage.when3": "For an alternative: “or” between two ways to sign in.",
+
+    "separatorPage.when2": "Between groups in a row, vertically.",
+
+    "separatorPage.when1": "Between two blocks about different topics.",
+
+    "separatorPage.contract3": "Lists, menus and bars draw their own line: do not put Separator inside.",
+
+    "separatorPage.contract2": "<code>decorative</code> removes it from the accessibility tree when the line means nothing.",
+
+    "separatorPage.contract1": '<code>Separator</code> is an <code>&lt;hr&gt;</code>; <code>LabelledSeparator</code>, a <code>role="separator"</code> with its label.',
+    "separatorPage.lede": "Separator draws a line between two different things: two sections of a page, two groups in a bar, two ways to sign in (“or”). If what is missing is space and not a line, use the container's <code>gap</code>.",
     "separatorPage.anatomyBody":
       "The labelled variant is the one with anatomy to name: two rules and the label between them. The bare rule is an <code>&lt;hr&gt;</code> and has no parts.",
     "separatorPage.anatomyLabel": "LabelledSeparator anatomy",
     "separatorPage.anatomyPreviewLabel": "LabelledSeparator, part by part",
-    "separatorPage.meaningTitle": "By default the line means something",
-    "separatorPage.meaningBody":
-      "An <code>&lt;hr&gt;</code> is a thematic break with the <code>separator</code> role: it says that what is above and what is below are about different things. <code>decorative</code> is the way out for a line that only draws - a card's internal edge - and it leaves the accessibility tree entirely, because announcing “separator” over content that is not separated is noise. Both spellings are real; what is wrong is having only one.",
-    "separatorPage.tonesTitle": "The tones",
-    "separatorPage.tonesBody":
-      "Named by role, like every tone in the system: <code>subtle</code> is chrome inside a surface, <code>default</code> divides content, <code>strong</code> separates sections with little to do with each other.",
-    "separatorPage.tonesPreviewLabel": "The three tones",
-    "separatorPage.verticalTitle": "Vertical",
-    "separatorPage.verticalBody":
-      "A separator has no content, so it has nothing to take its height from: the vertical one takes it from whatever holds it (<code>align-self: stretch</code>). That is why the row below is an <code>Inline</code> and not three loose elements. One option writes both <code>data-orientation</code> and <code>aria-orientation</code>, so the stylesheet and the screen reader cannot disagree.",
-    "separatorPage.verticalPreviewLabel": "Vertical separators in a line of metadata",
-    "separatorPage.labelledTitle": "The one with a word in it",
-    "separatorPage.labelledBody":
-      "“or”, “since 2019”, “older”. It is a <code>&lt;div&gt;</code> with an explicit <code>role=\"separator\"</code>, because an <code>&lt;hr&gt;</code> may hold no content. The name comes from the label through <code>aria-labelledby</code> rather than from the content: <code>separator</code> is not a name-from-content role, so without that wiring a screen reader arrives and says “separator”, which is exactly the word the visible label was written to replace.",
-    "separatorPage.labelledPreviewLabel": "LabelledSeparator between two ways to sign in",
-    "separatorPage.whenTitle": "When to use it",
-    "separatorPage.whenItem1":
-      "A rule divides two blocks about different things, or a vertical hairline separates two things placed side by side.",
-    "separatorPage.whenItem2":
-      "When the rule can be <strong>dragged</strong> to resize what it divides, it is not this: it is a <a href=\"/splitter\">Splitter</a>, which is focusable and has a keyboard contract of its own.",
-    "separatorPage.whenItem3":
-      "Between the rows of a list, a menu or a toolbar it does not belong here: those families draw their own, at the density of their own anatomy.",
-    "separatorPage.whenItem4":
-      "When what is missing is <em>air</em> rather than a line, that is the <code>gap</code> of whatever holds the two blocks.",
-    "separatorPage.contractItem1":
-      "The line is painted as a <code>background</code> and not as a <code>border</code>: an <code>&lt;hr&gt;</code> already carries an <code>inset</code> border from the browser, so half the hairline came from the element and half from the browser's idea of a groove.",
-    "separatorPage.contractItem2":
-      "<code>decorative</code> writes <code>role=\"presentation\"</code> rather than <code>aria-hidden</code>: the element has no content to hide, and presentation is the spelling that says “this box is paint” while leaving the DOM alone.",
-    "separatorPage.contractItem3":
-      "<code>LabelledSeparator</code> takes no <code>orientation</code>: a label inside a vertical rule is rotated text, which is a different component and not a variant of this one.",
-    "separatorPage.contractItem4":
-      "There is no enhancer: the markup is complete on its own, so both bindings are the same markup twice.",
-    "separatorPage.prop.tone.title": "Tone",
-    "separatorPage.prop.tone.body": "<code>tone</code> adjusts the line's visual strength.",
+    "separatorPage.meaningTitle": "Between topics: a rule",
+    "separatorPage.meaningBody": "An <code>&lt;hr&gt;</code> says what is above and below are about different things.",
+    "separatorPage.verticalTitle": "In a row: vertical",
+    "separatorPage.verticalBody": "Author, date and reading time, separated by lines as tall as the row.",
+    "separatorPage.labelledTitle": "With a word: “or”",
+    "separatorPage.labelledBody": "<code>LabelledSeparator</code> puts a word between two rules: “or”, “older”.",
+    "separatorPage.prop.tone.title": "Tone: how much it separates",
+    "separatorPage.prop.tone.body": "The line's strength, by how different the parts are.",
     "separatorPage.prop.tone.subtle": "Use <code>subtle</code> as chrome inside a surface.",
-    "separatorPage.prop.tone.default": "Use <code>default</code> to divide related blocks.",
+    "separatorPage.prop.tone.default": "Use <code>default</code>, the default, between different content blocks.",
     "separatorPage.prop.tone.strong": "Use <code>strong</code> for more separate sections.",
-    "separatorPage.prop.orientation.title": "Orientation",
-    "separatorPage.prop.orientation.body": "<code>orientation</code> changes the line direction.",
-    "separatorPage.prop.orientation.horizontal": "Use <code>horizontal</code> between vertical blocks.",
+    "separatorPage.prop.orientation.title": "Orientation: horizontal or vertical",
+    "separatorPage.prop.orientation.body": "The vertical one takes the height of what contains it.",
+    "separatorPage.prop.orientation.horizontal": "Use <code>horizontal</code>, the default, between stacked blocks.",
     "separatorPage.prop.orientation.vertical": "Use <code>vertical</code> between items on one line.",
-    "separatorPage.showcaseTitle": "Showcases",
-    "separatorPage.showcaseBody": "Separator covers thematic breaks, vertical lines, and labelled dividers.",
-    "separatorPage.guidelinesLede": "Use Separator when a line communicates a real division.",
-    "separatorPage.dd.meaning.title": "A meaningful line",
-    "separatorPage.dd.meaning.do": "Use the rule to separate two blocks about different topics.",
-    "separatorPage.dd.meaning.dont": "Do not use strong tones just to add decoration.",
-    "separatorPage.dd.label.title": "Label only when useful",
-    "separatorPage.dd.label.do": "Use LabelledSeparator to name a clear alternative.",
-    "separatorPage.dd.label.dont": "Do not put labels on vertical separators; they divide inline items.",
+    "separatorPage.guidelinesLede": "A line says two things are different; use it only when they are.",
+    "separatorPage.dd.meaning.title": "Related: space, not a line",
+    "separatorPage.dd.meaning.do": "Three details of the same person are grouped with space.",
+    "separatorPage.dd.meaning.dont": "A line between each detail splits them into three things they are not.",
   },
 } as const;

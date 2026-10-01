@@ -11,23 +11,46 @@ export const fadeEdgeParts = {
 } as const;
 
 export type FadeEdgeMode = "transparent" | "color";
-export type FadeEdgeDirection = "to-bottom" | "to-top" | "to-right" | "to-left";
+/** One edge, physical like the gradient it turns. */
+export type FadeEdgeSide = "to-bottom" | "to-top" | "to-right" | "to-left";
+/** Both ends of an axis: the start (left, top) and the end (right, bottom). */
+export type FadeEdgeAxis = "horizontal" | "vertical";
+export type FadeEdgeDirection = FadeEdgeSide | FadeEdgeAxis;
+
+/** The two sides an axis fades, start first. */
+export const fadeEdgeAxisSides = {
+  horizontal: ["to-left", "to-right"],
+  vertical: ["to-top", "to-bottom"],
+} as const satisfies Record<FadeEdgeAxis, readonly [FadeEdgeSide, FadeEdgeSide]>;
 
 /*
  * SCROLL-AWARE: the fade says "there is more this way", so once the scroll reaches the edge it
  * points at, it is saying something false. Opting in lets the bindings write `data-at-edge` at that
  * moment and the stylesheet retire the fade.
  *
- * WHY NOT CSS ALONE. `container-type: scroll-state` answers exactly this question, but a container
- * query styles the container's DESCENDANTS, and the fade is painted on the scroller itself (its
- * `mask-image`, its `::after`). So the reading is a few lines of script both bindings share
- * (`fade-edge-dom.ts`), not a Zag scroll-area: the platform still draws and drives the scrollbar.
+ * CSS FIRST, SCRIPT AS FALLBACK. A container query cannot do it: it styles the container's
+ * DESCENDANTS, and the fade is painted on the scroller itself. The element's own scroll TIMELINE can
+ * (`animation-timeline: scroll(self)`), so where it is supported the stylesheet retires each ramp on
+ * the scroll position from the first frame, with no script and no late jump. The bindings still
+ * write `data-at-edge` (or `data-at-start` / `data-at-end` for an axis) for browsers without scroll
+ * timelines, and measure the scrollbars, which no stylesheet can (`fade-edge-dom.ts`).
  */
 export const fadeEdgeAttrs = {
   mount: "data-sk-fade-edge",
   scrollAware: "data-scroll-aware",
   direction: "data-direction",
   atEdge: "data-at-edge",
+  /* An axis direction retires each end on its own. */
+  atStart: "data-at-start",
+  atEnd: "data-at-end",
+  /* The gutters are written: until then a scroller paints no fade rather than one over its scrollbar. */
+  measured: "data-measured",
+} as const;
+
+/** Custom properties the bindings write on the root: the thickness of its own scrollbars. */
+export const fadeEdgeProperties = {
+  gutterBlock: "--sk-fade-edge-gutter-block",
+  gutterInline: "--sk-fade-edge-gutter-inline",
 } as const;
 
 /** The scroll geometry `fadeEdgeHasMore` reads, so a test can pass a plain object. */
@@ -52,7 +75,7 @@ const EDGE_SLACK = 1;
  * Whether there is still content past the edge a fade in `direction` covers. The directions are
  * PHYSICAL, like the gradient they turn, so `to-right` means the right edge in either writing mode.
  */
-export function fadeEdgeHasMore(metrics: FadeEdgeScrollMetrics, direction: FadeEdgeDirection): boolean {
+export function fadeEdgeHasMore(metrics: FadeEdgeScrollMetrics, direction: FadeEdgeSide): boolean {
   const maxY = metrics.scrollHeight - metrics.clientHeight;
   const maxX = metrics.scrollWidth - metrics.clientWidth;
   /* Distance from the physical LEFT edge, whichever way the axis runs. */
@@ -76,7 +99,14 @@ export const fadeEdgeContract = {
   parts: fadeEdgeParts,
   hooks: [
     "--sk-fade-edge-color",
+    "--sk-fade-edge-gutter-block",
+    "--sk-fade-edge-gutter-inline",
+    "--sk-fade-edge-axis",
+    "--sk-fade-edge-mask-far",
+    "--sk-fade-edge-mask-near",
     "--sk-fade-edge-mask-ramp",
+    "--sk-fade-edge-ramp-far",
+    "--sk-fade-edge-ramp-near",
     "--sk-fade-edge-ramp",
     "--sk-fade-edge-size",
   ],
@@ -89,7 +119,7 @@ export const fadeEdgeContract = {
     },
     direction: {
       type: "enum",
-      values: ["to-bottom", "to-top", "to-right", "to-left"],
+      values: ["to-bottom", "to-top", "to-right", "to-left", "horizontal", "vertical"],
       default: "to-bottom",
       attr: "data-direction",
     },

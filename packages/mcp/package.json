@@ -21,6 +21,7 @@
     "@skryensya/ai-compiler": "workspace:*",
     "@skryensya/core": "workspace:*",
     "@skryensya/maker-model": "workspace:*",
+    "@skryensya/maker-agent": "workspace:*",
     "@skryensya/snippets": "workspace:*",
     "hono": "^4.12.34",
     "zod": "^4.4.3"

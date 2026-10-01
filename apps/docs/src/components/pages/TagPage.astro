@@ -5,12 +5,14 @@ import "@skryensya/core/components/annotation.css";
 import ComponentPageShell from "./ComponentPageShell.astro";
 import AppearanceMenu from "../AppearanceMenu.astro";
 import CodeBlock from "../CodeBlock.astro";
-import ComponentPreview from "../ComponentPreview.astro";
 import UsagePreview from "../UsagePreview.astro";
 import DoDont from "../DoDont.astro";
+import WhenToUse from "../WhenToUse.astro";
+import ContentRules from "../ContentRules.astro";
+import A11yNotes from "../A11yNotes.astro";
 import { tagAnatomyTree, tagLinksTree, tagRemovableTree, tagSimpleTree, tagTonesTree } from "../../demos/tag";
 import { annotationDemoCss } from "../../demos/annotation";
-import { getLocale, useTranslations } from "../../i18n";
+import { getLocale, tList, useTranslations } from "../../i18n";
 
 const t = useTranslations(getLocale(Astro.url));
 const install = `pnpm add @skryensya/core @skryensya/react`;
@@ -23,7 +25,7 @@ const explain = (option: string, values: readonly string[]) =>
   description={t("tagPage.description")}
   contractId="tag"
   appearanceTargetSelector=".sk-tag"
-  testFiles={["packages/react/src/components/tag.test.tsx"]}}
+  testFiles={["packages/react/src/components/tag.test.tsx"]}
 >
   <Fragment slot="appearance">
     <AppearanceMenu label={t("prefs.appearance")} values={["plain", "brutalist"]} unavailable={{ tactile: t("prefs.appearanceTactileUnavailable"), frosted: t("prefs.appearanceFrostedUnavailable") }} />
@@ -51,27 +53,26 @@ const explain = (option: string, values: readonly string[]) =>
       stageMinBlockSize="7rem"
     />
 
-    <h3>{t("tagPage.showcaseTitle")}</h3>
-    <p set:html={t("tagPage.showcaseBody")} />
+    <h3>{t("component.examplesTitle")}</h3>
     <UsagePreview tree={tagSimpleTree(t)} title={t("tagPage.simpleTitle")} description={t("tagPage.simpleBody")} />
     <UsagePreview tree={tagTonesTree(t)} title={t("tagPage.tonesTitle")} description={t("tagPage.tonesBody")} />
     <UsagePreview tree={tagLinksTree(t)} title={t("tagPage.linksTitle")} description={t("tagPage.linksBody")} />
     <UsagePreview tree={tagRemovableTree(t)} title={t("tagPage.removableTitle")} description={t("tagPage.removableBody")} />
 
+
+    <h3>{t("component.contractNotesTitle")}</h3>
+    <ul>
+      {tList(t, "tagPage.contract").map((item) => <li set:html={item} />)}
+    </ul>
+
     <h3>{t("component.anatomy")}</h3>
     <p set:html={t("tagPage.anatomyBody")} />
-    <ComponentPreview
-      tree={tagAnatomyTree(t)}
-      css={annotationDemoCss}
-      label={t("tagPage.anatomyPreviewLabel")}
-      screens={false}
-      hideSource
-      chrome={false}
-    />
+    <UsagePreview tree={tagAnatomyTree(t)} css={annotationDemoCss} label={t("tagPage.anatomyPreviewLabel")} bare />
   </Fragment>
 
   <Fragment slot="guidelines">
     <p class="lede" set:html={t("tagPage.guidelinesLede")} />
+    <WhenToUse use={tList(t, "tagPage.when")} avoid={tList(t, "tagPage.whenNot")} />
     <DoDont
       title={t("tagPage.dd.job.title")}
       do={{ tree: tagRemovableTree(t), caption: t("tagPage.dd.job.do") }}
@@ -82,9 +83,18 @@ const explain = (option: string, values: readonly string[]) =>
       do={{ tree: tagLinksTree(t), caption: t("tagPage.dd.link.do") }}
       dont={{ tree: tagRemovableTree(t), caption: t("tagPage.dd.link.dont") }}
     />
+    <ContentRules items={tList(t, "tagPage.content")} />
   </Fragment>
 
   <Fragment slot="install">
     <CodeBlock code={install} label="terminal" />
+  </Fragment>
+  <Fragment slot="a11y">
+    <A11yNotes
+      intro={t("tagPage.a11yIntro")}
+      does={tList(t, "tagPage.a11yDoes")}
+      yours={tList(t, "tagPage.a11yYours")}
+      keys={[{ keys: ["Enter", t("component.key.space")], action: t("tagPage.key.remove") }]}
+    />
   </Fragment>
 </ComponentPageShell>

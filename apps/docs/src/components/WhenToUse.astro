@@ -1,0 +1,28 @@
+---
+/*
+ * "WHEN TO USE" AND "WHEN NOT TO USE", the pair every Usage guide opens with (DOCS-COPY-GUIDE.md,
+ * rule 2). The bullets come from the page's messages as numbered runs (`tList`), so a page writes
+ * copy, not markup. Every "not" is expected to end in its alternative: the copy guide's rule, which
+ * this component cannot enforce but makes the one obvious place to check.
+ */
+import { getLocale, useTranslations } from "../i18n";
+
+interface Props {
+  /** When the component fits. Trusted HTML. */
+  use: readonly string[];
+  /** When it does not, each ending in what to use instead. Trusted HTML. */
+  avoid: readonly string[];
+}
+
+const { use, avoid } = Astro.props;
+const t = useTranslations(getLocale(Astro.url));
+---
+
+<h3>{t("component.whenTitle")}</h3>
+<ul>
+  {use.map((item) => <li set:html={item} />)}
+</ul>
+<h3>{t("component.whenNotTitle")}</h3>
+<ul>
+  {avoid.map((item) => <li set:html={item} />)}
+</ul>

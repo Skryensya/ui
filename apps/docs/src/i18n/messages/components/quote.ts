@@ -14,62 +14,68 @@ export const quoteMessages = {
     "demo.quote.testimonial.attribution": "Equipo de Postulaciones,",
     "demo.quote.testimonial.source": "Informe de adopción, marzo 2026",
 
-    "quotePage.description":
-      "Quote: palabras de otro, con quién las dijo y en qué obra aparecieron, en la anatomía que pide el propio HTML.",
-    "quotePage.lede":
-      "Palabras que son <em>de otro</em>. La raíz es un <code>&lt;figure&gt;</code> y la atribución va fuera del <code>&lt;blockquote&gt;</code>: no es una preferencia de layout, es la regla del propio HTML, que reserva ese elemento para el material citado y nada más.",
+    "quotePage.description": "Muestra palabras de otra persona y dice de quién son y dónde aparecieron.",
+
+    "quotePage.a11yYours2": "Un pull repite una frase que ya está en el texto: el lector de pantalla la lee dos veces. Considera <code>aria-hidden</code> en el pull.",
+
+    "quotePage.a11yYours1": "Si la cita está en otro idioma, ponle <code>lang</code>.",
+
+    "quotePage.a11yDoes2": "La línea del costado es decorativa.",
+
+    "quotePage.a11yDoes1": "<code>&lt;figure&gt;</code> y <code>&lt;figcaption&gt;</code> asocian la atribución a la cita.",
+
+    "quotePage.a11yIntro": "Quote usa los elementos de cita del HTML.",
+
+    "quotePage.content3": "Usa las comillas de tu idioma: «» en español.",
+
+    "quotePage.content2": "Escribe la atribución con nombre y, si ayuda, cargo: «Ana Rojas, directora de producto».",
+
+    "quotePage.content1": "Cita textual; si recortas, marca el corte con «[…]».",
+
+    "quotePage.whenNot3": 'Para código o salida de consola: usa <a href="/es/componentes/code-preview">CodePreview</a>.',
+
+    "quotePage.whenNot2": 'Para un aviso de la interfaz: usa <a href="/es/componentes/callout">Callout</a>.',
+
+    "quotePage.whenNot1": "Para una frase corta dentro de una oración: usa el <code>&lt;q&gt;</code> nativo.",
+
+    "quotePage.when2": 'Para destacar una frase del artículo, con <code>variant="pull"</code>.',
+
+    "quotePage.when1": "Para palabras de otro: una cita, un testimonio, un extracto.",
+
+    "quotePage.contract4": "No necesita JavaScript.",
+
+    "quotePage.contract3": "No agrega comillas: las escribe quien cita, con las de su idioma.",
+
+    "quotePage.contract2": "El atributo <code>cite</code> guarda la URL de origen; ningún navegador lo muestra.",
+
+    "quotePage.contract1": "La raíz es un <code>&lt;figure&gt;</code>; la cita, un <code>&lt;blockquote&gt;</code>; la atribución, un <code>&lt;figcaption&gt;</code> afuera.",
+
+    "quotePage.citedBody": "<code>attribution</code> es quién lo dijo; <code>source</code>, la obra, que va en un <code>&lt;cite&gt;</code>.",
+
+    "quotePage.citedTitle": "Con fuente: quién y dónde",
+    "quotePage.lede": "Quote muestra palabras de otra persona: una cita en un artículo, un testimonio, un extracto. Dice quién lo dijo y en qué obra apareció, fuera de la cita, como pide el HTML.",
     "quotePage.anatomyBody":
       "El diagrama nombra las cuatro partes. Fíjate dónde queda el caption: afuera de la cita, que es lo que esta anatomía existe para hacer bien.",
     "quotePage.anatomyLabel": "Anatomía de Quote",
     "quotePage.anatomyPreviewLabel": "Quote, parte por parte",
-    "quotePage.citeTitle": "Quién lo dijo y dónde apareció son dos campos",
-    "quotePage.citeBody":
-      "<code>attribution</code> es <strong>quién</strong> lo dijo y es texto del caption. <code>source</code> es <strong>en qué obra</strong> apareció, y ese sí es el <code>&lt;cite&gt;</code>: el elemento nombra el título de un trabajo, nunca a una persona. Escribir «Camila Rojas» dentro de un <code>&lt;cite&gt;</code> es el error más común de este markup, y tenerlos separados es lo que lo vuelve difícil de cometer por accidente. La puntuación entre los dos (la coma, un guion, «en») es copia y la escribes tú, porque cambia con el idioma; el espacio que sigue no, ese lo pone el caption, que es una fila flex. Esa fila existe por una razón concreta: sin ella el markup emitido dejaría un espacio colapsado entre las dos partes que React no deja, y las dos bindings diferirían en un carácter invisible.",
-    "quotePage.bareTitle": "Sin nadie a quién citar",
-    "quotePage.bareBody":
-      "Sin <code>attribution</code> ni <code>source</code> el caption no se emite: no queda un elemento vacío ocupando espacio bajo la cita.",
-    "quotePage.barePreviewLabel": "Quote sin atribución",
-    "quotePage.pullTitle": "Pull: la cita levantada del texto",
-    "quotePage.pullBody":
-      "<code>variant=\"pull\"</code> no es la misma cita más grande: es otra función. Está <em>fuera</em> del párrafo, así que pierde el filete (ya no está dentro de nada de lo que colgarlo), toma tipografía de display y aprieta la medida, porque un display a 60ch es una línea en la que el ojo se pierde al volver.",
-    "quotePage.pullPreviewLabel": "Quote, variante pull",
-    "quotePage.testimonialTitle": "Testimonio",
-    "quotePage.testimonialBody":
-      "Un testimonio es una cita con superficie propia. La caja es un <code>Box</code>: la cita no cambia, cambia dónde está puesta.",
-    "quotePage.testimonialPreviewLabel": "Quote como testimonio",
-    "quotePage.whenTitle": "Cuándo usarlo",
-    "quotePage.whenItem1":
-      "Las palabras son de otro y se muestran como suyas: una cita, un testimonio, un extracto.",
-    "quotePage.whenItem2":
-      "Una frase corta citada <em>dentro</em> de una oración no es esto: es el <code>&lt;q&gt;</code> nativo, en línea, sin bloque.",
-    "quotePage.whenItem3":
-      "Si el texto es la voz de la página y no la de alguien más, es <a href=\"/es/componentes/callout\">Callout</a>: un aviso con estado, no una cita.",
-    "quotePage.whenItem4":
-      "Código, comandos o salida de consola van en <code>Code</code> o en <a href=\"/es/componentes/code-preview\">CodePreview</a>.",
-    "quotePage.contractItem1":
-      "La raíz es siempre <code>&lt;figure&gt;</code>, con o sin atribución: una raíz que cambiara de elemento según un slot sería una segunda estructura que el CSS de quien la consume tendría que conocer.",
-    "quotePage.contractItem2":
-      "<code>cite</code> (el atributo) es la URL de procedencia y va en el <code>&lt;blockquote&gt;</code>. No lo pinta ningún navegador y este componente tampoco: si hay un enlace que seguir, va escrito dentro de <code>source</code>.",
-    "quotePage.contractItem3":
-      "No agrega comillas. El glifo es de la copia: quien escribe sabe si el pasaje ya viene puntuado, qué marcas usa su idioma («», „“, “”) y si es un fragmento.",
-    "quotePage.contractItem4":
-      "<code>--sk-quote-font-style</code> existe para la marca que cita en cursiva. El default es redonda: la cursiva a largo de párrafo se lee más lento, y el filete ya dice que es una cita.",
-    "quotePage.contractItem5":
-      "No tiene enhancer: el markup está completo por sí solo, así que las dos bindings son el mismo markup dos veces.",
+    "quotePage.bareTitle": "Sin atribución: solo la cita",
+    "quotePage.bareBody": "Sin <code>attribution</code> ni <code>source</code>, no queda un pie vacío bajo la cita.",
+    "quotePage.pullTitle": "Pull: una frase levantada del texto",
+    "quotePage.pullBody": "Fuera del párrafo, más grande y sin línea: para repetir una frase que ya está en el artículo.",
+    "quotePage.testimonialTitle": "Testimonio: en una tarjeta",
+    "quotePage.testimonialBody": "La misma cita dentro de un Box, como en una sección de clientes.",
     "demo.quote.dd.long": "Durante años pensamos que el problema era la velocidad, así que medimos cada paso, cada espera y cada clic. Lo que encontramos fue otra cosa: la gente no se iba por lo lento, se iba porque no sabía qué pasaba después.",
     "demo.quote.dd.notice": "Recuerda guardar los cambios antes de salir.",
-    "quotePage.prop.variant.title": "Variante",
-    "quotePage.prop.variant.body": "La <code>variant</code> dice si la cita vive dentro del texto o se lee sola.",
-    "quotePage.prop.variant.block": "Usa <code>block</code>, el default, para citar dentro de un artículo: lleva una línea al costado.",
+    "quotePage.prop.variant.title": "Variant: dentro del texto o sola",
+    "quotePage.prop.variant.body": "Dice si la cita vive dentro del texto o se lee sola.",
+    "quotePage.prop.variant.block": "Usa <code>block</code>, el valor por defecto, para citar dentro de un artículo: lleva una línea al costado.",
     "quotePage.prop.variant.pull": "Usa <code>pull</code> para destacar una frase fuera del texto, más grande y sin la línea.",
-    "quotePage.showcaseTitle": "Showcases",
-    "quotePage.showcaseBody": "Una cita con su fuente, una sin atribución, una destacada y un testimonio.",
-    "quotePage.guidelinesLede": "Quote muestra palabras de otra persona y dice de quién son.",
-    "quotePage.dd.pull.title": "Una frase destacada es corta",
+    "quotePage.guidelinesLede": "Una cita presenta palabras como de alguien: úsala solo cuando lo son.",
+    "quotePage.dd.pull.title": "Pull: una frase corta",
     "quotePage.dd.pull.do": "Destaca una sola frase que se entienda sin el resto.",
     "quotePage.dd.pull.dont": "Un párrafo en tamaño grande deja de destacar y cuesta leerlo.",
-    "quotePage.dd.notice.title": "Solo para citas",
-    "quotePage.dd.notice.do": "Un aviso de la interfaz va en un <a href=\"/es/componentes/callout\">Callout</a>.",
+    "quotePage.dd.notice.title": "Cita: solo si alguien la dijo",
+    "quotePage.dd.notice.do": 'Un aviso de la interfaz va en un <a href="/es/componentes/callout">Callout</a>.',
     "quotePage.dd.notice.dont": "Nadie dijo esa frase: el formato de cita la presenta como si alguien la hubiera dicho.",
   },
   en: {
@@ -87,62 +93,68 @@ export const quoteMessages = {
     "demo.quote.testimonial.attribution": "Applications team,",
     "demo.quote.testimonial.source": "Adoption report, March 2026",
 
-    "quotePage.description":
-      "Quote: somebody else's words, who said them and the work they appeared in, in the anatomy HTML itself asks for.",
-    "quotePage.lede":
-      "Words that are <em>somebody else's</em>. The root is a <code>&lt;figure&gt;</code> and the attribution sits outside the <code>&lt;blockquote&gt;</code>: not a layout preference, but HTML's own rule, which reserves that element for the quoted material and nothing else.",
+    "quotePage.description": "Shows another person's words and says whose they are and where they appeared.",
+
+    "quotePage.a11yYours2": "A pull repeats a phrase already in the text: the screen reader reads it twice. Consider <code>aria-hidden</code> on the pull.",
+
+    "quotePage.a11yYours1": "If the quote is in another language, give it <code>lang</code>.",
+
+    "quotePage.a11yDoes2": "The side line is decorative.",
+
+    "quotePage.a11yDoes1": "<code>&lt;figure&gt;</code> and <code>&lt;figcaption&gt;</code> tie the attribution to the quote.",
+
+    "quotePage.a11yIntro": "Quote uses HTML's quotation elements.",
+
+    "quotePage.content3": "Use your language's quotation marks: “” in English.",
+
+    "quotePage.content2": "Write the attribution with a name and, if it helps, a role: “Ana Rojas, head of product”.",
+
+    "quotePage.content1": "Quote verbatim; if you cut, mark it with “[…]”.",
+
+    "quotePage.whenNot3": 'For code or console output: use <a href="/components/code-preview">CodePreview</a>.',
+
+    "quotePage.whenNot2": 'For an interface notice: use <a href="/components/callout">Callout</a>.',
+
+    "quotePage.whenNot1": "For a short phrase within a sentence: use the native <code>&lt;q&gt;</code>.",
+
+    "quotePage.when2": 'To highlight a phrase from the article, with <code>variant="pull"</code>.',
+
+    "quotePage.when1": "For someone else's words: a quotation, a testimonial, an excerpt.",
+
+    "quotePage.contract4": "It needs no JavaScript.",
+
+    "quotePage.contract3": "It adds no quotation marks: the author writes them, with their language's.",
+
+    "quotePage.contract2": "The <code>cite</code> attribute keeps the source URL; no browser shows it.",
+
+    "quotePage.contract1": "The root is a <code>&lt;figure&gt;</code>; the quote a <code>&lt;blockquote&gt;</code>; the attribution a <code>&lt;figcaption&gt;</code> outside it.",
+
+    "quotePage.citedBody": "<code>attribution</code> is who said it; <code>source</code>, the work, which goes in a <code>&lt;cite&gt;</code>.",
+
+    "quotePage.citedTitle": "With a source: who and where",
+    "quotePage.lede": "Quote shows another person's words: a quotation in an article, a testimonial, an excerpt. It says who said it and in what work it appeared, outside the quotation, as HTML asks.",
     "quotePage.anatomyBody":
       "The diagram names the four parts. Watch where the caption lands: outside the quotation, which is what this anatomy exists to get right.",
     "quotePage.anatomyLabel": "Quote anatomy",
     "quotePage.anatomyPreviewLabel": "Quote, part by part",
-    "quotePage.citeTitle": "Who said it and where it appeared are two fields",
-    "quotePage.citeBody":
-      "<code>attribution</code> is <strong>who</strong> said it, and it is plain caption text. <code>source</code> is <strong>the work</strong> it appeared in, and that one IS the <code>&lt;cite&gt;</code>: the element names the title of a work, never a person. Putting “Camila Rojas” inside a <code>&lt;cite&gt;</code> is the most common mistake in this markup, and keeping the two apart is what makes it hard to fall into by accident. The punctuation between them (a comma, a dash, “in”) is copy, and you write it, because it changes with the language; the space after it is not - the caption is a flex row and supplies it. That row exists for a concrete reason: without it the emitted markup would leave one collapsed space between the halves that React does not, and the two bindings would differ by an invisible character.",
-    "quotePage.bareTitle": "With nobody to credit",
-    "quotePage.bareBody":
-      "With neither <code>attribution</code> nor <code>source</code> the caption is not emitted: no empty element is left holding space under the quotation.",
-    "quotePage.barePreviewLabel": "Quote with no attribution",
-    "quotePage.pullTitle": "Pull: the quotation lifted out of the text",
-    "quotePage.pullBody":
-      "<code>variant=\"pull\"</code> is not the same quotation, larger: it is a different job. It sits <em>outside</em> the paragraph, so it loses the rule (there is nothing left to hang it off), takes display type, and tightens its measure, because display type at 60ch is a line the eye loses on the way back.",
-    "quotePage.pullPreviewLabel": "Quote, pull variant",
-    "quotePage.testimonialTitle": "Testimonial",
-    "quotePage.testimonialBody":
-      "A testimonial is a quotation with a surface of its own. The card is a <code>Box</code>: the quotation does not change, only where it is put.",
-    "quotePage.testimonialPreviewLabel": "Quote as a testimonial",
-    "quotePage.whenTitle": "When to use it",
-    "quotePage.whenItem1":
-      "The words are somebody else's and are shown as theirs: a quotation, a testimonial, an excerpt.",
-    "quotePage.whenItem2":
-      "A short phrase quoted <em>inside</em> a sentence is not this: that is the native <code>&lt;q&gt;</code>, inline, with no block.",
-    "quotePage.whenItem3":
-      "When the text is the page's own voice rather than somebody else's, it is a <a href=\"/components/callout\">Callout</a>: a notice with a status, not a quotation.",
-    "quotePage.whenItem4":
-      "Code, commands and console output belong in <code>Code</code> or a <a href=\"/components/code-preview\">CodePreview</a>.",
-    "quotePage.contractItem1":
-      "The root is always a <code>&lt;figure&gt;</code>, with or without attribution: a root that changed element depending on a slot would be a second structure for a consumer's CSS to know about.",
-    "quotePage.contractItem2":
-      "<code>cite</code> (the attribute) is the provenance URL and lives on the <code>&lt;blockquote&gt;</code>. No browser renders it and neither does this component: a link a reader can follow is written inside <code>source</code>.",
-    "quotePage.contractItem3":
-      "It adds no quotation marks. The glyph belongs to the copy: whoever writes it knows whether the passage is already punctuated, which marks their language takes («», „“, “”) and whether it is a fragment.",
-    "quotePage.contractItem4":
-      "<code>--sk-quote-font-style</code> is there for the brand that quotes in italic. The default is upright: italic at paragraph length reads measurably slower, and the rule already says it is a quotation.",
-    "quotePage.contractItem5":
-      "There is no enhancer: the markup is complete on its own, so both bindings are the same markup twice.",
+    "quotePage.bareTitle": "No attribution: just the quote",
+    "quotePage.bareBody": "Without <code>attribution</code> or <code>source</code>, no empty caption is left under the quote.",
+    "quotePage.pullTitle": "Pull: a phrase lifted from the text",
+    "quotePage.pullBody": "Outside the paragraph, larger and without the line: to repeat a phrase already in the article.",
+    "quotePage.testimonialTitle": "Testimonial: in a card",
+    "quotePage.testimonialBody": "The same quote inside a Box, as in a customers section.",
     "demo.quote.dd.long": "For years we thought the problem was speed, so we measured every step, every wait and every click. What we found was something else: people did not leave because it was slow, they left because they did not know what came next.",
     "demo.quote.dd.notice": "Remember to save your changes before leaving.",
-    "quotePage.prop.variant.title": "Variant",
-    "quotePage.prop.variant.body": "<code>variant</code> says whether the quote lives inside the text or is read on its own.",
-    "quotePage.prop.variant.block": "Use <code>block</code>, the default, to quote inside an article: it carries a rule at the side.",
+    "quotePage.prop.variant.title": "Variant: inside the text or on its own",
+    "quotePage.prop.variant.body": "Says whether the quote lives inside the text or reads on its own.",
+    "quotePage.prop.variant.block": "Use <code>block</code>, the default, to quote inside an article: it carries a line on the side.",
     "quotePage.prop.variant.pull": "Use <code>pull</code> to lift one sentence out of the text, larger and without the rule.",
-    "quotePage.showcaseTitle": "Showcases",
-    "quotePage.showcaseBody": "A quote with its source, one with no attribution, a pull quote and a testimonial.",
-    "quotePage.guidelinesLede": "Quote shows someone else's words and says whose they are.",
-    "quotePage.dd.pull.title": "A pull quote is short",
+    "quotePage.guidelinesLede": "A quote presents words as someone's: use it only when they are.",
+    "quotePage.dd.pull.title": "Pull: a short phrase",
     "quotePage.dd.pull.do": "Lift one sentence that makes sense without the rest.",
     "quotePage.dd.pull.dont": "A paragraph set large stops standing out and is hard to read.",
-    "quotePage.dd.notice.title": "Only for quotations",
-    "quotePage.dd.notice.do": "An interface notice goes in a <a href=\"/components/callout\">Callout</a>.",
+    "quotePage.dd.notice.title": "Quote: only if someone said it",
+    "quotePage.dd.notice.do": 'An interface notice goes in a <a href="/components/callout">Callout</a>.',
     "quotePage.dd.notice.dont": "Nobody said that sentence: the quote format presents it as if someone had.",
   },
 } as const;

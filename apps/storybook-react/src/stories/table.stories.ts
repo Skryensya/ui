@@ -6,17 +6,16 @@ import "@skryensya/core/components/canvas.css";
 import "@skryensya/core/components/table.css";
 import "@skryensya/core/patterns/box.css";
 import * as demos from "@docs/demos/table";
-import { annotationDemoCss } from "@docs/demos/annotation";
-import { treeStory, withCss, type Meta, type StoryObj } from "../tree-story";
+import { treeStory, type Meta, type StoryObj } from "../tree-story";
 
 export default { title: "Components/Data/Table", tags: ["autodocs"] } satisfies Meta;
 
-export const Anatomy: StoryObj = treeStory(demos.tableAnatomyTree, { decorators: [withCss(annotationDemoCss)] });
-export const Density: StoryObj = treeStory(demos.tableDensityTree);
+export const Anatomy: StoryObj = treeStory(demos.tableAnatomyTree);
 export const Default: StoryObj = treeStory(demos.tableTree);
 export const StickyColumn: StoryObj = treeStory(demos.tableStickyColumnTree);
 export const ResizableColumns: StoryObj = treeStory(demos.tableResizableColumnsTree);
 export const StickyHeader: StoryObj = treeStory(demos.tableStickyHeaderTree);
 export const InBox: StoryObj = treeStory(demos.tableInBoxTree);
 export const DeploymentsTable: StoryObj = treeStory(demos.deploymentsTable);
+export const Density: StoryObj = treeStory(demos.tableDensityTree);
 export const DontList: StoryObj = treeStory(demos.tableDontListTree);

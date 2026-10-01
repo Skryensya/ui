@@ -201,3 +201,16 @@ export const radioGroupMatrixTree = (t: Translate): UsageTree => ({
     },
   ],
 });
+
+/* Usage guide: ten countries as radios, a list long enough that it belongs in a Select. The names
+   are the same in both locales, so only the label is translated. */
+export const radioGroupDontManyTree = (t: Translate): UsageTree => ({
+  contract: "radio-group",
+  signature: "RadioGroup",
+  options: { name: "country", value: "Chile", orientation: "vertical", label: t("demo.radioGroup.country") },
+  slots: {
+    items: ["Argentina", "Bolivia", "Chile", "Colombia", "Ecuador", "Guatemala", "Honduras", "Paraguay", "Uruguay", "Venezuela"].map(
+      (country) => ({ options: { value: country }, slots: { label: country } }),
+    ),
+  },
+});

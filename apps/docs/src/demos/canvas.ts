@@ -46,3 +46,78 @@ export const canvasAnatomyTree = (t: Translate): UsageTree => ({
     ],
   },
 });
+
+/*
+ * A publishing flow drawn at its own width (30rem, `canvasDiagramCss`), wider than a phone column: the
+ * shape a Canvas exists for, a drawing that means something only in its composed geometry.
+ */
+export const canvasDiagramTree = (t: Translate): UsageTree => ({
+  contract: "canvas",
+  signature: "Canvas",
+  attrs: { style: "--sk-canvas-content-inline-size: 30rem;" },
+  options: {
+    label: t("canvas.demoLabel"),
+    zoomInLabel: t("canvas.zoomInLabel"),
+    zoomOutLabel: t("canvas.zoomOutLabel"),
+    fitLabel: t("canvas.fitLabel"),
+  },
+  slots: {
+    touchHint: t("canvas.touchHint"),
+    wheelHint: t("canvas.wheelHint"),
+    children: {
+      contract: "diagram",
+      signature: "Diagram",
+      options: { label: t("canvas.demoLabel") },
+      slots: {
+        nodes: [
+          { options: { node: "draft", shape: "terminal" }, slots: { children: t("canvas.nodeDraft") } },
+          { options: { node: "review" }, slots: { children: t("canvas.nodeReview") } },
+          { options: { node: "publish" }, slots: { children: t("canvas.nodePublish") } },
+          { options: { node: "live", shape: "terminal" }, slots: { children: t("canvas.nodeLive") } },
+        ],
+        edges: [
+          { options: { from: "draft", to: "review" }, slots: {} },
+          { options: { from: "review", to: "publish" }, slots: { children: t("canvas.edgeApproved") } },
+          { options: { from: "publish", to: "live" }, slots: {} },
+        ],
+      },
+    },
+  },
+});
+
+export const canvasDiagramCss = `.sk-canvas {
+  --sk-canvas-content-inline-size: 30rem;
+}`;
+
+/* Usage guide: a linear sequence should reflow as content instead of becoming a zoomable drawing. */
+export const canvasDontFitsTree = (t: Translate): UsageTree => ({
+  contract: "process-list",
+  signature: "ProcessList",
+  attrs: { "aria-label": t("canvas.demoLabel") },
+  children: [
+    {
+      contract: "process-list",
+      signature: "ProcessListItem",
+      slots: {
+        title: t("canvas.nodeDraft"),
+        children: t("canvas.stepDraft"),
+      },
+    },
+    {
+      contract: "process-list",
+      signature: "ProcessListItem",
+      slots: {
+        title: t("canvas.nodeReview"),
+        children: t("canvas.stepReview"),
+      },
+    },
+    {
+      contract: "process-list",
+      signature: "ProcessListItem",
+      slots: {
+        title: t("canvas.nodePublish"),
+        children: t("canvas.stepPublish"),
+      },
+    },
+  ],
+});

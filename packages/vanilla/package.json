@@ -93,10 +93,6 @@
       "types": "./src/components/code-preview.ts",
       "default": "./src/components/code-preview.ts"
     },
-    "./component-preview": {
-      "types": "./src/components/component-preview.ts",
-      "default": "./src/components/component-preview.ts"
-    },
     "./accordion": {
       "types": "./src/components/accordion.ts",
       "default": "./src/components/accordion.ts"

@@ -20,60 +20,93 @@ export const descriptionListMessages = {
     "demo.descriptionList.spec.updated.value": "14 de marzo de 2026",
     "demo.descriptionList.spec.licence.term": "Licencia",
     "demo.descriptionList.spec.licence.value": "CC BY 4.0",
+    "demo.descriptionList.spec.sizeBare": "1,4",
+    "demo.descriptionList.longTerm1": "Plataforma donde se realizó el pago",
+    "demo.descriptionList.longValue1": "Tarjeta de crédito",
+    "demo.descriptionList.longTerm2": "Dirección de correo para notificaciones",
+    "demo.descriptionList.longValue2": "ana@example.com",
+    "demo.descriptionList.missingValue": "Sin seguimiento",
+    "demo.descriptionList.longLabel": "Identificador del pedido en el sistema de ventas",
 
-    "descriptionListPage.description":
-      "DescriptionList: pares de nombre y valor sobre un solo registro, en el <dl> nativo con su elemento de agrupación.",
-    "descriptionListPage.lede":
-      "Los datos de <em>un</em> registro, como nombre y valor. Cada fila es una afirmación completa por sí sola y nada se compara entre filas: eso último es lo que la separa de una <a href=\"/es/componentes/table\">Table</a>, donde una celda significa algo por su fila <em>y</em> su columna.",
-    "descriptionListPage.anatomyBody":
-      "El diagrama nombra las cuatro partes. El <code>&lt;div&gt;</code> alrededor de cada par no es un wrapper inventado acá: es el elemento de agrupación que el propio HTML admite dentro de <code>&lt;dl&gt;</code>.",
+    "descriptionListPage.description": "Muestra los datos de un registro como pares de nombre y valor.",
+
+    "descriptionListPage.a11yYours2": "No uses la lista para alinear un formulario: los campos van en FormField.",
+
+    "descriptionListPage.a11yYours1": "Pon un encabezado antes de la lista que diga de qué registro son los datos.",
+
+    "descriptionListPage.a11yDoes2": "No recibe foco: los enlaces de un valor sí.",
+
+    "descriptionListPage.a11yDoes1": "Usa <code>&lt;dl&gt;</code>, <code>&lt;dt&gt;</code> y <code>&lt;dd&gt;</code>; cada par va agrupado en su <code>&lt;div&gt;</code>.",
+
+    "descriptionListPage.a11yIntro": "Es un <code>&lt;dl&gt;</code> nativo: los lectores de pantalla anuncian cada nombre con su valor.",
+
+    "descriptionListPage.content3": "Si un valor falta, dilo: «Sin seguimiento», en vez de dejar la fila vacía.",
+
+    "descriptionListPage.content2": "Escribe los valores completos, con su unidad: «1,4 MB», no «1.4».",
+
+    "descriptionListPage.content1": "Usa nombres cortos, de 1 a 3 palabras, con mayúscula solo al inicio: «Medio de pago».",
+
+    "descriptionListPage.dd.one.dont": "Tres pedidos en una lista repiten los nombres y obligan a comparar filas: eso es una Table.",
+
+    "descriptionListPage.dd.one.do": "Los datos de un pedido: cada fila se lee sola.",
+
+    "descriptionListPage.dd.one.title": "Registros: uno por lista",
+    "descriptionListPage.dd.terms.title": "Layout: deja respirar los nombres largos",
+    "descriptionListPage.dd.terms.do": "Con nombres largos, apila cada valor debajo de su nombre.",
+    "descriptionListPage.dd.terms.dont": "En columnas, el nombre largo aprieta el espacio del valor.",
+    "descriptionListPage.dd.units.title": "Valores: incluye la unidad",
+    "descriptionListPage.dd.units.do": "«1,4 MB» dice cuánto pesa el archivo sin que haya que inferirlo.",
+    "descriptionListPage.dd.units.dont": "«1,4» podría ser tamaño, cantidad o precio.",
+    "descriptionListPage.dd.missing.title": "Datos faltantes: dilo explícitamente",
+    "descriptionListPage.dd.missing.do": "«Sin seguimiento» explica por qué no hay un número.",
+    "descriptionListPage.dd.missing.dont": "Una fila vacía parece un error o un dato olvidado.",
+    "descriptionListPage.dd.labels.title": "Términos: etiquetas, no frases",
+    "descriptionListPage.dd.labels.do": "«Pedido» se escanea rápido como nombre del dato.",
+    "descriptionListPage.dd.labels.dont": "Una pregunta larga convierte el término en otro párrafo.",
+    "descriptionListPage.dd.links.title": "Valores: haz que el destino sea un enlace",
+    "descriptionListPage.dd.links.do": "El número de seguimiento se puede abrir para consultar el envío.",
+    "descriptionListPage.dd.links.dont": "Una URL como texto no permite seguir el envío con un clic.",
+
+    "descriptionListPage.whenNot3": 'Si es una lista de cosas y no de datos sobre una cosa: usa <a href="/es/componentes/list">List</a>.',
+
+    "descriptionListPage.whenNot2": 'Si los pares son campos que la persona completa: usa <a href="/es/componentes/form-field">FormField</a>.',
+
+    "descriptionListPage.whenNot1": 'Si los mismos campos se muestran para varios registros: usa <a href="/es/componentes/table">Table</a>.',
+
+    "descriptionListPage.when2": "Cuando los nombres son cortos y cada fila se lee sola.",
+
+    "descriptionListPage.when1": "Para los datos de un registro: el resumen de un pedido, los metadatos de un documento, las características de un producto.",
+
+    "descriptionListPage.contract3": "No tiene enhancer: el markup está completo por sí solo.",
+
+    "descriptionListPage.contract2": "La hoja quita la sangría y el margen del navegador.",
+
+    "descriptionListPage.contract1": "Cada par va en un <code>&lt;div&gt;</code>, el agrupador que HTML admite dentro de <code>&lt;dl&gt;</code>: de ahí cuelgan el divisor y el layout.",
+
+    "descriptionListPage.basicBody": "Tres pares apilados, la forma que resiste cualquier ancho y cualquier largo de nombre.",
+
+    "descriptionListPage.basicTitle": "Un pedido: el caso base",
+    "descriptionListPage.lede": 'DescriptionList muestra los datos de un registro como pares de nombre y valor: el resumen de un pedido, los metadatos de un documento, las características de un producto. Cada fila se lee sola; si hay que comparar varios registros, es una <a href="/es/componentes/table">Table</a>.',
+    "descriptionListPage.anatomyBody": "La lista, cada par, el nombre y el valor.",
     "descriptionListPage.anatomyLabel": "Anatomía de DescriptionList",
     "descriptionListPage.anatomyPreviewLabel": "DescriptionList, parte por parte",
-    "descriptionListPage.groupTitle": "Por qué cada par va envuelto",
-    "descriptionListPage.groupBody":
-      "El <code>&lt;div&gt;</code> es lo que vuelve <em>direccionable</em> la fila: de ahí cuelgan el divisor y el layout de dos columnas, y es lo que mantiene un nombre junto a su valor cuando la lista corta. Sin él el par existe sólo en el orden del documento, y cualquier layout hay que dibujarlo sobre una grilla compartida a la que las dos mitades tienen que entrar por separado.",
-    "descriptionListPage.columnsTitle": "Columnas",
-    "descriptionListPage.columnsBody":
-      "<code>layout=\"columns\"</code> pone el valor al lado del nombre. Se dibuja <em>por fila</em>, no sobre una grilla compartida, y por eso la columna del nombre es un largo (<code>--sk-description-list-term-size</code>) y no <code>max-content</code>: la grilla compartida necesitaría que cada par fuera <code>display: contents</code>, que saca del árbol de cajas justo el elemento del que cuelga todo lo demás. Bajo 36rem vuelve a apilarse solo: una columna de nombre peleando por 320px no es un layout, son dos truncados.",
-    "descriptionListPage.columnsPreviewLabel": "DescriptionList en columnas",
-    "descriptionListPage.dividedTitle": "Divisores y densidad",
-    "descriptionListPage.dividedBody":
-      "<code>dividers</code> pone una línea entre filas, nunca sobre la primera (ese borde es de la caja que contiene la lista, no de la lista). <code>density=\"compact\"</code> acerca las filas sin tocar la tipografía: es material de referencia para escanear, no prosa para leer.",
-    "descriptionListPage.dividedPreviewLabel": "DescriptionList con divisores, compacta",
-    "descriptionListPage.richTitle": "El valor acepta markup; el nombre no",
-    "descriptionListPage.richBody":
-      "El valor es un nodo: un <a href=\"/es/componentes/tag\">Tag</a> de estado, un enlace, una fecha. El nombre es texto a propósito: un nombre que necesita markup propio es un encabezado, y esto no es una sección.",
-    "descriptionListPage.richPreviewLabel": "DescriptionList con Tag y enlace",
-    "descriptionListPage.whenTitle": "Cuándo usarlo",
-    "descriptionListPage.whenItem1":
-      "Se muestran los datos de <strong>un</strong> registro: el resumen de un pedido, los metadatos de un documento, las specs de un producto.",
-    "descriptionListPage.whenItem2":
-      "Si los mismos campos se muestran para <strong>varios</strong> registros, es una <a href=\"/es/componentes/table\">Table</a>: ahí una celda significa algo por su fila y su columna.",
-    "descriptionListPage.whenItem3":
-      "Si los pares son controles que alguien completa, es <a href=\"/es/componentes/form-field\">FormField</a>, no esto.",
-    "descriptionListPage.whenItem4":
-      "Si es una lista de cosas y no de hechos sobre una cosa, es <a href=\"/es/componentes/list\">List</a>.",
-    "descriptionListPage.contractItem1":
-      "El <code>&lt;dd&gt;</code> trae 40px de sangría del navegador y el <code>&lt;dl&gt;</code> un margen de bloque: la hoja los saca, porque los dos dibujan el glosario indentado que este componente no es.",
-    "descriptionListPage.contractItem2":
-      "<code>dividers</code> se escribe por presencia (<code>data-dividers</code> vacío) y no como <code>\"false\"</code>: decir que no es no decir nada.",
-    "descriptionListPage.contractItem3":
-      "<code>--sk-description-list-term-size</code> es el hook que mueve la columna del nombre cuando los tuyos son más largos. Es un largo, y el encabezado del contrato explica por qué.",
-    "descriptionListPage.contractItem4":
-      "No tiene enhancer: el markup está completo por sí solo, así que las dos bindings son el mismo markup dos veces.",
-    "descriptionListPage.prop.layout.title": "Disposición",
-    "descriptionListPage.prop.layout.body": "El <code>layout</code> pone cada término sobre su valor o a su lado.",
-    "descriptionListPage.prop.layout.stacked": "Usa <code>stacked</code>, el default, en columnas angostas y en el celular.",
-    "descriptionListPage.prop.layout.columns": "Usa <code>columns</code> en una vista ancha, para leer términos y valores como una tabla de dos columnas.",
-    "descriptionListPage.prop.dividers.title": "Divisores",
+    "descriptionListPage.columnsTitle": "Columnas: el valor al lado",
+    "descriptionListPage.columnsBody": "El ancho de la columna del nombre se ajusta con <code>--sk-description-list-term-size</code> si tus nombres son largos.",
+    "descriptionListPage.dividedTitle": "Divisores y densidad: material de referencia",
+    "descriptionListPage.dividedBody": '<code>dividers</code> separa las filas y <code>density="compact"</code> las acerca sin cambiar la tipografía.',
+    "descriptionListPage.richTitle": "Valores con markup: un Tag, un enlace",
+    "descriptionListPage.richBody": 'El valor acepta un <a href="/es/componentes/tag">Tag</a>, un enlace o una fecha. El nombre es texto: si necesita markup, es un encabezado.',
+    "descriptionListPage.prop.layout.title": "Layout: el valor debajo o al lado",
+    "descriptionListPage.prop.layout.body": "Pone cada valor debajo de su nombre o a su lado.",
+    "descriptionListPage.prop.layout.stacked": "Usa <code>stacked</code>, el valor por defecto, en columnas angostas y en teléfonos.",
+    "descriptionListPage.prop.layout.columns": "Usa <code>columns</code> en una vista ancha, para leer nombres y valores en dos columnas. Por debajo de 36rem vuelve a apilarse.",
+    "descriptionListPage.prop.dividers.title": "Dividers: una línea entre pares",
     "descriptionListPage.prop.dividers.body": "<code>dividers</code> dibuja una línea entre pares.",
-    "descriptionListPage.prop.dividers.false": "Sin divisores, el espacio separa los pares.",
-    "descriptionListPage.prop.dividers.true": "Usa <code>dividers</code> cuando hay muchos pares y el ojo se pierde entre filas.",
+    "descriptionListPage.prop.dividers.false": "Usa <code>false</code> cuando son pocos pares y el espacio alcanza para separarlos.",
+    "descriptionListPage.prop.dividers.true": "Usa <code>true</code> cuando son muchos pares y el ojo se pierde entre filas.",
     "descriptionListPage.prop.dividers.falseLabel": "Sin divisores",
     "descriptionListPage.prop.dividers.trueLabel": "Con divisores",
-    "descriptionListPage.showcaseTitle": "Showcases",
-    "descriptionListPage.showcaseBody": "Pares de término y valor, en columnas, con divisores y con valores compuestos.",
-    "descriptionListPage.guidelinesLede": "DescriptionList muestra pares de término y valor, como los datos de una cuenta.",
+    "descriptionListPage.guidelinesLede": "Cada fila es una afirmación sobre una misma cosa.",
   },
   en: {
     "demo.descriptionList.order.term": "Order",
@@ -96,59 +129,92 @@ export const descriptionListMessages = {
     "demo.descriptionList.spec.updated.value": "14 March 2026",
     "demo.descriptionList.spec.licence.term": "Licence",
     "demo.descriptionList.spec.licence.value": "CC BY 4.0",
+    "demo.descriptionList.spec.sizeBare": "1.4",
+    "demo.descriptionList.longTerm1": "Platform used to make the payment",
+    "demo.descriptionList.longValue1": "Credit card",
+    "demo.descriptionList.longTerm2": "Email address for notifications",
+    "demo.descriptionList.longValue2": "ana@example.com",
+    "demo.descriptionList.missingValue": "No tracking available",
+    "demo.descriptionList.longLabel": "Order identifier in the sales system",
 
-    "descriptionListPage.description":
-      "DescriptionList: name-and-value pairs about a single record, on the native <dl> with its grouping element.",
-    "descriptionListPage.lede":
-      "The details of <em>one</em> record, as name and value. Each row is a complete statement on its own and nothing is compared across rows: that last part is what separates it from a <a href=\"/components/table\">Table</a>, where a cell means something because of its row <em>and</em> its column.",
-    "descriptionListPage.anatomyBody":
-      "The diagram names the four parts. The <code>&lt;div&gt;</code> around each pair is not a wrapper invented here: it is the grouping element HTML itself allows inside <code>&lt;dl&gt;</code>.",
+    "descriptionListPage.description": "Shows one record's details as name and value pairs.",
+
+    "descriptionListPage.a11yYours2": "Do not use the list to align a form: fields go in FormField.",
+
+    "descriptionListPage.a11yYours1": "Put a heading before the list that says which record the details belong to.",
+
+    "descriptionListPage.a11yDoes2": "It takes no focus: links inside a value do.",
+
+    "descriptionListPage.a11yDoes1": "It uses <code>&lt;dl&gt;</code>, <code>&lt;dt&gt;</code> and <code>&lt;dd&gt;</code>; each pair is grouped in its <code>&lt;div&gt;</code>.",
+
+    "descriptionListPage.a11yIntro": "It is a native <code>&lt;dl&gt;</code>: screen readers announce each name with its value.",
+
+    "descriptionListPage.content3": "If a value is missing, say so: “No tracking”, instead of leaving the row empty.",
+
+    "descriptionListPage.content2": "Write values in full, with their unit: “1.4 MB”, not “1.4”.",
+
+    "descriptionListPage.content1": "Use short names, 1 to 3 words, capitalizing only the first: “Payment method”.",
+
+    "descriptionListPage.dd.one.dont": "Three orders in one list repeat the names and force comparing rows: that is a Table.",
+
+    "descriptionListPage.dd.one.do": "One order's details: each row reads on its own.",
+
+    "descriptionListPage.dd.one.title": "Records: one per list",
+    "descriptionListPage.dd.terms.title": "Layout: give long names room",
+    "descriptionListPage.dd.terms.do": "With long names, stack each value under its term.",
+    "descriptionListPage.dd.terms.dont": "In columns, a long term squeezes the value's space.",
+    "descriptionListPage.dd.units.title": "Values: include the unit",
+    "descriptionListPage.dd.units.do": "“1.4 MB” says how large the file is without making people infer it.",
+    "descriptionListPage.dd.units.dont": "“1.4” could be a size, count or price.",
+    "descriptionListPage.dd.missing.title": "Missing data: say so",
+    "descriptionListPage.dd.missing.do": "“No tracking available” explains why there is no number.",
+    "descriptionListPage.dd.missing.dont": "An empty row looks like an error or forgotten data.",
+    "descriptionListPage.dd.labels.title": "Terms: labels, not sentences",
+    "descriptionListPage.dd.labels.do": "“Order” scans quickly as the name of a fact.",
+    "descriptionListPage.dd.labels.dont": "A long question turns the term into another paragraph.",
+    "descriptionListPage.dd.links.title": "Values: make destinations links",
+    "descriptionListPage.dd.links.do": "The tracking number can open the shipment details.",
+    "descriptionListPage.dd.links.dont": "A URL shown as text cannot be followed with one click.",
+
+    "descriptionListPage.whenNot3": 'If it is a list of things rather than facts about one thing: use <a href="/components/list">List</a>.',
+
+    "descriptionListPage.whenNot2": 'If the pairs are fields people fill in: use <a href="/components/form-field">FormField</a>.',
+
+    "descriptionListPage.whenNot1": 'If the same fields are shown for several records: use <a href="/components/table">Table</a>.',
+
+    "descriptionListPage.when2": "When names are short and each row reads on its own.",
+
+    "descriptionListPage.when1": "For one record's details: an order summary, a document's metadata, a product's specs.",
+
+    "descriptionListPage.contract3": "It has no enhancer: the markup is complete on its own.",
+
+    "descriptionListPage.contract2": "The sheet removes the browser's indentation and margin.",
+
+    "descriptionListPage.contract1": "Each pair sits in a <code>&lt;div&gt;</code>, the grouping element HTML allows inside <code>&lt;dl&gt;</code>: the divider and the layout hang from it.",
+
+    "descriptionListPage.basicBody": "Three stacked pairs, the shape that survives any width and any name length.",
+
+    "descriptionListPage.basicTitle": "An order: the base case",
+    "descriptionListPage.lede": 'DescriptionList shows one record\'s details as name and value pairs: an order summary, a document\'s metadata, a product\'s specs. Each row reads on its own; if several records have to be compared, it is a <a href="/components/table">Table</a>.',
+    "descriptionListPage.anatomyBody": "The list, each pair, the name and the value.",
     "descriptionListPage.anatomyLabel": "DescriptionList anatomy",
     "descriptionListPage.anatomyPreviewLabel": "DescriptionList, part by part",
-    "descriptionListPage.groupTitle": "Why each pair is wrapped",
-    "descriptionListPage.groupBody":
-      "The <code>&lt;div&gt;</code> is what makes the row <em>addressable</em>: the divider and the two-column layout both hang off it, and it is what keeps a name beside its own value when the list wraps. Without it the pair exists only in document order, and every layout has to be drawn on a shared grid that both halves opt into separately.",
-    "descriptionListPage.columnsTitle": "Columns",
-    "descriptionListPage.columnsBody":
-      "<code>layout=\"columns\"</code> puts the value beside its name. It is drawn <em>per row</em> rather than on one shared grid, which is why the name column is a length (<code>--sk-description-list-term-size</code>) instead of <code>max-content</code>: a shared grid would need each pair to be <code>display: contents</code>, which takes the very element everything else hangs off back out of the box tree. Below 36rem it stacks again on its own: a name column fighting for 320px is not a layout, it is two truncations.",
-    "descriptionListPage.columnsPreviewLabel": "DescriptionList in columns",
-    "descriptionListPage.dividedTitle": "Dividers and density",
-    "descriptionListPage.dividedBody":
-      "<code>dividers</code> puts a rule between rows and never above the first (that edge belongs to the box holding the list, not to the list). <code>density=\"compact\"</code> brings the rows closer without touching the type: it is reference material to scan, not prose to read.",
-    "descriptionListPage.dividedPreviewLabel": "DescriptionList, ruled and compact",
-    "descriptionListPage.richTitle": "The value takes markup; the name does not",
-    "descriptionListPage.richBody":
-      "The value is a node: a status <a href=\"/components/tag\">Tag</a>, a link, a date. The name is text on purpose: a name that needs markup of its own is a heading, and this is not a section.",
-    "descriptionListPage.richPreviewLabel": "DescriptionList with a Tag and a link",
-    "descriptionListPage.whenTitle": "When to use it",
-    "descriptionListPage.whenItem1":
-      "The details of <strong>one</strong> record are shown: an order's summary, a document's metadata, a product's specs.",
-    "descriptionListPage.whenItem2":
-      "When the same fields are shown for <strong>several</strong> records it is a <a href=\"/components/table\">Table</a>: there a cell means something because of its row and its column.",
-    "descriptionListPage.whenItem3":
-      "When the pairs are controls somebody fills in, it is <a href=\"/components/form-field\">FormField</a>, not this.",
-    "descriptionListPage.whenItem4":
-      "When it is a list of things rather than of facts about one thing, it is <a href=\"/components/list\">List</a>.",
-    "descriptionListPage.contractItem1":
-      "The browser gives <code>&lt;dd&gt;</code> a 40px indent and <code>&lt;dl&gt;</code> a block margin: the stylesheet removes both, because they draw the indented glossary this component is not.",
-    "descriptionListPage.contractItem2":
-      "<code>dividers</code> is written by presence (an empty <code>data-dividers</code>) rather than as <code>\"false\"</code>: saying no is saying nothing.",
-    "descriptionListPage.contractItem3":
-      "<code>--sk-description-list-term-size</code> is the hook that moves the name column when yours are longer. It is a length, and the contract's header says why.",
-    "descriptionListPage.contractItem4":
-      "There is no enhancer: the markup is complete on its own, so both bindings are the same markup twice.",
-    "descriptionListPage.prop.layout.title": "Layout",
-    "descriptionListPage.prop.layout.body": "<code>layout</code> puts each term above its value or beside it.",
+    "descriptionListPage.columnsTitle": "Columns: the value beside",
+    "descriptionListPage.columnsBody": "The name column's width adjusts with <code>--sk-description-list-term-size</code> if your names are long.",
+    "descriptionListPage.dividedTitle": "Dividers and density: reference material",
+    "descriptionListPage.dividedBody": '<code>dividers</code> separates the rows and <code>density="compact"</code> brings them closer without changing the type.',
+    "descriptionListPage.richTitle": "Values with markup: a Tag, a link",
+    "descriptionListPage.richBody": 'The value takes a <a href="/components/tag">Tag</a>, a link or a date. The name is text: if it needs markup, it is a heading.',
+    "descriptionListPage.prop.layout.title": "Layout: the value below or beside",
+    "descriptionListPage.prop.layout.body": "Puts each value below its name or beside it.",
     "descriptionListPage.prop.layout.stacked": "Use <code>stacked</code>, the default, in narrow columns and on phones.",
-    "descriptionListPage.prop.layout.columns": "Use <code>columns</code> in a wide view, reading terms and values like a two-column table.",
-    "descriptionListPage.prop.dividers.title": "Dividers",
+    "descriptionListPage.prop.layout.columns": "Use <code>columns</code> in a wide view, to read names and values in two columns. Below 36rem it stacks again.",
+    "descriptionListPage.prop.dividers.title": "Dividers: a line between pairs",
     "descriptionListPage.prop.dividers.body": "<code>dividers</code> draws a line between pairs.",
-    "descriptionListPage.prop.dividers.false": "Without dividers, space separates the pairs.",
-    "descriptionListPage.prop.dividers.true": "Use <code>dividers</code> when there are many pairs and the eye gets lost between rows.",
+    "descriptionListPage.prop.dividers.false": "Use <code>false</code> when there are few pairs and space is enough to separate them.",
+    "descriptionListPage.prop.dividers.true": "Use <code>true</code> when there are many pairs and the eye gets lost between rows.",
     "descriptionListPage.prop.dividers.falseLabel": "No dividers",
     "descriptionListPage.prop.dividers.trueLabel": "Dividers",
-    "descriptionListPage.showcaseTitle": "Showcases",
-    "descriptionListPage.showcaseBody": "Term and value pairs, in columns, with dividers, and with composed values.",
-    "descriptionListPage.guidelinesLede": "DescriptionList shows term and value pairs, like an account's details.",
+    "descriptionListPage.guidelinesLede": "Each row is a statement about the same thing.",
   },
 } as const;

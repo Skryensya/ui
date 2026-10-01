@@ -107,9 +107,23 @@ export const clipboardButtonTree = (t: Translate): UsageTree => ({
   options: { value: "pnpm add @skryensya/core", label: t("clipboard.demoCopy"), ...labels(t) },
 });
 
-/* Don't: a value that has to be checked, copied blind from a lone button. */
+/* Don't: the action is named, but the value itself is hidden, so the copy is unverifiable. */
 export const clipboardDontBlindTree = (t: Translate): UsageTree => ({
-  contract: "clipboard",
-  signature: "CopyButton",
-  options: { value: "https://ui.skryensya.dev/s/7f3a9c", label: t("clipboard.demoCopyLink"), ...labels(t) },
+  contract: "layout",
+  signature: "Stack",
+  options: { gap: "xs", align: "start" },
+  attrs: { style: "inline-size: 24rem; max-inline-size: 100%;" },
+  children: [
+    {
+      contract: "typography",
+      signature: "Text",
+      options: { size: "caption", tone: "secondary" },
+      children: t("clipboard.demoShareLink"),
+    },
+    {
+      contract: "clipboard",
+      signature: "CopyButton",
+      options: { value: "https://ui.skryensya.dev/s/7f3a9c", label: t("clipboard.demoCopyLink"), ...labels(t) },
+    },
+  ],
 });

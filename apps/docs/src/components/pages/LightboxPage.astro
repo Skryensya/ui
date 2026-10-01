@@ -1,7 +1,7 @@
 ---
 /*
  * THE Lightbox page. The demos are usage trees, so each renders in both bindings from one source; the
- * programmatic API is shown as code, because a handle is a call, and a call is never markup.
+ * programmatic API belongs in Storybook/examples, not as long code blocks in this component page.
  *
  * A preview only gets the CSS this page imports (and whatever its slotted children need): the
  * lightbox sheet brings button + loader, the thumbnails need ImageFrame's pattern, and the keyboard
@@ -12,19 +12,55 @@ import "@skryensya/core/patterns/image-frame.css";
 import "@skryensya/core/components/table.css";
 import CodeBlock from "../CodeBlock.astro";
 import ComponentPageShell from "./ComponentPageShell.astro";
-import ComponentPreview from "../ComponentPreview.astro";
+import UsagePreview from "../UsagePreview.astro";
+import DoDont from "../DoDont.astro";
+import WhenToUse from "../WhenToUse.astro";
+import ContentRules from "../ContentRules.astro";
+import A11yNotes from "../A11yNotes.astro";
+import { LightboxCardDemo } from "../react-demos/lightbox";
 import "@skryensya/core/components/annotation.css";
+/* Do/Don't specimens use the same small surface as other comparisons. */
+import "@skryensya/core/patterns/box.css";
 import {
-  lightboxAnatomyCss,
-  lightboxAnatomyHtml,
+  lightboxCaptionTree,
   lightboxDemoCss,
+  lightboxDoCaptionDdTree,
+  lightboxDoCardDdTree,
+  lightboxDoGalleryDdTree,
+  lightboxDontImageOnlyDdTree,
+  lightboxDontNoCaptionDdTree,
+  lightboxDontStaticDdTree,
   lightboxGalleryTree,
   lightboxLoopTree,
   lightboxSingleTree,
+  lightboxTinyTree,
 } from "../../demos/lightbox";
-import { getLocale, useTranslations } from "../../i18n";
+import { getLocale, tList, useTranslations } from "../../i18n";
 
 const t = useTranslations(getLocale(Astro.url));
+
+const cardDemoImages = [
+  {
+    src: "/demos/lightbox/fjord.jpg",
+    thumbnailSrc: "/demos/lightbox/fjord-thumb.jpg",
+    alt: t("lightbox.demo.dawnAlt"),
+    title: t("lightbox.demo.dawnTitle"),
+    description: t("lightbox.demo.dawnDescription"),
+    credit: "Alexey Topolyanskiy · Unsplash",
+    width: 1800,
+    height: 1200,
+  },
+  {
+    src: "/demos/lightbox/coast.jpg",
+    thumbnailSrc: "/demos/lightbox/coast-thumb.jpg",
+    alt: t("lightbox.demo.panoramaAlt"),
+    title: t("lightbox.demo.panoramaTitle"),
+    description: t("lightbox.demo.panoramaDescription"),
+    credit: "Paul Jarvis · Unsplash",
+    width: 1800,
+    height: 1200,
+  },
+];
 
 const install = `pnpm add @skryensya/core @skryensya/react
 # or, for authored HTML
@@ -34,108 +70,6 @@ const styles = `@import "@skryensya/core/components/lightbox.css";
 @import "@skryensya/core/patterns/scroll-lock.css";
 @import "@skryensya/core/patterns/visually-hidden.css";`;
 
-const reactHandle = `import { useRef } from "react";
-import { Lightbox, type LightboxHandle } from "@skryensya/react/lightbox";
-
-const images = [
-  { src: "https://cdn.example.com/photos/lake.jpg", alt: "A lake at dawn", title: "Dawn", width: 1800, height: 1200 },
-  { src: "https://cdn.example.com/photos/forest.jpg", alt: "A pine forest", thumbnailSrc: "https://cdn.example.com/photos/forest-480.jpg" },
-];
-
-export function Trip() {
-  const lightbox = useRef<LightboxHandle>(null);
-  return (
-    <>
-      <button type="button" onClick={() => lightbox.current?.open({ images, index: 1 })}>
-        View photos
-      </button>
-      <Lightbox ref={lightbox} label="Trip photos" />
-    </>
-  );
-}`;
-
-const reactProvider = `import { LightboxProvider, useLightbox, useLightboxState } from "@skryensya/react/lightbox";
-
-// Once, near the root: one dialog for the whole app.
-<LightboxProvider label="Image viewer">
-  <App />
-</LightboxProvider>;
-
-// Anywhere below it.
-function ProductPhotos({ photos }) {
-  const lightbox = useLightbox();
-  const { open, index } = useLightboxState();
-
-  return (
-    <button type="button" onClick={() => lightbox.open({ images: photos, index: 0, loop: true })}>
-      See all {photos.length} photos
-    </button>
-  );
-}
-
-// The rest of the handle:
-lightbox.open({ images: [{ src: imageUrl, alt: "Image description" }] }); // one image
-lightbox.next();
-lightbox.previous();
-lightbox.goTo(3);
-lightbox.zoomIn();
-lightbox.resetZoom();
-lightbox.setImages(nextImages); // stays on the same photo if it is still there
-lightbox.close();`;
-
-const reactDeclarative = `const [open, setOpen] = useState(false);
-const [index, setIndex] = useState(0);
-
-<Lightbox
-  images={images}
-  open={open}
-  index={index}
-  onOpenChange={setOpen}
-  onIndexChange={setIndex}
-  onImageError={(image) => report(image.src)}
-/>;`;
-
-const reactTriggers = `<Lightbox id="trip" label="Trip photos" loop />
-
-{photos.map((photo) => (
-  <Lightbox.Trigger key={photo.src} opens="trip" src={photo.src} title={photo.title} width={photo.width} height={photo.height}>
-    <ImageFrame aspect="1/1" src={photo.thumb} alt={photo.alt} />
-  </Lightbox.Trigger>
-))}`;
-
-const vanillaHtml = `<!-- A thumbnail: a link to the full image. Works with no script at all. -->
-<a class="sk-lightbox__trigger" href="https://cdn.example.com/photos/lake.jpg" data-sk-lightbox-open="trip"
-   data-lightbox-title="Dawn" data-lightbox-width="1800" data-lightbox-height="900" aria-haspopup="dialog">
-  <img src="https://cdn.example.com/photos/lake-480.jpg" alt="A lake at dawn">
-</a>
-
-<!-- The lightbox itself: the markup the contract emits (see the HTML tab of any preview). -->
-<dialog class="sk-lightbox" id="trip" data-sk-lightbox aria-label="Trip photos" data-loop>
-  …
-</dialog>`;
-
-const vanillaJs = `import { initComponents } from "@skryensya/vanilla/auto";
-import { getLightbox, lightboxEvents } from "@skryensya/vanilla/lightbox";
-
-await initComponents();
-
-const lightbox = getLightbox("trip");
-lightbox?.open({ images, index: 2 });
-lightbox?.goTo(0);
-lightbox?.close();
-
-document.getElementById("trip")?.addEventListener(lightboxEvents.indexChange, (event) => {
-  console.log(event.detail.index, event.detail.image.src);
-});`;
-
-const keys = [
-  ["Esc", "lightbox.key.escape"],
-  ["Tab / Shift + Tab", "lightbox.key.tab"],
-  ["← →", "lightbox.key.arrows"],
-  ["Home / End", "lightbox.key.homeEnd"],
-  ["+ / -", "lightbox.key.zoom"],
-  ["0", "lightbox.key.reset"],
-] as const;
 ---
 
 <ComponentPageShell
@@ -151,87 +85,108 @@ const keys = [
   <Fragment slot="usage">
     <p class="lede" set:html={t("lightbox.lede")} />
 
-    <h3>{t("lightbox.showcaseTitle")}</h3>
-    <p set:html={t("lightbox.showcaseBody")} />
+    <h3>{t("component.examplesTitle")}</h3>
 
     <h3>{t("lightbox.galleryTitle")}</h3>
     <p set:html={t("lightbox.galleryBody")} />
-    <p set:html={t("lightbox.tryBody")} />
-    <ComponentPreview
+    <UsagePreview
       tree={lightboxGalleryTree(t)}
       css={lightboxDemoCss}
       label={t("lightbox.demo.galleryLabel")}
-      minHeight="42rem"
-      defaultScreen="free"
+      stageMinBlockSize="24rem"
+      storybookTitle="Components/Overlays/Lightbox"
+      storybookStory="Gallery"
+    />
+
+    <h3>{t("lightbox.cardTitle")}</h3>
+    <p set:html={t("lightbox.cardBody")} />
+    <LightboxCardDemo
+      client:visible
+      action={t("lightbox.cardAction")}
+      body={t("lightbox.cardCopy")}
+      closeLabel={t("lightbox.closeLabel")}
+      counterLabel={t("lightbox.counterLabel")}
+      errorLabel={t("lightbox.errorLabel")}
+      images={cardDemoImages}
+      label={t("lightbox.demo.label")}
+      nextLabel={t("lightbox.nextLabel")}
+      previousLabel={t("lightbox.previousLabel")}
+      resetZoomLabel={t("lightbox.resetZoomLabel")}
+      title={t("lightbox.cardDemoTitle")}
+      zoomInLabel={t("lightbox.zoomInLabel")}
+      zoomOutLabel={t("lightbox.zoomOutLabel")}
     />
 
     <h3>{t("lightbox.singleTitle")}</h3>
     <p set:html={t("lightbox.singleBody")} />
-    <ComponentPreview
+    <UsagePreview
       tree={lightboxSingleTree(t)}
       css={lightboxDemoCss}
       label={t("lightbox.singleTitle")}
-      minHeight="42rem"
-      defaultScreen="free"
+      stageMinBlockSize="24rem"
+      storybookTitle="Components/Overlays/Lightbox"
+      storybookStory="Single"
+    />
+
+    <h3>{t("lightbox.captionTitle")}</h3>
+    <p set:html={t("lightbox.captionBody")} />
+    <UsagePreview
+      tree={lightboxCaptionTree(t)}
+      css={lightboxDemoCss}
+      label={t("lightbox.captionTitle")}
+      stageMinBlockSize="24rem"
+      storybookTitle="Components/Overlays/Lightbox"
+      storybookStory="Captions"
+    />
+
+    <h3>{t("lightbox.tinyTitle")}</h3>
+    <p set:html={t("lightbox.tinyBody")} />
+    <UsagePreview
+      tree={lightboxTinyTree(t)}
+      css={lightboxDemoCss}
+      label={t("lightbox.tinyTitle")}
+      stageMinBlockSize="24rem"
+      storybookTitle="Components/Overlays/Lightbox"
+      storybookStory="SmallImage"
     />
 
     <h3>{t("lightbox.loopTitle")}</h3>
     <p set:html={t("lightbox.loopBody")} />
-    <ComponentPreview
+    <UsagePreview
       tree={lightboxLoopTree(t)}
       css={lightboxDemoCss}
       label={t("lightbox.loopTitle")}
-      minHeight="42rem"
-      defaultScreen="free"
+      stageMinBlockSize="24rem"
+      storybookTitle="Components/Overlays/Lightbox"
+      storybookStory="Loop"
     />
-
-    <h3>{t("lightbox.programmaticTitle")}</h3>
-    <p set:html={t("lightbox.programmaticBody")} />
-    <CodeBlock code={reactHandle} label="React" lang="tsx" />
-
-    <h4>{t("lightbox.reactProviderTitle")}</h4>
-    <p set:html={t("lightbox.reactProviderBody")} />
-    <CodeBlock code={reactProvider} label="React" lang="tsx" />
-
-    <h4>{t("lightbox.declarativeTitle")}</h4>
-    <p set:html={t("lightbox.declarativeBody")} />
-    <CodeBlock code={reactDeclarative} label="React" lang="tsx" />
-    <CodeBlock code={reactTriggers} label="React" lang="tsx" />
-
-    <h4>{t("lightbox.vanillaTitle")}</h4>
-    <p set:html={t("lightbox.vanillaBody")} />
-    <CodeBlock code={vanillaHtml} label="HTML" lang="html" />
-    <CodeBlock code={vanillaJs} label="JavaScript" />
-
-    <h3>{t("lightbox.optionsTitle")}</h3>
-    <p set:html={t("lightbox.optionsBody")} />
 
     <h3>{t("component.contractNotesTitle")}</h3>
     <ul>
-      <li set:html={t("lightbox.contractItem1")} />
-      <li set:html={t("lightbox.contractItem2")} />
-      <li set:html={t("lightbox.contractItem3")} />
+      {tList(t, "lightbox.contract").map((item) => <li set:html={item} />)}
     </ul>
 
-    <h3>{t("component.anatomy")}</h3>
-    <p set:html={t("lightbox.anatomyBody")} />
-    <ComponentPreview
-      html={lightboxAnatomyHtml(t)}
-      css={lightboxAnatomyCss}
-      label={t("lightbox.anatomyPreviewLabel")}
-      screens={false}
-      hideSource
-      chrome={false}
-    />
   </Fragment>
 
   <Fragment slot="guidelines">
     <p class="lede" set:html={t("lightbox.guidelinesLede")} />
-    <ul>
-      <li set:html={t("lightbox.guide.item1")} />
-      <li set:html={t("lightbox.guide.item2")} />
-      <li set:html={t("lightbox.guide.item3")} />
-    </ul>
+    <WhenToUse use={tList(t, "lightbox.when")} avoid={tList(t, "lightbox.whenNot")} />
+    <DoDont
+      title={t("lightbox.dd.card.title")}
+      do={{ tree: lightboxDoCardDdTree(t), caption: t("lightbox.dd.card.do") }}
+      dont={{ tree: lightboxDontImageOnlyDdTree(t), caption: t("lightbox.dd.card.dont") }}
+    />
+    <DoDont
+      title={t("lightbox.dd.gallery.title")}
+      do={{ tree: lightboxDoGalleryDdTree(t), caption: t("lightbox.dd.gallery.do") }}
+      dont={{ tree: lightboxDontStaticDdTree(t), caption: t("lightbox.dd.gallery.dont") }}
+    />
+    <DoDont
+      title={t("lightbox.dd.caption.title")}
+      do={{ tree: lightboxDoCaptionDdTree(t), caption: t("lightbox.dd.caption.do") }}
+      dont={{ tree: lightboxDontNoCaptionDdTree(t), caption: t("lightbox.dd.caption.dont") }}
+    />
+    <ContentRules items={tList(t, "lightbox.content")} />
   </Fragment>
 
   <Fragment slot="install">
@@ -240,28 +195,18 @@ const keys = [
   </Fragment>
 
   <Fragment slot="a11y">
-    <p set:html={t("lightbox.a11yP1")} />
-    <ul>
-      <li set:html={t("lightbox.a11yItem1")} />
-      <li set:html={t("lightbox.a11yItem2")} />
-      <li set:html={t("lightbox.a11yItem3")} />
-      <li set:html={t("lightbox.a11yItem4")} />
-      <li set:html={t("lightbox.a11yItem5")} />
-    </ul>
-    <h3>{t("lightbox.keyboardTitle")}</h3>
-    <div class="sk-table-scroll">
-      <table class="sk-table">
-        <tbody class="sk-table__body">
-          {
-            keys.map(([combo, key]) => (
-              <tr class="sk-table__row">
-                <th class="sk-table__header" scope="row"><kbd>{combo}</kbd></th>
-                <td class="sk-table__cell" set:html={t(key)} />
-              </tr>
-            ))
-          }
-        </tbody>
-      </table>
-    </div>
+    <A11yNotes
+      intro={t("lightbox.a11yIntro")}
+      does={tList(t, "lightbox.a11yDoes")}
+      yours={tList(t, "lightbox.a11yYours")}
+      keys={[
+        { keys: ["Esc"], action: t("lightbox.key.escape") },
+        { keys: ["Tab", "Shift+Tab"], action: t("lightbox.key.tab") },
+        { keys: ["←", "→"], action: t("lightbox.key.arrows") },
+        { keys: [t("component.key.home"), t("component.key.end")], action: t("lightbox.key.homeEnd") },
+        { keys: ["+", "-"], action: t("lightbox.key.zoom") },
+        { keys: ["0"], action: t("lightbox.key.reset") },
+      ]}
+    />
   </Fragment>
 </ComponentPageShell>

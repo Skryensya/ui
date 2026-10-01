@@ -106,6 +106,89 @@ export const listboxPlainTree = (t: Translate): UsageTree => ({
   },
 });
 
+export const listboxDoMultipleFiltersTree = (t: Translate): UsageTree => listboxMultipleTree(t);
+
+export const listboxDontSingleFiltersTree = (t: Translate): UsageTree => ({
+  contract: "listbox",
+  signature: "Listbox",
+  attrs: { style: "inline-size: 16rem; max-inline-size: 100%;" },
+  slots: {
+    label: t("listbox.demoLabelsLabel"),
+    items: [
+      option("bug", t("listbox.demoLabelBug"), { defaultSelected: true }),
+      option("docs", t("listbox.demoLabelDocs")),
+      option("design", t("listbox.demoLabelDesign")),
+      option("performance", t("listbox.demoLabelPerformance")),
+    ],
+  },
+});
+
+export const listboxDoHorizontalShortTree = (t: Translate): UsageTree => listboxHorizontalTree(t);
+
+export const listboxDontHorizontalLongTree = (t: Translate): UsageTree => ({
+  contract: "listbox",
+  signature: "Listbox",
+  options: { orientation: "horizontal" },
+  attrs: { style: "inline-size: 16rem; max-inline-size: 100%;" },
+  slots: {
+    label: t("listbox.demoViewLabel"),
+    items: [
+      option("table", t("listbox.dd.fullTable"), { defaultSelected: true }),
+      option("dashboard", t("listbox.dd.dashboard")),
+      option("calendar", t("listbox.demoViewCalendar")),
+    ],
+  },
+});
+
+export const listboxDoDisabledTree = (t: Translate): UsageTree => ({
+  contract: "listbox",
+  signature: "Listbox",
+  attrs: { style: "inline-size: 16rem; max-inline-size: 100%;" },
+  slots: {
+    label: t("listbox.demoViewLabel"),
+    items: [
+      option("list", t("listbox.demoViewList"), { defaultSelected: true }),
+      option("board", t("listbox.demoViewBoard")),
+      option("timeline", t("listbox.demoViewTimeline"), { disabled: true }),
+    ],
+  },
+});
+
+export const listboxDontMissingTree = (t: Translate): UsageTree => ({
+  contract: "listbox",
+  signature: "Listbox",
+  attrs: { style: "inline-size: 16rem; max-inline-size: 100%;" },
+  slots: {
+    label: t("listbox.demoViewLabel"),
+    items: [
+      option("list", t("listbox.demoViewList"), { defaultSelected: true }),
+      option("board", t("listbox.demoViewBoard")),
+    ],
+  },
+});
+
+export const listboxDoNaturalOrderTree = (t: Translate): UsageTree => ({
+  contract: "listbox",
+  signature: "Listbox",
+  options: { selectionMode: "multiple" },
+  attrs: { style: "inline-size: 14rem; max-inline-size: 100%;" },
+  slots: {
+    label: t("listbox.demoDaysLabel"),
+    items: (["mon", "tue", "wed", "thu", "fri"] as const).map((day) => option(day, t(`listbox.demoDay.${day}`))),
+  },
+});
+
+export const listboxDontAlphabeticalDaysTree = (t: Translate): UsageTree => ({
+  contract: "listbox",
+  signature: "Listbox",
+  options: { selectionMode: "multiple" },
+  attrs: { style: "inline-size: 14rem; max-inline-size: 100%;" },
+  slots: {
+    label: t("listbox.demoDaysLabel"),
+    items: (["fri", "mon", "thu", "tue", "wed"] as const).map((day) => option(day, t(`listbox.demoDay.${day}`))),
+  },
+});
+
 /* Don't: commands in a listbox, which reads as a choice that stays chosen. */
 export const listboxDontActionsTree = (t: Translate): UsageTree => ({
   contract: "listbox",

@@ -4,10 +4,14 @@ import { icons, noStates, stage } from "./shared.js";
 /*
  * Window, as Figma structure: its open panel drawn alone, a header with its title and the minimize,
  * maximize and close controls over its body, at its default size. Where it floats is the page's.
+ * One set per appearance.
  */
 export const windowRealization: Realization = {
   contract: "window",
   signature: "Window",
+  // One set per appearance, like Dialog and Popover: with nothing on its grid, four appearances in
+  // one set would have no place to go.
+  splitBy: "appearance",
   nested: true,
   drawFrom: ".sk-window__content",
   state: noStates,

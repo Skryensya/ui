@@ -16,7 +16,7 @@ import * as demos from "@docs/demos/card";
 import { cardCopy } from "@docs/examples/card-data";
 import { treeStory, localeOf, type Meta, type StoryObj } from "../tree-story";
 
-export default { title: "Components/Content/Card", tags: ["autodocs"] } satisfies Meta;
+export default { title: "Components/Content/Card/Card", tags: ["autodocs"] } satisfies Meta;
 
 export const PlainMedia: StoryObj = treeStory((t) => demos.cardPlainMediaTree(cardCopy[localeOf(t)]));
 export const Basic: StoryObj = treeStory((t) => demos.cardBasicTree(cardCopy[localeOf(t)]));

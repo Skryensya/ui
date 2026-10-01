@@ -1,5 +1,9 @@
 export const heroMessages = {
   es: {
+    "demo.layoutGuide.heroD": "Leer la guía",
+    "demo.layoutGuide.heroC": "Hablar con ventas",
+    "demo.layoutGuide.heroB": "Ver precios",
+    "demo.layoutGuide.heroA": "Empezar gratis",
     "hero.anatomyLabel": "Anatomía de Hero",
     "hero.anatomyPreviewLabel": "Hero, parte por parte",
     "hero.anatomyBody": "La banda entre el corchete y el anillo es el <code>padding</code> del hero, que es lo que aporta el patrón. La columna de adentro es un Wrapper, y lo que va en ella es composición.",
@@ -79,80 +83,96 @@ export const heroMessages = {
     "demo.hero.testimonialName": "Jordan Cole",
     "demo.hero.testimonialRole": "Head of Design, Northwind",
 
-    "hero.description": "La apertura de una página: una superficie propia y espacio generoso, sin anatomía fija.",
-    "hero.betaBadge": "Beta",
-    "hero.lede":
-      "Hero sólo posee superficie y padding, con los valores por defecto invertidos respecto a Box: <code>surface: \"surface\"</code> y <code>padding: \"xl\"</code> en vez de <code>\"none\"</code>. El titular, la bajada y la acción siguen siendo composición libre: <code>Heading</code>, <code>Text</code> y <code>Button</code> como en cualquier otra sección.",
-    "hero.whenTitle": "Cuándo usarlo",
-    "hero.whenBody1":
-      "Usa Hero para el momento de apertura de una página: necesita distinguirse visualmente de las secciones que la siguen, con más aire y una superficie propia en vez de la del fondo de la página.",
-    "hero.whenBody2":
-      'Hero no impone anatomía: no hay slots con nombre para titular, bajada o acción. Compón adentro con <a href="/es/componentes/stack">Stack</a>, <a href="/es/componentes/heading">Heading/Text</a> y <a href="/es/componentes/button">Button</a>, igual que en cualquier otra sección de la página.',
-    "hero.whenBody3":
-      'Si sólo hace falta relleno, borde o superficie sin ser la apertura de la página, usa <a href="/es/componentes/box">Box</a>: comparten el mismo vocabulario de <code>padding</code>/<code>surface</code>, sólo cambian los valores por defecto.',
-    "hero.htmlTitle": "HTML escrito a mano",
-    "hero.contractItem1": 'En HTML, usa un <code>&lt;div&gt;</code> (o el elemento semántico que corresponda) con la clase <code>sk-hero</code>.',
-    "hero.contractItem2":
-      '<code>data-surface</code> acepta <code>none</code>, <code>sunken</code>, <code>surface</code> (default) o <code>raised</code>.',
-    "hero.contractItem3":
-      '<code>data-padding</code> acepta <code>none</code>, <code>xs</code>, <code>sm</code>, <code>md</code>, <code>lg</code> o <code>xl</code> (default).',
-    "hero.contractItem4": 'En React, <code>surface</code> y <code>padding</code> renderizan esos mismos atributos.',
-    "hero.contractItem5": 'En React, <code>align</code> acepta <code>start</code> (default) o <code>center</code>.',
+    "hero.description": "Abre una página con un título, una frase y una o dos acciones, sobre una superficie propia.",
 
-    "hero.contentRulesTitle": "Reglas de contenido",
-    "hero.contentRule1": 'Adentro siempre va un <strong>encabezado real</strong> (<a href="/es/componentes/heading">Heading</a>), nunca sólo texto grande. Si el hero abre la página entera, ese encabezado es el <code>&lt;h1&gt;</code> de la página; si abre una sección, es el encabezado de esa sección.',
-    "hero.contentRule2": "Como mucho <strong>una acción primaria y una secundaria</strong> más silenciosa. Una fila de botones de igual peso deshace la única decisión que un hero debe señalar; si el mensaje necesita más de dos acciones, ese contenido pertenece a otra sección.",
-    "hero.contentRule3": 'Cualquier imagen adentro lleva <code>alt</code> real si aporta información (una captura, una foto de producto), o <code>alt=""</code> si es puramente decorativa. La imagen acompaña al titular, nunca lo reemplaza.',
+    "hero.a11yYours3": 'Las imágenes llevan <code>alt</code> real, o <code>alt=""</code> si son decorativas.',
 
-    "hero.patternPitchTitle": "Pitch con acciones",
+    "hero.a11yYours2": "Si lo haces un <code>&lt;section&gt;</code>, nómbralo con <code>aria-labelledby</code> apuntando al título.",
+
+    "hero.a11yYours1": "Pon un encabezado real adentro; si abre la página, es el <code>h1</code>.",
+
+    "hero.a11yDoes1": "El host es un <code>div</code>, sin landmark.",
+
+    "hero.a11yIntro": "Hero es un contenedor sin rol: la estructura la da lo que tiene adentro.",
+
+    "hero.content4": "Una imagen acompaña al título, no lo reemplaza, y lleva su <code>alt</code>.",
+
+    "hero.content3": "Usa como mucho una acción principal y una secundaria, con verbo: «Empezar gratis», «Ver demo».",
+
+    "hero.content2": "Escribe el título en pocas palabras, con lo que la persona gana, y la frase en una línea.",
+
+    "hero.content1": 'Adentro va un <a href="/es/componentes/heading">Heading</a> real, no solo texto grande. Si el hero abre la página, es su <code>h1</code>.',
+
+    "hero.dd.actions.dont": "Cuatro botones del mismo peso deshacen la única decisión que un hero debe señalar.",
+
+    "hero.dd.actions.do": "Una acción principal y una secundaria más silenciosa: la persona sabe qué hacer.",
+
+    "hero.dd.actions.title": "Acciones: una principal",
+
+    "hero.whenNot3": "Si el mensaje necesita más de dos acciones o más de un título: lleva el resto a su propia sección.",
+
+    "hero.whenNot2": 'Para cerrar la página: usa <a href="/es/componentes/footer">Footer</a>.',
+
+    "hero.whenNot1": 'Para una sección más de la página, no la de apertura: usa <a href="/es/componentes/box">Box</a> o <a href="/es/componentes/stack">Stack</a>.',
+
+    "hero.when2": "Cuando el título y la frase necesitan más aire y una superficie propia.",
+
+    "hero.when1": "Para la apertura de una página o de una sección, que debe distinguirse de lo que sigue.",
+
+    "hero.contract2": "El host no es un landmark; como <code>&lt;section&gt;</code> necesita un nombre con <code>aria-labelledby</code> apuntando al título.",
+
+    "hero.contract1": 'Solo trae superficie y relleno: <code>surface="surface"</code> y <code>padding="xl"</code> por defecto. La anatomía es tuya.',
+    "hero.lede": "Hero abre una página o una sección: un título, una frase de apoyo y como mucho dos acciones, con más aire y una superficie propia que lo separa de lo que sigue. No impone anatomía: adentro compones Heading, Text y Button.",
+
+
+    "hero.patternPitchTitle": "Pitch con acciones: el patrón base",
     "hero.patternPitchDescription": "El patrón por defecto: un titular, una bajada de una línea y como mucho dos acciones.",
-    "hero.patternCenteredTitle": "Centrado, minimal",
-    "hero.patternCenteredDescription": "Sólo titular y bajada, sin acción: para un hero sin vecino visual, como un portfolio. También el único patrón aquí que pide surface=\"raised\", el nivel de elevación que le falta ejemplo en vivo.",
-    "hero.patternEyebrowTitle": "Con etiqueta superior",
-    "hero.patternEyebrowDescription": "Una Badge chica arriba del titular, para dar contexto antes de que el pitch aterrice.",
-    "hero.patternSplitTitle": "Partido con imagen",
+    "hero.patternCenteredTitle": "Centrado: solo título y frase",
+    "hero.patternCenteredDescription": "Sin acción, para una página personal o un portafolio.",
+    "hero.patternEyebrowTitle": "Con etiqueta: contexto antes del título",
+    "hero.patternEyebrowDescription": "Un Badge pequeño arriba del título dice de qué se trata antes del mensaje.",
+    "hero.patternSplitTitle": "Con imagen: el producto a la vista",
     "hero.patternSplitDescription": "El pitch al lado de una captura, útil cuando el producto se explica mejor mostrándolo.",
-    "hero.patternProofTitle": "Con prueba social",
+    "hero.patternProofTitle": "Con prueba social: avatares y una cifra",
     "hero.patternProofDescription": "Un pitch centrado respaldado por un grupo de avatares reales y un contador de confianza.",
-    "hero.patternEmailTitle": "Con captura de correo",
+    "hero.patternEmailTitle": "Con correo: una lista de espera",
     "hero.patternEmailDescription": "Una franja de ancho completo con otro fondo, para una lista de espera o acceso anticipado.",
-    "hero.patternAppBadgesTitle": "Con enlaces a tiendas",
+    "hero.patternAppBadgesTitle": "Con tiendas: instalar una app",
     "hero.patternAppBadgesDescription": "Cierra en los dos destinos que realmente instalan una app móvil.",
-    "hero.patternLogoWallTitle": "Con muro de logos",
+    "hero.patternLogoWallTitle": "Con logos: clientes reales",
     "hero.patternLogoWallDescription": "Una fila de marcas de confianza, leídas como nombres reales en vez de un número.",
-    "hero.patternPricingTitle": "Con switch de precios",
+    "hero.patternPricingTitle": "Con precios: mensual o anual",
     "hero.patternPricingDescription": "El pitch, un cambio mensual/anual y el precio que ese cambio realmente actualiza.",
-    "hero.patternCodePreviewTitle": "Con vista de código",
+    "hero.patternCodePreviewTitle": "Con código: el comando para empezar",
     "hero.patternCodePreviewDescription": "El pitch al lado del comando exacto que hace arrancar a alguien, en vez de una captura.",
-    "hero.patternVideoDemoTitle": "Con demo en video",
+    "hero.patternVideoDemoTitle": "Con video: una demo que se elige ver",
     "hero.patternVideoDemoDescription": "Una miniatura en pausa y una acción explícita para verla, en vez de un ícono flotante.",
-    "hero.patternAudienceTabsTitle": "Con pestañas por audiencia",
+    "hero.patternAudienceTabsTitle": "Con pestañas: un pitch por audiencia",
     "hero.patternAudienceTabsDescription": "Un mismo titular; el pitch y la lista de funciones cambian según el rol elegido.",
     "hero.patternTestimonialTitle": "Con testimonio",
     "hero.patternTestimonialDescription": "Un pull-quote real, con la cita como titular en vez de un pitch en voz propia.",
 
-    "hero.a11yP1": 'El host de <code>Hero</code> es un contenedor plano sin rol de landmark por defecto (un <code>div</code> en HTML, cualquier elemento vía <code>as</code> en React). La mayoría de las páginas tienen exactamente un hero, así que darle un rol de región sin nombre agregaría una parada más en la lista de landmarks de quien navega por ellos, sin ganar nada.',
-    "hero.a11yP2": 'Se vuelve un landmark sólo si quien lo compone lo autora explícitamente como uno (<code>&lt;section&gt;</code> a mano en HTML, <code>as="section"</code> en React). En ese momento aplica la misma regla de WAI para cualquier landmark sin nombre: dale <code>aria-label</code> o <code>aria-labelledby</code> apuntando al encabezado adentro.',
-    "hero.a11yP3": 'El contrato no puede exigir estructuralmente "hay un encabezado real adentro" ni "la imagen tiene alt": <code>children</code> acepta contenido libre, la misma razón por la que Hero no tiene anatomía fija. Lo que el contrato sí exige, vía el esquema normal, son sus propias opciones (<code>padding</code>/<code>surface</code>/<code>align</code>); las reglas de contenido de arriba se enseñan por ejemplo, en cada patrón publicado, no por una validación que una composición distinta podría esquivar en silencio.',
     "hero.test1":
-      "Por defecto se renderiza como un <code>div</code> plano, sin rol de landmark, con <code>align=\"start\"</code>, padding <code>xl</code> y superficie <code>surface</code>.",
+      'Por defecto se renderiza como un <code>div</code> plano, sin rol de landmark, con <code>align="start"</code>, padding <code>xl</code> y superficie <code>surface</code>.',
     "hero.test2":
       "<code>align</code>, <code>padding</code> y <code>surface</code> se pueden cambiar, y <code>as</code> renderiza el hero como cualquier otro elemento (por ejemplo un <code>section</code> con landmark propio).",
-    "hero.prop.align.title": "Alineación",
-    "hero.prop.align.body": "El <code>align</code> alinea el título, el texto y las acciones.",
-    "hero.prop.align.start": "Usa <code>start</code>, el default, cuando hay una imagen al lado o mucho texto.",
-    "hero.prop.align.center": "Usa <code>center</code> para un mensaje corto que ocupa la vista sola.",
-    "hero.prop.surface.title": "Superficie",
-    "hero.prop.surface.body": "La <code>surface</code> decide el fondo de la sección.",
+    "hero.prop.align.title": "Align: al inicio o centrado",
+    "hero.prop.align.body": "Alinea el título, el texto y las acciones.",
+    "hero.prop.align.start": "Usa <code>start</code>, el valor por defecto, con una imagen al lado o con mucho texto.",
+    "hero.prop.align.center": "Usa <code>center</code> para un mensaje corto que ocupa la vista solo.",
+    "hero.prop.surface.title": "Surface: cuánto se separa del resto",
+    "hero.prop.surface.body": "El fondo de la apertura respecto de la página.",
     "hero.prop.surface.none": "Usa <code>none</code> para que el hero comparta el fondo de la página.",
     "hero.prop.surface.sunken": "Usa <code>sunken</code> para separarlo sin elevarlo.",
-    "hero.prop.surface.surface": "Usa <code>surface</code>, el default, sobre un fondo de página hundido.",
+    "hero.prop.surface.surface": "Usa <code>surface</code>, el valor por defecto, sobre una página de fondo hundido.",
     "hero.prop.surface.raised": "Usa <code>raised</code> para un hero que se lee como una tarjeta grande.",
-    "hero.showcaseTitle": "Showcases",
-    "hero.showcaseBody": "Las formas más comunes de abrir una página: con acciones, centrado, con imagen, con prueba social, con captura de correo y más.",
-    "hero.guidelinesLede": "Hero abre una página con un título, una frase y una o dos acciones.",
+    "hero.guidelinesLede": "Una apertura tiene un solo mensaje y una sola acción principal.",
   },
   en: {
+    "demo.layoutGuide.heroD": "Read the guide",
+    "demo.layoutGuide.heroC": "Talk to sales",
+    "demo.layoutGuide.heroB": "See pricing",
+    "demo.layoutGuide.heroA": "Start free",
     "hero.anatomyLabel": "Hero anatomy",
     "hero.anatomyPreviewLabel": "Hero, part by part",
     "hero.anatomyBody": "The band between the bracket and the ring is the hero's own <code>padding</code>, which is what the pattern contributes. The column inside is a Wrapper, and what goes in it is composition.",
@@ -232,77 +252,89 @@ export const heroMessages = {
     "demo.hero.testimonialName": "Jordan Cole",
     "demo.hero.testimonialRole": "Head of Design, Northwind",
 
-    "hero.description": "A page's opening: a surface of its own and generous room, no fixed anatomy.",
-    "hero.betaBadge": "Beta",
-    "hero.lede":
-      "Hero only owns surface and padding, with the defaults flipped from Box: <code>surface: \"surface\"</code> and <code>padding: \"xl\"</code> instead of <code>\"none\"</code>. The headline, sub-line and action stay freely composed: <code>Heading</code>, <code>Text</code> and <code>Button</code> like any other section.",
-    "hero.whenTitle": "When to use it",
-    "hero.whenBody1":
-      "Use Hero for a page's opening moment: it needs to read as distinct from the sections that follow it, with more room and a surface of its own instead of the page background's.",
-    "hero.whenBody2":
-      'Hero imposes no anatomy: there are no named slots for a headline, sub-line or action. Compose inside it with <a href="/components/stack">Stack</a>, <a href="/components/heading">Heading/Text</a> and <a href="/components/button">Button</a>, same as any other section of the page.',
-    "hero.whenBody3":
-      'If all you need is padding, a border or a surface without being the page\'s opening, use <a href="/components/box">Box</a>: they share the same <code>padding</code>/<code>surface</code> vocabulary, only the defaults differ.',
-    "hero.htmlTitle": "Authored HTML",
-    "hero.contractItem1": 'In HTML, use a <code>&lt;div&gt;</code> (or the semantic element that fits) with the <code>sk-hero</code> class.',
-    "hero.contractItem2":
-      '<code>data-surface</code> accepts <code>none</code>, <code>sunken</code>, <code>surface</code> (default) or <code>raised</code>.',
-    "hero.contractItem3":
-      '<code>data-padding</code> accepts <code>none</code>, <code>xs</code>, <code>sm</code>, <code>md</code>, <code>lg</code> or <code>xl</code> (default).',
-    "hero.contractItem4": 'In React, <code>surface</code> and <code>padding</code> render those same attributes.',
-    "hero.contractItem5": 'In React, <code>align</code> accepts <code>start</code> (default) or <code>center</code>.',
+    "hero.description": "Opens a page with a title, a sentence and one or two actions, on a surface of its own.",
 
-    "hero.contentRulesTitle": "Content rules",
-    "hero.contentRule1": 'A <strong>real heading</strong> (<a href="/components/heading">Heading</a>) always goes inside, never just large-looking text. If this hero opens the whole page, that heading is the page\'s own <code>&lt;h1&gt;</code>; if it opens a section, it\'s that section\'s own heading.',
-    "hero.contentRule2": "At most <strong>one primary action and one quieter secondary</strong> one. A row of equal-weight buttons undoes the one decision a hero is supposed to point at; if the message needs more than two actions, that content belongs in its own section.",
-    "hero.contentRule3": 'Any image inside carries a real <code>alt</code> if it\'s informative (a screenshot, a product photo), or <code>alt=""</code> if it\'s purely decorative. The image accompanies the headline, it never replaces it.',
+    "hero.a11yYours3": 'Images carry a real <code>alt</code>, or <code>alt=""</code> if decorative.',
 
-    "hero.patternPitchTitle": "Pitch with actions",
+    "hero.a11yYours2": "If you make it a <code>&lt;section&gt;</code>, name it with <code>aria-labelledby</code> pointing to the title.",
+
+    "hero.a11yYours1": "Put a real heading inside; if it opens the page, it is the <code>h1</code>.",
+
+    "hero.a11yDoes1": "The host is a <code>div</code>, with no landmark.",
+
+    "hero.a11yIntro": "Hero is a container with no role: structure comes from what is inside.",
+
+    "hero.content4": "An image accompanies the title, it does not replace it, and it carries its <code>alt</code>.",
+
+    "hero.content3": "Use at most one main and one secondary action, with a verb: “Start free”, “Watch demo”.",
+
+    "hero.content2": "Write the title in a few words, with what people gain, and the sentence in one line.",
+
+    "hero.content1": 'A real <a href="/components/heading">Heading</a> goes inside, not just large text. If the hero opens the page, it is its <code>h1</code>.',
+
+    "hero.dd.actions.dont": "Four buttons of equal weight undo the one decision a hero should point to.",
+
+    "hero.dd.actions.do": "One main action and a quieter secondary one: people know what to do.",
+
+    "hero.dd.actions.title": "Actions: one main action",
+
+    "hero.whenNot3": "If the message needs more than two actions or more than one title: move the rest to its own section.",
+
+    "hero.whenNot2": 'To close the page: use <a href="/components/footer">Footer</a>.',
+
+    "hero.whenNot1": 'For one more section of the page, not the opening: use <a href="/components/box">Box</a> or <a href="/components/stack">Stack</a>.',
+
+    "hero.when2": "When the title and sentence need more room and a surface of their own.",
+
+    "hero.when1": "For the opening of a page or a section, which must stand apart from what follows.",
+
+    "hero.contract2": "The host is not a landmark; as a <code>&lt;section&gt;</code> it needs a name through <code>aria-labelledby</code> pointing to the title.",
+
+    "hero.contract1": 'It only brings surface and padding: <code>surface="surface"</code> and <code>padding="xl"</code> by default. The anatomy is yours.',
+    "hero.lede": "Hero opens a page or a section: a title, a supporting sentence and at most two actions, with more room and a surface of its own that sets it apart from what follows. It imposes no anatomy: inside you compose Heading, Text and Button.",
+
+
+    "hero.patternPitchTitle": "Pitch with actions: the base pattern",
     "hero.patternPitchDescription": "The default shape: a headline, one line of body copy, and at most two actions.",
-    "hero.patternCenteredTitle": "Centered, minimal",
-    "hero.patternCenteredDescription": "Just a headline and one line, no action: for a hero with no visual neighbor, like a portfolio. Also the only pattern here asking for surface=\"raised\", the elevation tier that had no live example.",
-    "hero.patternEyebrowTitle": "With an eyebrow label",
-    "hero.patternEyebrowDescription": "A small Badge above the headline, giving context before the pitch lands.",
-    "hero.patternSplitTitle": "Split with media",
+    "hero.patternCenteredTitle": "Centered: title and sentence only",
+    "hero.patternCenteredDescription": "No action, for a personal page or a portfolio.",
+    "hero.patternEyebrowTitle": "With a label: context before the title",
+    "hero.patternEyebrowDescription": "A small Badge above the title says what it is about before the message.",
+    "hero.patternSplitTitle": "With an image: the product in view",
     "hero.patternSplitDescription": "The pitch beside a screenshot, useful when the product explains itself better shown than told.",
-    "hero.patternProofTitle": "With social proof",
+    "hero.patternProofTitle": "With social proof: avatars and a figure",
     "hero.patternProofDescription": "A centered pitch backed by a group of real avatars and a trust count.",
-    "hero.patternEmailTitle": "With email capture",
+    "hero.patternEmailTitle": "With email: a waitlist",
     "hero.patternEmailDescription": "A full-width band with a different background, for a waitlist or early-access signup.",
-    "hero.patternAppBadgesTitle": "With app store badges",
+    "hero.patternAppBadgesTitle": "With stores: installing an app",
     "hero.patternAppBadgesDescription": "Closes on the two destinations that actually install a mobile app.",
-    "hero.patternLogoWallTitle": "With a logo wall",
+    "hero.patternLogoWallTitle": "With logos: real customers",
     "hero.patternLogoWallDescription": "A row of trusted wordmarks, read as real names instead of a number.",
-    "hero.patternPricingTitle": "With a pricing toggle",
+    "hero.patternPricingTitle": "With pricing: monthly or yearly",
     "hero.patternPricingDescription": "The pitch, a monthly/annual switch, and the price that switch actually updates.",
-    "hero.patternCodePreviewTitle": "With a code preview",
+    "hero.patternCodePreviewTitle": "With code: the command to get started",
     "hero.patternCodePreviewDescription": "The pitch beside the exact command that gets someone running, instead of a screenshot.",
-    "hero.patternVideoDemoTitle": "With a video demo",
+    "hero.patternVideoDemoTitle": "With video: a demo people choose to watch",
     "hero.patternVideoDemoDescription": "A paused thumbnail and an explicit action to watch it, instead of a floating icon.",
-    "hero.patternAudienceTabsTitle": "With audience tabs",
+    "hero.patternAudienceTabsTitle": "With tabs: a pitch per audience",
     "hero.patternAudienceTabsDescription": "One shared headline; the pitch and feature list change with the chosen role.",
     "hero.patternTestimonialTitle": "With a testimonial",
     "hero.patternTestimonialDescription": "A real pull-quote, the quote itself as the headline instead of a pitch in its own voice.",
 
-    "hero.a11yP1": "<code>Hero</code>'s own host is a plain container with no landmark role by default (a <code>div</code> in HTML, whatever element <code>as</code> renders in React). Most pages have exactly one hero, so giving it an unnamed region role would just be one more stop for someone navigating by landmarks, with nothing gained.",
-    "hero.a11yP2": 'It only becomes a landmark if the composer explicitly authors it as one (a hand-written <code>&lt;section&gt;</code> in HTML, <code>as="section"</code> in React). At that point the usual rule for any unnamed landmark applies: give it <code>aria-label</code> or <code>aria-labelledby</code> pointing at the heading inside.',
-    "hero.a11yP3": "The contract can't structurally require \"there's a real heading inside\" or \"the image has alt text\": <code>children</code> accepts free-form content, the same reason Hero has no fixed anatomy. What the contract DOES enforce, through the usual schema, are its own options (<code>padding</code>/<code>surface</code>/<code>align</code>); the content rules above are taught by example, in every published pattern, not by a check a differently-shaped composition could silently dodge.",
     "hero.test1":
-      "Renders as a plain <code>div</code> by default, with no landmark role, <code>align=\"start\"</code>, <code>xl</code> padding and <code>surface</code> surface.",
+      'Renders as a plain <code>div</code> by default, with no landmark role, <code>align="start"</code>, <code>xl</code> padding and <code>surface</code> surface.',
     "hero.test2":
       "<code>align</code>, <code>padding</code> and <code>surface</code> can all be changed, and <code>as</code> renders the hero as any other element (a <code>section</code> with its own landmark, for instance).",
-    "hero.prop.align.title": "Alignment",
-    "hero.prop.align.body": "<code>align</code> aligns the title, the text and the actions.",
-    "hero.prop.align.start": "Use <code>start</code>, the default, when there is an image beside it or a lot of text.",
-    "hero.prop.align.center": "Use <code>center</code> for a short message that holds the view on its own.",
-    "hero.prop.surface.title": "Surface",
-    "hero.prop.surface.body": "<code>surface</code> decides the section's background.",
+    "hero.prop.align.title": "Align: start or centered",
+    "hero.prop.align.body": "Aligns the title, the text and the actions.",
+    "hero.prop.align.start": "Use <code>start</code>, the default, with an image beside it or a lot of text.",
+    "hero.prop.align.center": "Use <code>center</code> for a short message that fills the view on its own.",
+    "hero.prop.surface.title": "Surface: how far it stands apart",
+    "hero.prop.surface.body": "The opening's background against the page.",
     "hero.prop.surface.none": "Use <code>none</code> so the hero shares the page's background.",
     "hero.prop.surface.sunken": "Use <code>sunken</code> to set it apart without raising it.",
-    "hero.prop.surface.surface": "Use <code>surface</code>, the default, over a sunken page background.",
+    "hero.prop.surface.surface": "Use <code>surface</code>, the default, on a page with a sunken background.",
     "hero.prop.surface.raised": "Use <code>raised</code> for a hero that reads as a large card.",
-    "hero.showcaseTitle": "Showcases",
-    "hero.showcaseBody": "The most common ways to open a page: with actions, centred, with media, with social proof, with email capture, and more.",
-    "hero.guidelinesLede": "Hero opens a page with a title, a sentence, and one or two actions.",
+    "hero.guidelinesLede": "An opening has one message and one main action.",
   },
 } as const;

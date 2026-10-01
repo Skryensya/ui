@@ -8,13 +8,11 @@ import "@skryensya/core/components/navbar.css";
 import "@skryensya/core/patterns/icon.css";
 import "@skryensya/core/patterns/nav-list.css";
 import * as demos from "@docs/demos/navbar";
-import { annotationDemoCss } from "@docs/demos/annotation";
-const { navbarBareCss } = demos;
-import { treeStory, withCss, type Meta, type StoryObj } from "../tree-story";
+import { treeStory, type Meta, type StoryObj } from "../tree-story";
 
 export default { title: "Components/Navigation/Navbar", tags: ["autodocs"] } satisfies Meta;
 
-export const Anatomy: StoryObj = treeStory(demos.navbarAnatomyTree, { decorators: [withCss(annotationDemoCss)] });
+export const Anatomy: StoryObj = treeStory(demos.navbarAnatomyTree);
 export const Default: StoryObj = treeStory(demos.navbarTree);
-export const Bare: StoryObj = treeStory(demos.navbarBareTree, { decorators: [withCss(navbarBareCss)] });
+export const Bare: StoryObj = treeStory(demos.navbarBareTree);
 export const App: StoryObj = treeStory(demos.navbarAppTree);

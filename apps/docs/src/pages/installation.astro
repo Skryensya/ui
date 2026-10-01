@@ -1,7 +1,7 @@
 ---
 import Base from "../layouts/Base.astro";
 import CodeBlock from "../components/CodeBlock.astro";
-import ComponentPreview from "../components/ComponentPreview.astro";
+import UsagePreview from "../components/UsagePreview.astro";
 import { installUsageTree } from "../demos/installation";
 import { getLocale, useTranslations } from "../i18n";
 
@@ -40,7 +40,7 @@ const t = useTranslations(getLocale(Astro.url));
     For static components, the class is enough: the CSS brings the structure and its styling hooks. For machined components, <code>@skryensya/vanilla</code> hydrates the authored HTML and <code>@skryensya/react</code> renders the same contract.
   </p>
 
-  <ComponentPreview tree={installUsageTree(t)} label="Button" />
+  <UsagePreview tree={installUsageTree(t)} label="Button" />
 
   <h2>Components with behavior</h2>
   <p>

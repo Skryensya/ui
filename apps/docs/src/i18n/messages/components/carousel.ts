@@ -28,71 +28,89 @@ export const carouselMessages = {
 
     "demo.carousel.nativeLabel": "Novedades (sin JS)",
 
-    "carousel.description":
-      "Carousel: región scroll-snap nativa de slides con controles machine-backed (Zag), snap-to-index y una base sin JS.",
-    "carousel.betaBadge": "Beta",
-    "carousel.lede":
-      "Secciones desplazables <strong>nativas</strong>: la pista es un <code>&lt;div&gt;</code> con <code>scroll-snap-type</code>, así que el desplazamiento, el momentum táctil y los puntos de anclaje son de la plataforma, no de un script. Encima van dos capas de control sobre ese mismo sustrato: una base <strong>sin JS</strong> con los pseudo-elementos nativos de carrusel, y un enhancer <strong>machine-backed</strong> sobre <code>@zag-js/carousel</code> que mide la pista, deriva las páginas y dibuja botones y dots. Cada slide es cualquier contenido: una card, una imagen, un stat.",
-    "carousel.anatomyBody":
-      "Pista, slide, controles, dots y el botón de autoplay cuando <code>data-autoplay</code> está puesto. El espécimen está congelado; los carruseles vivos empiezan abajo.",
+    "carousel.description": "Muestra una fila de elementos parecidos que no entran a lo ancho, con el siguiente asomando.",
+
+    "carousel.a11yKeyTab": "Recorre los botones, los puntos y el contenido de los slides.",
+
+    "carousel.a11yKeyHomeEnd": "Va a la primera o a la última página.",
+
+    "carousel.a11yKeyArrows": "Con el foco en la pista o en los puntos, pasa a la página anterior o siguiente.",
+
+    "carousel.a11yYours3": "Si usas <code>autoplay</code>, deja al menos 5 segundos por página.",
+
+    "carousel.a11yYours2": "No pongas en un slide lo único que la persona necesita para seguir: puede no verlo.",
+
+    "carousel.a11yYours1": "Debe tener <code>aria-label</code>.",
+
+    "carousel.a11yDoes4": "El desplazamiento suave se apaga con <code>prefers-reduced-motion</code>.",
+
+    "carousel.a11yDoes3": "Con <code>autoplay</code> hay un botón de pausa (WCAG 2.2, 2.2.2), y la rotación se detiene con el foco o el mouse dentro del carrusel. Con <code>prefers-reduced-motion</code> no arranca sola.",
+
+    "carousel.a11yDoes2": "Los botones anterior y siguiente tienen nombre y se deshabilitan en los extremos.",
+
+    "carousel.a11yDoes1": 'Cada slide es un <code>role="group"</code> con su posición («2 de 4»).',
+
+    "carousel.a11yIntro": "Carousel sigue el patrón de carrusel de la APG.",
+
+    "carousel.content3": "Da a cada tarjeta un título propio, no «Diapositiva 1».",
+
+    "carousel.content2": "Pon lo importante en la primera tarjeta: puede que nadie llegue a la tercera.",
+
+    "carousel.content1": "Nombra el carrusel con <code>aria-label</code>: «Novedades», «Equipo».",
+
+    "carousel.dd.few.dont": "Dos tarjetas que ya entran quedan detrás de botones sin motivo.",
+
+    "carousel.dd.few.do": "Cuatro tarjetas en un ancho para dos: la siguiente asoma y la persona sabe que hay más.",
+
+    "carousel.dd.few.title": "Cantidad: solo si no entran",
+
+    "carousel.whenNot4": 'Para elementos que se leen en orden: usa <a href="/es/componentes/list">List</a>.',
+
+    "carousel.whenNot3": 'Para un mensaje que rota solo, como un banner: se lee poco y molesta. Usa un <a href="/es/componentes/callout">Callout</a> fijo.',
+
+    "carousel.whenNot2": 'Si son pocos y entran: muéstralos todos con <a href="/es/componentes/grid">Grid</a> o <a href="/es/componentes/inline">Inline</a>.',
+
+    "carousel.whenNot1": 'Si el contenido importa y no puede depender de que alguien deslice: usa <a href="/es/componentes/grid">Grid</a>.',
+
+    "carousel.when2": "Cuando conviene mostrar que hay más, con el siguiente asomando.",
+
+    "carousel.when1": "Para muchos elementos parecidos cuando el ancho solo alcanza para algunos: tarjetas, fotos, perfiles.",
+
+    "carousel.contract4": 'El arrastre con mouse viene activado; <code>mouseDrag="off"</code> lo apaga cuando el texto de los slides debe poder seleccionarse.',
+
+    "carousel.contract3": "Hay un punto por página medida, no por slide: los últimos slides pueden compartir la última parada.",
+
+    "carousel.contract2": "<code>--sk-carousel-slide-size</code> fija el ancho de cada slide, con y sin JavaScript.",
+
+    "carousel.contract1": 'La raíz es un <code>section</code> con una pista de slides; cada slide es un <code>role="group"</code>, no un ítem de lista.',
+
+    "carousel.prop.controls.none": "Usa <code>none</code> cuando la pista sola alcanza, como una fila corta en un teléfono. El teclado y el arrastre siguen funcionando.",
+
+    "carousel.prop.controls.auto": "Usa <code>auto</code> casi siempre: da una forma de avanzar sin arrastrar.",
+
+    "carousel.prop.controls.body": "Decide si se dibujan los botones anterior y siguiente y los puntos de página.",
+
+    "carousel.prop.controls.title": "Controls: con botones o solo deslizar",
+    "carousel.lede": "Carousel muestra una fila de elementos parecidos (tarjetas, fotos, perfiles) cuando no entran todos a lo ancho, con el siguiente asomando para decir que hay más. La pista es un scroller nativo con puntos de anclaje; los botones y los puntos se agregan encima, y sin JavaScript la plataforma dibuja los suyos.",
+    "carousel.anatomyBody": "Pista, slide, botones, puntos y, con <code>autoplay</code>, el botón de pausa.",
     "carousel.anatomyLabel": "Anatomía de Carousel",
     "carousel.anatomyPreviewLabel": "Carousel, parte por parte",
-    "carousel.cardsTitle": "Carrusel de tarjetas",
-    "carousel.cardsBody":
-      'Con <code>data-sk-carousel</code> el enhancer corre la máquina: prev/next (se deshabilitan en los extremos), un dot por <strong>página</strong>, teclado, arrastre y re-medición al cambiar de tamaño. Aquí cada slide es una card con <a href="/es/componentes/image-frame">ImageFrame</a> y un cuerpo compuesto con <code>Box</code>, <code>Stack</code> y <code>Text</code>, sin clases locales. El tamaño base de CSS deja asomar la siguiente.',
-    "carousel.cardsLabel": "Carrusel de tarjetas",
-    "carousel.dotsTitle": "Un dot por página, no por slide",
-    "carousel.dotsBody":
-      "Es la razón concreta por la que aquí hay una máquina y no un contador. Las posiciones de anclaje <strong>alcanzables</strong> no son una por slide: cuando un slide asoma, los últimos se recortan todos contra el scroll máximo y colapsan en la misma posición. Un carrusel hecho a mano dibuja ahí un dot por slide y termina con dots que <em>nunca</em> se pueden activar y un botón «siguiente» que nunca se deshabilita. La máquina deriva las páginas de <code>getScrollSnapPositions</code> (medidas, recortadas y deduplicadas), así que los dots y el scroll coinciden por construcción. Se ve achicando la ventana sobre cualquiera de los ejemplos: cambian los slides que entran, cambia la cantidad de dots, y el último siempre se puede alcanzar.",
-    "carousel.multiTitle": "Multi-up, loop y autoplay",
-    "carousel.multiBody1":
-      "Slides más angostos entran de a varios por página, y la máquina las cuenta midiendo. Con <code>data-loop</code> el carrusel da la vuelta, con <code>data-autoplay</code> avanza solo (vacío para los 4000 ms por defecto, o un retardo en ms).",
-    "carousel.multiBody2":
-      "Con <code>data-autoplay</code> aparece además un <strong>botón de pausa</strong>: algo que se mueve solo tiene que poder detenerse (WCAG 2.2.2), así que la opción y el control son una sola cosa. El botón siempre dice lo que va a hacer según lo último que el usuario pidió: pasar el mouse por encima o llevar el foco de teclado a cualquier parte del carrusel: no sólo a los botones: pausa la rotación mientras dure, y la retoma al salir, salvo que la otra condición siga activa. Un click en el botón manda por encima de todo eso hasta el próximo click. A quien declara <code>prefers-reduced-motion</code> no se le arranca: el carrusel queda quieto y el botón ofrece reproducir. También se pausa solo cuando la pestaña deja de estar visible.",
-    "carousel.multiLabel": "Multi-up + autoplay",
+    "carousel.cardsTitle": "Tarjetas: la siguiente asoma",
+    "carousel.cardsBody": "Cada slide es una card con imagen. Los botones se deshabilitan en los extremos y hay un punto por página, no por slide.",
+    "carousel.multiTitle": "Varias por página, con avance automático",
+    "carousel.multiBody1": "Slides más angostos entran varios por página. Con <code>autoplay</code> aparece un botón de pausa, y la rotación se detiene al pasar el mouse o llevar el foco al carrusel.",
     "carousel.multiNote": "Avatar + meta · data-loop · data-autoplay",
-    "carousel.focusTitle": "Foco dentro de una tarjeta",
-    "carousel.focusLabel": "Foco dentro de una tarjeta",
-    "carousel.focusBody1":
-      "El patrón de WAI-ARIA dice que el foco de teclado pausa la rotación \"en cualquier parte del carrusel, incluyendo los elementos de siguiente y anterior slide\". Una frase fácil de leer como \"sólo los botones\". Esta tarjeta agrega un enlace real (\"Leer más\") adentro de cada slide para probar que también cuenta: Tab hacia el enlace pausa el autoplay, Tab o Shift+Tab hacia afuera lo retoma.",
-    "carousel.focusBody2":
-      "No hizo falta código nuevo para esto: el listener de foco vive en la raíz del carrusel, y <code>focusin</code>/<code>focusout</code> burbujean desde cualquier descendiente, así que un enlace, un botón o cualquier control dentro de una tarjeta ya queda cubierto.",
-    "carousel.focusNote": "Link real por tarjeta · Tab para probar la pausa",
-    "carousel.bareTitle": "Sin controles",
-    "carousel.bareBody1":
-      "<code>data-controls=\"none\"</code> apaga las <strong>dos</strong> capas: ni botones y dots del enhancer, ni <code>::scroll-button</code> y <code>::scroll-marker</code> nativos. Queda la pista desnuda, que sigue siendo un scroller con snap: cada slide es una parada (<code>scroll-snap-stop: always</code>), así que deslizar nunca se salta una card.",
-    "carousel.bareBody2":
-      "Lo que no cambia es el comportamiento: los controles eran el chrome. El teclado sigue andando con el foco en la pista, y <code>sk:carouselgoto</code> / <code>sk:carouselchange</code> siguen siendo el mismo par de eventos.",
-    "carousel.bareBody3":
-      "Y aquí se ve por qué el <strong>arrastre con mouse viene activado</strong>: una rueda vertical scrollea la <em>página</em>, no la pista horizontal que tienes debajo del cursor. Sin arrastre, un puntero de escritorio no tendría ninguna forma de recorrer esto. El cursor <code>grab</code> es todo el aviso, y sólo aparece donde el arrastre de verdad funciona. Desactívalo con <code>data-mouse-drag=\"off\"</code> cuando el texto de los slides esté para seleccionarse: el arrastre suprime la selección.",
-    "carousel.bareLabel": "Sin controles",
-    "carousel.bareNote": 'data-controls="none" · arrastra y desliza',
-    "carousel.nativeTitle": "Sin JS: controles nativos",
-    "carousel.nativeBody":
-      "El <strong>mismo markup</strong> sin <code>data-sk-carousel</code>: el enhancer no lo toca y los pseudo-elementos nativos (<code>::scroll-button</code> y <code>::scroll-marker</code>) dibujan los controles con <strong>cero JavaScript</strong>. El adapter CSS del set elegido les da los SVG de <code>chevron-left</code> y <code>chevron-right</code>, sin sustituirlos por glifos tipográficos. Hoy funciona en Chrome/Edge; en el resto degrada a un scroller con snap nativo (sin flechas ni dots, pero se desliza igual). Cuando el enhancer monta, esta capa se apaga para no duplicar.",
+    "carousel.focusTitle": "Contenido con foco: pausa la rotación",
+    "carousel.focusBody1": "Cada tarjeta tiene un enlace. Llevar el foco a cualquier parte del carrusel, no solo a los botones, pausa el avance automático.",
+    "carousel.bareTitle": "Sin controles: la pista sola",
+    "carousel.bareBody1": '<code>controls="none"</code> deja la pista con sus puntos de anclaje. Cada slide es una parada, así que deslizar nunca se salta una.',
+    "carousel.nativeTitle": "Sin JavaScript: controles nativos",
+    "carousel.nativeBody": "El mismo markup sin montar: los pseudo-elementos <code>::scroll-button</code> y <code>::scroll-marker</code> dibujan los controles. Hoy funciona en Chrome y Edge; en el resto queda un scroller con anclaje.",
     "carousel.nativeLabel": "Sin JS (CSS nativo)",
     "carousel.nativeNote": "iconos del set + scroll buttons nativos",
     "carousel.nativeCssLabel": "la base sin JS",
-    "carousel.apiTitle": "Snap-to-index y eventos",
-    "carousel.apiBody":
-      "El control programático es un par de eventos en la raíz: envía <code>sk:carouselgoto</code> para anclar a una página y escucha <code>sk:carouselchange</code> para saber cuál está activa. En React, el <code>ref</code> del <code>&lt;Carousel&gt;</code> expone <code>snapTo(index)</code>, que envía ese mismo evento.",
-    "carousel.contractItem1":
-      'Raíz: <code>&lt;section class="sk-carousel" data-sk-carousel&gt;</code> con una pista <code>&lt;div class="sk-carousel__track"&gt;</code> de <code>&lt;div class="sk-carousel__slide"&gt;</code>. No es una lista: la máquina le da <code>role="group"</code> a cada slide, lo que la saca de la lista y dejaría una lista sin ítems.',
-    "carousel.contractItem2":
-      "Slides: cualquier contenido. <code>--sk-carousel-slide-size</code> fija el ancho (peek o multi-up) y es la <strong>única</strong> perilla de tamaño: vale igual con y sin JS, porque la máquina mide la pista en vez de imponerle anchos.",
-    "carousel.contractItem3":
-      'Opciones en la raíz: <code>data-controls="none"</code>, <code>data-loop</code>, <code>data-autoplay</code> (vacío o ms), <code>data-orientation="vertical"</code>.',
-    "carousel.contractItem4":
-      'Arrastre con mouse: <strong>activado</strong>. <code>data-mouse-drag="off"</code> lo apaga, para slides cuyo texto se tenga que poder seleccionar.',
-    "carousel.contractItem5":
-      "Snap: cada slide es una parada, con <code>scroll-snap-stop: always</code>, así que deslizar nunca salta una. Las paradas <em>alcanzables</em> se recortan contra el fin del scroll, por eso los últimos slides pueden compartir la última.",
-    "carousel.contractItem6":
-      "Controles: el enhancer los dibuja, uno por página medida; en un extremo el botón se deshabilita. Prev/next respetan el floor táctil. Los dots se ven compactos; el área clicable crece en bloque sin ensanchar el layout ni solaparse. Sin JS, los pseudo-elementos nativos hacen de baseline (Chrome/Edge) y el adapter <code>@skryensya/icons-*/carousel.css</code> les suministra los mismos roles estables de chevron que usa el enhancer.",
-    "carousel.contractItem7":
-      "Teclado: con el foco en la pista, <kbd class=\"sk-kbd\">←</kbd>/<kbd class=\"sk-kbd\">→</kbd> mueven una página y <kbd class=\"sk-kbd\">Inicio</kbd>/<kbd class=\"sk-kbd\">Fin</kbd> saltan a los extremos; las mismas teclas funcionan con el foco en los dots.",
-    "carousel.contractItem8":
-      'API: <code>sk:carouselgoto</code> (comando) y <code>sk:carouselchange</code> (salida, con <code>{"{ index, count }"}</code>); en React, <code>ref.snapTo(index)</code>.',
-    "carousel.contractItem9": "Movimiento reducido: el desplazamiento suave se apaga con <code>prefers-reduced-motion</code>.",
+    "carousel.apiTitle": "Ir a una página: eventos",
+    "carousel.apiBody": "Envía <code>sk:carouselgoto</code> para ir a una página y escucha <code>sk:carouselchange</code> para saber cuál está activa. En React, el <code>ref</code> expone <code>snapTo(index)</code>.",
     "carousel.nativeCssComment1": "cero JS: la plataforma dibuja los controles",
     "carousel.nativeCssComment2": "Anterior",
     "carousel.nativeCssComment3": "Siguiente",
@@ -108,14 +126,8 @@ export const carouselMessages = {
     "carousel.test3": "Dibuja un punto por página MEDIDA, no uno por slide.",
     "carousel.test4": "Se ancla a un punto y reporta la página en el evento de cambio.",
     "carousel.test5":
-      "El foco en el ENLACE de una tarjeta (no sólo en los botones prev/next) pausa el autoplay, y lo retoma al perderlo.",
-    "carousel.showcaseTitle": "Showcases",
-    "carousel.showcaseBody": "Tarjetas que se deslizan, varias a la vez con avance automático, con contenido que recibe foco, sin controles y la versión nativa.",
-    "carousel.guidelinesLede": "Carousel muestra una fila de elementos que se recorre de a uno o de a varios.",
-    "carousel.guide.item1": "Úsalo cuando los elementos son parecidos y está bien ver solo algunos a la vez, como fotos o productos.",
-    "carousel.guide.item2": "Deja siempre una forma de avanzar sin arrastrar: botones o puntos.",
-    "carousel.guide.item3": "Si el avance es automático, da una forma de pausarlo.",
-    "carousel.guide.item4": "Lo importante no va escondido en la tercera diapositiva: quizás nadie llegue.",
+      "El foco en el ENLACE de una tarjeta (no solo en los botones prev/next) pausa el autoplay, y lo retoma al perderlo.",
+    "carousel.guidelinesLede": "Un carrusel muestra que hay más al costado sin ocupar más alto.",
   },
   en: {
     "demo.carousel.label": "What's new",
@@ -146,71 +158,89 @@ export const carouselMessages = {
 
     "demo.carousel.nativeLabel": "News (no JS)",
 
-    "carousel.description":
-      "Carousel: a native scroll-snap slide region with machine-backed (Zag) controls, snap-to-index, and a JS-free base.",
-    "carousel.betaBadge": "Beta",
-    "carousel.lede":
-      "Scrollable sections that are <strong>native</strong>: the track is a <code>&lt;div&gt;</code> with <code>scroll-snap-type</code>, so scrolling, touch momentum and anchor points belong to the platform, not a script. On top of that sit two control layers over the same substrate: a <strong>JS-free</strong> base using native carousel pseudo-elements, and a <strong>machine-backed</strong> enhancer over <code>@zag-js/carousel</code> that measures the track, derives the pages, and draws buttons and dots. Each slide is any content: a card, an image, a stat.",
-    "carousel.anatomyBody":
-      "Track, slide, controls, dots, and the autoplay button when <code>data-autoplay</code> is set. The specimen is frozen; the live carousels start below.",
+    "carousel.description": "Shows a row of similar items that do not fit across, with the next one peeking in.",
+
+    "carousel.a11yKeyTab": "Moves through the buttons, the dots and the slides' content.",
+
+    "carousel.a11yKeyHomeEnd": "Goes to the first or last page.",
+
+    "carousel.a11yKeyArrows": "With focus on the track or the dots, goes to the previous or next page.",
+
+    "carousel.a11yYours3": "If you use <code>autoplay</code>, allow at least 5 seconds per page.",
+
+    "carousel.a11yYours2": "Do not put in a slide the only thing people need to move on: they may never see it.",
+
+    "carousel.a11yYours1": "It must have an <code>aria-label</code>.",
+
+    "carousel.a11yDoes4": "Smooth scrolling turns off with <code>prefers-reduced-motion</code>.",
+
+    "carousel.a11yDoes3": "With <code>autoplay</code> there is a pause button (WCAG 2.2, 2.2.2), and rotation stops with focus or the mouse inside. With <code>prefers-reduced-motion</code> it does not start on its own.",
+
+    "carousel.a11yDoes2": "The previous and next buttons are named and disable at the ends.",
+
+    "carousel.a11yDoes1": 'Each slide is a <code>role="group"</code> with its position (“2 of 4”).',
+
+    "carousel.a11yIntro": "Carousel follows the APG carousel pattern.",
+
+    "carousel.content3": "Give each card its own title, not “Slide 1”.",
+
+    "carousel.content2": "Put what matters in the first card: nobody may reach the third.",
+
+    "carousel.content1": "Name the carousel with <code>aria-label</code>: “What's new”, “Team”.",
+
+    "carousel.dd.few.dont": "Two cards that already fit end up behind buttons for no reason.",
+
+    "carousel.dd.few.do": "Four cards in room for two: the next peeks in and people know there is more.",
+
+    "carousel.dd.few.title": "Count: only when they do not fit",
+
+    "carousel.whenNot4": 'For items read in order: use <a href="/components/list">List</a>.',
+
+    "carousel.whenNot3": 'For a message that rotates on its own, like a banner: it is little read and much disliked. Use a fixed <a href="/components/callout">Callout</a>.',
+
+    "carousel.whenNot2": 'If there are few and they fit: show them all with <a href="/components/grid">Grid</a> or <a href="/components/inline">Inline</a>.',
+
+    "carousel.whenNot1": 'If the content matters and cannot depend on someone swiping: use <a href="/components/grid">Grid</a>.',
+
+    "carousel.when2": "When it helps to show there is more, with the next one peeking in.",
+
+    "carousel.when1": "For many similar items when the width fits only a few: cards, photos, profiles.",
+
+    "carousel.contract4": 'Mouse dragging is on; <code>mouseDrag="off"</code> turns it off when the slides\' text must be selectable.',
+
+    "carousel.contract3": "There is one dot per measured page, not per slide: the last slides can share the final stop.",
+
+    "carousel.contract2": "<code>--sk-carousel-slide-size</code> sets each slide's width, with and without JavaScript.",
+
+    "carousel.contract1": 'The root is a <code>section</code> holding a track of slides; each slide is a <code>role="group"</code>, not a list item.',
+
+    "carousel.prop.controls.none": "Use <code>none</code> when the track alone is enough, like a short row on a phone. Keyboard and dragging still work.",
+
+    "carousel.prop.controls.auto": "Use <code>auto</code> almost always: it gives a way forward without dragging.",
+
+    "carousel.prop.controls.body": "Sets whether the previous and next buttons and the page dots are drawn.",
+
+    "carousel.prop.controls.title": "Controls: buttons or swipe only",
+    "carousel.lede": "Carousel shows a row of similar items (cards, photos, profiles) when they do not all fit across, with the next one peeking in to say there is more. The track is a native scroller with snap points; buttons and dots are added on top, and without JavaScript the platform draws its own.",
+    "carousel.anatomyBody": "Track, slide, buttons, dots and, with <code>autoplay</code>, the pause button.",
     "carousel.anatomyLabel": "Carousel anatomy",
     "carousel.anatomyPreviewLabel": "Carousel, part by part",
-    "carousel.cardsTitle": "Card carousel",
-    "carousel.cardsBody":
-      'With <code>data-sk-carousel</code> the enhancer runs the machine: prev/next (disabled at the ends), one dot per <strong>page</strong>, keyboard, drag, and re-measuring on resize. Here every slide is a card with <a href="/components/image-frame">ImageFrame</a> and a body composed of <code>Box</code>, <code>Stack</code> and <code>Text</code>, with no local classes. The default CSS size lets the next one peek through.',
-    "carousel.cardsLabel": "Card carousel",
-    "carousel.dotsTitle": "One dot per page, not per slide",
-    "carousel.dotsBody":
-      "This is the concrete reason there is a machine here and not a counter. The <strong>reachable</strong> anchor positions are not one per slide: once a slide starts to peek through, the trailing ones all clip against the maximum scroll and collapse onto the same position. A hand-rolled carousel draws one dot per slide there and ends up with dots that can <em>never</em> be activated and a \"next\" button that never disables. The machine derives pages from <code>getScrollSnapPositions</code> (measured, clipped and deduplicated), so the dots and the scroll agree by construction. You can see it by shrinking the window over any of the examples: the slides that fit change, the dot count changes, and the last one is always reachable.",
-    "carousel.multiTitle": "Multi-up, loop and autoplay",
-    "carousel.multiBody1":
-      "Narrower slides fit several per page, and the machine counts them by measuring. With <code>data-loop</code> the carousel wraps around; with <code>data-autoplay</code> it advances on its own (empty for the default 4000ms, or a delay in ms).",
-    "carousel.multiBody2":
-      "<code>data-autoplay</code> also brings a <strong>pause button</strong>: anything that moves on its own has to be stoppable (WCAG 2.2.2), so the option and the control are one and the same thing. The button always says what it will do based on what the user last asked for: hovering the mouse over the carousel or moving keyboard focus anywhere inside it: not just the buttons: pauses rotation for as long as that lasts, and resumes it on leaving, unless the other condition is still active. A click on the button overrides all of that until the next click. For anyone who declares <code>prefers-reduced-motion</code>, it never starts: the carousel stays still and the button offers to play. It also pauses on its own once the tab is no longer visible.",
-    "carousel.multiLabel": "Multi-up + autoplay",
+    "carousel.cardsTitle": "Cards: the next one peeks in",
+    "carousel.cardsBody": "Each slide is a card with an image. The buttons disable at the ends and there is one dot per page, not per slide.",
+    "carousel.multiTitle": "Several per page, with autoplay",
+    "carousel.multiBody1": "Narrower slides fit several per page. With <code>autoplay</code> a pause button appears, and rotation stops when the mouse or focus is inside the carousel.",
     "carousel.multiNote": "Avatar + meta · data-loop · data-autoplay",
-    "carousel.focusTitle": "Focus inside a card",
-    "carousel.focusLabel": "Focus inside a card",
-    "carousel.focusBody1":
-      "The WAI-ARIA pattern says keyboard focus pauses rotation \"anywhere in the carousel content, including the next and previous slide elements\". Easy to read as \"only the buttons\". This card adds a real link (\"Read more\") inside every slide to prove it also counts: Tab onto the link pauses autoplay, Tab or Shift+Tab away resumes it.",
-    "carousel.focusBody2":
-      "No new code was needed for this: the focus listener lives on the carousel's root, and <code>focusin</code>/<code>focusout</code> bubble from any descendant, so a link, a button, or any control inside a card is already covered.",
-    "carousel.focusNote": "A real link per card · Tab to test the pause",
-    "carousel.bareTitle": "No controls",
-    "carousel.bareBody1":
-      "<code>data-controls=\"none\"</code> turns off <strong>both</strong> layers: neither the enhancer's buttons and dots, nor the native <code>::scroll-button</code> and <code>::scroll-marker</code>. What is left is the bare track, still a scroller with snap: every slide is a stop (<code>scroll-snap-stop: always</code>), so swiping never skips a card.",
-    "carousel.bareBody2":
-      "What does not change is the behavior: the controls were only the chrome. The keyboard still works with focus on the track, and <code>sk:carouselgoto</code> / <code>sk:carouselchange</code> are still the same pair of events.",
-    "carousel.bareBody3":
-      "And here you can see why <strong>mouse drag ships on</strong>: a vertical wheel scrolls the <em>page</em>, not the horizontal track sitting under the cursor. Without drag, a desktop pointer would have no way to move through this at all. The <code>grab</code> cursor is the entire hint, and it only shows up where drag actually works. Turn it off with <code>data-mouse-drag=\"off\"</code> when the slide text needs to stay selectable: drag suppresses selection.",
-    "carousel.bareLabel": "No controls",
-    "carousel.bareNote": 'data-controls="none" · drag and swipe',
-    "carousel.nativeTitle": "No JS: native controls",
-    "carousel.nativeBody":
-      "The <strong>same markup</strong> without <code>data-sk-carousel</code>: the enhancer never touches it, and the native pseudo-elements (<code>::scroll-button</code> and <code>::scroll-marker</code>) draw the controls with <strong>zero JavaScript</strong>. The chosen set's CSS adapter feeds them the <code>chevron-left</code> and <code>chevron-right</code> SVGs, rather than swapping in typographic glyphs. It works in Chrome/Edge today; everywhere else it degrades to a scroller with native snap (no arrows or dots, but it still swipes). Once the enhancer mounts, this layer turns itself off so nothing doubles up.",
+    "carousel.focusTitle": "Focusable content: it pauses rotation",
+    "carousel.focusBody1": "Each card has a link. Moving focus anywhere in the carousel, not only to the buttons, pauses autoplay.",
+    "carousel.bareTitle": "No controls: the track alone",
+    "carousel.bareBody1": '<code>controls="none"</code> leaves the track with its snap points. Each slide is a stop, so swiping never skips one.',
+    "carousel.nativeTitle": "No JavaScript: native controls",
+    "carousel.nativeBody": "The same markup, not mounted: the <code>::scroll-button</code> and <code>::scroll-marker</code> pseudo-elements draw the controls. It works today in Chrome and Edge; elsewhere it is a snapping scroller.",
     "carousel.nativeLabel": "No JS (native CSS)",
     "carousel.nativeNote": "set icons + native scroll buttons",
     "carousel.nativeCssLabel": "the JS-free base",
-    "carousel.apiTitle": "Snap-to-index and events",
-    "carousel.apiBody":
-      "Programmatic control is a pair of events on the root: send <code>sk:carouselgoto</code> to pin to a page, and listen for <code>sk:carouselchange</code> to know which one is active. In React, the <code>&lt;Carousel&gt;</code>'s <code>ref</code> exposes <code>snapTo(index)</code>, which sends that same event.",
-    "carousel.contractItem1":
-      'Root: <code>&lt;section class="sk-carousel" data-sk-carousel&gt;</code> with a track <code>&lt;div class="sk-carousel__track"&gt;</code> of <code>&lt;div class="sk-carousel__slide"&gt;</code>. Not a list: the machine gives every slide <code>role="group"</code>, which takes it out of listhood and would otherwise leave a list with no list items.',
-    "carousel.contractItem2":
-      "Slides: any content. <code>--sk-carousel-slide-size</code> sets the width (peek or multi-up) and is the <strong>only</strong> sizing knob: it holds equally with and without JS, because the machine measures the track instead of imposing widths on it.",
-    "carousel.contractItem3":
-      'Root options: <code>data-controls="none"</code>, <code>data-loop</code>, <code>data-autoplay</code> (empty or ms), <code>data-orientation="vertical"</code>.',
-    "carousel.contractItem4":
-      'Mouse drag: <strong>on</strong>. <code>data-mouse-drag="off"</code> turns it off, for slides whose text needs to stay selectable.',
-    "carousel.contractItem5":
-      "Snap: every slide is a stop, with <code>scroll-snap-stop: always</code>, so swiping never skips one. <em>Reachable</em> stops clip against the end of the scroll, which is why the last few slides can end up sharing the final one.",
-    "carousel.contractItem6":
-      "Controls: the enhancer draws them, one per measured page; the button disables at each end. Prev/next respect the touch-target floor. The dots read compact; the clickable area grows as a block without widening the layout or overlapping. Without JS, the native pseudo-elements act as the baseline (Chrome/Edge), and the <code>@skryensya/icons-*/carousel.css</code> adapter feeds them the same stable chevron roles the enhancer uses.",
-    "carousel.contractItem7":
-      "Keyboard: with focus on the track, <kbd class=\"sk-kbd\">←</kbd>/<kbd class=\"sk-kbd\">→</kbd> move one page and <kbd class=\"sk-kbd\">Home</kbd>/<kbd class=\"sk-kbd\">End</kbd> jump to the ends; the same keys work with focus on the dots.",
-    "carousel.contractItem8":
-      'API: <code>sk:carouselgoto</code> (command) and <code>sk:carouselchange</code> (output, with <code>{"{ index, count }"}</code>); in React, <code>ref.snapTo(index)</code>.',
-    "carousel.contractItem9": "Reduced motion: smooth scrolling turns off with <code>prefers-reduced-motion</code>.",
+    "carousel.apiTitle": "Go to a page: events",
+    "carousel.apiBody": "Dispatch <code>sk:carouselgoto</code> to go to a page and listen for <code>sk:carouselchange</code> to know which is active. In React, the <code>ref</code> exposes <code>snapTo(index)</code>.",
     "carousel.nativeCssComment1": "zero JS: the platform draws the controls",
     "carousel.nativeCssComment2": "Previous",
     "carousel.nativeCssComment3": "Next",
@@ -227,12 +257,6 @@ export const carouselMessages = {
     "carousel.test4": "Snaps to a dot and reports the page on the change event.",
     "carousel.test5":
       "Focus landing on a card's LINK (not just the prev/next buttons) pauses autoplay, and resumes it on blur.",
-    "carousel.showcaseTitle": "Showcases",
-    "carousel.showcaseBody": "Sliding cards, several at once with autoplay, with focusable content, without controls, and the native version.",
-    "carousel.guidelinesLede": "Carousel shows a row of items browsed one or several at a time.",
-    "carousel.guide.item1": "Use it when the items are alike and seeing only some at a time is fine, like photos or products.",
-    "carousel.guide.item2": "Always leave a way to move on without dragging: buttons or dots.",
-    "carousel.guide.item3": "If it advances on its own, give a way to pause it.",
-    "carousel.guide.item4": "What matters does not go hidden on the third slide: nobody may get there.",
+    "carousel.guidelinesLede": "A carousel shows there is more to the side without taking more height.",
   },
 } as const;

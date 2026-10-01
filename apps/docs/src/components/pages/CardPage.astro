@@ -9,6 +9,10 @@ import "@skryensya/core/components/checkbox.css";
 import CodeBlock from "../CodeBlock.astro";
 import ComponentPageShell from "./ComponentPageShell.astro";
 import UsagePreview from "../UsagePreview.astro";
+import DoDont from "../DoDont.astro";
+import WhenToUse from "../WhenToUse.astro";
+import ContentRules from "../ContentRules.astro";
+import A11yNotes from "../A11yNotes.astro";
 import { cardCopy } from "../../examples/card-data";
 import {
   cardActionTree,
@@ -18,7 +22,8 @@ import {
   cardProductTree,
   cardSelectTree,
 } from "../../demos/card";
-import { getLocale, localizePath, useTranslations } from "../../i18n";
+import { cardDontInnerLinkTree } from "../../demos/card-guide";
+import { getLocale, localizePath, tList, useTranslations } from "../../i18n";
 
 const locale = getLocale(Astro.url);
 const t = useTranslations(locale);
@@ -49,16 +54,20 @@ pnpm add @skryensya/core @skryensya/react
     { file: "components/button.css", probe: "sk-button", title: "Button" },
     { file: "components/link.css", probe: "sk-link", title: "Link" },
   ]}
-  testFiles={["apps/docs/src/examples/card-sources.test.ts", "apps/docs/src/components/pages/CardPage.test.ts"]}}
+  testFiles={["apps/docs/src/examples/card-sources.test.ts", "apps/docs/src/components/pages/CardPage.test.ts"]}
 >
   <Fragment slot="usage">
     <p class="lede" set:html={t("cardPage.lede")} />
 
-    <div class="sk-callout" data-tone="info">
-      <div class="sk-callout__content">
-        <div class="sk-callout__description" set:html={t("cardPage.calloutBody")} />
-      </div>
-    </div>
+    <UsagePreview
+      tree={cardBasicTree(copy)}
+      optionName="surface"
+      target={["children", 0]}
+      title={t("cardPage.prop.surface.title")}
+      description={t("cardPage.prop.surface.body")}
+      explain={explain("surface", ["none", "sunken", "surface", "raised"])}
+      stageMinBlockSize="14rem"
+    />
 
     <h3>{t("cardPage.chooseTitle")}</h3>
     <p set:html={t("cardPage.chooseBody")} />
@@ -78,109 +87,29 @@ pnpm add @skryensya/core @skryensya/react
       </table>
     </div>
 
-    <h3>{t("cardPage.showcaseTitle")}</h3>
-    <p set:html={t("cardPage.showcaseBody")} />
+    <h3>{t("component.examplesTitle")}</h3>
+    <UsagePreview tree={cardPlainMediaTree(copy)} title={t("cardPage.plainMediaTitle")} description={t("cardPage.plainMediaBody")} caption={t("cardPage.plainMediaNote")} />
+    <UsagePreview tree={cardLinkTree(copy)} title={t("cardPage.linkTitle")} description={t("cardPage.linkBody")} caption={t("cardPage.linkNote")} />
+    <UsagePreview tree={cardActionTree(copy)} title={t("cardPage.actionTitle")} description={t("cardPage.actionBody")} caption={t("cardPage.actionNote")} />
+    <UsagePreview tree={cardSelectTree(copy)} title={t("cardPage.selectTitle")} description={t("cardPage.selectBody")} caption={t("cardPage.selectNote")} />
+    <UsagePreview tree={cardProductTree(copy)} title={t("cardPage.productTitle")} description={t("cardPage.productBody")} caption={t("cardPage.productNote")} />
 
-    <UsagePreview
-      tree={cardPlainMediaTree(copy)}
-      title={t("cardPage.plainMediaTitle")}
-      description={t("cardPage.plainMediaBody")}
-      caption={t("cardPage.plainMediaNote")}
-    />
-
-    <UsagePreview
-      tree={cardBasicTree(copy)}
-      optionName="surface"
-      target={["children", 0]}
-      title={t("cardPage.prop.surface.title")}
-      description={t("cardPage.prop.surface.body")}
-      explain={explain("surface", ["none", "sunken", "surface", "raised"])}
-      stageMinBlockSize="18rem"
-    />
-
-    <UsagePreview
-      tree={cardBasicTree(copy)}
-      optionName="padding"
-      target={["children", 0]}
-      title={t("cardPage.prop.padding.title")}
-      description={t("cardPage.prop.padding.body")}
-      explain={explain("padding", ["none", "xs", "sm", "md", "lg", "xl"])}
-      stageMinBlockSize="18rem"
-    />
-
-    <UsagePreview
-      tree={cardLinkTree(copy)}
-      optionName="appearance"
-      target={["children", 0]}
-      title={t("cardPage.prop.appearance.title")}
-      description={t("cardPage.prop.appearance.body")}
-      explain={explain("appearance", ["plain", "tactile", "brutalist", "frosted"])}
-      stageMinBlockSize="18rem"
-    />
-
-    <UsagePreview
-      tree={cardActionTree(copy)}
-      title={t("cardPage.actionTitle")}
-      description={t("cardPage.actionBody")}
-      caption={t("cardPage.actionNote")}
-    />
-
-    <UsagePreview
-      tree={cardSelectTree(copy)}
-      optionName="defaultChecked"
-      target={["children", 0]}
-      title={t("cardPage.prop.defaultChecked.title")}
-      description={t("cardPage.prop.defaultChecked.body")}
-      explain={explain("defaultChecked", ["false", "true"])}
-      labels={{ false: t("cardPage.prop.defaultChecked.falseLabel"), true: t("cardPage.prop.defaultChecked.trueLabel") }}
-      stageMinBlockSize="18rem"
-    />
-
-    <UsagePreview
-      tree={cardProductTree(copy)}
-      title={t("cardPage.productTitle")}
-      description={t("cardPage.productBody")}
-      caption={t("cardPage.productNote")}
-    />
+    <h3>{t("component.contractNotesTitle")}</h3>
+    <ul>
+      {tList(t, "cardPage.contract").map((item) => <li set:html={item} />)}
+    </ul>
   </Fragment>
 
   <Fragment slot="guidelines">
     <p class="lede" set:html={t("cardPage.guidelinesLede")} />
-
-    <div class="sk-grid" data-columns="2" data-gap="md" data-multicol>
-      <section class="sk-box" data-surface="surface" data-border="subtle" data-padding="lg">
-        <div class="sk-stack" data-gap="sm">
-          <span class="sk-badge" data-tone="success">{t("cardPage.doTitle")}</span>
-          <h3 class="sk-heading" data-size="h4">{t("cardPage.doHeading")}</h3>
-          <ul>
-            <li set:html={t("cardPage.doItem1")} />
-            <li set:html={t("cardPage.doItem2")} />
-            <li set:html={t("cardPage.doItem3")} />
-            <li set:html={t("cardPage.doItem4")} />
-            <li set:html={t("cardPage.doItem5")} />
-          </ul>
-        </div>
-      </section>
-      <section class="sk-box" data-surface="surface" data-border="subtle" data-padding="lg">
-        <div class="sk-stack" data-gap="sm">
-          <span class="sk-badge" data-tone="danger">{t("cardPage.dontTitle")}</span>
-          <h3 class="sk-heading" data-size="h4">{t("cardPage.dontHeading")}</h3>
-          <ul>
-            <li set:html={t("cardPage.dontItem1")} />
-            <li set:html={t("cardPage.dontItem2")} />
-            <li set:html={t("cardPage.dontItem3")} />
-            <li set:html={t("cardPage.dontItem4")} />
-            <li set:html={t("cardPage.dontItem5")} />
-          </ul>
-        </div>
-      </section>
-    </div>
-
-    <h3>{t("cardPage.geometryTitle")}</h3>
-    <p set:html={t("cardPage.geometryBody")} />
-
-    <h3>{t("cardPage.implTitle")}</h3>
-    <p set:html={t("cardPage.implBody")} />
+    <WhenToUse use={tList(t, "cardPage.when")} avoid={tList(t, "cardPage.whenNot")} />
+    <DoDont
+      canvas
+      title={t("cardPage.dd.target.title")}
+      do={{ tree: cardLinkTree(copy), caption: t("cardPage.dd.target.do") }}
+      dont={{ tree: cardDontInnerLinkTree(copy, t("demo.card.cta")), caption: t("cardPage.dd.target.dont") }}
+    />
+    <ContentRules items={tList(t, "cardPage.content")} />
   </Fragment>
 
   <Fragment slot="install">
@@ -188,10 +117,6 @@ pnpm add @skryensya/core @skryensya/react
   </Fragment>
 
   <Fragment slot="a11y">
-    <p set:html={t("cardPage.a11yP1")} />
-    <p set:html={t("cardPage.a11yP2")} />
-    <p set:html={t("cardPage.a11yP3")} />
-    <p set:html={t("cardPage.a11yP4")} />
-    <p set:html={t("cardPage.a11yP5")} />
+    <A11yNotes intro={t("cardPage.a11yIntro")} does={tList(t, "cardPage.a11yDoes")} yours={tList(t, "cardPage.a11yYours")} />
   </Fragment>
 </ComponentPageShell>

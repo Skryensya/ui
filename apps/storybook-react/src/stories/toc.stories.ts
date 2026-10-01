@@ -6,12 +6,11 @@ import "@skryensya/core/components/canvas.css";
 import "@skryensya/core/components/toc.css";
 import "@skryensya/core/patterns/icon.css";
 import * as demos from "@docs/demos/toc";
-import { annotationDemoCss } from "@docs/demos/annotation";
-import { treeStory, withCss, type Meta, type StoryObj } from "../tree-story";
+import { treeStory, type Meta, type StoryObj } from "../tree-story";
 
 export default { title: "Components/Navigation/Table of contents", tags: ["autodocs"] } satisfies Meta;
 
-export const Anatomy: StoryObj = treeStory(demos.tocAnatomyTree, { decorators: [withCss(annotationDemoCss)] });
+export const Anatomy: StoryObj = treeStory(demos.tocAnatomyTree);
 export const Plain: StoryObj = treeStory(demos.tocPlainTree);
 export const Nested: StoryObj = treeStory(demos.tocNestedTree);
 export const Icons: StoryObj = treeStory(demos.tocIconsTree);

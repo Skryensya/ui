@@ -1,0 +1,26 @@
+---
+/*
+ * THE CONTENT BLOCK: how to write the component's own text (its label, title, message), closing the
+ * Usage guide of every component that carries text (DOCS-COPY-GUIDE.md, rule 3).
+ */
+import { getLocale, useTranslations } from "../i18n";
+
+interface Props {
+  /** One rule per item, each with an example. Trusted HTML. */
+  items: readonly string[];
+}
+
+const { items } = Astro.props;
+const t = useTranslations(getLocale(Astro.url));
+---
+
+{
+  items.length > 0 && (
+    <>
+      <h3>{t("component.contentTitle")}</h3>
+      <ul>
+        {items.map((item) => <li set:html={item} />)}
+      </ul>
+    </>
+  )
+}

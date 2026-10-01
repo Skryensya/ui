@@ -4,9 +4,11 @@ import "@skryensya/core/components/meter.css";
 import "@skryensya/core/components/annotation.css";
 import ComponentPageShell from "./ComponentPageShell.astro";
 import CodeBlock from "../CodeBlock.astro";
-import ComponentPreview from "../ComponentPreview.astro";
 import UsagePreview from "../UsagePreview.astro";
 import DoDont from "../DoDont.astro";
+import WhenToUse from "../WhenToUse.astro";
+import ContentRules from "../ContentRules.astro";
+import A11yNotes from "../A11yNotes.astro";
 import {
   meterAnatomyTree,
   meterDoToneTree,
@@ -16,7 +18,7 @@ import {
   meterTree,
 } from "../../demos/meter";
 import { annotationDemoCss } from "../../demos/annotation";
-import { getLocale, useTranslations } from "../../i18n";
+import { getLocale, tList, useTranslations } from "../../i18n";
 
 const t = useTranslations(getLocale(Astro.url));
 const install = `pnpm add @skryensya/core @skryensya/react`;
@@ -31,7 +33,7 @@ const explain = (option: string, values: readonly string[]) =>
   description={t("meterPage.description")}
   contractId="meter"
   styleGroups={[{ file: "components/meter.css", probe: "sk-meter" }]}
-  testFiles={["packages/react/src/components/meter.test.tsx"]}}
+  testFiles={["packages/react/src/components/meter.test.tsx"]}
 >
   <Fragment slot="usage">
     <p class="lede" set:html={t("meterPage.lede")} />
@@ -45,26 +47,23 @@ const explain = (option: string, values: readonly string[]) =>
       stageMinBlockSize="7rem"
     />
 
-    <h3>{t("meterPage.showcaseTitle")}</h3>
-    <p set:html={t("meterPage.showcaseBody")} />
-    <UsagePreview tree={meterTree(t)} />
-    <p set:html={t("meterPage.body")} />
+    <h3>{t("component.examplesTitle")}</h3>
+    <UsagePreview tree={meterTree(t)} title={t("meterPage.panelTitle")} description={t("meterPage.panelBody")} />
+
+    <h3>{t("component.contractNotesTitle")}</h3>
+    <ul>
+      {tList(t, "meterPage.contract").map((item) => <li set:html={item} />)}
+    </ul>
     <p set:html={t("component.reactNote")} />
 
     <h3>{t("component.anatomy")}</h3>
     <p set:html={t("meterPage.anatomyBody")} />
-    <ComponentPreview
-      tree={meterAnatomyTree(t)}
-      css={annotationDemoCss}
-      label={t("meterPage.anatomyPreviewLabel")}
-      screens={false}
-      hideSource
-      chrome={false}
-    />
+    <UsagePreview tree={meterAnatomyTree(t)} css={annotationDemoCss} label={t("meterPage.anatomyPreviewLabel")} bare />
   </Fragment>
 
   <Fragment slot="guidelines">
     <p class="lede" set:html={t("meterPage.guidelinesLede")} />
+    <WhenToUse use={tList(t, "meterPage.when")} avoid={tList(t, "meterPage.whenNot")} />
     <DoDont
       title={t("meterPage.dd.tone.title")}
       do={{ tree: meterDoToneTree(t), caption: t("meterPage.dd.tone.do") }}
@@ -75,6 +74,7 @@ const explain = (option: string, values: readonly string[]) =>
       do={{ tree: meterSingleTree(t), caption: t("meterPage.dd.measure.do") }}
       dont={{ tree: meterDontTaskTree(t), caption: t("meterPage.dd.measure.dont") }}
     />
+    <ContentRules items={tList(t, "meterPage.content")} />
   </Fragment>
 
   <Fragment slot="install">
@@ -82,6 +82,6 @@ const explain = (option: string, values: readonly string[]) =>
   </Fragment>
 
   <Fragment slot="a11y">
-    <p set:html={t("meterPage.a11yBody")} />
+    <A11yNotes intro={t("meterPage.a11yIntro")} does={tList(t, "meterPage.a11yDoes")} yours={tList(t, "meterPage.a11yYours")} />
   </Fragment>
 </ComponentPageShell>

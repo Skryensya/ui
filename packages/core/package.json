@@ -162,11 +162,6 @@
       "import": "./src/code-preview.ts",
       "default": "./src/code-preview.ts"
     },
-    "./component-preview": {
-      "types": "./src/component-preview.ts",
-      "import": "./src/component-preview.ts",
-      "default": "./src/component-preview.ts"
-    },
     "./listbox": {
       "types": "./src/listbox.ts",
       "import": "./src/listbox.ts",

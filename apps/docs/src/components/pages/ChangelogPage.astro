@@ -4,10 +4,14 @@ import "@skryensya/core/components/changelog.css";
 import "@skryensya/core/components/annotation.css";
 import ComponentPageShell from "./ComponentPageShell.astro";
 import CodeBlock from "../CodeBlock.astro";
-import ComponentPreview from "../ComponentPreview.astro";
-import { changelogAnatomyTree, changelogTree } from "../../demos/changelog";
+import UsagePreview from "../UsagePreview.astro";
+import DoDont from "../DoDont.astro";
+import WhenToUse from "../WhenToUse.astro";
+import ContentRules from "../ContentRules.astro";
+import A11yNotes from "../A11yNotes.astro";
+import { changelogAnatomyTree, changelogDoSpecificTree, changelogDontVagueTree, changelogTree } from "../../demos/changelog";
 import { annotationDemoCss } from "../../demos/annotation";
-import { getLocale, useTranslations } from "../../i18n";
+import { getLocale, tList, useTranslations } from "../../i18n";
 
 const t = useTranslations(getLocale(Astro.url));
 
@@ -18,53 +22,54 @@ const styles = `@import "@skryensya/core/components/changelog.css";`;
 <ComponentPageShell
   title="Changelog"
   description={t("changelogPage.description")}
-  badge={t("changelogPage.betaBadge")}
   contractId="changelog"
-  testFiles={["packages/react/src/components/changelog.test.tsx"]}}
+  testFiles={["packages/react/src/components/changelog.test.tsx"]}
 >
   <Fragment slot="usage">
     <p class="lede" set:html={t("changelogPage.lede")} />
 
-    <h3>{t("changelogPage.showcaseTitle")}</h3>
-    <p set:html={t("changelogPage.showcaseBody")} />
-    <ComponentPreview tree={changelogTree(t)} label="Changelog" note={t("changelogPage.previewNote")} />
+    <h3>{t("component.examplesTitle")}</h3>
+    <UsagePreview
+      tree={changelogTree(t)}
+      title={t("changelogPage.exampleTitle")}
+      description={t("changelogPage.exampleBody")}
+      storybookTitle="Components/Content/Changelog"
+      storybookStory="Default"
+    />
 
     <h3>{t("component.contractNotesTitle")}</h3>
     <ul>
-      <li set:html={t("changelogPage.contractItem1")} />
-      <li set:html={t("changelogPage.contractItem2")} />
-      <li set:html={t("changelogPage.contractItem3")} />
-      <li set:html={t("changelogPage.contractItem4")} />
-      <li set:html={t("changelogPage.contractItem5")} />
+      {tList(t, "changelogPage.contract").map((item) => <li set:html={item} />)}
     </ul>
-
-    <h3>{t("changelogPage.datesTitle")}</h3>
-    <p set:html={t("changelogPage.datesBody")} />
 
     <h3>{t("component.anatomy")}</h3>
     <p set:html={t("changelogPage.anatomyBody")} />
-    <ComponentPreview
+    <UsagePreview
       tree={changelogAnatomyTree(t)}
       css={annotationDemoCss}
       label={t("changelogPage.anatomyPreviewLabel")}
-      screens={false}
-      hideSource
-      chrome={false}
+      bare
     />
   </Fragment>
 
   <Fragment slot="guidelines">
     <p class="lede" set:html={t("changelogPage.guidelinesLede")} />
-    <h3>{t("changelogPage.whenTitle")}</h3>
-    <ul>
-      <li set:html={t("changelogPage.whenItem1")} />
-      <li set:html={t("changelogPage.whenItem2")} />
-      <li set:html={t("changelogPage.whenItem3")} />
-    </ul>
+    <WhenToUse use={tList(t, "changelogPage.when")} avoid={tList(t, "changelogPage.whenNot")} />
+    <DoDont
+      canvas
+      title={t("changelogPage.dd.specific.title")}
+      do={{ tree: changelogDoSpecificTree(t), caption: t("changelogPage.dd.specific.do") }}
+      dont={{ tree: changelogDontVagueTree(t), caption: t("changelogPage.dd.specific.dont") }}
+    />
+    <ContentRules items={tList(t, "changelogPage.content")} />
   </Fragment>
 
   <Fragment slot="install">
     <CodeBlock code={install} label="terminal" />
     <CodeBlock code={styles} label="CSS" lang="css" />
+  </Fragment>
+
+  <Fragment slot="a11y">
+    <A11yNotes intro={t("changelogPage.a11yIntro")} does={tList(t, "changelogPage.a11yDoes")} yours={tList(t, "changelogPage.a11yYours")} />
   </Fragment>
 </ComponentPageShell>

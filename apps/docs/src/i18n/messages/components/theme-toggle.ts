@@ -23,7 +23,7 @@ export const themeToggleMessages = {
 
     "themeTogglePage.description": "Theme Toggle: cycles color mode system → light → dark and re-themes with color-scheme.",
     "themeTogglePage.lede":
-      "Theme Toggle cycles the <strong>color mode</strong> (system → light → dark → system). It is a ghost, icon-only Button with three stacked faces; on click it writes <code>data-scheme</code> and <code>color-scheme</code> on <code>&lt;html&gt;</code> so <code>light-dark()</code> re-themes. Its size is Button's own: <strong>md</strong> (default) or <code>data-size=\"sm\"</code> / <code>size=\"sm\"</code>. Persistence is the app's job.",
+      'Theme Toggle cycles the <strong>color mode</strong> (system → light → dark → system). It is a ghost, icon-only Button with three stacked faces; on click it writes <code>data-scheme</code> and <code>color-scheme</code> on <code>&lt;html&gt;</code> so <code>light-dark()</code> re-themes. Its size is Button\'s own: <strong>md</strong> (default) or <code>data-size="sm"</code> / <code>size="sm"</code>. Persistence is the app\'s job.',
     "themeTogglePage.previewNote": "md · sm",
     "themeTogglePage.contractItem1":
       "The faces use the stable <code>mode-system</code>, <code>mode-light</code>, and <code>mode-dark</code> roles, marked with <code>data-sk-theme-toggle-icon</code>.",

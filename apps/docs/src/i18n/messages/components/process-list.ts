@@ -16,24 +16,50 @@ export const processListMessages = {
     "demo.processList.third.title": "Publica",
     "demo.processList.third.description": "Revisa permisos y confirma el cambio.",
 
-    "processListPage.description": "ProcessList: secuencia ordenada de instrucciones con marcadores conectados y contenido arbitrario.",
-    "processListPage.lede":
-      "Una secuencia estática de instrucciones donde el contenido es lo principal. Usa un <code>&lt;ol&gt;</code> real, numera cada <code>&lt;li&gt;</code> y conecta visualmente los pasos sin convertirlos en estados de progreso.",
+    "processListPage.description": "Explica un procedimiento que se sigue en orden, paso a paso.",
+
+    "processListPage.a11yYours2": "Si un paso lleva código o una imagen, dale su propio texto alternativo o título.",
+
+    "processListPage.a11yYours1": "Pon un encabezado antes que diga qué se logra al terminar.",
+
+    "processListPage.a11yDoes2": "El conector entre pasos es decorativo.",
+
+    "processListPage.a11yDoes1": "El lector de pantalla anuncia «lista, 3 elementos» y cada número.",
+
+    "processListPage.a11yIntro": "ProcessList es una lista ordenada nativa.",
+
+    "processListPage.content3": "Deja entre 3 y 7 pasos; más largo, divídelo en secciones.",
+
+    "processListPage.content2": "Pon una acción por paso; si hay dos, son dos pasos.",
+
+    "processListPage.content1": "Empieza cada título con un verbo: «Instala el paquete», «Importa los estilos».",
+
+    "processListPage.whenNot3": 'Para eventos con fecha: usa <a href="/es/componentes/timeline">Timeline</a>.',
+
+    "processListPage.whenNot2": 'Para mostrar el avance de un flujo, con pasos hechos y pendientes: usa <a href="/es/componentes/steps">Steps</a>.',
+
+    "processListPage.whenNot1": 'Para filas sin orden: usa <a href="/es/componentes/list">List</a>.',
+
+    "processListPage.when2": "Cuando cada paso necesita explicación, código o una imagen.",
+
+    "processListPage.when1": "Para recetas, instalaciones y procedimientos cuyo orden importa.",
+
+    "processListPage.contract4": "No guarda estado ni avance: los pasos no se marcan como hechos.",
+
+    "processListPage.contract3": "El contenido de un paso acepta cualquier cosa: párrafos, código, imágenes.",
+
+    "processListPage.contract2": "Los números salen de un contador CSS; no se escriben a mano.",
+
+    "processListPage.contract1": "Es un <code>&lt;ol&gt;</code> real y cada paso, un <code>&lt;li&gt;</code>: el lector de pantalla anuncia cuántos son.",
+
+    "processListPage.guideBody": "Cada paso dice la acción en el título y el detalle debajo. Los números los pone la lista.",
+
+    "processListPage.guideTitle": "Una guía: tres pasos",
+    "processListPage.lede": "ProcessList explica un procedimiento que se sigue en orden: una instalación, una receta, los pasos para configurar algo. Cada paso tiene un título, un número y el contenido que haga falta: texto, código, una imagen.",
     "processListPage.anatomyBody":
       "Este diagrama nombra la lista, el paso, el contenido y el título. El espécimen está congelado; los ProcessList vivos empiezan abajo.",
     "processListPage.anatomyLabel": "Anatomía de ProcessList",
     "processListPage.anatomyPreviewLabel": "ProcessList, parte por parte",
-    "processListPage.whenTitle": "Cuándo usarlo",
-    "processListPage.whenItem1": "Usa ProcessList para recetas, instalaciones y procedimientos cuyo orden importa.",
-    "processListPage.whenItem2": 'Usa <a href="/es/componentes/list">List</a> para colecciones de filas estáticas o interactivas.',
-    "processListPage.whenItem3":
-      'Usa <a href="/es/componentes/steps">Steps</a> cuando existan estados <code>complete</code>, <code>current</code> o <code>upcoming</code>.',
-    "processListPage.contractItem1": 'La raíz siempre es <code>&lt;ol class="sk-process-list"&gt;</code>.',
-    "processListPage.contractItem2": 'Cada instrucción es un <code>&lt;li class="sk-process-list__item"&gt;</code>.',
-    "processListPage.contractItem3":
-      "<code>sk-process-list__title</code> identifica el paso y <code>sk-process-list__content</code> admite cualquier contenido de flujo.",
-    "processListPage.contractItem4": "El contador genera los números; no se escriben manualmente ni representan progreso.",
-    "processListPage.contractItem5": "No existen estados persistentes ni filas completamente clicables. Para progreso usa Steps.",
     "processListPage.test1": "Renderiza una secuencia ordenada nativa de instrucciones.",
     "processListPage.test2": "Mantiene el título y el contenido arbitrario de cada paso dentro de su ítem.",
     "demo.processList.dd.fast": "Rápido",
@@ -43,13 +69,11 @@ export const processListMessages = {
     "demo.processList.dd.themable": "Personalizable",
     "demo.processList.dd.themableBody": "Cambia colores y tipografía con tokens.",
     "demo.processList.dd.longTitle": "Instala los paquetes del núcleo y de React con tu gestor de paquetes antes de seguir",
-    "processListPage.showcaseTitle": "Showcases",
-    "processListPage.showcaseBody": "Una guía de tres pasos, cada uno con su explicación y lo que hace falta para hacerlo.",
-    "processListPage.guidelinesLede": "ProcessList explica un procedimiento que se sigue en orden.",
-    "processListPage.dd.order.title": "Solo si hay un orden",
+    "processListPage.guidelinesLede": "Numerar los pasos dice que el orden importa y que cada uno depende del anterior.",
+    "processListPage.dd.order.title": "Orden: solo si lo hay",
     "processListPage.dd.order.do": "Numera pasos que dependen del anterior.",
-    "processListPage.dd.order.dont": "Una lista de ventajas no tiene orden: los números sugieren uno que no existe. Usa una <a href=\"/es/componentes/list\">List</a>.",
-    "processListPage.dd.short.title": "Títulos cortos",
+    "processListPage.dd.order.dont": 'Una lista de ventajas no tiene orden: los números sugieren uno que no existe. Usa una <a href="/es/componentes/list">List</a>.',
+    "processListPage.dd.short.title": "Títulos: cortos",
     "processListPage.dd.short.do": "El título dice la acción; el detalle va debajo.",
     "processListPage.dd.short.dont": "Un título largo esconde la acción y hace difícil recorrer los pasos.",
   },
@@ -70,24 +94,50 @@ export const processListMessages = {
     "demo.processList.third.title": "Publish",
     "demo.processList.third.description": "Review permissions and confirm the change.",
 
-    "processListPage.description": "ProcessList: an ordered instruction sequence with connected markers and arbitrary content.",
-    "processListPage.lede":
-      "A static instruction sequence where the content is what matters. It uses a real <code>&lt;ol&gt;</code>, numbers each <code>&lt;li&gt;</code>, and visually connects the steps without turning them into progress states.",
+    "processListPage.description": "Explains a procedure followed in order, step by step.",
+
+    "processListPage.a11yYours2": "If a step carries code or an image, give it its own alt text or title.",
+
+    "processListPage.a11yYours1": "Put a heading before it that says what finishing achieves.",
+
+    "processListPage.a11yDoes2": "The connector between steps is decorative.",
+
+    "processListPage.a11yDoes1": "The screen reader announces “list, 3 items” and each number.",
+
+    "processListPage.a11yIntro": "ProcessList is a native ordered list.",
+
+    "processListPage.content3": "Keep 3 to 7 steps; longer, split it into sections.",
+
+    "processListPage.content2": "One action per step; if there are two, they are two steps.",
+
+    "processListPage.content1": "Start each title with a verb: “Install the package”, “Import the styles”.",
+
+    "processListPage.whenNot3": 'For dated events: use <a href="/components/timeline">Timeline</a>.',
+
+    "processListPage.whenNot2": 'To show a flow\'s progress, with done and pending steps: use <a href="/components/steps">Steps</a>.',
+
+    "processListPage.whenNot1": 'For rows with no order: use <a href="/components/list">List</a>.',
+
+    "processListPage.when2": "When each step needs explanation, code or an image.",
+
+    "processListPage.when1": "For recipes, installations and procedures whose order matters.",
+
+    "processListPage.contract4": "It keeps no state or progress: steps are not marked done.",
+
+    "processListPage.contract3": "A step's content takes anything: paragraphs, code, images.",
+
+    "processListPage.contract2": "The numbers come from a CSS counter; they are not written by hand.",
+
+    "processListPage.contract1": "It is a real <code>&lt;ol&gt;</code> and each step an <code>&lt;li&gt;</code>: the screen reader announces how many.",
+
+    "processListPage.guideBody": "Each step states the action in the title and the detail below. The list supplies the numbers.",
+
+    "processListPage.guideTitle": "A guide: three steps",
+    "processListPage.lede": "ProcessList explains a procedure followed in order: an installation, a recipe, the steps to set something up. Each step has a title, a number and whatever content it needs: text, code, an image.",
     "processListPage.anatomyBody":
       "This diagram names the list, the step, the content and the title. The specimen is frozen; the live ProcessLists begin below.",
     "processListPage.anatomyLabel": "ProcessList anatomy",
     "processListPage.anatomyPreviewLabel": "ProcessList, part by part",
-    "processListPage.whenTitle": "When to use it",
-    "processListPage.whenItem1": "Use ProcessList for recipes, installs, and procedures whose order matters.",
-    "processListPage.whenItem2": 'Use <a href="/components/list">List</a> for static or interactive row collections.',
-    "processListPage.whenItem3":
-      'Use <a href="/components/steps">Steps</a> when there are <code>complete</code>, <code>current</code>, or <code>upcoming</code> states.',
-    "processListPage.contractItem1": 'The root is always <code>&lt;ol class="sk-process-list"&gt;</code>.',
-    "processListPage.contractItem2": 'Every instruction is an <code>&lt;li class="sk-process-list__item"&gt;</code>.',
-    "processListPage.contractItem3":
-      "<code>sk-process-list__title</code> identifies the step, and <code>sk-process-list__content</code> accepts any flow content.",
-    "processListPage.contractItem4": "The counter generates the numbers; they are never hand-written and never represent progress.",
-    "processListPage.contractItem5": "There are no persistent states or fully clickable rows. For progress, use Steps.",
     "processListPage.test1": "Renders a native ordered sequence of instructions.",
     "processListPage.test2": "Keeps each title and arbitrary step content inside its item.",
     "demo.processList.dd.fast": "Fast",
@@ -97,13 +147,11 @@ export const processListMessages = {
     "demo.processList.dd.themable": "Themable",
     "demo.processList.dd.themableBody": "Change colours and type with tokens.",
     "demo.processList.dd.longTitle": "Install the core and React packages with your package manager before moving on",
-    "processListPage.showcaseTitle": "Showcases",
-    "processListPage.showcaseBody": "A three-step guide, each step with its explanation and what it takes.",
-    "processListPage.guidelinesLede": "ProcessList explains a procedure followed in order.",
-    "processListPage.dd.order.title": "Only when there is an order",
+    "processListPage.guidelinesLede": "Numbering the steps says the order matters and each depends on the one before.",
+    "processListPage.dd.order.title": "Order: only if there is one",
     "processListPage.dd.order.do": "Number steps that depend on the one before.",
-    "processListPage.dd.order.dont": "A list of benefits has no order: numbers suggest one that is not there. Use a <a href=\"/components/list\">List</a>.",
-    "processListPage.dd.short.title": "Short titles",
+    "processListPage.dd.order.dont": 'A list of benefits has no order: numbers suggest one that is not there. Use a <a href="/components/list">List</a>.',
+    "processListPage.dd.short.title": "Titles: short",
     "processListPage.dd.short.do": "The title says the action; the detail goes underneath.",
     "processListPage.dd.short.dont": "A long title hides the action and makes the steps hard to scan.",
   },

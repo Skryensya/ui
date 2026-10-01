@@ -1,21 +1,30 @@
 ---
 import ComponentPageShell from "./ComponentPageShell.astro";
 import CodeBlock from "../CodeBlock.astro";
-import ComponentPreview from "../ComponentPreview.astro";
 import UsagePreview from "../UsagePreview.astro";
+import DoDont from "../DoDont.astro";
+import WhenToUse from "../WhenToUse.astro";
+import ContentRules from "../ContentRules.astro";
+import A11yNotes from "../A11yNotes.astro";
 import {
   commentAnatomyTree,
   commentActionsTree,
   commentAloneTree,
   commentLikesTree,
   commentDeepTree,
+  commentCollapseGuideTree,
   commentSkeletonTree,
   commentThreadFixedTree,
   commentThreadInfiniteScrollTree,
   commentThreadTree,
+  commentThreadDoPermissionsTree,
+  commentThreadDontPermissionsTree,
+  commentThreadDontFlatRepliesTree,
+  commentThreadNestingDoTree,
+  commentThreadDontVoteForLikeTree,
 } from "../../demos/comment-thread";
 import { annotationDemoCss } from "../../demos/annotation";
-import { getLocale, useTranslations } from "../../i18n";
+import { getLocale, tList, useTranslations } from "../../i18n";
 import actionsScript from "../../demos/scripts/comment-thread-actions.ts?raw";
 import infiniteScrollScript from "../../demos/scripts/comment-thread-infinite-scroll.ts?raw";
 /* The sheet itself, not only its source: the Style hooks table resolves each hook against a real
@@ -175,101 +184,117 @@ thread.addEventListener(commentThreadEvents.reply, async (event) => {
 <ComponentPageShell
   title="CommentThread"
   description={t("commentThread.description")}
-  badge={t("commentThread.betaBadge")}
   contractId="comment-thread"
   styleGroups={[
     { file: "components/comment-thread.css", probe: "sk-comment-thread", title: "CommentThread" },
     { file: "components/comment-thread.css", probe: "sk-comment", title: "Comment" },
   ]}
-  testFiles={["packages/react/src/components/comment-thread.test.tsx", "packages/vanilla/src/components/comment-thread.test.ts"]}}
+  testFiles={["packages/react/src/components/comment-thread.test.tsx", "packages/vanilla/src/components/comment-thread.test.ts"]}
 >
   <Fragment slot="usage">
     <p class="lede" set:html={t("commentThread.lede")} />
 
-    <h3>{t("commentThread.showcaseTitle")}</h3>
-    <p set:html={t("commentThread.showcaseBody")} />
-    <h3>{t("commentThread.demoTitle")}</h3>
-    <p set:html={t("commentThread.demoBody")} />
-    <UsagePreview tree={commentAloneTree(t)} />
+    <h3>{t("component.examplesTitle")}</h3>
+    <UsagePreview tree={commentAloneTree(t)} title={t("commentThread.demoTitle")} description={t("commentThread.demoBody")} />
 
     <h4>{t("commentThread.demoActionsTitle")}</h4>
     <p set:html={t("commentThread.demoActionsBody")} />
-    <ComponentPreview js={actionsScript} previewScript={actionsScript} tree={commentActionsTree(t)} label={t("commentThread.demoActionsLabel")} />
+    <UsagePreview script={actionsScript} tree={commentActionsTree(t)} label={t("commentThread.demoActionsLabel")} />
 
     <h4>{t("commentThread.demoLikesTitle")}</h4>
     <p set:html={t("commentThread.demoLikesBody")} />
-    <ComponentPreview js={actionsScript} previewScript={actionsScript} tree={commentLikesTree(t)} label={t("commentThread.demoLikesLabel")} />
+    <UsagePreview script={actionsScript} tree={commentLikesTree(t)} label={t("commentThread.demoLikesLabel")} />
 
     <h4>{t("commentThread.demoThreadTitle")}</h4>
     <p set:html={t("commentThread.demoThreadBody")} />
-    <ComponentPreview js={actionsScript} previewScript={actionsScript} tree={commentThreadTree(t)} label={t("commentThread.demoLabel")} />
+    <UsagePreview script={actionsScript} tree={commentThreadTree(t)} label={t("commentThread.demoLabel")} />
 
     <h4>{t("commentThread.demoFixedTitle")}</h4>
     <p set:html={t("commentThread.demoFixedBody")} />
-    <ComponentPreview js={actionsScript} previewScript={actionsScript} tree={commentThreadFixedTree(t)} label={t("commentThread.demoFixedLabel")} minHeight="26rem" />
+    <UsagePreview
+      script={actionsScript}
+      tree={commentThreadFixedTree(t)}
+      label={t("commentThread.demoFixedLabel")}
+      stageMinBlockSize="26rem"
+    />
 
     <h4>{t("commentThread.demoDeepTitle")}</h4>
     <p set:html={t("commentThread.demoDeepBody")} />
-    <ComponentPreview js={actionsScript} previewScript={actionsScript} tree={commentDeepTree(t)} label={t("commentThread.demoDeepLabel")} minHeight="26rem" />
+    <UsagePreview
+      script={actionsScript}
+      tree={commentDeepTree(t)}
+      label={t("commentThread.demoDeepLabel")}
+      stageMinBlockSize="26rem"
+    />
 
     <h3>{t("commentThread.demoLoadingTitle")}</h3>
     <p set:html={t("commentThread.demoLoadingBody")} />
 
-    <h4>{t("commentThread.demoSkeletonTitle")}</h4>
-    <p set:html={t("commentThread.demoSkeletonBody")} />
-    <UsagePreview tree={commentSkeletonTree(t)} />
+    <UsagePreview tree={commentSkeletonTree(t)} title={t("commentThread.demoSkeletonTitle")} description={t("commentThread.demoSkeletonBody")} />
 
     <h4>{t("commentThread.demoInfiniteTitle")}</h4>
     <p set:html={t("commentThread.demoInfiniteBody")} />
-    <ComponentPreview
-      js={infiniteScrollScript}
-      previewScript={infiniteScrollScript}
+    <UsagePreview
+      script={infiniteScrollScript}
       tree={commentThreadInfiniteScrollTree(t)}
       label={t("commentThread.demoInfiniteLabel")}
     />
 
-    <h3>{t("commentThread.behaviorTitle")}</h3>
-    <p set:html={t("commentThread.behaviorBody1")} />
-    <p set:html={t("commentThread.behaviorBody2")} />
-
-    <h3>{t("commentThread.optionsTitle")}</h3>
-    <p set:html={t("commentThread.optionsBody")} />
-
+    <h3>{t("component.contractNotesTitle")}</h3>
+    <ul>
+      {tList(t, "commentThread.contract").map((item) => <li set:html={item} />)}
+    </ul>
     <p set:html={t("component.reactNote")} />
 
     <h3>{t("commentThread.vanillaApiTitle")}</h3>
     <p set:html={t("commentThread.vanillaApiBody1")} />
-    <p set:html={t("commentThread.vanillaApiBody2")} />
     <CodeBlock code={vanillaApi} label="TypeScript" lang="ts" />
 
-    <h3>{t("component.contractNotesTitle")}</h3>
-    <ul>
-      <li set:html={t("commentThread.contractItem1")} />
-      <li set:html={t("commentThread.contractItem2")} />
-      <li set:html={t("commentThread.contractItem3")} />
-    </ul>
 
     <h3>{t("component.anatomy")}</h3>
     <p set:html={t("commentThread.anatomyBody")} />
-    <ComponentPreview
+    <UsagePreview
       tree={commentAnatomyTree(t)}
       css={annotationDemoCss}
       label={t("commentThread.anatomyPreviewLabel")}
-      screens={false}
-      hideSource
-      chrome={false}
+      bare
     />
   </Fragment>
 
   <Fragment slot="guidelines">
     <p class="lede" set:html={t("commentThread.guidelinesLede")} />
-    <h3>{t("commentThread.whenTitle")}</h3>
-    <p set:html={t("commentThread.whenBody1")} />
-    <p set:html={t("commentThread.whenBody2")} />
-
-    {/* The ladder, simplest first: one comment, that comment with a row, the composer taking
-        different controls, and only then the whole set. */}
-    {/* The ladder, simplest first: one comment, its action row, a short thread, then depth. */}
+    <WhenToUse use={tList(t, "commentThread.when")} avoid={tList(t, "commentThread.whenNot")} />
+    <DoDont
+      canvas
+      title={t("commentThread.dd.collapse.title")}
+      do={{ tree: commentCollapseGuideTree(t, true), caption: t("commentThread.dd.collapse.do") }}
+      dont={{ tree: commentCollapseGuideTree(t, false), caption: t("commentThread.dd.collapse.dont") }}
+    />
+    <DoDont
+      canvas
+      title={t("commentThread.dd.permissions.title")}
+      do={{ tree: commentThreadDoPermissionsTree(t), caption: t("commentThread.dd.permissions.do") }}
+      dont={{ tree: commentThreadDontPermissionsTree(t), caption: t("commentThread.dd.permissions.dont") }}
+    />
+    <DoDont
+      canvas
+      title={t("commentThread.dd.nesting.title")}
+      do={{ tree: commentThreadNestingDoTree(t), caption: t("commentThread.dd.nesting.do") }}
+      dont={{ tree: commentThreadDontFlatRepliesTree(t), caption: t("commentThread.dd.nesting.dont") }}
+    />
+    <DoDont
+      canvas
+      title={t("commentThread.dd.reaction.title")}
+      do={{ tree: commentLikesTree(t), caption: t("commentThread.dd.reaction.do") }}
+      dont={{ tree: commentThreadDontVoteForLikeTree(t), caption: t("commentThread.dd.reaction.dont") }}
+    />
+    <DoDont
+      canvas
+      title={t("commentThread.dd.actions.title")}
+      do={{ tree: commentAloneTree(t), caption: t("commentThread.dd.actions.do") }}
+      dont={{ tree: commentActionsTree(t), caption: t("commentThread.dd.actions.dont") }}
+    />
+    <ContentRules items={tList(t, "commentThread.content")} />
   </Fragment>
 
   <Fragment slot="install">
@@ -285,7 +310,14 @@ thread.addEventListener(commentThreadEvents.reply, async (event) => {
   </Fragment>
 
   <Fragment slot="a11y">
-    <p set:html={t("commentThread.a11yP1")} />
-    <p set:html={t("commentThread.a11yP2")} />
+    <A11yNotes
+      intro={t("commentThread.a11yIntro")}
+      does={tList(t, "commentThread.a11yDoes")}
+      yours={tList(t, "commentThread.a11yYours")}
+      keys={[
+        { keys: ["Tab", "Shift+Tab"], action: t("commentThread.a11yKeyTab") },
+        { keys: ["Enter", t("component.key.space")], action: t("commentThread.a11yKeyEnter") },
+      ]}
+    />
   </Fragment>
 </ComponentPageShell>

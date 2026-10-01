@@ -1,16 +1,21 @@
 import type { CommandPaletteEntry } from "@skryensya/core/command-palette";
 import { localizePath, useTranslations, type Locale } from "../i18n";
 import { DOCS_TOUR_COMMAND } from "./docs-tour";
-import { getNavigation } from "./navigation";
+import { getDevCommandPaletteOnlyComponentNavigation, getNavigation } from "./navigation";
 
 /*
- * Search sees the complete library. The catalogue is a view, not a rail category, but remains a
- * deliberate result for people who want to browse rather than arrive with a component name. Kept as
- * a module because Base uses only the URL now, while the JSON endpoints own the data bytes.
+ * Search sees the public docs navigation. In development it also sees docs-internal component pages
+ * that stay out of the sidebar, so maintainers can jump to them without advertising them. The
+ * catalogue is a view, not a rail category, but remains a deliberate result for people who want to
+ * browse rather than arrive with a component name.
  */
 export function buildSearchIndex(locale: Locale): CommandPaletteEntry[] {
   const t = useTranslations(locale);
   const navigation = getNavigation(locale);
+  const devCommandPaletteOnlyComponents = import.meta.env.DEV
+    ? getDevCommandPaletteOnlyComponentNavigation(locale)
+    : [];
+  const devOnlyAlert = locale === "es" ? "Oculto del sidebar · solo dev" : "Hidden from sidebar · dev only";
 
   return [
     ...navigation.flatMap((section) =>
@@ -25,6 +30,18 @@ export function buildSearchIndex(locale: Locale): CommandPaletteEntry[] {
             group: group.group,
           })),
       ),
+    ),
+    ...devCommandPaletteOnlyComponents.flatMap((group) =>
+      group.items
+        .filter((item) => !item.todo)
+        .map((item) => ({
+          label: item.label,
+          aliases: item.aliases ?? [],
+          href: item.href,
+          section: t("section.components"),
+          group: group.group,
+          context: devOnlyAlert,
+        })),
     ),
     {
       label: t("search.exploreComponents"),

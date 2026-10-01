@@ -1,16 +1,16 @@
 export const radioGroupMessages = {
   es: {
+    "demo.radioGroup.country": "País",
     "demo.matrix.easy": "Es fácil de usar",
     "demo.matrix.fast": "Responde rápido",
     "demo.matrix.recommend": "Lo recomendaría",
-    "radioGroupPage.matrixTitle": "Componer: varias preguntas, una escala",
-    "radioGroupPage.matrixTable": "Cada fila es una pregunta y cada columna un punto de la escala. La escala se nombra una sola vez, en la cabecera, en lugar de repetirse bajo cada fila. Cada celda lleva un <strong>radio suelto</strong> cuyo <code>name</code> es su fila: para el navegador, los radios que comparten nombre son un mismo grupo estén donde estén, y eso es lo que hace que una tabla de radios se comporte como una pregunta por fila. El radio de la celda no lleva etiqueta visible, porque ya la nombran el encabezado de su fila y el de su columna.",
+    "radioGroupPage.matrixTitle": "Matriz: varias preguntas, una escala",
+    "radioGroupPage.matrixTable": "Una tabla: cada fila es una pregunta y la escala se nombra una vez, en la cabecera.",
     "radioGroupPage.matrixCaption": "Cuánto estás de acuerdo con cada afirmación",
     "radioGroupPage.matrixStatement": "Afirmación",
     "radioGroupPage.matrixLabel": "Likert de tabla",
-    "radioGroupPage.likertTitle": "Componer: escala Likert",
-    "radioGroupPage.likertBody":
-      "Una escala Likert no es un componente: es <strong>este mismo grupo de radios</strong> en horizontal dentro de un <a href=\"/es/componentes/box\">Box</a>, con los extremos nombrados debajo. El navegador sigue manejando la selección y el teclado. Cuatro puntos a propósito: una escala par no tiene centro donde estacionarse, así que quien tiene una opinión se inclina. Tres, cinco o siete funcionan igual.",
+    "radioGroupPage.likertTitle": "Likert: una escala en fila",
+    "radioGroupPage.likertBody": "El mismo grupo en horizontal, con los extremos nombrados. No es otro componente.",
     "radioGroupPage.likertLabel": "Escala Likert, compuesta",
     "demo.radioGroup.label": "Plan",
     "demo.radioGroup.starter.title": "Starter",
@@ -20,61 +20,91 @@ export const radioGroupMessages = {
     "demo.radioGroup.basic.title": "Basic",
     "demo.radioGroup.basic.body": "Funciones esenciales, sin costo.",
 
-    "radioGroupPage.description": "RadioGroup: una opción exclusiva con inputs nativos y formulario real.",
-    "radioGroupPage.lede": "Una elección exclusiva entre alternativas relacionadas. Cada opción es un radio nativo; el nombre compartido impone la exclusión.",
+    "radioGroupPage.description": "Elige una sola opción de un grupo pequeño, con todas a la vista.",
+
+    "radioGroupPage.key.space": "Elige la opción con el foco.",
+
+    "radioGroupPage.key.arrows": "Elige la opción anterior o siguiente.",
+
+    "radioGroupPage.key.tab": "Entra al grupo, a la opción elegida.",
+
+    "radioGroupPage.a11yYours2": "Elige una opción por defecto si hay una razonable; si no, deja ninguna.",
+
+    "radioGroupPage.a11yYours1": "Dale nombre al grupo con <code>label</code> o un <code>legend</code>.",
+
+    "radioGroupPage.a11yDoes2": "El lector de pantalla anuncia el grupo, la opción y su posición: «Professional, 2 de 3».",
+
+    "radioGroupPage.a11yDoes1": "El grupo es una sola parada de <kbd>Tab</kbd>; las flechas eligen dentro.",
+
+    "radioGroupPage.a11yIntro": "RadioGroup usa radios nativos con un nombre compartido.",
+
+    "radioGroupPage.content3": "Ordénalas de forma lógica: de menor a mayor, o la recomendada primero.",
+
+    "radioGroupPage.content2": "Escribe opciones cortas, con la misma forma y sin solaparse.",
+
+    "radioGroupPage.content1": "Nombra el grupo con una pregunta o un sustantivo: «Plan», «¿Cómo quieres recibirlo?».",
+
+    "radioGroupPage.whenNot4": 'Para cambiar de vista: usa <a href="/es/componentes/segmented">Segmented</a>.',
+
+    "radioGroupPage.whenNot3": 'Para activar o desactivar algo al instante: usa <a href="/es/componentes/switch">Switch</a>.',
+
+    "radioGroupPage.whenNot2": 'Si se pueden elegir varias: usa <a href="/es/componentes/checkbox">Checkbox</a>.',
+
+    "radioGroupPage.whenNot1": 'Para más de 6 opciones: usa <a href="/es/componentes/select">Select</a>.',
+
+    "radioGroupPage.when2": "Para una escala de encuesta, en horizontal.",
+
+    "radioGroupPage.when1": "Para elegir una sola opción entre 2 y 6, cuando conviene verlas todas.",
+
+    "radioGroupPage.contract3": "El grupo necesita nombre: <code>label</code>, o un <code>fieldset</code> con <code>legend</code>.",
+
+    "radioGroupPage.contract2": "<code>defaultValue</code> respeta el reset del formulario; <code>value</code> y <code>onValueChange</code> lo controlan.",
+
+    "radioGroupPage.contract1": "<code>name</code> es obligatorio y lo comparten todas las opciones.",
+
+    "radioGroupPage.basicTitle": "Un plan: tres opciones",
+    "radioGroupPage.lede": "RadioGroup elige una sola opción de un grupo pequeño, con todas a la vista: un plan, un método de envío, una respuesta de una encuesta. Elegir una desmarca la anterior. Cada opción es un radio nativo, así que se envía con el formulario.",
     "radioGroupPage.anatomyBody":
       "Este diagrama nombra el grupo, cada opción, el input, el control, el indicador y la etiqueta. El espécimen está congelado; los RadioGroup vivos empiezan abajo.",
     "radioGroupPage.anatomyLabel": "Anatomía de RadioGroup",
     "radioGroupPage.anatomyPreviewLabel": "RadioGroup, parte por parte",
-    "radioGroupPage.tileTitle": "Opciones de superficie: TileRadioGroup",
-    "radioGroupPage.tileBody1":
-      "Cuando cada alternativa necesita título, descripción y una superficie completa, usa <code>TileRadioGroup</code>. Cada item conserva un radio nativo; el grupo no impone disposición.",
-    "radioGroupPage.tileBody2":
-      'En este preview las opciones van en fila con <a href="/es/componentes/inline"><code>sk-inline</code></a> y cada Tile toma <code>flex: 1</code>. En una columna, omite <code>sk-inline</code>.',
-    "radioGroupPage.tileBody3":
-      'El enhancer <code>tile-radio-group</code> (Svelte + <code>@zag-js/radio-group</code>, la misma máquina que React) hidrata la raíz <code>data-sk-tile-radio-group</code> con <code>initComponents()</code>: garantiza la exclusión mutua y sincroniza el estado de cada <code>[data-part="item"]</code> con su radio real.',
-    "radioGroupPage.tileBody4": "Importa <code>@skryensya/core/components/radio-group.css</code> y llama <code>initComponents()</code> una vez.",
-    "radioGroupPage.contractItem1": "<code>name</code> es obligatorio y lo comparten todas las opciones.",
-    "radioGroupPage.contractItem2": "<code>defaultValue</code> conserva el estado nativo y respeta reset de formularios.",
-    "radioGroupPage.contractItem3": "<code>value</code> controla la opción seleccionada; <code>onValueChange</code> reporta cambios.",
-    "radioGroupPage.contractItem4":
-      "El grupo necesita un nombre accesible: <code>aria-label</code>, <code>aria-labelledby</code> o un <code>fieldset</code> con <code>legend</code>.",
-    "radioGroupPage.prop.orientation.title": "Orientación",
-    "radioGroupPage.prop.orientation.body": "<code>orientation</code> decide cómo se ordenan las opciones.",
-    "radioGroupPage.prop.orientation.vertical": "Usa <code>vertical</code> para lectura cómoda en formularios.",
-    "radioGroupPage.prop.orientation.horizontal": "Usa <code>horizontal</code> para pocas opciones cortas.",
-    "radioGroupPage.prop.spread.title": "Distribución",
-    "radioGroupPage.prop.spread.body": "<code>spread</code> reparte opciones horizontales como pasos iguales.",
-    "radioGroupPage.prop.spread.false": "Déjalo apagado cuando cada opción debe ocupar lo que mide su etiqueta.",
-    "radioGroupPage.prop.spread.true": "Actívalo para escalas donde cada punto debe tener el mismo peso visual.",
+    "radioGroupPage.tileTitle": "TileRadioGroup: opciones con detalle",
+    "radioGroupPage.tileBody1": "Cuando cada opción necesita título y descripción, cada una es una tarjeta que se elige entera.",
+    "radioGroupPage.tileBody2": "Con HTML escrito a mano, el enhancer <code>tile-radio-group</code> le da el teclado de un grupo de radios.",
+    "radioGroupPage.prop.orientation.title": "Orientation: columna o fila",
+    "radioGroupPage.prop.orientation.body": "Cómo se ordenan las opciones.",
+    "radioGroupPage.prop.orientation.vertical": "Usa <code>vertical</code>, el valor por defecto, en formularios: se lee de arriba abajo.",
+    "radioGroupPage.prop.orientation.horizontal": "Usa <code>horizontal</code> para dos o tres opciones cortas.",
+    "radioGroupPage.prop.spread.title": "Spread: el mismo ancho para cada una",
+    "radioGroupPage.prop.spread.body": "Reparte las opciones en fila como pasos iguales.",
+    "radioGroupPage.prop.spread.false": "Usa <code>false</code>, el valor por defecto: cada opción mide lo que su etiqueta.",
+    "radioGroupPage.prop.spread.true": "Usa <code>true</code> en escalas, donde cada punto pesa lo mismo.",
     "radioGroupPage.prop.spread.falseLabel": "Natural",
     "radioGroupPage.prop.spread.trueLabel": "Distribuido",
-    "radioGroupPage.showcaseTitle": "Showcases",
-    "radioGroupPage.showcaseBody": "RadioGroup cubre elecciones exclusivas, escalas y superficies de opción.",
-    "radioGroupPage.basicBody": "Usa RadioGroup para elegir una sola opción de un conjunto relacionado.",
-    "radioGroupPage.guidelinesLede": "Usa RadioGroup cuando sólo una opción puede estar activa.",
-    "radioGroupPage.dd.exclusive.title": "Una respuesta",
-    "radioGroupPage.dd.exclusive.do": "Usa RadioGroup para alternativas mutuamente excluyentes.",
-    "radioGroupPage.dd.exclusive.dont": "No uses una escala de radio cuando la persona puede elegir varios puntos; usa Checkbox.",
-    "radioGroupPage.dd.surface.title": "Opciones con detalle",
-    "radioGroupPage.dd.surface.do": "Usa TileRadioGroup cuando cada opción necesita título y descripción.",
-    "radioGroupPage.dd.surface.dont": "No uses una matriz si cada alternativa necesita mucho contenido.",
+    "radioGroupPage.basicBody": "La opción recomendada empieza elegida.",
+    "radioGroupPage.guidelinesLede": "Ver todas las opciones a la vez ayuda a compararlas antes de elegir.",
+    "radioGroupPage.dd.exclusive.title": "Cantidad: pocas opciones",
+    "radioGroupPage.dd.exclusive.do": "Tres planes se comparan de un vistazo.",
+    "radioGroupPage.dd.exclusive.dont": 'Diez países ocupan media pantalla y cuesta encontrar uno: eso es un <a href="/es/componentes/select">Select</a>.',
+    "radioGroupPage.dd.surface.title": "Detalle: una tarjeta por opción",
+    "radioGroupPage.dd.surface.do": "Con título y descripción, cada opción es una tarjeta que se elige entera.",
+    "radioGroupPage.dd.surface.dont": "Una etiqueta sola no alcanza para comparar planes con precio y límites.",
     "radioGroupPage.test1":
       "Es un radiogroup, respeta el valor por defecto, mantiene los valores mutuamente excluyentes y emite el evento.",
     "radioGroupPage.test2": "Marca el <code>data-state</code> del ítem seleccionado.",
   },
   en: {
+    "demo.radioGroup.country": "Country",
     "demo.matrix.easy": "It is easy to use",
     "demo.matrix.fast": "It responds quickly",
     "demo.matrix.recommend": "I would recommend it",
-    "radioGroupPage.matrixTitle": "Compose: several questions, one scale",
-    "radioGroupPage.matrixTable": "Every row is a question and every column a point on the scale. The scale is named once, in the head, instead of repeating under every row. Each cell holds a <strong>single radio</strong> whose <code>name</code> is its row: to the browser, radios sharing a name are one group wherever they sit, and that is what makes a table of radios behave like one question per row. The cell's radio carries no visible label, because its row header and its column header already name it.",
+    "radioGroupPage.matrixTitle": "Matrix: several questions, one scale",
+    "radioGroupPage.matrixTable": "A table: each row is a question and the scale is named once, in the header.",
     "radioGroupPage.matrixCaption": "How much you agree with each statement",
     "radioGroupPage.matrixStatement": "Statement",
     "radioGroupPage.matrixLabel": "Table Likert",
-    "radioGroupPage.likertTitle": "Compose: a Likert scale",
-    "radioGroupPage.likertBody":
-      "A Likert scale is not a component: it is <strong>this same radio group</strong>, laid across a <a href=\"/components/box\">Box</a>, with its two ends named underneath. The browser still owns selection and the keyboard. Four points on purpose: an even scale has no middle to park on, so a reader with an opinion has to lean. Three, five or seven work the same way.",
+    "radioGroupPage.likertTitle": "Likert: a scale in a row",
+    "radioGroupPage.likertBody": "The same group laid horizontally, with the ends named. It is not another component.",
     "radioGroupPage.likertLabel": "Likert scale, composed",
     "demo.radioGroup.label": "Plan",
     "demo.radioGroup.starter.title": "Starter",
@@ -84,45 +114,75 @@ export const radioGroupMessages = {
     "demo.radioGroup.basic.title": "Basic",
     "demo.radioGroup.basic.body": "Core features, free forever.",
 
-    "radioGroupPage.description": "RadioGroup: an exclusive choice with native inputs and a real form.",
-    "radioGroupPage.lede": "An exclusive choice among related alternatives. Every option is a native radio; the shared name enforces the exclusion.",
+    "radioGroupPage.description": "Chooses a single option from a small group, with all of them in view.",
+
+    "radioGroupPage.key.space": "Chooses the focused option.",
+
+    "radioGroupPage.key.arrows": "Chooses the previous or next option.",
+
+    "radioGroupPage.key.tab": "Enters the group, at the chosen option.",
+
+    "radioGroupPage.a11yYours2": "Pick a default if there is a reasonable one; otherwise leave none.",
+
+    "radioGroupPage.a11yYours1": "Name the group with <code>label</code> or a <code>legend</code>.",
+
+    "radioGroupPage.a11yDoes2": "The screen reader announces the group, the option and its position: “Professional, 2 of 3”.",
+
+    "radioGroupPage.a11yDoes1": "The group is a single <kbd>Tab</kbd> stop; the arrows choose within it.",
+
+    "radioGroupPage.a11yIntro": "RadioGroup uses native radios with a shared name.",
+
+    "radioGroupPage.content3": "Order them logically: smallest to largest, or the recommended one first.",
+
+    "radioGroupPage.content2": "Write short options, in the same shape and without overlap.",
+
+    "radioGroupPage.content1": "Name the group with a question or noun: “Plan”, “How do you want to receive it?”.",
+
+    "radioGroupPage.whenNot4": 'To switch views: use <a href="/components/segmented">Segmented</a>.',
+
+    "radioGroupPage.whenNot3": 'To turn something on or off instantly: use <a href="/components/switch">Switch</a>.',
+
+    "radioGroupPage.whenNot2": 'If several can be chosen: use <a href="/components/checkbox">Checkbox</a>.',
+
+    "radioGroupPage.whenNot1": 'For more than 6 options: use <a href="/components/select">Select</a>.',
+
+    "radioGroupPage.when2": "For a survey scale, horizontally.",
+
+    "radioGroupPage.when1": "To choose one option among 2 to 6, when it helps to see them all.",
+
+    "radioGroupPage.contract3": "The group needs a name: <code>label</code>, or a <code>fieldset</code> with a <code>legend</code>.",
+
+    "radioGroupPage.contract2": "<code>defaultValue</code> respects form reset; <code>value</code> and <code>onValueChange</code> control it.",
+
+    "radioGroupPage.contract1": "<code>name</code> is required and shared by every option.",
+
+    "radioGroupPage.basicTitle": "A plan: three options",
+    "radioGroupPage.lede": "RadioGroup chooses a single option from a small group, with all of them in view: a plan, a shipping method, a survey answer. Choosing one unchecks the last. Each option is a native radio, so it is submitted with the form.",
     "radioGroupPage.anatomyBody":
       "This diagram names the group, each option, the input, the control, the indicator and the label. The specimen is frozen; the live RadioGroups begin below.",
     "radioGroupPage.anatomyLabel": "RadioGroup anatomy",
     "radioGroupPage.anatomyPreviewLabel": "RadioGroup, part by part",
-    "radioGroupPage.tileTitle": "Surface options: TileRadioGroup",
-    "radioGroupPage.tileBody1":
-      "When each alternative needs a title, a description, and a whole surface, use <code>TileRadioGroup</code>. Every item keeps a native radio; the group imposes no layout.",
-    "radioGroupPage.tileBody2":
-      'In this preview the options run in a row with <a href="/components/inline"><code>sk-inline</code></a>, and each Tile takes <code>flex: 1</code>. In a column, skip <code>sk-inline</code>.',
-    "radioGroupPage.tileBody3":
-      'The <code>tile-radio-group</code> enhancer (Svelte + <code>@zag-js/radio-group</code>, the same machine React uses) hydrates the <code>data-sk-tile-radio-group</code> root with <code>initComponents()</code>: it guarantees mutual exclusion and syncs each <code>[data-part="item"]</code>\'s state with its real radio.',
-    "radioGroupPage.tileBody4": "Import <code>@skryensya/core/components/radio-group.css</code> and call <code>initComponents()</code> once.",
-    "radioGroupPage.contractItem1": "<code>name</code> is required and shared by every option.",
-    "radioGroupPage.contractItem2": "<code>defaultValue</code> keeps the native state and respects form resets.",
-    "radioGroupPage.contractItem3": "<code>value</code> controls the selected option; <code>onValueChange</code> reports changes.",
-    "radioGroupPage.contractItem4":
-      "The group needs an accessible name: <code>aria-label</code>, <code>aria-labelledby</code>, or a <code>fieldset</code> with a <code>legend</code>.",
-    "radioGroupPage.prop.orientation.title": "Orientation",
-    "radioGroupPage.prop.orientation.body": "<code>orientation</code> decides how options are arranged.",
-    "radioGroupPage.prop.orientation.vertical": "Use <code>vertical</code> for comfortable form reading.",
-    "radioGroupPage.prop.orientation.horizontal": "Use <code>horizontal</code> for a few short options.",
-    "radioGroupPage.prop.spread.title": "Spread",
-    "radioGroupPage.prop.spread.body": "<code>spread</code> distributes horizontal options as equal steps.",
-    "radioGroupPage.prop.spread.false": "Leave it off when each option should take its label's natural width.",
-    "radioGroupPage.prop.spread.true": "Turn it on for scales where each point needs equal visual weight.",
+    "radioGroupPage.tileTitle": "TileRadioGroup: options with detail",
+    "radioGroupPage.tileBody1": "When each option needs a title and description, each is a card chosen whole.",
+    "radioGroupPage.tileBody2": "With hand-written HTML, the <code>tile-radio-group</code> enhancer gives it a radio group's keyboard.",
+    "radioGroupPage.prop.orientation.title": "Orientation: column or row",
+    "radioGroupPage.prop.orientation.body": "How the options are laid out.",
+    "radioGroupPage.prop.orientation.vertical": "Use <code>vertical</code>, the default, in forms: it reads top to bottom.",
+    "radioGroupPage.prop.orientation.horizontal": "Use <code>horizontal</code> for two or three short options.",
+    "radioGroupPage.prop.spread.title": "Spread: the same width for each",
+    "radioGroupPage.prop.spread.body": "Spreads the options in a row as equal steps.",
+    "radioGroupPage.prop.spread.false": "Use <code>false</code>, the default: each option measures its label.",
+    "radioGroupPage.prop.spread.true": "Use <code>true</code> in scales, where each point weighs the same.",
     "radioGroupPage.prop.spread.falseLabel": "Natural",
     "radioGroupPage.prop.spread.trueLabel": "Spread",
-    "radioGroupPage.showcaseTitle": "Showcases",
-    "radioGroupPage.showcaseBody": "RadioGroup covers exclusive choices, scales, and option surfaces.",
-    "radioGroupPage.basicBody": "Use RadioGroup to choose one option from a related set.",
-    "radioGroupPage.guidelinesLede": "Use RadioGroup when only one option can be active.",
-    "radioGroupPage.dd.exclusive.title": "One answer",
-    "radioGroupPage.dd.exclusive.do": "Use RadioGroup for mutually exclusive alternatives.",
-    "radioGroupPage.dd.exclusive.dont": "Do not use a radio scale when the person can choose multiple points; use Checkbox.",
-    "radioGroupPage.dd.surface.title": "Options with detail",
-    "radioGroupPage.dd.surface.do": "Use TileRadioGroup when each option needs a title and description.",
-    "radioGroupPage.dd.surface.dont": "Do not use a matrix if each alternative needs a lot of content.",
+    "radioGroupPage.basicBody": "The recommended option starts selected.",
+    "radioGroupPage.guidelinesLede": "Seeing every option at once helps compare them before choosing.",
+    "radioGroupPage.dd.exclusive.title": "Count: a few options",
+    "radioGroupPage.dd.exclusive.do": "Three plans compare at a glance.",
+    "radioGroupPage.dd.exclusive.dont": 'Ten countries fill half the screen and one is hard to find: that is a <a href="/components/select">Select</a>.',
+    "radioGroupPage.dd.surface.title": "Detail: one card per option",
+    "radioGroupPage.dd.surface.do": "With a title and description, each option is a card chosen whole.",
+    "radioGroupPage.dd.surface.dont": "A label alone is not enough to compare plans with price and limits.",
     "radioGroupPage.test1":
       "Is a radiogroup, honours the default value, keeps values mutually exclusive, and emits the event.",
     "radioGroupPage.test2": "Marks the selected item's <code>data-state</code>.",

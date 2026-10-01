@@ -1,9 +1,14 @@
 export const breadcrumbMessages = {
   es: {
+    "demo.breadcrumb.genericHere": "Aquí",
+    "demo.breadcrumb.genericSection": "Sección",
+    "demo.breadcrumb.genericBack": "Atrás",
     "demo.breadcrumb.label": "Migas de pan",
     "demo.breadcrumb.home": "Inicio",
     "demo.breadcrumb.projects": "Proyectos",
     "demo.breadcrumb.settings": "Configuración",
+    "demo.breadcrumb.search": "Búsqueda",
+    "demo.breadcrumb.results": "Resultados",
     "demo.breadcrumb.longAncestor":
       "Migración del layer vanilla a componentes Svelte",
     "demo.breadcrumb.longCurrent":
@@ -13,58 +18,99 @@ export const breadcrumbMessages = {
     "demo.breadcrumb.designSystem": "Sistema de diseño",
     "demo.breadcrumb.sharedComponents": "Componentes compartidos",
 
-    "breadcrumb.description": "Ubicación jerárquica con enlaces reales y página actual explícita.",
-    "breadcrumb.betaBadge": "Beta",
-    "breadcrumb.anatomyBody":
-      "Un trail son partes que <em>se repiten</em>: <code>sk-breadcrumb__item</code> no es la primera miga, son todas las que quedan visibles, y lo mismo vale para los separadores. Las singulares son dos: <code>sk-breadcrumb__collapse-trigger</code>, el control que representa a los ancestros escondidos cuando no entran, y <code>sk-breadcrumb__current</code>, porque un trail tiene exactamente una página actual. El espécimen está congelado y angosto a propósito, para que el colapso se vea; los trails vivos empiezan abajo.",
-    "breadcrumb.examplesTitle": "Ejemplos",
-    "breadcrumb.twoTitle": "Dos niveles",
-    "breadcrumb.twoBody": "El caso mínimo: un enlace al nivel anterior y la página actual, sin enlace ni separador final.",
-    "breadcrumb.twoLabel": "Breadcrumb de dos niveles",
-    "breadcrumb.multiTitle": "Varios niveles",
-    "breadcrumb.multiBody": "Cada nivel intermedio es un enlace real seguido de su separador; solo el último elemento pierde ambos.",
-    "breadcrumb.multiLabel": "Breadcrumb de varios niveles",
-    "breadcrumb.iconTitle": "Separador con ícono",
-    "breadcrumb.iconBody":
-      'El separador es una ranura de contenido: sin llenarla el template escribe <code>/</code>, y acepta texto (<code>·</code>, <code>›</code>) o un <a href="/es/componentes/icon">Icon</a>, como <code>chevron-right</code>. Nada más: puntuación con un título adentro no es puntuación.',
-    "breadcrumb.iconLabel": "Breadcrumb con separador de ícono",
-    "breadcrumb.longTitle": "Etiquetas largas",
-    "breadcrumb.longBody":
-      "Un nivel intermedio largo no debería empujar el resto del trail fuera de la columna, y la página actual no debería truncarse: es justo la etiqueta que el breadcrumb existe para mostrar completa. Cada parte resuelve el exceso de forma distinta.",
-    "breadcrumb.longItem1":
-      '<code>sk-breadcrumb__link</code> corta con elipsis a <code>--sk-breadcrumb-link-max</code> (16ch por default) y expone el texto completo en <code>title</code>; un ancestro largo se lee como referencia, no como el foco de la página.',
-    "breadcrumb.longItem2":
-      '<code>sk-breadcrumb__current</code> nunca trunca: envuelve en varias líneas (<code>overflow-wrap: anywhere</code>) para que el título completo siga siendo legible aunque no quepa en una sola línea.',
-    "breadcrumb.longLabel": "Breadcrumb con etiquetas largas",
-    "breadcrumb.collapseTitle": "Colapsa para entrar",
-    "breadcrumb.collapseBody":
-      'Cuando la senda no entra en una sola línea, un enhancer esconde los niveles ancestro. Nunca el primero ni la página actual. Detrás de un disclosure «…» que abre un <a href="/es/componentes/menu">Menu</a> real con esos mismos niveles: el patrón de teclado de un menú ARIA (flechas, Home/End, typeahead), no una lista plana. Sin JavaScript, o con menos de cuatro niveles, el markup sigue completo por sí solo.',
-    "breadcrumb.collapseLabel": "Breadcrumb que colapsa para entrar",
+    "breadcrumb.description": "Muestra dónde está la página dentro de una jerarquía y deja volver a cada nivel.",
+
+    "breadcrumb.a11yKeyEnter": "Sigue el enlace, o abre el menú de niveles ocultos.",
+
+    "breadcrumb.a11yKeyTab": "Recorre los enlaces y el botón «…».",
+
+    "breadcrumb.a11yKeysNote": 'Dentro del menú de niveles ocultos, las teclas son las de <a href="/es/componentes/menu">Menu</a>.',
+
+    "breadcrumb.a11yYours2": "Pasa <code>collapsedLabel</code>: es el nombre del botón «…», como «Mostrar niveles ocultos».",
+
+    "breadcrumb.a11yYours1": "Debe tener <code>label</code>, para distinguirlo de otras navegaciones de la página.",
+
+    "breadcrumb.a11yDoes4": "El botón «…» abre un Menu real, con su teclado.",
+
+    "breadcrumb.a11yDoes3": "Los separadores son decorativos y no se anuncian.",
+
+    "breadcrumb.a11yDoes2": 'La página actual lleva <code>aria-current="page"</code>.',
+
+    "breadcrumb.a11yDoes1": "Renderiza un <code>nav</code> con una lista <code>ol</code>: el lector de pantalla anuncia cuántos niveles hay.",
+
+    "breadcrumb.a11yIntro": "Breadcrumb es una navegación con nombre, con una lista ordenada de enlaces.",
+
+    "breadcrumb.content3": "Nombra la navegación con <code>label</code>: «Migas de pan» o «Ubicación».",
+
+    "breadcrumb.content2": "Escribe la página actual completa; los ancestros largos se cortan solos.",
+
+    "breadcrumb.content1": "Usa el título de cada página tal como aparece en su encabezado.",
+
+    "breadcrumb.dd.labels.dont": "«Atrás» y «Sección» no identifican las páginas de destino; usa sus títulos para que se entiendan antes de abrir los enlaces.",
+
+    "breadcrumb.dd.labels.do": "Cada enlace dice adónde lleva, con el mismo título que tiene esa página.",
+
+    "breadcrumb.dd.labels.title": "Etiquetas: el título de cada página",
+
+    "breadcrumb.dd.hierarchy.title": "Jerarquía: no historial",
+    "breadcrumb.dd.hierarchy.do": "La senda muestra el lugar estable de esta página dentro del producto.",
+    "breadcrumb.dd.hierarchy.dont": "Búsqueda y resultados son cómo llegó la persona, no niveles por encima de la página.",
+
+    "breadcrumb.dd.current.title": "Página actual: termina la senda",
+    "breadcrumb.dd.current.do": "El último nivel nombra dónde está la persona ahora y no es un enlace.",
+    "breadcrumb.dd.current.dont": "Sin la página actual, la senda solo dice a dónde puede ir, no dónde está.",
+
+    "breadcrumb.whenNot3": 'Si solo hay una página por encima: un enlace «Volver a…» alcanza. Usa <a href="/es/componentes/link">Link</a>.',
+
+    "breadcrumb.whenNot2": 'Para los pasos de un proceso: usa <a href="/es/componentes/steps">Steps</a>.',
+
+    "breadcrumb.whenNot1": 'Si la navegación es plana: usa <a href="/es/nav-list">NavList</a>.',
+
+    "breadcrumb.when2": "Cuando la persona llega por búsqueda o por un enlace directo y necesita subir.",
+
+    "breadcrumb.when1": "En páginas dentro de una jerarquía de tres niveles o más: documentación, catálogos, carpetas.",
+
+    "breadcrumb.contract1": 'Usa <code>nav</code> y una lista <code>ol</code>; el último elemento lleva <code>aria-current="page"</code> y no es un enlace.',
+
+    "breadcrumb.lede": "Breadcrumb muestra dónde está la página dentro de una jerarquía y deja volver a cualquier nivel superior. Cada nivel es un enlace real, y la página actual va al final, sin enlace.",
+    "breadcrumb.anatomyBody": "<code>sk-breadcrumb__item</code> y los separadores se repiten; el botón de colapso y la página actual son únicos.",
+    "breadcrumb.twoTitle": "Dos niveles: el caso mínimo",
+    "breadcrumb.twoBody": "Un enlace al nivel anterior y la página actual.",
+    "breadcrumb.multiTitle": "Varios niveles: un enlace por ancestro",
+    "breadcrumb.multiBody": "Cada nivel intermedio es un enlace seguido de su separador; solo el último pierde los dos.",
+    "breadcrumb.iconTitle": "Separador: texto o ícono",
+    "breadcrumb.iconBody": 'Sin llenarlo, el separador es <code>/</code>. Acepta texto (<code>·</code>, <code>›</code>) o un <a href="/es/componentes/icon">Icon</a>, como <code>chevron-right</code>.',
+    "breadcrumb.longTitle": "Etiquetas largas: los ancestros se cortan, la actual no",
+    "breadcrumb.longBody": "Un ancestro largo no debe sacar al resto de la columna, y la página actual es justo la que tiene que leerse entera.",
+    "breadcrumb.longItem1": "<code>sk-breadcrumb__link</code> se corta con elipsis a <code>--sk-breadcrumb-link-max</code> (16ch por defecto) y guarda el texto completo en <code>title</code>.",
+    "breadcrumb.longItem2": "<code>sk-breadcrumb__current</code> no se corta: pasa a varias líneas.",
+    "breadcrumb.collapseTitle": "Colapso: cuando no entra en una línea",
+    "breadcrumb.collapseBody": 'Si el camino no entra, los ancestros del medio pasan a un botón «…» que abre un <a href="/es/componentes/menu">Menu</a> con esos niveles. El primero y la página actual quedan siempre a la vista. Sin JavaScript, el camino sigue completo.',
     "breadcrumb.collapseTriggerLabel": "Mostrar niveles ocultos",
-    "breadcrumb.contractBody": "Usa nav + ol; el último elemento lleva aria-current=page y no es un enlace.",
-    "breadcrumb.a11yBody":
-      'El label distingue estas migas de otras navegaciones de la página. El disclosure «…» de una senda colapsada lleva su propio <code>aria-label</code> (<code>collapsedLabel</code>) y abre un <a href="/es/componentes/menu">Menu</a> real, <code>role="menu"</code>: navegación con flechas, Home/End, typeahead y cierre con Escape son del patrón de menú, no algo que este componente reimplemente.',
     "breadcrumb.test1": "Una senda corta se renderiza sin colapsar: no hay «…» que valga la pena mostrar.",
-    "breadcrumb.test2": "El trigger «…» expone su <code>aria-label</code> y <code>aria-haspopup=\"menu\"</code>, y abre un <a href=\"/componentes/menu\">Menu</a> real con los niveles ocultos.",
+    "breadcrumb.test2": 'El trigger «…» expone su <code>aria-label</code> y <code>aria-haspopup="menu"</code>, y abre un <a href="/es/componentes/menu">Menu</a> real con los niveles ocultos.',
     "breadcrumb.test3": "Una senda que entra en una línea queda sin colapsar.",
     "breadcrumb.test4": "El colapso se recalcula en cada resize, incluso al achicarse desde un estado ya expandido.",
     "breadcrumb.test5": "Una senda corta no gana ni siquiera el elemento «…»: nada vale la pena esconder.",
     "breadcrumb.test6": "Una senda que entra en una línea no toca ningún crumb: el «…» queda oculto.",
-    "breadcrumb.test7": "Sin espacio, el «…» abre un <a href=\"/componentes/menu\">Menu</a> real con los crumbs escondidos, cada uno como enlace navegable; el primero y la página actual quedan siempre a la vista.",
+    "breadcrumb.test7": 'Sin espacio, el «…» abre un <a href="/es/componentes/menu">Menu</a> real con los crumbs escondidos, cada uno como enlace navegable; el primero y la página actual quedan siempre a la vista.',
     "breadcrumb.test8": "Cada resize vuelve a medir la senda: primero expande todo, así nunca queda atascado colapsado de más.",
     "breadcrumb.test9": "Al desmontar el enhancer, todos los crumbs vuelven a quedar visibles.",
-    "breadcrumb.showcaseTitle": "Showcases",
-    "breadcrumb.guidelinesLede": "Breadcrumb muestra el camino desde el inicio hasta la página actual.",
-    "breadcrumb.dd.collapse.title": "Acorta los caminos largos",
-    "breadcrumb.dd.collapse.do": "Colapsa los niveles del medio y deja el inicio y los últimos a la vista.",
+    "breadcrumb.guidelinesLede": "Breadcrumb responde dos preguntas: dónde estoy y cómo vuelvo.",
+    "breadcrumb.dd.collapse.title": "Colapso: acorta los caminos largos",
+    "breadcrumb.dd.collapse.do": "Los niveles del medio pasan a «…» y el inicio y la página actual quedan a la vista.",
     "breadcrumb.dd.collapse.dont": "Un camino entero se parte en varias líneas y deja de leerse como un camino.",
-    "breadcrumb.showcaseBody": "Dos niveles, varios, con ícono, un camino largo y el mismo camino colapsado.",
   },
   en: {
+    "demo.breadcrumb.genericHere": "Here",
+    "demo.breadcrumb.genericSection": "Section",
+    "demo.breadcrumb.genericBack": "Back",
     "demo.breadcrumb.label": "Breadcrumbs",
     "demo.breadcrumb.home": "Home",
     "demo.breadcrumb.projects": "Projects",
     "demo.breadcrumb.settings": "Settings",
+    "demo.breadcrumb.search": "Search",
+    "demo.breadcrumb.results": "Results",
     "demo.breadcrumb.longAncestor":
       "Migration from vanilla layer to Svelte components",
     "demo.breadcrumb.longCurrent":
@@ -74,51 +120,87 @@ export const breadcrumbMessages = {
     "demo.breadcrumb.designSystem": "Design system",
     "demo.breadcrumb.sharedComponents": "Shared components",
 
-    "breadcrumb.description": "Hierarchical location with real links and an explicit current page.",
-    "breadcrumb.betaBadge": "Beta",
-    "breadcrumb.anatomyBody":
-      "A trail is made of parts that <em>repeat</em>: <code>sk-breadcrumb__item</code> is not the first crumb, it is all of the ones that stay visible, and the same goes for the separators. Two names are singular: <code>sk-breadcrumb__collapse-trigger</code>, the control standing in for the ancestors that no longer fit, and <code>sk-breadcrumb__current</code>, because a trail has exactly one current page. The specimen is frozen, and narrow on purpose so the collapse shows; the live trails start below.",
-    "breadcrumb.examplesTitle": "Examples",
-    "breadcrumb.twoTitle": "Two levels",
-    "breadcrumb.twoBody": "The minimum case: a link to the previous level and the current page, with no trailing link or separator.",
-    "breadcrumb.twoLabel": "Two-level breadcrumb",
-    "breadcrumb.multiTitle": "Several levels",
-    "breadcrumb.multiBody": "Every intermediate level is a real link followed by its separator; only the last item loses both.",
-    "breadcrumb.multiLabel": "Multi-level breadcrumb",
-    "breadcrumb.iconTitle": "Icon separator",
-    "breadcrumb.iconBody":
-      'The separator is a content slot: leave it empty and the template writes <code>/</code>, or fill it with text (<code>·</code>, <code>›</code>) or an <a href="/components/icon">Icon</a>, such as <code>chevron-right</code>. Nothing else: punctuation with a heading inside it is not punctuation.',
-    "breadcrumb.iconLabel": "Breadcrumb with an icon separator",
-    "breadcrumb.longTitle": "Long labels",
-    "breadcrumb.longBody":
-      "A long intermediate level should not push the rest of the trail out of the column, and the current page should not truncate: that is exactly the label the breadcrumb exists to show in full. Each part resolves the overflow differently.",
-    "breadcrumb.longItem1":
-      '<code>sk-breadcrumb__link</code> ellipsizes at <code>--sk-breadcrumb-link-max</code> (16ch by default) and exposes the full text through <code>title</code>; a long ancestor reads as a reference, not the focus of the page.',
-    "breadcrumb.longItem2":
-      '<code>sk-breadcrumb__current</code> never truncates: it wraps across lines (<code>overflow-wrap: anywhere</code>) so the full title stays legible even when it does not fit on one line.',
-    "breadcrumb.longLabel": "Breadcrumb with long labels",
-    "breadcrumb.collapseTitle": "Collapsing to fit",
-    "breadcrumb.collapseBody":
-      'When the trail does not fit on one line, an enhancer hides the ancestor levels: never the first one or the current page. Behind a "…" disclosure that opens a real <a href="/components/menu">Menu</a> holding those same levels: an ARIA menu\'s own keyboard pattern (arrow keys, Home/End, typeahead), not a plain list. Without JavaScript, or under four levels, the markup is still complete on its own.',
-    "breadcrumb.collapseLabel": "Breadcrumb that collapses to fit",
+    "breadcrumb.description": "Shows where a page sits in a hierarchy and leads back to each level.",
+
+    "breadcrumb.a11yKeyEnter": "Follows the link, or opens the hidden-levels menu.",
+
+    "breadcrumb.a11yKeyTab": "Moves through the links and the “…” button.",
+
+    "breadcrumb.a11yKeysNote": 'Inside the hidden-levels menu, the keys are <a href="/components/menu">Menu</a>\'s.',
+
+    "breadcrumb.a11yYours2": "Pass <code>collapsedLabel</code>: it is the name of the “…” button, such as “Show hidden levels”.",
+
+    "breadcrumb.a11yYours1": "It must have a <code>label</code>, to tell it apart from other navigations on the page.",
+
+    "breadcrumb.a11yDoes4": "The “…” button opens a real Menu, with its keyboard.",
+
+    "breadcrumb.a11yDoes3": "The separators are decorative and not announced.",
+
+    "breadcrumb.a11yDoes2": 'The current page carries <code>aria-current="page"</code>.',
+
+    "breadcrumb.a11yDoes1": "It renders a <code>nav</code> with an <code>ol</code> list: the screen reader announces how many levels there are.",
+
+    "breadcrumb.a11yIntro": "Breadcrumb is a named navigation holding an ordered list of links.",
+
+    "breadcrumb.content3": "Name the navigation with <code>label</code>: “Breadcrumb” or “Location”.",
+
+    "breadcrumb.content2": "Write the current page in full; long ancestors truncate on their own.",
+
+    "breadcrumb.content1": "Use each page's title exactly as its heading shows it.",
+
+    "breadcrumb.dd.labels.dont": "“Back” and “Section” do not identify the destination pages; use their titles so people know where each link goes.",
+
+    "breadcrumb.dd.labels.do": "Each link says where it goes, with the same title that page has.",
+
+    "breadcrumb.dd.labels.title": "Labels: each page's title",
+
+    "breadcrumb.dd.hierarchy.title": "Hierarchy: not history",
+    "breadcrumb.dd.hierarchy.do": "The trail shows this page's stable place inside the product.",
+    "breadcrumb.dd.hierarchy.dont": "Search and results are how people arrived, not levels above the page.",
+
+    "breadcrumb.dd.current.title": "Current page: end the trail",
+    "breadcrumb.dd.current.do": "The last level names where people are now and is not a link.",
+    "breadcrumb.dd.current.dont": "Without the current page, the trail only says where people can go, not where they are.",
+
+    "breadcrumb.whenNot3": 'If there is only one page above: a “Back to…” link is enough. Use <a href="/components/link">Link</a>.',
+
+    "breadcrumb.whenNot2": 'For the steps of a process: use <a href="/components/steps">Steps</a>.',
+
+    "breadcrumb.whenNot1": 'If navigation is flat: use <a href="/nav-list">NavList</a>.',
+
+    "breadcrumb.when2": "When people arrive from search or a direct link and need to go up.",
+
+    "breadcrumb.when1": "On pages inside a hierarchy three or more levels deep: documentation, catalogs, folders.",
+
+    "breadcrumb.contract1": 'It uses <code>nav</code> and an <code>ol</code> list; the last item carries <code>aria-current="page"</code> and is not a link.',
+
+    "breadcrumb.lede": "Breadcrumb shows where a page sits in a hierarchy and leads back to any level above it. Each level is a real link, and the current page comes last, with no link.",
+    "breadcrumb.anatomyBody": "<code>sk-breadcrumb__item</code> and the separators repeat; the collapse button and the current page are single.",
+    "breadcrumb.twoTitle": "Two levels: the minimum",
+    "breadcrumb.twoBody": "A link to the level above and the current page.",
+    "breadcrumb.multiTitle": "Several levels: one link per ancestor",
+    "breadcrumb.multiBody": "Each intermediate level is a link followed by its separator; only the last loses both.",
+    "breadcrumb.iconTitle": "Separator: text or an icon",
+    "breadcrumb.iconBody": 'Left empty, the separator is <code>/</code>. It takes text (<code>·</code>, <code>›</code>) or an <a href="/components/icon">Icon</a>, such as <code>chevron-right</code>.',
+    "breadcrumb.longTitle": "Long labels: ancestors truncate, the current page does not",
+    "breadcrumb.longBody": "A long ancestor must not push the rest out of the column, and the current page is exactly the one that must read in full.",
+    "breadcrumb.longItem1": "<code>sk-breadcrumb__link</code> truncates with an ellipsis at <code>--sk-breadcrumb-link-max</code> (16ch by default) and keeps the full text in <code>title</code>.",
+    "breadcrumb.longItem2": "<code>sk-breadcrumb__current</code> never truncates: it wraps onto several lines.",
+    "breadcrumb.collapseTitle": "Collapse: when it does not fit one line",
+    "breadcrumb.collapseBody": 'If the trail does not fit, the middle ancestors move behind a “…” button that opens a <a href="/components/menu">Menu</a> with those levels. The first level and the current page always stay visible. Without JavaScript, the trail stays whole.',
     "breadcrumb.collapseTriggerLabel": "Show hidden levels",
-    "breadcrumb.contractBody": "Use nav + ol; the last item carries aria-current=page and is not a link.",
-    "breadcrumb.a11yBody":
-      'The label tells these crumbs apart from other navigation on the page. A collapsed trail\'s "…" disclosure carries its own <code>aria-label</code> (<code>collapsedLabel</code>) and opens a real <a href="/components/menu">Menu</a>, <code>role="menu"</code>: arrow-key navigation, Home/End, typeahead and Escape to close all come from the menu pattern, not something this component reimplements.',
-    "breadcrumb.test1": "A short trail renders uncollapsed: there is no \"…\" worth showing.",
-    "breadcrumb.test2": "The \"…\" trigger exposes its <code>aria-label</code> and <code>aria-haspopup=\"menu\"</code>, and opens a real <a href=\"/components/menu\">Menu</a> of the hidden levels.",
+    "breadcrumb.test1": 'A short trail renders uncollapsed: there is no "…" worth showing.',
+    "breadcrumb.test2": 'The "…" trigger exposes its <code>aria-label</code> and <code>aria-haspopup="menu"</code>, and opens a real <a href="/components/menu">Menu</a> of the hidden levels.',
     "breadcrumb.test3": "A trail that fits on one line stays uncollapsed.",
     "breadcrumb.test4": "The collapse is re-measured on every resize, even shrinking back from an already-expanded state.",
-    "breadcrumb.test5": "A short trail doesn't even grow the \"…\" item: nothing is worth hiding.",
-    "breadcrumb.test6": "A trail that fits on one line leaves every crumb untouched: the \"…\" stays hidden.",
-    "breadcrumb.test7": "With no room, the \"…\" opens a real <a href=\"/components/menu\">Menu</a> of the hidden crumbs, each one a navigable link; the first crumb and the current page stay visible either way.",
+    "breadcrumb.test5": 'A short trail doesn\'t even grow the "…" item: nothing is worth hiding.',
+    "breadcrumb.test6": 'A trail that fits on one line leaves every crumb untouched: the "…" stays hidden.',
+    "breadcrumb.test7": 'With no room, the "…" opens a real <a href="/components/menu">Menu</a> of the hidden crumbs, each one a navigable link; the first crumb and the current page stay visible either way.',
     "breadcrumb.test8": "Every resize re-measures the trail: it expands first, so it never gets stuck over-collapsed.",
     "breadcrumb.test9": "Unmounting the enhancer restores every crumb to visible.",
-    "breadcrumb.showcaseTitle": "Showcases",
-    "breadcrumb.guidelinesLede": "Breadcrumb shows the path from the start to the current page.",
-    "breadcrumb.dd.collapse.title": "Shorten long paths",
-    "breadcrumb.dd.collapse.do": "Collapse the middle levels and keep the start and the last ones in view.",
-    "breadcrumb.dd.collapse.dont": "A full path breaks over several lines and stops reading as a path.",
-    "breadcrumb.showcaseBody": "Two levels, several, with an icon, a long path, and the same path collapsed.",
+    "breadcrumb.guidelinesLede": "Breadcrumb answers two questions: where am I, and how do I go back.",
+    "breadcrumb.dd.collapse.title": "Collapse: shorten long trails",
+    "breadcrumb.dd.collapse.do": "The middle levels move behind “…”, and the start and the current page stay visible.",
+    "breadcrumb.dd.collapse.dont": "A whole trail breaks across several lines and stops reading as a trail.",
   },
 } as const;

@@ -6,11 +6,15 @@ import "@skryensya/core/patterns/vaul.css";
 import ComponentPageShell from "./ComponentPageShell.astro";
 import AppearanceMenu from "../AppearanceMenu.astro";
 import CodeBlock from "../CodeBlock.astro";
-import ComponentPreview from "../ComponentPreview.astro";
+import UsagePreview from "../UsagePreview.astro";
+import WhenToUse from "../WhenToUse.astro";
+import ContentRules from "../ContentRules.astro";
+import DoDont from "../DoDont.astro";
+import A11yNotes from "../A11yNotes.astro";
 import "@skryensya/core/components/annotation.css";
-import { drawerAnatomyTree, drawerScript, drawerTree } from "../../demos/drawer";
+import { drawerAnatomyTree, drawerGuideHtml, drawerNameGuideHtml, drawerDecisionGuideHtml, drawerScript, drawerTree } from "../../demos/drawer";
 import { vaulAnatomyCss } from "../../demos/vaul";
-import { getLocale, useTranslations } from "../../i18n";
+import { getLocale, tList, useTranslations } from "../../i18n";
 
 const t = useTranslations(getLocale(Astro.url));
 
@@ -32,49 +36,11 @@ const tuning = `.mi-drawer {
   --sk-drawer-bg: var(--color-bg-surface-raised);
 }`;
 
-const nativeHtml = `<button
-  class="sk-button sk-interactive"
-  data-native-drawer-open="native-drawer"
-  type="button"
->
-  ${t("drawer.demoOpenLabel")}
-</button>
-
-<dialog
-  class="sk-vaul sk-drawer demo-drawer"
-  id="native-drawer"
-  data-edge="inline-start"
-  aria-label="${t("drawer.demoAriaLabel")}"
->
-  <div class="demo-drawer__body">
-    <strong>${t("drawer.demoPanelTitle")}</strong>
-    <p>${t("drawer.demoPanelBody")}</p>
-    <form method="dialog">
-      <button
-        class="sk-button sk-interactive"
-        data-variant="ghost"
-        type="submit"
-      >
-        ${t("drawer.demoCloseLabel")}
-      </button>
-    </form>
-  </div>
-</dialog>`;
-
-const nativeJs = `const trigger = document.querySelector(
-  '[data-native-drawer-open="native-drawer"]',
-);
-const drawer = document.getElementById("native-drawer");
-
-trigger?.addEventListener("click", () => {
-  if (drawer instanceof HTMLDialogElement) drawer.showModal();
-});`;
 ---
 
 <ComponentPageShell
   title="Drawer"
   description={t("drawer.description")}
-  badge={t("drawer.betaBadge")}
   contractId="vaul"
   appearanceTargetSelector=".sk-vaul"
   styleGroups={[
@@ -99,70 +65,59 @@ trigger?.addEventListener("click", () => {
   <Fragment slot="usage">
     <p class="lede" set:html={t("drawer.lede")} />
 
-    <h3>{t("drawer.showcaseTitle")}</h3>
-    <p set:html={t("drawer.showcaseBody")} />
-    <ComponentPreview tree={drawerTree(t)} previewScript={drawerScript} label="HTML" viewport="overlay" />
+    <h3>{t("component.examplesTitle")}</h3>
+    {/* A drawer is a modal that pins itself to the viewport's edge, so it opens in an isolated frame
+        (`viewport="overlay"`) that keeps it off this page. */}
+    <h3>{t("drawer.exampleTitle")}</h3>
+    <p set:html={t("drawer.exampleBody")} />
+    <UsagePreview tree={drawerTree(t)} script={drawerScript} label="HTML" viewport="overlay" />
 
-    <h3>{t("drawer.hooksTitle")}</h3>
-    <p set:html={t("drawer.hooksBody1")} />
-    <p set:html={t("drawer.hooksBody2")} />
-    <CodeBlock code={tuning} label="CSS" lang="css" />
-
-    <h3>{t("drawer.markupTitle")}</h3>
-    <p set:html={t("drawer.markupBody")} />
-
-    <h3>{t("drawer.nativeTitle")}</h3>
-    <p class="lede" set:html={t("drawer.nativeLede")} />
-    <p set:html={t("drawer.nativeBody")} />
-    <ComponentPreview html={nativeHtml} previewScript={nativeJs} label={t("drawer.nativeLabel")} viewport="overlay" />
-
-    <h4>{t("drawer.openTitle")}</h4>
-    <CodeBlock code={nativeJs} label="JavaScript" />
-
-    <h4>{t("drawer.nativeContractTitle")}</h4>
+    <h3>{t("component.contractNotesTitle")}</h3>
     <ul>
-      <li set:html={t("drawer.nativeContractItem1")} />
-      <li set:html={t("drawer.nativeContractItem2")} />
-      <li set:html={t("drawer.nativeContractItem3")} />
-      <li set:html={t("drawer.nativeContractItem4")} />
+      {tList(t, "drawer.contract").map((item) => <li set:html={item} />)}
     </ul>
+    <CodeBlock code={tuning} label="CSS" lang="css" />
 
     <h3>{t("component.anatomy")}</h3>
     <p set:html={t("drawer.anatomyBody")} />
-    <ComponentPreview
-      tree={drawerAnatomyTree(t)}
-      css={vaulAnatomyCss}
-      label={t("drawer.anatomyPreviewLabel")}
-      screens={false}
-      hideSource
-      chrome={false}
-    />
+    <UsagePreview tree={drawerAnatomyTree(t)} css={vaulAnatomyCss} label={t("drawer.anatomyPreviewLabel")} bare />
   </Fragment>
 
   <Fragment slot="guidelines">
     <p class="lede" set:html={t("drawer.guidelinesLede")} />
-    <h3>{t("drawer.whenTitle")}</h3>
-    <div class="sk-table-scroll">
-    <table class="sk-table">
-      <thead class="sk-table__head"><tr class="sk-table__row"><th class="sk-table__header">{t("drawer.whenHeadNeed")}</th><th class="sk-table__header">{t("drawer.whenHeadUse")}</th></tr></thead>
-      <tbody class="sk-table__body">
-        <tr class="sk-table__row"><td class="sk-table__cell">{t("drawer.whenRow1Need")}</td><td set:html={t("drawer.whenRow1Use")} class="sk-table__cell" /></tr>
-        <tr class="sk-table__row"><td class="sk-table__cell">{t("drawer.whenRow2Need")}</td><td set:html={t("drawer.whenRow2Use")} class="sk-table__cell" /></tr>
-        <tr class="sk-table__row"><td class="sk-table__cell">{t("drawer.whenRow3Need")}</td><td set:html={t("drawer.whenRow3Use")} class="sk-table__cell" /></tr>
-        <tr class="sk-table__row"><td class="sk-table__cell">{t("drawer.whenRow4Need")}</td><td set:html={t("drawer.whenRow4Use")} class="sk-table__cell" /></tr>
-      </tbody>
-    </table>
-    </div>
-    <p set:html={t("drawer.whenBody")} />
-    <ul>
-      <li set:html={t("drawer.guide.use1")} />
-      <li set:html={t("drawer.guide.avoid1")} />
-      <li set:html={t("drawer.guide.avoid2")} />
-    </ul>
+    <WhenToUse use={tList(t, "drawer.when")} avoid={tList(t, "drawer.whenNot")} />
+    <DoDont
+      title={t("drawer.dd.close.title")}
+      do={{ html: drawerGuideHtml(t, true), caption: t("drawer.dd.close.do") }}
+      dont={{ html: drawerGuideHtml(t, false), caption: t("drawer.dd.close.dont") }}
+    />
+    <DoDont
+      title={t("drawer.dd.name.title")}
+      do={{ html: drawerNameGuideHtml(t, true), caption: t("drawer.dd.name.do") }}
+      dont={{ html: drawerNameGuideHtml(t, false), caption: t("drawer.dd.name.dont") }}
+    />
+    <DoDont
+      title={t("drawer.dd.decision.title")}
+      do={{ html: drawerDecisionGuideHtml(t, false), caption: t("drawer.dd.decision.do") }}
+      dont={{ html: drawerDecisionGuideHtml(t, true), caption: t("drawer.dd.decision.dont") }}
+    />
+    <ContentRules items={tList(t, "drawer.content")} />
   </Fragment>
 
   <Fragment slot="install">
     <CodeBlock code={import_} label="CSS" />
+  </Fragment>
+
+  <Fragment slot="a11y">
+    <A11yNotes
+      intro={t("drawer.a11yIntro")}
+      does={tList(t, "drawer.a11yDoes")}
+      yours={tList(t, "drawer.a11yYours")}
+      keys={[
+        { keys: ["Tab", "Shift+Tab"], action: t("drawer.a11yKeyTab") },
+        { keys: ["Esc"], action: t("drawer.a11yKeyEsc") },
+      ]}
+    />
   </Fragment>
 </ComponentPageShell>
 
@@ -232,5 +187,177 @@ trigger?.addEventListener("click", () => {
 
   .demo-drawer__body p {
     margin: 0;
+  }
+
+  /* Zoomed-out, static viewport for the guideline: show the drawer AND the page it covers. */
+  .drawer-guide__viewport {
+    --sk-vaul-backdrop-bg: light-dark(
+      color-mix(in oklch, var(--color-text-primary) 40%, transparent),
+      color-mix(in oklch, var(--color-bg-canvas) 80%, transparent)
+    );
+    position: relative;
+    inline-size: 100%;
+    aspect-ratio: 4 / 3;
+    overflow: hidden;
+    border: 1px solid var(--color-border-subtle);
+    border-radius: var(--radius-surface);
+    background: var(--color-bg-canvas);
+  }
+
+  .drawer-guide__page {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    align-content: start;
+    gap: var(--space-stack-sm);
+    padding: var(--space-inset-md);
+  }
+
+  .drawer-guide__page-title {
+    margin-block-end: var(--space-stack-xs);
+    font-size: var(--font-size-heading-sm);
+  }
+
+  .drawer-guide__page-line {
+    display: block;
+    inline-size: 62%;
+    block-size: 0.45rem;
+    border-radius: var(--radius-pill);
+    background: var(--color-border-subtle);
+  }
+
+  .drawer-guide__page-line--long { inline-size: 82%; }
+  .drawer-guide__page-line--short { inline-size: 42%; }
+
+  .drawer-guide__page-card {
+    display: grid;
+    gap: var(--space-stack-xs);
+    margin-block: var(--space-stack-xs);
+    border: 1px solid var(--color-border-subtle);
+    border-radius: var(--radius-control);
+    padding: var(--space-inset-sm);
+    background: var(--color-bg-surface);
+    font-size: var(--font-size-caption);
+  }
+
+  .drawer-guide__page-card span { color: var(--color-text-secondary); }
+
+  .drawer-guide__scrim {
+    position: absolute;
+    z-index: 1;
+    inset: 0;
+    background: var(--sk-vaul-backdrop-bg);
+  }
+
+  .drawer-guide__panel {
+    position: absolute;
+    z-index: 2;
+    inset: 0 auto 0 0;
+    display: flex;
+    flex-direction: column;
+    inline-size: 52%;
+    block-size: 100%;
+    min-inline-size: 0;
+    max-inline-size: none;
+    max-block-size: none;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    border-inline-end: 1px solid var(--color-border-subtle);
+    background: var(--sk-vaul-bg, var(--color-bg-surface-raised));
+    box-shadow: var(--elevation-modal);
+    color: var(--color-text-primary);
+  }
+
+  .drawer-guide__header,
+  .drawer-guide__footer {
+    display: flex;
+    flex: none;
+    align-items: center;
+    gap: var(--space-inline-sm);
+    padding: var(--space-inset-sm);
+    border-block-end: 1px solid var(--color-border-subtle);
+    font-size: var(--font-size-caption);
+  }
+
+  .drawer-guide__header { justify-content: space-between; }
+  .drawer-guide__close { flex: none; min-inline-size: 1.75rem; min-block-size: 1.75rem; padding: 0; }
+
+  .drawer-guide__decision {
+    position: absolute;
+    z-index: 2;
+    inset: 50% auto auto 50%;
+    display: grid;
+    gap: var(--space-stack-sm);
+    inline-size: 72%;
+    box-sizing: border-box;
+    padding: var(--space-inset-md);
+    transform: translate(-50%, -50%);
+    border: 1px solid var(--color-border-subtle);
+    border-radius: var(--radius-surface);
+    background: var(--color-bg-surface-raised);
+    box-shadow: var(--elevation-modal);
+    font-size: var(--font-size-caption);
+  }
+
+  .drawer-guide__decision p { margin: 0; color: var(--color-text-secondary); }
+
+  .drawer-guide__actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: var(--space-inline-sm);
+    margin-block-start: var(--space-stack-sm);
+    font-size: var(--font-size-caption);
+  }
+
+  .drawer-guide__actions strong { color: var(--color-text-danger); }
+
+  .drawer-guide__nav {
+    display: grid;
+    align-content: start;
+    gap: var(--space-stack-xs);
+    flex: 1;
+    min-block-size: 0;
+    overflow: hidden;
+    padding: var(--space-inset-xs);
+    font-size: var(--font-size-caption);
+  }
+
+  .drawer-guide__section {
+    padding: var(--space-inset-xs);
+    color: var(--color-text-secondary);
+    font-size: 0.65rem;
+  }
+
+  .drawer-guide__link {
+    overflow: hidden;
+    border-radius: var(--radius-control);
+    padding: var(--space-inset-xs);
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .drawer-guide__link--current {
+    background: var(--color-bg-accent-subtle);
+    color: var(--color-text-accent);
+    font-weight: var(--font-weight-emphasis);
+  }
+
+  .drawer-guide__footer {
+    border-block-start: 1px solid var(--color-border-subtle);
+    border-block-end: 0;
+  }
+
+  .drawer-guide__avatar {
+    display: grid;
+    flex: none;
+    inline-size: 1.5rem;
+    aspect-ratio: 1;
+    place-items: center;
+    border-radius: var(--radius-pill);
+    background: var(--color-bg-accent-subtle);
+    color: var(--color-text-accent);
+    font-size: 0.6rem;
+    font-weight: var(--font-weight-emphasis);
   }
 </style>

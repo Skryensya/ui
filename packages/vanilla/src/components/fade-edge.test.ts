@@ -17,9 +17,21 @@ afterEach(() => {
 });
 
 describe("mountFadeEdge", () => {
-  it("leaves a plain FadeEdge alone: without data-scroll-aware it is paint only", () => {
-    scroller('data-direction="to-bottom"', { scrollHeight: 100, clientHeight: 100 });
-    expect(mountFadeEdge()).toBe(0);
+  it("measures a plain FadeEdge's scrollbars, but never marks it at its edge", () => {
+    const root = scroller('data-direction="to-bottom"', { scrollHeight: 100, clientHeight: 100 });
+    Object.defineProperty(root, "offsetHeight", { configurable: true, value: 112 });
+    // jsdom gives no element a box; a shown one has at least one client rect.
+    root.getClientRects = () => [new DOMRect()] as unknown as DOMRectList;
+    expect(mountFadeEdge()).toBe(1);
+    expect(root.style.getPropertyValue("--sk-fade-edge-gutter-block")).toBe("12px");
+    expect(root.hasAttribute("data-measured")).toBe(true);
+    expect(root.hasAttribute("data-at-edge")).toBe(false);
+  });
+
+  it("waits to mark a hidden FadeEdge measured: it has no box to measure yet", () => {
+    const root = scroller('data-direction="to-bottom"', { scrollHeight: 100, clientHeight: 100 });
+    mountFadeEdge();
+    expect(root.hasAttribute("data-measured")).toBe(false);
   });
 
   it("marks content that fits as already at its edge", () => {
@@ -42,10 +54,11 @@ describe("mountFadeEdge", () => {
     expect(root.hasAttribute("data-at-edge")).toBe(true);
   });
 
-  it("removes the attribute on destroy, so the fade paints again unwatched", () => {
+  it("removes the attribute and the gutters on destroy, so the fade paints again unwatched", () => {
     const root = scroller('data-direction="to-bottom" data-scroll-aware', { scrollHeight: 100, clientHeight: 100 });
     mountFadeEdge();
     destroyMount(root);
     expect(root.hasAttribute("data-at-edge")).toBe(false);
+    expect(root.style.getPropertyValue("--sk-fade-edge-gutter-block")).toBe("");
   });
 });

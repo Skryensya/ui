@@ -9,12 +9,11 @@ import "@skryensya/core/patterns/image-frame.css";
 import "@skryensya/core/patterns/layout.css";
 import "@skryensya/core/patterns/media-gradient.css";
 import * as demos from "@docs/demos/media-gradient";
-import { annotationDemoCss } from "@docs/demos/annotation";
-import { treeStory, withCss, type Meta, type StoryObj } from "../tree-story";
+import { treeStory, type Meta, type StoryObj } from "../tree-story";
 
 export default { title: "Components/Content/MediaGradient", tags: ["autodocs"] } satisfies Meta;
 
-export const Anatomy: StoryObj = treeStory(demos.mediaGradientAnatomyTree, { decorators: [withCss(annotationDemoCss)] });
+export const Anatomy: StoryObj = treeStory(demos.mediaGradientAnatomyTree);
 export const Card: StoryObj = treeStory(demos.mediaGradientCardTree);
 export const Edges: StoryObj = treeStory((t) => demos.mediaGradientEdgesTree());
 export const Strengths: StoryObj = treeStory((t) => demos.mediaGradientStrengthsTree());

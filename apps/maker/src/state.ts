@@ -21,6 +21,7 @@ import {
   type MakerNode,
   type MakerPageEntry,
   type MakerSite,
+  type MakerProposal,
   type Operation,
   type Pending,
   type SiteOperation,
@@ -53,6 +54,8 @@ export type View = {
 
 type State = {
   readonly history: History<MakerSite>;
+  /** Local monotonic edit generation, including undo and incoming remote changes. */
+  readonly revision: number;
   readonly view: View;
   /** The last refusal, said out loud once and then replaced. */
   readonly notice?: { readonly text: string; readonly at: number };
@@ -182,6 +185,7 @@ function initialState(given?: MakerSite): State {
   }
   const view: View = { page: site.pages[0]!.id, selectedIds: [], width: "fit", mode: "edit", scheme: "light", contrast: false, density: "default", radius: "md", ...savedPreferences() };
   return {
+    revision: 0,
     history: startHistory(site),
     view: settle(site, view),
     notice: catalogueChanged ? { text: CATALOGUE_MOVED, at: Date.now() } : undefined,
@@ -224,8 +228,19 @@ export function forgetProject(id: string): void {
 function dispatchTo(id: string, action: Action): void {
   const state = states.get(id);
   if (!state) return;
-  states.set(id, reducer(state, action));
+  const next = reducer(state, action);
+  states.set(id, { ...next, revision: next.history.present !== state.history.present ? state.revision + 1 : state.revision });
   emit();
+}
+
+/** Atomic proposal commit through the same gesture reducer as pointer/keyboard editing. */
+export function commitProposal(projectId: string, proposal: MakerProposal, generation: number): { ok: true } | { ok: false; reason: string } {
+  const state = states.get(projectId);
+  if (!state || state.history.present !== proposal.base || state.revision !== generation) return { ok: false, reason: "This project changed since the request. Discard this proposal and ask again." };
+  const result = commitSite(state.history, proposal.operations);
+  if (!result.ok) return { ok: false, reason: result.reason };
+  dispatchTo(projectId, { type: "gesture", operations: proposal.operations });
+  return { ok: true };
 }
 
 export function useMaker(projectId: string) {
@@ -262,6 +277,7 @@ export function useMaker(projectId: string) {
   const pageId = page.id;
   return {
     projectId,
+    revision: state.revision,
     site,
     page,
     view: state.view,

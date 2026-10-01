@@ -1,15 +1,27 @@
 ---
 import ComponentPageShell from "./ComponentPageShell.astro";
 import AppearanceMenu from "../AppearanceMenu.astro";
-import ComponentPreview from "../ComponentPreview.astro";
 import UsagePreview from "../UsagePreview.astro";
-import { footerColumnsTree, footerCreditTree } from "../../demos/layout";
-import { getLocale, useTranslations } from "../../i18n";
+import DoDont from "../DoDont.astro";
+import WhenToUse from "../WhenToUse.astro";
+import ContentRules from "../ContentRules.astro";
+import A11yNotes from "../A11yNotes.astro";
+import {
+  footerColumnsTree,
+  footerCreditTree,
+  footerCrowdedDontTree,
+  footerLeanDoTree,
+  footerSurfaceDoTree,
+  footerSurfaceDontTree,
+} from "../../demos/layout";
+import { getLocale, tList, useTranslations } from "../../i18n";
 import { footerAnatomyTree, layoutAnatomyFillCss } from "../../demos/layout-anatomy";
 import "@skryensya/core/components/annotation.css";
 /* The sheet itself, not only its source: the Style hooks table resolves each hook against a real
    element, and a page that never loads `patterns/footer.css` shows every value blank. */
 import "@skryensya/core/patterns/footer.css";
+/* The Do/Don't specimens include a last content block before the footer, drawn as a Box. */
+import "@skryensya/core/patterns/box.css";
 
 const locale = getLocale(Astro.url);
 const t = useTranslations(locale);
@@ -26,7 +38,6 @@ const explain = (option: string, values: readonly string[]) =>
 <ComponentPageShell
   title="Footer"
   description={t("footer.description")}
-  badge={t("footer.betaBadge")}
   contractId="footer"
   appearanceTargetSelector=".sk-footer"
   styleGroups={[{ file: "patterns/footer.css", probe: "sk-footer" }]}
@@ -62,52 +73,40 @@ const explain = (option: string, values: readonly string[]) =>
       stageMinBlockSize="14rem"
     />
 
-    <h3>{t("footer.showcaseTitle")}</h3>
-    <p set:html={t("footer.showcaseBody")} />
-
-    <h3>{t("footer.htmlTitle")}</h3>
-
-    <h4>{t("footer.patternSiteTitle")}</h4>
-    <p>{t("footer.patternSiteDescription")}</p>
-    <UsagePreview tree={footerSiteTree} />
-
-    <h4>{t("footer.patternCreditTitle")}</h4>
-    <p>{t("footer.patternCreditDescription")}</p>
-    <UsagePreview tree={footerOneLineTree} />
-
-    <p set:html={t("component.reactNote")} />
+    <h3>{t("component.examplesTitle")}</h3>
+    <UsagePreview tree={footerSiteTree} title={t("footer.patternSiteTitle")} description={t("footer.patternSiteDescription")} />
+    <UsagePreview tree={footerOneLineTree} title={t("footer.patternCreditTitle")} description={t("footer.patternCreditDescription")} />
 
     <h3>{t("component.contractNotesTitle")}</h3>
     <ul>
-      <li set:html={t("footer.contractItem1")} />
-      <li set:html={t("footer.contractItem2")} />
-      <li set:html={t("footer.contractItem3")} />
-      <li set:html={t("footer.contractItem4")} />
+      {tList(t, "footer.contract").map((item) => <li set:html={item} />)}
     </ul>
+    <p set:html={t("component.reactNote")} />
 
     <h3>{t("component.anatomy")}</h3>
     <p set:html={t("footer.anatomyBody")} />
-    <ComponentPreview
-      tree={footerAnatomyTree(t)}
-      css={layoutAnatomyFillCss}
-      label={t("footer.anatomyPreviewLabel")}
-      screens={false}
-      hideSource
-      chrome={false}
-    />
+    <UsagePreview tree={footerAnatomyTree(t)} css={layoutAnatomyFillCss} label={t("footer.anatomyPreviewLabel")} bare />
   </Fragment>
 
   <Fragment slot="guidelines">
     <p class="lede" set:html={t("footer.guidelinesLede")} />
-    <h3>{t("footer.whenTitle")}</h3>
-    <p set:html={t("footer.whenBody1")} />
-    <p set:html={t("footer.whenBody2")} />
-    <p set:html={t("footer.whenBody3")} />
+    <WhenToUse use={tList(t, "footer.when")} avoid={tList(t, "footer.whenNot")} />
+    <DoDont
+      canvas
+      title={t("footer.dd.surface.title")}
+      do={{ tree: footerSurfaceDoTree(t), caption: t("footer.dd.surface.do") }}
+      dont={{ tree: footerSurfaceDontTree(t), caption: t("footer.dd.surface.dont") }}
+    />
+    <DoDont
+      canvas
+      title={t("footer.dd.scope.title")}
+      do={{ tree: footerLeanDoTree(t, docsHref), caption: t("footer.dd.scope.do") }}
+      dont={{ tree: footerCrowdedDontTree(t, docsHref), caption: t("footer.dd.scope.dont") }}
+    />
+    <ContentRules items={tList(t, "footer.content")} />
   </Fragment>
 
   <Fragment slot="a11y">
-    <p set:html={t("footer.a11yP1")} />
-    <p set:html={t("footer.a11yP2")} />
-    <p set:html={t("footer.a11yP3")} />
+    <A11yNotes intro={t("footer.a11yIntro")} does={tList(t, "footer.a11yDoes")} yours={tList(t, "footer.a11yYours")} />
   </Fragment>
 </ComponentPageShell>

@@ -1,19 +1,29 @@
 ---
 import ComponentPageShell from "./ComponentPageShell.astro";
 import CodeBlock from "../CodeBlock.astro";
-import ComponentPreview from "../ComponentPreview.astro";
 import UsagePreview from "../UsagePreview.astro";
 import DoDont from "../DoDont.astro";
+import WhenToUse from "../WhenToUse.astro";
+import ContentRules from "../ContentRules.astro";
+import A11yNotes from "../A11yNotes.astro";
 import { annotationDemoCss } from "../../demos/annotation";
 import {
   listboxAnatomyTree,
+  listboxDoDisabledTree,
+  listboxDoHorizontalShortTree,
+  listboxDoMultipleFiltersTree,
+  listboxDoNaturalOrderTree,
   listboxDontActionsTree,
+  listboxDontAlphabeticalDaysTree,
+  listboxDontHorizontalLongTree,
+  listboxDontMissingTree,
+  listboxDontSingleFiltersTree,
   listboxHorizontalTree,
   listboxMultipleTree,
   listboxPlainTree,
   listboxSingleTree,
 } from "../../demos/listbox";
-import { getLocale, useTranslations } from "../../i18n";
+import { getLocale, tList, useTranslations } from "../../i18n";
 import "@skryensya/core/components/listbox.css";
 /* The anatomy diagram is an Annotated frame, so this page needs its sheet. */
 import "@skryensya/core/components/annotation.css";
@@ -42,7 +52,6 @@ const explain = (option: string, values: readonly string[]) =>
 <ComponentPageShell
   title="Listbox"
   description={t("listbox.description")}
-  badge={t("listbox.betaBadge")}
   contractId="listbox"
   styleGroups={[{ file: "components/listbox.css", probe: "sk-listbox" }]}
   testFiles={[
@@ -71,27 +80,10 @@ const explain = (option: string, values: readonly string[]) =>
       stageMinBlockSize="12rem"
     />
 
-    <h3>{t("listbox.showcaseTitle")}</h3>
-    <p set:html={t("listbox.showcaseBody")} />
-
-    <h3>{t("listbox.singleTitle")}</h3>
-    <p set:html={t("listbox.singleBody")} />
-    <UsagePreview tree={listboxSingleTree(t)} />
-
-    <h3>{t("listbox.multipleTitle")}</h3>
-    <p set:html={t("listbox.multipleBody")} />
-    <UsagePreview tree={listboxMultipleTree(t)} />
-
-    <h3>{t("listbox.horizontalTitle")}</h3>
-    <p set:html={t("listbox.horizontalBody")} />
-    <UsagePreview tree={listboxHorizontalTree(t)} />
-
-    <h3>{t("listbox.keyboardTitle")}</h3>
-    <ul>
-      <li set:html={t("listbox.keyboardItem1")} />
-      <li set:html={t("listbox.keyboardItem2")} />
-      <li set:html={t("listbox.keyboardItem3")} />
-    </ul>
+    <h3>{t("component.examplesTitle")}</h3>
+    <UsagePreview tree={listboxSingleTree(t)} title={t("listbox.singleTitle")} description={t("listbox.singleBody")} />
+    <UsagePreview tree={listboxMultipleTree(t)} title={t("listbox.multipleTitle")} description={t("listbox.multipleBody")} />
+    <UsagePreview tree={listboxHorizontalTree(t)} title={t("listbox.horizontalTitle")} description={t("listbox.horizontalBody")} />
 
     <h3>{t("listbox.eventsTitle")}</h3>
     <p set:html={t("listbox.eventsBody")} />
@@ -100,28 +92,52 @@ const explain = (option: string, values: readonly string[]) =>
 
     <h3>{t("component.anatomy")}</h3>
     <p set:html={t("listbox.anatomyBody")} />
-    <ComponentPreview
-      tree={listboxAnatomyTree(t)}
-      css={annotationDemoCss}
-      label={t("listbox.anatomyPreviewLabel")}
-      screens={false}
-      hideSource
-      chrome={false}
-    />
+    <UsagePreview tree={listboxAnatomyTree(t)} css={annotationDemoCss} label={t("listbox.anatomyPreviewLabel")} bare />
   </Fragment>
 
   <Fragment slot="guidelines">
     <p class="lede" set:html={t("listbox.guidelinesLede")} />
-    <h3>{t("listbox.whenTitle")}</h3>
-    <ul>
-      <li set:html={t("listbox.whenItem1")} />
-      <li set:html={t("listbox.whenItem2")} />
-      <li set:html={t("listbox.whenItem3")} />
-    </ul>
+    <WhenToUse use={tList(t, "listbox.when")} avoid={tList(t, "listbox.whenNot")} />
     <DoDont
       title={t("listbox.dd.actions.title")}
       do={{ tree: listboxPlainTree(t), caption: t("listbox.dd.actions.do") }}
       dont={{ tree: listboxDontActionsTree(t), caption: t("listbox.dd.actions.dont") }}
+    />
+    <DoDont
+      title={t("listbox.dd.multiple.title")}
+      do={{ tree: listboxDoMultipleFiltersTree(t), caption: t("listbox.dd.multiple.do") }}
+      dont={{ tree: listboxDontSingleFiltersTree(t), caption: t("listbox.dd.multiple.dont") }}
+    />
+    <DoDont
+      title={t("listbox.dd.horizontal.title")}
+      do={{ tree: listboxDoHorizontalShortTree(t), caption: t("listbox.dd.horizontal.do") }}
+      dont={{ tree: listboxDontHorizontalLongTree(t), caption: t("listbox.dd.horizontal.dont") }}
+    />
+    <DoDont
+      title={t("listbox.dd.disabled.title")}
+      do={{ tree: listboxDoDisabledTree(t), caption: t("listbox.dd.disabled.do") }}
+      dont={{ tree: listboxDontMissingTree(t), caption: t("listbox.dd.disabled.dont") }}
+    />
+    <DoDont
+      title={t("listbox.dd.order.title")}
+      do={{ tree: listboxDoNaturalOrderTree(t), caption: t("listbox.dd.order.do") }}
+      dont={{ tree: listboxDontAlphabeticalDaysTree(t), caption: t("listbox.dd.order.dont") }}
+    />
+    <ContentRules items={tList(t, "listbox.content")} />
+  </Fragment>
+
+  <Fragment slot="a11y">
+    <A11yNotes
+      intro={t("listbox.a11yIntro")}
+      does={tList(t, "listbox.a11yDoes")}
+      yours={tList(t, "listbox.a11yYours")}
+      keys={[
+        { keys: ["↑", "↓"], action: t("listbox.key.arrows") },
+        { keys: [t("component.key.home"), t("component.key.end")], action: t("listbox.key.homeEnd") },
+        { keys: [t("component.key.space"), "Enter"], action: t("listbox.key.select") },
+        { keys: ["A–Z"], action: t("listbox.key.letter") },
+        { keys: ["Tab"], action: t("listbox.key.tab") },
+      ]}
     />
   </Fragment>
 </ComponentPageShell>

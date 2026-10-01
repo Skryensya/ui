@@ -265,3 +265,103 @@ export const loaderSingleTree = (t: Translate): UsageTree => ({
   signature: "Loader",
   options: { label: t("demo.loader.dd.loading") },
 });
+
+/* Usage guide: the wait said in words beside the mark, against a mark alone that says nothing. */
+export const loaderDoTextTree = (t: Translate): UsageTree => ({
+  contract: "layout",
+  signature: "Inline",
+  options: { gap: "sm" },
+  attrs: { role: "status" },
+  children: [
+    { contract: "loader", signature: "Loader", options: { size: "sm" } },
+    { contract: "typography", signature: "Text", children: t("demo.loader.dd.invoices") },
+  ],
+});
+
+export const loaderDontAloneTree: UsageTree = { contract: "loader", signature: "Loader", options: { size: "lg" } };
+
+/* Usage guide: a count that is known shown as a bar, against a spinner that hides it in words. */
+export const loaderDoProgressTree = (t: Translate): UsageTree => ({
+  contract: "layout",
+  signature: "Stack",
+  options: { gap: "xs" },
+  attrs: { style: "inline-size: min(100%, 16rem)" },
+  children: [
+    { contract: "typography", signature: "Text", children: t("demo.loader.dd.files") },
+    { contract: "progress", signature: "Progress", options: { value: 30, label: t("demo.loader.dd.files") } },
+  ],
+});
+
+export const loaderDontProgressTree = (t: Translate): UsageTree => ({
+  contract: "layout",
+  signature: "Inline",
+  options: { gap: "sm" },
+  children: [
+    { contract: "loader", signature: "Loader", options: { size: "sm" } },
+    { contract: "typography", signature: "Text", children: t("demo.loader.dd.files") },
+  ],
+});
+
+/* Usage guide: inside a control, the loader is small and the button text says the action. */
+export const loaderDoControlTree = (t: Translate): UsageTree => ({
+  contract: "button",
+  signature: "Button.action",
+  options: { tone: "accent" },
+  children: {
+    contract: "layout",
+    signature: "Inline",
+    options: { gap: "xs", inlineAlign: "center" },
+    children: [
+      { contract: "loader", signature: "Loader", options: { size: "sm" } },
+      t("demo.loader.dd.saving"),
+    ],
+  },
+});
+
+export const loaderDontControlTree = (t: Translate): UsageTree => ({
+  contract: "button",
+  signature: "Button.action",
+  options: { tone: "accent" },
+  children: {
+    contract: "layout",
+    signature: "Inline",
+    options: { gap: "sm", inlineAlign: "center" },
+    children: [
+      { contract: "loader", signature: "Loader", options: { size: "lg" } },
+      t("demo.loader.dd.save"),
+    ],
+  },
+});
+
+/* Usage guide: if the incoming content has shape, skeleton it instead of showing a generic wait. */
+export const loaderDoShapeTree = (_t: Translate): UsageTree => ({
+  contract: "box",
+  signature: "Box",
+  options: { surface: "surface", border: "subtle", padding: "md" },
+  attrs: { style: "inline-size: min(100%, 16rem);" },
+  children: {
+    contract: "layout",
+    signature: "Stack",
+    options: { gap: "sm" },
+    children: [
+      { contract: "placeholder", signature: "Placeholder.block", options: { height: "4rem" } },
+      { contract: "placeholder", signature: "Placeholder.paragraph", options: { lines: 2 } },
+    ],
+  },
+});
+
+export const loaderDontShapeTree = (t: Translate): UsageTree => ({
+  contract: "box",
+  signature: "Box",
+  options: { surface: "surface", border: "subtle", padding: "md" },
+  attrs: { style: "inline-size: min(100%, 16rem); min-block-size: 9rem; display: grid; place-items: center;" },
+  children: {
+    contract: "layout",
+    signature: "Stack",
+    options: { gap: "sm", align: "center" },
+    children: [
+      { contract: "loader", signature: "Loader", options: { size: "lg" } },
+      { contract: "typography", signature: "Text", options: { size: "sm", tone: "secondary" }, children: t("demo.loader.dd.card") },
+    ],
+  },
+});

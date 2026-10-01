@@ -9,9 +9,11 @@ import "@skryensya/core/components/annotation.css";
 import ComponentPageShell from "./ComponentPageShell.astro";
 import AppearanceMenu from "../AppearanceMenu.astro";
 import CodeBlock from "../CodeBlock.astro";
-import ComponentPreview from "../ComponentPreview.astro";
 import UsagePreview from "../UsagePreview.astro";
 import DoDont from "../DoDont.astro";
+import WhenToUse from "../WhenToUse.astro";
+import ContentRules from "../ContentRules.astro";
+import A11yNotes from "../A11yNotes.astro";
 import {
   nestedToolbarTree,
   toolbarAnatomyTree,
@@ -21,7 +23,7 @@ import {
   toolbarTree,
 } from "../../demos/toolbar";
 import { annotationDemoCss } from "../../demos/annotation";
-import { getLocale, useTranslations } from "../../i18n";
+import { getLocale, tList, useTranslations } from "../../i18n";
 
 const t = useTranslations(getLocale(Astro.url));
 
@@ -41,7 +43,6 @@ const explain = (option: string, values: readonly string[]) =>
 <ComponentPageShell
   title="Toolbar"
   description={t("toolbarPage.description")}
-  badge={t("toolbarPage.betaBadge")}
   contractId="toolbar"
   appearanceTargetSelector=".sk-toolbar"
 >
@@ -50,7 +51,7 @@ const explain = (option: string, values: readonly string[]) =>
   </Fragment>
 
   <Fragment slot="usage">
-    <p class="lede" set:html={t("toolbarPage.description")} />
+    <p class="lede" set:html={t("toolbarPage.lede")} />
 
     <UsagePreview
       tree={toolbarTree(t)}
@@ -61,34 +62,28 @@ const explain = (option: string, values: readonly string[]) =>
       stageMinBlockSize="12rem"
     />
 
-    <h3>{t("toolbarPage.showcaseTitle")}</h3>
-    <p set:html={t("toolbarPage.showcaseBody")} />
-    <ComponentPreview tree={toolbarTree(t)} js={js} label="Toolbar" viewport="auto" />
+    <h3>{t("component.examplesTitle")}</h3>
+    <UsagePreview tree={toolbarTree(t)} title={t("toolbarPage.basicTitle")} description={t("toolbarPage.basicBody")} />
+    <UsagePreview tree={nestedToolbarTree(t)} title={t("toolbarPage.compositeTitle")} description={t("toolbarPage.compositeBody")} />
 
     <h3>{t("component.contractNotesTitle")}</h3>
-    <p set:html={t("toolbarPage.contractBody")} />
-
-    <h3>{t("toolbarPage.compositeTitle")}</h3>
-    <p set:html={t("toolbarPage.compositeBody")} />
-    <ComponentPreview tree={nestedToolbarTree(t)} js={js} label={t("toolbarPage.compositeLabel")} viewport="auto" />
-
-    <h3>{t("toolbarPage.wysiwygTitle")}</h3>
-    <p set:html={t("toolbarPage.wysiwygBody")} />
+    <ul>
+      {tList(t, "toolbarPage.contract").map((item) => <li set:html={item} />)}
+    </ul>
 
     <h3>{t("component.anatomy")}</h3>
     <p set:html={t("toolbarPage.anatomyBody")} />
-    <ComponentPreview
+    <UsagePreview
       tree={toolbarAnatomyTree(t)}
       css={annotationDemoCss}
       label={t("toolbarPage.anatomyPreviewLabel")}
-      screens={false}
-      hideSource
-      chrome={false}
+      bare
     />
   </Fragment>
 
   <Fragment slot="guidelines">
     <p class="lede" set:html={t("toolbarPage.guidelinesLede")} />
+    <WhenToUse use={tList(t, "toolbarPage.when")} avoid={tList(t, "toolbarPage.whenNot")} />
     <DoDont
       title={t("toolbarPage.dd.group.title")}
       do={{ tree: toolbarTree(t), caption: t("toolbarPage.dd.group.do") }}
@@ -99,6 +94,7 @@ const explain = (option: string, values: readonly string[]) =>
       do={{ tree: toolbarDoSingleTree(t), caption: t("toolbarPage.dd.single.do") }}
       dont={{ tree: toolbarDontSingleTree(t), caption: t("toolbarPage.dd.single.dont") }}
     />
+    <ContentRules items={tList(t, "toolbarPage.content")} />
   </Fragment>
 
   <Fragment slot="install">
@@ -106,6 +102,15 @@ const explain = (option: string, values: readonly string[]) =>
   </Fragment>
 
   <Fragment slot="a11y">
-    <p set:html={t("toolbarPage.a11yBody")} />
+    <A11yNotes
+      intro={t("toolbarPage.a11yIntro")}
+      does={tList(t, "toolbarPage.a11yDoes")}
+      yours={tList(t, "toolbarPage.a11yYours")}
+      keys={[
+        { keys: ["Tab", "Shift+Tab"], action: t("toolbarPage.key.tab") },
+        { keys: ["←", "→"], action: t("toolbarPage.key.arrows") },
+        { keys: [t("component.key.home"), t("component.key.end")], action: t("toolbarPage.key.homeEnd") },
+      ]}
+    />
   </Fragment>
 </ComponentPageShell>

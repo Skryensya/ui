@@ -5,9 +5,11 @@ import "@skryensya/core/components/tree-view.css";
 import "@skryensya/core/components/annotation.css";
 import ComponentPageShell from "./ComponentPageShell.astro";
 import CodeBlock from "../CodeBlock.astro";
-import ComponentPreview from "../ComponentPreview.astro";
 import UsagePreview from "../UsagePreview.astro";
 import DoDont from "../DoDont.astro";
+import WhenToUse from "../WhenToUse.astro";
+import ContentRules from "../ContentRules.astro";
+import A11yNotes from "../A11yNotes.astro";
 import {
   treeViewAnatomyTree,
   treeViewDisabledTree,
@@ -19,7 +21,7 @@ import {
   treeViewMultipleTree,
 } from "../../demos/tree-view";
 import { annotationDemoCss } from "../../demos/annotation";
-import { getLocale, useTranslations } from "../../i18n";
+import { getLocale, tList, useTranslations } from "../../i18n";
 
 const t = useTranslations(getLocale(Astro.url));
 
@@ -40,13 +42,12 @@ const explain = (option: string, values: readonly string[]) =>
 <ComponentPageShell
   title="TreeView"
   description={t("treeViewPage.description")}
-  badge={t("treeViewPage.betaBadge")}
   contractId="tree-view"
   styleGroups={[
     { file: "components/tree-view.css", probe: "sk-tree-view", title: "TreeView" },
     { file: "patterns/state-layer.css", probe: "sk-interactive", title: "Heredados de State layer" },
   ]}
-  testFiles={["packages/vanilla/src/components/tree-view.test.ts", "packages/react/src/components/tree-view.test.tsx"]}}
+  testFiles={["packages/vanilla/src/components/tree-view.test.ts", "packages/react/src/components/tree-view.test.tsx"]}
 >
   <Fragment slot="usage">
     <p class="lede" set:html={t("treeViewPage.lede")} />
@@ -60,62 +61,37 @@ const explain = (option: string, values: readonly string[]) =>
       stageMinBlockSize="16rem"
     />
 
-    <h3>{t("treeViewPage.showcaseTitle")}</h3>
-    <p set:html={t("treeViewPage.showcaseBody")} />
-    <h3>{t("treeViewPage.minimalTitle")}</h3>
-    <p set:html={t("treeViewPage.minimalBody")} />
-    <UsagePreview tree={treeViewMinimalTree(t)} />
-
-    <h3>{t("treeViewPage.initialTitle")}</h3>
-    <p set:html={t("treeViewPage.initialBody")} />
-    <UsagePreview tree={treeViewInitialTree(t)} />
-
-    <h3>{t("treeViewPage.multipleTitle")}</h3>
-    <p set:html={t("treeViewPage.multipleBody")} />
-    <UsagePreview tree={treeViewMultipleTree(t)} />
-
-    <h3>{t("treeViewPage.disabledTitle")}</h3>
-    <p set:html={t("treeViewPage.disabledBody")} />
-    <UsagePreview tree={treeViewDisabledTree(t)} />
-
-    <h3>{t("treeViewPage.eventsTitle")}</h3>
-    <p set:html={t("treeViewPage.eventsBody")} />
-    <ComponentPreview
-      tree={treeViewEventsTree(t)}
-      js={treeViewEventsScript}
-      previewScript={treeViewEventsScript}
-      label={t("treeViewPage.eventsLabel")}
-    />
+    <h3>{t("component.examplesTitle")}</h3>
+    <UsagePreview tree={treeViewMinimalTree(t)} title={t("treeViewPage.minimalTitle")} description={t("treeViewPage.minimalBody")} />
+    <UsagePreview tree={treeViewInitialTree(t)} title={t("treeViewPage.initialTitle")} description={t("treeViewPage.initialBody")} />
+    <UsagePreview tree={treeViewMultipleTree(t)} title={t("treeViewPage.multipleTitle")} description={t("treeViewPage.multipleBody")} />
+    <UsagePreview tree={treeViewDisabledTree(t)} title={t("treeViewPage.disabledTitle")} description={t("treeViewPage.disabledBody")} />
+    <UsagePreview tree={treeViewEventsTree(t)} script={treeViewEventsScript} title={t("treeViewPage.eventsTitle")} description={t("treeViewPage.eventsBody")} />
 
     <h3>{t("component.contractNotesTitle")}</h3>
     <ul>
-      <li set:html={t("treeViewPage.contractItem1")} />
-      <li set:html={t("treeViewPage.contractItem2")} />
-      <li set:html={t("treeViewPage.contractItem3")} />
-      <li set:html={t("treeViewPage.contractItem4")} />
-      <li set:html={t("treeViewPage.contractItem5")} />
-      <li set:html={t("treeViewPage.contractItem6")} />
+      {tList(t, "treeViewPage.contract").map((item) => <li set:html={item} />)}
     </ul>
 
     <h3>{t("component.anatomy")}</h3>
     <p set:html={t("treeViewPage.anatomyBody")} />
-    <ComponentPreview
+    <UsagePreview
       tree={treeViewAnatomyTree(t)}
       css={annotationDemoCss}
       label={t("treeViewPage.anatomyPreviewLabel")}
-      screens={false}
-      hideSource
-      chrome={false}
+      bare
     />
   </Fragment>
 
   <Fragment slot="guidelines">
     <p class="lede" set:html={t("treeViewPage.guidelinesLede")} />
+    <WhenToUse use={tList(t, "treeViewPage.when")} avoid={tList(t, "treeViewPage.whenNot")} />
     <DoDont
       title={t("treeViewPage.dd.nested.title")}
       do={{ tree: treeViewMinimalTree(t), caption: t("treeViewPage.dd.nested.do") }}
       dont={{ tree: treeViewDontFlatTree(t), caption: t("treeViewPage.dd.nested.dont") }}
     />
+    <ContentRules items={tList(t, "treeViewPage.content")} />
   </Fragment>
 
   <Fragment slot="install">
@@ -125,6 +101,17 @@ const explain = (option: string, values: readonly string[]) =>
   </Fragment>
 
   <Fragment slot="a11y">
-    <p set:html={t("treeViewPage.a11yBody")} />
+    <A11yNotes
+      intro={t("treeViewPage.a11yIntro")}
+      does={tList(t, "treeViewPage.a11yDoes")}
+      yours={tList(t, "treeViewPage.a11yYours")}
+      keys={[
+        { keys: ["↑", "↓"], action: t("treeViewPage.key.updown") },
+        { keys: ["→"], action: t("treeViewPage.key.right") },
+        { keys: ["←"], action: t("treeViewPage.key.left") },
+        { keys: [t("component.key.home"), t("component.key.end")], action: t("treeViewPage.key.homeEnd") },
+        { keys: ["Enter", t("component.key.space")], action: t("treeViewPage.key.select") },
+      ]}
+    />
   </Fragment>
 </ComponentPageShell>

@@ -45,6 +45,23 @@ describe("an agent's operations", () => {
     expect(childrenOf(row, "children").map((child) => child.id)).toEqual(["a", "b"]);
   });
 
+  it.each(["style", "class", "className", "onclick", "onClick", "STYLE"])("refuses %s in an inserted tree, including nested nodes", (attribute) => {
+    const resolved = resolveAgentOperations(site(), [{ type: "page", page: "home", operations: [{ type: "insert", at: { parent: "s", slot: "children", index: 0 }, tree: {
+      contract: "layout", signature: "Stack", children: [{ contract: "typography", signature: "Text", attrs: { [attribute]: "arbitrary" }, children: "Content" }],
+    } }] }], counterIds("unsafe"));
+    expect(resolved.ok).toBe(true);
+    if (resolved.ok) {
+      const result = applySiteAll(site(), resolved.value);
+      expect(result.ok).toBe(false);
+      if (!result.ok) expect(result.reason).toContain("never authored");
+    }
+  });
+
+  it("refuses invented insertion options and wrapper options rather than granting a tree extra authority", () => {
+    expect(() => run(site(), [{ type: "page", page: "home", operations: [{ type: "insert", at: { parent: "s", slot: "children", index: 0 }, tree: { contract: "typography", signature: "Text", options: { width: "200px" }, children: "Content" } }] }])).toThrow();
+    expect(() => run(site(), [{ type: "page", page: "home", operations: [{ type: "wrap", children: ["b1"], with: { contract: "layout", signature: "Inline", options: { padding: "200px" } } }] }])).toThrow();
+  });
+
   it("inserts a usage tree, minting its identities", () => {
     const next = run(site(), [
       {

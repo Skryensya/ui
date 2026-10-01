@@ -1335,70 +1335,6 @@ describe("comment-thread: CommentVote in like style", () => {
   });
 });
 
-describe("component-preview: labelled demo with composed source", () => {
-  const preview = (overrides: Partial<UsageTree> = {}): UsageTree =>
-    ({
-      contract: "component-preview",
-      signature: "ComponentPreview.bare",
-      slots: {
-        title: "Button",
-        stage: "demo",
-        code: {
-          contract: "code-preview",
-          signature: "CodePreview",
-          children: "const x = 1;",
-        },
-      },
-      ...overrides,
-    }) as UsageTree;
-
-  it("requires title, stage, and a CodePreview", () => {
-    expect(rules({ contract: "component-preview", signature: "ComponentPreview.bare" })).toEqual(
-      expect.arrayContaining(["missing-required-slot"]),
-    );
-    expect(validateUsageTree(preview()).valid).toBe(true);
-  });
-
-  it("accepts an optional note and CodePreview.density", () => {
-    expect(
-      validateUsageTree(
-        preview({
-          slots: {
-            title: "Button",
-            note: "disabled",
-            stage: "demo",
-            code: {
-              contract: "code-preview",
-              signature: "CodePreview.density",
-              slots: {
-                label: "Fuente",
-                condensed: "short",
-                full: "long",
-                condensedLabel: "Condensed",
-                fullLabel: "Full",
-              },
-            },
-          },
-        }),
-      ).valid,
-    ).toBe(true);
-  });
-
-  it("publishes mount, document preference events, and composes code-preview sheets", () => {
-    const contract = getContract("component-preview")!;
-    expect(contract.signatures["ComponentPreview.bare"].mount).toBe("data-sk-component-preview");
-    expect(contract.events).toEqual({
-      bindingChange: "sk:componentpreviewbindingchange",
-      screenChange: "sk:componentpreviewscreenchange",
-    });
-
-    const { sheets, unplaced } = sheetsForTree(preview());
-    expect(sheets).toContain("@skryensya/core/components/component-preview.css");
-    expect(sheets).toContain("@skryensya/core/components/code-preview.css");
-    expect(unplaced).toEqual([]);
-  });
-});
-
 describe("content: transient toast in a live region", () => {
   const toast = (overrides: Partial<UsageTree> = {}): UsageTree =>
     ({
@@ -1774,7 +1710,14 @@ describe("fade-edge: paint-only clipped edge", () => {
     expect(getContract("fade-edge")!.hookSheets ?? []).toEqual([]);
     expect(getContract("fade-edge")!.hooks).toEqual([
       "--sk-fade-edge-color",
+      "--sk-fade-edge-gutter-block",
+      "--sk-fade-edge-gutter-inline",
+      "--sk-fade-edge-axis",
+      "--sk-fade-edge-mask-far",
+      "--sk-fade-edge-mask-near",
       "--sk-fade-edge-mask-ramp",
+      "--sk-fade-edge-ramp-far",
+      "--sk-fade-edge-ramp-near",
       "--sk-fade-edge-ramp",
       "--sk-fade-edge-size",
     ]);

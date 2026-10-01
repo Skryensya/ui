@@ -5,13 +5,17 @@ import { annotationDemoCss } from "../../demos/annotation";
 import ComponentPageShell from "./ComponentPageShell.astro";
 import AppearanceMenu from "../AppearanceMenu.astro";
 import CodeBlock from "../CodeBlock.astro";
-import ComponentPreview from "../ComponentPreview.astro";
 import UsagePreview from "../UsagePreview.astro";
 import DoDont from "../DoDont.astro";
+import WhenToUse from "../WhenToUse.astro";
+import ContentRules from "../ContentRules.astro";
+import A11yNotes from "../A11yNotes.astro";
 import {
   inputAnatomyTree,
+  inputDoFormatTree,
   inputDoLabelTree,
   inputDoLongTree,
+  inputDontFormatTree,
   inputDontLongTree,
   inputDontPlaceholderTree,
   inputFormatTree,
@@ -19,8 +23,10 @@ import {
   inputTree,
   textareaTree,
 } from "../../demos/input";
-import { getLocale, useTranslations } from "../../i18n";
+import { getLocale, tList, useTranslations } from "../../i18n";
 import { variantsTree } from "../../demos/variants";
+/* Do/Don't specimens put fields on a small surface so labels, hints and typed values are visible. */
+import "@skryensya/core/patterns/box.css";
 
 const install = `pnpm add @skryensya/core @skryensya/react`;
 const t = useTranslations(getLocale(Astro.url));
@@ -72,33 +78,18 @@ const explain = (option: string, values: readonly string[]) =>
       target={["children"]}
     />
 
-    <h3>{t("inputPage.showcaseTitle")}</h3>
-    <p set:html={t("inputPage.showcaseBody")} />
-    <UsagePreview tree={inputTree(t)} />
-    <p set:html={t("inputPage.densityBody")} />
-
-    <h3>{t("inputPage.oneClassTitle")}</h3>
-    <p set:html={t("inputPage.oneClassBody")} />
-    <UsagePreview tree={textareaTree(t)} />
-    <h3>{t("inputPage.formFieldTitle")}</h3>
-    <p set:html={t("inputPage.formFieldBody")} />
-
-    <h3>{t("inputPage.formatTitle")}</h3>
-    <p set:html={t("inputPage.formatBody")} />
-    <UsagePreview tree={inputFormatTree(t)} />
-    <p set:html={t("inputPage.formatCheckBody")} />
-    <p set:html={t("inputPage.formatMessageBody")} />
-
+    <h3>{t("component.examplesTitle")}</h3>
+    <UsagePreview tree={inputTree(t)} title={t("inputPage.basicTitle")} description={t("inputPage.basicBody")} storybookTitle="Components/Forms/Input" storybookStory="Default" />
+    <UsagePreview tree={textareaTree(t)} title={t("inputPage.textareaTitle")} description={t("inputPage.textareaBody")} />
+    <UsagePreview tree={inputFormatTree(t)} title={t("inputPage.formatTitle")} description={t("inputPage.formatBody")} storybookTitle="Components/Forms/Input" storybookStory="Format" />
     <h4>{t("inputPage.formatPhoneTitle")}</h4>
     <p set:html={t("inputPage.formatPhoneBody")} />
-    <p set:html={t("inputPage.formatPhoneUsage")} />
     <CodeBlock code={phoneSetup} label="TypeScript" />
-    <p set:html={t("inputPage.formatPhoneMissing")} />
-    <p set:html={t("inputPage.formatPhoneEvidence")} />
 
-    <h3>{t("inputPage.nativeTitle")}</h3>
-    <p set:html={t("inputPage.nativeBody")} />
-
+    <h3>{t("component.contractNotesTitle")}</h3>
+    <ul>
+      {tList(t, "inputPage.contract").map((item) => <li set:html={item} />)}
+    </ul>
     <p set:html={t("component.reactNote")} />
 
     <UsagePreview
@@ -109,18 +100,12 @@ const explain = (option: string, values: readonly string[]) =>
 
     <h3>{t("component.anatomy")}</h3>
     <p set:html={t("inputPage.anatomyBody")} />
-    <ComponentPreview
-      tree={inputAnatomyTree(t)}
-      css={annotationDemoCss}
-      label={t("inputPage.anatomyPreviewLabel")}
-      screens={false}
-      hideSource
-      chrome={false}
-    />
+    <UsagePreview tree={inputAnatomyTree(t)} css={annotationDemoCss} label={t("inputPage.anatomyPreviewLabel")} bare />
   </Fragment>
 
   <Fragment slot="guidelines">
     <p class="lede" set:html={t("inputPage.guidelinesLede")} />
+    <WhenToUse use={tList(t, "inputPage.when")} avoid={tList(t, "inputPage.whenNot")} />
     <DoDont
       title={t("inputPage.dd.label.title")}
       do={{ tree: inputDoLabelTree(t), caption: t("inputPage.dd.label.do") }}
@@ -131,10 +116,20 @@ const explain = (option: string, values: readonly string[]) =>
       do={{ tree: inputDoLongTree(t), caption: t("inputPage.dd.long.do") }}
       dont={{ tree: inputDontLongTree(t), caption: t("inputPage.dd.long.dont") }}
     />
+    <DoDont
+      title={t("inputPage.dd.format.title")}
+      do={{ tree: inputDoFormatTree(t), caption: t("inputPage.dd.format.do") }}
+      dont={{ tree: inputDontFormatTree(t), caption: t("inputPage.dd.format.dont") }}
+    />
+    <ContentRules items={tList(t, "inputPage.content")} />
   </Fragment>
 
   <Fragment slot="install">
     <CodeBlock code={install} label="terminal" />
     <CodeBlock code={css} label="CSS" />
+  </Fragment>
+
+  <Fragment slot="a11y">
+    <A11yNotes intro={t("inputPage.a11yIntro")} does={tList(t, "inputPage.a11yDoes")} yours={tList(t, "inputPage.a11yYours")} />
   </Fragment>
 </ComponentPageShell>

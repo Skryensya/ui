@@ -5,7 +5,10 @@ import "@skryensya/core/components/annotation.css";
 import ComponentPageShell from "./ComponentPageShell.astro";
 import AppearanceMenu from "../AppearanceMenu.astro";
 import CodeBlock from "../CodeBlock.astro";
-import ComponentPreview from "../ComponentPreview.astro";
+import UsagePreview from "../UsagePreview.astro";
+import WhenToUse from "../WhenToUse.astro";
+import ContentRules from "../ContentRules.astro";
+import A11yNotes from "../A11yNotes.astro";
 import {
   stateButtonAnatomyTree,
   stateButtonBasicTree,
@@ -13,7 +16,7 @@ import {
   stateButtonDemoScript,
   stateButtonThemeToggleTree,
 } from "../../demos/state-button";
-import { getLocale, useTranslations } from "../../i18n";
+import { getLocale, tList, useTranslations } from "../../i18n";
 import { annotationDemoCss } from "../../demos/annotation";
 
 const t = useTranslations(getLocale(Astro.url));
@@ -35,77 +38,39 @@ const styles = `@import "@skryensya/core/components/state-button.css";`;
   <Fragment slot="usage">
     <p class="lede" set:html={t("stateButtonPage.lede")} />
 
-    <h3>{t("stateButtonPage.showcaseTitle")}</h3>
-    <p set:html={t("stateButtonPage.showcaseBody")} />
-
-    <h3>{t("stateButtonPage.anatomyTitle")}</h3>
-    <p set:html={t("stateButtonPage.anatomyBody")} />
-    <ComponentPreview
-      tree={stateButtonBasicTree(t)}
-      previewScript={stateButtonDemoScript}
-      label="StateButton with three states"
-    />
-
-    <h3>{t("stateButtonPage.behaviorTitle")}</h3>
-    <p set:html={t("stateButtonPage.behaviorBody")} />
-
-    <h3>{t("stateButtonPage.variantTitle")}</h3>
-    <p set:html={t("stateButtonPage.variantBody")} />
-    <ComponentPreview
-      tree={stateButtonThemeToggleTree(t)}
-      previewScript={stateButtonDemoScript}
-      label="StateButton as theme toggle"
-    />
-
-    <h3>{t("stateButtonPage.useCaseThemeTitle")}</h3>
-    <p set:html={t("stateButtonPage.useCaseThemeBody")} />
-
-    <h3>{t("stateButtonPage.useCaseViewTitle")}</h3>
-    <p set:html={t("stateButtonPage.useCaseViewBody")} />
-
-    <h3>{t("stateButtonPage.useCaseCopyTitle")}</h3>
-    <p set:html={t("stateButtonPage.useCaseCopyBody")} />
-    <ComponentPreview
-      tree={stateButtonCopyTree(t)}
-      previewScript={stateButtonDemoScript}
-      label="StateButton for copy status"
-    />
+    <h3>{t("component.examplesTitle")}</h3>
+    <UsagePreview tree={stateButtonBasicTree(t)} script={stateButtonDemoScript} title={t("stateButtonPage.viewTitle")} description={t("stateButtonPage.viewBody")} />
+    <UsagePreview tree={stateButtonThemeToggleTree(t)} script={stateButtonDemoScript} title={t("stateButtonPage.themeTitle")} description={t("stateButtonPage.themeBody")} />
+    <UsagePreview tree={stateButtonCopyTree(t)} script={stateButtonDemoScript} title={t("stateButtonPage.copyTitle")} description={t("stateButtonPage.copyBody")} />
 
     <h3>{t("component.contractNotesTitle")}</h3>
     <ul>
-      <li set:html={t("stateButtonPage.contractItem1")} />
-      <li set:html={t("stateButtonPage.contractItem2")} />
-      <li set:html={t("stateButtonPage.contractItem3")} />
-      <li set:html={t("stateButtonPage.contractItem4")} />
+      {tList(t, "stateButtonPage.contract").map((item) => <li set:html={item} />)}
     </ul>
 
     <h3>{t("component.anatomy")}</h3>
     <p set:html={t("stateButtonPage.anatomyDiagramBody")} />
-    <ComponentPreview
+    <UsagePreview
       tree={stateButtonAnatomyTree(t)}
       css={annotationDemoCss}
       label={t("stateButtonPage.anatomyPreviewLabel")}
-      screens={false}
-      hideSource
-      chrome={false}
+      bare
     />
   </Fragment>
 
   <Fragment slot="guidelines">
     <p class="lede" set:html={t("stateButtonPage.guidelinesLede")} />
-    <h3>{t("stateButtonPage.whenTitle")}</h3>
-    <ul>
-      <li set:html={t("stateButtonPage.whenItem1")} />
-      <li set:html={t("stateButtonPage.whenItem2")} />
-      <li set:html={t("stateButtonPage.whenItem3")} />
-    </ul>
-    <h3>{t("stateButtonPage.avoidTitle")}</h3>
-    <ul>
-      <li set:html={t("stateButtonPage.avoidItem1")} />
-      <li set:html={t("stateButtonPage.avoidItem2")} />
-      <li set:html={t("stateButtonPage.avoidItem3")} />
-      <li set:html={t("stateButtonPage.avoidItem4")} />
-    </ul>
+    <WhenToUse use={tList(t, "stateButtonPage.when")} avoid={tList(t, "stateButtonPage.whenNot")} />
+    <ContentRules items={tList(t, "stateButtonPage.content")} />
+  </Fragment>
+
+  <Fragment slot="a11y">
+    <A11yNotes
+      intro={t("stateButtonPage.a11yIntro")}
+      does={tList(t, "stateButtonPage.a11yDoes")}
+      yours={tList(t, "stateButtonPage.a11yYours")}
+      keys={[{ keys: ["Enter", t("component.key.space")], action: t("stateButtonPage.key.run") }]}
+    />
   </Fragment>
 
   <Fragment slot="install">

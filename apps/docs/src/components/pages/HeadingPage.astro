@@ -1,27 +1,40 @@
 ---
 import "@skryensya/core/components/dialog.css";
 import "@skryensya/core/components/annotation.css";
+/* The Do/Don't specimens put heading examples on a bordered Box so the hierarchy labels are visible. */
+import "@skryensya/core/patterns/box.css";
 import ComponentPageShell from "./ComponentPageShell.astro";
 import CodeBlock from "../CodeBlock.astro";
-import ComponentPreview from "../ComponentPreview.astro";
 import UsagePreview from "../UsagePreview.astro";
 import DoDont from "../DoDont.astro";
+import WhenToUse from "../WhenToUse.astro";
+import ContentRules from "../ContentRules.astro";
+import A11yNotes from "../A11yNotes.astro";
+import { variantsTree } from "../../demos/variants";
 import {
   headingAnatomyTree,
   headingCompactTree,
   headingDisplayTree,
+  headingDoContentTree,
+  headingDoEyebrowTree,
+  headingDoLevelsTree,
+  headingDoOneH1Tree,
+  headingDoVisualSizeTree,
   headingDocumentTree,
+  headingDontContentTree,
+  headingDontEyebrowTree,
+  headingDontManyH1Tree,
+  headingDontSkipLevelTree,
+  headingDontVisualLevelTree,
   headingFlushTree,
   headingOutlineTree,
   headingPageTitleTree,
 } from "../../demos/typography";
-import { getLocale, useTranslations } from "../../i18n";
+import { getLocale, tList, useTranslations } from "../../i18n";
 import { annotationDemoCss } from "../../demos/annotation";
 
 const install = `pnpm add @skryensya/core @skryensya/react`;
 const t = useTranslations(getLocale(Astro.url));
-const explain = (option: string, values: readonly string[]) =>
-  Object.fromEntries(values.map((value) => [value, t(`heading.prop.${option}.${value}` as Parameters<typeof t>[0])]));
 ---
 
 <ComponentPageShell
@@ -42,81 +55,73 @@ const explain = (option: string, values: readonly string[]) =>
   <Fragment slot="usage">
     <p class="lede" set:html={t("heading.lede")} />
 
+    {/* No live control: `size` has thirteen values (four of them legacy aliases), `as` looks
+        identical at every value and `flush` is spacing. A scale shows the sizes side by side. */}
     <UsagePreview
-      tree={headingFlushTree(t)}
-      optionName="headingSize"
-      title={t("heading.prop.headingSize.title")}
-      description={t("heading.prop.headingSize.body")}
-      explain={explain("headingSize", ["display-lg", "display-md", "display-sm", "h1", "h2", "h3", "h4", "h5", "h6", "sm", "md", "lg", "display"])}
-      stageMinBlockSize="9rem"
+      tree={variantsTree(headingFlushTree(t), [{ label: "display-lg", options: { headingSize: "display-lg" } }, { label: "display-md", options: { headingSize: "display-md" } }, { label: "display-sm", options: { headingSize: "display-sm" } }, { label: "h1", options: { headingSize: "h1" } }, { label: "h2", options: { headingSize: "h2" } }, { label: "h3", options: { headingSize: "h3" } }, { label: "h4", options: { headingSize: "h4" } }], [], "1")}
+      title={t("heading.sizesTitle")}
+      description={t("heading.sizesBody")}
     />
 
-    <UsagePreview
-      tree={headingFlushTree(t)}
-      optionName="headingElement"
-      title={t("heading.prop.headingElement.title")}
-      description={t("heading.prop.headingElement.body")}
-      explain={explain("headingElement", ["h1", "h2", "h3", "h4", "h5", "h6"])}
-      stageMinBlockSize="9rem"
-    />
-
-    <UsagePreview
-      tree={headingFlushTree(t)}
-      optionName="flush"
-      title={t("heading.prop.flush.title")}
-      description={t("heading.prop.flush.body")}
-      explain={explain("flush", ["false", "true"])}
-      labels={{ false: t("heading.prop.flush.falseLabel"), true: t("heading.prop.flush.trueLabel") }}
-      stageMinBlockSize="9rem"
-    />
-
-    <h3>{t("heading.showcaseTitle")}</h3>
-    <p set:html={t("heading.showcaseBody")} />
-    <UsagePreview tree={headingDisplayTree(t)} title={t("heading.displayTitle")} description={t("heading.displayBody")} />
-    <UsagePreview tree={headingDocumentTree(t)} title={t("heading.documentTitle")} description={t("heading.documentBody")} />
-    <UsagePreview tree={headingPageTitleTree(t)} title={t("heading.pageTitleTitle")} description={t("heading.pageTitleBody")} />
-    <UsagePreview tree={headingOutlineTree(t)} title={t("heading.outlineTitle")} description={t("heading.outlineBody")} />
-    <UsagePreview tree={headingCompactTree(t)} title={t("heading.compactTitle")} description={t("heading.compactBody")} />
-
-    <p set:html={t("component.reactNote")} />
+    <h3>{t("component.examplesTitle")}</h3>
+    <UsagePreview tree={headingDisplayTree(t)} title={t("heading.displayTitle")} description={t("heading.displayBody")} storybookTitle="Components/Content/Heading" storybookStory="HeadingDisplay" />
+    <UsagePreview tree={headingDocumentTree(t)} title={t("heading.documentTitle")} description={t("heading.documentBody")} storybookTitle="Components/Content/Heading" storybookStory="HeadingDocument" />
+    <UsagePreview tree={headingPageTitleTree(t)} title={t("heading.pageTitleTitle")} description={t("heading.pageTitleBody")} storybookTitle="Components/Content/Heading" storybookStory="HeadingPageTitle" />
+    <UsagePreview tree={headingOutlineTree(t)} title={t("heading.outlineTitle")} description={t("heading.outlineBody")} storybookTitle="Components/Content/Heading" storybookStory="HeadingOutline" />
+    <UsagePreview tree={headingCompactTree(t)} title={t("heading.compactTitle")} description={t("heading.compactBody")} storybookTitle="Components/Content/Heading" storybookStory="HeadingCompact" />
 
     <h3>{t("component.contractNotesTitle")}</h3>
     <ul>
-      <li set:html={t("heading.contractItem1")} />
-      <li set:html={t("heading.contractItem2")} />
-      <li set:html={t("heading.contractItem3")} />
-      <li set:html={t("heading.contractItem4")} />
-      <li set:html={t("heading.contractItem5")} />
-      <li set:html={t("heading.contractItem6")} />
+      {tList(t, "heading.contract").map((item) => <li set:html={item} />)}
     </ul>
+    <p set:html={t("component.reactNote")} />
 
     <h3>{t("component.anatomy")}</h3>
     <p set:html={t("heading.anatomyBody")} />
-    <ComponentPreview
-      tree={headingAnatomyTree(t)}
-      css={annotationDemoCss}
-      label={t("heading.anatomyPreviewLabel")}
-      screens={false}
-      hideSource
-      chrome={false}
-    />
+    <UsagePreview tree={headingAnatomyTree(t)} css={annotationDemoCss} label={t("heading.anatomyPreviewLabel")} bare />
   </Fragment>
 
   <Fragment slot="guidelines">
     <p class="lede" set:html={t("heading.guidelinesLede")} />
+    <WhenToUse use={tList(t, "heading.when")} avoid={tList(t, "heading.whenNot")} />
     <DoDont
       title={t("heading.dd.level.title")}
-      do={{ tree: headingOutlineTree(t), caption: t("heading.dd.level.do") }}
-      dont={{ tree: headingDisplayTree(t), caption: t("heading.dd.level.dont") }}
+      do={{ tree: headingDoLevelsTree(t), caption: t("heading.dd.level.do") }}
+      dont={{ tree: headingDontSkipLevelTree(t), caption: t("heading.dd.level.dont") }}
+    />
+    <DoDont
+      title={t("heading.dd.h1.title")}
+      do={{ tree: headingDoOneH1Tree(t), caption: t("heading.dd.h1.do") }}
+      dont={{ tree: headingDontManyH1Tree(t), caption: t("heading.dd.h1.dont") }}
+    />
+    <DoDont
+      title={t("heading.dd.visual.title")}
+      do={{ tree: headingDoVisualSizeTree(t), caption: t("heading.dd.visual.do") }}
+      dont={{ tree: headingDontVisualLevelTree(t), caption: t("heading.dd.visual.dont") }}
+    />
+    <DoDont
+      title={t("heading.dd.eyebrow.title")}
+      do={{ tree: headingDoEyebrowTree(t), caption: t("heading.dd.eyebrow.do") }}
+      dont={{ tree: headingDontEyebrowTree(t), caption: t("heading.dd.eyebrow.dont") }}
+    />
+    <DoDont
+      title={t("heading.dd.content.title")}
+      do={{ tree: headingDoContentTree(t), caption: t("heading.dd.content.do") }}
+      dont={{ tree: headingDontContentTree(t), caption: t("heading.dd.content.dont") }}
     />
     <DoDont
       title={t("heading.dd.compact.title")}
       do={{ tree: headingCompactTree(t), caption: t("heading.dd.compact.do") }}
       dont={{ tree: headingPageTitleTree(t), caption: t("heading.dd.compact.dont") }}
     />
+    <ContentRules items={tList(t, "heading.content")} />
   </Fragment>
 
   <Fragment slot="install">
     <CodeBlock code={install} label="terminal" />
+  </Fragment>
+
+  <Fragment slot="a11y">
+    <A11yNotes intro={t("heading.a11yIntro")} does={tList(t, "heading.a11yDoes")} yours={tList(t, "heading.a11yYours")} />
   </Fragment>
 </ComponentPageShell>

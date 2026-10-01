@@ -9,10 +9,13 @@ import "@skryensya/core/components/table.css";
 import ComponentPageShell from "./ComponentPageShell.astro";
 import AppearanceMenu from "../AppearanceMenu.astro";
 import CodeBlock from "../CodeBlock.astro";
-import ComponentPreview from "../ComponentPreview.astro";
+import UsagePreview from "../UsagePreview.astro";
+import WhenToUse from "../WhenToUse.astro";
+import ContentRules from "../ContentRules.astro";
+import A11yNotes from "../A11yNotes.astro";
 import "@skryensya/core/components/annotation.css";
 import { windowAnatomyCss, windowAnatomyTree, windowFixedTree, windowTree } from "../../demos/window";
-import { getLocale, useTranslations } from "../../i18n";
+import { getLocale, tList, useTranslations } from "../../i18n";
 
 const t = useTranslations(getLocale(Astro.url));
 
@@ -22,12 +25,6 @@ const js = `import { mountIcons } from "@skryensya/vanilla/icon";
 import { lucideIcons } from "@skryensya/icons-lucide";
 
 mountIcons(document, lucideIcons);`;
-
-const keys = [
-  ["← → ↑ ↓", "window.key.arrows"],
-  ["Esc", "window.key.escape"],
-  ["2 × click", "window.key.dblclick"],
-] as const;
 ---
 
 <ComponentPageShell
@@ -48,36 +45,24 @@ const keys = [
   <Fragment slot="usage">
     <p class="lede" set:html={t("windowPage.lede")} />
 
-    <h3>{t("windowPage.showcaseTitle")}</h3>
-    <p set:html={t("windowPage.showcaseBody")} />
-    <ComponentPreview tree={windowTree(t)} js={js} label="Window" viewport="overlay" />
-
-    <h3>{t("windowPage.fixedTitle")}</h3>
-    <p set:html={t("windowPage.fixedBody")} />
-    <ComponentPreview tree={windowFixedTree(t)} js={js} label={t("windowPage.fixedLabel")} viewport="overlay" />
+    <h3>{t("component.examplesTitle")}</h3>
+    <UsagePreview tree={windowTree(t)} title={t("windowPage.freeTitle")} description={t("windowPage.freeBody")} viewport="overlay" />
+    <UsagePreview tree={windowFixedTree(t)} title={t("windowPage.fixedTitle")} description={t("windowPage.fixedBody")} viewport="overlay" />
 
     <h3>{t("component.contractNotesTitle")}</h3>
-    <p set:html={t("windowPage.contractBody")} />
+    <ul>
+      {tList(t, "windowPage.contract").map((item) => <li set:html={item} />)}
+    </ul>
 
     <h3>{t("component.anatomy")}</h3>
     <p set:html={t("windowPage.anatomyBody")} />
-    <ComponentPreview
-      tree={windowAnatomyTree(t)}
-      css={windowAnatomyCss}
-      label={t("windowPage.anatomyPreviewLabel")}
-      screens={false}
-      hideSource
-      chrome={false}
-    />
+    <UsagePreview tree={windowAnatomyTree(t)} css={windowAnatomyCss} label={t("windowPage.anatomyPreviewLabel")} bare />
   </Fragment>
 
   <Fragment slot="guidelines">
     <p class="lede" set:html={t("windowPage.guidelinesLede")} />
-    <ul>
-      <li set:html={t("windowPage.guide.item1")} />
-      <li set:html={t("windowPage.guide.item2")} />
-      <li set:html={t("windowPage.guide.item3")} />
-    </ul>
+    <WhenToUse use={tList(t, "windowPage.when")} avoid={tList(t, "windowPage.whenNot")} />
+    <ContentRules items={tList(t, "windowPage.content")} />
   </Fragment>
 
   <Fragment slot="install">
@@ -85,21 +70,15 @@ const keys = [
   </Fragment>
 
   <Fragment slot="a11y">
-    <p set:html={t("windowPage.a11yBody")} />
-    <h3>{t("windowPage.keyboardTitle")}</h3>
-    <div class="sk-table-scroll">
-      <table class="sk-table">
-        <tbody class="sk-table__body">
-          {
-            keys.map(([combo, key]) => (
-              <tr class="sk-table__row">
-                <th class="sk-table__header" scope="row"><kbd>{combo}</kbd></th>
-                <td class="sk-table__cell" set:html={t(key)} />
-              </tr>
-            ))
-          }
-        </tbody>
-      </table>
-    </div>
+    <A11yNotes
+      intro={t("windowPage.a11yIntro")}
+      does={tList(t, "windowPage.a11yDoes")}
+      yours={tList(t, "windowPage.a11yYours")}
+      keys={[
+        { keys: ["←", "→", "↑", "↓"], action: t("window.key.arrows") },
+        { keys: ["Esc"], action: t("window.key.escape") },
+      ]}
+      keysNote={t("window.key.dblclick")}
+    />
   </Fragment>
 </ComponentPageShell>

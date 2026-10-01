@@ -95,7 +95,6 @@ const componentItems = [
   {
     href: "/components/annotation",
     label: "Annotation",
-    trailing: "Beta",
     aliases: [
       "anotación",
       "anotacion",
@@ -119,7 +118,6 @@ const componentItems = [
   {
     href: "/components/canvas",
     label: "Canvas",
-    trailing: "Beta",
     aliases: [
       "lienzo",
       "paneo",
@@ -135,7 +133,6 @@ const componentItems = [
   {
     href: "/components/diagram",
     label: "Diagram",
-    trailing: "Beta",
     aliases: [
       "diagrama",
       "diagrama de flujo",
@@ -177,12 +174,11 @@ const componentItems = [
       "organigrama",
     ],
   },
-  { href: "/components/avatar", label: "Avatar", trailing: "Beta", aliases: ["perfil"] },
+  { href: "/components/avatar", label: "Avatar", aliases: ["perfil"] },
   { href: "/components/badge", label: "Badge", aliases: ["insignia"] },
   {
     href: "/components/back-to-top",
     label: "BackToTop",
-    trailing: "Beta",
     aliases: [
       "volver arriba",
       "ir arriba",
@@ -213,7 +209,6 @@ const componentItems = [
   {
     href: "/components/footer",
     label: "Footer",
-    trailing: "Beta",
     aliases: ["pie", "pie de pagina", "pie de página", "contentinfo", "colofón", "colofon"],
   },
   { href: "/components/hero", label: "Hero", trailing: "Beta", aliases: ["portada", "landing"] },
@@ -230,7 +225,7 @@ const componentItems = [
       "tarjeta boton",
     ],
   },
-  { href: "/components/callout", label: "Callout", trailing: "Beta", aliases: ["alerta", "nota", "aviso"] },
+  { href: "/components/callout", label: "Callout", aliases: ["alerta", "nota", "aviso"] },
   {
     href: "/components/card",
     label: "Card",
@@ -251,7 +246,6 @@ const componentItems = [
   {
     href: "/components/carousel",
     label: "Carousel",
-    trailing: "Beta",
     aliases: [
       "carrusel",
       "carousel",
@@ -271,7 +265,6 @@ const componentItems = [
   {
     href: "/components/charts",
     label: "Charts",
-    trailing: "Beta",
     aliases: [
       "chart",
       "charts",
@@ -310,7 +303,6 @@ const componentItems = [
   {
     href: "/components/changelog",
     label: "Changelog",
-    trailing: "Beta",
     aliases: [
       "changelog",
       "historial",
@@ -339,31 +331,16 @@ const componentItems = [
       "ctrl+k",
     ],
   },
-  {
-    href: "/components/component-preview",
-    label: "ComponentPreview",
-    aliases: [
-      "preview",
-      "demo",
-      "showcase",
-      "srcdoc",
-      "iframe",
-      "stage",
-      "preview de componente",
-      "documentación de componente",
-      "documentacion de componente",
-    ],
-  },
+
+
   {
     href: "/components/data-grid",
     label: "Data Grid",
-    trailing: "Beta",
     aliases: ["grilla de datos", "layout grid", "grilla de layout", "navegación 2d", "navegacion 2d"],
   },
   {
     href: "/components/clipboard",
     label: "Clipboard",
-    trailing: "Beta",
     aliases: ["copy button", "copybutton", "copiar", "portapapeles", "copy to clipboard", "copy link"],
   },
   {
@@ -374,19 +351,16 @@ const componentItems = [
   {
     href: "/components/drawer",
     label: "Drawer",
-    trailing: "Beta",
     aliases: ["panel lateral", "cajón", "cajon"],
   },
   {
     href: "/components/fade-edge",
     label: "FadeEdge",
-    trailing: "Beta",
     aliases: ["fade out", "fade-out", "mask", "gradient fade", "fade effect", "fade visual"],
   },
   {
     href: "/components/presence",
     label: "Presence",
-    trailing: "Beta",
     aliases: ["animate presence", "exit animation", "animación de salida", "animacion de salida", "unmount", "transition"],
   },
   {
@@ -418,7 +392,6 @@ const componentItems = [
   {
     href: "/components/grid",
     label: "Grid",
-    trailing: "Beta",
     aliases: ["grilla", "cuadrícula", "cuadricula"],
   },
   {
@@ -466,7 +439,6 @@ const componentItems = [
   {
     href: "/components/sticker",
     label: "Sticker",
-    trailing: "Beta",
     aliases: ["sticker", "calcomanía", "calcomania", "pegatina", "die-cut", "troquelado", "decal", "peel", "despegar"],
   },
   {
@@ -496,7 +468,6 @@ const componentItems = [
   {
     href: "/components/listbox",
     label: "Listbox",
-    trailing: "Beta",
     aliases: ["lista de opciones", "list box", "lista seleccionable", "selección múltiple", "multi select", "multiselect"],
   },
   {
@@ -543,7 +514,6 @@ const componentItems = [
   {
     href: "/components/questionnaire",
     label: "Questionnaire",
-    trailing: "Beta",
     aliases: ["cuestionario", "encuesta", "survey", "formulario por pasos", "wizard", "preguntas"],
   },
   {
@@ -582,7 +552,6 @@ const componentItems = [
   {
     href: "/components/tags-input",
     label: "TagsInput",
-    trailing: "Beta",
     aliases: [
       "campo de etiquetas",
       "etiquetas",
@@ -614,7 +583,6 @@ const componentItems = [
   {
     href: "/components/timeline",
     label: "Timeline",
-    trailing: "Beta",
     aliases: [
       "timeline",
       "línea de tiempo",
@@ -645,7 +613,6 @@ const componentItems = [
   {
     href: "/components/qr-code",
     label: "QRCode",
-    trailing: "Beta",
     aliases: [
       "qr",
       "qr code",
@@ -724,13 +691,11 @@ const componentItems = [
   {
     href: "/components/table-pager",
     label: "TablePager",
-    trailing: "Beta",
     aliases: ["paginar tabla", "tabla paginada", "paginated table", "table pagination", "filas por página", "rows per page"],
   },
   {
     href: "/components/treegrid",
     label: "Treegrid",
-    trailing: "Beta",
     aliases: ["grilla jerárquica", "grilla jerarquica", "tabla jerárquica", "tabla jerarquica", "explorador de archivos"],
   },
   { href: "/components/tabs", label: "Tabs", aliases: ["pestañas", "pestanas"] },
@@ -762,7 +727,6 @@ const componentItems = [
   {
     href: "/components/tour",
     label: "Tour",
-    trailing: "Beta",
     aliases: [
       "tour guiado",
       "recorrido guiado",
@@ -794,7 +758,6 @@ const componentItems = [
   {
     href: "/components/user-select",
     label: "UserSelect",
-    trailing: "Beta",
     aliases: [
       "selector de usuarios",
       "seleccionar personas",
@@ -811,19 +774,16 @@ const componentItems = [
   {
     href: "/components/breadcrumb",
     label: "Breadcrumb",
-    trailing: "Beta",
     aliases: ["migas de pan", "ruta jerárquica", "ruta jerarquica"],
   },
   {
     href: "/components/combobox",
     label: "Combobox",
-    trailing: "Beta",
     aliases: ["autocompletar", "autocomplete", "selector editable"],
   },
   {
     href: "/components/comment-thread",
     label: "CommentThread",
-    trailing: "Beta",
     aliases: ["hilo de comentarios", "comentarios", "respuestas anidadas", "comment thread"],
   },
   {
@@ -834,25 +794,21 @@ const componentItems = [
   {
     href: "/components/color-picker",
     label: "ColorPicker",
-    trailing: "Beta",
     aliases: ["selector de color", "color picker", "swatch", "rgb", "hsl", "oklch", "presets de color"],
   },
   {
     href: "/components/calendar",
     label: "Calendar",
-    trailing: "Beta",
     aliases: ["calendario", "grid de fecha", "mes", "vista de año", "década"],
   },
   {
     href: "/components/empty-state",
     label: "EmptyState",
-    trailing: "Beta",
     aliases: ["estado vacío", "estado vacio", "sin resultados"],
   },
   {
     href: "/components/editor",
     label: "Editor",
-    trailing: "Beta",
     aliases: ["editor de texto enriquecido", "wysiwyg", "rich text", "prosemirror", "editor de contenido"],
   },
   {
@@ -873,13 +829,11 @@ const componentItems = [
   {
     href: "/components/marquee",
     label: "Marquee",
-    trailing: "Beta",
     aliases: ["marquesina", "ticker", "cinta continua", "scrolling text", "logo wall"],
   },
   {
     href: "/components/media-gradient",
     label: "MediaGradient",
-    trailing: "Beta",
     aliases: ["gradient", "gradients", "gradientes", "media gradient", "media-gradient", "media caption", "contraste sobre imagen", "text on image", "texto sobre imagen", "wash", "velo", "scrim"],
   },
   {
@@ -890,7 +844,6 @@ const componentItems = [
   {
     href: "/components/app-bar",
     label: "AppBar",
-    trailing: "Beta",
     aliases: ["barra de aplicación", "barra de aplicacion", "app bar", "barra superior", "top bar", "menu bar macos", "barra de menús de escritorio"],
   },
   {
@@ -906,13 +859,11 @@ const componentItems = [
   {
     href: "/components/otp-input",
     label: "OtpInput",
-    trailing: "Beta",
     aliases: ["código de verificación", "codigo de verificacion", "otp", "pin", "pin input", "one-time code", "2fa", "código sms"],
   },
   {
     href: "/components/password-input",
     label: "PasswordInput",
-    trailing: "Beta",
     aliases: ["contraseña", "contrasena", "password", "mostrar contraseña", "show password", "clave"],
   },
   {
@@ -956,13 +907,11 @@ const componentItems = [
   {
     href: "/components/toolbar",
     label: "Toolbar",
-    trailing: "Beta",
     aliases: ["barra de herramientas", "grupo de controles"],
   },
   {
     href: "/components/tree-view",
     label: "TreeView",
-    trailing: "Beta",
     aliases: ["árbol", "arbol", "jerarquía", "jerarquia"],
   },
 ] as const satisfies readonly NavigationItem[];
@@ -1124,7 +1073,6 @@ const allComponentNavigation = [
       "/components/canvas",
       "/components/diagram",
       "/components/code-preview",
-      "/components/component-preview",
       "/components/changelog",
       "/components/comment-thread",
       "/components/feed",
@@ -1167,10 +1115,10 @@ if (
  * THE CATALOGUE AS THE SITE OFFERS IT: the table above minus whatever is paused.
  *
  * ONE FILTER REACHES EVERY SURFACE, which is the reason it lives here and not in each renderer.
- * `getNavigation` builds the sidebar, the component index, the landing page and the search index
- * from this list. A
- * paused component leaves all of them together, which is what "hidden" has to mean: a sidebar that
- * dropped it while search still found it would be worse than not hiding it at all.
+ * `getNavigation` builds the sidebar, the component index and the landing page from this list. A
+ * paused component leaves those surfaces together, which is what "hidden" has to mean for a paused
+ * contract. A separate dev-only list below can still feed the command palette for docs-internal
+ * pages that should stay out of the rails.
  *
  * WHAT DOES NOT CHANGE: the page itself. `/components/data-grid` still builds, still renders its
  * demos, still runs its gates, and still answers to anyone holding the link. Pausing removes the
@@ -1179,13 +1127,32 @@ if (
  *
  * An emptied group disappears rather than rendering as a heading over nothing.
  */
+const devCommandPaletteOnlyComponentHrefs = new Set<ComponentHref>([
+  "/components/annotation",
+]);
+
 const visibleGroup = (group: NavigationGroup): NavigationGroup => ({
   ...group,
-  items: group.items.filter((item) => !isPausedRoute(item.href)),
+  items: group.items.filter(
+    (item) =>
+      !isPausedRoute(item.href) &&
+      !devCommandPaletteOnlyComponentHrefs.has(item.href as ComponentHref),
+  ),
 });
 
 export const componentNavigation = allComponentNavigation
   .map(visibleGroup)
+  .filter((group) => group.items.length > 0) satisfies readonly NavigationGroup[];
+
+export const devCommandPaletteOnlyComponentNavigation = allComponentNavigation
+  .map((group) => ({
+    ...group,
+    items: group.items.filter(
+      (item) =>
+        !isPausedRoute(item.href) &&
+        devCommandPaletteOnlyComponentHrefs.has(item.href as ComponentHref),
+    ),
+  }))
   .filter((group) => group.items.length > 0) satisfies readonly NavigationGroup[];
 
 /*
@@ -1532,14 +1499,17 @@ export const documentationNavigation = [
 const resolveHref = (href: string, locale: Locale): string =>
   hasTranslation(href, locale) ? localizePath(href, locale) : href;
 
-export function getNavigation(locale: Locale): readonly NavigationSection[] {
-  const t = useTranslations(locale);
+const localizeNavigationItem = (entry: NavigationItem, locale: Locale): NavigationItem => {
   const labels = navLabel[locale] ?? {};
-  const item = (entry: NavigationItem): NavigationItem => ({
+  return {
     ...entry,
     href: resolveHref(entry.href, locale),
     label: labels[entry.href] ?? entry.label,
-  });
+  };
+};
+
+export function getNavigation(locale: Locale): readonly NavigationSection[] {
+  const t = useTranslations(locale);
 
   return documentationNavigation.map((section) => ({
     ...section,
@@ -1550,8 +1520,19 @@ export function getNavigation(locale: Locale): readonly NavigationSection[] {
       ...group,
       group: group.group ? t(group.group as Parameters<typeof t>[0]) : "",
       blurb: group.blurb ? t(group.blurb as Parameters<typeof t>[0]) : undefined,
-      items: group.items.map(item),
+      items: group.items.map((entry) => localizeNavigationItem(entry, locale)),
     })),
+  }));
+}
+
+export function getDevCommandPaletteOnlyComponentNavigation(locale: Locale): readonly NavigationGroup[] {
+  const t = useTranslations(locale);
+
+  return devCommandPaletteOnlyComponentNavigation.map((group) => ({
+    ...group,
+    group: group.group ? t(group.group as Parameters<typeof t>[0]) : "",
+    blurb: group.blurb ? t(group.blurb as Parameters<typeof t>[0]) : undefined,
+    items: group.items.map((entry) => localizeNavigationItem(entry, locale)),
   }));
 }
 

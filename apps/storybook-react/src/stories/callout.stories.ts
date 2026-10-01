@@ -7,13 +7,14 @@ import "@skryensya/core/components/canvas.css";
 import "@skryensya/core/components/typography.css";
 import "@skryensya/core/patterns/icon.css";
 import * as demos from "@docs/demos/callout";
-import { annotationDemoCss } from "@docs/demos/annotation";
-import { treeStory, withCss, type Meta, type StoryObj } from "../tree-story";
+import { treeStory, type Meta, type StoryObj } from "../tree-story";
 
 export default { title: "Components/Feedback/Callout", tags: ["autodocs"] } satisfies Meta;
 
-export const Anatomy: StoryObj = treeStory(demos.calloutAnatomyTree, { decorators: [withCss(annotationDemoCss)] });
+export const Anatomy: StoryObj = treeStory(demos.calloutAnatomyTree);
 export const Neutral: StoryObj = treeStory(demos.calloutNeutralTree);
 export const Info: StoryObj = treeStory(demos.calloutInfoTree);
 export const Warning: StoryObj = treeStory(demos.calloutWarningTree);
 export const Success: StoryObj = treeStory(demos.calloutSuccessTree);
+export const DontAction: StoryObj = treeStory(demos.calloutDontActionTree);
+export const DontDanger: StoryObj = treeStory(demos.calloutDontDangerTree);

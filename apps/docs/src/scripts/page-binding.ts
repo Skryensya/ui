@@ -19,7 +19,7 @@ import { segmentedEvents } from "@skryensya/core/segmented";
 import {
   componentPreviewAttrs,
   componentPreviewBindingChangeEvent,
-} from "@skryensya/core/component-preview";
+} from "../preview/component-preview";
 
 type Binding = "vanilla" | "react";
 

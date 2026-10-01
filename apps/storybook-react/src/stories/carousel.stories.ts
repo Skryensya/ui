@@ -11,14 +11,14 @@ import "@skryensya/core/patterns/image-frame.css";
 import "@skryensya/core/patterns/layout.css";
 import "@skryensya/core/patterns/media-gradient.css";
 import * as demos from "@docs/demos/carousel";
-import { annotationDemoCss } from "@docs/demos/annotation";
-import { treeStory, withCss, type Meta, type StoryObj } from "../tree-story";
+import { treeStory, type Meta, type StoryObj } from "../tree-story";
 
 export default { title: "Components/Content/Carousel", tags: ["autodocs"] } satisfies Meta;
 
-export const Anatomy: StoryObj = treeStory(demos.carouselAnatomyTree, { decorators: [withCss(annotationDemoCss)] });
+export const Anatomy: StoryObj = treeStory(demos.carouselAnatomyTree);
 export const Cards: StoryObj = treeStory(demos.carouselCardsTree);
 export const Autoplay: StoryObj = treeStory(demos.carouselAutoplayTree);
 export const Focusable: StoryObj = treeStory(demos.carouselFocusableTree);
 export const Bare: StoryObj = treeStory(demos.carouselBareTree);
 export const Native: StoryObj = treeStory(demos.carouselNativeTree);
+export const DontFew: StoryObj = treeStory(demos.carouselDontFewTree);

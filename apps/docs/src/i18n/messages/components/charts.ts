@@ -1,145 +1,102 @@
 export const chartsMessages = {
   es: {
 
-    "chartsPage.betaBadge": "Beta",
-    "chartsPage.description":
-      "Una serie de valores con nombre hecha visible. Las barras viven en Core; línea y área son un renderer opcional. La card alrededor es una composición.",
-    "chartsPage.lede":
-      "Chart es un contrato: <code>points</code>, <code>kind</code> y un <code>label</code> que dice qué miden los números. No es la API de una librería de gráficos. Las barras se pintan desde markup. Línea y área cambian el import a <code>@skryensya/charts/react</code>, un drop-in que dibuja un overlay sobre el mismo listado. TanStack existe, en otro subpath, para el caso que este contrato no cubre.",
-    "chartsPage.anatomyBody":
-      "Este diagrama nombra el caption, el plot, la serie y cada punto (barra, etiqueta, valor). El espécimen está congelado; los charts vivos empiezan abajo.",
+    "chartsPage.description": "Muestra la forma de una serie de valores: si crece, cuál destaca, dónde cae.",
+    "chartsPage.a11yYours3": "No comuniques solo con color: el valor y la etiqueta deben decirlo (WCAG 2.2, 1.4.1).",
+    "chartsPage.a11yYours2": "Escribe <code>description</code> para quien no va a ver las barras.",
+    "chartsPage.a11yYours1": "Debe tener <code>label</code>: una serie sin nada que diga qué mide no sirve.",
+    "chartsPage.a11yDoes3": "El overlay de línea y área es <code>aria-hidden</code>: es una segunda pintura de la misma lista.",
+    "chartsPage.a11yDoes2": "<code>labels={false}</code> oculta las etiquetas sin borrarlas.",
+    "chartsPage.a11yDoes1": "Cada punto es texto en el DOM: un lector de pantalla lee «Q1, 14, Q2, 23».",
+    "chartsPage.a11yIntro": "La serie es una lista de texto real: lo que se ve también se lee.",
+    "chartsPage.content4": "Usa etiquetas cortas y parejas en el eje: «Ene», «Feb», no fechas completas.",
+    "chartsPage.content3": "Pon el número que importa en un Stat, no en el eje.",
+    "chartsPage.content2": "Escribe en <code>description</code> la forma en palabras: rango, tendencia y unidades.",
+    "chartsPage.content1": "Escribe en <code>label</code> qué mide la serie, con su unidad: «Visitas por semana», no «Gráfico».",
+    "chartsPage.dd.count.dont": "Tres valores se leen más rápido como números: un gráfico solo agrega un eje que estimar.",
+    "chartsPage.dd.count.do": "Cinco trimestres muestran una tendencia de un vistazo.",
+    "chartsPage.dd.count.title": "Cantidad: un gráfico para una serie",
+    "chartsPage.dd.tone.dont": "Un color por barra no dice nada y obliga a buscar una leyenda.",
+    "chartsPage.dd.tone.do": "La serie en <code>neutral</code> y un solo punto en <code>accent</code>: la persona ve de inmediato cuál importa.",
+    "chartsPage.dd.tone.title": "Tono: destaca un punto, no todos",
+    "chartsPage.whenNot4": "Para facetas, apilados o dispersión: sal del contrato con el subpath de TanStack.",
+    "chartsPage.whenNot3": 'Para un avance hacia una meta: usa <a href="/es/componentes/progress">Progress</a> o <a href="/es/componentes/meter">Meter</a>.',
+    "chartsPage.whenNot2": 'Cuando importa el número exacto de cada fila: usa <a href="/es/componentes/table">Table</a>.',
+    "chartsPage.whenNot1": 'Para dos o tres valores: los números se leen más rápido. Usa <a href="/es/componentes/stat">Stat</a>.',
+    "chartsPage.when3": "Como sparkline junto a un Stat, para dar contexto al número.",
+    "chartsPage.when2": "Para comparar una serie de valores y ver cuál destaca.",
+    "chartsPage.when1": "Para ver una tendencia en el tiempo: visitas por semana, latencia por versión.",
+    "chartsPage.contract3": "Una serie vacía es no tener serie: no dibujes ceros como estado vacío.",
+    "chartsPage.contract2": "Barras, línea y área: <code>@skryensya/react/chart</code> y <code>components/chart.css</code>. Vanilla dibuja la línea al montar, con la misma geometría.",
+    "chartsPage.contract1": "No hay <code>ChartCard</code>: título, acción, superficie y números de apoyo son de Box, Heading, Stat y Button.",
+    "chartsPage.prop.format.currency": "Usa <code>currency</code> para dinero, con <code>currency</code> para la moneda.",
+    "chartsPage.prop.format.percent": "Usa <code>percent</code> para proporciones entre 0 y 1.",
+    "chartsPage.prop.format.compact": "Usa <code>compact</code> para cifras grandes en poco espacio: 96K.",
+    "chartsPage.prop.format.number": "Usa <code>number</code> para cantidades que se leen completas.",
+    "chartsPage.prop.format.body": "Formatea los valores con <code>Intl.NumberFormat</code> en el idioma de la página.",
+    "chartsPage.prop.format.title": "Format: cómo se escriben los números",
+    "chartsPage.prop.tone.neutral": "Usa <code>neutral</code> como fondo cuando un punto destacado lleva el color.",
+    "chartsPage.prop.tone.info": "Usa <code>info</code> para una métrica informativa, sin juicio.",
+    "chartsPage.prop.tone.danger": "Usa <code>danger</code> para una serie de problemas: errores, caídas.",
+    "chartsPage.prop.tone.warning": "Usa <code>warning</code> para una serie que se acerca a un límite: uso de disco, cuota.",
+    "chartsPage.prop.tone.success": "Usa <code>success</code> cuando subir es bueno y la serie lo muestra: ventas, conversión.",
+    "chartsPage.prop.tone.accent": "Usa <code>accent</code>, el valor por defecto, para la serie principal de una vista.",
+    "chartsPage.prop.tone.body": "El color de la serie, por su significado. Cada punto puede llevar su propio tono para destacarse.",
+    "chartsPage.prop.tone.title": "Tone: qué dice la serie",
+    "chartsPage.lede": "Chart muestra la forma de una serie de valores: si crece, cuál destaca, dónde cae. El número exacto lo dice un Stat o una Table al lado. Las barras vienen en Core; línea y área son un renderer opcional con las mismas props.",
+    "chartsPage.anatomyBody": "El caption, el plot, la serie y cada punto: barra, etiqueta y valor.",
     "chartsPage.anatomyLabel": "Anatomía de Chart",
     "chartsPage.anatomyPreviewLabel": "Chart, parte por parte",
-    "chartsPage.calloutBody":
-      "<strong>No hay <code>ChartCard</code>.</strong> Título, acción, superficie y números de apoyo son de <a href=\"/componentes/box\">Box</a>, <a href=\"/componentes/heading\">Heading</a>, <a href=\"/componentes/stat\">Stat</a> y <a href=\"/componentes/button\">Button</a>. El gráfico sólo pinta la serie. Publicarlo como variante de card habría crecido exactamente el componente que Card se niega a ser; la receta está en <code>metric-panel</code>.",
-    "chartsPage.cardsTitle": "Una card con un chart",
-    "chartsPage.cardsBody":
-      "Lo primero que se pide. Tres composiciones, no tres componentes: el número lo dice el texto, el gráfico dice la forma, y el botón dice a dónde ir después.",
-    "chartsPage.analyticsTitle": "Analítica, con la tendencia al borde",
-    "chartsPage.analyticsBody":
-      "El número vive en el texto. El área es un sparkline: <code>flush</code> cancela el padding del Box para que la serie llegue al borde, y <code>labels={false}</code> esconde el eje sin borrar los datos del DOM. Línea y área importan el renderer opcional.",
+    "chartsPage.cardsTitle": "En una card: el número en el texto, la forma en el gráfico",
+    "chartsPage.cardsBody": "Tres composiciones, no tres componentes: el Stat dice el número, el gráfico la forma y el botón adónde ir después.",
+    "chartsPage.analyticsTitle": "Analítica: la tendencia al borde",
+    "chartsPage.analyticsBody": "El área es un sparkline: <code>flush</code> la lleva hasta el borde y <code>labels={false}</code> oculta el eje sin sacar los datos del DOM.",
     "chartsPage.analyticsLabel": "Visitas de las últimas ocho semanas",
     "chartsPage.analyticsNote": "Box + Badge + Button + Chart area · flush",
-    "chartsPage.historyTitle": "Historial, con una barra destacada",
-    "chartsPage.historyBody":
-      "Barras con etiquetas, sin motor. El tono de la serie es <code>neutral</code>; Diciembre lleva <code>tone=\"accent\"</code> para destacarlo contra sus hermanas. Los dos Stats hundidos son apoyo, no pares del titular.",
-    "chartsPage.historyLabel": "Aportes de los últimos cinco meses",
-    "chartsPage.historyNote": "Box + Chart bar + Stat + Button",
-    "chartsPage.usageTitle": "Consumo, con los números debajo",
-    "chartsPage.usageBody":
-      "Otra vez barras. El gráfico no intenta decir 3.4 kW: eso lo dice el Stat. Un gráfico del que hay que estimar valores contra un eje es una tabla peor.",
-    "chartsPage.usageLabel": "Consumo eléctrico de toda la casa",
-    "chartsPage.usageNote": "Box + Chart bar + Stat",
-    "chartsPage.pieceTitle": "El gráfico, solo",
-    "chartsPage.pieceBody":
-      "Cuando no hay card alrededor, Chart sigue siendo la misma signature: una lista de entradas, cada una con etiqueta y número. <code>kind</code> elige la forma.",
-    "chartsPage.barTitle": "Barras, sin renderer",
-    "chartsPage.barBody":
-      "Cada entrada trae su valor y la hoja divide por el máximo de la serie. Un gráfico de barras se pinta desde markup escrito a mano. No hace falta <code>@skryensya/charts</code>.",
-    "chartsPage.barLabel": "Componentes documentados por trimestre",
-    "chartsPage.barNote": "Chart · kind bar",
-    "chartsPage.lineTitle": "Línea, con el renderer opcional",
-    "chartsPage.lineBody":
-      "Una línea necesita un path, y CSS no puede calcularlo. El mismo componente, importado desde <code>@skryensya/charts/react</code>, dibuja el overlay. Las props no cambian.",
+    "chartsPage.historyTitle": "Historial: una barra destacada",
+    "chartsPage.historyBody": 'La serie es <code>neutral</code> y diciembre lleva <code>tone="accent"</code> para destacarse.',
+    "chartsPage.usageTitle": "Consumo: los números debajo",
+    "chartsPage.usageBody": "El gráfico no intenta decir 3.4 kW: eso lo dice el Stat.",
+    "chartsPage.pieceTitle": "El gráfico solo: una lista de puntos",
+    "chartsPage.pieceBody": "Sin card alrededor, Chart es la misma lista de entradas, cada una con etiqueta y número. <code>kind</code> elige la forma.",
+    "chartsPage.barTitle": "Barras: sin renderer",
+    "chartsPage.barBody": "Cada barra se divide por el máximo de la serie en CSS. No hace falta JavaScript para pintarla.",
+    "chartsPage.lineTitle": "Línea: con el renderer opcional",
+    "chartsPage.lineBody": "Una línea necesita un path que CSS no calcula. Chart lo dibuja con <code>kind=\"line\"</code>, igual en React y en Vanilla. Las props no cambian.",
     "chartsPage.lineLabel": "Latencia de interacción por versión",
-    "chartsPage.lineNote": "Chart · kind line · @skryensya/charts",
-    "chartsPage.areaTitle": "Área, el mismo drop-in",
-    "chartsPage.areaBody":
-      "Un área es la línea cerrada hasta la base. El renderer pinta dos paths: el relleno cerrado y el trazo abierto, para no dibujar un eje vertical que el contrato no tiene.",
+    "chartsPage.lineNote": "Chart · kind line",
+    "chartsPage.areaTitle": "Área: el mismo renderer",
+    "chartsPage.areaBody": "La línea cerrada hasta la base, con el relleno y el trazo como dos paths.",
     "chartsPage.areaLabel": "Peso del bundle por semana",
-    "chartsPage.areaNote": "Chart · kind area · @skryensya/charts",
-    "chartsPage.integrationsTitle": "Chart con otros componentes",
-    "chartsPage.integrationsBody":
-      "Cuatro composiciones más, cada una un contrato que ya existe junto a Chart, no una capacidad nueva inventada para gráficos.",
-    "chartsPage.periodTitle": "Un selector cambia la serie",
-    "chartsPage.periodBody":
-      "<code>Segmented</code> elige el período; Chart sigue siendo la misma signature, sólo cambian sus <code>points</code>. El encabezado y el control no se mueven, así que el cambio se lee como un dato distinto, no como una card distinta.",
+    "chartsPage.areaNote": "Chart · kind area",
+    "chartsPage.integrationsTitle": "Con otros componentes",
+    "chartsPage.integrationsBody": "Cada composición usa un contrato que ya existe junto a Chart.",
+    "chartsPage.periodTitle": "Período: un selector cambia la serie",
+    "chartsPage.periodBody": "<code>SegmentedControl</code> elige el período y solo cambian los <code>points</code>; el encabezado no se mueve.",
     "chartsPage.periodLabel": "Tráfico del sitio, por período",
     "chartsPage.periodNote": "Segmented + Chart bar",
-    "chartsPage.tableTitle": "Chart y Table, la misma serie dos veces",
-    "chartsPage.tableBody":
-      "El gráfico dice la forma; la tabla dice el número exacto y permite comparar fila por fila, el caso que <code>avoidWhen</code> en la semántica de Chart ya marca como <em>\"gráfico peor que tabla\"</em>. Cada uno lleva su propio nombre accesible: <code>label</code> en Chart, <code>TableCaption</code> en Table.",
-    "chartsPage.tableLabel": "Ingresos por trimestre",
-    "chartsPage.tableNote": "Chart bar + Table",
-    "chartsPage.detailTitle": "Un detalle por punto, con Tooltip",
-    "chartsPage.detailBody":
-      "La barra de Chart es <code>aria-hidden</code> y no tiene nombre propio, así que no es un trigger válido para Tooltip: el contrato de Tooltip exige que su contenido envuelva un control con su propio nombre accesible. Aquí el trigger es un <code>Button.action</code> real por punto, debajo del gráfico; no duplica el overlay ni toca la lista accesible.",
-    "chartsPage.detailLabel": "Latencia por endpoint, con detalle",
-    "chartsPage.detailNote": "Chart bar + Tooltip + Button",
-    "chartsPage.galleryTitle": "Formatos y tamaños, lado a lado",
-    "chartsPage.galleryBody":
-      "Las mismas opciones de siempre (<code>kind</code>, <code>tone</code>, <code>height</code>, <code>format</code>, <code>flush</code>, <code>grid</code>) a escala de card, para que la diferencia se lea de un vistazo.",
+    "chartsPage.tableTitle": "Con Table: la misma serie dos veces",
+    "chartsPage.tableBody": "El gráfico dice la forma; la tabla da el número exacto y deja comparar fila por fila.",
+    "chartsPage.detailTitle": "Detalle por punto: con Tooltip",
+    "chartsPage.detailBody": "Una barra no es un control, así que el Tooltip va sobre un botón con nombre propio debajo del gráfico.",
+    "chartsPage.galleryTitle": "Formatos y tamaños: lado a lado",
+    "chartsPage.galleryBody": "<code>kind</code>, <code>tone</code>, <code>height</code>, <code>format</code>, <code>flush</code> y <code>grid</code> a escala de card.",
     "chartsPage.galleryLabel": "Cuatro chart cards, distintas opciones",
     "chartsPage.galleryNote": "Grid + 4 Chart",
-    "chartsPage.metricTabsTitle": "Tabs, no Segmented: métricas distintas",
-    "chartsPage.metricTabsBody":
-      "El selector de período de arriba cambia una SERIE bajo una configuración; esto es distinto: cada tab es una métrica distinta, con su propio chart y su propio tono, la misma diferencia que <code>hero-with-audience-tabs</code> traza para un pitch. Los tres paneles comparten la misma altura de chart para que cambiar de tab no mueva el resto de la página.",
-    "chartsPage.metricTabsLabel": "Ingresos, usuarios y errores por semana",
-    "chartsPage.metricTabsNote": "Tabs + Stat + Chart bar",
-    "chartsPage.legendTitle": "Una leyenda, hecha de Badge",
-    "chartsPage.legendBody":
-      "Cada entrada lleva su propio <code>tone</code> (el override por punto que el contrato ya tiene) y la leyenda de abajo repite ese mapeo en Badges del mismo tono. Es decoración: <code>values</code> ya pinta el número de cada barra y la etiqueta ya nombra la categoría, así que la leyenda no es la única fuente de nada.",
-    "chartsPage.legendLabel": "Presupuesto por equipo, cinco categorías",
-    "chartsPage.legendNote": "Chart bar · tone por punto + Badge",
-    "chartsPage.comparisonTitle": "Dos períodos, lado a lado",
-    "chartsPage.comparisonBody":
-      "No es un chart con dos series  -  el contrato no tiene una segunda serie que darle. Son dos paneles independientes en un Grid, el actual con <code>tone=\"accent\"</code> y superficie <code>surface</code>, el anterior con <code>tone=\"neutral\"</code> y superficie <code>sunken</code>, para que el ojo encuentre \"ahora\" antes que \"antes\".",
+    "chartsPage.metricTabsTitle": "Métricas distintas: Tabs, no Segmented",
+    "chartsPage.metricTabsBody": "Cada tab es otra métrica, con su gráfico y su tono. Cambiar el período de una misma serie es Segmented.",
+    "chartsPage.legendTitle": "Leyenda: hecha de Badge",
+    "chartsPage.legendBody": "Cada punto lleva su tono y la leyenda repite ese mapeo en Badges.",
+    "chartsPage.comparisonTitle": "Dos períodos: dos paneles",
+    "chartsPage.comparisonBody": "El contrato tiene una sola serie, así que la comparación son dos paneles en un Grid: el actual en <code>accent</code>, el anterior en <code>neutral</code>.",
     "chartsPage.comparisonLabel": "Ingresos del trimestre, este año contra el anterior",
     "chartsPage.comparisonNote": "Grid + 2 × (Stat + Chart area)",
-    "chartsPage.tanstackTitle": "Cuando el contrato no alcanza",
-    "chartsPage.tanstackBody":
-      "Facetas, apilados, scatter, brushing: eso es otro trabajo. El escape hatch vive en <code>@skryensya/charts/react/tanstack</code>, un import aparte para que salir del contrato se vea en el diff. Ahí la API es la de TanStack, sin changelog nuestro, y el peer pre-alpha queda sin instalar para quien no lo pidió.",
-    "chartsPage.doTitle": "Sí",
-    "chartsPage.doHeading": "Prácticas recomendadas",
-    "chartsPage.doItem1":
-      "Da a cada chart un <code>label</code> que diga qué mide, no \"gráfico\".",
-    "chartsPage.doItem2":
-      "Escribe <code>description</code> con la forma de los datos: rango, tendencia y unidades.",
-    "chartsPage.doItem3":
-      "Pon el número que importa en un <a href=\"/componentes/stat\">Stat</a>, no en el eje.",
-    "chartsPage.doItem4":
-      "Usa <code>tone</code> de la serie y, si hace falta, el de una entrada. El color sigue a los tokens.",
-    "chartsPage.doItem5":
-      "Compón la card con Box. No pidas un componente ChartCard al kit.",
-    "chartsPage.dontTitle": "No",
-    "chartsPage.dontHeading": "Errores frecuentes",
-    "chartsPage.dontItem1":
-      "No importes TanStack desde el camino documentado. El contrato no lo nombra.",
-    "chartsPage.dontItem2":
-      "No uses un chart para tres valores: una <a href=\"/componentes/table\">tabla</a> o un Stat se leen mejor.",
-    "chartsPage.dontItem3":
-      "No codifiques información sólo con color: la etiqueta y el valor siguen en el DOM a propósito.",
-    "chartsPage.dontItem4":
-      "No pongas título, acción o superficie en Chart. Eso es de lo que lo contiene.",
-    "chartsPage.dontItem5":
-      "No dibujes una serie de ceros como estado vacío: cero es un dato, y el vacío es no haber serie.",
-    "chartsPage.implTitle": "Implementación",
-    "chartsPage.implBody":
-      "Un import para barras: <code>@skryensya/react/chart</code> y <code>components/chart.css</code>. Línea y área cambian el módulo a <code>@skryensya/charts/react</code> y dejan las props igual. El motor es una mejora de un gráfico que ya funcionaba.",
+    "chartsPage.tanstackTitle": "Cuando el contrato no alcanza: TanStack",
+    "chartsPage.tanstackBody": "Facetas, apilados, dispersión: eso es otro trabajo. El escape vive en <code>@skryensya/charts/react/tanstack</code>, un import aparte para que salir del contrato se vea en el diff.",
     "chartsPage.installBody":
-      "Barras no piden más que Core y el binding. La hoja no entra en el bundle base: hay que importarla, igual que Stat.",
+      "Barras, línea y área no piden más que Core y el binding. La hoja no entra en el bundle base: hay que importarla, igual que Stat.",
     "chartsPage.installLineBody":
-      "Línea y área añaden el paquete opcional. No instala TanStack: ese peer sólo entra con el subpath <code>react/tanstack</code>.",
-    "chartsPage.a11yP1":
-      "La serie es una lista real de texto real. Un lector de pantalla lee \"Dic, 18, Ene, 22\" desde el DOM, no un <code>aria-label</code> que avisa que hay datos y se niega a decir cuáles.",
-    "chartsPage.a11yP2":
-      "<code>label</code> es obligatorio: una serie de números sin nada que diga qué miden es el único gráfico peor que ningún gráfico.",
-    "chartsPage.a11yP3":
-      "<code>description</code> es la forma de los datos en palabras, para quien no va a ver las barras.",
-    "chartsPage.a11yP4":
-      "<code>labels={false}</code> oculta las etiquetas, no las borra. El sparkline sigue siendo una lista.",
-    "chartsPage.a11yP5":
-      "El overlay de línea y área es <code>aria-hidden</code>: es una segunda pintura de la misma lista, y leer las dos sería leer la serie dos veces.",
-    "chartsPage.testBarsNoEngine":
-      "Las barras no pintan overlay: no necesitan este paquete.",
-    "chartsPage.testLineOverlay":
-      "La línea se pinta en el overlay y marca el gráfico como renderizado.",
-    "chartsPage.testListIsData":
-      "La serie sigue siendo una lista de texto, que es la representación accesible.",
-    "chartsPage.testCardsAreComposition":
-      "Las cards del dashboard se componen con Box, Stat, Chart y Button, sin inventar ChartCard.",
-    "chartsPage.testNoTanstackApi":
-      "El camino documentado no expone la gramática de TanStack.",
+      "El paquete opcional solo hace falta para salir del contrato con TanStack, y ese peer solo entra con el subpath <code>react/tanstack</code>.",
 
     "demo.charts.month.dec": "Dic",
     "demo.charts.month.jan": "Ene",
@@ -251,154 +208,106 @@ export const chartsMessages = {
     "demo.charts.analytics.button": "Ver analítica",
     "demo.charts.analytics.chartLabel": "Visitas por semana",
     "demo.charts.analytics.chartDescription": "Ocho semanas, subiendo de 38.200 a 61.400 visitas.",
-    "chartsPage.showcaseTitle": "Showcases",
-    "chartsPage.showcaseBody": "Gráficos de barras, líneas y áreas, en tarjetas y en vistas de analítica.",
-    "chartsPage.guidelinesLede": "Charts dibuja una serie de datos para ver su forma de un vistazo.",
-    "chartsPage.guide.item1": "Elige la forma por la pregunta: barras para comparar, líneas para una tendencia en el tiempo.",
-    "chartsPage.guide.item2": "Pon un título que diga qué muestra el gráfico, y las unidades en el eje o en el valor.",
-    "chartsPage.guide.item3": "Si el número exacto importa más que la forma, usa una <a href=\"/es/componentes/table\">Table</a> o un <a href=\"/es/componentes/stat\">Stat</a>.",
+    "chartsPage.guidelinesLede": "Un gráfico sirve cuando la forma importa más que cada número.",
   },
   en: {
 
-    "chartsPage.betaBadge": "Beta",
-    "chartsPage.description":
-      "A series of labelled values made visible. Bars live in Core; line and area are an optional renderer. The card around them is a composition.",
-    "chartsPage.lede":
-      "Chart is a contract: <code>points</code>, <code>kind</code>, and a <code>label</code> that says what the numbers measure. It is not a charting library's API. Bars paint from markup. Line and area swap the import to <code>@skryensya/charts/react</code>, a drop-in that draws an overlay on the same list. TanStack exists, on another subpath, for the job this contract does not cover.",
-    "chartsPage.anatomyBody":
-      "This diagram names the caption, plot, series and each point (bar, label, value). The specimen is frozen; the live charts start below.",
+    "chartsPage.description": "Shows the shape of a series of values: whether it grows, which stands out, where it drops.",
+    "chartsPage.a11yYours3": "Do not communicate with color alone: the value and label must say it (WCAG 2.2, 1.4.1).",
+    "chartsPage.a11yYours2": "Write a <code>description</code> for people who will not see the bars.",
+    "chartsPage.a11yYours1": "It must have a <code>label</code>: a series with nothing saying what it measures is useless.",
+    "chartsPage.a11yDoes3": "The line and area overlay is <code>aria-hidden</code>: it is a second painting of the same list.",
+    "chartsPage.a11yDoes2": "<code>labels={false}</code> hides the labels without removing them.",
+    "chartsPage.a11yDoes1": "Each point is text in the DOM: a screen reader reads “Q1, 14, Q2, 23”.",
+    "chartsPage.a11yIntro": "The series is a real list of text: what is seen is also read.",
+    "chartsPage.content4": "Use short, even axis labels: “Jan”, “Feb”, not full dates.",
+    "chartsPage.content3": "Put the number that matters in a Stat, not on the axis.",
+    "chartsPage.content2": "Write the shape in words in <code>description</code>: range, trend and units.",
+    "chartsPage.content1": "Write in <code>label</code> what the series measures, with its unit: “Visits per week”, not “Chart”.",
+    "chartsPage.dd.count.dont": "Three values read faster as numbers: a chart only adds an axis to estimate against.",
+    "chartsPage.dd.count.do": "Five quarters show a trend at a glance.",
+    "chartsPage.dd.count.title": "Count: one chart for a series",
+    "chartsPage.dd.tone.dont": "One color per bar says nothing and sends people looking for a legend.",
+    "chartsPage.dd.tone.do": "The series in <code>neutral</code> and one point in <code>accent</code>: people see at once which one matters.",
+    "chartsPage.dd.tone.title": "Tone: highlight one point, not all",
+    "chartsPage.whenNot4": "For facets, stacking or scatter: leave the contract with the TanStack subpath.",
+    "chartsPage.whenNot3": 'For progress toward a goal: use <a href="/components/progress">Progress</a> or <a href="/components/meter">Meter</a>.',
+    "chartsPage.whenNot2": 'When each row\'s exact number matters: use <a href="/components/table">Table</a>.',
+    "chartsPage.whenNot1": 'For two or three values: the numbers read faster. Use <a href="/components/stat">Stat</a>.',
+    "chartsPage.when3": "As a sparkline beside a Stat, to give the number context.",
+    "chartsPage.when2": "To compare a series of values and see which stands out.",
+    "chartsPage.when1": "To see a trend over time: visits per week, latency per version.",
+    "chartsPage.contract3": "An empty series is no series: do not draw zeros as an empty state.",
+    "chartsPage.contract2": "Bars, line and area: <code>@skryensya/react/chart</code> and <code>components/chart.css</code>. Vanilla draws the line on mount, with the same geometry.",
+    "chartsPage.contract1": "There is no <code>ChartCard</code>: title, action, surface and supporting numbers belong to Box, Heading, Stat and Button.",
+    "chartsPage.prop.format.currency": "Use <code>currency</code> for money, with <code>currency</code> for the currency.",
+    "chartsPage.prop.format.percent": "Use <code>percent</code> for ratios between 0 and 1.",
+    "chartsPage.prop.format.compact": "Use <code>compact</code> for large figures in little space: 96K.",
+    "chartsPage.prop.format.number": "Use <code>number</code> for amounts read in full.",
+    "chartsPage.prop.format.body": "Formats the values with <code>Intl.NumberFormat</code> in the page's language.",
+    "chartsPage.prop.format.title": "Format: how the numbers are written",
+    "chartsPage.prop.tone.neutral": "Use <code>neutral</code> as the background when a highlighted point carries the color.",
+    "chartsPage.prop.tone.info": "Use <code>info</code> for an informational metric, with no judgment.",
+    "chartsPage.prop.tone.danger": "Use <code>danger</code> for a series of problems: errors, outages.",
+    "chartsPage.prop.tone.warning": "Use <code>warning</code> for a series approaching a limit: disk usage, a quota.",
+    "chartsPage.prop.tone.success": "Use <code>success</code> when going up is good and the series shows it: sales, conversion.",
+    "chartsPage.prop.tone.accent": "Use <code>accent</code>, the default, for a view's main series.",
+    "chartsPage.prop.tone.body": "The series' color, by meaning. Each point can carry its own tone to stand out.",
+    "chartsPage.prop.tone.title": "Tone: what the series says",
+    "chartsPage.lede": "Chart shows the shape of a series of values: whether it grows, which stands out, where it drops. A Stat or a Table beside it gives the exact number. Bars ship in Core; line and area are an optional renderer with the same props.",
+    "chartsPage.anatomyBody": "The caption, the plot, the series and each point: bar, label and value.",
     "chartsPage.anatomyLabel": "Chart anatomy",
     "chartsPage.anatomyPreviewLabel": "Chart, part by part",
-    "chartsPage.calloutBody":
-      "<strong>There is no <code>ChartCard</code>.</strong> Title, action, surface, and supporting numbers belong to <a href=\"/components/box\">Box</a>, <a href=\"/components/heading\">Heading</a>, <a href=\"/components/stat\">Stat</a>, and <a href=\"/components/button\">Button</a>. The chart only paints the series. Publishing it as a card variant would have grown exactly the component Card refuses to be; the recipe lives in <code>metric-panel</code>.",
-    "chartsPage.cardsTitle": "A card with a chart",
-    "chartsPage.cardsBody":
-      "The first thing anyone asks for. Three compositions, not three components: the number lives in the text, the chart lives in the shape, and the button says where to go next.",
-    "chartsPage.analyticsTitle": "Analytics, with the trend at the edge",
-    "chartsPage.analyticsBody":
-      "The number lives in the text. The area is a sparkline: <code>flush</code> cancels the Box padding so the series reaches the edge, and <code>labels={false}</code> hides the axis without removing the data from the DOM. Line and area import the optional renderer.",
+    "chartsPage.cardsTitle": "In a card: the number in the text, the shape in the chart",
+    "chartsPage.cardsBody": "Three compositions, not three components: the Stat says the number, the chart the shape and the button where to go next.",
+    "chartsPage.analyticsTitle": "Analytics: the trend to the edge",
+    "chartsPage.analyticsBody": "The area is a sparkline: <code>flush</code> takes it to the edge and <code>labels={false}</code> hides the axis without removing the data from the DOM.",
     "chartsPage.analyticsLabel": "Visits over the last eight weeks",
     "chartsPage.analyticsNote": "Box + Badge + Button + Chart area · flush",
-    "chartsPage.historyTitle": "History, with one bar emphasized",
-    "chartsPage.historyBody":
-      "Labelled bars, no engine. The series tone is <code>neutral</code>; December carries <code>tone=\"accent\"</code> to stand out against its siblings. The two sunken Stats are supporting, not peers of the headline.",
-    "chartsPage.historyLabel": "Contributions over the last five months",
-    "chartsPage.historyNote": "Box + Chart bar + Stat + Button",
-    "chartsPage.usageTitle": "Usage, with the numbers underneath",
-    "chartsPage.usageBody":
-      "Bars again. The chart does not try to say 3.4 kW: that is what Stat is for. A chart you have to estimate values off is a worse table.",
-    "chartsPage.usageLabel": "Whole-home power usage",
-    "chartsPage.usageNote": "Box + Chart bar + Stat",
-    "chartsPage.pieceTitle": "The chart, on its own",
-    "chartsPage.pieceBody":
-      "When there is no card around it, Chart is still the same signature: a list of entries, each with a label and a number. <code>kind</code> picks the shape.",
-    "chartsPage.barTitle": "Bars, with no renderer",
-    "chartsPage.barBody":
-      "Each entry carries its value and the stylesheet divides by the series maximum. A bar chart paints from authored markup. <code>@skryensya/charts</code> is not required.",
-    "chartsPage.barLabel": "Documented components per quarter",
-    "chartsPage.barNote": "Chart · kind bar",
-    "chartsPage.lineTitle": "Line, with the optional renderer",
-    "chartsPage.lineBody":
-      "A line needs a path, and CSS cannot compute one. The same component, imported from <code>@skryensya/charts/react</code>, draws the overlay. The props do not change.",
+    "chartsPage.historyTitle": "History: one highlighted bar",
+    "chartsPage.historyBody": 'The series is <code>neutral</code> and December carries <code>tone="accent"</code> to stand out.',
+    "chartsPage.usageTitle": "Usage: the numbers below",
+    "chartsPage.usageBody": "The chart does not try to say 3.4 kW: the Stat says it.",
+    "chartsPage.pieceTitle": "The chart alone: a list of points",
+    "chartsPage.pieceBody": "Without a card around it, Chart is the same list of entries, each with a label and a number. <code>kind</code> picks the shape.",
+    "chartsPage.barTitle": "Bars: no renderer",
+    "chartsPage.barBody": "Each bar is divided by the series' maximum in CSS. No JavaScript is needed to paint it.",
+    "chartsPage.lineTitle": "Line: with the optional renderer",
+    "chartsPage.lineBody": "A line needs a path CSS cannot compute. Chart draws it with <code>kind=\"line\"</code>, the same in React and Vanilla. The props do not change.",
     "chartsPage.lineLabel": "Interaction latency per version",
-    "chartsPage.lineNote": "Chart · kind line · @skryensya/charts",
-    "chartsPage.areaTitle": "Area, the same drop-in",
-    "chartsPage.areaBody":
-      "An area is the line closed down to the baseline. The renderer paints two paths: a closed fill and an open stroke, so it never draws a vertical axis the contract does not have.",
+    "chartsPage.lineNote": "Chart · kind line",
+    "chartsPage.areaTitle": "Area: the same renderer",
+    "chartsPage.areaBody": "The line closed down to the base, with the fill and the stroke as two paths.",
     "chartsPage.areaLabel": "Bundle weight per week",
-    "chartsPage.areaNote": "Chart · kind area · @skryensya/charts",
-    "chartsPage.integrationsTitle": "Chart with other components",
-    "chartsPage.integrationsBody":
-      "Four more compositions, each a contract that already exists alongside Chart, not a new capability invented for charts specifically.",
-    "chartsPage.periodTitle": "A selector swaps the series",
-    "chartsPage.periodBody":
-      "<code>Segmented</code> picks the period; Chart stays the same signature, only its <code>points</code> change. The heading and the control hold still, so the change reads as different data, not a different card.",
+    "chartsPage.areaNote": "Chart · kind area",
+    "chartsPage.integrationsTitle": "With other components",
+    "chartsPage.integrationsBody": "Each composition uses a contract that already exists beside Chart.",
+    "chartsPage.periodTitle": "Period: a selector changes the series",
+    "chartsPage.periodBody": "<code>SegmentedControl</code> picks the period and only the <code>points</code> change; the header stays still.",
     "chartsPage.periodLabel": "Site traffic, by period",
     "chartsPage.periodNote": "Segmented + Chart bar",
-    "chartsPage.tableTitle": "Chart and Table, the same series twice",
-    "chartsPage.tableBody":
-      "The chart says the shape; the table says the exact number and lets you compare row by row, the case Chart's own semantic <code>avoidWhen</code> already names as <em>\"a chart worse than a table\"</em>. Each carries its own accessible name: <code>label</code> on Chart, <code>TableCaption</code> on Table.",
-    "chartsPage.tableLabel": "Revenue by quarter",
-    "chartsPage.tableNote": "Chart bar + Table",
-    "chartsPage.detailTitle": "A per-point detail, with Tooltip",
-    "chartsPage.detailBody":
-      "Chart's bar is <code>aria-hidden</code> with no name of its own, so it is not a valid Tooltip trigger: Tooltip's own contract requires its content to wrap a control that already has an accessible name. Here the trigger is a real <code>Button.action</code> per point, underneath the chart; it duplicates neither the overlay nor the accessible list.",
-    "chartsPage.detailLabel": "Latency by endpoint, with detail",
-    "chartsPage.detailNote": "Chart bar + Tooltip + Button",
-    "chartsPage.galleryTitle": "Formats and sizes, side by side",
-    "chartsPage.galleryBody":
-      "The same options as always (<code>kind</code>, <code>tone</code>, <code>height</code>, <code>format</code>, <code>flush</code>, <code>grid</code>) at card scale, so the difference between them reads at a glance.",
+    "chartsPage.tableTitle": "With Table: the same series twice",
+    "chartsPage.tableBody": "The chart says the shape; the table gives the exact number and allows row-by-row comparison.",
+    "chartsPage.detailTitle": "Detail per point: with Tooltip",
+    "chartsPage.detailBody": "A bar is not a control, so the Tooltip sits on a named button below the chart.",
+    "chartsPage.galleryTitle": "Formats and sizes: side by side",
+    "chartsPage.galleryBody": "<code>kind</code>, <code>tone</code>, <code>height</code>, <code>format</code>, <code>flush</code> and <code>grid</code> at card scale.",
     "chartsPage.galleryLabel": "Four chart cards, different options",
     "chartsPage.galleryNote": "Grid + 4 Chart",
-    "chartsPage.metricTabsTitle": "Tabs, not Segmented: different metrics",
-    "chartsPage.metricTabsBody":
-      "The period selector above changes one SERIES under a setting; this is different: each tab is a distinct metric, with its own chart and its own tone, the same distinction <code>hero-with-audience-tabs</code> draws for a pitch. All three panels share the same chart height so switching tabs never moves the rest of the page.",
-    "chartsPage.metricTabsLabel": "Revenue, users and errors per week",
-    "chartsPage.metricTabsNote": "Tabs + Stat + Chart bar",
-    "chartsPage.legendTitle": "A legend, made of Badge",
-    "chartsPage.legendBody":
-      "Each entry carries its own <code>tone</code> (the contract's own per-point override) and the legend below repeats that mapping as Badges of the same tone. It is decoration: <code>values</code> already paints each bar's own number and the label already names the category, so the legend is never the only source of anything.",
-    "chartsPage.legendLabel": "Budget by team, five categories",
-    "chartsPage.legendNote": "Chart bar · per-point tone + Badge",
-    "chartsPage.comparisonTitle": "Two periods, side by side",
-    "chartsPage.comparisonBody":
-      "Not one chart with two series  -  the contract has no second series to give it. Two independent panels in a Grid, the current one <code>tone=\"accent\"</code> on a <code>surface</code> box, the prior one <code>tone=\"neutral\"</code> on a <code>sunken</code> one, so the eye finds \"now\" before it finds \"then\".",
+    "chartsPage.metricTabsTitle": "Different metrics: Tabs, not Segmented",
+    "chartsPage.metricTabsBody": "Each tab is another metric, with its own chart and tone. Changing the period of one series is Segmented.",
+    "chartsPage.legendTitle": "Legend: made of Badge",
+    "chartsPage.legendBody": "Each point carries its tone and the legend repeats that mapping in Badges.",
+    "chartsPage.comparisonTitle": "Two periods: two panels",
+    "chartsPage.comparisonBody": "The contract has one series, so the comparison is two panels in a Grid: the current one in <code>accent</code>, the previous in <code>neutral</code>.",
     "chartsPage.comparisonLabel": "Quarterly revenue, this year against last",
     "chartsPage.comparisonNote": "Grid + 2 × (Stat + Chart area)",
-    "chartsPage.tanstackTitle": "When the contract is not enough",
-    "chartsPage.tanstackBody":
-      "Facets, stacks, scatter, brushing: that is a different job. The escape hatch lives at <code>@skryensya/charts/react/tanstack</code>, a separate import so leaving the contract is visible in the diff. There the API is TanStack's, with no changelog of ours, and the pre-alpha peer stays uninstalled for anyone who did not ask for it.",
-    "chartsPage.doTitle": "Do",
-    "chartsPage.doHeading": "Recommended practice",
-    "chartsPage.doItem1":
-      "Give every chart a <code>label</code> that says what it measures, not \"chart\".",
-    "chartsPage.doItem2":
-      "Write a <code>description</code> carrying the shape of the data: range, trend, and units.",
-    "chartsPage.doItem3":
-      "Put the number that matters in a <a href=\"/components/stat\">Stat</a>, not on the axis.",
-    "chartsPage.doItem4":
-      "Use the series <code>tone</code> and, when needed, an entry's own. Color follows the tokens.",
-    "chartsPage.doItem5":
-      "Compose the card with Box. Do not ask the kit for a ChartCard component.",
-    "chartsPage.dontTitle": "Don't",
-    "chartsPage.dontHeading": "Common mistakes",
-    "chartsPage.dontItem1":
-      "Don't import TanStack on the documented path. The contract does not name it.",
-    "chartsPage.dontItem2":
-      "Don't use a chart for three values: a <a href=\"/components/table\">table</a> or a Stat reads better.",
-    "chartsPage.dontItem3":
-      "Don't encode information in color alone: the label and value stay in the DOM on purpose.",
-    "chartsPage.dontItem4":
-      "Don't put a title, an action, or a surface on Chart. Those belong to whatever contains it.",
-    "chartsPage.dontItem5":
-      "Don't draw a series of zeros as an empty state: zero is a datum, and empty is no series at all.",
-    "chartsPage.implTitle": "Implementation",
-    "chartsPage.implBody":
-      "One import for bars: <code>@skryensya/react/chart</code> and <code>components/chart.css</code>. Line and area swap the module to <code>@skryensya/charts/react</code> and leave the props alone. The engine is an upgrade to a chart that already worked.",
+    "chartsPage.tanstackTitle": "When the contract is not enough: TanStack",
+    "chartsPage.tanstackBody": "Facets, stacking, scatter: that is another job. The escape hatch lives at <code>@skryensya/charts/react/tanstack</code>, a separate import so leaving the contract shows in the diff.",
     "chartsPage.installBody":
-      "Bars ask for nothing beyond Core and the binding. The sheet is not in the base bundle: import it, the same way Stat does.",
+      "Bars, line and area ask for nothing beyond Core and the binding. The sheet is not in the base bundle: import it, the same way Stat does.",
     "chartsPage.installLineBody":
-      "Line and area add the optional package. It does not install TanStack: that peer only arrives with the <code>react/tanstack</code> subpath.",
-    "chartsPage.a11yP1":
-      "The series is a real list of real text. A screen reader reads \"Dec, 18, Jan, 22\" off the DOM, not an <code>aria-label</code> that announces data exists and then refuses to say what it is.",
-    "chartsPage.a11yP2":
-      "<code>label</code> is required: a series of numbers with nothing saying what they measure is the one chart worse than no chart.",
-    "chartsPage.a11yP3":
-      "<code>description</code> is the shape of the data in words, for a reader who is not going to see the bars.",
-    "chartsPage.a11yP4":
-      "<code>labels={false}</code> hides the labels, it does not delete them. The sparkline is still a list.",
-    "chartsPage.a11yP5":
-      "The line and area overlay is <code>aria-hidden</code>: it is a second painting of the same list, and reading both would read the series twice.",
-    "chartsPage.testBarsNoEngine":
-      "Bars paint no overlay: they never need this package.",
-    "chartsPage.testLineOverlay":
-      "The line is painted into the overlay and flags the chart as rendered.",
-    "chartsPage.testListIsData":
-      "The series stays a list of text, which is the accessible rendering.",
-    "chartsPage.testCardsAreComposition":
-      "The dashboard cards are composed from Box, Stat, Chart, and Button, without inventing ChartCard.",
-    "chartsPage.testNoTanstackApi":
-      "The documented path does not expose TanStack's grammar.",
+      "The optional package is only needed to leave the contract with TanStack, and that peer only arrives with the <code>react/tanstack</code> subpath.",
 
     "demo.charts.month.dec": "Dec",
     "demo.charts.month.jan": "Jan",
@@ -510,11 +419,6 @@ export const chartsMessages = {
     "demo.charts.analytics.button": "View Analytics",
     "demo.charts.analytics.chartLabel": "Visits per week",
     "demo.charts.analytics.chartDescription": "Eight weeks, rising from 38,200 to 61,400 visits.",
-    "chartsPage.showcaseTitle": "Showcases",
-    "chartsPage.showcaseBody": "Bar, line and area charts, in cards and in analytics views.",
-    "chartsPage.guidelinesLede": "Charts draws a data series so its shape shows at a glance.",
-    "chartsPage.guide.item1": "Pick the form by the question: bars to compare, lines for a trend over time.",
-    "chartsPage.guide.item2": "Give it a title saying what it shows, and the units on the axis or the value.",
-    "chartsPage.guide.item3": "When the exact number matters more than the shape, use a <a href=\"/components/table\">Table</a> or a <a href=\"/components/stat\">Stat</a>.",
+    "chartsPage.guidelinesLede": "A chart helps when the shape matters more than each number.",
   },
 } as const;

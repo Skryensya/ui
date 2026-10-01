@@ -39272,73 +39272,28 @@
       "visualHash": "393650ba669967bb"
     },
     {
-      "axes": [
-        {
-          "name": "appearance",
-          "values": [
-            "plain",
-            "tactile",
-            "brutalist",
-            "frosted"
-          ]
-        }
-      ],
+      "axes": [],
       "cells": [
         {
           "box": "7989cb2aa996dcf7",
-          "hash": "341207b4197ada52",
-          "id": "window/appearance=plain",
-          "key": "appearance=plain",
+          "hash": "25d5af7e85bff214",
+          "id": "window/plain/",
+          "key": "",
           "layers": "521d1b8e84c0c0f3",
-          "props": {
-            "appearance": "plain"
-          },
+          "props": {},
           "surface": "4da51b78c68b523d"
-        },
-        {
-          "box": "7989cb2aa996dcf7",
-          "hash": "441316c3a03b1309",
-          "id": "window/appearance=tactile",
-          "key": "appearance=tactile",
-          "layers": "4d7121bb54cbe2e7",
-          "props": {
-            "appearance": "tactile"
-          },
-          "surface": "1751baf2d6c6c9ac"
-        },
-        {
-          "box": "7989cb2aa996dcf7",
-          "hash": "4b5b8ecedab86de0",
-          "id": "window/appearance=brutalist",
-          "key": "appearance=brutalist",
-          "layers": "d34151ac83681f4e",
-          "props": {
-            "appearance": "brutalist"
-          },
-          "surface": "ba5c965a7a199e8a"
-        },
-        {
-          "box": "7989cb2aa996dcf7",
-          "hash": "5b9d5da4b243a5a0",
-          "id": "window/appearance=frosted",
-          "key": "appearance=frosted",
-          "layers": "5dd17051036be46d",
-          "props": {
-            "appearance": "frosted"
-          },
-          "surface": "1985966040712cd0"
         }
       ],
       "contractHash": "3dc3ff3715a6203f",
-      "defaultCell": "appearance=plain",
+      "defaultCell": "",
       "grid": {
         "columns": [],
         "rows": []
       },
-      "id": "window",
+      "id": "window/plain",
       "interactions": [],
       "kind": "component-set",
-      "name": "Window",
+      "name": "Window / plain",
       "page": "skryensya",
       "properties": [
         {
@@ -39356,7 +39311,133 @@
         "base": {},
         "columns": []
       },
-      "visualHash": "b39354ea4f7de5e6"
+      "visualHash": "d55a7696abe38115"
+    },
+    {
+      "axes": [],
+      "cells": [
+        {
+          "box": "7989cb2aa996dcf7",
+          "hash": "2532165cd249790b",
+          "id": "window/tactile/",
+          "key": "",
+          "layers": "4d7121bb54cbe2e7",
+          "props": {},
+          "surface": "1751baf2d6c6c9ac"
+        }
+      ],
+      "contractHash": "3dc3ff3715a6203f",
+      "defaultCell": "",
+      "grid": {
+        "columns": [],
+        "rows": []
+      },
+      "id": "window/tactile",
+      "interactions": [],
+      "kind": "component-set",
+      "name": "Window / tactile",
+      "page": "skryensya",
+      "properties": [
+        {
+          "default": "Notes",
+          "name": "title",
+          "type": "TEXT"
+        },
+        {
+          "default": "Drag the header to move the window; its edges resize it.",
+          "name": "children",
+          "type": "TEXT"
+        }
+      ],
+      "showcase": {
+        "base": {},
+        "columns": []
+      },
+      "visualHash": "bb4ee2b0c90f4e39"
+    },
+    {
+      "axes": [],
+      "cells": [
+        {
+          "box": "7989cb2aa996dcf7",
+          "hash": "5c0da0cfa3eb4df5",
+          "id": "window/brutalist/",
+          "key": "",
+          "layers": "d34151ac83681f4e",
+          "props": {},
+          "surface": "ba5c965a7a199e8a"
+        }
+      ],
+      "contractHash": "3dc3ff3715a6203f",
+      "defaultCell": "",
+      "grid": {
+        "columns": [],
+        "rows": []
+      },
+      "id": "window/brutalist",
+      "interactions": [],
+      "kind": "component-set",
+      "name": "Window / brutalist",
+      "page": "skryensya",
+      "properties": [
+        {
+          "default": "Notes",
+          "name": "title",
+          "type": "TEXT"
+        },
+        {
+          "default": "Drag the header to move the window; its edges resize it.",
+          "name": "children",
+          "type": "TEXT"
+        }
+      ],
+      "showcase": {
+        "base": {},
+        "columns": []
+      },
+      "visualHash": "3a8f7a757ac81e28"
+    },
+    {
+      "axes": [],
+      "cells": [
+        {
+          "box": "7989cb2aa996dcf7",
+          "hash": "a2163b55e405f71e",
+          "id": "window/frosted/",
+          "key": "",
+          "layers": "5dd17051036be46d",
+          "props": {},
+          "surface": "1985966040712cd0"
+        }
+      ],
+      "contractHash": "3dc3ff3715a6203f",
+      "defaultCell": "",
+      "grid": {
+        "columns": [],
+        "rows": []
+      },
+      "id": "window/frosted",
+      "interactions": [],
+      "kind": "component-set",
+      "name": "Window / frosted",
+      "page": "skryensya",
+      "properties": [
+        {
+          "default": "Notes",
+          "name": "title",
+          "type": "TEXT"
+        },
+        {
+          "default": "Drag the header to move the window; its edges resize it.",
+          "name": "children",
+          "type": "TEXT"
+        }
+      ],
+      "showcase": {
+        "base": {},
+        "columns": []
+      },
+      "visualHash": "92529ab69acd2f67"
     }
   ],
   "diagnostics": [
@@ -41951,8 +42032,8 @@
       "variables": 466
     },
     "variants": {
-      "components": 154,
-      "componentSets": 153,
+      "components": 157,
+      "componentSets": 156,
       "naiveAllOptions": {
         "accordion": 32,
         "avatar": 8,
@@ -42703,15 +42784,27 @@
           "variants": 1
         },
         {
-          "set": "window",
-          "variants": 4
+          "set": "window/plain",
+          "variants": 1
+        },
+        {
+          "set": "window/tactile",
+          "variants": 1
+        },
+        {
+          "set": "window/brutalist",
+          "variants": 1
+        },
+        {
+          "set": "window/frosted",
+          "variants": 1
         }
       ],
       "variantsTotal": 2140
     }
   },
   "schemaVersion": 1,
-  "sourceHash": "ba20859c85965b6e",
+  "sourceHash": "fcde7c9d4eff0242",
   "stage": {
     "background": {
       "variable": "--color-bg-surface"

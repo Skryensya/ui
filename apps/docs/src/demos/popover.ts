@@ -1,41 +1,11 @@
 import type { UsageTree } from "@skryensya/core/usage-tree";
 import type { Translate } from "../i18n";
-import { anatomyFigureHtml } from "./annotation-parts";
-
-/*
- * THE ANATOMY SPECIMEN: frozen open markup. A live Popover sits in the top layer behind `popover`
- * and dismisses on the first pointer press in an inert frame. No mount attributes and no `popover`
- * attribute (that UA rule would hide the panel). The positioner is forced back into flow in
- * `popoverAnatomyCss` so the panel contributes to Annotated's measured box.
- *
- * The positioner node also carries `sk-popover__content` (the emitter's `also`), so both classes
- * name the same painted surface; the diagram labels the content class.
- *
- * `data-state="open"` is a STYLING hook here, not a machine write: popover.css paints closed as
- * `opacity: 0` until `:popover-open`, and anchored.css hides the arrow until open. Without either
- * selector matching, the specimen was just a trigger. The anatomy CSS below forces the open paint;
- * this attribute is what makes the arrow's `visibility: visible` rule fire (same three-way open
- * test anchored.css uses for Menu/Tooltip/Popover).
- */
-const popoverAnatomySpecimen = (t: Translate): string => `<div class="sk-popover">
-  <button class="sk-popover__trigger sk-button sk-interactive sk-anchor" type="button" tabindex="-1" aria-expanded="true">
-    ${t("demo.popover.trigger")}
-  </button>
-  <div class="sk-popover__positioner sk-popover__content sk-anchored" data-state="open" data-sk-placement="block-end">
-    <span class="sk-anchored-arrow" aria-hidden="true"></span>
-    <h2 class="sk-popover__title">Ada Lovelace</h2>
-    <p class="sk-popover__description">${t("demo.popover.description")}</p>
-    <p>${t("demo.popover.body")}</p>
-    <button class="sk-popover__close sk-button sk-interactive" type="button" tabindex="-1">
-      ${t("demo.popover.close")}
-    </button>
-  </div>
-</div>`;
+import { anatomyFigureTree } from "./annotation-parts";
 
 
-export const popoverAnatomyHtml = (t: Translate): string => anatomyFigureHtml(t, {
+export const popoverAnatomyTree = (t: Translate): UsageTree => anatomyFigureTree(t, {
   label: t("popoverPage.anatomyLabel"),
-  specimen: popoverAnatomySpecimen(t),
+  subject: popoverTree(t),
   parts: [
     { for: ".sk-popover", side: "block-start", mark: "bracket", ringPlacement: "offset", ringDistance: 8 },
     { for: ".sk-popover__trigger", side: "inline-start" },
@@ -84,6 +54,8 @@ export const popoverAnatomyCss = `.sk-annotated-figure {
 /* Absolute against the static panel, not fixed against the viewport (the @supports path in
  * anchored.css). Top-centred on the panel's near edge so it still reads as the tip of the box. */
 .sk-annotated__subject > .sk-popover > .sk-popover__positioner > .sk-anchored-arrow {
+  /* The arrow is hidden until the popover opens (anchored.css); here it is drawn open. */
+  visibility: visible;
   position: absolute;
   inset-block-start: calc(-1 * var(--sk-anchored-arrow-size, 8px) / 2);
   inset-inline-start: 50%;
@@ -284,51 +256,10 @@ export const popupTree = (t: Translate): UsageTree => ({
 });
 
 
-/*
- * THE ANATOMY SPECIMEN, authored as markup and frozen open, for the two reasons Popover's own is:
- * a live panel sits in the top layer behind `popover` and dismisses on the first pointer press in
- * an inert frame, and `.sk-anchored` is `position: fixed`, so out of flow it contributes nothing to
- * the box `Annotated` measures and the frame collapses onto the trigger. No mount attributes, no
- * `popover` attribute (the UA rule for a closed one would hide the panel), and the CSS below puts
- * the surface back in flow and forces the open paint.
- *
- * ONE NODE, THREE CLASSES, and that is the whole anatomy of a Popup rather than a detail of it. The
- * bare signature emits no content wrapper: the element that `sk-anchored` places IS the element
- * that `sk-popover__content` paints, so the drawing names the same box twice, from opposite gutters
- * and at two distances. The inner ring is the surface, the outer one the pattern that positions it,
- * exactly the two-rings-on-one-box reading Button's diagram uses for `sk-button` and
- * `sk-interactive`.
- *
- * `sk-popover__positioner` rides that same node and is NOT labelled: a third ring on one box teaches
- * nothing a reader can act on, and between the positioner and the content class it is the content
- * one a consumer styles.
- *
- * The checkbox inside is the emitter's own markup for `Checkbox`, minus the indeterminate indicator
- * the specimen can never be in. It is filler: what goes in a bare surface is the composition's
- * business, which is the point of the signature, so the diagram names none of it.
- */
-const popupAnatomySpecimen = (t: Translate): string => `<div class="sk-popover">
-  <button class="sk-popover__trigger sk-button sk-interactive sk-anchor" type="button" tabindex="-1" aria-expanded="true">
-    ${t("demo.popup.trigger")}
-  </button>
-  <div class="sk-popover__positioner sk-popover__content sk-anchored" data-state="open" data-sk-placement="block-end">
-    <span class="sk-anchored-arrow" aria-hidden="true"></span>
-    <label class="sk-checkbox">
-      <input class="sk-checkbox__input" name="active" type="checkbox" tabindex="-1" checked />
-      <span class="sk-checkbox__control sk-interactive" aria-hidden="true">
-        <span class="sk-checkbox__indicator" data-state="checked">
-          <span data-sk-icon="check" data-sk-icon-size="sm"></span>
-        </span>
-      </span>
-      <span class="sk-checkbox__label">${t("demo.popup.onlyActive")}</span>
-    </label>
-  </div>
-</div>`;
 
-
-export const popupAnatomyHtml = (t: Translate): string => anatomyFigureHtml(t, {
+export const popupAnatomyTree = (t: Translate): UsageTree => anatomyFigureTree(t, {
   label: t("popoverPage.popupAnatomyLabel"),
-  specimen: popupAnatomySpecimen(t),
+  subject: popoverStructuredTree(t),
   parts: [
     { for: ".sk-popover", side: "block-start", mark: "bracket", ringPlacement: "offset", ringDistance: 6 },
     { for: ".sk-popover__trigger", side: "inline-start" },
@@ -366,6 +297,8 @@ export const popupAnatomyCss = `.sk-annotated-figure {
 }
 
 .sk-annotated__subject > .sk-popover > .sk-popover__positioner > .sk-anchored-arrow {
+  /* The arrow is hidden until the popover opens (anchored.css); here it is drawn open. */
+  visibility: visible;
   position: absolute;
   inset-block-start: calc(-1 * var(--sk-anchored-arrow-size, 8px) / 2);
   inset-inline-start: 50%;

@@ -75,3 +75,67 @@ export const linkAnatomyTree = (t: Translate, href: string = PLACEHOLDER_HREF): 
     ],
   },
 });
+
+/* Usage guide: a sentence whose link text says where it goes, against one whose link says "here". */
+const sentence = (t: Translate, before: string, link: string, after: string, href: string): UsageTree => ({
+  contract: "typography",
+  signature: "Text",
+  children: [t(before as Parameters<Translate>[0]), { contract: "typography", signature: "Link", options: { href }, children: t(link as Parameters<Translate>[0]) }, t(after as Parameters<Translate>[0])],
+});
+
+export const linkDoDescriptiveTree = (t: Translate, href: string = PLACEHOLDER_HREF): UsageTree =>
+  sentence(t, "demo.link.doBefore", "demo.link.doLink", "demo.link.doAfter", href);
+
+export const linkDontHereTree = (t: Translate, href: string = PLACEHOLDER_HREF): UsageTree =>
+  sentence(t, "demo.link.dontBefore", "demo.link.dontLink", "demo.link.dontAfter", href);
+
+export const linkDoTargetWordsTree = (t: Translate, href: string = PLACEHOLDER_HREF): UsageTree => ({
+  contract: "typography",
+  signature: "Text",
+  children: [
+    t("demo.link.targetBefore"),
+    { contract: "typography", signature: "Link", options: { href }, children: t("demo.link.targetLink") },
+    t("demo.link.targetAfter"),
+  ],
+});
+
+export const linkDontWholeSentenceTree = (t: Translate, href: string = PLACEHOLDER_HREF): UsageTree => ({
+  contract: "typography",
+  signature: "Link",
+  options: { href },
+  children: t("demo.link.wholeSentence"),
+});
+
+export const linkDoExternalTree = (t: Translate, href: string = PLACEHOLDER_HREF): UsageTree => ({
+  contract: "typography",
+  signature: "Link",
+  options: { href },
+  attrs: { target: "_blank", rel: "noopener noreferrer" },
+  children: [
+    t("demo.link.externalReport"),
+    " ",
+    { contract: "icon", signature: "Icon", options: { name: "external-link", label: t("demo.link.newTab") } },
+  ],
+});
+
+export const linkDontExternalTree = (t: Translate, href: string = PLACEHOLDER_HREF): UsageTree => ({
+  contract: "typography",
+  signature: "Link",
+  options: { href },
+  attrs: { target: "_blank", rel: "noopener noreferrer" },
+  children: t("demo.link.externalReport"),
+});
+
+export const linkDoActionTree = (t: Translate): UsageTree => ({
+  contract: "button",
+  signature: "Button.action",
+  options: { tone: "accent" },
+  children: t("demo.link.saveChanges"),
+});
+
+export const linkDontActionTree = (t: Translate, href: string = PLACEHOLDER_HREF): UsageTree => ({
+  contract: "typography",
+  signature: "Link",
+  options: { href, linkTone: "accent" },
+  children: t("demo.link.saveChanges"),
+});

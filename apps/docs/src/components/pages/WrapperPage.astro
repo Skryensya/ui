@@ -4,14 +4,16 @@ import "@skryensya/core/components/annotation.css";
 import { layoutAnatomyFillCss, wrapperAnatomyTree } from "../../demos/layout-anatomy";
 import ComponentPageShell from "./ComponentPageShell.astro";
 import CodeBlock from "../CodeBlock.astro";
-import ComponentPreview from "../ComponentPreview.astro";
+import UsagePreview from "../UsagePreview.astro";
 import DoDont from "../DoDont.astro";
+import WhenToUse from "../WhenToUse.astro";
+import A11yNotes from "../A11yNotes.astro";
 import {
   wrapperDoBoxTree,
   wrapperDontPaintTree,
   wrapperTree,
 } from "../../demos/wrapper";
-import { getLocale, useTranslations } from "../../i18n";
+import { getLocale, tList, useTranslations } from "../../i18n";
 /* The sheet itself, not only its source: the Style hooks table resolves each hook
    against a real element, and a page that never loads `patterns/wrapper.css` would show every
    value blank. */
@@ -38,13 +40,8 @@ const install = `pnpm add @skryensya/core @skryensya/react`;
   <Fragment slot="usage">
     <p class="lede" set:html={t("wrapperPage.lede")} />
 
-    <h3>{t("wrapperPage.showcaseTitle")}</h3>
-    <p set:html={t("wrapperPage.showcaseBody")} />
-
-    <h3>{t("wrapperPage.ceilingTitle")}</h3>
-    <p set:html={t("wrapperPage.ceilingBody")} />
-    <ComponentPreview tree={wrapperTree(t)} label="Wrapper" flush />
-    <p set:html={t("wrapperPage.belowBody")} />
+    <h3>{t("component.examplesTitle")}</h3>
+    <UsagePreview tree={wrapperTree(t)} title={t("wrapperPage.ceilingTitle")} description={t("wrapperPage.ceilingBody")} flush />
 
     <h3>{t("wrapperPage.tableTitle")}</h3>
     <div class="sk-table-scroll">
@@ -59,33 +56,25 @@ const install = `pnpm add @skryensya/core @skryensya/react`;
     </table>
     </div>
 
-    <h3>{t("wrapperPage.siteTitle")}</h3>
-    <p set:html={t("wrapperPage.siteBody")} />
-
-    <p set:html={t("component.reactNote")} />
-
     <h3>{t("component.contractNotesTitle")}</h3>
     <ul>
-      <li set:html={t("wrapperPage.contractItem1")} />
-      <li set:html={t("wrapperPage.contractItem2")} />
-      <li set:html={t("wrapperPage.contractItem3")} />
-      <li set:html={t("wrapperPage.contractItem4")} />
+      {tList(t, "wrapperPage.contract").map((item) => <li set:html={item} />)}
     </ul>
+    <p set:html={t("component.reactNote")} />
 
     <h3>{t("component.anatomy")}</h3>
     <p set:html={t("wrapperPage.anatomyBody")} />
-    <ComponentPreview
+    <UsagePreview
       tree={wrapperAnatomyTree(t)}
       css={layoutAnatomyFillCss}
       label={t("wrapperPage.anatomyPreviewLabel")}
-      screens={false}
-      hideSource
-      chrome={false}
+      bare
     />
   </Fragment>
 
   <Fragment slot="guidelines">
     <p class="lede" set:html={t("wrapperPage.guidelinesLede")} />
+    <WhenToUse use={tList(t, "wrapperPage.when")} avoid={tList(t, "wrapperPage.whenNot")} />
     <DoDont
       canvas
       title={t("wrapperPage.dd.surface.title")}
@@ -96,5 +85,8 @@ const install = `pnpm add @skryensya/core @skryensya/react`;
 
   <Fragment slot="install">
     <CodeBlock code={install} label="terminal" />
+  </Fragment>
+  <Fragment slot="a11y">
+    <A11yNotes intro={t("wrapperPage.a11yIntro")} does={tList(t, "wrapperPage.a11yDoes")} yours={tList(t, "wrapperPage.a11yYours")} />
   </Fragment>
 </ComponentPageShell>

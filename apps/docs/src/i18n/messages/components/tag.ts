@@ -18,55 +18,75 @@ export const tagMessages = {
     "demo.tag.deprecated": "deprecado",
     "demo.tag.remove": "Quitar {name}",
 
-    "tagPage.description": "Tag: chip de palabra clave opcionalmente removible, con tonos y componente React.",
-    "tagPage.lede":
-      'Tag clasifica contenido sobre el que el usuario puede actuar: filtros, facetas, chips. Donde <a href="/es/componentes/badge">Badge</a> es una etiqueta de estado de solo lectura, Tag es más cuadrado (radio de control, no píldora) para leerse como accionable.',
-    "tagPage.simpleTitle": "Tags de palabra clave",
+    "tagPage.description": "Clasifica contenido con palabras clave sobre las que se puede actuar: filtrar, quitar, navegar.",
+
+    "tagPage.key.remove": "Con el foco en el botón, quita el tag.",
+
+    "tagPage.a11yYours2": "Pon los filtros en una lista con nombre: «Filtros aplicados».",
+
+    "tagPage.a11yYours1": "Al quitar un tag, lleva el foco al siguiente, o al campo si no quedan.",
+
+    "tagPage.a11yDoes2": "<code>Tag.link</code> es un enlace nativo.",
+
+    "tagPage.a11yDoes1": "El botón de quitar tiene su propio nombre accesible.",
+
+    "tagPage.a11yIntro": "Tag es texto, un enlace o un texto con botón, según su función.",
+
+    "tagPage.content2": "Nombra el botón de quitar con el tag: «Quitar Diseño».",
+
+    "tagPage.content1": "Escribe una o dos palabras: «Diseño», «Accesibilidad».",
+
+    "tagPage.whenNot3": 'Para elegir entre opciones: usa <a href="/es/componentes/checkbox">Checkbox</a> o <a href="/es/componentes/segmented">Segmented</a>.',
+
+    "tagPage.whenNot2": 'Para escribir varios valores en un campo: usa <a href="/es/componentes/tags-input">TagsInput</a>.',
+
+    "tagPage.whenNot1": 'Para un estado que solo se lee: usa <a href="/es/componentes/badge">Badge</a>.',
+
+    "tagPage.when2": "Para temas o palabras clave que llevan a su página.",
+
+    "tagPage.when1": "Para los filtros aplicados de una búsqueda, que se quitan uno a uno.",
+
+    "tagPage.contract3": "Quitar un tag dispara un evento; sacarlo de la lista es tuyo.",
+
+    "tagPage.contract2": "<code>Tag.link</code> es un enlace; no acepta <code>removable</code>.",
+
+    "tagPage.contract1": "Un tag removible tiene dos partes: el texto y un botón aparte, con nombre propio.",
+    "tagPage.lede": 'Tag clasifica contenido con palabras clave sobre las que se puede actuar: los filtros aplicados de una búsqueda, los temas de un artículo, las etiquetas de un ticket. Un tag se quita o lleva a su tema; un <a href="/es/componentes/badge">Badge</a> solo se lee.',
+    "tagPage.simpleTitle": "Palabras clave: los temas de un artículo",
     "tagPage.anatomyBody":
       "Este diagrama nombra el chip, la etiqueta y el botón de quitar. El espécimen está congelado; los Tag vivos empiezan abajo.",
     "tagPage.anatomyLabel": "Anatomía de Tag",
     "tagPage.anatomyPreviewLabel": "Tag, parte por parte",
-    "tagPage.simpleBody":
-      "Una etiqueta quieta categoriza contenido sin sugerir estado, alerta o eliminación.",
-    "tagPage.simpleLabel": "Tag simple",
-    "tagPage.tonesTitle": "Tags con tono",
-    "tagPage.tonesBody":
-      "El tono comunica función. Activo, beta, deprecado, pero sigue siendo Tag. Si sólo quieres un estado de lectura, Badge es la pieza correcta.",
-    "tagPage.tonesLabel": "Tonos",
-    "tagPage.linksTitle": "Tags enlace",
-    "tagPage.linksBody":
-      "Un tag enlace navega a una faceta o palabra clave. No puede ser dismissible: si el usuario debe quitar un filtro, usa un tag removible con su botón separado.",
-    "tagPage.linksLabel": "Tags enlace",
-    "tagPage.removableTitle": "Tags removibles",
-    "tagPage.removableBody":
-      "Cuando es removible, la etiqueta y el botón de quitar son dos objetivos distintos. El nombre accesible del control nombra el tag exacto que remueve.",
-    "tagPage.removableLabel": "Tags removibles",
-    "tagPage.prop.tone.title": "Tono",
-    "tagPage.prop.tone.body": "<code>tone</code> comunica la función del tag.",
-    "tagPage.prop.tone.neutral": "Usa <code>neutral</code> para una palabra clave común.",
+    "tagPage.simpleBody": "Clasifican sin sugerir estado ni alerta.",
+    "tagPage.tonesTitle": "Con tono: activo, beta, obsoleto",
+    "tagPage.tonesBody": "El tono dice qué función tiene cada palabra clave.",
+    "tagPage.linksTitle": "Enlaces: cada tag lleva a su tema",
+    "tagPage.linksBody": "<code>Tag.link</code> navega a la página del tema; no se puede quitar.",
+    "tagPage.removableTitle": "Filtros: cada tag se quita",
+    "tagPage.removableBody": "La etiqueta y el botón de quitar son dos objetivos distintos.",
+    "tagPage.prop.tone.title": "Tone: la función del tag",
+    "tagPage.prop.tone.body": "Dice qué es la palabra clave; el texto sigue siendo lo que se lee.",
+    "tagPage.prop.tone.neutral": "Usa <code>neutral</code>, el valor por defecto, para una palabra clave común.",
     "tagPage.prop.tone.accent": "Usa <code>accent</code> para destacar una faceta elegida.",
     "tagPage.prop.tone.success": "Usa <code>success</code> para una faceta positiva o activa.",
     "tagPage.prop.tone.warning": "Usa <code>warning</code> para una faceta que necesita atención.",
     "tagPage.prop.tone.danger": "Usa <code>danger</code> para una faceta riesgosa o deprecada.",
-    "tagPage.prop.removable.title": "Removible",
-    "tagPage.prop.removable.body": "<code>removable</code> añade un botón separado para quitar el tag.",
-    "tagPage.prop.removable.false": "Déjalo fijo cuando sólo clasifica contenido.",
-    "tagPage.prop.removable.true": "Hazlo removible cuando representa una faceta aplicada.",
+    "tagPage.prop.removable.title": "Removable: un botón para quitarlo",
+    "tagPage.prop.removable.body": "Agrega un botón aparte para quitar el tag.",
+    "tagPage.prop.removable.false": "Usa <code>false</code>, el valor por defecto, cuando el tag solo clasifica.",
+    "tagPage.prop.removable.true": "Usa <code>true</code> cuando el tag es un filtro aplicado.",
     "tagPage.prop.removable.falseLabel": "Fijo",
     "tagPage.prop.removable.trueLabel": "Removible",
-    "tagPage.showcaseTitle": "Showcases",
-    "tagPage.showcaseBody": "Tag cubre palabras clave, tonos, navegación y filtros removibles.",
-    "tagPage.guidelinesLede": "Usa Tag cuando la etiqueta clasifica algo sobre lo que la persona puede actuar.",
-    "tagPage.dd.job.title": "Un trabajo por tag",
-    "tagPage.dd.job.do": "Usa tags removibles para filtros aplicados.",
-    "tagPage.dd.job.dont": "No uses tonos como si todos fueran estados de sólo lectura; para eso existe Badge.",
-    "tagPage.dd.link.title": "Navegar o quitar",
-    "tagPage.dd.link.do": "Usa Tag.link cuando el chip navega a una faceta.",
-    "tagPage.dd.link.dont": "No mezcles navegación y quitar en el mismo chip.",
+    "tagPage.guidelinesLede": "Un tag es algo que se puede tocar: si solo se lee, es un Badge.",
+    "tagPage.dd.job.title": "Función: se actúa sobre él",
+    "tagPage.dd.job.do": "Un filtro aplicado se quita con su botón.",
+    "tagPage.dd.job.dont": "Un estado que solo se lee, como «Beta», es un Badge.",
+    "tagPage.dd.link.title": "Acción: navegar o quitar, no las dos",
+    "tagPage.dd.link.do": "Un tag que lleva a su tema es un enlace.",
+    "tagPage.dd.link.dont": "Un tag que navega y además se quita ofrece dos acciones en un objetivo pequeño.",
     "tagPage.test1": "Lleva su tono y su etiqueta.",
     "tagPage.test2": "Expone un control de remover nombrado solo cuando <code>removable</code> es verdadero.",
     "tagPage.test3": "El control de remover compone Button real: foco, press y área de toque vienen de Button.",
-    "tagPage.testLink": "Renderiza un tag navegable como enlace y nunca como dismissible.",
   },
   en: {
 
@@ -76,54 +96,74 @@ export const tagMessages = {
     "demo.tag.deprecated": "deprecated",
     "demo.tag.remove": "Remove {name}",
 
-    "tagPage.description": "Tag: an optionally removable keyword chip, with tones and a React component.",
-    "tagPage.lede":
-      'Tag classifies content the user can act on: filters, facets, chips. Where <a href="/components/badge">Badge</a> is a read-only status label, Tag is more squared (control radius, not a pill) to read as actionable.',
-    "tagPage.simpleTitle": "Keyword tags",
+    "tagPage.description": "Classifies content with keywords that can be acted on: filter, remove, navigate.",
+
+    "tagPage.key.remove": "With focus on the button, removes the tag.",
+
+    "tagPage.a11yYours2": "Put filters in a named list: “Applied filters”.",
+
+    "tagPage.a11yYours1": "On removing a tag, move focus to the next one, or to the field if none are left.",
+
+    "tagPage.a11yDoes2": "<code>Tag.link</code> is a native link.",
+
+    "tagPage.a11yDoes1": "The remove button has its own accessible name.",
+
+    "tagPage.a11yIntro": "Tag is text, a link or text with a button, depending on its function.",
+
+    "tagPage.content2": "Name the remove button with the tag: “Remove Design”.",
+
+    "tagPage.content1": "Write one or two words: “Design”, “Accessibility”.",
+
+    "tagPage.whenNot3": 'To choose among options: use <a href="/components/checkbox">Checkbox</a> or <a href="/components/segmented">Segmented</a>.',
+
+    "tagPage.whenNot2": 'To type several values into a field: use <a href="/components/tags-input">TagsInput</a>.',
+
+    "tagPage.whenNot1": 'For a status that is only read: use <a href="/components/badge">Badge</a>.',
+
+    "tagPage.when2": "For topics or keywords that lead to their page.",
+
+    "tagPage.when1": "For a search's applied filters, removed one by one.",
+
+    "tagPage.contract3": "Removing a tag fires an event; taking it off the list is yours.",
+
+    "tagPage.contract2": "<code>Tag.link</code> is a link; it does not take <code>removable</code>.",
+
+    "tagPage.contract1": "A removable tag has two parts: the text and a separate button, with its own name.",
+    "tagPage.lede": 'Tag classifies content with keywords that can be acted on: a search\'s applied filters, an article\'s topics, a ticket\'s labels. A tag is removed or leads to its topic; a <a href="/components/badge">Badge</a> is only read.',
+    "tagPage.simpleTitle": "Keywords: an article's topics",
     "tagPage.anatomyBody":
       "This diagram names the chip, the label and the remove button. The specimen is frozen; the live Tags begin below.",
     "tagPage.anatomyLabel": "Tag anatomy",
     "tagPage.anatomyPreviewLabel": "Tag, part by part",
-    "tagPage.simpleBody":
-      "A quiet label categorizes content without implying status, warning, or removal.",
-    "tagPage.simpleLabel": "Simple tag",
-    "tagPage.tonesTitle": "Tonal tags",
-    "tagPage.tonesBody":
-      "Tone communicates function. Active, beta, deprecated, but the component is still Tag. If you only need read-only status, Badge is the right piece.",
-    "tagPage.tonesLabel": "Tones",
-    "tagPage.linksTitle": "Link tags",
-    "tagPage.linksBody":
-      "A link tag navigates to a facet or keyword. It cannot be dismissible: if the user needs to remove a filter, use a removable tag with its separate button.",
-    "tagPage.linksLabel": "Link tags",
-    "tagPage.removableTitle": "Removable tags",
-    "tagPage.removableBody":
-      "When removable, the label and the remove button are two separate targets. The control's accessible name names the exact tag it removes.",
-    "tagPage.removableLabel": "Removable tags",
-    "tagPage.prop.tone.title": "Tone",
-    "tagPage.prop.tone.body": "<code>tone</code> communicates the tag's function.",
-    "tagPage.prop.tone.neutral": "Use <code>neutral</code> for an ordinary keyword.",
+    "tagPage.simpleBody": "They classify without suggesting status or alert.",
+    "tagPage.tonesTitle": "With tone: active, beta, deprecated",
+    "tagPage.tonesBody": "The tone says what function each keyword has.",
+    "tagPage.linksTitle": "Links: each tag leads to its topic",
+    "tagPage.linksBody": "<code>Tag.link</code> navigates to the topic's page; it cannot be removed.",
+    "tagPage.removableTitle": "Filters: each tag is removed",
+    "tagPage.removableBody": "The label and the remove button are two separate targets.",
+    "tagPage.prop.tone.title": "Tone: the tag's function",
+    "tagPage.prop.tone.body": "Says what the keyword is; the text is still what is read.",
+    "tagPage.prop.tone.neutral": "Use <code>neutral</code>, the default, for a common keyword.",
     "tagPage.prop.tone.accent": "Use <code>accent</code> to highlight a selected facet.",
     "tagPage.prop.tone.success": "Use <code>success</code> for a positive or active facet.",
     "tagPage.prop.tone.warning": "Use <code>warning</code> for a facet that needs attention.",
     "tagPage.prop.tone.danger": "Use <code>danger</code> for a risky or deprecated facet.",
-    "tagPage.prop.removable.title": "Removable",
-    "tagPage.prop.removable.body": "<code>removable</code> adds a separate button to remove the tag.",
-    "tagPage.prop.removable.false": "Keep it fixed when it only classifies content.",
-    "tagPage.prop.removable.true": "Make it removable when it represents an applied facet.",
+    "tagPage.prop.removable.title": "Removable: a button to remove it",
+    "tagPage.prop.removable.body": "Adds a separate button to remove the tag.",
+    "tagPage.prop.removable.false": "Use <code>false</code>, the default, when the tag only classifies.",
+    "tagPage.prop.removable.true": "Use <code>true</code> when the tag is an applied filter.",
     "tagPage.prop.removable.falseLabel": "Fixed",
     "tagPage.prop.removable.trueLabel": "Removable",
-    "tagPage.showcaseTitle": "Showcases",
-    "tagPage.showcaseBody": "Tag covers keywords, tones, navigation, and removable filters.",
-    "tagPage.guidelinesLede": "Use Tag when the label classifies something the person can act on.",
-    "tagPage.dd.job.title": "One job per tag",
-    "tagPage.dd.job.do": "Use removable tags for applied filters.",
-    "tagPage.dd.job.dont": "Do not use tones as if every tag were read-only status; that is Badge's job.",
-    "tagPage.dd.link.title": "Navigate or remove",
-    "tagPage.dd.link.do": "Use Tag.link when the chip navigates to a facet.",
-    "tagPage.dd.link.dont": "Do not mix navigation and removal in the same chip.",
+    "tagPage.guidelinesLede": "A tag is something to act on: if it is only read, it is a Badge.",
+    "tagPage.dd.job.title": "Function: it is acted on",
+    "tagPage.dd.job.do": "An applied filter is removed with its button.",
+    "tagPage.dd.job.dont": "A status that is only read, like “Beta”, is a Badge.",
+    "tagPage.dd.link.title": "Action: navigate or remove, not both",
+    "tagPage.dd.link.do": "A tag that leads to its topic is a link.",
+    "tagPage.dd.link.dont": "A tag that navigates and is also removed offers two actions on a small target.",
     "tagPage.test1": "Carries its tone and label.",
     "tagPage.test2": "Exposes a named remove control only when <code>removable</code> is true.",
     "tagPage.test3": "The remove control composes a real Button: focus, press, and hit area come from Button.",
-    "tagPage.testLink": "Renders a navigable tag as a link and never as dismissible.",
   },
 } as const;

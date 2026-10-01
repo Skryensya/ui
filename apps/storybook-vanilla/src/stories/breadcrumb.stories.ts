@@ -14,3 +14,6 @@ export const Multi: StoryObj = treeStory(demos.breadcrumbMultiTree);
 export const Icon: StoryObj = treeStory(demos.breadcrumbIconTree);
 export const Long: StoryObj = treeStory(demos.breadcrumbLongTree);
 export const Collapse: StoryObj = treeStory(demos.breadcrumbCollapseTree);
+export const DontGeneric: StoryObj = treeStory(demos.breadcrumbDontGenericTree);
+export const History: StoryObj = treeStory(demos.breadcrumbHistoryTree);
+export const MissingCurrent: StoryObj = treeStory(demos.breadcrumbMissingCurrentTree);

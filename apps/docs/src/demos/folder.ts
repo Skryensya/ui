@@ -34,6 +34,57 @@ const on = (surface: "sunken" | "raised", children: UsageTree | UsageTree[]): Us
   },
 });
 
+const onSpecimen = (surface: "sunken" | "raised", children: UsageTree): UsageTree => ({
+  contract: "box",
+  signature: "Box",
+  options: { surface, padding: "md" },
+  slots: {
+    children: {
+      contract: "layout",
+      signature: "Stack",
+      options: { align: "center" },
+      attrs: {
+        style: [
+          "inline-size: 34rem",
+          "max-inline-size: 100%",
+          "--sk-folder-max-inline-size: 32rem",
+          "--sk-folder-min-height: 9rem",
+          "--sk-folder-tab-min: 10rem",
+          "--sk-folder-preview-rise: 4rem",
+          "--sk-folder-preview-size: 22%",
+        ].join("; "),
+      },
+      slots: { children },
+    },
+  },
+});
+
+const onNamesSpecimen = (children: UsageTree): UsageTree => ({
+  contract: "box",
+  signature: "Box",
+  options: { surface: "sunken", padding: "sm" },
+  slots: {
+    children: {
+      contract: "layout",
+      signature: "Stack",
+      options: { align: "center" },
+      attrs: {
+        style: [
+          "inline-size: 32rem",
+          "max-inline-size: 100%",
+          "--sk-folder-max-inline-size: 30rem",
+          "--sk-folder-min-height: 8rem",
+          "--sk-folder-tab-min: 9rem",
+          "--sk-folder-label-size: var(--font-size-heading-sm)",
+          "--sk-folder-inset-x: var(--space-inset-md)",
+          "--sk-folder-inset-y: var(--space-inset-md)",
+        ].join("; "),
+      },
+      slots: { children },
+    },
+  },
+});
+
 /*
  * One preview, and every one of them is the SAME picture on purpose: a fan of screenshots from one
  * project looks alike by nature, so that is the case the design has to survive. What tells one from
@@ -69,12 +120,13 @@ const body = (text: string): UsageTree => ({
   children: text,
 });
 
-type FolderSpec = { title: string; body: string; href: string; previews?: number; active?: boolean };
+type FolderSpec = { title: string; body: string; href: string; previews?: number; active?: boolean; style?: string };
 
-const folder = ({ title, body: copy, href, previews = 0, active }: FolderSpec): UsageTree => ({
+const folder = ({ title, body: copy, href, previews = 0, active, style }: FolderSpec): UsageTree => ({
   contract: "folder",
   signature: "FolderLink",
   options: { href, ...(active ? { active: true } : {}) },
+  ...(style ? { attrs: { style } } : {}),
   slots: {
     label: heading(title),
     children: body(copy),
@@ -154,12 +206,37 @@ const projects = (t: Translate): FolderSpec[] => [
   { title: t("demo.folder.wadaTitle"), body: t("demo.folder.wadaBody"), href: "#folder-wada" },
 ];
 
+const albums = (t: Translate): FolderSpec[] => [
+  { title: t("demo.folder.albumMorningTitle"), body: t("demo.folder.albumMorningBody"), href: "#folder-album-morning" },
+  { title: t("demo.folder.albumNightTitle"), body: t("demo.folder.albumNightBody"), href: "#folder-album-night" },
+  { title: t("demo.folder.albumFieldTitle"), body: t("demo.folder.albumFieldBody"), href: "#folder-album-field" },
+];
+
+const files = (t: Translate): FolderSpec[] => [
+  { title: t("demo.folder.filesBrandTitle"), body: t("demo.folder.filesBrandBody"), href: "#folder-files-brand" },
+  { title: t("demo.folder.filesResearchTitle"), body: t("demo.folder.filesResearchBody"), href: "#folder-files-research" },
+  { title: t("demo.folder.filesArchiveTitle"), body: t("demo.folder.filesArchiveBody"), href: "#folder-files-archive" },
+];
+
 const stack = (specs: FolderSpec[]): UsageTree => ({
   contract: "folder",
   signature: "FolderStack",
   options: { overlap: "100px" },
   slots: { children: specs.map(folder) },
 });
+
+const folderDesktopSpecimenStyle = [
+  "inline-size: 30rem",
+  "--sk-folder-min-height: 9rem",
+  "--sk-folder-tab-min: 10rem",
+  "--sk-folder-label-size: var(--font-size-heading-h3)",
+  "--sk-folder-inset-x: var(--space-inset-lg)",
+  "--sk-folder-inset-y: var(--space-inset-md)",
+  "--sk-folder-preview-rise: 4rem",
+  "--sk-folder-preview-size: 22%",
+].join("; ");
+
+const desktopSpec = (spec: FolderSpec): FolderSpec => ({ ...spec, style: folderDesktopSpecimenStyle });
 
 /*
  * THE COMPONENT, as it is meant to be used: a stack, invisible until you reach into it, with a fan
@@ -168,10 +245,89 @@ const stack = (specs: FolderSpec[]): UsageTree => ({
  * different component (a `Box` with a heading in it).
  */
 export const folderTree = (t: Translate): UsageTree =>
-  on("sunken", stack(projects(t).map((spec, index) => ({ ...spec, previews: index === 0 ? 3 : 2 }))));
+  on(
+    "sunken",
+    stack(projects(t).map((spec, index) => ({
+      ...spec,
+      previews: index === 0 ? 3 : 2,
+      active: index === 0,
+    }))),
+  );
 
 /** The same stack with nothing behind the folders: previews are a flourish, never the mechanism. */
-export const folderPlainTree = (t: Translate): UsageTree => on("sunken", stack(projects(t)));
+export const folderPlainTree = (t: Translate): UsageTree =>
+  on("sunken", stack(projects(t).map((spec, index) => ({ ...spec, active: index === 0 }))));
+
+export const folderAlbumsTree = (t: Translate): UsageTree =>
+  on(
+    "raised",
+    stack(albums(t).map((spec, index) => ({
+      ...spec,
+      previews: 3,
+      active: index === 1,
+    }))),
+  );
+
+export const folderFilesTree = (t: Translate): UsageTree =>
+  on(
+    "sunken",
+    {
+      ...stack(files(t).map((spec, index) => ({
+        ...spec,
+        active: index === 2,
+      }))),
+      options: { overlap: "72px" },
+    },
+  );
+
+export const folderDoCollectionTree = (t: Translate): UsageTree =>
+  onSpecimen(
+    "sunken",
+    { ...stack(projects(t).map((spec, index) => desktopSpec({ ...spec, active: index === 0 }))), options: { overlap: "52px" } },
+  );
+
+export const folderDontSingleTree = (t: Translate): UsageTree =>
+  onSpecimen(
+    "sunken",
+    stack([desktopSpec({ ...projects(t)[0]!, body: t("demo.folder.singleBody"), active: true })]),
+  );
+
+export const folderDoNamesTree = (t: Translate): UsageTree =>
+  onSpecimen(
+    "sunken",
+    { ...stack(files(t).map((spec, index) => desktopSpec({
+      ...spec,
+      body: t(`demo.folder.filesShortBody${index + 1}` as Parameters<typeof t>[0]),
+      active: index === 0,
+    }))), options: { overlap: "52px" } },
+  );
+
+export const folderDontNamesTree = (t: Translate): UsageTree =>
+  onSpecimen(
+    "sunken",
+    { ...stack([1, 2, 3].map((number, index) => desktopSpec({
+      title: t(`demo.folder.genericTitle${number}` as Parameters<typeof t>[0]),
+      body: t("demo.folder.genericBody"),
+      href: `#folder-generic-${number}`,
+      active: index === 0,
+    }))), options: { overlap: "52px" } },
+  );
+
+export const folderDoSameKindTree = (t: Translate): UsageTree =>
+  onSpecimen(
+    "raised",
+    { ...stack(albums(t).map((spec, index) => desktopSpec({ ...spec, previews: 3, active: index === 0 }))), options: { overlap: "48px" } },
+  );
+
+export const folderDontMixedKindTree = (t: Translate): UsageTree =>
+  onSpecimen(
+    "raised",
+    { ...stack([
+      desktopSpec({ ...projects(t)[0]!, body: t("demo.folder.mixedProjectBody"), previews: 3, active: true }),
+      desktopSpec({ ...files(t)[0]!, previews: 0 }),
+      desktopSpec({ ...albums(t)[0]!, previews: 3 }),
+    ]), options: { overlap: "48px" } },
+  );
 
 /*
  * The same composition on two grounds, as TWO specimens rather than one stacked pair: side by side

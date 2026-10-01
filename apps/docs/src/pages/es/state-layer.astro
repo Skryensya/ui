@@ -3,7 +3,7 @@ import Base from "../../layouts/Base.astro";
 import CodeBlock from "../../components/CodeBlock.astro";
 import { stateLayerBareTree, stateLayerCurrentColorTree, stateLayerLabTree } from "../../demos/state-layer";
 import { getLocale, useTranslations } from "../../i18n";
-import ComponentPreview from "../../components/ComponentPreview.astro";
+import UsagePreview from "../../components/UsagePreview.astro";
 import Used from "../../components/Used.astro";
 
 import "../../examples/state-layer.css";
@@ -193,8 +193,8 @@ const t = useTranslations(getLocale(Astro.url));
     contiene un input nativo.
   </p>
   <CodeBlock code={usage} label="HTML" note="el target posee el estado" />
-  <ComponentPreview tree={stateLayerBareTree(t)} label="Superficie neutra" />
-  <ComponentPreview tree={stateLayerCurrentColorTree(t)} label="Superficie con currentColor" />
+  <UsagePreview tree={stateLayerBareTree(t)} label="Superficie neutra" />
+  <UsagePreview tree={stateLayerCurrentColorTree(t)} label="Superficie con currentColor" />
 
   <h2>Conexión proyectada</h2>
   <p>
@@ -204,7 +204,7 @@ const t = useTranslations(getLocale(Astro.url));
     los traduce a la misma escalera de opacidades.
   </p>
   <CodeBlock code={projectedUsage} label="HTML" note="resultado escrito por el Enhancer" />
-  <ComponentPreview tree={stateLayerLabTree(t)} label="Proyección y acciones" />
+  <UsagePreview tree={stateLayerLabTree(t)} label="Proyección y acciones" />
 
   <h2>Mecanismo</h2>
   <p>

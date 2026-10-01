@@ -242,6 +242,7 @@ export function UserSelect({
     <div
       {...api.getRootProps()}
       className={cx(selectParts.root, className)}
+      data-loading={loading ? "" : undefined}
       data-variant={variant}
       ref={rootRef}
       {...{ [userSelectAttrs.root]: "" }}
@@ -327,72 +328,72 @@ export function UserSelect({
             >
               {resultsStatus}
             </div>
-            {loading ? (
-              <div className={comboboxParts.empty} role="presentation">
-                <Loader size="sm" /> {label("loading")}
-              </div>
-            ) : (
-              // `tabIndex={-1}`: `getListProps()` defaults it to 0 for a STANDALONE listbox
-              // (`composite: false`'s other use case), but here the search input is the one real tab
-              // stop; the list is reached through it via `aria-activedescendant`, never by Tab.
-              <div
-                {...api.getListProps()}
-                className="sk-scrollbar"
-                ref={listRef}
-                tabIndex={-1}
-                {...{ [userSelectAttrs.list]: "" }}
-              >
-                {filteredUsers.map((user) => (
-                  <div
-                    {...api.getItemProps({ item: user })}
-                    className={cx(selectParts.item, "sk-interactive")}
-                    key={user.id}
-                    {...{ [selectAttrs.item]: "" }}
-                  >
-                    {/* Decorative: the option's own `aria-selected` is the state; this box only shows it.
-                        Checked from the row's `data-state` in CSS, so it needs no state of its own. */}
-                    <span aria-hidden="true" className={selectionParts.checkbox} {...{ [userSelectAttrs.check]: "" }}>
-                      <span className={selectionParts.checkboxControl}>
-                        <span className={selectionParts.checkboxIndicator} data-state="checked">
-                          <Icon name="check" size="sm" />
-                        </span>
-                      </span>
-                    </span>
-                    <span className="sk-inline" data-align="center" data-gap="sm" data-wrap="false">
-                      {avatarOf(user)}
-                      <span className={comboboxParts.itemCopy}>
-                        <span
-                          {...api.getItemTextProps({ item: user })}
-                          className={selectParts.itemText}
-                          {...{ [selectAttrs.itemText]: "" }}
-                        >
-                          {user.name}
-                        </span>
-                        {user.email ? (
-                          <span className={cx(selectParts.itemText, comboboxParts.itemDescription)}>{user.email}</span>
-                        ) : null}
-                      </span>
-                    </span>
-                  </div>
-                ))}
+            {/* The same two nodes as the Vanilla binding: a loading row before the list, and the list
+                hidden while it shows, so one tree renders one DOM in both. */}
+            <div className={comboboxParts.empty} hidden={!loading} role="presentation" {...{ [userSelectAttrs.loading]: "" }}>
+              <Loader size="sm" /> {label("loading")}
+            </div>
+            {/* `tabIndex={-1}`: `getListProps()` defaults it to 0 for a STANDALONE listbox
+                (`composite: false`'s other use case), but here the search input is the one real tab
+                stop; the list is reached through it via `aria-activedescendant`, never by Tab. */}
+            <div
+              {...api.getListProps()}
+              className="sk-scrollbar"
+              ref={listRef}
+              hidden={loading}
+              tabIndex={-1}
+              {...{ [userSelectAttrs.list]: "" }}
+            >
+              {filteredUsers.map((user) => (
                 <div
-                  className={comboboxParts.empty}
-                  hidden={filteredUsers.length > 0}
-                  role="presentation"
-                  {...{ [userSelectAttrs.empty]: "" }}
+                  {...api.getItemProps({ item: user })}
+                  className={cx(selectParts.item, "sk-interactive")}
+                  key={user.id}
+                  {...{ [selectAttrs.item]: "" }}
                 >
-                  <span aria-hidden="true" {...{ [userSelectAttrs.emptyIcon]: "" }}>
-                    <Icon name={noRoster ? "user" : "search"} />
+                  {/* Decorative: the option's own `aria-selected` is the state; this box only shows it.
+                      Checked from the row's `data-state` in CSS, so it needs no state of its own. */}
+                  <span aria-hidden="true" className={selectionParts.checkbox} {...{ [userSelectAttrs.check]: "" }}>
+                    <span className={selectionParts.checkboxControl}>
+                      <span className={selectionParts.checkboxIndicator} data-state="checked">
+                        <Icon name="check" size="sm" />
+                      </span>
+                    </span>
                   </span>
-                  <span {...{ [userSelectAttrs.emptyTitle]: "" }}>
-                    {noRoster ? label("empty") : label("noResults", { query: query.trim() })}
-                  </span>
-                  <span hidden={noRoster} {...{ [userSelectAttrs.emptyHint]: "" }}>
-                    {noRoster ? "" : label("noResultsHint")}
+                  <span className="sk-inline" data-align="center" data-gap="sm" data-wrap="false">
+                    {avatarOf(user)}
+                    <span className={comboboxParts.itemCopy}>
+                      <span
+                        {...api.getItemTextProps({ item: user })}
+                        className={selectParts.itemText}
+                        {...{ [selectAttrs.itemText]: "" }}
+                      >
+                        {user.name}
+                      </span>
+                      {user.email ? (
+                        <span className={cx(selectParts.itemText, comboboxParts.itemDescription)}>{user.email}</span>
+                      ) : null}
+                    </span>
                   </span>
                 </div>
+              ))}
+              <div
+                className={comboboxParts.empty}
+                hidden={filteredUsers.length > 0}
+                role="presentation"
+                {...{ [userSelectAttrs.empty]: "" }}
+              >
+                <span aria-hidden="true" {...{ [userSelectAttrs.emptyIcon]: "" }}>
+                  <Icon name={noRoster ? "user" : "search"} />
+                </span>
+                <span {...{ [userSelectAttrs.emptyTitle]: "" }}>
+                  {noRoster ? label("empty") : label("noResults", { query: query.trim() })}
+                </span>
+                <span hidden={noRoster} {...{ [userSelectAttrs.emptyHint]: "" }}>
+                  {noRoster ? "" : label("noResultsHint")}
+                </span>
               </div>
-            )}
+            </div>
             <span
               className="sk-inline"
               data-align="center"

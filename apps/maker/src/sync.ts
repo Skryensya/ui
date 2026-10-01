@@ -22,6 +22,9 @@ export type SyncState = "syncing" | "saved" | "offline";
 const known = new Map<string, number>();
 const saved = new Map<string, MakerSite>();
 
+/** Server revision evidence; local edit generations are separately guarded by state.ts. */
+export const knownRevision = (id: string): number => known.get(id) ?? 0;
+
 /** Record what a project was when it was opened: the revision and the site the server holds. */
 export function opened(project: Project): void {
   known.set(project.id, project.revision);

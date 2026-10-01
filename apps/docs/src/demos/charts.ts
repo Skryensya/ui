@@ -23,20 +23,12 @@ import {
  * THE CHARTS PAGE'S OWN DEMOS, tree-authored so both bindings render from one source (see this
  * folder's own README).
  *
- * Every kind lives here, `line`/`area` included: `@skryensya/charts`'s SVG overlay is a React-only
- * prop (`packages/charts/src/react/chart.tsx`'s own `overlay`), not a documented `chart` contract
- * option, so `emitMarkup` alone can only ever produce the bar-shaped anatomy for those kinds. What a
- * tree CANNOT do on its own, `../lib/../demos/chart-overlay.ts`'s `emitCompositionWithChartOverlays`
- * does after the fact: same tree, same build-time geometry the React renderer draws, spliced into the
- * one div the contract's own template reserves for it (see that file's own header). Callers needing an
- * overlay pass the tree through it in `ChartsPage.astro`, next to the pairing React component that
- * uses `@skryensya/charts/react` directly, so both bindings still show the same series.
+ * Every kind lives here, `line`/`area` included: Chart draws their path itself, in both bindings,
+ * from core's geometry, so a tree is the whole demo.
  *
- * The period selector's own tree lives here too (it is `bar`, no overlay needed) - only the part a
- * tree cannot express, a Segmented control swapping the chart's data at runtime, is authored by hand:
- * the React side keeps its own `useState` in `chart-integrations.tsx`, and the Vanilla side gets
- * `demos/scripts/chart-period.ts`, wired to the SAME `sk:segmentedvaluechange` event Segmented already
- * dispatches (see that script's own header).
+ * The period selector's own tree lives here too, for the generated stories: the part a tree cannot
+ * express, a Segmented control swapping the chart's data at runtime, is `demos/scripts/chart-period.ts`,
+ * wired to the SAME `sk:segmentedvaluechange` event Segmented already dispatches.
  */
 
 /** One series, as the `chart` contract's own `items` slot: `{value, tone?}` options, a `label`
@@ -600,64 +592,7 @@ export const chartMetricTabsTree = (t: Translate): UsageTree => {
   };
 };
 
-/** The sparkline card: the number is text, the chart is only the trend, flush to the bottom edge.
- *  `kind="area"`, so its markup needs `chart-overlay.ts`'s pass once emitted - see this file's own
- *  header. */
-/*
- * THE ANALYTICS CARD'S REACT SOURCE, beside the tree it describes.
- *
- * Hand written, not emitted, for the reason `chart-overlay.ts` gives: the area overlay is a
- * React-only prop of `@skryensya/charts`, so an emitted snippet would name the bar-shaped anatomy
- * and not the drop-in a consumer actually imports.
- *
- * HERE and not in a page, because TWO pages show this same card: `/components/charts` documents the
- * chart, `/components/card` documents the surface around it. It used to be typed once per page, and
- * the two had already drifted - the Card page's copy described a `Badge` and a `Text` where the live
- * demo beside it rendered a `Stat`. One string cannot disagree with itself.
- */
-export const chartAnalyticsCardSource = `import { Chart } from "@skryensya/charts/react";
-import { Button } from "@skryensya/react/button";
-import { Icon } from "@skryensya/react/icon";
-import { Box, Inline, Stack } from "@skryensya/react/layout";
-import { Stat } from "@skryensya/react/stat";
-import { Heading } from "@skryensya/react/typography";
-
-const compactCount = (n) =>
-  new Intl.NumberFormat("en", { notation: "compact", maximumFractionDigits: 1 }).format(n);
-
-<Box as="article" border="subtle" padding="lg" surface="surface">
-  <Stack gap="lg">
-    <Inline align="start" justify="between">
-      <Stack gap="xs">
-        <Heading as="h3" flush size="h4">
-          Analytics
-        </Heading>
-        <Stat
-          animate
-          change={<><Icon name="arrow-up" size="sm" /> +10%</>}
-          count={418200}
-          format={compactCount}
-          label="Visits this month"
-          trend="up"
-          value="418.2K"
-        />
-      </Stack>
-      <Button size="sm" variant="soft">
-        View Analytics
-      </Button>
-    </Inline>
-    <Chart
-      flush
-      format="compact"
-      height="md"
-      kind="area"
-      label="Visits per week"
-      labels={false}
-      points={visits}
-      tone="neutral"
-    />
-  </Stack>
-</Box>;`;
+/** The sparkline card: the number is text, the chart is only the trend, flush to the bottom edge. */
 
 export const chartAnalyticsCardTree = (t: Translate): UsageTree => ({
   contract: "box",
@@ -765,11 +700,7 @@ export const chartsAreaTree = (t: Translate): UsageTree => ({
   slots: { items: chartItems(bundleWeightPerWeek) },
 });
 
-/**
- * Four small cards, one per option page a chart can take, side by side. Two of the four are
- * `line`/`area` - see this file's own header for why they need `chart-overlay.ts`'s pass once
- * emitted.
- */
+/** Four small cards, one per option page a chart can take, side by side. */
 export const chartGalleryTree = (t: Translate): UsageTree => {
   const week = compactWeekdays(t);
   const card = (title: string, note: string, chart: UsageTree): UsageTree => ({
@@ -855,17 +786,6 @@ export const chartGalleryTree = (t: Translate): UsageTree => {
   };
 };
 
-/** In document order: which of the gallery's four charts need `chart-overlay.ts`'s pass, and their
- *  points, exactly as `chartGalleryTree` built them above. */
-export const chartGalleryOverlays = (t: Translate) => {
-  const week = compactWeekdays(t);
-  return [
-    { kind: "bar" as const, points: week },
-    { kind: "line" as const, points: week },
-    { kind: "area" as const, points: week },
-    { kind: "bar" as const, points: week },
-  ];
-};
 
 /** Two periods, side by side: the CURRENT one accented, the PRIOR one neutral. Both charts are
  *  `kind="area"`, see this file's own header. */
@@ -944,12 +864,6 @@ export const chartComparisonTree = (t: Translate): UsageTree => {
   };
 };
 
-/** In document order: which of the comparison's two charts need `chart-overlay.ts`'s pass, and their
- *  points, exactly as `chartComparisonTree` built them above. Both are `area`. */
-export const chartComparisonOverlays = (): readonly { kind: "area"; points: readonly ChartPoint[] }[] => [
-  { kind: "area", points: q4Current },
-  { kind: "area", points: q4Prior },
-];
 
 /**
  * The period selector: a Segmented control swaps which series the chart draws. `bar`, so this tree
@@ -1030,3 +944,34 @@ export const chartPeriodCardTree = (t: Translate): UsageTree => {
 };
 
 export { default as chartPeriodScript } from "./scripts/chart-period.ts?raw";
+
+/* The bar series with its numbers painted, so `format` has something to change. */
+export const chartsValuesTree = (t: Translate): UsageTree => ({
+  ...chartsBarTree(t),
+  options: { ...chartsBarTree(t).options, values: true, format: "compact" },
+  slots: { items: chartItems(documentedPerQuarter.map((point) => ({ ...point, value: point.value * 1370 }))) },
+});
+
+/* Usage guide: one bar highlighted against neutral sisters, and every bar its own color. */
+export const chartsDoOneToneTree = (t: Translate): UsageTree => ({
+  ...chartsBarTree(t),
+  options: { ...chartsBarTree(t).options, tone: "neutral" },
+  slots: {
+    items: chartItems(documentedPerQuarter.map((point, index) => (index === 4 ? { ...point, tone: "accent" } : point))),
+  },
+});
+
+const RAINBOW = ["accent", "success", "warning", "danger", "info"] as const;
+export const chartsDontRainbowTree = (t: Translate): UsageTree => ({
+  ...chartsBarTree(t),
+  slots: {
+    items: chartItems(documentedPerQuarter.map((point, index) => ({ ...point, tone: RAINBOW[index % RAINBOW.length] }))),
+  },
+});
+
+/* Usage guide: three values drawn as a chart, where the numbers alone read faster. */
+export const chartsDontThreeTree = (t: Translate): UsageTree => ({
+  ...chartsBarTree(t),
+  options: { ...chartsBarTree(t).options, height: "md" },
+  slots: { items: chartItems(documentedPerQuarter.slice(0, 3)) },
+});

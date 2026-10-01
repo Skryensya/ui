@@ -2,7 +2,7 @@ export const drawerMessages = {
   es: {
     "drawer.anatomyLabel": "Anatomía de Drawer",
     "drawer.anatomyPreviewLabel": "Drawer, parte por parte",
-    "drawer.anatomyBody": "Un drawer es <code>Vaul.drawer</code>: la misma raíz y el mismo tirador que cualquier Vaul, con <code>sk-drawer</code> sumado en la raíz para pintarlo como panel lateral. El contenido es composición libre.",
+    "drawer.anatomyBody": "La raíz y el tirador de Vaul, con <code>sk-drawer</code> para pintarlo como panel lateral. El contenido es tuyo.",
     "drawer.anatomyPanelLabel": "Navegación",
     "drawer.anatomyTitle": "Tu cuenta",
     "drawer.anatomyBodyText": "Perfil, seguridad y notificaciones.",
@@ -10,6 +10,13 @@ export const drawerMessages = {
     "demo.drawer.label": "Navegación",
     "demo.drawer.brand": "Estudio",
     "demo.drawer.close": "Cerrar",
+    "demo.drawer.filters": "Filtros de búsqueda",
+    "demo.drawer.genericPanel": "Panel",
+    "demo.drawer.nameBody": "Ajusta los filtros para acotar los resultados.",
+    "demo.drawer.decisionTitle": "¿Eliminar este archivo?",
+    "demo.drawer.decisionBody": "Se eliminará de forma permanente.",
+    "demo.drawer.decisionCancel": "Cancelar",
+    "demo.drawer.decisionConfirm": "Eliminar",
     "demo.drawer.main": "Principal",
     "demo.drawer.work": "Trabajo",
     "demo.drawer.account": "Cuenta",
@@ -19,44 +26,63 @@ export const drawerMessages = {
     "demo.drawer.team": "Equipo",
     "demo.drawer.settings": "Ajustes",
     "demo.drawer.userName": "Ada Kovač",
+    "demo.drawer.pageTitle": "Resumen del proyecto",
+    "demo.drawer.pageCard": "Actividad reciente",
+    "demo.drawer.pageCardBody": "3 tareas actualizadas",
 
-    "drawer.description": "Un Vaul en el borde inline, a lo alto de la pantalla. Envía hooks y nada de estructura.",
-    "drawer.betaBadge": "Beta",
-    "drawer.lede":
-      'Un drawer <strong>es</strong> un <a href="/es/vaul">Vaul</a> en el borde inline, corriendo a lo alto de la pantalla. Esa frase es el componente entero: el borde, el slide, el backdrop, el drag y el top layer son del pattern, y este archivo sólo dice <em>qué Vaul es un drawer</em> y cómo se ve.',
-    "drawer.hooksTitle": "Envía hooks y nada de estructura",
-    "drawer.hooksBody1":
-      "Por la regla del sistema: cada línea de estructura que un drawer podría tener es estructura que una hoja inferior necesita idéntica, y esa estructura compartida <strong>es</strong> el pattern. Un drawer que reimplementara el panel sería un segundo Vaul con otro nombre.",
-    "drawer.hooksBody2":
-      "Los hooks del drawer <strong>son</strong> los del Vaul, re-declarados. Un consumidor afina <code>--sk-drawer-*</code> y no se entera nunca de que hay un Vaul abajo: el pattern queda como detalle de implementación en vez de una segunda superficie pública que mantener sincronizada.",
-    "drawer.whenTitle": "Cuándo es un drawer y cuándo no",
-    "drawer.whenHeadNeed": "Necesitas",
-    "drawer.whenHeadUse": "Usa",
-    "drawer.whenRow1Need": "Navegación o filtros al costado, a lo alto",
-    "drawer.whenRow1Use": "<code>sk-drawer</code>",
-    "drawer.whenRow2Need": "Una hoja que sube desde abajo en móvil",
-    "drawer.whenRow2Use": '<a href="/es/componentes/dialog">Dialog</a> (opción Vaul)',
-    "drawer.whenRow3Need": "Una caja centrada",
-    "drawer.whenRow3Use": '<a href="/es/componentes/dialog">Dialog</a>',
-    "drawer.whenRow4Need": "Un riel permanente que no tapa la página",
-    "drawer.whenRow4Use": '<a href="/es/componentes/sidebar">Sidebar</a>',
-    "drawer.whenBody":
-      'El sidebar y el drawer no compiten: un <a href="/es/componentes/sidebar">sidebar</a> es un shell que vive en el layout, y un drawer es modal y tapa la página. Este sitio usa los dos, el riel arriba de 52rem, el drawer abajo, con <strong>una sola</strong> nav-list adentro de los dos.',
-    "drawer.markupTitle": "Markup contract",
-    "drawer.markupBody":
-      "El root lleva <code>sk-vaul sk-drawer</code> sobre un <code>&lt;dialog&gt;</code> nativo, Vaul lo exige, más su <code>data-edge</code>. El handle es opcional: sin él no hay drag, y el drawer sigue completo.",
-    "drawer.nativeTitle": "Drawer nativo",
-    "drawer.nativeLede":
-      'La misma superficie puede quedarse en la plataforma. Conserva <code>&lt;dialog class="sk-vaul sk-drawer"&gt;</code>, omite <code>data-sk-vaul</code> y ábrelo con <code>showModal()</code>: no carga enhancer, drag ni light-dismiss.',
-    "drawer.nativeBody":
-      "<code>&lt;form method=\"dialog\"&gt;</code> cierra sin un listener propio; Escape, foco, página inerte, backdrop y restauración pertenecen al navegador. Los estilos y la transición siguen siendo los mismos porque viven en Core, no en el enhancer.",
+    "drawer.description": "Un panel que entra desde el costado, a lo alto de la pantalla, y tapa la página hasta que se cierra.",
+
+    "drawer.a11yKeyEsc": "Cierra el panel y devuelve el foco.",
+
+    "drawer.a11yKeyTab": "Recorre los controles del panel.",
+
+    "drawer.a11yYours2": "Da un botón de cerrar visible: arrastrar no es la única forma de salir.",
+
+    "drawer.a11yYours1": "Nombra el panel con <code>aria-labelledby</code> apuntando a su título.",
+
+    "drawer.a11yDoes4": "El tirador no se anuncia si no hay arrastre.",
+
+    "drawer.a11yDoes3": "Escape lo cierra.",
+
+    "drawer.a11yDoes2": "La página detrás queda <code>inert</code>.",
+
+    "drawer.a11yDoes1": "Al abrir, el foco entra al panel; al cerrar, vuelve a lo que lo abrió.",
+
+    "drawer.a11yIntro": "Drawer es un <code>&lt;dialog&gt;</code> modal: la plataforma maneja el foco y la página inerte.",
+
+    "drawer.content3": "Da al botón de cerrar solo ícono un <code>aria-label</code>: «Cerrar».",
+
+    "drawer.content2": "Nombra el botón que lo abre por lo que abre: «Abrir menú», «Filtros».",
+
+    "drawer.content1": "Pon un título que diga qué hay en el panel: «Filtros», «Tu cuenta».",
+
+    "drawer.whenNot4": 'Si no bloquea el resto de la pantalla: usa <a href="/es/componentes/popover">Popover</a>.',
+
+    "drawer.whenNot3": 'Para un riel permanente que no tapa la página: usa <a href="/es/componentes/sidebar">Sidebar</a>.',
+
+    "drawer.whenNot2": 'Para una hoja que sube desde abajo en móvil: usa la opción Vaul de <a href="/es/componentes/dialog">Dialog</a>.',
+
+    "drawer.whenNot1": 'Para una decisión corta: usa <a href="/es/componentes/dialog">Dialog</a>, centrado y con título.',
+
+    "drawer.when2": "Para el detalle de un elemento que se revisa sin salir de la lista.",
+
+    "drawer.when1": "Para navegación o filtros al costado, a lo alto, en pantallas angostas.",
+
+    "drawer.contract4": "Sin <code>data-sk-vaul</code>, el auto-loader no monta nada: el enhancer solo hace falta para arrastrar y para cerrar tocando fuera.",
+
+    "drawer.contract3": "No trae estructura: encabezado, navegación y pie son tu composición. Afina el panel con los hooks <code>--sk-drawer-*</code>.",
+
+    "drawer.contract2": "El tirador es opcional: sin él no hay arrastre, y el drawer sigue funcionando.",
+
+    "drawer.contract1": "La raíz es un <code>&lt;dialog&gt;</code> nativo con <code>sk-vaul sk-drawer</code> y su <code>data-edge</code>.",
+
+    "drawer.exampleBody": "Encabezado fijo, navegación con scroll propio y la cuenta abajo. Ábrelo y arrástralo hacia el borde para cerrarlo.",
+
+    "drawer.exampleTitle": "Navegación: el menú de una app en móvil",
+    "drawer.lede": 'Drawer es un panel que entra desde el costado, a lo alto de la pantalla, para una tarea que descansa en un borde: navegación en móvil, filtros, detalles de un elemento. Tapa la página hasta que se cierra; se cierra con Escape, tocando fuera o arrastrándolo. Es un <a href="/es/vaul">Vaul</a> en el borde inline.',
+    "drawer.nativeTitle": "Nativo: sin JavaScript extra",
+    "drawer.nativeLede": 'El mismo <code>&lt;dialog class="sk-vaul sk-drawer"&gt;</code> sin <code>data-sk-vaul</code>, abierto con <code>showModal()</code>. Sin arrastre, pero con Escape, foco y fondo del navegador.',
     "drawer.nativeLabel": "Drawer nativo",
-    "drawer.openTitle": "Abrir",
-    "drawer.nativeContractTitle": "Contrato nativo",
-    "drawer.nativeContractItem1": "La raíz sigue siendo un <code>&lt;dialog&gt;</code> abierto con <code>showModal()</code>.",
-    "drawer.nativeContractItem2": "Sin <code>data-sk-vaul</code>, el auto-loader no monta nada.",
-    "drawer.nativeContractItem3": "Sin handle no se anuncia una interacción de drag que no existe.",
-    "drawer.nativeContractItem4": "El enhancer sólo hace falta para drag-to-dismiss y light-dismiss.",
     "drawer.compositionComment": "un drawer ES un Vaul",
     "drawer.compositionComment2": "toca tres bordes del viewport: un radio ahí se lee como\n     un error",
     "drawer.demoOpenLabel": "Abrir drawer nativo",
@@ -65,17 +91,21 @@ export const drawerMessages = {
     "drawer.demoCloseLabel": "Cerrar",
     "drawer.demoAriaLabel": "Drawer nativo de ejemplo",
     "drawer.test1": "Agrega el modificador de drawer solo para la firma de drawer.",
-    "drawer.showcaseTitle": "Showcases",
-    "drawer.showcaseBody": "Un panel que entra desde un borde y se cierra arrastrándolo, y la versión nativa.",
-    "drawer.guidelinesLede": "Drawer es un panel modal que llega desde un borde de la pantalla.",
-    "drawer.guide.use1": "Úsalo para una tarea que descansa en un borde: filtros, compartir, una hoja de acciones en el celular.",
-    "drawer.guide.avoid1": "Una decisión corta que hay que confirmar es un <a href=\"/es/componentes/dialog\">Dialog</a>, centrado y con título.",
-    "drawer.guide.avoid2": "Si no bloquea el resto de la pantalla, es un <a href=\"/es/componentes/popover\">Popover</a>.",
+    "drawer.guidelinesLede": "Un drawer mantiene a mano algo que no cabe en la pantalla, sin sacar a la persona de donde está.",
+    "drawer.dd.close.title": "Cierre: ofrece un control visible",
+    "drawer.dd.close.do": "El botón de cerrar es fácil de encontrar; arrastrar queda como alternativa.",
+    "drawer.dd.close.dont": "No dependas del gesto de arrastre como única forma de salir.",
+    "drawer.dd.name.title": "Nombre: identifica qué contiene el panel",
+    "drawer.dd.name.do": "«Filtros de búsqueda» describe el propósito del panel.",
+    "drawer.dd.name.dont": "«Panel» no ayuda a entender qué hay dentro.",
+    "drawer.dd.decision.title": "Decisión breve: usa Dialog, no Drawer",
+    "drawer.dd.decision.do": "Una confirmación puntual encaja en un diálogo centrado.",
+    "drawer.dd.decision.dont": "Un panel lateral de pantalla completa es excesivo para una decisión breve."
   },
   en: {
     "drawer.anatomyLabel": "Drawer anatomy",
     "drawer.anatomyPreviewLabel": "Drawer, part by part",
-    "drawer.anatomyBody": "A drawer is <code>Vaul.drawer</code>: the same root and handle as any Vaul, with <code>sk-drawer</code> added on the root to paint it as a side panel. The content is free composition.",
+    "drawer.anatomyBody": "Vaul's root and handle, with <code>sk-drawer</code> to paint it as a side panel. The content is yours.",
     "drawer.anatomyPanelLabel": "Navigation",
     "drawer.anatomyTitle": "Your account",
     "drawer.anatomyBodyText": "Profile, security and notifications.",
@@ -83,6 +113,13 @@ export const drawerMessages = {
     "demo.drawer.label": "Navigation",
     "demo.drawer.brand": "Estudio",
     "demo.drawer.close": "Close",
+    "demo.drawer.filters": "Search filters",
+    "demo.drawer.genericPanel": "Panel",
+    "demo.drawer.nameBody": "Adjust filters to narrow the results.",
+    "demo.drawer.decisionTitle": "Delete this file?",
+    "demo.drawer.decisionBody": "It will be permanently deleted.",
+    "demo.drawer.decisionCancel": "Cancel",
+    "demo.drawer.decisionConfirm": "Delete",
     "demo.drawer.main": "Main",
     "demo.drawer.work": "Work",
     "demo.drawer.account": "Account",
@@ -92,44 +129,63 @@ export const drawerMessages = {
     "demo.drawer.team": "Team",
     "demo.drawer.settings": "Settings",
     "demo.drawer.userName": "Ada Kovač",
+    "demo.drawer.pageTitle": "Project overview",
+    "demo.drawer.pageCard": "Recent activity",
+    "demo.drawer.pageCardBody": "3 tasks updated",
 
-    "drawer.description": "A Vaul on the inline edge, running the full height of the screen. Ships hooks and no structure.",
-    "drawer.betaBadge": "Beta",
-    "drawer.lede":
-      'A drawer <strong>is</strong> a <a href="/vaul">Vaul</a> on the inline edge, running the full height of the screen. That sentence is the whole component: the edge, the slide, the backdrop, the drag and the top layer belong to the pattern, and this file only says <em>which Vaul is a drawer</em> and how it looks.',
-    "drawer.hooksTitle": "Ships hooks and no structure",
-    "drawer.hooksBody1":
-      "By the system's own rule: every line of structure a drawer could have is structure a bottom sheet would need identically, and that shared structure <strong>is</strong> the pattern. A drawer that reimplemented the panel would be a second Vaul under another name.",
-    "drawer.hooksBody2":
-      "The drawer's hooks <strong>are</strong> the Vaul's, redeclared. A consumer tunes <code>--sk-drawer-*</code> and never learns there is a Vaul underneath: the pattern stays an implementation detail instead of a second public surface to keep in sync.",
-    "drawer.whenTitle": "When it is a drawer and when it is not",
-    "drawer.whenHeadNeed": "You need",
-    "drawer.whenHeadUse": "Use",
-    "drawer.whenRow1Need": "Side navigation or filters, full height",
-    "drawer.whenRow1Use": "<code>sk-drawer</code>",
-    "drawer.whenRow2Need": "A sheet that rises from the bottom on mobile",
-    "drawer.whenRow2Use": '<a href="/components/dialog">Dialog</a> (Vaul option)',
-    "drawer.whenRow3Need": "A centered box",
-    "drawer.whenRow3Use": '<a href="/components/dialog">Dialog</a>',
-    "drawer.whenRow4Need": "A permanent rail that never covers the page",
-    "drawer.whenRow4Use": '<a href="/components/sidebar">Sidebar</a>',
-    "drawer.whenBody":
-      'The sidebar and the drawer do not compete: a <a href="/components/sidebar">sidebar</a> is a shell that lives in the layout, and a drawer is modal and covers the page. This site uses both, the rail above 52rem, the drawer below, with <strong>a single</strong> nav-list inside either one.',
-    "drawer.markupTitle": "Markup contract",
-    "drawer.markupBody":
-      "The root carries <code>sk-vaul sk-drawer</code> over a native <code>&lt;dialog&gt;</code>, which Vaul requires, plus its <code>data-edge</code>. The handle is optional: without it there is no drag, and the drawer is still complete.",
-    "drawer.nativeTitle": "Native drawer",
-    "drawer.nativeLede":
-      'The same surface can stay on the platform. Keep <code>&lt;dialog class="sk-vaul sk-drawer"&gt;</code>, skip <code>data-sk-vaul</code>, and open it with <code>showModal()</code>: no enhancer, drag, or light-dismiss loads.',
-    "drawer.nativeBody":
-      "<code>&lt;form method=\"dialog\"&gt;</code> closes with no listener of its own; Escape, focus, an inert page, backdrop and restoration all belong to the browser. The styles and the transition stay the same, because they live in Core, not in the enhancer.",
+    "drawer.description": "A panel that slides in from the side, full height, and covers the page until it closes.",
+
+    "drawer.a11yKeyEsc": "Closes the panel and returns focus.",
+
+    "drawer.a11yKeyTab": "Moves through the panel's controls.",
+
+    "drawer.a11yYours2": "Give a visible close button: dragging is not the only way out.",
+
+    "drawer.a11yYours1": "Name the panel with <code>aria-labelledby</code> pointing to its title.",
+
+    "drawer.a11yDoes4": "The handle is not announced when there is no dragging.",
+
+    "drawer.a11yDoes3": "Escape closes it.",
+
+    "drawer.a11yDoes2": "The page behind is <code>inert</code>.",
+
+    "drawer.a11yDoes1": "On open, focus enters the panel; on close, it returns to what opened it.",
+
+    "drawer.a11yIntro": "Drawer is a modal <code>&lt;dialog&gt;</code>: the platform handles focus and the inert page.",
+
+    "drawer.content3": "Give the icon-only close button an <code>aria-label</code>: “Close”.",
+
+    "drawer.content2": "Name the button that opens it by what it opens: “Open menu”, “Filters”.",
+
+    "drawer.content1": "Give it a title that says what is in the panel: “Filters”, “Your account”.",
+
+    "drawer.whenNot4": 'If it does not block the rest of the screen: use <a href="/components/popover">Popover</a>.',
+
+    "drawer.whenNot3": 'For a permanent rail that does not cover the page: use <a href="/components/sidebar">Sidebar</a>.',
+
+    "drawer.whenNot2": 'For a sheet sliding up from the bottom on mobile: use <a href="/components/dialog">Dialog</a>\'s Vaul option.',
+
+    "drawer.whenNot1": 'For a short decision: use <a href="/components/dialog">Dialog</a>, centered and titled.',
+
+    "drawer.when2": "For an item's details, reviewed without leaving the list.",
+
+    "drawer.when1": "For side navigation or filters, full height, on narrow screens.",
+
+    "drawer.contract4": "Without <code>data-sk-vaul</code>, the auto-loader mounts nothing: the enhancer is only needed for dragging and tap-outside dismissal.",
+
+    "drawer.contract3": "It ships no structure: header, navigation and footer are your composition. Tune the panel with the <code>--sk-drawer-*</code> hooks.",
+
+    "drawer.contract2": "The handle is optional: without it there is no dragging, and the drawer still works.",
+
+    "drawer.contract1": "The root is a native <code>&lt;dialog&gt;</code> with <code>sk-vaul sk-drawer</code> and its <code>data-edge</code>.",
+
+    "drawer.exampleBody": "A fixed header, navigation with its own scroll and the account at the bottom. Open it and drag it toward the edge to close it.",
+
+    "drawer.exampleTitle": "Navigation: an app's menu on mobile",
+    "drawer.lede": 'Drawer is a panel that slides in from the side, full height, for a task that rests on an edge: mobile navigation, filters, an item\'s details. It covers the page until it closes; it closes with Escape, a tap outside or a drag. It is a <a href="/vaul">Vaul</a> on the inline edge.',
+    "drawer.nativeTitle": "Native: no extra JavaScript",
+    "drawer.nativeLede": 'The same <code>&lt;dialog class="sk-vaul sk-drawer"&gt;</code> without <code>data-sk-vaul</code>, opened with <code>showModal()</code>. No dragging, but the browser\'s Escape, focus and backdrop.',
     "drawer.nativeLabel": "Native drawer",
-    "drawer.openTitle": "Opening it",
-    "drawer.nativeContractTitle": "Native contract",
-    "drawer.nativeContractItem1": "The root is still a <code>&lt;dialog&gt;</code> opened with <code>showModal()</code>.",
-    "drawer.nativeContractItem2": "Without <code>data-sk-vaul</code>, the auto-loader mounts nothing.",
-    "drawer.nativeContractItem3": "Without a handle, no drag interaction that doesn't exist gets announced.",
-    "drawer.nativeContractItem4": "The enhancer is only needed for drag-to-dismiss and light-dismiss.",
     "drawer.compositionComment": "a drawer IS a Vaul",
     "drawer.compositionComment2": "touches three edges of the viewport: a radius there\n     reads as a bug",
     "drawer.demoOpenLabel": "Open native drawer",
@@ -138,11 +194,15 @@ export const drawerMessages = {
     "drawer.demoCloseLabel": "Close",
     "drawer.demoAriaLabel": "Example native drawer",
     "drawer.test1": "Adds the drawer modifier only for the drawer signature.",
-    "drawer.showcaseTitle": "Showcases",
-    "drawer.showcaseBody": "A panel that comes in from an edge and closes by dragging, and the native version.",
-    "drawer.guidelinesLede": "Drawer is a modal panel that arrives from an edge of the screen.",
-    "drawer.guide.use1": "Use it for a task that rests on an edge: filters, sharing, an action sheet on phones.",
-    "drawer.guide.avoid1": "A short decision that has to be confirmed is a <a href=\"/components/dialog\">Dialog</a>, centred and titled.",
-    "drawer.guide.avoid2": "When it does not block the rest of the screen, it is a <a href=\"/components/popover\">Popover</a>.",
+    "drawer.guidelinesLede": "A drawer keeps at hand something that does not fit on screen, without taking people away from where they are.",
+    "drawer.dd.close.title": "Dismissal: provide a visible control",
+    "drawer.dd.close.do": "The close button is easy to find; dragging remains an alternative.",
+    "drawer.dd.close.dont": "Do not make dragging the only way out.",
+    "drawer.dd.name.title": "Name: identify what the panel contains",
+    "drawer.dd.name.do": "“Search filters” describes the panel's purpose.",
+    "drawer.dd.name.dont": "“Panel” does not help people understand what is inside.",
+    "drawer.dd.decision.title": "Brief decision: use Dialog, not Drawer",
+    "drawer.dd.decision.do": "A one-off confirmation belongs in a centered dialog.",
+    "drawer.dd.decision.dont": "A full-height side panel is excessive for a brief decision."
   },
 } as const;

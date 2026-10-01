@@ -1,83 +1,79 @@
 export const tablePagerMessages = {
   es: {
-    "tablePager.description": "Pagina en el cliente las filas de una tabla escrita a mano, con tamaño de página opcional.",
-    "tablePager.betaBadge": "Beta",
+    "tablePager.description": "Divide en páginas las filas de una tabla que ya están en la página.",
+    "tablePager.key.enter": "Va a esa página.",
+    "tablePager.key.tab": "Recorre el tamaño, las páginas y las flechas.",
+    "tablePager.a11yYours2": "Al cambiar de página, considera anunciar el rango nuevo.",
+    "tablePager.a11yYours1": "Traduce los nombres de anterior y siguiente.",
+    "tablePager.a11yDoes2": 'La página actual se marca con <code>aria-current="page"</code>.',
+    "tablePager.a11yDoes1": "El <code>nav</code> lleva <code>aria-label</code> (<code>navLabel</code>).",
+    "tablePager.a11yIntro": "TablePager agrega un <code>&lt;nav&gt;</code> con botones nativos debajo de la tabla.",
+    "tablePager.content2": "Ofrece tamaños redondos: 10, 25, 50.",
+    "tablePager.content1": "Di el rango con el total: «21–30 de 214».",
+    "tablePager.whenNot2": 'Para una tabla con orden, filtros y selección: usa <a href="/es/componentes/data-grid">DataGrid</a>.',
+    "tablePager.whenNot1": 'Si los datos llegan paginados del servidor: usa <a href="/es/componentes/pagination">Pagination</a>.',
+    "tablePager.when2": "Cuando conviene elegir cuántas filas ver por página.",
+    "tablePager.when1": "Para una tabla con todas sus filas ya en el HTML, demasiadas para verlas de una vez.",
+    "tablePager.contract3": "Con datos paginados en el servidor, usa Pagination y controla tú la consulta.",
+    "tablePager.contract2": "Cada cambio dispara <code>sk:tablepagerchange</code> con <code>{ page, pageSize, pageCount, total, start, end }</code>.",
+    "tablePager.contract1": "Pagina en el navegador: oculta las filas que no están en la página actual.",
     "tablePager.anatomyBody":
-      "La tabla va primero y la barra después. La barra tiene el tamaño de página al inicio (opcional) y, al final, el rango visible (opcional) junto al <code>nav</code>, que el enhancer llena con los controles de <a class=\"sk-link sk-interactive\" href=\"/es/componentes/pagination\">Pagination</a>.",
+      'La tabla va primero y la barra después. La barra tiene el tamaño de página al inicio (opcional) y, al final, el rango visible (opcional) junto al <code>nav</code>, que el enhancer llena con los controles de <a class="sk-link sk-interactive" href="/es/componentes/pagination">Pagination</a>.',
     "tablePager.anatomyLabel": "Partes de TablePager",
     "tablePager.anatomyPreviewLabel": "Anatomía",
 
-    "tablePager.lede":
-      "TablePager no dibuja la tabla: la tabla sigue siendo <a class=\"sk-link sk-interactive\" href=\"/es/componentes/table\">Table</a>. Lo que agrega es la composición alrededor y un enhancer que oculta las filas del <code>&lt;tbody&gt;</code> que no caen en la página actual, genera los botones del <code>nav</code> y reescribe el rango. El mismo código corre en Vanilla y en React.",
+    "tablePager.lede": 'TablePager divide en páginas las filas de una tabla que ya están todas en la página: una lista de pedidos, un registro de actividad. Dice qué filas estás viendo y deja elegir cuántas por página. La tabla sigue siendo una <a href="/es/componentes/table">Table</a>.',
 
-    "tablePager.whenTitle": "Cuándo usarlo",
-    "tablePager.whenItem1": "Una tabla con todas sus filas ya en el HTML, demasiadas para verlas de una vez",
-    "tablePager.whenItem2": "Cuando quien la lee tiene que poder elegir cuántas filas ver por página",
-    "tablePager.whenItem3":
-      "No cuando los datos llegan paginados del servidor: ahí la aplicación controla la consulta y usa <a class=\"sk-link sk-interactive\" href=\"/es/componentes/pagination\">Pagination</a> sola",
 
-    "tablePager.fullTitle": "Con tamaño de página",
-    "tablePager.fullBody":
-      "Un <a class=\"sk-link sk-interactive\" href=\"/es/componentes/select\">Select</a> dentro de <code>TablePagerSize</code> cambia <code>pageSize</code>: el enhancer escucha su cambio y vuelve a la primera página. <code>statusTemplate</code> arma el rango con <code>{start}</code>, <code>{end}</code> y <code>{total}</code>. Con <code>data-layout=\"fixed\"</code> en la tabla, los anchos de columna no saltan entre páginas.",
-    "tablePager.fullPreviewLabel": "TablePager con tamaño de página",
+    "tablePager.fullTitle": "Completo: tamaño, rango y páginas",
+    "tablePager.fullBody": "Un Select cambia cuántas filas por página; al cambiarlo, vuelve a la primera.",
 
-    "tablePager.minimalTitle": "Solo navegación",
-    "tablePager.minimalBody":
-      "<code>TablePagerSize</code> y <code>TablePagerStatus</code> son opcionales. <code>TablePagerEnd</code> y su <code>TablePagerNav</code> no lo son: sin ellos no hay cómo cambiar de página.",
-    "tablePager.minimalPreviewLabel": "TablePager solo con navegación",
+    "tablePager.minimalTitle": "Mínimo: solo las páginas",
+    "tablePager.minimalBody": "El tamaño y el rango son opcionales; la navegación no.",
 
-    "tablePager.eventsTitle": "Escuchar el cambio",
-    "tablePager.eventsBody":
-      "Cada cambio de página o de tamaño dispara <code>sk:tablepagerchange</code> en la raíz, con <code>{ page, pageSize, pageCount, total, start, end }</code>. En React no hay prop para este evento: se escucha en el elemento.",
 
-    "tablePager.a11yBody":
-      "El <code>nav</code> lleva <code>aria-label</code> (<code>navLabel</code>) y la página actual se marca con <code>aria-current=\"page\"</code>. Los botones de anterior y siguiente se nombran con <code>previousLabel</code> y <code>nextLabel</code>, y cada número con <code>pageLabel</code>; sus valores por defecto están en inglés, así que en otra lengua hay que traducirlos. El rango es <code>role=\"status\"</code>, así que un lector de pantalla anuncia el nuevo rango al cambiar de página.",
     "demo.tablePager.dd.between": "Estas cifras se actualizan cada hora.",
-    "tablePager.showcaseTitle": "Showcases",
-    "tablePager.showcaseBody": "El paginador completo, y el mínimo con solo la navegación.",
-    "tablePager.guidelinesLede": "TablePager pagina una tabla y dice qué filas estás viendo.",
-    "tablePager.dd.attached.title": "Pegado a su tabla",
+    "tablePager.guidelinesLede": "Páginas cortas hacen una tabla larga recorrible, a cambio de un clic por página.",
+    "tablePager.dd.attached.title": "Lugar: pegado a su tabla",
     "tablePager.dd.attached.do": "La barra va justo debajo de la tabla que pagina.",
     "tablePager.dd.attached.dont": "Separada por otro contenido, no queda claro qué pagina.",
   },
   en: {
-    "tablePager.description": "Pages a hand-written table's rows on the client, with an optional page size.",
-    "tablePager.betaBadge": "Beta",
+    "tablePager.description": "Splits into pages the rows of a table that are already on the page.",
+    "tablePager.key.enter": "Goes to that page.",
+    "tablePager.key.tab": "Moves through the size, the pages and the arrows.",
+    "tablePager.a11yYours2": "On a page change, consider announcing the new range.",
+    "tablePager.a11yYours1": "Translate the previous and next names.",
+    "tablePager.a11yDoes2": 'The current page is marked with <code>aria-current="page"</code>.',
+    "tablePager.a11yDoes1": "The <code>nav</code> carries an <code>aria-label</code> (<code>navLabel</code>).",
+    "tablePager.a11yIntro": "TablePager adds a <code>&lt;nav&gt;</code> with native buttons below the table.",
+    "tablePager.content2": "Offer round sizes: 10, 25, 50.",
+    "tablePager.content1": "State the range with the total: “21–30 of 214”.",
+    "tablePager.whenNot2": 'For a table with sorting, filters and selection: use <a href="/components/data-grid">DataGrid</a>.',
+    "tablePager.whenNot1": 'If data comes paginated from the server: use <a href="/components/pagination">Pagination</a>.',
+    "tablePager.when2": "When it helps to choose how many rows to see per page.",
+    "tablePager.when1": "For a table with all its rows already in the HTML, too many to see at once.",
+    "tablePager.contract3": "With server-paginated data, use Pagination and drive the query yourself.",
+    "tablePager.contract2": "Every change fires <code>sk:tablepagerchange</code> with <code>{ page, pageSize, pageCount, total, start, end }</code>.",
+    "tablePager.contract1": "It pages in the browser: it hides the rows not on the current page.",
     "tablePager.anatomyBody":
-      "The table comes first and the bar after it. The bar has the page size at its start (optional) and, at its end, the visible range (optional) next to the <code>nav</code>, which the enhancer fills with <a class=\"sk-link sk-interactive\" href=\"/components/pagination\">Pagination</a>'s controls.",
+      'The table comes first and the bar after it. The bar has the page size at its start (optional) and, at its end, the visible range (optional) next to the <code>nav</code>, which the enhancer fills with <a class="sk-link sk-interactive" href="/components/pagination">Pagination</a>\'s controls.',
     "tablePager.anatomyLabel": "TablePager parts",
     "tablePager.anatomyPreviewLabel": "Anatomy",
 
-    "tablePager.lede":
-      "TablePager does not draw the table: the table is still <a class=\"sk-link sk-interactive\" href=\"/components/table\">Table</a>. What it adds is the composition around it and an enhancer that hides the <code>&lt;tbody&gt;</code> rows outside the current page, generates the <code>nav</code>'s buttons and rewrites the range. The same code runs in Vanilla and in React.",
+    "tablePager.lede": 'TablePager splits into pages the rows of a table that are all already on the page: a list of orders, an activity log. It says which rows you are viewing and lets you choose how many per page. The table is still a <a href="/components/table">Table</a>.',
 
-    "tablePager.whenTitle": "When to use it",
-    "tablePager.whenItem1": "A table with all its rows already in the HTML, too many to see at once",
-    "tablePager.whenItem2": "When the reader has to be able to choose how many rows to see per page",
-    "tablePager.whenItem3":
-      "Not when the data arrives paged from the server: there the application controls the query and uses <a class=\"sk-link sk-interactive\" href=\"/components/pagination\">Pagination</a> on its own",
 
-    "tablePager.fullTitle": "With a page size",
-    "tablePager.fullBody":
-      "A <a class=\"sk-link sk-interactive\" href=\"/components/select\">Select</a> inside <code>TablePagerSize</code> changes <code>pageSize</code>: the enhancer listens for its change and goes back to the first page. <code>statusTemplate</code> builds the range from <code>{start}</code>, <code>{end}</code> and <code>{total}</code>. With <code>data-layout=\"fixed\"</code> on the table, column widths do not jump between pages.",
-    "tablePager.fullPreviewLabel": "TablePager with a page size",
+    "tablePager.fullTitle": "Full: size, range and pages",
+    "tablePager.fullBody": "A Select changes how many rows per page; changing it returns to the first.",
 
-    "tablePager.minimalTitle": "Navigation only",
-    "tablePager.minimalBody":
-      "<code>TablePagerSize</code> and <code>TablePagerStatus</code> are optional. <code>TablePagerEnd</code> and its <code>TablePagerNav</code> are not: without them there is no way to change page.",
-    "tablePager.minimalPreviewLabel": "TablePager with navigation only",
+    "tablePager.minimalTitle": "Minimal: just the pages",
+    "tablePager.minimalBody": "Size and range are optional; navigation is not.",
 
-    "tablePager.eventsTitle": "Listening for the change",
-    "tablePager.eventsBody":
-      "Every page or size change fires <code>sk:tablepagerchange</code> on the root, with <code>{ page, pageSize, pageCount, total, start, end }</code>. React has no prop for this event: listen for it on the element.",
 
-    "tablePager.a11yBody":
-      "The <code>nav</code> carries <code>aria-label</code> (<code>navLabel</code>) and the current page is marked <code>aria-current=\"page\"</code>. The previous and next buttons are named by <code>previousLabel</code> and <code>nextLabel</code>, and each number by <code>pageLabel</code>; their defaults are English, so in another language they have to be translated. The range is <code>role=\"status\"</code>, so a screen reader announces the new range when the page changes.",
     "demo.tablePager.dd.between": "These figures update every hour.",
-    "tablePager.showcaseTitle": "Showcases",
-    "tablePager.showcaseBody": "The full pager, and the minimal one with only the navigation.",
-    "tablePager.guidelinesLede": "TablePager pages a table and says which rows you are looking at.",
-    "tablePager.dd.attached.title": "Attached to its table",
+    "tablePager.guidelinesLede": "Short pages make a long table browsable, at the cost of a click per page.",
+    "tablePager.dd.attached.title": "Place: attached to its table",
     "tablePager.dd.attached.do": "The bar sits right under the table it pages.",
     "tablePager.dd.attached.dont": "Separated by other content, it is unclear what it pages.",
   },

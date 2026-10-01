@@ -1,50 +1,21 @@
 ---
-import type { UsageTree } from "@skryensya/core/usage-tree";
 import "@skryensya/core/components/button.css";
 import "@skryensya/core/components/canvas.css";
+import "@skryensya/core/components/process-list.css";
 import "@skryensya/core/components/diagram.css";
 import ComponentPageShell from "./ComponentPageShell.astro";
 import CodeBlock from "../CodeBlock.astro";
-import ComponentPreview from "../ComponentPreview.astro";
 import "@skryensya/core/components/annotation.css";
-import { canvasAnatomyTree } from "../../demos/canvas";
+import { canvasAnatomyTree, canvasDiagramCss, canvasDiagramTree, canvasDontFitsTree } from "../../demos/canvas";
+import UsagePreview from "../UsagePreview.astro";
+import DoDont from "../DoDont.astro";
+import WhenToUse from "../WhenToUse.astro";
+import ContentRules from "../ContentRules.astro";
+import A11yNotes from "../A11yNotes.astro";
 import { annotationDemoCss } from "../../demos/annotation";
-import { getLocale, useTranslations, type Translate } from "../../i18n";
+import { getLocale, tList, useTranslations } from "../../i18n";
 
 const t = useTranslations(getLocale(Astro.url));
-
-const canvasTree = (translate: Translate): UsageTree => ({
-  contract: "canvas",
-  signature: "Canvas",
-  options: {
-    label: translate("canvas.demoLabel"),
-    zoomInLabel: translate("canvas.zoomInLabel"),
-    zoomOutLabel: translate("canvas.zoomOutLabel"),
-    fitLabel: translate("canvas.fitLabel"),
-  },
-  slots: {
-    touchHint: translate("canvas.touchHint"),
-    wheelHint: translate("canvas.wheelHint"),
-    children: {
-      contract: "diagram",
-      signature: "Diagram",
-      options: { label: translate("canvas.demoLabel") },
-      slots: {
-        nodes: [
-          { options: { node: "draft", shape: "terminal" }, slots: { children: translate("canvas.nodeDraft") } },
-          { options: { node: "review" }, slots: { children: translate("canvas.nodeReview") } },
-          { options: { node: "publish" }, slots: { children: translate("canvas.nodePublish") } },
-          { options: { node: "live", shape: "terminal" }, slots: { children: translate("canvas.nodeLive") } },
-        ],
-        edges: [
-          { options: { from: "draft", to: "review" }, slots: {} },
-          { options: { from: "review", to: "publish" }, slots: { children: translate("canvas.edgeApproved") } },
-          { options: { from: "publish", to: "live" }, slots: {} },
-        ],
-      },
-    },
-  },
-});
 
 const install = `pnpm add @skryensya/core @skryensya/react`;
 const styles = `@import "@skryensya/core/components/canvas.css";`;
@@ -61,9 +32,9 @@ const react = `import { Canvas } from "@skryensya/react/canvas";
 <Canvas label="Flujo de publicación">
   <PublicationDiagram />
 </Canvas>`;
-const canvasDemoCss = `.sk-canvas {
-  --sk-canvas-content-inline-size: 30rem;
-}`;
+const storybookTitle = "Components/Content/Canvas";
+const explain = (option: string, values: readonly string[]) =>
+  Object.fromEntries(values.map((value) => [value, t(`canvas.prop.${option}.${value}` as Parameters<typeof t>[0])]));
 const hooks = `.mi-canvas {
   --sk-canvas-max-block-size: 34rem;
   --sk-canvas-viewport-bg: var(--color-bg-canvas);
@@ -77,57 +48,53 @@ const hooks = `.mi-canvas {
 <ComponentPageShell
   title="Canvas"
   description={t("canvas.description")}
-  badge={t("canvas.betaBadge")}
   contractId="canvas"
   testFiles={["packages/core/src/canvas.test.ts", "packages/vanilla/src/components/canvas.test.ts", "packages/react/src/components/canvas.test.tsx"]}
 >
   <Fragment slot="usage">
     <p class="lede" set:html={t("canvas.lede")} />
 
-    <h3>{t("canvas.showcaseTitle")}</h3>
-    <p set:html={t("canvas.showcaseBody")} />
-
-    <h3>{t("canvas.demoTitle")}</h3>
-    <p set:html={t("canvas.demoBody")} />
-    <ComponentPreview
-      tree={canvasTree(t)}
-      css={canvasDemoCss}
-      label={t("canvas.demoLabel")}
-      flush
+    <UsagePreview
+      tree={canvasDiagramTree(t)}
+      optionName="fitOnly"
+      title={t("canvas.prop.fitOnly.title")}
+      description={t("canvas.prop.fitOnly.body")}
+      explain={explain("fitOnly", ["false", "true"])}
+      css={canvasDiagramCss}
+      storybookTitle={storybookTitle}
+      storybookStory="Diagram"
     />
 
-    <h3>{t("canvas.controlsTitle")}</h3>
-    <p set:html={t("canvas.controlsBody")} />
-
-    <h3>{t("canvas.optionsTitle")}</h3>
-    <p set:html={t("canvas.optionsBody")} />
-
-    <p set:html={t("component.reactNote")} />
+    <h3>{t("component.examplesTitle")}</h3>
+    <UsagePreview
+      tree={canvasDiagramTree(t)}
+      title={t("canvas.demoTitle")}
+      description={t("canvas.demoBody")}
+      css={canvasDiagramCss}
+      storybookTitle={storybookTitle}
+      storybookStory="Diagram"
+    />
 
     <h3>{t("component.contractNotesTitle")}</h3>
     <ul>
-      <li set:html={t("canvas.contractItem1")} />
-      <li set:html={t("canvas.contractItem2")} />
+      {tList(t, "canvas.contract").map((item) => <li set:html={item} />)}
     </ul>
+    <p set:html={t("component.reactNote")} />
 
     <h3>{t("component.anatomy")}</h3>
     <p set:html={t("canvas.anatomyBody")} />
-    <ComponentPreview
-      tree={canvasAnatomyTree(t)}
-      css={annotationDemoCss}
-      label={t("canvas.anatomyPreviewLabel")}
-      screens={false}
-      hideSource
-      chrome={false}
-    />
+    <UsagePreview tree={canvasAnatomyTree(t)} css={annotationDemoCss} label={t("canvas.anatomyPreviewLabel")} bare />
   </Fragment>
 
   <Fragment slot="guidelines">
     <p class="lede" set:html={t("canvas.guidelinesLede")} />
-    <h3>{t("canvas.whenTitle")}</h3>
-    <p set:html={t("canvas.whenBody")} />
-    <h3>{t("canvas.notForTitle")}</h3>
-    <p set:html={t("canvas.notForBody")} />
+    <WhenToUse use={tList(t, "canvas.when")} avoid={tList(t, "canvas.whenNot")} />
+    <DoDont
+      title={t("canvas.dd.fit.title")}
+      do={{ tree: canvasDiagramTree(t), caption: t("canvas.dd.fit.do") }}
+      dont={{ tree: canvasDontFitsTree(t), caption: t("canvas.dd.fit.dont") }}
+    />
+    <ContentRules items={tList(t, "canvas.content")} />
   </Fragment>
 
   <Fragment slot="install">
@@ -142,7 +109,15 @@ const hooks = `.mi-canvas {
   </Fragment>
 
   <Fragment slot="a11y">
-    <p set:html={t("canvas.a11yP1")} />
-    <p set:html={t("canvas.a11yP2")} />
+    <A11yNotes
+      intro={t("canvas.a11yIntro")}
+      does={tList(t, "canvas.a11yDoes")}
+      yours={tList(t, "canvas.a11yYours")}
+      keys={[
+        { keys: ["+", "-"], action: t("canvas.a11yKeyZoom") },
+        { keys: ["0"], action: t("canvas.a11yKeyFit") },
+        { keys: ["←", "→", "↑", "↓"], action: t("canvas.a11yKeyArrows") },
+      ]}
+    />
   </Fragment>
 </ComponentPageShell>

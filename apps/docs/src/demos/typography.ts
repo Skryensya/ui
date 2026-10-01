@@ -127,6 +127,106 @@ export const headingCompactTree = (t: Translate): UsageTree => ({
   ],
 });
 
+const headingSpecimen = (children: UsageTree[]): UsageTree => ({
+  contract: "box",
+  signature: "Box",
+  options: { surface: "surface", border: "subtle", padding: "md" },
+  attrs: { style: "inline-size: 30rem; max-inline-size: 100%;" },
+  children: {
+    contract: "layout",
+    signature: "Stack",
+    options: { gap: "md" },
+    children,
+  },
+});
+
+const levelTag = (label: string): UsageTree => ({
+  contract: "typography",
+  signature: "Code",
+  attrs: {
+    style: "display: inline-grid; place-items: center; inline-size: 3.25rem; flex: none; white-space: nowrap; text-align: center;",
+  },
+  children: label,
+});
+
+const headingRow = (label: string, heading: UsageTree, body?: UsageTree): UsageTree => ({
+  contract: "layout",
+  signature: "Grid",
+  options: { gap: "sm" },
+  attrs: { style: "grid-template-columns: 3.25rem minmax(0, 1fr); align-items: start;" },
+  children: [
+    levelTag(label),
+    {
+      contract: "layout",
+      signature: "Stack",
+      options: { gap: "xs" },
+      children: body ? [heading, body] : heading,
+    },
+  ],
+});
+
+const h = (element: string, size: string, children: string): UsageTree => ({
+  contract: "typography",
+  signature: "Heading",
+  options: { headingElement: element, headingSize: size, flush: true },
+  children,
+});
+
+const supporting = (children: string): UsageTree => ({
+  contract: "typography",
+  signature: "Text",
+  options: { size: "sm", tone: "secondary" },
+  children,
+});
+
+export const headingDoLevelsTree = (t: Translate): UsageTree => headingSpecimen([
+  headingRow("h2", h("h2", "h2", t("demo.heading.outline.title"))),
+  headingRow("h3", h("h3", "h3", t("demo.heading.outline.ready")), supporting(t("demo.heading.outline.readyBody"))),
+]);
+
+export const headingDontSkipLevelTree = (t: Translate): UsageTree => headingSpecimen([
+  headingRow("h2", h("h2", "h2", t("demo.heading.outline.title"))),
+  headingRow("h4", h("h4", "h3", t("demo.heading.outline.ready")), supporting(t("demo.heading.outline.readyBody"))),
+]);
+
+export const headingDoOneH1Tree = (t: Translate): UsageTree => headingSpecimen([
+  headingRow("h1", h("h1", "display-sm", t("demo.heading.shortPageTitle"))),
+  headingRow("h2", h("h2", "h3", t("demo.heading.outline.title"))),
+  headingRow("h3", h("h3", "h4", t("demo.heading.outline.next"))),
+]);
+
+export const headingDontManyH1Tree = (t: Translate): UsageTree => headingSpecimen([
+  headingRow("h1", h("h1", "display-sm", t("demo.heading.shortPageTitle"))),
+  headingRow("h1", h("h1", "h3", t("demo.heading.outline.title"))),
+  headingRow("h1", h("h1", "h4", t("demo.heading.outline.next"))),
+]);
+
+export const headingDoVisualSizeTree = (t: Translate): UsageTree => headingSpecimen([
+  headingRow("h2", h("h2", "display-sm", t("demo.heading.sample")), supporting(t("demo.heading.visualBody"))),
+]);
+
+export const headingDontVisualLevelTree = (t: Translate): UsageTree => headingSpecimen([
+  headingRow("h1", h("h1", "display-sm", t("demo.heading.sample")), supporting(t("demo.heading.visualBody"))),
+]);
+
+export const headingDoEyebrowTree = (t: Translate): UsageTree => headingSpecimen([
+  headingRow("text", { contract: "typography", signature: "Text", options: { textRole: "eyebrow" }, children: t("demo.heading.page.eyebrow") }),
+  headingRow("h1", h("h1", "display-sm", t("demo.heading.shortPageTitle"))),
+]);
+
+export const headingDontEyebrowTree = (t: Translate): UsageTree => headingSpecimen([
+  headingRow("h1", h("h1", "h4", t("demo.heading.page.eyebrow"))),
+  headingRow("h1", h("h1", "display-sm", t("demo.heading.shortPageTitle"))),
+]);
+
+export const headingDoContentTree = (t: Translate): UsageTree => headingSpecimen([
+  headingRow("h2", h("h2", "h2", t("demo.heading.contentGood")), supporting(t("demo.heading.contentBody"))),
+]);
+
+export const headingDontContentTree = (t: Translate): UsageTree => headingSpecimen([
+  headingRow("h2", h("h2", "h2", t("demo.heading.contentBad")), supporting(t("demo.heading.contentBody"))),
+]);
+
 export const headingFlushTree = (t: Translate): UsageTree => ({
   contract: "typography",
   signature: "Heading",

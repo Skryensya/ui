@@ -266,3 +266,12 @@ export const carouselNativeTree = (t: Translate): UsageTree => ({
     },
   })),
 });
+
+/* Usage guide: two cards that already fit side by side, put behind carousel controls anyway. */
+export const carouselDontFewTree = (t: Translate): UsageTree => ({
+  contract: "carousel",
+  signature: "Carousel",
+  options: { slideSize: "48%" },
+  attrs: { "aria-label": t("demo.carousel.label") },
+  children: features.slice(0, 2).map(([feature, position]) => featureSlide(t, feature, position)),
+});

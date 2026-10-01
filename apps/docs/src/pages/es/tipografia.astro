@@ -1,7 +1,7 @@
 ---
 import Base from "../../layouts/Base.astro";
 import CodeBlock from "../../components/CodeBlock.astro";
-import ComponentPreview from "../../components/ComponentPreview.astro";
+import UsagePreview from "../../components/UsagePreview.astro";
 import Used from "../../components/Used.astro";
 import { headingDisplayTree, headingDocumentTree, textScaleTree, textTitleTree } from "../../demos/typography";
 import { getLocale, useTranslations } from "../../i18n";
@@ -150,21 +150,21 @@ const usage = `<!-- Nivel del documento y tamaño visual van por separado -->
     Por encima de la escala del documento, para hero y portadas. No corresponden a ningún nivel de
     encabezado: un display puede ser un <code>h1</code> o un <code>p</code>.
   </p>
-  <ComponentPreview tree={headingDisplayTree(t)} label="Displays" />
+  <UsagePreview tree={headingDisplayTree(t)} label="Displays" />
 
   <h3>Encabezados del documento</h3>
   <p>
     Del h1 al h4 cada peldaño es visible. h5 y h6 reutilizan el par del h4: por debajo de 18px un
     título de sección deja de distinguirse del texto que encabeza.
   </p>
-  <ComponentPreview tree={headingDocumentTree(t)} label="h1 a h6" />
+  <UsagePreview tree={headingDocumentTree(t)} label="h1 a h6" />
 
   <h3>Texto de lectura</h3>
   <p>
     Cuatro tamaños para el cuerpo, todos con interlineado 1.5. Para texto largo existe además
     <code>--font-line-height-body-relaxed</code> (1.7), que se aplica a propósito y no por defecto.
   </p>
-  <ComponentPreview tree={textScaleTree()} label="caption a lg" />
+  <UsagePreview tree={textScaleTree()} label="caption a lg" />
 
   <h2>Pesos: uno por rol</h2>
   <p>
@@ -202,7 +202,7 @@ const usage = `<!-- Nivel del documento y tamaño visual van por separado -->
     de énfasis, mayúsculas con tracking) sobre el título y <code>subtitle</code> (body-lg, interlineado
     relajado, tono secundario) debajo. Cada hook que fija un rol sigue siendo sobreescribible.
   </p>
-  <ComponentPreview tree={textTitleTree(t)} label="Eyebrow, título y subtítulo" />
+  <UsagePreview tree={textTitleTree(t)} label="Eyebrow, título y subtítulo" />
 
   <h2>Cómo se usa</h2>
   <p>

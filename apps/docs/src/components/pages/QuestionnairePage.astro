@@ -21,33 +21,33 @@ import "@skryensya/core/components/progress.css";
 import "@skryensya/core/components/steps.css";
 import ComponentPageShell from "./ComponentPageShell.astro";
 import CodeBlock from "../CodeBlock.astro";
-import ComponentPreview from "../ComponentPreview.astro";
 import UsagePreview from "../UsagePreview.astro";
+import WhenToUse from "../WhenToUse.astro";
+import ContentRules from "../ContentRules.astro";
+import A11yNotes from "../A11yNotes.astro";
 import "@skryensya/core/components/annotation.css";
 import { annotationDemoCss } from "../../demos/annotation";
 import {
   questionnaireAnatomyTree,
-  questionnaireBarTree,
   questionnaireBranchingTree,
   questionnaireChoicesOnlyTree,
   questionnaireControlTree,
   questionnaireRailTree,
-  questionnaireSegmentsTree,
   questionnaireFollowUpTree,
   questionnaireLikertTree,
   questionnaireShortcutsTree,
-  questionnaireStepsTree,
   questionnaireTree,
 } from "../../demos/questionnaire";
-import { getLocale, useTranslations } from "../../i18n";
+import { getLocale, tList, useTranslations } from "../../i18n";
 
 const install = `pnpm add @skryensya/core @skryensya/react`;
 const t = useTranslations(getLocale(Astro.url));
+const explain = (option: string, values: readonly string[]) =>
+  Object.fromEntries(values.map((value) => [value, t(`questionnairePage.prop.${option}.${value}` as Parameters<typeof t>[0])]));
 ---
 
 <ComponentPageShell
   title="Questionnaire"
-  badge="Beta"
   description={t("questionnairePage.description")}
   contractId="questionnaire"
   testFiles={[
@@ -59,83 +59,59 @@ const t = useTranslations(getLocale(Astro.url));
   <Fragment slot="usage">
     <p class="lede" set:html={t("questionnairePage.lede")} />
 
-    <h3>{t("questionnairePage.showcaseTitle")}</h3>
-    <p set:html={t("questionnairePage.showcaseBody")} />
+    <UsagePreview
+      tree={questionnaireTree(t)}
+      optionName="progress"
+      title={t("questionnairePage.prop.progress.title")}
+      description={t("questionnairePage.prop.progress.body")}
+      explain={explain("progress", ["text", "bar", "steps", "segments"])}
+    />
 
-    <UsagePreview tree={questionnaireTree(t)} />
+    <h3>{t("component.examplesTitle")}</h3>
+    <UsagePreview tree={questionnaireTree(t)} title={t("questionnairePage.basicTitle")} description={t("questionnairePage.basicBody")} />
+    <UsagePreview tree={questionnaireChoicesOnlyTree(t)} title={t("questionnairePage.choicesOnlyTitle")} description={t("questionnairePage.choicesOnlyBody")} />
+    <UsagePreview tree={questionnaireLikertTree(t)} title={t("questionnairePage.likertTitle")} description={t("questionnairePage.likertBody")} />
+    <UsagePreview tree={questionnaireBranchingTree(t)} title={t("questionnairePage.branchTitle")} description={t("questionnairePage.branchBody")} />
+    <UsagePreview tree={questionnaireFollowUpTree(t)} title={t("questionnairePage.followUpTitle")} description={t("questionnairePage.followUpBody")} />
+    <UsagePreview tree={questionnaireControlTree(t)} title={t("questionnairePage.controlTitle")} description={t("questionnairePage.controlBody")} />
+    {/* The side rail needs about 750px; below `desktop` it falls back to the top bar. */}
+    <UsagePreview tree={questionnaireRailTree(t)} title={t("questionnairePage.railTitle")} description={t("questionnairePage.railBody")} />
+    <UsagePreview tree={questionnaireShortcutsTree(t)} title={t("questionnairePage.keyboardTitle")} description={t("questionnairePage.keyboardBody")} />
+
+    <h3>{t("component.contractNotesTitle")}</h3>
+    <ul>
+      {tList(t, "questionnairePage.contract").map((item) => <li set:html={item} />)}
+    </ul>
     <p set:html={t("component.reactNote")} />
-
-    <h3>{t("questionnairePage.stateTitle")}</h3>
-    <p set:html={t("questionnairePage.stateBody")} />
-
-    <h3>{t("questionnairePage.choicesOnlyTitle")}</h3>
-    <p set:html={t("questionnairePage.choicesOnlyBody")} />
-    <UsagePreview tree={questionnaireChoicesOnlyTree(t)} />
-
-    <h3>{t("questionnairePage.likertTitle")}</h3>
-    <p set:html={t("questionnairePage.likertBody")} />
-    <UsagePreview tree={questionnaireLikertTree(t)} />
-
-    <h3>{t("questionnairePage.branchTitle")}</h3>
-    <p set:html={t("questionnairePage.branchBody")} />
-    <UsagePreview tree={questionnaireBranchingTree(t)} />
-
-    <h3>{t("questionnairePage.followUpTitle")}</h3>
-    <p set:html={t("questionnairePage.followUpBody")} />
-    <UsagePreview tree={questionnaireFollowUpTree(t)} />
-
-    <h3>{t("questionnairePage.controlTitle")}</h3>
-    <p set:html={t("questionnairePage.controlBody")} />
-    <UsagePreview tree={questionnaireControlTree(t)} />
-
-    <h3>{t("questionnairePage.progressTitle")}</h3>
-    <p set:html={t("questionnairePage.progressBody")} />
-    <UsagePreview tree={questionnaireBarTree(t)} />
-    <UsagePreview tree={questionnaireStepsTree(t)} />
-    <UsagePreview tree={questionnaireSegmentsTree(t)} />
-
-    <h3>{t("questionnairePage.railTitle")}</h3>
-    <p set:html={t("questionnairePage.railBody")} />
-    <!--
-      PINNED TO A FRAME WIDE ENOUGH TO SHOW ITS OWN SUBJECT. The two columns need 746px and the page
-      default is Tablet, whose frame is 805px but whose questionnaire falls back below `desktop`
-      (832px). A Free frame is ~974px and clears it, so the section documenting the side rail shows
-      the side rail rather than its fallback. Same reason Vaul pins Mobile, at the other end.
-    -->
-    <UsagePreview tree={questionnaireRailTree(t)} />
-
-    <h3>{t("questionnairePage.heightTitle")}</h3>
-    <p set:html={t("questionnairePage.heightBody")} />
-
-    <h3>{t("questionnairePage.keyboardTitle")}</h3>
-    <p set:html={t("questionnairePage.keyboardBody")} />
-    <UsagePreview tree={questionnaireShortcutsTree(t)} />
-
-    <h3>{t("questionnairePage.skipTitle")}</h3>
-    <p set:html={t("questionnairePage.skipBody")} />
-
-    <h3>{t("questionnairePage.noScriptTitle")}</h3>
-    <p set:html={t("questionnairePage.noScriptBody")} />
 
     <h3>{t("component.anatomy")}</h3>
     <p set:html={t("questionnairePage.anatomyBody")} />
-    <ComponentPreview
+    <UsagePreview
       tree={questionnaireAnatomyTree(t)}
       css={annotationDemoCss}
       label={t("questionnairePage.anatomyPreviewLabel")}
-      screens={false}
-      hideSource
-      chrome={false}
+      bare
     />
   </Fragment>
 
   <Fragment slot="guidelines">
     <p class="lede" set:html={t("questionnairePage.guidelinesLede")} />
-    <ul>
-      <li set:html={t("questionnairePage.guide.item1")} />
-      <li set:html={t("questionnairePage.guide.item2")} />
-      <li set:html={t("questionnairePage.guide.item3")} />
-    </ul>
+    <WhenToUse use={tList(t, "questionnairePage.when")} avoid={tList(t, "questionnairePage.whenNot")} />
+    <ContentRules items={tList(t, "questionnairePage.content")} />
+  </Fragment>
+
+  <Fragment slot="a11y">
+    <A11yNotes
+      intro={t("questionnairePage.a11yIntro")}
+      does={tList(t, "questionnairePage.a11yDoes")}
+      yours={tList(t, "questionnairePage.a11yYours")}
+      keys={[
+        { keys: ["Enter"], action: t("questionnairePage.key.enter") },
+        { keys: ["⌘+Enter", "Ctrl+Enter"], action: t("questionnairePage.key.modEnter") },
+        { keys: ["↑", "↓"], action: t("questionnairePage.key.arrows") },
+        { keys: ["A–Z"], action: t("questionnairePage.key.letter") },
+      ]}
+    />
   </Fragment>
 
   <Fragment slot="install">

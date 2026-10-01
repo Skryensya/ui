@@ -3,7 +3,11 @@
 import "@skryensya/core/components/annotation.css";
 import ComponentPageShell from "./ComponentPageShell.astro";
 import CodeBlock from "../CodeBlock.astro";
-import ComponentPreview from "../ComponentPreview.astro";
+import UsagePreview from "../UsagePreview.astro";
+import DoDont from "../DoDont.astro";
+import WhenToUse from "../WhenToUse.astro";
+import ContentRules from "../ContentRules.astro";
+import A11yNotes from "../A11yNotes.astro";
 import {
   carouselAnatomyTree,
   carouselAutoplayTree,
@@ -11,14 +15,19 @@ import {
   carouselCardsTree,
   carouselFocusableTree,
   carouselNativeTree,
+  carouselDontFewTree,
 } from "../../demos/carousel";
 import { annotationDemoCss } from "../../demos/annotation";
-import { getLocale, useTranslations } from "../../i18n";
+import { getLocale, tList, useTranslations } from "../../i18n";
 import "@skryensya/core/components/carousel.css";
 import "@skryensya/icons-lucide/carousel.css";
 import "../../examples/carousel.css";
 
 const t = useTranslations(getLocale(Astro.url));
+
+const storybookTitle = "Components/Content/Carousel";
+const explain = (option: string, values: readonly string[]) =>
+  Object.fromEntries(values.map((value) => [value, t(`carousel.prop.${option}.${value}` as Parameters<typeof t>[0])]));
 
 const install = `pnpm add @skryensya/core @skryensya/vanilla \\
   @skryensya/icons-lucide`;
@@ -69,46 +78,34 @@ carousel.addEventListener("sk:carouselchange", (event) => {
 <ComponentPageShell
   title="Carousel"
   description={t("carousel.description")}
-  badge={t("carousel.betaBadge")}
   contractId="carousel"
-  testFiles={["packages/react/src/components/carousel.test.tsx", "packages/vanilla/src/components/carousel.svelte.test.ts"]}}
+  testFiles={["packages/react/src/components/carousel.test.tsx", "packages/vanilla/src/components/carousel.svelte.test.ts"]}
 >
   <Fragment slot="usage">
     <p class="lede" set:html={t("carousel.lede")} />
 
-    <h3>{t("carousel.showcaseTitle")}</h3>
-    <p set:html={t("carousel.showcaseBody")} />
-    <h3>{t("carousel.cardsTitle")}</h3>
-    <p set:html={t("carousel.cardsBody")} />
-    <ComponentPreview
+    <UsagePreview
       tree={carouselCardsTree(t)}
-      js={bootstrap}
-      label={t("carousel.cardsLabel")}
-      note="ImageFrame + layout + typography · scroll-snap + Zag"
+      optionName="controls"
+      title={t("carousel.prop.controls.title")}
+      description={t("carousel.prop.controls.body")}
+      explain={explain("controls", ["auto", "none"])}
+      stageMinBlockSize="24rem"
+      storybookTitle={storybookTitle}
+      storybookStory="Cards"
     />
 
-    <h3>{t("carousel.dotsTitle")}</h3>
-    <p set:html={t("carousel.dotsBody")} />
+    <h3>{t("component.examplesTitle")}</h3>
+    <UsagePreview tree={carouselCardsTree(t)} title={t("carousel.cardsTitle")} description={t("carousel.cardsBody")} storybookTitle={storybookTitle} storybookStory="Cards" />
+    <UsagePreview tree={carouselAutoplayTree(t)} title={t("carousel.multiTitle")} description={t("carousel.multiBody1")} storybookTitle={storybookTitle} storybookStory="Autoplay" />
+    <UsagePreview tree={carouselFocusableTree(t)} title={t("carousel.focusTitle")} description={t("carousel.focusBody1")} storybookTitle={storybookTitle} storybookStory="Focusable" />
+    <UsagePreview tree={carouselBareTree(t)} title={t("carousel.bareTitle")} description={t("carousel.bareBody1")} storybookTitle={storybookTitle} storybookStory="Bare" />
 
-    <h3>{t("carousel.multiTitle")}</h3>
-    <p set:html={t("carousel.multiBody1")} />
-    <p set:html={t("carousel.multiBody2")} />
-    <ComponentPreview tree={carouselAutoplayTree(t)} label={t("carousel.multiLabel")} note={t("carousel.multiNote")} />
-
-    <h3>{t("carousel.focusTitle")}</h3>
-    <p set:html={t("carousel.focusBody1")} />
-    <p set:html={t("carousel.focusBody2")} />
-    <ComponentPreview tree={carouselFocusableTree(t)} label={t("carousel.focusLabel")} note={t("carousel.focusNote")} />
-
-    <h3>{t("carousel.bareTitle")}</h3>
-    <p set:html={t("carousel.bareBody1")} />
-    <p set:html={t("carousel.bareBody2")} />
-    <p set:html={t("carousel.bareBody3")} />
-    <ComponentPreview tree={carouselBareTree(t)} label={t("carousel.bareLabel")} note={t("carousel.bareNote")} />
-
+    {/* ComponentPreview, not UsagePreview: this one is the markup WITHOUT the enhancer, which only a
+        Vanilla frame can show; the React stage always mounts the machine. */}
     <h3>{t("carousel.nativeTitle")}</h3>
     <p set:html={t("carousel.nativeBody")} />
-    <ComponentPreview tree={carouselNativeTree(t)} label={t("carousel.nativeLabel")} note={t("carousel.nativeNote")} />
+    <UsagePreview tree={carouselNativeTree(t)} label={t("carousel.nativeLabel")} caption={t("carousel.nativeNote")} />
     <CodeBlock code={nativeCss} label={t("carousel.nativeCssLabel")} lang="css" />
 
     <h3>{t("carousel.apiTitle")}</h3>
@@ -117,43 +114,47 @@ carousel.addEventListener("sk:carouselchange", (event) => {
 
     <h3>{t("component.contractNotesTitle")}</h3>
     <ul>
-      <li set:html={t("carousel.contractItem1")} />
-      <li set:html={t("carousel.contractItem2")} />
-      <li set:html={t("carousel.contractItem3")} />
-      <li set:html={t("carousel.contractItem4")} />
-      <li set:html={t("carousel.contractItem5")} />
-      <li set:html={t("carousel.contractItem6")} />
-      <li set:html={t("carousel.contractItem7")} />
-      <li set:html={t("carousel.contractItem8")} />
-      <li set:html={t("carousel.contractItem9")} />
+      {tList(t, "carousel.contract").map((item) => <li set:html={item} />)}
     </ul>
 
     <h3>{t("component.anatomy")}</h3>
     <p set:html={t("carousel.anatomyBody")} />
-    <ComponentPreview
+    <UsagePreview
       tree={carouselAnatomyTree(t)}
       css={annotationDemoCss}
-      js={bootstrap}
       label={t("carousel.anatomyPreviewLabel")}
-      screens={false}
-      hideSource
-      chrome={false}
+      bare
     />
   </Fragment>
 
   <Fragment slot="guidelines">
     <p class="lede" set:html={t("carousel.guidelinesLede")} />
-    <ul>
-      <li set:html={t("carousel.guide.item1")} />
-      <li set:html={t("carousel.guide.item2")} />
-      <li set:html={t("carousel.guide.item3")} />
-      <li set:html={t("carousel.guide.item4")} />
-    </ul>
+    <WhenToUse use={tList(t, "carousel.when")} avoid={tList(t, "carousel.whenNot")} />
+    <DoDont
+      canvas
+      title={t("carousel.dd.few.title")}
+      do={{ tree: carouselCardsTree(t), caption: t("carousel.dd.few.do") }}
+      dont={{ tree: carouselDontFewTree(t), caption: t("carousel.dd.few.dont") }}
+    />
+    <ContentRules items={tList(t, "carousel.content")} />
   </Fragment>
 
   <Fragment slot="install">
     <CodeBlock code={install} label="terminal" />
     <CodeBlock code={styles} label="CSS" />
     <CodeBlock code={bootstrap} label="JavaScript" lang="ts" />
+  </Fragment>
+
+  <Fragment slot="a11y">
+    <A11yNotes
+      intro={t("carousel.a11yIntro")}
+      does={tList(t, "carousel.a11yDoes")}
+      yours={tList(t, "carousel.a11yYours")}
+      keys={[
+        { keys: ["Tab", "Shift+Tab"], action: t("carousel.a11yKeyTab") },
+        { keys: ["←", "→"], action: t("carousel.a11yKeyArrows") },
+        { keys: [t("component.key.home"), t("component.key.end")], action: t("carousel.a11yKeyHomeEnd") },
+      ]}
+    />
   </Fragment>
 </ComponentPageShell>

@@ -1,6 +1,7 @@
-import { useEffect, useRef, useState, type CSSProperties, type PointerEvent as ReactPointerEvent } from "react";
+import { lazy, Suspense, useEffect, useRef, useState, type CSSProperties, type PointerEvent as ReactPointerEvent } from "react";
 import { createPortal } from "react-dom";
 import { isTypingContext } from "@skryensya/core/hotkey";
+import { trapModalDialogs } from "@skryensya/core/focus-trap";
 import { useHotkey } from "@skryensya/react/hotkey";
 import { useDrag } from "./drag";
 import { useProjectSync } from "./sync";
@@ -10,6 +11,7 @@ import { useWorkspace, type Workspace } from "./workspace";
 import { ExportPanel } from "./ExportPanel";
 import { IconButton } from "./IconButton";
 import { Inspector } from "./Inspector";
+import type { MakerSite } from "@skryensya/maker-model";
 import { Outline } from "./Outline";
 import { Pages } from "./Pages";
 import { Palette } from "./Palette";
@@ -23,6 +25,8 @@ import { SegmentedControl } from "@skryensya/react/segmented";
 import { MakerIcon } from "./icons";
 import { LOCAL_PROJECT, selectParent, stageTree, useMaker, type Maker } from "./state";
 import type { StageApi } from "./stage/entry";
+
+const AIPanel = lazy(() => import("./ai/Panel").then(module => ({ default: module.AIPanel })));
 
 /*
  * The Maker's chrome: the bar across the top holds every command as words in menus (MakerBar.tsx);
@@ -101,6 +105,9 @@ function Editor({
   const [exporting, setExporting] = useState(false);
   const [publishingOpen, setPublishingOpen] = useState(false);
   const [playing, setPlaying] = useState(false);
+  const [aiOpen, setAiOpen] = useState(false);
+  const [aiStarted, setAiStarted] = useState(false);
+  const [aiPreview, setAiPreview] = useState<MakerSite>();
   const [panels, setPanels] = usePanels();
   const [panelWidths, setPanelWidths] = usePanelWidths();
   const [leftTab, setLeftTab] = useState<"layers" | "insert">("layers");
@@ -230,15 +237,17 @@ function Editor({
       />
 
       {playing ? createPortal(<PlayPreview maker={maker} onClose={() => setPlaying(false)} />, document.body) : null}
+      {aiPreview ? createPortal(<PlayPreview maker={{ ...maker, site: aiPreview, page: aiPreview.pages.find(p => p.id === maker.page.id) ?? aiPreview.pages[0]! }} label="AI proposal preview" onClose={() => setAiPreview(undefined)} />, document.body) : null}
 
       {!panels.right && !projectsOpen && !publishingOpen && !exporting ? (
         <span className="maker-float-toggle maker-float-toggle--right">
           <IconButton icon={{ glyph: "inspect" }} label="Show the inspector" onClick={() => setPanels({ ...panels, right: true })} />
         </span>
       ) : (
-      <aside className="maker__right maker-float" aria-label={rightPanel} style={{ inlineSize: panelWidths.right }}>
+      <aside className="maker__right maker-float" aria-label={rightPanel === "Inspector" && aiOpen ? "AI" : rightPanel} style={{ inlineSize: panelWidths.right }}>
         <PanelResizeHandle side="right" width={panelWidths.right} onWidth={(right) => setPanelWidths({ ...panelWidths, right })} />
-        <div key={rightPanel} className="maker-panel-swap">
+        {rightPanel === "Inspector" && <SegmentedControl label="Editing mode" value={aiOpen ? "ai" : "inspector"} onValueChange={v => { setAiOpen(v === "ai"); if (v === "ai") setAiStarted(true); }} options={[{ value: "inspector", label: "Inspector" }, { value: "ai", label: "AI" }]} />}
+        <div key={rightPanel} className="maker-panel-swap" hidden={rightPanel === "Inspector" && aiOpen}>
           {projectsOpen ? (
             <ProjectsPanel workspace={workspace} onClose={onCloseProjects} />
           ) : publishingOpen ? (
@@ -253,6 +262,7 @@ function Editor({
             <Inspector maker={maker} />
           )}
         </div>
+        <div hidden={rightPanel !== "Inspector" || !aiOpen}>{aiStarted && <Suspense fallback={<p role="status">Loading Maker AI…</p>}><AIPanel maker={maker} onPreview={setAiPreview} /></Suspense>}</div>
       </aside>
       )}
 
@@ -266,7 +276,14 @@ function Editor({
   );
 }
 
-function PlayPreview({ maker, onClose }: { maker: Maker; onClose: () => void }) {
+function PlayPreview({ maker, onClose, label = "Play site" }: { maker: Maker; onClose: () => void; label?: string }) {
+  const modal = useRef<HTMLDialogElement>(null);
+  useEffect(() => {
+    const dialog = modal.current!;
+    dialog.showModal();
+    const release = trapModalDialogs(document);
+    return () => { dialog.close(); release(); };
+  }, []);
   const frame = useRef<HTMLIFrameElement>(null);
   const [ready, setReady] = useState(false);
   const [pageId, setPageId] = useState(maker.page.id);
@@ -308,10 +325,10 @@ function PlayPreview({ maker, onClose }: { maker: Maker; onClose: () => void }) 
   }, [ready, page.root, maker.view.scheme, maker.view.contrast, maker.view.density, maker.view.radius]);
 
   return (
-    <div className="maker-play" role="dialog" aria-label="Play site" aria-modal="true">
+    <dialog ref={modal} className="maker-play" aria-label={label} onCancel={e => { e.preventDefault(); onClose(); }}>
       <header className="maker-play__bar">
         <div className="maker-play__identity">
-          <span className="maker-play__eyebrow">Play</span>
+          <span className="maker-play__eyebrow">{label}</span>
           <strong>{page.name}</strong>
         </div>
         <span className="maker-play__page">
@@ -329,7 +346,7 @@ function PlayPreview({ maker, onClose }: { maker: Maker; onClose: () => void }) 
       <div className="maker-play__body">
         <iframe ref={frame} src="/stage.html" title={page.name} className="maker-play__frame" onLoad={checkReady} />
       </div>
-    </div>
+    </dialog>
   );
 }
 

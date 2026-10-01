@@ -8,7 +8,7 @@ export const installMessages = {
     "install.vanillaGenerated":
       "Instala el paquete de tokens y estilos, e importa las hojas que este componente usa. El marcado lo escribes tú: la capa vanilla no trae componentes, trae las clases que ese marcado lleva.",
     "install.vanillaMount":
-      "{name} tiene enhancer propio. <code>initComponents()</code> lo monta junto con el resto; esta es la versión aislada, por si prefieres importar sólo este.",
+      "{name} tiene enhancer propio. <code>initComponents()</code> lo monta junto con el resto; esta es la versión aislada, por si prefieres importar solo este.",
     "install.vanillaNoMount":
       "No hay nada que montar: este componente es marcado y CSS, así que funciona apenas la hoja está cargada.",
   },

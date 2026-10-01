@@ -104,33 +104,177 @@ export const dialogConfirmTree = (t: Translate): UsageTree => ({
       attrs: { "data-dialog-demo-open": "" },
       children: t("demo.dialog.open"),
     },
-    {
-      contract: "dialog",
-      signature: "Dialog",
-      options: { closeLabel: t("kit.close") },
-      attrs: { id: "demo-confirm" },
-      slots: {
-        title: t("demo.dialog.title"),
-        children: t("demo.dialog.body"),
-        footer: [
-          {
-            contract: "button",
-            signature: "Button.action",
-            options: { variant: "ghost", type: "submit" },
-            attrs: { value: "cancel", autofocus: "" },
-            children: t("demo.dialog.cancel"),
-          },
-          {
-            contract: "button",
-            signature: "Button.action",
-            options: { variant: "solid", tone: "danger", type: "submit" },
-            attrs: { value: "confirm" },
-            children: t("demo.dialog.confirm"),
-          },
-        ],
-      },
-    },
+    dialogConfirmSpecimenTree(t, true, false),
   ],
+});
+
+const dialogConfirmSpecimenTree = (t: Translate, safeAutofocus = true, open = true): UsageTree => ({
+  contract: "dialog",
+  signature: "Dialog",
+  options: { ...(open ? { open: true } : {}), closeLabel: t("kit.close") },
+  attrs: { id: "demo-confirm" },
+  slots: {
+    title: t("demo.dialog.title"),
+    children: t("demo.dialog.body"),
+    footer: [
+      {
+        contract: "button",
+        signature: "Button.action",
+        options: { variant: "ghost", type: "submit" },
+        attrs: { value: "cancel", ...(safeAutofocus ? { autofocus: "" } : {}) },
+        children: t("demo.dialog.cancel"),
+      },
+      {
+        contract: "button",
+        signature: "Button.action",
+        options: { variant: "solid", tone: "danger", type: "submit" },
+        attrs: { value: "confirm", ...(!safeAutofocus ? { autofocus: "" } : {}) },
+        children: t("demo.dialog.confirm"),
+      },
+    ],
+  },
+});
+
+export const dialogClearConfirmTree = (t: Translate): UsageTree => dialogConfirmSpecimenTree(t);
+export const dialogUnsafeFocusTree = (t: Translate): UsageTree => dialogConfirmSpecimenTree(t, false);
+
+/** A different destructive decision, used to demonstrate safe initial focus without repeating deletion. */
+export const dialogUnsavedChangesTree = (t: Translate, safeAutofocus = true): UsageTree => ({
+  contract: "dialog",
+  signature: "Dialog",
+  options: { open: true, closeLabel: t("kit.close") },
+  slots: {
+    title: t("demo.dialog.unsavedTitle"),
+    children: t("demo.dialog.unsavedBody"),
+    footer: [
+      {
+        contract: "button",
+        signature: "Button.action",
+        options: { variant: "ghost", type: "submit" },
+        attrs: { value: "continue", ...(safeAutofocus ? { autofocus: "" } : {}) },
+        children: t("demo.dialog.keepEditing"),
+      },
+      {
+        contract: "button",
+        signature: "Button.action",
+        options: { type: "submit" },
+        attrs: { value: "discard", ...(!safeAutofocus ? { autofocus: "" } : {}) },
+        children: t("demo.dialog.discard"),
+      },
+    ],
+  },
+});
+
+/** A quick, non-destructive choice illustrates a brief dialog decision. */
+export const dialogInviteTree = (t: Translate): UsageTree => ({
+  contract: "dialog",
+  signature: "Dialog",
+  options: { open: true, closeLabel: t("kit.close") },
+  slots: {
+    title: t("demo.dialog.inviteTitle"),
+    children: t("demo.dialog.inviteBody"),
+    footer: [
+      {
+        contract: "button",
+        signature: "Button.action",
+        options: { variant: "ghost", type: "submit" },
+        attrs: { value: "later" },
+        children: t("demo.dialog.later"),
+      },
+      {
+        contract: "button",
+        signature: "Button.action",
+        options: { type: "submit" },
+        attrs: { value: "accept" },
+        children: t("demo.dialog.acceptInvite"),
+      },
+    ],
+  },
+});
+
+/** A distinct urgent decision: revoke a collaborator's access. */
+export const dialogRevokeAccessTree = (t: Translate): UsageTree => ({
+  contract: "dialog",
+  signature: "Dialog",
+  options: { open: true, closeLabel: t("kit.close") },
+  slots: {
+    title: t("demo.dialog.revokeTitle"),
+    children: t("demo.dialog.revokeBody"),
+    footer: [
+      {
+        contract: "button",
+        signature: "Button.action",
+        options: { variant: "ghost", type: "submit" },
+        attrs: { value: "cancel", autofocus: "" },
+        children: t("demo.dialog.cancel"),
+      },
+      {
+        contract: "button",
+        signature: "Button.action",
+        options: { type: "submit", tone: "danger" },
+        attrs: { value: "revoke" },
+        children: t("demo.dialog.revoke"),
+      },
+    ],
+  },
+});
+
+export const dialogVagueTree = (t: Translate): UsageTree => ({
+  contract: "dialog",
+  signature: "Dialog",
+  options: { open: true, closeLabel: t("kit.close") },
+  slots: {
+    title: t("demo.dialog.vagueTitle"),
+    children: t("demo.dialog.vagueBody"),
+    footer: [
+      { contract: "button", signature: "Button.action", options: { variant: "ghost", type: "submit" }, attrs: { value: "cancel" }, children: t("demo.dialog.vagueCancel") },
+      { contract: "button", signature: "Button.action", options: { type: "submit" }, attrs: { value: "confirm" }, children: t("demo.dialog.vagueConfirm") },
+    ],
+  },
+});
+
+/** Don't: a completed, low-risk notice does not need to block the page. */
+export const dialogNoticeTree = (t: Translate): UsageTree => ({
+  contract: "dialog",
+  signature: "Dialog",
+  options: { open: true, closeLabel: t("kit.close") },
+  slots: {
+    title: t("demo.dialog.noticeTitle"),
+    children: t("demo.dialog.noticeBody"),
+    footer: [
+      {
+        contract: "button",
+        signature: "Button.action",
+        options: { type: "submit" },
+        attrs: { value: "close" },
+        children: t("demo.dialog.noticeClose"),
+      },
+    ],
+  },
+});
+
+export const dialogLongTaskTree = (t: Translate): UsageTree => ({
+  contract: "dialog",
+  signature: "Dialog",
+  options: { open: true, closeLabel: t("kit.close") },
+  attrs: { "data-dd-scroll": "" },
+  slots: {
+    title: t("demo.dialog.longTitle"),
+    children: {
+      contract: "layout",
+      signature: "Stack",
+      options: { gap: "sm" },
+      children: [
+        { contract: "typography", signature: "Text", children: t("demo.dialog.longBody1") },
+        { contract: "typography", signature: "Text", children: t("demo.dialog.longBody2") },
+        { contract: "typography", signature: "Text", children: t("demo.dialog.longBody3") },
+      ],
+    },
+    footer: [
+      { contract: "button", signature: "Button.action", options: { variant: "ghost", type: "submit" }, attrs: { value: "cancel" }, children: t("demo.dialog.cancel") },
+      { contract: "button", signature: "Button.action", options: { type: "submit" }, attrs: { value: "confirm" }, children: t("demo.dialog.confirm") },
+    ],
+  },
 });
 
 /*

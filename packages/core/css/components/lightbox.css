@@ -240,6 +240,21 @@
     --sk-button-radius: var(--radius-pill);
   }
 
+  /* Desktop can afford the controls that end or move the modal being easier to catch. Keep the zoom
+     bar compact: it is secondary, grouped, and repeated three times. */
+  @media (min-width: 48rem) {
+    .sk-lightbox .sk-lightbox__control.sk-button[data-lightbox-action="close"],
+    .sk-lightbox .sk-lightbox__nav.sk-button {
+      --sk-button-height: max(var(--size-control-lg), var(--size-touch-target));
+      --sk-button-font-size: var(--font-size-body-lg);
+    }
+
+    .sk-lightbox .sk-lightbox__control.sk-button[data-lightbox-action="close"] .sk-icon,
+    .sk-lightbox .sk-lightbox__nav.sk-button .sk-icon {
+      --sk-icon-size: var(--size-icon-xl);
+    }
+  }
+
   /* ---- the zoom bar: Canvas's, a vertical pill of xs ghost buttons ---- */
 
   .sk-lightbox__zoom {
@@ -336,9 +351,10 @@
       --sk-lightbox-gutter: var(--space-inset-md);
     }
 
-    /* Always, not only for a gallery: the zoom bar lives in the same margin. */
+    /* Always, not only for a gallery: the zoom bar lives in the same margin. Desktop nav buttons
+       paint at lg, so reserve their face rather than only the touch-target floor. */
     .sk-lightbox {
-      --sk-lightbox-nav-room: calc(var(--size-touch-target) + var(--sk-lightbox-gutter) * 2);
+      --sk-lightbox-nav-room: calc(max(var(--size-control-lg), var(--size-touch-target)) + var(--sk-lightbox-gutter) * 2);
     }
   }
 

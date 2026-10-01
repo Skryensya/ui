@@ -13,13 +13,13 @@ import "@skryensya/core/patterns/box.css";
 import "@skryensya/core/patterns/layout.css";
 import "@skryensya/core/patterns/wrapper.css";
 import * as demos from "@docs/demos/radio-group";
-import { annotationDemoCss } from "@docs/demos/annotation";
-import { treeStory, withCss, type Meta, type StoryObj } from "../tree-story";
+import { treeStory, type Meta, type StoryObj } from "../tree-story";
 
 export default { title: "Components/Forms/RadioGroup", tags: ["autodocs"] } satisfies Meta;
 
-export const Anatomy: StoryObj = treeStory(demos.radioGroupAnatomyTree, { decorators: [withCss(annotationDemoCss)] });
+export const Anatomy: StoryObj = treeStory(demos.radioGroupAnatomyTree);
 export const Default: StoryObj = treeStory(demos.radioGroupTree);
 export const TileRadioGroup: StoryObj = treeStory(demos.tileRadioGroupTree);
 export const Likert: StoryObj = treeStory(demos.radioGroupLikertTree);
 export const Matrix: StoryObj = treeStory(demos.radioGroupMatrixTree);
+export const DontMany: StoryObj = treeStory(demos.radioGroupDontManyTree);

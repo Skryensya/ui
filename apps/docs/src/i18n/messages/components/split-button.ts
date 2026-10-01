@@ -21,13 +21,51 @@ export const splitButtonMessages = {
     "demo.splitButton.dangerItem1": "Eliminar permanentemente",
     "demo.splitButton.dangerItem2": "Mover a la papelera",
 
-    "splitButtonPage.description": "Acción principal estable y menú adyacente con acciones alternativas.",
+    "splitButtonPage.description": "Pone la acción más común a un clic y sus variantes en un menú al lado.",
+
+    "splitButtonPage.key.arrows": "Dentro del menú, recorre las variantes.",
+
+    "splitButtonPage.key.run": "Ejecuta la acción, o abre el menú.",
+
+    "splitButtonPage.key.tab": "Pasa de la acción al botón del menú.",
+
+    "splitButtonPage.a11yYours1": "El botón del menú solo muestra una flecha: dale <code>aria-label</code>.",
+
+    "splitButtonPage.a11yDoes2": "El segundo abre un Menu y anuncia <code>aria-haspopup</code> y <code>aria-expanded</code>.",
+
+    "splitButtonPage.a11yDoes1": "La acción es un <code>&lt;button&gt;</code> que ejecuta.",
+
+    "splitButtonPage.a11yIntro": "SplitButton son dos botones con un nombre cada uno.",
+
+    "splitButtonPage.content3": 'Nombra el botón del menú: <code>aria-label="Más opciones de guardado"</code>.',
+
+    "splitButtonPage.content2": "Escribe las variantes del menú partiendo del mismo verbo: «Guardar como…», «Guardar una copia».",
+
+    "splitButtonPage.content1": "Escribe la acción con un verbo: «Guardar», «Exportar».",
+
+    "splitButtonPage.whenNot3": 'Si ninguna acción domina: usa un <a href="/es/componentes/menu">Menu</a> con un botón «Acciones».',
+
+    "splitButtonPage.whenNot2": 'Si hay una sola acción: usa <a href="/es/componentes/button">Button</a>.',
+
+    "splitButtonPage.whenNot1": 'Si las acciones no son variantes de lo mismo: usa <a href="/es/componentes/menu">Menu</a>.',
+
+    "splitButtonPage.when1": "Cuando casi todos quieren una acción y unos pocos una variante: Guardar y Guardar como.",
+
+    "splitButtonPage.contract3": "Elegir en el menú ejecuta esa variante; no reemplaza la acción principal.",
+
+    "splitButtonPage.contract2": "El menú es un Menu completo, con su teclado.",
+
+    "splitButtonPage.contract1": "Las dos mitades llevan la misma variante y el mismo tamaño: se leen como un solo control.",
+
+    "splitButtonPage.mainBody": "La acción de la izquierda no cambia al elegir en el menú.",
+
+    "splitButtonPage.mainTitle": "Principal: Guardar y sus variantes",
+
+    "splitButtonPage.lede": "SplitButton pone la acción más común a un clic y sus variantes en un menú al lado: Guardar y Guardar como, Exportar y sus formatos. Son dos botones soldados: uno ejecuta y el otro abre las alternativas.",
     "splitButtonPage.anatomyBody":
       "Este diagrama nombra el grupo soldado, el Button de acción y el trigger del Menu. El espécimen está congelado; los SplitButton vivos empiezan abajo.",
     "splitButtonPage.anatomyLabel": "Anatomía de SplitButton",
     "splitButtonPage.anatomyPreviewLabel": "SplitButton, parte por parte",
-    "splitButtonPage.contractBody": "La acción accent no cambia silenciosamente al elegir el menú. Si no hay una acción dominante, usa Menu.",
-    "splitButtonPage.a11yBody": "Son dos botones independientes: uno ejecuta y el otro anuncia y abre las alternativas.",
 
     "splitButtonPage.testReact1":
       "Renderiza un grupo con nombre que contiene el botón de acción y el trigger icon-only del menú.",
@@ -40,30 +78,17 @@ export const splitButtonMessages = {
       'El trigger de fallback empareja su <code class="sk-code">variant</code>/<code class="sk-code">size</code> y forma (icon-only, soldado) con el botón de acción.',
     "splitButtonPage.testReact5":
       "Una acción y un menu compuestos a mano se renderizan tal cual, en vez del fallback de props planas.",
-    "splitButtonPage.smallTitle": "Tamaño small",
-    "splitButtonPage.smallBody": "Las dos mitades escalan juntas: <code>size</code> en el Button de acción, <code>triggerSize</code> en el trigger del Menu.",
-    "splitButtonPage.smallLabel": "SplitButton, tamaño small",
-    "splitButtonPage.menuFirstTitle": "El menú primero",
-    "splitButtonPage.menuFirstBody": "Compuesto a mano con <code>Inline</code> en vez del contrato de SplitButton: que siempre ordena la acción antes que el menú, el patrón real de un split button (el trigger va después, y solo pasa a la izquierda por espejado <code>dir=\"rtl\"</code>, nunca como elección escrita a mano en el mismo idioma). Esto demuestra que <code>weldStart</code>/<code>weldEnd</code> funcionan en cualquier orden, no solo en el que arma SplitButton.",
-    "splitButtonPage.menuFirstLabel": "SplitButton, menú primero",
-    "splitButtonPage.subtleTitle": "Variante subtle",
-    "splitButtonPage.subtleBody": "<code>variant: \"subtle\"</code> en las dos mitades: nunca una variante distinta por lado, para que se lea como un solo control. \"Archivar\" en vez de \"Guardar\": una acción de menor énfasis, el registro que <code>subtle</code> pinta.",
-    "splitButtonPage.subtleLabel": "SplitButton, variante subtle",
-    "splitButtonPage.overMediaTitle": "Variante soft sobre una foto",
-    "splitButtonPage.overMediaBody": "<code>variant: \"soft\"</code> en las dos mitades. \"Descargar\": <code>soft</code> deja ver la foto o portada que tiene detrás, el fondo donde vive esta acción.",
-    "splitButtonPage.overMediaLabel": "SplitButton, variante soft sobre una foto",
-    "splitButtonPage.ghostTitle": "Variante ghost",
-    "splitButtonPage.ghostBody": "<code>variant: \"ghost\"</code> en las dos mitades. \"Compartir\": sin cromo y opcional, el registro casi invisible en reposo de <code>ghost</code>.",
-    "splitButtonPage.ghostLabel": "SplitButton, variante ghost",
-    "splitButtonPage.dangerTitle": "Variante danger",
-    "splitButtonPage.dangerBody": "<code>variant: \"danger\"</code> en las dos mitades. \"Eliminar\": la acción destructiva que el color de <code>danger</code> existe para advertir.",
-    "splitButtonPage.dangerLabel": "SplitButton, variante danger",
-    "splitButtonPage.showcaseTitle": "Showcases",
-    "splitButtonPage.showcaseBody": "La acción principal con sus variantes a un clic: en varios tamaños, con el menú primero y en cada variante de botón.",
-    "splitButtonPage.guidelinesLede": "SplitButton pone la acción más común a un clic y sus variantes en un menú al lado.",
-    "splitButtonPage.guide.use1": "Úsalo cuando casi todos quieren una acción y unos pocos una variante de la misma, como Guardar y Guardar como.",
-    "splitButtonPage.guide.avoid1": "Si las acciones no son variantes de lo mismo, usa un <a href=\"/es/componentes/menu\">Menu</a> solo.",
-    "splitButtonPage.guide.avoid2": "Si hay una sola acción, es un <a href=\"/es/componentes/button\">Button</a>.",
+    "splitButtonPage.smallTitle": "Pequeño: las dos mitades juntas",
+    "splitButtonPage.smallBody": "<code>size</code> en la acción y <code>triggerSize</code> en el menú, con el mismo valor.",
+    "splitButtonPage.subtleTitle": "Subtle: una acción de menos énfasis",
+    "splitButtonPage.subtleBody": "Archivar, junto a una acción principal que ya existe en la vista.",
+    "splitButtonPage.overMediaTitle": "Soft: sobre una foto",
+    "splitButtonPage.overMediaBody": "Descargar, sobre la portada donde vive la acción.",
+    "splitButtonPage.ghostTitle": "Ghost: sin borde",
+    "splitButtonPage.ghostBody": "Compartir, opcional y casi invisible en reposo.",
+    "splitButtonPage.dangerTitle": "Danger: una acción destructiva",
+    "splitButtonPage.dangerBody": "Eliminar, con sus variantes en el menú.",
+    "splitButtonPage.guidelinesLede": "Una acción a un clic y sus variantes a dos: sirve cuando casi todos quieren la primera.",
   },
   en: {
     "demo.splitButton.action": "Save",
@@ -87,13 +112,51 @@ export const splitButtonMessages = {
     "demo.splitButton.dangerItem1": "Delete permanently",
     "demo.splitButton.dangerItem2": "Move to trash",
 
-    "splitButtonPage.description": "A stable accent action with an adjacent menu of alternative actions.",
+    "splitButtonPage.description": "Puts the most common action one click away and its variants in a menu beside it.",
+
+    "splitButtonPage.key.arrows": "Inside the menu, moves through the variants.",
+
+    "splitButtonPage.key.run": "Runs the action, or opens the menu.",
+
+    "splitButtonPage.key.tab": "Moves from the action to the menu button.",
+
+    "splitButtonPage.a11yYours1": "The menu button only shows an arrow: give it an <code>aria-label</code>.",
+
+    "splitButtonPage.a11yDoes2": "The second opens a Menu and announces <code>aria-haspopup</code> and <code>aria-expanded</code>.",
+
+    "splitButtonPage.a11yDoes1": "The action is a <code>&lt;button&gt;</code> that runs.",
+
+    "splitButtonPage.a11yIntro": "SplitButton is two buttons, each with a name.",
+
+    "splitButtonPage.content3": 'Name the menu button: <code>aria-label="More save options"</code>.',
+
+    "splitButtonPage.content2": "Write the menu's variants starting from the same verb: “Save as…”, “Save a copy”.",
+
+    "splitButtonPage.content1": "Write the action with a verb: “Save”, “Export”.",
+
+    "splitButtonPage.whenNot3": 'If no action dominates: use a <a href="/components/menu">Menu</a> with an “Actions” button.',
+
+    "splitButtonPage.whenNot2": 'If there is a single action: use <a href="/components/button">Button</a>.',
+
+    "splitButtonPage.whenNot1": 'If the actions are not variants of the same thing: use <a href="/components/menu">Menu</a>.',
+
+    "splitButtonPage.when1": "When almost everyone wants one action and a few a variant: Save and Save as.",
+
+    "splitButtonPage.contract3": "Choosing in the menu runs that variant; it does not replace the main action.",
+
+    "splitButtonPage.contract2": "The menu is a full Menu, with its keyboard.",
+
+    "splitButtonPage.contract1": "Both halves carry the same variant and size: they read as one control.",
+
+    "splitButtonPage.mainBody": "The left action does not change when choosing in the menu.",
+
+    "splitButtonPage.mainTitle": "Main: Save and its variants",
+
+    "splitButtonPage.lede": "SplitButton puts the most common action one click away and its variants in a menu beside it: Save and Save as, Export and its formats. It is two joined buttons: one runs and the other opens the alternatives.",
     "splitButtonPage.anatomyBody":
       "This diagram names the welded group, the action Button and the Menu trigger. The specimen is frozen; the live SplitButtons begin below.",
     "splitButtonPage.anatomyLabel": "SplitButton anatomy",
     "splitButtonPage.anatomyPreviewLabel": "SplitButton, part by part",
-    "splitButtonPage.contractBody": "The accent action never silently changes when the menu is chosen. If there is no dominant action, use Menu.",
-    "splitButtonPage.a11yBody": "They are two independent buttons: one runs the action, and the other announces and opens the alternatives.",
 
     "splitButtonPage.testReact1":
       "Renders a labelled group holding the action button and the menu's icon-only trigger.",
@@ -106,29 +169,16 @@ export const splitButtonMessages = {
       'The fallback trigger pairs its <code class="sk-code">variant</code>/<code class="sk-code">size</code> and shape (icon-only, welded) with the action button.',
     "splitButtonPage.testReact5":
       "A hand-composed action and menu render verbatim instead of the flat-prop fallback.",
-    "splitButtonPage.smallTitle": "Small size",
-    "splitButtonPage.smallBody": "Both halves scale together: <code>size</code> on the action Button, <code>triggerSize</code> on the Menu's own trigger.",
-    "splitButtonPage.smallLabel": "SplitButton, small size",
-    "splitButtonPage.menuFirstTitle": "The menu, first",
-    "splitButtonPage.menuFirstBody": "Composed by hand with <code>Inline</code> instead of SplitButton's own contract: which always orders the action before the menu, the real split-button pattern (the trigger comes after, and only moves to the left through <code>dir=\"rtl\"</code> mirroring, never as an authored choice in the same language direction). This shows <code>weldStart</code>/<code>weldEnd</code> work in either order, not only the one SplitButton itself assembles.",
-    "splitButtonPage.menuFirstLabel": "SplitButton, menu first",
-    "splitButtonPage.subtleTitle": "Subtle variant",
-    "splitButtonPage.subtleBody": "<code>variant: \"subtle\"</code> on both halves: never a different variant per side, so the two read as one control. \"Archive\" instead of \"Save\": a lower-emphasis action, the register <code>subtle</code> paints.",
-    "splitButtonPage.subtleLabel": "SplitButton, subtle variant",
-    "splitButtonPage.overMediaTitle": "Soft variant over a photo",
-    "splitButtonPage.overMediaBody": "<code>variant: \"soft\"</code> on both halves. \"Download\": <code>soft</code> lets the photo or hero backdrop behind it show through, the background this action actually lives on.",
-    "splitButtonPage.overMediaLabel": "SplitButton, soft variant over a photo",
-    "splitButtonPage.ghostTitle": "Ghost variant",
-    "splitButtonPage.ghostBody": "<code>variant: \"ghost\"</code> on both halves. \"Share\": chromeless and optional, <code>ghost</code>'s own near-invisible resting state.",
-    "splitButtonPage.ghostLabel": "SplitButton, ghost variant",
-    "splitButtonPage.dangerTitle": "Danger variant",
-    "splitButtonPage.dangerBody": "<code>variant: \"danger\"</code> on both halves. \"Delete\": the destructive action <code>danger</code>'s color exists to warn about.",
-    "splitButtonPage.dangerLabel": "SplitButton, danger variant",
-    "splitButtonPage.showcaseTitle": "Showcases",
-    "splitButtonPage.showcaseBody": "The main action with its variants one click away: in several sizes, menu first, and in every button variant.",
-    "splitButtonPage.guidelinesLede": "SplitButton keeps the most common action one click away and its variants in a menu beside it.",
-    "splitButtonPage.guide.use1": "Use it when almost everyone wants one action and a few want a variant of it, like Save and Save as.",
-    "splitButtonPage.guide.avoid1": "When the actions are not variants of one thing, use a <a href=\"/components/menu\">Menu</a> alone.",
-    "splitButtonPage.guide.avoid2": "When there is a single action, it is a <a href=\"/components/button\">Button</a>.",
+    "splitButtonPage.smallTitle": "Small: both halves together",
+    "splitButtonPage.smallBody": "<code>size</code> on the action and <code>triggerSize</code> on the menu, with the same value.",
+    "splitButtonPage.subtleTitle": "Subtle: a lower-emphasis action",
+    "splitButtonPage.subtleBody": "Archive, beside a main action already in the view.",
+    "splitButtonPage.overMediaTitle": "Soft: over a photo",
+    "splitButtonPage.overMediaBody": "Download, over the cover where the action lives.",
+    "splitButtonPage.ghostTitle": "Ghost: no border",
+    "splitButtonPage.ghostBody": "Share, optional and nearly invisible at rest.",
+    "splitButtonPage.dangerTitle": "Danger: a destructive action",
+    "splitButtonPage.dangerBody": "Delete, with its variants in the menu.",
+    "splitButtonPage.guidelinesLede": "One action a click away and its variants two away: it helps when almost everyone wants the first.",
   },
 } as const;

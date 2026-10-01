@@ -395,3 +395,133 @@ export const avatarProfileTree = (t: Translate): UsageTree => ({
     },
   ],
 });
+
+export const avatarCompactRowTree = (): UsageTree => ({
+  contract: "layout",
+  signature: "Inline",
+  options: { gap: "sm", inlineAlign: "center" },
+  children: [
+    {
+      contract: "avatar",
+      signature: "Avatar.initials",
+      options: { name: "Ada Lovelace", size: "sm" },
+      attrs: { style: AVATAR_FALLBACK_STYLE },
+      children: "AL",
+    },
+    {
+      contract: "typography",
+      signature: "Text",
+      options: { size: "sm", weight: "emphasis" },
+      children: "Ada Lovelace",
+    },
+  ],
+});
+
+export const avatarDontOversizedRowTree = (): UsageTree => ({
+  contract: "layout",
+  signature: "Inline",
+  options: { gap: "sm", inlineAlign: "center" },
+  children: [
+    {
+      contract: "avatar",
+      signature: "Avatar.initials",
+      options: { name: "Ada Lovelace", size: "xl" },
+      attrs: { style: AVATAR_FALLBACK_STYLE },
+      children: "AL",
+    },
+    {
+      contract: "typography",
+      signature: "Text",
+      options: { size: "sm", weight: "emphasis" },
+      children: "Ada Lovelace",
+    },
+  ],
+});
+
+const avatarStatusRows = (rows: { initials: string; name: string; style: string; label: string }[]): UsageTree => ({
+  contract: "layout",
+  signature: "Stack",
+  options: { gap: "sm", align: "start" },
+  children: rows.map((row) => ({
+    contract: "layout",
+    signature: "Inline",
+    options: { gap: "sm", inlineAlign: "center" },
+    children: [
+      {
+        contract: "avatar",
+        signature: "Avatar.initials",
+        options: { name: row.name, size: "sm" },
+        attrs: { style: row.style },
+        children: row.initials,
+      },
+      {
+        contract: "typography",
+        signature: "Text",
+        options: { size: "sm" },
+        children: row.label,
+      },
+    ],
+  })),
+});
+
+export const avatarColorIdentityTree = (t: Translate): UsageTree =>
+  avatarStatusRows([
+    { initials: "AL", name: "Ada Lovelace", style: AVATAR_FALLBACK_STYLE, label: t("demo.avatar.statusAssigned") },
+    {
+      initials: "GH",
+      name: "Grace Hopper",
+      style: "--sk-avatar-bg: var(--palette-red-600); --sk-avatar-fg: var(--palette-white);",
+      label: t("demo.avatar.statusReview"),
+    },
+    {
+      initials: "AT",
+      name: "Alan Turing",
+      style: "--sk-avatar-bg: var(--palette-emerald-600); --sk-avatar-fg: var(--palette-white);",
+      label: t("demo.avatar.statusDone"),
+    },
+  ]);
+
+export const avatarDontStatusColorTree = (t: Translate): UsageTree =>
+  avatarStatusRows([
+    {
+      initials: "AL",
+      name: "Ada Lovelace",
+      style: "--sk-avatar-bg: var(--color-bg-success-subtle); --sk-avatar-fg: var(--color-text-success);",
+      label: t("demo.avatar.statusDone"),
+    },
+    {
+      initials: "GH",
+      name: "Grace Hopper",
+      style: "--sk-avatar-bg: var(--color-bg-danger-subtle); --sk-avatar-fg: var(--color-text-danger);",
+      label: t("demo.avatar.statusBlocked"),
+    },
+    {
+      initials: "AT",
+      name: "Alan Turing",
+      style: "--sk-avatar-bg: var(--color-bg-warning-subtle); --sk-avatar-fg: var(--color-text-warning);",
+      label: t("demo.avatar.statusReview"),
+    },
+  ]);
+
+/* Usage guide: the same identity with nothing beside it, where the reader has to guess who "AL" is. */
+export const avatarDontAloneTree = (): UsageTree => ({
+  contract: "avatar",
+  signature: "Avatar.initials",
+  options: { name: "Ada Lovelace", size: "xl" },
+  attrs: { style: AVATAR_FALLBACK_STYLE },
+  children: "AL",
+});
+
+/* Usage guide: seven discs side by side, the row a group exists to replace. */
+export const avatarDontLongRowTree = (t: Translate): UsageTree => ({
+  contract: "layout",
+  signature: "Inline",
+  options: { gap: "xs", inlineAlign: "center" },
+  attrs: { "aria-label": t("demo.avatar.groupLabel") },
+  children: ["P1", "P2", "P3", "P4", "P5", "P6", "P7"].map((initials) => ({
+    contract: "avatar",
+    signature: "Avatar.initials",
+    options: { name: initials },
+    children: initials,
+  })),
+});

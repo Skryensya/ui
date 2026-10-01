@@ -1,7 +1,6 @@
 import { fireEvent, render } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
 import { CodePreview, CodePreviewDensity } from "./code-preview.js";
-import { ComponentPreviewBare } from "./component-preview.js";
 
 describe("CodePreview", () => {
   it("serializes its appearance on the panel, plain by default", () => {
@@ -162,36 +161,5 @@ describe("CodePreviewDensity", () => {
     fireEvent.click(control);
 
     expect(toggle.getAttribute("aria-controls")).toBe(fullPanel.id);
-  });
-});
-
-describe("ComponentPreviewBare", () => {
-  it("stages an example above its own source", () => {
-    const ui = render(
-      <ComponentPreviewBare
-        code={
-          <CodePreview>
-            <pre>código</pre>
-          </CodePreview>
-        }
-        note="variante ghost"
-        stage={<button type="button">Guardar</button>}
-        title="Botón"
-      />,
-    );
-    const root = ui.container.querySelector(".sk-component-preview")!;
-
-    expect(root.querySelector(".sk-component-preview__title")?.textContent).toBe("Botón");
-    expect(root.querySelector(".sk-component-preview__note")?.textContent).toBe("variante ghost");
-    expect(root.querySelector(".sk-component-preview__stage button")?.textContent).toBe("Guardar");
-    // The bare form ships no binding switch and no screen presets: those belong to the docs site.
-    expect(root.querySelector(".sk-component-preview__binding-tabs")).toBeNull();
-    expect(root.querySelector(".sk-component-preview__screen-tabs")).toBeNull();
-    expect(root.querySelector(".sk-code-preview")).toBeTruthy();
-  });
-
-  it("drops the header when there is nothing to caption", () => {
-    const ui = render(<ComponentPreviewBare code={null} stage={<span>algo</span>} title="" />);
-    expect(ui.container.querySelector(".sk-component-preview__header")).toBeNull();
   });
 });

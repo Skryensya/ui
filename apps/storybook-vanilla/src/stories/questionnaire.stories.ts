@@ -18,12 +18,11 @@ import "@skryensya/core/patterns/anchored.css";
 import "@skryensya/core/patterns/box.css";
 import "@skryensya/core/patterns/layout.css";
 import * as demos from "@docs/demos/questionnaire";
-import { annotationDemoCss } from "@docs/demos/annotation";
-import { treeStory, withCss, type Meta, type StoryObj } from "../tree-story";
+import { treeStory, type Meta, type StoryObj } from "../tree-story";
 
 export default { title: "Components/Forms/Questionnaire", tags: ["autodocs"] } satisfies Meta;
 
-export const Anatomy: StoryObj = treeStory(demos.questionnaireAnatomyTree, { decorators: [withCss(annotationDemoCss)] });
+export const Anatomy: StoryObj = treeStory(demos.questionnaireAnatomyTree);
 export const Default: StoryObj = treeStory(demos.questionnaireTree);
 export const Bar: StoryObj = treeStory(demos.questionnaireBarTree);
 export const Steps: StoryObj = treeStory(demos.questionnaireStepsTree);

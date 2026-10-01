@@ -4,8 +4,14 @@
  * showing one fixed composition or varying one option live: title/description above, live React stage
  * in the card, optional Storybook link, optional caption or per-value explanation below.
  *
- * A lighter sibling to `ComponentPreview.astro`: one tree, React-only stage (no Vanilla binding, no
- * viewport presets: Storybook has those, linked from the card), no source panels.
+ * The docs' one preview: one tree, React-only stage (no Vanilla binding, no screen presets, no source
+ * panels: Storybook has those, linked from the card).
+ *
+ * TWO STAGES, chosen by what the example needs. By default the tree renders in the page itself,
+ * which is what a property card wants: it sits in the page and reacts at once. An example that
+ * paints outside its flow (a menu, a dialog, a drawer), runs a script of its own, or must reach the
+ * card's edges renders instead in the isolated frame (`react-demos/framed.tsx`): its own document,
+ * top layer and viewport, so an open dialog covers the stage and not the reader's page.
  *
  * When `optionName` is present, the control's values are never authored here: `signatureOptions`
  * reads them off the option's own `ContractOption` (packages/core/src/contract.ts), the declaration
@@ -14,9 +20,12 @@
  * rendering an empty control.
  */
 import { getContract, getSignature } from "@skryensya/core/registry";
-import { signatureOptions } from "@skryensya/core/contract";
+import { signatureOptions, type ContractOption } from "@skryensya/core/contract";
 import type { UsageTree } from "@skryensya/core/usage-tree";
 import { ExampleStage } from "./react-demos/example-stage";
+import { TreeDemo } from "./react-demos/tree";
+import { compileDemoScript } from "../lib/demo-script";
+import "../styles/component-preview.css";
 import { PropertyPlayground } from "./react-demos/property-playground";
 import { nodeAt, type TreePath } from "./react-demos/usage-tree-path";
 import { iconMarkup } from "../icons";
@@ -45,28 +54,104 @@ interface Props {
   stageMinBlockSize?: string;
   /** Remount the specimen when the value changes. Disable for continuous animations like Marquee. */
   remountOnChange?: boolean;
-  /** Same pair `ComponentPreview` takes (`lib/navigation.ts`). Omit either and no code link renders. */
+  /**
+   * Extra CSS for this example only, the prop `ComponentPreview` also takes. The stage is on the page
+   * itself, not in a frame, so the rules are nested under this card (native CSS nesting) and cannot
+   * reach anything outside it.
+   */
+  css?: string;
+  /** The generated story this tree became (`lib/navigation.ts`). Omit either and no code link renders. */
   storybookTitle?: string;
   storybookStory?: string;
+  /** What the example is, for assistive technology, when no visible `title` names it. */
+  label?: string;
+  /** Cap the specimen's width on the stage only, as a CSS length (`measure="34rem"`). */
+  measure?: string;
+  /** Named span on the page's `.sk-layout-grid`, for an example that needs more room than the text. */
+  width?: "narrow" | "content" | "breakout" | "full-width";
+  /** Render in the isolated frame even when nothing else below asks for it. */
+  isolate?: boolean;
+  /** Reserve room for what paints out of flow: an open listbox (`menu`), a dialog or drawer (`overlay`). Isolates. */
+  viewport?: "auto" | "menu" | "overlay" | "menu-deep";
+  /** A fixed screen: the example sees a phone (`mobile`) or a tablet, for a pattern that only reads at that width. Isolates. */
+  screen?: "tablet" | "mobile";
+  /** No stage padding: the example reaches the card's edges. Isolates. */
+  flush?: boolean;
+  /** Let the stage scroll instead of growing to its content. Isolates. */
+  scroll?: boolean;
+  /** App-only TypeScript run in the frame once the example mounts (`demos/scripts/*.ts`). Isolates. */
+  script?: string;
+  /**
+   * No card around the example: for an anatomy diagram, which is already a complete surface
+   * (`Annotated` owns its canvas, legend, border and corners). Isolates.
+   */
+  bare?: boolean;
 }
 
-const { tree, optionName, target = [], title, description, caption, explain, labels, stageMinBlockSize, remountOnChange, storybookTitle, storybookStory } = Astro.props;
+const {
+  tree: authoredTree,
+  optionName,
+  target = [],
+  title,
+  description,
+  caption,
+  explain,
+  labels,
+  stageMinBlockSize,
+  remountOnChange,
+  css,
+  storybookTitle,
+  storybookStory,
+  label,
+  measure,
+  width,
+  isolate = false,
+  viewport = "auto",
+  flush = false,
+  scroll = false,
+  script,
+  bare = false,
+  screen,
+} = Astro.props;
+/*
+ * AN ANATOMY DIAGRAM IS LOOKED AT, NOT EXPLORED: no zoom bar, no gestures, no tab stop on the canvas,
+ * the drawing fitted and centred. That is `Annotated`'s own `fitOnly`, set here once for every bare
+ * anatomy rather than in each of the trees that draw one.
+ */
+const anatomy = bare && authoredTree.contract === "annotation" && authoredTree.signature === "Annotated";
+const tree = anatomy ? { ...authoredTree, options: { ...authoredTree.options, fitOnly: true } } : authoredTree;
+const framedStage = !optionName && (isolate || bare || flush || scroll || Boolean(script) || Boolean(screen) || viewport !== "auto");
 const t = useTranslations(getLocale(Astro.url));
 
 let values: readonly string[] = [];
 let defaultValue = "";
 let segmentLabels: Record<string, string> = {};
 let isBoolean = false;
-if (optionName) {
-  const node = nodeAt(tree, target);
-  if (!node) throw new Error(`UsagePreview: the target path ${JSON.stringify(target)} leaves the tree.`);
-  const contract = getContract(node.contract);
-  if (!contract) throw new Error(`UsagePreview: no contract "${node.contract}".`);
-  const signature = getSignature(contract, node.signature);
-  if (!signature) throw new Error(`UsagePreview: no signature "${node.signature}" on "${node.contract}".`);
+/* The option list for the node a path names. A collection ENTRY (`items: [{ options, slots }]`) is
+   data, not a tree: it has no contract of its own, so its options are the ones its owner's slot
+   declares for every entry (`ContractSlot.item.options`). */
+const optionsAt = (path: TreePath): { owner: string; options: readonly (readonly [string, ContractOption])[] } => {
+  const node = nodeAt(tree, path);
+  if (!node) throw new Error(`UsagePreview: the target path ${JSON.stringify(path)} leaves the tree.`);
+  const entry = !node.contract && typeof path.at(-1) === "number" && typeof path.at(-2) === "string";
+  const owner = entry ? nodeAt(tree, path.slice(0, -2)) : node;
+  if (!owner) throw new Error(`UsagePreview: the target path ${JSON.stringify(path)} leaves the tree.`);
+  const contract = getContract(owner.contract);
+  if (!contract) throw new Error(`UsagePreview: no contract "${owner.contract}".`);
+  const signature = getSignature(contract, owner.signature);
+  if (!signature) throw new Error(`UsagePreview: no signature "${owner.signature}" on "${owner.contract}".`);
+  if (!entry) return { owner: owner.signature, options: signatureOptions(contract, signature) };
+  const slotName = path.at(-2) as string;
+  const item = signature.slots?.[slotName]?.item;
+  if (!item) throw new Error(`UsagePreview: "${owner.signature}" has no collection "${slotName}".`);
+  return { owner: `${owner.signature} ${slotName}`, options: Object.entries(item.options) };
+};
 
-  const found = signatureOptions(contract, signature).find(([name]) => name === optionName);
-  if (!found) throw new Error(`UsagePreview: "${node.signature}" declares no option "${optionName}".`);
+if (optionName) {
+  const node = nodeAt(tree, target)!;
+  const { owner, options } = optionsAt(target);
+  const found = options.find(([name]) => name === optionName);
+  if (!found) throw new Error(`UsagePreview: "${owner}" declares no option "${optionName}".`);
   const [, option] = found;
   isBoolean = option.type === "boolean";
   if (!isBoolean && (option.type !== "enum" || !option.values)) {
@@ -80,42 +165,73 @@ if (optionName) {
 const codeHref = storybookTitle && storybookStory ? storybookDocsUrl(storybookReactUrl, storybookTitle, storybookStory) : null;
 const codeIcon = iconMarkup("code", { size: "sm" });
 const id = title ? `usage-${title.toLowerCase().replace(/[^a-z0-9]+/g, "-")}` : undefined;
+/* A scope per card, stable across builds: the same tree and css always get the same attribute. */
+/* The frame's settings, when the example renders in one. Its script is COMPILED here: the frame runs
+   JavaScript, and a demo script is authored in TypeScript. */
+const frameOptions = framedStage
+  ? { flush: flush || anatomy, scroll, viewport, minHeight: stageMinBlockSize, css, screen, script: script ? compileDemoScript(script) : undefined }
+  : undefined;
+const scope = css ? `u${[...(css + JSON.stringify(tree))].reduce((h, c) => (h * 31 + c.charCodeAt(0)) >>> 0, 7).toString(36)}` : undefined;
 ---
 
-<section class:list={["sk-preview-section", optionName && "sk-usage-preview--controlled"]} {...(id ? { "aria-labelledby": id } : {})}>
+<section
+  class:list={["sk-preview-section", optionName && "sk-usage-preview--controlled"]}
+  data-width={width}
+  {...(id ? { "aria-labelledby": id } : label ? { "aria-label": label } : {})}
+>
   {title && <h3 id={id}>{title}</h3>}
   {description && <p class="sk-preview-section__description" set:html={description} />}
-  <div class="sk-preview-card" style={stageMinBlockSize ? `--sk-preview-card-stage-min-block-size: ${stageMinBlockSize};` : undefined}>
-    {
-      codeHref && (
-        <a class="sk-preview-card__code-link" href={codeHref} rel="noreferrer" target="_blank" aria-label={`${t("preview.viewCode")} (${optionName})`}>
-          <Fragment set:html={codeIcon} />
-        </a>
-      )
-    }
-    {
-      optionName ? (
-        <PropertyPlayground
-          client:visible
-          tree={tree}
-          optionName={optionName}
-          target={target}
-          values={values}
-          boolean={isBoolean}
-          defaultValue={defaultValue}
-          labels={segmentLabels}
-          controlLabel={title ?? optionName}
-          explain={explain}
-          remountOnChange={remountOnChange}
-        />
-      ) : (
-        <>
-          <ExampleStage client:visible tree={tree} />
-          {caption && <p class="sk-preview-card__caption" set:html={caption} />}
-        </>
-      )
-    }
-  </div>
+  {scope && !framedStage && <style is:inline set:html={`[data-usage-scope="${scope}"] { ${css} }`} />}
+  {
+    framedStage && bare ? (
+      <div class="sk-component-preview" data-sk-component-preview data-sk-component-preview-chrome="false" data-sk-component-preview-surface="none">
+        <TreeDemo client:visible tree={tree} measure={measure} frameOptions={frameOptions} />
+      </div>
+    ) : (
+      <div
+        class="sk-preview-card"
+        data-usage-scope={framedStage ? undefined : scope}
+        style={stageMinBlockSize ? `--sk-preview-card-stage-min-block-size: ${stageMinBlockSize};` : undefined}
+      >
+        {
+          codeHref && (
+            <a class="sk-preview-card__code-link" href={codeHref} rel="noreferrer" target="_blank" aria-label={`${t("preview.viewCode")} (${title ?? label ?? optionName})`}>
+              <Fragment set:html={codeIcon} />
+            </a>
+          )
+        }
+        {
+          optionName ? (
+            <PropertyPlayground
+              client:visible
+              tree={tree}
+              optionName={optionName}
+              target={target}
+              values={values}
+              boolean={isBoolean}
+              defaultValue={defaultValue}
+              labels={segmentLabels}
+              controlLabel={title ?? optionName}
+              explain={explain}
+              remountOnChange={remountOnChange}
+            />
+          ) : framedStage ? (
+            <>
+              <div class="sk-component-preview" data-sk-component-preview data-sk-component-preview-chrome="false" data-sk-component-preview-surface="none">
+                <TreeDemo client:visible tree={tree} measure={measure} frameOptions={frameOptions} />
+              </div>
+              {caption && <p class="sk-preview-card__caption" set:html={caption} />}
+            </>
+          ) : (
+            <>
+              <ExampleStage client:visible tree={tree} measure={measure} />
+              {caption && <p class="sk-preview-card__caption" set:html={caption} />}
+            </>
+          )
+        }
+      </div>
+    )
+  }
 </section>
 
 <style>

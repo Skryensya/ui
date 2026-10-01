@@ -1,9 +1,11 @@
 ---
 import ComponentPageShell from "./ComponentPageShell.astro";
 import CodeBlock from "../CodeBlock.astro";
-import ComponentPreview from "../ComponentPreview.astro";
 import UsagePreview from "../UsagePreview.astro";
 import DoDont from "../DoDont.astro";
+import WhenToUse from "../WhenToUse.astro";
+import ContentRules from "../ContentRules.astro";
+import A11yNotes from "../A11yNotes.astro";
 import {
   codeTree,
   outputTree,
@@ -13,7 +15,7 @@ import {
   textReadingTree,
   textTitleTree,
 } from "../../demos/typography";
-import { getLocale, useTranslations } from "../../i18n";
+import { getLocale, tList, useTranslations } from "../../i18n";
 import { annotationDemoCss } from "../../demos/annotation";
 import "@skryensya/core/components/annotation.css";
 
@@ -78,8 +80,7 @@ const explain = (option: string, values: readonly string[]) =>
       stageMinBlockSize="8rem"
     />
 
-    <h3>{t("textPage.showcaseTitle")}</h3>
-    <p set:html={t("textPage.showcaseBody")} />
+    <h3>{t("component.examplesTitle")}</h3>
     <UsagePreview tree={textTitleTree(t)} title={t("textPage.titleBlockTitle")} description={t("textPage.titleBlockBody")} />
     <UsagePreview tree={textReadingTree(t)} title={t("textPage.readingTitle")} description={t("textPage.readingBody")} />
     <UsagePreview tree={codeTree(t)} title={t("textPage.codeTitle")} description={t("textPage.codeBody")} />
@@ -89,29 +90,17 @@ const explain = (option: string, values: readonly string[]) =>
 
     <h3>{t("component.contractNotesTitle")}</h3>
     <ul>
-      <li set:html={t("textPage.contractItem1")} />
-      <li set:html={t("textPage.contractItem2")} />
-      <li set:html={t("textPage.contractItem3")} />
-      <li set:html={t("textPage.contractItem4")} />
-      <li set:html={t("textPage.contractItem5")} />
-      <li set:html={t("textPage.contractItem6")} />
-      <li set:html={t("textPage.contractItem7")} />
+      {tList(t, "textPage.contract").map((item) => <li set:html={item} />)}
     </ul>
 
     <h3>{t("component.anatomy")}</h3>
     <p set:html={t("textPage.anatomyBody")} />
-    <ComponentPreview
-      tree={textAnatomyTree(t)}
-      css={annotationDemoCss}
-      label={t("textPage.anatomyPreviewLabel")}
-      screens={false}
-      hideSource
-      chrome={false}
-    />
+    <UsagePreview tree={textAnatomyTree(t)} css={annotationDemoCss} label={t("textPage.anatomyPreviewLabel")} bare />
   </Fragment>
 
   <Fragment slot="guidelines">
     <p class="lede" set:html={t("textPage.guidelinesLede")} />
+    <WhenToUse use={tList(t, "textPage.when")} avoid={tList(t, "textPage.whenNot")} />
     <DoDont
       title={t("textPage.dd.hierarchy.title")}
       do={{ tree: textReadingTree(t), caption: t("textPage.dd.hierarchy.do") }}
@@ -122,9 +111,13 @@ const explain = (option: string, values: readonly string[]) =>
       do={{ tree: textInlineTree(t), caption: t("textPage.dd.inline.do") }}
       dont={{ tree: codeTree(t), caption: t("textPage.dd.inline.dont") }}
     />
+    <ContentRules items={tList(t, "textPage.content")} />
   </Fragment>
 
   <Fragment slot="install">
     <CodeBlock code={install} label="terminal" />
+  </Fragment>
+  <Fragment slot="a11y">
+    <A11yNotes intro={t("textPage.a11yIntro")} does={tList(t, "textPage.a11yDoes")} yours={tList(t, "textPage.a11yYours")} />
   </Fragment>
 </ComponentPageShell>

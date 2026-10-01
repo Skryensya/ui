@@ -26,17 +26,14 @@ const treeFor = (factory: TreeFactory, locale: unknown): UsageTree =>
 
 /*
  * THE BOOT, as `component-preview-frame.ts` runs it: icons, the registry, one frame, icons again
- * (`mountComponentsWithIcons` says why), then the three surfaces the registry deliberately does not
- * name. Code preview and component preview are documentation surfaces a page opts into; Editor
- * pulls ProseMirror, an optional peer the auto-loader must never reach for.
+ * (`mountComponentsWithIcons` says why), then the two surfaces the registry deliberately does not
+ * name. Code preview is a documentation surface a page opts into; Editor pulls ProseMirror, an
+ * optional peer the auto-loader must never reach for.
  */
 async function boot(host: HTMLElement): Promise<void> {
   await mountComponentsWithIcons(host, lucideIcons);
   if (host.querySelector("[data-sk-code-preview]")) {
     (await import("@skryensya/vanilla/code-preview")).mountCodePreview(host);
-  }
-  if (host.querySelector("[data-sk-component-preview]")) {
-    (await import("@skryensya/vanilla/component-preview")).mountComponentPreview(host);
   }
   if (host.querySelector("[data-sk-editor]")) {
     (await import("@skryensya/vanilla/editor")).mountEditor(host);

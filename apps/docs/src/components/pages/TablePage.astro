@@ -5,9 +5,11 @@ import "@skryensya/core/components/table.css";
 import "@skryensya/core/components/annotation.css";
 import ComponentPageShell from "./ComponentPageShell.astro";
 import CodeBlock from "../CodeBlock.astro";
-import ComponentPreview from "../ComponentPreview.astro";
 import UsagePreview from "../UsagePreview.astro";
 import DoDont from "../DoDont.astro";
+import WhenToUse from "../WhenToUse.astro";
+import ContentRules from "../ContentRules.astro";
+import A11yNotes from "../A11yNotes.astro";
 import {
   tableAnatomyTree,
   tableDensityTree,
@@ -19,7 +21,7 @@ import {
   tableTree,
 } from "../../demos/table";
 import { annotationDemoCss } from "../../demos/annotation";
-import { getLocale, useTranslations } from "../../i18n";
+import { getLocale, tList, useTranslations } from "../../i18n";
 
 const t = useTranslations(getLocale(Astro.url));
 const install = `pnpm add @skryensya/core @skryensya/react`;
@@ -29,67 +31,52 @@ const install = `pnpm add @skryensya/core @skryensya/react`;
   title="Table"
   description={t("tablePage.description")}
   contractId="table"
-  testFiles={["packages/react/src/components/table.test.tsx"]}}
+  testFiles={["packages/react/src/components/table.test.tsx"]}
 >
   <Fragment slot="usage">
     <p class="lede" set:html={t("tablePage.lede")} />
 
-    <h3>{t("tablePage.showcaseTitle")}</h3>
-    <p set:html={t("tablePage.showcaseBody")} />
-    <UsagePreview tree={tableTree(t)} />
+    <h3>{t("component.examplesTitle")}</h3>
+    <UsagePreview tree={tableTree(t)} title={t("tablePage.basicTitle")} description={t("tablePage.basicBody")} />
+    <UsagePreview tree={tableStickyColumnTree(t)} title={t("tablePage.stickyColTitle")} description={t("tablePage.stickyColBody")} />
+    <UsagePreview tree={tableStickyHeaderTree(t)} title={t("tablePage.stickyHeadTitle")} description={t("tablePage.stickyHeadBody")} />
+    <UsagePreview tree={tableResizableColumnsTree(t)} title={t("tablePage.resizableTitle")} description={t("tablePage.resizableBody")} />
+    <UsagePreview tree={tableInBoxTree(t)} title={t("tablePage.boxTitle")} description={t("tablePage.boxBody")} />
+    <UsagePreview tree={tableDensityTree(t, 1.2)} title={t("tablePage.densityTitle")} description={t("tablePage.densityBody")} label={t("tablePage.densityWideLabel")} />
+    <UsagePreview tree={tableDensityTree(t, 0.6)} label={t("tablePage.densityCompactLabel")} />
 
-    <h3>{t("tablePage.scrollTitle")}</h3>
-    <p set:html={t("tablePage.scrollBody")} />
-
-    <h3>{t("tablePage.stickyColTitle")}</h3>
-    <p set:html={t("tablePage.stickyColBody")} />
-    <UsagePreview tree={tableStickyColumnTree(t)} />
-
-    <h3>{t("tablePage.stickyHeadTitle")}</h3>
-    <p set:html={t("tablePage.stickyHeadBody")} />
-    <UsagePreview tree={tableStickyHeaderTree(t)} />
-
-    <h3>{t("tablePage.resizableTitle")}</h3>
-    <p set:html={t("tablePage.resizableBody")} />
-    <UsagePreview tree={tableResizableColumnsTree(t)} />
-
-    <h3>{t("tablePage.pagerTitle")}</h3>
-    <p set:html={t("tablePage.pagerBody")} />
-
-    <h3>{t("tablePage.boxTitle")}</h3>
-    <p set:html={t("tablePage.boxBody")} />
-    <UsagePreview tree={tableInBoxTree(t)} />
-
-    <h3>{t("tablePage.densityTitle")}</h3>
-    <p set:html={t("tablePage.densityBody")} />
-    <ComponentPreview tree={tableDensityTree(t, 1.2)} label={t("tablePage.densityWideLabel")} />
-    <ComponentPreview tree={tableDensityTree(t, 0.6)} label={t("tablePage.densityCompactLabel")} />
-
+    <h3>{t("component.contractNotesTitle")}</h3>
+    <ul>
+      {tList(t, "tablePage.contract").map((item) => <li set:html={item} />)}
+    </ul>
     <p set:html={t("tablePage.reactBody")} />
 
     <h3>{t("component.anatomy")}</h3>
     <p set:html={t("tablePage.anatomyBody")} />
-    <ComponentPreview
-      tree={tableAnatomyTree(t)}
-      css={annotationDemoCss}
-      label={t("tablePage.anatomyPreviewLabel")}
-      screens={false}
-      hideSource
-      chrome={false}
-    />
+    <UsagePreview tree={tableAnatomyTree(t)} css={annotationDemoCss} label={t("tablePage.anatomyPreviewLabel")} bare />
   </Fragment>
 
   <Fragment slot="guidelines">
     <p class="lede" set:html={t("tablePage.guidelinesLede")} />
+    <WhenToUse use={tList(t, "tablePage.when")} avoid={tList(t, "tablePage.whenNot")} />
     <DoDont
       canvas
       title={t("tablePage.dd.data.title")}
       do={{ tree: tableTree(t), caption: t("tablePage.dd.data.do") }}
       dont={{ tree: tableDontListTree(t), caption: t("tablePage.dd.data.dont") }}
     />
+    <ContentRules items={tList(t, "tablePage.content")} />
   </Fragment>
 
   <Fragment slot="install">
     <CodeBlock code={install} label="terminal" />
+  </Fragment>
+  <Fragment slot="a11y">
+    <A11yNotes
+      intro={t("tablePage.a11yIntro")}
+      does={tList(t, "tablePage.a11yDoes")}
+      yours={tList(t, "tablePage.a11yYours")}
+      keys={[{ keys: ["←", "→"], action: t("tablePage.key.arrows") }]}
+    />
   </Fragment>
 </ComponentPageShell>

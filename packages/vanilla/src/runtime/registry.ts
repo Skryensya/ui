@@ -72,8 +72,8 @@ const registrations: readonly Registration[] = [
       (await import("../components/segmented.js")).mountSegmented,
   },
   {
-    /* Only the opted-in ones: a plain FadeEdge is paint and has nothing to watch. */
-    selector: "[data-sk-fade-edge][data-scroll-aware]",
+    /* Every FadeEdge: its scrollbars' thickness is measured even when it is not scroll-aware. */
+    selector: "[data-sk-fade-edge]",
     load: async () => (await import("../components/fade-edge.js")).mountFadeEdge,
   },
   {

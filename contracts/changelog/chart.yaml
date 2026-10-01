@@ -155,3 +155,18 @@ entries:
       title: Every point needs a value
       body: >-
         A point with no <code>value</code> validated and could not be plotted; React already required it.
+  - date: 2026-09-30
+    kind: feature
+    es:
+      title: "<code>line</code> y <code>area</code> se dibujan en las dos bibliotecas"
+      body: >-
+        La línea y el área ya no dependen de <code>@skryensya/charts</code>: el Chart de React y el enhancer de Vanilla
+        las dibujan desde la geometría de core (<code>chartLinePath</code>, <code>chartAreaPath</code>). La prop
+        <code>overlay</code>, que solo existía en React, desaparece; <code>@skryensya/charts/react</code> reexporta el
+        mismo Chart.
+    en:
+      title: "<code>line</code> and <code>area</code> draw in both bindings"
+      body: >-
+        Line and area no longer depend on <code>@skryensya/charts</code>: the React Chart and the Vanilla enhancer draw
+        them from core's geometry (<code>chartLinePath</code>, <code>chartAreaPath</code>). The React-only
+        <code>overlay</code> prop is gone; <code>@skryensya/charts/react</code> re-exports the same Chart.

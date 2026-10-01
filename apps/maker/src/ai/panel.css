@@ -1,0 +1,11 @@
+.maker-ai { display: flex; flex-direction: column; gap: 12px; padding: 12px; overflow: auto; max-block-size: calc(100vh - 180px); }
+.maker-ai p { margin: 0; white-space: pre-wrap; overflow-wrap: anywhere; }
+.maker-ai label { display: grid; gap: 4px; font-size: 12px; }
+.maker-ai input, .maker-ai select, .maker-ai textarea { font: inherit; color: inherit; background: transparent; border: 1px solid currentColor; border-radius: 6px; padding: 8px; min-inline-size: 0; inline-size: 100%; box-sizing: border-box; }
+.maker-ai textarea { resize: vertical; }
+.maker-ai__settings, .maker-ai form { display: grid; gap: 10px; min-inline-size: 0; }
+.maker-ai__settings p { font-size: 12px; }
+.maker-ai__conversation { display: grid; gap: 12px; }
+.maker-ai__conversation article { display: grid; gap: 6px; border-block-end: 1px solid currentColor; padding-block-end: 12px; }
+.maker-ai__context { display: flex; gap: 6px; flex-wrap: wrap; font-size: 12px; }
+.maker-ai__context button { font: inherit; color: inherit; background: transparent; border: 1px solid currentColor; border-radius: 16px; padding: 4px 8px; }

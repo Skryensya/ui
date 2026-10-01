@@ -5,9 +5,11 @@ import "@skryensya/core/components/annotation.css";
 import ComponentPageShell from "./ComponentPageShell.astro";
 import AppearanceMenu from "../AppearanceMenu.astro";
 import CodeBlock from "../CodeBlock.astro";
-import ComponentPreview from "../ComponentPreview.astro";
 import UsagePreview from "../UsagePreview.astro";
 import DoDont from "../DoDont.astro";
+import WhenToUse from "../WhenToUse.astro";
+import ContentRules from "../ContentRules.astro";
+import A11yNotes from "../A11yNotes.astro";
 import {
   paginationAnatomyTree,
   paginationDoBelowTree,
@@ -16,7 +18,7 @@ import {
   paginationTree,
 } from "../../demos/pagination";
 import { annotationDemoCss } from "../../demos/annotation";
-import { getLocale, useTranslations } from "../../i18n";
+import { getLocale, tList, useTranslations } from "../../i18n";
 
 const t = useTranslations(getLocale(Astro.url));
 const install = `pnpm add @skryensya/core @skryensya/react`;
@@ -32,7 +34,7 @@ paginationRange(5, 20);
   description={t("paginationPage.description")}
   contractId="pagination"
   appearanceTargetSelector=".sk-pagination"
-  testFiles={["packages/react/src/components/pagination.test.tsx"]}}
+  testFiles={["packages/react/src/components/pagination.test.tsx"]}
 >
   <Fragment slot="appearance">
     <AppearanceMenu label={t("prefs.appearance")} />
@@ -41,32 +43,31 @@ paginationRange(5, 20);
   <Fragment slot="usage">
     <p class="lede" set:html={t("paginationPage.lede")} />
 
-    <h3>{t("paginationPage.showcaseTitle")}</h3>
-    <p set:html={t("paginationPage.showcaseBody")} />
-    <UsagePreview tree={paginationTree(t)} />
-    <p set:html={t("paginationPage.body")} />
-
-    <h3>{t("paginationPage.rangeTitle")}</h3>
+    <h3>{t("component.examplesTitle")}</h3>
+    <UsagePreview tree={paginationTree(t)} title={t("paginationPage.twelveTitle")} description={t("paginationPage.twelveBody")} />
+    <h4>{t("paginationPage.rangeTitle")}</h4>
     <p set:html={t("paginationPage.rangeBody")} />
     <CodeBlock code={rangeExample} lang="ts" label="@skryensya/core/pagination" />
 
+    <h3>{t("component.contractNotesTitle")}</h3>
+    <ul>
+      {tList(t, "paginationPage.contract").map((item) => <li set:html={item} />)}
+    </ul>
     <p set:html={t("component.reactNote")} />
-    <p set:html={t("paginationPage.reactBody")} />
 
     <h3>{t("component.anatomy")}</h3>
     <p set:html={t("paginationPage.anatomyBody")} />
-    <ComponentPreview
+    <UsagePreview
       tree={paginationAnatomyTree(t)}
       css={annotationDemoCss}
       label={t("paginationPage.anatomyPreviewLabel")}
-      screens={false}
-      hideSource
-      chrome={false}
+      bare
     />
   </Fragment>
 
   <Fragment slot="guidelines">
     <p class="lede" set:html={t("paginationPage.guidelinesLede")} />
+    <WhenToUse use={tList(t, "paginationPage.when")} avoid={tList(t, "paginationPage.whenNot")} />
     <DoDont
       title={t("paginationPage.dd.few.title")}
       do={{ tree: paginationTree(t), caption: t("paginationPage.dd.few.do") }}
@@ -77,9 +78,21 @@ paginationRange(5, 20);
       do={{ tree: paginationDoBelowTree(t), caption: t("paginationPage.dd.below.do") }}
       dont={{ tree: paginationDontAboveTree(t), caption: t("paginationPage.dd.below.dont") }}
     />
+    <ContentRules items={tList(t, "paginationPage.content")} />
   </Fragment>
 
   <Fragment slot="install">
     <CodeBlock code={install} label="terminal" />
+  </Fragment>
+  <Fragment slot="a11y">
+    <A11yNotes
+      intro={t("paginationPage.a11yIntro")}
+      does={tList(t, "paginationPage.a11yDoes")}
+      yours={tList(t, "paginationPage.a11yYours")}
+      keys={[
+        { keys: ["Tab", "Shift+Tab"], action: t("paginationPage.key.tab") },
+        { keys: ["Enter"], action: t("paginationPage.key.enter") },
+      ]}
+    />
   </Fragment>
 </ComponentPageShell>

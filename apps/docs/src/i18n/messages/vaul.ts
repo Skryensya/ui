@@ -1,9 +1,48 @@
 export const vaulMessages = {
   es: {
 
-    "vaulPage.description": "Panel modal anclado a un borde del viewport, con variantes de sheet, drawer y gesto.",
-    "vaulPage.lede":
-      "Vaul es la superficie modal que entra desde un borde. La página muestra sus formas principales: sheet de compartir, el mismo contrato en otros bordes, drag táctil opcional y los detalles que evitan duplicar Drawer o Dialog.",
+    "vaulPage.description": "Abre un panel desde un borde de la pantalla, que en el teléfono se cierra arrastrándolo.",
+
+    "vaulPage.key.tab": "Recorre los controles del panel, sin salir de él.",
+
+    "vaulPage.key.escape": "Cierra el panel.",
+
+    "vaulPage.a11yYours2": "Pon siempre un botón para cerrar: no todos pueden arrastrar.",
+
+    "vaulPage.a11yYours1": "Nombra el diálogo con su título o un <code>aria-label</code>.",
+
+    "vaulPage.a11yDoes3": "Con <code>prefers-reduced-motion</code>, entra sin desplazamiento.",
+
+    "vaulPage.a11yDoes2": "<kbd>Esc</kbd> lo cierra; el arrastre tiene siempre otra forma de cerrar.",
+
+    "vaulPage.a11yDoes1": "El foco queda dentro del panel y vuelve a lo que lo abrió al cerrar.",
+
+    "vaulPage.a11yIntro": "Vaul es un <code>&lt;dialog&gt;</code> modal nativo.",
+
+    "vaulPage.content2": "Pon la acción principal al final, al alcance del pulgar.",
+
+    "vaulPage.content1": "Titula el panel con la tarea: «Compartir», «Filtros».",
+
+    "vaulPage.whenNot3": 'Para un panel que convive con la página: usa <a href="/es/componentes/window">Window</a>.',
+
+    "vaulPage.whenNot2": 'Para una navegación lateral: usa <a href="/es/componentes/drawer">Drawer</a>.',
+
+    "vaulPage.whenNot1": 'Para una decisión en escritorio: usa <a href="/es/componentes/dialog">Dialog</a>.',
+
+    "vaulPage.when2": "Cuando el contenido cabe en un panel y no necesita una página propia.",
+
+    "vaulPage.when1": "En el teléfono, para una tarea corta que sale de la pantalla actual: compartir, filtrar, confirmar.",
+
+    "vaulPage.guidelinesLede": "Un panel desde el borde deja ver de dónde vino la acción, a cambio de bloquear la página.",
+
+    "vaulPage.contract4": '<a href="/es/componentes/drawer">Drawer</a> es el mismo Vaul pegado a un borde lateral.',
+
+    "vaulPage.contract3": "En pantallas anchas, sobre <code>52rem</code>, no hay gesto ni handle: se cierra con <kbd>Esc</kbd> o un clic afuera.",
+
+    "vaulPage.contract2": "Un gesto corto y rápido también cierra; tirar hacia adentro cede un poco y vuelve.",
+
+    "vaulPage.contract1": "Es un <code>&lt;dialog&gt;</code> nativo: foco atrapado, <kbd>Esc</kbd>, fondo inerte y capa superior vienen del navegador.",
+    "vaulPage.lede": 'Vaul abre un panel desde un borde de la pantalla: compartir un archivo, confirmar un borrado, filtrar resultados. En el teléfono entra desde abajo y se cierra arrastrándolo hacia afuera. Bloquea la página de atrás, como un <a href="/es/componentes/dialog">Dialog</a>.',
     "vaulPage.anatomyBody":
       "Este diagrama nombra el panel y el handle. El contenido es composición libre (no hay <code>sk-vaul__content</code>); el espécimen solo trae título y texto para que el panel se lea como panel. Está congelado y en flujo; los sheets vivos empiezan abajo.",
     "vaulPage.anatomyLabel": "Anatomía de Vaul",
@@ -11,57 +50,17 @@ export const vaulMessages = {
     "vaulPage.anatomyPanelLabel": "Panel de ejemplo",
     "vaulPage.anatomyTitle": "Hoja inferior",
     "vaulPage.anatomyBodyText": "El handle es el affordance del gesto; el resto lo compone quien lo usa.",
-    "vaulPage.step1Eyebrow": "01 · base",
-    "vaulPage.startTitle": "Un dialog, una clase, un borde",
-    "vaulPage.startBody":
-      "Lo mínimo ya es útil: <code>sk-vaul</code> pinta el panel, <code>data-edge</code> decide desde dónde entra y <code>aria-label</code> nombra el diálogo.",
-    "vaulPage.minimumLabel": "Panel de ejemplo",
-    "vaulPage.step2Eyebrow": "02 · posición",
-    "vaulPage.edgeTitle": "El mismo Vaul en tres bordes",
-    "vaulPage.edgeBody":
-      "La diferencia entre sheet inferior y panel lateral es <code>data-edge</code>. Los bordes inline son lógicos, así que siguen RTL sin otro markup.",
-    "vaulPage.step3Eyebrow": "03 · gesto",
-    "vaulPage.dragTitle": "Con drag o sin drag",
-    "vaulPage.dragBody1":
-      "Abrir, cerrar, foco, Escape, backdrop y top layer son del <code>&lt;dialog&gt;</code>. El enhancer sólo conecta el gesto táctil de arrastrar para cerrar.",
+    "vaulPage.edgeTitle": "Borde: abajo, al inicio o al final",
+    "vaulPage.edgeBody": "<code>data-edge</code> decide desde dónde entra. Los bordes laterales siguen la dirección del texto.",
+    "vaulPage.dragTitle": "Arrastrar: con o sin gesto",
+    "vaulPage.dragBody1": "Abrir es <code>showModal()</code> y cerrar, <code>close()</code>; el enhancer solo agrega el gesto de arrastrar.",
     "vaulPage.noDragLabel": "sin drag",
-    "vaulPage.step4Eyebrow": "04 · composición",
-    "vaulPage.completeTitle": "Sheet de compartir",
-    "vaulPage.completeBody":
-      "Un Vaul puede contener un flujo de producto completo: cabecera, interruptor, lista, acciones y cierre explícito. El preview alterna Vanilla y React porque ambos renderizan el mismo contrato.",
+    "vaulPage.completeTitle": "Compartir: un flujo completo",
+    "vaulPage.completeBody": "Cabecera, un interruptor, la lista de personas y las acciones. Arrastra el panel hacia abajo para cerrarlo.",
     "vaulPage.completeLabel": "Compartir archivo",
     "vaulPage.reactSnippetComment": "mismo contenido que el ejemplo Vanilla",
-    "vaulPage.detailsTitle": "Detalles del contrato",
-    "vaulPage.whyPatternTitle": "Por qué es pattern",
-    "vaulPage.whyPatternBody1":
-      '<a href="/es/componentes/drawer">Drawer</a> es el mismo Vaul pegado al borde inline. Compartir estructura evita mantener dos sheets casi iguales.',
-    "vaulPage.whyPatternBody2": "Vaul envía hooks y estructura; cada composición decide el contenido.",
-    "vaulPage.nativeTitle": "La modalidad es nativa",
-    "vaulPage.nativeBody":
-      "Focus trap, Escape, fondo inerte, restauración del foco, top layer y <code>::backdrop</code> vienen de la plataforma. Un <code>div</code> no puede comprar eso después.",
-    "vaulPage.zagTitle": "Zag no entra aquí",
-    "vaulPage.zagBody":
-      "No existe máquina de Vaul en Zag, y usar Dialog/Presence duplicaría lo que ya hace <code>&lt;dialog&gt;</code> más <code>@starting-style</code>.",
     "vaulPage.dragBody2":
       "El cierre usa distancia o velocidad: un flick corto también es intención. Un flick de vuelta gana aunque el panel haya viajado lejos.",
-    "vaulPage.resistTitle": "Hacia adentro resiste",
-    "vaulPage.resistBody1":
-      "Tirar contra el borde no despega el panel: cede unos píxeles y vuelve. La asimetría dice que ese lado no tiene salida.",
-    "vaulPage.resistBody2":
-      "<code>--sk-vaul-overpull</code> controla cuánto cede; <code>--sk-vaul-material</code> asegura que el material siga debajo del dedo.",
-    "vaulPage.resistBody3": "La opacidad del backdrop acompaña el drag para no mentir sobre la modalidad.",
-    "vaulPage.handleTitle": "El handle sigue al gesto",
-    "vaulPage.handleBody":
-      "Una hoja inferior muestra una barra horizontal; un panel lateral muestra una barra vertical. El affordance apunta hacia donde se arrastra.",
-    "vaulPage.desktopTitle": "En desktop se queda quieto",
-    "vaulPage.desktopBody":
-      "Sobre <code>52rem</code> se oculta el handle y no se cablea el drag. Con puntero, Escape y click afuera son mejores controles.",
-    "vaulPage.motionTitle": "Motion por intención",
-    "vaulPage.motionBody1":
-      "Entrar, salir y soltar usan tokens distintos. Con motion reducido cae el viaje decorativo, no la modalidad ni el aterrizaje del panel.",
-    "vaulPage.motionBody2":
-      '<a href="/es/transparencias"><code>prefers-reduced-transparency</code></a> vuelve opaco el backdrop; no lo elimina.',
-    "vaulPage.motionBody3": "Soltar tiene su propio intent porque termina el impulso de la mano, no una animación de salida.",
     "vaulPage.demoOpenLabel": "Compartir archivo",
     "vaulPage.demoTitle": "Propuesta comercial Q3",
     "vaulPage.demoMeta": "PDF · 2,4 MB · editado hace 2 h",
@@ -77,7 +76,7 @@ export const vaulMessages = {
     "vaulPage.demoDesignTeamMeta": "6 personas",
     "vaulPage.demoCancel": "Cancelar",
     "vaulPage.demoShare": "Compartir",
-    "vaulPage.vanillaComment1": "Sólo el drag. Abrir es showModal() y cerrar es close():",
+    "vaulPage.vanillaComment1": "Solo el drag. Abrir es showModal() y cerrar es close():",
     "vaulPage.vanillaComment2": "la modalidad es de la plataforma.",
     "vaulPage.vanillaComment3": "fracción del panel que hay que arrastrar",
     "vaulPage.vanillaComment4": "px/ms: un flick cierra sin cruzar la distancia",
@@ -85,11 +84,10 @@ export const vaulMessages = {
     "vaulPage.test1": "Lleva las marcas de scope del enhancer en reposo.",
     "vaulPage.test2": "Dibuja el handle como decoración, siempre.",
     "vaulPage.test3": "Cierra con un drag lento que llega suficientemente lejos (solo distancia).",
-    "vaulPage.test4": "Un flick rápido y corto cierra aunque la distancia sea chica.",
+    "vaulPage.test4": "Un flick rápido y corto cierra aunque la distancia sea pequeña.",
     "vaulPage.test5": "Un flick de vuelta a casa le gana a un drag largo: la dirección le gana a la distancia.",
-    "vaulPage.examplesTitle": "Poco contenido, mucho contenido",
-    "vaulPage.examplesBody":
-      "El mismo panel sostiene una confirmación de una línea y un formulario de varias secciones: el pattern no impone alto, sólo borde, slide y backdrop. Los tres parten en móvil porque es donde vive un Vaul de verdad.",
+    "vaulPage.examplesTitle": "Poco o mucho contenido: el alto lo da el contenido",
+    "vaulPage.examplesBody": "Una confirmación de una línea y un formulario de filtros usan el mismo panel.",
     "vaulPage.deleteLabel": "Confirmar eliminación",
     "vaulPage.deleteOpenLabel": "Eliminar archivo",
     "vaulPage.deleteTitle": "¿Eliminar este archivo?",
@@ -120,9 +118,48 @@ export const vaulMessages = {
   },
   en: {
 
-    "vaulPage.description": "A modal panel anchored to a viewport edge, with sheet, drawer, and gesture variants.",
-    "vaulPage.lede":
-      "Vaul is the modal surface that enters from an edge. This page shows its main shapes: a sharing sheet, the same contract on other edges, optional touch drag, and the details that keep Drawer and Dialog from duplicating it.",
+    "vaulPage.description": "Opens a panel from an edge of the screen that, on a phone, closes by dragging it.",
+
+    "vaulPage.key.tab": "Moves through the panel's controls, without leaving it.",
+
+    "vaulPage.key.escape": "Closes the panel.",
+
+    "vaulPage.a11yYours2": "Always include a close button: not everyone can drag.",
+
+    "vaulPage.a11yYours1": "Name the dialog with its title or an <code>aria-label</code>.",
+
+    "vaulPage.a11yDoes3": "With <code>prefers-reduced-motion</code>, it enters without travel.",
+
+    "vaulPage.a11yDoes2": "<kbd>Esc</kbd> closes it; dragging always has another way to close.",
+
+    "vaulPage.a11yDoes1": "Focus stays inside the panel and returns to what opened it on close.",
+
+    "vaulPage.a11yIntro": "Vaul is a native modal <code>&lt;dialog&gt;</code>.",
+
+    "vaulPage.content2": "Put the main action at the end, within thumb reach.",
+
+    "vaulPage.content1": "Title the panel with the task: “Share”, “Filters”.",
+
+    "vaulPage.whenNot3": 'For a panel that lives alongside the page: use <a href="/components/window">Window</a>.',
+
+    "vaulPage.whenNot2": 'For side navigation: use <a href="/components/drawer">Drawer</a>.',
+
+    "vaulPage.whenNot1": 'For a decision on desktop: use <a href="/components/dialog">Dialog</a>.',
+
+    "vaulPage.when2": "When the content fits a panel and needs no page of its own.",
+
+    "vaulPage.when1": "On a phone, for a short task off the current screen: share, filter, confirm.",
+
+    "vaulPage.guidelinesLede": "A panel from the edge shows where the action came from, at the cost of blocking the page.",
+
+    "vaulPage.contract4": '<a href="/components/drawer">Drawer</a> is the same Vaul attached to a side edge.',
+
+    "vaulPage.contract3": "On wide screens, above <code>52rem</code>, there is no gesture or handle: it closes with <kbd>Esc</kbd> or a click outside.",
+
+    "vaulPage.contract2": "A short, quick flick also closes it; pulling inward gives a little and springs back.",
+
+    "vaulPage.contract1": "It is a native <code>&lt;dialog&gt;</code>: focus trap, <kbd>Esc</kbd>, inert backdrop and top layer come from the browser.",
+    "vaulPage.lede": 'Vaul opens a panel from an edge of the screen: sharing a file, confirming a deletion, filtering results. On a phone it comes up from the bottom and closes by dragging it away. It blocks the page behind, like a <a href="/components/dialog">Dialog</a>.',
     "vaulPage.anatomyBody":
       "This diagram names the panel and the handle. Content is free-form composition (there is no <code>sk-vaul__content</code>); the specimen only carries a title and a line of text so the panel reads as a panel. It is frozen and in flow; the live sheets start below.",
     "vaulPage.anatomyLabel": "Vaul anatomy",
@@ -130,57 +167,17 @@ export const vaulMessages = {
     "vaulPage.anatomyPanelLabel": "Example panel",
     "vaulPage.anatomyTitle": "Bottom sheet",
     "vaulPage.anatomyBodyText": "The handle is the gesture affordance; the rest is the consumer's composition.",
-    "vaulPage.step1Eyebrow": "01 · base",
-    "vaulPage.startTitle": "One dialog, one class, one edge",
-    "vaulPage.startBody":
-      "The minimum is already useful: <code>sk-vaul</code> paints the panel, <code>data-edge</code> chooses where it arrives from, and <code>aria-label</code> names the dialog.",
-    "vaulPage.minimumLabel": "Example panel",
-    "vaulPage.step2Eyebrow": "02 · position",
-    "vaulPage.edgeTitle": "The same Vaul on three edges",
-    "vaulPage.edgeBody":
-      "The difference between a bottom sheet and a side panel is <code>data-edge</code>. Inline edges are logical, so RTL follows without different markup.",
-    "vaulPage.step3Eyebrow": "03 · gesture",
-    "vaulPage.dragTitle": "With drag or without drag",
-    "vaulPage.dragBody1":
-      "Opening, closing, focus, Escape, backdrop, and the top layer all belong to <code>&lt;dialog&gt;</code>. The enhancer only connects the touch drag-to-dismiss gesture.",
+    "vaulPage.edgeTitle": "Edge: bottom, start or end",
+    "vaulPage.edgeBody": "<code>data-edge</code> decides where it enters from. Side edges follow the text direction.",
+    "vaulPage.dragTitle": "Drag: with or without the gesture",
+    "vaulPage.dragBody1": "Opening is <code>showModal()</code> and closing <code>close()</code>; the enhancer only adds the drag gesture.",
     "vaulPage.noDragLabel": "no drag",
-    "vaulPage.step4Eyebrow": "04 · composition",
-    "vaulPage.completeTitle": "Sharing sheet",
-    "vaulPage.completeBody":
-      "A Vaul can hold a complete product flow: header, switch, list, actions, and explicit close controls. The preview switches between Vanilla and React because both render the same contract.",
+    "vaulPage.completeTitle": "Share: a complete flow",
+    "vaulPage.completeBody": "A header, a switch, the list of people and the actions. Drag the panel down to close it.",
     "vaulPage.completeLabel": "Share file",
     "vaulPage.reactSnippetComment": "same content as the Vanilla example",
-    "vaulPage.detailsTitle": "Contract details",
-    "vaulPage.whyPatternTitle": "Why it is a pattern",
-    "vaulPage.whyPatternBody1":
-      '<a href="/components/drawer">Drawer</a> is the same Vaul pinned to an inline edge. Sharing the structure avoids maintaining two almost-identical sheets.',
-    "vaulPage.whyPatternBody2": "Vaul ships hooks and structure; each composition decides the content.",
-    "vaulPage.nativeTitle": "Modality is native",
-    "vaulPage.nativeBody":
-      "Focus trap, Escape, inert background, focus restoration, the top layer, and <code>::backdrop</code> come from the platform. A <code>div</code> cannot buy that later.",
-    "vaulPage.zagTitle": "Zag stays out",
-    "vaulPage.zagBody":
-      "There is no Vaul machine in Zag, and Dialog/Presence would duplicate what <code>&lt;dialog&gt;</code> plus <code>@starting-style</code> already do.",
     "vaulPage.dragBody2":
       "Dismissal uses distance or velocity: a short flick is intent too. A flick back home wins even after the panel has travelled far.",
-    "vaulPage.resistTitle": "Inward, it resists",
-    "vaulPage.resistBody1":
-      "Pulling against the edge does not detach the panel: it gives a few pixels and returns. The asymmetry says that side has no exit.",
-    "vaulPage.resistBody2":
-      "<code>--sk-vaul-overpull</code> controls how far it gives; <code>--sk-vaul-material</code> keeps material under the finger.",
-    "vaulPage.resistBody3": "Backdrop opacity follows the drag so modality does not lie.",
-    "vaulPage.handleTitle": "The handle follows the gesture",
-    "vaulPage.handleBody":
-      "A bottom sheet gets a horizontal bar; a side panel gets a vertical bar. The affordance points in the direction you drag.",
-    "vaulPage.desktopTitle": "On desktop, it stays still",
-    "vaulPage.desktopBody":
-      "Above <code>52rem</code>, the handle hides and drag is not wired. With a pointer, Escape and outside-click are better controls.",
-    "vaulPage.motionTitle": "Motion by intent",
-    "vaulPage.motionBody1":
-      "Entering, leaving, and releasing use different tokens. With reduced motion, the decorative trip drops; modality and landing remain.",
-    "vaulPage.motionBody2":
-      '<a href="/transparency"><code>prefers-reduced-transparency</code></a> makes the backdrop opaque; it does not remove it.',
-    "vaulPage.motionBody3": "Release has its own intent because it finishes the hand's momentum, not an exit animation.",
     "vaulPage.demoOpenLabel": "Share file",
     "vaulPage.demoTitle": "Q3 commercial proposal",
     "vaulPage.demoMeta": "PDF · 2.4 MB · edited 2h ago",
@@ -206,9 +203,8 @@ export const vaulMessages = {
     "vaulPage.test3": "Dismisses on a slow drag that travels far enough (distance alone).",
     "vaulPage.test4": "A fast, short flick closes it even when the distance is small.",
     "vaulPage.test5": "A flick back home overrules a far drag: direction beats distance.",
-    "vaulPage.examplesTitle": "Little content, lots of content",
-    "vaulPage.examplesBody":
-      "The same panel holds a one-line confirmation and a multi-section form: the pattern imposes no height, only edge, slide and backdrop. All three start on mobile because that's where a Vaul actually lives.",
+    "vaulPage.examplesTitle": "Little or much content: the content sets the height",
+    "vaulPage.examplesBody": "A one-line confirmation and a filters form use the same panel.",
     "vaulPage.deleteLabel": "Confirm deletion",
     "vaulPage.deleteOpenLabel": "Delete file",
     "vaulPage.deleteTitle": "Delete this file?",

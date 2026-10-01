@@ -179,12 +179,11 @@ export type Realization = {
    */
   grid: { columns: readonly string[]; rows: readonly string[]; descending: readonly string[] };
   /**
-   * What the drawing stands on. The background is a contract's styling hook (the docs preview's
-   * own), resolved through the cascade like any other; the labels name the tokens they read.
+   * What the drawing stands on: the token the docs preview card is painted in, and the tokens its
+   * labels read.
    */
   stage: {
-    contract: string;
-    hook: string;
+    background: string;
     label: { color: string; fontFamily: string; fontSize: string; fontWeight: string };
     /**
      * The page's own text, by token: what a component inherits for a property its sheets never set

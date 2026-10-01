@@ -8,18 +8,23 @@ import "@skryensya/core/components/typography.css";
 import "@skryensya/core/components/annotation.css";
 import ComponentPageShell from "./ComponentPageShell.astro";
 import CodeBlock from "../CodeBlock.astro";
-import ComponentPreview from "../ComponentPreview.astro";
 import UsagePreview from "../UsagePreview.astro";
+import WhenToUse from "../WhenToUse.astro";
+import ContentRules from "../ContentRules.astro";
+import A11yNotes from "../A11yNotes.astro";
 import {
   mediaGradientAnatomyTree,
   mediaGradientCardTree,
-  mediaGradientEdgesTree,
-  mediaGradientStrengthsTree,
 } from "../../demos/media-gradient";
 import { annotationDemoCss } from "../../demos/annotation";
-import { getLocale, useTranslations } from "../../i18n";
+import { getLocale, tList, useTranslations } from "../../i18n";
 
 const t = useTranslations(getLocale(Astro.url));
+const explain = (option: string, values: readonly string[]) =>
+  Object.fromEntries(values.map((value) => [value, t(`mediaGradient.prop.${option}.${value}` as Parameters<typeof t>[0])]));
+const storybookTitle = "Components/Content/MediaGradient";
+/* A card at the width a card is used at: stretched to the stage, the photo would crowd the page. */
+const cardWidthCss = `.sk-box { inline-size: min(100%, 24rem); margin-inline: auto; }`;
 const styles = `@import "@skryensya/core/patterns/image-frame.css";
 @import "@skryensya/core/patterns/media-gradient.css";`;
 const tint = `.hero-media .sk-media-gradient {
@@ -31,52 +36,58 @@ const tint = `.hero-media .sk-media-gradient {
 <ComponentPageShell
   title="MediaGradient"
   description={t("mediaGradient.description")}
-  badge={t("mediaGradient.betaBadge")}
   contractId="media-gradient"
   testFiles={["packages/react/src/components/media-gradient.test.tsx"]}
 >
   <Fragment slot="usage">
     <p class="lede" set:html={t("mediaGradient.lede")} />
 
-    <h3>{t("mediaGradient.showcaseTitle")}</h3>
-    <p set:html={t("mediaGradient.showcaseBody")} />
+    <UsagePreview
+      tree={mediaGradientCardTree(t)}
+      target={["children", 0, "caption"]}
+      optionName="edge"
+      title={t("mediaGradient.prop.edge.title")}
+      description={t("mediaGradient.prop.edge.body")}
+      explain={explain("edge", ["bottom", "top", "start", "end"])}
+      css={cardWidthCss}
+    />
+    <UsagePreview
+      tree={mediaGradientCardTree(t)}
+      target={["children", 0, "caption", "children", 0]}
+      optionName="strength"
+      title={t("mediaGradient.prop.strength.title")}
+      description={t("mediaGradient.prop.strength.body")}
+      explain={explain("strength", ["sm", "md", "lg"])}
+      css={cardWidthCss}
+    />
 
-    <h3>{t("mediaGradient.cardTitle")}</h3>
-    <p set:html={t("mediaGradient.cardBody")} />
-    <UsagePreview tree={mediaGradientCardTree(t)} />
-
-    <h3>{t("mediaGradient.edgesTitle")}</h3>
-    <p set:html={t("mediaGradient.edgesBody")} />
-    <UsagePreview tree={mediaGradientEdgesTree()} />
-
-    <h3>{t("mediaGradient.strengthTitle")}</h3>
-    <p set:html={t("mediaGradient.strengthBody")} />
-    <UsagePreview tree={mediaGradientStrengthsTree()} />
-
-    <h3>{t("mediaGradient.tintTitle")}</h3>
+    <h3>{t("component.examplesTitle")}</h3>
+    <UsagePreview
+      tree={mediaGradientCardTree(t)}
+      title={t("mediaGradient.cardTitle")}
+      description={t("mediaGradient.cardBody")}
+      css={cardWidthCss}
+      storybookTitle={storybookTitle}
+      storybookStory="Card"
+    />
+    <h4>{t("mediaGradient.tintTitle")}</h4>
     <p set:html={t("mediaGradient.tintBody")} />
     <CodeBlock code={tint} label="CSS" lang="css" />
 
     <h3>{t("component.anatomy")}</h3>
     <p set:html={t("mediaGradient.anatomyBody")} />
-    <ComponentPreview
+    <UsagePreview
       tree={mediaGradientAnatomyTree(t)}
       css={annotationDemoCss}
       label={t("mediaGradient.anatomyPreviewLabel")}
-      screens={false}
-      hideSource
-      chrome={false}
+      bare
     />
   </Fragment>
 
   <Fragment slot="guidelines">
     <p class="lede" set:html={t("mediaGradient.guidelinesLede")} />
-    <h3>{t("mediaGradient.whenTitle")}</h3>
-    <ul>
-      <li set:html={t("mediaGradient.whenItem1")} />
-      <li set:html={t("mediaGradient.whenItem2")} />
-      <li set:html={t("mediaGradient.whenItem3")} />
-    </ul>
+    <WhenToUse use={tList(t, "mediaGradient.when")} avoid={tList(t, "mediaGradient.whenNot")} />
+    <ContentRules items={tList(t, "mediaGradient.content")} />
   </Fragment>
 
   <Fragment slot="install">
@@ -84,6 +95,6 @@ const tint = `.hero-media .sk-media-gradient {
   </Fragment>
 
   <Fragment slot="a11y">
-    <p set:html={t("mediaGradient.a11yBody")} />
+    <A11yNotes intro={t("mediaGradient.a11yIntro")} does={tList(t, "mediaGradient.a11yDoes")} yours={tList(t, "mediaGradient.a11yYours")} />
   </Fragment>
 </ComponentPageShell>

@@ -2,65 +2,118 @@ export const folderMessages = {
   es: {
     "demo.folder.radioTitle": "Radio",
     "demo.folder.radioBody":
-      "Una radio personal: estaciones curadas a mano y la misma canción sonando para todos a la misma hora, sin botón de siguiente ni servidor coordinando nada. Sólo el reloj de cada quien, que resulta ser el mismo reloj.",
+      "Una radio personal: estaciones curadas a mano y la misma canción sonando para todos a la misma hora, sin botón de siguiente ni servidor coordinando nada. Solo el reloj de cada quien, que resulta ser el mismo reloj.",
     "demo.folder.printerTitle": "Printer",
     "demo.folder.printerBody":
       "Un sitio donde cualquiera puede mandar un mensaje corto que sale impreso al instante en la impresora térmica de mi escritorio. Nació de una pregunta que no me dejaba en paz: ¿y si cualquier cosa en internet pudiera imprimir en ella?",
     "demo.folder.wadaTitle": "Wada.ink",
     "demo.folder.wadaBody":
-      "Un catálogo interactivo de las combinaciones de color de Sanzo Wada, pensado para navegar y descubrir, no sólo para mirar láminas. Ya existían otras versiones, pero ninguna dejaba comparar dos paletas de un vistazo.",
+      "Un catálogo interactivo de las combinaciones de color de Sanzo Wada, pensado para navegar y descubrir, no solo para mirar láminas. Ya existían otras versiones, pero ninguna dejaba comparar dos paletas de un vistazo.",
+    "demo.folder.albumMorningTitle": "Mañana",
+    "demo.folder.albumMorningBody": "Fotos de ventanas, mesas y primeras caminatas; una serie suave para abrir el día.",
+    "demo.folder.albumNightTitle": "Noche",
+    "demo.folder.albumNightBody": "Luces, letreros y reflejos: imágenes oscuras que se reconocen por el color.",
+    "demo.folder.albumFieldTitle": "Campo",
+    "demo.folder.albumFieldBody": "Texturas de plantas, tierra y señales encontradas en una salida corta.",
+    "demo.folder.filesBrandTitle": "Marca",
+    "demo.folder.filesBrandBody": "Logos, paleta, tipografías y reglas para publicar piezas consistentes.",
+    "demo.folder.filesResearchTitle": "Investigación",
+    "demo.folder.filesResearchBody": "Notas, entrevistas y capturas que explican de dónde salió una decisión.",
+    "demo.folder.filesArchiveTitle": "Archivo",
+    "demo.folder.filesArchiveBody": "Material anterior que se conserva por contexto, no para usarlo como fuente principal.",
+    "demo.folder.filesShortBody1": "Logos y reglas.",
+    "demo.folder.filesShortBody2": "Notas y entrevistas.",
+    "demo.folder.filesShortBody3": "Material anterior.",
+    "demo.folder.genericTitle1": "Carpeta 1",
+    "demo.folder.genericTitle2": "Carpeta 2",
+    "demo.folder.genericTitle3": "Carpeta 3",
+    "demo.folder.genericBody": "Contenido guardado para revisar después.",
+    "demo.folder.singleBody": "Un destino único no necesita pila ni solape para entenderse.",
+    "demo.folder.mixedProjectBody": "Un proyecto interactivo con vistas previas y una historia propia.",
 
-    "folderPage.description": "Folder: una superficie con pestaña, dibujada como una sola silueta que el binding mide.",
-    "folderPage.lede":
-      "Una carpeta no es una caja con otra caja encima: la pestaña sale del cuerpo en una curva, y esa curva es la razón de que este componente tenga geometría. La silueta es un solo <code>&lt;path&gt;</code>, y el único número que no se puede escribir de antemano es dónde termina la pestaña, porque termina donde termina su rótulo.",
-    "folderPage.anatomyBody":
-      "Raíz, path de la silueta, pestaña, contenido y las tres previews (un label, tres líderes). En <code>active</code> para que se vea la forma; el diagrama va plano (sin el lean 3D) para que los anillos caigan donde están las partes.",
+    "folderPage.description": "Presenta una colección de cosas del mismo tipo como carpetas que se asoman al tocarlas.",
+
+    "folderPage.a11yYours2": "Con varios destinos adentro, no uses <code>Folder.link</code>: pon los enlaces en el cuerpo.",
+
+    "folderPage.a11yYours1": "Pon un encabezado en la pestaña, con el nivel que le toca en la página.",
+
+    "folderPage.a11yDoes4": "Con <code>prefers-reduced-motion</code>, se revela sin movimiento.",
+
+    "folderPage.a11yDoes3": "En punteros gruesos se muestra revelada: invisible para siempre sería peor.",
+
+    "folderPage.a11yDoes2": "Se revela con <code>:focus-within</code>, no solo con hover.",
+
+    "folderPage.a11yDoes1": "El <code>&lt;svg&gt;</code> es <code>aria-hidden</code>, sin rol ni nombre.",
+
+    "folderPage.a11yIntro": "La silueta es decorativa; lo que nombra la carpeta es su pestaña.",
+
+    "folderPage.content2": "Usa como vistas previas lo que hay adentro, para que se reconozca sin abrirla.",
+
+    "folderPage.content1": "Pon en la pestaña el nombre de la cosa: «Radio comunitaria», no «Proyecto 1».",
+
+    "folderPage.dd.collection.dont": 'Una carpeta sola no tiene con qué apilarse: una <a href="/es/componentes/card">Card</a> enlazada es más directa.',
+
+    "folderPage.dd.collection.do": "Tres proyectos apilados: el solape dice que hay un orden y que hay más.",
+
+    "folderPage.dd.collection.title": "Colección: varias del mismo tipo",
+
+    "folderPage.dd.names.dont": "«Carpeta 2» obliga a leer el cuerpo para saber qué hay dentro.",
+
+    "folderPage.dd.names.do": "La pestaña nombra el contenido sin abrir la carpeta.",
+
+    "folderPage.dd.names.title": "Nombre: específico en la pestaña",
+
+    "folderPage.dd.kind.dont": "Proyectos, archivos y álbumes en una misma pila no comparten una lógica de navegación.",
+
+    "folderPage.dd.kind.do": "Tres álbumes juntos forman una colección; el solape ayuda a leerlos como serie.",
+
+    "folderPage.dd.kind.title": "Tipo: una pila, una clase de cosa",
+
+    "folderPage.whenNot4": 'Si cada carpeta debe verse entera: usa un <a href="/es/componentes/grid">Grid</a> de Folders, sin pila.',
+
+    "folderPage.whenNot3": 'Si el contenido se abre y se cierra: usa <a href="/es/componentes/accordion">Accordion</a>.',
+
+    "folderPage.whenNot2": 'Si toda la superficie es un control: usa <a href="/es/componentes/tile">Tile</a>.',
+
+    "folderPage.whenNot1": 'Para una superficie sin pestaña propia: usa <a href="/es/componentes/box">Box</a>.',
+
+    "folderPage.when2": "Cuando conviene que en reposo se lea como texto limpio y la forma aparezca al tocar.",
+
+    "folderPage.when1": "Para una colección de cosas del mismo tipo que se leen como objetos separados: proyectos, álbumes.",
+
+    "folderPage.contract4": "La silueta es un solo <code>&lt;path&gt;</code> que el binding calcula midiendo la caja y la pestaña.",
+
+    "folderPage.contract3": "<code>Folder.link</code> es un <code>&lt;a&gt;</code> real, lo que da teclado al revelado.",
+
+    "folderPage.contract2": "Todas las carpetas son del mismo color, como en un cajón: una pila de colores distintos se lee como tarjetas sueltas.",
+
+    "folderPage.contract1": "<code>label</code> es un slot: la pestaña suele llevar un encabezado.",
+
+    "folderPage.prop.active.true": "Usa <code>true</code> para marcar la carpeta actual, sobre todo en pantallas táctiles, que no tienen hover.",
+
+    "folderPage.prop.active.false": "Usa <code>false</code>, el valor por defecto: la carpeta aparece al pasar el puntero o con el foco.",
+
+    "folderPage.prop.active.body": "Deja la carpeta dibujada, como si el puntero estuviera encima.",
+
+    "folderPage.prop.active.title": "Active: revelada sin tocarla",
+    "folderPage.lede": "Folder presenta una colección de cosas del mismo tipo (proyectos, álbumes, grupos de archivos) como carpetas apiladas. En reposo se lee como texto limpio; al pasar el puntero o llevar el foco, la carpeta se dibuja con su pestaña y abre en abanico lo que tiene adentro.",
+    "folderPage.anatomyBody": "La raíz, la silueta, la pestaña, el contenido y las vistas previas.",
     "folderPage.anatomyLabel": "Anatomía de Folder",
     "folderPage.anatomyPreviewLabel": "Folder, parte por parte",
-    "folderPage.appearanceTitle": "Apariencia",
-    "folderPage.appearanceBody":
-      "<code>appearance</code> es el mismo eje de <a href=\"/es/componentes/button\">Button</a>, y todos los ejemplos de esta página lo siguen: cámbialo con el selector de apariencia de arriba. Se ve <strong>solo en el folder revelado</strong>: en reposo sigue siendo del color de su fondo. <code>tactile</code> sombrea la hoja y le pone un canto debajo, <code>brutalist</code> dibuja el borde y la sombra dura en el negro de Button alrededor de la silueta, y <code>frosted</code> vuelve la hoja el material translúcido de Button. El ejemplo de abajo es un solo folder siempre revelado sobre un degradado, para que <code>frosted</code> tenga algo que difuminar.",
-    "folderPage.appearanceLabel": "Un folder revelado sobre un fondo",
-    "folderPage.shapeTitle": "Cómo se dibuja",
-    "folderPage.shapeBody":
-      "La geometría es una función pura de core, <code>folderPath</code>, y las dos bindings la llaman con los mismos números: miden la caja de la carpeta y el ancho de la pestaña, y escriben el <code>d</code> resultante. Los cinco números de la forma (alto de pestaña, barrido de entrada, hombro, esquina superior y radio inferior) son hooks CSS, así que una marca reafina la silueta en su propia hoja sin tocar una binding.",
-    "folderPage.revealTitle": "Nunca se ve en reposo",
-    "folderPage.revealBody":
-      "Una carpeta nunca se ve en reposo, y no hay opción para que se vea: es lo que el componente ES. Una página de carpetas se lee como texto limpio hasta que el puntero, o el foco del teclado, llega a una, y solo entonces la forma se resuelve bajo su propio rótulo. Responde a <code>:hover</code> y a <code>:focus-within</code>, nunca sólo a hover; en punteros gruesos, que no tienen hover con qué responder, se pinta siempre. Si quieres la forma visible siempre, eso es un <code>Box</code> con un encabezado adentro, y el catálogo ya tiene uno.",
-    "folderPage.revealLabel": "FolderStack que aparece al interactuar",
-    "folderPage.previewsTitle": "Previews",
-    "folderPage.previewsBody":
-      "El slot opcional <code>previews</code> abre en abanico lo que la carpeta contenga sobre los mismos estados que revelan la silueta. Cada hijo directo es una preview y lo coloca la hoja, así que quien compone elige qué son (unos <code>ImageFrame</code>, casi siempre) en vez de pasar una lista que este contrato tendría que aprender a leer. Son decorativas por construcción: la capa va <code>aria-hidden</code> y no toma el puntero, así una preview que tapa la carpeta de adelante no le roba el clic. Una imagen que signifique algo por sí sola va en el cuerpo, donde se la puede alcanzar.",
-    "folderPage.plainLabel": "FolderStack sin previews",
-    "folderPage.touchTitle": "En táctil no hay hover",
-    "folderPage.touchBody":
-      "Una carpeta se revela con <code>:hover</code> y <code>:focus-within</code>, y un teléfono no tiene ninguno de los dos: hover no existe, y tocar un enlace navega en vez de dejarle el foco. Sin nada más, el abanico no aparecía nunca en un teléfono: las imágenes se renderizaban y se quedaban en <code>opacity: 0</code> para siempre. La opción <code>active</code> es la tercera entrada: dice que esta carpeta está siendo alcanzada por algo que no es el puntero ni el teclado, y la carpeta responde igual que al hover, abanico incluido. Quién la pone es de quien compone: en una página que scrollea suele ser la carpeta más cercana al centro de la pantalla, pero podría ser la que un carrusel dejó al frente o la que apunta una ruta, y esas preguntas las sabe la página, no el componente. Pintar el abanico siempre en táctil sería más simple y es peor: las previews suben hacia la carpeta de arriba, así que en una pila taparían su texto de forma permanente.",
-    "folderPage.touchLabel": "La segunda carpeta con active puesto",
-    "folderPage.groundTitle": "Se esconde contra su fondo",
-    "folderPage.groundBody":
-      "Una carpeta en reposo se pinta del color de lo que tiene detrás, no transparente: transparente no pinta nada, y una carpeta revelada se vería a través de las que van adelante. El binding copia lo que el primer ancestro que pinta algo tiene puesto (color y capas, el degradado de elevación incluido), así que la misma composición desaparece contra un panel hundido y contra uno elevado sin que nadie configure nada. Leer sólo el color de fondo no alcanzaba: las superficies de este sistema son un color con un wash encima, y ese wash delataba la forma. <code>--sk-folder-ground</code> queda como salida para lo que la heurística no cubre: una carpeta sobre una imagen o un degradado.",
-    "folderPage.groundSunkenLabel": "Sobre una superficie hundida",
-    "folderPage.groundRaisedLabel": "Sobre una superficie elevada",
-    "folderPage.stackTitle": "El solape",
-    "folderPage.stackBody":
-      "<code>FolderStack</code> solapa las carpetas como están en un cajón: cada una muestra su pestaña y una franja de cuerpo. El solape es una sola regla entre hermanos, sin elemento envoltorio ni índice por ítem, y sin <code>z-index</code> en ninguna parte: la carpeta que tocas sigue estando detrás de las que van adelante, igual que en un cajón de verdad. <code>overlap</code> es cuánto se esconde cada una detrás de la anterior.",
-    "folderPage.stackLabel": "FolderStack",
-    "folderPage.contractItem1":
-      "<code>label</code> es un slot, no un string: la pestaña de una carpeta casi siempre lleva un encabezado, y un encabezado es markup.",
-    "folderPage.contractItem2":
-      "Todas las carpetas son del mismo color, como en un cajón real: una pila con cada carpeta de un tono distinto se lee como cinco tarjetas sueltas que comparten forma, y la forma es todo el punto. Tampoco tiene borde: lo que la separa del fondo es la sombra.",
-    "folderPage.contractItem3":
-      "<code>Folder.link</code> es un <code>&lt;a&gt;</code> de verdad, no una caja con handler: es lo mismo que hace <code>TileLink</code>, y es lo que le da teclado a <code>reveal=\"interaction\"</code>.",
-    "folderPage.contractItem4":
-      "La sombra es un <code>drop-shadow</code>, no un <code>box-shadow</code>: una sombra de caja sigue el rectángulo, y todo el punto de este componente es que su borde no es un rectángulo.",
-    "folderPage.a11yBody":
-      "La silueta es decorativa por construcción: el <code>&lt;svg&gt;</code> va <code>aria-hidden</code>, sin rol y sin nombre. Lo que nombra a una carpeta es el contenido de su pestaña.",
-    "folderPage.a11yItem1":
-      "El revelado responde a <code>:focus-within</code> además de <code>:hover</code>: una forma que sólo aparece bajo el mouse es una forma que nadie que navegue con teclado ve nunca.",
-    "folderPage.a11yItem2":
-      "En punteros gruesos <code>interaction</code> se pinta como <code>always</code>: invisible para siempre es peor respuesta que revelado de entrada.",
-    "folderPage.a11yItem3":
-      "Con <code>prefers-reduced-motion</code> sobrevive el revelado, que es información, y se van el levante y los fundidos, que no lo son.",
+    "folderPage.appearanceTitle": "Appearance: el mismo eje que Button",
+    "folderPage.appearanceBody": "Sigue el menú de apariencia de esta página. Va sobre un degradado para que <code>frosted</code> tenga algo que difuminar.",
+    "folderPage.albumsTitle": "Álbumes: vistas previas como memoria visual",
+    "folderPage.albumsBody": "Cuando la colección es visual, el abanico ayuda a reconocer la carpeta antes de abrirla.",
+    "folderPage.filesTitle": "Archivos: una pila más compacta",
+    "folderPage.filesBody": "Con descripciones cortas, el solape puede ser menor y la pila sigue leyendo como una colección.",
+    "folderPage.previewsTitle": "Sin vistas previas: solo la forma",
+    "folderPage.previewsBody": "El slot <code>previews</code> es opcional: sin él, la carpeta se revela igual.",
+    "folderPage.touchTitle": "En táctil: la actual, revelada",
+    "folderPage.touchBody": "Un teléfono no tiene hover: <code>active</code> deja revelada la carpeta en la que está la persona.",
+    "folderPage.groundTitle": "Sobre cualquier fondo: se esconde contra él",
+    "folderPage.groundBody": "En reposo, la carpeta toma el color de lo que tiene detrás, sobre una superficie hundida o elevada.",
+    "folderPage.stackTitle": "Una pila: el uso principal",
+    "folderPage.stackBody": "La primera carpeta queda abierta para enseñar la forma, el solape y las vistas previas en una sola imagen.",
     "folderPage.testCore1": "Gira la esquina de entrada con el mismo radio en los dos ejes, como todas las demás.",
     "folderPage.testCore2": "Lleva el filo de la pestaña hasta donde termina la pestaña y ahí dobla por el hombro.",
     "folderPage.testCore3": "Mantiene las proporciones de la curva en S cuando la pestaña es más alta.",
@@ -74,8 +127,6 @@ export const folderMessages = {
     "folderPage.testReact1": "Renderiza la pestaña, el contenido y una silueta decorativa detrás.",
     "folderPage.testReact2": "Dibuja la silueta a partir de la caja de la carpeta y del ancho de su pestaña.",
     "folderPage.testReact3": "Marca la raíz como lista solo cuando escribió un path real.",
-    "folderPage.testReactScheme":
-      "Vuelve a leer el fondo cuando se da vuelta el esquema de color, que no mueve ninguna caja.",
     "folderPage.testReact4": "No escribe atributo de reveal: una carpeta nunca se ve en reposo.",
     "folderPage.testReact5": "Escribe el <code>reveal</code> por defecto del contrato cuando no se pide.",
     "folderPage.testReact6": "Espeja la silueta dentro de un subárbol RTL.",
@@ -86,12 +137,9 @@ export const folderMessages = {
     "folderPage.testVanilla2": "Marca la raíz como lista solo cuando escribió un path real.",
     "folderPage.testVanilla3": "No dibuja nada, y no queda lista, si la caja no se puede medir.",
     "folderPage.testVanilla4": "Vuelve a medir cuando cambia cualquiera de las dos cajas, y observa las dos.",
-    "folderPage.testVanillaScheme":
-      "Vuelve a leer el fondo cuando se da vuelta el esquema de color, que no mueve ninguna caja.",
-    "folderPage.testVanillaSchemeCleanup": "Deja de escuchar el esquema cuando la carpeta se destruye.",
     "folderPage.testVanilla5": "Rechaza una raíz a la que le faltan los nodos donde tiene que dibujar.",
     "folderPage.testVanilla6": "Monta una vez por raíz y deja en paz una carpeta ya enhanceada.",
-    "folderPage.testCore11": "Mide hasta el borde lejano de la pestaña, no sólo su ancho.",
+    "folderPage.testCore11": "Mide hasta el borde lejano de la pestaña, no solo su ancho.",
     "folderPage.testCore12": "En RTL mide desde el borde inline-start, que es el derecho.",
     "folderPage.testCore13": "Toma el primer ancestro que efectivamente pinta algo.",
     "folderPage.testCore14": "Omite todas las formas de escribir un fondo totalmente transparente.",
@@ -108,12 +156,7 @@ export const folderMessages = {
     "folderPage.testReact10": "Publica la silueta como clip para que el state layer la siga.",
     "folderPage.testReact11": "Abre las previews en una capa <code>aria-hidden</code>, y no renderiza ninguna sin el slot.",
     "folderPage.testVanilla7": "Publica la silueta como clip para que el state layer la siga.",
-    "folderPage.showcaseTitle": "Showcases",
-    "folderPage.showcaseBody": "Carpetas que muestran su contenido al pasar, en táctil, sobre distintos fondos y en cada apariencia.",
-    "folderPage.guidelinesLede": "Folder presenta un grupo de cosas como una carpeta que se asoma al pasar el puntero.",
-    "folderPage.guide.use1": "Úsalo para colecciones: proyectos, álbumes, grupos de archivos.",
-    "folderPage.guide.use2": "Pon como vista previa lo que hay adentro, para que se reconozca sin abrirla.",
-    "folderPage.guide.avoid1": "Para una sola cosa que se abre, una <a href=\"/es/componentes/card\">Card</a> enlazada es más directa.",
+    "folderPage.guidelinesLede": "Una carpeta dice de qué trata algo antes de que se lea.",
   },
   en: {
     "demo.folder.radioTitle": "Radio",
@@ -125,58 +168,111 @@ export const folderMessages = {
     "demo.folder.wadaTitle": "Wada.ink",
     "demo.folder.wadaBody":
       "An interactive catalogue of Sanzo Wada's colour combinations, built to browse and discover rather than only to look at. Other versions existed, but none let you hold two palettes side by side.",
+    "demo.folder.albumMorningTitle": "Morning",
+    "demo.folder.albumMorningBody": "Photos of windows, tables and first walks; a soft series to open the day.",
+    "demo.folder.albumNightTitle": "Night",
+    "demo.folder.albumNightBody": "Lights, signs and reflections: dark images recognized by colour.",
+    "demo.folder.albumFieldTitle": "Field",
+    "demo.folder.albumFieldBody": "Textures of plants, soil and found signs from a short trip.",
+    "demo.folder.filesBrandTitle": "Brand",
+    "demo.folder.filesBrandBody": "Logos, palette, type and rules for publishing consistent pieces.",
+    "demo.folder.filesResearchTitle": "Research",
+    "demo.folder.filesResearchBody": "Notes, interviews and screenshots that explain where a decision came from.",
+    "demo.folder.filesArchiveTitle": "Archive",
+    "demo.folder.filesArchiveBody": "Older material kept for context, not as the primary source.",
+    "demo.folder.filesShortBody1": "Logos and rules.",
+    "demo.folder.filesShortBody2": "Notes and interviews.",
+    "demo.folder.filesShortBody3": "Older material.",
+    "demo.folder.genericTitle1": "Folder 1",
+    "demo.folder.genericTitle2": "Folder 2",
+    "demo.folder.genericTitle3": "Folder 3",
+    "demo.folder.genericBody": "Saved content to review later.",
+    "demo.folder.singleBody": "A single destination does not need a stack or overlap to be understood.",
+    "demo.folder.mixedProjectBody": "An interactive project with previews and its own story.",
 
-    "folderPage.description": "Folder: a surface with a tab, drawn as one silhouette the binding measures.",
-    "folderPage.lede":
-      "A folder is not a box with another box stuck on top: the tab flows out of the body through a curve, and that curve is the whole reason this component needs geometry. The silhouette is a single <code>&lt;path&gt;</code>, and the only number that cannot be written ahead of time is where the tab ends, because it ends wherever its label ends.",
-    "folderPage.anatomyBody":
-      "Root, silhouette path, tab, content, and the three previews (one label, three leaders). Held <code>active</code> so the shape is visible; the diagram stays flat (no 3D lean) so the rings land on the parts.",
+    "folderPage.description": "Presents a collection of same-kind things as folders that peek out when reached.",
+
+    "folderPage.a11yYours2": "With several destinations inside, do not use <code>Folder.link</code>: put the links in the body.",
+
+    "folderPage.a11yYours1": "Put a heading on the tab, at the level it has on the page.",
+
+    "folderPage.a11yDoes4": "With <code>prefers-reduced-motion</code>, it reveals without motion.",
+
+    "folderPage.a11yDoes3": "On coarse pointers it shows revealed: invisible forever would be worse.",
+
+    "folderPage.a11yDoes2": "It reveals on <code>:focus-within</code>, not only on hover.",
+
+    "folderPage.a11yDoes1": "The <code>&lt;svg&gt;</code> is <code>aria-hidden</code>, with no role or name.",
+
+    "folderPage.a11yIntro": "The silhouette is decorative; the folder is named by its tab.",
+
+    "folderPage.content2": "Use what is inside as previews, so it is recognized without opening it.",
+
+    "folderPage.content1": "Put the thing's name on the tab: “Community radio”, not “Project 1”.",
+
+    "folderPage.dd.collection.dont": 'A single folder has nothing to stack with: a linked <a href="/components/card">Card</a> is more direct.',
+
+    "folderPage.dd.collection.do": "Three stacked projects: the overlap says there is an order and more to see.",
+
+    "folderPage.dd.collection.title": "Collection: several of one kind",
+
+    "folderPage.dd.names.dont": "“Folder 2” forces people to read the body to know what is inside.",
+
+    "folderPage.dd.names.do": "The tab names the content without opening the folder.",
+
+    "folderPage.dd.names.title": "Name: specific on the tab",
+
+    "folderPage.dd.kind.dont": "Projects, files and albums in one stack do not share a navigation logic.",
+
+    "folderPage.dd.kind.do": "Three albums together form a collection; the overlap helps them read as a series.",
+
+    "folderPage.dd.kind.title": "Kind: one stack, one class of thing",
+
+    "folderPage.whenNot4": 'If each folder must be seen whole: use a <a href="/components/grid">Grid</a> of Folders, with no stack.',
+
+    "folderPage.whenNot3": 'If the content opens and closes: use <a href="/components/accordion">Accordion</a>.',
+
+    "folderPage.whenNot2": 'If the whole surface is a control: use <a href="/components/tile">Tile</a>.',
+
+    "folderPage.whenNot1": 'For a surface with no tab of its own: use <a href="/components/box">Box</a>.',
+
+    "folderPage.when2": "When it should read as clean text at rest and the shape should appear when reached.",
+
+    "folderPage.when1": "For a collection of same-kind things read as separate objects: projects, albums.",
+
+    "folderPage.contract4": "The silhouette is a single <code>&lt;path&gt;</code> the binding computes by measuring the box and the tab.",
+
+    "folderPage.contract3": "<code>Folder.link</code> is a real <code>&lt;a&gt;</code>, which gives the reveal a keyboard.",
+
+    "folderPage.contract2": "All folders are the same color, as in a drawer: a stack of different colors reads as loose cards.",
+
+    "folderPage.contract1": "<code>label</code> is a slot: the tab usually carries a heading.",
+
+    "folderPage.prop.active.true": "Use <code>true</code> to mark the current folder, especially on touch screens, which have no hover.",
+
+    "folderPage.prop.active.false": "Use <code>false</code>, the default: the folder appears on hover or focus.",
+
+    "folderPage.prop.active.body": "Keeps the folder drawn, as if the pointer were over it.",
+
+    "folderPage.prop.active.title": "Active: revealed without reaching it",
+    "folderPage.lede": "Folder presents a collection of same-kind things (projects, albums, groups of files) as stacked folders. At rest it reads as clean text; on hover or focus, the folder draws itself with its tab and fans out what is inside.",
+    "folderPage.anatomyBody": "The root, the silhouette, the tab, the content and the previews.",
     "folderPage.anatomyLabel": "Folder anatomy",
     "folderPage.anatomyPreviewLabel": "Folder, part by part",
-    "folderPage.appearanceTitle": "Appearance",
-    "folderPage.appearanceBody":
-      "<code>appearance</code> is <a href=\"/components/button\">Button</a>'s axis, and every example on this page follows it: change it with the appearance switch at the top. It shows <strong>only on the revealed folder</strong>: at rest a folder is still the colour of its ground. <code>tactile</code> shades the sheet and puts a ledge under it, <code>brutalist</code> draws Button's black edge and hard offset around the silhouette, and <code>frosted</code> turns the sheet into Button's see-through material. The example below is a single folder, always revealed, on a gradient so <code>frosted</code> has something to blur.",
-    "folderPage.appearanceLabel": "A revealed folder over a backdrop",
-    "folderPage.shapeTitle": "How it is drawn",
-    "folderPage.shapeBody":
-      "The geometry is a pure function in core, <code>folderPath</code>, and both bindings call it with the same numbers: they measure the folder's box and the tab's width, and write the resulting <code>d</code>. The shape's five numbers (tab height, leading sweep, shoulder, top corner and bottom radius) are CSS hooks, so a brand retunes the silhouette in its own stylesheet without touching a binding.",
-    "folderPage.revealTitle": "Never visible at rest",
-    "folderPage.revealBody":
-      "A folder is never visible at rest, and there is no option to make it so: that is what the component IS. A page of folders reads as plain text until the pointer, or the keyboard's focus, reaches one, and only then does the shape resolve under its own label. It answers <code>:hover</code> and <code>:focus-within</code>, never hover alone; on coarse pointers, which have no hover to answer with, it is simply painted. If you want the shape always visible, that is a <code>Box</code> with a heading in it, and the catalogue already has one.",
-    "folderPage.revealLabel": "A FolderStack that appears on interaction",
-    "folderPage.previewsTitle": "Previews",
-    "folderPage.previewsBody":
-      "The optional <code>previews</code> slot fans out whatever the folder holds, on the same states that reveal the silhouette. Each direct child is one preview and the stylesheet places it, so the author picks what they are (a few <code>ImageFrame</code>s, usually) rather than handing over a list this contract would have to learn to read. They are decorative by construction: the layer is <code>aria-hidden</code> and takes no pointer, so a preview covering the folder in front never steals its click. A picture that means something on its own belongs in the body, where a reader can reach it.",
-    "folderPage.plainLabel": "FolderStack with no previews",
-    "folderPage.touchTitle": "Touch has no hover",
-    "folderPage.touchBody":
-      "A folder reveals on <code>:hover</code> and <code>:focus-within</code>, and a phone has neither: hover does not exist, and a tap on a link navigates rather than settling focus on it. With nothing else, the fan never appeared on a phone at all: the pictures rendered and sat at <code>opacity: 0</code> forever. The <code>active</code> option is the third way in: it says this folder is being reached for by something that is neither pointer nor keyboard, and the folder answers exactly as it does to hover, fan included. Who sets it is the composition's business: on a scrolling page it is usually whichever folder is nearest the middle of the screen, but it could be the one a carousel stopped at or the one a route points at, and those questions belong to the page rather than to the component. Painting the fan permanently on touch would be simpler and is worse: previews rise into the folder above them, so in a stack they would cover its copy for good.",
-    "folderPage.touchLabel": "The second folder with active held on",
-    "folderPage.groundTitle": "It hides against its ground",
-    "folderPage.groundBody":
-      "A folder at rest is painted the colour of whatever is behind it, not transparent: transparent paints nothing, and a revealed folder would show straight through the ones in front. The binding copies whatever the first painting ancestor has on it (colour and layers, the elevation wash included), so the same composition disappears into a sunken panel and into a raised one with nothing configured. Reading the background colour alone was not enough: this system's surfaces are a colour with a wash over it, and that wash gave the shape away. <code>--sk-folder-ground</code> is the way out for what the heuristic cannot see: a folder over an image or a gradient.",
-    "folderPage.groundSunkenLabel": "On a sunken surface",
-    "folderPage.groundRaisedLabel": "On a raised surface",
-    "folderPage.stackTitle": "The overlap",
-    "folderPage.stackBody":
-      "<code>FolderStack</code> overlaps folders the way they sit in a drawer: each shows its tab and a strip of body. The overlap is one rule between siblings, with no wrapper element, no per-item index, and no <code>z-index</code> anywhere: the folder you reach for still sits behind the ones in front of it, exactly as it would in a real drawer. <code>overlap</code> is how deeply each one hides behind the one before it.",
-    "folderPage.stackLabel": "FolderStack",
-    "folderPage.contractItem1":
-      "<code>label</code> is a slot, not a string: a folder's tab almost always holds a heading, and a heading is markup.",
-    "folderPage.contractItem2":
-      "Every folder is the same colour, the way a real drawer is: a pile tinted one shade each reads as five unrelated cards that share a shape, and the shape is the whole point. Nor is there a border: what separates a folder from its ground is the shadow.",
-    "folderPage.contractItem3":
-      "<code>Folder.link</code> is a real <code>&lt;a&gt;</code>, not a box with a handler - the same move <code>TileLink</code> makes, and what gives <code>reveal=\"interaction\"</code> a keyboard.",
-    "folderPage.contractItem4":
-      "The shadow is a <code>drop-shadow</code>, not a <code>box-shadow</code>: a box shadow follows the rectangle, and the whole point of this component is that its edge is not one.",
-    "folderPage.a11yBody":
-      "The silhouette is decorative by construction: the <code>&lt;svg&gt;</code> is <code>aria-hidden</code>, with no role and no name. What names a folder is whatever its tab holds.",
-    "folderPage.a11yItem1":
-      "The reveal answers <code>:focus-within</code> as well as <code>:hover</code>: a shape that only ever appears under a mouse is a shape no keyboard reader ever sees.",
-    "folderPage.a11yItem2":
-      "On coarse pointers <code>interaction</code> paints as <code>always</code>: invisible forever is a worse answer than revealed early.",
-    "folderPage.a11yItem3":
-      "Under <code>prefers-reduced-motion</code> the reveal survives, because it is information, and the lift and the fades go, because they are not.",
+    "folderPage.appearanceTitle": "Appearance: the same axis as Button",
+    "folderPage.appearanceBody": "It follows this page's appearance menu. It sits on a gradient so <code>frosted</code> has something to blur.",
+    "folderPage.albumsTitle": "Albums: previews as visual memory",
+    "folderPage.albumsBody": "When the collection is visual, the fan helps people recognize a folder before opening it.",
+    "folderPage.filesTitle": "Files: a tighter stack",
+    "folderPage.filesBody": "With short descriptions, the overlap can be smaller and the stack still reads as a collection.",
+    "folderPage.previewsTitle": "No previews: just the shape",
+    "folderPage.previewsBody": "The <code>previews</code> slot is optional: without it, the folder still reveals.",
+    "folderPage.touchTitle": "On touch: the current one, revealed",
+    "folderPage.touchBody": "A phone has no hover: <code>active</code> keeps the folder people are on revealed.",
+    "folderPage.groundTitle": "On any ground: it hides against it",
+    "folderPage.groundBody": "At rest, the folder takes the color of what is behind it, on a sunken or raised surface.",
+    "folderPage.stackTitle": "A stack: the main use",
+    "folderPage.stackBody": "The first folder is held open to show the shape, the overlap and the previews in one image.",
     "folderPage.testCore1": "Turns the leading corner on the same radius both ways, like every other corner.",
     "folderPage.testCore2": "Runs the tab's top edge to where the tab ends, then folds down over the shoulder.",
     "folderPage.testCore3": "Keeps the S-curve's proportions when the tab is taller.",
@@ -190,8 +286,6 @@ export const folderMessages = {
     "folderPage.testReact1": "Renders the tab, the content and a decorative silhouette behind them.",
     "folderPage.testReact2": "Draws the silhouette from the folder's own box and its tab's width.",
     "folderPage.testReact3": "Marks the root ready only once a real path has been written.",
-    "folderPage.testReactScheme":
-      "Re-samples the ground when the colour scheme flips, which moves no box at all.",
     "folderPage.testReact4": "Writes no reveal attribute, because a folder is never visible at rest.",
     "folderPage.testReact5": "Writes the contract's default reveal when none is given.",
     "folderPage.testReact6": "Mirrors the silhouette inside an RTL subtree.",
@@ -202,9 +296,6 @@ export const folderMessages = {
     "folderPage.testVanilla2": "Marks the root ready only once a real path has been written.",
     "folderPage.testVanilla3": "Draws nothing, and stays unready, when the box cannot be measured.",
     "folderPage.testVanilla4": "Re-measures when either box changes, and observes both.",
-    "folderPage.testVanillaScheme":
-      "Re-samples the ground when the colour scheme flips, which moves no box at all.",
-    "folderPage.testVanillaSchemeCleanup": "Stops watching the scheme once the folder is destroyed.",
     "folderPage.testVanilla5": "Refuses a root missing the nodes it has to draw into.",
     "folderPage.testVanilla6": "Mounts once per root and leaves an already-enhanced folder alone.",
     "folderPage.testCore11": "Measures to the tab's far edge, not merely its width.",
@@ -224,11 +315,6 @@ export const folderMessages = {
     "folderPage.testReact10": "Publishes the silhouette as a clip for the state layer to follow.",
     "folderPage.testReact11": "Fans previews into an <code>aria-hidden</code> layer, and renders none without the slot.",
     "folderPage.testVanilla7": "Publishes the silhouette as a clip for the state layer to follow.",
-    "folderPage.showcaseTitle": "Showcases",
-    "folderPage.showcaseBody": "Folders that show their contents on hover, on touch, over different grounds, and in each appearance.",
-    "folderPage.guidelinesLede": "Folder presents a group of things as a folder that peeks open under the pointer.",
-    "folderPage.guide.use1": "Use it for collections: projects, albums, groups of files.",
-    "folderPage.guide.use2": "Preview what is inside, so it is recognised without opening it.",
-    "folderPage.guide.avoid1": "For a single thing that opens, a linked <a href=\"/components/card\">Card</a> is more direct.",
+    "folderPage.guidelinesLede": "A folder says what something is about before it is read.",
   },
 } as const;

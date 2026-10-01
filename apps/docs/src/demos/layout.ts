@@ -10,11 +10,23 @@ export const boxTree = (t: Translate): UsageTree => ({
   contract: "box",
   signature: "Box",
   options: { surface: "raised", border: "subtle", padding: "lg" },
-  children: [
-    { contract: "typography", signature: "Heading", children: t("demo.box.title") },
-    { contract: "typography", signature: "Text", children: t("demo.box.body") },
-    { contract: "button", signature: "Button.action", children: t("demo.box.action") },
-  ],
+  children: {
+    contract: "layout",
+    signature: "Stack",
+    options: { gap: "md", align: "start" },
+    children: [
+      {
+        contract: "layout",
+        signature: "Stack",
+        options: { gap: "xs", align: "start" },
+        children: [
+          { contract: "typography", signature: "Heading", options: { flush: true }, children: t("demo.box.title") },
+          { contract: "typography", signature: "Text", children: t("demo.box.body") },
+        ],
+      },
+      { contract: "button", signature: "Button.action", children: t("demo.box.action") },
+    ],
+  },
 });
 
 /*
@@ -92,6 +104,74 @@ export const boxControlsTree = (t: Translate): UsageTree => ({
       ],
     },
   ],
+});
+
+const boxSection = (title: string, body: string): UsageTree => ({
+  contract: "layout",
+  signature: "Stack",
+  options: { gap: "xs", align: "start" },
+  children: [
+    { contract: "typography", signature: "Heading", options: { headingSize: "sm", flush: true }, children: title },
+    { contract: "typography", signature: "Text", options: { tone: "secondary", size: "sm" }, children: body },
+  ],
+});
+
+export const boxSeparateSectionsTree = (t: Translate): UsageTree => ({
+  contract: "layout",
+  signature: "Stack",
+  options: { gap: "md" },
+  children: [
+    {
+      contract: "box",
+      signature: "Box",
+      options: { surface: "surface", border: "subtle", padding: "md" },
+      children: boxSection(t("demo.box.billing.title"), t("demo.box.billing.body")),
+    },
+    {
+      contract: "box",
+      signature: "Box",
+      options: { surface: "surface", border: "subtle", padding: "md" },
+      children: boxSection(t("demo.box.security.title"), t("demo.box.security.body")),
+    },
+  ],
+});
+
+export const boxMixedSectionsTree = (t: Translate): UsageTree => ({
+  contract: "box",
+  signature: "Box",
+  options: { surface: "surface", border: "subtle", padding: "md" },
+  children: {
+    contract: "layout",
+    signature: "Stack",
+    options: { gap: "lg" },
+    children: [
+      boxSection(t("demo.box.billing.title"), t("demo.box.billing.body")),
+      boxSection(t("demo.box.security.title"), t("demo.box.security.body")),
+    ],
+  },
+});
+
+export const boxMeasuredTree = (t: Translate): UsageTree => ({
+  contract: "box",
+  signature: "Box",
+  options: { surface: "surface", border: "subtle", padding: "lg" },
+  children: {
+    contract: "layout",
+    signature: "Stack",
+    options: { gap: "xs", align: "start" },
+    attrs: { style: "max-inline-size: 32rem;" },
+    children: [
+      { contract: "typography", signature: "Heading", options: { headingSize: "sm", flush: true }, children: t("demo.box.measure.title") },
+      { contract: "typography", signature: "Text", options: { tone: "secondary", size: "sm" }, children: t("demo.box.measure.body") },
+    ],
+  },
+});
+
+export const boxUnmeasuredTree = (t: Translate): UsageTree => ({
+  contract: "box",
+  signature: "Box",
+  options: { surface: "surface", border: "subtle", padding: "lg" },
+  children: boxSection(t("demo.box.measure.title"), t("demo.box.measure.body")),
 });
 
 /**
@@ -1297,6 +1377,81 @@ export const footerCreditTree = (t: Translate): UsageTree => ({
     },
   ],
 });
+
+const footerPageBody = (t: Translate): UsageTree => ({
+  contract: "box",
+  signature: "Box",
+  options: { surface: "surface", padding: "md" },
+  attrs: { style: "--sk-box-radius: 0;" },
+  children: {
+    contract: "layout",
+    signature: "Stack",
+    options: { gap: "xs" },
+    children: [
+      { contract: "typography", signature: "Heading", options: { headingSize: "sm", flush: true }, children: t("demo.footer.pageTitle") },
+      { contract: "typography", signature: "Text", options: { size: "sm", tone: "secondary" }, children: t("demo.footer.pageBody") },
+    ],
+  },
+});
+
+const footerComparisonFrame = (children: UsageTree[]): UsageTree => ({
+  contract: "layout",
+  signature: "Stack",
+  options: { gap: "none" },
+  attrs: { style: "inline-size: 34rem; max-inline-size: 100%;" },
+  children,
+});
+
+export const footerSurfaceDoTree = (t: Translate): UsageTree =>
+  footerComparisonFrame([footerPageBody(t), footerCreditTree(t)]);
+
+export const footerSurfaceDontTree = (t: Translate): UsageTree =>
+  footerComparisonFrame([
+    footerPageBody(t),
+    {
+      ...footerCreditTree(t),
+      options: { ...footerCreditTree(t).options, surface: "none", divider: false },
+    },
+  ]);
+
+export const footerLeanDoTree = (t: Translate, href: string = PLACEHOLDER_HREF): UsageTree =>
+  footerComparisonFrame([footerPageBody(t), footerColumnsTree(t, href)]);
+
+export const footerCrowdedDontTree = (t: Translate, href: string = PLACEHOLDER_HREF): UsageTree => {
+  const columnsWrapper = (footerColumnsTree(t, href).children as readonly UsageTree[])[0];
+  const columnsContent = (columnsWrapper.children as readonly UsageTree[])[0];
+
+  return footerComparisonFrame([
+    footerPageBody(t),
+    {
+      contract: "footer",
+      signature: "Footer",
+      children: [
+        {
+          contract: "wrapper",
+          signature: "Wrapper",
+          children: {
+            contract: "layout",
+            signature: "Stack",
+            options: { gap: "lg" },
+            children: [
+              {
+                contract: "layout",
+                signature: "Stack",
+                options: { gap: "xs" },
+                children: [
+                  { contract: "typography", signature: "Heading", options: { headingSize: "h3", flush: true }, children: t("demo.footer.newsletterTitle") },
+                  { contract: "typography", signature: "Text", options: { tone: "secondary" }, children: t("demo.footer.newsletterBody") },
+                ],
+              },
+              columnsContent,
+            ],
+          },
+        },
+      ],
+    },
+  ]);
+};
 
 /*
  * THE SCALE SPECIMENS: the smallest picture of each spacing option, for the "scale" showcases that

@@ -69,6 +69,11 @@
     color: inherit;
   }
 
+  /* Heading and Text paint their own ink, which `inherit` above cannot reach: over a photo the only
+     readable ink is the caption's, so their color hooks point at it. */
+  .sk-media-caption > .sk-heading { --sk-heading-fg: var(--sk-media-caption-fg); }
+  .sk-media-caption > .sk-text { --sk-text-fg: var(--sk-media-caption-fg); }
+
   /*
    * Wash fills the caption box only. Direction fades toward the photo (away from the edge).
    * `strength` is opacity / tint, never how much of the image is covered.

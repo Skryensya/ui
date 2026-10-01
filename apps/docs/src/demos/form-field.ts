@@ -76,6 +76,23 @@ export const formFieldAroundSelectTree = (t: Translate): UsageTree => ({
   },
 });
 
+/* Do/Don't: the field has a real label; the placeholder is only an example value. */
+export const formFieldDoLabelTree = (t: Translate): UsageTree => ({
+  contract: "form-field",
+  signature: "FormField",
+  slots: { label: t("demo.formField.dd.email") },
+  attrs: { style: "inline-size: 16rem" },
+  children: { contract: "input", signature: "Input", options: { type: "email", name: "email-label", placeholder: "name@example.com" } },
+});
+
+export const formFieldDontLabelTree = (t: Translate): UsageTree => ({
+  contract: "form-field",
+  signature: "FormField",
+  slots: { label: t("demo.formField.dd.information") },
+  attrs: { style: "inline-size: 16rem" },
+  children: { contract: "input", signature: "Input", options: { type: "email", name: "email-placeholder", placeholder: t("demo.formField.dd.email") } },
+});
+
 /* Do/Don't: the format said up front in the hint, or only after it fails. */
 export const formFieldDoHintTree = (t: Translate): UsageTree => ({
   contract: "form-field",
@@ -91,4 +108,124 @@ export const formFieldDontHintTree = (t: Translate): UsageTree => ({
   slots: { label: t("demo.formField.dd.date"), error: t("demo.formField.dd.dateError") },
   attrs: { style: "inline-size: 16rem" },
   children: { contract: "input", signature: "Input", options: { name: "date-error" } },
+});
+
+/* Do/Don't: an error gives a fix, not only a verdict. */
+export const formFieldDoErrorTree = (t: Translate): UsageTree => ({
+  contract: "form-field",
+  signature: "FormField",
+  slots: { label: t("demo.formField.dd.email"), error: t("demo.formField.dd.emailError") },
+  attrs: { style: "inline-size: 16rem" },
+  children: { contract: "input", signature: "Input", options: { type: "email", name: "email-specific-error" }, attrs: { value: "ana" } },
+});
+
+export const formFieldDontErrorTree = (t: Translate): UsageTree => ({
+  contract: "form-field",
+  signature: "FormField",
+  slots: { label: t("demo.formField.dd.email"), error: t("demo.formField.dd.genericError") },
+  attrs: { style: "inline-size: 16rem" },
+  children: { contract: "input", signature: "Input", options: { type: "email", name: "email-generic-error" }, attrs: { value: "ana" } },
+});
+
+/* Do/Don't: required is a real control state, not just words in the label. */
+export const formFieldDoRequiredTree = (t: Translate): UsageTree => ({
+  contract: "form-field",
+  signature: "FormField",
+  options: { required: true },
+  slots: { label: t("demo.formField.dd.taxId"), hint: t("demo.formField.dd.taxIdHint") },
+  attrs: { style: "inline-size: 16rem" },
+  children: { contract: "input", signature: "Input", options: { name: "tax-id-required" } },
+});
+
+export const formFieldDontRequiredTree = (t: Translate): UsageTree => ({
+  contract: "form-field",
+  signature: "FormField",
+  slots: { label: t("demo.formField.dd.taxIdRequiredText"), hint: t("demo.formField.dd.taxIdHint") },
+  attrs: { style: "inline-size: 16rem" },
+  children: { contract: "input", signature: "Input", options: { name: "tax-id-text-only" } },
+});
+
+/* Do/Don't: one field asks one question. */
+export const formFieldDoOneQuestionTree = (t: Translate): UsageTree => ({
+  contract: "form-field",
+  signature: "FormField",
+  slots: { label: t("demo.formField.dd.legalName"), hint: t("demo.formField.dd.legalNameHint") },
+  attrs: { style: "inline-size: 16rem" },
+  children: { contract: "input", signature: "Input", options: { name: "legal-name" }, attrs: { autocomplete: "name" } },
+});
+
+export const formFieldDontOneQuestionTree = (t: Translate): UsageTree => ({
+  contract: "form-field",
+  signature: "FormField",
+  slots: { label: t("demo.formField.dd.nameAndPhone") },
+  attrs: { style: "inline-size: 16rem" },
+  children: { contract: "input", signature: "Input", options: { name: "name-and-phone", placeholder: t("demo.formField.dd.nameAndPhonePlaceholder") } },
+});
+
+/* Do/Don't: long answers get a multiline control. */
+export const formFieldDoTextareaTree = (t: Translate): UsageTree => ({
+  contract: "form-field",
+  signature: "FormField",
+  slots: { label: t("demo.formField.dd.deliveryNotes"), hint: t("demo.formField.dd.deliveryNotesHint") },
+  attrs: { style: "inline-size: 16rem" },
+  children: { contract: "input", signature: "Textarea", options: { name: "delivery-notes" }, attrs: { rows: "4" } },
+});
+
+export const formFieldDontTextareaTree = (t: Translate): UsageTree => ({
+  contract: "form-field",
+  signature: "FormField",
+  slots: { label: t("demo.formField.dd.deliveryNotes") },
+  attrs: { style: "inline-size: 16rem" },
+  children: { contract: "input", signature: "Input", options: { name: "delivery-notes-one-line", placeholder: t("demo.formField.dd.deliveryNotesPlaceholder") } },
+});
+
+/* Do/Don't: the hint adds information instead of repeating the label. */
+export const formFieldDoPurposeTree = (t: Translate): UsageTree => ({
+  contract: "form-field",
+  signature: "FormField",
+  slots: { label: t("demo.formField.dd.phone"), hint: t("demo.formField.dd.phonePurpose") },
+  attrs: { style: "inline-size: 16rem" },
+  children: { contract: "input", signature: "Input", options: { type: "tel", name: "phone-purpose" }, attrs: { autocomplete: "tel" } },
+});
+
+export const formFieldDontPurposeTree = (t: Translate): UsageTree => ({
+  contract: "form-field",
+  signature: "FormField",
+  slots: { label: t("demo.formField.dd.phone"), hint: t("demo.formField.dd.phoneRepeat") },
+  attrs: { style: "inline-size: 16rem" },
+  children: { contract: "input", signature: "Input", options: { type: "tel", name: "phone-repeat" }, attrs: { autocomplete: "tel" } },
+});
+
+/* Do/Don't: server validation belongs in the error slot. */
+export const formFieldDoServerErrorTree = (t: Translate): UsageTree => ({
+  contract: "form-field",
+  signature: "FormField",
+  slots: { label: t("demo.formField.dd.email"), error: t("demo.formField.dd.accountError") },
+  attrs: { style: "inline-size: 16rem" },
+  children: { contract: "input", signature: "Input", options: { type: "email", name: "account-email" }, attrs: { value: "ana@example.com" } },
+});
+
+export const formFieldDontServerErrorTree = (t: Translate): UsageTree => ({
+  contract: "form-field",
+  signature: "FormField",
+  slots: { label: t("demo.formField.dd.email"), hint: t("demo.formField.dd.accountError") },
+  attrs: { style: "inline-size: 16rem" },
+  children: { contract: "input", signature: "Input", options: { type: "email", name: "account-email-hint" }, attrs: { value: "ana@example.com" } },
+});
+
+/* Do/Don't: optional is helper text, not the value placeholder. */
+export const formFieldDoOptionalTree = (t: Translate): UsageTree => ({
+  contract: "form-field",
+  signature: "FormField",
+  slots: { label: t("demo.formField.dd.middleName"), hint: t("demo.formField.dd.optional") },
+  attrs: { style: "inline-size: 16rem" },
+  children: { contract: "input", signature: "Input", options: { name: "middle-name" }, attrs: { autocomplete: "additional-name" } },
+});
+
+export const formFieldDontOptionalTree = (t: Translate): UsageTree => ({
+  contract: "form-field",
+  signature: "FormField",
+  slots: { label: t("demo.formField.dd.middleName") },
+  attrs: { style: "inline-size: 16rem" },
+  children: { contract: "input", signature: "Input", options: { name: "middle-name-placeholder", placeholder: t("demo.formField.dd.optional") } },
 });

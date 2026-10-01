@@ -5,9 +5,11 @@ import "@skryensya/core/patterns/layout.css";
 import "@skryensya/core/components/annotation.css";
 import ComponentPageShell from "./ComponentPageShell.astro";
 import CodeBlock from "../CodeBlock.astro";
-import ComponentPreview from "../ComponentPreview.astro";
 import UsagePreview from "../UsagePreview.astro";
 import DoDont from "../DoDont.astro";
+import WhenToUse from "../WhenToUse.astro";
+import ContentRules from "../ContentRules.astro";
+import A11yNotes from "../A11yNotes.astro";
 import {
   otpInputAlphanumericTree,
   otpInputAnatomyTree,
@@ -20,7 +22,7 @@ import {
   otpInputStatesTree,
 } from "../../demos/otp-input";
 import { annotationDemoCss } from "../../demos/annotation";
-import { getLocale, useTranslations } from "../../i18n";
+import { getLocale, tList, useTranslations } from "../../i18n";
 
 const t = useTranslations(getLocale(Astro.url));
 const styles = `@import "@skryensya/core/components/otp-input.css";`;
@@ -33,7 +35,6 @@ const explain = (option: string, values: readonly string[]) =>
 <ComponentPageShell
   title="OtpInput"
   description={t("otpInput.description")}
-  badge={t("otpInput.betaBadge")}
   contractId="otp-input"
   testFiles={["packages/react/src/components/otp-input.test.tsx", "packages/vanilla/src/components/otp-input.test.ts"]}
 >
@@ -50,48 +51,30 @@ const explain = (option: string, values: readonly string[]) =>
       labels={{ false: t("otpInput.prop.mask.falseLabel"), true: t("otpInput.prop.mask.trueLabel") }}
     />
 
-    <h3>{t("otpInput.showcaseTitle")}</h3>
-    <p set:html={t("otpInput.showcaseBody")} />
+    <h3>{t("component.examplesTitle")}</h3>
+    <UsagePreview tree={otpInputSmsTree(t)} title={t("otpInput.smsTitle")} description={t("otpInput.smsBody")} />
+    <UsagePreview tree={otpInputAlphanumericTree(t)} title={t("otpInput.alphanumericTitle")} description={t("otpInput.alphanumericBody")} />
+    <UsagePreview tree={otpInputPinTree(t)} title={t("otpInput.pinTitle")} description={t("otpInput.pinBody")} />
+    <UsagePreview tree={otpInputStatesTree(t)} title={t("otpInput.statesTitle")} description={t("otpInput.statesBody")} />
 
-    <h3>{t("otpInput.smsTitle")}</h3>
-    <p set:html={t("otpInput.smsBody")} />
-    <UsagePreview tree={otpInputSmsTree(t)} />
-
-    <h3>{t("otpInput.alphanumericTitle")}</h3>
-    <p set:html={t("otpInput.alphanumericBody")} />
-    <UsagePreview tree={otpInputAlphanumericTree(t)} />
-
-    <h3>{t("otpInput.pinTitle")}</h3>
-    <p set:html={t("otpInput.pinBody")} />
-    <UsagePreview tree={otpInputPinTree(t)} />
-
-    <h3>{t("otpInput.statesTitle")}</h3>
-    <p set:html={t("otpInput.statesBody")} />
-    <UsagePreview tree={otpInputStatesTree(t)} />
-
-    <h3>{t("otpInput.eventsTitle")}</h3>
-    <p set:html={t("otpInput.eventsBody")} />
+    <h3>{t("component.contractNotesTitle")}</h3>
+    <ul>
+      {tList(t, "otpInput.contract").map((item) => <li set:html={item} />)}
+    </ul>
 
     <h3>{t("component.anatomy")}</h3>
     <p set:html={t("otpInput.anatomyBody")} />
-    <ComponentPreview
+    <UsagePreview
       tree={otpInputAnatomyTree(t)}
       css={annotationDemoCss}
       label={t("otpInput.anatomyPreviewLabel")}
-      screens={false}
-      hideSource
-      chrome={false}
+      bare
     />
   </Fragment>
 
   <Fragment slot="guidelines">
     <p class="lede" set:html={t("otpInput.guidelinesLede")} />
-    <h3>{t("otpInput.whenTitle")}</h3>
-    <ul>
-      <li set:html={t("otpInput.whenItem1")} />
-      <li set:html={t("otpInput.whenItem2")} />
-      <li set:html={t("otpInput.whenItem3")} />
-    </ul>
+    <WhenToUse use={tList(t, "otpInput.when")} avoid={tList(t, "otpInput.whenNot")} />
     <DoDont
       title={t("otpInput.dd.hint.title")}
       do={{ tree: otpInputSmsTree(t), caption: t("otpInput.dd.hint.do") }}
@@ -103,6 +86,7 @@ const explain = (option: string, values: readonly string[]) =>
       do={{ tree: otpInputDoLongTree(t), caption: t("otpInput.dd.long.do") }}
       dont={{ tree: otpInputDontLongTree(t), caption: t("otpInput.dd.long.dont") }}
     />
+    <ContentRules items={tList(t, "otpInput.content")} />
   </Fragment>
 
   <Fragment slot="install">
@@ -110,6 +94,15 @@ const explain = (option: string, values: readonly string[]) =>
   </Fragment>
 
   <Fragment slot="a11y">
-    <p set:html={t("otpInput.a11yBody")} />
+    <A11yNotes
+      intro={t("otpInput.a11yIntro")}
+      does={tList(t, "otpInput.a11yDoes")}
+      yours={tList(t, "otpInput.a11yYours")}
+      keys={[
+        { keys: ["←", "→"], action: t("otpInput.key.arrows") },
+        { keys: ["Backspace"], action: t("otpInput.key.backspace") },
+        { keys: ["Ctrl+V", "⌘+V"], action: t("otpInput.key.paste") },
+      ]}
+    />
   </Fragment>
 </ComponentPageShell>

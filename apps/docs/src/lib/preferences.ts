@@ -25,7 +25,7 @@ export { colorModePreference } from "@skryensya/core/theme-toggle";
 export {
   componentPreviewBindingPreference,
   componentPreviewScreenPreference,
-} from "@skryensya/core/component-preview";
+} from "../preview/component-preview";
 
 /** Component documentation examples can opt into alternate appearances, currently Button tactile, brutalist and frosted. */
 export const appearancePreference = definePreference<"plain" | "tactile" | "brutalist" | "frosted">({

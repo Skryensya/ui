@@ -2134,7 +2134,7 @@
                         {
                           "contract": "typography",
                           "signature": "Text",
-                          "children": "El kit se publica como un único paquete con los estilos separados por componente, así una página sólo carga el CSS que usa."
+                          "children": "El kit se publica como un único paquete con los estilos separados por componente, así una página solo carga el CSS que usa."
                         },
                         {
                           "contract": "process-list",

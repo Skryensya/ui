@@ -335,3 +335,11 @@ export const placeholderParagraphTree = (): UsageTree => ({
   options: { lines: 3 },
   attrs: { style: "inline-size: min(100%, 20rem)" },
 });
+
+/* Usage guide: one grey slab where a card is coming, against the card's own shape (the do side
+   reuses `publicationPlaceholderTree`). */
+export const placeholderDontSlabTree: UsageTree = {
+  contract: "placeholder",
+  signature: "Placeholder.block",
+  options: { width: "100%", height: "14rem" },
+};
