@@ -2,14 +2,19 @@
 import ComponentPageShell from "./ComponentPageShell.astro";
 import AppearanceMenu from "../AppearanceMenu.astro";
 import CodeBlock from "../CodeBlock.astro";
-import ComponentPreview from "../ComponentPreview.astro";
+import UsagePreview from "../UsagePreview.astro";
+import WhenToUse from "../WhenToUse.astro";
+import ContentRules from "../ContentRules.astro";
+import DoDont from "../DoDont.astro";
+import A11yNotes from "../A11yNotes.astro";
 import {
-  commandPaletteAnatomyCss,
-  commandPaletteAnatomyHtml,
   commandPaletteDemoScript,
   commandPaletteDemoTree,
+  commandPaletteDoShortcutTree,
+  commandPaletteResultsGuideHtml,
+  commandPaletteDontShortcutTree,
 } from "../../demos/command-palette";
-import { getLocale, useTranslations } from "../../i18n";
+import { getLocale, tList, useTranslations } from "../../i18n";
 import "@skryensya/core/components/dialog.css";
 import "@skryensya/core/components/command-palette.css";
 /* Structure diagram: Annotated specimen; a preview frame only copies styles THIS page loaded. */
@@ -25,6 +30,7 @@ const styles = `@import "@skryensya/core/components/dialog.css";
 @import "@skryensya/core/patterns/scroll-lock.css";`;
 
 const hotkeyHint = `<kbd class="sk-kbd" data-sk-command-palette-hint>⌘K</kbd>`;
+const resultExamples = commandPaletteResultsGuideHtml(t);
 ---
 
 <ComponentPageShell
@@ -32,7 +38,7 @@ const hotkeyHint = `<kbd class="sk-kbd" data-sk-command-palette-hint>⌘K</kbd>`
   description={t("commandPalette.description")}
   contractId="command-palette"
   appearanceTargetSelector=".sk-command-palette"
-  testFiles={["packages/react/src/components/command-palette.test.tsx", "packages/vanilla/src/components/command-palette.test.ts"]}}
+  testFiles={["packages/react/src/components/command-palette.test.tsx", "packages/vanilla/src/components/command-palette.test.ts"]}
 >
   <Fragment slot="appearance">
     <AppearanceMenu label={t("prefs.appearance")} values={["plain", "brutalist", "frosted"]} unavailable={{ tactile: t("prefs.appearanceTactileUnavailable") }} />
@@ -41,50 +47,57 @@ const hotkeyHint = `<kbd class="sk-kbd" data-sk-command-palette-hint>⌘K</kbd>`
   <Fragment slot="usage">
     <p class="lede" set:html={t("commandPalette.lede", { hotkey: hotkeyHint })} />
 
-    <h3>{t("commandPalette.showcaseTitle")}</h3>
-    <p set:html={t("commandPalette.showcaseBody")} />
-    <ComponentPreview
+    <h3>{t("component.examplesTitle")}</h3>
+    {/* ComponentPreview, not UsagePreview: the palette is a modal dialog seeded by a demo script, and
+        a frame of its own keeps it from opening over this page. */}
+    <h3>{t("commandPalette.exampleTitle")}</h3>
+    <p set:html={t("commandPalette.exampleBody")} />
+    <UsagePreview
       tree={commandPaletteDemoTree(t)}
-      js={commandPaletteDemoScript}
-      previewScript={commandPaletteDemoScript}
+      script={commandPaletteDemoScript}
       label="CommandPalette"
       viewport="overlay"
     />
 
     <h3>{t("component.contractNotesTitle")}</h3>
     <ul>
-      <li set:html={t("commandPalette.contractItem1")} />
-      <li set:html={t("commandPalette.contractItem2")} />
-      <li set:html={t("commandPalette.contractItem3")} />
-      <li set:html={t("commandPalette.contractItem4")} />
-      <li set:html={t("commandPalette.contractItem5")} />
-      <li set:html={t("commandPalette.contractItem6")} />
+      {tList(t, "commandPalette.contract").map((item) => <li set:html={item} />)}
     </ul>
 
-    <h3>{t("component.anatomy")}</h3>
-    <p set:html={t("commandPalette.anatomyBody")} />
-    <ComponentPreview
-      html={commandPaletteAnatomyHtml(t)}
-      css={commandPaletteAnatomyCss}
-      label={t("commandPalette.anatomyPreviewLabel")}
-      screens={false}
-      hideSource
-      chrome={false}
-    />
   </Fragment>
 
   <Fragment slot="guidelines">
     <p class="lede" set:html={t("commandPalette.guidelinesLede")} />
-    <ul>
-      <li set:html={t("commandPalette.guide.use1")} />
-      <li set:html={t("commandPalette.guide.use2")} />
-      <li set:html={t("commandPalette.guide.avoid1")} />
-      <li set:html={t("commandPalette.guide.avoid2")} />
-    </ul>
+    <WhenToUse use={tList(t, "commandPalette.when")} avoid={tList(t, "commandPalette.whenNot")} />
+    <DoDont
+      title={t("commandPalette.dd.shortcut.title")}
+      do={{ tree: commandPaletteDoShortcutTree(t), caption: t("commandPalette.dd.shortcut.do") }}
+      dont={{ tree: commandPaletteDontShortcutTree, caption: t("commandPalette.dd.shortcut.dont") }}
+    />
+    <DoDont
+      title={t("commandPalette.dd.results.title")}
+      do={{ html: resultExamples.do, caption: t("commandPalette.dd.results.do") }}
+      dont={{ html: resultExamples.dont, caption: t("commandPalette.dd.results.dont") }}
+    />
+    <ContentRules items={tList(t, "commandPalette.content")} />
   </Fragment>
 
   <Fragment slot="install">
     <CodeBlock code={install} label="terminal" />
     <CodeBlock code={styles} label="CSS" />
+  </Fragment>
+
+  <Fragment slot="a11y">
+    <A11yNotes
+      intro={t("commandPalette.a11yIntro")}
+      does={tList(t, "commandPalette.a11yDoes")}
+      yours={tList(t, "commandPalette.a11yYours")}
+      keys={[
+        { keys: ["⌘+K", "Ctrl+K"], action: t("commandPalette.a11yKeyHotkey") },
+        { keys: ["↓", "↑"], action: t("commandPalette.a11yKeyArrows") },
+        { keys: ["Enter"], action: t("commandPalette.a11yKeyEnter") },
+        { keys: ["Esc"], action: t("commandPalette.a11yKeyEsc") },
+      ]}
+    />
   </Fragment>
 </ComponentPageShell>

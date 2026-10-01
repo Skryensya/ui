@@ -54,6 +54,19 @@ describe("maker tools", () => {
     expect(read.outline).toMatch(/^page \S+ "Home" \/\n\s+\S+ layout\/Main$/);
   });
 
+  it("shares semantic context and dry-run operations without saving", async () => {
+    const read = await call("maker_read", { project });
+    const page = /^page (\S+)/.exec(read.outline)![1]!;
+    const main = /(\S+) layout\/Main/.exec(read.outline)![1]!;
+    const result = await client.callTool({ name: "maker_context", arguments: { project, page, selected: main } });
+    expect(result.structuredContent).toMatchObject({ project: { id: project, revision: read.revision }, selection: { primary: main } });
+    const tried = await call("maker_try", { project, revision: read.revision, operations: [{ type: "page", page, operations: [{ type: "insert", at: { parent: main, slot: "children", index: 0 }, tree: { contract: "typography", signature: "Text", children: "Proposed only" } }] }] });
+    expect(tried.isError).toBe(false);
+    expect(tried.outline).toContain("Proposed only");
+    expect(await call("maker_read", { project })).toEqual(read);
+    expect((await call("maker_try", { project, revision: read.revision + 1, operations: [{ type: "renamePage", page, name: "Conflict" }] })).refused).toContain("conflict");
+  });
+
   it("applies structure and saves it one revision up", async () => {
     const read = await call("maker_read", { project });
     const page = /^page (\S+)/.exec(read.outline)![1]!;

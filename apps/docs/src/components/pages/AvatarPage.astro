@@ -7,27 +7,35 @@ import "@skryensya/core/components/annotation.css";
 import ComponentPageShell from "./ComponentPageShell.astro";
 import AppearanceMenu from "../AppearanceMenu.astro";
 import CodeBlock from "../CodeBlock.astro";
-import ComponentPreview from "../ComponentPreview.astro";
 import UsagePreview from "../UsagePreview.astro";
 import DoDont from "../DoDont.astro";
+import WhenToUse from "../WhenToUse.astro";
+import ContentRules from "../ContentRules.astro";
+import A11yNotes from "../A11yNotes.astro";
 import {
   avatarAnatomyTree,
   avatarGroupAnatomyTree,
   avatarImageTree,
   avatarSingleTree,
-  avatarSizesTree,
   avatarColorsTree,
   avatarGroupTree,
   avatarProfileTree,
+  avatarCompactRowTree,
+  avatarDontOversizedRowTree,
+  avatarColorIdentityTree,
+  avatarDontStatusColorTree,
+  avatarDontAloneTree,
+  avatarDontLongRowTree,
 } from "../../demos/avatar";
 import { annotationDemoCss } from "../../demos/annotation";
-import { getLocale, useTranslations } from "../../i18n";
+import { getLocale, tList, useTranslations } from "../../i18n";
 
 const t = useTranslations(getLocale(Astro.url));
 const explain = (option: string, values: readonly string[]) =>
   Object.fromEntries(values.map((value) => [value, t(`avatar.prop.${option}.${value}` as Parameters<typeof t>[0])]));
 
 const install = `pnpm add @skryensya/core @skryensya/react`;
+const storybookTitle = "Components/Content/Avatar";
 
 /*
  * `max` is React's own shorthand, not a contract option, so it cannot be shown as a usage tree: the
@@ -107,10 +115,9 @@ window.addEventListener("pagehide", () => observer.disconnect(), { once: true })
 <ComponentPageShell
   title="Avatar"
   description={t("avatar.description")}
-  badge={t("avatar.betaBadge")}
   contractId="avatar"
   appearanceTargetSelector=".sk-avatar"
-  testFiles={["packages/react/src/components/avatar.test.tsx"]}}
+  testFiles={["packages/react/src/components/avatar.test.tsx"]}
 >
   <Fragment slot="appearance">
     <AppearanceMenu
@@ -130,71 +137,97 @@ window.addEventListener("pagehide", () => observer.disconnect(), { once: true })
       description={t("avatar.prop.size.body")}
       explain={explain("size", ["sm", "md", "lg", "xl"])}
       stageMinBlockSize="8rem"
+      storybookTitle={storybookTitle}
+      storybookStory="Single"
     />
 
-    <h3>{t("avatar.showcaseTitle")}</h3>
-    <p set:html={t("avatar.showcaseBody")} />
+    <h3>{t("component.examplesTitle")}</h3>
     <UsagePreview
       tree={avatarImageTree(t)}
       title={t("avatar.imagesTitle")}
       description={t("avatar.imagesBody")}
+      storybookTitle={storybookTitle}
+      storybookStory="Image"
     />
-
-    <UsagePreview tree={avatarSizesTree(t)} title={t("avatar.sizesTitle")} description={t("avatar.sizesBody")} />
-
-    <UsagePreview tree={avatarColorsTree(t)} title={t("avatar.colorsTitle")} description={t("avatar.colorsBody")} />
-
-    <h3>{t("avatar.groupTitle")}</h3>
-    <p set:html={t("avatar.groupBody")} />
-    {/* The group's own anatomy sits HERE, not beside the Avatar diagram at the top: the two parts it
-        names only exist once there is a stack, and the section that introduces the stack is where a
-        reader is asking what it is made of. */}
-    <p set:html={t("avatar.groupAnatomyBody")} />
-    <ComponentPreview
-      tree={avatarGroupAnatomyTree(t)}
-      css={annotationDemoCss}
-      label={t("avatar.groupAnatomyPreviewLabel")}
-      screens={false}
-      hideSource
-      chrome={false}
+    <UsagePreview
+      tree={avatarGroupTree(t)}
+      title={t("avatar.groupTitle")}
+      description={t("avatar.groupBody")}
+      storybookTitle={storybookTitle}
+      storybookStory="Group"
     />
-    <UsagePreview tree={avatarGroupTree(t)} caption={t("avatar.groupTitle")} />
     <p set:html={t("avatar.groupMaxBody")} />
     <CodeBlock code={groupMax} label="React" lang="tsx" note={t("avatar.groupMaxNote")} />
+    <UsagePreview
+      tree={avatarProfileTree(t)}
+      title={t("avatar.profileTitle")}
+      description={t("avatar.profileBody")}
+      storybookTitle={storybookTitle}
+      storybookStory="Profile"
+    />
+    <UsagePreview
+      tree={avatarColorsTree(t)}
+      title={t("avatar.colorsTitle")}
+      description={t("avatar.colorsBody")}
+      storybookTitle={storybookTitle}
+      storybookStory="Colors"
+    />
 
-    <UsagePreview tree={avatarProfileTree(t)} title={t("avatar.profileTitle")} description={t("avatar.profileBody")} />
-
-    <p set:html={t("avatar.body")} />
+    <h3>{t("component.contractNotesTitle")}</h3>
+    <ul>
+      {tList(t, "avatar.contract").map((item) => <li set:html={item} />)}
+    </ul>
     <p set:html={t("component.reactNote")} />
 
     <h3>{t("component.anatomy")}</h3>
     <p set:html={t("avatar.anatomyBody")} />
-    <ComponentPreview
+    <UsagePreview
       tree={avatarAnatomyTree(t)}
       css={annotationDemoCss}
       label={t("avatar.anatomyPreviewLabel")}
-      previewScript={previewScript}
-      screens={false}
-      hideSource
-      chrome={false}
+      script={previewScript}
+      bare
+    />
+    <p set:html={t("avatar.groupAnatomyBody")} />
+    <UsagePreview
+      tree={avatarGroupAnatomyTree(t)}
+      css={annotationDemoCss}
+      label={t("avatar.groupAnatomyPreviewLabel")}
+      bare
     />
   </Fragment>
 
   <Fragment slot="guidelines">
     <p class="lede" set:html={t("avatar.guidelinesLede")} />
+    <WhenToUse use={tList(t, "avatar.when")} avoid={tList(t, "avatar.whenNot")} />
     <DoDont
       title={t("avatar.dd.identity.title")}
       do={{ tree: avatarProfileTree(t), caption: t("avatar.dd.identity.do") }}
-      dont={{ tree: avatarColorsTree(t), caption: t("avatar.dd.identity.dont") }}
+      dont={{ tree: avatarDontAloneTree(), caption: t("avatar.dd.identity.dont") }}
     />
     <DoDont
       title={t("avatar.dd.group.title")}
       do={{ tree: avatarGroupTree(t), caption: t("avatar.dd.group.do") }}
-      dont={{ tree: avatarSizesTree(t), caption: t("avatar.dd.group.dont") }}
+      dont={{ tree: avatarDontLongRowTree(t), caption: t("avatar.dd.group.dont") }}
     />
+    <DoDont
+      title={t("avatar.dd.size.title")}
+      do={{ tree: avatarCompactRowTree(), caption: t("avatar.dd.size.do") }}
+      dont={{ tree: avatarDontOversizedRowTree(), caption: t("avatar.dd.size.dont") }}
+    />
+    <DoDont
+      title={t("avatar.dd.color.title")}
+      do={{ tree: avatarColorIdentityTree(t), caption: t("avatar.dd.color.do") }}
+      dont={{ tree: avatarDontStatusColorTree(t), caption: t("avatar.dd.color.dont") }}
+    />
+    <ContentRules items={tList(t, "avatar.content")} />
   </Fragment>
 
   <Fragment slot="install">
     <CodeBlock code={install} label="terminal" />
+  </Fragment>
+
+  <Fragment slot="a11y">
+    <A11yNotes intro={t("avatar.a11yIntro")} does={tList(t, "avatar.a11yDoes")} yours={tList(t, "avatar.a11yYours")} />
   </Fragment>
 </ComponentPageShell>

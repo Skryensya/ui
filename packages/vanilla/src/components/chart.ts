@@ -1,4 +1,12 @@
-import { chartAttrs, chartMax, chartParts, formatChartValue, type ChartFormat } from "@skryensya/core/chart";
+import {
+  chartAreaPath,
+  chartAttrs,
+  chartLinePath,
+  chartMax,
+  chartParts,
+  formatChartValue,
+  type ChartFormat,
+} from "@skryensya/core/chart";
 import { createConnectMount } from "../runtime/svelte-hydrate.js";
 
 const rootSelector = `[${chartAttrs.root}]`;
@@ -15,6 +23,10 @@ export const mountChart = createConnectMount({ key: "chart", rootSelector, conne
  * difference that matters. A meter reads a value that is already ON the element it paints, so it can
  * work from attributes alone; a bar's height depends on the LARGEST value in the series, which no
  * single entry knows. Hence the pass over the whole list before anything is written.
+ *
+ * For `line` and `area` it also draws the path into the overlay the template reserves, from core's
+ * own geometry, and writes `data-rendered` so `chart.css` retires the fallback bars: the same SVG the
+ * React binding renders, so one tree paints one line in both.
  *
  * It also fills in an entry's value TEXT when the author left it empty, using the same
  * `formatChartValue` the React binding calls. Without that, identical markup would announce the
@@ -44,7 +56,37 @@ export function connectChart(root: HTMLElement): () => void {
     }
   });
 
+  const kind = root.getAttribute("data-kind");
+  const overlay = root.querySelector<HTMLElement>(`.${chartParts.overlay}`);
+  let drawn: SVGSVGElement | null = null;
+  if ((kind === "line" || kind === "area") && overlay && !overlay.firstElementChild) {
+    const series = values.map((value, index) => ({ label: String(index), value }));
+    const line = chartLinePath(series);
+    if (line) {
+      const svgNs = "http://www.w3.org/2000/svg";
+      const path = (className: string, d: string) => {
+        const node = document.createElementNS(svgNs, "path");
+        node.setAttribute("class", className);
+        node.setAttribute("d", d);
+        return node;
+      };
+      drawn = document.createElementNS(svgNs, "svg");
+      drawn.setAttribute("class", chartParts.overlaySvg);
+      drawn.setAttribute("preserveAspectRatio", "none");
+      drawn.setAttribute("viewBox", "0 0 100 100");
+      if (kind === "area") drawn.append(path(chartParts.overlayArea, chartAreaPath(series)));
+      drawn.append(path(chartParts.overlayLine, line));
+      overlay.append(drawn);
+      root.setAttribute(chartAttrs.rendered, "");
+    }
+  }
+
   return () => {
+    // Only what this enhancer drew: an overlay an author wrote by hand is not ours to remove.
+    if (drawn) {
+      drawn.remove();
+      root.removeAttribute(chartAttrs.rendered);
+    }
     root.style.removeProperty(chartAttrs.max);
     for (const point of points) point.style.removeProperty(chartAttrs.value);
     // Only the ones this enhancer wrote: an author's own string is not ours to clear.

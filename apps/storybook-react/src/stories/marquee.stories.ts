@@ -13,12 +13,11 @@ import "@skryensya/core/patterns/layout.css";
 import "@skryensya/core/patterns/media-gradient.css";
 import "@skryensya/core/patterns/visually-hidden.css";
 import * as demos from "@docs/demos/marquee";
-import { annotationDemoCss } from "@docs/demos/annotation";
-import { treeStory, withCss, type Meta, type StoryObj } from "../tree-story";
+import { treeStory, type Meta, type StoryObj } from "../tree-story";
 
 export default { title: "Components/Content/Marquee", tags: ["autodocs"] } satisfies Meta;
 
-export const Anatomy: StoryObj = treeStory(demos.marqueeAnatomyTree, { decorators: [withCss(annotationDemoCss)] });
+export const Anatomy: StoryObj = treeStory(demos.marqueeAnatomyTree);
 export const Manual: StoryObj = treeStory(demos.marqueeManualTree);
 export const Autoplay: StoryObj = treeStory((t) => demos.marqueeAutoplayTree());
 export const Control: StoryObj = treeStory(demos.marqueeControlTree);
@@ -26,3 +25,5 @@ export const Badge: StoryObj = treeStory(demos.marqueeBadgeTree);
 export const Avatar: StoryObj = treeStory(demos.marqueeAvatarTree);
 export const Vertical: StoryObj = treeStory(demos.marqueeVerticalTree);
 export const NoFade: StoryObj = treeStory((t) => demos.marqueeNoFadeTree());
+export const DoLinks: StoryObj = treeStory(demos.marqueeDoLinksTree);
+export const DontLinks: StoryObj = treeStory(demos.marqueeDontLinksTree);

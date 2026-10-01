@@ -1,7 +1,7 @@
 ---
 import Base from "../../layouts/Base.astro";
 import CodeBlock from "../../components/CodeBlock.astro";
-import ComponentPreview from "../../components/ComponentPreview.astro";
+import UsagePreview from "../../components/UsagePreview.astro";
 import { stableIconNames } from "@skryensya/core/icon";
 import { iconVocabTree } from "../../demos/icons";
 import { allSets, iconMarkup } from "../../icons";
@@ -42,7 +42,7 @@ import { IconSetProvider } from "@skryensya/react";
     el SVG hereda <code>currentColor</code>.
   </p>
 
-  <ComponentPreview tree={iconVocabTree} css={vocabCss} label="Vocabulario estable" />
+  <UsagePreview tree={iconVocabTree} css={vocabCss} label="Vocabulario estable" />
 
   <h2>Qué falla sin roles estables</h2>
   <p>

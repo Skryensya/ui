@@ -2,18 +2,22 @@
 /* The anatomy diagram at the top of the page is an Annotated frame, so this page needs its sheet. */
 import "@skryensya/core/components/annotation.css";
 import ComponentPageShell from "./ComponentPageShell.astro";
-import ComponentPreview from "../ComponentPreview.astro";
 import UsagePreview from "../UsagePreview.astro";
 import DoDont from "../DoDont.astro";
+import WhenToUse from "../WhenToUse.astro";
+import ContentRules from "../ContentRules.astro";
+import A11yNotes from "../A11yNotes.astro";
 import {
-  fileUploadAnatomyCss,
-  fileUploadAnatomyHtml,
+  fileUploadDoInstructionTree,
   fileUploadDoLimitsTree,
+  fileUploadDoTriggerTree,
+  fileUploadDontInstructionTree,
   fileUploadDontLimitsTree,
+  fileUploadDontTriggerTree,
   fileUploadPageDropTree,
   fileUploadTree,
 } from "../../demos/file-upload";
-import { getLocale, useTranslations } from "../../i18n";
+import { getLocale, tList, useTranslations } from "../../i18n";
 import "@skryensya/core/components/file-upload.css";
 import "@skryensya/core/components/button.css";
 /* The rows draw the kit's own ghost icon button and two icon glyphs. */
@@ -34,47 +38,31 @@ const t = useTranslations(getLocale(Astro.url));
   ]}
 >
   <Fragment slot="usage">
-    <p class="lede" set:html={t("fileUploadPage.description")} />
+    <p class="lede" set:html={t("fileUploadPage.lede")} />
 
-    <h3>{t("fileUploadPage.showcaseTitle")}</h3>
-    <p set:html={t("fileUploadPage.showcaseBody")} />
-
-    {/*
-      * A FLOOR, NOT A MEASUREMENT. `preview-heights.json` reserves what a demo settles at, and this
-      * one settles EMPTY: the whole point of the control is that you add files to it, and each row
-      * pushed the page down under the reader's pointer. Measured on this demo at 1920px: 323px
-      * empty, 426 with one file, 496 with two (and 368 with three, where `maxFiles` is reached and
-      * the dropzone hides). 31rem is that 496, so the first two files land in room that is already
-      * there and nothing below the preview moves.
-      */}
-    <ComponentPreview
+    <h3>{t("component.examplesTitle")}</h3>
+    {/* 31rem reserves the room two chosen files take, so adding them does not push the page. */}
+    <UsagePreview
       tree={fileUploadTree(t)}
-      label="FileUpload"
-      measure="28rem"
-      minHeight="31rem"
-      viewport="auto"
+      title={t("fileUploadPage.basicTitle")}
+      description={t("fileUploadPage.basicBody")}
+      stageMinBlockSize="31rem"
+      storybookTitle="Components/Forms/FileUpload"
+      storybookStory="Default"
     />
-
-    <h3 id="validation">{t("fileUploadPage.validationTitle")}</h3>
-    <p set:html={t("fileUploadPage.validationBody")} />
-
-    <h3 id="chosen-files">{t("fileUploadPage.chosenTitle")}</h3>
-    <p set:html={t("fileUploadPage.chosenBody")} />
-
-    <h3 id="drop-scope">{t("fileUploadPage.dropScopeTitle")}</h3>
-    <p set:html={t("fileUploadPage.dropScopeBody")} />
-    {/* Same floor as the demo above, and this one needs it more: with no `maxFiles` the dropzone
-        never steps aside, so every file added is height added. */}
-    <ComponentPreview
+    <h3>{t("fileUploadPage.pageDropTitle")}</h3>
+    <p set:html={t("fileUploadPage.pageDropBody")} />
+    <UsagePreview
       tree={fileUploadPageDropTree(t)}
       label={t("fileUploadPage.pageDropLabel")}
       measure="28rem"
-      minHeight="31rem"
-      viewport="auto"
+      stageMinBlockSize="31rem"
     />
 
     <h3>{t("component.contractNotesTitle")}</h3>
-    <p set:html={t("fileUploadPage.contractBody")} />
+    <ul>
+      {tList(t, "fileUploadPage.contract").map((item) => <li set:html={item} />)}
+    </ul>
 
     <UsagePreview
       tree={variantsTree(fileUploadTree(t), [{ label: t("component.state.default"), options: {} }, { label: t("component.state.disabled"), options: { disabled: true } }])}
@@ -82,34 +70,41 @@ const t = useTranslations(getLocale(Astro.url));
       description={t("component.statesBody")}
     />
 
-    <h3>{t("component.anatomy")}</h3>
-    <p set:html={t("fileUploadPage.anatomyBody")} />
-    {/* Ten labels need the whole track, and `breakout` is how a preview asks for it. It was a no-op
-        until the `justify-self` rule in site.css: the panel placed every preview on that track and
-        then centred it, so the room was there and nothing took it. */}
-    <ComponentPreview
-      html={fileUploadAnatomyHtml(t)}
-      css={fileUploadAnatomyCss}
-      label={t("fileUploadPage.anatomyPreviewLabel")}
-      screens={false}
-      hideSource
-      chrome={false}
-      width="breakout"
-    />
   </Fragment>
 
   <Fragment slot="guidelines">
     <p class="lede" set:html={t("fileUploadPage.guidelinesLede")} />
+    <WhenToUse use={tList(t, "fileUploadPage.when")} avoid={tList(t, "fileUploadPage.whenNot")} />
     <DoDont
       canvas
       title={t("fileUploadPage.dd.limits.title")}
       do={{ tree: fileUploadDoLimitsTree(t), caption: t("fileUploadPage.dd.limits.do") }}
       dont={{ tree: fileUploadDontLimitsTree(t), caption: t("fileUploadPage.dd.limits.dont") }}
     />
+    <DoDont
+      canvas
+      title={t("fileUploadPage.dd.instruction.title")}
+      do={{ tree: fileUploadDoInstructionTree(t), caption: t("fileUploadPage.dd.instruction.do") }}
+      dont={{ tree: fileUploadDontInstructionTree(t), caption: t("fileUploadPage.dd.instruction.dont") }}
+    />
+    <DoDont
+      canvas
+      title={t("fileUploadPage.dd.trigger.title")}
+      do={{ tree: fileUploadDoTriggerTree(t), caption: t("fileUploadPage.dd.trigger.do") }}
+      dont={{ tree: fileUploadDontTriggerTree(t), caption: t("fileUploadPage.dd.trigger.dont") }}
+    />
+    <ContentRules items={tList(t, "fileUploadPage.content")} />
   </Fragment>
 
   <Fragment slot="a11y">
-    <p set:html={t("fileUploadPage.a11yBody")} />
-    <p set:html={t("fileUploadPage.dropScopeA11yBody")} />
+    <A11yNotes
+      intro={t("fileUploadPage.a11yIntro")}
+      does={tList(t, "fileUploadPage.a11yDoes")}
+      yours={tList(t, "fileUploadPage.a11yYours")}
+      keys={[
+        { keys: ["Tab", "Shift+Tab"], action: t("fileUploadPage.a11yKeyTab") },
+        { keys: ["Enter", t("component.key.space")], action: t("fileUploadPage.a11yKeyEnter") },
+      ]}
+    />
   </Fragment>
 </ComponentPageShell>

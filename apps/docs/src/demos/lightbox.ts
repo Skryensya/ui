@@ -1,6 +1,5 @@
 import type { UsageTree } from "@skryensya/core/usage-tree";
 import type { Translate } from "../i18n";
-import { anatomyFigureHtml } from "./annotation-parts";
 
 /*
  * Real photos from Unsplash, fetched once through picsum.photos (the docs' default image source) and
@@ -99,6 +98,14 @@ const labels = (t: Translate) => ({
   counterLabel: t("lightbox.counterLabel"),
 });
 
+const thumbnailImage = (photo: Photo): UsageTree => ({
+  contract: "image-frame",
+  signature: "ImageFrame",
+  options: { aspect: "1/1", radius: "control", src: `${DIR}/${photo.file}-thumb.jpg`, alt: photo.alt },
+});
+
+const thumbnailContent = (photo: Photo): UsageTree => thumbnailImage(photo);
+
 const trigger = (opens: string, photo: Photo): UsageTree => ({
   contract: "lightbox",
   signature: "Lightbox.Trigger",
@@ -114,13 +121,132 @@ const trigger = (opens: string, photo: Photo): UsageTree => ({
   },
   slots: {
     /* The thumbnail's alt names the link, and the lightbox reuses it for the full image. */
-    children: {
-      contract: "image-frame",
-      signature: "ImageFrame",
-      options: { aspect: "1/1", radius: "control", src: `${DIR}/${photo.file}-thumb.jpg`, alt: photo.alt },
-    },
+    children: thumbnailContent(photo),
   },
 });
+
+const thumbnail = (photo: Photo): UsageTree => thumbnailContent(photo);
+
+const lightboxSpecimen = (children: UsageTree | UsageTree[]): UsageTree => ({
+  contract: "box",
+  signature: "Box",
+  options: { surface: "surface", border: "subtle", padding: "md" },
+  attrs: { style: "inline-size: 28rem; max-inline-size: 100%;" },
+  children,
+});
+
+const ddText = (children: string, tone: "primary" | "secondary" | "danger" = "secondary"): UsageTree => ({
+  contract: "typography",
+  signature: "Text",
+  options: { size: "sm", tone },
+  children,
+});
+
+const compactThumbRow = (children: readonly UsageTree[]): UsageTree => ({
+  contract: "layout",
+  signature: "Grid",
+  options: { columns: "3", gap: "sm", responsive: false },
+  attrs: { role: "list", style: "inline-size: 100%;" },
+  children: children.map((child) => ({
+    contract: "layout",
+    signature: "Stack",
+    attrs: { role: "listitem", style: "min-inline-size: 0;" },
+    children: child,
+  })),
+});
+
+const galleryItem = (image: UsageTree, label: string): UsageTree => ({
+  contract: "layout",
+  signature: "Stack",
+  options: { gap: "xs" },
+  children: [image, ddText(label)],
+});
+
+export const lightboxDoGalleryDdTree = (t: Translate): UsageTree => {
+  const items = photos(t).slice(0, 3).map((photo) =>
+    galleryItem(trigger("demo-lightbox-dd-gallery", photo), t("lightbox.dd.gallery.itemDo")),
+  );
+  return lightboxSpecimen([
+    compactThumbRow(items),
+    ddText(t("lightbox.dd.gallery.specimenDo")),
+    { contract: "lightbox", signature: "Lightbox", options: { lightboxId: "demo-lightbox-dd-gallery", ...labels(t) } },
+  ]);
+};
+
+export const lightboxDontStaticDdTree = (t: Translate): UsageTree => {
+  const items = photos(t).slice(0, 3).map((photo) => galleryItem(thumbnail(photo), t("lightbox.dd.gallery.itemDont")));
+  return lightboxSpecimen([
+    compactThumbRow(items),
+    ddText(t("lightbox.dd.gallery.specimenDont"), "danger"),
+  ]);
+};
+
+const captionDetails = (children: UsageTree | UsageTree[]): UsageTree => ({
+  contract: "box",
+  signature: "Box",
+  options: { surface: "sunken", padding: "sm" },
+  children,
+});
+
+export const lightboxDoCaptionDdTree = (t: Translate): UsageTree => {
+  const photo = photos(t)[0]!;
+  return lightboxSpecimen([
+    compactThumbRow([trigger("demo-lightbox-dd-caption", photo)]),
+    captionDetails([
+      { contract: "typography", signature: "Text", options: { size: "sm", weight: "label" }, children: photo.title! },
+      ddText(photo.description!),
+      { contract: "typography", signature: "Text", options: { size: "caption", tone: "tertiary" }, children: photo.credit! },
+    ]),
+    { contract: "lightbox", signature: "Lightbox", options: { lightboxId: "demo-lightbox-dd-caption", ...labels(t) } },
+  ]);
+};
+
+export const lightboxDontNoCaptionDdTree = (t: Translate): UsageTree => {
+  const photo = photos(t)[1]!;
+  const noCaption = { ...photo, title: undefined, description: undefined, credit: undefined };
+  return lightboxSpecimen([
+    compactThumbRow([trigger("demo-lightbox-dd-no-caption", noCaption)]),
+    captionDetails(ddText(t("lightbox.dd.caption.specimenDont"), "danger")),
+    { contract: "lightbox", signature: "Lightbox", options: { lightboxId: "demo-lightbox-dd-no-caption", ...labels(t) } },
+  ]);
+};
+
+const lightboxCardImage = (photo: Photo): UsageTree => ({
+  contract: "image-frame",
+  signature: "ImageFrame",
+  options: { aspect: "16/9", radius: "top", src: `${DIR}/${photo.file}-thumb.jpg`, alt: photo.alt },
+});
+
+const lightboxCardSpecimen = (photo: Photo, action?: string): UsageTree => ({
+  contract: "box",
+  signature: "Box",
+  options: { surface: "surface", border: "subtle", padding: "sm" },
+  attrs: { style: "inline-size: min(100%, 15rem);" },
+  children: {
+    contract: "layout",
+    signature: "Stack",
+    options: { gap: "sm", align: "start" },
+    children: [
+      lightboxCardImage(photo),
+      {
+        contract: "layout",
+        signature: "Stack",
+        options: { gap: "xs" },
+        children: [
+          { contract: "typography", signature: "Heading", options: { headingElement: "h3", headingSize: "h5", flush: true }, children: photo.title ?? photo.alt },
+          { contract: "typography", signature: "Text", options: { size: "caption", tone: "secondary" }, children: photo.credit ?? photo.alt },
+        ],
+      },
+      ...(action ? [{ contract: "button", signature: "Button.action", options: { tone: "accent", size: "sm" }, children: action } as UsageTree] : []),
+    ],
+  },
+});
+
+export const lightboxDoCardDdTree = (t: Translate): UsageTree =>
+  lightboxCardSpecimen(photos(t)[0]!, t("lightbox.cardAction"));
+
+export const lightboxDontImageOnlyDdTree = (t: Translate): UsageTree =>
+  lightboxCardSpecimen(photos(t)[0]!);
 
 /*
  * A GALLERY IS THE TRIGGERS. Six thumbnails naming one lightbox's id, in page order; clicking one
@@ -166,6 +292,51 @@ export const lightboxSingleTree = (t: Translate): UsageTree => {
         contract: "lightbox",
         signature: "Lightbox",
         options: { lightboxId: "demo-lightbox-single", ...labels(t) },
+      },
+    ],
+  };
+};
+
+export const lightboxCaptionTree = (t: Translate): UsageTree => {
+  const [dawn, snow] = [photos(t)[0]!, photos(t)[4]!];
+  return {
+    contract: "layout",
+    signature: "Stack",
+    options: { gap: "md" },
+    children: [
+      {
+        contract: "layout",
+        signature: "Inline",
+        options: { gap: "sm", wrap: true },
+        children: [dawn, snow].map((photo) => trigger("demo-lightbox-caption", photo)),
+      },
+      {
+        contract: "lightbox",
+        signature: "Lightbox",
+        options: { lightboxId: "demo-lightbox-caption", ...labels(t) },
+      },
+    ],
+  };
+};
+
+export const lightboxTinyTree = (t: Translate): UsageTree => {
+  const photo = photos(t)[5]!;
+  return {
+    contract: "layout",
+    signature: "Stack",
+    options: { gap: "md" },
+    children: [
+      trigger("demo-lightbox-tiny", photo),
+      {
+        contract: "typography",
+        signature: "Text",
+        options: { size: "sm", tone: "secondary" },
+        children: t("lightbox.tinyNote"),
+      },
+      {
+        contract: "lightbox",
+        signature: "Lightbox",
+        options: { lightboxId: "demo-lightbox-tiny", ...labels(t) },
       },
     ],
   };
@@ -221,80 +392,5 @@ export const lightboxLoopTree = (t: Translate): UsageTree => {
 /* ImageFrame is the thumbnail's own; the lightbox's sheet brings button + loader. */
 export const lightboxDemoCss = `.sk-lightbox__trigger {
   inline-size: 200px;
-}`;
-
-/*
- * THE ANATOMY SPECIMEN: the viewer frozen open on one photo, hand-written because a tree cannot say
- * it. What the controller fills in at runtime (the image, the counter, the caption) is written out
- * here, and the dialog is non-modal and pulled into flow by `lightboxAnatomyCss` so it becomes a
- * panel Annotated can measure instead of a layer over the whole page. The live region and the error
- * line are omitted: one is visually hidden and the other only shows when an image fails.
- */
-const lightboxAnatomySpecimen = (t: Translate): string => {
-  const photo = photos(t)[2]!;
-  const control = (action: string, icon: string, label: string, extra = "") =>
-    `<button class="${extra}sk-lightbox__control sk-button sk-interactive" aria-label="${label}" type="button" tabindex="-1" data-lightbox-action="${action}" data-icon-only data-variant="ghost" data-size="sm"><span data-sk-icon="${icon}" data-sk-icon-size="md"></span></button>`;
-  return `<dialog class="sk-lightbox" open aria-label="${t("lightbox.demo.label")}">
-  <div class="sk-lightbox__toolbar">
-    <p class="sk-lightbox__counter" aria-hidden="true">3 / 6</p>
-    <div class="sk-lightbox__actions">${control("close", "close", t("lightbox.closeLabel"))}</div>
-  </div>
-  <figure class="sk-lightbox__figure">
-    <div class="sk-lightbox__stage">
-      <img class="sk-lightbox__image" src="${DIR}/${photo.file}-small.jpg" alt="${photo.alt}" width="${photo.width}" height="${photo.height}">
-    </div>
-    <figcaption class="sk-lightbox__caption">
-      <p class="sk-lightbox__title">${photo.title}</p>
-      <p class="sk-lightbox__description">${photo.description}</p>
-      <p class="sk-lightbox__credit">${photo.credit}</p>
-    </figcaption>
-  </figure>
-  ${control("previous", "chevron-left", t("lightbox.previousLabel"), "sk-lightbox__nav ")}
-  ${control("next", "chevron-right", t("lightbox.nextLabel"), "sk-lightbox__nav ")}
-  <div class="sk-lightbox__zoom">
-    ${control("zoom-in", "zoom-in", t("lightbox.zoomInLabel"))}
-    ${control("zoom-out", "zoom-out", t("lightbox.zoomOutLabel"))}
-    ${control("reset-zoom", "fit", t("lightbox.resetZoomLabel"))}
-  </div>
-</dialog>`;
-};
-
-export const lightboxAnatomyHtml = (t: Translate): string =>
-  anatomyFigureHtml(t, {
-    label: t("lightbox.anatomyLabel"),
-    specimen: lightboxAnatomySpecimen(t),
-    parts: [
-      { for: ".sk-lightbox", side: "inline-start", mark: "bracket" },
-      { for: ".sk-lightbox__toolbar", side: "block-start", mark: "bracket" },
-      { for: ".sk-lightbox__counter", side: "inline-start" },
-      { for: ".sk-lightbox__actions", side: "inline-end" },
-      /* The image rather than the stage: the stage is the same box the image fills. */
-      { for: ".sk-lightbox__image", side: "inline-start" },
-      { for: ".sk-lightbox__nav", side: "inline-end", match: "first" },
-      { for: ".sk-lightbox__zoom", side: "block-start" },
-      { for: ".sk-lightbox__caption", side: "inline-end", mark: "bracket" },
-      { for: ".sk-lightbox__title", side: "inline-start" },
-      { for: ".sk-lightbox__credit", side: "block-end" },
-    ],
-  });
-
-export const lightboxAnatomyCss = `.sk-annotated-figure {
-  --sk-annotation-font-family: var(--font-family-code);
-}
-
-/* A panel, not a layer over the page: the same grid the open dialog uses, at a fixed size. */
-.sk-annotated__subject > .sk-lightbox[open] {
-  position: relative;
-  inset: auto;
-  inline-size: 26rem;
-  block-size: 24rem;
-  padding: 0;
-  background: var(--sk-lightbox-backdrop-bg);
-  border-radius: var(--radius-surface);
-}
-
-.sk-annotated__subject > .sk-lightbox :is(.sk-lightbox__toolbar, .sk-lightbox__nav, .sk-lightbox__zoom, .sk-lightbox__caption) {
-  opacity: 1;
-  translate: none;
 }`;
 

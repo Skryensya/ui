@@ -1,5 +1,5 @@
 # What changed in fade-edge, in the words its users read. Only appended to, never rewritten.
-surface: "62550a1cc5f7ae27"
+surface: "ed88d4a77c2d37c6"
 entries:
   - date: 2026-09-07
     kind: feature
@@ -63,3 +63,21 @@ entries:
         the edge the fade points at, or the content fits without scrolling, <code>data-at-edge</code>
         is written and the fade retires. Without the option nothing changes. Authored markup needs
         <code>data-sk-fade-edge</code> for the enhancer to find it.
+  - date: 2026-09-30
+    kind: feature
+    es:
+      title: FadeEdge deja la barra de scroll a la vista y desvanece ambos extremos
+      body: >-
+        La máscara ya no desvanece la barra de scroll del propio FadeEdge: los bindings miden su
+        grosor y lo reservan. Nuevas direcciones <code>horizontal</code> y <code>vertical</code> que
+        desvanecen los dos extremos del eje; con <code>scrollAware</code>, cada uno se retira al llegar
+        a su borde. Donde el navegador tiene scroll timelines, <code>scrollAware</code> funciona en CSS
+        desde el primer cuadro, sin esperar al script. El enhancer ahora se monta en todo FadeEdge.
+    en:
+      title: FadeEdge keeps its scrollbar visible and fades both ends
+      body: >-
+        The mask no longer fades the FadeEdge's own scrollbar: the bindings measure its thickness and
+        keep it out. New <code>horizontal</code> and <code>vertical</code> directions fade both ends of
+        the axis; with <code>scrollAware</code>, each retires at its own edge. Where the browser has
+        scroll timelines, <code>scrollAware</code> works in CSS from the first frame, without waiting
+        for script. The enhancer now mounts on every FadeEdge.

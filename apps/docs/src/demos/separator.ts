@@ -118,3 +118,25 @@ export const separatorScaleSpecimenTree = (): UsageTree => ({
   attrs: { style: "inline-size: 8rem" },
   children: [separatorBlock, { contract: "separator", signature: "Separator" }, separatorBlock],
 });
+
+/* Usage guide: three lines about one person, held together by space, against the same lines cut
+   apart by a rule each. Contact data reads the same in both locales, so it stays written. */
+const contactLines = ["Camila Rojas", "camila.rojas@empresa.cl", "+56 9 8765 4321"].map(
+  (line): UsageTree => ({ contract: "typography", signature: "Text", children: line }),
+);
+
+export const separatorDoSpaceTree: UsageTree = {
+  contract: "layout",
+  signature: "Stack",
+  options: { gap: "xs" },
+  children: contactLines,
+};
+
+export const separatorDontEveryRowTree: UsageTree = {
+  contract: "layout",
+  signature: "Stack",
+  options: { gap: "none" },
+  children: contactLines.flatMap((line, index) =>
+    index === 0 ? [line] : [{ contract: "separator", signature: "Separator" } as UsageTree, line],
+  ),
+};

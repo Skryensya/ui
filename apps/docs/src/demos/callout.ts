@@ -151,3 +151,18 @@ export const calloutSuccessTree = (t: Translate): UsageTree => ({
   },
   children: t("demo.callout.success.body"),
 });
+
+/* Usage guide: an action that resolves nothing, added because the slot is there. */
+export const calloutDontActionTree = (t: Translate): UsageTree => ({
+  ...calloutNeutralTree(t),
+  slots: {
+    title: t("demo.callout.neutral.title"),
+    actions: { contract: "button", signature: "Button.action", options: { variant: "soft" }, children: t("demo.callout.gotIt") },
+  },
+});
+
+/* Usage guide: a plan running out painted as an error, which interrupts a screen reader too. */
+export const calloutDontDangerTree = (t: Translate): UsageTree => ({
+  ...calloutWarningTree(t),
+  options: { tone: "danger" },
+});

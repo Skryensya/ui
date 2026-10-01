@@ -1,83 +1,113 @@
 export const commentThreadMessages = {
   es: {
 
-    "commentThread.description":
-      "Comentarios anidados en cinco piezas que se usan juntas o sueltas, data-driven y sin backend propio.",
-    "commentThread.betaBadge": "Beta",
-    "commentThread.lede":
-      "Cinco piezas, no un componente con todo adentro. La más simple es <code>Comment</code>: quién escribió, cuándo y qué dijo, válido sin hilo alrededor. Encima se componen <code>CommentActions</code>, <code>CommentVote</code>, <code>CommentComposer</code> y <code>CommentThread</code>. Las respuestas recursan por composición: <code>Comment</code> adentro de <code>Comment</code>, a cualquier profundidad. Nada de esto llama a una API ni guarda un borrador: cada acción se devuelve a quien lo usa.",
-    "commentThread.anatomyBody":
-      "Este diagrama nombra las partes de un comentario con respuesta y fila de acciones. El espécimen está congelado; los hilos vivos empiezan abajo.",
+    "commentThread.description": "Muestra una conversación con respuestas anidadas: quién escribió, cuándo y qué dijo.",
+
+    "commentThread.a11yKeyEnter": "Activa el control con foco.",
+
+    "commentThread.a11yKeyTab": "Recorre los controles de cada comentario en orden.",
+
+    "commentThread.a11yYours2": 'Borrar no pide confirmación: compón un <a href="/es/componentes/dialog">Dialog</a> si la necesitas.',
+
+    "commentThread.a11yYours1": "Nombra el hilo con <code>label</code>: «Comentarios».",
+
+    "commentThread.a11yDoes3": "El plegado anuncia su estado con <code>aria-expanded</code>.",
+
+    "commentThread.a11yDoes2": "Cada control es un <code>&lt;button&gt;</code> en el orden de tabulación; los de voto tienen nombre propio.",
+
+    "commentThread.a11yDoes1": "Las respuestas son <code>&lt;article&gt;</code> anidados: un lector de pantalla calcula la jerarquía sin <code>aria-level</code>.",
+
+    "commentThread.a11yIntro": "Cada comentario es un <code>&lt;article&gt;</code>; la anidación se lee sola.",
+
+    "commentThread.content4": "Traduce los nombres de los votos: los que trae por defecto dicen «Upvote» y «Downvote».",
+
+    "commentThread.content3": "Al borrar, di qué se pierde: «Se borra junto con sus respuestas».",
+
+    "commentThread.content2": "Nombra las acciones con un verbo: «Responder», «Eliminar».",
+
+    "commentThread.content1": "Muestra la hora relativa («hace 3 h») y la fecha completa en el <code>title</code>.",
+
+    "commentThread.dd.collapse.dont": "Sin controles de plegado, la rama completa empuja el siguiente comentario principal hacia abajo.",
+
+    "commentThread.dd.collapse.do": "Pliega esta conversación anidada y el siguiente comentario principal queda a la vista.",
+
+    "commentThread.dd.collapse.title": "Hilos profundos: plegar una rama",
+
+    "commentThread.dd.permissions.title": "Borrado: solo en lo propio",
+
+    "commentThread.dd.permissions.do": "La app muestra «Eliminar» en el comentario de Ada, pero no en el de Grace.",
+
+    "commentThread.dd.permissions.dont": "Poner «Eliminar» en todos los comentarios promete un permiso que la persona quizá no tiene.",
+
+    "commentThread.dd.nesting.title": "Respuestas: bajo el comentario que contestan",
+
+    "commentThread.dd.nesting.do": "Anidar la respuesta deja claro qué comentario continúa la conversación.",
+
+    "commentThread.dd.nesting.dont": "Como comentarios al mismo nivel, las respuestas pierden el vínculo con aquello que contestan.",
+
+    "commentThread.dd.reaction.title": "Mecánica: reacción o ranking, según el propósito",
+
+    "commentThread.dd.reaction.do": "Si solo quieres expresar simpatía, usa «me gusta»: no hace falta ordenar los comentarios.",
+
+    "commentThread.dd.reaction.dont": "Para una reacción casual, flechas y puntaje hacen parecer que los comentarios compiten. Si quieres ordenarlos, los votos sí tienen sentido.",
+
+    "commentThread.dd.actions.title": "Acciones: solo si hacen falta",
+
+    "commentThread.dd.actions.do": "Si el comentario es solo para leer, muestra autor, fecha y texto, sin controles extra.",
+
+    "commentThread.dd.actions.dont": "Agregar votos, respuestas y borrado a un comentario informativo crea controles que no aportan nada.",
+
+    "commentThread.whenNot3": 'Para una actividad del sistema con horas: usa <a href="/es/componentes/timeline">Timeline</a>.',
+
+    "commentThread.whenNot2": 'Para una jerarquía que se selecciona, como archivos: usa <a href="/es/componentes/tree-view">TreeView</a>.',
+
+    "commentThread.whenNot1": 'Para un flujo plano, sin respuestas anidadas: usa <a href="/es/componentes/feed">Feed</a>.',
+
+    "commentThread.when2": "Para citar un comentario en otra parte: usa <code>Comment</code> solo.",
+
+    "commentThread.when1": "Para una conversación con respuestas anidadas: comentarios de un documento, de un artículo, de una tarea.",
+
+    "commentThread.contract4": "<code>CommentComposer</code> acepta cualquier control: un Textarea, un Input o un Editor.",
+
+    "commentThread.contract3": "Las respuestas se componen: <code>Comment</code> dentro de <code>Comment</code>, a cualquier profundidad.",
+
+    "commentThread.contract2": "Plegar y abrir el cuadro de respuesta sí son estado propio.",
+
+    "commentThread.contract1": "Votar o borrar solo despacha el evento (<code>onVote</code>, <code>onDelete</code> o un <code>CustomEvent</code>): el estado que se ve es el que trae tu dato.",
+    "commentThread.lede": "CommentThread muestra una conversación con respuestas anidadas: quién escribió, cuándo y qué dijo, con votos, respuestas y borrado si hacen falta. Son cinco piezas que se usan juntas o sueltas; la más simple, <code>Comment</code>, vale sin hilo alrededor.",
+    "commentThread.anatomyBody": "Las partes de un comentario con respuesta y fila de acciones.",
     "commentThread.anatomyLabel": "Anatomía de Comment",
     "commentThread.anatomyPreviewLabel": "Comment, parte por parte",
-    "commentThread.whenTitle": "Cuándo usarlo",
-    "commentThread.whenBody1":
-      "Cuando hay una conversación con respuestas anidadas de verdad: cada comentario puede tener los suyos, a cualquier profundidad. Un stream plano de publicaciones sin hilos es <a href=\"/componentes/feed\">Feed</a>; una jerarquía SELECCIONABLE (archivos, un índice) es <a href=\"/componentes/tree-view\">TreeView</a>. Este componente es para contenido de solo lectura con acciones (votar, responder, borrar), no para elegir un ítem.",
-    "commentThread.whenBody2":
-      "Para citar un solo comentario en otra parte no hace falta el hilo: <code>Comment</code> vale por sí solo. La moderación por rol y las menciones enriquecidas (<code>@</code>/<code>#</code>) quedaron afuera a propósito: son decisiones de dominio de cada app, no del sistema de diseño.",
-    "commentThread.demoTitle": "El objeto, de lo más simple al hilo profundo",
-    "commentThread.demoBody":
-      "La pieza más simple: quién escribió, cuándo y qué dijo. No necesita hilo alrededor ni arrastra chrome que no usa.",
-    "commentThread.demoAloneLabel": "Un comentario suelto",
-    "commentThread.demoActionsTitle": "Con acciones",
-    "commentThread.demoActionsBody":
-      "El mismo comentario más la fila: un <code>CommentVote</code> compuesto dentro de un <code>CommentActions</code>. Quién puede votar o borrar es composición, no un puñado de flags.",
+    "commentThread.demoTitle": "Un comentario: la pieza más simple",
+    "commentThread.demoBody": "Autor, hora y texto, sin hilo ni acciones.",
+    "commentThread.demoActionsTitle": "Con acciones: votar, responder, borrar",
+    "commentThread.demoActionsBody": "Un <code>CommentVote</code> dentro de <code>CommentActions</code>. Quién puede votar o borrar se decide al componer.",
     "commentThread.demoActionsLabel": "Comentario con acciones",
     "commentThread.demoLikesTitle": "Me gusta en vez de votos",
-    "commentThread.demoLikesBody":
-      "Con <code>voteStyle: \"like\"</code> las flechas pasan a ser pulgares: un voto ordena, un me gusta reacciona. Es el mismo control, con los mismos eventos (<code>direction</code> sigue siendo <code>up</code> o <code>down</code>). Los dos nombres se pasan siempre, porque los que trae por defecto dicen \"Upvote\" y \"Downvote\".",
+    "commentThread.demoLikesBody": 'Con <code>voteStyle="like"</code> las flechas pasan a pulgares: un voto ordena, un me gusta reacciona. Pasa siempre los dos nombres.',
     "commentThread.demoLikesLabel": "Comentario con me gusta",
-    "commentThread.demoThreadTitle": "Un hilo corto",
-    "commentThread.demoThreadBody":
-      "Tres comentarios, uno respondido. El control de plegado sólo aparece donde hay respuestas que plegar, y el último no trae acciones.",
-    "commentThread.demoFixedTitle": "Sin plegado",
-    "commentThread.demoFixedBody":
-      "El mismo hilo profundo de abajo, pero sin <code>collapsible</code> en ningún nivel: no hay control de plegado en ninguna parte y ninguna respuesta puede ocultarse. Para un hilo de soporte o moderación donde ocultar una respuesta nunca es lo que se quiere.",
+    "commentThread.demoThreadTitle": "Un hilo corto: plegado donde hay respuestas",
+    "commentThread.demoThreadBody": "El botón de plegado solo aparece en los comentarios con respuestas.",
+    "commentThread.demoFixedTitle": "Sin plegado: ninguna respuesta se oculta",
+    "commentThread.demoFixedBody": "Para un hilo de soporte o moderación, donde ocultar una respuesta nunca es lo que se quiere.",
     "commentThread.demoFixedLabel": "Hilo profundo sin plegado",
-    "commentThread.demoDeepTitle": "Profundidad",
-    "commentThread.demoDeepBody":
-      "Cuatro niveles, con hermanos en varios. El conector se dibuja por respuesta y no se mide: la primera vuelve al control de plegado y la última corta en su propio codo, así que la única forma de ver que eso aguanta en profundidad es renderizarlo.",
-    "commentThread.demoThreadLabel": "Hilo corto",
+    "commentThread.demoDeepTitle": "Profundidad: cuatro niveles",
+    "commentThread.demoDeepBody": "El conector se dibuja por respuesta, a cualquier profundidad.",
     "commentThread.demoDeepLabel": "Hilo profundo",
     "commentThread.demoLabel": "Comentarios de ejemplo",
-    "commentThread.demoLoadingTitle": "Cargando",
-    "commentThread.demoLoadingBody":
-      "Dos preguntas distintas: qué se ve mientras algo carga, y qué pasa cuando eso tiene que convivir con lo que ya cargó.",
-    "commentThread.demoSkeletonTitle": "El placeholder",
-    "commentThread.demoSkeletonBody":
-      "La forma de un comentario que todavía no llegó: un círculo donde va el avatar, un par de barras para el encabezado y otro par para el cuerpo. Nada de esto se anuncia - <code>Loader.status</code> avisa la espera una sola vez, no una vez por fila.",
-    "commentThread.demoSkeletonLabel": "Comentarios cargando",
-    "commentThread.demoInfiniteTitle": "En uso: cargando al hacer scroll",
-    "commentThread.demoInfiniteBody":
-      "Los comentarios ya cargados y el placeholder conviven: al llegar al final del scroll aparece la fila del esqueleto justo donde va a caer el próximo comentario, y a los pocos instantes ese comentario real la reemplaza. Nada de esto lo sabe <code>CommentThread</code> - el hilo nunca se entera de que hay páginas.",
+    "commentThread.demoLoadingTitle": "Carga: el placeholder y el scroll infinito",
+    "commentThread.demoLoadingBody": "Qué se ve mientras algo carga, y cómo convive con lo que ya cargó.",
+    "commentThread.demoSkeletonTitle": "El placeholder: la forma de un comentario",
+    "commentThread.demoSkeletonBody": "Un círculo para el avatar y barras para el encabezado y el cuerpo. La espera se anuncia una sola vez, no por fila.",
+    "commentThread.demoInfiniteTitle": "Al desplazarse: carga de a poco",
+    "commentThread.demoInfiniteBody": "Al llegar al final aparece el placeholder donde caerá el próximo comentario, y el comentario real lo reemplaza.",
     "commentThread.demoInfiniteLabel": "Hilo con carga progresiva",
-    "commentThread.behaviorTitle": "Voto y borrado no tocan el DOM por su cuenta",
-    "commentThread.behaviorBody1":
-      "Un clic en votar o borrar solo despacha el evento (<code>onVote</code>/<code>onDelete</code> en React, un <code>CustomEvent</code> en Vanilla) - el estado que se ve (<code>aria-pressed</code>, <code>data-voted</code>) es SIEMPRE el que trae el dato de quien lo usa, nunca algo que este componente decida por su cuenta. Plegar un hilo y abrir/cerrar el cuadro de respuesta sí son estado propio, y usan el mismo patrón de disclosure de <code>NavListGroup</code> (<code>aria-expanded</code> + <code>hidden</code>): no hay máquina de Zag, no hace falta una para un click que alterna un booleano.",
-    "commentThread.behaviorBody2":
-      "Sin <code>role=\"feed\"</code> ni <code>role=\"tree\"</code>: cada comentario es un <code>&lt;article&gt;</code>, y sus respuestas son <code>&lt;article&gt;</code> anidados dentro - la jerarquía que un lector de pantalla ya calcula solo, sin <code>aria-level</code> escrito a mano (la misma exención que la spec normativa de WAI-ARIA da al patrón Tree cuando el árbol entero ya está en el DOM).",
-    "commentThread.optionsTitle": "Opciones",
-    "commentThread.optionsBody":
-      "<code>label</code>: el nombre accesible del hilo. <code>nodes</code>: el árbol de comentarios (cada uno con <code>id</code>, <code>author</code>, <code>timestamp</code>, <code>voteCount</code>, <code>body</code>, y opcionalmente <code>votedByMe</code>, <code>canDelete</code>, <code>replies</code>). <code>composer</code>: la caja para publicar un comentario nuevo, opcional. Los textos de cada control (<code>replyLabel</code>, <code>deleteLabel</code>, <code>voteUpLabel</code>…) son props separadas, nunca texto fijo en un idioma.",
-    "commentThread.a11yP1":
-      "Cada comentario es un <code>&lt;article&gt;</code> de solo lectura con sus acciones dentro, nunca un widget seleccionable: no hay roving tabindex ni flechas propias, cada control (voto, responder, borrar, plegar) es un <code>&lt;button&gt;</code> normal en el orden de Tab. Los botones de voto son solo-ícono; su nombre accesible viene de un <code>&lt;span&gt;</code> recortado con <code>sk-visually-hidden</code>, no de un <code>aria-label</code> aparte.",
-    "commentThread.a11yP2":
-      "Borrar no trae confirmación propia: dispara <code>onDelete</code> directo. Quien necesite un paso de confirmación compone <code>Dialog</code> con <code>alert</code> (pensado exactamente para eso) alrededor de su propio manejador, en vez de que este componente cargue una segunda ventana modal que no todos los consumidores necesitan.",
-    "commentThread.vanillaApiTitle": "La API en Vanilla",
-    "commentThread.vanillaApiBody1":
-      "Cuatro cosas y ninguna más: <strong>escuchar</strong> los tres eventos, <strong>vetar</strong> uno con <code>preventDefault()</code>, <strong>escribir</strong> estado con <code>setCommentVote</code>, y <strong>crear</strong> un comentario clonando un <code>CommentTemplate</code>.",
-    "commentThread.vanillaApiBody2":
-      "Para crear se clona un blueprint y se llenan los campos por los hooks <code>data-sk-comment-*</code>, nunca por las clases de parte: esas son de la hoja de estilos y se mueven cuando cambia la pintura. Es el mismo idiom que usa <a href=\"/componentes/toast\">Toast</a> con su propio <code>ToastTemplate</code>.",
+    "commentThread.vanillaApiTitle": "En Vanilla: escuchar, vetar, escribir y crear",
+    "commentThread.vanillaApiBody1": "Los eventos burbujean y se pueden cancelar con <code>preventDefault()</code>; <code>setCommentVote</code> escribe el estado y un <code>CommentTemplate</code> se clona para crear comentarios.",
     "commentThread.htmlTitle": "HTML escrito a mano",
     "commentThread.htmlBody":
-      "Un comentario recursivo se compone repitiendo esta misma forma dentro de <code>.sk-comment-thread__replies</code>. El <code>FormField</code>/<code>Textarea</code> del formulario de respuesta queda a criterio de quien lo usa - aquí se omite por brevedad.",
+      "Un comentario recursivo se compone repitiendo esta misma forma dentro de <code>.sk-comment-thread__replies</code>. El <code>FormField</code>/<code>Textarea</code> del formulario de respuesta queda a criterio de quien lo usa: aquí se omite por brevedad.",
     "commentThread.reactTitle": "React",
-    "commentThread.contractItem1":
-      "Las respuestas recursan por COMPOSICIÓN, no como colección de datos: <code>Comment.replies</code> acepta <code>Comment</code>, igual que <code>NavListLink.nested</code> acepta <code>NavListGroup</code>. Por eso cada slot a cualquier profundidad admite contenido compuesto, cosa que una colección no podía: una entrada de colección es DATA, y un subárbol adentro se aplanaba a su texto.",
-    "commentThread.contractItem2":
-      "<code>CommentComposer</code> no entrega ningún control: su slot acepta cualquier signature, sin <code>of</code>, igual que el de <code>FormField</code>. Un field, un textarea o un editor entran por igual, y ninguno queda fijo en el contrato.",
-    "commentThread.contractItem3":
-      "La hoja es <code>components/comment-thread.css</code> y publica un prefijo por pieza (<code>sk-comment</code>, <code>sk-comment-actions</code>, <code>sk-comment-vote</code>, <code>sk-comment-composer</code>), porque cada una se usa suelta. Todos los controles son <code>sk-button</code> reales: lo único que la hoja mueve es el tono, vía <code>--sk-button-fg</code>.",
     "commentThread.test1": "Un <code>Comment</code> suelto renderiza autor, fecha y cuerpo, sin hilo ni chrome alrededor.",
     "commentThread.test2": "El slot <code>author</code> acepta contenido compuesto, no solo un string.",
     "commentThread.test3": "No hay control de plegado salvo que el comentario sea <code>collapsible</code> Y tenga respuestas que plegar.",
@@ -127,112 +157,147 @@ export const commentThreadMessages = {
     "demo.commentThread.discardKeep": "Seguir escribiendo",
     "demo.commentThread.discardConfirm": "Descartar",
     "demo.commentThread.author1": "Ada",
+    "demo.commentThread.ddParent": "¿Cómo seguimos?",
+    "demo.commentThread.ddReply": "Dividamos la tarea.",
     "demo.commentThread.time1": "hace 3h",
-    "demo.commentThread.body1": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
+    "demo.commentThread.body1": "¿Alguien probó la exportación a PDF con tablas largas? A mí se me corta en la segunda página.",
+    "demo.commentThread.ddRoot": "¿Cómo seguimos?",
+    "demo.commentThread.ddReply1": "Dividamos la tarea.",
+    "demo.commentThread.ddReply2": "Yo tomo la parte técnica.",
+    "demo.commentThread.ddReply3": "Yo reviso el diseño.",
+    "demo.commentThread.ddNext": "Mientras tanto: otro tema.",
     /* The anatomy specimen's own text, short on purpose: the diagram names the BOX a message lives
        in, and three lines of lorem make that box tall enough to push its own labels apart. */
-    "demo.commentThread.anatomyBody": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-    "demo.commentThread.anatomyReply": "Sed do eiusmod tempor incididunt.",
+    "demo.commentThread.anatomyBody": "¿Alguien probó la exportación a PDF?",
+    "demo.commentThread.anatomyReply": "Sí, funciona desde la versión 2.1.",
     "demo.commentThread.author2": "Grace",
     "demo.commentThread.time2": "hace 1h",
-    "demo.commentThread.body2": "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+    "demo.commentThread.body2": "Me pasó lo mismo. Si las filas tienen texto largo, la tabla no parte bien entre páginas.",
     "demo.commentThread.author3": "Linus",
     "demo.commentThread.time3": "hace 40m",
-    "demo.commentThread.body3": "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
+    "demo.commentThread.body3": "Está arreglado en la versión 2.3. Actualiza y avísanos si sigue pasando.",
     "demo.commentThread.author4": "Margaret",
     "demo.commentThread.time4": "hace 10m",
-    "demo.commentThread.body4": "Lorem ipsum dolor sit amet.",
+    "demo.commentThread.body4": "Confirmo, con la 2.3 ya sale bien.",
     "demo.commentThread.author5": "Alan",
     "demo.commentThread.time5": "hace 5m",
-    "demo.commentThread.body5": "Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+    "demo.commentThread.body5": "¿Se puede elegir el tamaño de página? Necesito A4 y el sistema me da carta.",
     "demo.commentThread.author6": "Barbara",
     "demo.commentThread.time6": "hace 2m",
-    "demo.commentThread.body6": "Consectetur adipiscing elit, sed do eiusmod.",
-    "demo.commentThread.body7": "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium.",
-    "demo.commentThread.body8": "Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit.",
-    "commentThread.showcaseTitle": "Showcases",
-    "commentThread.showcaseBody": "Un hilo de comentarios con respuestas anidadas, votos y su estado de carga.",
-    "commentThread.guidelinesLede": "CommentThread muestra una conversación con respuestas anidadas.",
+    "demo.commentThread.body6": "Está en Ajustes, en la sección Exportar.",
+    "demo.commentThread.body7": "Gracias, no lo había visto.",
+    "demo.commentThread.body8": "Estaría bien que se recordara la última elección.",
+    "commentThread.guidelinesLede": "Un hilo muestra quién respondió a quién.",
   },
   en: {
 
-    "commentThread.description":
-      "Nested comments as five pieces usable together or apart, data-driven with no backend of its own.",
-    "commentThread.betaBadge": "Beta",
-    "commentThread.lede":
-      "Five pieces, not one component with everything folded in. The simplest is <code>Comment</code>: who wrote it, when, and what they said, valid with no thread around it. On top of that compose <code>CommentActions</code>, <code>CommentVote</code>, <code>CommentComposer</code> and <code>CommentThread</code>. Replies recurse by composition: a <code>Comment</code> inside a <code>Comment</code>, at any depth. None of it calls an API or persists a draft: every action is handed back to the consumer.",
-    "commentThread.anatomyBody":
-      "This diagram names the parts of a comment with a reply and an action row. The specimen is frozen; the live threads start below.",
+    "commentThread.description": "Shows a conversation with nested replies: who wrote, when and what they said.",
+
+    "commentThread.a11yKeyEnter": "Activates the focused control.",
+
+    "commentThread.a11yKeyTab": "Moves through each comment's controls in order.",
+
+    "commentThread.a11yYours2": 'Deleting asks for no confirmation: compose a <a href="/components/dialog">Dialog</a> if you need one.',
+
+    "commentThread.a11yYours1": "Name the thread with <code>label</code>: “Comments”.",
+
+    "commentThread.a11yDoes3": "Folding announces its state with <code>aria-expanded</code>.",
+
+    "commentThread.a11yDoes2": "Each control is a <code>&lt;button&gt;</code> in the tab order; the vote buttons have their own names.",
+
+    "commentThread.a11yDoes1": "Replies are nested <code>&lt;article&gt;</code>s: a screen reader works out the hierarchy without <code>aria-level</code>.",
+
+    "commentThread.a11yIntro": "Each comment is an <code>&lt;article&gt;</code>; nesting reads on its own.",
+
+    "commentThread.content4": "Translate the vote names: the defaults say “Upvote” and “Downvote”.",
+
+    "commentThread.content3": "On delete, say what is lost: “It is deleted along with its replies”.",
+
+    "commentThread.content2": "Name actions with a verb: “Reply”, “Delete”.",
+
+    "commentThread.content1": "Show relative time (“3 h ago”) and the full date in the <code>title</code>.",
+
+    "commentThread.dd.collapse.dont": "Without fold controls, the whole branch pushes the next main comment farther down.",
+
+    "commentThread.dd.collapse.do": "Fold this nested conversation and the next main comment stays in view.",
+
+    "commentThread.dd.collapse.title": "Deep threads: fold a branch",
+
+    "commentThread.dd.permissions.title": "Deletion: only on your own comments",
+
+    "commentThread.dd.permissions.do": "The app shows “Delete” on Ada's comment, but not Grace's.",
+
+    "commentThread.dd.permissions.dont": "Showing “Delete” on every comment promises a permission the person may not have.",
+
+    "commentThread.dd.nesting.title": "Replies: beneath the comment they answer",
+
+    "commentThread.dd.nesting.do": "Nesting a reply makes clear which comment it continues.",
+
+    "commentThread.dd.nesting.dont": "As comments at the same level, replies lose their connection to the message they answer.",
+
+    "commentThread.dd.reaction.title": "Mechanic: reaction or ranking, depending on the goal",
+
+    "commentThread.dd.reaction.do": "If you only want to show appreciation, use a like: there is no need to rank comments.",
+
+    "commentThread.dd.reaction.dont": "For a casual reaction, arrows and a score make comments look like competitors. If you want to rank them, votes make sense.",
+
+    "commentThread.dd.actions.title": "Actions: only when they are needed",
+
+    "commentThread.dd.actions.do": "When a comment is only for reading, show its author, date and text without extra controls.",
+
+    "commentThread.dd.actions.dont": "Adding votes, replies and deletion to an informational comment creates controls that serve no purpose.",
+
+    "commentThread.whenNot3": 'For system activity with times: use <a href="/components/timeline">Timeline</a>.',
+
+    "commentThread.whenNot2": 'For a selectable hierarchy, like files: use <a href="/components/tree-view">TreeView</a>.',
+
+    "commentThread.whenNot1": 'For a flat stream with no nested replies: use <a href="/components/feed">Feed</a>.',
+
+    "commentThread.when2": "To quote one comment elsewhere: use <code>Comment</code> alone.",
+
+    "commentThread.when1": "For a conversation with nested replies: comments on a document, an article, a task.",
+
+    "commentThread.contract4": "<code>CommentComposer</code> takes any control: a Textarea, an Input or an Editor.",
+
+    "commentThread.contract3": "Replies are composed: <code>Comment</code> inside <code>Comment</code>, at any depth.",
+
+    "commentThread.contract2": "Folding and opening the reply box are its own state.",
+
+    "commentThread.contract1": "Voting or deleting only dispatches the event (<code>onVote</code>, <code>onDelete</code> or a <code>CustomEvent</code>): the visible state is whatever your data says.",
+    "commentThread.lede": "CommentThread shows a conversation with nested replies: who wrote, when and what they said, with votes, replies and deletion when needed. It is five pieces used together or alone; the simplest, <code>Comment</code>, works with no thread around it.",
+    "commentThread.anatomyBody": "The parts of a comment with a reply and an action row.",
     "commentThread.anatomyLabel": "Comment anatomy",
     "commentThread.anatomyPreviewLabel": "Comment, part by part",
-    "commentThread.whenTitle": "When to use it",
-    "commentThread.whenBody1":
-      "When there is a conversation with genuinely nested replies: any comment can have its own, at any depth. A flat stream of posts with no threading is <a href=\"/components/feed\">Feed</a>; a SELECTABLE hierarchy (files, an index) is <a href=\"/components/tree-view\">TreeView</a>. This one is for read-only content with actions (vote, reply, delete), not for picking an item.",
-    "commentThread.whenBody2":
-      "Per-node moderation by role and rich mention autocomplete (<code>@</code>/<code>#</code>) are deliberately out of this first version: those are each app's own domain decisions, not the design system's.",
-    "commentThread.demoTitle": "The object, from the simplest piece to a deep thread",
-    "commentThread.demoBody":
-      "The simplest piece: who wrote it, when, and what they said. It needs no thread around it and drags no chrome it does not use.",
-    "commentThread.demoAloneLabel": "One comment on its own",
-    "commentThread.demoActionsTitle": "With actions",
-    "commentThread.demoActionsBody":
-      "The same comment plus the row: a <code>CommentVote</code> composed inside a <code>CommentActions</code>. Who may vote or delete is composition, not a handful of flags.",
+    "commentThread.demoTitle": "One comment: the simplest piece",
+    "commentThread.demoBody": "Author, time and text, with no thread and no actions.",
+    "commentThread.demoActionsTitle": "With actions: vote, reply, delete",
+    "commentThread.demoActionsBody": "A <code>CommentVote</code> inside <code>CommentActions</code>. Who can vote or delete is decided when composing.",
     "commentThread.demoActionsLabel": "Comment with actions",
     "commentThread.demoLikesTitle": "Likes instead of votes",
-    "commentThread.demoLikesBody":
-      "With <code>voteStyle: \"like\"</code> the arrows become thumbs: a vote ranks, a like reacts. It is the same control with the same events (<code>direction</code> is still <code>up</code> or <code>down</code>). Both names are always passed, because the defaults say \"Upvote\" and \"Downvote\".",
+    "commentThread.demoLikesBody": 'With <code>voteStyle="like"</code> the arrows become thumbs: a vote ranks, a like reacts. Always pass both names.',
     "commentThread.demoLikesLabel": "Comment with likes",
-    "commentThread.demoThreadTitle": "A short thread",
-    "commentThread.demoThreadBody":
-      "Three comments, one of them answered. The fold control appears only where there are replies to fold, and the last comment carries no actions.",
-    "commentThread.demoFixedTitle": "No folding",
-    "commentThread.demoFixedBody":
-      "The same deep thread below, but without <code>collapsible</code> at any level: there is no fold control anywhere, and no reply can ever be hidden. For a support or moderation thread where hiding a reply is never the right call.",
+    "commentThread.demoThreadTitle": "A short thread: folding where there are replies",
+    "commentThread.demoThreadBody": "The fold button only appears on comments with replies.",
+    "commentThread.demoFixedTitle": "No folding: no reply can be hidden",
+    "commentThread.demoFixedBody": "For a support or moderation thread, where hiding a reply is never what is wanted.",
     "commentThread.demoFixedLabel": "Deep thread with no folding",
-    "commentThread.demoDeepTitle": "Depth",
-    "commentThread.demoDeepBody":
-      "Four levels, with siblings at several of them. The connector is drawn per reply rather than measured - the first reaches back to the fold control, the last clips at its own elbow - so the only way to see that hold at depth is to render it.",
-    "commentThread.demoThreadLabel": "Short thread",
+    "commentThread.demoDeepTitle": "Depth: four levels",
+    "commentThread.demoDeepBody": "The connector is drawn per reply, at any depth.",
     "commentThread.demoDeepLabel": "Deep thread",
     "commentThread.demoLabel": "Sample comments",
-    "commentThread.demoLoadingTitle": "Loading",
-    "commentThread.demoLoadingBody":
-      "Two different questions: what shows while something is loading, and what happens when that has to sit next to what already loaded.",
-    "commentThread.demoSkeletonTitle": "The placeholder",
-    "commentThread.demoSkeletonBody":
-      "The shape of a comment that has not arrived yet: a circle where the avatar goes, a couple of bars for the header, another couple for the body. None of it is announced - <code>Loader.status</code> reports the wait once, not once per row.",
-    "commentThread.demoSkeletonLabel": "Comments loading",
-    "commentThread.demoInfiniteTitle": "In use: loading on scroll",
-    "commentThread.demoInfiniteBody":
-      "Comments already loaded and the placeholder sit side by side: reaching the end of the scroll reveals the skeleton row exactly where the next comment will land, and moments later a real comment replaces it. None of this is <code>CommentThread</code>'s own - the thread never learns that pages exist.",
+    "commentThread.demoLoadingTitle": "Loading: the placeholder and infinite scroll",
+    "commentThread.demoLoadingBody": "What shows while something loads, and how it lives beside what already loaded.",
+    "commentThread.demoSkeletonTitle": "The placeholder: a comment's shape",
+    "commentThread.demoSkeletonBody": "A circle for the avatar and bars for the header and body. The wait is announced once, not per row.",
+    "commentThread.demoInfiniteTitle": "While scrolling: it loads bit by bit",
+    "commentThread.demoInfiniteBody": "At the end, the placeholder appears where the next comment will land, and the real comment replaces it.",
     "commentThread.demoInfiniteLabel": "Thread with progressive loading",
-    "commentThread.behaviorTitle": "Vote and delete never touch the DOM on their own",
-    "commentThread.behaviorBody1":
-      "A click on vote or delete only dispatches the event (<code>onVote</code>/<code>onDelete</code> in React, a <code>CustomEvent</code> in Vanilla) - the visible state (<code>aria-pressed</code>, <code>data-voted</code>) is ALWAYS whatever the consumer's own data says, never something this component decides on its own. Folding a thread and opening/closing the reply box ARE this component's own state, and use the same disclosure pattern as <code>NavListGroup</code> (<code>aria-expanded</code> + <code>hidden</code>): no Zag machine, none needed for a click that flips one boolean.",
-    "commentThread.behaviorBody2":
-      "No <code>role=\"feed\"</code>, no <code>role=\"tree\"</code>: every comment is an <code>&lt;article&gt;</code>, and its replies are nested <code>&lt;article&gt;</code> elements inside it - the hierarchy a screen reader already computes on its own, with no hand-authored <code>aria-level</code> (the same exemption WAI-ARIA's own normative Tree spec gives once the whole tree is already in the DOM).",
-    "commentThread.optionsTitle": "Options",
-    "commentThread.optionsBody":
-      "<code>label</code>: the thread's accessible name. <code>nodes</code>: the comment tree (each with <code>id</code>, <code>author</code>, <code>timestamp</code>, <code>voteCount</code>, <code>body</code>, and optionally <code>votedByMe</code>, <code>canDelete</code>, <code>replies</code>). <code>composer</code>: the box for posting a new comment, optional. Every control's copy (<code>replyLabel</code>, <code>deleteLabel</code>, <code>voteUpLabel</code>…) is its own prop, never fixed text in one language.",
-    "commentThread.a11yP1":
-      "Every comment is a read-only <code>&lt;article&gt;</code> with its actions inside, never a selectable widget: no roving tabindex, no arrow keys of its own - each control (vote, reply, delete, collapse) is a plain <code>&lt;button&gt;</code> in Tab order. The vote buttons are icon-only; their accessible name comes from a <code>&lt;span&gt;</code> clipped with <code>sk-visually-hidden</code>, not a separate <code>aria-label</code>.",
-    "commentThread.a11yP2":
-      "Delete ships no confirmation of its own: it fires <code>onDelete</code> directly. A consumer who wants a confirm step composes <code>Dialog</code> with <code>alert</code> (built for exactly that) around their own handler, rather than this component shipping a second modal not every consumer needs.",
-    "commentThread.vanillaApiTitle": "The Vanilla API",
-    "commentThread.vanillaApiBody1":
-      "Four things and no more: <strong>listen</strong> to the three events, <strong>veto</strong> one with <code>preventDefault()</code>, <strong>write</strong> state with <code>setCommentVote</code>, and <strong>create</strong> a comment by cloning a <code>CommentTemplate</code>.",
-    "commentThread.vanillaApiBody2":
-      "Creating means cloning a blueprint and filling it through the <code>data-sk-comment-*</code> hooks, never through part classes: those belong to the stylesheet and move whenever the paint does. It is the same idiom <a href=\"/components/toast\">Toast</a> uses with its own <code>ToastTemplate</code>.",
+    "commentThread.vanillaApiTitle": "In Vanilla: listen, veto, write and create",
+    "commentThread.vanillaApiBody1": "The events bubble and can be cancelled with <code>preventDefault()</code>; <code>setCommentVote</code> writes state and a <code>CommentTemplate</code> is cloned to create comments.",
     "commentThread.htmlTitle": "Authored HTML",
     "commentThread.htmlBody":
       "A recursive comment is composed by repeating this same shape inside <code>.sk-comment-thread__replies</code>. The reply form's <code>FormField</code>/<code>Textarea</code> is the consumer's own composition - omitted here for brevity.",
     "commentThread.reactTitle": "React",
-    "commentThread.contractItem1":
-      "The tree is <code>nodes</code> (not <code>items</code>): the same name <code>TreeView</code>'s own recursive collection already uses.",
-    "commentThread.contractItem2":
-      "<code>CommentComposer</code> ships no control: its slot takes any signature at all, with no <code>of</code>, exactly as <code>FormField</code>'s own does. A field, a textarea or an editor all fit, and none of them is fixed in the contract.",
-    "commentThread.contractItem3":
-      "Its stylesheet is <code>components/comment-thread.css</code>, and it publishes one class prefix per piece (<code>sk-comment</code>, <code>sk-comment-actions</code>, <code>sk-comment-vote</code>, <code>sk-comment-composer</code>), because each is used on its own. Every control is a real <code>sk-button</code>: the only thing the sheet moves is the tone, through <code>--sk-button-fg</code>.",
     "commentThread.test1": "A standalone <code>Comment</code> renders author, time and body, with no thread or chrome around it.",
     "commentThread.test2": "The <code>author</code> slot takes composed content, not only a string.",
     "commentThread.test3": "There is no fold control unless the comment is <code>collapsible</code> AND has replies to fold.",
@@ -283,30 +348,35 @@ export const commentThreadMessages = {
     "demo.commentThread.discardConfirm": "Discard",
     "demo.commentThread.author1": "Ada",
     "demo.commentThread.time1": "3h ago",
-    "demo.commentThread.body1": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
+    "demo.commentThread.body1": "Has anyone tried the PDF export with long tables? Mine cuts off on the second page.",
+    "demo.commentThread.ddRoot": "How should we proceed?",
+    "demo.commentThread.ddReply1": "Let's split up the task.",
+    "demo.commentThread.ddReply2": "I'll take the technical part.",
+    "demo.commentThread.ddReply3": "I'll review the design.",
+    "demo.commentThread.ddNext": "Meanwhile: another topic.",
     /* The anatomy specimen's own text, short on purpose: the diagram names the BOX a message lives
        in, and three lines of lorem make that box tall enough to push its own labels apart. */
-    "demo.commentThread.anatomyBody": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-    "demo.commentThread.anatomyReply": "Sed do eiusmod tempor incididunt.",
+    "demo.commentThread.anatomyBody": "Has anyone tried the PDF export?",
+    "demo.commentThread.anatomyReply": "Yes, it works since version 2.1.",
     "demo.commentThread.author2": "Grace",
     "demo.commentThread.time2": "1h ago",
-    "demo.commentThread.body2": "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+    "demo.commentThread.body2": "Same here. When rows have long text, the table does not split well across pages.",
     "demo.commentThread.author3": "Linus",
     "demo.commentThread.time3": "40m ago",
-    "demo.commentThread.body3": "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
+    "demo.commentThread.body3": "It is fixed in version 2.3. Update and let us know if it still happens.",
     "demo.commentThread.author4": "Margaret",
     "demo.commentThread.time4": "10m ago",
-    "demo.commentThread.body4": "Lorem ipsum dolor sit amet.",
+    "demo.commentThread.body4": "Confirmed, it comes out right with 2.3.",
     "demo.commentThread.author5": "Alan",
     "demo.commentThread.time5": "5m ago",
-    "demo.commentThread.body5": "Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+    "demo.commentThread.body5": "Can I choose the page size? I need A4 and it gives me Letter.",
     "demo.commentThread.author6": "Barbara",
     "demo.commentThread.time6": "2m ago",
-    "demo.commentThread.body6": "Consectetur adipiscing elit, sed do eiusmod.",
-    "demo.commentThread.body7": "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium.",
-    "demo.commentThread.body8": "Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit.",
-    "commentThread.showcaseTitle": "Showcases",
-    "commentThread.showcaseBody": "A comment thread with nested replies, votes, and its loading state.",
-    "commentThread.guidelinesLede": "CommentThread shows a conversation with nested replies.",
+    "demo.commentThread.body6": "It is in Settings, under Export.",
+    "demo.commentThread.body7": "Thanks, I had missed it.",
+    "demo.commentThread.body8": "It would be nice if it remembered the last choice.",
+    "demo.commentThread.ddParent": "How should we proceed?",
+    "demo.commentThread.ddReply": "Let's split up the task.",
+    "commentThread.guidelinesLede": "A thread shows who replied to whom.",
   },
 } as const;

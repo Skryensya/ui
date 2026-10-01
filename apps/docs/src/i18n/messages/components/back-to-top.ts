@@ -1,46 +1,55 @@
 export const backToTopMessages = {
   es: {
 
-    "backToTop.description":
-      "Un botón que devuelve un scroller a su inicio, colocado donde el consumidor quiera. Aparece solo después de pasar un umbral de scroll y se va solo al volver arriba.",
-    "backToTop.betaBadge": "Beta",
-    "backToTop.lede":
-      "En una página larga hay un movimiento que se repite: volver al principio. El teclado tiene <kbd>Inicio</kbd> y el trackpad un impulso fuerte, y ninguno se ve. Un botón visible mientras se baja es la señal de que ese movimiento existe. Dónde se ancla no lo decide el componente: aquí va alineado al rail del índice, porque ese es el borde que ya responde \"dónde estoy, llévame a otro lado\".",
-    "backToTop.anatomyBody":
-      "Este diagrama nombra el root, el icono y la etiqueta. El espécimen es el pill con texto visible: por defecto la etiqueta está recortada a un nombre accesible, y un diagrama que nombrara una parte invisible sería peor que omitirla. Está congelado; el objeto vivo y el scroll empiezan abajo.",
+    "backToTop.description": "Devuelve al inicio de una página larga con un clic, y solo aparece cuando hace falta.",
+
+    "backToTop.a11yKeyEnter": "Vuelve al inicio. Con <code>target</code>, mueve el foco ahí.",
+
+    "backToTop.a11yKeyTab": "Llega al botón cuando está visible.",
+
+    "backToTop.a11yYours2": "Ubícalo donde no tape contenido ni controles al aparecer.",
+
+    "backToTop.a11yYours1": 'Pasa <code>target</code> con algo enfocable del inicio (un encabezado con <code>tabindex="-1"</code>). Sin él, el foco se queda en un botón que ya se escondió.',
+
+    "backToTop.a11yDoes3": "Respeta <code>prefers-reduced-motion</code>: sin animación, sube de inmediato.",
+
+    "backToTop.a11yDoes2": "Escondido, sale del árbol de accesibilidad y del orden de tabulación.",
+
+    "backToTop.a11yDoes1": 'Renderiza un <code>&lt;button type="button"&gt;</code>; la etiqueta recortada es su nombre accesible y el chevron es decorativo.',
+
+    "backToTop.a11yIntro": "Es un botón nativo con nombre, que desaparece del recorrido de foco mientras está escondido.",
+
+    "backToTop.content2": "Di adónde lleva. En un panel, nombra el panel: “Volver al inicio de la lista”.",
+
+    "backToTop.content1": "Debe tener etiqueta aunque no se vea: “Volver arriba”.",
+
+    "backToTop.whenNot4": "Para recordar la posición entre páginas: es tarea del router, no de un botón.",
+
+    "backToTop.whenNot3": 'Para ir a una sección concreta: usa un enlace de ancla o <a href="/es/componentes/toc">Toc</a>.',
+
+    "backToTop.whenNot2": 'Para saltar el encabezado y llegar al contenido: usa <a href="/es/componentes/skip-link">SkipLink</a>.',
+
+    "backToTop.whenNot1": "Si la página entra en una pantalla: no hay adónde volver. No lo pongas.",
+
+    "backToTop.when2": "En un panel con desplazamiento propio: apúntalo con <code>scroller</code>.",
+
+    "backToTop.when1": "En páginas largas, donde la persona baja varias pantallas: documentación, artículos, listados.",
+
+    "backToTop.contract3": "El desplazamiento es suave, e instantáneo si la persona pidió menos movimiento.",
+
+    "backToTop.contract2": "<code>threshold</code> son los píxeles antes de aparecer (400 por defecto). <code>scroller</code> apunta a un panel con desplazamiento propio. <code>target</code> mueve el foco después de subir.",
+
+    "backToTop.contract1": "Viene con <code>hidden</code>: sin JavaScript no ocupa lugar.",
+    "backToTop.lede": "BackToTop devuelve al inicio de una página larga con un clic. Aparece cuando la persona ya bajó lo suficiente y se va al volver arriba, así no ocupa lugar cuando no hace falta.",
+    "backToTop.anatomyBody": "El botón, el ícono y la etiqueta. El diagrama muestra la etiqueta, que por defecto está recortada.",
     "backToTop.anatomyLabel": "Anatomía de BackToTop",
     "backToTop.anatomyPreviewLabel": "BackToTop, parte por parte",
-    "backToTop.whenTitle": "Cuándo usarlo",
-    "backToTop.whenBody1":
-      "Cuando la página es larga y quien baja mucho quiere volver arriba sin arrastrar el scroll a mano. El botón viene con <code>hidden</code>: sin JavaScript no ocupa lugar, y con él aparece solo después de pasar <code>threshold</code> píxeles (400 por defecto) y se esconde de nuevo al volver.",
-    "backToTop.whenBody2":
-      "No es <a href=\"/componentes/skip-link\">SkipLink</a>: ese va primero en el documento, se alcanza con Tab antes que nada y salta por un ancla real. Este aparece tarde, se alcanza con el puntero o tabulando hasta él, y llama a <code>scrollTo</code> sobre un scroller que puede no ser el documento. Si quieres llevar a una sección puntual y no al principio, eso es un enlace de ancla o <a href=\"/componentes/toc\">Toc</a>.",
-    "backToTop.behaviorTitle": "El comportamiento vive en las dos bindings, no en el markup",
-    "backToTop.behaviorBody1":
-      "No hay máquina de Zag para \"revelar al pasar un umbral\", así que se escribe como <code>hotkey</code>: la parte pura (¿pasó el umbral?, ¿la animación se atenúa?) vive en <code>@skryensya/core/back-to-top</code> y la comparten el enhancer de Vanilla y el componente de React. Cada binding pone lo que toca la plataforma: qué scroller escuchar, prender y apagar <code>hidden</code> por frame, y el <code>scrollTo</code> al hacer clic.",
-    "backToTop.behaviorBody2":
-      "El scroll lo hace la plataforma: suave por defecto, instantáneo si el lector pidió menos movimiento (<code>prefers-reduced-motion</code>). En este preview <code>threshold</code> está en <code>0</code> para que se vea sin nada que scrollear; en una página real se queda escondido hasta que bajas una pantalla o dos.",
     "backToTop.demoLabel": "Volver arriba",
-    "backToTop.optionsTitle": "Opciones",
-    "backToTop.optionsBody":
-      "<code>threshold</code>: los píxeles de scroll antes de aparecer. <code>scroller</code>: un selector CSS para un panel con overflow propio, en vez de la ventana. <code>target</code>: un selector de algo enfocable arriba al que mover el foco después del scroll, para que el siguiente Tab siga desde el principio y no desde un control que ya se escondió (el destino tiene que poder recibir el foco, con <code>tabindex=\"-1\"</code> si es un landmark o un encabezado).",
-    "backToTop.a11yP1":
-      "Es un <code>&lt;button type=\"button\"&gt;</code> con un nombre accesible obligatorio: la marca visible es un <code>chevron-up</code> del set de iconos (decorativo, <code>aria-hidden</code>) y la etiqueta que le pasas (<code>sk-back-to-top__label</code>) queda recortada a una caja de solo-nombre, la misma técnica que <code>sk-visually-hidden</code>. Un texto requerido en un <code>&lt;button&gt;</code> hace que el control siempre tenga nombre, así que no hay regla de a11y que evaluar: la garantía es estructural.",
-    "backToTop.a11yP2":
-      "Escondido es <code>visibility</code>, no <code>display</code>: la hoja pisa el <code>[hidden]</code> de la UA para que la aparición pueda animarse, y <code>visibility: hidden</code> hace el trabajo semántico (fuera del árbol de accesibilidad y fuera del orden de tabulación) que <code>[hidden]</code> promete. Sin <code>target</code>, el foco no viaja: si te importa que el Tab siguiente arranque de arriba, pásalo.",
-    "backToTop.contractItem1":
-      "En HTML: un <code>&lt;button class=\"sk-back-to-top sk-interactive\" data-sk-back-to-top hidden&gt;</code> con el placeholder <code>&lt;span class=\"sk-back-to-top__icon\"&gt;&lt;span data-sk-icon=\"chevron-up\"&gt;</code> y la etiqueta en un <code>&lt;span class=\"sk-back-to-top__label\"&gt;</code>. El enhancer lo monta solo por <code>montaje automático</code> (y el mismo pase enlaza el icono al set).",
-    "backToTop.contractItem2":
-      "En React: <code>&lt;BackToTop&gt;Volver arriba&lt;/BackToTop&gt;</code>. <code>threshold</code>, <code>scroller</code> y <code>target</code> son props; el componente maneja <code>hidden</code> por estado.",
-    "backToTop.contractItem3":
-      "La hoja es <code>components/back-to-top.css</code>. Para un pill con texto visible, un consumidor restaura <code>.sk-back-to-top__label</code> (<code>position: static</code>, sin recorte) y le da aire al root; el nombre ya está bien, esto solo decide si se dibuja.",
-    "backToTop.demoStaticTitle": "El objeto",
-    "backToTop.demoStaticBody":
-      'Con <code>threshold</code> en <code>0</code> queda siempre visible, así se ve la pieza: un botón redondo con un <code>chevron-up</code> del set de iconos (Lucide en este sitio) y una sombra de superficie flotante. Al pasarle el puntero se levanta un pelo y el chevron lo acompaña.',
+    "backToTop.demoStaticTitle": "El botón: un chevron con nombre",
+    "backToTop.demoStaticBody": "Con <code>threshold</code> en <code>0</code> queda siempre visible. La etiqueta está recortada: se oye, no se ve.",
     "backToTop.demoStaticLabel": "BackToTop siempre visible",
-    "backToTop.demoScrollTitle": "El comportamiento",
-    "backToTop.demoScrollBody":
-      "Aquí el preview scrollea. Baja dentro del recuadro: el botón aparece con un pop (aparece, escala desde chico, sube a su lugar) una vez que pasas el umbral, y al hacerle clic te lleva de vuelta arriba. Vuelve a subir y se va solo.",
+    "backToTop.demoScrollTitle": "Al desplazarse: aparece pasado el umbral",
+    "backToTop.demoScrollBody": "Baja dentro del recuadro: el botón aparece al pasar el umbral y, al presionarlo, vuelve arriba. Al llegar, se va solo.",
     "backToTop.demoScrollLabel": "BackToTop al scrollear",
     "backToTop.demoScrollHint": "Desplázate dentro del recuadro para verlo aparecer.",
     "backToTop.scrollDemoP1":
@@ -77,52 +86,66 @@ export const backToTopMessages = {
     "backToTop.test19": "Actúa sobre un scroller interno nombrado en vez de la ventana.",
     "backToTop.test20": "Deja de sincronizar una vez limpiado (<code>off()</code>).",
     "backToTop.test21": "Se monta una sola vez por raíz escrita a mano; una segunda llamada no hace nada.",
-    "backToTop.showcaseTitle": "Showcases",
-    "backToTop.showcaseBody": "El botón quieto, y el mismo apareciendo al bajar en un área con scroll.",
-    "backToTop.guidelinesLede": "BackToTop devuelve al inicio de una página larga con un clic.",
+    "backToTop.guidelinesLede": "Un atajo visible para un movimiento que se repite en páginas largas: volver arriba.",
+    "backToTop.dd.placement.title": "Ubicación: despeja el contenido",
+    "backToTop.dd.placement.do": "Pon el botón en una esquina libre para que siga a mano sin tapar lo que se está leyendo.",
+    "backToTop.dd.placement.dont": "No lo pongas sobre el texto: el atajo no debe ocultar el contenido al que acompaña.",
+    "backToTop.dd.mockEyebrow": "DOCUMENTACIÓN · GUÍA",
+    "backToTop.dd.mockTitle": "Leer la documentación",
+    "backToTop.dd.mockBody1": "El contenido largo se recorre a tu ritmo. Puedes volver al inicio cuando lo necesites.",
+    "backToTop.dd.mockBody2": "Deja espacio alrededor del texto y los controles para que nada importante quede cubierto.",
   },
   en: {
 
-    "backToTop.description":
-      "A button that returns a scroller to its start, placed wherever the consumer wants it. It appears only after the reader is past a scroll threshold and hides again on the way back.",
-    "backToTop.betaBadge": "Beta",
-    "backToTop.lede":
-      "A long page has one move the reader makes over and over: get back to the start. The keyboard has <kbd>Home</kbd> and a trackpad has a hard flick, and neither is discoverable. A button that stays visible while scrolling is the affordance that says the move exists. Where it anchors is not the component's call: here it aligns to the index rail, the edge that already answers \"where am I, take me somewhere\".",
-    "backToTop.anatomyBody":
-      "This diagram names the root, the icon, and the label. The specimen is the labelled pill: by default the label is clipped to an accessible name, and a diagram that named an invisible part would be worse than omitting it. It is frozen; the live object and scroll demos start below.",
+    "backToTop.description": "Takes people back to the top of a long page in one click, and only appears when needed.",
+
+    "backToTop.a11yKeyEnter": "Goes back to the top. With <code>target</code>, moves focus there.",
+
+    "backToTop.a11yKeyTab": "Reaches the button while it is visible.",
+
+    "backToTop.a11yYours2": "Place it where it covers no content or controls when it appears.",
+
+    "backToTop.a11yYours1": 'Pass <code>target</code> with something focusable at the top (a heading with <code>tabindex="-1"</code>). Without it, focus stays on a button that just hid.',
+
+    "backToTop.a11yDoes3": "It respects <code>prefers-reduced-motion</code>: with no animation, it jumps up at once.",
+
+    "backToTop.a11yDoes2": "While hidden, it is out of the accessibility tree and the tab order.",
+
+    "backToTop.a11yDoes1": 'It renders a <code>&lt;button type="button"&gt;</code>; the clipped label is its accessible name and the chevron is decorative.',
+
+    "backToTop.a11yIntro": "It is a native, named button that leaves the focus order while hidden.",
+
+    "backToTop.content2": "Say where it goes. In a panel, name the panel: “Back to the start of the list”.",
+
+    "backToTop.content1": "It must have a label even though it is not visible: “Back to top”.",
+
+    "backToTop.whenNot4": "To remember the position between pages: that is the router's job, not a button's.",
+
+    "backToTop.whenNot3": 'To go to a specific section: use an anchor link or <a href="/components/toc">Toc</a>.',
+
+    "backToTop.whenNot2": 'To skip the header and reach the content: use <a href="/components/skip-link">SkipLink</a>.',
+
+    "backToTop.whenNot1": "If the page fits on one screen: there is nowhere to go back to. Leave it out.",
+
+    "backToTop.when2": "In a panel with its own scroll: point it there with <code>scroller</code>.",
+
+    "backToTop.when1": "On long pages where people scroll several screens: documentation, articles, listings.",
+
+    "backToTop.contract3": "Scrolling is smooth, and instant if the person asked for less motion.",
+
+    "backToTop.contract2": "<code>threshold</code> is the pixels before it appears (400 by default). <code>scroller</code> points it at a panel with its own scroll. <code>target</code> moves focus after scrolling up.",
+
+    "backToTop.contract1": "It ships with <code>hidden</code>: without JavaScript it takes no room.",
+    "backToTop.lede": "BackToTop takes people back to the top of a long page in one click. It appears once they have scrolled far enough and leaves when they are back at the top, so it takes no room when it is not needed.",
+    "backToTop.anatomyBody": "The button, the icon and the label. The diagram shows the label, which is clipped by default.",
     "backToTop.anatomyLabel": "BackToTop anatomy",
     "backToTop.anatomyPreviewLabel": "BackToTop, part by part",
-    "backToTop.whenTitle": "When to use it",
-    "backToTop.whenBody1":
-      "When the page is long and a reader who scrolled far wants back to the top without dragging the scrollbar by hand. The button ships <code>hidden</code>: with no JavaScript it takes no room, and with it, it appears only once the reader is <code>threshold</code> pixels past the top (400 by default) and hides again on the way back.",
-    "backToTop.whenBody2":
-      "It is not <a href=\"/components/skip-link\">SkipLink</a>: that one goes first in the document, is reached by Tab before anything else, and jumps through a real anchor. This one appears late, is reached by pointer or by tabbing to it, and calls <code>scrollTo</code> on a scroller that may not be the document. To land on a specific section rather than the start, that is an anchor link, or <a href=\"/components/toc\">Toc</a>.",
-    "backToTop.behaviorTitle": "The behaviour lives in both bindings, not in the markup",
-    "backToTop.behaviorBody1":
-      "No Zag machine covers \"reveal past a scroll threshold\", so it is written the <code>hotkey</code> way: the pure half - past the threshold?, does the scroll animate? - lives in <code>@skryensya/core/back-to-top</code> and both the Vanilla enhancer and the React component share it. Each binding owns what touches the platform: which scroller to watch, toggling <code>hidden</code> per frame, and the <code>scrollTo</code> on click.",
-    "backToTop.behaviorBody2":
-      "The scroll is the platform's: smooth by default, instant when the reader asked for less motion (<code>prefers-reduced-motion</code>). This preview pins <code>threshold</code> to <code>0</code> so the button shows with nothing to scroll; on a real page it stays hidden until you are a screen or two down.",
     "backToTop.demoLabel": "Back to top",
-    "backToTop.optionsTitle": "Options",
-    "backToTop.optionsBody":
-      "<code>threshold</code>: the scroll distance before it reveals. <code>scroller</code>: a CSS selector for an inner <code>overflow</code> pane instead of the window. <code>target</code>: a selector for a focusable element up top to move focus to after the scroll, so the next Tab continues from the start rather than from a control that has hidden itself (the target has to be focusable, with <code>tabindex=\"-1\"</code> if it is a landmark or a heading).",
-    "backToTop.a11yP1":
-      "It is a <code>&lt;button type=\"button\"&gt;</code> with a required accessible name: the visible mark is a <code>chevron-up</code> from the bound icon set (decorative, <code>aria-hidden</code>) and the label you pass (<code>sk-back-to-top__label</code>) is clipped to a name-only box, the same technique as <code>sk-visually-hidden</code>. Required text on a <code>&lt;button&gt;</code> means the control is always named, so there is no a11y rule to evaluate: the guarantee is structural.",
-    "backToTop.a11yP2":
-      "Hidden is <code>visibility</code>, not <code>display</code>: the stylesheet overrides the UA <code>[hidden]</code> so the reveal can animate, and <code>visibility: hidden</code> does the semantic work - out of the accessibility tree, out of the tab order - that <code>[hidden]</code> promises. Without <code>target</code>, focus does not travel: if it matters that the next Tab starts from the top, pass it.",
-    "backToTop.contractItem1":
-      "In HTML: a <code>&lt;button class=\"sk-back-to-top sk-interactive\" data-sk-back-to-top hidden&gt;</code> with the placeholder <code>&lt;span class=\"sk-back-to-top__icon\"&gt;&lt;span data-sk-icon=\"chevron-up\"&gt;</code> and the label in a <code>&lt;span class=\"sk-back-to-top__label\"&gt;</code>. The enhancer mounts it on its own through <code>auto-mounting</code> (and the same pass binds the icon to the set).",
-    "backToTop.contractItem2":
-      "In React: <code>&lt;BackToTop&gt;Back to top&lt;/BackToTop&gt;</code>. <code>threshold</code>, <code>scroller</code> and <code>target</code> are props; the component manages <code>hidden</code> from state.",
-    "backToTop.contractItem3":
-      "Its stylesheet is <code>components/back-to-top.css</code>. For a pill with visible text, a consumer restores <code>.sk-back-to-top__label</code> (<code>position: static</code>, no clip) and gives the root room; the name is already correct, this only decides whether it is drawn.",
-    "backToTop.demoStaticTitle": "The object",
-    "backToTop.demoStaticBody":
-      'With <code>threshold</code> at <code>0</code> it stays visible, so you can see the piece: a round button with a <code>chevron-up</code> from the bound icon set (Lucide on this site) and a floating-surface shadow. On hover it lifts a hair and the chevron rides up with it.',
+    "backToTop.demoStaticTitle": "The button: a chevron with a name",
+    "backToTop.demoStaticBody": "With <code>threshold</code> at <code>0</code> it is always visible. The label is clipped: it is heard, not seen.",
     "backToTop.demoStaticLabel": "BackToTop, always shown",
-    "backToTop.demoScrollTitle": "The behaviour",
-    "backToTop.demoScrollBody":
-      "This preview scrolls. Scroll down inside the box: the button pops in - fades, scales up from small, rises into place - once you are past the threshold, and clicking it carries you back to the top. Scroll back up and it hides itself.",
+    "backToTop.demoScrollTitle": "While scrolling: it appears past the threshold",
+    "backToTop.demoScrollBody": "Scroll inside the box: the button appears past the threshold and, when pressed, goes back to the top. Once there, it leaves.",
     "backToTop.demoScrollLabel": "BackToTop on scroll",
     "backToTop.demoScrollHint": "Scroll inside the box to see it appear.",
     "backToTop.scrollDemoP1":
@@ -159,8 +182,13 @@ export const backToTopMessages = {
     "backToTop.test19": "Acts on a named inner scroller instead of the window.",
     "backToTop.test20": "Stops syncing once cleaned up (<code>off()</code>).",
     "backToTop.test21": "Mounts once per authored root; a second call does nothing.",
-    "backToTop.showcaseTitle": "Showcases",
-    "backToTop.showcaseBody": "The button at rest, and the same one appearing as you scroll down an area.",
-    "backToTop.guidelinesLede": "BackToTop returns to the top of a long page in one click.",
+    "backToTop.guidelinesLede": "A visible shortcut for a move people repeat on long pages: back to the top.",
+    "backToTop.dd.placement.title": "Placement: keep content clear",
+    "backToTop.dd.placement.do": "Place the button in a clear corner so it stays handy without covering what people are reading.",
+    "backToTop.dd.placement.dont": "Do not put it over the text: the shortcut should not hide the content it supports.",
+    "backToTop.dd.mockEyebrow": "DOCUMENTATION · GUIDE",
+    "backToTop.dd.mockTitle": "Reading the docs",
+    "backToTop.dd.mockBody1": "Long content should be read at your own pace. Return to the top whenever you need.",
+    "backToTop.dd.mockBody2": "Leave room around text and controls so nothing important gets covered.",
   },
 } as const;

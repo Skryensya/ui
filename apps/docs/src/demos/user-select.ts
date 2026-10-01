@@ -2,7 +2,6 @@ import { avatarInitials } from "@skryensya/core/avatar";
 import { userSelectLabel, userSelectLabels, type UserSelectLabels } from "@skryensya/core/user-select";
 import type { UsageTree } from "@skryensya/core/usage-tree";
 import type { Translate, UIKey } from "../i18n";
-import { anatomyFigureHtml } from "./annotation-parts";
 import { userSelectRoster, type UserSelectDemoUser } from "./data/user-select";
 
 /*
@@ -130,92 +129,6 @@ const anatomyRow = (user: UserSelectDemoUser, checked: boolean): string => `<div
                 </span>
               </div>`;
 
-const userSelectAnatomySpecimen = (t: Translate): string => {
-  const labels = userSelectDemoLabels(t);
-  const [jane, maria, marco] = userSelectRoster;
-  return `<div class="sk-select" data-variant="ghost">
-  <div class="sk-select__control">
-    <button class="sk-select__trigger sk-anchor sk-interactive" type="button" data-state="open" aria-expanded="true" tabindex="-1">
-      <span class="sk-select__value">
-        <span class="sk-inline" data-align="center" data-gap="sm" data-wrap="false">
-          <span class="sk-avatar-group">${anatomyAvatar(jane!)}${anatomyAvatar(maria!)}</span>
-          <span class="sk-select__value">${userSelectLabel(labels, "count", { count: 2 })}</span>
-        </span>
-      </span>
-      <span class="sk-select__indicator" aria-hidden="true">
-        <span data-state="closed"><span data-sk-icon="chevron-down" data-sk-icon-size="md"></span></span>
-        <span data-state="open"><span data-sk-icon="chevron-up" data-sk-icon-size="md"></span></span>
-      </span>
-    </button>
-  </div>
-  <div class="sk-select__positioner sk-anchored">
-    <div class="sk-select__content" data-state="open">
-      <input class="sk-input" data-sk-user-select-search type="search" placeholder="${attrEscape(userSelectLabel(labels, "searchPlaceholder"))}" data-size="sm" tabindex="-1" />
-      <div data-sk-user-select-list class="sk-scrollbar" role="listbox" aria-multiselectable="true">
-              ${anatomyRow(jane!, true)}
-              ${anatomyRow(maria!, true)}
-              ${anatomyRow(marco!, false)}
-      </div>
-      <span class="sk-inline" data-align="center" data-gap="sm" data-justify="between" data-sk-user-select-footer>
-        <span class="sk-text" data-size="caption" data-tone="secondary">${userSelectLabel(labels, "selectedCount", { count: 2 })}</span>
-        <button class="sk-button sk-interactive" type="button" data-variant="ghost" data-size="sm" tabindex="-1">${userSelectLabel(labels, "clear")}</button>
-      </span>
-    </div>
-  </div>
-</div>`;
-};
-
-export const userSelectAnatomyHtml = (t: Translate): string =>
-  anatomyFigureHtml(t, {
-    label: t("userSelectPage.anatomyLabel"),
-    specimen: userSelectAnatomySpecimen(t),
-    parts: [
-      { for: ".sk-select", side: "inline-start", mark: "bracket" },
-      { for: ".sk-select__trigger", side: "inline-end" },
-      { for: ".sk-avatar-group", side: "inline-start" },
-      { for: ".sk-select__indicator", side: "inline-end" },
-      { for: ".sk-select__content", side: "inline-start", mark: "bracket" },
-      { for: "[data-sk-user-select-search]", side: "inline-end", name: "data-sk-user-select-search" },
-      { for: "[data-sk-user-select-list]", side: "inline-start", mark: "bracket", name: "data-sk-user-select-list" },
-      { for: ".sk-select__item", side: "inline-end", match: "first" },
-      { for: "[data-sk-user-select-check]", side: "inline-start", match: "first", name: "data-sk-user-select-check" },
-      { for: ".sk-combobox__item-copy", side: "inline-end", match: "first" },
-      { for: "[data-sk-user-select-footer]", side: "inline-end", name: "data-sk-user-select-footer" },
-    ],
-  });
-
-export const userSelectAnatomyCss = `.sk-annotated-figure {
-  --sk-annotation-font-family: var(--font-family-code);
-}
-
-/* In flow, not floating: the content sits under the trigger at the width the live one opens at. */
-.sk-annotated__subject > .sk-select {
-  display: inline-grid;
-  gap: var(--space-stack-md);
-  inline-size: 18rem;
-  text-align: start;
-}
-
-.sk-annotated__subject > .sk-select > .sk-select__positioner {
-  position: static;
-  display: block;
-  inline-size: 100%;
-}
-
-.sk-annotated .sk-select__content {
-  inline-size: 100%;
-  min-inline-size: 0;
-}
-
-/* Three rows, drawn at their own height rather than inside the live list's fixed 15rem well. */
-.sk-annotated [data-sk-user-select-list] {
-  flex: none;
-}
-
-.sk-annotated__subject {
-  text-align: center;
-}`;
-
 /*
  * THE SAME PICKER AS A USAGE TREE, the contract's own shape: what the stories and the MCP examples
  * are built from. The page's live stage stays hand-authored only for the colored avatars, which a
@@ -244,4 +157,16 @@ export const userSelectTree = (t: Translate): UsageTree => {
       })),
     },
   };
+};
+
+/** Four people chosen at once: the trigger stacks them as an AvatarGroup. */
+export const userSelectMultipleTree = (t: Translate): UsageTree => {
+  const tree = userSelectTree(t);
+  return { ...tree, options: { ...tree.options, name: "assignees-multiple", value: "jane maria marco john" } };
+};
+
+/** The roster still arriving: open it and the list shows a Loader and the `loading` string. */
+export const userSelectLoadingTree = (t: Translate): UsageTree => {
+  const tree = userSelectTree(t);
+  return { ...tree, options: { ...tree.options, name: "assignees-loading", loading: true } };
 };

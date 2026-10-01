@@ -22,9 +22,11 @@ describe("CardPage.astro", () => {
     expect(source).toContain('import UsagePreview from "../UsagePreview.astro"');
     expect(source).not.toContain('import ComponentPreview from "../ComponentPreview.astro"');
     expect(source).toContain('optionName="surface"');
-    expect(source).toContain('optionName="padding"');
-    expect(source).toContain('optionName="appearance"');
-    expect(source).toContain('optionName="defaultChecked"');
+    /* A spacing scale, the page's own appearance axis and an initial state fail the "one choice per
+       instance, seen at rest" test that earns a live control; each is taught elsewhere. */
+    expect(source).not.toContain('optionName="padding"');
+    expect(source).not.toContain('optionName="appearance"');
+    expect(source).not.toContain('optionName="defaultChecked"');
   });
 
   it("keeps Card as a composition guide, not a chart showcase", () => {

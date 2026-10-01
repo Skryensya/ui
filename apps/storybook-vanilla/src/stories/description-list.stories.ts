@@ -7,13 +7,23 @@ import "@skryensya/core/components/description-list.css";
 import "@skryensya/core/components/tag.css";
 import "@skryensya/core/components/typography.css";
 import * as demos from "@docs/demos/description-list";
-import { annotationDemoCss } from "@docs/demos/annotation";
-import { treeStory, withCss, type Meta, type StoryObj } from "../tree-story";
+import { treeStory, type Meta, type StoryObj } from "../tree-story";
 
 export default { title: "Components/Data/DescriptionList", tags: ["autodocs"] } satisfies Meta;
 
-export const Anatomy: StoryObj = treeStory(demos.descriptionListAnatomyTree, { decorators: [withCss(annotationDemoCss)] });
+export const Anatomy: StoryObj = treeStory(demos.descriptionListAnatomyTree);
 export const Default: StoryObj = treeStory(demos.descriptionListTree);
 export const Columns: StoryObj = treeStory(demos.descriptionListColumnsTree);
 export const Divided: StoryObj = treeStory(demos.descriptionListDividedTree);
 export const Rich: StoryObj = treeStory(demos.descriptionListRichTree);
+export const DontMany: StoryObj = treeStory(demos.descriptionListDontManyTree);
+export const LongTerms: StoryObj = treeStory(demos.descriptionListLongTermsTree);
+export const DontLongTerms: StoryObj = treeStory(demos.descriptionListDontLongTermsTree);
+export const Units: StoryObj = treeStory(demos.descriptionListUnitsTree);
+export const DontUnits: StoryObj = treeStory(demos.descriptionListDontUnitsTree);
+export const Missing: StoryObj = treeStory(demos.descriptionListMissingTree);
+export const DontMissing: StoryObj = treeStory(demos.descriptionListDontMissingTree);
+export const ShortTerms: StoryObj = treeStory(demos.descriptionListShortTermsTree);
+export const DontLongLabel: StoryObj = treeStory(demos.descriptionListDontLongLabelTree);
+export const LinkedValue: StoryObj = treeStory(demos.descriptionListLinkedValueTree);
+export const DontLinkedValue: StoryObj = treeStory(demos.descriptionListDontLinkedValueTree);

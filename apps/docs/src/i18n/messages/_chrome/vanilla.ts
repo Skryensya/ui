@@ -4,18 +4,18 @@ export const vanillaMessages = {
     "vanilla.title": "Vanilla: instalar y montar",
     "vanilla.intro":
       "Esta ruta no necesita React. Instala Core para los estilos y Vanilla para el enhancer; después elige una estrategia de montaje para cada raíz. Ambas son idempotentes.",
-    "vanilla.autoTitle": "Auto, sólo los enhancers presentes",
+    "vanilla.autoTitle": "Auto, solo los enhancers presentes",
     "vanilla.autoBody":
-      "Úsalo cuando la página contiene varios componentes del sistema: escanea los roots data-sk-* presentes e importa sólo esos tipos. Más sobre cómo funciona en {autoLink}.",
+      "Úsalo cuando la página contiene varios componentes del sistema: escanea los roots data-sk-* presentes e importa solo esos tipos. Más sobre cómo funciona en {autoLink}.",
     "vanilla.autoLinkLabel": "Montaje automático",
-    "vanilla.onlyTitle": "Sólo {name}",
+    "vanilla.onlyTitle": "Solo {name}",
     "vanilla.onlyBody":
-      "Este entry point importa sólo el enhancer de {name}. Sin argumento monta sus instancias en el documento; al pasar una raíz, monta exclusivamente esa instancia.",
+      "Este entry point importa solo el enhancer de {name}. Sin argumento monta sus instancias en el documento; al pasar una raíz, monta exclusivamente esa instancia.",
     "vanilla.instance": "una instancia",
     "vanilla.autoComment":
-      "Cada selector presente dispara sólo el import dinámico de su enhancer.",
+      "Cada selector presente dispara solo el import dinámico de su enhancer.",
     "vanilla.componentComment":
-      "Monta sólo {name}; no carga ni recorre otros enhancers.",
+      "Monta solo {name}; no carga ni recorre otros enhancers.",
   },
   en: {
 

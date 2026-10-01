@@ -158,34 +158,87 @@ export const inputSingleTree = (t: Translate): UsageTree => ({
   children: { contract: "input", signature: "Input", options: { type: "email", name: "email-single", placeholder: t("demo.input.dd.placeholder") } },
 });
 
-/* Don't: the placeholder as the only label, gone as soon as someone types. */
-export const inputDontPlaceholderTree = (_t: Translate): UsageTree => ({
-  contract: "form-field",
-  signature: "FormField",
-  options: { labelHidden: true },
-  slots: { label: "Email" },
-  attrs: { style: "inline-size: 16rem" },
-  children: { contract: "input", signature: "Input", options: { type: "email", name: "email-placeholder", placeholder: "Email" } },
+const inputSpecimen = (children: UsageTree): UsageTree => ({
+  contract: "box",
+  signature: "Box",
+  options: { surface: "surface", border: "subtle", padding: "md" },
+  attrs: { style: "inline-size: 22rem; max-inline-size: 100%;" },
+  children,
 });
 
-export const inputDoLabelTree = (t: Translate): UsageTree => ({
-  ...inputSingleTree(t),
-  attrs: { style: "inline-size: 16rem" },
-});
+/* Don't: the placeholder as the only label, gone as soon as someone types. */
+export const inputDontPlaceholderTree = (t: Translate): UsageTree =>
+  inputSpecimen({
+    contract: "form-field",
+    signature: "FormField",
+    slots: { label: t("demo.input.dd.genericLabel") },
+    children: {
+      contract: "input",
+      signature: "Input",
+      options: { type: "email", name: "email-placeholder", placeholder: t("demo.input.emailLabel") },
+    },
+  });
+
+export const inputDoLabelTree = (t: Translate): UsageTree =>
+  inputSpecimen({
+    contract: "form-field",
+    signature: "FormField",
+    slots: { label: t("demo.input.emailLabel") },
+    children: {
+      contract: "input",
+      signature: "Input",
+      options: { type: "email", name: "email-labelled", placeholder: t("demo.input.dd.placeholder") },
+      attrs: { autocomplete: "email" },
+    },
+  });
 
 /* Don't: a message several sentences long in a one-line field. */
-export const inputDontLongTree = (t: Translate): UsageTree => ({
-  contract: "form-field",
-  signature: "FormField",
-  slots: { label: t("demo.input.dd.message") },
-  children: { contract: "input", signature: "Input", options: { name: "message-line", placeholder: t("demo.input.dd.messagePlaceholder") } },
-  attrs: { style: "inline-size: 16rem" },
-});
+export const inputDontLongTree = (t: Translate): UsageTree =>
+  inputSpecimen({
+    contract: "form-field",
+    signature: "FormField",
+    slots: { label: t("demo.input.dd.message") },
+    children: {
+      contract: "input",
+      signature: "Input",
+      options: { name: "message-line", placeholder: t("demo.input.dd.messagePlaceholder") },
+      attrs: { value: t("demo.input.dd.longValue") },
+    },
+  });
 
-export const inputDoLongTree = (t: Translate): UsageTree => ({
-  contract: "form-field",
-  signature: "FormField",
-  slots: { label: t("demo.input.dd.message") },
-  children: { contract: "input", signature: "Textarea", options: { name: "message-area", placeholder: t("demo.input.dd.messagePlaceholder") } },
-  attrs: { style: "inline-size: 16rem" },
-});
+export const inputDoLongTree = (t: Translate): UsageTree =>
+  inputSpecimen({
+    contract: "form-field",
+    signature: "FormField",
+    slots: { label: t("demo.input.dd.message"), hint: t("demo.input.dd.messageHint") },
+    children: {
+      contract: "input",
+      signature: "Textarea",
+      options: { name: "message-area", placeholder: t("demo.input.dd.messagePlaceholder") },
+      attrs: { rows: "4", value: t("demo.input.dd.longValue") },
+    },
+  });
+
+export const inputDoFormatTree = (t: Translate): UsageTree =>
+  inputSpecimen({
+    contract: "form-field",
+    signature: "FormField",
+    slots: { label: "RUT", hint: t("demo.input.rutHint") },
+    children: {
+      contract: "input",
+      signature: "Input",
+      options: { format: "rut", name: "rut-do", placeholder: "12.345.678-5" },
+    },
+  });
+
+export const inputDontFormatTree = (t: Translate): UsageTree =>
+  inputSpecimen({
+    contract: "form-field",
+    signature: "FormField",
+    slots: { label: "RUT" },
+    children: {
+      contract: "input",
+      signature: "Input",
+      options: { name: "rut-dont", placeholder: t("demo.input.dd.formatPlaceholder") },
+    },
+  });

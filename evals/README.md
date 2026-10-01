@@ -250,6 +250,26 @@ files. The fix that held: `document.ts` manually injects the exact bootstrap
 `__vite_plugin_react_preamble_installed__`), dev-only  -  the same workaround Vite's own docs give for
 any non-standard HTML entry point.
 
+## Embedded Maker selection evals
+
+`maker/cases.ts` supplies four starting sites, frozen selections and product invariants:
+selected buttons share an Inline without losing content; a selected Grid gains contract-backed
+`minColumn`; a selected heading changes copy without replacing its identity; no selection adds a
+navigation CTA to the current page while preserving existing content. The target pricing page exists.
+`maker/cases.test.ts` checks minimal reference operations pass and unchanged sites fail.
+
+The live runner uses the embedded runtime directly, not a separate editing API:
+
+```sh
+OPENAI_API_KEY=... pnpm --filter @skryensya/evals maker-agent
+# Or ANTHROPIC_API_KEY=... MAKER_AI_PROVIDER=anthropic
+# Optional: MAKER_AI_MODEL=<model-id>
+```
+
+This is opt-in, metered usage, never part of `check`. Only PASS/FAIL and case IDs are printed;
+credentials, request headers and transcripts are not logged. Scores use validity, preserved node
+identities/content and composition invariants, not exact tree equality.
+
 ## Running the static gate
 
 ```

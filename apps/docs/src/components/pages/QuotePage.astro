@@ -6,9 +6,11 @@ import "@skryensya/core/components/annotation.css";
 import "@skryensya/core/patterns/box.css";
 import ComponentPageShell from "./ComponentPageShell.astro";
 import CodeBlock from "../CodeBlock.astro";
-import ComponentPreview from "../ComponentPreview.astro";
 import UsagePreview from "../UsagePreview.astro";
 import DoDont from "../DoDont.astro";
+import WhenToUse from "../WhenToUse.astro";
+import ContentRules from "../ContentRules.astro";
+import A11yNotes from "../A11yNotes.astro";
 import {
   quoteAnatomyTree,
   quoteBareTree,
@@ -20,7 +22,7 @@ import {
   quoteTree,
 } from "../../demos/quote";
 import { annotationDemoCss } from "../../demos/annotation";
-import { getLocale, useTranslations } from "../../i18n";
+import { getLocale, tList, useTranslations } from "../../i18n";
 
 const t = useTranslations(getLocale(Astro.url));
 const install = `pnpm add @skryensya/core @skryensya/react`;
@@ -49,55 +51,25 @@ const explain = (option: string, values: readonly string[]) =>
       stageMinBlockSize="12rem"
     />
 
-    <h3>{t("quotePage.showcaseTitle")}</h3>
-    <p set:html={t("quotePage.showcaseBody")} />
-    <UsagePreview tree={quoteTree(t)} />
-
-    <h3>{t("quotePage.citeTitle")}</h3>
-    <p set:html={t("quotePage.citeBody")} />
-
-    <h3>{t("quotePage.bareTitle")}</h3>
-    <p set:html={t("quotePage.bareBody")} />
-    <UsagePreview tree={quoteBareTree(t)} />
-
-    <h3>{t("quotePage.pullTitle")}</h3>
-    <p set:html={t("quotePage.pullBody")} />
-    <UsagePreview tree={quotePullTree(t)} />
-
-    <h3>{t("quotePage.testimonialTitle")}</h3>
-    <p set:html={t("quotePage.testimonialBody")} />
-    <UsagePreview tree={quoteTestimonialTree(t)} />
+    <h3>{t("component.examplesTitle")}</h3>
+    <UsagePreview tree={quoteTree(t)} title={t("quotePage.citedTitle")} description={t("quotePage.citedBody")} />
+    <UsagePreview tree={quoteBareTree(t)} title={t("quotePage.bareTitle")} description={t("quotePage.bareBody")} />
+    <UsagePreview tree={quotePullTree(t)} title={t("quotePage.pullTitle")} description={t("quotePage.pullBody")} />
+    <UsagePreview tree={quoteTestimonialTree(t)} title={t("quotePage.testimonialTitle")} description={t("quotePage.testimonialBody")} />
 
     <h3>{t("component.contractNotesTitle")}</h3>
     <ul>
-      <li set:html={t("quotePage.contractItem1")} />
-      <li set:html={t("quotePage.contractItem2")} />
-      <li set:html={t("quotePage.contractItem3")} />
-      <li set:html={t("quotePage.contractItem4")} />
-      <li set:html={t("quotePage.contractItem5")} />
+      {tList(t, "quotePage.contract").map((item) => <li set:html={item} />)}
     </ul>
 
     <h3>{t("component.anatomy")}</h3>
     <p set:html={t("quotePage.anatomyBody")} />
-    <ComponentPreview
-      tree={quoteAnatomyTree(t)}
-      css={annotationDemoCss}
-      label={t("quotePage.anatomyPreviewLabel")}
-      screens={false}
-      hideSource
-      chrome={false}
-    />
+    <UsagePreview tree={quoteAnatomyTree(t)} css={annotationDemoCss} label={t("quotePage.anatomyPreviewLabel")} bare />
   </Fragment>
 
   <Fragment slot="guidelines">
     <p class="lede" set:html={t("quotePage.guidelinesLede")} />
-    <h3>{t("quotePage.whenTitle")}</h3>
-    <ul>
-      <li set:html={t("quotePage.whenItem1")} />
-      <li set:html={t("quotePage.whenItem2")} />
-      <li set:html={t("quotePage.whenItem3")} />
-      <li set:html={t("quotePage.whenItem4")} />
-    </ul>
+    <WhenToUse use={tList(t, "quotePage.when")} avoid={tList(t, "quotePage.whenNot")} />
     <DoDont
       canvas
       title={t("quotePage.dd.pull.title")}
@@ -109,10 +81,14 @@ const explain = (option: string, values: readonly string[]) =>
       do={{ tree: quoteDoNoticeTree(t), caption: t("quotePage.dd.notice.do") }}
       dont={{ tree: quoteDontNoticeTree(t), caption: t("quotePage.dd.notice.dont") }}
     />
+    <ContentRules items={tList(t, "quotePage.content")} />
   </Fragment>
 
   <Fragment slot="install">
     <CodeBlock code={install} label="terminal" />
     <CodeBlock code={styles} label="CSS" />
+  </Fragment>
+  <Fragment slot="a11y">
+    <A11yNotes intro={t("quotePage.a11yIntro")} does={tList(t, "quotePage.a11yDoes")} yours={tList(t, "quotePage.a11yYours")} />
   </Fragment>
 </ComponentPageShell>

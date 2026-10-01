@@ -6,27 +6,39 @@ import "@skryensya/core/patterns/state-layer.css";
 import "@skryensya/core/components/annotation.css";
 import ComponentPageShell from "./ComponentPageShell.astro";
 import CodeBlock from "../CodeBlock.astro";
-import ComponentPreview from "../ComponentPreview.astro";
-import { appBarAnatomyCss, appBarAnatomyHtml, appBarMinimalTree, appBarTree } from "../../demos/app-bar";
-import { getLocale, useTranslations } from "../../i18n";
+import UsagePreview from "../UsagePreview.astro";
+import DoDont from "../DoDont.astro";
+import WhenToUse from "../WhenToUse.astro";
+import ContentRules from "../ContentRules.astro";
+import A11yNotes from "../A11yNotes.astro";
+import {
+  appBarDoDropdownHtml,
+  appBarDontDropdownHtml,
+  appBarDoAppMenuTree,
+  appBarDoShortStatusTree,
+  appBarDoShortTitlesTree,
+  appBarDontLongStatusTree,
+  appBarDontLongTitlesTree,
+  appBarDontNoAppMenuTree,
+  appBarMinimalTree,
+  appBarTree,
+} from "../../demos/app-bar";
+import { getLocale, tList, useTranslations } from "../../i18n";
 
 const t = useTranslations(getLocale(Astro.url));
 
 const install = `@import "@skryensya/core/components/app-bar.css";
 @import "@skryensya/core/patterns/state-layer.css";`;
-const js = `import { mountIcons } from "@skryensya/vanilla/icon";
-import { lucideIcons } from "@skryensya/icons-lucide";
-import { initComponents } from "@skryensya/vanilla/auto";
+const storybookTitle = "Components/Actions/AppBar";
 
-mountIcons(document, lucideIcons);
-initComponents();`;
+const explain = (option: string, values: readonly string[]) =>
+  Object.fromEntries(values.map((value) => [value, t(`appBarPage.prop.${option}.${value}` as Parameters<typeof t>[0])]));
 ---
 
 <ComponentPageShell
   title="AppBar"
   description={t("appBarPage.description")}
   contractId="app-bar"
-  badge="Beta"
   styleGroups={[
     { file: "components/app-bar.css", probe: "sk-app-bar", title: "AppBar" },
     { file: "patterns/state-layer.css", probe: "sk-interactive", title: "Heredados de State layer" },
@@ -36,46 +48,73 @@ initComponents();`;
   <Fragment slot="usage">
     <p class="lede" set:html={t("appBarPage.lede")} />
 
-    <h3>{t("appBarPage.showcaseTitle")}</h3>
-    <p set:html={t("appBarPage.showcaseBody")} />
-    <ComponentPreview tree={appBarTree(t)} js={js} label={t("appBarPage.label")} viewport="menu-deep" />
+    <UsagePreview
+      tree={appBarMinimalTree(t)}
+      optionName="strong"
+      target={["children", 0]}
+      title={t("appBarPage.prop.strong.title")}
+      description={t("appBarPage.prop.strong.body")}
+      explain={explain("strong", ["false", "true"])}
+      storybookTitle={storybookTitle}
+      storybookStory="Minimal"
+    />
 
-    <h3>{t("appBarPage.intentTitle")}</h3>
-    <p set:html={t("appBarPage.intentBody")} />
+    <h3>{t("component.examplesTitle")}</h3>
 
-    <h3>{t("appBarPage.notMobileTitle")}</h3>
-    <p set:html={t("appBarPage.notMobileBody")} />
+    <UsagePreview
+      tree={appBarTree(t)}
+      title={t("appBarPage.fullTitle")}
+      description={t("appBarPage.fullBody")}
+      stageMinBlockSize="16rem"
+      storybookTitle={storybookTitle}
+      storybookStory="Default"
+    />
+
+    <UsagePreview
+      tree={appBarMinimalTree(t)}
+      title={t("appBarPage.minimalTitle")}
+      description={t("appBarPage.minimalBody")}
+      stageMinBlockSize="12rem"
+      storybookTitle={storybookTitle}
+      storybookStory="Minimal"
+    />
 
     <h3>{t("component.contractNotesTitle")}</h3>
-    <p set:html={t("appBarPage.contractBody")} />
+    <ul>
+      {tList(t, "appBarPage.contract").map((item) => <li set:html={item} />)}
+    </ul>
 
-    <h3>{t("appBarPage.statusTitle")}</h3>
-    <p set:html={t("appBarPage.statusBody")} />
-
-    <h3>{t("appBarPage.minimalTitle")}</h3>
-    <p set:html={t("appBarPage.minimalBody")} />
-    <ComponentPreview tree={appBarMinimalTree(t)} js={js} label={t("appBarPage.minimalTitle")} viewport="menu" />
-
-    <h3>{t("component.anatomy")}</h3>
-    <p set:html={t("appBarPage.anatomyBody")} />
-    <ComponentPreview
-      html={appBarAnatomyHtml(t)}
-      css={appBarAnatomyCss}
-      label={t("appBarPage.anatomyPreviewLabel")}
-      screens={false}
-      hideSource
-      chrome={false}
-    />
   </Fragment>
 
   <Fragment slot="guidelines">
     <p class="lede" set:html={t("appBarPage.guidelinesLede")} />
-    <ul>
-      <li set:html={t("appBarPage.guide.use1")} />
-      <li set:html={t("appBarPage.guide.avoid1")} />
-      <li set:html={t("appBarPage.guide.avoid2")} />
-      <li set:html={t("appBarPage.guide.avoid3")} />
-    </ul>
+    <WhenToUse use={tList(t, "appBarPage.when")} avoid={tList(t, "appBarPage.whenNot")} />
+
+    <DoDont
+      canvas
+      title={t("appBarPage.dd.status.title")}
+      do={{ tree: appBarDoShortStatusTree(t), caption: t("appBarPage.dd.status.do") }}
+      dont={{ tree: appBarDontLongStatusTree(t), caption: t("appBarPage.dd.status.dont") }}
+    />
+    <DoDont
+      canvas
+      title={t("appBarPage.dd.appMenu.title")}
+      do={{ tree: appBarDoAppMenuTree(t), caption: t("appBarPage.dd.appMenu.do") }}
+      dont={{ tree: appBarDontNoAppMenuTree(t), caption: t("appBarPage.dd.appMenu.dont") }}
+    />
+    <DoDont
+      canvas
+      title={t("appBarPage.dd.titles.title")}
+      do={{ tree: appBarDoShortTitlesTree(t), caption: t("appBarPage.dd.titles.do") }}
+      dont={{ tree: appBarDontLongTitlesTree(t), caption: t("appBarPage.dd.titles.dont") }}
+    />
+    <DoDont
+      title={t("appBarPage.dd.dropdown.title")}
+      do={{ html: appBarDoDropdownHtml(t), caption: t("appBarPage.dd.dropdown.do") }}
+      dont={{ html: appBarDontDropdownHtml(t), caption: t("appBarPage.dd.dropdown.dont") }}
+    />
+
+    <ContentRules items={tList(t, "appBarPage.content")} />
   </Fragment>
 
   <Fragment slot="install">
@@ -83,6 +122,17 @@ initComponents();`;
   </Fragment>
 
   <Fragment slot="a11y">
-    <p set:html={t("appBarPage.a11yBody")} />
+    <A11yNotes
+      intro={t("appBarPage.a11yIntro")}
+      does={tList(t, "appBarPage.a11yDoes")}
+      yours={tList(t, "appBarPage.a11yYours")}
+      keysNote={t("appBarPage.a11yKeysNote")}
+      keys={[
+        { keys: ["Tab", "Shift+Tab"], action: t("appBarPage.a11yKeyTab") },
+        { keys: ["←", "→"], action: t("appBarPage.a11yKeyArrows") },
+        { keys: ["Enter", t("component.key.space"), "↓"], action: t("appBarPage.a11yKeyOpen") },
+        { keys: ["Esc"], action: t("appBarPage.a11yKeyEsc") },
+      ]}
+    />
   </Fragment>
 </ComponentPageShell>

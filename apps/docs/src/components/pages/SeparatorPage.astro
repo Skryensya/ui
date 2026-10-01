@@ -8,20 +8,22 @@ import "@skryensya/core/components/button.css";
 import "@skryensya/core/patterns/layout.css";
 import ComponentPageShell from "./ComponentPageShell.astro";
 import CodeBlock from "../CodeBlock.astro";
-import ComponentPreview from "../ComponentPreview.astro";
 import UsagePreview from "../UsagePreview.astro";
 import DoDont from "../DoDont.astro";
+import WhenToUse from "../WhenToUse.astro";
+import ContentRules from "../ContentRules.astro";
+import A11yNotes from "../A11yNotes.astro";
+import { separatorDoSpaceTree, separatorDontEveryRowTree } from "../../demos/separator";
 import {
   separatorAnatomyTree,
   separatorLabelledTree,
-  separatorTonesTree,
   separatorSingleTree,
   separatorTree,
   separatorVerticalTree,
   separatorScaleSpecimenTree,
 } from "../../demos/separator";
 import { annotationDemoCss } from "../../demos/annotation";
-import { getLocale, useTranslations } from "../../i18n";
+import { getLocale, tList, useTranslations } from "../../i18n";
 import { variantsTree } from "../../demos/variants";
 
 const t = useTranslations(getLocale(Astro.url));
@@ -58,59 +60,45 @@ const styles = `@import "@skryensya/core/components/separator.css";`;
       stageMinBlockSize="8rem"
     />
 
-    <h3>{t("separatorPage.showcaseTitle")}</h3>
-    <p set:html={t("separatorPage.showcaseBody")} />
-    <UsagePreview tree={separatorTree(t)} title="Separator" description={t("separatorPage.meaningBody")} />
-    <UsagePreview tree={separatorTonesTree(t)} title={t("separatorPage.tonesTitle")} description={t("separatorPage.tonesBody")} />
+    <h3>{t("component.examplesTitle")}</h3>
+    <UsagePreview tree={separatorTree(t)} title={t("separatorPage.meaningTitle")} description={t("separatorPage.meaningBody")} />
     <UsagePreview tree={separatorVerticalTree(t)} title={t("separatorPage.verticalTitle")} description={t("separatorPage.verticalBody")} />
     <UsagePreview tree={separatorLabelledTree(t)} title={t("separatorPage.labelledTitle")} description={t("separatorPage.labelledBody")} />
-
-    <h3>{t("separatorPage.whenTitle")}</h3>
-    <ul>
-      <li set:html={t("separatorPage.whenItem1")} />
-      <li set:html={t("separatorPage.whenItem2")} />
-      <li set:html={t("separatorPage.whenItem3")} />
-      <li set:html={t("separatorPage.whenItem4")} />
-    </ul>
-
-    <h3>{t("component.contractNotesTitle")}</h3>
-    <ul>
-      <li set:html={t("separatorPage.contractItem1")} />
-      <li set:html={t("separatorPage.contractItem2")} />
-      <li set:html={t("separatorPage.contractItem3")} />
-      <li set:html={t("separatorPage.contractItem4")} />
-    </ul>
-
     <UsagePreview
       tree={variantsTree(separatorScaleSpecimenTree(), [{ label: "none", options: { spacing: "none" } }, { label: "sm", options: { spacing: "sm" } }, { label: "md", options: { spacing: "md" } }, { label: "lg", options: { spacing: "lg" } }], ["children", 1])}
       title={t("component.scaleTitle", { option: "spacing" })}
       description={t("component.scaleBody")}
     />
 
+
+    <h3>{t("component.contractNotesTitle")}</h3>
+    <ul>
+      {tList(t, "separatorPage.contract").map((item) => <li set:html={item} />)}
+    </ul>
+
     <h3>{t("component.anatomy")}</h3>
     <p set:html={t("separatorPage.anatomyBody")} />
-    <ComponentPreview
+    <UsagePreview
       tree={separatorAnatomyTree(t)}
       css={annotationDemoCss}
       label={t("separatorPage.anatomyPreviewLabel")}
-      screens={false}
-      hideSource
-      chrome={false}
+      bare
     />
   </Fragment>
 
   <Fragment slot="guidelines">
     <p class="lede" set:html={t("separatorPage.guidelinesLede")} />
+    <WhenToUse use={tList(t, "separatorPage.when")} avoid={tList(t, "separatorPage.whenNot")} />
     <DoDont
       title={t("separatorPage.dd.meaning.title")}
-      do={{ tree: separatorTree(t), caption: t("separatorPage.dd.meaning.do") }}
-      dont={{ tree: separatorTonesTree(t), caption: t("separatorPage.dd.meaning.dont") }}
+      do={{ tree: separatorDoSpaceTree, caption: t("separatorPage.dd.meaning.do") }}
+      dont={{ tree: separatorDontEveryRowTree, caption: t("separatorPage.dd.meaning.dont") }}
     />
-    <DoDont
-      title={t("separatorPage.dd.label.title")}
-      do={{ tree: separatorLabelledTree(t), caption: t("separatorPage.dd.label.do") }}
-      dont={{ tree: separatorVerticalTree(t), caption: t("separatorPage.dd.label.dont") }}
-    />
+    <ContentRules items={tList(t, "separatorPage.content")} />
+  </Fragment>
+
+  <Fragment slot="a11y">
+    <A11yNotes intro={t("separatorPage.a11yIntro")} does={tList(t, "separatorPage.a11yDoes")} yours={tList(t, "separatorPage.a11yYours")} />
   </Fragment>
 
   <Fragment slot="install">

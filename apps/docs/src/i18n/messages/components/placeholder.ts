@@ -9,41 +9,55 @@ export const placeholderMessages = {
     "demo.placeholder.readTime": "8 min de lectura · actualizado hoy",
     "demo.placeholder.roleSample": "El texto real de este rol",
 
-    "placeholderPage.description": "Placeholder: geometría decorativa para reservar el lugar del contenido mientras carga.",
-    "placeholderPage.lede":
-      "Placeholder reserva la forma del contenido que todavía no llegó. Reduce saltos de layout y ofrece una señal visual breve; el contenedor conserva la responsabilidad de explicar qué está cargando.",
+    "placeholderPage.description": "Dibuja la forma del contenido mientras carga, para que nada salte al llegar.",
+
+    "placeholderPage.a11yYours2": 'Pon un mensaje de estado, visible u oculto, con <code>role="status"</code>.',
+
+    "placeholderPage.a11yYours1": 'Marca la región con <code>aria-busy="true"</code> y quítalo cuando llegue el contenido.',
+
+    "placeholderPage.a11yDoes2": "Con <code>prefers-reduced-motion: reduce</code>, deja de moverse.",
+
+    "placeholderPage.a11yDoes1": "Cada forma lleva <code>aria-hidden</code>.",
+
+    "placeholderPage.a11yIntro": "Placeholder no se lee: la región que carga anuncia la espera.",
+
+    "placeholderPage.content1": "Di en el mensaje de estado qué se carga: «Cargando publicaciones…».",
+
+    "placeholderPage.dd.shape.dont": "Un bloque gris no anticipa nada y, al llegar la tarjeta, todo salta.",
+
+    "placeholderPage.dd.shape.do": "La misma imagen, las mismas líneas y el mismo orden que la tarjeta que llega.",
+
+    "placeholderPage.dd.shape.title": "Forma: la del contenido",
+
+    "placeholderPage.whenNot3": 'Para una lista vacía: usa <a href="/es/componentes/empty-state">EmptyState</a>.',
+
+    "placeholderPage.whenNot2": 'Si se sabe cuánto falta: usa <a href="/es/componentes/progress">Progress</a>.',
+
+    "placeholderPage.whenNot1": 'Si no se sabe qué forma tendrá el contenido: usa <a href="/es/componentes/loader">Loader</a>.',
+
+    "placeholderPage.when2": "Cuando la carga dura lo bastante para verse, más de medio segundo.",
+
+    "placeholderPage.when1": "Cuando el contenido tiene una forma conocida: una tarjeta, una lista, un perfil.",
+
+    "placeholderPage.contract3": "Con <code>prefers-reduced-motion: reduce</code>, el brillo se apaga y queda la forma quieta.",
+
+    "placeholderPage.contract2": "Cada forma acepta solo sus opciones: un círculo no acepta <code>text</code>, un párrafo no acepta <code>fill</code>.",
+
+    "placeholderPage.contract1": 'Siempre es decorativo: la región que carga lleva <code>aria-busy="true"</code> y un mensaje de estado.',
+    "placeholderPage.lede": "Placeholder dibuja la forma del contenido mientras carga: las líneas de un texto, una imagen, un avatar. Cuando llega el contenido, ocupa el mismo lugar y nada salta. Es decorativo: la región que carga dice qué espera.",
     "placeholderPage.anatomyBody":
       "Este diagrama nombra el root y las líneas de un <code>Placeholder.paragraph</code>. Las demás firmas son un solo <code>sk-placeholder</code> sin parte hija; solo el párrafo hace que <code>sk-placeholder__line</code> valga la pena. Está congelado; los layouts vivos empiezan abajo.",
     "placeholderPage.anatomyLabel": "Anatomía de Placeholder",
     "placeholderPage.anatomyPreviewLabel": "Placeholder, parte por parte",
-    "placeholderPage.calloutBody":
-      'Placeholder siempre es decorativo. Usa <code>aria-busy="true"</code> y un mensaje de estado en la región que espera los datos.',
-    "placeholderPage.layoutTitle": "Layout pendiente",
-    "placeholderPage.layoutBody":
-      "La geometría sigue el layout final: una card del kit (<code>Box</code> + <code>Stack</code>) con media, texto y byline. Este primer ejemplo permanece siempre en carga para poder inspeccionar el Placeholder.",
-    "placeholderPage.layoutLabel": "Layout con Placeholder",
-    "placeholderPage.layoutNote": "Siempre pendiente",
-    "placeholderPage.swapTitle": "Carga simulada",
-    "placeholderPage.swapBody":
-      "El segundo ejemplo espera <strong>5 segundos</strong>, retira el layout provisional y muestra el contenido real en el mismo espacio: <code>ImageFrame</code>, <code>Badge</code>, <code>Heading</code>, <code>Text</code> y <code>Avatar</code>.",
+    "placeholderPage.layoutTitle": "Una publicación: la forma de la tarjeta",
+    "placeholderPage.layoutBody": "Imagen, título, dos líneas y firma, con las mismas medidas que la tarjeta real.",
+    "placeholderPage.swapTitle": "Carga simulada: el contenido ocupa su lugar",
+    "placeholderPage.swapBody": "A los 5 segundos, la tarjeta real reemplaza la forma en el mismo espacio.",
     "placeholderPage.swapLabel": "Placeholder → contenido",
-    "placeholderPage.swapNote": "Carga falsa · 5 s",
-    "placeholderPage.shapesTitle": "Cuatro firmas, un primitivo",
-    "placeholderPage.shapesBody":
-      "Cada firma lleva sólo las opciones que le corresponden: un círculo no acepta <code>text</code> y un párrafo no acepta <code>fill</code>. Componer un skeleton específico es elegir firmas y nombrar roles, nunca escribir medidas.",
-    "placeholderPage.shapesItem1": "<code>Placeholder</code>: una línea, con el rol tipográfico que reemplaza.",
-    "placeholderPage.shapesItem2": "<code>Placeholder.paragraph</code>: varias líneas con la última corta.",
-    "placeholderPage.shapesItem3": "<code>Placeholder.block</code>: media, tablas o regiones rectangulares; <code>fill</code> toma la caja y la esquina del padre.",
-    "placeholderPage.shapesItem4": "<code>Placeholder.circle</code>: avatares, en la misma escala que usa Avatar.",
-    "placeholderPage.shapesLabel": "Las cuatro firmas",
-    "placeholderPage.matchTitle": "El skeleton mide lo que va a reemplazar",
-    "placeholderPage.matchBody":
-      "<code>text=\"h3\"</code> no es \"más o menos alto como un h3\": resuelve al mismo par de tokens de tamaño e interlineado que lee <code>Heading</code>. Aquí cada fila es un Placeholder al lado del texto real del mismo rol. Coinciden porque leen lo mismo, no porque alguien los midió; si cambia la escala tipográfica, se mueven juntos.",
-    "placeholderPage.matchLabel": "Skeleton y texto real, mismo rol",
-    "placeholderPage.matchNote": "h1 · h3 · body · caption",
-    "placeholderPage.reducedTitle": "Movimiento reducido",
-    "placeholderPage.reducedBody":
-      "El brillo se desplaza con <code>transform</code>. Con <code>prefers-reduced-motion: reduce</code>, desaparece la animación y permanece el relleno estático.",
+    "placeholderPage.shapesTitle": "Formas: línea, párrafo, bloque y círculo",
+    "placeholderPage.shapesBody": "Una línea mide lo que el texto que reemplaza; un párrafo deja la última línea corta; un bloque es una imagen o una tabla; un círculo, un avatar.",
+    "placeholderPage.matchTitle": "A la medida: igual que el texto",
+    "placeholderPage.matchBody": '<code>text="h3"</code> usa el mismo tamaño e interlineado que un Heading h3: al cambiar, la línea no se mueve.',
     "placeholderPage.reactBody": "El código está en la pestaña <strong>React</strong> de cada preview.",
     "placeholderPage.test1": "Una línea toma su alto del rol tipográfico que reemplaza, no de un largo escrito a mano.",
     "placeholderPage.test2": "No tiene violaciones serias de accesibilidad dentro de una región busy nombrada.",
@@ -51,18 +65,13 @@ export const placeholderMessages = {
     "placeholderPage.test4": "React acota la cantidad de líneas igual que el emisor, así los dos bindings dibujan lo mismo.",
     "placeholderPage.test5": "Un bloque con fill toma la caja del padre; el círculo toma la escala de Avatar.",
     "placeholderPage.test6": "Ninguna de las cuatro firmas entra al árbol de accesibilidad.",
-    "placeholderPage.prop.shimmer.title": "Brillo",
-    "placeholderPage.prop.shimmer.body": "<code>shimmer</code> pasa un brillo por la forma para decir que algo está cargando.",
-    "placeholderPage.prop.shimmer.false": "Sin brillo, la forma queda quieta: úsalo cuando hay muchas en pantalla.",
-    "placeholderPage.prop.shimmer.true": "Usa <code>shimmer</code>, el default, para que la espera se note. Se apaga con <code>prefers-reduced-motion</code>.",
+    "placeholderPage.prop.shimmer.title": "Shimmer: un brillo que pasa",
+    "placeholderPage.prop.shimmer.body": "Un brillo recorre la forma para que se note que algo carga.",
+    "placeholderPage.prop.shimmer.false": "Usa <code>false</code> cuando hay muchas formas en pantalla: el brillo en todas distrae.",
+    "placeholderPage.prop.shimmer.true": "Usa <code>true</code>, el valor por defecto, para que la espera se note.",
     "placeholderPage.prop.shimmer.falseLabel": "Quieto",
     "placeholderPage.prop.shimmer.trueLabel": "Con brillo",
-    "placeholderPage.showcaseTitle": "Showcases",
-    "placeholderPage.showcaseBody": "El esqueleto de una publicación, el cambio al contenido real, las formas disponibles y cómo calzan con el texto.",
-    "placeholderPage.guidelinesLede": "Placeholder dibuja la forma del contenido mientras carga.",
-    "placeholderPage.guide.use1": "Imita el contenido que va a llegar: el mismo alto, las mismas líneas, el mismo orden.",
-    "placeholderPage.guide.use2": "Úsalo cuando la carga dura lo suficiente para verse, y el contenido tiene una forma conocida.",
-    "placeholderPage.guide.avoid1": "Si no se sabe qué forma tendrá el contenido, usa un <a href=\"/es/componentes/loader\">Loader</a>.",
+    "placeholderPage.guidelinesLede": "Una forma parecida al contenido hace la espera más corta y evita que la página salte.",
   },
   en: {
     "demo.placeholder.loading": "Loading post…",
@@ -74,41 +83,55 @@ export const placeholderMessages = {
     "demo.placeholder.readTime": "8 min read · updated today",
     "demo.placeholder.roleSample": "The real text of this role",
 
-    "placeholderPage.description": "Placeholder: decorative geometry that reserves content's place while it loads.",
-    "placeholderPage.lede":
-      "Placeholder reserves the shape of content that has not arrived yet. It cuts layout shift and offers a brief visual signal; the container keeps the responsibility of explaining what is loading.",
+    "placeholderPage.description": "Draws the content's shape while it loads, so nothing jumps when it arrives.",
+
+    "placeholderPage.a11yYours2": 'Add a status message, visible or hidden, with <code>role="status"</code>.',
+
+    "placeholderPage.a11yYours1": 'Mark the region with <code>aria-busy="true"</code> and remove it when the content arrives.',
+
+    "placeholderPage.a11yDoes2": "With <code>prefers-reduced-motion: reduce</code>, it stops moving.",
+
+    "placeholderPage.a11yDoes1": "Each shape carries <code>aria-hidden</code>.",
+
+    "placeholderPage.a11yIntro": "Placeholder is not read: the loading region announces the wait.",
+
+    "placeholderPage.content1": "Say in the status message what is loading: “Loading posts…”.",
+
+    "placeholderPage.dd.shape.dont": "A grey block anticipates nothing and, when the card arrives, everything jumps.",
+
+    "placeholderPage.dd.shape.do": "The same image, lines and order as the card that is coming.",
+
+    "placeholderPage.dd.shape.title": "Shape: the content's own",
+
+    "placeholderPage.whenNot3": 'For an empty list: use <a href="/components/empty-state">EmptyState</a>.',
+
+    "placeholderPage.whenNot2": 'If you know how long is left: use <a href="/components/progress">Progress</a>.',
+
+    "placeholderPage.whenNot1": 'If the content\'s shape is unknown: use <a href="/components/loader">Loader</a>.',
+
+    "placeholderPage.when2": "When loading lasts long enough to see, over half a second.",
+
+    "placeholderPage.when1": "When the content has a known shape: a card, a list, a profile.",
+
+    "placeholderPage.contract3": "With <code>prefers-reduced-motion: reduce</code>, the gleam turns off and the shape stays still.",
+
+    "placeholderPage.contract2": "Each shape takes only its own options: a circle takes no <code>text</code>, a paragraph no <code>fill</code>.",
+
+    "placeholderPage.contract1": 'It is always decorative: the loading region carries <code>aria-busy="true"</code> and a status message.',
+    "placeholderPage.lede": "Placeholder draws the content's shape while it loads: a text's lines, an image, an avatar. When the content arrives, it takes the same place and nothing jumps. It is decorative: the loading region says what it awaits.",
     "placeholderPage.anatomyBody":
       "This diagram names the root and the lines of a <code>Placeholder.paragraph</code>. The other signatures are a single <code>sk-placeholder</code> with no child part; only the paragraph makes <code>sk-placeholder__line</code> worth naming. It is frozen; the live layouts start below.",
     "placeholderPage.anatomyLabel": "Placeholder anatomy",
     "placeholderPage.anatomyPreviewLabel": "Placeholder, part by part",
-    "placeholderPage.calloutBody":
-      'Placeholder is always decorative. Use <code>aria-busy="true"</code> and a status message on the region waiting for the data.',
-    "placeholderPage.layoutTitle": "Pending layout",
-    "placeholderPage.layoutBody":
-      "The geometry follows the final layout: a kit card (<code>Box</code> + <code>Stack</code>) with media, text, and a byline. This first example stays loading forever so the Placeholder can be inspected.",
-    "placeholderPage.layoutLabel": "Layout with Placeholder",
-    "placeholderPage.layoutNote": "Always pending",
-    "placeholderPage.swapTitle": "Simulated load",
-    "placeholderPage.swapBody":
-      "The second example waits <strong>5 seconds</strong>, drops the provisional layout, and shows the real content in the same space: <code>ImageFrame</code>, <code>Badge</code>, <code>Heading</code>, <code>Text</code>, and <code>Avatar</code>.",
+    "placeholderPage.layoutTitle": "A post: the card's shape",
+    "placeholderPage.layoutBody": "Image, title, two lines and byline, at the same sizes as the real card.",
+    "placeholderPage.swapTitle": "Simulated load: the content takes its place",
+    "placeholderPage.swapBody": "After 5 seconds, the real card replaces the shape in the same space.",
     "placeholderPage.swapLabel": "Placeholder → content",
-    "placeholderPage.swapNote": "Fake load · 5 s",
-    "placeholderPage.shapesTitle": "Four signatures, one primitive",
-    "placeholderPage.shapesBody":
-      "Each signature carries only the options that apply to it: a circle takes no <code>text</code>, a paragraph takes no <code>fill</code>. Composing a specific skeleton is choosing signatures and naming roles, never writing measurements.",
-    "placeholderPage.shapesItem1": "<code>Placeholder</code>: one line, carrying the type role it replaces.",
-    "placeholderPage.shapesItem2": "<code>Placeholder.paragraph</code>: several lines with a short last one.",
-    "placeholderPage.shapesItem3": "<code>Placeholder.block</code>: media, tables, or rectangular regions; <code>fill</code> takes the parent's box and corner.",
-    "placeholderPage.shapesItem4": "<code>Placeholder.circle</code>: avatars, on the same scale Avatar uses.",
-    "placeholderPage.shapesLabel": "The four signatures",
-    "placeholderPage.matchTitle": "A skeleton measures what it will replace",
-    "placeholderPage.matchBody":
-      "<code>text=\"h3\"</code> does not mean \"roughly as tall as an h3\": it resolves to the same size and leading token pair <code>Heading</code> reads. Each row below is a Placeholder beside the real text of the same role. They line up because both read the same tokens, not because anyone measured; change the type scale and they move together.",
-    "placeholderPage.matchLabel": "Skeleton and real text, same role",
-    "placeholderPage.matchNote": "h1 · h3 · body · caption",
-    "placeholderPage.reducedTitle": "Reduced motion",
-    "placeholderPage.reducedBody":
-      "The sheen moves with <code>transform</code>. Under <code>prefers-reduced-motion: reduce</code>, the animation disappears and the static fill remains.",
+    "placeholderPage.shapesTitle": "Shapes: line, paragraph, block and circle",
+    "placeholderPage.shapesBody": "A line measures the text it replaces; a paragraph leaves the last line short; a block is an image or a table; a circle, an avatar.",
+    "placeholderPage.matchTitle": "To size: the same as the text",
+    "placeholderPage.matchBody": '<code>text="h3"</code> uses the same size and line height as an h3 Heading: on the swap, the line does not move.',
     "placeholderPage.reactBody": "The code is in each preview's <strong>React</strong> tab.",
     "placeholderPage.test1": "A line takes its height from the type role it replaces, not from a hand-written length.",
     "placeholderPage.test2": "Has no serious accessibility violations inside a labelled busy region.",
@@ -116,17 +139,12 @@ export const placeholderMessages = {
     "placeholderPage.test4": "React clamps the line count exactly as the emitter does, so both bindings draw the same thing.",
     "placeholderPage.test5": "A filled block takes the parent's box; the circle takes Avatar's scale.",
     "placeholderPage.test6": "None of the four signatures enters the accessibility tree.",
-    "placeholderPage.prop.shimmer.title": "Shimmer",
-    "placeholderPage.prop.shimmer.body": "<code>shimmer</code> sweeps a glint across the shape to say something is loading.",
-    "placeholderPage.prop.shimmer.false": "Without shimmer, the shape stays still: use it when many are on screen.",
-    "placeholderPage.prop.shimmer.true": "Use <code>shimmer</code>, the default, so the wait shows. It turns off under <code>prefers-reduced-motion</code>.",
+    "placeholderPage.prop.shimmer.title": "Shimmer: a passing gleam",
+    "placeholderPage.prop.shimmer.body": "A gleam runs over the shape so the loading shows.",
+    "placeholderPage.prop.shimmer.false": "Use <code>false</code> when there are many shapes on screen: a gleam on all of them distracts.",
+    "placeholderPage.prop.shimmer.true": "Use <code>true</code>, the default, so the wait shows.",
     "placeholderPage.prop.shimmer.falseLabel": "Still",
     "placeholderPage.prop.shimmer.trueLabel": "Shimmer",
-    "placeholderPage.showcaseTitle": "Showcases",
-    "placeholderPage.showcaseBody": "A post's skeleton, the swap to the real content, the available shapes, and how they match the text.",
-    "placeholderPage.guidelinesLede": "Placeholder draws the shape of content while it loads.",
-    "placeholderPage.guide.use1": "Mimic the content that is coming: the same height, the same lines, the same order.",
-    "placeholderPage.guide.use2": "Use it when the load lasts long enough to be seen, and the content has a known shape.",
-    "placeholderPage.guide.avoid1": "When the content's shape is unknown, use a <a href=\"/components/loader\">Loader</a>.",
+    "placeholderPage.guidelinesLede": "A shape like the content makes the wait feel shorter and keeps the page from jumping.",
   },
 } as const;

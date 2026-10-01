@@ -13,7 +13,11 @@ const tileContent = (title: string, description: string): UsageTree => ({
 export const checkboxAnatomyTree = (t: Translate): UsageTree => ({
   contract: "annotation",
   signature: "Annotated",
-  options: { ...anatomyCanvas(t), label: t("checkbox.anatomyLabel"), inert: true },
+  options: {
+    ...anatomyCanvas(t),
+    label: t("checkbox.anatomyLabel"),
+    inert: true,
+  },
   slots: {
     ...anatomyHints(t),
     subject: {
@@ -25,9 +29,15 @@ export const checkboxAnatomyTree = (t: Translate): UsageTree => ({
     items: [
       namePart(".sk-checkbox", "block-start", { mark: "bracket" }),
       namePart(".sk-checkbox__input", "inline-start"),
-      namePart(".sk-checkbox__control", "inline-start", { ringPlacement: "offset", ringDistance: 2 }),
+      namePart(".sk-checkbox__control", "inline-start", {
+        ringPlacement: "offset",
+        ringDistance: 2,
+      }),
       namePart(".sk-checkbox__indicator", "inline-end"),
-      namePart(".sk-checkbox__label", "inline-end", { ringPlacement: "offset", ringDistance: 2 }),
+      namePart(".sk-checkbox__label", "inline-end", {
+        ringPlacement: "offset",
+        ringDistance: 2,
+      }),
     ],
   },
 });
@@ -54,20 +64,33 @@ export const tileCheckboxTree = (t: Translate): UsageTree => ({
     {
       contract: "tile",
       signature: "TileCheckbox",
-      options: { name: "notifications", value: "critical", defaultChecked: true },
-      children: tileContent(t("demo.checkbox.critical.title"), t("demo.checkbox.critical.body")),
+      options: {
+        name: "notifications",
+        value: "critical",
+        defaultChecked: true,
+      },
+      children: tileContent(
+        t("demo.checkbox.critical.title"),
+        t("demo.checkbox.critical.body"),
+      ),
     },
     {
       contract: "tile",
       signature: "TileCheckbox",
       options: { name: "notifications", value: "private" },
-      children: tileContent(t("demo.checkbox.private.title"), t("demo.checkbox.private.body")),
+      children: tileContent(
+        t("demo.checkbox.private.title"),
+        t("demo.checkbox.private.body"),
+      ),
     },
     {
       contract: "tile",
       signature: "TileCheckbox",
       options: { name: "notifications", value: "inherited", disabled: true },
-      children: tileContent(t("demo.checkbox.disabled.title"), t("demo.checkbox.disabled.body")),
+      children: tileContent(
+        t("demo.checkbox.disabled.title"),
+        t("demo.checkbox.disabled.body"),
+      ),
     },
   ],
 });
@@ -98,10 +121,30 @@ export const checkboxScaleTree = (t: Translate): UsageTree => ({
               signature: "Inline",
               options: { gap: "md", equal: true },
               children: [
-                { contract: "checkbox", signature: "Checkbox", options: { name: "days", value: "mon" }, children: t("demo.checkboxScale.mon") },
-                { contract: "checkbox", signature: "Checkbox", options: { name: "days", value: "tue" }, children: t("demo.checkboxScale.tue") },
-                { contract: "checkbox", signature: "Checkbox", options: { name: "days", value: "wed" }, children: t("demo.checkboxScale.wed") },
-                { contract: "checkbox", signature: "Checkbox", options: { name: "days", value: "thu" }, children: t("demo.checkboxScale.thu") },
+                {
+                  contract: "checkbox",
+                  signature: "Checkbox",
+                  options: { name: "days", value: "mon" },
+                  children: t("demo.checkboxScale.mon"),
+                },
+                {
+                  contract: "checkbox",
+                  signature: "Checkbox",
+                  options: { name: "days", value: "tue" },
+                  children: t("demo.checkboxScale.tue"),
+                },
+                {
+                  contract: "checkbox",
+                  signature: "Checkbox",
+                  options: { name: "days", value: "wed" },
+                  children: t("demo.checkboxScale.wed"),
+                },
+                {
+                  contract: "checkbox",
+                  signature: "Checkbox",
+                  options: { name: "days", value: "thu" },
+                  children: t("demo.checkboxScale.thu"),
+                },
               ],
             },
             {
@@ -109,8 +152,18 @@ export const checkboxScaleTree = (t: Translate): UsageTree => ({
               signature: "Inline",
               options: { justify: "between", gap: "md" },
               children: [
-                { contract: "typography", signature: "Text", options: { size: "caption", tone: "secondary" }, children: t("demo.checkboxScale.min") },
-                { contract: "typography", signature: "Text", options: { size: "caption", tone: "secondary" }, children: t("demo.checkboxScale.max") },
+                {
+                  contract: "typography",
+                  signature: "Text",
+                  options: { size: "caption", tone: "secondary" },
+                  children: t("demo.checkboxScale.min"),
+                },
+                {
+                  contract: "typography",
+                  signature: "Text",
+                  options: { size: "caption", tone: "secondary" },
+                  children: t("demo.checkboxScale.max"),
+                },
               ],
             },
           ],
@@ -118,4 +171,80 @@ export const checkboxScaleTree = (t: Translate): UsageTree => ({
       ],
     },
   ],
+});
+
+/** Usage guide: one TileCheckbox with a short title and its explanation in the description. */
+export const checkboxDoDescriptionTree = (t: Translate): UsageTree => ({
+  contract: "layout",
+  signature: "Stack",
+  attrs: { style: "inline-size: 18rem;" },
+  children: {
+    contract: "tile",
+    signature: "TileCheckbox",
+    options: { name: "notifications", value: "critical", defaultChecked: true },
+    children: tileContent(
+      t("demo.checkbox.critical.title"),
+      t("demo.checkbox.critical.body"),
+    ),
+  },
+});
+
+/** A positive label says what checking the option will do. */
+export const checkboxPositiveLabelTree = (t: Translate): UsageTree => ({
+  contract: "layout",
+  signature: "Stack",
+  attrs: { style: "inline-size: 18rem;" },
+  children: {
+    contract: "checkbox",
+    signature: "Checkbox",
+    options: { name: "alerts", value: "email" },
+    children: t("demo.checkbox.receiveAlerts"),
+  },
+});
+
+/** A negative label makes the checked state harder to interpret. */
+export const checkboxNegativeLabelTree = (t: Translate): UsageTree => ({
+  contract: "layout",
+  signature: "Stack",
+  attrs: { style: "inline-size: 18rem;" },
+  children: {
+    contract: "checkbox",
+    signature: "Checkbox",
+    options: { name: "alerts", value: "email" },
+    children: t("demo.checkbox.noAlerts"),
+  },
+});
+
+/* Usage guide: a plan picked with checkboxes, where only one answer makes sense. */
+export const checkboxDontExclusiveTree = (t: Translate): UsageTree => ({
+  contract: "layout",
+  signature: "Stack",
+  options: { gap: "sm" },
+  children: [
+    "demo.checkbox.planBasic",
+    "demo.checkbox.planPro",
+    "demo.checkbox.planTeam",
+  ].map((key, index) => ({
+    contract: "checkbox",
+    signature: "Checkbox",
+    options: {
+      name: "plan",
+      value: String(index),
+      ...(index < 2 ? { defaultChecked: true } : {}),
+    },
+    children: t(key as Parameters<Translate>[0]),
+  })),
+});
+
+/* Usage guide: a long explanation crammed into a plain checkbox label. */
+export const checkboxDontLongLabelTree = (t: Translate): UsageTree => ({
+  contract: "layout",
+  signature: "Stack",
+  attrs: { style: "inline-size: 18rem;" },
+  children: {
+    contract: "checkbox",
+    signature: "Checkbox",
+    options: { name: "alerts", value: "critical" },
+    children: t("demo.checkbox.longLabel"),
+  },
 });

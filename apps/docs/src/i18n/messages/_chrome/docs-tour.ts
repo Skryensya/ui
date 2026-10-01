@@ -4,7 +4,7 @@ export const docsTourMessages = {
     "docsTour.command": "/tour",
     "docsTour.commandHint": "Recorrer la documentación",
     "docsTour.menuTitle": "Índice",
-    "docsTour.menuBody": "Toda la documentación, sección por sección. En pantallas chicas, aquí vive la barra lateral.",
+    "docsTour.menuBody": "Toda la documentación, sección por sección. En pantallas pequeñas, aquí vive la barra lateral.",
     "docsTour.globalTitle": "Secciones",
     "docsTour.globalBody": "Las grandes áreas del sitio: fundamentos, componentes, templates y presets. La que estás leyendo queda marcada.",
     "docsTour.versionTitle": "Versión",

@@ -123,7 +123,6 @@ const loaders: Record<string, () => Promise<Record<string, unknown>>> = {
   "@skryensya/react/megamenu": () => import("./components/megamenu.js"),
   "@skryensya/react/tabs": () => import("./components/tabs.js"),
   "@skryensya/react/toc": () => import("./components/toc.js"),
-  "@skryensya/react/component-preview": () => import("./components/component-preview.js"),
   "@skryensya/react/editor": () => import("./components/editor.js"),
   "@skryensya/react/folder": () => import("./components/folder.js"),
 };

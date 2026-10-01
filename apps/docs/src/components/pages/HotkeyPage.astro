@@ -1,0 +1,295 @@
+---
+import ComponentPageShell from "./ComponentPageShell.astro";
+import CodeBlock from "../CodeBlock.astro";
+import DoDont from "../DoDont.astro";
+import A11yNotes from "../A11yNotes.astro";
+import { getLocale, localizePath } from "../../i18n";
+
+const locale = getLocale(Astro.url);
+const commandPaletteHref = localizePath("/components/command-palette", locale);
+const isEs = locale === "es";
+
+const copy = isEs
+  ? {
+      description: "El primitivo de atajos de teclado: parseo, match, formato y bindings para Vanilla y React.",
+      lede:
+        'Hotkey cubre el atajo completo: una especificación como <code>"mod+k"</code>, un matcher puro, un formato visible y un binding que limpia lo que registra. <code>mod</code> es ⌘ en Mac y Ctrl en el resto, así la app escribe un solo atajo y cada plataforma recibe el suyo.',
+      try:
+        `Pruébalo ahora: aprieta <kbd class="sk-kbd" data-sk-command-palette-hint>⌘K</kbd>. El buscador de esta documentación es <a href="${commandPaletteHref}">CommandPalette</a>, un consumidor real de este primitivo.`,
+      primitiveTitle: "Un primitivo, tres capas",
+      primitiveBody:
+        "Core parsea, compara y formatea. Vanilla reexporta el binding imperativo. React envuelve el mismo binding en un hook con cleanup de efecto y handler estable por ref.",
+      specTitle: "Spec: exacto y portable",
+      specBody:
+        'Modificadores primero, tecla después, separados por <code>+</code>. <code>&gt;</code> separa pasos de secuencia. El match es exacto: <code>"mod+k"</code> no dispara con <code>mod+shift+k</code>.',
+      showTitle: "Mostrarlo",
+      showBody:
+        "Un atajo solo se descubre si aparece en la UI. <code>formatHotkey</code> lo escribe como el sistema operativo: glifos en Mac, palabras en el resto.",
+      guidelinesLede: "Un atajo acelera una acción existente; no debe ser la única forma de encontrarla.",
+      ddVisibleTitle: "Descubrimiento: visible junto al comando",
+      ddVisibleDo: "El botón explica la acción y el atajo aparece como acelerador.",
+      ddVisibleDont: "Un atajo invisible solo lo encuentra quien ya lo conoce.",
+      ddTypingTitle: "Mientras escriben: el campo manda",
+      ddTypingDo: "Si el foco está en un campo, <code>/</code> se escribe como texto. No abras el buscador ni la ayuda.",
+      ddTypingDont: "Si <code>/</code> abre un comando mientras alguien escribe una URL o una búsqueda, el campo deja de comportarse como campo.",
+      ddModTitle: "Plataforma: usa mod, no ramas",
+      ddModDo: '<code>"mod+k"</code> produce ⌘K en Mac y Ctrl+K en el resto.',
+      ddModDont: "Dos ramas manuales duplican la decisión de plataforma y se desincronizan.",
+      anatomyIntro: "Hotkey no pinta DOM propio. Su anatomía es el flujo que conecta una especificación escrita con un evento del teclado y una etiqueta visible.",
+      a11yIntro: "Hotkey agrega aceleradores; la operación principal debe seguir disponible con controles visibles.",
+      a11yDoes: [
+        "No dispara letras sueltas dentro de campos de texto por defecto.",
+        "Frena el default del navegador por defecto cuando el atajo coincide.",
+        "Formatea el atajo para que la UI muestre la plataforma correcta.",
+      ],
+      a11yYours: [
+        "Pon el mismo comando en un botón, menú o CommandPalette; el atajo es un extra.",
+        "No uses atajos de una sola tecla para acciones destructivas.",
+        "Muestra el atajo donde se descubre la acción.",
+      ],
+    }
+  : {
+      description: "The keyboard shortcut primitive: parsing, matching, formatting and Vanilla/React bindings.",
+      lede:
+        'Hotkey covers the whole shortcut: a spec like <code>"mod+k"</code>, a pure matcher, visible formatting and a binding that cleans up what it registers. <code>mod</code> is ⌘ on Mac and Ctrl everywhere else, so the app writes one shortcut and each platform gets its own.',
+      try:
+        `Try it now: press <kbd class="sk-kbd" data-sk-command-palette-hint>⌘K</kbd>. This documentation finder is <a href="${commandPaletteHref}">CommandPalette</a>, a real consumer of this primitive.`,
+      primitiveTitle: "One primitive, three layers",
+      primitiveBody:
+        "Core parses, matches and formats. Vanilla re-exports the imperative binding. React wraps the same binding in a hook with effect cleanup and a ref-stable handler.",
+      specTitle: "Spec: exact and portable",
+      specBody:
+        'Modifiers first, then the key, separated by <code>+</code>. <code>&gt;</code> separates sequence steps. Matching is exact: <code>"mod+k"</code> does not fire for <code>mod+shift+k</code>.',
+      showTitle: "Showing it",
+      showBody:
+        "A shortcut is only discoverable when it appears in the UI. <code>formatHotkey</code> writes it the way the operating system does: glyphs on Mac, words elsewhere.",
+      guidelinesLede: "A shortcut accelerates an existing action; it must not be the only way to find it.",
+      ddVisibleTitle: "Discovery: visible beside the command",
+      ddVisibleDo: "The button explains the action and the shortcut appears as an accelerator.",
+      ddVisibleDont: "An invisible shortcut is only found by someone who already knows it.",
+      ddTypingTitle: "While typing: the field wins",
+      ddTypingDo: "If focus is in a field, <code>/</code> is typed as text. Do not open search or help.",
+      ddTypingDont: "If <code>/</code> opens a command while someone types a URL or a search, the field stops behaving like a field.",
+      ddModTitle: "Platform: use mod, not branches",
+      ddModDo: '<code>"mod+k"</code> produces ⌘K on Mac and Ctrl+K everywhere else.',
+      ddModDont: "Two manual branches duplicate the platform decision and drift apart.",
+      anatomyIntro: "Hotkey does not paint its own DOM. Its anatomy is the flow that connects an authored spec to a keyboard event and a visible label.",
+      a11yIntro: "Hotkey adds accelerators; the main operation must remain available through visible controls.",
+      a11yDoes: [
+        "Does not fire bare letters inside text fields by default.",
+        "Prevents the browser default by default when the shortcut matches.",
+        "Formats the shortcut so the UI shows the right platform.",
+      ],
+      a11yYours: [
+        "Put the same command in a button, menu or CommandPalette; the shortcut is an extra.",
+        "Do not use single-key shortcuts for destructive actions.",
+        "Show the shortcut where the action is discovered.",
+      ],
+    };
+
+const vanilla = `import { bindHotkey } from "@skryensya/vanilla/hotkey";
+
+const off = bindHotkey("mod+k", () => palette.showModal());
+
+// cleanup, like every enhancer
+off();`;
+
+const react = `import { useHotkey } from "@skryensya/react/hotkey";
+
+function Palette() {
+  const [open, setOpen] = useState(false);
+  useHotkey("mod+k", () => setOpen((v) => !v));
+}`;
+
+const specs = `"mod+k"        // ⌘K on Mac, Ctrl+K everywhere else
+"mod+shift+p"  // exact: does not fire with "mod+p"
+"shift+/"      // "?" for help
+"escape"       // a single key
+"g > i"        // sequence: g, then i`;
+
+const format = `import { formatHotkey } from "@skryensya/core/hotkey";
+
+formatHotkey("mod+k", true);   // "⌘K"   (Mac)
+formatHotkey("mod+k", false);  // "Ctrl+K"`;
+
+const visibleDo = `<div class="hotkey-dd hotkey-dd--command"><button class="sk-button sk-interactive" type="button">Search <kbd class="sk-kbd">⌘K</kbd></button></div>`;
+const visibleDont = `<div class="hotkey-dd hotkey-dd--ghost"><kbd class="sk-kbd">⌘K</kbd></div>`;
+const typingDo = `<div class="hotkey-dd"><label class="hotkey-dd__label">${isEs ? "Buscar" : "Search"}</label><input class="hotkey-dd__input" value="/docs" aria-label="${isEs ? "Buscar" : "Search"}" /><p class="hotkey-dd__note">${isEs ? "/ queda en el campo" : "/ stays in the field"}</p></div>`;
+const typingDont = `<div class="hotkey-dd"><label class="hotkey-dd__label">${isEs ? "Buscar" : "Search"}</label><input class="hotkey-dd__input" value="docs" aria-label="${isEs ? "Buscar" : "Search"}" /><p class="hotkey-dd__note hotkey-dd__note--bad">${isEs ? "/ abrió Ayuda" : "/ opened Help"}</p></div>`;
+const modDo = `<div class="hotkey-dd hotkey-dd--platform"><code>mod+k</code><span>→</span><kbd class="sk-kbd">⌘K</kbd><kbd class="sk-kbd">Ctrl+K</kbd></div>`;
+const modDont = `<div class="hotkey-dd hotkey-dd--platform"><code>isMac ? "⌘K" : "Ctrl+K"</code><span>×</span><kbd class="sk-kbd">?</kbd></div>`;
+---
+
+<ComponentPageShell
+  title="Hotkey"
+  description={copy.description}
+  testFiles={[
+    "packages/core/src/hotkey.test.ts",
+    "packages/vanilla/src/hotkey.test.ts",
+    "packages/react/src/components/hotkey.test.tsx",
+  ]}
+>
+  <Fragment slot="usage">
+    <p class="lede" set:html={copy.lede} />
+    <p set:html={copy.try} />
+
+    <h3>{copy.primitiveTitle}</h3>
+    <p>{copy.primitiveBody}</p>
+    <CodeBlock code={vanilla} label="Vanilla" lang="ts" />
+    <CodeBlock code={react} label="React" lang="tsx" />
+
+    <h3>{copy.specTitle}</h3>
+    <p set:html={copy.specBody} />
+    <CodeBlock code={specs} label="specs" lang="ts" />
+
+    <h3>{copy.showTitle}</h3>
+    <p set:html={copy.showBody} />
+    <CodeBlock code={format} label="formatHotkey" lang="ts" />
+  </Fragment>
+
+  <Fragment slot="guidelines">
+    <p class="lede">{copy.guidelinesLede}</p>
+    <DoDont
+      title={copy.ddVisibleTitle}
+      do={{ html: visibleDo, caption: copy.ddVisibleDo }}
+      dont={{ html: visibleDont, caption: copy.ddVisibleDont }}
+    />
+    <DoDont
+      title={copy.ddTypingTitle}
+      do={{ html: typingDo, caption: copy.ddTypingDo }}
+      dont={{ html: typingDont, caption: copy.ddTypingDont }}
+    />
+    <DoDont
+      title={copy.ddModTitle}
+      do={{ html: modDo, caption: copy.ddModDo }}
+      dont={{ html: modDont, caption: copy.ddModDont }}
+    />
+  </Fragment>
+
+  <Fragment slot="anatomy">
+    <p>{copy.anatomyIntro}</p>
+    <div class="hotkey-anatomy" aria-label="Hotkey anatomy">
+      <div><code>"mod+k"</code><span>spec</span></div>
+      <svg aria-hidden="true" viewBox="0 0 48 16"><path d="M2 8h40m-6-5 6 5-6 5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" /></svg>
+      <div><code>parseHotkey</code><span>normalize</span></div>
+      <svg aria-hidden="true" viewBox="0 0 48 16"><path d="M2 8h40m-6-5 6 5-6 5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" /></svg>
+      <div><code>matchesHotkey</code><span>event</span></div>
+      <svg aria-hidden="true" viewBox="0 0 48 16"><path d="M2 8h40m-6-5 6 5-6 5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" /></svg>
+      <div><code>formatHotkey</code><span>label</span></div>
+    </div>
+  </Fragment>
+
+  <Fragment slot="install">
+    <CodeBlock code="pnpm add @skryensya/core @skryensya/react" label="terminal" lang="bash" />
+    <CodeBlock code={react} label="React" lang="tsx" />
+  </Fragment>
+
+  <Fragment slot="installVanilla">
+    <CodeBlock code="pnpm add @skryensya/core @skryensya/vanilla" label="terminal" lang="bash" />
+    <CodeBlock code={vanilla} label="Vanilla" lang="ts" />
+  </Fragment>
+
+  <Fragment slot="a11y">
+    <A11yNotes intro={copy.a11yIntro} does={copy.a11yDoes} yours={copy.a11yYours} />
+  </Fragment>
+</ComponentPageShell>
+
+<style is:global>
+  .hotkey-dd {
+    display: grid;
+    place-items: center;
+    gap: var(--space-stack-xs);
+    min-block-size: 10rem;
+    padding: var(--space-inset-lg);
+    border-radius: var(--radius-surface);
+    background: var(--color-bg-surface);
+    text-align: center;
+  }
+
+  .hotkey-dd--command .sk-button {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-inline-sm);
+  }
+
+  .hotkey-dd--ghost {
+    color: var(--color-text-secondary);
+  }
+
+  .hotkey-dd__label {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-secondary);
+  }
+
+  .hotkey-dd__input {
+    inline-size: min(100%, 14rem);
+    border: 1px solid var(--color-border-default);
+    border-radius: var(--radius-control);
+    padding: var(--space-inset-sm);
+    background: var(--color-bg-surface);
+    color: var(--color-text-primary);
+    font: inherit;
+  }
+
+  .hotkey-dd__note {
+    margin: 0;
+    color: var(--color-text-success);
+    font-size: var(--font-size-sm);
+  }
+
+  .hotkey-dd__note--bad {
+    color: var(--color-text-danger);
+  }
+
+  .hotkey-dd--platform {
+    grid-auto-flow: column;
+    grid-auto-columns: max-content;
+    justify-content: center;
+    align-content: center;
+    color: var(--color-text-secondary);
+  }
+
+  .hotkey-dd--platform code {
+    color: var(--color-text-primary);
+  }
+
+  .hotkey-anatomy {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: var(--space-inline-sm);
+    align-items: center;
+    margin-block: var(--space-stack-md);
+  }
+
+  .hotkey-anatomy > div {
+    display: grid;
+    gap: var(--space-stack-2xs);
+    min-block-size: 7rem;
+    place-items: center;
+    border: 1px solid var(--color-border-subtle);
+    border-radius: var(--radius-surface);
+    background: var(--color-bg-surface);
+    padding: var(--space-inset-md);
+    text-align: center;
+  }
+
+  .hotkey-anatomy > div span {
+    color: var(--color-text-secondary);
+    font-size: var(--font-size-sm);
+  }
+
+  .hotkey-anatomy > svg {
+    display: none;
+    color: var(--color-text-tertiary);
+  }
+
+  @media (min-width: 56rem) {
+    .hotkey-anatomy {
+      grid-template-columns: minmax(0, 1fr) 3rem minmax(0, 1fr) 3rem minmax(0, 1fr) 3rem minmax(0, 1fr);
+    }
+
+    .hotkey-anatomy > svg {
+      display: block;
+    }
+  }
+</style>

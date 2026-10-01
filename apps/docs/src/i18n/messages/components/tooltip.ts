@@ -7,41 +7,64 @@ export const tooltipMessages = {
     "demo.tooltip.metric.content": "Suma facturada del periodo, sin impuestos ni reembolsos",
     "demo.tooltip.truncated.content": "Migración del pipeline de facturación",
 
-    "tooltipPage.description": "Tooltip: una descripción auxiliar anclada al trigger, con aria-describedby, Escape y CSS anchor positioning.",
-    "tooltipPage.lede":
-      "Tooltip es una <strong>descripción auxiliar</strong>, nunca el nombre de un control ni el único lugar donde vive un dato. La máquina cuelga <code>aria-describedby</code> del trigger mientras está abierto, no <code>aria-labelledby</code>: el control ya tiene que tener nombre accesible por su cuenta, y el tooltip lo amplía.",
+    "tooltipPage.description": "Agrega una descripción corta a algo que ya está en pantalla, al pasar el puntero o enfocarlo.",
+
+    "tooltipPage.key.escape": "Cierra el tooltip.",
+
+    "tooltipPage.key.focus": "Enfocar el control muestra el tooltip.",
+
+    "tooltipPage.a11yYours2": "No pongas enlaces ni botones dentro.",
+
+    "tooltipPage.a11yYours1": "Un botón de solo ícono necesita su propio <code>aria-label</code>: el tooltip describe, no nombra.",
+
+    "tooltipPage.a11yDoes3": "El puntero puede pasar sobre el tooltip sin que se cierre.",
+
+    "tooltipPage.a11yDoes2": "<kbd>Esc</kbd> lo cierra sin mover el foco.",
+
+    "tooltipPage.a11yDoes1": "Se abre al enfocar, no solo al pasar el puntero.",
+
+    "tooltipPage.a11yIntro": "Tooltip sigue el patrón tooltip de la APG.",
+
+    "tooltipPage.content2": "Para un botón de ícono, usa el mismo texto que su <code>aria-label</code>.",
+
+    "tooltipPage.content1": "Escribe unas pocas palabras, sin punto final: «Copiar enlace».",
+
+    "tooltipPage.whenNot3": "Para un botón que ya muestra su texto: no repitas.",
+
+    "tooltipPage.whenNot2": 'Para información que hace falta para completar la tarea: ponla en la página, por ejemplo en la ayuda de un <a href="/es/componentes/form-field">FormField</a>.',
+
+    "tooltipPage.whenNot1": 'Para texto con formato, enlaces o acciones: usa <a href="/es/componentes/popover">Popover</a>.',
+
+    "tooltipPage.when3": "Para mostrar completo un texto recortado.",
+
+    "tooltipPage.when2": "Para explicar una cifra o una abreviatura.",
+
+    "tooltipPage.when1": "Para nombrar un botón de solo ícono, además de su <code>aria-label</code>.",
+
+    "tooltipPage.contract4": "En pantallas táctiles no hay puntero: lo que diga el tooltip tiene que estar también en otro lado.",
+
+    "tooltipPage.contract3": "<code>placement</code> acepta <code>block-start</code> (por defecto), <code>block-end</code>, <code>inline-start</code> e <code>inline-end</code>; si no cabe, se da vuelta.",
+
+    "tooltipPage.contract2": "Cumple WCAG 2.2, 1.4.13: se cierra con <kbd>Esc</kbd>, se puede pasar el puntero encima y no se va solo.",
+
+    "tooltipPage.contract1": "Cuelga <code>aria-describedby</code> del control: describe, no nombra.",
+
+    "tooltipPage.casesBody": "Pasa el puntero o recorre con <kbd>Tab</kbd>: la descripción aparece arriba del control.",
+
+    "tooltipPage.casesTitle": "Tres casos: ícono, cifra y texto recortado",
+    "tooltipPage.lede": "Tooltip agrega una descripción corta a algo que ya está en pantalla: qué hace un botón de solo ícono, qué significa una cifra, el texto completo de uno recortado. Aparece al pasar el puntero o al enfocar, y nunca es el único lugar donde vive un dato.",
     "tooltipPage.anatomyBody":
       "Este diagrama nombra el root, el trigger, el positioner, el content y la flecha. El espécimen está congelado abierto; los Tooltip vivos empiezan abajo.",
     "tooltipPage.anatomyLabel": "Anatomía de Tooltip",
     "tooltipPage.anatomyPreviewLabel": "Tooltip, parte por parte",
-    "tooltipPage.ruleTitle": "La regla que no puede verificar el sistema",
-    "tooltipPage.ruleBody1":
-      "Hay dos situaciones sin arreglo posible dentro del componente. En <strong>touch</strong> no hay hover: la máquina abre en <code>pointerenter</code> y en <code>focus</code>, así que en un teléfono el tooltip prácticamente no aparece. <strong>Sin JavaScript</strong> el contenido se pinta oculto y solo la máquina lo abre, así que tampoco aparece.",
-    "tooltipPage.ruleBody2":
-      "En los dos casos no se pierde información <em>porque</em> el contrato prohíbe que haya información ahí que no esté en otro lado. Un tooltip que es la única fuente de algo es un bug de quien lo usa, y el validador no lo puede detectar: por eso está escrito aquí y en el contrato de <code>@skryensya/core/tooltip</code>.",
-    "tooltipPage.wcagTitle": "WCAG 1.4.13",
-    "tooltipPage.wcagBody1":
-      "El criterio <em>Content on Hover or Focus</em> pide tres cosas, y las tres se cumplen por defecto. <strong>Descartable</strong>: <kbd class=\"sk-kbd\">Esc</kbd> cierra sin mover el puntero ni el foco. <strong>Persistente</strong>: no se cierra sola por un temporizador. <strong>Hoverable</strong>: el puntero puede llegar hasta el tooltip sin que desaparezca.",
-    "tooltipPage.wcagBody2":
-      'Ese último es la opción <code>interactive</code> de la máquina, y viene <strong>encendida</strong>. Con ella apagada el contenido recibe <code>pointer-events: none</code>, el puntero nunca lo alcanza y el tooltip se cierra en el camino: eso falla el criterio. La tentación es apagarla razonando que un tooltip descriptivo no tiene nada que clickear, y es un error de lectura: <em>hoverable</em> no existe para poder operar el tooltip, existe para poder <strong>leerlo</strong>, que es justo lo que necesita alguien con magnificación de pantalla o con temblor. Se puede apagar con <code>data-interactive="false"</code>, y apagarlo es salirse del criterio a sabiendas.',
-    "tooltipPage.placementTitle": "Colocación",
-    "tooltipPage.placementBody":
-      "<code>data-sk-placement</code> acepta cuatro valores en ejes lógicos: <code>block-start</code> (el defecto), <code>block-end</code>, <code>inline-start</code> y <code>inline-end</code>. Son una <em>preferencia</em>, no una garantía: si no entra, voltea al lado opuesto del mismo eje, porque quien pide <code>inline-end</code> quiere el tooltip al costado y caer arriba sería desobedecer, no adaptarse.",
-    "tooltipPage.positioningTitle": "Posicionamiento",
-    "tooltipPage.positioningBody1":
-      'Donde hay <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_anchor_positioning" rel="noopener noreferrer" target="_blank">CSS anchor positioning</a>, el navegador coloca el tooltip: sin bucle de layout y sin medir en cada scroll. El enhancer estampa un <code>anchor-name</code> único y deja de pasarle a Zag los estilos inline, para que no haya dos motores de posicionamiento peleando. Los navegadores sin la API se quedan con el posicionamiento JS de Zag, que es el fallback, no un camino inferior.',
-    "tooltipPage.positioningBody2":
-      'La <strong>flecha</strong> sigue el mismo reparto: sale del <em>trigger</em> y no del centro de la caja, así que sigue apuntando al control aunque la caja se haya corrido para no salirse de pantalla, y voltea junto con ella. Vive adentro del positioner y aun así se ancla al trigger, porque es <code>fixed</code>: un fijo lo contiene el viewport, no su padre. En el fallback la coloca la máquina. Está contado en <a href="/es/anclaje">Anclaje</a>.',
     "tooltipPage.test1": "Describe el trigger en vez de nombrarlo.",
     "tooltipPage.test2": "Se mantiene cerrado mientras está deshabilitado.",
     "demo.tooltip.dd.long": "Este archivo se exporta con todas sus capas, incluidas las ocultas. Si necesitas solo la vista actual, usa la opción de exportar selección desde el menú de archivo.",
-    "tooltipPage.showcaseTitle": "Showcases",
-    "tooltipPage.showcaseBody": "Los tres casos en que un tooltip vale la pena: un control solo con ícono, una cifra que se explica y un texto recortado.",
-    "tooltipPage.guidelinesLede": "Tooltip agrega una etiqueta corta a algo que ya está en pantalla.",
-    "tooltipPage.dd.short.title": "Una etiqueta, no un párrafo",
+    "tooltipPage.guidelinesLede": "Un tooltip es una ayuda extra: si alguien no lo ve, no debe perderse nada.",
+    "tooltipPage.dd.short.title": "Largo: una frase corta",
     "tooltipPage.dd.short.do": "Unas pocas palabras que nombran o aclaran.",
-    "tooltipPage.dd.short.dont": "Un párrafo desaparece al mover el puntero antes de leerlo. Usa un <a href=\"/es/componentes/popover\">Popover</a>.",
-    "tooltipPage.dd.repeat.title": "Agrega algo",
+    "tooltipPage.dd.short.dont": 'Un párrafo desaparece al mover el puntero antes de leerlo. Usa un <a href="/es/componentes/popover">Popover</a>.',
+    "tooltipPage.dd.repeat.title": "Contenido: agrega algo",
     "tooltipPage.dd.repeat.do": "Nombra un botón que solo muestra un ícono.",
     "tooltipPage.dd.repeat.dont": "No repitas el texto que el botón ya muestra.",
   },
@@ -53,41 +76,64 @@ export const tooltipMessages = {
     "demo.tooltip.metric.content": "Amount invoiced for the period, before tax and refunds",
     "demo.tooltip.truncated.content": "Billing pipeline migration",
 
-    "tooltipPage.description": "Tooltip: an auxiliary description anchored to the trigger, with aria-describedby, Escape, and CSS anchor positioning.",
-    "tooltipPage.lede":
-      "Tooltip is an <strong>auxiliary description</strong>, never a control's name and never the only place a piece of data lives. The machine hangs <code>aria-describedby</code> off the trigger while it is open, not <code>aria-labelledby</code>: the control already has to have its own accessible name, and the tooltip expands on it.",
+    "tooltipPage.description": "Adds a short description to something already on screen, on hover or focus.",
+
+    "tooltipPage.key.escape": "Closes the tooltip.",
+
+    "tooltipPage.key.focus": "Focusing the control shows the tooltip.",
+
+    "tooltipPage.a11yYours2": "Do not put links or buttons inside.",
+
+    "tooltipPage.a11yYours1": "An icon-only button needs its own <code>aria-label</code>: the tooltip describes, it does not name.",
+
+    "tooltipPage.a11yDoes3": "The pointer can move over the tooltip without it closing.",
+
+    "tooltipPage.a11yDoes2": "<kbd>Esc</kbd> closes it without moving focus.",
+
+    "tooltipPage.a11yDoes1": "It opens on focus, not only on hover.",
+
+    "tooltipPage.a11yIntro": "Tooltip follows the APG tooltip pattern.",
+
+    "tooltipPage.content2": "For an icon button, use the same text as its <code>aria-label</code>.",
+
+    "tooltipPage.content1": "Write a few words, with no final period: “Copy link”.",
+
+    "tooltipPage.whenNot3": "For a button that already shows its text: do not repeat.",
+
+    "tooltipPage.whenNot2": 'For information needed to complete the task: put it on the page, for example in a <a href="/components/form-field">FormField</a>\'s hint.',
+
+    "tooltipPage.whenNot1": 'For text with formatting, links or actions: use <a href="/components/popover">Popover</a>.',
+
+    "tooltipPage.when3": "To show a truncated text in full.",
+
+    "tooltipPage.when2": "To explain a figure or an abbreviation.",
+
+    "tooltipPage.when1": "To name an icon-only button, on top of its <code>aria-label</code>.",
+
+    "tooltipPage.contract4": "On touch screens there is no hover: whatever the tooltip says must also be somewhere else.",
+
+    "tooltipPage.contract3": "<code>placement</code> takes <code>block-start</code> (default), <code>block-end</code>, <code>inline-start</code> and <code>inline-end</code>; if it does not fit, it flips.",
+
+    "tooltipPage.contract2": "It meets WCAG 2.2, 1.4.13: it closes with <kbd>Esc</kbd>, can be hovered and does not leave by itself.",
+
+    "tooltipPage.contract1": "It hangs <code>aria-describedby</code> on the control: it describes, it does not name.",
+
+    "tooltipPage.casesBody": "Hover or move through with <kbd>Tab</kbd>: the description appears above the control.",
+
+    "tooltipPage.casesTitle": "Three cases: icon, figure and truncated text",
+    "tooltipPage.lede": "Tooltip adds a short description to something already on screen: what an icon-only button does, what a figure means, the full text of a truncated one. It appears on hover or focus, and is never the only place a piece of data lives.",
     "tooltipPage.anatomyBody":
       "This diagram names the root, the trigger, the positioner, the content and the arrow. The specimen is frozen open; the live Tooltips begin below.",
     "tooltipPage.anatomyLabel": "Tooltip anatomy",
     "tooltipPage.anatomyPreviewLabel": "Tooltip, part by part",
-    "tooltipPage.ruleTitle": "The rule the system cannot verify",
-    "tooltipPage.ruleBody1":
-      "There are two situations with no fix possible inside the component. On <strong>touch</strong> there is no hover: the machine opens on <code>pointerenter</code> and on <code>focus</code>, so on a phone the tooltip practically never appears. <strong>With no JavaScript</strong>, the content paints hidden and only the machine opens it, so it does not appear either.",
-    "tooltipPage.ruleBody2":
-      "In both cases no information is lost <em>because</em> the contract forbids there being information there that lives nowhere else. A tooltip that is the sole source of something is a bug on the consumer's side, and the validator cannot catch it: that is why it is written here and in <code>@skryensya/core/tooltip</code>'s own contract.",
-    "tooltipPage.wcagTitle": "WCAG 1.4.13",
-    "tooltipPage.wcagBody1":
-      "The <em>Content on Hover or Focus</em> criterion asks for three things, and all three hold by default. <strong>Dismissible</strong>: <kbd class=\"sk-kbd\">Esc</kbd> closes without moving the pointer or focus. <strong>Persistent</strong>: it never closes itself on a timer. <strong>Hoverable</strong>: the pointer can reach the tooltip without it disappearing.",
-    "tooltipPage.wcagBody2":
-      'That last one is the machine\'s <code>interactive</code> option, and it ships <strong>on</strong>. With it off, the content gets <code>pointer-events: none</code>, the pointer never reaches it, and the tooltip closes along the way: that fails the criterion. The temptation is to turn it off, reasoning that a descriptive tooltip has nothing to click, and that is a misreading: <em>hoverable</em> does not exist so the tooltip can be operated, it exists so it can be <strong>read</strong>, which is exactly what someone using screen magnification or with a tremor needs. It can be turned off with <code>data-interactive="false"</code>, and turning it off means knowingly stepping outside the criterion.',
-    "tooltipPage.placementTitle": "Placement",
-    "tooltipPage.placementBody":
-      "<code>data-sk-placement</code> accepts four values on logical axes: <code>block-start</code> (the default), <code>block-end</code>, <code>inline-start</code>, and <code>inline-end</code>. They are a <em>preference</em>, not a guarantee: if it does not fit, it flips to the opposite side of the same axis, because whoever asked for <code>inline-end</code> wants the tooltip to the side, and landing above would be disobeying, not adapting.",
-    "tooltipPage.positioningTitle": "Positioning",
-    "tooltipPage.positioningBody1":
-      "Where <a href=\"https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_anchor_positioning\" rel=\"noopener noreferrer\" target=\"_blank\">CSS anchor positioning</a> exists, the browser places the tooltip: no layout loop, no measuring on every scroll. The enhancer stamps a unique <code>anchor-name</code> and stops handing Zag inline styles, so there are never two positioning engines fighting each other. Browsers without the API fall back to Zag's JS positioning, which is the fallback, not a lesser path.",
-    "tooltipPage.positioningBody2":
-      "The <strong>arrow</strong> follows the same split: it comes off the <em>trigger</em>, not the box's center, so it keeps pointing at the control even after the box has shifted to stay on screen, and it flips right along with it. It lives inside the positioner and still anchors to the trigger, because it is <code>fixed</code>: a fixed element is contained by the viewport, not its parent. In the fallback, the machine places it. It is covered in <a href=\"/anchoring\">Anchoring</a>.",
     "tooltipPage.test1": "Describes the trigger rather than naming it.",
     "tooltipPage.test2": "Stays closed while disabled.",
     "demo.tooltip.dd.long": "This file is exported with all its layers, hidden ones included. If you only need the current view, use export selection from the file menu.",
-    "tooltipPage.showcaseTitle": "Showcases",
-    "tooltipPage.showcaseBody": "The three cases where a tooltip earns its place: an icon-only control, a figure being explained, and truncated text.",
-    "tooltipPage.guidelinesLede": "Tooltip adds a short label to something already on screen.",
-    "tooltipPage.dd.short.title": "A label, not a paragraph",
+    "tooltipPage.guidelinesLede": "A tooltip is extra help: if someone does not see it, nothing should be lost.",
+    "tooltipPage.dd.short.title": "Length: a short phrase",
     "tooltipPage.dd.short.do": "A few words that name or clarify.",
-    "tooltipPage.dd.short.dont": "A paragraph disappears when the pointer moves before it is read. Use a <a href=\"/components/popover\">Popover</a>.",
-    "tooltipPage.dd.repeat.title": "Add something",
+    "tooltipPage.dd.short.dont": 'A paragraph disappears when the pointer moves before it is read. Use a <a href="/components/popover">Popover</a>.',
+    "tooltipPage.dd.repeat.title": "Content: add something",
     "tooltipPage.dd.repeat.do": "Name a button that only shows an icon.",
     "tooltipPage.dd.repeat.dont": "Do not repeat the text the button already shows.",
   },

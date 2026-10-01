@@ -8,35 +8,34 @@
  */
 import ComponentPageShell from "./ComponentPageShell.astro";
 import CodeBlock from "../CodeBlock.astro";
-import ComponentPreview from "../ComponentPreview.astro";
+import UsagePreview from "../UsagePreview.astro";
+import WhenToUse from "../WhenToUse.astro";
 import { primitivesTree } from "../../demos/layout";
-import { getLocale, useTranslations } from "../../i18n";
+import { getLocale, tList, useTranslations } from "../../i18n";
 
 const install = `pnpm add @skryensya/core @skryensya/react`;
 const locale = getLocale(Astro.url);
 const t = useTranslations(locale);
-const path = locale === "en" ? "/components/primitives" : "/components/primitives";
+const path = "/components/primitives";
 ---
 
 <ComponentPageShell title={t("primitivasPage.title")} description={t("primitivasPage.description")}>
   <Fragment slot="usage">
     <p class="lede" set:html={t("primitivasPage.lede")} />
-    <ComponentPreview tree={primitivesTree(t, path)} label={t("primitivasPage.previewLabel")} />
 
-    <h3>{t("primitivasPage.htmlTitle")}</h3>
-    <p set:html={t("primitivasPage.htmlBody")} />
+    <h3>{t("component.examplesTitle")}</h3>
+    <UsagePreview tree={primitivesTree(t, path)} title={t("primitivasPage.exampleTitle")} description={t("primitivasPage.exampleBody")} />
 
-    <p set:html={t("component.reactNote")} />
-
-    <h3>{t("primitivasPage.contractsTitle")}</h3>
+    <h3>{t("component.contractNotesTitle")}</h3>
     <ul>
-      <li set:html={t("primitivasPage.contractItem1")} />
-      <li set:html={t("primitivasPage.contractItem2")} />
-      <li set:html={t("primitivasPage.contractItem3")} />
-      <li set:html={t("primitivasPage.contractItem4")} />
-      <li set:html={t("primitivasPage.contractItem5")} />
-      <li set:html={t("primitivasPage.contractItem6")} />
+      {tList(t, "primitivasPage.contract").map((item) => <li set:html={item} />)}
     </ul>
+    <p set:html={t("component.reactNote")} />
+  </Fragment>
+
+  <Fragment slot="guidelines">
+    <p class="lede" set:html={t("primitivasPage.guidelinesLede")} />
+    <WhenToUse use={tList(t, "primitivasPage.which")} avoid={tList(t, "primitivasPage.whichNot")} />
   </Fragment>
 
   <Fragment slot="install">

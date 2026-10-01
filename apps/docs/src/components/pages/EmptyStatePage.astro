@@ -1,16 +1,25 @@
 ---
 import ComponentPageShell from "./ComponentPageShell.astro";
-import ComponentPreview from "../ComponentPreview.astro";
 import UsagePreview from "../UsagePreview.astro";
 import DoDont from "../DoDont.astro";
+import WhenToUse from "../WhenToUse.astro";
+import ContentRules from "../ContentRules.astro";
+import A11yNotes from "../A11yNotes.astro";
 import {
   emptyStateAnatomyTree,
-  emptyStateDontVagueTree,
+  emptyStateSearchDoGuideTree,
+  emptyStateSearchDontGuideTree,
+  emptyStateSearchTree,
   emptyStateTree,
+  emptyStateFirstDoGuideTree,
+  emptyStateFirstDontGuideTree,
+  emptyStateLoadingDoTree,
+  emptyStateLoadingDontTree,
 } from "../../demos/empty-state";
 import { annotationDemoCss } from "../../demos/annotation";
-import { getLocale, useTranslations } from "../../i18n";
+import { getLocale, tList, useTranslations } from "../../i18n";
 import "@skryensya/core/components/empty-state.css";
+import "@skryensya/core/components/loader.css";
 /* Structure diagram: Annotated specimen; a preview frame only copies styles THIS page loaded. */
 import "@skryensya/core/components/annotation.css";
 
@@ -20,42 +29,53 @@ const t = useTranslations(getLocale(Astro.url));
 <ComponentPageShell
   title="EmptyState"
   description={t("emptyState.description")}
-  badge={t("emptyState.betaBadge")}
   contractId="empty-state"
-  testFiles={["packages/react/src/components/empty-state.test.tsx"]}}
+  testFiles={["packages/react/src/components/empty-state.test.tsx"]}
 >
   <Fragment slot="usage">
-    <p class="lede" set:html={t("emptyState.description")} />
+    <p class="lede" set:html={t("emptyState.lede")} />
 
-    <h3>{t("emptyState.showcaseTitle")}</h3>
-    <p set:html={t("emptyState.showcaseBody")} />
-    <UsagePreview tree={emptyStateTree(t)} />
+    <h3>{t("component.examplesTitle")}</h3>
+    <UsagePreview tree={emptyStateTree(t)} title={t("emptyState.firstTitle")} description={t("emptyState.firstBody")} storybookTitle="Components/Feedback/EmptyState" storybookStory="Default" />
+    <UsagePreview tree={emptyStateSearchTree(t)} title={t("emptyState.searchTitle")} description={t("emptyState.searchBody")} storybookTitle="Components/Feedback/EmptyState" storybookStory="Search" />
 
     <h3>{t("component.contractNotesTitle")}</h3>
-    <p set:html={t("emptyState.contractBody")} />
+    <ul>
+      {tList(t, "emptyState.contract").map((item) => <li set:html={item} />)}
+    </ul>
 
     <h3>{t("component.anatomy")}</h3>
     <p set:html={t("emptyState.anatomyBody")} />
-    <ComponentPreview
+    <UsagePreview
       tree={emptyStateAnatomyTree(t)}
       css={annotationDemoCss}
       label={t("emptyState.anatomyPreviewLabel")}
-      screens={false}
-      hideSource
-      chrome={false}
+      bare
     />
   </Fragment>
 
   <Fragment slot="guidelines">
     <p class="lede" set:html={t("emptyState.guidelinesLede")} />
+    <WhenToUse use={tList(t, "emptyState.when")} avoid={tList(t, "emptyState.whenNot")} />
     <DoDont
       title={t("emptyState.dd.next.title")}
-      do={{ tree: emptyStateTree(t), caption: t("emptyState.dd.next.do") }}
-      dont={{ tree: emptyStateDontVagueTree(t), caption: t("emptyState.dd.next.dont") }}
+      do={{ tree: emptyStateSearchDoGuideTree(t), caption: t("emptyState.dd.next.do") }}
+      dont={{ tree: emptyStateSearchDontGuideTree(t), caption: t("emptyState.dd.next.dont") }}
     />
+    <DoDont
+      title={t("emptyState.dd.first.title")}
+      do={{ tree: emptyStateFirstDoGuideTree(t), caption: t("emptyState.dd.first.do") }}
+      dont={{ tree: emptyStateFirstDontGuideTree(t), caption: t("emptyState.dd.first.dont") }}
+    />
+    <DoDont
+      title={t("emptyState.dd.loading.title")}
+      do={{ tree: emptyStateLoadingDoTree(t), caption: t("emptyState.dd.loading.do") }}
+      dont={{ tree: emptyStateLoadingDontTree(t), caption: t("emptyState.dd.loading.dont") }}
+    />
+    <ContentRules items={tList(t, "emptyState.content")} />
   </Fragment>
 
   <Fragment slot="a11y">
-    <p set:html={t("emptyState.a11yBody")} />
+    <A11yNotes intro={t("emptyState.a11yIntro")} does={tList(t, "emptyState.a11yDoes")} yours={tList(t, "emptyState.a11yYours")} />
   </Fragment>
 </ComponentPageShell>

@@ -2830,9 +2830,11 @@ main a:not(
 :is(p, li) > code {
   font-family: var(--font-family-code);
   font-size: var(--font-size-body-sm);
+  color: var(--color-text-primary);
   overflow-wrap: anywhere;
-  background: var(--color-bg-surface-sunken);
-  padding: 0 var(--space-inset-xs);
+  background: var(--color-bg-surface-raised);
+  box-shadow: inset 0 0 0 1px var(--color-border-default);
+  padding: 0.08em var(--space-inset-xs);
   border-radius: var(--scale-radius-sm);
 }
 

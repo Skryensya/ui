@@ -1,7 +1,11 @@
 ---
 import ComponentPageShell from "./ComponentPageShell.astro";
 import CodeBlock from "../CodeBlock.astro";
-import ComponentPreview from "../ComponentPreview.astro";
+import WhenToUse from "../WhenToUse.astro";
+import ContentRules from "../ContentRules.astro";
+import A11yNotes from "../A11yNotes.astro";
+import DoDont from "../DoDont.astro";
+import { marqueeDoLinksTree, marqueeDontLinksTree } from "../../demos/marquee";
 import UsagePreview from "../UsagePreview.astro";
 import {
   marqueeAnatomyTree,
@@ -10,12 +14,11 @@ import {
   marqueeBadgeTree,
   marqueeControlTree,
   marqueeManualTree,
-  marqueeNoFadeTree,
   marqueeVerticalTree,
 } from "../../demos/marquee";
 import { annotationDemoCss } from "../../demos/annotation";
 import { emitReactSource } from "@skryensya/ai-compiler/emit";
-import { getLocale, useTranslations } from "../../i18n";
+import { getLocale, tList, useTranslations } from "../../i18n";
 import "@skryensya/core/components/marquee.css";
 import "@skryensya/core/components/annotation.css";
 
@@ -38,9 +41,8 @@ const explain = (option: string, values: readonly string[]) =>
 <ComponentPageShell
   title="Marquee"
   description={t("marquee.description")}
-  badge={t("marquee.betaBadge")}
   contractId="marquee"
-  testFiles={["packages/react/src/components/marquee.test.tsx", "packages/vanilla/src/components/marquee.test.ts"]}}
+  testFiles={["packages/react/src/components/marquee.test.tsx", "packages/vanilla/src/components/marquee.test.ts"]}
 >
   <Fragment slot="usage">
     <p class="lede" set:html={t("marquee.lede")} />
@@ -64,62 +66,32 @@ const explain = (option: string, values: readonly string[]) =>
       stageMinBlockSize="9rem"
     />
 
-    <h3>{t("marquee.showcaseTitle")}</h3>
-    <p set:html={t("marquee.showcaseBody")} />
-    <h3>{t("marquee.manualTitle")}</h3>
-    <p set:html={t("marquee.manualBody")} />
-    <ComponentPreview tree={marqueeManualTree(t)} label={t("marquee.manualLabel")} minHeight="9rem" />
+    <h3>{t("component.examplesTitle")}</h3>
+    <UsagePreview tree={marqueeAutoplayTree()} title={t("marquee.autoplayTitle")} description={t("marquee.autoplayBody")} storybookTitle="Components/Content/Marquee" storybookStory="Autoplay" />
+    <UsagePreview tree={marqueeControlTree(t)} title={t("marquee.controlTitle")} description={t("marquee.controlBody")} storybookTitle="Components/Content/Marquee" storybookStory="Control" />
+    <UsagePreview tree={marqueeBadgeTree(t)} title={t("marquee.anyChildTitle")} description={t("marquee.anyChildBody")} storybookTitle="Components/Content/Marquee" storybookStory="Badge" />
+    <UsagePreview tree={marqueeAvatarTree(t)} storybookTitle="Components/Content/Marquee" storybookStory="Avatar" />
+    <UsagePreview tree={marqueeVerticalTree(t)} title={t("marquee.verticalTitle")} description={t("marquee.verticalBody")} storybookTitle="Components/Content/Marquee" storybookStory="Vertical" />
 
-    <h3>{t("marquee.autoplayTitle")}</h3>
-    <p set:html={t("marquee.autoplayBody")} />
-    <ComponentPreview
-      tree={marqueeAutoplayTree()}
-      label={t("marquee.autoplayLabel")}
-      note={t("marquee.autoplayNote")}
-      minHeight="6rem"
-    />
-
-    <h3>{t("marquee.controlTitle")}</h3>
-    <p set:html={t("marquee.controlBody")} />
-    <ComponentPreview tree={marqueeControlTree(t)} label={t("marquee.controlLabel")} minHeight="9rem" />
-
-    <h3>{t("marquee.anyChildTitle")}</h3>
-    <p set:html={t("marquee.anyChildBody")} />
-    <ComponentPreview tree={marqueeBadgeTree(t)} label={t("marquee.badgeLabel")} minHeight="6rem" />
-    <ComponentPreview tree={marqueeAvatarTree(t)} label={t("marquee.avatarLabel")} minHeight="7rem" />
-
-    <h3>{t("marquee.verticalTitle")}</h3>
-    <p set:html={t("marquee.verticalBody")} />
-    <ComponentPreview tree={marqueeVerticalTree(t)} label={t("marquee.verticalLabel")} minHeight="18rem" />
-
-    <h3>{t("marquee.fadeTitle")}</h3>
-    <p set:html={t("marquee.fadeBody")} />
-    <ComponentPreview tree={marqueeNoFadeTree()} label={t("marquee.fadeLabel")} minHeight="6rem" />
-
-    <h3>{t("marquee.behaviorTitle")}</h3>
-    <p set:html={t("marquee.behaviorBody1")} />
-    <p set:html={t("marquee.behaviorBody2")} />
-    <p set:html={t("marquee.behaviorBody3")} />
-
-    <h3>{t("marquee.optionsTitle")}</h3>
-    <p set:html={t("marquee.optionsBody")} />
+    <h3>{t("component.contractNotesTitle")}</h3>
+    <ul>
+      {tList(t, "marquee.contract").map((item) => <li set:html={item} />)}
+    </ul>
 
     <h3>{t("component.anatomy")}</h3>
     <p set:html={t("marquee.anatomyBody")} />
-    <ComponentPreview
-      tree={marqueeAnatomyTree(t)}
-      css={annotationDemoCss}
-      label={t("marquee.anatomyPreviewLabel")}
-      screens={false}
-      hideSource
-      chrome={false}
-    />
+    <UsagePreview tree={marqueeAnatomyTree(t)} css={annotationDemoCss} label={t("marquee.anatomyPreviewLabel")} bare />
   </Fragment>
 
   <Fragment slot="guidelines">
     <p class="lede" set:html={t("marquee.guidelinesLede")} />
-    <h3>{t("marquee.whenTitle")}</h3>
-    <p set:html={t("marquee.whenBody")} />
+    <WhenToUse use={tList(t, "marquee.when")} avoid={tList(t, "marquee.whenNot")} />
+    <DoDont
+      title={t("marquee.dd.links.title")}
+      do={{ tree: marqueeDoLinksTree(t), caption: t("marquee.dd.links.do") }}
+      dont={{ tree: marqueeDontLinksTree(t), caption: t("marquee.dd.links.dont") }}
+    />
+    <ContentRules items={tList(t, "marquee.content")} />
   </Fragment>
 
   <Fragment slot="install">
@@ -131,12 +103,11 @@ const explain = (option: string, values: readonly string[]) =>
   </Fragment>
 
   <Fragment slot="a11y">
-    <p set:html={t("marquee.a11yP1")} />
-    <p set:html={t("marquee.a11yP2")} />
-    <p>
-      <a href="https://www.w3.org/WAI/WCAG22/Understanding/pause-stop-hide.html">WCAG 2.2.2: Pause, Stop, Hide</a>
-      ·
-      <a href="https://www.w3.org/WAI/WCAG22/Techniques/css/C39">Technique C39: prefers-reduced-motion</a>
-    </p>
+    <A11yNotes
+      intro={t("marquee.a11yIntro")}
+      does={tList(t, "marquee.a11yDoes")}
+      yours={tList(t, "marquee.a11yYours")}
+      keys={[{ keys: [t("component.key.space"), "Enter"], action: t("marquee.key.toggle") }]}
+    />
   </Fragment>
 </ComponentPageShell>

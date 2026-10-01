@@ -5,11 +5,13 @@ import { annotationDemoCss } from "../../demos/annotation";
 import { stackAnatomyTree } from "../../demos/layout-anatomy";
 import ComponentPageShell from "./ComponentPageShell.astro";
 import CodeBlock from "../CodeBlock.astro";
-import ComponentPreview from "../ComponentPreview.astro";
 import UsagePreview from "../UsagePreview.astro";
 import DoDont from "../DoDont.astro";
+import WhenToUse from "../WhenToUse.astro";
+import A11yNotes from "../A11yNotes.astro";
+import { inlineButtonsTree, stackDontButtonsTree } from "../../demos/layout-guide";
 import { stackTree, stackScaleSpecimenTree } from "../../demos/layout";
-import { getLocale, useTranslations } from "../../i18n";
+import { getLocale, tList, useTranslations } from "../../i18n";
 import { variantsTree } from "../../demos/variants";
 
 const install = `pnpm add @skryensya/core @skryensya/react`;
@@ -46,24 +48,13 @@ const explain = (option: string, values: readonly string[]) =>
       stageMinBlockSize="16rem"
     />
 
-    <h3>{t("stackPage.showcaseTitle")}</h3>
-    <p set:html={t("stackPage.showcaseBody")} />
-    <UsagePreview tree={stackTree(t, "/components/stack")} title="Stack" description={t("stackPage.htmlBody")} />
-
-    <h3>{t("stackPage.htmlTitle")}</h3>
-    <p set:html={t("stackPage.htmlBody")} />
-
-    <p set:html={t("stackPage.reactBody")} />
-    <p set:html={t("component.reactNote")} />
+    <h3>{t("component.examplesTitle")}</h3>
+    <UsagePreview tree={stackTree(t, "/components/stack")} title={t("stackPage.cardTitle")} description={t("stackPage.cardBody")} />
 
     <h3>{t("component.contractNotesTitle")}</h3>
     <ul>
-      <li set:html={t("stackPage.contractItem1")} />
-      <li set:html={t("stackPage.contractItem2")} />
-      <li set:html={t("stackPage.contractItem3")} />
-      <li set:html={t("stackPage.contractItem4")} />
+      {tList(t, "stackPage.contract").map((item) => <li set:html={item} />)}
     </ul>
-
     <UsagePreview
       tree={variantsTree(stackScaleSpecimenTree(t), [{ label: "none", options: { gap: "none" } }, { label: "xs", options: { gap: "xs" } }, { label: "sm", options: { gap: "sm" } }, { label: "md", options: { gap: "md" } }, { label: "lg", options: { gap: "lg" } }, { label: "xl", options: { gap: "xl" } }], [], "3")}
       title={t("component.scaleTitle", { option: "gap" })}
@@ -72,23 +63,21 @@ const explain = (option: string, values: readonly string[]) =>
 
     <h3>{t("component.anatomy")}</h3>
     <p set:html={t("stackPage.anatomyBody")} />
-    <ComponentPreview
-      tree={stackAnatomyTree(t)}
-      css={annotationDemoCss}
-      label={t("stackPage.anatomyPreviewLabel")}
-      screens={false}
-      hideSource
-      chrome={false}
-    />
+    <UsagePreview tree={stackAnatomyTree(t)} css={annotationDemoCss} label={t("stackPage.anatomyPreviewLabel")} bare />
   </Fragment>
 
   <Fragment slot="guidelines">
     <p class="lede" set:html={t("stackPage.guidelinesLede")} />
+    <WhenToUse use={tList(t, "stackPage.when")} avoid={tList(t, "stackPage.whenNot")} />
     <DoDont
       title={t("stackPage.dd.axis.title")}
-      do={{ tree: stackTree(t, "/components/stack"), caption: t("stackPage.dd.axis.do") }}
-      dont={{ tree: stackTree(t, "/components/stack"), caption: t("stackPage.dd.axis.dont") }}
+      do={{ tree: inlineButtonsTree(t), caption: t("stackPage.dd.axis.do") }}
+      dont={{ tree: stackDontButtonsTree(t), caption: t("stackPage.dd.axis.dont") }}
     />
+  </Fragment>
+
+  <Fragment slot="a11y">
+    <A11yNotes intro={t("stackPage.a11yIntro")} does={tList(t, "stackPage.a11yDoes")} yours={tList(t, "stackPage.a11yYours")} />
   </Fragment>
 
   <Fragment slot="install">

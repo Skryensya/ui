@@ -4,42 +4,69 @@ export const timeFieldMessages = {
     "demo.timeField.forced24Label": "Llegada (24 horas)",
     "demo.timeField.optionsLabel": "Elegir de la lista",
 
-    "timeFieldPage.description": "Un campo de hora segmentado con un desplegable integrado: hora, minuto y AM/PM como partes editables, más una lista de horarios preestablecidos, todo operable por teclado.",
-    "timeFieldPage.lede":
-      'Un campo para una hora de reloj local, sin fecha, sin zona horaria. Hora, minuto y (en un locale de 12 horas) AM/PM son tres segmentos editables independientes en un solo campo, en vez del chrome del propio <code>&lt;input type="time"&gt;</code>, que difiere lo suficiente entre Chrome, Firefox y Safari como para no poder estilarse ni confiar en que se vea igual dos veces. No existe una machine <code>@zag-js/time-picker</code> para esos segmentos, así que esa parte es estado a mano, como Slider y Segmented: pero SÍ hay un desplegable, siempre presente, con una lista simple y navegable con flechas (nada de buscador: para una lista acotada y ordenada, uno de más). Dos cosas se probaron y se descartaron antes de llegar ahí: un selector de ruedas (ni más simple ni más accesible que los segmentos mismos) y una lista con buscador tipo Combobox (demasiada máquina para una lista corta).',
+    "timeFieldPage.description": "Recibe una hora del día, sin fecha, con un campo por segmento y una lista de horarios.",
+
+    "timeFieldPage.key.open": "Abre la lista de horarios.",
+
+    "timeFieldPage.key.digits": "Escribe el valor del segmento.",
+
+    "timeFieldPage.key.move": "Pasa al segmento anterior o siguiente.",
+
+    "timeFieldPage.key.arrows": "Sube o baja el segmento con el foco.",
+
+    "timeFieldPage.a11yYours1": "Debe tener una etiqueta visible.",
+
+    "timeFieldPage.a11yDoes3": "La lista de horarios es un listbox que se recorre con flechas.",
+
+    "timeFieldPage.a11yDoes2": "Cada segmento anuncia su nombre y su valor: hora, minuto, AM/PM.",
+
+    "timeFieldPage.a11yDoes1": "El grupo toma el nombre de la etiqueta del campo.",
+
+    "timeFieldPage.a11yIntro": "Cada segmento sigue el patrón spinbutton de la APG, dentro de un grupo nombrado.",
+
+    "timeFieldPage.content2": "Si importa la zona horaria, dila al lado: «Hora de Santiago».",
+
+    "timeFieldPage.content1": "Nombra el campo con lo que ocurre a esa hora: «Hora de inicio».",
+
+    "timeFieldPage.whenNot3": 'Si basta el selector del sistema: usa el <code>&lt;input type="time"&gt;</code> nativo.',
+
+    "timeFieldPage.whenNot2": 'Para una duración (2 h 30 min): usa <a href="/es/componentes/number-field">NumberField</a>.',
+
+    "timeFieldPage.whenNot1": 'Para una fecha: usa <a href="/es/componentes/date-picker">DatePicker</a>.',
+
+    "timeFieldPage.when2": "Cuando conviene ofrecer horarios frecuentes en una lista.",
+
+    "timeFieldPage.when1": "Para una hora del día sin fecha: reuniones, entregas, turnos.",
+
+    "timeFieldPage.contract3": "El valor es una hora local <code>HH:mm</code>, sin fecha ni zona horaria.",
+
+    "timeFieldPage.contract2": "Escribir un dígito avanza al siguiente segmento cuando ya no cabe otro.",
+
+    "timeFieldPage.contract1": "El orden de los segmentos y el separador salen de <code>Intl.DateTimeFormat</code> del idioma.",
+
+    "timeFieldPage.basicBody": "Escribe los dígitos o elige de la lista. Las flechas suben y bajan el segmento con el foco.",
+
+    "timeFieldPage.basicTitle": "Una hora: segmentos y lista",
+    "timeFieldPage.lede": "TimeField recibe una hora del día, sin fecha: la hora de una reunión, de una entrega, de un turno. Hora, minuto y AM/PM se escriben por separado, y un botón abre una lista de horarios. El reloj de 12 o 24 horas lo decide el idioma.",
     "timeFieldPage.anatomyBody":
-      "Un TimeField cerrado es un control segmentado: el positioner, el content y las filas del listbox sólo existen mientras el desplegable está abierto. Por eso el espécimen se dibuja abierto y se queda así. Está congelado; el TimeField vivo es el de abajo.",
+      "Un TimeField cerrado es un control segmentado: el positioner, el content y las filas del listbox solo existen mientras el desplegable está abierto. Por eso el espécimen se dibuja abierto y se queda así. Está congelado; el TimeField vivo es el de abajo.",
     "timeFieldPage.anatomyLabel": "Anatomía de TimeField",
     "timeFieldPage.anatomyPreviewLabel": "TimeField abierto, parte por parte",
-    "timeFieldPage.contractBody":
-      "El orden de los segmentos y el separador entre ellos se leen del propio <code>formatToParts</code> de <code>Intl.DateTimeFormat</code>, no se asumen: algunos locales ponen el periodo del día antes de la hora, y el separador no siempre es <code>\":\"</code>. El valor público sigue siendo el string canónico <code>HH:mm</code>, la misma forma que envía un <code>&lt;input type=\"time\"&gt;</code> plano, llevado en un input oculto, así que un formulario detrás de TimeField nunca tiene que parsear un string dependiente del locale. React lo guarda como estado del componente (<code>value</code>/<code>defaultValue</code>, un callback <code>onValueChange</code>). Vanilla hidrata el <code>data-sk-time-field</code> escrito a mano: el consumidor sólo autora la raíz y su label, y el componente genera los segmentos a partir de <code>data-locale</code>.",
-    "timeFieldPage.editTitle": "Editar un segmento",
-    "timeFieldPage.editBody":
-      'Escribir un dígito llena el segmento enfocado y avanza en cuanto ningún otro dígito podría mantenerlo válido: escribir <kbd class="sk-kbd">1</kbd> en el segmento de hora de un campo de 12 horas espera brevemente un posible segundo dígito (<code>10</code>–<code>12</code>), escribir <kbd class="sk-kbd">9</kbd> avanza de inmediato, porque ningún segundo dígito podría seguirlo y seguir siendo ≤ 12. Las flechas arriba/abajo suben o bajan el valor y dan la vuelta en los extremos; <kbd class="sk-kbd">Retroceso</kbd> limpia el segmento; <kbd class="sk-kbd">←</kbd>/<kbd class="sk-kbd">→</kbd> mueven entre segmentos; escribir la primera letra de la etiqueta AM/PM del locale en ese segmento lo fija directamente.',
-    "timeFieldPage.forced24Title": "Forzar 24 horas, sin depender del locale",
-    "timeFieldPage.forced24Body":
-      'La detección automática (<code>getHourCycle</code>) lee <code>Intl.DateTimeFormat(locale, {hour:"numeric"}).resolvedOptions().hourCycle</code>, y ese dato resultó inconsistente entre motores: el mismo string de locale (<code>es</code>/<code>es-AR</code>) resuelve a ciclos opuestos en Node y en un Chromium real. Como el máximo del segmento de hora sale directo de ese ciclo, una detección equivocada no sólo mostraba mal la hora: adelantaba el foco antes de tiempo al tipear un primer dígito ambiguo (un «2», que todavía podía volverse «22»). La opción <code>hourCycle</code> pisa la detección cuando se necesita un campo de 24 horas garantizado, sin importar el navegador.',
-    "timeFieldPage.nativeTitle": "Si sólo necesitas el selector de la plataforma",
-    "timeFieldPage.nativeBody":
-      'Un <code>&lt;input type="time"&gt;</code> plano sigue funcionando, no necesita CSS ni JavaScript, y trae gratis el teclado y selector del sistema operativo. Sube a TimeField sólo cuando la inconsistencia de ese selector entre navegadores, o la ausencia total de hooks de estilo, realmente te cuesta algo, la misma decisión que DatePicker toma contra un <code>type="date"</code> plano.',
-    "timeFieldPage.nativeLabel": "Input de hora nativo",
-    "timeFieldPage.optionsTitle": "El desplegable, con otro paso",
-    "timeFieldPage.optionsBody":
-      'El botón de reloj pinta DENTRO de <code>.sk-time-field__control</code>: una sola caja con borde, la misma anatomía que ya tiene el control de Combobox para sus propios botones finales: y abre una lista simple, sin buscador, navegable con flechas: <code>@zag-js/select</code> maneja esa máquina directamente (la misma que usa <code>Select</code>), sin montar el componente <code>Select</code> completo, que trae su propio trigger visible y hubiera significado dos clics para llegar a la lista. La opción <code>optionsStep</code> (30 minutos por defecto, 48 filas) decide cada cuánto aparece una fila; <code>Alt+Flecha-abajo</code> desde cualquier segmento la abre sin pasar por Tab, la misma tecla que ya abre un <code>&lt;select&gt;</code> nativo.',
-    "timeFieldPage.optionsQuarterHourTitle": "Cada 15 minutos",
-    "timeFieldPage.a11yBody":
-      'Cada segmento es <code>role="spinbutton"</code> dentro de un <code>role="group"</code> nombrado por el label del campo: <code>aria-valuenow</code>/<code>aria-valuetext</code> llevan su valor actual (un placeholder amistoso como «hh» antes de fijar nada, no un string vacío), y <code>aria-valuemin</code>/<code>aria-valuemax</code> su rango real: 1–12 para un segmento de hora en un locale de 12 horas, 0–23 en uno de 24. Cada segmento es su propia parada de tabulación, igual que ya funciona un input de fecha nativo de varias partes, así que el uso por teclado no necesita nada más que Tab y las flechas documentadas arriba: más <code>Alt+Flecha-abajo</code> para abrir el desplegable sin llegar hasta su botón, y las flechas/Inicio/Fin/Escape ya provistas por <code>@zag-js/select</code> una vez adentro de la lista.',
+    "timeFieldPage.forced24Title": "24 horas: sin depender del idioma",
+    "timeFieldPage.forced24Body": '<code>hourCycle="h24"</code> fija el reloj para horarios técnicos, como turnos o vuelos.',
+    "timeFieldPage.nativeTitle": 'Nativo: <input type="time">',
+    "timeFieldPage.nativeBody": "No necesita CSS ni JavaScript y trae el selector del sistema. Usa TimeField cuando necesitas la lista de horarios o el mismo aspecto en todos los navegadores.",
+    "timeFieldPage.optionsTitle": "Cada 15 minutos: la lista con otro paso",
+    "timeFieldPage.optionsBody": "<code>optionsStep</code> cambia el intervalo de la lista, en minutos.",
     "timeFieldPage.test1": "Monta una sola vez y nombra el grupo a partir del label escrito a mano.",
     "timeFieldPage.test2": "Deriva los segmentos del locale, no del markup.",
     "timeFieldPage.test3": "Empieza vacío, con placeholders en vez de una hora inventada.",
-    "timeFieldPage.prop.hourCycle.title": "Ciclo horario",
-    "timeFieldPage.prop.hourCycle.body": "El <code>hourCycle</code> fuerza un reloj de 12 o de 24 horas. Sin él, lo decide el idioma.",
+    "timeFieldPage.prop.hourCycle.title": "Hour cycle: 12 o 24 horas",
+    "timeFieldPage.prop.hourCycle.body": "Fuerza un reloj; sin él, lo decide el idioma.",
     "timeFieldPage.prop.hourCycle.h12": "Usa <code>h12</code> solo cuando el dominio lo exige, y siempre con AM y PM.",
     "timeFieldPage.prop.hourCycle.h24": "Usa <code>h24</code> para horarios técnicos, como turnos o vuelos.",
-    "timeFieldPage.showcaseTitle": "Showcases",
-    "timeFieldPage.showcaseBody": "Una hora con segmentos, un ciclo fijo, opciones cada cuarto de hora y el campo nativo.",
-    "timeFieldPage.guidelinesLede": "TimeField recibe una hora, segmento por segmento.",
-    "timeFieldPage.dd.cycle.title": "El ciclo del idioma",
+    "timeFieldPage.guidelinesLede": "Una hora se escribe más rápido que se elige, si el campo ayuda a escribirla.",
+    "timeFieldPage.dd.cycle.title": "Reloj: el del idioma",
     "timeFieldPage.dd.cycle.do": "Deja que el idioma decida el reloj: en español, 24 horas.",
     "timeFieldPage.dd.cycle.dont": "Forzar 12 horas donde se lee en 24 obliga a traducir cada hora.",
   },
@@ -48,42 +75,69 @@ export const timeFieldMessages = {
     "demo.timeField.forced24Label": "Arrival (24-hour)",
     "demo.timeField.optionsLabel": "Choose from the list",
 
-    "timeFieldPage.description": "A segmented time field with a built-in dropdown: hour, minute, and AM/PM as editable parts, plus a list of preset times, all keyboard-operable.",
-    "timeFieldPage.lede":
-      "A field for a local clock time, no date, no timezone. Hour, minute, and (in a 12-hour locale) AM/PM are three independent editable segments in a single field, instead of the native <code>&lt;input type=\"time\"&gt;</code>'s own chrome, which differs enough between Chrome, Firefox, and Safari that it cannot be styled or trusted to look the same twice. There is no <code>@zag-js/time-picker</code> machine for those segments, so that part is hand-rolled state, like Slider and Segmented: but there IS a dropdown, always present, a plain arrow-key-navigable list (no search box: too much machine for a short, ordered list). Two things were tried and dropped on the way there: a wheel picker (neither simpler nor more accessible than the segments themselves) and a searchable Combobox-style list (too much machine for a short list).",
+    "timeFieldPage.description": "Takes a time of day, with no date, with one field per segment and a list of times.",
+
+    "timeFieldPage.key.open": "Opens the list of times.",
+
+    "timeFieldPage.key.digits": "Types the segment's value.",
+
+    "timeFieldPage.key.move": "Moves to the previous or next segment.",
+
+    "timeFieldPage.key.arrows": "Raises or lowers the focused segment.",
+
+    "timeFieldPage.a11yYours1": "It must have a visible label.",
+
+    "timeFieldPage.a11yDoes3": "The list of times is a listbox browsed with the arrows.",
+
+    "timeFieldPage.a11yDoes2": "Each segment announces its name and value: hour, minute, AM/PM.",
+
+    "timeFieldPage.a11yDoes1": "The group takes the name of the field's label.",
+
+    "timeFieldPage.a11yIntro": "Each segment follows the APG spinbutton pattern, inside a named group.",
+
+    "timeFieldPage.content2": "If the time zone matters, state it beside: “Santiago time”.",
+
+    "timeFieldPage.content1": "Name the field by what happens at that time: “Start time”.",
+
+    "timeFieldPage.whenNot3": 'If the system picker is enough: use the native <code>&lt;input type="time"&gt;</code>.',
+
+    "timeFieldPage.whenNot2": 'For a duration (2 h 30 min): use <a href="/components/number-field">NumberField</a>.',
+
+    "timeFieldPage.whenNot1": 'For a date: use <a href="/components/date-picker">DatePicker</a>.',
+
+    "timeFieldPage.when2": "When it helps to offer common times in a list.",
+
+    "timeFieldPage.when1": "For a time of day with no date: meetings, deliveries, shifts.",
+
+    "timeFieldPage.contract3": "The value is a local <code>HH:mm</code> time, with no date or time zone.",
+
+    "timeFieldPage.contract2": "Typing a digit advances to the next segment once no other fits.",
+
+    "timeFieldPage.contract1": "Segment order and separator come from the language's <code>Intl.DateTimeFormat</code>.",
+
+    "timeFieldPage.basicBody": "Type the digits or choose from the list. The arrows raise and lower the focused segment.",
+
+    "timeFieldPage.basicTitle": "A time: segments and list",
+    "timeFieldPage.lede": "TimeField takes a time of day, with no date: a meeting's time, a delivery's, a shift's. Hour, minute and AM/PM are typed separately, and a button opens a list of times. The 12 or 24 hour clock is decided by the language.",
     "timeFieldPage.anatomyBody":
       "A closed TimeField is a segmented control: the positioner, content and listbox rows only exist while the dropdown is open. That is why the specimen is drawn open and stays that way. It is frozen; the live TimeField is the one below.",
     "timeFieldPage.anatomyLabel": "TimeField anatomy",
     "timeFieldPage.anatomyPreviewLabel": "An open TimeField, part by part",
-    "timeFieldPage.contractBody":
-      "The order of the segments and the separator between them are read from <code>Intl.DateTimeFormat</code>'s own <code>formatToParts</code>, never assumed: some locales put the period of day before the hour, and the separator is not always <code>\":\"</code>. The public value stays the canonical <code>HH:mm</code> string, the same shape a plain <code>&lt;input type=\"time\"&gt;</code> sends, carried in a hidden input, so a form behind TimeField never has to parse a locale-dependent string. React keeps it as component state (<code>value</code>/<code>defaultValue</code>, an <code>onValueChange</code> callback). Vanilla hydrates the authored <code>data-sk-time-field</code>: the consumer only authors the root and its label, and the component generates the segments from <code>data-locale</code>.",
-    "timeFieldPage.editTitle": "Editing a segment",
-    "timeFieldPage.editBody":
-      'Typing a digit fills the focused segment and advances as soon as no other digit could keep it valid: typing <kbd class="sk-kbd">1</kbd> in a 12-hour field\'s hour segment briefly waits for a possible second digit (<code>10</code>–<code>12</code>), typing <kbd class="sk-kbd">9</kbd> advances immediately, because no second digit could follow it and stay ≤ 12. The up/down arrows raise or lower the value and wrap at the ends; <kbd class="sk-kbd">Backspace</kbd> clears the segment; <kbd class="sk-kbd">←</kbd>/<kbd class="sk-kbd">→</kbd> move between segments; typing the locale\'s AM/PM label\'s first letter in that segment sets it directly.',
-    "timeFieldPage.forced24Title": "Forcing 24-hour form, without depending on the locale",
-    "timeFieldPage.forced24Body":
-      'Auto-detection (<code>getHourCycle</code>) reads <code>Intl.DateTimeFormat(locale, {hour:"numeric"}).resolvedOptions().hourCycle</code>, and that value turned out to be inconsistent across engines: the same locale string (<code>es</code>/<code>es-AR</code>) resolves to opposite cycles in Node and in a real Chromium. Since the hour segment\'s own max comes straight from that cycle, a wrong guess did not just mislabel the hour: it advanced focus too early on an ambiguous first digit (a "2", which could still become "22"). The <code>hourCycle</code> option overrides the guess when a guaranteed 24-hour field is what you actually need, regardless of browser.',
-    "timeFieldPage.nativeTitle": "If you only need the platform's own picker",
-    "timeFieldPage.nativeBody":
-      'A plain <code>&lt;input type="time"&gt;</code> still works, needs no CSS or JavaScript, and comes with the operating system\'s own keyboard and picker for free. Move up to TimeField only once that picker\'s cross-browser inconsistency, or the total absence of styling hooks, actually costs you something: the same decision DatePicker makes against a plain <code>type="date"</code>.',
-    "timeFieldPage.nativeLabel": "Native time input",
-    "timeFieldPage.optionsTitle": "The dropdown, at another step",
-    "timeFieldPage.optionsBody":
-      'The clock button paints INSIDE <code>.sk-time-field__control</code>: one bordered box, the same anatomy Combobox\'s own control already has for its own trailing buttons: and opens a plain, search-free list, navigable with arrow keys: <code>@zag-js/select</code> drives that machine directly (the same one <code>Select</code> uses), without mounting the full <code>Select</code> component, which carries its own visible trigger and would have meant two clicks to reach the list. The <code>optionsStep</code> option (30 minutes by default, 48 rows) decides how far apart each row sits; <code>Alt+ArrowDown</code> from any segment opens it without tabbing there first, the same key that already opens a native <code>&lt;select&gt;</code>.',
-    "timeFieldPage.optionsQuarterHourTitle": "Every 15 minutes",
-    "timeFieldPage.a11yBody":
-      "Every segment is a <code>role=\"spinbutton\"</code> inside a <code>role=\"group\"</code> named by the field's label: <code>aria-valuenow</code>/<code>aria-valuetext</code> carry its current value (a friendly placeholder like \"hh\" before anything is set, never an empty string), and <code>aria-valuemin</code>/<code>aria-valuemax</code> carry its real range: 1–12 for an hour segment in a 12-hour locale, 0–23 in a 24-hour one. Every segment is its own tab stop, the same way a native multi-part date input already works, so keyboard use needs nothing beyond Tab and the arrows documented above: plus <code>Alt+ArrowDown</code> to open the dropdown without reaching its own button, and the arrows/Home/End/Escape <code>@zag-js/select</code> already provides once inside the list.",
+    "timeFieldPage.forced24Title": "24 hours: regardless of language",
+    "timeFieldPage.forced24Body": '<code>hourCycle="h24"</code> fixes the clock for technical schedules, like shifts or flights.',
+    "timeFieldPage.nativeTitle": 'Native: <input type="time">',
+    "timeFieldPage.nativeBody": "It needs no CSS or JavaScript and brings the system picker. Use TimeField when you need the list of times or the same look in every browser.",
+    "timeFieldPage.optionsTitle": "Every 15 minutes: the list with another step",
+    "timeFieldPage.optionsBody": "<code>optionsStep</code> changes the list's interval, in minutes.",
     "timeFieldPage.test1": "Mounts once and names the group from the authored label.",
     "timeFieldPage.test2": "Derives the segments from the locale, not from the markup.",
     "timeFieldPage.test3": "Starts empty, with placeholders instead of a made-up time.",
-    "timeFieldPage.prop.hourCycle.title": "Hour cycle",
-    "timeFieldPage.prop.hourCycle.body": "<code>hourCycle</code> forces a 12- or 24-hour clock. Without it, the locale decides.",
+    "timeFieldPage.prop.hourCycle.title": "Hour cycle: 12 or 24 hours",
+    "timeFieldPage.prop.hourCycle.body": "Forces a clock; without it, the language decides.",
     "timeFieldPage.prop.hourCycle.h12": "Use <code>h12</code> only when the domain requires it, and always with AM and PM.",
     "timeFieldPage.prop.hourCycle.h24": "Use <code>h24</code> for technical schedules, like shifts or flights.",
-    "timeFieldPage.showcaseTitle": "Showcases",
-    "timeFieldPage.showcaseBody": "A time in segments, a fixed cycle, options every quarter hour, and the native field.",
-    "timeFieldPage.guidelinesLede": "TimeField takes a time, one segment at a time.",
-    "timeFieldPage.dd.cycle.title": "The locale's cycle",
+    "timeFieldPage.guidelinesLede": "A time is faster to type than to pick, if the field helps type it.",
+    "timeFieldPage.dd.cycle.title": "Clock: the language's",
     "timeFieldPage.dd.cycle.do": "Let the locale choose the clock: in Spanish, 24 hours.",
     "timeFieldPage.dd.cycle.dont": "Forcing 12 hours where people read 24 makes them translate every time.",
   },

@@ -2,7 +2,7 @@ export const questionnaireMessages = {
   es: {
     "questionnairePage.anatomyLabel": "Anatomía de Questionnaire",
     "questionnairePage.anatomyPreviewLabel": "Questionnaire, parte por parte",
-    "questionnairePage.anatomyBody": "Una sola pregunta, para que todas las partes visibles estén en pantalla a la vez: la máquina muestra un ítem por vez. Es obligatoria, así que Omitir y Anterior no tienen por qué aparecer y las acciones son sólo Siguiente.",
+    "questionnairePage.anatomyBody": "Una sola pregunta, para que todas las partes visibles estén en pantalla a la vez: la máquina muestra un ítem por vez. Es obligatoria, así que Omitir y Anterior no tienen por qué aparecer y las acciones son solo Siguiente.",
     "demo.questionnaire.label": "Encuesta de producto",
     "demo.questionnaire.previous": "Anterior",
     "demo.questionnaire.next": "Siguiente",
@@ -42,44 +42,74 @@ export const questionnaireMessages = {
     "demo.likert.four": "4",
     "demo.likert.five": "5",
 
-    "questionnairePage.description":
-      "Questionnaire: un formulario que pregunta de a una, con estado propio y compuesto con Tile, FormField, Button, Progress y Steps.",
-    "questionnairePage.lede":
-      "Questionnaire pregunta <strong>de a una</strong>: valida antes de avanzar, permite omitir lo opcional y muestra el progreso. No redibuja nada: las opciones son <a href=\"/es/componentes/tile\">Tile</a>, la respuesta libre es <a href=\"/es/componentes/form-field\">FormField</a> + <a href=\"/es/componentes/input\">Input</a>, los botones son <a href=\"/es/componentes/button\">Button</a> y el progreso es <a href=\"/es/componentes/progress\">Progress</a> o <a href=\"/es/componentes/steps\">Steps</a>.",
-    "questionnairePage.basicLabel": "Questionnaire",
-    "questionnairePage.stateTitle": "El estado no sale del DOM",
-    "questionnairePage.stateBody":
-      "Respuestas, pregunta activa, preguntas omitidas y errores viven en una máquina de <code>@skryensya/core/questionnaire</code> (<code>createQuestionnaireStore</code>). Cada cambio es un evento (<code>choose</code>, <code>text</code>, <code>next</code>, <code>skip</code>, <code>submit</code>…) que pasa por una transición pura, y los controles reutilizados están <strong>controlados</strong> por ese estado: nunca se lee un <code>checked</code> o un <code>value</code> para decidir qué contiene el cuestionario. Mover el foco y enviar el formulario, lo único que el estado no puede hacer, vuelven como efectos que cada implementación ejecuta.",
-    "questionnairePage.progressTitle": "Progreso: texto, barra o pasos",
-    "questionnairePage.progressBody":
-      "<code>progress</code> elige cómo se muestra el avance. <code>text</code> dice la posición («Pregunta 2 de 3»). <code>bar</code> suma una <a href=\"/es/componentes/progress\">Progress</a> que se llena con las preguntas respondidas u omitidas. <code>steps</code> reemplaza la barra por <a href=\"/es/componentes/steps\">Steps</a>, un paso por pregunta; <code>stepLabel</code> le da a cada pregunta un nombre corto.",
-    "questionnairePage.barLabel": "Progreso con barra",
-    "questionnairePage.stepsLabel": "Progreso con pasos",
-    "questionnairePage.heightTitle": "El alto no cambia",
-    "questionnairePage.heightBody":
-      "Las preguntas comparten una fila de la grilla, así que el alto lo fija la pregunta más alta y se mantiene igual al avanzar: los botones no se mueven bajo el cursor ni reacomodan la página en cada paso. La pregunta que no está activa se oculta con <code>visibility</code>, que la deja fuera del foco y de los lectores de pantalla pero conserva su caja. La línea del error también está reservada, así que mostrarlo no empuja nada. Sin JavaScript, las preguntas vuelven a ser una columna normal.",
-    "questionnairePage.keyboardTitle": "Teclado",
-    "questionnairePage.keyboardBody":
-      "<kbd>Enter</kbd> sobre una respuesta elegida avanza, y <kbd>⌘</kbd>/<kbd>Ctrl</kbd> + <kbd>Enter</kbd> avanza desde cualquier control. <kbd>↑</kbd> <kbd>↓</kbd> recorren las respuestas de la pregunta; <kbd>←</kbd> vuelve a la anterior y <kbd>→</kbd> pasa a la siguiente cuando la actual ya tiene respuesta, salvo dentro de un campo de texto o sobre un radio. Con <code>shortcuts=\"letters\"</code> o <code>\"numbers\"</code>, cada opción muestra su tecla en un <a href=\"/es/componentes/kbd\">Kbd</a> y esa tecla la elige.",
-    "questionnairePage.shortcutsLabel": "Atajos con letras",
-    "questionnairePage.skipTitle": "Validar y omitir",
-    "questionnairePage.skipBody":
-      "Una pregunta <code>required</code> no se deja sin respuesta: el error aparece recién después del intento, como <code>role=\"alert\"</code>, y el foco vuelve a la primera respuesta. Una pregunta opcional muestra <strong>Omitir</strong>: omitir no borra lo que se marcó, sólo lo deja fuera del envío, y responder después deshace la omisión. Omitir la última pregunta no envía el formulario. Al enviar, si una pregunta anterior quedó inválida, el cuestionario vuelve a ella.",
-    "questionnairePage.noScriptTitle": "Sin JavaScript",
-    "questionnairePage.noScriptBody":
-      "El markup emitido es un formulario largo que funciona: todas las preguntas visibles, los botones de paso ocultos y <strong>Enviar</strong> en su lugar. La implementación lo convierte en una pregunta a la vez.",
-    "questionnairePage.choicesOnlyTitle": "Solo opciones",
-    "questionnairePage.choicesOnlyBody":
-      "Sin <code>data-text</code> no hay campo “otra respuesta”: el lector elige únicamente entre las opciones emitidas.",
-    "questionnairePage.choicesOnlyLabel": "Solo opciones",
-    "questionnairePage.likertTitle": "Escala Likert",
-    "questionnairePage.likertBody":
-      "<code>likert</code> no trae otro control: es la <strong>misma pregunta de elección única</strong>, los mismos radios y la misma máquina, puestos de lado. Cada punto es una columna con su marca sobre el número, y <code>likertMinLabel</code> / <code>likertMaxLabel</code> nombran los extremos debajo. En pantallas angostas vuelve a ser una columna de filas, porque una columna más angosta que un dedo no se puede tocar.",
-    "questionnairePage.likertLabel": "Likert en el cuestionario",
-    "questionnairePage.branchTitle": "Ramificación",
-    "questionnairePage.branchBody":
-      "<code>data-show-when-item</code> nombra la pregunta puerta. <code>data-show-when-any</code>, <code>data-show-when-all</code> (multiselección) o <code>data-show-when-none</code> (valores separados por comas) deciden si la pregunta entra en el flujo. Al elegir una respuesta única, el cuestionario avanza solo a la rama recién desbloqueada; si cambias la puerta, las respuestas de ramas cerradas se descartan.",
-    "questionnairePage.branchLabel": "Ramificación",
+    "questionnairePage.description": "Hace preguntas de una en una, valida antes de avanzar y muestra cuánto falta.",
+
+    "questionnairePage.key.letter": "Con atajos, elige la opción de esa letra.",
+
+    "questionnairePage.key.arrows": "Recorre las respuestas.",
+
+    "questionnairePage.key.modEnter": "Avanza desde cualquier control.",
+
+    "questionnairePage.key.enter": "Con una respuesta elegida, avanza.",
+
+    "questionnairePage.a11yYours2": "Deja volver atrás: la persona puede querer cambiar una respuesta.",
+
+    "questionnairePage.a11yYours1": "Dale un título al cuestionario y di cuánto dura antes de empezar.",
+
+    "questionnairePage.a11yDoes3": "El avance se anuncia con su texto: «Pregunta 2 de 3».",
+
+    "questionnairePage.a11yDoes2": 'Un error aparece después del intento, como <code>role="alert"</code>, y el foco vuelve a la respuesta.',
+
+    "questionnairePage.a11yDoes1": "Al avanzar, el foco va a la pregunta nueva.",
+
+    "questionnairePage.a11yIntro": "Questionnaire es un formulario nativo que se muestra por partes.",
+
+    "questionnairePage.content3": "Marca lo opcional, no lo obligatorio: «(opcional)».",
+
+    "questionnairePage.content2": "Escribe las opciones con la misma forma y sin solaparse: «1 a 5», «6 a 20», «Más de 20».",
+
+    "questionnairePage.content1": "Escribe cada pregunta como pregunta, con su signo: «¿Cuántas personas hay en tu equipo?».",
+
+    "questionnairePage.whenNot2": 'Para un flujo con pasos que agrupan varios campos: usa <a href="/es/componentes/steps">Steps</a>.',
+
+    "questionnairePage.whenNot1": 'Para un formulario corto que se llena de una vez: usa <a href="/es/componentes/form-field">FormField</a> en una sola vista.',
+
+    "questionnairePage.when2": "Cuando las preguntas siguientes dependen de las respuestas.",
+
+    "questionnairePage.when1": "Para una encuesta, un diagnóstico o una configuración donde cada pregunta merece atención.",
+
+    "questionnairePage.contract4": "Sin JavaScript, muestra todas las preguntas y un botón Enviar.",
+
+    "questionnairePage.contract3": "El alto no cambia al avanzar: los botones no se mueven bajo el cursor.",
+
+    "questionnairePage.contract2": "El estado vive en <code>createQuestionnaireStore</code>, de <code>@skryensya/core/questionnaire</code>.",
+
+    "questionnairePage.contract1": "Las opciones son Tile, los campos FormField, los botones Button y el avance Progress o Steps.",
+
+    "questionnairePage.basicBody": "Cada pregunta ocupa toda la vista; la opción «Otra» abre un campo de texto.",
+
+    "questionnairePage.basicTitle": "Una encuesta: opciones y otra respuesta",
+
+    "questionnairePage.prop.progress.segments": "Usa <code>segments</code> para una barra partida en preguntas, sin nombres.",
+
+    "questionnairePage.prop.progress.steps": "Usa <code>steps</code> cuando cada pregunta tiene un nombre que conviene ver.",
+
+    "questionnairePage.prop.progress.bar": "Usa <code>bar</code> para un recorrido largo sin nombres de etapa.",
+
+    "questionnairePage.prop.progress.text": "Usa <code>text</code>, el valor por defecto, para pocas preguntas: «Pregunta 2 de 3».",
+
+    "questionnairePage.prop.progress.body": "Cómo dice cuánto falta.",
+
+    "questionnairePage.prop.progress.title": "Progress: cómo se ve el avance",
+    "questionnairePage.lede": "Questionnaire hace preguntas de una en una: una encuesta, un diagnóstico, la configuración inicial de una cuenta. Valida antes de avanzar, deja omitir lo opcional, puede ramificarse según las respuestas y muestra cuánto falta. Sin JavaScript es un formulario largo que funciona.",
+    "questionnairePage.keyboardTitle": "Atajos: una letra por opción",
+    "questionnairePage.keyboardBody": 'Con <code>shortcuts="letters"</code>, cada opción muestra su letra y se elige con ella.',
+    "questionnairePage.choicesOnlyTitle": "Solo opciones: sin otra respuesta",
+    "questionnairePage.choicesOnlyBody": "Sin <code>data-text</code>, se elige solo entre las opciones.",
+    "questionnairePage.likertTitle": "Likert: de acuerdo a en desacuerdo",
+    "questionnairePage.likertBody": "La misma pregunta de una opción, puesta de lado: cada punto de la escala es una columna.",
+    "questionnairePage.branchTitle": "Ramas: la siguiente depende de la respuesta",
+    "questionnairePage.branchBody": "<code>data-show-when-item</code> nombra la pregunta que decide y <code>data-show-when-any</code> las respuestas que la abren.",
     "demo.questionnaire.choicesOnly.label": "Preferencias",
     "demo.questionnaire.choicesOnly.step": "Herramienta",
     "demo.questionnaire.choicesOnly.title": "¿Qué prefieres prototipar?",
@@ -96,15 +126,10 @@ export const questionnaireMessages = {
     "demo.questionnaire.control.fileLabel": "Archivo",
     "demo.questionnaire.control.fileDropzone": "Arrastra el archivo o elígelo",
     "demo.questionnaire.control.fileTrigger": "Elegir archivo",
-    "questionnairePage.segmentsLabel": "Progreso: segmentos",
-    "questionnairePage.railLabel": "Rail al costado",
-    "questionnairePage.railTitle": "El rail al costado",
-    "questionnairePage.railBody":
-      "<code>progressOrientation=\"vertical\"</code> pasa el rail a la izquierda y la pregunta a la derecha. Es lo que pide un recorrido largo: ocho etapas cruzadas en una medida de lectura no le dan nada a ninguna, y esas mismas ocho en columna le dan una línea a cada una. La pregunta <strong>conserva su medida</strong> y el formulario se ensancha, porque un rail que sacara su espacio de la columna de lectura cambiaría un rail apretado por prosa apretada. Vuelve a una columna con el rail arriba cuando las dos ya no entran, y el corte está donde el contenido deja de caber: rail + medida son 746px, y <code>desktop</code> (832px) es el primer escalón que los despeja.",
-    "questionnairePage.controlTitle": "Cualquier control del kit",
-    "questionnairePage.controlBody":
-      "El slot <code>control</code> recibe un control que este contrato no conoce: un <code>Select</code> para una lista demasiado larga para ser tiles, un <code>FileUpload</code>, un <code>NumberField</code>. El control se posee a sí mismo (su estado, su teclado, su accesibilidad) y el cuestionario se queda con lo suyo: una pregunta a la vez, progreso, obligatoriedad y ramificación. Aprende la respuesta del <strong>estado de formulario nativo</strong> del control, que es la única interfaz que todos comparten: medido en el kit, <code>Select</code> termina en un <code>&lt;select&gt;</code> y <code>FileUpload</code>, <code>NumberField</code>, <code>Combobox</code> y <code>DatePicker</code> terminan cada uno en un <code>&lt;input&gt;</code>. Un input de archivo responde con los nombres de sus archivos; los archivos viajan con el formulario.",
-    "questionnairePage.controlLabel": "Control slotteado",
+    "questionnairePage.railTitle": "Rail: el avance al costado",
+    "questionnairePage.railBody": '<code>progressOrientation="vertical"</code> pone las etapas a la izquierda, para un recorrido largo.',
+    "questionnairePage.controlTitle": "Cualquier control: un Select, un archivo",
+    "questionnairePage.controlBody": "El slot <code>control</code> recibe cualquier control del kit, como un Select para una lista larga.",
     "demo.questionnaire.followUp.label": "Hogar",
     "demo.questionnaire.followUp.aloneTitle": "¿Vives con otras personas?",
     "demo.questionnaire.followUp.shared": "Sí, con otras personas",
@@ -116,10 +141,8 @@ export const questionnaireMessages = {
     "demo.questionnaire.followUp.tenureShort": "Menos de un año",
     "demo.questionnaire.followUp.tenureMid": "Entre uno y cinco años",
     "demo.questionnaire.followUp.tenureLong": "Más de cinco años",
-    "questionnairePage.followUpTitle": "Preguntas de seguimiento",
-    "questionnairePage.followUpBody":
-      "El mismo <code>data-show-when-item</code> que ramifica también sirve para lo contrario: no abrir un camino alternativo, sino <strong>agregar</strong> una pregunta al que ya hay. Vivir solo es una respuesta completa y el formulario dura dos preguntas; vivir acompañado levanta una pregunta que recién entonces tiene sujeto, y dura tres. No se cierra ningún camino ni se descarta nada, y por eso se lee como una sub-pregunta de la de arriba y no como otra ruta. La barra se llena contra un total que acaba de crecer, así que el avance sigue siendo honesto.",
-    "questionnairePage.followUpLabel": "Pregunta de seguimiento",
+    "questionnairePage.followUpTitle": "Seguimiento: una pregunta más",
+    "questionnairePage.followUpBody": "La misma regla agrega una pregunta al camino, por ejemplo «¿Qué falló?» después de una nota baja.",
     "demo.questionnaire.branch.label": "Beta",
     "demo.questionnaire.branch.betaStep": "Beta",
     "demo.questionnaire.branch.betaTitle": "¿Quieres acceso anticipado?",
@@ -135,12 +158,7 @@ export const questionnaireMessages = {
     "demo.questionnaire.branch.closingTitle": "¿A qué correo te escribimos?",
     "demo.questionnaire.branch.closingLabel": "Correo",
     "demo.questionnaire.branch.closingPlaceholder": "tu@correo.com",
-    "questionnairePage.showcaseTitle": "Showcases",
-    "questionnairePage.showcaseBody": "Preguntas de a una, con opciones, escala, ramas, seguimiento, progreso y teclado.",
-    "questionnairePage.guidelinesLede": "Questionnaire hace preguntas de a una y guarda las respuestas.",
-    "questionnairePage.guide.item1": "Úsalo cuando cada pregunta merece toda la atención, como una encuesta o un diagnóstico.",
-    "questionnairePage.guide.item2": "Muestra cuánto falta, y deja volver atrás.",
-    "questionnairePage.guide.item3": "Para un formulario corto que se completa de una vez, usa campos normales en una sola vista.",
+    "questionnairePage.guidelinesLede": "Una pregunta por vista pide toda la atención, a cambio de no ver el formulario completo.",
   },
   en: {
     "questionnairePage.anatomyLabel": "Questionnaire anatomy",
@@ -185,44 +203,74 @@ export const questionnaireMessages = {
     "demo.likert.four": "4",
     "demo.likert.five": "5",
 
-    "questionnairePage.description":
-      "Questionnaire: a form that asks one question at a time, with its own state, composed from Tile, FormField, Button, Progress and Steps.",
-    "questionnairePage.lede":
-      "Questionnaire asks <strong>one question at a time</strong>: it validates before moving on, lets optional questions be skipped and shows progress. It redraws nothing: the choices are <a href=\"/components/tile\">Tile</a>, the free answer is <a href=\"/components/form-field\">FormField</a> + <a href=\"/components/input\">Input</a>, the buttons are <a href=\"/components/button\">Button</a> and the progress is <a href=\"/components/progress\">Progress</a> or <a href=\"/components/steps\">Steps</a>.",
-    "questionnairePage.basicLabel": "Questionnaire",
-    "questionnairePage.stateTitle": "The state does not come from the DOM",
-    "questionnairePage.stateBody":
-      "Answers, the active question, skipped questions and errors live in a machine in <code>@skryensya/core/questionnaire</code> (<code>createQuestionnaireStore</code>). Every change is an event (<code>choose</code>, <code>text</code>, <code>next</code>, <code>skip</code>, <code>submit</code>…) run through a pure transition, and the reused controls are <strong>controlled</strong> by that state: no <code>checked</code> or <code>value</code> is ever read to decide what the questionnaire holds. Moving focus and submitting the form, the two things state cannot do, come back as effects each binding carries out.",
-    "questionnairePage.progressTitle": "Progress: text, bar or steps",
-    "questionnairePage.progressBody":
-      "<code>progress</code> picks how progress shows. <code>text</code> states the position (\"Question 2 of 3\"). <code>bar</code> adds a <a href=\"/components/progress\">Progress</a> that fills with answered or skipped questions. <code>steps</code> replaces the bar with <a href=\"/components/steps\">Steps</a>, one step per question; <code>stepLabel</code> gives each question a short name.",
-    "questionnairePage.barLabel": "Bar progress",
-    "questionnairePage.stepsLabel": "Steps progress",
-    "questionnairePage.heightTitle": "The height does not change",
-    "questionnairePage.heightBody":
-      "The questions share one grid row, so the tallest question sets the height and it stays the same as the reader moves on: the buttons never shift under the cursor and the page around them never reflows per step. The inactive question is hidden with <code>visibility</code>, which takes it out of focus and out of screen readers while keeping its box. The error keeps its line too, so showing it pushes nothing. With no JavaScript the questions are an ordinary column again.",
-    "questionnairePage.keyboardTitle": "Keyboard",
-    "questionnairePage.keyboardBody":
-      "<kbd>Enter</kbd> on a chosen answer moves on, and <kbd>⌘</kbd>/<kbd>Ctrl</kbd> + <kbd>Enter</kbd> moves on from any control. <kbd>↑</kbd> <kbd>↓</kbd> walk the question's answers; <kbd>←</kbd> goes back and <kbd>→</kbd> goes forward once the current question has an answer, except inside a text field or on a radio. With <code>shortcuts=\"letters\"</code> or <code>\"numbers\"</code>, each choice shows its key in a <a href=\"/components/kbd\">Kbd</a> and that key picks it.",
-    "questionnairePage.shortcutsLabel": "Letter shortcuts",
-    "questionnairePage.skipTitle": "Validating and skipping",
-    "questionnairePage.skipBody":
-      "A <code>required</code> question cannot be left unanswered: the error shows only after an attempt, as <code>role=\"alert\"</code>, and focus returns to the first answer. An optional question shows <strong>Skip</strong>: skipping does not erase what was chosen, it only leaves it out of the submission, and answering afterwards takes the skip back. Skipping the last question does not submit the form. On submit, if an earlier question is still invalid, the questionnaire goes back to it.",
-    "questionnairePage.noScriptTitle": "Without JavaScript",
-    "questionnairePage.noScriptBody":
-      "The emitted markup is a working long form: every question visible, the step buttons hidden and <strong>Submit</strong> in place. A binding turns it into one question at a time.",
-    "questionnairePage.choicesOnlyTitle": "Choices only",
-    "questionnairePage.choicesOnlyBody":
-      "Without <code>data-text</code> there is no “other answer” field: the reader picks only from the emitted options.",
-    "questionnairePage.choicesOnlyLabel": "Choices only",
-    "questionnairePage.likertTitle": "Likert scale",
-    "questionnairePage.likertBody":
-      "<code>likert</code> brings no second control: it is the <strong>same single-choice question</strong>, the same radios and the same machine, turned sideways. Each point is a column with its mark over its number, and <code>likertMinLabel</code> / <code>likertMaxLabel</code> name the ends underneath. On a narrow screen it goes back to a column of rows, because a column narrower than a finger cannot be tapped.",
-    "questionnairePage.likertLabel": "Likert in Questionnaire",
-    "questionnairePage.branchTitle": "Branching",
-    "questionnairePage.branchBody":
-      "<code>data-show-when-item</code> names the gate question. <code>data-show-when-any</code>, <code>data-show-when-all</code> (multi-select), or <code>data-show-when-none</code> (comma-separated values) decide whether the question joins the flow. A single-choice answer auto-advances into a newly unlocked branch; changing the gate drops answers on branches that closed.",
-    "questionnairePage.branchLabel": "Branching",
+    "questionnairePage.description": "Asks questions one at a time, validates before moving on and shows how much is left.",
+
+    "questionnairePage.key.letter": "With shortcuts, chooses that letter's option.",
+
+    "questionnairePage.key.arrows": "Moves through the answers.",
+
+    "questionnairePage.key.modEnter": "Moves on from any control.",
+
+    "questionnairePage.key.enter": "With an answer chosen, moves on.",
+
+    "questionnairePage.a11yYours2": "Allow going back: people may want to change an answer.",
+
+    "questionnairePage.a11yYours1": "Give the questionnaire a title and say how long it takes before starting.",
+
+    "questionnairePage.a11yDoes3": "Progress is announced as text: “Question 2 of 3”.",
+
+    "questionnairePage.a11yDoes2": 'An error appears after the attempt, as <code>role="alert"</code>, and focus returns to the answer.',
+
+    "questionnairePage.a11yDoes1": "On advancing, focus goes to the new question.",
+
+    "questionnairePage.a11yIntro": "Questionnaire is a native form shown in parts.",
+
+    "questionnairePage.content3": "Mark what is optional, not what is required: “(optional)”.",
+
+    "questionnairePage.content2": "Write options in the same shape and without overlap: “1 to 5”, “6 to 20”, “More than 20”.",
+
+    "questionnairePage.content1": "Write each question as a question: “How many people are on your team?”.",
+
+    "questionnairePage.whenNot2": 'For a flow whose steps group several fields: use <a href="/components/steps">Steps</a>.',
+
+    "questionnairePage.whenNot1": 'For a short form filled in at once: use <a href="/components/form-field">FormField</a> in a single view.',
+
+    "questionnairePage.when2": "When later questions depend on the answers.",
+
+    "questionnairePage.when1": "For a survey, diagnosis or setup where each question deserves attention.",
+
+    "questionnairePage.contract4": "Without JavaScript, it shows every question and a Submit button.",
+
+    "questionnairePage.contract3": "Height does not change when advancing: the buttons do not move under the cursor.",
+
+    "questionnairePage.contract2": "The state lives in <code>createQuestionnaireStore</code>, from <code>@skryensya/core/questionnaire</code>.",
+
+    "questionnairePage.contract1": "Options are Tile, fields FormField, buttons Button and progress Progress or Steps.",
+
+    "questionnairePage.basicBody": "Each question takes the whole view; the “Other” option opens a text field.",
+
+    "questionnairePage.basicTitle": "A survey: options and another answer",
+
+    "questionnairePage.prop.progress.segments": "Use <code>segments</code> for a bar split into questions, with no names.",
+
+    "questionnairePage.prop.progress.steps": "Use <code>steps</code> when each question has a name worth seeing.",
+
+    "questionnairePage.prop.progress.bar": "Use <code>bar</code> for a long path with no stage names.",
+
+    "questionnairePage.prop.progress.text": "Use <code>text</code>, the default, for a few questions: “Question 2 of 3”.",
+
+    "questionnairePage.prop.progress.body": "How it says how much is left.",
+
+    "questionnairePage.prop.progress.title": "Progress: how advancement looks",
+    "questionnairePage.lede": "Questionnaire asks questions one at a time: a survey, a diagnosis, an account's initial setup. It validates before moving on, lets optional ones be skipped, can branch on answers and shows how much is left. Without JavaScript it is a long form that works.",
+    "questionnairePage.keyboardTitle": "Shortcuts: one letter per option",
+    "questionnairePage.keyboardBody": 'With <code>shortcuts="letters"</code>, each option shows its letter and is chosen with it.',
+    "questionnairePage.choicesOnlyTitle": "Options only: no other answer",
+    "questionnairePage.choicesOnlyBody": "Without <code>data-text</code>, the choice is only among the options.",
+    "questionnairePage.likertTitle": "Likert: agree to disagree",
+    "questionnairePage.likertBody": "The same single-choice question, laid sideways: each point of the scale is a column.",
+    "questionnairePage.branchTitle": "Branches: the next depends on the answer",
+    "questionnairePage.branchBody": "<code>data-show-when-item</code> names the deciding question and <code>data-show-when-any</code> the answers that open it.",
     "demo.questionnaire.choicesOnly.label": "Preferences",
     "demo.questionnaire.choicesOnly.step": "Tooling",
     "demo.questionnaire.choicesOnly.title": "What do you prefer to prototype?",
@@ -239,15 +287,10 @@ export const questionnaireMessages = {
     "demo.questionnaire.control.fileLabel": "File",
     "demo.questionnaire.control.fileDropzone": "Drop the file or pick one",
     "demo.questionnaire.control.fileTrigger": "Choose file",
-    "questionnairePage.segmentsLabel": "Progress: segments",
-    "questionnairePage.railLabel": "Rail beside",
-    "questionnairePage.railTitle": "The rail beside the question",
-    "questionnairePage.railBody":
-      "<code>progressOrientation=\"vertical\"</code> moves the rail to the left and the question to the right. It is what a long journey needs: eight stages across a reading measure give each one nothing, and the same eight down a column give each one a line. The question <strong>keeps its measure</strong> and the form widens instead, because a rail taking its room out of the reading column would trade a cramped rail for cramped prose. It returns to one column with the rail on top once two no longer fit, and the break is where the content stops fitting: rail + measure come to 746px, and <code>desktop</code> (832px) is the first step that clears them.",
-    "questionnairePage.controlTitle": "Any control in the kit",
-    "questionnairePage.controlBody":
-      "The <code>control</code> slot takes a control this contract has never heard of: a <code>Select</code> for a list too long to be tiles, a <code>FileUpload</code>, a <code>NumberField</code>. The control owns itself (its state, its keyboard, its accessibility) and the questionnaire keeps what it is for: one question at a time, progress, required, branching. It learns the answer from the control's <strong>native form state</strong>, the one interface all of them share: measured across the kit, <code>Select</code> ends in a <code>&lt;select&gt;</code> and <code>FileUpload</code>, <code>NumberField</code>, <code>Combobox</code> and <code>DatePicker</code> each end in an <code>&lt;input&gt;</code>. A file input answers with the names of its files; the files travel with the form.",
-    "questionnairePage.controlLabel": "Slotted control",
+    "questionnairePage.railTitle": "Rail: progress on the side",
+    "questionnairePage.railBody": '<code>progressOrientation="vertical"</code> puts the stages on the left, for a long path.',
+    "questionnairePage.controlTitle": "Any control: a Select, a file",
+    "questionnairePage.controlBody": "The <code>control</code> slot takes any kit control, like a Select for a long list.",
     "demo.questionnaire.followUp.label": "Household",
     "demo.questionnaire.followUp.aloneTitle": "Do you live with other people?",
     "demo.questionnaire.followUp.shared": "Yes, with others",
@@ -259,10 +302,8 @@ export const questionnaireMessages = {
     "demo.questionnaire.followUp.tenureShort": "Under a year",
     "demo.questionnaire.followUp.tenureMid": "One to five years",
     "demo.questionnaire.followUp.tenureLong": "Over five years",
-    "questionnairePage.followUpTitle": "Follow-up questions",
-    "questionnairePage.followUpBody":
-      "The same <code>data-show-when-item</code> that branches also does the opposite: instead of opening an alternative path, it <strong>adds</strong> a question to the one already there. Living alone is a complete answer and the form is two questions long; living with other people raises a question that only then has a subject, and it is three. Nothing is closed off and nothing is discarded, which is what makes it read as a sub-question of the one above rather than a different route. The bar fills against a total that just grew, so progress stays honest.",
-    "questionnairePage.followUpLabel": "Follow-up question",
+    "questionnairePage.followUpTitle": "Follow-up: one more question",
+    "questionnairePage.followUpBody": "The same rule adds a question to the path, for example “What went wrong?” after a low score.",
     "demo.questionnaire.branch.label": "Beta",
     "demo.questionnaire.branch.betaStep": "Beta",
     "demo.questionnaire.branch.betaTitle": "Want early access?",
@@ -278,11 +319,6 @@ export const questionnaireMessages = {
     "demo.questionnaire.branch.closingTitle": "Where should we write?",
     "demo.questionnaire.branch.closingLabel": "Email",
     "demo.questionnaire.branch.closingPlaceholder": "you@example.com",
-    "questionnairePage.showcaseTitle": "Showcases",
-    "questionnairePage.showcaseBody": "One question at a time, with choices, a scale, branches, follow-ups, progress and keyboard.",
-    "questionnairePage.guidelinesLede": "Questionnaire asks one question at a time and keeps the answers.",
-    "questionnairePage.guide.item1": "Use it when each question deserves full attention, like a survey or an assessment.",
-    "questionnairePage.guide.item2": "Show how much is left, and let people go back.",
-    "questionnairePage.guide.item3": "For a short form filled in one go, use regular fields on one view.",
+    "questionnairePage.guidelinesLede": "One question per view asks for full attention, at the cost of not seeing the whole form.",
   },
 } as const;

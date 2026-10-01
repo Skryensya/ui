@@ -1,5 +1,22 @@
 export const loaderMessages = {
   es: {
+    "demo.loader.variant.beads": "Ocho puntos sobre el borde.",
+    "demo.loader.variant.compass": "Cuatro marcas que giran juntas un cuarto.",
+    "demo.loader.variant.ticks": "La misma secuencia con ocho marcas.",
+    "demo.loader.variant.spokes": "Doce radios que se apagan en secuencia.",
+    "demo.loader.variant.clock": "Una aguja barriendo una esfera tenue.",
+    "demo.loader.variant.orbit": "Un punto recorriendo una pista fina.",
+    "demo.loader.variant.comet": "Una cola que se apaga tras la cabeza.",
+    "demo.loader.variant.arc": "Un cuarto suelto, sin pista detrás.",
+    "demo.loader.variant.dots": "Un punto que avanza por tres posiciones.",
+    "demo.loader.variant.bars": "Dos pares que alternan; nada gira.",
+    "demo.loader.variant.sweep": "Abanico cónico que se desvanece.",
+    "demo.loader.variant.ring": "Pista completa con un cuarto encendido.",
+    "demo.loader.dd.files": "Subiendo 3 de 10 archivos",
+    "demo.loader.dd.invoices": "Cargando facturas…",
+    "demo.loader.dd.saving": "Guardando…",
+    "demo.loader.dd.save": "Guardar",
+    "demo.loader.dd.card": "Cargando tarjeta…",
     "loaderPage.anatomyLabel": "Anatomía de Loader",
     "loaderPage.anatomyPreviewLabel": "Loader, parte por parte",
     "loaderPage.anatomyBody": "Una parte visible. Las variantes escalonadas (spokes, ticks, beads, compass) montan hijos <code>sk-loader__tick</code>, pero cada uno es una capa del tamaño de la raíz que gira sobre su centro, así que no se dibujan aparte.",
@@ -27,96 +44,116 @@ export const loaderMessages = {
     "demo.loader.control.body": "Reserva espacio junto a una acción.",
     "demo.loader.pseudoVariantsLabel": "Diseños sin hijos",
     "demo.loader.staggeredVariantsLabel": "Diseños con marcas escalonadas",
-    "demo.loader.variant.ring": "Pista completa con un cuarto encendido.",
-    "demo.loader.variant.sweep": "Abanico cónico que se desvanece.",
-    "demo.loader.variant.bars": "Dos pares que alternan; nada gira.",
-    "demo.loader.variant.dots": "Un punto que avanza por tres posiciones.",
-    "demo.loader.variant.arc": "Un cuarto suelto, sin pista detrás.",
-    "demo.loader.variant.comet": "Una cola que se apaga tras la cabeza.",
-    "demo.loader.variant.orbit": "Un punto recorriendo una pista fina.",
-    "demo.loader.variant.clock": "Una aguja barriendo una esfera tenue.",
-    "demo.loader.variant.spokes": "Doce radios que se apagan en secuencia.",
-    "demo.loader.variant.ticks": "La misma secuencia con ocho marcas.",
-    "demo.loader.variant.compass": "Cuatro marcas que giran juntas un cuarto.",
-    "demo.loader.variant.beads": "Ocho puntos sobre el borde.",
 
-    "loaderPage.description": "Loader: simulación de carga indeterminada, patrones de uso, tamaños y velocidad.",
-    "loaderPage.lede":
-      "Loader comunica trabajo <strong>indeterminado</strong>: la operación está activa, pero no existe una fracción honesta que mostrar. El sistema ofrece doce diseños de movimiento con las mismas reglas semánticas para componer acciones, regiones y cargas iniciales.",
-    "loaderPage.calloutBody":
-      "Los doce son diseños visuales del mismo Loader, no componentes distintos: comparten <code>size</code>, <code>speed</code> y la misma regla de accesibilidad. Elegir uno es una decisión de presencia visual, nunca de significado.",
-    "loaderPage.variantsTitle": "Diseños de movimiento",
-    "loaderPage.variantsBody":
-      "Ocho se dibujan con los dos pseudo-elementos de la raíz y nada más, así que su markup es un único <code>&lt;span&gt;</code> vacío.",
-    "loaderPage.pseudoVariantsLabel": "Diseños sin hijos",
-    "loaderPage.staggeredVariantsBody":
-      "Los otros cuatro son marcas que se apagan <strong>en secuencia</strong>, y eso no cabe en dos pseudo-elementos: un escalonamiento necesita un elemento real por marca. No se escriben a mano: el markup sólo nombra el diseño con <code>data-sk-loader</code>, y el enhancer inyecta las marcas que falten. Sin JavaScript, pinta el anillo por defecto. El retraso de cada marca es <strong>negativo</strong> por construcción, así que todas empiezan a mitad de ciclo en el primer fotograma; con un escalonamiento positivo, el anillo arrancaría a la vista una sola vez al montarse.",
-    "loaderPage.staggeredVariantsLabel": "Diseños con marcas escalonadas",
-    "loaderPage.staggeredVariantsNote": "Cada marca arranca a mitad de ciclo, nunca desde cero.",
-    "loaderPage.tempoTitle": "Ritmo",
-    "loaderPage.tempoBody":
-      "Cada diseño necesita su propio ritmo, pero <code>speed</code> tiene que seguir siendo independiente de <code>variant</code>. Por eso ninguno nombra milisegundos: nombran una razón en <code>--sk-loader-tempo</code>, y <code>--sk-loader-cycle</code> es donde las dos se encuentran.",
-    "loaderPage.simTitle": "Simulación",
-    "loaderPage.simBody":
-      "Un único contenedor cambia de ocupado a listo. No necesita una pantalla, métricas ni una card exterior: sólo la marca, el texto que explica el trabajo y una acción para repetirlo.",
+    "loaderPage.description": "Dice que algo está cargando cuando no se sabe cuánto falta.",
+
+    "loaderPage.a11yYours2": "Anuncia el final si cambia algo que no se ve: «Facturas cargadas».",
+
+    "loaderPage.a11yYours1": 'Marca la región que carga con <code>aria-busy="true"</code> y quítalo al terminar.',
+
+    "loaderPage.a11yDoes3": "Con <code>prefers-reduced-motion: reduce</code>, deja de moverse.",
+
+    "loaderPage.a11yDoes2": "Sin <code>label</code>, la figura es decorativa.",
+
+    "loaderPage.a11yDoes1": 'Con <code>label</code>, es un <code>role="status"</code> que el lector de pantalla anuncia.',
+
+    "loaderPage.a11yIntro": "Loader anuncia la espera una vez; la figura no se lee.",
+
+    "loaderPage.content2": "Si la espera se alarga, cambia el texto: «Esto está tardando más de lo normal».",
+
+    "loaderPage.content1": "Di qué se carga, con un verbo en gerundio: «Cargando facturas…», «Guardando cambios…».",
+
+    "loaderPage.dd.progress.dont": "Un Loader con el avance en palabras obliga a leer para saber cuánto falta.",
+
+    "loaderPage.dd.progress.do": "Si sabes cuánto va, una barra lo muestra de un vistazo.",
+
+    "loaderPage.dd.progress.title": "Avance conocido: usa Progress",
+
+    "loaderPage.dd.text.dont": "Una figura sola no dice qué se espera ni si tiene que ver con lo que hiciste.",
+
+    "loaderPage.dd.text.do": "La figura con un texto que dice qué se carga.",
+
+    "loaderPage.dd.text.title": "Texto: di qué se carga",
+
+    "loaderPage.dd.control.dont": "Un loader grande dentro de un botón cambia el peso del control y no dice qué acción sigue corriendo.",
+
+    "loaderPage.dd.control.do": "Dentro de un botón, usa <code>sm</code> y cambia el texto a la acción en curso.",
+
+    "loaderPage.dd.control.title": "Control: pequeño y con verbo",
+
+    "loaderPage.dd.shape.dont": "Un spinner genérico oculta la forma de lo que viene y hace que la tarjeta parezca vacía.",
+
+    "loaderPage.dd.shape.do": "Si la tarjeta ya tiene una forma esperada, usa Placeholder para reservar esa forma.",
+
+    "loaderPage.dd.shape.title": "Forma conocida: usa Placeholder",
+
+    "loaderPage.whenNot3": "Para una espera de menos de un segundo: no muestres nada, el parpadeo distrae.",
+
+    "loaderPage.whenNot2": 'Si el contenido tiene una forma conocida: usa <a href="/es/componentes/placeholder">Placeholder</a>.',
+
+    "loaderPage.whenNot1": 'Si sabes cuánto falta: usa <a href="/es/componentes/progress">Progress</a>.',
+
+    "loaderPage.when2": "En un botón mientras su acción corre, junto a un texto como «Guardando…».",
+
+    "loaderPage.when1": "Para una espera de largo desconocido: una búsqueda, un guardado.",
+
+    "loaderPage.contract4": "Con <code>prefers-reduced-motion: reduce</code>, las doce figuras se quedan quietas y se siguen reconociendo.",
+
+    "loaderPage.contract3": 'No controla la operación: la región que carga lleva <code>aria-busy="true"</code>.',
+
+    "loaderPage.contract2": "<code>Loader.status</code> anuncia una espera que ya se ve, con skeletons o una barra.",
+
+    "loaderPage.contract1": 'Con <code>label</code> es un <code>role="status"</code> que se anuncia; sin él es decorativo y acompaña un texto que ya lo dice.',
+    "loaderPage.lede": "Loader dice que algo está cargando cuando no se sabe cuánto falta: una búsqueda, un guardado, la carga de una sección. Si sabes cuánto falta, usa Progress. Hay doce figuras del mismo Loader; elige una por producto.",
+    "loaderPage.variantsTitle": "Figuras: doce, para elegir una",
+    "loaderPage.variantsBody": "Todas comparten <code>size</code>, <code>speed</code> y la misma accesibilidad. Usa la misma en todo el producto.",
+    "loaderPage.simTitle": "Ocupado y listo: el mismo lugar",
+    "loaderPage.simBody": "Una región pasa de cargando a lista sin cambiar de tamaño. Presiona el botón para repetirlo.",
     "loaderPage.simLabel": "Análisis de mezcla",
-    "loaderPage.simNote": "Ocupado → listo",
     "loaderPage.simBody2":
       "<code>bars</code> aporta movimiento sin fingir un porcentaje. El contenedor conserva <code>aria-busy</code> y el estado visible aporta el anuncio accesible.",
-    "loaderPage.contextsTitle": "Patrones completos",
-    "loaderPage.contextsLabel": "Loader en contexto",
-    "loaderPage.contextsBody":
-      "Loader posee la marca, no la superficie ni el ciclo de vida. El contexto decide dónde vive, quién aporta el nombre accesible y qué región conserva <code>aria-busy=\"true\"</code>.",
-    "loaderPage.contextsNote": "Acción local · actualización de región · carga inicial",
-    "loaderPage.contextsItem1": "En un botón, Loader es decorativo: «Guardando…» ya nombra el estado.",
-    "loaderPage.contextsItem2": "En una actualización local, conserva el contenido previo y marca la región como ocupada.",
-    "loaderPage.contextsItem3": "En una carga inicial, acompaña la marca con un título y una explicación; evita una pantalla vacía.",
-    "loaderPage.sizeTitle": "Tamaño",
-    "loaderPage.sizeBody":
-      "Usa <code>sm</code> dentro de controles, <code>md</code> junto a texto y <code>lg</code> cuando la marca ocupa una región propia. El tamaño no comunica cuánto trabajo queda.",
-    "loaderPage.sizeLabel": "Tamaños de Loader",
-    "loaderPage.speedTitle": "Velocidad",
-    "loaderPage.speedBody":
-      "<code>speed</code> reescribe el styling hook <code>--sk-loader-duration</code> desde tokens de intención (<code>--motion-loading-duration*</code>), no desde milisegundos crudos. Elige la cadencia por presencia visual, no como promesa sobre la duración real de la operación.",
-    "loaderPage.speedLabel": "Velocidades de Loader",
-    "loaderPage.speedOverrideLabel": "override local",
+    "loaderPage.contextsTitle": "Tres lugares: página, tarjeta y botón",
+    "loaderPage.contextsBody": "En una carga inicial, Loader lleva un título; en una tarjeta que se actualiza, anuncia el estado; en un botón, acompaña el texto que ya lo dice.",
     "loaderPage.hookPlaygroundTitle": "Pruébalo",
     "loaderPage.hookPlaygroundBody":
-      "Cada control mueve un solo hook sobre esta misma marca. Es una prueba de concepto: sin encabezado, sin código, sólo la variable y su efecto.",
+      "Cada control mueve un solo hook sobre esta misma marca. Es una prueba de concepto: sin encabezado, sin código, solo la variable y su efecto.",
     "loaderPage.hookPlaygroundLabel": "Playground de hooks de Loader",
-    "loaderPage.semanticsTitle": "Semántica",
-    "loaderPage.semanticsItem1": 'Con nombre accesible usa <code>role="status"</code>; React lo escribe al pasar <code>label</code>.',
-    "loaderPage.semanticsItem2": "Sin <code>label</code>, React lo vuelve decorativo para acompañar texto sin duplicarlo.",
-    "loaderPage.semanticsItem3": 'Marca la región afectada con <code>aria-busy="true"</code>; Loader no controla la operación.',
-    "loaderPage.semanticsItem4":
-      'Si conoces el avance, usa <a href="/es/componentes/progress">Progress</a>, no una velocidad distinta.',
-    "loaderPage.reducedTitle": "Movimiento reducido",
-    "loaderPage.reducedBody":
-      "Los doce diseños conservan una silueta reconocible y detienen todo movimiento con <code>prefers-reduced-motion: reduce</code>. Las marcas escalonadas quedan además todas a la misma opacidad, no congeladas a mitad de secuencia: una marca brillante junto a otra casi apagada se lee como un fallo de dibujado, no como una espera. El texto de estado permanece: reducir movimiento no puede convertir una operación pendiente en una señal invisible.",
     "loaderPage.reactBody":
       "Props: <code>size</code>, <code>variant</code>, <code>speed</code> y <code>label</code>. Los valores por defecto son <code>md</code>, <code>ring</code> y <code>normal</code>.",
     "loaderPage.test1": "Expone el trabajo indeterminado con nombre como un status cortés (<code>polite</code>).",
     "loaderPage.test2": "Escribe los ejes ortogonales de variante y velocidad en la raíz.",
     "loaderPage.test3": "Queda decorativo cuando el control que lo rodea ya aporta el significado de estado.",
     "demo.loader.dd.loading": "Cargando",
-    "loaderPage.prop.size.title": "Tamaño",
-    "loaderPage.prop.size.body": "El <code>size</code> acompaña al contenedor.",
+    "loaderPage.prop.size.title": "Size: el tamaño de su lugar",
+    "loaderPage.prop.size.body": "Va con el tamaño de lo que carga.",
     "loaderPage.prop.size.sm": "Usa <code>sm</code> dentro de un botón o una línea de texto.",
-    "loaderPage.prop.size.md": "Usa <code>md</code>, el default, en una tarjeta o un panel.",
+    "loaderPage.prop.size.md": "Usa <code>md</code>, el valor por defecto, en una tarjeta o un panel.",
     "loaderPage.prop.size.lg": "Usa <code>lg</code> cuando la carga ocupa toda la vista.",
-    "loaderPage.prop.speed.title": "Velocidad",
-    "loaderPage.prop.speed.body": "La <code>speed</code> cambia el ritmo de la animación.",
+    "loaderPage.prop.speed.title": "Speed: el ritmo",
+    "loaderPage.prop.speed.body": "El ritmo de la animación, sin cambiar la figura.",
     "loaderPage.prop.speed.fast": "Usa <code>fast</code> para esperas cortas y acciones directas.",
-    "loaderPage.prop.speed.normal": "Usa <code>normal</code>, el default, casi siempre.",
+    "loaderPage.prop.speed.normal": "Usa <code>normal</code>, el valor por defecto, casi siempre.",
     "loaderPage.prop.speed.slow": "Usa <code>slow</code> para esperas largas, donde un ritmo rápido cansa.",
-    "loaderPage.showcaseTitle": "Showcases",
-    "loaderPage.showcaseBody": "Una carga simulada, el loader en distintos contextos, sus figuras, tamaños y velocidades.",
-    "loaderPage.guidelinesLede": "Loader dice que algo está cargando cuando no se sabe cuánto falta.",
-    "loaderPage.guide.use1": "Úsalo para una espera de largo desconocido, con una etiqueta que diga qué se carga.",
-    "loaderPage.guide.avoid1": "Si se sabe cuánto falta, muestra el avance con <a href=\"/es/componentes/progress\">Progress</a>.",
-    "loaderPage.guide.avoid2": "Si el contenido tiene una forma conocida, dibújala con <a href=\"/es/componentes/placeholder\">Placeholder</a>.",
+    "loaderPage.guidelinesLede": "Un Loader solo dice que hay que esperar; el texto de al lado dice qué.",
   },
   en: {
+    "demo.loader.variant.beads": "Eight dots around the rim.",
+    "demo.loader.variant.compass": "Four marks turning together, a quarter at a time.",
+    "demo.loader.variant.ticks": "The same sequence at eight marks.",
+    "demo.loader.variant.spokes": "Twelve spokes fading in sequence.",
+    "demo.loader.variant.clock": "A hand sweeping a faint face.",
+    "demo.loader.variant.orbit": "A dot travelling a hairline track.",
+    "demo.loader.variant.comet": "A tail fading out behind the head.",
+    "demo.loader.variant.arc": "A lone quarter, with no track behind it.",
+    "demo.loader.variant.dots": "One dot stepping across three positions.",
+    "demo.loader.variant.bars": "Two alternating pairs; nothing rotates.",
+    "demo.loader.variant.sweep": "A conic fan trailing off.",
+    "demo.loader.variant.ring": "A full track with one quarter lit.",
+    "demo.loader.dd.files": "Uploading 3 of 10 files",
+    "demo.loader.dd.invoices": "Loading invoices…",
+    "demo.loader.dd.saving": "Saving…",
+    "demo.loader.dd.save": "Save",
+    "demo.loader.dd.card": "Loading card…",
     "loaderPage.anatomyLabel": "Loader anatomy",
     "loaderPage.anatomyPreviewLabel": "Loader, part by part",
     "loaderPage.anatomyBody": "One visible part. The staggered variants (spokes, ticks, beads, compass) mount <code>sk-loader__tick</code> children, but each is a root-sized layer rotating about its centre, so they are not drawn separately.",
@@ -144,93 +181,96 @@ export const loaderMessages = {
     "demo.loader.control.body": "Reserving space beside an action.",
     "demo.loader.pseudoVariantsLabel": "Designs with no children",
     "demo.loader.staggeredVariantsLabel": "Designs with staggered marks",
-    "demo.loader.variant.ring": "A full track with one quarter lit.",
-    "demo.loader.variant.sweep": "A conic fan trailing off.",
-    "demo.loader.variant.bars": "Two alternating pairs; nothing rotates.",
-    "demo.loader.variant.dots": "One dot stepping across three positions.",
-    "demo.loader.variant.arc": "A lone quarter, with no track behind it.",
-    "demo.loader.variant.comet": "A tail fading out behind the head.",
-    "demo.loader.variant.orbit": "A dot travelling a hairline track.",
-    "demo.loader.variant.clock": "A hand sweeping a faint face.",
-    "demo.loader.variant.spokes": "Twelve spokes fading in sequence.",
-    "demo.loader.variant.ticks": "The same sequence at eight marks.",
-    "demo.loader.variant.compass": "Four marks turning together, a quarter at a time.",
-    "demo.loader.variant.beads": "Eight dots around the rim.",
 
-    "loaderPage.description": "Loader: indeterminate loading simulation, usage patterns, sizes, and speed.",
-    "loaderPage.lede":
-      "Loader communicates <strong>indeterminate</strong> work: the operation is active, but there is no honest fraction to show. The system offers twelve motion designs, with the same semantic rules for composing actions, regions, and initial loads.",
-    "loaderPage.calloutBody":
-      "All twelve are visual designs of the same Loader, not separate components: they share <code>size</code>, <code>speed</code>, and the same accessibility rule. Choosing one is a decision about visual presence, never about meaning.",
-    "loaderPage.variantsTitle": "Motion designs",
-    "loaderPage.variantsBody":
-      "Eight draw themselves out of the root's two pseudo-elements and nothing else, so their markup is a single empty <code>&lt;span&gt;</code>.",
-    "loaderPage.pseudoVariantsLabel": "Designs with no children",
-    "loaderPage.staggeredVariantsBody":
-      "The other four are marks that fade <strong>in sequence</strong>, which two pseudo-elements cannot be: a stagger needs one real element per mark. They are never written by hand: the markup only names the design with <code>data-sk-loader</code>, and the enhancer injects whichever marks are missing. With no JavaScript, it paints the default ring. Each mark's delay is <strong>negative</strong> by construction, so every one of them is already mid-cycle on the first painted frame; with a positive stagger, the ring would visibly wind up once on mount.",
-    "loaderPage.staggeredVariantsLabel": "Designs with staggered marks",
-    "loaderPage.staggeredVariantsNote": "Every mark starts mid-cycle, never from zero.",
-    "loaderPage.tempoTitle": "Tempo",
-    "loaderPage.tempoBody":
-      "Every design needs its own pace, but <code>speed</code> has to stay orthogonal to <code>variant</code>, so no design names milliseconds. It names a ratio in <code>--sk-loader-tempo</code>, and <code>--sk-loader-cycle</code> is where the two meet.",
-    "loaderPage.simTitle": "Simulation",
-    "loaderPage.simBody":
-      "A single container switches from busy to ready. It needs no screen, no metrics, no outer card: just the mark, the text explaining the work, and an action to run it again.",
+    "loaderPage.description": "Says something is loading when how long is left is unknown.",
+
+    "loaderPage.a11yYours2": "Announce the end if something changes out of view: “Invoices loaded”.",
+
+    "loaderPage.a11yYours1": 'Mark the loading region with <code>aria-busy="true"</code> and remove it when done.',
+
+    "loaderPage.a11yDoes3": "With <code>prefers-reduced-motion: reduce</code>, it stops moving.",
+
+    "loaderPage.a11yDoes2": "Without <code>label</code>, the figure is decorative.",
+
+    "loaderPage.a11yDoes1": 'With <code>label</code>, it is a <code>role="status"</code> the screen reader announces.',
+
+    "loaderPage.a11yIntro": "Loader announces the wait once; the figure is not read.",
+
+    "loaderPage.content2": "If the wait drags on, change the text: “This is taking longer than usual”.",
+
+    "loaderPage.content1": "Say what is loading, with an -ing verb: “Loading invoices…”, “Saving changes…”.",
+
+    "loaderPage.dd.progress.dont": "A Loader with progress in words makes people read to know how long is left.",
+
+    "loaderPage.dd.progress.do": "If you know how far along it is, a bar shows it at a glance.",
+
+    "loaderPage.dd.progress.title": "Known progress: use Progress",
+
+    "loaderPage.dd.text.dont": "A figure alone does not say what is awaited or whether it relates to what you did.",
+
+    "loaderPage.dd.text.do": "The figure with text that says what is loading.",
+
+    "loaderPage.dd.text.title": "Text: say what is loading",
+
+    "loaderPage.dd.control.dont": "A large loader inside a button changes the control's weight and does not say which action is still running.",
+
+    "loaderPage.dd.control.do": "Inside a button, use <code>sm</code> and change the text to the action in progress.",
+
+    "loaderPage.dd.control.title": "Control: small and verb-led",
+
+    "loaderPage.dd.shape.dont": "A generic spinner hides the shape of what is coming and makes the card feel empty.",
+
+    "loaderPage.dd.shape.do": "If the card already has an expected shape, use Placeholder to reserve that shape.",
+
+    "loaderPage.dd.shape.title": "Known shape: use Placeholder",
+
+    "loaderPage.whenNot3": "For a wait under a second: show nothing, the flicker distracts.",
+
+    "loaderPage.whenNot2": 'If the content has a known shape: use <a href="/components/placeholder">Placeholder</a>.',
+
+    "loaderPage.whenNot1": 'If you know how long is left: use <a href="/components/progress">Progress</a>.',
+
+    "loaderPage.when2": "In a button while its action runs, beside text like “Saving…”.",
+
+    "loaderPage.when1": "For a wait of unknown length: a search, a save.",
+
+    "loaderPage.contract4": "With <code>prefers-reduced-motion: reduce</code>, all twelve figures stand still and remain recognizable.",
+
+    "loaderPage.contract3": 'It does not control the operation: the loading region carries <code>aria-busy="true"</code>.',
+
+    "loaderPage.contract2": "<code>Loader.status</code> announces a wait that is already visible, with skeletons or a bar.",
+
+    "loaderPage.contract1": 'With <code>label</code> it is an announced <code>role="status"</code>; without it, it is decorative and goes with text that already says it.',
+    "loaderPage.lede": "Loader says something is loading when how long is left is unknown: a search, a save, a section loading. If you know how long, use Progress. There are twelve figures of the same Loader; choose one per product.",
+    "loaderPage.variantsTitle": "Figures: twelve, to choose one",
+    "loaderPage.variantsBody": "They all share <code>size</code>, <code>speed</code> and the same accessibility. Use the same one across the product.",
+    "loaderPage.simTitle": "Busy and ready: the same place",
+    "loaderPage.simBody": "A region goes from loading to ready without changing size. Press the button to repeat it.",
     "loaderPage.simLabel": "Blend analysis",
-    "loaderPage.simNote": "Busy → ready",
     "loaderPage.simBody2":
       "<code>bars</code> adds motion with no percentage to fake. The container carries <code>aria-busy</code>, and the visible state provides the accessible announcement.",
-    "loaderPage.contextsTitle": "Full patterns",
-    "loaderPage.contextsLabel": "Loader in context",
-    "loaderPage.contextsBody":
-      "Loader owns the mark, not the surface or the lifecycle. Context decides where it lives, who supplies the accessible name, and which region carries <code>aria-busy=\"true\"</code>.",
-    "loaderPage.contextsNote": "Local action · region update · initial load",
-    "loaderPage.contextsItem1": "In a button, Loader is decorative: \"Saving…\" already names the state.",
-    "loaderPage.contextsItem2": "In a local update, it keeps the previous content and marks the region busy.",
-    "loaderPage.contextsItem3": "In an initial load, it pairs the mark with a title and an explanation; it avoids a blank screen.",
-    "loaderPage.sizeTitle": "Size",
-    "loaderPage.sizeBody":
-      "Use <code>sm</code> inside controls, <code>md</code> beside text, and <code>lg</code> when the mark owns its own region. Size does not communicate how much work is left.",
-    "loaderPage.sizeLabel": "Loader sizes",
-    "loaderPage.speedTitle": "Speed",
-    "loaderPage.speedBody":
-      "<code>speed</code> rewrites the <code>--sk-loader-duration</code> styling hook from intent tokens (<code>--motion-loading-duration*</code>), not raw milliseconds. Choose the cadence for visual presence, not as a promise about the operation's real duration.",
-    "loaderPage.speedLabel": "Loader speeds",
-    "loaderPage.speedOverrideLabel": "local override",
+    "loaderPage.contextsTitle": "Three places: page, card and button",
+    "loaderPage.contextsBody": "In an initial load, Loader carries a title; in a card that refreshes, it announces the state; in a button, it goes with text that already says it.",
     "loaderPage.hookPlaygroundTitle": "Try it",
     "loaderPage.hookPlaygroundBody":
       "Each control moves a single hook on this same mark. It's a proof of concept: no header, no code, just the variable and its effect.",
     "loaderPage.hookPlaygroundLabel": "Loader hook playground",
-    "loaderPage.semanticsTitle": "Semantics",
-    "loaderPage.semanticsItem1": 'With an accessible name it uses <code>role="status"</code>; React writes it when you pass <code>label</code>.',
-    "loaderPage.semanticsItem2": "With no <code>label</code>, React makes it decorative, to pair with text without duplicating it.",
-    "loaderPage.semanticsItem3": 'It marks the affected region with <code>aria-busy="true"</code>; Loader does not control the operation.',
-    "loaderPage.semanticsItem4":
-      'If you know the progress, use <a href="/components/progress">Progress</a>, not a different speed.',
-    "loaderPage.reducedTitle": "Reduced motion",
-    "loaderPage.reducedBody":
-      "All twelve designs keep a recognizable silhouette and stop all motion under <code>prefers-reduced-motion: reduce</code>. Staggered marks also settle to one shared opacity rather than freezing mid-sequence: one bright mark beside a nearly invisible one reads as a rendering fault, not as a wait. The status text stays: reducing motion cannot turn a pending operation into an invisible signal.",
     "loaderPage.reactBody":
       "Props: <code>size</code>, <code>variant</code>, <code>speed</code>, and <code>label</code>. The defaults are <code>md</code>, <code>ring</code>, and <code>normal</code>.",
     "loaderPage.test1": "Exposes labelled indeterminate work as a polite status.",
     "loaderPage.test2": "Writes orthogonal variant and speed axes onto the root.",
     "loaderPage.test3": "Stays decorative when the surrounding control already carries the status meaning.",
     "demo.loader.dd.loading": "Loading",
-    "loaderPage.prop.size.title": "Size",
-    "loaderPage.prop.size.body": "<code>size</code> follows the container.",
+    "loaderPage.prop.size.title": "Size: the size of its place",
+    "loaderPage.prop.size.body": "Matches the size of what is loading.",
     "loaderPage.prop.size.sm": "Use <code>sm</code> inside a button or a line of text.",
     "loaderPage.prop.size.md": "Use <code>md</code>, the default, in a card or a panel.",
     "loaderPage.prop.size.lg": "Use <code>lg</code> when the load takes the whole view.",
-    "loaderPage.prop.speed.title": "Speed",
-    "loaderPage.prop.speed.body": "<code>speed</code> changes the animation's pace.",
+    "loaderPage.prop.speed.title": "Speed: the pace",
+    "loaderPage.prop.speed.body": "The animation's pace, without changing the figure.",
     "loaderPage.prop.speed.fast": "Use <code>fast</code> for short waits and direct actions.",
     "loaderPage.prop.speed.normal": "Use <code>normal</code>, the default, almost always.",
     "loaderPage.prop.speed.slow": "Use <code>slow</code> for long waits, where a fast pace tires the eye.",
-    "loaderPage.showcaseTitle": "Showcases",
-    "loaderPage.showcaseBody": "A simulated load, the loader in different contexts, its figures, sizes and speeds.",
-    "loaderPage.guidelinesLede": "Loader says something is loading when nobody knows how much is left.",
-    "loaderPage.guide.use1": "Use it for a wait of unknown length, with a label saying what is loading.",
-    "loaderPage.guide.avoid1": "When how much is left is known, show the progress with <a href=\"/components/progress\">Progress</a>.",
-    "loaderPage.guide.avoid2": "When the content has a known shape, draw it with <a href=\"/components/placeholder\">Placeholder</a>.",
+    "loaderPage.guidelinesLede": "A Loader only says there is a wait; the text beside it says what for.",
   },
 } as const;

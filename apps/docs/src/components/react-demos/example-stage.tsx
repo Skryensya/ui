@@ -2,7 +2,13 @@
 import type { UsageTree } from "@skryensya/core/usage-tree";
 import { useRenderedTree } from "./use-rendered-tree";
 
-export function ExampleStage({ tree }: { tree: UsageTree }) {
+/** `measure` caps the specimen's width on the stage only, as a CSS length. */
+export function ExampleStage({ tree, measure }: { tree: UsageTree; measure?: string }) {
   const render = useRenderedTree(tree);
-  return <div className="sk-preview-card__stage">{render ? render(tree) : null}</div>;
+  const example = render ? render(tree) : null;
+  return (
+    <div className="sk-preview-card__stage">
+      {measure ? <div style={{ inlineSize: "100%", maxInlineSize: measure }}>{example}</div> : example}
+    </div>
+  );
 }

@@ -14,31 +14,75 @@ export const popoverMessages = {
     "demo.popoverPlacement.inlineStart": "Se abre al inicio en línea (izquierda en LTR).",
     "demo.popoverPlacement.inlineEnd": "Se abre al final en línea (derecha en LTR).",
 
-    "popoverPage.description": "Contenido no modal con título, descripción y cierre explícito sobre top layer nativo.",
+    "popoverPage.description": "Abre junto a un control un panel con contenido propio, sin bloquear la página.",
+
+    "popoverPage.contract3": "<code>Popover.bare</code> no agrega roles: el contenido trae su propia semántica.",
+
+    "popoverPage.contract2": "El panel se ancla a su botón con CSS anchor positioning.",
+
+    "popoverPage.contract1": 'Usa el atributo nativo <code>popover="auto"</code>: la capa superior, <kbd>Esc</kbd> y el cierre por clic afuera son del navegador.',
+
+    "popoverPage.simpleBody": "El panel abre sobre la página, junto a su botón, y se cierra con la X, con <kbd>Esc</kbd> o con un clic afuera.",
+
+    "popoverPage.simpleTitle": "Simple: título, texto y cierre",
+
+    "popoverPage.lede": "Popover abre junto a un control un panel con contenido propio: un formulario corto, una tarjeta de perfil, una explicación con formato. No bloquea la página y se cierra con <kbd>Esc</kbd> o con un clic afuera.",
+
+    "popoverPage.key.escape": "Cierra el panel y vuelve al botón.",
+
+    "popoverPage.key.tab": "Recorre el contenido del panel; al salir, sigue la página.",
+
+    "popoverPage.key.open": "Abre o cierra el panel desde su botón.",
+
+    "popoverPage.a11yYours2": "No pongas en un Popover lo único que explica una acción: puede pasar desapercibido.",
+
+    "popoverPage.a11yYours1": "En <code>Popover.bare</code>, pon tú los roles que el contenido necesite.",
+
+    "popoverPage.a11yDoes3": "El botón de cierre tiene nombre accesible.",
+
+    "popoverPage.a11yDoes2": "El botón anuncia <code>aria-expanded</code> y el panel queda asociado a él.",
+
+    "popoverPage.a11yDoes1": "<kbd>Esc</kbd> y el clic afuera lo cierran.",
+
+    "popoverPage.a11yIntro": "Popover es un panel no modal sobre el <code>popover</code> nativo.",
+
+    "popoverPage.content3": "Deja el contenido corto: si necesita desplazarse, es un Dialog o un Drawer.",
+
+    "popoverPage.content2": "Nombra el botón que lo abre con lo mismo que el título.",
+
+    "popoverPage.content1": "Escribe el título con lo que el panel contiene: «Compartir», «Filtros».",
+
+    "popoverPage.whenNot3": 'Si hay que decidir algo antes de seguir: usa <a href="/es/componentes/dialog">Dialog</a>.',
+
+    "popoverPage.whenNot2": 'Para una lista de acciones: usa <a href="/es/componentes/menu">Menu</a>.',
+
+    "popoverPage.whenNot1": 'Para una descripción de una línea: usa <a href="/es/componentes/tooltip">Tooltip</a>.',
+
+    "popoverPage.when2": "Para una explicación con formato, enlaces o una imagen.",
+
+    "popoverPage.when1": "Para un formulario corto o un ajuste rápido junto al control que lo abre.",
+
+
+
+
+
+
     "popoverPage.anatomyBody":
       "Este diagrama nombra el trigger, el panel abierto, el título, la descripción y el cierre. El espécimen está congelado; los popovers vivos empiezan abajo.",
     "popoverPage.anatomyLabel": "Anatomía de Popover",
     "popoverPage.anatomyPreviewLabel": "Popover abierto, parte por parte",
-    "popoverPage.structuredTitle": "Contenido estructurado",
-    "popoverPage.structuredBody":
-      "El contrato no tiene un slot de <code>header</code> ni de <code>footer</code>, y no le hace falta: <code>children</code> acepta un nodo, así que una fila de encabezado (avatar y nombre) y una fila de acciones al final son composición, hechas con las mismas piezas publicadas (Inline, Stack, Avatar, Text, Button): nada de marcado propio de esta página.",
-    "popoverPage.structuredLabel": "Popover con encabezado y pie",
-    "popoverPage.placementTitle": "Colocación",
-    "popoverPage.placementBody":
-      "Las cuatro colocaciones posibles, con <code>Popover.bare</code> en vez de <code>Popover</code>: aquí el punto es <code>placement</code>, no el título ni el botón de cierre. La etiqueta de cada disparador es el valor de la opción que usa.",
-    "popoverPage.placementLabel": "Popover en las cuatro colocaciones",
-    "popoverPage.contractBody": "Popover describe contenido auxiliar rico. Menu contiene acciones; Tooltip solo una descripción corta.",
-    "popoverPage.a11yBody": "La plataforma posee top layer, Escape y light-dismiss mediante popover=auto.",
+    "popoverPage.structuredTitle": "Estructurado: un perfil con acciones",
+    "popoverPage.structuredBody": "Un encabezado con avatar y nombre, el cuerpo y una fila de acciones: todo va en <code>children</code>.",
+    "popoverPage.placementTitle": "Placement: los cuatro lados",
+    "popoverPage.placementBody": "<code>placement</code> elige el lado; si no cabe, el panel se da vuelta solo.",
 
-    "popoverPage.popupTitle": "Popup: la superficie desnuda",
-    "popoverPage.popupBody":
-      "<code>Popover.bare</code> es la misma familia sin el chrome: ancla y superficie, nada más. Esta sección se llamaba <strong>Popup</strong> y tenía página propia; era un nombre distinto para una signature que ya existía acá, así que vive donde vive el contrato.",
+    "popoverPage.popupTitle": "Popup: solo ancla y superficie",
+    "popoverPage.popupBody": "<code>Popover.bare</code> es el mismo panel sin título ni cierre, para armar un patrón propio encima. Antes era la página Popup.",
     "popoverPage.popupAnatomyBody":
       "Un Popup es un ancla y una superficie, y el dibujo lo muestra literal: el disparador lleva <code>sk-anchor</code>, y el panel es <strong>un solo nodo</strong> que usa dos clases a la vez, <code>sk-popover__content</code> (lo que pinta la superficie) y <code>sk-anchored</code> (el patrón que la ubica). Por eso hay dos anillos concéntricos sobre la misma caja. Adentro no se nombra nada: qué va ahí es asunto de la composición, que es justamente para lo que existe la signature bare. El espécimen está congelado y abierto a la fuerza; el vivo está arriba.",
     "popoverPage.popupAnatomyLabel": "Anatomía de Popup",
     "popoverPage.popupAnatomyPreviewLabel": "Popup, parte por parte",
     "popoverPage.popupContractBody": "Popup aporta ancla y superficie, no semántica interna. Si el patrón tiene título y acciones de cierre, usa Popover completo.",
-    "popoverPage.popupA11yBody": "En modo bare el contenido debe aportar su propia semántica: la signature no inventa roles dialog ni menu.",
 
     "demo.popup.trigger": "Filtros",
     "demo.popup.onlyActive": "Solo activos",
@@ -63,13 +107,7 @@ export const popoverMessages = {
       'Pasa <code class="sk-code">triggerVariant</code>/<code class="sk-code">triggerSize</code>/<code class="sk-code">triggerIconOnly</code> al botón del trigger.',
     "popoverPage.testReact12":
       "Deja fuera los atributos de variante, tamaño e icon-only del trigger cuando no se piden.",
-    "popoverPage.showcaseTitle": "Showcases",
-    "popoverPage.showcaseBody": "Un panel simple, uno con título y acciones, las cuatro posiciones y el Popup sin adornos.",
-    "popoverPage.guidelinesLede": "Popover abre un panel con contenido propio junto a un control, sin bloquear la página.",
-    "popoverPage.guide.use1": "Úsalo para un formulario corto o una explicación con formato, que se cierra al hacer clic afuera o con Esc.",
-    "popoverPage.guide.avoid1": "Una descripción de una línea es un <a href=\"/es/componentes/tooltip\">Tooltip</a>: no se roba el foco.",
-    "popoverPage.guide.avoid2": "Una lista de acciones es un <a href=\"/es/componentes/menu\">Menu</a>, que ya trae la navegación con teclado.",
-    "popoverPage.guide.avoid3": "Si hay que decidir algo antes de seguir, es un <a href=\"/es/componentes/dialog\">Dialog</a>.",
+    "popoverPage.guidelinesLede": "Un panel junto al control da contexto sin sacar a la persona de lo que hacía.",
   },
   en: {
     "demo.popover.trigger": "View profile",
@@ -86,31 +124,75 @@ export const popoverMessages = {
     "demo.popoverPlacement.inlineStart": "Opens at inline-start (left in LTR).",
     "demo.popoverPlacement.inlineEnd": "Opens at inline-end (right in LTR).",
 
-    "popoverPage.description": "Non-modal content with a title, description, and explicit close over the native top layer.",
+    "popoverPage.description": "Opens a panel with its own content beside a control, without blocking the page.",
+
+    "popoverPage.contract3": "<code>Popover.bare</code> adds no roles: the content brings its own semantics.",
+
+    "popoverPage.contract2": "The panel anchors to its button with CSS anchor positioning.",
+
+    "popoverPage.contract1": 'It uses the native <code>popover="auto"</code> attribute: the top layer, <kbd>Esc</kbd> and click-outside dismissal belong to the browser.',
+
+    "popoverPage.simpleBody": "The panel opens over the page, beside its button, and closes with the X, <kbd>Esc</kbd> or a click outside.",
+
+    "popoverPage.simpleTitle": "Simple: title, text and close",
+
+    "popoverPage.lede": "Popover opens a panel with its own content beside a control: a short form, a profile card, a formatted explanation. It does not block the page and closes with <kbd>Esc</kbd> or a click outside.",
+
+    "popoverPage.key.escape": "Closes the panel and returns to the button.",
+
+    "popoverPage.key.tab": "Moves through the panel's content; leaving it continues the page.",
+
+    "popoverPage.key.open": "Opens or closes the panel from its button.",
+
+    "popoverPage.a11yYours2": "Do not put the only explanation of an action in a Popover: it may go unnoticed.",
+
+    "popoverPage.a11yYours1": "In <code>Popover.bare</code>, add the roles the content needs yourself.",
+
+    "popoverPage.a11yDoes3": "The close button has an accessible name.",
+
+    "popoverPage.a11yDoes2": "The button announces <code>aria-expanded</code> and the panel is tied to it.",
+
+    "popoverPage.a11yDoes1": "<kbd>Esc</kbd> and clicking outside close it.",
+
+    "popoverPage.a11yIntro": "Popover is a non-modal panel on the native <code>popover</code>.",
+
+    "popoverPage.content3": "Keep the content short: if it needs scrolling, it is a Dialog or a Drawer.",
+
+    "popoverPage.content2": "Name the button that opens it the same as the title.",
+
+    "popoverPage.content1": "Write the title with what the panel holds: “Share”, “Filters”.",
+
+    "popoverPage.whenNot3": 'If something must be decided before going on: use <a href="/components/dialog">Dialog</a>.',
+
+    "popoverPage.whenNot2": 'For a list of actions: use <a href="/components/menu">Menu</a>.',
+
+    "popoverPage.whenNot1": 'For a one-line description: use <a href="/components/tooltip">Tooltip</a>.',
+
+    "popoverPage.when2": "For an explanation with formatting, links or an image.",
+
+    "popoverPage.when1": "For a short form or quick setting beside the control that opens it.",
+
+
+
+
+
+
     "popoverPage.anatomyBody":
       "This diagram names the trigger, the open panel, the title, the description, and the close control. The specimen is frozen; the live popovers start below.",
     "popoverPage.anatomyLabel": "Popover anatomy",
     "popoverPage.anatomyPreviewLabel": "An open Popover, part by part",
-    "popoverPage.structuredTitle": "Structured content",
-    "popoverPage.structuredBody":
-      "The contract has no <code>header</code> or <code>footer</code> slot, and does not need one: <code>children</code> accepts a node, so a header row (avatar and name) and an action row at the end are composition, built from the same published pieces (Inline, Stack, Avatar, Text, Button): no markup of this page's own.",
-    "popoverPage.structuredLabel": "Popover with a header and footer",
-    "popoverPage.placementTitle": "Placement",
-    "popoverPage.placementBody":
-      "All four placements, with <code>Popover.bare</code> instead of <code>Popover</code>: the point here is <code>placement</code>, not the title or the close button. Each trigger's label is the option value it uses.",
-    "popoverPage.placementLabel": "Popover in all four placements",
-    "popoverPage.contractBody": "Popover describes rich auxiliary content. Menu holds actions; Tooltip holds only a short description.",
-    "popoverPage.a11yBody": "The platform owns the top layer, Escape, and light-dismiss through popover=auto.",
+    "popoverPage.structuredTitle": "Structured: a profile with actions",
+    "popoverPage.structuredBody": "A header with avatar and name, the body and a row of actions: all of it goes in <code>children</code>.",
+    "popoverPage.placementTitle": "Placement: the four sides",
+    "popoverPage.placementBody": "<code>placement</code> picks the side; if it does not fit, the panel flips on its own.",
 
-    "popoverPage.popupTitle": "Popup: the bare surface",
-    "popoverPage.popupBody":
-      "<code>Popover.bare</code> is the same family without the chrome: an anchor and a surface, nothing else. This section used to be a page of its own called <strong>Popup</strong>, which was a second name for a signature that already lived here, so it now lives where the contract lives.",
+    "popoverPage.popupTitle": "Popup: just anchor and surface",
+    "popoverPage.popupBody": "<code>Popover.bare</code> is the same panel with no title or close, to build a pattern of your own on top. It used to be the Popup page.",
     "popoverPage.popupAnatomyBody":
       "A Popup is an anchor and a surface, and the drawing shows exactly that: the trigger carries <code>sk-anchor</code>, and the panel is <strong>one node</strong> wearing two classes at once, <code>sk-popover__content</code> (which paints the surface) and <code>sk-anchored</code> (the pattern that places it). Hence the two concentric rings on one box. Nothing inside is named: what goes there is the composition's business, which is what the bare signature exists for. The specimen is frozen and forced open; the live one is above.",
     "popoverPage.popupAnatomyLabel": "Popup anatomy",
     "popoverPage.popupAnatomyPreviewLabel": "Popup, part by part",
     "popoverPage.popupContractBody": "Popup provides an anchor and a surface, not internal semantics. If the pattern has a title and closing actions, use the full Popover.",
-    "popoverPage.popupA11yBody": "In bare mode the content must provide its own semantics: the signature invents no dialog or menu roles.",
 
     "demo.popup.trigger": "Filters",
     "demo.popup.onlyActive": "Active only",
@@ -134,12 +216,6 @@ export const popoverMessages = {
       'Passes <code class="sk-code">triggerVariant</code>/<code class="sk-code">triggerSize</code>/<code class="sk-code">triggerIconOnly</code> through to the trigger button.',
     "popoverPage.testReact12":
       "Leaves the trigger's variant/size/icon-only attributes off when unset.",
-    "popoverPage.showcaseTitle": "Showcases",
-    "popoverPage.showcaseBody": "A simple panel, one with a title and actions, the four placements, and the bare Popup.",
-    "popoverPage.guidelinesLede": "Popover opens a panel with content of its own beside a control, without blocking the page.",
-    "popoverPage.guide.use1": "Use it for a short form or a formatted explanation, closed by clicking outside or pressing Esc.",
-    "popoverPage.guide.avoid1": "A one-line description is a <a href=\"/components/tooltip\">Tooltip</a>: it does not steal focus.",
-    "popoverPage.guide.avoid2": "A list of actions is a <a href=\"/components/menu\">Menu</a>, which already brings keyboard navigation.",
-    "popoverPage.guide.avoid3": "When something must be decided before going on, it is a <a href=\"/components/dialog\">Dialog</a>.",
+    "popoverPage.guidelinesLede": "A panel beside the control gives context without taking people out of what they were doing.",
   },
 } as const;

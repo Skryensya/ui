@@ -1,140 +1,206 @@
 export const inputMessages = {
   es: {
     "demo.input.hint": "Te escribimos aquí si algo sale mal.",
+    "demo.input.emailLabel": "Correo electrónico",
+    "demo.input.emailHint": "Lo usamos para enviarte el recibo.",
     "demo.input.notesLabel": "Notas",
     "demo.input.notesHint": "Cuéntanos qué te pasó, con el detalle que puedas.",
     "demo.input.notesPlaceholder": "Escribe aquí",
 
-    "inputPage.description": "Input: el control de texto nativo, con una clase para el input y el textarea.",
+    "inputPage.description": "Recibe una línea de texto, o varias con Textarea, con el teclado y la validación del navegador.",
+
+    "inputPage.a11yYours2": "Usa <code>autocomplete</code> para datos personales (<code>email</code>, <code>name</code>): ayuda a completar (WCAG 2.2, 1.3.5).",
+
+    "inputPage.a11yYours1": "Debe tener una etiqueta visible.",
+
+    "inputPage.a11yDoes3": "El área de interacción mide al menos 44px de alto.",
+
+    "inputPage.a11yDoes2": "Con <code>format</code>, el error se escribe en el FormField y el campo lleva <code>aria-invalid</code>.",
+
+    "inputPage.a11yDoes1": "Dentro de un FormField, la etiqueta, la ayuda y el error quedan conectados.",
+
+    "inputPage.a11yIntro": "Input es un control nativo: el rol, el foco y el teclado vienen del navegador.",
+
+    "inputPage.content4": "Usa el <code>type</code> que corresponde (<code>email</code>, <code>tel</code>, <code>url</code>): el teléfono muestra el teclado correcto.",
+
+    "inputPage.content3": "Pon el formato esperado en la ayuda, antes de escribir: «Con puntos y guion: 12.345.678-5».",
+
+    "inputPage.content2": "Usa el placeholder solo para un ejemplo del formato, nunca como etiqueta: «nombre@empresa.com».",
+
+    "inputPage.content1": "Escribe la etiqueta con lo que se pide: «Correo electrónico».",
+
+    "inputPage.whenNot4": 'Para texto con formato: usa <a href="/es/componentes/editor">Editor</a>.',
+
+    "inputPage.whenNot3": 'Para una contraseña: usa <a href="/es/componentes/password-input">PasswordInput</a>.',
+
+    "inputPage.whenNot2": 'Para un número con paso y límites: usa <a href="/es/componentes/number-field">NumberField</a>.',
+
+    "inputPage.whenNot1": 'Para elegir de un conjunto cerrado: usa <a href="/es/componentes/select">Select</a>.',
+
+    "inputPage.when3": "Para un valor con una validez que el navegador no comprueba, como un RUT: usa <code>format</code>.",
+
+    "inputPage.when2": "Para texto de varias líneas: usa Textarea.",
+
+    "inputPage.when1": "Para una línea de texto: nombre, correo, búsqueda.",
+
+    "inputPage.contract4": "Un error del servidor (un RUT ya registrado) va en el slot <code>error</code> del FormField y le gana al de <code>format</code>.",
+
+    "inputPage.contract3": "<code>NativeInput</code> es el mismo elemento sin <code>sk-input</code>, para controles como <code>time</code>, <code>color</code> o <code>range</code> con su aspecto nativo.",
+
+    "inputPage.contract2": "La densidad compacta el espacio alrededor, no el área de interacción: el campo mide al menos 44px de alto.",
+
+    "inputPage.contract1": "<code>sk-input</code> va en el <code>&lt;input&gt;</code> y en el <code>&lt;textarea&gt;</code>: un solo set de hooks.",
+
+    "inputPage.textareaBody": "El mismo control visual, con la misma clase y los mismos hooks.",
+
+    "inputPage.textareaTitle": "Varias líneas: Textarea",
+
+    "inputPage.basicBody": "Un Input dentro de un FormField, con etiqueta y ayuda.",
+
+    "inputPage.basicTitle": "Una línea: con su etiqueta",
     "inputPage.title": "Input",
-    "inputPage.lede":
-      "El control de texto nativo se queda nativo: no hay máquina, y no hay un <code>div</code> con borde haciéndose pasar por input. La plataforma se queda con la validación, el autofill, el IME y la asociación al formulario.",
-    "inputPage.densityBody": 'La densidad compacta el espacio alrededor del campo, no su área de interacción: Input conserva un mínimo de <code>44px</code> de alto, incluso con <code>data-size="sm"</code>.',
-    "inputPage.oneClassTitle": "Una clase para todo control de texto",
-    "inputPage.oneClassBody":
-      "<code>sk-input</code> va en el <code>&lt;input&gt;</code> y en el <code>&lt;textarea&gt;</code>: es el mismo control visual, así que es un solo set de hooks. Una segunda clase sería un segundo set que mantener sincronizado con el primero.",
+    "inputPage.lede": 'Input recibe una línea de texto (un nombre, un correo, una búsqueda) y Textarea, varias. Son los controles nativos: el teclado del teléfono, la validación y el autocompletado son del navegador. Van dentro de un <a href="/es/componentes/form-field">FormField</a>, que les pone la etiqueta.',
     "demo.input.anatomyEmail": "tu@ejemplo.com",
     "demo.input.anatomyEmailLabel": "Email",
     "demo.input.anatomyNotes": "Escribe aquí",
     "inputPage.anatomyBody":
-      "El dibujo tiene una sola etiqueta porque el contrato publica una sola clase; lo que vale la pena ver es <strong>cuántos elementos</strong> la llevan. Un anillo por cada uno, saliendo de la misma burbuja: el <code>&lt;input type=\"email\"&gt;</code>, el <code>&lt;textarea&gt;</code> y un <code>&lt;input type=\"time\"&gt;</code> nativo de verdad. Y no hay nada más nombrado: el rótulo, la pista y el error son del FormField, y están dibujados en su propia anatomía.",
+      'El dibujo tiene una sola etiqueta porque el contrato publica una sola clase; lo que vale la pena ver es <strong>cuántos elementos</strong> la llevan. Un anillo por cada uno, saliendo de la misma burbuja: el <code>&lt;input type="email"&gt;</code>, el <code>&lt;textarea&gt;</code> y un <code>&lt;input type="time"&gt;</code> nativo de verdad. Y no hay nada más nombrado: el rótulo, la pista y el error son del FormField, y están dibujados en su propia anatomía.',
     "inputPage.anatomyLabel": "Anatomía de Input",
     "inputPage.anatomyPreviewLabel": "Una clase, tres elementos",
-    "inputPage.formFieldTitle": "El rótulo no es del Input",
-    "inputPage.formFieldBody":
-      'Los dos demos de arriba están envueltos en un <a href="/es/componentes/form-field">FormField</a>, y no por costumbre: el rótulo, la ayuda, el mensaje de error y los seis ids que los atan viven ahí. Por eso este contrato no tiene <code>invalid</code> ni <code>id</code> propios: un control que trajera su propio <code>aria-invalid</code> podría contradecir al mensaje que tiene al lado. Un <code>Input</code> fuera de un <code>FormField</code> igual es un control válido, siempre que lleve su <code>aria-label</code>.',
     "demo.input.rutHint": "Con puntos o sin ellos, da lo mismo.",
     "demo.input.phoneLabel": "Celular",
     "demo.input.siteLabel": "Sitio web",
 
     "inputPage.formatTitle": "format: la validación que el navegador no trae",
-    "inputPage.formatBody":
-      'La plataforma sabe comprobar un email y una URL, y no sabe nada de un RUT. <code>format</code> agrega esa capa para los valores que tienen una validez real: <code>"rut"</code>, <code>"url"</code> y <code>"email"</code> los trae el propio core, sin dependencias. No es un <code>pattern</code> con otro nombre: un dígito verificador es aritmética, y ninguna expresión regular expresa eso.',
-    "inputPage.formatPreviewLabel": "Tres campos que se validan solos",
-    "inputPage.formatCheckBody":
-      'Escribe <code>12.345.678-4</code> y sal del campo: el RUT tiene la forma correcta y el dígito verificador no corresponde, que es justo lo que un chequeo de formato deja pasar. Lo mismo con <code>44 123 4567</code>, que tiene nueve dígitos y ningún código de área chileno empieza así, o con <code>foo:bar</code>, que es una URL válida a un esquema que ningún navegador puede abrir.',
-    "inputPage.formatMessageBody":
-      'El mensaje lo escribe el control en el slot <code>error</code> del <a href="/es/componentes/form-field">FormField</a>, no quien compone el árbol: si un RUT es real no es algo que el árbol pueda saber. Aparece recién cuando sales del campo, y desde ahí sigue al valor en vivo. Un <code>error</code> escrito a mano le gana siempre, porque quien arma el formulario sabe cosas que el dígito verificador no ("ese RUT ya está registrado"). Y la validez va también a <code>setCustomValidity</code>, así que el <code>&lt;form&gt;</code> nativo se niega a enviarse sin que este contrato tenga que reimplementar el submit.',
-    "inputPage.formatPhoneTitle": "phone: los planes de numeración son un paquete aparte",
-    "inputPage.formatPhoneBody":
-      'Un teléfono solo se puede comprobar contra el plan de numeración de su país, y los planes son datos: unos 155 kB de metadata que nadie que valide un RUT debería descargar. Por eso <code>@skryensya/core</code> declara el formato <code>"phone"</code> y no trae validador; lo aporta <code>@skryensya/phone</code>, que envuelve libphonenumber-js. Es el mismo trato que ya tiene <code>@skryensya/editor</code> como peer opcional.',
-    "inputPage.formatPhoneUsage":
-      'Se instala y se registra una sola vez al arranque. Una llamada explícita y no un import con efecto secundario: un módulo que solo existe por su efecto es lo primero que un bundler agresivo borra, y la falla sería un campo que dejó de validar en silencio.',
-    "inputPage.formatPhoneMissing":
-      'Si nadie lo registra, el campo <strong>no valida y deja pasar el valor</strong>, con un aviso en consola nombrando el paquete que falta. Un paquete opcional ausente es problema de quien programa, nunca de quien está llenando el formulario: ponerle en rojo un teléfono correcto sería un error que no puede arreglar escribiendo nada.',
-    "inputPage.formatPhoneEvidence":
-      'Vale la pena saber qué compra esa metadata. Antes de esto el kit traía un plan chileno escrito a mano, y medido contra los datos reales estaba mal en las dos direcciones: aceptaba <code>+56 9 1234 5678</code> (el rango móvil <code>91x</code> no está asignado) y rechazaba <code>+56 44 234 5678</code> (44 sí es código de área). Se borró en vez de dejarlo al lado: dos validadores que contestan distinto sobre el mismo número son peores que uno que hay que instalar.',
-    "inputPage.nativeTitle": "NativeInput: el control sin la apariencia",
-    "inputPage.nativeBody":
-      'La tercera signature del contrato es <code>NativeInput</code>: el mismo elemento sin <code>sk-input</code>, para cuando lo que quieres enseñar es el comportamiento que trae el navegador y no la apariencia del sistema. Es lo que usa el demo del <code>&lt;input type="time"&gt;</code> plano en TimeField.',
+    "inputPage.formatBody": '<code>format="rut"</code> comprueba el dígito verificador y <code>"url"</code> que el enlace se pueda abrir. Escribe <code>12.345.678-4</code> y sal del campo: el mensaje aparece en el error del FormField.',
+    "inputPage.formatPhoneTitle": "phone: un paquete aparte",
+    "inputPage.formatPhoneBody": "Un teléfono se valida contra el plan de numeración de su país, que son datos: instala <code>@skryensya/phone</code> y regístralo al arrancar. Si nadie lo registra, el campo deja pasar el valor y avisa en consola.",
     "inputPage.test1": "Sigue siendo un control válido fuera de un FormField.",
     "inputPage.test2": "Le da al textarea el mismo contrato de apariencia que al input.",
     "inputPage.test3": "Escribe el alto en data-size y deja en paz al atributo size nativo.",
     "demo.input.dd.placeholder": "nombre@ejemplo.com",
+    "demo.input.dd.genericLabel": "Información",
     "demo.input.dd.message": "Mensaje",
     "demo.input.dd.messagePlaceholder": "Cuéntanos qué pasó",
-    "inputPage.prop.controlSize.title": "Tamaño",
-    "inputPage.prop.controlSize.body": "El <code>controlSize</code> fija la altura del campo, igual que la de un botón del mismo tamaño.",
+    "demo.input.dd.messageHint": "Puedes escribir varias líneas.",
+    "demo.input.dd.longValue": "El pedido llegó incompleto y necesito explicar qué falta antes de enviarlo de nuevo.",
+    "demo.input.dd.formatPlaceholder": "Ingresa tu RUT",
+    "inputPage.prop.controlSize.title": "Control size: la altura del campo",
+    "inputPage.prop.controlSize.body": "Fija la altura, igual que la de un botón del mismo tamaño.",
     "inputPage.prop.controlSize.sm": "Usa <code>sm</code> en barras de herramientas y filtros compactos.",
-    "inputPage.prop.controlSize.md": "Usa <code>md</code>, el default, en formularios.",
+    "inputPage.prop.controlSize.md": "Usa <code>md</code>, el valor por defecto, en formularios.",
     "inputPage.prop.controlSize.lg": "Usa <code>lg</code> para un campo principal, como una búsqueda en portada.",
-    "inputPage.showcaseTitle": "Showcases",
-    "inputPage.showcaseBody": "Un campo con su etiqueta, un área de texto y un campo con formato.",
-    "inputPage.guidelinesLede": "Input recibe texto corto. La etiqueta dice qué escribir y la pista, cómo.",
-    "inputPage.dd.label.title": "Una etiqueta visible",
-    "inputPage.dd.label.do": "Pon la etiqueta sobre el campo, con un <a href=\"/es/componentes/form-field\">FormField</a>.",
-    "inputPage.dd.label.dont": "El placeholder desaparece al escribir: luego nadie recuerda qué pedía el campo.",
-    "inputPage.dd.long.title": "El campo, del largo del texto",
-    "inputPage.dd.long.do": "Para un texto de varias líneas, usa <code>Textarea</code>.",
+    "inputPage.guidelinesLede": "Un campo de texto dice qué pide antes de que la persona escriba.",
+    "inputPage.dd.label.title": "Etiqueta: visible, sobre el campo",
+    "inputPage.dd.label.do": 'Pon la etiqueta sobre el campo, con un <a href="/es/componentes/form-field">FormField</a>.',
+    "inputPage.dd.label.dont": "El placeholder desaparece al escribir y no todos los lectores de pantalla lo anuncian: después nadie recuerda qué pedía el campo.",
+    "inputPage.dd.long.title": "Largo: el campo del tamaño del texto",
+    "inputPage.dd.long.do": "Para un texto de varias líneas, usa <code>Textarea</code>: se ve lo que se está escribiendo.",
     "inputPage.dd.long.dont": "Un mensaje en una sola línea se escribe a ciegas: lo anterior se sale de la vista.",
+    "inputPage.dd.format.title": "Formato: dilo antes de escribir",
+    "inputPage.dd.format.do": "La ayuda muestra el formato esperado y el campo puede validarlo.",
+    "inputPage.dd.format.dont": "Un placeholder genérico no enseña el patrón y desaparece al escribir.",
   },
   en: {
     "demo.input.hint": "We write here if something goes wrong.",
+    "demo.input.emailLabel": "Email address",
+    "demo.input.emailHint": "We use it to send your receipt.",
     "demo.input.notesLabel": "Notes",
     "demo.input.notesHint": "Tell us what happened, in as much detail as you can.",
     "demo.input.notesPlaceholder": "Write here",
 
-    "inputPage.description": "Input: the native text control, with one class for the input and the textarea.",
+    "inputPage.description": "Takes one line of text, or several with Textarea, with the browser's keyboard and validation.",
+
+    "inputPage.a11yYours2": "Use <code>autocomplete</code> for personal data (<code>email</code>, <code>name</code>): it helps filling in (WCAG 2.2, 1.3.5).",
+
+    "inputPage.a11yYours1": "It must have a visible label.",
+
+    "inputPage.a11yDoes3": "The interaction area is at least 44px tall.",
+
+    "inputPage.a11yDoes2": "With <code>format</code>, the error is written in the FormField and the field carries <code>aria-invalid</code>.",
+
+    "inputPage.a11yDoes1": "Inside a FormField, the label, hint and error are connected.",
+
+    "inputPage.a11yIntro": "Input is a native control: role, focus and keyboard come from the browser.",
+
+    "inputPage.content4": "Use the matching <code>type</code> (<code>email</code>, <code>tel</code>, <code>url</code>): the phone shows the right keyboard.",
+
+    "inputPage.content3": "Put the expected format in the hint, before typing: “With dots and a dash: 12.345.678-5”.",
+
+    "inputPage.content2": "Use the placeholder only for a format example, never as the label: “name@company.com”.",
+
+    "inputPage.content1": "Write the label as what is asked: “Email address”.",
+
+    "inputPage.whenNot4": 'For formatted text: use <a href="/components/editor">Editor</a>.',
+
+    "inputPage.whenNot3": 'For a password: use <a href="/components/password-input">PasswordInput</a>.',
+
+    "inputPage.whenNot2": 'For a number with a step and bounds: use <a href="/components/number-field">NumberField</a>.',
+
+    "inputPage.whenNot1": 'To choose from a closed set: use <a href="/components/select">Select</a>.',
+
+    "inputPage.when3": "For a value with a validity the browser does not check, like a RUT: use <code>format</code>.",
+
+    "inputPage.when2": "For multi-line text: use Textarea.",
+
+    "inputPage.when1": "For one line of text: name, email, search.",
+
+    "inputPage.contract4": "A server error (an already registered RUT) goes in the FormField's <code>error</code> slot and wins over <code>format</code>'s.",
+
+    "inputPage.contract3": "<code>NativeInput</code> is the same element without <code>sk-input</code>, for controls like <code>time</code>, <code>color</code> or <code>range</code> with their native look.",
+
+    "inputPage.contract2": "Density compacts the space around, not the interaction area: the field is at least 44px tall.",
+
+    "inputPage.contract1": "<code>sk-input</code> goes on the <code>&lt;input&gt;</code> and the <code>&lt;textarea&gt;</code>: one set of hooks.",
+
+    "inputPage.textareaBody": "The same visual control, with the same class and the same hooks.",
+
+    "inputPage.textareaTitle": "Several lines: Textarea",
+
+    "inputPage.basicBody": "An Input inside a FormField, with a label and a hint.",
+
+    "inputPage.basicTitle": "One line: with its label",
     "inputPage.title": "Input",
-    "inputPage.lede":
-      "The native text control stays native: there is no machine, and no bordered <code>div</code> pretending to be an input. The platform keeps validation, autofill, IME, and form association.",
-    "inputPage.densityBody": 'Density compacts the space around the field, not its interaction area: Input keeps a minimum height of <code>44px</code>, even with <code>data-size="sm"</code>.',
-    "inputPage.oneClassTitle": "One class for every text control",
-    "inputPage.oneClassBody":
-      "<code>sk-input</code> goes on both the <code>&lt;input&gt;</code> and the <code>&lt;textarea&gt;</code>: it is the same visual control, so it is one set of hooks. A second class would be a second set to keep in sync with the first.",
+    "inputPage.lede": 'Input takes one line of text (a name, an email, a search) and Textarea, several. They are the native controls: the phone keyboard, validation and autofill belong to the browser. They go inside a <a href="/components/form-field">FormField</a>, which gives them their label.',
     "demo.input.anatomyEmail": "you@example.com",
     "demo.input.anatomyEmailLabel": "Email",
     "demo.input.anatomyNotes": "Write here",
     "inputPage.anatomyBody":
-      "The drawing carries one label because the contract publishes one class; what is worth seeing is <strong>how many elements</strong> wear it. One ring each, from a single bubble: the <code>&lt;input type=\"email\"&gt;</code>, the <code>&lt;textarea&gt;</code>, and a real native <code>&lt;input type=\"time\"&gt;</code>. Nothing else is named: the label, the hint and the error are FormField's, and they are drawn on FormField's own anatomy.",
+      'The drawing carries one label because the contract publishes one class; what is worth seeing is <strong>how many elements</strong> wear it. One ring each, from a single bubble: the <code>&lt;input type="email"&gt;</code>, the <code>&lt;textarea&gt;</code>, and a real native <code>&lt;input type="time"&gt;</code>. Nothing else is named: the label, the hint and the error are FormField\'s, and they are drawn on FormField\'s own anatomy.',
     "inputPage.anatomyLabel": "Input anatomy",
     "inputPage.anatomyPreviewLabel": "One class, three elements",
-    "inputPage.formFieldTitle": "The label is not the Input's",
-    "inputPage.formFieldBody":
-      'Both demos above are wrapped in a <a href="/components/form-field">FormField</a>, and not out of habit: the label, the hint, the error message and the six ids that tie them together all live there. That is why this contract has no <code>invalid</code> and no <code>id</code> of its own: a control carrying its own <code>aria-invalid</code> could contradict the message sitting next to it. An <code>Input</code> outside a <code>FormField</code> is still a valid control, as long as it carries its own <code>aria-label</code>.',
     "demo.input.rutHint": "With dots or without them, it makes no difference.",
     "demo.input.phoneLabel": "Mobile",
     "demo.input.siteLabel": "Website",
 
-    "inputPage.formatTitle": "format: the validation the browser does not have",
-    "inputPage.formatBody":
-      'The platform knows how to check an email and a URL, and knows nothing about a RUT. <code>format</code> adds that layer for values that have a real validity: <code>"rut"</code>, <code>"url"</code> and <code>"email"</code> ship in core itself, with no dependencies. It is not a <code>pattern</code> under another name: a check digit is arithmetic, and no regular expression expresses that.',
-    "inputPage.formatPreviewLabel": "Three fields that validate themselves",
-    "inputPage.formatCheckBody":
-      'Type <code>12.345.678-4</code> and leave the field: the RUT has the right shape and the check digit does not match, which is exactly what a format check lets through. Same with <code>44 123 4567</code>, nine digits that no Chilean area code begins with, or with <code>foo:bar</code>, a valid URL to a scheme no browser can open.',
-    "inputPage.formatMessageBody":
-      'The control writes the message into <a href="/components/form-field">FormField</a>\'s <code>error</code> slot, not whoever composed the tree: whether a RUT is real is not something a tree can know. It appears once you leave the field, and tracks the value live from then on. A hand-written <code>error</code> always wins, because whoever builds the form knows things the check digit does not ("that RUT is already registered"). Validity also goes to <code>setCustomValidity</code>, so a native <code>&lt;form&gt;</code> refuses to submit without this contract reimplementing submission.',
-    "inputPage.formatPhoneTitle": "phone: numbering plans are a separate package",
-    "inputPage.formatPhoneBody":
-      'A phone number can only be checked against its country\'s numbering plan, and the plans are data: some 155 kB of metadata that nobody validating a RUT should download. So <code>@skryensya/core</code> declares the <code>"phone"</code> format and ships no validator for it; <code>@skryensya/phone</code> provides one, wrapping libphonenumber-js. The same deal <code>@skryensya/editor</code> already has as an optional peer.',
-    "inputPage.formatPhoneUsage":
-      'Install it and register it once at startup. An explicit call rather than an import with a side effect: a module that exists only for its side effect is the first thing an aggressive bundler drops, and the failure would be a field that silently stopped validating.',
-    "inputPage.formatPhoneMissing":
-      'With nothing registered, the field <strong>does not validate and lets the value through</strong>, with one console warning naming the missing package. An absent optional package is the developer\'s problem, never the problem of the person filling in the form: painting their correct phone number red would be an error nothing they can type will clear.',
-    "inputPage.formatPhoneEvidence":
-      'It is worth knowing what that metadata buys. The kit shipped a hand-written Chilean plan before this, and measured against the real data it was wrong in both directions: it accepted <code>+56 9 1234 5678</code> (the <code>91x</code> mobile range is unassigned) and rejected <code>+56 44 234 5678</code> (44 is a real area code). It was deleted rather than kept alongside: two validators that disagree about the same number are worse than one that has to be installed.',
-    "inputPage.nativeTitle": "NativeInput: the control without the appearance",
-    "inputPage.nativeBody":
-      'The contract\'s third signature is <code>NativeInput</code>: the same element without <code>sk-input</code>, for when what you are teaching is the behaviour the browser ships rather than the system\'s appearance. It is what the plain <code>&lt;input type="time"&gt;</code> demo on TimeField uses.',
+    "inputPage.formatTitle": "format: the validation the browser lacks",
+    "inputPage.formatBody": '<code>format="rut"</code> checks the check digit and <code>"url"</code> that the link can be opened. Type <code>12.345.678-4</code> and leave the field: the message appears in the FormField\'s error.',
+    "inputPage.formatPhoneTitle": "phone: a separate package",
+    "inputPage.formatPhoneBody": "A phone is validated against its country's numbering plan, which is data: install <code>@skryensya/phone</code> and register it at startup. If nobody registers it, the field lets the value through and warns in the console.",
     "inputPage.test1": "Stays a valid control outside a FormField.",
     "inputPage.test2": "Gives a textarea the same appearance contract as an input.",
     "inputPage.test3": "Writes the height to data-size and leaves the native size attribute alone.",
     "demo.input.dd.placeholder": "name@example.com",
+    "demo.input.dd.genericLabel": "Information",
     "demo.input.dd.message": "Message",
     "demo.input.dd.messagePlaceholder": "Tell us what happened",
-    "inputPage.prop.controlSize.title": "Size",
-    "inputPage.prop.controlSize.body": "<code>controlSize</code> sets the field's height, the same as a button of the same size.",
+    "demo.input.dd.messageHint": "You can write several lines.",
+    "demo.input.dd.longValue": "The order arrived incomplete and I need to explain what is missing before sending it again.",
+    "demo.input.dd.formatPlaceholder": "Enter your RUT",
+    "inputPage.prop.controlSize.title": "Control size: the field's height",
+    "inputPage.prop.controlSize.body": "Sets the height, the same as a button of the same size.",
     "inputPage.prop.controlSize.sm": "Use <code>sm</code> in toolbars and compact filters.",
     "inputPage.prop.controlSize.md": "Use <code>md</code>, the default, in forms.",
     "inputPage.prop.controlSize.lg": "Use <code>lg</code> for a main field, like a search on a home page.",
-    "inputPage.showcaseTitle": "Showcases",
-    "inputPage.showcaseBody": "A field with its label, a text area, and a formatted field.",
-    "inputPage.guidelinesLede": "Input takes short text. The label says what to write, the hint says how.",
-    "inputPage.dd.label.title": "A visible label",
-    "inputPage.dd.label.do": "Put the label above the field, with a <a href=\"/components/form-field\">FormField</a>.",
-    "inputPage.dd.label.dont": "The placeholder disappears on typing: afterwards nobody remembers what the field asked for.",
-    "inputPage.dd.long.title": "A field as long as the text",
-    "inputPage.dd.long.do": "For text several lines long, use <code>Textarea</code>.",
+    "inputPage.guidelinesLede": "A text field says what it asks for before people type.",
+    "inputPage.dd.label.title": "Label: visible, above the field",
+    "inputPage.dd.label.do": 'Put the label above the field, with a <a href="/components/form-field">FormField</a>.',
+    "inputPage.dd.label.dont": "The placeholder disappears on typing and not every screen reader announces it: afterwards nobody remembers what the field asked for.",
+    "inputPage.dd.long.title": "Length: the field sized to the text",
+    "inputPage.dd.long.do": "For text several lines long, use <code>Textarea</code>: what people are writing stays visible.",
     "inputPage.dd.long.dont": "A message on a single line is typed blind: what came before scrolls out of view.",
+    "inputPage.dd.format.title": "Format: say it before typing",
+    "inputPage.dd.format.do": "The hint shows the expected format and the field can validate it.",
+    "inputPage.dd.format.dont": "A generic placeholder does not teach the pattern and disappears on typing.",
   },
 } as const;

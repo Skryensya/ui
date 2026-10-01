@@ -6,8 +6,8 @@ import type { Realization } from "../realization.js";
  * One place, so a new component is only what makes it different.
  */
 export const stage: Realization["stage"] = {
-  contract: "component-preview",
-  hook: "--sk-component-preview-bg",
+  // The preview card's own surface (`apps/docs/src/components/preview-card.css`).
+  background: "--color-bg-surface",
   label: {
     color: "--color-text-secondary",
     fontFamily: "--font-family-body",

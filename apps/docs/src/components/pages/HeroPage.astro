@@ -1,8 +1,12 @@
 ---
 import ComponentPageShell from "./ComponentPageShell.astro";
 import AppearanceMenu from "../AppearanceMenu.astro";
-import ComponentPreview from "../ComponentPreview.astro";
 import UsagePreview from "../UsagePreview.astro";
+import DoDont from "../DoDont.astro";
+import WhenToUse from "../WhenToUse.astro";
+import ContentRules from "../ContentRules.astro";
+import A11yNotes from "../A11yNotes.astro";
+import { heroDontActionsTree } from "../../demos/layout-guide";
 import {
   heroAppBadgesTree,
   heroAudienceTabsTree,
@@ -18,7 +22,7 @@ import {
   heroTree,
   heroVideoDemoTree,
 } from "../../demos/layout";
-import { getLocale, useTranslations } from "../../i18n";
+import { getLocale, tList, useTranslations } from "../../i18n";
 import { heroAnatomyTree, layoutAnatomyFillCss } from "../../demos/layout-anatomy";
 import "@skryensya/core/components/annotation.css";
 /* The sheet itself, not only its source: the Style hooks table resolves each hook
@@ -93,7 +97,6 @@ const explain = (option: string, values: readonly string[]) =>
 <ComponentPageShell
   title="Hero"
   description={t("hero.description")}
-  badge={t("hero.betaBadge")}
   contractId="hero"
   appearanceTargetSelector=".sk-hero"
   styleGroups={[{ file: "patterns/hero.css", probe: "sk-hero" }]}
@@ -138,116 +141,45 @@ const explain = (option: string, values: readonly string[]) =>
       stageMinBlockSize="20rem"
     />
 
-    <h3>{t("hero.showcaseTitle")}</h3>
-    <p set:html={t("hero.showcaseBody")} />
-
-    <h3>{t("hero.htmlTitle")}</h3>
-    {/*
-     * THIRTEEN separate, literal tags, not a `.map()` over an array: `/f/{page}/{n}`'s own
-     * static-path generator (`lib/fullscreen-preview-paths.ts`) counts `<ComponentPreview`
-     * occurrences by REGEX over this file's raw SOURCE TEXT, not by rendering it, so a `.map()`
-     * (one literal tag, N runtime instances) would register only `/f/components/hero/1` and leave
-     * the rest 404ing. Confirmed live: `ButtonPage.astro`'s own seven previews are the same seven
-     * literal tags for the identical reason. The counter has no notion of a loop; matching its own
-     * convention here is the only way every "Pantalla completa" link on this page actually lands.
-     *
-     * Each pattern's own `<h4>` + one-line description sits directly above its card, a plain
-     * sibling of it (not wrapped in another element): `indexHeroTabPanel`'s own depth walk only
-     * picks up `h3`/`h4` at depth 0 of this panel, so nesting either inside a wrapping `<div>`
-     * would drop it out of the page's own "En esta página" rail silently.
-     */}
-    <h4>{t("hero.patternPitchTitle")}</h4>
-    <p>{t("hero.patternPitchDescription")}</p>
-    <UsagePreview tree={heroPitchTree} />
-
-    <h4>{t("hero.patternCenteredTitle")}</h4>
-    <p>{t("hero.patternCenteredDescription")}</p>
-    <UsagePreview tree={heroCenteredMinimalTree} />
-
-    <h4>{t("hero.patternEyebrowTitle")}</h4>
-    <p>{t("hero.patternEyebrowDescription")}</p>
-    <UsagePreview tree={heroEyebrowLabelTree} />
-
-    <h4>{t("hero.patternSplitTitle")}</h4>
-    <p>{t("hero.patternSplitDescription")}</p>
-    <UsagePreview tree={heroSplitMediaTree} />
-
-    <h4>{t("hero.patternProofTitle")}</h4>
-    <p>{t("hero.patternProofDescription")}</p>
-    <UsagePreview tree={heroProofTree} />
-
-    <h4>{t("hero.patternEmailTitle")}</h4>
-    <p>{t("hero.patternEmailDescription")}</p>
-    <UsagePreview tree={heroEmailTree} />
-
-    <h4>{t("hero.patternAppBadgesTitle")}</h4>
-    <p>{t("hero.patternAppBadgesDescription")}</p>
-    <UsagePreview tree={heroAppTree} />
-
-    <h4>{t("hero.patternLogoWallTitle")}</h4>
-    <p>{t("hero.patternLogoWallDescription")}</p>
-    <UsagePreview tree={heroLogosTree} />
-
-    <h4>{t("hero.patternPricingTitle")}</h4>
-    <p>{t("hero.patternPricingDescription")}</p>
-    <UsagePreview tree={heroPricingTree} />
-
-    <h4>{t("hero.patternCodePreviewTitle")}</h4>
-    <p>{t("hero.patternCodePreviewDescription")}</p>
-    <UsagePreview tree={heroCodeTree} />
-
-    <h4>{t("hero.patternVideoDemoTitle")}</h4>
-    <p>{t("hero.patternVideoDemoDescription")}</p>
-    <UsagePreview tree={heroVideoTree} />
-
-    <h4>{t("hero.patternAudienceTabsTitle")}</h4>
-    <p>{t("hero.patternAudienceTabsDescription")}</p>
-    <UsagePreview tree={heroTabsTree} />
-
-    <h4>{t("hero.patternTestimonialTitle")}</h4>
-    <p>{t("hero.patternTestimonialDescription")}</p>
-    <UsagePreview tree={heroQuoteTree} />
-
+    <h3>{t("component.examplesTitle")}</h3>
+    <UsagePreview tree={heroPitchTree} title={t("hero.patternPitchTitle")} description={t("hero.patternPitchDescription")} />
+    <UsagePreview tree={heroCenteredMinimalTree} title={t("hero.patternCenteredTitle")} description={t("hero.patternCenteredDescription")} />
+    <UsagePreview tree={heroEyebrowLabelTree} title={t("hero.patternEyebrowTitle")} description={t("hero.patternEyebrowDescription")} />
+    <UsagePreview tree={heroSplitMediaTree} title={t("hero.patternSplitTitle")} description={t("hero.patternSplitDescription")} />
+    <UsagePreview tree={heroProofTree} title={t("hero.patternProofTitle")} description={t("hero.patternProofDescription")} />
+    <UsagePreview tree={heroEmailTree} title={t("hero.patternEmailTitle")} description={t("hero.patternEmailDescription")} />
+    <UsagePreview tree={heroAppTree} title={t("hero.patternAppBadgesTitle")} description={t("hero.patternAppBadgesDescription")} />
+    <UsagePreview tree={heroLogosTree} title={t("hero.patternLogoWallTitle")} description={t("hero.patternLogoWallDescription")} />
+    <UsagePreview tree={heroPricingTree} title={t("hero.patternPricingTitle")} description={t("hero.patternPricingDescription")} />
+    <UsagePreview tree={heroCodeTree} title={t("hero.patternCodePreviewTitle")} description={t("hero.patternCodePreviewDescription")} />
+    <UsagePreview tree={heroVideoTree} title={t("hero.patternVideoDemoTitle")} description={t("hero.patternVideoDemoDescription")} />
+    <UsagePreview tree={heroTabsTree} title={t("hero.patternAudienceTabsTitle")} description={t("hero.patternAudienceTabsDescription")} />
+    <UsagePreview tree={heroQuoteTree} title={t("hero.patternTestimonialTitle")} description={t("hero.patternTestimonialDescription")} />
     <p set:html={t("component.reactNote")} />
 
     <h3>{t("component.contractNotesTitle")}</h3>
     <ul>
-      <li set:html={t("hero.contractItem1")} />
-      <li set:html={t("hero.contractItem2")} />
-      <li set:html={t("hero.contractItem3")} />
-      <li set:html={t("hero.contractItem4")} />
-      <li set:html={t("hero.contractItem5")} />
+      {tList(t, "hero.contract").map((item) => <li set:html={item} />)}
     </ul>
 
     <h3>{t("component.anatomy")}</h3>
     <p set:html={t("hero.anatomyBody")} />
-    <ComponentPreview
-      tree={heroAnatomyTree(t)}
-      css={layoutAnatomyFillCss}
-      label={t("hero.anatomyPreviewLabel")}
-      screens={false}
-      hideSource
-      chrome={false}
-    />
+    <UsagePreview tree={heroAnatomyTree(t)} css={layoutAnatomyFillCss} label={t("hero.anatomyPreviewLabel")} bare />
   </Fragment>
 
   <Fragment slot="guidelines">
     <p class="lede" set:html={t("hero.guidelinesLede")} />
-    <h3>{t("hero.whenTitle")}</h3>
-    <p set:html={t("hero.whenBody1")} />
-    <p set:html={t("hero.whenBody2")} />
-    <p set:html={t("hero.whenBody3")} />
-    <h3>{t("hero.contentRulesTitle")}</h3>
-    <ul>
-      <li set:html={t("hero.contentRule1")} />
-      <li set:html={t("hero.contentRule2")} />
-      <li set:html={t("hero.contentRule3")} />
-    </ul>
+    <WhenToUse use={tList(t, "hero.when")} avoid={tList(t, "hero.whenNot")} />
+    <DoDont
+      canvas
+      title={t("hero.dd.actions.title")}
+      do={{ tree: heroTree(t), caption: t("hero.dd.actions.do") }}
+      dont={{ tree: heroDontActionsTree(t), caption: t("hero.dd.actions.dont") }}
+    />
+    <ContentRules items={tList(t, "hero.content")} />
   </Fragment>
 
   <Fragment slot="a11y">
-    <p set:html={t("hero.a11yP1")} />
-    <p set:html={t("hero.a11yP2")} />
-    <p set:html={t("hero.a11yP3")} />
+    <A11yNotes intro={t("hero.a11yIntro")} does={tList(t, "hero.a11yDoes")} yours={tList(t, "hero.a11yYours")} />
   </Fragment>
 </ComponentPageShell>

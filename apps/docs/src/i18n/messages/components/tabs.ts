@@ -31,37 +31,62 @@ export const tabsMessages = {
     "demo.tabs.metrics.body": "Rendimiento y uso del proyecto.",
     "demo.tabs.settings.body": "Preferencias del espacio de trabajo.",
 
-    "tabsPage.description": "Cinco ejemplos de Tabs, de la anatomía básica a la variante colgante.",
-    "tabsPage.lede":
-      "Empieza con dos vistas, añade estados e iconos, sigue con una navegación vertical controlada pasa por el tamaño del trigger y termina en la variante colgante. La anatomía no cambia al crecer: lista, triggers y un panel por cada valor.",
+    "tabsPage.description": "Cambia entre vistas del mismo contenido, al mismo nivel, sin salir de la página.",
+
+    "tabsPage.key.select": "Con activación manual, muestra el panel de la pestaña con el foco.",
+
+    "tabsPage.key.tab": "Sale de la lista al panel.",
+
+    "tabsPage.key.homeEnd": "Va a la primera o a la última.",
+
+    "tabsPage.key.arrows": "Pasa a la pestaña anterior o siguiente.",
+
+    "tabsPage.a11yYours2": "Usa activación manual si cambiar de panel es lento.",
+
+    "tabsPage.a11yYours1": "Nombra la lista con <code>aria-label</code> si hay varias en la página.",
+
+    "tabsPage.a11yDoes3": "El ícono nunca reemplaza el nombre accesible.",
+
+    "tabsPage.a11yDoes2": "Cada pestaña anuncia si está elegida y controla su panel.",
+
+    "tabsPage.a11yDoes1": "La lista es una sola parada de <kbd>Tab</kbd>; las flechas cambian de pestaña.",
+
+    "tabsPage.a11yIntro": "Tabs sigue el patrón tabs de la APG.",
+
+    "tabsPage.content2": "Usa sustantivos, todos con la misma forma.",
+
+    "tabsPage.content1": "Nombra cada pestaña con 1 o 2 palabras: «Resumen», «Actividad».",
+
+    "tabsPage.whenNot4": "Si conviene comparar las vistas: muéstralas juntas.",
+
+    "tabsPage.whenNot3": 'Para muchas secciones: usa <a href="/es/componentes/sidebar">Sidebar</a> o una navegación.',
+
+    "tabsPage.whenNot2": 'Para cambiar la vista de los mismos datos (lista, tablero): usa <a href="/es/componentes/segmented">Segmented</a>.',
+
+    "tabsPage.whenNot1": 'Para pasos que se hacen en orden: usa <a href="/es/componentes/steps">Steps</a>.',
+
+    "tabsPage.when2": "Cuando el contenido de cada vista es largo y verlas juntas sería demasiado.",
+
+    "tabsPage.when1": "Para 2 a 5 vistas del mismo contenido que se abren en cualquier orden.",
+
+    "tabsPage.contract3": "El cambio dispara <code>sk:tabsvaluechange</code>; en React, <code>onValueChange</code>.",
+
+    "tabsPage.contract2": "<code>data-disabled</code> retira una pestaña.",
+
+    "tabsPage.contract1": "Cada pestaña y su panel comparten <code>data-value</code>; la raíz guarda el activo.",
+    "tabsPage.lede": "Tabs cambia entre vistas del mismo contenido, al mismo nivel, sin salir de la página: el resumen y la actividad de un proyecto, la configuración de una cuenta por tema. Solo se ve un panel a la vez.",
     "tabsPage.anatomyBody":
       "Este diagrama nombra la lista, los triggers y el panel. El espécimen está congelado; los Tabs vivos empiezan abajo.",
     "tabsPage.anatomyLabel": "Anatomía de Tabs",
     "tabsPage.anatomyPreviewLabel": "Tabs, parte por parte",
-    "tabsPage.basicTitle": "1. Básico",
-    "tabsPage.basicBody": "Dos triggers y dos paneles. <code>data-value</code> enlaza cada opción con su contenido; el enhancer completa roles, foco y ARIA.",
-    "tabsPage.basicLabel": "Tabs básicos",
-    "tabsPage.statesTitle": "2. Estados e iconos",
-    "tabsPage.statesBody": "El mismo contrato admite labels compuestos y opciones deshabilitadas. El icono acompaña al texto; nunca reemplaza el nombre accesible del tab.",
-    "tabsPage.statesLabel": "Tabs con estados",
-    "tabsPage.advancedTitle": "3. Orientación y estado",
-    "tabsPage.advancedBody":
-      "En orientación vertical, las flechas recorren el rail. Con activación manual, mover el foco no cambia el panel: Enter o Espacio confirma la selección. El evento actualiza la región viva debajo del componente.",
-    "tabsPage.advancedLabel": "Tabs verticales con control manual",
-    "tabsPage.sizeTitle": "4. Tamaño",
-    "tabsPage.sizeBody": "<code>size</code> es sólo CSS, ortogonal a la orientación y al modo de activación: <code>sm</code> reduce alto, relleno y tipografía del trigger; <code>md</code> es el valor por defecto.",
-    "tabsPage.sizeLabel": "Tabs sm y md",
-    "tabsPage.hangingTitle": "5. Colgantes",
-    "tabsPage.hangingBody": "<code>variant=\"hanging\"</code> invierte la tira: la línea va arriba, los triggers cuelgan de ella con las esquinas redondeadas abajo y la barra del seleccionado queda en el borde superior. Es sólo CSS; el orden del DOM y el teclado no cambian.",
-    "tabsPage.hangingLabel": "Tabs colgantes",
+    "tabsPage.basicTitle": "Dos vistas: resumen y actividad",
+    "tabsPage.basicBody": "Cada pestaña se enlaza con su panel por <code>data-value</code>.",
+    "tabsPage.statesTitle": "Con íconos y una deshabilitada",
+    "tabsPage.statesBody": "El ícono acompaña al texto; una pestaña deshabilitada se ve pero no se elige.",
+    "tabsPage.advancedTitle": "Vertical y manual: elegir con Enter",
+    "tabsPage.advancedBody": 'Con <code>activationMode="manual"</code>, mover el foco no cambia el panel: <kbd>Enter</kbd> o <kbd>Espacio</kbd> lo confirma.',
     "tabsPage.vanillaInitTitle": "Inicializar vanilla",
     "tabsPage.vanillaInitBody": "<code>initComponents</code> conecta los Tabs. Los iconos se montan por separado con el set elegido por la aplicación.",
-    "tabsPage.contractItem1": "La raíz usa <code>data-sk-tabs</code> y conserva el valor activo en <code>data-value</code>.",
-    "tabsPage.contractItem2": "Cada trigger y panel declara el mismo <code>data-value</code>.",
-    "tabsPage.contractItem3": "<code>data-disabled</code> retira una opción de la interacción.",
-    "tabsPage.contractItem4": "<code>data-orientation=\"vertical\"</code> cambia el eje de navegación y del indicador.",
-    "tabsPage.contractItem5": "<code>data-activation-mode=\"manual\"</code> separa foco y selección.",
-    "tabsPage.contractItem6": "Vanilla emite <code>sk:tabsvaluechange</code>; React expone <code>onValueChange</code>.",
     "tabsPage.reactBody": "El componente renderiza la misma anatomía desde <code>items</code>. Usa <code>value</code> y <code>onValueChange</code> cuando otro estado de la aplicación dependa de la pestaña activa.",
     "tabsPage.test1": "Conecta la pestaña seleccionada con su panel nombrado.",
     "tabsPage.test2": "Refleja la selección en el atributo <code>data-*</code> de la raíz.",
@@ -78,27 +103,25 @@ export const tabsMessages = {
     "demo.tabs.dd.step2": "2. Envío",
     "demo.tabs.dd.step3": "3. Pago",
     "demo.tabs.dd.stepBody": "Completa tus datos para seguir.",
-    "tabsPage.prop.variant.title": "Variante",
-    "tabsPage.prop.variant.body": "La <code>variant</code> decide cómo se marca la pestaña activa.",
-    "tabsPage.prop.variant.underline": "Usa <code>underline</code>, el default, sobre el contenido de una página.",
+    "tabsPage.prop.variant.title": "Variant: cómo se marca la activa",
+    "tabsPage.prop.variant.body": "La línea va abajo de las pestañas o arriba, colgando.",
+    "tabsPage.prop.variant.underline": "Usa <code>underline</code>, el valor por defecto, sobre el contenido de una página.",
     "tabsPage.prop.variant.hanging": "Usa <code>hanging</code> cuando las pestañas cuelgan de una superficie, como la cabecera de una tarjeta.",
-    "tabsPage.prop.size.title": "Tamaño",
-    "tabsPage.prop.size.body": "El <code>size</code> fija la altura de las pestañas.",
+    "tabsPage.prop.size.title": "Size: la altura de las pestañas",
+    "tabsPage.prop.size.body": "Solo cambia alto, relleno y texto.",
     "tabsPage.prop.size.sm": "Usa <code>sm</code> dentro de un panel o una tarjeta.",
-    "tabsPage.prop.size.md": "Usa <code>md</code>, el default, para las secciones de una página.",
-    "tabsPage.prop.orientation.title": "Orientación",
-    "tabsPage.prop.orientation.body": "La <code>orientation</code> pone las pestañas en fila o en columna.",
-    "tabsPage.prop.orientation.horizontal": "Usa <code>horizontal</code>, el default, con pocas pestañas de nombre corto.",
+    "tabsPage.prop.size.md": "Usa <code>md</code>, el valor por defecto, para las secciones de una página.",
+    "tabsPage.prop.orientation.title": "Orientation: fila o columna",
+    "tabsPage.prop.orientation.body": "Cambia también qué flechas recorren las pestañas.",
+    "tabsPage.prop.orientation.horizontal": "Usa <code>horizontal</code>, el valor por defecto, con pocas pestañas de nombre corto.",
     "tabsPage.prop.orientation.vertical": "Usa <code>vertical</code> cuando hay más pestañas o sus nombres son largos.",
-    "tabsPage.showcaseTitle": "Showcases",
-    "tabsPage.showcaseBody": "Pestañas simples, con íconos y una deshabilitada, verticales, en dos tamaños y colgantes.",
-    "tabsPage.guidelinesLede": "Tabs cambia entre vistas del mismo contenido, al mismo nivel y en cualquier orden.",
-    "tabsPage.dd.few.title": "Pocas pestañas",
+    "tabsPage.guidelinesLede": "Las pestañas esconden contenido: úsalas cuando no hace falta ver dos vistas a la vez.",
+    "tabsPage.dd.few.title": "Cantidad: pocas pestañas",
     "tabsPage.dd.few.do": "Dos a cinco pestañas con nombres cortos.",
     "tabsPage.dd.few.dont": "Si no caben, las últimas quedan fuera de la vista. Usa una navegación lateral.",
-    "tabsPage.dd.steps.title": "Vistas, no pasos",
+    "tabsPage.dd.steps.title": "Orden: vistas, no pasos",
     "tabsPage.dd.steps.do": "Usa pestañas para vistas que se abren en cualquier orden.",
-    "tabsPage.dd.steps.dont": "Unos pasos numerados tienen orden: eso es <a href=\"/es/componentes/steps\">Steps</a>.",
+    "tabsPage.dd.steps.dont": 'Unos pasos numerados tienen orden: eso es <a href="/es/componentes/steps">Steps</a>.',
   },
   en: {
     "demo.tabs.basic.label": "Project",
@@ -131,42 +154,63 @@ export const tabsMessages = {
     "demo.tabs.metrics.body": "Project performance and usage.",
     "demo.tabs.settings.body": "Workspace preferences.",
 
-    "tabsPage.description": "Five Tabs examples, from basic anatomy to the hanging variant.",
-    "tabsPage.lede":
-      "Start with two views, add states and icons, move on to controlled vertical navigation, cover trigger size, and end with the hanging variant. The anatomy does not change as it grows: a list, triggers, and one panel per value.",
+    "tabsPage.description": "Switches between views of the same content, at the same level, without leaving the page.",
+
+    "tabsPage.key.select": "With manual activation, shows the focused tab's panel.",
+
+    "tabsPage.key.tab": "Leaves the list for the panel.",
+
+    "tabsPage.key.homeEnd": "Goes to the first or last.",
+
+    "tabsPage.key.arrows": "Moves to the previous or next tab.",
+
+    "tabsPage.a11yYours2": "Use manual activation if switching panels is slow.",
+
+    "tabsPage.a11yYours1": "Name the list with <code>aria-label</code> if there are several on the page.",
+
+    "tabsPage.a11yDoes3": "The icon never replaces the accessible name.",
+
+    "tabsPage.a11yDoes2": "Each tab announces whether it is selected and controls its panel.",
+
+    "tabsPage.a11yDoes1": "The list is a single <kbd>Tab</kbd> stop; the arrows switch tabs.",
+
+    "tabsPage.a11yIntro": "Tabs follows the APG tabs pattern.",
+
+    "tabsPage.content2": "Use nouns, all in the same shape.",
+
+    "tabsPage.content1": "Name each tab in 1 or 2 words: “Summary”, “Activity”.",
+
+    "tabsPage.whenNot4": "If comparing the views helps: show them together.",
+
+    "tabsPage.whenNot3": 'For many sections: use <a href="/components/sidebar">Sidebar</a> or a navigation.',
+
+    "tabsPage.whenNot2": 'To change the view of the same data (list, board): use <a href="/components/segmented">Segmented</a>.',
+
+    "tabsPage.whenNot1": 'For steps done in order: use <a href="/components/steps">Steps</a>.',
+
+    "tabsPage.when2": "When each view's content is long and seeing them together would be too much.",
+
+    "tabsPage.when1": "For 2 to 5 views of the same content opened in any order.",
+
+    "tabsPage.contract3": "A change fires <code>sk:tabsvaluechange</code>; in React, <code>onValueChange</code>.",
+
+    "tabsPage.contract2": "<code>data-disabled</code> removes a tab.",
+
+    "tabsPage.contract1": "Each tab and its panel share a <code>data-value</code>; the root keeps the active one.",
+    "tabsPage.lede": "Tabs switches between views of the same content, at the same level, without leaving the page: a project’s summary and activity, an account's settings by topic. Only one panel shows at a time.",
     "tabsPage.anatomyBody":
       "This diagram names the list, the triggers and the panel. The specimen is frozen; the live Tabs begin below.",
     "tabsPage.anatomyLabel": "Tabs anatomy",
     "tabsPage.anatomyPreviewLabel": "Tabs, part by part",
-    "tabsPage.basicTitle": "1. Basic",
-    "tabsPage.basicBody":
-      "Two triggers and two panels. <code>data-value</code> links each option to its content; the enhancer fills in roles, focus, and ARIA.",
-    "tabsPage.basicLabel": "Basic Tabs",
-    "tabsPage.statesTitle": "2. States and icons",
-    "tabsPage.statesBody":
-      "The same contract accepts composite labels and disabled options. The icon rides alongside the text; it never replaces the tab's accessible name.",
-    "tabsPage.statesLabel": "Tabs with states",
-    "tabsPage.advancedTitle": "3. Orientation and state",
-    "tabsPage.advancedBody":
-      "In vertical orientation, the arrows move along the rail. With manual activation, moving focus does not change the panel: Enter or Space confirms the selection. The event updates the live region below the component.",
-    "tabsPage.advancedLabel": "Vertical Tabs with manual control",
-    "tabsPage.sizeTitle": "4. Size",
-    "tabsPage.sizeBody":
-      "<code>size</code> is CSS-only, orthogonal to orientation and activation mode: <code>sm</code> shrinks the trigger's height, padding and type; <code>md</code> is the default.",
-    "tabsPage.sizeLabel": "sm and md Tabs",
-    "tabsPage.hangingTitle": "5. Hanging",
-    "tabsPage.hangingBody":
-      '<code>variant="hanging"</code> flips the strip: the line runs along the top, the triggers hang from it with their rounded corners at the bottom, and the selected bar sits on the top edge. It is CSS-only; DOM order and keyboard behavior do not change.',
-    "tabsPage.hangingLabel": "Hanging Tabs",
+    "tabsPage.basicTitle": "Two views: summary and activity",
+    "tabsPage.basicBody": "Each tab links to its panel through <code>data-value</code>.",
+    "tabsPage.statesTitle": "With icons and a disabled one",
+    "tabsPage.statesBody": "The icon goes with the text; a disabled tab shows but cannot be chosen.",
+    "tabsPage.advancedTitle": "Vertical and manual: choose with Enter",
+    "tabsPage.advancedBody": 'With <code>activationMode="manual"</code>, moving focus does not change the panel: <kbd>Enter</kbd> or <kbd>Space</kbd> confirms it.',
     "tabsPage.vanillaInitTitle": "Initializing vanilla",
     "tabsPage.vanillaInitBody":
       "<code>initComponents</code> connects Tabs. Icons mount separately with the set the application chooses.",
-    "tabsPage.contractItem1": "The root uses <code>data-sk-tabs</code> and keeps the active value in <code>data-value</code>.",
-    "tabsPage.contractItem2": "Every trigger and panel declares the same <code>data-value</code>.",
-    "tabsPage.contractItem3": "<code>data-disabled</code> removes an option from interaction.",
-    "tabsPage.contractItem4": '<code>data-orientation="vertical"</code> changes the navigation and indicator axis.',
-    "tabsPage.contractItem5": '<code>data-activation-mode="manual"</code> separates focus from selection.',
-    "tabsPage.contractItem6": "Vanilla emits <code>sk:tabsvaluechange</code>; React exposes <code>onValueChange</code>.",
     "tabsPage.reactBody":
       "The component renders the same anatomy from <code>items</code>. Use <code>value</code> and <code>onValueChange</code> when another piece of application state depends on the active tab.",
     "tabsPage.test1": "Connects the selected tab with its labelled panel.",
@@ -184,26 +228,24 @@ export const tabsMessages = {
     "demo.tabs.dd.step2": "2. Shipping",
     "demo.tabs.dd.step3": "3. Payment",
     "demo.tabs.dd.stepBody": "Fill in your details to continue.",
-    "tabsPage.prop.variant.title": "Variant",
-    "tabsPage.prop.variant.body": "<code>variant</code> decides how the active tab is marked.",
+    "tabsPage.prop.variant.title": "Variant: how the active one is marked",
+    "tabsPage.prop.variant.body": "The line goes below the tabs or above them, hanging.",
     "tabsPage.prop.variant.underline": "Use <code>underline</code>, the default, over a page's content.",
     "tabsPage.prop.variant.hanging": "Use <code>hanging</code> when the tabs hang from a surface, like a card's header.",
-    "tabsPage.prop.size.title": "Size",
-    "tabsPage.prop.size.body": "<code>size</code> sets the tabs' height.",
+    "tabsPage.prop.size.title": "Size: the tabs' height",
+    "tabsPage.prop.size.body": "Only changes height, padding and text.",
     "tabsPage.prop.size.sm": "Use <code>sm</code> inside a panel or a card.",
     "tabsPage.prop.size.md": "Use <code>md</code>, the default, for a page's sections.",
-    "tabsPage.prop.orientation.title": "Orientation",
-    "tabsPage.prop.orientation.body": "<code>orientation</code> puts the tabs in a row or a column.",
+    "tabsPage.prop.orientation.title": "Orientation: row or column",
+    "tabsPage.prop.orientation.body": "Also changes which arrows move through the tabs.",
     "tabsPage.prop.orientation.horizontal": "Use <code>horizontal</code>, the default, with a few short-named tabs.",
     "tabsPage.prop.orientation.vertical": "Use <code>vertical</code> when there are more tabs or their names are long.",
-    "tabsPage.showcaseTitle": "Showcases",
-    "tabsPage.showcaseBody": "Simple tabs, tabs with icons and a disabled one, vertical, two sizes, and hanging.",
-    "tabsPage.guidelinesLede": "Tabs switches between views of the same content, on the same level and in any order.",
-    "tabsPage.dd.few.title": "Few tabs",
+    "tabsPage.guidelinesLede": "Tabs hide content: use them when seeing two views at once is not needed.",
+    "tabsPage.dd.few.title": "Count: a few tabs",
     "tabsPage.dd.few.do": "Two to five tabs with short names.",
     "tabsPage.dd.few.dont": "When they do not fit, the last ones fall out of view. Use a side navigation.",
-    "tabsPage.dd.steps.title": "Views, not steps",
+    "tabsPage.dd.steps.title": "Order: views, not steps",
     "tabsPage.dd.steps.do": "Use tabs for views opened in any order.",
-    "tabsPage.dd.steps.dont": "Numbered steps have an order: that is <a href=\"/components/steps\">Steps</a>.",
+    "tabsPage.dd.steps.dont": 'Numbered steps have an order: that is <a href="/components/steps">Steps</a>.',
   },
 } as const;

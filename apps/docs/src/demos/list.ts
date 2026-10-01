@@ -206,3 +206,104 @@ export const listDontParagraphsTree = (t: Translate): UsageTree => ({
     children: t(key as never),
   })),
 });
+
+export const listDoSameShapeTree = (t: Translate): UsageTree => ({
+  contract: "list",
+  signature: "List",
+  attrs: { "aria-label": t("demo.list.preferences") },
+  children: ["timezone", "language", "dateFormat"].map((key) => ({
+    contract: "list",
+    signature: "ListItem",
+    slots: {
+      title: t(`demo.list.${key}.title` as never),
+      description: t(`demo.list.${key}.description` as never),
+    },
+  })),
+});
+
+/* Don't: rows that keep changing shape make the eye re-learn each line. */
+export const listDontMixedShapeTree = (t: Translate): UsageTree => ({
+  contract: "list",
+  signature: "List",
+  attrs: { "aria-label": t("demo.list.preferences") },
+  children: [
+    {
+      contract: "list",
+      signature: "ListItemPlain",
+      children: t("demo.list.dd.shapePlain" as never),
+    },
+    {
+      contract: "list",
+      signature: "ListItem",
+      slots: {
+        title: t("demo.list.dd.shapeDescribed" as never),
+        description: t("demo.list.language.description" as never),
+      },
+    },
+    {
+      contract: "list",
+      signature: "ListItem",
+      slots: {
+        leading: { contract: "icon", signature: "Icon", options: { name: "calendar" } },
+        title: t("demo.list.dd.shapeIcon" as never),
+        description: t("demo.list.dateFormat.description" as never),
+      },
+    },
+    {
+      contract: "list",
+      signature: "ListItem",
+      slots: {
+        title: t("demo.list.dd.shapeTrailing" as never),
+        trailing: t("demo.list.dateFormat.value" as never),
+      },
+    },
+  ],
+});
+
+export const listDoComparableTrailingTree = (t: Translate): UsageTree => ({
+  contract: "list",
+  signature: "List",
+  attrs: { "aria-label": t("demo.list.preferences") },
+  children: ["timezone", "language", "dateFormat"].map((key) => ({
+    contract: "list",
+    signature: "ListItem",
+    slots: {
+      title: t(`demo.list.${key}.title` as never),
+      description: t(`demo.list.${key}.description` as never),
+      trailing: t(`demo.list.${key}.value` as never),
+    },
+  })),
+});
+
+/* Don't: comparable values buried in prose cannot line up visually. */
+export const listDontBuriedValuesTree = (t: Translate): UsageTree => ({
+  contract: "list",
+  signature: "List",
+  attrs: { "aria-label": t("demo.list.preferences") },
+  children: [
+    {
+      contract: "list",
+      signature: "ListItem",
+      slots: {
+        title: t("demo.list.timezone.title" as never),
+        description: t("demo.list.dd.buriedTimezone" as never),
+      },
+    },
+    {
+      contract: "list",
+      signature: "ListItem",
+      slots: {
+        title: t("demo.list.language.title" as never),
+        description: t("demo.list.dd.buriedLanguage" as never),
+      },
+    },
+    {
+      contract: "list",
+      signature: "ListItem",
+      slots: {
+        title: t("demo.list.dateFormat.title" as never),
+        description: t("demo.list.dd.buriedDateFormat" as never),
+      },
+    },
+  ],
+});

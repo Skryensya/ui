@@ -1,6 +1,6 @@
 import type { UsageTree } from "@skryensya/core/usage-tree";
 import { anatomyCanvas, anatomyHints, namePart } from "./annotation-parts";
-import type { Translate } from "../i18n";
+import { useTranslations, type Translate } from "../i18n";
 
 /*
  * THE FADE-EDGE EXAMPLES, AS USAGE TREES.
@@ -11,9 +11,8 @@ import type { Translate } from "../i18n";
  * paint-only, every piece it composes is published, and the one option the activity feed needed
  * (`List`'s `dividers`) was declared in the contract and simply not exposed by its signature.
  *
- * The copy stays literal Spanish rather than going through `t()`, because this page exists only at
- * `/es/componentes/fade-edge`: routing six demos' worth of strings through the message tree would
- * add a locale this page does not have.
+ * Horizontal agenda examples use localized copy; the legacy vertical specimens retain their
+ * literal Spanish copy.
  */
 
 /** Scroll geometry the two vertical demos share. `attrs.style`, because these are the CONSUMER's
@@ -21,12 +20,24 @@ import type { Translate } from "../i18n";
 const VERTICAL_SCROLL = "max-block-size: 11rem; overflow-y: auto;";
 const HORIZONTAL_SCROLL = "overflow-x: auto;";
 
+/*
+ * THE SCROLLER REACHES THE CARD'S EDGE. A card that holds a scroll region has no padding of its own;
+ * the scroller carries it instead, so its scrollbar runs along the card's very edge rather than
+ * floating a padding's width inside it, and the content still sits inset. The card clips its own
+ * corners so the bar follows the radius.
+ */
+const SCROLL_INSET = "padding: var(--space-inset-md);";
+const SCROLL_CARD = "overflow: hidden;";
+/** What sits above or below the scroller keeps the card's inset on the three sides it does not share. */
+const CARD_HEAD = "padding: var(--space-inset-md) var(--space-inset-md) 0;";
+const CARD_FOOT = "padding: 0 var(--space-inset-md) var(--space-inset-md);";
+
 /** The card every vertical demo sits in: a raised, bordered Box at a realistic column width. */
 const card = (children: UsageTree): UsageTree => ({
   contract: "box",
   signature: "Box",
-  options: { surface: "raised", border: "subtle", padding: "md" },
-  attrs: { style: "inline-size: 22rem;" },
+  options: { surface: "raised", border: "subtle", padding: "none" },
+  attrs: { style: `inline-size: 22rem; max-inline-size: 100%; box-sizing: border-box; ${SCROLL_CARD}` },
   children: [children],
 });
 
@@ -98,32 +109,79 @@ const TAGS = [
   ["QA", "accent"],
 ] as const;
 
-/** A row of chips that deliberately overflows its container, for the two horizontal demos. */
-const tagRow: UsageTree = {
-  contract: "layout",
-  signature: "Inline",
-  options: { gap: "sm", wrap: false },
-  children: TAGS.map(([label, tone]) => ({
-    contract: "tag",
-    signature: "Tag",
-    ...(tone ? { options: { tone } } : {}),
-    children: label,
-  })),
-};
+/** A real sequence to browse: two complete sessions and part of the next one at rest. */
+export const fadeHorizontalAgendaTree = (t: Translate, directionOrHref: "to-right" | "to-left" | string = "to-right"): UsageTree => {
+  const direction = directionOrHref === "to-left" ? "to-left" : "to-right";
 
-const tagCard = (fade: UsageTree): UsageTree => ({
+  return {
   contract: "box",
   signature: "Box",
-  options: { surface: "raised", border: "subtle", padding: "md" },
-  attrs: { style: "inline-size: 20rem;" },
-  children: [fade],
-});
+  options: { surface: "raised", border: "subtle", padding: "none" },
+  attrs: { style: `inline-size: 28rem; max-inline-size: 100%; min-inline-size: 0; box-sizing: border-box; ${SCROLL_CARD}` },
+  children: {
+    contract: "layout",
+    signature: "Stack",
+    options: { gap: "none" },
+    children: [
+      {
+        contract: "typography",
+        signature: "Heading",
+        options: { headingSize: "h4", flush: true },
+        attrs: { style: CARD_HEAD },
+        children: t("demo.fadeEdge.agenda.title"),
+      },
+      {
+        contract: "fade-edge",
+        signature: "FadeEdge",
+        options: { direction, scrollAware: true, size: "3rem" },
+        attrs: {
+          ...(direction === "to-left" ? { id: "fade-left-scroll" } : {}),
+          class: "sk-scrollbar",
+          style: `${HORIZONTAL_SCROLL} ${SCROLL_INSET}`,
+          tabindex: "0",
+          role: "region",
+          "aria-label": t("demo.fadeEdge.agenda.region"),
+        },
+        children: {
+          contract: "layout",
+          signature: "Inline",
+          options: { gap: "sm", wrap: false },
+          attrs: { style: "inline-size: max-content;" },
+          children: [1, 2, 3, 4].map((session) => ({
+            contract: "box",
+            signature: "Box",
+            options: { surface: "surface", border: "subtle", padding: "md" },
+            attrs: { style: "inline-size: 11rem; flex: 0 0 11rem; box-sizing: border-box;" },
+            children: {
+              contract: "layout",
+              signature: "Stack",
+              options: { gap: "sm" },
+              children: [
+                { contract: "typography", signature: "Text", options: { size: "sm", tone: "secondary" }, children: t(`demo.fadeEdge.agenda.day${session}` as "demo.fadeEdge.agenda.day1") },
+                { contract: "typography", signature: "Strong", children: t(`demo.fadeEdge.agenda.session${session}` as "demo.fadeEdge.agenda.session1") },
+                { contract: "typography", signature: "Text", options: { size: "sm", tone: "secondary" }, children: ["10:00", "11:30", "14:00", "16:00"][session - 1] },
+              ],
+            },
+          })),
+        },
+      },
+      {
+        contract: "typography",
+        signature: "Text",
+        options: { size: "caption", tone: "secondary" },
+        attrs: { style: CARD_FOOT },
+        children: t("demo.fadeEdge.agenda.hint"),
+      },
+    ],
+  },
+};
+};
 
 /** 1. The default direction: a clipped list whose bottom edge says there are more rows below. */
 export const fadeBottomTree: UsageTree = card({
   contract: "fade-edge",
   signature: "FadeEdge",
-  attrs: { class: "sk-scrollbar", style: VERTICAL_SCROLL },
+  attrs: { class: "sk-scrollbar", style: `${VERTICAL_SCROLL} ${SCROLL_INSET}` },
   children: [activityList("Actividad reciente")],
 });
 
@@ -132,27 +190,13 @@ export const fadeTopTree: UsageTree = card({
   contract: "fade-edge",
   signature: "FadeEdge",
   options: { direction: "to-top" },
-  attrs: { id: "fade-top-scroll", class: "sk-scrollbar", style: VERTICAL_SCROLL },
+  attrs: { id: "fade-top-scroll", class: "sk-scrollbar", style: `${VERTICAL_SCROLL} ${SCROLL_INSET}` },
   children: [activityList("Actividad reciente, scrolleada hacia abajo")],
 });
 
-/** 3. A chip row that does not fit, with the fade standing in for a scroll affordance. */
-export const fadeRightTree: UsageTree = tagCard({
-  contract: "fade-edge",
-  signature: "FadeEdge",
-  options: { direction: "to-right" },
-  attrs: { class: "sk-scrollbar", style: HORIZONTAL_SCROLL },
-  children: [tagRow],
-});
-
-/** 4. The same row, started at its end. */
-export const fadeLeftTree: UsageTree = tagCard({
-  contract: "fade-edge",
-  signature: "FadeEdge",
-  options: { direction: "to-left" },
-  attrs: { id: "fade-left-scroll", class: "sk-scrollbar", style: HORIZONTAL_SCROLL },
-  children: [tagRow],
-});
+/** Storybook keeps the same agenda as the docs, in its default Spanish locale. */
+export const fadeRightTree: UsageTree = fadeHorizontalAgendaTree(useTranslations("es"));
+export const fadeLeftTree: UsageTree = fadeHorizontalAgendaTree(useTranslations("es"), "to-left");
 
 /*
  * 5. The scrim: a photo whose caption has to stay legible over whatever the image happens to show.
@@ -227,13 +271,14 @@ export const fadeIntensityTree: UsageTree = {
     {
       contract: "box",
       signature: "Box",
-      options: { surface: "raised", border: "subtle", padding: "md" },
+      options: { surface: "raised", border: "subtle", padding: "none" },
+      attrs: { style: SCROLL_CARD },
       children: [
         {
           contract: "fade-edge",
           signature: "FadeEdge",
           options: { size: "64px" },
-          attrs: { id: "fade-intensity-region", class: "sk-scrollbar", style: VERTICAL_SCROLL },
+          attrs: { id: "fade-intensity-region", class: "sk-scrollbar", style: `${VERTICAL_SCROLL} ${SCROLL_INSET}` },
           children: [activityList("Actividad reciente")],
         },
       ],
@@ -289,7 +334,7 @@ export const fadeScrollAwareTree: UsageTree = card({
   contract: "fade-edge",
   signature: "FadeEdge",
   options: { scrollAware: true },
-  attrs: { class: "sk-scrollbar", style: VERTICAL_SCROLL },
+  attrs: { class: "sk-scrollbar", style: `${VERTICAL_SCROLL} ${SCROLL_INSET}` },
   children: [activityList("Actividad reciente, con el fundido atento al scroll")],
 });
 
@@ -310,4 +355,127 @@ export const fadeEdgeAnatomyTree = (t: Translate): UsageTree => ({
       namePart(".sk-fade-edge > *", "inline-end"),
     ],
   },
+});
+
+/*
+ * Usage guide, "only when there is more": ONE specimen, both halves. Two chips that fit, in a card as
+ * wide as they are, so the edge the fade sits on is the last chip itself. Faded anyway, that chip
+ * loses contrast for nothing; with `scrollAware`, the row has nothing left to scroll, so there is no
+ * fade at all. Same chips, same card, same height: the only difference is the one the caption names.
+ */
+const fitsTree = (scrollAware: boolean): UsageTree => ({
+  contract: "box",
+  signature: "Box",
+  options: { surface: "raised", border: "subtle", padding: "md" },
+  attrs: { style: "inline-size: max-content;" },
+  children: [
+    {
+      contract: "fade-edge",
+      signature: "FadeEdge",
+      options: scrollAware ? { direction: "to-right", scrollAware: true } : { direction: "to-right" },
+      attrs: scrollAware ? { class: "sk-scrollbar", style: HORIZONTAL_SCROLL } : {},
+      children: [
+        {
+          contract: "layout",
+          signature: "Inline",
+          options: { gap: "sm", wrap: false },
+          children: TAGS.slice(0, 2).map(([label, tone]) => ({
+            contract: "tag",
+            signature: "Tag",
+            ...(tone ? { options: { tone } } : {}),
+            children: label,
+          })),
+        },
+      ],
+    },
+  ],
+});
+
+export const fadeDoFitsTree: UsageTree = fitsTree(true);
+export const fadeDontFitsTree: UsageTree = fitsTree(false);
+
+/*
+ * A matched specimen for the direction guide: the same row, opened at its MIDDLE (`data-dd-middle`,
+ * set by the page before it paints), so there are more chips on both sides. Only the fade differs:
+ * the Do fades both ends and lets each retire with the scroll, the Don't fades one side and cuts the
+ * other dry. Real scrollers with their scrollbars showing, because the bar is the proof of where the
+ * content continues. The row is `max-content` wide so the chips keep their full labels and really
+ * overflow; a Tag shrinks and ellipsizes inside a row it does not fit.
+ */
+const directionGuideTree = (fade: { direction: "horizontal"; scrollAware: true } | { direction: "to-right" }): UsageTree => ({
+  contract: "box",
+  signature: "Box",
+  options: { surface: "raised", border: "subtle", padding: "none" },
+  attrs: { style: `inline-size: 100%; min-inline-size: 0; ${SCROLL_CARD}` },
+  children: {
+    contract: "layout",
+    signature: "Stack",
+    options: { gap: "none" },
+    children: [
+      { contract: "typography", signature: "Heading", options: { headingSize: "h4", flush: true }, attrs: { style: CARD_HEAD }, children: "Etiquetas" },
+      {
+        contract: "fade-edge",
+        signature: "FadeEdge",
+        options: fade,
+        attrs: {
+          "data-dd-middle": "",
+          class: "sk-scrollbar",
+          style: `${HORIZONTAL_SCROLL} ${SCROLL_INSET} --sk-fade-edge-size: 5rem;`,
+          tabindex: "0",
+          role: "region",
+          "aria-label": "Etiquetas",
+        },
+        children: [
+          {
+            contract: "layout",
+            signature: "Inline",
+            options: { gap: "sm", wrap: false },
+            attrs: { style: "inline-size: max-content;" },
+            children: TAGS.map(([label, tone]) => ({
+              contract: "tag",
+              signature: "Tag",
+              ...(tone ? { options: { tone } } : {}),
+              children: label,
+            })),
+          },
+        ],
+      },
+    ],
+  },
+});
+
+export const fadeDirectionGuideTree = directionGuideTree({ direction: "horizontal", scrollAware: true });
+/** More content on both sides, but only the right edge fades: the left one cuts dry. */
+export const fadeDontDirectionTree = directionGuideTree({ direction: "to-right" });
+
+/** Transparent masking fades the photo itself; color mode lets it blend into the caption surface. */
+export const fadeDontModeTree: UsageTree = {
+  contract: "box",
+  signature: "Box",
+  options: { border: "subtle" },
+  attrs: { style: "inline-size: 20rem;" },
+  children: {
+    contract: "fade-edge",
+    signature: "FadeEdge",
+    attrs: {
+      style: "block-size: 12rem; background: linear-gradient(135deg, var(--palette-blue-600), var(--palette-sky-400));",
+    },
+    children: [""],
+  },
+};
+
+/** scrollAware cannot follow scrolling when overflow belongs to a nested child, not FadeEdge. */
+export const fadeDontNestedScrollTree: UsageTree = card({
+  contract: "fade-edge",
+  signature: "FadeEdge",
+  options: { scrollAware: true },
+  children: [
+    {
+      contract: "layout",
+      signature: "Stack",
+      options: { gap: "none" },
+      attrs: { class: "sk-scrollbar", style: `${VERTICAL_SCROLL} ${SCROLL_INSET}` },
+      children: [activityList("Actividad reciente")],
+    },
+  ],
 });

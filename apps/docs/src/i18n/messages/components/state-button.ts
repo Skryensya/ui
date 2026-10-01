@@ -2,7 +2,7 @@ export const stateButtonMessages = {
   es: {
     "stateButtonPage.anatomyLabel": "Anatomía de StateButton",
     "stateButtonPage.anatomyPreviewLabel": "StateButton, parte por parte",
-    "stateButtonPage.anatomyDiagramBody": "El botón es la raíz y cada estado es una cara, un hijo con <code>data-face</code>. Sólo la que lleva <code>data-active</code> se ve; las caras son datos, no partes, por eso no tienen clase.",
+    "stateButtonPage.anatomyDiagramBody": "El botón es la raíz y cada estado es una cara, un hijo con <code>data-face</code>. Solo la que lleva <code>data-active</code> se ve; las caras son datos, no partes, por eso no tienen clase.",
     "demo.state-button.viewMode.title": "Modo de vista",
     "demo.state-button.viewMode.grid": "Modo de vista: cuadrícula",
     "demo.state-button.viewMode.list": "Modo de vista: lista",
@@ -10,55 +10,57 @@ export const stateButtonMessages = {
     "demo.state-button.themeToggle.title": "Modo de tema",
     "demo.state-button.copy.title": "Copiar al portapapeles",
 
-    "stateButtonPage.description":
-      "StateButton: un botón que muestra uno de N estados nombrados, cada uno con su propio ícono, y deja que quien lo usa escriba el comportamiento.",
-    "stateButtonPage.lede":
-      "Un botón de estado es un primitivo para mostrar uno de varios estados posibles. A diferencia de un Switch (que es para on/off) o un Icon simple (que no cambia), este componente deja que tú decidas cuántos estados hay, cuál está activo, y qué pasa cuando se hace clic.",
-    "stateButtonPage.anatomyTitle": "Anatomía: estados nombrados con íconos",
-    "stateButtonPage.anatomyBody":
-      "Cada estado tiene un nombre (grid, list, light, dark), un ícono que lo representa, y una etiqueta accesible (aria-label). El botón siempre es icon-only: no hay texto visible, sólo glifos.",
-    "stateButtonPage.behaviorTitle": "El comportamiento lo escribes tú",
-    "stateButtonPage.behaviorBody":
-      "StateButton no decide cuándo cambiar de estado. Tú escribes la función que cambia <code>activeState</code> cuando se hace clic: un ciclo (grid → list → compact → grid), un toggle (light ↔ dark), un flujo (ready → copied → ready), lo que necesites.",
-    "stateButtonPage.variantTitle": "Variantes y tamaño heredados de Button",
-    "stateButtonPage.variantBody":
-      "El <code>variant</code> y el <code>size</code> son los de Button: ghost, primary, danger, etc. Con otros estilos. La forma más común en una toolbar es ghost + sm.",
-    "stateButtonPage.useCaseThemeTitle": "Ejemplo: ciclo de modo de tema",
-    "stateButtonPage.useCaseThemeBody":
-      "Tres estados: light (sol), dark (luna), auto (automático). El ícono cambia con el estado, la función onClick cicla entre los tres.",
-    "stateButtonPage.useCaseViewTitle": "Ejemplo: modo de vista",
-    "stateButtonPage.useCaseViewBody":
-      "Tres estados: grid, list, compact. El usuario hace clic para elegir cómo ver los datos. El estado se guarda en la URL o en localStorage.",
-    "stateButtonPage.useCaseCopyTitle": "Ejemplo: copia al portapapeles",
-    "stateButtonPage.useCaseCopyBody":
-      "Dos estados: ready (ícono copy) y copied (ícono check). Después de hacer clic, un timeout vuelve a ready. La función está hecha en <code>@skryensya/core/copy-button</code>.",
-    "stateButtonPage.whenTitle": "Cuándo usarlo",
-    "stateButtonPage.whenItem1":
-      "Necesitas un control icon-only que muestre uno de varios estados, cada uno con su propio ícono.",
-    "stateButtonPage.whenItem2":
-      "Los estados varían según el caso: no hay un set fijo. Si siempre son on/off, es un Switch.",
-    "stateButtonPage.whenItem3":
-      "Quien lo usa va a escribir el comportamiento: un ciclo, un toggle, un flujo personalizado.",
-    "stateButtonPage.avoidTitle": "Cuándo no usarlo",
-    "stateButtonPage.avoidItem1":
-      "Si hay sólo dos estados que se leen como on/off: usa un Switch o un Toggle simple.",
-    "stateButtonPage.avoidItem2":
-      "Si el comportamiento ya está hecho: usa <code>@skryensya/core/theme-toggle</code> o <code>@skryensya/core/copy-button</code>, que están hechos sobre StateButton.",
-    "stateButtonPage.avoidItem3":
-      "Si el ícono es puramente decorativo y no cambia: usa Icon, sin la anatomía de estados.",
-    "stateButtonPage.avoidItem4":
-      "Si necesitas texto visible además del ícono: usa Button.action, no esta anatomía icon-only.",
-    "stateButtonPage.contractItem1":
-      "El botón siempre es <code>data-icon-only</code>. El nombre accesible es <code>aria-label</code> o <code>aria-labelledby</code> en el botón.",
-    "stateButtonPage.contractItem2":
-      "El <code>name</code> nombra el comportamiento (theme-toggle, view-mode, copy-status) para que el CSS y el comportamiento hablen el mismo idioma.",
-    "stateButtonPage.contractItem3":
-      "El <code>states</code> es un array de {name, icon, ariaLabel}: cada estado tiene su propio ícono y su propia etiqueta accesible.",
-    "stateButtonPage.contractItem4":
-      "El <code>variant</code> y el <code>size</code> vienen de Button: el primitivo no tiene opinión sobre aspecto.",
-    "stateButtonPage.showcaseTitle": "Showcases",
-    "stateButtonPage.showcaseBody": "Un botón con tres estados, un selector de tema y el estado de una copia.",
-    "stateButtonPage.guidelinesLede": "StateButton es un botón de ícono que muestra uno de varios estados con nombre.",
+    "stateButtonPage.description": "Un botón de ícono que muestra uno de varios estados con nombre y cambia al presionarlo.",
+
+    "stateButtonPage.key.run": "Pasa al siguiente estado.",
+
+    "stateButtonPage.a11yYours2": "Si el cambio no se ve en otro lado (como «copiado»), anúncialo con una región viva.",
+
+    "stateButtonPage.a11yYours1": "Dale a cada estado su etiqueta.",
+
+    "stateButtonPage.a11yDoes2": "Solo la cara activa se ve; las demás no se anuncian.",
+
+    "stateButtonPage.a11yDoes1": "El nombre accesible es el del estado activo.",
+
+    "stateButtonPage.a11yIntro": "StateButton es un <code>&lt;button&gt;</code> nativo cuyo nombre cambia con el estado.",
+
+    "stateButtonPage.content2": "Elige íconos que se distingan entre sí sin leer la etiqueta.",
+
+    "stateButtonPage.content1": "Nombra cada estado con lo que pasa al presionar, o con lo que está activo, pero siempre igual: «Vista en lista».",
+
+    "stateButtonPage.whenNot4": 'Para copiar texto con su valor a la vista: usa <a href="/es/componentes/clipboard">Clipboard</a>.',
+
+    "stateButtonPage.whenNot3": 'Si necesita texto visible: usa <a href="/es/componentes/button">Button</a>.',
+
+    "stateButtonPage.whenNot2": 'Si conviene ver todas las opciones a la vez: usa <a href="/es/componentes/segmented">Segmented</a>.',
+
+    "stateButtonPage.whenNot1": 'Para encender o apagar algo: usa <a href="/es/componentes/switch">Switch</a>.',
+
+    "stateButtonPage.when2": 'En una barra de herramientas, con <code>variant="ghost"</code> y <code>size="sm"</code>.',
+
+    "stateButtonPage.when1": "Para un control de ícono con varios estados, cada uno con su ícono: tema, vista, copiado.",
+
+    "stateButtonPage.contract4": "<code>variant</code> y <code>size</code> son los de Button.",
+
+    "stateButtonPage.contract3": "No cambia de estado solo: escribes tú la función que cambia <code>activeState</code>.",
+
+    "stateButtonPage.contract2": "<code>states</code> es una lista de estados, cada uno con <code>name</code>, ícono y etiqueta.",
+
+    "stateButtonPage.contract1": "Siempre es un botón de solo ícono: el nombre accesible cambia con el estado.",
+
+    "stateButtonPage.copyBody": "Después del clic muestra el check y vuelve solo. <code>@skryensya/core/copy-button</code> ya trae este comportamiento.",
+
+    "stateButtonPage.copyTitle": "Copiar: listo y copiado",
+
+    "stateButtonPage.themeBody": "El ícono muestra el modo actual. <code>@skryensya/core/theme-toggle</code> ya trae este comportamiento.",
+
+    "stateButtonPage.themeTitle": "Tema: claro, oscuro o del sistema",
+
+    "stateButtonPage.viewBody": "Tres estados en ciclo: cada clic pasa al siguiente.",
+
+    "stateButtonPage.viewTitle": "Vista: cuadrícula, lista o compacta",
+    "stateButtonPage.lede": "StateButton es un botón de ícono que muestra uno de varios estados con nombre y cambia al presionarlo: el modo de tema, la vista de una lista, «copiado». Cada estado tiene su ícono y su nombre accesible; cuándo cambia lo decides tú.",
+    "stateButtonPage.guidelinesLede": "Un botón que muestra su estado ahorra espacio, a cambio de esconder los otros estados.",
   },
   en: {
     "stateButtonPage.anatomyLabel": "StateButton anatomy",
@@ -71,54 +73,56 @@ export const stateButtonMessages = {
     "demo.state-button.themeToggle.title": "Theme mode",
     "demo.state-button.copy.title": "Copy to clipboard",
 
-    "stateButtonPage.description":
-      "StateButton: a button that shows one of N named states, each with its own icon, and lets you write the behavior.",
-    "stateButtonPage.lede":
-      "A state button is a primitive to show one of several possible states. Unlike a Switch (which is for on/off) or a simple Icon (which does not change), this component lets you decide how many states there are, which is active, and what happens when clicked.",
-    "stateButtonPage.anatomyTitle": "Anatomy: named states with icons",
-    "stateButtonPage.anatomyBody":
-      "Each state has a name (grid, list, light, dark), an icon that represents it, and an accessible label (aria-label). The button is always icon-only: no visible text, just glyphs.",
-    "stateButtonPage.behaviorTitle": "You write the behavior",
-    "stateButtonPage.behaviorBody":
-      "StateButton does not decide when to change state. You write the function that changes <code>activeState</code> when clicked: a cycle (grid → list → compact → grid), a toggle (light ↔ dark), a flow (ready → copied → ready), whatever you need.",
-    "stateButtonPage.variantTitle": "Variants and size inherited from Button",
-    "stateButtonPage.variantBody":
-      "The <code>variant</code> and <code>size</code> are from Button: ghost, primary, danger, etc. The most common form in a toolbar is ghost + sm.",
-    "stateButtonPage.useCaseThemeTitle": "Example: theme mode cycle",
-    "stateButtonPage.useCaseThemeBody":
-      "Three states: light (sun), dark (moon), auto (automatic). The icon changes with the state, the onClick function cycles through all three.",
-    "stateButtonPage.useCaseViewTitle": "Example: view mode",
-    "stateButtonPage.useCaseViewBody":
-      "Three states: grid, list, compact. The user clicks to choose how to view the data. The state is saved in the URL or localStorage.",
-    "stateButtonPage.useCaseCopyTitle": "Example: copy to clipboard",
-    "stateButtonPage.useCaseCopyBody":
-      "Two states: ready (copy icon) and copied (check icon). After clicking, a timeout returns to ready. The function is built into <code>@skryensya/core/copy-button</code>.",
-    "stateButtonPage.whenTitle": "When to use it",
-    "stateButtonPage.whenItem1":
-      "You need an icon-only control that shows one of several states, each with its own icon.",
-    "stateButtonPage.whenItem2":
-      "States vary by use case: there is no fixed set. If it is always on/off, use a Switch.",
-    "stateButtonPage.whenItem3":
-      "The person using it will write the behavior: a cycle, a toggle, a custom flow.",
-    "stateButtonPage.avoidTitle": "When not to use it",
-    "stateButtonPage.avoidItem1":
-      "If there are only two states that read as on/off: use a Switch or a simple Toggle.",
-    "stateButtonPage.avoidItem2":
-      "If the behavior is already built: use <code>@skryensya/core/theme-toggle</code> or <code>@skryensya/core/copy-button</code>, which are built on StateButton.",
-    "stateButtonPage.avoidItem3":
-      "If the icon is purely decorative and does not change: use Icon, without the state anatomy.",
-    "stateButtonPage.avoidItem4":
-      "If you need visible text alongside the icon: use Button.action, not this icon-only anatomy.",
-    "stateButtonPage.contractItem1":
-      "The button is always <code>data-icon-only</code>. The accessible name is <code>aria-label</code> or <code>aria-labelledby</code> on the button.",
-    "stateButtonPage.contractItem2":
-      "The <code>name</code> names the behavior (theme-toggle, view-mode, copy-status) so CSS and behavior speak the same language.",
-    "stateButtonPage.contractItem3":
-      "The <code>states</code> is an array of {name, icon, ariaLabel}: each state has its own icon and its own accessible label.",
-    "stateButtonPage.contractItem4":
-      "The <code>variant</code> and <code>size</code> come from Button: the primitive has no opinion about appearance.",
-    "stateButtonPage.showcaseTitle": "Showcases",
-    "stateButtonPage.showcaseBody": "A button with three states, a theme toggle, and a copy status.",
-    "stateButtonPage.guidelinesLede": "StateButton is an icon button showing one of several named states.",
+    "stateButtonPage.description": "An icon button that shows one of several named states and changes when pressed.",
+
+    "stateButtonPage.key.run": "Moves to the next state.",
+
+    "stateButtonPage.a11yYours2": "If the change is not seen elsewhere (like “copied”), announce it with a live region.",
+
+    "stateButtonPage.a11yYours1": "Give each state its label.",
+
+    "stateButtonPage.a11yDoes2": "Only the active face shows; the others are not announced.",
+
+    "stateButtonPage.a11yDoes1": "The accessible name is the active state's.",
+
+    "stateButtonPage.a11yIntro": "StateButton is a native <code>&lt;button&gt;</code> whose name changes with the state.",
+
+    "stateButtonPage.content2": "Choose icons that tell apart without reading the label.",
+
+    "stateButtonPage.content1": "Name each state by what pressing does, or by what is active, but always the same way: “List view”.",
+
+    "stateButtonPage.whenNot4": 'To copy text with its value in view: use <a href="/components/clipboard">Clipboard</a>.',
+
+    "stateButtonPage.whenNot3": 'If it needs visible text: use <a href="/components/button">Button</a>.',
+
+    "stateButtonPage.whenNot2": 'If seeing all options at once helps: use <a href="/components/segmented">Segmented</a>.',
+
+    "stateButtonPage.whenNot1": 'To turn something on or off: use <a href="/components/switch">Switch</a>.',
+
+    "stateButtonPage.when2": 'In a toolbar, with <code>variant="ghost"</code> and <code>size="sm"</code>.',
+
+    "stateButtonPage.when1": "For an icon control with several states, each with its icon: theme, view, copied.",
+
+    "stateButtonPage.contract4": "<code>variant</code> and <code>size</code> are Button's.",
+
+    "stateButtonPage.contract3": "It does not change state by itself: you write the function that changes <code>activeState</code>.",
+
+    "stateButtonPage.contract2": "<code>states</code> is a list of states, each with a <code>name</code>, icon and label.",
+
+    "stateButtonPage.contract1": "It is always an icon-only button: the accessible name changes with the state.",
+
+    "stateButtonPage.copyBody": "After the click it shows the check and returns by itself. <code>@skryensya/core/copy-button</code> already brings this behavior.",
+
+    "stateButtonPage.copyTitle": "Copy: ready and copied",
+
+    "stateButtonPage.themeBody": "The icon shows the current mode. <code>@skryensya/core/theme-toggle</code> already brings this behavior.",
+
+    "stateButtonPage.themeTitle": "Theme: light, dark or system",
+
+    "stateButtonPage.viewBody": "Three states in a cycle: each click moves to the next.",
+
+    "stateButtonPage.viewTitle": "View: grid, list or compact",
+    "stateButtonPage.lede": "StateButton is an icon button that shows one of several named states and changes when pressed: the theme mode, a list's view, “copied”. Each state has its icon and accessible name; when it changes is up to you.",
+    "stateButtonPage.guidelinesLede": "A button that shows its state saves space, at the cost of hiding the other states.",
   },
 };

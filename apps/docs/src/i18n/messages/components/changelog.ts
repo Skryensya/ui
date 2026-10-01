@@ -1,5 +1,9 @@
 export const changelogMessages = {
   es: {
+    "demo.changelog.vague.refactorBody": "Cambios internos.",
+    "demo.changelog.vague.refactor": "Refactor",
+    "demo.changelog.vague.fixesBody": "Mejoras de estabilidad.",
+    "demo.changelog.vague.fixes": "Varios arreglos",
     /* The dates are written here, not formatted in the demo: the tree has a `Translate` and not a
        locale, and `Intl` needs the locale. Each language writes the date the way that language does. */
     "demo.changelog.label": "Cambios de Accordion",
@@ -15,7 +19,7 @@ export const changelogMessages = {
        gets read once someone stopped there. */
     "demo.changelog.breaking.title": "El evento cambió de nombre",
     "demo.changelog.breaking.body": "Pasó a llamarse sk:accordionvaluechange. El anterior ya no se emite.",
-    "demo.changelog.bugfix.title": "La parte se busca sólo como hija directa",
+    "demo.changelog.bugfix.title": "La parte se busca solo como hija directa",
     "demo.changelog.bugfix.body": "El enhancer la buscaba en cualquier descendiente, así que una sección anidada ataba su propio título como panel.",
     "demo.changelog.rework.title": "collapsible pasa a ser false por defecto",
     "demo.changelog.rework.body": "Es como se comportaba el acordeón de una sola sección desde siempre.",
@@ -40,45 +44,72 @@ export const changelogMessages = {
     "changelog.kind.rework": "rework",
     "changelog.kind.chore": "chore",
 
-    "changelogPage.description":
-      "Changelog: historial fechado con riel, donde la fecha es lo que se busca y el punto dice qué tipo de cambio fue.",
-    "changelogPage.betaBadge": "Beta",
-    "changelogPage.lede":
-      "Un historial fechado, lo más nuevo arriba. La fecha encabeza cada entrada porque es lo que el lector viene a buscar, y el punto del riel es una marca neutra que dice <em>cuándo</em>: el <em>qué</em> lo dice la palabra al lado. Es estático: no hay enhancer ni estado.",
-    "changelogPage.anatomyBody":
-      "Este diagrama nombra el release, el marcador, la versión, la fecha, las entries y el título y texto de una entrada. El espécimen está congelado; el Changelog vivo empieza abajo.",
+    "changelogPage.description": "Lista las versiones de algo y lo que cambió en cada una, lo más nuevo arriba.",
+
+    "changelogPage.a11yYours2": "Si pones el changelog bajo un encabezado, ajusta los niveles de los títulos de versión al esquema de la página.",
+
+    "changelogPage.a11yYours1": "Nombra la lista con <code>aria-label</code>: «Cambios de Accordion».",
+
+    "changelogPage.a11yDoes3": "El tipo se escribe con una palabra; el punto de color es decorativo.",
+
+    "changelogPage.a11yDoes2": "La fecha va en un <code>&lt;time datetime&gt;</code>.",
+
+    "changelogPage.a11yDoes1": "La lista es <code>reversed</code>, así el lector de pantalla cuenta hacia atrás, como el tiempo.",
+
+    "changelogPage.a11yIntro": "Changelog es una lista ordenada: no tiene controles ni foco.",
+
+    "changelogPage.content4": "Formatea la fecha en el idioma de la página; no la escribas a mano.",
+
+    "changelogPage.content3": "Nombra en <code>target</code> la opción o la parte que tocó el cambio.",
+
+    "changelogPage.content2": "En un cambio incompatible, di qué hay que hacer para actualizarse.",
+
+    "changelogPage.content1": "Titula cada entrada con lo que cambió para quien lo usa: «El evento cambió de nombre», no «Refactor».",
+
+    "changelogPage.dd.specific.dont": "«Varios arreglos» obliga a leer el código para saber si algo te afecta.",
+
+    "changelogPage.dd.specific.do": "«El evento cambió de nombre» dice qué hay que tocar en el código que lo consume.",
+
+    "changelogPage.dd.specific.title": "Entradas: qué cambió para quien lo usa",
+
+    "changelogPage.whenNot4": 'Para una actividad con autores y horas: usa <a href="/es/componentes/feed">Feed</a>.',
+
+    "changelogPage.whenNot3": 'Para una sola novedad sin historia alrededor: usa un <a href="/es/componentes/callout">Callout</a>.',
+
+    "changelogPage.whenNot2": 'Para mostrar en qué etapa está alguien: usa <a href="/es/componentes/steps">Steps</a>.',
+
+    "changelogPage.whenNot1": 'Para instrucciones que se siguen en orden: usa <a href="/es/componentes/process-list">ProcessList</a>.',
+
+    "changelogPage.when2": "Cuando quien lee necesita saber desde qué versión puede contar con un cambio.",
+
+    "changelogPage.when1": "Para las notas de versión de un producto o el historial de un contrato.",
+
+    "changelogPage.contract4": "Una versión sin fecha es una versión sin publicar; no hay una opción aparte para decirlo.",
+
+    "changelogPage.contract3": "El tipo también: la opción <code>kind</code> marca la entrada y el slot es la palabra, obligatoria, así el tipo nunca queda solo en el color.",
+
+    "changelogPage.contract2": "La fecha son dos campos: <code>date</code> (<code>YYYY-MM-DD</code>) va a <code>&lt;time datetime&gt;</code>, y el texto visible es un slot que formateas con <code>Intl.DateTimeFormat</code>.",
+
+    "changelogPage.contract1": "La raíz es un <code>&lt;ol reversed&gt;</code>: lo más nuevo arriba no es una opción, es lo que un changelog es.",
+
+    "changelogPage.exampleBody": "La versión con sufijo <code>-dev</code> y sin fecha todavía no se publicó. Cada entrada dice su tipo con una palabra, y el punto lo refuerza.",
+
+    "changelogPage.exampleTitle": "Dos versiones: una sin publicar",
+    "changelogPage.lede": "Changelog lista las versiones de algo y lo que cambió en cada una, lo más nuevo arriba. Quien lo lee quiere saber si ya tiene el cambio que está leyendo, y la versión se lo dice. Es estático: no tiene estado ni JavaScript.",
+    "changelogPage.anatomyBody": "La versión, su marcador y su fecha, y en cada entrada el tipo, el título y el texto.",
     "changelogPage.anatomyLabel": "Anatomía de Changelog",
     "changelogPage.anatomyPreviewLabel": "Changelog, parte por parte",
-    "changelogPage.previewNote": "cuatro tipos",
-    "changelogPage.whenTitle": "Cuándo usarlo",
-    "changelogPage.whenItem1":
-      "Usa Changelog para release notes y para el historial de un contrato: cosas que pasaron, cada una con su día.",
-    "changelogPage.whenItem2":
-      'Usa <a href="/es/componentes/process-list">ProcessList</a> para instrucciones en orden. Numera sus marcadores con un <code>counter()</code> de CSS, así que una lista con lo más nuevo arriba se numeraría al revés del tiempo.',
-    "changelogPage.whenItem3":
-      'Usa <a href="/es/componentes/steps">Steps</a> cuando haya progreso: <code>complete</code>, <code>current</code>, <code>upcoming</code>. Su conector dice cuánto trabajo queda atrás, que de un cambio ya publicado no es una afirmación que nadie pueda hacer.',
-    "changelogPage.contractItem1":
-      'La raíz es <code>&lt;ol class="sk-changelog" reversed&gt;</code>. El <code>reversed</code> es fijo, no una opción: lo más nuevo arriba es lo que un changelog <em>es</em>. Nadie dibuja los números, pero el árbol de accesibilidad los lee, y ahí tienen que contar hacia atrás.',
-    "changelogPage.contractItem2":
-      "<strong>La fecha son dos campos.</strong> La opción <code>date</code> es el día legible por una máquina (<code>YYYY-MM-DD</code>) y aterriza en <code>&lt;time datetime&gt;</code>; el texto visible es un slot, porque una fecha formateada es copy en un idioma y Core no envía ninguno. Formatea con <code>Intl.DateTimeFormat</code> y llena el slot.",
-    "changelogPage.contractItem3":
-      "<strong>El tipo también son dos.</strong> La opción <code>kind</code> marca la entrada (<code>added</code>, <code>changed</code>, <code>fixed</code>, <code>removed</code>, <code>breaking</code>); el slot es la palabra, y es obligatorio, así que el tipo nunca queda sólo en el color.",
-    "changelogPage.contractItem4":
-      "<code>target</code> es opcional: la opción, parte o firma a la que le pegó el cambio. Una entrada sobre el contrato entero no lleva ninguno.",
-    "changelogPage.contractItem5":
-      "<strong>Un solo color.</strong> Pintar cada tipo con su color de estado dejaba un riel verde, azul y ámbar al costado de una página que es prosa, y el verde ganaba por cantidad: casi toda entrada de casi todo changelog es una alta. El punto es una marca neutra; el tipo ya está escrito al lado. <code>breaking</code> es la única excepción, porque es el único tipo cuyo costo de pasar desapercibido es el build de quien te consume: se lleva el punto y la palabra. Si quieres la paleta de estado de vuelta, es una declaración de <code>--sk-changelog-marker-color</code> por tipo.",
-    "changelogPage.datesTitle": "Fechas, no versiones",
-    "changelogPage.datesBody":
-      "Este contrato no tiene campo de versión y es a propósito. Un número de versión sólo dice algo si quien lee sabe qué releases existen; una fecha se lee sola. Cuando haya versiones publicadas, el lugar para ponerlas es el slot de la fecha, junto al día, no en vez de él.",
     "changelogPage.test1": "Renderiza una lista ordenada de releases en orden inverso (el más reciente primero).",
     "changelogPage.test2": "Un release sin fecha se marca «sin publicar» y no renderiza hora alguna.",
     "changelogPage.test3": "El tipo de cambio se dibuja como un Badge.",
     "changelogPage.test4": "Título y descripción se renderizan como partes separadas.",
-    "changelogPage.showcaseTitle": "Showcases",
-    "changelogPage.showcaseBody": "Versiones con sus cambios, cada uno marcado por tipo.",
-    "changelogPage.guidelinesLede": "Changelog lista las versiones de un producto y lo que cambió en cada una.",
+    "changelogPage.guidelinesLede": "Un changelog responde una pregunta: ¿ya tengo este cambio?",
   },
   en: {
+    "demo.changelog.vague.refactorBody": "Internal changes.",
+    "demo.changelog.vague.refactor": "Refactor",
+    "demo.changelog.vague.fixesBody": "Stability improvements.",
+    "demo.changelog.vague.fixes": "Various fixes",
     /* The dates are written here rather than formatted in the demo: the tree has a `Translate` and
        not a locale, and `Intl` needs the locale. Each language writes a date the way it writes dates. */
     "demo.changelog.label": "Accordion changes",
@@ -111,42 +142,65 @@ export const changelogMessages = {
     "changelog.kind.rework": "rework",
     "changelog.kind.chore": "chore",
 
-    "changelogPage.description":
-      "Changelog: a dated history with a rail, where the date is what a reader is looking for and the marker says what kind of change it was.",
-    "changelogPage.betaBadge": "Beta",
-    "changelogPage.lede":
-      "A dated history, newest on top. The date heads every entry because that is what the reader came looking for, and the rail's marker is a neutral mark that says <em>when</em>: the <em>what</em> is the word beside it. It is static: no enhancer, no state.",
-    "changelogPage.anatomyBody":
-      "This diagram names the release, marker, version, date, entries, and an entry's title and text. The specimen is frozen; the live Changelog starts below.",
+    "changelogPage.description": "Lists something's versions and what changed in each, newest first.",
+
+    "changelogPage.a11yYours2": "If the changelog sits under a heading, set the version titles' levels to fit the page's outline.",
+
+    "changelogPage.a11yYours1": "Name the list with <code>aria-label</code>: “Accordion changes”.",
+
+    "changelogPage.a11yDoes3": "The kind is written as a word; the colored dot is decorative.",
+
+    "changelogPage.a11yDoes2": "The date is in a <code>&lt;time datetime&gt;</code>.",
+
+    "changelogPage.a11yDoes1": "The list is <code>reversed</code>, so a screen reader counts down, as time does.",
+
+    "changelogPage.a11yIntro": "Changelog is an ordered list: it has no controls and no focus.",
+
+    "changelogPage.content4": "Format the date in the page's language; do not write it by hand.",
+
+    "changelogPage.content3": "Name in <code>target</code> the option or part the change touched.",
+
+    "changelogPage.content2": "For a breaking change, say what to do to upgrade.",
+
+    "changelogPage.content1": "Title each entry with what changed for whoever uses it: “The event was renamed”, not “Refactor”.",
+
+    "changelogPage.dd.specific.dont": "“Various fixes” makes people read the code to know whether anything affects them.",
+
+    "changelogPage.dd.specific.do": "“The event was renamed” says what to change in the code that consumes it.",
+
+    "changelogPage.dd.specific.title": "Entries: what changed for whoever uses it",
+
+    "changelogPage.whenNot4": 'For activity with authors and times: use <a href="/components/feed">Feed</a>.',
+
+    "changelogPage.whenNot3": 'For a single piece of news with no history around it: use a <a href="/components/callout">Callout</a>.',
+
+    "changelogPage.whenNot2": 'To show which stage someone is at: use <a href="/components/steps">Steps</a>.',
+
+    "changelogPage.whenNot1": 'For instructions followed in order: use <a href="/components/process-list">ProcessList</a>.',
+
+    "changelogPage.when2": "When readers need to know from which version they can rely on a change.",
+
+    "changelogPage.when1": "For a product's release notes or a contract's history.",
+
+    "changelogPage.contract4": "A version with no date is an unpublished version; there is no separate option to say so.",
+
+    "changelogPage.contract3": "So is the kind: the <code>kind</code> option marks the entry and the slot is the word, required, so the kind is never color alone.",
+
+    "changelogPage.contract2": "The date is two fields: <code>date</code> (<code>YYYY-MM-DD</code>) lands on <code>&lt;time datetime&gt;</code>, and the visible text is a slot you format with <code>Intl.DateTimeFormat</code>.",
+
+    "changelogPage.contract1": "The root is an <code>&lt;ol reversed&gt;</code>: newest first is not an option, it is what a changelog is.",
+
+    "changelogPage.exampleBody": "The version with a <code>-dev</code> suffix and no date is not published yet. Each entry states its kind in a word, and the dot reinforces it.",
+
+    "changelogPage.exampleTitle": "Two versions: one unpublished",
+    "changelogPage.lede": "Changelog lists something's versions and what changed in each, newest first. Readers want to know whether they already have the change they are reading, and the version tells them. It is static: no state and no JavaScript.",
+    "changelogPage.anatomyBody": "The version, its marker and its date, and in each entry the kind, the title and the text.",
     "changelogPage.anatomyLabel": "Changelog anatomy",
     "changelogPage.anatomyPreviewLabel": "Changelog, part by part",
-    "changelogPage.previewNote": "four kinds",
-    "changelogPage.whenTitle": "When to use it",
-    "changelogPage.whenItem1":
-      "Use Changelog for release notes and for a contract's history: things that happened, each with its own day.",
-    "changelogPage.whenItem2":
-      'Use <a href="/components/process-list">ProcessList</a> for instructions in order. It numbers its markers with a CSS <code>counter()</code>, so a list with the newest on top would count backward through time.',
-    "changelogPage.whenItem3":
-      'Use <a href="/components/steps">Steps</a> when there is progress: <code>complete</code>, <code>current</code>, <code>upcoming</code>. Its connector says how much work is left behind, which is not a claim anyone can make about a change that already shipped.',
-    "changelogPage.contractItem1":
-      'The root is <code>&lt;ol class="sk-changelog" reversed&gt;</code>. <code>reversed</code> is fixed, not an option: newest on top is what a changelog <em>is</em>. Nobody draws the numbers, but the accessibility tree reads them, and there they have to count backward.',
-    "changelogPage.contractItem2":
-      "<strong>The date is two fields.</strong> The <code>date</code> option is the machine-readable day (<code>YYYY-MM-DD</code>) and lands in <code>&lt;time datetime&gt;</code>; the visible text is a slot, because a formatted date is copy in a language and Core ships none. Format it with <code>Intl.DateTimeFormat</code> and fill the slot.",
-    "changelogPage.contractItem3":
-      "<strong>The kind is also two things.</strong> The <code>kind</code> option marks the entry (<code>added</code>, <code>changed</code>, <code>fixed</code>, <code>removed</code>, <code>breaking</code>); the slot is the word, and it is required, so the kind never lives in color alone.",
-    "changelogPage.contractItem4":
-      "<code>target</code> is optional: the option, part or signature the change touched. An entry about the whole contract carries none.",
-    "changelogPage.contractItem5":
-      "<strong>One color.</strong> Painting every kind with its status color left a green, blue and amber rail beside a page that is prose, and green won by sheer volume: almost every entry in almost every changelog is an addition. The marker is a neutral mark; the kind is already spelled out beside it. <code>breaking</code> is the one exception, because it is the only kind whose cost of going unnoticed is the build of whoever consumes you: it keeps the marker and the word. If you want the status palette back, that is a <code>--sk-changelog-marker-color</code> declaration per kind.",
-    "changelogPage.datesTitle": "Dates, not versions",
-    "changelogPage.datesBody":
-      "This contract has no version field, and that is on purpose. A version number only says something if the reader knows which releases exist; a date reads on its own. Once there are published versions, the place for them is the date's own slot, next to the day, not instead of it.",
     "changelogPage.test1": "Renders a reversed ordered list of releases (most recent first).",
     "changelogPage.test2": "A release with no date is marked unreleased and renders no time at all.",
     "changelogPage.test3": "The kind of change is drawn as a Badge.",
     "changelogPage.test4": "Title and description render as separate parts.",
-    "changelogPage.showcaseTitle": "Showcases",
-    "changelogPage.showcaseBody": "Releases with their changes, each marked by kind.",
-    "changelogPage.guidelinesLede": "Changelog lists a product's releases and what changed in each.",
+    "changelogPage.guidelinesLede": "A changelog answers one question: do I have this change yet?",
   },
 } as const;

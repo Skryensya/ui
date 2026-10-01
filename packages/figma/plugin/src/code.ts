@@ -1973,8 +1973,9 @@ async function syncSet(ctx: SetCtx, spec: M.ComponentSet, found: Map<string, Sce
 /* ── the dark demo ──────────────────────────────────────────────────────────────────────────── */
 
 /*
- * DARK IS THE SAME TOKENS IN ANOTHER MODE. Under each frame goes a copy of it, `-demo`, drawn from
- * instances of the same variants, so it is never a second definition of anything:
+ * DARK IS THE SAME TOKENS IN ANOTHER MODE. Beside each frame, to its right and level with it, goes a
+ * copy of it, `-demo`, drawn from instances of the same variants, so it is never a second definition
+ * of anything:
  *
  *   - Where the file holds a Dark mode, the copy only switches its collections to Dark.
  *   - Where it cannot (a Starter file holds one mode per collection), each collection whose values
@@ -1983,6 +1984,23 @@ async function syncSet(ctx: SetCtx, spec: M.ComponentSet, found: Map<string, Sce
  *
  * The copy is rebuilt whole when what it copies changed, and left alone otherwise.
  */
+
+/** Between a frame and its dark copy: the pair reads as one row, light then dark. */
+const DEMO_GAP = 80;
+
+/** How far a node reaches down and across, overflow included: its render bounds, where it has them. */
+function shownSize(node: SceneNode) {
+  const bounds = ("absoluteRenderBounds" in node ? node.absoluteRenderBounds : null) ?? node.absoluteBoundingBox;
+  const above = bounds ? Math.max(0, node.absoluteTransform[1][2] - bounds.y) : 0;
+  return {
+    above,
+    wide: Math.ceil(bounds ? Math.max(node.width, bounds.width) : node.width),
+    tall: Math.ceil(bounds ? Math.max(node.height, bounds.height) : node.height),
+  };
+}
+
+/** Where a frame's dark copy goes: right of everything the frame shows, on the same line. */
+const besideOf = (frame: SceneNode) => ({ x: Math.round(frame.x + shownSize(frame).wide + DEMO_GAP), y: Math.round(frame.y) });
 
 /** Real Figma variable id → the `-demo` variable that holds its dark value. Empty where Dark is a mode. */
 type DemoSwap = Map<string, Variable>;
@@ -2120,7 +2138,7 @@ function demoSignature(spec: M.ComponentSet, frame: FrameNode, set: ComponentSet
   return ["v2", spec.visualHash, spec.contractHash, size(frame), size(set), layout, darkModes.size ? "mode" : `demo:${swap.size}`].join("|");
 }
 
-/** The set's frame, again, in dark: under it, built from instances of its variants. Writes only when stale. */
+/** The set's frame, again, in dark: beside it, built from instances of its variants. Writes only when stale. */
 async function syncDemo(ctx: Ctx, spec: M.ComponentSet, found: Map<string, SceneNode>, page: PageNode | undefined, darkModes: DarkModes, swap: DemoSwap) {
   const { run } = ctx;
   const frame = found.get(`frame:${spec.id}`) as FrameNode | undefined;
@@ -2146,6 +2164,11 @@ async function syncDemo(ctx: Ctx, spec: M.ComponentSet, found: Map<string, Scene
     found.set(id, demo);
   }
   const d = demo;
+  // In its place from the moment it exists: a run that stops while filling it leaves it beside its
+  // frame, not piled at the page's origin.
+  const at = besideOf(frame);
+  d.x = at.x;
+  d.y = at.y;
   // Tagged before it is filled, so a run stopped halfway finds this frame again and rebuilds it.
   tag(run, d, provenance("demo", id));
   d.setSharedPluginData(NS, "signature", "");
@@ -2335,8 +2358,8 @@ function picked(only: readonly string[] | undefined): Set<string> {
 
 /**
  * One column per contract, side by side in manifest order, each contract's frames stacked inside its
- * column: Button's appearances under one another, Badge beside them. A column is as wide as its
- * widest frame. Writes only what moved.
+ * column: Button's appearances under one another, Badge beside them. Each frame's dark copy sits to
+ * its right, so a column is as wide as its widest light-and-dark pair. Writes only what moved.
  */
 function arrange(run: Run, pages: Map<string, PageNode>, found: Map<string, SceneNode>, check = false) {
   for (const [pageId, page] of pages) {
@@ -2348,27 +2371,23 @@ function arrange(run: Run, pages: Map<string, PageNode>, found: Map<string, Scen
       for (const spec of manifest.components.filter((c) => c.page === pageId && contractOf(c) === group.id)) {
         const node = found.get(`frame:${spec.id}`) as FrameNode | undefined;
         if (!node || node.parent !== page) continue;
-        const bounds = node.absoluteRenderBounds ?? node.absoluteBoundingBox;
-        const top = node.absoluteTransform[1][2];
-        const above = bounds ? Math.max(0, top - bounds.y) : 0;
-        const shown = bounds ? Math.max(node.height, bounds.height) : node.height;
+        const { above, wide, tall } = shownSize(node);
         move(run, node, x, Math.round(y + above));
-        y += Math.ceil(shown) + 160;
-        const wide = Math.ceil(bounds ? Math.max(node.width, bounds.width) : node.width);
-        // Its dark demo sits right under it: the same frame, light and then dark, down the column.
-        const demo = found.get(`frame:${spec.id}${DEMO}`);
-        if (demo && demo.parent === page) {
-          move(run, demo, x, Math.round(y - 160 + 48));
-          y += Math.ceil(demo.height) + 48;
-        }
-        columnWidth = Math.max(columnWidth, wide, demo && demo.parent === page ? Math.ceil(demo.width) : 0);
+        // Its dark demo sits beside it, level with it: each row is one frame, light then dark.
+        const copy = found.get(`frame:${spec.id}${DEMO}`);
+        const demo = copy && copy.parent === page ? copy : undefined;
+        const dark = demo ? shownSize(demo) : undefined;
+        if (demo) move(run, demo, x + wide + DEMO_GAP, Math.round(y + above));
+        // The row is as tall as the taller of the two, so neither one sits on the next row.
+        y += Math.max(tall, dark ? dark.tall : 0) + 160;
+        columnWidth = Math.max(columnWidth, dark ? wide + DEMO_GAP + dark.wide : wide);
         if (!check) continue;
         const planned = plannedHeight(spec);
         if (Math.abs(node.height - planned) > 1) run.log("WARN", `frame ${spec.name}`, `height ${Math.round(node.height)}, planned ${planned}`);
         const width = frameWidths.get(spec.id);
         if (width !== undefined && Math.abs(node.width - width) > 1) run.log("WARN", `frame ${spec.name}`, `width ${Math.round(node.width)}, planned ${width}`);
-        if (shown - node.height > 1 || above > 0) {
-          run.log("WARN", `frame ${spec.name}`, `content overflows it: ${Math.round(above)}px above, ${Math.round(shown - node.height - above)}px below`);
+        if (tall - node.height > 1 || above > 0) {
+          run.log("WARN", `frame ${spec.name}`, `content overflows it: ${Math.round(above)}px above, ${Math.round(tall - node.height - above)}px below`);
         }
       }
       if (columnWidth) x += columnWidth + 160;
@@ -2444,73 +2463,82 @@ async function reconcileRun(
   if (apply && home && figma.currentPage !== home) await figma.setCurrentPageAsync(home);
   const { found, pages: ownPages } = await findOwn();
   const ctx: Ctx = { run, progress, vars };
+  try {
+    return await drawAll();
+  } finally {
+    // Whatever happened, stopped or failed halfway, what was drawn is put in its place: a frame or a
+    // dark copy made before the run ended must not stay piled at the page's origin.
+    if (apply) arrange(run, pages, found);
+  }
 
-  // Every frame first, at its final size and place, with its labels: the grid of each set is worked
-  // out here, once, and the variants later only fill it.
-  const layouts = new Map<string, Layout>();
-  if (apply) {
-    for (const spec of specs) {
-      const page = pages.get(spec.page);
-      if (!page) continue;
-      const frame = ensureFrame(ctx, spec.id, spec.name, page, found);
-      if (!frame) continue;
-      if (spec.kind === "icon-set") {
-        frameWidths.set(spec.id, FRAME_PAD + ICON_COLUMNS * ICON_SLOT + FRAME_PAD);
+  async function drawAll() {
+    // Every frame first, at its final size and place, with its labels: the grid of each set is worked
+    // out here, once, and the variants later only fill it.
+    const layouts = new Map<string, Layout>();
+    if (apply) {
+      for (const spec of specs) {
+        const page = pages.get(spec.page);
+        if (!page) continue;
+        const frame = ensureFrame(ctx, spec.id, spec.name, page, found);
+        if (!frame) continue;
+        if (spec.kind === "icon-set") {
+          frameWidths.set(spec.id, FRAME_PAD + ICON_COLUMNS * ICON_SLOT + FRAME_PAD);
+          resizeTo(run, frame, frameWidths.get(spec.id)!, plannedHeight(spec));
+          continue;
+        }
+        const { w, h } = await measureFirst(ctx, spec, setOf(run, spec, found));
+        plannedCellH.set(spec.id, h);
+        const layout = await planLayout(ctx, frame, spec, w, h);
+        layouts.set(spec.id, layout);
+        frameWidths.set(spec.id, Math.ceil(plannedWidth(spec, layout)));
         resizeTo(run, frame, frameWidths.get(spec.id)!, plannedHeight(spec));
-        continue;
       }
-      const { w, h } = await measureFirst(ctx, spec, setOf(run, spec, found));
-      plannedCellH.set(spec.id, h);
-      const layout = await planLayout(ctx, frame, spec, w, h);
-      layouts.set(spec.id, layout);
-      frameWidths.set(spec.id, Math.ceil(plannedWidth(spec, layout)));
-      resizeTo(run, frame, frameWidths.get(spec.id)!, plannedHeight(spec));
+      arrange(run, pages, found);
     }
-    arrange(run, pages, found);
-  }
-  const icons = withIcons ? await syncIconSet(ctx, iconSpec, found, pages.get(iconSpec.page)) : undefined;
-  // A dry run never draws a cell, so it walks the sets without the Icon set it would have made.
-  const setCtx: SetCtx = { ...ctx, icons: icons as IconCtx };
-  // Restacked after each frame fills, so a frame that came out taller never sits on the next one.
-  if (apply) arrange(run, pages, found);
-  for (const spec of setSpecs) {
-    await syncSet(setCtx, spec, found, pages.get(spec.page), layouts.get(spec.id));
+    const icons = withIcons ? await syncIconSet(ctx, iconSpec, found, pages.get(iconSpec.page)) : undefined;
+    // A dry run never draws a cell, so it walks the sets without the Icon set it would have made.
+    const setCtx: SetCtx = { ...ctx, icons: icons as IconCtx };
+    // Restacked after each frame fills, so a frame that came out taller never sits on the next one.
     if (apply) arrange(run, pages, found);
-  }
-  if (darkDemo && setSpecs.length) {
-    progress.start("dark");
-    const swap = await syncDemoVariables(run, vars, darkModes);
-    if (!darkModes.size && !swap.size) {
-      run.log("WARN", "dark versions", "no Dark mode and no dark variables to rebind to: the copies would draw light");
-    }
-    const before = run.writes;
     for (const spec of setSpecs) {
-      await syncDemo(ctx, spec, found, pages.get(spec.page), darkModes, swap);
-      await progress.tick("dark");
+      await syncSet(setCtx, spec, found, pages.get(spec.page), layouts.get(spec.id));
+      if (apply) arrange(run, pages, found);
     }
-    const how = darkModes.size ? "Dark mode" : `${swap.size} ${DEMO} variables`;
-    progress.finish("dark", `${run.writes > before ? "redrawn where stale" : "all current"} · ${how}`);
-    if (apply) arrange(run, pages, found);
-  }
-  // The specimen is gone from the manifest. Its frame held only this plugin's own instances, so it goes too.
-  const specimen = found.get("specimen");
-  if (specimen) {
-    run.log("UPDATE", "specimen frame", "removed, no longer in the manifest");
-    run.write(() => specimen.remove());
-    found.delete("specimen");
-  }
-  collectOrphans(run, ownPages, found);
-  arrange(run, pages, found, apply);
+    if (darkDemo && setSpecs.length) {
+      progress.start("dark");
+      const swap = await syncDemoVariables(run, vars, darkModes);
+      if (!darkModes.size && !swap.size) {
+        run.log("WARN", "dark versions", "no Dark mode and no dark variables to rebind to: the copies would draw light");
+      }
+      const before = run.writes;
+      for (const spec of setSpecs) {
+        await syncDemo(ctx, spec, found, pages.get(spec.page), darkModes, swap);
+        await progress.tick("dark");
+      }
+      const how = darkModes.size ? "Dark mode" : `${swap.size} ${DEMO} variables`;
+      progress.finish("dark", `${run.writes > before ? "redrawn where stale" : "all current"} · ${how}`);
+      if (apply) arrange(run, pages, found);
+    }
+    // The specimen is gone from the manifest. Its frame held only this plugin's own instances, so it goes too.
+    const specimen = found.get("specimen");
+    if (specimen) {
+      run.log("UPDATE", "specimen frame", "removed, no longer in the manifest");
+      run.write(() => specimen.remove());
+      found.delete("specimen");
+    }
+    collectOrphans(run, ownPages, found);
+    arrange(run, pages, found, apply);
 
-  // The file is stamped current only when everything was synced: a partial import is not the manifest.
-  const everything = groups.every((g) => chosen.has(g.id));
-  if (everything && figma.root.getSharedPluginData(NS, "sourceHash") !== manifest.sourceHash) {
-    run.write(() => figma.root.setSharedPluginData(NS, "sourceHash", manifest.sourceHash));
-  }
-  const landing = pages.get(manifest.pages[0].id);
-  if (apply && landing && figma.currentPage !== landing) await figma.setCurrentPageAsync(landing);
+    // The file is stamped current only when everything was synced: a partial import is not the manifest.
+    const everything = groups.every((g) => chosen.has(g.id));
+    if (everything && figma.root.getSharedPluginData(NS, "sourceHash") !== manifest.sourceHash) {
+      run.write(() => figma.root.setSharedPluginData(NS, "sourceHash", manifest.sourceHash));
+    }
+    const landing = pages.get(manifest.pages[0].id);
+    if (apply && landing && figma.currentPage !== landing) await figma.setCurrentPageAsync(landing);
 
-  return report(run, apply, started, progress.phases);
+    return report(run, apply, started, progress.phases);
+  }
 }
 
 figma.showUI(__html__, { width: 440, height: 600, themeColors: true });

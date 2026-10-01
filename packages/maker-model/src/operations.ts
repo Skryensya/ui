@@ -10,6 +10,7 @@ import {
   locate,
   replaceNode,
   withChildren,
+  walk,
   type MakerChild,
   type MakerNode,
   type Place,
@@ -94,12 +95,30 @@ export function applyAll(root: MakerNode, operations: readonly Operation[]): App
 }
 
 function insert(root: MakerNode, at: Place, child: MakerChild): Applied {
+  const forbidden = forbiddenAttributes(child);
+  if (forbidden) return refuse(forbidden);
   if (findChild(root, child.id)) return refuse(`"${child.id}" is already in the page; move it instead.`);
   if (isNode(child)) {
     for (const id of identities(child)) if (findChild(root, id)) return refuse(`"${id}" is already in the page.`);
   }
   if (!canPlaceAt(root, at, child)) return refuse(`${describe(child)} cannot go in "${at.slot}" of "${at.parent}".`);
-  return { ok: true, root: spliceInto(root, at, child) };
+  const placed = spliceInto(root, at, child);
+  return checkAuthoredValues(placed, isNode(child) ? walk(child) : []);
+}
+
+/** An inserted tree has no authority that individual inspector edits lack. */
+function checkAuthoredValues(placed: MakerNode, nodes: Iterable<MakerNode>): Applied {
+  for (const node of nodes) {
+    for (const [name, value] of Object.entries(node.options ?? {})) {
+      const checked = setOption(placed, node.id, name, value);
+      if (!checked.ok) return checked;
+    }
+    for (const [name, value] of Object.entries(node.attrs ?? {})) {
+      const checked = setAttr(placed, node.id, name, value);
+      if (!checked.ok) return checked;
+    }
+  }
+  return { ok: true, root: placed };
 }
 
 function move(root: MakerNode, id: string, to: Place): Applied {
@@ -128,6 +147,8 @@ function remove(root: MakerNode, id: string): Applied {
  * operation does one thing and `unwrap` undoes exactly this.
  */
 function wrap(root: MakerNode, ids: readonly string[], container: MakerNode): Applied {
+  const forbidden = forbiddenAttributes(container);
+  if (forbidden) return refuse(forbidden);
   if (ids.length === 0) return refuse("Wrap needs at least one child.");
   const locations = ids.map((id) => locate(root, id));
   if (locations.some((at) => at === undefined)) return refuse("Every wrapped child must be in the page, and not be its root.");
@@ -157,7 +178,7 @@ function wrap(root: MakerNode, ids: readonly string[], container: MakerNode): Ap
   if (!canPlace(parentAfter, first.slot, next, ancestors(root, first.parent.id), next.id)) {
     return refuse(`${container.signature} cannot go in "${first.slot}" of ${first.parent.signature}.`);
   }
-  return { ok: true, root: replaceNode(root, first.parent.id, () => parentAfter) };
+  return checkAuthoredValues(replaceNode(root, first.parent.id, () => parentAfter), [container]);
 }
 
 /** Replace a container by its children, in order. The inverse of `wrap`. */
@@ -216,7 +237,23 @@ function setOption(root: MakerNode, id: string, name: string, value: OptionInput
  * No attribute that would let a page style or place itself. `style` and `class` are how a
  * coordinate would get back in, and an attribute an option already writes would fight the option.
  */
-const NEVER_AUTHORED = new Set(["style", "class"]);
+const NEVER_AUTHORED = new Set(["style", "class", "classname"]);
+const neverAuthored = (name: string) => NEVER_AUTHORED.has(name.toLowerCase()) || name.toLowerCase().startsWith("on");
+
+/** Insertions/collections cannot smuggle attributes that setAttr would refuse. Collection slots
+ * can contain usage trees without Maker identities, so inspect those opaque entries as well. */
+function forbiddenAttributes(value: unknown): string | undefined {
+  if (!value || typeof value !== "object") return undefined;
+  const object = value as Record<string, unknown>;
+  if (object.attrs && typeof object.attrs === "object") {
+    for (const name of Object.keys(object.attrs)) if (neverAuthored(name)) return `"${name}" is never authored in the Maker.`;
+  }
+  for (const nested of Object.values(object)) {
+    const forbidden = forbiddenAttributes(nested);
+    if (forbidden) return forbidden;
+  }
+  return undefined;
+}
 
 /**
  * Attributes on the host: a child attribute the parent's slot publishes (Inline's `data-sizing`,
@@ -226,7 +263,7 @@ const NEVER_AUTHORED = new Set(["style", "class"]);
 function setAttr(root: MakerNode, id: string, name: string, value: string | undefined): Applied {
   const node = findNode(root, id);
   if (!node) return refuse(`No "${id}" in the page.`);
-  if (NEVER_AUTHORED.has(name) || name.startsWith("on")) return refuse(`"${name}" is never authored in the Maker.`);
+  if (neverAuthored(name)) return refuse(`"${name}" is never authored in the Maker.`);
   const resolved = resolve(node);
   if (!resolved) return refuse(`${node.contract}/${node.signature} is not in the catalogue.`);
   const owned = resolved.signature.options.some((option) => resolved.contract.options[option]?.attr === name);
@@ -287,6 +324,8 @@ function setText(root: MakerNode, id: string, slot: string, text: string): Appli
 }
 
 function setItems(root: MakerNode, id: string, slot: string, items: readonly ItemInput[]): Applied {
+  const forbidden = forbiddenAttributes(items);
+  if (forbidden) return refuse(forbidden);
   const node = findNode(root, id);
   if (!node) return refuse(`No "${id}" in the page.`);
   if (slotOf(node, slot)?.accepts !== "items") return refuse(`"${slot}" of ${node.signature} is not a collection.`);

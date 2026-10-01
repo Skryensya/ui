@@ -34,10 +34,14 @@ export function FadeEdge({
 }: FadeEdgeProps) {
   const rootRef = useRef<HTMLDivElement>(null);
 
-  /* The same watcher the vanilla enhancer mounts; it owns `data-at-edge`, which React never renders. */
+  /*
+   * The same watcher the vanilla enhancer mounts. It owns the scrollbar gutter hooks and
+   * `data-at-edge`, which React never renders. It reads `data-scroll-aware` off the root, and
+   * re-runs when the option flips so the attribute is settled in the same commit.
+   */
   useEffect(() => {
     const root = rootRef.current;
-    if (!scrollAware || !root) return;
+    if (!root) return;
     return watchFadeEdge(root);
   }, [scrollAware]);
 

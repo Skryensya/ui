@@ -6,9 +6,11 @@ import "@skryensya/core/components/annotation.css";
 import "@skryensya/core/patterns/icon.css";
 import ComponentPageShell from "./ComponentPageShell.astro";
 import CodeBlock from "../CodeBlock.astro";
-import ComponentPreview from "../ComponentPreview.astro";
 import UsagePreview from "../UsagePreview.astro";
 import DoDont from "../DoDont.astro";
+import WhenToUse from "../WhenToUse.astro";
+import ContentRules from "../ContentRules.astro";
+import A11yNotes from "../A11yNotes.astro";
 import {
   timelineAnatomyTree,
   timelineDoTimeTree,
@@ -18,7 +20,7 @@ import {
   timelineTree,
 } from "../../demos/timeline";
 import { annotationDemoCss } from "../../demos/annotation";
-import { getLocale, useTranslations } from "../../i18n";
+import { getLocale, tList, useTranslations } from "../../i18n";
 
 const t = useTranslations(getLocale(Astro.url));
 const install = `pnpm add @skryensya/core @skryensya/react`;
@@ -49,45 +51,28 @@ const explain = (option: string, values: readonly string[]) =>
       target={["children", 0]}
     />
 
-    <h3>{t("timelinePage.showcaseTitle")}</h3>
-    <p set:html={t("timelinePage.showcaseBody")} />
-    <UsagePreview tree={timelineTree(t)} />
-
-    <h3>{t("timelinePage.tonesTitle")}</h3>
-    <p set:html={t("timelinePage.tonesBody")} />
-    <UsagePreview tree={timelineTonesTree(t)} />
+    <h3>{t("component.examplesTitle")}</h3>
+    <UsagePreview tree={timelineTree(t)} title={t("timelinePage.orderTitle")} description={t("timelinePage.orderBody")} />
+    <UsagePreview tree={timelineTonesTree(t)} title={t("timelinePage.tonesTitle")} description={t("timelinePage.tonesBody")} />
 
     <h3>{t("component.contractNotesTitle")}</h3>
     <ul>
-      <li set:html={t("timelinePage.contractItem1")} />
-      <li set:html={t("timelinePage.contractItem2")} />
-      <li set:html={t("timelinePage.contractItem3")} />
-      <li set:html={t("timelinePage.contractItem4")} />
-      <li set:html={t("timelinePage.contractItem5")} />
-      <li set:html={t("timelinePage.contractItem6")} />
+      {tList(t, "timelinePage.contract").map((item) => <li set:html={item} />)}
     </ul>
 
     <h3>{t("component.anatomy")}</h3>
     <p set:html={t("timelinePage.anatomyBody")} />
-    <ComponentPreview
+    <UsagePreview
       tree={timelineAnatomyTree(t)}
       css={annotationDemoCss}
       label={t("timelinePage.anatomyPreviewLabel")}
-      screens={false}
-      hideSource
-      chrome={false}
+      bare
     />
   </Fragment>
 
   <Fragment slot="guidelines">
     <p class="lede" set:html={t("timelinePage.guidelinesLede")} />
-    <h3>{t("timelinePage.whenTitle")}</h3>
-    <ul>
-      <li set:html={t("timelinePage.whenItem1")} />
-      <li set:html={t("timelinePage.whenItem2")} />
-      <li set:html={t("timelinePage.whenItem3")} />
-      <li set:html={t("timelinePage.whenItem4")} />
-    </ul>
+    <WhenToUse use={tList(t, "timelinePage.when")} avoid={tList(t, "timelinePage.whenNot")} />
     <DoDont
       title={t("timelinePage.dd.time.title")}
       do={{ tree: timelineDoTimeTree(t), caption: t("timelinePage.dd.time.do") }}
@@ -98,10 +83,14 @@ const explain = (option: string, values: readonly string[]) =>
       do={{ tree: timelineDoTimeTree(t), caption: t("timelinePage.dd.tone.do") }}
       dont={{ tree: timelineDontToneTree(t), caption: t("timelinePage.dd.tone.dont") }}
     />
+    <ContentRules items={tList(t, "timelinePage.content")} />
   </Fragment>
 
   <Fragment slot="install">
     <CodeBlock code={install} label="terminal" />
     <CodeBlock code={styles} label="CSS" />
+  </Fragment>
+  <Fragment slot="a11y">
+    <A11yNotes intro={t("timelinePage.a11yIntro")} does={tList(t, "timelinePage.a11yDoes")} yours={tList(t, "timelinePage.a11yYours")} />
   </Fragment>
 </ComponentPageShell>

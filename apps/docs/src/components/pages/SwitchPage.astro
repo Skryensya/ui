@@ -6,12 +6,16 @@ import "@skryensya/core/components/annotation.css";
 import ComponentPageShell from "./ComponentPageShell.astro";
 import AppearanceMenu from "../AppearanceMenu.astro";
 import CodeBlock from "../CodeBlock.astro";
-import ComponentPreview from "../ComponentPreview.astro";
 import UsagePreview from "../UsagePreview.astro";
 import DoDont from "../DoDont.astro";
+import WhenToUse from "../WhenToUse.astro";
+import ContentRules from "../ContentRules.astro";
+import A11yNotes from "../A11yNotes.astro";
+import { switchDoCheckboxTree, switchDontSaveTree } from "../../demos/switch";
+import "@skryensya/core/components/checkbox.css";
 import { switchAnatomyTree, switchTree, tileSwitchTree } from "../../demos/switch";
 import { annotationDemoCss } from "../../demos/annotation";
-import { getLocale, useTranslations } from "../../i18n";
+import { getLocale, tList, useTranslations } from "../../i18n";
 import { variantsTree } from "../../demos/variants";
 
 const t = useTranslations(getLocale(Astro.url));
@@ -38,7 +42,7 @@ for (const root of document.querySelectorAll(
   contractId="switch"
   appearanceTargetSelector=".sk-switch"
   styleGroups={[{ file: "components/switch.css", probe: "sk-switch" }]}
-  testFiles={["packages/vanilla/src/components/tile-switch.svelte.test.ts"]}}
+  testFiles={["packages/vanilla/src/components/tile-switch.svelte.test.ts"]}
 >
   <Fragment slot="appearance">
     <AppearanceMenu label={t("prefs.appearance")} />
@@ -47,25 +51,17 @@ for (const root of document.querySelectorAll(
   <Fragment slot="usage">
     <p class="lede" set:html={t("switchPage.lede")} />
 
-    <h3>{t("switchPage.showcaseTitle")}</h3>
-    <p set:html={t("switchPage.showcaseBody")} />
-    <UsagePreview tree={switchTree(t)} title="Switch" description={t("switchPage.body")} />
-
+    <h3>{t("component.examplesTitle")}</h3>
+    <UsagePreview tree={switchTree(t)} title={t("switchPage.basicTitle")} description={t("switchPage.basicBody")} />
     <UsagePreview tree={tileSwitchTree(t)} title={t("switchPage.tileTitle")} description={t("switchPage.tileBody1")} />
     <p set:html={t("switchPage.tileBody2")} />
     <CodeBlock code={tileSwitchVanilla} label="JavaScript" />
 
-    <p set:html={t("component.reactNote")} />
-
     <h3>{t("component.contractNotesTitle")}</h3>
     <ul>
-      <li set:html={t("switchPage.contractItem1")} />
-      <li set:html={t("switchPage.contractItem2")} />
-      <li set:html={t("switchPage.contractItem3")} />
-      <li set:html={t("switchPage.contractItem4")} />
-      <li set:html={t("switchPage.contractItem5")} />
+      {tList(t, "switchPage.contract").map((item) => <li set:html={item} />)}
     </ul>
-
+    <p set:html={t("component.reactNote")} />
     <UsagePreview
       tree={variantsTree(switchTree(t), [{ label: t("component.state.default"), options: {} }, { label: t("component.state.checked"), options: { defaultChecked: true } }, { label: t("component.state.disabled"), options: { disabled: true } }])}
       title={t("component.statesTitle")}
@@ -74,27 +70,37 @@ for (const root of document.querySelectorAll(
 
     <h3>{t("component.anatomy")}</h3>
     <p set:html={t("switchPage.anatomyBody")} />
-    <ComponentPreview
+    <UsagePreview
       tree={switchAnatomyTree(t)}
       css={annotationDemoCss}
       label={t("switchPage.anatomyPreviewLabel")}
-      screens={false}
-      hideSource
-      chrome={false}
+      bare
     />
   </Fragment>
 
   <Fragment slot="guidelines">
     <p class="lede" set:html={t("switchPage.guidelinesLede")} />
+    <WhenToUse use={tList(t, "switchPage.when")} avoid={tList(t, "switchPage.whenNot")} />
     <DoDont
       title={t("switchPage.dd.immediate.title")}
-      do={{ tree: switchTree(t), caption: t("switchPage.dd.immediate.do") }}
-      dont={{ tree: tileSwitchTree(t), caption: t("switchPage.dd.immediate.dont") }}
+      do={{ tree: switchDoCheckboxTree(t), caption: t("switchPage.dd.immediate.do") }}
+      dont={{ tree: switchDontSaveTree(t), caption: t("switchPage.dd.immediate.dont") }}
     />
     <DoDont
+      canvas
       title={t("switchPage.dd.surface.title")}
       do={{ tree: tileSwitchTree(t), caption: t("switchPage.dd.surface.do") }}
       dont={{ tree: switchTree(t), caption: t("switchPage.dd.surface.dont") }}
+    />
+    <ContentRules items={tList(t, "switchPage.content")} />
+  </Fragment>
+
+  <Fragment slot="a11y">
+    <A11yNotes
+      intro={t("switchPage.a11yIntro")}
+      does={tList(t, "switchPage.a11yDoes")}
+      yours={tList(t, "switchPage.a11yYours")}
+      keys={[{ keys: [t("component.key.space")], action: t("switchPage.key.toggle") }]}
     />
   </Fragment>
 </ComponentPageShell>

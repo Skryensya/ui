@@ -5,7 +5,10 @@ import "@skryensya/core/components/callout.css";
 import "@skryensya/core/components/annotation.css";
 import ComponentPageShell from "./ComponentPageShell.astro";
 import CodeBlock from "../CodeBlock.astro";
-import ComponentPreview from "../ComponentPreview.astro";
+import UsagePreview from "../UsagePreview.astro";
+import WhenToUse from "../WhenToUse.astro";
+import ContentRules from "../ContentRules.astro";
+import A11yNotes from "../A11yNotes.astro";
 import {
   toastActionTree,
   toastAnatomyCss,
@@ -18,72 +21,11 @@ import {
   toastStatusScript,
   toastStatusTree,
 } from "../../demos/toast";
-import { getLocale, useTranslations } from "../../i18n";
+import { getLocale, tList, useTranslations } from "../../i18n";
 
 const t = useTranslations(getLocale(Astro.url));
 
 const install = `pnpm add @skryensya/core @skryensya/vanilla @skryensya/react`;
-
-const stackCss = `/* Ya viene en components/toast.css: está aquí porque
-   es la única parte del componente que lee el DOM
-   desde CSS, y conviene saber de dónde sale. */
-
-/* Only the newest one stays in flow, so the region
-   measures what IT measures. The ones behind go out of
-   flow stretched to that same box: that is why the stack
-   reads as one object and not as misaligned cards. */
-.sk-toast-region:not([data-stack="off"]) > .sk-callout:not(:last-child) {
-  position: absolute;
-  inset: 0;
-  overflow: clip;
-}
-
-.sk-toast-region:not([data-stack="off"]) > .sk-callout {
-  /* 0 for the newest (the last child), +1 for
-     each one that fell behind. No counters in JS. */
-  --sk-toast-depth: calc(sibling-count() - sibling-index());
-
-  transform-origin: bottom center;
-  translate: 0 calc(
-    var(--sk-toast-depth) * var(--sk-toast-peek) * -1
-  );
-  scale: calc(1 - (var(--sk-toast-depth) * var(--sk-toast-shrink)));
-  opacity: calc(3 - var(--sk-toast-depth));
-
-  /* Depth again, now in time: the one in front
-     leaves first, each one behind follows it. */
-  transition-delay: calc(
-    var(--sk-toast-depth) * var(--sk-toast-cascade)
-  );
-}
-
-.sk-toast-region:not([data-stack="off"]):is(:hover, :focus-within)
-  > .sk-callout {
-  position: static;
-  overflow: visible;
-  translate: none;
-  scale: none;
-  opacity: 1;
-}
-
-/* The layout does not transition: once they stop being
-   absolute they are already in their row. Instead of animating
-   the jump, it is covered with an arrival. The newest one does
-   not take part: it did not move. */
-.sk-toast-region:not([data-stack="off"]):is(:hover, :focus-within)
-  > .sk-callout:not(:last-child) {
-  animation: sk-toast-fan var(--motion-expand-duration)
-    var(--motion-expand-easing)
-    calc(var(--sk-toast-depth) * var(--sk-toast-cascade))
-    backwards;
-}
-
-@keyframes sk-toast-fan {
-  from {
-    opacity: 0;
-    translate: 0 var(--sk-toast-peek);
-  }
-}`;
 
 const vanilla = `import {
   initComponents,
@@ -102,91 +44,43 @@ await initComponents();`;
   description={t("toastPage.description")}
   contractId="content"
   styleGroups={[{ file: "components/toast.css", probe: "sk-toast" }]}
-  testFiles={["packages/vanilla/src/components/toast.test.ts"]}}
+  testFiles={["packages/vanilla/src/components/toast.test.ts"]}
 >
   <Fragment slot="usage">
     <p class="lede" set:html={t("toastPage.lede")} />
 
-    <h3>{t("toastPage.showcaseTitle")}</h3>
-    <p set:html={t("toastPage.showcaseBody")} />
-    <h3>{t("toastPage.emitTitle")}</h3>
-    <p set:html={t("toastPage.emitBody")} />
-    <ComponentPreview
-      tree={toastEmitTree(t)}
-      js={toastEmitScript}
-      previewScript={toastEmitScript}
-      label={t("toastPage.emitLabel")}
-      note={t("toastPage.emitNote")}
-      viewport="menu"
-    />
-
-    <h3>{t("toastPage.simpleTitle")}</h3>
-    <p set:html={t("toastPage.simpleBody")} />
-    <ComponentPreview tree={toastSimpleTree(t)} label={t("toastPage.simpleLabel")} viewport="menu" />
-
-    <h3>{t("toastPage.statusTitle")}</h3>
-    <p set:html={t("toastPage.statusBody1")} />
-    <p set:html={t("toastPage.statusBody2")} />
-    <ComponentPreview
-      tree={toastStatusTree(t)}
-      js={toastStatusScript}
-      previewScript={toastStatusScript}
-      label={t("toastPage.statusLabel")}
-      viewport="overlay"
-    />
-
-    <h3>{t("toastPage.actionTitle")}</h3>
-    <p set:html={t("toastPage.actionBody")} />
-    <ComponentPreview tree={toastActionTree(t)} label={t("toastPage.actionLabel")} viewport="menu" />
-
-    <h3>{t("toastPage.stackTitle")}</h3>
-    <p set:html={t("toastPage.stackBody1")} />
-    <p set:html={t("toastPage.stackBody2")} />
-    <p set:html={t("toastPage.stackBody3")} />
-    <p set:html={t("toastPage.stackBody4")} />
-    <p set:html={t("toastPage.stackBody5")} />
-    <ComponentPreview
-      tree={toastStackTree(t)}
-      js={toastStackScript}
-      previewScript={toastStackScript}
-      label={t("toastPage.stackLabel")}
-      note={t("toastPage.stackNote")}
-      viewport="overlay"
-    />
-    <p set:html={t("toastPage.stackBody6")} />
-    <CodeBlock code={stackCss} lang="css" label="components/toast.css" />
-
-    <h3>{t("toastPage.closeTitle")}</h3>
-    <p set:html={t("toastPage.closeBody1")} />
-    <p set:html={t("toastPage.closeBody2")} />
-
-    <h3>{t("toastPage.lifecycleTitle")}</h3>
-    <p set:html={t("toastPage.lifecycleBody1")} />
-    <p set:html={t("toastPage.lifecycleBody2")} />
+    <h3>{t("component.examplesTitle")}</h3>
+    <UsagePreview tree={toastEmitTree(t)} script={toastEmitScript} title={t("toastPage.emitTitle")} description={t("toastPage.emitBody")} viewport="menu" />
+    <UsagePreview tree={toastSimpleTree(t)} title={t("toastPage.simpleTitle")} description={t("toastPage.simpleBody")} viewport="menu" />
+    <UsagePreview tree={toastStatusTree(t)} script={toastStatusScript} title={t("toastPage.statusTitle")} description={t("toastPage.statusBody1")} viewport="overlay" />
+    <UsagePreview tree={toastActionTree(t)} title={t("toastPage.actionTitle")} description={t("toastPage.actionBody")} viewport="menu" />
+    <UsagePreview tree={toastStackTree(t)} script={toastStackScript} title={t("toastPage.stackTitle")} description={t("toastPage.stackBody1")} caption={t("toastPage.stackNote")} viewport="overlay" />
     <CodeBlock code={vanilla} label="JavaScript" />
 
+    <h3>{t("component.contractNotesTitle")}</h3>
+    <ul>
+      {tList(t, "toastPage.contract").map((item) => <li set:html={item} />)}
+    </ul>
     <p set:html={t("toastPage.reactBody")} />
 
     <h3>{t("component.anatomy")}</h3>
     <p set:html={t("toastPage.anatomyBody")} />
-    <ComponentPreview
-      tree={toastAnatomyTree(t)}
-      css={toastAnatomyCss}
-      label={t("toastPage.anatomyPreviewLabel")}
-      screens={false}
-      hideSource
-      chrome={false}
-    />
+    <UsagePreview tree={toastAnatomyTree(t)} css={toastAnatomyCss} label={t("toastPage.anatomyPreviewLabel")} bare />
   </Fragment>
 
   <Fragment slot="guidelines">
     <p class="lede" set:html={t("toastPage.guidelinesLede")} />
-    <ul>
-      <li set:html={t("toastPage.guide.use1")} />
-      <li set:html={t("toastPage.guide.use2")} />
-      <li set:html={t("toastPage.guide.avoid1")} />
-      <li set:html={t("toastPage.guide.avoid2")} />
-    </ul>
+    <WhenToUse use={tList(t, "toastPage.when")} avoid={tList(t, "toastPage.whenNot")} />
+    <ContentRules items={tList(t, "toastPage.content")} />
+  </Fragment>
+
+  <Fragment slot="a11y">
+    <A11yNotes
+      intro={t("toastPage.a11yIntro")}
+      does={tList(t, "toastPage.a11yDoes")}
+      yours={tList(t, "toastPage.a11yYours")}
+      keys={[{ keys: ["Enter", t("component.key.space")], action: t("toastPage.key.dismiss") }]}
+    />
   </Fragment>
 
   <Fragment slot="install">

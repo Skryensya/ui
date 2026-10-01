@@ -8,11 +8,19 @@ import "@skryensya/core/components/annotation.css";
 import ComponentPageShell from "./ComponentPageShell.astro";
 import AppearanceMenu from "../AppearanceMenu.astro";
 import CodeBlock from "../CodeBlock.astro";
-import ComponentPreview from "../ComponentPreview.astro";
-import { codePreviewAnatomyCss, codePreviewAnatomyHtml } from "../../demos/code-preview";
-import { getLocale, useTranslations } from "../../i18n";
+import UsagePreview from "../UsagePreview.astro";
+import DoDont from "../DoDont.astro";
+import WhenToUse from "../WhenToUse.astro";
+import ContentRules from "../ContentRules.astro";
+import A11yNotes from "../A11yNotes.astro";
+import { codePreviewAnatomyCss, codePreviewAnatomyTree, codePreviewDontLabelTree, codePreviewTree } from "../../demos/code-preview";
+import { getLocale, tList, useTranslations } from "../../i18n";
 
 const t = useTranslations(getLocale(Astro.url));
+
+const storybookTitle = "Components/Content/CodePreview";
+const explain = (option: string, values: readonly string[]) =>
+  Object.fromEntries(values.map((value) => [value, t(`codePreview.prop.${option}.${value}` as Parameters<typeof t>[0])]));
 
 const install = `pnpm add shiki @skryensya/core @skryensya/vanilla`;
 
@@ -53,7 +61,7 @@ const example = `const registrations = [
   description={t("codePreview.description")}
   contractId="code-preview"
   appearanceTargetSelector=".sk-code-preview"
-  testFiles={["packages/vanilla/src/components/code-preview.test.ts"]}}
+  testFiles={["packages/vanilla/src/components/code-preview.test.ts"]}
 >
   <Fragment slot="appearance">
     <AppearanceMenu label={t("prefs.appearance")} values={["plain", "brutalist", "frosted"]} unavailable={{ tactile: t("prefs.appearanceTactileUnavailable") }} />
@@ -62,16 +70,22 @@ const example = `const registrations = [
   <Fragment slot="usage">
     <p class="lede" set:html={t("codePreview.lede")} />
 
-    <h3>{t("codePreview.showcaseTitle")}</h3>
-    <p set:html={t("codePreview.showcaseBody")} />
-    <CodeBlock code={example} label="TypeScript" lang="ts" />
-    <p set:html={t("codePreview.exampleNote")} />
+    <UsagePreview
+      tree={codePreviewTree(t)}
+      optionName="collapsible"
+      title={t("codePreview.prop.collapsible.title")}
+      description={t("codePreview.prop.collapsible.body")}
+      explain={explain("collapsible", ["false", "true"])}
+      storybookTitle={storybookTitle}
+      storybookStory="Default"
+    />
 
-    <h3>{t("codePreview.contractTitle")}</h3>
+    <h3>{t("component.examplesTitle")}</h3>
+    <UsagePreview tree={codePreviewTree(t)} title={t("codePreview.exampleTitle")} description={t("codePreview.exampleBody")} storybookTitle={storybookTitle} storybookStory="Default" />
+
+    <h3>{t("component.contractNotesTitle")}</h3>
     <ul>
-      <li set:html={t("codePreview.contractItem1")} />
-      <li set:html={t("codePreview.contractItem2")} />
-      <li set:html={t("codePreview.contractItem3")} />
+      {tList(t, "codePreview.contract").map((item) => <li set:html={item} />)}
     </ul>
 
     <h3>{t("codePreview.highlightTitle")}</h3>
@@ -83,27 +97,39 @@ const example = `const registrations = [
 
     <h3>{t("component.anatomy")}</h3>
     <p set:html={t("codePreview.anatomyBody")} />
-    <ComponentPreview
-      html={codePreviewAnatomyHtml(t)}
+    <UsagePreview
+      tree={codePreviewAnatomyTree(t)}
       css={codePreviewAnatomyCss}
       label={t("codePreview.anatomyPreviewLabel")}
-      screens={false}
-      hideSource
-      chrome={false}
+      bare
     />
   </Fragment>
 
   <Fragment slot="guidelines">
     <p class="lede" set:html={t("codePreview.guidelinesLede")} />
-    <ul>
-      <li set:html={t("codePreview.guide.item1")} />
-      <li set:html={t("codePreview.guide.item2")} />
-      <li set:html={t("codePreview.guide.item3")} />
-    </ul>
+    <WhenToUse use={tList(t, "codePreview.when")} avoid={tList(t, "codePreview.whenNot")} />
+    <DoDont
+      title={t("codePreview.dd.label.title")}
+      do={{ tree: codePreviewTree(t), caption: t("codePreview.dd.label.do") }}
+      dont={{ tree: codePreviewDontLabelTree(t), caption: t("codePreview.dd.label.dont") }}
+    />
+    <ContentRules items={tList(t, "codePreview.content")} />
   </Fragment>
 
   <Fragment slot="install">
     <CodeBlock code={install} label="terminal" />
     <CodeBlock code={styles} label="CSS" lang="css" />
+  </Fragment>
+
+  <Fragment slot="a11y">
+    <A11yNotes
+      intro={t("codePreview.a11yIntro")}
+      does={tList(t, "codePreview.a11yDoes")}
+      yours={tList(t, "codePreview.a11yYours")}
+      keys={[
+        { keys: ["Tab", "Shift+Tab"], action: t("codePreview.a11yKeyTab") },
+        { keys: ["Enter", t("component.key.space")], action: t("codePreview.a11yKeyEnter") },
+      ]}
+    />
   </Fragment>
 </ComponentPageShell>

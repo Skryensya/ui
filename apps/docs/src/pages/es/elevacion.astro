@@ -1,7 +1,7 @@
 ---
 import Base from "../../layouts/Base.astro";
 import CodeBlock from "../../components/CodeBlock.astro";
-import ComponentPreview from "../../components/ComponentPreview.astro";
+import UsagePreview from "../../components/UsagePreview.astro";
 import Used from "../../components/Used.astro";
 import { elevationScaleTree, elevationBoxSurfacesTree } from "../../demos/elevation";
 import { elevationLevels } from "../../demos/data/elevation";
@@ -57,7 +57,7 @@ const usage = `<!-- Box ya trae el styling hook: surface="raised" usa --elevatio
     <code>box.css</code> más el override que muestra la sección "Cómo se usa") y el valor al que
     resuelve cada uno ahora mismo, en el modo activo.
   </p>
-  <ComponentPreview tree={elevationScaleTree} label="Los cinco niveles" />
+  <UsagePreview tree={elevationScaleTree} label="Los cinco niveles" />
   <div class="sk-table-scroll">
     <table class="sk-table">
       <thead class="sk-table__head">
@@ -190,7 +190,7 @@ const usage = `<!-- Box ya trae el styling hook: surface="raised" usa --elevatio
     <code>surface</code>. En esta página no se escribe ninguna sombra, la pinta
     <code>box.css</code>.
   </p>
-  <ComponentPreview tree={elevationBoxSurfacesTree} label="Box · surface nativo" />
+  <UsagePreview tree={elevationBoxSurfacesTree} label="Box · surface nativo" />
 
   <h2>Cómo se usa</h2>
   <p>

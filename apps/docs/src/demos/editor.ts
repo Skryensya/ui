@@ -61,9 +61,21 @@ export const editorCompactTree = (t: Translate): UsageTree => ({
   options: {
     toolbarLabel: t("kit.textFormatting"),
     name: "compact-content",
-    defaultValue: "<p>Un comentario <strong>corto</strong> cabe mejor con una barra chica.</p>",
+    defaultValue: "<p>Un comentario <strong>corto</strong> cabe mejor con una barra compacta.</p>",
     placeholder: t("demo.editor.placeholder"),
     label: t("demo.editor.label"),
     toolbarCompact: true,
+  },
+});
+
+/* Usage guide: a one-line title given a whole formatting toolbar it will never use. */
+export const editorDontSingleLineTree = (t: Translate): UsageTree => ({
+  contract: "editor",
+  signature: "Editor",
+  options: {
+    toolbarLabel: t("kit.textFormatting"),
+    name: "title",
+    defaultValue: `<p>${t("demo.editor.titleValue")}</p>`,
+    label: t("demo.editor.titleLabel"),
   },
 });

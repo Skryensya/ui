@@ -2,7 +2,7 @@
 import Base from "../layouts/Base.astro";
 import CodeBlock from "../components/CodeBlock.astro";
 import { anchorPlacementsTree } from "../demos/anchoring";
-import ComponentPreview from "../components/ComponentPreview.astro";
+import UsagePreview from "../components/UsagePreview.astro";
 import StylingHooks from "../components/StylingHooks.astro";
 
 const import_ = `@import "@skryensya/core/patterns/anchored.css";`;
@@ -66,7 +66,7 @@ const arrowReact = `<Tooltip arrow content="It keeps itself">
     A box placed against <strong>another</strong> element, not against the page: it opens from one side of the anchor, flips to the opposite side when it does not fit, and disappears if the anchor leaves the screen. This is what tooltip, popover, popup, menu and its submenus, select, combobox and date picker do.
   </p>
 
-  <ComponentPreview tree={anchorPlacementsTree} label="HTML" />
+  <UsagePreview tree={anchorPlacementsTree} label="HTML" />
 
   <h2>Why is it a pattern and not a component</h2>
   <p>

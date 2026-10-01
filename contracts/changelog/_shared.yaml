@@ -20,7 +20,6 @@ entries:
       - combobox
       - command-palette
       - comment-thread
-      - component-preview
       - content
       - date-picker
       - editor

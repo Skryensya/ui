@@ -20,7 +20,7 @@ export const variantsTree = (
   cases: readonly VariantCase[],
   target: TreePath = [],
   /** Lay the cases on a grid of this many columns instead of one wrapping row: for large specimens. */
-  columns?: "2" | "3",
+  columns?: "1" | "2" | "3",
 ): UsageTree => ({
   contract: "layout",
   ...(columns

@@ -4,11 +4,13 @@ import "@skryensya/core/patterns/nav-list.css";
 import "@skryensya/core/components/annotation.css";
 import ComponentPageShell from "./ComponentPageShell.astro";
 import CodeBlock from "../CodeBlock.astro";
-import ComponentPreview from "../ComponentPreview.astro";
 import UsagePreview from "../UsagePreview.astro";
+import WhenToUse from "../WhenToUse.astro";
+import ContentRules from "../ContentRules.astro";
+import A11yNotes from "../A11yNotes.astro";
 import { navListAnatomyTree, navListCollapsibleTree, navListHorizontalTree, navListProductTree } from "../../demos/nav-list";
 import { annotationDemoCss } from "../../demos/annotation";
-import { getLocale, useTranslations } from "../../i18n";
+import { getLocale, tList, useTranslations } from "../../i18n";
 
 const locale = getLocale(Astro.url);
 const t = useTranslations(locale);
@@ -43,11 +45,10 @@ const explain = (option: string, values: readonly string[]) =>
       stageMinBlockSize="16rem"
     />
 
-    <h3>{t("navListPage.showcaseTitle")}</h3>
-    <p set:html={t("navListPage.showcaseBody")} />
+    <h3>{t("component.examplesTitle")}</h3>
     <h3>{t("navListPage.productTitle")}</h3>
     <p set:html={t("navListPage.productBody")} />
-    <ComponentPreview
+    <UsagePreview
       tree={navListProductTree(t, {
         dashboard: "/app/dashboard",
         inbox: "/app/inbox",
@@ -62,7 +63,7 @@ const explain = (option: string, values: readonly string[]) =>
 
     <h3>{t("navListPage.horizontalTitle")}</h3>
     <p set:html={t("navListPage.horizontalBody")} />
-    <ComponentPreview
+    <UsagePreview
       tree={navListHorizontalTree(t, {
         overview: "/app",
         projects: "/app/projects",
@@ -71,12 +72,12 @@ const explain = (option: string, values: readonly string[]) =>
       })}
       label={t("demo.navList.horizontalLabel")}
       measure="34rem"
-      minHeight="9rem"
+      stageMinBlockSize="9rem"
     />
 
     <h3>{t("navListPage.disclosureTitle")}</h3>
     <p set:html={t("navListPage.disclosureBody")} />
-    <ComponentPreview
+    <UsagePreview
       tree={navListCollapsibleTree(t, {
         start: startHref,
         components: componentHref,
@@ -89,28 +90,24 @@ const explain = (option: string, values: readonly string[]) =>
     />
 
     <h3>{t("component.contractNotesTitle")}</h3>
-    <p set:html={t("navListPage.contractBody")} />
+    <ul>
+      {tList(t, "navListPage.contract").map((item) => <li set:html={item} />)}
+    </ul>
 
     <h3>{t("component.anatomy")}</h3>
     <p set:html={t("navListPage.anatomyBody")} />
-    <ComponentPreview
+    <UsagePreview
       tree={navListAnatomyTree(t)}
       css={annotationDemoCss}
       label={t("navListPage.anatomyPreviewLabel")}
-      screens={false}
-      hideSource
-      chrome={false}
+      bare
     />
   </Fragment>
 
   <Fragment slot="guidelines">
     <p class="lede" set:html={t("navListPage.guidelinesLede")} />
-    <ul>
-      <li set:html={t("navListPage.guide.use1")} />
-      <li set:html={t("navListPage.guide.avoid1")} />
-      <li set:html={t("navListPage.guide.avoid2")} />
-      <li set:html={t("navListPage.guide.avoid3")} />
-    </ul>
+    <WhenToUse use={tList(t, "navListPage.when")} avoid={tList(t, "navListPage.whenNot")} />
+    <ContentRules items={tList(t, "navListPage.content")} />
   </Fragment>
 
   <Fragment slot="install">
@@ -119,6 +116,6 @@ const explain = (option: string, values: readonly string[]) =>
   </Fragment>
 
   <Fragment slot="a11y">
-    <p set:html={t("navListPage.a11yBody")} />
+    <A11yNotes intro={t("navListPage.a11yIntro")} does={tList(t, "navListPage.a11yDoes")} yours={tList(t, "navListPage.a11yYours")} />
   </Fragment>
 </ComponentPageShell>

@@ -59,21 +59,45 @@ export const kbdAnatomyTree = (t: Translate): UsageTree => ({
 /* The one key every property preview on the page varies: `tone` and `appearance` played on it. */
 export const kbdSingleTree: UsageTree = { contract: "kbd", signature: "Kbd", children: "K" };
 
-/* Do: a shortcut named in the sentence that teaches it. */
-export const kbdDoInlineTree = (t: Translate): UsageTree => ({
-  contract: "typography",
-  signature: "Text",
+const kbdSpecimen = (children: UsageTree | UsageTree[]): UsageTree => ({
+  contract: "box",
+  signature: "Box",
+  options: { surface: "surface", border: "subtle", padding: "md" },
+  attrs: { style: "inline-size: 22rem; max-inline-size: 100%;" },
+  children,
+});
+
+const shortcut = (keys: readonly string[], label: string, accent = false): UsageTree => ({
+  contract: "layout",
+  signature: "Inline",
+  options: { gap: "xs", inlineAlign: "center", wrap: true },
   children: [
-    t("demo.kbd.dd.pressPrefix"),
-    { contract: "kbd", signature: "Kbd", children: "⌘" },
-    " ",
-    { contract: "kbd", signature: "Kbd", children: "K" },
-    t("demo.kbd.dd.pressSuffix"),
+    ...keys.map((key) => ({
+      contract: "kbd",
+      signature: "Kbd",
+      ...(accent ? { options: { tone: "accent" } } : {}),
+      children: key,
+    })),
+    { contract: "typography", signature: "Text", options: { textElement: "span", size: "sm" }, children: label },
   ],
 });
 
+/* Do: a shortcut named in the sentence that teaches it. */
+export const kbdDoInlineTree = (t: Translate): UsageTree =>
+  kbdSpecimen({
+    contract: "typography",
+    signature: "Text",
+    children: [
+      t("demo.kbd.dd.pressPrefix"),
+      { contract: "kbd", signature: "Kbd", children: "⌘" },
+      " ",
+      { contract: "kbd", signature: "Kbd", children: "K" },
+      t("demo.kbd.dd.pressSuffix"),
+    ],
+  });
+
 /* Don't: a key as the only way to say what it does. */
-export const kbdDontAloneTree: UsageTree = {
+export const kbdDontAloneTree: UsageTree = kbdSpecimen({
   contract: "layout",
   signature: "Inline",
   options: { gap: "xs" },
@@ -81,17 +105,17 @@ export const kbdDontAloneTree: UsageTree = {
     { contract: "kbd", signature: "Kbd", children: "⌘" },
     { contract: "kbd", signature: "Kbd", children: "K" },
   ],
-};
+});
 
 /* Don't: one kbd holding the whole chord, plus signs and all. */
-export const kbdDontChordTree: UsageTree = {
+export const kbdDontChordTree: UsageTree = kbdSpecimen({
   contract: "kbd",
   signature: "Kbd",
   children: "⌘ + Shift + K",
-};
+});
 
 /* Do: one key per kbd. */
-export const kbdDoChordTree: UsageTree = {
+export const kbdDoChordTree: UsageTree = kbdSpecimen({
   contract: "layout",
   signature: "Inline",
   options: { gap: "xs" },
@@ -100,12 +124,29 @@ export const kbdDoChordTree: UsageTree = {
     { contract: "kbd", signature: "Kbd", children: "⇧" },
     { contract: "kbd", signature: "Kbd", children: "K" },
   ],
-};
+});
+
+export const kbdDoAccentTree = (t: Translate): UsageTree =>
+  kbdSpecimen({
+    contract: "layout",
+    signature: "Stack",
+    options: { gap: "sm" },
+    children: [
+      shortcut(["⌘", "K"], t("demo.kbd.dd.search"), true),
+      shortcut(["Esc"], t("demo.kbd.dd.close")),
+      shortcut(["?"], t("demo.kbd.dd.help")),
+    ],
+  });
 
 /* Don't: every key painted accent, so none of them is the one to notice. */
-export const kbdDontAccentTree: UsageTree = {
-  contract: "layout",
-  signature: "Inline",
-  options: { gap: "sm" },
-  children: ["⌘", "K", "Esc", "↵"].map((key) => ({ contract: "kbd", signature: "Kbd", options: { tone: "accent" }, children: key })),
-};
+export const kbdDontAccentTree = (t: Translate): UsageTree =>
+  kbdSpecimen({
+    contract: "layout",
+    signature: "Stack",
+    options: { gap: "sm" },
+    children: [
+      shortcut(["⌘", "K"], t("demo.kbd.dd.search"), true),
+      shortcut(["Esc"], t("demo.kbd.dd.close"), true),
+      shortcut(["?"], t("demo.kbd.dd.help"), true),
+    ],
+  });

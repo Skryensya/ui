@@ -12,12 +12,11 @@ import "@skryensya/core/components/typography.css";
 import "@skryensya/core/patterns/box.css";
 import "@skryensya/core/patterns/layout.css";
 import * as demos from "@docs/demos/presence";
-import { annotationDemoCss } from "@docs/demos/annotation";
-import { treeStory, withCss, type Meta, type StoryObj } from "../tree-story";
+import { treeStory, type Meta, type StoryObj } from "../tree-story";
 
 export default { title: "Components/Layout/Presence", tags: ["autodocs"] } satisfies Meta;
 
-export const Anatomy: StoryObj = treeStory(demos.presenceAnatomyTree, { decorators: [withCss(annotationDemoCss)] });
+export const Anatomy: StoryObj = treeStory(demos.presenceAnatomyTree);
 export const Notice: StoryObj = treeStory(demos.presenceNoticeTree);
 export const Fields: StoryObj = treeStory(demos.presenceFieldsTree);
 export const Tuning: StoryObj = treeStory(demos.presenceTuningTree);

@@ -9,17 +9,18 @@ import "@skryensya/core/patterns/anchored.css";
 import "@skryensya/core/components/button.css";
 import ComponentPageShell from "./ComponentPageShell.astro";
 import CodeBlock from "../CodeBlock.astro";
-import ComponentPreview from "../ComponentPreview.astro";
+import UsagePreview from "../UsagePreview.astro";
 import DoDont from "../DoDont.astro";
+import WhenToUse from "../WhenToUse.astro";
+import ContentRules from "../ContentRules.astro";
+import A11yNotes from "../A11yNotes.astro";
 import {
-  tooltipAnatomyCss,
-  tooltipAnatomyHtml,
   tooltipDoIconTree,
   tooltipDontLongTree,
   tooltipDontRepeatTree,
   tooltipTree,
 } from "../../demos/tooltip";
-import { getLocale, useTranslations } from "../../i18n";
+import { getLocale, tList, useTranslations } from "../../i18n";
 
 const t = useTranslations(getLocale(Astro.url));
 const install = `pnpm add @skryensya/core @skryensya/vanilla @skryensya/react`;
@@ -29,48 +30,27 @@ const install = `pnpm add @skryensya/core @skryensya/vanilla @skryensya/react`;
   title="Tooltip"
   description={t("tooltipPage.description")}
   contractId="tooltip"
-  testFiles={["packages/react/src/components/tooltip.test.tsx"]}}
+  testFiles={["packages/react/src/components/tooltip.test.tsx"]}
 >
   <Fragment slot="usage">
     <p class="lede" set:html={t("tooltipPage.lede")} />
 
-    <h3>{t("tooltipPage.showcaseTitle")}</h3>
-    <p set:html={t("tooltipPage.showcaseBody")} />
+    <h3>{t("component.examplesTitle")}</h3>
     {/* `menu`: the tooltip paints out of flow, and in a stage sized to the content it would have
         nowhere to go, so the real placement would never be visible. */}
-    <ComponentPreview tree={tooltipTree(t)} label="Tooltip" viewport="menu" />
+    <UsagePreview tree={tooltipTree(t)} title={t("tooltipPage.casesTitle")} description={t("tooltipPage.casesBody")} viewport="menu" />
 
-    <h3>{t("tooltipPage.ruleTitle")}</h3>
-    <p set:html={t("tooltipPage.ruleBody1")} />
-    <p set:html={t("tooltipPage.ruleBody2")} />
-
-    <h3>{t("tooltipPage.wcagTitle")}</h3>
-    <p set:html={t("tooltipPage.wcagBody1")} />
-    <p set:html={t("tooltipPage.wcagBody2")} />
-
-    <h3>{t("tooltipPage.placementTitle")}</h3>
-    <p set:html={t("tooltipPage.placementBody")} />
-
-    <h3>{t("tooltipPage.positioningTitle")}</h3>
-    <p set:html={t("tooltipPage.positioningBody1")} />
-    <p set:html={t("tooltipPage.positioningBody2")} />
-
+    <h3>{t("component.contractNotesTitle")}</h3>
+    <ul>
+      {tList(t, "tooltipPage.contract").map((item) => <li set:html={item} />)}
+    </ul>
     <p set:html={t("component.reactNote")} />
 
-    <h3>{t("component.anatomy")}</h3>
-    <p set:html={t("tooltipPage.anatomyBody")} />
-    <ComponentPreview
-      html={tooltipAnatomyHtml(t)}
-      css={tooltipAnatomyCss}
-      label={t("tooltipPage.anatomyPreviewLabel")}
-      screens={false}
-      hideSource
-      chrome={false}
-    />
   </Fragment>
 
   <Fragment slot="guidelines">
     <p class="lede" set:html={t("tooltipPage.guidelinesLede")} />
+    <WhenToUse use={tList(t, "tooltipPage.when")} avoid={tList(t, "tooltipPage.whenNot")} />
     <DoDont
       title={t("tooltipPage.dd.short.title")}
       do={{ tree: tooltipDoIconTree(t), caption: t("tooltipPage.dd.short.do") }}
@@ -81,9 +61,21 @@ const install = `pnpm add @skryensya/core @skryensya/vanilla @skryensya/react`;
       do={{ tree: tooltipDoIconTree(t), caption: t("tooltipPage.dd.repeat.do") }}
       dont={{ tree: tooltipDontRepeatTree(t), caption: t("tooltipPage.dd.repeat.dont") }}
     />
+    <ContentRules items={tList(t, "tooltipPage.content")} />
   </Fragment>
 
   <Fragment slot="install">
     <CodeBlock code={install} label="terminal" />
+  </Fragment>
+  <Fragment slot="a11y">
+    <A11yNotes
+      intro={t("tooltipPage.a11yIntro")}
+      does={tList(t, "tooltipPage.a11yDoes")}
+      yours={tList(t, "tooltipPage.a11yYours")}
+      keys={[
+        { keys: ["Tab"], action: t("tooltipPage.key.focus") },
+        { keys: ["Esc"], action: t("tooltipPage.key.escape") },
+      ]}
+    />
   </Fragment>
 </ComponentPageShell>

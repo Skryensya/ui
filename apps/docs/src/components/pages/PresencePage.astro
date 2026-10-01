@@ -1,14 +1,16 @@
 ---
 import ComponentPageShell from "./ComponentPageShell.astro";
 import CodeBlock from "../CodeBlock.astro";
-import ComponentPreview from "../ComponentPreview.astro";
+import UsagePreview from "../UsagePreview.astro";
+import WhenToUse from "../WhenToUse.astro";
+import A11yNotes from "../A11yNotes.astro";
 import {
   presenceAnatomyTree,
   presenceFieldsTree,
   presenceNoticeTree,
   presenceTuningTree,
 } from "../../demos/presence";
-import { getLocale, useTranslations } from "../../i18n";
+import { getLocale, tList, useTranslations } from "../../i18n";
 import "@skryensya/core/components/presence.css";
 import "@skryensya/core/components/callout.css";
 import "@skryensya/core/components/button.css";
@@ -83,69 +85,55 @@ notice.remove();`;
 <ComponentPageShell
   title="Presence"
   description={t("presence.description")}
-  badge={t("presence.betaBadge")}
   contractId="presence"
 >
   <Fragment slot="usage">
     <p class="lede" set:html={t("presence.lede")} />
 
-    <h3>{t("presence.showcaseTitle")}</h3>
-    <p set:html={t("presence.showcaseBody")} />
+    <h3>{t("component.examplesTitle")}</h3>
 
     <h3>{t("presence.noticeHeading")}</h3>
     <p set:html={t("presence.noticeIntro")} />
-    <ComponentPreview tree={presenceNoticeTree(t)} previewScript={noticeScript} label={t("presence.noticeLabel")} />
+    <UsagePreview tree={presenceNoticeTree(t)} script={noticeScript} label={t("presence.noticeLabel")} />
 
     <h3>{t("presence.fieldsHeading")}</h3>
     <p set:html={t("presence.fieldsIntro")} />
-    <ComponentPreview tree={presenceFieldsTree(t)} previewScript={fieldsScript} label={t("presence.fieldsLabel")} />
+    <UsagePreview tree={presenceFieldsTree(t)} script={fieldsScript} label={t("presence.fieldsLabel")} />
 
     <h3>{t("presence.tuningHeading")}</h3>
     <p set:html={t("presence.tuningIntro")} />
-    <ComponentPreview tree={presenceTuningTree(t)} previewScript={tuningScript} label={t("presence.tuningLabel")} />
+    <UsagePreview tree={presenceTuningTree(t)} script={tuningScript} label={t("presence.tuningLabel")} />
 
     <h3>{t("presence.reactTitle")}</h3>
     <p set:html={t("presence.reactBody")} />
     <CodeBlock code={react} label="React" lang="tsx" />
-    <ul>
-      <li set:html={t("presence.reactItem1")} />
-      <li set:html={t("presence.reactItem2")} />
-      <li set:html={t("presence.reactItem3")} />
-      <li set:html={t("presence.reactItem4")} />
-    </ul>
 
     <h3>{t("presence.vanillaTitle")}</h3>
     <p set:html={t("presence.vanillaBody")} />
     <CodeBlock code={html} label="HTML" lang="html" />
     <CodeBlock code={vanilla} label="JavaScript" lang="ts" />
 
-    <h3>{t("presence.notesTitle")}</h3>
+    <h3>{t("component.contractNotesTitle")}</h3>
     <ul>
-      <li set:html={t("presence.notesItem1")} />
-      <li set:html={t("presence.notesItem2")} />
-      <li set:html={t("presence.notesItem3")} />
-      <li set:html={t("presence.notesItem4")} />
+      {tList(t, "presence.contract").map((item) => <li set:html={item} />)}
     </ul>
 
     <h3>{t("component.anatomy")}</h3>
     <p set:html={t("presence.anatomyBody")} />
-    <ComponentPreview
+    <UsagePreview
       tree={presenceAnatomyTree(t)}
       css={annotationDemoCss}
       label={t("presence.anatomyPreviewLabel")}
-      screens={false}
-      hideSource
-      chrome={false}
+      bare
     />
   </Fragment>
 
   <Fragment slot="guidelines">
     <p class="lede" set:html={t("presence.guidelinesLede")} />
-    <h3>{t("presence.whenTitle")}</h3>
-    <ul>
-      <li set:html={t("presence.whenItem1")} />
-      <li set:html={t("presence.whenItem2")} />
-      <li set:html={t("presence.whenItem3")} />
-    </ul>
+    <WhenToUse use={tList(t, "presence.when")} avoid={tList(t, "presence.whenNot")} />
+  </Fragment>
+
+  <Fragment slot="a11y">
+    <A11yNotes intro={t("presence.a11yIntro")} does={tList(t, "presence.a11yDoes")} yours={tList(t, "presence.a11yYours")} />
   </Fragment>
 </ComponentPageShell>

@@ -414,6 +414,90 @@ export const commentLikesTree = (t: Translate): UsageTree =>
     ]),
   ]);
 
+/** Show deletion only on the current person's comment; permissions belong to the consuming app. */
+export const commentThreadDoPermissionsTree = (t: Translate): UsageTree =>
+  interactive(t, [
+    thread(t, [
+      comment(t, {
+        id: "p1",
+        who: ADA,
+        time: "demo.commentThread.time1",
+        body: "demo.commentThread.body1",
+        actions: actions(t, "none", "4", { deletable: true }),
+      }),
+      comment(t, {
+        id: "p2",
+        who: GRACE,
+        time: "demo.commentThread.time2",
+        body: "demo.commentThread.body2",
+        actions: actions(t, "none", "1"),
+      }),
+    ]),
+  ]);
+
+/** Don't: expose deletion on comments that do not belong to the current person. */
+export const commentThreadDontPermissionsTree = (t: Translate): UsageTree =>
+  interactive(t, [
+    thread(t, [
+      comment(t, {
+        id: "p1",
+        who: ADA,
+        time: "demo.commentThread.time1",
+        body: "demo.commentThread.body1",
+        actions: actions(t, "none", "4", { deletable: true }),
+      }),
+      comment(t, {
+        id: "p2",
+        who: GRACE,
+        time: "demo.commentThread.time2",
+        body: "demo.commentThread.body2",
+        actions: actions(t, "none", "1", { deletable: true }),
+      }),
+    ]),
+  ]);
+
+/** A compact specimen keeps the reply relationship, not the rest of the interactive thread demo. */
+export const commentThreadNestingDoTree = (t: Translate): UsageTree =>
+  interactive(t, [
+    thread(t, [
+      comment(t, {
+        id: "nesting-parent",
+        who: ADA,
+        time: "demo.commentThread.time1",
+        body: "demo.commentThread.ddParent",
+        replies: comment(t, {
+          id: "nesting-reply",
+          who: GRACE,
+          time: "demo.commentThread.time2",
+          body: "demo.commentThread.ddReply",
+        }),
+      }),
+    ]),
+  ]);
+
+/** Replies belong under the comment they answer, not alongside unrelated top-level comments. */
+export const commentThreadDontFlatRepliesTree = (t: Translate): UsageTree =>
+  interactive(t, [
+    thread(t, [
+      comment(t, { id: "flat-1", who: ADA, time: "demo.commentThread.time1", body: "demo.commentThread.ddParent" }),
+      comment(t, { id: "flat-2", who: GRACE, time: "demo.commentThread.time2", body: "demo.commentThread.ddReply" }),
+    ]),
+  ]);
+
+/** Don't: use ranking votes when the interaction is only a lightweight reaction. */
+export const commentThreadDontVoteForLikeTree = (t: Translate): UsageTree =>
+  interactive(t, [
+    thread(t, [
+      comment(t, {
+        id: "reaction-1",
+        who: ADA,
+        time: "demo.commentThread.time1",
+        body: "demo.commentThread.body1",
+        actions: actions(t, "up", "12"),
+      }),
+    ]),
+  ]);
+
 /*
  * A SHORT THREAD: three comments, one of them answered, and the thread's own composer.
  *
@@ -622,6 +706,50 @@ export const commentThreadInfiniteScrollTree = (t: Translate): UsageTree => ({
     },
     scrollCommentTemplate(t),
   ],
+});
+
+/** Focused collapse comparison: a deep branch, a sibling reply and the next main comment. */
+export const commentCollapseGuideTree = (t: Translate, collapsible: boolean): UsageTree => ({
+  contract: "layout",
+  signature: "Stack",
+  options: { gap: "none" },
+  attrs: { style: "inline-size: 23rem; max-inline-size: 100%;" },
+  children: thread(t, [
+    comment(t, {
+      id: "guide-root",
+      who: ADA,
+      time: "demo.commentThread.time1",
+      body: "demo.commentThread.ddRoot",
+      collapsible,
+      replies: [
+        comment(t, {
+          id: "guide-reply-1",
+          who: GRACE,
+          time: "demo.commentThread.time2",
+          body: "demo.commentThread.ddReply1",
+          collapsible,
+          replies: comment(t, {
+            id: "guide-reply-1-1",
+            who: LINUS,
+            time: "demo.commentThread.time3",
+            body: "demo.commentThread.ddReply2",
+          }),
+        }),
+        comment(t, {
+          id: "guide-reply-2",
+          who: MARGARET,
+          time: "demo.commentThread.time4",
+          body: "demo.commentThread.ddReply3",
+        }),
+      ],
+    }),
+    comment(t, {
+      id: "guide-main-next",
+      who: ALAN,
+      time: "demo.commentThread.time5",
+      body: "demo.commentThread.ddNext",
+    }),
+  ]),
 });
 
 export const commentDeepTree = (t: Translate): UsageTree =>

@@ -3,15 +3,27 @@
 import "@skryensya/core/components/annotation.css";
 import "@skryensya/core/components/button.css";
 import "@skryensya/core/components/canvas.css";
+import "@skryensya/core/components/typography.css";
+import "@skryensya/core/patterns/box.css";
 import "@skryensya/core/patterns/icon.css";
 import "@skryensya/core/patterns/layout.css";
 import * as demos from "@docs/demos/icon";
-import { annotationDemoCss } from "@docs/demos/annotation";
-import { treeStory, withCss, type Meta, type StoryObj } from "../tree-story";
+import { treeStory, type Meta, type StoryObj } from "../tree-story";
 
 export default { title: "Components/Content/Icon", tags: ["autodocs"] } satisfies Meta;
 
-export const Anatomy: StoryObj = treeStory(demos.iconAnatomyTree, { decorators: [withCss(annotationDemoCss)] });
+export const Anatomy: StoryObj = treeStory(demos.iconAnatomyTree);
 export const Single: StoryObj = treeStory(() => demos.iconSingleTree);
-export const Default: StoryObj = treeStory(() => demos.iconTree);
+export const Default: StoryObj = treeStory(demos.iconTree);
 export const Size: StoryObj = treeStory(() => demos.iconSizeTree);
+export const SizesExample: StoryObj = treeStory(demos.iconSizesExampleTree);
+export const StatusExample: StoryObj = treeStory(demos.iconStatusExampleTree);
+export const DirectionExample: StoryObj = treeStory(demos.iconDirectionExampleTree);
+export const DoText: StoryObj = treeStory(demos.iconDoTextTree);
+export const DontText: StoryObj = treeStory(() => demos.iconDontTextTree);
+export const DoSize: StoryObj = treeStory(demos.iconDoSizeTree);
+export const DontSize: StoryObj = treeStory(demos.iconDontSizeTree);
+export const DoStatus: StoryObj = treeStory(demos.iconDoStatusTree);
+export const DontStatus: StoryObj = treeStory(() => demos.iconDontStatusTree);
+export const DoTone: StoryObj = treeStory(demos.iconDoToneTree);
+export const DontTone: StoryObj = treeStory(demos.iconDontToneTree);

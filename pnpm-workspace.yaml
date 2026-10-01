@@ -84,6 +84,12 @@ minimumReleaseAgeExclude:
   # Both reached by that same bump, and both the floor of their own patched range.
   - "smol-toml"
   - "svgo"
+  # DELETE AFTER 2026-10-14, when brace-expansion 5.0.12 (published 09-14) is 30 days old.
+  # `brace-expansion < 5.0.11` carries HIGH denial-of-service advisories reached through
+  # apps/storybook-react > @storybook/react-vite. 5.0.12 is the first available version above the
+  # patched floor, so the push-blocking audit cannot be fixed without letting this one package
+  # resolve inside the cooldown window.
+  - "brace-expansion"
   # DELETE AFTER 2026-10-15, when fast-uri 3.1.8 (published 09-15, what the range resolves to) is
   # 30 days old.
   # `fast-uri < 3.1.7` carries two HIGH advisories (authority injection via the port, host confusion

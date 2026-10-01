@@ -55,7 +55,6 @@ const MAP: Record<string, string> = {
   "/components/combobox": "TextSearch",
   "/components/command-palette": "role:search",
   "/components/comment-thread": "MessagesSquare",
-  "/components/component-preview": "ScanEye",
   "/components/data-grid": "Grid3x3",
   "/components/date-picker": "CalendarDays",
   "/components/description-list": "ListTree",

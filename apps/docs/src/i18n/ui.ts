@@ -65,7 +65,6 @@ import { colorPickerMessages } from "./messages/components/color-picker";
 import { comboboxMessages } from "./messages/components/combobox";
 import { commandPaletteMessages } from "./messages/components/command-palette";
 import { commentThreadMessages } from "./messages/components/comment-thread";
-import { componentPreviewMessages } from "./messages/components/component-preview";
 import { dataGridMessages } from "./messages/components/data-grid";
 import { datePickerMessages } from "./messages/components/date-picker";
 import { dialogMessages } from "./messages/components/dialog";
@@ -213,7 +212,6 @@ export const ui = {
     ...comboboxMessages.es,
     ...commandPaletteMessages.es,
     ...commentThreadMessages.es,
-    ...componentPreviewMessages.es,
     ...dataGridMessages.es,
     ...datePickerMessages.es,
     ...dialogMessages.es,
@@ -358,7 +356,6 @@ export const ui = {
     ...comboboxMessages.en,
     ...commandPaletteMessages.en,
     ...commentThreadMessages.en,
-    ...componentPreviewMessages.en,
     ...dataGridMessages.en,
     ...datePickerMessages.en,
     ...dialogMessages.en,

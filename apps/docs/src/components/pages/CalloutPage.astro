@@ -2,35 +2,47 @@
 /* The anatomy diagram at the top of the page is an Annotated frame, so this page needs its sheet the
    same way Accordion's, Button's and Breadcrumb's do. */
 import "@skryensya/core/components/annotation.css";
+import type { UsageTree } from "@skryensya/core/usage-tree";
 import ComponentPageShell from "./ComponentPageShell.astro";
 import AppearanceMenu from "../AppearanceMenu.astro";
 import CodeBlock from "../CodeBlock.astro";
-import ComponentPreview from "../ComponentPreview.astro";
 import UsagePreview from "../UsagePreview.astro";
 import DoDont from "../DoDont.astro";
+import WhenToUse from "../WhenToUse.astro";
+import ContentRules from "../ContentRules.astro";
+import A11yNotes from "../A11yNotes.astro";
 import {
   calloutAnatomyTree,
   calloutInfoTree,
   calloutNeutralTree,
   calloutSuccessTree,
   calloutWarningTree,
+  calloutDontActionTree,
+  calloutDontDangerTree,
 } from "../../demos/callout";
 import { annotationDemoCss } from "../../demos/annotation";
-import { getLocale, useTranslations } from "../../i18n";
+import { getLocale, tList, useTranslations } from "../../i18n";
 
 const install = `pnpm add @skryensya/core @skryensya/react`;
+const storybookTitle = "Components/Feedback/Callout";
 const t = useTranslations(getLocale(Astro.url));
 const explain = (option: string, values: readonly string[]) =>
   Object.fromEntries(values.map((value) => [value, t(`callout.prop.${option}.${value}` as Parameters<typeof t>[0])]));
+
+const doDontSpecimen = (tree: UsageTree, inlineSize = "28rem"): UsageTree => ({
+  contract: "layout",
+  signature: "Stack",
+  attrs: { style: `inline-size: ${inlineSize};` },
+  children: tree,
+});
 ---
 
 <ComponentPageShell
   title="Callout"
   description={t("callout.description")}
-  badge={t("callout.betaBadge")}
   contractId="callout"
   appearanceTargetSelector=".sk-callout"
-  testFiles={["packages/react/src/components/callout.test.tsx"]}}
+  testFiles={["packages/react/src/components/callout.test.tsx"]}
 >
   <Fragment slot="appearance">
     <AppearanceMenu label={t("prefs.appearance")} values={["plain", "brutalist", "frosted"]} unavailable={{ tactile: t("prefs.appearanceTactileUnavailable") }} />
@@ -48,50 +60,52 @@ const explain = (option: string, values: readonly string[]) =>
       stageMinBlockSize="12rem"
     />
 
-    <h3>{t("callout.showcaseTitle")}</h3>
-    <p set:html={t("callout.showcaseBody")} />
-    <UsagePreview tree={calloutNeutralTree(t)} title={t("callout.neutralTitle")} description={t("callout.neutralBody")} />
-    <UsagePreview tree={calloutInfoTree(t)} title={t("callout.infoTitle")} description={t("callout.infoBody")} />
-    <UsagePreview tree={calloutWarningTree(t)} title={t("callout.warningTitle")} description={t("callout.warningBody")} />
-    <UsagePreview tree={calloutSuccessTree(t)} title={t("callout.successTitle")} description={t("callout.successBody")} />
+    <h3>{t("component.examplesTitle")}</h3>
+    <UsagePreview tree={calloutNeutralTree(t)} title={t("callout.neutralTitle")} description={t("callout.neutralBody")} storybookTitle={storybookTitle} storybookStory="Neutral" />
+    <UsagePreview tree={calloutInfoTree(t)} title={t("callout.infoTitle")} description={t("callout.infoBody")} storybookTitle={storybookTitle} storybookStory="Info" />
+    <UsagePreview tree={calloutWarningTree(t)} title={t("callout.warningTitle")} description={t("callout.warningBody")} storybookTitle={storybookTitle} storybookStory="Warning" />
+    <UsagePreview tree={calloutSuccessTree(t)} title={t("callout.successTitle")} description={t("callout.successBody")} storybookTitle={storybookTitle} storybookStory="Success" />
 
-    <h3>{t("callout.anatomyTitle")}</h3>
+    <h3>{t("component.contractNotesTitle")}</h3>
     <ul>
-      <li set:html={t("callout.anatomyItem1")} />
-      <li set:html={t("callout.anatomyItem2")} />
-      <li set:html={t("callout.anatomyItem3")} />
-      <li set:html={t("callout.anatomyItem4")} />
+      {tList(t, "callout.contract").map((item) => <li set:html={item} />)}
     </ul>
-
-    <p set:html={t("callout.reactBody")} />
+    <p set:html={t("component.reactNote")} />
 
     <h3>{t("component.anatomy")}</h3>
     <p set:html={t("callout.anatomyBody")} />
-    <ComponentPreview
-      tree={calloutAnatomyTree(t)}
-      css={annotationDemoCss}
-      label={t("callout.anatomyPreviewLabel")}
-      screens={false}
-      hideSource
-      chrome={false}
-    />
+    <UsagePreview tree={calloutAnatomyTree(t)} css={annotationDemoCss} label={t("callout.anatomyPreviewLabel")} bare />
   </Fragment>
 
   <Fragment slot="guidelines">
     <p class="lede" set:html={t("callout.guidelinesLede")} />
+    <WhenToUse use={tList(t, "callout.when")} avoid={tList(t, "callout.whenNot")} />
     <DoDont
+      canvas
       title={t("callout.dd.persistence.title")}
-      do={{ tree: calloutInfoTree(t), caption: t("callout.dd.persistence.do") }}
-      dont={{ tree: calloutSuccessTree(t), caption: t("callout.dd.persistence.dont") }}
+      do={{ tree: doDontSpecimen(calloutInfoTree(t)), caption: t("callout.dd.persistence.do") }}
+      dont={{ tree: doDontSpecimen(calloutSuccessTree(t)), caption: t("callout.dd.persistence.dont") }}
     />
     <DoDont
+      canvas
       title={t("callout.dd.recovery.title")}
-      do={{ tree: calloutWarningTree(t), caption: t("callout.dd.recovery.do") }}
-      dont={{ tree: calloutNeutralTree(t), caption: t("callout.dd.recovery.dont") }}
+      do={{ tree: doDontSpecimen(calloutWarningTree(t)), caption: t("callout.dd.recovery.do") }}
+      dont={{ tree: doDontSpecimen(calloutDontActionTree(t)), caption: t("callout.dd.recovery.dont") }}
     />
+    <DoDont
+      canvas
+      title={t("callout.dd.tone.title")}
+      do={{ tree: doDontSpecimen(calloutWarningTree(t)), caption: t("callout.dd.tone.do") }}
+      dont={{ tree: doDontSpecimen(calloutDontDangerTree(t)), caption: t("callout.dd.tone.dont") }}
+    />
+    <ContentRules items={tList(t, "callout.content")} />
   </Fragment>
 
   <Fragment slot="install">
     <CodeBlock code={install} label="terminal" />
+  </Fragment>
+
+  <Fragment slot="a11y">
+    <A11yNotes intro={t("callout.a11yIntro")} does={tList(t, "callout.a11yDoes")} yours={tList(t, "callout.a11yYours")} />
   </Fragment>
 </ComponentPageShell>

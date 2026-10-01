@@ -2,8 +2,11 @@
 import ComponentPageShell from "./ComponentPageShell.astro";
 import AppearanceMenu from "../AppearanceMenu.astro";
 import CodeBlock from "../CodeBlock.astro";
-import ComponentPreview from "../ComponentPreview.astro";
 import UsagePreview from "../UsagePreview.astro";
+import DoDont from "../DoDont.astro";
+import WhenToUse from "../WhenToUse.astro";
+import ContentRules from "../ContentRules.astro";
+import A11yNotes from "../A11yNotes.astro";
 import {
   imageFrameAnatomyTree,
   imageFrameAspectTree,
@@ -14,7 +17,7 @@ import {
   imageFrameTree,
 } from "../../demos/image-frame";
 import { annotationDemoCss } from "../../demos/annotation";
-import { getLocale, useTranslations } from "../../i18n";
+import { getLocale, tList, useTranslations } from "../../i18n";
 /* Structure diagram: Annotated specimen; a preview frame only copies styles THIS page loaded. */
 import "@skryensya/core/components/annotation.css";
 import "@skryensya/core/patterns/image-frame.css";
@@ -26,6 +29,50 @@ const styles = `@import "@skryensya/core/patterns/image-frame.css";
 
 const t = useTranslations(getLocale(Astro.url));
 
+const protectedGraphic = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 240">
+  <rect width="640" height="240" rx="28" fill="#f8fafc"/>
+  <circle cx="116" cy="120" r="56" fill="#2563eb"/>
+  <path d="M95 120h42M116 99v42" stroke="white" stroke-width="18" stroke-linecap="round"/>
+  <text x="210" y="142" font-family="Inter, Arial, sans-serif" font-size="84" font-weight="700" fill="#0f172a">SKRY</text>
+  <path d="M502 74h64v92h-64zM534 74v92M502 120h64" fill="none" stroke="#64748b" stroke-width="14" stroke-linejoin="round"/>
+</svg>`;
+const protectedGraphicSrc = `data:image/svg+xml,${encodeURIComponent(protectedGraphic)}`;
+const protectedGraphicFrame = (fit: "contain" | "cover") => `<div class="sk-image-frame image-frame-dd-specimen" data-aspect="1/1" data-fit="${fit}" data-radius="surface" data-border="subtle"><img src="${protectedGraphicSrc}" alt="" /></div>`;
+
+const photoGraphic = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 360">
+  <defs><linearGradient id="sky" x1="0" x2="0" y1="0" y2="1"><stop stop-color="#bfdbfe"/><stop offset="1" stop-color="#dbeafe"/></linearGradient></defs>
+  <rect width="640" height="360" fill="url(#sky)"/>
+  <circle cx="500" cy="78" r="42" fill="#f59e0b"/>
+  <path d="M0 260 150 120l110 100 95-75 285 170v45H0z" fill="#475569"/>
+  <path d="M0 302 180 170l125 105 80-62 255 126v21H0z" fill="#16a34a"/>
+</svg>`;
+const photoGraphicSrc = `data:image/svg+xml,${encodeURIComponent(photoGraphic)}`;
+const photoFrame = (fit: "cover" | "contain") => `<div class="sk-image-frame image-frame-dd-specimen" data-aspect="1/1" data-fit="${fit}" data-radius="surface" data-border="subtle"><img src="${photoGraphicSrc}" alt="" /></div>`;
+
+const portraitGraphic = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 640">
+  <rect width="240" height="640" fill="#e0f2fe"/>
+  <circle cx="120" cy="110" r="58" fill="#f59e0b"/>
+  <path d="M70 98c28-42 76-42 100 0" fill="none" stroke="#0f172a" stroke-width="16" stroke-linecap="round"/>
+  <circle cx="98" cy="115" r="7" fill="#0f172a"/><circle cx="142" cy="115" r="7" fill="#0f172a"/>
+  <path d="M95 145c18 15 34 15 50 0" fill="none" stroke="#0f172a" stroke-width="8" stroke-linecap="round"/>
+  <path d="M52 265c18-70 118-70 136 0l30 250H22z" fill="#2563eb"/>
+  <rect x="72" y="250" width="96" height="220" rx="20" fill="#1d4ed8"/>
+</svg>`;
+const portraitGraphicSrc = `data:image/svg+xml,${encodeURIComponent(portraitGraphic)}`;
+const portraitFrame = (position: "top" | "center") => `<div class="sk-image-frame image-frame-dd-specimen" data-aspect="1/1" data-fit="cover" data-position="${position}" data-radius="surface" data-border="subtle"><img src="${portraitGraphicSrc}" alt="" /></div>`;
+
+const lightScreenshot = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 400">
+  <rect width="640" height="400" fill="#ffffff"/>
+  <rect x="48" y="48" width="544" height="64" rx="12" fill="#f8fafc"/>
+  <rect x="72" y="72" width="170" height="16" rx="8" fill="#cbd5e1"/>
+  <rect x="48" y="144" width="250" height="170" rx="16" fill="#f8fafc"/>
+  <rect x="342" y="144" width="250" height="170" rx="16" fill="#f8fafc"/>
+  <rect x="72" y="174" width="150" height="14" rx="7" fill="#94a3b8"/>
+  <rect x="366" y="174" width="150" height="14" rx="7" fill="#94a3b8"/>
+</svg>`;
+const lightScreenshotSrc = `data:image/svg+xml,${encodeURIComponent(lightScreenshot)}`;
+const screenshotFrame = (border: "none" | "subtle") => `<div class="sk-image-frame image-frame-dd-specimen image-frame-dd-specimen--light" data-aspect="16/9" data-fit="cover" data-radius="surface" data-border="${border}"><img src="${lightScreenshotSrc}" alt="" /></div>`;
+
 /* What each value of a property is for, read from this page's messages. Same model Badge uses. */
 const explain = (option: string, values: readonly string[]) =>
   Object.fromEntries(values.map((value) => [value, t(`imageFrame.prop.${option}.${value}` as Parameters<typeof t>[0])]));
@@ -36,7 +83,7 @@ const explain = (option: string, values: readonly string[]) =>
   description={t("imageFrame.description")}
   contractId="image-frame"
   appearanceTargetSelector=".sk-image-frame"
-  testFiles={["packages/react/src/components/image-frame.test.tsx"]}}
+  testFiles={["packages/react/src/components/image-frame.test.tsx"]}
 >
   <Fragment slot="appearance">
     <AppearanceMenu label={t("prefs.appearance")} values={["plain", "brutalist"]} unavailable={{ tactile: t("prefs.appearanceTactileUnavailable"), frosted: t("prefs.appearanceFrostedUnavailable") }} />
@@ -72,58 +119,72 @@ const explain = (option: string, values: readonly string[]) =>
       stageMinBlockSize="26rem"
     />
 
-    <h3>{t("imageFrame.showcaseTitle")}</h3>
-    <p set:html={t("imageFrame.showcaseBody")} />
-    <UsagePreview tree={imageFrameTree(t)} />
-
-    <h3>{t("imageFrame.aspectTitle")}</h3>
-    <p set:html={t("imageFrame.aspectBody")} />
-    <UsagePreview tree={imageFrameAspectTree(t)} />
-
-    <h3>{t("imageFrame.fitTitle")}</h3>
-    <p set:html={t("imageFrame.fitBody")} />
-    <UsagePreview tree={imageFrameFitTree(t)} />
-
-    <h3>{t("imageFrame.positionTitle")}</h3>
-    <p set:html={t("imageFrame.positionBody")} />
-    <UsagePreview tree={imageFramePositionTree(t)} />
-
-    <p set:html={t("imageFrame.reactBody")} />
+    <h3>{t("component.examplesTitle")}</h3>
+    <UsagePreview tree={imageFrameTree(t)} title={t("imageFrame.basicTitle")} description={t("imageFrame.basicBody")} storybookTitle="Components/Content/ImageFrame" storybookStory="Default" />
+    <UsagePreview tree={imageFrameAspectTree(t)} title={t("imageFrame.aspectTitle")} description={t("imageFrame.aspectBody")} storybookTitle="Components/Content/ImageFrame" storybookStory="Aspect" />
+    <UsagePreview tree={imageFrameFitTree(t)} title={t("imageFrame.fitTitle")} description={t("imageFrame.fitBody")} storybookTitle="Components/Content/ImageFrame" storybookStory="Fit" />
+    <UsagePreview tree={imageFramePositionTree(t)} title={t("imageFrame.positionTitle")} description={t("imageFrame.positionBody")} storybookTitle="Components/Content/ImageFrame" storybookStory="Position" />
 
     <h3>{t("component.contractNotesTitle")}</h3>
     <ul>
-      <li set:html={t("imageFrame.contractItem1")} />
-      <li set:html={t("imageFrame.contractItem2")} />
-      <li set:html={t("imageFrame.contractItem3")} />
-      <li set:html={t("imageFrame.contractItem4")} />
-      <li set:html={t("imageFrame.contractItem5")} />
-      <li set:html={t("imageFrame.contractItem6")} />
-      <li set:html={t("imageFrame.contractItem7")} />
+      {tList(t, "imageFrame.contract").map((item) => <li set:html={item} />)}
     </ul>
 
     <h3>{t("component.anatomy")}</h3>
     <p set:html={t("imageFrame.anatomyBody")} />
-    <ComponentPreview
+    <UsagePreview
       tree={imageFrameAnatomyTree(t)}
       css={annotationDemoCss}
       label={t("imageFrame.anatomyPreviewLabel")}
-      screens={false}
-      hideSource
-      chrome={false}
+      bare
     />
   </Fragment>
 
   <Fragment slot="guidelines">
     <p class="lede" set:html={t("imageFrame.guidelinesLede")} />
-    <ul>
-      <li set:html={t("imageFrame.guide.use1")} />
-      <li set:html={t("imageFrame.guide.use2")} />
-      <li set:html={t("imageFrame.guide.use3")} />
-    </ul>
+    <WhenToUse use={tList(t, "imageFrame.when")} avoid={tList(t, "imageFrame.whenNot")} />
+    <DoDont
+      title={t("imageFrame.dd.fit.title")}
+      do={{ html: protectedGraphicFrame("contain"), caption: t("imageFrame.dd.fit.do") }}
+      dont={{ html: protectedGraphicFrame("cover"), caption: t("imageFrame.dd.fit.dont") }}
+    />
+    <DoDont
+      title={t("imageFrame.dd.photo.title")}
+      do={{ html: photoFrame("cover"), caption: t("imageFrame.dd.photo.do") }}
+      dont={{ html: photoFrame("contain"), caption: t("imageFrame.dd.photo.dont") }}
+    />
+    <DoDont
+      title={t("imageFrame.dd.position.title")}
+      do={{ html: portraitFrame("top"), caption: t("imageFrame.dd.position.do") }}
+      dont={{ html: portraitFrame("center"), caption: t("imageFrame.dd.position.dont") }}
+    />
+    <DoDont
+      title={t("imageFrame.dd.border.title")}
+      do={{ html: screenshotFrame("subtle"), caption: t("imageFrame.dd.border.do") }}
+      dont={{ html: screenshotFrame("none"), caption: t("imageFrame.dd.border.dont") }}
+    />
+    <ContentRules items={tList(t, "imageFrame.content")} />
   </Fragment>
 
   <Fragment slot="install">
     <CodeBlock code={install} label="terminal" />
     <CodeBlock code={styles} label="CSS" />
   </Fragment>
+
+  <Fragment slot="a11y">
+    <A11yNotes intro={t("imageFrame.a11yIntro")} does={tList(t, "imageFrame.a11yDoes")} yours={tList(t, "imageFrame.a11yYours")} />
+  </Fragment>
 </ComponentPageShell>
+
+<style>
+  :global(.image-frame-dd-specimen) {
+    inline-size: min(100%, 12rem);
+    margin: var(--space-inset-lg) auto;
+    --sk-image-frame-bg: var(--color-bg-surface-sunken);
+  }
+
+  :global(.image-frame-dd-specimen--light) {
+    inline-size: min(100%, 16rem);
+    --sk-image-frame-bg: var(--color-bg-surface);
+  }
+</style>

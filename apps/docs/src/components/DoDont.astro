@@ -5,23 +5,8 @@
  * frame, so every pair on a page is the same shape, with a verdict on top and one sentence under it
  * saying why.
  *
- * TWO KINDS OF FRAME. By default a plain one: the example centred by CSS alone on the canvas's
- * ground (the same grid), so it is in place from the first paint with nothing to measure. `canvas`
- * puts it on a real still canvas instead (`Canvas` with `fitOnly`: no zoom, no drag, no buttons),
- * for an example that can be bigger than the frame and has to be scaled down to fit: that one needs
- * the binding to measure it, and is only worth its script where the example needs it.
- *
- * RENDERED AT BUILD TIME, not in the browser: each example is the compiler's markup for its tree
- * (`emitMarkup`, the same Vanilla output `ComponentPreview` stages), and the page's own Vanilla
- * enhancers (`initComponents(document)`, run once for the whole page) fit the canvas. These are
- * still pictures, never touched, so there is nothing for React to do: as islands they were sixteen
- * bundles hydrating one by one as they scrolled into view, an empty frame until each one arrived,
- * and the page jumping each time one did. Now every example is in the HTML from the first byte, and
- * the 4:3 frame holds its space before any script runs.
- *
- * The verdict is a word and a mark, never colour alone: "Do" with a check, "Don't" with a cross,
- * then the success/danger colour on top of that, as the frame's brutalist shadow. Side by side from a tablet up, the don't under the
- * do on a phone, in that order, so the right answer is always read first.
+ * The example is emitted as static HTML at build time. It is inert, not hydrated, so it paints with
+ * the current theme and language while remaining a specimen rather than a second live control.
  */
 import type { UsageTree } from "@skryensya/core/usage-tree";
 import { emitMarkup } from "@skryensya/ai-compiler/emit";
@@ -31,28 +16,33 @@ import "./preview-card.css";
 import "@skryensya/core/components/canvas.css";
 
 type Half = {
-  tree: UsageTree;
+  /** A normal validated component composition. */
+  tree?: UsageTree;
+  /** Frozen markup for a visual state that cannot be represented by a closed UsageTree. */
+  html?: string;
   /** Why this is right, or wrong. Trusted HTML from the page's messages. */
   caption: string;
 };
 
 interface Props {
-  /** What the pair is about, as a heading above both. */
   title?: string;
-  /** Put both examples on a fit-only canvas, for examples that may be larger than the frame. */
   canvas?: boolean;
+  /**
+   * Let the reader use the specimen: no `inert`, pointer events on. For a pair whose point is felt
+   * by doing it (scrolling a region to see where its fade goes); every other pair stays a picture.
+   */
+  interactive?: boolean;
   do: Half;
   dont: Half;
 }
 
-const { title, canvas = false, do: good, dont: bad } = Astro.props;
+const { title, canvas = false, interactive = false, do: good, dont: bad } = Astro.props;
 const t = useTranslations(getLocale(Astro.url));
 
-/* The example, on a canvas that only fits: something to look at, not to explore. */
 const inertTree = (tree: UsageTree): UsageTree => ({
   contract: "layout",
   signature: "Stack",
-  attrs: { inert: "", style: "padding: var(--space-inset-lg); box-sizing: border-box;" },
+  attrs: { inert: "", style: "padding: var(--space-inset-xl); box-sizing: border-box;" },
   children: tree,
 });
 
@@ -80,11 +70,13 @@ const halves = [
           </figcaption>
           <div class="sk-do-dont__card">
             {
-              canvas ? (
+              half.html ? (
+                <div class="sk-do-dont__frame" inert={!interactive} data-interactive={interactive || undefined} set:html={half.html} />
+              ) : half.tree && canvas ? (
                 <Fragment set:html={emitMarkup(onCanvas(half.tree, label))} />
-              ) : (
-                <div class="sk-do-dont__frame" inert set:html={emitMarkup(half.tree)} />
-              )
+              ) : half.tree ? (
+                <div class="sk-do-dont__frame" inert={!interactive} data-interactive={interactive || undefined} set:html={emitMarkup(half.tree)} />
+              ) : null
             }
           </div>
           <p class="sk-do-dont__why" set:html={half.caption} />
@@ -106,7 +98,8 @@ const halves = [
 
   @media (min-width: 40rem) {
     .sk-do-dont__pair {
-      grid-template-columns: 1fr 1fr;
+      /* minmax(0, …): a wide specimen is clipped by its frame, it never widens its own column. */
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
     }
   }
 
@@ -115,6 +108,7 @@ const halves = [
     display: grid;
     align-content: start;
     gap: var(--space-stack-xs);
+    min-inline-size: 0;
     margin: 0;
   }
 
@@ -134,37 +128,38 @@ const halves = [
     display: inline-flex;
   }
 
-  /*
-   * A 4:3 FRAME, the anatomy diagrams' own shape (site.css), so every pair reads as one set. The
-   * canvas sizes itself to the fitted drawing inside a floor and a cap; the ratio decides instead,
-   * so all three are released, and the canvas reads the ratio-fixed height back as its own cap: an
-   * example taller than 4:3 shrinks to fit rather than being cut.
-   */
   .sk-do-dont__card :global(.sk-canvas[data-fit-only] > .sk-canvas__viewport) {
+    aspect-ratio: 4 / 3;
     block-size: auto;
     min-block-size: 0;
     max-block-size: none;
-    aspect-ratio: 4 / 3;
   }
 
-  /*
-   * A BRUTALIST FRAME IN THE VERDICT'S COLOUR: the kit's own brutalist construction (button.css), a
-   * 1px edge and a hard, unblurred offset, both in the verdict's colour instead of black, so the box
-   * and its shadow read as one piece and a scanning eye pairs each frame with its word without
-   * reading it. (A black edge, the kit's usual ink, vanished against the dark page.) The offset
-   * points toward block-end and inline-end, mirrored for right-to-left like every brutalist surface.
-   * The card keeps the offset's room clear, so the shadow never runs into the sentence under it.
-   */
+  /* Give the specimen board its own ground, distinct from the page around it. */
+  .sk-do-dont__card :global(.sk-canvas) {
+    --sk-canvas-viewport-bg: color-mix(in oklab, var(--color-bg-surface-raised) 92%, var(--sk-do-dont-color) 8%);
+  }
+
+  /* The grid helps navigate a design canvas, but competes with these small comparison specimens. */
+  .sk-do-dont__card :global(.sk-canvas__viewport) {
+    background-image: none;
+  }
+
+  /* The example should read as an object resting above the board, not printed on it. */
+  .sk-do-dont__card :global(.sk-canvas__content .sk-accordion),
+  .sk-do-dont__card :global(.sk-canvas__content .sk-details-group) {
+    box-shadow: var(--elevation-overlay);
+  }
+
   .sk-do-dont__card {
     --sk-do-dont-offset: 6px;
+    min-inline-size: 0;
     padding-block-end: var(--sk-do-dont-offset);
     padding-inline-end: var(--sk-do-dont-offset);
   }
 
-  /* Do/Don't examples are specimens, never controls. This is global for every page using this
-     component: the page may enhance widgets around them, but the pair itself stays read-only. */
   .sk-do-dont__card :global(.sk-canvas__content),
-  .sk-do-dont__frame {
+  .sk-do-dont__frame:not([data-interactive]) {
     pointer-events: none;
   }
 
@@ -180,13 +175,34 @@ const halves = [
     --sk-do-dont-direction: -1;
   }
 
-  /*
-   * THE PLAIN FRAME: the canvas's ground and edge, drawn by CSS alone, with the example centred in
-   * a grid cell. The same tokens the canvas paints its viewport with (canvas.css), so a plain pair and
-   * a canvas pair look like one set; nothing here waits for a script, so nothing moves.
-   */
+  /* Native dialogs are positioned out of normal flow by the browser and size themselves against
+     the viewport. In an inert Do/Don't specimen they belong inside the comparison frame instead. */
+  .sk-do-dont__frame :global(dialog.sk-dialog),
+  .sk-do-dont__frame :global(dialog.sk-vaul) {
+    position: relative;
+    inset: auto;
+    inline-size: 100%;
+    max-inline-size: 100%;
+    margin: 0;
+  }
+
+  /* Dialog specimens stay content-sized and never scroll internally by default. The long-flow
+     specimen opts in below so the anti-pattern is visible and its caption can call it out. */
+  .sk-do-dont__frame :global(dialog.sk-dialog[data-dd-scroll]) {
+    max-block-size: 100%;
+    overflow-y: auto;
+  }
+
+  .sk-do-dont__frame :global(dialog.sk-vaul) {
+    block-size: auto;
+    max-block-size: 100%;
+    overflow: auto;
+  }
+
   .sk-do-dont__frame {
     display: grid;
+    /* One column as wide as the frame, so a specimen's `max-inline-size: 100%` means the frame. */
+    grid-template-columns: minmax(0, 1fr);
     place-items: center;
     aspect-ratio: 4 / 3;
     box-sizing: border-box;
@@ -194,11 +210,12 @@ const halves = [
     overflow: hidden;
     border: 1px solid var(--sk-do-dont-color);
     border-radius: var(--radius-surface);
-    background-color: color-mix(in oklab, var(--color-bg-surface) 50%, var(--color-bg-canvas));
-    background-image:
-      linear-gradient(to right, color-mix(in oklab, var(--color-border-subtle) 25%, transparent) 1px, transparent 1px),
-      linear-gradient(to bottom, color-mix(in oklab, var(--color-border-subtle) 25%, transparent) 1px, transparent 1px);
-    background-size: 24px 24px;
+    background-color: color-mix(in oklab, var(--color-bg-surface-raised) 92%, var(--sk-do-dont-color) 8%);
+    background-image: none;
+  }
+
+  .sk-do-dont__frame :global(.sk-app-bar) {
+    box-shadow: var(--elevation-overlay);
   }
 
   .sk-do-dont__why {

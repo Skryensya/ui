@@ -10,56 +10,86 @@ export const avatarMessages = {
     "demo.avatar.personOne": "Persona 1",
     "demo.avatar.personTwo": "Persona 2",
     "demo.avatar.personThree": "Persona 3",
+    "demo.avatar.statusAssigned": "Asignada",
+    "demo.avatar.statusReview": "En revisión",
+    "demo.avatar.statusDone": "Lista",
+    "demo.avatar.statusBlocked": "Bloqueada",
 
-    "avatar.description": "Avatar: ImageFrame o iniciales, AvatarGroup con colapso +N y componente React.",
+    "avatar.description": "Identifica a una persona o entidad con su foto o, sin foto, sus iniciales.",
+
+    "avatar.a11yYours3": "Si usas un color por persona, las iniciales deben tener un contraste de 4.5:1 sobre ese fondo (WCAG 2.2, 1.4.3).",
+
+    "avatar.a11yYours2": "Si el avatar abre un perfil, el enlace o el botón que lo envuelve debe tener su propio nombre, como “Ver perfil de Ada Lovelace”.",
+
+    "avatar.a11yYours1": "Debe tener <code>name</code>: es lo único que un lector de pantalla anuncia.",
+
+    "avatar.a11yDoes3": "AvatarGroup es un grupo; con <code>label</code>, tiene nombre.",
+
+    "avatar.a11yDoes2": 'Sin foto, el disco es <code>role="img"</code> con el nombre, y las iniciales quedan ocultas al lector de pantalla.',
+
+    "avatar.a11yDoes1": "Con foto, el <code>&lt;img alt&gt;</code> lleva el nombre.",
+
+    "avatar.a11yIntro": "Un avatar es una imagen con nombre: se anuncia como tal y no recibe foco.",
+
+    "avatar.content3": "En el grupo, <code>label</code> nombra el conjunto: “Participantes”, “Equipo de diseño”.",
+
+    "avatar.content2": "Escribe las iniciales en mayúsculas, con dos letras como máximo.",
+
+    "avatar.content1": "Usa el nombre de la persona como <code>name</code>: “Ada Lovelace”, no “Foto de perfil”.",
+
+    "avatar.whenNot3": 'Como decoración o marcador genérico: usa <a href="/es/componentes/icon">Icon</a>.',
+
+    "avatar.whenNot2": 'Cuando cada persona necesita su nombre, un detalle o una acción a la vista: usa <a href="/es/componentes/list">List</a>.',
+
+    "avatar.whenNot1": 'Para una imagen de contenido, no de identidad: usa <a href="/es/componentes/image-frame">ImageFrame</a>.',
+
+    "avatar.when2": "Para mostrar varias personas en poco espacio: usa AvatarGroup.",
+
+    "avatar.when1": "Para mostrar quién escribió, asignó o participa: un comentario, una fila, un perfil.",
+
+    "avatar.contract3": "En React, <code>avatarInitials(name)</code> deriva las iniciales si no las pasas: la primera letra de cada una de dos palabras, o los dos primeros caracteres de una.",
+
+    "avatar.contract2": 'Sin foto, el disco toma <code>role="img"</code> con el nombre y las iniciales quedan decorativas.',
+
+    "avatar.contract1": "Con foto, el avatar anida un <code>sk-image-frame</code> y el <code>&lt;img alt&gt;</code> lleva el nombre.",
     "avatar.tactileUnavailable": "Solo para controles que se presionan",
     "avatar.frostedUnavailable": "Solo para superficies, no para retratos",
-    "avatar.betaBadge": "Beta",
-    "avatar.lede":
-      'Avatar es el token visual de una persona o entidad: una foto recortada con <strong>ImageFrame</strong> (1/1, cover, pill) o, sin imagen, las dos primeras letras del nombre. <strong>AvatarGroup</strong> apila un conjunto y colapsa el excedente en un contador «+N».',
-    "avatar.anatomyBody":
-      "El contrato se bifurca en <code>src</code>, así que el diagrama dibuja las dos ramas: con foto el disco contiene un <strong>ImageFrame</strong>, sin ella contiene el fallback. <code>sk-avatar</code> lleva un anillo en cada una porque la raíz es la misma de los dos lados. El espécimen está congelado; los Avatar vivos empiezan abajo.",
+    "avatar.lede": "Avatar identifica a una persona o entidad con su foto o, sin foto, sus iniciales. <strong>AvatarGroup</strong> apila varias identidades y resume el excedente con un contador «+N».",
+    "avatar.anatomyBody": "El contrato se bifurca en <code>src</code>: con foto, el disco contiene un ImageFrame; sin foto, contiene las iniciales.",
     "avatar.anatomyLabel": "Anatomía de Avatar",
     "avatar.anatomyPreviewLabel": "Avatar, parte por parte",
-    "avatar.groupAnatomyBody":
-      "Apilar agrega dos partes que un avatar suelto no tiene: el contenedor del grupo y el contador de excedente. El anillo del medio marca un miembro cualquiera de la pila.",
+    "avatar.groupAnatomyBody": "El grupo agrega dos partes: el contenedor y el contador de excedente.",
     "avatar.groupAnatomyLabel": "Anatomía de AvatarGroup",
     "avatar.groupAnatomyPreviewLabel": "AvatarGroup, parte por parte",
-    "avatar.body":
-      'Con imagen, el avatar anida <code>sk-image-frame</code> y el <code>&lt;img alt&gt;</code> aporta la semántica. Sin ella, el contenedor toma <code>role="img"</code> y las iniciales quedan decorativas. En React, <code>avatarInitials(name)</code> deriva el fallback cuando no pasas hijos: dos palabras → primera letra de cada una; una sola → los dos primeros caracteres.',
-    "avatar.imagesTitle": "Con imagen",
-    "avatar.imagesBody":
-      'Con <code>src</code>, el avatar recorta la foto dentro de <strong>ImageFrame</strong> (1/1, cover, pill); el <code>&lt;img alt&gt;</code> aporta la semántica.',
-    "avatar.sizesTitle": "Tamaños",
-    "avatar.sizesBody":
-      'Cuatro tamaños. <code>sm</code> / <code>md</code> / <code>lg</code> van sobre la escala de controles, la misma que usa Button; <code>xl</code> (64px) queda fuera de esa rampa a propósito, porque es el retrato de una ficha de perfil y no un control. Se mide como <code>calc(var(--size-control-lg) * 4 / 3)</code>, así que la densidad lo sigue alcanzando igual que a los otros tres.',
-    "avatar.colorsTitle": "Colores",
-    "avatar.colorsBody":
-      'El fondo y la tinta son hooks de estilo (<code>--sk-avatar-bg</code> / <code>--sk-avatar-fg</code>): tintar un avatar por persona es lo más común que hace una app con ellos. Dieciséis identidades, cuatro por cada tamaño, cada una de un color distinto de la paleta base, con el mismo anillo que usa <strong>AvatarGroup</strong> para separar sus discos.',
-    "avatar.groupTitle": "Avatares apilados",
-    "avatar.groupBody":
-      '<strong>AvatarGroup</strong> superpone un conjunto y colapsa el excedente en un contador «+N».',
-    "avatar.groupMaxBody":
-      'En React no hace falta contarlos a mano: <code>max</code> recorta los avatares visibles y colapsa el resto en el contador. El árbol de arriba escribe el excedente a mano porque el contrato lo expone como un slot (<code>overflow</code>), y eso es justamente lo que deja componer el mismo grupo sin JavaScript; <code>max</code> es el atajo que React construye encima.',
+    "avatar.imagesTitle": "Con foto: el nombre queda como texto alternativo",
+    "avatar.imagesBody": "Con <code>src</code>, el avatar recorta la foto en un círculo y usa el nombre como <code>alt</code>.",
+    "avatar.colorsTitle": "Colores: uno por persona",
+    "avatar.colorsBody": "El fondo y la tinta son hooks de estilo (<code>--sk-avatar-bg</code> y <code>--sk-avatar-fg</code>). Considera un color por persona cuando varias aparecen juntas.",
+    "avatar.groupTitle": "Grupo: varias identidades en poco espacio",
+    "avatar.groupBody": "<strong>AvatarGroup</strong> superpone los discos y resume el excedente con «+N».",
+    "avatar.groupMaxBody": "En React, <code>max</code> recorta los avatares visibles y cuenta el resto por ti.",
     "avatar.groupMaxNote": "cuatro hijos y max={3}: se ven tres, el cuarto se convierte en «+1»",
-    "avatar.profileTitle": "En composición",
-    "avatar.profileBody":
-      'Todo lo de arriba son especímenes: discos en fila, que es como se compara una escala o dieciséis tintes, y no como se escribe una interfaz. Esta es la pieza real, la misma que publica el ejemplo <code>hero-with-testimonial</code>: un <strong>Inline</strong> con el avatar al lado de un <strong>Stack</strong> de dos <strong>Text</strong>, nombre sobre rol. Van en dos <code>Text</code> separados y no en una sola cadena con coma, porque un lector de pantalla los anuncia como dos datos distintos, en el mismo orden en que los toma la vista. A <code>md</code>, esta misma pieza es el encabezado de un comentario o una fila de lista: la forma no cambia con el tamaño.',
-    "avatar.prop.size.title": "Tamaño",
-    "avatar.prop.size.body": "<code>size</code> ajusta el diámetro del avatar.",
+    "avatar.profileTitle": "En composición: avatar, nombre y rol",
+    "avatar.profileBody": "El avatar al lado de dos textos, nombre sobre rol. Son dos textos y no uno con coma: un lector de pantalla los anuncia como dos datos.",
+    "avatar.prop.size.title": "Size: cuánto pesa la identidad",
+    "avatar.prop.size.body": "Ajusta el diámetro del avatar.",
     "avatar.prop.size.sm": "Usa <code>sm</code> en listas densas o metadatos.",
-    "avatar.prop.size.md": "Usa <code>md</code> como tamaño normal junto a texto.",
-    "avatar.prop.size.lg": "Usa <code>lg</code> cuando la identidad necesita más presencia.",
-    "avatar.prop.size.xl": "Usa <code>xl</code> para una ficha o perfil donde el retrato es protagonista.",
-    "avatar.showcaseTitle": "Showcases",
-    "avatar.showcaseBody": "Avatar cubre fotos, iniciales, grupos apilados y composiciones con texto.",
-    "avatar.guidelinesLede": "Usa Avatar para identificar una persona o entidad; no lo uses como decoración genérica.",
-    "avatar.dd.identity.title": "Identidad con contexto",
-    "avatar.dd.identity.do": "Acompaña el avatar con nombre o datos cuando la identidad importa.",
-    "avatar.dd.identity.dont": "No uses una fila de colores como si fuera una interfaz final.",
-    "avatar.dd.group.title": "Grupo con excedente",
-    "avatar.dd.group.do": "Colapsa grupos largos en un contador claro.",
-    "avatar.dd.group.dont": "No muestres una escala de tamaños cuando el usuario necesita saber quién participa.",
+    "avatar.prop.size.md": "Usa <code>md</code> junto a una línea de texto: un comentario, una fila.",
+    "avatar.prop.size.lg": "Usa <code>lg</code> cuando la identidad encabeza un bloque, como una tarjeta.",
+    "avatar.prop.size.xl": "Usa <code>xl</code> en una ficha de perfil, donde el retrato es el tema.",
+    "avatar.guidelinesLede": "Un avatar dice quién es alguien de un vistazo; el nombre al lado dice cuál.",
+    "avatar.dd.identity.title": "Identidad: el avatar acompaña al nombre",
+    "avatar.dd.identity.do": "El nombre y el rol al lado dicen quién es sin que la persona adivine.",
+    "avatar.dd.identity.dont": "Dos letras solas no dicen quién es: varias personas comparten iniciales.",
+    "avatar.dd.group.title": "Grupo: resume el excedente",
+    "avatar.dd.group.do": "Tres discos y «+1» ocupan poco y dicen cuántos son.",
+    "avatar.dd.group.dont": "Una fila larga de discos ocupa la línea y nadie los cuenta.",
+    "avatar.dd.size.title": "Tamaño: iguala el peso del texto",
+    "avatar.dd.size.do": "En una fila densa, un avatar pequeño identifica sin dominar la lectura.",
+    "avatar.dd.size.dont": "Un retrato grande junto a texto pequeño hace que una fila común parezca una ficha de perfil.",
+    "avatar.dd.color.title": "Color: identifica, no marca estado",
+    "avatar.dd.color.do": "El color separa personas; el texto dice el estado de cada una.",
+    "avatar.dd.color.dont": "Usar verde, rojo o amarillo para el estado convierte el avatar en una badge ambigua.",
     "avatar.test1": "Sin imagen, deriva las iniciales del nombre (dos palabras → una letra de cada una).",
     "avatar.test2": "Con un solo nombre, usa sus dos primeros caracteres.",
     "avatar.test3": "Con <code>src</code>, la imagen se renderiza dentro de ImageFrame.",
@@ -81,60 +111,90 @@ export const avatarMessages = {
     "demo.avatar.personOne": "Person 1",
     "demo.avatar.personTwo": "Person 2",
     "demo.avatar.personThree": "Person 3",
+    "demo.avatar.statusAssigned": "Assigned",
+    "demo.avatar.statusReview": "In review",
+    "demo.avatar.statusDone": "Done",
+    "demo.avatar.statusBlocked": "Blocked",
 
-    "avatar.description": "Avatar: ImageFrame or initials, AvatarGroup with +N collapse, and a React component.",
+    "avatar.description": "Identifies a person or entity with their photo or, without one, their initials.",
+
+    "avatar.a11yYours3": "If you use one color per person, the initials must reach 4.5:1 contrast on it (WCAG 2.2, 1.4.3).",
+
+    "avatar.a11yYours2": "If the avatar opens a profile, the link or button around it must have its own name, such as “View Ada Lovelace's profile”.",
+
+    "avatar.a11yYours1": "It must have a <code>name</code>: it is all a screen reader announces.",
+
+    "avatar.a11yDoes3": "AvatarGroup is a group; with <code>label</code>, it has a name.",
+
+    "avatar.a11yDoes2": 'Without a photo, the disc is <code>role="img"</code> with the name, and the initials are hidden from screen readers.',
+
+    "avatar.a11yDoes1": "With a photo, the <code>&lt;img alt&gt;</code> carries the name.",
+
+    "avatar.a11yIntro": "An avatar is a named image: it is announced as one and takes no focus.",
+
+    "avatar.content3": "In a group, <code>label</code> names the set: “Participants”, “Design team”.",
+
+    "avatar.content2": "Write initials in capitals, two letters at most.",
+
+    "avatar.content1": "Use the person's name as <code>name</code>: “Ada Lovelace”, not “Profile photo”.",
+
+    "avatar.whenNot3": 'As decoration or a generic marker: use <a href="/components/icon">Icon</a>.',
+
+    "avatar.whenNot2": 'When each person needs their name, a detail or an action in view: use <a href="/components/list">List</a>.',
+
+    "avatar.whenNot1": 'For a content image rather than an identity: use <a href="/components/image-frame">ImageFrame</a>.',
+
+    "avatar.when2": "To show several people in little space: use AvatarGroup.",
+
+    "avatar.when1": "To show who wrote, assigned or took part: a comment, a row, a profile.",
+
+    "avatar.contract3": "In React, <code>avatarInitials(name)</code> derives the initials when you pass none: the first letter of each of two words, or the first two characters of one.",
+
+    "avatar.contract2": 'Without a photo, the disc takes <code>role="img"</code> with the name, and the initials are decorative.',
+
+    "avatar.contract1": "With a photo, the avatar nests an <code>sk-image-frame</code> and the <code>&lt;img alt&gt;</code> carries the name.",
     "avatar.tactileUnavailable": "Only for controls you press",
     "avatar.frostedUnavailable": "Only for surfaces, not portraits",
-    "avatar.betaBadge": "Beta",
-    "avatar.lede":
-      'Avatar is the visual token for a person or entity: a cropped photo with <strong>ImageFrame</strong> (1/1, cover, pill), or, with no image, the first two letters of the name. <strong>AvatarGroup</strong> stacks a set and collapses the overflow into a "+N" counter.',
-    "avatar.anatomyBody":
-      "The contract forks on <code>src</code>, so the diagram draws both branches: with a photo the disc holds an <strong>ImageFrame</strong>, without one it holds the fallback. <code>sk-avatar</code> is ringed on each, because the root is the same either way. The specimen is frozen; the live Avatars begin below.",
+    "avatar.lede": "Avatar identifies a person or entity with their photo or, without one, their initials. <strong>AvatarGroup</strong> stacks several identities and sums up the rest with a “+N” counter.",
+    "avatar.anatomyBody": "The contract forks on <code>src</code>: with a photo, the disc holds an ImageFrame; without, it holds the initials.",
     "avatar.anatomyLabel": "Avatar anatomy",
     "avatar.anatomyPreviewLabel": "Avatar, part by part",
-    "avatar.groupAnatomyBody":
-      "Stacking adds two parts a lone avatar does not have: the group container and the overflow counter. The ring in the middle marks any one member of the stack.",
+    "avatar.groupAnatomyBody": "The group adds two parts: the container and the overflow counter.",
     "avatar.groupAnatomyLabel": "AvatarGroup anatomy",
     "avatar.groupAnatomyPreviewLabel": "AvatarGroup, part by part",
-    "avatar.body":
-      'With an image, the avatar nests <code>sk-image-frame</code> and the <code>&lt;img alt&gt;</code> carries the semantics. Without one, the container takes <code>role="img"</code> and the initials stay decorative. In React, <code>avatarInitials(name)</code> derives the fallback when you pass no children: two words → first letter of each; a single word → its first two characters.',
-    "avatar.imagesTitle": "With an image",
-    "avatar.imagesBody":
-      'With <code>src</code>, the avatar crops the photo inside <strong>ImageFrame</strong> (1/1, cover, pill); the <code>&lt;img alt&gt;</code> carries the semantics.',
-    "avatar.sizesTitle": "Sizes",
-    "avatar.sizesBody":
-      'Four sizes. <code>sm</code> / <code>md</code> / <code>lg</code> ride the control scale, the same one Button uses; <code>xl</code> (64px) sits off that ramp on purpose, because it is a profile card\'s portrait rather than a control. It measures as <code>calc(var(--size-control-lg) * 4 / 3)</code>, so density still reaches it the way it reaches the other three.',
-    "avatar.colorsTitle": "Colors",
-    "avatar.colorsBody":
-      'Background and ink are styling hooks (<code>--sk-avatar-bg</code> / <code>--sk-avatar-fg</code>): tinting an avatar per person is the most ordinary thing an app does with them. Sixteen identities, four at each size, each a different color off the base palette, ringed the same way <strong>AvatarGroup</strong> separates its own overlapping discs.',
-    "avatar.groupTitle": "Stacked avatars",
-    "avatar.groupBody":
-      '<strong>AvatarGroup</strong> overlaps a set and collapses the overflow into a "+N" counter.',
-    "avatar.groupMaxBody":
-      'In React you do not have to count them yourself: <code>max</code> caps the visible avatars and collapses the rest into the counter. The tree above writes its overflow by hand because the contract exposes it as a slot (<code>overflow</code>), which is exactly what lets the same group be composed with no JavaScript at all; <code>max</code> is the shorthand React builds on top of it.',
+    "avatar.imagesTitle": "With a photo: the name becomes the alternative text",
+    "avatar.imagesBody": "With <code>src</code>, the avatar crops the photo into a circle and uses the name as <code>alt</code>.",
+    "avatar.colorsTitle": "Colors: one per person",
+    "avatar.colorsBody": "The fill and ink are styling hooks (<code>--sk-avatar-bg</code> and <code>--sk-avatar-fg</code>). Consider one color per person when several appear together.",
+    "avatar.groupTitle": "Group: several identities in little space",
+    "avatar.groupBody": "<strong>AvatarGroup</strong> overlaps the discs and sums up the rest with “+N”.",
+    "avatar.groupMaxBody": "In React, <code>max</code> trims the visible avatars and counts the rest for you.",
     "avatar.groupMaxNote": 'four children and max={3}: three show, the fourth becomes "+1"',
-    "avatar.profileTitle": "In a composition",
-    "avatar.profileBody":
-      'Everything above is a specimen: discs in a bare row, which is how you compare a size ramp or sixteen tints, and not how you write an interface. This is the real piece, the same one the <code>hero-with-testimonial</code> example publishes: an <strong>Inline</strong> with the avatar beside a <strong>Stack</strong> of two <strong>Text</strong>s, name over role. They are two separate <code>Text</code>s rather than one string with a comma, because a screen reader announces them as two distinct facts, in the same order a sighted reader\'s eye takes them. At <code>md</code> this same piece is a comment header or a list row: the shape does not change with the size.',
-    "avatar.prop.size.title": "Size",
-    "avatar.prop.size.body": "<code>size</code> adjusts the avatar diameter.",
+    "avatar.profileTitle": "In a composition: avatar, name and role",
+    "avatar.profileBody": "The avatar beside two texts, name over role. They are two texts, not one with a comma: a screen reader announces them as two facts.",
+    "avatar.prop.size.title": "Size: how much weight the identity has",
+    "avatar.prop.size.body": "Sets the avatar's diameter.",
     "avatar.prop.size.sm": "Use <code>sm</code> in dense lists or metadata.",
-    "avatar.prop.size.md": "Use <code>md</code> as the normal size beside text.",
-    "avatar.prop.size.lg": "Use <code>lg</code> when the identity needs more presence.",
-    "avatar.prop.size.xl": "Use <code>xl</code> for a card or profile where the portrait is the subject.",
-    "avatar.showcaseTitle": "Showcases",
-    "avatar.showcaseBody": "Avatar covers photos, initials, stacked groups, and text compositions.",
-    "avatar.guidelinesLede": "Use Avatar to identify a person or entity; do not use it as generic decoration.",
-    "avatar.dd.identity.title": "Identity with context",
-    "avatar.dd.identity.do": "Pair the avatar with a name or details when identity matters.",
-    "avatar.dd.identity.dont": "Do not use a row of colors as if it were a final interface.",
-    "avatar.dd.group.title": "Group with overflow",
-    "avatar.dd.group.do": "Collapse long groups into a clear counter.",
-    "avatar.dd.group.dont": "Do not show a size scale when the user needs to know who participates.",
+    "avatar.prop.size.md": "Use <code>md</code> beside a line of text: a comment, a row.",
+    "avatar.prop.size.lg": "Use <code>lg</code> when the identity heads a block, like a card.",
+    "avatar.prop.size.xl": "Use <code>xl</code> on a profile, where the portrait is the subject.",
+    "avatar.guidelinesLede": "An avatar says who someone is at a glance; the name beside it says which one.",
+    "avatar.dd.identity.title": "Identity: the avatar goes with the name",
+    "avatar.dd.identity.do": "The name and role beside it say who it is, so nobody has to guess.",
+    "avatar.dd.identity.dont": "Two letters alone do not say who it is: several people share initials.",
+    "avatar.dd.group.title": "Group: sum up the rest",
+    "avatar.dd.group.do": "Three discs and “+1” take little room and say how many there are.",
+    "avatar.dd.group.dont": "A long row of discs fills the line and nobody counts them.",
+    "avatar.dd.size.title": "Size: match the text weight",
+    "avatar.dd.size.do": "In a dense row, a small avatar identifies without taking over the line.",
+    "avatar.dd.size.dont": "A large portrait beside small text makes an ordinary row look like a profile card.",
+    "avatar.dd.color.title": "Color: identify, do not mark status",
+    "avatar.dd.color.do": "Color separates people; the text says each person's status.",
+    "avatar.dd.color.dont": "Using green, red or yellow for status turns the avatar into an ambiguous badge.",
     "avatar.test1": "With no image, derives initials from the name (two words → one letter from each).",
     "avatar.test2": "With a single name, uses its first two characters.",
     "avatar.test3": "With <code>src</code>, the image renders inside ImageFrame.",
-    "avatar.test4": "AvatarGroup caps visible avatars and collapses the rest into a \"+N\" counter.",
+    "avatar.test4": 'AvatarGroup caps visible avatars and collapses the rest into a "+N" counter.',
     "avatar.test5":
       'The <code>xl</code> size serializes onto <code>data-size</code> on the disc, with initials and with a photo alike.',
     "avatar.test6": "With <code>label</code>, AvatarGroup announces itself as a named group.",

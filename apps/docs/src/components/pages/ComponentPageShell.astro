@@ -340,6 +340,13 @@ const markMarkup = findComponentIconMarkup(Astro.url.pathname, { className: "doc
           )
         }
         {
+          hasAnatomy && !hasContract && (
+            <button class="sk-tabs__trigger sk-interactive" data-sk-tabs-trigger data-value="anatomy" type="button">
+              {t("component.anatomy")}
+            </button>
+          )
+        }
+        {
           hasContract && (
             <button class="sk-tabs__trigger sk-interactive" data-sk-tabs-trigger data-value="contract" type="button">
               {t("contract.tab")}
@@ -451,6 +458,14 @@ const markMarkup = findComponentIconMarkup(Astro.url.pathname, { className: "doc
           <div class="sk-tabs__content sk-layout-grid" data-sk-tabs-content data-value="guidelines">
             <h2 class="sk-visually-hidden">{t("component.tabGuidelines")}</h2>
             <slot name="guidelines" />
+          </div>
+        )
+      }
+      {
+        hasAnatomy && !hasContract && (
+          <div class="sk-tabs__content sk-layout-grid" data-sk-tabs-content data-value="anatomy">
+            <h2>{t("component.anatomy")}</h2>
+            <slot name="anatomy" />
           </div>
         )
       }

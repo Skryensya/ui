@@ -96,10 +96,6 @@ const componentDescriptions = {
     es: "Encuentra destinos y ejecuta comandos desde el teclado.",
     en: "Finds destinations and runs commands from the keyboard.",
   },
-  "/components/component-preview": {
-    es: "Aísla demos interactivas para documentar componentes y estados.",
-    en: "Isolates interactive demos to document components and states.",
-  },
   "/components/data-grid": {
     es: "Navegación 2D por celdas: datos tabulares o widgets agrupados.",
     en: "2D cell navigation: tabular data or grouped widgets.",

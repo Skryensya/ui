@@ -8,10 +8,13 @@ import "@skryensya/core/components/annotation.css";
 import ComponentPageShell from "./ComponentPageShell.astro";
 import AppearanceMenu from "../AppearanceMenu.astro";
 import CodeBlock from "../CodeBlock.astro";
-import ComponentPreview from "../ComponentPreview.astro";
+import UsagePreview from "../UsagePreview.astro";
+import WhenToUse from "../WhenToUse.astro";
+import ContentRules from "../ContentRules.astro";
+import A11yNotes from "../A11yNotes.astro";
 import { navbarAnatomyTree, navbarAppTree, navbarBareCss, navbarBareTree, navbarTree } from "../../demos/navbar";
 import { annotationDemoCss } from "../../demos/annotation";
-import { getLocale, useTranslations } from "../../i18n";
+import { getLocale, tList, useTranslations } from "../../i18n";
 
 const install = `pnpm add @skryensya/core @skryensya/react`;
 const t = useTranslations(getLocale(Astro.url));
@@ -28,7 +31,7 @@ const css = `@import "@skryensya/core/tokens.scss";
   description={t("navbarPage.description")}
   contractId="navbar"
   appearanceTargetSelector=".sk-navbar"
-  testFiles={["packages/react/src/components/navbar.test.tsx"]}}
+  testFiles={["packages/react/src/components/navbar.test.tsx"]}
 >
   <Fragment slot="appearance">
     <AppearanceMenu label={t("prefs.appearance")} values={["plain", "brutalist", "frosted"]} unavailable={{ tactile: t("prefs.appearanceTactileUnavailable") }} />
@@ -37,11 +40,10 @@ const css = `@import "@skryensya/core/tokens.scss";
   <Fragment slot="usage">
     <p class="lede" set:html={t("navbarPage.lede")} />
 
-    <h3>{t("navbarPage.showcaseTitle")}</h3>
-    <p set:html={t("navbarPage.showcaseBody")} />
+    <h3>{t("component.examplesTitle")}</h3>
     <h3>{t("navbarPage.linksTitle")}</h3>
     <p set:html={t("navbarPage.linksBody")} />
-    <ComponentPreview
+    <UsagePreview
       tree={navbarTree(t, {
         home: "/",
         projects: "/proyectos",
@@ -50,39 +52,32 @@ const css = `@import "@skryensya/core/tokens.scss";
       })}
       label="Navbar"
       flush
-      minHeight="10rem"
-      zoomedDesktop
+      stageMinBlockSize="10rem"
     />
 
     <h3>{t("navbarPage.bareTitle")}</h3>
     <p set:html={t("navbarPage.bareBody")} />
-    <ComponentPreview
+    <UsagePreview
       tree={navbarBareTree(t, hrefs)}
       css={navbarBareCss}
       label={t("navbarPage.bareTitle")}
       flush
-      minHeight="10rem"
-      zoomedDesktop
+      stageMinBlockSize="10rem"
     />
 
     <h3>{t("navbarPage.appTitle")}</h3>
     <p set:html={t("navbarPage.appBody")} />
-    <ComponentPreview
-      tree={navbarAppTree(t, hrefs)}
-      label={t("navbarPage.appTitle")}
-      flush
-      minHeight="10rem"
-      zoomedDesktop
-    />
+    <UsagePreview tree={navbarAppTree(t, hrefs)} label={t("navbarPage.appTitle")} flush stageMinBlockSize="10rem" />
 
-    <h3>{t("navbarPage.currentTitle")}</h3>
-    <p set:html={t("navbarPage.currentBody")} />
-
+    <h3>{t("component.contractNotesTitle")}</h3>
+    <ul>
+      {tList(t, "navbarPage.contract").map((item) => <li set:html={item} />)}
+    </ul>
     <p set:html={t("component.reactNote")} />
 
     <h3>{t("component.anatomy")}</h3>
     <p set:html={t("navbarPage.anatomyBody")} />
-    <ComponentPreview
+    <UsagePreview
       tree={navbarAnatomyTree(t, {
         home: "/",
         projects: "/proyectos",
@@ -91,19 +86,18 @@ const css = `@import "@skryensya/core/tokens.scss";
       })}
       css={annotationDemoCss}
       label={t("navbarPage.anatomyPreviewLabel")}
-      screens={false}
-      hideSource
-      chrome={false}
+      bare
     />
   </Fragment>
 
   <Fragment slot="guidelines">
     <p class="lede" set:html={t("navbarPage.guidelinesLede")} />
-    <ul>
-      <li set:html={t("navbarPage.guide.use1")} />
-      <li set:html={t("navbarPage.guide.avoid1")} />
-      <li set:html={t("navbarPage.guide.avoid2")} />
-    </ul>
+    <WhenToUse use={tList(t, "navbarPage.when")} avoid={tList(t, "navbarPage.whenNot")} />
+    <ContentRules items={tList(t, "navbarPage.content")} />
+  </Fragment>
+
+  <Fragment slot="a11y">
+    <A11yNotes intro={t("navbarPage.a11yIntro")} does={tList(t, "navbarPage.a11yDoes")} yours={tList(t, "navbarPage.a11yYours")} />
   </Fragment>
 
   <Fragment slot="install">

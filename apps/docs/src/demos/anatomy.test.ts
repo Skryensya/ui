@@ -79,20 +79,6 @@ const classesIn = (markup: string): Set<string> => {
   return classes;
 };
 
-/*
- * The hand-written figures (`anatomyFigureHtml`), for the specimens a tree cannot express: a menu
- * frozen open, a lightbox on one photo. Same rule, read straight off the markup: every `data-for`
- * names classes the figure's own specimen carries.
- */
-const htmlAnatomies: [string, string][] = [];
-for (const [file, exports] of Object.entries(modules)) {
-  for (const [name, value] of Object.entries(exports)) {
-    if (!/AnatomyHtml$/.test(name) || typeof value !== "function") continue;
-    const html = (value as (t: Translate) => unknown)(t);
-    if (typeof html === "string") htmlAnatomies.push([`${file}#${name}`, html]);
-  }
-}
-
 describe("anatomy diagrams", () => {
   it("finds the anatomy trees", () => {
     expect(anatomies.length).toBeGreaterThan(40);
@@ -103,20 +89,6 @@ describe("anatomy diagrams", () => {
     const missing = tree.slots.items.flatMap(({ options }) =>
       [...options.for.matchAll(/\.([\w-]+)/g)]
         .map((match) => match[1]!)
-        .filter((name) => !present.has(name) && !RENDERED_AT_RUNTIME.has(name)),
-    );
-    expect(missing).toEqual([]);
-  });
-
-  it("finds the hand-written anatomies", () => {
-    expect(htmlAnatomies.length).toBeGreaterThan(5);
-  });
-
-  it.each(htmlAnatomies)("%s names only parts its specimen renders", (_id, html) => {
-    const present = classesIn(html);
-    const missing = [...html.matchAll(/data-for="([^"]*)"/g)].flatMap((match) =>
-      [...match[1]!.matchAll(/\.([\w-]+)/g)]
-        .map((part) => part[1]!)
         .filter((name) => !present.has(name) && !RENDERED_AT_RUNTIME.has(name)),
     );
     expect(missing).toEqual([]);

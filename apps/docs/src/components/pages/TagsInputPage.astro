@@ -10,9 +10,11 @@ import "@skryensya/core/components/form-field.css";
 import ComponentPageShell from "./ComponentPageShell.astro";
 import AppearanceMenu from "../AppearanceMenu.astro";
 import CodeBlock from "../CodeBlock.astro";
-import ComponentPreview from "../ComponentPreview.astro";
 import UsagePreview from "../UsagePreview.astro";
 import DoDont from "../DoDont.astro";
+import WhenToUse from "../WhenToUse.astro";
+import ContentRules from "../ContentRules.astro";
+import A11yNotes from "../A11yNotes.astro";
 import {
   tagsInputAnatomyTree,
   tagsInputDoShortTree,
@@ -24,7 +26,7 @@ import {
   tagsInputTree,
 } from "../../demos/tags-input";
 import { annotationDemoCss } from "../../demos/annotation";
-import { getLocale, useTranslations } from "../../i18n";
+import { getLocale, tList, useTranslations } from "../../i18n";
 
 const t = useTranslations(getLocale(Astro.url));
 const install = `pnpm add @skryensya/core @skryensya/react`;
@@ -51,70 +53,53 @@ const styles = `@import "@skryensya/core/components/tags-input.css";
   <Fragment slot="usage">
     <p class="lede" set:html={t("tagsInputPage.lede")} />
 
-    <h3>{t("tagsInputPage.showcaseTitle")}</h3>
-    <p set:html={t("tagsInputPage.showcaseBody")} />
-    <UsagePreview tree={tagsInputTree(t)} />
-
-    <h3>{t("tagsInputPage.composesTitle")}</h3>
-    <p set:html={t("tagsInputPage.composesBody")} />
-
-    <h3>{t("tagsInputPage.markupTitle")}</h3>
-    <p set:html={t("tagsInputPage.markupBody")} />
-
-    <h3>{t("tagsInputPage.emptyTitle")}</h3>
-    <p set:html={t("tagsInputPage.emptyBody")} />
-    <UsagePreview tree={tagsInputEmptyTree(t)} />
-
-    <h3>{t("tagsInputPage.maxTitle")}</h3>
-    <p set:html={t("tagsInputPage.maxBody")} />
-    <UsagePreview tree={tagsInputMaxTree(t)} />
-
-    <h3>{t("tagsInputPage.readOnlyTitle")}</h3>
-    <p set:html={t("tagsInputPage.readOnlyBody")} />
-    <UsagePreview tree={tagsInputReadOnlyTree(t)} />
-
-    <h3>{t("tagsInputPage.fieldTitle")}</h3>
-    <p set:html={t("tagsInputPage.fieldBody")} />
-    <UsagePreview tree={tagsInputFieldTree(t)} />
+    <h3>{t("component.examplesTitle")}</h3>
+    <UsagePreview tree={tagsInputTree(t)} title={t("tagsInputPage.basicTitle")} description={t("tagsInputPage.basicBody")} />
+    <UsagePreview tree={tagsInputEmptyTree(t)} title={t("tagsInputPage.emptyTitle")} description={t("tagsInputPage.emptyBody")} />
+    <UsagePreview tree={tagsInputMaxTree(t)} title={t("tagsInputPage.maxTitle")} description={t("tagsInputPage.maxBody")} />
+    <UsagePreview tree={tagsInputReadOnlyTree(t)} title={t("tagsInputPage.readOnlyTitle")} description={t("tagsInputPage.readOnlyBody")} />
+    <UsagePreview tree={tagsInputFieldTree(t)} title={t("tagsInputPage.fieldTitle")} description={t("tagsInputPage.fieldBody")} />
 
     <h3>{t("component.contractNotesTitle")}</h3>
     <ul>
-      <li set:html={t("tagsInputPage.contractItem1")} />
-      <li set:html={t("tagsInputPage.contractItem2")} />
-      <li set:html={t("tagsInputPage.contractItem3")} />
-      <li set:html={t("tagsInputPage.contractItem4")} />
+      {tList(t, "tagsInputPage.contract").map((item) => <li set:html={item} />)}
     </ul>
 
     <h3>{t("component.anatomy")}</h3>
     <p set:html={t("tagsInputPage.anatomyBody")} />
-    <ComponentPreview
+    <UsagePreview
       tree={tagsInputAnatomyTree(t)}
       css={annotationDemoCss}
       label={t("tagsInputPage.anatomyPreviewLabel")}
-      screens={false}
-      hideSource
-      chrome={false}
+      bare
     />
   </Fragment>
 
   <Fragment slot="guidelines">
     <p class="lede" set:html={t("tagsInputPage.guidelinesLede")} />
-    <h3>{t("tagsInputPage.whenTitle")}</h3>
-    <ul>
-      <li set:html={t("tagsInputPage.whenItem1")} />
-      <li set:html={t("tagsInputPage.whenItem2")} />
-      <li set:html={t("tagsInputPage.whenItem3")} />
-      <li set:html={t("tagsInputPage.whenItem4")} />
-    </ul>
+    <WhenToUse use={tList(t, "tagsInputPage.when")} avoid={tList(t, "tagsInputPage.whenNot")} />
     <DoDont
       title={t("tagsInputPage.dd.short.title")}
       do={{ tree: tagsInputDoShortTree(t), caption: t("tagsInputPage.dd.short.do") }}
       dont={{ tree: tagsInputDontLongTree(t), caption: t("tagsInputPage.dd.short.dont") }}
     />
+    <ContentRules items={tList(t, "tagsInputPage.content")} />
   </Fragment>
 
   <Fragment slot="install">
     <CodeBlock code={install} label="terminal" />
     <CodeBlock code={styles} label="CSS" />
+  </Fragment>
+  <Fragment slot="a11y">
+    <A11yNotes
+      intro={t("tagsInputPage.a11yIntro")}
+      does={tList(t, "tagsInputPage.a11yDoes")}
+      yours={tList(t, "tagsInputPage.a11yYours")}
+      keys={[
+        { keys: ["Enter", ","], action: t("tagsInputPage.key.add") },
+        { keys: ["Backspace"], action: t("tagsInputPage.key.back") },
+        { keys: ["←", "→"], action: t("tagsInputPage.key.arrows") },
+      ]}
+    />
   </Fragment>
 </ComponentPageShell>

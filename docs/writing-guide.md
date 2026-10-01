@@ -1,347 +1,416 @@
-# Guía de escritura
+# Writing guide
 
-Esta guía describe **cómo** se escribe: registro, persona gramatical, puntuación, y qué cambia entre
-español e inglés. No es el glosario, [`CONTEXT.md`](../CONTEXT.md) decide **qué palabra** nombra cada
-concepto, con sus propias listas `_Avoid_`, y sigue siendo la única autoridad sobre terminología. Esta
-guía nunca redefine un término; si un ejemplo de acá contradice a `CONTEXT.md`, `CONTEXT.md` gana o
-cambia, pero los dos nunca conviven, la misma regla que `CONTEXT.md` aplica sobre sí mismo.
+This guide describes **how** things are written: register, grammatical person, punctuation, page
+structure, and what changes between Spanish and English. It is not the glossary.
+[`CONTEXT.md`](../CONTEXT.md) decides **which word** names each concept, with its own `_Avoid_`
+lists, and remains the only authority on terminology. This guide never redefines a term; if an
+example here contradicts `CONTEXT.md`, `CONTEXT.md` wins or changes, but the two never coexist.
 
-Cada regla de acá viene de un archivo real, citado, no de una convención inventada. Donde la práctica
-actual es inconsistente, se dice explícitamente.
+Every rule here comes from a real file in this repository or from a measured comparison with five
+public design systems, cited. Where current practice is inconsistent, the guide says so and counts it.
 
-## Qué idioma en qué lugar
+## Which language where
 
-`CONTEXT.md` ya fija el eje principal: documentación de cara al usuario y registros de decisión van en
-español; código, identificadores y metadata de repositorio van en inglés. La tabla extiende esa regla a
-los géneros que `CONTEXT.md` no cubre:
+[Decision 21](decisions/0021-english-is-the-repository-language-and-spanish-is-a-product-locale.md)
+settles this with one question: is the artifact addressed to a reader of the product, or to a
+contributor? Product-facing text is a locale and is written in both languages; everything else is
+English, in one copy.
 
-| Contenido | Idioma | Ejemplo |
+| Content | Language | Where |
 |---|---|---|
-| Páginas de componentes (`componentes/*.astro`) | Español | `componentes/button.astro` |
-| Traducción de una página de componente | Inglés, archivo propio | `en/components/avatar.astro` |
-| Registros de decisión (`docs/decisions/`) | Español | `0002-nombrar-por-rol-nunca-por-inquilino.md` |
-| `CONTEXT.md`, `README.md`, metadata de paquete | Inglés | este repo |
-| Comentarios en código fuente | Cualquiera, **localmente consistente** | ver [Comentarios de código](#comentarios-de-código) |
-| Mensajes de commit | Inglés | ver [Mensajes de commit](#mensajes-de-commit) |
-| Copy dentro de una demo (labels, `aria-label`) | El idioma de la página que lo muestra | `Guardar` en `componentes/`, la traducción en `en/` |
+| Docs site prose and demo copy | Spanish and English, both written by hand | `apps/docs/src/i18n/messages/**`, an `es` and an `en` block per file |
+| Contract changelog | Both, in one file | `contracts/changelog/*.yaml`, `es:` and `en:` keys |
+| Contract judgment (`useWhen`, `avoidWhen`) | English | `contracts/semantic/*.yaml` |
+| Decision records, `docs/**`, `CONTEXT.md`, `README.md` | English | this file |
+| Code, comments, identifiers, package metadata | English | everywhere else |
+| Commit messages | See [`CONTRIBUTING.md`](../CONTRIBUTING.md#commit-messages) | not decided here |
 
-Una página traducida es **un archivo real con contenido propio**, nunca una interpolación de la
-versión española parametrizada por locale. Lo dice el propio comentario de
-[`en/components/avatar.astro`](../apps/docs/src/pages/en/components/avatar.astro): el demo markup, el
-código React y la prosa son el contenido de la página, y el contenido se traduce, no se interpola. Lo
-que sí comparten las dos versiones es toda la capa estructural: layout, chrome, rail. Eso nunca se
-duplica por idioma.
+A page's two locales share everything structural (`components/pages/<Name>Page.astro`, the layout,
+the rail) and differ only in their message block. Prose is translated, never machine-generated:
+decision 21 rejected machine translation for judgment prose because an adequate translation turns a
+decision into a description.
 
-## Voz compartida
+## Shared voice
 
-Esto no cambia con el idioma:
+This does not change with the language:
 
-- **Sin relleno.** Nada de "en este artículo vamos a ver", "es importante notar que", cierres
-  motivacionales. Cada oración aporta una decisión o un hecho.
-- **Nombra el mecanismo, no solo la conclusión.** No "esto es más seguro", sino *por qué*: qué falla
-  sin la regla y qué lo previene. Ver cualquier ADR en `docs/decisions/` para el patrón completo.
-- **Un concepto, un nombre.** Si `CONTEXT.md` ya nombró algo, ese nombre es el único que se usa; nunca
-  un sinónimo "para variar la prosa". Variar el nombre de un concepto fijo es el error que
-  `CONTEXT.md` existe para prevenir.
-- **Ejemplos reales, nunca `foo`/`bar`.** Los ejemplos de este repo guardan, cancelan, borran,
-  descargan, configuran: acciones que existen en la interfaz real. Un ejemplo inventado no prueba que
-  el patrón funcione en un caso real.
+- **No filler.** No "in this article we will see", no "it is important to note", no motivational
+  closings. Every sentence carries a decision or a fact.
+- **Name the mechanism, not only the conclusion.** Not "this is safer", but why: what breaks without
+  the rule and what prevents it.
+- **One concept, one name.** If `CONTEXT.md` named something, that name is the only one used, never a
+  synonym to vary the prose.
+- **Real examples, never `foo`/`bar`.** Examples save, cancel, delete, download, configure: actions
+  that exist in real interfaces. An invented example does not prove the pattern works.
+- **Numbers and names, not adjectives.** "4.5:1 against the background (WCAG 2.2, 1.4.3)", not "good
+  contrast". Words that are never used: powerful, flexible, robust, intuitive, simply, easily, "all
+  you have to do", and their Spanish equivalents.
 
-## Registro según el género
+## Register by genre
 
-La persona gramatical no es una preferencia de quien escribe, depende de qué tipo de documento es:
+Grammatical person depends on what kind of document it is, not on who writes it:
 
-- **Tutorial o página de componente** → se dirige al lector directamente (segunda persona). Enseña a
-  alguien a hacer algo, paso a paso: "Si activa una acción, usa Button. Si navega, pásale `href` y
-  Button se renderiza como `<a>`" (`componentes/button.astro`).
-- **Referencia o regla** (`CONTEXT.md`, ADRs, `docs/ai-ui-platform.md`) → impersonal, con "se". Describe
-  un sistema, no acompaña a nadie: "no se usa `as="a"`", "el icono queda decorativo" (`docs/ai/README.md`,
-  archivado en el tag `ai-v1`).
-  Esta misma guía es referencia, por eso está escrita así y no como "vos vas a aprender a escribir…".
+- **Component pages and tutorials** address the reader directly, in the second person and the
+  imperative: "Usa `ghost` en barras o filas donde la caja sobra" (`button.ts`).
+- **Reference and rules** (`CONTEXT.md`, decision records, this guide) are impersonal. They describe a
+  system; they do not accompany anyone.
 
-Confundir los dos registros dentro de un mismo documento es el error a evitar: una página de componente
-que de golpe cae en impersonal, o un ADR que se dirige al lector, rompe la señal de qué tipo de
-documento está leyendo.
+Mixing the two inside one document is the error to avoid: it breaks the signal of what kind of
+document is being read.
 
-## Español
+Component pages carry a second split, by tab, described in [Two registers](#two-registers).
 
-### Persona: tú, nunca vos ni usted
+## Component pages
 
-Cuando un documento se dirige al lector, la forma es **tú** (`necesitas` en `accordion.astro` y
-`dialog.astro`, `quieres` en `flyout.astro`, `usas` en `kbd.astro`, `usa Button` en `button.astro`).
-Nunca **usted** (registro distante, no encaja con el tono directo del resto) ni **vos**
-(regionalismo rioplatense). El voseo que quedaba en el copy en español se barrió el 2026-09-14: los
-imperativos (`probá`, `usá`, `elegí`) pasaron a tuteo (`prueba`, `usa`, `elige`) y con ellos el léxico
-rioplatense que los acompañaba: `acá` -> `aquí`, `saltear` -> `saltar`, `degradé` -> `degradado`,
-`recién` + verbo conjugado -> `solo`. Un slip nuevo es una inconsistencia a corregir, no un segundo
-registro válido.
+### What the comparison found
 
-### Code-switching: qué se traduce y qué no
+On 2026-09-30 the copy of our component pages was compared with six equivalent pages (button, text
+input, dialog, checkbox, tabs, alert) in five systems:
+[GOV.UK](https://design-system.service.gov.uk/components/),
+[Carbon](https://carbondesignsystem.com/components/overview/components/),
+[DSFR](https://www.systeme-de-design.gouv.fr/version-courante/fr/composants),
+[Singapore Government DS](https://www.designsystem.tech.gov.sg/components/button) and
+[Material 3](https://m3.material.io/components). Sources were read from each project's repository
+where the site blocked downloads (Carbon MDX, GOV.UK Markdown, DSFR Markdown). On our side, all 108
+files under `i18n/messages/components`, in both locales. The metrics are regex counts over prose only,
+without headings, tables or code: good for orders of magnitude, not decimals.
 
-Un párrafo en español puede nombrar conceptos en inglés en la misma oración sin marcarlos como cita
-("Button es un componente estático", `componentes/button.astro`). La regla para decidir qué se
-traduce:
+| Corpus | Words per sentence | Imperative openers | Sentences with code | End user, per 1000 words | should + must, per 1000 |
+|---|---|---|---|---|---|
+| GOV.UK | 18.9 | 21% | 11% | 25.0 | 8.7 |
+| Singapore DS | 12.5 | 43% | 0% | 15.9 | 3.7 |
+| Carbon | 16.2 | 8% | 5% | 14.2 | 7.7 |
+| Material 3 | 14.6 | 14% | 0% | 11.0 | 8.8 |
+| DSFR (French) | 16.9 | 31% (infinitive) | 21% | 7.2 | n/a |
+| Ours, Guidelines tab | 11.0 | 31% | 4% | 6.0 | 2.4 |
+| Ours, everything else | 14.6 | 8% | 39% | 0.6 | 0.7 |
 
-**Nunca se traduce** (son identificadores, o nombres propios fijados por `CONTEXT.md`):
+What it says:
 
-- Nombres de componente o patrón: `Button`, `TileButton`, `Vaul`, `Avatar`.
-- Nombres de prop, clase, atributo o archivo: `data-icon-only`, `sk-interactive`, `button.css`.
-- Términos ya fijados por `CONTEXT.md`: `styling hook`, `state layer`, `enhancer`, `machine`, `ramp`.
-  Esta guía no repite esa lista, ver `CONTEXT.md` para la lista completa y sus `_Avoid_`.
+- **Our Guidelines tab already writes like the references**: short sentences, imperative rules, almost
+  no code, and do/don't pairs that give their reason ("Si todas las etiquetas destacan, ninguna
+  destaca", `badge.ts`).
+- **That tab is 7% of our words.** The other 93% almost never names the person using the interface
+  (0.6 per 1000 words against 7 to 25), and 12% of its sentences have an identifier as subject, against
+  0 to 4% elsewhere. That register is right for readers who integrate the component; the problem is
+  that it is the first thing every reader sees.
+- **Sections the five systems have on 6 of 6 pages, and we do not:**
 
-**Siempre se traduce** (es contenido, no identificador):
+| Section | The five systems | Ours |
+|---|---|---|
+| When to use / when not to use | 6/6 in GOV.UK, Carbon, DSFR, Singapore; inside Usage in Material 3 | 20 of 108 pages (`guide.use*`, `guide.avoid*`) |
+| Guidance for the component's own text | Carbon "Content" 6/6, DSFR "Règles éditoriales" 6/6, Material 3 "Label text" 5/6 | No section; a few pairs (Input, Dialog, Badge, Tooltip) |
+| Accessibility section | Carbon, DSFR, Singapore 6/6; Material 3 5/6; GOV.UK inside every rule | 49 of 116 pages have the tab |
+| Guidance first | GOV.UK, Carbon, DSFR, Singapore open on guidance | Only Material 3 opens, like us, on an overview |
 
-- El copy visible de una demo: `Guardar`/`Save`, `Cancelar`/`Cancel`, `Borrar`/`Delete`.
-- El texto accesible: `aria-label="Configuración"` en una página en español,
-  `aria-label="Settings"` en su traducción. El nombre accesible sigue el idioma de la página que lo
-  muestra, no el idioma del código que lo implementa.
-- La prosa, los conectores, las explicaciones: todo lo que no sea un identificador.
+### Page structure, by tab
 
-### Puntuación de listas
+The tabs are those of `ComponentPageShell.astro`. What goes where:
 
-Una lista con viñetas sigue una de dos formas, y cuál depende de si los ítems son una sola oración
-partida o varias oraciones independientes:
+1. **Page header.** The lede, whose first sentence is the task the component solves (see
+   [Ledes](#ledes)). No page ships without one; 12 of 108 do today (accordion, breadcrumb, callout,
+   empty-state, file-upload, megamenu, menu, number-field, popover, split-button, toolbar,
+   typography).
+2. **Overview (Resumen).** Base example, anatomy, options, then examples from simple to complex
+   ([below](#examples-go-from-simple-to-complex)). Native variants and advanced alternatives come after
+   the main path, marked as such. The technical register is allowed here.
+3. **Guidelines (Guía de uso).** In this order:
+    1. Purpose in one sentence (`guidelinesLede`), not a repeat of the lede and not a setup procedure.
+    2. When to use and when not to use, consistent with `useWhen`/`avoidWhen` in the semantic contract.
+       Every "not" ends in the alternative: "Una lista de acciones que cuelga de un botón es un Menu"
+       (`dialog.ts`).
+    3. Do/don't pairs about a real interface, never about the demo on the page.
+    4. Content, for every component that carries text: how to write its label, title, message or
+       placeholder.
+4. **Reference (Referencia) and Changes (Cambios).** Generated from the contract; no hand-written prose.
+5. **Accessibility (Accesibilidad).** Required for every interactive component, in three parts: what
+   the component already does, what is left to the author, and a Key / Action table.
+6. **Installation and Style hooks.** Unchanged: install, CSS, vanilla init, contract notes, React,
+   `StylingHooks` last.
 
-- **Enumeración de una sola oración** → cada ítem termina en punto y coma, el anteúltimo agrega
-  `; y` antes del último, que cierra con punto. Ejemplo real, `docs/ai/README.md` (tag `ai-v1`):
+### Ledes
 
-  ```
-  - `sk-button sk-interactive`;
-  - `data-sk-button`;
-  - `@skryensya/core/components/button.css`; y
-  - `initComponents` desde `@skryensya/vanilla/auto`.
-  ```
+The first sentence of the lede says what the component does for the interface, in terms of the task.
+How it is built goes in the second sentence or in Reference. Of the 96 current ledes, roughly 48 open
+with the task, 35 with the implementation, 7 with what the component is not, 2 with the tour of the
+page and 4 with a count ("Tres formas de elegir un color").
 
-- **Lista de afirmaciones independientes** → cada ítem es su propia oración completa, con su propio
-  punto final, sin `y` de cierre. Ejemplo real, la lista de alternativas rechazadas en
-  `docs/decisions/0019-public-palettes-and-constant-semantics.md`:
+| Write | Instead of |
+|---|---|
+| "Dialog detiene la página hasta que la persona decide algo." | "Un `<dialog class="sk-dialog">` centrado." |
+| "Una ventana es para lo que tiene que quedar abierto mientras sigues trabajando: una paleta de herramientas, un inspector, un chat." (`window.ts`) | "Sobre @zag-js/password-input, la misma máquina en las dos capas." (`password-input.ts`) |
 
-  ```
-  - `palette` implica un *conjunto sin orden*; pierde que...
-  - `shades` (Tailwind) implica *solo más oscuro*, pero los pasos...
-  - `scale` es la palabra más precisa para..., pero ya está tomada...
-  ```
+The purpose sentence usually exists already: it is the page's `guidelinesLede`, one tab away. For
+Dialog the fix is to swap the order. A lede that defines by contrast ("Canvas no es un lienzo…")
+keeps the contrast as its second sentence, after the task. A lede that announces the tour of the page
+(`tabs.ts`) moves the tour into the Overview body.
 
-  Un punto y coma *dentro* de un ítem sigue siendo válido acá, solo une las dos cláusulas de esa
-  afirmación puntual, no encadena con el ítem siguiente.
+### Two registers
 
-El error a evitar es mezclar los dos: una lista de afirmaciones independientes que de repente agrega
-"; y" al final imita una enumeración que no es tal.
+- **Guidelines** is about the person and the task. The subject of a sentence is the person, the
+  interface or the component by name, never a prop: "Dialog detiene la página…", not "`open` bloquea…".
+- **Overview and Reference** are about the implementation. Identifiers as subjects are fine:
+  "`variant` decide qué tan fuerte se ve el botón".
 
-### Comillas y énfasis
+The person using the final interface is "la persona" or "quien…" in Spanish and "people" or "the
+person" in English, as Material 3 does. Not "el usuario" / "the user": the reader of the docs is also a
+user, of the library. Ten message files still say "el usuario".
 
-Comillas curvas (`“…”`), nunca rectas (`"…"`), para citar una palabra como mención más que como uso.
-`docs/ai/README.md` (tag `ai-v1`) escribe `no se “deshabilita”`, con curvas, no `no se "deshabilita"`. Negrita en la
-primera mención de un término que el párrafo va a explicar (`**ImageFrame**`, `**AvatarGroup**` en
-`en/components/avatar.astro`); cursiva para la palabra que se está definiendo dentro de una
-explicación (`un *conjunto sin orden*`, ADR 0002).
+### Guidelines content
+
+- **A rule and its reason, together.** "Usa un solo `accent` por región. Si todo es la acción
+  principal, nada lo es." GOV.UK does this on every rule; it is the pattern our best pairs already
+  follow.
+- **All the reasons, when there are several.** Our Input says the placeholder "desaparece al escribir";
+  GOV.UK adds that not every screen reader announces it. The accessibility reason is the one that must
+  not be dropped.
+- **A pair is about the product.** "No pongas dos `solid` + `accent` en la misma fila" is a rule; "Compara
+  el disparador destructivo con la confirmación destructiva" (`button.dd.emphasis.do`) describes the
+  demo.
+- **Pair titles are rules that read alone**: "Vistas, no pasos", "Informa, no se presiona", "Un
+  contador con tope".
+- **Content guidance per component with text.** For controls: an infinitive verb plus its object
+  ("Guardar cambios"), a bare verb only for common actions ("Cancelar", "Cerrar"), 1 to 3 words on
+  one line (`button.css` keeps a label on one line; `button-single-line.test.ts` guards the docs),
+  sentence case, never naming the control or its position ("Botón de enviar", "el botón de abajo"),
+  never repeating the instruction next to it, and naming the cost on a destructive confirmation
+  ("Borrar para siempre", not "Aceptar"). For fields: a visible label, never a placeholder in its place.
+
+### Force levels
+
+Each level always uses the same words, so the reader tells an obligation from advice without
+thinking about it.
+
+| Level | When | Spanish | English | Example |
+|---|---|---|---|---|
+| Required | Breaking it breaks accessibility or the contract | Debe / No + verb | Must / Do not | "Un botón solo icono debe tener nombre accesible." |
+| Recommended | Breaking it makes the interface worse | Usa / No uses | Use / Do not use | "No uses dos `solid` + `accent` a la vista." |
+| Judgment | Depends on context | Considera / Prefiere | Consider / Prefer | "Considera `ghost` en filas con más de tres acciones." |
+
+In English, "Do not", never "Don't", as GOV.UK writes it and as our English copy already does.
+
+### Headings
+
+A heading names its topic first; the thesis may follow a colon. GOV.UK headings are tasks or rules
+("Avoid placeholder text", "Do not disable tabs"), which scan. Ours are often theses ("El rótulo no es
+del Input", "Sigue siendo el dialog"), which read well but cannot be found in a table of contents.
+The "topic: thesis" form already exists in our copy ("`format`: la validación que el navegador no
+trae") and keeps both: "Etiqueta: la pone FormField".
+
+Headings are written in the page's language: "Showcases" appears in 103 Spanish message files and
+becomes "Ejemplos".
+
+### Examples go from simple to complex
+
+The rule is not "start easy, end hard" as a tutorial convention. **Each example more complex than the
+previous one exists because it demonstrates a capability a real use needs**, never to add variety or
+to cover props for completeness.
+
+The model is `tabs.ts`, with three numbered examples:
+
+- **`1. Básico`**: two triggers, two panels, nothing else. The minimal real case: "Resumen" and
+  "Actividad".
+- **`2. Estados e iconos`**: adds icons and a disabled tab, and the disabled tab has a product reason
+  in the copy: "Los ajustes estarán disponibles después de aprobar la solicitud."
+- **`3. Orientación y estado`**: adds vertical orientation and manual activation, tied to a workspace
+  settings scenario where moving focus with the arrows must not trigger a heavy panel change.
+
+**The test before adding a more complex example**: if the real scenario that needs the new prop or
+variant cannot be named in one sentence, the example has not earned its place. "To show that it
+exists" is not a scenario.
+
+**Numbered headings** mean the page tells one continuous story. When sections are independent facets
+(Button's variants, sizes, icon, icon only, as a link), they are not numbered, but they still go from
+the most common to the most specialized.
+
+**Advanced or optional alternatives are marked as such and say what they add.** Dialog presents
+`Confirm` first and only then "Opción: Dialog Vaul", with a "Qué añade" section. Native alternatives
+follow the rule `CONTEXT.md` sets for `Native alternative`: documented separately and secondarily,
+after the enhanced path (Accordion's "Details nativo", Select's "Select nativo").
+
+### Template
+
+Button, rewritten with these rules:
+
+````markdown
+# Button
+
+Button ejecuta una acción en la página: enviar un formulario, guardar, confirmar o descartar.
+Es el <button> nativo con styling hooks, un enhancer vanilla mínimo y un componente React.
+
+## Resumen
+[Ejemplo base: "Guardar cambios"]
+### Anatomía
+### Énfasis: `variant` decide qué tan fuerte se ve
+- Usa `solid` para la acción principal o una confirmación.
+- Usa `soft` para una acción visible pero secundaria.
+- Usa `ghost` en barras o filas donde la caja sobra.
+### Acción destructiva: el disparador y la confirmación no pesan igual
+
+## Guía de uso
+Un botón hace algo aquí; si lleva a otro lugar, es un enlace.
+### Cuándo usar
+- Para una acción que cambia algo en la página: guardar, enviar, confirmar.
+### Cuándo no usar
+- Para ir a otra página: usa Button.navigation.
+- Para una acción secundaria dentro de un párrafo: usa Link.
+### Una sola acción principal
+Hazlo: un `accent` por región, el resto `neutral`.
+Evítalo: dos `solid` + `accent` en la misma fila. Si todo es la acción principal, nada lo es.
+### Contenido
+- Empieza con un verbo en infinitivo: "Guardar cambios", no "Cambios".
+- En la confirmación destructiva, di el costo: "Borrar para siempre", no "Aceptar".
+
+## Accesibilidad
+### Lo que ya hace
+- Renderiza un <button> nativo, o un <a> cuando recibe href.
+### Lo que te toca
+- Un botón solo icono debe tener aria-label.
+### Teclado
+| Tecla | Acción |
+| Enter, Espacio | Activa el botón |
+````
+
+## Spanish
+
+### Person: tú, never vos or usted
+
+When a document addresses the reader, the form is **tú** (`usa`, `necesitas`, `quieres`). Never
+**usted** (distant, does not fit the direct tone) nor **vos** (Rioplatense regionalism). The voseo was
+swept on 2026-09-14: imperatives like `probá`, `usá`, `elegí` became `prueba`, `usa`, `elige`.
+
+The vocabulary that came with it was not fully swept. As of 2026-09-30, in
+`i18n/messages/components`:
+
+| Word | Files | Replace with |
+|---|---|---|
+| acá | 9 | aquí |
+| recién | 9 | solo, apenas, hasta que |
+| de a una / de a uno | 3 | una a una, de una en una |
+| chico (size) | 6 | pequeño |
+| grilla | 11 | cuadrícula (open: "grilla" is common in Latin America) |
+
+A new slip is an inconsistency to fix, not a second valid register. A vocabulary guard like
+`no-em-dash.test.ts` would keep these from coming back.
+
+### Accents and punctuation
+
+- **"solo" never takes an accent** (RAE, 2010). "sólo" appears in 63 message files.
+- **No em dash** (U+2014); `no-em-dash.test.ts` rejects it. Its replacement is a colon, commas or
+  parentheses, never a spaced hyphen: seven files carry "  -  " where a dash used to be ("un texto
+  corto  -  casi siempre una URL  - ", `qr-code.ts`).
+- **Curly quotes** (`“…”`) to cite a word as a mention rather than a use, never straight ones.
+- **Bold** on the first mention of a term the paragraph explains; *italics* for the word being
+  defined.
+
+### Code-switching: what is translated and what is not
+
+A Spanish paragraph may name English concepts in the same sentence without marking them as quotes
+("Button es un componente estático").
+
+**Never translated** (identifiers, or proper names fixed by `CONTEXT.md`):
+
+- Component or pattern names: `Button`, `TileButton`, `Vaul`, `Avatar`.
+- Prop, class, attribute or file names: `data-icon-only`, `sk-interactive`, `button.css`.
+- Terms fixed by `CONTEXT.md`: `styling hook`, `state layer`, `enhancer`, `machine`, `ramp`.
+
+**Always translated** (content, not identifiers):
+
+- Visible demo copy: `Guardar`/`Save`, `Cancelar`/`Cancel`.
+- Accessible text: `aria-label="Configuración"` on a Spanish page, `aria-label="Settings"` on the
+  English one. The accessible name follows the language of the page that shows it.
+- Prose, connectors, explanations, headings.
+- Plain English words that have a Spanish equivalent and are not `CONTEXT.md` terms: "Showcases"
+  (103 files) becomes "Ejemplos", "patterns" (11) "patrones", "browser" (2) "navegador", "feedback"
+  (4) "respuesta" or "aviso", "scrollea" (6) "se desplaza".
+
+### List punctuation
+
+A bulleted list takes one of two forms, depending on whether the items are one sentence split up or
+independent sentences:
+
+- **One sentence split into items**: each item ends in a semicolon, the second to last adds "; y", and
+  the last closes with a period.
+- **Independent statements**: each item is a full sentence with its own period, no closing "y".
+
+Mixing the two is the error to avoid.
 
 ## English
 
-### Direct address, same restraint
+The English pages mirror the Spanish register: direct, second person where the genre calls for it,
+no filler, no marketing adjectives. "Avatar is the visual token for a person or entity" states what a
+thing is and moves on. No contractions: "Do not", "does not", "it is". Component names are proper
+nouns, never translated and never lowercased mid-sentence. Curly quotes; American punctuation, with
+the period inside a closing quote and a serial comma in lists of three or more.
 
-The English pages mirror the Spanish tutorial register: direct, second person where the genre calls
-for it, no filler, no marketing adjectives. `en/components/avatar.astro` states what a thing is and
-moves on: "Avatar is the visual token of a person or entity." No contractions have shown up in the
-English corpus so far (a small sample, one translated page); keep that until a larger body of English
-content says otherwise.
+## Code block labels
 
-### Component names are proper nouns
+The `label` of a `CodeBlock` or `ComponentPreview` names the language or artifact (`CSS`,
+`JavaScript`, `HTML`, `terminal`), never with a possessive ("tu CSS", "your JS"). Languages with a full
+name and an abbreviation use the full name: `JavaScript`, not `JS`.
 
-A component or pattern name is never translated and never lowercased mid-sentence: `Avatar`,
-`ImageFrame`, `AvatarGroup`, bolded on first mention in a paragraph, plain after. Same rule as the
-Spanish pages, same names, because the identifier is the identifier in either language.
+The label is not only text: `CodeBlock.astro` infers the highlighting language from it when `lang`
+is not passed (it looks for `CSS`, `React`, `JavaScript`, `TypeScript`). A label that is none of the
+recognized names needs an explicit `lang`, or highlighting falls back to `html`.
 
-### Punctuation
+A descriptive label is fine when the example asks for it (`una instancia`,
+`components/button.css`); the rule is against the possessive and the abbreviation. It does not apply
+to an `aria-label` inside a demo, which is interface content and follows code-switching.
 
-Curly quotes (`“+N”`, `en/components/avatar.astro`), not straight ones. Otherwise, standard
-American punctuation: period inside a closing quote, serial comma in a list of three or more.
+## Decision records (`docs/decisions/`)
 
-## Terminología
+A decision record is the record of why the system has the shape it has, including what was discarded.
+The form is fixed:
 
-`CONTEXT.md` es la única fuente de verdad sobre qué palabra nombra qué concepto. Esta guía no repite
-su contenido, solo el patrón de cómo leerlo: cada entrada define un término por lo que **es**, nunca
-por cómo se construye, y cierra con una línea `_Avoid_` que lista los sinónimos prohibidos y por qué
-cada uno miente. Antes de nombrar algo nuevo en cualquier documento, se busca primero en `CONTEXT.md`;
-si el concepto ya tiene nombre, ese nombre es el único correcto en español, en inglés, en código y en
-comentarios. Si el concepto es nuevo, la entrada se agrega a `CONTEXT.md` antes de usarse en prosa,
-nunca al revés.
+- **File**: `NNNN-slug.md`, a four-digit number followed by the principle in English kebab-case.
+- **Frontmatter**: `num`, `title`, `short` (for navigation), `summary` (the whole argument in one
+  paragraph, shown without opening the document).
+- **Opening**: the problem or the principle in one or two sentences, before any technical detail.
+- **Rejected alternatives, each with its reason**: never "other options were considered", but the
+  concrete options and what each one loses.
+- **Accepted cost**: the section that names what the decision costs. A record without it reads as if
+  the decision had no cost, which is never true.
+- **Enforcement**: how the rule is kept (validator, test, convention, nothing). If the obvious
+  enforcement was tried and failed, that is recorded with the same priority as the decision.
+- **Cross-references**: another decision is named by number and linked by relative path,
+  `[decision 21](decisions/0021-english-is-the-repository-language-and-spanish-is-a-product-locale.md)`.
 
-## Estructura de una página de componente
+## README and repository metadata
 
-Esto no es sobre voz, es sobre el orden de las piezas. La evidencia viene de comparar varias páginas de
-`componentes/*.astro` (`button.astro`, `tabs.astro`, `accordion.astro`, `dialog.astro`, `select.astro`,
-`alert.astro`): el orden exacto de secciones varía de una página a otra, pero estas cosas no.
+`README.md`, `package.json` and anything that describes the repository for tooling or for someone
+cloning it for the first time: English, terse, no marketing adjectives. "A Turborepo for the
+`skryensya/ui` design system", not "a powerful, flexible design system".
 
-**Forma general:**
+## Code comments
 
-1. **Lede**: qué es el componente, en una o dos oraciones. Si la página va a mostrar una progresión de
-   ejemplos, la lede la anticipa ahí mismo. `tabs.astro` lo hace explícito: "Empieza con dos vistas,
-   añade estados e iconos y termina con una navegación vertical controlada. La anatomía no cambia al
-   crecer." El lector sabe, antes del primer ejemplo, qué arco va a recorrer y qué se mantiene fijo.
-2. **Ejemplos**, de más simple a más complejo (ver regla completa abajo).
-3. **Variantes nativas o alternativas avanzadas**, después del camino principal y marcadas como tal,
-   nunca intercaladas con los ejemplos centrales.
-4. **Bloque mecánico**: Instalar, CSS, Inicializar vanilla, Contrato, React. Siempre después de todos
-   los ejemplos, nunca antes: el lector ve primero qué hace el componente, después cómo instalarlo.
-5. **`StylingHooks`**, al final del todo, en toda página que lo usa.
+English, per decision 21. The old clause that allowed either language "when locally consistent"
+constrained nothing, since every file passes it on its own, and left 1,687 lines of Spanish comments
+behind; the remaining migration is tracked in `docs/pending-tasks.md`. When editing a file that still
+has Spanish comments, new comments are written in English.
 
-### Los ejemplos van de más simple a más complejo, pero la complejidad se gana, no se agrega
+## Commit messages
 
-La regla no es "empezar fácil y terminar difícil" por convención de tutorial. Es que **cada ejemplo más
-complejo que el anterior existe porque demuestra una capacidad que un uso real necesita**, nunca porque
-agrega variedad o cubre props por completitud.
+[`CONTRIBUTING.md`](../CONTRIBUTING.md#commit-messages) is the authority, and `.husky/commit-msg`
+enforces the shape: Conventional Commits, a subject of at most 100 characters, an optional body of at
+most 300 characters after a blank line, no `Co-authored-by:` or `Signed-off-by:` trailers. This guide
+does not restate the rules, so the two cannot drift. One commit is one subject.
 
-El modelo es `tabs.astro`, con tres ejemplos numerados:
+## Checklist
 
-- **`1. Básico`**: dos triggers, dos paneles, sin nada más. El caso mínimo real: "Resumen" y
-  "Actividad".
-- **`2. Estados e iconos`**: agrega iconos y un tab deshabilitado, pero no porque "hay que mostrar
-  `disabled`": el ejemplo es una revisión con "Detalles", "Validación" y "Ajustes", y Ajustes está
-  deshabilitado porque el texto lo explica: "Los ajustes estarán disponibles después de aprobar la
-  solicitud". El prop nuevo tiene una razón de producto, no solo una razón de API.
-- **`3. Orientación y estado`**: agrega orientación vertical y activación manual, otra vez atado a un
-  escenario real (ajustes de un workspace) donde mover el foco con flechas no debe disparar el cambio de
-  panel pesado; Enter o Espacio confirma. El ejemplo también conecta `sk:tabsvaluechange` a una región viva
-  visible, mostrando el evento en uso, no solo declarado.
-
-**La prueba antes de agregar un ejemplo más complejo**: si no se puede nombrar, en una oración, qué
-escenario real necesita el prop o la variante nueva, ese ejemplo no gana su lugar todavía en la
-secuencia. "Para mostrar que existe" no es un escenario.
-
-**Numerar encabezados** (`1.`, `2.`, `3.`, como en `tabs.astro`) quiere decir que la página cuenta una
-sola historia continua, cada paso construye sobre el anterior. Cuando las secciones son facetas
-independientes del componente en vez de una progresión (`button.astro` no numera `Variantes`,
-`Tamaños`, `Con icono`, `Solo icono`, `Como enlace`, `TileButton`, porque cada una es una variante
-distinta, no un paso sobre la anterior) no se numera, pero el orden todavía va de lo más común a lo
-más especializado.
-
-**Alternativas avanzadas u opcionales se marcan como tal, explicando qué agregan.** `dialog.astro`
-presenta `Confirm` (el caso común) y recién después `Opción: Dialog Vaul`, con su propia sección "Qué
-añade" que explica la ganancia concreta en vez de asumir que el lector la infiere. Una variante nativa
-sigue el mismo principio y además el que ya fija [`CONTEXT.md`](../CONTEXT.md) para `Native
-alternative`: "documented separately and secondarily when an enhanced module has a larger interaction
-contract". `accordion.astro` hace esto con `Details nativo`, `select.astro` con `Select nativo`, los
-dos después del camino enhanced, nunca antes.
-
-## Labels de los bloques de código
-
-El `label` de un `CodeBlock` o `ComponentPreview` nombra el lenguaje o el artefacto del ejemplo (`CSS`,
-`JavaScript`, `HTML`, `terminal`), nunca con la posesión "tu"/"tu propio". Nada de `tu CSS`, `tu JS`,
-`tu JavaScript`: sobrio y profesional es `CSS`, `JavaScript`. Cuando el lenguaje tiene nombre completo
-y abreviatura (`JavaScript`/`JS`, `TypeScript`/`TS`), el label usa el nombre completo, nunca la sigla.
-
-Esto no es una preferencia sin costo: hasta este mismo cambio, el patrón `tu X` estaba en 86 labels
-reales de 44 archivos en todo `apps/docs/src` (no solo en páginas de `componentes/`), así que si
-aparece de nuevo es una regresión, no una segunda convención vigente.
-
-**El label no es solo texto: alimenta la detección de lenguaje.** `CodeBlock.astro` infiere el
-lenguaje del resaltado a partir del label cuando no se pasa `lang` explícito
-(`label?.includes("JavaScript")`, `"TypeScript"`, `"CSS"`, `"React"`). Ninguno de los nombres
-completos contiene la sigla vieja como substring (`"JavaScript".includes("JS")` es `false`), así que
-el cambio de `tu JS` a `JavaScript` no es un simple find-and-replace de prosa: la lógica de detección
-en `CodeBlock.astro` tuvo que ampliarse para reconocer los nombres completos, o el resaltado cae en
-el fallback `html` para cualquier ejemplo cuyo código no arranque con `import` o `const`. Un label
-nuevo que no sea uno de los nombres reconocidos necesita `lang` explícito.
-
-Esto no prohíbe un label descriptivo cuando el ejemplo lo pide (`una instancia`, `cambiar el set por
-defecto`, `components/button.css`): la regla es contra la posesión y la sigla, no contra describir qué
-hace ese bloque puntual en vez de solo nombrar su lenguaje.
-
-**No confundir con un `aria-label` de la interfaz.** La regla de arriba es solo para el label del
-bloque de código. Un `aria-label` real dentro de un ejemplo (`aria-label="Tu email"` en un formulario
-de newsletter de demo) sigue las reglas de [Code-switching](#code-switching-qué-se-traduce-y-qué-no):
-es contenido de interfaz, se traduce, y "tu" ahí es simplemente el posesivo correcto en español, no el
-patrón que esta sección corrige.
-
-## Registros de decisión (`docs/decisions/`)
-
-Un ADR no es un post de blog justificando una idea, es el registro de por qué el sistema tiene la forma
-que tiene, incluyendo lo que se descartó. La forma es fija:
-
-- **Archivo**: `NNNN-slug-en-español.md`, número de cuatro dígitos seguido del principio en kebab-case.
-- **Frontmatter**: `num`, `title`, `short` (versión corta del título, para navegación), `summary`
-  (el argumento completo en un párrafo, es lo que se muestra sin abrir el documento).
-- **Apertura**: el principio en una o dos oraciones, con las palabras clave en negrita, antes de
-  cualquier detalle técnico. ADR 0002 abre con "Un nombre que dice **quién** usa algo se convierte en
-  mentira…", no con contexto histórico.
-- **Alternativas rechazadas, con razón de cada rechazo**: nunca "se consideraron otras opciones", sino
-  una lista de las opciones puntuales y qué se pierde con cada una.
-- **Debilidad aceptada**: la sección que nombra el costo real de la decisión tomada, no solo sus
-  ventajas. ADR 0002 lo hace explícito: "`ramp` es jerga de especialistas… Se tolera porque marca el
-  tier en el nombre." Un ADR sin esta sección suena a que la decisión no tuvo costo, lo cual nunca es
-  cierto.
-- **Enforcement**: cómo se hace cumplir la regla (validador, convención, nada), y si la implementación
-  obvia se probó y falló, eso se documenta con la misma prioridad que la decisión final. ADR 0002
-  dedica media página a la versión de enforcement que se descartó y por qué.
-- **Referencias cruzadas**: a otra decisión se la nombra por número y se enlaza con ruta relativa,
-  `[decisión 12](decisions/0006-the-monorepo-and-the-site.md)`, nunca solo por título.
-
-## README y metadata de repositorio
-
-`README.md`, `package.json`, y cualquier archivo que describa el repositorio para tooling o para
-quien lo clona por primera vez, van en inglés, terso, sin adjetivos de marketing: "A Turborepo for the
-`skryensya/ui` design system", no "a powerful, flexible design system". Mismo principio que "voz
-compartida" arriba, aplicado en el idioma que le toca a este género.
-
-## Comentarios de código
-
-`CONTEXT.md` ya lo permite: "Comments may use either language when locally consistent." La práctica
-real lo confirma en ambos sentidos, en el mismo paquete: `packages/vanilla/src/icon.ts` está comentado
-enteramente en español, `packages/vanilla/src/storage.ts` enteramente en inglés. Ninguno de los dos
-está mal, lo que estaría mal es mezclar los dos idiomas dentro de un mismo archivo.
-
-Regla práctica al escribir:
-
-- **Editando un archivo existente** → seguir el idioma que ese archivo ya usa. No se traduce un
-  comentario preexistente solo para uniformar con otro archivo.
-- **Creando un archivo nuevo** → cualquiera de los dos, pero una vez elegido, ese archivo no cambia de
-  idioma en un comentario posterior.
-
-## Mensajes de commit
-
-Conventional Commits, en español, sin trailers:
-
-```
-type(optional scope): description
-
-Optional body, after a blank line. At most 300 characters.
-```
-
-Tipos: `feat fix docs style refactor perf test build ci chore revert`. La descripción es texto libre:
-puede empezar en mayúscula y puede terminar en punto. Ejemplo real del historial:
-`fix(calendar): sube las celdas de dia a sm para que el widget tenga un solo escalon de tamano`.
-
-El **asunto tiene un tope de 100 caracteres**, que es lo único que se ve en `git log --oneline`. El
-detalle que no entra va al cuerpo, separado por una línea en blanco (sin esa línea git no distingue
-asunto de cuerpo).
-
-La forma la impone `.husky/commit-msg`, así que un mensaje que no la cumple se rechaza al commitear:
-esta sección describe lo que el hook ya obliga, nunca una convención paralela. El idioma no lo
-verifica el hook, pero el historial entero está en español.
-
-Un commit es un solo asunto. Si hace falta un punto y coma para unir dos cambios que no se implican,
-son dos commits.
-
-> Esta sección decía antes `Categoría: qué cambia`, en inglés y sin prefijo de tipo. Esa era la forma
-> del historial viejo; el hook que la reemplazó la rechazaría hoy.
-
-## Checklist rápida
-
-- ¿El término ya existe en `CONTEXT.md`? Úsalo tal cual, no inventes un sinónimo.
-- ¿Es una página de componente/tutorial, o una referencia/regla? Elige segunda persona o impersonal
-  según corresponda, nunca mezclado.
-- ¿Página de componente con varios ejemplos? Ordénalos de más simple a más complejo, y para cada uno
-  más complejo que el anterior nombra en una oración qué uso real lo necesita.
-- ¿Una variante nativa o una alternativa avanzada? Va después del camino principal, marcada como tal,
-  con una frase que explique qué agrega.
-- ¿Label de un `CodeBlock`/`ComponentPreview`? Sin "tu", nombre completo del lenguaje (`JavaScript`, no `JS`).
-  Si el label no es uno de los nombres reconocidos, pasa `lang` explícito.
-- ¿Español? Tú, nunca usted ni vos.
-- ¿Un nombre de componente, prop, clase o archivo? No se traduce en ningún idioma.
-- ¿Copy de demo o `aria-label`? Se traduce, sigue el idioma de la página.
-- ¿Lista con viñetas? Define primero si es una oración partida (`; y` final) o afirmaciones
-  independientes (punto en cada ítem), no mezcles las dos formas.
-- ¿ADR? Necesita alternativas rechazadas, debilidad aceptada, y enforcement, no solo la decisión final.
-- ¿Comentario de código? Sigue el idioma del archivo que estás editando.
-- ¿Commit? Conventional Commits en español, asunto de 100 caracteres como máximo, cuerpo opcional.
+- Does the term exist in `CONTEXT.md`? Use it as is.
+- Component page or tutorial, or reference and rules? Second person or impersonal, never mixed.
+- Does the lede exist, and is its first sentence the task, without naming the implementation?
+- Does Guidelines have a purpose sentence, "Cuándo usar" and "Cuándo no usar", consistent with
+  `useWhen`/`avoidWhen`, each "not" ending in the alternative?
+- Do the do/don't pairs talk about a real interface, and give their reason?
+- Does the component carry text? Then Guidelines has a Content block.
+- Is it interactive? Then it has an Accessibility tab: what it does, what is left to the author,
+  keyboard.
+- In Guidelines, is the subject the person or the task, never a prop?
+- Force verbs: Debe/No, Usa/No uses, Considera/Prefiere, and nothing in between.
+- Headings: topic first, thesis after a colon, in the page's language.
+- A more complex example: can its real scenario be named in one sentence?
+- Spanish: tú; "solo" without an accent; no "acá", "recién", "de a una"; no em dash and no spaced
+  hyphen in its place.
+- Identifiers are never translated; demo copy and `aria-label` always are.
+- Code block label: no possessive, full language name, explicit `lang` if unrecognized.

@@ -1258,34 +1258,6 @@
       ]
     },
     {
-      "category": "content",
-      "css": "@skryensya/core/components/component-preview.css",
-      "id": "component-preview",
-      "signatures": [
-        {
-          "alternatives": [
-            "CodePreview"
-          ],
-          "avoidWhen": [
-            "Vanilla and React of the SAME component have to be compared: that is this site's machinery, not a published contract",
-            "the block is only code, with nothing to show above it: that is CodePreview alone"
-          ],
-          "host": "div",
-          "id": "ComponentPreview.bare",
-          "intent": [
-            "labelled-demo",
-            "show-something-with-its-source",
-            "example-with-code"
-          ],
-          "parents": [],
-          "useWhen": [
-            "something has to be shown next to its source code: an example, a demo, a use case",
-            "the docs surface does not need to compare two bindings or screen presets"
-          ]
-        }
-      ]
-    },
-    {
       "category": "feedback",
       "css": "@skryensya/core/components/toast.css",
       "id": "content",
@@ -5517,5 +5489,5 @@
     }
   ],
   "schemaVersion": "2.3",
-  "sourceHash": "2db009fdcc7ff98f"
+  "sourceHash": "03390e3f945a4dcc"
 }

@@ -9,12 +9,12 @@ import "@skryensya/core/components/annotation.css";
 import ComponentPageShell from "./ComponentPageShell.astro";
 import AppearanceMenu from "../AppearanceMenu.astro";
 import CodeBlock from "../CodeBlock.astro";
-import ComponentPreview from "../ComponentPreview.astro";
 import UsagePreview from "../UsagePreview.astro";
 import DoDont from "../DoDont.astro";
+import WhenToUse from "../WhenToUse.astro";
+import ContentRules from "../ContentRules.astro";
+import A11yNotes from "../A11yNotes.astro";
 import {
-  timeFieldAnatomyCss,
-  timeFieldAnatomyHtml,
   timeFieldDoCycleTree,
   timeFieldDontCycleTree,
   timeFieldForced24Tree,
@@ -22,7 +22,7 @@ import {
   timeFieldQuarterHourTree,
   timeFieldTree,
 } from "../../demos/time-field";
-import { getLocale, useTranslations } from "../../i18n";
+import { getLocale, tList, useTranslations } from "../../i18n";
 
 const styles = `@import "@skryensya/core/components/button.css";
 @import "@skryensya/core/components/time-field.css";
@@ -68,76 +68,30 @@ const explain = (option: string, values: readonly string[]) =>
       labels={{ h12: "12 h", h24: "24 h" }}
     />
 
-    <h3>{t("timeFieldPage.showcaseTitle")}</h3>
-    <p set:html={t("timeFieldPage.showcaseBody")} />
-    <ComponentPreview tree={timeFieldTree(t, { locale: "es-DO", name: "salida" })} label="TimeField" viewport="menu" />
+    <h3>{t("component.examplesTitle")}</h3>
+    <UsagePreview tree={timeFieldTree(t, { locale: "es-DO", name: "salida" })} title={t("timeFieldPage.basicTitle")} description={t("timeFieldPage.basicBody")} viewport="menu" />
+    <UsagePreview tree={timeFieldForced24Tree(t, { locale: "es", name: "llegada" })} title={t("timeFieldPage.forced24Title")} description={t("timeFieldPage.forced24Body")} viewport="menu" />
+    <UsagePreview tree={timeFieldQuarterHourTree(t, { locale: "es", name: "reunion" })} title={t("timeFieldPage.optionsTitle")} description={t("timeFieldPage.optionsBody")} viewport="menu" />
+    {/* The native fallback goes last: the exit for a reader who found everything above too much.
+        `measure` matches `--sk-time-field-inline-size`, since `.sk-input` fills its container. */}
+    <UsagePreview tree={timeFieldNativeTree(t, { name: "inicio" })} title={t("timeFieldPage.nativeTitle")} description={t("timeFieldPage.nativeBody")} measure="12rem" />
 
     <h3>{t("component.contractNotesTitle")}</h3>
-    <p set:html={t("timeFieldPage.contractBody")} />
+    <ul>
+      {tList(t, "timeFieldPage.contract").map((item) => <li set:html={item} />)}
+    </ul>
 
-    <h3>{t("timeFieldPage.editTitle")}</h3>
-    <p set:html={t("timeFieldPage.editBody")} />
-
-    <h3>{t("timeFieldPage.forced24Title")}</h3>
-    <p set:html={t("timeFieldPage.forced24Body")} />
-    <ComponentPreview
-      tree={timeFieldForced24Tree(t, { locale: "es", name: "llegada" })}
-      label={t("timeFieldPage.forced24Title")}
-      viewport="menu"
-    />
-
-    <h3>{t("timeFieldPage.optionsTitle")}</h3>
-    <p set:html={t("timeFieldPage.optionsBody")} />
-    <ComponentPreview
-      tree={timeFieldQuarterHourTree(t, { locale: "es", name: "reunion" })}
-      label={t("timeFieldPage.optionsQuarterHourTitle")}
-      viewport="menu"
-    />
-
-    {/*
-      LAST, on purpose: simplest-to-most-complex top to bottom (segments alone, then a locked-in
-      option, then the full segments+picker composition), with the plain platform fallback at the
-      very end. A reader reaches for it only once everything ABOVE it turned out to be more than
-      they needed, so it reads as the exit, not a fourth variant of the same thing.
-    */}
-    <h3>{t("timeFieldPage.nativeTitle")}</h3>
-    <p set:html={t("timeFieldPage.nativeBody")} />
-    {
-      /*
-       * `measure` matches `.sk-time-field`'s own `--sk-time-field-inline-size` (`time-field.css`)
-       * exactly. The STAGE'S width, not the input's: `.sk-input` already fills its container
-       * (`inline-size: 100%`, `input.css`), so capping the stage is what narrows a reader's actual
-       * comparison target instead of the field it sits beside. Scoped to this ONE demo on purpose,
-       * not to `.sk-input` itself: most native inputs on a real form legitimately want to fill
-       * whatever column they are given, a `type="time"` field's own narrow, fixed-shape content is
-       * the exception, not the rule for every native input this contract renders.
-       */
-    }
-    <ComponentPreview
-      tree={timeFieldNativeTree(t, { name: "inicio" })}
-      label={t("timeFieldPage.nativeLabel")}
-      measure="12rem"
-    />
-
-    <h3>{t("component.anatomy")}</h3>
-    <p set:html={t("timeFieldPage.anatomyBody")} />
-    <ComponentPreview
-      html={timeFieldAnatomyHtml(t)}
-      css={timeFieldAnatomyCss}
-      label={t("timeFieldPage.anatomyPreviewLabel")}
-      screens={false}
-      hideSource
-      chrome={false}
-    />
   </Fragment>
 
   <Fragment slot="guidelines">
     <p class="lede" set:html={t("timeFieldPage.guidelinesLede")} />
+    <WhenToUse use={tList(t, "timeFieldPage.when")} avoid={tList(t, "timeFieldPage.whenNot")} />
     <DoDont
       title={t("timeFieldPage.dd.cycle.title")}
       do={{ tree: timeFieldDoCycleTree(t), caption: t("timeFieldPage.dd.cycle.do") }}
       dont={{ tree: timeFieldDontCycleTree(t), caption: t("timeFieldPage.dd.cycle.dont") }}
     />
+    <ContentRules items={tList(t, "timeFieldPage.content")} />
   </Fragment>
 
   <Fragment slot="install">
@@ -145,6 +99,16 @@ const explain = (option: string, values: readonly string[]) =>
   </Fragment>
 
   <Fragment slot="a11y">
-    <p set:html={t("timeFieldPage.a11yBody")} />
+    <A11yNotes
+      intro={t("timeFieldPage.a11yIntro")}
+      does={tList(t, "timeFieldPage.a11yDoes")}
+      yours={tList(t, "timeFieldPage.a11yYours")}
+      keys={[
+        { keys: ["↑", "↓"], action: t("timeFieldPage.key.arrows") },
+        { keys: ["←", "→"], action: t("timeFieldPage.key.move") },
+        { keys: ["0–9"], action: t("timeFieldPage.key.digits") },
+        { keys: ["Alt+↓"], action: t("timeFieldPage.key.open") },
+      ]}
+    />
   </Fragment>
 </ComponentPageShell>

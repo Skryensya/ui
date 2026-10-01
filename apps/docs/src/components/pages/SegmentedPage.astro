@@ -5,12 +5,14 @@ import "@skryensya/core/components/annotation.css";
 import ComponentPageShell from "./ComponentPageShell.astro";
 import AppearanceMenu from "../AppearanceMenu.astro";
 import CodeBlock from "../CodeBlock.astro";
-import ComponentPreview from "../ComponentPreview.astro";
 import UsagePreview from "../UsagePreview.astro";
 import DoDont from "../DoDont.astro";
+import WhenToUse from "../WhenToUse.astro";
+import ContentRules from "../ContentRules.astro";
+import A11yNotes from "../A11yNotes.astro";
 import { segmentedAnatomyTree, segmentedTree, segmentedDontManyTree } from "../../demos/segmented";
 import { annotationDemoCss } from "../../demos/annotation";
-import { getLocale, useTranslations } from "../../i18n";
+import { getLocale, tList, useTranslations } from "../../i18n";
 
 const t = useTranslations(getLocale(Astro.url));
 
@@ -25,7 +27,7 @@ await initComponents();`;
   description={t("segmentedPage.description")}
   contractId="segmented"
   appearanceTargetSelector=".sk-segmented"
-  testFiles={["packages/vanilla/src/components/segmented.test.ts"]}}
+  testFiles={["packages/vanilla/src/components/segmented.test.ts"]}
 >
   <Fragment slot="appearance">
     <AppearanceMenu label={t("prefs.appearance")} />
@@ -44,32 +46,34 @@ await initComponents();`;
       stageMinBlockSize="7rem"
     />
 
-    <h3>{t("segmentedPage.showcaseTitle")}</h3>
-    <p set:html={t("segmentedPage.showcaseBody")} />
-    <ComponentPreview tree={segmentedTree(t)} label="Segmented" />
-    <p set:html={t("segmentedPage.body")} />
+    <h3>{t("component.examplesTitle")}</h3>
+    <UsagePreview tree={segmentedTree(t)} title={t("segmentedPage.viewsTitle")} description={t("segmentedPage.viewsBody")} />
+
+    <h3>{t("component.contractNotesTitle")}</h3>
+    <ul>
+      {tList(t, "segmentedPage.contract").map((item) => <li set:html={item} />)}
+    </ul>
     <p set:html={t("component.reactNote")} />
-    <p set:html={t("segmentedPage.reactBody")} />
 
     <h3>{t("component.anatomy")}</h3>
     <p set:html={t("segmentedPage.anatomyBody")} />
-    <ComponentPreview
+    <UsagePreview
       tree={segmentedAnatomyTree(t)}
       css={annotationDemoCss}
       label={t("segmentedPage.anatomyPreviewLabel")}
-      screens={false}
-      hideSource
-      chrome={false}
+      bare
     />
   </Fragment>
 
   <Fragment slot="guidelines">
     <p class="lede" set:html={t("segmentedPage.guidelinesLede")} />
+    <WhenToUse use={tList(t, "segmentedPage.when")} avoid={tList(t, "segmentedPage.whenNot")} />
     <DoDont
       title={t("segmentedPage.dd.few.title")}
       do={{ tree: segmentedTree(t), caption: t("segmentedPage.dd.few.do") }}
       dont={{ tree: segmentedDontManyTree(t), caption: t("segmentedPage.dd.few.dont") }}
     />
+    <ContentRules items={tList(t, "segmentedPage.content")} />
   </Fragment>
 
   <Fragment slot="install">
@@ -77,5 +81,16 @@ await initComponents();`;
 
     <h3>{t("segmentedPage.vanillaInitTitle")}</h3>
     <CodeBlock code={js} label="JavaScript" />
+  </Fragment>
+  <Fragment slot="a11y">
+    <A11yNotes
+      intro={t("segmentedPage.a11yIntro")}
+      does={tList(t, "segmentedPage.a11yDoes")}
+      yours={tList(t, "segmentedPage.a11yYours")}
+      keys={[
+        { keys: ["←", "→"], action: t("segmentedPage.key.arrows") },
+        { keys: [t("component.key.home"), t("component.key.end")], action: t("segmentedPage.key.homeEnd") },
+      ]}
+    />
   </Fragment>
 </ComponentPageShell>

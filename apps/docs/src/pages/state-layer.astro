@@ -3,7 +3,7 @@ import Base from "../layouts/Base.astro";
 import CodeBlock from "../components/CodeBlock.astro";
 import { stateLayerBareTree, stateLayerCurrentColorTree, stateLayerLabTree } from "../demos/state-layer";
 import { getLocale, useTranslations } from "../i18n";
-import ComponentPreview from "../components/ComponentPreview.astro";
+import UsagePreview from "../components/UsagePreview.astro";
 import Used from "../components/Used.astro";
 
 import "../examples/state-layer.css";
@@ -193,8 +193,8 @@ const t = useTranslations(getLocale(Astro.url));
     contains a native input.
   </p>
   <CodeBlock code={usage} label="HTML" note="the target owns the state" />
-  <ComponentPreview tree={stateLayerBareTree(t)} label="Neutral surface" />
-  <ComponentPreview tree={stateLayerCurrentColorTree(t)} label="Surface with currentColor" />
+  <UsagePreview tree={stateLayerBareTree(t)} label="Neutral surface" />
+  <UsagePreview tree={stateLayerCurrentColorTree(t)} label="Surface with currentColor" />
 
   <h2>Projected connection</h2>
   <p>
@@ -204,7 +204,7 @@ const t = useTranslations(getLocale(Astro.url));
     translates them into the same opacity ladder.
   </p>
   <CodeBlock code={projectedUsage} label="HTML" note="written by the adapter" />
-  <ComponentPreview tree={stateLayerLabTree(t)} label="Projection and actions" />
+  <UsagePreview tree={stateLayerLabTree(t)} label="Projection and actions" />
 
   <h2>Mechanism</h2>
   <p>

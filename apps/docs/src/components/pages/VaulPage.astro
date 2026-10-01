@@ -10,176 +10,18 @@ import "@skryensya/core/components/annotation.css";
 import ComponentPageShell from "./ComponentPageShell.astro";
 import AppearanceMenu from "../AppearanceMenu.astro";
 import CodeBlock from "../CodeBlock.astro";
-import ComponentPreview from "../ComponentPreview.astro";
-import { VaulDeleteDemo, VaulFiltersDemo, VaulShareDemo } from "../react-demos/vaul";
-import { vaulAnatomyCss, vaulAnatomyTree } from "../../demos/vaul";
-import { getLocale, useTranslations } from "../../i18n";
+import WhenToUse from "../WhenToUse.astro";
+import ContentRules from "../ContentRules.astro";
+import A11yNotes from "../A11yNotes.astro";
+import UsagePreview from "../UsagePreview.astro";
+import { vaulAnatomyCss, vaulAnatomyTree, vaulDeleteTree, vaulFiltersTree, vaulShareTree } from "../../demos/vaul";
+import { getLocale, tList, useTranslations } from "../../i18n";
 
 const t = useTranslations(getLocale(Astro.url));
 
 const import_ = `@import "@skryensya/core/patterns/vaul.css";
 @import "@skryensya/core/patterns/scroll-lock.css";`;
 
-const html = `<button
-  class="sk-button sk-interactive"
-  data-sk-button
-  data-sk-vaul-open="demo-vaul"
-  type="button"
->
-  ${t("vaulPage.demoOpenLabel")}
-</button>
-
-<dialog
-  class="sk-vaul demo-vaul"
-  id="demo-vaul"
-  data-sk-vaul
-  data-edge="block-end"
-  aria-labelledby="demo-vaul-title"
->
-  <div
-    class="sk-vaul__handle"
-    data-part="handle"
-    aria-hidden="true"
-  ></div>
-
-  <header class="demo-vaul__header">
-    <span class="demo-vaul__heading">
-      <h2 class="demo-vaul__title" id="demo-vaul-title" data-flush>
-        ${t("vaulPage.demoTitle")}
-      </h2>
-      <span class="demo-vaul__meta">
-        ${t("vaulPage.demoMeta")}
-      </span>
-    </span>
-    <button
-      class="sk-button sk-interactive"
-      data-sk-button
-      data-variant="ghost"
-      data-icon-only
-      data-sk-vaul-close
-      type="button"
-      aria-label="${t("vaulPage.demoClose")}"
-    >
-      <span data-sk-icon="close"></span>
-    </button>
-  </header>
-
-  <label class="sk-switch demo-vaul__link">
-    <input
-      class="sk-switch__input"
-      type="checkbox"
-      role="switch"
-      checked
-    />
-    <span class="sk-switch__control" aria-hidden="true">
-      <span class="sk-switch__thumb"></span>
-    </span>
-    <span class="sk-switch__label">
-      ${t("vaulPage.demoShareToggle")}
-    </span>
-  </label>
-
-  <ul
-    class="sk-list demo-vaul__people"
-    data-density="compact"
-    aria-label="${t("vaulPage.demoPeopleLabel")}"
-  >
-    <li class="sk-list__item">
-      <span class="sk-list__leading">
-        <span class="sk-avatar" data-size="sm" aria-hidden="true">
-          <span class="sk-avatar__fallback">AK</span>
-        </span>
-      </span>
-      <span class="sk-list__content">
-        <span class="sk-list__title">Ada Kovač</span>
-        <span class="sk-list__description">ada@estudio.cl</span>
-      </span>
-      <span class="sk-list__trailing">
-        <span class="sk-badge">${t("vaulPage.demoOwner")}</span>
-      </span>
-    </li>
-    <li class="sk-list__item">
-      <span class="sk-list__leading">
-        <span class="sk-avatar" data-size="sm" aria-hidden="true">
-          <span class="sk-avatar__fallback">RM</span>
-        </span>
-      </span>
-      <span class="sk-list__content">
-        <span class="sk-list__title">Renzo Molina</span>
-        <span class="sk-list__description">renzo@estudio.cl</span>
-      </span>
-      <span class="sk-list__trailing">${t("vaulPage.demoCanEdit")}</span>
-    </li>
-    <li class="sk-list__item">
-      <span class="sk-list__leading">
-        <span class="sk-avatar" data-size="sm" aria-hidden="true">
-          <span class="sk-avatar__fallback">NS</span>
-        </span>
-      </span>
-      <span class="sk-list__content">
-        <span class="sk-list__title">Nadia Sepúlveda</span>
-        <span class="sk-list__description">nadia@estudio.cl</span>
-      </span>
-      <span class="sk-list__trailing">${t("vaulPage.demoCanComment")}</span>
-    </li>
-    <li class="sk-list__item">
-      <span class="sk-list__leading">
-        <span class="sk-avatar" data-size="sm" aria-hidden="true">
-          <span class="sk-avatar__fallback">TB</span>
-        </span>
-      </span>
-      <span class="sk-list__content">
-        <span class="sk-list__title">Tomás Bahamondes</span>
-        <span class="sk-list__description">tomas@estudio.cl</span>
-      </span>
-      <span class="sk-list__trailing">${t("vaulPage.demoCanComment")}</span>
-    </li>
-    <li class="sk-list__item">
-      <span class="sk-list__leading">
-        <span class="sk-avatar" data-size="sm" aria-hidden="true">
-          <span class="sk-avatar__fallback">+6</span>
-        </span>
-      </span>
-      <span class="sk-list__content">
-        <span class="sk-list__title">${t("vaulPage.demoDesignTeam")}</span>
-        <span class="sk-list__description">${t("vaulPage.demoDesignTeamMeta")}</span>
-      </span>
-      <span class="sk-list__trailing">${t("vaulPage.demoReadOnly")}</span>
-    </li>
-    <li class="sk-list__item">
-      <span class="sk-list__leading">
-        <span class="sk-avatar" data-size="sm" aria-hidden="true">
-          <span class="sk-avatar__fallback">LV</span>
-        </span>
-      </span>
-      <span class="sk-list__content">
-        <span class="sk-list__title">Lucía Vergara</span>
-        <span class="sk-list__description">lucia@cliente.cl</span>
-      </span>
-      <span class="sk-list__trailing">${t("vaulPage.demoInviteSent")}</span>
-    </li>
-  </ul>
-
-  <footer class="demo-vaul__actions">
-    <button
-      class="sk-button sk-interactive"
-      data-sk-button
-      data-variant="ghost"
-      data-sk-vaul-close
-      type="button"
-    >
-      ${t("vaulPage.demoCancel")}
-    </button>
-    <button
-      class="sk-button sk-interactive"
-      data-sk-button
-      data-sk-vaul-close
-      type="button"
-    >
-      ${t("vaulPage.demoShare")}
-    </button>
-  </footer>
-</dialog>`;
 const edges = `
 <dialog class="sk-vaul" data-edge="inline-start">…</dialog>
 <dialog class="sk-vaul" data-edge="inline-end">…</dialog>
@@ -207,280 +49,6 @@ const noDrag = `<dialog
 >
   <!-- ${t("vaulPage.noDragComment")} -->
 </dialog>`;
-const react = `import { useState } from "react";
-import { Button } from "@skryensya/react/button";
-import { Vaul } from "@skryensya/react/vaul";
-
-export function ShareSheet() {
-  const [open, setOpen] = useState(false);
-
-  return (
-    <>
-      <Button onClick={() => setOpen(true)}>
-        ${t("vaulPage.demoOpenLabel")}
-      </Button>
-      <Vaul
-        open={open}
-        className="demo-vaul"
-        edge="block-end"
-        label="${t("vaulPage.demoTitle")}"
-      >
-        {/* ${t("vaulPage.reactSnippetComment")} */}
-      </Vaul>
-    </>
-  );
-}`;
-
-const deleteHtml = `<button
-  class="sk-button sk-interactive"
-  data-sk-button
-  data-sk-vaul-open="demo-vaul-delete"
-  type="button"
->
-  ${t("vaulPage.deleteOpenLabel")}
-</button>
-
-<dialog
-  class="sk-vaul demo-vaul-delete"
-  id="demo-vaul-delete"
-  data-sk-vaul
-  data-edge="block-end"
-  aria-labelledby="demo-vaul-delete-title"
->
-  <div
-    class="sk-vaul__handle"
-    data-part="handle"
-    aria-hidden="true"
-  ></div>
-
-  <div class="demo-vaul-delete__body">
-    <h2 class="demo-vaul-delete__title" id="demo-vaul-delete-title" data-flush>
-      ${t("vaulPage.deleteTitle")}
-    </h2>
-    <p class="demo-vaul-delete__desc">${t("vaulPage.deleteDesc")}</p>
-  </div>
-
-  <footer class="demo-vaul-delete__actions">
-    <button
-      class="sk-button sk-interactive"
-      data-sk-button
-      data-variant="ghost"
-      data-sk-vaul-close
-      type="button"
-    >
-      ${t("vaulPage.deleteCancel")}
-    </button>
-    <button
-      class="sk-button sk-interactive"
-      data-sk-button
-      data-tone="danger"
-      data-sk-vaul-close
-      type="button"
-    >
-      ${t("vaulPage.deleteConfirm")}
-    </button>
-  </footer>
-</dialog>`;
-
-const deleteReact = `import { useState } from "react";
-import { Button } from "@skryensya/react/button";
-import { Vaul } from "@skryensya/react/vaul";
-
-export function DeleteFileSheet() {
-  const [open, setOpen] = useState(false);
-
-  return (
-    <>
-      <Button onClick={() => setOpen(true)}>
-        ${t("vaulPage.deleteOpenLabel")}
-      </Button>
-      <Vaul
-        open={open}
-        className="demo-vaul-delete"
-        edge="block-end"
-        label="${t("vaulPage.deleteTitle")}"
-      >
-        {/* ${t("vaulPage.reactSnippetComment")} */}
-      </Vaul>
-    </>
-  );
-}`;
-
-const filtersSortOptions = [
-  { value: "relevance", label: t("vaulPage.filtersSortRelevance") },
-  { value: "price-asc", label: t("vaulPage.filtersSortPriceAsc") },
-  { value: "price-desc", label: t("vaulPage.filtersSortPriceDesc") },
-  { value: "recent", label: t("vaulPage.filtersSortRecent") },
-];
-const filtersCategoryOptions = [
-  { value: "design", label: t("vaulPage.filtersCategoryDesign") },
-  { value: "dev", label: t("vaulPage.filtersCategoryDev") },
-  { value: "research", label: t("vaulPage.filtersCategoryResearch") },
-  { value: "strategy", label: t("vaulPage.filtersCategoryStrategy") },
-  { value: "content", label: t("vaulPage.filtersCategoryContent") },
-  { value: "illustration", label: t("vaulPage.filtersCategoryIllustration") },
-];
-const filtersAvailabilityOptions = [
-  { value: "stock", label: t("vaulPage.filtersAvailabilityStock") },
-  { value: "shipping", label: t("vaulPage.filtersAvailabilityShipping") },
-];
-const filtersDefaultCategories = new Set(filtersCategoryOptions.slice(0, 2).map((item) => item.value));
-
-const radioItemHtml = (item: { value: string; label: string }, checked: boolean) => `      <label class="sk-radio">
-        <input class="sk-radio__input" name="sort" value="${item.value}" type="radio"${checked ? " checked" : ""}>
-        <span class="sk-radio__control" aria-hidden="true">
-          <span class="sk-radio__indicator"></span>
-        </span>
-        <span class="sk-radio__label">${item.label}</span>
-      </label>`;
-
-const checkboxItemHtml = (
-  name: string,
-  item: { value: string; label: string },
-  checked: boolean,
-) => `        <label class="sk-checkbox">
-          <input
-            class="sk-checkbox__input"
-            data-sk-checkbox-group-item
-            name="${name}"
-            value="${item.value}"
-            type="checkbox"${checked ? "\n            checked" : ""}
-          >
-          <span class="sk-checkbox__control sk-interactive" aria-hidden="true">
-            <span class="sk-checkbox__indicator" data-state="checked">
-              <span data-sk-icon="check" data-sk-icon-size="sm"></span>
-            </span>
-            <span class="sk-checkbox__indicator" data-state="indeterminate">
-              <span data-sk-icon="remove" data-sk-icon-size="sm"></span>
-            </span>
-          </span>
-          <span class="sk-checkbox__label">${item.label}</span>
-        </label>`;
-
-const checkboxGroupHtml = (
-  name: string,
-  label: string,
-  items: { value: string; label: string }[],
-  defaultChecked: Set<string>,
-) => `      <div class="sk-checkbox-group" data-sk-checkbox-group role="group" aria-labelledby="demo-vaul-filters-${name}-label">
-        <label class="sk-checkbox">
-          <input class="sk-checkbox__input" data-sk-checkbox-group-all type="checkbox">
-          <span class="sk-checkbox__control sk-interactive" aria-hidden="true">
-            <span class="sk-checkbox__indicator" data-state="checked">
-              <span data-sk-icon="check" data-sk-icon-size="sm"></span>
-            </span>
-            <span class="sk-checkbox__indicator" data-state="indeterminate">
-              <span data-sk-icon="remove" data-sk-icon-size="sm"></span>
-            </span>
-          </span>
-          <span class="sk-checkbox__label" id="demo-vaul-filters-${name}-label">${label}</span>
-        </label>
-        <div class="sk-checkbox-group__items">
-${items.map((item) => checkboxItemHtml(name, item, defaultChecked.has(item.value))).join("\n")}
-        </div>
-      </div>`;
-
-const filtersHtml = `<button
-  class="sk-button sk-interactive"
-  data-sk-button
-  data-sk-vaul-open="demo-vaul-filters"
-  type="button"
->
-  ${t("vaulPage.filtersOpenLabel")}
-</button>
-
-<dialog
-  class="sk-vaul demo-vaul-filters"
-  id="demo-vaul-filters"
-  data-sk-vaul
-  data-edge="block-end"
-  aria-labelledby="demo-vaul-filters-title"
->
-  <div
-    class="sk-vaul__handle"
-    data-part="handle"
-    aria-hidden="true"
-  ></div>
-
-  <header class="demo-vaul-filters__header">
-    <h2 class="demo-vaul-filters__title" id="demo-vaul-filters-title" data-flush>
-      ${t("vaulPage.filtersTitle")}
-    </h2>
-    <button
-      class="sk-button sk-interactive"
-      data-sk-button
-      data-variant="ghost"
-      data-icon-only
-      data-sk-vaul-close
-      type="button"
-      aria-label="${t("vaulPage.demoClose")}"
-    >
-      <span data-sk-icon="close"></span>
-    </button>
-  </header>
-
-  <div class="demo-vaul-filters__body">
-    <section class="demo-vaul-filters__section">
-      <div class="sk-radio-group" role="radiogroup" aria-label="${t("vaulPage.filtersSortLabel")}">
-${filtersSortOptions.map((item, index) => radioItemHtml(item, index === 0)).join("\n")}
-      </div>
-    </section>
-    <section class="demo-vaul-filters__section">
-${checkboxGroupHtml("category", t("vaulPage.filtersCategoryLabel"), filtersCategoryOptions, filtersDefaultCategories)}
-    </section>
-    <section class="demo-vaul-filters__section">
-${checkboxGroupHtml("availability", t("vaulPage.filtersAvailabilityLabel"), filtersAvailabilityOptions, new Set())}
-    </section>
-  </div>
-
-  <footer class="demo-vaul-filters__actions">
-    <button
-      class="sk-button sk-interactive"
-      data-sk-button
-      data-variant="ghost"
-      data-sk-vaul-close
-      type="button"
-    >
-      ${t("vaulPage.filtersClear")}
-    </button>
-    <button
-      class="sk-button sk-interactive"
-      data-sk-button
-      data-sk-vaul-close
-      type="button"
-    >
-      ${t("vaulPage.filtersApply")}
-    </button>
-  </footer>
-</dialog>`;
-
-const filtersReact = `import { useState } from "react";
-import { Button } from "@skryensya/react/button";
-import { CheckboxGroup, RadioGroup } from "@skryensya/react/selection";
-import { Vaul } from "@skryensya/react/vaul";
-
-export function FiltersSheet() {
-  const [open, setOpen] = useState(false);
-
-  return (
-    <>
-      <Button onClick={() => setOpen(true)}>
-        ${t("vaulPage.filtersOpenLabel")}
-      </Button>
-      <Vaul
-        open={open}
-        className="demo-vaul-filters"
-        edge="block-end"
-        label="${t("vaulPage.filtersTitle")}"
-      >
-        <RadioGroup name="sort" items={sortOptions} aria-label="${t("vaulPage.filtersSortLabel")}" />
-        <CheckboxGroup name="category" items={categoryOptions} label="${t("vaulPage.filtersCategoryLabel")}" />
-        <CheckboxGroup name="availability" items={availabilityOptions} label="${t("vaulPage.filtersAvailabilityLabel")}" />
-        {/* ${t("vaulPage.reactSnippetComment")} */}
-      </Vaul>
-    </>
-  );
-}`;
 ---
 
 <ComponentPageShell
@@ -521,99 +89,41 @@ export function FiltersSheet() {
 
   <Fragment slot="anatomy">
     <p set:html={t("vaulPage.anatomyBody")} />
-    <ComponentPreview
-      tree={vaulAnatomyTree(t)}
-      css={vaulAnatomyCss}
-      label={t("vaulPage.anatomyPreviewLabel")}
-      screens={false}
-      hideSource
-      chrome={false}
-    />
+    <UsagePreview tree={vaulAnatomyTree(t)} css={vaulAnatomyCss} label={t("vaulPage.anatomyPreviewLabel")} bare />
   </Fragment>
 
   <Fragment slot="usage">
     <p class="lede" set:html={t("vaulPage.lede")} />
+
+    <h3>{t("component.examplesTitle")}</h3>
+    {/* Each sheet on a phone-sized stage, where the drag gesture is live. */}
     <h3>{t("vaulPage.completeTitle")}</h3>
     <p set:html={t("vaulPage.completeBody")} />
-    <ComponentPreview
-      html={html}
-      react={react}
+    <UsagePreview
+      tree={vaulShareTree(t)}
       label={t("vaulPage.completeLabel")}
-      screenScope="local"
-      defaultScreen="mobile"
-      minHeight="760px"
+      screen="mobile"
+      stageMinBlockSize="760px"
       scroll
-    >
-      <Fragment slot="react">
-        <VaulShareDemo
-          client:visible
-          openLabel={t("vaulPage.demoOpenLabel")}
-          title={t("vaulPage.demoTitle")}
-          meta={t("vaulPage.demoMeta")}
-          closeLabel={t("vaulPage.demoClose")}
-          shareToggle={t("vaulPage.demoShareToggle")}
-          peopleLabel={t("vaulPage.demoPeopleLabel")}
-          owner={t("vaulPage.demoOwner")}
-          canEdit={t("vaulPage.demoCanEdit")}
-          canComment={t("vaulPage.demoCanComment")}
-          readOnly={t("vaulPage.demoReadOnly")}
-          designTeam={t("vaulPage.demoDesignTeam")}
-          designTeamMeta={t("vaulPage.demoDesignTeamMeta")}
-          cancel={t("vaulPage.demoCancel")}
-          share={t("vaulPage.demoShare")}
-        />
-      </Fragment>
-    </ComponentPreview>
+    />
 
     <h3>{t("vaulPage.examplesTitle")}</h3>
     <p set:html={t("vaulPage.examplesBody")} />
-    <ComponentPreview
-      html={deleteHtml}
-      react={deleteReact}
+    <UsagePreview
+      tree={vaulDeleteTree(t)}
       label={t("vaulPage.deleteLabel")}
-      screenScope="local"
-      defaultScreen="mobile"
-      minHeight="760px"
+      screen="mobile"
+      stageMinBlockSize="760px"
       scroll
-    >
-      <Fragment slot="react">
-        <VaulDeleteDemo
-          client:visible
-          openLabel={t("vaulPage.deleteOpenLabel")}
-          title={t("vaulPage.deleteTitle")}
-          desc={t("vaulPage.deleteDesc")}
-          cancel={t("vaulPage.deleteCancel")}
-          confirm={t("vaulPage.deleteConfirm")}
-        />
-      </Fragment>
-    </ComponentPreview>
+    />
 
-    <ComponentPreview
-      html={filtersHtml}
-      react={filtersReact}
+    <UsagePreview
+      tree={vaulFiltersTree(t)}
       label={t("vaulPage.filtersLabel")}
-      screenScope="local"
-      defaultScreen="mobile"
-      minHeight="760px"
+      screen="mobile"
+      stageMinBlockSize="760px"
       scroll
-    >
-      <Fragment slot="react">
-        <VaulFiltersDemo
-          client:visible
-          openLabel={t("vaulPage.filtersOpenLabel")}
-          title={t("vaulPage.filtersTitle")}
-          closeLabel={t("vaulPage.demoClose")}
-          sortLabel={t("vaulPage.filtersSortLabel")}
-          sortOptions={filtersSortOptions}
-          categoryLabel={t("vaulPage.filtersCategoryLabel")}
-          categoryOptions={filtersCategoryOptions}
-          availabilityLabel={t("vaulPage.filtersAvailabilityLabel")}
-          availabilityOptions={filtersAvailabilityOptions}
-          clear={t("vaulPage.filtersClear")}
-          apply={t("vaulPage.filtersApply")}
-        />
-      </Fragment>
-    </ComponentPreview>
+    />
 
     <h3>{t("vaulPage.edgeTitle")}</h3>
     <p set:html={t("vaulPage.edgeBody")} />
@@ -625,33 +135,28 @@ export function FiltersSheet() {
     <p set:html={t("vaulPage.dragBody2")} />
     <CodeBlock code={noDrag} label={t("vaulPage.noDragLabel")} />
 
-    <h3>{t("vaulPage.detailsTitle")}</h3>
-    <div class="docs-vaul-cards">
-      <article class="docs-vaul-card">
-        <h4>{t("vaulPage.nativeTitle")}</h4>
-        <p set:html={t("vaulPage.nativeBody")} />
-      </article>
-      <article class="docs-vaul-card">
-        <h4>{t("vaulPage.whyPatternTitle")}</h4>
-        <p set:html={t("vaulPage.whyPatternBody1")} />
-      </article>
-      <article class="docs-vaul-card">
-        <h4>{t("vaulPage.resistTitle")}</h4>
-        <p set:html={t("vaulPage.resistBody1")} />
-      </article>
-      <article class="docs-vaul-card">
-        <h4>{t("vaulPage.handleTitle")}</h4>
-        <p set:html={t("vaulPage.handleBody")} />
-      </article>
-      <article class="docs-vaul-card">
-        <h4>{t("vaulPage.desktopTitle")}</h4>
-        <p set:html={t("vaulPage.desktopBody")} />
-      </article>
-      <article class="docs-vaul-card">
-        <h4>{t("vaulPage.motionTitle")}</h4>
-        <p set:html={t("vaulPage.motionBody1")} />
-      </article>
-    </div>
+    <h3>{t("component.contractNotesTitle")}</h3>
+    <ul>
+      {tList(t, "vaulPage.contract").map((item) => <li set:html={item} />)}
+    </ul>
+  </Fragment>
+
+  <Fragment slot="guidelines">
+    <p class="lede" set:html={t("vaulPage.guidelinesLede")} />
+    <WhenToUse use={tList(t, "vaulPage.when")} avoid={tList(t, "vaulPage.whenNot")} />
+    <ContentRules items={tList(t, "vaulPage.content")} />
+  </Fragment>
+
+  <Fragment slot="a11y">
+    <A11yNotes
+      intro={t("vaulPage.a11yIntro")}
+      does={tList(t, "vaulPage.a11yDoes")}
+      yours={tList(t, "vaulPage.a11yYours")}
+      keys={[
+        { keys: ["Esc"], action: t("vaulPage.key.escape") },
+        { keys: ["Tab", "Shift+Tab"], action: t("vaulPage.key.tab") },
+      ]}
+    />
   </Fragment>
 
   <Fragment slot="install">
@@ -665,36 +170,9 @@ export function FiltersSheet() {
      sheet's ceiling.
      `is:global`: the authored HTML lives inside the srcdoc and does not carry Astro's scope attribute;
      the adapter copies this global rule into the frame, a scoped rule could not reach it. */
-
-
-  .docs-vaul-cards {
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: var(--space-inline-md);
-  }
-
-  .docs-vaul-card {
-    display: grid;
-    gap: var(--space-stack-xs);
-    padding: var(--space-inset-md);
-    border: 1px solid var(--color-border-subtle);
-    border-radius: var(--radius-surface);
-    background: var(--color-bg-surface);
-  }
-
-  .docs-vaul-card h4 {
-    font-size: var(--font-size-body);
-  }
-
-  .docs-vaul-card p {
-    color: var(--color-text-secondary);
-    font-size: var(--font-size-body-sm);
-  }
-
   @media (max-width: 52rem) {
     .docs-vaul-step,
-    .docs-vaul-complete,
-    .docs-vaul-cards {
+    .docs-vaul-complete {
       grid-template-columns: 1fr;
     }
   }

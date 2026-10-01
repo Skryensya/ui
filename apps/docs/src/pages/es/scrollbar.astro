@@ -3,7 +3,7 @@ import Base from "../../layouts/Base.astro";
 import CodeBlock from "../../components/CodeBlock.astro";
 import { scrollbarAlwaysTree, scrollbarRevealTree } from "../../demos/scrollbar";
 import { getLocale, useTranslations } from "../../i18n";
-import ComponentPreview from "../../components/ComponentPreview.astro";
+import UsagePreview from "../../components/UsagePreview.astro";
 import StylingHooks from "../../components/StylingHooks.astro";
 
 const import_ = `@import "@skryensya/core/patterns/scrollbar.css";`;
@@ -55,7 +55,7 @@ const t = useTranslations(getLocale(Astro.url));
     <code>sk-scrollbar</code> deja track y thumb a la vista. Úsalo cuando el scroll es parte
     del mapa de la UI (un panel de código, una tabla ancha).
   </p>
-  <ComponentPreview tree={scrollbarAlwaysTree(t)} label="sk-scrollbar" />
+  <UsagePreview tree={scrollbarAlwaysTree(t)} label="sk-scrollbar" />
 
   <h2>Reveal al hover (y al foco)</h2>
   <p>
@@ -63,7 +63,7 @@ const t = useTranslations(getLocale(Astro.url));
     deja el thumb transparente hasta <code>:hover</code> o <code>:focus-within</code>. Al
     revelar solo aparece el thumb, no un track relleno.
   </p>
-  <ComponentPreview tree={scrollbarRevealTree(t)} label="sk-scrollbar--reveal" note="hover o tab para revelar" />
+  <UsagePreview tree={scrollbarRevealTree(t)} label="sk-scrollbar--reveal" caption="hover o tab para revelar" />
   <p>
     El rail del sidebar de esta documentación usa exactamente esta variante: quieto en reposo,
     legible cuando lo tocas.

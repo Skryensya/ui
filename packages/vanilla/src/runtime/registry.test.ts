@@ -76,7 +76,6 @@ describe("initComponents", () => {
   it("leaves documentation previews to their explicit opt-in mounts", async () => {
     document.body.innerHTML = `
       <div data-sk-code-preview></div>
-      <div data-sk-component-preview></div>
     `;
 
     expect(await initComponents(document)).toBe(0);

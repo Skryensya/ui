@@ -15,39 +15,66 @@ export const stepsMessages = {
     "demo.steps.payment.label": "Pago",
     "demo.steps.payment.description": "Método y facturación",
 
-    "stepsPage.description": "Steps: indicador de progreso lineal con estados complete / current / upcoming.",
-    "stepsPage.lede":
-      "Steps muestra el avance sobre una secuencia ordenada. Cada paso reporta uno de tres estados <code>complete</code>, <code>current</code>, <code>upcoming</code>; el componente exhibe la secuencia, no gobierna cuál está activo ni guarda la navegación entre pasos.",
+    "stepsPage.description": "Muestra en qué etapa de un proceso está alguien y cuántas quedan.",
+
+    "stepsPage.a11yYours2": "Al avanzar, lleva el foco al título de la etapa nueva.",
+
+    "stepsPage.a11yYours1": "Si los pasos son enlaces para volver atrás, que sean enlaces reales.",
+
+    "stepsPage.a11yDoes3": "Terminado se marca con un ícono además del color.",
+
+    "stepsPage.a11yDoes2": 'El paso actual lleva <code>aria-current="step"</code>.',
+
+    "stepsPage.a11yDoes1": "Es un <code>&lt;ol&gt;</code>: se anuncia cuántos pasos hay.",
+
+    "stepsPage.a11yIntro": "Steps es una lista ordenada con el paso actual marcado.",
+
+    "stepsPage.content2": "Usa sustantivos o verbos, pero todos igual.",
+
+    "stepsPage.content1": "Nombra cada etapa con 1 o 2 palabras: «Envío», «Pago», «Confirmación».",
+
+    "stepsPage.whenNot3": 'Para cambiar entre secciones sin orden: usa <a href="/es/componentes/tabs">Tabs</a>.',
+
+    "stepsPage.whenNot2": 'Para el avance de una tarea automática: usa <a href="/es/componentes/progress">Progress</a>.',
+
+    "stepsPage.whenNot1": 'Para instrucciones que se leen, sin avance: usa <a href="/es/componentes/process-list">ProcessList</a>.',
+
+    "stepsPage.when2": "Cuando conviene saber cuánto falta antes de empezar.",
+
+    "stepsPage.when1": "Para un proceso de 3 a 5 etapas que se hace en orden: checkout, alta, configuración.",
+
+    "stepsPage.contract3": 'El paso actual lleva <code>aria-current="step"</code>.',
+
+    "stepsPage.contract2": "En React, <code>current</code> calcula el estado de los pasos; <code>status</code> lo fija en uno.",
+
+    "stepsPage.contract1": "Cada paso está en <code>complete</code>, <code>current</code> o <code>upcoming</code>.",
+
+    "stepsPage.checkoutBody": "Marca, rampas, contraste y exportar: las terminadas llevan un check, la actual se marca y las pendientes esperan.",
+
+    "stepsPage.checkoutTitle": "Una paleta: cuatro etapas",
+    "stepsPage.lede": "Steps muestra en qué etapa de un proceso está alguien y cuántas quedan: un checkout, un alta, la configuración de una cuenta. Cada etapa está terminada, en curso o pendiente. Solo muestra el avance; los pasos los maneja tu flujo.",
     "stepsPage.anatomyBody":
       "Este diagrama nombra el recorrido, el ítem, el marcador, la etiqueta y la descripción. El espécimen está congelado; los Steps vivos empiezan abajo.",
     "stepsPage.anatomyLabel": "Anatomía de Steps",
     "stepsPage.anatomyPreviewLabel": "Steps, parte por parte",
-    "stepsPage.body": "En React, <code>current</code> deriva el estado de los pasos que no declaran el suyo; un paso puede sobrescribirlo con <code>status</code>. <code>description</code> agrega contexto sin convertir el paso en una tarjeta.",
-    "stepsPage.mobileTitle": "En móvil",
-    "stepsPage.mobileBody":
-      "Cuando el viewport no llega a <code>40rem</code>, el recorrido se vuelve un riel vertical automáticamente: el marcador queda a la izquierda y cada etiqueta conserva todo su ancho. No hay truncado ni scroll horizontal.",
-    "stepsPage.verticalTitle": "Opción: vertical en cualquier tamaño",
-    "stepsPage.verticalBody":
-      '<code>data-orientation="vertical"</code> pide el mismo riel a cualquier ancho de viewport, no solo en móvil: el caso de uso es un wizard con contenido a la derecha, donde el paso a paso es la navegación de una barra lateral fija en vez de un fallback de espacio angosto. La marca <code>data-orientation="horizontal"</code> hace el inverso: fuerza el recorrido horizontal incluso por debajo de <code>40rem</code>.',
-    "stepsPage.verticalLabel": "Steps vertical",
+    "stepsPage.verticalTitle": "Vertical: con descripción",
+    "stepsPage.verticalBody": "En una columna al costado del formulario, cada etapa puede llevar una línea de descripción.",
     "stepsPage.test1": "Deriva completo / actual / pendiente a partir del índice actual.",
     "stepsPage.test2": "Un paso puede anular su estado explícitamente.",
     "demo.steps.dd.step": "Paso",
-    "stepsPage.prop.orientation.title": "Orientación",
-    "stepsPage.prop.orientation.body": "La <code>orientation</code> decide si las etapas van en una fila o en una columna.",
+    "stepsPage.prop.orientation.title": "Orientation: fila o columna",
+    "stepsPage.prop.orientation.body": "En un teléfono, bajo <code>40rem</code>, la fila se vuelve columna sola.",
     "stepsPage.prop.orientation.horizontal": "Usa <code>horizontal</code> sobre un formulario ancho, con pocas etapas de nombre corto.",
     "stepsPage.prop.orientation.vertical": "Usa <code>vertical</code> en una columna lateral, o cuando cada etapa lleva descripción.",
-    "stepsPage.prop.appearance.title": "Apariencia",
-    "stepsPage.prop.appearance.body": "La <code>appearance</code> decide cómo se dibuja cada etapa.",
-    "stepsPage.prop.appearance.markers": "Usa <code>markers</code>, el default, para ver el número o el ícono de cada etapa.",
+    "stepsPage.prop.appearance.title": "Appearance: marcadores o barra",
+    "stepsPage.prop.appearance.body": "Cómo se dibuja cada etapa.",
+    "stepsPage.prop.appearance.markers": "Usa <code>markers</code>, el valor por defecto, para ver el número o el ícono de cada etapa.",
     "stepsPage.prop.appearance.segments": "Usa <code>segments</code> para una barra compacta, cuando basta con ver cuánto falta.",
-    "stepsPage.showcaseTitle": "Showcases",
-    "stepsPage.showcaseBody": "Un proceso en fila, y el mismo modelo en una columna.",
-    "stepsPage.guidelinesLede": "Steps muestra en qué etapa de un proceso está alguien y cuántas quedan.",
-    "stepsPage.dd.few.title": "Pocas etapas",
+    "stepsPage.guidelinesLede": "Ver cuántas etapas quedan ayuda a terminar un proceso largo.",
+    "stepsPage.dd.few.title": "Etapas: de tres a cinco",
     "stepsPage.dd.few.do": "Agrupa el proceso en tres a cinco etapas con nombre.",
     "stepsPage.dd.few.dont": "Ocho etapas no caben ni se recuerdan. Junta las que van juntas.",
-    "stepsPage.dd.cue.title": "Terminado, sin depender del color",
+    "stepsPage.dd.cue.title": "Terminado: con ícono, no solo color",
     "stepsPage.dd.cue.do": "Marca lo terminado con un ícono, además del color.",
     "stepsPage.dd.cue.dont": "Si solo cambia el color, quien no lo distingue no sabe qué etapa terminó.",
   },
@@ -67,39 +94,66 @@ export const stepsMessages = {
     "demo.steps.payment.label": "Payment",
     "demo.steps.payment.description": "Method and billing",
 
-    "stepsPage.description": "Steps: a linear progress indicator with complete / current / upcoming states.",
-    "stepsPage.lede":
-      "Steps shows progress across an ordered sequence. Every step reports one of three states: <code>complete</code>, <code>current</code>, <code>upcoming</code>: the component displays the sequence; it does not govern which one is active or keep navigation between steps.",
+    "stepsPage.description": "Shows which stage of a process someone is at and how many remain.",
+
+    "stepsPage.a11yYours2": "On advancing, move focus to the new stage's title.",
+
+    "stepsPage.a11yYours1": "If steps are links to go back, make them real links.",
+
+    "stepsPage.a11yDoes3": "Done is marked with an icon as well as color.",
+
+    "stepsPage.a11yDoes2": 'The current step carries <code>aria-current="step"</code>.',
+
+    "stepsPage.a11yDoes1": "It is an <code>&lt;ol&gt;</code>: how many steps there are is announced.",
+
+    "stepsPage.a11yIntro": "Steps is an ordered list with the current step marked.",
+
+    "stepsPage.content2": "Use nouns or verbs, but all the same.",
+
+    "stepsPage.content1": "Name each stage in 1 or 2 words: “Shipping”, “Payment”, “Confirmation”.",
+
+    "stepsPage.whenNot3": 'To switch between unordered sections: use <a href="/components/tabs">Tabs</a>.',
+
+    "stepsPage.whenNot2": 'For an automatic task\'s progress: use <a href="/components/progress">Progress</a>.',
+
+    "stepsPage.whenNot1": 'For instructions to read, with no progress: use <a href="/components/process-list">ProcessList</a>.',
+
+    "stepsPage.when2": "When it helps to know how much is left before starting.",
+
+    "stepsPage.when1": "For a 3 to 5 stage process done in order: checkout, sign-up, setup.",
+
+    "stepsPage.contract3": 'The current step carries <code>aria-current="step"</code>.',
+
+    "stepsPage.contract2": "In React, <code>current</code> computes the steps' state; <code>status</code> fixes it on one.",
+
+    "stepsPage.contract1": "Each step is <code>complete</code>, <code>current</code> or <code>upcoming</code>.",
+
+    "stepsPage.checkoutBody": "Brand, ramps, contrast and export: done ones carry a check, the current one is marked and upcoming ones wait.",
+
+    "stepsPage.checkoutTitle": "A palette: four stages",
+    "stepsPage.lede": "Steps shows which stage of a process someone is at and how many remain: a checkout, a sign-up, an account setup. Each stage is done, current or upcoming. It only shows progress; your flow drives the steps.",
     "stepsPage.anatomyBody":
       "This diagram names the trail, the item, the marker, the label, and the description. The specimen is frozen; the live Steps start below.",
     "stepsPage.anatomyLabel": "Steps anatomy",
     "stepsPage.anatomyPreviewLabel": "Steps, part by part",
-    "stepsPage.body": "In React, <code>current</code> derives the state of steps that declare none of their own; a step can override it with <code>status</code>. <code>description</code> adds context without turning the step into a card.",
-    "stepsPage.mobileTitle": "On mobile",
-    "stepsPage.mobileBody":
-      "When the viewport falls below <code>40rem</code>, the trail automatically becomes a vertical rail: the marker sits on the left, and every label keeps its full width. There is no truncation or horizontal scroll.",
-    "stepsPage.verticalTitle": "Option: vertical at any size",
-    "stepsPage.verticalBody":
-      '<code>data-orientation="vertical"</code> asks for the same rail at any viewport width, not only on mobile: the use case is a wizard with content on the right, where the step-by-step is a fixed sidebar\'s navigation rather than a narrow-space fallback. <code>data-orientation="horizontal"</code> does the reverse: it forces the horizontal trail even below <code>40rem</code>.',
-    "stepsPage.verticalLabel": "Vertical Steps",
+    "stepsPage.verticalTitle": "Vertical: with a description",
+    "stepsPage.verticalBody": "In a column beside the form, each stage can carry a line of description.",
     "stepsPage.test1": "Derives complete / current / upcoming from the current index.",
     "stepsPage.test2": "Lets a step override its status explicitly.",
     "demo.steps.dd.step": "Step",
-    "stepsPage.prop.orientation.title": "Orientation",
-    "stepsPage.prop.orientation.body": "<code>orientation</code> decides whether the stages sit in a row or a column.",
+    "stepsPage.prop.orientation.title": "Orientation: row or column",
+    "stepsPage.prop.orientation.body": "On a phone, below <code>40rem</code>, the row becomes a column by itself.",
     "stepsPage.prop.orientation.horizontal": "Use <code>horizontal</code> above a wide form, with a few short-named stages.",
     "stepsPage.prop.orientation.vertical": "Use <code>vertical</code> in a side column, or when each stage has a description.",
-    "stepsPage.prop.appearance.title": "Appearance",
-    "stepsPage.prop.appearance.body": "<code>appearance</code> decides how each stage is drawn.",
-    "stepsPage.prop.appearance.markers": "Use <code>markers</code>, the default, to show each stage's number or icon.",
+    "stepsPage.prop.appearance.title": "Appearance: markers or bar",
+    "stepsPage.prop.appearance.body": "How each stage is drawn.",
+    "stepsPage.prop.appearance.markers": "Use <code>markers</code>, the default, to see each stage's number or icon.",
     "stepsPage.prop.appearance.segments": "Use <code>segments</code> for a compact bar, when seeing how much is left is enough.",
-    "stepsPage.showcaseTitle": "Showcases",
-    "stepsPage.showcaseBody": "A process in a row, and the same model in a column.",
-    "stepsPage.guidelinesLede": "Steps shows which stage of a process someone is at, and how many are left.",
-    "stepsPage.dd.few.title": "Few stages",
+    "stepsPage.guidelinesLede": "Seeing how many stages remain helps finish a long process.",
+    "stepsPage.dd.few.title": "Stages: three to five",
     "stepsPage.dd.few.do": "Group the process into three to five named stages.",
     "stepsPage.dd.few.dont": "Eight stages neither fit nor stick. Merge the ones that belong together.",
-    "stepsPage.dd.cue.title": "Done, without relying on colour",
+    "stepsPage.dd.cue.title": "Done: with an icon, not only color",
     "stepsPage.dd.cue.do": "Mark what is done with an icon, on top of the colour.",
     "stepsPage.dd.cue.dont": "When only the colour changes, someone who cannot tell it apart cannot tell which stage is done.",
   },

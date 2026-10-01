@@ -16,3 +16,5 @@ import { treeStory, type Meta, type StoryObj } from "../tree-story";
 export default { title: "Components/Forms/UserSelect", tags: ["autodocs"] } satisfies Meta;
 
 export const Default: StoryObj = treeStory(demos.userSelectTree);
+export const Multiple: StoryObj = treeStory(demos.userSelectMultipleTree);
+export const Loading: StoryObj = treeStory(demos.userSelectLoadingTree);

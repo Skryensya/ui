@@ -1,16 +1,57 @@
 export const megamenuMessages = {
   es: {
 
-    "megamenuPage.description":
-      "Categorías de navegación que despliegan un panel borde a borde con varias columnas de enlaces.",
+    "megamenuPage.description": "Organiza la navegación de un sitio en categorías que abren un panel de varias columnas de enlaces.",
+
+    "megamenuPage.key.escape": "Cierra el panel y vuelve a la categoría.",
+
+    "megamenuPage.key.tab": "Recorre las categorías y los enlaces del panel abierto.",
+
+    "megamenuPage.key.open": "Abre o cierra la categoría.",
+
+    "megamenuPage.a11yYours2": 'Marca la página actual con <code>aria-current="page"</code> en su enlace.',
+
+    "megamenuPage.a11yYours1": 'Pon el Megamenu dentro de un <code>&lt;nav&gt;</code> con nombre: <code>aria-label="Principal"</code>.',
+
+    "megamenuPage.a11yDoes3": "<kbd>Esc</kbd> cierra el panel y devuelve el foco a su categoría.",
+
+    "megamenuPage.a11yDoes2": "<kbd>Tab</kbd> recorre los enlaces del panel en orden, sin atrapar el foco.",
+
+    "megamenuPage.a11yDoes1": "Cada categoría anuncia <code>aria-expanded</code>.",
+
+    "megamenuPage.a11yIntro": "Megamenu es navegación con botones que muestran y ocultan paneles.",
+
+    "megamenuPage.content3": "Escribe cada enlace con el nombre de su destino, no con «Ver más».",
+
+    "megamenuPage.content2": "Da un título a cada columna y ordena sus enlaces por lo que más se busca.",
+
+    "megamenuPage.content1": "Nombra cada categoría con 1 o 2 palabras: «Productos», «Recursos».",
+
+    "megamenuPage.whenNot3": 'Si solo hace falta la barra con la marca y las acciones: usa <a href="/es/componentes/navbar">Navbar</a>.',
+
+    "megamenuPage.whenNot2": 'Para pocos destinos sin panel: usa <a href="/es/nav-list">NavList</a>.',
+
+    "megamenuPage.whenNot1": 'Para comandos de una aplicación: usa <a href="/es/componentes/menu">Menu</a> o <a href="/es/componentes/menubar">Menubar</a>.',
+
+    "megamenuPage.when2": "Cuando los enlaces de una categoría se ordenan en dos a cuatro columnas con título.",
+
+    "megamenuPage.when1": "Para la navegación de un sitio con categorías que agrupan muchos destinos.",
+
+    "megamenuPage.contract3": "El hover abre el panel después de una pausa corta, solo con mouse; el clic y el teclado funcionan igual.",
+
+    "megamenuPage.contract2": 'No es un <code>role="menu"</code>: no hay flechas ni búsqueda por letra, y <kbd>Tab</kbd> recorre los enlaces en orden.',
+
+    "megamenuPage.contract1": "Cada categoría es un <code>&lt;button aria-expanded&gt;</code>; su panel son dos a cuatro NavListGroup.",
+
+    "megamenuPage.siteBody": "Abre una categoría con clic o con <kbd>Enter</kbd>; <kbd>Esc</kbd> la cierra y devuelve el foco.",
+
+    "megamenuPage.siteTitle": "Barra de sitio: tres categorías",
+
+    "megamenuPage.lede": "Megamenu organiza la navegación de un sitio con muchos destinos: cada categoría de la barra (Productos, Recursos, Empresa) abre un panel de borde a borde con dos a cuatro columnas de enlaces. Son enlaces, no comandos.",
     "megamenuPage.anatomyBody":
       "Este diagrama nombra la barra, el trigger y el panel abierto con sus columnas NavList. El espécimen está congelado; el megamenu vivo empieza abajo.",
     "megamenuPage.anatomyLabel": "Anatomía de Megamenu",
     "megamenuPage.anatomyPreviewLabel": "Megamenu abierto, parte por parte",
-    "megamenuPage.contractBody":
-      "Megamenu es distinto de Menu/Menubar: sin <code>role=\"menu\"</code>, sin flechas ni typeahead. Cada categoría es un <code>&lt;button aria-expanded&gt;</code> y su panel son 2-4 <code>NavListGroup</code> (el mismo componente que usa NavList), enlaces comunes que se recorren con Tab. El panel mide el mismo ancho que la barra entera (anclado a la barra, no al trigger).",
-    "megamenuPage.a11yBody":
-      "Tab recorre los enlaces del panel en orden normal del documento, sin trampa de foco. Escape cierra el panel abierto y devuelve el foco a su trigger. El hover con intención (~150ms) es una mejora sólo para mouse; click/Enter/Space funcionan igual en cualquier dispositivo.",
 
     "megamenuPage.testVanilla1":
       "Las N posicionadoras escritas a mano colapsan en un solo panel compartido, dimensionado por una regla oculta con las columnas de cada trigger.",
@@ -65,26 +106,61 @@ export const megamenuMessages = {
     "demo.megamenu.link7": "Guías",
     "demo.megamenu.link8": "Foro",
     "demo.megamenu.link9": "Blog",
-    "megamenuPage.showcaseTitle": "Showcases",
-    "megamenuPage.showcaseBody": "Una barra de sitio con categorías que abren paneles de enlaces.",
-    "megamenuPage.guidelinesLede": "Megamenu es la navegación de un sitio con categorías que despliegan paneles de varias columnas.",
-    "megamenuPage.guide.use1": "Úsalo cuando cada categoría tiene muchos destinos que se agrupan en dos a cuatro columnas.",
-    "megamenuPage.guide.avoid1": "Comandos de aplicación, no destinos, van en un <a href=\"/es/componentes/menu\">Menu</a>.",
-    "megamenuPage.guide.avoid2": "Destinos simples sin panel son una <a href=\"/es/componentes/nav-list\">NavList</a>.",
-    "megamenuPage.guide.avoid3": "Si solo hace falta la barra con la marca y las acciones, es una <a href=\"/es/componentes/navbar\">Navbar</a>.",
+    "megamenuPage.guidelinesLede": "Un panel grande muestra de una vez todo lo que tiene una categoría, a cambio de tapar la página.",
   },
   en: {
 
-    "megamenuPage.description":
-      "Navigation categories that open an edge-to-edge panel of several link columns.",
+    "megamenuPage.description": "Organizes a site's navigation into categories that open a panel with several columns of links.",
+
+    "megamenuPage.key.escape": "Closes the panel and returns to the category.",
+
+    "megamenuPage.key.tab": "Moves through the categories and the open panel's links.",
+
+    "megamenuPage.key.open": "Opens or closes the category.",
+
+    "megamenuPage.a11yYours2": 'Mark the current page with <code>aria-current="page"</code> on its link.',
+
+    "megamenuPage.a11yYours1": 'Put the Megamenu inside a named <code>&lt;nav&gt;</code>: <code>aria-label="Main"</code>.',
+
+    "megamenuPage.a11yDoes3": "<kbd>Esc</kbd> closes the panel and returns focus to its category.",
+
+    "megamenuPage.a11yDoes2": "<kbd>Tab</kbd> moves through the panel's links in order, without trapping focus.",
+
+    "megamenuPage.a11yDoes1": "Each category announces <code>aria-expanded</code>.",
+
+    "megamenuPage.a11yIntro": "Megamenu is navigation with buttons that show and hide panels.",
+
+    "megamenuPage.content3": "Write each link with its destination's name, not “See more”.",
+
+    "megamenuPage.content2": "Give each column a title and order its links by what is most sought.",
+
+    "megamenuPage.content1": "Name each category in 1 or 2 words: “Products”, “Resources”.",
+
+    "megamenuPage.whenNot3": 'If only the bar with brand and actions is needed: use <a href="/components/navbar">Navbar</a>.',
+
+    "megamenuPage.whenNot2": 'For a few destinations with no panel: use <a href="/nav-list">NavList</a>.',
+
+    "megamenuPage.whenNot1": 'For an application\'s commands: use <a href="/components/menu">Menu</a> or <a href="/components/menubar">Menubar</a>.',
+
+    "megamenuPage.when2": "When a category's links sort into two to four titled columns.",
+
+    "megamenuPage.when1": "For a site's navigation with categories grouping many destinations.",
+
+    "megamenuPage.contract3": "Hover opens the panel after a short pause, mouse only; click and keyboard work the same.",
+
+    "megamenuPage.contract2": 'It is not a <code>role="menu"</code>: no arrows or type-ahead, and <kbd>Tab</kbd> moves through the links in order.',
+
+    "megamenuPage.contract1": "Each category is a <code>&lt;button aria-expanded&gt;</code>; its panel is two to four NavListGroups.",
+
+    "megamenuPage.siteBody": "Open a category with a click or <kbd>Enter</kbd>; <kbd>Esc</kbd> closes it and returns focus.",
+
+    "megamenuPage.siteTitle": "Site bar: three categories",
+
+    "megamenuPage.lede": "Megamenu organizes the navigation of a site with many destinations: each category in the bar (Products, Resources, Company) opens an edge-to-edge panel with two to four columns of links. They are links, not commands.",
     "megamenuPage.anatomyBody":
       "This diagram names the bar, the trigger, and the open panel with its NavList columns. The specimen is frozen; the live megamenu starts below.",
     "megamenuPage.anatomyLabel": "Megamenu anatomy",
     "megamenuPage.anatomyPreviewLabel": "An open Megamenu, part by part",
-    "megamenuPage.contractBody":
-      "Megamenu is deliberately unlike Menu/Menubar: no <code>role=\"menu\"</code>, no arrow keys or typeahead. Each category is a plain <code>&lt;button aria-expanded&gt;</code> and its panel is 2-4 <code>NavListGroup</code>s (the same component NavList uses), ordinary links you Tab through. The panel matches the whole bar's own width (anchored to the bar, not the trigger).",
-    "megamenuPage.a11yBody":
-      "Tab flows through a panel's links in normal document order, no focus trap. Escape closes the open panel and returns focus to its trigger. Hover-intent (~150ms) is a mouse-only enhancement; click/Enter/Space work identically on any device.",
 
     "megamenuPage.testVanilla1":
       "The N authored positioners collapse into one shared panel, sized by a hidden ruler holding every trigger's columns.",
@@ -138,12 +214,6 @@ export const megamenuMessages = {
     "demo.megamenu.link7": "Guides",
     "demo.megamenu.link8": "Forum",
     "demo.megamenu.link9": "Blog",
-    "megamenuPage.showcaseTitle": "Showcases",
-    "megamenuPage.showcaseBody": "A site bar with categories that open panels of links.",
-    "megamenuPage.guidelinesLede": "Megamenu is a site's navigation, with categories that drop down multi-column panels.",
-    "megamenuPage.guide.use1": "Use it when each category has many destinations grouped in two to four columns.",
-    "megamenuPage.guide.avoid1": "Application commands, not destinations, go in a <a href=\"/components/menu\">Menu</a>.",
-    "megamenuPage.guide.avoid2": "Simple destinations with no panel are a <a href=\"/components/nav-list\">NavList</a>.",
-    "megamenuPage.guide.avoid3": "When only the bar with the brand and actions is needed, it is a <a href=\"/components/navbar\">Navbar</a>.",
+    "megamenuPage.guidelinesLede": "A large panel shows everything a category holds at once, at the cost of covering the page.",
   },
 } as const;

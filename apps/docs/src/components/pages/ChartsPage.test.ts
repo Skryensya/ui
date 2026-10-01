@@ -10,21 +10,16 @@ import { describe, expect, it } from "vitest";
  * that Chart is a contract (a list of points) would quietly become false.
  */
 const page = readFileSync(fileURLToPath(new URL("./ChartsPage.astro", import.meta.url)), "utf8");
-const cards = readFileSync(
-  fileURLToPath(new URL("../react-demos/chart-card.tsx", import.meta.url)),
-  "utf8",
-);
-const kinds = readFileSync(
-  fileURLToPath(new URL("../react-demos/charts.tsx", import.meta.url)),
-  "utf8",
-);
+/* The cards and every kind are usage trees now (`demos/charts.ts`): one source for both bindings. */
+const cards = readFileSync(fileURLToPath(new URL("../../demos/charts.ts", import.meta.url)), "utf8");
+const kinds = cards;
 
 describe("ChartsPage.astro", () => {
   it("composes the dashboard cards from Box, Stat, Chart and Button", () => {
-    expect(cards).toContain('<Box as="article"');
-    expect(cards).toContain("<Stat");
-    expect(cards).toContain("<Button");
-    expect(cards).toContain("<Chart");
+    expect(cards).toContain('contract: "box"');
+    expect(cards).toContain('contract: "stat"');
+    expect(cards).toContain('contract: "button"');
+    expect(cards).toContain('contract: "chart"');
     expect(cards).not.toContain("<ChartCard>");
     expect(cards).not.toContain("sk-card");
     expect(cards).not.toContain("BarChart");
@@ -39,11 +34,14 @@ describe("ChartsPage.astro", () => {
     expect(page).toContain("@skryensya/charts/react/tanstack");
   });
 
-  it("keeps only the React-only chart previews as viewport-triggered islands", () => {
+  it("shows every chart from a usage tree, with no React-only island", () => {
     const cardsHeading = page.indexOf('id="cards"');
     const pieceHeading = page.indexOf('id="chart"');
     expect(cardsHeading).toBeGreaterThan(-1);
     expect(pieceHeading).toBeGreaterThan(cardsHeading);
-    expect(page.match(/Demo client:visible/g)).toHaveLength(6);
+    // Line and area draw in both bindings now: a hand-written React demo here would be a second
+    // source that only one binding can show.
+    expect(page).not.toMatch(/Demo client:visible/);
   });
+
 });

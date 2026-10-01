@@ -242,13 +242,36 @@ const row = (children: readonly UsageTree[]): UsageTree => ({
   children: [...children],
 });
 
-/* The tone says what the state MEANS: paid is good, pending wants attention, overdue is a problem. */
-export const badgeDoToneTree = (t: Translate): UsageTree =>
-  row([label("success", t("demo.badge.dd.paid")), label("warning", t("demo.badge.dd.pending")), label("danger", t("demo.badge.dd.overdue"))]);
+/*
+ * SAME INVOICE LIST, TWO TONE MAPPINGS. Keeping the invoice reference beside each status gives the
+ * colors a meaning to communicate; a row of three detached badges only asks the reader to memorize
+ * which word belongs to which color.
+ */
+const toneComparison = (
+  t: Translate,
+  choices: readonly [(typeof tones)[number], (typeof tones)[number], (typeof tones)[number]],
+): UsageTree => ({
+  contract: "layout",
+  signature: "Stack",
+  options: { gap: "xs" },
+  children: (["paid", "pending", "overdue"] as const).map((state, index) => ({
+    contract: "layout",
+    signature: "Inline",
+    options: { gap: "sm", inlineAlign: "center" },
+    children: [
+      { contract: "typography", signature: "Text", options: { tone: "secondary" }, children: t(`demo.badge.dd.invoice${index + 1}` as never) },
+      label(choices[index]!, t(`demo.badge.dd.${state}` as never)),
+    ],
+  })),
+});
 
-/* The same three states, with tones picked for variety: every one of them now says the wrong thing. */
+/* Match each invoice state to its meaning: paid is good, pending needs attention, overdue is a problem. */
+export const badgeDoToneTree = (t: Translate): UsageTree =>
+  toneComparison(t, ["success", "warning", "danger"]);
+
+/* The same invoices with tones picked for variety: each color now contradicts the actual state. */
 export const badgeDontToneTree = (t: Translate): UsageTree =>
-  row([label("danger", t("demo.badge.dd.paid")), label("accent", t("demo.badge.dd.pending")), label("success", t("demo.badge.dd.overdue"))]);
+  toneComparison(t, ["danger", "accent", "success"]);
 
 export const badgeDoShortTree = (t: Translate): UsageTree => label("neutral", t("demo.badge.dd.draft"));
 

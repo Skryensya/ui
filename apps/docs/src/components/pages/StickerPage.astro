@@ -1,18 +1,19 @@
 ---
 import ComponentPageShell from "./ComponentPageShell.astro";
 import CodeBlock from "../CodeBlock.astro";
-import ComponentPreview from "../ComponentPreview.astro";
 import UsagePreview from "../UsagePreview.astro";
+import WhenToUse from "../WhenToUse.astro";
+import ContentRules from "../ContentRules.astro";
+import A11yNotes from "../A11yNotes.astro";
 import {
   stickerAnatomyTree,
   stickerHooksTree,
   stickerOriginsTree,
   stickerPlacementTree,
-  stickerStatesTree,
   stickerTree,
 } from "../../demos/sticker";
 import { annotationDemoCss } from "../../demos/annotation";
-import { getLocale, useTranslations } from "../../i18n";
+import { getLocale, tList, useTranslations } from "../../i18n";
 import "@skryensya/core/components/sticker.css";
 import "@skryensya/core/components/button.css";
 import "@skryensya/core/components/typography.css";
@@ -59,7 +60,6 @@ const explain = (option: string, values: readonly string[]) =>
 <ComponentPageShell
   title="Sticker"
   description={t("sticker.description")}
-  badge={t("sticker.betaBadge")}
   contractId="sticker"
   testFiles={["packages/react/src/components/sticker.test.tsx"]}
 >
@@ -76,62 +76,36 @@ const explain = (option: string, values: readonly string[]) =>
       target={["children", 0]}
     />
 
-    <h3>{t("sticker.showcaseTitle")}</h3>
-    <p set:html={t("sticker.showcaseBody")} />
-    <UsagePreview tree={stickerTree(t)} />
-
-    <h3>{t("sticker.statesHeading")}</h3>
-    <p set:html={t("sticker.statesIntro")} />
-    <UsagePreview tree={stickerStatesTree(t)} />
-
-    <h3>{t("sticker.placementHeading")}</h3>
-    <p set:html={t("sticker.placementIntro")} />
-    <ComponentPreview tree={stickerPlacementTree(t)} previewScript={placementScript} label={t("sticker.placementLabel")} />
-
-    <h3>{t("sticker.originsHeading")}</h3>
-    <p set:html={t("sticker.originsIntro")} />
-    <UsagePreview tree={stickerOriginsTree(t)} />
-
-    <h3>{t("sticker.hooksHeading")}</h3>
-    <p set:html={t("sticker.hooksIntro")} />
-    <UsagePreview tree={stickerHooksTree(t)} />
-
-    <h3>{t("sticker.reactTitle")}</h3>
+    <h3>{t("component.examplesTitle")}</h3>
+    <UsagePreview tree={stickerTree(t)} title={t("sticker.setTitle")} description={t("sticker.setBody")} />
+    <UsagePreview tree={stickerPlacementTree(t)} script={placementScript} title={t("sticker.placementHeading")} description={t("sticker.placementIntro")} />
+    <UsagePreview tree={stickerOriginsTree(t)} title={t("sticker.originsHeading")} description={t("sticker.originsIntro")} />
+    <UsagePreview tree={stickerHooksTree(t)} title={t("sticker.hooksHeading")} description={t("sticker.hooksIntro")} />
+    <h4>{t("sticker.reactTitle")}</h4>
     <p set:html={t("sticker.reactBody")} />
     <CodeBlock code={react} label="React" lang="tsx" />
-
-    <h3>{t("sticker.vanillaTitle")}</h3>
+    <h4>{t("sticker.vanillaTitle")}</h4>
     <p set:html={t("sticker.vanillaBody")} />
     <CodeBlock code={html} label="HTML" lang="html" />
     <CodeBlock code={vanilla} label="JavaScript" lang="ts" />
 
-    <h3>{t("sticker.notesTitle")}</h3>
+    <h3>{t("component.contractNotesTitle")}</h3>
     <ul>
-      <li set:html={t("sticker.notesItem1")} />
-      <li set:html={t("sticker.notesItem2")} />
-      <li set:html={t("sticker.notesItem3")} />
-      <li set:html={t("sticker.notesItem4")} />
+      {tList(t, "sticker.contract").map((item) => <li set:html={item} />)}
     </ul>
 
     <h3>{t("component.anatomy")}</h3>
     <p set:html={t("sticker.anatomyBody")} />
-    <ComponentPreview
-      tree={stickerAnatomyTree(t)}
-      css={annotationDemoCss}
-      label={t("sticker.anatomyPreviewLabel")}
-      screens={false}
-      hideSource
-      chrome={false}
-    />
+    <UsagePreview tree={stickerAnatomyTree(t)} css={annotationDemoCss} label={t("sticker.anatomyPreviewLabel")} bare />
   </Fragment>
 
   <Fragment slot="guidelines">
     <p class="lede" set:html={t("sticker.guidelinesLede")} />
-    <h3>{t("sticker.whenTitle")}</h3>
-    <ul>
-      <li set:html={t("sticker.whenItem1")} />
-      <li set:html={t("sticker.whenItem2")} />
-      <li set:html={t("sticker.whenItem3")} />
-    </ul>
+    <WhenToUse use={tList(t, "sticker.when")} avoid={tList(t, "sticker.whenNot")} />
+    <ContentRules items={tList(t, "sticker.content")} />
+  </Fragment>
+
+  <Fragment slot="a11y">
+    <A11yNotes intro={t("sticker.a11yIntro")} does={tList(t, "sticker.a11yDoes")} yours={tList(t, "sticker.a11yYours")} />
   </Fragment>
 </ComponentPageShell>

@@ -10,12 +10,11 @@ import "@skryensya/core/components/typography.css";
 import "@skryensya/core/patterns/box.css";
 import "@skryensya/core/patterns/layout.css";
 import * as demos from "@docs/demos/tile";
-import { annotationDemoCss } from "@docs/demos/annotation";
-import { treeStory, withCss, type Meta, type StoryObj } from "../tree-story";
+import { treeStory, type Meta, type StoryObj } from "../tree-story";
 
 export default { title: "Components/Content/Tile", tags: ["autodocs"] } satisfies Meta;
 
-export const Anatomy: StoryObj = treeStory(demos.tileAnatomyTree, { decorators: [withCss(annotationDemoCss)] });
+export const Anatomy: StoryObj = treeStory(demos.tileAnatomyTree);
 export const LinkDemo: StoryObj = treeStory(demos.tileLinkDemoTree);
 export const ButtonDemo: StoryObj = treeStory(demos.tileButtonDemoTree);
 export const ExpandableTile: StoryObj = treeStory(demos.expandableTileTree);

@@ -3,7 +3,7 @@
 # `surface` is the shape of the contract the last time somebody reviewed it. If the compiler says it
 # does not match, something a consumer depends on has moved: write the entry and paste in the new
 # hash.
-surface: "9f6af20be6330242"
+surface: "a1ff8df53c8ae5c2"
 entries:
   - date: 2026-09-27
     kind: feature
@@ -19,3 +19,17 @@ entries:
         UserSelect becomes a family of the system: a contract, its own sheet (<code>user-select.css</code>) with
         hooks for the list height and the dropdown size, a canonical tree compared across React and Vanilla,
         automatic mounting through <code>initComponents()</code> and a reference page.
+  - date: 2026-09-30
+    kind: feature
+    es:
+      title: "<code>loading</code> es una opción del contrato"
+      body: >-
+        Mientras la lista llega, UserSelect muestra un Loader y el texto <code>loading</code> en lugar de sus filas, y
+        lo anuncia. Antes era una prop solo de React; ahora es la opción <code>loading</code> (<code>data-loading</code>),
+        así que Vanilla dibuja la misma fila y un árbol de uso puede pedirla.
+    en:
+      title: "<code>loading</code> is a contract option"
+      body: >-
+        While the roster arrives, UserSelect shows a Loader and the <code>loading</code> string instead of its rows, and
+        announces it. It used to be a React-only prop; it is now the <code>loading</code> option (<code>data-loading</code>),
+        so Vanilla draws the same row and a usage tree can ask for it.

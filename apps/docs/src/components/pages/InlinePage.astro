@@ -5,10 +5,25 @@ import { annotationDemoCss } from "../../demos/annotation";
 import { inlineAnatomyTree } from "../../demos/layout-anatomy";
 import ComponentPageShell from "./ComponentPageShell.astro";
 import CodeBlock from "../CodeBlock.astro";
-import ComponentPreview from "../ComponentPreview.astro";
+import UsagePreview from "../UsagePreview.astro";
+import DoDont from "../DoDont.astro";
+import WhenToUse from "../WhenToUse.astro";
+import A11yNotes from "../A11yNotes.astro";
+import {
+  gridDontButtonsTree,
+  inlineButtonsTree,
+  inlineDoBetweenTree,
+  inlineDoMetadataTree,
+  inlineDoWrapTree,
+  inlineDontBetweenTree,
+  inlineDontMetadataTree,
+  inlineDontWrapTree,
+} from "../../demos/layout-guide";
 import { inlineCardFloorTree, inlineTree } from "../../demos/layout";
-import { getLocale, useTranslations } from "../../i18n";
+import { getLocale, tList, useTranslations } from "../../i18n";
 
+const explain = (option: string, values: readonly string[]) =>
+  Object.fromEntries(values.map((value) => [value, t(`inlinePage.prop.${option}.${value}` as Parameters<typeof t>[0])]));
 const install = `pnpm add @skryensya/core @skryensya/react`;
 const t = useTranslations(getLocale(Astro.url));
 ---
@@ -36,47 +51,68 @@ const t = useTranslations(getLocale(Astro.url));
   <Fragment slot="usage">
     <p class="lede" set:html={t("inlinePage.lede")} />
 
-    <h3>{t("inlinePage.showcaseTitle")}</h3>
-    <p set:html={t("inlinePage.showcaseBody")} />
-    <ComponentPreview tree={inlineTree(t)} label={t("inlinePage.previewLabel")} note={t("inlinePage.previewNote")} />
-    <h3>{t("inlinePage.floorTitle")}</h3>
-    <p set:html={t("inlinePage.floorBody")} />
-    <ComponentPreview tree={inlineCardFloorTree(t)} label={t("inlinePage.floorPreviewLabel")} note={t("inlinePage.floorPreviewNote")} />
+    <UsagePreview
+      tree={{ ...inlineButtonsTree(t), attrs: { style: "inline-size: 100%;" } }}
+      optionName="justify"
+      title={t("inlinePage.prop.justify.title")}
+      description={t("inlinePage.prop.justify.body")}
+      explain={explain("justify", ["start", "center", "end", "between"])}
+    />
 
-    <h3>{t("inlinePage.htmlTitle")}</h3>
-    <p set:html={t("inlinePage.htmlBody")} />
-
-    <p set:html={t("component.reactNote")} />
+    <h3>{t("component.examplesTitle")}</h3>
+    <UsagePreview tree={inlineTree(t)} title={t("inlinePage.barTitle")} description={t("inlinePage.barBody")} />
+    <UsagePreview tree={inlineCardFloorTree(t)} title={t("inlinePage.floorTitle")} description={t("inlinePage.floorBody")} />
 
     <h3>{t("component.contractNotesTitle")}</h3>
     <ul>
-      <li set:html={t("inlinePage.contractItem1")} />
-      <li set:html={t("inlinePage.contractItem2")} />
-      <li set:html={t("inlinePage.contractItem3")} />
-      <li set:html={t("inlinePage.contractItem4")} />
-      <li set:html={t("inlinePage.contractItem5")} />
-      <li set:html={t("inlinePage.contractItem6")} />
+      {tList(t, "inlinePage.contract").map((item) => <li set:html={item} />)}
     </ul>
+    <p set:html={t("component.reactNote")} />
 
     <h3>{t("component.anatomy")}</h3>
     <p set:html={t("inlinePage.anatomyBody")} />
-    <ComponentPreview
+    <UsagePreview
       tree={inlineAnatomyTree(t)}
       css={annotationDemoCss}
       label={t("inlinePage.anatomyPreviewLabel")}
-      screens={false}
-      hideSource
-      chrome={false}
+      bare
     />
   </Fragment>
 
   <Fragment slot="guidelines">
     <p class="lede" set:html={t("inlinePage.guidelinesLede")} />
-    <h3>{t("inlinePage.whereTitle")}</h3>
-    <p set:html={t("inlinePage.whereBody")} />
+    <WhenToUse use={tList(t, "inlinePage.when")} avoid={tList(t, "inlinePage.whenNot")} />
+    <DoDont
+      canvas
+      title={t("inlinePage.dd.row.title")}
+      do={{ tree: inlineButtonsTree(t), caption: t("inlinePage.dd.row.do") }}
+      dont={{ tree: gridDontButtonsTree(t), caption: t("inlinePage.dd.row.dont") }}
+    />
+    <DoDont
+      canvas
+      title={t("inlinePage.dd.wrap.title")}
+      do={{ tree: inlineDoWrapTree(t), caption: t("inlinePage.dd.wrap.do") }}
+      dont={{ tree: inlineDontWrapTree(t), caption: t("inlinePage.dd.wrap.dont") }}
+    />
+    <DoDont
+      canvas
+      title={t("inlinePage.dd.metadata.title")}
+      do={{ tree: inlineDoMetadataTree(t), caption: t("inlinePage.dd.metadata.do") }}
+      dont={{ tree: inlineDontMetadataTree(t), caption: t("inlinePage.dd.metadata.dont") }}
+    />
+    <DoDont
+      canvas
+      title={t("inlinePage.dd.between.title")}
+      do={{ tree: inlineDoBetweenTree(t), caption: t("inlinePage.dd.between.do") }}
+      dont={{ tree: inlineDontBetweenTree(t), caption: t("inlinePage.dd.between.dont") }}
+    />
   </Fragment>
 
   <Fragment slot="install">
     <CodeBlock code={install} label="terminal" />
+  </Fragment>
+
+  <Fragment slot="a11y">
+    <A11yNotes intro={t("inlinePage.a11yIntro")} does={tList(t, "inlinePage.a11yDoes")} yours={tList(t, "inlinePage.a11yYours")} />
   </Fragment>
 </ComponentPageShell>

@@ -1,18 +1,25 @@
 ---
 import ComponentPageShell from "./ComponentPageShell.astro";
 import CodeBlock from "../CodeBlock.astro";
-import ComponentPreview from "../ComponentPreview.astro";
+import UsagePreview from "../UsagePreview.astro";
+import DoDont from "../DoDont.astro";
+import WhenToUse from "../WhenToUse.astro";
+import ContentRules from "../ContentRules.astro";
+import A11yNotes from "../A11yNotes.astro";
 import {
   annotationAnatomyTree,
-  annotationDemoCss,
-  annotationElbowTree,
-  annotationPluralCss,
-  annotationPluralTree,
+  annotationDoAllCopiesTree,
+  annotationDoBracketTree,
+  annotationDoNearestSideTree,
+  annotationDontFirstOnlyTree,
+  annotationDontOneSideTree,
+  annotationDontRingAreaTree,
+  annotationMatchTree,
+  annotationOneTree,
   annotationSelfAnatomyCss,
   annotationSelfAnatomyTree,
-  annotationSidesTree,
 } from "../../demos/annotation";
-import { getLocale, useTranslations } from "../../i18n";
+import { getLocale, tList, useTranslations } from "../../i18n";
 /* The sheet itself, not only its source: the Style hooks table resolves each hook against a real
    element, and a page that never loads this stylesheet shows every value blank. */
 import "@skryensya/core/components/annotation.css";
@@ -22,208 +29,129 @@ import "@skryensya/core/components/annotation.css";
 import "@skryensya/core/components/accordion.css";
 import "@skryensya/core/components/tile.css";
 import "@skryensya/core/components/stat.css";
-import "@skryensya/core/components/badge.css";
 import "@skryensya/core/components/breadcrumb.css";
+import "@skryensya/core/components/button.css";
 
 const t = useTranslations(getLocale(Astro.url));
 
 const install = `pnpm add @skryensya/core @skryensya/react`;
 const styles = `@import "@skryensya/core/components/annotation.css";`;
 
-/* The shape `emit` writes, trimmed to what an author types: the enhancers fill the bubbles, the
-   leaders and the canvas's behaviour. */
-const html = `<div class="sk-annotated-figure" data-sk-annotated role="group" aria-label="Anatomía de Accordion">
-  <div class="sk-canvas" data-sk-canvas>
-    <div class="sk-canvas__viewport" tabindex="0">
-      <div class="sk-canvas__content">
-        <div class="sk-annotated">
-          <div class="sk-annotated__subject" inert>
-            <!-- cualquier composición: aquí va el Accordion entero -->
-          </div>
+/* Same Storybook handoff Badge and Accordion use (`lib/navigation.ts` files Annotation under Content). */
+const storybookTitle = "Components/Content/Annotation";
 
-          <!-- vacías a propósito: el número es un contador de CSS -->
-          <span class="sk-annotation" data-for=".sk-accordion" data-side="inline-end" data-mark="bracket" aria-hidden="true"></span>
-          <span class="sk-annotation" data-for=".sk-tile__title" data-side="inline-start" aria-hidden="true"></span>
-          <span class="sk-annotation" data-for=".sk-tile__chevron" data-side="block-start" aria-hidden="true"></span>
-
-          <!-- vacío a propósito: el enhancer dibuja aquí, con números que sólo existen medidos -->
-          <svg class="sk-annotated__leaders" aria-hidden="true" focusable="false"></svg>
-        </div>
-      </div>
-    </div>
-    <!-- la barra de zoom y los dos avisos del canvas: ver el HTML que emite el árbol -->
-  </div>
-
-  <ol class="sk-annotated__legend">
-    <li class="sk-annotated__legend-item" tabindex="0">sk-accordion</li>
-    <li class="sk-annotated__legend-item" tabindex="0">sk-tile__title</li>
-    <li class="sk-annotated__legend-item" tabindex="0">sk-tile__chevron</li>
-  </ol>
-</div>`;
-
-const react = `import { Annotated } from "@skryensya/react/annotation";
-import { Accordion } from "@skryensya/react/accordion";
-
-<Annotated
-  label="Anatomía de Accordion"
-  zoomInLabel="Acercar"
-  zoomOutLabel="Alejar"
-  fitLabel="Ajustar a la vista"
-  touchHint="Usa dos dedos para mover el diagrama"
-  wheelHint="Usa Ctrl + scroll para hacer zoom"
-  subject={
-    <Accordion>
-      <Accordion.Item value="envio" defaultOpen>
-        <Accordion.Trigger>¿Cuánto tarda el envío?</Accordion.Trigger>
-        <Accordion.Content>Entre tres y cinco días hábiles.</Accordion.Content>
-      </Accordion.Item>
-    </Accordion>
-  }
-  annotations={[
-    { for: ".sk-accordion", side: "inline-end", mark: "bracket", children: "sk-accordion" },
-    { for: ".sk-tile__title", side: "inline-start", children: "sk-tile__title" },
-    { for: ".sk-tile__chevron", side: "block-start", children: "sk-tile__chevron" },
-  ]}
-/>`;
-
-/* The hooks a diagram actually retunes, and the one nobody guesses: the type family is inherited,
-   because a label is not always a class name. */
-const hooks = `.mi-diagrama.sk-annotated-figure {
-  /* los nombres de esta pagina SON clases, asi que piden la familia de codigo;
-     en la figura, para que llegue tambien a la leyenda */
-  --sk-annotation-font-family: var(--font-family-code);
-  /* el gap de la grilla: con las tres columnas en auto, es la distancia entre cada
-     numero y lo que nombra */
-  --sk-annotated-gap: var(--space-inline-lg);
-  /* el unico acento: la anotacion que se esta leyendo. En reposo todo queda gris. */
-  --sk-annotation-ring-color: var(--color-border-accent);
-  /* el gris de reposo: un pelo de trazo con alfa, para que el aparato quede
-     por encima de la muestra sin pisarla */
-  --sk-annotation-ring-color-rest: color-mix(
-    in oklab, var(--color-border-default) 45%, transparent);
-  --sk-annotation-ring-width: 1px;
-  --sk-annotation-color-active: var(--color-text-accent);
-  --sk-annotation-bubble-bg-active: var(--color-bg-accent-subtle);
-  /* de que lado del borde va el anillo y cuanto: ringPlacement / ringDistance en el arbol */
-  /* el sujeto va en escala de grises; un diagrama SOBRE el color lo pone en none */
-  --sk-annotated-subject-filter: grayscale(1);
-}`;
+/* What each value of a property is for, read from this page's messages. Same model Badge uses. */
+const explain = (option: string, values: readonly string[]) =>
+  Object.fromEntries(values.map((value) => [value, t(`annotation.prop.${option}.${value}` as Parameters<typeof t>[0])]));
 ---
 
 <ComponentPageShell
   title="Annotation"
   description={t("annotation.description")}
-  badge={t("annotation.betaBadge")}
   contractId="annotation"
-  testFiles={["packages/core/src/annotation.test.ts", "packages/vanilla/src/components/annotation.test.ts", "packages/react/src/components/annotation.test.tsx"]}}
+  testFiles={["packages/core/src/annotation.test.ts", "packages/vanilla/src/components/annotation.test.ts", "packages/react/src/components/annotation.test.tsx"]}
 >
   <Fragment slot="usage">
     <p class="lede" set:html={t("annotation.lede")} />
 
-    <h3>{t("annotation.showcaseTitle")}</h3>
+    {/* All three live on an entry, not on the frame: `target` walks into the `items` slot. */}
+    <UsagePreview
+      tree={annotationOneTree(t)}
+      optionName="side"
+      target={["items", 0]}
+      title={t("annotation.prop.side.title")}
+      description={t("annotation.prop.side.body")}
+      explain={explain("side", ["inline-start", "inline-end", "block-start", "block-end"])}
+      storybookTitle={storybookTitle}
+      storybookStory="One"
+    />
+
+    <UsagePreview
+      tree={annotationOneTree(t)}
+      optionName="mark"
+      target={["items", 0]}
+      title={t("annotation.prop.mark.title")}
+      description={t("annotation.prop.mark.body")}
+      explain={explain("mark", ["ring", "bracket"])}
+      storybookTitle={storybookTitle}
+      storybookStory="One"
+    />
+
+    <UsagePreview
+      tree={annotationMatchTree(t)}
+      optionName="match"
+      target={["items", 0]}
+      title={t("annotation.prop.match.title")}
+      description={t("annotation.prop.match.body")}
+      explain={explain("match", ["first", "all"])}
+      storybookTitle={storybookTitle}
+      storybookStory="Match"
+    />
+
+    <h3>{t("component.examplesTitle")}</h3>
     <p set:html={t("annotation.showcaseBody")} />
 
-    <h3>{t("annotation.anatomyTitle")}</h3>
-    <p set:html={t("annotation.anatomyBody")} />
-    <p set:html={t("annotation.anatomyNote")} />
-    <ComponentPreview
+    <UsagePreview
       tree={annotationAnatomyTree(t)}
-      css={annotationDemoCss}
-      label={t("annotation.anatomyPreviewLabel")}
-      note={t("annotation.anatomyHint")}
+      title={t("annotation.anatomyTitle")}
+      description={t("annotation.anatomyBody")}
+      storybookTitle={storybookTitle}
+      storybookStory="Anatomy"
     />
-
-    <h3 id="legend">{t("annotation.legendTitle")}</h3>
-    <p set:html={t("annotation.legendBody")} />
-
-    <h3 id="canvas">{t("annotation.canvasTitle")}</h3>
-    <p set:html={t("annotation.canvasBody")} />
-
-    <h3>{t("annotation.ringPlacementTitle")}</h3>
-    <p set:html={t("annotation.ringPlacementBody")} />
-
-    <h3>{t("annotation.sidesTitle")}</h3>
-    <p set:html={t("annotation.sidesBody")} />
-    <ComponentPreview
-      tree={annotationSidesTree(t)}
-      css={annotationDemoCss}
-      label={t("annotation.sidesPreviewLabel")}
-    />
-
-    <h3 id="key">{t("annotation.keyTitle")}</h3>
-    <p set:html={t("annotation.keyBody")} />
-
-    <h3>{t("annotation.pluralTitle")}</h3>
-    <p set:html={t("annotation.pluralBody")} />
-    <ComponentPreview
-      tree={annotationPluralTree(t)}
-      css={annotationPluralCss}
-      label={t("annotation.pluralPreviewLabel")}
-    />
-
-    <h3>{t("annotation.elbowTitle")}</h3>
-    <p set:html={t("annotation.elbowBody")} />
-    <ComponentPreview
-      tree={annotationElbowTree(t)}
-      css={annotationDemoCss}
-      label={t("annotation.elbowPreviewLabel")}
-      minHeight="24rem"
-    />
-
-    <h3>{t("annotation.revealTitle")}</h3>
-    <p set:html={t("annotation.revealBody")} />
-
-    <h3>{t("annotation.ringTitle")}</h3>
-    <p set:html={t("annotation.ringBody")} />
-
-    <h3>{t("annotation.runtimeTitle")}</h3>
-    <p set:html={t("annotation.runtimeBody1")} />
-    <p set:html={t("annotation.runtimeBody2")} />
-
-    <h3>{t("annotation.optionsTitle")}</h3>
-    <p set:html={t("annotation.optionsBody")} />
 
     <p set:html={t("component.reactNote")} />
 
-    <h3>{t("component.contractNotesTitle")}</h3>
-    <ul>
-      <li set:html={t("annotation.contractItem1")} />
-      <li set:html={t("annotation.contractItem2")} />
-      <li set:html={t("annotation.contractItem3")} />
-    </ul>
-
     <h3>{t("component.anatomy")}</h3>
     <p set:html={t("annotation.selfAnatomyBody")} />
-    <ComponentPreview
+    <UsagePreview
       tree={annotationSelfAnatomyTree(t)}
       css={annotationSelfAnatomyCss}
       label={t("annotation.selfAnatomyPreviewLabel")}
-      screens={false}
-      hideSource
-      chrome={false}
+      bare
     />
   </Fragment>
 
   <Fragment slot="guidelines">
     <p class="lede" set:html={t("annotation.guidelinesLede")} />
-    <h3>{t("annotation.whenTitle")}</h3>
-    <p set:html={t("annotation.whenBody1")} />
-    <p set:html={t("annotation.whenBody2")} />
+    <WhenToUse use={tList(t, "annotation.when")} avoid={tList(t, "annotation.whenNot")} />
+
+    <DoDont
+      canvas
+      title={t("annotation.dd.mark.title")}
+      do={{ tree: annotationDoBracketTree(t), caption: t("annotation.dd.mark.do") }}
+      dont={{ tree: annotationDontRingAreaTree(t), caption: t("annotation.dd.mark.dont") }}
+    />
+    <DoDont
+      canvas
+      title={t("annotation.dd.side.title")}
+      do={{ tree: annotationDoNearestSideTree(t), caption: t("annotation.dd.side.do") }}
+      dont={{ tree: annotationDontOneSideTree(t), caption: t("annotation.dd.side.dont") }}
+    />
+    <DoDont
+      canvas
+      title={t("annotation.dd.match.title")}
+      do={{ tree: annotationDoAllCopiesTree(t), caption: t("annotation.dd.match.do") }}
+      dont={{ tree: annotationDontFirstOnlyTree(t), caption: t("annotation.dd.match.dont") }}
+    />
+
+    <ContentRules items={tList(t, "annotation.content")} />
   </Fragment>
 
   <Fragment slot="install">
     <CodeBlock code={install} label="terminal" />
     <CodeBlock code={styles} label="CSS" lang="css" />
-    <CodeBlock code={html} label="HTML" lang="html" />
-    <CodeBlock code={react} label="React" lang="tsx" />
-
-    <h4>{t("annotation.cssTitle")}</h4>
-    <p set:html={t("annotation.cssBody")} />
-    <CodeBlock code={hooks} label="CSS" lang="css" />
   </Fragment>
 
   <Fragment slot="a11y">
-    <p set:html={t("annotation.a11yP1")} />
-    <p set:html={t("annotation.a11yP2")} />
+    <A11yNotes
+      intro={t("annotation.a11yIntro")}
+      does={tList(t, "annotation.a11yDoes")}
+      yours={tList(t, "annotation.a11yYours")}
+      keys={[
+        { keys: ["Tab", "Shift+Tab"], action: t("annotation.a11yKeyTab") },
+        { keys: ["+", "-"], action: t("annotation.a11yKeyZoom") },
+        { keys: ["0"], action: t("annotation.a11yKeyFit") },
+      ]}
+    />
   </Fragment>
 </ComponentPageShell>

@@ -8,12 +8,20 @@ import "@skryensya/core/patterns/anchored.css";
 import "@skryensya/core/components/annotation.css";
 import ComponentPageShell from "./ComponentPageShell.astro";
 import CodeBlock from "../CodeBlock.astro";
-import ComponentPreview from "../ComponentPreview.astro";
-import { editorAnatomyTree, editorCompactTree, editorTree } from "../../demos/editor";
+import UsagePreview from "../UsagePreview.astro";
+import DoDont from "../DoDont.astro";
+import WhenToUse from "../WhenToUse.astro";
+import ContentRules from "../ContentRules.astro";
+import A11yNotes from "../A11yNotes.astro";
+import { editorAnatomyTree, editorCompactTree, editorDontSingleLineTree, editorTree } from "../../demos/editor";
 import { annotationDemoCss } from "../../demos/annotation";
-import { getLocale, useTranslations } from "../../i18n";
+import { getLocale, tList, useTranslations } from "../../i18n";
 
 const t = useTranslations(getLocale(Astro.url));
+
+const storybookTitle = "Components/Forms/Editor";
+const explain = (option: string, values: readonly string[]) =>
+  Object.fromEntries(values.map((value) => [value, t(`editorPage.prop.${option}.${value}` as Parameters<typeof t>[0])]));
 
 const install = `pnpm add @skryensya/core @skryensya/editor @skryensya/react
 # or, on the Vanilla side:
@@ -33,50 +41,50 @@ mountEditor();`;
 <ComponentPageShell
   title="Editor"
   description={t("editorPage.description")}
-  badge={t("editorPage.betaBadge")}
   contractId="editor"
 >
   <Fragment slot="usage">
     <p class="lede" set:html={t("editorPage.lede")} />
 
-    <h3>{t("editorPage.showcaseTitle")}</h3>
-    <p set:html={t("editorPage.showcaseBody")} />
-    <ComponentPreview tree={editorTree(t)} js={js} label="Editor" viewport="auto" />
+    <UsagePreview
+      tree={editorCompactTree(t)}
+      optionName="toolbarCompact"
+      title={t("editorPage.prop.toolbarCompact.title")}
+      description={t("editorPage.prop.toolbarCompact.body")}
+      explain={explain("toolbarCompact", ["false", "true"])}
+      storybookTitle={storybookTitle}
+      storybookStory="Compact"
+    />
 
-    <h3>{t("editorPage.formatsTitle")}</h3>
-    <p set:html={t("editorPage.formatsBody")} />
+    <h3>{t("component.examplesTitle")}</h3>
+    <UsagePreview tree={editorTree(t)} title={t("editorPage.defaultTitle")} description={t("editorPage.defaultBody")} storybookTitle={storybookTitle} storybookStory="Default" />
+    <UsagePreview tree={editorCompactTree(t)} title={t("editorPage.compactTitle")} description={t("editorPage.compactBody")} storybookTitle={storybookTitle} storybookStory="Compact" />
 
     <h3>{t("component.contractNotesTitle")}</h3>
     <ul>
-      <li set:html={t("editorPage.contractItem1")} />
-      <li set:html={t("editorPage.contractItem2")} />
-      <li set:html={t("editorPage.contractItem3")} />
-      <li set:html={t("editorPage.contractItem4")} />
+      {tList(t, "editorPage.contract").map((item) => <li set:html={item} />)}
     </ul>
-
-    <h3>{t("editorPage.compactTitle")}</h3>
-    <p set:html={t("editorPage.compactBody")} />
-    <ComponentPreview tree={editorCompactTree(t)} js={js} label={t("editorPage.compactLabel")} viewport="auto" />
 
     <h3>{t("component.anatomy")}</h3>
     <p set:html={t("editorPage.anatomyBody")} />
-    <ComponentPreview
+    <UsagePreview
       tree={editorAnatomyTree(t)}
       css={annotationDemoCss}
-      js={js}
       label={t("editorPage.anatomyPreviewLabel")}
-      screens={false}
-      hideSource
-      chrome={false}
+      bare
     />
   </Fragment>
 
   <Fragment slot="guidelines">
     <p class="lede" set:html={t("editorPage.guidelinesLede")} />
-    <ul>
-      <li set:html={t("editorPage.guide.item1")} />
-      <li set:html={t("editorPage.guide.item2")} />
-    </ul>
+    <WhenToUse use={tList(t, "editorPage.when")} avoid={tList(t, "editorPage.whenNot")} />
+    <DoDont
+      canvas
+      title={t("editorPage.dd.format.title")}
+      do={{ tree: editorTree(t), caption: t("editorPage.dd.format.do") }}
+      dont={{ tree: editorDontSingleLineTree(t), caption: t("editorPage.dd.format.dont") }}
+    />
+    <ContentRules items={tList(t, "editorPage.content")} />
   </Fragment>
 
   <Fragment slot="install">
@@ -85,6 +93,16 @@ mountEditor();`;
   </Fragment>
 
   <Fragment slot="a11y">
-    <p set:html={t("editorPage.a11yBody")} />
+    <A11yNotes
+      intro={t("editorPage.a11yIntro")}
+      does={tList(t, "editorPage.a11yDoes")}
+      yours={tList(t, "editorPage.a11yYours")}
+      keys={[
+        { keys: ["Ctrl+B", "⌘+B"], action: t("editorPage.a11yKeyBold") },
+        { keys: ["Ctrl+I", "⌘+I"], action: t("editorPage.a11yKeyItalic") },
+        { keys: ["Ctrl+Z", "⌘+Z"], action: t("editorPage.a11yKeyUndo") },
+        { keys: ["Tab"], action: t("editorPage.a11yKeyTab") },
+      ]}
+    />
   </Fragment>
 </ComponentPageShell>

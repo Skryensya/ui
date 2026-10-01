@@ -4,9 +4,11 @@ import "@skryensya/core/components/rating.css";
 import "@skryensya/core/components/annotation.css";
 import ComponentPageShell from "./ComponentPageShell.astro";
 import CodeBlock from "../CodeBlock.astro";
-import ComponentPreview from "../ComponentPreview.astro";
 import UsagePreview from "../UsagePreview.astro";
 import DoDont from "../DoDont.astro";
+import WhenToUse from "../WhenToUse.astro";
+import ContentRules from "../ContentRules.astro";
+import A11yNotes from "../A11yNotes.astro";
 import {
   ratingAnatomyTree,
   ratingDisplayTree,
@@ -14,10 +16,9 @@ import {
   ratingDontNoCountTree,
   ratingFractionsTree,
   ratingInputTree,
-  ratingSizesTree,
 } from "../../demos/rating";
 import { annotationDemoCss } from "../../demos/annotation";
-import { getLocale, useTranslations } from "../../i18n";
+import { getLocale, tList, useTranslations } from "../../i18n";
 import { variantsTree } from "../../demos/variants";
 
 const t = useTranslations(getLocale(Astro.url));
@@ -57,48 +58,39 @@ const explain = (option: string, values: readonly string[]) =>
       labels={{ sm: "sm", md: "md", lg: "lg" }}
     />
 
-    <h3>{t("ratingPage.showcaseTitle")}</h3>
-    <p set:html={t("ratingPage.showcaseBody")} />
-    <UsagePreview tree={ratingDisplayTree(t)} />
-
-    <h3>{t("ratingPage.inputTitle")}</h3>
-    <p set:html={t("ratingPage.inputBody")} />
-    <UsagePreview tree={ratingInputTree(t)} />
-
-    <h3>{t("ratingPage.fractionTitle")}</h3>
-    <p set:html={t("ratingPage.fractionBody")} />
-    <UsagePreview tree={ratingFractionsTree(t)} />
-    <p set:html={t("ratingPage.asymmetryBody")} />
-    <h3>{t("ratingPage.symbolTitle")}</h3>
+    <h3>{t("component.examplesTitle")}</h3>
+    <UsagePreview tree={ratingDisplayTree(t)} title={t("ratingPage.displayTitle")} description={t("ratingPage.displayBody")} />
+    <UsagePreview tree={ratingInputTree(t)} title={t("ratingPage.inputTitle")} description={t("ratingPage.inputBody")} />
+    <UsagePreview tree={ratingFractionsTree(t)} title={t("ratingPage.fractionTitle")} description={t("ratingPage.fractionBody")} />
+    <h4>{t("ratingPage.symbolTitle")}</h4>
     <p set:html={t("ratingPage.symbolBody")} />
     <CodeBlock code={symbolSwap} label="CSS" />
-
-    <h3>{t("ratingPage.sizeTitle")}</h3>
-    <p set:html={t("ratingPage.sizeBody")} />
-    <UsagePreview tree={ratingSizesTree(t)} />
-
-    <p set:html={t("component.reactNote")} />
-
     <UsagePreview
       tree={variantsTree(ratingInputTree(t), [{ label: t("component.state.default"), options: {} }, { label: t("component.state.readOnly"), options: { readOnly: true } }, { label: t("component.state.disabled"), options: { disabled: true } }])}
       title={t("component.statesTitle")}
       description={t("component.statesBody")}
     />
 
+
+    <h3>{t("component.contractNotesTitle")}</h3>
+    <ul>
+      {tList(t, "ratingPage.contract").map((item) => <li set:html={item} />)}
+    </ul>
+    <p set:html={t("component.reactNote")} />
+
     <h3>{t("component.anatomy")}</h3>
     <p set:html={t("ratingPage.anatomyBody")} />
-    <ComponentPreview
+    <UsagePreview
       tree={ratingAnatomyTree(t)}
       css={annotationDemoCss}
       label={t("ratingPage.anatomyPreviewLabel")}
-      screens={false}
-      hideSource
-      chrome={false}
+      bare
     />
   </Fragment>
 
   <Fragment slot="guidelines">
     <p class="lede" set:html={t("ratingPage.guidelinesLede")} />
+    <WhenToUse use={tList(t, "ratingPage.when")} avoid={tList(t, "ratingPage.whenNot")} />
     <DoDont
       title={t("ratingPage.dd.count.title")}
       do={{ tree: ratingDisplayTree(t), caption: t("ratingPage.dd.count.do") }}
@@ -109,6 +101,7 @@ const explain = (option: string, values: readonly string[]) =>
       do={{ tree: ratingDisplayTree(t), caption: t("ratingPage.dd.display.do") }}
       dont={{ tree: ratingDontInputAverageTree(t), caption: t("ratingPage.dd.display.dont") }}
     />
+    <ContentRules items={tList(t, "ratingPage.content")} />
   </Fragment>
 
   <Fragment slot="install">
@@ -116,7 +109,11 @@ const explain = (option: string, values: readonly string[]) =>
   </Fragment>
 
   <Fragment slot="a11y">
-    <p set:html={t("ratingPage.a11yBody")} />
-    <p set:html={t("ratingPage.a11yLabelBody")} />
+    <A11yNotes
+      intro={t("ratingPage.a11yIntro")}
+      does={tList(t, "ratingPage.a11yDoes")}
+      yours={tList(t, "ratingPage.a11yYours")}
+      keys={[{ keys: ["↑", "↓", "←", "→"], action: t("ratingPage.key.arrows") }]}
+    />
   </Fragment>
 </ComponentPageShell>

@@ -43,69 +43,94 @@ export const listMessages = {
     "demo.list.area.product": "Producto",
     "demo.list.integrations": "Integraciones",
 
-    "listPage.description":
-      "List: colección semántica de filas (ul/ol) con anatomía real (leading, contenido, trailing), divisores, filas interactivas y orden.",
-    "listPage.lede":
-      "Una <strong>lista con UI</strong>, no un <code>&lt;li&gt;</code> con tipografía. Por debajo es un <code>&lt;ul&gt;</code> o <code>&lt;ol&gt;</code> real (el lector oye una lista de N ítems), y encima aporta la anatomía de fila: <strong>leading</strong> (icono, avatar, número), <strong>contenido</strong> (título y descripción) y <strong>trailing</strong> (meta, badge, acción), con divisores. Es composable por partes y funcional: una fila que actúa es un <code>&lt;a&gt;</code>/<code>&lt;button&gt;</code> real, nunca un <code>onClick</code> en el <code>&lt;li&gt;</code>.",
+    "listPage.description": "Muestra filas de cosas del mismo tipo, una debajo de otra, para recorrerlas rápido.",
+
+    "listPage.a11yKeyEnter": "Sigue el enlace o activa el botón de la fila.",
+
+    "listPage.a11yKeyTab": "Recorre las filas que actúan.",
+
+    "listPage.a11yYours2": "Una fila deshabilitada debe decir por qué, si no es evidente.",
+
+    "listPage.a11yYours1": "Dale nombre a la lista si hay varias en la página: un encabezado antes o un <code>aria-label</code>.",
+
+    "listPage.a11yDoes3": "Una fila que actúa es un enlace o un botón nativo, con su foco y su teclado.",
+
+    "listPage.a11yDoes2": "El ícono o el avatar del inicio son decorativos.",
+
+    "listPage.a11yDoes1": "Usa <code>&lt;ul&gt;</code> u <code>&lt;ol&gt;</code> y <code>&lt;li&gt;</code>.",
+
+    "listPage.a11yIntro": "List es una lista real: el lector de pantalla anuncia cuántas filas hay.",
+
+    "listPage.content3": "Usa la misma forma en todas las filas: si una lleva descripción, todas deberían.",
+
+    "listPage.content2": "Pon al final datos cortos y comparables: una fecha, una cifra, un estado.",
+
+    "listPage.content1": "Escribe el título de la fila con 1 a 5 palabras; el detalle va en la descripción.",
+
+    "listPage.whenNot4": 'Para elegir una o varias opciones de la lista: usa <a href="/es/componentes/listbox">Listbox</a>.',
+
+    "listPage.whenNot3": 'Para instrucciones que se siguen en orden: usa <a href="/es/componentes/process-list">ProcessList</a>.',
+
+    "listPage.whenNot2": 'Para la navegación de un sitio o de una página: usa <a href="/es/nav-list">NavList</a>.',
+
+    "listPage.whenNot1": 'Si las filas tienen columnas que se comparan: usa <a href="/es/componentes/table">Table</a>.',
+
+    "listPage.when2": "Cuando cada fila lleva a un detalle o hace una acción.",
+
+    "listPage.when1": "Para filas de cosas del mismo tipo: una bandeja de entrada, ajustes, resultados de búsqueda.",
+
+    "listPage.contract4": '<code>density="compact"</code> acerca las filas; no necesita JavaScript.',
+
+    "listPage.contract3": "No guarda selección ni destino actual: para eso está NavList o Listbox.",
+
+    "listPage.contract2": "Una fila que actúa lleva un <code>&lt;a&gt;</code> o un <code>&lt;button&gt;</code> con <code>sk-list__action</code> que la llena.",
+
+    "listPage.contract1": "La raíz es un <code>&lt;ul&gt;</code> u <code>&lt;ol&gt;</code>; cada fila, un <code>&lt;li&gt;</code>.",
+    "listPage.lede": "List muestra filas de cosas del mismo tipo, una debajo de otra: una bandeja de entrada, ajustes, resultados. Cada fila puede llevar un ícono o un avatar al inicio, un título con su descripción y un dato al final, y puede ser un enlace o un botón.",
     "listPage.anatomyBody":
       "Este diagrama nombra cada parte de una fila completa: leading, content, trailing. El espécimen está congelado; las listas vivas empiezan abajo.",
     "listPage.anatomyLabel": "Anatomía de List",
     "listPage.anatomyPreviewLabel": "List, parte por parte",
-    "listPage.stepsTitle": "La fila, un slot a la vez",
-    "listPage.stepsBody":
-      "Los seis ejemplos que siguen son <strong>la misma lista</strong>, y cada uno agrega exactamente una pieza sobre el anterior. Se leen en orden: lo que aparece de nuevo en cada paso es lo único que cambió en el markup.",
-    "listPage.step1Title": "1 · Sólo la lista",
-    "listPage.step1Body":
-      "El piso: un <code>&lt;ul&gt;</code> real con filas y divisores, sin un solo slot. Ya hay altura de fila, inset y hairlines, y el lector oye <em>lista de 5 ítems</em>. Muchas listas no necesitan nada más que esto.",
-    "listPage.step1Note": "ul + item",
-    "listPage.step2Title": "2 · Título y descripción",
-    "listPage.step2Body":
-      "Entra <code>sk-list__content</code>, la columna que flexiona. El título y la descripción se apilan, y es la única parte de la fila que se encoge: por eso un título largo corta ahí y no empuja la fila más ancha que su contenedor.",
-    "listPage.step2Note": "+ content",
-    "listPage.step3Title": "3 · Media al inicio",
-    "listPage.step3Body":
-      "Entra <code>sk-list__leading</code>: un icono, un avatar o un número. Es <strong>decorativo</strong>, no nombra la fila: quien la nombra es el título. Un slot vacío no existe para el layout, así que las filas sin icono no arrastran padding fantasma.",
-    "listPage.step3Note": "+ leading (Icon)",
-    "listPage.step4Title": "4 · Meta al final",
-    "listPage.step4Body":
-      "Entra <code>sk-list__trailing</code> y la fila queda completa. Se ancla al final con <code>margin-inline-start: auto</code> y trae <code>tabular-nums</code>, así que las cifras de filas distintas se alinean en columna. Acepta texto o un componente, como un Badge.",
-    "listPage.step4Note": "+ trailing + Badge",
-    "listPage.step5Title": "5 · La fila actúa",
-    "listPage.step5Body":
-      'Misma anatomía, ahora envuelta en un <code>a[href]</code> real con <code>sk-list__action sk-interactive</code>. El foco y el teclado son nativos, y el hover, foco y press vienen del <a href="/es/state-layer">state layer</a>. El <code>&lt;li&gt;</code> pasa a ser sólo el que lleva el divisor.',
-    "listPage.step5Note": "+ a[href] + state layer",
-    "listPage.step6Title": "6 · Todo junto",
-    "listPage.step6Body":
-      "El techo de la escalera: filas interactivas, dos piezas en el trailing, densidad <code>compact</code> y una fila deshabilitada. Nada nuevo del componente, sólo lo anterior combinado.",
-    "listPage.step6Note": "+ density",
-    "listPage.contractItem1":
-      'Raíz: <code>&lt;ul class="sk-list"&gt;</code> o <code>&lt;ol&gt;</code>. Cada fila es un <code>&lt;li class="sk-list__item"&gt;</code>.',
-    "listPage.contractItem2":
-      "Anatomía de fila: <code>sk-list__leading</code>, <code>sk-list__content</code> (con <code>sk-list__title</code> y <code>sk-list__description</code>) y <code>sk-list__trailing</code>. Todas opcionales; compón las que uses.",
-    "listPage.contractItem3":
-      'Secuencias de instrucciones: usa <a href="/es/componentes/process-list">ProcessList</a>, que conserva un <code>&lt;ol&gt;</code> y posee los marcadores, conectores y contenido de cada paso.',
-    "listPage.contractItem4":
-      'Fila funcional: un <code>&lt;a&gt;</code>/<code>&lt;button&gt;</code> con <code>sk-list__action sk-interactive</code> dentro del <code>&lt;li&gt;</code>. Llena la fila y hereda foco, teclado y state layer.',
-    "listPage.contractItem5":
-      'Estado persistente: ninguno. List no modela selección ni destino actual; para navegación activa usa <a href="/es/nav-list">Nav list</a>.',
-    "listPage.contractItem6": 'Variantes: <code>data-density="compact"</code> y <code>data-dividers="none"</code>.',
-    "listPage.contractItem7": "Sin inicialización: el comportamiento es del <code>&lt;a&gt;</code>/<code>&lt;button&gt;</code> nativo.",
+    "listPage.stepsBody": "Cada ejemplo es la misma lista con una pieza más que el anterior.",
+    "listPage.step1Title": "Solo la lista: filas y divisores",
+    "listPage.step1Body": "Un <code>&lt;ul&gt;</code> real: el lector de pantalla anuncia «lista de 5 elementos».",
+    "listPage.step2Title": "Título y descripción: el contenido",
+    "listPage.step2Body": "El contenido es la única parte que se encoge: un título largo se corta y el resto de la fila se queda.",
+    "listPage.step3Title": "Al inicio: un ícono o un avatar",
+    "listPage.step3Body": "El inicio es decorativo: quien nombra la fila es el título.",
+    "listPage.step4Title": "Al final: un dato o un estado",
+    "listPage.step4Body": "El final se alinea a la derecha con números tabulares, así las cifras quedan en columna.",
+    "listPage.step5Title": "La fila actúa: un enlace",
+    "listPage.step5Body": "La misma fila dentro de un <code>a[href]</code> real: toda la fila es el objetivo y el foco es nativo.",
+    "listPage.step6Title": "Todo junto: densidad compacta",
+    "listPage.step6Body": "Filas que actúan, un estado y una flecha al final, y densidad <code>compact</code>.",
     "listPage.test1": "Renderiza una lista semántica con filas estáticas, de enlace y de botón.",
     "listPage.test2": "Renderiza una lista ordenada cuando el orden importa.",
     "demo.list.dd.long1": "Conecta tu cuenta para que cada cambio que hagas en el repositorio aparezca en el historial del proyecto y avise al equipo.",
     "demo.list.dd.long2": "Envía un aviso al canal elegido cada vez que alguien comenta, asigna o cierra una tarea de las que sigues.",
-    "listPage.prop.dividers.title": "Divisores",
+    "demo.list.dd.shapePlain": "Solo título",
+    "demo.list.dd.shapeDescribed": "Título con descripción",
+    "demo.list.dd.shapeIcon": "Fila con ícono",
+    "demo.list.dd.shapeTrailing": "Fila con dato final",
+    "demo.list.dd.buriedTimezone": "Se usa para programar envíos. Valor actual: GMT−3.",
+    "demo.list.dd.buriedLanguage": "Interfaz y correos. Valor actual: Español.",
+    "demo.list.dd.buriedDateFormat": "Cómo se escriben días y meses. Valor actual: 31/12/2026.",
+    "listPage.prop.dividers.title": "Dividers: una línea entre filas",
     "listPage.prop.dividers.body": "<code>dividers</code> dibuja una línea entre filas.",
-    "listPage.prop.dividers.false": "Sin divisores, el espacio separa las filas: mejor para listas cortas y aireadas.",
-    "listPage.prop.dividers.true": "Usa <code>dividers</code>, el default, cuando las filas son densas o llevan varias partes.",
+    "listPage.prop.dividers.false": "Usa <code>false</code> en listas cortas y aireadas: el espacio separa las filas.",
+    "listPage.prop.dividers.true": "Usa <code>true</code>, el valor por defecto, cuando las filas son densas o llevan varias partes.",
     "listPage.prop.dividers.falseLabel": "Sin divisores",
     "listPage.prop.dividers.trueLabel": "Con divisores",
-    "listPage.showcaseTitle": "Showcases",
-    "listPage.showcaseBody": "La lista se arma de a una parte: texto, título, íconos, acciones al final, enlaces y todo junto.",
-    "listPage.guidelinesLede": "List muestra elementos parecidos, uno debajo del otro, para recorrerlos rápido.",
-    "listPage.dd.short.title": "Filas que se recorren",
-    "listPage.dd.short.do": "Un nombre corto por fila, y el detalle en una segunda línea si hace falta.",
+    "listPage.guidelinesLede": "Una lista se recorre con la vista: cada fila tiene que leerse de un vistazo.",
+    "listPage.dd.short.title": "Filas: título corto, detalle aparte",
+    "listPage.dd.short.do": "Título breve arriba y una descripción corta debajo: la vista encuentra la fila rápido.",
     "listPage.dd.short.dont": "Párrafos enteros no se recorren: la lista deja de servir para encontrar algo.",
+    "listPage.dd.shape.title": "Forma: todas las filas iguales",
+    "listPage.dd.shape.do": "Si una fila tiene título y descripción, mantén esa forma en las demás.",
+    "listPage.dd.shape.dont": "Mezclar filas simples, con ícono y con dato final obliga a reinterpretar cada línea.",
+    "listPage.dd.trailing.title": "Dato final: corto y comparable",
+    "listPage.dd.trailing.do": "Pon estados, fechas o valores al final para que se alineen y se comparen de reojo.",
+    "listPage.dd.trailing.dont": "Enterrar el valor dentro de la descripción lo vuelve texto: ya no se compara entre filas.",
   },
   en: {
 
@@ -151,68 +176,93 @@ export const listMessages = {
     "demo.list.area.product": "Product",
     "demo.list.integrations": "Integrations",
 
-    "listPage.description":
-      "List: a semantic row collection (ul/ol) with real anatomy (leading, content, trailing), dividers, interactive rows, and ordering.",
-    "listPage.lede":
-      "A <strong>list with UI</strong>, not an <code>&lt;li&gt;</code> with typography. Underneath it is a real <code>&lt;ul&gt;</code> or <code>&lt;ol&gt;</code> (a reader hears a list of N items), and on top of that it adds row anatomy: <strong>leading</strong> (icon, avatar, number), <strong>content</strong> (title and description), and <strong>trailing</strong> (meta, badge, action), with dividers. It composes piece by piece and stays functional: a row that acts is a real <code>&lt;a&gt;</code>/<code>&lt;button&gt;</code>, never an <code>onClick</code> on the <code>&lt;li&gt;</code>.",
+    "listPage.description": "Shows rows of same-kind things, one below another, to scan quickly.",
+
+    "listPage.a11yKeyEnter": "Follows the row's link or activates its button.",
+
+    "listPage.a11yKeyTab": "Moves through the acting rows.",
+
+    "listPage.a11yYours2": "A disabled row should say why, if it is not obvious.",
+
+    "listPage.a11yYours1": "Name the list if there are several on the page: a heading before it or an <code>aria-label</code>.",
+
+    "listPage.a11yDoes3": "An acting row is a native link or button, with its focus and keyboard.",
+
+    "listPage.a11yDoes2": "The start's icon or avatar is decorative.",
+
+    "listPage.a11yDoes1": "It uses <code>&lt;ul&gt;</code> or <code>&lt;ol&gt;</code> and <code>&lt;li&gt;</code>.",
+
+    "listPage.a11yIntro": "List is a real list: the screen reader announces how many rows there are.",
+
+    "listPage.content3": "Use the same shape in every row: if one has a description, all should.",
+
+    "listPage.content2": "Put short, comparable values at the end: a date, a figure, a status.",
+
+    "listPage.content1": "Write the row's title in 1 to 5 words; the detail goes in the description.",
+
+    "listPage.whenNot4": 'To choose one or several options from the list: use <a href="/components/listbox">Listbox</a>.',
+
+    "listPage.whenNot3": 'For instructions followed in order: use <a href="/components/process-list">ProcessList</a>.',
+
+    "listPage.whenNot2": 'For a site\'s or page\'s navigation: use <a href="/nav-list">NavList</a>.',
+
+    "listPage.whenNot1": 'If the rows have columns compared with each other: use <a href="/components/table">Table</a>.',
+
+    "listPage.when2": "When each row leads to a detail or performs an action.",
+
+    "listPage.when1": "For rows of same-kind things: an inbox, settings, search results.",
+
+    "listPage.contract4": '<code>density="compact"</code> brings rows closer; it needs no JavaScript.',
+
+    "listPage.contract3": "It keeps no selection or current destination: NavList or Listbox do that.",
+
+    "listPage.contract2": "An acting row carries an <code>&lt;a&gt;</code> or <code>&lt;button&gt;</code> with <code>sk-list__action</code> that fills it.",
+
+    "listPage.contract1": "The root is a <code>&lt;ul&gt;</code> or <code>&lt;ol&gt;</code>; each row, an <code>&lt;li&gt;</code>.",
+    "listPage.lede": "List shows rows of same-kind things, one below another: an inbox, settings, results. Each row can carry an icon or avatar at the start, a title with its description and a value at the end, and can be a link or a button.",
     "listPage.anatomyBody":
       "This diagram names every part of a complete row: leading, content, trailing. The specimen is frozen; the live lists start below.",
     "listPage.anatomyLabel": "List anatomy",
     "listPage.anatomyPreviewLabel": "List, part by part",
-    "listPage.stepsTitle": "The row, one slot at a time",
-    "listPage.stepsBody":
-      "The six examples below are <strong>the same list</strong>, and each one adds exactly one piece over the last. Read them in order: whatever shows up new at each step is the only thing that changed in the markup.",
-    "listPage.step1Title": "1 · Just the list",
-    "listPage.step1Body":
-      "The floor: a real <code>&lt;ul&gt;</code> with rows and dividers, not a single slot. There is already row height, inset, and hairlines, and the reader hears <em>list of 5 items</em>. Many lists need nothing more than this.",
-    "listPage.step1Note": "ul + item",
-    "listPage.step2Title": "2 · Title and description",
-    "listPage.step2Body":
-      "In comes <code>sk-list__content</code>, the column that flexes. Title and description stack, and it is the only part of the row that shrinks: that is why a long title ellipsizes there instead of pushing the row wider than its container.",
-    "listPage.step2Note": "+ content",
-    "listPage.step3Title": "3 · Leading media",
-    "listPage.step3Body":
-      "In comes <code>sk-list__leading</code>: an icon, an avatar, or a number. It is <strong>decorative</strong>, it does not name the row: the title does that. An empty slot does not exist for layout purposes, so rows with no icon carry no phantom padding.",
-    "listPage.step3Note": "+ leading (Icon)",
-    "listPage.step4Title": "4 · Trailing meta",
-    "listPage.step4Body":
-      "In comes <code>sk-list__trailing</code>, and the row is complete. It anchors to the end with <code>margin-inline-start: auto</code> and carries <code>tabular-nums</code>, so figures across rows line up in a column. It takes text or a component, like a Badge.",
-    "listPage.step4Note": "+ trailing + Badge",
-    "listPage.step5Title": "5 · The row acts",
-    "listPage.step5Body":
-      'Same anatomy, now wrapped in a real <code>a[href]</code> with <code>sk-list__action sk-interactive</code>. Focus and keyboard are native, and hover, focus, and press come from the <a href="/state-layer">state layer</a>. The <code>&lt;li&gt;</code> becomes just the thing carrying the divider.',
-    "listPage.step5Note": "+ a[href] + state layer",
-    "listPage.step6Title": "6 · Everything together",
-    "listPage.step6Body":
-      "The top of the ladder: interactive rows, two pieces in the trailing slot, <code>compact</code> density, and one disabled row. Nothing new from the component, just the above combined.",
-    "listPage.step6Note": "+ density",
-    "listPage.contractItem1":
-      'Root: <code>&lt;ul class="sk-list"&gt;</code> or <code>&lt;ol&gt;</code>. Each row is an <code>&lt;li class="sk-list__item"&gt;</code>.',
-    "listPage.contractItem2":
-      "Row anatomy: <code>sk-list__leading</code>, <code>sk-list__content</code> (with <code>sk-list__title</code> and <code>sk-list__description</code>), and <code>sk-list__trailing</code>. All optional; compose whichever you use.",
-    "listPage.contractItem3":
-      'Instruction sequences: use <a href="/components/process-list">ProcessList</a>, which keeps an <code>&lt;ol&gt;</code> and owns the markers, connectors, and content of each step.',
-    "listPage.contractItem4":
-      'Functional row: an <code>&lt;a&gt;</code>/<code>&lt;button&gt;</code> with <code>sk-list__action sk-interactive</code> inside the <code>&lt;li&gt;</code>. It fills the row and inherits focus, keyboard, and the state layer.',
-    "listPage.contractItem5":
-      'Persistent state: none. List models neither selection nor a current destination; for active navigation use <a href="/nav-list">Nav list</a>.',
-    "listPage.contractItem6": 'Variants: <code>data-density="compact"</code> and <code>data-dividers="none"</code>.',
-    "listPage.contractItem7": "No initialization needed: the behavior belongs to the native <code>&lt;a&gt;</code>/<code>&lt;button&gt;</code>.",
+    "listPage.stepsBody": "Each example is the same list with one more piece than the last.",
+    "listPage.step1Title": "Just the list: rows and dividers",
+    "listPage.step1Body": "A real <code>&lt;ul&gt;</code>: the screen reader announces “list, 5 items”.",
+    "listPage.step2Title": "Title and description: the content",
+    "listPage.step2Body": "The content is the only part that shrinks: a long title truncates and the rest of the row stays.",
+    "listPage.step3Title": "At the start: an icon or an avatar",
+    "listPage.step3Body": "The start is decorative: the title is what names the row.",
+    "listPage.step4Title": "At the end: a value or a status",
+    "listPage.step4Body": "The end aligns right with tabular numbers, so figures line up in a column.",
+    "listPage.step5Title": "The row acts: a link",
+    "listPage.step5Body": "The same row inside a real <code>a[href]</code>: the whole row is the target and focus is native.",
+    "listPage.step6Title": "All together: compact density",
+    "listPage.step6Body": "Acting rows, a status and an arrow at the end, and <code>compact</code> density.",
     "listPage.test1": "Renders a semantic list with static, link and button rows.",
     "listPage.test2": "Renders an ordered list when order is meaningful.",
     "demo.list.dd.long1": "Connect your account so that every change you make in the repository shows up in the project's history and notifies the team.",
     "demo.list.dd.long2": "Send a notice to the chosen channel every time someone comments on, assigns or closes a task you follow.",
-    "listPage.prop.dividers.title": "Dividers",
+    "demo.list.dd.shapePlain": "Title only",
+    "demo.list.dd.shapeDescribed": "Title with description",
+    "demo.list.dd.shapeIcon": "Row with icon",
+    "demo.list.dd.shapeTrailing": "Row with trailing value",
+    "demo.list.dd.buriedTimezone": "Used to schedule sends. Current value: GMT−3.",
+    "demo.list.dd.buriedLanguage": "Interface and emails. Current value: Spanish.",
+    "demo.list.dd.buriedDateFormat": "How days and months are written. Current value: 31/12/2026.",
+    "listPage.prop.dividers.title": "Dividers: a line between rows",
     "listPage.prop.dividers.body": "<code>dividers</code> draws a line between rows.",
-    "listPage.prop.dividers.false": "Without dividers, space separates the rows: better for short, airy lists.",
-    "listPage.prop.dividers.true": "Use <code>dividers</code>, the default, when rows are dense or carry several parts.",
+    "listPage.prop.dividers.false": "Use <code>false</code> for short, airy lists: space separates the rows.",
+    "listPage.prop.dividers.true": "Use <code>true</code>, the default, when rows are dense or carry several parts.",
     "listPage.prop.dividers.falseLabel": "No dividers",
     "listPage.prop.dividers.trueLabel": "Dividers",
-    "listPage.showcaseTitle": "Showcases",
-    "listPage.showcaseBody": "The list built one part at a time: text, title, icons, trailing actions, links, and everything together.",
-    "listPage.guidelinesLede": "List shows similar items one under another, to scan them quickly.",
-    "listPage.dd.short.title": "Rows you can scan",
-    "listPage.dd.short.do": "A short name per row, and the detail on a second line when needed.",
+    "listPage.guidelinesLede": "A list is scanned by eye: each row has to read at a glance.",
+    "listPage.dd.short.title": "Rows: short title, detail aside",
+    "listPage.dd.short.do": "Brief title on top and a short description below: the eye finds the row quickly.",
     "listPage.dd.short.dont": "Whole paragraphs do not scan: the list stops helping anyone find anything.",
+    "listPage.dd.shape.title": "Shape: every row the same",
+    "listPage.dd.shape.do": "If one row has title and description, keep that shape in the rest.",
+    "listPage.dd.shape.dont": "Mixing plain rows, icon rows and value rows makes each line a new layout to parse.",
+    "listPage.dd.trailing.title": "End value: short and comparable",
+    "listPage.dd.trailing.do": "Put statuses, dates or values at the end so they align and compare at a glance.",
+    "listPage.dd.trailing.dont": "Burying the value in the description turns it into prose: it no longer compares across rows.",
   },
 } as const;

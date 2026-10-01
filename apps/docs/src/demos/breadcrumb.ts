@@ -70,3 +70,43 @@ export const breadcrumbCollapseTree = (
   options: { label: t("demo.breadcrumb.label"), collapsedLabel: t("breadcrumb.collapseTriggerLabel") },
   slots: { items: breadcrumbCollapseItems(t, hrefs) },
 });
+
+/* Usage guide: the same depth with labels that name nothing, so no link says where it goes. */
+export const breadcrumbDontGenericTree = (t: Translate): UsageTree => ({
+  contract: "breadcrumb",
+  signature: "Breadcrumb",
+  options: { label: t("demo.breadcrumb.label"), collapsedLabel: t("kit.showHiddenLevels") },
+  slots: {
+    items: [
+      { options: { href: PLACEHOLDER_HREF }, slots: { label: t("demo.breadcrumb.genericBack") } },
+      { options: { href: PLACEHOLDER_HREF }, slots: { label: t("demo.breadcrumb.genericSection") } },
+      { options: { current: true }, slots: { label: t("demo.breadcrumb.genericHere") } },
+    ],
+  },
+});
+
+export const breadcrumbHistoryTree = (t: Translate): UsageTree => ({
+  contract: "breadcrumb",
+  signature: "Breadcrumb",
+  options: { label: t("demo.breadcrumb.label"), collapsedLabel: t("kit.showHiddenLevels") },
+  slots: {
+    items: [
+      { options: { href: PLACEHOLDER_HREF }, slots: { label: t("demo.breadcrumb.search") } },
+      { options: { href: PLACEHOLDER_HREF }, slots: { label: t("demo.breadcrumb.results") } },
+      { options: { current: true }, slots: { label: t("demo.breadcrumb.settings") } },
+    ],
+  },
+});
+
+export const breadcrumbMissingCurrentTree = (t: Translate): UsageTree => ({
+  contract: "breadcrumb",
+  signature: "Breadcrumb",
+  options: { label: t("demo.breadcrumb.label"), collapsedLabel: t("kit.showHiddenLevels") },
+  slots: {
+    items: [
+      { options: { href: "/" }, slots: { label: t("demo.breadcrumb.home") } },
+      { options: { href: PLACEHOLDER_HREF }, slots: { label: t("demo.breadcrumb.projects") } },
+      { options: { href: PLACEHOLDER_HREF }, slots: { label: "Kit Digital" } },
+    ],
+  },
+});

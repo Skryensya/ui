@@ -7,68 +7,63 @@ import "@skryensya/core/components/button.css";
 import "@skryensya/core/patterns/icon.css";
 import ComponentPageShell from "./ComponentPageShell.astro";
 import CodeBlock from "../CodeBlock.astro";
-import ComponentPreview from "../ComponentPreview.astro";
+import UsagePreview from "../UsagePreview.astro";
+import DoDont from "../DoDont.astro";
+import WhenToUse from "../WhenToUse.astro";
+import ContentRules from "../ContentRules.astro";
+import A11yNotes from "../A11yNotes.astro";
 import { dataGridActionsTree, dataGridAnatomyTree, dataGridScoresTree } from "../../demos/data-grid";
 import { annotationDemoCss } from "../../demos/annotation";
-import { getLocale, useTranslations } from "../../i18n";
+import { getLocale, tList, useTranslations } from "../../i18n";
 
 const t = useTranslations(getLocale(Astro.url));
 
 const install = `@import "@skryensya/core/components/data-grid.css";
 @import "@skryensya/core/patterns/state-layer.css";`;
-const js = `import { mountIcons } from "@skryensya/vanilla/icon";
-import { lucideIcons } from "@skryensya/icons-lucide";
-import { initComponents } from "@skryensya/vanilla/auto";
-
-mountIcons(document, lucideIcons);
-initComponents();`;
+const storybookTitle = "Components/Unlisted/DataGrid";
 ---
 
 <ComponentPageShell
   title="Data Grid"
   description={t("dataGridPage.description")}
-  badge={t("dataGridPage.betaBadge")}
   contractId="data-grid"
   styleGroups={[
     { file: "components/data-grid.css", probe: "sk-data-grid", title: "Data Grid" },
     { file: "patterns/state-layer.css", probe: "sk-interactive", title: "Heredados de State layer" },
   ]}
-  testFiles={["packages/react/src/components/data-grid.test.tsx", "packages/vanilla/src/components/data-grid.test.ts"]}}
+  testFiles={["packages/react/src/components/data-grid.test.tsx", "packages/vanilla/src/components/data-grid.test.ts"]}
 >
   <Fragment slot="usage">
     <p class="lede" set:html={t("dataGridPage.lede")} />
 
-    <h3>{t("dataGridPage.showcaseTitle")}</h3>
-    <p set:html={t("dataGridPage.showcaseBody")} />
-    <h3>{t("dataGridPage.dataTitle")}</h3>
-    <p set:html={t("dataGridPage.dataBody")} />
-    <ComponentPreview tree={dataGridScoresTree(t)} js={js} label={t("dataGridPage.dataLabel")} />
-
-    <h3>{t("dataGridPage.layoutTitle")}</h3>
-    <p set:html={t("dataGridPage.layoutBody")} />
-    <ComponentPreview tree={dataGridActionsTree(t)} js={js} label={t("dataGridPage.layoutLabel")} />
+    <h3>{t("component.examplesTitle")}</h3>
+    <UsagePreview tree={dataGridScoresTree(t)} title={t("dataGridPage.dataTitle")} description={t("dataGridPage.dataBody")} storybookTitle={storybookTitle} storybookStory="Scores" />
+    <UsagePreview tree={dataGridActionsTree(t)} title={t("dataGridPage.layoutTitle")} description={t("dataGridPage.layoutBody")} storybookTitle={storybookTitle} storybookStory="Actions" />
 
     <h3>{t("component.contractNotesTitle")}</h3>
-    <p set:html={t("dataGridPage.contractBody")} />
+    <ul>
+      {tList(t, "dataGridPage.contract").map((item) => <li set:html={item} />)}
+    </ul>
 
     <h3>{t("component.anatomy")}</h3>
     <p set:html={t("dataGridPage.anatomyBody")} />
-    <ComponentPreview
+    <UsagePreview
       tree={dataGridAnatomyTree(t)}
       css={annotationDemoCss}
       label={t("dataGridPage.anatomyPreviewLabel")}
-      screens={false}
-      hideSource
-      chrome={false}
+      bare
     />
   </Fragment>
 
   <Fragment slot="guidelines">
     <p class="lede" set:html={t("dataGridPage.guidelinesLede")} />
-    <ul>
-      <li set:html={t("dataGridPage.guide.item1")} />
-      <li set:html={t("dataGridPage.guide.item2")} />
-    </ul>
+    <WhenToUse use={tList(t, "dataGridPage.when")} avoid={tList(t, "dataGridPage.whenNot")} />
+    <DoDont
+      title={t("dataGridPage.dd.static.title")}
+      do={{ tree: dataGridActionsTree(t), caption: t("dataGridPage.dd.static.do") }}
+      dont={{ tree: dataGridScoresTree(t), caption: t("dataGridPage.dd.static.dont") }}
+    />
+    <ContentRules items={tList(t, "dataGridPage.content")} />
   </Fragment>
 
   <Fragment slot="install">
@@ -76,6 +71,16 @@ initComponents();`;
   </Fragment>
 
   <Fragment slot="a11y">
-    <p set:html={t("dataGridPage.a11yBody")} />
+    <A11yNotes
+      intro={t("dataGridPage.a11yIntro")}
+      does={tList(t, "dataGridPage.a11yDoes")}
+      yours={tList(t, "dataGridPage.a11yYours")}
+      keys={[
+        { keys: ["Tab", "Shift+Tab"], action: t("dataGridPage.a11yKeyTab") },
+        { keys: ["←", "→", "↑", "↓"], action: t("dataGridPage.a11yKeyArrows") },
+        { keys: [t("component.key.home"), t("component.key.end")], action: t("dataGridPage.a11yKeyHomeEnd") },
+        { keys: [`Ctrl+${t("component.key.home")}`, `Ctrl+${t("component.key.end")}`], action: t("dataGridPage.a11yKeyCtrlHomeEnd") },
+      ]}
+    />
   </Fragment>
 </ComponentPageShell>

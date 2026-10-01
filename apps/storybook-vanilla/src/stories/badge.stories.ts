@@ -9,12 +9,11 @@ import "@skryensya/core/components/typography.css";
 import "@skryensya/core/patterns/icon.css";
 import "@skryensya/core/patterns/layout.css";
 import * as demos from "@docs/demos/badge";
-const { badgeAnatomyCss } = demos;
-import { treeStory, withCss, type Meta, type StoryObj } from "../tree-story";
+import { treeStory, type Meta, type StoryObj } from "../tree-story";
 
 export default { title: "Components/Content/Badge", tags: ["autodocs"] } satisfies Meta;
 
-export const Anatomy: StoryObj = treeStory(demos.badgeAnatomyTree, { decorators: [withCss(badgeAnatomyCss)] });
+export const Anatomy: StoryObj = treeStory(demos.badgeAnatomyTree);
 export const Label: StoryObj = treeStory(demos.badgeLabelTree);
 export const LoneDot: StoryObj = treeStory(demos.badgeLoneDotTree);
 export const Tag: StoryObj = treeStory(demos.badgeTagTree);

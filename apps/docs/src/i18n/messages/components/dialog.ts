@@ -5,6 +5,28 @@ export const dialogMessages = {
     "demo.dialog.body": "Se elimina el proyecto y todo su historial. Esta acción no se puede deshacer.",
     "demo.dialog.cancel": "Cancelar",
     "demo.dialog.confirm": "Borrar",
+    "demo.dialog.vagueTitle": "¿Continuar?",
+    "demo.dialog.vagueBody": "¿Seguro que quieres continuar?",
+    "demo.dialog.vagueCancel": "No",
+    "demo.dialog.vagueConfirm": "Sí",
+    "demo.dialog.longTitle": "Completar el perfil",
+    "demo.dialog.longBody1": "Para continuar, revisa y completa todos los datos del perfil. La información debe coincidir con tus documentos actuales.",
+    "demo.dialog.longBody2": "También tendrás que confirmar tu correo, agregar una dirección y revisar las preferencias de comunicación antes de guardar los cambios.",
+    "demo.dialog.longBody3": "Si necesitas cambiar alguno de estos datos más adelante, vuelve a esta pantalla y repite los pasos. El proceso puede tomar varios minutos.",
+    "demo.dialog.noticeTitle": "Perfil guardado",
+    "demo.dialog.noticeBody": "Tus cambios se guardaron correctamente.",
+    "demo.dialog.noticeClose": "Entendido",
+    "demo.dialog.unsavedTitle": "¿Descartar los cambios?",
+    "demo.dialog.unsavedBody": "Perderás los cambios que hiciste en el documento.",
+    "demo.dialog.keepEditing": "Seguir editando",
+    "demo.dialog.discard": "Descartar",
+    "demo.dialog.inviteTitle": "Invitación al proyecto",
+    "demo.dialog.inviteBody": "Ana te invitó a colaborar en el proyecto Atlas.",
+    "demo.dialog.acceptInvite": "Aceptar invitación",
+    "demo.dialog.later": "Ahora no",
+    "demo.dialog.revokeTitle": "¿Revocar el acceso?",
+    "demo.dialog.revokeBody": "Ana ya no podrá ver ni editar el proyecto Atlas.",
+    "demo.dialog.revoke": "Revocar acceso",
     "demo.dialogVaul.open": "Abrir dialog",
     "demo.dialogVaul.title": "Caja centrada, Vaul en móvil",
     "demo.dialogVaul.body": "Angosta la ventana debajo de 52rem y este mismo dialog gana un Vaul block-end. El markup del dialog no cambia.",
@@ -12,7 +34,7 @@ export const dialogMessages = {
     "demo.dialogVaul.edgeTitle": "Llega desde el borde",
     "demo.dialogVaul.edgeBody": "Slide block-end en vez de escala centrada.",
     "demo.dialogVaul.dragTitle": "Se arrastra para cerrar",
-    "demo.dialogVaul.dragBody": "Con handle, y sólo abajo del breakpoint.",
+    "demo.dialogVaul.dragBody": "Con handle, y solo abajo del breakpoint.",
     "demo.dialogVaul.sameTitle": "Sigue siendo el dialog",
     "demo.dialogVaul.sameBody": "Foco, Escape y página inerte son de la plataforma.",
     "demo.dialogVaul.later": "Ahora no",
@@ -22,75 +44,64 @@ export const dialogMessages = {
      * The Dialog page, migrated onto `ComponentPageShell` as the second proof of the shape
      * `AccordionPage` piloted: `dialog.*` for the exact same reason `accordion.*` exists above.
      */
-    "dialog.description":
-      "El dialog centrado de la plataforma. Opcional: Dialog Vaul cuando el contenido pide una superficie desde el borde en móvil.",
-    "dialog.lede":
-      'Un <code>&lt;dialog class="sk-dialog"&gt;</code> centrado. <code>showModal()</code> entrega foco, Escape, página inerte y backdrop; el sistema pinta la superficie. Sin enhancer: el único JavaScript es abrir.',
-    "dialog.anatomyBody":
-      "Este diagrama nombra header, body y footer del dialog abierto. El espécimen está congelado; el confirm vivo empieza abajo.",
+    "dialog.description": "Detiene la página hasta que la persona decide algo.",
+    "dialog.a11yKeyEsc": "Cierra el diálogo sin confirmar y devuelve el foco.",
+    "dialog.a11yKeyTab": "Recorre los controles del diálogo, dando la vuelta en los extremos.",
+    "dialog.a11yYours4": "El botón de cerrar solo ícono debe tener <code>aria-label</code>: «Cerrar».",
+    "dialog.a11yYours3": "En una confirmación destructiva, pon <code>autofocus</code> en Cancelar, la opción segura.",
+    "dialog.a11yYours2": "Pon el título antes del botón de cerrar en el DOM.",
+    "dialog.a11yYours1": "Asocia el título con <code>aria-labelledby</code>.",
+    "dialog.a11yDoes4": "Escape cierra el diálogo como Cancelar, no como confirmar.",
+    "dialog.a11yDoes3": "<kbd>Tab</kbd> da la vuelta del último control al primero.",
+    "dialog.a11yDoes2": "La página detrás queda <code>inert</code>: no recibe foco ni clics.",
+    "dialog.a11yDoes1": "Al abrir, el foco entra al diálogo; al cerrar, vuelve a lo que lo abrió.",
+    "dialog.content4": "Usa «Cancelar» para salir sin cambios.",
+    "dialog.content3": "En una confirmación destructiva, di qué se pierde en el cuerpo: «Se borran sus 12 archivos. No se puede deshacer.».",
+    "dialog.content2": "Nombra los botones por lo que hacen: «Eliminar proyecto», no «Aceptar».",
+    "dialog.content1": "Escribe el título como la pregunta o la tarea: «¿Eliminar el proyecto?».",
+    "dialog.whenNot4": 'Para un panel que ocupa un borde entero: usa <a href="/es/componentes/drawer">Drawer</a>.',
+    "dialog.whenNot3": "Para contenido largo o con navegación: dale su propia página.",
+    "dialog.whenNot2": 'Para una lista de acciones que cuelga de un botón: usa <a href="/es/componentes/menu">Menu</a>.',
+    "dialog.whenNot1": 'Para información que no bloquea: usa <a href="/es/componentes/popover">Popover</a> o <a href="/es/componentes/tooltip">Tooltip</a>.',
+    "dialog.when3": "En móvil, como hoja desde abajo: usa Dialog Vaul.",
+    "dialog.when2": "Para un error que bloquea y necesita atención inmediata: usa la opción <code>alert</code>.",
+    "dialog.when1": "Para algo que hay que decidir antes de seguir: confirmar un borrado, completar un paso corto.",
+    "dialog.contract5": 'Importa <a href="/es/scroll-lock">scroll lock</a> para congelar la página detrás sin que salte al desaparecer la barra.',
+    "dialog.contract4": "<code>footerAlign</code> alinea las acciones al inicio o al final (por defecto).",
+    "dialog.contract3": "No agregues una trampa de foco: <code>showModal()</code> ya la hace, y el kit hace que <kbd>Tab</kbd> dé la vuelta en los extremos.",
+    "dialog.contract2": 'Cierre y acciones van en un <code>&lt;form method="dialog"&gt;</code>; el <code>value</code> de cada botón dice cuál se eligió.',
+    "dialog.contract1": 'Abre un <code>&lt;dialog class="sk-dialog"&gt;</code> con <code>showModal()</code>, no un <code>div</code> con roles imitados.',
+    "dialog.lede": "Dialog detiene la página hasta que la persona decide algo: confirmar un borrado, completar un paso corto. Es el <code>&lt;dialog&gt;</code> nativo abierto con <code>showModal()</code>, que ya maneja el foco, Escape, el fondo y la página inerte; el único JavaScript es abrirlo.",
+    "dialog.anatomyBody": "El encabezado, el cuerpo y el pie de un diálogo abierto.",
     "dialog.anatomyLabel": "Anatomía de Dialog",
     "dialog.anatomyPreviewLabel": "Dialog, parte por parte",
-    "dialog.confirmTitle": "Confirm",
+    "dialog.confirmTitle": "Confirmación: una decisión antes de seguir",
     "dialog.confirmJsComment": "Opcional: leer qué botón cerró el form.",
-    "dialog.confirmAnatomy":
-      'Anatomía: <code>sk-dialog__header</code> (título con <code>Heading</code> + <code>sk-dialog__title</code>, y cierre), <code>sk-dialog__body</code> y <code>sk-dialog__footer</code> (controles). El cierre y el footer son <code>&lt;form method="dialog"&gt;</code>: cierran sin handler y dejan el <code>value</code> en <code>dialog.returnValue</code>.',
-    "dialog.openingTitle": "Abrirlo",
-    "dialog.contractTitle": "Contrato",
-    "dialog.contractItem1":
-      'Abre un <code>&lt;dialog class="sk-dialog"&gt;</code> con <code>showModal()</code>, no un <code>div</code> con roles imitadas.',
-    "dialog.contractItem2":
-      'Anatomía: <code>sk-dialog__header</code> (<code>sk-heading sk-dialog__title</code> + <code>sk-dialog__close</code>), <code>sk-dialog__body</code>, <code>sk-dialog__footer</code> (controles, opcional). El título es <a class="sk-link sk-interactive" href="/es/componentes/heading">Heading</a> (casi siempre con <code>data-flush</code>).',
-    "dialog.contractItem3":
-      'Asocia el título con <code>aria-labelledby</code> apuntando al <code>id</code> del Heading (o un nombre accesible equivalente).',
-    "dialog.contractItem4":
-      'Cierre y acciones usan <code>&lt;form method="dialog"&gt;</code>; <code>value</code> en cada botón si necesitas saber cuál se eligió.',
-    "dialog.contractItem5":
-      'No añadas un focus trap propio: <code>showModal()</code> ya contiene el foco y lo restaura al cerrar, y el kit hace que <kbd>Tab</kbd> dé la vuelta en los extremos en vez de salir a la barra del navegador.',
-    "dialog.contractItem6":
-      'Importa <a class="sk-link sk-interactive" href="/es/scroll-lock">scroll lock</a> si quieres congelar la página detrás sin CLS al desaparecer la scrollbar.',
-    "dialog.contractItem7":
-      'Con <a class="sk-link sk-interactive" href="/es/transparencias"><code>prefers-reduced-transparency</code></a>, el backdrop deja la mezcla translúcida y pasa a un fondo opaco; la modalidad no cambia.',
-    "dialog.contractItem8":
-      '<code>footerAlign</code> (<code>start</code> | <code>end</code>, React: <code>footerAlign</code>; por defecto <code>end</code>) alinea la fila de acciones del footer al inicio o al final del eje inline. El orden de los botones en el DOM sigue definiendo cuál queda a la izquierda de cuál.',
-    "dialog.vaulTitle": "Opción: Dialog Vaul",
-    "dialog.vaulIntro":
-      "Cuando el contenido pide una superficie desde el borde en móvil, el mismo <code>&lt;dialog&gt;</code> puede optar en <strong>Dialog Vaul</strong>: añade slide, light-dismiss y drag-to-dismiss. La modalidad (foco, Escape, inert) sigue siendo de <code>showModal()</code>.",
-    "dialog.vaulAddsTitle": "Qué añade",
-    "dialog.vaulAddsItem1":
-      'Abre y cierra con triggers y closers escritos a mano (<code>data-sk-dialog-vaul-open</code> / <code>-close</code>).',
-    "dialog.vaulAddsItem2": "Por debajo de <code>52rem</code>, deja arrastrar el handle hacia <code>block-end</code>.",
-    "dialog.vaulAddsItem3": "Light-dismiss al pulsar fuera del rectángulo del panel.",
-    "dialog.vaulAddsItem4":
-      '<code>data-sk-dialog-vaul</code> opta en la mejora; <code>data-edge="block-end"</code> nombra el borde. El handle es opcional.',
+    "dialog.confirmAnatomy": "Encabezado con título y cierre, cuerpo y pie con las acciones. Abre el diálogo para probarlo.",
+    "dialog.openingTitle": "Abrirlo: una línea",
+    "dialog.vaulTitle": "En móvil: una hoja desde abajo",
+    "dialog.vaulIntro": "<strong>Dialog Vaul</strong> es el mismo <code>&lt;dialog&gt;</code> que, por debajo de 52rem, sube desde el borde inferior y se cierra arrastrando o tocando fuera. La modalidad no cambia.",
     "dialog.vaulInstallTitle": "Instalar Dialog Vaul",
-    "dialog.a11yIntro":
-      "Con <code>showModal()</code> la plataforma ya hace casi todo el trabajo (técnica WCAG H102). Lo único que añade el kit es que <kbd>Tab</kbd> dé la vuelta del último control al primero, y <kbd>Shift + Tab</kbd> del primero al último (decisión 24). No reimplementes el resto en JavaScript.",
-    "dialog.a11yItem1":
-      '<strong>Al abrir</strong> el foco entra al dialog. Sin <code>autofocus</code>, aterriza en el primer control enfocable. En un confirm destructivo pon <code>autofocus</code> en <strong>Cancelar</strong> (la opción segura), no en Borrar ni en el cierre.',
-    "dialog.a11yItem2":
-      '<strong>Orden en el DOM</strong>: el título va <em>antes</em> del botón de cerrar. Si el cierre fuera el primer nodo enfocable y el contenido largo, <code>showModal()</code> podría abrir el panel ya scrolleado hacia ese control.',
-    "dialog.a11yItem3":
-      '<strong>Tab / Shift+Tab</strong> ciclan entre controles del dialog. La página detrás queda <code>inert</code>: no recibe foco. Sí se puede llegar al chrome del navegador (barra de direcciones); eso es intencional, no un bug.',
-    "dialog.a11yItem4":
-      '<strong>Escape</strong> cierra el dialog (evento <code>cancel</code>) y restaura el foco al trigger. Equivale a descartar, no a confirmar: mismo <code>returnValue</code> vacío / cancel que el botón de cerrar con <code>value="cancel"</code>.',
-    "dialog.a11yItem5":
-      '<strong>Al cerrar</strong> el foco vuelve al elemento que abrió el dialog, si sigue en la página. No hace falta guardarlo a mano.',
-    "dialog.a11yItem6":
-      'El botón de cerrar es un <code>sk-button</code> con <code>data-icon-only</code> y <code>aria-label="Cerrar"</code>. El icono es decorativo (<code>&lt;span data-sk-icon="close"&gt;</code>); el nombre es del botón.',
+    "dialog.a11yIntro": "Con <code>showModal()</code>, la plataforma hace casi todo el trabajo (WCAG, técnica H102).",
     "dialog.borderTitle": "El borde siempre encendido no es estético",
     "dialog.borderBody":
       "En alto contraste el panel y la página resuelven al mismo color: suavizar <code>--sk-dialog-border-width</code> deja el dialog invisible sin que falle un solo test. Por eso llega en <code>1px</code> y no en <code>0</code>.",
-    "dialog.test1": "Cierra a través del <code>&lt;form method=\"dialog\"&gt;</code> de la plataforma, no de un handler.",
+    "dialog.test1": 'Cierra a través del <code>&lt;form method="dialog"&gt;</code> de la plataforma, no de un handler.',
     "dialog.test2": "Renderiza la anatomía contra la que la hoja de estilos escribe su contrato.",
     "dialog.test3": "Omite el form del pie cuando no hay nada que poner en él.",
-    "dialog.showcaseTitle": "Showcases",
-    "dialog.showcaseBody": "Una confirmación centrada, y el mismo diálogo como hoja desde abajo en el celular.",
-    "dialog.guidelinesLede": "Dialog detiene la página hasta que la persona decide algo.",
-    "dialog.guide.use1": "Úsalo para algo que hay que decidir antes de seguir: confirmar un borrado, completar un paso corto.",
-    "dialog.guide.use2": "Nombra los botones por lo que hacen, como \"Eliminar proyecto\", no \"Aceptar\".",
-    "dialog.guide.avoid1": "Una información que no bloquea es un <a href=\"/es/componentes/popover\">Popover</a> o un <a href=\"/es/componentes/tooltip\">Tooltip</a>.",
-    "dialog.guide.avoid2": "Una lista de acciones que cuelga de un botón es un <a href=\"/es/componentes/menu\">Menu</a>.",
-    "dialog.guide.avoid3": "Un contenido largo o con navegación necesita su propia página, no una caja modal.",
+    "dialog.guidelinesLede": "Un diálogo interrumpe: úsalo solo cuando la decisión no puede esperar.",
+    "dialog.dd.clear.title": "Confirmación: explica la decisión",
+    "dialog.dd.clear.do": "El título nombra la acción y el cuerpo explica qué se perderá.",
+    "dialog.dd.clear.dont": "«¿Continuar?» no dice qué ocurrirá ni qué significa cada opción.",
+    "dialog.dd.focus.title": "Foco inicial: favorece la opción segura",
+    "dialog.dd.focus.do": "Al descartar cambios, el foco inicial queda en «Seguir editando», la opción que conserva el trabajo.",
+    "dialog.dd.focus.dont": "Si el foco inicial cae en «Descartar», una tecla accidental puede borrar el trabajo.",
+    "dialog.dd.scope.title": "Alcance: una decisión breve, no un flujo entero",
+    "dialog.dd.scope.do": "Aceptar una invitación es una decisión concreta que se resuelve en un momento.",
+    "dialog.dd.scope.dont": "El contenido largo obliga a desplazarse dentro del diálogo: ese flujo necesita su propia página.",
+    "dialog.dd.interruption.title": "Interrupción: pide una decisión, no solo informes",
+    "dialog.dd.interruption.do": "Revocar el acceso cambia quién puede entrar: pide confirmación antes de aplicarlo.",
+    "dialog.dd.interruption.dont": "No abras un diálogo para avisar que el perfil se guardó: informa sin bloquear el trabajo.",
   },
   en: {
     "demo.dialog.open": "Delete project",
@@ -98,6 +109,28 @@ export const dialogMessages = {
     "demo.dialog.body": "The project and all its history are removed. This cannot be undone.",
     "demo.dialog.cancel": "Cancel",
     "demo.dialog.confirm": "Delete",
+    "demo.dialog.vagueTitle": "Continue?",
+    "demo.dialog.vagueBody": "Are you sure you want to continue?",
+    "demo.dialog.vagueCancel": "No",
+    "demo.dialog.vagueConfirm": "Yes",
+    "demo.dialog.longTitle": "Complete your profile",
+    "demo.dialog.longBody1": "To continue, review and complete all profile details. The information must match your current documents.",
+    "demo.dialog.longBody2": "You will also need to confirm your email, add an address and review communication preferences before saving.",
+    "demo.dialog.longBody3": "To change any of these details later, return to this screen and repeat the steps. The process may take several minutes.",
+    "demo.dialog.noticeTitle": "Profile saved",
+    "demo.dialog.noticeBody": "Your changes were saved successfully.",
+    "demo.dialog.noticeClose": "Got it",
+    "demo.dialog.unsavedTitle": "Discard your changes?",
+    "demo.dialog.unsavedBody": "You will lose the changes you made to this document.",
+    "demo.dialog.keepEditing": "Keep editing",
+    "demo.dialog.discard": "Discard",
+    "demo.dialog.inviteTitle": "Project invitation",
+    "demo.dialog.inviteBody": "Ana invited you to collaborate on the Atlas project.",
+    "demo.dialog.acceptInvite": "Accept invitation",
+    "demo.dialog.later": "Not now",
+    "demo.dialog.revokeTitle": "Revoke access?",
+    "demo.dialog.revokeBody": "Ana will no longer be able to view or edit the Atlas project.",
+    "demo.dialog.revoke": "Revoke access",
     "demo.dialogVaul.open": "Open dialog",
     "demo.dialogVaul.title": "Centred box, Vaul on mobile",
     "demo.dialogVaul.body": "Narrow the window below 52rem and this same dialog gains a block-end Vaul. The dialog's markup does not change.",
@@ -111,74 +144,89 @@ export const dialogMessages = {
     "demo.dialogVaul.later": "Not now",
     "demo.dialogVaul.understood": "Got it",
 
-    "dialog.description":
-      "The platform's centered dialog. Optional: Dialog Vaul when content asks for an edge-anchored surface on mobile.",
-    "dialog.lede":
-      'A centered <code>&lt;dialog class="sk-dialog"&gt;</code>. <code>showModal()</code> hands you focus, Escape, an inert page and a backdrop; the system paints the surface. No enhancer: the only JavaScript is opening it.',
-    "dialog.anatomyBody":
-      "This diagram names the dialog's header, body, and footer while open. The specimen is frozen; the live confirm starts below.",
+    "dialog.description": "Stops the page until people decide something.",
+
+    "dialog.a11yKeyEsc": "Closes the dialog without confirming and returns focus.",
+
+    "dialog.a11yKeyTab": "Moves through the dialog's controls, wrapping at the ends.",
+
+    "dialog.a11yYours4": "The icon-only close button must have an <code>aria-label</code>: “Close”.",
+
+    "dialog.a11yYours3": "In a destructive confirm, put <code>autofocus</code> on Cancel, the safe option.",
+
+    "dialog.a11yYours2": "Put the title before the close button in the DOM.",
+
+    "dialog.a11yYours1": "Associate the title with <code>aria-labelledby</code>.",
+
+    "dialog.a11yDoes4": "Escape closes the dialog like Cancel, not like confirming.",
+
+    "dialog.a11yDoes3": "<kbd>Tab</kbd> wraps from the last control to the first.",
+
+    "dialog.a11yDoes2": "The page behind is <code>inert</code>: it takes no focus or clicks.",
+
+    "dialog.a11yDoes1": "On open, focus enters the dialog; on close, it returns to what opened it.",
+
+    "dialog.content4": "Use “Cancel” to leave without changes.",
+
+    "dialog.content3": "In a destructive confirm, say in the body what is lost: “Its 12 files are deleted. This cannot be undone.”.",
+
+    "dialog.content2": "Name buttons by what they do: “Delete project”, not “OK”.",
+
+    "dialog.content1": "Write the title as the question or the task: “Delete the project?”.",
+
+    "dialog.whenNot4": 'For a panel that takes a whole edge: use <a href="/components/drawer">Drawer</a>.',
+
+    "dialog.whenNot3": "For long or navigable content: give it its own page.",
+
+    "dialog.whenNot2": 'For a list of actions hanging from a button: use <a href="/components/menu">Menu</a>.',
+
+    "dialog.whenNot1": 'For information that does not block: use <a href="/components/popover">Popover</a> or <a href="/components/tooltip">Tooltip</a>.',
+
+    "dialog.when3": "On mobile, as a sheet from the bottom: use Dialog Vaul.",
+
+    "dialog.when2": "For a blocking error that needs immediate attention: use the <code>alert</code> option.",
+
+    "dialog.when1": "For something that must be decided before going on: confirming a deletion, completing a short step.",
+
+    "dialog.contract5": 'Import <a href="/scroll-lock">scroll lock</a> to freeze the page behind without a jump when the scrollbar disappears.',
+
+    "dialog.contract4": "<code>footerAlign</code> aligns the actions to the start or the end (the default).",
+
+    "dialog.contract3": "Do not add a focus trap: <code>showModal()</code> already does it, and the kit makes <kbd>Tab</kbd> wrap at the ends.",
+
+    "dialog.contract2": 'Close and actions go in a <code>&lt;form method="dialog"&gt;</code>; each button\'s <code>value</code> says which was chosen.',
+
+    "dialog.contract1": 'Open a <code>&lt;dialog class="sk-dialog"&gt;</code> with <code>showModal()</code>, not a <code>div</code> with imitated roles.',
+    "dialog.lede": "Dialog stops the page until people decide something: confirming a deletion, completing a short step. It is the native <code>&lt;dialog&gt;</code> opened with <code>showModal()</code>, which already handles focus, Escape, the backdrop and the inert page; the only JavaScript is opening it.",
+    "dialog.anatomyBody": "An open dialog's header, body and footer.",
     "dialog.anatomyLabel": "Dialog anatomy",
     "dialog.anatomyPreviewLabel": "Dialog, part by part",
-    "dialog.confirmTitle": "Confirm",
+    "dialog.confirmTitle": "Confirmation: a decision before going on",
     "dialog.confirmJsComment": "Optional: read which button closed the form.",
-    "dialog.confirmAnatomy":
-      'Anatomy: <code>sk-dialog__header</code> (a title with <code>Heading</code> + <code>sk-dialog__title</code>, and a close button), <code>sk-dialog__body</code> and <code>sk-dialog__footer</code> (controls). The close button and the footer are a <code>&lt;form method="dialog"&gt;</code>: they close with no handler and leave the <code>value</code> in <code>dialog.returnValue</code>.',
-    "dialog.openingTitle": "Opening it",
-    "dialog.contractTitle": "Contract",
-    "dialog.contractItem1":
-      'Opens a <code>&lt;dialog class="sk-dialog"&gt;</code> with <code>showModal()</code>, not a <code>div</code> imitating the roles.',
-    "dialog.contractItem2":
-      'Anatomy: <code>sk-dialog__header</code> (<code>sk-heading sk-dialog__title</code> + <code>sk-dialog__close</code>), <code>sk-dialog__body</code>, <code>sk-dialog__footer</code> (controls, optional). The title is a <a class="sk-link sk-interactive" href="/components/heading">Heading</a> (almost always with <code>data-flush</code>).',
-    "dialog.contractItem3":
-      'Associates the title with <code>aria-labelledby</code> pointing at the Heading\'s <code>id</code> (or an equivalent accessible name).',
-    "dialog.contractItem4":
-      'Close and action controls use <code>&lt;form method="dialog"&gt;</code>; give each button a <code>value</code> if you need to know which one was chosen.',
-    "dialog.contractItem5":
-      "Don't add a focus trap of your own: <code>showModal()</code> already contains focus and restores it on close, and the kit makes <kbd>Tab</kbd> wrap at either end instead of leaving for the browser's toolbar.",
-    "dialog.contractItem6":
-      'Import <a class="sk-link sk-interactive" href="/scroll-lock">scroll lock</a> if you want to freeze the page behind it with no CLS when the scrollbar disappears.',
-    "dialog.contractItem7":
-      'With <a class="sk-link sk-interactive" href="/transparency"><code>prefers-reduced-transparency</code></a>, the backdrop drops the translucent blend for an opaque one; modality does not change.',
-    "dialog.contractItem8":
-      '<code>footerAlign</code> (<code>start</code> | <code>end</code>, React: <code>footerAlign</code>; default <code>end</code>) aligns the footer action row to the inline-start or inline-end. DOM order still controls which button sits left of which.',
-    "dialog.vaulTitle": "Option: Dialog Vaul",
-    "dialog.vaulIntro":
-      "When content asks for an edge-anchored surface on mobile, the same <code>&lt;dialog&gt;</code> can opt into <strong>Dialog Vaul</strong>: it adds slide, light-dismiss and drag-to-dismiss. Modality (focus, Escape, inert) still comes from <code>showModal()</code>.",
-    "dialog.vaulAddsTitle": "What it adds",
-    "dialog.vaulAddsItem1":
-      'Opens and closes with authored triggers and closers (<code>data-sk-dialog-vaul-open</code> / <code>-close</code>).',
-    "dialog.vaulAddsItem2": "Below <code>52rem</code>, lets you drag the handle toward <code>block-end</code>.",
-    "dialog.vaulAddsItem3": "Light-dismiss when the pointer lands outside the panel's rectangle.",
-    "dialog.vaulAddsItem4":
-      '<code>data-sk-dialog-vaul</code> opts into the enhancement; <code>data-edge="block-end"</code> names the edge. The handle is optional.',
+    "dialog.confirmAnatomy": "A header with title and close, a body and a footer with the actions. Open the dialog to try it.",
+    "dialog.openingTitle": "Opening it: one line",
+    "dialog.vaulTitle": "On mobile: a sheet from the bottom",
+    "dialog.vaulIntro": "<strong>Dialog Vaul</strong> is the same <code>&lt;dialog&gt;</code> that, below 52rem, slides up from the bottom edge and closes by dragging or tapping outside. Modality does not change.",
     "dialog.vaulInstallTitle": "Installing Dialog Vaul",
-    "dialog.a11yIntro":
-      "With <code>showModal()</code>, the platform already does almost all of the work (WCAG technique H102). The one thing the kit adds is that <kbd>Tab</kbd> wraps from the last control to the first, and <kbd>Shift + Tab</kbd> from the first to the last (decision 24). Do not reimplement the rest in JavaScript.",
-    "dialog.a11yItem1":
-      '<strong>On open</strong>, focus enters the dialog. With no <code>autofocus</code>, it lands on the first focusable control. In a destructive confirm, put <code>autofocus</code> on <strong>Cancel</strong> (the safe option), not on Delete or the close button.',
-    "dialog.a11yItem2":
-      '<strong>DOM order</strong>: the title comes <em>before</em> the close button. If the close button were the first focusable node and the content were long, <code>showModal()</code> could open the panel already scrolled to that control.',
-    "dialog.a11yItem3":
-      '<strong>Tab / Shift+Tab</strong> cycle between the dialog\'s controls. The page behind it is <code>inert</code>: it receives no focus. The browser chrome (address bar) is still reachable; that is intentional, not a bug.',
-    "dialog.a11yItem4":
-      '<strong>Escape</strong> closes the dialog (a <code>cancel</code> event) and restores focus to the trigger. It counts as dismissing, not confirming: the same empty/cancel <code>returnValue</code> as the close button with <code>value="cancel"</code>.',
-    "dialog.a11yItem5":
-      '<strong>On close</strong>, focus returns to whatever element opened the dialog, if it is still on the page. Nothing to save by hand.',
-    "dialog.a11yItem6":
-      'The close button is an <code>sk-button</code> with <code>data-icon-only</code> and <code>aria-label="Close"</code>. Its icon is decorative (<code>&lt;span data-sk-icon="close"&gt;</code>); the accessible name belongs to the button.',
+    "dialog.a11yIntro": "With <code>showModal()</code>, the platform does almost all the work (WCAG technique H102).",
     "dialog.borderTitle": "Always-on borders aren't just aesthetic",
     "dialog.borderBody":
       "In high contrast, the panel and the page resolve to the same color: softening <code>--sk-dialog-border-width</code> would leave the dialog invisible without a single test failing. That is why it ships at <code>1px</code> rather than <code>0</code>.",
-    "dialog.test1": "Closes through the platform's own <code>&lt;form method=\"dialog\"&gt;</code>, not a handler.",
+    "dialog.test1": 'Closes through the platform\'s own <code>&lt;form method="dialog"&gt;</code>, not a handler.',
     "dialog.test2": "Renders the anatomy the stylesheet contracts against.",
     "dialog.test3": "Omits the footer form when there is nothing to put in it.",
-    "dialog.showcaseTitle": "Showcases",
-    "dialog.showcaseBody": "A centred confirmation, and the same dialog as a sheet from the bottom on phones.",
-    "dialog.guidelinesLede": "Dialog stops the page until the person decides something.",
-    "dialog.guide.use1": "Use it for something that must be decided before going on: confirming a deletion, finishing a short step.",
-    "dialog.guide.use2": "Name the buttons by what they do, like \"Delete project\", not \"OK\".",
-    "dialog.guide.avoid1": "Information that does not block is a <a href=\"/components/popover\">Popover</a> or a <a href=\"/components/tooltip\">Tooltip</a>.",
-    "dialog.guide.avoid2": "A list of actions hanging from a button is a <a href=\"/components/menu\">Menu</a>.",
-    "dialog.guide.avoid3": "Long or navigable content needs its own page, not a modal box.",
+    "dialog.guidelinesLede": "A dialog interrupts: use it only when the decision cannot wait.",
+    "dialog.dd.clear.title": "Confirmation: make the decision clear",
+    "dialog.dd.clear.do": "The title names the action and the body explains what will be lost.",
+    "dialog.dd.clear.dont": "“Continue?” does not say what will happen or what each choice means.",
+    "dialog.dd.focus.title": "Initial focus: favor the safe choice",
+    "dialog.dd.focus.do": "When discarding changes, initial focus lands on “Keep editing”, the choice that preserves the work.",
+    "dialog.dd.focus.dont": "If initial focus lands on “Discard”, one accidental keystroke can erase the work.",
+    "dialog.dd.scope.title": "Scope: one brief decision, not a whole flow",
+    "dialog.dd.scope.do": "Accepting an invitation is one concrete choice people can resolve in a moment.",
+    "dialog.dd.scope.dont": "Long content forces scrolling inside the dialog: that flow needs its own page.",
+    "dialog.dd.interruption.title": "Interrupt: ask for a decision, not just inform",
+    "dialog.dd.interruption.do": "Revoking access changes who can enter: ask for confirmation before applying it.",
+    "dialog.dd.interruption.dont": "Do not open a dialog to say the profile was saved: report it without blocking the work.",
   },
 } as const;

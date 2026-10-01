@@ -12,12 +12,11 @@ import "@skryensya/core/patterns/box.css";
 import "@skryensya/core/patterns/icon.css";
 import "@skryensya/core/patterns/layout.css";
 import * as demos from "@docs/demos/qr-code";
-import { annotationDemoCss } from "@docs/demos/annotation";
-import { treeStory, withCss, localeOf, type Meta, type StoryObj } from "../tree-story";
+import { treeStory, localeOf, type Meta, type StoryObj } from "../tree-story";
 
 export default { title: "Components/Content/QRCode", tags: ["autodocs"] } satisfies Meta;
 
-export const Anatomy: StoryObj = treeStory((t) => demos.qrCodeAnatomyTree(t, localeOf(t)), { decorators: [withCss(annotationDemoCss)] });
+export const Anatomy: StoryObj = treeStory((t) => demos.qrCodeAnatomyTree(t, localeOf(t)));
 export const Default: StoryObj = treeStory((t) => demos.qrCodeTree(localeOf(t)));
 export const Sizes: StoryObj = treeStory((t) => demos.qrCodeSizesTree(localeOf(t)));
 export const Levels: StoryObj = treeStory((t) => demos.qrCodeLevelsTree(localeOf(t)));

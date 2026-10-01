@@ -6,9 +6,12 @@ import "@skryensya/core/patterns/anchored.css";
 import "@skryensya/core/components/annotation.css";
 import ComponentPageShell from "./ComponentPageShell.astro";
 import CodeBlock from "../CodeBlock.astro";
-import ComponentPreview from "../ComponentPreview.astro";
-import { megamenuAnatomyCss, megamenuAnatomyHtml, megamenuTree } from "../../demos/megamenu";
-import { getLocale, useTranslations } from "../../i18n";
+import UsagePreview from "../UsagePreview.astro";
+import WhenToUse from "../WhenToUse.astro";
+import ContentRules from "../ContentRules.astro";
+import A11yNotes from "../A11yNotes.astro";
+import { megamenuTree } from "../../demos/megamenu";
+import { getLocale, tList, useTranslations } from "../../i18n";
 
 const t = useTranslations(getLocale(Astro.url));
 
@@ -35,38 +38,27 @@ const hrefs = { overview: "#", pricing: "#", integrations: "#", teams: "#", ente
     { file: "patterns/anchored.css", probe: "sk-anchored", title: "Heredados de Anclaje" },
     { file: "patterns/nav-list.css", probe: "sk-nav-list", title: "Heredados de NavList" },
   ]}
-  testFiles={["packages/vanilla/src/components/megamenu.test.ts", "packages/react/src/components/megamenu.test.tsx"]}}
+  testFiles={["packages/vanilla/src/components/megamenu.test.ts", "packages/react/src/components/megamenu.test.tsx"]}
 >
   <Fragment slot="usage">
-    <p class="lede" set:html={t("megamenuPage.description")} />
+    <p class="lede" set:html={t("megamenuPage.lede")} />
 
-    <h3>{t("megamenuPage.showcaseTitle")}</h3>
-    <p set:html={t("megamenuPage.showcaseBody")} />
-    <ComponentPreview tree={megamenuTree(t, hrefs)} js={js} label="Megamenu" viewport="overlay" flush />
+    <h3>{t("component.examplesTitle")}</h3>
+    <h3>{t("megamenuPage.siteTitle")}</h3>
+    <p set:html={t("megamenuPage.siteBody")} />
+    <UsagePreview tree={megamenuTree(t, hrefs)} label="Megamenu" viewport="overlay" flush />
 
     <h3>{t("component.contractNotesTitle")}</h3>
-    <p set:html={t("megamenuPage.contractBody")} />
+    <ul>
+      {tList(t, "megamenuPage.contract").map((item) => <li set:html={item} />)}
+    </ul>
 
-    <h3>{t("component.anatomy")}</h3>
-    <p set:html={t("megamenuPage.anatomyBody")} />
-    <ComponentPreview
-      html={megamenuAnatomyHtml(t)}
-      css={megamenuAnatomyCss}
-      label={t("megamenuPage.anatomyPreviewLabel")}
-      screens={false}
-      hideSource
-      chrome={false}
-    />
   </Fragment>
 
   <Fragment slot="guidelines">
     <p class="lede" set:html={t("megamenuPage.guidelinesLede")} />
-    <ul>
-      <li set:html={t("megamenuPage.guide.use1")} />
-      <li set:html={t("megamenuPage.guide.avoid1")} />
-      <li set:html={t("megamenuPage.guide.avoid2")} />
-      <li set:html={t("megamenuPage.guide.avoid3")} />
-    </ul>
+    <WhenToUse use={tList(t, "megamenuPage.when")} avoid={tList(t, "megamenuPage.whenNot")} />
+    <ContentRules items={tList(t, "megamenuPage.content")} />
   </Fragment>
 
   <Fragment slot="install">
@@ -74,6 +66,15 @@ const hrefs = { overview: "#", pricing: "#", integrations: "#", teams: "#", ente
   </Fragment>
 
   <Fragment slot="a11y">
-    <p set:html={t("megamenuPage.a11yBody")} />
+    <A11yNotes
+      intro={t("megamenuPage.a11yIntro")}
+      does={tList(t, "megamenuPage.a11yDoes")}
+      yours={tList(t, "megamenuPage.a11yYours")}
+      keys={[
+        { keys: ["Enter", t("component.key.space")], action: t("megamenuPage.key.open") },
+        { keys: ["Tab", "Shift+Tab"], action: t("megamenuPage.key.tab") },
+        { keys: ["Esc"], action: t("megamenuPage.key.escape") },
+      ]}
+    />
   </Fragment>
 </ComponentPageShell>

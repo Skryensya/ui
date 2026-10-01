@@ -1,14 +1,15 @@
 import type { McpServer } from "@modelcontextprotocol/server";
 import {
-  applySiteAll,
+  tryAgentOperations,
   describeSite,
+  makerContext,
   parseSite,
   randomId,
-  resolveAgentOperations,
   type AgentSiteOperation,
   type MakerSite,
 } from "@skryensya/maker-model";
 import { z } from "zod";
+import { siteOperation } from "@skryensya/maker-agent/schema";
 import { provenance } from "./manifest.js";
 
 /*
@@ -24,44 +25,6 @@ import { provenance } from "./manifest.js";
  * STDIO ONLY: the local server talks to the local Maker (`MAKER_URL`, http://localhost:4200 by
  * default). The HTTP server has no Maker to talk to and does not offer these tools.
  */
-
-const place = z.object({
-  parent: z.string().describe("Id of the node whose slot receives it."),
-  slot: z.string().describe('The slot: "children" almost always; a named slot like "actions" otherwise.'),
-  index: z.number().int().min(0).describe("The gap among that slot's current children: 0 is before the first."),
-});
-
-const signatureRef = z.object({ contract: z.string(), signature: z.string() });
-const optionValue = z.union([z.string(), z.number(), z.boolean()]);
-
-const pageOperation = z.discriminatedUnion("type", [
-  z.object({
-    type: z.literal("insert"),
-    at: place,
-    tree: z.record(z.string(), z.unknown()).optional().describe("A usage tree, as validate_ui takes it."),
-    signature: signatureRef.optional().describe("Or a catalogue signature, inserted as its preset."),
-  }),
-  z.object({ type: z.literal("move"), child: z.string(), to: place }),
-  z.object({ type: z.literal("remove"), child: z.string() }),
-  z.object({
-    type: z.literal("wrap"),
-    children: z.array(z.string()).min(1).describe("Contiguous siblings of one slot, in order."),
-    with: signatureRef.extend({ options: z.record(z.string(), optionValue).optional() }).describe("The container: Stack, Inline, Grid, Box, Wrapper…"),
-  }),
-  z.object({ type: z.literal("unwrap"), node: z.string() }),
-  z.object({ type: z.literal("setOption"), node: z.string(), name: z.string(), value: optionValue.optional().describe("Omit to go back to the default.") }),
-  z.object({ type: z.literal("setAttr"), node: z.string(), name: z.string(), value: z.string().optional() }),
-  z.object({ type: z.literal("setText"), node: z.string(), slot: z.string().optional(), text: z.string() }),
-]);
-
-const siteOperation = z.discriminatedUnion("type", [
-  z.object({ type: z.literal("page"), page: z.string().describe("Page id."), operations: z.array(pageOperation).min(1) }),
-  z.object({ type: z.literal("addPage"), name: z.string(), path: z.string(), index: z.number().int().min(0).optional() }),
-  z.object({ type: z.literal("removePage"), page: z.string() }),
-  z.object({ type: z.literal("renamePage"), page: z.string(), name: z.string() }),
-  z.object({ type: z.literal("setPagePath"), page: z.string(), path: z.string() }),
-  z.object({ type: z.literal("movePage"), page: z.string(), index: z.number().int().min(0) }),
-]);
 
 const makerOutput = z.object({
   ...{ schemaVersion: z.string(), sourceHash: z.string() },
@@ -198,6 +161,45 @@ export function registerMakerTools(server: McpServer, makerUrl: string): void {
   );
 
   server.registerTool(
+    "maker_context",
+    {
+      title: "Read a Maker working context",
+      description: "Bounded semantic selection context. Selection and view are caller-supplied ephemeral evidence, not persisted project data.",
+      inputSchema: z.object({ project: z.string(), page: z.string(), selected: z.string().optional(), selectedIds: z.array(z.string()).max(32).default([]) }),
+      outputSchema: z.object({ schemaVersion: z.string(), sourceHash: z.string(), project: z.object({ id: z.string(), revision: z.number() }).optional(), page: z.object({ id: z.string(), name: z.string(), path: z.string() }).optional(), selection: z.record(z.string(), z.unknown()).optional(), view: z.record(z.string(), z.unknown()).optional() }).passthrough(),
+      annotations: { readOnlyHint: true, idempotentHint: true, openWorldHint: false },
+    },
+    async ({ project, page, selected, selectedIds }) => guard(async () => {
+      const row = await maker.get(project);
+      if (typeof row === "string") return refusedAnswer(row);
+      const context = makerContext(siteOf(row), { id: project, revision: row.revision }, {
+        page, selected, selectedIds, width: "fit", scheme: "light", contrast: false, density: "default", mode: "edit",
+      });
+      return { content: [{ type: "text" as const, text: JSON.stringify(context) }], structuredContent: { ...provenance, ...context } };
+    }),
+  );
+
+  server.registerTool(
+    "maker_try",
+    {
+      title: "Try Maker operations without saving",
+      description: "Resolve and validate the same closed operations as maker_apply on a temporary site. Returns the resulting outline or refusal; never saves.",
+      inputSchema: z.object({ project: z.string(), revision: z.number().int().min(0), operations: z.array(siteOperation).min(1).max(100) }),
+      outputSchema: makerOutput,
+      annotations: { readOnlyHint: true, idempotentHint: false, openWorldHint: false },
+    },
+    async ({ project, revision, operations }) => guard(async () => {
+      const row = await maker.get(project);
+      if (typeof row === "string") return refusedAnswer(row);
+      const site = siteOf(row);
+      const current = { ...provenance, project, revision: row.revision, outline: describeSite(site) };
+      if (revision !== row.revision) return answer({ ...current, refused: "Revision conflict. Re-read before proposing." }, true);
+      const result = tryAgentOperations(site, operations as AgentSiteOperation[], randomId);
+      return result.ok ? answer({ ...current, outline: describeSite(result.site) }) : answer({ ...current, refused: result.reason }, true);
+    }),
+  );
+
+  server.registerTool(
     "maker_apply",
     {
       title: "Change a Maker project, by operations",
@@ -230,9 +232,7 @@ export function registerMakerTools(server: McpServer, makerUrl: string): void {
         if (args.revision !== undefined && args.revision !== row.revision) {
           return answer({ ...current, refused: `The project is at revision ${row.revision}, not ${args.revision}: it changed since you read it. Nothing was applied; re-read the outline below.` }, true);
         }
-        const resolved = resolveAgentOperations(site, operations, randomId);
-        if (!resolved.ok) return answer({ ...current, refused: resolved.reason }, true);
-        const applied = applySiteAll(site, resolved.value);
+        const applied = tryAgentOperations(site, operations, randomId);
         if (!applied.ok) return answer({ ...current, refused: applied.reason }, true);
         const saved = await maker.save(args.project, row.revision, applied.site);
         if (!saved.ok && "current" in saved) {

@@ -7,9 +7,11 @@ import "@skryensya/core/components/annotation.css";
 import ComponentPageShell from "./ComponentPageShell.astro";
 import AppearanceMenu from "../AppearanceMenu.astro";
 import CodeBlock from "../CodeBlock.astro";
-import ComponentPreview from "../ComponentPreview.astro";
 import UsagePreview from "../UsagePreview.astro";
 import DoDont from "../DoDont.astro";
+import WhenToUse from "../WhenToUse.astro";
+import ContentRules from "../ContentRules.astro";
+import A11yNotes from "../A11yNotes.astro";
 import {
   numberFieldAnatomyTree,
   numberFieldDontApproxTree,
@@ -17,7 +19,7 @@ import {
   numberFieldTree,
 } from "../../demos/number-field";
 import { annotationDemoCss } from "../../demos/annotation";
-import { getLocale, useTranslations } from "../../i18n";
+import { getLocale, tList, useTranslations } from "../../i18n";
 import { variantsTree } from "../../demos/variants";
 
 const t = useTranslations(getLocale(Astro.url));
@@ -31,47 +33,48 @@ const styles = `@import "@skryensya/core/patterns/state-layer.css";
   description={t("numberFieldPage.description")}
   contractId="number-field"
   appearanceTargetSelector=".sk-number-field"
-  testFiles={["packages/vanilla/src/components/number-field.test.ts", "packages/react/src/components/number-field.test.tsx"]}}
+  testFiles={["packages/vanilla/src/components/number-field.test.ts", "packages/react/src/components/number-field.test.tsx"]}
 >
   <Fragment slot="appearance">
     <AppearanceMenu label={t("prefs.appearance")} values={["plain", "brutalist", "frosted"]} unavailable={{ tactile: t("prefs.appearanceTactileUnavailable") }} />
   </Fragment>
 
   <Fragment slot="usage">
-    <p class="lede" set:html={t("numberFieldPage.description")} />
+    <p class="lede" set:html={t("numberFieldPage.lede")} />
 
-    <h3>{t("numberFieldPage.showcaseTitle")}</h3>
-    <p set:html={t("numberFieldPage.showcaseBody")} />
-    <ComponentPreview tree={numberFieldTree(t)} label="NumberField" viewport="auto" />
-
-    <h3>{t("component.contractNotesTitle")}</h3>
-    <p set:html={t("numberFieldPage.contractBody")} />
-
+    <h3>{t("component.examplesTitle")}</h3>
+    <UsagePreview tree={numberFieldSingleTree(t)} title={t("numberFieldPage.quantityTitle")} description={t("numberFieldPage.quantityBody")} />
     <UsagePreview
       tree={variantsTree(numberFieldSingleTree(t), [{ label: t("component.state.default"), options: {} }, { label: t("component.state.readOnly"), options: { readOnly: true } }, { label: t("component.state.invalid"), options: { invalid: true } }, { label: t("component.state.disabled"), options: { disabled: true } }])}
       title={t("component.statesTitle")}
       description={t("component.statesBody")}
     />
 
+
+    <h3>{t("component.contractNotesTitle")}</h3>
+    <ul>
+      {tList(t, "numberFieldPage.contract").map((item) => <li set:html={item} />)}
+    </ul>
+
     <h3>{t("component.anatomy")}</h3>
     <p set:html={t("numberFieldPage.anatomyBody")} />
-    <ComponentPreview
+    <UsagePreview
       tree={numberFieldAnatomyTree(t)}
       css={annotationDemoCss}
       label={t("numberFieldPage.anatomyPreviewLabel")}
-      screens={false}
-      hideSource
-      chrome={false}
+      bare
     />
   </Fragment>
 
   <Fragment slot="guidelines">
     <p class="lede" set:html={t("numberFieldPage.guidelinesLede")} />
+    <WhenToUse use={tList(t, "numberFieldPage.when")} avoid={tList(t, "numberFieldPage.whenNot")} />
     <DoDont
       title={t("numberFieldPage.dd.exact.title")}
       do={{ tree: numberFieldSingleTree(t), caption: t("numberFieldPage.dd.exact.do") }}
       dont={{ tree: numberFieldDontApproxTree(t), caption: t("numberFieldPage.dd.exact.dont") }}
     />
+    <ContentRules items={tList(t, "numberFieldPage.content")} />
   </Fragment>
 
   <Fragment slot="install">
@@ -79,6 +82,14 @@ const styles = `@import "@skryensya/core/patterns/state-layer.css";
   </Fragment>
 
   <Fragment slot="a11y">
-    <p set:html={t("numberFieldPage.a11yBody")} />
+    <A11yNotes
+      intro={t("numberFieldPage.a11yIntro")}
+      does={tList(t, "numberFieldPage.a11yDoes")}
+      yours={tList(t, "numberFieldPage.a11yYours")}
+      keys={[
+        { keys: ["↑", "↓"], action: t("numberFieldPage.key.arrows") },
+        { keys: [t("component.key.home"), t("component.key.end")], action: t("numberFieldPage.key.homeEnd") },
+      ]}
+    />
   </Fragment>
 </ComponentPageShell>

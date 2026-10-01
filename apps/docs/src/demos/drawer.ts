@@ -117,6 +117,59 @@ export const drawerTree = (t: Translate): UsageTree => ({
   ],
 });
 
+/**
+ * A small, zoomed-out viewport specimen for the close-control guideline. A real drawer is fixed to
+ * the viewport, which a clipped Do/Don't card cannot show faithfully; freeze the whole scene so the
+ * reader can see the edge panel, the scrim and the page it covers at once.
+ */
+export const drawerGuideHtml = (t: Translate, withClose: boolean): string => `<div class="drawer-guide__viewport">
+  <div class="drawer-guide__page" aria-hidden="true">
+    <strong class="drawer-guide__page-title">${t("demo.drawer.pageTitle")}</strong>
+    <span class="drawer-guide__page-line drawer-guide__page-line--long"></span>
+    <span class="drawer-guide__page-line"></span>
+    <div class="drawer-guide__page-card"><strong>${t("demo.drawer.pageCard")}</strong><span>${t("demo.drawer.pageCardBody")}</span></div>
+    <span class="drawer-guide__page-line drawer-guide__page-line--short"></span>
+  </div>
+  <div class="drawer-guide__scrim"></div>
+  <dialog class="sk-vaul sk-drawer drawer-guide__panel" open aria-label="${t("demo.drawer.label")}">
+    <header class="drawer-guide__header">
+      <strong>${t("demo.drawer.brand")}</strong>
+      ${withClose ? `<button class="sk-button sk-interactive drawer-guide__close" type="button" aria-label="${t("demo.drawer.close")}">×</button>` : ""}
+    </header>
+    <nav class="drawer-guide__nav" aria-label="${t("demo.drawer.main")}">
+      <span class="drawer-guide__section">${t("demo.drawer.work")}</span>
+      <span class="drawer-guide__link drawer-guide__link--current">${t("demo.drawer.summary")}</span>
+      <span class="drawer-guide__link">${t("demo.drawer.agenda")}</span>
+      <span class="drawer-guide__link">${t("demo.drawer.files")}</span>
+      <span class="drawer-guide__section">${t("demo.drawer.account")}</span>
+      <span class="drawer-guide__link">${t("demo.drawer.settings")}</span>
+    </nav>
+    <footer class="drawer-guide__footer"><span class="drawer-guide__avatar">AK</span><strong>${t("demo.drawer.userName")}</strong></footer>
+  </dialog>
+</div>`;
+
+/** Match the panel's visible heading to a specific accessible name, rather than a generic label. */
+export const drawerNameGuideHtml = (t: Translate, specific: boolean): string => {
+  const name = t(specific ? "demo.drawer.filters" : "demo.drawer.genericPanel");
+  return `<div class="drawer-guide__viewport">
+    <div class="drawer-guide__page" aria-hidden="true"><strong class="drawer-guide__page-title">${t("demo.drawer.pageTitle")}</strong><span class="drawer-guide__page-line drawer-guide__page-line--long"></span><span class="drawer-guide__page-line"></span></div>
+    <div class="drawer-guide__scrim"></div>
+    <dialog class="sk-vaul sk-drawer drawer-guide__panel" open aria-label="${name}">
+      <header class="drawer-guide__header"><strong>${name}</strong></header>
+      <div class="drawer-guide__nav">${t("demo.drawer.nameBody")}</div>
+    </dialog>
+  </div>`;
+};
+
+/** A short blocking decision belongs in a centered Dialog, not a full-height Drawer. */
+export const drawerDecisionGuideHtml = (t: Translate, useDrawer: boolean): string => `<div class="drawer-guide__viewport">
+  <div class="drawer-guide__page" aria-hidden="true"><strong class="drawer-guide__page-title">${t("demo.drawer.pageTitle")}</strong><span class="drawer-guide__page-line drawer-guide__page-line--long"></span><span class="drawer-guide__page-line"></span></div>
+  <div class="drawer-guide__scrim"></div>
+  ${useDrawer
+    ? `<dialog class="sk-vaul sk-drawer drawer-guide__panel" open aria-label="${t("demo.drawer.decisionTitle")}"><header class="drawer-guide__header"><strong>${t("demo.drawer.decisionTitle")}</strong></header><div class="drawer-guide__nav">${t("demo.drawer.decisionBody")}<div class="drawer-guide__actions"><span>${t("demo.drawer.decisionCancel")}</span><strong>${t("demo.drawer.decisionConfirm")}</strong></div></div></dialog>`
+    : `<div class="drawer-guide__decision"><strong>${t("demo.drawer.decisionTitle")}</strong><p>${t("demo.drawer.decisionBody")}</p><div class="drawer-guide__actions"><span>${t("demo.drawer.decisionCancel")}</span><strong>${t("demo.drawer.decisionConfirm")}</strong></div></div>`}
+</div>`;
+
 /** Opening is a call, never markup: the same escape hatch the dialog and the palette use. */
 export { default as drawerScript } from "./scripts/drawer-open.ts?raw";
 

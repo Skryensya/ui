@@ -2213,6 +2213,18 @@
         "date": null,
         "entries": [
           {
+            "date": "2026-09-30",
+            "en": {
+              "body": "Line and area no longer depend on <code>@skryensya/charts</code>: the React Chart and the Vanilla enhancer draw them from core's geometry (<code>chartLinePath</code>, <code>chartAreaPath</code>). The React-only <code>overlay</code> prop is gone; <code>@skryensya/charts/react</code> re-exports the same Chart.",
+              "title": "<code>line</code> and <code>area</code> draw in both bindings"
+            },
+            "es": {
+              "body": "La línea y el área ya no dependen de <code>@skryensya/charts</code>: el Chart de React y el enhancer de Vanilla las dibujan desde la geometría de core (<code>chartLinePath</code>, <code>chartAreaPath</code>). La prop <code>overlay</code>, que solo existía en React, desaparece; <code>@skryensya/charts/react</code> reexporta el mismo Chart.",
+              "title": "<code>line</code> y <code>area</code> se dibujan en las dos bibliotecas"
+            },
+            "kind": "feature"
+          },
+          {
             "date": "2026-09-17",
             "en": {
               "body": "The surface hash now projects options through a whitelist (no <code>machineInput</code>), includes <code>eventDetails</code>, and still excludes the template (<code>also</code>, ephemeral attrs). This contract's API did not change; only what the hash measures did.",
@@ -3304,98 +3316,6 @@
         "version": "0.0.1-dev"
       }
     ],
-    "component-preview": [
-      {
-        "date": null,
-        "entries": [
-          {
-            "date": "2026-09-19",
-            "en": {
-              "body": "A click used to change the preset for every preview on the page at once. Changing the preset is usually a question asked of ONE demo, and answering it by moving the rest throws away wherever the reader had left them, so a plain click now moves that stage alone and never touches the saved preference. <code>Shift</code> + click is the broadcast: everything follows, the choice is saved, and it reaches previews that had already been nudged by hand, which is how the page is put back in step. The shared preference still exists and is what seeds every preview on load. A preview that owns its preset outright is unchanged: it neither reads the shared preference nor follows a broadcast.",
-              "title": "The screen preset becomes each preview's, and Shift broadcasts it"
-            },
-            "es": {
-              "body": "Antes un click cambiaba el preset de todos los previews de la página a la vez. Cambiar el preset suele ser una pregunta sobre UNA demo, y responderla moviendo el resto tira donde el lector los había dejado, así que ahora un click normal mueve sólo ese stage y no toca la preferencia guardada. <code>Shift</code> + click es la difusión: cambian todos, se guarda, y alcanza también a los previews que ya se habían movido a mano, que es la forma de volver a poner la página en fila. La preferencia compartida sigue existiendo y es la que siembra a todos al cargar. El preview que declara su preset por cuenta propia no cambia: no lee la preferencia compartida ni sigue una difusión.",
-              "title": "El preset de pantalla pasa a ser de cada preview, y Shift lo difunde"
-            },
-            "kind": "rework"
-          },
-          {
-            "date": "2026-09-17",
-            "en": {
-              "body": "<code>eventDetails</code> declares <code>source</code> (part that dispatches the CustomEvent) and, when clear, <code>trigger</code> (part the user activates). An agent knows where to listen and which control causes the event.",
-              "title": "eventDetails names source and trigger"
-            },
-            "es": {
-              "body": "<code>eventDetails</code> declara <code>source</code> (parte que despacha el CustomEvent) y, cuando es claro, <code>trigger</code> (parte que el usuario activa). Un agente sabe dónde escuchar y qué control provoca el evento.",
-              "title": "eventDetails nombra source y trigger"
-            },
-            "kind": "feature"
-          },
-          {
-            "date": "2026-09-17",
-            "en": {
-              "body": "The surface hash now projects options through a whitelist (no <code>machineInput</code>), includes <code>eventDetails</code>, and still excludes the template (<code>also</code>, ephemeral attrs). This contract's API did not change; only what the hash measures did.",
-              "title": "Surface hash measures the public promise"
-            },
-            "es": {
-              "body": "El hash de superficie ahora proyecta opciones por lista blanca (sin <code>machineInput</code>), incluye <code>eventDetails</code>, y sigue excluyendo la plantilla (<code>also</code>, attrs efímeros). Este contrato no cambió su API; sólo cambió lo que el hash mide.",
-              "title": "El hash de superficie mide la promesa pública"
-            },
-            "kind": "chore"
-          },
-          {
-            "date": "2026-09-17",
-            "en": {
-              "body": "<code>events.bindingChange</code> and <code>events.screenChange</code> document the CustomEvents the full enhancer publishes on <code>document</code> when Vanilla|React or the screen preset changes. <code>ComponentPreview.bare</code> does not fire them; they remain the family's DOM channel. React types <code>title</code>/<code>note</code> as string, matching the text slots.",
-              "title": "The contract declares the document preference events"
-            },
-            "es": {
-              "body": "<code>events.bindingChange</code> y <code>events.screenChange</code> documentan los CustomEvent que el enhancer completo publica en <code>document</code> cuando cambia Vanilla| React o el preset de pantalla. <code>ComponentPreview.bare</code> no los dispara; siguen siendo el canal DOM de la familia. React tipa <code>title</code>/<code>note</code> como string, alineado con los slots de texto.",
-              "title": "El contrato declara los eventos de preferencia del documento"
-            },
-            "kind": "feature"
-          },
-          {
-            "date": "2026-09-12",
-            "en": {
-              "body": "The contract now publishes this component's <code>30</code> styling hooks. Nothing you wrote changes: the same hooks, under the same names, and the stylesheet was not touched. What is new is that the contract declares them, so the compiler fails when the stylesheet declares one the contract does not publish, or the contract promises one the stylesheet never declares. That second half is the one that matters: until now, re-declaring a hook that no longer existed was not an error, it was silence.",
-              "title": "component-preview's styling hooks are now declared in the contract"
-            },
-            "es": {
-              "body": "El contrato ahora publica los <code>30</code> styling hooks de este componente. Nada de lo que hayas escrito cambia: son los mismos hooks, con los mismos nombres, y la hoja de estilos no se tocó. Lo nuevo es que el contrato los declara, así que el compilador falla si la hoja declara uno que el contrato no publica, o si el contrato promete uno que la hoja no declara. Esa segunda mitad es la que importa: hasta ahora, redeclarar un hook que ya no existía no daba error, daba silencio.",
-              "title": "Los styling hooks de component-preview quedan declarados en el contrato"
-            },
-            "kind": "feature"
-          },
-          {
-            "date": "2026-09-12",
-            "en": {
-              "body": "The previous batch over-published these lists. They were generated by counting every <code>--sk-*</code> a stylesheet <em>declares</em>, and tuning another component's hook inside your own scope counted as publishing it: seventeen contracts ended up claiming <code>--sk-icon-size</code>. A hook now belongs to the sheet that declares it without naming another family, and the gate uses that same rule. No styling changes; what changes is whose each hook is said to be.",
-              "title": "The styling hook list stops claiming other components' hooks"
-            },
-            "es": {
-              "body": "El lote anterior publico estas listas de mas. Se generaron contando todo <code>--sk-*</code> que la hoja <em>declara</em>, y afinar el hook de otro componente dentro del propio scope contaba como publicarlo: diecisiete contratos terminaron reclamando <code>--sk-icon-size</code>. Ahora un hook pertenece a la hoja que lo declara sin nombrar otra familia, y el gate usa esa misma regla. Ningun estilo cambia; cambia de quien se dice que es cada hook.",
-              "title": "La lista de styling hooks deja de reclamar los de otros componentes"
-            },
-            "kind": "bugfix"
-          },
-          {
-            "date": "2026-08-11",
-            "en": {
-              "body": "It joins the catalogue with <code>ComponentPreview.bare</code>: both bindings realize it, and this page's reference is rendered from the compiled contract rather than from prose written beside it. The Vanilla binding mounts on <code>data-sk-component-preview</code>: the markup is authored and the enhancer hydrates it, so whatever needs no JavaScript works before any runs. It has no options: the element IS the meaning. Its stylesheet is <code>components/component-preview.css</code>.",
-              "title": "ComponentPreview is published as a contract, with one signature"
-            },
-            "es": {
-              "body": "Entra al catálogo con <code>ComponentPreview.bare</code>: los dos bindings lo realizan, y la referencia de esta página sale del contrato compilado en vez de prosa escrita al lado. El binding Vanilla monta sobre <code>data-sk-component-preview</code>: el markup se autora y el enhancer lo hidrata, así que lo que no necesita JavaScript funciona antes de que corra ninguno. No tiene opciones: el elemento ES el significado. La hoja es <code>components/component-preview.css</code>.",
-              "title": "ComponentPreview se publica como contrato, con una signature"
-            },
-            "kind": "feature"
-          }
-        ],
-        "version": "0.0.1-dev"
-      }
-    ],
     "content": [
       {
         "date": null,
@@ -4205,6 +4125,18 @@
       {
         "date": null,
         "entries": [
+          {
+            "date": "2026-09-30",
+            "en": {
+              "body": "The mask no longer fades the FadeEdge's own scrollbar: the bindings measure its thickness and keep it out. New <code>horizontal</code> and <code>vertical</code> directions fade both ends of the axis; with <code>scrollAware</code>, each retires at its own edge. Where the browser has scroll timelines, <code>scrollAware</code> works in CSS from the first frame, without waiting for script. The enhancer now mounts on every FadeEdge.",
+              "title": "FadeEdge keeps its scrollbar visible and fades both ends"
+            },
+            "es": {
+              "body": "La máscara ya no desvanece la barra de scroll del propio FadeEdge: los bindings miden su grosor y lo reservan. Nuevas direcciones <code>horizontal</code> y <code>vertical</code> que desvanecen los dos extremos del eje; con <code>scrollAware</code>, cada uno se retira al llegar a su borde. Donde el navegador tiene scroll timelines, <code>scrollAware</code> funciona en CSS desde el primer cuadro, sin esperar al script. El enhancer ahora se monta en todo FadeEdge.",
+              "title": "FadeEdge deja la barra de scroll a la vista y desvanece ambos extremos"
+            },
+            "kind": "feature"
+          },
           {
             "date": "2026-09-25",
             "en": {
@@ -12235,6 +12167,18 @@
       {
         "date": null,
         "entries": [
+          {
+            "date": "2026-09-30",
+            "en": {
+              "body": "While the roster arrives, UserSelect shows a Loader and the <code>loading</code> string instead of its rows, and announces it. It used to be a React-only prop; it is now the <code>loading</code> option (<code>data-loading</code>), so Vanilla draws the same row and a usage tree can ask for it.",
+              "title": "<code>loading</code> is a contract option"
+            },
+            "es": {
+              "body": "Mientras la lista llega, UserSelect muestra un Loader y el texto <code>loading</code> en lugar de sus filas, y lo anuncia. Antes era una prop solo de React; ahora es la opción <code>loading</code> (<code>data-loading</code>), así que Vanilla dibuja la misma fila y un árbol de uso puede pedirla.",
+              "title": "<code>loading</code> es una opción del contrato"
+            },
+            "kind": "feature"
+          },
           {
             "date": "2026-09-27",
             "en": {
@@ -23744,307 +23688,6 @@
         }
       }
     },
-    "component-preview": {
-      "bindings": {
-        "ComponentPreview.bare": {
-          "enhancer": "data-sk-component-preview",
-          "markup": true,
-          "portals": false,
-          "react": "@skryensya/react/component-preview#ComponentPreviewBare"
-        }
-      },
-      "category": "content",
-      "css": "@skryensya/core/components/component-preview.css",
-      "eventDetails": {
-        "bindingChange": {
-          "detail": {
-            "value": "string"
-          },
-          "reactProp": false,
-          "source": "root",
-          "trigger": "bindingTabs"
-        },
-        "screenChange": {
-          "detail": {
-            "value": "string"
-          },
-          "reactProp": false,
-          "source": "root",
-          "trigger": "screenTabs"
-        }
-      },
-      "events": {
-        "bindingChange": "sk:componentpreviewbindingchange",
-        "screenChange": "sk:componentpreviewscreenchange"
-      },
-      "hookDetails": {
-        "--sk-component-preview-bg": {
-          "default": "var(--color-bg-surface)",
-          "output": false,
-          "part": "root",
-          "sheet": "@skryensya/core/components/component-preview.css"
-        },
-        "--sk-component-preview-border-color": {
-          "default": "var(--color-border-subtle)",
-          "output": false,
-          "part": "root",
-          "sheet": "@skryensya/core/components/component-preview.css"
-        },
-        "--sk-component-preview-grip-active-fg": {
-          "default": "var(--color-border-accent)",
-          "output": false,
-          "part": "root",
-          "sheet": "@skryensya/core/components/component-preview.css"
-        },
-        "--sk-component-preview-grip-block-size": {
-          "default": "0.1875rem",
-          "output": false,
-          "part": "root",
-          "sheet": "@skryensya/core/components/component-preview.css"
-        },
-        "--sk-component-preview-grip-fg": {
-          "default": "var(--color-border-default)",
-          "output": false,
-          "part": "root",
-          "sheet": "@skryensya/core/components/component-preview.css"
-        },
-        "--sk-component-preview-grip-inline-size": {
-          "default": "2rem",
-          "output": false,
-          "part": "root",
-          "sheet": "@skryensya/core/components/component-preview.css"
-        },
-        "--sk-component-preview-header-bg": {
-          "default": "var(--color-bg-surface-sunken)",
-          "output": false,
-          "part": "root",
-          "sheet": "@skryensya/core/components/component-preview.css"
-        },
-        "--sk-component-preview-loader-fg": {
-          "default": "var(--color-text-accent)",
-          "output": false,
-          "part": "root",
-          "sheet": "@skryensya/core/components/component-preview.css"
-        },
-        "--sk-component-preview-mat-bg": {
-          "default": "var(--color-bg-surface-sunken)",
-          "output": false,
-          "part": "root",
-          "sheet": "@skryensya/core/components/component-preview.css"
-        },
-        "--sk-component-preview-mat-dot-color": {
-          "default": "color-mix(\n      in oklab,\n      var(--color-border-accent) 55%,\n      transparent\n    )",
-          "output": false,
-          "part": "root",
-          "sheet": "@skryensya/core/components/component-preview.css"
-        },
-        "--sk-component-preview-mat-dot-gap": {
-          "default": "1.25rem",
-          "output": false,
-          "part": "root",
-          "sheet": "@skryensya/core/components/component-preview.css"
-        },
-        "--sk-component-preview-mat-dot-size": {
-          "default": "1.5px",
-          "output": false,
-          "part": "root",
-          "sheet": "@skryensya/core/components/component-preview.css"
-        },
-        "--sk-component-preview-mat-veil": {
-          "default": "color-mix(\n      in oklab,\n      var(--sk-component-preview-mat-bg) 55%,\n      transparent\n    )",
-          "output": false,
-          "part": "root",
-          "sheet": "@skryensya/core/components/component-preview.css"
-        },
-        "--sk-component-preview-mat-veil-reach": {
-          "default": "85%",
-          "output": false,
-          "part": "root",
-          "sheet": "@skryensya/core/components/component-preview.css"
-        },
-        "--sk-component-preview-note-fg": {
-          "default": "var(--color-text-tertiary)",
-          "output": false,
-          "part": "root",
-          "sheet": "@skryensya/core/components/component-preview.css"
-        },
-        "--sk-component-preview-resizer-inline-size": {
-          "default": "6rem",
-          "output": false,
-          "part": "root",
-          "sheet": "@skryensya/core/components/component-preview.css"
-        },
-        "--sk-component-preview-resizer-size": {
-          "default": "0.75rem",
-          "output": false,
-          "part": "root",
-          "sheet": "@skryensya/core/components/component-preview.css"
-        },
-        "--sk-component-preview-screen-inline-size": {
-          "default": "100%",
-          "output": false,
-          "part": "stage",
-          "sheet": "@skryensya/core/components/component-preview.css"
-        },
-        "--sk-component-preview-screen-xl": {
-          "default": "1440px",
-          "output": false,
-          "part": "root",
-          "sheet": "@skryensya/core/components/component-preview.css"
-        },
-        "--sk-component-preview-stage-min-block-size": {
-          "default": "12rem",
-          "output": false,
-          "part": "root",
-          "sheet": "@skryensya/core/components/component-preview.css"
-        },
-        "--sk-component-preview-stage-padding": {
-          "default": "var(--space-inset-lg)",
-          "output": false,
-          "part": "frameBody",
-          "sheet": "@skryensya/core/components/component-preview.css"
-        },
-        "--sk-component-preview-title-fg": {
-          "default": "var(--color-text-secondary)",
-          "output": false,
-          "part": "root",
-          "sheet": "@skryensya/core/components/component-preview.css"
-        }
-      },
-      "hooks": [
-        "--sk-component-preview-bg",
-        "--sk-component-preview-border-color",
-        "--sk-component-preview-grip-active-fg",
-        "--sk-component-preview-grip-block-size",
-        "--sk-component-preview-grip-fg",
-        "--sk-component-preview-grip-inline-size",
-        "--sk-component-preview-header-bg",
-        "--sk-component-preview-loader-fg",
-        "--sk-component-preview-mat-bg",
-        "--sk-component-preview-mat-dot-color",
-        "--sk-component-preview-mat-dot-gap",
-        "--sk-component-preview-mat-dot-size",
-        "--sk-component-preview-mat-veil",
-        "--sk-component-preview-mat-veil-reach",
-        "--sk-component-preview-note-fg",
-        "--sk-component-preview-resizer-inline-size",
-        "--sk-component-preview-resizer-size",
-        "--sk-component-preview-screen-inline-size",
-        "--sk-component-preview-screen-xl",
-        "--sk-component-preview-stage-min-block-size",
-        "--sk-component-preview-stage-padding",
-        "--sk-component-preview-title-fg"
-      ],
-      "id": "component-preview",
-      "options": {},
-      "parts": {
-        "actions": "sk-component-preview__actions",
-        "binding": "sk-component-preview__binding",
-        "bindingTabs": "sk-component-preview__binding-tabs",
-        "code": "sk-component-preview__code",
-        "frameBody": "sk-component-preview__frame-body",
-        "header": "sk-component-preview__header",
-        "loading": "sk-component-preview__loading",
-        "note": "sk-component-preview__note",
-        "reload": "sk-component-preview__reload",
-        "resizer": "sk-component-preview__resizer",
-        "root": "sk-component-preview",
-        "screenTabs": "sk-component-preview__screen-tabs",
-        "sourceTabs": "sk-component-preview__source-tabs",
-        "stage": "sk-component-preview__stage",
-        "title": "sk-component-preview__title"
-      },
-      "semantics": {
-        "ComponentPreview.bare": {
-          "alternatives": [
-            "CodePreview"
-          ],
-          "avoidWhen": [
-            "Vanilla and React of the SAME component have to be compared: that is this site's machinery, not a published contract",
-            "the block is only code, with nothing to show above it: that is CodePreview alone"
-          ],
-          "useWhen": [
-            "something has to be shown next to its source code: an example, a demo, a use case",
-            "the docs surface does not need to compare two bindings or screen presets"
-          ]
-        }
-      },
-      "signatures": {
-        "ComponentPreview.bare": {
-          "host": {
-            "element": "div"
-          },
-          "intent": [
-            "labelled-demo",
-            "show-something-with-its-source",
-            "example-with-code"
-          ],
-          "mount": "data-sk-component-preview",
-          "options": [],
-          "react": {
-            "from": "@skryensya/react/component-preview",
-            "name": "ComponentPreviewBare"
-          },
-          "slots": {
-            "code": {
-              "accepts": "signature",
-              "of": [
-                "CodePreview",
-                "CodePreview.density"
-              ],
-              "required": true
-            },
-            "note": {
-              "accepts": "text"
-            },
-            "stage": {
-              "accepts": "node",
-              "required": true
-            },
-            "title": {
-              "accepts": "text",
-              "required": true
-            }
-          },
-          "template": {
-            "children": [
-              {
-                "children": [
-                  {
-                    "element": "span",
-                    "part": "title",
-                    "slot": "title"
-                  },
-                  {
-                    "element": "span",
-                    "part": "note",
-                    "slot": "note",
-                    "whenGiven": "note"
-                  }
-                ],
-                "element": "header",
-                "part": "header",
-                "whenGiven": [
-                  "title",
-                  "note"
-                ]
-              },
-              {
-                "element": "div",
-                "part": "stage",
-                "slot": "stage"
-              },
-              {
-                "slot": "code"
-              }
-            ],
-            "element": "div",
-            "host": true,
-            "part": "root"
-          }
-        }
-      }
-    },
     "content": {
       "a11y": [
         {
@@ -27328,8 +26971,38 @@
       "category": "layout",
       "css": "@skryensya/core/components/fade-edge.css",
       "hookDetails": {
+        "--sk-fade-edge-axis": {
+          "default": "y",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/fade-edge.css"
+        },
         "--sk-fade-edge-color": {
           "default": "var(--color-bg-canvas)",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/fade-edge.css"
+        },
+        "--sk-fade-edge-gutter-block": {
+          "default": "0px",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/fade-edge.css"
+        },
+        "--sk-fade-edge-gutter-inline": {
+          "default": "0px",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/fade-edge.css"
+        },
+        "--sk-fade-edge-mask-far": {
+          "default": "var(--sk-fade-edge-ramp-far)",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/fade-edge.css"
+        },
+        "--sk-fade-edge-mask-near": {
+          "default": "var(--sk-fade-edge-ramp-near)",
           "output": false,
           "part": "root",
           "sheet": "@skryensya/core/components/fade-edge.css"
@@ -27346,6 +27019,18 @@
           "part": "root",
           "sheet": "@skryensya/core/components/fade-edge.css"
         },
+        "--sk-fade-edge-ramp-far": {
+          "default": "linear-gradient(to bottom, #000 0%, var(--sk-fade-edge-mask-ramp))",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/fade-edge.css"
+        },
+        "--sk-fade-edge-ramp-near": {
+          "default": "linear-gradient(#000 0 0)",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/fade-edge.css"
+        },
         "--sk-fade-edge-size": {
           "default": "4rem",
           "output": false,
@@ -27355,7 +27040,14 @@
       },
       "hooks": [
         "--sk-fade-edge-color",
+        "--sk-fade-edge-gutter-block",
+        "--sk-fade-edge-gutter-inline",
+        "--sk-fade-edge-axis",
+        "--sk-fade-edge-mask-far",
+        "--sk-fade-edge-mask-near",
         "--sk-fade-edge-mask-ramp",
+        "--sk-fade-edge-ramp-far",
+        "--sk-fade-edge-ramp-near",
         "--sk-fade-edge-ramp",
         "--sk-fade-edge-size"
       ],
@@ -27373,7 +27065,9 @@
             "to-bottom",
             "to-top",
             "to-right",
-            "to-left"
+            "to-left",
+            "horizontal",
+            "vertical"
           ]
         },
         "mode": {
@@ -53166,6 +52860,12 @@
           "trueValue": "",
           "type": "boolean"
         },
+        "loading": {
+          "attr": "data-loading",
+          "default": false,
+          "trueValue": "",
+          "type": "boolean"
+        },
         "maxAvatars": {
           "attr": "data-max-avatars",
           "type": "number"
@@ -53293,7 +52993,8 @@
             "placeholder",
             "searchPlaceholder",
             "unselectedLabel",
-            "maxAvatars"
+            "maxAvatars",
+            "loading"
           ],
           "portals": {
             "container": true
@@ -55116,7 +54817,7 @@
     "working": "0.0.1"
   },
   "schemaVersion": "2.3",
-  "sourceHash": "2db009fdcc7ff98f",
+  "sourceHash": "03390e3f945a4dcc",
   "vocabulary": {
     "a11y": "When `when` holds, one of `requiresOneOf` must be given: an option, a raw attribute, a filled slot, or a child signature by name.",
     "atLeastOneOf": "At least one member of each group counts: a filled slot, a boolean option set to true, or an option other than its default.",

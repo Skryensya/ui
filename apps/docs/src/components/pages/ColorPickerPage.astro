@@ -3,23 +3,26 @@
 import "@skryensya/core/components/annotation.css";
 import ComponentPageShell from "./ComponentPageShell.astro";
 import CodeBlock from "../CodeBlock.astro";
-import ComponentPreview from "../ComponentPreview.astro";
 import UsagePreview from "../UsagePreview.astro";
+import DoDont from "../DoDont.astro";
+import WhenToUse from "../WhenToUse.astro";
+import ContentRules from "../ContentRules.astro";
+import A11yNotes from "../A11yNotes.astro";
 import {
-  colorPickerAnatomyCss,
-  colorPickerAnatomyHtml,
   colorPickerTree,
   compactColorPickerTree,
   disabledColorPickerTree,
   nativeColorPickerTree,
   presetsColorPickerTree,
 } from "../../demos/color-picker";
-import { getLocale, useTranslations } from "../../i18n";
+import { getLocale, tList, useTranslations } from "../../i18n";
 import "@skryensya/core/components/color-picker.css";
 import "@skryensya/core/components/button.css";
 import "@skryensya/core/patterns/anchored.css";
 
 const t = useTranslations(getLocale(Astro.url));
+
+const storybookTitle = "Components/Forms/ColorPicker";
 
 const styles = `@import "@skryensya/core/patterns/anchored.css";
 @import "@skryensya/core/components/button.css";
@@ -29,58 +32,40 @@ const styles = `@import "@skryensya/core/patterns/anchored.css";
 <ComponentPageShell
   title="ColorPicker"
   description={t("colorPicker.description")}
-  badge={t("colorPicker.betaBadge")}
   contractId="color-picker"
   styleGroups={[
     { file: "components/color-picker.css", probe: "sk-color-picker", title: "ColorPicker" },
     { file: "patterns/anchored.css", probe: "sk-anchored", title: "Heredados de Anclaje" },
     { file: "components/button.css", probe: "sk-button", title: "Heredados de Button" },
   ]}
-  testFiles={["packages/vanilla/src/components/color-picker.svelte.test.ts"]}}
+  testFiles={["packages/vanilla/src/components/color-picker.svelte.test.ts"]}
 >
   <Fragment slot="usage">
     <p class="lede" set:html={t("colorPicker.lede")} />
 
-    <h3>{t("colorPicker.showcaseTitle")}</h3>
-    <p set:html={t("colorPicker.showcaseBody")} />
-    <h3>{t("colorPicker.nativeTitle")}</h3>
-    <p set:html={t("colorPicker.nativeBody")} />
-    <UsagePreview tree={nativeColorPickerTree(t)} />
-
-    <h3>{t("colorPicker.customTitle")}</h3>
-    <p set:html={t("colorPicker.customBody")} />
-    <ComponentPreview tree={colorPickerTree(t)} label={t("demo.colorPicker.label")} viewport="overlay" />
-
-    <h3>{t("colorPicker.compactTitle")}</h3>
-    <p set:html={t("colorPicker.compactBody")} />
-    <ComponentPreview tree={compactColorPickerTree(t)} label={t("demo.colorPicker.compactLabel")} viewport="overlay" />
-
-    <h3>{t("colorPicker.presetsTitle")}</h3>
-    <p set:html={t("colorPicker.presetsBody")} />
-    <ComponentPreview tree={presetsColorPickerTree(t)} label={t("demo.colorPicker.presetsLabel")} viewport="overlay" />
-
-    <h3>{t("colorPicker.disabledTitle")}</h3>
-    <UsagePreview tree={disabledColorPickerTree(t)} />
+    <h3>{t("component.examplesTitle")}</h3>
+    <UsagePreview tree={nativeColorPickerTree(t)} title={t("colorPicker.nativeTitle")} description={t("colorPicker.nativeBody")} storybookTitle={storybookTitle} storybookStory="NativeColorPicker" />
+    <UsagePreview tree={colorPickerTree(t)} title={t("colorPicker.customTitle")} description={t("colorPicker.customBody")} stageMinBlockSize="26rem" storybookTitle={storybookTitle} storybookStory="Default" />
+    <UsagePreview tree={compactColorPickerTree(t)} title={t("colorPicker.compactTitle")} description={t("colorPicker.compactBody")} stageMinBlockSize="22rem" storybookTitle={storybookTitle} storybookStory="CompactColorPicker" />
+    <UsagePreview tree={presetsColorPickerTree(t)} title={t("colorPicker.presetsTitle")} description={t("colorPicker.presetsBody")} stageMinBlockSize="26rem" storybookTitle={storybookTitle} storybookStory="PresetsColorPicker" />
+    <UsagePreview tree={disabledColorPickerTree(t)} title={t("colorPicker.disabledTitle")} storybookTitle={storybookTitle} storybookStory="DisabledColorPicker" />
 
     <h3>{t("component.contractNotesTitle")}</h3>
-    <p set:html={t("colorPicker.contractBody")} />
+    <ul>
+      {tList(t, "colorPicker.contract").map((item) => <li set:html={item} />)}
+    </ul>
 
-    <h3>{t("component.anatomy")}</h3>
-    <p set:html={t("colorPicker.anatomyBody")} />
-    <ComponentPreview
-      html={colorPickerAnatomyHtml(t)}
-      css={colorPickerAnatomyCss}
-      label={t("colorPicker.anatomyPreviewLabel")}
-      screens={false}
-      hideSource
-      chrome={false}
-    />
   </Fragment>
 
   <Fragment slot="guidelines">
     <p class="lede" set:html={t("colorPicker.guidelinesLede")} />
-    <h3>{t("colorPicker.whichTitle")}</h3>
-    <p set:html={t("colorPicker.whichBody")} />
+    <WhenToUse use={tList(t, "colorPicker.when")} avoid={tList(t, "colorPicker.whenNot")} />
+    <DoDont
+      title={t("colorPicker.dd.presets.title")}
+      do={{ tree: presetsColorPickerTree(t), caption: t("colorPicker.dd.presets.do") }}
+      dont={{ tree: colorPickerTree(t), caption: t("colorPicker.dd.presets.dont") }}
+    />
+    <ContentRules items={tList(t, "colorPicker.content")} />
   </Fragment>
 
   <Fragment slot="install">
@@ -88,6 +73,15 @@ const styles = `@import "@skryensya/core/patterns/anchored.css";
   </Fragment>
 
   <Fragment slot="a11y">
-    <p set:html={t("colorPicker.a11yBody")} />
+    <A11yNotes
+      intro={t("colorPicker.a11yIntro")}
+      does={tList(t, "colorPicker.a11yDoes")}
+      yours={tList(t, "colorPicker.a11yYours")}
+      keys={[
+        { keys: ["←", "→", "↑", "↓"], action: t("colorPicker.a11yKeyArrows") },
+        { keys: ["PageUp", "PageDown"], action: t("colorPicker.a11yKeyPage") },
+        { keys: ["Esc"], action: t("colorPicker.a11yKeyEsc") },
+      ]}
+    />
   </Fragment>
 </ComponentPageShell>

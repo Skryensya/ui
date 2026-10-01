@@ -4,11 +4,17 @@ import "@skryensya/core/components/annotation.css";
 import { layoutAnatomyFillCss, layoutGridAnatomyTree } from "../../demos/layout-anatomy";
 import ComponentPageShell from "./ComponentPageShell.astro";
 import CodeBlock from "../CodeBlock.astro";
-import ComponentPreview from "../ComponentPreview.astro";
+import UsagePreview from "../UsagePreview.astro";
+import DoDont from "../DoDont.astro";
+import WhenToUse from "../WhenToUse.astro";
+import ContentRules from "../ContentRules.astro";
+import A11yNotes from "../A11yNotes.astro";
 import { layoutGridTree, layoutGridRailStartTree, layoutGridRailsBothTree, layoutGridTocTree } from "../../demos/layout";
-import { getLocale, useTranslations } from "../../i18n";
+import { getLocale, tList, useTranslations } from "../../i18n";
 
-const t = useTranslations(getLocale(Astro.url));
+const locale = getLocale(Astro.url);
+const t = useTranslations(locale);
+const isEs = locale === "es";
 const install = `pnpm add @skryensya/core @skryensya/react`;
 
 const configurationCss = `.sk-layout-grid {
@@ -19,6 +25,76 @@ const configurationCss = `.sk-layout-grid {
   --sk-layout-rail-inline-size: 14rem;
   --sk-layout-rail-gap: var(--space-inline-lg);
 }`;
+
+const text = {
+  contentTrack: "content",
+  breakoutTrack: "breakout",
+  proseInContent: isEs ? "texto" : "text",
+  proseInBreakout: isEs ? "texto ancho" : "wide text",
+  figureInBreakout: isEs ? "figura" : "figure",
+  figureInContent: isEs ? "figura chica" : "small figure",
+  bandFull: "full-width",
+  bandManual: "100vw",
+  aligned: isEs ? "alineado" : "aligned",
+  drift: isEs ? "corrido" : "shifted",
+};
+
+const diagram = (body: string) => `<div class="layout-grid-dd"><svg class="layout-grid-dd__svg" viewBox="0 0 420 230" role="img" aria-hidden="true">
+  <rect x="1" y="1" width="418" height="228" rx="18" class="layout-grid-dd__page" />
+  <rect x="65" y="24" width="290" height="182" rx="12" class="layout-grid-dd__breakout" />
+  <rect x="125" y="24" width="170" height="182" rx="10" class="layout-grid-dd__content" />
+  <text x="210" y="46" text-anchor="middle" class="layout-grid-dd__label">${text.contentTrack}</text>
+  <text x="210" y="220" text-anchor="middle" class="layout-grid-dd__label">${text.breakoutTrack}</text>
+  ${body}
+</svg></div>`;
+
+const proseDo = diagram(`
+  <rect x="145" y="72" width="130" height="72" rx="10" class="layout-grid-dd__card layout-grid-dd__good" />
+  <text x="210" y="94" text-anchor="middle" class="layout-grid-dd__strong">${text.proseInContent}</text>
+  <rect x="163" y="110" width="94" height="7" rx="4" class="layout-grid-dd__line" />
+  <rect x="163" y="126" width="84" height="7" rx="4" class="layout-grid-dd__line" />
+`);
+
+const proseDont = diagram(`
+  <rect x="80" y="72" width="260" height="72" rx="10" class="layout-grid-dd__card layout-grid-dd__bad" />
+  <text x="210" y="94" text-anchor="middle" class="layout-grid-dd__strong">${text.proseInBreakout}</text>
+  <rect x="105" y="110" width="210" height="7" rx="4" class="layout-grid-dd__line" />
+  <rect x="105" y="126" width="190" height="7" rx="4" class="layout-grid-dd__line" />
+`);
+
+const figureDo = diagram(`
+  <rect x="82" y="78" width="256" height="88" rx="10" class="layout-grid-dd__card layout-grid-dd__good" />
+  <text x="210" y="101" text-anchor="middle" class="layout-grid-dd__strong">${text.figureInBreakout}</text>
+  <rect x="108" y="136" width="28" height="18" rx="4" class="layout-grid-dd__bar" />
+  <rect x="148" y="120" width="28" height="34" rx="4" class="layout-grid-dd__bar" />
+  <rect x="188" y="130" width="28" height="24" rx="4" class="layout-grid-dd__bar" />
+  <rect x="228" y="112" width="28" height="42" rx="4" class="layout-grid-dd__bar" />
+  <rect x="268" y="126" width="28" height="28" rx="4" class="layout-grid-dd__bar" />
+`);
+
+const figureDont = diagram(`
+  <rect x="145" y="78" width="130" height="88" rx="10" class="layout-grid-dd__card layout-grid-dd__bad" />
+  <text x="210" y="101" text-anchor="middle" class="layout-grid-dd__strong">${text.figureInContent}</text>
+  <rect x="158" y="136" width="14" height="18" rx="3" class="layout-grid-dd__bar" />
+  <rect x="181" y="120" width="14" height="34" rx="3" class="layout-grid-dd__bar" />
+  <rect x="204" y="130" width="14" height="24" rx="3" class="layout-grid-dd__bar" />
+  <rect x="227" y="112" width="14" height="42" rx="3" class="layout-grid-dd__bar" />
+  <rect x="250" y="126" width="14" height="28" rx="3" class="layout-grid-dd__bar" />
+`);
+
+const bandDo = diagram(`
+  <rect x="0" y="82" width="420" height="70" class="layout-grid-dd__band layout-grid-dd__good-fill" />
+  <rect x="145" y="99" width="130" height="36" rx="8" class="layout-grid-dd__card" />
+  <text x="210" y="104" text-anchor="middle" class="layout-grid-dd__strong">${text.bandFull}</text>
+  <text x="210" y="126" text-anchor="middle" class="layout-grid-dd__strong">${text.aligned}</text>
+`);
+
+const bandDont = diagram(`
+  <rect x="-28" y="82" width="420" height="70" class="layout-grid-dd__band layout-grid-dd__bad-fill" />
+  <rect x="86" y="99" width="130" height="36" rx="8" class="layout-grid-dd__card layout-grid-dd__bad" />
+  <text x="151" y="104" text-anchor="middle" class="layout-grid-dd__strong">${text.bandManual}</text>
+  <text x="151" y="126" text-anchor="middle" class="layout-grid-dd__strong">${text.drift}</text>
+`);
 
 const previewCss = `.sk-layout-grid {
   row-gap: var(--space-stack-lg);
@@ -115,62 +191,62 @@ const previewCss = `.sk-layout-grid {
   <Fragment slot="usage">
     <p class="lede" set:html={t("layoutGridPage.lede")} />
 
-    <h3>{t("layoutGridPage.showcaseTitle")}</h3>
-    <p set:html={t("layoutGridPage.showcaseBody")} />
-    <ComponentPreview tree={layoutGridTree(t)} css={previewCss} label="Layout Grid" flush zoomedDesktop />
-    <h3>{t("layoutGridPage.levelsTitle")}</h3>
-    <p set:html={t("layoutGridPage.levelsBody")} />
-    <ul>
-      <li><code>narrow</code>: {t("layoutGridPage.levelNarrow")}</li>
-      <li><code>content</code>: {t("layoutGridPage.levelContent")}</li>
-      <li><code>breakout</code>: {t("layoutGridPage.levelBreakout")}</li>
-      <li><code>full-width</code>: {t("layoutGridPage.levelFullWidth")}</li>
-    </ul>
-
-    <h3>{t("layoutGridPage.fullWidthTitle")}</h3>
-    <p set:html={t("layoutGridPage.fullWidthBody")} />
-
+    <h3>{t("component.examplesTitle")}</h3>
+    <h3>{t("layoutGridPage.pageTitle")}</h3>
+    <p set:html={t("layoutGridPage.pageBody")} />
+    <UsagePreview tree={layoutGridTree(t)} css={previewCss} label="Layout Grid" flush />
     <h3>{t("layoutGridPage.railTitle")}</h3>
     <p set:html={t("layoutGridPage.railBody")} />
-    {/*
-      No \`width\` prop: the tab panel itself is capped below 72rem, so the rail's wide form cannot
-      appear at the stage's free width. \`zoomedDesktop\` is what pretends a 1440 px viewport inside
-      the column; fullscreen and \`/debug/layout-grid-rail\` are the same layout at a real window.
-    */}
     <h4>{t("layoutGridPage.railEndTitle")}</h4>
-    <ComponentPreview tree={layoutGridTocTree(t)} css={previewCss} label="Layout Grid + Rail" flush zoomedDesktop />
+    <UsagePreview tree={layoutGridTocTree(t)} css={previewCss} label="Layout Grid + Rail" flush />
     <h4>{t("layoutGridPage.railStartTitle")}</h4>
-    <ComponentPreview tree={layoutGridRailStartTree(t)} css={previewCss} label="Layout Grid + Rail start" flush zoomedDesktop />
+    <UsagePreview tree={layoutGridRailStartTree(t)} css={previewCss} label="Layout Grid + Rail start" flush />
     <h4>{t("layoutGridPage.railBothTitle")}</h4>
-    <ComponentPreview tree={layoutGridRailsBothTree(t)} css={previewCss} label="Layout Grid + both rails" flush zoomedDesktop />
+    <UsagePreview tree={layoutGridRailsBothTree(t)} css={previewCss} label="Layout Grid + both rails" flush />
 
-    <h3>{t("layoutGridPage.htmlTitle")}</h3>
-    <p set:html={t("layoutGridPage.htmlBody")} />
+    <h3>{t("component.contractNotesTitle")}</h3>
+    <ul>
+      {tList(t, "layoutGridPage.contract").map((item) => <li set:html={item} />)}
+    </ul>
     <p set:html={t("layoutGridPage.reactBody")} />
 
     <h3>{t("component.anatomy")}</h3>
     <p set:html={t("layoutGridPage.anatomyBody")} />
-    <ComponentPreview
+    <UsagePreview
       tree={layoutGridAnatomyTree(t)}
       css={layoutAnatomyFillCss}
       label={t("layoutGridPage.anatomyPreviewLabel")}
-      screens={false}
-      hideSource
-      chrome={false}
+      bare
     />
   </Fragment>
 
   <Fragment slot="guidelines">
     <p class="lede" set:html={t("layoutGridPage.guidelinesLede")} />
-    <ul>
-      <li set:html={t("layoutGridPage.guide.use1")} />
-      <li set:html={t("layoutGridPage.guide.use2")} />
-      <li set:html={t("layoutGridPage.guide.avoid1")} />
-    </ul>
+    <WhenToUse use={tList(t, "layoutGridPage.when")} avoid={tList(t, "layoutGridPage.whenNot")} />
+    <DoDont
+      title={t("layoutGridPage.dd.prose.title")}
+      do={{ html: proseDo, caption: t("layoutGridPage.dd.prose.do") }}
+      dont={{ html: proseDont, caption: t("layoutGridPage.dd.prose.dont") }}
+    />
+    <DoDont
+      title={t("layoutGridPage.dd.figure.title")}
+      do={{ html: figureDo, caption: t("layoutGridPage.dd.figure.do") }}
+      dont={{ html: figureDont, caption: t("layoutGridPage.dd.figure.dont") }}
+    />
+    <DoDont
+      title={t("layoutGridPage.dd.band.title")}
+      do={{ html: bandDo, caption: t("layoutGridPage.dd.band.do") }}
+      dont={{ html: bandDont, caption: t("layoutGridPage.dd.band.dont") }}
+    />
+    <ContentRules items={tList(t, "layoutGridPage.content")} />
   </Fragment>
 
   <Fragment slot="install">
     <CodeBlock code={install} label="terminal" />
+  </Fragment>
+
+  <Fragment slot="a11y">
+    <A11yNotes intro={t("layoutGridPage.a11yIntro")} does={tList(t, "layoutGridPage.a11yDoes")} yours={tList(t, "layoutGridPage.a11yYours")} />
   </Fragment>
 
   <Fragment slot="style">
@@ -180,3 +256,87 @@ const previewCss = `.sk-layout-grid {
     <p set:html={t("layoutGridPage.configBody2")} />
   </Fragment>
 </ComponentPageShell>
+
+<style>
+  :global(.sk-do-dont__frame:has(.layout-grid-dd)) {
+    padding: 0;
+  }
+
+  :global(.layout-grid-dd) {
+    display: grid;
+    place-items: stretch;
+    min-block-size: 100%;
+    padding: 0;
+    border-radius: var(--radius-surface);
+    background: var(--color-bg-canvas);
+  }
+
+  :global(.layout-grid-dd__svg) {
+    display: block;
+    inline-size: 100%;
+    block-size: 100%;
+    min-block-size: 13.5rem;
+  }
+
+  :global(.layout-grid-dd__page) {
+    fill: var(--color-bg-canvas);
+  }
+
+  :global(.layout-grid-dd__breakout) {
+    fill: color-mix(in oklab, var(--color-action-accent) 8%, transparent);
+    stroke: color-mix(in oklab, var(--color-action-accent) 52%, transparent);
+    stroke-dasharray: 7 5;
+    stroke-width: 2;
+  }
+
+  :global(.layout-grid-dd__content) {
+    fill: color-mix(in oklab, var(--color-bg-surface) 84%, var(--color-action-accent) 16%);
+    stroke: var(--color-border-subtle);
+    stroke-width: 2;
+  }
+
+  :global(.layout-grid-dd__card) {
+    fill: var(--color-bg-surface);
+    stroke: var(--color-border-subtle);
+    stroke-width: 2;
+  }
+
+  :global(.layout-grid-dd__good) {
+    stroke: var(--color-text-success);
+    stroke-width: 3;
+  }
+
+  :global(.layout-grid-dd__bad) {
+    stroke: var(--color-text-danger);
+    stroke-width: 3;
+  }
+
+  :global(.layout-grid-dd__good-fill) {
+    fill: color-mix(in oklab, var(--color-text-success) 22%, var(--color-bg-surface));
+  }
+
+  :global(.layout-grid-dd__bad-fill) {
+    fill: color-mix(in oklab, var(--color-text-danger) 20%, var(--color-bg-surface));
+  }
+
+  :global(.layout-grid-dd__line) {
+    fill: color-mix(in oklab, var(--color-text-secondary) 28%, transparent);
+  }
+
+  :global(.layout-grid-dd__bar) {
+    fill: color-mix(in oklab, var(--color-action-accent) 58%, var(--color-bg-surface));
+  }
+
+  :global(.layout-grid-dd__label),
+  :global(.layout-grid-dd__strong) {
+    fill: var(--color-text-secondary);
+    font-family: var(--font-family-sans);
+    font-size: 13px;
+    font-weight: var(--font-weight-emphasis);
+    white-space: nowrap;
+  }
+
+  :global(.layout-grid-dd__strong) {
+    fill: var(--color-text-primary);
+  }
+</style>

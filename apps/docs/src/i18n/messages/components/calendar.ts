@@ -3,132 +3,245 @@ export const calendarMessages = {
     "demo.calendar.locale": "es-DO",
     "demo.calendar.availability": "Disponibilidad",
     "demo.calendar.stay": "Estadía",
+    "demo.calendar.previousMonth": "Mes anterior",
+    "demo.calendar.nextMonth": "Mes siguiente",
 
     "calendar.description":
-      "Grid de fecha independiente: día, mes o año/década, sin campo ni popover, con el mismo botón cambiando de vista.",
-    "calendar.betaBadge": "Beta",
+      "Muestra un mes a la vista para elegir un día o un rango.",
+
+    "calendar.a11yKeyEnter": "Elige el día con foco.",
+
+    "calendar.a11yKeyHomeEnd": "Va al inicio o al fin de la semana.",
+
+    "calendar.a11yKeyPage": "Pasa al mes anterior o al siguiente.",
+
+    "calendar.a11yKeyArrows":
+      "Mueve el foco un día, o una semana arriba y abajo.",
+
+    "calendar.a11yYours2":
+      "No marques feriados ni días especiales solo con color: agrega texto o un ícono con nombre.",
+
+    "calendar.a11yYours1": "Debe tener <code>label</code>.",
+
+    "calendar.a11yDoes4":
+      "Los días fuera de <code>min</code> y <code>max</code> se anuncian deshabilitados.",
+
+    "calendar.a11yDoes3":
+      "Las abreviaturas de los días guardan el nombre completo en un <code>&lt;abbr&gt;</code>.",
+
+    "calendar.a11yDoes2":
+      "Los botones anterior y siguiente dicen qué cambian: mes, año o década.",
+
+    "calendar.a11yDoes1":
+      'El mes es un <code>role="grid"</code>; el foco se mueve entre días con las flechas.',
+
+    "calendar.a11yIntro":
+      "Calendar sigue el patrón de grid de fechas de la APG.",
+
+    "calendar.content2":
+      "Nombra el calendario con <code>label</code>: «Disponibilidad», «Estadía».",
+
+    "calendar.content1":
+      "Pasa el locale en vez de traducir los nombres: decide los meses, los días y el primer día de la semana.",
+
+    "calendar.dd.limits.dont":
+      "Si todo parece elegible, la persona elige una fecha y después se entera de que no estaba disponible.",
+
+    "calendar.dd.limits.do":
+      "Con <code>min</code> y <code>max</code>, la persona ve de entrada qué fechas están disponibles.",
+
+    "calendar.dd.limits.title":
+      "Límites: deshabilita lo que no se puede elegir",
+
+    "calendar.whenNot3":
+      'Para una hora: usa <a href="/es/componentes/time-field">TimeField</a>.',
+
+    "calendar.whenNot2":
+      'Si la fecha se escribe más rápido de lo que se busca, como una fecha de nacimiento: usa el campo de <a href="/es/componentes/date-picker">DatePicker</a>.',
+
+    "calendar.whenNot1":
+      'Para una fecha dentro de un formulario: usa <a href="/es/componentes/date-picker">DatePicker</a>, que abre este calendario desde un campo.',
+
+    "calendar.when2":
+      "Cuando ver el mes ayuda a decidir: fines de semana, feriados, cuántos días quedan.",
+
+    "calendar.when1":
+      "Cuando elegir la fecha es la tarea de la pantalla: una reserva, una agenda, un filtro de un panel.",
+
+    "calendar.contract4":
+      "La misma tabla sirve a las tres vistas; <code>sk-calendar__month-grid</code> y <code>sk-calendar__year-grid</code> son modificadores.",
+
+    "calendar.contract3":
+      "<code>data-min</code> y <code>data-max</code> (fechas ISO) deshabilitan lo que cae fuera, en las tres vistas.",
+
+    "calendar.contract2":
+      "Los días dentro del rango llevan <code>data-in-range</code>; los extremos, <code>data-selected</code>.",
+
+    "calendar.contract1":
+      "El botón del encabezado sube de vista (día, mes, década) y elegir una celda baja un nivel. No hay selects de mes y año.",
     "calendar.lede":
-      'El grid de fecha en sí, separado del campo que lo abre. <a href="/es/componentes/date-picker">DatePicker</a> lo nestea dentro de un popover; esta página es el mismo componente de pie, para cuando el calendario <em>es</em> la UI (una página de reservas, un filtro de dashboard) y no hace falta un input detrás.',
+      'Calendar muestra un mes a la vista para elegir un día o un rango, cuando ver los fines de semana y los días que quedan ayuda a decidir. Es el mismo grid que abre <a href="/es/componentes/date-picker">DatePicker</a>, sin el campo.',
     "calendar.anatomyBody":
-      "Vista de día: etiqueta, encabezado (anterior, view-trigger, siguiente), tabla, cabecera de días, cuerpo, celda y su trigger. Las vistas de mes y año siguen abajo.",
+      "Vista de día: etiqueta, encabezado (anterior, cambio de vista, siguiente), tabla, cabecera de días, celda y su botón.",
     "calendar.anatomyLabel": "Anatomía de Calendar (día)",
     "calendar.anatomyPreviewLabel": "Calendar, vista de día",
     "calendar.anatomyMonthBody":
-      "Vista de mes: la misma tabla lleva el modificador <code>sk-calendar__month-grid</code> (no es marcado aparte). Sin cabecera de días de la semana; doce celdas en 4×3. Espécimen congelado: un Calendar vivo siempre abre en día.",
+      "Vista de mes: la misma tabla con <code>sk-calendar__month-grid</code>, doce celdas en 4×3.",
     "calendar.anatomyMonthLabel": "Anatomía de Calendar (mes)",
     "calendar.anatomyMonthPreviewLabel": "Calendar, vista de mes",
     "calendar.anatomyYearBody":
-      "Vista de año/década: <code>sk-calendar__year-grid</code> es el modificador sobre la misma tabla. El view-trigger muestra el rango de la década; las celdas son años.",
+      "Vista de año: la misma tabla con <code>sk-calendar__year-grid</code>; el encabezado muestra la década.",
     "calendar.anatomyYearLabel": "Anatomía de Calendar (año)",
     "calendar.anatomyYearPreviewLabel": "Calendar, vista de año",
-    "calendar.gridTitle": "Grid",
+    "calendar.gridTitle": "Un día: el mes completo a la vista",
     "calendar.gridBody":
-      "Detrás sigue corriendo <code>@zag-js/date-picker</code> (no hay una máquina de calendario separada en este stack), configurada <code>inline</code>: la misma navegación por teclado, el mismo grid con seis semanas fijas.",
-    "calendar.gridLabel": "Calendar",
-    "calendar.viewTitle": "Cambiar de vista: botones, no selects",
-    "calendar.viewBody1":
-      'El encabezado no tiene dos <code>&lt;select&gt;</code> de mes y año: es un solo botón, <code>sk-calendar__view-trigger</code>, que muestra la fecha visible («marzo 2026» en vista de día, «2026» en vista de mes, «2020–2029» en vista de año) y al hacer clic <strong>escala</strong> un nivel (día → mes → año) en vez de forzar a desplazarse mes por mes hasta una fecha lejana.',
-    "calendar.viewBody2":
-      'Elegir un mes o un año en su grilla <strong>desciende</strong> un nivel: tocar «Ene» en la vista de mes vuelve a la vista de día ya parada en enero; tocar un año en la vista de año vuelve a la vista de mes de ese año. Ir y volver (escalar para elegir la década, descender tocando la celda) reemplaza lo que antes hacían dos selects nativos, sin perder la navegación por teclado del grid (roles <code>grid</code>/<code>gridcell</code>, foco administrado por Zag).',
-    "calendar.rangeTitle": "Selección en rango",
+      "Seis semanas fijas, así el alto no cambia al pasar de mes.",
+    "calendar.rangeTitle": "Rango: inicio y fin en el mismo calendario",
     "calendar.rangeBody1":
-      '<code>data-selection-mode="range"</code> cambia el criterio de selección: el primer clic fija el inicio, el segundo el fin. Zag marca cada día intermedio <code>data-in-range</code> (no <code>data-selected</code>, que queda solo para los dos extremos) y, mientras se está eligiendo el fin, el mismo estado aparece como <code>data-in-hover-range</code> a medida que el mouse se mueve, sin JS propio: el <code>onPointerMove</code> que lo alimenta solo se activa cuando el modo es <code>range</code>.',
-    "calendar.rangeBody2":
-      "Ese atributo vive en el <em>trigger</em>, no en la celda, así que un relleno limitado a su propio botón dejaría un espacio entre cada día. <code>sk-calendar__cell:has(...)</code> alcanza el estado del trigger desde la celda (la misma técnica que ya usa el anillo de foco de Combobox) para pintar la celda completa y que la franja se vea continua bajo <code>border-collapse</code>.",
-    "calendar.rangeLabel": "Calendar (rango)",
-    "calendar.minMaxTitle": "Rango acotado: min y max",
+      "El primer clic fija el inicio y el segundo el fin; los días del medio se marcan, también mientras se elige.",
+    "calendar.minMaxTitle": "Límites: min y max",
     "calendar.minMaxBody1":
-      "<code>data-min</code> / <code>data-max</code> (fechas ISO) deshabilitan todo lo que caiga fuera del rango. En vista de día, Zag ya marca esas celdas <code>data-disabled</code>/<code>aria-disabled</code> y el propio <code>onClick</code> del día se niega a disparar la selección.",
-    "calendar.minMaxBody2":
-      "Min/max llega igual a mes y año: <code>getMonthsGrid</code>/<code>getYearsGrid</code> resuelven su propio <code>disabled</code> nativo por celda, comparando contra min/max la fecha enfocada <em>llevada a ese mes o año</em> (no «¿tiene este mes algún día válido?»: un matiz que puede deshabilitar un mes que sí toca el rango si el día enfocado, trasladado a ese mes, cae fuera). Ninguna de las dos vistas necesitó CSS nuevo: ambas ya pasan por <code>.sk-button:disabled</code>.",
-    "calendar.minMaxLabel": "Calendar (min/max)",
-    "calendar.contractItem1":
-      '<code>sk-calendar__header</code> agrupa anterior, el botón de vista y siguiente; los tres leen "anterior/siguiente <em>de la vista activa</em>" (mes en vista de día, año en vista de mes, década en vista de año), Zag ajusta la etiqueta accesible sola.',
-    "calendar.contractItem2":
-      "<code>sk-calendar__table</code> se reusa en las tres vistas; <code>sk-calendar__month-grid</code> y <code>sk-calendar__year-grid</code> son hooks de modificador sobre la misma tabla, no marcado distinto.",
-    "calendar.contractItem3":
-      "<code>sk-calendar__cell-trigger</code> es el mismo botón de celda en día, mes y año: mismo tamaño, mismo estado de selección/hoy/deshabilitado.",
-    "calendar.a11yBody":
-      "El grid es <code>role=\"grid\"</code> navegable por teclado en las tres vistas. El locale determina meses y las abreviaturas de dos letras visibles en el grid de día; el nombre completo localizado permanece en cada <code>&lt;abbr&gt;</code>.",
-    "calendar.test1": "Genera todo el grid desde una raíz escrita a mano vacía, una sola vez.",
-    "calendar.test2": "Nombra los días de la semana en el locale escrito a mano.",
+      "Lo que cae fuera del rango queda deshabilitado, en la vista de día, de mes y de año.",
+    "calendar.test1":
+      "Genera todo el grid desde una raíz escrita a mano vacía, una sola vez.",
+    "calendar.test2":
+      "Nombra los días de la semana en el locale escrito a mano.",
     "calendar.test3": "Abre en la fecha escrita a mano en vez de en hoy.",
-    "calendar.test4": "Pinta cada control del calendario en un solo escalón de tamaño, incluidas las celdas de día.",
-    "calendar.prop.selectionMode.title": "Selección",
-    "calendar.prop.selectionMode.body": "El <code>selectionMode</code> dice si se elige un día o un rango.",
-    "calendar.prop.selectionMode.single": "Usa <code>single</code>, el default, para una fecha.",
-    "calendar.prop.selectionMode.range": "Usa <code>range</code> para un inicio y un fin, como una reserva.",
-    "calendar.showcaseTitle": "Showcases",
-    "calendar.showcaseBody": "La cuadrícula de un mes, un rango y fechas con límites.",
-    "calendar.guidelinesLede": "Calendar muestra un mes para elegir días a la vista.",
-    "calendar.dd.range.title": "Un rango, un calendario",
-    "calendar.dd.range.do": "Elige inicio y fin en el mismo calendario: el rango se ve entero.",
-    "calendar.dd.range.dont": "Dos calendarios no muestran el rango y dejan elegir un fin antes del inicio.",
+    "calendar.test4":
+      "Pinta cada control del calendario en un solo escalón de tamaño, incluidas las celdas de día.",
+    "calendar.prop.selectionMode.title": "Selection mode: un día o un rango",
+    "calendar.prop.selectionMode.body":
+      "Dice si la persona elige una fecha o un inicio y un fin.",
+    "calendar.prop.selectionMode.single":
+      "Usa <code>single</code>, el valor por defecto, para una fecha.",
+    "calendar.prop.selectionMode.range":
+      "Usa <code>range</code> para un inicio y un fin, como una reserva.",
+    "calendar.guidelinesLede":
+      "Calendar hace de elegir una fecha la tarea de la pantalla.",
+    "calendar.dd.range.title": "Rango: un solo calendario",
+    "calendar.dd.range.do":
+      "Inicio y fin en el mismo calendario: el rango se ve entero.",
+    "calendar.dd.range.dont":
+      "Dos calendarios no muestran el rango y dejan elegir un fin antes del inicio.",
   },
   en: {
     "demo.calendar.locale": "en-US",
     "demo.calendar.availability": "Availability",
     "demo.calendar.stay": "Stay",
+    "demo.calendar.previousMonth": "Previous month",
+    "demo.calendar.nextMonth": "Next month",
 
-    "calendar.description":
-      "Standalone date grid for a day, month, or year/decade view, with no field or popover and the same button switching views.",
-    "calendar.betaBadge": "Beta",
+    "calendar.description": "Shows a month in view to pick a day or a range.",
+
+    "calendar.a11yKeyEnter": "Picks the focused day.",
+
+    "calendar.a11yKeyHomeEnd": "Goes to the start or end of the week.",
+
+    "calendar.a11yKeyPage": "Goes to the previous or next month.",
+
+    "calendar.a11yKeyArrows": "Moves focus one day, or one week up and down.",
+
+    "calendar.a11yYours2":
+      "Do not mark holidays or special days with color alone: add text or a named icon.",
+
+    "calendar.a11yYours1": "It must have a <code>label</code>.",
+
+    "calendar.a11yDoes4":
+      "Days outside <code>min</code> and <code>max</code> are announced as disabled.",
+
+    "calendar.a11yDoes3":
+      "Weekday abbreviations keep the full name in an <code>&lt;abbr&gt;</code>.",
+
+    "calendar.a11yDoes2":
+      "The previous and next buttons say what they change: month, year or decade.",
+
+    "calendar.a11yDoes1":
+      'The month is a <code>role="grid"</code>; focus moves between days with the arrow keys.',
+
+    "calendar.a11yIntro": "Calendar follows the APG date grid pattern.",
+
+    "calendar.content2":
+      "Name the calendar with <code>label</code>: “Availability”, “Stay”.",
+
+    "calendar.content1":
+      "Pass the locale instead of translating names: it sets the months, the days and the first day of the week.",
+
+    "calendar.dd.limits.dont":
+      "If everything looks available, people pick a date and only then learn it was not.",
+
+    "calendar.dd.limits.do":
+      "With <code>min</code> and <code>max</code>, people see up front which dates are available.",
+
+    "calendar.dd.limits.title": "Limits: disable what cannot be picked",
+
+    "calendar.whenNot3":
+      'For a time: use <a href="/components/time-field">TimeField</a>.',
+
+    "calendar.whenNot2":
+      'If the date is typed faster than it is found, like a date of birth: use <a href="/components/date-picker">DatePicker</a>\'s field.',
+
+    "calendar.whenNot1":
+      'For a date inside a form: use <a href="/components/date-picker">DatePicker</a>, which opens this calendar from a field.',
+
+    "calendar.when2":
+      "When seeing the month helps people decide: weekends, holidays, how many days are left.",
+
+    "calendar.when1":
+      "When picking the date is the task of the screen: a booking, a schedule, a dashboard filter.",
+
+    "calendar.contract4":
+      "The same table serves all three views; <code>sk-calendar__month-grid</code> and <code>sk-calendar__year-grid</code> are modifiers.",
+
+    "calendar.contract3":
+      "<code>data-min</code> and <code>data-max</code> (ISO dates) disable what falls outside, in all three views.",
+
+    "calendar.contract2":
+      "Days inside the range carry <code>data-in-range</code>; the ends, <code>data-selected</code>.",
+
+    "calendar.contract1":
+      "The header button steps up a view (day, month, decade) and picking a cell steps back down. There are no month and year selects.",
     "calendar.lede":
-      'The date grid itself, separate from the field that opens it. <a href="/components/date-picker">DatePicker</a> nests it inside a popover; this page is the same component standing alone, for when the calendar <em>is</em> the UI (a reservations page, a dashboard filter) and no input is needed behind it.',
+      'Calendar shows a month in view to pick a day or a range, when seeing weekends and remaining days helps people decide. It is the same grid <a href="/components/date-picker">DatePicker</a> opens, without the field.',
     "calendar.anatomyBody":
-      "Day view: label, header (previous, view-trigger, next), table, weekday header, body, cell and its trigger. Month and year views follow below.",
+      "Day view: label, header (previous, view switch, next), table, weekday header, cell and its button.",
     "calendar.anatomyLabel": "Calendar anatomy (day)",
     "calendar.anatomyPreviewLabel": "Calendar, day view",
     "calendar.anatomyMonthBody":
-      "Month view: the same table carries the <code>sk-calendar__month-grid</code> modifier (not separate markup). No weekday header; twelve cells in a 4×3 grid. Frozen specimen: a live Calendar always opens on day.",
+      "Month view: the same table with <code>sk-calendar__month-grid</code>, twelve cells in 4×3.",
     "calendar.anatomyMonthLabel": "Calendar anatomy (month)",
     "calendar.anatomyMonthPreviewLabel": "Calendar, month view",
     "calendar.anatomyYearBody":
-      "Year/decade view: <code>sk-calendar__year-grid</code> is the modifier on the same table. The view-trigger shows the decade range; cells are years.",
+      "Year view: the same table with <code>sk-calendar__year-grid</code>; the header shows the decade.",
     "calendar.anatomyYearLabel": "Calendar anatomy (year)",
     "calendar.anatomyYearPreviewLabel": "Calendar, year view",
-    "calendar.gridTitle": "Grid",
+    "calendar.gridTitle": "One day: the whole month in view",
     "calendar.gridBody":
-      "Underneath it still runs <code>@zag-js/date-picker</code> (there is no separate calendar machine in this stack), configured <code>inline</code>: the same keyboard navigation, the same grid with six fixed weeks.",
-    "calendar.gridLabel": "Calendar",
-    "calendar.viewTitle": "Switching views: buttons, not selects",
-    "calendar.viewBody1":
-      'The header does not carry two month/year <code>&lt;select&gt;</code> elements: it is a single button, <code>sk-calendar__view-trigger</code>, which shows the visible date ("March 2026" in day view, "2026" in month view, "2020–2029" in year view) and on click <strong>climbs</strong> one level (day → month → year) instead of forcing you to page month by month toward a distant date.',
-    "calendar.viewBody2":
-      'Choosing a month or a year in its grid <strong>descends</strong> one level: tapping "Jan" in month view returns to day view already parked on January; tapping a year in year view returns to the month view for that year. Climbing up and descending back down (climb to pick the decade, descend by tapping a cell) replaces what two native selects used to do, without losing the grid\'s keyboard navigation (<code>grid</code>/<code>gridcell</code> roles, focus managed by Zag).',
-    "calendar.rangeTitle": "Range selection",
+      "Six fixed weeks, so the height does not change from month to month.",
+    "calendar.rangeTitle": "Range: start and end in one calendar",
     "calendar.rangeBody1":
-      '<code>data-selection-mode="range"</code> changes the selection rule: the first click sets the start, the second the end. Zag marks every day in between <code>data-in-range</code> (not <code>data-selected</code>, which stays reserved for the two endpoints) and, while the end is still being chosen, the same state appears as <code>data-in-hover-range</code> as the pointer moves, with no JavaScript of your own: the <code>onPointerMove</code> feeding it only turns on when the mode is <code>range</code>.',
-    "calendar.rangeBody2":
-      "That attribute lives on the <em>trigger</em>, not the cell, so a fill limited to its own button would leave a gap between days. <code>sk-calendar__cell:has(...)</code> reaches the trigger's state from the cell (the same technique Combobox's focus ring already uses) to paint the whole cell, so the band reads as continuous under <code>border-collapse</code>.",
-    "calendar.rangeLabel": "Calendar (range)",
-    "calendar.minMaxTitle": "Bounded range: min and max",
+      "The first click sets the start and the second the end; the days between are marked, also while choosing.",
+    "calendar.minMaxTitle": "Limits: min and max",
     "calendar.minMaxBody1":
-      "<code>data-min</code> / <code>data-max</code> (ISO dates) disable everything falling outside the range. In day view, Zag already marks those cells <code>data-disabled</code>/<code>aria-disabled</code>, and the day's own <code>onClick</code> refuses to fire the selection.",
-    "calendar.minMaxBody2":
-      'Min/max reaches month and year just the same: <code>getMonthsGrid</code>/<code>getYearsGrid</code> resolve their own native <code>disabled</code> per cell, comparing the focused date <em>carried into that month or year</em> against min/max (not "does this month have any valid day?": a nuance that can disable a month that does touch the range, if the focused day, moved into that month, falls outside it). Neither view needed new CSS: both already go through <code>.sk-button:disabled</code>.',
-    "calendar.minMaxLabel": "Calendar (min/max)",
-    "calendar.contractItem1":
-      '<code>sk-calendar__header</code> groups previous, the view button and next; all three read "previous/next <em>of the active view</em>" (month in day view, year in month view, decade in year view), Zag adjusts the accessible label on its own.',
-    "calendar.contractItem2":
-      "<code>sk-calendar__table</code> is reused across the three views; <code>sk-calendar__month-grid</code> and <code>sk-calendar__year-grid</code> are modifier hooks on the same table, not different markup.",
-    "calendar.contractItem3":
-      "<code>sk-calendar__cell-trigger</code> is the same cell button in day, month and year views: same size, same selected/today/disabled state.",
-    "calendar.a11yBody":
-      'The grid is a keyboard-navigable <code>role="grid"</code> in all three views. The locale determines the months and the two-letter abbreviations visible in the day grid; the localized full name stays on each <code>&lt;abbr&gt;</code>.',
-    "calendar.test1": "Generates the whole grid from an empty authored root, once.",
+      "Anything outside the range is disabled, in the day, month and year views.",
+    "calendar.test1":
+      "Generates the whole grid from an empty authored root, once.",
     "calendar.test2": "Names the weekdays in the authored locale.",
     "calendar.test3": "Opens on the authored date rather than on today.",
-    "calendar.test4": "Paints every control in the calendar at one size tier, day cells included.",
-    "calendar.prop.selectionMode.title": "Selection",
-    "calendar.prop.selectionMode.body": "<code>selectionMode</code> says whether a day or a range is picked.",
-    "calendar.prop.selectionMode.single": "Use <code>single</code>, the default, for one date.",
-    "calendar.prop.selectionMode.range": "Use <code>range</code> for a start and an end, like a booking.",
-    "calendar.showcaseTitle": "Showcases",
-    "calendar.showcaseBody": "A month's grid, a range, and dates with limits.",
-    "calendar.guidelinesLede": "Calendar shows a month for picking days in view.",
-    "calendar.dd.range.title": "One range, one calendar",
-    "calendar.dd.range.do": "Pick start and end on the same calendar: the whole range is visible.",
-    "calendar.dd.range.dont": "Two calendars do not show the range, and let people pick an end before the start.",
+    "calendar.test4":
+      "Paints every control in the calendar at one size tier, day cells included.",
+    "calendar.prop.selectionMode.title": "Selection mode: one day or a range",
+    "calendar.prop.selectionMode.body":
+      "Sets whether people pick one date or a start and an end.",
+    "calendar.prop.selectionMode.single":
+      "Use <code>single</code>, the default, for one date.",
+    "calendar.prop.selectionMode.range":
+      "Use <code>range</code> for a start and an end, such as a booking.",
+    "calendar.guidelinesLede":
+      "Calendar makes picking a date the task of the screen.",
+    "calendar.dd.range.title": "Range: one calendar",
+    "calendar.dd.range.do":
+      "Start and end in the same calendar: the whole range is visible.",
+    "calendar.dd.range.dont":
+      "Two calendars do not show the range and let people pick an end before the start.",
   },
 } as const;

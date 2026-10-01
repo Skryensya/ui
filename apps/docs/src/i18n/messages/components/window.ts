@@ -14,28 +14,50 @@ export const windowMessages = {
     "demo.windowFixed.title": "Notas",
     "demo.windowFixed.body": "Esta ventana se mueve, pero no cambia de tamaño.",
 
-    "windowPage.description":
-      "Un panel no modal que se mueve, cambia de tamaño, se minimiza y se maximiza, al lado de la página y sin bloquearla.",
-    "windowPage.lede":
-      "Una <strong>ventana</strong> es para lo que tiene que quedar abierto mientras sigues trabajando: una paleta de herramientas, un inspector, un chat. La barra de título la arrastra, los bordes y las esquinas la redimensionan, y sus controles la minimizan, la maximizan y la cierran. A diferencia de un <code>Dialog</code>, la página de atrás sigue viva.",
-    "windowPage.fixedTitle": "Tamaño fijo",
-    "windowPage.fixedBody":
-      "Con <code>resizable={false}</code> desaparecen los bordes y también los controles de minimizar y maximizar: la máquina no cambia la etapa de una ventana que no puede redimensionar, y un control que no hace nada es peor que ninguno. Se sigue moviendo.",
-    "windowPage.fixedLabel": "Ventana de tamaño fijo",
-    "windowPage.contractBody":
-      "La máquina es <code>@zag-js/floating-panel</code>, la misma en los dos bindings. Ella escribe <code>--x</code>, <code>--y</code>, <code>--width</code> y <code>--height</code> en el posicionador; la hoja solo los lee. Varias ventanas abiertas comparten una pila: la última enfocada queda arriba y las demás llevan <code>data-behind</code>. Sin JavaScript no hay ventana, así que no pongas en una nada que no exista en otro lado.",
-    "windowPage.a11yBody":
-      "El contenido es un <code>role=\"dialog\"</code> <strong>sin</strong> <code>aria-modal</code>, nombrado por su título: la página no queda inerte y nada dice lo contrario. Al abrir, el foco entra a la ventana; al cerrar, vuelve al disparador. Los controles son botones de icono con nombre propio (<code>closeLabel</code>, <code>minimizeLabel</code>, <code>maximizeLabel</code>, <code>restoreLabel</code>), que reemplazan el \"Close Window\" en inglés que trae Zag.",
-    "windowPage.keyboardTitle": "Teclado",
-    "window.key.arrows": "Con el foco en la ventana, la mueve. Con Shift, en pasos más largos.",
+    "windowPage.description": "Abre un panel que se mueve y cambia de tamaño al lado de la página, sin bloquearla.",
+
+    "windowPage.a11yYours2": "Al cerrarla, devuelve el foco a lo que la abrió.",
+
+    "windowPage.a11yYours1": "Dale un título que la nombre.",
+
+    "windowPage.a11yDoes3": "Los botones de minimizar, maximizar y cerrar tienen nombre.",
+
+    "windowPage.a11yDoes2": "Todo lo que se hace con el puntero se puede hacer con el teclado.",
+
+    "windowPage.a11yDoes1": "La página no queda inerte: <kbd>Tab</kbd> entra y sale de la ventana.",
+
+    "windowPage.a11yIntro": 'El contenido es un <code>role="dialog"</code> sin <code>aria-modal</code>, nombrado por su título.',
+
+    "windowPage.content2": "Recuerda la posición y el tamaño si la persona vuelve a abrirla.",
+
+    "windowPage.content1": "Titula la ventana con lo que contiene: «Inspector», «Capas».",
+
+    "windowPage.whenNot3": 'Para una ayuda junto a un control: usa <a href="/es/componentes/popover">Popover</a>.',
+
+    "windowPage.whenNot2": 'Para un panel de costado fijo: usa <a href="/es/componentes/drawer">Drawer</a>.',
+
+    "windowPage.whenNot1": 'Para algo que hay que decidir antes de seguir: usa <a href="/es/componentes/dialog">Dialog</a>.',
+
+    "windowPage.when2": "Cuando la persona necesita ver la página y el panel a la vez.",
+
+    "windowPage.when1": "Para herramientas que acompañan el contenido: un inspector, un reproductor, un chat.",
+
+    "windowPage.contract3": "No hay fondo que tape la página ni trampa de foco.",
+
+    "windowPage.contract2": "No recuerda dónde estaba: guardarlo es de tu app.",
+
+    "windowPage.contract1": "La posición y el tamaño son cuatro hooks: <code>--x</code>, <code>--y</code>, <code>--width</code> y <code>--height</code>.",
+
+    "windowPage.freeBody": "Arrastra la barra de título o un borde; doble clic en la barra maximiza.",
+
+    "windowPage.freeTitle": "Libre: arrastrar y cambiar de tamaño",
+    "windowPage.lede": "Window abre un panel que queda abierto mientras sigues trabajando: una paleta de herramientas, un inspector, un chat. Se arrastra por la barra de título, cambia de tamaño por los bordes, se minimiza y se maximiza. La página de atrás sigue funcionando.",
+    "windowPage.fixedTitle": "Tamaño fijo: sin bordes ni maximizar",
+    "windowPage.fixedBody": "Con <code>resizable={false}</code> se quitan los bordes y los botones de minimizar y maximizar.",
+    "window.key.arrows": "Con el foco en la ventana, la mueve; con <kbd>Shift</kbd>, en pasos más largos.",
     "window.key.escape": "Cierra la ventana. Durante un arrastre o un cambio de tamaño, lo cancela y la deja donde estaba.",
-    "window.key.dblclick": "Doble clic en la barra de título: maximiza, o restaura si ya estaba maximizada o minimizada.",
-    "windowPage.showcaseTitle": "Showcases",
-    "windowPage.showcaseBody": "Una ventana que se arrastra y cambia de tamaño, y una fija.",
-    "windowPage.guidelinesLede": "Window es un panel flotante que se mueve y cambia de tamaño sobre la página.",
-    "windowPage.guide.item1": "Úsalo para herramientas que conviven con el contenido, como un inspector o un reproductor.",
-    "windowPage.guide.item2": "Recuerda la posición y el tamaño si la persona vuelve a abrirla.",
-    "windowPage.guide.item3": "Para algo que hay que decidir antes de seguir, usa un <a href=\"/es/componentes/dialog\">Dialog</a>.",
+    "window.key.dblclick": "Doble clic en la barra de título: maximiza o restaura.",
+    "windowPage.guidelinesLede": "Una ventana convive con la página: úsala para lo que se consulta mientras se trabaja.",
   },
   en: {
     "windowPage.anatomyLabel": "Window anatomy",
@@ -52,27 +74,49 @@ export const windowMessages = {
     "demo.windowFixed.title": "Notes",
     "demo.windowFixed.body": "This window moves, but it does not resize.",
 
-    "windowPage.description":
-      "A non-modal panel that moves, resizes, minimizes and maximizes, beside the page and without blocking it.",
-    "windowPage.lede":
-      "A <strong>window</strong> is for what has to stay open while you keep working: a tool palette, an inspector, a chat. The title bar drags it, the edges and corners resize it, and its controls minimize, maximize and close it. Unlike a <code>Dialog</code>, the page behind it stays live.",
-    "windowPage.fixedTitle": "Fixed size",
-    "windowPage.fixedBody":
-      "With <code>resizable={false}</code> the edges go, and so do the minimize and maximize controls: the machine will not change the stage of a window it cannot resize, and a control that does nothing is worse than none. It still moves.",
-    "windowPage.fixedLabel": "Fixed-size window",
-    "windowPage.contractBody":
-      "The machine is <code>@zag-js/floating-panel</code>, the same one in both bindings. It writes <code>--x</code>, <code>--y</code>, <code>--width</code> and <code>--height</code> on the positioner; the stylesheet only reads them. Open windows share one stack: the last one focused sits on top and the others carry <code>data-behind</code>. No JavaScript means no window, so put nothing in one that exists nowhere else.",
-    "windowPage.a11yBody":
-      "The content is a <code>role=\"dialog\"</code> <strong>without</strong> <code>aria-modal</code>, named by its title: the page does not go inert and nothing claims it does. Opening moves focus into the window; closing returns it to the trigger. The controls are icon buttons with names of their own (<code>closeLabel</code>, <code>minimizeLabel</code>, <code>maximizeLabel</code>, <code>restoreLabel</code>), which replace the English \"Close Window\" Zag ships.",
-    "windowPage.keyboardTitle": "Keyboard",
-    "window.key.arrows": "With focus on the window, moves it. With Shift, in larger steps.",
+    "windowPage.description": "Opens a panel that moves and resizes beside the page, without blocking it.",
+
+    "windowPage.a11yYours2": "On close, return focus to what opened it.",
+
+    "windowPage.a11yYours1": "Give it a title that names it.",
+
+    "windowPage.a11yDoes3": "The minimize, maximize and close buttons have names.",
+
+    "windowPage.a11yDoes2": "Everything done with the pointer can be done with the keyboard.",
+
+    "windowPage.a11yDoes1": "The page does not become inert: <kbd>Tab</kbd> enters and leaves the window.",
+
+    "windowPage.a11yIntro": 'The content is a <code>role="dialog"</code> without <code>aria-modal</code>, named by its title.',
+
+    "windowPage.content2": "Remember position and size if people open it again.",
+
+    "windowPage.content1": "Title the window with what it holds: “Inspector”, “Layers”.",
+
+    "windowPage.whenNot3": 'For help beside a control: use <a href="/components/popover">Popover</a>.',
+
+    "windowPage.whenNot2": 'For a fixed side panel: use <a href="/components/drawer">Drawer</a>.',
+
+    "windowPage.whenNot1": 'For something that must be decided before going on: use <a href="/components/dialog">Dialog</a>.',
+
+    "windowPage.when2": "When people need to see the page and the panel at once.",
+
+    "windowPage.when1": "For tools that go with the content: an inspector, a player, a chat.",
+
+    "windowPage.contract3": "There is no backdrop covering the page and no focus trap.",
+
+    "windowPage.contract2": "It does not remember where it was: saving that is your app's job.",
+
+    "windowPage.contract1": "Position and size are four hooks: <code>--x</code>, <code>--y</code>, <code>--width</code> and <code>--height</code>.",
+
+    "windowPage.freeBody": "Drag the title bar or an edge; double-click the bar to maximize.",
+
+    "windowPage.freeTitle": "Free: drag and resize",
+    "windowPage.lede": "Window opens a panel that stays open while you keep working: a tool palette, an inspector, a chat. It is dragged by its title bar, resized by its edges, minimized and maximized. The page behind keeps working.",
+    "windowPage.fixedTitle": "Fixed size: no edges or maximize",
+    "windowPage.fixedBody": "With <code>resizable={false}</code> the edges and the minimize and maximize buttons are gone.",
+    "window.key.arrows": "With focus on the window, moves it; with <kbd>Shift</kbd>, in longer steps.",
     "window.key.escape": "Closes the window. During a drag or a resize, cancels it and puts the window back.",
-    "window.key.dblclick": "Double-click the title bar: maximizes, or restores when already maximized or minimized.",
-    "windowPage.showcaseTitle": "Showcases",
-    "windowPage.showcaseBody": "A window that drags and resizes, and a fixed one.",
-    "windowPage.guidelinesLede": "Window is a floating panel that moves and resizes over the page.",
-    "windowPage.guide.item1": "Use it for tools that live alongside the content, like an inspector or a player.",
-    "windowPage.guide.item2": "Remember the position and size if the person opens it again.",
-    "windowPage.guide.item3": "For something that must be decided before going on, use a <a href=\"/components/dialog\">Dialog</a>.",
+    "window.key.dblclick": "Double-click the title bar: maximizes or restores.",
+    "windowPage.guidelinesLede": "A window lives alongside the page: use it for what is consulted while working.",
   },
 } as const;

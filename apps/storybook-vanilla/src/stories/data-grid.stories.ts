@@ -6,11 +6,10 @@ import "@skryensya/core/components/canvas.css";
 import "@skryensya/core/components/data-grid.css";
 import "@skryensya/core/patterns/icon.css";
 import * as demos from "@docs/demos/data-grid";
-import { annotationDemoCss } from "@docs/demos/annotation";
-import { treeStory, withCss, type Meta, type StoryObj } from "../tree-story";
+import { treeStory, type Meta, type StoryObj } from "../tree-story";
 
 export default { title: "Components/Unlisted/DataGrid", tags: ["autodocs"] } satisfies Meta;
 
-export const Anatomy: StoryObj = treeStory(demos.dataGridAnatomyTree, { decorators: [withCss(annotationDemoCss)] });
+export const Anatomy: StoryObj = treeStory(demos.dataGridAnatomyTree);
 export const Scores: StoryObj = treeStory(demos.dataGridScoresTree);
 export const Actions: StoryObj = treeStory(demos.dataGridActionsTree);

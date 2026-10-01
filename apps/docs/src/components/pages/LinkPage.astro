@@ -3,11 +3,26 @@ import "@skryensya/core/components/tile.css";
 import "@skryensya/core/components/annotation.css";
 import ComponentPageShell from "./ComponentPageShell.astro";
 import CodeBlock from "../CodeBlock.astro";
-import ComponentPreview from "../ComponentPreview.astro";
 import UsagePreview from "../UsagePreview.astro";
 import DoDont from "../DoDont.astro";
+import WhenToUse from "../WhenToUse.astro";
+import ContentRules from "../ContentRules.astro";
+import A11yNotes from "../A11yNotes.astro";
+import {
+  linkDoActionTree,
+  linkDoDescriptiveTree,
+  linkDoExternalTree,
+  linkDoTargetWordsTree,
+  linkDontActionTree,
+  linkDontExternalTree,
+  linkDontHereTree,
+  linkDontWholeSentenceTree,
+} from "../../demos/link";
+import { cardLinkTree } from "../../demos/card";
+import { cardDontInnerLinkTree } from "../../demos/card-guide";
+import { cardCopy } from "../../examples/card-data";
 import { linkAnatomyTree, linkSingleTree, linkTree, tileLinkTree } from "../../demos/link";
-import { getLocale, useTranslations } from "../../i18n";
+import { getLocale, tList, useTranslations } from "../../i18n";
 import { annotationDemoCss } from "../../demos/annotation";
 
 const install = `pnpm add @skryensya/core @skryensya/react`;
@@ -49,63 +64,69 @@ link.textContent = "Usage details";`;
       stageMinBlockSize="7rem"
     />
 
-    <h3>{t("linkPage.showcaseTitle")}</h3>
-    <p set:html={t("linkPage.showcaseBody")} />
+    <h3>{t("component.examplesTitle")}</h3>
     <UsagePreview tree={linkTree(t, "/components/link")} title={t("linkPage.inlineTitle")} description={t("linkPage.inlineBody")} />
     <UsagePreview tree={tileLinkTree(t, "/components/link")} title={t("linkPage.tileTitle")} description={t("linkPage.tileBody1")} />
     <p set:html={t("linkPage.tileBody2")} />
     <CodeBlock code={tileLinkVanilla} label="JavaScript" />
 
-    <h3>{t("linkPage.whyTitle")}</h3>
-    <p set:html={t("linkPage.whyBody1")} />
-    <p set:html={t("linkPage.whyBody2")} />
-    <div class="sk-callout" data-tone="info">
-      <div class="sk-callout__content">
-        <p set:html={t("linkPage.calloutBody")} />
-      </div>
-    </div>
-
-    <h3>{t("linkPage.toneTitle")}</h3>
-    <p set:html={t("linkPage.toneBody")} />
-
-    <p set:html={t("component.reactNote")} />
-
     <h3>{t("component.contractNotesTitle")}</h3>
     <ul>
-      <li set:html={t("linkPage.contractItem1")} />
-      <li set:html={t("linkPage.contractItem2")} />
-      <li set:html={t("linkPage.contractItem3")} />
-      <li set:html={t("linkPage.contractItem4")} />
-      <li set:html={t("linkPage.contractItem5")} />
+      {tList(t, "linkPage.contract").map((item) => <li set:html={item} />)}
     </ul>
+    <p set:html={t("component.reactNote")} />
 
     <h3>{t("component.anatomy")}</h3>
     <p set:html={t("linkPage.anatomyBody")} />
-    <ComponentPreview
+    <UsagePreview
       tree={linkAnatomyTree(t, "/components/link")}
       css={annotationDemoCss}
       label={t("linkPage.anatomyPreviewLabel")}
-      screens={false}
-      hideSource
-      chrome={false}
+      bare
     />
   </Fragment>
 
   <Fragment slot="guidelines">
     <p class="lede" set:html={t("linkPage.guidelinesLede")} />
+    <WhenToUse use={tList(t, "linkPage.when")} avoid={tList(t, "linkPage.whenNot")} />
     <DoDont
       title={t("linkPage.dd.text.title")}
-      do={{ tree: linkTree(t, "/components/link"), caption: t("linkPage.dd.text.do") }}
-      dont={{ tree: tileLinkTree(t, "/components/link"), caption: t("linkPage.dd.text.dont") }}
+      do={{ tree: linkDoDescriptiveTree(t), caption: t("linkPage.dd.text.do") }}
+      dont={{ tree: linkDontHereTree(t), caption: t("linkPage.dd.text.dont") }}
     />
     <DoDont
-      title={t("linkPage.dd.underline.title")}
-      do={{ tree: linkSingleTree(t, "/components/link"), caption: t("linkPage.dd.underline.do") }}
-      dont={{ tree: linkSingleTree(t, "/components/link"), caption: t("linkPage.dd.underline.dont") }}
+      title={t("linkPage.dd.scope.title")}
+      do={{ tree: linkDoTargetWordsTree(t), caption: t("linkPage.dd.scope.do") }}
+      dont={{ tree: linkDontWholeSentenceTree(t), caption: t("linkPage.dd.scope.dont") }}
     />
+    <DoDont
+      title={t("linkPage.dd.external.title")}
+      do={{ tree: linkDoExternalTree(t), caption: t("linkPage.dd.external.do") }}
+      dont={{ tree: linkDontExternalTree(t), caption: t("linkPage.dd.external.dont") }}
+    />
+    <DoDont
+      title={t("linkPage.dd.action.title")}
+      do={{ tree: linkDoActionTree(t), caption: t("linkPage.dd.action.do") }}
+      dont={{ tree: linkDontActionTree(t), caption: t("linkPage.dd.action.dont") }}
+    />
+    <DoDont
+      canvas
+      title={t("linkPage.dd.underline.title")}
+      do={{ tree: cardLinkTree(cardCopy[getLocale(Astro.url)]), caption: t("linkPage.dd.underline.do") }}
+      dont={{ tree: cardDontInnerLinkTree(cardCopy[getLocale(Astro.url)], t("demo.card.cta")), caption: t("linkPage.dd.underline.dont") }}
+    />
+    <ContentRules items={tList(t, "linkPage.content")} />
   </Fragment>
 
   <Fragment slot="install">
     <CodeBlock code={install} label="terminal" />
+  </Fragment>
+  <Fragment slot="a11y">
+    <A11yNotes
+      intro={t("linkPage.a11yIntro")}
+      does={tList(t, "linkPage.a11yDoes")}
+      yours={tList(t, "linkPage.a11yYours")}
+      keys={[{ keys: ["Enter"], action: t("linkPage.a11yKeyEnter") }]}
+    />
   </Fragment>
 </ComponentPageShell>

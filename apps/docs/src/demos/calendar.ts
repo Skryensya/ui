@@ -1,6 +1,10 @@
 import type { UsageTree } from "@skryensya/core/usage-tree";
 import type { Translate } from "../i18n";
-import { anatomyCanvas, anatomyFigureHtml, anatomyHints, namePart } from "./annotation-parts";
+import {
+  anatomyCanvas,
+  anatomyHints,
+  namePart,
+} from "./annotation-parts";
 
 /*
  * The three calendar demos, from the contract published for it.
@@ -37,19 +41,42 @@ const isoDate = (date: Date) => date.toISOString().slice(0, 10);
 export const calendarAnatomyTree = (t: Translate): UsageTree => ({
   contract: "annotation",
   signature: "Annotated",
-  options: { ...anatomyCanvas(t), label: t("calendar.anatomyLabel"), inert: true },
+  options: {
+    ...anatomyCanvas(t),
+    label: t("calendar.anatomyLabel"),
+    inert: true,
+  },
   slots: {
     ...anatomyHints(t),
     subject: calendarTree(t),
     items: [
-      namePart(".sk-calendar", "block-start", { mark: "bracket", ringPlacement: "offset", ringDistance: 6 }),
-      namePart(".sk-calendar__label", "block-start", { ringPlacement: "offset", ringDistance: 2 }),
+      namePart(".sk-calendar", "block-start", {
+        mark: "bracket",
+        ringPlacement: "offset",
+        ringDistance: 6,
+      }),
+      namePart(".sk-calendar__label", "block-start", {
+        ringPlacement: "offset",
+        ringDistance: 2,
+      }),
       namePart(".sk-calendar__header", "inline-start"),
-      namePart(".sk-calendar__previous", "inline-start", { ringPlacement: "offset", ringDistance: 2 }),
+      namePart(".sk-calendar__previous", "inline-start", {
+        ringPlacement: "offset",
+        ringDistance: 2,
+      }),
       namePart(".sk-calendar__view-trigger", "inline-end"),
-      namePart(".sk-calendar__next", "inline-end", { ringPlacement: "offset", ringDistance: 2 }),
-      namePart(".sk-calendar__table", "inline-start", { ringPlacement: "offset", ringDistance: 4 }),
-      namePart(".sk-calendar__table-header", "inline-end", { ringPlacement: "offset", ringDistance: 2 }),
+      namePart(".sk-calendar__next", "inline-end", {
+        ringPlacement: "offset",
+        ringDistance: 2,
+      }),
+      namePart(".sk-calendar__table", "inline-start", {
+        ringPlacement: "offset",
+        ringDistance: 4,
+      }),
+      namePart(".sk-calendar__table-header", "inline-end", {
+        ringPlacement: "offset",
+        ringDistance: 2,
+      }),
       namePart(".sk-calendar__table-body", "inline-start"),
       {
         options: {
@@ -94,7 +121,9 @@ const iconBtn = (part: string): string =>
 const textBtn = (part: string): string =>
   `<button class="${part} sk-button sk-interactive" ${ghostAttrs}>`;
 
-const calendarHeader = (heading: string): string => `<div class="sk-calendar__header">
+const calendarHeader = (
+  heading: string,
+): string => `<div class="sk-calendar__header">
   ${iconBtn("sk-calendar__previous")}
     <span aria-hidden="true"><span data-sk-icon="chevron-left" data-sk-icon-size="sm"></span></span>
   </button>
@@ -114,7 +143,12 @@ const gridCell = (label: string): string => `<td class="sk-calendar__cell">
 const gridRows = (labels: readonly string[], columns: number): string => {
   const rows: string[] = [];
   for (let i = 0; i < labels.length; i += columns) {
-    rows.push(`<tr>${labels.slice(i, i + columns).map(gridCell).join("")}</tr>`);
+    rows.push(
+      `<tr>${labels
+        .slice(i, i + columns)
+        .map(gridCell)
+        .join("")}</tr>`,
+    );
   }
   return rows.join("");
 };
@@ -131,87 +165,90 @@ const shortMonths = (locale: string): string[] =>
 const decadeYears = (start = 2020): string[] =>
   Array.from({ length: 12 }, (_, i) => String(start - 1 + i));
 
-
-/** Month view: the climbed grid where `sk-calendar__month-grid` is the part that only exists here. */
-export const calendarMonthAnatomyHtml = (t: Translate): string => {
+/** Frozen day-grid markup for Do/Don't specimens, whose inert wrapper intentionally skips mounting. */
+const calendarGuideMarkup = (
+  t: Translate,
+  {
+    range = false,
+    limits = false,
+    compact = false,
+    endpoint,
+    label: customLabel,
+  }: {
+    range?: boolean;
+    limits?: boolean;
+    compact?: boolean;
+    endpoint?: "start" | "end";
+    label?: string;
+  } = {},
+): string => {
   const locale = t("demo.calendar.locale");
-  const months = shortMonths(locale);
-  const specimen = `<div class="sk-calendar">
-  <p class="sk-calendar__label">${t("demo.calendar.availability")}</p>
-  ${calendarHeader("2026")}
-  <table class="sk-calendar__table sk-calendar__month-grid" role="grid">
-    <tbody class="sk-calendar__table-body">
-      ${gridRows(months, 4)}
-    </tbody>
-  </table>
-</div>`;
-
-  return anatomyFigureHtml(t, {
-    label: t("calendar.anatomyMonthLabel"),
-    specimen,
-    parts: [
-      { for: ".sk-calendar", side: "block-start", mark: "bracket", ringPlacement: "offset", ringDistance: 6 },
-      { for: ".sk-calendar__header", side: "inline-start" },
-      { for: ".sk-calendar__view-trigger", side: "inline-end" },
-      {
-        for: ".sk-calendar__month-grid",
-        side: "inline-start",
-        ringPlacement: "offset", ringDistance: 4,
-      },
-      { for: ".sk-calendar__table-body", side: "inline-end" },
-      {
-        for: ".sk-calendar__cell",
-        side: "block-end",
-        ringPlacement: "offset", ringDistance: 2,
-      },
-      {
-        for: ".sk-calendar__cell-trigger",
-        side: "inline-end",
-        ringPlacement: "offset", ringDistance: 2,
-      },
-    ],
+  const month = new Date(Date.UTC(2026, 6, 1));
+  const heading = new Intl.DateTimeFormat(locale, {
+    month: compact ? "short" : "long",
+    year: "numeric",
+    timeZone: "UTC",
+  }).format(month);
+  const weekdays = Array.from({ length: 7 }, (_, day) => {
+    const date = new Date(Date.UTC(2026, 0, 4 + day));
+    return new Intl.DateTimeFormat(locale, {
+      weekday: compact ? "narrow" : "short",
+      timeZone: "UTC",
+    }).format(date);
   });
+  const firstWeekday = month.getUTCDay();
+  const daysInMonth = new Date(Date.UTC(2026, 7, 0)).getUTCDate();
+  const days = Array.from({ length: 42 }, (_, index) => {
+    const day = index - firstWeekday + 1;
+    if (day < 1 || day > daysInMonth)
+      return '<td class="sk-calendar__cell"></td>';
+    const outside = limits && (day < 8 || day > 23);
+    const selected = endpoint
+      ? day === (endpoint === "start" ? 17 : 12)
+      : range && (day === 12 || day === 17);
+    const inRange = range && !endpoint && day > 12 && day < 17;
+    const attrs = [
+      'class="sk-calendar__cell-trigger sk-button sk-interactive"',
+      'type="button" data-variant="ghost" data-tone="neutral" data-size="sm"',
+      outside ? "disabled data-outside-range" : "",
+      selected ? "data-selected" : "",
+      inRange ? "data-in-range" : "",
+      (endpoint === "start" ? day === 17 : range && day === 12)
+        ? "data-range-start"
+        : "",
+      (endpoint === "end" ? day === 12 : range && day === 17)
+        ? "data-range-end"
+        : "",
+    ]
+      .filter(Boolean)
+      .join(" ");
+    return `<td class="sk-calendar__cell"><button ${attrs}>${day}</button></td>`;
+  });
+  const rows = Array.from(
+    { length: 6 },
+    (_, row) => `<tr>${days.slice(row * 7, row * 7 + 7).join("")}</tr>`,
+  ).join("");
+  const label =
+    customLabel ??
+    (range ? t("demo.calendar.stay") : t("demo.calendar.availability"));
+  const style = compact
+    ? ' style="--sk-calendar-inline-size: 9.75rem; --sk-calendar-cell-size: 1.125rem;"'
+    : "";
+  return `<div class="sk-calendar"${style}>
+    <p class="sk-calendar__label">${label}</p>
+    <div class="sk-calendar__header"><button class="sk-calendar__previous sk-button sk-interactive" data-icon-only type="button" aria-label="${t("demo.calendar.previousMonth")}">‹</button><button class="sk-calendar__view-trigger sk-button sk-interactive" type="button">${heading}</button><button class="sk-calendar__next sk-button sk-interactive" data-icon-only type="button" aria-label="${t("demo.calendar.nextMonth")}">›</button></div>
+    <table class="sk-calendar__table" role="grid"><thead class="sk-calendar__table-header"><tr>${weekdays.map((day) => `<th scope="col"><abbr>${day}</abbr></th>`).join("")}</tr></thead><tbody class="sk-calendar__table-body">${rows}</tbody></table>
+  </div>`;
 };
 
-/** Year / decade view: same shape, `sk-calendar__year-grid` is the view-only modifier. */
-export const calendarYearAnatomyHtml = (t: Translate): string => {
-  const years = decadeYears(2020);
-  const specimen = `<div class="sk-calendar">
-  <p class="sk-calendar__label">${t("demo.calendar.availability")}</p>
-  ${calendarHeader("2020–2029")}
-  <table class="sk-calendar__table sk-calendar__year-grid" role="grid">
-    <tbody class="sk-calendar__table-body">
-      ${gridRows(years, 4)}
-    </tbody>
-  </table>
-</div>`;
-
-  return anatomyFigureHtml(t, {
-    label: t("calendar.anatomyYearLabel"),
-    specimen,
-    parts: [
-      { for: ".sk-calendar", side: "block-start", mark: "bracket", ringPlacement: "offset", ringDistance: 6 },
-      { for: ".sk-calendar__header", side: "inline-start" },
-      { for: ".sk-calendar__view-trigger", side: "inline-end" },
-      {
-        for: ".sk-calendar__year-grid",
-        side: "inline-start",
-        ringPlacement: "offset", ringDistance: 4,
-      },
-      { for: ".sk-calendar__table-body", side: "inline-end" },
-      {
-        for: ".sk-calendar__cell",
-        side: "block-end",
-        ringPlacement: "offset", ringDistance: 2,
-      },
-      {
-        for: ".sk-calendar__cell-trigger",
-        side: "inline-end",
-        ringPlacement: "offset", ringDistance: 2,
-      },
-    ],
-  });
-};
+export const calendarRangeGuideHtml = (t: Translate): string =>
+  calendarGuideMarkup(t, { range: true });
+export const calendarTwoGuideHtml = (t: Translate): string =>
+  `<div style="display:flex;gap:var(--space-inline-sm);align-items:start">${calendarGuideMarkup(t, { compact: true, endpoint: "end", label: t("demo.datePicker.dd.end") })}${calendarGuideMarkup(t, { compact: true, endpoint: "start", label: t("demo.datePicker.dd.start") })}</div>`;
+export const calendarLimitsGuideHtml = (t: Translate): string =>
+  calendarGuideMarkup(t, { limits: true });
+export const calendarNoLimitsGuideHtml = (t: Translate): string =>
+  calendarGuideMarkup(t);
 
 export const calendarTree = (t: Translate): UsageTree => ({
   contract: "calendar",
@@ -250,7 +287,17 @@ export const calendarDontTwoTree = (t: Translate): UsageTree => ({
   signature: "Inline",
   options: { gap: "md", inlineAlign: "start" },
   children: [
-    { contract: "calendar", signature: "Calendar", options: { locale: t("demo.calendar.locale") }, slots: { label: t("demo.datePicker.dd.start") } },
-    { contract: "calendar", signature: "Calendar", options: { locale: t("demo.calendar.locale") }, slots: { label: t("demo.datePicker.dd.end") } },
+    {
+      contract: "calendar",
+      signature: "Calendar",
+      options: { locale: t("demo.calendar.locale") },
+      slots: { label: t("demo.datePicker.dd.start") },
+    },
+    {
+      contract: "calendar",
+      signature: "Calendar",
+      options: { locale: t("demo.calendar.locale") },
+      slots: { label: t("demo.datePicker.dd.end") },
+    },
   ],
 });

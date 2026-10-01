@@ -17,16 +17,27 @@ import "@skryensya/core/components/annotation.css";
 import CodeBlock from "../CodeBlock.astro";
 import ComponentPageShell from "./ComponentPageShell.astro";
 import AppearanceMenu from "../AppearanceMenu.astro";
-import ComponentPreview from "../ComponentPreview.astro";
+import UsagePreview from "../UsagePreview.astro";
+import WhenToUse from "../WhenToUse.astro";
+import ContentRules from "../ContentRules.astro";
+import DoDont from "../DoDont.astro";
+import A11yNotes from "../A11yNotes.astro";
 import {
   dialogAnatomyCss,
   dialogAnatomyTree,
   dialogConfirmScript,
   dialogConfirmTree,
+  dialogClearConfirmTree,
+  dialogUnsavedChangesTree,
+  dialogInviteTree,
+  dialogRevokeAccessTree,
+  dialogVagueTree,
+  dialogLongTaskTree,
+  dialogNoticeTree,
   dialogVaulScript,
   dialogVaulTree,
 } from "../../demos/dialog";
-import { getLocale, useTranslations } from "../../i18n";
+import { getLocale, tList, useTranslations } from "../../i18n";
 
 const t = useTranslations(getLocale(Astro.url));
 
@@ -66,7 +77,7 @@ await initComponents();`;
     { file: "components/dialog.css", probe: "sk-dialog", title: "Dialog" },
     { file: "patterns/dialog-vaul.css", probe: "data-sk-dialog-vaul", title: "Dialog Vaul" },
   ]}
-  testFiles={["packages/react/src/components/dialog.test.tsx"]}}
+  testFiles={["packages/react/src/components/dialog.test.tsx"]}
 >
   <Fragment slot="appearance">
     <AppearanceMenu label={t("prefs.appearance")} values={["plain", "brutalist", "frosted"]} unavailable={{ tactile: t("prefs.appearanceTactileUnavailable") }} />
@@ -75,60 +86,53 @@ await initComponents();`;
   <Fragment slot="usage">
     <p class="lede" set:html={t("dialog.lede")} />
 
-    <h3>{t("dialog.showcaseTitle")}</h3>
-    <p set:html={t("dialog.showcaseBody")} />
+    <h3>{t("component.examplesTitle")}</h3>
+    {/* ComponentPreviews, not UsagePreviews: each opens a modal, and a frame of its own keeps the
+        dialog from taking over this page. */}
     <h3>{t("dialog.confirmTitle")}</h3>
     <p set:html={t("dialog.confirmAnatomy")} />
-    <ComponentPreview tree={dialogConfirmTree(t)} previewScript={dialogConfirmScript} label="Confirm" viewport="overlay" />
+    <UsagePreview tree={dialogConfirmTree(t)} script={dialogConfirmScript} label="Confirm" viewport="overlay" />
+    <h3>{t("dialog.vaulTitle")}</h3>
+    <p set:html={t("dialog.vaulIntro")} />
+    <UsagePreview tree={dialogVaulTree(t)} script={dialogVaulScript} label="Dialog Vaul" viewport="overlay" />
 
     <h3>{t("dialog.openingTitle")}</h3>
     <CodeBlock code={confirmJs} label="JavaScript" />
 
-    <h3>{t("dialog.contractTitle")}</h3>
+    <h3>{t("component.contractNotesTitle")}</h3>
     <ul>
-      <li set:html={t("dialog.contractItem1")} />
-      <li set:html={t("dialog.contractItem2")} />
-      <li set:html={t("dialog.contractItem3")} />
-      <li set:html={t("dialog.contractItem4")} />
-      <li set:html={t("dialog.contractItem5")} />
-      <li set:html={t("dialog.contractItem6")} />
-      <li set:html={t("dialog.contractItem7")} />
-      <li set:html={t("dialog.contractItem8")} />
-    </ul>
-
-    <h3>{t("dialog.vaulTitle")}</h3>
-    <p set:html={t("dialog.vaulIntro")} />
-    <ComponentPreview tree={dialogVaulTree(t)} previewScript={dialogVaulScript} label="Dialog Vaul" viewport="overlay" />
-
-    <h4>{t("dialog.vaulAddsTitle")}</h4>
-    <ul>
-      <li set:html={t("dialog.vaulAddsItem1")} />
-      <li set:html={t("dialog.vaulAddsItem2")} />
-      <li set:html={t("dialog.vaulAddsItem3")} />
-      <li set:html={t("dialog.vaulAddsItem4")} />
+      {tList(t, "dialog.contract").map((item) => <li set:html={item} />)}
     </ul>
 
     <h3>{t("component.anatomy")}</h3>
     <p set:html={t("dialog.anatomyBody")} />
-    <ComponentPreview
-      tree={dialogAnatomyTree(t)}
-      css={dialogAnatomyCss}
-      label={t("dialog.anatomyPreviewLabel")}
-      screens={false}
-      hideSource
-      chrome={false}
-    />
+    <UsagePreview tree={dialogAnatomyTree(t)} css={dialogAnatomyCss} label={t("dialog.anatomyPreviewLabel")} bare />
   </Fragment>
 
   <Fragment slot="guidelines">
     <p class="lede" set:html={t("dialog.guidelinesLede")} />
-    <ul>
-      <li set:html={t("dialog.guide.use1")} />
-      <li set:html={t("dialog.guide.use2")} />
-      <li set:html={t("dialog.guide.avoid1")} />
-      <li set:html={t("dialog.guide.avoid2")} />
-      <li set:html={t("dialog.guide.avoid3")} />
-    </ul>
+    <WhenToUse use={tList(t, "dialog.when")} avoid={tList(t, "dialog.whenNot")} />
+    <ContentRules items={tList(t, "dialog.content")} />
+    <DoDont
+      title={t("dialog.dd.clear.title")}
+      do={{ tree: dialogClearConfirmTree(t), caption: t("dialog.dd.clear.do") }}
+      dont={{ tree: dialogVagueTree(t), caption: t("dialog.dd.clear.dont") }}
+    />
+    <DoDont
+      title={t("dialog.dd.focus.title")}
+      do={{ tree: dialogUnsavedChangesTree(t), caption: t("dialog.dd.focus.do") }}
+      dont={{ tree: dialogUnsavedChangesTree(t, false), caption: t("dialog.dd.focus.dont") }}
+    />
+    <DoDont
+      title={t("dialog.dd.scope.title")}
+      do={{ tree: dialogInviteTree(t), caption: t("dialog.dd.scope.do") }}
+      dont={{ tree: dialogLongTaskTree(t), caption: t("dialog.dd.scope.dont") }}
+    />
+    <DoDont
+      title={t("dialog.dd.interruption.title")}
+      do={{ tree: dialogRevokeAccessTree(t), caption: t("dialog.dd.interruption.do") }}
+      dont={{ tree: dialogNoticeTree(t), caption: t("dialog.dd.interruption.dont") }}
+    />
   </Fragment>
 
   <Fragment slot="install">
@@ -142,15 +146,15 @@ await initComponents();`;
   </Fragment>
 
   <Fragment slot="a11y">
-    <p set:html={t("dialog.a11yIntro")} />
-    <ul>
-      <li set:html={t("dialog.a11yItem1")} />
-      <li set:html={t("dialog.a11yItem2")} />
-      <li set:html={t("dialog.a11yItem3")} />
-      <li set:html={t("dialog.a11yItem4")} />
-      <li set:html={t("dialog.a11yItem5")} />
-      <li set:html={t("dialog.a11yItem6")} />
-    </ul>
+    <A11yNotes
+      intro={t("dialog.a11yIntro")}
+      does={tList(t, "dialog.a11yDoes")}
+      yours={tList(t, "dialog.a11yYours")}
+      keys={[
+        { keys: ["Tab", "Shift+Tab"], action: t("dialog.a11yKeyTab") },
+        { keys: ["Esc"], action: t("dialog.a11yKeyEsc") },
+      ]}
+    />
   </Fragment>
 
   <Fragment slot="style">

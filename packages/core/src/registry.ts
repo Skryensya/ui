@@ -91,7 +91,6 @@ import { tableContract } from "./table.js";
 import { treegridContract } from "./treegrid.js";
 import { tabsContract } from "./tabs.js";
 import { tocContract } from "./toc.js";
-import { componentPreviewContract } from "./component-preview.js";
 import { vaulContract } from "./vaul.js";
 import type { ComponentContract, ContractSignature } from "./contract.js";
 
@@ -218,7 +217,6 @@ export const contracts = fromContracts(
   tabsContract,
   tocContract,
   vaulContract,
-  componentPreviewContract,
   annotationContract,
   diagramContract,
 );

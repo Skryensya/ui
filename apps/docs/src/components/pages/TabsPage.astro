@@ -4,9 +4,11 @@ import "@skryensya/core/components/tabs.css";
 import "@skryensya/core/components/annotation.css";
 import ComponentPageShell from "./ComponentPageShell.astro";
 import CodeBlock from "../CodeBlock.astro";
-import ComponentPreview from "../ComponentPreview.astro";
 import UsagePreview from "../UsagePreview.astro";
 import DoDont from "../DoDont.astro";
+import WhenToUse from "../WhenToUse.astro";
+import ContentRules from "../ContentRules.astro";
+import A11yNotes from "../A11yNotes.astro";
 import {
   tabsAdvancedScript,
   tabsAdvancedTree,
@@ -14,12 +16,10 @@ import {
   tabsBasicTree,
   tabsDontManyTree,
   tabsDontStepsTree,
-  tabsHangingTree,
-  tabsSizeTree,
   tabsStatesTree,
 } from "../../demos/tabs";
 import { annotationDemoCss } from "../../demos/annotation";
-import { getLocale, useTranslations } from "../../i18n";
+import { getLocale, tList, useTranslations } from "../../i18n";
 
 const install = `pnpm add @skryensya/core @skryensya/vanilla`;
 
@@ -46,7 +46,7 @@ const explain = (option: string, values: readonly string[]) =>
   title="Tabs"
   description={t("tabsPage.description")}
   contractId="tabs"
-  testFiles={["packages/react/src/components/tabs.test.tsx"]}}
+  testFiles={["packages/react/src/components/tabs.test.tsx"]}
 >
   <Fragment slot="usage">
     <p class="lede" set:html={t("tabsPage.lede")} />
@@ -79,54 +79,25 @@ const explain = (option: string, values: readonly string[]) =>
       stageMinBlockSize="14rem"
     />
 
-    <h3>{t("tabsPage.showcaseTitle")}</h3>
-    <p set:html={t("tabsPage.showcaseBody")} />
-    <h3>{t("tabsPage.basicTitle")}</h3>
-    <p set:html={t("tabsPage.basicBody")} />
-    <UsagePreview tree={tabsBasicTree(t)} />
-
-    <h3>{t("tabsPage.statesTitle")}</h3>
-    <p set:html={t("tabsPage.statesBody")} />
-    <UsagePreview tree={tabsStatesTree(t)} />
-
-    <h3>{t("tabsPage.advancedTitle")}</h3>
-    <p set:html={t("tabsPage.advancedBody")} />
-    <ComponentPreview tree={tabsAdvancedTree(t)} js={tabsAdvancedScript} previewScript={tabsAdvancedScript} label={t("tabsPage.advancedLabel")} />
-
-    <h3>{t("tabsPage.sizeTitle")}</h3>
-    <p set:html={t("tabsPage.sizeBody")} />
-    <UsagePreview tree={tabsSizeTree(t)} />
-
-    <h3>{t("tabsPage.hangingTitle")}</h3>
-    <p set:html={t("tabsPage.hangingBody")} />
-    <UsagePreview tree={tabsHangingTree(t)} />
+    <h3>{t("component.examplesTitle")}</h3>
+    <UsagePreview tree={tabsBasicTree(t)} title={t("tabsPage.basicTitle")} description={t("tabsPage.basicBody")} />
+    <UsagePreview tree={tabsStatesTree(t)} title={t("tabsPage.statesTitle")} description={t("tabsPage.statesBody")} />
+    <UsagePreview tree={tabsAdvancedTree(t)} script={tabsAdvancedScript} title={t("tabsPage.advancedTitle")} description={t("tabsPage.advancedBody")} />
 
     <h3>{t("component.contractNotesTitle")}</h3>
     <ul>
-      <li set:html={t("tabsPage.contractItem1")} />
-      <li set:html={t("tabsPage.contractItem2")} />
-      <li set:html={t("tabsPage.contractItem3")} />
-      <li set:html={t("tabsPage.contractItem4")} />
-      <li set:html={t("tabsPage.contractItem5")} />
-      <li set:html={t("tabsPage.contractItem6")} />
+      {tList(t, "tabsPage.contract").map((item) => <li set:html={item} />)}
     </ul>
-
     <p set:html={t("tabsPage.reactBody")} />
 
     <h3>{t("component.anatomy")}</h3>
     <p set:html={t("tabsPage.anatomyBody")} />
-    <ComponentPreview
-      tree={tabsAnatomyTree(t)}
-      css={annotationDemoCss}
-      label={t("tabsPage.anatomyPreviewLabel")}
-      screens={false}
-      hideSource
-      chrome={false}
-    />
+    <UsagePreview tree={tabsAnatomyTree(t)} css={annotationDemoCss} label={t("tabsPage.anatomyPreviewLabel")} bare />
   </Fragment>
 
   <Fragment slot="guidelines">
     <p class="lede" set:html={t("tabsPage.guidelinesLede")} />
+    <WhenToUse use={tList(t, "tabsPage.when")} avoid={tList(t, "tabsPage.whenNot")} />
     <DoDont
       canvas
       title={t("tabsPage.dd.few.title")}
@@ -138,6 +109,7 @@ const explain = (option: string, values: readonly string[]) =>
       do={{ tree: tabsBasicTree(t), caption: t("tabsPage.dd.steps.do") }}
       dont={{ tree: tabsDontStepsTree(t), caption: t("tabsPage.dd.steps.dont") }}
     />
+    <ContentRules items={tList(t, "tabsPage.content")} />
   </Fragment>
 
   <Fragment slot="install">
@@ -147,5 +119,18 @@ const explain = (option: string, values: readonly string[]) =>
     <h3>{t("tabsPage.vanillaInitTitle")}</h3>
     <p set:html={t("tabsPage.vanillaInitBody")} />
     <CodeBlock code={vanillaJs} label="JavaScript" />
+  </Fragment>
+  <Fragment slot="a11y">
+    <A11yNotes
+      intro={t("tabsPage.a11yIntro")}
+      does={tList(t, "tabsPage.a11yDoes")}
+      yours={tList(t, "tabsPage.a11yYours")}
+      keys={[
+        { keys: ["←", "→"], action: t("tabsPage.key.arrows") },
+        { keys: [t("component.key.home"), t("component.key.end")], action: t("tabsPage.key.homeEnd") },
+        { keys: ["Tab"], action: t("tabsPage.key.tab") },
+        { keys: ["Enter", t("component.key.space")], action: t("tabsPage.key.select") },
+      ]}
+    />
   </Fragment>
 </ComponentPageShell>

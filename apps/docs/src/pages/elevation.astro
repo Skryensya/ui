@@ -1,7 +1,7 @@
 ---
 import Base from "../layouts/Base.astro";
 import CodeBlock from "../components/CodeBlock.astro";
-import ComponentPreview from "../components/ComponentPreview.astro";
+import UsagePreview from "../components/UsagePreview.astro";
 import Used from "../components/Used.astro";
 import { elevationScaleTree, elevationBoxSurfacesTree } from "../demos/elevation";
 import { elevationLevels } from "../demos/data/elevation";
@@ -57,7 +57,7 @@ const usage = `<!-- Box already ships the hook: surface="raised" sets --elevatio
     <code>box.css</code> plus the override the "How it's used" section shows) and the value each
     resolves to right now, in the active mode.
   </p>
-  <ComponentPreview tree={elevationScaleTree} label="The five levels" />
+  <UsagePreview tree={elevationScaleTree} label="The five levels" />
   <div class="sk-table-scroll">
     <table class="sk-table">
       <thead class="sk-table__head">
@@ -188,7 +188,7 @@ const usage = `<!-- Box already ships the hook: surface="raised" sets --elevatio
     publish. But if what's actually needed is a sunken or lifted Box, the real path is shorter: its
     own <code>surface</code>. No shadow is written on this page, <code>box.css</code> paints it.
   </p>
-  <ComponentPreview tree={elevationBoxSurfacesTree} label="Box · native surface" />
+  <UsagePreview tree={elevationBoxSurfacesTree} label="Box · native surface" />
 
   <h2>How it's used</h2>
   <p>

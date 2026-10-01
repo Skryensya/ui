@@ -152,3 +152,38 @@ export const changelogAnatomyTree = (t: Translate): UsageTree => ({
     ],
   },
 });
+
+/* Usage guide: one release whose entries say nothing a reader can act on. */
+export const changelogDontVagueTree = (t: Translate): UsageTree => ({
+  contract: "changelog",
+  signature: "Changelog",
+  attrs: { "aria-label": t("demo.changelog.label") },
+  children: [
+    {
+      contract: "changelog",
+      signature: "ChangelogRelease",
+      slots: { version: "0.2.0-dev" },
+      children: [
+        {
+          contract: "changelog",
+          signature: "ChangelogEntry",
+          options: { kind: "bugfix" },
+          slots: { kind: t("demo.changelog.kind.bugfix"), title: t("demo.changelog.vague.fixes") },
+          children: t("demo.changelog.vague.fixesBody"),
+        },
+        {
+          contract: "changelog",
+          signature: "ChangelogEntry",
+          slots: { kind: t("changelog.kind.chore"), title: t("demo.changelog.vague.refactor") },
+          children: t("demo.changelog.vague.refactorBody"),
+        },
+      ],
+    },
+  ],
+});
+
+/* The Do half: the same release, entries that say what changed for whoever uses it. */
+export const changelogDoSpecificTree = (t: Translate): UsageTree => ({
+  ...changelogTree(t),
+  children: [(changelogTree(t).children as UsageTree[])[0]!],
+});

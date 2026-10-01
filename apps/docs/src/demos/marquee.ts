@@ -212,3 +212,26 @@ export const marqueeNoFadeTree = (): UsageTree => ({
   options: { speed: "slow", fade: "none" },
   slots: { children: logoStrip() },
 });
+
+/* Usage guide: destinations sit still in a row, against the same links travelling in a band. */
+const guideLinks = (t: Translate): UsageTree[] =>
+  (["pricing", "docs", "blog", "support"] as const).map((key) => ({
+    contract: "typography",
+    signature: "Link",
+    options: { href: "#" },
+    children: t(`demo.marquee.link.${key}`),
+  }));
+
+export const marqueeDoLinksTree = (t: Translate): UsageTree => ({
+  contract: "layout",
+  signature: "Inline",
+  options: { gap: "lg" },
+  children: guideLinks(t),
+});
+
+export const marqueeDontLinksTree = (t: Translate): UsageTree => ({
+  contract: "marquee",
+  signature: "Marquee.autoplay",
+  options: { speed: "normal" },
+  slots: { children: guideLinks(t) },
+});

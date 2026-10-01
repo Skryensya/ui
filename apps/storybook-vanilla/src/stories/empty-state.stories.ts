@@ -4,13 +4,24 @@ import "@skryensya/core/components/annotation.css";
 import "@skryensya/core/components/button.css";
 import "@skryensya/core/components/canvas.css";
 import "@skryensya/core/components/empty-state.css";
+import "@skryensya/core/components/loader.css";
+import "@skryensya/core/components/typography.css";
+import "@skryensya/core/patterns/box.css";
 import "@skryensya/core/patterns/icon.css";
+import "@skryensya/core/patterns/layout.css";
+import "@skryensya/core/patterns/visually-hidden.css";
 import * as demos from "@docs/demos/empty-state";
-import { annotationDemoCss } from "@docs/demos/annotation";
-import { treeStory, withCss, type Meta, type StoryObj } from "../tree-story";
+import { treeStory, type Meta, type StoryObj } from "../tree-story";
 
 export default { title: "Components/Feedback/EmptyState", tags: ["autodocs"] } satisfies Meta;
 
-export const Anatomy: StoryObj = treeStory(demos.emptyStateAnatomyTree, { decorators: [withCss(annotationDemoCss)] });
+export const Anatomy: StoryObj = treeStory(demos.emptyStateAnatomyTree);
 export const Default: StoryObj = treeStory(demos.emptyStateTree);
 export const DontVague: StoryObj = treeStory(demos.emptyStateDontVagueTree);
+export const SearchDoGuide: StoryObj = treeStory(demos.emptyStateSearchDoGuideTree);
+export const SearchDontGuide: StoryObj = treeStory(demos.emptyStateSearchDontGuideTree);
+export const FirstDoGuide: StoryObj = treeStory(demos.emptyStateFirstDoGuideTree);
+export const FirstDontGuide: StoryObj = treeStory(demos.emptyStateFirstDontGuideTree);
+export const LoadingDo: StoryObj = treeStory(demos.emptyStateLoadingDoTree);
+export const LoadingDont: StoryObj = treeStory(demos.emptyStateLoadingDontTree);
+export const Search: StoryObj = treeStory(demos.emptyStateSearchTree);

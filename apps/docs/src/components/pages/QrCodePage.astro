@@ -9,24 +9,22 @@
  * that only showed the single node would leave a reader with no idea what to build around it.
  */
 import ComponentPageShell from "./ComponentPageShell.astro";
-import ComponentPreview from "../ComponentPreview.astro";
+import DoDont from "../DoDont.astro";
+import WhenToUse from "../WhenToUse.astro";
+import ContentRules from "../ContentRules.astro";
+import A11yNotes from "../A11yNotes.astro";
 import UsagePreview from "../UsagePreview.astro";
 import CodeBlock from "../CodeBlock.astro";
 import {
   qrCodeAnatomyTree,
   qrCodeCardTree,
-  qrCodeLevelsTree,
   qrCodeLogoTree,
-  qrCodeMasksTree,
   qrCodePopoverTree,
-  qrCodeShapesTree,
-  qrCodeSizesTree,
   qrCodeTicketTree,
-  qrCodeTonesTree,
   qrCodeTree,
 } from "../../demos/qr-code";
 import { annotationDemoCss } from "../../demos/annotation";
-import { getLocale, useTranslations } from "../../i18n";
+import { getLocale, tList, useTranslations } from "../../i18n";
 /* The sheet itself, not only its source: the Style tab resolves each hook against a real element,
    and a page that never loads `components/qr-code.css` would show every value blank. */
 import "@skryensya/core/components/qr-code.css";
@@ -110,13 +108,12 @@ const explain = (option: string, values: readonly string[]) =>
 <ComponentPageShell
   title="QRCode"
   description={t("qrCodePage.description")}
-  badge={t("qrCodePage.betaBadge")}
   contractId="qr-code"
   testFiles={[
     "packages/core/src/qr-code.test.ts",
     "packages/vanilla/src/components/qr-code.test.ts",
     "packages/react/src/components/qr-code.test.tsx",
-  ]}}
+  ]}
 >
   <Fragment slot="usage">
     <p class="lede" set:html={t("qrCodePage.lede")} />
@@ -149,123 +146,56 @@ const explain = (option: string, values: readonly string[]) =>
       stageMinBlockSize="14rem"
     />
 
-    <h3>{t("qrCodePage.showcaseTitle")}</h3>
-    <p set:html={t("qrCodePage.showcaseBody")} />
-    <h3>{t("qrCodePage.basicTitle")}</h3>
-    <p set:html={t("qrCodePage.basicBody")} />
-    <ComponentPreview tree={qrCodeTree(locale)} label={t("qrCodePage.basicLabel")} note={t("qrCodePage.basicNote")} />
-
-    <h3>{t("qrCodePage.labelTitle")}</h3>
-    <p set:html={t("qrCodePage.labelBody")} />
-
-    <h3>{t("qrCodePage.sizesTitle")}</h3>
-    <p set:html={t("qrCodePage.sizesBody")} />
-    <ComponentPreview
-      tree={qrCodeSizesTree(locale)}
-      label={t("qrCodePage.sizesLabel")}
-      note={t("qrCodePage.sizesNote")}
+    <UsagePreview
+      tree={qrCodeTree(locale)}
+      optionName="level"
+      title={t("qrCodePage.prop.level.title")}
+      description={t("qrCodePage.prop.level.body")}
+      explain={explain("level", ["L", "M", "Q", "H"])}
+      stageMinBlockSize="14rem"
     />
 
-    <h3>{t("qrCodePage.levelsTitle")}</h3>
-    <p set:html={t("qrCodePage.levelsBody")} />
-    <ComponentPreview
-      tree={qrCodeLevelsTree(locale)}
-      label={t("qrCodePage.levelsLabel")}
-      note={t("qrCodePage.levelsNote")}
-    />
-
-    <h3>{t("qrCodePage.shapesTitle")}</h3>
-    <p set:html={t("qrCodePage.shapesBody")} />
-    <ComponentPreview
-      tree={qrCodeShapesTree(locale)}
-      label={t("qrCodePage.shapesLabel")}
-      note={t("qrCodePage.shapesNote")}
-    />
-
-    <h3>{t("qrCodePage.masksTitle")}</h3>
-    <p set:html={t("qrCodePage.masksBody")} />
-    <p set:html={t("qrCodePage.masksBody2")} />
-    <ComponentPreview
-      tree={qrCodeMasksTree(locale)}
-      label={t("qrCodePage.masksLabel")}
-      note={t("qrCodePage.masksNote")}
-    />
-
-    <h3>{t("qrCodePage.tonesTitle")}</h3>
-    <p set:html={t("qrCodePage.tonesBody")} />
-    <p set:html={t("qrCodePage.tonesBody2")} />
-    <ComponentPreview
-      tree={qrCodeTonesTree(locale)}
-      label={t("qrCodePage.tonesLabel")}
-      note={t("qrCodePage.tonesNote")}
-    />
-
-    <h3>{t("qrCodePage.logoTitle")}</h3>
-    <p set:html={t("qrCodePage.logoBody")} />
-    <p set:html={t("qrCodePage.logoBody2")} />
-    <ComponentPreview tree={qrCodeLogoTree(locale)} label={t("qrCodePage.logoLabel")} note={t("qrCodePage.logoNote")} />
-
-    <h3>{t("qrCodePage.compositionTitle")}</h3>
-    <p set:html={t("qrCodePage.compositionBody")} />
-    <ComponentPreview
-      tree={qrCodeCardTree(locale)}
-      label={t("qrCodePage.compositionLabel")}
-      note={t("qrCodePage.compositionNote")}
-    />
-
+    <h3>{t("component.examplesTitle")}</h3>
+    <UsagePreview tree={qrCodeLogoTree(locale)} title={t("qrCodePage.logoTitle")} description={t("qrCodePage.logoBody")} />
+    <UsagePreview tree={qrCodeCardTree(locale)} title={t("qrCodePage.compositionTitle")} description={t("qrCodePage.compositionBody")} />
     <h3>{t("qrCodePage.popoverTitle")}</h3>
     <p set:html={t("qrCodePage.popoverBody")} />
-    <ComponentPreview
-      tree={qrCodePopoverTree(locale)}
-      label={t("qrCodePage.popoverLabel")}
-      note={t("qrCodePage.popoverNote")}
-      viewport="menu"
-    />
-
-    <h3>{t("qrCodePage.ticketTitle")}</h3>
-    <p set:html={t("qrCodePage.ticketBody")} />
-    <ComponentPreview
-      tree={qrCodeTicketTree(locale)}
-      label={t("qrCodePage.ticketLabel")}
-      note={t("qrCodePage.ticketNote")}
-    />
-
-    <h3>{t("qrCodePage.runtimeTitle")}</h3>
+    <UsagePreview tree={qrCodePopoverTree(locale)} label={t("qrCodePage.popoverLabel")} viewport="menu" />
+    <UsagePreview tree={qrCodeTicketTree(locale)} title={t("qrCodePage.ticketTitle")} description={t("qrCodePage.ticketBody")} />
+    <h4>{t("qrCodePage.runtimeTitle")}</h4>
     <p set:html={t("qrCodePage.runtimeBody")} />
     <CodeBlock code={runtimeHtml} label="HTML" lang="html" />
     <CodeBlock code={runtimeJs} label="JavaScript" />
-
-    <h3>{t("qrCodePage.exportTitle")}</h3>
+    <h4>{t("qrCodePage.exportTitle")}</h4>
     <p set:html={t("qrCodePage.exportBody")} />
     <CodeBlock code={exportReact} label="React" lang="tsx" />
     <CodeBlock code={exportJs} label="JavaScript" />
 
-    <h3>{t("qrCodePage.limitsTitle")}</h3>
+    <h3>{t("component.contractNotesTitle")}</h3>
     <ul>
-      <li set:html={t("qrCodePage.limitsItem1")} />
-      <li set:html={t("qrCodePage.limitsItem2")} />
-      <li set:html={t("qrCodePage.limitsItem3")} />
+      {tList(t, "qrCodePage.contract").map((item) => <li set:html={item} />)}
     </ul>
 
     <h3>{t("component.anatomy")}</h3>
     <p set:html={t("qrCodePage.anatomyBody")} />
-    <ComponentPreview
+    <UsagePreview
       tree={qrCodeAnatomyTree(t, locale)}
       css={annotationDemoCss}
       label={t("qrCodePage.anatomyPreviewLabel")}
-      screens={false}
-      hideSource
-      chrome={false}
+      bare
     />
   </Fragment>
 
   <Fragment slot="guidelines">
     <p class="lede" set:html={t("qrCodePage.guidelinesLede")} />
-    <ul>
-      <li set:html={t("qrCodePage.guide.use1")} />
-      <li set:html={t("qrCodePage.guide.use2")} />
-      <li set:html={t("qrCodePage.guide.avoid1")} />
-    </ul>
+    <WhenToUse use={tList(t, "qrCodePage.when")} avoid={tList(t, "qrCodePage.whenNot")} />
+    <DoDont
+      canvas
+      title={t("qrCodePage.dd.link.title")}
+      do={{ tree: qrCodeCardTree(locale), caption: t("qrCodePage.dd.link.do") }}
+      dont={{ tree: qrCodeTree(locale), caption: t("qrCodePage.dd.link.dont") }}
+    />
+    <ContentRules items={tList(t, "qrCodePage.content")} />
   </Fragment>
 
   <Fragment slot="install">
@@ -274,9 +204,6 @@ const explain = (option: string, values: readonly string[]) =>
   </Fragment>
 
   <Fragment slot="a11y">
-    <p set:html={t("qrCodePage.a11yP1")} />
-    <p set:html={t("qrCodePage.a11yP2")} />
-    <p set:html={t("qrCodePage.a11yP3")} />
-    <p set:html={t("qrCodePage.a11yP4")} />
+    <A11yNotes intro={t("qrCodePage.a11yIntro")} does={tList(t, "qrCodePage.a11yDoes")} yours={tList(t, "qrCodePage.a11yYours")} />
   </Fragment>
 </ComponentPageShell>

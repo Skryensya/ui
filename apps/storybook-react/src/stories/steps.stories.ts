@@ -6,12 +6,11 @@ import "@skryensya/core/components/canvas.css";
 import "@skryensya/core/components/steps.css";
 import "@skryensya/core/patterns/icon.css";
 import * as demos from "@docs/demos/steps";
-import { annotationDemoCss } from "@docs/demos/annotation";
-import { treeStory, withCss, type Meta, type StoryObj } from "../tree-story";
+import { treeStory, type Meta, type StoryObj } from "../tree-story";
 
 export default { title: "Components/Navigation/Steps", tags: ["autodocs"] } satisfies Meta;
 
-export const Anatomy: StoryObj = treeStory(demos.stepsAnatomyTree, { decorators: [withCss(annotationDemoCss)] });
+export const Anatomy: StoryObj = treeStory(demos.stepsAnatomyTree);
 export const Default: StoryObj = treeStory(demos.stepsTree);
 export const Vertical: StoryObj = treeStory(demos.stepsVerticalTree);
 export const DontMany: StoryObj = treeStory(demos.stepsDontManyTree);

@@ -16,39 +16,63 @@ export const footerMessages = {
     "demo.footer.legal": "© 2026 skryensya/ui",
     "demo.footer.built": "Compuesto a mano con skryensya/ui",
     "demo.footer.credit": "Sitio compuesto a mano con skryensya/ui.",
+    "demo.footer.pageTitle": "Última sección",
+    "demo.footer.pageBody": "El contenido termina acá; el pie empieza después y debe leerse como otra zona.",
+    "demo.footer.newsletterTitle": "Recibe novedades y lanzamientos",
+    "demo.footer.newsletterBody": "Un bloque promocional con texto largo hace que el pie compita con el contenido principal.",
 
-    "footer.description": "El cierre de la página: una banda con superficie propia, un borde arriba y espacio para respirar. Anatomía libre.",
-    "footer.betaBadge": "Beta",
-    "footer.lede":
-      "Footer sólo posee <code>padding</code>, <code>surface</code> y <code>divider</code>, con los valores por defecto pensados para cerrar la página en vez de desaparecer en ella: <code>surface: \"sunken\"</code>, <code>divider</code> prendido y <code>padding: \"lg\"</code>. Las columnas, el aviso legal y el crédito siguen siendo composición libre: <a href=\"/componentes/grid\">Grid</a>, <a href=\"/componentes/nav-list\">NavList</a> y <a href=\"/es/componentes/text\">Text</a> adentro.",
-    "footer.whenTitle": "Cuándo usarlo",
-    "footer.whenBody1":
-      "Usa Footer para el cierre de la página: la banda final que dice «la página termina aquí», con navegación secundaria, aviso legal o una línea de crédito. El host es un <code>&lt;footer&gt;</code>, y a nivel de documento ese elemento YA es el landmark <code>contentinfo</code> sin escribir <code>role</code>.",
-    "footer.whenBody2":
-      'Footer no impone anatomía: no hay slots con nombre para columnas ni una barra inferior. Compón adentro con <a href="/es/componentes/grid">Grid</a> para la fila de columnas, <a href="/es/nav-list">NavList</a> para cada columna (con su propio nombre accesible) y <a href="/es/componentes/wrapper">Wrapper</a> para sostener la medida de la página.',
-    "footer.whenBody3":
-      'Si sólo hace falta separar una sección del resto en medio de la página, usa <a href="/es/componentes/box">Box</a>. Una fila de botones de confirmación abajo de un panel o un diálogo se compone con <a href="/es/componentes/inline">Inline</a> dentro de ese contenedor, no con Footer.',
-    "footer.htmlTitle": "HTML escrito a mano",
-    "footer.patternSiteTitle": "Footer de sitio",
-    "footer.patternSiteDescription":
-      "Una fila de columnas de enlaces sobre una línea legal, todo dentro de un Wrapper a la medida de la página.",
-    "footer.patternCreditTitle": "Línea de crédito",
-    "footer.patternCreditDescription":
-      "Todo el footer es una sola línea: el cierre de una página personal o de portfolio. El espejo de hero-centered-minimal.",
-    "footer.contractItem1":
-      'En HTML, usa un <code>&lt;footer&gt;</code> con la clase <code>sk-footer</code>. A nivel de documento ese elemento ya es el landmark <code>contentinfo</code>.',
-    "footer.contractItem2":
-      '<code>data-surface</code> acepta <code>none</code>, <code>sunken</code> (default), <code>surface</code> o <code>raised</code>.',
-    "footer.contractItem3":
-      '<code>data-padding</code> acepta <code>none</code>, <code>xs</code>, <code>sm</code>, <code>md</code>, <code>lg</code> (default) o <code>xl</code>. En pantallas angostas <code>lg</code> baja a <code>md</code>.',
-    "footer.contractItem4":
-      '<code>data-divider</code> (el borde superior) viene activado; <code>data-divider="false"</code> lo apaga sin mover nada abajo.',
-    "footer.a11yP1":
-      'El host de <code>Footer</code> es un <code>&lt;footer&gt;</code> real. A nivel de documento (no anidado dentro de <code>article</code>, <code>aside</code>, <code>main</code>, <code>nav</code> o <code>section</code>) ese elemento ES el landmark <code>contentinfo</code> sin escribir <code>role</code>, y un lector de pantalla lo lista junto a <code>banner</code>, <code>main</code> y la navegación de la página.',
-    "footer.a11yP2":
-      'Debe haber como mucho UN <code>&lt;footer&gt;</code> de documento por página, la misma regla que <code>banner</code> o <code>main</code>. Un footer que pertenece de verdad a un <code>&lt;article&gt;</code> sigue siendo válido, sólo que deja de ser el landmark.',
-    "footer.a11yP3":
-      'Una fila de columnas de enlaces es navegación: cada columna es un <a href="/es/nav-list">NavList</a> con su propio nombre accesible (<code>aria-label</code> o un encabezado visible), para que la lista de landmarks diga «Footer / Recursos», no una <code>navigation</code> sin nombre por columna.',
+    "footer.description": "Cierra la página con navegación secundaria, avisos legales o créditos.",
+
+    "footer.a11yYours3": 'Cada columna de enlaces es un <a href="/es/nav-list">NavList</a> con nombre: una navegación sin nombre en la lista de landmarks confunde.',
+
+    "footer.a11yYours2": 'No escribas <code>role="contentinfo"</code> a mano.',
+
+    "footer.a11yYours1": "Pon a lo sumo un <code>&lt;footer&gt;</code> de documento por página.",
+
+    "footer.a11yDoes2": "No agrega roles ni foco.",
+
+    "footer.a11yDoes1": "El host es un <code>&lt;footer&gt;</code> real.",
+
+    "footer.a11yIntro": "Un <code>&lt;footer&gt;</code> de documento es el landmark <code>contentinfo</code> sin escribir el rol.",
+
+    "footer.content3": "Escribe el aviso legal en una línea: «© 2026 Empresa. Todos los derechos reservados.».",
+
+    "footer.content2": "Usa enlaces de 1 a 3 palabras: «Precios», «Términos de uso».",
+
+    "footer.content1": "Da nombre a cada columna de enlaces con un encabezado visible o un <code>aria-label</code>: «Producto», «Empresa».",
+
+    "footer.dd.surface.dont": "Sobre el mismo fondo y sin borde, el crédito parece un párrafo más de la página.",
+
+    "footer.dd.surface.do": "Con fondo hundido y un borde arriba, hasta un pie de una línea se lee como cierre.",
+
+    "footer.dd.surface.title": "Superficie: marca el cierre",
+
+    "footer.dd.scope.dont": "Si el pie suma promoción, explicación y navegación a la vez, deja de ser cierre y vuelve a abrir la página.",
+
+    "footer.dd.scope.do": "Columnas de enlaces y una línea legal bastan: secundario, escaneable y al final.",
+
+    "footer.dd.scope.title": "Alcance: navegación secundaria",
+
+    "footer.whenNot3": "Si el pie tiene columnas, un boletín, una barra legal y créditos a la vez: saca lo que sobra a su propia región antes del pie.",
+
+    "footer.whenNot2": 'Para una fila de botones al pie de un panel o un diálogo: usa <a href="/es/componentes/inline">Inline</a> dentro del contenedor.',
+
+    "footer.whenNot1": 'Para separar una sección en medio de la página: usa <a href="/es/componentes/box">Box</a>.',
+
+    "footer.when2": "Una vez por página, en un <code>&lt;footer&gt;</code> a nivel de documento.",
+
+    "footer.when1": "Para cerrar la página con navegación secundaria, avisos legales o créditos.",
+
+    "footer.contract3": "No trae slots para columnas ni para una barra inferior: la anatomía es tuya.",
+
+    "footer.contract2": '<code>divider</code>, el borde superior, viene activado; <code>divider="false"</code> lo apaga.',
+
+    "footer.contract1": "Usa un <code>&lt;footer&gt;</code> con <code>sk-footer</code>: a nivel de documento ya es el landmark <code>contentinfo</code>.",
+    "footer.lede": "Footer cierra la página: la banda final con navegación secundaria, avisos legales o una línea de crédito. Trae su superficie, un borde arriba y espacio; lo que va adentro lo compones tú con Grid, NavList y Text.",
+    "footer.patternSiteTitle": "Pie de sitio: columnas y aviso legal",
+    "footer.patternSiteDescription": "Columnas de enlaces sobre una línea legal, dentro de un Wrapper a la medida de la página.",
+    "footer.patternCreditTitle": "Línea de crédito: una sola línea",
+    "footer.patternCreditDescription": "El cierre de una página personal o de un portafolio.",
     "footer.test1":
       "Por defecto emite el landmark <code>contentinfo</code> con la superficie hundida, el padding grande y el divisor superior que documenta el contrato.",
     "footer.test2":
@@ -79,15 +103,13 @@ export const footerMessages = {
     /* Appended by `report-issue.ts` at the end of the body above, with JS only: the only thing the
        server cannot know. Without JS the body above is already a complete report on its own. */
     "footer.reportIssue.environment": "\n\n**Entorno:**\n- Navegador: {ua}\n- Tamaño de ventana: {viewport}",
-    "footer.prop.surface.title": "Superficie",
-    "footer.prop.surface.body": "La <code>surface</code> decide el fondo del pie respecto de la página.",
+    "footer.prop.surface.title": "Surface: cuánto se separa del contenido",
+    "footer.prop.surface.body": "El fondo del pie respecto de la página.",
     "footer.prop.surface.none": "Usa <code>none</code> cuando el pie es una sola línea sobre el fondo de la página.",
-    "footer.prop.surface.sunken": "Usa <code>sunken</code>, el default, para separar el pie del contenido sin una línea dura.",
+    "footer.prop.surface.sunken": "Usa <code>sunken</code>, el valor por defecto, para separar el cierre sin una línea dura.",
     "footer.prop.surface.surface": "Usa <code>surface</code> cuando la página tiene un fondo hundido y el pie debe subir.",
     "footer.prop.surface.raised": "Usa <code>raised</code> para un pie que se lee como una tarjeta.",
-    "footer.showcaseTitle": "Showcases",
-    "footer.showcaseBody": "El pie de un sitio con columnas de enlaces, y una sola línea de créditos.",
-    "footer.guidelinesLede": "Footer cierra la página con enlaces secundarios, datos legales y créditos.",
+    "footer.guidelinesLede": "Un pie dice «la página termina aquí» y ofrece adónde ir después.",
   },
   en: {
     "footer.anatomyLabel": "Footer anatomy",
@@ -106,39 +128,63 @@ export const footerMessages = {
     "demo.footer.legal": "© 2026 skryensya/ui",
     "demo.footer.built": "Hand-composed with skryensya/ui",
     "demo.footer.credit": "Site hand-composed with skryensya/ui.",
+    "demo.footer.pageTitle": "Last section",
+    "demo.footer.pageBody": "The content ends here; the footer starts after it and should read as another zone.",
+    "demo.footer.newsletterTitle": "Get updates and releases",
+    "demo.footer.newsletterBody": "A promotional block with long copy makes the footer compete with the main content.",
 
-    "footer.description": "A page's close: a band with a surface of its own, a rule above it, and room to breathe. Free anatomy.",
-    "footer.betaBadge": "Beta",
-    "footer.lede":
-      "Footer owns only <code>padding</code>, <code>surface</code> and <code>divider</code>, with defaults tuned to close the page rather than disappear into it: <code>surface: \"sunken\"</code>, <code>divider</code> on, and <code>padding: \"lg\"</code>. Columns, the legal line and the credit stay free composition: <a href=\"/components/grid\">Grid</a>, <a href=\"/nav-list\">NavList</a> and <a href=\"/components/text\">Text</a> inside.",
-    "footer.whenTitle": "When to use it",
-    "footer.whenBody1":
-      "Use Footer for a page's close: the final band that says “the page ends here”, with secondary navigation, a legal line or a credit. The host is a <code>&lt;footer&gt;</code>, and at document level that element already IS the <code>contentinfo</code> landmark with no <code>role</code> written.",
-    "footer.whenBody2":
-      'Footer imposes no anatomy: there are no named slots for columns or a bottom bar. Compose inside with <a href="/components/grid">Grid</a> for the column row, <a href="/nav-list">NavList</a> for each column (with its own accessible name) and <a href="/components/wrapper">Wrapper</a> to hold the page\'s measure.',
-    "footer.whenBody3":
-      'To separate a section from the rest mid-page, use <a href="/components/box">Box</a>. A row of confirm buttons at the bottom of a panel or dialog is composed with <a href="/components/inline">Inline</a> inside that container, not with Footer.',
-    "footer.htmlTitle": "Authored HTML",
-    "footer.patternSiteTitle": "Site footer",
-    "footer.patternSiteDescription":
-      "A row of link columns over a legal line, all inside a Wrapper at the page's own measure.",
-    "footer.patternCreditTitle": "Credit line",
-    "footer.patternCreditDescription":
-      "The whole footer is one line: a personal or portfolio page's close. The mirror of hero-centered-minimal.",
-    "footer.contractItem1":
-      'In HTML, use a <code>&lt;footer&gt;</code> with the <code>sk-footer</code> class. At document level that element already is the <code>contentinfo</code> landmark.',
-    "footer.contractItem2":
-      '<code>data-surface</code> accepts <code>none</code>, <code>sunken</code> (default), <code>surface</code> or <code>raised</code>.',
-    "footer.contractItem3":
-      '<code>data-padding</code> accepts <code>none</code>, <code>xs</code>, <code>sm</code>, <code>md</code>, <code>lg</code> (default) or <code>xl</code>. On narrow screens <code>lg</code> steps down to <code>md</code>.',
-    "footer.contractItem4":
-      '<code>data-divider</code> (the top rule) is on by default; <code>data-divider="false"</code> turns it off without shifting anything below.',
-    "footer.a11yP1":
-      "<code>Footer</code>'s own host is a real <code>&lt;footer&gt;</code>. At document level (not nested inside <code>article</code>, <code>aside</code>, <code>main</code>, <code>nav</code> or <code>section</code>) that element IS the <code>contentinfo</code> landmark with no <code>role</code> written, and a screen reader lists it alongside <code>banner</code>, <code>main</code> and the page's navigation.",
-    "footer.a11yP2":
-      "There must be AT MOST ONE document-level <code>&lt;footer&gt;</code> per page, the same rule as <code>banner</code> or <code>main</code>. A footer that genuinely belongs to one <code>&lt;article&gt;</code> is still valid, it just is not the landmark.",
-    "footer.a11yP3":
-      'A row of link columns is navigation: each column is a <a href="/nav-list">NavList</a> with its own accessible name (<code>aria-label</code> or a visible heading), so the landmark list reads “Footer / Resources”, not one unnamed <code>navigation</code> per column.',
+    "footer.description": "Closes the page with secondary navigation, legal notices or credits.",
+
+    "footer.a11yYours3": 'Each link column is a named <a href="/nav-list">NavList</a>: an unnamed navigation in the landmark list confuses.',
+
+    "footer.a11yYours2": 'Do not write <code>role="contentinfo"</code> by hand.',
+
+    "footer.a11yYours1": "Put at most one document <code>&lt;footer&gt;</code> per page.",
+
+    "footer.a11yDoes2": "It adds no roles and no focus.",
+
+    "footer.a11yDoes1": "The host is a real <code>&lt;footer&gt;</code>.",
+
+    "footer.a11yIntro": "A document <code>&lt;footer&gt;</code> is the <code>contentinfo</code> landmark without writing the role.",
+
+    "footer.content3": "Write the legal notice in one line: “© 2026 Company. All rights reserved.”.",
+
+    "footer.content2": "Use links of 1 to 3 words: “Pricing”, “Terms of use”.",
+
+    "footer.content1": "Name each link column with a visible heading or an <code>aria-label</code>: “Product”, “Company”.",
+
+    "footer.dd.surface.dont": "On the same background with no border, the credit reads like one more paragraph on the page.",
+
+    "footer.dd.surface.do": "With a sunken background and a top border, even a one-line footer reads as the close.",
+
+    "footer.dd.surface.title": "Surface: mark the close",
+
+    "footer.dd.scope.dont": "If the footer adds promotion, explanation and navigation at once, it stops closing the page and opens it again.",
+
+    "footer.dd.scope.do": "Link columns and one legal line are enough: secondary, scannable and at the end.",
+
+    "footer.dd.scope.title": "Scope: secondary navigation",
+
+    "footer.whenNot3": "If the footer has columns, a newsletter, a legal bar and credits at once: move the extra into its own region before the footer.",
+
+    "footer.whenNot2": 'For a row of buttons at the bottom of a panel or dialog: use <a href="/components/inline">Inline</a> inside the container.',
+
+    "footer.whenNot1": 'To separate a section mid-page: use <a href="/components/box">Box</a>.',
+
+    "footer.when2": "Once per page, in a document-level <code>&lt;footer&gt;</code>.",
+
+    "footer.when1": "To close the page with secondary navigation, legal notices or credits.",
+
+    "footer.contract3": "It has no slots for columns or a bottom bar: the anatomy is yours.",
+
+    "footer.contract2": '<code>divider</code>, the top border, is on; <code>divider="false"</code> turns it off.',
+
+    "footer.contract1": "Use a <code>&lt;footer&gt;</code> with <code>sk-footer</code>: at document level it is already the <code>contentinfo</code> landmark.",
+    "footer.lede": "Footer closes the page: the final band with secondary navigation, legal notices or a credit line. It brings its surface, a top border and space; what goes inside you compose with Grid, NavList and Text.",
+    "footer.patternSiteTitle": "Site footer: columns and legal notice",
+    "footer.patternSiteDescription": "Columns of links over a legal line, inside a Wrapper at the page's measure.",
+    "footer.patternCreditTitle": "Credit line: a single line",
+    "footer.patternCreditDescription": "The ending of a personal page or a portfolio.",
     "footer.test1":
       "Emits the <code>contentinfo</code> landmark by default, with the sunken surface, large padding and top divider the contract documents.",
     "footer.test2":
@@ -166,14 +212,12 @@ export const footerMessages = {
     /* Appended by `report-issue.ts` to the end of the body above, JS only: the one thing the server
        cannot know. Without JS the body above is already a complete report on its own. */
     "footer.reportIssue.environment": "\n\n**Environment:**\n- Browser: {ua}\n- Window size: {viewport}",
-    "footer.prop.surface.title": "Surface",
-    "footer.prop.surface.body": "<code>surface</code> decides the footer's background against the page.",
+    "footer.prop.surface.title": "Surface: how far it sets apart from the content",
+    "footer.prop.surface.body": "The footer's background against the page.",
     "footer.prop.surface.none": "Use <code>none</code> when the footer is a single line on the page's background.",
-    "footer.prop.surface.sunken": "Use <code>sunken</code>, the default, to set the footer apart from the content without a hard line.",
+    "footer.prop.surface.sunken": "Use <code>sunken</code>, the default, to set the ending apart without a hard line.",
     "footer.prop.surface.surface": "Use <code>surface</code> when the page has a sunken background and the footer should rise.",
     "footer.prop.surface.raised": "Use <code>raised</code> for a footer that reads as a card.",
-    "footer.showcaseTitle": "Showcases",
-    "footer.showcaseBody": "A site footer with columns of links, and a single credit line.",
-    "footer.guidelinesLede": "Footer closes the page with secondary links, legal details and credits.",
+    "footer.guidelinesLede": "A footer says “the page ends here” and offers where to go next.",
   },
 } as const;

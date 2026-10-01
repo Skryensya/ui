@@ -1,96 +1,5 @@
 import type { UsageTree } from "@skryensya/core/usage-tree";
 import type { Translate } from "../i18n";
-import { anatomyFigureHtml } from "./annotation-parts";
-
-/*
- * THE ANATOMY, and the one thing it shows that the real control never does: the dropzone and a
- * chosen file at the same time. Live they coexist too, but only once somebody has picked something,
- * and a diagram cannot wait for that before it can point at a row. So the specimen is frozen with
- * both on screen. The list is runtime state (no usage tree produces it), which is why this stays
- * MARKUP like Menu's: part classes, and no mount attributes that would leave the enhancer fighting
- * static rows.
- *
- * FIFTEEN PARTS, AND THE MARGINS HOLD ONLY THEIR NUMBERS. This diagram is the one that used to
- * say its block name once in a key and abbreviate every label to `*__element`, because fifteen
- * names in the gutters squeezed the specimen to 292px. The names live in the legend now, where
- * they wrap instead of costing the drawing its width, so each one is spelled out whole.
- */
-const fileUploadAnatomySpecimen = (t: Translate): string => `<div class="sk-file-upload">
-  <label class="sk-file-upload__label">${t("demo.fileUpload.label")}</label>
-  <div class="sk-file-upload__dropzone" role="button" tabindex="0">
-    <span class="sk-file-upload__icon" aria-hidden="true">
-      <span data-sk-icon="upload" data-sk-icon-size="lg"></span>
-    </span>
-    <span class="sk-file-upload__instruction">${t("demo.fileUpload.dropzone")}</span>
-    <p class="sk-file-upload__hint">${t("demo.fileUpload.anatomyHint")}</p>
-  </div>
-  <button class="sk-file-upload__trigger sk-button sk-interactive" type="button">${t("demo.fileUpload.trigger")}</button>
-  <p class="sk-file-upload__tally">1 archivo · 128 kB</p>
-  <ul class="sk-file-upload__item-group">
-    <li class="sk-file-upload__item">
-      <span class="sk-file-upload__item-preview" aria-hidden="true">
-        <span data-sk-icon="file" data-sk-icon-size="md"></span>
-      </span>
-      <span class="sk-file-upload__item-body">
-        <span class="sk-file-upload__item-name">${t("demo.fileUpload.anatomyItem")}</span>
-        <span class="sk-file-upload__item-size">
-          <span class="sk-file-upload__item-kind">PDF</span> · 128 kB
-        </span>
-      </span>
-      <button
-        class="sk-file-upload__item-delete sk-button sk-interactive"
-        data-variant="ghost"
-        data-size="sm"
-        data-icon-only
-        type="button"
-        tabindex="-1"
-        aria-label="${t("demo.fileUpload.anatomyRemove")}"
-      >
-        <span data-sk-icon="close" data-sk-icon-size="sm" aria-hidden="true"></span>
-      </button>
-    </li>
-  </ul>
-</div>`;
-
-
-export const fileUploadAnatomyHtml = (t: Translate): string => anatomyFigureHtml(t, {
-  label: t("fileUploadPage.anatomyLabel"),
-  specimen: fileUploadAnatomySpecimen(t),
-  parts: [
-    { for: ".sk-file-upload", side: "block-start", mark: "bracket" },
-    { for: ".sk-file-upload__label", side: "inline-start", ringPlacement: "offset", ringDistance: 2 },
-    { for: ".sk-file-upload__icon", side: "inline-start", ringPlacement: "offset", ringDistance: 2 },
-    { for: ".sk-file-upload__trigger", side: "inline-start" },
-    { for: ".sk-file-upload__tally", side: "inline-start" },
-    { for: ".sk-file-upload__item-preview", side: "inline-start" },
-    { for: ".sk-file-upload__item-name", side: "inline-start", ringPlacement: "offset", ringDistance: 2 },
-    { for: ".sk-file-upload__item-size", side: "inline-start", ringPlacement: "offset", ringDistance: 4 },
-    { for: ".sk-file-upload__dropzone", side: "inline-end" },
-    { for: ".sk-file-upload__instruction", side: "inline-end" },
-    { for: ".sk-file-upload__hint", side: "inline-end", ringPlacement: "offset", ringDistance: 2 },
-    { for: ".sk-file-upload__item-body", side: "inline-end", ringPlacement: "offset", ringDistance: 2 },
-    { for: ".sk-file-upload__item-delete", side: "inline-end", ringPlacement: "offset", ringDistance: 4 },
-    { for: ".sk-file-upload__item-group", side: "block-end" },
-    { for: ".sk-file-upload__item", side: "block-end", ringPlacement: "offset", ringDistance: 2 },
-  ],
-});
-
-export const fileUploadAnatomyCss = `.sk-annotated-figure {
-  --sk-annotation-font-family: var(--font-family-code);
-}
-
-.sk-annotated__subject > .sk-file-upload {
-  /*
-   * A WIDTH OF ITS OWN, not a percentage. Annotated sizes its middle track TO the specimen
-   * (grid-template-columns: auto minmax(0, auto) auto), so a percentage here resolves against the
-   * room the gutters happen to leave and the subject can only ever get the remainder: measured at
-   * 292px inside a 756px frame, and still 322px once the frame grew to 976. Asking for a real width
-   * makes the track that wide and the gutters take what is left, which is the right way round for a
-   * diagram whose subject is the point.
-   */
-  inline-size: 30rem;
-  max-inline-size: 100%;
-}`;
 
 /** The authored upload shell: label, drop target, native input and its explicit trigger. */
 /*
@@ -141,10 +50,47 @@ export const fileUploadPageDropTree = (t: Translate): UsageTree => ({
   },
 });
 
-/* Do/Don't: limits the control states before choosing, or none, so they are discovered on upload. */
-export const fileUploadDoLimitsTree = (t: Translate): UsageTree => fileUploadTree(t);
-
-export const fileUploadDontLimitsTree = (t: Translate): UsageTree => ({
-  ...fileUploadTree(t),
-  options: { multiple: true, name: "attachments-unbounded" },
+/*
+ * Do/Don't specimens: same field and scale, so the comparison is about the limits and their hint,
+ * not two differently sized controls. A modest fixed design width lets the fit-only canvas show the
+ * whole control without shrinking it to a tiny page-wide example.
+ */
+const fileUploadLimitsGuide = (tree: UsageTree): UsageTree => ({
+  ...tree,
+  attrs: {
+    style: "inline-size: 24rem; max-inline-size: 100%; --sk-file-upload-dropzone-padding: var(--space-inset-lg);",
+  },
 });
+
+export const fileUploadDoLimitsTree = (t: Translate): UsageTree =>
+  fileUploadLimitsGuide(fileUploadTree(t));
+
+export const fileUploadDontLimitsTree = (t: Translate): UsageTree =>
+  fileUploadLimitsGuide({
+    ...fileUploadTree(t),
+    options: { multiple: true, name: "attachments-unbounded" },
+  });
+
+export const fileUploadDoInstructionTree = (t: Translate): UsageTree =>
+  fileUploadLimitsGuide(fileUploadTree(t));
+
+export const fileUploadDontInstructionTree = (t: Translate): UsageTree =>
+  fileUploadLimitsGuide({
+    ...fileUploadTree(t),
+    slots: {
+      ...fileUploadTree(t).slots,
+      dropzoneLabel: t("demo.fileUpload.vagueDropzone"),
+    },
+  });
+
+export const fileUploadDoTriggerTree = (t: Translate): UsageTree =>
+  fileUploadLimitsGuide(fileUploadTree(t));
+
+export const fileUploadDontTriggerTree = (t: Translate): UsageTree =>
+  fileUploadLimitsGuide({
+    ...fileUploadTree(t),
+    slots: {
+      ...fileUploadTree(t).slots,
+      triggerLabel: t("demo.fileUpload.vagueTrigger"),
+    },
+  });

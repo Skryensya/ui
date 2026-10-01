@@ -8,15 +8,14 @@ import "@skryensya/core/components/typography.css";
 import "@skryensya/core/patterns/icon.css";
 import "@skryensya/core/patterns/layout.css";
 import * as demos from "@docs/demos/tabs";
-import { annotationDemoCss } from "@docs/demos/annotation";
-import { treeStory, withCss, type Meta, type StoryObj } from "../tree-story";
+import { treeStory, type Meta, type StoryObj } from "../tree-story";
 
 export default { title: "Components/Navigation/Tabs", tags: ["autodocs"] } satisfies Meta;
 
-export const Anatomy: StoryObj = treeStory(demos.tabsAnatomyTree, { decorators: [withCss(annotationDemoCss)] });
-export const Advanced: StoryObj = treeStory(demos.tabsAdvancedTree);
+export const Anatomy: StoryObj = treeStory(demos.tabsAnatomyTree);
 export const Basic: StoryObj = treeStory(demos.tabsBasicTree);
 export const States: StoryObj = treeStory(demos.tabsStatesTree);
+export const Advanced: StoryObj = treeStory(demos.tabsAdvancedTree);
 export const Size: StoryObj = treeStory(demos.tabsSizeTree);
 export const Hanging: StoryObj = treeStory(demos.tabsHangingTree);
 export const DontMany: StoryObj = treeStory(demos.tabsDontManyTree);

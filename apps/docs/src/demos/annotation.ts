@@ -1,9 +1,9 @@
 import type { UsageTree } from "@skryensya/core/usage-tree";
 import type { Translate } from "../i18n";
-import { anatomyCanvas, anatomyHints, namePart } from "./annotation-parts";
+import { anatomyCanvas, anatomyHints, namePart, type Side } from "./annotation-parts";
 
 /*
- * FOUR DEMOS, because the component makes four separate claims and no single frame makes all of
+ * THREE DEMOS, because the component makes three separate claims and no single frame makes all of
  * them at once. Every one is the same form, the only one there is: numbers in the gutters, names in
  * the legend, the whole drawing on a canvas.
  *
@@ -13,9 +13,6 @@ import { anatomyCanvas, anatomyHints, namePart } from "./annotation-parts";
  *   annotationSidesTree     the four gutters on one small specimen, so "inline-start" and friends
  *                           stop being words and become positions.
  *   annotationPluralTree    one name, several parts: `match: "all"`.
- *   annotationElbowTree     the leader itself: targets deliberately bunched so their numbers cannot
- *                           all sit level with them, which is the only way to SEE the 45-degree
- *                           knee the contract promises.
  *
  * The part names are the content. They are not translated and never will be: `sk-tile__trigger` is
  * a class name, and a translated one would name nothing.
@@ -273,70 +270,120 @@ export const annotationPluralTree = (t: Translate): UsageTree => ({
 });
 
 /*
- * THE KNEE, and the first version of this demo did not produce one.
- *
- * Four List rows 48px apart, numbered from the side, is not a hard case: an 18px bubble plus a 6px
- * gap needs 24, so every number sat level with its own row and every leader came out as one straight
- * segment. The demo claimed a knee and drew four ruler lines.
- *
- * Side BY SIDE is what forces it. Four chips in a row share one y, so all four numbers want the same
- * millimetre of one gutter, the distribution has to fan them out, and then every leader but the one
- * that happened to land level has to turn to get back. Which is the whole claim: it turns ONCE, at
- * 45 degrees, and never twice.
+ * THE PROPERTY PREVIEWS' SPECIMEN: one Stat and one name, so the only thing that changes when the
+ * reader flips `side` or `mark` is where that one number sits and how it marks its part.
  */
-export const annotationElbowTree = (t: Translate): UsageTree => ({
+export const annotationOneTree = (t: Translate): UsageTree => ({
   contract: "annotation",
   signature: "Annotated",
-  options: { ...anatomyCanvas(t), label: t("annotation.elbowLabel"), inert: true },
+  options: { ...anatomyCanvas(t), label: t("annotation.sidesLabel"), inert: true },
   slots: {
     ...anatomyHints(t),
     subject: {
-      contract: "layout",
-      signature: "Inline",
-      /*
-       * `lg`, not `sm`, and it is the ring that decides it. Each ring is drawn just outside its
-       * chip's own box, so chips packed `sm` apart leave the two outlines touching and the reader
-       * cannot tell where one mark ends and the next begins. A diagram wants at least twice the ring
-       * offset between siblings.
-       */
-      options: { gap: "lg" },
-      children: [
-        { contract: "badge", signature: "Badge", options: { tone: "accent" }, children: t("annotation.chip1") },
-        { contract: "badge", signature: "Badge", options: { tone: "success" }, children: t("annotation.chip2") },
-        { contract: "badge", signature: "Badge", options: { tone: "warning" }, children: t("annotation.chip3") },
-        { contract: "badge", signature: "Badge", options: { tone: "danger" }, children: t("annotation.chip4") },
-      ],
+      contract: "stat",
+      signature: "Stat",
+      slots: { label: t("annotation.statLabel"), value: "38.2K", change: t("annotation.statChange") },
+      options: { trend: "up" },
     },
+    items: [{ options: { for: ".sk-stat", side: "inline-start" }, slots: { children: "sk-stat" } }],
+  },
+});
+
+/* A one-item Accordion: an area (the accordion) and a thing (the title) in one small drawing. */
+const markSubject = (t: Translate): UsageTree => ({
+  contract: "accordion",
+  signature: "Accordion",
+  attrs: { style: "inline-size: 20rem;" },
+  children: [
+    accordionSection(
+      "envio",
+      t("annotation.demoQuestion1"),
+      t("annotation.demoDescription1"),
+      t("annotation.demoAnswer1"),
+      true,
+    ),
+  ],
+});
+
+const markTree = (t: Translate, areaMark?: "bracket"): UsageTree => ({
+  contract: "annotation",
+  signature: "Annotated",
+  options: { ...anatomyCanvas(t), label: t("annotation.anatomyLabel"), inert: true, fitOnly: true },
+  slots: {
+    ...anatomyHints(t),
+    subject: markSubject(t),
     items: [
       {
-        options: { for: ".sk-badge:nth-child(1)", side: "inline-start" },
-        slots: { children: ":nth-child(1)" },
+        options: { for: ".sk-accordion", side: "inline-end", ...(areaMark ? { mark: areaMark } : {}) },
+        slots: { children: "sk-accordion" },
       },
       {
-        options: { for: ".sk-badge:nth-child(2)", side: "inline-start" },
-        slots: { children: ":nth-child(2)" },
-      },
-      /*
-       * FOUR BEFORE THREE, and the inversion is the point rather than a slip.
-       *
-       * Four numbers that want the same millimetre are fanned out in AUTHORING order (the
-       * distribution sorts by desired position and ties break on index, `distributeLanes`), so the
-       * order they are written in is the order they end up down the gutter. In the `inline-end`
-       * gutter the nearest target is the LAST chip, so listing the third first put the far number
-       * nearest the frame and crossed the two leaders over each other. Nearest target, nearest
-       * number: nothing crosses.
-       */
-      {
-        options: { for: ".sk-badge:nth-child(4)", side: "inline-end" },
-        slots: { children: ":nth-child(4)" },
-      },
-      {
-        options: { for: ".sk-badge:nth-child(3)", side: "inline-end" },
-        slots: { children: ":nth-child(3)" },
+        options: { for: ".sk-tile__title", side: "inline-start", ringPlacement: "offset", ringDistance: 4 },
+        slots: { children: "sk-tile__title" },
       },
     ],
   },
 });
+
+/* Usage guide: an area gets a bracket, never a ring whose leader lands on one of its children. */
+export const annotationDoBracketTree = (t: Translate): UsageTree => markTree(t, "bracket");
+export const annotationDontRingAreaTree = (t: Translate): UsageTree => markTree(t);
+
+/* Usage guide: every number on the side nearest its part, against every number crammed into the top,
+   where the lower parts' leaders have to cross the ones above them. */
+const statParts = [".sk-stat__label", ".sk-stat__value", ".sk-stat__change"] as const;
+const sidesTree = (t: Translate, sides: readonly Side[]): UsageTree => ({
+  contract: "annotation",
+  signature: "Annotated",
+  options: { ...anatomyCanvas(t), label: t("annotation.sidesLabel"), inert: true, fitOnly: true, ringPlacement: "offset", ringDistance: 4 },
+  slots: {
+    ...anatomyHints(t),
+    subject: {
+      contract: "stat",
+      signature: "Stat",
+      slots: { label: t("annotation.statLabel"), value: "38.2K", change: t("annotation.statChange") },
+      options: { trend: "up" },
+    },
+    items: statParts.map((part, index) => namePart(part, sides[index]!)),
+  },
+});
+
+export const annotationDoNearestSideTree = (t: Translate): UsageTree =>
+  sidesTree(t, ["inline-start", "inline-end", "block-end"]);
+export const annotationDontOneSideTree = (t: Translate): UsageTree =>
+  sidesTree(t, ["block-start", "block-start", "block-start"]);
+
+/* Usage guide: a repeated part named once for all its copies, against naming only the first. */
+const crumbsTree = (t: Translate, match: "first" | "all", fitOnly = false): UsageTree => ({
+  contract: "annotation",
+  signature: "Annotated",
+  options: { ...anatomyCanvas(t), label: t("annotation.pluralLabel"), inert: true, ringPlacement: "offset", ringDistance: 3, ...(fitOnly ? { fitOnly } : {}) },
+  slots: {
+    ...anatomyHints(t),
+    subject: {
+      contract: "breadcrumb",
+      signature: "Breadcrumb",
+      options: { label: t("annotation.crumbNav") },
+      slots: {
+        items: [
+          { options: { href: "/" }, slots: { label: t("annotation.crumb1") } },
+          { options: { href: "/c" }, slots: { label: t("annotation.crumb2") } },
+          { options: { current: true }, slots: { label: t("annotation.crumb3") } },
+        ],
+      },
+    },
+    items: [
+      {
+        options: { for: ".sk-breadcrumb__item", side: "block-start", match },
+        slots: { children: "sk-breadcrumb__item" },
+      },
+    ],
+  },
+});
+
+export const annotationMatchTree = (t: Translate): UsageTree => crumbsTree(t, "all");
+export const annotationDoAllCopiesTree = (t: Translate): UsageTree => crumbsTree(t, "all", true);
+export const annotationDontFirstOnlyTree = (t: Translate): UsageTree => crumbsTree(t, "first", true);
 
 /*
  * AN ANATOMY OF AN ANATOMY: a small Annotated (a button with one named part) is the subject, and

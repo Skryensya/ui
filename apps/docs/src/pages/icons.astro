@@ -1,7 +1,7 @@
 ---
 import Base from "../layouts/Base.astro";
 import CodeBlock from "../components/CodeBlock.astro";
-import ComponentPreview from "../components/ComponentPreview.astro";
+import UsagePreview from "../components/UsagePreview.astro";
 import { iconVocabTree } from "../demos/icons";
 import { allSets, iconMarkup } from "../icons";
 
@@ -41,7 +41,7 @@ const swap = `- import { phosphorIcons } from "@skryensya/icons-phosphor";
     The system names <strong>roles</strong>, not drawings. A set (Lucide, Phosphor, Material) is a brand: it chooses the geometry that each role occupies, just as a brand chooses the hue of <code>--palette-blue-600</code>. How you mount the SVG in React or vanilla is in <a href="/components/icon">Icon</a>.
   </p>
 
-  <ComponentPreview tree={iconVocabTree} css={vocabCss} label="Stable vocabulary" />
+  <UsagePreview tree={iconVocabTree} css={vocabCss} label="Stable vocabulary" />
   <p>
     Change brand, mode or contrast above: the icons follow, and do not declare a single color token. They inherit <code>currentColor</code>.
   </p>

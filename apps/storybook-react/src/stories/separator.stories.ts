@@ -8,15 +8,16 @@ import "@skryensya/core/components/typography.css";
 import "@skryensya/core/patterns/box.css";
 import "@skryensya/core/patterns/layout.css";
 import * as demos from "@docs/demos/separator";
-import { annotationDemoCss } from "@docs/demos/annotation";
-import { treeStory, withCss, type Meta, type StoryObj } from "../tree-story";
+import { treeStory, type Meta, type StoryObj } from "../tree-story";
 
 export default { title: "Components/Layout/Separator", tags: ["autodocs"] } satisfies Meta;
 
-export const Anatomy: StoryObj = treeStory(demos.separatorAnatomyTree, { decorators: [withCss(annotationDemoCss)] });
+export const Anatomy: StoryObj = treeStory(demos.separatorAnatomyTree);
 export const Single: StoryObj = treeStory((t) => demos.separatorSingleTree());
 export const Default: StoryObj = treeStory(demos.separatorTree);
 export const Tones: StoryObj = treeStory(demos.separatorTonesTree);
 export const Vertical: StoryObj = treeStory(demos.separatorVerticalTree);
 export const Labelled: StoryObj = treeStory(demos.separatorLabelledTree);
 export const ScaleSpecimen: StoryObj = treeStory((t) => demos.separatorScaleSpecimenTree());
+export const DoSpace: StoryObj = treeStory(() => demos.separatorDoSpaceTree);
+export const DontEveryRow: StoryObj = treeStory(() => demos.separatorDontEveryRowTree);

@@ -6,12 +6,11 @@ import "@skryensya/core/components/canvas.css";
 import "@skryensya/core/components/table.css";
 import "@skryensya/core/components/treegrid.css";
 import * as demos from "@docs/demos/treegrid";
-import { annotationDemoCss } from "@docs/demos/annotation";
-import { treeStory, withCss, type Meta, type StoryObj } from "../tree-story";
+import { treeStory, type Meta, type StoryObj } from "../tree-story";
 
 export default { title: "Components/Data/Treegrid", tags: ["autodocs"] } satisfies Meta;
 
-export const Anatomy: StoryObj = treeStory(demos.treegridAnatomyTree, { decorators: [withCss(annotationDemoCss)] });
+export const Anatomy: StoryObj = treeStory(demos.treegridAnatomyTree);
 export const Inbox: StoryObj = treeStory(demos.treegridInboxTree);
 export const Stress: StoryObj = treeStory(demos.treegridStressTree);
 export const DontOneColumn: StoryObj = treeStory(demos.treegridDontOneColumnTree);

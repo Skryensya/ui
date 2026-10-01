@@ -3,6 +3,7 @@
 import "@skryensya/core/components/button.css";
 import "@skryensya/core/components/combobox.css";
 import "@skryensya/core/components/form-field.css";
+import "@skryensya/core/components/radio-group.css";
 import "@skryensya/core/patterns/anchored.css";
 import "@skryensya/core/patterns/visually-hidden.css";
 import * as demos from "@docs/demos/combobox";
@@ -12,4 +13,6 @@ export default { title: "Components/Forms/Combobox", tags: ["autodocs"] } satisf
 
 export const Default: StoryObj = treeStory((t) => demos.comboboxTree(t, localeOf(t)));
 export const Single: StoryObj = treeStory((t) => demos.comboboxSingleTree(t, localeOf(t)));
+export const DoFew: StoryObj = treeStory(demos.comboboxDoFewTree);
 export const DontFew: StoryObj = treeStory(demos.comboboxDontFewTree);
+export const Multiple: StoryObj = treeStory((t) => demos.comboboxMultipleTree(t, localeOf(t)));

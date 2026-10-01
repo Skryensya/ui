@@ -1040,3 +1040,53 @@ export const diagramAnatomyCss = `.sk-annotated-figure {
   --sk-annotation-font-family: var(--font-family-code);
 }
 ${diagramDemoCss}`;
+
+/*
+ * The Do/Don't specimens use a deliberately compact drawing width. Their canvas is half a page
+ * column, not the full-width stage used by the examples above; keeping the design width in step
+ * with that frame prevents the fit-only preview from shrinking the labels into illegibility.
+ */
+const diagramGuideStyle =
+  "--sk-diagram-node-min-inline-size: 5rem; --sk-diagram-node-max-inline-size: 7rem; --sk-diagram-column-gap: var(--space-inline-sm); --sk-diagram-row-gap: var(--space-stack-lg); --sk-diagram-canvas-inline-size: 15rem;";
+
+/** A compact, legible branch for the guideline cards (no extra retry cycle to distract). */
+export const diagramGuideBranchTree = (t: Translate): UsageTree => ({
+  contract: "diagram",
+  signature: "Diagram",
+  options: { label: t("diagram.branchLabel"), columns: 2 },
+  attrs: { style: diagramGuideStyle },
+  slots: {
+    nodes: [
+      { options: { node: "request", shape: "terminal", span: 2 }, slots: { children: t("diagram.branchNode1") } },
+      { options: { node: "session", shape: "decision", span: 2 }, slots: { children: t("diagram.branchNode2") } },
+      { options: { node: "app" }, slots: { children: t("diagram.branchNode3") } },
+      { options: { node: "login" }, slots: { children: t("diagram.branchNode4") } },
+    ],
+    edges: [
+      { options: { from: "request", to: "session" }, slots: {} },
+      { options: { from: "session", to: "app" }, slots: { children: t("diagram.branchYes") } },
+      { options: { from: "session", to: "login" }, slots: { children: t("diagram.branchNo") } },
+    ],
+  },
+});
+
+/** A compact straight sequence, included to show when a ProcessList is the clearer choice. */
+export const diagramGuideLinearTree = (t: Translate): UsageTree => {
+  const tree = diagramFlowTree(t);
+  return { ...tree, attrs: { style: diagramGuideStyle } };
+};
+
+/* Usage guide: same compact branch, with edge labels stretched into explanations. */
+export const diagramDontLongEdgeTree = (t: Translate): UsageTree => {
+  const tree = diagramGuideBranchTree(t);
+  const slots = tree.slots as { nodes: unknown; edges: { options: object; slots: { children?: string } }[] };
+  return {
+    ...tree,
+    slots: {
+      ...slots,
+      edges: slots.edges.map((edge, index) =>
+        index === 1 ? { ...edge, slots: { children: t("diagram.longYes") } } : index === 2 ? { ...edge, slots: { children: t("diagram.longNo") } } : edge,
+      ),
+    },
+  } as UsageTree;
+};

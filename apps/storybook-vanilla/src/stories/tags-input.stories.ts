@@ -7,12 +7,11 @@ import "@skryensya/core/components/form-field.css";
 import "@skryensya/core/components/tag.css";
 import "@skryensya/core/components/tags-input.css";
 import * as demos from "@docs/demos/tags-input";
-import { annotationDemoCss } from "@docs/demos/annotation";
-import { treeStory, withCss, type Meta, type StoryObj } from "../tree-story";
+import { treeStory, type Meta, type StoryObj } from "../tree-story";
 
 export default { title: "Components/Forms/TagsInput", tags: ["autodocs"] } satisfies Meta;
 
-export const Anatomy: StoryObj = treeStory(demos.tagsInputAnatomyTree, { decorators: [withCss(annotationDemoCss)] });
+export const Anatomy: StoryObj = treeStory(demos.tagsInputAnatomyTree);
 export const Default: StoryObj = treeStory(demos.tagsInputTree);
 export const Empty: StoryObj = treeStory(demos.tagsInputEmptyTree);
 export const Max: StoryObj = treeStory(demos.tagsInputMaxTree);

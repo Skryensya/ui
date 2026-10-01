@@ -1,15 +1,26 @@
 ---
 /* The anatomy diagram is an Annotated frame, so this page needs its sheet. */
 import "@skryensya/core/components/annotation.css";
+import type { UsageTree } from "@skryensya/core/usage-tree";
 import { annotationDemoCss } from "../../demos/annotation";
 import { boxAnatomyTree } from "../../demos/layout-anatomy";
 import ComponentPageShell from "./ComponentPageShell.astro";
-import ComponentPreview from "../ComponentPreview.astro";
 import UsagePreview from "../UsagePreview.astro";
 import DoDont from "../DoDont.astro";
+import WhenToUse from "../WhenToUse.astro";
+import A11yNotes from "../A11yNotes.astro";
 import AppearanceMenu from "../AppearanceMenu.astro";
-import { boxControlsTree, boxSurfacesTree, boxTree, boxScaleSpecimenTree } from "../../demos/layout";
-import { getLocale, useTranslations } from "../../i18n";
+import {
+  boxControlsTree,
+  boxMeasuredTree,
+  boxMixedSectionsTree,
+  boxScaleSpecimenTree,
+  boxSeparateSectionsTree,
+  boxSurfacesTree,
+  boxTree,
+  boxUnmeasuredTree,
+} from "../../demos/layout";
+import { getLocale, tList, useTranslations } from "../../i18n";
 /* The sheet itself, not only its source: the Style hooks table resolves each hook
    against a real element, and a page that never loads `patterns/box.css` would show every
    value blank. */
@@ -19,6 +30,13 @@ import { variantsTree } from "../../demos/variants";
 const t = useTranslations(getLocale(Astro.url));
 const explain = (option: string, values: readonly string[]) =>
   Object.fromEntries(values.map((value) => [value, t(`box.prop.${option}.${value}` as Parameters<typeof t>[0])]));
+
+const doDontSpecimen = (tree: UsageTree, inlineSize = "24rem"): UsageTree => ({
+  contract: "layout",
+  signature: "Stack",
+  attrs: { style: `inline-size: ${inlineSize};` },
+  children: tree,
+});
 ---
 
 <ComponentPageShell
@@ -68,22 +86,10 @@ const explain = (option: string, values: readonly string[]) =>
       stageMinBlockSize="11rem"
     />
 
-    <h3>{t("box.showcaseTitle")}</h3>
-    <p set:html={t("box.showcaseBody")} />
+    <h3>{t("component.examplesTitle")}</h3>
     <UsagePreview tree={boxTree(t)} title={t("box.htmlTitle")} description={t("box.htmlBody")} />
     <UsagePreview tree={boxSurfacesTree(t)} title={t("box.surfacesTitle")} description={t("box.surfacesBody")} />
     <UsagePreview tree={boxControlsTree(t)} title={t("box.controlsTitle")} description={t("box.controlsBody")} />
-
-    <p set:html={t("component.reactNote")} />
-
-    <h3>{t("component.contractNotesTitle")}</h3>
-    <ul>
-      <li set:html={t("box.contractItem1")} />
-      <li set:html={t("box.contractItem2")} />
-      <li set:html={t("box.contractItem3")} />
-      <li set:html={t("box.contractItem4")} />
-      <li set:html={t("box.contractItem5")} />
-    </ul>
 
     <UsagePreview
       tree={variantsTree(boxScaleSpecimenTree(t), [{ label: "none", options: { padding: "none" } }, { label: "xs", options: { padding: "xs" } }, { label: "sm", options: { padding: "sm" } }, { label: "md", options: { padding: "md" } }, { label: "lg", options: { padding: "lg" } }, { label: "xl", options: { padding: "xl" } }], [], "3")}
@@ -91,29 +97,47 @@ const explain = (option: string, values: readonly string[]) =>
       description={t("component.scaleBody")}
     />
 
+    <h3>{t("component.contractNotesTitle")}</h3>
+    <ul>
+      {tList(t, "box.contract").map((item) => <li set:html={item} />)}
+    </ul>
+    <p set:html={t("component.reactNote")} />
+
     <h3>{t("component.anatomy")}</h3>
     <p set:html={t("box.anatomyBody")} />
-    <ComponentPreview
-      tree={boxAnatomyTree(t)}
-      css={annotationDemoCss}
-      label={t("box.anatomyPreviewLabel")}
-      screens={false}
-      hideSource
-      chrome={false}
-    />
+    <UsagePreview tree={boxAnatomyTree(t)} css={annotationDemoCss} label={t("box.anatomyPreviewLabel")} bare />
   </Fragment>
 
   <Fragment slot="guidelines">
     <p class="lede" set:html={t("box.guidelinesLede")} />
+    <WhenToUse use={tList(t, "box.when")} avoid={tList(t, "box.whenNot")} />
     <DoDont
+      canvas
       title={t("box.dd.controls.title")}
-      do={{ tree: boxControlsTree(t), caption: t("box.dd.controls.do") }}
-      dont={{ tree: boxTree(t), caption: t("box.dd.controls.dont") }}
+      do={{ tree: doDontSpecimen(boxControlsTree(t)), caption: t("box.dd.controls.do") }}
+      dont={{ tree: doDontSpecimen(boxTree(t)), caption: t("box.dd.controls.dont") }}
     />
     <DoDont
+      canvas
       title={t("box.dd.surface.title")}
-      do={{ tree: boxSurfacesTree(t), caption: t("box.dd.surface.do") }}
-      dont={{ tree: { ...boxTree(t), options: { padding: "lg" } }, caption: t("box.dd.surface.dont") }}
+      do={{ tree: doDontSpecimen(boxTree(t)), caption: t("box.dd.surface.do") }}
+      dont={{ tree: doDontSpecimen({ ...boxTree(t), options: { surface: "none", border: "none", padding: "xl" } }), caption: t("box.dd.surface.dont") }}
     />
+    <DoDont
+      canvas
+      title={t("box.dd.scope.title")}
+      do={{ tree: doDontSpecimen(boxSeparateSectionsTree(t)), caption: t("box.dd.scope.do") }}
+      dont={{ tree: doDontSpecimen(boxMixedSectionsTree(t)), caption: t("box.dd.scope.dont") }}
+    />
+    <DoDont
+      canvas
+      title={t("box.dd.measure.title")}
+      do={{ tree: doDontSpecimen(boxMeasuredTree(t), "34rem"), caption: t("box.dd.measure.do") }}
+      dont={{ tree: doDontSpecimen(boxUnmeasuredTree(t), "56rem"), caption: t("box.dd.measure.dont") }}
+    />
+  </Fragment>
+
+  <Fragment slot="a11y">
+    <A11yNotes intro={t("box.a11yIntro")} does={tList(t, "box.a11yDoes")} yours={tList(t, "box.a11yYours")} />
   </Fragment>
 </ComponentPageShell>

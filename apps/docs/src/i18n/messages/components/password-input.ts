@@ -1,42 +1,40 @@
 export const passwordInputMessages = {
   es: {
     "passwordInput.description": "Un campo de contraseña con un botón para mostrar lo que se escribió.",
-    "passwordInput.betaBadge": "Beta",
+    "passwordInput.key.toggle": "Muestra u oculta la contraseña, con el foco en el botón.",
+    "passwordInput.a11yYours2": "No bloquees pegar: los gestores de contraseñas lo necesitan (WCAG 2.2, 3.3.8).",
+    "passwordInput.a11yYours1": "Debe tener una etiqueta visible.",
+    "passwordInput.a11yDoes3": "La pista queda asociada al campo con <code>aria-describedby</code>.",
+    "passwordInput.a11yDoes2": "Su nombre dice lo que hará: «Mostrar contraseña» u «Ocultar contraseña».",
+    "passwordInput.a11yDoes1": "El botón se alcanza con <kbd>Tab</kbd>; en la máquina de Zag no se podía.",
+    "passwordInput.a11yIntro": "PasswordInput es un campo nativo con un botón que se alcanza con el teclado.",
+    "passwordInput.content3": "En el error de inicio de sesión, no digas qué dato falló: «El correo o la contraseña no son correctos».",
+    "passwordInput.content2": "Di la regla en positivo y concreta: «Al menos 12 caracteres».",
+    "passwordInput.content1": "Nombra el campo «Contraseña», o «Contraseña nueva» al crearla.",
+    "passwordInput.whenNot2": 'Para mostrar un secreto ya generado y copiarlo: usa <a href="/es/componentes/clipboard">Clipboard</a>.',
+    "passwordInput.whenNot1": 'Para un código corto de un solo uso: usa <a href="/es/componentes/otp-input">OtpInput</a>.',
+    "passwordInput.when1": "Para entrar a una cuenta, o para crear o cambiar una contraseña.",
+    "passwordInput.contract3": "<code>ignorePasswordManagers</code> pide a los gestores que no autocompleten: úsalo solo para lo que no es la contraseña de una cuenta, como un PIN.",
+    "passwordInput.contract2": "Al enviar o reiniciar el formulario, la contraseña vuelve a ocultarse.",
+    "passwordInput.contract1": "El botón cambia su nombre según lo que hará: «Mostrar contraseña» u «Ocultar contraseña».",
     "passwordInput.anatomyBody":
       "La etiqueta, el pozo que contiene el campo y el botón, y una pista opcional debajo. El botón es un Button icon-only compuesto: la forma, el área táctil y el state layer vienen de él.",
     "passwordInput.anatomyLabel": "Partes de PasswordInput",
     "passwordInput.anatomyPreviewLabel": "Anatomía",
 
-    "passwordInput.lede":
-      "Sobre <code>@zag-js/password-input</code>, la misma máquina en las dos capas. El botón alterna entre ocultar y mostrar la contraseña y cambia su nombre según lo que va a hacer. Al enviar o reiniciar el formulario, la contraseña se vuelve a ocultar sola, así que no queda visible en la página siguiente.",
+    "passwordInput.lede": "PasswordInput recibe una contraseña para entrar a una cuenta o para crear una. Un botón la muestra y la oculta, para revisar lo escrito antes de enviar. Al enviar el formulario, vuelve a ocultarse.",
 
-    "passwordInput.whenTitle": "Cuándo usarlo",
-    "passwordInput.whenItem1": "Para entrar a una cuenta o para crear o cambiar una contraseña",
-    "passwordInput.whenItem2": "Sobre todo en el teléfono, donde un error de tipeo no se ve y mostrar la contraseña ahorra un intento fallido",
-    "passwordInput.whenItem3":
-      "No para un código de un solo uso de pocos dígitos (eso es OtpInput) ni para mostrar un secreto ya generado para copiarlo (eso es Clipboard)",
 
-    "passwordInput.signInTitle": "Para entrar",
-    "passwordInput.signInBody":
-      "Por defecto, <code>autoComplete</code> es <code>current-password</code>: el navegador y el gestor de contraseñas ofrecen la guardada para esta cuenta. Va junto al campo de correo con el que forma el par.",
-    "passwordInput.signInPreviewLabel": "PasswordInput para iniciar sesión",
+    "passwordInput.signInTitle": "Entrar: la contraseña guardada",
+    "passwordInput.signInBody": '<code>autoComplete="current-password"</code>, el valor por defecto: el gestor de contraseñas ofrece la guardada.',
 
-    "passwordInput.signUpTitle": "Para crear una",
-    "passwordInput.signUpBody":
-      "Con <code>autoComplete=\"new-password\"</code> el gestor ofrece generar una y guardarla. La regla que tiene que cumplir va en <code>hint</code>, que queda asociada al campo con <code>aria-describedby</code>: se lee al entrar, no solo cuando ya falló.",
-    "passwordInput.signUpPreviewLabel": "PasswordInput para crear una contraseña",
+    "passwordInput.signUpTitle": "Crear: la regla en la pista",
+    "passwordInput.signUpBody": 'Con <code>autoComplete="new-password"</code>, el gestor ofrece generar una. La regla va en <code>hint</code>, antes de escribir.',
 
-    "passwordInput.statesTitle": "Estados",
-    "passwordInput.statesBody":
-      "<code>invalid</code> pinta el borde de peligro y marca el campo <code>aria-invalid</code>; el motivo va en la pista. <code>disabled</code> apaga el campo y el botón: una contraseña que no se puede editar tampoco se puede revelar.",
-    "passwordInput.statesPreviewLabel": "Estados de PasswordInput",
+    "passwordInput.statesTitle": "Estados: inválido y deshabilitado",
+    "passwordInput.statesBody": "<code>invalid</code> marca el campo y el motivo va en la pista.",
 
-    "passwordInput.managersTitle": "Gestores de contraseñas",
-    "passwordInput.managersBody":
-      "<code>ignorePasswordManagers</code> pide a 1Password, LastPass, Bitwarden, Dashlane y Proton Pass que no ofrezcan autocompletar este campo. Úsalo solo cuando no es la contraseña de una cuenta: un PIN, una frase de un archivo cifrado. En un inicio de sesión, apagarlo empuja a la gente a contraseñas más débiles.",
 
-    "passwordInput.a11yBody":
-      "El botón de Zag no se puede alcanzar con Tab (<code>tabIndex=-1</code>) y solo responde al puntero. Aquí es un botón normal: se alcanza con Tab y se activa con Enter o Espacio, y su nombre accesible cambia entre <code>showLabel</code> y <code>hideLabel</code> junto con <code>aria-expanded</code>. Un clic con el mouse no le quita el foco al campo, así que se puede seguir escribiendo.",
 
     "passwordInput.showLabel": "Mostrar contraseña",
     "passwordInput.hideLabel": "Ocultar contraseña",
@@ -47,54 +45,50 @@ export const passwordInputMessages = {
     "passwordInput.invalidHint": "La contraseña no es correcta.",
     "passwordInput.disabledLabel": "Contraseña (bloqueada)",
     "passwordInput.dd.repeatLabel": "Repite la contraseña",
-    "passwordInput.showcaseTitle": "Showcases",
-    "passwordInput.showcaseBody": "Iniciar sesión, crear una contraseña y los estados del campo.",
-    "passwordInput.guidelinesLede": "PasswordInput recibe una contraseña y deja revisarla antes de enviar.",
-    "passwordInput.dd.rule.title": "La regla, antes",
+    "passwordInput.guidelinesLede": "Mostrar la contraseña evita un intento fallido, sobre todo en el teléfono.",
+    "passwordInput.dd.rule.title": "Regla: antes de escribir",
     "passwordInput.dd.rule.do": "Di en la pista qué tiene que cumplir una contraseña nueva.",
-    "passwordInput.dd.rule.dont": "Si la regla aparece recién con el error, la persona escribe dos veces.",
-    "passwordInput.dd.repeat.title": "Un campo alcanza",
+    "passwordInput.dd.rule.dont": "Si la regla aparece solo con el error, la persona escribe dos veces.",
+    "passwordInput.dd.repeat.title": "Repetir: un campo basta",
     "passwordInput.dd.repeat.do": "Un solo campo: el botón de mostrar deja revisar lo escrito.",
     "passwordInput.dd.repeat.dont": "Un segundo campo para repetirla duplica el trabajo y no evita el error.",
   },
   en: {
     "passwordInput.description": "A password field with a button to show what was typed.",
-    "passwordInput.betaBadge": "Beta",
+    "passwordInput.key.toggle": "Shows or hides the password, with focus on the button.",
+    "passwordInput.a11yYours2": "Do not block pasting: password managers need it (WCAG 2.2, 3.3.8).",
+    "passwordInput.a11yYours1": "It must have a visible label.",
+    "passwordInput.a11yDoes3": "The hint is tied to the field with <code>aria-describedby</code>.",
+    "passwordInput.a11yDoes2": "Its name says what it will do: “Show password” or “Hide password”.",
+    "passwordInput.a11yDoes1": "The button is reachable with <kbd>Tab</kbd>; in Zag's machine it was not.",
+    "passwordInput.a11yIntro": "PasswordInput is a native field with a button reachable by keyboard.",
+    "passwordInput.content3": "In a sign-in error, do not say which item failed: “The email or password is incorrect”.",
+    "passwordInput.content2": "State the rule positively and concretely: “At least 12 characters”.",
+    "passwordInput.content1": "Name the field “Password”, or “New password” when creating one.",
+    "passwordInput.whenNot2": 'To show an already generated secret and copy it: use <a href="/components/clipboard">Clipboard</a>.',
+    "passwordInput.whenNot1": 'For a short one-time code: use <a href="/components/otp-input">OtpInput</a>.',
+    "passwordInput.when1": "To sign in, or to create or change a password.",
+    "passwordInput.contract3": "<code>ignorePasswordManagers</code> asks managers not to autofill: use it only for what is not an account password, like a PIN.",
+    "passwordInput.contract2": "On form submit or reset, the password hides again.",
+    "passwordInput.contract1": "The button changes its name by what it will do: “Show password” or “Hide password”.",
     "passwordInput.anatomyBody":
       "The label, the well that holds the field and the button, and an optional hint below. The button is a composed icon-only Button: the shape, the hit target and the state layer come from it.",
     "passwordInput.anatomyLabel": "PasswordInput parts",
     "passwordInput.anatomyPreviewLabel": "Anatomy",
 
-    "passwordInput.lede":
-      "On <code>@zag-js/password-input</code>, the same machine in both bindings. The button toggles between hiding and showing the password and renames itself for what it will do next. When the form is submitted or reset, the password hides again on its own, so it is never left visible on the next page.",
+    "passwordInput.lede": "PasswordInput takes a password to sign in or to create one. A button shows and hides it, to check what was typed before submitting. On submit, it hides again.",
 
-    "passwordInput.whenTitle": "When to use it",
-    "passwordInput.whenItem1": "To sign in to an account, or to create or change a password",
-    "passwordInput.whenItem2": "Especially on a phone, where a typo is invisible and showing the password saves a failed attempt",
-    "passwordInput.whenItem3":
-      "Not for a short one-time code (that is OtpInput), and not to show an already generated secret for copying (that is Clipboard)",
 
-    "passwordInput.signInTitle": "Signing in",
-    "passwordInput.signInBody":
-      "By default <code>autoComplete</code> is <code>current-password</code>: the browser and the password manager offer the one saved for this account. It sits with the email field it pairs with.",
-    "passwordInput.signInPreviewLabel": "PasswordInput for signing in",
+    "passwordInput.signInTitle": "Sign in: the saved password",
+    "passwordInput.signInBody": '<code>autoComplete="current-password"</code>, the default: the password manager offers the saved one.',
 
-    "passwordInput.signUpTitle": "Creating one",
-    "passwordInput.signUpBody":
-      "With <code>autoComplete=\"new-password\"</code> the manager offers to generate one and save it. The rule it has to meet goes in <code>hint</code>, tied to the field through <code>aria-describedby</code>: it is read on the way in, not only once it has failed.",
-    "passwordInput.signUpPreviewLabel": "PasswordInput for creating a password",
+    "passwordInput.signUpTitle": "Create: the rule in the hint",
+    "passwordInput.signUpBody": 'With <code>autoComplete="new-password"</code>, the manager offers to generate one. The rule goes in <code>hint</code>, before typing.',
 
-    "passwordInput.statesTitle": "States",
-    "passwordInput.statesBody":
-      "<code>invalid</code> paints the danger border and marks the field <code>aria-invalid</code>; the reason goes in the hint. <code>disabled</code> turns off the field and the button: a password that cannot be edited cannot be revealed either.",
-    "passwordInput.statesPreviewLabel": "PasswordInput states",
+    "passwordInput.statesTitle": "States: invalid and disabled",
+    "passwordInput.statesBody": "<code>invalid</code> marks the field and the reason goes in the hint.",
 
-    "passwordInput.managersTitle": "Password managers",
-    "passwordInput.managersBody":
-      "<code>ignorePasswordManagers</code> asks 1Password, LastPass, Bitwarden, Dashlane and Proton Pass not to offer to fill this field. Use it only when it is not an account's password: a PIN, the passphrase of an encrypted file. On a sign-in, turning them off pushes people toward weaker passwords.",
 
-    "passwordInput.a11yBody":
-      "Zag's button cannot be reached with Tab (<code>tabIndex=-1</code>) and only answers the pointer. Here it is an ordinary button: reachable with Tab and activated with Enter or Space, and its accessible name switches between <code>showLabel</code> and <code>hideLabel</code> along with <code>aria-expanded</code>. A mouse click does not take focus away from the field, so typing can carry on.",
 
     "passwordInput.showLabel": "Show password",
     "passwordInput.hideLabel": "Hide password",
@@ -105,13 +99,11 @@ export const passwordInputMessages = {
     "passwordInput.invalidHint": "That password is not right.",
     "passwordInput.disabledLabel": "Password (locked)",
     "passwordInput.dd.repeatLabel": "Repeat password",
-    "passwordInput.showcaseTitle": "Showcases",
-    "passwordInput.showcaseBody": "Signing in, creating a password, and the field's states.",
-    "passwordInput.guidelinesLede": "PasswordInput takes a password and lets people check it before sending.",
-    "passwordInput.dd.rule.title": "The rule, up front",
+    "passwordInput.guidelinesLede": "Showing the password avoids a failed attempt, especially on a phone.",
+    "passwordInput.dd.rule.title": "Rule: before typing",
     "passwordInput.dd.rule.do": "Say in the hint what a new password has to meet.",
-    "passwordInput.dd.rule.dont": "When the rule only shows up with the error, people type twice.",
-    "passwordInput.dd.repeat.title": "One field is enough",
+    "passwordInput.dd.rule.dont": "If the rule appears only with the error, people type twice.",
+    "passwordInput.dd.repeat.title": "Repeat: one field is enough",
     "passwordInput.dd.repeat.do": "A single field: the show button lets people check what they typed.",
     "passwordInput.dd.repeat.dont": "A second field to repeat it doubles the work and does not prevent the mistake.",
   },

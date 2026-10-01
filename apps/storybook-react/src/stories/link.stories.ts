@@ -7,13 +7,21 @@ import "@skryensya/core/components/checkbox.css";
 import "@skryensya/core/components/switch.css";
 import "@skryensya/core/components/tile.css";
 import "@skryensya/core/components/typography.css";
+import "@skryensya/core/patterns/icon.css";
 import * as demos from "@docs/demos/link";
-import { annotationDemoCss } from "@docs/demos/annotation";
-import { treeStory, withCss, type Meta, type StoryObj } from "../tree-story";
+import { treeStory, type Meta, type StoryObj } from "../tree-story";
 
 export default { title: "Components/Navigation/Link", tags: ["autodocs"] } satisfies Meta;
 
-export const Anatomy: StoryObj = treeStory(demos.linkAnatomyTree, { decorators: [withCss(annotationDemoCss)] });
+export const Anatomy: StoryObj = treeStory(demos.linkAnatomyTree);
 export const Single: StoryObj = treeStory(demos.linkSingleTree);
 export const Default: StoryObj = treeStory(demos.linkTree);
 export const TileLink: StoryObj = treeStory(demos.tileLinkTree);
+export const DoDescriptive: StoryObj = treeStory(demos.linkDoDescriptiveTree);
+export const DontHere: StoryObj = treeStory(demos.linkDontHereTree);
+export const DoTargetWords: StoryObj = treeStory(demos.linkDoTargetWordsTree);
+export const DontWholeSentence: StoryObj = treeStory(demos.linkDontWholeSentenceTree);
+export const DoExternal: StoryObj = treeStory(demos.linkDoExternalTree);
+export const DontExternal: StoryObj = treeStory(demos.linkDontExternalTree);
+export const DoAction: StoryObj = treeStory(demos.linkDoActionTree);
+export const DontAction: StoryObj = treeStory(demos.linkDontActionTree);

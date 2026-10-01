@@ -43,7 +43,7 @@ export const appearanceMessages = {
     "appearancePage.ruleBlack":
       "<strong>Brutalist dibuja con negro en ambos modos.</strong> Es el color de sombra del sistema a opacidad total: una sombra es oscura sea cual sea la página. El borde conserva el grosor de plain, así que cambiar de apariencia nunca cambia el tamaño.",
     "appearancePage.ruleFrosted":
-      "<strong>Frosted parte de una base opaca.</strong> La lámina translúcida solo aparece donde hay <code>backdrop-filter</code> y nadie pidió menos transparencia; con alto contraste vuelve a la superficie opaca. Ver <a href=\"/es/transparencias\">Transparencia</a>.",
+      '<strong>Frosted parte de una base opaca.</strong> La lámina translúcida solo aparece donde hay <code>backdrop-filter</code> y nadie pidió menos transparencia; con alto contraste vuelve a la superficie opaca. Ver <a href="/es/transparencias">Transparencia</a>.',
     "appearancePage.ruleReveal":
       "<strong>Folder solo la muestra revelado.</strong> En reposo un folder es del color de su fondo, y una apariencia visible ahí lo delataría.",
     "appearancePage.ruleDisabled":
@@ -122,7 +122,7 @@ export const appearanceMessages = {
     "appearancePage.ruleBlack":
       "<strong>Brutalist draws in black in both modes.</strong> It is the system's shadow colour at full opacity: a shadow is dark whatever the page is. The edge keeps plain's width, so switching appearance never changes a size.",
     "appearancePage.ruleFrosted":
-      "<strong>Frosted starts from an opaque baseline.</strong> The see-through sheet only appears where <code>backdrop-filter</code> exists and nobody asked for less transparency; under high contrast it returns to the opaque surface. See <a href=\"/transparency\">Transparency</a>.",
+      '<strong>Frosted starts from an opaque baseline.</strong> The see-through sheet only appears where <code>backdrop-filter</code> exists and nobody asked for less transparency; under high contrast it returns to the opaque surface. See <a href="/transparency">Transparency</a>.',
     "appearancePage.ruleReveal":
       "<strong>Folder shows it only when revealed.</strong> At rest a folder is the colour of its ground, and a visible appearance there would give it away.",
     "appearancePage.ruleDisabled":

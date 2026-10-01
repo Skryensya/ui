@@ -13,7 +13,7 @@ downstream of keeping that true.
 |---|---|
 | [`CONTEXT.md`](CONTEXT.md) | The glossary. Which word names each concept, and which words not to use. It is the only authority on terminology. |
 | [`docs/decisions/`](docs/decisions) | 21 decision records, each with the alternatives rejected. Most "why isn't this X?" questions have a numbered answer. |
-| [`docs/writing-guide.md`](docs/writing-guide.md) | How prose is written: register, person, punctuation, and what changes between Spanish and English. |
+| [`docs/writing-guide.md`](docs/writing-guide.md) | How prose is written: register, person, punctuation, component page structure, and what changes between Spanish and English. |
 | [`docs/pending-tasks.md`](docs/pending-tasks.md) | The live backlog, ranked. If you want something to pick up, take the top unchecked item of Nivel 1. |
 
 ## Setup

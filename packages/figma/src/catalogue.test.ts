@@ -23,6 +23,22 @@ describe("the catalogue", () => {
     expect(sets.length).toBeGreaterThan(0);
     for (const set of sets) expect(set.cells.length).toBeGreaterThan(0);
   });
+
+  /* A variant off its set's grid is never placed: the frame keeps the set's loose size and misses
+     the height it was planned at (Window's four appearances, before it was split by appearance). */
+  it("puts every variant of every set on its grid", () => {
+    const combos = (axes: { name: string; values: string[] }[]) =>
+      axes.reduce<Record<string, string>[]>((out, axis) => out.flatMap((o) => axis.values.map((v) => ({ ...o, [axis.name]: v }))), [{}]);
+    const offGrid = manifest.components.flatMap((set) => {
+      if (set.kind !== "component-set") return [];
+      const order = set.axes.map((a) => a.name);
+      const keys = new Set(
+        combos(set.grid.rows).flatMap((row) => combos(set.grid.columns).map((col) => order.map((a) => `${a}=${({ ...row, ...col } as Record<string, string>)[a]}`).join(", "))),
+      );
+      return set.cells.filter((cell) => !keys.has(cell.key)).map((cell) => `${set.name}: ${cell.key}`);
+    });
+    expect(offGrid).toEqual([]);
+  });
 });
 
 /* A nested realization draws the markup's own structure, not a flat row of slots. */

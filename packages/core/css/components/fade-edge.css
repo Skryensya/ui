@@ -77,23 +77,211 @@
       color-mix(in srgb, var(--sk-fade-edge-color) 2%, transparent) 88%,
       transparent 100%;
 
+    /* Written by the bindings: how thick the element's own scrollbars are. 0 without them. */
+    --sk-fade-edge-gutter-block: 0px;
+    --sk-fade-edge-gutter-inline: 0px;
+
+    /*
+     * THE TWO RAMPS, by PHYSICAL side: `near` fades the left or top edge, `far` the right or bottom
+     * one. Each direction sets the ramps it uses; an unused side stays solid and hides nothing.
+     * `--sk-fade-edge-mask-*` is what actually paints: the ramp, unless scroll-awareness retires it.
+     */
+    --sk-fade-edge-ramp-near: linear-gradient(#000 0 0);
+    --sk-fade-edge-ramp-far: linear-gradient(to bottom, #000 0%, var(--sk-fade-edge-mask-ramp));
+    --sk-fade-edge-mask-near: var(--sk-fade-edge-ramp-near);
+    --sk-fade-edge-mask-far: var(--sk-fade-edge-ramp-far);
+
     position: relative;
-    mask-image: linear-gradient(to bottom, #000 0%, var(--sk-fade-edge-mask-ramp));
-    mask-position: 0 0;
-    mask-size: 100% 100%;
+    /*
+     * THE SCROLLBAR STAYS OUT OF THE FADE. When the FadeEdge is also the scroll container, the
+     * browser draws its scrollbar inside the box the mask paints on, so a single ramp faded the
+     * scrollbar along with the content: the one control that says "this scrolls" disappeared exactly
+     * where the fade says "there is more".
+     *
+     * CSS cannot tell where that scrollbar is. Chrome counts a native scrollbar as part of the padding
+     * box, so `mask-clip: padding-box` does not exclude it, and its thickness is the browser's to
+     * choose. So the bindings measure it (core's `watchFadeEdge`) into the two gutter hooks, and the
+     * mask is four layers:
+     *
+     *   1. a solid strip the height of the horizontal scrollbar, along the bottom;
+     *   2. a solid strip the width of the vertical scrollbar, along the inline end;
+     *   3. the far ramp, over the box minus the gutters;
+     *   4. the near ramp, the same size.
+     *
+     * 3 and 4 are intersected (content shows where neither ramp hides it), then 2 and 1 are added on
+     * top, so the scrollbars are never faded. With no scrollbar the gutters are 0 and the strips
+     * paint nothing.
+     */
+    mask-image:
+      linear-gradient(#000 0 0),
+      linear-gradient(#000 0 0),
+      var(--sk-fade-edge-mask-far),
+      var(--sk-fade-edge-mask-near);
+    mask-size:
+      100% var(--sk-fade-edge-gutter-block),
+      var(--sk-fade-edge-gutter-inline) 100%,
+      calc(100% - var(--sk-fade-edge-gutter-inline)) calc(100% - var(--sk-fade-edge-gutter-block)),
+      calc(100% - var(--sk-fade-edge-gutter-inline)) calc(100% - var(--sk-fade-edge-gutter-block));
+    mask-position:
+      left bottom,
+      right top,
+      left top,
+      left top;
     mask-repeat: no-repeat;
+    mask-composite: add, add, intersect;
+  }
+
+  /* A right-to-left scroller puts its vertical scrollbar on the left. */
+  .sk-fade-edge:dir(rtl) {
+    mask-position:
+      left bottom,
+      left top,
+      right top,
+      right top;
   }
 
   .sk-fade-edge[data-direction="to-top"] {
-    mask-image: linear-gradient(to top, #000 0%, var(--sk-fade-edge-mask-ramp));
+    --sk-fade-edge-ramp-near: linear-gradient(to top, #000 0%, var(--sk-fade-edge-mask-ramp));
+    --sk-fade-edge-ramp-far: linear-gradient(#000 0 0);
   }
 
   .sk-fade-edge[data-direction="to-right"] {
-    mask-image: linear-gradient(to right, #000 0%, var(--sk-fade-edge-mask-ramp));
+    --sk-fade-edge-ramp-far: linear-gradient(to right, #000 0%, var(--sk-fade-edge-mask-ramp));
   }
 
   .sk-fade-edge[data-direction="to-left"] {
-    mask-image: linear-gradient(to left, #000 0%, var(--sk-fade-edge-mask-ramp));
+    --sk-fade-edge-ramp-near: linear-gradient(to left, #000 0%, var(--sk-fade-edge-mask-ramp));
+    --sk-fade-edge-ramp-far: linear-gradient(#000 0 0);
+  }
+
+  /*
+   * BOTH ENDS OF AN AXIS. A strip scrolled to its middle continues both ways, and a one-sided fade
+   * would promise more on one side and cut the other dry. Paired with `scrollAware`, each end
+   * retires on its own, so the fade follows the scroll: only the far side at the start, both in the
+   * middle, only the near side at the end.
+   */
+  .sk-fade-edge[data-direction="horizontal"] {
+    --sk-fade-edge-ramp-near: linear-gradient(to left, #000 0%, var(--sk-fade-edge-mask-ramp));
+    --sk-fade-edge-ramp-far: linear-gradient(to right, #000 0%, var(--sk-fade-edge-mask-ramp));
+  }
+
+  .sk-fade-edge[data-direction="vertical"] {
+    --sk-fade-edge-ramp-near: linear-gradient(to top, #000 0%, var(--sk-fade-edge-mask-ramp));
+  }
+
+  /*
+   * NO FADE BEFORE THE SCROLLBAR IS MEASURED, AND SCROLL-AWARE IN CSS.
+   *
+   * Both run on the element's own scroll timeline, which is ACTIVE only while the element really
+   * scrolls along that axis. That makes it the one CSS signal for "this is a scroller with somewhere
+   * to go", read on the very first frame, with no script:
+   *
+   *  - Until the bindings write `data-measured`, a scroller paints no fade at all (`hold`). Painting
+   *    it before the gutters are known faded the scrollbar for a moment and then jumped. A FadeEdge
+   *    that does not scroll has an inactive timeline, the animation does nothing, and it paints as
+   *    plain CSS as it always has.
+   *  - `scrollAware` retires each ramp on the scroll position itself: the near ramp only appears
+   *    past the first pixel, the far one goes in the last. Content that fits has an inactive
+   *    timeline, so its declared value applies, and for `scrollAware` that is no fade.
+   *
+   * The ramps are images, so they swap rather than tween: a discrete animation flips at half its
+   * range, which is half a pixel. Browsers without scroll timelines keep the bindings' attributes
+   * (`data-at-*`, below).
+   */
+  @supports (animation-timeline: scroll()) {
+    .sk-fade-edge {
+      --sk-fade-edge-axis: y;
+      animation: sk-fade-edge-hold linear both;
+      animation-timeline: scroll(self var(--sk-fade-edge-axis));
+    }
+
+    .sk-fade-edge:is([data-direction="to-right"], [data-direction="to-left"], [data-direction="horizontal"]) {
+      --sk-fade-edge-axis: x;
+    }
+
+    .sk-fade-edge[data-measured] {
+      animation: none;
+    }
+
+    .sk-fade-edge[data-scroll-aware] {
+      --sk-fade-edge-mask-near: linear-gradient(#000 0 0);
+      --sk-fade-edge-mask-far: linear-gradient(#000 0 0);
+    }
+
+    .sk-fade-edge[data-scroll-aware][data-measured] {
+      animation:
+        sk-fade-edge-near linear both,
+        sk-fade-edge-far linear both;
+      animation-timeline: scroll(self var(--sk-fade-edge-axis));
+      animation-range:
+        0 1px,
+        calc(100% - 1px) 100%;
+    }
+
+    /* A right-to-left row starts scrolled to its right end, so the timeline runs from the far side. */
+    .sk-fade-edge[data-scroll-aware][data-measured]:dir(rtl):is([data-direction="to-right"], [data-direction="to-left"], [data-direction="horizontal"]) {
+      animation-name: sk-fade-edge-far-rtl, sk-fade-edge-near-rtl;
+    }
+  }
+
+  @keyframes sk-fade-edge-hold {
+    from,
+    to {
+      --sk-fade-edge-mask-near: linear-gradient(#000 0 0);
+      --sk-fade-edge-mask-far: linear-gradient(#000 0 0);
+    }
+  }
+
+  @keyframes sk-fade-edge-near {
+    from {
+      --sk-fade-edge-mask-near: linear-gradient(#000 0 0);
+    }
+    to {
+      --sk-fade-edge-mask-near: var(--sk-fade-edge-ramp-near);
+    }
+  }
+
+  @keyframes sk-fade-edge-far {
+    from {
+      --sk-fade-edge-mask-far: var(--sk-fade-edge-ramp-far);
+    }
+    to {
+      --sk-fade-edge-mask-far: linear-gradient(#000 0 0);
+    }
+  }
+
+  @keyframes sk-fade-edge-far-rtl {
+    from {
+      --sk-fade-edge-mask-far: linear-gradient(#000 0 0);
+    }
+    to {
+      --sk-fade-edge-mask-far: var(--sk-fade-edge-ramp-far);
+    }
+  }
+
+  @keyframes sk-fade-edge-near-rtl {
+    from {
+      --sk-fade-edge-mask-near: var(--sk-fade-edge-ramp-near);
+    }
+    to {
+      --sk-fade-edge-mask-near: linear-gradient(#000 0 0);
+    }
+  }
+
+  /* Without scroll timelines, the bindings say where the scroll is. */
+  @supports not (animation-timeline: scroll()) {
+    .sk-fade-edge[data-at-edge] {
+      --sk-fade-edge-mask-near: linear-gradient(#000 0 0);
+      --sk-fade-edge-mask-far: linear-gradient(#000 0 0);
+    }
+
+    .sk-fade-edge[data-at-start] {
+      --sk-fade-edge-mask-near: linear-gradient(#000 0 0);
+    }
+
+    .sk-fade-edge[data-at-end] {
+      --sk-fade-edge-mask-far: linear-gradient(#000 0 0);
+    }
   }
 
   /*
@@ -135,6 +323,39 @@
     background: linear-gradient(to right, var(--sk-fade-edge-ramp));
   }
 
+  /* An axis paints both bands: `::after` at the end, as above, and `::before` at the start. */
+  .sk-fade-edge[data-fade="color"][data-direction="horizontal"]::after {
+    inset: 0 0 0 auto;
+    inline-size: var(--sk-fade-edge-size);
+    block-size: auto;
+    background: linear-gradient(to left, var(--sk-fade-edge-ramp));
+  }
+
+  .sk-fade-edge[data-fade="color"]:is([data-direction="horizontal"], [data-direction="vertical"])::before {
+    content: "";
+    position: absolute;
+    z-index: 1;
+    pointer-events: none;
+    transition: opacity var(--motion-state-change-duration) var(--motion-state-change-easing);
+  }
+
+  .sk-fade-edge[data-fade="color"][data-direction="horizontal"]::before {
+    inset: 0 auto 0 0;
+    inline-size: var(--sk-fade-edge-size);
+    background: linear-gradient(to right, var(--sk-fade-edge-ramp));
+  }
+
+  .sk-fade-edge[data-fade="color"][data-direction="vertical"]::before {
+    inset: 0 0 auto 0;
+    block-size: var(--sk-fade-edge-size);
+    background: linear-gradient(to bottom, var(--sk-fade-edge-ramp));
+  }
+
+  .sk-fade-edge[data-fade="color"][data-at-start]::before,
+  .sk-fade-edge[data-fade="color"][data-at-end]::after {
+    opacity: 0;
+  }
+
   /*
    * SCROLL-AWARE, retired at the edge. `data-at-edge` is written by the bindings (core's
    * `watchFadeEdge`) when the scroll has reached the edge this fade points at, or the content fits
@@ -145,10 +366,6 @@
    * to animate it would change how every consumer's own value of that hook inherits. So the mask
    * mode lets go in one frame, which at the moment the reader hits the end reads as arriving.
    */
-  .sk-fade-edge[data-at-edge] {
-    mask-image: none;
-  }
-
   .sk-fade-edge[data-fade="color"]::after {
     transition: opacity var(--motion-state-change-duration) var(--motion-state-change-easing);
   }

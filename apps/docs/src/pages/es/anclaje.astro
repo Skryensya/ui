@@ -2,7 +2,7 @@
 import Base from "../../layouts/Base.astro";
 import CodeBlock from "../../components/CodeBlock.astro";
 import { anchorPlacementsTree } from "../../demos/anchoring";
-import ComponentPreview from "../../components/ComponentPreview.astro";
+import UsagePreview from "../../components/UsagePreview.astro";
 import StylingHooks from "../../components/StylingHooks.astro";
 
 const import_ = `@import "@skryensya/core/patterns/anchored.css";`;
@@ -64,7 +64,7 @@ const arrowReact = `<Tooltip arrow content="Se guarda solo">
     Una caja colocada contra <strong>otro</strong> elemento, no contra la página: se abre por un lado del ancla, se voltea al lado opuesto cuando no entra, y desaparece si el ancla sale de la pantalla. Es lo que hacen tooltip, popover, popup, menu y sus submenús, select, combobox y date picker.
   </p>
 
-  <ComponentPreview tree={anchorPlacementsTree} label="HTML" />
+  <UsagePreview tree={anchorPlacementsTree} label="HTML" />
 
   <h2>Por qué es un patrón y no un componente</h2>
   <p>

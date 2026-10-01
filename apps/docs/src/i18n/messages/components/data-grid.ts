@@ -1,30 +1,63 @@
 export const dataGridMessages = {
   es: {
 
-    "dataGridPage.description":
-      "Data Grid: navegación 2D con roving tabindex para datos tabulares o widgets agrupados.",
-    "dataGridPage.betaBadge": "Beta",
-    "dataGridPage.lede":
-      'La propia especificación WAI-ARIA trata "data grids" y "layout grids" como el mismo patrón. Mismos roles, misma mecánica de roving tabindex, así que este es UN contrato, no dos. Úsalo cuando una grilla de celdas necesita navegación 2D: <a href="/es/componentes/table">Table</a> ya cubre el caso de datos tabulares ESTÁTICOS, sin modelo de teclado propio.',
-    "dataGridPage.dataTitle": "Datos tabulares",
-    "dataGridPage.anatomyBody":
-      "Este diagrama nombra la grilla, la fila y la celda. El espécimen está congelado; los DataGrid vivos empiezan abajo.",
+    "dataGridPage.description": "Una cuadrícula que se recorre celda por celda con las flechas, con una sola parada de tabulación.",
+
+    "dataGridPage.a11yKeyTab": "Entra y sale de la cuadrícula.",
+
+    "dataGridPage.a11yKeyCtrlHomeEnd": "Va al inicio o al fin de la cuadrícula.",
+
+    "dataGridPage.a11yKeyHomeEnd": "Va al inicio o al fin de la fila.",
+
+    "dataGridPage.a11yKeyArrows": "Mueve el foco entre celdas.",
+
+    "dataGridPage.a11yYours2": "Explica cerca de la cuadrícula que se recorre con las flechas si no es evidente.",
+
+    "dataGridPage.a11yYours1": "Debe tener <code>aria-label</code>.",
+
+    "dataGridPage.a11yDoes3": "Mantiene el rol de lo que hay en la celda: un botón sigue siendo un botón.",
+
+    "dataGridPage.a11yDoes2": "Una sola celda, o su control, es la parada de tabulación de toda la cuadrícula.",
+
+    "dataGridPage.a11yDoes1": 'La raíz es <code>role="grid"</code>, cada fila <code>role="row"</code> y cada celda <code>role="gridcell"</code>.',
+
+    "dataGridPage.a11yIntro": "DataGrid sigue el patrón de grid de la APG, con foco itinerante.",
+
+    "dataGridPage.content2": "Da a cada botón de celda su propio nombre: «Editar», «Eliminar».",
+
+    "dataGridPage.content1": "Nombra la cuadrícula con <code>aria-label</code>: «Puntajes por ronda».",
+
+    "dataGridPage.dd.static.dont": "Si los datos solo se leen, las flechas no agregan nada: en una Table cada celda se lee con su encabezado.",
+
+    "dataGridPage.dd.static.do": "Los controles de la cuadrícula comparten una parada: Tab salta la cuadrícula entera.",
+
+    "dataGridPage.dd.static.title": "Datos de lectura: una Table",
+
+    "dataGridPage.whenNot3": 'Para una cuadrícula visual sin navegación con teclado: usa <a href="/es/componentes/grid">Grid</a>.',
+
+    "dataGridPage.whenNot2": 'Si las filas tienen jerarquía: usa <a href="/es/componentes/treegrid">Treegrid</a>.',
+
+    "dataGridPage.whenNot1": 'Para datos que solo se leen: usa <a href="/es/componentes/table">Table</a>.',
+
+    "dataGridPage.when2": "Para una cuadrícula de controles (chips, tarjetas, enlaces) que debe ocupar una sola parada de tabulación.",
+
+    "dataGridPage.when1": "Para datos que se editan o se operan celda por celda.",
+
+    "dataGridPage.contract2": "<code>wrapCols</code> y <code>wrapRows</code> deciden si las flechas pasan al otro borde; los dos son <code>false</code> por defecto.",
+
+    "dataGridPage.contract1": "El modelo de teclado está escrito a mano y lo comparten los dos bindings; no usa una máquina de Zag.",
+    "dataGridPage.lede": 'DataGrid es una cuadrícula que se recorre celda por celda con las flechas: datos que se editan, o una cuadrícula de controles que ocupa una sola parada de tabulación en vez de una por control. Para datos que solo se leen, <a href="/es/componentes/table">Table</a> es más simple.',
+    "dataGridPage.dataTitle": "Datos: la celda recibe el foco",
+    "dataGridPage.anatomyBody": "La cuadrícula, la fila y la celda.",
     "dataGridPage.anatomyLabel": "Anatomía de DataGrid",
     "dataGridPage.anatomyPreviewLabel": "DataGrid, parte por parte",
-    "dataGridPage.dataBody": "Celdas de solo texto: la parada de foco es la celda misma.",
-    "dataGridPage.dataLabel": "Puntajes por ronda",
-    "dataGridPage.layoutTitle": "Widgets agrupados",
-    "dataGridPage.layoutBody":
-      "Cada celda contiene su propio botón: la parada de foco se la cede a ESE elemento, la celda nunca compite con su propio contenido interactivo por el roving tabindex.",
-    "dataGridPage.layoutLabel": "Acciones rápidas",
-    "dataGridPage.contractBody":
-      'Sin máquina <code>@zag-js/*</code> propia: igual que <code>Treegrid</code>, el modelo de teclado está escrito a mano y es puro, compartido por ambos bindings. <code>wrapCols</code>/<code>wrapRows</code> controlan si las flechas envuelven al borde de la grilla; ambos son <code>false</code> por defecto.',
-    "dataGridPage.a11yBody":
-      'La raíz lleva <code>role="grid"</code> con <code>aria-label</code> (obligatorio). Cada fila es <code>role="row"</code>, cada celda <code>role="gridcell"</code>. El foco es roving: una sola celda (o su descendiente interactivo) es la parada de tabulación en toda la grilla. <kbd class="sk-kbd">↑</kbd>/<kbd class="sk-kbd">↓</kbd>/<kbd class="sk-kbd">←</kbd>/<kbd class="sk-kbd">→</kbd> mueven entre celdas, <kbd class="sk-kbd">Home</kbd>/<kbd class="sk-kbd">End</kbd> dentro de la fila, <kbd class="sk-kbd">Ctrl</kbd>+<kbd class="sk-kbd">Home</kbd>/<kbd class="sk-kbd">End</kbd> saltan al principio/final de la grilla entera.',
+    "dataGridPage.dataBody": "Celdas de texto que se recorren con las flechas, como una planilla que se revisa o se edita.",
+    "dataGridPage.layoutTitle": "Controles: una parada en vez de muchas",
+    "dataGridPage.layoutBody": "Cada celda tiene su botón y el foco va al botón, no a la celda. Toda la cuadrícula ocupa una sola parada de tabulación.",
     "dataGridPage.testReact1":
       "Le cede la parada de foco al descendiente interactivo PROPIO de la celda, no al div de la celda.",
     "dataGridPage.testReact2":
-      "En movimiento vertical, se ajusta a la última celda real de una fila más corta (grilla irregular).",
+      "En movimiento vertical, se ajusta a la última celda real de una fila más corta (cuadrícula irregular).",
     "dataGridPage.testVanilla1":
       "Envuelve columnas a la fila siguiente cuando se autora data-wrap-cols.",
     "dataGridPage.testVanilla2": "Clickear una celda mueve la parada de foco ahí.",
@@ -38,34 +71,63 @@ export const dataGridMessages = {
     "demo.dataGrid.copy": "Copiar",
     "demo.dataGrid.delete": "Eliminar",
     "demo.dataGrid.more": "Más opciones",
-    "dataGridPage.showcaseTitle": "Showcases",
-    "dataGridPage.showcaseBody": "Una cuadrícula de datos que se recorre con flechas, y una con acciones en las celdas.",
-    "dataGridPage.guidelinesLede": "DataGrid es una tabla que se recorre celda por celda con el teclado.",
-    "dataGridPage.guide.item1": "Úsalo cuando las celdas tienen controles o se editan, y moverse con flechas ayuda.",
-    "dataGridPage.guide.item2": "Para datos que solo se leen, una <a href=\"/es/componentes/table\">Table</a> es más simple y más accesible.",
+    "dataGridPage.guidelinesLede": "DataGrid ahorra paradas de tabulación cuando hay muchas celdas que operar.",
   },
   en: {
 
-    "dataGridPage.description":
-      "Data Grid: 2D roving-tabindex navigation for tabular data or grouped widgets.",
-    "dataGridPage.betaBadge": "Beta",
-    "dataGridPage.lede":
-      'The WAI-ARIA spec itself treats "data grids" and "layout grids" as the same pattern. Identical roles, identical roving-tabindex mechanics, so this is ONE contract, not two. Use it when a grid of cells needs 2D navigation: <a href="/components/table">Table</a> already covers STATIC tabular data with no keyboard model of its own.',
-    "dataGridPage.dataTitle": "Tabular data",
-    "dataGridPage.anatomyBody":
-      "This diagram names the grid, the row and the cell. The specimen is frozen; the live DataGrids begin below.",
+    "dataGridPage.description": "A grid moved through cell by cell with the arrow keys, with a single tab stop.",
+
+    "dataGridPage.a11yKeyTab": "Enters and leaves the grid.",
+
+    "dataGridPage.a11yKeyCtrlHomeEnd": "Goes to the start or end of the grid.",
+
+    "dataGridPage.a11yKeyHomeEnd": "Goes to the start or end of the row.",
+
+    "dataGridPage.a11yKeyArrows": "Moves focus between cells.",
+
+    "dataGridPage.a11yYours2": "If it is not obvious, say near the grid that it is moved through with the arrow keys.",
+
+    "dataGridPage.a11yYours1": "It must have an <code>aria-label</code>.",
+
+    "dataGridPage.a11yDoes3": "It keeps the role of what is in the cell: a button stays a button.",
+
+    "dataGridPage.a11yDoes2": "A single cell, or its control, is the whole grid's tab stop.",
+
+    "dataGridPage.a11yDoes1": 'The root is <code>role="grid"</code>, each row <code>role="row"</code> and each cell <code>role="gridcell"</code>.',
+
+    "dataGridPage.a11yIntro": "DataGrid follows the APG grid pattern, with roving focus.",
+
+    "dataGridPage.content2": "Give each cell button its own name: “Edit”, “Delete”.",
+
+    "dataGridPage.content1": "Name the grid with <code>aria-label</code>: “Scores per round”.",
+
+    "dataGridPage.dd.static.dont": "If the data is only read, the arrows add nothing: in a Table each cell is read with its header.",
+
+    "dataGridPage.dd.static.do": "The grid's controls share one stop: Tab skips the whole grid.",
+
+    "dataGridPage.dd.static.title": "Read-only data: a Table",
+
+    "dataGridPage.whenNot3": 'For a visual grid with no keyboard navigation: use <a href="/components/grid">Grid</a>.',
+
+    "dataGridPage.whenNot2": 'If rows have a hierarchy: use <a href="/components/treegrid">Treegrid</a>.',
+
+    "dataGridPage.whenNot1": 'For read-only data: use <a href="/components/table">Table</a>.',
+
+    "dataGridPage.when2": "For a grid of controls (chips, cards, links) that should take a single tab stop.",
+
+    "dataGridPage.when1": "For data that is edited or operated cell by cell.",
+
+    "dataGridPage.contract2": "<code>wrapCols</code> and <code>wrapRows</code> decide whether the arrows wrap to the other edge; both are <code>false</code> by default.",
+
+    "dataGridPage.contract1": "The keyboard model is hand-written and shared by both bindings; it uses no Zag machine.",
+    "dataGridPage.lede": 'DataGrid is a grid moved through cell by cell with the arrow keys: data that is edited, or a grid of controls taking a single tab stop instead of one per control. For read-only data, <a href="/components/table">Table</a> is simpler.',
+    "dataGridPage.dataTitle": "Data: the cell takes focus",
+    "dataGridPage.anatomyBody": "The grid, the row and the cell.",
     "dataGridPage.anatomyLabel": "DataGrid anatomy",
     "dataGridPage.anatomyPreviewLabel": "DataGrid, part by part",
-    "dataGridPage.dataBody": "Plain text cells: the focus stop is the cell itself.",
-    "dataGridPage.dataLabel": "Scores by round",
-    "dataGridPage.layoutTitle": "Grouped widgets",
-    "dataGridPage.layoutBody":
-      "Each cell holds its own button: the focus stop hands off to THAT element instead. The cell never competes with its own interactive content for the roving tabindex.",
-    "dataGridPage.layoutLabel": "Quick actions",
-    "dataGridPage.contractBody":
-      'No <code>@zag-js/*</code> machine of its own: same as <code>Treegrid</code>, the keyboard model is hand-rolled and pure, shared by both bindings. <code>wrapCols</code>/<code>wrapRows</code> control whether the arrows wrap at the grid\'s edge; both default to <code>false</code>.',
-    "dataGridPage.a11yBody":
-      'The root carries <code>role="grid"</code> with <code>aria-label</code> (required). Each row is <code>role="row"</code>, each cell <code>role="gridcell"</code>. Focus is roving: a single cell (or its interactive descendant) is the tab stop for the whole grid. <kbd class="sk-kbd">↑</kbd>/<kbd class="sk-kbd">↓</kbd>/<kbd class="sk-kbd">←</kbd>/<kbd class="sk-kbd">→</kbd> move between cells, <kbd class="sk-kbd">Home</kbd>/<kbd class="sk-kbd">End</kbd> within the row, <kbd class="sk-kbd">Ctrl</kbd>+<kbd class="sk-kbd">Home</kbd>/<kbd class="sk-kbd">End</kbd> jump to the start/end of the whole grid.',
+    "dataGridPage.dataBody": "Text cells moved through with the arrow keys, like a sheet that is reviewed or edited.",
+    "dataGridPage.layoutTitle": "Controls: one stop instead of many",
+    "dataGridPage.layoutBody": "Each cell has its button and focus goes to the button, not the cell. The whole grid takes a single tab stop.",
     "dataGridPage.testReact1":
       "Hands the roving stop to a cell's OWN interactive descendant, not the cell div.",
     "dataGridPage.testReact2":
@@ -82,10 +144,6 @@ export const dataGridMessages = {
     "demo.dataGrid.copy": "Copy",
     "demo.dataGrid.delete": "Delete",
     "demo.dataGrid.more": "More options",
-    "dataGridPage.showcaseTitle": "Showcases",
-    "dataGridPage.showcaseBody": "A data grid navigated with the arrow keys, and one with actions in its cells.",
-    "dataGridPage.guidelinesLede": "DataGrid is a table navigated cell by cell with the keyboard.",
-    "dataGridPage.guide.item1": "Use it when cells hold controls or are edited, and arrow-key movement helps.",
-    "dataGridPage.guide.item2": "For read-only data, a <a href=\"/components/table\">Table</a> is simpler and more accessible.",
+    "dataGridPage.guidelinesLede": "DataGrid saves tab stops when there are many cells to operate.",
   },
 } as const;

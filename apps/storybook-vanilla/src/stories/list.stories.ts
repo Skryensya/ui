@@ -7,12 +7,11 @@ import "@skryensya/core/components/canvas.css";
 import "@skryensya/core/components/list.css";
 import "@skryensya/core/patterns/icon.css";
 import * as demos from "@docs/demos/list";
-import { annotationDemoCss } from "@docs/demos/annotation";
-import { treeStory, withCss, type Meta, type StoryObj } from "../tree-story";
+import { treeStory, type Meta, type StoryObj } from "../tree-story";
 
 export default { title: "Components/Data/List", tags: ["autodocs"] } satisfies Meta;
 
-export const Anatomy: StoryObj = treeStory(demos.listAnatomyTree, { decorators: [withCss(annotationDemoCss)] });
+export const Anatomy: StoryObj = treeStory(demos.listAnatomyTree);
 export const Plain: StoryObj = treeStory(demos.listPlainTree);
 export const Titled: StoryObj = treeStory(demos.listTitledTree);
 export const Leading: StoryObj = treeStory(demos.listLeadingTree);
@@ -20,3 +19,7 @@ export const Trailing: StoryObj = treeStory(demos.listTrailingTree);
 export const Links: StoryObj = treeStory(demos.listLinksTree);
 export const Full: StoryObj = treeStory(demos.listFullTree);
 export const DontParagraphs: StoryObj = treeStory(demos.listDontParagraphsTree);
+export const DoSameShape: StoryObj = treeStory(demos.listDoSameShapeTree);
+export const DontMixedShape: StoryObj = treeStory(demos.listDontMixedShapeTree);
+export const DoComparableTrailing: StoryObj = treeStory(demos.listDoComparableTrailingTree);
+export const DontBuriedValues: StoryObj = treeStory(demos.listDontBuriedValuesTree);

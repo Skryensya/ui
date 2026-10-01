@@ -1,13 +1,32 @@
 ---
 import ComponentPageShell from "./ComponentPageShell.astro";
 import CodeBlock from "../CodeBlock.astro";
-import ComponentPreview from "../ComponentPreview.astro";
 import UsagePreview from "../UsagePreview.astro";
 import DoDont from "../DoDont.astro";
+import WhenToUse from "../WhenToUse.astro";
+import ContentRules from "../ContentRules.astro";
+import A11yNotes from "../A11yNotes.astro";
 import { annotationDemoCss } from "../../demos/annotation";
-import { iconAnatomyTree, iconSingleTree, iconSizeTree, iconTree } from "../../demos/icon";
-import { getLocale, useTranslations } from "../../i18n";
+import {
+  iconAnatomyTree,
+  iconDoSizeTree,
+  iconDoStatusTree,
+  iconDirectionExampleTree,
+  iconDoTextTree,
+  iconDoToneTree,
+  iconDontSizeTree,
+  iconDontStatusTree,
+  iconDontTextTree,
+  iconDontToneTree,
+  iconSingleTree,
+  iconSizesExampleTree,
+  iconStatusExampleTree,
+  iconTree,
+} from "../../demos/icon";
+import { getLocale, tList, useTranslations } from "../../i18n";
 import "@skryensya/core/components/annotation.css";
+/* Icon examples use small labelled cards to explain role names. */
+import "@skryensya/core/patterns/box.css";
 
 const t = useTranslations(getLocale(Astro.url));
 const explain = (option: string, values: readonly string[]) =>
@@ -65,7 +84,7 @@ const sizesCss = `/* another size? you re-declare the hook, like every
   title="Icon"
   description={t("iconPage.description")}
   contractId="icon"
-  testFiles={["packages/react/src/components/icon.test.tsx"]}}
+  testFiles={["packages/react/src/components/icon.test.tsx"]}
 >
   <Fragment slot="usage">
     <p class="lede" set:html={t("iconPage.lede")} />
@@ -79,10 +98,11 @@ const sizesCss = `/* another size? you re-declare the hook, like every
       stageMinBlockSize="7rem"
     />
 
-    <h3>{t("iconPage.showcaseTitle")}</h3>
-    <p set:html={t("iconPage.showcaseBody")} />
-    <UsagePreview tree={iconTree} title={t("iconPage.vocabularyTitle")} description={t("iconPage.vocabularyBody")} />
-    <UsagePreview tree={iconSizeTree} title={t("iconPage.sizeTitle")} description={t("iconPage.sizeBody")} />
+    <h3>{t("component.examplesTitle")}</h3>
+    <UsagePreview tree={iconTree(t)} title={t("iconPage.vocabularyTitle")} description={t("iconPage.vocabularyBody")} stageMinBlockSize="18rem" />
+    <UsagePreview tree={iconSizesExampleTree(t)} title={t("iconPage.sizeExamplesTitle")} description={t("iconPage.sizeExamplesBody")} stageMinBlockSize="18rem" />
+    <UsagePreview tree={iconStatusExampleTree(t)} title={t("iconPage.statusExamplesTitle")} description={t("iconPage.statusExamplesBody")} stageMinBlockSize="18rem" />
+    <UsagePreview tree={iconDirectionExampleTree(t)} title={t("iconPage.directionExamplesTitle")} description={t("iconPage.directionExamplesBody")} stageMinBlockSize="18rem" />
 
     <h3>{t("iconPage.reactTitle")}</h3>
     <p set:html={t("iconPage.reactBody1")} />
@@ -103,36 +123,36 @@ const sizesCss = `/* another size? you re-declare the hook, like every
 
     <h3>{t("component.anatomy")}</h3>
     <p set:html={t("iconPage.anatomyBody")} />
-    <ComponentPreview
-      tree={iconAnatomyTree(t)}
-      css={annotationDemoCss}
-      label={t("iconPage.anatomyPreviewLabel")}
-      screens={false}
-      hideSource
-      chrome={false}
-    />
+    <UsagePreview tree={iconAnatomyTree(t)} css={annotationDemoCss} label={t("iconPage.anatomyPreviewLabel")} bare />
   </Fragment>
 
   <Fragment slot="guidelines">
     <p class="lede" set:html={t("iconPage.guidelinesLede")} />
+    <WhenToUse use={tList(t, "iconPage.when")} avoid={tList(t, "iconPage.whenNot")} />
     <DoDont
-      title={t("iconPage.dd.decorative.title")}
-      do={{ tree: iconTree, caption: t("iconPage.dd.decorative.do") }}
-      dont={{ tree: iconSingleTree, caption: t("iconPage.dd.decorative.dont") }}
+      title={t("iconPage.dd.text.title")}
+      do={{ tree: iconDoTextTree(t), caption: t("iconPage.dd.text.do") }}
+      dont={{ tree: iconDontTextTree, caption: t("iconPage.dd.text.dont") }}
     />
     <DoDont
       title={t("iconPage.dd.size.title")}
-      do={{ tree: iconSizeTree, caption: t("iconPage.dd.size.do") }}
-      dont={{ tree: iconTree, caption: t("iconPage.dd.size.dont") }}
+      do={{ tree: iconDoSizeTree(t), caption: t("iconPage.dd.size.do") }}
+      dont={{ tree: iconDontSizeTree(t), caption: t("iconPage.dd.size.dont") }}
     />
+    <DoDont
+      title={t("iconPage.dd.status.title")}
+      do={{ tree: iconDoStatusTree(t), caption: t("iconPage.dd.status.do") }}
+      dont={{ tree: iconDontStatusTree, caption: t("iconPage.dd.status.dont") }}
+    />
+    <DoDont
+      title={t("iconPage.dd.tone.title")}
+      do={{ tree: iconDoToneTree(t), caption: t("iconPage.dd.tone.do") }}
+      dont={{ tree: iconDontToneTree(t), caption: t("iconPage.dd.tone.dont") }}
+    />
+    <ContentRules items={tList(t, "iconPage.content")} />
   </Fragment>
 
   <Fragment slot="a11y">
-    <ul>
-      <li set:html={t("iconPage.a11yItem1")} />
-      <li set:html={t("iconPage.a11yItem2")} />
-      <li set:html={t("iconPage.a11yItem3")} />
-      <li set:html={t("iconPage.a11yItem4")} />
-    </ul>
+    <A11yNotes intro={t("iconPage.a11yIntro")} does={tList(t, "iconPage.a11yDoes")} yours={tList(t, "iconPage.a11yYours")} />
   </Fragment>
 </ComponentPageShell>

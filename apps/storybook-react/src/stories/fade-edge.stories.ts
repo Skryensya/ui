@@ -12,16 +12,22 @@ import "@skryensya/core/components/typography.css";
 import "@skryensya/core/patterns/box.css";
 import "@skryensya/core/patterns/layout.css";
 import * as demos from "@docs/demos/fade-edge";
-import { annotationDemoCss } from "@docs/demos/annotation";
-import { treeStory, withCss, type Meta, type StoryObj } from "../tree-story";
+import { treeStory, type Meta, type StoryObj } from "../tree-story";
 
 export default { title: "Components/Layout/FadeEdge", tags: ["autodocs"] } satisfies Meta;
 
-export const Anatomy: StoryObj = treeStory(demos.fadeEdgeAnatomyTree, { decorators: [withCss(annotationDemoCss)] });
-export const FadeTop: StoryObj = treeStory(() => demos.fadeTopTree);
-export const FadeLeft: StoryObj = treeStory(() => demos.fadeLeftTree);
-export const FadeIntensity: StoryObj = treeStory(() => demos.fadeIntensityTree);
+export const Anatomy: StoryObj = treeStory(demos.fadeEdgeAnatomyTree);
+export const FadeHorizontalAgenda: StoryObj = treeStory(demos.fadeHorizontalAgendaTree);
 export const FadeBottom: StoryObj = treeStory(() => demos.fadeBottomTree);
+export const FadeTop: StoryObj = treeStory(() => demos.fadeTopTree);
 export const FadeRight: StoryObj = treeStory(() => demos.fadeRightTree);
+export const FadeLeft: StoryObj = treeStory(() => demos.fadeLeftTree);
 export const FadeColor: StoryObj = treeStory(() => demos.fadeColorTree);
+export const FadeIntensity: StoryObj = treeStory(() => demos.fadeIntensityTree);
 export const FadeScrollAware: StoryObj = treeStory(() => demos.fadeScrollAwareTree);
+export const FadeDoFits: StoryObj = treeStory(() => demos.fadeDoFitsTree);
+export const FadeDontFits: StoryObj = treeStory(() => demos.fadeDontFitsTree);
+export const FadeDirectionGuide: StoryObj = treeStory(() => demos.fadeDirectionGuideTree);
+export const FadeDontDirection: StoryObj = treeStory(() => demos.fadeDontDirectionTree);
+export const FadeDontMode: StoryObj = treeStory(() => demos.fadeDontModeTree);
+export const FadeDontNestedScroll: StoryObj = treeStory(() => demos.fadeDontNestedScrollTree);

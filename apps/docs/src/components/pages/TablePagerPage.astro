@@ -7,9 +7,11 @@ import "@skryensya/core/patterns/table-pager.css";
 import "@skryensya/core/components/annotation.css";
 import ComponentPageShell from "./ComponentPageShell.astro";
 import CodeBlock from "../CodeBlock.astro";
-import ComponentPreview from "../ComponentPreview.astro";
 import UsagePreview from "../UsagePreview.astro";
 import DoDont from "../DoDont.astro";
+import WhenToUse from "../WhenToUse.astro";
+import ContentRules from "../ContentRules.astro";
+import A11yNotes from "../A11yNotes.astro";
 import {
   tablePagerAnatomyTree,
   tablePagerDontDetachedTree,
@@ -17,7 +19,7 @@ import {
   tablePagerTree,
 } from "../../demos/table-pager";
 import { annotationDemoCss } from "../../demos/annotation";
-import { getLocale, useTranslations } from "../../i18n";
+import { getLocale, tList, useTranslations } from "../../i18n";
 
 const t = useTranslations(getLocale(Astro.url));
 const styles = `@import "@skryensya/core/components/table.css";
@@ -28,53 +30,41 @@ const styles = `@import "@skryensya/core/components/table.css";
 <ComponentPageShell
   title="TablePager"
   description={t("tablePager.description")}
-  badge={t("tablePager.betaBadge")}
   contractId="table-pager"
   testFiles={["packages/react/src/components/pagination.test.tsx", "packages/vanilla/src/components/table-pager.test.ts"]}
 >
   <Fragment slot="usage">
     <p class="lede" set:html={t("tablePager.lede")} />
 
-    <h3>{t("tablePager.showcaseTitle")}</h3>
-    <p set:html={t("tablePager.showcaseBody")} />
+    <h3>{t("component.examplesTitle")}</h3>
+    <UsagePreview tree={tablePagerTree(t)} title={t("tablePager.fullTitle")} description={t("tablePager.fullBody")} />
+    <UsagePreview tree={tablePagerMinimalTree(t)} title={t("tablePager.minimalTitle")} description={t("tablePager.minimalBody")} />
 
-    <h3>{t("tablePager.fullTitle")}</h3>
-    <p set:html={t("tablePager.fullBody")} />
-    <UsagePreview tree={tablePagerTree(t)} />
-
-    <h3>{t("tablePager.minimalTitle")}</h3>
-    <p set:html={t("tablePager.minimalBody")} />
-    <UsagePreview tree={tablePagerMinimalTree(t)} />
-
-    <h3>{t("tablePager.eventsTitle")}</h3>
-    <p set:html={t("tablePager.eventsBody")} />
+    <h3>{t("component.contractNotesTitle")}</h3>
+    <ul>
+      {tList(t, "tablePager.contract").map((item) => <li set:html={item} />)}
+    </ul>
 
     <h3>{t("component.anatomy")}</h3>
     <p set:html={t("tablePager.anatomyBody")} />
-    <ComponentPreview
+    <UsagePreview
       tree={tablePagerAnatomyTree(t)}
       css={annotationDemoCss}
       label={t("tablePager.anatomyPreviewLabel")}
-      screens={false}
-      hideSource
-      chrome={false}
+      bare
     />
   </Fragment>
 
   <Fragment slot="guidelines">
     <p class="lede" set:html={t("tablePager.guidelinesLede")} />
-    <h3>{t("tablePager.whenTitle")}</h3>
-    <ul>
-      <li set:html={t("tablePager.whenItem1")} />
-      <li set:html={t("tablePager.whenItem2")} />
-      <li set:html={t("tablePager.whenItem3")} />
-    </ul>
+    <WhenToUse use={tList(t, "tablePager.when")} avoid={tList(t, "tablePager.whenNot")} />
     <DoDont
       canvas
       title={t("tablePager.dd.attached.title")}
       do={{ tree: tablePagerMinimalTree(t), caption: t("tablePager.dd.attached.do") }}
       dont={{ tree: tablePagerDontDetachedTree(t), caption: t("tablePager.dd.attached.dont") }}
     />
+    <ContentRules items={tList(t, "tablePager.content")} />
   </Fragment>
 
   <Fragment slot="install">
@@ -82,6 +72,14 @@ const styles = `@import "@skryensya/core/components/table.css";
   </Fragment>
 
   <Fragment slot="a11y">
-    <p set:html={t("tablePager.a11yBody")} />
+    <A11yNotes
+      intro={t("tablePager.a11yIntro")}
+      does={tList(t, "tablePager.a11yDoes")}
+      yours={tList(t, "tablePager.a11yYours")}
+      keys={[
+        { keys: ["Tab", "Shift+Tab"], action: t("tablePager.key.tab") },
+        { keys: ["Enter"], action: t("tablePager.key.enter") },
+      ]}
+    />
   </Fragment>
 </ComponentPageShell>

@@ -64,7 +64,7 @@ describe("the surface", () => {
   it("exposes exactly the declared inventory, in workflow order", async () => {
     const { tools: listed } = await client.listTools();
     /* The declared inventory, then the Maker's two, which only the local stdio server offers. */
-    expect(listed.map((tool) => tool.name)).toEqual([...toolNames, "maker_projects", "maker_read", "maker_apply", "maker_publish"]);
+    expect(listed.map((tool) => tool.name)).toEqual([...toolNames, "maker_projects", "maker_read", "maker_context", "maker_try", "maker_apply", "maker_publish"]);
     expect(toolNames).toEqual(["discover_ui", "get_examples", "get_contract", "get_contracts", "validate_ui", "get_catalog"]);
   });
 

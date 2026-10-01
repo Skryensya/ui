@@ -5,104 +5,106 @@ import "@skryensya/core/components/breadcrumb.css";
 import "@skryensya/core/components/annotation.css";
 import ComponentPageShell from "./ComponentPageShell.astro";
 import CodeBlock from "../CodeBlock.astro";
-import ComponentPreview from "../ComponentPreview.astro";
+import UsagePreview from "../UsagePreview.astro";
 import DoDont from "../DoDont.astro";
+import WhenToUse from "../WhenToUse.astro";
+import ContentRules from "../ContentRules.astro";
+import A11yNotes from "../A11yNotes.astro";
 import {
   breadcrumbCollapseTree,
   breadcrumbIconTree,
   breadcrumbLongTree,
   breadcrumbMultiTree,
   breadcrumbTwoTree,
+  breadcrumbDontGenericTree,
+  breadcrumbHistoryTree,
+  breadcrumbMissingCurrentTree,
 } from "../../demos/breadcrumb";
 /* THE SAME TREE the Annotation page draws, not a copy of it: that page uses this drawing to teach
    `match: "all"`, and this one uses it as Breadcrumb's anatomy. One diagram, so the two cannot
    drift into disagreeing about what a crumb is called. */
 import { annotationPluralCss, annotationPluralTree } from "../../demos/annotation";
-import { getLocale, useTranslations } from "../../i18n";
+import { getLocale, tList, useTranslations } from "../../i18n";
 
 const t = useTranslations(getLocale(Astro.url));
 
 const install = `pnpm add @skryensya/core @skryensya/react`;
 const styles = `@import "@skryensya/core/components/breadcrumb.css";`;
+const storybookTitle = "Components/Navigation/Breadcrumb";
 ---
 
 <ComponentPageShell
   title="Breadcrumb"
   description={t("breadcrumb.description")}
-  badge={t("breadcrumb.betaBadge")}
   contractId="breadcrumb"
-  testFiles={["packages/react/src/components/breadcrumb.test.tsx", "packages/vanilla/src/components/breadcrumb.test.ts"]}}
+  testFiles={["packages/react/src/components/breadcrumb.test.tsx", "packages/vanilla/src/components/breadcrumb.test.ts"]}
 >
   <Fragment slot="usage">
-    <p class="lede" set:html={t("breadcrumb.description")} />
+    <p class="lede" set:html={t("breadcrumb.lede")} />
 
-    <h3>{t("breadcrumb.showcaseTitle")}</h3>
-    <p set:html={t("breadcrumb.showcaseBody")} />
-    <h3>{t("breadcrumb.examplesTitle")}</h3>
-
-    <h4>{t("breadcrumb.twoTitle")}</h4>
-    <p set:html={t("breadcrumb.twoBody")} />
-    <ComponentPreview tree={breadcrumbTwoTree(t)} label={t("breadcrumb.twoLabel")} viewport="auto" />
-
-    <h4>{t("breadcrumb.multiTitle")}</h4>
-    <p set:html={t("breadcrumb.multiBody")} />
-    <ComponentPreview
-      tree={breadcrumbMultiTree(t, {
-        projects: "/proyectos",
-        kit: "/proyectos/kit-digital",
-      })}
-      label={t("breadcrumb.multiLabel")}
-      viewport="auto"
+    <h3>{t("component.examplesTitle")}</h3>
+    <UsagePreview tree={breadcrumbTwoTree(t)} title={t("breadcrumb.twoTitle")} description={t("breadcrumb.twoBody")} storybookTitle={storybookTitle} storybookStory="Two" />
+    <UsagePreview
+      tree={breadcrumbMultiTree(t, { projects: "/proyectos", kit: "/proyectos/kit-digital" })}
+      title={t("breadcrumb.multiTitle")}
+      description={t("breadcrumb.multiBody")}
+      storybookTitle={storybookTitle}
+      storybookStory="Multi"
     />
-
-    <h4>{t("breadcrumb.iconTitle")}</h4>
-    <p set:html={t("breadcrumb.iconBody")} />
-    <ComponentPreview tree={breadcrumbIconTree(t, "/proyectos")} label={t("breadcrumb.iconLabel")} viewport="auto" />
-
-    <h4>{t("breadcrumb.longTitle")}</h4>
-    <p set:html={t("breadcrumb.longBody")} />
+    <UsagePreview tree={breadcrumbIconTree(t, "/proyectos")} title={t("breadcrumb.iconTitle")} description={t("breadcrumb.iconBody")} storybookTitle={storybookTitle} storybookStory="Icon" />
+    <UsagePreview tree={breadcrumbLongTree(t, "/proyectos")} title={t("breadcrumb.longTitle")} description={t("breadcrumb.longBody")} storybookTitle={storybookTitle} storybookStory="Long" />
     <ul>
       <li set:html={t("breadcrumb.longItem1")} />
       <li set:html={t("breadcrumb.longItem2")} />
     </ul>
-    <ComponentPreview tree={breadcrumbLongTree(t, "/proyectos")} label={t("breadcrumb.longLabel")} viewport="auto" />
-
-    <h4>{t("breadcrumb.collapseTitle")}</h4>
-    <p set:html={t("breadcrumb.collapseBody")} />
-    <ComponentPreview
+    <UsagePreview
       tree={breadcrumbCollapseTree(t, {
         documents: "/documentos",
         projects: "/documentos/proyectos",
         designSystem: "/documentos/sistema-de-diseno",
         components: "/documentos/sistema-de-diseno/components",
       })}
-      label={t("breadcrumb.collapseLabel")}
-      viewport="auto"
+      title={t("breadcrumb.collapseTitle")}
+      description={t("breadcrumb.collapseBody")}
+      storybookTitle={storybookTitle}
+      storybookStory="Collapse"
     />
 
     <h3>{t("component.contractNotesTitle")}</h3>
-    <p set:html={t("breadcrumb.contractBody")} />
+    <ul>
+      {tList(t, "breadcrumb.contract").map((item) => <li set:html={item} />)}
+    </ul>
 
     <h3>{t("component.anatomy")}</h3>
     <p set:html={t("breadcrumb.anatomyBody")} />
-    <ComponentPreview
-      tree={annotationPluralTree(t)}
-      css={annotationPluralCss}
-      label={t("annotation.pluralLabel")}
-      screens={false}
-      hideSource
-      chrome={false}
-    />
+    <UsagePreview tree={annotationPluralTree(t)} css={annotationPluralCss} label={t("annotation.pluralLabel")} bare />
   </Fragment>
 
   <Fragment slot="guidelines">
     <p class="lede" set:html={t("breadcrumb.guidelinesLede")} />
+    <WhenToUse use={tList(t, "breadcrumb.when")} avoid={tList(t, "breadcrumb.whenNot")} />
     <DoDont
       canvas
       title={t("breadcrumb.dd.collapse.title")}
-      do={{ tree: breadcrumbCollapseTree(t, { documents: "#", projects: "#", designSystem: "#", components: "#" }), caption: t("breadcrumb.dd.collapse.do") }}
-      dont={{ tree: breadcrumbLongTree(t, "#"), caption: t("breadcrumb.dd.collapse.dont") }}
+      do={{ tree: { ...breadcrumbCollapseTree(t, { documents: "#", projects: "#", designSystem: "#", components: "#" }), attrs: { style: "inline-size: 22rem;" } }, caption: t("breadcrumb.dd.collapse.do") }}
+      dont={{ tree: { ...breadcrumbLongTree(t, "#"), attrs: { style: "inline-size: 22rem;" } }, caption: t("breadcrumb.dd.collapse.dont") }}
     />
+    <DoDont
+      title={t("breadcrumb.dd.labels.title")}
+      do={{ tree: breadcrumbMultiTree(t), caption: t("breadcrumb.dd.labels.do") }}
+      dont={{ tree: breadcrumbDontGenericTree(t), caption: t("breadcrumb.dd.labels.dont") }}
+    />
+    <DoDont
+      title={t("breadcrumb.dd.hierarchy.title")}
+      do={{ tree: breadcrumbMultiTree(t), caption: t("breadcrumb.dd.hierarchy.do") }}
+      dont={{ tree: breadcrumbHistoryTree(t), caption: t("breadcrumb.dd.hierarchy.dont") }}
+    />
+    <DoDont
+      title={t("breadcrumb.dd.current.title")}
+      do={{ tree: breadcrumbMultiTree(t), caption: t("breadcrumb.dd.current.do") }}
+      dont={{ tree: breadcrumbMissingCurrentTree(t), caption: t("breadcrumb.dd.current.dont") }}
+    />
+    <ContentRules items={tList(t, "breadcrumb.content")} />
   </Fragment>
 
   <Fragment slot="install">
@@ -111,6 +113,15 @@ const styles = `@import "@skryensya/core/components/breadcrumb.css";`;
   </Fragment>
 
   <Fragment slot="a11y">
-    <p set:html={t("breadcrumb.a11yBody")} />
+    <A11yNotes
+      intro={t("breadcrumb.a11yIntro")}
+      does={tList(t, "breadcrumb.a11yDoes")}
+      yours={tList(t, "breadcrumb.a11yYours")}
+      keysNote={t("breadcrumb.a11yKeysNote")}
+      keys={[
+        { keys: ["Tab", "Shift+Tab"], action: t("breadcrumb.a11yKeyTab") },
+        { keys: ["Enter"], action: t("breadcrumb.a11yKeyEnter") },
+      ]}
+    />
   </Fragment>
 </ComponentPageShell>

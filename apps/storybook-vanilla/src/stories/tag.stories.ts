@@ -6,12 +6,11 @@ import "@skryensya/core/components/canvas.css";
 import "@skryensya/core/components/tag.css";
 import "@skryensya/core/patterns/layout.css";
 import * as demos from "@docs/demos/tag";
-import { annotationDemoCss } from "@docs/demos/annotation";
-import { treeStory, withCss, type Meta, type StoryObj } from "../tree-story";
+import { treeStory, type Meta, type StoryObj } from "../tree-story";
 
 export default { title: "Components/Content/Tag", tags: ["autodocs"] } satisfies Meta;
 
-export const Anatomy: StoryObj = treeStory(demos.tagAnatomyTree, { decorators: [withCss(annotationDemoCss)] });
+export const Anatomy: StoryObj = treeStory(demos.tagAnatomyTree);
 export const Simple: StoryObj = treeStory(demos.tagSimpleTree);
 export const Tones: StoryObj = treeStory(demos.tagTonesTree);
 export const Links: StoryObj = treeStory(demos.tagLinksTree);

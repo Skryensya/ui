@@ -7,19 +7,34 @@ import "@skryensya/core/components/tag.css";
 import "@skryensya/core/components/typography.css";
 import ComponentPageShell from "./ComponentPageShell.astro";
 import CodeBlock from "../CodeBlock.astro";
-import ComponentPreview from "../ComponentPreview.astro";
 import UsagePreview from "../UsagePreview.astro";
+import DoDont from "../DoDont.astro";
+import WhenToUse from "../WhenToUse.astro";
+import ContentRules from "../ContentRules.astro";
+import A11yNotes from "../A11yNotes.astro";
 import {
   descriptionListAnatomyTree,
   descriptionListColumnsTree,
   descriptionListDividedTree,
   descriptionListRichTree,
   descriptionListTree,
+  descriptionListDontManyTree,
+  descriptionListLongTermsTree,
+  descriptionListDontLongTermsTree,
+  descriptionListUnitsTree,
+  descriptionListDontUnitsTree,
+  descriptionListMissingTree,
+  descriptionListDontMissingTree,
+  descriptionListShortTermsTree,
+  descriptionListDontLongLabelTree,
+  descriptionListLinkedValueTree,
+  descriptionListDontLinkedValueTree,
 } from "../../demos/description-list";
 import { annotationDemoCss } from "../../demos/annotation";
-import { getLocale, useTranslations } from "../../i18n";
+import { getLocale, tList, useTranslations } from "../../i18n";
 
 const t = useTranslations(getLocale(Astro.url));
+const storybookTitle = "Components/Data/DescriptionList";
 const install = `pnpm add @skryensya/core @skryensya/react`;
 const styles = `@import "@skryensya/core/components/description-list.css";`;
 
@@ -56,58 +71,69 @@ const explain = (option: string, values: readonly string[]) =>
       labels={{ false: t("descriptionListPage.prop.dividers.falseLabel"), true: t("descriptionListPage.prop.dividers.trueLabel") }}
     />
 
-    <h3>{t("descriptionListPage.showcaseTitle")}</h3>
-    <p set:html={t("descriptionListPage.showcaseBody")} />
-    <UsagePreview tree={descriptionListTree(t)} />
-
-    <h3>{t("descriptionListPage.groupTitle")}</h3>
-    <p set:html={t("descriptionListPage.groupBody")} />
-
-    <h3>{t("descriptionListPage.columnsTitle")}</h3>
-    <p set:html={t("descriptionListPage.columnsBody")} />
-    <UsagePreview tree={descriptionListColumnsTree(t)} />
-
-    <h3>{t("descriptionListPage.dividedTitle")}</h3>
-    <p set:html={t("descriptionListPage.dividedBody")} />
-    <UsagePreview tree={descriptionListDividedTree(t)} />
-
-    <h3>{t("descriptionListPage.richTitle")}</h3>
-    <p set:html={t("descriptionListPage.richBody")} />
-    <UsagePreview tree={descriptionListRichTree(t)} />
+    <h3>{t("component.examplesTitle")}</h3>
+    <UsagePreview tree={descriptionListTree(t)} title={t("descriptionListPage.basicTitle")} description={t("descriptionListPage.basicBody")} storybookTitle={storybookTitle} storybookStory="Default" />
+    <UsagePreview tree={descriptionListColumnsTree(t)} title={t("descriptionListPage.columnsTitle")} description={t("descriptionListPage.columnsBody")} storybookTitle={storybookTitle} storybookStory="Columns" />
+    <UsagePreview tree={descriptionListDividedTree(t)} title={t("descriptionListPage.dividedTitle")} description={t("descriptionListPage.dividedBody")} storybookTitle={storybookTitle} storybookStory="Divided" />
+    <UsagePreview tree={descriptionListRichTree(t)} title={t("descriptionListPage.richTitle")} description={t("descriptionListPage.richBody")} storybookTitle={storybookTitle} storybookStory="Rich" />
 
     <h3>{t("component.contractNotesTitle")}</h3>
     <ul>
-      <li set:html={t("descriptionListPage.contractItem1")} />
-      <li set:html={t("descriptionListPage.contractItem2")} />
-      <li set:html={t("descriptionListPage.contractItem3")} />
-      <li set:html={t("descriptionListPage.contractItem4")} />
+      {tList(t, "descriptionListPage.contract").map((item) => <li set:html={item} />)}
     </ul>
 
     <h3>{t("component.anatomy")}</h3>
     <p set:html={t("descriptionListPage.anatomyBody")} />
-    <ComponentPreview
+    <UsagePreview
       tree={descriptionListAnatomyTree(t)}
       css={annotationDemoCss}
       label={t("descriptionListPage.anatomyPreviewLabel")}
-      screens={false}
-      hideSource
-      chrome={false}
+      bare
     />
   </Fragment>
 
   <Fragment slot="guidelines">
     <p class="lede" set:html={t("descriptionListPage.guidelinesLede")} />
-    <h3>{t("descriptionListPage.whenTitle")}</h3>
-    <ul>
-      <li set:html={t("descriptionListPage.whenItem1")} />
-      <li set:html={t("descriptionListPage.whenItem2")} />
-      <li set:html={t("descriptionListPage.whenItem3")} />
-      <li set:html={t("descriptionListPage.whenItem4")} />
-    </ul>
+    <WhenToUse use={tList(t, "descriptionListPage.when")} avoid={tList(t, "descriptionListPage.whenNot")} />
+    <DoDont
+      title={t("descriptionListPage.dd.one.title")}
+      do={{ tree: descriptionListTree(t), caption: t("descriptionListPage.dd.one.do") }}
+      dont={{ tree: descriptionListDontManyTree(t), caption: t("descriptionListPage.dd.one.dont") }}
+    />
+    <DoDont
+      title={t("descriptionListPage.dd.terms.title")}
+      do={{ tree: descriptionListLongTermsTree(t), caption: t("descriptionListPage.dd.terms.do") }}
+      dont={{ tree: descriptionListDontLongTermsTree(t), caption: t("descriptionListPage.dd.terms.dont") }}
+    />
+    <DoDont
+      title={t("descriptionListPage.dd.units.title")}
+      do={{ tree: descriptionListUnitsTree(t), caption: t("descriptionListPage.dd.units.do") }}
+      dont={{ tree: descriptionListDontUnitsTree(t), caption: t("descriptionListPage.dd.units.dont") }}
+    />
+    <DoDont
+      title={t("descriptionListPage.dd.missing.title")}
+      do={{ tree: descriptionListMissingTree(t), caption: t("descriptionListPage.dd.missing.do") }}
+      dont={{ tree: descriptionListDontMissingTree(t), caption: t("descriptionListPage.dd.missing.dont") }}
+    />
+    <DoDont
+      title={t("descriptionListPage.dd.labels.title")}
+      do={{ tree: descriptionListShortTermsTree(t), caption: t("descriptionListPage.dd.labels.do") }}
+      dont={{ tree: descriptionListDontLongLabelTree(t), caption: t("descriptionListPage.dd.labels.dont") }}
+    />
+    <DoDont
+      title={t("descriptionListPage.dd.links.title")}
+      do={{ tree: descriptionListLinkedValueTree(t), caption: t("descriptionListPage.dd.links.do") }}
+      dont={{ tree: descriptionListDontLinkedValueTree(t), caption: t("descriptionListPage.dd.links.dont") }}
+    />
+    <ContentRules items={tList(t, "descriptionListPage.content")} />
   </Fragment>
 
   <Fragment slot="install">
     <CodeBlock code={install} label="terminal" />
     <CodeBlock code={styles} label="CSS" />
+  </Fragment>
+
+  <Fragment slot="a11y">
+    <A11yNotes intro={t("descriptionListPage.a11yIntro")} does={tList(t, "descriptionListPage.a11yDoes")} yours={tList(t, "descriptionListPage.a11yYours")} />
   </Fragment>
 </ComponentPageShell>

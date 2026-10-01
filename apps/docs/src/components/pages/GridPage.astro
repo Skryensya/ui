@@ -5,10 +5,21 @@ import { annotationDemoCss } from "../../demos/annotation";
 import { gridAnatomyTree } from "../../demos/layout-anatomy";
 import ComponentPageShell from "./ComponentPageShell.astro";
 import CodeBlock from "../CodeBlock.astro";
-import ComponentPreview from "../ComponentPreview.astro";
 import UsagePreview from "../UsagePreview.astro";
+import DoDont from "../DoDont.astro";
+import WhenToUse from "../WhenToUse.astro";
+import A11yNotes from "../A11yNotes.astro";
+import {
+  gridDoSequenceTree,
+  gridDontButtonsTree,
+  gridDontDataCardsTree,
+  gridDontSequenceTree,
+  gridDontStackCardsTree,
+  inlineButtonsTree,
+} from "../../demos/layout-guide";
 import { gridMulticolTree, gridResponsiveTree, gridTree, gridScaleSpecimenTree } from "../../demos/layout";
-import { getLocale, useTranslations } from "../../i18n";
+import { tableTree } from "../../demos/table";
+import { getLocale, tList, useTranslations } from "../../i18n";
 import { variantsTree } from "../../demos/variants";
 
 const install = `pnpm add @skryensya/core @skryensya/react`;
@@ -82,7 +93,6 @@ const explain = (option: string, values: readonly string[]) =>
 <ComponentPageShell
   title="Grid"
   description={t("grid.description")}
-  badge={t("grid.betaBadge")}
   contractId="layout"
   tests={[
     {
@@ -112,35 +122,18 @@ const explain = (option: string, values: readonly string[]) =>
       stageMinBlockSize="14rem"
     />
 
-    <h3>{t("grid.showcaseTitle")}</h3>
-    <p set:html={t("grid.showcaseBody")} />
-    <UsagePreview tree={gridTree(t)} />
-    <h3>{t("grid.multicolTitle")}</h3>
-    <p set:html={t("grid.multicolBody1")} />
-    <p set:html={t("grid.multicolBody2")} />
+    <h3>{t("component.examplesTitle")}</h3>
+    <UsagePreview tree={gridTree(t)} title={t("grid.basicTitle")} description={t("grid.basicBody")} />
+    <UsagePreview tree={gridMulticolTree(t)} title={t("grid.multicolTitle")} description={t("grid.multicolBody1")} />
     <CodeBlock code={multicolCss} label="patterns/layout.css" />
-    <UsagePreview tree={gridMulticolTree(t)} />
-    <p set:html={t("grid.multicolBody3")} />
-
-    <h3>{t("grid.responsiveTitle")}</h3>
-    <p set:html={t("grid.responsiveBody1")} />
-    <p set:html={t("grid.responsiveBody2")} />
+    <UsagePreview tree={gridResponsiveTree(t)} title={t("grid.responsiveTitle")} description={t("grid.responsiveBody1")} />
     <CodeBlock code={responsiveCss} label="patterns/layout.css" />
-    <UsagePreview tree={gridResponsiveTree(t)} />
-
-    <h3>{t("grid.htmlTitle")}</h3>
-    <p set:html={t("grid.htmlBody")} />
-    <p set:html={t("grid.reactBody")} />
-    <p set:html={t("component.reactNote")} />
 
     <h3>{t("component.contractNotesTitle")}</h3>
     <ul>
-      <li set:html={t("grid.contractItem1")} />
-      <li set:html={t("grid.contractItem2")} />
-      <li set:html={t("grid.contractItem3")} />
-      <li set:html={t("grid.contractItem4")} />
-      <li set:html={t("grid.contractItem5")} />
+      {tList(t, "grid.contract").map((item) => <li set:html={item} />)}
     </ul>
+    <p set:html={t("component.reactNote")} />
 
     <UsagePreview
       tree={variantsTree(gridScaleSpecimenTree(t), [{ label: "none", options: { gap: "none" } }, { label: "xs", options: { gap: "xs" } }, { label: "sm", options: { gap: "sm" } }, { label: "md", options: { gap: "md" } }, { label: "lg", options: { gap: "lg" } }, { label: "xl", options: { gap: "xl" } }], [], "3")}
@@ -150,26 +143,43 @@ const explain = (option: string, values: readonly string[]) =>
 
     <h3>{t("component.anatomy")}</h3>
     <p set:html={t("grid.anatomyBody")} />
-    <ComponentPreview
-      tree={gridAnatomyTree(t)}
-      css={annotationDemoCss}
-      label={t("grid.anatomyPreviewLabel")}
-      screens={false}
-      hideSource
-      chrome={false}
-    />
+    <UsagePreview tree={gridAnatomyTree(t)} css={annotationDemoCss} label={t("grid.anatomyPreviewLabel")} bare />
   </Fragment>
 
   <Fragment slot="guidelines">
     <p class="lede" set:html={t("grid.guidelinesLede")} />
-    <ul>
-      <li set:html={t("grid.guide.use1")} />
-      <li set:html={t("grid.guide.use2")} />
-      <li set:html={t("grid.guide.avoid1")} />
-    </ul>
+    <WhenToUse use={tList(t, "grid.when")} avoid={tList(t, "grid.whenNot")} />
+    <DoDont
+      canvas
+      title={t("grid.dd.cards.title")}
+      do={{ tree: gridTree(t), caption: t("grid.dd.cards.do") }}
+      dont={{ tree: gridDontStackCardsTree(t), caption: t("grid.dd.cards.dont") }}
+    />
+    <DoDont
+      canvas
+      title={t("grid.dd.data.title")}
+      do={{ tree: tableTree(t), caption: t("grid.dd.data.do") }}
+      dont={{ tree: gridDontDataCardsTree(t), caption: t("grid.dd.data.dont") }}
+    />
+    <DoDont
+      canvas
+      title={t("grid.dd.sequence.title")}
+      do={{ tree: gridDoSequenceTree(t), caption: t("grid.dd.sequence.do") }}
+      dont={{ tree: gridDontSequenceTree(t), caption: t("grid.dd.sequence.dont") }}
+    />
+    <DoDont
+      canvas
+      title={t("grid.dd.buttons.title")}
+      do={{ tree: inlineButtonsTree(t), caption: t("grid.dd.buttons.do") }}
+      dont={{ tree: gridDontButtonsTree(t), caption: t("grid.dd.buttons.dont") }}
+    />
   </Fragment>
 
   <Fragment slot="install">
     <CodeBlock code={install} label="terminal" />
+  </Fragment>
+
+  <Fragment slot="a11y">
+    <A11yNotes intro={t("grid.a11yIntro")} does={tList(t, "grid.a11yDoes")} yours={tList(t, "grid.a11yYours")} />
   </Fragment>
 </ComponentPageShell>

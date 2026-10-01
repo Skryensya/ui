@@ -1,56 +1,101 @@
 export const linkMessages = {
   es: {
+    "demo.link.dontAfter": ".",
+    "demo.link.dontLink": "aquí",
+    "demo.link.dontBefore": "Para ver los precios de cada plan, haz clic ",
+    "demo.link.doAfter": " antes de elegir.",
+    "demo.link.doLink": "precios de cada plan",
+    "demo.link.doBefore": "Revisa los ",
     "linkPage.anatomyLabel": "Anatomía de Link",
     "linkPage.anatomyPreviewLabel": "Link, parte por parte",
-    "linkPage.anatomyBody": "Una sola parte, y sólo tiene sentido dentro de una frase: el párrafo es <code>sk-text</code>, el enlace dentro de él es <code>sk-link</code>.",
+    "linkPage.anatomyBody": "Una sola parte, y solo tiene sentido dentro de una frase: el párrafo es <code>sk-text</code>, el enlace dentro de él es <code>sk-link</code>.",
     "demo.link.before": "Un párrafo con un ",
     "demo.link.neutral": "enlace del color del texto",
     "demo.link.middle": " y otro ",
     "demo.link.accent": "de color acento",
     "demo.link.after": ", los dos con subrayado permanente.",
+    "demo.link.targetBefore": "Lee la ",
+    "demo.link.targetLink": "guía de migración",
+    "demo.link.targetAfter": " antes de actualizar.",
+    "demo.link.wholeSentence": "Lee la guía de migración antes de actualizar.",
+    "demo.link.externalReport": "Informe anual",
+    "demo.link.newTab": "Se abre en otra pestaña",
+    "demo.link.saveChanges": "Guardar cambios",
 
-    "linkPage.description": "Link: un enlace de texto, siempre subrayado, el único tratamiento que WCAG 1.4.1 permite.",
-    "linkPage.lede":
-      'Link conserva la semántica nativa de <code>&lt;a&gt;</code>: úsalo para navegar y proporciona un <code>href</code> válido. Es un <strong>enlace de texto</strong> con subrayado permanente, el único tratamiento que WCAG 1.4.1 permite en prosa. El hover usa el state layer (<code>sk-interactive</code>), no un color inventado por el componente.',
-    "linkPage.tileTitle": "Link de superficie: TileLink",
-    "linkPage.tileBody1":
-      "Cuando toda una superficie es un único destino, usa <code>TileLink</code>. También renderiza un <code>&lt;a&gt;</code>, pero no es <code>sk-link</code>: conserva la geometría Tile y su state layer porque el contexto, no un subrayado en prosa, comunica que la superficie es navegable.",
-    "linkPage.tileBody2": "El HTML escrito a mano funciona sin inicialización. <code>createTileLink</code> solo crea el ancla cuando el árbol se genera desde JavaScript.",
-    "linkPage.whyTitle": "Por qué un solo tipo, y no tres",
-    "linkPage.whyBody1":
-      'Un enlace dentro de un bloque de texto <strong>no se puede distinguir por color solo</strong>: es <a class="sk-link sk-interactive" href="https://www.w3.org/WAI/WCAG22/Understanding/use-of-color.html">WCAG 1.4.1 (Use of Color)</a>, nivel A. Solo hay dos formas de cumplir: un indicador que no sea color <em>en reposo</em>, un subrayado permanente, o un contraste de ≥3:1 entre el color del enlace y el del texto <em>más</em> una señal no-color en hover <em>y</em> foco.',
-    "linkPage.whyBody2":
-      "La segunda vía es frágil: hay que re-medir ese 3:1 en cada marca y cada modo, y quien lee la página quieta, o no puede hacer hover, no recibe ninguna señal hasta tocar el enlace. Un subrayado que aparece solo en hover deja el texto en reposo sin pista, y sin subrayado se falla el criterio de plano. Así que <code>sk-link</code> tiene <strong>una</strong> forma, subrayado siempre, y no un hook para apagarlo: ofrecer <code>hover</code> o <code>none</code> sería ofrecer una manera de fallar 1.4.1.",
-    "linkPage.calloutBody":
-      "<strong>¿Y los enlaces que no van subrayados?</strong> Un ítem de navegación, un breadcrumb, el prev/next del pie, esos se distinguen por <em>ubicación</em>, no por color, así que 1.4.1 no les pide subrayado. Pero no son <code>sk-link</code>: usan el pattern <code>nav-list</code> o un botón <code>ghost</code>. <code>sk-link</code> es, por definición, el enlace <em>dentro del texto</em>.",
-    "linkPage.toneTitle": "El tono no cambia la regla",
-    "linkPage.toneBody":
-      'Por defecto el enlace toma el <strong>mismo color que el texto</strong> y se apoya enteramente en el subrayado. <code>data-tone="accent"</code> lo pinta del color de acento de marca. En ambos casos el subrayado es obligatorio: sin él, el tono accent solo se distinguiría por color (falla WCAG 1.4.1), y el default no se distinguiría de la prosa.',
-    "linkPage.prop.linkTone.title": "Tono",
-    "linkPage.prop.linkTone.body": "<code>tone</code> cambia el color; el subrayado permanece siempre.",
-    "linkPage.prop.linkTone.neutral": "Usa <code>neutral</code> cuando el contexto ya sostiene el enlace.",
-    "linkPage.prop.linkTone.accent": "Usa <code>accent</code> cuando el enlace necesita más señal de marca.",
-    "linkPage.showcaseTitle": "Showcases",
-    "linkPage.showcaseBody": "Link cubre enlaces dentro de texto y superficies enlazadas separadas.",
-    "linkPage.inlineTitle": "Enlaces dentro de texto",
-    "linkPage.inlineBody": "En prosa, el subrayado permanente distingue el enlace sin depender del color.",
-    "linkPage.guidelinesLede": "Usa Link para navegación en texto; usa otro patrón cuando toda una superficie navega.",
-    "linkPage.dd.text.title": "Texto o superficie",
-    "linkPage.dd.text.do": "Usa Link dentro de una frase o párrafo.",
-    "linkPage.dd.text.dont": "No uses un enlace de texto para hacer que toda una tarjeta parezca clicable.",
-    "linkPage.dd.underline.title": "Señal permanente",
-    "linkPage.dd.underline.do": "Mantén el subrayado visible en reposo.",
-    "linkPage.dd.underline.dont": "No dependas sólo del color para comunicar que algo es un enlace.",
-    "linkPage.contractItem1": "Renderiza un ancla nativa: <code>href</code> define el destino.",
-    "linkPage.contractItem2": "<code>data-tone</code> es opcional: sin él, el color del texto; <code>accent</code> usa el color de acento de marca.",
-    "linkPage.contractItem3":
-      "<strong>El subrayado no es configurable</strong>: siempre está, porque un enlace de texto sin señal no-color permanente falla WCAG 1.4.1.",
-    "linkPage.contractItem4": "No establece <code>target</code>, <code>rel</code> ni ningún comportamiento para enlaces externos.",
-    "linkPage.contractItem5":
-      "Lleva <code>sk-interactive</code>: hover, press y foco vienen del state layer. El <code>::before</code> se abre un poco más que la tinta para que el wash no se lea como una mancha sobre los glifos; el subrayado permanente sigue siendo la señal en reposo.",
+    "linkPage.description": "Lleva a otra página desde dentro de un texto, siempre subrayado.",
+
+    "linkPage.a11yKeyEnter": "Sigue el enlace.",
+
+    "linkPage.a11yYours2": "El texto debe tener sentido fuera de su frase.",
+
+    "linkPage.a11yYours1": "Debe tener un <code>href</code> real; sin él, no es un enlace.",
+
+    "linkPage.a11yDoes2": "El subrayado permanente cumple WCAG 2.2, 1.4.1: el enlace no depende del color.",
+
+    "linkPage.a11yDoes1": "Renderiza un <code>&lt;a href&gt;</code> que se anuncia como enlace.",
+
+    "linkPage.a11yIntro": "Link es un enlace nativo: rol, foco y teclado vienen del navegador.",
+
+    "linkPage.content3": "No enlaces una oración entera: enlaza las palabras que nombran el destino.",
+
+    "linkPage.content2": "Si abre en otra pestaña, dilo: «(se abre en otra pestaña)» o un ícono con nombre.",
+
+    "linkPage.content1": "Escribe el texto del enlace con el destino: «precios del plan», no «aquí» ni «más información».",
+
+    "linkPage.whenNot4": 'Para la navegación de un sitio: usa <a href="/es/componentes/navbar">Navbar</a> o <a href="/es/nav-list">NavList</a>.',
+
+    "linkPage.whenNot3": 'Para una tarjeta entera que lleva a un lugar: usa <a href="/es/componentes/tile">TileLink</a>.',
+
+    "linkPage.whenNot2": "Para un enlace que debe verse como botón: usa <code>Button.navigation</code>.",
+
+    "linkPage.whenNot1": 'Para una acción que cambia algo en la página: usa <a href="/es/componentes/button">Button</a>.',
+
+    "linkPage.when2": "Para una acción secundaria dentro de un párrafo que en realidad navega.",
+
+    "linkPage.when1": "Para llevar a otra página desde dentro de un texto.",
+
+    "linkPage.contract4": "Los enlaces de navegación (un menú, un breadcrumb) se distinguen por su lugar, no por el subrayado: son otros componentes.",
+
+    "linkPage.contract3": "No pone <code>target</code> ni <code>rel</code>: un enlace externo los recibe de quien lo escribe.",
+
+    "linkPage.contract2": "El subrayado no se puede quitar.",
+
+    "linkPage.contract1": "Renderiza un <code>&lt;a&gt;</code> nativo; <code>href</code> es el destino.",
+    "linkPage.lede": "Link lleva a otra página desde dentro de un texto. Es un <code>&lt;a&gt;</code> nativo, siempre subrayado: un enlace en un párrafo no se puede distinguir solo por el color (WCAG 2.2, 1.4.1).",
+    "linkPage.tileTitle": "Una superficie entera: TileLink",
+    "linkPage.tileBody1": "Cuando toda una tarjeta lleva a un destino, <code>TileLink</code> es el <code>&lt;a&gt;</code>, con la superficie de Tile.",
+    "linkPage.tileBody2": "El HTML escrito a mano funciona sin JavaScript; <code>createTileLink</code> crea el enlace cuando el árbol se genera en el navegador.",
+    "linkPage.prop.linkTone.title": "Tone: cuánto destaca",
+    "linkPage.prop.linkTone.body": "Cambia el color; el subrayado se queda siempre.",
+    "linkPage.prop.linkTone.neutral": "Usa <code>neutral</code>, el valor por defecto, en prosa: el enlace toma el color del texto y el subrayado lo marca.",
+    "linkPage.prop.linkTone.accent": "Usa <code>accent</code> cuando el enlace necesita más señal, como un «Ver todos» al pie de una lista.",
+    "linkPage.inlineTitle": "En un párrafo: el subrayado lo marca",
+    "linkPage.inlineBody": "El subrayado permanente distingue el enlace sin depender del color.",
+    "linkPage.guidelinesLede": "Un enlace dice adónde lleva con su propio texto.",
+    "linkPage.dd.text.title": "Texto: di adónde lleva",
+    "linkPage.dd.text.do": "El texto del enlace nombra el destino: se entiende leído solo, como en una lista de enlaces.",
+    "linkPage.dd.text.dont": "«Aquí» no dice adónde lleva, y un lector de pantalla que recorre los enlaces oye «aquí» varias veces.",
+    "linkPage.dd.scope.title": "Alcance: solo las palabras destino",
+    "linkPage.dd.scope.do": "Enlaza las palabras que nombran la página de destino.",
+    "linkPage.dd.scope.dont": "Enlazar toda la oración agranda el objetivo, pero hace menos claro qué parte navega.",
+    "linkPage.dd.external.title": "Nueva pestaña: avisa",
+    "linkPage.dd.external.do": "Si cambia de pestaña, el texto o un ícono con nombre lo anuncian.",
+    "linkPage.dd.external.dont": "Abrir otra pestaña sin aviso sorprende y rompe la expectativa del enlace.",
+    "linkPage.dd.action.title": "Acción: no es enlace",
+    "linkPage.dd.action.do": "Si cambia algo en esta página, es un botón.",
+    "linkPage.dd.action.dont": "Un enlace para guardar promete navegación, no una mutación del estado.",
+    "linkPage.dd.underline.title": "Superficie: un enlace de texto no basta",
+    "linkPage.dd.underline.do": "Una tarjeta entera que lleva a un lugar es un TileLink: todo el rectángulo es el objetivo.",
+    "linkPage.dd.underline.dont": "Un enlace pequeño dentro de una tarjeta que parece presionable obliga a apuntar a una palabra.",
     "linkPage.test1": "Renderiza un enlace nativo con el state layer compartido para hover/press/foco.",
   },
   en: {
+    "demo.link.dontAfter": ".",
+    "demo.link.dontLink": "here",
+    "demo.link.dontBefore": "To see each plan's pricing, click ",
+    "demo.link.doAfter": " before choosing.",
+    "demo.link.doLink": "each plan's pricing",
+    "demo.link.doBefore": "Check ",
     "linkPage.anatomyLabel": "Link anatomy",
     "linkPage.anatomyPreviewLabel": "Link, part by part",
     "linkPage.anatomyBody": "One part, and it only makes sense inside a sentence: the paragraph is <code>sk-text</code>, the anchor inside it is <code>sk-link</code>.",
@@ -59,46 +104,79 @@ export const linkMessages = {
     "demo.link.middle": " and another ",
     "demo.link.accent": "accent-coloured one",
     "demo.link.after": ", both with a permanent underline.",
+    "demo.link.targetBefore": "Read the ",
+    "demo.link.targetLink": "migration guide",
+    "demo.link.targetAfter": " before updating.",
+    "demo.link.wholeSentence": "Read the migration guide before updating.",
+    "demo.link.externalReport": "Annual report",
+    "demo.link.newTab": "Opens in a new tab",
+    "demo.link.saveChanges": "Save changes",
 
-    "linkPage.description": "Link: a text link, always underlined, the only treatment WCAG 1.4.1 allows.",
-    "linkPage.lede":
-      "Link keeps <code>&lt;a&gt;</code>'s native semantics: use it to navigate, and give it a valid <code>href</code>. It is a <strong>text link</strong> with a permanent underline, the only treatment WCAG 1.4.1 allows in prose. Hover uses the state layer (<code>sk-interactive</code>), not a color the component invents.",
-    "linkPage.tileTitle": "A surface link: TileLink",
-    "linkPage.tileBody1":
-      "When a whole surface is a single destination, use <code>TileLink</code>. It also renders an <code>&lt;a&gt;</code>, but it is not <code>sk-link</code>: it keeps Tile's geometry and state layer, because the context: not a prose underline: communicates that the surface is navigable.",
-    "linkPage.tileBody2": "The authored HTML works with no initialization. <code>createTileLink</code> only creates the anchor when the tree is generated from JavaScript.",
-    "linkPage.whyTitle": "Why one shape, not three",
-    "linkPage.whyBody1":
-      "A link inside a block of text <strong>cannot be told apart by color alone</strong>: that is <a class=\"sk-link sk-interactive\" href=\"https://www.w3.org/WAI/WCAG22/Understanding/use-of-color.html\">WCAG 1.4.1 (Use of Color)</a>, level A. There are only two ways to comply: a non-color indicator <em>at rest</em>, a permanent underline, or a ≥3:1 contrast between the link's color and the text's <em>plus</em> a non-color signal on hover <em>and</em> focus.",
-    "linkPage.whyBody2":
-      "The second path is fragile: that 3:1 has to be re-measured for every brand and every mode, and whoever is reading a still page, or cannot hover, gets no signal until they touch the link. An underline that only appears on hover leaves resting text with no clue, and with no underline the flat criterion fails. So <code>sk-link</code> has <strong>one</strong> shape, always underlined, and no hook to turn it off: offering <code>hover</code> or <code>none</code> would be offering a way to fail 1.4.1.",
-    "linkPage.calloutBody":
-      "<strong>What about links that are not underlined?</strong> A nav item, a breadcrumb, the prev/next in a footer: those are told apart by <em>location</em>, not color, so 1.4.1 does not ask them for an underline. But they are not <code>sk-link</code>: they use the <code>nav-list</code> pattern or a <code>ghost</code> button. <code>sk-link</code> is, by definition, the link <em>inside the text</em>.",
-    "linkPage.toneTitle": "Tone does not change the rule",
-    "linkPage.toneBody":
-      'By default the link takes the <strong>same color as the text</strong> and relies entirely on the underline. <code>data-tone="accent"</code> paints it in the brand\'s accent color. Either way the underline stays mandatory: without it, the accent tone would be told apart by color alone (a WCAG 1.4.1 failure), and the default would not be told apart from the prose at all.',
-    "linkPage.prop.linkTone.title": "Tone",
-    "linkPage.prop.linkTone.body": "<code>tone</code> changes color; the underline always remains.",
-    "linkPage.prop.linkTone.neutral": "Use <code>neutral</code> when the context already supports the link.",
-    "linkPage.prop.linkTone.accent": "Use <code>accent</code> when the link needs more brand signal.",
-    "linkPage.showcaseTitle": "Showcases",
-    "linkPage.showcaseBody": "Link covers links inside text and separate linked surfaces.",
-    "linkPage.inlineTitle": "Links inside text",
-    "linkPage.inlineBody": "In prose, the permanent underline identifies the link without relying on color.",
-    "linkPage.guidelinesLede": "Use Link for navigation in text; use another pattern when a whole surface navigates.",
-    "linkPage.dd.text.title": "Text or surface",
-    "linkPage.dd.text.do": "Use Link inside a sentence or paragraph.",
-    "linkPage.dd.text.dont": "Do not use a text link to make a whole card feel clickable.",
-    "linkPage.dd.underline.title": "Permanent signal",
-    "linkPage.dd.underline.do": "Keep the underline visible at rest.",
-    "linkPage.dd.underline.dont": "Do not rely only on color to communicate that something is a link.",
-    "linkPage.contractItem1": "Renders a native anchor: <code>href</code> sets the destination.",
-    "linkPage.contractItem2": "<code>data-tone</code> is optional: without it, the text's own color; <code>accent</code> uses the brand's accent color.",
-    "linkPage.contractItem3":
-      "<strong>The underline is not configurable</strong>: it is always there, because a text link with no permanent non-color signal fails WCAG 1.4.1.",
-    "linkPage.contractItem4": "It sets no <code>target</code>, <code>rel</code>, or any behavior for external links.",
-    "linkPage.contractItem5":
-      "It carries <code>sk-interactive</code>: hover, press, and focus come from the state layer. The <code>::before</code> opens a bit wider than the ink, so the wash does not read as a smear over the glyphs; the permanent underline stays the resting signal.",
+    "linkPage.description": "Leads to another page from inside text, always underlined.",
+
+    "linkPage.a11yKeyEnter": "Follows the link.",
+
+    "linkPage.a11yYours2": "The text must make sense outside its sentence.",
+
+    "linkPage.a11yYours1": "It must have a real <code>href</code>; without it, it is not a link.",
+
+    "linkPage.a11yDoes2": "The permanent underline meets WCAG 2.2, 1.4.1: the link does not rely on color.",
+
+    "linkPage.a11yDoes1": "It renders an <code>&lt;a href&gt;</code> announced as a link.",
+
+    "linkPage.a11yIntro": "Link is a native link: role, focus and keyboard come from the browser.",
+
+    "linkPage.content3": "Do not link a whole sentence: link the words that name the destination.",
+
+    "linkPage.content2": "If it opens in another tab, say so: “(opens in a new tab)” or a named icon.",
+
+    "linkPage.content1": "Write the link text with the destination: “each plan's pricing”, not “here” or “more information”.",
+
+    "linkPage.whenNot4": 'For a site\'s navigation: use <a href="/components/navbar">Navbar</a> or <a href="/nav-list">NavList</a>.',
+
+    "linkPage.whenNot3": 'For a whole card that leads somewhere: use <a href="/components/tile">TileLink</a>.',
+
+    "linkPage.whenNot2": "For a link that must look like a button: use <code>Button.navigation</code>.",
+
+    "linkPage.whenNot1": 'For an action that changes something on the page: use <a href="/components/button">Button</a>.',
+
+    "linkPage.when2": "For a secondary action inside a paragraph that actually navigates.",
+
+    "linkPage.when1": "To lead to another page from inside text.",
+
+    "linkPage.contract4": "Navigation links (a menu, a breadcrumb) are told apart by their place, not the underline: they are other components.",
+
+    "linkPage.contract3": "It sets no <code>target</code> or <code>rel</code>: an external link gets them from whoever writes it.",
+
+    "linkPage.contract2": "The underline cannot be removed.",
+
+    "linkPage.contract1": "It renders a native <code>&lt;a&gt;</code>; <code>href</code> is the destination.",
+    "linkPage.lede": "Link leads to another page from inside text. It is a native <code>&lt;a&gt;</code>, always underlined: a link in a paragraph cannot be told apart by color alone (WCAG 2.2, 1.4.1).",
+    "linkPage.tileTitle": "A whole surface: TileLink",
+    "linkPage.tileBody1": "When a whole card leads to one destination, <code>TileLink</code> is the <code>&lt;a&gt;</code>, with Tile's surface.",
+    "linkPage.tileBody2": "Hand-written HTML works without JavaScript; <code>createTileLink</code> creates the link when the tree is built in the browser.",
+    "linkPage.prop.linkTone.title": "Tone: how much it stands out",
+    "linkPage.prop.linkTone.body": "Changes the color; the underline always stays.",
+    "linkPage.prop.linkTone.neutral": "Use <code>neutral</code>, the default, in prose: the link takes the text's color and the underline marks it.",
+    "linkPage.prop.linkTone.accent": "Use <code>accent</code> when the link needs more signal, like a “See all” at the foot of a list.",
+    "linkPage.inlineTitle": "In a paragraph: the underline marks it",
+    "linkPage.inlineBody": "The permanent underline sets the link apart without relying on color.",
+    "linkPage.guidelinesLede": "A link says where it goes with its own text.",
+    "linkPage.dd.text.title": "Text: say where it goes",
+    "linkPage.dd.text.do": "The link's text names the destination: it makes sense read alone, as in a list of links.",
+    "linkPage.dd.text.dont": "“Here” does not say where it goes, and a screen reader moving through links hears “here” several times.",
+    "linkPage.dd.scope.title": "Scope: only the destination words",
+    "linkPage.dd.scope.do": "Link the words that name the destination page.",
+    "linkPage.dd.scope.dont": "Linking the whole sentence makes the target larger, but makes it less clear what navigates.",
+    "linkPage.dd.external.title": "New tab: announce it",
+    "linkPage.dd.external.do": "If it changes tabs, the text or a named icon says so.",
+    "linkPage.dd.external.dont": "Opening another tab without warning surprises people and breaks the link's expectation.",
+    "linkPage.dd.action.title": "Action: not a link",
+    "linkPage.dd.action.do": "If it changes something on this page, it is a button.",
+    "linkPage.dd.action.dont": "A link for saving promises navigation, not a state mutation.",
+    "linkPage.dd.underline.title": "Surface: a text link is not enough",
+    "linkPage.dd.underline.do": "A whole card that leads somewhere is a TileLink: the entire rectangle is the target.",
+    "linkPage.dd.underline.dont": "A small link inside a card that looks pressable makes people aim at a word.",
     "linkPage.test1": "Renders a native link with the shared state layer for hover/press/focus.",
   },
 } as const;

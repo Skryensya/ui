@@ -5,19 +5,19 @@ import "@skryensya/core/components/annotation.css";
 import ComponentPageShell from "./ComponentPageShell.astro";
 import AppearanceMenu from "../AppearanceMenu.astro";
 import CodeBlock from "../CodeBlock.astro";
-import ComponentPreview from "../ComponentPreview.astro";
 import UsagePreview from "../UsagePreview.astro";
 import DoDont from "../DoDont.astro";
+import WhenToUse from "../WhenToUse.astro";
+import ContentRules from "../ContentRules.astro";
+import A11yNotes from "../A11yNotes.astro";
 import {
-  selectAnatomyCss,
-  selectAnatomyHtml,
   selectDoTwoTree,
   selectDontTwoTree,
   selectNativeTree,
   selectSingleTree,
   selectTree,
 } from "../../demos/select";
-import { getLocale, useTranslations } from "../../i18n";
+import { getLocale, tList, useTranslations } from "../../i18n";
 
 const install = `pnpm add @skryensya/core @skryensya/vanilla`;
 const t = useTranslations(getLocale(Astro.url));
@@ -70,7 +70,7 @@ const explain = (option: string, values: readonly string[]) =>
     { file: "patterns/anchored.css", probe: "sk-anchored", title: "Heredados de Anclaje" },
     { file: "components/select.css", probe: "sk-select-native" },
   ]}
-  testFiles={["packages/react/src/components/select.test.tsx", "packages/vanilla/src/components/select.test.ts"]}}
+  testFiles={["packages/react/src/components/select.test.tsx", "packages/vanilla/src/components/select.test.ts"]}
 >
   <Fragment slot="appearance">
     <AppearanceMenu label={t("prefs.appearance")} values={["plain", "brutalist", "frosted"]} unavailable={{ tactile: t("prefs.appearanceTactileUnavailable") }} />
@@ -88,61 +88,29 @@ const explain = (option: string, values: readonly string[]) =>
       stageMinBlockSize="8rem"
     />
 
-    <h3>{t("selectPage.showcaseTitle")}</h3>
-    <p set:html={t("selectPage.showcaseBody")} />
-    <p set:html={t("selectPage.nativeLinkBody")} />
-    <ComponentPreview tree={selectTree(t)} label={t("selectPage.enhancedLabel")} viewport="menu" />
-    <p set:html={t("selectPage.densityBody")} />
-
-    <h3>{t("selectPage.htmlTitle")}</h3>
+    <h3>{t("component.examplesTitle")}</h3>
+    <UsagePreview tree={selectTree(t)} title={t("selectPage.enhancedTitle")} description={t("selectPage.enhancedBody")} viewport="menu" />
+    <h4>{t("selectPage.htmlTitle")}</h4>
     <p set:html={t("selectPage.htmlBody")} />
-
-    <h3>{t("selectPage.formsTitle")}</h3>
     <CodeBlock code={forms} label="HTML" />
+    <UsagePreview tree={selectNativeTree(t)} title={t("selectPage.nativeTitle")} description={t("selectPage.nativeBody")} viewport="menu" />
 
-    <h3>{t("selectPage.enhancedContractTitle")}</h3>
+    <h3>{t("component.contractNotesTitle")}</h3>
     <ul>
-      <li set:html={t("selectPage.enhancedContractItem1")} />
-      <li set:html={t("selectPage.enhancedContractItem2")} />
-      <li set:html={t("selectPage.enhancedContractItem3")} />
-      <li set:html={t("selectPage.enhancedContractItem4")} />
+      {tList(t, "selectPage.contract").map((item) => <li set:html={item} />)}
     </ul>
 
-    <h3>{t("selectPage.nativeTitle")}</h3>
-    <p class="lede" set:html={t("selectPage.nativeLede")} />
-    <p set:html={t("selectPage.nativeBody")} />
-    <ComponentPreview tree={selectNativeTree(t)} label={t("selectPage.nativeLabel")} viewport="menu" />
-
-    <h4>{t("selectPage.progressiveTitle")}</h4>
-    <p set:html={t("selectPage.progressiveBody")} />
-
-    <h4>{t("selectPage.nativeContractTitle")}</h4>
-    <ul>
-      <li set:html={t("selectPage.nativeContractItem1")} />
-      <li set:html={t("selectPage.nativeContractItem2")} />
-      <li set:html={t("selectPage.nativeContractItem3")} />
-      <li set:html={t("selectPage.nativeContractItem4")} />
-    </ul>
-
-    <h3>{t("component.anatomy")}</h3>
-    <p set:html={t("selectPage.anatomyBody")} />
-    <ComponentPreview
-      html={selectAnatomyHtml(t)}
-      css={selectAnatomyCss}
-      label={t("selectPage.anatomyPreviewLabel")}
-      screens={false}
-      hideSource
-      chrome={false}
-    />
   </Fragment>
 
   <Fragment slot="guidelines">
     <p class="lede" set:html={t("selectPage.guidelinesLede")} />
+    <WhenToUse use={tList(t, "selectPage.when")} avoid={tList(t, "selectPage.whenNot")} />
     <DoDont
       title={t("selectPage.dd.two.title")}
       do={{ tree: selectDoTwoTree(t), caption: t("selectPage.dd.two.do") }}
       dont={{ tree: selectDontTwoTree(t), caption: t("selectPage.dd.two.dont") }}
     />
+    <ContentRules items={tList(t, "selectPage.content")} />
   </Fragment>
 
   <Fragment slot="install">
@@ -158,5 +126,19 @@ const explain = (option: string, values: readonly string[]) =>
     <h3>{t("selectPage.nativeInstallTitle")}</h3>
     <CodeBlock code={nativeInstall} label="terminal" />
     <CodeBlock code={styles} label="CSS" lang="css" />
+  </Fragment>
+  <Fragment slot="a11y">
+    <A11yNotes
+      intro={t("selectPage.a11yIntro")}
+      does={tList(t, "selectPage.a11yDoes")}
+      yours={tList(t, "selectPage.a11yYours")}
+      keys={[
+        { keys: ["Enter", t("component.key.space"), "↓"], action: t("selectPage.key.open") },
+        { keys: ["↑", "↓"], action: t("selectPage.key.arrows") },
+        { keys: ["Enter"], action: t("selectPage.key.choose") },
+        { keys: ["A–Z"], action: t("selectPage.key.letter") },
+        { keys: ["Esc"], action: t("selectPage.key.escape") },
+      ]}
+    />
   </Fragment>
 </ComponentPageShell>

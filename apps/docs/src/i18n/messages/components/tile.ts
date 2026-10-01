@@ -1,46 +1,59 @@
 export const tileMessages = {
   es: {
 
-    "tilePage.description": "Patrón visual para una única interacción; Box para superficies estáticas o varios controles.",
-    "tilePage.lede": 'Invariante estricta: cada Tile tiene exactamente una intención interactiva. Un Tile nunca es una superficie estática. Para contenido estático o varios controles independientes, usa <a href="/es/componentes/box">Box</a>.',
+    "tilePage.description": "Hace que toda una tarjeta sea un solo control: un enlace, un botón o una opción.",
+
+    "tilePage.a11yYours2": "Si un TileButton está deshabilitado, di por qué en la descripción.",
+
+    "tilePage.a11yYours1": "No pongas enlaces ni botones dentro: dos controles anidados no se pueden alcanzar bien.",
+
+    "tilePage.a11yDoes2": "El foco rodea toda la tarjeta.",
+
+    "tilePage.a11yDoes1": "El título es el nombre accesible del control.",
+
+    "tilePage.a11yIntro": "Cada Tile es el control nativo de su acción, con forma de tarjeta.",
+
+    "tilePage.content2": "Usa la descripción para lo que ayuda a decidir: precio, límite, tiempo.",
+
+    "tilePage.content1": "Escribe el título con lo que se elige o adónde se va: «Plan Pro», «Guía de inicio».",
+
+    "tilePage.whenNot2": 'Para opciones cortas que caben en una etiqueta: usa <a href="/es/componentes/radio-group">RadioGroup</a> o <a href="/es/componentes/checkbox">Checkbox</a>.',
+
+    "tilePage.whenNot1": 'Para una tarjeta con varias acciones o sin ninguna: usa <a href="/es/componentes/box">Box</a>.',
+
+    "tilePage.when2": "Cuando la opción necesita título y descripción para decidir.",
+
+    "tilePage.when1": "Cuando toda una tarjeta hace una sola cosa: navegar, ejecutar, elegir.",
+
+    "tilePage.contract4": 'La guía <a href="/es/componentes/card">Card</a> compara Tile y Box en tarjetas reales.',
+
+    "tilePage.contract3": "No pongas controles dentro de un Tile: si hacen falta, usa Box.",
+
+    "tilePage.contract2": "Los checkbox y radios son reales y viajan en el formulario.",
+
+    "tilePage.contract1": "Cada forma usa el elemento nativo de su acción: enlace, botón, checkbox o radio.",
+    "tilePage.lede": 'Tile hace que toda una tarjeta sea un solo control: un enlace a un artículo, un plan que se elige, una preferencia que se enciende. Cada Tile tiene una sola acción; si la tarjeta lleva varias, es un <a href="/es/componentes/box">Box</a> con sus controles adentro.',
     "tilePage.anatomyBody":
       "Este diagrama nombra el trigger, el content, el título, la descripción, el chevron y el panel expandible. El espécimen está abierto y congelado; el ExpandableTile vivo empieza abajo.",
     "tilePage.anatomyLabel": "Anatomía de Tile",
     "tilePage.anatomyPreviewLabel": "ExpandableTile, parte por parte",
-    "tilePage.expandableLabel": "ExpandableTile",
-    "tilePage.chooseBody":
-      "Un Tile se elige por <strong>lo que pasa cuando lo tocas</strong>, no por cómo se ve: los seis se ven casi iguales y cada uno es un elemento nativo distinto. Si la respuesta es «nada», no es un Tile.",
-    "tilePage.linkTitle": "Navegar: TileLink",
-    "tilePage.linkBody":
-      "Toda la tarjeta es un <code>&lt;a href&gt;</code>: abre en otra pestaña con clic medio, se puede copiar el enlace y el lector de pantalla la anuncia como enlace. Es la forma de un índice de destinos.",
-    "tilePage.linkLabel": "Tres destinos como TileLink",
-    "tilePage.buttonTitle": "Ejecutar una acción: TileButton",
-    "tilePage.buttonBody":
-      "Un <code>&lt;button type=\"button\"&gt;</code> con cara de tarjeta, para una acción que merece más contexto que una etiqueta. Si está deshabilitado, la descripción dice por qué: una tarjeta gris sin motivo es un callejón sin salida.",
-    "tilePage.buttonLabel": "Tres acciones, una deshabilitada con su motivo",
-    "tilePage.checkboxTitle": "Elegir varias: TileCheckbox",
-    "tilePage.checkboxBody":
-      "Envuelve un <code>&lt;input type=\"checkbox\"&gt;</code> real, oculto a la vista y no reemplazado: es el que viaja en el formulario. Cada tarjeta es independiente de las otras.",
-    "tilePage.checkboxLabel": "Selección múltiple con una opción deshabilitada",
-    "tilePage.switchTitle": "Encender o apagar: TileSwitch",
-    "tilePage.switchBody":
-      "Para una preferencia que <strong>se aplica al instante</strong>. Si el cambio espera a un botón Guardar, es un TileCheckbox: un switch promete efecto inmediato.",
-    "tilePage.switchLabel": "Dos ajustes como TileSwitch",
-    "tilePage.radioTitle": "Elegir una: TileRadioGroup",
-    "tilePage.radioBody":
-      "Radios nativos con el mismo <code>name</code>: las flechas mueven la selección dentro del grupo y Tab sale de él. <code>padding</code> y <code>appearance</code> se ponen en el grupo y se pintan en cada opción.",
-    "tilePage.radioLabel": "Un selector de plan",
-    "tilePage.expandableTitle": "Mostrar detalles: ExpandableTile",
-    "tilePage.expandableBody":
-      "La sección es el contenedor y solo el trigger es el control, así que el texto revelado se puede seleccionar. Varias juntas que se coordinan son un <a href=\"/es/componentes/accordion\">Accordion</a>.",
-    "tilePage.versusTitle": "¿Tile o Box?",
-    "tilePage.versusBody":
-      "El mismo contenido, dos respuestas. Con <strong>un</strong> destino, toda la tarjeta es el enlace. Con <strong>dos</strong> acciones, la tarjeta es un <a href=\"/es/componentes/box\">Box</a> y las acciones son botones hermanos: un control dentro de otro no se alcanza con el teclado y se anuncia mal.",
-    "tilePage.versusLabel": "Una intención como TileLink y dos acciones como Box",
-    "tilePage.paddingTitle": "Padding",
-    "tilePage.paddingBody":
-      "La misma escala que Box: <code>none</code>, <code>xs</code>, <code>sm</code>, <code>md</code>, <code>lg</code> y <code>xl</code>. <code>md</code> es el default. <code>none</code> existe para cuando el contenido tiene que llegar al borde, como una imagen.",
-    "tilePage.paddingLabel": "El mismo TileButton en cuatro pasos de padding",
+    "tilePage.chooseBody": "Los seis se ven casi iguales; cada uno es un elemento nativo distinto.",
+    "tilePage.linkTitle": "TileLink: navegar",
+    "tilePage.linkBody": "Toda la tarjeta es un enlace: se abre en otra pestaña y se copia como cualquier enlace.",
+    "tilePage.buttonTitle": "TileButton: ejecutar una acción",
+    "tilePage.buttonBody": "Un botón con forma de tarjeta, para una acción que necesita más contexto que una etiqueta.",
+    "tilePage.checkboxTitle": "TileCheckbox: elegir varias",
+    "tilePage.checkboxBody": "Cada tarjeta envuelve un checkbox real, independiente de las demás.",
+    "tilePage.switchTitle": "TileSwitch: encender o apagar",
+    "tilePage.switchBody": "Para una preferencia que se aplica al instante.",
+    "tilePage.radioTitle": "TileRadioGroup: elegir una",
+    "tilePage.radioBody": "Radios nativos con el mismo <code>name</code>: las flechas mueven la selección.",
+    "tilePage.expandableTitle": "ExpandableTile: mostrar detalles",
+    "tilePage.expandableBody": "Solo el encabezado es el control; el texto que se abre se puede seleccionar.",
+    "tilePage.versusTitle": "¿Tile o Box?: una acción o varias",
+    "tilePage.versusBody": "Con un destino, toda la tarjeta es el enlace. Con dos acciones, es un Box con dos botones.",
+    "tilePage.paddingTitle": "Padding: la misma escala que Box",
+    "tilePage.paddingBody": "<code>none</code> a <code>xl</code>; <code>md</code> por defecto.",
     "demo.tile.padding.mdDefault": "md (default)",
     "demo.tile.hub.guides.title": "Guías",
     "demo.tile.hub.guides.description": "Aprende el sistema paso a paso.",
@@ -58,10 +71,8 @@ export const tileMessages = {
     "demo.tile.versus.description": "Actualizado hace 2 horas por el equipo de plataforma.",
     "demo.tile.versus.open": "Abrir",
     "demo.tile.versus.archive": "Archivar",
-    "tilePage.appearanceTitle": "Apariencia",
-        "tilePage.appearanceBody":
-      "<code>appearance</code> es el mismo eje de <a href=\"/es/componentes/button\">Button</a>, con los mismos valores: <code>plain</code> es el borde plano de siempre, <code>tactile</code> le da un canto hacia el que se hunde al presionar, <code>brutalist</code> lo dibuja con el borde y la sombra dura en negro de Button, y <code>frosted</code> lo vuelve el material translúcido de Button sobre lo que haya detrás. La selección cambia el borde, nunca presiona la tarjeta. Un <code>ExpandableTile</code> la lleva sin moverse: su control es el trigger, no la tarjeta. El selector de apariencia de esta página cambia los demás ejemplos.",
-    "tilePage.appearanceLabel": "El mismo TileButton y TileCheckbox en plain, tactile, brutalist y frosted",
+    "tilePage.appearanceTitle": "Appearance: la misma que Button",
+        "tilePage.appearanceBody": "<code>plain</code>, <code>tactile</code>, <code>frosted</code> y <code>brutalist</code>.",
     "demo.tile.appearance.checkTitle": "Alertas críticas",
     "demo.tile.appearance.checkDescription": "Avisar cuando falle un despliegue.",
     "demo.tile.link.title": "Documentación",
@@ -71,9 +82,7 @@ export const tileMessages = {
     "demo.tile.expandable.title": "Detalles de envío",
     "demo.tile.expandable.description": "Plazos, costos y restricciones.",
     "demo.tile.expandable.body": "Los pedidos salen en 24 horas hábiles. El envío internacional tarda entre cinco y diez días.",
-    "tilePage.body1": "Tile es una receta visual que los componentes semánticos aplican sobre el elemento nativo correcto. Cada forma también aparece en la página de su control: Link, Button, Checkbox, Switch y RadioGroup.",
-    "tilePage.body2": 'La guía <a href="/es/componentes/card">Card</a> compara estas raíces con Box en cards reales de contenido, noticia, producto, enlace, acción, selección y métricas.',
-    "tilePage.chooseTitle": "Elige por comportamiento",
+    "tilePage.chooseTitle": "Cuál: por lo que pasa al tocarlo",
     "tilePage.headNeed": "Necesidad",
     "tilePage.headComponent": "Componente",
     "tilePage.headNative": "Contrato nativo",
@@ -91,64 +100,66 @@ export const tileMessages = {
     "tilePage.row6Native": '<code>TileRadioGroup</code> usa <code>&lt;input type="radio"&gt;</code>',
     "tilePage.row7Need": "Mostrar u ocultar detalles (uno o varios)",
     "tilePage.row7Native": '<code>&lt;button&gt;</code> trigger; una o varias divulgaciones Tile',
-    "tilePage.contractsTitle": "Contratos",
-    "tilePage.contractItem1": "Link y botón no requieren enhancer: el navegador ya provee su comportamiento.",
-    "tilePage.contractItem2":
-      "Checkbox, switch, radio group y Accordion conservan inputs o botón reales. Sus enhancers Vanilla leen los hooks <code>data-part</code> documentados en los componentes semánticos. Una sola divulgación es Accordion con un item.",
-    "tilePage.contractItem3":
-      'No anides controles interactivos dentro de un Tile. Si hacen falta acciones independientes, usa <a href="/es/componentes/box">Box</a> y deja los controles como hermanos.',
-    "tilePage.contractItem4": "Los bindings React renderizan el mismo contrato semántico; no montan el enhancer Vanilla.",
-    "tilePage.contractItem5":
-      "Todos los Tile aceptan <code>data-padding</code> con <code>none</code>, <code>xs</code>, <code>sm</code>, <code>md</code>, <code>lg</code> o <code>xl</code>; React expone el mismo valor como <code>padding</code>. El default es <code>md</code>.",
     "tilePage.test1": "Renderiza cada raíz de Tile de React con una variante interactiva o de disclosure explícita.",
     "tilePage.test2": "Renderiza la anatomía compartida de título y descripción para los tiles seleccionables.",
     "tilePage.test3": "Soporta cambios de checkbox en modo no controlado.",
-    "tilePage.showcaseTitle": "Showcases",
-    "tilePage.showcaseBody": "Una superficie que se presiona, en cada forma: enlace, botón, checkbox, switch, radio y desplegable.",
-    "tilePage.guidelinesLede": "Tile hace que toda una superficie sea un solo control.",
+    "tilePage.guidelinesLede": "Un Tile se elige por lo que pasa al tocarlo, no por cómo se ve.",
   },
   en: {
 
-    "tilePage.description": "A visual pattern for a single interaction; Box for static surfaces or several controls.",
-    "tilePage.lede": 'Strict invariant: every Tile has exactly one interactive intent. A Tile is never a static surface. For static content or several independent controls, use <a href="/components/box">Box</a>.',
+    "tilePage.description": "Makes a whole card a single control: a link, a button or an option.",
+
+    "tilePage.a11yYours2": "If a TileButton is disabled, say why in the description.",
+
+    "tilePage.a11yYours1": "Do not put links or buttons inside: two nested controls cannot be reached well.",
+
+    "tilePage.a11yDoes2": "Focus surrounds the whole card.",
+
+    "tilePage.a11yDoes1": "The title is the control's accessible name.",
+
+    "tilePage.a11yIntro": "Each Tile is its action's native control, shaped like a card.",
+
+    "tilePage.content2": "Use the description for what helps decide: price, limit, time.",
+
+    "tilePage.content1": "Write the title with what is chosen or where it leads: “Pro plan”, “Getting started”.",
+
+    "tilePage.whenNot2": 'For short options that fit a label: use <a href="/components/radio-group">RadioGroup</a> or <a href="/components/checkbox">Checkbox</a>.',
+
+    "tilePage.whenNot1": 'For a card with several actions or none: use <a href="/components/box">Box</a>.',
+
+    "tilePage.when2": "When the option needs a title and description to decide.",
+
+    "tilePage.when1": "When a whole card does one thing: navigate, run, choose.",
+
+    "tilePage.contract4": 'The <a href="/components/card">Card</a> guide compares Tile and Box on real cards.',
+
+    "tilePage.contract3": "Do not put controls inside a Tile: if needed, use Box.",
+
+    "tilePage.contract2": "Checkboxes and radios are real and travel with the form.",
+
+    "tilePage.contract1": "Each form uses its action's native element: link, button, checkbox or radio.",
+    "tilePage.lede": 'Tile makes a whole card a single control: a link to an article, a plan to choose, a preference to turn on. Each Tile has a single action; if the card carries several, it is a <a href="/components/box">Box</a> with its controls inside.',
     "tilePage.anatomyBody":
       "This diagram names the trigger, content, title, description, chevron and expandable panel. The specimen is open and frozen; the live ExpandableTile starts below.",
     "tilePage.anatomyLabel": "Tile anatomy",
     "tilePage.anatomyPreviewLabel": "ExpandableTile, part by part",
-    "tilePage.expandableLabel": "ExpandableTile",
-    "tilePage.chooseBody":
-      "Pick a Tile by <strong>what happens when you press it</strong>, not by how it looks: the six look almost alike and each one is a different native element. If the answer is \"nothing\", it is not a Tile.",
-    "tilePage.linkTitle": "Navigate: TileLink",
-    "tilePage.linkBody":
-      "The whole card is an <code>&lt;a href&gt;</code>: it opens in a new tab on middle-click, its address can be copied, and a screen reader announces it as a link. It is the shape of an index of destinations.",
-    "tilePage.linkLabel": "Three destinations as TileLink",
-    "tilePage.buttonTitle": "Run an action: TileButton",
-    "tilePage.buttonBody":
-      "A <code>&lt;button type=\"button\"&gt;</code> with a card's face, for an action that deserves more context than a label. When it is disabled, the description says why: a grey card with no reason is a dead end.",
-    "tilePage.buttonLabel": "Three actions, one disabled with its reason",
-    "tilePage.checkboxTitle": "Pick several: TileCheckbox",
-    "tilePage.checkboxBody":
-      "Wraps a real <code>&lt;input type=\"checkbox\"&gt;</code>, hidden from sight and never replaced: it is the one that travels with the form. Each card is independent of the others.",
-    "tilePage.checkboxLabel": "Multiple selection with one disabled option",
-    "tilePage.switchTitle": "Turn on or off: TileSwitch",
-    "tilePage.switchBody":
-      "For a preference that <strong>applies immediately</strong>. If the change waits for a Save button, it is a TileCheckbox: a switch promises an immediate effect.",
-    "tilePage.switchLabel": "Two settings as TileSwitch",
-    "tilePage.radioTitle": "Pick one: TileRadioGroup",
-    "tilePage.radioBody":
-      "Native radios sharing one <code>name</code>: arrow keys move the selection inside the group and Tab leaves it. <code>padding</code> and <code>appearance</code> are set on the group and painted on each option.",
-    "tilePage.radioLabel": "A plan picker",
-    "tilePage.expandableTitle": "Reveal details: ExpandableTile",
-    "tilePage.expandableBody":
-      "The section is the container and only the trigger is the control, so the revealed text can be selected. Several that coordinate are an <a href=\"/components/accordion\">Accordion</a>.",
-    "tilePage.versusTitle": "Tile or Box?",
-    "tilePage.versusBody":
-      "The same content, two answers. With <strong>one</strong> destination, the whole card is the link. With <strong>two</strong> actions, the card is a <a href=\"/components/box\">Box</a> and the actions are sibling buttons: a control inside another control cannot be reached by keyboard and is announced wrong.",
-    "tilePage.versusLabel": "One intent as a TileLink, two actions as a Box",
-    "tilePage.paddingTitle": "Padding",
-    "tilePage.paddingBody":
-      "Box's own scale: <code>none</code>, <code>xs</code>, <code>sm</code>, <code>md</code>, <code>lg</code> and <code>xl</code>. <code>md</code> is the default. <code>none</code> exists for content that has to reach the edge, like an image.",
-    "tilePage.paddingLabel": "The same TileButton at four padding steps",
+    "tilePage.chooseBody": "All six look almost the same; each is a different native element.",
+    "tilePage.linkTitle": "TileLink: navigate",
+    "tilePage.linkBody": "The whole card is a link: it opens in another tab and copies like any link.",
+    "tilePage.buttonTitle": "TileButton: run an action",
+    "tilePage.buttonBody": "A button shaped like a card, for an action that needs more context than a label.",
+    "tilePage.checkboxTitle": "TileCheckbox: choose several",
+    "tilePage.checkboxBody": "Each card wraps a real checkbox, independent of the others.",
+    "tilePage.switchTitle": "TileSwitch: turn on or off",
+    "tilePage.switchBody": "For a preference applied at once.",
+    "tilePage.radioTitle": "TileRadioGroup: choose one",
+    "tilePage.radioBody": "Native radios sharing a <code>name</code>: the arrows move the selection.",
+    "tilePage.expandableTitle": "ExpandableTile: show details",
+    "tilePage.expandableBody": "Only the header is the control; the revealed text can be selected.",
+    "tilePage.versusTitle": "Tile or Box?: one action or several",
+    "tilePage.versusBody": "With one destination, the whole card is the link. With two actions, it is a Box with two buttons.",
+    "tilePage.paddingTitle": "Padding: Box's scale",
+    "tilePage.paddingBody": "<code>none</code> to <code>xl</code>; <code>md</code> by default.",
     "demo.tile.padding.mdDefault": "md (default)",
     "demo.tile.hub.guides.title": "Guides",
     "demo.tile.hub.guides.description": "Learn the system step by step.",
@@ -166,10 +177,8 @@ export const tileMessages = {
     "demo.tile.versus.description": "Updated 2 hours ago by the platform team.",
     "demo.tile.versus.open": "Open",
     "demo.tile.versus.archive": "Archive",
-    "tilePage.appearanceTitle": "Appearance",
-        "tilePage.appearanceBody":
-      "<code>appearance</code> is <a href=\"/components/button\">Button</a>'s axis with Button's values: <code>plain</code> is the flat bordered card, <code>tactile</code> gives it a ledge it sinks into when pressed, <code>brutalist</code> draws it with Button's black edge and hard offset, and <code>frosted</code> makes it Button's see-through material over whatever sits behind. Selection changes the edge; it never presses the card. An <code>ExpandableTile</code> wears it without moving: its control is the trigger, not the card. This page's appearance switch changes the other examples.",
-    "tilePage.appearanceLabel": "The same TileButton and TileCheckbox as plain, tactile, brutalist and frosted",
+    "tilePage.appearanceTitle": "Appearance: Button's",
+        "tilePage.appearanceBody": "<code>plain</code>, <code>tactile</code>, <code>frosted</code> and <code>brutalist</code>.",
     "demo.tile.appearance.checkTitle": "Critical alerts",
     "demo.tile.appearance.checkDescription": "Notify me when a deployment fails.",
     "demo.tile.link.title": "Documentation",
@@ -179,9 +188,7 @@ export const tileMessages = {
     "demo.tile.expandable.title": "Shipping details",
     "demo.tile.expandable.description": "Timelines, costs and restrictions.",
     "demo.tile.expandable.body": "Orders ship within 24 business hours. International delivery takes five to ten days.",
-    "tilePage.body1": "Tile is a visual recipe the semantic components apply over the correct native element. Each kind also appears on its control's own page: Link, Button, Checkbox, Switch and RadioGroup.",
-    "tilePage.body2": 'The <a href="/components/card">Card</a> guide compares these roots against Box across real content, news, product, link, action, selection, and metric cards.',
-    "tilePage.chooseTitle": "Choose by behavior",
+    "tilePage.chooseTitle": "Which: by what happens on touch",
     "tilePage.headNeed": "Need",
     "tilePage.headComponent": "Component",
     "tilePage.headNative": "Native contract",
@@ -199,20 +206,9 @@ export const tileMessages = {
     "tilePage.row6Native": '<code>TileRadioGroup</code> uses <code>&lt;input type="radio"&gt;</code>',
     "tilePage.row7Need": "Show or hide details (one or several)",
     "tilePage.row7Native": '<code>&lt;button&gt;</code> trigger; one or several Tile disclosures',
-    "tilePage.contractsTitle": "Contracts",
-    "tilePage.contractItem1": "Link and button need no enhancer: the browser already provides their behavior.",
-    "tilePage.contractItem2":
-      "Checkbox, switch, radio group, and Accordion keep real inputs or a real button. Their Vanilla enhancers read the <code>data-part</code> hooks documented on the semantic components. A single disclosure is Accordion with one item.",
-    "tilePage.contractItem3":
-      'Never nest interactive controls inside a Tile. If independent actions are needed, use <a href="/components/box">Box</a> and leave the controls as siblings.',
-    "tilePage.contractItem4": "The React bindings render the same semantic contract; they never mount the Vanilla enhancer.",
-    "tilePage.contractItem5":
-      "Every Tile accepts <code>data-padding</code> with <code>none</code>, <code>xs</code>, <code>sm</code>, <code>md</code>, <code>lg</code>, or <code>xl</code>; React exposes the same value as <code>padding</code>. The default is <code>md</code>.",
     "tilePage.test1": "Renders every React Tile root with an explicit interactive or disclosure variant.",
     "tilePage.test2": "Renders the shared title and description anatomy for selectable tiles.",
     "tilePage.test3": "Supports uncontrolled checkbox changes.",
-    "tilePage.showcaseTitle": "Showcases",
-    "tilePage.showcaseBody": "A pressable surface in every form: link, button, checkbox, switch, radio and expandable.",
-    "tilePage.guidelinesLede": "Tile turns a whole surface into a single control.",
+    "tilePage.guidelinesLede": "A Tile is chosen by what happens when it is touched, not by how it looks.",
   },
 } as const;

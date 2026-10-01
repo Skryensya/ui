@@ -1,13 +1,15 @@
 import {
+  chartAreaPath,
   chartAttrs,
   chartContract,
+  chartLinePath,
   chartMax,
   chartParts,
   formatChartValue,
   type ChartPoint,
 } from "@skryensya/core/chart";
 import type { SignatureOptionsOf } from "@skryensya/core/contract";
-import { forwardRef, type CSSProperties, type HTMLAttributes, type ReactNode } from "react";
+import { forwardRef, type CSSProperties, type HTMLAttributes } from "react";
 
 /*
  * A BINDING, not a second declaration (decision 28). The kind/tone/height unions, their defaults and
@@ -21,8 +23,9 @@ import { forwardRef, type CSSProperties, type HTMLAttributes, type ReactNode } f
  * `chart.css` carries a fallback for the window before either has run.
  *
  * NO CHARTING LIBRARY IS IMPORTED HERE, and that is the point of the whole design. A bar chart is a
- * list plus a division. `line` and `area` need a real path, and `@skryensya/charts` draws that as an
- * overlay on top of this same markup: an upgrade to something that already worked.
+ * list plus a division. `line` and `area` need a real path, drawn here from core's own geometry into
+ * the overlay the template reserves, exactly as the Vanilla enhancer draws it: the same tree paints
+ * the same line in both bindings.
  */
 const o = chartContract.options;
 
@@ -37,20 +40,6 @@ export type ChartProps = Omit<HTMLAttributes<HTMLElement>, "children"> &
      * saying what it measures is the one chart that is worse than no chart.
      */
     label: string;
-    /**
-     * THE RENDERER'S SEAM, and the only reason this binding has a prop the contract does not declare.
-     *
-     * `line` and `area` need a path, which CSS cannot compute, so something has to draw one. Whatever
-     * is passed here lands in the `aria-hidden` overlay the contract's template already reserves, and
-     * its presence is what writes `data-rendered` (the flag `chart.css` reads to retire the fallback
-     * bars). `@skryensya/charts` is what fills it.
-     *
-     * A PROP rather than an imperative injection, because the alternatives are worse: a renderer that
-     * appended its own node would make the two bindings emit different DOM, and one that ran in an
-     * effect would paint a frame late, on markup it had to re-measure. This way the overlay is just
-     * children, and the engine that produces them is a package a consumer may never install.
-     */
-    overlay?: ReactNode;
   };
 
 export const Chart = forwardRef<HTMLElement, ChartProps>(function Chart(
@@ -66,7 +55,6 @@ export const Chart = forwardRef<HTMLElement, ChartProps>(function Chart(
     label,
     labels = o.labels.default,
     locale,
-    overlay,
     points,
     tone = o.tone.default,
     values = o.values.default,
@@ -75,6 +63,7 @@ export const Chart = forwardRef<HTMLElement, ChartProps>(function Chart(
   ref,
 ) {
   const max = chartMax(points.map((point) => point.value));
+  const line = kind === "bar" ? "" : chartLinePath(points);
 
   return (
     <figure
@@ -93,7 +82,7 @@ export const Chart = forwardRef<HTMLElement, ChartProps>(function Chart(
       // `falseValue` in the contract says the same).
       data-labels={labels ? undefined : "false"}
       data-locale={locale}
-      data-rendered={overlay ? "" : undefined}
+      data-rendered={line ? "" : undefined}
       data-tone={tone}
       data-values={values ? "" : undefined}
       ref={ref}
@@ -104,11 +93,16 @@ export const Chart = forwardRef<HTMLElement, ChartProps>(function Chart(
           before the numbers. `chart.css` explains when a composition shows it. */}
       <figcaption className={chartParts.caption}>{label}</figcaption>
       <div className={chartParts.plot}>
-        {/* Empty unless a renderer filled it: a renderer that appended its own container would make
-            the two bindings produce different DOM. `aria-hidden` always, because whatever gets drawn
-            in it is a second rendering of the list below. */}
+        {/* The path for `line` and `area`, empty for `bar`. `aria-hidden` always, because it is a
+            second rendering of the list below. `preserveAspectRatio="none"` over a 0-100 box is what
+            makes it responsive with no measurement (see the geometry's own banner in core). */}
         <div aria-hidden="true" className={chartParts.overlay}>
-          {overlay}
+          {line && (
+            <svg className={chartParts.overlaySvg} preserveAspectRatio="none" viewBox="0 0 100 100">
+              {kind === "area" && <path className={chartParts.overlayArea} d={chartAreaPath(points)} />}
+              <path className={chartParts.overlayLine} d={line} />
+            </svg>
+          )}
         </div>
         <ul className={chartParts.series} role="list">
           {points.map((point) => (

@@ -807,7 +807,7 @@ async function boot(): Promise<void> {
     (await import("@skryensya/vanilla/code-preview")).mountCodePreview(document);
   }
   if (document.querySelector("[data-sk-component-preview]")) {
-    (await import("@skryensya/vanilla/component-preview")).mountComponentPreview(document);
+    (await import("../preview/component-preview-enhancer")).mountComponentPreview(document);
   }
   /*
    * Editor is deliberately absent from `initComponents`'s own registry (`mountFrameComponents`

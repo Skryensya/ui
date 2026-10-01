@@ -4,9 +4,11 @@ import "@skryensya/core/components/steps.css";
 import "@skryensya/core/components/annotation.css";
 import ComponentPageShell from "./ComponentPageShell.astro";
 import CodeBlock from "../CodeBlock.astro";
-import ComponentPreview from "../ComponentPreview.astro";
 import UsagePreview from "../UsagePreview.astro";
 import DoDont from "../DoDont.astro";
+import WhenToUse from "../WhenToUse.astro";
+import ContentRules from "../ContentRules.astro";
+import A11yNotes from "../A11yNotes.astro";
 import {
   stepsAnatomyTree,
   stepsDontColorTree,
@@ -15,7 +17,7 @@ import {
   stepsVerticalTree,
 } from "../../demos/steps";
 import { annotationDemoCss } from "../../demos/annotation";
-import { getLocale, useTranslations } from "../../i18n";
+import { getLocale, tList, useTranslations } from "../../i18n";
 
 const install = `pnpm add @skryensya/core @skryensya/react`;
 const t = useTranslations(getLocale(Astro.url));
@@ -29,7 +31,7 @@ const explain = (option: string, values: readonly string[]) =>
   title="Steps"
   description={t("stepsPage.description")}
   contractId="steps"
-  testFiles={["packages/react/src/components/steps.test.tsx"]}}
+  testFiles={["packages/react/src/components/steps.test.tsx"]}
 >
   <Fragment slot="usage">
     <p class="lede" set:html={t("stepsPage.lede")} />
@@ -52,34 +54,24 @@ const explain = (option: string, values: readonly string[]) =>
       stageMinBlockSize="10rem"
     />
 
-    <h3>{t("stepsPage.showcaseTitle")}</h3>
-    <p set:html={t("stepsPage.showcaseBody")} />
-    <UsagePreview tree={stepsTree(t)} />
-    <p set:html={t("stepsPage.body")} />
+    <h3>{t("component.examplesTitle")}</h3>
+    <UsagePreview tree={stepsTree(t)} title={t("stepsPage.checkoutTitle")} description={t("stepsPage.checkoutBody")} />
+    <UsagePreview tree={stepsVerticalTree(t)} title={t("stepsPage.verticalTitle")} description={t("stepsPage.verticalBody")} />
 
-    <h3>{t("stepsPage.mobileTitle")}</h3>
-    <p set:html={t("stepsPage.mobileBody")} />
-
-    <h3>{t("stepsPage.verticalTitle")}</h3>
-    <p set:html={t("stepsPage.verticalBody")} />
-    <UsagePreview tree={stepsVerticalTree(t)} />
-
+    <h3>{t("component.contractNotesTitle")}</h3>
+    <ul>
+      {tList(t, "stepsPage.contract").map((item) => <li set:html={item} />)}
+    </ul>
     <p set:html={t("component.reactNote")} />
 
     <h3>{t("component.anatomy")}</h3>
     <p set:html={t("stepsPage.anatomyBody")} />
-    <ComponentPreview
-      tree={stepsAnatomyTree(t)}
-      css={annotationDemoCss}
-      label={t("stepsPage.anatomyPreviewLabel")}
-      screens={false}
-      hideSource
-      chrome={false}
-    />
+    <UsagePreview tree={stepsAnatomyTree(t)} css={annotationDemoCss} label={t("stepsPage.anatomyPreviewLabel")} bare />
   </Fragment>
 
   <Fragment slot="guidelines">
     <p class="lede" set:html={t("stepsPage.guidelinesLede")} />
+    <WhenToUse use={tList(t, "stepsPage.when")} avoid={tList(t, "stepsPage.whenNot")} />
     <DoDont
       canvas
       title={t("stepsPage.dd.few.title")}
@@ -92,9 +84,13 @@ const explain = (option: string, values: readonly string[]) =>
       do={{ tree: stepsTree(t), caption: t("stepsPage.dd.cue.do") }}
       dont={{ tree: stepsDontColorTree(t), caption: t("stepsPage.dd.cue.dont") }}
     />
+    <ContentRules items={tList(t, "stepsPage.content")} />
   </Fragment>
 
   <Fragment slot="install">
     <CodeBlock code={install} label="terminal" />
+  </Fragment>
+  <Fragment slot="a11y">
+    <A11yNotes intro={t("stepsPage.a11yIntro")} does={tList(t, "stepsPage.a11yDoes")} yours={tList(t, "stepsPage.a11yYours")} />
   </Fragment>
 </ComponentPageShell>

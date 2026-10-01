@@ -10,8 +10,10 @@ import "@skryensya/core/patterns/box.css";
 import "@skryensya/core/components/annotation.css";
 import ComponentPageShell from "./ComponentPageShell.astro";
 import AppearanceMenu from "../AppearanceMenu.astro";
-import ComponentPreview from "../ComponentPreview.astro";
 import UsagePreview from "../UsagePreview.astro";
+import WhenToUse from "../WhenToUse.astro";
+import ContentRules from "../ContentRules.astro";
+import A11yNotes from "../A11yNotes.astro";
 import { annotationDemoCss } from "../../demos/annotation";
 import {
   expandableTileTree,
@@ -25,7 +27,7 @@ import {
   tileSwitchTree,
   tileVersusBoxTree,
 } from "../../demos/tile";
-import { getLocale, localizePath, useTranslations } from "../../i18n";
+import { getLocale, localizePath, tList, useTranslations } from "../../i18n";
 
 const locale = getLocale(Astro.url);
 const t = useTranslations(locale);
@@ -39,7 +41,7 @@ const href = (path: string) => localizePath(path, locale);
   description={t("tilePage.description")}
   contractId="tile"
   appearanceTargetSelector=".sk-tile:is(.sk-tile--interactive, .sk-tile--expandable)[data-appearance]"
-  testFiles={["packages/react/src/components/tile.test.tsx"]}}
+  testFiles={["packages/react/src/components/tile.test.tsx"]}
 >
   <Fragment slot="appearance">
     <AppearanceMenu label={t("prefs.appearance")} />
@@ -48,40 +50,15 @@ const href = (path: string) => localizePath(path, locale);
   <Fragment slot="usage">
     <p class="lede" set:html={t("tilePage.lede")} />
 
-    <h3>{t("tilePage.showcaseTitle")}</h3>
-    <p set:html={t("tilePage.showcaseBody")} />
-
-    <h3>{t("tilePage.linkTitle")}</h3>
-    <p set:html={t("tilePage.linkBody")} />
-    <UsagePreview tree={tileLinkGridTree(t)} />
-
-    <h3>{t("tilePage.buttonTitle")}</h3>
-    <p set:html={t("tilePage.buttonBody")} />
-    <UsagePreview tree={tileButtonGroupTree(t)} />
-
-    <h3>{t("tilePage.checkboxTitle")}</h3>
-    <p set:html={t("tilePage.checkboxBody")} />
-    <UsagePreview tree={tileCheckboxTree(t)} />
-
-    <h3>{t("tilePage.switchTitle")}</h3>
-    <p set:html={t("tilePage.switchBody")} />
-    <UsagePreview tree={tileSwitchTree(t)} />
-
-    <h3>{t("tilePage.radioTitle")}</h3>
-    <p set:html={t("tilePage.radioBody")} />
-    <UsagePreview tree={tileRadioGroupTree(t)} />
-
-    <h3>{t("tilePage.expandableTitle")}</h3>
-    <p set:html={t("tilePage.expandableBody")} />
-    <UsagePreview tree={expandableTileTree(t)} />
-
-    <h3>{t("tilePage.versusTitle")}</h3>
-    <p set:html={t("tilePage.versusBody")} />
-    <UsagePreview tree={tileVersusBoxTree(t)} />
-
-    <h3>{t("tilePage.paddingTitle")}</h3>
-    <p set:html={t("tilePage.paddingBody")} />
-    <UsagePreview tree={tilePaddingTree(t)} />
+    <h3>{t("component.examplesTitle")}</h3>
+    <UsagePreview tree={tileLinkGridTree(t)} title={t("tilePage.linkTitle")} description={t("tilePage.linkBody")} />
+    <UsagePreview tree={tileButtonGroupTree(t)} title={t("tilePage.buttonTitle")} description={t("tilePage.buttonBody")} />
+    <UsagePreview tree={tileCheckboxTree(t)} title={t("tilePage.checkboxTitle")} description={t("tilePage.checkboxBody")} />
+    <UsagePreview tree={tileSwitchTree(t)} title={t("tilePage.switchTitle")} description={t("tilePage.switchBody")} />
+    <UsagePreview tree={tileRadioGroupTree(t)} title={t("tilePage.radioTitle")} description={t("tilePage.radioBody")} />
+    <UsagePreview tree={expandableTileTree(t)} title={t("tilePage.expandableTitle")} description={t("tilePage.expandableBody")} />
+    <UsagePreview tree={tileVersusBoxTree(t)} title={t("tilePage.versusTitle")} description={t("tilePage.versusBody")} />
+    <UsagePreview tree={tilePaddingTree(t)} title={t("tilePage.paddingTitle")} description={t("tilePage.paddingBody")} />
 
     <h3>{t("tilePage.appearanceTitle")}</h3>
     <p set:html={t("tilePage.appearanceBody")} />
@@ -90,32 +67,19 @@ const href = (path: string) => localizePath(path, locale);
       <UsagePreview tree={tileAppearanceTree(t)} />
     </div>
 
-    <h3>{t("tilePage.contractsTitle")}</h3>
+    <h3>{t("component.contractNotesTitle")}</h3>
     <ul>
-      <li set:html={t("tilePage.contractItem1")} />
-      <li set:html={t("tilePage.contractItem2")} />
-      <li set:html={t("tilePage.contractItem3")} />
-      <li set:html={t("tilePage.contractItem4")} />
-      <li set:html={t("tilePage.contractItem5")} />
+      {tList(t, "tilePage.contract").map((item) => <li set:html={item} />)}
     </ul>
-
-    <p set:html={t("tilePage.body1")} />
-    <p set:html={t("tilePage.body2")} />
 
     <h3>{t("component.anatomy")}</h3>
     <p set:html={t("tilePage.anatomyBody")} />
-    <ComponentPreview
-      tree={tileAnatomyTree(t)}
-      css={annotationDemoCss}
-      label={t("tilePage.anatomyPreviewLabel")}
-      screens={false}
-      hideSource
-      chrome={false}
-    />
+    <UsagePreview tree={tileAnatomyTree(t)} css={annotationDemoCss} label={t("tilePage.anatomyPreviewLabel")} bare />
   </Fragment>
 
   <Fragment slot="guidelines">
     <p class="lede" set:html={t("tilePage.guidelinesLede")} />
+    <WhenToUse use={tList(t, "tilePage.when")} avoid={tList(t, "tilePage.whenNot")} />
     <h3>{t("tilePage.chooseTitle")}</h3>
     <p set:html={t("tilePage.chooseBody")} />
     <div class="sk-table-scroll">
@@ -134,5 +98,10 @@ const href = (path: string) => localizePath(path, locale);
         </tbody>
       </table>
     </div>
+    <ContentRules items={tList(t, "tilePage.content")} />
+  </Fragment>
+
+  <Fragment slot="a11y">
+    <A11yNotes intro={t("tilePage.a11yIntro")} does={tList(t, "tilePage.a11yDoes")} yours={tList(t, "tilePage.a11yYours")} />
   </Fragment>
 </ComponentPageShell>

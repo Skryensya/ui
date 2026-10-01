@@ -859,6 +859,14 @@ html[data-scheme="dark"] .maker-palette__thumb-image--dark {
 /* ─── play mode ──────────────────────────────────────────────────────────────────────────────── */
 
 .maker-play {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  inline-size: 100%;
+  block-size: 100%;
+  max-inline-size: none;
+  max-block-size: none;
+  color: inherit;
   position: fixed;
   z-index: 1000;
   inset: 0;

@@ -121,7 +121,7 @@ export const templatesMessages = {
       "Necesitas Node 20 o superior. Si vienes de la v2, lee primero la guía de migración: los nombres de token cambiaron.",
     "demo.docsSite.sectionInstall": "Instalar el paquete",
     "demo.docsSite.sectionInstallBody":
-      "El kit se publica como un único paquete con los estilos separados por componente, así una página sólo carga el CSS que usa.",
+      "El kit se publica como un único paquete con los estilos separados por componente, así una página solo carga el CSS que usa.",
     "demo.docsSite.step1": "Instala el paquete desde tu gestor de siempre.",
     "demo.docsSite.step2": "Importa la hoja de tokens una vez, en la raíz de la aplicación.",
     "demo.docsSite.step3": "Importa el CSS del componente donde lo uses.",

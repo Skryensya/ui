@@ -4,7 +4,7 @@ import Base from "../layouts/Base.astro";
 import CodeBlock from "../components/CodeBlock.astro";
 import { densityLabTree } from "../demos/density";
 import { getLocale, useTranslations } from "../i18n";
-import ComponentPreview from "../components/ComponentPreview.astro";
+import UsagePreview from "../components/UsagePreview.astro";
 
 /* The site remains an honest consumer: input/field needs its authored paint rules. */
 
@@ -130,7 +130,12 @@ const t = useTranslations(getLocale(Astro.url));
   <p>
     The control below sits outside the scope. Drag it: padding, gaps and semantic sizes change inside the panel, and the rest of the page stays where it is.
   </p>
-  <ComponentPreview tree={densityLabTree(t)} previewScript={densityLabScript} label="Local Scope in action" note="scope and value live inline on the same node" />
+  <UsagePreview
+    tree={densityLabTree(t)}
+    script={densityLabScript}
+    label="Local Scope in action"
+    caption="scope and value live inline on the same node"
+  />
 
   <h2>What changes, and what does not</h2>
   <div class="sk-table-scroll">

@@ -1,0 +1,88 @@
+---
+/*
+ * THE ACCESSIBILITY TAB'S ONE SHAPE (DOCS-COPY-GUIDE.md, rule 4): what the component already does,
+ * what is left to the author, and the keyboard as a Key / Action table. The shell supplies the tab's
+ * own heading; this renders what goes under it.
+ *
+ * A key is written as it is pressed: "Shift+Tab" becomes two <kbd>s joined by "+", and several keys
+ * that do the same thing are separate entries, joined by commas.
+ */
+import { getLocale, useTranslations } from "../i18n";
+
+type KeyRow = {
+  /** The keys, each as pressed ("Enter", "Shift+Tab"); already localized by the page where needed. */
+  keys: readonly string[];
+  /** What pressing it does. Trusted HTML. */
+  action: string;
+};
+
+interface Props {
+  /** One sentence above the lists. Trusted HTML. */
+  intro?: string;
+  does: readonly string[];
+  yours: readonly string[];
+  keys?: readonly KeyRow[];
+  /** A note above the keyboard table: what is not implemented, what the platform adds. Trusted HTML. */
+  keysNote?: string;
+}
+
+const { intro, does, yours, keys = [], keysNote } = Astro.props;
+
+const escape = (text: string) => text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+/* Written as one string, not JSX: Astro keeps the whitespace between expressions, which would print
+   "Shift + Tab" and "Tab , Enter". */
+const keysHtml = (combos: readonly string[]) =>
+  combos.map((combo) => (combo.length > 1 ? combo.split("+") : [combo]).map((key) => `<kbd>${escape(key)}</kbd>`).join("+")).join(", ");
+const t = useTranslations(getLocale(Astro.url));
+---
+
+{intro && <p class="lede" set:html={intro} />}
+
+{
+  does.length > 0 && (
+    <>
+      <h3>{t("component.a11yDoesTitle")}</h3>
+      <ul>
+        {does.map((item) => <li set:html={item} />)}
+      </ul>
+    </>
+  )
+}
+
+{
+  yours.length > 0 && (
+    <>
+      <h3>{t("component.a11yYoursTitle")}</h3>
+      <ul>
+        {yours.map((item) => <li set:html={item} />)}
+      </ul>
+    </>
+  )
+}
+
+{
+  keys.length > 0 && (
+    <>
+      <h3>{t("component.a11yKeyboardTitle")}</h3>
+      {keysNote && <p set:html={keysNote} />}
+      <div class="sk-table-scroll">
+        <table class="sk-table">
+          <thead class="sk-table__head">
+            <tr class="sk-table__row">
+              <th class="sk-table__header">{t("component.a11yKeyHead")}</th>
+              <th class="sk-table__header">{t("component.a11yActionHead")}</th>
+            </tr>
+          </thead>
+          <tbody class="sk-table__body">
+            {keys.map((row) => (
+              <tr class="sk-table__row">
+                <td class="sk-table__cell" set:html={keysHtml(row.keys)} />
+                <td class="sk-table__cell" set:html={row.action} />
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </>
+  )
+}

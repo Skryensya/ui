@@ -4,9 +4,11 @@ import "@skryensya/core/components/progress.css";
 import "@skryensya/core/components/annotation.css";
 import ComponentPageShell from "./ComponentPageShell.astro";
 import CodeBlock from "../CodeBlock.astro";
-import ComponentPreview from "../ComponentPreview.astro";
 import UsagePreview from "../UsagePreview.astro";
 import DoDont from "../DoDont.astro";
+import WhenToUse from "../WhenToUse.astro";
+import ContentRules from "../ContentRules.astro";
+import A11yNotes from "../A11yNotes.astro";
 import {
   progressAnatomyTree,
   progressDoRunningTree,
@@ -17,7 +19,7 @@ import {
   progressTree,
 } from "../../demos/progress";
 import { annotationDemoCss } from "../../demos/annotation";
-import { getLocale, useTranslations } from "../../i18n";
+import { getLocale, tList, useTranslations } from "../../i18n";
 
 const t = useTranslations(getLocale(Astro.url));
 const install = `pnpm add @skryensya/core @skryensya/react`;
@@ -31,7 +33,7 @@ const explain = (option: string, values: readonly string[]) =>
   title="Progress"
   description={t("progressPage.description")}
   contractId="progress"
-  testFiles={["packages/react/src/components/progress.test.tsx"]}}
+  testFiles={["packages/react/src/components/progress.test.tsx"]}
 >
   <Fragment slot="usage">
     <p class="lede" set:html={t("progressPage.lede")} />
@@ -45,26 +47,28 @@ const explain = (option: string, values: readonly string[]) =>
       stageMinBlockSize="7rem"
     />
 
-    <h3>{t("progressPage.showcaseTitle")}</h3>
-    <p set:html={t("progressPage.showcaseBody")} />
-    <UsagePreview tree={progressTree(t)} />
-    <p set:html={t("progressPage.body")} />
+    <h3>{t("component.examplesTitle")}</h3>
+    <UsagePreview tree={progressTree(t)} title={t("progressPage.tasksTitle")} description={t("progressPage.tasksBody")} />
+
+    <h3>{t("component.contractNotesTitle")}</h3>
+    <ul>
+      {tList(t, "progressPage.contract").map((item) => <li set:html={item} />)}
+    </ul>
     <p set:html={t("component.reactNote")} />
 
     <h3>{t("component.anatomy")}</h3>
     <p set:html={t("progressPage.anatomyBody")} />
-    <ComponentPreview
+    <UsagePreview
       tree={progressAnatomyTree(t)}
       css={annotationDemoCss}
       label={t("progressPage.anatomyPreviewLabel")}
-      screens={false}
-      hideSource
-      chrome={false}
+      bare
     />
   </Fragment>
 
   <Fragment slot="guidelines">
     <p class="lede" set:html={t("progressPage.guidelinesLede")} />
+    <WhenToUse use={tList(t, "progressPage.when")} avoid={tList(t, "progressPage.whenNot")} />
     <DoDont
       title={t("progressPage.dd.tone.title")}
       do={{ tree: progressDoRunningTree(t), caption: t("progressPage.dd.tone.do") }}
@@ -75,9 +79,13 @@ const explain = (option: string, values: readonly string[]) =>
       do={{ tree: progressDoTaskTree(t), caption: t("progressPage.dd.task.do") }}
       dont={{ tree: progressDontMeasureTree(t), caption: t("progressPage.dd.task.dont") }}
     />
+    <ContentRules items={tList(t, "progressPage.content")} />
   </Fragment>
 
   <Fragment slot="install">
     <CodeBlock code={install} label="terminal" />
+  </Fragment>
+  <Fragment slot="a11y">
+    <A11yNotes intro={t("progressPage.a11yIntro")} does={tList(t, "progressPage.a11yDoes")} yours={tList(t, "progressPage.a11yYours")} />
   </Fragment>
 </ComponentPageShell>

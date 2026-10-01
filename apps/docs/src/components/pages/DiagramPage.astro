@@ -1,7 +1,11 @@
 ---
 import ComponentPageShell from "./ComponentPageShell.astro";
 import CodeBlock from "../CodeBlock.astro";
-import ComponentPreview from "../ComponentPreview.astro";
+import UsagePreview from "../UsagePreview.astro";
+import DoDont from "../DoDont.astro";
+import WhenToUse from "../WhenToUse.astro";
+import ContentRules from "../ContentRules.astro";
+import A11yNotes from "../A11yNotes.astro";
 import "@skryensya/core/components/annotation.css";
 import {
   diagramAnatomyCss,
@@ -28,8 +32,11 @@ import {
   diagramTreeCss,
   diagramTreeTree,
   diagramZonedCss,
+  diagramDontLongEdgeTree,
+  diagramGuideBranchTree,
+  diagramGuideLinearTree,
 } from "../../demos/diagram";
-import { getLocale, useTranslations } from "../../i18n";
+import { getLocale, tList, useTranslations } from "../../i18n";
 /* The sheet itself, not only its source: the Style hooks table resolves each hook against a real
    element, and a page that never loads this stylesheet shows every value blank. Nothing else is
    needed here, and that is worth noticing: a diagram's nodes are whatever text the author wrote, so
@@ -44,6 +51,10 @@ import "@skryensya/core/patterns/image-frame.css";
 import "@skryensya/core/components/canvas.css";
 
 const t = useTranslations(getLocale(Astro.url));
+
+const storybookTitle = "Components/Content/Diagram";
+const explain = (option: string, values: readonly string[]) =>
+  Object.fromEntries(values.map((value) => [value, t(`diagram.prop.${option}.${value}` as Parameters<typeof t>[0])]));
 
 const install = `pnpm add @skryensya/core @skryensya/react`;
 const styles = `@import "@skryensya/core/components/diagram.css";`;
@@ -121,170 +132,64 @@ const hooks = `.mi-diagrama {
 <ComponentPageShell
   title="Diagram"
   description={t("diagram.description")}
-  badge={t("diagram.betaBadge")}
   contractId="diagram"
-  testFiles={["packages/core/src/diagram.test.ts", "packages/vanilla/src/components/diagram.test.ts", "packages/react/src/components/diagram.test.tsx"]}}
+  testFiles={["packages/core/src/diagram.test.ts", "packages/vanilla/src/components/diagram.test.ts", "packages/react/src/components/diagram.test.tsx"]}
 >
   <Fragment slot="usage">
     <p class="lede" set:html={t("diagram.lede")} />
 
-    <h3>{t("diagram.showcaseTitle")}</h3>
-    <p set:html={t("diagram.showcaseBody")} />
-
-    <h3>{t("diagram.modelTitle")}</h3>
-    <p set:html={t("diagram.modelBody")} />
-
-    <h3>{t("diagram.flowTitle")}</h3>
-    <p set:html={t("diagram.flowBody")} />
-    <ComponentPreview
+    <UsagePreview
       tree={diagramFlowTree(t)}
+      optionName="arrow"
+      target={["edges", 0]}
+      title={t("diagram.prop.arrow.title")}
+      description={t("diagram.prop.arrow.body")}
+      explain={explain("arrow", ["end", "both", "none"])}
       css={diagramFlowCss}
-      label={t("diagram.flowPreviewLabel")}
+      storybookTitle={storybookTitle}
+      storybookStory="Flow"
     />
 
-    <h3>{t("diagram.branchTitle")}</h3>
-    <p set:html={t("diagram.branchBody")} />
-    <ComponentPreview
-      tree={diagramBranchTree(t)}
-      css={diagramCycleCss}
-      label={t("diagram.branchPreviewLabel")}
-    />
-
-    <h3>{t("diagram.treeTitle")}</h3>
-    <p set:html={t("diagram.treeBody")} />
-    <ComponentPreview
-      tree={diagramTreeTree(t)}
-      css={diagramTreeCss}
-      label={t("diagram.treePreviewLabel")}
-    />
-
-    <h3>{t("diagram.canvasTitle")}</h3>
-    <p set:html={t("diagram.canvasBody")} />
-    <ComponentPreview
-      tree={diagramCanvasTree(t)}
-      css={diagramDemoCss}
-      label={t("diagram.canvasPreviewLabel")}
-      flush
-    />
-
-    <h3>{t("diagram.stateTitle")}</h3>
-    <p set:html={t("diagram.stateBody")} />
-    <ComponentPreview
-      tree={diagramStateTree(t)}
-      css={diagramCycleCss}
-      label={t("diagram.statePreviewLabel")}
-    />
-
-    <h3>{t("diagram.processTitle")}</h3>
-    <p set:html={t("diagram.processBody")} />
-    <ComponentPreview
-      tree={diagramProcessTree(t)}
-      css={diagramDemoCss}
-      label={t("diagram.processPreviewLabel")}
-    />
-
-    <h3>{t("diagram.logicTitle")}</h3>
-    <p set:html={t("diagram.logicBody")} />
-    <ComponentPreview
-      tree={diagramLogicTree(t)}
-      css={diagramDemoCss}
-      label={t("diagram.logicPreviewLabel")}
-    />
-
-    <h3>{t("diagram.gateTitle")}</h3>
-    <p set:html={t("diagram.gateBody")} />
-    <p set:html={t("diagram.gateBody2")} />
-    <ComponentPreview
-      tree={diagramGateTree(t)}
-      css={diagramHalfAdderCss}
-      label={t("diagram.gatePreviewLabel")}
-    />
-    <p set:html={t("diagram.gateBody3")} />
-
-    <h3>{t("diagram.gateRuleTitle")}</h3>
-    <p set:html={t("diagram.gateRuleBody")} />
-    <ComponentPreview
-      tree={diagramGateRuleTree(t)}
-      css={diagramGateRuleCss}
-      label={t("diagram.gateRulePreviewLabel")}
-    />
-    <p set:html={t("diagram.gateRuleBody2")} />
-
-    <h3>{t("diagram.modelTitleDiagram")}</h3>
-    <p set:html={t("diagram.modelBodyDiagram")} />
-    <p set:html={t("diagram.modelBodyDiagram2")} />
-    <ComponentPreview
-      tree={diagramModelTree(t)}
-      css={diagramModelCss}
-      label={t("diagram.modelPreviewLabel")}
-    />
-    <p set:html={t("diagram.modelWarn")} />
-
-    <h3>{t("diagram.infraTitle")}</h3>
-    <p set:html={t("diagram.infraBody")} />
-    <ComponentPreview
-      tree={diagramInfraTree(t)}
-      css={diagramZonedCss}
-      label={t("diagram.infraPreviewLabel")}
-    />
-    <p set:html={t("diagram.infraBody2")} />
-    <p set:html={t("diagram.infraBody3")} />
-    <p set:html={t("diagram.infraBody4")} />
-
-    <h3>{t("diagram.awsTitle")}</h3>
-    <p set:html={t("diagram.awsBody")} />
-    <ComponentPreview
-      tree={diagramAwsTree(t)}
-      css={diagramAwsCss}
-      label={t("diagram.awsPreviewLabel")}
-    />
-    <p set:html={t("diagram.awsBody2")} />
-
-    <h3>{t("diagram.layoutTitle")}</h3>
-    <p set:html={t("diagram.layoutBody")} />
-
-    <h3>{t("diagram.shapesTitle")}</h3>
-    <p set:html={t("diagram.shapesBody")} />
-
-    <h3>{t("diagram.routingTitle")}</h3>
-    <p set:html={t("diagram.routingBody")} />
-
-    <h3>{t("diagram.runtimeTitle")}</h3>
-    <p set:html={t("diagram.runtimeBody1")} />
-    <p set:html={t("diagram.runtimeBody2")} />
-
-    <h3>{t("diagram.progressiveTitle")}</h3>
-    <p set:html={t("diagram.progressiveBody")} />
-
-    <h3>{t("diagram.optionsTitle")}</h3>
-    <p set:html={t("diagram.optionsBody")} />
-
-    <p set:html={t("component.reactNote")} />
+    <h3>{t("component.examplesTitle")}</h3>
+    <UsagePreview tree={diagramBranchTree(t)} css={diagramCycleCss} title={t("diagram.branchTitle")} description={t("diagram.branchBody")} storybookTitle={storybookTitle} storybookStory="Branch" />
+    <UsagePreview tree={diagramTreeTree(t)} css={diagramTreeCss} title={t("diagram.treeTitle")} description={t("diagram.treeBody")} storybookTitle={storybookTitle} storybookStory="Default" />
+    <UsagePreview tree={diagramCanvasTree(t)} css={diagramDemoCss} title={t("diagram.canvasTitle")} description={t("diagram.canvasBody")} storybookTitle={storybookTitle} storybookStory="Canvas" />
+    <UsagePreview tree={diagramStateTree(t)} css={diagramCycleCss} title={t("diagram.stateTitle")} description={t("diagram.stateBody")} storybookTitle={storybookTitle} storybookStory="State" />
+    <UsagePreview tree={diagramProcessTree(t)} css={diagramDemoCss} title={t("diagram.processTitle")} description={t("diagram.processBody")} storybookTitle={storybookTitle} storybookStory="Process" />
+    <UsagePreview tree={diagramLogicTree(t)} css={diagramDemoCss} title={t("diagram.logicTitle")} description={t("diagram.logicBody")} storybookTitle={storybookTitle} storybookStory="Logic" />
+    <UsagePreview tree={diagramGateTree(t)} css={diagramHalfAdderCss} title={t("diagram.gateTitle")} description={t("diagram.gateBody")} storybookTitle={storybookTitle} storybookStory="Gate" />
+    <UsagePreview tree={diagramGateRuleTree(t)} css={diagramGateRuleCss} title={t("diagram.gateRuleTitle")} description={t("diagram.gateRuleBody")} storybookTitle={storybookTitle} storybookStory="GateRule" />
+    <UsagePreview tree={diagramModelTree(t)} css={diagramModelCss} title={t("diagram.modelTitleDiagram")} description={t("diagram.modelBodyDiagram")} storybookTitle={storybookTitle} storybookStory="Model" />
+    <UsagePreview tree={diagramInfraTree(t)} css={diagramZonedCss} title={t("diagram.infraTitle")} description={t("diagram.infraBody")} storybookTitle={storybookTitle} storybookStory="Infra" />
+    <UsagePreview tree={diagramAwsTree(t)} css={diagramAwsCss} title={t("diagram.awsTitle")} description={t("diagram.awsBody")} storybookTitle={storybookTitle} storybookStory="Aws" />
 
     <h3>{t("component.contractNotesTitle")}</h3>
     <ul>
-      <li set:html={t("diagram.contractItem1")} />
-      <li set:html={t("diagram.contractItem2")} />
-      <li set:html={t("diagram.contractItem3")} />
+      {tList(t, "diagram.contract").map((item) => <li set:html={item} />)}
     </ul>
+    <p set:html={t("component.reactNote")} />
 
     <h3>{t("component.anatomy")}</h3>
     <p set:html={t("diagram.anatomyBody")} />
-    <ComponentPreview
-      tree={diagramAnatomyTree(t)}
-      css={diagramAnatomyCss}
-      label={t("diagram.anatomyPreviewLabel")}
-      screens={false}
-      hideSource
-      chrome={false}
-    />
+    <UsagePreview tree={diagramAnatomyTree(t)} css={diagramAnatomyCss} label={t("diagram.anatomyPreviewLabel")} bare />
   </Fragment>
 
   <Fragment slot="guidelines">
     <p class="lede" set:html={t("diagram.guidelinesLede")} />
-    <h3>{t("diagram.whenTitle")}</h3>
-    <p set:html={t("diagram.whenBody1")} />
-    <p set:html={t("diagram.whenBody2")} />
+    <WhenToUse use={tList(t, "diagram.when")} avoid={tList(t, "diagram.whenNot")} />
+    <DoDont
+      canvas
+      title={t("diagram.dd.linear.title")}
+      do={{ tree: diagramGuideBranchTree(t), caption: t("diagram.dd.linear.do") }}
+      dont={{ tree: diagramGuideLinearTree(t), caption: t("diagram.dd.linear.dont") }}
+    />
+    <DoDont
+      canvas
+      title={t("diagram.dd.edges.title")}
+      do={{ tree: diagramGuideBranchTree(t), caption: t("diagram.dd.edges.do") }}
+      dont={{ tree: diagramDontLongEdgeTree(t), caption: t("diagram.dd.edges.dont") }}
+    />
+    <ContentRules items={tList(t, "diagram.content")} />
   </Fragment>
 
   <Fragment slot="install">
@@ -299,8 +204,6 @@ const hooks = `.mi-diagrama {
   </Fragment>
 
   <Fragment slot="a11y">
-    <p set:html={t("diagram.a11yP1")} />
-    <p set:html={t("diagram.a11yP2")} />
-    <p set:html={t("diagram.a11yP3")} />
+    <A11yNotes intro={t("diagram.a11yIntro")} does={tList(t, "diagram.a11yDoes")} yours={tList(t, "diagram.a11yYours")} />
   </Fragment>
 </ComponentPageShell>

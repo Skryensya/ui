@@ -1,18 +1,25 @@
 ---
 import ComponentPageShell from "./ComponentPageShell.astro";
-import ComponentPreview from "../ComponentPreview.astro";
 import UsagePreview from "../UsagePreview.astro";
+import DoDont from "../DoDont.astro";
+import WhenToUse from "../WhenToUse.astro";
+import A11yNotes from "../A11yNotes.astro";
 import {
   fadeBottomTree,
   fadeColorTree,
   fadeEdgeAnatomyTree,
   fadeIntensityTree,
-  fadeLeftTree,
-  fadeRightTree,
+  fadeHorizontalAgendaTree,
   fadeScrollAwareTree,
   fadeTopTree,
+  fadeDoFitsTree,
+  fadeDontFitsTree,
+  fadeDirectionGuideTree,
+  fadeDontDirectionTree,
+  fadeDontModeTree,
+  fadeDontNestedScrollTree,
 } from "../../demos/fade-edge";
-import { getLocale, useTranslations } from "../../i18n";
+import { getLocale, tList, useTranslations } from "../../i18n";
 import "@skryensya/core/components/fade-edge.css";
 import "@skryensya/core/patterns/box.css";
 import "@skryensya/core/patterns/layout.css";
@@ -40,6 +47,8 @@ const t = useTranslations(getLocale(Astro.url));
  * write around the pattern, not part of it. Each runs inside the stage for both bindings, so it
  * drives the demo through the DOM and never through a binding's own API.
  */
+const storybookTitle = "Components/Layout/FadeEdge";
+
 const fadeTopScript = `
 const region = document.getElementById("fade-top-scroll");
 if (region) region.scrollTop = region.scrollHeight;
@@ -73,7 +82,6 @@ const explain = (option: string, values: readonly string[]) =>
 <ComponentPageShell
   title="FadeEdge"
   description={t("fadeEdge.description")}
-  badge={t("fadeEdge.betaBadge")}
   contractId="fade-edge"
 >
   <Fragment slot="usage">
@@ -87,80 +95,97 @@ const explain = (option: string, values: readonly string[]) =>
       description={t("fadeEdge.prop.direction.body")}
       explain={explain("direction", ["to-bottom", "to-top", "to-right", "to-left"])}
       stageMinBlockSize="14rem"
+      storybookTitle={storybookTitle}
+      storybookStory="FadeBottom"
     />
 
-    <h3>{t("fadeEdge.showcaseTitle")}</h3>
-    <p set:html={t("fadeEdge.showcaseBody")} />
+    <UsagePreview
+      tree={fadeBottomTree}
+      target={["children", 0]}
+      optionName="mode"
+      title={t("fadeEdge.prop.mode.title")}
+      description={t("fadeEdge.prop.mode.body")}
+      explain={explain("mode", ["transparent", "color"])}
+      stageMinBlockSize="14rem"
+      storybookTitle={storybookTitle}
+      storybookStory="FadeBottom"
+    />
 
-    <h3>{t("fadeEdge.bottomTitle")}</h3>
-    <p set:html={t("fadeEdge.bottomBody")} />
-    <UsagePreview tree={fadeBottomTree} />
-
+    <h3>{t("component.examplesTitle")}</h3>
     <h3>{t("fadeEdge.topTitle")}</h3>
     <p set:html={t("fadeEdge.topBody")} />
-    <ComponentPreview tree={fadeTopTree} previewScript={fadeTopScript} label={t("fadeEdge.topLabel")} />
-
-    <h3>{t("fadeEdge.rightTitle")}</h3>
-    <p set:html={t("fadeEdge.rightBody")} />
-    <UsagePreview tree={fadeRightTree} />
-
+    <UsagePreview tree={fadeTopTree} script={fadeTopScript} label={t("fadeEdge.topLabel")} />
+    <UsagePreview tree={fadeHorizontalAgendaTree(t)} title={t("fadeEdge.rightTitle")} description={t("fadeEdge.rightBody")} storybookTitle={storybookTitle} storybookStory="FadeRight" />
     <h3>{t("fadeEdge.leftTitle")}</h3>
     <p set:html={t("fadeEdge.leftBody")} />
-    <ComponentPreview tree={fadeLeftTree} previewScript={fadeLeftScript} label={t("fadeEdge.leftLabel")} />
-
-    <h3>{t("fadeEdge.colorTitle")}</h3>
-    <p set:html={t("fadeEdge.colorBody")} />
-    <UsagePreview tree={fadeColorTree} />
-
+    <UsagePreview tree={fadeHorizontalAgendaTree(t, "to-left")} script={fadeLeftScript} label={t("fadeEdge.leftLabel")} />
+    <UsagePreview tree={fadeColorTree} title={t("fadeEdge.colorTitle")} description={t("fadeEdge.colorBody")} storybookTitle={storybookTitle} storybookStory="FadeColor" />
     <h3>{t("fadeEdge.intensityTitle")}</h3>
     <p set:html={t("fadeEdge.intensityBody")} />
-    <ComponentPreview
-      tree={fadeIntensityTree}
-      previewScript={fadeIntensityScript}
-      label={t("fadeEdge.intensityLabel")}
-    />
+    <UsagePreview tree={fadeIntensityTree} script={fadeIntensityScript} label={t("fadeEdge.intensityLabel")} />
+    <UsagePreview tree={fadeScrollAwareTree} title={t("fadeEdge.scrollAwareTitle")} description={t("fadeEdge.scrollAwareBody")} storybookTitle={storybookTitle} storybookStory="FadeScrollAware" />
 
-    <h3>{t("fadeEdge.scrollAwareTitle")}</h3>
-    <p set:html={t("fadeEdge.scrollAwareBody")} />
-    <UsagePreview tree={fadeScrollAwareTree} />
-
-    <h3>{t("fadeEdge.apiTitle")}</h3>
+    <h3>{t("component.contractNotesTitle")}</h3>
     <ul>
-      <li set:html={t("fadeEdge.apiItem1")} />
-      <li set:html={t("fadeEdge.apiItem2")} />
-      <li set:html={t("fadeEdge.apiItem3")} />
-      <li set:html={t("fadeEdge.apiItem4")} />
-    </ul>
-
-    <h3>{t("fadeEdge.notesTitle")}</h3>
-    <ul>
-      <li set:html={t("fadeEdge.notesItem1")} />
-      <li set:html={t("fadeEdge.notesItem2")} />
-      <li set:html={t("fadeEdge.notesItem3")} />
-      <li set:html={t("fadeEdge.notesItem4")} />
-      <li set:html={t("fadeEdge.notesItem5")} />
+      {tList(t, "fadeEdge.contract").map((item) => <li set:html={item} />)}
     </ul>
 
     <h3>{t("component.anatomy")}</h3>
     <p set:html={t("fadeEdge.anatomyBody")} />
-    <ComponentPreview
+    <UsagePreview
       tree={fadeEdgeAnatomyTree(t)}
       css={annotationDemoCss}
       label={t("fadeEdge.anatomyPreviewLabel")}
-      screens={false}
-      hideSource
-      chrome={false}
+      bare
     />
   </Fragment>
 
   <Fragment slot="guidelines">
     <p class="lede" set:html={t("fadeEdge.guidelinesLede")} />
-    <h3>{t("fadeEdge.whenTitle")}</h3>
-    <ul>
-      <li set:html={t("fadeEdge.whenItem1")} />
-      <li set:html={t("fadeEdge.whenItem2")} />
-      <li set:html={t("fadeEdge.whenItem3")} />
-      <li set:html={t("fadeEdge.whenItem4")} />
-    </ul>
+    <WhenToUse use={tList(t, "fadeEdge.when")} avoid={tList(t, "fadeEdge.whenNot")} />
+    <DoDont
+      title={t("fadeEdge.dd.fits.title")}
+      interactive
+      do={{ tree: fadeDoFitsTree, caption: t("fadeEdge.dd.fits.do") }}
+      dont={{ tree: fadeDontFitsTree, caption: t("fadeEdge.dd.fits.dont") }}
+    />
+    <DoDont
+      title={t("fadeEdge.dd.direction.title")}
+      interactive
+      do={{ tree: fadeDirectionGuideTree, caption: t("fadeEdge.dd.direction.do") }}
+      dont={{ tree: fadeDontDirectionTree, caption: t("fadeEdge.dd.direction.dont") }}
+    />
+    {/*
+      Inline, right after the pair, so both rows open at their middle before the first paint. A row
+      in a tab that is still hidden has no width yet, so it is centred the first time it gets one.
+    */}
+    <script is:inline>
+      document.querySelectorAll("[data-dd-middle]").forEach((row) => {
+        const centre = () => {
+          if (!row.clientWidth) return false;
+          row.scrollLeft = (row.scrollWidth - row.clientWidth) / 2;
+          return true;
+        };
+        if (centre()) return;
+        const observer = new ResizeObserver(() => centre() && observer.disconnect());
+        observer.observe(row);
+      });
+    </script>
+    <DoDont
+      title={t("fadeEdge.dd.mode.title")}
+      do={{ tree: fadeColorTree, caption: t("fadeEdge.dd.mode.do") }}
+      dont={{ tree: fadeDontModeTree, caption: t("fadeEdge.dd.mode.dont") }}
+    />
+    <DoDont
+      title={t("fadeEdge.dd.scroll.title")}
+      interactive
+      do={{ tree: fadeScrollAwareTree, caption: t("fadeEdge.dd.scroll.do") }}
+      dont={{ tree: fadeDontNestedScrollTree, caption: t("fadeEdge.dd.scroll.dont") }}
+    />
+  </Fragment>
+
+  <Fragment slot="a11y">
+    <A11yNotes intro={t("fadeEdge.a11yIntro")} does={tList(t, "fadeEdge.a11yDoes")} yours={tList(t, "fadeEdge.a11yYours")} />
   </Fragment>
 </ComponentPageShell>
+

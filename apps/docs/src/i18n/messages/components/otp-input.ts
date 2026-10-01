@@ -1,47 +1,47 @@
 export const otpInputMessages = {
   es: {
     "otpInput.description": "Un código de un solo uso, con un campo por dígito.",
-    "otpInput.betaBadge": "Beta",
+    "otpInput.key.paste": "Reparte el código pegado entre las casillas.",
+    "otpInput.key.backspace": "Borra el carácter y vuelve a la casilla anterior.",
+    "otpInput.key.arrows": "Pasa a la casilla anterior o siguiente.",
+    "otpInput.a11yYours2": "No envíes el código por tiempo: deja que la persona lo termine de escribir.",
+    "otpInput.a11yYours1": "Traduce el nombre de cada casilla con <code>segmentLabel</code>, usando <code>{index}</code> y <code>{count}</code>.",
+    "otpInput.a11yDoes3": "Con <code>invalid</code>, las casillas llevan <code>aria-invalid</code>.",
+    "otpInput.a11yDoes2": "Cada casilla se anuncia con su posición; en inglés, por defecto, «Code 2 of 6».",
+    "otpInput.a11yDoes1": "La etiqueta queda asociada a la primera casilla.",
+    "otpInput.a11yIntro": "OtpInput es una fila de campos nativos con un nombre cada uno.",
+    "otpInput.content3": "En el error, di qué hacer: «El código expiró. Pide uno nuevo».",
+    "otpInput.content2": "Di en la pista adónde se envió: «Te lo enviamos por SMS al número terminado en 42».",
+    "otpInput.content1": "Nombra el campo con lo que se pide: «Código de verificación».",
+    "otpInput.whenNot2": 'Para una contraseña: usa <a href="/es/componentes/password-input">PasswordInput</a>.',
+    "otpInput.whenNot1": 'Para texto de largo variable o una clave larga: usa <a href="/es/componentes/input">Input</a>.',
+    "otpInput.when3": "Para un PIN, con <code>mask</code>.",
+    "otpInput.when2": "Cuando el largo se conoce de antemano: 4 a 8 caracteres.",
+    "otpInput.when1": "Para un código enviado por SMS, correo o una app de autenticación.",
+    "otpInput.contract3": '<code>otp</code> escribe <code>autocomplete="one-time-code"</code>.',
+    "otpInput.contract2": "No habla con el servidor: <code>onValueComplete</code> se dispara una vez al llenar la última casilla, y ahí envías el código.",
+    "otpInput.contract1": "Cada casilla es un <code>&lt;input&gt;</code> nativo; un campo oculto lleva el código completo al formulario.",
     "otpInput.anatomyBody":
       "La etiqueta, la fila de segmentos y una pista opcional debajo. Cada segmento es un <code>&lt;input&gt;</code> nativo; un campo oculto lleva el código completo al formulario.",
     "otpInput.anatomyLabel": "Partes de OtpInput",
     "otpInput.anatomyPreviewLabel": "Anatomía",
 
-    "otpInput.lede":
-      "Sobre <code>@zag-js/pin-input</code>, la misma máquina en las dos capas. Escribir avanza el foco solo, borrar lo regresa, y pegar el código completo lo reparte entre los segmentos. Cada segmento es un campo real, así que la selección, el IME y el autocompletado del teléfono siguen funcionando.",
+    "otpInput.lede": "OtpInput recibe un código corto de largo fijo, un carácter por casilla: el código que llega por SMS, por correo o desde una app de autenticación. Escribir avanza solo, borrar retrocede y pegar el código completo lo reparte.",
 
-    "otpInput.whenTitle": "Cuándo usarlo",
-    "otpInput.whenItem1": "Para un código enviado por SMS, correo o una app de autenticación",
-    "otpInput.whenItem2": "Cuando el largo del código se conoce de antemano: 4 o 6 dígitos",
-    "otpInput.whenItem3":
-      "No para texto libre de largo variable (eso es Input) ni para una contraseña (eso es PasswordInput)",
 
-    "otpInput.smsTitle": "Código por SMS",
-    "otpInput.smsBody":
-      "Los valores por defecto: seis dígitos y <code>otp</code> activo, que marca <code>autocomplete=\"one-time-code\"</code>. Con eso iOS y Android ofrecen el código recién recibido como sugerencia del teclado, y el teléfono muestra el teclado numérico.",
-    "otpInput.smsPreviewLabel": "OtpInput para un código por SMS",
+    "otpInput.smsTitle": "SMS: seis dígitos",
+    "otpInput.smsBody": "Con <code>otp</code>, el teléfono ofrece el código recibido como sugerencia del teclado.",
 
-    "otpInput.alphanumericTitle": "Con letras",
-    "otpInput.alphanumericBody":
-      "<code>type=\"alphanumeric\"</code> acepta letras y números. Apaga también <code>otp</code>: si no, el teléfono muestra el teclado numérico y no hay cómo escribir una letra.",
-    "otpInput.alphanumericPreviewLabel": "OtpInput alfanumérico",
+    "otpInput.alphanumericTitle": "Con letras: type alphanumeric",
+    "otpInput.alphanumericBody": "Acepta letras y números. Apaga también <code>otp</code>, o el teléfono muestra el teclado numérico.",
 
-    "otpInput.pinTitle": "PIN",
-    "otpInput.pinBody":
-      "No hay un componente PinInput aparte: un PIN es un OtpInput con <code>mask</code>, que muestra puntos en vez de los dígitos, y <code>otp</code> apagado, porque un PIN es algo que la persona sabe y no algo que le llegó por SMS.",
-    "otpInput.pinPreviewLabel": "OtpInput como PIN",
+    "otpInput.pinTitle": "PIN: oculto y sin sugerencia",
+    "otpInput.pinBody": "Un PIN es un OtpInput con <code>mask</code> y sin <code>otp</code>: la persona lo sabe, no lo recibe.",
 
-    "otpInput.statesTitle": "Estados",
-    "otpInput.statesBody":
-      "<code>invalid</code> pinta de peligro el borde de toda la fila y marca los segmentos <code>aria-invalid</code>; el motivo va en la pista. <code>disabled</code> apaga todos los segmentos.",
-    "otpInput.statesPreviewLabel": "Estados de OtpInput",
+    "otpInput.statesTitle": "Estados: inválido y deshabilitado",
+    "otpInput.statesBody": "<code>invalid</code> marca toda la fila y el motivo va en la pista.",
 
-    "otpInput.eventsTitle": "Verificar el código",
-    "otpInput.eventsBody":
-      "El componente no habla con el servidor. <code>sk:otpinputvaluecomplete</code> (<code>onValueComplete</code> en React) se dispara una vez, cuando se llena el último segmento: ahí se envía el código, y si el servidor lo rechaza se marca <code>invalid</code> con el motivo en la pista. <code>sk:otpinputvaluechange</code> avisa cada cambio, y <code>sk:otpinputinvalid</code> avisa el carácter que no correspondía a <code>type</code>, por ejemplo una letra en un código numérico.",
 
-    "otpInput.a11yBody":
-      "La etiqueta queda asociada al primer segmento. Cada segmento tiene su propio nombre accesible, <code>segmentLabel</code>, con <code>{index}</code> y <code>{count}</code> como marcadores. El texto por defecto de Zag está fijo en inglés (\"pin code 3 of 6\"); aquí se puede traducir, y en una página en español hay que hacerlo.",
 
     "otpInput.segmentLabel": "Dígito {index} de {count}",
     "otpInput.smsLabel": "Código de verificación",
@@ -52,65 +52,63 @@ export const otpInputMessages = {
     "otpInput.invalidHint": "El código no es correcto o ya expiró.",
     "otpInput.disabledLabel": "Código de verificación (bloqueado)",
     "otpInput.dd.licenseLabel": "Clave de licencia",
-    "otpInput.prop.mask.title": "Ocultar",
-    "otpInput.prop.mask.body": "<code>mask</code> dibuja puntos en vez de los caracteres.",
-    "otpInput.prop.mask.false": "Por defecto el código se ve: uno recibido por SMS no es secreto una vez en pantalla.",
-    "otpInput.prop.mask.true": "Usa <code>mask</code> para algo que la persona sabe, como un PIN.",
+    "otpInput.prop.mask.title": "Mask: ocultar el código",
+    "otpInput.prop.mask.body": "Dibuja puntos en vez de los caracteres.",
+    "otpInput.prop.mask.false": "Usa <code>false</code>, el valor por defecto, para un código recibido: una vez en pantalla ya no es secreto.",
+    "otpInput.prop.mask.true": "Usa <code>true</code> para algo que la persona sabe, como un PIN.",
     "otpInput.prop.mask.falseLabel": "Visible",
     "otpInput.prop.mask.trueLabel": "Oculto",
-    "otpInput.showcaseTitle": "Showcases",
-    "otpInput.showcaseBody": "Un código por SMS, uno con letras, un PIN y los estados del campo.",
-    "otpInput.guidelinesLede": "OtpInput recibe un código corto de largo fijo, un carácter por casilla.",
-    "otpInput.dd.hint.title": "Di de dónde viene",
+    "otpInput.guidelinesLede": "Casillas separadas muestran cuántos caracteres faltan, a cambio de servir solo para códigos cortos.",
+    "otpInput.dd.hint.title": "Pista: di de dónde viene",
     "otpInput.dd.hint.do": "Di en la pista a dónde se envió el código.",
     "otpInput.dd.hint.dont": "Sin la pista, la persona no sabe dónde buscarlo.",
-    "otpInput.dd.long.title": "Solo códigos cortos",
-    "otpInput.dd.long.do": "Una clave larga va en un <a href=\"/es/componentes/input\">Input</a>, donde se pega de una vez.",
+    "otpInput.dd.long.title": "Largo: solo códigos cortos",
+    "otpInput.dd.long.do": 'Una clave larga va en un <a href="/es/componentes/input">Input</a>, donde se pega de una vez.',
     "otpInput.dd.long.dont": "Dieciséis casillas no caben y cuesta ver en cuál estás.",
   },
   en: {
     "otpInput.description": "A one-time code, one field per digit.",
-    "otpInput.betaBadge": "Beta",
+    "otpInput.key.paste": "Spreads the pasted code across the boxes.",
+    "otpInput.key.backspace": "Deletes the character and returns to the previous box.",
+    "otpInput.key.arrows": "Moves to the previous or next box.",
+    "otpInput.a11yYours2": "Do not submit the code on a timer: let people finish typing it.",
+    "otpInput.a11yYours1": "Translate each box's name with <code>segmentLabel</code>, using <code>{index}</code> and <code>{count}</code>.",
+    "otpInput.a11yDoes3": "With <code>invalid</code>, the boxes carry <code>aria-invalid</code>.",
+    "otpInput.a11yDoes2": "Each box announces its position: “Code 2 of 6” by default.",
+    "otpInput.a11yDoes1": "The label is tied to the first box.",
+    "otpInput.a11yIntro": "OtpInput is a row of native fields, each with a name.",
+    "otpInput.content3": "In the error, say what to do: “The code expired. Request a new one”.",
+    "otpInput.content2": "Say in the hint where it was sent: “We texted it to the number ending in 42”.",
+    "otpInput.content1": "Name the field by what is asked: “Verification code”.",
+    "otpInput.whenNot2": 'For a password: use <a href="/components/password-input">PasswordInput</a>.',
+    "otpInput.whenNot1": 'For variable-length text or a long key: use <a href="/components/input">Input</a>.',
+    "otpInput.when3": "For a PIN, with <code>mask</code>.",
+    "otpInput.when2": "When the length is known in advance: 4 to 8 characters.",
+    "otpInput.when1": "For a code sent by SMS, email or an authenticator app.",
+    "otpInput.contract3": '<code>otp</code> writes <code>autocomplete="one-time-code"</code>.',
+    "otpInput.contract2": "It does not talk to the server: <code>onValueComplete</code> fires once when the last box fills, and that is when you send the code.",
+    "otpInput.contract1": "Each box is a native <code>&lt;input&gt;</code>; a hidden field carries the full code to the form.",
     "otpInput.anatomyBody":
       "The label, the row of segments, and an optional hint below. Each segment is a native <code>&lt;input&gt;</code>; a hidden field carries the whole code to the form.",
     "otpInput.anatomyLabel": "OtpInput parts",
     "otpInput.anatomyPreviewLabel": "Anatomy",
 
-    "otpInput.lede":
-      "On <code>@zag-js/pin-input</code>, the same machine in both bindings. Typing moves focus forward on its own, deleting moves it back, and pasting the whole code spreads it across the segments. Each segment is a real field, so selection, IME and the phone's autofill keep working.",
+    "otpInput.lede": "OtpInput takes a short fixed-length code, one character per box: the code that arrives by SMS, email or from an authenticator app. Typing advances, deleting goes back and pasting the full code spreads it out.",
 
-    "otpInput.whenTitle": "When to use it",
-    "otpInput.whenItem1": "For a code sent by SMS, email or an authenticator app",
-    "otpInput.whenItem2": "When the code's length is known in advance: 4 or 6 digits",
-    "otpInput.whenItem3":
-      "Not for free text of variable length (that is Input), and not for a password (that is PasswordInput)",
 
-    "otpInput.smsTitle": "A code by SMS",
-    "otpInput.smsBody":
-      "The defaults: six digits and <code>otp</code> on, which sets <code>autocomplete=\"one-time-code\"</code>. With it, iOS and Android offer the code that just arrived as a keyboard suggestion, and the phone shows the numeric keypad.",
-    "otpInput.smsPreviewLabel": "OtpInput for an SMS code",
+    "otpInput.smsTitle": "SMS: six digits",
+    "otpInput.smsBody": "With <code>otp</code>, the phone offers the received code as a keyboard suggestion.",
 
-    "otpInput.alphanumericTitle": "With letters",
-    "otpInput.alphanumericBody":
-      "<code>type=\"alphanumeric\"</code> accepts letters and digits. Turn <code>otp</code> off too: otherwise the phone shows the numeric keypad and there is no way to type a letter.",
-    "otpInput.alphanumericPreviewLabel": "Alphanumeric OtpInput",
+    "otpInput.alphanumericTitle": "With letters: type alphanumeric",
+    "otpInput.alphanumericBody": "It takes letters and numbers. Also turn off <code>otp</code>, or the phone shows the number pad.",
 
-    "otpInput.pinTitle": "PIN",
-    "otpInput.pinBody":
-      "There is no separate PinInput: a PIN is an OtpInput with <code>mask</code>, which shows dots instead of the digits, and <code>otp</code> off, because a PIN is something the person knows, not something that arrived by SMS.",
-    "otpInput.pinPreviewLabel": "OtpInput as a PIN",
+    "otpInput.pinTitle": "PIN: hidden and no suggestion",
+    "otpInput.pinBody": "A PIN is an OtpInput with <code>mask</code> and no <code>otp</code>: people know it, they do not receive it.",
 
-    "otpInput.statesTitle": "States",
-    "otpInput.statesBody":
-      "<code>invalid</code> paints the whole row's border in danger and marks the segments <code>aria-invalid</code>; the reason goes in the hint. <code>disabled</code> turns every segment off.",
-    "otpInput.statesPreviewLabel": "OtpInput states",
+    "otpInput.statesTitle": "States: invalid and disabled",
+    "otpInput.statesBody": "<code>invalid</code> marks the whole row and the reason goes in the hint.",
 
-    "otpInput.eventsTitle": "Checking the code",
-    "otpInput.eventsBody":
-      "The component does not talk to the server. <code>sk:otpinputvaluecomplete</code> (<code>onValueComplete</code> in React) fires once, when the last segment fills: that is where the code is sent, and if the server rejects it the field is marked <code>invalid</code> with the reason in the hint. <code>sk:otpinputvaluechange</code> reports every change, and <code>sk:otpinputinvalid</code> reports the character that did not match <code>type</code>, such as a letter in a numeric code.",
 
-    "otpInput.a11yBody":
-      "The label is tied to the first segment. Each segment has its own accessible name, <code>segmentLabel</code>, with <code>{index}</code> and <code>{count}</code> as placeholders. Zag's default wording is fixed in English (\"pin code 3 of 6\"); here it can be translated, and on a page in another language it should be.",
 
     "otpInput.segmentLabel": "Digit {index} of {count}",
     "otpInput.smsLabel": "Verification code",
@@ -121,20 +119,18 @@ export const otpInputMessages = {
     "otpInput.invalidHint": "That code is wrong or has expired.",
     "otpInput.disabledLabel": "Verification code (locked)",
     "otpInput.dd.licenseLabel": "License key",
-    "otpInput.prop.mask.title": "Mask",
-    "otpInput.prop.mask.body": "<code>mask</code> draws dots instead of the characters.",
-    "otpInput.prop.mask.false": "By default the code is visible: one received by SMS is no secret once it is on screen.",
-    "otpInput.prop.mask.true": "Use <code>mask</code> for something the person knows, like a PIN.",
+    "otpInput.prop.mask.title": "Mask: hide the code",
+    "otpInput.prop.mask.body": "Draws dots instead of the characters.",
+    "otpInput.prop.mask.false": "Use <code>false</code>, the default, for a received code: once on screen it is no longer secret.",
+    "otpInput.prop.mask.true": "Use <code>true</code> for something people know, like a PIN.",
     "otpInput.prop.mask.falseLabel": "Visible",
     "otpInput.prop.mask.trueLabel": "Masked",
-    "otpInput.showcaseTitle": "Showcases",
-    "otpInput.showcaseBody": "An SMS code, one with letters, a PIN, and the field's states.",
-    "otpInput.guidelinesLede": "OtpInput takes a short code of fixed length, one character per box.",
-    "otpInput.dd.hint.title": "Say where it comes from",
+    "otpInput.guidelinesLede": "Separate boxes show how many characters are left, at the cost of suiting only short codes.",
+    "otpInput.dd.hint.title": "Hint: say where it comes from",
     "otpInput.dd.hint.do": "Say in the hint where the code was sent.",
     "otpInput.dd.hint.dont": "Without the hint, people do not know where to look for it.",
-    "otpInput.dd.long.title": "Short codes only",
-    "otpInput.dd.long.do": "A long key goes in an <a href=\"/components/input\">Input</a>, where it is pasted in one go.",
+    "otpInput.dd.long.title": "Length: short codes only",
+    "otpInput.dd.long.do": 'A long key goes in an <a href="/components/input">Input</a>, where it is pasted in one go.',
     "otpInput.dd.long.dont": "Sixteen boxes do not fit, and it is hard to see which one you are in.",
   },
 } as const;

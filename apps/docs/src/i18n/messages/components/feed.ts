@@ -1,57 +1,85 @@
 export const feedMessages = {
   es: {
 
-    "feedPage.description":
-      "Feed: un stream de publicaciones independientes, cada una anunciada con su posición.",
-    "feedPage.lede":
-      'Un stream desplazable de unidades de contenido independientes (posts, comentarios): el rol WAI-ARIA <code>feed</code>. Cada <code>FeedArticle</code> declara su propia posición (<code>aria-posinset</code>/<code>aria-setsize</code>), así un lector de pantalla anuncia "2 de 3" sin tener que leer el resto del stream primero.',
-    "feedPage.body":
-      "Un Feed es estático salvo que se le pida otra cosa: la posición, el total y el nombre son markup y no necesitan JavaScript. El modelo de teclado que el patrón recomienda es aparte y opcional, en <code>keyboard</code>, y está más abajo.",
+    "feedPage.description": "Un flujo de publicaciones independientes que se carga por partes.",
+
+    "feedPage.a11yKeysNote": "WAI-ARIA recomienda estas teclas pero no las exige; se activan con <code>keyboard</code>.",
+
+    "feedPage.a11yYours2": "Usa <code>setSize: -1</code> si no conoces el total; no inventes uno.",
+
+    "feedPage.a11yYours1": "Debe tener <code>label</code>: el rol no trae un nombre propio.",
+
+    "feedPage.a11yDoes3": "Con <code>keyboard</code>, los artículos entran al orden de Tab.",
+
+    "feedPage.a11yDoes2": 'Con <code>busy</code>, la raíz anuncia <code>aria-busy="true"</code> y el lector espera al lote nuevo.',
+
+    "feedPage.a11yDoes1": "Cada artículo es un <code>article</code> con <code>aria-posinset</code> y <code>aria-setsize</code>, nombrado por su etiqueta.",
+
+    "feedPage.a11yIntro": "Feed sigue el rol <code>feed</code> de WAI-ARIA.",
+
+    "feedPage.content3": "Escribe el botón de más con lo que trae: «Cargar más publicaciones».",
+
+    "feedPage.content2": "Nombra el feed con <code>label</code>: «Actividad reciente».",
+
+    "feedPage.content1": "Usa como etiqueta del artículo quién lo publicó y cuándo: «Ana, hace 2 h».",
+
+    "feedPage.dd.loading.dont": "No sustituyas las publicaciones por un indicador de carga al pedir más. La persona pierde el contexto de lo que estaba leyendo.",
+
+    "feedPage.dd.loading.do": "Conserva las publicaciones ya cargadas y muestra la espera al final. La persona puede seguir leyendo mientras llega el siguiente lote.",
+
+    "feedPage.dd.loading.title": "Carga: conserva lo que ya se puede leer",
+    "feedPage.dd.fixed.title": "Contenido fijo: usa una lista, no un Feed",
+    "feedPage.dd.fixed.do": "Usa una lista ordenada para los pasos de publicación. Su posición indica qué va antes y qué va después.",
+    "feedPage.dd.fixed.dont": "No presentes instrucciones como publicaciones. Su orden depende del procedimiento, no de cuándo se publicaron.",
+    "feedPage.dd.labels.title": "Etiquetas: identifica cada publicación",
+    "feedPage.dd.labels.do": "Incluye el autor y la hora en cada etiqueta. Permiten recorrer el feed y reconocer una publicación sin leer todo su cuerpo.",
+    "feedPage.dd.labels.dont": "No repitas “Actualización” como única etiqueta. Oculta quién publicó y cuándo, y da el mismo nombre a todos los artículos para quien usa un lector de pantalla.",
+    "feedPage.dd.order.title": "Actividad reciente: mantén un orden temporal",
+    "feedPage.dd.order.do": "Ordena la actividad reciente de más nueva a más antigua. La hora de cada publicación permite entender la secuencia y localizar lo último.",
+    "feedPage.dd.order.dont": "No mezcles publicaciones de ayer entre las de hoy sin explicar otro criterio. La persona tiene que comparar todas las horas para encontrar las novedades.",
+
+    "feedPage.whenNot4": 'Si el orden es fijo y no de publicación: usa <a href="/es/componentes/table">Table</a> o <a href="/es/componentes/list">List</a>.',
+
+    "feedPage.whenNot3": 'Si todavía no hay publicaciones: usa <a href="/es/componentes/empty-state">EmptyState</a>.',
+
+    "feedPage.whenNot2": 'Para una conversación con respuestas anidadas: usa <a href="/es/componentes/comment-thread">CommentThread</a>.',
+
+    "feedPage.whenNot1": 'Para una lista fija o de opciones: usa <a href="/es/componentes/list">List</a> o <a href="/es/componentes/listbox">Listbox</a>.',
+
+    "feedPage.when2": "Cuando el contenido llega por lotes y a veces sin final conocido.",
+
+    "feedPage.when1": "Para contenido que se agrega a medida que se lee: publicaciones, actividad, comentarios.",
+
+    "feedPage.contract3": "Los artículos que llegan después se suman solos al orden de tabulación.",
+
+    "feedPage.contract2": "El teclado del patrón es opcional (<code>keyboard</code>): cada artículo entra al orden de Tab y Page Up y Page Down pasan de uno a otro.",
+
+    "feedPage.contract1": "La posición, el total y el nombre son markup: un Feed no necesita JavaScript.",
+    "feedPage.lede": "Feed muestra un flujo de publicaciones independientes que se carga por partes: posts, actividad, comentarios sin respuestas. Cada artículo dice su posición, y un lector de pantalla sabe cuántos hay y cuándo llegan más.",
     "feedPage.test1": "Aplica role=feed, lo nombra, y refleja aria-busy.",
-    "feedPage.anatomyBody":
-      "Este diagrama nombra el feed, el artículo y su etiqueta. El espécimen está congelado; los Feed vivos empiezan abajo.",
+    "feedPage.anatomyBody": "El feed, el artículo y su etiqueta.",
     "feedPage.anatomyLabel": "Anatomía de Feed",
     "feedPage.anatomyPreviewLabel": "Feed, parte por parte",
     "feedPage.test2":
       "Cada artículo recibe role=article con aria-posinset/aria-setsize y un nombre real enlazado.",
     "feedPage.test3":
       "Permite setSize=-1 para un total indeterminado, por la propia licencia de WAI.",
-    "feedPage.a11yBody":
-      'La raíz lleva <code>role="feed"</code> con <code>aria-label</code> (obligatorio, el rol no trae nombre implícito) y <code>aria-busy</code> mientras carga más contenido. Cada <code>FeedArticle</code> es un <code>role="article"</code> con <code>aria-posinset</code>/<code>aria-setsize</code>, nombrado por su propio slot de etiqueta vía <code>aria-labelledby</code>: nunca solo referenciado, siempre renderizado. Con <code>keyboard</code> activado el artículo además recibe foco, y lleva el mismo anillo de foco que una fila de Treegrid, porque lo enfocado es un bloque y no un control.',
 
-    "feedPage.demoTitle": "Ejemplos",
-    "feedPage.demoBody":
-      "De lo más simple a lo que realmente se escribe: tres posts de texto plano, un feed de actividad compuesto, el estado de carga y un stream sin total conocido.",
-    "feedPage.demoActivityTitle": "Feed de actividad",
-    "feedPage.demoActivityBody":
-      'El slot <code>label</code> acepta un nodo, no un string: acá es un <code>Avatar</code>, el nombre y la hora, y el cuerpo lleva un <code>Tag</code>. El nombre accesible del artículo sigue saliendo de lo que ese slot renderizó, porque <code>labelledBySlot</code> apunta al nodo real. Este demo trae <code>keyboard</code> activado: probá Page Down.',
-    "feedPage.demoActivityLabel": "Feed de actividad con identidades compuestas",
-    "feedPage.demoBusyTitle": "Cargando más",
-    "feedPage.demoBusyBody":
-      'Con <code>busy</code>, la raíz anuncia <code>aria-busy="true"</code> mientras llega el siguiente lote. Los esqueletos son <code>Placeholder</code> (decorativos por construcción) y que algo está cargando lo dice UNA sola vez un <code>Loader.status</code>: tres esqueletos narrando "cargando" lo dicen tres veces, que es peor que el silencio.',
-    "feedPage.demoBusyLabel": "Feed con un lote en vuelo",
-    "feedPage.demoInfiniteTitle": "Total desconocido",
-    "feedPage.demoInfiniteBody":
-      'Cada artículo declara <code>setSize: -1</code>, el valor que WAI reserva para un stream sin final conocido, así un lector de pantalla anuncia la posición sin inventar un total que nadie sabe. El botón agrega el siguiente lote; el enhancer observa el subárbol, así que los artículos nuevos entran en la secuencia de Tab sin que el foco tenga que volver a entrar al feed.',
+    "feedPage.demoTitle": "Publicaciones: el caso base",
+    "feedPage.demoBody": "Tres posts de texto, cada uno con su autor como etiqueta.",
+    "feedPage.demoActivityTitle": "Actividad: avatar, nombre y hora",
+    "feedPage.demoActivityBody": "La etiqueta acepta una composición: un Avatar, el nombre y la hora. El cuerpo lleva un Tag.",
+    "feedPage.demoBusyTitle": "Cargando más: esqueletos",
+    "feedPage.demoBusyBody": "Con <code>busy</code>, la raíz anuncia <code>aria-busy</code> mientras llega el siguiente lote, y los esqueletos muestran dónde va a caer.",
+    "feedPage.demoInfiniteTitle": "Total desconocido: un flujo sin fin",
+    "feedPage.demoInfiniteBody": "Cada artículo declara <code>setSize: -1</code>, así se anuncia la posición sin inventar un total. El botón agrega el siguiente lote.",
     "feedPage.demoInfiniteLabel": "Stream con botón de cargar más",
-    "feedPage.demoCommentsTitle": "Stream de comentarios",
-    "feedPage.demoCommentsBody":
-      "Comentarios planos, que sólo se leen: sin respuestas anidadas y sin controles de votar o responder. En cuanto aparece cualquiera de esas dos cosas la respuesta cambia y el componente es <code>CommentThread</code>. Esa frase vive en el contrato semántico; acá se ve.",
-    "feedPage.demoCommentsLabel": "Feed de comentarios planos",
-    "feedPage.keyboardTitle": "Teclado",
-    "feedPage.keyboardBody1":
-      'WAI-ARIA es explícito: el rol <code>feed</code> "no está asociado a ninguna convención de teclado bien establecida". Page Down, Page Up, Ctrl+Inicio y Ctrl+Fin son RECOMENDACIONES, no requisitos, a diferencia de todos los demás patrones de foco móvil de este catálogo. Por eso el modelo es opcional y viene apagado: <code>keyboard</code>.',
-    "feedPage.keyboardBody2":
-      "Con la opción activada, cada artículo entra en la secuencia de Tab (<code>tabindex=\"0\"</code> en todos, como en el propio ejemplo de WAI, y no un foco móvil 0/-1: un feed se lee, no se opera). En los extremos la tecla NO se consume, así Page Down en el último artículo conserva su significado nativo y la página sigue haciendo scroll.",
-    "feedPage.keyboardBody3":
-      "Ctrl+Inicio y Ctrl+Fin SALEN del feed, al primer elemento enfocable antes o después: no van al primer o último artículo. Es lo que dice el patrón, y también se acepta Cmd en macOS, que no tiene convención de Ctrl+Inicio.",
-    "feedPage.keyboardTableCaption": "Teclas que atiende un feed con keyboard activado",
-    "feedPage.keyboardKey": "Tecla",
-    "feedPage.keyboardDoes": "Qué hace",
+    "feedPage.demoCommentsTitle": "Comentarios: sin respuestas anidadas",
+    "feedPage.demoCommentsBody": 'Comentarios que solo se leen. Si tienen respuestas o votos, es <a href="/es/componentes/comment-thread">CommentThread</a>.',
     "feedPage.keyboardPageDown": "Mueve el foco al artículo siguiente.",
     "feedPage.keyboardPageUp": "Mueve el foco al artículo anterior.",
-    "feedPage.keyboardCtrlEnd": "Mueve el foco al primer elemento enfocable DESPUÉS del feed.",
-    "feedPage.keyboardCtrlHome": "Mueve el foco al primer elemento enfocable ANTES del feed.",
+    "feedPage.keyboardCtrlEnd": "Mueve el foco al primer elemento enfocable después del feed.",
+    "feedPage.keyboardCtrlHome": "Mueve el foco al primer elemento enfocable antes del feed.",
     "feedPage.test4": "Resuelve Page Down y Page Up un artículo por vez, sin dar la vuelta.",
 
     "demo.feed.label": "Actividad reciente",
@@ -73,70 +101,101 @@ export const feedMessages = {
     "demo.feed.streamLabel": "Novedades",
     "demo.feed.loadMore": "Cargar más",
     "demo.feed.commentsLabel": "Comentarios",
+    "demo.feed.genericLabel": "Actualización",
+    "demo.feed.fixedListLabel": "Pasos de publicación",
+    "demo.feed.fixed1": "Preparar borrador",
+    "demo.feed.fixed1Body": "Reunir el contenido.",
+    "demo.feed.fixed2": "Revisar",
+    "demo.feed.fixed2Body": "Comprobar los detalles.",
+    "demo.feed.fixed3": "Publicar",
+    "demo.feed.fixed3Body": "Compartir el resultado.",
     "demo.feed.commentAuthor1": "Paula",
     "demo.feed.commentAuthor2": "Tomás",
     "demo.feed.comment1": "Me pasó lo mismo con el lector de pantalla en Firefox.",
     "demo.feed.comment2": "Buenísimo el cambio, ahora el orden de lectura tiene sentido.",
 
-    "feedPage.showcaseTitle": "Showcases",
-    "feedPage.showcaseBody": "Una lista de publicaciones, de actividad, cargando, con carga infinita y de comentarios.",
-    "feedPage.guidelinesLede": "Feed es una lista de artículos que crece al bajar, y se recorre con el teclado.",
-    "feedPage.guide.item1": "Úsalo para contenido que se agrega a medida que se lee: publicaciones, actividad, comentarios.",
-    "feedPage.guide.item2": "Marca la lista como ocupada mientras carga más, para que el lector de pantalla espere.",
-    "feedPage.guide.item3": "Para una lista fija, una <a href=\"/es/componentes/list\">List</a> alcanza.",
+    "feedPage.guidelinesLede": "Un feed crece mientras se lee; cada artículo tiene que valer por sí solo.",
   },
   en: {
 
-    "feedPage.description":
-      "Feed: a stream of independent posts, each announced with its own position.",
-    "feedPage.lede":
-      'A scrollable stream of independent content units (posts, comments): the WAI-ARIA <code>feed</code> role. Each <code>FeedArticle</code> states its own position (<code>aria-posinset</code>/<code>aria-setsize</code>), so a screen reader announces "2 of 3" without reading the rest of the stream first.',
-    "feedPage.body":
-      "A Feed is static unless you ask for more: the position, the total and the name are markup and need no JavaScript. The keyboard model the pattern recommends is separate and optional, behind <code>keyboard</code>, and it is below.",
+    "feedPage.description": "A stream of independent posts that loads in batches.",
+
+    "feedPage.a11yKeysNote": "WAI-ARIA recommends these keys but does not require them; they turn on with <code>keyboard</code>.",
+
+    "feedPage.a11yYours2": "Use <code>setSize: -1</code> if you do not know the total; do not invent one.",
+
+    "feedPage.a11yYours1": "It must have a <code>label</code>: the role has no name of its own.",
+
+    "feedPage.a11yDoes3": "With <code>keyboard</code>, the articles join the Tab order.",
+
+    "feedPage.a11yDoes2": 'With <code>busy</code>, the root announces <code>aria-busy="true"</code> and the reader waits for the new batch.',
+
+    "feedPage.a11yDoes1": "Each article is an <code>article</code> with <code>aria-posinset</code> and <code>aria-setsize</code>, named by its label.",
+
+    "feedPage.a11yIntro": "Feed follows the WAI-ARIA <code>feed</code> role.",
+
+    "feedPage.content3": "Write the load-more button with what it brings: “Load more posts”.",
+
+    "feedPage.content2": "Name the feed with <code>label</code>: “Recent activity”.",
+
+    "feedPage.content1": "Use who posted and when as the article's label: “Ana, 2 h ago”.",
+
+    "feedPage.dd.loading.dont": "Do not replace posts with a loading indicator when fetching more. People lose the context of what they were reading.",
+
+    "feedPage.dd.loading.do": "Keep loaded posts visible and show the loading state at the end. People can keep reading while the next batch arrives.",
+
+    "feedPage.dd.loading.title": "Loading: keep readable content visible",
+    "feedPage.dd.fixed.title": "Fixed content: use a list, not a Feed",
+    "feedPage.dd.fixed.do": "Use an ordered list for publishing steps. Their position indicates what comes before and what comes after.",
+    "feedPage.dd.fixed.dont": "Do not present instructions as posts. Their order depends on the procedure, not on when they were published.",
+    "feedPage.dd.labels.title": "Labels: identify each post",
+    "feedPage.dd.labels.do": "Include the author and time in each label. They let people scan the feed and recognize a post without reading its entire body.",
+    "feedPage.dd.labels.dont": "Do not repeat “Update” as the only label. It hides who posted and when, and gives every article the same name for people using a screen reader.",
+    "feedPage.dd.order.title": "Recent activity: keep a chronological order",
+    "feedPage.dd.order.do": "Order recent activity from newest to oldest. Each post's time makes the sequence clear and helps people find the latest updates.",
+    "feedPage.dd.order.dont": "Do not mix yesterday's posts between today's without explaining a different ordering. People have to compare every timestamp to find what is new.",
+
+    "feedPage.whenNot4": 'If the order is fixed rather than by publication: use <a href="/components/table">Table</a> or <a href="/components/list">List</a>.',
+
+    "feedPage.whenNot3": 'If there are no posts yet: use <a href="/components/empty-state">EmptyState</a>.',
+
+    "feedPage.whenNot2": 'For a conversation with nested replies: use <a href="/components/comment-thread">CommentThread</a>.',
+
+    "feedPage.whenNot1": 'For a fixed list or a list of options: use <a href="/components/list">List</a> or <a href="/components/listbox">Listbox</a>.',
+
+    "feedPage.when2": "When content arrives in batches, sometimes with no known end.",
+
+    "feedPage.when1": "For content that is added as it is read: posts, activity, comments.",
+
+    "feedPage.contract3": "Articles added later join the tab order on their own.",
+
+    "feedPage.contract2": "The pattern's keyboard is optional (<code>keyboard</code>): each article joins the Tab order and Page Up and Page Down move between them.",
+
+    "feedPage.contract1": "Position, total and name are markup: a Feed needs no JavaScript.",
+    "feedPage.lede": "Feed shows a stream of independent posts that loads in batches: posts, activity, comments without replies. Each article states its position, and a screen reader knows how many there are and when more arrive.",
     "feedPage.test1": "Sets role=feed, names it, and reflects aria-busy.",
-    "feedPage.anatomyBody":
-      "This diagram names the feed, the article and its label. The specimen is frozen; the live Feeds begin below.",
+    "feedPage.anatomyBody": "The feed, the article and its label.",
     "feedPage.anatomyLabel": "Feed anatomy",
     "feedPage.anatomyPreviewLabel": "Feed, part by part",
     "feedPage.test2":
       "Each article gets role=article with aria-posinset/aria-setsize and a real labelled name.",
     "feedPage.test3": "Allows setSize=-1 for an undetermined total, per WAI's own allowance.",
-    "feedPage.a11yBody":
-      'The root carries <code>role="feed"</code> with <code>aria-label</code> (required, the role has no implicit name) and <code>aria-busy</code> while more content loads. Each <code>FeedArticle</code> is a <code>role="article"</code> with <code>aria-posinset</code>/<code>aria-setsize</code>, named by its own label slot via <code>aria-labelledby</code>: never just referenced, always rendered. With <code>keyboard</code> on the article also takes focus, and carries the same focus ring a Treegrid row gets, because what is focused is a block rather than a control.',
 
-    "feedPage.demoTitle": "Examples",
-    "feedPage.demoBody":
-      "Simplest first, then what actually gets written: three plain-text posts, a composed activity feed, the loading state, and a stream with no known total.",
-    "feedPage.demoActivityTitle": "Activity feed",
-    "feedPage.demoActivityBody":
-      'The <code>label</code> slot accepts a node, not a string: here it is an <code>Avatar</code>, the name and the time, and the body carries a <code>Tag</code>. The article\'s accessible name still comes from whatever that slot rendered, because <code>labelledBySlot</code> points at the real node. This demo has <code>keyboard</code> on: try Page Down.',
-    "feedPage.demoActivityLabel": "Activity feed with composed identities",
-    "feedPage.demoBusyTitle": "Loading more",
-    "feedPage.demoBusyBody":
-      'With <code>busy</code>, the root announces <code>aria-busy="true"</code> while the next batch is in flight. The skeletons are <code>Placeholder</code>s (decorative by construction) and the fact that something is loading is announced ONCE by a <code>Loader.status</code>: three skeletons each narrating "loading" says it three times, which is worse than the silence.',
-    "feedPage.demoBusyLabel": "Feed with a batch in flight",
-    "feedPage.demoInfiniteTitle": "Unknown total",
-    "feedPage.demoInfiniteBody":
-      "Every article states <code>setSize: -1</code>, the value WAI reserves for a stream with no known end, so a screen reader announces the position without inventing a total nobody has. The button appends the next batch; the enhancer watches the subtree, so new articles join the Tab sequence without focus ever having to re-enter the feed.",
+    "feedPage.demoTitle": "Posts: the base case",
+    "feedPage.demoBody": "Three text posts, each labelled with its author.",
+    "feedPage.demoActivityTitle": "Activity: avatar, name and time",
+    "feedPage.demoActivityBody": "The label takes a composition: an Avatar, the name and the time. The body carries a Tag.",
+    "feedPage.demoBusyTitle": "Loading more: skeletons",
+    "feedPage.demoBusyBody": "With <code>busy</code>, the root announces <code>aria-busy</code> while the next batch arrives, and the skeletons show where it will land.",
+    "feedPage.demoInfiniteTitle": "Unknown total: an endless stream",
+    "feedPage.demoInfiniteBody": "Each article declares <code>setSize: -1</code>, so the position is announced without inventing a total. The button appends the next batch.",
     "feedPage.demoInfiniteLabel": "Stream with a load-more button",
-    "feedPage.demoCommentsTitle": "Comment stream",
-    "feedPage.demoCommentsBody":
-      "Flat comments, read only: no nested replies and no vote or reply controls. The moment either appears the answer changes and the component is <code>CommentThread</code>. That sentence lives in the semantic contract; here you can see it.",
-    "feedPage.demoCommentsLabel": "Flat comment feed",
-    "feedPage.keyboardTitle": "Keyboard",
-    "feedPage.keyboardBody1":
-      'WAI-ARIA is explicit: the <code>feed</code> role "is not associated with any well-established keyboard conventions". Page Down, Page Up, Ctrl+Home and Ctrl+End are RECOMMENDATIONS, not requirements, unlike every other roving-focus pattern in this catalogue. So the model is optional and ships off: <code>keyboard</code>.',
-    "feedPage.keyboardBody2":
-      'With the option on, every article joins the Tab sequence (<code>tabindex="0"</code> on each, as WAI\'s own example does, and not a roving 0/-1: a feed is read, not operated). At either end the key is NOT consumed, so Page Down on the last article keeps its native meaning and the page still scrolls.',
-    "feedPage.keyboardBody3":
-      "Ctrl+Home and Ctrl+End LEAVE the feed, to the first focusable element before or after it: they do not go to the first or last article. That is what the pattern says, and Cmd is accepted too on macOS, which has no Ctrl+Home convention.",
-    "feedPage.keyboardTableCaption": "Keys a feed with keyboard on answers to",
-    "feedPage.keyboardKey": "Key",
-    "feedPage.keyboardDoes": "What it does",
-    "feedPage.keyboardPageDown": "Move focus to the next article.",
-    "feedPage.keyboardPageUp": "Move focus to the previous article.",
-    "feedPage.keyboardCtrlEnd": "Move focus to the first focusable element AFTER the feed.",
-    "feedPage.keyboardCtrlHome": "Move focus to the first focusable element BEFORE the feed.",
+    "feedPage.demoCommentsTitle": "Comments: no nested replies",
+    "feedPage.demoCommentsBody": 'Comments that are only read. If they have replies or votes, it is <a href="/components/comment-thread">CommentThread</a>.',
+    "feedPage.keyboardPageDown": "Moves focus to the next article.",
+    "feedPage.keyboardPageUp": "Moves focus to the previous article.",
+    "feedPage.keyboardCtrlEnd": "Moves focus to the first focusable element after the feed.",
+    "feedPage.keyboardCtrlHome": "Moves focus to the first focusable element before the feed.",
     "feedPage.test4": "Resolves Page Down and Page Up one article at a time, without wrapping.",
 
     "demo.feed.label": "Recent activity",
@@ -158,16 +217,19 @@ export const feedMessages = {
     "demo.feed.streamLabel": "What's new",
     "demo.feed.loadMore": "Load more",
     "demo.feed.commentsLabel": "Comments",
+    "demo.feed.genericLabel": "Update",
+    "demo.feed.fixedListLabel": "Publishing steps",
+    "demo.feed.fixed1": "Prepare draft",
+    "demo.feed.fixed1Body": "Gather the content.",
+    "demo.feed.fixed2": "Review",
+    "demo.feed.fixed2Body": "Check the details.",
+    "demo.feed.fixed3": "Publish",
+    "demo.feed.fixed3Body": "Share the result.",
     "demo.feed.commentAuthor1": "Paula",
     "demo.feed.commentAuthor2": "Tomás",
     "demo.feed.comment1": "Same thing happened to me with the screen reader on Firefox.",
     "demo.feed.comment2": "Great change, the reading order finally makes sense.",
 
-    "feedPage.showcaseTitle": "Showcases",
-    "feedPage.showcaseBody": "A list of posts, of activity, loading, with infinite loading, and of comments.",
-    "feedPage.guidelinesLede": "Feed is a list of articles that grows as you scroll, navigated with the keyboard.",
-    "feedPage.guide.item1": "Use it for content added as it is read: posts, activity, comments.",
-    "feedPage.guide.item2": "Mark the list as busy while more loads, so screen readers wait.",
-    "feedPage.guide.item3": "For a fixed list, a <a href=\"/components/list\">List</a> is enough.",
+    "feedPage.guidelinesLede": "A feed grows as it is read; each article has to stand on its own.",
   },
 } as const;

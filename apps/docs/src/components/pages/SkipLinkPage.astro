@@ -3,14 +3,17 @@
  * every page), so this page needs no import of its own. */
 import ComponentPageShell from "./ComponentPageShell.astro";
 import CodeBlock from "../CodeBlock.astro";
-import ComponentPreview from "../ComponentPreview.astro";
+import UsagePreview from "../UsagePreview.astro";
+import WhenToUse from "../WhenToUse.astro";
+import ContentRules from "../ContentRules.astro";
+import A11yNotes from "../A11yNotes.astro";
 import {
   skipLinkAnatomyCss,
   skipLinkAnatomyTree,
   skipLinkPairTree,
   skipLinkTree,
 } from "../../demos/skip-link";
-import { getLocale, useTranslations } from "../../i18n";
+import { getLocale, tList, useTranslations } from "../../i18n";
 import "@skryensya/core/components/annotation.css";
 
 const t = useTranslations(getLocale(Astro.url));
@@ -46,61 +49,39 @@ const pair = `<body>
   title="SkipLink"
   description={t("skipLink.description")}
   contractId="skip-link"
-  testFiles={["packages/react/src/components/skip-link.test.tsx"]}}
+  testFiles={["packages/react/src/components/skip-link.test.tsx"]}
 >
   <Fragment slot="usage">
     <p class="lede" set:html={t("skipLink.lede")} />
 
-    <h3>{t("skipLink.showcaseTitle")}</h3>
-    <p set:html={t("skipLink.showcaseBody")} />
-
-    <p set:html={t("skipLink.tryItBody")} />
-
-    <ComponentPreview tree={skipLinkTree(t)} label="SkipLink" viewport="auto" />
-
-    <h3>{t("skipLink.targetTitle")}</h3>
+    <h3>{t("component.examplesTitle")}</h3>
+    <UsagePreview tree={skipLinkTree(t)} title={t("skipLink.oneTitle")} description={t("skipLink.oneBody")} />
+    <h4>{t("skipLink.targetTitle")}</h4>
     <p set:html={t("skipLink.targetBody1")} />
-    <p set:html={t("skipLink.targetBody2")} />
     <CodeBlock code={target} label="HTML" lang="html" />
     <CodeBlock code={targetReact} label="React" lang="tsx" />
-
-    <h3>{t("skipLink.severalTitle")}</h3>
-    <p set:html={t("skipLink.severalBody1")} />
-    <p set:html={t("skipLink.severalBody2")} />
-    <ComponentPreview tree={skipLinkPairTree(t)} label={t("skipLink.severalLabel")} viewport="auto" />
+    <UsagePreview tree={skipLinkPairTree(t)} title={t("skipLink.severalTitle")} description={t("skipLink.severalBody1")} />
     <CodeBlock code={pair} label="HTML" lang="html" />
-    <p set:html={t("skipLink.severalBody3")} />
-
-    <h3>{t("skipLink.hiddenTitle")}</h3>
-    <p set:html={t("skipLink.hiddenBody1")} />
-    <p set:html={t("skipLink.hiddenBody2")} />
-
-    <h3>{t("skipLink.firstTitle")}</h3>
-    <p set:html={t("skipLink.firstBody")} />
 
     <h3>{t("component.contractNotesTitle")}</h3>
-    <p set:html={t("skipLink.contractBody")} />
+    <ul>
+      {tList(t, "skipLink.contract").map((item) => <li set:html={item} />)}
+    </ul>
 
     <h3>{t("component.anatomy")}</h3>
     <p set:html={t("skipLink.anatomyBody")} />
-    <ComponentPreview
+    <UsagePreview
       tree={skipLinkAnatomyTree(t)}
       css={skipLinkAnatomyCss}
       label={t("skipLink.anatomyPreviewLabel")}
-      screens={false}
-      hideSource
-      chrome={false}
+      bare
     />
   </Fragment>
 
   <Fragment slot="guidelines">
     <p class="lede" set:html={t("skipLink.guidelinesLede")} />
-    <ul>
-      <li set:html={t("skipLink.guide.use1")} />
-      <li set:html={t("skipLink.guide.use2")} />
-      <li set:html={t("skipLink.guide.avoid1")} />
-      <li set:html={t("skipLink.guide.avoid2")} />
-    </ul>
+    <WhenToUse use={tList(t, "skipLink.when")} avoid={tList(t, "skipLink.whenNot")} />
+    <ContentRules items={tList(t, "skipLink.content")} />
   </Fragment>
 
   <Fragment slot="install">
@@ -109,13 +90,14 @@ const pair = `<body>
   </Fragment>
 
   <Fragment slot="a11y">
-    <p set:html={t("skipLink.a11yIntro")} />
-    <ul>
-      <li set:html={t("skipLink.a11yItem1")} />
-      <li set:html={t("skipLink.a11yItem2")} />
-      <li set:html={t("skipLink.a11yItem3")} />
-      <li set:html={t("skipLink.a11yItem4")} />
-      <li set:html={t("skipLink.a11yItem5")} />
-    </ul>
+    <A11yNotes
+      intro={t("skipLink.a11yIntro")}
+      does={tList(t, "skipLink.a11yDoes")}
+      yours={tList(t, "skipLink.a11yYours")}
+      keys={[
+        { keys: ["Tab"], action: t("skipLink.key.tab") },
+        { keys: ["Enter"], action: t("skipLink.key.enter") },
+      ]}
+    />
   </Fragment>
 </ComponentPageShell>

@@ -2,167 +2,167 @@ export const fadeEdgeMessages = {
   es: {
     "fadeEdge.anatomyLabel": "Anatomía de FadeEdge",
     "fadeEdge.anatomyPreviewLabel": "FadeEdge, parte por parte",
-    "fadeEdge.anatomyBody": "Una sola parte. El desvanecimiento no es un hijo: en el modo por defecto es una máscara sobre la propia raíz, así que el elemento que desplaza es el mismo que se desvanece. Lo de adentro es composición libre.",
-    "fadeEdge.description": "Efecto de desvanecimiento CSS puro para ocultar contenido suavemente en los bordes.",
-    "fadeEdge.betaBadge": "Beta",
+    "fadeEdge.anatomyBody": "Una sola parte: el desvanecido es una máscara sobre la raíz, no un hijo.",
+    "fadeEdge.description": "Desvanece un borde para mostrar que el contenido sigue más allá.",
+    "fadeEdge.a11yYours2": 'Si el contenedor tiene scroll, debe poder desplazarse con teclado: dale <code>tabindex="0"</code> y un nombre si no contiene controles.',
+    "fadeEdge.a11yYours1": "No dejes un control o un texto crítico bajo el desvanecido en reposo.",
+    "fadeEdge.a11yDoes2": "No agrega roles ni paradas de foco.",
+    "fadeEdge.a11yDoes1": "El contenido desvanecido sigue en el DOM y se lee completo.",
+    "fadeEdge.a11yIntro": "FadeEdge es visual: no cambia la semántica ni el foco de lo que envuelve.",
+    "fadeEdge.dd.fits.dont": "Las dos etiquetas entran, pero la última se desvanece igual: pierde contraste y no hay nada más que ver.",
+    "fadeEdge.dd.fits.do": "Con <code>scrollAware</code>, las mismas dos etiquetas se ven nítidas: todo entra, así que no hay nada que desvanecer.",
+    "fadeEdge.dd.fits.title": "Contenido: solo si hay más",
+    "fadeEdge.dd.direction.title": "Dirección: desvanece cada borde por donde sigue el contenido",
+    "fadeEdge.dd.direction.do": "En medio de la fila hay etiquetas a ambos lados, y los dos bordes se desvanecen. Con <code>scrollAware</code>, cada fundido se retira al llegar a su extremo.",
+    "fadeEdge.dd.direction.dont": "También hay etiquetas a la izquierda, pero solo se desvanece el borde derecho: el izquierdo corta seco y no avisa que hay más.",
+    "fadeEdge.dd.mode.title": "Superficie: máscara o degradado de color",
+    "fadeEdge.dd.mode.do": "Sobre una imagen, <code>color</code> funde hacia el color de la superficie del texto.",
+    "fadeEdge.dd.mode.dont": "<code>transparent</code> hace desaparecer la imagen hacia el fondo, en vez de fundirla hacia el color elegido.",
+    "fadeEdge.dd.scroll.title": "Scroll: FadeEdge debe ser el contenedor",
+    "fadeEdge.dd.scroll.do": "El mismo elemento se desplaza y retira el fundido cuando llega al borde.",
+    "fadeEdge.dd.scroll.dont": "Si el scroll está en un hijo, <code>scrollAware</code> no puede saber cuándo llegó al final.",
+    "fadeEdge.whenNot4": "Si taparía un control o algo que hay que leer en reposo.",
+    "fadeEdge.whenNot3": 'Alrededor de un <a href="/es/componentes/marquee">Marquee</a>: ya trae su propio desvanecido.',
+    "fadeEdge.whenNot2": 'Para proteger texto sobre una foto: usa <a href="/es/componentes/media-gradient">MediaGradient</a>.',
+    "fadeEdge.whenNot1": "Si el contenido entra entero: desvanecerlo solo le quita contraste.",
+    "fadeEdge.when3": "Para contenido que pasa por detrás de una cabecera fija.",
+    "fadeEdge.when2": "Para una fila de etiquetas o chips que se desborda al costado.",
+    "fadeEdge.when1": "Para una lista o un feed con scroll, cuando hay más filas abajo.",
+    "fadeEdge.contract3": "Pon <code>overflow: auto</code> en el mismo elemento cuando el contenido se desborda.",
+    "fadeEdge.contract2": "En modo <code>color</code> es un <code>::after</code> encima, así que la raíz trae <code>position: relative</code>.",
+    "fadeEdge.contract1": "En modo <code>transparent</code> es un <code>mask-image</code> sobre la raíz: el contenido sigue seleccionable.",
+    "fadeEdge.prop.mode.color": "Usa <code>color</code> cuando detrás no hay una superficie lisa, como una foto: pinta un degradado del color de <code>--sk-fade-edge-color</code>.",
+    "fadeEdge.prop.mode.transparent": "Usa <code>transparent</code>, el valor por defecto, sobre una superficie lisa.",
+    "fadeEdge.prop.mode.body": "Cómo se desvanece: dejando ver lo que hay detrás, o pintando un degradado encima.",
+    "fadeEdge.prop.mode.title": "Modo: transparente o a un color",
 
-    "fadeEdge.lede":
-      "FadeEdge desvanece un borde del contenido, en CSS puro. Dos formas de hacerlo: hacia transparencia, dejando ver lo que hay detrás, o hacia un color determinado, pintando un degradado encima. Úsalo para indicar que hay más contenido por descubrir, en vez de cortarlo de golpe con <code>overflow: hidden</code>.",
+    "fadeEdge.lede": "FadeEdge desvanece un borde para mostrar que el contenido sigue: una lista con más filas abajo, una fila de etiquetas que continúa al costado. Envuelve cualquier componente sin cambiar su semántica, su foco ni su comportamiento; es CSS puro.",
 
-    "fadeEdge.whenTitle": "Cuándo usarlo",
-    "fadeEdge.whenItem1":
-      "Una lista o feed con scroll, para insinuar que hay más filas por debajo sin una flecha ni un scrollbar grueso",
-    "fadeEdge.whenItem2": "Una fila de chips o tags que se desborda horizontalmente",
-    "fadeEdge.whenItem3": 'Un párrafo truncado, con un botón "Leer más" flotando sobre el desvanecido',
-    "fadeEdge.whenItem4": "Contenido que se desplaza detrás de una cabecera fija",
 
-    "fadeEdge.bottomTitle": "Fundido hacia abajo",
-    "fadeEdge.bottomBody":
-      "Una lista con scroll real y altura acotada: el borde inferior se desvanece para señalar que faltan filas por ver. Desplázate adentro del recuadro y vas a ver que el degradado queda fijo en el borde mientras el contenido pasa debajo.",
-    "fadeEdge.bottomLabel": "Fundido hacia abajo",
 
-    "fadeEdge.topTitle": "Fundido hacia arriba",
-    "fadeEdge.topBody":
-      "El mismo feed, arrancando ya scrolleado hasta el final: lo que falta está arriba, y el degradado lo señala ahí. Sube el scroll para verlo desaparecer.",
+    "fadeEdge.topTitle": "Hacia arriba: lo que falta está antes",
+    "fadeEdge.topBody": "El mismo listado, empezando al final. Sube el scroll y el borde se aclara.",
     "fadeEdge.topLabel": "Fundido hacia arriba",
 
-    "fadeEdge.rightTitle": "Fundido hacia la derecha",
-    "fadeEdge.rightBody":
-      "Una fila de tags que no entra en el ancho disponible, con scroll horizontal real. El desvanecido a la derecha avisa que hay más sin necesidad de una flecha visible.",
-    "fadeEdge.rightLabel": "Fundido hacia la derecha",
+    "fadeEdge.rightTitle": "Agenda: descubre las próximas sesiones",
+    "fadeEdge.rightBody": "La agenda muestra dos sesiones completas y parte de la siguiente. El borde derecho desvanecido señala que hay más: desplázate horizontalmente para verlas. Al llegar a la última, el fundido desaparece.",
 
-    "fadeEdge.leftTitle": "Fundido hacia la izquierda",
-    "fadeEdge.leftBody":
-      "La misma fila, arrancando ya scrolleada hasta el final: el desvanecido a la izquierda indica que hay contenido anterior.",
-    "fadeEdge.leftLabel": "Fundido hacia la izquierda",
+    "fadeEdge.leftTitle": "Agenda: vuelve a las sesiones anteriores",
+    "fadeEdge.leftBody": "La misma agenda empieza en la última sesión. Ahora el borde izquierdo desvanecido señala lo que quedó antes: desplázate hacia la izquierda para volver al comienzo.",
+    "fadeEdge.leftLabel": "Agenda desplazada hasta la última sesión",
 
-    "fadeEdge.colorTitle": "Fundido a un color determinado",
-    "fadeEdge.colorBody":
-      'Cuando no hay una superficie plana detrás para revelar, una foto por ejemplo, <code>data-fade="color"</code> pinta un degradado opaco encima en vez de hacer transparente el contenido. Es el patrón clásico del scrim: un texto legible sobre una imagen, sin importar qué colores tenga la foto.',
-    "fadeEdge.colorLabel": "Fundido a un color",
+    "demo.fadeEdge.agenda.title": "Próximas sesiones",
+    "demo.fadeEdge.agenda.region": "Agenda del equipo, desplazamiento horizontal",
+    "demo.fadeEdge.agenda.hint": "Desplázate para ver más sesiones. Con teclado, enfoca la agenda y usa las flechas.",
+    "demo.fadeEdge.agenda.day1": "Lunes 5 de octubre",
+    "demo.fadeEdge.agenda.day2": "Martes 6 de octubre",
+    "demo.fadeEdge.agenda.day3": "Miércoles 7 de octubre",
+    "demo.fadeEdge.agenda.day4": "Jueves 8 de octubre",
+    "demo.fadeEdge.agenda.session1": "Planificación del sprint",
+    "demo.fadeEdge.agenda.session2": "Revisión de diseño",
+    "demo.fadeEdge.agenda.session3": "Pruebas de accesibilidad",
+    "demo.fadeEdge.agenda.session4": "Retrospectiva del equipo",
 
-    "fadeEdge.intensityTitle": "Ajustar la intensidad",
-    "fadeEdge.intensityBody":
-      "La variable <code>--sk-fade-edge-size</code> controla qué tan ancha es la zona que se desvanece (por defecto <code>4rem</code>), en cualquiera de los dos modos. Mueves el control y el CSS se actualiza en vivo sobre el mismo feed con scroll de arriba.",
+    "fadeEdge.colorTitle": "A un color: sobre una foto",
+    "fadeEdge.colorBody": 'Sin superficie lisa detrás, <code>fade="color"</code> pinta el degradado encima.',
+
+    "fadeEdge.intensityTitle": "Intensidad: el ancho del desvanecido",
+    "fadeEdge.intensityBody": "<code>--sk-fade-edge-size</code> fija el ancho de la zona (4rem por defecto). Mueve el control para verlo.",
     "fadeEdge.intensityLabel": "Intensidad del desvanecido",
 
-    "fadeEdge.scrollAwareTitle": "Atento al scroll",
-    "fadeEdge.scrollAwareBody":
-      "Con <code>scrollAware</code> (<code>data-scroll-aware</code> en HTML) el fundido se retira cuando el scroll llega al borde al que apunta, y también cuando el contenido entra entero sin scrollear: ya no hay nada más en esa dirección. Baja hasta la última fila y el fundido desaparece; vuelve a subir y reaparece. El elemento con FadeEdge tiene que ser el mismo que scrollea.",
-    "fadeEdge.scrollAwareLabel": "Fundido atento al scroll",
+    "fadeEdge.scrollAwareTitle": "Atento al scroll: se va al llegar",
+    "fadeEdge.scrollAwareBody": "Con <code>scrollAware</code>, el desvanecido se retira cuando el scroll llega a ese borde o cuando todo el contenido entra.",
 
-    "fadeEdge.apiTitle": "Variables y atributos",
-    "fadeEdge.apiItem1":
-      "<code>data-fade</code>: <code>transparent</code> (por defecto, revela el fondo detrás) o <code>color</code> (pinta un degradado opaco encima)",
-    "fadeEdge.apiItem2":
-      "<code>data-direction</code>: <code>to-bottom</code> (por defecto), <code>to-top</code>, <code>to-right</code>, <code>to-left</code>",
-    "fadeEdge.apiItem3":
-      "<code>--sk-fade-edge-size</code>: el alto o ancho de la zona que se desvanece (por defecto: <code>4rem</code>)",
-    "fadeEdge.apiItem4":
-      "<code>--sk-fade-edge-color</code>: el color de destino del degradado en modo <code>color</code> (por defecto: <code>var(--color-bg-canvas)</code>); no tiene efecto en modo <code>transparent</code>",
 
-    "fadeEdge.notesTitle": "Notas de implementación",
-    "fadeEdge.notesItem1":
-      "Modo <code>transparent</code>: usa <code>mask-image</code> con un <code>linear-gradient</code>. El contenido sigue en el DOM y es seleccionable, solo se enmascara visualmente. Se nota únicamente si lo que hay detrás es un fondo sólido que contrasta con el contenido",
-    "fadeEdge.notesItem2":
-      "Modo <code>color</code>: un <code>::after</code> posicionado encima pinta el degradado, así que el elemento necesita <code>position: relative</code> (ya lo trae por defecto) y el resto de tu contenido no debe competir por ese mismo pseudo-elemento",
-    "fadeEdge.notesItem3":
-      "El desvanecido queda fijo en el borde del elemento aunque el contenido interno tenga scroll: no hace falta recalcularlo al desplazarse",
-    "fadeEdge.notesItem4":
-      "Ponle <code>overflow: auto</code> (o <code>hidden</code>, si no necesitas scroll) al mismo elemento cuando el contenido interno se desborda, para que no se vea por fuera del área desvanecida",
-    "fadeEdge.notesItem5":
-      "Para accesibilidad, asegúrate de que el contenido crítico no quede oculto detrás del desvanecido",
-    "fadeEdge.prop.direction.title": "Dirección",
-    "fadeEdge.prop.direction.body": "La <code>direction</code> dice hacia qué borde se desvanece el contenido.",
-    "fadeEdge.prop.direction.to-bottom": "Usa <code>to-bottom</code>, el default, para un texto que sigue más abajo.",
+    "fadeEdge.prop.direction.title": "Direction: dónde sigue el contenido",
+    "fadeEdge.prop.direction.body": "El borde que se desvanece.",
+    "fadeEdge.prop.direction.to-bottom": "Usa <code>to-bottom</code>, el valor por defecto, para una lista que sigue más abajo.",
     "fadeEdge.prop.direction.to-top": "Usa <code>to-top</code> cuando lo nuevo aparece abajo, como en un chat.",
     "fadeEdge.prop.direction.to-right": "Usa <code>to-right</code> para una fila que sigue hacia el costado.",
     "fadeEdge.prop.direction.to-left": "Usa <code>to-left</code> cuando la fila ya se desplazó y hay contenido antes.",
-    "fadeEdge.showcaseTitle": "Showcases",
-    "fadeEdge.showcaseBody": "Un desvanecido hacia cada borde, sobre un color, con más intensidad y solo mientras queda contenido.",
-    "fadeEdge.guidelinesLede": "FadeEdge desvanece un borde para decir que hay más contenido más allá.",
+    "fadeEdge.guidelinesLede": "Un borde desvanecido dice «hay más» sin una flecha ni una barra de scroll gruesa.",
   },
   en: {
     "fadeEdge.anatomyLabel": "FadeEdge anatomy",
     "fadeEdge.anatomyPreviewLabel": "FadeEdge, part by part",
-    "fadeEdge.anatomyBody": "One part. The fade is not a child: in the default mode it is a mask on the root itself, so the element that scrolls is the element that fades. What is inside is free composition.",
-    "fadeEdge.description": "Pure CSS fade-out effect to smoothly hide content at the edges.",
-    "fadeEdge.betaBadge": "Beta",
+    "fadeEdge.anatomyBody": "A single part: the fade is a mask on the root, not a child.",
+    "fadeEdge.description": "Fades an edge to show the content continues past it.",
+    "fadeEdge.a11yYours2": 'If the container scrolls, it must scroll from the keyboard: give it <code>tabindex="0"</code> and a name if it holds no controls.',
+    "fadeEdge.a11yYours1": "Do not leave a control or critical text under the fade at rest.",
+    "fadeEdge.a11yDoes2": "It adds no roles and no focus stops.",
+    "fadeEdge.a11yDoes1": "The faded content stays in the DOM and is read in full.",
+    "fadeEdge.a11yIntro": "FadeEdge is visual: it does not change the semantics or focus of what it wraps.",
+    "fadeEdge.dd.fits.dont": "Both tags fit, but the last one fades anyway: it loses contrast and there is nothing more to see.",
+    "fadeEdge.dd.fits.do": "With <code>scrollAware</code>, the same two tags stay sharp: everything fits, so there is nothing to fade.",
+    "fadeEdge.dd.fits.title": "Content: only when there is more",
+    "fadeEdge.dd.direction.title": "Direction: fade every edge the content continues past",
+    "fadeEdge.dd.direction.do": "Mid-row there are tags on both sides, and both edges fade. With <code>scrollAware</code>, each fade retires when its end is reached.",
+    "fadeEdge.dd.direction.dont": "There are tags to the left too, but only the right edge fades: the left one cuts dry and does not say there is more.",
+    "fadeEdge.dd.mode.title": "Surface: mask or color gradient",
+    "fadeEdge.dd.mode.do": "Over an image, <code>color</code> blends toward the surface color behind the text.",
+    "fadeEdge.dd.mode.dont": "<code>transparent</code> makes the image disappear into the backdrop instead of blending toward the chosen color.",
+    "fadeEdge.dd.scroll.title": "Scrolling: FadeEdge must be the container",
+    "fadeEdge.dd.scroll.do": "The same element scrolls and retires the fade when it reaches the edge.",
+    "fadeEdge.dd.scroll.dont": "If a child owns the scroll, <code>scrollAware</code> cannot tell when it reaches the end.",
+    "fadeEdge.whenNot4": "If it would cover a control or something to read at rest.",
+    "fadeEdge.whenNot3": 'Around a <a href="/components/marquee">Marquee</a>: it already has its own fade.',
+    "fadeEdge.whenNot2": 'To protect text over a photo: use <a href="/components/media-gradient">MediaGradient</a>.',
+    "fadeEdge.whenNot1": "If the content fits whole: fading it only costs contrast.",
+    "fadeEdge.when3": "For content passing behind a fixed header.",
+    "fadeEdge.when2": "For a row of tags or chips that overflows to the side.",
+    "fadeEdge.when1": "For a scrolling list or feed, when there are more rows below.",
+    "fadeEdge.contract3": "Set <code>overflow: auto</code> on the same element when the content overflows.",
+    "fadeEdge.contract2": "In <code>color</code> mode it is an <code>::after</code> on top, so the root ships <code>position: relative</code>.",
+    "fadeEdge.contract1": "In <code>transparent</code> mode it is a <code>mask-image</code> on the root: the content stays selectable.",
+    "fadeEdge.prop.mode.color": "Use <code>color</code> when there is no flat surface behind, such as a photo: it paints a gradient in <code>--sk-fade-edge-color</code>.",
+    "fadeEdge.prop.mode.transparent": "Use <code>transparent</code>, the default, over a flat surface.",
+    "fadeEdge.prop.mode.body": "How it fades: revealing what is behind, or painting a gradient on top.",
+    "fadeEdge.prop.mode.title": "Mode: transparent or to a color",
 
-    "fadeEdge.lede":
-      "FadeEdge fades one edge of your content, in pure CSS. Two ways to do it: toward transparency, letting whatever sits behind show through, or toward a given colour, painting a gradient on top. Use it to say there is more content to find, rather than cutting it off with <code>overflow: hidden</code>.",
+    "fadeEdge.lede": "FadeEdge fades an edge to show the content continues: a list with more rows below, a row of tags going on to the side. It wraps any component without changing its semantics, focus or behavior; it is pure CSS.",
 
-    "fadeEdge.whenTitle": "When to use it",
-    "fadeEdge.whenItem1":
-      "A scrolling list or feed, to hint at more rows below without an arrow or a heavy scrollbar",
-    "fadeEdge.whenItem2": "A row of chips or tags that overflows horizontally",
-    "fadeEdge.whenItem3": 'A truncated paragraph, with a "Read more" button floating over the fade',
-    "fadeEdge.whenItem4": "Content scrolling behind a fixed header",
 
-    "fadeEdge.bottomTitle": "Fade to bottom",
-    "fadeEdge.bottomBody":
-      "A list with real scrolling and a capped height: the bottom edge fades to signal the rows you cannot see yet. Scroll inside the box and the gradient stays pinned to the edge while the content passes underneath it.",
-    "fadeEdge.bottomLabel": "Fade to bottom",
 
-    "fadeEdge.topTitle": "Fade to top",
-    "fadeEdge.topBody":
-      "The same feed, starting already scrolled to the end: what is missing is above, and the gradient marks it there. Scroll back up to watch it go.",
+    "fadeEdge.topTitle": "Upward: what is missing is above",
+    "fadeEdge.topBody": "The same list, starting at the end. Scroll up and the edge clears.",
     "fadeEdge.topLabel": "Fade to top",
 
-    "fadeEdge.rightTitle": "Fade to right",
-    "fadeEdge.rightBody":
-      "A row of tags too wide for the space it has, with real horizontal scrolling. The fade on the right says there is more without needing a visible arrow.",
-    "fadeEdge.rightLabel": "Fade to right",
+    "fadeEdge.rightTitle": "Agenda: discover upcoming sessions",
+    "fadeEdge.rightBody": "The agenda shows two complete sessions and part of the next one. The faded right edge signals that there is more: scroll horizontally to see it. The fade disappears when you reach the last session.",
 
-    "fadeEdge.leftTitle": "Fade to left",
-    "fadeEdge.leftBody":
-      "The same row, starting already scrolled to the end: the fade on the left says there is content behind you.",
-    "fadeEdge.leftLabel": "Fade to left",
+    "fadeEdge.leftTitle": "Agenda: return to earlier sessions",
+    "fadeEdge.leftBody": "The same agenda starts at the last session. The faded left edge now signals what came before: scroll left to return to the beginning.",
+    "fadeEdge.leftLabel": "Agenda scrolled to the last session",
 
-    "fadeEdge.colorTitle": "Fade to a given colour",
-    "fadeEdge.colorBody":
-      'When there is no flat surface behind to reveal, a photograph for instance, <code>data-fade="color"</code> paints an opaque gradient on top instead of making the content transparent. It is the classic scrim: readable text over an image, whatever colours the photograph happens to have.',
-    "fadeEdge.colorLabel": "Fade to a colour",
+    "demo.fadeEdge.agenda.title": "Upcoming sessions",
+    "demo.fadeEdge.agenda.region": "Team agenda, horizontal scrolling",
+    "demo.fadeEdge.agenda.hint": "Scroll to see more sessions. With a keyboard, focus the agenda and use the arrow keys.",
+    "demo.fadeEdge.agenda.day1": "Monday, October 5",
+    "demo.fadeEdge.agenda.day2": "Tuesday, October 6",
+    "demo.fadeEdge.agenda.day3": "Wednesday, October 7",
+    "demo.fadeEdge.agenda.day4": "Thursday, October 8",
+    "demo.fadeEdge.agenda.session1": "Sprint planning",
+    "demo.fadeEdge.agenda.session2": "Design review",
+    "demo.fadeEdge.agenda.session3": "Accessibility testing",
+    "demo.fadeEdge.agenda.session4": "Team retrospective",
 
-    "fadeEdge.intensityTitle": "Tuning the intensity",
-    "fadeEdge.intensityBody":
-      "<code>--sk-fade-edge-size</code> controls how wide the fading band is (<code>4rem</code> by default), in either mode. Move the control and the CSS updates live on the same scrolling feed from above.",
+    "fadeEdge.colorTitle": "To a color: over a photo",
+    "fadeEdge.colorBody": 'With no flat surface behind, <code>fade="color"</code> paints the gradient on top.',
+
+    "fadeEdge.intensityTitle": "Intensity: the fade's width",
+    "fadeEdge.intensityBody": "<code>--sk-fade-edge-size</code> sets the zone's width (4rem by default). Move the control to see it.",
     "fadeEdge.intensityLabel": "Fade intensity",
 
-    "fadeEdge.scrollAwareTitle": "Scroll-aware",
-    "fadeEdge.scrollAwareBody":
-      "With <code>scrollAware</code> (<code>data-scroll-aware</code> in HTML) the fade retires once the scroll reaches the edge it points at, and also when the content fits without scrolling at all: there is nothing more that way. Scroll to the last row and the fade goes; scroll back up and it returns. The FadeEdge element has to be the one that scrolls.",
-    "fadeEdge.scrollAwareLabel": "Scroll-aware fade",
+    "fadeEdge.scrollAwareTitle": "Scroll-aware: it leaves on arrival",
+    "fadeEdge.scrollAwareBody": "With <code>scrollAware</code>, the fade withdraws when the scroll reaches that edge or when all the content fits.",
 
-    "fadeEdge.apiTitle": "Variables and attributes",
-    "fadeEdge.apiItem1":
-      "<code>data-fade</code>: <code>transparent</code> (default, reveals the background behind) or <code>color</code> (paints an opaque gradient on top)",
-    "fadeEdge.apiItem2":
-      "<code>data-direction</code>: <code>to-bottom</code> (default), <code>to-top</code>, <code>to-right</code>, <code>to-left</code>",
-    "fadeEdge.apiItem3":
-      "<code>--sk-fade-edge-size</code>: the height or width of the fading band (default: <code>4rem</code>)",
-    "fadeEdge.apiItem4":
-      "<code>--sk-fade-edge-color</code>: the gradient's destination colour in <code>color</code> mode (default: <code>var(--color-bg-canvas)</code>); no effect in <code>transparent</code> mode",
 
-    "fadeEdge.notesTitle": "Implementation notes",
-    "fadeEdge.notesItem1":
-      "<code>transparent</code> mode uses <code>mask-image</code> with a <code>linear-gradient</code>. The content stays in the DOM and stays selectable, only its paint is masked. It only reads as a fade when what sits behind is a solid background that contrasts with the content",
-    "fadeEdge.notesItem2":
-      "<code>color</code> mode paints the gradient from an <code>::after</code> on top, so the element needs <code>position: relative</code> (it ships with it) and the rest of your content must not compete for that same pseudo-element",
-    "fadeEdge.notesItem3":
-      "The fade stays pinned to the element's edge even while the content inside it scrolls: there is nothing to recalculate as it moves",
-    "fadeEdge.notesItem4":
-      "Give the same element <code>overflow: auto</code> (or <code>hidden</code>, if you need no scrolling) when its content overflows, so nothing shows outside the faded area",
-    "fadeEdge.notesItem5":
-      "For accessibility, make sure no critical content ends up hidden behind the fade",
-    "fadeEdge.prop.direction.title": "Direction",
-    "fadeEdge.prop.direction.body": "<code>direction</code> says which edge the content fades toward.",
-    "fadeEdge.prop.direction.to-bottom": "Use <code>to-bottom</code>, the default, for text that continues below.",
+    "fadeEdge.prop.direction.title": "Direction: where the content continues",
+    "fadeEdge.prop.direction.body": "The edge that fades.",
+    "fadeEdge.prop.direction.to-bottom": "Use <code>to-bottom</code>, the default, for a list that continues below.",
     "fadeEdge.prop.direction.to-top": "Use <code>to-top</code> when new content arrives at the bottom, as in a chat.",
     "fadeEdge.prop.direction.to-right": "Use <code>to-right</code> for a row that continues sideways.",
     "fadeEdge.prop.direction.to-left": "Use <code>to-left</code> when the row has scrolled and there is content before.",
-    "fadeEdge.showcaseTitle": "Showcases",
-    "fadeEdge.showcaseBody": "A fade toward each edge, over a colour, stronger, and only while there is content left.",
-    "fadeEdge.guidelinesLede": "FadeEdge fades an edge to say there is more content beyond it.",
+    "fadeEdge.guidelinesLede": "A faded edge says “there is more” without an arrow or a thick scrollbar.",
   },
 } as const;
