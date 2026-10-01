@@ -156,6 +156,7 @@ const routeSegments: Record<string, Partial<Record<Locale, string>>> = {
   "release-notes": { es: "notas-de-version" },
   installation: { es: "instalacion" },
   prerequisites: { es: "prerrequisitos" },
+  dependencies: { es: "dependencias" },
   keyboard: { es: "teclado" },
   "first-component": { es: "primer-componente" },
   "automatic-mounting": { es: "montaje-automatico" },

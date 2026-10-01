@@ -1274,6 +1274,11 @@ export const documentationNavigation = [
           },
           { href: "/tiers", label: "Tiers" },
           { href: "/reference", label: "Tokens" },
+          {
+            href: "/dependencies",
+            label: "Dependencias",
+            aliases: ["dependencies", "paquetes de terceros", "zag", "svelte", "peer dependencies", "librerías"],
+          },
         ],
       },
       {
