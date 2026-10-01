@@ -49,6 +49,50 @@ pnpm check
 That is what `pre-push` AND CI run, and it skips the browser gates. `pnpm check:gates` runs those
 alone (about 19 minutes, worth it for anything visual) and `pnpm check:all` runs both.
 
+## Consuming 0.0.1
+
+`0.0.1` is cut as a GitHub Release, not published to npm yet. The release assets are npm-compatible
+tarballs, so install the Skryensya packages you need from the release URL.
+
+For React:
+
+```bash
+pnpm add react react-dom \
+  https://github.com/Skryensya/ui/releases/download/v0.0.1/skryensya-core-0.0.1.tgz \
+  https://github.com/Skryensya/ui/releases/download/v0.0.1/skryensya-icons-lucide-0.0.1.tgz \
+  https://github.com/Skryensya/ui/releases/download/v0.0.1/skryensya-react-0.0.1.tgz
+```
+
+```tsx
+import "@skryensya/core/skryensya.css";
+import { Button } from "@skryensya/react";
+
+export function SaveButton() {
+  return <Button variant="solid">Save</Button>;
+}
+```
+
+For authored HTML plus progressive enhancement:
+
+```bash
+pnpm add \
+  https://github.com/Skryensya/ui/releases/download/v0.0.1/skryensya-core-0.0.1.tgz \
+  https://github.com/Skryensya/ui/releases/download/v0.0.1/skryensya-icons-lucide-0.0.1.tgz \
+  https://github.com/Skryensya/ui/releases/download/v0.0.1/skryensya-vanilla-0.0.1.tgz
+```
+
+```ts
+import "@skryensya/core/skryensya.css";
+import { lucideIcons } from "@skryensya/icons-lucide";
+import { mountComponentsWithIcons } from "@skryensya/vanilla/auto";
+
+await mountComponentsWithIcons(document, lucideIcons);
+```
+
+Optional packages use the same release URL pattern: `skryensya-charts-0.0.1.tgz`,
+`skryensya-editor-0.0.1.tgz`, `skryensya-devtools-0.0.1.tgz`, `skryensya-icons-material-0.0.1.tgz`
+and `skryensya-icons-phosphor-0.0.1.tgz`.
+
 [**ui.skryensya.dev**](https://ui.skryensya.dev) is the primary reference: every contract has a page
 with live previews in both bindings, its options, its accessibility notes, and a real pass/fail test
 report. The command above serves the same site locally.
