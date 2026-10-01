@@ -1,6 +1,6 @@
 {
   "name": "@skryensya/sites-worker",
-  "version": "0.0.1-dev",
+  "version": "0.0.1",
   "private": true,
   "type": "module",
   "description": "The Cloudflare Worker that serves every site the Maker publishes, at <name>.skryensya.dev, from R2; and takes new publications at publish.skryensya.dev, behind a token.",

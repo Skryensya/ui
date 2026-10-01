@@ -1,10 +1,24 @@
 {
   "name": "@skryensya/maker-agent",
-  "version": "0.0.1-dev",
+  "version": "0.0.1",
   "private": true,
   "type": "module",
-  "exports": { ".": "./src/index.ts", "./schema": "./src/schema.ts" },
-  "scripts": { "check": "tsc -p tsconfig.json --noEmit && vitest run" },
-  "dependencies": { "@skryensya/maker-model": "workspace:*", "@skryensya/core": "workspace:*", "@skryensya/ai-compiler": "workspace:*", "zod": "^4.4.3" },
-  "devDependencies": { "@types/node": "catalog:", "typescript": "^5.9.3", "vitest": "^4.1.11" }
+  "exports": {
+    ".": "./src/index.ts",
+    "./schema": "./src/schema.ts"
+  },
+  "scripts": {
+    "check": "tsc -p tsconfig.json --noEmit && vitest run"
+  },
+  "dependencies": {
+    "@skryensya/maker-model": "workspace:*",
+    "@skryensya/core": "workspace:*",
+    "@skryensya/ai-compiler": "workspace:*",
+    "zod": "^4.4.3"
+  },
+  "devDependencies": {
+    "@types/node": "catalog:",
+    "typescript": "^5.9.3",
+    "vitest": "^4.1.11"
+  }
 }

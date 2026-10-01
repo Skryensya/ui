@@ -1,7 +1,7 @@
 {
   "name": "@skryensya/storybook-vanilla",
   "private": true,
-  "version": "0.0.1-dev",
+  "version": "0.0.1",
   "type": "module",
   "description": "The Vanilla Storybook: every docs demo tree as emitted markup brought to life by the Vanilla enhancers, with that markup in the code panel.",
   "scripts": {

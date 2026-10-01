@@ -1,6 +1,6 @@
 {
   "name": "@skryensya/maker-server",
-  "version": "0.0.1-dev",
+  "version": "0.0.1",
   "private": true,
   "type": "module",
   "description": "The Maker's projects: a store (PostgreSQL, or memory for tests) and the HTTP API over it that the Maker app and the MCP's maker tools both use.",
