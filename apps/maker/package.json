@@ -1,6 +1,6 @@
 {
   "name": "@skryensya/maker",
-  "version": "0.0.1-dev",
+  "version": "0.0.1",
   "private": true,
   "type": "module",
   "description": "The Maker: a visual page builder where the browser does the layout. A page is a tree of signatures changed only through operations; the stage renders it with the real React binding.",

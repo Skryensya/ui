@@ -1,6 +1,6 @@
 {
   "name": "@skryensya/mcp",
-  "version": "0.0.1-dev",
+  "version": "0.0.1",
   "private": true,
   "type": "module",
   "description": "MCP server over the compiled manifest: discover_ui, get_examples, get_contract, validate_ui and get_catalog, over stdio and stateless Streamable HTTP. A protocol adapter over @skryensya/ai-compiler/agent.",

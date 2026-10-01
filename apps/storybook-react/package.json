@@ -1,7 +1,7 @@
 {
   "name": "@skryensya/storybook-react",
   "private": true,
-  "version": "0.0.1-dev",
+  "version": "0.0.1",
   "type": "module",
   "description": "The React Storybook: every docs demo tree drawn by renderTree, with its React source in the code panel.",
   "scripts": {

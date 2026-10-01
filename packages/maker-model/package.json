@@ -1,6 +1,6 @@
 {
   "name": "@skryensya/maker-model",
-  "version": "0.0.1-dev",
+  "version": "0.0.1",
   "private": true,
   "type": "module",
   "description": "The Maker's model: a maker page as a tree of maker nodes, the closed set of operations that change it, and its projection to a usage tree. Pure data and functions: no DOM, no React, no coordinates.",

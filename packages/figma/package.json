@@ -1,6 +1,6 @@
 {
   "name": "@skryensya/figma",
-  "version": "0.0.1-dev",
+  "version": "0.0.1",
   "private": true,
   "type": "module",
   "description": "Compiles the Button contract and the tokens it reaches into a Figma manifest, and a local development plugin that reconciles a Figma file against it. Downstream of Core: nothing imports this package.",
