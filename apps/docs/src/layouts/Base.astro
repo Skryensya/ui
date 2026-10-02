@@ -603,8 +603,9 @@ const PALETTE_PRESETS = palettePresets(locale);
         } else {
           d.removeAttribute("data-sk-component-preview-screen-pref");
         }
-        /* Each non-default preset carries complete semantic accent declarations. Unknown or absent ids
-         * fall back to the default stylesheet, so clearing storage is a no-op. */
+        /* Every preset carries complete semantic accent declarations. An unknown or absent id falls back
+         * to the FIRST preset (the site's default, green), which is applied explicitly because core's
+         * own stylesheet default is blue. Clearing storage therefore lands on the default. */
         var palettes = [];
         try {
           palettes = JSON.parse(document.getElementById("docs-palette-presets").textContent || "[]");
@@ -614,7 +615,8 @@ const PALETTE_PRESETS = palettePresets(locale);
         for (var i = 0; i < palettes.length; i++) {
           if (palettes[i].id === paletteId) { preset = palettes[i]; break; }
         }
-        if (preset && palettes[0] && preset.id !== palettes[0].id) {
+        if (!preset && palettes[0]) preset = palettes[0];
+        if (preset) {
           var properties = Object.keys(preset.tokens);
           for (var j = 0; j < properties.length; j++) {
             d.style.setProperty(properties[j], preset.tokens[properties[j]]);
@@ -1375,7 +1377,7 @@ const PALETTE_PRESETS = palettePresets(locale);
                     what a screen reader hears, the name stays the destination.
                   */}
                   <span class="docs-page-nav__direction" id="docs-page-nav-previous">{t("nav.previous")}</span>
-                  <a class="sk-button sk-interactive docs-page-nav__link" data-variant="ghost" href={previousNavItem.href} rel="prev" aria-describedby="docs-page-nav-previous">
+                  <a class="sk-button sk-interactive docs-page-nav__link" data-variant="soft" data-size="lg" href={previousNavItem.href} rel="prev" aria-describedby="docs-page-nav-previous">
                     <Fragment set:html={previousIcon} />
                     <span>{previousNavItem.label}</span>
                   </a>
@@ -1384,7 +1386,7 @@ const PALETTE_PRESETS = palettePresets(locale);
               {nextNavItem && (
                 <div class="docs-page-nav__item docs-page-nav__item--next">
                   <span class="docs-page-nav__direction" id="docs-page-nav-next">{t("nav.next")}</span>
-                  <a class="sk-button sk-interactive docs-page-nav__link" data-variant="ghost" href={nextNavItem.href} rel="next" aria-describedby="docs-page-nav-next">
+                  <a class="sk-button sk-interactive docs-page-nav__link" data-variant="soft" data-size="lg" href={nextNavItem.href} rel="next" aria-describedby="docs-page-nav-next">
                     <span>{nextNavItem.label}</span>
                     <Fragment set:html={nextIcon} />
                   </a>
@@ -1887,10 +1889,7 @@ const PALETTE_PRESETS = palettePresets(locale);
           const preset = presets[index];
           if (!preset) return;
           const properties = Object.keys(presets[0].tokens);
-          for (const property of properties) {
-            if (index === 0) root.style.removeProperty(property);
-            else root.style.setProperty(property, preset.tokens[property]);
-          }
+          for (const property of properties) root.style.setProperty(property, preset.tokens[property]);
           paletteToggles.forEach((paletteToggle) => {
             const dot = paletteToggle.querySelector<HTMLElement>(".dimensions__palette-dot");
             /* the dot shows the current color; the label names it so the icon-only button stays legible */
