@@ -2262,16 +2262,16 @@ describe("image-frame: clipped media box", () => {
     expect(JSON.stringify(emitReactSource(tree))).toContain('as=\\"figure\\"');
   });
 
-  it("keeps a MediaCaption beside src media and loads media-gradient.css from the caption tree", () => {
+  it("keeps a MediaOverlay beside src media and loads media-overlay.css from the caption tree", () => {
     const withCaption = frame({
       options: { src: "/cover.jpg", alt: "Portada", aspect: "16/9", border: "subtle" },
       slots: {
         caption: {
-          contract: "media-gradient",
-          signature: "MediaCaption",
+          contract: "media-overlay",
+          signature: "MediaOverlay",
           options: { edge: "bottom" },
           children: [
-            { contract: "media-gradient", signature: "MediaGradient", options: { strength: "md" } },
+            { contract: "media-overlay", signature: "MediaOverlayShade", options: { strength: "moderate" } },
             "Título",
           ],
         },
@@ -2279,12 +2279,12 @@ describe("image-frame: clipped media box", () => {
     });
     expect(validateUsageTree(withCaption).valid).toBe(true);
     const markup = emitMarkup(withCaption);
-    expect(markup).toContain('class="sk-media-caption"');
-    expect(markup).toContain('class="sk-media-gradient"');
+    expect(markup).toContain('class="sk-media-overlay"');
+    expect(markup).toContain('class="sk-media-overlay-shade"');
     expect(markup).toContain("aria-hidden");
     const { sheets, unplaced } = sheetsForTree(withCaption);
     expect(sheets).toContain("@skryensya/core/patterns/image-frame.css");
-    expect(sheets).toContain("@skryensya/core/patterns/media-gradient.css");
+    expect(sheets).toContain("@skryensya/core/patterns/media-overlay.css");
     expect(unplaced).toEqual([]);
   });
 
@@ -2629,7 +2629,7 @@ describe("marquee: requested and automatic continuous strips", () => {
   });
 });
 
-describe("media-gradient: caption measure and decorative wash", () => {
+describe("media-overlay: caption measure and decorative wash", () => {
   const caption = (overrides: Partial<UsageTree> = {}): UsageTree =>
     ({
       contract: "image-frame",
@@ -2637,11 +2637,11 @@ describe("media-gradient: caption measure and decorative wash", () => {
       options: { src: "/cover.jpg", alt: "Portada" },
       slots: {
         caption: {
-          contract: "media-gradient",
-          signature: "MediaCaption",
+          contract: "media-overlay",
+          signature: "MediaOverlay",
           options: { edge: "bottom" },
           children: [
-            { contract: "media-gradient", signature: "MediaGradient", options: { strength: "md" } },
+            { contract: "media-overlay", signature: "MediaOverlayShade", options: { strength: "moderate" } },
             "Título",
           ],
         },
@@ -2649,12 +2649,12 @@ describe("media-gradient: caption measure and decorative wash", () => {
       ...overrides,
     }) as UsageTree;
 
-  it("requires ImageFrame around MediaCaption and MediaCaption around MediaGradient", () => {
-    expect(rules({ contract: "media-gradient", signature: "MediaCaption", children: "Hi" })).toContain(
+  it("requires ImageFrame around MediaOverlay and MediaOverlay around MediaOverlayShade", () => {
+    expect(rules({ contract: "media-overlay", signature: "MediaOverlay", children: "Hi" })).toContain(
       "invalid-parent",
     );
-    expect(rules({ contract: "media-gradient", signature: "MediaGradient" })).toContain("invalid-parent");
-    expect(rules({ contract: "media-gradient", signature: "MediaCaption" })).toContain(
+    expect(rules({ contract: "media-overlay", signature: "MediaOverlayShade" })).toContain("invalid-parent");
+    expect(rules({ contract: "media-overlay", signature: "MediaOverlay" })).toContain(
       "missing-required-slot",
     );
     expect(validateUsageTree(caption()).valid).toBe(true);
@@ -2662,51 +2662,51 @@ describe("media-gradient: caption measure and decorative wash", () => {
 
   it("emits edge/strength defaults and a decorative wash", () => {
     const markup = emitMarkup(caption());
-    expect(markup).toContain('class="sk-media-caption"');
+    expect(markup).toContain('class="sk-media-overlay"');
     expect(markup).toContain('data-edge="bottom"');
-    expect(markup).toContain('class="sk-media-gradient"');
-    expect(markup).toContain('data-strength="md"');
+    expect(markup).toContain('class="sk-media-overlay-shade"');
+    expect(markup).toContain('data-strength="moderate"');
     expect(markup).toContain('aria-hidden="true"');
   });
 
-  it("emits a MediaCaption as figcaption when captionElement asks", () => {
+  it("emits a MediaOverlay as figcaption when captionElement asks", () => {
     const tree = caption({
       slots: {
         caption: {
-          contract: "media-gradient",
-          signature: "MediaCaption",
+          contract: "media-overlay",
+          signature: "MediaOverlay",
           options: { edge: "bottom", captionElement: "figcaption" },
           children: [
-            { contract: "media-gradient", signature: "MediaGradient", options: { strength: "md" } },
+            { contract: "media-overlay", signature: "MediaOverlayShade", options: { strength: "moderate" } },
             "Título",
           ],
         },
       },
     });
     const markup = emitMarkup(tree);
-    expect(markup).toMatch(/<figcaption\s+class="sk-media-caption"/);
+    expect(markup).toMatch(/<figcaption\s+class="sk-media-overlay"/);
     expect(JSON.stringify(emitReactSource(tree))).toContain('as=\\"figcaption\\"');
   });
 
   it("publishes caption and wash hooks on its own sheet", () => {
-    const contract = getContract("media-gradient")!;
+    const contract = getContract("media-overlay")!;
     expect(contract.hookSheets ?? []).toEqual([]);
     expect(contract.hooks).toEqual([
-      "--sk-media-caption-fg",
-      "--sk-media-caption-gap",
-      "--sk-media-caption-padding",
-      "--sk-media-gradient-base",
-      "--sk-media-gradient-direction",
-      "--sk-media-gradient-ink",
-      "--sk-media-gradient-ink-mid",
-      "--sk-media-gradient-mix",
-      "--sk-media-gradient-opacity",
-      "--sk-media-gradient-tint",
-      "--sk-media-gradient-tint-edge",
-      "--sk-media-gradient-tint-mid",
+      "--sk-media-overlay-fg",
+      "--sk-media-overlay-gap",
+      "--sk-media-overlay-padding",
+      "--sk-media-overlay-shade-base",
+      "--sk-media-overlay-shade-direction",
+      "--sk-media-overlay-shade-ink",
+      "--sk-media-overlay-shade-ink-mid",
+      "--sk-media-overlay-shade-mix",
+      "--sk-media-overlay-shade-opacity",
+      "--sk-media-overlay-shade-tint",
+      "--sk-media-overlay-shade-tint-edge",
+      "--sk-media-overlay-shade-tint-mid",
     ]);
     const { sheets, unplaced } = sheetsForTree(caption());
-    expect(sheets).toContain("@skryensya/core/patterns/media-gradient.css");
+    expect(sheets).toContain("@skryensya/core/patterns/media-overlay.css");
     expect(sheets).toContain("@skryensya/core/patterns/image-frame.css");
     expect(unplaced).toEqual([]);
   });
@@ -2961,8 +2961,8 @@ describe("menubar: labelled bar of Menu-backed items", () => {
     expect(unplaced).toEqual([]);
   });
 
-  it("swaps the trigger to nav-list classes when nav is given", () => {
-    const markup = emitMarkup({
+  it("rejects the removed nav option, and keeps the trigger a ghost Button", () => {
+    const item = (options?: Record<string, unknown>): UsageTree => ({
       contract: "menubar",
       signature: "Menubar",
       options: { label: "Principal" },
@@ -2970,7 +2970,7 @@ describe("menubar: labelled bar of Menu-backed items", () => {
         children: {
           contract: "menubar",
           signature: "MenubarItem",
-          options: { nav: true },
+          ...(options ? { options } : {}),
           slots: {
             children: "Producto",
             items: [{ options: { value: "overview" }, slots: { label: "Overview" } }],
@@ -2978,10 +2978,10 @@ describe("menubar: labelled bar of Menu-backed items", () => {
         },
       },
     });
-    expect(markup).toContain("sk-nav-list__link");
-    expect(markup).toContain("sk-nav-list__label");
-    expect(markup).toContain("data-nav");
-    expect(markup).not.toContain('data-variant="ghost"');
+    expect(validateUsageTree(item({ nav: true })).valid).toBe(false);
+    const markup = emitMarkup(item());
+    expect(markup).toContain('data-variant="ghost"');
+    expect(markup).not.toContain("sk-nav-list__link");
   });
 });
 
@@ -3394,9 +3394,9 @@ describe("placeholder: role-sized skeletons with a clamped paragraph", () => {
     );
   });
 
-  it("publishes 11 hooks and loads only its own stylesheet", () => {
+  it("publishes 14 hooks and loads only its own stylesheet", () => {
     const contract = getContract("placeholder")!;
-    expect(contract.hooks).toHaveLength(11);
+    expect(contract.hooks).toHaveLength(14);
     expect(contract.options.lines).toMatchObject({ min: 1, max: 12, integer: true });
     expect(contract.hookSheets ?? []).toEqual([]);
     const { sheets, unplaced } = sheetsForTree(paragraph());
@@ -3405,10 +3405,10 @@ describe("placeholder: role-sized skeletons with a clamped paragraph", () => {
   });
 });
 
-describe("process-list: ordered instructions without progress state", () => {
+describe("procedure: ordered instructions without progress state", () => {
   const item = (title: string, body?: string): UsageTree => ({
-    contract: "process-list",
-    signature: "ProcessListItem",
+    contract: "procedure",
+    signature: "ProcedureStep",
     slots: {
       title,
       ...(body
@@ -3426,20 +3426,20 @@ describe("process-list: ordered instructions without progress state", () => {
 
   const list = (overrides: Partial<UsageTree> = {}): UsageTree =>
     ({
-      contract: "process-list",
-      signature: "ProcessList",
+      contract: "procedure",
+      signature: "Procedure",
       children: [item("Instala el paquete", "Usa el gestor del proyecto."), item("Importa los estilos")],
       ...overrides,
     }) as UsageTree;
 
-  it("requires ProcessListItem children and a text title on each item", () => {
-    expect(rules({ contract: "process-list", signature: "ProcessList" })).toContain("missing-required-slot");
-    expect(rules({ contract: "process-list", signature: "ProcessListItem" })).toContain("missing-required-slot");
+  it("requires ProcedureStep children and a text title on each item", () => {
+    expect(rules({ contract: "procedure", signature: "Procedure" })).toContain("missing-required-slot");
+    expect(rules({ contract: "procedure", signature: "ProcedureStep" })).toContain("missing-required-slot");
     expect(validateUsageTree(list()).valid).toBe(true);
     expect(
       rules({
-        contract: "process-list",
-        signature: "ProcessList",
+        contract: "procedure",
+        signature: "Procedure",
         children: {
           contract: "list",
           signature: "ListItem",
@@ -3453,20 +3453,20 @@ describe("process-list: ordered instructions without progress state", () => {
     const markup = emitMarkup(list());
     expect(markup).toMatch(/^<ol\s+/);
     expect(markup).toContain('role="list"');
-    expect(markup).toContain("sk-process-list__title");
+    expect(markup).toContain("sk-procedure__title");
     expect(markup).toContain("Instala el paquete");
-    expect(markup).toContain("sk-process-list__content");
+    expect(markup).toContain("sk-procedure__content");
   });
 
   it("publishes 15 hooks with no foreign hookSheets and rejects status options", () => {
-    const contract = getContract("process-list")!;
+    const contract = getContract("procedure")!;
     expect(contract.hooks).toHaveLength(15);
     expect(contract.options).toEqual({});
     expect(contract.events).toBeUndefined();
     expect(contract.hookSheets ?? []).toEqual([]);
     expect(rules(list({ options: { status: "current" } }))).toContain("unknown-option");
     const { sheets, unplaced } = sheetsForTree(list());
-    expect(sheets).toContain("@skryensya/core/components/process-list.css");
+    expect(sheets).toContain("@skryensya/core/components/procedure.css");
     expect(sheets).toContain("@skryensya/core/components/typography.css");
     expect(unplaced).toEqual([]);
   });

@@ -1,13 +1,11 @@
 ---
-import Base from "../../layouts/Base.astro";
+import FoundationPage from "../../components/FoundationPage.astro";
 ---
 
-<Base
+<FoundationPage
   title="Navegación por teclado"
-  documentLayout="grid"
   description="Qué hace cada tecla, componente por componente: verificado contra la máquina real o el elemento nativo, no contra lo que el patrón debería hacer."
 >
-  <h1>Navegación por teclado</h1>
   <p class="lede">
     Ningún componente de este sistema escribe a mano un listener de <code>keydown</code> para decidir qué
     hace una flecha. El comportamiento de teclado sale de uno de dos lugares: el elemento HTML nativo (un
@@ -279,4 +277,4 @@ import Base from "../../layouts/Base.astro";
   <p>
     Reference: <a href="https://www.w3.org/WAI/WCAG22/Understanding/keyboard.html">WCAG 2.1.1 Keyboard</a>.
   </p>
-</Base>
+</FoundationPage>

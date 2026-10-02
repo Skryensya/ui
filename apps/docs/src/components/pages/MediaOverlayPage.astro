@@ -1,0 +1,126 @@
+---
+import "@skryensya/core/patterns/media-overlay.css";
+import "@skryensya/core/patterns/image-frame.css";
+import "@skryensya/core/patterns/box.css";
+import "@skryensya/core/patterns/layout.css";
+import "@skryensya/core/components/typography.css";
+/* Structure diagram: Annotated specimen; a preview frame only copies styles THIS page loaded. */
+import "@skryensya/core/components/annotation.css";
+import ComponentPageShell from "./ComponentPageShell.astro";
+import CodeBlock from "../CodeBlock.astro";
+import UsagePreview from "../UsagePreview.astro";
+import WhenToUse from "../WhenToUse.astro";
+import DoDont from "../DoDont.astro";
+import ContentRules from "../ContentRules.astro";
+import A11yNotes from "../A11yNotes.astro";
+import {
+  mediaOverlayAnatomyTree,
+  mediaOverlayCardTree,
+  mediaOverlayDoShadeTree,
+  mediaOverlayDoShortTextTree,
+  mediaOverlayDoStrengthTree,
+  mediaOverlayDontLongTextTree,
+  mediaOverlayDontNoShadeTree,
+  mediaOverlayDontStrengthTree,
+} from "../../demos/media-overlay";
+import { annotationDemoCss } from "../../demos/annotation";
+import { getLocale, tList, useTranslations } from "../../i18n";
+
+const t = useTranslations(getLocale(Astro.url));
+const explain = (option: string, values: readonly string[]) =>
+  Object.fromEntries(values.map((value) => [value, t(`mediaOverlay.prop.${option}.${value}` as Parameters<typeof t>[0])]));
+const storybookTitle = "Components/Content/MediaOverlay";
+/* A card at the width a card is used at: stretched to the stage, the photo would crowd the page. */
+const cardWidthCss = `.sk-box { inline-size: min(100%, 24rem); margin-inline: auto; }`;
+const styles = `@import "@skryensya/core/patterns/image-frame.css";
+@import "@skryensya/core/patterns/media-overlay.css";`;
+const tint = `.hero-media .sk-media-overlay-shade {
+  --sk-media-overlay-shade-mix: 48%;
+  --sk-media-overlay-shade-opacity: 88%;
+}`;
+---
+
+<ComponentPageShell
+  title="MediaOverlay"
+  description={t("mediaOverlay.description")}
+  contractId="media-overlay"
+  testFiles={["packages/react/src/components/media-overlay.test.tsx"]}
+>
+  <Fragment slot="usage">
+    <p class="lede" set:html={t("mediaOverlay.lede")} />
+
+    <UsagePreview
+      tree={mediaOverlayCardTree(t)}
+      target={["children", 0, "caption"]}
+      optionName="edge"
+      title={t("mediaOverlay.prop.edge.title")}
+      description={t("mediaOverlay.prop.edge.body")}
+      explain={explain("edge", ["bottom", "top", "start", "end"])}
+      css={cardWidthCss}
+      storybookTitle={storybookTitle}
+      storybookStory="Card"
+    />
+    <UsagePreview
+      tree={mediaOverlayCardTree(t)}
+      target={["children", 0, "caption", "children", 0]}
+      optionName="strength"
+      title={t("mediaOverlay.prop.strength.title")}
+      description={t("mediaOverlay.prop.strength.body")}
+      explain={explain("strength", ["subtle", "moderate", "strong"])}
+      css={cardWidthCss}
+      storybookTitle={storybookTitle}
+      storybookStory="Card"
+    />
+
+    <h3>{t("component.examplesTitle")}</h3>
+    <UsagePreview
+      tree={mediaOverlayCardTree(t)}
+      title={t("mediaOverlay.cardTitle")}
+      description={t("mediaOverlay.cardBody")}
+      css={cardWidthCss}
+      storybookTitle={storybookTitle}
+      storybookStory="Card"
+    />
+    <h4>{t("mediaOverlay.tintTitle")}</h4>
+    <p set:html={t("mediaOverlay.tintBody")} />
+    <CodeBlock code={tint} label="CSS" lang="css" />
+
+    <h3>{t("component.anatomy")}</h3>
+    <p set:html={t("mediaOverlay.anatomyBody")} />
+    <UsagePreview
+      tree={mediaOverlayAnatomyTree(t)}
+      css={annotationDemoCss}
+      label={t("mediaOverlay.anatomyPreviewLabel")}
+      bare
+    />
+  </Fragment>
+
+  <Fragment slot="guidelines">
+    <p class="lede" set:html={t("mediaOverlay.guidelinesLede")} />
+    <WhenToUse use={tList(t, "mediaOverlay.when")} avoid={tList(t, "mediaOverlay.whenNot")} />
+    <DoDont
+      title={t("mediaOverlay.dd.copy.title")}
+      do={{ tree: mediaOverlayDoShortTextTree(t), caption: t("mediaOverlay.dd.copy.do") }}
+      dont={{ tree: mediaOverlayDontLongTextTree(t), caption: t("mediaOverlay.dd.copy.dont") }}
+    />
+    <DoDont
+      title={t("mediaOverlay.dd.shade.title")}
+      do={{ tree: mediaOverlayDoShadeTree(t), caption: t("mediaOverlay.dd.shade.do") }}
+      dont={{ tree: mediaOverlayDontNoShadeTree(t), caption: t("mediaOverlay.dd.shade.dont") }}
+    />
+    <DoDont
+      title={t("mediaOverlay.dd.strength.title")}
+      do={{ tree: mediaOverlayDoStrengthTree(t), caption: t("mediaOverlay.dd.strength.do") }}
+      dont={{ tree: mediaOverlayDontStrengthTree(t), caption: t("mediaOverlay.dd.strength.dont") }}
+    />
+    <ContentRules items={tList(t, "mediaOverlay.content")} />
+  </Fragment>
+
+  <Fragment slot="install">
+    <CodeBlock code={styles} label="CSS" lang="css" />
+  </Fragment>
+
+  <Fragment slot="a11y">
+    <A11yNotes intro={t("mediaOverlay.a11yIntro")} does={tList(t, "mediaOverlay.a11yDoes")} yours={tList(t, "mediaOverlay.a11yYours")} />
+  </Fragment>
+</ComponentPageShell>

@@ -79,22 +79,22 @@ const launchIcon = iconMarkup("external-link", { size: "sm" });
  * `globalNavigation`, the same five destinations the header itself points at, Componentes meaning
  * "the catalog page", not any one piece in it.
  */
-const startSection = nav.find((section) => section.id === "start");
 const foundationsSection = nav.find((section) => section.id === "foundations");
 const globalNav = getGlobalNavigation(locale);
 
 /* Dimensiones (visualDimensions' own first item), added to foundationModel's own three: still an
    axis of the system, not a leaf, and it evens the column out to four, matching Empezar. */
 const foundationsItems = [
-  ...(foundationsSection?.groups[0]?.items ?? []),
-  ...(foundationsSection?.groups[1]?.items.slice(0, 1) ?? []),
+  ...(foundationsSection?.groups[1]?.items ?? []),
+  ...(foundationsSection?.groups[2]?.items.slice(0, 1) ?? []),
 ];
 
 const columns = [
   {
-    title: startSection?.section ?? "",
-    href: startSection?.href,
-    items: (startSection?.groups[0]?.items ?? []).slice(0, 4),
+    // Foundations' own first group: the first steps, which are part of the section but a column of their own here.
+    title: t("section.start"),
+    href: undefined,
+    items: (foundationsSection?.groups[0]?.items ?? []).slice(0, 4),
   },
   {
     title: foundationsSection?.section ?? "",

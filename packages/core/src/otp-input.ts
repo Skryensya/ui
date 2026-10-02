@@ -23,7 +23,11 @@ export const otpInputParts = {
   label: "sk-otp-input__label",
   hint: "sk-otp-input__hint",
   control: "sk-otp-input__control",
+  /** One box: the real input and, over it, the symbol that stands for a character hidden by `mask`. */
+  cell: "sk-otp-input__cell",
   segment: "sk-otp-input__segment",
+  /** The `mask` role drawn over a filled box when the code is masked: an icon, never typed text. */
+  mask: "sk-otp-input__mask",
   /** The form participant: one input carrying the whole code, the way `Rating`'s own does. */
   hiddenInput: "sk-otp-input__hidden",
 } as const;
@@ -68,6 +72,7 @@ export const otpInputContract = {
     "--sk-otp-input-border-color",
     "--sk-otp-input-fg",
     "--sk-otp-input-gap",
+    "--sk-otp-input-group-gap",
     "--sk-otp-input-hint-color",
     "--sk-otp-input-invalid-border-color",
     "--sk-otp-input-label-color",
@@ -91,8 +96,20 @@ export const otpInputContract = {
      * `data-otp="false"` (the same "write only the exception" shape `chart.ts`'s own `labels` uses).
      */
     otp: { type: "boolean", default: true, attr: "data-otp", falseValue: "false", machineInput: true },
-    /** Shown in the segment that currently has focus; every other segment stays blank while typing. */
-    placeholder: { type: "string", default: "○", attr: "data-placeholder", machineInput: true },
+    /**
+     * What an empty segment shows. Nothing by default: a row of `○` on a field nobody has touched
+     * reads as a decoration the person has to ignore, and the segment's own border already says
+     * "type here". An author who wants a hint in the boxes (a `0`, a `•`) writes it.
+     */
+    placeholder: { type: "string", default: "", attr: "data-placeholder", machineInput: true },
+    /**
+     * Sets the segments apart in groups of this many, a wider gap between one group and the next:
+     * `123 456` instead of `123456`. A code is read and keyed in chunks, so the gap is where the eye
+     * and the hand rest. Absent means one unbroken row. A CLOSED list rather than any number, so the
+     * grouping is pure CSS on the root (`[data-group-size]`) and the same in every binding; a count
+     * that does not divide evenly leaves the last group shorter.
+     */
+    groupSize: { type: "enum", values: ["2", "3", "4"], attr: "data-group-size" },
     name: { type: "string", attr: "data-name", machineInput: true },
     /** Initial uncontrolled value, as one string ("123456"); each binding splits it per segment. */
     defaultValue: { type: "string", default: "", attr: "data-default-value", machineInput: true },
@@ -119,6 +136,7 @@ export const otpInputContract = {
         "mask",
         "otp",
         "placeholder",
+        "groupSize",
         "name",
         "defaultValue",
         "disabled",
@@ -152,11 +170,25 @@ export const otpInputContract = {
             children: [
               {
                 repeatComputed: { window: "otp-segments", from: ["count"], key: "index" },
-                element: "input",
-                part: "segment",
-                also: ["sk-interactive"],
-                mount: otpInputAttrs.segment,
-                attrs: { type: "text", autocomplete: "off" },
+                element: "span",
+                part: "cell",
+                children: [
+                  {
+                    element: "input",
+                    part: "segment",
+                    also: ["sk-interactive"],
+                    mount: otpInputAttrs.segment,
+                    attrs: { type: "text", autocomplete: "off" },
+                  },
+                  /* Decoration only: the input keeps the value and the name. Shown by CSS when the
+                     root is masked and the cell is filled (`data-filled`, kept by each binding). */
+                  {
+                    element: "span",
+                    part: "mask",
+                    attrs: { "aria-hidden": "true" },
+                    children: [{ element: "span", attrs: { "data-sk-icon": "mask", "data-sk-icon-size": "md" } }],
+                  },
+                ],
               },
             ],
           },
@@ -177,3 +209,6 @@ export const otpInputContract = {
 
 /** Derived, never restated: adding a value to the contract's own enum is the only edit. */
 export type OtpInputType = NonNullable<(typeof otpInputContract.options.type)["values"]>[number];
+
+/** The group sizes the contract allows, derived like `OtpInputType`: the enum is the only edit. */
+export type OtpInputGroupSize = NonNullable<(typeof otpInputContract.options.groupSize)["values"]>[number];

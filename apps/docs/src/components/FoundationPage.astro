@@ -1,0 +1,64 @@
+---
+/*
+ * The frame every Foundations page shares: the component page's masthead and reading column
+ * (`ComponentPageShell.astro` documents why each box exists) without its tab strip or Vanilla/React
+ * switch, since a foundation has no demos to switch.
+ *
+ * The body lives INSIDE the shell, in `.docs-component-body`, for the same reason a tab panel does:
+ * the sticky hero needs a tall containing block, and the body takes the panel's reading measure
+ * instead of the wider default page column. Both wrappers are `data-toc-transparent` so the rail still
+ * indexes the body's own h2/h3.
+ *
+ * A page with an appearance switch (Appearance) passes `appearanceTarget` and fills the `appearance`
+ * slot: the shell becomes the appearance scope, the same wiring `ComponentPageShell` does, and the
+ * control sits in the masthead where a component page keeps it.
+ *
+ * `title` is the document title; `heading` is the on-page h1 when the two differ ("Tres tiers" in the
+ * tab, "Three tiers" in the masthead).
+ */
+import Base from "../layouts/Base.astro";
+import { getLocale, useTranslations } from "../i18n";
+
+interface Props {
+  title: string;
+  description: string;
+  heading?: string;
+  /** CSS selector the page's appearance switch applies to. Set it together with the `appearance` slot. */
+  appearanceTarget?: string;
+}
+
+const { title, description, heading = title, appearanceTarget } = Astro.props;
+const hasAppearanceControl = Astro.slots.has("appearance") && appearanceTarget !== undefined;
+const t = useTranslations(getLocale(Astro.url));
+---
+
+<Base title={title} description={description} documentLayout="grid">
+  <div
+    class="docs-component-shell"
+    data-toc-transparent
+    data-docs-appearance-scope={hasAppearanceControl ? "" : undefined}
+    data-docs-appearance-target={hasAppearanceControl ? appearanceTarget : undefined}
+  >
+    <div class="docs-component-head">
+      <div class="docs-component-hero__spacer sk-fx-collapse-header__spacer"></div>
+      <div aria-hidden="true" class="docs-component-hero__backing"></div>
+      <header class="docs-component-hero sk-fx-collapse-header">
+        <p class="docs-component-hero__eyebrow">{t("section.foundations")}</p>
+        <div class="docs-component-hero__title-row">
+          <h1>{heading}</h1>
+        </div>
+        {
+          hasAppearanceControl && (
+            <div class="docs-component-hero__controls">
+              <slot name="appearance" />
+            </div>
+          )
+        }
+      </header>
+    </div>
+
+    <div class="docs-component-body sk-layout-grid" data-toc-transparent>
+      <slot />
+    </div>
+  </div>
+</Base>

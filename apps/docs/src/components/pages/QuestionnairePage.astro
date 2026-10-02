@@ -19,19 +19,33 @@ import "@skryensya/core/components/radio-group.css";
 import "@skryensya/core/components/kbd.css";
 import "@skryensya/core/components/progress.css";
 import "@skryensya/core/components/steps.css";
+import "@skryensya/core/components/presence.css";
+import "@skryensya/core/components/callout.css";
+import "@skryensya/core/components/button.css";
+import "@skryensya/core/components/typography.css";
+import "@skryensya/core/patterns/layout.css";
 import ComponentPageShell from "./ComponentPageShell.astro";
 import CodeBlock from "../CodeBlock.astro";
 import UsagePreview from "../UsagePreview.astro";
+import ComparisonTable from "../ComparisonTable.astro";
 import WhenToUse from "../WhenToUse.astro";
+import DoDont from "../DoDont.astro";
 import ContentRules from "../ContentRules.astro";
 import A11yNotes from "../A11yNotes.astro";
 import "@skryensya/core/components/annotation.css";
 import { annotationDemoCss } from "../../demos/annotation";
 import {
+  questionnaireSubmitScript,
+  questionnaireSubmittedTree,
   questionnaireAnatomyTree,
   questionnaireBranchingTree,
   questionnaireChoicesOnlyTree,
   questionnaireControlTree,
+  questionnaireDoEmailTree,
+  questionnaireDoFewTree,
+  questionnaireDontEmailTree,
+  questionnaireDontManyTree,
+  questionnaireTextAnswersTree,
   questionnaireRailTree,
   questionnaireFollowUpTree,
   questionnaireLikertTree,
@@ -42,6 +56,24 @@ import { getLocale, tList, useTranslations } from "../../i18n";
 
 const install = `pnpm add @skryensya/core @skryensya/react`;
 const t = useTranslations(getLocale(Astro.url));
+/* A key as it is pressed: "Ctrl+Enter" is two keys joined by "+", several that do the same are separate. */
+const keysHtml = (combos: readonly string[]) =>
+  combos.map((combo) => (combo.length > 1 ? combo.split("+") : [combo]).map((key) => `<kbd class="sk-kbd">${key}</kbd>`).join("+")).join(", ");
+const tt = (key: string) => t(`questionnairePage.${key}` as Parameters<typeof t>[0]);
+const keyRows = [
+  { id: "modEnter", keys: ["⌘+Enter", "Ctrl+Enter"] },
+  { id: "enter", keys: ["Enter"] },
+  { id: "updown", keys: ["↑", "↓"] },
+  { id: "left", keys: ["←"] },
+  { id: "right", keys: ["→"] },
+  { id: "letters", keys: ["A–Z"] },
+  { id: "numbers", keys: ["1–9"] },
+].map(({ id, keys }) => ({
+  label: keys.join(" / "),
+  /* One line per row: a key combination broken across two reads as two different keys. */
+  labelHtml: `<span style="white-space: nowrap">${keysHtml(keys)}</span>`,
+  cells: [tt(`keysTable.${id}.choosing`), tt(`keysTable.${id}.typing`)],
+}));
 const explain = (option: string, values: readonly string[]) =>
   Object.fromEntries(values.map((value) => [value, t(`questionnairePage.prop.${option}.${value}` as Parameters<typeof t>[0])]));
 ---
@@ -65,10 +97,27 @@ const explain = (option: string, values: readonly string[]) =>
       title={t("questionnairePage.prop.progress.title")}
       description={t("questionnairePage.prop.progress.body")}
       explain={explain("progress", ["text", "bar", "steps", "segments"])}
+      stageMinBlockSize="26rem"
+    />
+    <UsagePreview
+      tree={questionnaireTree(t)}
+      optionName="shortcuts"
+      title={t("questionnairePage.prop.shortcuts.title")}
+      description={t("questionnairePage.prop.shortcuts.body")}
+      explain={explain("shortcuts", ["none", "letters", "numbers"])}
+      stageMinBlockSize="26rem"
     />
 
     <h3>{t("component.examplesTitle")}</h3>
     <UsagePreview tree={questionnaireTree(t)} title={t("questionnairePage.basicTitle")} description={t("questionnairePage.basicBody")} />
+    <UsagePreview
+      tree={questionnaireSubmittedTree(t)}
+      script={questionnaireSubmitScript}
+      title={t("questionnairePage.submittedTitle")}
+      description={t("questionnairePage.submittedBody")}
+      label={t("questionnairePage.submittedTitle")}
+      stageMinBlockSize="22rem"
+    />
     <UsagePreview tree={questionnaireChoicesOnlyTree(t)} title={t("questionnairePage.choicesOnlyTitle")} description={t("questionnairePage.choicesOnlyBody")} />
     <UsagePreview tree={questionnaireLikertTree(t)} title={t("questionnairePage.likertTitle")} description={t("questionnairePage.likertBody")} />
     <UsagePreview tree={questionnaireBranchingTree(t)} title={t("questionnairePage.branchTitle")} description={t("questionnairePage.branchBody")} />
@@ -76,7 +125,7 @@ const explain = (option: string, values: readonly string[]) =>
     <UsagePreview tree={questionnaireControlTree(t)} title={t("questionnairePage.controlTitle")} description={t("questionnairePage.controlBody")} />
     {/* The side rail needs about 750px; below `desktop` it falls back to the top bar. */}
     <UsagePreview tree={questionnaireRailTree(t)} title={t("questionnairePage.railTitle")} description={t("questionnairePage.railBody")} />
-    <UsagePreview tree={questionnaireShortcutsTree(t)} title={t("questionnairePage.keyboardTitle")} description={t("questionnairePage.keyboardBody")} />
+    <UsagePreview tree={questionnaireTextAnswersTree(t)} title={t("questionnairePage.textTitle")} description={t("questionnairePage.textBody")} />
 
     <h3>{t("component.contractNotesTitle")}</h3>
     <ul>
@@ -97,6 +146,18 @@ const explain = (option: string, values: readonly string[]) =>
   <Fragment slot="guidelines">
     <p class="lede" set:html={t("questionnairePage.guidelinesLede")} />
     <WhenToUse use={tList(t, "questionnairePage.when")} avoid={tList(t, "questionnairePage.whenNot")} />
+    <DoDont
+      canvas
+      title={t("questionnairePage.dd.email.title")}
+      do={{ tree: questionnaireDoEmailTree(t), caption: t("questionnairePage.dd.email.do") }}
+      dont={{ tree: questionnaireDontEmailTree(t), caption: t("questionnairePage.dd.email.dont") }}
+    />
+    <DoDont
+      canvas
+      title={t("questionnairePage.dd.few.title")}
+      do={{ tree: questionnaireDoFewTree(t), caption: t("questionnairePage.dd.few.do") }}
+      dont={{ tree: questionnaireDontManyTree(t), caption: t("questionnairePage.dd.few.dont") }}
+    />
     <ContentRules items={tList(t, "questionnairePage.content")} />
   </Fragment>
 
@@ -105,13 +166,17 @@ const explain = (option: string, values: readonly string[]) =>
       intro={t("questionnairePage.a11yIntro")}
       does={tList(t, "questionnairePage.a11yDoes")}
       yours={tList(t, "questionnairePage.a11yYours")}
-      keys={[
-        { keys: ["Enter"], action: t("questionnairePage.key.enter") },
-        { keys: ["⌘+Enter", "Ctrl+Enter"], action: t("questionnairePage.key.modEnter") },
-        { keys: ["↑", "↓"], action: t("questionnairePage.key.arrows") },
-        { keys: ["A–Z"], action: t("questionnairePage.key.letter") },
-      ]}
     />
+
+    <h3>{t("component.a11yKeyboardTitle")}</h3>
+    <p set:html={t("questionnairePage.keysIntro")} />
+    <ComparisonTable
+      aspectLabel={t("questionnairePage.keysTable.aspect")}
+      columns={[t("questionnairePage.keysTable.choosing"), t("questionnairePage.keysTable.typing")]}
+      rows={keyRows}
+    />
+    <p>{t("questionnairePage.keysNoteShort")}</p>
+    <UsagePreview tree={questionnaireShortcutsTree(t)} title={t("questionnairePage.keyboardTitle")} description={t("questionnairePage.keyboardBody")} />
   </Fragment>
 
   <Fragment slot="install">

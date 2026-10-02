@@ -71,7 +71,7 @@ export const imageFrameMessages = {
     "imageFrame.basicTitle": "Una foto con su marco",
     "imageFrame.lede": "ImageFrame recorta una imagen o un video a una proporción fija, y decide cómo la llena (<code>fit</code>) y qué parte sobrevive al recorte (<code>position</code>). La caja tiene su tamaño antes de que la imagen cargue, así la página no salta.",
     "imageFrame.anatomyBody":
-      "Este diagrama nombra el marco, el media y un caption con wash. El caption y el gradient son de MediaCaption/MediaGradient (padres de ImageFrame), no partes propias del frame; el espécimen los trae porque esa composición es lo que el contrato enseña. Está congelado; los aspect/fit/position vivos empiezan abajo.",
+      "Este diagrama nombra el marco, el media y un caption con wash. El caption y el gradient son de MediaOverlay/MediaOverlayShade (padres de ImageFrame), no partes propias del frame; el espécimen los trae porque esa composición es lo que el contrato enseña. Está congelado; los aspect/fit/position vivos empiezan abajo.",
     "imageFrame.anatomyLabel": "Anatomía de ImageFrame",
     "imageFrame.anatomyPreviewLabel": "ImageFrame, parte por parte",
     "imageFrame.aspectTitle": "Proporciones: la caja, no el archivo",
@@ -190,7 +190,7 @@ export const imageFrameMessages = {
     "imageFrame.basicTitle": "A photo with its frame",
     "imageFrame.lede": "ImageFrame crops an image or video to a fixed ratio, and decides how it fills (<code>fit</code>) and which part survives the crop (<code>position</code>). The box has its size before the image loads, so the page does not jump.",
     "imageFrame.anatomyBody":
-      "This diagram names the frame, the media, and a caption with wash. Caption and gradient belong to MediaCaption/MediaGradient (parents of ImageFrame), not to the frame's own parts; the specimen includes them because that composition is what the contract teaches. It is frozen; the live aspect/fit/position demos start below.",
+      "This diagram names the frame, the media, and a caption with wash. Caption and gradient belong to MediaOverlay/MediaOverlayShade (parents of ImageFrame), not to the frame's own parts; the specimen includes them because that composition is what the contract teaches. It is frozen; the live aspect/fit/position demos start below.",
     "imageFrame.anatomyLabel": "ImageFrame anatomy",
     "imageFrame.anatomyPreviewLabel": "ImageFrame, part by part",
     "imageFrame.aspectTitle": "Ratios: the box, not the file",

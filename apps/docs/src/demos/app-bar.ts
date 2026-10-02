@@ -145,3 +145,17 @@ export const appBarDoDropdownHtml = (t: Translate): string => appBarDropdownSpec
 export const appBarDontDropdownHtml = (t: Translate): string => appBarDropdownSpecimen(t, `
   <div class="sk-menu__item sk-interactive" role="menuitemcheckbox" aria-checked="true"><span class="sk-menu__item-label">${t("demo.appBar.showGrid")}</span><span class="sk-menu__item-indicator" data-state="checked" aria-hidden="true"><span data-sk-icon="check" data-sk-icon-size="sm"></span></span></div>
   <div class="sk-menu__item sk-interactive" role="menuitemcheckbox" aria-checked="false"><span class="sk-menu__item-label">${t("demo.appBar.snapToGrid")}</span><span class="sk-menu__item-indicator" aria-hidden="true"><span data-sk-icon="check" data-sk-icon-size="sm"></span></span></div>`);
+
+/** The same commands as `menubarCompareTree` (`demos/menubar.ts`), drawn as an app bar: the name, then the words. */
+export const appBarCompareTree = (t: Translate): UsageTree => ({
+  contract: "app-bar",
+  signature: "AppBar",
+  options: { label: t("demo.appBar.app") },
+  children: [
+    menu(t("demo.appBar.app"), [item("about", t("demo.appBar.about"))], true),
+    menu(t("demo.appBar.file"), [item("new", t("demo.appBar.new")), item("open", t("demo.appBar.open"))]),
+    menu(t("demo.appBar.edit"), [item("undo", t("demo.appBar.undo")), item("redo", t("demo.appBar.redo"))]),
+    menu(t("demo.appBar.view"), [item("zoom-in", t("demo.appBar.zoomIn")), item("zoom-out", t("demo.appBar.zoomOut"))]),
+  ],
+  slots: { status: [status(t("demo.appBar.saved"))] },
+});

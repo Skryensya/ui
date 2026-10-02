@@ -253,7 +253,7 @@ entries:
       title: Primera publicación del contrato
       body: >-
         <code>Changelog</code> y <code>ChangelogEntry</code>, un historial con riel. No es un
-        <code>ProcessList</code> con otra pintura: ése numera sus marcadores con un
+        <code>Procedure</code> con otra pintura: ése numera sus marcadores con un
         <code>counter()</code> de CSS, así que una lista con lo más nuevo arriba se numeraría al
         revés del tiempo. Tampoco es un <code>Steps</code>, cuyo conector dice cuánto trabajo queda
         atrás, que de un cambio ya publicado no es una afirmación que nadie pueda hacer.
@@ -261,7 +261,7 @@ entries:
       title: First published contract
       body: >-
         <code>Changelog</code> and <code>ChangelogEntry</code>, a history on a rail. It is not a
-        repainted <code>ProcessList</code>: that one numbers its markers with a CSS
+        repainted <code>Procedure</code>: that one numbers its markers with a CSS
         <code>counter()</code>, so a newest-first list would number itself backwards through time.
         Nor is it <code>Steps</code>, whose connector says how much work is behind the reader, which
         of a shipped change is not a claim anyone can make.

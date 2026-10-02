@@ -154,6 +154,10 @@ export const stableIconNames = [
   "user",
   "visibility",
   "visibility-off",
+  /* The symbol drawn IN PLACE of a character that is being hidden (an OTP box with `mask`). It names the
+   * ROLE, "a hidden character", and not the asterisk most sets draw for it: Lucide and Phosphor draw
+   * an asterisk, Material an asterisk too. Another set could draw a dot or a bullet. */
+  "mask",
   /* An app's language / locale selection. It is a ROLE, not a drawing: it names "pick the language of
    * this", and it stays true whether a set draws it as two crossed writing strokes (Lucide), an "A文"
    * pair (Material, Phosphor) or anything else. That is why `language` and not `translate`, which is

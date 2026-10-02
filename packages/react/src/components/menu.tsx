@@ -210,7 +210,8 @@ function initialCheckedState(items: readonly MenuItem[]): CheckedState {
 }
 
 /** Any submenu anywhere in the tree; see the note on `useAnchored` in `Menu` below. */
-function hasSubmenu(items: readonly MenuItem[]): boolean {
+/** Whether any level of the tree opens a submenu. `Menubar` asks the same question as `Menu`. */
+export function hasSubmenu(items: readonly MenuItem[]): boolean {
   return items.some((item) => (item.children?.length ?? 0) > 0 || hasSubmenu(item.children ?? []));
 }
 

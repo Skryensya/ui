@@ -3,7 +3,7 @@
 # `surface` is the shape of the contract the last time somebody reviewed it. If the compiler says it
 # does not match, something a consumer depends on has moved: write the entry and paste in the new
 # hash.
-surface: "7176356eacc183cf"
+surface: "6fd39360b4c83ff6"
 entries:
   - date: 2026-09-20
     kind: feature
@@ -35,3 +35,23 @@ entries:
         <code>block</code> (inside the text, with a rule down its edge) and <code>pull</code>
         (lifted out of it, display type, no rule). It adds no quotation marks: the glyph belongs to
         the copy. There is no enhancer. Its stylesheet is <code>components/quote.css</code>.
+  - date: 2026-10-02
+    kind: feature
+    target: media
+    es:
+      title: Quote acepta la imagen de la persona citada
+      body: >-
+        Nuevo slot <code>image</code>: un <code>Avatar</code> (con foto o con iniciales) junto al
+        nombre. Decora la atribución y no la reemplaza, así que por sí solo no hace aparecer el
+        caption. Para ubicarlo, el caption ahora guarda la imagen en <code>sk-quote__media</code> y el
+        nombre con la obra en <code>sk-quote__author</code>; el espacio entre ambos se ajusta con
+        <code>--sk-quote-media-gap</code>. Sin imagen se ve igual que antes.
+    en:
+      title: Quote accepts a picture of the person quoted
+      body: >-
+        New <code>image</code> slot: an <code>Avatar</code> (photo or initials) beside the name. It
+        decorates the attribution and does not replace it, so on its own it does not make the
+        caption appear. To place it, the caption now holds the picture in
+        <code>sk-quote__media</code> and the name with the work in <code>sk-quote__author</code>; the
+        space between them is tuned with <code>--sk-quote-media-gap</code>. Without a picture it
+        looks the same as before.

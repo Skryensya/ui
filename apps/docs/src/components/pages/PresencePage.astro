@@ -1,6 +1,5 @@
 ---
 import ComponentPageShell from "./ComponentPageShell.astro";
-import CodeBlock from "../CodeBlock.astro";
 import UsagePreview from "../UsagePreview.astro";
 import WhenToUse from "../WhenToUse.astro";
 import A11yNotes from "../A11yNotes.astro";
@@ -8,9 +7,14 @@ import {
   presenceAnatomyTree,
   presenceFieldsTree,
   presenceNoticeTree,
-  presenceTuningTree,
+  presenceToastCss,
+  presencePlaygroundTree,
+  presenceMotionFadeTree,
+  presenceMotionSlowTree,
+  presenceMotionTree,
 } from "../../demos/presence";
 import { getLocale, tList, useTranslations } from "../../i18n";
+import { storybookDocsUrl, storybookReactUrl, storybookVanillaUrl } from "../../lib/navigation";
 import "@skryensya/core/components/presence.css";
 import "@skryensya/core/components/callout.css";
 import "@skryensya/core/components/button.css";
@@ -24,6 +28,8 @@ import "@skryensya/core/components/annotation.css";
 import { annotationDemoCss } from "../../demos/annotation";
 
 const t = useTranslations(getLocale(Astro.url));
+const reactStorybook = storybookDocsUrl(storybookReactUrl, "Components/Layout/Presence", "Notice");
+const vanillaStorybook = storybookDocsUrl(storybookVanillaUrl, "Components/Layout/Presence", "Notice");
 
 /*
  * Page-level app code, not part of the component. Each script drives its demo through the DOM,
@@ -56,30 +62,6 @@ const fields = document.getElementById("presence-fields");
 toggle.addEventListener("change", () => show(fields, toggle.checked));
 `;
 
-const tuningScript = `${show}
-const button = document.getElementById("presence-tuning-toggle");
-const panels = document.querySelectorAll("[data-presence-tuning]");
-button.addEventListener("click", () => {
-  for (const panel of panels) show(panel, panel.hidden);
-});
-`;
-
-const react = `import { Callout } from "@skryensya/react/callout";
-import { Presence } from "@skryensya/react/presence";
-import "@skryensya/core/components/presence.css";
-
-<Presence present={open} unmountOnExit>
-  <Callout tone="success" title="Saved">…</Callout>
-</Presence>`;
-
-const html = `<div class="sk-presence" data-state="closed" hidden id="notice">…</div>`;
-
-const vanilla = `import { setPresent } from "@skryensya/vanilla/presence";
-
-const notice = document.getElementById("notice");
-await setPresent(notice, true);   // enters
-await setPresent(notice, false);  // resolves once the exit has painted
-notice.remove();`;
 ---
 
 <ComponentPageShell
@@ -90,28 +72,50 @@ notice.remove();`;
   <Fragment slot="usage">
     <p class="lede" set:html={t("presence.lede")} />
 
+    <UsagePreview
+      tree={presencePlaygroundTree(t)}
+      optionName="present"
+      title={t("presence.presentTitle")}
+      description={t("presence.presentBody")}
+      labels={{ false: t("presence.present.false"), true: t("presence.present.true") }}
+      explain={{ false: t("presence.presentExplain.false"), true: t("presence.presentExplain.true") }}
+      remountOnChange={false}
+      stageMinBlockSize="9rem"
+    />
+
+    <UsagePreview
+      variants={(["default", "fade", "slow"] as const).map((motion) => ({
+        value: motion,
+        label: t(`presence.tuning${motion === "default" ? "Default" : motion === "fade" ? "Fade" : "Slow"}` as Parameters<typeof t>[0]),
+        tree: { default: presenceMotionTree, fade: presenceMotionFadeTree, slow: presenceMotionSlowTree }[motion](t),
+        explain: t(`presence.motion.${motion}.explain` as Parameters<typeof t>[0]),
+      }))}
+      initialVariant="default"
+      variantsLabel={t("presence.motionLabel")}
+      toggleLabel={t("presence.tuningToggle")}
+      title={t("presence.tuningHeading")}
+      description={t("presence.tuningIntro")}
+      remountOnChange={false}
+      stageMinBlockSize="6rem"
+    />
+
     <h3>{t("component.examplesTitle")}</h3>
 
     <h3>{t("presence.noticeHeading")}</h3>
     <p set:html={t("presence.noticeIntro")} />
-    <UsagePreview tree={presenceNoticeTree(t)} script={noticeScript} label={t("presence.noticeLabel")} />
+    <UsagePreview tree={presenceNoticeTree(t)} script={noticeScript} css={presenceToastCss} label={t("presence.noticeLabel")} />
 
     <h3>{t("presence.fieldsHeading")}</h3>
     <p set:html={t("presence.fieldsIntro")} />
     <UsagePreview tree={presenceFieldsTree(t)} script={fieldsScript} label={t("presence.fieldsLabel")} />
 
-    <h3>{t("presence.tuningHeading")}</h3>
-    <p set:html={t("presence.tuningIntro")} />
-    <UsagePreview tree={presenceTuningTree(t)} script={tuningScript} label={t("presence.tuningLabel")} />
-
     <h3>{t("presence.reactTitle")}</h3>
-    <p set:html={t("presence.reactBody")} />
-    <CodeBlock code={react} label="React" lang="tsx" />
-
-    <h3>{t("presence.vanillaTitle")}</h3>
-    <p set:html={t("presence.vanillaBody")} />
-    <CodeBlock code={html} label="HTML" lang="html" />
-    <CodeBlock code={vanilla} label="JavaScript" lang="ts" />
+    <p>
+      {t("presence.reactBody")}
+      {reactStorybook && <a class="sk-link sk-interactive" href={reactStorybook} rel="noreferrer" target="_blank">Storybook React</a>}
+      {reactStorybook && vanillaStorybook && " · "}
+      {vanillaStorybook && <a class="sk-link sk-interactive" href={vanillaStorybook} rel="noreferrer" target="_blank">Storybook Vanilla</a>}
+    </p>
 
     <h3>{t("component.contractNotesTitle")}</h3>
     <ul>

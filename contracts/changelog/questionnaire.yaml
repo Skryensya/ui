@@ -5,6 +5,24 @@
 # hash.
 surface: "a70dff49b9ae2b5d"
 entries:
+  - date: 2026-10-02
+    kind: feature
+    target: text
+    es:
+      title: Una pregunta que solo pide texto libre es un textarea
+      body: >-
+        Si el texto libre es lo único que pide una pregunta (sin <code>choices</code>, sin
+        <code>control</code> y sin <code>textType</code>), ahora es un textarea de tres filas en vez de una
+        línea: una pregunta abierta necesita espacio. <code>textLines</code> sigue fijando sus propias filas
+        y <code>textType="text"</code> pide una sola línea. El texto junto a opciones y las respuestas
+        tipadas (email, número, fecha) siguen siendo un input.
+    en:
+      title: A question that only asks for free text is a textarea
+      body: >-
+        When free text is all a question asks for (no <code>choices</code>, no <code>control</code> and no
+        <code>textType</code>), it is now a three-row textarea instead of one line: an open question needs
+        room. <code>textLines</code> still sets its own rows and <code>textType="text"</code> asks for a
+        single line. Text beside choices and typed answers (email, number, date) stay an input.
   - date: 2026-09-29
     kind: breaking
     es:

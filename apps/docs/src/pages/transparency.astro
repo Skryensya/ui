@@ -5,7 +5,7 @@
  * `.sk-translucent` (patterns/transparency.css) was removed once every surface it styled published
  * frosted.
  */
-import Base from "../layouts/Base.astro";
+import FoundationPage from "../components/FoundationPage.astro";
 import CodeBlock from "../components/CodeBlock.astro";
 import "@skryensya/core/patterns/box.css";
 
@@ -46,12 +46,10 @@ const ownMarkup = `.my-glass {
 
 ---
 
-<Base
+<FoundationPage
   title="Transparency"
-  documentLayout="grid"
   description="The policy behind every translucent surface: opaque baseline, progressive blur, reduced transparency, high contrast and a contrast floor."
 >
-  <h1>Transparency</h1>
   <p class="lede">
     A translucent surface lets the context show through without handing it the contrast. In this system,
     transparency is not a class you add: it is a policy every see-through surface follows, and you turn it
@@ -201,7 +199,7 @@ const ownMarkup = `.my-glass {
       opaque background. The modality and the drag both stay.
     </li>
     <li>
-      <strong><a href="/components/media-gradient">Media gradient</a>.</strong> The wash becomes the opaque base colour
+      <strong><a href="/components/media-overlay">MediaOverlay</a>.</strong> The wash becomes the opaque base colour
       inside the caption box; it does not cover the whole image.
     </li>
     <li>
@@ -228,7 +226,7 @@ const ownMarkup = `.my-glass {
  href="https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/At-rules/@media/prefers-reduced-transparency"
  >MDN, <code>prefers-reduced-transparency</code></a>.
   </p>
-</Base>
+</FoundationPage>
 
 <style>
   .transparency-lab {

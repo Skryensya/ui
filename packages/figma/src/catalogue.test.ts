@@ -85,7 +85,9 @@ describe("Quote, drawn at a reading width", () => {
     expect(body.kind === "frame" && manifest.styles.boxes[body.box].stretch).toBe(true);
     expect(body.kind === "frame" && body.layers[0]).toMatchObject({ kind: "text", slot: "children", fill: true });
     expect(body.kind === "frame" && manifest.styles.boxes[body.box].padding.left).not.toEqual({ value: 0, expression: "0" });
-    expect(attribution.kind === "frame" && attribution.layers.every((l) => l.kind === "text" && !l.fill)).toBe(true);
+    // The caption holds one author frame (the name and the work); with a picture it would hold the picture first.
+    const author = attribution.kind === "frame" ? attribution.layers[0] : undefined;
+    expect(author?.kind === "frame" && author.layers.every((l) => l.kind === "text" && !l.fill)).toBe(true);
   });
 });
 
@@ -540,11 +542,11 @@ describe("BadgeHolder", () => {
 });
 
 describe("OtpInput", () => {
-  it("draws its label over four segments, each holding the placeholder", () => {
+  it("draws its label over four boxes, each an empty segment", () => {
     const set = manifest.components.find((c): c is ComponentSet => c.kind === "component-set" && c.id === "otp-input")!;
     const [label, control] = manifest.styles.layers[set.cells[0].layers];
     expect(label.slot).toBe("label");
-    expect(control.kind === "frame" && control.layers.map((l) => (l.kind === "frame" ? l.layers[0]?.slot : undefined))).toEqual(["placeholder", "placeholder", "placeholder", "placeholder"]);
+    expect(control.kind === "frame" && control.layers.map((l) => (l.kind === "frame" ? l.layers[0]?.slot : undefined))).toEqual(["segment", "segment", "segment", "segment"]);
   });
 });
 
@@ -652,9 +654,9 @@ describe("Timeline's connector", () => {
   });
 });
 
-describe("ProcessList", () => {
+describe("Procedure", () => {
   it("numbers each step in its marker, the content filling the rest of the row", () => {
-    const set = manifest.components.find((c): c is ComponentSet => c.kind === "component-set" && c.id === "process-list")!;
+    const set = manifest.components.find((c): c is ComponentSet => c.kind === "component-set" && c.id === "procedure")!;
     const steps = manifest.styles.layers[set.cells[0].layers];
     const numbers = steps.map((step) => {
       const marker = step.kind === "frame" ? step.layers.find((l) => l.slot === "before") : undefined;

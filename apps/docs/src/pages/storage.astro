@@ -1,5 +1,5 @@
 ---
-import Base from "../layouts/Base.astro";
+import FoundationPage from "../components/FoundationPage.astro";
 import CodeBlock from "../components/CodeBlock.astro";
 
 const declare = `import { definePreference, oneOf } from "@skryensya/core/storage";
@@ -88,12 +88,11 @@ const PREPAINT = {
 </script>`;
 ---
 
-<Base
+<FoundationPage
   title="Almacenamiento"
-  documentLayout="grid"
   description="The only way to save preferences: one entry, declared preferences, and readings that never fail."
+  heading="Storage"
 >
-  <h1>Storage</h1>
   <p class="lede">
     A design system saves preferences: color mode, contrast, density, whatever the product adds. It is not a component, it is plumbing that every consumer reinvents, and that this repo had reinvented <strong>four times</strong>, each copy with its own <code>try/catch</code>, its own key, and its own handwritten save. So it ships the way any behaviour with no platform equivalent ships here ( <a href="https://github.com/Skryensya/ui/blob/main/docs/decisions">decision 14</a> ): the pure codec in <code>@skryensya/core/storage</code>, the imperative binding in <code>@skryensya/vanilla/storage</code>, and the hook in <code>@skryensya/react/storage</code>.
   </p>
@@ -161,4 +160,4 @@ const PREPAINT = {
   <p>
     That rule is what makes this checkable: grep for <code>localStorage</code> outside those files and the only hit should be the prepaint script.
   </p>
-</Base>
+</FoundationPage>

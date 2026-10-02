@@ -1,0 +1,67 @@
+# What changed in procedure, in the words its users read. Only appended to, never rewritten.
+#
+# `surface` is the shape of the contract the last time somebody reviewed it. If the compiler says it
+# does not match, something a consumer depends on has moved: write the entry and paste in the new
+# hash.
+surface: "d626c8b1955a1c5a"
+entries:
+  - date: 2026-08-11
+    kind: feature
+    es:
+      title: Procedure se publica como contrato, con 2 signatures
+      body: >-
+        Entra al catálogo con <code>Procedure</code>, <code>ProcedureStep</code>: los dos bindings
+        lo realizan, y la referencia de esta página sale del contrato compilado en vez de prosa escrita
+        al lado. No tiene enhancer: el markup está completo por sí solo, así que las dos bindings son el
+        mismo markup dos veces. No tiene opciones: el elemento ES el significado. La hoja es
+        <code>components/procedure.css</code>.
+    en:
+      title: Procedure is published as a contract, with 2 signatures
+      body: >-
+        It joins the catalogue with <code>Procedure</code>, <code>ProcedureStep</code>: both
+        bindings realize it, and this page's reference is rendered from the compiled contract rather
+        than from prose written beside it. There is no enhancer: the markup is complete on its own, so
+        both bindings are the same markup twice. It has no options: the element IS the meaning. Its
+        stylesheet is <code>components/procedure.css</code>.
+  - date: 2026-09-12
+    kind: feature
+    es:
+      title: Los styling hooks de procedure quedan declarados en el contrato
+      body: >-
+        El contrato ahora publica los <code>15</code> styling hooks de este componente. Nada
+        de lo que hayas escrito cambia: son los mismos hooks, con los mismos nombres, y la hoja de
+        estilos no se tocó. Lo nuevo es que el contrato los declara, así que el compilador falla si
+        la hoja declara uno que el contrato no publica, o si el contrato promete uno que la hoja no
+        declara. Esa segunda mitad es la que importa: hasta ahora, redeclarar un hook que ya no
+        existía no daba error, daba silencio.
+    en:
+      title: procedure's styling hooks are now declared in the contract
+      body: >-
+        The contract now publishes this component's <code>15</code> styling hooks. Nothing you
+        wrote changes: the same hooks, under the same names, and the stylesheet was not touched.
+        What is new is that the contract declares them, so the compiler fails when the stylesheet
+        declares one the contract does not publish, or the contract promises one the stylesheet
+        never declares. That second half is the one that matters: until now, re-declaring a hook
+        that no longer existed was not an error, it was silence.
+  - date: 2026-10-02
+    kind: breaking
+    es:
+      title: ProcessList pasa a llamarse Procedure
+      body: >-
+        <code>ProcessList</code> y <code>ProcessListItem</code> son ahora <code>Procedure</code> y
+        <code>ProcedureStep</code>: el nombre dice lo que es, un procedimiento que se sigue en orden, y
+        se distingue de <code>Steps</code>, que mide avance. Cambian el id del contrato
+        (<code>procedure</code>), el import (<code>@skryensya/react/procedure</code>), la hoja
+        (<code>components/procedure.css</code>), las clases (<code>sk-procedure</code>,
+        <code>sk-procedure__step</code>) y los hooks (<code>--sk-procedure-*</code>, con
+        <code>item</code> convertido en <code>step</code>). No hay período de deprecación.
+    en:
+      title: ProcessList is now called Procedure
+      body: >-
+        <code>ProcessList</code> and <code>ProcessListItem</code> are now <code>Procedure</code> and
+        <code>ProcedureStep</code>: the name says what it is, a procedure followed in order, and sets it
+        apart from <code>Steps</code>, which measures progress. The contract id
+        (<code>procedure</code>), the import (<code>@skryensya/react/procedure</code>), the stylesheet
+        (<code>components/procedure.css</code>), the classes (<code>sk-procedure</code>,
+        <code>sk-procedure__step</code>) and the hooks (<code>--sk-procedure-*</code>, with
+        <code>item</code> becoming <code>step</code>) all change. There is no deprecation period.

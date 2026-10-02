@@ -1,5 +1,5 @@
 ---
-import Base from "../../layouts/Base.astro";
+import FoundationPage from "../../components/FoundationPage.astro";
 import Chain from "../../components/Chain.astro";
 import CodeBlock from "../../components/CodeBlock.astro";
 import { tokens } from "../../lib/tokens";
@@ -23,12 +23,10 @@ const linterOutput = `✗ 1 problem(s):
     switching, breaks dark mode for this component alone`;
 ---
 
-<Base
+<FoundationPage
   title="Tiers de tokens"
-  documentLayout="grid"
   description="Primitive, semantic y styling hook: qué responde cada tier, hacia dónde puede referenciar y qué falla cuando se salta la dirección."
 >
-  <h1>Tiers de tokens</h1>
   <p class="lede">
     Un tier no se define por la carpeta donde vive, sino por <strong>qué puede referenciar</strong>.
     El sistema tiene primitive, semantic y styling hook porque esa dirección mantiene separados valor,
@@ -121,4 +119,4 @@ const linterOutput = `✗ 1 problem(s):
     <a href="/es/dimensiones">Dimensiones</a>, que muestra qué cambia en semantic, y en
     <a href="/es/referencia">Referencia</a>, que queda para buscar tokens puntuales.
   </p>
-</Base>
+</FoundationPage>

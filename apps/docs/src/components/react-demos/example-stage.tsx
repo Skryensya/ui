@@ -1,4 +1,5 @@
-/* One tree, drawn live and left alone: `UsagePreview`'s fixed mode. No control, nothing to vary. */
+/* One tree, drawn live and left alone: `UsagePreview`'s fixed mode. No control, nothing to vary.
+   A form inside it never submits natively: that would reload the docs page under the reader. */
 import type { UsageTree } from "@skryensya/core/usage-tree";
 import { useRenderedTree } from "./use-rendered-tree";
 
@@ -7,7 +8,7 @@ export function ExampleStage({ tree, measure }: { tree: UsageTree; measure?: str
   const render = useRenderedTree(tree);
   const example = render ? render(tree) : null;
   return (
-    <div className="sk-preview-card__stage">
+    <div className="sk-preview-card__stage" onSubmitCapture={(event) => event.preventDefault()}>
       {measure ? <div style={{ inlineSize: "100%", maxInlineSize: measure }}>{example}</div> : example}
     </div>
   );

@@ -1,5 +1,5 @@
 ---
-import Base from "../../layouts/Base.astro";
+import FoundationPage from "../../components/FoundationPage.astro";
 import CodeBlock from "../../components/CodeBlock.astro";
 import Used from "../../components/Used.astro";
 import { tokens } from "../../lib/tokens";
@@ -25,12 +25,10 @@ const radiusUse = `<!-- Un preset del multiplicador… -->
 <html style="--radius-multiplier: 1.25">`;
 ---
 
-<Base
+<FoundationPage
   title="Cuatro dimensiones"
-  documentLayout="grid"
   description="Modo de color, alto contraste, densidad y radio: cuatro ejes que componen en la cascada. La marca re-declara bundles semánticos."
 >
-  <h1>Cuatro dimensiones</h1>
   <p class="lede">
     Modo de color, alto contraste, densidad y radio: cuatro ejes independientes que <strong>componen en la cascada</strong> en vez de estar enumerados en disco.
   </p>
@@ -240,4 +238,4 @@ const radiusUse = `<!-- Un preset del multiplicador… -->
     Sigue en <a href="/es/densidad">Densidad</a>, que baja el eje global a scopes locales, y en
     <a href="/es/elevacion">Elevación</a>, que muestra qué le hace una dimensión de color a una escala compuesta.
   </p>
-</Base>
+</FoundationPage>

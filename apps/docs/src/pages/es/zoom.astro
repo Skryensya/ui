@@ -1,5 +1,5 @@
 ---
-import Base from "../../layouts/Base.astro";
+import FoundationPage from "../../components/FoundationPage.astro";
 import CodeBlock from "../../components/CodeBlock.astro";
 
 const reflowCss = `.responsive-grid {
@@ -61,12 +61,10 @@ const localScrollCss = `.table-scroll,
 }`;
 ---
 
-<Base
+<FoundationPage
   title="Zoom y reflow"
-  documentLayout="grid"
   description="Texto al 200% y reflow al 400% sin perder contenido, controles ni funcionalidad."
 >
-  <h1>Zoom y reflow</h1>
   <p class="lede">
     El zoom no es una preferencia visual ni una media query. Es una transformación del viewport y del tamaño legible: el contenido tiene que envolver, las columnas tienen que apilarse y todos los controles tienen que seguir disponibles. La interfaz cambia de geometría, no de capacidades.
   </p>
@@ -267,7 +265,7 @@ const localScrollCss = `.table-scroll,
       WCAG 1.4.10 Reflow
     </a>.
   </p>
-</Base>
+</FoundationPage>
 
 <style>
   .reflow-specimen {

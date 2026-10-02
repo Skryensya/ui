@@ -10,7 +10,7 @@ export const heroWithCodePreviewSnippet: Snippet = {
       "developer-tool's own hero has a more convincing screenshot than a photo, the exact command " +
       "that gets someone from zero to running.",
     "`CodePreview`'s `children` slot takes plain text (the literal command), not a nested `Code` " +
-      "signature: confirmed against `demos/process-list.ts`'s own established usage, the same shape " +
+      "signature: confirmed against `demos/procedure.ts`'s own established usage, the same shape " +
       "this snippet borrows rather than inventing a second convention for the same contract.",
     "One real command, not a fabricated block of application code: `pnpm add @skryensya/core " +
       "@skryensya/react` is something a reader could paste and run, which is the whole point of " +

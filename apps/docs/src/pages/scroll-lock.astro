@@ -1,5 +1,5 @@
 ---
-import Base from "../layouts/Base.astro";
+import FoundationPage from "../components/FoundationPage.astro";
 import CodeBlock from "../components/CodeBlock.astro";
 
 const import_ = `@import "@skryensya/core/patterns/scroll-lock.css";`;
@@ -20,12 +20,10 @@ html:has(dialog:modal) .mi-toc {
 }`;
 ---
 
-<Base
+<FoundationPage
   title="Scroll lock"
-  documentLayout="grid"
   description="Pattern opt-in that freezes the page behind a dialog:modal and reserves the scrollbar gutter so that the layout does not jump."
 >
-  <h1>Scroll lock</h1>
   <p class="lede">
     When a <code>&lt;dialog&gt;</code> is opened with <code>showModal()</code>, the page behind it has to stop scrolling. Freezing the overflow takes out the classic scrollbar and the content becomes wider by ~15px: that is CLS. This pattern does both things at the same time, and only if you import it.
   </p>
@@ -74,4 +72,4 @@ html:has(dialog:modal) .mi-toc {
     <li>Does not measure or offset against <code>padding-inline-end</code> in JS. The reservation is <code>scrollbar-gutter</code>, platform property.</li>
     <li>It does not replace a scroll lock of your own: if you already have one, do not import this one.</li>
   </ul>
-</Base>
+</FoundationPage>

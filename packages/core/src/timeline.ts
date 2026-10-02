@@ -13,7 +13,7 @@ import type { ComponentContract, OptionValue } from "./contract.js";
  *   - Steps models a process the reader is INSIDE: its items carry complete / current / upcoming
  *     and exactly one is current. Nothing here is "current" - it all already happened - and a
  *     Timeline whose entries had status would be a vertical Steps with the content misplaced.
- *   - ProcessList is instructions to follow. Order is its only state and there is no time at all.
+ *   - Procedure is instructions to follow. Order is its only state and there is no time at all.
  *   - Changelog is releases, and says so in its own vocabulary: its entries are versions, its
  *     order is locked newest-first because that is what a changelog IS, and its scale is a dense
  *     document at 85ch. This one takes arbitrary events in whichever order the author writes them.

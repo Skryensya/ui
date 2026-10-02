@@ -1,5 +1,5 @@
 ---
-import Base from "../layouts/Base.astro";
+import FoundationPage from "../components/FoundationPage.astro";
 import Chain from "../components/Chain.astro";
 import CodeBlock from "../components/CodeBlock.astro";
 import { tokens } from "../lib/tokens";
@@ -23,12 +23,11 @@ const linterOutput = `✗ 1 problem(s):
     switching, breaks dark mode for this component alone`;
 ---
 
-<Base
+<FoundationPage
   title="Tres tiers"
-  documentLayout="grid"
   description="Primitives, semantics and styling hooks: what each tier can reference, and why the direction of the references is what makes it a system."
+  heading="Three tiers"
 >
-  <h1>Three tiers</h1>
   <p class="lede">
     A tier is not defined by the folder it lives in, but by <strong>what it is allowed to reference</strong>. Three folders named primitive, semantic and component do not make a three-tier system; the rule about which way references may point does.
   </p>
@@ -121,4 +120,4 @@ const linterOutput = `✗ 1 problem(s):
     It buys one more thing: because <strong>any rule outside a layer beats every rule inside one</strong>, your own app can override a styling hook without a specificity fight.
   </p>
   <CodeBlock code={`.hero .sk-button { --sk-button-bg: rebeccapurple; }`} label="CSS" />
-</Base>
+</FoundationPage>

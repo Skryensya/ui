@@ -2,20 +2,36 @@ import type { UsageTree } from "@skryensya/core/usage-tree";
 import type { Translate } from "../i18n";
 import { anatomyFigureTree } from "./annotation-parts";
 
-
-export const popoverAnatomyTree = (t: Translate): UsageTree => anatomyFigureTree(t, {
-  label: t("popoverPage.anatomyLabel"),
-  subject: popoverTree(t),
-  parts: [
-    { for: ".sk-popover", side: "block-start", mark: "bracket", ringPlacement: "offset", ringDistance: 8 },
-    { for: ".sk-popover__trigger", side: "inline-start" },
-    { for: ".sk-popover__content", side: "inline-start" },
-    { for: ".sk-anchored-arrow", side: "inline-end" },
-    { for: ".sk-popover__title", side: "inline-end", ringPlacement: "offset", ringDistance: 2 },
-    { for: ".sk-popover__description", side: "inline-end", ringPlacement: "offset", ringDistance: 2 },
-    { for: ".sk-popover__close", side: "block-end" },
-  ],
-});
+export const popoverAnatomyTree = (t: Translate): UsageTree =>
+  anatomyFigureTree(t, {
+    label: t("popoverPage.anatomyLabel"),
+    subject: popoverTree(t),
+    parts: [
+      {
+        for: ".sk-popover",
+        side: "block-start",
+        mark: "bracket",
+        ringPlacement: "offset",
+        ringDistance: 8,
+      },
+      { for: ".sk-popover__trigger", side: "inline-start" },
+      { for: ".sk-popover__content", side: "inline-start" },
+      { for: ".sk-anchored-arrow", side: "inline-end" },
+      {
+        for: ".sk-popover__title",
+        side: "inline-end",
+        ringPlacement: "offset",
+        ringDistance: 2,
+      },
+      {
+        for: ".sk-popover__description",
+        side: "inline-end",
+        ringPlacement: "offset",
+        ringDistance: 2,
+      },
+      { for: ".sk-popover__close", side: "block-end" },
+    ],
+  });
 
 export const popoverAnatomyCss = `.sk-annotated-figure {
   --sk-annotation-font-family: var(--font-family-code);
@@ -79,7 +95,11 @@ export const popoverAnatomyCss = `.sk-annotated-figure {
 export const popoverTree = (t: Translate): UsageTree => ({
   contract: "popover",
   signature: "Popover",
-  options: { panelId: "profile-popover", arrow: true, closeLabel: t("demo.popover.close") },
+  options: {
+    panelId: "profile-popover",
+    arrow: true,
+    closeLabel: t("demo.popover.close"),
+  },
   slots: {
     trigger: t("demo.popover.trigger"),
     title: "Ada Lovelace",
@@ -125,7 +145,12 @@ export const popoverStructuredTree = (t: Translate): UsageTree => ({
             signature: "Stack",
             options: { gap: "xs" },
             children: [
-              { contract: "typography", signature: "Text", options: { weight: "emphasis" }, children: "Grace Hopper" },
+              {
+                contract: "typography",
+                signature: "Text",
+                options: { weight: "emphasis" },
+                children: "Grace Hopper",
+              },
               {
                 contract: "typography",
                 signature: "Text",
@@ -194,26 +219,58 @@ export const popoverPlacementTree = (t: Translate): UsageTree => ({
         {
           contract: "popover",
           signature: "Popover.bare",
-          options: { panelId: "place-block-start", placement: "block-start", arrow: true, bare: true },
-          slots: { trigger: "block-start", children: t("demo.popoverPlacement.blockStart") },
+          options: {
+            panelId: "place-block-start",
+            placement: "block-start",
+            arrow: true,
+            bare: true,
+          },
+          slots: {
+            trigger: "block-start",
+            children: t("demo.popoverPlacement.blockStart"),
+          },
         },
         {
           contract: "popover",
           signature: "Popover.bare",
-          options: { panelId: "place-block-end", placement: "block-end", arrow: true, bare: true },
-          slots: { trigger: "block-end", children: t("demo.popoverPlacement.blockEnd") },
+          options: {
+            panelId: "place-block-end",
+            placement: "block-end",
+            arrow: true,
+            bare: true,
+          },
+          slots: {
+            trigger: "block-end",
+            children: t("demo.popoverPlacement.blockEnd"),
+          },
         },
         {
           contract: "popover",
           signature: "Popover.bare",
-          options: { panelId: "place-inline-start", placement: "inline-start", arrow: true, bare: true },
-          slots: { trigger: "inline-start", children: t("demo.popoverPlacement.inlineStart") },
+          options: {
+            panelId: "place-inline-start",
+            placement: "inline-start",
+            arrow: true,
+            bare: true,
+          },
+          slots: {
+            trigger: "inline-start",
+            children: t("demo.popoverPlacement.inlineStart"),
+          },
         },
         {
           contract: "popover",
           signature: "Popover.bare",
-          options: { panelId: "place-inline-end", placement: "inline-end", arrow: true, bare: true },
-          slots: { trigger: "inline-end", children: t("demo.popoverPlacement.inlineEnd") },
+          options: {
+            panelId: "place-inline-end",
+            placement: "inline-end",
+            arrow: true,
+            bare: true,
+          },
+          slots: {
+            trigger: "inline-end",
+            children: t("demo.popoverPlacement.inlineEnd"),
+          },
         },
       ],
     },
@@ -255,19 +312,34 @@ export const popupTree = (t: Translate): UsageTree => ({
   },
 });
 
-
-
-export const popupAnatomyTree = (t: Translate): UsageTree => anatomyFigureTree(t, {
-  label: t("popoverPage.popupAnatomyLabel"),
-  subject: popoverStructuredTree(t),
-  parts: [
-    { for: ".sk-popover", side: "block-start", mark: "bracket", ringPlacement: "offset", ringDistance: 6 },
-    { for: ".sk-popover__trigger", side: "inline-start" },
-    { for: ".sk-popover__content", side: "inline-start" },
-    { for: ".sk-anchored", side: "inline-end", ringPlacement: "offset", ringDistance: 4 },
-    { for: ".sk-anchored-arrow", side: "inline-end", ringPlacement: "offset", ringDistance: 3 },
-  ],
-});
+export const popupAnatomyTree = (t: Translate): UsageTree =>
+  anatomyFigureTree(t, {
+    label: t("popoverPage.popupAnatomyLabel"),
+    subject: popoverStructuredTree(t),
+    parts: [
+      {
+        for: ".sk-popover",
+        side: "block-start",
+        mark: "bracket",
+        ringPlacement: "offset",
+        ringDistance: 6,
+      },
+      { for: ".sk-popover__trigger", side: "inline-start" },
+      { for: ".sk-popover__content", side: "inline-start" },
+      {
+        for: ".sk-anchored",
+        side: "inline-end",
+        ringPlacement: "offset",
+        ringDistance: 4,
+      },
+      {
+        for: ".sk-anchored-arrow",
+        side: "inline-end",
+        ringPlacement: "offset",
+        ringDistance: 3,
+      },
+    ],
+  });
 
 /* Lifted from Popover's own anatomy sheet, because the two specimens have the same problem: a fixed
    surface has to come back into flow before it can be measured, and a panel that paints itself
@@ -309,3 +381,208 @@ export const popupAnatomyCss = `.sk-annotated-figure {
 .sk-annotated__subject {
   text-align: center;
 }`;
+
+/*
+ * USAGE GUIDE. A frozen popover has no panel to show (it opens on a click), so every half is the live
+ * component drawn OPEN by `popoverGuideCss`: the panel back in flow under its trigger, painted as if
+ * `:popover-open`.
+ *
+ * ONE STANDARD FOR ALL FOUR PAIRS, so no Do contradicts another pair's Don't or the page's own rules:
+ * every Do is a `Popover` with an arrow and a close control, its trigger is named exactly like its
+ * title, and its text is short. Each Don't breaks exactly one of those things and keeps the rest.
+ */
+type GuideKey = Parameters<Translate>[0];
+const g = (t: Translate, key: string) =>
+  t(`demo.popover.guide.${key}` as GuideKey);
+
+const guidePopover = (
+  t: Translate,
+  id: string,
+  trigger: string,
+  title: string,
+  children: UsageTree | string,
+  description?: string,
+): UsageTree => ({
+  contract: "popover",
+  signature: "Popover",
+  options: {
+    panelId: `guide-${id}`,
+    arrow: true,
+    closeLabel: t("demo.popover.close"),
+  },
+  slots: { trigger, title, ...(description ? { description } : {}), children },
+});
+
+/* Content: something to read, with a title, against a single word that only labels its button. */
+export const popoverDoInteractiveTree = (t: Translate): UsageTree =>
+  guidePopover(
+    t,
+    "do-content",
+    "Ada Lovelace",
+    "Ada Lovelace",
+    t("demo.popover.body"),
+    t("demo.popover.description"),
+  );
+
+/** Don't: one word that only explains its trigger. That is a Tooltip, and it opens on hover or focus. */
+export const popoverDontLabelTree = (t: Translate): UsageTree => ({
+  contract: "popover",
+  signature: "Popover.bare",
+  options: { panelId: "guide-dont-label", arrow: true },
+  slots: { trigger: g(t, "copy.trigger"), children: g(t, "copy.word") },
+});
+
+/* Length: a title and one or two sentences, against a paragraph that has become a page. */
+export const popoverDoShortTree = (t: Translate): UsageTree =>
+  guidePopover(
+    t,
+    "do-short",
+    t("demo.popover.guideTitle"),
+    t("demo.popover.guideTitle"),
+    t("demo.popover.guideShort"),
+  );
+
+export const popoverDontLongTree = (t: Translate): UsageTree =>
+  guidePopover(
+    t,
+    "dont-long",
+    t("demo.popover.guideTitle"),
+    t("demo.popover.guideTitle"),
+    t("demo.popover.guideLong"),
+  );
+
+/* Name: the button and the title say the same thing, against a button that promises one thing and a panel that is another. */
+export const popoverDoNameTree = (t: Translate): UsageTree =>
+  guidePopover(
+    t,
+    "do-name",
+    g(t, "filters.title"),
+    g(t, "filters.title"),
+    g(t, "filters.body"),
+  );
+
+export const popoverDontNameTree = (t: Translate): UsageTree =>
+  guidePopover(
+    t,
+    "dont-name",
+    g(t, "filters.mismatch"),
+    g(t, "filters.title"),
+    g(t, "filters.body"),
+  );
+
+/* Decision: a quick action beside its control, against a question that must be answered before going on. */
+const actionRow = (children: UsageTree[]): UsageTree => ({
+  contract: "layout",
+  signature: "Inline",
+  options: { gap: "sm" },
+  children,
+});
+
+export const popoverDoActionTree = (t: Translate): UsageTree =>
+  guidePopover(t, "do-action", g(t, "share.title"), g(t, "share.title"), {
+    contract: "layout",
+    signature: "Stack",
+    options: { gap: "sm" },
+    children: [
+      {
+        contract: "typography",
+        signature: "Text",
+        options: { tone: "secondary" },
+        children: g(t, "share.body"),
+      },
+      actionRow([
+        {
+          contract: "button",
+          signature: "Button.action",
+          options: { tone: "accent", size: "sm" },
+          children: g(t, "share.action"),
+        },
+      ]),
+    ],
+  });
+
+export const popoverDontDecisionTree = (t: Translate): UsageTree =>
+  guidePopover(t, "dont-decision", g(t, "delete.title"), g(t, "delete.title"), {
+    contract: "layout",
+    signature: "Stack",
+    options: { gap: "sm" },
+    children: [
+      {
+        contract: "typography",
+        signature: "Text",
+        options: { tone: "secondary" },
+        children: g(t, "delete.body"),
+      },
+      actionRow([
+        {
+          contract: "button",
+          signature: "Button.action",
+          options: { tone: "danger", size: "sm" },
+          children: g(t, "delete.confirm"),
+        },
+        {
+          contract: "button",
+          signature: "Button.action",
+          options: { size: "sm" },
+          children: g(t, "delete.cancel"),
+        },
+      ]),
+    ],
+  });
+
+export const popoverGuideCss = `.sk-do-dont__card .sk-popover {
+  display: inline-grid;
+  justify-items: start;
+  gap: var(--space-stack-sm);
+  inline-size: min(100%, 15rem);
+}
+
+.sk-do-dont__card .sk-popover > .sk-popover__positioner {
+  /* A closed [popover] is display: none; the guide draws it open, in flow under its trigger. */
+  display: block;
+  position: relative;
+  inset: auto;
+  inline-size: 100%;
+  margin: 0;
+  opacity: 1;
+  scale: 1;
+  translate: 0 0;
+  filter: blur(0);
+  pointer-events: none;
+}
+
+.sk-do-dont__card .sk-popover > .sk-popover__positioner > .sk-anchored-arrow {
+  visibility: visible;
+  position: absolute;
+  inset-block-start: calc(-1 * var(--sk-anchored-arrow-size, 8px) / 2);
+  inset-inline-start: 50%;
+  translate: -50% 0;
+  margin: 0;
+}
+`;
+
+/*
+ * THE PROFILE POPOVER, FOR A PROPERTY CARD. A popover is wired by id (`popovertarget` on the trigger,
+ * `id` on the panel), and every card on a page renders the same specimen, so each needs its own: with a
+ * shared one, every trigger opens the FIRST panel on the page and the rest sit unopened.
+ */
+export const popoverCardCase = (
+  t: Translate,
+  card: string = "card",
+): UsageTree => {
+  const base = popoverTree(t);
+  const id = typeof card === "string" && card ? card : "card";
+  /*
+   * The placement card is the one whose panel opens SIDEWAYS, and the stage is only as wide as the docs
+   * column: a panel at its full 24rem does not fit beside a centered trigger and spills out of the card.
+   * So it gets no paragraph, only the title and the one-line description, which keeps the panel narrow
+   * enough to sit on either side.
+   */
+  const slots =
+    id === "placement" ? { ...base.slots, children: undefined } : base.slots;
+  return {
+    ...base,
+    slots,
+    options: { ...base.options, panelId: `popover-${id}` },
+  };
+};

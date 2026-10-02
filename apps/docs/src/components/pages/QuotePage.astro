@@ -4,6 +4,8 @@ import "@skryensya/core/components/quote.css";
 import "@skryensya/core/components/annotation.css";
 /* The testimonial sits on a Box, and a preview frame only copies styles THIS page loaded. */
 import "@skryensya/core/patterns/box.css";
+/* The person's picture is an Avatar. */
+import "@skryensya/core/components/avatar.css";
 import ComponentPageShell from "./ComponentPageShell.astro";
 import CodeBlock from "../CodeBlock.astro";
 import UsagePreview from "../UsagePreview.astro";
@@ -12,6 +14,16 @@ import WhenToUse from "../WhenToUse.astro";
 import ContentRules from "../ContentRules.astro";
 import A11yNotes from "../A11yNotes.astro";
 import {
+  quoteDoAvatarTree,
+  quoteDoInTextTree,
+  quoteDoNamedTree,
+  quoteDoPullTree,
+  quoteDontPullInTextTree,
+  quoteDontVagueTree,
+  quoteDontInitialsTree,
+  quoteAvatarTree,
+  quotePullAvatarTree,
+  quoteTextTree,
   quoteAnatomyTree,
   quoteBareTree,
   quoteDoNoticeTree,
@@ -52,9 +64,11 @@ const explain = (option: string, values: readonly string[]) =>
     />
 
     <h3>{t("component.examplesTitle")}</h3>
-    <UsagePreview tree={quoteTree(t)} title={t("quotePage.citedTitle")} description={t("quotePage.citedBody")} />
+    <UsagePreview tree={quoteTextTree(t)} title={t("quotePage.citedTitle")} description={t("quotePage.citedBody")} />
+    <UsagePreview tree={quoteAvatarTree(t)} title={t("quotePage.portraitTitle")} description={t("quotePage.portraitBody")} />
     <UsagePreview tree={quoteBareTree(t)} title={t("quotePage.bareTitle")} description={t("quotePage.bareBody")} />
     <UsagePreview tree={quotePullTree(t)} title={t("quotePage.pullTitle")} description={t("quotePage.pullBody")} />
+    <UsagePreview tree={quotePullAvatarTree(t)} title={t("quotePage.pullPortraitTitle")} description={t("quotePage.pullPortraitBody")} />
     <UsagePreview tree={quoteTestimonialTree(t)} title={t("quotePage.testimonialTitle")} description={t("quotePage.testimonialBody")} />
 
     <h3>{t("component.contractNotesTitle")}</h3>
@@ -72,14 +86,33 @@ const explain = (option: string, values: readonly string[]) =>
     <WhenToUse use={tList(t, "quotePage.when")} avoid={tList(t, "quotePage.whenNot")} />
     <DoDont
       canvas
+      title={t("quotePage.dd.place.title")}
+      do={{ tree: quoteDoInTextTree(t), caption: t("quotePage.dd.place.do") }}
+      dont={{ tree: quoteDontPullInTextTree(t), caption: t("quotePage.dd.place.dont") }}
+    />
+    <DoDont
+      canvas
       title={t("quotePage.dd.pull.title")}
-      do={{ tree: quotePullTree(t), caption: t("quotePage.dd.pull.do") }}
+      do={{ tree: quoteDoPullTree(t), caption: t("quotePage.dd.pull.do") }}
       dont={{ tree: quoteDontLongPullTree(t), caption: t("quotePage.dd.pull.dont") }}
     />
     <DoDont
+      canvas
+      title={t("quotePage.dd.who.title")}
+      do={{ tree: quoteDoNamedTree(t), caption: t("quotePage.dd.who.do") }}
+      dont={{ tree: quoteDontVagueTree(t), caption: t("quotePage.dd.who.dont") }}
+    />
+    <DoDont
+      canvas
       title={t("quotePage.dd.notice.title")}
       do={{ tree: quoteDoNoticeTree(t), caption: t("quotePage.dd.notice.do") }}
       dont={{ tree: quoteDontNoticeTree(t), caption: t("quotePage.dd.notice.dont") }}
+    />
+    <DoDont
+      canvas
+      title={t("quotePage.dd.image.title")}
+      do={{ tree: quoteDoAvatarTree(t), caption: t("quotePage.dd.image.do") }}
+      dont={{ tree: quoteDontInitialsTree(t), caption: t("quotePage.dd.image.dont") }}
     />
     <ContentRules items={tList(t, "quotePage.content")} />
   </Fragment>

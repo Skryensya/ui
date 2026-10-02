@@ -41,6 +41,10 @@
       "types": "./src/components/tag.tsx",
       "default": "./src/components/tag.tsx"
     },
+    "./comparison-table": {
+      "types": "./src/components/comparison-table.tsx",
+      "default": "./src/components/comparison-table.tsx"
+    },
     "./description-list": {
       "types": "./src/components/description-list.tsx",
       "default": "./src/components/description-list.tsx"
@@ -85,9 +89,9 @@
       "types": "./src/components/steps.tsx",
       "default": "./src/components/steps.tsx"
     },
-    "./process-list": {
-      "types": "./src/components/process-list.tsx",
-      "default": "./src/components/process-list.tsx"
+    "./procedure": {
+      "types": "./src/components/procedure.tsx",
+      "default": "./src/components/procedure.tsx"
     },
     "./changelog": {
       "types": "./src/components/changelog.tsx",
@@ -173,9 +177,9 @@
       "types": "./src/components/sticker.tsx",
       "default": "./src/components/sticker.tsx"
     },
-    "./media-gradient": {
-      "types": "./src/components/media-gradient.tsx",
-      "default": "./src/components/media-gradient.tsx"
+    "./media-overlay": {
+      "types": "./src/components/media-overlay.tsx",
+      "default": "./src/components/media-overlay.tsx"
     },
     "./input": {
       "types": "./src/components/input.tsx",

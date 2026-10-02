@@ -4,13 +4,24 @@ import "@skryensya/core/components/annotation.css";
 import "@skryensya/core/components/button.css";
 import "@skryensya/core/components/canvas.css";
 import "@skryensya/core/patterns/icon.css";
+import "@skryensya/core/patterns/layout.css";
 import "@skryensya/core/patterns/nav-list.css";
 import * as demos from "@docs/demos/nav-list";
+import { placeholderHrefs } from "@docs/lib/placeholder-hrefs";
 import { treeStory, type Meta, type StoryObj } from "../tree-story";
 
 export default { title: "Components/Navigation/Nav list", tags: ["autodocs"] } satisfies Meta;
 
 export const Anatomy: StoryObj = treeStory(demos.navListAnatomyTree);
 export const Product: StoryObj = treeStory(demos.navListProductTree);
+export const Orientation: StoryObj = treeStory((t) => demos.navListOrientationTree(t, placeholderHrefs()));
 export const Horizontal: StoryObj = treeStory(demos.navListHorizontalTree);
 export const Collapsible: StoryObj = treeStory(demos.navListCollapsibleTree);
+export const DoShortNames: StoryObj = treeStory(demos.navListDoShortNamesTree);
+export const DontLongNames: StoryObj = treeStory(demos.navListDontLongNamesTree);
+export const DoTopicGroups: StoryObj = treeStory(demos.navListDoTopicGroupsTree);
+export const DontVagueGroups: StoryObj = treeStory(demos.navListDontVagueGroupsTree);
+export const DoOneCurrent: StoryObj = treeStory(demos.navListDoOneCurrentTree);
+export const DontTwoCurrent: StoryObj = treeStory(demos.navListDontTwoCurrentTree);
+export const DoDestinations: StoryObj = treeStory(demos.navListDoDestinationsTree);
+export const DontActions: StoryObj = treeStory(demos.navListDontActionsTree);

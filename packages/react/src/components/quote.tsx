@@ -19,6 +19,11 @@ export type QuoteProps = Omit<HTMLAttributes<HTMLElement>, "cite"> & {
   /** WHAT it appeared in: the book, the talk, the page. This is the `<cite>`. */
   source?: ReactNode;
   /**
+   * The person's picture, beside the name: an `Avatar`. It decorates the attribution and does not
+   * replace it, so on its own it does not make a caption.
+   */
+  image?: ReactNode;
+  /**
    * The URL the quotation came from, on `<blockquote cite>`. Machine-readable provenance only: no
    * browser renders it. A link a reader can follow belongs in `source`.
    */
@@ -38,6 +43,7 @@ export function Quote({
   children,
   cite,
   className,
+  image,
   source,
   variant = variantOption.default,
   ...props
@@ -50,8 +56,11 @@ export function Quote({
       {/* Either half warrants the caption: a name with no work, or a work quoted anonymously. */}
       {(attribution !== undefined || source !== undefined) && (
         <figcaption className={quoteParts.attribution}>
-          {attribution}
-          {source !== undefined && <cite className={quoteParts.source}>{source}</cite>}
+          {image !== undefined && <span className={quoteParts.media}>{image}</span>}
+          <span className={quoteParts.author}>
+            {attribution}
+            {source !== undefined && <cite className={quoteParts.source}>{source}</cite>}
+          </span>
         </figcaption>
       )}
     </figure>

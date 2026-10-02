@@ -3,7 +3,7 @@
 # `surface` is the shape of the contract the last time somebody reviewed it. If the compiler says it
 # does not match, something a consumer depends on has moved: write the entry and paste in the new
 # hash.
-surface: "0794f6a68d94f73d"
+surface: "928fb6b489c33326"
 entries:
   - date: 2026-09-26
     kind: feature
@@ -233,3 +233,19 @@ entries:
         CommentVote have to look different in every set, so its vote moves to the heavy arrow
         (<code>arrow_upward_alt</code>). If you use Material and <code>vote-up</code>, the drawing
         changes; the name does not.
+  - date: 2026-10-02
+    kind: feature
+    target: name
+    es:
+      title: Nuevo rol de icono mask
+      body: >-
+        <code>mask</code> es el símbolo que ocupa el lugar de un carácter oculto: lo dibuja
+        <code>OtpInput</code> sobre cada casilla llena cuando el código está enmascarado. Nombra el
+        rol, no el dibujo: Lucide y Phosphor ponen un asterisco, Material el suyo. Los tres sets lo
+        dibujan.
+    en:
+      title: New icon role mask
+      body: >-
+        <code>mask</code> is the symbol that stands in for a hidden character: <code>OtpInput</code>
+        draws it over each filled box when the code is masked. It names the role, not the drawing:
+        Lucide and Phosphor draw an asterisk, Material its own. All three sets draw it.

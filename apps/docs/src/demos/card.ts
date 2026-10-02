@@ -302,7 +302,7 @@ export const cardMediaTree = (c: CardCopy): UsageTree =>
  * 9. Type ON the photo, over a wash.
  *
  * The wash sizes itself to the CAPTION, never to a percentage of the image: the caption is the box
- * and `MediaGradient` absolutely fills it, fading away from its edge. `strength` is opacity and
+ * and `MediaOverlayShade` absolutely fills it, fading away from its edge. `strength` is opacity and
  * tint, and it varies across the three so the row shows what the option actually does.
  */
 export const cardGradientTree = (c: CardCopy): UsageTree =>
@@ -319,11 +319,11 @@ export const cardGradientTree = (c: CardCopy): UsageTree =>
           options: { src: card.src, alt: card.alt, aspect: "3/4", radius: "none", fit: "cover" },
           slots: {
             caption: {
-              contract: "media-gradient",
-              signature: "MediaCaption",
+              contract: "media-overlay",
+              signature: "MediaOverlay",
               options: { edge: "bottom" },
               children: [
-                { contract: "media-gradient", signature: "MediaGradient", options: { strength: card.strength } },
+                { contract: "media-overlay", signature: "MediaOverlayShade", options: { strength: card.strength } },
                 eyebrow(card.eyebrow),
                 {
                   contract: "typography",
@@ -376,11 +376,11 @@ export const cardMediaLinkTree = (c: CardCopy): UsageTree =>
               options: { src: card.src, alt: card.alt, aspect: "16/9", radius: "none", fit: "cover" },
               slots: {
                 caption: {
-                  contract: "media-gradient",
-                  signature: "MediaCaption",
+                  contract: "media-overlay",
+                  signature: "MediaOverlay",
                   options: { edge: "bottom" },
                   children: [
-                    { contract: "media-gradient", signature: "MediaGradient", options: { strength: "lg" } },
+                    { contract: "media-overlay", signature: "MediaOverlayShade", options: { strength: "strong" } },
                     eyebrow(card.eyebrow),
                   ],
                 },

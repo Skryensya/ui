@@ -1,0 +1,189 @@
+/*
+ * MEDIA OVERLAY, a wash that keeps text readable over a photo.
+ *
+ * A PATTERN: the wash is solid behind the whole caption box (as tall for top/bottom, as wide for
+ * start/end, which also span the media's height) and fades out over 5rem past it, so the type always
+ * sits on the full ink and contrast does not depend on the photo or on how much text there is. Nested inside
+ * `sk-media-overlay`, absolute-filled to that box, fading toward the photo.
+ *
+ * Distinct from Backdrop (modal page scrim) and State layer (interaction paint). Named by geometry
+ * (`edge`, `strength`), never by use (`hero`, `card`).
+ *
+ * Compose as a sibling of the media inside a positioned host (ImageFrame is `position: relative`):
+ *
+ *   <div class="sk-image-frame" data-aspect="16/9">
+ *     <img class="sk-image-frame__media" src="…" alt="…" />
+ *     <div class="sk-media-overlay" data-edge="bottom">
+ *       <div class="sk-media-overlay-shade" data-strength="moderate" aria-hidden="true"></div>
+ *       <h3>…</h3>
+ *     </div>
+ *   </div>
+ */
+@layer components {
+  /* Caption is the measure: content + padding define the wash box. */
+  .sk-media-overlay {
+    --sk-media-overlay-fg: var(--color-text-on-media);
+    --sk-media-overlay-gap: var(--space-stack-xs);
+    --sk-media-overlay-padding: var(--space-inset-md);
+
+    position: absolute;
+    z-index: calc(var(--z-base) + 1);
+    display: grid;
+    gap: var(--sk-media-overlay-gap);
+    padding: var(--sk-media-overlay-padding);
+    isolation: isolate;
+    color: var(--sk-media-overlay-fg);
+    pointer-events: auto;
+  }
+
+  .sk-media-overlay[data-edge="bottom"],
+  .sk-media-overlay:not([data-edge]) {
+    inset-block-end: 0;
+    inset-inline: 0;
+  }
+
+  .sk-media-overlay[data-edge="top"] {
+    inset-block-start: 0;
+    inset-inline: 0;
+  }
+
+  /* Side bands: the full height of the media, as wide as the type (capped), type at the foot. */
+  .sk-media-overlay[data-edge="start"] {
+    inset-block: 0;
+    inset-inline-start: 0;
+    align-content: end;
+    max-inline-size: min(18rem, 70%);
+  }
+
+  .sk-media-overlay[data-edge="end"] {
+    inset-block: 0;
+    inset-inline-end: 0;
+    align-content: end;
+    max-inline-size: min(18rem, 70%);
+  }
+
+  .sk-media-overlay > :not(.sk-media-overlay-shade) {
+    position: relative;
+    z-index: 1;
+  }
+
+  .sk-media-overlay > :where(h1, h2, h3, h4, h5, h6, p) {
+    margin: 0;
+    color: inherit;
+  }
+
+  /* Heading and Text paint their own ink, which `inherit` above cannot reach: over a photo the only
+     readable ink is the caption's, so their color hooks point at it. */
+  .sk-media-overlay > .sk-heading { --sk-heading-fg: var(--sk-media-overlay-fg); }
+  .sk-media-overlay > .sk-text { --sk-text-fg: var(--sk-media-overlay-fg); }
+
+  /*
+   * Wash fills the caption box only. Direction fades toward the photo (away from the edge).
+   * `strength` is opacity / tint, never how much of the image is covered.
+   */
+  .sk-media-overlay > .sk-media-overlay-shade {
+    /* The tint is brand decoration over the contrast guarantee provided by base + opacity. */
+    --sk-media-overlay-shade-tint: var(--color-action-accent);
+    --sk-media-overlay-shade-base: black;
+    --sk-media-overlay-shade-mix: 34%;
+    --sk-media-overlay-shade-opacity: 78%;
+    --sk-media-overlay-shade-direction: to top;
+
+    --sk-media-overlay-shade-ink: color-mix(
+      in oklch,
+      var(--sk-media-overlay-shade-base) var(--sk-media-overlay-shade-opacity),
+      transparent
+    );
+    --sk-media-overlay-shade-ink-mid: color-mix(
+      in oklch,
+      var(--sk-media-overlay-shade-base) calc(var(--sk-media-overlay-shade-opacity) * 0.5),
+      transparent
+    );
+    --sk-media-overlay-shade-tint-edge: color-mix(
+      in oklch,
+      var(--sk-media-overlay-shade-tint) calc(var(--sk-media-overlay-shade-mix) * 1.1),
+      transparent
+    );
+    --sk-media-overlay-shade-tint-mid: color-mix(
+      in oklch,
+      var(--sk-media-overlay-shade-tint) calc(var(--sk-media-overlay-shade-mix) * 0.55),
+      transparent
+    );
+
+    /* The wash is solid behind the type and only fades, along an eased curve, over the 5rem it reaches past the box, so the
+       contrast never depends on how tall the type happens to be. */
+    position: absolute;
+    /* 1px past every side: the frame is rarely a whole number of pixels, and a shade that stops exactly
+       at the box leaves a hairline of photo at the edge. The frame clips what overflows. */
+    inset: -1px;
+    z-index: 0;
+    pointer-events: none;
+    background-image:
+      linear-gradient(
+        var(--sk-media-overlay-shade-direction),
+        var(--sk-media-overlay-shade-ink) calc(100% - 5rem),
+        color-mix(in oklch, var(--sk-media-overlay-shade-base) calc(var(--sk-media-overlay-shade-opacity) * 0.96), transparent) calc(100% - 4.25rem),
+        color-mix(in oklch, var(--sk-media-overlay-shade-base) calc(var(--sk-media-overlay-shade-opacity) * 0.86), transparent) calc(100% - 3.5rem),
+        color-mix(in oklch, var(--sk-media-overlay-shade-base) calc(var(--sk-media-overlay-shade-opacity) * 0.7), transparent) calc(100% - 2.75rem),
+        var(--sk-media-overlay-shade-ink-mid) calc(100% - 2rem),
+        color-mix(in oklch, var(--sk-media-overlay-shade-base) calc(var(--sk-media-overlay-shade-opacity) * 0.29), transparent) calc(100% - 1.25rem),
+        color-mix(in oklch, var(--sk-media-overlay-shade-base) calc(var(--sk-media-overlay-shade-opacity) * 0.1), transparent) calc(100% - 0.5rem),
+        transparent 100%
+      ),
+      linear-gradient(
+        var(--sk-media-overlay-shade-direction),
+        var(--sk-media-overlay-shade-tint-edge) calc(100% - 5rem),
+        color-mix(in oklch, var(--sk-media-overlay-shade-tint) calc(calc(var(--sk-media-overlay-shade-mix) * 1.1) * 0.96), transparent) calc(100% - 4.25rem),
+        color-mix(in oklch, var(--sk-media-overlay-shade-tint) calc(calc(var(--sk-media-overlay-shade-mix) * 1.1) * 0.86), transparent) calc(100% - 3.5rem),
+        color-mix(in oklch, var(--sk-media-overlay-shade-tint) calc(calc(var(--sk-media-overlay-shade-mix) * 1.1) * 0.7), transparent) calc(100% - 2.75rem),
+        var(--sk-media-overlay-shade-tint-mid) calc(100% - 2rem),
+        color-mix(in oklch, var(--sk-media-overlay-shade-tint) calc(calc(var(--sk-media-overlay-shade-mix) * 1.1) * 0.29), transparent) calc(100% - 1.25rem),
+        color-mix(in oklch, var(--sk-media-overlay-shade-tint) calc(calc(var(--sk-media-overlay-shade-mix) * 1.1) * 0.1), transparent) calc(100% - 0.5rem),
+        transparent 100%
+      );
+  }
+
+  .sk-media-overlay[data-edge="bottom"] > .sk-media-overlay-shade,
+  .sk-media-overlay:not([data-edge]) > .sk-media-overlay-shade {
+    --sk-media-overlay-shade-direction: to top;
+    inset-block-start: -5rem;
+  }
+
+  .sk-media-overlay[data-edge="top"] > .sk-media-overlay-shade {
+    --sk-media-overlay-shade-direction: to bottom;
+    inset-block-end: -5rem;
+  }
+
+  .sk-media-overlay[data-edge="start"] > .sk-media-overlay-shade {
+    --sk-media-overlay-shade-direction: to right;
+    inset-inline-end: -5rem;
+  }
+
+  .sk-media-overlay[data-edge="end"] > .sk-media-overlay-shade {
+    --sk-media-overlay-shade-direction: to left;
+    inset-inline-start: -5rem;
+  }
+
+  .sk-media-overlay > .sk-media-overlay-shade[data-strength="subtle"] {
+    --sk-media-overlay-shade-opacity: 66%;
+    --sk-media-overlay-shade-mix: 26%;
+  }
+
+  .sk-media-overlay > .sk-media-overlay-shade[data-strength="moderate"],
+  .sk-media-overlay > .sk-media-overlay-shade:not([data-strength]) {
+    --sk-media-overlay-shade-opacity: 78%;
+    --sk-media-overlay-shade-mix: 34%;
+  }
+
+  .sk-media-overlay > .sk-media-overlay-shade[data-strength="strong"] {
+    --sk-media-overlay-shade-opacity: 90%;
+    --sk-media-overlay-shade-mix: 42%;
+  }
+
+  @media (prefers-reduced-transparency: reduce) {
+    .sk-media-overlay > .sk-media-overlay-shade {
+      background-color: var(--sk-media-overlay-shade-base);
+      background-image: none;
+    }
+  }
+}

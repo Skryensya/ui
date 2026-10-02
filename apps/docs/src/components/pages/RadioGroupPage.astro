@@ -9,6 +9,8 @@ import "@skryensya/core/patterns/wrapper.css";
 import "@skryensya/core/components/table.css";
 /* Structure diagram: Annotated specimen; a preview frame only copies styles THIS page loaded. */
 import "@skryensya/core/components/annotation.css";
+/* Centres the numbers of the two Likert compositions below. */
+import "../../examples/likert.css";
 import ComponentPageShell from "./ComponentPageShell.astro";
 import AppearanceMenu from "../AppearanceMenu.astro";
 import CodeBlock from "../CodeBlock.astro";
@@ -17,8 +19,8 @@ import DoDont from "../DoDont.astro";
 import WhenToUse from "../WhenToUse.astro";
 import ContentRules from "../ContentRules.astro";
 import A11yNotes from "../A11yNotes.astro";
-import { radioGroupDontManyTree } from "../../demos/radio-group";
-import { radioGroupAnatomyTree, radioGroupLikertTree, radioGroupMatrixTree, radioGroupTree, tileRadioGroupTree } from "../../demos/radio-group";
+import { radioGroupDontLongTree, radioGroupDontManyTree, radioGroupSpreadTarget, radioGroupSpreadTree, radioGroupDisabledTree, radioGroupOptionStateTree } from "../../demos/radio-group";
+import { radioGroupAnatomyTree, radioGroupLikertTree, radioGroupMatrixTree, radioGroupTree, tileRadioGroupAnatomyTree, tileRadioGroupTree } from "../../demos/radio-group";
 import { annotationDemoCss } from "../../demos/annotation";
 import { getLocale, tList, useTranslations } from "../../i18n";
 
@@ -64,12 +66,23 @@ root.addEventListener("sk:tilevaluechange", (event) => {
     />
 
     <UsagePreview
-      tree={radioGroupTree(t)}
+      tree={radioGroupSpreadTree(t)}
+      target={radioGroupSpreadTarget}
       optionName="spread"
       title={t("radioGroupPage.prop.spread.title")}
       description={t("radioGroupPage.prop.spread.body")}
       explain={explain("spread", ["false", "true"])}
       labels={{ false: t("radioGroupPage.prop.spread.falseLabel"), true: t("radioGroupPage.prop.spread.trueLabel") }}
+      stageMinBlockSize="9rem"
+    />
+
+    <UsagePreview
+      tree={radioGroupDisabledTree(t)}
+      optionName="disabled"
+      title={t("radioGroupPage.prop.disabled.title")}
+      description={t("radioGroupPage.prop.disabled.body")}
+      explain={explain("disabled", ["false", "true"])}
+      labels={{ false: t("radioGroupPage.prop.disabled.falseLabel"), true: t("radioGroupPage.prop.disabled.trueLabel") }}
       stageMinBlockSize="11rem"
     />
 
@@ -77,6 +90,7 @@ root.addEventListener("sk:tilevaluechange", (event) => {
     <UsagePreview tree={radioGroupTree(t)} title={t("radioGroupPage.basicTitle")} description={t("radioGroupPage.basicBody")} />
     <UsagePreview tree={radioGroupLikertTree(t)} title={t("radioGroupPage.likertTitle")} description={t("radioGroupPage.likertBody")} caption={t("radioGroupPage.likertLabel")} />
     <UsagePreview tree={radioGroupMatrixTree(t)} title={t("radioGroupPage.matrixTitle")} description={t("radioGroupPage.matrixTable")} caption={t("radioGroupPage.matrixLabel")} />
+    <UsagePreview tree={radioGroupOptionStateTree(t)} title={t("radioGroupPage.statesTitle")} description={t("radioGroupPage.statesBody")} />
     <UsagePreview tree={tileRadioGroupTree(t)} title={t("radioGroupPage.tileTitle")} description={t("radioGroupPage.tileBody1")} />
     <p set:html={t("radioGroupPage.tileBody2")} />
     <CodeBlock code={tileRadioGroupVanilla} label="JavaScript" />
@@ -95,6 +109,14 @@ root.addEventListener("sk:tilevaluechange", (event) => {
       label={t("radioGroupPage.anatomyPreviewLabel")}
       bare
     />
+    <h4>{t("radioGroupPage.tileAnatomyTitle")}</h4>
+    <p set:html={t("radioGroupPage.tileAnatomyBody")} />
+    <UsagePreview
+      tree={tileRadioGroupAnatomyTree(t)}
+      css={annotationDemoCss}
+      label={t("radioGroupPage.tileAnatomyPreviewLabel")}
+      bare
+    />
   </Fragment>
 
   <Fragment slot="guidelines">
@@ -111,6 +133,12 @@ root.addEventListener("sk:tilevaluechange", (event) => {
       title={t("radioGroupPage.dd.surface.title")}
       do={{ tree: tileRadioGroupTree(t), caption: t("radioGroupPage.dd.surface.do") }}
       dont={{ tree: radioGroupTree(t), caption: t("radioGroupPage.dd.surface.dont") }}
+    />
+    <DoDont
+      canvas
+      title={t("radioGroupPage.dd.labels.title")}
+      do={{ tree: radioGroupTree(t), caption: t("radioGroupPage.dd.labels.do") }}
+      dont={{ tree: radioGroupDontLongTree(t), caption: t("radioGroupPage.dd.labels.dont") }}
     />
     <ContentRules items={tList(t, "radioGroupPage.content")} />
   </Fragment>

@@ -1,5 +1,6 @@
 import type { UsageTree } from "@skryensya/core/usage-tree";
 import type { Translate } from "../i18n";
+import { menubarTree } from "./menubar";
 import {
   menuCompactItems,
   menuItems,
@@ -107,6 +108,55 @@ export const menuTree = (t: Translate): UsageTree => ({
   slots: { trigger: t("demo.menu.trigger"), items: menuItems(t) },
 });
 
+/** The Format menu without its `density`: the property card is what turns it on. */
+export const menuDensityTree = (t: Translate): UsageTree => ({
+  contract: "menu",
+  signature: "Menu",
+  options: { label: t("demo.menu.compact.label") },
+  slots: {
+    trigger: t("demo.menu.compact.trigger"),
+    items: menuCompactItems(t),
+  },
+});
+
+/**
+ * ONE MENU PER TONE, because the tone is a claim about what the menu opens and the claim has to be
+ * true of its contents: a danger button over "Rename" says nothing. Neutral is the ordinary menu;
+ * accent is the creation menu a bar wants found first; danger holds only destructive commands, each
+ * one marked with the item's own `danger` tone so the rows agree with the button.
+ */
+export const menuToneTree = (t: Translate, tone: "neutral" | "accent" | "danger"): UsageTree => {
+  if (tone === "neutral") return { ...menuTree(t), options: { label: t("demo.menu.label"), triggerTone: "neutral" } };
+  if (tone === "accent") {
+    return {
+      contract: "menu",
+      signature: "Menu",
+      options: { label: t("demo.menu.tone.accent.label"), triggerTone: "accent" },
+      slots: {
+        trigger: t("demo.menu.tone.accent.trigger"),
+        items: [
+          { options: { value: "document" }, slots: { label: t("demo.menu.tone.accent.document") } },
+          { options: { value: "folder" }, slots: { label: t("demo.menu.tone.accent.folder") } },
+          { options: { value: "template" }, slots: { label: t("demo.menu.tone.accent.template") } },
+        ],
+      },
+    };
+  }
+  return {
+    contract: "menu",
+    signature: "Menu",
+    options: { label: t("demo.menu.tone.danger.label"), triggerTone: "danger" },
+    slots: {
+      trigger: t("demo.menu.tone.danger.trigger"),
+      items: [
+        { options: { value: "trash", tone: "danger" }, slots: { label: t("demo.menu.tone.danger.trash") } },
+        { options: { value: "empty", tone: "danger" }, slots: { label: t("demo.menu.tone.danger.empty") } },
+        { options: { value: "delete", tone: "danger" }, slots: { label: t("demo.menu.tone.danger.delete") } },
+      ],
+    },
+  };
+};
+
 /** Submenus that nest without limit: three levels of the same `children` slot. */
 export const menuMultilevelTree = (t: Translate): UsageTree => ({
   contract: "menu",
@@ -154,3 +204,79 @@ export const menuSafetyTree = (t: Translate): UsageTree => ({
  * so the spans have to match what the emitter would have produced: the part class, the gutter,
  * `data-match` and the `tabindex` that makes every label reachable on its own.
  */
+
+/*
+ * USAGE GUIDE: WHEN A MENU, AND WHEN ITS NEIGHBOURS. Menu, Megamenu, Menubar and AppBar all open a
+ * list from a button, and what separates them is what the list is FOR, so each pair puts the same
+ * kind of list in the right component and in the wrong one.
+ *
+ * A live Menu starts closed, so the pairs that need the popup visible are frozen HTML specimens with
+ * the popup drawn open, the same device AppBar's own guide uses (`appBarDoDropdownHtml`).
+ */
+const chevron = `<span aria-hidden="true"><span data-sk-icon="chevron-down" data-sk-icon-size="sm"></span></span>`;
+
+const menuRow = (label: string, danger = false): string =>
+  `<div class="sk-menu__item sk-interactive" role="menuitem"${danger ? ' data-tone="danger"' : ""}><span class="sk-menu__item-label">${label}</span></div>`;
+
+const openMenuHtml = (trigger: string, rows: string): string => `<div class="sk-menu" style="display: grid; justify-items: start; row-gap: var(--space-stack-xs);">
+  <button class="sk-button sk-interactive sk-menu__trigger sk-anchor" type="button" aria-haspopup="menu" aria-expanded="true" data-variant="solid">${trigger}${chevron}</button>
+  <div class="sk-menu__positioner sk-anchored" style="position: static; inset: auto; inline-size: max-content;">
+    <div class="sk-menu__content" data-state="open" role="menu">${rows}</div>
+  </div>
+</div>`;
+
+/** Commands on something: what a Menu is for. */
+export const menuDoCommandsHtml = (t: Translate): string =>
+  openMenuHtml(
+    t("demo.menu.dd.actions"),
+    menuRow(t("demo.menu.rename")) + menuRow(t("demo.menu.dd.duplicate")) + menuRow(t("demo.menu.dd.delete"), true),
+  );
+
+/** Site destinations in a Menu: a Megamenu's job, in the wrong component. */
+export const menuDontDestinationsHtml = (t: Translate): string =>
+  openMenuHtml(
+    t("demo.menu.dd.explore"),
+    menuRow(t("demo.marquee.link.pricing")) + menuRow(t("demo.marquee.link.docs")) + menuRow(t("demo.marquee.link.blog")),
+  );
+
+/** An application's menus as ONE bar: a Menubar. */
+export const menuDoMenubarTree = (t: Translate): UsageTree => menubarTree(t);
+
+/** The same menus as separate Menus: nothing connects them, so the arrow keys stop at each one. */
+const lonelyMenu = (t: Translate, trigger: string, rows: readonly [string, string][]): UsageTree => ({
+  contract: "menu",
+  signature: "Menu",
+  options: { label: trigger },
+  slots: {
+    trigger,
+    items: rows.map(([value, label]) => ({ options: { value }, slots: { label } })),
+  },
+});
+
+export const menuDontSeparateMenusTree = (t: Translate): UsageTree => ({
+  contract: "layout",
+  signature: "Inline",
+  options: { gap: "sm", wrap: false },
+  children: [
+    lonelyMenu(t, t("demo.menubar.file"), [["new", t("demo.menubar.new")]]),
+    lonelyMenu(t, t("demo.menubar.edit"), [["undo", t("demo.menubar.undo")]]),
+  ],
+});
+
+/** The secondary actions of one thing, behind one button beside it. */
+export const menuDoRowActionsHtml = (t: Translate): string => `<div class="sk-menu" style="display: grid; row-gap: var(--space-stack-xs); inline-size: 100%;">
+  <div style="display: flex; align-items: center; justify-content: space-between; gap: var(--space-inline-md); padding: var(--space-inset-xs) var(--space-inset-sm) var(--space-inset-xs) var(--space-inset-md); border: 1px solid var(--color-border-subtle); border-radius: var(--radius-control);">
+    <span>${t("demo.menu.dd.file")}</span>
+    <button class="sk-button sk-interactive sk-menu__trigger sk-anchor" type="button" aria-haspopup="menu" aria-expanded="true" data-variant="ghost" data-size="sm">${t("demo.menu.dd.actions")}${chevron}</button>
+  </div>
+  <div class="sk-menu__positioner sk-anchored" style="position: static; inset: auto; inline-size: max-content; justify-self: end;">
+    <div class="sk-menu__content" data-state="open" role="menu">${menuRow(t("demo.menu.rename")) + menuRow(t("demo.menu.dd.duplicate")) + menuRow(t("demo.menu.dd.delete"), true)}</div>
+  </div>
+</div>`;
+
+/** A Menu standing in for the application's own menu bar: AppBar's job. */
+export const menuDontAppBarHtml = (t: Translate): string => `<div style="display: grid; gap: var(--space-stack-xs); inline-size: 100%;">
+  <div style="padding: var(--space-inset-sm); border: 1px solid var(--color-border-subtle); border-radius: var(--radius-control);">
+    ${openMenuHtml(t("demo.menubar.file"), menuRow(t("demo.menubar.new")) + menuRow(t("demo.menubar.open")) + menuRow(t("demo.menubar.save")))}
+  </div>
+</div>`;

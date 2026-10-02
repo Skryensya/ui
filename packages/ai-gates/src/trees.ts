@@ -1000,21 +1000,21 @@ const signatureTrees: readonly Canonical[] = [
   },
   {
     // Order, never progress: no complete, no current, no upcoming.
-    name: "process-list/instructions",
+    name: "procedure/instructions",
     enhanced: false,
     tree: {
-      contract: "process-list",
-      signature: "ProcessList",
+      contract: "procedure",
+      signature: "Procedure",
       children: [
         {
-          contract: "process-list",
-          signature: "ProcessListItem",
+          contract: "procedure",
+          signature: "ProcedureStep",
           slots: { title: "Instalar" },
           children: "pnpm add @skryensya/core",
         },
         {
-          contract: "process-list",
-          signature: "ProcessListItem",
+          contract: "procedure",
+          signature: "ProcedureStep",
           slots: { title: "Importar los tokens" },
           children: "Una vez, en el entry de la app.",
         },
@@ -1064,7 +1064,7 @@ const signatureTrees: readonly Canonical[] = [
   },
   {
     /*
-     * A version history: neither the progress Steps reports nor the plain order a ProcessList
+     * A version history: neither the progress Steps reports nor the plain order a Procedure
      * counts. BOTH RELEASE STATES ARE HERE, and that is the point of the tree: the dated one carries
      * its day twice on purpose, once as the machine's `YYYY-MM-DD` and once as the words a reader
      * sees, which is the one thing about this contract a binding could most easily get half right;
@@ -1314,26 +1314,26 @@ const signatureTrees: readonly Canonical[] = [
   },
   /*
    * Caption wash over a photo. ImageFrame's `caption` slot is not a second media source, so `src`
-   * and MediaCaption can coexist without breaking `exactlyOneOf`. Alone, MediaGradient paints
+   * and MediaOverlay can coexist without breaking `exactlyOneOf`. Alone, MediaOverlayShade paints
    * nothing (its CSS says so), which is why the canonical tree is this composition, not the wash.
    */
   {
-    name: "media-gradient/caption-on-frame",
+    name: "media-overlay/caption-on-frame",
     enhanced: false,
     tree: {
       contract: "image-frame",
       signature: "ImageFrame",
-      options: { aspect: "16/9", src: "/demos/media-gradient.svg", alt: "" },
+      options: { aspect: "16/9", src: "/demos/media-overlay.svg", alt: "" },
       slots: {
         caption: {
-          contract: "media-gradient",
-          signature: "MediaCaption",
+          contract: "media-overlay",
+          signature: "MediaOverlay",
           options: { edge: "bottom" },
           children: [
             {
-              contract: "media-gradient",
-              signature: "MediaGradient",
-              options: { strength: "lg" },
+              contract: "media-overlay",
+              signature: "MediaOverlayShade",
+              options: { strength: "strong" },
             },
             "Horizonte",
           ],
@@ -2556,6 +2556,65 @@ const signatureTrees: readonly Canonical[] = [
     },
   },
   {
+    /*
+     * COMPARISON TABLE, the one shape it has: two things in the columns, two aspects in the rows, a
+     * visually hidden corner cell, a `scope` on every header. Short text is all a cell holds.
+     */
+    name: "comparison-table/two-columns",
+    enhanced: false,
+    tree: {
+      contract: "comparison-table",
+      signature: "ComparisonTable",
+      options: { aspectLabel: "Aspecto" },
+      slots: {
+        columns: [
+          { contract: "comparison-table", signature: "ComparisonColumn", children: "Plan básico" },
+          { contract: "comparison-table", signature: "ComparisonColumn", children: "Plan completo" },
+        ],
+      },
+      children: [
+        {
+          contract: "comparison-table",
+          signature: "ComparisonRow",
+          slots: {
+            label: "Usuarios",
+            children: [
+            {
+              contract: "comparison-table",
+              signature: "ComparisonCell",
+              children: "Hasta 3",
+            },
+            {
+              contract: "comparison-table",
+              signature: "ComparisonCell",
+              children: "Sin límite",
+            },
+            ],
+          },
+        },
+        {
+          contract: "comparison-table",
+          signature: "ComparisonRow",
+          slots: {
+            label: "Soporte",
+            children: [
+            {
+              contract: "comparison-table",
+              signature: "ComparisonCell",
+              children: "Por correo",
+            },
+            {
+              contract: "comparison-table",
+              signature: "ComparisonCell",
+              children: "Por correo y chat",
+            },
+            ],
+          },
+        },
+      ],
+    },
+  },
+  {
     /* SEPARATOR, the bare rule: an `<hr>` that means something, which is this family's default. */
     name: "separator/rule",
     enhanced: false,
@@ -2674,17 +2733,17 @@ const signatureTrees: readonly Canonical[] = [
      * it protects, so on its own it paints NOTHING, which is what the render gate caught the first
      * time this was published standalone. The caption is the measure, and that is the composition.
      */
-    name: "media-gradient/caption-over-a-frame",
+    name: "media-overlay/caption-over-a-frame",
     enhanced: false,
     tree: {
       contract: "image-frame",
       signature: "ImageFrame",
       options: { aspect: "16/9" },
       children: {
-        contract: "media-gradient",
-        signature: "MediaCaption",
+        contract: "media-overlay",
+        signature: "MediaOverlay",
         children: [
-          { contract: "media-gradient", signature: "MediaGradient", options: { strength: "lg" } },
+          { contract: "media-overlay", signature: "MediaOverlayShade", options: { strength: "strong" } },
           { contract: "typography", signature: "Heading", children: "La plaza al atardecer" },
         ],
       },

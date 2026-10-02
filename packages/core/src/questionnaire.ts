@@ -1552,6 +1552,8 @@ export const questionnaireContract = {
                     also: ["sk-input"],
                     name: "text",
                     whenMissing: "textLines",
+                    /* ...and the text is NOT the question's only input, or is a typed answer. */
+                    whenGiven: ["choices", "control", "textType"],
                     options: ["name", "textPlaceholder", "textType", "textMin", "textMax", "textStep"],
                     optionAttrs: { name: "name" },
                     attrs: { "data-size": "sm" },
@@ -1564,6 +1566,23 @@ export const questionnaireContract = {
                     options: ["name", "textPlaceholder", "textLines"],
                     optionAttrs: { name: "name" },
                     attrs: { "data-size": "sm" },
+                  },
+                  /*
+                   * THE RULE: free text that is the question's ONLY input is a textarea. It has no
+                   * choices beside it, no slotted control, and no `textType` asking for a typed answer
+                   * (email, number, date...), so it is an open question, and one line is too little room
+                   * to answer it. Three rows is the default; `textLines` still sets its own, and writing
+                   * `textType="text"` is how a question asks for one line anyway. The three conditions
+                   * are the exact complement of the input above, so exactly one of the three is emitted.
+                   */
+                  {
+                    element: "textarea",
+                    also: ["sk-input", "sk-input--textarea"],
+                    name: "text",
+                    whenMissing: ["textLines", "choices", "control", "textType"],
+                    options: ["name", "textPlaceholder"],
+                    optionAttrs: { name: "name" },
+                    attrs: { "data-size": "sm", rows: "3" },
                   },
                 ],
               },

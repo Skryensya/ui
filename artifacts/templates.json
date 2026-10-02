@@ -2137,26 +2137,26 @@
                           "children": "El kit se publica como un único paquete con los estilos separados por componente, así una página solo carga el CSS que usa."
                         },
                         {
-                          "contract": "process-list",
-                          "signature": "ProcessList",
+                          "contract": "procedure",
+                          "signature": "Procedure",
                           "children": [
                             {
-                              "contract": "process-list",
-                              "signature": "ProcessListItem",
+                              "contract": "procedure",
+                              "signature": "ProcedureStep",
                               "slots": {
                                 "title": "Instala el paquete desde tu gestor de siempre."
                               }
                             },
                             {
-                              "contract": "process-list",
-                              "signature": "ProcessListItem",
+                              "contract": "procedure",
+                              "signature": "ProcedureStep",
                               "slots": {
                                 "title": "Importa la hoja de tokens una vez, en la raíz de la aplicación."
                               }
                             },
                             {
-                              "contract": "process-list",
-                              "signature": "ProcessListItem",
+                              "contract": "procedure",
+                              "signature": "ProcedureStep",
                               "slots": {
                                 "title": "Importa el CSS del componente donde lo uses."
                               }
@@ -2587,26 +2587,26 @@
                           "children": "The kit ships as a single package with per-component stylesheets, so a page only loads the CSS it actually uses."
                         },
                         {
-                          "contract": "process-list",
-                          "signature": "ProcessList",
+                          "contract": "procedure",
+                          "signature": "Procedure",
                           "children": [
                             {
-                              "contract": "process-list",
-                              "signature": "ProcessListItem",
+                              "contract": "procedure",
+                              "signature": "ProcedureStep",
                               "slots": {
                                 "title": "Install the package with your usual package manager."
                               }
                             },
                             {
-                              "contract": "process-list",
-                              "signature": "ProcessListItem",
+                              "contract": "procedure",
+                              "signature": "ProcedureStep",
                               "slots": {
                                 "title": "Import the token sheet once, at the root of the application."
                               }
                             },
                             {
-                              "contract": "process-list",
-                              "signature": "ProcessListItem",
+                              "contract": "procedure",
+                              "signature": "ProcedureStep",
                               "slots": {
                                 "title": "Import a component's CSS where you use it."
                               }
@@ -8000,12 +8000,12 @@
                                 },
                                 "slots": {
                                   "caption": {
-                                    "contract": "media-gradient",
-                                    "signature": "MediaCaption",
+                                    "contract": "media-overlay",
+                                    "signature": "MediaOverlay",
                                     "children": [
                                       {
-                                        "contract": "media-gradient",
-                                        "signature": "MediaGradient"
+                                        "contract": "media-overlay",
+                                        "signature": "MediaOverlayShade"
                                       },
                                       {
                                         "contract": "button",
@@ -8400,12 +8400,12 @@
                                 },
                                 "slots": {
                                   "caption": {
-                                    "contract": "media-gradient",
-                                    "signature": "MediaCaption",
+                                    "contract": "media-overlay",
+                                    "signature": "MediaOverlay",
                                     "children": [
                                       {
-                                        "contract": "media-gradient",
-                                        "signature": "MediaGradient"
+                                        "contract": "media-overlay",
+                                        "signature": "MediaOverlayShade"
                                       },
                                       {
                                         "contract": "button",

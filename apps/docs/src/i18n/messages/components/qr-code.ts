@@ -4,11 +4,17 @@ export const qrCodeMessages = {
     "qrCodePage.a11yYours2": "Escribe el enlace al lado: el código no puede ser el único camino.",
     "qrCodePage.a11yYours1": "Nunca uses la URL como nombre: un lector de pantalla la deletrea.",
     "qrCodePage.a11yDoes2": "Los puntos son oscuros sobre claro: el contraste que la cámara necesita.",
-    "qrCodePage.a11yDoes1": 'La raíz es <code>role="img"</code> con <code>label</code> como nombre; el SVG va oculto.',
+    "qrCodePage.a11yDoes1": "Es una imagen con nombre; el dibujo en sí queda oculto para los lectores de pantalla.",
     "qrCodePage.a11yIntro": "QRCode es una imagen con nombre.",
     "qrCodePage.content3": "Deja el margen vacío alrededor: es parte del código.",
     "qrCodePage.content2": "Di encima qué hacer: «Escanea con la cámara del teléfono».",
-    "qrCodePage.content1": "Escribe el <code>label</code> con lo que se logra: «Abrir esta página en el teléfono», no la URL.",
+    "qrCodePage.content1": "Nombra el código con lo que se logra: «Abrir esta página en el teléfono», no la URL.",
+    "qrCodePage.dd.short.title": "Enlace corto",
+    "qrCodePage.dd.short.do": "Un enlace corto da un código con pocos puntos grandes: la cámara lo lee al instante.",
+    "qrCodePage.dd.short.dont": "Un enlace largo con parámetros llena el código de puntos diminutos: cuesta más escanearlo. Acórtalo.",
+    "qrCodePage.dd.logo.title": "Logo en el centro",
+    "qrCodePage.dd.logo.do": "Con el nivel más alto de corrección, el código se reconstruye aunque el logo tape el centro.",
+    "qrCodePage.dd.logo.dont": "Con el nivel más bajo no queda con qué reconstruirlo: el hueco lo vuelve ilegible.",
     "qrCodePage.dd.link.dont": "Un código solo deja fuera a quien no puede escanearlo.",
     "qrCodePage.dd.link.do": "El enlace escrito al lado sirve a quien no tiene cámara o lee desde el mismo teléfono.",
     "qrCodePage.dd.link.title": "Enlace: también en texto",
@@ -17,9 +23,9 @@ export const qrCodeMessages = {
     "qrCodePage.when2": "Para un dato que se escanea: una entrada, un pase, un código de pago.",
     "qrCodePage.when1": "Para llevar un enlace de una pantalla grande o un impreso al teléfono.",
     "qrCodePage.contract4": "No lee códigos ni trae botón de descarga.",
-    "qrCodePage.contract3": "<code>polarity</code> decide el lado del contraste en modo oscuro; por defecto los puntos siempre son oscuros sobre claro.",
-    "qrCodePage.contract2": "<code>label</code> es obligatorio: nombra lo que se logra al escanear.",
-    "qrCodePage.contract1": "El código se dibuja como un solo <code>path</code> SVG en <code>currentColor</code>.",
+    "qrCodePage.contract3": "En modo oscuro puedes elegir de qué lado va el contraste; por defecto los puntos siempre son oscuros sobre claro.",
+    "qrCodePage.contract2": "Necesita un nombre: dice qué se logra al escanearlo.",
+    "qrCodePage.contract1": "Es un solo dibujo vectorial: se ve nítido a cualquier tamaño y toma el color del texto.",
     "qrCodePage.prop.level.H": "Usa <code>H</code> con un logo al centro o en impresos que se gastan.",
     "qrCodePage.prop.level.Q": "Usa <code>Q</code>, el valor por defecto, casi siempre.",
     "qrCodePage.prop.level.M": "Usa <code>M</code> para pantallas e impresos cuidados.",
@@ -37,7 +43,7 @@ export const qrCodeMessages = {
 
 
     "qrCodePage.logoTitle": "Con logo: al centro, con nivel H",
-    "qrCodePage.logoBody": '<code>logoRatio</code> vacía el centro y le da lugar al slot <code>logo</code>: un Icon, un Avatar o una imagen. Usa <code>level="H"</code> para que el código resista el hueco.',
+    "qrCodePage.logoBody": "El centro se vacía para darle lugar a un logo: un ícono, un avatar o una imagen. Usa el nivel más alto de corrección para que el código resista el hueco.",
     "qrCodePage.logoBody2":
       'El slot toma cualquier nodo publicado del kit: un <a href="/es/componentes/icon">Icon</a>, un <a href="/es/componentes/avatar">Avatar</a>, un <a href="/es/componentes/image-frame">ImageFrame</a>. Y el agujero se paga en capacidad, así que un logo pide nivel <code>Q</code> o <code>H</code>: por debajo de eso el contrato avisa.',
 
@@ -55,9 +61,9 @@ export const qrCodeMessages = {
     "qrCodePage.ticketBody": "Lo que se escanea en la puerta. Es lo más grande de la tarjeta y el texto de al lado repite el dato.",
 
     "qrCodePage.exportTitle": "Guardarlo: PNG o SVG",
-    "qrCodePage.exportBody": "<code>downloadQrCode</code> y <code>qrCodeToSvg</code> exportan el código tal como se ve, desde cualquiera de los dos bindings.",
-    "qrCodePage.runtimeTitle": "En el navegador: data-value",
-    "qrCodePage.runtimeBody": "Si el valor solo se conoce en el navegador, escribe el markup con <code>data-value</code> y el enhancer dibuja el código.",
+    "qrCodePage.exportBody": "El código se guarda tal como se ve: como imagen (PNG) o como vector (SVG) para imprimir. El código de cada caso está en Storybook.",
+    "qrCodePage.runtimeTitle": "Si el valor llega después",
+    "qrCodePage.runtimeBody": "Si el enlace solo se conoce en el navegador, el código se dibuja cuando llega y se redibuja si cambia. Si es demasiado largo para un QR, queda vacío: muestra entonces el enlace en texto.",
 
 
     "qrCodePage.prop.moduleShape.title": "Module shape: el dibujo de cada punto",
@@ -86,11 +92,17 @@ export const qrCodeMessages = {
     "qrCodePage.a11yYours2": "Write the link beside it: the code cannot be the only way.",
     "qrCodePage.a11yYours1": "Never use the URL as the name: a screen reader spells it out.",
     "qrCodePage.a11yDoes2": "The dots are dark on light: the contrast the camera needs.",
-    "qrCodePage.a11yDoes1": 'The root is <code>role="img"</code> with <code>label</code> as its name; the SVG is hidden.',
+    "qrCodePage.a11yDoes1": "It is a named image; the drawing itself is hidden from screen readers.",
     "qrCodePage.a11yIntro": "QRCode is a named image.",
     "qrCodePage.content3": "Leave the margin around it empty: it is part of the code.",
     "qrCodePage.content2": "Say above it what to do: “Scan with your phone's camera”.",
-    "qrCodePage.content1": "Write the <code>label</code> with what is achieved: “Open this page on your phone”, not the URL.",
+    "qrCodePage.content1": "Name the code by what it achieves: “Open this page on your phone”, not the URL.",
+    "qrCodePage.dd.short.title": "Short link",
+    "qrCodePage.dd.short.do": "A short link makes a code of a few large dots: a camera reads it at a glance.",
+    "qrCodePage.dd.short.dont": "A long link with parameters fills the code with tiny dots: it is harder to scan. Shorten it.",
+    "qrCodePage.dd.logo.title": "Logo in the centre",
+    "qrCodePage.dd.logo.do": "At the highest correction level the code rebuilds itself even with the logo over the middle.",
+    "qrCodePage.dd.logo.dont": "At the lowest level there is nothing to rebuild it from: the hole makes it unreadable.",
     "qrCodePage.dd.link.dont": "A code alone leaves out whoever cannot scan it.",
     "qrCodePage.dd.link.do": "The written link beside it serves whoever has no camera or reads on the same phone.",
     "qrCodePage.dd.link.title": "Link: also as text",
@@ -99,9 +111,9 @@ export const qrCodeMessages = {
     "qrCodePage.when2": "For data that is scanned: a ticket, a pass, a payment code.",
     "qrCodePage.when1": "To take a link from a large screen or a print to the phone.",
     "qrCodePage.contract4": "It does not read codes or bring a download button.",
-    "qrCodePage.contract3": "<code>polarity</code> decides which side the contrast is on in dark mode; by default the dots are always dark on light.",
-    "qrCodePage.contract2": "<code>label</code> is required: it names what scanning achieves.",
-    "qrCodePage.contract1": "The code is drawn as a single SVG <code>path</code> in <code>currentColor</code>.",
+    "qrCodePage.contract3": "In dark mode you can choose which side the contrast falls on; by default the dots are always dark on light.",
+    "qrCodePage.contract2": "It needs a name: it says what scanning it achieves.",
+    "qrCodePage.contract1": "It is a single vector drawing: it stays sharp at any size and takes the text colour.",
     "qrCodePage.prop.level.H": "Use <code>H</code> with a logo in the center or on prints that wear.",
     "qrCodePage.prop.level.Q": "Use <code>Q</code>, the default, almost always.",
     "qrCodePage.prop.level.M": "Use <code>M</code> for screens and careful prints.",
@@ -119,7 +131,7 @@ export const qrCodeMessages = {
 
 
     "qrCodePage.logoTitle": "With a logo: centered, at level H",
-    "qrCodePage.logoBody": '<code>logoRatio</code> clears the center and makes room for the <code>logo</code> slot: an Icon, an Avatar or an image. Use <code>level="H"</code> so the code survives the gap.',
+    "qrCodePage.logoBody": "The centre is cleared to make room for a logo: an icon, an avatar or an image. Use the highest correction level so the code survives the gap.",
     "qrCodePage.logoBody2":
       'The slot takes any published node in the kit: an <a href="/components/icon">Icon</a>, an <a href="/components/avatar">Avatar</a>, an <a href="/components/image-frame">ImageFrame</a>. The hole is paid for in capacity, so a logo wants level <code>Q</code> or <code>H</code>; below that the contract says so.',
 
@@ -137,9 +149,9 @@ export const qrCodeMessages = {
     "qrCodePage.ticketBody": "What is scanned at the door. It is the largest thing on the card and the text beside it repeats the data.",
 
     "qrCodePage.exportTitle": "Saving it: PNG or SVG",
-    "qrCodePage.exportBody": "<code>downloadQrCode</code> and <code>qrCodeToSvg</code> export the code as it looks, from either binding.",
-    "qrCodePage.runtimeTitle": "In the browser: data-value",
-    "qrCodePage.runtimeBody": "If the value is only known in the browser, write the markup with <code>data-value</code> and the enhancer draws the code.",
+    "qrCodePage.exportBody": "The code is saved just as it looks: as an image (PNG) or a vector (SVG) for print. The code for each case is in Storybook.",
+    "qrCodePage.runtimeTitle": "If the value arrives later",
+    "qrCodePage.runtimeBody": "If the link is only known in the browser, the code draws when it arrives and redraws if it changes. If it is too long for a QR it stays empty: show the link as text instead.",
 
 
     "qrCodePage.prop.moduleShape.title": "Module shape: how each dot is drawn",

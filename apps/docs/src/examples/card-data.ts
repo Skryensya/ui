@@ -41,7 +41,7 @@ export type ActionCard = { icon: StableIconName; title: string; body: string };
 export type SelectCard = { title: string; body: string; checked: boolean };
 export type MediaCard = { src: string; alt: string; badge: string; title: string; body: string };
 /** `strength` varies across the three so the grid shows what the hook actually does. */
-export type GradientCard = { src: string; alt: string; strength: "sm" | "md" | "lg"; eyebrow: string; title: string; body: string };
+export type GradientCard = { src: string; alt: string; strength: "subtle" | "moderate" | "strong"; eyebrow: string; title: string; body: string };
 export type MediaLinkCard = { src: string; alt: string; eyebrow: string; title: string; body: string };
 export type ProductCard = { badge: string; tone: "accent" | "neutral"; title: string; body: string; price: string; period: string };
 
@@ -148,9 +148,9 @@ export const cardCopy: Record<CardLang, CardCopy> = {
       { src: dummyImage(640, 360, media.c[0], media.c[1], "Motion"), alt: "Portada de la guía de movimiento", badge: "Guía", title: "Movimiento", body: "Duraciones, curvas y la regla que respeta a quien pide menos movimiento." },
     ],
     gradient: [
-      { src: blankImage(640, 800, lightMedia.a), strength: "sm", alt: "Fotografía de la campaña Aurora", eyebrow: "Campaña · sm", title: "Aurora", body: "El lavado más liviano, para una foto que ya es oscura donde va el texto." },
-      { src: blankImage(640, 800, lightMedia.b), strength: "md", alt: "Fotografía de la campaña Marea", eyebrow: "Campaña · md", title: "Marea", body: "El valor por defecto, y el que sirve para casi cualquier fotografía." },
-      { src: blankImage(640, 800, lightMedia.c), strength: "lg", alt: "Fotografía de la campaña Cobalto", eyebrow: "Campaña · lg", title: "Cobalto", body: "El más denso, para una foto clara o con mucho detalle bajo el texto." },
+      { src: blankImage(640, 800, lightMedia.a), strength: "subtle", alt: "Fotografía de la campaña Aurora", eyebrow: "Campaña · subtle", title: "Aurora", body: "El lavado más liviano, para una foto que ya es oscura donde va el texto." },
+      { src: blankImage(640, 800, lightMedia.b), strength: "moderate", alt: "Fotografía de la campaña Marea", eyebrow: "Campaña · moderate", title: "Marea", body: "El valor por defecto, y el que sirve para casi cualquier fotografía." },
+      { src: blankImage(640, 800, lightMedia.c), strength: "strong", alt: "Fotografía de la campaña Cobalto", eyebrow: "Campaña · strong", title: "Cobalto", body: "El más denso, para una foto clara o con mucho detalle bajo el texto." },
     ],
     mediaLink: [
       { src: blankImage(640, 360, lightMedia.a), alt: "Portada del artículo sobre anclaje", eyebrow: "Producto · 6 min", title: "Anclaje sin JavaScript", body: "Dejamos que el navegador coloque los popups y el código se volvió más chico." },
@@ -225,9 +225,9 @@ export const cardCopy: Record<CardLang, CardCopy> = {
       { src: dummyImage(640, 360, media.c[0], media.c[1], "Motion"), alt: "Cover of the motion guide", badge: "Guide", title: "Motion", body: "Durations, curves and the rule that respects anyone asking for less motion." },
     ],
     gradient: [
-      { src: blankImage(640, 800, lightMedia.a), strength: "sm", alt: "Photograph from the Aurora campaign", eyebrow: "Campaign · sm", title: "Aurora", body: "The lightest wash, for a photo already dark where the text sits." },
-      { src: blankImage(640, 800, lightMedia.b), strength: "md", alt: "Photograph from the Tide campaign", eyebrow: "Campaign · md", title: "Tide", body: "The default, and the one that works for almost any photograph." },
-      { src: blankImage(640, 800, lightMedia.c), strength: "lg", alt: "Photograph from the Cobalt campaign", eyebrow: "Campaign · lg", title: "Cobalt", body: "The densest, for a bright photo or heavy detail under the text." },
+      { src: blankImage(640, 800, lightMedia.a), strength: "subtle", alt: "Photograph from the Aurora campaign", eyebrow: "Campaign · subtle", title: "Aurora", body: "The lightest wash, for a photo already dark where the text sits." },
+      { src: blankImage(640, 800, lightMedia.b), strength: "moderate", alt: "Photograph from the Tide campaign", eyebrow: "Campaign · moderate", title: "Tide", body: "The default, and the one that works for almost any photograph." },
+      { src: blankImage(640, 800, lightMedia.c), strength: "strong", alt: "Photograph from the Cobalt campaign", eyebrow: "Campaign · strong", title: "Cobalt", body: "The densest, for a bright photo or heavy detail under the text." },
     ],
     mediaLink: [
       { src: blankImage(640, 360, lightMedia.a), alt: "Cover of the anchoring article", eyebrow: "Product · 6 min", title: "Anchoring without JavaScript", body: "We let the browser place the popups and the code got smaller." },

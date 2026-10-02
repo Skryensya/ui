@@ -3,8 +3,28 @@
 # `surface` is the shape of the contract the last time somebody reviewed it. If the compiler says it
 # does not match, something a consumer depends on has moved: write the entry and paste in the new
 # hash.
-surface: "ab4ee5be6ca684cc"
+surface: "f9c1e72696d6ea27"
 entries:
+  - date: 2026-10-02
+    kind: rework
+    es:
+      title: El brillo cruza todas las formas como una sola banda, más lento
+      body: >-
+        Antes cada barra barría su propio ancho, así que una columna de anchos distintos nunca
+        brillaba a la vez. Ahora el brillo es una banda anclada al viewport y todas las formas
+        muestran el mismo trozo de ella. Dentro de una región <code>aria-busy="true"</code> el
+        barrido lo marca un solo reloj, <code>--sk-placeholder-phase</code>, así que lo montado en
+        momentos distintos tampoco se desfasa. Dura 1,75 veces el token de carga y se ajusta con
+        <code>--sk-placeholder-sweep-duration</code> y <code>--sk-placeholder-sweep-size</code>.
+    en:
+      title: The shimmer crosses every shape as one band, and slower
+      body: >-
+        Each bar used to sweep its own width, so a column of different widths never lit up
+        together. The shimmer is now a band anchored to the viewport and every shape shows the same
+        slice of it. Inside an <code>aria-busy="true"</code> region one clock,
+        <code>--sk-placeholder-phase</code>, drives the sweep, so skeletons mounted at different
+        moments no longer drift apart. It lasts 1.75 times the loading token and is tuned with
+        <code>--sk-placeholder-sweep-duration</code> and <code>--sk-placeholder-sweep-size</code>.
   - date: 2026-09-17
     kind: bugfix
     target: lines

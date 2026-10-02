@@ -1,5 +1,5 @@
 ---
-import Base from "../layouts/Base.astro";
+import FoundationPage from "../components/FoundationPage.astro";
 import CodeBlock from "../components/CodeBlock.astro";
 
 const run = `docker compose -f apps/maker/docker-compose.yml up -d   # PostgreSQL, once
@@ -34,12 +34,10 @@ const apply = `{
 }`;
 ---
 
-<Base
+<FoundationPage
   title="Maker"
   description="A visual page builder where the browser does the layout: pages are trees of signatures, changed only by operations, never by coordinates."
-  documentLayout="grid"
 >
-  <h1>Maker</h1>
   <p class="lede">
     The Maker builds pages by composing the kit's own components inside ordinary document flow. There
     is no canvas and no coordinate: a page is a tree, <code>Stack</code>, <code>Inline</code>,
@@ -171,4 +169,4 @@ const apply = `{
     project. Every form
     comes from the same emitter <code>validate_ui</code> uses.
   </p>
-</Base>
+</FoundationPage>

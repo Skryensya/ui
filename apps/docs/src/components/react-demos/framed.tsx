@@ -59,7 +59,7 @@ export type FramedOverrides = Pick<
   "flush" | "scroll" | "viewport" | "minHeight" | "css"
 > & {
   /** A fixed screen for this stage (`styles/component-preview.css`): its media queries see a phone or a tablet. */
-  screen?: "tablet" | "mobile";
+  screen?: "xl" | "tablet" | "mobile";
   /**
    * App-only script shared by both tree-rendered bindings, already COMPILED to JavaScript.
    *

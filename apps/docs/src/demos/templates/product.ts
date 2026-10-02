@@ -12,8 +12,8 @@ import { blankImage } from "../../examples/card-data";
  *   - "Save" is `variant: "soft"`: a real action, but a secondary one, so it gets a tinted face
  *     instead of competing with the solid accent beside it;
  *   - "View all photos" sits ON the photo, so it is `variant: "soft"`, the one variant made
- *     for a surface whose colour nobody knows in advance. It lives in the frame's `MediaCaption`,
- *     with a `MediaGradient` under it so it keeps its contrast whatever the photo turns out to be;
+ *     for a surface whose colour nobody knows in advance. It lives in the frame's `MediaOverlay`,
+ *     with a `MediaOverlayShade` under it so it keeps its contrast whatever the photo turns out to be;
  *   - the long-form detail is `Tabs` with `variant: "hanging"`. Three panels of different content
  *     (description, specs, shipping) are what Tabs is for, and the hanging tabs read as folders
  *     attached to the panel below, which suits a spec sheet better than a thin underline; and
@@ -83,10 +83,10 @@ export const productTree = (t: Translate, locale: "es" | "en"): UsageTree => {
                         },
                         slots: {
                           caption: {
-                            contract: "media-gradient",
-                            signature: "MediaCaption",
+                            contract: "media-overlay",
+                            signature: "MediaOverlay",
                             children: [
-                              { contract: "media-gradient", signature: "MediaGradient" },
+                              { contract: "media-overlay", signature: "MediaOverlayShade" },
                               {
                                 contract: "button",
                                 signature: "Button.action",

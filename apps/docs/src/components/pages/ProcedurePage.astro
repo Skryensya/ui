@@ -1,0 +1,121 @@
+---
+import "@skryensya/core/components/procedure.css";
+/* Structure diagram: Annotated specimen; a preview frame only copies styles THIS page loaded. */
+import "@skryensya/core/components/annotation.css";
+import "@skryensya/core/components/code-preview.css";
+import "@skryensya/core/components/callout.css";
+import "@skryensya/core/components/badge.css";
+import "@skryensya/core/components/button.css";
+import "@skryensya/core/components/qr-code.css";
+import ComponentPageShell from "./ComponentPageShell.astro";
+import CodeBlock from "../CodeBlock.astro";
+import UsagePreview from "../UsagePreview.astro";
+import DoDont from "../DoDont.astro";
+import WhenToUse from "../WhenToUse.astro";
+import ContentRules from "../ContentRules.astro";
+import A11yNotes from "../A11yNotes.astro";
+import {
+  procedureAnatomyTree,
+  procedureContentTree,
+  procedureDoActionsTree,
+  procedureDoCommandTree,
+  procedureDoOrderTree,
+  procedureDoTitlesTree,
+  procedureDontActionsTree,
+  procedureDontCommandTree,
+  procedureDontOrderTree,
+  procedureDontTitlesTree,
+  procedureDeployTree,
+  procedureSecurityTree,
+  procedureTree,
+} from "../../demos/procedure";
+import { annotationDemoCss } from "../../demos/annotation";
+import { getLocale, tList, useTranslations } from "../../i18n";
+
+const t = useTranslations(getLocale(Astro.url));
+const install = `pnpm add @skryensya/core @skryensya/react`;
+const styles = `@import "@skryensya/core/components/procedure.css";
+@import "@skryensya/core/components/code-preview.css";
+@import "@skryensya/core/components/callout.css";`;
+---
+
+<ComponentPageShell
+  title="Procedure"
+  description={t("procedurePage.description")}
+  contractId="procedure"
+  testFiles={["packages/react/src/components/procedure.test.tsx"]}
+>
+  <Fragment slot="usage">
+    <p class="lede" set:html={t("procedurePage.lede")} />
+
+    <h3>{t("component.examplesTitle")}</h3>
+    <UsagePreview
+      tree={procedureContentTree(t, "text")}
+      variants={(["text", "code", "rich"] as const).map((kind) => ({
+        value: kind,
+        label: t(`procedurePage.content.${kind}` as Parameters<typeof t>[0]),
+        tree: procedureContentTree(t, kind),
+        explain: t(`procedurePage.content.${kind}.explain` as Parameters<typeof t>[0]),
+      }))}
+      variantsLabel={t("procedurePage.content.label")}
+      title={t("procedurePage.content.title")}
+      description={t("procedurePage.content.body")}
+      stageMinBlockSize="24rem"
+    />
+    <UsagePreview tree={procedureTree(t)} title={t("procedurePage.guideTitle")} description={t("procedurePage.guideBody")} />
+    <UsagePreview tree={procedureDeployTree(t)} title={t("procedurePage.deployTitle")} description={t("procedurePage.deployBody")} />
+    <UsagePreview tree={procedureSecurityTree(t)} title={t("procedurePage.securityTitle")} description={t("procedurePage.securityBody")} />
+
+    <h3>{t("component.contractNotesTitle")}</h3>
+    <ul>
+      {tList(t, "procedurePage.contract").map((item) => <li set:html={item} />)}
+    </ul>
+
+    <h3>{t("component.anatomy")}</h3>
+    <p set:html={t("procedurePage.anatomyBody")} />
+    <UsagePreview
+      tree={procedureAnatomyTree(t)}
+      css={annotationDemoCss}
+      label={t("procedurePage.anatomyPreviewLabel")}
+      bare
+    />
+  </Fragment>
+
+  <Fragment slot="guidelines">
+    <p class="lede" set:html={t("procedurePage.guidelinesLede")} />
+    <WhenToUse use={tList(t, "procedurePage.when")} avoid={tList(t, "procedurePage.whenNot")} />
+    <DoDont
+      canvas
+      title={t("procedurePage.dd.order.title")}
+      do={{ tree: procedureDoOrderTree(t), caption: t("procedurePage.dd.order.do") }}
+      dont={{ tree: procedureDontOrderTree(t), caption: t("procedurePage.dd.order.dont") }}
+    />
+    <DoDont
+      canvas
+      title={t("procedurePage.dd.titles.title")}
+      do={{ tree: procedureDoTitlesTree(t), caption: t("procedurePage.dd.titles.do") }}
+      dont={{ tree: procedureDontTitlesTree(t), caption: t("procedurePage.dd.titles.dont") }}
+    />
+    <DoDont
+      canvas
+      title={t("procedurePage.dd.action.title")}
+      do={{ tree: procedureDoActionsTree(t), caption: t("procedurePage.dd.action.do") }}
+      dont={{ tree: procedureDontActionsTree(t), caption: t("procedurePage.dd.action.dont") }}
+    />
+    <DoDont
+      canvas
+      title={t("procedurePage.dd.command.title")}
+      do={{ tree: procedureDoCommandTree(t), caption: t("procedurePage.dd.command.do") }}
+      dont={{ tree: procedureDontCommandTree(t), caption: t("procedurePage.dd.command.dont") }}
+    />
+    <ContentRules items={tList(t, "procedurePage.content")} />
+  </Fragment>
+
+  <Fragment slot="install">
+    <CodeBlock code={install} label="terminal" />
+    <CodeBlock code={styles} label="CSS" />
+  </Fragment>
+  <Fragment slot="a11y">
+    <A11yNotes intro={t("procedurePage.a11yIntro")} does={tList(t, "procedurePage.a11yDoes")} yours={tList(t, "procedurePage.a11yYours")} />
+  </Fragment>
+</ComponentPageShell>

@@ -93,6 +93,24 @@ afterEach(() => {
 });
 
 describe("NumberField vanilla enhancer", () => {
+  it("groups thousands by the root's language, as the React binding does", () => {
+    const root = markup({ value: "1234567.89", max: "99999999" });
+    expect(parts(root).input.value).toBe("1,234,567.89");
+    destroyMount(root);
+    document.body.innerHTML = "";
+    document.body.innerHTML = `<div data-sk-number-field lang="es-CL"><label data-sk-number-field-label>Monto</label>
+      <div data-sk-number-field-control>
+        <button data-sk-number-field-decrement type="button" aria-label="Disminuir"></button>
+        <input data-sk-number-field-input type="text" inputmode="decimal" value="1234567,89" />
+        <button data-sk-number-field-increment type="button" aria-label="Aumentar"></button>
+      </div></div>`;
+    const es = document.body.firstElementChild as HTMLElement;
+    expect(mountNumberField(document)).toBe(1);
+    flushSync();
+    expect(parts(es).input.value).toBe("1.234.567,89");
+    destroyMount(es);
+  });
+
   it("wires the accessible names from the authored aria-label onto the triggers", () => {
     const root = markup();
     const { decrement, increment } = parts(root);

@@ -78,7 +78,7 @@ export const changelogMessages = {
 
     "changelogPage.whenNot2": 'Para mostrar en qué etapa está alguien: usa <a href="/es/componentes/steps">Steps</a>.',
 
-    "changelogPage.whenNot1": 'Para instrucciones que se siguen en orden: usa <a href="/es/componentes/process-list">ProcessList</a>.',
+    "changelogPage.whenNot1": 'Para instrucciones que se siguen en orden: usa <a href="/es/componentes/procedure">Procedure</a>.',
 
     "changelogPage.when2": "Cuando quien lee necesita saber desde qué versión puede contar con un cambio.",
 
@@ -176,7 +176,7 @@ export const changelogMessages = {
 
     "changelogPage.whenNot2": 'To show which stage someone is at: use <a href="/components/steps">Steps</a>.',
 
-    "changelogPage.whenNot1": 'For instructions followed in order: use <a href="/components/process-list">ProcessList</a>.',
+    "changelogPage.whenNot1": 'For instructions followed in order: use <a href="/components/procedure">Procedure</a>.',
 
     "changelogPage.when2": "When readers need to know from which version they can rely on a change.",
 

@@ -228,7 +228,7 @@ const componentDescriptions = {
     es: "Una línea corta de texto en el borde superior de una aplicación: sus menús y su estado.",
     en: "One short line of text on an application's top edge: its menus and its state.",
   },
-  "/components/media-gradient": {
+  "/components/media-overlay": {
     es: "Un wash del tamaño del texto para que se lea sobre una foto.",
     en: "A wash the size of the text, so it reads over a photo.",
   },
@@ -284,9 +284,13 @@ const componentDescriptions = {
     es: "Cuenta qué cambió y cuándo, en un riel fechado.",
     en: "Tells what changed and when, on a dated rail.",
   },
-  "/components/process-list": {
+  "/components/procedure": {
     es: "Explica procedimientos ordenados con pasos y detalles.",
     en: "Explains ordered procedures with steps and supporting details.",
+  },
+  "/components/comparison-table": {
+    es: "Pone los mismos aspectos lado a lado para dos a cuatro cosas, cuando hay que elegir.",
+    en: "Sets the same aspects side by side for two to four things, when you have to choose.",
   },
   "/components/description-list": {
     es: "Muestra los datos de un registro como pares de nombre y valor.",

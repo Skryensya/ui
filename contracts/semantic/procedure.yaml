@@ -1,0 +1,19 @@
+# The structure lives in packages/core/src/procedure.ts. Here, only why it is chosen.
+
+Procedure:
+  useWhen:
+    - "they are instructions to follow, and the content of each step is what matters"
+  avoidWhen:
+    - "what matters is which step the user is on; that is Steps"
+    - "they are rows of a list (links, actions, metadata) with no instruction body; that is List"
+  alternatives:
+    - Steps
+    - List
+
+ProcedureStep:
+  useWhen:
+    - "one instruction inside the list"
+  avoidWhen:
+    - "the item reports complete/current/upcoming; that is a step of Steps, not an instruction"
+  alternatives:
+    - Steps

@@ -14,15 +14,31 @@ import ContentRules from "../ContentRules.astro";
 import A11yNotes from "../A11yNotes.astro";
 import {
   numberFieldAnatomyTree,
+  numberFieldDecimalTree,
+  numberFieldDoBoundsTree,
+  numberFieldDoLabelTree,
   numberFieldDontApproxTree,
+  numberFieldDontBoundsTree,
+  numberFieldDontLabelTree,
+  numberFieldLocaleTree,
   numberFieldSingleTree,
-  numberFieldTree,
+  numberFieldUnboundedTree,
 } from "../../demos/number-field";
 import { annotationDemoCss } from "../../demos/annotation";
 import { getLocale, tList, useTranslations } from "../../i18n";
-import { variantsTree } from "../../demos/variants";
 
 const t = useTranslations(getLocale(Astro.url));
+/* The locales the number is written in: three groupings, so the difference shows at rest. */
+const locales = ["en-US", "es-CL", "en-IN"] as const;
+
+/* The states a field can be in, each an option the contract already declares. */
+const states = [
+  { value: "default", options: {} },
+  { value: "readOnly", options: { readOnly: true } },
+  { value: "invalid", options: { invalid: true } },
+  { value: "disabled", options: { disabled: true } },
+] as const;
+
 const styles = `@import "@skryensya/core/patterns/state-layer.css";
 @import "@skryensya/core/components/button.css";
 @import "@skryensya/core/components/number-field.css";`;
@@ -42,14 +58,38 @@ const styles = `@import "@skryensya/core/patterns/state-layer.css";
   <Fragment slot="usage">
     <p class="lede" set:html={t("numberFieldPage.lede")} />
 
-    <h3>{t("component.examplesTitle")}</h3>
-    <UsagePreview tree={numberFieldSingleTree(t)} title={t("numberFieldPage.quantityTitle")} description={t("numberFieldPage.quantityBody")} />
     <UsagePreview
-      tree={variantsTree(numberFieldSingleTree(t), [{ label: t("component.state.default"), options: {} }, { label: t("component.state.readOnly"), options: { readOnly: true } }, { label: t("component.state.invalid"), options: { invalid: true } }, { label: t("component.state.disabled"), options: { disabled: true } }])}
-      title={t("component.statesTitle")}
-      description={t("component.statesBody")}
+      tree={numberFieldLocaleTree(t, locales[0])}
+      variants={locales.map((locale) => ({
+        value: locale,
+        label: locale,
+        tree: numberFieldLocaleTree(t, locale),
+        explain: t(`numberFieldPage.prop.locale.${locale}` as Parameters<typeof t>[0]),
+      }))}
+      variantsLabel={t("numberFieldPage.prop.locale.label")}
+      title={t("numberFieldPage.prop.locale.title")}
+      description={t("numberFieldPage.prop.locale.body")}
+      stageMinBlockSize="9rem"
     />
 
+    <UsagePreview
+      tree={numberFieldSingleTree(t)}
+      variants={states.map(({ value, options }) => ({
+        value,
+        label: t(`component.state.${value}` as Parameters<typeof t>[0]),
+        tree: { ...numberFieldSingleTree(t), options: { ...numberFieldSingleTree(t).options, ...options } },
+        explain: t(`numberFieldPage.state.${value}` as Parameters<typeof t>[0]),
+      }))}
+      variantsLabel={t("numberFieldPage.state.label")}
+      title={t("numberFieldPage.state.title")}
+      description={t("numberFieldPage.state.body")}
+      stageMinBlockSize="9rem"
+    />
+
+    <h3>{t("component.examplesTitle")}</h3>
+    <UsagePreview tree={numberFieldSingleTree(t)} title={t("numberFieldPage.quantityTitle")} description={t("numberFieldPage.quantityBody")} />
+    <UsagePreview tree={numberFieldDecimalTree(t)} title={t("numberFieldPage.decimalTitle")} description={t("numberFieldPage.decimalBody")} />
+    <UsagePreview tree={numberFieldUnboundedTree(t)} title={t("numberFieldPage.unboundedTitle")} description={t("numberFieldPage.unboundedBody")} />
 
     <h3>{t("component.contractNotesTitle")}</h3>
     <ul>
@@ -73,6 +113,16 @@ const styles = `@import "@skryensya/core/patterns/state-layer.css";
       title={t("numberFieldPage.dd.exact.title")}
       do={{ tree: numberFieldSingleTree(t), caption: t("numberFieldPage.dd.exact.do") }}
       dont={{ tree: numberFieldDontApproxTree(t), caption: t("numberFieldPage.dd.exact.dont") }}
+    />
+    <DoDont
+      title={t("numberFieldPage.dd.bounds.title")}
+      do={{ tree: numberFieldDoBoundsTree(t), caption: t("numberFieldPage.dd.bounds.do") }}
+      dont={{ tree: numberFieldDontBoundsTree(t), caption: t("numberFieldPage.dd.bounds.dont") }}
+    />
+    <DoDont
+      title={t("numberFieldPage.dd.label.title")}
+      do={{ tree: numberFieldDoLabelTree(t), caption: t("numberFieldPage.dd.label.do") }}
+      dont={{ tree: numberFieldDontLabelTree(t), caption: t("numberFieldPage.dd.label.dont") }}
     />
     <ContentRules items={tList(t, "numberFieldPage.content")} />
   </Fragment>

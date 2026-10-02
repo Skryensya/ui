@@ -5,15 +5,32 @@ import "@skryensya/core/components/annotation.css";
 import ComponentPageShell from "./ComponentPageShell.astro";
 import CodeBlock from "../CodeBlock.astro";
 import UsagePreview from "../UsagePreview.astro";
+import DoDont from "../DoDont.astro";
 import WhenToUse from "../WhenToUse.astro";
 import ContentRules from "../ContentRules.astro";
 import A11yNotes from "../A11yNotes.astro";
-import { navListAnatomyTree, navListCollapsibleTree, navListHorizontalTree, navListProductTree } from "../../demos/nav-list";
+import {
+  navListAnatomyTree,
+  navListCollapsibleTree,
+  navListDoDestinationsTree,
+  navListDontActionsTree,
+  navListDontLongNamesTree,
+  navListDontTwoCurrentTree,
+  navListDontVagueGroupsTree,
+  navListDoOneCurrentTree,
+  navListDoShortNamesTree,
+  navListDoTopicGroupsTree,
+  navListHorizontalTree,
+  navListOrientationTree,
+  navListProductTree,
+} from "../../demos/nav-list";
 import { annotationDemoCss } from "../../demos/annotation";
 import { getLocale, tList, useTranslations } from "../../i18n";
 
 const locale = getLocale(Astro.url);
 const t = useTranslations(locale);
+/* A column is a sidebar's width, not the stage's; a row sizes itself and the stage centres it. */
+const orientationCardCss = `.sk-nav-list:not([data-orientation="horizontal"]) { inline-size: min(100%, 16rem); }`;
 const isEnglish = locale === "en";
 
 const componentHref = isEnglish ? "/components" : "/components";
@@ -37,12 +54,13 @@ const explain = (option: string, values: readonly string[]) =>
     <p class="lede" set:html={t("navListPage.lede")} />
 
     <UsagePreview
-      tree={navListProductTree(t, { dashboard: "#", inbox: "#", customers: "#", segments: "#", automations: "#", settings: "#" })}
+      tree={navListOrientationTree(t, { dashboard: "#", inbox: "#", customers: "#", automations: "#", settings: "#" })}
       optionName="orientation"
       title={t("navListPage.prop.orientation.title")}
       description={t("navListPage.prop.orientation.body")}
       explain={explain("orientation", ["vertical", "horizontal"])}
-      stageMinBlockSize="16rem"
+      css={orientationCardCss}
+      stageMinBlockSize="14rem"
     />
 
     <h3>{t("component.examplesTitle")}</h3>
@@ -107,6 +125,26 @@ const explain = (option: string, values: readonly string[]) =>
   <Fragment slot="guidelines">
     <p class="lede" set:html={t("navListPage.guidelinesLede")} />
     <WhenToUse use={tList(t, "navListPage.when")} avoid={tList(t, "navListPage.whenNot")} />
+    <DoDont
+      title={t("navListPage.dd.names.title")}
+      do={{ tree: navListDoShortNamesTree(t), caption: t("navListPage.dd.names.do") }}
+      dont={{ tree: navListDontLongNamesTree(t), caption: t("navListPage.dd.names.dont") }}
+    />
+    <DoDont
+      title={t("navListPage.dd.groups.title")}
+      do={{ tree: navListDoTopicGroupsTree(t), caption: t("navListPage.dd.groups.do") }}
+      dont={{ tree: navListDontVagueGroupsTree(t), caption: t("navListPage.dd.groups.dont") }}
+    />
+    <DoDont
+      title={t("navListPage.dd.current.title")}
+      do={{ tree: navListDoOneCurrentTree(t), caption: t("navListPage.dd.current.do") }}
+      dont={{ tree: navListDontTwoCurrentTree(t), caption: t("navListPage.dd.current.dont") }}
+    />
+    <DoDont
+      title={t("navListPage.dd.destinations.title")}
+      do={{ tree: navListDoDestinationsTree(t), caption: t("navListPage.dd.destinations.do") }}
+      dont={{ tree: navListDontActionsTree(t), caption: t("navListPage.dd.destinations.dont") }}
+    />
     <ContentRules items={tList(t, "navListPage.content")} />
   </Fragment>
 

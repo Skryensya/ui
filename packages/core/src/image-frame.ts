@@ -24,7 +24,7 @@ export type ImageFramePartClass = (typeof imageFrameParts)[ImageFramePart];
  * nobody could enforce.
  *
  * A caption over the photo is not a second media source. It is its own slot so `src` (or authored
- * children) can coexist with a MediaCaption; the wash needs the media beside it, and that composition
+ * children) can coexist with a MediaOverlay; the wash needs the media beside it, and that composition
  * is the whole reason the gradient pattern exists.
  */
 export const imageFrameContract = {
@@ -125,10 +125,10 @@ export const imageFrameContract = {
          * Type on the photo. Not a media source; `exactlyOneOf` does not count it; so a `src`
          * frame can still carry a wash and a title.
          */
-        caption: { accepts: "signature", of: ["MediaCaption"] },
+        caption: { accepts: "signature", of: ["MediaOverlay"] },
       },
       compose: [
-        { of: "media-gradient", sheets: ["@skryensya/core/patterns/media-gradient.css"] },
+        { of: "media-overlay", sheets: ["@skryensya/core/patterns/media-overlay.css"] },
       ],
       template: {
         element: "div",

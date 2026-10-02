@@ -1,5 +1,5 @@
 ---
-import Base from "../layouts/Base.astro";
+import FoundationPage from "../components/FoundationPage.astro";
 import CodeBlock from "../components/CodeBlock.astro";
 import { stylingHookOverrideTree } from "../demos/styling-hooks";
 import { getLocale, useTranslations } from "../i18n";
@@ -36,12 +36,10 @@ const consumer = `/* Your CSS reads it once and never branches. */
 const t = useTranslations(getLocale(Astro.url));
 ---
 
-<Base
+<FoundationPage
   title="The styling hooks contract"
-  documentLayout="grid"
   description="A styling hook is the public knob for a component: what it means, how they are named, and how to step on them."
 >
-  <h1>The styling hooks contract</h1>
   <p class="lede">
     Importing <code>components/button.css</code> gives you a button <em>and</em> {buttonHooks.length} styling
     hooks. The class is what you see; the hooks are how you change it without writing a selector of your own.
@@ -137,4 +135,4 @@ const t = useTranslations(getLocale(Astro.url));
     None of them point at a <code>--palette-*</code>, and that is not discipline holding:
     <a href="/tiers">the tier-skip rule</a> fails the build if one does.
   </p>
-</Base>
+</FoundationPage>

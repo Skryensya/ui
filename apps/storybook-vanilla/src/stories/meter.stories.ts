@@ -16,3 +16,4 @@ export const Single: StoryObj = treeStory(demos.meterSingleTree);
 export const DoTone: StoryObj = treeStory(demos.meterDoToneTree);
 export const DontTone: StoryObj = treeStory(demos.meterDontToneTree);
 export const DontTask: StoryObj = treeStory(demos.meterDontTaskTree);
+export const DoMeasure: StoryObj = treeStory(demos.meterDoMeasureTree);

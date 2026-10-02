@@ -3,7 +3,7 @@
 # `surface` es la forma del contrato la última vez que alguien la revisó. Si el compilador dice
 # que no coincide, algo de lo que un consumidor depende se movió: escribe la entrada y pega el
 # hash nuevo.
-surface: "abfd697515bb08d7"
+surface: "fc28e34c721cf53a"
 entries:
   - date: 2026-09-20
     kind: feature
@@ -23,3 +23,60 @@ entries:
         <code>autocomplete="one-time-code"</code> so the phone offers the received SMS.
         <code>sk:otpinputvaluecomplete</code> fires once the last segment fills;
         <code>sk:otpinputinvalid</code> fires the character that did not match <code>type</code>.
+  - date: 2026-10-02
+    kind: feature
+    target: groupSize
+    es:
+      title: Nueva opción groupSize para agrupar las casillas
+      body: >-
+        <code>groupSize</code> (<code>2</code>, <code>3</code> o <code>4</code>) separa las casillas
+        en grupos de ese tamaño con un espacio más ancho entre uno y otro: <code>123 456</code> en vez
+        de <code>123456</code>. Un código se lee y se teclea por trozos, y el espacio es donde
+        descansan el ojo y la mano. Sin la opción, la fila sigue corrida. Si el largo no se divide
+        parejo, el último grupo queda más corto.
+    en:
+      title: New groupSize option to group the boxes
+      body: >-
+        <code>groupSize</code> (<code>2</code>, <code>3</code> or <code>4</code>) sets the boxes apart
+        in groups of that size with a wider gap between one and the next: <code>123 456</code> instead
+        of <code>123456</code>. A code is read and keyed in chunks, and the gap is where the eye and
+        the hand rest. Without the option the row stays unbroken. If the length does not divide evenly,
+        the last group is shorter.
+  - date: 2026-10-02
+    kind: breaking
+    target: placeholder
+    es:
+      title: Las casillas vacías ya no muestran ○ por defecto
+      body: >-
+        El valor por defecto de <code>placeholder</code> pasa de <code>○</code> a vacío. Una fila de
+        círculos en un campo que nadie tocó se leía como un adorno que hay que ignorar, y el borde de
+        cada casilla ya dice «escribe aquí». Quien quiera una pista dentro de las casillas la escribe
+        en <code>placeholder</code>.
+    en:
+      title: Empty boxes no longer show ○ by default
+      body: >-
+        The default of <code>placeholder</code> changes from <code>○</code> to empty. A row of circles
+        on a field nobody has touched read as a decoration to ignore, and each box's border already
+        says "type here". Anyone who wants a hint inside the boxes writes it in
+        <code>placeholder</code>.
+  - date: 2026-10-02
+    kind: feature
+    target: mask
+    es:
+      title: Con mask, cada casilla llena muestra un icono en vez de los puntos del navegador
+      body: >-
+        Un navegador dibuja los caracteres de un campo de contraseña como sus propios puntos, y ese
+        glifo no se puede cambiar. Ahora cada casilla es una celda (<code>sk-otp-input__cell</code>) y,
+        con <code>mask</code>, una casilla llena oculta el carácter y muestra el rol de icono
+        <code>mask</code> (<code>sk-otp-input__mask</code>), un asterisco en los sets publicados. El
+        icono es decoración: el valor y el foco siguen en el input. Cada celda lleva
+        <code>data-filled</code> mientras tiene un carácter.
+    en:
+      title: With mask, each filled box shows an icon instead of the browser's dots
+      body: >-
+        A browser draws a password field's characters as its own dots, and that glyph cannot be
+        changed. Each box is now a cell (<code>sk-otp-input__cell</code>) and, with <code>mask</code>,
+        a filled box hides the character and shows the <code>mask</code> icon role
+        (<code>sk-otp-input__mask</code>), an asterisk in the published sets. The icon is decoration:
+        the value and the focus stay on the input. Each cell carries <code>data-filled</code> while it
+        holds a character.

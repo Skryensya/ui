@@ -2,6 +2,7 @@ import {
   numberFieldEvents,
   numberFieldParts,
   numberFieldContract,
+  numberFieldFormatOptions,
 } from "@skryensya/core/number-field";
 import { numberInput } from "@skryensya/core/machines";
 import { normalizeProps, useMachine } from "@zag-js/react";
@@ -48,7 +49,7 @@ export function NumberField({
   decrementLabel = decrementLabelOption.default,
   defaultValue,
   disabled,
-  formatOptions,
+  formatOptions = numberFieldFormatOptions,
   hint,
   id,
   incrementIcon,

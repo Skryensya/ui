@@ -6,7 +6,7 @@ import "@skryensya/core/components/canvas.css";
 import "@skryensya/core/components/diagram.css";
 import "@skryensya/core/patterns/icon.css";
 import "@skryensya/core/patterns/image-frame.css";
-import "@skryensya/core/patterns/media-gradient.css";
+import "@skryensya/core/patterns/media-overlay.css";
 import "@skryensya/core/patterns/visually-hidden.css";
 import * as demos from "@docs/demos/diagram";
 import { treeStory, type Meta, type StoryObj } from "../tree-story";

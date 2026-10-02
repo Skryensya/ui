@@ -4,6 +4,8 @@ import "@skryensya/core/components/annotation.css";
 import "@skryensya/core/components/button.css";
 import "@skryensya/core/components/canvas.css";
 import "@skryensya/core/components/progress.css";
+import "@skryensya/core/components/steps.css";
+import "@skryensya/core/components/typography.css";
 import "@skryensya/core/patterns/layout.css";
 import * as demos from "@docs/demos/progress";
 import { treeStory, type Meta, type StoryObj } from "../tree-story";
@@ -12,8 +14,18 @@ export default { title: "Components/Feedback/Progress", tags: ["autodocs"] } sat
 
 export const Anatomy: StoryObj = treeStory(demos.progressAnatomyTree);
 export const Default: StoryObj = treeStory(demos.progressTree);
+export const Steps: StoryObj = treeStory(demos.progressStepsTree);
+export const Empty: StoryObj = treeStory(demos.progressEmptyTree);
+export const Quarter: StoryObj = treeStory(demos.progressQuarterTree);
+export const Most: StoryObj = treeStory(demos.progressMostTree);
+export const Full: StoryObj = treeStory(demos.progressFullTree);
 export const Single: StoryObj = treeStory(demos.progressSingleTree);
 export const DoRunning: StoryObj = treeStory(demos.progressDoRunningTree);
 export const DontRunning: StoryObj = treeStory(demos.progressDontRunningTree);
 export const DontMeasure: StoryObj = treeStory(demos.progressDontMeasureTree);
 export const DoTask: StoryObj = treeStory(demos.progressDoTaskTree);
+export const DoValue: StoryObj = treeStory(demos.progressDoValueTree);
+export const DontBare: StoryObj = treeStory(demos.progressDontBareTree);
+export const Segments: StoryObj = treeStory(demos.progressSegmentsTree);
+export const AsBar: StoryObj = treeStory(demos.progressAsBarTree);
+export const AsSegments: StoryObj = treeStory(demos.progressAsSegmentsTree);

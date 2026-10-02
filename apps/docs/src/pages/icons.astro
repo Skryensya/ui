@@ -1,5 +1,5 @@
 ---
-import Base from "../layouts/Base.astro";
+import FoundationPage from "../components/FoundationPage.astro";
 import CodeBlock from "../components/CodeBlock.astro";
 import UsagePreview from "../components/UsagePreview.astro";
 import { iconVocabTree } from "../demos/icons";
@@ -31,12 +31,10 @@ const swap = `- import { phosphorIcons } from "@skryensya/icons-phosphor";
   // and nothing more. Not a <Icon name="…"> moves.`;
 ---
 
-<Base
+<FoundationPage
   title="Iconography"
-  documentLayout="grid"
   description="The stable vocabulary of roles, sets as a brand, and why the SVG pattern does not paint fill or stroke."
 >
-  <h1>Iconography</h1>
   <p class="lede">
     The system names <strong>roles</strong>, not drawings. A set (Lucide, Phosphor, Material) is a brand: it chooses the geometry that each role occupies, just as a brand chooses the hue of <code>--palette-blue-600</code>. How you mount the SVG in React or vanilla is in <a href="/components/icon">Icon</a>.
   </p>
@@ -127,4 +125,4 @@ const swap = `- import { phosphorIcons } from "@skryensya/icons-phosphor";
   <p>
     React (<code>&lt;Icon&gt;</code>), vanilla (<code>mountIcons</code>), sizes and accessibility in the call site: <a href="/components/icon">Icon</a>.
   </p>
-</Base>
+</FoundationPage>

@@ -159,36 +159,4 @@ describe("Menubar vanilla enhancer, dropdowns as real Menu instances", () => {
     expect(link.getAttribute("role")).toBe("menuitem");
     destroyMount(root);
   });
-
-  /*
-   * `nav: true` (`menubar.ts`) only swaps the trigger's CLASSES for `nav-list`'s own
-   * (`sk-nav-list__link`/`__label` instead of `sk-button`). The enhancer's own attachment is
-   * class-agnostic (`data-sk-menubar-item`/roles only), so the exact same behavior the plain-bar
-   * tests above already cover should hold unchanged on this markup too.
-   */
-  it("wires up identically when the trigger is nav-list's own link instead of a Button", () => {
-    document.body.innerHTML = `<div class="sk-menubar" data-sk-menubar role="menubar" aria-label="Principal">
-      <div class="sk-menubar__item-wrapper sk-menu" data-sk-menu>
-        <button type="button" role="menuitem" class="sk-nav-list__link" data-sk-menubar-item data-sk-menu-trigger>
-          <span class="sk-nav-list__label">Inicio</span>
-        </button>
-        <div data-sk-menu-positioner>
-          <div data-sk-menu-content role="menu">
-            <a data-sk-menu-item data-value="docs" href="/docs"><span>Documentación</span></a>
-          </div>
-        </div>
-      </div>
-    </div>`;
-    const root = document.querySelector<HTMLElement>("[data-sk-menubar]")!;
-    expect(mountMenu(document)).toBe(1);
-    expect(mountMenubar(document)).toBe(1);
-    flushSync();
-    const trigger = document.querySelector<HTMLButtonElement>("[data-sk-menubar-item]")!;
-    expect(trigger.tabIndex).toBe(0);
-    expect(trigger.getAttribute("aria-haspopup")).toBe("menu");
-    fireEvent.click(trigger);
-    flushSync();
-    expect(isOpen(trigger)).toBe(true);
-    destroyMount(root);
-  });
 });

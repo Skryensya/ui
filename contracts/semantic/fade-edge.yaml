@@ -6,9 +6,9 @@ FadeEdge:
     - "the effect has to wrap another component without changing its semantics, focus or behaviour"
   avoidWhen:
     - "the content is not clipped; fading it only lowers contrast"
-    - "the gradient protects text over a photo; that is MediaGradient inside MediaCaption"
+    - "the gradient protects text over a photo; that is MediaOverlayShade inside MediaOverlay"
     - "the fade would hide a control or information needed at rest"
     - "the clipped edge is a Marquee's viewport; Marquee already has its own inner fade, and a FadeEdge around it also washes out the Play/Pause"
   alternatives:
-    - MediaGradient
+    - MediaOverlayShade
     - Marquee

@@ -25,6 +25,10 @@ export const quoteParts = {
   root: "sk-quote",
   body: "sk-quote__body",
   attribution: "sk-quote__attribution",
+  /** The picture of the person quoted, a step to the inline-start of who they are. */
+  media: "sk-quote__media",
+  /** Who said it and where: the name and the `<cite>`, set together beside the picture. */
+  author: "sk-quote__author",
   /** The `<cite>`: the title of the work, never the name of the person. */
   source: "sk-quote__source",
 } as const;
@@ -46,6 +50,8 @@ export const quoteContract = {
     "--sk-quote-font-style",
     "--sk-quote-gap",
     "--sk-quote-line-height",
+    /* The space between the person's picture and their name. */
+    "--sk-quote-media-gap",
     /* The measure a quotation is read at. Narrower than the page's, which is the point of it. */
     "--sk-quote-measure",
     "--sk-quote-padding-inline",
@@ -89,6 +95,13 @@ export const quoteContract = {
         attribution: { accepts: "text" },
         /** WHAT it appeared in: the book, the talk, the page. This is the `<cite>`. */
         source: { accepts: "node" },
+        /**
+         * WHO, as a face: the person's picture, beside the name. An Avatar, because that is what a
+         * picture of a person already is in this system: it carries the person's name for assistive
+         * technology, falls back to initials when there is no photo, and brings its own sizes. It
+         * decorates the attribution and never replaces it, so on its own it does not make a caption.
+         */
+        image: { accepts: "signature", of: ["Avatar.image", "Avatar.initials"] },
       },
       template: {
         element: "figure",
@@ -104,10 +117,17 @@ export const quoteContract = {
             part: "attribution",
             whenGiven: ["attribution", "source"],
             children: [
-              /* No element of its own: the name is the caption's own text, and a span around it
-                 would be a box with nothing to say. */
-              { slot: "attribution" },
-              { element: "cite", part: "source", whenGiven: "source", slot: "source" },
+              { element: "span", part: "media", whenGiven: "image", slot: "image" },
+              {
+                element: "span",
+                part: "author",
+                children: [
+                  /* No element of its own: the name is the author's own text, and a span around it
+                     would be a box with nothing to say. */
+                  { slot: "attribution" },
+                  { element: "cite", part: "source", whenGiven: "source", slot: "source" },
+                ],
+              },
             ],
           },
         ],

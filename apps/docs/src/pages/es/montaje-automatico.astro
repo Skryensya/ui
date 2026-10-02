@@ -1,5 +1,5 @@
 ---
-import Base from "../../layouts/Base.astro";
+import FoundationPage from "../../components/FoundationPage.astro";
 import CodeBlock from "../../components/CodeBlock.astro";
 
 const auto = `import { initComponents } from "@skryensya/vanilla/auto";
@@ -16,12 +16,10 @@ const single = `import { mountAccordion } from "@skryensya/vanilla/accordion";
 mountAccordion();`;
 ---
 
-<Base
+<FoundationPage
   title="Montaje automático"
   description="initComponents() escanea el documento y hace import() únicamente de los enhancers que la página realmente usa."
-  documentLayout="grid"
 >
-  <h1>Montaje automático</h1>
   <p class="lede">
     Una página con varios componentes del sistema no necesita un import por cada uno:
     <code>initComponents()</code> escanea el documento, encuentra qué roots <code>data-sk-*</code>
@@ -78,4 +76,4 @@ mountAccordion();`;
     <code>initComponents()</code> cuando la página combine varios y prefieras no mantener la lista
     a mano.
   </p>
-</Base>
+</FoundationPage>

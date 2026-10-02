@@ -14,6 +14,19 @@ const press = (trigger: HTMLElement) => {
 };
 
 describe("NumberField (React)", () => {
+  it("groups thousands and uses the language's marks by default", () => {
+    const value = (locale: string, defaultValue: string) =>
+      render(<NumberField label={locale} locale={locale} defaultValue={defaultValue} />).container.querySelector("input")!.value;
+    expect(value("en-US", "1234567.89")).toBe("1,234,567.89");
+    expect(value("es-CL", "1234567,89")).toBe("1.234.567,89");
+    expect(value("en-IN", "1234567.89")).toBe("12,34,567.89");
+  });
+
+  it("lets a caller choose its own format instead of the default", () => {
+    const ui = render(<NumberField label="Plain" defaultValue="1234567.89" formatOptions={{ useGrouping: false }} />);
+    expect(ui.container.querySelector("input")!.value).toBe("1234567.89");
+  });
+
   it("writes an appearance on the root only when asked", () => {
     const plain = render(<NumberField label="Plain" defaultValue="1" />);
     expect(plain.container.querySelector(".sk-number-field")?.hasAttribute("data-appearance")).toBe(false);

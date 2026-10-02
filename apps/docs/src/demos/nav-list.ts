@@ -47,7 +47,7 @@ export const navListAnatomyTree = (t: Translate): UsageTree => ({
       namePart(".sk-nav-list__item", "inline-start", { ringPlacement: "offset", ringDistance: 2 }),
       namePart(".sk-nav-list__link", "inline-end", { ringPlacement: "offset", ringDistance: 2 }),
       namePart(".sk-nav-list__label", "inline-end", { ringPlacement: "offset", ringDistance: 2 }),
-      namePart(".sk-nav-list__trailing", "block-end"),
+      namePart(".sk-nav-list__trailing", "inline-end"),
     ],
   },
 });
@@ -119,6 +119,31 @@ export const navListProductTree = (
   ],
 });
 
+/*
+ * THE ORIENTATION CARD'S SPECIMEN: one flat, unlabelled group, so the same tree reads in a column and
+ * in a row. The product tree (two labelled groups, a nested destination) is a sidebar by nature: in a
+ * row its group labels, nesting and counters line up into something nobody would build.
+ */
+export const navListOrientationTree = (
+  t: Translate,
+  hrefs: { dashboard: string; inbox: string; customers: string; automations: string; settings: string },
+): UsageTree => ({
+  contract: "nav-list",
+  signature: "NavList",
+  attrs: { "aria-label": t("demo.navList.productLabel") },
+  children: {
+    contract: "nav-list",
+    signature: "NavListGroup",
+    children: [
+      link(t("demo.navList.dashboard"), hrefs.dashboard, "info", { current: true }),
+      link(t("demo.navList.inbox"), hrefs.inbox, "file", { trailing: "8" }),
+      link(t("demo.navList.customers"), hrefs.customers, "user"),
+      link(t("demo.navList.automations"), hrefs.automations, "refresh"),
+      link(t("demo.navList.settings"), hrefs.settings, "settings"),
+    ],
+  },
+});
+
 /* Horizontal nav-list as a navbar guest: the same NavListGroup wrapper remains, just unlabelled. */
 export const navListHorizontalTree = (
   t: Translate,
@@ -175,3 +200,65 @@ export const navListCollapsibleTree = (
     },
   ],
 });
+
+/*
+ * USAGE GUIDE. Every pair is a plain sidebar column at one width, so what differs is the one thing the
+ * rule is about: how destinations are named, how groups are titled, which one is current, and what
+ * counts as a destination at all.
+ */
+type Row = [label: string, current?: boolean];
+
+const guideList = (t: Translate, groups: { label?: string; rows: Row[] }[]): UsageTree => ({
+  contract: "layout",
+  signature: "Stack",
+  attrs: { style: "inline-size: 18rem; max-inline-size: 100%" },
+  children: {
+    contract: "nav-list",
+    signature: "NavList",
+    attrs: { "aria-label": t("demo.navList.productLabel") },
+    children: groups.map(({ label, rows }) => ({
+      contract: "nav-list",
+      signature: "NavListGroup",
+      ...(label ? { slots: { label } } : {}),
+      children: rows.map(([text, current]) => link(text, "#", undefined, { current })),
+    })),
+  },
+});
+
+/** Do: one or two words per destination. */
+export const navListDoShortNamesTree = (t: Translate): UsageTree =>
+  guideList(t, [{ rows: [[t("demo.navList.dashboard"), true], [t("demo.navList.customers")], [t("demo.navList.automations")], [t("demo.navList.settings")]] }]);
+
+/** Don't: a sentence per destination, which no sidebar has the width to show. */
+export const navListDontLongNamesTree = (t: Translate): UsageTree =>
+  guideList(t, [{ rows: [[t("demo.navList.dashboard"), true], [t("demo.navList.dd.longCustomers")], [t("demo.navList.dd.longAutomations")], [t("demo.navList.dd.longSettings")]] }]);
+
+/** Do: groups titled by topic. */
+export const navListDoTopicGroupsTree = (t: Translate): UsageTree =>
+  guideList(t, [
+    { label: t("demo.navList.groupWork"), rows: [[t("demo.navList.dashboard"), true], [t("demo.navList.inbox")], [t("demo.navList.customers")]] },
+    { label: t("demo.navList.groupOperate"), rows: [[t("demo.navList.automations")], [t("demo.navList.settings")]] },
+  ]);
+
+/** Don't: the same destinations under titles that say nothing. */
+export const navListDontVagueGroupsTree = (t: Translate): UsageTree =>
+  guideList(t, [
+    { label: t("demo.navList.dd.groupOther"), rows: [[t("demo.navList.dashboard"), true], [t("demo.navList.inbox")], [t("demo.navList.customers")]] },
+    { label: t("demo.navList.dd.groupMisc"), rows: [[t("demo.navList.automations")], [t("demo.navList.settings")]] },
+  ]);
+
+/** Do: exactly one link marks the current page. */
+export const navListDoOneCurrentTree = (t: Translate): UsageTree =>
+  guideList(t, [{ rows: [[t("demo.navList.overview")], [t("demo.navList.projects"), true], [t("demo.navList.reports")], [t("demo.navList.team")]] }]);
+
+/** Don't: two links claim to be the current page. */
+export const navListDontTwoCurrentTree = (t: Translate): UsageTree =>
+  guideList(t, [{ rows: [[t("demo.navList.overview"), true], [t("demo.navList.projects"), true], [t("demo.navList.reports")], [t("demo.navList.team")]] }]);
+
+/** Do: every row is somewhere to go. */
+export const navListDoDestinationsTree = (t: Translate): UsageTree =>
+  guideList(t, [{ label: t("demo.navList.account"), rows: [[t("demo.navList.profile"), true], [t("demo.navList.billing")]] }]);
+
+/** Don't: actions dressed as destinations; they do something, they do not go anywhere. */
+export const navListDontActionsTree = (t: Translate): UsageTree =>
+  guideList(t, [{ label: t("demo.navList.account"), rows: [[t("demo.navList.profile"), true], [t("demo.navList.dd.export")], [t("demo.navList.dd.delete")]] }]);

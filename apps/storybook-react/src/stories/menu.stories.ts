@@ -2,13 +2,19 @@
 // change the demo (or the docs page that shows it) and run `pnpm generate` in this app.
 import "@skryensya/core/components/button.css";
 import "@skryensya/core/components/menu.css";
+import "@skryensya/core/components/menubar.css";
 import "@skryensya/core/patterns/anchored.css";
+import "@skryensya/core/patterns/layout.css";
 import * as demos from "@docs/demos/menu";
 import { treeStory, type Meta, type StoryObj } from "../tree-story";
 
 export default { title: "Components/Actions/Menu", tags: ["autodocs"] } satisfies Meta;
 
 export const Default: StoryObj = treeStory(demos.menuTree);
+export const Density: StoryObj = treeStory(demos.menuDensityTree);
+export const Tone: StoryObj = treeStory((t) => demos.menuToneTree(t, "#"));
 export const Multilevel: StoryObj = treeStory(demos.menuMultilevelTree);
 export const Compact: StoryObj = treeStory(demos.menuCompactTree);
 export const Safety: StoryObj = treeStory(demos.menuSafetyTree);
+export const DoMenubar: StoryObj = treeStory(demos.menuDoMenubarTree);
+export const DontSeparateMenus: StoryObj = treeStory(demos.menuDontSeparateMenusTree);

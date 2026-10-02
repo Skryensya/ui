@@ -24,7 +24,7 @@ entries:
       - date-picker
       - editor
       - state-button
-      - media-gradient
+      - media-overlay
       - megamenu
       - menu
       - menubar

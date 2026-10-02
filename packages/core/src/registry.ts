@@ -7,8 +7,9 @@ import { breadcrumbContract } from "./breadcrumb.js";
 import { emptyStateContract } from "./empty-state.js";
 import { statContract } from "./stat.js";
 import { calloutContract } from "./callout.js";
-import { processListContract } from "./process-list.js";
+import { procedureContract } from "./procedure.js";
 import { changelogContract } from "./changelog.js";
+import { comparisonTableContract } from "./comparison-table.js";
 import { descriptionListContract } from "./description-list.js";
 import { quoteContract } from "./quote.js";
 import { separatorContract } from "./separator.js";
@@ -17,7 +18,7 @@ import { timelineContract } from "./timeline.js";
 import { chartContract } from "./chart.js";
 import { stepsContract } from "./steps.js";
 import { listContract } from "./list.js";
-import { mediaGradientContract } from "./media-gradient.js";
+import { mediaOverlayContract } from "./media-overlay.js";
 import { timeFieldContract } from "./time-field.js";
 import { fileUploadContract } from "./file-upload.js";
 import { carouselContract } from "./carousel.js";
@@ -150,7 +151,7 @@ export const contracts = fromContracts(
   layoutContract,
   listContract,
   loaderContract,
-  mediaGradientContract,
+  mediaOverlayContract,
   inputContract,
   navListContract,
   navbarContract,
@@ -169,8 +170,9 @@ export const contracts = fromContracts(
   stateButtonContract,
   numberFieldContract,
   placeholderContract,
-  processListContract,
+  procedureContract,
   changelogContract,
+  comparisonTableContract,
   descriptionListContract,
   quoteContract,
   separatorContract,

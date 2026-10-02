@@ -5,6 +5,11 @@
  * frame, so every pair on a page is the same shape, with a verdict on top and one sentence under it
  * saying why.
  *
+ * With `canvas`, the specimen is drawn at its natural size and scaled to fit its frame, and BOTH halves
+ * of a pair take the SAME scale (the smaller of the two), so what is compared is the same size on
+ * either side; each half used to be fitted alone, which made the tidy side look tiny and the long
+ * one huge, and a specimen taller than its frame was cropped instead of scaled.
+ *
  * The example is emitted as static HTML at build time. It is inert, not hydrated, so it paints with
  * the current theme and language while remaining a specimen rather than a second live control.
  */
@@ -13,7 +18,6 @@ import { emitMarkup } from "@skryensya/ai-compiler/emit";
 import { iconMarkup } from "../icons";
 import { getLocale, useTranslations } from "../i18n";
 import "./preview-card.css";
-import "@skryensya/core/components/canvas.css";
 
 type Half = {
   /** A normal validated component composition. */
@@ -32,25 +36,34 @@ interface Props {
    * by doing it (scrolling a region to see where its fade goes); every other pair stays a picture.
    */
   interactive?: boolean;
+  /** Less air around the specimen, for a tall one that has to be scaled down to fit the frame. */
+  compact?: boolean;
+  /**
+   * One half above the other, each as wide as the column, in a short wide frame. For a specimen that is
+   * itself wide (a bar across the top of a page): side by side each half is about 270px, and the
+   * specimen is squeezed until its links vanish, which makes the pair wrong, not just small.
+   */
+  stacked?: boolean;
   do: Half;
   dont: Half;
 }
 
-const { title, canvas = false, interactive = false, do: good, dont: bad } = Astro.props;
+const { title, canvas = false, interactive = false, compact = false, stacked = false, do: good, dont: bad } = Astro.props;
 const t = useTranslations(getLocale(Astro.url));
 
 const inertTree = (tree: UsageTree): UsageTree => ({
   contract: "layout",
   signature: "Stack",
-  attrs: { inert: "", style: "padding: var(--space-inset-xl); box-sizing: border-box;" },
+  attrs: { inert: "", style: `padding: var(--space-inset-${compact ? "md" : "xl"}); box-sizing: border-box;` },
   children: tree,
 });
 
-const onCanvas = (tree: UsageTree, label: string): UsageTree => ({
-  contract: "canvas",
-  signature: "Canvas",
-  options: { fitOnly: true, label: title ? `${label}: ${title}` : label },
-  children: inertTree(tree),
+/* The specimen at natural size, inert: the frame around it does the padding and the scaling. */
+const stageTree = (tree: UsageTree): UsageTree => ({
+  contract: "layout",
+  signature: "Stack",
+  attrs: { inert: "" },
+  children: tree,
 });
 const halves = [
   { kind: "do", label: t("component.do"), icon: iconMarkup("check", { size: "sm" }), half: good },
@@ -58,7 +71,7 @@ const halves = [
 ] as const;
 ---
 
-<section class="sk-do-dont">
+<section class:list={["sk-do-dont", stacked && "sk-do-dont--stacked"]}>
   {title && <h3>{title}</h3>}
   <div class="sk-do-dont__pair">
     {
@@ -71,11 +84,25 @@ const halves = [
           <div class="sk-do-dont__card">
             {
               half.html ? (
-                <div class="sk-do-dont__frame" inert={!interactive} data-interactive={interactive || undefined} set:html={half.html} />
+                interactive ? (
+                  <div class="sk-do-dont__frame" data-interactive set:html={half.html} />
+                ) : (
+                  <div class="sk-do-dont__frame" inert data-fit="pending" data-fit-mode="flow">
+                    <div class="sk-do-dont__stage" set:html={half.html} />
+                  </div>
+                )
               ) : half.tree && canvas ? (
-                <Fragment set:html={emitMarkup(onCanvas(half.tree, label))} />
+                <div class="sk-do-dont__frame" data-fit="pending" role="img" aria-label={title ? `${label}: ${title}` : label}>
+                  <div class="sk-do-dont__stage" set:html={emitMarkup(stageTree(half.tree))} />
+                </div>
               ) : half.tree ? (
-                <div class="sk-do-dont__frame" inert={!interactive} data-interactive={interactive || undefined} set:html={emitMarkup(half.tree)} />
+                interactive ? (
+                  <div class="sk-do-dont__frame" data-interactive set:html={emitMarkup(half.tree)} />
+                ) : (
+                  <div class="sk-do-dont__frame" inert data-fit="pending" data-fit-mode="flow">
+                    <div class="sk-do-dont__stage" set:html={emitMarkup(half.tree)} />
+                  </div>
+                )
               ) : null
             }
           </div>
@@ -89,6 +116,10 @@ const halves = [
 <style>
   .sk-do-dont {
     margin-block: var(--space-stack-lg);
+    /* A stacking context of its own: a specimen with an open popup (Menu, AppBar) carries the
+       component's real z-index, which is right for the component and wrong here, where it would
+       float over the sticky header while the page scrolls underneath. Contained, it stays under it. */
+    isolation: isolate;
   }
 
   .sk-do-dont__pair {
@@ -101,6 +132,30 @@ const halves = [
       /* minmax(0, …): a wide specimen is clipped by its frame, it never widens its own column. */
       grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
     }
+  }
+
+  @media (min-width: 40rem) {
+    .sk-do-dont--stacked .sk-do-dont__pair {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+
+  /* A wide, short frame instead of 4:3, and the specimen takes the frame's whole width. Its own
+     padding is left alone: a bar's inset is part of what is being shown. */
+  .sk-do-dont--stacked .sk-do-dont__frame {
+    aspect-ratio: auto;
+    min-block-size: 7rem;
+    padding: var(--space-inset-lg);
+  }
+
+  /* A specimen never overflows the frame; one that IS a bar across the page (Navbar) takes all of it,
+     anything else keeps its own width and is centred by the frame. */
+  .sk-do-dont--stacked .sk-do-dont__frame > :global(*) {
+    max-inline-size: 100%;
+  }
+
+  .sk-do-dont--stacked .sk-do-dont__frame > :global(.sk-navbar) {
+    inline-size: 100%;
   }
 
   .sk-do-dont__half {
@@ -128,26 +183,53 @@ const halves = [
     display: inline-flex;
   }
 
-  .sk-do-dont__card :global(.sk-canvas[data-fit-only] > .sk-canvas__viewport) {
-    aspect-ratio: 4 / 3;
-    block-size: auto;
-    min-block-size: 0;
-    max-block-size: none;
+  /* The specimen at natural size, shrunk (never grown) by the pair's shared scale. Until the script has
+     measured it the stage is hidden, so a page never flashes a specimen at the wrong size. */
+  .sk-do-dont__frame[data-fit]:not([data-fit-mode="flow"]) {
+    /* As Canvas does: the specimen keeps the width it would have on a desktop instead of taking the
+       frame's, which is what a responsive grid or a container query would otherwise collapse to. */
+    contain: inline-size;
+    /* One row exactly as tall as the frame, so a stage taller than it overflows around its centre
+       instead of stretching the row and sitting low. */
+    grid-template-rows: minmax(0, 1fr);
   }
 
-  /* Give the specimen board its own ground, distinct from the page around it. */
-  .sk-do-dont__card :global(.sk-canvas) {
-    --sk-canvas-viewport-bg: color-mix(in oklab, var(--color-bg-surface-raised) 92%, var(--sk-do-dont-color) 8%);
+  /* FLOW: the specimen keeps the frame's width, as it always had, and only when it is taller than the
+     frame does the pair zoom out, the stage widening as it shrinks so it still fills the width. */
+  .sk-do-dont__frame[data-fit-mode="flow"] {
+    grid-template-rows: minmax(0, 1fr);
   }
 
-  /* The grid helps navigate a design canvas, but competes with these small comparison specimens. */
-  .sk-do-dont__card :global(.sk-canvas__viewport) {
-    background-image: none;
+  .sk-do-dont__frame[data-fit-mode="flow"] .sk-do-dont__stage {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    place-items: center;
+    inline-size: 100%;
+  }
+
+  .sk-do-dont--stacked .sk-do-dont__stage > :global(*) {
+    inline-size: 100%;
+  }
+
+  .sk-do-dont__stage {
+    /* `unsafe`: the unscaled box can be taller or wider than the frame, and a safe centre would pin it
+       to the start, so the scaled picture would sit off-centre and be cropped. */
+    place-self: unsafe center;
+    inline-size: max-content;
+    max-inline-size: none;
+    transform: scale(var(--sk-do-dont-scale, 1));
+    transform-origin: center;
+  }
+
+  @media (scripting: enabled) {
+    .sk-do-dont__frame[data-fit="pending"] .sk-do-dont__stage {
+      visibility: hidden;
+    }
   }
 
   /* The example should read as an object resting above the board, not printed on it. */
-  .sk-do-dont__card :global(.sk-canvas__content .sk-accordion),
-  .sk-do-dont__card :global(.sk-canvas__content .sk-details-group) {
+  .sk-do-dont__stage :global(.sk-accordion),
+  .sk-do-dont__stage :global(.sk-details-group) {
     box-shadow: var(--elevation-overlay);
   }
 
@@ -158,19 +240,15 @@ const halves = [
     padding-inline-end: var(--sk-do-dont-offset);
   }
 
-  .sk-do-dont__card :global(.sk-canvas__content),
   .sk-do-dont__frame:not([data-interactive]) {
     pointer-events: none;
   }
 
-  .sk-do-dont__card :global(.sk-canvas),
   .sk-do-dont__frame {
-    --sk-canvas-border-color: var(--sk-do-dont-color);
     --sk-do-dont-direction: 1;
     box-shadow: calc(var(--sk-do-dont-offset) * var(--sk-do-dont-direction)) var(--sk-do-dont-offset) 0 var(--sk-do-dont-color);
   }
 
-  .sk-do-dont__card :global(.sk-canvas:dir(rtl)),
   .sk-do-dont__frame:dir(rtl) {
     --sk-do-dont-direction: -1;
   }
@@ -223,3 +301,83 @@ const halves = [
     color: var(--color-text-secondary);
   }
 </style>
+
+<script>
+  /*
+   * ONE SCALE PER PAIR. Each stage is measured at its natural size and the pair takes the smaller of
+   * the two fits (never above 1), so the Do and the Don't are drawn at the same size and neither is
+   * cropped. Re-measured when a frame resizes and when fonts arrive, because text changes the size.
+   */
+  /* Below this a specimen stops being readable, so a layout that can reflow is given less width first. */
+  const MIN_SCALE = 0.55;
+
+  /* Flow stages: the pair's shared scale is found first, then each stage is widened to fill the frame. */
+  const flowScale = (stage: HTMLElement) => {
+    const frame = stage.parentElement!;
+    const style = getComputedStyle(frame);
+    const width = frame.clientWidth - parseFloat(style.paddingLeft) - parseFloat(style.paddingRight);
+    const height = frame.clientHeight - parseFloat(style.paddingTop) - parseFloat(style.paddingBottom);
+    let scale = 1;
+    /* A wider stage is a shorter one, so the scale that fits the height is found by settling, not once. */
+    for (let pass = 0; pass < 4; pass += 1) {
+      stage.style.inlineSize = `${width / scale}px`;
+      scale = Math.min(1, height / (stage.offsetHeight || 1));
+    }
+    return Math.max(0.2, scale);
+  };
+
+  const fitStage = (stage: HTMLElement) => {
+    const frame = stage.parentElement!;
+    const style = getComputedStyle(frame);
+    const width = frame.clientWidth - parseFloat(style.paddingLeft) - parseFloat(style.paddingRight);
+    const height = frame.clientHeight - parseFloat(style.paddingTop) - parseFloat(style.paddingBottom);
+    const measure = () => Math.min(1, width / (stage.offsetWidth || 1), height / (stage.offsetHeight || 1));
+
+    stage.style.inlineSize = "";
+    let scale = measure();
+    /*
+     * A responsive layout (a row of cards, a grid) is wide only because the stage is measured as on a
+     * desktop. Narrowing it lets it reflow into fewer columns at a size a person can read; one that
+     * cannot reflow overflows instead, and goes back to its natural width and a smaller scale.
+     */
+    if (scale < MIN_SCALE && stage.offsetWidth * MIN_SCALE > width) {
+      stage.style.inlineSize = `${width / MIN_SCALE}px`;
+      if (stage.scrollWidth > stage.clientWidth + 1) stage.style.inlineSize = "";
+      else scale = measure();
+    }
+    return scale;
+  };
+
+  const fitPair = (pair: Element) => {
+    const stages = [...pair.querySelectorAll<HTMLElement>(".sk-do-dont__stage")];
+    if (!stages.length) return;
+    const flow = stages.filter((stage) => stage.parentElement!.dataset.fitMode === "flow");
+    const fixed = stages.filter((stage) => !flow.includes(stage));
+    const scale = Math.max(0.2, Math.min(...flow.map(flowScale), ...fixed.map(fitStage)));
+    for (const stage of stages) {
+      if (flow.includes(stage)) {
+        const frame = stage.parentElement!;
+        const style = getComputedStyle(frame);
+        const width = frame.clientWidth - parseFloat(style.paddingLeft) - parseFloat(style.paddingRight);
+        stage.style.inlineSize = `${width / scale}px`;
+      }
+      stage.style.setProperty("--sk-do-dont-scale", String(scale));
+      stage.parentElement!.dataset.fit = "ready";
+    }
+  };
+
+  const pairs = [...document.querySelectorAll(".sk-do-dont__pair")].filter((pair) => pair.querySelector(".sk-do-dont__stage"));
+  const observer = new ResizeObserver((entries) => {
+    const touched = new Set<Element>();
+    for (const entry of entries) {
+      const pair = entry.target.closest(".sk-do-dont__pair");
+      if (pair) touched.add(pair);
+    }
+    touched.forEach(fitPair);
+  });
+  for (const pair of pairs) {
+    fitPair(pair);
+    pair.querySelectorAll(".sk-do-dont__frame").forEach((frame) => observer.observe(frame));
+  }
+  void document.fonts?.ready.then(() => pairs.forEach(fitPair));
+</script>

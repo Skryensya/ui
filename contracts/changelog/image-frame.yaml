@@ -3,7 +3,7 @@
 # `surface` is the shape of the contract the last time somebody reviewed it. If the compiler says it
 # does not match, something a consumer depends on has moved: write the entry and paste in the new
 # hash.
-surface: "9df24c4596401cec"
+surface: "ce6e9662b3c8ac94"
 entries:
   - date: 2026-09-26
     kind: feature
@@ -21,13 +21,13 @@ entries:
   - date: 2026-09-17
     kind: feature
     es:
-      title: ImageFrame declara compose de media-gradient
+      title: ImageFrame declara compose de media-overlay
       body: >-
-        <code>compose</code> documenta el caption MediaCaption (contrato media-gradient) del slot.
+        <code>compose</code> documenta el caption MediaOverlay (contrato media-overlay) del slot.
     en:
-      title: ImageFrame declares compose of media-gradient
+      title: ImageFrame declares compose of media-overlay
       body: >-
-        <code>compose</code> documents the MediaCaption (media-gradient contract) caption slot.
+        <code>compose</code> documents the MediaOverlay (media-overlay contract) caption slot.
   - date: 2026-08-11
     kind: feature
     es:
@@ -78,3 +78,13 @@ entries:
       title: ImageFrame chooses its element
       body: >-
         <code>frameElement</code> (<code>div</code> or <code>figure</code>), what React already allowed through <code>as</code>: <code>figure</code> when a caption names the media.
+  - date: 2026-10-02
+    kind: chore
+    es:
+      title: ImageFrame compone MediaOverlay
+      body: >-
+        El pie sobre la foto que ImageFrame admite se llama ahora <code>MediaOverlay</code> (antes <code>MediaCaption</code>).
+    en:
+      title: ImageFrame composes MediaOverlay
+      body: >-
+        The caption ImageFrame accepts over the media is now called <code>MediaOverlay</code> (formerly <code>MediaCaption</code>).

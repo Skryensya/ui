@@ -1,0 +1,87 @@
+/*
+ * TIER 3, COMPARISON TABLE
+ *
+ * The same few aspects set side by side for two to four things: a header row of the things, a header
+ * column of the aspects, text in between. Every pixel of structure is the `<table>`'s own, so a screen
+ * reader gets its row and column headers from `scope`; this sheet only draws it.
+ *
+ * NO OUTER BOX AND NO ZEBRA. A comparison is read across a row and down a column, and a rule under each
+ * row is all the eye needs to stay on a line. A border around the lot or alternating fills would add a
+ * second thing to look at for no gain; this is prose-adjacent, it sits in the flow of a page.
+ *
+ * THE ASPECT COLUMN IS A LENGTH (`--sk-comparison-table-row-header-size`), not `max-content`, so the
+ * things compared share the rest of the width evenly instead of the widest cell deciding.
+ */
+@layer components {
+  .sk-comparison-table {
+    --sk-comparison-table-border-color: var(--color-border-subtle);
+    --sk-comparison-table-cell-padding-block: var(--space-inset-sm);
+    --sk-comparison-table-cell-padding-inline: var(--space-inset-md);
+    --sk-comparison-table-column-fg: var(--color-text-primary);
+    --sk-comparison-table-font-size: var(--font-size-body-sm);
+    --sk-comparison-table-row-header-fg: var(--color-text-secondary);
+    --sk-comparison-table-row-header-size: 12rem;
+
+    inline-size: 100%;
+    border-collapse: collapse;
+    font-size: var(--sk-comparison-table-font-size);
+    text-align: start;
+  }
+
+  .sk-comparison-table[data-density="compact"] {
+    --sk-comparison-table-cell-padding-block: var(--space-inset-xs);
+  }
+
+  .sk-comparison-table__caption {
+    padding-block-end: var(--space-stack-xs);
+    color: var(--sk-comparison-table-row-header-fg);
+    text-align: start;
+  }
+
+  .sk-comparison-table__column,
+  .sk-comparison-table__row-header,
+  .sk-comparison-table__cell {
+    padding: var(--sk-comparison-table-cell-padding-block) var(--sk-comparison-table-cell-padding-inline);
+    border-block-end: 1px solid var(--sk-comparison-table-border-color);
+    text-align: start;
+    vertical-align: top;
+  }
+
+  .sk-comparison-table__column {
+    color: var(--sk-comparison-table-column-fg);
+    font-weight: var(--font-weight-emphasis);
+  }
+
+  .sk-comparison-table__row-header {
+    inline-size: var(--sk-comparison-table-row-header-size);
+    color: var(--sk-comparison-table-row-header-fg);
+    font-weight: var(--font-weight-label);
+  }
+
+  /* The top-left cell names the aspect column and is read, never seen: it would label a blank. */
+  .sk-comparison-table__corner {
+    inline-size: var(--sk-comparison-table-row-header-size);
+    padding: 0;
+    border-block-end: 1px solid var(--sk-comparison-table-border-color);
+  }
+
+  .sk-comparison-table__corner-label {
+    position: absolute;
+    inline-size: 1px;
+    block-size: 1px;
+    margin: -1px;
+    padding: 0;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+    border: 0;
+  }
+
+  /* Narrow screens: the aspect column gives up its fixed width and shares like the rest. */
+  @media (max-width: 35.999rem) {
+    .sk-comparison-table__row-header,
+    .sk-comparison-table__corner {
+      inline-size: auto;
+    }
+  }
+}

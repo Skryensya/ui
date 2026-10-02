@@ -33,9 +33,9 @@ export const meterMessages = {
 
     "meterPage.contract1": "Rol <code>meter</code> con <code>aria-valuenow</code>, <code>aria-valuemin</code> y <code>aria-valuemax</code> siempre presentes.",
 
-    "meterPage.panelBody": "<code>min</code> no tiene que ser cero: una calificación va de 1 a 5, una temperatura puede ser negativa.",
+    "meterPage.panelBody": "<code>min</code> y <code>max</code> fijan la escala, y la barra se llena según dónde cae el valor entre ellos, no desde cero. Una calificación va de 1 a 5; una temperatura, de -20 a 40.",
 
-    "meterPage.panelTitle": "Varias medidas: cada una con su escala",
+    "meterPage.panelTitle": "Cada medida con su propia escala",
     "meterPage.lede": "Meter muestra una medida dentro de un rango conocido: el uso del disco, el nivel de batería, una calificación de 1 a 5. El valor sube y baja; no es el avance de una tarea que termina, que es Progress.",
     "meterPage.anatomyBody":
       "Este diagrama nombra el grupo, el encabezado, la etiqueta, el valor, la pista y la barra. El espécimen está congelado; los meters vivos empiezan abajo.",
@@ -45,9 +45,11 @@ export const meterMessages = {
     "meterPage.test2":
       "Respeta un min distinto de cero al pintar el relleno, a diferencia de Progress.",
 
-    "demo.meter.rating": "Calificación",
-    "demo.meter.ratingText": "4 de 5 estrellas",
-    "demo.meter.disk": "Uso de disco",
+    "demo.meter.rating": "Calificación (1 a 5)",
+    "demo.meter.ratingText": "4 de 5",
+    "demo.meter.temperature": "Temperatura (-20 a 40 °C)",
+    "demo.meter.temperatureText": "-5 °C",
+    "demo.meter.disk": "Uso de disco (0 a 100)",
     "demo.meter.diskText": "92% usado",
     "demo.meter.battery": "Batería",
     "demo.meter.batteryText": "68% restante",
@@ -100,9 +102,9 @@ export const meterMessages = {
 
     "meterPage.contract1": "Role <code>meter</code> with <code>aria-valuenow</code>, <code>aria-valuemin</code> and <code>aria-valuemax</code> always present.",
 
-    "meterPage.panelBody": "<code>min</code> need not be zero: a rating goes from 1 to 5, a temperature can be negative.",
+    "meterPage.panelBody": "<code>min</code> and <code>max</code> set the scale, and the bar fills by where the value falls between them, not from zero. A rating runs 1 to 5; a temperature, -20 to 40.",
 
-    "meterPage.panelTitle": "Several measurements: each with its scale",
+    "meterPage.panelTitle": "Each measurement with its own scale",
     "meterPage.lede": "Meter shows a measurement within a known range: disk usage, battery level, a 1 to 5 rating. The value goes up and down; it is not a task's progress toward an end, which is Progress.",
     "meterPage.anatomyBody":
       "This diagram names the group, the header, the label, the value, the track, and the bar. The specimen is frozen; the live meters start below.",
@@ -111,9 +113,11 @@ export const meterMessages = {
     "meterPage.test1": "Sets role=meter with the three required aria-value attributes.",
     "meterPage.test2": "Honors a non-zero min when painting the fill, unlike Progress.",
 
-    "demo.meter.rating": "Rating",
-    "demo.meter.ratingText": "4 out of 5 stars",
-    "demo.meter.disk": "Disk usage",
+    "demo.meter.rating": "Rating (1 to 5)",
+    "demo.meter.ratingText": "4 of 5",
+    "demo.meter.temperature": "Temperature (-20 to 40 °C)",
+    "demo.meter.temperatureText": "-5 °C",
+    "demo.meter.disk": "Disk usage (0 to 100)",
     "demo.meter.diskText": "92% used",
     "demo.meter.battery": "Battery",
     "demo.meter.batteryText": "68% remaining",

@@ -235,3 +235,31 @@ export const marqueeDontLinksTree = (t: Translate): UsageTree => ({
   options: { speed: "normal" },
   slots: { children: guideLinks(t) },
 });
+
+/* Usage guide: one kind of child per band, against the same band with four kinds mixed in. */
+export const marqueeDoUniformTree = (): UsageTree => ({
+  contract: "marquee",
+  signature: "Marquee.autoplay",
+  options: { speed: "slow" },
+  slots: { children: logoStrip().slice(0, 4) },
+});
+
+export const marqueeDontMixedTree = (t: Translate): UsageTree => {
+  const [logo, , , orbital] = logoStrip();
+  return {
+    contract: "marquee",
+    signature: "Marquee.autoplay",
+    options: { speed: "slow" },
+    slots: {
+      children: [logo, badgeStrip(t)[0], avatarStrip(t)[0], { contract: "typography", signature: "Text", children: t("demo.marquee.mixedLine") }, orbital],
+    },
+  };
+};
+
+/* Usage guide: the default fade, against `fade="none"` cutting the run off mid-item. */
+export const marqueeDoFadeTree = (): UsageTree => ({
+  contract: "marquee",
+  signature: "Marquee.autoplay",
+  options: { speed: "slow" },
+  slots: { children: logoStrip() },
+});

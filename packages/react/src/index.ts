@@ -69,7 +69,14 @@ export type {
   ListItemProps,
   ListProps,
 } from "./components/list.js";
-export { ProcessList, ProcessListItem } from "./components/process-list.js";
+export { Procedure, ProcedureStep } from "./components/procedure.js";
+export { ComparisonCell, ComparisonColumn, ComparisonRow, ComparisonTable } from "./components/comparison-table.js";
+export type {
+  ComparisonCellProps,
+  ComparisonColumnProps,
+  ComparisonRowProps,
+  ComparisonTableProps,
+} from "./components/comparison-table.js";
 export { DescriptionItem, DescriptionList } from "./components/description-list.js";
 export type { DescriptionItemProps, DescriptionListProps } from "./components/description-list.js";
 export { LabelledSeparator, Separator } from "./components/separator.js";
@@ -81,9 +88,9 @@ export type { QuoteProps } from "./components/quote.js";
 export { Timeline, TimelineItem } from "./components/timeline.js";
 export type { TimelineItemProps, TimelineProps } from "./components/timeline.js";
 export type {
-  ProcessListItemProps,
-  ProcessListProps,
-} from "./components/process-list.js";
+  ProcedureStepProps,
+  ProcedureProps,
+} from "./components/procedure.js";
 export { Changelog, ChangelogEntry, ChangelogRelease } from "./components/changelog.js";
 export type { ChangelogEntryProps, ChangelogProps, ChangelogReleaseProps } from "./components/changelog.js";
 export { Carousel, CarouselSlide } from "./components/carousel.js";
@@ -156,11 +163,11 @@ export type {
   TourStep,
   TourTriggerProps,
 } from "./components/tour.js";
-export { MediaCaption, MediaGradient } from "./components/media-gradient.js";
+export { MediaOverlay, MediaOverlayShade } from "./components/media-overlay.js";
 export type {
-  MediaCaptionProps,
-  MediaGradientProps,
-} from "./components/media-gradient.js";
+  MediaOverlayProps,
+  MediaOverlayShadeProps,
+} from "./components/media-overlay.js";
 export { FadeEdge } from "./components/fade-edge.js";
 export type { FadeEdgeProps } from "./components/fade-edge.js";
 export { Presence } from "./components/presence.js";

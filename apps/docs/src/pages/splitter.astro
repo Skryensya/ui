@@ -1,5 +1,5 @@
 ---
-import Base from "../layouts/Base.astro";
+import FoundationPage from "../components/FoundationPage.astro";
 import CodeBlock from "../components/CodeBlock.astro";
 import UsagePreview from "../components/UsagePreview.astro";
 import { sidebarResizableTree } from "../demos/sidebar";
@@ -76,12 +76,10 @@ const stackedHtml = `<!-- Stacked panes: the same bar, turned ninety degrees -->
 ></div>`;
 ---
 
-<Base
+<FoundationPage
   title="Splitter"
-  documentLayout="grid"
   description="The shared drag-to-resize handle: role=separator, one value model per consumer, the same visual bar across Sidebar, Table and Treegrid."
 >
-  <h1>Splitter</h1>
   <p class="lede">
     WAI-ARIA's <strong>Window Splitter</strong> pattern: a thin bar, draggable with pointer or
     keyboard, that resizes whatever sits next to it. <code>Sidebar</code> uses it for its panel
@@ -249,4 +247,4 @@ const stackedHtml = `<!-- Stacked panes: the same bar, turned ninety degrees -->
     <li><a href="/components/table">Table</a>: <code>resizableColumns</code>/<code>resizeLabel</code>, opt-in.</li>
     <li><a href="/components/treegrid">Treegrid</a>: same <code>resizableColumns</code>/<code>resizeLabel</code> pair, plus <code>columnWeights</code> for the initial split.</li>
   </ul>
-</Base>
+</FoundationPage>

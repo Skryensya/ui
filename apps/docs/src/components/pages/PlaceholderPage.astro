@@ -3,6 +3,8 @@
    `.sk-placeholder` rule nothing sets `block-size`, so every text-shaped line measured 0px and the
    skeleton painted only its media block: the one thing this page exists to show. */
 import "@skryensya/core/components/placeholder.css";
+import "@skryensya/core/patterns/visually-hidden.css";
+import "@skryensya/core/patterns/media-overlay.css";
 import "../../examples/placeholder.css";
 import ComponentPageShell from "./ComponentPageShell.astro";
 import CodeBlock from "../CodeBlock.astro";
@@ -11,12 +13,18 @@ import DoDont from "../DoDont.astro";
 import WhenToUse from "../WhenToUse.astro";
 import ContentRules from "../ContentRules.astro";
 import A11yNotes from "../A11yNotes.astro";
-import { placeholderDontSlabTree } from "../../demos/placeholder";
 import {
   placeholderAnatomyTree,
   placeholderMatchTree,
   placeholderParagraphTree,
-  placeholderVocabularyTree,
+  placeholderDoAvatarTree,
+  placeholderDoRoleTree,
+  placeholderDoShapeTree,
+  placeholderDontAvatarTree,
+  placeholderDontRoleTree,
+  placeholderDontSlabTree,
+  placeholderGalleryTree,
+  placeholderTableTree,
   publicationPlaceholderTree,
   publicationSwapScript,
   publicationSwapTree,
@@ -31,6 +39,8 @@ const t = useTranslations(getLocale(Astro.url));
 const swapScript = publicationSwapScript;
 const styles = `@import "@skryensya/core/components/placeholder.css";
 @import "@skryensya/core/patterns/layout.css";
+@import "@skryensya/core/patterns/visually-hidden.css";
+@import "@skryensya/core/patterns/media-overlay.css";
 @import "@skryensya/core/components/badge.css";
 @import "@skryensya/core/components/avatar.css";
 @import "@skryensya/core/components/typography.css";`;
@@ -64,7 +74,8 @@ const explain = (option: string, values: readonly string[]) =>
     <h3>{t("placeholderPage.swapTitle")}</h3>
     <p set:html={t("placeholderPage.swapBody")} />
     <UsagePreview tree={publicationSwapTree(t)} script={swapScript} label={t("placeholderPage.swapLabel")} />
-    <UsagePreview tree={placeholderVocabularyTree()} title={t("placeholderPage.shapesTitle")} description={t("placeholderPage.shapesBody")} />
+    <UsagePreview tree={placeholderGalleryTree(t)} title={t("placeholderPage.shapesTitle")} description={t("placeholderPage.shapesBody")} />
+    <UsagePreview tree={placeholderTableTree(t)} title={t("placeholderPage.tableTitle")} description={t("placeholderPage.tableBody")} />
     <UsagePreview tree={placeholderMatchTree(t)} title={t("placeholderPage.matchTitle")} description={t("placeholderPage.matchBody")} />
 
     <h3>{t("component.contractNotesTitle")}</h3>
@@ -89,8 +100,20 @@ const explain = (option: string, values: readonly string[]) =>
     <DoDont
       canvas
       title={t("placeholderPage.dd.shape.title")}
-      do={{ tree: publicationPlaceholderTree(t), caption: t("placeholderPage.dd.shape.do") }}
-      dont={{ tree: placeholderDontSlabTree, caption: t("placeholderPage.dd.shape.dont") }}
+      do={{ tree: placeholderDoShapeTree(), caption: t("placeholderPage.dd.shape.do") }}
+      dont={{ tree: placeholderDontSlabTree(), caption: t("placeholderPage.dd.shape.dont") }}
+    />
+    <DoDont
+      canvas
+      title={t("placeholderPage.dd.role.title")}
+      do={{ tree: placeholderDoRoleTree(), caption: t("placeholderPage.dd.role.do") }}
+      dont={{ tree: placeholderDontRoleTree(), caption: t("placeholderPage.dd.role.dont") }}
+    />
+    <DoDont
+      canvas
+      title={t("placeholderPage.dd.avatar.title")}
+      do={{ tree: placeholderDoAvatarTree(), caption: t("placeholderPage.dd.avatar.do") }}
+      dont={{ tree: placeholderDontAvatarTree(), caption: t("placeholderPage.dd.avatar.dont") }}
     />
     <ContentRules items={tList(t, "placeholderPage.content")} />
   </Fragment>

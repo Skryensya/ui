@@ -5,7 +5,14 @@ import WhenToUse from "../WhenToUse.astro";
 import ContentRules from "../ContentRules.astro";
 import A11yNotes from "../A11yNotes.astro";
 import DoDont from "../DoDont.astro";
-import { marqueeDoLinksTree, marqueeDontLinksTree } from "../../demos/marquee";
+import {
+  marqueeDoFadeTree,
+  marqueeDoLinksTree,
+  marqueeDoUniformTree,
+  marqueeDontLinksTree,
+  marqueeDontMixedTree,
+  marqueeNoFadeTree,
+} from "../../demos/marquee";
 import UsagePreview from "../UsagePreview.astro";
 import {
   marqueeAnatomyTree,
@@ -90,6 +97,16 @@ const explain = (option: string, values: readonly string[]) =>
       title={t("marquee.dd.links.title")}
       do={{ tree: marqueeDoLinksTree(t), caption: t("marquee.dd.links.do") }}
       dont={{ tree: marqueeDontLinksTree(t), caption: t("marquee.dd.links.dont") }}
+    />
+    <DoDont
+      title={t("marquee.dd.uniform.title")}
+      do={{ tree: marqueeDoUniformTree(), caption: t("marquee.dd.uniform.do") }}
+      dont={{ tree: marqueeDontMixedTree(t), caption: t("marquee.dd.uniform.dont") }}
+    />
+    <DoDont
+      title={t("marquee.dd.fade.title")}
+      do={{ tree: marqueeDoFadeTree(), caption: t("marquee.dd.fade.do") }}
+      dont={{ tree: marqueeNoFadeTree(), caption: t("marquee.dd.fade.dont") }}
     />
     <ContentRules items={tList(t, "marquee.content")} />
   </Fragment>

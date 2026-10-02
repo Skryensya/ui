@@ -14,14 +14,9 @@
  * `button.css` is imported below for the same reason `menu.css` is: the "Install" snippet this page
  * shows names only THIS file, so anything the bar's own markup needs has to arrive through it.
  *
- * `nav: true` (`menubar.ts`) swaps that Button for `nav-list`'s own link instead. A menubar used as
- * site navigation, not a command bar. Hence `patterns/nav-list.css` imported alongside the other
- * two: `.sk-nav-list__link`/`__label` are fully self-styling, so nothing here repaints them, only
- * the one open-dropdown state below that nav-list has no notion of.
  */
 @import url("./menu.css");
 @import url("./button.css");
-@import url("../patterns/nav-list.css");
 
 @layer components {
   .sk-menubar {
@@ -60,18 +55,6 @@
   .sk-menubar__item.sk-button[aria-expanded="true"] {
     --sk-button-bg: var(--color-bg-surface-sunken);
     --sk-button-fg: var(--color-text-primary);
-  }
-
-  /*
-   * The `nav` shape's own version of the rule above: an open dropdown re-points `nav-list`'s
-   * OWN "current" tokens (`patterns/nav-list.css`) rather than repainting bg/fg by hand, so a
-   * nav-styled bar and a plain nav-list share one definition of what "the active one" looks
-   * like. Keyed on `aria-expanded`, not `aria-current`: "this dropdown is open" is the fact here,
-   * not "this is the current page". Nav-list itself has no notion of the former.
-   */
-  .sk-menubar__item.sk-nav-list__link[aria-expanded="true"] {
-    --sk-nav-list-link-bg: var(--sk-nav-list-link-current-bg);
-    --sk-nav-list-link-fg: var(--sk-nav-list-link-current-fg);
   }
 
   /* The chevron marking a dropdown item (`whenGiven: "items"` in the template. A leaf command

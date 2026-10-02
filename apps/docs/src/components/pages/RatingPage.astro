@@ -1,5 +1,11 @@
 ---
 import "@skryensya/core/components/rating.css";
+import "@skryensya/core/components/typography.css";
+import "@skryensya/core/components/button.css";
+import "@skryensya/core/components/form-field.css";
+import "@skryensya/core/components/input.css";
+import "@skryensya/core/patterns/box.css";
+import "@skryensya/core/patterns/layout.css";
 /* Structure diagram: Annotated specimen; a preview frame only copies styles THIS page loaded. */
 import "@skryensya/core/components/annotation.css";
 import ComponentPageShell from "./ComponentPageShell.astro";
@@ -11,6 +17,14 @@ import ContentRules from "../ContentRules.astro";
 import A11yNotes from "../A11yNotes.astro";
 import {
   ratingAnatomyTree,
+  ratingFiveStepsTree,
+  ratingHeartsCss,
+  ratingHeartsTree,
+  ratingPlaygroundTree,
+  ratingProductTree,
+  ratingReviewTree,
+  ratingTenStepsTree,
+  ratingThreeStepsTree,
   ratingDisplayTree,
   ratingDontInputAverageTree,
   ratingDontNoCountTree,
@@ -24,10 +38,16 @@ import { variantsTree } from "../../demos/variants";
 const t = useTranslations(getLocale(Astro.url));
 const install = `pnpm add @skryensya/core @skryensya/react`;
 
-const symbolSwap = `/* The symbol is a mask, so a heart is one declaration. */
-.reviews {
-  --sk-rating-symbol: url("data:image/svg+xml,%3Csvg …heart… %3E");
-}`;
+const maxVariants = [
+  { value: "3", tree: ratingThreeStepsTree },
+  { value: "5", tree: ratingFiveStepsTree },
+  { value: "10", tree: ratingTenStepsTree },
+].map(({ value, tree }) => ({
+  value,
+  label: t(`ratingPage.max.${value}` as Parameters<typeof t>[0]),
+  tree: tree(t),
+  explain: t(`ratingPage.maxExplain.${value}` as Parameters<typeof t>[0]),
+}));
 
 /* What each value of a property is for, read from this page's messages. Same model Badge uses. */
 const explain = (option: string, values: readonly string[]) =>
@@ -58,13 +78,31 @@ const explain = (option: string, values: readonly string[]) =>
       labels={{ sm: "sm", md: "md", lg: "lg" }}
     />
 
+    <UsagePreview
+      tree={ratingPlaygroundTree(t)}
+      optionName="readOnly"
+      title={t("ratingPage.readOnlyTitle")}
+      description={t("ratingPage.readOnlyBody")}
+      labels={{ false: t("ratingPage.readOnly.false"), true: t("ratingPage.readOnly.true") }}
+      explain={{ false: t("ratingPage.readOnlyExplain.false"), true: t("ratingPage.readOnlyExplain.true") }}
+      stageMinBlockSize="7rem"
+    />
+    <UsagePreview
+      variants={maxVariants}
+      initialVariant="5"
+      variantsLabel={t("ratingPage.maxLabel")}
+      title={t("ratingPage.maxTitle")}
+      description={t("ratingPage.maxBody")}
+      stageMinBlockSize="7rem"
+    />
+
     <h3>{t("component.examplesTitle")}</h3>
+    <UsagePreview tree={ratingProductTree(t)} title={t("ratingPage.productTitle")} description={t("ratingPage.productBody")} />
+    <UsagePreview tree={ratingReviewTree(t)} title={t("ratingPage.reviewTitle")} description={t("ratingPage.reviewBody")} />
     <UsagePreview tree={ratingDisplayTree(t)} title={t("ratingPage.displayTitle")} description={t("ratingPage.displayBody")} />
     <UsagePreview tree={ratingInputTree(t)} title={t("ratingPage.inputTitle")} description={t("ratingPage.inputBody")} />
     <UsagePreview tree={ratingFractionsTree(t)} title={t("ratingPage.fractionTitle")} description={t("ratingPage.fractionBody")} />
-    <h4>{t("ratingPage.symbolTitle")}</h4>
-    <p set:html={t("ratingPage.symbolBody")} />
-    <CodeBlock code={symbolSwap} label="CSS" />
+    <UsagePreview tree={ratingHeartsTree(t)} css={ratingHeartsCss} title={t("ratingPage.symbolTitle")} description={t("ratingPage.symbolBody")} />
     <UsagePreview
       tree={variantsTree(ratingInputTree(t), [{ label: t("component.state.default"), options: {} }, { label: t("component.state.readOnly"), options: { readOnly: true } }, { label: t("component.state.disabled"), options: { disabled: true } }])}
       title={t("component.statesTitle")}

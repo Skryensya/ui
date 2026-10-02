@@ -370,9 +370,9 @@
     "/components/primitives": {
       "primitives": 369
     },
-    "/components/process-list": {
-      "processlist": 590,
-      "processlist-part-by-part": 369
+    "/components/procedure": {
+      "procedure": 590,
+      "procedure-part-by-part": 369
     },
     "/components/progress": {
       "progress": 105,
@@ -894,9 +894,9 @@
     "/es/componentes/primitivas": {
       "primitivas": 369
     },
-    "/es/componentes/process-list": {
-      "processlist": 558,
-      "processlist-parte-por-parte": 369
+    "/es/componentes/procedure": {
+      "procedure": 558,
+      "procedure-parte-por-parte": 369
     },
     "/es/componentes/progress": {
       "progress": 105,

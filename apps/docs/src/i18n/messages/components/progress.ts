@@ -1,5 +1,38 @@
 export const progressMessages = {
   es: {
+    "demo.progress.running": "Subiendo informe.pdf",
+    "demo.progress.done": "Importación de contactos",
+    "demo.progress.doneValue": "Listo",
+    "demo.progress.failed": "Instalación del paquete",
+    "demo.progress.failedValue": "Se detuvo en 40%",
+    "demo.progress.steps": "Configuración de la cuenta",
+    "demo.progress.stepsValue": "Paso 3 de 5",
+    "progressPage.valueTitle": "Value: cuánto lleva",
+    "progressPage.valueBody": "La barra se llena según el valor. Con el texto al lado, la persona sabe de qué tarea se trata y cuánto lleva.",
+    "progressPage.valueLabel": "Avance de la tarea",
+    "progressPage.valueExplain.0": "Recién empieza: la pista vacía.",
+    "progressPage.valueExplain.25": "Un cuarto: ya se nota que avanza.",
+    "progressPage.valueExplain.68": "Más de la mitad de la tarea.",
+    "progressPage.valueExplain.100": "Terminó: la barra llena. Un tono de éxito lo confirma.",
+    "progressPage.stepsTitle": "Con otro máximo: pasos en vez de porcentaje",
+    "progressPage.stepsBody": "La barra se llena en proporción al máximo que le des: tres de cinco pasos es el 60%.",
+    "progressPage.dd.value.title": "Decir cuánto lleva",
+    "progressPage.dd.value.do": "El nombre de la tarea y el avance en palabras junto a la barra.",
+    "progressPage.dd.value.dont": "Solo la barra: se ve que hay algo a medias, pero no de qué ni cuánto.",
+    "demo.progress.seg.account": "Cuenta",
+    "demo.progress.seg.profile": "Perfil",
+    "demo.progress.seg.team": "Equipo",
+    "demo.progress.seg.plan": "Plan",
+    "demo.progress.seg.done": "Listo",
+    "progressPage.styleTitle": "Barra o segmentos",
+    "progressPage.styleBody": "Para un camino de pasos, una barra por paso dice más que una sola: se ve cuántos van y cuántos faltan. Es lo que usa Questionnaire.",
+    "progressPage.styleLabel": "Cómo se dibuja el avance",
+    "progressPage.style.bar": "Una barra",
+    "progressPage.style.segments": "Por segmentos",
+    "progressPage.styleExplain.bar": "Una sola barra llena en proporción: tres de cinco pasos, el 60%. Sirve cuando lo que importa es cuánto falta.",
+    "progressPage.styleExplain.segments": "Una barra por paso: se cuentan las que ya están llenas. Sirve cuando los pasos importan por separado.",
+    "progressPage.segmentsTitle": "Por segmentos: los pasos de un flujo",
+    "progressPage.segmentsBody": 'Es <a href="/es/componentes/steps">Steps</a> dibujado como barras, el mismo avance que usa <a href="/es/componentes/questionnaire">Questionnaire</a>: dos pasos hechos, el tercero en curso.',
     "demo.progress.upload": "Subida",
     "demo.progress.complete": "Completado",
     "demo.progress.quota": "Cuota",
@@ -12,7 +45,7 @@ export const progressMessages = {
 
     "progressPage.a11yDoes2": "La etiqueta visible nombra la barra.",
 
-    "progressPage.a11yDoes1": "Usa el rol <code>progressbar</code>, con el valor actual y el rango.",
+    "progressPage.a11yDoes1": "Se anuncia como una barra de progreso, con su valor actual y su rango.",
 
     "progressPage.a11yIntro": "Progress se anuncia como barra de progreso, con su valor.",
 
@@ -32,13 +65,13 @@ export const progressMessages = {
 
     "progressPage.when1": "Para una tarea con un final conocido: subir archivos, importar, instalar.",
 
-    "progressPage.contract2": "El valor se recorta entre 0 y <code>max</code>: un valor fuera de rango no rompe la barra.",
+    "progressPage.contract2": "El valor se mantiene entre 0 y el máximo: uno fuera de rango no rompe la barra.",
 
-    "progressPage.contract1": "Rol <code>progressbar</code> con <code>aria-valuenow</code>, <code>aria-valuemin</code> y <code>aria-valuemax</code>.",
+    "progressPage.contract1": "Es solo la barra: el nombre de la tarea y el valor en palabras los pones tú, junto a ella.",
 
-    "progressPage.tasksBody": "Cada barra con su etiqueta y un tono que dice lo mismo que el texto.",
+    "progressPage.tasksBody": "Cada barra con el nombre de su tarea y el avance en palabras, y un tono que dice lo mismo.",
 
-    "progressPage.tasksTitle": "Tareas: en curso, terminada y con un problema",
+    "progressPage.tasksTitle": "Tareas: en curso, terminada y detenida",
     "progressPage.lede": "Progress muestra cuánto falta para terminar una tarea de largo conocido: una subida de archivos, una importación, una instalación. Si no sabes cuánto falta, usa Loader; si es una medida que sube y baja, Meter.",
     "progressPage.anatomyBody":
       "Este diagrama nombra la pista y la barra de relleno. El espécimen está congelado; los Progress vivos empiezan abajo.",
@@ -62,6 +95,39 @@ export const progressMessages = {
     "progressPage.dd.task.dont": 'Una batería no termina: es una medida, y eso es <a href="/es/componentes/meter">Meter</a>.',
   },
   en: {
+    "demo.progress.running": "Uploading report.pdf",
+    "demo.progress.done": "Contacts import",
+    "demo.progress.doneValue": "Done",
+    "demo.progress.failed": "Package install",
+    "demo.progress.failedValue": "Stopped at 40%",
+    "demo.progress.steps": "Account setup",
+    "demo.progress.stepsValue": "Step 3 of 5",
+    "progressPage.valueTitle": "Value: how far along",
+    "progressPage.valueBody": "The bar fills by the value. With the text beside it, people know which task it is and how far along it is.",
+    "progressPage.valueLabel": "Task progress",
+    "progressPage.valueExplain.0": "Just starting: the empty track.",
+    "progressPage.valueExplain.25": "A quarter: it already reads as moving.",
+    "progressPage.valueExplain.68": "More than half of the task.",
+    "progressPage.valueExplain.100": "Done: the bar is full. A success tone confirms it.",
+    "progressPage.stepsTitle": "With another maximum: steps instead of a percentage",
+    "progressPage.stepsBody": "The bar fills in proportion to the maximum you give it: three of five steps is 60%.",
+    "progressPage.dd.value.title": "Saying how far along",
+    "progressPage.dd.value.do": "The task's name and its progress in words beside the bar.",
+    "progressPage.dd.value.dont": "Only the bar: it shows something is half done, but not what or how much.",
+    "demo.progress.seg.account": "Account",
+    "demo.progress.seg.profile": "Profile",
+    "demo.progress.seg.team": "Team",
+    "demo.progress.seg.plan": "Plan",
+    "demo.progress.seg.done": "Done",
+    "progressPage.styleTitle": "Bar or segments",
+    "progressPage.styleBody": "For a path of steps, a bar per step says more than a single one: you see how many are done and how many are left. It is what Questionnaire uses.",
+    "progressPage.styleLabel": "How progress is drawn",
+    "progressPage.style.bar": "One bar",
+    "progressPage.style.segments": "Segments",
+    "progressPage.styleExplain.bar": "A single bar filling in proportion: three of five steps, 60%. It suits when what matters is how much is left.",
+    "progressPage.styleExplain.segments": "A bar per step: you count the ones already full. It suits when the steps matter on their own.",
+    "progressPage.segmentsTitle": "Segments: the steps of a flow",
+    "progressPage.segmentsBody": 'It is <a href="/components/steps">Steps</a> drawn as bars, the same progress <a href="/components/questionnaire">Questionnaire</a> uses: two steps done, the third in progress.',
     "demo.progress.upload": "Upload",
     "demo.progress.complete": "Complete",
     "demo.progress.quota": "Quota",
@@ -74,7 +140,7 @@ export const progressMessages = {
 
     "progressPage.a11yDoes2": "The visible label names the bar.",
 
-    "progressPage.a11yDoes1": "It uses the <code>progressbar</code> role, with the current value and range.",
+    "progressPage.a11yDoes1": "It is announced as a progress bar, with its current value and range.",
 
     "progressPage.a11yIntro": "Progress is announced as a progress bar, with its value.",
 
@@ -94,13 +160,13 @@ export const progressMessages = {
 
     "progressPage.when1": "For a task with a known end: uploading files, importing, installing.",
 
-    "progressPage.contract2": "The value is clamped between 0 and <code>max</code>: an out-of-range value does not break the bar.",
+    "progressPage.contract2": "The value stays between 0 and the maximum: an out-of-range one does not break the bar.",
 
-    "progressPage.contract1": "Role <code>progressbar</code> with <code>aria-valuenow</code>, <code>aria-valuemin</code> and <code>aria-valuemax</code>.",
+    "progressPage.contract1": "It is only the bar: the task's name and the value in words are yours to put beside it.",
 
-    "progressPage.tasksBody": "Each bar with its label and a tone that says what the text says.",
+    "progressPage.tasksBody": "Each bar with its task's name and its progress in words, and a tone that says the same.",
 
-    "progressPage.tasksTitle": "Tasks: running, done and with a problem",
+    "progressPage.tasksTitle": "Tasks: running, done and stopped",
     "progressPage.lede": "Progress shows how much is left to finish a task of known length: a file upload, an import, an installation. If you do not know how long is left, use Loader; if it is a measurement that goes up and down, Meter.",
     "progressPage.anatomyBody":
       "This diagram names the track and the fill bar. The specimen is frozen; the live Progress bars begin below.",

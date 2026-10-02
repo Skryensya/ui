@@ -5,7 +5,7 @@
  * `.sk-translucent` (patterns/transparency.css) se eliminó cuando todas las superficies que pintaba
  * publicaron frosted.
  */
-import Base from "../../layouts/Base.astro";
+import FoundationPage from "../../components/FoundationPage.astro";
 import CodeBlock from "../../components/CodeBlock.astro";
 import "@skryensya/core/patterns/box.css";
 
@@ -46,12 +46,10 @@ const ownMarkup = `.my-glass {
 
 ---
 
-<Base
+<FoundationPage
   title="Transparencias"
-  documentLayout="grid"
   description="La política detrás de toda superficie translúcida: base opaca, blur progresivo, transparencia reducida, alto contraste y un piso de contraste."
 >
-  <h1>Transparencias</h1>
   <p class="lede">
     Una superficie translúcida deja percibir el contexto sin entregarle el contraste. En este sistema, la
     transparencia no es una clase que se agrega: es una política que sigue toda superficie translúcida, y se
@@ -201,7 +199,7 @@ const ownMarkup = `.my-glass {
       fondo opaco. La modalidad y el arrastre se mantienen.
     </li>
     <li>
-      <strong><a href="/es/componentes/media-gradient">Media gradient</a>.</strong> El wash se vuelve el color base opaco dentro
+      <strong><a href="/es/componentes/media-overlay">MediaOverlay</a>.</strong> El wash se vuelve el color base opaco dentro
       de la caja del caption; no cubre la imagen entera.
     </li>
     <li>
@@ -228,7 +226,7 @@ const ownMarkup = `.my-glass {
  href="https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/At-rules/@media/prefers-reduced-transparency"
  >MDN, <code>prefers-reduced-transparency</code></a>.
   </p>
-</Base>
+</FoundationPage>
 
 <style>
   .transparency-lab {

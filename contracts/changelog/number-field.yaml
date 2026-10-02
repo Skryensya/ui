@@ -165,3 +165,23 @@ entries:
       body: >-
         The kit is an English library and its defaults were Spanish: <code>locale</code> en, <code>decrementLabel</code> Decrease, <code>incrementLabel</code> Increase. An interface in another
         language passes its own texts, and the <code>locale</code> it needs.
+  - date: 2026-10-02
+    kind: bugfix
+    es:
+      title: El campo agrupa los miles y usa las marcas de su idioma
+      body: >-
+        Sin <code>formatOptions</code>, el campo escribía los dígitos desnudos (<code>1234567.89</code>)
+        en cualquier idioma, así que <code>locale</code> no cambiaba nada visible aunque la documentación
+        decía que formateaba miles y decimales. Ahora agrupa los miles por defecto en los dos bindings:
+        <code>1,234,567.89</code> en <code>en-US</code>, <code>1.234.567,89</code> en <code>es-CL</code>.
+        El <code>defaultValue</code> se escribe como lo escribe el idioma del campo. En React se puede
+        elegir otro formato con <code>formatOptions</code>.
+    en:
+      title: The field groups thousands and uses its language's marks
+      body: >-
+        With no <code>formatOptions</code> the field wrote bare digits (<code>1234567.89</code>) in every
+        language, so <code>locale</code> changed nothing a person could see even though the docs said it
+        formatted thousands and decimals. It now groups thousands by default in both bindings:
+        <code>1,234,567.89</code> in <code>en-US</code>, <code>1.234.567,89</code> in <code>es-CL</code>.
+        The <code>defaultValue</code> is written the way the field's language writes it. In React you can
+        choose another format with <code>formatOptions</code>.

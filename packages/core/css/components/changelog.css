@@ -1,9 +1,9 @@
 /*
  * TIER 3, CHANGELOG
  *
- * A version history down a rail, newest first. The rail is the same drawing ProcessList and Steps
+ * A version history down a rail, newest first. The rail is the same drawing Procedure and Steps
  * each make for themselves, and it is drawn a third time here rather than borrowed, because what
- * those two MEAN is wrong for a history: ProcessList numbers its markers with a `counter()`, which
+ * those two MEAN is wrong for a history: Procedure numbers its markers with a `counter()`, which
  * counts a newest-first list backwards through time, and Steps colours its connector to say how much
  * work is behind the reader, which of a shipped release is not a claim anyone can make.
  *

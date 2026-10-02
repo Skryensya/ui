@@ -74,6 +74,7 @@ const MAP = {
   language: "Languages",
   appearance: "SwatchBook",
   visibility: "Eye",
+  mask: "Asterisk",
   "visibility-off": "EyeOff",
   "mode-system": "Monitor",
   "mode-light": "Sun",

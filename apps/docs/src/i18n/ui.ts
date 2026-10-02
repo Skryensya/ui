@@ -78,7 +78,7 @@ import { presenceMessages } from "./messages/components/presence";
 import { passwordInputMessages } from "./messages/components/password-input";
 import { otpInputMessages } from "./messages/components/otp-input";
 import { tablePagerMessages } from "./messages/components/table-pager";
-import { mediaGradientMessages } from "./messages/components/media-gradient";
+import { mediaOverlayMessages } from "./messages/components/media-overlay";
 import { qrCodeMessages } from "./messages/components/qr-code";
 import { feedMessages } from "./messages/components/feed";
 import { fileUploadMessages } from "./messages/components/file-upload";
@@ -111,9 +111,10 @@ import { paginationMessages } from "./messages/components/pagination";
 import { placeholderMessages } from "./messages/components/placeholder";
 import { popoverMessages } from "./messages/components/popover";
 import { primitivesMessages } from "./messages/components/primitives";
-import { processListMessages } from "./messages/components/process-list";
+import { procedureMessages } from "./messages/components/procedure";
 import { timelineMessages } from "./messages/components/timeline";
 import { progressMessages } from "./messages/components/progress";
+import { comparisonTableMessages } from "./messages/components/comparison-table";
 import { descriptionListMessages } from "./messages/components/description-list";
 import { separatorMessages } from "./messages/components/separator";
 import { tagsInputMessages } from "./messages/components/tags-input";
@@ -225,7 +226,7 @@ export const ui = {
     ...passwordInputMessages.es,
     ...otpInputMessages.es,
     ...tablePagerMessages.es,
-    ...mediaGradientMessages.es,
+    ...mediaOverlayMessages.es,
     ...qrCodeMessages.es,
     ...feedMessages.es,
     ...fileUploadMessages.es,
@@ -258,9 +259,10 @@ export const ui = {
     ...placeholderMessages.es,
     ...popoverMessages.es,
     ...primitivesMessages.es,
-    ...processListMessages.es,
+    ...procedureMessages.es,
     ...timelineMessages.es,
     ...progressMessages.es,
+    ...comparisonTableMessages.es,
     ...descriptionListMessages.es,
     ...quoteMessages.es,
     ...tagsInputMessages.es,
@@ -369,7 +371,7 @@ export const ui = {
     ...passwordInputMessages.en,
     ...otpInputMessages.en,
     ...tablePagerMessages.en,
-    ...mediaGradientMessages.en,
+    ...mediaOverlayMessages.en,
     ...qrCodeMessages.en,
     ...feedMessages.en,
     ...fileUploadMessages.en,
@@ -402,9 +404,10 @@ export const ui = {
     ...placeholderMessages.en,
     ...popoverMessages.en,
     ...primitivesMessages.en,
-    ...processListMessages.en,
+    ...procedureMessages.en,
     ...timelineMessages.en,
     ...progressMessages.en,
+    ...comparisonTableMessages.en,
     ...descriptionListMessages.en,
     ...quoteMessages.en,
     ...tagsInputMessages.en,

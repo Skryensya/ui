@@ -185,31 +185,31 @@ export const docsSiteTree = (t: Translate): UsageTree => ({
                 children: t("demo.docsSite.sectionInstallBody"),
               },
               /*
-               * `ProcessList`, and the catalogue decides this one outright: these are instructions
+               * `Procedure`, and the catalogue decides this one outright: these are instructions
                * to read and carry out, and `Steps.avoidWhen` names that case by hand: "son
-               * instrucciones para leer y hacer; eso es un ProcessList". `OrderedList` was the wrong
+               * instrucciones para leer y hacer; eso es un Procedure". `OrderedList` was the wrong
                * answer for the same reason from the other side: it is a list whose ORDER carries
                * meaning, but its rows have no step anatomy, and `ListItem.leading` only accepts an
                * `Icon` or an `Avatar.initials`: never a numeral, so the numbers had to be smuggled
-               * in as text the contract does not allow. ProcessList draws its own.
+               * in as text the contract does not allow. Procedure draws its own.
                */
               {
-                contract: "process-list",
-                signature: "ProcessList",
+                contract: "procedure",
+                signature: "Procedure",
                 children: [
                   {
-                    contract: "process-list",
-                    signature: "ProcessListItem",
+                    contract: "procedure",
+                    signature: "ProcedureStep",
                     slots: { title: t("demo.docsSite.step1") },
                   },
                   {
-                    contract: "process-list",
-                    signature: "ProcessListItem",
+                    contract: "procedure",
+                    signature: "ProcedureStep",
                     slots: { title: t("demo.docsSite.step2") },
                   },
                   {
-                    contract: "process-list",
-                    signature: "ProcessListItem",
+                    contract: "procedure",
+                    signature: "ProcedureStep",
                     slots: { title: t("demo.docsSite.step3") },
                   },
                 ],

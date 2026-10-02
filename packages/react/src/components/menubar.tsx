@@ -19,7 +19,7 @@ import {
 } from "react";
 import { useAnchored } from "./anchored.js";
 import { Icon } from "./icon.js";
-import { MenuPopup, useMenuMachine, type CheckedState } from "./menu.js";
+import { hasSubmenu, MenuPopup, useMenuMachine, type CheckedState } from "./menu.js";
 
 const cx = (base: string, className: string | undefined) => (className ? `${base} ${className}` : base);
 
@@ -195,9 +195,6 @@ export type MenubarItemProps = {
   onCheckedChange?: (details: { value: string; checked: boolean }) => void;
   /** Where the dropdown portals: `Menu`'s own `container`, see its identical doc. */
   container?: RefObject<HTMLElement>;
-  /** Styles the trigger as `nav-list`'s own link instead of a Button; see `menubar.ts`'s own doc
-   *  on the contract option this mirrors. Every bit of Menubar's own behavior is unchanged. */
-  nav?: boolean;
 };
 
 /** `topIndex` is injected by the parent `Menubar`: never author-set. */
@@ -213,7 +210,7 @@ function initialCheckedState(items: readonly MenuItem[]): CheckedState {
 }
 
 export function MenubarItem(publicProps: MenubarItemProps) {
-  const { children, container, items, nav, onActivate, onCheckedChange, onSelect, topIndex } =
+  const { children, container, items, onActivate, onCheckedChange, onSelect, topIndex } =
     publicProps as InjectedMenubarItemProps;
   const context = useMenubarContext("Item");
   const hasMenu = Boolean(items?.length);
@@ -228,7 +225,12 @@ export function MenubarItem(publicProps: MenubarItemProps) {
       );
     },
   });
-  const anchor = useAnchored(id);
+  /* Same rule as `Menu`'s own top level (`menu.tsx`): the native anchoring engine is withheld from the
+     WHOLE dropdown once any level of it has a submenu. A submenu is placed by the machine in viewport
+     coordinates, and the browser resolves its `position: fixed` against the nearest ancestor that is
+     itself anchor-positioned, so mixing the two engines one level apart threw "Exportar"'s submenu to
+     the far corner of the preview. */
+  const anchor = useAnchored(id, !hasSubmenu(items ?? []));
   const [checkedState, setChecked] = useState<CheckedState>(() => initialCheckedState(items ?? []));
 
   useEffect(() => {
@@ -262,15 +264,12 @@ export function MenubarItem(publicProps: MenubarItemProps) {
       ref={eventRootRef}
       className={cx(menubarParts.itemWrapper, menuParts.root)}
       {...{ [menuAttrs.root]: "" }}
-      {...(nav ? { "data-nav": "" } : {})}
     >
       {hasMenu ? (
         <button
           {...api.getTriggerProps()}
-          {...anchor.anchor(
-            cx(menubarParts.item, nav ? "sk-nav-list__link sk-interactive" : "sk-button sk-interactive"),
-          )}
-          {...(nav ? {} : { "data-size": "sm", "data-variant": "ghost" })}
+          {...anchor.anchor(cx(menubarParts.item, "sk-button sk-interactive"))}
+          {...{ "data-size": "sm", "data-variant": "ghost" }}
           {...{ [menubarAttrs.item]: "", [menuAttrs.trigger]: "" }}
           ref={ref}
           onClickCapture={() => context.closeSiblings(topIndex)}
@@ -278,7 +277,7 @@ export function MenubarItem(publicProps: MenubarItemProps) {
           tabIndex={tabIndex}
           type="button"
         >
-          {nav ? <span className="sk-nav-list__label">{children}</span> : children}
+          {children}
           {/* Same glyph as Menu's own top-level trigger (`menu.tsx`), so the two read as the same
             * affordance everywhere: this item opens something, absent on a leaf command. `menubar.css`
             * rotates it on `[aria-expanded="true"]`. The glyph says "opens", the rotation says "is
@@ -296,13 +295,8 @@ export function MenubarItem(publicProps: MenubarItemProps) {
           // class list to keep symmetric. `sk-button`/`ghost`/`sm` mirror the core template's own
           // attrs for the identical node. A bar item is a real Button, sized and skinned to sit
           // flush in a row of siblings, not the filled default a lone page action wants.
-          // `nav` mirrors the core template's other sibling node instead: `sk-nav-list__link`, no
-          // Button-specific attrs, its label wrapped the same way `NavListLink` wraps its own.
-          className={cx(
-            menubarParts.item,
-            nav ? "sk-nav-list__link sk-interactive sk-anchor" : "sk-button sk-interactive sk-anchor",
-          )}
-          {...(nav ? {} : { "data-size": "sm", "data-variant": "ghost" })}
+          className={cx(menubarParts.item, "sk-button sk-interactive sk-anchor")}
+          {...{ "data-size": "sm", "data-variant": "ghost" }}
           {...{ [menubarAttrs.item]: "" }}
           onClick={() => onActivate?.()}
           ref={ref}
@@ -310,7 +304,7 @@ export function MenubarItem(publicProps: MenubarItemProps) {
           tabIndex={tabIndex}
           type="button"
         >
-          {nav ? <span className="sk-nav-list__label">{children}</span> : children}
+          {children}
         </button>
       )}
       {hasMenu ? (

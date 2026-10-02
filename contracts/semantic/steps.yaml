@@ -6,6 +6,6 @@ Steps:
     - "what is done, what is left and where they stand matter"
     - "each step carries a status (complete, current or upcoming); exactly one is current"
   avoidWhen:
-    - "they are instructions to read and follow; that is a ProcessList"
+    - "they are instructions to read and follow; that is a Procedure"
   alternatives:
-    - ProcessList
+    - Procedure

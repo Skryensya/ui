@@ -4,7 +4,7 @@
  * there for and why the system borrows it instead of writing it. Workspace packages (`@skryensya/*`)
  * are not listed: they are the system itself. Versions are not repeated here, `package.json` owns them.
  */
-import Base from "../../layouts/Base.astro";
+import FoundationPage from "../FoundationPage.astro";
 import { getLocale, localizePath, versionOf, type Locale } from "../../i18n";
 
 const locale: Locale = getLocale(Astro.url);
@@ -235,8 +235,7 @@ const next = c.next
   .replace("{prerequisites}", href("/prerequisites"));
 ---
 
-<Base title={c.title} description={c.description} documentLayout="grid">
-  <h1>{c.title}</h1>
+<FoundationPage title={c.title} description={c.description}>
   <p class="lede" set:html={c.lede} />
 
   {
@@ -261,7 +260,7 @@ const next = c.next
 
   <h2>{c.after}</h2>
   <p set:html={next} />
-</Base>
+</FoundationPage>
 
 <style>
   .docs-deps + .docs-deps {

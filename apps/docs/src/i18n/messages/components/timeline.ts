@@ -46,7 +46,7 @@ export const timelineMessages = {
 
     "timelinePage.whenNot3": 'Para versiones publicadas: usa <a href="/es/componentes/changelog">Changelog</a>.',
 
-    "timelinePage.whenNot2": 'Para instrucciones que se siguen: usa <a href="/es/componentes/process-list">ProcessList</a>.',
+    "timelinePage.whenNot2": 'Para instrucciones que se siguen: usa <a href="/es/componentes/procedure">Procedure</a>.',
 
     "timelinePage.whenNot1": 'Para mostrar en qué etapa de un proceso vas: usa <a href="/es/componentes/steps">Steps</a>.',
 
@@ -140,7 +140,7 @@ export const timelineMessages = {
 
     "timelinePage.whenNot3": 'For published versions: use <a href="/components/changelog">Changelog</a>.',
 
-    "timelinePage.whenNot2": 'For instructions to follow: use <a href="/components/process-list">ProcessList</a>.',
+    "timelinePage.whenNot2": 'For instructions to follow: use <a href="/components/procedure">Procedure</a>.',
 
     "timelinePage.whenNot1": 'To show which stage of a process you are at: use <a href="/components/steps">Steps</a>.',
 

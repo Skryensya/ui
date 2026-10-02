@@ -49,9 +49,13 @@ function accentBundle(hue: string): Record<string, string> {
 /*
  * ELEVEN presets, and the ORDER is the cycle a reader actually sees on the header toggle: this is
  * one button pressed repeatedly, so what matters is that consecutive presets look nothing alike,
- * not that the list walks the color wheel in order. Hence green → indigo → red → cyan → fuchsia
- * after the original five, rather than dropping red next to orange and cyan next to teal. The
- * showcase gallery at /presets renders this same order top-to-bottom.
+ * not that the list walks the color wheel in order. Hence indigo → red → cyan → fuchsia after the
+ * first six, rather than dropping red next to orange and cyan next to teal. The showcase gallery at
+ * /presets renders this same order top-to-bottom.
+ *
+ * The FIRST entry is the one a reader gets before choosing anything, so it is green. Core's own
+ * stylesheet default is still blue (a library default, not the site's to rename), which is why
+ * Base.astro applies the first preset explicitly instead of treating it as "no override".
  *
  * The hue choice is bounded by one thing: `--color-action-accent` takes the `-600` step, and
  * `--color-text-on-accent` is white in light mode, so a hue whose `-600` is too light gives a
@@ -67,12 +71,12 @@ function accentBundle(hue: string): Record<string, string> {
  * accent before.
  */
 const HUES: { id: string; hue: string; es: string; en: string }[] = [
+  { id: "verde", hue: "green", es: "Verde", en: "Green" },
   { id: "azul", hue: "blue", es: "Azul", en: "Blue" },
   { id: "violeta", hue: "violet", es: "Violeta", en: "Violet" },
   { id: "teal", hue: "teal", es: "Turquesa", en: "Teal" },
   { id: "rosa", hue: "pink", es: "Rosa", en: "Pink" },
   { id: "naranja", hue: "orange", es: "Naranja", en: "Orange" },
-  { id: "verde", hue: "green", es: "Verde", en: "Green" },
   { id: "indigo", hue: "indigo", es: "Índigo", en: "Indigo" },
   { id: "rojo", hue: "red", es: "Rojo", en: "Red" },
   { id: "cian", hue: "cyan", es: "Cian", en: "Cyan" },

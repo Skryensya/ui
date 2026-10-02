@@ -1,5 +1,5 @@
 ---
-import Base from "../layouts/Base.astro";
+import FoundationPage from "../components/FoundationPage.astro";
 import CodeBlock from "../components/CodeBlock.astro";
 
 const auto = `import { initComponents } from "@skryensya/vanilla/auto";
@@ -16,12 +16,10 @@ const single = `import { mountAccordion } from "@skryensya/vanilla/accordion";
 mountAccordion();`;
 ---
 
-<Base
+<FoundationPage
   title="Automatic mounting"
   description="initComponents() scans the document and import()s only the enhancers the page actually uses."
-  documentLayout="grid"
 >
-  <h1>Automatic mounting</h1>
   <p class="lede">
     A page with several system components does not need one import per component:
     <code>initComponents()</code> scans the document, finds which <code>data-sk-*</code> roots are
@@ -77,4 +75,4 @@ mountAccordion();`;
     <code>initComponents()</code> when the page combines several and you would rather not keep
     the list by hand.
   </p>
-</Base>
+</FoundationPage>

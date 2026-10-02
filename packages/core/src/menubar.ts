@@ -72,20 +72,11 @@ export const menubarContract = {
   options: {
     /** The bar's accessible name. `role="menubar"` carries no implicit one. */
     label: { type: "string", attr: "aria-label" },
-    /**
-     * Styles the item as `nav-list`'s own link (`sk-nav-list__link`/`__label`) instead of a
-     * Button. For a menubar used as site navigation, WAI's own `menubar-navigation` example,
-     * where the row should read as destinations rather than commands. Nothing about Menubar's
-     * OWN behavior changes: same `role`, same roving tabindex, same dropdown open/close: only
-     * the trigger's classes and DOM shape swap, the same either/or `NavListGroup`'s own
-     * collapsible-vs-static label already uses (`nav-list.ts`).
-     */
-    nav: { type: "boolean", default: false, attr: "data-nav", trueValue: "" },
   },
 
   signatures: {
     Menubar: {
-      intent: ["application-menu-bar", "editor-menubar", "site-navigation-with-dropdowns"],
+      intent: ["application-menu-bar", "editor-menubar"],
       host: { element: "div" },
       options: ["label"],
       requires: ["label"],
@@ -121,7 +112,6 @@ export const menubarContract = {
           ],
           systemOwned: true,
         },
-        { of: "nav-list", sheets: ["@skryensya/core/patterns/nav-list.css"] },
       ],
       intent: ["menubar-command", "menubar-dropdown-trigger"],
       // The HOST is a wrapper, not the button: a `<button>` cannot contain another interactive
@@ -130,7 +120,7 @@ export const menubarContract = {
       // `NavListGroup`'s own trigger-plus-content wrapper already uses. That ancestor is now ALSO
       // Menu's own root (`data-sk-menu`): see the header comment above for why.
       host: { element: "div" },
-      options: ["nav"],
+      options: [],
       parents: ["Menubar"],
       /* Its dropdown is `Menu`'s own popup, and that portals. Same reason `Menu` itself declares
          this: React needs a container ref that keeps the floating content inside whatever subtree
@@ -152,13 +142,6 @@ export const menubarContract = {
         host: true,
         mount: menuAttrs.root,
         children: [
-          /*
-           * TWO shapes for the same trigger, chosen by `nav`. The same either/or `NavListGroup`'s
-           * own collapsible-vs-static label uses (`nav-list.ts`): `whenMissing`/`whenGiven` on a
-           * boolean option, not a value-conditional node (the template engine has no composition-
-           * level "equals". Only `attrsWhen`/`whenItem*` reach a value, and those are for
-           * attributes or repeated item entries, not for choosing between two node shapes here).
-           */
           {
             element: "button",
             part: "item",
@@ -185,7 +168,6 @@ export const menubarContract = {
             },
             mount: menubarAttrs.item,
             slot: "children",
-            whenMissing: "nav",
             /*
              * `whenGiven: "items"`: a LEAF item (a plain command, no dropdown) gets no chevron -
              * one would promise a popup that never opens. Same glyph, same part name, as Menu's own
@@ -196,36 +178,6 @@ export const menubarContract = {
              * carry that fact otherwise.
              */
             children: [
-              {
-                element: "span",
-                part: "itemIndicator",
-                attrs: { "aria-hidden": "true" },
-                whenGiven: "items",
-                children: [{ element: "span", attrs: { "data-sk-icon": "chevron-down", "data-sk-icon-size": "md" } }],
-              },
-            ],
-          },
-          /*
-           * The `nav` shape: `sk-nav-list__link`/`__label` instead of Button, literal class
-           * strings rather than a cross-contract part reference. Same reason `menuPopupTemplate`
-           * bakes its own resolved classes (`withResolvedParts`) before another contract embeds it:
-           * `nav-list`'s `parts` map is not in scope here, and the two contracts stay independent.
-           * Behaviorally identical to the sibling above: same role, same mount hook, same trigger
-           * attribute, same chevron.
-           */
-          {
-            element: "button",
-            part: "item",
-            also: ["sk-nav-list__link", "sk-interactive", "sk-anchor"],
-            attrs: {
-              type: "button",
-              role: "menuitem",
-              [menuAttrs.trigger]: "",
-            },
-            mount: menubarAttrs.item,
-            whenGiven: "nav",
-            children: [
-              { element: "span", also: ["sk-nav-list__label"], slot: "children" },
               {
                 element: "span",
                 part: "itemIndicator",

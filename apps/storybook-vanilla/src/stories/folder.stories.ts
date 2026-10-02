@@ -8,7 +8,7 @@ import "@skryensya/core/components/typography.css";
 import "@skryensya/core/patterns/box.css";
 import "@skryensya/core/patterns/image-frame.css";
 import "@skryensya/core/patterns/layout.css";
-import "@skryensya/core/patterns/media-gradient.css";
+import "@skryensya/core/patterns/media-overlay.css";
 import * as demos from "@docs/demos/folder";
 import { treeStory, type Meta, type StoryObj } from "../tree-story";
 

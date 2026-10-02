@@ -1070,7 +1070,7 @@ export const diagramGuideBranchTree = (t: Translate): UsageTree => ({
   },
 });
 
-/** A compact straight sequence, included to show when a ProcessList is the clearer choice. */
+/** A compact straight sequence, included to show when a Procedure is the clearer choice. */
 export const diagramGuideLinearTree = (t: Translate): UsageTree => {
   const tree = diagramFlowTree(t);
   return { ...tree, attrs: { style: diagramGuideStyle } };

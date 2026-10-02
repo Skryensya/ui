@@ -1,5 +1,5 @@
 ---
-import Base from "../../layouts/Base.astro";
+import FoundationPage from "../../components/FoundationPage.astro";
 import CodeBlock from "../../components/CodeBlock.astro";
 import UsagePreview from "../../components/UsagePreview.astro";
 import { sidebarResizableTree } from "../../demos/sidebar";
@@ -63,12 +63,10 @@ const keyboard = [
 ];
 ---
 
-<Base
+<FoundationPage
   title="Splitter"
-  documentLayout="grid"
   description="El handle de arrastre compartido: role=separator, un modelo de valor por consumidor, la misma franja visual en Sidebar, Table y Treegrid."
 >
-  <h1>Splitter</h1>
   <p class="lede">
     El patrón <strong>Window Splitter</strong> de WAI-ARIA: una franja fina, arrastrable con puntero
     o teclado, que redimensiona lo que tiene al lado. <code>Sidebar</code> la usa para el ancho de su
@@ -219,4 +217,4 @@ const keyboard = [
     <li><a href="/es/componentes/table">Table</a>: <code>resizableColumns</code>/<code>resizeLabel</code>, opt-in.</li>
     <li><a href="/es/componentes/treegrid">Treegrid</a>: el mismo par <code>resizableColumns</code>/<code>resizeLabel</code>, más <code>columnWeights</code> para el reparto inicial.</li>
   </ul>
-</Base>
+</FoundationPage>

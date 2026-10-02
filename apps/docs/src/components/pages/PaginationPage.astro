@@ -12,6 +12,10 @@ import ContentRules from "../ContentRules.astro";
 import A11yNotes from "../A11yNotes.astro";
 import {
   paginationAnatomyTree,
+  paginationAppearanceTree,
+  paginationPositionCase,
+  paginationResultsTree,
+  paginationSiblingsCase,
   paginationDoBelowTree,
   paginationDontAboveTree,
   paginationDontFewTree,
@@ -21,6 +25,21 @@ import { annotationDemoCss } from "../../demos/annotation";
 import { getLocale, tList, useTranslations } from "../../i18n";
 
 const t = useTranslations(getLocale(Astro.url));
+const appearanceExplain = Object.fromEntries(
+  (["plain", "tactile", "brutalist", "frosted"] as const).map((value) => [value, t(`paginationPage.appearance.${value}` as Parameters<typeof t>[0])]),
+);
+const siblingsVariants = ([0, 1, 2] as const).map((value) => ({
+  value: String(value),
+  label: t(`paginationPage.siblings.${value}` as Parameters<typeof t>[0]),
+  tree: paginationSiblingsCase(t, value),
+  explain: t(`paginationPage.siblingsExplain.${value}` as Parameters<typeof t>[0]),
+}));
+const positionVariants = ([1, 6, 12] as const).map((value) => ({
+  value: String(value),
+  label: t(`paginationPage.position.${value}` as Parameters<typeof t>[0]),
+  tree: paginationPositionCase(t, value),
+  explain: t(`paginationPage.positionExplain.${value}` as Parameters<typeof t>[0]),
+}));
 const install = `pnpm add @skryensya/core @skryensya/react`;
 
 const rangeExample = `import { paginationRange } from "@skryensya/core/pagination";
@@ -43,8 +62,34 @@ paginationRange(5, 20);
   <Fragment slot="usage">
     <p class="lede" set:html={t("paginationPage.lede")} />
 
+    <UsagePreview
+      tree={paginationAppearanceTree(t)}
+      optionName="appearance"
+      title={t("paginationPage.appearanceTitle")}
+      description={t("paginationPage.appearanceBody")}
+      explain={appearanceExplain}
+      stageMinBlockSize="8rem"
+    />
+    <UsagePreview
+      variants={siblingsVariants}
+      initialVariant="1"
+      variantsLabel={t("paginationPage.siblingsLabel")}
+      title={t("paginationPage.siblingsTitle")}
+      description={t("paginationPage.siblingsBody")}
+      stageMinBlockSize="8rem"
+    />
+    <UsagePreview
+      variants={positionVariants}
+      initialVariant="6"
+      variantsLabel={t("paginationPage.positionLabel")}
+      title={t("paginationPage.positionTitle")}
+      description={t("paginationPage.positionBody")}
+      stageMinBlockSize="8rem"
+    />
+
     <h3>{t("component.examplesTitle")}</h3>
     <UsagePreview tree={paginationTree(t)} title={t("paginationPage.twelveTitle")} description={t("paginationPage.twelveBody")} />
+    <UsagePreview tree={paginationResultsTree(t)} title={t("paginationPage.resultsTitle")} description={t("paginationPage.resultsBody")} />
     <h4>{t("paginationPage.rangeTitle")}</h4>
     <p set:html={t("paginationPage.rangeBody")} />
     <CodeBlock code={rangeExample} lang="ts" label="@skryensya/core/pagination" />
@@ -70,13 +115,21 @@ paginationRange(5, 20);
     <WhenToUse use={tList(t, "paginationPage.when")} avoid={tList(t, "paginationPage.whenNot")} />
     <DoDont
       title={t("paginationPage.dd.few.title")}
+      stacked
       do={{ tree: paginationTree(t), caption: t("paginationPage.dd.few.do") }}
       dont={{ tree: paginationDontFewTree(t), caption: t("paginationPage.dd.few.dont") }}
     />
     <DoDont
       title={t("paginationPage.dd.below.title")}
+      stacked
       do={{ tree: paginationDoBelowTree(t), caption: t("paginationPage.dd.below.do") }}
       dont={{ tree: paginationDontAboveTree(t), caption: t("paginationPage.dd.below.dont") }}
+    />
+    <DoDont
+      title={t("paginationPage.dd.total.title")}
+      stacked
+      do={{ tree: paginationResultsTree(t), caption: t("paginationPage.dd.total.do") }}
+      dont={{ tree: paginationDoBelowTree(t), caption: t("paginationPage.dd.total.dont") }}
     />
     <ContentRules items={tList(t, "paginationPage.content")} />
   </Fragment>

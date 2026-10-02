@@ -11,6 +11,7 @@
 @layer components {
   .sk-otp-input {
     --sk-otp-input-gap: var(--space-inline-xs);
+    --sk-otp-input-group-gap: var(--space-inline-lg);
     --sk-otp-input-segment-size: var(--size-touch-target);
     --sk-otp-input-label-color: var(--color-text-secondary);
     --sk-otp-input-hint-color: var(--color-text-secondary);
@@ -35,6 +36,12 @@
     gap: var(--sk-otp-input-gap);
   }
 
+  /* A cell is one box: the input fills it, and the mask symbol (below) sits over it. */
+  .sk-otp-input__cell {
+    position: relative;
+    display: inline-grid;
+  }
+
   .sk-otp-input__segment {
     box-sizing: border-box;
     inline-size: var(--sk-otp-input-segment-size);
@@ -49,6 +56,41 @@
     text-align: center;
     /* A code is read, not composed: no cursor caret drawing over the single character. */
     caret-color: transparent;
+  }
+
+  /*
+   * GROUPS, one rule per size the contract allows (`groupSize`). A custom property cannot be the `n`
+   * of `:nth-child`, so each size is spelled out. The first segment of every group but the first gets
+   * the wider gap, on top of the row's own, so `123 456` reads as two chunks without a separator
+   * element for a screen reader to find.
+   */
+  .sk-otp-input[data-group-size="2"] .sk-otp-input__cell:nth-child(2n + 3),
+  .sk-otp-input[data-group-size="3"] .sk-otp-input__cell:nth-child(3n + 4),
+  .sk-otp-input[data-group-size="4"] .sk-otp-input__cell:nth-child(4n + 5) {
+    margin-inline-start: var(--sk-otp-input-group-gap);
+  }
+
+  /*
+   * MASKED, WITH AN ICON. A browser draws a password field's characters as its own dots, and that
+   * glyph cannot be swapped, so a masked, filled box hides the typed character (transparent, the input
+   * keeps the value and the focus) and shows the `mask` role instead. The icon is decoration,
+   * `aria-hidden`; what a screen reader gets is still the input.
+   */
+  .sk-otp-input__mask {
+    position: absolute;
+    inset: 0;
+    display: none;
+    place-items: center;
+    color: var(--sk-otp-input-fg);
+    pointer-events: none;
+  }
+
+  .sk-otp-input[data-mask] .sk-otp-input__cell[data-filled] > .sk-otp-input__mask {
+    display: grid;
+  }
+
+  .sk-otp-input[data-mask] .sk-otp-input__cell[data-filled] > .sk-otp-input__segment {
+    color: transparent;
   }
 
   .sk-otp-input__segment:focus-visible {

@@ -37,7 +37,7 @@ export const stepsMessages = {
 
     "stepsPage.whenNot2": 'Para el avance de una tarea automática: usa <a href="/es/componentes/progress">Progress</a>.',
 
-    "stepsPage.whenNot1": 'Para instrucciones que se leen, sin avance: usa <a href="/es/componentes/process-list">ProcessList</a>.',
+    "stepsPage.whenNot1": 'Para instrucciones que se leen, sin avance: usa <a href="/es/componentes/procedure">Procedure</a>.',
 
     "stepsPage.when2": "Cuando conviene saber cuánto falta antes de empezar.",
 
@@ -116,7 +116,7 @@ export const stepsMessages = {
 
     "stepsPage.whenNot2": 'For an automatic task\'s progress: use <a href="/components/progress">Progress</a>.',
 
-    "stepsPage.whenNot1": 'For instructions to read, with no progress: use <a href="/components/process-list">ProcessList</a>.',
+    "stepsPage.whenNot1": 'For instructions to read, with no progress: use <a href="/components/procedure">Procedure</a>.',
 
     "stepsPage.when2": "When it helps to know how much is left before starting.",
 

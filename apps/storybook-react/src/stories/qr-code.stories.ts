@@ -27,3 +27,9 @@ export const Logo: StoryObj = treeStory((t) => demos.qrCodeLogoTree(localeOf(t))
 export const Card: StoryObj = treeStory((t) => demos.qrCodeCardTree(localeOf(t)));
 export const Popover: StoryObj = treeStory((t) => demos.qrCodePopoverTree(localeOf(t)));
 export const Ticket: StoryObj = treeStory((t) => demos.qrCodeTicketTree(localeOf(t)));
+export const DoWithLink: StoryObj = treeStory((t) => demos.qrCodeDoWithLinkTree(localeOf(t)));
+export const DontAlone: StoryObj = treeStory((t) => demos.qrCodeDontAloneTree(localeOf(t)));
+export const DoShortLink: StoryObj = treeStory((t) => demos.qrCodeDoShortLinkTree(localeOf(t)));
+export const DontLongLink: StoryObj = treeStory((t) => demos.qrCodeDontLongLinkTree(localeOf(t)));
+export const DoLogoLevel: StoryObj = treeStory((t) => demos.qrCodeDoLogoLevelTree(localeOf(t)));
+export const DontLogoLevel: StoryObj = treeStory((t) => demos.qrCodeDontLogoLevelTree(localeOf(t)));

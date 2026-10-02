@@ -42,6 +42,15 @@ export const numberFieldEvents = {
   valueChange: "sk:numberfieldvaluechange",
 } as const;
 
+/*
+ * HOW THE VALUE IS WRITTEN WHEN NOBODY SAYS. The machine formats with `Intl.NumberFormat(locale, options)`,
+ * and with no options at all it writes the bare digits: `1234567.89` in every language, no grouping and
+ * the same decimal mark, so `locale` changed nothing a person could see. Thousands grouping on is what
+ * the field has always claimed ("formats thousands and decimals by `locale`"), so it is the default, in
+ * both bindings, from this one place. A React caller can still pass its own `formatOptions`.
+ */
+export const numberFieldFormatOptions = { useGrouping: true } as const;
+
 export const numberFieldContract = {
   id: "number-field",
   category: "forms",
