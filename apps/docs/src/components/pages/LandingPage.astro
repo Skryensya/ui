@@ -1,1211 +1,924 @@
 ---
 /*
- * Marketing home. Hero, then a showcase of real screens sitting directly in the page: the same
- * markup the emitter (plus one hand-composed Combobox) would produce anywhere else in this
- * system, mounted by the site's own enhancers like everything around it: no iframe, no preview
- * chrome, no code panel. What's on screen IS the example.
+ * Landing page: sober and text-led. One idea (the contract), what exists today, and one real
+ * contract rendered from a usage tree.
  */
 import Base from "../../layouts/Base.astro";
 import SiteFooter from "../SiteFooter.astro";
-import { LandingFaq } from "../LandingFaq";
 import { getNavigation } from "../../lib/navigation";
-import { getLocale, localizePath, useTranslations, type Translate } from "../../i18n";
+import { getLocale, localizePath } from "../../i18n";
 import { emitMarkup } from "@skryensya/ai-compiler/emit";
+import { buttonContract } from "@skryensya/core/button";
 import type { UsageTree } from "@skryensya/core/usage-tree";
 
-import { calloutInfoTree, calloutSuccessTree } from "../../demos/callout";
-import { emptyStateTree } from "../../demos/empty-state";
-import { compositionInputButtonTree } from "../../demos/landing/composition";
-import { dialogConfirmScript, dialogConfirmTree } from "../../demos/dialog";
-import { tileRadioGroupTree } from "../../demos/radio-group";
-import { toolbarTree } from "../../demos/toolbar";
-import { stepsTree } from "../../demos/steps";
-import { breadcrumbTwoTree } from "../../demos/breadcrumb";
-import { meterTree } from "../../demos/meter";
-import { progressTree } from "../../demos/progress";
-import { tagTonesTree } from "../../demos/tag";
-import { kbdTree } from "../../demos/kbd";
-import { listLeadingTree } from "../../demos/list";
-import { numberFieldTree } from "../../demos/number-field";
-import { segmentedTree } from "../../demos/segmented";
-import { checkboxGroupTree } from "../../demos/checkbox";
-import { accordionExclusiveTree } from "../../demos/accordion";
-import { badgeHoldersTree } from "../../demos/badge";
-import { selectTree } from "../../demos/select";
-import { sliderTree } from "../../demos/slider";
-import { DEMO_IMAGE_FRAME_SRC } from "../../demos/image-frame";
-
-import "@skryensya/core/components/button.css";
-import "@skryensya/core/components/typography.css";
+import "@skryensya/core/patterns/box.css";
 import "@skryensya/core/patterns/layout.css";
-import "@skryensya/core/patterns/icon.css";
-import "@skryensya/core/components/combobox.css";
-import "@skryensya/core/components/form-field.css";
-import "@skryensya/core/patterns/scrollbar.css";
-import "@skryensya/core/components/input.css";
-import "@skryensya/core/components/callout.css";
-import "@skryensya/core/components/file-upload.css";
-import "@skryensya/core/components/tile.css";
-import "@skryensya/core/components/accordion.css";
-import "@skryensya/core/components/details.css";
-import "@skryensya/core/components/badge.css";
-import "@skryensya/core/components/tag.css";
-import "@skryensya/core/components/avatar.css";
-import "@skryensya/core/components/empty-state.css";
-import "@skryensya/core/components/radio-group.css";
-import "@skryensya/core/components/toolbar.css";
-import "@skryensya/core/components/stat.css";
-import "@skryensya/core/components/steps.css";
-import "@skryensya/core/components/breadcrumb.css";
-import "@skryensya/core/components/meter.css";
-import "@skryensya/core/components/progress.css";
-import "@skryensya/core/components/kbd.css";
-import "@skryensya/core/components/list.css";
-import "@skryensya/core/components/number-field.css";
-import "@skryensya/core/components/segmented.css";
-import "@skryensya/core/components/checkbox.css";
-import "@skryensya/core/components/accordion.css";
-import "@skryensya/core/components/select.css";
-/* The hero is a Hero band; the page paints its own background into the contract's wash hook. */
-import "@skryensya/core/patterns/hero.css";
-import "@skryensya/core/components/slider.css";
-/* The two ultrawide lanes and the closing band: skeletons behind a bottom fade, then the site's own
-   footer, which a `fullBleed` page does not get from Base (see the `SiteFooter` note there). */
-import "@skryensya/core/components/placeholder.css";
-import "@skryensya/core/components/fade-edge.css";
+import "@skryensya/core/patterns/wrapper.css";
 import "@skryensya/core/patterns/footer.css";
 import "@skryensya/core/patterns/nav-list.css";
+import "@skryensya/core/components/typography.css";
+import "@skryensya/core/components/button.css";
+import "@skryensya/core/components/badge.css";
+import "@skryensya/core/components/tag.css";
+import "@skryensya/core/components/callout.css";
+import "@skryensya/core/components/input.css";
+import "@skryensya/core/components/form-field.css";
+import "@skryensya/core/components/stat.css";
+import "@skryensya/core/components/progress.css";
 
 const locale = getLocale(Astro.url);
-const t = useTranslations(locale);
 const href = (path: string) => localizePath(path, locale);
-/* The same sections `Base` hands the footer on a railed page: the band builds its three link
-   columns out of them (see `SiteFooter`), so it wants the section tree, not the global item list. */
 const navigation = getNavigation(locale);
+const es = locale === "es";
 
-
-/*
- * Five molecules with no docs demo of their own to borrow: each one composed here, by hand, from
- * the catalogue's own published examples (`get_examples` on the MCP server - `product-card-in-grid`,
- * `settings-row-with-switch`, `callout-error-with-retry`, plus two authored the same way for a
- * profile row and a single metric card) and checked with `validate_ui` before being trusted here.
- * The gallery's other tiles all come from `../../demos/*`; these five exist only for this page.
- */
-
-/** A card: image, title, lead text, a trailing link. Two nested Boxes, not one (see the gallery's
- *  own comment on why: the outer carries the surface with no padding, the inner pads the text). */
-const productCardTree = (translate: Translate): UsageTree => ({
-  contract: "box",
-  signature: "Box",
-  options: { padding: "none", surface: "surface", border: "subtle" },
-  children: [
-    {
-      contract: "image-frame",
-      signature: "ImageFrame",
-      options: { src: DEMO_IMAGE_FRAME_SRC, alt: translate("demo.card.alt"), aspect: "4/3", radius: "top" },
-    },
-    {
-      contract: "box",
-      signature: "Box",
-      options: { padding: "md" },
-      children: {
-        contract: "layout",
-        signature: "Stack",
-        options: { gap: "sm" },
-        children: [
-          { contract: "typography", signature: "Heading", options: { headingSize: "h3", flush: true }, children: translate("demo.card.title") },
-          { contract: "typography", signature: "Text", options: { tone: "secondary" }, children: translate("demo.card.description") },
-          { contract: "typography", signature: "Link", options: { href: href("/components") }, children: translate("demo.card.cta") },
-        ],
-      },
-    },
-  ],
-});
-
-/** A settings row: a label and its description on one side, the Switch on the other. */
-const settingsRowTree = (translate: Translate): UsageTree => ({
-  contract: "layout",
-  signature: "Inline",
-  options: { justify: "between", inlineAlign: "center" },
-  children: [
-    {
-      contract: "layout",
-      signature: "Stack",
-      options: { gap: "xs" },
-      children: [
-        { contract: "typography", signature: "Text", options: { weight: "emphasis" }, children: translate("demo.settingsRow.title") },
-        { contract: "typography", signature: "Text", options: { tone: "secondary", size: "sm" }, children: translate("demo.settingsRow.description") },
+const copy = es
+  ? {
+      title: "skryensya/ui",
+      description: "Sistema de diseño contract-first: cada componente parte de una definición y React o Vanilla la realizan igual.",
+      eyebrow: "Sistema de diseño contract-first",
+      heroTitle: "Componentes que parten de un contrato.",
+      heroBody:
+        "Cada componente se define primero: qué partes tiene, qué opciones acepta, qué atributos escribe, qué reglas de accesibilidad cumple y qué combinaciones tienen sentido. El código se escribe después, a partir de esa definición.",
+      ctaComponents: "Ver componentes",
+      ctaArchitecture: "Cómo funciona",
+      ideaTitle: "Una alternativa al stack único",
+      ideaBody: [
+        "En sistemas institucionales lo habitual es ordenar el caos con un stack único para todos los proveedores. Baja la variación, pero fuerza una decisión técnica, reduce el grupo de proveedores posibles y sube el costo para la institución.",
+        "Este sistema permite React, Vue o Vanilla sin convertirse en tres implementaciones paralelas: el comportamiento y la estructura viven en el contrato, y cada runtime los pinta.",
       ],
-    },
-    { contract: "switch", signature: "Switch", options: { defaultChecked: true }, attrs: { "aria-label": translate("demo.settingsRow.title") } },
-  ],
-});
-
-/** An error that gives the reader a way forward: `actions` restricts `variant` to `soft`/
- *  `danger` on purpose, so the recovery button never out-competes the callout's own color. */
-const alertRetryTree = (translate: Translate): UsageTree => ({
-  contract: "callout",
-  signature: "Callout",
-  options: { tone: "danger" },
-  slots: {
-    icon: { contract: "icon", signature: "Icon", options: { name: "danger" } },
-    title: translate("demo.alertRetry.title"),
-    actions: {
-      contract: "button",
-      signature: "Button.action",
-      options: { variant: "soft" },
-      children: translate("demo.alertRetry.action"),
-    },
-  },
-  children: translate("demo.alertRetry.body"),
-});
-
-/** A person row: avatar and name/role on one side, a status Tag on the other. */
-const profileRowTree = (translate: Translate): UsageTree => ({
-  contract: "layout",
-  signature: "Inline",
-  options: { gap: "sm", inlineAlign: "center", justify: "between" },
-  children: [
-    {
-      contract: "layout",
-      signature: "Inline",
-      options: { gap: "sm", inlineAlign: "center" },
-      children: [
-        { contract: "avatar", signature: "Avatar.initials", options: { size: "md", name: "Grace Hopper" }, children: "GH" },
-        {
-          contract: "layout",
-          signature: "Stack",
-          options: { gap: "none" },
-          children: [
-            { contract: "typography", signature: "Text", options: { weight: "emphasis" }, children: "Grace Hopper" },
-            { contract: "typography", signature: "Text", options: { tone: "secondary", size: "sm" }, children: translate("demo.popoverStructured.role") },
-          ],
-        },
+      pointsTitle: "Lo que ya existe",
+      points: [
+        { title: "100+ componentes documentados", body: "Cada página muestra el contrato, las opciones, las notas de accesibilidad y ejemplos renderizados." },
+        { title: "Dos implementaciones", body: "React y Vanilla producen el mismo resultado a partir de la misma definición. No es una promesa futura." },
+        { title: "Contratos legibles como datos", body: "Partes, opciones, atributos y reglas de accesibilidad están declarados como estructura, no escondidos en el código." },
       ],
-    },
-    { contract: "tag", signature: "Tag", options: { tone: "success" }, children: translate("demo.profile.status") },
-  ],
-});
-
-/** One dashboard figure: a Box around a Stat, the same shape `metric-panel`'s own notes describe
- *  ("no hay componente MetricPanel"), just one card instead of that pattern's row of three. */
-const metricCardTree = (translate: Translate): UsageTree => ({
-  contract: "box",
-  signature: "Box",
-  options: { surface: "surface", border: "subtle", padding: "lg" },
-  children: {
-    contract: "stat",
-    signature: "Stat",
-    options: { trend: "up" },
-    slots: {
-      label: translate("demo.stat.income"),
-      value: locale === "es" ? "48.200 €" : "$48,200",
-      change: [
-        { contract: "icon", signature: "Icon", options: { name: "arrow-up", size: "sm" } },
-        "12.5%",
+      contractTitle: "Un contrato, paso a paso",
+      contractBody:
+        "Así se ve el contrato de Button. Los valores de la tabla se leen directamente del contrato real, no están copiados.",
+      contractSteps: {
+        contract: { title: "Contrato", note: "Lo que el componente declara" },
+        tree: { title: "Árbol de uso", note: "Lo que alguien (o un asistente) propone" },
+        result: { title: "Resultado", note: "Lo que se emite y se valida" },
+      },
+      contractCols: { option: "Opción", values: "Valores", writes: "Escribe" },
+      contractParts: "Partes",
+      contractRuleLabel: "Regla de accesibilidad",
+      contractRule: "Si iconOnly es verdadero, el botón no muestra texto: exige aria-label o aria-labelledby.",
+      contractResultNote: "El mismo árbol da el mismo markup en React y en Vanilla; los gates lo comparan.",
+      statusTitle: "Estado actual",
+      statusBody:
+        "Es un WIP grande y deliberadamente ambicioso, pero ya tiene una base funcionando.",
+      status: [
+        { title: "Core", body: "Fuente de verdad: cada contrato vive aquí y los demás lo leen." },
+        { title: "Documentación pública", body: "Contrato, opciones, accesibilidad y ejemplos por componente." },
+        { title: "React y Vanilla", body: "Dos implementaciones que deben producir el mismo resultado." },
+        { title: "Gates de consistencia", body: "Comparan árboles de uso entre bindings y convierten “debería ser consistente” en evidencia." },
       ],
-    },
-  },
-});
-
-/** A single pricing card: plan name, price, three checked features, one CTA. Distinct from the
- *  gallery's `tileRadioGroupTree` (a compact two-option picker, choosing BETWEEN plans) - this is
- *  the other everyday shape, one plan sold on its own merits. Each feature row is a plain
- *  `layout.Inline` (`Icon` `name: "check"` + `Text`), the same shape `hero-with-audience-tabs`'s own
- *  notes use for a checklist rather than `list.List` (its own `dividers` option is unwired, see that
- *  example's notes). */
-const pricingCardTree = (translate: Translate): UsageTree => ({
-  contract: "box",
-  signature: "Box",
-  options: { surface: "surface", border: "subtle", padding: "lg" },
-  children: {
-    contract: "layout",
-    signature: "Stack",
-    options: { gap: "md" },
-    children: [
-      { contract: "typography", signature: "Text", options: { weight: "emphasis" }, children: translate("demo.pricingCard.plan") },
-      {
-        contract: "layout",
-        signature: "Inline",
-        options: { gap: "xs", inlineAlign: "baseline" },
-        children: [
-          { contract: "typography", signature: "Heading", options: { headingSize: "h2", flush: true }, children: translate("demo.pricingCard.price") },
-          { contract: "typography", signature: "Text", options: { tone: "secondary", size: "sm" }, children: translate("demo.pricingCard.period") },
-        ],
+      roadmapTitle: "Roadmap",
+      roadmapBody:
+        "Lo siguiente aprovecha la misma estructura para cosas que normalmente se construyen aparte.",
+      roadmap: [
+        { title: "Plugin para Figma", body: "Llevar los contratos al diseño, para que diseño e implementación partan de la misma definición." },
+        { title: "Editor visual", body: "Componer interfaces sobre el catálogo, con árboles de uso válidos por construcción." },
+        { title: "MCP que valida interfaces", body: "Consultar el catálogo como estructura y revisar una interfaz de forma programática: composición, atributos y markup esperado." },
+      ],
+      closeTitle: "Explora el catálogo",
+      closeBody: "Más de 100 componentes documentados, cada uno con su contrato, opciones, notas de accesibilidad y ejemplos renderizados.",
+      closeCta: "Ver componentes",
+      closeInstall: "Instalación",
+    }
+  : {
+      title: "skryensya/ui",
+      description: "A contract-first design system: every component starts from a definition, and React or Vanilla realize it the same way.",
+      eyebrow: "Contract-first design system",
+      heroTitle: "Components that start from a contract.",
+      heroBody:
+        "Every component is defined first: which parts it has, which options it accepts, which attributes it writes, which accessibility rules it meets and which combinations make sense. The code is written afterwards, from that definition.",
+      ctaComponents: "View components",
+      ctaArchitecture: "How it works",
+      ideaTitle: "An alternative to the single stack",
+      ideaBody: [
+        "In institutional systems the usual way to tame chaos is one stack for every vendor. It lowers variation, but it forces a technical decision, shrinks the pool of possible vendors and raises the cost for the institution.",
+        "This system allows React, Vue or Vanilla without becoming three parallel implementations: behavior and structure live in the contract, and each runtime renders them.",
+      ],
+      pointsTitle: "What exists today",
+      points: [
+        { title: "100+ documented components", body: "Each page shows the contract, the options, accessibility notes and rendered examples." },
+        { title: "Two implementations", body: "React and Vanilla produce the same result from the same definition. It is not a future promise." },
+        { title: "Contracts readable as data", body: "Parts, options, attributes and accessibility rules are declared as structure, not buried in code." },
+      ],
+      contractTitle: "A contract, step by step",
+      contractBody:
+        "This is the Button contract. The values in the table are read straight from the real contract, not copied.",
+      contractSteps: {
+        contract: { title: "Contract", note: "What the component declares" },
+        tree: { title: "Usage tree", note: "What a person (or an assistant) proposes" },
+        result: { title: "Result", note: "What gets emitted and validated" },
       },
-      {
-        contract: "layout",
-        signature: "Stack",
-        options: { gap: "xs" },
-        children: [translate("demo.pricingCard.feature1"), translate("demo.pricingCard.feature2"), translate("demo.pricingCard.feature3")].map(
-          (feature): UsageTree => ({
-            contract: "layout",
-            signature: "Inline",
-            options: { gap: "xs", inlineAlign: "center" },
-            children: [
-              { contract: "icon", signature: "Icon", options: { name: "check", size: "sm" } },
-              { contract: "typography", signature: "Text", options: { size: "sm" }, children: feature },
-            ],
-          }),
-        ),
-      },
-      { contract: "button", signature: "Button.action", options: { tone: "accent" }, children: translate("demo.pricingCard.cta") },
-    ],
-  },
-});
+      contractCols: { option: "Option", values: "Values", writes: "Writes" },
+      contractParts: "Parts",
+      contractRuleLabel: "Accessibility rule",
+      contractRule: "When iconOnly is true the button shows no text: it requires aria-label or aria-labelledby.",
+      contractResultNote: "The same tree gives the same markup in React and Vanilla; the gates compare them.",
+      statusTitle: "Current state",
+      statusBody:
+        "A large, deliberately ambitious work in progress, but with a working base already.",
+      status: [
+        { title: "Core", body: "The source of truth: every contract lives here and everything else reads it." },
+        { title: "Public documentation", body: "Contract, options, accessibility and examples for each component." },
+        { title: "React and Vanilla", body: "Two implementations that must produce the same result." },
+        { title: "Consistency gates", body: "They compare usage trees across bindings and turn “this should be consistent” into evidence." },
+      ],
+      roadmapTitle: "Roadmap",
+      roadmapBody:
+        "What comes next reuses the same structure for things that are usually built separately.",
+      roadmap: [
+        { title: "Figma plugin", body: "Bring the contracts into design, so design and implementation start from the same definition." },
+        { title: "Visual editor", body: "Compose interfaces on top of the catalogue, with usage trees valid by construction." },
+        { title: "MCP that validates interfaces", body: "Query the catalogue as structure and check an interface programmatically: composition, attributes and expected markup." },
+      ],
+      closeTitle: "Explore the catalogue",
+      closeBody: "100+ documented components, each with its contract, options, accessibility notes and rendered examples.",
+      closeCta: "View components",
+      closeInstall: "Installation",
+    };
 
-/** A team member card: centered avatar, name, role, one action. The vertical counterpart to
- *  `profileRowTree`'s horizontal row - same three facts (who, what they do, what to do about it),
- *  read as a standalone card instead of a line in a list. */
-const teamCardTree = (translate: Translate): UsageTree => ({
-  contract: "box",
-  signature: "Box",
-  options: { surface: "surface", border: "subtle", padding: "lg" },
-  children: {
-    contract: "layout",
-    signature: "Stack",
-    options: { gap: "sm", align: "center" },
-    children: [
-      { contract: "avatar", signature: "Avatar.initials", options: { size: "lg", name: "Ada Lovelace" }, children: "AL" },
-      { contract: "typography", signature: "Text", options: { weight: "emphasis" }, children: "Ada Lovelace" },
-      { contract: "typography", signature: "Text", options: { tone: "secondary", size: "sm" }, children: translate("demo.popover.description") },
-      { contract: "button", signature: "Button.action", options: { variant: "solid", size: "sm" }, children: translate("demo.teamCard.follow") },
-    ],
-  },
+const signature = "Button.action";
+const shownOptions = ["variant", "tone", "size", "iconOnly", "pressed"] as const;
+const optionRows = shownOptions.map((name) => {
+  const option = buttonContract.options[name];
+  return {
+    name,
+    values: "values" in option ? option.values.join(" · ") : "true · false",
+    writes: option.attr,
+  };
 });
+const partNames = Object.keys(buttonContract.parts).join(" · ");
 
-/** A file row as a card: what it is (icon + name + size) on one side, what to do with it (an
- *  icon-only menu trigger) on the other. The `file`-management counterpart to `productCardTree`'s
- *  e-commerce one - the same "identity, then action" card shape, a different domain. */
-const fileCardTree = (translate: Translate): UsageTree => ({
-  contract: "box",
-  signature: "Box",
-  options: { surface: "surface", border: "subtle", padding: "md" },
-  children: {
-    contract: "layout",
-    signature: "Inline",
-    options: { justify: "between", inlineAlign: "center" },
-    children: [
-      {
-        contract: "layout",
-        signature: "Inline",
-        options: { gap: "sm", inlineAlign: "center" },
-        children: [
-          { contract: "icon", signature: "Icon", options: { name: "file" } },
-          {
-            contract: "layout",
-            signature: "Stack",
-            options: { gap: "none" },
-            children: [
-              { contract: "typography", signature: "Text", options: { weight: "emphasis" }, children: "informe-q3.pdf" },
-              { contract: "typography", signature: "Text", options: { tone: "secondary", size: "sm" }, children: "2.4 MB" },
-            ],
-          },
-        ],
-      },
-      {
-        contract: "button",
-        signature: "Button.action",
-        options: { variant: "ghost", iconOnly: true },
-        attrs: { "aria-label": translate("demo.fileCard.moreOptions") },
-        children: { contract: "icon", signature: "Icon", options: { name: "more" } },
-      },
-    ],
-  },
-});
-
-/** A trust row: an avatar stack (three named people, one `overflow` count reading "and many
- *  more") beside the line that says the same count in words. Adapted from the MCP catalogue's
- *  `hero-with-social-proof` - just the proof row itself, not the whole Hero it normally sits in;
- *  a bento tile is already its own small, considered surface. */
-const trustRowTree = (translate: Translate): UsageTree => ({
-  contract: "layout",
-  signature: "Inline",
-  options: { gap: "sm", inlineAlign: "center" },
-  children: [
-    {
-      contract: "avatar",
-      signature: "AvatarGroup",
-      slots: {
-        overflow: "+240",
-        children: [
-          { contract: "avatar", signature: "Avatar.initials", options: { name: "Alex Rivera" }, children: "AR" },
-          { contract: "avatar", signature: "Avatar.initials", options: { name: "Sam Okafor" }, children: "SO" },
-          { contract: "avatar", signature: "Avatar.initials", options: { name: "Priya Nair" }, children: "PN" },
-        ],
-      },
-    },
-    { contract: "typography", signature: "Text", options: { tone: "secondary", size: "sm" }, children: translate("demo.trustRow.text") },
-  ],
-});
-
-/** A field carrying a standing hint AND, once invalid, an error - both wired to the control by
- *  the contract's own `wiring`, not authored here: `aria-describedby` references both, and
- *  `aria-invalid="true"` follows from `error` being given. The MCP catalogue's own
- *  `form-field-hint-and-error`, verbatim. */
-const passwordFieldTree = (translate: Translate): UsageTree => ({
-  contract: "form-field",
-  signature: "FormField",
-  options: { required: true },
-  slots: {
-    label: translate("demo.passwordField.label"),
-    hint: translate("demo.passwordField.hint"),
-    error: translate("demo.passwordField.error"),
-  },
-  children: { contract: "input", signature: "Input", options: { type: "password", controlSize: "md" } },
-});
-
-/*
- * The gallery, one step below `showcase`: realistic small pieces of UI, not single components shown
- * in isolation and not whole screens either. Four cards alone cover four different domains - a
- * product (image + text + link), a metric (a number with its trend), a person (an avatar-centered
- * profile with one action), a plan (price + features + one CTA), a file (identity + a menu trigger)
- * - plus a form, a settings row, three alerts, a confirm-before-you-delete modal, a plan picker, a
- * toolbar, an empty state, a trust row, a validated field, and one-tile specimens of the smaller
- * controls (steps, breadcrumb, meter, progress, tag set, shortcut keys, a titled list, a number
- * field, a segmented control, a checkbox group, an accordion, a badge holder, a select, a slider):
- * the normal, expected shapes an app is actually built out of, each one mixing the two-to-five
- * component families that shape genuinely takes. Reused from each family's own docs demo where one
- * already composed the shape (`callout`, `empty-state`, the search-with-button journey, `dialog`'s
- * confirm pattern, the tile radio group, the toolbar, plus the fourteen small-control demos just
- * named); the ten with no demo to borrow (product card, settings row, alert-with-retry, profile
- * row, metric, pricing card, team card, file card, trust row, password field) are composed just
- * above, adapted from the MCP catalogue's own published examples (`get_examples`'s
- * `hero-with-social-proof`, `form-field-hint-and-error` for the two newest; three more are the same
- * shapes applied to a new domain) and checked with `validate_ui` before being trusted here.
- * Thirty-one distinct molecules, into a 5-lane `data-responsive` Grid.
- *
- * Five COLUMNS, not five lanes of one shared Grid: `data-responsive`'s row-based packing (tried
- * first, kept as an intermediate step in this file's own history) always leaves SOME gap under a
- * short tile because every tile in a row still shares one row track - narrowing that gap by
- * sorting, or even closing most of it with fixed-size sub-row tracks, is still fighting the ROW as
- * the unit of layout. A column doesn't have that problem: each of the five is its own `.sk-stack`,
- * tiles poured straight down it, so nothing under a tile is ever bare background - the next tile
- * starts one `sm` gap after the last one ended. Nothing here spans more than one column either
- * (`data-span` doesn't appear below at all): a wide tile would have to pick which column's stack it
- * interrupts, defeating the one thing a column buys.
- *
- * The grid itself sits wider than a normal page section: `data-width="full-width"` (rather than
- * `breakout`, capped at `--size-wrapper-lg`'s 1440px - precisely so a wide viewport still shows
- * five real lanes, per `layout.css`'s own note on that token) puts it on the SAME edge-to-edge
- * track the hero's section already sits on, and `GALLERY_MAX_WIDTH` then caps how far it actually
- * grows - fullbleed with a ceiling, not fullbleed forever, so a 4K monitor gets five wider, airier
- * columns rather than five endless ones. The heading/lede above it shares the same track and cap so
- * their edges line up with the grid's.
- *
- * The five columns aren't equal width either: `GALLERY_COLUMN_WEIGHTS` (`--sk-grid-template`,
- * layout.css) makes the center lane a little wider, its two neighbours equal to each other, and
- * the two outer lanes a little narrower - 319 / 354 / 407 / 354 / 319px at `GALLERY_MAX_WIDTH`.
- * That changes more than proportions: a WIDER column wraps text less, so the same tile measures
- * differently depending which lane it lands in (`settingsRow` alone drops from 121px to 85px
- * simply by moving from a narrow lane to the wide one). Placement below is ORDERED BY that benefit,
- * not by tile identity: the center lane (col 2) holds the tiles that shrink the most as their
- * column widens - `settingsRow`, `tagTonesTree`, `trustRowTree`, `compositionInputButtonTree` -
- * with `productCardTree` pushed to the opposite extreme, a narrow SIDE lane, because it's the one
- * tile that measures WORSE at width (its image's fixed aspect ratio grows taller as its column
- * widens). Everything width-invariant fills in around them wherever a column needs more height.
- *
- * `data-fill` (layout.css) gives all five columns the SAME minimum block-size,
- * `GALLERY_FILL_HEIGHT` - deliberately about double a single screen's worth, so each column reads
- * as a short scroll rather than a fixed panel. It's a FLOOR, not a clamp: the five START level,
- * then a column grows past it and pushes its own lower tiles down when a tile inside it expands
- * (the `accordionExclusiveTree` specimen opening a section, say). Thirty-one distinct molecules
- * cover the resting height; five (`teamCard`, `meter`, `steps`, `metricCard`, `alertRetry`, each
- * repeat-safe: no authored id, no form `name`, no stateful machine) get ONE repeat apiece, with a
- * distinct `idPrefix` - `emitMarkup`'s own escape hatch for independent trees sharing a page, the
- * same machinery that keeps two ColorPickers from portaling into each other - to bring a short
- * column up to that floor. `GALLERY_FILL_HEIGHT` is the tallest of the five resting totals, so the
- * columns start as level as measurement allows.
- *
- * Re-measure every column's total at ITS OWN width (Playwright against the live page,
- * `scrollHeight`, not eyeballed) and move a tile to a shorter column if a tile's content or frame
- * changes height. Measured at `90rem`/1440px (`layout.css`'s own widest `data-columns="5"` tier).
- *
- * Not every tile wears the same frame, either - the rule is: box it, unless it's already a card
- * or a container in its own right. Five molecules - product, metric, pricing, team, file - already
- * build their own `contract:"box"` root (a real card: `raised`/`surface` background, `subtle`
- * border); giving them a second, identical Box around the first just doubles the border and halves
- * the padding's meaning, so their outer `frame` here is bare. Three more - the two Callouts and the
- * retry alert - already carry a full tone-colored surface from `Callout` itself; boxing a
- * box-shaped thing in a second, neutral one muddies the tone rather than framing it, so they're
- * bare too. `toolbarTree` is the same story from a different component: `.sk-toolbar` already
- * paints its own background, border and radius (see `components/toolbar.css`), so an outer card
- * would just be a border around a border. Everything else here has NO surface of its own - a lone
- * button, a form row, a person row, a tile picker, a titled list, the small single-control
- * specimens - so it gets the same `raised`/`subtle` frame the self-boxed tiles' own root already
- * carries: one consistent card language across every tile that isn't already one.
- */
-type GalleryFrame = {
-  padding: "none" | "sm" | "md" | "lg";
-  surface?: "sunken" | "surface" | "raised";
-  border?: "subtle" | "default";
+const buttonTree: UsageTree = {
+  contract: "button",
+  signature,
+  options: { variant: "soft", tone: "danger" },
+  children: es ? "Eliminar" : "Delete",
 };
-type GalleryTile = { tree: UsageTree; frame: GalleryFrame; idPrefix?: string };
-const box = (padding: GalleryFrame["padding"] = "md"): GalleryFrame => ({ padding, surface: "raised", border: "subtle" });
-const bare: GalleryFrame = { padding: "none" };
+const buttonTreeSource = JSON.stringify(buttonTree, null, 2);
+const buttonMarkup = emitMarkup(buttonTree, { fillDefaults: false, idPrefix: "landing-contract" });
 
-/** Wider than `breakout`'s own 1440px ceiling (`--size-wrapper-lg`, `layout.css`) on purpose - the
- *  gallery sits in `full-width`'s edge-to-edge track so it can grow past that, capped here instead
- *  of by a named Wrapper step so a 4K monitor doesn't stretch five columns into five ribbons. */
-const GALLERY_MAX_WIDTH = 1800;
-
-/** Narrowest a lane may get. Below this, cards read as ribbons; the gallery stays on fewer columns
- *  until the viewport can pay for this width on every lane (see the stylesheet at the foot). */
-const GALLERY_LANE_MIN = "18rem";
-
-/** Center lane a little wider, the two flanking it equal to each other, the two outer ones a
- *  little narrower - `--sk-grid-template`'s own escape hatch (layout.css) for weighting a
- *  `data-fill` grid's columns instead of leaving them even. Each track is `minmax` against
- *  `--landing-lane-min` so `fr` redistribution cannot crush a lane under that floor. */
-const GALLERY_COLUMN_WEIGHTS =
-  "minmax(var(--landing-lane-min), 0.9fr) minmax(var(--landing-lane-min), 1fr) minmax(var(--landing-lane-min), 1.15fr) minmax(var(--landing-lane-min), 1fr) minmax(var(--landing-lane-min), 0.9fr)";
-
-/*
- * THE NEXT TIER UP.
- *
- * `--breakpoint-*` stops at `ultrawide` (90rem) because that is the widest a page column ever gets;
- * this is a GALLERY width, not a page one, so the literal lives here rather than joining the shared
- * map: seven lanes unlock at `140rem` in the stylesheet below (not at the kit's `120rem`), the first
- * size where seven tracks can each clear `--landing-lane-min`. It is a literal there because a media
- * query cannot read a custom property, the same reason `_breakpoints.scss` exists at all.
- *
- * THE TWO NEW LANES ARE LANES, not a margin decorated with skeletons: they take the SAME weight as
- * the outer real lanes they sit beside (`0.9fr`, the narrow end of `GALLERY_COLUMN_WEIGHTS`), so
- * the seven read as one grid of the same stuff rather than as five columns with two strips glued
- * to the sides. A fixed width was tried first, on the argument that a constant costs the five less
- * than two more `fr` shares do; what it actually bought was two lanes visibly narrower than every
- * card beside them, which made them read as chrome. The cap moves up (`GALLERY_XL_MAX_WIDTH`) so
- * seven lanes of real width have somewhere to go.
- */
-const GALLERY_XL_MAX_WIDTH = 2200;
-const GALLERY_XL_COLUMN_WEIGHTS =
-  "minmax(var(--landing-lane-min), 0.9fr) minmax(var(--landing-lane-min), 0.9fr) minmax(var(--landing-lane-min), 1fr) minmax(var(--landing-lane-min), 1.15fr) minmax(var(--landing-lane-min), 1fr) minmax(var(--landing-lane-min), 0.9fr) minmax(var(--landing-lane-min), 0.9fr)";
-
-/** The tallest of the five column totals below (px, Chromium/1900, each column's own weighted
- *  share of `GALLERY_MAX_WIDTH`) - roughly double the pre-`data-fill` single-screen height, so
- *  each column is a short scroll of its own. Thirty-one distinct molecules fill most of it; five
- *  get one repeat each (`idPrefix`) to top a column off. */
-const GALLERY_FILL_HEIGHT = 1191;
-/* How tall the dissolve at the foot of the gallery is. Long enough that a card mid-clip reads as
-   fading rather than cut; short enough that most of each column stays fully legible above it. */
-const GALLERY_FADE_SIZE = "10rem";
-
-/*
- * THE ULTRAWIDE LANES, and they are skeletons on purpose.
- *
- * Above `ultrawide` the five real lanes stop growing (`GALLERY_MAX_WIDTH`) and the page ends up
- * with two hundred pixels of bare canvas down each side. The honest fix is not a sixth and seventh
- * lane of real molecules: the five are placed by MEASUREMENT (see the note above, each tile in the
- * lane whose width it measures shortest in), and two more lanes of real tiles would be two more
- * columns to re-measure every time any of them changes. Skeletons carry no such debt. They are also
- * the truer thing to put there: the gallery is a window onto a catalogue that does not end at the
- * frame, and the shape of content just past the edge is exactly what a skeleton draws.
- *
- * DIFFERENT SHAPES, not one repeated: a media card, a person, a metric, a paragraph, a list. Each
- * is a composition of `placeholder`'s own signatures, which is the same vocabulary a consumer would
- * reach for while their data is in flight, so these read as loading UI rather than as grey boxes.
- *
- * THE SAME HEIGHT AS EACH OTHER AND AS THE GRID'S FLOOR (`GALLERY_FILL_HEIGHT`), clipped there
- * rather than allowed to end: a skeleton lane that stopped on its own last tile would read as a
- * column that ran out, which is the opposite of the claim. `FadeEdge` takes the bottom of the clip
- * (`sk-fade-edge`, `to-bottom`), so the lane dissolves instead of being cut.
- *
- * `aria-hidden`, like every Placeholder: a picture of absence has nothing to announce, and this one
- * is decoration on top of that.
- */
-const skeletonLane = (kinds: readonly SkeletonKind[]): UsageTree[] => kinds.map((kind) => SKELETONS[kind]());
-
-type SkeletonKind = "media" | "person" | "metric" | "paragraph" | "list" | "control";
-
-/*
- * EVERY SKELETON HERE IS STILL (`shimmer: false`), and that is a statement rather than a taste.
- * Nothing in these lanes is loading: they stand in for a catalogue that continues past the frame,
- * so a sweep would be promising an arrival that is never coming. Fourteen shimmering tiles beside
- * the real gallery would also be the loudest thing on a page whose whole subject is the quiet
- * stuff next to them.
- */
-const line = (text: string, width: string): UsageTree => ({
-  contract: "placeholder",
-  signature: "Placeholder",
-  options: { text, width, shimmer: false },
+const btn = (children: string, options: Record<string, string> = {}): UsageTree => ({
+  contract: "button",
+  signature: "Button.action",
+  options,
+  children,
+});
+const inline = (children: UsageTree[], gap = "sm"): UsageTree => ({
+  contract: "layout",
+  signature: "Inline",
+  options: { gap, wrap: true },
+  children,
+});
+const stack = (children: UsageTree[], gap = "sm"): UsageTree => ({
+  contract: "layout",
+  signature: "Stack",
+  options: { gap },
+  children,
+});
+const badge = (children: string, tone: string): UsageTree => ({
+  contract: "badge",
+  signature: "Badge",
+  options: { tone },
+  children,
+});
+const tag = (children: string, tone: string): UsageTree => ({
+  contract: "tag",
+  signature: "Tag",
+  options: { tone },
+  children,
 });
 
-const SKELETONS: Record<SkeletonKind, () => UsageTree> = {
-  /* A product card: image, then its title and two lines under it. */
-  media: () => ({
-    contract: "layout",
-    signature: "Stack",
-    options: { gap: "sm" },
-    children: [
-      { contract: "placeholder", signature: "Placeholder.block", options: { height: "7rem", shimmer: false } },
-      line("h4", "70%"),
-      { contract: "placeholder", signature: "Placeholder.paragraph", options: { lines: 2, shimmer: false } },
-    ],
-  }),
-  /* A person row: the disc beside two lines, the same shape `profileRowTree` loads into. */
-  person: () => ({
-    contract: "layout",
-    signature: "Inline",
-    options: { gap: "sm", inlineAlign: "center" },
-    children: [
-      { contract: "placeholder", signature: "Placeholder.circle", options: { size: "md", shimmer: false } },
-      {
-        contract: "layout",
-        signature: "Stack",
-        options: { gap: "xs" },
-        children: [line("body", "8rem"), line("caption", "5rem")],
-      },
-    ],
-  }),
-  /* A metric: the number, then what it counts. */
-  metric: () => ({
-    contract: "layout",
-    signature: "Stack",
-    options: { gap: "xs" },
-    children: [line("caption", "45%"), line("display-sm", "60%")],
-  }),
-  paragraph: () => ({
-    contract: "layout",
-    signature: "Stack",
-    options: { gap: "sm" },
-    children: [line("h5", "55%"), { contract: "placeholder", signature: "Placeholder.paragraph", options: { lines: 4, shimmer: false } }],
-  }),
-  /* A titled list: a heading over four rows of even length, which is what a list is and a paragraph
-     is not (the ragged last line is the difference). */
-  list: () => ({
-    contract: "layout",
-    signature: "Stack",
-    options: { gap: "sm" },
-    children: [
-      line("h5", "40%"),
-      ...["85%", "72%", "88%", "64%"].map((width) => line("body", width)),
-    ],
-  }),
-  /* A control row: a label over a field-height block, the shape every form tile loads into. */
-  control: () => ({
-    contract: "layout",
-    signature: "Stack",
-    options: { gap: "xs" },
-    children: [line("caption", "35%"), { contract: "placeholder", signature: "Placeholder.block", options: { height: "2.5rem", shimmer: false } }],
-  }),
+// Bento cells on a 12 x 6 grid: [row, column, rowSpan, columnSpan]. A full tiling: the 13 tiles cover
+// all 72 cells with no hole. Cut lines drift from band to band and tall tiles cross them, so edges
+// rarely line up. `link` draws a stitch to the tile on its right (`linkY` is where along the tile it
+// leaves).
+type BentoTile = {
+  id: string;
+  label: string;
+  area: [number, number, number, number];
+  tree: UsageTree;
+  link?: string;
+  accent?: boolean;
 };
-
-/*
- * THE ARC, in numbers: how far each lane starts below the top of the row, by distance from the
- * middle. The centre lane leads, the pair beside it drops a step, the outer pair another, and the
- * skeleton lanes at the tier drop one more (`SKELETON_LANE_DROP`), which is what keeps the shape
- * reading as one curve across all seven rather than five staggered lanes with two flat ones stuck
- * on the ends. Read by the stylesheet at the foot of this file, and only from `ultrawide` up.
- */
-const LANE_DROPS = ["3rem", "1.5rem", "0rem", "1.5rem", "3rem"];
-const SKELETON_LANE_DROP = "4.5rem";
-
-/* How many steps behind the centre content column each lane enters. The centre opens first (0),
-   then the pair beside it (1), then the outer pair (2). Skeleton lanes bookend the row one step
-   past that outer ring, so the bloom finishes at the edges. */
-const LANE_STEPS = [2, 1, 0, 1, 2];
-const SKELETON_LANE_STEP_LEFT = 3;
-const SKELETON_LANE_STEP_RIGHT = 3;
-
-/* Two lanes, each a different reading order, so the pair does not look like one column mirrored. */
-const skeletonLanes: UsageTree[][] = [
-  skeletonLane(["media", "person", "metric", "list", "control", "paragraph", "person"]),
-  skeletonLane(["paragraph", "control", "media", "metric", "person", "list", "metric"]),
+const sized = (children: string, size: string): UsageTree => btn(children, { variant: "soft", tone: "accent", size });
+const bentoTiles: BentoTile[] = [
+  { id: "button", label: "Button", area: [1, 1, 2, 5], link: "50%", tree: inline([btn(es ? "Guardar" : "Save", { tone: "accent" }), btn(es ? "Cancelar" : "Cancel", { variant: "soft" }), btn(es ? "Omitir" : "Skip", { variant: "ghost" })]) },
+  { id: "stat", label: "Stat", area: [1, 6, 2, 2], link: "25%", accent: true, tree: { contract: "stat", signature: "Stat", slots: { label: es ? "Componentes" : "Components", value: "100+" } } },
+  { id: "badges", label: "Badge", area: [1, 8, 1, 5], tree: inline([badge("neutral", "neutral"), badge("accent", "accent"), badge("success", "success"), badge("warning", "warning"), badge("danger", "danger")], "xs") },
+  {
+    id: "card",
+    label: "Heading · Button",
+    area: [2, 8, 3, 3], link: "50%",
+   
+    tree: stack(
+      [
+        { contract: "typography", signature: "Heading", options: { headingSize: "h3", flush: true }, children: es ? "Aprobar solicitud" : "Approve request" },
+        { contract: "typography", signature: "Text", options: { tone: "secondary" }, children: es ? "Un árbol de uso describe intención, estructura y reglas." : "A usage tree describes intent, structure and rules." },
+        inline([btn(es ? "Aprobar" : "Approve", { tone: "accent" }), btn(es ? "Rechazar" : "Reject", { variant: "soft", tone: "danger" })]),
+      ],
+      "md",
+    ),
+  },
+  { id: "tag", label: "Tag", area: [2, 11, 1, 2], tree: inline([tag("Beta", "accent"), tag(es ? "Nuevo" : "New", "success")], "xs") },
+  { id: "tones", label: "Button", area: [3, 11, 3, 2], tree: stack([btn("Neutral"), btn("Accent", { tone: "accent" }), btn("Danger", { tone: "danger" })], "sm") },
+  {
+    id: "field",
+    label: "FormField · Input",
+    area: [3, 1, 2, 3], link: "24%",
+   
+    tree: { contract: "form-field", signature: "FormField", slots: { label: es ? "Nombre del proyecto" : "Project name" }, children: { contract: "input", signature: "Input", options: { controlSize: "md" }, attrs: { placeholder: "Aurora" } } },
+  },
+  { id: "progress", label: "Progress", area: [3, 4, 1, 4], tree: { contract: "progress", signature: "Progress", options: { value: 64, label: es ? "Avance" : "Progress" } } },
+  {
+    id: "callout",
+    label: "Callout",
+    area: [4, 4, 2, 4], link: "25%",
+   
+    tree: { contract: "callout", signature: "Callout", options: { tone: "info" }, slots: { title: es ? "Regla explícita" : "Explicit rule" }, children: es ? "iconOnly exige un nombre accesible." : "iconOnly requires an accessible name." },
+  },
+  { id: "sizes", label: "Button · size", area: [5, 1, 2, 3], link: "25%", tree: inline([sized("sm", "sm"), sized("md", "md"), sized("lg", "lg")]) },
+  { id: "progress-b", label: "Progress", area: [5, 8, 1, 3], tree: { contract: "progress", signature: "Progress", options: { value: 32, label: es ? "Avance" : "Progress" } } },
+  { id: "tag-b", label: "Tag", area: [6, 4, 1, 4], tree: inline([tag(es ? "Borrador" : "Draft", "warning"), tag(es ? "Obsoleto" : "Deprecated", "danger")], "xs") },
+  { id: "bindings", label: "Bindings", area: [6, 8, 1, 5], tree: inline([tag("Vanilla", "neutral"), tag("React", "accent")], "xs") },
 ];
-
-const columns: GalleryTile[][] = [
-  // col 0, 319px (narrow) - productCard leads: the one tile that measures WORSE at width, so it
-  // gets the narrowest lane; the rest is width-invariant.
-  [
-    { tree: productCardTree(t), frame: bare }, // 394
-    { tree: meterTree(t), frame: box() }, // 175
-    { tree: metricCardTree(t), frame: bare }, // 137
-    { tree: calloutInfoTree(t), frame: bare }, // 95
-    { tree: badgeHoldersTree(t), frame: box() }, // 76
-    { tree: teamCardTree(t), frame: bare, idPrefix: "r1" }, // 211
-  ],
-  // col 1, 354px (medium)
-  [
-    { tree: accordionExclusiveTree(t), frame: box() }, // 309
-    { tree: stepsTree(t), frame: box() }, // 178
-    { tree: alertRetryTree(t), frame: bare }, // 172
-    { tree: selectTree(t), frame: box() }, // 100
-    { tree: progressTree(t), frame: box() }, // 88
-    { tree: kbdTree, frame: box() }, // 54
-    { tree: metricCardTree(t), frame: bare, idPrefix: "r1" }, // 137
-  ],
-  // col 2, 407px (wide centre) - holds every tile that SHRINKS as its column widens:
-  // settingsRow, tagTones, trustRow, compositionInputButton all measure shortest here.
-  [
-    { tree: compositionInputButtonTree(t), frame: box() }, // 105
-    { tree: settingsRowTree(t), frame: box() }, // 85
-    { tree: tagTonesTree(t), frame: box() }, // 60
-    { tree: trustRowTree(t), frame: box() }, // 72
-    { tree: emptyStateTree(t), frame: box() }, // 299
-    { tree: calloutSuccessTree(t), frame: bare }, // 126
-    { tree: dialogConfirmTree(t), frame: box() }, // 76
-    { tree: toolbarTree(t), frame: bare }, // 43
-    { tree: meterTree(t), frame: box(), idPrefix: "r1" }, // 175
-  ],
-  // col 3, 354px (medium)
-  [
-    { tree: listLeadingTree(t), frame: box() }, // 289
-    { tree: teamCardTree(t), frame: bare }, // 211
-    { tree: passwordFieldTree(t), frame: box() }, // 157
-    { tree: numberFieldTree(t), frame: box() }, // 107
-    { tree: profileRowTree(t), frame: box() }, // 77
-    { tree: breadcrumbTwoTree(t), frame: box() }, // 56
-    { tree: stepsTree(t), frame: box(), idPrefix: "r1" }, // 178
-  ],
-  // col 4, 319px (narrow)
-  [
-    { tree: pricingCardTree(t), frame: bare }, // 277
-    { tree: tileRadioGroupTree(t), frame: box("sm") }, // 224
-    { tree: checkboxGroupTree(t), frame: box() }, // 152
-    { tree: sliderTree(t), frame: box() }, // 108
-    { tree: fileCardTree(t), frame: bare }, // 79
-    { tree: segmentedTree(t), frame: box() }, // 64
-    { tree: alertRetryTree(t), frame: bare, idPrefix: "r1" }, // 172
-  ],
-];
-
-const faqItems = (
-  ["what", "runtime", "adopt", "version", "start"] as const
-).map((id) => ({
-  id,
-  question: t(`landing.faq.${id}.q`),
-  answer: t(`landing.faq.${id}.a`),
-}));
+// Seven copies, the middle one centred: there is always a copy on both sides, and the track only ever
+// shifts by one set.
+const bentoLoops = [0, 1, 2, 3, 4, 5, 6];
 ---
 
-<Base fullBleed title={t("landing.title")} description={t("landing.description")} hideVanillaMount alwaysShowNavTrigger={false}>
-  {/*
-    THE PAGE'S OWN LIGHT. Fixed to the viewport rather than sized to a section, because what it is
-    lighting is the whole document: the gallery scrolls through it and the grain stays put, so the
-    page reads as one surface with the content moving over it rather than as a tinted band with
-    ordinary page below. `aria-hidden` and `pointer-events: none`: it is paint, and nothing else.
-  */}
-  <div class="landing-backdrop" aria-hidden="true"></div>
+<Base fullBleed title={copy.title} description={copy.description} hideVanillaMount alwaysShowNavTrigger={false}>
+  <main class="landing-page">
+    <div class="sk-wrapper" data-size="lg" data-gutter="lg">
+      <section class="landing-hero" aria-labelledby="landing-title">
+        <p class="landing-kicker">{copy.eyebrow}</p>
+        <h1 id="landing-title" class="landing-title">{copy.heroTitle}</h1>
+        <p class="sk-text landing-prose" data-size="lg" data-tone="secondary">{copy.heroBody}</p>
+        <div class="sk-inline" data-gap="sm" data-wrap>
+          <a class="sk-button sk-interactive" data-sk-button data-tone="accent" href={href("/components")}>{copy.ctaComponents}</a>
+          <a class="sk-button sk-interactive" data-sk-button data-variant="ghost" href={href("/architecture")}>{copy.ctaArchitecture}</a>
+        </div>
+      </section>
 
-  <div class="sk-layout-grid landing-canvas" style="row-gap: var(--space-stack-xl)">
-    {/*
-      `breakout` rather than `narrow`: the gallery under it runs the full bleed of the page, and a
-      hero at the grid's narrowest measure read as a paragraph someone had left above a wall of
-      cards. The band is a `Hero` from the kit now rather than a Box with a stack inside it, for the
-      reason this whole page exists: the site does not get to hand-roll a shape the catalogue
-      publishes. The headline's `h1` comes from `Heading`'s own `headingSize`, so the one thing lost
-      in the move is a hand-written tag name.
-    */}
-    <section data-width="breakout" class="landing-hero">
-      <div class="sk-hero landing-hero__band" data-surface="none" data-padding="xl" data-align="center">
-        <div class="sk-stack landing-hero__copy" data-gap="lg" data-align="center">
-          <header class="sk-stack" data-gap="md" data-align="center">
-            <h1 class="sk-heading" data-size="display-lg" data-flush>{t("landing.hero.title")}</h1>
-            <p class="sk-text landing-hero__lede" data-tone="secondary" data-size="lg">{t("landing.hero.lede")}</p>
-          </header>
-          <div class="sk-inline" data-gap="sm">
-            <a class="sk-button sk-interactive" data-sk-button data-tone="accent" data-size="md" href={href("/components")}>
-              {t("landing.hero.ctaComponents")}
-            </a>
-            <a class="sk-button sk-interactive" data-sk-button data-variant="ghost" data-size="md" href={href("/installation")}>
-              {t("landing.hero.ctaInstall")}
-            </a>
+      <section class="landing-row" aria-labelledby="landing-idea-title">
+        <h2 id="landing-idea-title" class="landing-heading">{copy.ideaTitle}</h2>
+        <div class="landing-body">
+          {copy.ideaBody.map((paragraph) => <p class="sk-text landing-prose" data-tone="secondary" data-read>{paragraph}</p>)}
+        </div>
+      </section>
+
+      <section class="landing-row" aria-labelledby="landing-points-title">
+        <h2 id="landing-points-title" class="landing-heading">{copy.pointsTitle}</h2>
+        <ul class="landing-body landing-list">
+          {copy.points.map((point) => (
+            <li data-read>
+              <h3 class="landing-subheading">{point.title}</h3>
+              <p class="sk-text" data-tone="secondary">{point.body}</p>
+            </li>
+          ))}
+        </ul>
+      </section>
+
+      <section class="landing-row" aria-labelledby="landing-contract-title">
+        <div class="landing-heading-group">
+          <h2 id="landing-contract-title" class="landing-heading">{copy.contractTitle}</h2>
+          <p class="sk-text" data-tone="secondary">{copy.contractBody}</p>
+        </div>
+        <div class="landing-body landing-steps">
+          <figure class="landing-step" data-read>
+            <figcaption>
+              <span class="landing-step__index">01</span>
+              <span class="landing-step__title">{copy.contractSteps.contract.title}</span>
+              <span class="landing-step__note">{copy.contractSteps.contract.note}</span>
+            </figcaption>
+            <div class="landing-step__body">
+              <p class="landing-meta"><span>{signature}</span><span>{copy.contractParts}: <code>{partNames}</code></span></p>
+              <table class="landing-table">
+                <thead>
+                  <tr><th scope="col">{copy.contractCols.option}</th><th scope="col">{copy.contractCols.values}</th><th scope="col">{copy.contractCols.writes}</th></tr>
+                </thead>
+                <tbody>
+                  {optionRows.map((row) => (
+                    <tr><th scope="row"><code>{row.name}</code></th><td>{row.values}</td><td><code>{row.writes}</code></td></tr>
+                  ))}
+                </tbody>
+              </table>
+              <p class="landing-rule"><strong>{copy.contractRuleLabel}.</strong> {copy.contractRule}</p>
+            </div>
+          </figure>
+
+          <figure class="landing-step" data-read>
+            <figcaption>
+              <span class="landing-step__index">02</span>
+              <span class="landing-step__title">{copy.contractSteps.tree.title}</span>
+              <span class="landing-step__note">{copy.contractSteps.tree.note}</span>
+            </figcaption>
+            <div class="landing-step__body"><pre class="landing-code"><code>{buttonTreeSource}</code></pre></div>
+          </figure>
+
+          <figure class="landing-step" data-read>
+            <figcaption>
+              <span class="landing-step__index">03</span>
+              <span class="landing-step__title">{copy.contractSteps.result.title}</span>
+              <span class="landing-step__note">{copy.contractSteps.result.note}</span>
+            </figcaption>
+            <div class="landing-step__body">
+              <div class="landing-result" set:html={buttonMarkup} />
+              <pre class="landing-code"><code>{buttonMarkup}</code></pre>
+              <p class="landing-rule">{copy.contractResultNote}</p>
+            </div>
+          </figure>
+        </div>
+      </section>
+
+      <section class="landing-row" aria-labelledby="landing-status-title">
+        <div class="landing-heading-group">
+          <h2 id="landing-status-title" class="landing-heading">{copy.statusTitle}</h2>
+          <p class="sk-text" data-tone="secondary">{copy.statusBody}</p>
+        </div>
+        <ul class="landing-body landing-list">
+          {copy.status.map((item) => (
+            <li data-read>
+              <h3 class="landing-subheading">{item.title}</h3>
+              <p class="sk-text" data-tone="secondary">{item.body}</p>
+            </li>
+          ))}
+        </ul>
+      </section>
+
+      <section class="landing-row" aria-labelledby="landing-roadmap-title">
+        <div class="landing-heading-group">
+          <h2 id="landing-roadmap-title" class="landing-heading">{copy.roadmapTitle}</h2>
+          <p class="sk-text" data-tone="secondary">{copy.roadmapBody}</p>
+        </div>
+        <div class="landing-body">
+          <ol class="landing-roadmap">
+            {copy.roadmap.map((item, index) => (
+              <li data-read>
+                <span class="landing-roadmap__index">{String(index + 1).padStart(2, "0")}</span>
+                <div class="landing-roadmap__text">
+                  <h3 class="landing-subheading">{item.title}</h3>
+                  <p class="sk-text" data-tone="secondary">{item.body}</p>
+                </div>
+              </li>
+            ))}
+          </ol>
+        </div>
+      </section>
+
+    </div>
+
+    <div class="sk-wrapper" data-size="lg" data-gutter="lg">
+      <section class="landing-closing" aria-labelledby="landing-closing-title">
+        <h2 id="landing-closing-title" class="landing-closing__title">{copy.closeTitle}</h2>
+        <div class="landing-closing__body">
+          <p class="sk-text landing-prose" data-tone="secondary">{copy.closeBody}</p>
+          <div class="sk-inline" data-gap="sm" data-wrap>
+            <a class="sk-button sk-interactive" data-sk-button data-tone="accent" data-size="lg" href={href("/components")}>{copy.closeCta}</a>
+            <a class="sk-button sk-interactive" data-sk-button data-variant="soft" data-size="lg" href={href("/installation")}>{copy.closeInstall}</a>
           </div>
         </div>
-      </div>
-    </section>
+      </section>
 
-    {/*
-      NO VISIBLE HEADING over the gallery: the columns say what they are by being components, and a
-      title plus a subtitle in front of them was the page explaining a picture that had already
-      finished making its point.
+    </div>
 
-      `aria-label` stays, and matters MORE now rather than less: it is the region's only name, so a
-      reader moving by landmark still hears what this stretch of the page is instead of arriving at
-      an unnamed region full of cards. `landing.gallery.title` is therefore still in use; its lede
-      is not, and is gone.
-    */}
-    <section aria-label={t("landing.gallery.title")} data-width="full-width">
-      {/*
-        THE WHOLE GALLERY FALLS INTO A FADE, not each skeleton lane on its own. A hard clip at the
-        floor used to read as a wall of cards cut mid-tile; FadeEdge (`to-bottom`) dissolves that
-        edge into the page so the FAQ below can pick up without a seam. Height is capped so the
-        columns always have something to fade through, even when a lane grows past the floor.
-
-        `data-width="full-width"` LIVES HERE, on the fade, because this is the element the layout
-        grid actually places: `layout.css` only reads `data-width` off a direct child of
-        `.sk-layout-grid` (and one level deeper, off a direct child of a `full-width` child, which
-        is exactly this). It used to sit on the grid inside instead, where nothing matched it, so
-        the fade fell back to the `content` track (1024px) and the lanes - whose tracks have a hard
-        `minmax(--landing-lane-min)` floor - overflowed it sideways from the five-lane tier up and
-        were clipped off-centre by the `overflow-x: clip` below. The grid re-centres itself inside
-        the full bleed with its own `max-width` + `margin-inline: auto`.
-      */}
-      <div
-        class="sk-fade-edge landing-gallery-fade"
-        data-direction="to-bottom"
-        data-width="full-width"
-        style={`--sk-fade-edge-size: ${GALLERY_FADE_SIZE}`}
-      >
-        <div
-          class="sk-grid landing-gallery"
-          data-responsive
-          data-fill
-          data-columns="5"
-          data-gap="md"
-          style={`--sk-grid-fill: ${GALLERY_FILL_HEIGHT}px; --sk-grid-template: ${GALLERY_COLUMN_WEIGHTS}; max-width: ${GALLERY_MAX_WIDTH}px; margin-inline: auto; padding-inline: var(--space-inset-lg)`}
-        >
-          <div class="landing-gallery__skeleton" data-lane="skeleton-start" aria-hidden="true" style={`--landing-lane-drop: ${SKELETON_LANE_DROP}; --lane-step: ${SKELETON_LANE_STEP_LEFT}`}>
-            <div class="sk-stack" data-gap="sm">
-              {skeletonLanes[0].map((tree) => (
-                <div class="sk-box" data-surface="raised" data-border="subtle" data-padding="md" set:html={emitMarkup(tree, { fillDefaults: false })} />
-              ))}
-            </div>
-          </div>
-          {
-            columns.map((column, lane) => (
+    <div class="landing-marquee" aria-hidden="true">
+      <div class="landing-marquee__track">
+        {bentoLoops.map((loop) => (
+          <div class="landing-bento" inert>
+            {bentoTiles.map((tile) => (
               <div
-                class="sk-stack"
-                data-lane={lane}
-                data-gap="sm"
-                style={`--landing-lane-drop: ${LANE_DROPS[lane]}; --lane-step: ${LANE_STEPS[lane]}`}
+                class="sk-box landing-tile"
+                data-surface="surface"
+                data-border="subtle"
+                data-accent={tile.accent ? "" : undefined}
+                data-link={tile.link ? "" : undefined}
+                style={`grid-area: ${tile.area[0]} / ${tile.area[1]} / span ${tile.area[2]} / span ${tile.area[3]};${tile.link ? ` --link-y: ${tile.link};` : ""}`}
               >
-                {column.map(({ tree, frame, idPrefix }) => (
-                  <div
-                    class="sk-box"
-                    data-surface={frame.surface}
-                    data-border={frame.border}
-                    data-padding={frame.padding}
-                    set:html={emitMarkup(tree, { fillDefaults: false, idPrefix })}
-                  />
-                ))}
+                <span class="landing-tile__label">{tile.label}</span>
+                <div class="landing-tile__demo" set:html={emitMarkup(tile.tree, { fillDefaults: false, idPrefix: `bento-${loop}-${tile.id}` })} />
               </div>
-            ))
-          }
-          <div class="landing-gallery__skeleton" data-lane="skeleton-end" aria-hidden="true" style={`--landing-lane-drop: ${SKELETON_LANE_DROP}; --lane-step: ${SKELETON_LANE_STEP_RIGHT}`}>
-            <div class="sk-stack" data-gap="sm">
-              {skeletonLanes[1].map((tree) => (
-                <div class="sk-box" data-surface="raised" data-border="subtle" data-padding="md" set:html={emitMarkup(tree, { fillDefaults: false })} />
-              ))}
-            </div>
+            ))}
           </div>
-        </div>
+        ))}
       </div>
-      <script is:inline set:html={dialogConfirmScript} />
-    </section>
+    </div>
 
-    <section class="landing-faq" data-width="breakout" aria-labelledby="landing-faq-title">
-      <div class="sk-stack landing-faq__inner" data-gap="lg">
-        <header class="sk-stack" data-gap="sm" data-align="center">
-          <h2 class="sk-heading" id="landing-faq-title" data-size="display-sm" data-flush>
-            {t("landing.faq.title")}
-          </h2>
-          <p class="sk-text landing-faq__lede" data-tone="secondary" data-size="lg">{t("landing.faq.lede")}</p>
-        </header>
-        <LandingFaq client:load label={t("landing.faq.title")} items={faqItems} />
-      </div>
-    </section>
-
-    {/*
-      THE CLOSING BAND. `Base` renders `<SiteFooter>` only on railed pages (its own note says why:
-      the footer is site chrome that sits beside the document pair), and this page is `fullBleed`,
-      so it had none. Rendered here rather than moved into the layout's unconditional branch
-      because the two pages want it in different places: a docs page ends after its pager, this one
-      ends after the FAQ, and `data-width="full-width"` inside this same `sk-layout-grid` is
-      what lets the band bleed while its own content returns to the page measure.
-    */}
-    <SiteFooter nav={navigation} locale={locale} />
-  </div>
+    <div class="sk-wrapper" data-size="lg" data-gutter="lg">
+      <SiteFooter nav={navigation} locale={locale} />
+    </div>
+  </main>
 </Base>
 
-<style define:vars={{
-  galleryXlMaxWidth: `${GALLERY_XL_MAX_WIDTH}px`,
-  galleryFillHeight: `${GALLERY_FILL_HEIGHT}px`,
-  landingLaneMin: GALLERY_LANE_MIN,
-  galleryXlTemplate: GALLERY_XL_COLUMN_WEIGHTS,
-}}>
-  /*
-   * THE BAND'S OWN PAINT, into `--sk-hero-wash`, which is the hook `hero.css` publishes for exactly
-   * this. That stylesheet's own note says why it ships flat: a glow lived in the contract briefly
-   * and came out again, because decoration is "a call for a consumer's own page to make, not this
-   * contract's". This page is that consumer, and this is the one place on the site that gets to be
-   * loud.
-   *
-   * TWO LAYERS, IN THIS ORDER: grain on top, accent light underneath.
-   *
-   * The light is a wide radial bloom rising from just below the bottom edge, not a top-down linear
-   * ramp. A ramp reads as a coloured header band with a seam where it stops; a bloom has no edge to
-   * see, so the accent gathers behind the buttons (where the page wants the eye to end up) and is
-   * gone by the headline, which therefore keeps full contrast against plain canvas.
-   *
-   * The grain is `feTurbulence` rendered once into a data URI, tiled at 180px. It is what keeps the
-   * bloom from reading as the default soft-gradient-blob every landing page has: at 4% opacity the
-   * noise is invisible as texture and visible as a REFUSAL to be a smooth gradient, which is the
-   * whole point of asking for grain. `baseFrequency` is high (0.9) so the grain stays fine at any
-   * zoom rather than turning into visible blotches on a 4K display.
-   *
-   * `color-mix` against the accent token rather than a hex: the docs ship a brand switcher, so this
-   * band re-tints itself with whatever accent the reader picked, and it goes dark-mode-correct for
-   * free because both halves of the mix are already mode-aware.
-   */
-  /*
-   * THE BACKDROP: one wide, shallow field of accent light rising from the foot of the viewport.
-   *
-   * SHAPED AFTER LUMOS'S OWN, which is the reference asked for and is readable straight out of
-   * their stylesheet: `radial-gradient(75% 60% at 50% 88%, brand 14%, transparent 72%)` on a
-   * `pointer-events: none` layer, plus a canvas above it masked with
-   * `radial-gradient(90% 75% at 50% 92%, #000, #00000080 45%, #0000 78%)`. Three things are worth
-   * taking from that and one is worth leaving.
-   *
-   * WIDE AND LOW, not a disc in the middle. Their ellipse is three quarters of the viewport across
-   * and sits at 88% of its height, so the light reads as something the page is standing ON. A
-   * centred circle (what this was) reads as a spotlight pointed at the middle of the text, and on a
-   * wide screen it is a blob with cold canvas either side of it, which is what "the width of the
-   * whole page" was asking to fix.
-   *
-   * FAINT. Theirs is 14% of the brand colour. This one runs a little warmer at 22% because it also
-   * has grain over it, which eats some of the light, but the direction is the same: the field is
-   * the room the page sits in, not a thing to look at.
-   *
-   * MASKED AT THE EDGES, which is the detail that separates this from a gradient someone dropped in
-   * a div. The texture fades out before it reaches the sides instead of tiling to a hard stop
-   * against them.
-   *
-   * What is NOT taken: the animated canvas. Their aurora drifts, ours does not. A page whose whole
-   * subject is a catalogue of components does not need its background moving behind them, and
-   * `prefers-reduced-motion` would have to turn it off anyway.
-   */
-  .landing-backdrop {
-    position: fixed;
-    inset: 0;
-    z-index: 0;
-    pointer-events: none;
-    overflow: clip;
+<script>
+  // Highlights the right-column block that sits in the reading band while scrolling.
+  // Only one block is active at a time (the first in document order that crosses the band).
+  const items = Array.from(document.querySelectorAll<HTMLElement>("[data-read]"));
+  const inBand = new Set<HTMLElement>();
+
+  const sync = () => {
+    const active = items.find((item) => inBand.has(item));
+    for (const item of items) item.toggleAttribute("data-active", item === active);
+  };
+
+  if ("IntersectionObserver" in window) {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (entry.isIntersecting) inBand.add(entry.target as HTMLElement);
+          else inBand.delete(entry.target as HTMLElement);
+        }
+        sync();
+      },
+      { rootMargin: "-35% 0px -50% 0px" },
+    );
+    for (const item of items) observer.observe(item);
+  }
+</script>
+
+<style>
+  .landing-page {
+    --landing-read-bg: color-mix(in srgb, var(--color-text-primary) 6%, transparent);
+    background: var(--color-surface-canvas);
   }
 
-  /*
-   * THE LIGHT, on its own layer so it can move without dragging the grain with it: a transform on
-   * the parent would scale the noise tile too, and grain that breathes is grain that reads as a
-   * rendering artefact.
-   *
-   * A CIRCLE, stated as one (`circle <length> at …`) rather than left to a percentage pair, which
-   * resolves against the box and therefore comes out an ellipse on every viewport that is not
-   * square. The radius is in `rem` so the disc is the same physical size on a laptop and on a
-   * 4K panel instead of growing with the window.
-   *
-   * BIG, and bigger than looks right in the stylesheet: 42rem and 70rem are 672px and 1120px, so on
-   * a laptop the outer disc is wider than the window and only its middle is ever on screen. That is
-   * the point. A circle small enough to see the whole of reads as an object sitting on the page,
-   * something with an edge that the content happens to be arranged around; one whose edge never
-   * arrives reads as the light the page is lit by. The earlier pair (26/44rem) fell on the wrong
-   * side of that line.
-   */
-  .landing-backdrop::before {
+  .landing-hero,
+  .landing-row {
+    display: grid;
+    gap: var(--space-stack-lg);
+    padding-block: clamp(3rem, 6vw, 5rem);
+    border-block-end: 1px solid var(--color-border-subtle);
+  }
+
+  .landing-hero {
+    justify-items: start;
+    padding-block-start: clamp(4rem, 8vw, 7rem);
+  }
+
+  .landing-row {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
+    gap: clamp(1.5rem, 5vw, 4rem);
+    align-items: start;
+  }
+
+  .landing-row > :first-child {
+    position: sticky;
+    inset-block-start: 6rem;
+  }
+
+  /* Reading highlight: the block in the reading band gets a raised background. */
+  .landing-page [data-read] {
+    margin-inline-start: calc(-1 * var(--space-inset-md));
+    padding-inline: var(--space-inset-md);
+    border-radius: var(--radius-md);
+    transition: background-color 0.2s ease;
+  }
+
+  .landing-list > li,
+  .landing-body > p[data-read] {
+    margin-block: calc(-1 * var(--space-inset-sm));
+    padding-block: var(--space-inset-sm);
+  }
+
+  [data-read][data-active] {
+    background: var(--landing-read-bg);
+  }
+
+  [data-read].sk-text[data-active],
+  [data-read][data-active] .sk-text,
+  [data-read][data-active] .landing-subheading {
+    color: var(--color-text-primary);
+  }
+
+  .landing-kicker {
+    margin: 0;
+    color: var(--color-text-secondary);
+    font: var(--font-label-sm);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .landing-title {
+    margin: 0;
+    max-inline-size: 22ch;
+    font-size: clamp(2rem, 4.5vw, 3rem);
+    font-weight: var(--font-weight-emphasis);
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    text-wrap: balance;
+  }
+
+  .landing-heading {
+    margin: 0;
+    font-size: var(--font-size-heading-h3);
+    font-weight: var(--font-weight-emphasis);
+    line-height: 1.25;
+  }
+
+  .landing-subheading {
+    margin: 0;
+    font-size: var(--font-size-body-lg);
+    font-weight: var(--font-weight-emphasis);
+  }
+
+  .landing-heading-group {
+    display: grid;
+    gap: var(--space-stack-sm);
+  }
+
+  .landing-heading-group p {
+    margin: 0;
+    max-inline-size: 36ch;
+  }
+
+  .landing-prose {
+    margin: 0;
+    max-inline-size: 62ch;
+    line-height: 1.65;
+  }
+
+  .landing-body {
+    display: grid;
+    gap: var(--space-stack-md);
+    min-inline-size: 0;
+  }
+
+  .landing-list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    gap: var(--space-stack-lg);
+  }
+
+  .landing-list li {
+    display: grid;
+    gap: var(--space-stack-xs);
+  }
+
+  .landing-list p {
+    margin: 0;
+    max-inline-size: 62ch;
+    line-height: 1.6;
+  }
+
+  .landing-steps {
+    gap: var(--space-stack-lg);
+  }
+
+  .landing-page .landing-step[data-read] {
+    margin: 0;
+    padding-inline: 0;
+    border: 1px solid var(--color-border-subtle);
+    border-radius: var(--radius-lg);
+    background: transparent;
+    overflow: hidden;
+  }
+
+  .landing-page .landing-step[data-read][data-active] {
+    background: var(--landing-read-bg);
+  }
+
+  .landing-step figcaption {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: var(--space-inline-sm) var(--space-inline-md);
+    padding: var(--space-inset-md) var(--space-inset-lg);
+    border-block-end: 1px solid var(--color-border-subtle);
+  }
+
+  .landing-step__index {
+    color: var(--color-text-secondary);
+    font: var(--font-label-sm);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .landing-step__title {
+    font-weight: var(--font-weight-emphasis);
+  }
+
+  .landing-step__note {
+    margin-inline-start: auto;
+    color: var(--color-text-secondary);
+    font: var(--font-label-sm);
+  }
+
+  .landing-step__body {
+    display: grid;
+    gap: var(--space-stack-md);
+    padding: var(--space-inset-lg);
+  }
+
+  .landing-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-inline-sm) var(--space-inline-lg);
+    margin: 0;
+    color: var(--color-text-secondary);
+    font: var(--font-label-sm);
+  }
+
+  .landing-meta span:first-child {
+    color: var(--color-text-primary);
+    font-weight: var(--font-weight-emphasis);
+  }
+
+  .landing-table {
+    inline-size: 100%;
+    border-collapse: collapse;
+    font: var(--font-label-sm);
+  }
+
+  .landing-table th,
+  .landing-table td {
+    padding: var(--space-inset-sm) var(--space-inset-md) var(--space-inset-sm) 0;
+    border-block-end: 1px solid var(--color-border-subtle);
+    text-align: start;
+    font-weight: inherit;
+    vertical-align: top;
+  }
+
+  .landing-table thead th {
+    color: var(--color-text-secondary);
+    font-weight: var(--font-weight-emphasis);
+  }
+
+  .landing-table code,
+  .landing-meta code {
+    font: var(--font-code-sm);
+  }
+
+  .landing-rule {
+    margin: 0;
+    max-inline-size: 62ch;
+    color: var(--color-text-secondary);
+    font: var(--font-label-sm);
+    line-height: 1.6;
+  }
+
+  .landing-rule strong {
+    color: var(--color-text-primary);
+  }
+
+  .landing-code {
+    margin: 0;
+    padding: var(--space-inset-md);
+    border: 1px solid var(--color-border-subtle);
+    border-radius: var(--radius-md);
+    background: var(--color-surface-sunken);
+    font: var(--font-code-sm);
+    overflow-x: auto;
+  }
+
+  .landing-result {
+    display: flex;
+    padding: var(--space-inset-lg);
+    border: 1px dashed var(--color-border-subtle);
+    border-radius: var(--radius-md);
+  }
+
+  .landing-marquee {
+    --bento-col: 5.5rem;
+    --bento-row: 5rem;
+    --bento-gap: 1rem;
+    /* One set plus the gap that follows it: the exact distance the track shifts per loop. */
+    --bento-set: calc(12 * (var(--bento-col) + var(--bento-gap)));
+    overflow: hidden;
+    padding-block-end: clamp(3rem, 6vw, 5rem);
+    container-type: inline-size;
+    mask-image: linear-gradient(to right, transparent, #000 8%, #000 92%, transparent);
+  }
+
+  .landing-marquee__track {
+    display: flex;
+    gap: var(--bento-gap);
+    inline-size: max-content;
+    /* Centre the middle (4th) set: three sets sit to its left, so the loop has no empty edge. */
+    margin-inline-start: calc(-3 * var(--bento-set) + (100cqw - var(--bento-set) + var(--bento-gap)) / 2);
+    animation: landing-marquee 70s linear infinite;
+  }
+
+  /* The track holds identical sets back to back and shifts by exactly one set pitch, so the frame at
+     the end of a loop is the frame at its start: no seam, and no empty tail at any viewport width. */
+  @keyframes landing-marquee {
+    to {
+      transform: translateX(calc(-1 * var(--bento-set)));
+    }
+  }
+
+  .landing-bento {
+    display: grid;
+    grid-template-columns: repeat(12, var(--bento-col));
+    grid-template-rows: repeat(6, var(--bento-row));
+    gap: var(--bento-gap);
+  }
+
+  /* A Box (`sk-box`, surface + subtle border): the face comes from its hooks, this only sets what is
+     tile-specific. `overflow: visible` because Box clips, and the stitch below sits outside the tile. */
+  .landing-tile {
+    --sk-box-padding: var(--space-inset-lg) var(--space-inset-md) var(--space-inset-md);
+    /* One step past the surface radius, still scaled by the radius multiplier. */
+    --sk-box-radius: calc(var(--scale-radius-xl) * 1.25 * var(--radius-multiplier));
+    position: relative;
+    display: grid;
+    align-items: center;
+    overflow: visible;
+  }
+
+  .landing-tile[data-accent] {
+    --sk-box-border-color: color-mix(in srgb, var(--color-text-accent) 30%, var(--color-border-subtle));
+    --sk-box-bg: color-mix(in srgb, var(--color-text-accent) 8%, var(--color-bg-surface));
+  }
+
+  /* A stitch across the gap to the neighbouring tile, so the set reads as one connected piece. */
+  .landing-tile[data-link]::after {
     content: "";
     position: absolute;
-    inset: 0;
-    background:
-      radial-gradient(
-        circle 42rem at 50% 72%,
-        color-mix(in oklab, var(--color-action-accent) 34%, transparent) 0%,
-        color-mix(in oklab, var(--color-action-accent) 13%, transparent) 52%,
-        transparent 78%
-      ),
-      radial-gradient(
-        circle 70rem at 50% 74%,
-        color-mix(in oklab, var(--color-action-accent) 20%, transparent) 0%,
-        color-mix(in oklab, var(--color-action-accent) 8%, transparent) 48%,
-        transparent 76%
-      );
-    transform-origin: 50% 78%;
-    /*
-     * THE RESTING STATE, written on the element rather than left to the animation's last frame.
-     * Two readers have to land here: the one whose pulse has finished, and the one who never got a
-     * pulse because they asked for less motion. Declaring it once is what guarantees those two see
-     * the same page rather than the second one seeing whatever the base happened to be.
-     */
-    opacity: 0.92;
+    inset-block-start: var(--link-y, 50%);
+    inset-inline-start: 100%;
+    inline-size: var(--bento-gap);
+    block-size: 1px;
+    background: color-mix(in srgb, var(--color-text-primary) 28%, transparent);
   }
 
-  /*
-   * ONE PULSE, ON ARRIVAL. It was looping every nine seconds, which is a light with a heartbeat:
-   * fine for two breaths, then it is a thing moving in the corner of the eye for as long as the tab
-   * is open, and nothing on the page ever changes in response to it. Once, as the content comes in,
-   * says the same thing and then stops saying it.
-   *
-   * The shape is a lamp coming on rather than a throb: it starts small and dim, overshoots the
-   * resting size by a hair, and settles. `both` so it holds that resting frame afterwards instead
-   * of snapping back to the declaration above.
-   *
-   * AN OPT-IN, not an override. A reader who asked for reduced motion never enters this block, so
-   * they get the static light declared above, and so does anyone whose browser the query cannot
-   * read. Same for the gallery's reveal further down: the tiles animate inside a
-   * `no-preference` block and are simply present outside it.
-   */
-  @media (prefers-reduced-motion: no-preference) {
-    .landing-backdrop::before {
-      animation: landing-pulse 2.4s var(--scale-easing-enter, cubic-bezier(0.16, 1, 0.3, 1)) both;
-    }
+  .landing-tile__label {
+    position: absolute;
+    inset-block-start: var(--space-inset-sm);
+    inset-inline-start: var(--space-inset-md);
+    color: var(--color-text-secondary);
+    font: var(--font-label-sm);
   }
 
-  /*
-   * Scale and opacity move together throughout: scaling alone reads as the window resizing, fading
-   * alone reads as a flicker, and the two together read as light.
-   */
-  @keyframes landing-pulse {
-    from {
-      transform: scale(0.92);
-      opacity: 0.4;
-    }
-    60% {
-      transform: scale(1.05);
-      opacity: 1;
-    }
-    to {
-      transform: scale(1);
-      opacity: 0.92;
-    }
+  .landing-tile__demo {
+    display: grid;
+    align-content: center;
+    min-inline-size: 0;
+    padding-block-start: var(--space-inset-sm);
+    overflow: hidden;
   }
 
-  /*
-   * THE REVEAL: one orchestrated moment on load. Only the lanes move; tiles inside them arrive
-   * already composed. Centre out: step 0 is the middle column, each ring waits one more stagger
-   * beat. The stagger is enter (moderate / 200ms) so rings OVERLAP; the motion itself runs on
-   * expand (slow / 320ms), the kit's tempo for a larger surface settling, with enter easing so it
-   * decelerates into place rather than snapping. Materialise recipe matches Popover/Toast
-   * (opacity + scale + rise + soft blur), travel on navigate distance so the longer beat has
-   * room to read.
-   *
-   * `both` fill so a lane waiting its turn is already invisible rather than flashing at full
-   * opacity for the length of its own delay.
-   */
-  @media (prefers-reduced-motion: no-preference) {
-    .landing-gallery {
-      --landing-lane-stagger: var(--motion-enter-duration);
-    }
-
-    .landing-gallery > .sk-stack,
-    .landing-gallery > .landing-gallery__skeleton {
-      animation: landing-lane-enter var(--motion-expand-duration) var(--motion-enter-easing) both;
-      animation-delay: calc(var(--lane-step, 0) * var(--landing-lane-stagger));
-    }
+  /* The same 1fr / 2fr grid as `.landing-row`: the title sits in the heading column and the copy and
+     its buttons start on the content column's left edge, so the CTAs line up with every section above. */
+  .landing-closing {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
+    gap: clamp(1.5rem, 5vw, 4rem);
+    align-items: start;
+    padding-block: clamp(4rem, 8vw, 7rem);
   }
 
-  @keyframes landing-lane-enter {
-    from {
-      opacity: 0;
-      translate: 0 var(--motion-navigate-distance);
-      scale: var(--motion-materialize-scale);
-      filter: blur(var(--motion-materialize-blur));
-    }
-    to {
-      opacity: 1;
-      translate: 0 0;
-      scale: 1;
-      filter: blur(0);
-    }
+  .landing-closing__body {
+    display: grid;
+    gap: var(--space-stack-lg);
+    justify-items: start;
   }
 
-  /* Everything the page renders sits over the light, in its own layer. */
-  .landing-canvas {
-    position: relative;
-    z-index: 1;
+  .landing-closing__title {
+    margin: 0;
+    font-size: clamp(1.75rem, 3.5vw, 2.25rem);
+    font-weight: var(--font-weight-emphasis);
+    line-height: 1.15;
+    letter-spacing: -0.02em;
   }
 
-  /* A reader who asked for less contrast keeps the light and loses the texture. */
-  @media (prefers-contrast: more) {
-    .landing-backdrop::after {
+  .landing-roadmap {
+    display: grid;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .landing-roadmap li {
+    display: grid;
+    grid-template-columns: 2.5rem minmax(0, 1fr);
+    gap: var(--space-inline-md);
+    padding-block: var(--space-inset-lg);
+    border-block-start: 1px solid var(--color-border-subtle);
+  }
+
+  /* The rows own full-width rules, so they highlight inside the column instead of bleeding out. */
+  .landing-roadmap li[data-read] {
+    margin-inline-start: 0;
+    padding-inline: var(--space-inset-md);
+    border-radius: 0;
+  }
+
+  .landing-roadmap li:last-child {
+    border-block-end: 1px solid var(--color-border-subtle);
+  }
+
+  .landing-roadmap__index {
+    color: var(--color-text-secondary);
+    font: var(--font-label-sm);
+    font-variant-numeric: tabular-nums;
+    line-height: 1.6;
+  }
+
+  .landing-roadmap__text {
+    display: grid;
+    gap: var(--space-stack-xs);
+  }
+
+  .landing-roadmap__text p {
+    margin: 0;
+    max-inline-size: 62ch;
+    line-height: 1.6;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .landing-marquee {
+      overflow-x: auto;
+    }
+
+    .landing-marquee__track {
+      margin-inline-start: max(var(--bento-gap), calc((100cqw - var(--bento-set) + var(--bento-gap)) / 2));
+      animation: none;
+    }
+
+    .landing-marquee__track > .landing-bento:not(:first-child) {
       display: none;
     }
-  }
 
-  /*
-   * THE OPENING SCREEN. The band takes most of the first viewport and centres its copy in what it
-   * takes, so the page opens on the sentence rather than on the sentence plus a strip of gallery
-   * peeking in under it. `min()` rather than a flat `vh`: on a short laptop window 78vh is the
-   * right share of the screen, and on a tall monitor a hero that keeps growing with the glass is
-   * just a bigger empty room, so 42rem caps it.
-   *
-   * `justify-content: center` is already `hero.css`'s own doing (it centres its single child
-   * unconditionally, see its note on the min-height), which is why raising the floor is all this
-   * takes to put the copy in the middle of the screen.
-   */
-  .landing-hero__band {
-    --sk-hero-min-height: min(64vh, 34rem);
-    /*
-     * The band's own padding, asymmetric: full room above the headline, a third of it below the
-     * buttons. `data-padding="xl"` pads all four sides equally, which is right for a Hero standing
-     * alone and wrong for one whose whole job is to hand off to the gallery underneath it: the
-     * even version stacked xl of hero padding on top of the layout grid's own row gap, and the two
-     * together read as a page break between the sentence and the thing it is talking about.
-     */
-    --sk-hero-padding: var(--space-inset-xl) var(--space-inset-lg) var(--space-inset-sm);
-  }
-
-  /*
-   * THE COPY COLUMN, capped well inside the band. The hero section is `breakout` because the light
-   * behind it wants the width, but the WORDS do not: a headline free to run the full 1440px sets
-   * one enormous line across the screen and a reader's eye has to travel the whole of it to take in
-   * six words. Holding the column at 42rem is what lets the type be smaller AND the line still
-   * break where it should.
-   */
-  .landing-hero__copy {
-    max-inline-size: 42rem;
-    margin-inline: auto;
-    text-align: center;
-  }
-
-  /*
-   * SMALLER THAN IT WAS, by a lot: this ran at `clamp(display-lg, 5.2vw, 5.25rem)`, which is 84px
-   * on a wide screen and reads as a poster rather than as the opening of a page with work under it.
-   * The top now lands at `display-md`, the step the scale already publishes for a display heading,
-   * and the clamp only stops it getting silly on a phone or an ultrawide.
-   */
-  .landing-hero__copy .sk-heading {
-    font-size: clamp(var(--font-size-display-sm), 3.1vw, var(--font-size-display-md));
-    line-height: 1.08;
-    letter-spacing: -0.015em;
-  }
-
-  /*
-   * The lede drops its own clamp and sits at the scale's `lg` body size. It carries more text than
-   * it did, and past about twenty words the thing that makes a paragraph readable is the measure
-   * and the leading, not the size: a bigger face here just meant fewer words per line.
-   */
-  .landing-hero__lede {
-    max-inline-size: 46ch;
-    margin-inline: auto;
-    text-align: center;
-  }
-
-  /*
-   * The skeleton lanes are laid out by this sheet alone; the grid itself keeps its five-lane inline
-   * style at every width below the tier. `display: none` rather than `visibility` or opacity: a
-   * hidden-but-present lane would still claim a grid track, and below the tier the template has no
-   * track to give it, so the lane would wrap into a row of its own under the gallery.
-   */
-  .landing-gallery__skeleton {
-    display: none;
-  }
-
-  .landing-gallery {
-    --landing-lane-min: var(--landingLaneMin);
-  }
-
-  /*
-   * ODD LANE COUNTS ONLY. The centre content lane (`data-lane="2"`) has to stay in the middle of
-   * whatever is visible. Even counts (2, 4) shove it off-centre and, with a hard `minmax(18rem)`,
-   * also overflow the page. So this gallery opts out of the kit's 2/4 steps: 1 → 3 → 5 → 7, and
-   * only unlocks the next count when `N × --landing-lane-min` fits. Tracks use `minmax(0, 1fr)`
-   * (never a pixel floor on the track itself); the floor is enforced by waiting to add lanes.
-   *
-   * Specificity beats `.sk-grid[data-responsive][data-fill]` from layout.css so a later kit tier
-   * cannot quietly reinstall a five-track template while we are still hiding the outer lanes.
-   */
-  .landing-gallery.sk-grid[data-responsive][data-fill][data-columns="5"] {
-    --sk-grid-columns: 1;
-    grid-template-columns: minmax(0, 1fr);
-  }
-
-  /*
-   * THREE LANES: hide the outer content columns so the visible set is 1-2-3 with 2 in the middle.
-   * `64rem` clears `3 × 18rem` plus gap and inset without horizontal scroll.
-   */
-  @media (min-width: 64rem) {
-    .landing-gallery.sk-grid[data-responsive][data-fill][data-columns="5"] {
-      --sk-grid-columns: 3;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-    }
-
-    .landing-gallery > [data-lane="0"],
-    .landing-gallery > [data-lane="4"] {
-      display: none;
+    [data-read] {
+      transition: none;
     }
   }
 
-  @media (min-width: 64rem) and (max-width: 111.98rem) {
-    .landing-gallery > [data-lane="1"],
-    .landing-gallery > [data-lane="3"] {
-      margin-block-start: 1.5rem;
+  @media (max-width: 52rem) {
+    .landing-row,
+    .landing-closing {
+      grid-template-columns: 1fr;
+    }
+
+    .landing-row > :first-child {
+      position: static;
     }
   }
 
-  /*
-   * FIVE LANES: restore the outer columns and the measured weights. Near `GALLERY_MAX_WIDTH` so
-   * each track clears `--landing-lane-min` without overflowing.
-   */
-  @media (min-width: 112rem) {
-    .landing-gallery.sk-grid[data-responsive][data-fill][data-columns="5"] {
-      --sk-grid-columns: 5;
-      grid-template-columns: var(--sk-grid-template);
+  @media (max-width: 40rem) {
+    .landing-marquee {
+      --bento-col: 4.75rem;
     }
 
-    .landing-gallery > [data-lane="0"],
-    .landing-gallery > [data-lane="4"] {
-      display: revert;
+    .landing-step figcaption {
+      padding: var(--space-inset-md);
     }
 
-    .landing-gallery > * {
-      margin-block-start: var(--landing-lane-drop, 0rem);
-    }
-  }
-
-  /*
-   * THE GALLERY'S FLOOR FADE. Clip at the measured column floor, then dissolve the last band so
-   * the FAQ can sit under a soft edge instead of a sawtooth of half-cut cards.
-   *
-   * NOT a viewport fraction. An earlier `min(78vh, …)` made laptop screens show a short stub of
-   * each lane (hero already spent most of the first screen), and the columns read as cramped.
-   * The floor was measured to be about two screens of column; that length is the point.
-   */
-  .landing-gallery-fade {
-    max-block-size: var(--galleryFillHeight);
-    overflow-x: clip;
-    overflow-y: hidden;
-  }
-
-  /*
-   * FAQ: one composition under the dissolve. Measure matches the hero copy column so the questions
-   * read as prose, not as a wide wall of tiles.
-   */
-  .landing-faq {
-    position: relative;
-    z-index: 1;
-    margin-block-start: 0;
-    padding-block: var(--space-stack-xl) var(--space-stack-lg);
-  }
-
-  .landing-faq__inner {
-    max-inline-size: 42rem;
-    margin-inline: auto;
-  }
-
-  .landing-faq__lede {
-    max-inline-size: 46ch;
-    margin-inline: auto;
-    text-align: center;
-  }
-
-  .landing-faq__inner > .sk-stack[data-align="center"] {
-    text-align: center;
-  }
-
-  /*
-   * SEVEN LANES only when each can still clear the floor. `120rem` (1920px) is too tight for
-   * `7 × 18rem`; wait until the XL cap (`2200px`) has room to breathe.
-   */
-  @media (min-width: 140rem) {
-    .landing-gallery {
-      max-width: var(--galleryXlMaxWidth) !important;
-      --sk-grid-template: var(--galleryXlTemplate) !important;
-      grid-template-columns: var(--galleryXlTemplate) !important;
+    .landing-step__note {
+      flex-basis: 100%;
+      margin-inline-start: 0;
     }
 
-    .landing-gallery__skeleton {
-      display: block;
-      align-self: start;
-      block-size: var(--galleryFillHeight);
+    .landing-step__body {
+      padding: var(--space-inset-md);
+    }
+
+    .landing-code {
+      white-space: pre-wrap;
+      overflow-wrap: anywhere;
+    }
+
+    .landing-result {
+      padding: var(--space-inset-md);
+    }
+
+    .landing-table thead {
+      position: absolute;
+      inline-size: 1px;
+      block-size: 1px;
       overflow: hidden;
+      clip-path: inset(50%);
+    }
+
+    .landing-table tr {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: var(--space-stack-xs) var(--space-inline-md);
+      padding-block: var(--space-inset-sm);
+      border-block-end: 1px solid var(--color-border-subtle);
+    }
+
+    .landing-table th,
+    .landing-table td {
+      padding: 0;
+      border: 0;
+    }
+
+    .landing-table tbody td:nth-child(2) {
+      grid-row: 2;
+      grid-column: 1 / -1;
+      color: var(--color-text-secondary);
+    }
+
+    .landing-table tbody td:nth-child(3) {
+      grid-row: 1;
+      grid-column: 2;
     }
   }
 </style>
