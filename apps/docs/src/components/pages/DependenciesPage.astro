@@ -1,0 +1,280 @@
+---
+/*
+ * Every third-party dependency the packages declare, one heading and one paragraph each: what it is
+ * there for and why the system borrows it instead of writing it. Workspace packages (`@skryensya/*`)
+ * are not listed: they are the system itself. Versions are not repeated here, `package.json` owns them.
+ */
+import Base from "../../layouts/Base.astro";
+import { getLocale, localizePath, versionOf, type Locale } from "../../i18n";
+
+const locale: Locale = getLocale(Astro.url);
+const version = versionOf(Astro.url);
+const href = (path: string) => localizePath(path, locale, version);
+
+type Entry = { id: string; name: string; used: string; why: Record<Locale, string> };
+type Group = { id: string; title: Record<Locale, string>; blurb: Record<Locale, string>; entries: readonly Entry[] };
+
+const groups: readonly Group[] = [
+  {
+    id: "behavior",
+    title: { es: "Comportamiento", en: "Behavior" },
+    blurb: {
+      es: "Lo que un consumidor instala con el sistema y ejecuta en el navegador.",
+      en: "What a consumer installs with the system and runs in the browser.",
+    },
+    entries: [
+      {
+        id: "zag",
+        name: "@zag-js/*",
+        used: "core",
+        why: {
+          es: "Son las state machines de los componentes con estado: tabs, accordion, menu, combobox, select, slider, date-picker y el resto. Escribir cada una a mano es reimplementar foco, teclado y ARIA con sus bordes; Zag ya los resuelve y los dos bindings consumen la misma máquina desde @skryensya/core/machines, así que el comportamiento tiene un solo dueño.",
+          en: "These are the state machines behind the stateful components: tabs, accordion, menu, combobox, select, slider, date-picker and the rest. Writing each by hand means reimplementing focus, keyboard and ARIA with all their edge cases; Zag already does, and both bindings consume the same machine from @skryensya/core/machines, so behavior has a single owner.",
+        },
+      },
+      {
+        id: "zag-react",
+        name: "@zag-js/react",
+        used: "react",
+        why: {
+          es: "Es el adaptador que conecta una machine de Zag con el ciclo de render de React (useMachine y connect). Mantiene el binding de React delgado: expone props y no vuelve a declarar comportamiento.",
+          en: "The adapter that connects a Zag machine to React's render cycle (useMachine and connect). It keeps the React binding thin: it exposes props and never restates behavior.",
+        },
+      },
+      {
+        id: "zag-vanilla",
+        name: "@zag-js/vanilla, @zag-js/svelte",
+        used: "vanilla",
+        why: {
+          es: "Son el adaptador de la capa Vanilla. Esa capa hidrata el HTML que escribió el consumidor y parchea los atributos que devuelve connect, sin renderizar estructura propia. Svelte es solo la implementación interna que monta sobre esas raíces en light DOM: no es un contrato para el consumidor (ADR 0010).",
+          en: "The adapter for the Vanilla layer. That layer hydrates the HTML the consumer wrote and patches the attributes connect returns, without rendering structure of its own. Svelte is only the internal implementation that mounts over those roots in light DOM; it is not a consumer contract (ADR 0010).",
+        },
+      },
+      {
+        id: "svelte",
+        name: "svelte",
+        used: "vanilla",
+        why: {
+          es: "Es el runtime que necesita @zag-js/svelte para reaccionar a los cambios de la machine. Se declara como dependencia de @skryensya/vanilla para que quien use HTML puro no tenga que instalarlo ni saber que existe.",
+          en: "The runtime @zag-js/svelte needs to react to machine changes. It is declared as a dependency of @skryensya/vanilla so that someone writing plain HTML never has to install it or know it exists.",
+        },
+      },
+      {
+        id: "react",
+        name: "react, react-dom",
+        used: "react, charts",
+        why: {
+          es: "Son peer dependencies (>=19), no dependencias: el consumidor ya tiene React y el sistema no puede traer una segunda copia sin romper hooks y contexto. Se pide 19 como piso porque el binding lo asume.",
+          en: "Peer dependencies (>=19), not dependencies: the consumer already has React, and the system cannot bring a second copy without breaking hooks and context. 19 is the floor because the binding assumes it.",
+        },
+      },
+    ],
+  },
+  {
+    id: "data",
+    title: { es: "Datos y formatos", en: "Data and formats" },
+    blurb: {
+      es: "Problemas con una especificación detrás, donde reescribir es introducir bugs.",
+      en: "Problems with a specification behind them, where rewriting means introducing bugs.",
+    },
+    entries: [
+      {
+        id: "internationalized-date",
+        name: "@internationalized/date",
+        used: "core",
+        why: {
+          es: "Calendar, DatePicker y TimeField necesitan aritmética de fechas sin zonas horarias ambiguas ni calendarios hardcodeados al gregoriano. Es el tipo de fecha que usan también las machines de Zag, así que no hay conversiones en la frontera.",
+          en: "Calendar, DatePicker and TimeField need date arithmetic with no ambiguous time zones and no calendars hardcoded to Gregorian. It is also the date type the Zag machines use, so there is no conversion at the boundary.",
+        },
+      },
+      {
+        id: "qrcode",
+        name: "qrcode",
+        used: "core",
+        why: {
+          es: "QrCode dibuja un código escaneable. La codificación (versiones, corrección de errores, máscaras) es una especificación larga y poco visible; un error ahí produce códigos que parecen válidos y no se leen. Se delega para que el componente solo pinte el resultado.",
+          en: "QrCode draws a scannable code. The encoding (versions, error correction, masks) is a long, low-visibility specification; a mistake there yields codes that look valid and do not scan. It is delegated so the component only paints the result.",
+        },
+      },
+      {
+        id: "libphonenumber",
+        name: "libphonenumber-js",
+        used: "phone",
+        why: {
+          es: "Validar y formatear teléfonos depende de metadatos por país que cambian con frecuencia. Mantener esa tabla sería un trabajo aparte del design system, por eso vive en un paquete opcional (@skryensya/phone) y el núcleo no la carga.",
+          en: "Validating and formatting phone numbers depends on per-country metadata that changes often. Maintaining that table would be a separate job from the design system, which is why it lives in an optional package (@skryensya/phone) and the core never loads it.",
+        },
+      },
+      {
+        id: "prosemirror",
+        name: "prosemirror-*",
+        used: "editor",
+        why: {
+          es: "Un editor de texto enriquecido es modelo de documento, selección, historial y transformaciones, no un contenteditable con botones. ProseMirror resuelve eso con un esquema explícito, y el editor queda en su propio paquete opcional para que quien no lo use no pague su peso.",
+          en: "A rich-text editor is a document model, selection, history and transforms, not a contenteditable with buttons. ProseMirror solves that with an explicit schema, and the editor sits in its own optional package so anyone not using it does not pay for it.",
+        },
+      },
+      {
+        id: "tanstack-charts",
+        name: "@tanstack/charts",
+        used: "charts",
+        why: {
+          es: "Es el motor de gráficos detrás de @skryensya/charts. Se declara como peer opcional y con versión fija porque el sistema aporta la apariencia (tokens y paleta) y no reimplementa escalas, ejes ni layout.",
+          en: "The charting engine behind @skryensya/charts. It is an optional peer with a pinned version because the system supplies the look (tokens and palette) and does not reimplement scales, axes or layout.",
+        },
+      },
+    ],
+  },
+  {
+    id: "optional",
+    title: { es: "Peers opcionales de los bindings", en: "Optional binding peers" },
+    blurb: {
+      es: "Paquetes del propio sistema que React y Vanilla piden solo si se usa la función.",
+      en: "Packages of the system itself that React and Vanilla ask for only when the feature is used.",
+    },
+    entries: [
+      {
+        id: "optional-peers",
+        name: "@skryensya/editor, @skryensya/icons-material, @skryensya/icons-phosphor",
+        used: "react, vanilla",
+        why: {
+          es: "Se marcan como peer opcional para que el árbol de instalación de quien no usa un editor o un set de iconos concreto no los incluya. Los iconos de Lucide sí vienen por defecto porque los componentes los necesitan para funcionar.",
+          en: "Marked as optional peers so the install tree of someone not using an editor or a given icon set does not include them. The Lucide icons do ship by default because the components need them to work.",
+        },
+      },
+    ],
+  },
+  {
+    id: "tooling",
+    title: { es: "Herramientas del repositorio", en: "Repository tooling" },
+    blurb: {
+      es: "No llegan al navegador del consumidor: sostienen el compilador, el MCP, el Maker y el puente con Figma.",
+      en: "They never reach the consumer's browser: they power the compiler, the MCP, the Maker and the Figma bridge.",
+    },
+    entries: [
+      {
+        id: "typescript-vite",
+        name: "typescript, vite",
+        used: "ai-compiler, storybook-kit",
+        why: {
+          es: "El compilador lee los contracts como código TypeScript real y storybook-kit corre sobre Vite. Se usan como herramienta, no como API que el consumidor vea.",
+          en: "The compiler reads contracts as real TypeScript and storybook-kit runs on Vite. They are used as tools, not as an API the consumer sees.",
+        },
+      },
+      {
+        id: "yaml",
+        name: "yaml",
+        used: "ai-compiler",
+        why: {
+          es: "El changelog y otros artefactos derivados se escriben en YAML. Un parser completo evita regex frágiles sobre un formato con anclas, multilínea y comillas.",
+          en: "The changelog and other derived artifacts are written in YAML. A full parser avoids brittle regexes over a format with anchors, multiline scalars and quoting.",
+        },
+      },
+      {
+        id: "zod",
+        name: "zod",
+        used: "mcp, maker-agent",
+        why: {
+          es: "Las herramientas del MCP y del Maker reciben datos que escribe un modelo. Validarlos en la entrada con un esquema declarativo hace que un argumento mal formado falle con un mensaje claro y no más adentro.",
+          en: "The MCP and Maker tools receive data written by a model. Validating it at the door with a declarative schema makes a malformed argument fail with a clear message instead of deeper in.",
+        },
+      },
+      {
+        id: "mcp-sdk",
+        name: "@modelcontextprotocol/server, @modelcontextprotocol/node, hono",
+        used: "mcp",
+        why: {
+          es: "El MCP es un adaptador sin estado sobre el SDK oficial (ADR 0027): hablar el protocolo a mano sería mantener una especificación ajena. El bundle los deja como externos porque son dependencias reales de npm.",
+          en: "The MCP is a stateless adapter over the official SDK (ADR 0027): speaking the protocol by hand would mean maintaining someone else's specification. The bundle keeps them external because they are real npm dependencies.",
+        },
+      },
+      {
+        id: "postgres",
+        name: "postgres",
+        used: "maker-server",
+        why: {
+          es: "Los proyectos del Maker viven en PostgreSQL detrás de la API propia del Maker (ADR 0032). Es el cliente que habla con esa base; ningún otro paquete la toca.",
+          en: "Maker projects live in PostgreSQL behind the Maker's own API (ADR 0032). It is the client that talks to that database; no other package touches it.",
+        },
+      },
+      {
+        id: "figma-tooling",
+        name: "postcss, jsdom, @bramus/specificity",
+        used: "figma",
+        why: {
+          es: "Figma es un destino de compilación alimentado por un manifiesto derivado (ADR 0034). Para convertir el CSS real a variables y estilos hace falta resolver la cascada: postcss lo parsea, @bramus/specificity ordena las reglas y jsdom da un DOM donde medirlas.",
+          en: "Figma is a compile target fed by a derived manifest (ADR 0034). Turning the real CSS into variables and styles means resolving the cascade: postcss parses it, @bramus/specificity orders the rules and jsdom provides a DOM to measure them on.",
+        },
+      },
+    ],
+  },
+];
+
+const copy = {
+  es: {
+    title: "Dependencias",
+    description: "Cada dependencia de terceros del design system y la razón por la que existe.",
+    lede: "Esta página declara todo lo que el sistema toma de terceros. Cada dependencia lleva un párrafo con <strong>por qué</strong> está y no se escribió aquí. Los paquetes @skryensya/* no aparecen: son el sistema. Las versiones viven en cada <code>package.json</code>; copiarlas aquí las dejaría desactualizadas.",
+    usedIn: "Paquetes",
+    after: "Después de esto",
+    next: 'Sigue con <a href="{architecture}">Arquitectura</a> para ver cómo se reparten estas piezas, o con <a href="{prerequisites}">Prerrequisitos</a> para lo que conviene saber de la plataforma antes.',
+  },
+  en: {
+    title: "Dependencies",
+    description: "Every third-party dependency of the design system and the reason it exists.",
+    lede: "This page declares everything the system takes from third parties. Each dependency carries a paragraph on <strong>why</strong> it is here and was not written here. The @skryensya/* packages are not listed: they are the system. Versions live in each <code>package.json</code>; copying them here would let them go stale.",
+    usedIn: "Packages",
+    after: "After this",
+    next: 'Continue with <a href="{architecture}">Architecture</a> to see how these pieces are split, or <a href="{prerequisites}">Prerequisites</a> for the platform knowledge worth having first.',
+  },
+} as const;
+
+const c = copy[locale];
+const next = c.next
+  .replace("{architecture}", href("/architecture"))
+  .replace("{prerequisites}", href("/prerequisites"));
+---
+
+<Base title={c.title} description={c.description} documentLayout="grid">
+  <h1>{c.title}</h1>
+  <p class="lede" set:html={c.lede} />
+
+  {
+    groups.map((group) => (
+      <section class="docs-deps" aria-labelledby={`deps-${group.id}`} data-toc-transparent>
+        <h2 id={`deps-${group.id}`}>{group.title[locale]}</h2>
+        <p class="docs-deps__blurb">{group.blurb[locale]}</p>
+        {group.entries.map((entry) => (
+          <article class="docs-deps__entry">
+            <h3 id={`dep-${entry.id}`}>
+              <code>{entry.name}</code>
+            </h3>
+            <p>{entry.why[locale]}</p>
+            <p class="docs-deps__used">
+              {c.usedIn}: <code>{entry.used}</code>
+            </p>
+          </article>
+        ))}
+      </section>
+    ))
+  }
+
+  <h2>{c.after}</h2>
+  <p set:html={next} />
+</Base>
+
+<style>
+  .docs-deps + .docs-deps {
+    margin-block-start: var(--space-stack-xl);
+  }
+
+  .docs-deps__blurb,
+  .docs-deps__used {
+    color: var(--color-text-secondary);
+  }
+
+  .docs-deps__used {
+    margin-block-start: var(--space-stack-xs);
+    font-size: var(--font-size-body-sm);
+  }
+</style>

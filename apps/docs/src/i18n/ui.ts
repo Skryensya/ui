@@ -468,6 +468,7 @@ export const navLabel: Record<Locale, Partial<Record<string, string>>> = {
     "/": "Installation",
     "/installation": "Installation",
     "/prerequisites": "Prerequisites",
+    "/dependencies": "Dependencies",
     "/first-component": "Your first component",
     "/automatic-mounting": "Automatic mounting",
     "/architecture": "Architecture",
