@@ -1,5 +1,5 @@
 ---
-import Base from "../../layouts/Base.astro";
+import FoundationPage from "../../components/FoundationPage.astro";
 import CodeBlock from "../../components/CodeBlock.astro";
 
 const import_ = `@import "@skryensya/core/patterns/scroll-lock.css";`;
@@ -18,12 +18,10 @@ html:has(dialog:modal) .mi-toc {
 }`;
 ---
 
-<Base
+<FoundationPage
   title="Scroll lock"
-  documentLayout="grid"
   description="Pattern opt-in que congela el documento detrás de un dialog modal y reserva el scrollbar gutter."
 >
-  <h1>Scroll lock</h1>
   <p class="lede">
     <strong>Scroll lock es un Pattern</strong> de documento: si una app importa su CSS, el
     <code>html</code> se congela mientras existe un <code>dialog:modal</code> y conserva el gutter de
@@ -99,4 +97,4 @@ html:has(dialog:modal) .mi-toc {
     <kbd class="sk-kbd" data-sk-command-palette-hint>⌘K</kbd> o el drawer de navegación en un
     viewport estrecho: la página detrás no se desplaza y el ancho se mantiene estable.
   </p>
-</Base>
+</FoundationPage>

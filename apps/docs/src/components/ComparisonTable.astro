@@ -1,0 +1,37 @@
+---
+/*
+ * The kit's ComparisonTable, for docs copy. The component's cells are nodes, and the docs write theirs
+ * as message strings with `<code>` and links, so this draws the same markup the contract emits (same
+ * parts, same `scope`s, same visually hidden corner) with `set:html` on the cells. Anything that can be
+ * a usage tree should be one; this exists for the comparison blocks whose cells are translated prose.
+ */
+import "@skryensya/core/components/comparison-table.css";
+import { comparisonTableParts as parts } from "@skryensya/core/comparison-table";
+
+interface Props {
+  aspectLabel: string;
+  columns: readonly string[];
+  /** `labelHtml` for a row header that carries markup (a key drawn as `<kbd>`); trusted, like the cells. */
+  rows: readonly { label: string; labelHtml?: string; cells: readonly string[] }[];
+}
+const { aspectLabel, columns, rows } = Astro.props;
+---
+
+<table class={parts.root}>
+  <thead>
+    <tr>
+      <th class={parts.corner} scope="col"><span class={parts.cornerLabel}>{aspectLabel}</span></th>
+      {columns.map((name) => <th class={parts.column} scope="col">{name}</th>)}
+    </tr>
+  </thead>
+  <tbody>
+    {
+      rows.map(({ label, labelHtml, cells }) => (
+        <tr class={parts.row}>
+          {labelHtml ? <th class={parts.rowHeader} scope="row" set:html={labelHtml} /> : <th class={parts.rowHeader} scope="row">{label}</th>}
+          {cells.map((html) => <td class={parts.cell} set:html={html} />)}
+        </tr>
+      ))
+    }
+  </tbody>
+</table>

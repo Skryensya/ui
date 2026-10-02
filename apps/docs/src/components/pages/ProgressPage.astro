@@ -1,5 +1,8 @@
 ---
 import "@skryensya/core/components/progress.css";
+import "@skryensya/core/components/steps.css";
+import "@skryensya/core/components/typography.css";
+import "@skryensya/core/patterns/layout.css";
 /* Structure diagram: Annotated specimen; a preview frame only copies styles THIS page loaded. */
 import "@skryensya/core/components/annotation.css";
 import ComponentPageShell from "./ComponentPageShell.astro";
@@ -11,11 +14,20 @@ import ContentRules from "../ContentRules.astro";
 import A11yNotes from "../A11yNotes.astro";
 import {
   progressAnatomyTree,
+  progressAsBarTree,
+  progressAsSegmentsTree,
+  progressSegmentsTree,
   progressDoRunningTree,
   progressDoTaskTree,
+  progressDoValueTree,
+  progressDontBareTree,
   progressDontMeasureTree,
+  progressEmptyTree,
+  progressFullTree,
+  progressMostTree,
+  progressQuarterTree,
+  progressStepsTree,
   progressDontRunningTree,
-  progressSingleTree,
   progressTree,
 } from "../../demos/progress";
 import { annotationDemoCss } from "../../demos/annotation";
@@ -25,6 +37,23 @@ const t = useTranslations(getLocale(Astro.url));
 const install = `pnpm add @skryensya/core @skryensya/react`;
 
 /* What each value of a property is for, read from this page's messages. Same model Badge uses. */
+const valueVariants = [
+  { value: "0", tree: progressEmptyTree },
+  { value: "25", tree: progressQuarterTree },
+  { value: "68", tree: progressMostTree },
+  { value: "100", tree: progressFullTree },
+].map(({ value, tree }) => ({
+  value,
+  label: `${value}%`,
+  tree: tree(t),
+  explain: t(`progressPage.valueExplain.${value}` as Parameters<typeof t>[0]),
+}));
+const styleVariants = (["bar", "segments"] as const).map((style) => ({
+  value: style,
+  label: t(`progressPage.style.${style}` as Parameters<typeof t>[0]),
+  tree: (style === "bar" ? progressAsBarTree : progressAsSegmentsTree)(t),
+  explain: t(`progressPage.styleExplain.${style}` as Parameters<typeof t>[0]),
+}));
 const explain = (option: string, values: readonly string[]) =>
   Object.fromEntries(values.map((value) => [value, t(`progressPage.prop.${option}.${value}` as Parameters<typeof t>[0])]));
 ---
@@ -39,7 +68,8 @@ const explain = (option: string, values: readonly string[]) =>
     <p class="lede" set:html={t("progressPage.lede")} />
 
     <UsagePreview
-      tree={progressSingleTree(t)}
+      tree={progressMostTree(t)}
+      target={["children", 0, "children", 1]}
       optionName="tone"
       title={t("progressPage.prop.tone.title")}
       description={t("progressPage.prop.tone.body")}
@@ -47,8 +77,30 @@ const explain = (option: string, values: readonly string[]) =>
       stageMinBlockSize="7rem"
     />
 
+    <UsagePreview
+      variants={valueVariants}
+      initialVariant="68"
+      variantsLabel={t("progressPage.valueLabel")}
+      title={t("progressPage.valueTitle")}
+      description={t("progressPage.valueBody")}
+      stageMinBlockSize="7rem"
+    />
+
+    <UsagePreview
+      variants={styleVariants}
+      initialVariant="segments"
+      variantsLabel={t("progressPage.styleLabel")}
+      title={t("progressPage.styleTitle")}
+      description={t("progressPage.styleBody")}
+      stageMinBlockSize="7rem"
+    />
+
     <h3>{t("component.examplesTitle")}</h3>
     <UsagePreview tree={progressTree(t)} title={t("progressPage.tasksTitle")} description={t("progressPage.tasksBody")} />
+    <h4>{t("progressPage.segmentsTitle")}</h4>
+    <p set:html={t("progressPage.segmentsBody")} />
+    <UsagePreview tree={progressSegmentsTree(t)} label={t("progressPage.segmentsTitle")} />
+    <UsagePreview tree={progressStepsTree(t)} title={t("progressPage.stepsTitle")} description={t("progressPage.stepsBody")} />
 
     <h3>{t("component.contractNotesTitle")}</h3>
     <ul>
@@ -78,6 +130,11 @@ const explain = (option: string, values: readonly string[]) =>
       title={t("progressPage.dd.task.title")}
       do={{ tree: progressDoTaskTree(t), caption: t("progressPage.dd.task.do") }}
       dont={{ tree: progressDontMeasureTree(t), caption: t("progressPage.dd.task.dont") }}
+    />
+    <DoDont
+      title={t("progressPage.dd.value.title")}
+      do={{ tree: progressDoValueTree(t), caption: t("progressPage.dd.value.do") }}
+      dont={{ tree: progressDontBareTree(t), caption: t("progressPage.dd.value.dont") }}
     />
     <ContentRules items={tList(t, "progressPage.content")} />
   </Fragment>

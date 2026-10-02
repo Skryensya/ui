@@ -16,3 +16,7 @@ export const Default: StoryObj = treeStory(demos.paginationTree);
 export const DontFew: StoryObj = treeStory(demos.paginationDontFewTree);
 export const DoBelow: StoryObj = treeStory(demos.paginationDoBelowTree);
 export const DontAbove: StoryObj = treeStory(demos.paginationDontAboveTree);
+export const SiblingsCase: StoryObj = treeStory(demos.paginationSiblingsCase);
+export const Results: StoryObj = treeStory(demos.paginationResultsTree);
+export const PositionCase: StoryObj = treeStory(demos.paginationPositionCase);
+export const Appearance: StoryObj = treeStory(demos.paginationAppearanceTree);

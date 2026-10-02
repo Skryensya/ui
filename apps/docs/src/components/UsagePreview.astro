@@ -35,9 +35,21 @@ import "@skryensya/core/components/segmented.css";
 import "./preview-card.css";
 
 interface Props {
-  tree: UsageTree;
+  tree?: UsageTree;
   /** The one option this preview varies: an enum, or a boolean (played as its two values). Omit for a fixed example. */
   optionName?: string;
+  /**
+   * Switch between whole trees instead of one option, for a docs-only axis the contract has no enum for
+   * (a megamenu's column count). It is the same `PropertyPlayground` as an option card: the control
+   * picks which tree is drawn, with its sentence under the example. `tree` is then omitted.
+   */
+  variants?: { value: string; label: string; tree: UsageTree; explain?: string }[];
+  /** The variant shown first. Absent, the first one. */
+  initialVariant?: string;
+  /** A button at the top of the stage that plays the root's `present` on and off (Presence): the control picks the motion. */
+  toggleLabel?: string;
+  /** The control's accessible name when `variants` is set. */
+  variantsLabel?: string;
   /** Where `optionName` lives when it is not on the root: a path of keys and indices (`usage-tree-path.ts`). */
   target?: TreePath;
   /** The preview's heading. Omit it when the page already titled this example. */
@@ -74,7 +86,7 @@ interface Props {
   /** Reserve room for what paints out of flow: an open listbox (`menu`), a dialog or drawer (`overlay`). Isolates. */
   viewport?: "auto" | "menu" | "overlay" | "menu-deep";
   /** A fixed screen: the example sees a phone (`mobile`) or a tablet, for a pattern that only reads at that width. Isolates. */
-  screen?: "tablet" | "mobile";
+  screen?: "xl" | "tablet" | "mobile";
   /** No stage padding: the example reaches the card's edges. Isolates. */
   flush?: boolean;
   /** Let the stage scroll instead of growing to its content. Isolates. */
@@ -89,8 +101,12 @@ interface Props {
 }
 
 const {
-  tree: authoredTree,
+  tree: givenTree,
   optionName,
+  variants,
+  initialVariant,
+  variantsLabel,
+  toggleLabel,
   target = [],
   title,
   description,
@@ -113,6 +129,7 @@ const {
   bare = false,
   screen,
 } = Astro.props;
+const authoredTree = (givenTree ?? variants?.[0]?.tree)!;
 /*
  * AN ANATOMY DIAGRAM IS LOOKED AT, NOT EXPLORED: no zoom bar, no gestures, no tab stop on the canvas,
  * the drawing fitted and centred. That is `Annotated`'s own `fitOnly`, set here once for every bare
@@ -120,13 +137,23 @@ const {
  */
 const anatomy = bare && authoredTree.contract === "annotation" && authoredTree.signature === "Annotated";
 const tree = anatomy ? { ...authoredTree, options: { ...authoredTree.options, fitOnly: true } } : authoredTree;
-const framedStage = !optionName && (isolate || bare || flush || scroll || Boolean(script) || Boolean(screen) || viewport !== "auto");
+/* A fixed screen is the card's own authoring decision, so the root says which (the enhancer keeps it
+   instead of falling back to "free"). `xl` is drawn at 840px, just past the 52rem desktop query. */
+const screenRoot = screen
+  ? {
+      "data-sk-component-preview-screen-local": screen,
+      style: screen === "xl" ? "--sk-component-preview-screen-xl: 840px;" : undefined,
+    }
+  : {};
+const framedStage = !optionName && !variants && (isolate || bare || flush || scroll || Boolean(script) || Boolean(screen) || viewport !== "auto");
 const t = useTranslations(getLocale(Astro.url));
 
 let values: readonly string[] = [];
 let defaultValue = "";
 let segmentLabels: Record<string, string> = {};
 let isBoolean = false;
+let onValue: string | undefined;
+let explainByValue: Record<string, string> | undefined = explain;
 /* The option list for the node a path names. A collection ENTRY (`items: [{ options, slots }]`) is
    data, not a tree: it has no contract of its own, so its options are the ones its owner's slot
    declares for every entry (`ContractSlot.item.options`). */
@@ -154,12 +181,29 @@ if (optionName) {
   if (!found) throw new Error(`UsagePreview: "${owner}" declares no option "${optionName}".`);
   const [, option] = found;
   isBoolean = option.type === "boolean";
-  if (!isBoolean && (option.type !== "enum" || !option.values)) {
+  /* A string option can borrow another contract's enum (`valuesFrom`: Menu's `triggerVariant` is
+     Button's `variant`), so its values and default are read from there, never retyped here. */
+  const borrowed = option.valuesFrom ? getContract(option.valuesFrom.contract)?.options?.[option.valuesFrom.option] : undefined;
+  const enumOption = option.type === "enum" ? option : borrowed?.type === "enum" ? borrowed : undefined;
+  if (!isBoolean && !enumOption?.values) {
     throw new Error(`UsagePreview: "${optionName}" is a "${option.type}" option, neither an enum nor a boolean.`);
   }
-  values = isBoolean ? ["false", "true"] : option.values!;
-  defaultValue = String(node.options?.[optionName] ?? option.default ?? values[0]);
+  /* An enum with ONE value is a switch: the option is either absent or that value (`density`'s only
+     value is `compact`). It plays as off/on, and the one value is what "on" writes into the tree. */
+  const switchValue = !isBoolean && enumOption!.values!.length === 1 ? enumOption!.values![0] : undefined;
+  values = isBoolean || switchValue ? ["false", "true"] : enumOption!.values!;
+  defaultValue = switchValue
+    ? String(node.options?.[optionName] === switchValue)
+    : String(node.options?.[optionName] ?? option.default ?? enumOption?.default ?? values[0]);
+  onValue = switchValue;
   segmentLabels = Object.fromEntries(values.map((value) => [value, labels?.[value] ?? value.charAt(0).toUpperCase() + value.slice(1)]));
+}
+
+if (variants) {
+  values = variants.map(({ value }) => value);
+  defaultValue = initialVariant ?? values[0]!;
+  segmentLabels = Object.fromEntries(variants.map(({ value, label: optionLabel }) => [value, optionLabel]));
+  explainByValue = Object.fromEntries(variants.filter(({ explain }) => explain).map(({ value, explain }) => [value, explain!]));
 }
 
 const codeHref = storybookTitle && storybookStory ? storybookDocsUrl(storybookReactUrl, storybookTitle, storybookStory) : null;
@@ -175,7 +219,7 @@ const scope = css ? `u${[...(css + JSON.stringify(tree))].reduce((h, c) => (h * 
 ---
 
 <section
-  class:list={["sk-preview-section", optionName && "sk-usage-preview--controlled"]}
+  class:list={["sk-preview-section", (optionName || variants) && "sk-usage-preview--controlled"]}
   data-width={width}
   {...(id ? { "aria-labelledby": id } : label ? { "aria-label": label } : {})}
 >
@@ -184,7 +228,7 @@ const scope = css ? `u${[...(css + JSON.stringify(tree))].reduce((h, c) => (h * 
   {scope && !framedStage && <style is:inline set:html={`[data-usage-scope="${scope}"] { ${css} }`} />}
   {
     framedStage && bare ? (
-      <div class="sk-component-preview" data-sk-component-preview data-sk-component-preview-chrome="false" data-sk-component-preview-surface="none">
+      <div class="sk-component-preview" data-sk-component-preview data-sk-component-preview-chrome="false" data-sk-component-preview-surface="none" {...screenRoot}>
         <TreeDemo client:visible tree={tree} measure={measure} frameOptions={frameOptions} />
       </div>
     ) : (
@@ -201,23 +245,26 @@ const scope = css ? `u${[...(css + JSON.stringify(tree))].reduce((h, c) => (h * 
           )
         }
         {
-          optionName ? (
+          optionName || variants ? (
             <PropertyPlayground
               client:visible
               tree={tree}
               optionName={optionName}
+              toggleLabel={toggleLabel}
+              trees={variants && Object.fromEntries(variants.map(({ value, tree: variantTree }) => [value, variantTree]))}
               target={target}
               values={values}
               boolean={isBoolean}
+              onValue={onValue}
               defaultValue={defaultValue}
               labels={segmentLabels}
-              controlLabel={title ?? optionName}
-              explain={explain}
+              controlLabel={variantsLabel ?? title ?? optionName ?? label ?? ""}
+              explain={explainByValue}
               remountOnChange={remountOnChange}
             />
           ) : framedStage ? (
             <>
-              <div class="sk-component-preview" data-sk-component-preview data-sk-component-preview-chrome="false" data-sk-component-preview-surface="none">
+              <div class="sk-component-preview" data-sk-component-preview data-sk-component-preview-chrome="false" data-sk-component-preview-surface="none" {...screenRoot}>
                 <TreeDemo client:visible tree={tree} measure={measure} frameOptions={frameOptions} />
               </div>
               {caption && <p class="sk-preview-card__caption" set:html={caption} />}

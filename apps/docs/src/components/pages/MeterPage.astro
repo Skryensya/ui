@@ -11,6 +11,7 @@ import ContentRules from "../ContentRules.astro";
 import A11yNotes from "../A11yNotes.astro";
 import {
   meterAnatomyTree,
+  meterDoMeasureTree,
   meterDoToneTree,
   meterDontTaskTree,
   meterDontToneTree,
@@ -20,6 +21,8 @@ import {
 import { annotationDemoCss } from "../../demos/annotation";
 import { getLocale, tList, useTranslations } from "../../i18n";
 
+/* The property card shows one meter, centred, at the same width as the page's other examples. */
+const toneCardCss = `.sk-meter-group { inline-size: min(100%, 24rem); }`;
 const t = useTranslations(getLocale(Astro.url));
 const install = `pnpm add @skryensya/core @skryensya/react`;
 
@@ -44,7 +47,8 @@ const explain = (option: string, values: readonly string[]) =>
       title={t("meterPage.prop.tone.title")}
       description={t("meterPage.prop.tone.body")}
       explain={explain("tone", ["accent", "success", "warning", "danger"])}
-      stageMinBlockSize="7rem"
+      css={toneCardCss}
+      stageMinBlockSize="8rem"
     />
 
     <h3>{t("component.examplesTitle")}</h3>
@@ -71,7 +75,7 @@ const explain = (option: string, values: readonly string[]) =>
     />
     <DoDont
       title={t("meterPage.dd.measure.title")}
-      do={{ tree: meterSingleTree(t), caption: t("meterPage.dd.measure.do") }}
+      do={{ tree: meterDoMeasureTree(t), caption: t("meterPage.dd.measure.do") }}
       dont={{ tree: meterDontTaskTree(t), caption: t("meterPage.dd.measure.dont") }}
     />
     <ContentRules items={tList(t, "meterPage.content")} />

@@ -10,15 +10,25 @@ import ComponentPageShell from "./ComponentPageShell.astro";
 import AppearanceMenu from "../AppearanceMenu.astro";
 import CodeBlock from "../CodeBlock.astro";
 import UsagePreview from "../UsagePreview.astro";
+import DoDont from "../DoDont.astro";
 import WhenToUse from "../WhenToUse.astro";
 import ContentRules from "../ContentRules.astro";
 import A11yNotes from "../A11yNotes.astro";
 import {
+  popoverCardCase,
+  popoverDoInteractiveTree,
+  popoverDoActionTree,
+  popoverDoNameTree,
+  popoverDoShortTree,
+  popoverDontDecisionTree,
+  popoverDontNameTree,
+  popoverDontLabelTree,
+  popoverDontLongTree,
+  popoverGuideCss,
   popoverAnatomyCss,
   popoverAnatomyTree,
   popoverTree,
   popoverStructuredTree,
-  popoverPlacementTree,
   popupTree,
   popupAnatomyTree,
   popupAnatomyCss,
@@ -26,6 +36,14 @@ import {
 import { getLocale, tList, useTranslations } from "../../i18n";
 
 const t = useTranslations(getLocale(Astro.url));
+
+/* What each value of a property is for, read from this page's messages. Same model Badge and Menu use. */
+const explain = (option: string, values: readonly string[]) =>
+  Object.fromEntries(values.map((value) => [value, t(`popoverPage.prop.${option}.${value}` as Parameters<typeof t>[0])]));
+const prop = (option: string) => ({
+  title: t(`popoverPage.prop.${option}.title` as Parameters<typeof t>[0]),
+  description: t(`popoverPage.prop.${option}.body` as Parameters<typeof t>[0]),
+});
 
 const styles = `@import "@skryensya/core/patterns/anchored.css";
 @import "@skryensya/core/components/popover.css";`;
@@ -53,12 +71,17 @@ mountIcons(document, lucideIcons);`;
   <Fragment slot="usage">
     <p class="lede" set:html={t("popoverPage.lede")} />
 
+    {/* One card per option with a closed set of values. The panel opens over the card, so each stage is
+        reserved tall enough, and wide enough for a side placement, not to move when it opens. */}
+    <UsagePreview tree={popoverCardCase(t, "placement")} optionName="placement" {...prop("placement")} explain={explain("placement", ["block-start", "block-end", "inline-start", "inline-end"])} labels={{ "block-start": "Arriba", "block-end": "Abajo", "inline-start": "Inicio", "inline-end": "Final" }} stageMinBlockSize="24rem" />
+    <UsagePreview tree={popoverCardCase(t, "arrow")} optionName="arrow" {...prop("arrow")} explain={explain("arrow", ["false", "true"])} labels={{ false: t("popoverPage.prop.arrow.off"), true: t("popoverPage.prop.arrow.on") }} stageMinBlockSize="24rem" />
+    <UsagePreview tree={popoverCardCase(t, "triggerVariant")} optionName="triggerVariant" {...prop("triggerVariant")} explain={explain("triggerVariant", ["solid", "soft", "ghost"])} stageMinBlockSize="24rem" />
+    <UsagePreview tree={popoverCardCase(t, "triggerTone")} optionName="triggerTone" {...prop("triggerTone")} explain={explain("triggerTone", ["neutral", "accent", "danger"])} stageMinBlockSize="24rem" />
+
     <h3>{t("component.examplesTitle")}</h3>
     <UsagePreview tree={popoverTree(t)} title={t("popoverPage.simpleTitle")} description={t("popoverPage.simpleBody")} viewport="overlay" />
 
     <UsagePreview tree={popoverStructuredTree(t)} title={t("popoverPage.structuredTitle")} description={t("popoverPage.structuredBody")} viewport="overlay" />
-
-    <UsagePreview tree={popoverPlacementTree(t)} title={t("popoverPage.placementTitle")} description={t("popoverPage.placementBody")} viewport="overlay" />
 
     {/*
       * POPUP IS THIS FAMILY'S BARE SIGNATURE, not a component of its own, and this section is where
@@ -102,6 +125,34 @@ mountIcons(document, lucideIcons);`;
   <Fragment slot="guidelines">
     <p class="lede" set:html={t("popoverPage.guidelinesLede")} />
     <WhenToUse use={tList(t, "popoverPage.when")} avoid={tList(t, "popoverPage.whenNot")} />
+    <DoDont
+      canvas
+      compact
+      title={t("popoverPage.dd.interactive.title")}
+      do={{ tree: popoverDoInteractiveTree(t), caption: t("popoverPage.dd.interactive.do") }}
+      dont={{ tree: popoverDontLabelTree(t), caption: t("popoverPage.dd.interactive.dont") }}
+    />
+    <DoDont
+      canvas
+      compact
+      title={t("popoverPage.dd.short.title")}
+      do={{ tree: popoverDoShortTree(t), caption: t("popoverPage.dd.short.do") }}
+      dont={{ tree: popoverDontLongTree(t), caption: t("popoverPage.dd.short.dont") }}
+    />
+    <DoDont
+      canvas
+      compact
+      title={t("popoverPage.dd.name.title")}
+      do={{ tree: popoverDoNameTree(t), caption: t("popoverPage.dd.name.do") }}
+      dont={{ tree: popoverDontNameTree(t), caption: t("popoverPage.dd.name.dont") }}
+    />
+    <DoDont
+      canvas
+      compact
+      title={t("popoverPage.dd.decision.title")}
+      do={{ tree: popoverDoActionTree(t), caption: t("popoverPage.dd.decision.do") }}
+      dont={{ tree: popoverDontDecisionTree(t), caption: t("popoverPage.dd.decision.dont") }}
+    />
     <ContentRules items={tList(t, "popoverPage.content")} />
   </Fragment>
 
@@ -122,3 +173,5 @@ mountIcons(document, lucideIcons);`;
     />
   </Fragment>
 </ComponentPageShell>
+
+<style is:global set:html={popoverGuideCss}></style>

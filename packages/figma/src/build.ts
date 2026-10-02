@@ -800,7 +800,7 @@ async function compileRealization(authored: Realization, shared: Shared): Promis
         // In a grid laid across, a child in an `fr` column fills the row, as flex-grow does.
         const tracks = gridTracks(ctx(el));
         const rows = /grid/.test(ctx(el).computed.get("display") ?? "") ? gridTracks(ctx(el), "grid-template-rows") : [];
-        // An in-flow `::before` is the first grid item (a ProcessList's step number): the children
+        // An in-flow `::before` is the first grid item (a Procedure's step number): the children
         // start from the next column.
         const lead = pseudo.get(el)?.before;
         let column =
@@ -1058,7 +1058,7 @@ async function compileRealization(authored: Realization, shared: Shared): Promis
           if (/^1\s*\/\s*1$/.test(generated.get("grid-area") ?? "")) continue;
           const { strokes, fills, effects, ...box } = frameOf(ctxOf(generated));
           if (!fills.length && !strokes.length) continue;
-          // What it says: a string, or a counter (a ProcessList's step number), counted as the
+          // What it says: a string, or a counter (a Procedure's step number), counted as the
           // element's place among its siblings of the same kind.
           const content = generated.get("content") ?? "";
           const quoted = /^["'](.*)["']$/.exec(content)?.[1];

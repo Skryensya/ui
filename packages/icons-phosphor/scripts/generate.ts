@@ -69,6 +69,7 @@ const MAP = {
   language: "translate",
   appearance: "swatches",
   visibility: "eye",
+  mask: "asterisk",
   "visibility-off": "eye-slash",
   "mode-system": "monitor",
   "mode-light": "sun",

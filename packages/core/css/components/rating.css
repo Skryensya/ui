@@ -230,6 +230,14 @@
     --sk-rating-off-color: var(--color-border-subtle);
   }
 
+  /* A step is a Button, and a disabled Button paints its own face: five filled squares where the
+     symbols should be. A disabled rating is the symbols alone, dimmed by the two colours above. */
+  .sk-rating[data-disabled] .sk-rating__item {
+    background: transparent;
+    border-color: transparent;
+    box-shadow: none;
+  }
+
   .sk-rating__value {
     font-weight: var(--font-weight-label);
     color: var(--color-text-primary);

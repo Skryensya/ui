@@ -8,9 +8,26 @@ import ComponentPageShell from "./ComponentPageShell.astro";
 import CodeBlock from "../CodeBlock.astro";
 import UsagePreview from "../UsagePreview.astro";
 import WhenToUse from "../WhenToUse.astro";
+import DoDont from "../DoDont.astro";
 import ContentRules from "../ContentRules.astro";
 import A11yNotes from "../A11yNotes.astro";
-import { megamenuTree } from "../../demos/megamenu";
+import {
+  megamenuAnatomyCss,
+  megamenuAnatomyTree,
+  megamenuDoNamedLinksTree,
+  megamenuDoShortTriggersTree,
+  megamenuDontLongTriggersTree,
+  megamenuGuideCss,
+  megamenuDoShortColumnsTree,
+  megamenuDontLongColumnTree,
+  megamenuDontVagueLinksTree,
+  megamenuFourColumnsTree,
+  megamenuOpenCss,
+  megamenuOpenTree,
+  megamenuThreeColumnsTree,
+  megamenuTwoColumnsTree,
+  megamenuTree,
+} from "../../demos/megamenu";
 import { getLocale, tList, useTranslations } from "../../i18n";
 
 const t = useTranslations(getLocale(Astro.url));
@@ -46,18 +63,56 @@ const hrefs = { overview: "#", pricing: "#", integrations: "#", teams: "#", ente
     <h3>{t("component.examplesTitle")}</h3>
     <h3>{t("megamenuPage.siteTitle")}</h3>
     <p set:html={t("megamenuPage.siteBody")} />
-    <UsagePreview tree={megamenuTree(t, hrefs)} label="Megamenu" viewport="overlay" flush />
+    <UsagePreview tree={megamenuTree(t, hrefs)} label="Megamenu" viewport="overlay" screen="xl" flush />
+
+    <h3>{t("megamenuPage.variantsTitle")}</h3>
+    <UsagePreview
+      variants={[
+        { value: "2", label: t("megamenuPage.columnsOption", { count: "2" }), tree: megamenuOpenTree(t, megamenuTwoColumnsTree(t, hrefs)), explain: t("megamenuPage.variantTwoBody") },
+        { value: "3", label: t("megamenuPage.columnsOption", { count: "3" }), tree: megamenuOpenTree(t, megamenuThreeColumnsTree(t, hrefs)), explain: t("megamenuPage.variantThreeBody") },
+        { value: "4", label: t("megamenuPage.columnsOption", { count: "4" }), tree: megamenuOpenTree(t, megamenuFourColumnsTree(t, hrefs)), explain: t("megamenuPage.variantFourBody") },
+      ]}
+      initialVariant="3"
+      variantsLabel={t("megamenuPage.columnsLabel")}
+      css={megamenuOpenCss}
+      label="Megamenu"
+    />
 
     <h3>{t("component.contractNotesTitle")}</h3>
     <ul>
       {tList(t, "megamenuPage.contract").map((item) => <li set:html={item} />)}
     </ul>
 
+    <h3>{t("component.anatomy")}</h3>
+    <p set:html={t("megamenuPage.anatomyBody")} />
+    <UsagePreview tree={megamenuAnatomyTree(t)} css={megamenuAnatomyCss} label={t("megamenuPage.anatomyPreviewLabel")} bare />
+
   </Fragment>
 
   <Fragment slot="guidelines">
     <p class="lede" set:html={t("megamenuPage.guidelinesLede")} />
     <WhenToUse use={tList(t, "megamenuPage.when")} avoid={tList(t, "megamenuPage.whenNot")} />
+    <DoDont
+      canvas
+      compact
+      title={t("megamenuPage.dd.links.title")}
+      do={{ tree: megamenuDoNamedLinksTree(t), caption: t("megamenuPage.dd.links.do") }}
+      dont={{ tree: megamenuDontVagueLinksTree(t), caption: t("megamenuPage.dd.links.dont") }}
+    />
+    <DoDont
+      canvas
+      compact
+      title={t("megamenuPage.dd.columns.title")}
+      do={{ tree: megamenuDoShortColumnsTree(t), caption: t("megamenuPage.dd.columns.do") }}
+      dont={{ tree: megamenuDontLongColumnTree(t), caption: t("megamenuPage.dd.columns.dont") }}
+    />
+    <DoDont
+      canvas
+      compact
+      title={t("megamenuPage.dd.triggers.title")}
+      do={{ tree: megamenuDoShortTriggersTree(t), caption: t("megamenuPage.dd.triggers.do") }}
+      dont={{ tree: megamenuDontLongTriggersTree(t), caption: t("megamenuPage.dd.triggers.dont") }}
+    />
     <ContentRules items={tList(t, "megamenuPage.content")} />
   </Fragment>
 
@@ -78,3 +133,5 @@ const hrefs = { overview: "#", pricing: "#", integrations: "#", teams: "#", ente
     />
   </Fragment>
 </ComponentPageShell>
+
+<style is:global set:html={megamenuGuideCss}></style>

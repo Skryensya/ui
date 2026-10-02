@@ -1,5 +1,5 @@
 ---
-import Base from "../../layouts/Base.astro";
+import FoundationPage from "../../components/FoundationPage.astro";
 
 type Ref = {
   label: string;
@@ -250,12 +250,10 @@ const concepts: readonly Concept[] = [
 ];
 ---
 
-<Base
+<FoundationPage
   title="Prerrequisitos"
   description="Conceptos de plataforma y estándares que este design system da por conocidos, con referencias externas."
-  documentLayout="grid"
 >
-  <h1>Prerrequisitos</h1>
   <p class="lede">
     Esta página no explica el sistema: apunta a material externo que conviene dominar antes. Cada
     concepto lista <strong>por qué aparece aquí</strong> y enlaces a la fuente (MDN, W3C, specs). El
@@ -296,7 +294,7 @@ const concepts: readonly Concept[] = [
     <a href="/es/dimensiones">dimensiones</a>,
     <a href="/es/styling-hooks">styling hooks</a>.
   </p>
-</Base>
+</FoundationPage>
 
 <style>
   .docs-prereq + .docs-prereq {

@@ -1,5 +1,5 @@
 import { ANNOTATION_RING_DISTANCE, annotationAttrs, annotationElementRadius, annotationHitIndex, annotationInstances, annotationParts, annotationRingInset, annotationRoomProperty, annotationScale, annotationSides, annotationTranslate, watchAnnotationSpecimenFocus, layoutAnnotations, readAnnotationTranslate, type AnnotationBox, type AnnotationDirection, type AnnotationLayout, type AnnotationMarkKind, type AnnotationMeasurement, type AnnotationMatch, type AnnotationPlacement, type AnnotationRingPlacement, type AnnotationSide, type AnnotationTarget, annotationContract } from "@skryensya/core/annotation";
-import { canvasParts } from "@skryensya/core/canvas";
+import { canvasAttrs, canvasParts } from "@skryensya/core/canvas";
 import { CanvasParts, useCanvasView } from "./canvas.js";
 
 /* Derived, never restated: the default lives in the contract. */
@@ -61,7 +61,9 @@ export type AnnotatedProps = Omit<HTMLAttributes<HTMLDivElement>, "children"> & 
    * a ring takes the `border-radius` of the element it wraps, so it outlines a pill as a pill.
    */
   ringRadius?: number;
-  /* The canvas's zoom bar. The drawing always sits on one: laid out at its own width, shown fitted. */
+  /** The canvas only fits the drawing: no zoom bar, no zoom, no pan, and the page keeps the wheel and the drag. */
+  fitOnly?: boolean;
+  /* The canvas's zoom bar. The drawing sits on one unless `fitOnly`: laid out at its own width, shown fitted. */
   zoomInLabel?: string;
   zoomOutLabel?: string;
   fitLabel?: string;
@@ -99,6 +101,7 @@ export function Annotated({
   className,
   inert = inertOption.default,
   label,
+  fitOnly = false,
   zoomInLabel = zoomInOption.default,
   zoomOutLabel = zoomOutOption.default,
   fitLabel = fitOption.default,
@@ -115,7 +118,7 @@ export function Annotated({
   const rootRef = useRef<HTMLDivElement>(null);
   const subjectRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLDivElement>(null);
-  useCanvasView(canvasRef, true);
+  useCanvasView(canvasRef, true, { fitOnly });
   const labelRefs = useRef<(HTMLSpanElement | null)[]>([]);
   /*
    * HOW MANY BUBBLES EACH ENTRY WEARS: one per part a `match: "all"` selector found, all showing the
@@ -425,9 +428,14 @@ export function Annotated({
       {...{ [annotationAttrs.root]: "" }}
     >
       {/* The same structure the template embeds: a canvas around the frame, the legend outside. */}
-      <div className={canvasParts.root} ref={canvasRef}>
+      <div
+        className={canvasParts.root}
+        ref={canvasRef}
+        {...{ [canvasAttrs.fitOnly]: fitOnly ? "" : undefined }}
+      >
         <CanvasParts
           fitLabel={fitLabel}
+          fitOnly={fitOnly}
           touchHint={touchHint}
           wheelHint={wheelHint}
           zoomInLabel={zoomInLabel}

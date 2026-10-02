@@ -145,29 +145,6 @@ describe("Menubar React contracts, dropdowns as real Menu instances", () => {
     expect(onHelp).toHaveBeenCalledOnce();
   });
 
-  it("nav renders the trigger as nav-list's own link, not a Button, with behavior unchanged", async () => {
-    const ui = render(
-      <Menubar label="Principal">
-        <MenubarItem nav items={[{ value: "new", label: "Nuevo" }]}>
-          Archivo
-        </MenubarItem>
-        <MenubarItem nav onActivate={() => {}}>
-          Ayuda
-        </MenubarItem>
-      </Menubar>,
-    );
-    const [archivo, ayuda] = triggers(ui);
-    expect(archivo!.className).toContain("sk-nav-list__link");
-    expect(archivo!.className).not.toContain("sk-button");
-    expect(archivo!.querySelector(".sk-nav-list__label")?.textContent).toBe("Archivo");
-    expect(ayuda!.className).toContain("sk-nav-list__link");
-    // Same behavior as the non-nav bar above: still one tab stop, still opens via Zag.
-    expect(ayuda!.tabIndex).toBe(-1);
-    fireEvent.click(archivo!);
-    await tick();
-    expect(archivo!.getAttribute("aria-expanded")).toBe("true");
-  });
-
   it("a dropdown entry with an href renders as a real link, not a command div", async () => {
     const ui = render(
       <Menubar label="Editor">

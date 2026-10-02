@@ -1,6 +1,6 @@
 ---
 import "@skryensya/core/components/slider.css";
-import Base from "../../layouts/Base.astro";
+import FoundationPage from "../../components/FoundationPage.astro";
 import CodeBlock from "../../components/CodeBlock.astro";
 import { densityLabTree } from "../../demos/density";
 import { getLocale, useTranslations } from "../../i18n";
@@ -84,12 +84,10 @@ const densityLabScript = `document.querySelectorAll("[data-density-lab]").forEac
 const t = useTranslations(getLocale(Astro.url));
 ---
 
-<Base
+<FoundationPage
   title="Densidad global y local"
-  documentLayout="grid"
   description="La densidad global ajusta la aplicación; un scope local recalcula un componente aislado sin compactar el resto de la interfaz."
 >
-  <h1>Densidad global y local</h1>
   <p class="lede">
     La densidad local no es una variante de componente. Es un scope que recalcula los <strong>tokens de espacio y de control en el límite de tu componente</strong>, sin tocar a sus vecinos ni la densidad que eligió la aplicación.
   </p>
@@ -166,5 +164,5 @@ const t = useTranslations(getLocale(Astro.url));
     <a href="/es/elevacion">Elevación</a>, que muestra los fallbacks visuales, y en
     <a href="/es/referencia">Referencia</a>, para buscar los valores resueltos.
   </p>
-</Base>
+</FoundationPage>
 

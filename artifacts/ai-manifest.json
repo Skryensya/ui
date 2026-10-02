@@ -2195,11 +2195,11 @@
           {
             "date": "2026-08-04",
             "en": {
-              "body": "<code>Changelog</code> and <code>ChangelogEntry</code>, a history on a rail. It is not a repainted <code>ProcessList</code>: that one numbers its markers with a CSS <code>counter()</code>, so a newest-first list would number itself backwards through time. Nor is it <code>Steps</code>, whose connector says how much work is behind the reader, which of a shipped change is not a claim anyone can make.",
+              "body": "<code>Changelog</code> and <code>ChangelogEntry</code>, a history on a rail. It is not a repainted <code>Procedure</code>: that one numbers its markers with a CSS <code>counter()</code>, so a newest-first list would number itself backwards through time. Nor is it <code>Steps</code>, whose connector says how much work is behind the reader, which of a shipped change is not a claim anyone can make.",
               "title": "First published contract"
             },
             "es": {
-              "body": "<code>Changelog</code> y <code>ChangelogEntry</code>, un historial con riel. No es un <code>ProcessList</code> con otra pintura: ése numera sus marcadores con un <code>counter()</code> de CSS, así que una lista con lo más nuevo arriba se numeraría al revés del tiempo. Tampoco es un <code>Steps</code>, cuyo conector dice cuánto trabajo queda atrás, que de un cambio ya publicado no es una afirmación que nadie pueda hacer.",
+              "body": "<code>Changelog</code> y <code>ChangelogEntry</code>, un historial con riel. No es un <code>Procedure</code> con otra pintura: ése numera sus marcadores con un <code>counter()</code> de CSS, así que una lista con lo más nuevo arriba se numeraría al revés del tiempo. Tampoco es un <code>Steps</code>, cuyo conector dice cuánto trabajo queda atrás, que de un cambio ya publicado no es una afirmación que nadie pueda hacer.",
               "title": "Primera publicación del contrato"
             },
             "kind": "feature"
@@ -3314,6 +3314,26 @@
           }
         ],
         "version": "0.0.1"
+      }
+    ],
+    "comparison-table": [
+      {
+        "date": null,
+        "entries": [
+          {
+            "date": "2026-10-02",
+            "en": {
+              "body": "It joins the catalogue with <code>ComparisonTable</code>, <code>ComparisonColumn</code>, <code>ComparisonRow</code> and <code>ComparisonCell</code>: the same few aspects set side by side for two to four things, when someone has to choose between them. It is <code>Table</code>'s comparison shape with the accessibility already decided: every column carries <code>scope=\"col\"</code>, the first cell of each row is a <code>&lt;th scope=\"row\"&gt;</code> and the corner cell is never empty, because <code>aspectLabel</code> is required and drawn visually hidden. No outer box and no zebra: it reads in the flow of a page. The aspect column is a length (<code>--sk-comparison-table-row-header-size</code>) and not <code>max-content</code>. More than four things, or long cells, is a <code>Table</code>. The sheet is <code>components/comparison-table.css</code>.",
+              "title": "ComparisonTable is published as a contract, with 4 signatures"
+            },
+            "es": {
+              "body": "Entra al catálogo con <code>ComparisonTable</code>, <code>ComparisonColumn</code>, <code>ComparisonRow</code> y <code>ComparisonCell</code>: los mismos pocos aspectos puestos lado a lado para dos a cuatro cosas, cuando alguien tiene que elegir entre ellas. Es la forma de comparación de <code>Table</code> con la accesibilidad ya decidida: cada columna lleva <code>scope=\"col\"</code>, la primera celda de cada fila es un <code>&lt;th scope=\"row\"&gt;</code> y la celda de la esquina nunca queda vacía, porque <code>aspectLabel</code> es obligatorio y se dibuja visualmente oculto. Sin caja exterior ni cebra: se lee en el flujo de una página. La columna de los aspectos es un largo (<code>--sk-comparison-table-row-header-size</code>) y no <code>max-content</code>. Más de cuatro cosas, o celdas largas, ya es un <code>Table</code>. La hoja es <code>components/comparison-table.css</code>.",
+              "title": "ComparisonTable se publica como contrato, con 4 signatures"
+            },
+            "kind": "feature"
+          }
+        ],
+        "version": "0.0.2-dev"
       }
     ],
     "content": [
@@ -5078,6 +5098,25 @@
     ],
     "icon": [
       {
+        "date": null,
+        "entries": [
+          {
+            "date": "2026-10-02",
+            "en": {
+              "body": "<code>mask</code> is the symbol that stands in for a hidden character: <code>OtpInput</code> draws it over each filled box when the code is masked. It names the role, not the drawing: Lucide and Phosphor draw an asterisk, Material its own. All three sets draw it.",
+              "title": "New icon role mask"
+            },
+            "es": {
+              "body": "<code>mask</code> es el símbolo que ocupa el lugar de un carácter oculto: lo dibuja <code>OtpInput</code> sobre cada casilla llena cuando el código está enmascarado. Nombra el rol, no el dibujo: Lucide y Phosphor ponen un asterisco, Material el suyo. Los tres sets lo dibujan.",
+              "title": "Nuevo rol de icono mask"
+            },
+            "kind": "feature",
+            "target": "name"
+          }
+        ],
+        "version": "0.0.2-dev"
+      },
+      {
         "date": "2026-10-01",
         "entries": [
           {
@@ -5239,6 +5278,24 @@
     ],
     "image-frame": [
       {
+        "date": null,
+        "entries": [
+          {
+            "date": "2026-10-02",
+            "en": {
+              "body": "The caption ImageFrame accepts over the media is now called <code>MediaOverlay</code> (formerly <code>MediaCaption</code>).",
+              "title": "ImageFrame composes MediaOverlay"
+            },
+            "es": {
+              "body": "El pie sobre la foto que ImageFrame admite se llama ahora <code>MediaOverlay</code> (antes <code>MediaCaption</code>).",
+              "title": "ImageFrame compone MediaOverlay"
+            },
+            "kind": "chore"
+          }
+        ],
+        "version": "0.0.2-dev"
+      },
+      {
         "date": "2026-10-01",
         "entries": [
           {
@@ -5257,12 +5314,12 @@
           {
             "date": "2026-09-17",
             "en": {
-              "body": "<code>compose</code> documents the MediaCaption (media-gradient contract) caption slot.",
-              "title": "ImageFrame declares compose of media-gradient"
+              "body": "<code>compose</code> documents the MediaOverlay (media-overlay contract) caption slot.",
+              "title": "ImageFrame declares compose of media-overlay"
             },
             "es": {
-              "body": "<code>compose</code> documenta el caption MediaCaption (contrato media-gradient) del slot.",
-              "title": "ImageFrame declara compose de media-gradient"
+              "body": "<code>compose</code> documenta el caption MediaOverlay (contrato media-overlay) del slot.",
+              "title": "ImageFrame declara compose de media-overlay"
             },
             "kind": "feature"
           },
@@ -6147,7 +6204,37 @@
         "version": "0.0.1"
       }
     ],
-    "media-gradient": [
+    "media-overlay": [
+      {
+        "date": null,
+        "entries": [
+          {
+            "date": "2026-10-02",
+            "en": {
+              "body": "The contract, <code>MediaCaption</code> and <code>MediaGradient</code> are now <code>MediaOverlay</code> and <code>MediaOverlayShade</code>. The classes (<code>sk-media-overlay</code>, <code>sk-media-overlay-shade</code>) and the hooks change too.",
+              "title": "MediaGradient is now MediaOverlay"
+            },
+            "es": {
+              "body": "El contrato, <code>MediaCaption</code> y <code>MediaGradient</code> son ahora <code>MediaOverlay</code> y <code>MediaOverlayShade</code>. Cambian las clases (<code>sk-media-overlay</code>, <code>sk-media-overlay-shade</code>) y los hooks.",
+              "title": "MediaGradient pasa a llamarse MediaOverlay"
+            },
+            "kind": "breaking"
+          },
+          {
+            "date": "2026-10-02",
+            "en": {
+              "body": "<code>strength</code> is how much it darkens, not a size: <code>sm</code>, <code>md</code> and <code>lg</code> are now <code>subtle</code>, <code>moderate</code> (the default) and <code>strong</code>.",
+              "title": "strength no longer uses sizes"
+            },
+            "es": {
+              "body": "<code>strength</code> mide cuánto oscurece, no un tamaño: <code>sm</code>, <code>md</code> y <code>lg</code> pasan a ser <code>subtle</code>, <code>moderate</code> (por defecto) y <code>strong</code>.",
+              "title": "strength deja de usar tallas"
+            },
+            "kind": "breaking"
+          }
+        ],
+        "version": "0.0.2-dev"
+      },
       {
         "date": "2026-10-01",
         "entries": [
@@ -6155,24 +6242,24 @@
             "date": "2026-09-17",
             "en": {
               "body": "<code>compose</code> documents the wash React injects via <code>strength</code> (<code>systemOwned</code>).",
-              "title": "MediaCaption declares compose of MediaGradient"
+              "title": "MediaOverlay declares compose of MediaOverlayShade"
             },
             "es": {
               "body": "<code>compose</code> documenta el wash que React inyecta con <code>strength</code> (<code>systemOwned</code>).",
-              "title": "MediaCaption declara compose de MediaGradient"
+              "title": "MediaOverlay declara compose de MediaOverlayShade"
             },
             "kind": "feature",
-            "target": "MediaCaption"
+            "target": "MediaOverlay"
           },
           {
             "date": "2026-09-17",
             "en": {
               "body": "<code>captionElement</code> takes <code>div</code> or <code>figcaption</code>, what React already allowed through <code>as</code> (pairs with <code>ImageFrame.frameElement: figure</code>).",
-              "title": "MediaCaption chooses its element from the tree"
+              "title": "MediaOverlay chooses its element from the tree"
             },
             "es": {
               "body": "<code>captionElement</code> acepta <code>div</code> o <code>figcaption</code>, lo mismo que React ya permitía con <code>as</code> (útil junto a <code>ImageFrame.frameElement: figure</code>).",
-              "title": "MediaCaption elige su elemento desde el árbol"
+              "title": "MediaOverlay elige su elemento desde el árbol"
             },
             "kind": "feature"
           },
@@ -6180,11 +6267,11 @@
             "date": "2026-09-17",
             "en": {
               "body": "The contract again declares the stylesheet's <code>12</code> styling hooks (caption + wash), not only the three caption ones. Same override surface as before; what was missing was naming them so an agent can discover them.",
-              "title": "MediaGradient publishes all 12 caption and wash hooks"
+              "title": "MediaOverlayShade publishes all 12 caption and wash hooks"
             },
             "es": {
               "body": "El contrato vuelve a declarar los <code>12</code> styling hooks de la hoja (pie + lavado), no sólo los tres del caption. Son el mismo override surface de siempre; lo que faltaba era que el contrato los nombrara para que un agente pueda descubrirlos.",
-              "title": "MediaGradient publica los 12 hooks del lavado y del pie"
+              "title": "MediaOverlayShade publica los 12 hooks del lavado y del pie"
             },
             "kind": "bugfix"
           },
@@ -6192,11 +6279,11 @@
             "date": "2026-09-12",
             "en": {
               "body": "The contract now publishes this component's <code>12</code> styling hooks. Nothing you wrote changes: the same hooks, under the same names, and the stylesheet was not touched. What is new is that the contract declares them, so the compiler fails when the stylesheet declares one the contract does not publish, or the contract promises one the stylesheet never declares. That second half is the one that matters: until now, re-declaring a hook that no longer existed was not an error, it was silence.",
-              "title": "media-gradient's styling hooks are now declared in the contract"
+              "title": "media-overlay's styling hooks are now declared in the contract"
             },
             "es": {
               "body": "El contrato ahora publica los <code>12</code> styling hooks de este componente. Nada de lo que hayas escrito cambia: son los mismos hooks, con los mismos nombres, y la hoja de estilos no se tocó. Lo nuevo es que el contrato los declara, así que el compilador falla si la hoja declara uno que el contrato no publica, o si el contrato promete uno que la hoja no declara. Esa segunda mitad es la que importa: hasta ahora, redeclarar un hook que ya no existía no daba error, daba silencio.",
-              "title": "Los styling hooks de media-gradient quedan declarados en el contrato"
+              "title": "Los styling hooks de media-overlay quedan declarados en el contrato"
             },
             "kind": "feature"
           },
@@ -6215,12 +6302,12 @@
           {
             "date": "2026-08-11",
             "en": {
-              "body": "It joins the catalogue with <code>MediaCaption</code>, <code>MediaGradient</code>: both bindings realize it, and this page's reference is rendered from the compiled contract rather than from prose written beside it. There is no enhancer: the markup is complete on its own, so both bindings are the same markup twice. Options: <code>edge</code>, <code>strength</code>. Its stylesheet is <code>patterns/media-gradient.css</code>.",
-              "title": "MediaGradient is published as a contract, with 2 signatures"
+              "body": "It joins the catalogue with <code>MediaOverlay</code>, <code>MediaOverlayShade</code>: both bindings realize it, and this page's reference is rendered from the compiled contract rather than from prose written beside it. There is no enhancer: the markup is complete on its own, so both bindings are the same markup twice. Options: <code>edge</code>, <code>strength</code>. Its stylesheet is <code>patterns/media-overlay.css</code>.",
+              "title": "MediaOverlay is published as a contract, with 2 signatures"
             },
             "es": {
-              "body": "Entra al catálogo con <code>MediaCaption</code>, <code>MediaGradient</code>: los dos bindings lo realizan, y la referencia de esta página sale del contrato compilado en vez de prosa escrita al lado. No tiene enhancer: el markup está completo por sí solo, así que las dos bindings son el mismo markup dos veces. Opciones: <code>edge</code>, <code>strength</code>. La hoja es <code>patterns/media-gradient.css</code>.",
-              "title": "MediaGradient se publica como contrato, con 2 signatures"
+              "body": "Entra al catálogo con <code>MediaOverlay</code>, <code>MediaOverlayShade</code>: los dos bindings lo realizan, y la referencia de esta página sale del contrato compilado en vez de prosa escrita al lado. No tiene enhancer: el markup está completo por sí solo, así que las dos bindings son el mismo markup dos veces. Opciones: <code>edge</code>, <code>strength</code>. La hoja es <code>patterns/media-overlay.css</code>.",
+              "title": "MediaOverlay se publica como contrato, con 2 signatures"
             },
             "kind": "feature"
           }
@@ -6713,6 +6800,36 @@
     ],
     "menubar": [
       {
+        "date": null,
+        "entries": [
+          {
+            "date": "2026-10-02",
+            "en": {
+              "body": "<code>MenubarItem</code> no longer accepts <code>nav</code>: the trigger is always a <code>ghost</code> <code>Button</code>. Drawing the bar as <code>nav-list</code> links duplicated what <code>Megamenu</code> already does for site navigation and contradicted the bar's purpose, which is to carry commands. A tree with <code>nav</code> is now invalid; to move between pages use <code>Megamenu</code> or <code>NavList</code>.",
+              "title": "MenubarItem's nav option is removed"
+            },
+            "es": {
+              "body": "<code>MenubarItem</code> ya no acepta <code>nav</code>: el trigger es siempre un <code>Button</code> <code>ghost</code>. Dibujar la barra como enlaces de <code>nav-list</code> duplicaba lo que ya hace <code>Megamenu</code> para la navegación de un sitio y contradecía el propósito de la barra, que es llevar comandos. Un árbol con <code>nav</code> ahora es inválido; para navegar entre páginas usa <code>Megamenu</code> o <code>NavList</code>.",
+              "title": "Se elimina la opción nav de MenubarItem"
+            },
+            "kind": "breaking"
+          },
+          {
+            "date": "2026-10-02",
+            "en": {
+              "body": "A dropdown with submenus (<code>Export</code> → PDF, CSV) opened the submenu far from its item, in the corner of the page. The top-level dropdown used the browser's native anchoring while the machine placed the submenu, and mixing the two engines throws the coordinates off. Now <code>MenubarItem</code> withholds native anchoring when any level of its dropdown has a submenu, as <code>Menu</code> does. The contract's surface does not change.",
+              "title": "A Menubar dropdown's submenu is placed beside its item"
+            },
+            "es": {
+              "body": "Un desplegable con submenús (<code>Exportar</code> → PDF, CSV) abría el submenú lejos de su ítem, en la esquina de la página. El desplegable de nivel superior usaba el anclaje nativo del navegador mientras el submenú lo colocaba la máquina, y mezclar los dos motores desfasa las coordenadas. Ahora <code>MenubarItem</code> retira el anclaje nativo cuando algún nivel de su desplegable tiene un submenú, igual que <code>Menu</code>. La superficie del contrato no cambia.",
+              "title": "El submenú de un desplegable de Menubar se coloca junto a su ítem"
+            },
+            "kind": "bugfix"
+          }
+        ],
+        "version": "0.0.2-dev"
+      },
+      {
         "date": "2026-10-01",
         "entries": [
           {
@@ -6811,8 +6928,7 @@
               "body": "Se agrega <code>nav</code> (booleana) a <code>MenubarItem</code>: cuando está presente, el trigger renderiza con las clases propias de <code>nav-list</code> (<code>sk-nav-list__link</code>/<code>__label</code>) en vez de <code>Button</code> (<code>sk-button</code>). Nada del comportamiento de Menubar cambia: mismo <code>role</code>, mismo roving tabindex, mismo manejo de apertura/cierre de desplegables. Sólo el elemento y las clases que pinta el trigger. Pensada junto con la nueva opción de ítem <code>href</code> de <code>Menu</code> para el caso <code>menubar-navigation</code> de WAI-ARIA: una barra que es de verdad navegación, construida con los elementos de <code>nav-list</code>, no una barra de comandos con los colores de nav-list prestados.",
               "title": "Nueva opción nav en MenubarItem. El trigger puede ser el link real de nav-list"
             },
-            "kind": "feature",
-            "target": "nav"
+            "kind": "feature"
           },
           {
             "date": "2026-08-19",
@@ -7116,6 +7232,24 @@
     ],
     "number-field": [
       {
+        "date": null,
+        "entries": [
+          {
+            "date": "2026-10-02",
+            "en": {
+              "body": "With no <code>formatOptions</code> the field wrote bare digits (<code>1234567.89</code>) in every language, so <code>locale</code> changed nothing a person could see even though the docs said it formatted thousands and decimals. It now groups thousands by default in both bindings: <code>1,234,567.89</code> in <code>en-US</code>, <code>1.234.567,89</code> in <code>es-CL</code>. The <code>defaultValue</code> is written the way the field's language writes it. In React you can choose another format with <code>formatOptions</code>.",
+              "title": "The field groups thousands and uses its language's marks"
+            },
+            "es": {
+              "body": "Sin <code>formatOptions</code>, el campo escribía los dígitos desnudos (<code>1234567.89</code>) en cualquier idioma, así que <code>locale</code> no cambiaba nada visible aunque la documentación decía que formateaba miles y decimales. Ahora agrupa los miles por defecto en los dos bindings: <code>1,234,567.89</code> en <code>en-US</code>, <code>1.234.567,89</code> en <code>es-CL</code>. El <code>defaultValue</code> se escribe como lo escribe el idioma del campo. En React se puede elegir otro formato con <code>formatOptions</code>.",
+              "title": "El campo agrupa los miles y usa las marcas de su idioma"
+            },
+            "kind": "bugfix"
+          }
+        ],
+        "version": "0.0.2-dev"
+      },
+      {
         "date": "2026-10-01",
         "entries": [
           {
@@ -7283,6 +7417,51 @@
       }
     ],
     "otp-input": [
+      {
+        "date": null,
+        "entries": [
+          {
+            "date": "2026-10-02",
+            "en": {
+              "body": "<code>groupSize</code> (<code>2</code>, <code>3</code> or <code>4</code>) sets the boxes apart in groups of that size with a wider gap between one and the next: <code>123 456</code> instead of <code>123456</code>. A code is read and keyed in chunks, and the gap is where the eye and the hand rest. Without the option the row stays unbroken. If the length does not divide evenly, the last group is shorter.",
+              "title": "New groupSize option to group the boxes"
+            },
+            "es": {
+              "body": "<code>groupSize</code> (<code>2</code>, <code>3</code> o <code>4</code>) separa las casillas en grupos de ese tamaño con un espacio más ancho entre uno y otro: <code>123 456</code> en vez de <code>123456</code>. Un código se lee y se teclea por trozos, y el espacio es donde descansan el ojo y la mano. Sin la opción, la fila sigue corrida. Si el largo no se divide parejo, el último grupo queda más corto.",
+              "title": "Nueva opción groupSize para agrupar las casillas"
+            },
+            "kind": "feature",
+            "target": "groupSize"
+          },
+          {
+            "date": "2026-10-02",
+            "en": {
+              "body": "The default of <code>placeholder</code> changes from <code>○</code> to empty. A row of circles on a field nobody has touched read as a decoration to ignore, and each box's border already says \"type here\". Anyone who wants a hint inside the boxes writes it in <code>placeholder</code>.",
+              "title": "Empty boxes no longer show ○ by default"
+            },
+            "es": {
+              "body": "El valor por defecto de <code>placeholder</code> pasa de <code>○</code> a vacío. Una fila de círculos en un campo que nadie tocó se leía como un adorno que hay que ignorar, y el borde de cada casilla ya dice «escribe aquí». Quien quiera una pista dentro de las casillas la escribe en <code>placeholder</code>.",
+              "title": "Las casillas vacías ya no muestran ○ por defecto"
+            },
+            "kind": "breaking",
+            "target": "placeholder"
+          },
+          {
+            "date": "2026-10-02",
+            "en": {
+              "body": "A browser draws a password field's characters as its own dots, and that glyph cannot be changed. Each box is now a cell (<code>sk-otp-input__cell</code>) and, with <code>mask</code>, a filled box hides the character and shows the <code>mask</code> icon role (<code>sk-otp-input__mask</code>), an asterisk in the published sets. The icon is decoration: the value and the focus stay on the input. Each cell carries <code>data-filled</code> while it holds a character.",
+              "title": "With mask, each filled box shows an icon instead of the browser's dots"
+            },
+            "es": {
+              "body": "Un navegador dibuja los caracteres de un campo de contraseña como sus propios puntos, y ese glifo no se puede cambiar. Ahora cada casilla es una celda (<code>sk-otp-input__cell</code>) y, con <code>mask</code>, una casilla llena oculta el carácter y muestra el rol de icono <code>mask</code> (<code>sk-otp-input__mask</code>), un asterisco en los sets publicados. El icono es decoración: el valor y el foco siguen en el input. Cada celda lleva <code>data-filled</code> mientras tiene un carácter.",
+              "title": "Con mask, cada casilla llena muestra un icono en vez de los puntos del navegador"
+            },
+            "kind": "feature",
+            "target": "mask"
+          }
+        ],
+        "version": "0.0.2-dev"
+      },
       {
         "date": "2026-10-01",
         "entries": [
@@ -7733,7 +7912,7 @@
         "version": "0.0.1"
       }
     ],
-    "process-list": [
+    "procedure": [
       {
         "date": "2026-10-01",
         "entries": [
@@ -7741,23 +7920,23 @@
             "date": "2026-09-12",
             "en": {
               "body": "The contract now publishes this component's <code>15</code> styling hooks. Nothing you wrote changes: the same hooks, under the same names, and the stylesheet was not touched. What is new is that the contract declares them, so the compiler fails when the stylesheet declares one the contract does not publish, or the contract promises one the stylesheet never declares. That second half is the one that matters: until now, re-declaring a hook that no longer existed was not an error, it was silence.",
-              "title": "process-list's styling hooks are now declared in the contract"
+              "title": "procedure's styling hooks are now declared in the contract"
             },
             "es": {
               "body": "El contrato ahora publica los <code>15</code> styling hooks de este componente. Nada de lo que hayas escrito cambia: son los mismos hooks, con los mismos nombres, y la hoja de estilos no se tocó. Lo nuevo es que el contrato los declara, así que el compilador falla si la hoja declara uno que el contrato no publica, o si el contrato promete uno que la hoja no declara. Esa segunda mitad es la que importa: hasta ahora, redeclarar un hook que ya no existía no daba error, daba silencio.",
-              "title": "Los styling hooks de process-list quedan declarados en el contrato"
+              "title": "Los styling hooks de procedure quedan declarados en el contrato"
             },
             "kind": "feature"
           },
           {
             "date": "2026-08-11",
             "en": {
-              "body": "It joins the catalogue with <code>ProcessList</code>, <code>ProcessListItem</code>: both bindings realize it, and this page's reference is rendered from the compiled contract rather than from prose written beside it. There is no enhancer: the markup is complete on its own, so both bindings are the same markup twice. It has no options: the element IS the meaning. Its stylesheet is <code>components/process-list.css</code>.",
-              "title": "ProcessList is published as a contract, with 2 signatures"
+              "body": "It joins the catalogue with <code>Procedure</code>, <code>ProcedureStep</code>: both bindings realize it, and this page's reference is rendered from the compiled contract rather than from prose written beside it. There is no enhancer: the markup is complete on its own, so both bindings are the same markup twice. It has no options: the element IS the meaning. Its stylesheet is <code>components/procedure.css</code>.",
+              "title": "Procedure is published as a contract, with 2 signatures"
             },
             "es": {
-              "body": "Entra al catálogo con <code>ProcessList</code>, <code>ProcessListItem</code>: los dos bindings lo realizan, y la referencia de esta página sale del contrato compilado en vez de prosa escrita al lado. No tiene enhancer: el markup está completo por sí solo, así que las dos bindings son el mismo markup dos veces. No tiene opciones: el elemento ES el significado. La hoja es <code>components/process-list.css</code>.",
-              "title": "ProcessList se publica como contrato, con 2 signatures"
+              "body": "Entra al catálogo con <code>Procedure</code>, <code>ProcedureStep</code>: los dos bindings lo realizan, y la referencia de esta página sale del contrato compilado en vez de prosa escrita al lado. No tiene enhancer: el markup está completo por sí solo, así que las dos bindings son el mismo markup dos veces. No tiene opciones: el elemento ES el significado. La hoja es <code>components/procedure.css</code>.",
+              "title": "Procedure se publica como contrato, con 2 signatures"
             },
             "kind": "feature"
           }
@@ -9628,6 +9807,24 @@
       }
     ],
     "state-button": [
+      {
+        "date": null,
+        "entries": [
+          {
+            "date": "2026-10-02",
+            "en": {
+              "body": "The list of icon roles <code>StateButton</code> accepts grows with <code>mask</code> (the symbol of a hidden character). Nothing about its behavior changes.",
+              "title": "Icon names include the mask role"
+            },
+            "es": {
+              "body": "La lista de roles de icono que acepta <code>StateButton</code> crece con <code>mask</code> (el símbolo de un carácter oculto). No cambia nada de su comportamiento.",
+              "title": "Los nombres de icono incluyen el rol mask"
+            },
+            "kind": "feature"
+          }
+        ],
+        "version": "0.0.2-dev"
+      },
       {
         "date": "2026-10-01",
         "entries": [
@@ -18381,11 +18578,11 @@
       "semantics": {
         "Changelog": {
           "alternatives": [
-            "ProcessList",
+            "Procedure",
             "Steps"
           ],
           "avoidWhen": [
-            "they are instructions to read and follow, in order but without versions; that is a ProcessList",
+            "they are instructions to read and follow, in order but without versions; that is a Procedure",
             "what matters is which stage someone is at, what they have done and what is left; that is Steps",
             "it is a single piece of news; one entry with no history around it is not a history"
           ],
@@ -23688,6 +23885,366 @@
         }
       }
     },
+    "comparison-table": {
+      "bindings": {
+        "ComparisonCell": {
+          "enhancer": null,
+          "markup": true,
+          "portals": false,
+          "react": "@skryensya/react/comparison-table#ComparisonCell"
+        },
+        "ComparisonColumn": {
+          "enhancer": null,
+          "markup": true,
+          "portals": false,
+          "react": "@skryensya/react/comparison-table#ComparisonColumn"
+        },
+        "ComparisonRow": {
+          "enhancer": null,
+          "markup": true,
+          "portals": false,
+          "react": "@skryensya/react/comparison-table#ComparisonRow"
+        },
+        "ComparisonTable": {
+          "enhancer": null,
+          "markup": true,
+          "portals": false,
+          "react": "@skryensya/react/comparison-table#ComparisonTable"
+        }
+      },
+      "category": "data",
+      "css": "@skryensya/core/components/comparison-table.css",
+      "hookDetails": {
+        "--sk-comparison-table-border-color": {
+          "default": "var(--color-border-subtle)",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/comparison-table.css"
+        },
+        "--sk-comparison-table-cell-padding-block": {
+          "default": "var(--space-inset-sm)",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/comparison-table.css"
+        },
+        "--sk-comparison-table-cell-padding-inline": {
+          "default": "var(--space-inset-md)",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/comparison-table.css"
+        },
+        "--sk-comparison-table-column-fg": {
+          "default": "var(--color-text-primary)",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/comparison-table.css"
+        },
+        "--sk-comparison-table-font-size": {
+          "default": "var(--font-size-body-sm)",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/comparison-table.css"
+        },
+        "--sk-comparison-table-row-header-fg": {
+          "default": "var(--color-text-secondary)",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/comparison-table.css"
+        },
+        "--sk-comparison-table-row-header-size": {
+          "default": "12rem",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/comparison-table.css"
+        }
+      },
+      "hooks": [
+        "--sk-comparison-table-border-color",
+        "--sk-comparison-table-cell-padding-block",
+        "--sk-comparison-table-cell-padding-inline",
+        "--sk-comparison-table-column-fg",
+        "--sk-comparison-table-font-size",
+        "--sk-comparison-table-row-header-fg",
+        "--sk-comparison-table-row-header-size"
+      ],
+      "id": "comparison-table",
+      "options": {
+        "aspectLabel": {
+          "type": "string"
+        },
+        "density": {
+          "attr": "data-density",
+          "type": "enum",
+          "values": [
+            "compact"
+          ]
+        }
+      },
+      "parts": {
+        "caption": "sk-comparison-table__caption",
+        "cell": "sk-comparison-table__cell",
+        "column": "sk-comparison-table__column",
+        "corner": "sk-comparison-table__corner",
+        "cornerLabel": "sk-comparison-table__corner-label",
+        "root": "sk-comparison-table",
+        "row": "sk-comparison-table__row",
+        "rowHeader": "sk-comparison-table__row-header"
+      },
+      "semantics": {
+        "ComparisonCell": {
+          "alternatives": [
+            "Table"
+          ],
+          "avoidWhen": [
+            "the answer needs a paragraph or a control; that is a Table, or prose beside the comparison"
+          ],
+          "useWhen": [
+            "how one thing answers one aspect: a short phrase, with code or a link"
+          ]
+        },
+        "ComparisonColumn": {
+          "alternatives": [
+            "Table"
+          ],
+          "avoidWhen": [
+            "a grouped or spanning header; that is a Table's TableHeader"
+          ],
+          "useWhen": [
+            "the name of one of the things compared, at the top of its column"
+          ]
+        },
+        "ComparisonRow": {
+          "alternatives": [
+            "Table"
+          ],
+          "avoidWhen": [
+            "the row needs a spanning cell; that is a Table"
+          ],
+          "useWhen": [
+            "one aspect the things are compared on, named once on the left and answered in each column"
+          ]
+        },
+        "ComparisonTable": {
+          "alternatives": [
+            "Table",
+            "DescriptionList",
+            "DataGrid"
+          ],
+          "avoidWhen": [
+            "there are more than four things, or the cells are long; that is a catalogue and it is a Table",
+            "the rows are facts about ONE thing and nothing is compared across them; that is DescriptionList",
+            "the data is sorted, filtered, paged or summed; that is a Table or a DataGrid"
+          ],
+          "useWhen": [
+            "two to four things are set side by side on the same few aspects: two components, three plans, an old and a new behaviour",
+            "the reader has to decide between them, and the answer is in how the columns differ row by row",
+            "every cell is short: a phrase, a bit of code, a link"
+          ]
+        }
+      },
+      "signatures": {
+        "ComparisonCell": {
+          "host": {
+            "element": "td"
+          },
+          "intent": [
+            "how-one-thing-answers-one-aspect",
+            "cell"
+          ],
+          "options": [],
+          "parents": [
+            "ComparisonRow"
+          ],
+          "react": {
+            "from": "@skryensya/react/comparison-table",
+            "name": "ComparisonCell"
+          },
+          "slots": {
+            "children": {
+              "accepts": "node",
+              "required": true
+            }
+          },
+          "template": {
+            "element": "td",
+            "host": true,
+            "part": "cell",
+            "slot": "children"
+          }
+        },
+        "ComparisonColumn": {
+          "host": {
+            "element": "th"
+          },
+          "intent": [
+            "one-thing-compared",
+            "column-header"
+          ],
+          "options": [],
+          "parents": [
+            "ComparisonTable"
+          ],
+          "react": {
+            "from": "@skryensya/react/comparison-table",
+            "name": "ComparisonColumn"
+          },
+          "slots": {
+            "children": {
+              "accepts": "node",
+              "required": true
+            }
+          },
+          "template": {
+            "attrs": {
+              "scope": "col"
+            },
+            "element": "th",
+            "host": true,
+            "part": "column",
+            "slot": "children"
+          }
+        },
+        "ComparisonRow": {
+          "host": {
+            "element": "tr"
+          },
+          "intent": [
+            "one-aspect-compared",
+            "row"
+          ],
+          "options": [],
+          "parents": [
+            "ComparisonTable"
+          ],
+          "react": {
+            "from": "@skryensya/react/comparison-table",
+            "name": "ComparisonRow"
+          },
+          "slots": {
+            "children": {
+              "accepts": "signature",
+              "of": [
+                "ComparisonCell"
+              ],
+              "required": true
+            },
+            "label": {
+              "accepts": "text",
+              "required": true
+            }
+          },
+          "template": {
+            "children": [
+              {
+                "attrs": {
+                  "scope": "row"
+                },
+                "element": "th",
+                "part": "rowHeader",
+                "slot": "label"
+              },
+              {
+                "slot": "children"
+              }
+            ],
+            "element": "tr",
+            "host": true,
+            "part": "row"
+          }
+        },
+        "ComparisonTable": {
+          "forward": [
+            "id",
+            "aria-*"
+          ],
+          "host": {
+            "element": "table"
+          },
+          "intent": [
+            "compare-two-to-four-things",
+            "feature-comparison",
+            "when-to-use-which",
+            "side-by-side"
+          ],
+          "options": [
+            "aspectLabel",
+            "density"
+          ],
+          "react": {
+            "from": "@skryensya/react/comparison-table",
+            "name": "ComparisonTable"
+          },
+          "requires": [
+            "aspectLabel"
+          ],
+          "slots": {
+            "caption": {
+              "accepts": "text"
+            },
+            "children": {
+              "accepts": "signature",
+              "of": [
+                "ComparisonRow"
+              ],
+              "required": true
+            },
+            "columns": {
+              "accepts": "signature",
+              "maxItems": 4,
+              "minItems": 2,
+              "of": [
+                "ComparisonColumn"
+              ],
+              "required": true
+            }
+          },
+          "template": {
+            "children": [
+              {
+                "element": "caption",
+                "part": "caption",
+                "slot": "caption",
+                "whenGiven": "caption"
+              },
+              {
+                "children": [
+                  {
+                    "children": [
+                      {
+                        "attrs": {
+                          "scope": "col"
+                        },
+                        "children": [
+                          {
+                            "element": "span",
+                            "part": "cornerLabel",
+                            "textFromOption": "aspectLabel"
+                          }
+                        ],
+                        "element": "th",
+                        "part": "corner"
+                      },
+                      {
+                        "slot": "columns"
+                      }
+                    ],
+                    "element": "tr"
+                  }
+                ],
+                "element": "thead"
+              },
+              {
+                "element": "tbody",
+                "slot": "children"
+              }
+            ],
+            "element": "table",
+            "host": true,
+            "part": "root"
+          }
+        }
+      }
+    },
     "content": {
       "a11y": [
         {
@@ -25679,13 +26236,13 @@
         "Diagram": {
           "alternatives": [
             "Annotated",
-            "ProcessList",
+            "Procedure",
             "Steps",
             "TreeView"
           ],
           "avoidWhen": [
             "what has to be named are the parts of one thing already drawn: that is Annotation, which anchors each label to a selector inside the subject and does not draw a graph",
-            "the content is a sequence with no branches and no loops: that is ProcessList if they are instructions, or Steps if progress is primary; a single-column diagram with no forks is a list with extra lines",
+            "the content is a sequence with no branches and no loops: that is Procedure if they are instructions, or Steps if progress is primary; a single-column diagram with no forks is a list with extra lines",
             "the hierarchy is containment and not flow (folders, a file tree): that is TreeView or Folder, where what matters is what is inside what",
             "the graph is large, comes from data, or has to be explored or have its nodes dragged: this does not do layout, it draws small hand-written diagrams. Wrapping it in a Canvas is enough to zoom and pan the view",
             "full UML notation, swimlanes or box types by convention (cylinder, parallelogram, hexagon) are needed: those are conventions the reader has to be taught, and of the prose shapes only the three understood without a legend live here. Logic gates are the exception and pass the same test from the other side: they are not a box that means AND, they are the symbol the standard assigns to conjunction, and anyone who reads the notation reads it without a legend",
@@ -27096,12 +27653,12 @@
       "semantics": {
         "FadeEdge": {
           "alternatives": [
-            "MediaGradient",
+            "MediaOverlayShade",
             "Marquee"
           ],
           "avoidWhen": [
             "the content is not clipped; fading it only lowers contrast",
-            "the gradient protects text over a photo; that is MediaGradient inside MediaCaption",
+            "the gradient protects text over a photo; that is MediaOverlayShade inside MediaOverlay",
             "the fade would hide a control or information needed at rest",
             "the clipped edge is a Marquee's viewport; Marquee already has its own inner fade, and a FadeEdge around it also washes out the Play/Pause"
           ],
@@ -29329,6 +29886,7 @@
             "user",
             "visibility",
             "visibility-off",
+            "mask",
             "language",
             "appearance",
             "mode-system",
@@ -29599,9 +30157,9 @@
         "ImageFrame": {
           "compose": [
             {
-              "of": "media-gradient",
+              "of": "media-overlay",
               "sheets": [
-                "@skryensya/core/patterns/media-gradient.css"
+                "@skryensya/core/patterns/media-overlay.css"
               ]
             }
           ],
@@ -29640,7 +30198,7 @@
             "caption": {
               "accepts": "signature",
               "of": [
-                "MediaCaption"
+                "MediaOverlay"
               ]
             },
             "children": {
@@ -31749,12 +32307,12 @@
           "alternatives": [
             "Table",
             "NavList",
-            "ProcessList"
+            "Procedure"
           ],
           "avoidWhen": [
             "the rows have columns comparable with each other; that is a Table",
             "they are navigation destinations of the site or the page; that is NavList",
-            "they are instructions to read and follow, in order; that is ProcessList"
+            "they are instructions to read and follow, in order; that is Procedure"
           ],
           "useWhen": [
             "rows of things of the same kind: an inbox, settings, results"
@@ -31797,11 +32355,11 @@
         "OrderedList": {
           "alternatives": [
             "List",
-            "ProcessList"
+            "Procedure"
           ],
           "avoidWhen": [
             "reordering the rows does not change their meaning; that is List",
-            "they are steps of a process with a rich body per item; that is ProcessList"
+            "they are steps of a process with a rich body per item; that is Procedure"
           ],
           "useWhen": [
             "the order of the rows communicates sequence, priority or ranking"
@@ -33212,112 +33770,112 @@
         }
       }
     },
-    "media-gradient": {
+    "media-overlay": {
       "bindings": {
-        "MediaCaption": {
+        "MediaOverlay": {
           "enhancer": null,
           "markup": true,
           "portals": false,
-          "react": "@skryensya/react/media-gradient#MediaCaption"
+          "react": "@skryensya/react/media-overlay#MediaOverlay"
         },
-        "MediaGradient": {
+        "MediaOverlayShade": {
           "enhancer": null,
           "markup": true,
           "portals": false,
-          "react": "@skryensya/react/media-gradient#MediaGradient"
+          "react": "@skryensya/react/media-overlay#MediaOverlayShade"
         }
       },
       "category": "content",
-      "css": "@skryensya/core/patterns/media-gradient.css",
+      "css": "@skryensya/core/patterns/media-overlay.css",
       "hookDetails": {
-        "--sk-media-caption-fg": {
+        "--sk-media-overlay-fg": {
           "default": "var(--color-text-on-media)",
           "output": false,
           "part": "caption",
-          "sheet": "@skryensya/core/patterns/media-gradient.css"
+          "sheet": "@skryensya/core/patterns/media-overlay.css"
         },
-        "--sk-media-caption-gap": {
+        "--sk-media-overlay-gap": {
           "default": "var(--space-stack-xs)",
           "output": false,
           "part": "caption",
-          "sheet": "@skryensya/core/patterns/media-gradient.css"
+          "sheet": "@skryensya/core/patterns/media-overlay.css"
         },
-        "--sk-media-caption-padding": {
+        "--sk-media-overlay-padding": {
           "default": "var(--space-inset-md)",
           "output": false,
           "part": "caption",
-          "sheet": "@skryensya/core/patterns/media-gradient.css"
+          "sheet": "@skryensya/core/patterns/media-overlay.css"
         },
-        "--sk-media-gradient-base": {
+        "--sk-media-overlay-shade-base": {
           "default": "black",
           "output": false,
           "part": "root",
-          "sheet": "@skryensya/core/patterns/media-gradient.css"
+          "sheet": "@skryensya/core/patterns/media-overlay.css"
         },
-        "--sk-media-gradient-direction": {
+        "--sk-media-overlay-shade-direction": {
           "default": "to top",
           "output": false,
           "part": "root",
-          "sheet": "@skryensya/core/patterns/media-gradient.css"
+          "sheet": "@skryensya/core/patterns/media-overlay.css"
         },
-        "--sk-media-gradient-ink": {
-          "default": "color-mix(\n      in oklch,\n      var(--sk-media-gradient-base) var(--sk-media-gradient-opacity),\n      transparent\n    )",
+        "--sk-media-overlay-shade-ink": {
+          "default": "color-mix(\n      in oklch,\n      var(--sk-media-overlay-shade-base) var(--sk-media-overlay-shade-opacity),\n      transparent\n    )",
           "output": false,
           "part": "root",
-          "sheet": "@skryensya/core/patterns/media-gradient.css"
+          "sheet": "@skryensya/core/patterns/media-overlay.css"
         },
-        "--sk-media-gradient-ink-mid": {
-          "default": "color-mix(\n      in oklch,\n      var(--sk-media-gradient-base) calc(var(--sk-media-gradient-opacity) * 0.35),\n      transparent\n    )",
+        "--sk-media-overlay-shade-ink-mid": {
+          "default": "color-mix(\n      in oklch,\n      var(--sk-media-overlay-shade-base) calc(var(--sk-media-overlay-shade-opacity) * 0.5),\n      transparent\n    )",
           "output": false,
           "part": "root",
-          "sheet": "@skryensya/core/patterns/media-gradient.css"
+          "sheet": "@skryensya/core/patterns/media-overlay.css"
         },
-        "--sk-media-gradient-mix": {
+        "--sk-media-overlay-shade-mix": {
           "default": "34%",
           "output": false,
           "part": "root",
-          "sheet": "@skryensya/core/patterns/media-gradient.css"
+          "sheet": "@skryensya/core/patterns/media-overlay.css"
         },
-        "--sk-media-gradient-opacity": {
-          "default": "72%",
+        "--sk-media-overlay-shade-opacity": {
+          "default": "78%",
           "output": false,
           "part": "root",
-          "sheet": "@skryensya/core/patterns/media-gradient.css"
+          "sheet": "@skryensya/core/patterns/media-overlay.css"
         },
-        "--sk-media-gradient-tint": {
+        "--sk-media-overlay-shade-tint": {
           "default": "var(--color-action-accent)",
           "output": false,
           "part": "root",
-          "sheet": "@skryensya/core/patterns/media-gradient.css"
+          "sheet": "@skryensya/core/patterns/media-overlay.css"
         },
-        "--sk-media-gradient-tint-edge": {
-          "default": "color-mix(\n      in oklch,\n      var(--sk-media-gradient-tint) calc(var(--sk-media-gradient-mix) * 1.1),\n      transparent\n    )",
+        "--sk-media-overlay-shade-tint-edge": {
+          "default": "color-mix(\n      in oklch,\n      var(--sk-media-overlay-shade-tint) calc(var(--sk-media-overlay-shade-mix) * 1.1),\n      transparent\n    )",
           "output": false,
           "part": "root",
-          "sheet": "@skryensya/core/patterns/media-gradient.css"
+          "sheet": "@skryensya/core/patterns/media-overlay.css"
         },
-        "--sk-media-gradient-tint-mid": {
-          "default": "color-mix(\n      in oklch,\n      var(--sk-media-gradient-tint) calc(var(--sk-media-gradient-mix) * 0.4),\n      transparent\n    )",
+        "--sk-media-overlay-shade-tint-mid": {
+          "default": "color-mix(\n      in oklch,\n      var(--sk-media-overlay-shade-tint) calc(var(--sk-media-overlay-shade-mix) * 0.55),\n      transparent\n    )",
           "output": false,
           "part": "root",
-          "sheet": "@skryensya/core/patterns/media-gradient.css"
+          "sheet": "@skryensya/core/patterns/media-overlay.css"
         }
       },
       "hooks": [
-        "--sk-media-caption-fg",
-        "--sk-media-caption-gap",
-        "--sk-media-caption-padding",
-        "--sk-media-gradient-base",
-        "--sk-media-gradient-direction",
-        "--sk-media-gradient-ink",
-        "--sk-media-gradient-ink-mid",
-        "--sk-media-gradient-mix",
-        "--sk-media-gradient-opacity",
-        "--sk-media-gradient-tint",
-        "--sk-media-gradient-tint-edge",
-        "--sk-media-gradient-tint-mid"
+        "--sk-media-overlay-fg",
+        "--sk-media-overlay-gap",
+        "--sk-media-overlay-padding",
+        "--sk-media-overlay-shade-base",
+        "--sk-media-overlay-shade-direction",
+        "--sk-media-overlay-shade-ink",
+        "--sk-media-overlay-shade-ink-mid",
+        "--sk-media-overlay-shade-mix",
+        "--sk-media-overlay-shade-opacity",
+        "--sk-media-overlay-shade-tint",
+        "--sk-media-overlay-shade-tint-edge",
+        "--sk-media-overlay-shade-tint-mid"
       ],
-      "id": "media-gradient",
+      "id": "media-overlay",
       "options": {
         "captionElement": {
           "default": "div",
@@ -33342,21 +33900,21 @@
         },
         "strength": {
           "attr": "data-strength",
-          "default": "md",
+          "default": "moderate",
           "type": "enum",
           "values": [
-            "sm",
-            "md",
-            "lg"
+            "subtle",
+            "moderate",
+            "strong"
           ]
         }
       },
       "parts": {
-        "caption": "sk-media-caption",
-        "root": "sk-media-gradient"
+        "caption": "sk-media-overlay",
+        "root": "sk-media-overlay-shade"
       },
       "semantics": {
-        "MediaCaption": {
+        "MediaOverlay": {
           "alternatives": [
             "ImageFrame"
           ],
@@ -33369,13 +33927,13 @@
             "the wash should be as tall as the text, not a percentage of the image"
           ]
         },
-        "MediaGradient": {
+        "MediaOverlayShade": {
           "alternatives": [
             "Dialog",
             "FadeEdge"
           ],
           "avoidWhen": [
-            "it is outside a MediaCaption; it has no box to fill and paints nothing",
+            "it is outside a MediaOverlay; it has no box to fill and paints nothing",
             "it darkens a dialog over the page; that is Dialog's ::backdrop, not this wash"
           ],
           "useWhen": [
@@ -33384,10 +33942,10 @@
         }
       },
       "signatures": {
-        "MediaCaption": {
+        "MediaOverlay": {
           "compose": [
             {
-              "of": "media-gradient",
+              "of": "media-overlay",
               "systemOwned": true
             }
           ],
@@ -33408,8 +33966,8 @@
             "ImageFrame"
           ],
           "react": {
-            "from": "@skryensya/react/media-gradient",
-            "name": "MediaCaption"
+            "from": "@skryensya/react/media-overlay",
+            "name": "MediaOverlay"
           },
           "slots": {
             "children": {
@@ -33424,7 +33982,7 @@
             "slot": "children"
           }
         },
-        "MediaGradient": {
+        "MediaOverlayShade": {
           "host": {
             "element": "div"
           },
@@ -33437,11 +33995,11 @@
             "strength"
           ],
           "parents": [
-            "MediaCaption"
+            "MediaOverlay"
           ],
           "react": {
-            "from": "@skryensya/react/media-gradient",
-            "name": "MediaGradient"
+            "from": "@skryensya/react/media-overlay",
+            "name": "MediaOverlayShade"
           },
           "slots": {},
           "template": {
@@ -34546,12 +35104,6 @@
         "label": {
           "attr": "aria-label",
           "type": "string"
-        },
-        "nav": {
-          "attr": "data-nav",
-          "default": false,
-          "trueValue": "",
-          "type": "boolean"
         }
       },
       "parts": {
@@ -34594,8 +35146,7 @@
           },
           "intent": [
             "application-menu-bar",
-            "editor-menubar",
-            "site-navigation-with-dropdowns"
+            "editor-menubar"
           ],
           "mount": "data-sk-menubar",
           "options": [
@@ -34643,12 +35194,6 @@
                 "@skryensya/core/patterns/anchored.css"
               ],
               "systemOwned": true
-            },
-            {
-              "of": "nav-list",
-              "sheets": [
-                "@skryensya/core/patterns/nav-list.css"
-              ]
             }
           ],
           "host": {
@@ -34658,9 +35203,7 @@
             "menubar-command",
             "menubar-dropdown-trigger"
           ],
-          "options": [
-            "nav"
-          ],
+          "options": [],
           "parents": [
             "Menubar"
           ],
@@ -34768,50 +35311,7 @@
                 "element": "button",
                 "mount": "data-sk-menubar-item",
                 "part": "item",
-                "slot": "children",
-                "whenMissing": "nav"
-              },
-              {
-                "also": [
-                  "sk-nav-list__link",
-                  "sk-interactive",
-                  "sk-anchor"
-                ],
-                "attrs": {
-                  "data-sk-menu-trigger": "",
-                  "role": "menuitem",
-                  "type": "button"
-                },
-                "children": [
-                  {
-                    "also": [
-                      "sk-nav-list__label"
-                    ],
-                    "element": "span",
-                    "slot": "children"
-                  },
-                  {
-                    "attrs": {
-                      "aria-hidden": "true"
-                    },
-                    "children": [
-                      {
-                        "attrs": {
-                          "data-sk-icon": "chevron-down",
-                          "data-sk-icon-size": "md"
-                        },
-                        "element": "span"
-                      }
-                    ],
-                    "element": "span",
-                    "part": "itemIndicator",
-                    "whenGiven": "items"
-                  }
-                ],
-                "element": "button",
-                "mount": "data-sk-menubar-item",
-                "part": "item",
-                "whenGiven": "nav"
+                "slot": "children"
               },
               {
                 "also": [
@@ -36543,6 +37043,12 @@
           "part": "root",
           "sheet": "@skryensya/core/components/otp-input.css"
         },
+        "--sk-otp-input-group-gap": {
+          "default": "var(--space-inline-lg)",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/otp-input.css"
+        },
         "--sk-otp-input-hint-color": {
           "default": "var(--color-text-secondary)",
           "output": false,
@@ -36579,6 +37085,7 @@
         "--sk-otp-input-border-color",
         "--sk-otp-input-fg",
         "--sk-otp-input-gap",
+        "--sk-otp-input-group-gap",
         "--sk-otp-input-hint-color",
         "--sk-otp-input-invalid-border-color",
         "--sk-otp-input-label-color",
@@ -36606,6 +37113,15 @@
           "machineInput": true,
           "trueValue": "",
           "type": "boolean"
+        },
+        "groupSize": {
+          "attr": "data-group-size",
+          "type": "enum",
+          "values": [
+            "2",
+            "3",
+            "4"
+          ]
         },
         "invalid": {
           "attr": "data-invalid",
@@ -36635,7 +37151,7 @@
         },
         "placeholder": {
           "attr": "data-placeholder",
-          "default": "○",
+          "default": "",
           "machineInput": true,
           "type": "string"
         },
@@ -36671,10 +37187,12 @@
         }
       },
       "parts": {
+        "cell": "sk-otp-input__cell",
         "control": "sk-otp-input__control",
         "hiddenInput": "sk-otp-input__hidden",
         "hint": "sk-otp-input__hint",
         "label": "sk-otp-input__label",
+        "mask": "sk-otp-input__mask",
         "root": "sk-otp-input",
         "segment": "sk-otp-input__segment"
       },
@@ -36720,6 +37238,7 @@
             "mask",
             "otp",
             "placeholder",
+            "groupSize",
             "name",
             "defaultValue",
             "disabled",
@@ -36752,16 +37271,38 @@
               {
                 "children": [
                   {
-                    "also": [
-                      "sk-interactive"
+                    "children": [
+                      {
+                        "also": [
+                          "sk-interactive"
+                        ],
+                        "attrs": {
+                          "autocomplete": "off",
+                          "type": "text"
+                        },
+                        "element": "input",
+                        "mount": "data-sk-otp-input-segment",
+                        "part": "segment"
+                      },
+                      {
+                        "attrs": {
+                          "aria-hidden": "true"
+                        },
+                        "children": [
+                          {
+                            "attrs": {
+                              "data-sk-icon": "mask",
+                              "data-sk-icon-size": "md"
+                            },
+                            "element": "span"
+                          }
+                        ],
+                        "element": "span",
+                        "part": "mask"
+                      }
                     ],
-                    "attrs": {
-                      "autocomplete": "off",
-                      "type": "text"
-                    },
-                    "element": "input",
-                    "mount": "data-sk-otp-input-segment",
-                    "part": "segment",
+                    "element": "span",
+                    "part": "cell",
                     "repeatComputed": {
                       "from": [
                         "count"
@@ -38701,142 +39242,142 @@
         }
       }
     },
-    "process-list": {
+    "procedure": {
       "bindings": {
-        "ProcessList": {
+        "Procedure": {
           "enhancer": null,
           "markup": true,
           "portals": false,
-          "react": "@skryensya/react/process-list#ProcessList"
+          "react": "@skryensya/react/procedure#Procedure"
         },
-        "ProcessListItem": {
+        "ProcedureStep": {
           "enhancer": null,
           "markup": true,
           "portals": false,
-          "react": "@skryensya/react/process-list#ProcessListItem"
+          "react": "@skryensya/react/procedure#ProcedureStep"
         }
       },
       "category": "content",
-      "css": "@skryensya/core/components/process-list.css",
+      "css": "@skryensya/core/components/procedure.css",
       "hookDetails": {
-        "--sk-process-list-connector-color": {
+        "--sk-procedure-connector-color": {
           "default": "var(--color-border-subtle)",
           "output": false,
           "part": "root",
-          "sheet": "@skryensya/core/components/process-list.css"
+          "sheet": "@skryensya/core/components/procedure.css"
         },
-        "--sk-process-list-connector-size": {
+        "--sk-procedure-connector-size": {
           "default": "1px",
           "output": false,
           "part": "root",
-          "sheet": "@skryensya/core/components/process-list.css"
+          "sheet": "@skryensya/core/components/procedure.css"
         },
-        "--sk-process-list-content-gap": {
+        "--sk-procedure-content-gap": {
           "default": "var(--space-stack-xs)",
           "output": false,
           "part": "root",
-          "sheet": "@skryensya/core/components/process-list.css"
+          "sheet": "@skryensya/core/components/procedure.css"
         },
-        "--sk-process-list-fg": {
+        "--sk-procedure-fg": {
           "default": "var(--color-text-primary)",
           "output": false,
           "part": "root",
-          "sheet": "@skryensya/core/components/process-list.css"
+          "sheet": "@skryensya/core/components/procedure.css"
         },
-        "--sk-process-list-item-gap": {
+        "--sk-procedure-step-gap": {
           "default": "var(--space-inline-md)",
           "output": false,
           "part": "root",
-          "sheet": "@skryensya/core/components/process-list.css"
+          "sheet": "@skryensya/core/components/procedure.css"
         },
-        "--sk-process-list-item-padding-x": {
+        "--sk-procedure-step-padding-x": {
           "default": "var(--space-inset-md)",
           "output": false,
           "part": "root",
-          "sheet": "@skryensya/core/components/process-list.css"
+          "sheet": "@skryensya/core/components/procedure.css"
         },
-        "--sk-process-list-item-padding-y": {
+        "--sk-procedure-step-padding-y": {
           "default": "var(--space-inset-md)",
           "output": false,
           "part": "root",
-          "sheet": "@skryensya/core/components/process-list.css"
+          "sheet": "@skryensya/core/components/procedure.css"
         },
-        "--sk-process-list-marker-bg": {
+        "--sk-procedure-marker-bg": {
           "default": "var(--color-bg-surface-sunken)",
           "output": false,
           "part": "root",
-          "sheet": "@skryensya/core/components/process-list.css"
+          "sheet": "@skryensya/core/components/procedure.css"
         },
-        "--sk-process-list-marker-border-color": {
+        "--sk-procedure-marker-border-color": {
           "default": "var(--color-border-subtle)",
           "output": false,
           "part": "root",
-          "sheet": "@skryensya/core/components/process-list.css"
+          "sheet": "@skryensya/core/components/procedure.css"
         },
-        "--sk-process-list-marker-fg": {
+        "--sk-procedure-marker-fg": {
           "default": "var(--color-text-secondary)",
           "output": false,
           "part": "root",
-          "sheet": "@skryensya/core/components/process-list.css"
+          "sheet": "@skryensya/core/components/procedure.css"
         },
-        "--sk-process-list-marker-ring-color": {
+        "--sk-procedure-marker-ring-color": {
           "default": "transparent",
           "output": false,
           "part": "root",
-          "sheet": "@skryensya/core/components/process-list.css"
+          "sheet": "@skryensya/core/components/procedure.css"
         },
-        "--sk-process-list-marker-size": {
+        "--sk-procedure-marker-size": {
           "default": "var(--size-control-sm)",
           "output": false,
           "part": "root",
-          "sheet": "@skryensya/core/components/process-list.css"
+          "sheet": "@skryensya/core/components/procedure.css"
         },
-        "--sk-process-list-title-fg": {
+        "--sk-procedure-title-fg": {
           "default": "var(--color-text-primary)",
           "output": false,
           "part": "root",
-          "sheet": "@skryensya/core/components/process-list.css"
+          "sheet": "@skryensya/core/components/procedure.css"
         },
-        "--sk-process-list-title-font-size": {
+        "--sk-procedure-title-font-size": {
           "default": "var(--font-size-body)",
           "output": false,
           "part": "root",
-          "sheet": "@skryensya/core/components/process-list.css"
+          "sheet": "@skryensya/core/components/procedure.css"
         },
-        "--sk-process-list-title-font-weight": {
+        "--sk-procedure-title-font-weight": {
           "default": "var(--font-weight-emphasis)",
           "output": false,
           "part": "root",
-          "sheet": "@skryensya/core/components/process-list.css"
+          "sheet": "@skryensya/core/components/procedure.css"
         }
       },
       "hooks": [
-        "--sk-process-list-connector-color",
-        "--sk-process-list-connector-size",
-        "--sk-process-list-content-gap",
-        "--sk-process-list-fg",
-        "--sk-process-list-item-gap",
-        "--sk-process-list-item-padding-x",
-        "--sk-process-list-item-padding-y",
-        "--sk-process-list-marker-bg",
-        "--sk-process-list-marker-border-color",
-        "--sk-process-list-marker-fg",
-        "--sk-process-list-marker-ring-color",
-        "--sk-process-list-marker-size",
-        "--sk-process-list-title-fg",
-        "--sk-process-list-title-font-size",
-        "--sk-process-list-title-font-weight"
+        "--sk-procedure-connector-color",
+        "--sk-procedure-connector-size",
+        "--sk-procedure-content-gap",
+        "--sk-procedure-fg",
+        "--sk-procedure-step-gap",
+        "--sk-procedure-step-padding-x",
+        "--sk-procedure-step-padding-y",
+        "--sk-procedure-marker-bg",
+        "--sk-procedure-marker-border-color",
+        "--sk-procedure-marker-fg",
+        "--sk-procedure-marker-ring-color",
+        "--sk-procedure-marker-size",
+        "--sk-procedure-title-fg",
+        "--sk-procedure-title-font-size",
+        "--sk-procedure-title-font-weight"
       ],
-      "id": "process-list",
+      "id": "procedure",
       "options": {},
       "parts": {
-        "content": "sk-process-list__content",
-        "item": "sk-process-list__item",
-        "root": "sk-process-list",
-        "title": "sk-process-list__title"
+        "content": "sk-procedure__content",
+        "item": "sk-procedure__step",
+        "root": "sk-procedure",
+        "title": "sk-procedure__title"
       },
       "semantics": {
-        "ProcessList": {
+        "Procedure": {
           "alternatives": [
             "Steps",
             "List"
@@ -38849,7 +39390,7 @@
             "they are instructions to follow, and the content of each step is what matters"
           ]
         },
-        "ProcessListItem": {
+        "ProcedureStep": {
           "alternatives": [
             "Steps"
           ],
@@ -38862,7 +39403,7 @@
         }
       },
       "signatures": {
-        "ProcessList": {
+        "Procedure": {
           "host": {
             "element": "ol"
           },
@@ -38873,14 +39414,14 @@
           ],
           "options": [],
           "react": {
-            "from": "@skryensya/react/process-list",
-            "name": "ProcessList"
+            "from": "@skryensya/react/procedure",
+            "name": "Procedure"
           },
           "slots": {
             "children": {
               "accepts": "signature",
               "of": [
-                "ProcessListItem"
+                "ProcedureStep"
               ],
               "required": true
             }
@@ -38895,7 +39436,7 @@
             "slot": "children"
           }
         },
-        "ProcessListItem": {
+        "ProcedureStep": {
           "host": {
             "element": "li"
           },
@@ -38905,11 +39446,11 @@
           ],
           "options": [],
           "parents": [
-            "ProcessList"
+            "Procedure"
           ],
           "react": {
-            "from": "@skryensya/react/process-list",
-            "name": "ProcessListItem"
+            "from": "@skryensya/react/procedure",
+            "name": "ProcedureStep"
           },
           "slots": {
             "children": {
@@ -44662,6 +45203,7 @@
                       "user",
                       "visibility",
                       "visibility-off",
+                      "mask",
                       "language",
                       "appearance",
                       "mode-system",
@@ -44798,10 +45340,10 @@
       "semantics": {
         "Steps": {
           "alternatives": [
-            "ProcessList"
+            "Procedure"
           ],
           "avoidWhen": [
-            "they are instructions to read and follow; that is a ProcessList"
+            "they are instructions to read and follow; that is a Procedure"
           ],
           "useWhen": [
             "which stage of a multi-stage process the user is at has to be shown",
@@ -49756,12 +50298,12 @@
         "Timeline": {
           "alternatives": [
             "Steps",
-            "ProcessList",
+            "Procedure",
             "Changelog"
           ],
           "avoidWhen": [
             "the reader is inside the process and has to be told which stage they are at; that is Steps",
-            "they are instructions to follow, with no time at all; that is a ProcessList",
+            "they are instructions to follow, with no time at all; that is a Procedure",
             "they are shipped releases; that is Changelog, which has its own vocabulary and scale"
           ],
           "useWhen": [
@@ -54822,7 +55364,7 @@
     "working": "0.0.2"
   },
   "schemaVersion": "2.3",
-  "sourceHash": "03b5eb901cf8592f",
+  "sourceHash": "604fc22246b86106",
   "vocabulary": {
     "a11y": "When `when` holds, one of `requiresOneOf` must be given: an option, a raw attribute, a filled slot, or a child signature by name.",
     "atLeastOneOf": "At least one member of each group counts: a filled slot, a boolean option set to true, or an option other than its default.",

@@ -1,5 +1,5 @@
 ---
-import Base from "../../layouts/Base.astro";
+import FoundationPage from "../../components/FoundationPage.astro";
 import CodeBlock from "../../components/CodeBlock.astro";
 import UsagePreview from "../../components/UsagePreview.astro";
 import Used from "../../components/Used.astro";
@@ -54,12 +54,10 @@ const usage = `<!-- Nivel del documento y tamaño visual van por separado -->
 </style>`;
 ---
 
-<Base
+<FoundationPage
   title="Tipografía"
-  documentLayout="grid"
   description="La escala tipográfica del sistema: familias, pares de tamaño e interlineado, pesos por rol y cómo consumirlos."
 >
-  <h1>Tipografía</h1>
   <p class="lede">
     Una familia sans que viaja con el paquete, una mono para código, once roles de tamaño que traen
     su propio interlineado y cuatro pesos con nombre. Ningún componente escribe un
@@ -217,4 +215,4 @@ const usage = `<!-- Nivel del documento y tamaño visual van por separado -->
     Todos los tokens están en la <a href="/es/referencia">referencia de tokens</a>, con su valor
     resuelto en vivo.
   </p>
-</Base>
+</FoundationPage>

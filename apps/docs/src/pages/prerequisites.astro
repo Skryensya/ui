@@ -1,5 +1,5 @@
 ---
-import Base from "../layouts/Base.astro";
+import FoundationPage from "../components/FoundationPage.astro";
 
 type Ref = {
   label: string;
@@ -250,12 +250,11 @@ const concepts: readonly Concept[] = [
 ];
 ---
 
-<Base
+<FoundationPage
   title="Prerrequisitos"
   description="Platform concepts and standards that this design system considers known, with external references."
-  documentLayout="grid"
+  heading="Prerequisites"
 >
-  <h1>Prerequisites</h1>
   <p class="lede">
     This page does not explain the system: it points to external material that should be mastered first. Each concept lists <strong>why</strong> appears here and links to the source (MDN, W3C, specs).“How we apply it” is on the system pages; <em>because</em> of each slice lives in <code>docs/decisions/</code> of the repository.
   </p>
@@ -288,7 +287,7 @@ const concepts: readonly Concept[] = [
   <p>
     With those platform parts, follow <a href="/installation">installation</a>, <a href="/first-component">your first component</a> and the basics: <a href="/tiers">tiers</a>, <a href="/dimensions">dimensions</a>, <a href="/styling-hooks">styling hooks</a>.
   </p>
-</Base>
+</FoundationPage>
 
 <style>
   .docs-prereq + .docs-prereq {

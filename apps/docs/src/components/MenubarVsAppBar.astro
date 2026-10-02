@@ -1,0 +1,69 @@
+---
+/*
+ * MENUBAR OR APP BAR, on both pages. Two widgets open menus from a bar and a reader meets them in the
+ * same breath, so the difference is stated once, here, and drawn: the same commands in each, a
+ * toggle between them, a table of what is actually different and one rule to decide by.
+ *
+ * What the table says is what `packages/core/src/app-bar.ts` says about itself (WHY NOT MENUBAR),
+ * not a second opinion: if the two contracts move, this is the text to move with them.
+ */
+/* Both widgets are drawn here, so both sheets travel with it: a page that only used one of them
+   would otherwise draw the other unstyled. */
+import "@skryensya/core/components/menubar.css";
+import "@skryensya/core/components/app-bar.css";
+import "@skryensya/core/components/menu.css";
+import "@skryensya/core/patterns/anchored.css";
+import UsagePreview from "./UsagePreview.astro";
+import ComparisonTable from "./ComparisonTable.astro";
+import { menubarCompareTree } from "../demos/menubar";
+import { appBarCompareTree } from "../demos/app-bar";
+import { getLocale, useTranslations } from "../i18n";
+
+const locale = getLocale(Astro.url);
+const t = useTranslations(locale);
+
+const rows = ["where", "entries", "dropdown", "status", "device"] as const;
+
+/* The same block on both pages, told from the page's own side: each opens with its own component and
+   says when to reach for the other. `from` is the page it sits on. */
+interface Props {
+  from?: "menubar" | "app-bar";
+}
+const { from = "menubar" } = Astro.props;
+const here = from;
+const other = from === "menubar" ? "app-bar" : "menubar";
+const names = { menubar: "Menubar", "app-bar": "AppBar" } as const;
+const trees = { menubar: menubarCompareTree(t), "app-bar": appBarCompareTree(t) } as const;
+const bodies = { menubar: t("menubarVs.menubar.body"), "app-bar": t("menubarVs.appbar.body") } as const;
+const sides = { menubar: "menubar", "app-bar": "appbar" } as const;
+const titleKey = from === "menubar" ? "menubarVs.title" : "menubarVs.appbarPage.title";
+const ruleKey = from === "menubar" ? "menubarVs.rule" : "menubarVs.appbarPage.rule";
+---
+
+<section class="menubar-vs-appbar">
+  <h3>{t(titleKey as Parameters<typeof t>[0])}</h3>
+  <p set:html={t(ruleKey as Parameters<typeof t>[0])} />
+
+  <UsagePreview
+    tree={trees[here]}
+    variants={[here, other].map((side) => ({
+      value: side,
+      label: names[side],
+      tree: trees[side],
+      explain: bodies[side],
+    }))}
+    variantsLabel={t("menubarVs.toggle")}
+    description={t("menubarVs.intro")}
+    stageMinBlockSize="16rem"
+  />
+
+  <ComparisonTable
+    aspectLabel={t("menubarVs.col.aspect")}
+    columns={[here, other].map((side) => names[side])}
+    rows={rows.map((row) => ({
+      label: t(`menubarVs.row.${row}` as Parameters<typeof t>[0]),
+      cells: [here, other].map((side) => t(`menubarVs.row.${row}.${sides[side]}` as Parameters<typeof t>[0])),
+    }))}
+  />
+</section>
+

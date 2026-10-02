@@ -80,15 +80,15 @@ _Avoid_: mini sidebar, icon sidebar, collapsed drawer
 
 ## Ordered sequences
 
-**Process list**:
+**Procedure**:
 A static ordered sequence of instructions whose content is primary. Its numbers and connectors
 express order, never progress; it has no complete, current, or upcoming state.
-_Avoid_: stepper, steps, progress list, ordered List
+_Avoid_: process list, stepper, steps, progress list, ordered List
 
 **Steps**:
 A progress indicator across ordered stages. Stage status is primary; it summarizes progress rather
 than containing the instructions for each stage.
-_Avoid_: process list, instructions, how-to
+_Avoid_: procedure, instructions, how-to
 
 ## Anatomy
 
@@ -126,11 +126,11 @@ The material border a Sticker draws around its artwork's visible pixels, uniform
 curves, points and holes. It follows alpha, so a transparent corner of the image is outside it.
 _Avoid_: outline (that is the CSS property), stroke, border, halo
 
-**Media gradient**:
-A pattern. A wash nested in a media caption so type stays readable over a photo. Sized to the
+**Media overlay**:
+A pattern. A caption laid over a photo, with a wash (`MediaOverlayShade`) nested in it so type stays readable over a photo. Sized to the
 caption (as tall or as wide as the text), tinted with the brand accent, never by use (`hero`,
 `card`). Distinct from Backdrop (modal page scrim) and State layer (interaction paint).
-_Avoid_: scrim, overlay, veil, shade, vignette (as the product name), ink, paper, light wash
+_Avoid_: scrim, veil, vignette (as the product name), media gradient (the old name), ink, paper, light wash
 
 **State**:
 What a component currently *is*, selected, expanded, disabled. Owned by the machine and written by

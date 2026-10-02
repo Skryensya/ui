@@ -428,8 +428,8 @@ describe("discovery quality on real prompts", () => {
     const list = order(
       "A cinematic editorial landing page with an oversized headline, overlapping image, breakout sections, and strong visual hierarchy.",
     );
-    for (const id of ["Hero", "LayoutGrid", "Heading", "ImageFrame", "MediaCaption"]) expect(list, id).toContain(id);
-    for (const id of ["Hero", "LayoutGrid", "Heading", "MediaCaption"]) before(list, id, "Lightbox");
+    for (const id of ["Hero", "LayoutGrid", "Heading", "ImageFrame", "MediaOverlay"]) expect(list, id).toContain(id);
+    for (const id of ["Hero", "LayoutGrid", "Heading", "MediaOverlay"]) before(list, id, "Lightbox");
     // A pager family may appear through an intent that literally says "page", never through `pager`,
     // and never above the primitives the prompt is about.
     const result = discover(real, snippets, {
@@ -442,8 +442,8 @@ describe("discovery quality on real prompts", () => {
       expect(candidate.matched.some((m) => m.value === "overlays"), candidate.signature).toBe(false);
     }
     for (const pager of ["TablePager", "TablePagerSize", "Pagination"]) before(list, "Hero", pager);
-    // MediaGradient, which only lives inside a MediaCaption, is matched too, past the default limit.
-    expect(order("A cinematic editorial landing page with an oversized headline, overlapping image.", 40)).toContain("MediaGradient");
+    // MediaOverlayShade, which only lives inside a MediaOverlay, is matched too, past the default limit.
+    expect(order("A cinematic editorial landing page with an oversized headline, overlapping image.", 40)).toContain("MediaOverlayShade");
   });
 });
 

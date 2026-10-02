@@ -1,5 +1,5 @@
 ---
-import Base from "../../layouts/Base.astro";
+import FoundationPage from "../../components/FoundationPage.astro";
 import CodeBlock from "../../components/CodeBlock.astro";
 import UsagePreview from "../../components/UsagePreview.astro";
 import { firstComponentButtonsTree } from "../../demos/button";
@@ -41,12 +41,10 @@ const fouc = `<script>
 </script>`;
 ---
 
-<Base
+<FoundationPage
   title="Tu primer componente"
   description="De cero a un botón que responde a las cuatro dimensiones, paso a paso."
-  documentLayout="grid"
 >
-  <h1>Tu primer componente</h1>
   <p class="lede">
     De cero a un botón que responde a modo, contraste, densidad y radio. Seis pasos, sin magia.
   </p>
@@ -119,4 +117,4 @@ const fouc = `<script>
     </p>
     </div>
   </div>
-</Base>
+</FoundationPage>

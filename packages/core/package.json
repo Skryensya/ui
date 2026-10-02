@@ -76,6 +76,10 @@
       "types": "./src/tag.ts",
       "default": "./src/tag.ts"
     },
+    "./comparison-table": {
+      "types": "./src/comparison-table.ts",
+      "default": "./src/comparison-table.ts"
+    },
     "./description-list": {
       "types": "./src/description-list.ts",
       "default": "./src/description-list.ts"
@@ -120,9 +124,9 @@
       "types": "./src/steps.ts",
       "default": "./src/steps.ts"
     },
-    "./process-list": {
-      "types": "./src/process-list.ts",
-      "default": "./src/process-list.ts"
+    "./procedure": {
+      "types": "./src/procedure.ts",
+      "default": "./src/procedure.ts"
     },
     "./pagination": {
       "types": "./src/pagination.ts",
@@ -258,9 +262,9 @@
       "types": "./src/sticker.ts",
       "default": "./src/sticker.ts"
     },
-    "./media-gradient": {
-      "types": "./src/media-gradient.ts",
-      "default": "./src/media-gradient.ts"
+    "./media-overlay": {
+      "types": "./src/media-overlay.ts",
+      "default": "./src/media-overlay.ts"
     },
     "./nav-list": {
       "types": "./src/nav-list.ts",

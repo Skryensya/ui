@@ -5,7 +5,7 @@
  * copiar compartido y una cuarta columna resuelta en el navegador) y por qué el marcado vive acá en
  * lugar de en un componente, con el costo que eso tiene: dos locales, dos copias de la misma tabla.
  */
-import Base from "../../layouts/Base.astro";
+import FoundationPage from "../../components/FoundationPage.astro";
 import { groupedTokens, tokens } from "../../lib/tokens";
 
 const toneByTier = { primitive: "warning", semantic: "accent", component: "success" } as const;
@@ -30,12 +30,10 @@ const groupBlockSize = (rows: number) => `${(rows * 2.6 + 6.5).toFixed(1)}rem`;
 const fullText = (value: string) => (value.length > 40 ? value : undefined);
 ---
 
-<Base
+<FoundationPage
   title="Referencia de tokens"
-  documentLayout="grid"
   description="Todos los tokens del sistema: nombre, tier y el valor escrito en CSS."
 >
-  <h1>Referencia de tokens</h1>
   <p class="lede">
     Cada token del sistema, con el tier al que pertenece y el valor que le da su hoja de estilos.
   </p>
@@ -96,4 +94,4 @@ const fullText = (value: string) => (value.length > 40 ? value : undefined);
     Para entender la dirección de referencias, lee <a href="/es/tiers">Tiers</a>. Para ver qué ejes
     cambian el valor resuelto, lee <a href="/es/dimensiones">Dimensiones</a>.
   </p>
-</Base>
+</FoundationPage>

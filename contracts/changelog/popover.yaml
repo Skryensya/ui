@@ -5,6 +5,26 @@
 # hash.
 surface: "d75c29f8f816fb0c"
 entries:
+  - date: 2026-10-02
+    kind: bugfix
+    target: arrow
+    es:
+      title: La flecha del Popover apunta al botón, incluso si el panel se desplaza
+      body: >-
+        La flecha nunca se colocaba: <code>scale</code>, <code>translate</code> y <code>filter</code> del
+        panel abierto lo convertían en el bloque contenedor de la flecha, y el botón, fuera de él, no era un
+        ancla válida. El estado abierto ahora es <code>none</code> (la misma imagen, sin bloque contenedor),
+        así que la flecha se ancla al botón como en Tooltip y Menu y lo sigue cuando el panel se empuja al
+        borde de la pantalla. Para que esté bien desde el primer cuadro, el panel ya no escala, desliza ni desenfoca al abrirse o cerrarse: entra y sale solo con opacidad, y la flecha se desvanece con él. Pinta también el degradado de elevación del panel. La superficie del contrato
+        no cambia.
+    en:
+      title: The Popover's arrow points at the button, even when the panel is pushed aside
+      body: >-
+        The arrow was never placed: the open panel's <code>scale</code>, <code>translate</code> and
+        <code>filter</code> made it the containing block of the arrow, and the button, outside it, was not a
+        valid anchor. The open state is now <code>none</code> (same picture, no containing block), so the
+        arrow anchors to the button as in Tooltip and Menu and follows it when the panel is pushed to the
+        screen edge. So that it is right from the first frame the panel no longer scales, slides or blurs in and out: it fades with opacity only, and the arrow fades with it. It also paints the panel's elevation wash. The contract's surface does not change.
   - date: 2026-09-26
     kind: feature
     target: appearance

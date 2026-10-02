@@ -1,5 +1,5 @@
 ---
-import Base from "../layouts/Base.astro";
+import FoundationPage from "../components/FoundationPage.astro";
 import CodeBlock from "../components/CodeBlock.astro";
 import UsagePreview from "../components/UsagePreview.astro";
 import Used from "../components/Used.astro";
@@ -53,12 +53,10 @@ const usage = `<!-- Document level and visual size are separate -->
 </style>`;
 ---
 
-<Base
+<FoundationPage
   title="Typography"
-  documentLayout="grid"
   description="The system's type scale: families, size and line-height pairs, one weight per role, and how to consume them."
 >
-  <h1>Typography</h1>
   <p class="lede">
     A sans family that ships with the package, a mono for code, eleven size roles that carry their
     own line-height, and four named weights. No component writes a <code>font-size</code> in pixels:
@@ -214,4 +212,4 @@ const usage = `<!-- Document level and visual size are separate -->
   <p>
     Every token is in the <a href="/reference">token reference</a>, with its live resolved value.
   </p>
-</Base>
+</FoundationPage>

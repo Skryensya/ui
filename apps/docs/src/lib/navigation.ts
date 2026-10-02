@@ -69,7 +69,7 @@ export type NavigationSection = {
   groups: readonly NavigationGroup[];
 };
 
-export type NavigationSectionId = "start" | "foundations" | "components";
+export type NavigationSectionId = "foundations" | "components";
 
 /** Component inventory. The catalog groups this single source by task below. */
 const componentItems = [
@@ -517,6 +517,23 @@ const componentItems = [
     aliases: ["cuestionario", "encuesta", "survey", "formulario por pasos", "wizard", "preguntas"],
   },
   {
+    href: "/components/comparison-table",
+    label: "ComparisonTable",
+    aliases: [
+      "tabla comparativa",
+      "comparación",
+      "comparacion",
+      "comparar",
+      "versus",
+      "vs",
+      "cuándo usar",
+      "cuando usar",
+      "planes",
+      "lado a lado",
+      "side by side",
+    ],
+  },
+  {
     href: "/components/description-list",
     label: "DescriptionList",
     aliases: [
@@ -596,8 +613,8 @@ const componentItems = [
     ],
   },
   {
-    href: "/components/process-list",
-    label: "ProcessList",
+    href: "/components/procedure",
+    label: "Procedure",
     aliases: [
       "lista de instrucciones",
       "lista ordenada",
@@ -832,9 +849,9 @@ const componentItems = [
     aliases: ["marquesina", "ticker", "cinta continua", "scrolling text", "logo wall"],
   },
   {
-    href: "/components/media-gradient",
-    label: "MediaGradient",
-    aliases: ["gradient", "gradients", "gradientes", "media gradient", "media-gradient", "media caption", "contraste sobre imagen", "text on image", "texto sobre imagen", "wash", "velo", "scrim"],
+    href: "/components/media-overlay",
+    label: "MediaOverlay",
+    aliases: ["gradient", "gradients", "gradientes", "media gradient", "media-overlay", "media overlay", "media caption", "contraste sobre imagen", "text on image", "texto sobre imagen", "wash", "velo", "scrim"],
   },
   {
     href: "/components/menu",
@@ -1037,6 +1054,7 @@ const allComponentNavigation = [
     blurb: "group.componentData.blurb",
     items: componentGroupItems(
       "/components/description-list",
+      "/components/comparison-table",
       "/components/table",
       "/components/table-pager",
       "/components/data-grid",
@@ -1060,7 +1078,7 @@ const allComponentNavigation = [
       "/components/tag",
       "/components/avatar",
       "/components/image-frame",
-      "/components/media-gradient",
+      "/components/media-overlay",
       "/components/sticker",
       "/components/carousel",
       "/components/qr-code",
@@ -1076,7 +1094,7 @@ const allComponentNavigation = [
       "/components/changelog",
       "/components/comment-thread",
       "/components/feed",
-      "/components/process-list",
+      "/components/procedure",
       "/components/quote",
       "/components/timeline",
     ),
@@ -1221,9 +1239,12 @@ export const globalNavigation = [
 
 export const documentationNavigation = [
   {
-    id: "start",
-    section: "section.start",
-    blurb: "section.start.blurb",
+    // First stage: the pages commented out below are written and still routable, only unlisted here (rail,
+    // footer, search). Uncomment an entry to list it again.
+    id: "foundations",
+    section: "section.foundations",
+    href: "/foundations",
+    blurb: "section.foundations.blurb",
     groups: [
       {
         group: "group.firstSteps",
@@ -1248,21 +1269,13 @@ export const documentationNavigation = [
             label: "Montaje automático",
             aliases: ["auto mount", "initComponents", "auto-mounting", "automatic mounting", "vanilla mount"],
           },
-          {
-            href: "/maker",
-            label: "Maker",
-            aliases: ["page builder", "constructor de páginas", "editor visual", "visual editor", "maker_apply", "maker_read"],
-          },
+          // {
+            // href: "/maker",
+            // label: "Maker",
+            // aliases: ["page builder", "constructor de páginas", "editor visual", "visual editor", "maker_apply", "maker_read"],
+          // },
         ],
       },
-    ],
-  },
-  {
-    id: "foundations",
-    section: "section.foundations",
-    href: "/foundations",
-    blurb: "section.foundations.blurb",
-    groups: [
       {
         group: "group.foundationModel",
         blurb: "group.foundationModel.blurb",
@@ -1286,27 +1299,27 @@ export const documentationNavigation = [
         blurb: "group.visualDimensions.blurb",
         items: [
           { href: "/dimensions", label: "Dimensiones" },
-          {
-            href: "/density",
-            label: "Densidad de componente",
-            aliases: ["density", "densidad local", "scope de densidad", "custom density", "compactar componente"],
-          },
-          {
-            href: "/elevation",
-            label: "Elevación",
-            aliases: [
-              "elevation",
-              "sombra",
-              "sombras",
-              "shadow",
-              "shadows",
-              "box-shadow",
-              "depth",
-              "profundidad",
-              "material elevation",
-              "z-depth",
-            ],
-          },
+          // {
+            // href: "/density",
+            // label: "Densidad de componente",
+            // aliases: ["density", "densidad local", "scope de densidad", "custom density", "compactar componente"],
+          // },
+          // {
+            // href: "/elevation",
+            // label: "Elevación",
+            // aliases: [
+              // "elevation",
+              // "sombra",
+              // "sombras",
+              // "shadow",
+              // "shadows",
+              // "box-shadow",
+              // "depth",
+              // "profundidad",
+              // "material elevation",
+              // "z-depth",
+            // ],
+          // },
           {
             href: "/appearance",
             label: "Apariencia",
@@ -1351,42 +1364,42 @@ export const documentationNavigation = [
         blurb: "group.publicSurfaces.blurb",
         items: [
           { href: "/styling-hooks", label: "Styling hooks" },
-          { href: "/state-layer", label: "State layer" },
-          { href: "/motion", label: "Motion" },
-          {
-            href: "/effects",
-            label: "Efectos",
-            trailing: "Demo",
-            aliases: [
-              "effects",
-              "scroll reveal",
-              "reveal on scroll",
-              "animation-timeline",
-              "collapse header",
-              "header colapsable",
-              "pulse",
-              "pulso",
-              "adr-20",
-            ],
-          },
+          // { href: "/state-layer", label: "State layer" },
+          // { href: "/motion", label: "Motion" },
+          // {
+            // href: "/effects",
+            // label: "Efectos",
+            // trailing: "Demo",
+            // aliases: [
+              // "effects",
+              // "scroll reveal",
+              // "reveal on scroll",
+              // "animation-timeline",
+              // "collapse header",
+              // "header colapsable",
+              // "pulse",
+              // "pulso",
+              // "adr-20",
+            // ],
+          // },
         ],
       },
       {
         group: "group.platformAccessibility",
         blurb: "group.platformAccessibility.blurb",
         items: [
-          {
-            href: "/zoom",
-            label: "Zoom y reflow",
-            aliases: [
-              "zoom 200%",
-              "zoom 400%",
-              "reflow",
-              "resize text",
-              "wcag 1.4.4",
-              "wcag 1.4.10",
-            ],
-          },
+          // {
+            // href: "/zoom",
+            // label: "Zoom y reflow",
+            // aliases: [
+              // "zoom 200%",
+              // "zoom 400%",
+              // "reflow",
+              // "resize text",
+              // "wcag 1.4.4",
+              // "wcag 1.4.10",
+            // ],
+          // },
           {
             href: "/keyboard",
             label: "Navegación por teclado",
@@ -1404,78 +1417,78 @@ export const documentationNavigation = [
               "aria-activedescendant",
             ],
           },
-          {
-            href: "/storage",
-            label: "Almacenamiento",
-            aliases: [
-              "storage",
-              "localstorage",
-              "local storage",
-              "preferencias",
-              "preferences",
-              "persistencia",
-              "persistence",
-              "usestoredpreference",
-              "definepreference",
-            ],
-          },
+          // {
+            // href: "/storage",
+            // label: "Almacenamiento",
+            // aliases: [
+              // "storage",
+              // "localstorage",
+              // "local storage",
+              // "preferencias",
+              // "preferences",
+              // "persistencia",
+              // "persistence",
+              // "usestoredpreference",
+              // "definepreference",
+            // ],
+          // },
         ],
       },
-      {
-        group: "group.sharedPatterns",
-        blurb: "group.sharedPatterns.blurb",
-        items: [
-          {
-            href: "/anchoring",
-            label: "Anclaje",
-            aliases: [
-              "anchored",
-              "anchor",
-              "anchor positioning",
-              "posicionamiento",
-              "colocación",
-              "colocacion",
-              "placement",
-              "floating",
-              "popper",
-              "flecha",
-              "arrow",
-              "positioner",
-            ],
-          },
-          {
-            href: "/splitter",
-            label: "Splitter",
-            aliases: [
-              "window splitter",
-              "separador",
-              "resize handle",
-              "redimensionar",
-              "resizable columns",
-              "columnas redimensionables",
-              "sk-splitter",
-            ],
-          },
-          {
-            href: "/scroll-lock",
-            label: "Scroll lock",
-            aliases: ["scrollbar gutter", "cls", "overflow hidden", "congelar scroll", "reserva scrollbar"],
-          },
-          {
-            href: "/transparency",
-            label: "Transparencia",
-            aliases: [
-              "transparency",
-              "reduced transparency",
-              "prefers-reduced-transparency",
-              "blur",
-              "glassmorphism",
-              "fondos translúcidos",
-              "frosted",
-            ],
-          },
-        ],
-      },
+      // {
+        // group: "group.sharedPatterns",
+        // blurb: "group.sharedPatterns.blurb",
+        // items: [
+          // {
+            // href: "/anchoring",
+            // label: "Anclaje",
+            // aliases: [
+              // "anchored",
+              // "anchor",
+              // "anchor positioning",
+              // "posicionamiento",
+              // "colocación",
+              // "colocacion",
+              // "placement",
+              // "floating",
+              // "popper",
+              // "flecha",
+              // "arrow",
+              // "positioner",
+            // ],
+          // },
+          // {
+            // href: "/splitter",
+            // label: "Splitter",
+            // aliases: [
+              // "window splitter",
+              // "separador",
+              // "resize handle",
+              // "redimensionar",
+              // "resizable columns",
+              // "columnas redimensionables",
+              // "sk-splitter",
+            // ],
+          // },
+          // {
+            // href: "/scroll-lock",
+            // label: "Scroll lock",
+            // aliases: ["scrollbar gutter", "cls", "overflow hidden", "congelar scroll", "reserva scrollbar"],
+          // },
+          // {
+            // href: "/transparency",
+            // label: "Transparencia",
+            // aliases: [
+              // "transparency",
+              // "reduced transparency",
+              // "prefers-reduced-transparency",
+              // "blur",
+              // "glassmorphism",
+              // "fondos translúcidos",
+              // "frosted",
+            // ],
+          // },
+        // ],
+      // },
     ],
   },
   {

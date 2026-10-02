@@ -1,6 +1,6 @@
 ---
 import "@skryensya/core/components/slider.css";
-import Base from "../layouts/Base.astro";
+import FoundationPage from "../components/FoundationPage.astro";
 import CodeBlock from "../components/CodeBlock.astro";
 import { densityLabTree } from "../demos/density";
 import { getLocale, useTranslations } from "../i18n";
@@ -84,12 +84,10 @@ const densityLabScript = `document.querySelectorAll("[data-density-lab]").forEac
 const t = useTranslations(getLocale(Astro.url));
 ---
 
-<Base
+<FoundationPage
   title="Component Density"
-  documentLayout="grid"
   description="Adjust the spacing and controls of an isolated component without compacting the rest of the interface."
 >
-  <h1>Component Density</h1>
   <p class="lede">
     Local density is not a component variant. It is a scope that recalculates the <strong>spacing and control tokens at your component's boundary</strong>, without touching its neighbours or the density the application chose.
   </p>
@@ -166,5 +164,5 @@ const t = useTranslations(getLocale(Astro.url));
     <a href="/elevation">Elevation</a>, which shows the visual fallbacks, and in
     <a href="/reference">Reference</a>, for looking up the resolved values.
   </p>
-</Base>
+</FoundationPage>
 

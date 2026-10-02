@@ -3,16 +3,40 @@ import "@skryensya/core/components/navbar.css";
 import "@skryensya/core/patterns/nav-list.css";
 import "@skryensya/core/components/button.css";
 import "@skryensya/core/components/avatar.css";
+import "@skryensya/core/components/megamenu.css";
+import "@skryensya/core/patterns/anchored.css";
+import "@skryensya/core/patterns/image-frame.css";
+import "@skryensya/core/patterns/layout.css";
 /* Structure diagram: Annotated specimen; a preview frame only copies styles THIS page loaded. */
 import "@skryensya/core/components/annotation.css";
 import ComponentPageShell from "./ComponentPageShell.astro";
 import AppearanceMenu from "../AppearanceMenu.astro";
 import CodeBlock from "../CodeBlock.astro";
 import UsagePreview from "../UsagePreview.astro";
+import DoDont from "../DoDont.astro";
 import WhenToUse from "../WhenToUse.astro";
 import ContentRules from "../ContentRules.astro";
 import A11yNotes from "../A11yNotes.astro";
-import { navbarAnatomyTree, navbarAppTree, navbarBareCss, navbarBareTree, navbarTree } from "../../demos/navbar";
+import {
+  navbarAnatomyTree,
+  navbarAppTree,
+  navbarBareCss,
+  navbarBareTree,
+  navbarDoFewLinksTree,
+  navbarDoOneActionTree,
+  navbarDoShortBrandTree,
+  navbarDontLongBrandTree,
+  navbarDontManyActionsTree,
+  navbarDontManyLinksTree,
+  navbarLayoutCss,
+  navbarLayoutBrandCenterTree,
+  navbarLayoutCenteredTree,
+  navbarLayoutMinimalTree,
+  navbarLayoutTree,
+  navbarMegamenuAppTree,
+  navbarMegamenuTree,
+  navbarTree,
+} from "../../demos/navbar";
 import { annotationDemoCss } from "../../demos/annotation";
 import { getLocale, tList, useTranslations } from "../../i18n";
 
@@ -20,6 +44,17 @@ const install = `pnpm add @skryensya/core @skryensya/react`;
 const t = useTranslations(getLocale(Astro.url));
 
 const hrefs = { home: "/", projects: "/proyectos", reports: "/reportes", team: "/equipo" };
+
+const layoutValues = ["start", "centered", "brand-center", "minimal"] as const;
+const layoutVariants = layoutValues.map((layout) => ({
+  value: layout,
+  label: t(`navbarPage.layout.${layout}` as Parameters<typeof t>[0]),
+  tree: { start: navbarLayoutTree, centered: navbarLayoutCenteredTree, "brand-center": navbarLayoutBrandCenterTree, minimal: navbarLayoutMinimalTree }[layout](t, hrefs),
+  explain: t(`navbarPage.layoutExplain.${layout}` as Parameters<typeof t>[0]),
+}));
+const appearanceExplain = Object.fromEntries(
+  (["plain", "brutalist", "frosted"] as const).map((value) => [value, t(`navbarPage.appearance.${value}` as Parameters<typeof t>[0])]),
+);
 
 const css = `@import "@skryensya/core/tokens.scss";
 @import "@skryensya/core/components/navbar.css";
@@ -40,6 +75,25 @@ const css = `@import "@skryensya/core/tokens.scss";
   <Fragment slot="usage">
     <p class="lede" set:html={t("navbarPage.lede")} />
 
+    <UsagePreview
+      tree={navbarLayoutTree(t, hrefs)}
+      optionName="appearance"
+      title={t("navbarPage.appearanceTitle")}
+      description={t("navbarPage.appearanceBody")}
+      explain={appearanceExplain}
+      css={navbarLayoutCss}
+      stageMinBlockSize="7rem"
+    />
+    <UsagePreview
+      variants={layoutVariants}
+      initialVariant="start"
+      variantsLabel={t("navbarPage.layoutLabel")}
+      title={t("navbarPage.layoutTitle")}
+      description={t("navbarPage.layoutBody")}
+      css={navbarLayoutCss}
+      stageMinBlockSize="7rem"
+    />
+
     <h3>{t("component.examplesTitle")}</h3>
     <h3>{t("navbarPage.linksTitle")}</h3>
     <p set:html={t("navbarPage.linksBody")} />
@@ -52,7 +106,7 @@ const css = `@import "@skryensya/core/tokens.scss";
       })}
       label="Navbar"
       flush
-      stageMinBlockSize="10rem"
+      screen="xl"
     />
 
     <h3>{t("navbarPage.bareTitle")}</h3>
@@ -62,12 +116,20 @@ const css = `@import "@skryensya/core/tokens.scss";
       css={navbarBareCss}
       label={t("navbarPage.bareTitle")}
       flush
-      stageMinBlockSize="10rem"
+      screen="xl"
     />
 
     <h3>{t("navbarPage.appTitle")}</h3>
     <p set:html={t("navbarPage.appBody")} />
-    <UsagePreview tree={navbarAppTree(t, hrefs)} label={t("navbarPage.appTitle")} flush stageMinBlockSize="10rem" />
+    <UsagePreview tree={navbarAppTree(t, hrefs)} label={t("navbarPage.appTitle")} flush screen="xl" />
+
+    <h3>{t("navbarPage.megaTitle")}</h3>
+    <p set:html={t("navbarPage.megaBody")} />
+    <UsagePreview tree={navbarMegamenuTree(t)} label={t("navbarPage.megaTitle")} flush viewport="overlay" screen="xl" />
+
+    <h3>{t("navbarPage.megaAppTitle")}</h3>
+    <p set:html={t("navbarPage.megaAppBody")} />
+    <UsagePreview tree={navbarMegamenuAppTree(t)} label={t("navbarPage.megaAppTitle")} flush viewport="overlay" screen="xl" />
 
     <h3>{t("component.contractNotesTitle")}</h3>
     <ul>
@@ -93,6 +155,24 @@ const css = `@import "@skryensya/core/tokens.scss";
   <Fragment slot="guidelines">
     <p class="lede" set:html={t("navbarPage.guidelinesLede")} />
     <WhenToUse use={tList(t, "navbarPage.when")} avoid={tList(t, "navbarPage.whenNot")} />
+    <DoDont
+      title={t("navbarPage.dd.actions.title")}
+      stacked
+      do={{ tree: navbarDoOneActionTree(t), caption: t("navbarPage.dd.actions.do") }}
+      dont={{ tree: navbarDontManyActionsTree(t), caption: t("navbarPage.dd.actions.dont") }}
+    />
+    <DoDont
+      title={t("navbarPage.dd.links.title")}
+      stacked
+      do={{ tree: navbarDoFewLinksTree(t), caption: t("navbarPage.dd.links.do") }}
+      dont={{ tree: navbarDontManyLinksTree(t), caption: t("navbarPage.dd.links.dont") }}
+    />
+    <DoDont
+      title={t("navbarPage.dd.brand.title")}
+      stacked
+      do={{ tree: navbarDoShortBrandTree(t), caption: t("navbarPage.dd.brand.do") }}
+      dont={{ tree: navbarDontLongBrandTree(t), caption: t("navbarPage.dd.brand.dont") }}
+    />
     <ContentRules items={tList(t, "navbarPage.content")} />
   </Fragment>
 

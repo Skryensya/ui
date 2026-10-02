@@ -1,13 +1,11 @@
 ---
-import Base from "../layouts/Base.astro";
+import FoundationPage from "../components/FoundationPage.astro";
 ---
 
-<Base
+<FoundationPage
   title="Keyboard navigation"
-  documentLayout="grid"
   description="Which key does what, component by component: verified against the real machine or native element, not against what the pattern is supposed to do."
 >
-  <h1>Keyboard navigation</h1>
   <p class="lede">
     No component in this system hand-writes a <code>keydown</code> listener to decide what an arrow
     key does. Keyboard behavior comes from one of two places: the native HTML element (a
@@ -279,4 +277,4 @@ import Base from "../layouts/Base.astro";
   <p>
     Reference: <a href="https://www.w3.org/WAI/WCAG22/Understanding/keyboard.html">WCAG 2.1.1 Keyboard</a>.
   </p>
-</Base>
+</FoundationPage>

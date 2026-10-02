@@ -23,6 +23,20 @@ const type = async (input: HTMLInputElement, char: string) => {
 };
 
 describe("OtpInput", () => {
+  it("shows nothing in an empty box unless a placeholder is given", () => {
+    const plain = render(<OtpInput label="Code" />);
+    expect(plain.container.querySelector("input")!.getAttribute("placeholder") ?? "").toBe("");
+    const hinted = render(<OtpInput label="Hinted" placeholder="0" />);
+    expect(hinted.container.querySelector("input")!.getAttribute("placeholder")).toBe("0");
+  });
+
+  it("writes the group size on the root, and only when asked", () => {
+    const flat = render(<OtpInput label="Flat" />);
+    expect(flat.container.querySelector(".sk-otp-input")!.hasAttribute("data-group-size")).toBe(false);
+    const grouped = render(<OtpInput label="Grouped" groupSize="3" />);
+    expect(grouped.container.querySelector(".sk-otp-input")!.getAttribute("data-group-size")).toBe("3");
+  });
+
   it("renders one segment per count, each with its own accessible name", () => {
     const ui = render(<OtpInput count={4} label="Code" name="code" />);
     const segments = inside(ui).getAllByRole("textbox");

@@ -80,10 +80,10 @@
    * `nav-list.css`'s own default read back from the SAME underlying design tokens, not a fork of it.
    */
   .sk-megamenu__content {
-    --sk-nav-list-group-gap: var(--space-inline-xs);
+    --sk-nav-list-group-gap: 0;
     --sk-nav-list-item-gap: 0;
     --sk-nav-list-group-label-fg: var(--color-text-tertiary);
-    --sk-nav-list-group-label-font-size: var(--font-size-caption);
+    --sk-nav-list-group-label-font-size: var(--font-size-body-sm);
     --sk-nav-list-group-label-font-weight: var(--font-weight-label);
     --sk-nav-list-group-label-padding-x: var(--space-inset-sm);
     --sk-nav-list-group-label-min-height: 0;
@@ -100,8 +100,8 @@
     --sk-nav-list-link-gap: var(--space-inline-sm);
     --sk-nav-list-link-radius: var(--radius-control);
     --sk-nav-list-link-bg: transparent;
-    --sk-nav-list-link-fg: var(--color-text-secondary);
-    --sk-nav-list-link-font-size: var(--font-size-body-sm);
+    --sk-nav-list-link-fg: var(--color-text-primary);
+    --sk-nav-list-link-font-size: var(--font-size-body);
     --sk-nav-list-link-font-weight: var(--font-weight-body);
     --sk-nav-list-link-current-bg: var(--color-bg-accent-subtle);
     --sk-nav-list-link-current-fg: var(--color-text-accent);
@@ -196,7 +196,7 @@
      * cropped short of the row looks like a mistake, not a deliberate shorter column. */
     align-items: start;
     column-gap: var(--space-inline-lg);
-    row-gap: var(--space-stack-lg);
+    row-gap: var(--space-stack-md);
   }
 
   /* The one column that DOES want the row's full height rather than its own content's: a picture

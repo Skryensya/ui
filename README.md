@@ -8,7 +8,7 @@ contract is the source of truth, and every binding is derived from it rather tha
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![Node](https://img.shields.io/badge/node-%3E%3D24-brightgreen.svg)](package.json)
 [![pnpm](https://img.shields.io/badge/pnpm-10.18.2-orange.svg)](package.json)
-[![Contracts](https://img.shields.io/badge/contracts-79-8957e5.svg)](contracts/semantic)
+[![Contracts](https://img.shields.io/badge/contracts-99-8957e5.svg)](contracts/semantic)
 
 ## The problem
 
@@ -40,7 +40,7 @@ Requires **Node >= 24** and **pnpm 10.18.2** (via `corepack enable`).
 
 ```bash
 pnpm install                            # link the workspace
-pnpm --filter @skryensya/docs dev       # docs site at http://localhost:4173
+pnpm dev:docs                          # docs site at http://localhost:4173
 
 # The everyday gate: typecheck, lint and tests across every package.
 pnpm check
@@ -109,6 +109,7 @@ report. The command above serves the same site locally.
 | [`@skryensya/charts`](packages/charts) | Renderer for the chart contract's line and area kinds. |
 | [`@skryensya/editor`](packages/editor) | The ProseMirror engine behind the Editor contract: schema, commands, keymap, serialization. |
 | [`@skryensya/devtools`](packages/devtools) | Optional runtime debug overlay: hit-area visualization and inspection aids. |
+| [`@skryensya/phone`](packages/phone) | The numbering plans behind Input's phone format: `libphonenumber-js` wrapped as a registrable plan. Not part of the 0.0.1 release assets. |
 | [`@skryensya/icons-lucide`](packages/icons-lucide) · [`-material`](packages/icons-material) · [`-phosphor`](packages/icons-phosphor) | Three icon libraries bound to one stable icon vocabulary. Each ships data, not a runtime. |
 
 ### Tooling
@@ -119,6 +120,10 @@ report. The command above serves the same site locally.
 | [`@skryensya/mcp`](packages/mcp) | MCP server over that manifest (stdio and stateless HTTP), so an agent can discover candidate components, read their contracts and validate a composition before writing code. |
 | [`@skryensya/ai-gates`](packages/ai-gates) | Playwright gates: cross-binding symmetry, accessibility, focus-ring modality, and visual baselines. |
 | [`@skryensya/maker-model`](packages/maker-model) | The Maker's model: a page as a tree of signatures, changed only by operations that take a parent and an index, never a position ([ADR-0031](docs/decisions/0031-the-maker-speaks-only-the-contract-and-changes-only-through-operations.md)). |
+| [`@skryensya/maker-agent`](packages/maker-agent) | A provider-independent, proposal-first tool loop for the Maker: schemas, provider translation and orchestration over the same operations the MCP uses. |
+| [`@skryensya/maker-server`](packages/maker-server) | The Maker's projects: a PostgreSQL store (memory for tests) and the HTTP API over it ([ADR-0032](docs/decisions/0032-maker-projects-live-in-postgresql-behind-the-makers-own-api.md)). |
+| [`@skryensya/figma`](packages/figma) | Compiles the Button contract and the tokens it reaches into a Figma manifest, and a local check ([ADR-0034](docs/decisions/0034-figma-is-a-compile-target-fed-by-a-derived-manifest.md)). |
+| [`@skryensya/storybook-kit`](packages/storybook-kit) | What the React and Vanilla Storybooks share: the stories generator over the docs demos. |
 
 ### Content and apps
 
@@ -127,6 +132,8 @@ report. The command above serves the same site locally.
 | [`@skryensya/snippets`](contracts/snippets) | Established compositions below screen scale: one component well composed, or a small molecule. |
 | [`@skryensya/docs`](apps/docs) | The documentation site at [ui.skryensya.dev](https://ui.skryensya.dev) (Astro), and the system's own biggest consumer. |
 | [`@skryensya/eval-viewer`](apps/eval-viewer) | Local-only viewer for agent eval runs. |
+| [`@skryensya/storybook-react`](apps/storybook-react) · [`-vanilla`](apps/storybook-vanilla) | The React and Vanilla Storybooks: every docs demo tree drawn in each binding. `pnpm storybook:react`, `pnpm storybook:vanilla`. |
+| [`@skryensya/sites-worker`](apps/sites-worker) | The Cloudflare Worker that serves every site the Maker publishes ([ADR-0033](docs/decisions/0033-published-sites-are-served-by-one-worker-from-r2.md)). |
 | [`@skryensya/maker`](apps/maker) | Local-only visual page builder. The browser does the layout: pages compose Stack, Inline, Grid, Box and Wrapper, and export as React, HTML or a usage tree. `pnpm --filter @skryensya/maker dev`. |
 
 ## Repository layout
@@ -136,12 +143,12 @@ report. The command above serves the same site locally.
 ├── packages/          the system: core, both bindings, icons, tooling
 ├── apps/docs/         the documentation site, and the system's own biggest consumer
 ├── contracts/
-│   ├── semantic/      one YAML per contract, the human-readable overlay (79 of them)
+│   ├── semantic/      one YAML per contract, the human-readable overlay (99 of them)
 │   ├── changelog/     one YAML per contract, its published history
 │   └── snippets/      established compositions as usage trees
 ├── artifacts/         compiled output: ai-manifest.json, ai-index.json, test-results.json
 ├── docs/
-│   ├── decisions/    20 decision records, each with the alternatives rejected
+│   ├── decisions/    34 decision records, each with the alternatives rejected
 │   └── ...            audits, writing guide, pending work
 ├── evals/             agent evaluation corpus and runner
 └── CONTEXT.md         the glossary: what the words mean, and which words not to use
@@ -163,12 +170,15 @@ contract lives in Core and the frameworks are bindings.
 | Command | What it does |
 |---|---|
 | `pnpm check` | Typecheck and test every package, browser gates excepted. The everyday loop, and what both `pre-push` and CI run. Cached by Turbo: unchanged packages do not re-run. |
-| `pnpm check:gates` | The browser gates (Playwright, ~19 min). Their dependencies build first, from cache if nothing moved. |
+| `pnpm check:gates` | The browser gates alone (Playwright, ~19 min). Their dependencies build first, from cache if nothing moved. Sensitive to machine load: run them with the machine otherwise idle, or use `--workers=1` to judge a failure. |
 | `pnpm check:all` | Both. The fullest local gate; CI runs `pnpm check` alone, because the browser half is too load-sensitive to be evidence on a shared runner. |
-| `pnpm lint` | Token validator across the repo (cached by Turbo). |
 | `pnpm build` | Build every package. The docs site's static output lands in `apps/docs/dist`. |
-| `pnpm --filter @skryensya/docs dev` | Docs site on port 4173. |
-| `pnpm check:gates` | The browser gates alone. About 19 minutes, and sensitive to machine load: run them with the machine otherwise idle, or use `--workers=1` to judge a failure. |
+| `pnpm dev` | Every package's dev task. Use `pnpm dev:docs` or `pnpm dev:maker` for one app. |
+| `pnpm dev:docs` | Docs site on port 4173. |
+| `pnpm dev:maker` | The Maker, the local visual page builder. |
+| `pnpm storybook:react` · `pnpm storybook:vanilla` | The two Storybooks. |
+| `pnpm figma:build` · `pnpm figma:check` | Compile the Figma manifest, and check it is current. |
+| `pnpm audit:gate` | The dependency audit that `pre-push` runs. |
 
 Turbo caches aggressively, so an unchanged run replays in milliseconds.
 
@@ -191,8 +201,8 @@ minutes on a runner:
 | Hook | What it enforces |
 |---|---|
 | `commit-msg` | Conventional Commits shape, a 100-character subject, a 300-character body, no trailers. |
-| `pre-commit` | Secret scanning (gitleaks) and icon-vocabulary completeness. |
-| `pre-push` | Dependency audit, then the full check across every package except the browser gates. |
+| `pre-commit` | Author and committer identity, secret scanning (gitleaks, which warns and continues if it is not installed), and icon-vocabulary completeness when a commit touches the icon vocabulary or the icon packages. |
+| `pre-push` | Author and committer identity of every commit being published, the dependency audit (fails on high or critical), then the full check across every package except the browser gates. |
 
 If a hook blocks you, read what it printed: each one names the fix. Reach for `--no-verify` only when
 you are pushing work in progress to a branch of your own.

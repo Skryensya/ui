@@ -1,0 +1,143 @@
+/*
+ * TIER 3, PROCEDURE
+ *
+ * A Procedure is a static ordered sequence whose instructions are the primary content. The native
+ * `<ol>` owns order; CSS only paints its numbered markers and connector. It is not a progress
+ * indicator: there are no complete, current or upcoming states, which belong to Steps.
+ */
+@layer components {
+  .sk-procedure {
+    --sk-procedure-fg: var(--color-text-primary);
+    --sk-procedure-step-padding-x: var(--space-inset-md);
+    --sk-procedure-step-padding-y: var(--space-inset-md);
+    --sk-procedure-step-gap: var(--space-inline-md);
+    --sk-procedure-content-gap: var(--space-stack-xs);
+    --sk-procedure-title-fg: var(--color-text-primary);
+    --sk-procedure-title-font-size: var(--font-size-body);
+    --sk-procedure-title-font-weight: var(--font-weight-emphasis);
+    --sk-procedure-marker-size: var(--size-control-sm);
+    --sk-procedure-connector-size: 1px;
+    /*
+     * Markers name ORDER, not brand or progress. Accent would shout "action" on every step of a
+     * static recipe; secondary type on a sunken disc is enough to scan, and the connector is the
+     * same quiet rule the rest of the page already uses for structure.
+     */
+    --sk-procedure-marker-bg: var(--color-bg-surface-sunken);
+    --sk-procedure-marker-border-color: var(--color-border-subtle);
+    --sk-procedure-connector-color: var(--color-border-subtle);
+    --sk-procedure-marker-ring-color: transparent;
+    --sk-procedure-marker-fg: var(--color-text-secondary);
+
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    min-inline-size: 0;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    counter-reset: sk-procedure-counter;
+    color: var(--sk-procedure-fg);
+  }
+
+  .sk-procedure,
+  .sk-procedure *,
+  .sk-procedure *::before,
+  .sk-procedure *::after {
+    box-sizing: border-box;
+  }
+
+  .sk-procedure__step {
+    position: relative;
+    display: grid;
+    grid-template-columns: var(--sk-procedure-marker-size) minmax(0, 1fr);
+    align-items: start;
+    column-gap: var(--sk-procedure-step-gap);
+    min-inline-size: 0;
+    padding: var(--sk-procedure-step-padding-y) var(--sk-procedure-step-padding-x);
+    counter-increment: sk-procedure-counter;
+  }
+
+  .sk-procedure__step:not(:last-child)::after {
+    content: "";
+    position: absolute;
+    inset-block-start: calc(
+      var(--sk-procedure-step-padding-y) + var(--sk-procedure-marker-size)
+    );
+    inset-inline-start: calc(
+      var(--sk-procedure-step-padding-x) + var(--sk-procedure-marker-size) / 2 -
+        var(--sk-procedure-connector-size) / 2
+    );
+    inline-size: var(--sk-procedure-connector-size);
+    block-size: calc(100% - var(--sk-procedure-marker-size));
+    border-radius: var(--radius-pill);
+    background: var(--sk-procedure-connector-color);
+  }
+
+  .sk-procedure__step::before {
+    content: counter(sk-procedure-counter);
+    position: relative;
+    z-index: 1;
+    display: inline-flex;
+    grid-column: 1;
+    align-items: center;
+    justify-content: center;
+    inline-size: var(--sk-procedure-marker-size);
+    block-size: var(--sk-procedure-marker-size);
+    border-radius: var(--radius-pill);
+    background: var(--sk-procedure-marker-bg);
+    box-shadow:
+      inset 0 0 0 1px var(--sk-procedure-marker-border-color),
+      0 0 0 3px var(--sk-procedure-marker-ring-color);
+    color: var(--sk-procedure-marker-fg);
+    font-size: var(--font-size-caption);
+    font-weight: var(--font-weight-label);
+    font-variant-numeric: tabular-nums;
+    line-height: 1;
+  }
+
+  .sk-procedure__content {
+    display: grid;
+    grid-column: 2;
+    gap: var(--sk-procedure-content-gap);
+    min-inline-size: 0;
+  }
+
+  .sk-procedure__title {
+    display: block;
+    min-inline-size: 0;
+    margin: 0;
+    /*
+     * Center the title's FIRST LINE on the marker's center. The marker is a fixed
+     * `--marker-size` box starting at the content edge, so the first line has to come down by
+     * half the difference between that box and its own line box: `1lh` here resolves against
+     * this element's own font-size/line-height, so the offset follows density and type scale
+     * without restating either. Padding (not centering the whole block) keeps the alignment
+     * exact when the title wraps: later lines run on below, the first stays on the circle.
+     * `max()` floors it at 0 for the case where the line box outgrows the marker.
+     */
+    padding-block-start: max(0px, calc((var(--sk-procedure-marker-size) - 1lh) / 2));
+    color: var(--sk-procedure-title-fg);
+    font-size: var(--sk-procedure-title-font-size);
+    font-weight: var(--sk-procedure-title-font-weight);
+    line-height: var(--line-height-heading);
+  }
+
+  /*
+   * A CodePreview inside a step is content, not a section of the page: the surface already has
+   * `--space-stack-sm` of its own, which stacked on `__content`'s gap read as a second card
+   * floating off the instruction. Sit it flush with the copy above.
+   */
+  .sk-procedure .sk-code-preview {
+    margin-block: 0;
+  }
+
+  @media (forced-colors: active) {
+    .sk-procedure {
+      --sk-procedure-marker-bg: Canvas;
+      --sk-procedure-marker-border-color: CanvasText;
+      --sk-procedure-connector-color: CanvasText;
+      --sk-procedure-marker-fg: CanvasText;
+      --sk-procedure-marker-ring-color: transparent;
+    }
+  }
+}

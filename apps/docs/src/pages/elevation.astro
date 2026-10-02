@@ -1,5 +1,5 @@
 ---
-import Base from "../layouts/Base.astro";
+import FoundationPage from "../components/FoundationPage.astro";
 import CodeBlock from "../components/CodeBlock.astro";
 import UsagePreview from "../components/UsagePreview.astro";
 import Used from "../components/Used.astro";
@@ -34,12 +34,10 @@ const usage = `<!-- Box already ships the hook: surface="raised" sets --elevatio
 
 ---
 
-<Base
+<FoundationPage
   title="Elevation"
-  documentLayout="grid"
   description="The system's shadow scale: five levels composed from --shadow-sm/md/lg, and when to reach for each."
 >
-  <h1>Elevation</h1>
   <p class="lede">
     Five named levels, not a free numeric scale: <code>sunken</code>, <code>flat</code>,
     <code>raised</code>, <code>overlay</code> and <code>modal</code>. Each is a
@@ -372,4 +370,4 @@ const usage = `<!-- Box already ships the hook: surface="raised" sets --elevatio
   </p>
 
   <CodeBlock code={elevationSource} label="src/examples/elevation.css" note="the CSS behind the swatches above ↑" />
-</Base>
+</FoundationPage>

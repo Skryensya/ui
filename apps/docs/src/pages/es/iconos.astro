@@ -1,5 +1,5 @@
 ---
-import Base from "../../layouts/Base.astro";
+import FoundationPage from "../../components/FoundationPage.astro";
 import CodeBlock from "../../components/CodeBlock.astro";
 import UsagePreview from "../../components/UsagePreview.astro";
 import { stableIconNames } from "@skryensya/core/icon";
@@ -30,12 +30,10 @@ import { IconSetProvider } from "@skryensya/react";
 </IconSetProvider>`;
 ---
 
-<Base
+<FoundationPage
   title="Iconografía"
-  documentLayout="grid"
   description="Los iconos son roles estables; los sets son la marca que dibuja cada rol."
 >
-  <h1>Iconografía</h1>
   <p class="lede">
     El sistema nombra roles, no dibujos. Un Stable icon name sobrevive al cambio de set; un Icon set
     decide la geometría, el viewBox y si el trazo se expresa con fill o stroke. El color queda fuera:
@@ -161,4 +159,4 @@ import { IconSetProvider } from "@skryensya/react";
     <li><a href="/es/styling-hooks">Styling hooks</a>, para otra superficie pública tier 3.</li>
     <li><a href="/es/state-layer">State layer</a>, para el patrón compartido de feedback.</li>
   </ul>
-</Base>
+</FoundationPage>

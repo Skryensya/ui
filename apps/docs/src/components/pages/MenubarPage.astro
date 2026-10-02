@@ -8,12 +8,19 @@ import ComponentPageShell from "./ComponentPageShell.astro";
 import CodeBlock from "../CodeBlock.astro";
 import UsagePreview from "../UsagePreview.astro";
 import DoDont from "../DoDont.astro";
+import MenubarVsAppBar from "../MenubarVsAppBar.astro";
 import WhenToUse from "../WhenToUse.astro";
 import ContentRules from "../ContentRules.astro";
 import A11yNotes from "../A11yNotes.astro";
 import {
+  menubarCommandTree,
+  menubarDoCommandsHtml,
+  menubarDoShortLabelsHtml,
+  menubarDontDestinationsHtml,
+  menubarDontLongLabelsHtml,
+  menubarEditorTree,
+  menubarRowsTree,
   menubarDontSingleTree,
-  menubarNavTree,
   menubarSubmenuTree,
   menubarTree,
 } from "../../demos/menubar";
@@ -45,17 +52,33 @@ initComponents();`;
     <p class="lede" set:html={t("menubarPage.lede")} />
 
     <h3>{t("component.examplesTitle")}</h3>
-    <h3>{t("menubarPage.editorTitle")}</h3>
-    <p set:html={t("menubarPage.editorBody")} />
-    <UsagePreview tree={menubarTree(t)} label={t("menubarPage.label")} viewport="menu" />
+    {/* The contract has no enum to vary (`label` is free text), so the one toggle is structural: what an
+        entry is. Each value is a whole bar, and a switch back is instant. */}
+    <UsagePreview
+      tree={menubarTree(t)}
+      variants={[
+        { value: "dropdown", label: t("menubarPage.entry.dropdown"), tree: menubarTree(t), explain: t("menubarPage.entry.dropdown.body") },
+        { value: "submenu", label: t("menubarPage.entry.submenu"), tree: menubarSubmenuTree(t), explain: t("menubarPage.entry.submenu.body") },
+        { value: "command", label: t("menubarPage.entry.command"), tree: menubarCommandTree(t), explain: t("menubarPage.entry.command.body") },
+      ]}
+      variantsLabel={t("menubarPage.entry.label")}
+      title={t("menubarPage.entry.title")}
+      description={t("menubarPage.entry.intro")}
+      stageMinBlockSize="26rem"
+    />
 
-    <h3>{t("menubarPage.submenuTitle")}</h3>
-    <p set:html={t("menubarPage.submenuBody")} />
-    <UsagePreview tree={menubarSubmenuTree(t)} label={t("menubarPage.submenuTitle")} viewport="menu-deep" />
+    <h3>{t("menubarPage.rows.title")}</h3>
+    <p set:html={t("menubarPage.rows.intro")} />
+    <UsagePreview tree={menubarRowsTree(t)} label={t("menubarPage.rows.title")} viewport="menu-deep" />
+    <ul>
+      {[1, 2, 3, 4, 5, 6].map((n) => <li set:html={t(`menubarPage.rows.legend${n}` as Parameters<typeof t>[0])} />)}
+    </ul>
 
-    <h3>{t("menubarPage.navSkinTitle")}</h3>
-    <p set:html={t("menubarPage.navSkinBody")} />
-    <UsagePreview tree={menubarNavTree(t)} label={t("menubarPage.navSkinTitle")} viewport="menu" />
+    <h3>{t("menubarPage.editor.title")}</h3>
+    <p set:html={t("menubarPage.editor.body")} />
+    <UsagePreview tree={menubarEditorTree(t)} label={t("menubarPage.editor.title")} viewport="menu-deep" />
+
+    <MenubarVsAppBar />
 
     <h3>{t("component.contractNotesTitle")}</h3>
     <ul>
@@ -69,8 +92,20 @@ initComponents();`;
     <WhenToUse use={tList(t, "menubarPage.when")} avoid={tList(t, "menubarPage.whenNot")} />
     <DoDont
       title={t("menubarPage.dd.single.title")}
+      canvas
+      compact
       do={{ tree: menubarTree(t), caption: t("menubarPage.dd.single.do") }}
       dont={{ tree: menubarDontSingleTree(t), caption: t("menubarPage.dd.single.dont") }}
+    />
+    <DoDont
+      title={t("menubarPage.dd.labels.title")}
+      do={{ html: menubarDoShortLabelsHtml(t), caption: t("menubarPage.dd.labels.do") }}
+      dont={{ html: menubarDontLongLabelsHtml(t), caption: t("menubarPage.dd.labels.dont") }}
+    />
+    <DoDont
+      title={t("menubarPage.dd.commands.title")}
+      do={{ html: menubarDoCommandsHtml(t), caption: t("menubarPage.dd.commands.do") }}
+      dont={{ html: menubarDontDestinationsHtml(t), caption: t("menubarPage.dd.commands.dont") }}
     />
     <ContentRules items={tList(t, "menubarPage.content")} />
   </Fragment>

@@ -7,17 +7,33 @@ import ComponentPageShell from "./ComponentPageShell.astro";
 import CodeBlock from "../CodeBlock.astro";
 import UsagePreview from "../UsagePreview.astro";
 import WhenToUse from "../WhenToUse.astro";
+import DoDont from "../DoDont.astro";
 import ContentRules from "../ContentRules.astro";
 import A11yNotes from "../A11yNotes.astro";
 import {
+  menuDoCommandsHtml,
+  menuDoMenubarTree,
+  menuDoRowActionsHtml,
+  menuDontAppBarHtml,
+  menuDontDestinationsHtml,
+  menuDontSeparateMenusTree,
   menuTree,
+  menuToneTree,
   menuMultilevelTree,
-  menuCompactTree,
+  menuDensityTree,
   menuSafetyTree,
 } from "../../demos/menu";
 import { getLocale, tList, useTranslations } from "../../i18n";
 
 const t = useTranslations(getLocale(Astro.url));
+
+/* What each value of a property is for, read from this page's messages. Same model Marquee and Badge use. */
+const explain = (option: string, values: readonly string[]) =>
+  Object.fromEntries(values.map((value) => [value, t(`menuPage.prop.${option}.${value}` as Parameters<typeof t>[0])]));
+const prop = (option: string) => ({
+  title: t(`menuPage.prop.${option}.title` as Parameters<typeof t>[0]),
+  description: t(`menuPage.prop.${option}.body` as Parameters<typeof t>[0]),
+});
 
 const styles = `@import "@skryensya/core/patterns/anchored.css";
 @import "@skryensya/core/components/menu.css";`;
@@ -37,6 +53,41 @@ const styles = `@import "@skryensya/core/patterns/anchored.css";
   <Fragment slot="usage">
     <p class="lede" set:html={t("menuPage.lede")} />
 
+    {/* One card per option the contract declares that has a closed set of values: the trigger takes
+        Button's own variant, tone and size, so those values are Button's. The popup needs room, so each
+        stage is reserved tall enough for the menu to open without moving the card. */}
+    <UsagePreview tree={menuTree(t)} optionName="triggerVariant" {...prop("triggerVariant")} explain={explain("triggerVariant", ["solid", "soft", "ghost"])} stageMinBlockSize="16rem" />
+    {/* The tone also changes what the menu holds: the button's colour is a claim about its contents. */}
+    <UsagePreview
+      tree={menuToneTree(t, "neutral")}
+      variants={(["neutral", "accent", "danger"] as const).map((tone) => ({
+        value: tone,
+        label: tone.charAt(0).toUpperCase() + tone.slice(1),
+        tree: menuToneTree(t, tone),
+        explain: t(`menuPage.prop.triggerTone.${tone}` as Parameters<typeof t>[0]),
+      }))}
+      variantsLabel="triggerTone"
+      {...prop("triggerTone")}
+      stageMinBlockSize="16rem"
+    />
+    <UsagePreview tree={menuTree(t)} optionName="triggerSize" {...prop("triggerSize")} explain={explain("triggerSize", ["xs", "sm", "md", "lg"])} stageMinBlockSize="16rem" />
+    <UsagePreview
+      tree={menuDensityTree(t)}
+      optionName="density"
+      {...prop("density")}
+      labels={{ false: t("menuPage.prop.density.off"), true: t("menuPage.prop.density.on") }}
+      explain={explain("density", ["false", "true"])}
+      stageMinBlockSize="20rem"
+    />
+    <UsagePreview
+      tree={menuTree(t)}
+      optionName="disabled"
+      {...prop("disabled")}
+      labels={{ false: t("menuPage.prop.disabled.off"), true: t("menuPage.prop.disabled.on") }}
+      explain={explain("disabled", ["false", "true"])}
+      stageMinBlockSize="16rem"
+    />
+
     <h3>{t("component.examplesTitle")}</h3>
     {/* ComponentPreviews: each menu opens a popup that needs the enhancer and a viewport tall enough
         to hold it, which only a frame of its own gives. */}
@@ -47,10 +98,6 @@ const styles = `@import "@skryensya/core/patterns/anchored.css";
     <h3>{t("menuPage.multilevelTitle")}</h3>
     <p set:html={t("menuPage.multilevelBody")} />
     <UsagePreview tree={menuMultilevelTree(t)} label={t("menuPage.multilevelTitle")} viewport="menu" />
-
-    <h3>{t("menuPage.compactTitle")}</h3>
-    <p set:html={t("menuPage.compactBody")} />
-    <UsagePreview tree={menuCompactTree(t)} label={t("menuPage.compactTitle")} viewport="menu" />
 
     <h3>{t("menuPage.safetyTitle")}</h3>
     <p set:html={t("menuPage.safetyBody")} />
@@ -66,6 +113,21 @@ const styles = `@import "@skryensya/core/patterns/anchored.css";
   <Fragment slot="guidelines">
     <p class="lede" set:html={t("menuPage.guidelinesLede")} />
     <WhenToUse use={tList(t, "menuPage.when")} avoid={tList(t, "menuPage.whenNot")} />
+    <DoDont
+      title={t("menuPage.dd.megamenu.title")}
+      do={{ html: menuDoCommandsHtml(t), caption: t("menuPage.dd.megamenu.do") }}
+      dont={{ html: menuDontDestinationsHtml(t), caption: t("menuPage.dd.megamenu.dont") }}
+    />
+    <DoDont
+      title={t("menuPage.dd.menubar.title")}
+      do={{ tree: menuDoMenubarTree(t), caption: t("menuPage.dd.menubar.do") }}
+      dont={{ tree: menuDontSeparateMenusTree(t), caption: t("menuPage.dd.menubar.dont") }}
+    />
+    <DoDont
+      title={t("menuPage.dd.appbar.title")}
+      do={{ html: menuDoRowActionsHtml(t), caption: t("menuPage.dd.appbar.do") }}
+      dont={{ html: menuDontAppBarHtml(t), caption: t("menuPage.dd.appbar.dont") }}
+    />
     <ContentRules items={tList(t, "menuPage.content")} />
   </Fragment>
 

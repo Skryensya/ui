@@ -102,7 +102,7 @@ promise regresses are incomplete.
 | `number-field` | `done` | 2026-09-17: React DOM `sk:numberfieldvaluechange`; `invalid`+hint slot; drop scrubber; locale default; mount stamp; semantics; validate + react tests. Later: vanilla hint→aria-describedby (**resolved**). Second pass: `between` min↔max (`1b475bdf158c22e1`) |
 | `pagination` | `done` | 2026-09-17: `events.pageChange` + React DOM; contract label defaults; data-page/total/siblings on React; semantics TablePager/Feed; validate + react tests. Residual: no vanilla enhancer; computedInput attrs skip emit. Later: `between` page≤total (**resolved**) |
 | `placeholder` | `done` | 2026-09-17: `lines` max=12 (=PLACEHOLDER_MAX_LINES); semantics EmptyState/Loader/ImageFrame/Avatar; validate + react tests. Residual: free CSS length strings for width/height/lastLine |
-| `process-list` | `done` | 2026-09-17: React `title: string` (slot text parity); semantics List/Steps; validate + react tests. Residual: CSS guest margin on nested CodePreview (no hookSheets) |
+| `procedure` | `done` | 2026-09-17: React `title: string` (slot text parity); semantics List/Steps; validate + react tests. Residual: CSS guest margin on nested CodePreview (no hookSheets) |
 | `progress` | `done` | 2026-09-17: semantics Meter/Loader; validate label/value/tone/hooks (contract already solid). Later: `between` value↔max (**resolved**) |
 | `questionnaire` | `done` | 2026-09-17: mounts, hookSheets, implies, events; second pass: `atLeastOneOf` choices\|text, `uniqueChildOption` name, `compose` progress/steps/button/tile/form-field/kbd/icon; validate + react + vanilla |
 | `qr-code` | `done` | 2026-09-17: moduleShape not computedInput (CSS shape-rendering); logoRatio max=0.5; React data-module-shape; validate + react tests. Residual: guest `--sk-icon-size`. Later: `implies` logo→logoRatio (**resolved**) |
@@ -243,7 +243,7 @@ mark the row `done` here.
 | NumberField | React DOM valueChange; `invalid`+hint; drop scrubber; locale default; mount; semantics; `between` min↔max | `ai-compiler` validate.test · `react` number-field.test · `vanilla` number-field (existing) |
 | Pagination | `events.pageChange` + React DOM; contract defaults; data-page attrs; semantics | `ai-compiler` validate.test · `react` pagination.test |
 | Placeholder | `lines` max=12; semantics EmptyState/Loader/ImageFrame/Avatar; validate shape/options/sheets | `ai-compiler` validate.test · `react` placeholder.test (existing) |
-| ProcessList | React `title: string`; semantics List/Steps; validate parents/title/sheets | `ai-compiler` validate.test · `react` process-list.test |
+| Procedure | React `title: string`; semantics List/Steps; validate parents/title/sheets | `ai-compiler` validate.test · `react` procedure.test |
 | Progress | Semantics Meter/Loader; validate label/bounds/tone/hooks (contract already solid) | `ai-compiler` validate.test · `react` progress.test (existing) |
 | Questionnaire | React mounts; checkbox/progress/steps hookSheets; `defaultItem`; implies text/multiple; semantics | `ai-compiler` validate.test · `react` questionnaire.test · `vanilla` questionnaire |
 | QRCode | moduleShape DOM for CSS; logoRatio max=0.5; React data-module-shape; validate | `ai-compiler` validate.test · `react` qr-code.test · emit test (existing) |
@@ -709,7 +709,7 @@ mark the row `done` here.
 | `width` / `height` / `lastLine` are free CSS length strings (no unit vocabulary) | low | intentional: composition measure, not a token scale |
 | React omits default `lastLine` style when unset (CSS default `62%` matches contract) | low | emit writes the default; both sides agree on paint |
 
-### Process-list audit residuals (schema / later)
+### Procedure audit residuals (schema / later)
 
 | Gap | Severity | Status |
 | --- | --- | --- |

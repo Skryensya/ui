@@ -1,5 +1,5 @@
 ---
-import Base from "../../layouts/Base.astro";
+import FoundationPage from "../../components/FoundationPage.astro";
 import CodeBlock from "../../components/CodeBlock.astro";
 import { anchorPlacementsTree } from "../../demos/anchoring";
 import UsagePreview from "../../components/UsagePreview.astro";
@@ -54,12 +54,10 @@ const arrowReact = `<Tooltip arrow content="Se guarda solo">
 
 ---
 
-<Base
+<FoundationPage
   title="Anclaje"
-  documentLayout="grid"
   description="Un patrón: colocar una caja contra otro elemento, con el navegador como motor y la máquina como fallback."
 >
-  <h1>Anclaje</h1>
   <p class="lede">
     Una caja colocada contra <strong>otro</strong> elemento, no contra la página: se abre por un lado del ancla, se voltea al lado opuesto cuando no entra, y desaparece si el ancla sale de la pantalla. Es lo que hacen tooltip, popover, popup, menu y sus submenús, select, combobox y date picker.
   </p>
@@ -216,7 +214,7 @@ const arrowReact = `<Tooltip arrow content="Se guarda solo">
   <CodeBlock code={import_} label="CSS" />
 
   <StylingHooks groups={[{ file: "patterns/anchored.css", probe: "sk-anchored" }]} />
-</Base>
+</FoundationPage>
 
 <style is:global>
   /*

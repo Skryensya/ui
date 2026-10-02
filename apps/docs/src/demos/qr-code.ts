@@ -19,11 +19,10 @@ import { genericIcon } from "./anatomy-subject";
  * link that looks perfectly fine on the page.
  */
 
-const ORIGIN = "https://ui.skryensya.dev";
+const ORIGIN = "https://allison.sh";
 
-/** This page's own URL, in the locale the reader is actually on. */
-export const qrCodeDocsUrl = (locale: Locale): string =>
-  locale === "es" ? `${ORIGIN}/es/componentes/qr-code` : `${ORIGIN}/components/qr-code`;
+/* Every example sends you to the same place, in either locale. */
+export const qrCodeDocsUrl = (_locale: Locale): string => ORIGIN;
 
 /** The same, without the scheme, for writing out beside the code. */
 const readable = (locale: Locale): string => qrCodeDocsUrl(locale).replace("https://", "");
@@ -59,7 +58,7 @@ export const qrCodeAnatomyTree = (t: Translate, locale: Locale): UsageTree => ({
         label: copy(locale).label,
         level: "H",
         logoRatio: 0.22,
-        qrSize: "lg",
+        qrSize: "xl",
       },
       slots: {
         logo: genericIcon("lg"),
@@ -78,7 +77,7 @@ export const qrCodeAnatomyTree = (t: Translate, locale: Locale): UsageTree => ({
 export const qrCodeTree = (locale: Locale): UsageTree => ({
   contract: "qr-code",
   signature: "QRCode",
-  options: { value: qrCodeDocsUrl(locale), label: copy(locale).label },
+  options: { value: qrCodeDocsUrl(locale), label: copy(locale).label, qrSize: "xl" },
 });
 
 /** A labelled specimen, for the rows that vary one option across its whole vocabulary. */
@@ -117,7 +116,7 @@ export const qrCodeLevelsTree = (locale: Locale): UsageTree =>
       specimen(`${copy(locale).label} (${level})`, level, {
         value: qrCodeDocsUrl(locale),
         level,
-        qrSize: "md",
+        qrSize: "xl",
       }),
     ),
   );
@@ -136,7 +135,7 @@ export const qrCodeShapesTree = (locale: Locale): UsageTree =>
       specimen(`${copy(locale).label} (${moduleShape})`, moduleShape, {
         value: qrCodeDocsUrl(locale),
         moduleShape,
-        qrSize: "lg",
+        qrSize: "xl",
       }),
     ),
   );
@@ -162,7 +161,7 @@ export const qrCodeMasksTree = (locale: Locale): UsageTree =>
           ? `${copy(locale).label} (máscara ${mask})`
           : `${copy(locale).label} (mask ${mask})`,
         mask,
-        { value: qrCodeDocsUrl(locale), mask, qrSize: "md" },
+        { value: qrCodeDocsUrl(locale), mask, qrSize: "xl" },
       ),
     ),
   );
@@ -188,7 +187,7 @@ export const qrCodeTonesTree = (locale: Locale): UsageTree => ({
           value: qrCodeDocsUrl(locale),
           tone,
           polarity,
-          qrSize: "md",
+          qrSize: "xl",
         }),
       ),
     ),
@@ -211,7 +210,7 @@ export const qrCodeLogoTree = (locale: Locale): UsageTree => ({
     label: copy(locale).label,
     level: "H",
     logoRatio: 0.22,
-    qrSize: "lg",
+    qrSize: "xl",
   },
   slots: {
     logo: { contract: "icon", signature: "Icon", options: { name: "settings", size: "lg" } },
@@ -235,7 +234,7 @@ export const qrCodeCardTree = (locale: Locale): UsageTree => {
     contract: "box",
     signature: "Box",
     options: { surface: "surface", border: "subtle", padding: "lg" },
-    attrs: { style: "inline-size: 18rem;" },
+    attrs: { style: "inline-size: 24rem;" },
     children: [
       {
         contract: "layout",
@@ -245,7 +244,7 @@ export const qrCodeCardTree = (locale: Locale): UsageTree => {
           {
             contract: "qr-code",
             signature: "QRCode",
-            options: { value: qrCodeDocsUrl(locale), label: c.label, qrSize: "lg" },
+            options: { value: qrCodeDocsUrl(locale), label: c.label, qrSize: "xl" },
           },
           {
             contract: "layout",
@@ -288,12 +287,13 @@ export const qrCodeCardTree = (locale: Locale): UsageTree => {
  */
 export const qrCodePopoverTree = (locale: Locale): UsageTree => {
   const c = copy(locale);
-  return {
+  const isEs = locale === "es";
+  const popover: UsageTree = {
     contract: "popover",
     signature: "Popover",
-    options: { panelId: "qr-handoff", placement: "block-end", triggerVariant: "soft", closeLabel: locale === "es" ? "Cerrar" : "Close" },
+    options: { panelId: "qr-handoff", placement: "block-end", triggerVariant: "soft", closeLabel: isEs ? "Cerrar" : "Close" },
     slots: {
-      trigger: locale === "es" ? "Abrir en el teléfono" : "Open on my phone",
+      trigger: isEs ? "Abrir en el teléfono" : "Open on my phone",
       title: c.scanToOpen,
       children: {
         contract: "layout",
@@ -303,7 +303,7 @@ export const qrCodePopoverTree = (locale: Locale): UsageTree => {
           {
             contract: "qr-code",
             signature: "QRCode",
-            options: { value: qrCodeDocsUrl(locale), label: c.label, qrSize: "md" },
+            options: { value: qrCodeDocsUrl(locale), label: c.label, qrSize: "xl" },
           },
           {
             contract: "typography",
@@ -313,6 +313,38 @@ export const qrCodePopoverTree = (locale: Locale): UsageTree => {
           },
         ],
       },
+    },
+  };
+  /* The code is an aside to something being read, so the specimen is that something: an article's
+     header with its actions, and the phone hand-off one of them. */
+  return {
+    contract: "box",
+    signature: "Box",
+    options: { surface: "surface", border: "subtle", padding: "lg" },
+    attrs: { style: "inline-size: 28rem; max-inline-size: 100%;" },
+    children: {
+      contract: "layout",
+      signature: "Stack",
+      options: { gap: "sm" },
+      children: [
+        { contract: "typography", signature: "Text", options: { size: "sm", tone: "secondary" }, children: isEs ? "Guía · 6 min de lectura" : "Guide · 6 min read" },
+        { contract: "typography", signature: "Heading", options: { headingSize: "h4", flush: true }, children: isEs ? "Instala el paquete en tu proyecto" : "Install the package in your project" },
+        {
+          contract: "typography",
+          signature: "Text",
+          options: { size: "sm", tone: "secondary" },
+          children: isEs ? "Sigue los pasos en el computador y continúa en el teléfono cuando salgas." : "Follow the steps on your computer and carry on from your phone when you head out.",
+        },
+        {
+          contract: "layout",
+          signature: "Inline",
+          options: { gap: "sm", inlineAlign: "center" },
+          children: [
+            popover,
+            { contract: "button", signature: "Button.action", options: { variant: "ghost" }, children: isEs ? "Guardar" : "Save" },
+          ],
+        },
+      ],
     },
   };
 };
@@ -366,12 +398,12 @@ export const qrCodeTicketTree = (locale: Locale): UsageTree => {
             contract: "qr-code",
             signature: "QRCode",
             options: {
-              value: `${ORIGIN}/t/8F2K-19QD-7C4M`,
+              value: ORIGIN,
               label: isEs ? "Entrada 8F2K-19QD-7C4M" : "Ticket 8F2K-19QD-7C4M",
               level: "H",
               tone: "accent",
               logoRatio: 0.2,
-              qrSize: "lg",
+              qrSize: "xl",
             },
             slots: {
               logo: { contract: "icon", signature: "Icon", options: { name: "calendar", size: "lg" } },
@@ -387,3 +419,57 @@ export const qrCodeTicketTree = (locale: Locale): UsageTree => {
     ],
   };
 };
+
+/*
+ * USAGE GUIDE. Every pair draws the same symbol at the same size on the same plain ground, centred, so
+ * the only thing that differs is what the rule is about. They sit side by side in a 4:3 frame about 270px
+ * wide, so the code is the `md` size and carries at most one line of text: anything bigger is clipped.
+ */
+const LONG_URL = `${ORIGIN}/articulos/guia-de-instalacion?utm_source=boletin&utm_medium=correo&utm_campaign=octubre&ref=a81f3c`;
+
+const guideStack = (children: UsageTree[]): UsageTree => ({
+  contract: "layout",
+  signature: "Stack",
+  options: { gap: "sm", align: "center" },
+  children,
+});
+
+const guideCode = (locale: Locale, value: string, extra: Record<string, unknown> = {}): UsageTree => ({
+  contract: "qr-code",
+  signature: "QRCode",
+  options: { value, label: copy(locale).label, qrSize: "md", ...extra },
+});
+
+const guideText = (children: string): UsageTree => ({
+  contract: "typography",
+  signature: "Text",
+  options: { tone: "secondary", size: "sm" },
+  children,
+});
+
+/** Do: the code with the link in words. */
+export const qrCodeDoWithLinkTree = (locale: Locale): UsageTree =>
+  guideStack([guideCode(locale, qrCodeDocsUrl(locale)), guideText(readable(locale))]);
+
+/** Don't: the code alone, for whoever cannot scan it. */
+export const qrCodeDontAloneTree = (locale: Locale): UsageTree => guideStack([guideCode(locale, qrCodeDocsUrl(locale))]);
+
+/** Do: a short link, so a sparse code a camera reads at a glance. */
+export const qrCodeDoShortLinkTree = (locale: Locale): UsageTree =>
+  guideStack([guideCode(locale, qrCodeDocsUrl(locale))]);
+
+/** Don't: a long link with tracking parameters: the same code, packed with tiny modules. */
+export const qrCodeDontLongLinkTree = (locale: Locale): UsageTree =>
+  guideStack([guideCode(locale, LONG_URL)]);
+
+/** Do: a logo with the highest correction level behind it. */
+export const qrCodeDoLogoLevelTree = (locale: Locale): UsageTree => ({
+  ...guideCode(locale, qrCodeDocsUrl(locale), { level: "H", logoRatio: 0.22 }),
+  slots: { logo: { contract: "icon", signature: "Icon", options: { name: "settings", size: "lg" } } },
+} as UsageTree);
+
+/** Don't: the same hole with the lowest level: nothing left to rebuild what the logo covers. */
+export const qrCodeDontLogoLevelTree = (locale: Locale): UsageTree => ({
+  ...guideCode(locale, qrCodeDocsUrl(locale), { level: "L", logoRatio: 0.22 }),
+  slots: { logo: { contract: "icon", signature: "Icon", options: { name: "settings", size: "lg" } } },
+} as UsageTree);

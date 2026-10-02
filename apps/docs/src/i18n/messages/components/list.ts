@@ -69,7 +69,7 @@ export const listMessages = {
 
     "listPage.whenNot4": 'Para elegir una o varias opciones de la lista: usa <a href="/es/componentes/listbox">Listbox</a>.',
 
-    "listPage.whenNot3": 'Para instrucciones que se siguen en orden: usa <a href="/es/componentes/process-list">ProcessList</a>.',
+    "listPage.whenNot3": 'Para instrucciones que se siguen en orden: usa <a href="/es/componentes/procedure">Procedure</a>.',
 
     "listPage.whenNot2": 'Para la navegación de un sitio o de una página: usa <a href="/es/nav-list">NavList</a>.',
 
@@ -202,7 +202,7 @@ export const listMessages = {
 
     "listPage.whenNot4": 'To choose one or several options from the list: use <a href="/components/listbox">Listbox</a>.',
 
-    "listPage.whenNot3": 'For instructions followed in order: use <a href="/components/process-list">ProcessList</a>.',
+    "listPage.whenNot3": 'For instructions followed in order: use <a href="/components/procedure">Procedure</a>.',
 
     "listPage.whenNot2": 'For a site\'s or page\'s navigation: use <a href="/nav-list">NavList</a>.',
 

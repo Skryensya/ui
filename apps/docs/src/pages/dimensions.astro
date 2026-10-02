@@ -1,5 +1,5 @@
 ---
-import Base from "../layouts/Base.astro";
+import FoundationPage from "../components/FoundationPage.astro";
 import CodeBlock from "../components/CodeBlock.astro";
 import Used from "../components/Used.astro";
 import { tokens } from "../lib/tokens";
@@ -25,12 +25,10 @@ const radiusUse = `<!-- A preset of the multiplier… -->
 <html style="--radius-multiplier: 1.25">`;
 ---
 
-<Base
+<FoundationPage
   title="Four dimensions"
-  documentLayout="grid"
   description="Color mode, high contrast, density and radius: four axes that compose in the cascade. Brand re-declares semantic bundles."
 >
-  <h1>Four dimensions</h1>
   <p class="lede">
     Color mode, high contrast, density and radius: four independent axes that <strong>compose in the cascade</strong> rather than being enumerated on disk.
   </p>
@@ -239,4 +237,4 @@ const radiusUse = `<!-- A preset of the multiplier… -->
     scopes, and in <a href="/elevation">Elevation</a>, which shows what a colour dimension does to a composed
     scale.
   </p>
-</Base>
+</FoundationPage>

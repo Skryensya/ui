@@ -3,7 +3,7 @@
 # `surface` is the shape of the contract the last time somebody reviewed it. If the compiler says it
 # does not match, something a consumer depends on has moved: write the entry and paste in the new
 # hash.
-surface: "0ab65cf38f724110"
+surface: "2baeb926e4fcd024"
 entries:
   - date: 2026-09-17
     kind: feature
@@ -66,7 +66,6 @@ entries:
         and forwards Menu's DOM events from the item wrapper.
   - date: 2026-08-19
     kind: feature
-    target: nav
     es:
       title: Nueva opción nav en MenubarItem. El trigger puede ser el link real de nav-list
       body: >-
@@ -149,3 +148,40 @@ entries:
         the other. Both bindings already implemented it and Core's own <code>MenuItem</code> type
         already declared it; only the contract did not, so a composition the bindings handled
         correctly was rejected by the validator.
+  - date: 2026-10-02
+    kind: breaking
+    es:
+      title: Se elimina la opción nav de MenubarItem
+      body: >-
+        <code>MenubarItem</code> ya no acepta <code>nav</code>: el trigger es siempre un
+        <code>Button</code> <code>ghost</code>. Dibujar la barra como enlaces de
+        <code>nav-list</code> duplicaba lo que ya hace <code>Megamenu</code> para la navegación de
+        un sitio y contradecía el propósito de la barra, que es llevar comandos. Un árbol con
+        <code>nav</code> ahora es inválido; para navegar entre páginas usa
+        <code>Megamenu</code> o <code>NavList</code>.
+    en:
+      title: MenubarItem's nav option is removed
+      body: >-
+        <code>MenubarItem</code> no longer accepts <code>nav</code>: the trigger is always a
+        <code>ghost</code> <code>Button</code>. Drawing the bar as <code>nav-list</code> links
+        duplicated what <code>Megamenu</code> already does for site navigation and contradicted the
+        bar's purpose, which is to carry commands. A tree with <code>nav</code> is now invalid; to
+        move between pages use <code>Megamenu</code> or <code>NavList</code>.
+  - date: 2026-10-02
+    kind: bugfix
+    es:
+      title: El submenú de un desplegable de Menubar se coloca junto a su ítem
+      body: >-
+        Un desplegable con submenús (<code>Exportar</code> → PDF, CSV) abría el submenú lejos de su
+        ítem, en la esquina de la página. El desplegable de nivel superior usaba el anclaje nativo del
+        navegador mientras el submenú lo colocaba la máquina, y mezclar los dos motores desfasa las
+        coordenadas. Ahora <code>MenubarItem</code> retira el anclaje nativo cuando algún nivel de su
+        desplegable tiene un submenú, igual que <code>Menu</code>. La superficie del contrato no cambia.
+    en:
+      title: A Menubar dropdown's submenu is placed beside its item
+      body: >-
+        A dropdown with submenus (<code>Export</code> → PDF, CSV) opened the submenu far from its item,
+        in the corner of the page. The top-level dropdown used the browser's native anchoring while the
+        machine placed the submenu, and mixing the two engines throws the coordinates off. Now
+        <code>MenubarItem</code> withholds native anchoring when any level of its dropdown has a
+        submenu, as <code>Menu</code> does. The contract's surface does not change.

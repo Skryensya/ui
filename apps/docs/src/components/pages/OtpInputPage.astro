@@ -7,24 +7,35 @@ import ComponentPageShell from "./ComponentPageShell.astro";
 import CodeBlock from "../CodeBlock.astro";
 import UsagePreview from "../UsagePreview.astro";
 import DoDont from "../DoDont.astro";
+import PasswordVsOtp from "../PasswordVsOtp.astro";
 import WhenToUse from "../WhenToUse.astro";
 import ContentRules from "../ContentRules.astro";
 import A11yNotes from "../A11yNotes.astro";
 import {
   otpInputAlphanumericTree,
   otpInputAnatomyTree,
+  otpInputCountCase,
+  otpInputDoGroupHtml,
   otpInputDoLongTree,
+  otpInputDoMaskHtml,
+  otpInputDontGroupHtml,
   otpInputDontLongTree,
+  otpInputDontMaskHtml,
   otpInputDontNoHintTree,
+  otpInputDontPasswordTree,
   otpInputPinTree,
   otpInputSingleTree,
   otpInputSmsTree,
-  otpInputStatesTree,
+  otpInputStateCase,
 } from "../../demos/otp-input";
 import { annotationDemoCss } from "../../demos/annotation";
 import { getLocale, tList, useTranslations } from "../../i18n";
 
 const t = useTranslations(getLocale(Astro.url));
+/* The lengths a code comes in, and the states the field can be in: both are choices of the author or
+   conditions of the field, told apart by what a person sees at rest. */
+const counts = [4, 6, 8] as const;
+const states = ["default", "readOnly", "invalid", "disabled"] as const;
 const styles = `@import "@skryensya/core/components/otp-input.css";`;
 
 /* What each value of a property is for, read from this page's messages. Same model Badge uses. */
@@ -51,11 +62,51 @@ const explain = (option: string, values: readonly string[]) =>
       labels={{ false: t("otpInput.prop.mask.falseLabel"), true: t("otpInput.prop.mask.trueLabel") }}
     />
 
+    <UsagePreview
+      tree={otpInputSingleTree(t)}
+      optionName="groupSize"
+      title={t("otpInput.prop.groupSize.title")}
+      description={t("otpInput.prop.groupSize.body")}
+      explain={explain("groupSize", ["2", "3", "4"])}
+      labels={{ "2": "2", "3": "3", "4": "4" }}
+      stageMinBlockSize="8rem"
+    />
+
+    <UsagePreview
+      tree={otpInputCountCase(t, 6)}
+      variants={counts.map((count) => ({
+        value: String(count),
+        label: String(count),
+        tree: otpInputCountCase(t, count),
+        explain: t(`otpInput.prop.count.${count}` as Parameters<typeof t>[0]),
+      }))}
+      initialVariant="6"
+      variantsLabel={t("otpInput.prop.count.label")}
+      title={t("otpInput.prop.count.title")}
+      description={t("otpInput.prop.count.body")}
+      stageMinBlockSize="8rem"
+    />
+
+    <UsagePreview
+      tree={otpInputStateCase(t, "default")}
+      variants={states.map((state) => ({
+        value: state,
+        label: t(`component.state.${state}` as Parameters<typeof t>[0]),
+        tree: otpInputStateCase(t, state),
+        explain: t(`otpInput.state.${state}` as Parameters<typeof t>[0]),
+      }))}
+      variantsLabel={t("otpInput.state.label")}
+      title={t("otpInput.state.title")}
+      description={t("otpInput.state.body")}
+      stageMinBlockSize="9rem"
+    />
+
     <h3>{t("component.examplesTitle")}</h3>
     <UsagePreview tree={otpInputSmsTree(t)} title={t("otpInput.smsTitle")} description={t("otpInput.smsBody")} />
     <UsagePreview tree={otpInputAlphanumericTree(t)} title={t("otpInput.alphanumericTitle")} description={t("otpInput.alphanumericBody")} />
     <UsagePreview tree={otpInputPinTree(t)} title={t("otpInput.pinTitle")} description={t("otpInput.pinBody")} />
-    <UsagePreview tree={otpInputStatesTree(t)} title={t("otpInput.statesTitle")} description={t("otpInput.statesBody")} />
+
+    <PasswordVsOtp from="otp-input" />
 
     <h3>{t("component.contractNotesTitle")}</h3>
     <ul>
@@ -79,6 +130,21 @@ const explain = (option: string, values: readonly string[]) =>
       title={t("otpInput.dd.hint.title")}
       do={{ tree: otpInputSmsTree(t), caption: t("otpInput.dd.hint.do") }}
       dont={{ tree: otpInputDontNoHintTree(t), caption: t("otpInput.dd.hint.dont") }}
+    />
+    <DoDont
+      title={t("otpInput.dd.password.title")}
+      do={{ tree: otpInputSmsTree(t), caption: t("otpInput.dd.password.do") }}
+      dont={{ tree: otpInputDontPasswordTree(t), caption: t("otpInput.dd.password.dont") }}
+    />
+    <DoDont
+      title={t("otpInput.dd.mask.title")}
+      do={{ html: otpInputDoMaskHtml(t), caption: t("otpInput.dd.mask.do") }}
+      dont={{ html: otpInputDontMaskHtml(t), caption: t("otpInput.dd.mask.dont") }}
+    />
+    <DoDont
+      title={t("otpInput.dd.group.title")}
+      do={{ html: otpInputDoGroupHtml(t), caption: t("otpInput.dd.group.do") }}
+      dont={{ html: otpInputDontGroupHtml(t), caption: t("otpInput.dd.group.dont") }}
     />
     <DoDont
       canvas

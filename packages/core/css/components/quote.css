@@ -37,6 +37,7 @@
      */
     --sk-quote-measure: 60ch;
     --sk-quote-attribution-fg: var(--color-text-tertiary);
+    --sk-quote-media-gap: var(--space-inline-sm);
     /*
      * THE SPACE BETWEEN THE NAME AND THE WORK IS CHROME; THE PUNCTUATION IS COPY. The caption is a
      * flex row for one concrete reason: its two halves are a bare text run and a <cite>, and a flex
@@ -85,13 +86,31 @@
    */
   .sk-quote__attribution {
     display: flex;
-    flex-wrap: wrap;
-    align-items: baseline;
-    column-gap: var(--sk-quote-attribution-gap);
+    align-items: center;
+    column-gap: var(--sk-quote-media-gap);
     padding-inline-start: calc(var(--sk-quote-padding-inline) + var(--sk-quote-rule-width));
     color: var(--sk-quote-attribution-fg);
     font-size: var(--sk-quote-attribution-font-size);
     line-height: var(--font-line-height-body-sm);
+  }
+
+  /* The picture keeps its own size: a caption this small must not squeeze a face into an oval. */
+  .sk-quote__media {
+    display: inline-flex;
+    flex: none;
+  }
+
+  /*
+   * The name and the work. This is the row the caption itself used to be: a flex row because its two
+   * halves are a bare text run and a <cite>, and a flex container drops whitespace-only text nodes
+   * between items, which is what keeps the two bindings identical (see the gap hook above).
+   */
+  .sk-quote__author {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    column-gap: var(--sk-quote-attribution-gap);
+    min-inline-size: 0;
   }
 
   /*

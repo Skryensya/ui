@@ -266,4 +266,27 @@ describe("Questionnaire (React)", () => {
     expect((listener.mock.calls[0]![0] as CustomEvent).detail).toEqual({ values: { direction: "delegation" } });
     expect(onSubmit).toHaveBeenCalledTimes(1);
   });
+  describe("a question whose only input is free text", () => {
+    const kind = (ui: ReturnType<typeof render>, name: string) => ui.container.querySelector(`[name="${name}"]`)?.tagName;
+
+    it("is a textarea, while text beside choices stays a one-line input", () => {
+      const ui = render(<Survey />);
+      expect(kind(ui, "notes")).toBe("TEXTAREA");
+      expect(kind(ui, "direction")).toBe("INPUT");
+    });
+
+    it("keeps typed answers as inputs, and lets a text type or an explicit count override the rule", () => {
+      const ui = render(
+        <Questionnaire aria-label="Typed">
+          <QuestionnaireItem name="mail" text textLabel="Email" textType="email" title="Mail" />
+          <QuestionnaireItem name="short" text textLabel="Short" textType="text" title="Short" />
+          <QuestionnaireItem name="long" text textLabel="Long" textLines={6} title="Long" />
+        </Questionnaire>,
+      );
+      expect(kind(ui, "mail")).toBe("INPUT");
+      expect(kind(ui, "short")).toBe("INPUT");
+      expect(kind(ui, "long")).toBe("TEXTAREA");
+      expect((ui.container.querySelector('[name="long"]') as HTMLTextAreaElement).rows).toBe(6);
+    });
+  });
 });

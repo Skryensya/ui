@@ -733,11 +733,11 @@
       "signatures": [
         {
           "alternatives": [
-            "ProcessList",
+            "Procedure",
             "Steps"
           ],
           "avoidWhen": [
-            "they are instructions to read and follow, in order but without versions; that is a ProcessList",
+            "they are instructions to read and follow, in order but without versions; that is a Procedure",
             "what matters is which stage someone is at, what they have done and what is left; that is Steps",
             "it is a single piece of news; one entry with no history around it is not a history"
           ],
@@ -1258,6 +1258,99 @@
       ]
     },
     {
+      "category": "data",
+      "css": "@skryensya/core/components/comparison-table.css",
+      "id": "comparison-table",
+      "signatures": [
+        {
+          "alternatives": [
+            "Table",
+            "DescriptionList",
+            "DataGrid"
+          ],
+          "avoidWhen": [
+            "there are more than four things, or the cells are long; that is a catalogue and it is a Table",
+            "the rows are facts about ONE thing and nothing is compared across them; that is DescriptionList",
+            "the data is sorted, filtered, paged or summed; that is a Table or a DataGrid"
+          ],
+          "host": "table",
+          "id": "ComparisonTable",
+          "intent": [
+            "compare-two-to-four-things",
+            "feature-comparison",
+            "when-to-use-which",
+            "side-by-side"
+          ],
+          "parents": [],
+          "useWhen": [
+            "two to four things are set side by side on the same few aspects: two components, three plans, an old and a new behaviour",
+            "the reader has to decide between them, and the answer is in how the columns differ row by row",
+            "every cell is short: a phrase, a bit of code, a link"
+          ]
+        },
+        {
+          "alternatives": [
+            "Table"
+          ],
+          "avoidWhen": [
+            "a grouped or spanning header; that is a Table's TableHeader"
+          ],
+          "host": "th",
+          "id": "ComparisonColumn",
+          "intent": [
+            "one-thing-compared",
+            "column-header"
+          ],
+          "parents": [
+            "ComparisonTable"
+          ],
+          "useWhen": [
+            "the name of one of the things compared, at the top of its column"
+          ]
+        },
+        {
+          "alternatives": [
+            "Table"
+          ],
+          "avoidWhen": [
+            "the row needs a spanning cell; that is a Table"
+          ],
+          "host": "tr",
+          "id": "ComparisonRow",
+          "intent": [
+            "one-aspect-compared",
+            "row"
+          ],
+          "parents": [
+            "ComparisonTable"
+          ],
+          "useWhen": [
+            "one aspect the things are compared on, named once on the left and answered in each column"
+          ]
+        },
+        {
+          "alternatives": [
+            "Table"
+          ],
+          "avoidWhen": [
+            "the answer needs a paragraph or a control; that is a Table, or prose beside the comparison"
+          ],
+          "host": "td",
+          "id": "ComparisonCell",
+          "intent": [
+            "how-one-thing-answers-one-aspect",
+            "cell"
+          ],
+          "parents": [
+            "ComparisonRow"
+          ],
+          "useWhen": [
+            "how one thing answers one aspect: a short phrase, with code or a link"
+          ]
+        }
+      ]
+    },
+    {
       "category": "feedback",
       "css": "@skryensya/core/components/toast.css",
       "id": "content",
@@ -1443,13 +1536,13 @@
         {
           "alternatives": [
             "Annotated",
-            "ProcessList",
+            "Procedure",
             "Steps",
             "TreeView"
           ],
           "avoidWhen": [
             "what has to be named are the parts of one thing already drawn: that is Annotation, which anchors each label to a selector inside the subject and does not draw a graph",
-            "the content is a sequence with no branches and no loops: that is ProcessList if they are instructions, or Steps if progress is primary; a single-column diagram with no forks is a list with extra lines",
+            "the content is a sequence with no branches and no loops: that is Procedure if they are instructions, or Steps if progress is primary; a single-column diagram with no forks is a list with extra lines",
             "the hierarchy is containment and not flow (folders, a file tree): that is TreeView or Folder, where what matters is what is inside what",
             "the graph is large, comes from data, or has to be explored or have its nodes dragged: this does not do layout, it draws small hand-written diagrams. Wrapping it in a Canvas is enough to zoom and pan the view",
             "full UML notation, swimlanes or box types by convention (cylinder, parallelogram, hexagon) are needed: those are conventions the reader has to be taught, and of the prose shapes only the three understood without a legend live here. Logic gates are the exception and pass the same test from the other side: they are not a box that means AND, they are the symbol the standard assigns to conjunction, and anyone who reads the notation reads it without a legend",
@@ -1586,12 +1679,12 @@
       "signatures": [
         {
           "alternatives": [
-            "MediaGradient",
+            "MediaOverlayShade",
             "Marquee"
           ],
           "avoidWhen": [
             "the content is not clipped; fading it only lowers contrast",
-            "the gradient protects text over a photo; that is MediaGradient inside MediaCaption",
+            "the gradient protects text over a photo; that is MediaOverlayShade inside MediaOverlay",
             "the fade would hide a control or information needed at rest",
             "the clipped edge is a Marquee's viewport; Marquee already has its own inner fade, and a FadeEdge around it also washes out the Play/Pause"
           ],
@@ -2269,12 +2362,12 @@
           "alternatives": [
             "Table",
             "NavList",
-            "ProcessList"
+            "Procedure"
           ],
           "avoidWhen": [
             "the rows have columns comparable with each other; that is a Table",
             "they are navigation destinations of the site or the page; that is NavList",
-            "they are instructions to read and follow, in order; that is ProcessList"
+            "they are instructions to read and follow, in order; that is Procedure"
           ],
           "host": "ul",
           "id": "List",
@@ -2292,11 +2385,11 @@
         {
           "alternatives": [
             "List",
-            "ProcessList"
+            "Procedure"
           ],
           "avoidWhen": [
             "reordering the rows does not change their meaning; that is List",
-            "they are steps of a process with a rich body per item; that is ProcessList"
+            "they are steps of a process with a rich body per item; that is Procedure"
           ],
           "host": "ol",
           "id": "OrderedList",
@@ -2540,8 +2633,8 @@
     },
     {
       "category": "content",
-      "css": "@skryensya/core/patterns/media-gradient.css",
-      "id": "media-gradient",
+      "css": "@skryensya/core/patterns/media-overlay.css",
+      "id": "media-overlay",
       "signatures": [
         {
           "alternatives": [
@@ -2552,7 +2645,7 @@
             "it is a descriptive photo caption; that is a `<figcaption>` outside the frame"
           ],
           "host": "div",
-          "id": "MediaCaption",
+          "id": "MediaOverlay",
           "intent": [
             "caption-over-a-photo",
             "text-over-an-image",
@@ -2573,18 +2666,18 @@
             "FadeEdge"
           ],
           "avoidWhen": [
-            "it is outside a MediaCaption; it has no box to fill and paints nothing",
+            "it is outside a MediaOverlay; it has no box to fill and paints nothing",
             "it darkens a dialog over the page; that is Dialog's ::backdrop, not this wash"
           ],
           "host": "div",
-          "id": "MediaGradient",
+          "id": "MediaOverlayShade",
           "intent": [
             "readable-text-over-a-photo",
             "readable-text-over-an-image",
             "scrim-behind-a-caption"
           ],
           "parents": [
-            "MediaCaption"
+            "MediaOverlay"
           ],
           "useWhen": [
             "there is text over a photo or image and it needs contrast to be read"
@@ -2694,8 +2787,7 @@
           "id": "Menubar",
           "intent": [
             "application-menu-bar",
-            "editor-menubar",
-            "site-navigation-with-dropdowns"
+            "editor-menubar"
           ],
           "parents": [],
           "useWhen": [
@@ -3217,8 +3309,8 @@
     },
     {
       "category": "content",
-      "css": "@skryensya/core/components/process-list.css",
-      "id": "process-list",
+      "css": "@skryensya/core/components/procedure.css",
+      "id": "procedure",
       "signatures": [
         {
           "alternatives": [
@@ -3230,7 +3322,7 @@
             "they are rows of a list (links, actions, metadata) with no instruction body; that is List"
           ],
           "host": "ol",
-          "id": "ProcessList",
+          "id": "Procedure",
           "intent": [
             "instructions",
             "how-to",
@@ -3249,13 +3341,13 @@
             "the item reports complete/current/upcoming; that is a step of Steps, not an instruction"
           ],
           "host": "li",
-          "id": "ProcessListItem",
+          "id": "ProcedureStep",
           "intent": [
             "one-instruction",
             "one-step-of-a-how-to"
           ],
           "parents": [
-            "ProcessList"
+            "Procedure"
           ],
           "useWhen": [
             "one instruction inside the list"
@@ -4021,10 +4113,10 @@
       "signatures": [
         {
           "alternatives": [
-            "ProcessList"
+            "Procedure"
           ],
           "avoidWhen": [
-            "they are instructions to read and follow; that is a ProcessList"
+            "they are instructions to read and follow; that is a Procedure"
           ],
           "host": "ol",
           "id": "Steps",
@@ -4773,12 +4865,12 @@
         {
           "alternatives": [
             "Steps",
-            "ProcessList",
+            "Procedure",
             "Changelog"
           ],
           "avoidWhen": [
             "the reader is inside the process and has to be told which stage they are at; that is Steps",
-            "they are instructions to follow, with no time at all; that is a ProcessList",
+            "they are instructions to follow, with no time at all; that is a Procedure",
             "they are shipped releases; that is Changelog, which has its own vocabulary and scale"
           ],
           "host": "ol",
@@ -5489,5 +5581,5 @@
     }
   ],
   "schemaVersion": "2.3",
-  "sourceHash": "03b5eb901cf8592f"
+  "sourceHash": "604fc22246b86106"
 }

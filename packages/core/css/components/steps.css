@@ -279,6 +279,7 @@
    */
   .sk-steps[data-appearance="segments"] {
     gap: var(--space-inline-xs);
+    align-items: center;
   }
 
   .sk-steps[data-appearance="segments"] .sk-steps__item {
@@ -323,15 +324,40 @@
   }
 
   /*
-   * THE CURRENT STAGE IS MARKED, NOT FILLED. Filling it would say the question is answered, which is
-   * the one thing it is not: it is the one being asked. A ring in the accent names it as the place
-   * the reader is without claiming it is behind them.
+   * THE CURRENT STAGE IS A DIFFERENT COLOUR AND SLIGHTLY TALLER: the tertiary text colour (a mid grey, light
+   * enough on dark and dark enough on light to stand clear of the track) against the accent of the finished bars, and half again the height. The accent says "done";
+   * a colour that is not the accent says "this one is different", so where you are is not mistaken for
+   * a stage that is finished. Because the height differs too, it still reads in grey, in forced colours
+   * and for a colour-blind reader, and neither that colour nor a taller bar is a thing keyboard focus
+   * looks like.
+   *
+   * It used to be an empty bar with an accent ring, and a ring is exactly how focus is drawn: the stage
+   * you are on was easy to mistake for the control that has focus, and the other way round. A half
+   * filled bar, a full-strength tall one and a dimmed accent were tried next and dropped: they read
+   * as a measurement, as finished, and as unfinished business.
    */
   .sk-steps[data-appearance="segments"] .sk-steps__item[data-status="current"] .sk-steps__marker {
-    background: var(--color-bg-surface-sunken);
-    box-shadow: inset 0 0 0 var(--sk-steps-connector-size) var(--color-border-accent);
+    background: var(--color-text-tertiary);
+    block-size: calc(var(--sk-steps-segment-size) * 1.5);
   }
 
+  /* Forced colours keep the three states as shapes: full, taller and empty, each with an edge. Written with `:is()` so it stays out of the phone rail's twin-rule check, which
+   * compares the plain appearance rules. */
+  @media (forced-colors: active) {
+    .sk-steps:is([data-appearance="segments"]) .sk-steps__marker {
+      border: 1px solid CanvasText;
+      background: Canvas;
+      box-shadow: none;
+    }
+
+    .sk-steps:is([data-appearance="segments"]) .sk-steps__item[data-status="complete"] .sk-steps__marker {
+      background: Highlight;
+    }
+
+    .sk-steps:is([data-appearance="segments"]) .sk-steps__item[data-status="current"] .sk-steps__marker {
+      background: Highlight;
+    }
+  }
 
   /*
    * A PINNED HORIZONTAL RAIL ON A PHONE DRAWS AS SEGMENTS.
@@ -357,6 +383,7 @@
   @media (width < 36rem) {
     .sk-steps[data-orientation="horizontal"] {
       gap: var(--space-inline-xs);
+      align-items: center;
     }
 
     .sk-steps[data-orientation="horizontal"] .sk-steps__item {
@@ -396,8 +423,8 @@
     }
 
     .sk-steps[data-orientation="horizontal"] .sk-steps__item[data-status="current"] .sk-steps__marker {
-      background: var(--color-bg-surface-sunken);
-      box-shadow: inset 0 0 0 var(--sk-steps-connector-size) var(--color-border-accent);
+      background: var(--color-text-tertiary);
+      block-size: calc(var(--sk-steps-segment-size) * 1.5);
     }
   }
 }

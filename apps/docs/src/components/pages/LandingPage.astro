@@ -8,6 +8,8 @@ import SiteFooter from "../SiteFooter.astro";
 import { getNavigation } from "../../lib/navigation";
 import { getLocale, localizePath } from "../../i18n";
 import { emitMarkup } from "@skryensya/ai-compiler/emit";
+import { validateUsageTree } from "@skryensya/ai-compiler/validate";
+import { bentoSets as buildBentoSets } from "../../lib/landing-bento";
 import { buttonContract } from "@skryensya/core/button";
 import type { UsageTree } from "@skryensya/core/usage-tree";
 
@@ -18,13 +20,49 @@ import "@skryensya/core/patterns/footer.css";
 import "@skryensya/core/patterns/nav-list.css";
 import "@skryensya/core/components/typography.css";
 import "@skryensya/core/components/button.css";
-import "@skryensya/core/components/badge.css";
 import "@skryensya/core/components/tag.css";
 import "@skryensya/core/components/callout.css";
+import "@skryensya/core/components/badge.css";
+import "@skryensya/core/components/table.css";
+import "@skryensya/core/components/code-preview.css";
 import "@skryensya/core/components/input.css";
 import "@skryensya/core/components/form-field.css";
 import "@skryensya/core/components/stat.css";
+import "@skryensya/core/components/avatar.css";
+import "@skryensya/core/components/breadcrumb.css";
+import "@skryensya/core/components/menu.css";
+import "@skryensya/core/patterns/anchored.css";
+import "@skryensya/core/components/checkbox.css";
+import "@skryensya/core/components/switch.css";
+import "@skryensya/core/components/rating.css";
+import "@skryensya/core/components/segmented.css";
+import "@skryensya/core/components/kbd.css";
+import "@skryensya/core/components/badge.css";
 import "@skryensya/core/components/progress.css";
+import "@skryensya/core/components/steps.css";
+import "@skryensya/core/components/meter.css";
+import "@skryensya/core/components/timeline.css";
+import "@skryensya/core/components/radio-group.css";
+import "@skryensya/core/components/description-list.css";
+import "@skryensya/core/components/quote.css";
+import "@skryensya/core/components/slider.css";
+import "@skryensya/core/components/number-field.css";
+import "@skryensya/core/components/pagination.css";
+import "@skryensya/core/components/tabs.css";
+import "@skryensya/core/components/accordion.css";
+import "@skryensya/core/components/details.css";
+import "@skryensya/core/components/tile.css";
+import "@skryensya/core/components/loader.css";
+import "@skryensya/core/patterns/visually-hidden.css";
+import "@skryensya/core/components/empty-state.css";
+import "@skryensya/core/components/select.css";
+import "@skryensya/core/components/clipboard.css";
+import "@skryensya/core/components/copy-button.css";
+import "@skryensya/core/components/list.css";
+import "@skryensya/core/components/password-input.css";
+import "@skryensya/core/components/table.css";
+import "@skryensya/core/patterns/vaul.css";
+import "@skryensya/core/patterns/icon.css";
 
 const locale = getLocale(Astro.url);
 const href = (path: string) => localizePath(path, locale);
@@ -35,10 +73,10 @@ const copy = es
   ? {
       title: "skryensya/ui",
       description: "Sistema de diseño contract-first: cada componente parte de una definición y React o Vanilla la realizan igual.",
-      eyebrow: "Sistema de diseño contract-first",
+      eyebrow: "Componentes accesibles para React y HTML",
       heroTitle: "Componentes que parten de un contrato.",
       heroBody:
-        "Cada componente se define primero: qué partes tiene, qué opciones acepta, qué atributos escribe, qué reglas de accesibilidad cumple y qué combinaciones tienen sentido. El código se escribe después, a partir de esa definición.",
+        "Cada componente se declara una sola vez: sus partes, opciones, atributos, reglas de accesibilidad y las combinaciones válidas. React y Vanilla lo realizan sin volver a definirlo, así que se comportan igual y el uso se puede validar antes de escribir código.",
       ctaComponents: "Ver componentes",
       ctaArchitecture: "Cómo funciona",
       ideaTitle: "Una alternativa al stack único",
@@ -53,18 +91,20 @@ const copy = es
         { title: "Contratos legibles como datos", body: "Partes, opciones, atributos y reglas de accesibilidad están declarados como estructura, no escondidos en el código." },
       ],
       contractTitle: "Un contrato, paso a paso",
-      contractBody:
-        "Así se ve el contrato de Button. Los valores de la tabla se leen directamente del contrato real, no están copiados.",
+      contractBody: "Cuatro pasos con el contrato real de Button. Nada está copiado: se lee del contrato o lo calcula el compilador al construir la página.",
       contractSteps: {
-        contract: { title: "Contrato", note: "Lo que el componente declara" },
-        tree: { title: "Árbol de uso", note: "Lo que alguien (o un asistente) propone" },
-        result: { title: "Resultado", note: "Lo que se emite y se valida" },
+        contract: { title: "Contrato", lead: "Declara las opciones del botón y el atributo que escribe cada una." },
+        tree: { title: "Árbol de uso", lead: "Quien compone la interfaz propone datos, no markup." },
+        validate: {
+          title: "Validación",
+          lead: "El árbol se comprueba contra el contrato. Un botón solo con icono y sin nombre accesible falla:",
+          rule: "Regla",
+          verdictBad: "Inválido",
+        },
+        result: { title: "Resultado", lead: "Un árbol válido se emite como markup. React y Vanilla dan el mismo." },
       },
+      contractTableLabel: "Opciones de Button",
       contractCols: { option: "Opción", values: "Valores", writes: "Escribe" },
-      contractParts: "Partes",
-      contractRuleLabel: "Regla de accesibilidad",
-      contractRule: "Si iconOnly es verdadero, el botón no muestra texto: exige aria-label o aria-labelledby.",
-      contractResultNote: "El mismo árbol da el mismo markup en React y en Vanilla; los gates lo comparan.",
       statusTitle: "Estado actual",
       statusBody:
         "Es un WIP grande y deliberadamente ambicioso, pero ya tiene una base funcionando.",
@@ -90,10 +130,10 @@ const copy = es
   : {
       title: "skryensya/ui",
       description: "A contract-first design system: every component starts from a definition, and React or Vanilla realize it the same way.",
-      eyebrow: "Contract-first design system",
+      eyebrow: "Accessible components for React and HTML",
       heroTitle: "Components that start from a contract.",
       heroBody:
-        "Every component is defined first: which parts it has, which options it accepts, which attributes it writes, which accessibility rules it meets and which combinations make sense. The code is written afterwards, from that definition.",
+        "Each component is declared once: its parts, options, attributes, accessibility rules and valid combinations. React and Vanilla realize it without redefining it, so they behave the same and usage can be validated before any code is written.",
       ctaComponents: "View components",
       ctaArchitecture: "How it works",
       ideaTitle: "An alternative to the single stack",
@@ -108,18 +148,20 @@ const copy = es
         { title: "Contracts readable as data", body: "Parts, options, attributes and accessibility rules are declared as structure, not buried in code." },
       ],
       contractTitle: "A contract, step by step",
-      contractBody:
-        "This is the Button contract. The values in the table are read straight from the real contract, not copied.",
+      contractBody: "Four steps with the real Button contract. Nothing is copied: it is read from the contract or computed by the compiler when the page is built.",
       contractSteps: {
-        contract: { title: "Contract", note: "What the component declares" },
-        tree: { title: "Usage tree", note: "What a person (or an assistant) proposes" },
-        result: { title: "Result", note: "What gets emitted and validated" },
+        contract: { title: "Contract", lead: "Declares the button's options and the attribute each one writes." },
+        tree: { title: "Usage tree", lead: "Whoever composes the interface proposes data, not markup." },
+        validate: {
+          title: "Validation",
+          lead: "The tree is checked against the contract. An icon-only button with no accessible name fails:",
+          rule: "Rule",
+          verdictBad: "Invalid",
+        },
+        result: { title: "Result", lead: "A valid tree is emitted as markup. React and Vanilla give the same." },
       },
+      contractTableLabel: "Button options",
       contractCols: { option: "Option", values: "Values", writes: "Writes" },
-      contractParts: "Parts",
-      contractRuleLabel: "Accessibility rule",
-      contractRule: "When iconOnly is true the button shows no text: it requires aria-label or aria-labelledby.",
-      contractResultNote: "The same tree gives the same markup in React and Vanilla; the gates compare them.",
       statusTitle: "Current state",
       statusBody:
         "A large, deliberately ambitious work in progress, but with a working base already.",
@@ -144,7 +186,7 @@ const copy = es
     };
 
 const signature = "Button.action";
-const shownOptions = ["variant", "tone", "size", "iconOnly", "pressed"] as const;
+const shownOptions = ["variant", "tone", "iconOnly"] as const;
 const optionRows = shownOptions.map((name) => {
   const option = buttonContract.options[name];
   return {
@@ -153,7 +195,6 @@ const optionRows = shownOptions.map((name) => {
     writes: option.attr,
   };
 });
-const partNames = Object.keys(buttonContract.parts).join(" · ");
 
 const buttonTree: UsageTree = {
   contract: "button",
@@ -162,107 +203,126 @@ const buttonTree: UsageTree = {
   children: es ? "Eliminar" : "Delete",
 };
 const buttonTreeSource = JSON.stringify(buttonTree, null, 2);
+const badTree: UsageTree = { contract: "button", signature, options: { iconOnly: true }, children: "×" };
+const badCheck = validateUsageTree(badTree);
+const badProblem = badCheck.problems[0];
+const badTreeSource = JSON.stringify(badTree, null, 2);
 const buttonMarkup = emitMarkup(buttonTree, { fillDefaults: false, idPrefix: "landing-contract" });
 
-const btn = (children: string, options: Record<string, string> = {}): UsageTree => ({
-  contract: "button",
-  signature: "Button.action",
-  options,
+/* The four steps are a plain Stack of the system's own components, written as usage trees and emitted like any
+   other: Text, Badge, Table, Callout and CodePreview carry the look, this page adds none of its own. Every
+   figure in them is read from the contract or computed by the validator and the emitter at build time. */
+const steps = copy.contractSteps;
+const text = (children: UsageTree["children"], options: Record<string, string> = {}): UsageTree => ({
+  contract: "typography",
+  signature: "Text",
+  options: { tone: "secondary", size: "sm", ...options },
   children,
 });
-const inline = (children: UsageTree[], gap = "sm"): UsageTree => ({
-  contract: "layout",
-  signature: "Inline",
-  options: { gap, wrap: true },
+const code = (children: string): UsageTree => ({ contract: "typography", signature: "Code", children });
+const stack = (children: UsageTree[]): UsageTree => ({ contract: "layout", signature: "Stack", children });
+const snippet = (source: string, label: string): UsageTree => ({
+  contract: "code-preview",
+  signature: "CodePreview",
+  slots: { label },
+  children: source,
+});
+const callout = (tone: string, title: string, children: UsageTree["children"]): UsageTree => ({
+  contract: "callout",
+  signature: "Callout",
+  options: { tone },
+  slots: { title },
   children,
 });
-const stack = (children: UsageTree[], gap = "sm"): UsageTree => ({
+const step = (copyStep: { title: string; lead: string }, children: UsageTree[]): UsageTree => ({
+  ...stack([text(copyStep.title, { tone: "primary", size: "body" }), text(copyStep.lead), ...children]),
+  attrs: { "data-read": "" },
+});
+const cell = (signature: string, children: UsageTree["children"], options?: Record<string, string>): UsageTree => ({
+  contract: "table",
+  signature,
+  ...(options ? { options } : {}),
+  children,
+});
+const row = (cells: UsageTree[]): UsageTree => cell("TableRow", cells);
+
+const contractTable: UsageTree = {
+  contract: "table",
+  signature: "TableScroll",
+  children: {
+    contract: "table",
+    signature: "Table",
+    attrs: { "aria-label": copy.contractTableLabel },
+    children: [
+      cell("TableHead", [
+        row([
+          cell("TableHeader", copy.contractCols.option),
+          cell("TableHeader", copy.contractCols.values),
+          cell("TableHeader", copy.contractCols.writes),
+        ]),
+      ]),
+      cell("TableBody", optionRows.map((option) =>
+        row([cell("TableHeader", code(option.name), { scope: "row" }), cell("TableCell", option.values), cell("TableCell", code(option.writes))]),
+      )),
+    ],
+  },
+};
+
+const stepsTree: UsageTree = {
   contract: "layout",
   signature: "Stack",
-  options: { gap },
-  children,
-});
-const badge = (children: string, tone: string): UsageTree => ({
-  contract: "badge",
-  signature: "Badge",
-  options: { tone },
-  children,
-});
-const tag = (children: string, tone: string): UsageTree => ({
-  contract: "tag",
-  signature: "Tag",
-  options: { tone },
-  children,
-});
-
-// Bento cells on a 12 x 6 grid: [row, column, rowSpan, columnSpan]. A full tiling: the 13 tiles cover
-// all 72 cells with no hole. Cut lines drift from band to band and tall tiles cross them, so edges
-// rarely line up. `link` draws a stitch to the tile on its right (`linkY` is where along the tile it
-// leaves).
-type BentoTile = {
-  id: string;
-  label: string;
-  area: [number, number, number, number];
-  tree: UsageTree;
-  link?: string;
-  accent?: boolean;
+  options: { gap: "xl" },
+  children: [
+    step(steps.contract, [contractTable]),
+    step(steps.tree, [snippet(buttonTreeSource, "usage tree")]),
+    step(steps.validate, [
+      snippet(badTreeSource, "usage tree"),
+      ...(badProblem ? [callout("danger", steps.validate.verdictBad, [`${steps.validate.rule}: `, code(badProblem.rule), ` · ${badProblem.message}`])] : []),
+    ]),
+    step(steps.result, [{ contract: "layout", signature: "Stack", options: { align: "start" }, children: buttonTree }, snippet(buttonMarkup, "HTML")]),
+  ],
 };
-const sized = (children: string, size: string): UsageTree => btn(children, { variant: "soft", tone: "accent", size });
-const bentoTiles: BentoTile[] = [
-  { id: "button", label: "Button", area: [1, 1, 2, 5], link: "50%", tree: inline([btn(es ? "Guardar" : "Save", { tone: "accent" }), btn(es ? "Cancelar" : "Cancel", { variant: "soft" }), btn(es ? "Omitir" : "Skip", { variant: "ghost" })]) },
-  { id: "stat", label: "Stat", area: [1, 6, 2, 2], link: "25%", accent: true, tree: { contract: "stat", signature: "Stat", slots: { label: es ? "Componentes" : "Components", value: "100+" } } },
-  { id: "badges", label: "Badge", area: [1, 8, 1, 5], tree: inline([badge("neutral", "neutral"), badge("accent", "accent"), badge("success", "success"), badge("warning", "warning"), badge("danger", "danger")], "xs") },
-  {
-    id: "card",
-    label: "Heading · Button",
-    area: [2, 8, 3, 3], link: "50%",
-   
-    tree: stack(
-      [
-        { contract: "typography", signature: "Heading", options: { headingSize: "h3", flush: true }, children: es ? "Aprobar solicitud" : "Approve request" },
-        { contract: "typography", signature: "Text", options: { tone: "secondary" }, children: es ? "Un árbol de uso describe intención, estructura y reglas." : "A usage tree describes intent, structure and rules." },
-        inline([btn(es ? "Aprobar" : "Approve", { tone: "accent" }), btn(es ? "Rechazar" : "Reject", { variant: "soft", tone: "danger" })]),
-      ],
-      "md",
-    ),
-  },
-  { id: "tag", label: "Tag", area: [2, 11, 1, 2], tree: inline([tag("Beta", "accent"), tag(es ? "Nuevo" : "New", "success")], "xs") },
-  { id: "tones", label: "Button", area: [3, 11, 3, 2], tree: stack([btn("Neutral"), btn("Accent", { tone: "accent" }), btn("Danger", { tone: "danger" })], "sm") },
-  {
-    id: "field",
-    label: "FormField · Input",
-    area: [3, 1, 2, 3], link: "24%",
-   
-    tree: { contract: "form-field", signature: "FormField", slots: { label: es ? "Nombre del proyecto" : "Project name" }, children: { contract: "input", signature: "Input", options: { controlSize: "md" }, attrs: { placeholder: "Aurora" } } },
-  },
-  { id: "progress", label: "Progress", area: [3, 4, 1, 4], tree: { contract: "progress", signature: "Progress", options: { value: 64, label: es ? "Avance" : "Progress" } } },
-  {
-    id: "callout",
-    label: "Callout",
-    area: [4, 4, 2, 4], link: "25%",
-   
-    tree: { contract: "callout", signature: "Callout", options: { tone: "info" }, slots: { title: es ? "Regla explícita" : "Explicit rule" }, children: es ? "iconOnly exige un nombre accesible." : "iconOnly requires an accessible name." },
-  },
-  { id: "sizes", label: "Button · size", area: [5, 1, 2, 3], link: "25%", tree: inline([sized("sm", "sm"), sized("md", "md"), sized("lg", "lg")]) },
-  { id: "progress-b", label: "Progress", area: [5, 8, 1, 3], tree: { contract: "progress", signature: "Progress", options: { value: 32, label: es ? "Avance" : "Progress" } } },
-  { id: "tag-b", label: "Tag", area: [6, 4, 1, 4], tree: inline([tag(es ? "Borrador" : "Draft", "warning"), tag(es ? "Obsoleto" : "Deprecated", "danger")], "xs") },
-  { id: "bindings", label: "Bindings", area: [6, 8, 1, 5], tree: inline([tag("Vanilla", "neutral"), tag("React", "accent")], "xs") },
-];
-// Seven copies, the middle one centred: there is always a copy on both sides, and the track only ever
-// shifts by one set.
-const bentoLoops = [0, 1, 2, 3, 4, 5, 6];
+// A page that renders an invalid tree would ship broken markup: fail the build instead.
+const stepsCheck = validateUsageTree(stepsTree);
+if (!stepsCheck.valid) {
+  throw new Error(`Landing contract steps are not a valid usage tree: ${JSON.stringify(stepsCheck.problems, null, 2)}`);
+}
+const stepsMarkup = emitMarkup(stepsTree, { fillDefaults: false, idPrefix: "landing-steps" });
+
+// The cycle is every set once (A to E). The track repeats it and keeps a few sets past the end so the
+// band is never wider than the track: it only ever shifts by one whole cycle, so the frame at the end of a
+// loop is the frame at its start. The boxes and their content live in `lib/landing-bento.ts`, which a
+// test checks against the contracts.
+const bentoCycle = buildBentoSets(es);
+
+/*
+ * The fields in the marquee are examples, never something to type into, so the browser and the password
+ * managers must not treat them as a form to fill or remember. The contracts cannot say this: PasswordInput and
+ * NumberField forward no `autocomplete`, so it is written on the emitted markup, once, here. `off` is ignored
+ * for a password, which is why that one asks for `new-password` (nothing saved to offer). The data attributes
+ * are the opt-outs 1Password, LastPass and Bitwarden read, and `data-form-type` is Dashlane's.
+ */
+const quiet = (html: string) =>
+  html.replace(/<(input|textarea|select)\b[^>]*>/g, (tag, name: string) => {
+    const autocomplete = /\stype="password"/.test(tag) ? "new-password" : "off";
+    const own = /\sautocomplete=/.test(tag) ? "" : ` autocomplete="${autocomplete}"`;
+    return tag.replace(`<${name}`, `<${name}${own} data-1p-ignore data-lpignore="true" data-bwignore data-form-type="other"`);
+  });
+const bentoSets = Array.from({ length: bentoCycle.length + 3 }, (_, index) => bentoCycle[index % bentoCycle.length]);
 ---
 
 <Base fullBleed title={copy.title} description={copy.description} hideVanillaMount alwaysShowNavTrigger={false}>
   <main class="landing-page">
-    <div class="sk-wrapper" data-size="lg" data-gutter="lg">
+    <div class="sk-wrapper" data-size="md" data-gutter="lg">
       <section class="landing-hero" aria-labelledby="landing-title">
-        <p class="landing-kicker">{copy.eyebrow}</p>
-        <h1 id="landing-title" class="landing-title">{copy.heroTitle}</h1>
-        <p class="sk-text landing-prose" data-size="lg" data-tone="secondary">{copy.heroBody}</p>
-        <div class="sk-inline" data-gap="sm" data-wrap>
-          <a class="sk-button sk-interactive" data-sk-button data-tone="accent" href={href("/components")}>{copy.ctaComponents}</a>
-          <a class="sk-button sk-interactive" data-sk-button data-variant="ghost" href={href("/architecture")}>{copy.ctaArchitecture}</a>
+        <div class="landing-hero__copy">
+          <p class="landing-kicker">{copy.eyebrow}</p>
+          <h1 id="landing-title" class="landing-title">{copy.heroTitle}</h1>
+          <p class="sk-text landing-prose" data-size="lg" data-tone="secondary">{copy.heroBody}</p>
+          <div class="sk-inline" data-gap="sm" data-wrap>
+            <a class="sk-button sk-interactive" data-sk-button data-tone="accent" href={href("/components")}>{copy.ctaComponents}</a>
+            <a class="sk-button sk-interactive" data-sk-button data-variant="ghost" href={href("/architecture")}>{copy.ctaArchitecture}</a>
+          </div>
         </div>
       </section>
 
@@ -290,51 +350,7 @@ const bentoLoops = [0, 1, 2, 3, 4, 5, 6];
           <h2 id="landing-contract-title" class="landing-heading">{copy.contractTitle}</h2>
           <p class="sk-text" data-tone="secondary">{copy.contractBody}</p>
         </div>
-        <div class="landing-body landing-steps">
-          <figure class="landing-step" data-read>
-            <figcaption>
-              <span class="landing-step__index">01</span>
-              <span class="landing-step__title">{copy.contractSteps.contract.title}</span>
-              <span class="landing-step__note">{copy.contractSteps.contract.note}</span>
-            </figcaption>
-            <div class="landing-step__body">
-              <p class="landing-meta"><span>{signature}</span><span>{copy.contractParts}: <code>{partNames}</code></span></p>
-              <table class="landing-table">
-                <thead>
-                  <tr><th scope="col">{copy.contractCols.option}</th><th scope="col">{copy.contractCols.values}</th><th scope="col">{copy.contractCols.writes}</th></tr>
-                </thead>
-                <tbody>
-                  {optionRows.map((row) => (
-                    <tr><th scope="row"><code>{row.name}</code></th><td>{row.values}</td><td><code>{row.writes}</code></td></tr>
-                  ))}
-                </tbody>
-              </table>
-              <p class="landing-rule"><strong>{copy.contractRuleLabel}.</strong> {copy.contractRule}</p>
-            </div>
-          </figure>
-
-          <figure class="landing-step" data-read>
-            <figcaption>
-              <span class="landing-step__index">02</span>
-              <span class="landing-step__title">{copy.contractSteps.tree.title}</span>
-              <span class="landing-step__note">{copy.contractSteps.tree.note}</span>
-            </figcaption>
-            <div class="landing-step__body"><pre class="landing-code"><code>{buttonTreeSource}</code></pre></div>
-          </figure>
-
-          <figure class="landing-step" data-read>
-            <figcaption>
-              <span class="landing-step__index">03</span>
-              <span class="landing-step__title">{copy.contractSteps.result.title}</span>
-              <span class="landing-step__note">{copy.contractSteps.result.note}</span>
-            </figcaption>
-            <div class="landing-step__body">
-              <div class="landing-result" set:html={buttonMarkup} />
-              <pre class="landing-code"><code>{buttonMarkup}</code></pre>
-              <p class="landing-rule">{copy.contractResultNote}</p>
-            </div>
-          </figure>
-        </div>
+        <div class="landing-body" set:html={stepsMarkup} />
       </section>
 
       <section class="landing-row" aria-labelledby="landing-status-title">
@@ -374,7 +390,7 @@ const bentoLoops = [0, 1, 2, 3, 4, 5, 6];
 
     </div>
 
-    <div class="sk-wrapper" data-size="lg" data-gutter="lg">
+    <div class="sk-wrapper" data-size="md" data-gutter="lg">
       <section class="landing-closing" aria-labelledby="landing-closing-title">
         <h2 id="landing-closing-title" class="landing-closing__title">{copy.closeTitle}</h2>
         <div class="landing-closing__body">
@@ -388,29 +404,69 @@ const bentoLoops = [0, 1, 2, 3, 4, 5, 6];
 
     </div>
 
-    <div class="landing-marquee" aria-hidden="true">
-      <div class="landing-marquee__track">
-        {bentoLoops.map((loop) => (
-          <div class="landing-bento" inert>
-            {bentoTiles.map((tile) => (
-              <div
-                class="sk-box landing-tile"
-                data-surface="surface"
-                data-border="subtle"
-                data-accent={tile.accent ? "" : undefined}
-                data-link={tile.link ? "" : undefined}
-                style={`grid-area: ${tile.area[0]} / ${tile.area[1]} / span ${tile.area[2]} / span ${tile.area[3]};${tile.link ? ` --link-y: ${tile.link};` : ""}`}
-              >
-                <span class="landing-tile__label">{tile.label}</span>
-                <div class="landing-tile__demo" set:html={emitMarkup(tile.tree, { fillDefaults: false, idPrefix: `bento-${loop}-${tile.id}` })} />
-              </div>
-            ))}
-          </div>
-        ))}
+    <div class="sk-wrapper" data-size="md" data-gutter="lg">
+      <div class="landing-marquee" aria-hidden="true" style={`--bento-cycle: ${bentoCycle.length}`}>
+        <div class="landing-marquee__track">
+          {bentoSets.map((tiles, loop) => (
+            <div class="landing-bento" inert>
+              {tiles.map((tile) => (
+                <div
+                  class="sk-box landing-tile"
+                  data-surface="surface"
+                  data-border="subtle"
+                  data-appearance="plain"
+                  data-accent={tile.accent ? "" : undefined}
+                  data-phone={tile.phone ? "" : undefined}
+                  data-link={tile.link ? "" : undefined}
+                  style={`grid-area: ${tile.area[0]} / ${tile.area[1]} / span ${tile.area[2]} / span ${tile.area[3]};${tile.link ? ` --link-y: ${tile.link};` : ""}`}
+                >
+                  <div class="landing-tile__demo" set:html={quiet(emitMarkup(tile.tree, { fillDefaults: false, idPrefix: `bento-${loop}-${tile.id}` }))} />
+                </div>
+              ))}
+            </div>
+          ))}
+        </div>
+        <script is:inline>
+        /* Remember the marquee's place in its cycle. It is stored as a fraction of the cycle, not as milliseconds,
+           so adding or removing a set does not make a saved position land somewhere else. This runs right after
+           the markup, before the first paint, so a reload never shows the track at its start for a frame. */
+        (function () {
+          var track = document.querySelector(".landing-marquee__track");
+          if (!track) return;
+          /* Nobody is watching a hidden tab, so the marquee stops and resumes where it was. The flag is on <html>
+             and the CSS reads it. */
+          function syncVisibility() {
+            document.documentElement.toggleAttribute("data-tab-hidden", document.visibilityState === "hidden");
+          }
+          syncVisibility();
+          document.addEventListener("visibilitychange", syncVisibility);
+          var KEY = "sk-docs-landing-marquee";
+          var cycle = parseFloat(getComputedStyle(track).animationDuration) * 1000;
+          if (!cycle) return; /* reduced motion: nothing is animating */
+          try {
+            var saved = parseFloat(localStorage.getItem(KEY));
+            if (saved >= 0 && saved < 1) track.style.animationDelay = -saved * cycle + "ms";
+          } catch (e) {}
+          /* `progress` is where the effect is inside its current iteration. `currentTime` is not: a negative
+             delay (the restored position) is not part of it, so reading it would lose the saved offset. */
+          function save() {
+            try {
+              var animation = track.getAnimations()[0];
+              var progress = animation && animation.effect && animation.effect.getComputedTiming().progress;
+              if (typeof progress !== "number") return;
+              localStorage.setItem(KEY, String(progress));
+            } catch (e) {}
+          }
+          addEventListener("pagehide", save);
+          document.addEventListener("visibilitychange", function () {
+            if (document.visibilityState === "hidden") save();
+          });
+        })();
+        </script>
       </div>
     </div>
 
-    <div class="sk-wrapper" data-size="lg" data-gutter="lg">
+    <div class="sk-wrapper" data-size="md" data-gutter="lg">
       <SiteFooter nav={navigation} locale={locale} />
     </div>
   </main>
@@ -458,7 +514,13 @@ const bentoLoops = [0, 1, 2, 3, 4, 5, 6];
 
   .landing-hero {
     justify-items: start;
-    padding-block-start: clamp(4rem, 8vw, 7rem);
+    padding-block: clamp(3.5rem, 7vw, 6rem) clamp(3rem, 6vw, 5rem);
+  }
+
+  .landing-hero__copy {
+    display: grid;
+    justify-items: start;
+    gap: var(--space-stack-lg);
   }
 
   .landing-row {
@@ -477,7 +539,15 @@ const bentoLoops = [0, 1, 2, 3, 4, 5, 6];
     margin-inline-start: calc(-1 * var(--space-inset-md));
     padding-inline: var(--space-inset-md);
     border-radius: var(--radius-md);
-    transition: background-color 0.2s ease;
+    /* Background and text hand over together: the fill used to fade while the text colour jumped. Short,
+       because a block crosses the band every time the page scrolls. */
+    transition:
+      background-color 160ms cubic-bezier(0.23, 1, 0.32, 1),
+      color 160ms cubic-bezier(0.23, 1, 0.32, 1);
+  }
+
+  .landing-page [data-read] :is(.sk-text, .landing-subheading) {
+    transition: color 160ms cubic-bezier(0.23, 1, 0.32, 1);
   }
 
   .landing-list > li,
@@ -496,18 +566,18 @@ const bentoLoops = [0, 1, 2, 3, 4, 5, 6];
     color: var(--color-text-primary);
   }
 
+  /* One plain sentence above the title: what this is and who it is for. Body face, sentence case, no
+     label styling, so it reads as copy and not as a category tag. */
   .landing-kicker {
     margin: 0;
     color: var(--color-text-secondary);
-    font: var(--font-label-sm);
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
+    font-size: var(--font-size-body-sm);
   }
 
   .landing-title {
     margin: 0;
-    max-inline-size: 22ch;
-    font-size: clamp(2rem, 4.5vw, 3rem);
+    max-inline-size: 20ch;
+    font-size: clamp(2.25rem, 5vw, 3.5rem);
     font-weight: var(--font-weight-emphasis);
     line-height: 1.1;
     letter-spacing: -0.02em;
@@ -567,131 +637,15 @@ const bentoLoops = [0, 1, 2, 3, 4, 5, 6];
     line-height: 1.6;
   }
 
-  .landing-steps {
-    gap: var(--space-stack-lg);
-  }
-
-  .landing-page .landing-step[data-read] {
-    margin: 0;
-    padding-inline: 0;
-    border: 1px solid var(--color-border-subtle);
-    border-radius: var(--radius-lg);
-    background: transparent;
-    overflow: hidden;
-  }
-
-  .landing-page .landing-step[data-read][data-active] {
-    background: var(--landing-read-bg);
-  }
-
-  .landing-step figcaption {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: baseline;
-    gap: var(--space-inline-sm) var(--space-inline-md);
-    padding: var(--space-inset-md) var(--space-inset-lg);
-    border-block-end: 1px solid var(--color-border-subtle);
-  }
-
-  .landing-step__index {
-    color: var(--color-text-secondary);
-    font: var(--font-label-sm);
-    font-variant-numeric: tabular-nums;
-  }
-
-  .landing-step__title {
-    font-weight: var(--font-weight-emphasis);
-  }
-
-  .landing-step__note {
-    margin-inline-start: auto;
-    color: var(--color-text-secondary);
-    font: var(--font-label-sm);
-  }
-
-  .landing-step__body {
-    display: grid;
-    gap: var(--space-stack-md);
-    padding: var(--space-inset-lg);
-  }
-
-  .landing-meta {
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--space-inline-sm) var(--space-inline-lg);
-    margin: 0;
-    color: var(--color-text-secondary);
-    font: var(--font-label-sm);
-  }
-
-  .landing-meta span:first-child {
-    color: var(--color-text-primary);
-    font-weight: var(--font-weight-emphasis);
-  }
-
-  .landing-table {
-    inline-size: 100%;
-    border-collapse: collapse;
-    font: var(--font-label-sm);
-  }
-
-  .landing-table th,
-  .landing-table td {
-    padding: var(--space-inset-sm) var(--space-inset-md) var(--space-inset-sm) 0;
-    border-block-end: 1px solid var(--color-border-subtle);
-    text-align: start;
-    font-weight: inherit;
-    vertical-align: top;
-  }
-
-  .landing-table thead th {
-    color: var(--color-text-secondary);
-    font-weight: var(--font-weight-emphasis);
-  }
-
-  .landing-table code,
-  .landing-meta code {
-    font: var(--font-code-sm);
-  }
-
-  .landing-rule {
-    margin: 0;
-    max-inline-size: 62ch;
-    color: var(--color-text-secondary);
-    font: var(--font-label-sm);
-    line-height: 1.6;
-  }
-
-  .landing-rule strong {
-    color: var(--color-text-primary);
-  }
-
-  .landing-code {
-    margin: 0;
-    padding: var(--space-inset-md);
-    border: 1px solid var(--color-border-subtle);
-    border-radius: var(--radius-md);
-    background: var(--color-surface-sunken);
-    font: var(--font-code-sm);
-    overflow-x: auto;
-  }
-
-  .landing-result {
-    display: flex;
-    padding: var(--space-inset-lg);
-    border: 1px dashed var(--color-border-subtle);
-    border-radius: var(--radius-md);
-  }
-
   .landing-marquee {
     --bento-col: 5.5rem;
     --bento-row: 5rem;
     --bento-gap: 1rem;
     /* One set plus the gap that follows it: the exact distance the track shifts per loop. */
     --bento-set: calc(12 * (var(--bento-col) + var(--bento-gap)));
+    /* Clipped to its wrapper: the band is as wide as the page's other sections and no wider. */
     overflow: hidden;
     padding-block-end: clamp(3rem, 6vw, 5rem);
-    container-type: inline-size;
     mask-image: linear-gradient(to right, transparent, #000 8%, #000 92%, transparent);
   }
 
@@ -699,16 +653,19 @@ const bentoLoops = [0, 1, 2, 3, 4, 5, 6];
     display: flex;
     gap: var(--bento-gap);
     inline-size: max-content;
-    /* Centre the middle (4th) set: three sets sit to its left, so the loop has no empty edge. */
-    margin-inline-start: calc(-3 * var(--bento-set) + (100cqw - var(--bento-set) + var(--bento-gap)) / 2);
-    animation: landing-marquee 70s linear infinite;
+    animation: landing-marquee calc(var(--bento-cycle, 3) * 40s) linear infinite;
   }
 
-  /* The track holds identical sets back to back and shifts by exactly one set pitch, so the frame at
-     the end of a loop is the frame at its start: no seam, and no empty tail at any viewport width. */
+  /* The track holds the whole cycle back to back and shifts by exactly one cycle (`--bento-cycle` set
+     pitches), so the frame at the end of a loop is the frame at its start: no seam, no empty tail. */
+  /* Paused while the tab is hidden (see the inline script after the marquee). */
+  :global([data-tab-hidden]) .landing-marquee__track {
+    animation-play-state: paused;
+  }
+
   @keyframes landing-marquee {
     to {
-      transform: translateX(calc(-1 * var(--bento-set)));
+      transform: translateX(calc(-1 * var(--bento-cycle, 3) * var(--bento-set)));
     }
   }
 
@@ -722,18 +679,64 @@ const bentoLoops = [0, 1, 2, 3, 4, 5, 6];
   /* A Box (`sk-box`, surface + subtle border): the face comes from its hooks, this only sets what is
      tile-specific. `overflow: visible` because Box clips, and the stitch below sits outside the tile. */
   .landing-tile {
-    --sk-box-padding: var(--space-inset-lg) var(--space-inset-md) var(--space-inset-md);
+    /* The same inset on every side: nothing reserves a label row any more, so a one-row box (80px)
+       keeps 48px for its content instead of the 30px it had when the top carried a caption. */
+    --sk-box-padding: var(--space-inset-md);
     /* One step past the surface radius, still scaled by the radius multiplier. */
     --sk-box-radius: calc(var(--scale-radius-xl) * 1.25 * var(--radius-multiplier));
     position: relative;
     display: grid;
-    align-items: center;
     overflow: visible;
   }
 
   .landing-tile[data-accent] {
     --sk-box-border-color: color-mix(in srgb, var(--color-text-accent) 30%, var(--color-border-subtle));
     --sk-box-bg: color-mix(in srgb, var(--color-text-accent) 8%, var(--color-bg-surface));
+  }
+
+  /* A vertical Steps top-aligns each label to its marker, which suits a label with a description under it. The
+     labels here are one line, and a 21px line against a 32px disc sits 3.5px high, so they are centred on it. */
+  .landing-tile__demo :global(.sk-steps[data-orientation="vertical"] .sk-steps__item) {
+    align-items: center;
+  }
+
+  /* A stacked AvatarGroup overlaps each disc by a third of its size, which covers the initials of every
+     disc but the last. In a box this small they have to stay readable, so the overlap is halved. */
+  .landing-tile__demo :global(.sk-avatar-group > * + *) {
+    margin-inline-start: calc(var(--avatar-group-size) / -6);
+  }
+
+  /* The phone box is an ordinary tile: same surface, border and radius as the rest. It only differs in being
+     tall and in clipping what is inside it, with no padding of its own (the page inside carries it).
+     `transform` makes the box the containing block of anything `position: fixed` in it, which is the whole
+     trick: the Vaul inside is anchored to this box, not to the browser window. */
+  .landing-tile[data-phone] {
+    --sk-box-padding: 0;
+    overflow: hidden;
+    transform: translateZ(0);
+  }
+
+  .landing-tile[data-phone] .landing-tile__demo {
+    margin: 0;
+    padding: 0;
+    align-content: start;
+    overflow: visible;
+  }
+
+  /* The Vaul sizes itself against the window (`100dvw`, `90dvh`). Inside the phone it has to size against the
+     phone, so those become percentages of the box that contains it. */
+  .landing-tile[data-phone] :global(.sk-vaul) {
+    /* Rounded only at the top, on the same radius scale as the cards (`--radius-xl` is not a token). */
+    --landing-sheet-radius: calc(var(--scale-radius-xl) * var(--radius-multiplier));
+    --sk-vaul-radius: var(--landing-sheet-radius) var(--landing-sheet-radius) 0 0;
+    inline-size: 100%;
+    max-block-size: 66%;
+  }
+
+  /* A phone is a touch device, which is what the grab handle is for. The Vaul hides it from 52rem up because
+     it reads the browser window, and the window here is a desktop one, so the phone puts it back. */
+  .landing-tile[data-phone] :global(.sk-vaul__handle) {
+    display: flex;
   }
 
   /* A stitch across the gap to the neighbouring tile, so the set reads as one connected piece. */
@@ -747,19 +750,16 @@ const bentoLoops = [0, 1, 2, 3, 4, 5, 6];
     background: color-mix(in srgb, var(--color-text-primary) 28%, transparent);
   }
 
-  .landing-tile__label {
-    position: absolute;
-    inset-block-start: var(--space-inset-sm);
-    inset-inline-start: var(--space-inset-md);
-    color: var(--color-text-secondary);
-    font: var(--font-label-sm);
-  }
-
+  /* `safe center`: content taller than the box starts at the top and spills downward, where it is
+     clipped, instead of being centred into both edges and colliding with the box's border. The small
+     padding and matching negative margin keep shadows and focus rings from being cut by the clip. */
   .landing-tile__demo {
     display: grid;
-    align-content: center;
+    align-content: safe center;
     min-inline-size: 0;
-    padding-block-start: var(--space-inset-sm);
+    min-block-size: 0;
+    margin: calc(-1 * var(--space-inset-xs));
+    padding: var(--space-inset-xs);
     overflow: hidden;
   }
 
@@ -837,7 +837,6 @@ const bentoLoops = [0, 1, 2, 3, 4, 5, 6];
     }
 
     .landing-marquee__track {
-      margin-inline-start: max(var(--bento-gap), calc((100cqw - var(--bento-set) + var(--bento-gap)) / 2));
       animation: none;
     }
 
@@ -845,7 +844,8 @@ const bentoLoops = [0, 1, 2, 3, 4, 5, 6];
       display: none;
     }
 
-    [data-read] {
+    [data-read],
+    [data-read] :is(.sk-text, .landing-subheading) {
       transition: none;
     }
   }
@@ -864,61 +864,6 @@ const bentoLoops = [0, 1, 2, 3, 4, 5, 6];
   @media (max-width: 40rem) {
     .landing-marquee {
       --bento-col: 4.75rem;
-    }
-
-    .landing-step figcaption {
-      padding: var(--space-inset-md);
-    }
-
-    .landing-step__note {
-      flex-basis: 100%;
-      margin-inline-start: 0;
-    }
-
-    .landing-step__body {
-      padding: var(--space-inset-md);
-    }
-
-    .landing-code {
-      white-space: pre-wrap;
-      overflow-wrap: anywhere;
-    }
-
-    .landing-result {
-      padding: var(--space-inset-md);
-    }
-
-    .landing-table thead {
-      position: absolute;
-      inline-size: 1px;
-      block-size: 1px;
-      overflow: hidden;
-      clip-path: inset(50%);
-    }
-
-    .landing-table tr {
-      display: grid;
-      grid-template-columns: minmax(0, 1fr) auto;
-      gap: var(--space-stack-xs) var(--space-inline-md);
-      padding-block: var(--space-inset-sm);
-      border-block-end: 1px solid var(--color-border-subtle);
-    }
-
-    .landing-table th,
-    .landing-table td {
-      padding: 0;
-      border: 0;
-    }
-
-    .landing-table tbody td:nth-child(2) {
-      grid-row: 2;
-      grid-column: 1 / -1;
-      color: var(--color-text-secondary);
-    }
-
-    .landing-table tbody td:nth-child(3) {
-      grid-row: 1;
-      grid-column: 2;
     }
   }
 </style>

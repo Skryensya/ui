@@ -102,9 +102,8 @@ const noDrag = `<dialog
     <UsagePreview
       tree={vaulShareTree(t)}
       label={t("vaulPage.completeLabel")}
-      screen="mobile"
-      stageMinBlockSize="760px"
-      scroll
+      viewport="overlay"
+      stageMinBlockSize="24rem"
     />
 
     <h3>{t("vaulPage.examplesTitle")}</h3>
@@ -112,17 +111,15 @@ const noDrag = `<dialog
     <UsagePreview
       tree={vaulDeleteTree(t)}
       label={t("vaulPage.deleteLabel")}
-      screen="mobile"
-      stageMinBlockSize="760px"
-      scroll
+      viewport="overlay"
+      stageMinBlockSize="24rem"
     />
 
     <UsagePreview
       tree={vaulFiltersTree(t)}
       label={t("vaulPage.filtersLabel")}
-      screen="mobile"
-      stageMinBlockSize="760px"
-      scroll
+      viewport="overlay"
+      stageMinBlockSize="24rem"
     />
 
     <h3>{t("vaulPage.edgeTitle")}</h3>
@@ -178,7 +175,6 @@ const noDrag = `<dialog
   }
   .demo-vaul {
     --sk-vaul-radius: var(--radius-surface) var(--radius-surface) 0 0;
-    min-block-size: min(64dvh, 32rem);
     --demo-vaul-inset: calc(var(--space-inset-md) + var(--space-inset-xs));
   }
 
@@ -276,7 +272,6 @@ const noDrag = `<dialog
   /* MÁS CONTENIDO: three grouped sections, tall enough that the body needs its own scroll. */
   .demo-vaul-filters {
     --sk-vaul-radius: var(--radius-surface) var(--radius-surface) 0 0;
-    min-block-size: min(70dvh, 34rem);
   }
 
   .demo-vaul-filters[open] {

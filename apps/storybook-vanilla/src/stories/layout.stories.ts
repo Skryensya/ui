@@ -16,7 +16,7 @@ import "@skryensya/core/patterns/hero.css";
 import "@skryensya/core/patterns/icon.css";
 import "@skryensya/core/patterns/image-frame.css";
 import "@skryensya/core/patterns/layout.css";
-import "@skryensya/core/patterns/media-gradient.css";
+import "@skryensya/core/patterns/media-overlay.css";
 import "@skryensya/core/patterns/wrapper.css";
 import * as demos from "@docs/demos/layout";
 import { treeStory, type Meta, type StoryObj } from "../tree-story";

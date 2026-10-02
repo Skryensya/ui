@@ -155,8 +155,14 @@ export const placeholderContract = {
     "--sk-placeholder-leading",
     "--sk-placeholder-line-box",
     "--sk-placeholder-line-gap",
+    "--sk-placeholder-phase",
     "--sk-placeholder-size",
+    "--sk-placeholder-sweep-duration",
+    "--sk-placeholder-sweep-size",
   ],
+  /* Written by the loading region's own animation, read by every sweep inside it: a signal to read
+   * (to line something of yours up with the shimmer), not a value to set. */
+  outputHooks: ["--sk-placeholder-phase"],
   options: placeholderOptions,
 
   signatures: {

@@ -3,6 +3,18 @@ import type { Translate } from "../i18n";
 import { anatomyCanvas, anatomyHints, namePart } from "./annotation-parts";
 
 /*
+ * A Meter takes its width from its parent: its `attrs` land on the TRACK only (the label row would
+ * stay full width above a short bar), so a measure is set on a Stack around it, never on the Meter.
+ * The wrapper also gives a shrink-wrapped canvas something definite to fill.
+ */
+const sized = (rem: number, child: UsageTree): UsageTree => ({
+  contract: "layout",
+  signature: "Stack",
+  attrs: { style: `inline-size: ${rem}rem; max-inline-size: 100%` },
+  children: child,
+});
+
+/*
  * Header, label, value text, track and bar: one measurement named at rest. The live stack of three
  * tones starts below.
  */
@@ -12,7 +24,7 @@ export const meterAnatomyTree = (t: Translate): UsageTree => ({
   options: { ...anatomyCanvas(t), label: t("meterPage.anatomyLabel"), inert: true },
   slots: {
     ...anatomyHints(t),
-    subject: {
+    subject: sized(24, {
       contract: "meter",
       signature: "Meter",
       options: {
@@ -20,8 +32,7 @@ export const meterAnatomyTree = (t: Translate): UsageTree => ({
         label: t("demo.meter.battery"),
         valueText: t("demo.meter.batteryText"),
       },
-      attrs: { style: "inline-size: min(100%, 16rem)" },
-    },
+    }),
     items: [
       namePart(".sk-meter-group", "block-start", { mark: "bracket" }),
       namePart(".sk-meter-group__header", "inline-start"),
@@ -41,6 +52,7 @@ export const meterTree = (t: Translate): UsageTree => ({
   contract: "layout",
   signature: "Stack",
   options: { gap: "md" },
+  attrs: { style: "inline-size: 24rem; max-inline-size: 100%" },
   children: [
     {
       contract: "meter",
@@ -58,16 +70,22 @@ export const meterTree = (t: Translate): UsageTree => ({
       contract: "meter",
       signature: "Meter",
       options: {
-        value: 92,
-        tone: "danger",
-        label: t("demo.meter.disk"),
-        valueText: t("demo.meter.diskText"),
+        value: -5,
+        min: -20,
+        max: 40,
+        label: t("demo.meter.temperature"),
+        valueText: t("demo.meter.temperatureText"),
       },
     },
     {
       contract: "meter",
       signature: "Meter",
-      options: { value: 68, label: t("demo.meter.battery"), valueText: t("demo.meter.batteryText") },
+      options: {
+        value: 92,
+        tone: "danger",
+        label: t("demo.meter.disk"),
+        valueText: t("demo.meter.diskText"),
+      },
     },
   ],
 });
@@ -77,28 +95,27 @@ export const meterSingleTree = (t: Translate): UsageTree => ({
   contract: "meter",
   signature: "Meter",
   options: { value: 68, label: t("demo.meter.battery"), valueText: t("demo.meter.batteryText") },
-  attrs: { style: "inline-size: min(100%, 20rem)" },
 });
 
 /* Do/Don't: the tone agrees with what the value means, or contradicts it. */
-export const meterDoToneTree = (t: Translate): UsageTree => ({
+export const meterDoToneTree = (t: Translate): UsageTree => sized(18, {
   contract: "meter",
   signature: "Meter",
   options: { value: 92, tone: "danger", label: t("demo.meter.disk"), valueText: t("demo.meter.diskText") },
-  attrs: { style: "inline-size: min(100%, 16rem)" },
 });
 
-export const meterDontToneTree = (t: Translate): UsageTree => ({
+export const meterDontToneTree = (t: Translate): UsageTree => sized(18, {
   contract: "meter",
   signature: "Meter",
   options: { value: 92, tone: "success", label: t("demo.meter.disk"), valueText: t("demo.meter.diskText") },
-  attrs: { style: "inline-size: min(100%, 16rem)" },
 });
 
 /* Don't: a task's progress drawn as a measurement. */
-export const meterDontTaskTree = (t: Translate): UsageTree => ({
+export const meterDontTaskTree = (t: Translate): UsageTree => sized(18, {
   contract: "meter",
   signature: "Meter",
   options: { value: 40, label: t("demo.meter.dd.upload"), valueText: "40%" },
-  attrs: { style: "inline-size: min(100%, 16rem)" },
 });
+
+/* The measure pair's Do: the single meter at the width a pair uses. */
+export const meterDoMeasureTree = (t: Translate): UsageTree => sized(18, meterSingleTree(t));

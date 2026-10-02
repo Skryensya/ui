@@ -1,5 +1,5 @@
 ---
-import Base from "../../layouts/Base.astro";
+import FoundationPage from "../../components/FoundationPage.astro";
 import CodeBlock from "../../components/CodeBlock.astro";
 import { stylingHookOverrideTree } from "../../demos/styling-hooks";
 import { getLocale, useTranslations } from "../../i18n";
@@ -39,12 +39,10 @@ const consumedHook = `.sk-button {
 const t = useTranslations(getLocale(Astro.url));
 ---
 
-<Base
+<FoundationPage
   title="Styling hooks"
-  documentLayout="grid"
   description="La superficie pública que conecta un Contract, sus Parts y los valores semánticos que se pueden redefinir."
 >
-  <h1>Styling hooks</h1>
   <p class="lede">
     Un styling hook es la superficie pública de override de un componente. El Contract estabiliza la
     Part, la Part declara el styling hook, y el styling hook apunta a un Semantic token. El consumidor
@@ -114,4 +112,4 @@ const t = useTranslations(getLocale(Astro.url));
     <li><a href="/es/tiers">Tiers</a>, para la regla que impide saltar de tier 3 a tier 1.</li>
     <li><a href="/es/state-layer">State layer</a>, otro Pattern que consume tokens públicos.</li>
   </ul>
-</Base>
+</FoundationPage>

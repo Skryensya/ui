@@ -1,0 +1,39 @@
+# The structure lives in packages/core/src/comparison-table.ts. Here, only why it is chosen.
+
+ComparisonTable:
+  useWhen:
+    - "two to four things are set side by side on the same few aspects: two components, three plans, an old and a new behaviour"
+    - "the reader has to decide between them, and the answer is in how the columns differ row by row"
+    - "every cell is short: a phrase, a bit of code, a link"
+  avoidWhen:
+    - "there are more than four things, or the cells are long; that is a catalogue and it is a Table"
+    - "the rows are facts about ONE thing and nothing is compared across them; that is DescriptionList"
+    - "the data is sorted, filtered, paged or summed; that is a Table or a DataGrid"
+  alternatives:
+    - Table
+    - DescriptionList
+    - DataGrid
+
+ComparisonColumn:
+  useWhen:
+    - "the name of one of the things compared, at the top of its column"
+  avoidWhen:
+    - "a grouped or spanning header; that is a Table's TableHeader"
+  alternatives:
+    - Table
+
+ComparisonRow:
+  useWhen:
+    - "one aspect the things are compared on, named once on the left and answered in each column"
+  avoidWhen:
+    - "the row needs a spanning cell; that is a Table"
+  alternatives:
+    - Table
+
+ComparisonCell:
+  useWhen:
+    - "how one thing answers one aspect: a short phrase, with code or a link"
+  avoidWhen:
+    - "the answer needs a paragraph or a control; that is a Table, or prose beside the comparison"
+  alternatives:
+    - Table

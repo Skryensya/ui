@@ -956,7 +956,7 @@
       "leaves the trigger's variant/size/icon-only attributes off when unset": "passed",
       "marks bare and arrow on the root the way the contract emits them": "passed"
     },
-    "packages/react/src/components/process-list.test.tsx": {
+    "packages/react/src/components/procedure.test.tsx": {
       "renders a native ordered sequence of instructions": "passed",
       "keeps each title and arbitrary step content inside its item": "passed",
       "types the title as string to match the contract text slot": "passed"

@@ -10,8 +10,36 @@
  * skeleton and the content replacing it cannot disagree. Every hand-written rem at a call site was
  * a chance for exactly that disagreement, which is the one bug a skeleton exists to prevent.
  */
+/*
+ * ONE CLOCK PER LOADING REGION. A CSS animation starts when its element does, so skeletons mounted
+ * a frame apart (a hydrated island, a lazy preview) sweep out of phase and the page shimmers
+ * raggedly. The region the contract already requires (`aria-busy="true"`) runs ONE animation on this
+ * inherited number, and every sweep inside it reads that value instead of keeping its own timer.
+ * A skeleton outside such a region keeps its own animation, below.
+ */
+@property --sk-placeholder-phase {
+  syntax: "<number>";
+  inherits: true;
+  initial-value: 0;
+}
+
+@keyframes sk-placeholder-phase {
+  to { --sk-placeholder-phase: 1; }
+}
+
 @layer components {
+  /* The sweep crosses the whole viewport, not one bar, so it takes longer than the loader token. */
+  [aria-busy="true"]:has(.sk-placeholder) {
+    --sk-placeholder-sweep-duration: calc(var(--motion-loading-duration-slow) * 1.75);
+
+    animation: sk-placeholder-phase
+      var(--sk-placeholder-sweep-duration)
+      var(--motion-loading-easing)
+      infinite;
+  }
+
   .sk-placeholder {
+    --sk-placeholder-sweep-duration: calc(var(--motion-loading-duration-slow) * 1.75);
     --sk-placeholder-inline-size: 100%;
     /* The type pair a text skeleton borrows. Defaults are body's, and `data-text` swaps BOTH: a
      * size without its paired leading is how a skeleton ends up a different height than the text. */
@@ -214,30 +242,56 @@
   }
 
   /*
-   * The shimmer travels across each inked surface. On a paragraph that is every LINE, not the
-   * column: one sweep over the whole block would cross the gaps between lines and read as a panel
-   * being wiped rather than as text arriving.
+   * THE SHIMMER IS ONE BAND ACROSS THE VIEWPORT, not one band per bar. A sweep that travels its own
+   * element's width (`translateX(-100% -> 100%)`) crosses a 40% bar and a 100% bar in the same time
+   * but at different speeds and positions, so a column of different widths never lights up
+   * together. Here the gradient is `fixed` to the viewport and only its x-offset moves, so every
+   * bar shows the same slice of the same band at the same instant. On a paragraph the ink is every
+   * LINE, not the column: one sweep over the whole block would cross the gaps between lines.
    */
   .sk-placeholder:not([data-shape="paragraph"])::after,
   .sk-placeholder__line::after {
+    --sk-placeholder-sweep-size: 40rem;
+
     position: absolute;
     inset: 0;
-    background: linear-gradient(
-      100deg,
-      transparent 25%,
-      var(--sk-placeholder-highlight) 50%,
-      transparent 75%
-    );
+    background:
+      linear-gradient(
+        100deg,
+        transparent 25%,
+        var(--sk-placeholder-highlight) 50%,
+        transparent 75%
+      )
+      fixed no-repeat;
+    background-position: calc(var(--sk-placeholder-sweep-size) * -1) 0;
+    background-size: var(--sk-placeholder-sweep-size) 100%;
     content: "";
-    transform: translateX(-100%);
     animation: sk-placeholder-shimmer
-      var(--motion-loading-duration-slow)
+      var(--sk-placeholder-sweep-duration)
       var(--motion-loading-easing)
       infinite;
   }
 
   @keyframes sk-placeholder-shimmer {
-    to { transform: translateX(100%); }
+    to { background-position: 100vw 0; }
+  }
+
+  /* A text bar is inked through its padding box (see `ink`); the sweep covers the ink only, or it
+   * lights a halo in the padding around every line. */
+  .sk-placeholder[data-shape="text"]::after,
+  .sk-placeholder__line::after {
+    inset-block: calc(var(--sk-placeholder-line-box) * (1 - var(--sk-placeholder-ink)) / 2);
+    border-radius: inherit;
+  }
+
+  /* Inside a loading region the band's offset is the region's phase, not the element's own timer,
+   * so skeletons mounted at different moments still share one position. */
+  [aria-busy="true"] .sk-placeholder:not([data-shape="paragraph"])::after,
+  [aria-busy="true"] .sk-placeholder__line::after {
+    background-position:
+      calc(var(--sk-placeholder-phase) * (100vw + var(--sk-placeholder-sweep-size)) - var(--sk-placeholder-sweep-size))
+      0;
+    animation: none;
   }
 
   /*
@@ -257,8 +311,14 @@
   }
 
   @media (prefers-reduced-motion: reduce) {
+    [aria-busy="true"]:has(.sk-placeholder) {
+      animation: none;
+    }
+
     .sk-placeholder:not([data-shape="paragraph"])::after,
-    .sk-placeholder__line::after {
+    .sk-placeholder__line::after,
+    [aria-busy="true"] .sk-placeholder:not([data-shape="paragraph"])::after,
+    [aria-busy="true"] .sk-placeholder__line::after {
       animation: none;
       opacity: 0;
       transform: none;

@@ -18,6 +18,12 @@ import CodeBlock from "../CodeBlock.astro";
 import {
   qrCodeAnatomyTree,
   qrCodeCardTree,
+  qrCodeDoLogoLevelTree,
+  qrCodeDoShortLinkTree,
+  qrCodeDoWithLinkTree,
+  qrCodeDontAloneTree,
+  qrCodeDontLogoLevelTree,
+  qrCodeDontLongLinkTree,
   qrCodeLogoTree,
   qrCodePopoverTree,
   qrCodeTicketTree,
@@ -25,6 +31,7 @@ import {
 } from "../../demos/qr-code";
 import { annotationDemoCss } from "../../demos/annotation";
 import { getLocale, tList, useTranslations } from "../../i18n";
+import { storybookDocsUrl, storybookReactUrl, storybookVanillaUrl } from "../../lib/navigation";
 /* The sheet itself, not only its source: the Style tab resolves each hook against a real element,
    and a page that never loads `components/qr-code.css` would show every value blank. */
 import "@skryensya/core/components/qr-code.css";
@@ -47,55 +54,12 @@ import "@skryensya/core/components/button.css";
    that looks perfectly correct on the page, which is the one class of bug a QR hides best. */
 const locale = getLocale(Astro.url);
 const t = useTranslations(locale);
+const reactStorybook = storybookDocsUrl(storybookReactUrl, "Components/Content/QRCode", "Logo");
+const vanillaStorybook = storybookDocsUrl(storybookVanillaUrl, "Components/Content/QRCode", "Logo");
 
 const install = `pnpm add @skryensya/core @skryensya/react
 # or, for authored HTML
 pnpm add @skryensya/core @skryensya/vanilla`;
-
-const runtimeHtml = `<!-- The shell, with an EMPTY path: the enhancer draws it. -->
-<div class="sk-qr-code" data-sk-qr-code role="img" aria-label="Open your invitation"
-     data-value="https://example.com/invite/8f2c" data-level="Q" data-size="md">
-  <svg class="sk-qr-code__frame" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
-    <path class="sk-qr-code__modules" fill="currentColor"></path>
-  </svg>
-</div>`;
-
-const exportReact = `import { useRef } from "react";
-import { QRCode, downloadQrCode } from "@skryensya/react/qr-code";
-import { Button } from "@skryensya/react/button";
-
-export function Invitation({ url }: { url: string }) {
-  const code = useRef<HTMLDivElement>(null);
-  return (
-    <>
-      <QRCode ref={code} value={url} label="Open your invitation" />
-      <Button variant="soft" onClick={() => downloadQrCode(code.current!, { fileName: "invitation" })}>
-        Download PNG
-      </Button>
-    </>
-  );
-}`;
-
-const exportJs = `import { downloadQrCode, qrCodeToDataUrl, qrCodeToSvg } from "@skryensya/vanilla/qr-code";
-
-const code = document.querySelector(".sk-qr-code");
-
-await downloadQrCode(code, { fileName: "invitation" });                // PNG, 1024 px
-await downloadQrCode(code, { type: "image/svg+xml" });                 // vector, for print
-const url = await qrCodeToDataUrl(code, { type: "image/jpeg", size: 512, quality: 0.9 });
-const svg = qrCodeToSvg(code, { polarity: "as-drawn" });               // exactly what is on screen`;
-
-const runtimeJs = `import { initComponents } from "@skryensya/vanilla/auto";
-
-await initComponents();
-
-// Re-point it later: the symbol redraws itself.
-const code = document.querySelector("[data-sk-qr-code]");
-code.dataset.value = \`https://example.com/invite/\${inviteId}\`;
-code.setAttribute("aria-label", "Open your new invitation");
-
-// A value too long for any QR leaves the drawing empty and marks the root.
-if (code.hasAttribute("data-sk-qr-error")) showCopyableLinkInstead();`;
 
 const styles = `@import "@skryensya/core/tokens.scss";
 @import "@skryensya/core/components/qr-code.css";`;
@@ -124,7 +88,7 @@ const explain = (option: string, values: readonly string[]) =>
       title={t("qrCodePage.prop.moduleShape.title")}
       description={t("qrCodePage.prop.moduleShape.body")}
       explain={explain("moduleShape", ["square", "dot", "rounded"])}
-      stageMinBlockSize="14rem"
+      stageMinBlockSize="22rem"
     />
 
     <UsagePreview
@@ -133,7 +97,7 @@ const explain = (option: string, values: readonly string[]) =>
       title={t("qrCodePage.prop.qrSize.title")}
       description={t("qrCodePage.prop.qrSize.body")}
       explain={explain("qrSize", ["sm", "md", "lg", "xl"])}
-      stageMinBlockSize="18rem"
+      stageMinBlockSize="22rem"
       labels={{ sm: "sm", md: "md", lg: "lg", xl: "xl" }}
     />
 
@@ -143,7 +107,7 @@ const explain = (option: string, values: readonly string[]) =>
       title={t("qrCodePage.prop.tone.title")}
       description={t("qrCodePage.prop.tone.body")}
       explain={explain("tone", ["neutral", "accent", "success", "warning", "danger", "info"])}
-      stageMinBlockSize="14rem"
+      stageMinBlockSize="22rem"
     />
 
     <UsagePreview
@@ -152,7 +116,7 @@ const explain = (option: string, values: readonly string[]) =>
       title={t("qrCodePage.prop.level.title")}
       description={t("qrCodePage.prop.level.body")}
       explain={explain("level", ["L", "M", "Q", "H"])}
-      stageMinBlockSize="14rem"
+      stageMinBlockSize="22rem"
     />
 
     <h3>{t("component.examplesTitle")}</h3>
@@ -160,16 +124,17 @@ const explain = (option: string, values: readonly string[]) =>
     <UsagePreview tree={qrCodeCardTree(locale)} title={t("qrCodePage.compositionTitle")} description={t("qrCodePage.compositionBody")} />
     <h3>{t("qrCodePage.popoverTitle")}</h3>
     <p set:html={t("qrCodePage.popoverBody")} />
-    <UsagePreview tree={qrCodePopoverTree(locale)} label={t("qrCodePage.popoverLabel")} viewport="menu" />
+    <UsagePreview tree={qrCodePopoverTree(locale)} label={t("qrCodePage.popoverLabel")} viewport="overlay" />
     <UsagePreview tree={qrCodeTicketTree(locale)} title={t("qrCodePage.ticketTitle")} description={t("qrCodePage.ticketBody")} />
     <h4>{t("qrCodePage.runtimeTitle")}</h4>
     <p set:html={t("qrCodePage.runtimeBody")} />
-    <CodeBlock code={runtimeHtml} label="HTML" lang="html" />
-    <CodeBlock code={runtimeJs} label="JavaScript" />
     <h4>{t("qrCodePage.exportTitle")}</h4>
     <p set:html={t("qrCodePage.exportBody")} />
-    <CodeBlock code={exportReact} label="React" lang="tsx" />
-    <CodeBlock code={exportJs} label="JavaScript" />
+    <p>
+      {reactStorybook && <a class="sk-link sk-interactive" href={reactStorybook} rel="noreferrer" target="_blank">Storybook React</a>}
+      {reactStorybook && vanillaStorybook && " · "}
+      {vanillaStorybook && <a class="sk-link sk-interactive" href={vanillaStorybook} rel="noreferrer" target="_blank">Storybook Vanilla</a>}
+    </p>
 
     <h3>{t("component.contractNotesTitle")}</h3>
     <ul>
@@ -190,10 +155,19 @@ const explain = (option: string, values: readonly string[]) =>
     <p class="lede" set:html={t("qrCodePage.guidelinesLede")} />
     <WhenToUse use={tList(t, "qrCodePage.when")} avoid={tList(t, "qrCodePage.whenNot")} />
     <DoDont
-      canvas
       title={t("qrCodePage.dd.link.title")}
-      do={{ tree: qrCodeCardTree(locale), caption: t("qrCodePage.dd.link.do") }}
-      dont={{ tree: qrCodeTree(locale), caption: t("qrCodePage.dd.link.dont") }}
+      do={{ tree: qrCodeDoWithLinkTree(locale), caption: t("qrCodePage.dd.link.do") }}
+      dont={{ tree: qrCodeDontAloneTree(locale), caption: t("qrCodePage.dd.link.dont") }}
+    />
+    <DoDont
+      title={t("qrCodePage.dd.short.title")}
+      do={{ tree: qrCodeDoShortLinkTree(locale), caption: t("qrCodePage.dd.short.do") }}
+      dont={{ tree: qrCodeDontLongLinkTree(locale), caption: t("qrCodePage.dd.short.dont") }}
+    />
+    <DoDont
+      title={t("qrCodePage.dd.logo.title")}
+      do={{ tree: qrCodeDoLogoLevelTree(locale), caption: t("qrCodePage.dd.logo.do") }}
+      dont={{ tree: qrCodeDontLogoLevelTree(locale), caption: t("qrCodePage.dd.logo.dont") }}
     />
     <ContentRules items={tList(t, "qrCodePage.content")} />
   </Fragment>

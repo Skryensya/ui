@@ -127,3 +127,86 @@ export const ratingDontInputAverageTree = (t: Translate): UsageTree => ({
   signature: "Rating",
   options: { label: t("demo.rating.displayLabel"), name: "average", defaultValue: 4 },
 });
+
+/* The input with something already chosen, for the cards that vary how it behaves. */
+const chosen = (t: Translate, extra: Record<string, unknown> = {}): UsageTree => ({
+  contract: "rating",
+  signature: "Rating",
+  options: { label: t("demo.rating.inputLabel"), name: "score", defaultValue: 4, ...extra },
+});
+export const ratingPlaygroundTree = (t: Translate): UsageTree => chosen(t);
+
+/* How many steps the scale has: three, five (the usual) or ten. One export each, with 3 chosen. */
+export const ratingThreeStepsTree = (t: Translate): UsageTree => chosen(t, { max: 3, defaultValue: 2 });
+export const ratingFiveStepsTree = (t: Translate): UsageTree => chosen(t, { max: 5, defaultValue: 4 });
+export const ratingTenStepsTree = (t: Translate): UsageTree => chosen(t, { max: 10, defaultValue: 8 });
+
+/*
+ * ANOTHER SYMBOL, drawn live: the star is a mask behind one custom property, set here to a heart. It
+ * is the same property for the display and for the input, so one rule changes both.
+ */
+export const ratingHeartsCss = `.sk-rating {
+  --sk-rating-symbol: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='black'%3E%3Cpath d='M12 21s-7.5-4.6-9.5-9.2C1 8.4 3 5 6.3 5c2 0 3.7 1.1 4.7 2.8C12 6.1 13.7 5 15.7 5 19 5 21 8.4 19.5 11.8 19.5 16.4 12 21 12 21z'/%3E%3C/svg%3E");
+}`;
+
+export const ratingHeartsTree = (t: Translate): UsageTree => ({
+  contract: "layout",
+  signature: "Stack",
+  options: { gap: "md" },
+  children: [
+    {
+      contract: "rating",
+      signature: "RatingDisplay",
+      options: { value: 4.3, label: t("demo.rating.displayLabel") },
+      slots: { valueText: "4,3", count: t("demo.rating.count") },
+    },
+    chosen(t, { defaultValue: 3 }),
+  ],
+});
+
+/* A product, as a shop shows it: the name, the price and the average with how many agree. */
+export const ratingProductTree = (t: Translate): UsageTree => ({
+  contract: "box",
+  signature: "Box",
+  options: { surface: "surface", border: "subtle", padding: "lg" },
+  attrs: { style: "inline-size: 20rem; max-inline-size: 100%;" },
+  children: {
+    contract: "layout",
+    signature: "Stack",
+    options: { gap: "sm" },
+    children: [
+      { contract: "typography", signature: "Heading", options: { headingSize: "h5", flush: true }, children: t("demo.rating.product") },
+      {
+        contract: "rating",
+        signature: "RatingDisplay",
+        options: { value: 4.3, label: t("demo.rating.displayLabel") },
+        slots: { valueText: "4,3", count: t("demo.rating.count") },
+      },
+      { contract: "typography", signature: "Text", options: { size: "sm", tone: "secondary" }, children: t("demo.rating.productPrice") },
+    ],
+  },
+});
+
+/* A review form: the rating is one field among others, with the words that explain it. */
+export const ratingReviewTree = (t: Translate): UsageTree => ({
+  contract: "box",
+  signature: "Box",
+  options: { surface: "surface", border: "subtle", padding: "lg" },
+  attrs: { style: "inline-size: 24rem; max-inline-size: 100%;" },
+  children: {
+    contract: "layout",
+    signature: "Stack",
+    options: { gap: "md" },
+    children: [
+      { contract: "typography", signature: "Heading", options: { headingSize: "h4", flush: true }, children: t("demo.rating.reviewTitle") },
+      chosen(t, { defaultValue: 0, name: "review-score" }),
+      {
+        contract: "form-field",
+        signature: "FormField",
+        slots: { label: t("demo.rating.reviewLabel") },
+        children: { contract: "input", signature: "Textarea", options: { name: "review" } },
+      },
+      { contract: "button", signature: "Button.action", options: { tone: "accent" }, children: t("demo.rating.reviewSubmit") },
+    ],
+  },
+});

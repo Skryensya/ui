@@ -91,7 +91,7 @@ import "@skryensya/core/components/back-to-top.css";
 import "@skryensya/core/patterns/nav-list.css"; // opt-in: an app may have no navigation (decision 17)
 import "@skryensya/core/patterns/scrollbar.css";
 import "@skryensya/core/patterns/scroll-lock.css";
-import "@skryensya/core/patterns/media-gradient.css";
+import "@skryensya/core/patterns/media-overlay.css";
 import "@skryensya/core/patterns/layout.css";
 import "@skryensya/core/patterns/footer.css"; // <SiteFooter>'s `sk-footer`, on every page with a rail
 import "@skryensya/core/patterns/table-pager.css";
@@ -365,7 +365,9 @@ const sectionNavigation = (railIndex ? navigation : [currentSection]) satisfies 
 const isGlobalItemCurrent = (href: string): boolean => {
   const itemCanonical = canonicalPath(href);
   if (itemCanonical === "/components") return canonical === "/components" || canonical.startsWith("/componentes/");
-  if (itemCanonical === "/foundations") return currentSection.id === "foundations";
+  /* The home belongs to no section: `currentSection` falls back to the first one there, which would mark
+     Foundations as current next to the home entry itself. */
+  if (itemCanonical === "/foundations") return canonical !== "/" && currentSection.id === "foundations";
   return canonical === itemCanonical;
 };
 
@@ -1607,7 +1609,7 @@ const PALETTE_PRESETS = palettePresets(locale);
       <div class="sk-number-field" data-probe-for="sk-number-field"></div>
       <div class="sk-placeholder" data-probe-for="sk-placeholder"></div>
       <div class="sk-popover" data-probe-for="sk-popover"></div>
-      <ol class="sk-process-list" data-probe-for="sk-process-list"></ol>
+      <ol class="sk-procedure" data-probe-for="sk-procedure"></ol>
       <div class="sk-segmented" data-probe-for="sk-segmented"></div>
       <div class="sk-split-button" data-probe-for="sk-split-button"></div>
       <div class="sk-time-field" data-probe-for="sk-time-field"></div>

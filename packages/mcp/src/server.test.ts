@@ -271,7 +271,7 @@ describe("validate_ui, the hard boundary", () => {
     const tooltip = snippets.find((s) => s.id === "icon-only-button-tooltip")!;
     expect((await call("validate_ui", { tree: tooltip.tree })).payload.css).toContain("@skryensya/core/patterns/anchored.css");
     const card = snippets.find((s) => s.id === "product-card-in-grid")!;
-    expect((await call("validate_ui", { tree: card.tree })).payload.css).toContain("@skryensya/core/patterns/media-gradient.css");
+    expect((await call("validate_ui", { tree: card.tree })).payload.css).toContain("@skryensya/core/patterns/media-overlay.css");
   });
 
   it("returns the code for both bindings when the tree holds", async () => {

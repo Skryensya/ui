@@ -379,9 +379,9 @@ function connectScreenTabs(root: HTMLElement): Cleanup {
   tabs?.addEventListener("keydown", rememberModifier, true);
   tabs?.addEventListener("click", onShiftActivate, true);
 
-  const offersXl = Boolean(
-    tabs?.querySelector(`${selector(componentPreviewAttrs.screenOption)}[data-value="xl"]`),
-  );
+  const offersXl =
+    root.getAttribute(componentPreviewAttrs.screenLocal) === "xl" ||
+    Boolean(tabs?.querySelector(`${selector(componentPreviewAttrs.screenOption)}[data-value="xl"]`));
 
   /*
    * `xl` falls back to `free` on a preview that does not offer it - a shared preference reaching a
@@ -465,10 +465,14 @@ function connectScreenTabs(root: HTMLElement): Cleanup {
   viewport?.addEventListener("change", onViewportChange);
 
   const fromTabs = tabs?.getAttribute("data-value");
+  /* A card with no toggle names its fixed screen on the root itself (`UsagePreview`'s `screen`). */
+  const fromRoot = root.getAttribute(componentPreviewAttrs.screenLocal);
   const rawInitial = localScreen
     ? isScreen(fromTabs)
       ? fromTabs
-      : "free"
+      : isScreen(fromRoot)
+        ? fromRoot
+        : "free"
     : (readDocumentScreen() ?? sharedScreen ?? (isScreen(fromTabs) ? fromTabs : "free"));
   /* Same fullscreen guard as `resolveLocal` carried, and gone for the same reason. */
   const initial = rawInitial;

@@ -8,7 +8,7 @@ import { anatomyCanvas, anatomyHints, namePart } from "./annotation-parts";
  * `mounted: false` deliberately leaves the zero-JS baseline to native scroll controls.
  */
 
-const demoSrc = "/demos/media-gradient.svg";
+const demoSrc = "/demos/media-overlay.svg";
 
 const features = [
   ["productivity", "top"],
@@ -253,8 +253,8 @@ export const carouselNativeTree = (t: Translate): UsageTree => ({
       },
       slots: {
         caption: {
-          contract: "media-gradient",
-          signature: "MediaCaption",
+          contract: "media-overlay",
+          signature: "MediaOverlay",
           children: {
             contract: "typography",
             signature: "Text",

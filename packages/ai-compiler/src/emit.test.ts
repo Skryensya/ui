@@ -256,30 +256,6 @@ describe("emitMarkup", () => {
     expect(linkItem).toContain("<div\n        class=\"sk-menu__item sk-interactive\"");
   });
 
-  /*
-   * A menubar item's trigger is `sk-button` by default; `nav: true` swaps it for `nav-list`'s own
-   * link/label classes instead. Same either/or as `NavListGroup`'s collapsible-vs-static label.
-   */
-  it("renders a MenubarItem trigger as a real nav-list link when nav is true", () => {
-    const navItem = emitMarkup({
-      contract: "menubar",
-      signature: "Menubar",
-      options: { label: "Principal" },
-      children: [
-        {
-          contract: "menubar",
-          signature: "MenubarItem",
-          options: { nav: true },
-          children: "Inicio",
-        },
-      ],
-    } as never);
-
-    expect(navItem).toContain("sk-nav-list__link");
-    expect(navItem).toContain("sk-nav-list__label");
-    expect(navItem).not.toContain("sk-button");
-  });
-
   it("keeps a MenubarItem trigger as a Button when nav is not given", () => {
     const commandItem = emitMarkup({
       contract: "menubar",
@@ -766,7 +742,7 @@ describe("the two bindings agree on what the tree says", () => {
   it("never indents into an element whose whitespace is content", () => {
     /*
      * A CodePreview viewport is `white-space: pre-wrap`, so the printer's own newline and indent are
-     * RENDERED. Measured on `/components/process-list`: a one-line `pnpm add …` came out as a
+     * RENDERED. Measured on `/components/procedure`: a one-line `pnpm add …` came out as a
      * three-line box in Vanilla and a one-line box in React, and which snippets got it was decided
      * by `PRINT_WIDTH`  -  short ones stayed inline and were fine, long ones broke and were not.
      */

@@ -1,5 +1,5 @@
 ---
-import Base from "../../layouts/Base.astro";
+import FoundationPage from "../../components/FoundationPage.astro";
 import CodeBlock from "../../components/CodeBlock.astro";
 
 /* collapse-header.css is imported once, globally, by Base.astro (every component page masthead
@@ -45,12 +45,10 @@ void el.offsetWidth;
 el.classList.add("sk-fx-pulse");`;
 ---
 
-<Base
+<FoundationPage
   title="Efectos"
-  documentLayout="grid"
   description="CSS opt-in para motion decorativo sobre un elemento o un componente ya publicado: no es un Contract."
 >
-  <h1>Efectos</h1>
   <p class="lede">
     Un efecto es <strong>una clase que se agrega</strong> sobre un elemento que ya existe, sea
     markup propio o la raíz de un componente del kit. No es un <a href="/es/arquitectura">Contract</a>:
@@ -201,7 +199,7 @@ el.classList.add("sk-fx-pulse");`;
     aparte que mantener sincronizada. <code>pulse</code> lee <code>--motion-emphasize-duration</code>,
     que ya cae a 0 bajo motion reducido.
   </p>
-</Base>
+</FoundationPage>
 
 <script>
   import { initEffectsDemo } from "../../scripts/effects-demo";

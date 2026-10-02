@@ -7,11 +7,11 @@ Timeline:
     - "the author sets the direction by writing the entries in it; there is no order option"
   avoidWhen:
     - "the reader is inside the process and has to be told which stage they are at; that is Steps"
-    - "they are instructions to follow, with no time at all; that is a ProcessList"
+    - "they are instructions to follow, with no time at all; that is a Procedure"
     - "they are shipped releases; that is Changelog, which has its own vocabulary and scale"
   alternatives:
     - Steps
-    - ProcessList
+    - Procedure
     - Changelog
 
 TimelineItem:

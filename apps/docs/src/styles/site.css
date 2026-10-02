@@ -112,6 +112,19 @@ body {
   --sk-nav-list-link-font-weight: var(--font-weight-label);
 }
 
+/* The first destination is the site's name, so it is set as a wordmark and not as a section: larger,
+   at the heading weight the mobile brand already uses, tight tracking, full-strength text. The size and
+   weight go on the label so the link keeps the row's control height. */
+.dimensions__global .sk-nav-list__item:first-child .sk-nav-list__link {
+  --sk-nav-list-link-font-weight: var(--font-weight-heading);
+  color: var(--color-text-primary);
+}
+
+.dimensions__global .sk-nav-list__item:first-child .sk-nav-list__label {
+  font-size: var(--font-size-body-lg);
+  letter-spacing: -0.02em;
+}
+
 
 /* The auto margin sits on the FIRST of the trailing group so version + search + prefs travel to the
    trailing edge together. That first item is the version label; see `:has` below. A margin on prefs
@@ -405,7 +418,7 @@ body {
     overflow: hidden;
     color: var(--color-text-primary);
     font-size: var(--font-size-body);
-    font-weight: var(--font-weight-heading);
+    font-weight: var(--font-weight-emphasis);
     text-decoration: none;
     white-space: nowrap;
     text-overflow: ellipsis;
@@ -511,6 +524,17 @@ html:has(dialog:modal) .sk-toc {
    * else-branch, so a browser that has never heard of anchoring still gets a placed button.
    */
   inset-inline-end: var(--space-inset-lg);
+}
+
+/* The home has no toc rail to anchor to, so it would sit in the viewport corner, on top of the
+ * content once the viewport is narrower than the landing wrapper. Where the wrapper leaves a margin
+ * wide enough, park the button in it, beside the content's trailing edge; otherwise `max()` keeps
+ * the corner. Same wrapper token the landing uses, so the two cannot drift. */
+body:has(.landing-page) .sk-back-to-top {
+  inset-inline-end: max(
+    var(--space-inset-lg),
+    calc((100vw - var(--size-wrapper-md)) / 2 - var(--size-control-md) - var(--space-inset-lg))
+  );
 }
 
 /* A page with no headings renders `.sk-toc[data-empty]` (`Toc.astro`, computed at build time from
@@ -1940,12 +1964,14 @@ main {
 
 /* `soft` + `lg`, the same face as "Report an issue" above it: a ghost pager had no fill until hover,
    so it did not read as a control at rest. The fill is recessed, not the saturated call to action,
-   so it is still a way off the page rather than something competing with it. The link takes its
-   column's full width so the whole fill is the hit area, and the label is allowed to be as long as the
-   destination's name without the buttons changing size. */
+   so it is still a way off the page rather than something competing with it. The link is as wide as
+   its label and arrow, no wider: a full-column fill made a two-word destination read as a banner. A
+   long destination name still stops at the column (`max-inline-size`) and wraps inside it. */
 .docs-page-nav__link {
-  inline-size: 100%;
-  justify-content: space-between;
+  inline-size: fit-content;
+  max-inline-size: 100%;
+  justify-content: flex-start;
+  gap: var(--space-inline-sm);
   text-decoration: none;
 }
 
@@ -1953,12 +1979,13 @@ main {
 .docs-page-nav__item {
   display: grid;
   gap: var(--space-stack-xs);
-  justify-items: stretch;
+  justify-items: start;
 }
 
 /* Only the next column lands on the right; its label and arrow follow. */
 .docs-page-nav__item--next {
   grid-column: 2;
+  justify-items: end;
   text-align: end;
 }
 

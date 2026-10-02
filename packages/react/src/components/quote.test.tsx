@@ -1,5 +1,6 @@
 import { render } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
+import { Avatar } from "./avatar.js";
 import { Quote } from "./quote.js";
 
 describe("Quote", () => {
@@ -71,5 +72,36 @@ describe("Quote", () => {
   it("keeps the consumer's className beside the part class", () => {
     const ui = render(<Quote className="mine">Words.</Quote>);
     expect(ui.container.querySelector("figure")?.className).toBe("sk-quote mine");
+  });
+
+  it("places the person's picture before the name, in a part of its own", () => {
+    const ui = render(
+      <Quote
+        attribution="Ursula K. Le Guin,"
+        image={<Avatar name="Ursula K. Le Guin" />}
+        source="A Non-Euclidean View of California"
+      >
+        We will not be free if we do not imagine freedom.
+      </Quote>,
+    );
+    const caption = ui.container.querySelector("figcaption")!;
+    expect(caption.children[0]?.className).toContain("sk-quote__media");
+    expect(caption.children[0]?.querySelector("[role='img']")).not.toBeNull();
+    expect(caption.children[1]?.className).toContain("sk-quote__author");
+    expect(caption.children[1]?.textContent).toBe("Ursula K. Le Guin,A Non-Euclidean View of California");
+  });
+
+  it("keeps the name and the work together without a picture", () => {
+    const ui = render(<Quote attribution="Ursula K. Le Guin">We will not be free.</Quote>);
+    const caption = ui.container.querySelector("figcaption")!;
+    expect(caption.querySelector(".sk-quote__media")).toBeNull();
+    expect(caption.children).toHaveLength(1);
+    expect(caption.children[0]?.className).toContain("sk-quote__author");
+  });
+
+  it("does not make a caption out of a picture alone", () => {
+    // The face decorates a name; with no name and no work there is nothing for it to caption.
+    const ui = render(<Quote image={<Avatar name="Ursula K. Le Guin" />}>An unattributed passage.</Quote>);
+    expect(ui.container.querySelector("figcaption")).toBeNull();
   });
 });

@@ -1,5 +1,5 @@
 ---
-import Base from "../../layouts/Base.astro";
+import FoundationPage from "../../components/FoundationPage.astro";
 import CodeBlock from "../../components/CodeBlock.astro";
 import UsagePreview from "../../components/UsagePreview.astro";
 import Used from "../../components/Used.astro";
@@ -34,12 +34,10 @@ const usage = `<!-- Box ya trae el styling hook: surface="raised" usa --elevatio
 
 ---
 
-<Base
+<FoundationPage
   title="Elevación"
-  documentLayout="grid"
   description="La escala de sombras del sistema: cinco niveles compuestos con --shadow-sm/md/lg, y cuándo usar cada uno."
 >
-  <h1>Elevación</h1>
   <p class="lede">
     Cinco niveles con nombre, no una escala numérica libre: <code>sunken</code>, <code>flat</code>,
     <code>raised</code>, <code>overlay</code> y <code>modal</code>. Cada uno es un
@@ -376,4 +374,4 @@ const usage = `<!-- Box ya trae el styling hook: surface="raised" usa --elevatio
   </p>
 
   <CodeBlock code={elevationSource} label="src/examples/elevation.css" note="el CSS detrás de los swatches de arriba ↑" />
-</Base>
+</FoundationPage>

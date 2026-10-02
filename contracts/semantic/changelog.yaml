@@ -5,11 +5,11 @@ Changelog:
     - "there is a version history of something: release notes, a contract's changelog"
     - "the reader comes to learn whether they already have the change they are reading, and a version answers that"
   avoidWhen:
-    - "they are instructions to read and follow, in order but without versions; that is a ProcessList"
+    - "they are instructions to read and follow, in order but without versions; that is a Procedure"
     - "what matters is which stage someone is at, what they have done and what is left; that is Steps"
     - "it is a single piece of news; one entry with no history around it is not a history"
   alternatives:
-    - ProcessList
+    - Procedure
     - Steps
 
 ChangelogRelease:

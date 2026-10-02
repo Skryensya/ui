@@ -19,4 +19,7 @@ export default { title: "Components/Layout/Presence", tags: ["autodocs"] } satis
 export const Anatomy: StoryObj = treeStory(demos.presenceAnatomyTree);
 export const Notice: StoryObj = treeStory(demos.presenceNoticeTree);
 export const Fields: StoryObj = treeStory(demos.presenceFieldsTree);
-export const Tuning: StoryObj = treeStory(demos.presenceTuningTree);
+export const Motion: StoryObj = treeStory(demos.presenceMotionTree);
+export const MotionFade: StoryObj = treeStory(demos.presenceMotionFadeTree);
+export const MotionSlow: StoryObj = treeStory(demos.presenceMotionSlowTree);
+export const Playground: StoryObj = treeStory(demos.presencePlaygroundTree);

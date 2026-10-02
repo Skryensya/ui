@@ -1,5 +1,5 @@
 ---
-import Base from "../layouts/Base.astro";
+import FoundationPage from "../components/FoundationPage.astro";
 import CodeBlock from "../components/CodeBlock.astro";
 import { anchorPlacementsTree } from "../demos/anchoring";
 import UsagePreview from "../components/UsagePreview.astro";
@@ -56,12 +56,10 @@ const arrowReact = `<Tooltip arrow content="It keeps itself">
 
 ---
 
-<Base
+<FoundationPage
   title="Anchoring"
-  documentLayout="grid"
   description="A pattern: placing a box against another element, with the browser as the engine and the machine as the fallback."
 >
-  <h1>Anchoring</h1>
   <p class="lede">
     A box placed against <strong>another</strong> element, not against the page: it opens from one side of the anchor, flips to the opposite side when it does not fit, and disappears if the anchor leaves the screen. This is what tooltip, popover, popup, menu and its submenus, select, combobox and date picker do.
   </p>
@@ -220,7 +218,7 @@ const arrowReact = `<Tooltip arrow content="It keeps itself">
   <CodeBlock code={import_} label="CSS" />
 
   <StylingHooks groups={[{ file: "patterns/anchored.css", probe: "sk-anchored" }]} />
-</Base>
+</FoundationPage>
 
 <style is:global>
   /*

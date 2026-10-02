@@ -6,21 +6,21 @@ List:
   avoidWhen:
     - "the rows have columns comparable with each other; that is a Table"
     - "they are navigation destinations of the site or the page; that is NavList"
-    - "they are instructions to read and follow, in order; that is ProcessList"
+    - "they are instructions to read and follow, in order; that is Procedure"
   alternatives:
     - Table
     - NavList
-    - ProcessList
+    - Procedure
 
 OrderedList:
   useWhen:
     - "the order of the rows communicates sequence, priority or ranking"
   avoidWhen:
     - "reordering the rows does not change their meaning; that is List"
-    - "they are steps of a process with a rich body per item; that is ProcessList"
+    - "they are steps of a process with a rich body per item; that is Procedure"
   alternatives:
     - List
-    - ProcessList
+    - Procedure
 
 ListItemPlain:
   useWhen:

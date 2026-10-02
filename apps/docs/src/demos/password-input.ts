@@ -1,6 +1,7 @@
 import type { UsageTree } from "@skryensya/core/usage-tree";
 import type { Translate } from "../i18n";
 import { anatomyCanvas, anatomyHints, namePart } from "./annotation-parts";
+import { otpInputCountCase } from "./otp-input";
 
 const toggleLabels = (t: Translate) => ({
   showLabel: t("passwordInput.showLabel"),
@@ -125,3 +126,55 @@ export const passwordInputDontRepeatTree = (t: Translate): UsageTree => ({
     },
   ],
 });
+
+/*
+ * PASSWORD OR OTP. The two ask a person for a secret, and what separates them is what the secret is,
+ * so the pairs below put the same field label in the right component and in the wrong one.
+ */
+const field = (width: string) => ({ style: `inline-size: ${width}; max-inline-size: 100%;` });
+
+/** A password the person chose: one field, any length, a button to check what was typed. */
+export const passwordInputDoPasswordTree = (t: Translate): UsageTree => ({
+  contract: "password-input",
+  signature: "PasswordInput",
+  options: { name: "password-do", ...toggleLabels(t) },
+  attrs: field("18rem"),
+  slots: { label: t("passwordInput.signInLabel") },
+});
+
+/** Don't: the same password cut into eight boxes. It has no fixed length, and no manager can fill it. */
+export const passwordInputDontOtpTree = (t: Translate): UsageTree =>
+  otpInputCountCase(t, 8, { label: t("passwordInput.signInLabel"), defaultValue: "" });
+
+/** Don't: a bare password input with nothing to check it by. The toggle is what makes it a PasswordInput. */
+export const passwordInputDontPlainTree = (t: Translate): UsageTree => ({
+  contract: "form-field",
+  signature: "FormField",
+  slots: { label: t("passwordInput.signInLabel") },
+  attrs: field("18rem"),
+  children: { contract: "input", signature: "Input", options: { type: "password", name: "password-plain" } },
+});
+
+/* The comparison toggle's password side: signing in, the label and nothing more. */
+export const passwordInputCompareTree = (t: Translate): UsageTree => ({
+  contract: "password-input",
+  signature: "PasswordInput",
+  options: { name: "password-compare", ...toggleLabels(t) },
+  attrs: field("18rem"),
+  slots: { label: t("passwordInput.signInLabel"), hint: t("passwordInput.signUpHint") },
+});
+
+/* The states a field can be in. Without a typed value, the ones that read at rest. */
+export const passwordInputStateCase = (t: Translate, which: "default" | "invalid" | "disabled" = "default"): UsageTree => {
+  const state = which === "invalid" || which === "disabled" ? which : "default";
+  return {
+    contract: "password-input",
+    signature: "PasswordInput",
+    options: { name: `password-${state}`, ...(state === "default" ? {} : { [state]: true }), ...toggleLabels(t) },
+    attrs: field("22rem"),
+    slots: {
+      label: t("passwordInput.signInLabel"),
+      ...(state === "invalid" ? { hint: t("passwordInput.invalidHint") } : {}),
+    },
+  };
+};

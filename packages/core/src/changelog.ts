@@ -106,7 +106,7 @@ export type ChangelogPartClass = (typeof changelogParts)[ChangelogPart];
  * A HISTORY, not a list of instructions and not a progress bar, which is the whole reason this is
  * its own contract rather than a skin on one of the two rails the kit already has.
  *
- * ProcessList is ORDER: its markers are a CSS `counter()`, so a newest-first history would number
+ * Procedure is ORDER: its markers are a CSS `counter()`, so a newest-first history would number
  * itself 1, 2, 3 backwards through time, and there is no slot to put a version there instead. Steps
  * is PROGRESS: complete, current and upcoming, none of which a shipped release can be, and its
  * connector means "this much is behind you", which of a published version is simply false. The two

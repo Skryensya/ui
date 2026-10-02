@@ -3,7 +3,7 @@
 # `surface` is the shape of the contract the last time somebody reviewed it. If the compiler says it
 # does not match, something a consumer depends on has moved: write the entry and paste in the new
 # hash.
-surface: "a120f0fb179c71e1"
+surface: "506fc5d4250407a2"
 entries:
   - date: 2026-09-26
     kind: feature
@@ -257,3 +257,15 @@ entries:
       body: >-
         The stable icon vocabulary gained <code>like</code> and <code>dislike</code>, and a
         StateButton face takes any stable name. Nothing you wrote changes.
+  - date: 2026-10-02
+    kind: feature
+    es:
+      title: Los nombres de icono incluyen el rol mask
+      body: >-
+        La lista de roles de icono que acepta <code>StateButton</code> crece con <code>mask</code>
+        (el símbolo de un carácter oculto). No cambia nada de su comportamiento.
+    en:
+      title: Icon names include the mask role
+      body: >-
+        The list of icon roles <code>StateButton</code> accepts grows with <code>mask</code> (the
+        symbol of a hidden character). Nothing about its behavior changes.

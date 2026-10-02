@@ -11,7 +11,7 @@ import "@skryensya/core/patterns/box.css";
 import "@skryensya/core/patterns/icon.css";
 import "@skryensya/core/patterns/image-frame.css";
 import "@skryensya/core/patterns/layout.css";
-import "@skryensya/core/patterns/media-gradient.css";
+import "@skryensya/core/patterns/media-overlay.css";
 import * as demos from "@docs/demos/card";
 import { cardCopy } from "@docs/examples/card-data";
 import { treeStory, localeOf, type Meta, type StoryObj } from "../tree-story";

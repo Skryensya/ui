@@ -75,6 +75,7 @@ const MAP = {
   language: "translate",
   appearance: "style",
   visibility: "visibility",
+  mask: "asterisk",
   "visibility-off": "visibility_off",
   "mode-system": "monitor",
   "mode-light": "light_mode",

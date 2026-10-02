@@ -461,3 +461,144 @@ export const questionnaireAnatomyTree = (t: Translate): UsageTree => ({
     ],
   },
 });
+
+/* ── the text answers, and the Do/Don't pairs ─────────────────────────────── */
+
+type Item = UsageTree;
+
+const bare = (t: Translate, options: QuestionnaireOptions = {}): UsageTree["options"] => ({
+  ...options,
+  previousLabel: t("demo.questionnaire.previous"),
+  nextLabel: t("demo.questionnaire.next"),
+  skipLabel: t("demo.questionnaire.skip"),
+  submitLabel: t("demo.questionnaire.submit"),
+  positionLabel: t("demo.questionnaire.position"),
+  progressLabel: t("demo.questionnaire.progress"),
+  errorLabel: t("demo.questionnaire.error"),
+  skippableErrorLabel: t("demo.questionnaire.skippableError"),
+});
+
+/** A question whose only input is free text: it gets a textarea, with no option asking for one. */
+const openItem = (t: Translate, name = "open"): Item => ({
+  contract: "questionnaire",
+  signature: "QuestionnaireItem",
+  options: {
+    name,
+    textLabel: t("demo.questionnaire.textAnswers.openLabel"),
+    textPlaceholder: t("demo.questionnaire.textAnswers.openPlaceholder"),
+    stepLabel: t("demo.questionnaire.textAnswers.openStep"),
+    text: true,
+  },
+  slots: { title: t("demo.questionnaire.textAnswers.openTitle") },
+});
+
+/** An answer with a `textType`: a one-line input, with the browser's own keyboard and validation. */
+const emailItem = (t: Translate, name = "email", typed = true): Item => ({
+  contract: "questionnaire",
+  signature: "QuestionnaireItem",
+  options: {
+    name,
+    textLabel: t("demo.questionnaire.textAnswers.emailLabel"),
+    textPlaceholder: t("demo.questionnaire.textAnswers.emailPlaceholder"),
+    stepLabel: t("demo.questionnaire.textAnswers.emailStep"),
+    text: true,
+    ...(typed ? { textType: "email" } : {}),
+  },
+  slots: { title: t("demo.questionnaire.textAnswers.emailTitle") },
+});
+
+/** The two kinds of text answer, in one survey: an open question (textarea) and a typed one (input). */
+export const questionnaireTextAnswersTree = (t: Translate): UsageTree => ({
+  contract: "questionnaire",
+  signature: "Questionnaire",
+  options: bare(t, { progress: "steps" }),
+  attrs: { "aria-label": t("demo.questionnaire.textAnswers.label") },
+  children: [openItem(t), emailItem(t)],
+});
+
+const single = (t: Translate, label: string, item: Item, options: QuestionnaireOptions = {}): UsageTree => ({
+  contract: "questionnaire",
+  signature: "Questionnaire",
+  options: bare(t, options),
+  attrs: { "aria-label": label },
+  children: [item],
+});
+
+/** Do: an email is asked with `textType="email"`: one line, the right keyboard, checked before it moves on. */
+export const questionnaireDoEmailTree = (t: Translate): UsageTree =>
+  single(t, t("demo.questionnaire.textAnswers.label"), { ...emailItem(t), options: { ...emailItem(t).options, required: true } });
+
+/** Don't: the same email asked as an open answer, so it is a big empty box that checks nothing. */
+export const questionnaireDontEmailTree = (t: Translate): UsageTree =>
+  single(t, t("demo.questionnaire.textAnswers.label"), { ...emailItem(t, "email", false), options: { ...emailItem(t, "email", false).options, required: true } });
+
+const colors = ["red", "orange", "yellow", "green", "blue", "purple", "pink", "gray"] as const;
+
+const colorItem = (t: Translate, count: number): Item => ({
+  contract: "questionnaire",
+  signature: "QuestionnaireItem",
+  options: { name: "color", required: true, stepLabel: t("demo.questionnaire.dd.colorStep") },
+  slots: {
+    title: t("demo.questionnaire.dd.colorTitle"),
+    choices: colors.slice(0, count).map((color) => choice(color, t(`demo.questionnaire.dd.color.${color}` as Parameters<typeof t>[0]))),
+  },
+});
+
+/** Do: a handful of options, each with a key of its own. */
+export const questionnaireDoFewTree = (t: Translate): UsageTree =>
+  single(t, t("demo.questionnaire.dd.label"), colorItem(t, 4), { shortcuts: "letters" });
+
+/** Don't: a wall of options: nobody reads eight tiles to pick one, and each key has to be learned. */
+export const questionnaireDontManyTree = (t: Translate): UsageTree =>
+  single(t, t("demo.questionnaire.dd.label"), colorItem(t, 8), { shortcuts: "letters" });
+
+/*
+ * AFTER THE SUBMIT. The questionnaire does not decide what comes next, the page does: it announces the
+ * answers and stays out of the way. So this wraps one in a page of its own that cancels the form's
+ * submission and swaps the form for a received view (`scripts/questionnaire-submit.ts`). The received
+ * view is the kit's own pieces: a success Callout, a line of text and a button to start over.
+ */
+export { default as questionnaireSubmitScript } from "./scripts/questionnaire-submit.ts?raw";
+
+export const questionnaireSubmittedTree = (t: Translate): UsageTree => ({
+  contract: "layout",
+  signature: "Stack",
+  options: { gap: "md" },
+  attrs: { "data-questionnaire-demo": "", style: "inline-size: 100%; max-inline-size: 36rem;" },
+  children: [
+    questionnaire(t, { progress: "bar" }),
+    {
+      contract: "presence",
+      signature: "Presence",
+      options: { present: false },
+      attrs: { id: "questionnaire-done" },
+      children: {
+        contract: "layout",
+        signature: "Stack",
+        options: { gap: "md" },
+        children: [
+          {
+            contract: "callout",
+            signature: "Callout",
+            options: { tone: "success" },
+            slots: { title: t("demo.questionnaire.done.title") },
+            children: [
+              {
+                contract: "typography",
+                signature: "Text",
+                                children: t("demo.questionnaire.done.body"),
+              },
+            ],
+          },
+          {
+            contract: "button",
+            signature: "Button.action",
+            options: { variant: "ghost" },
+            attrs: { id: "questionnaire-again" },
+            children: t("demo.questionnaire.done.again"),
+          },
+        ],
+      },
+    },
+  ],
+});

@@ -21,7 +21,7 @@
  * this site before). The shaping stays shared in `lib/tokens.ts`, so what is duplicated is a table
  * and three words of heading, not a decision.
  */
-import Base from "../layouts/Base.astro";
+import FoundationPage from "../components/FoundationPage.astro";
 import { groupedTokens, tokens } from "../lib/tokens";
 
 const toneByTier = { primitive: "warning", semantic: "accent", component: "success" } as const;
@@ -51,12 +51,10 @@ const groupBlockSize = (rows: number) => `${(rows * 2.6 + 6.5).toFixed(1)}rem`;
 const fullText = (value: string) => (value.length > 40 ? value : undefined);
 ---
 
-<Base
+<FoundationPage
   title="Token reference"
-  documentLayout="grid"
   description="All system tokens: name, tier and the value written in CSS."
 >
-  <h1>Token reference</h1>
   <p class="lede">
     Every token in the system, with the tier it belongs to and the value its stylesheet gives it.
   </p>
@@ -117,4 +115,4 @@ const fullText = (value: string) => (value.length > 40 ? value : undefined);
     does not exist until an element opts into it. A component page's <strong>Style hooks</strong> tab resolves them
     against that element.
   </p>
-</Base>
+</FoundationPage>

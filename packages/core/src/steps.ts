@@ -29,7 +29,7 @@ export type StepsPartClass = (typeof stepsParts)[StepsPart];
 
 /*
  * Progress across ordered stages, where the STATUS is what matters, which is the whole difference
- * from a Process list, whose content is primary and which has no notion of complete or current.
+ * from a Procedure, whose content is primary and which has no notion of complete or current.
  *
  * The marker shows a tick when complete and a number otherwise, so the state is never colour alone.
  */

@@ -40,7 +40,7 @@
     /* Same rule the contract states: this family defaults `otp` ON. Only an explicit
        `data-otp="false"` turns off SMS autofill and the numeric keypad it forces on mobile. */
     otp: root.getAttribute("data-otp") !== "false",
-    placeholder: root.getAttribute("data-placeholder") ?? undefined,
+    placeholder: root.getAttribute("data-placeholder") ?? otpInputContract.options.placeholder.default,
     disabled: readBool("data-disabled"),
     readOnly: readBool("data-readonly"),
     required: root.hasAttribute("required"),
@@ -78,6 +78,14 @@
     { part: "label", node: () => parts?.label, props: () => api.getLabelProps() },
     { part: "control", node: () => parts?.control, props: () => api.getControlProps() },
     { part: "hiddenInput", node: () => parts?.hiddenInput, props: () => api.getHiddenInputProps() },
+    /* Which boxes hold a character, for the `mask` symbol: the cell is the segment's own parent. */
+    ...segments.map(
+      (segment, index): PartBinding => ({
+        part: `cell-${index}`,
+        node: () => (parts ? segment.parentElement : null),
+        props: () => ({ "data-filled": api.value[index] ? "" : undefined }),
+      }),
+    ),
     ...segments.map(
       (segment, index): PartBinding => ({
         part: `segment-${index}`,

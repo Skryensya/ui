@@ -1,5 +1,5 @@
 ---
-import Base from "../../layouts/Base.astro";
+import FoundationPage from "../../components/FoundationPage.astro";
 import CodeBlock from "../../components/CodeBlock.astro";
 import { stateLayerBareTree, stateLayerCurrentColorTree, stateLayerLabTree } from "../../demos/state-layer";
 import { getLocale, useTranslations } from "../../i18n";
@@ -112,12 +112,10 @@ const stillToken = [
 const t = useTranslations(getLocale(Astro.url));
 ---
 
-<Base
+<FoundationPage
   title="State layer"
-  documentLayout="grid"
   description="Un solo Pattern de feedback para estados DOM directos y estados proyectados por una Machine."
 >
-  <h1>State layer</h1>
   <p class="lede">
     State layer es un Pattern: un overlay semitransparente teñido con el color de contenido del
     componente. Sirve para hover, focus, pressed, selected y dragged. La fuente de verdad puede ser el
@@ -353,4 +351,4 @@ const t = useTranslations(getLocale(Astro.url));
     <li><a href="/es/motion">Motion</a>, para el fade del layer y reduced motion.</li>
     <li><a href="/es/componentes/combobox">Combobox</a>, como ejemplo de estado proyectado.</li>
   </ul>
-</Base>
+</FoundationPage>

@@ -22,8 +22,16 @@
      * a template is the same text every time. `anchor-scope` is the answer the platform already
      * has: it limits the name to this subtree, so any number of popovers on a page can share it.
      */
-    anchor-scope: --sk-popover;
+    anchor-scope: --sk-popover, --sk-popover-box;
     --sk-anchored-name: --sk-popover;
+    /*
+     * THE PANEL'S OWN NAME, for the arrow. The arrow is another anchored box whose far margin is the
+     * panel's height, read with `anchor-size(<box name> block)` (`patterns/anchored.css`), so that the arrow
+     * and the panel flip together. Every other anchored component has a binding that writes a unique box
+     * name inline; this one has none, and without it that `anchor-size()` is invalid, the margin with it,
+     * and the diamond lost its position and sat on the panel's top-left corner over the title. Scoped like
+     * the trigger's name, for the same reason: any number of popovers can share it. */
+    --sk-anchored-box-name: --sk-popover-box;
     display: inline-flex;
   }
 
@@ -80,12 +88,10 @@
     box-shadow: var(--sk-popover-shadow);
 
     /*
-     * MATERIALISING, NOT SLIDING: opacity + scale + a short translate + a soft blur settling to
-     * sharp: `--motion-materialize-scale`/`-blur`, the same pair Menu and Tooltip's positioners
-     * use for their own float-in (`patterns/anchored.css`), named once so a retune is one edit, not
-     * three. `translate` reads the intent tokens' OWN distance scale (`--motion-distance-md: 8px`,
-     * "things that enter: popover, toast") instead of a hardcoded pixel value the way the previous
-     * `@keyframes` did.
+     * A FADE, NOT A MATERIALIZE. Menu and Tooltip also scale, slide and blur in (`--motion-materialize-*`),
+     * but this panel cannot: any of `scale`, `translate` or `filter` makes it the containing block of its
+     * arrow, and the arrow is anchored to the trigger OUTSIDE it (see the arrow note below). Opacity does
+     * not, so the arrow is right from the first frame.
      *
      * `transition` + `@starting-style` + `allow-discrete` on `display`/`overlay`, not `@keyframes`:
      * the same idiom `Dialog` uses for its own `[open]`/no-attribute pair, which is what lets the
@@ -97,28 +103,41 @@
      * already decided") and the SHORTER `sm` distance, not `md`: closing travels less than opening.
      */
     opacity: 0;
-    scale: var(--motion-materialize-scale);
-    translate: 0 calc(-1 * var(--motion-exit-distance));
-    filter: blur(var(--motion-materialize-blur));
     transition:
       opacity var(--motion-exit-duration) var(--motion-exit-easing),
-      scale var(--motion-exit-duration) var(--motion-exit-easing),
-      translate var(--motion-exit-duration) var(--motion-exit-easing),
-      filter var(--motion-exit-duration) var(--motion-exit-easing),
       overlay var(--motion-exit-duration) var(--motion-exit-easing) allow-discrete,
       display var(--motion-exit-duration) var(--motion-exit-easing) allow-discrete;
   }
 
+  /*
+   * THE ARROW FOLLOWS THE TRIGGER, not the panel: it is anchored to the trigger by the pattern
+   * (`patterns/anchored.css`), so where the panel is pushed sideways to stay on screen the arrow still
+   * points at the button.
+   *
+   * It only works because the panel NEVER carries a transform, not even while it animates. `scale`, `translate` and `filter` each
+   * make an element the containing block of its `fixed` descendants, and an anchor must lie inside the
+   * positioned element's containing block: with the panel as that block, the trigger (outside it) was no
+   * valid anchor and the arrow was never placed. So the enter and exit are OPACITY ONLY: no materialize
+   * scale, slide or blur. With them the arrow appeared misplaced for the length of the animation (the
+   * panel was its containing block until the transform settled) and snapped into place at the end.
+   *
+   * The arrow paints what the panel paints: its fill is the elevation wash over the base color, so a flat
+   * `--sk-anchored-arrow-bg` came out a different shade. Frosted uses the same glass as the panel.
+   */
+  .sk-popover .sk-popover__positioner > .sk-anchored-arrow {
+    background: var(--frost-glass, var(--sk-popover-wash) var(--sk-popover-bg));
+    /* LEAVES WITH THE PANEL. The pattern hides the arrow the instant the panel stops being
+       `:popover-open`, but the panel is still fading out for the exit duration, so the diamond vanished
+       first. `visibility` is discrete: with `allow-discrete` it flips to `hidden` only at the END of
+       the transition, and to `visible` at its start, so entering is unchanged. The arrow is a child
+       of the panel, so it fades with it meanwhile. */
+    transition: visibility var(--motion-exit-duration) var(--motion-exit-easing) allow-discrete;
+  }
+
   .sk-popover__content:popover-open {
     opacity: 1;
-    scale: 1;
-    translate: 0 0;
-    filter: blur(0);
     transition:
       opacity var(--motion-enter-duration) var(--motion-enter-easing),
-      scale var(--motion-enter-duration) var(--motion-enter-easing),
-      translate var(--motion-enter-duration) var(--motion-enter-easing),
-      filter var(--motion-enter-duration) var(--motion-enter-easing),
       overlay var(--motion-enter-duration) var(--motion-enter-easing) allow-discrete,
       display var(--motion-enter-duration) var(--motion-enter-easing) allow-discrete;
   }
@@ -129,9 +148,6 @@
   @starting-style {
     .sk-popover__content:popover-open {
       opacity: 0;
-      scale: var(--motion-materialize-scale);
-      translate: 0 calc(-1 * var(--motion-enter-distance));
-      filter: blur(var(--motion-materialize-blur));
     }
   }
 

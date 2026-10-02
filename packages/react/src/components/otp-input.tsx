@@ -1,7 +1,14 @@
 import { pinInput } from "@skryensya/core/machines";
-import { otpInputContract, otpInputEvents, otpInputParts, type OtpInputType } from "@skryensya/core/otp-input";
+import {
+  otpInputContract,
+  otpInputEvents,
+  otpInputParts,
+  type OtpInputGroupSize,
+  type OtpInputType,
+} from "@skryensya/core/otp-input";
 import { normalizeProps, useMachine } from "@zag-js/react";
 import { useId, useRef, type ReactNode } from "react";
+import { Icon } from "./icon.js";
 
 /* Derived, never restated: the defaults live in the contract. */
 const {
@@ -27,6 +34,8 @@ export type OtpInputProps = {
   /** `autocomplete="one-time-code"` and a numeric keypad on mobile. On by default; see the contract. */
   otp?: boolean;
   placeholder?: string;
+  /** Sets the segments apart in groups of this many: a wider gap between one group and the next. */
+  groupSize?: OtpInputGroupSize;
   defaultValue?: string;
   value?: string;
   disabled?: boolean;
@@ -61,6 +70,7 @@ export function OtpInput({
   onValueInvalid,
   otp = otpOption.default,
   placeholder = placeholderOption.default,
+  groupSize,
   readOnly,
   required,
   segmentLabel = segmentLabelOption.default,
@@ -128,6 +138,8 @@ export function OtpInput({
       {...api.getRootProps()}
       aria-describedby={hintId}
       className={cx(otpInputParts.root, className)}
+      data-group-size={groupSize}
+      data-mask={mask ? "" : undefined}
       ref={rootRef}
     >
       <label {...api.getLabelProps()} className={otpInputParts.label}>
@@ -138,12 +150,14 @@ export function OtpInput({
             rating-group's. The segment count is what THIS binding was given, same source the
             contract's own emitter reads for authored markup. */}
         {Array.from({ length: count }, (_, index) => (
-          <input
-            {...api.getInputProps({ index })}
-            className={`${otpInputParts.segment} sk-interactive`}
-            // eslint-disable-next-line react/no-array-index-key -- segments have no other identity
-            key={index}
-          />
+          // eslint-disable-next-line react/no-array-index-key -- segments have no other identity
+          <span className={otpInputParts.cell} data-filled={api.value[index] ? "" : undefined} key={index}>
+            <input {...api.getInputProps({ index })} className={`${otpInputParts.segment} sk-interactive`} />
+            {/* Decoration for `mask`: CSS shows it over a filled box, the input still holds the value. */}
+            <span aria-hidden="true" className={otpInputParts.mask}>
+              <Icon name="mask" />
+            </span>
+          </span>
         ))}
       </div>
       <input {...api.getHiddenInputProps()} className={otpInputParts.hiddenInput} />

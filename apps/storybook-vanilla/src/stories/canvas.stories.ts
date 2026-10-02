@@ -4,7 +4,7 @@ import "@skryensya/core/components/annotation.css";
 import "@skryensya/core/components/button.css";
 import "@skryensya/core/components/canvas.css";
 import "@skryensya/core/components/diagram.css";
-import "@skryensya/core/components/process-list.css";
+import "@skryensya/core/components/procedure.css";
 import "@skryensya/core/patterns/box.css";
 import "@skryensya/core/patterns/visually-hidden.css";
 import * as demos from "@docs/demos/canvas";

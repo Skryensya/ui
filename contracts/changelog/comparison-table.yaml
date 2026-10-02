@@ -1,0 +1,35 @@
+# Qué cambió en comparison-table, en las palabras que lee quien lo usa. Sólo se agrega, nunca se reescribe.
+#
+# `surface` es la forma del contrato la última vez que alguien la revisó. Si el compilador dice
+# que no coincide, algo de lo que un consumidor depende se movió: escribe la entrada y pega el
+# hash nuevo.
+surface: "58c46b1c0d4ac6a5"
+entries:
+  - date: 2026-10-02
+    kind: feature
+    es:
+      title: ComparisonTable se publica como contrato, con 4 signatures
+      body: >-
+        Entra al catálogo con <code>ComparisonTable</code>, <code>ComparisonColumn</code>,
+        <code>ComparisonRow</code> y <code>ComparisonCell</code>: los mismos pocos aspectos puestos
+        lado a lado para dos a cuatro cosas, cuando alguien tiene que elegir entre ellas. Es la forma
+        de comparación de <code>Table</code> con la accesibilidad ya decidida: cada columna lleva
+        <code>scope="col"</code>, la primera celda de cada fila es un <code>&lt;th scope="row"&gt;</code>
+        y la celda de la esquina nunca queda vacía, porque <code>aspectLabel</code> es obligatorio y se
+        dibuja visualmente oculto. Sin caja exterior ni cebra: se lee en el flujo de una página. La
+        columna de los aspectos es un largo (<code>--sk-comparison-table-row-header-size</code>) y no
+        <code>max-content</code>. Más de cuatro cosas, o celdas largas, ya es un <code>Table</code>.
+        La hoja es <code>components/comparison-table.css</code>.
+    en:
+      title: ComparisonTable is published as a contract, with 4 signatures
+      body: >-
+        It joins the catalogue with <code>ComparisonTable</code>, <code>ComparisonColumn</code>,
+        <code>ComparisonRow</code> and <code>ComparisonCell</code>: the same few aspects set side by
+        side for two to four things, when someone has to choose between them. It is <code>Table</code>'s
+        comparison shape with the accessibility already decided: every column carries
+        <code>scope="col"</code>, the first cell of each row is a <code>&lt;th scope="row"&gt;</code>
+        and the corner cell is never empty, because <code>aspectLabel</code> is required and drawn
+        visually hidden. No outer box and no zebra: it reads in the flow of a page. The aspect column
+        is a length (<code>--sk-comparison-table-row-header-size</code>) and not
+        <code>max-content</code>. More than four things, or long cells, is a <code>Table</code>.
+        The sheet is <code>components/comparison-table.css</code>.

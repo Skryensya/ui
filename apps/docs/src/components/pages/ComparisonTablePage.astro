@@ -1,0 +1,110 @@
+---
+import "@skryensya/core/components/comparison-table.css";
+/* Structure diagram: Annotated specimen; a preview frame only copies styles THIS page loaded. */
+import "@skryensya/core/components/annotation.css";
+/* A cell can carry a link, and a frame only copies styles THIS page loaded. */
+import "@skryensya/core/components/typography.css";
+import ComponentPageShell from "./ComponentPageShell.astro";
+import CodeBlock from "../CodeBlock.astro";
+import UsagePreview from "../UsagePreview.astro";
+import DoDont from "../DoDont.astro";
+import WhenToUse from "../WhenToUse.astro";
+import ContentRules from "../ContentRules.astro";
+import A11yNotes from "../A11yNotes.astro";
+import {
+  comparisonTableAnatomyTree,
+  comparisonTableRevealCss,
+  comparisonTableVersusTree,
+  comparisonTableCaptionTree,
+  comparisonTableDensityTree,
+  comparisonTableDoAspectTree,
+  comparisonTableDoShortTree,
+  comparisonTableDontAspectTree,
+  comparisonTableDontLongTree,
+  comparisonTableLinksTree,
+  comparisonTableThreeTree,
+  comparisonTableTree,
+} from "../../demos/comparison-table";
+import { annotationDemoCss } from "../../demos/annotation";
+import { getLocale, tList, useTranslations } from "../../i18n";
+
+const t = useTranslations(getLocale(Astro.url));
+const storybookTitle = "Components/Data/ComparisonTable";
+const install = `pnpm add @skryensya/core @skryensya/react`;
+const styles = `@import "@skryensya/core/components/comparison-table.css";`;
+
+/* What each value of a property is for, read from this page's messages. Same model Badge uses. */
+const explain = (option: string, values: readonly string[]) =>
+  Object.fromEntries(values.map((value) => [value, t(`comparisonTablePage.prop.${option}.${value}` as Parameters<typeof t>[0])]));
+---
+
+<ComponentPageShell
+  title="ComparisonTable"
+  description={t("comparisonTablePage.description")}
+  contractId="comparison-table"
+  testFiles={["packages/react/src/components/comparison-table.test.tsx"]}
+>
+  <Fragment slot="usage">
+    <p class="lede" set:html={t("comparisonTablePage.lede")} />
+
+    <UsagePreview
+      tree={comparisonTableDensityTree(t)}
+      optionName="density"
+      title={t("comparisonTablePage.prop.density.title")}
+      description={t("comparisonTablePage.prop.density.body")}
+      explain={explain("density", ["false", "true"])}
+      labels={{ false: t("comparisonTablePage.prop.density.off"), true: t("comparisonTablePage.prop.density.on") }}
+      stageMinBlockSize="13rem"
+    />
+
+    <h3>{t("component.examplesTitle")}</h3>
+    <UsagePreview tree={comparisonTableTree(t)} title={t("comparisonTablePage.twoTitle")} description={t("comparisonTablePage.twoBody")} storybookTitle={storybookTitle} storybookStory="Default" />
+    <UsagePreview tree={comparisonTableThreeTree(t)} title={t("comparisonTablePage.threeTitle")} description={t("comparisonTablePage.threeBody")} storybookTitle={storybookTitle} storybookStory="Three" />
+    <UsagePreview tree={comparisonTableCaptionTree(t)} title={t("comparisonTablePage.captionTitle")} description={t("comparisonTablePage.captionBody")} storybookTitle={storybookTitle} storybookStory="Caption" />
+    <UsagePreview tree={comparisonTableLinksTree(t)} title={t("comparisonTablePage.linksTitle")} description={t("comparisonTablePage.linksBody")} storybookTitle={storybookTitle} storybookStory="Links" />
+    <UsagePreview tree={comparisonTableVersusTree(t)} title={t("comparisonTablePage.versusTitle")} description={t("comparisonTablePage.versusBody")} storybookTitle={storybookTitle} storybookStory="Versus" />
+
+    <h3>{t("component.contractNotesTitle")}</h3>
+    <ul>
+      {tList(t, "comparisonTablePage.contract").map((item) => <li set:html={item} />)}
+    </ul>
+
+    <h3>{t("component.anatomy")}</h3>
+    <p set:html={t("comparisonTablePage.anatomyBody")} />
+    <UsagePreview
+      tree={comparisonTableAnatomyTree(t)}
+      css={`${annotationDemoCss}\n${comparisonTableRevealCss}`}
+      label={t("comparisonTablePage.anatomyPreviewLabel")}
+      bare
+    />
+  </Fragment>
+
+  <Fragment slot="guidelines">
+    <p class="lede" set:html={t("comparisonTablePage.guidelinesLede")} />
+    <WhenToUse use={tList(t, "comparisonTablePage.when")} avoid={tList(t, "comparisonTablePage.whenNot")} />
+    <DoDont
+      canvas
+      compact
+      title={t("comparisonTablePage.dd.short.title")}
+      do={{ tree: comparisonTableDoShortTree(t), caption: t("comparisonTablePage.dd.short.do") }}
+      dont={{ tree: comparisonTableDontLongTree(t), caption: t("comparisonTablePage.dd.short.dont") }}
+    />
+    <DoDont
+      canvas
+      compact
+      title={t("comparisonTablePage.dd.aspect.title")}
+      do={{ tree: comparisonTableDoAspectTree(t), caption: t("comparisonTablePage.dd.aspect.do") }}
+      dont={{ tree: comparisonTableDontAspectTree(t), caption: t("comparisonTablePage.dd.aspect.dont") }}
+    />
+    <ContentRules items={tList(t, "comparisonTablePage.content")} />
+  </Fragment>
+
+  <Fragment slot="install">
+    <CodeBlock code={install} label="terminal" />
+    <CodeBlock code={styles} label="CSS" />
+  </Fragment>
+
+  <Fragment slot="a11y">
+    <A11yNotes intro={t("comparisonTablePage.a11yIntro")} does={tList(t, "comparisonTablePage.a11yDoes")} yours={tList(t, "comparisonTablePage.a11yYours")} />
+  </Fragment>
+</ComponentPageShell>

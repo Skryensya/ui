@@ -37,6 +37,7 @@ export const numberFieldMessages = {
     "numberFieldPage.when1": "Para un número que se escribe: una cantidad, un monto, un número de noches.",
 
     "numberFieldPage.contract3": "Un valor fuera de rango se ajusta al límite al salir del campo.",
+    "numberFieldPage.contract4": "El <code>defaultValue</code> se escribe como lo escribe el idioma del campo: <code>1234567,89</code> en <code>es-CL</code>, <code>1234567.89</code> en <code>en-US</code>.",
 
     "numberFieldPage.contract2": "<code>Intl.NumberFormat</code> formatea miles y decimales según <code>locale</code>.",
 
@@ -48,7 +49,7 @@ export const numberFieldMessages = {
 
     "numberFieldPage.lede": "NumberField recibe un número exacto que se escribe o se ajusta paso a paso: una cantidad, un monto, un número de noches. Respeta un mínimo, un máximo y un paso, y formatea el número según el idioma.",
     "numberFieldPage.anatomyBody":
-      "Este diagrama nombra la etiqueta, el control y ambos steppers. El espécimen está congelado; el NumberField vivo empieza abajo.",
+      "Este diagrama nombra la etiqueta, el control y ambos steppers. El espécimen está congelado.",
     "numberFieldPage.anatomyLabel": "Anatomía de NumberField",
     "numberFieldPage.anatomyPreviewLabel": "NumberField, parte por parte",
 
@@ -86,6 +87,34 @@ export const numberFieldMessages = {
       'Monta <code class="sk-code">aria-valuemin</code>/<code class="sk-code">aria-valuemax</code>/<code class="sk-code">aria-valuenow</code>.',
     "numberFieldPage.testReact9":
       "Flecha arriba/abajo suman o restan desde el teclado; Home/End saltan a los límites.",
+    "demo.numberField.amount": "Monto",
+    "demo.numberField.weight": "Peso (kg)",
+    "demo.numberField.offset": "Ajuste",
+    "demo.numberField.nights": "Noches",
+    "demo.numberField.generic": "Número",
+    "numberFieldPage.state.title": "State: cómo está el campo",
+    "numberFieldPage.state.body": "El mismo campo en cada estado. Cada uno dice algo distinto a quien lo usa.",
+    "numberFieldPage.state.label": "Estado",
+    "numberFieldPage.state.default": "Se puede escribir y ajustar con los botones y las flechas del teclado.",
+    "numberFieldPage.state.readOnly": "<code>readOnly</code> muestra el valor y deja copiarlo, pero no se puede cambiar. Úsalo para un dato que viene de otro lado.",
+    "numberFieldPage.state.invalid": "<code>invalid</code> marca el campo cuando el valor no cumple una regla que tú conoces. Dile a la persona qué corregir en la ayuda.",
+    "numberFieldPage.state.disabled": "<code>disabled</code> quita el campo de la tabulación y no se envía. Úsalo solo si no hay nada que ajustar todavía; si hay una razón, dila.",
+    "numberFieldPage.prop.locale.title": "Locale: cómo se escribe el número",
+    "numberFieldPage.prop.locale.body": "El mismo monto escrito como lo escribe cada idioma. Lo que cambia es la lectura; el número que se envía no.",
+    "numberFieldPage.prop.locale.label": "Locale",
+    "numberFieldPage.prop.locale.en-US": "<code>en-US</code>: coma para los miles, punto para los decimales.",
+    "numberFieldPage.prop.locale.es-CL": "<code>es-CL</code>: punto para los miles, coma para los decimales.",
+    "numberFieldPage.prop.locale.en-IN": "<code>en-IN</code>: los miles se agrupan de a dos después del primero. Usa el idioma de quien lee, no el del sitio.",
+    "numberFieldPage.decimalTitle": "Decimales: paso de medio",
+    "numberFieldPage.decimalBody": "Con <code>step</code> menor que uno el campo avanza de a medio y muestra la coma o el punto según el idioma.",
+    "numberFieldPage.unboundedTitle": "Sin límites: un ajuste",
+    "numberFieldPage.unboundedBody": "Sin <code>min</code> ni <code>max</code> el valor puede ir a cualquier lado: sirve para un ajuste, no para un conteo.",
+    "numberFieldPage.dd.bounds.title": "Límites: un conteo tiene piso",
+    "numberFieldPage.dd.bounds.do": "Con <code>min</code> y <code>max</code>, el campo no pasa de lo posible: de 1 a 14 noches.",
+    "numberFieldPage.dd.bounds.dont": "Sin límites, el campo acepta «−2 noches», un valor que no existe.",
+    "numberFieldPage.dd.label.title": "Etiqueta: lo que se cuenta",
+    "numberFieldPage.dd.label.do": "«Noches» dice qué es el número.",
+    "numberFieldPage.dd.label.dont": "«Número» no dice qué se está contando.",
     "demo.numberField.dd.volume": "Volumen",
     "numberFieldPage.guidelinesLede": "Un campo numérico sirve cuando el número exacto importa más que verlo moverse.",
     "numberFieldPage.dd.exact.title": "Valor: exacto, no aproximado",
@@ -130,6 +159,7 @@ export const numberFieldMessages = {
     "numberFieldPage.when1": "For a number that is typed: a quantity, an amount, a number of nights.",
 
     "numberFieldPage.contract3": "An out-of-range value snaps to the bound when leaving the field.",
+    "numberFieldPage.contract4": "The <code>defaultValue</code> is written the way the field's language writes it: <code>1234567,89</code> in <code>es-CL</code>, <code>1234567.89</code> in <code>en-US</code>.",
 
     "numberFieldPage.contract2": "<code>Intl.NumberFormat</code> formats thousands and decimals by <code>locale</code>.",
 
@@ -141,7 +171,7 @@ export const numberFieldMessages = {
 
     "numberFieldPage.lede": "NumberField takes an exact number that is typed or adjusted step by step: a quantity, an amount, a number of nights. It respects a minimum, a maximum and a step, and formats the number for the language.",
     "numberFieldPage.anatomyBody":
-      "This diagram names the label, the control, and both steppers. The specimen is frozen; the live NumberField starts below.",
+      "This diagram names the label, the control, and both steppers. The specimen is frozen.",
     "numberFieldPage.anatomyLabel": "NumberField anatomy",
     "numberFieldPage.anatomyPreviewLabel": "NumberField, part by part",
 
@@ -179,6 +209,34 @@ export const numberFieldMessages = {
       'Mounts <code class="sk-code">aria-valuemin</code>/<code class="sk-code">aria-valuemax</code>/<code class="sk-code">aria-valuenow</code>.',
     "numberFieldPage.testReact9":
       "ArrowUp/ArrowDown step from the keyboard; Home/End jump to the bounds.",
+    "demo.numberField.amount": "Amount",
+    "demo.numberField.weight": "Weight (kg)",
+    "demo.numberField.offset": "Offset",
+    "demo.numberField.nights": "Nights",
+    "demo.numberField.generic": "Number",
+    "numberFieldPage.state.title": "State: how the field is",
+    "numberFieldPage.state.body": "The same field in each state. Each one tells the person using it something different.",
+    "numberFieldPage.state.label": "State",
+    "numberFieldPage.state.default": "It can be typed into and adjusted with the buttons and the keyboard arrows.",
+    "numberFieldPage.state.readOnly": "<code>readOnly</code> shows the value and lets it be copied, but it cannot be changed. Use it for a figure that comes from elsewhere.",
+    "numberFieldPage.state.invalid": "<code>invalid</code> marks the field when the value breaks a rule you know. Say what to fix in the hint.",
+    "numberFieldPage.state.disabled": "<code>disabled</code> takes the field out of the tab order and it is not submitted. Use it only when there is nothing to adjust yet; if there is a reason, say it.",
+    "numberFieldPage.prop.locale.title": "Locale: how the number is written",
+    "numberFieldPage.prop.locale.body": "The same amount written the way each language writes it. What changes is how it reads; the number that is submitted does not.",
+    "numberFieldPage.prop.locale.label": "Locale",
+    "numberFieldPage.prop.locale.en-US": "<code>en-US</code>: a comma for thousands, a point for decimals.",
+    "numberFieldPage.prop.locale.es-CL": "<code>es-CL</code>: a point for thousands, a comma for decimals.",
+    "numberFieldPage.prop.locale.en-IN": "<code>en-IN</code>: thousands group in twos after the first. Use the reader's language, not the site's.",
+    "numberFieldPage.decimalTitle": "Decimals: half a step",
+    "numberFieldPage.decimalBody": "With a <code>step</code> below one the field moves by halves and shows the comma or the point for the language.",
+    "numberFieldPage.unboundedTitle": "No limits: an adjustment",
+    "numberFieldPage.unboundedBody": "With no <code>min</code> or <code>max</code> the value can go anywhere: right for an adjustment, wrong for a count.",
+    "numberFieldPage.dd.bounds.title": "Limits: a count has a floor",
+    "numberFieldPage.dd.bounds.do": "With <code>min</code> and <code>max</code> the field stays within what is possible: 1 to 14 nights.",
+    "numberFieldPage.dd.bounds.dont": "With no limits the field accepts “−2 nights”, a value that does not exist.",
+    "numberFieldPage.dd.label.title": "Label: what is counted",
+    "numberFieldPage.dd.label.do": "“Nights” says what the number is.",
+    "numberFieldPage.dd.label.dont": "“Number” does not say what is being counted.",
     "demo.numberField.dd.volume": "Volume",
     "numberFieldPage.guidelinesLede": "A number field helps when the exact number matters more than seeing it move.",
     "numberFieldPage.dd.exact.title": "Value: exact, not approximate",

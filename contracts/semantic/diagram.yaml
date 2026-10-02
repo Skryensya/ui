@@ -14,7 +14,7 @@ Diagram:
     - "a gate and a step go in the same drawing: they are one `Diagram`, so a gate's result can feed a process box and a step's output can be an operand, without switching components halfway"
   avoidWhen:
     - "what has to be named are the parts of one thing already drawn: that is Annotation, which anchors each label to a selector inside the subject and does not draw a graph"
-    - "the content is a sequence with no branches and no loops: that is ProcessList if they are instructions, or Steps if progress is primary; a single-column diagram with no forks is a list with extra lines"
+    - "the content is a sequence with no branches and no loops: that is Procedure if they are instructions, or Steps if progress is primary; a single-column diagram with no forks is a list with extra lines"
     - "the hierarchy is containment and not flow (folders, a file tree): that is TreeView or Folder, where what matters is what is inside what"
     - "the graph is large, comes from data, or has to be explored or have its nodes dragged: this does not do layout, it draws small hand-written diagrams. Wrapping it in a Canvas is enough to zoom and pan the view"
     - "full UML notation, swimlanes or box types by convention (cylinder, parallelogram, hexagon) are needed: those are conventions the reader has to be taught, and of the prose shapes only the three understood without a legend live here. Logic gates are the exception and pass the same test from the other side: they are not a box that means AND, they are the symbol the standard assigns to conjunction, and anyone who reads the notation reads it without a legend"
@@ -22,6 +22,6 @@ Diagram:
     - "the logic drawing needs feedback: a latch of cross-coupled gates cannot be drawn here. Operands have to come from earlier columns, which is the order a schematic is drawn in anyway; a wire going backwards bends halfway between its two ends, and if both gates share a column that point falls inside both and the wire runs under the symbol it was feeding"
   alternatives:
     - Annotated
-    - ProcessList
+    - Procedure
     - Steps
     - TreeView

@@ -19,7 +19,7 @@
     --sk-image-frame-bg: var(--color-bg-surface-sunken);
 
     box-sizing: border-box;
-    /* Host for absolute media-gradient / caption siblings. */
+    /* Host for absolute media-overlay / caption siblings. */
     position: relative;
     display: block;
     inline-size: 100%;

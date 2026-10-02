@@ -104,7 +104,15 @@ export type QuestionnaireItemProps = {
    * `tel` brings the phone keypad, `number` brings steppers, `date` brings the platform's own picker.
    */
   textType?: QuestionnaireTextType;
-  /** Makes the answer a textarea, this many rows tall. Two rows asks for a sentence, eight a story. */
+  /**
+   * Makes the answer a textarea, this many rows tall. Two rows asks for a sentence, eight a story.
+   *
+   * Left out, the question decides: when free text is its ONLY input (no choices, no slotted control) and
+   * no `textType` is given, the answer is a textarea of {@link SOLE_TEXT_LINES} rows, because a step that asks
+   * one open question is asking for more than a single line. Writing `textType="text"` keeps one line there.
+   * Typed answers (`email`, `number`, `date`...) are never turned into a textarea, and neither is text that
+   * sits beside choices ("pick one, or write your own"). The contract's template makes the same choice.
+   */
   textLines?: number;
   /** Bounds for `textType="number"`, straight through to the control. */
   textMin?: number;
@@ -520,6 +528,9 @@ function ChoiceShortcut({ shortcut }: { shortcut: string | null }) {
   );
 }
 
+/** Rows of the textarea a question gets when free text is its only input. */
+export const SOLE_TEXT_LINES = 3;
+
 export function QuestionnaireItem({
   choices,
   className,
@@ -567,6 +578,9 @@ export function QuestionnaireItem({
   const active = !disabled && state.active === name;
   const invalid = isQuestionnaireItemInvalid(state, name);
   const answer = questionnaireAnswer(state, name);
+  /* The ONLY input is the free text: no choices, no slotted control, and plain text rather than a typed answer. */
+  const soleText = text && !control && !choices?.length && textType === undefined;
+  const lines = textLines ?? (soleText ? SOLE_TEXT_LINES : undefined);
   const fieldsetRef = useRef<HTMLFieldSetElement | null>(null);
   const ref = useCallback(
     (element: HTMLFieldSetElement | null) => {
@@ -705,7 +719,7 @@ export function QuestionnaireItem({
         ) : null}
         {text ? (
           <FormField className={questionnaireParts.text} label={textLabel ?? title}>
-            {textLines === undefined ? (
+            {lines === undefined ? (
               <Input
                 controlSize="sm"
                 max={textMax}
@@ -723,7 +737,7 @@ export function QuestionnaireItem({
                 name={name}
                 onChange={(event) => send({ type: "text", name, text: event.target.value })}
                 placeholder={textPlaceholder}
-                rows={textLines}
+                rows={lines}
                 value={answer.text}
               />
             )}

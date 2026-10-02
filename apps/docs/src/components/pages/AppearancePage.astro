@@ -11,7 +11,7 @@
 import "@skryensya/core/components/tile.css";
 import "@skryensya/core/components/checkbox.css";
 import "@skryensya/core/components/accordion.css";
-import Base from "../../layouts/Base.astro";
+import FoundationPage from "../FoundationPage.astro";
 import AppearanceMenu from "../AppearanceMenu.astro";
 import CodeBlock from "../CodeBlock.astro";
 import UsagePreview from "../UsagePreview.astro";
@@ -92,17 +92,13 @@ const hooks = `/* The same families on every component that publishes the value.
 }`;
 ---
 
-<Base title={t("appearancePage.title")} description={t("appearancePage.description")} documentLayout="grid">
-  <div
-    class="docs-appearance-foundation"
-    data-toc-transparent
-    data-docs-appearance-scope
-    data-docs-appearance-target="[data-appearance]"
-  >
-    <header class="docs-appearance-foundation__head">
-      <h1>{t("appearancePage.title")}</h1>
-      <AppearanceMenu label={t("prefs.appearance")} />
-    </header>
+<FoundationPage
+  title={t("appearancePage.title")}
+  description={t("appearancePage.description")}
+  appearanceTarget="[data-appearance]"
+>
+  <AppearanceMenu slot="appearance" label={t("prefs.appearance")} />
+  <div class="docs-appearance-foundation" data-toc-transparent>
 
     <p class="lede" set:html={t("appearancePage.lede")} />
 
@@ -188,17 +184,9 @@ const hooks = `/* The same families on every component that publishes the value.
     <p set:html={t("appearancePage.hooksBody")} />
     <CodeBlock code={hooks} label="CSS" lang="css" />
   </div>
-</Base>
+</FoundationPage>
 
 <style>
-  .docs-appearance-foundation__head {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: space-between;
-    gap: var(--space-inline-md);
-  }
-
   .docs-appearance-foundation__mark {
     text-align: center;
   }

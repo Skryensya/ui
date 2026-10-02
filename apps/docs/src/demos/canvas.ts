@@ -91,29 +91,29 @@ export const canvasDiagramCss = `.sk-canvas {
 
 /* Usage guide: a linear sequence should reflow as content instead of becoming a zoomable drawing. */
 export const canvasDontFitsTree = (t: Translate): UsageTree => ({
-  contract: "process-list",
-  signature: "ProcessList",
+  contract: "procedure",
+  signature: "Procedure",
   attrs: { "aria-label": t("canvas.demoLabel") },
   children: [
     {
-      contract: "process-list",
-      signature: "ProcessListItem",
+      contract: "procedure",
+      signature: "ProcedureStep",
       slots: {
         title: t("canvas.nodeDraft"),
         children: t("canvas.stepDraft"),
       },
     },
     {
-      contract: "process-list",
-      signature: "ProcessListItem",
+      contract: "procedure",
+      signature: "ProcedureStep",
       slots: {
         title: t("canvas.nodeReview"),
         children: t("canvas.stepReview"),
       },
     },
     {
-      contract: "process-list",
-      signature: "ProcessListItem",
+      contract: "procedure",
+      signature: "ProcedureStep",
       slots: {
         title: t("canvas.nodePublish"),
         children: t("canvas.stepPublish"),

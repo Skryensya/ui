@@ -1,6 +1,11 @@
 <script lang="ts">
   import { numberInput } from "@skryensya/core/machines";
-  import { numberFieldContract, numberFieldEvents, numberFieldParts } from "@skryensya/core/number-field";
+  import {
+    numberFieldContract,
+    numberFieldEvents,
+    numberFieldFormatOptions,
+    numberFieldParts,
+  } from "@skryensya/core/number-field";
   import { normalizeProps, useMachine } from "@zag-js/svelte";
   import { bindParts, type PartBinding } from "../runtime/bind-part.svelte";
   import { getRoot, uniqueId } from "../runtime/svelte-hydrate";
@@ -36,6 +41,7 @@
     name: input?.name || undefined,
     locale: root.lang || document.documentElement.lang || numberFieldContract.options.locale.default,
     defaultValue: input?.defaultValue,
+    formatOptions: numberFieldFormatOptions,
     min: numberOf(input?.min),
     max: numberOf(input?.max),
     step: numberOf(input?.step),

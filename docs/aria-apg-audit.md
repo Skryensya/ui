@@ -586,7 +586,7 @@ Las 31 filas de arriba son el índice de ejemplos oficial de la APG, no el catá
 
 `ariaReviewed: true` agregado a las 16 en `navigation.ts`. Sin cambios de código. Son relecturas de filas que ya existen arriba, no revisiones nuevas.
 
-**Quedan ~51 páginas sin flag.** De esas, un subconjunto tiene semántica ARIA real que nunca pasó por esta auditoría (Tooltip, Popover, Popup, CommandPalette, SplitButton, Drawer, Flyout, Vaul, FileUpload, SegmentedControl, Pagination, SkipLink, TimeField, Progress, FormField, Input, Navbar, Sidebar, Loader, CopyButton, Theme Toggle, Table of contents, Hotkey) y el resto es contenido/layout puro (Avatar, Badge, Box, Callout, Card, Changelog, CodePreview, ComponentPreview, Grid, Layout Grid, Heading, Icon, ImageFrame, Inline, Kbd, List, ProcessList, Scrollbar, Stack, Stat, Steps, Tag, Text, Wrapper, EmptyState, Placeholder, Tile) donde se espera, pero se verifica, que no aplique ningún rol de widget.
+**Quedan ~51 páginas sin flag.** De esas, un subconjunto tiene semántica ARIA real que nunca pasó por esta auditoría (Tooltip, Popover, Popup, CommandPalette, SplitButton, Drawer, Flyout, Vaul, FileUpload, SegmentedControl, Pagination, SkipLink, TimeField, Progress, FormField, Input, Navbar, Sidebar, Loader, CopyButton, Theme Toggle, Table of contents, Hotkey) y el resto es contenido/layout puro (Avatar, Badge, Box, Callout, Card, Changelog, CodePreview, ComponentPreview, Grid, Layout Grid, Heading, Icon, ImageFrame, Inline, Kbd, List, Procedure, Scrollbar, Stack, Stat, Steps, Tag, Text, Wrapper, EmptyState, Placeholder, Tile) donde se espera, pero se verifica, que no aplique ningún rol de widget.
 
 ### Avatar. Revisado ✅ (2026-08-17)
 
@@ -710,7 +710,7 @@ El mismo bug real de WebKit que Breadcrumb destapó primero (`list-style: none` 
 
 - **List / OrderedList** (`core/list.ts`, `react/list.tsx`): ambos signatures (`ul`/`ol`).
 - **NavList**. Ya revisado el 2026-08-14, addendum: el `<ul>` del grupo (colapsable y estático) en `core/nav-list.ts`, replicado en `react/nav-list.tsx`.
-- **ProcessList** (`core/process-list.ts`, `react/process-list.tsx`).
+- **Procedure** (`core/procedure.ts`, `react/procedure.tsx`).
 - **Steps** (`core/steps.ts`, `react/steps.tsx`). El más grave de los seis: sin el rol, un lector de pantalla no solo pierde la lista, pierde el conteo "paso 2 de 5" que WAI espera de una secuencia semántica.
 - **Changelog** (`core/changelog.ts`, `react/changelog.tsx`). DOS `<ol>` (`Changelog` raíz y `ChangelogRelease.entries` anidado), ambos corregidos; el `reversed` que ya autoraba para la numeración descendente se queda, el rol es aditivo.
 
@@ -720,7 +720,7 @@ El mismo bug real de WebKit que Breadcrumb destapó primero (`list-style: none` 
 
 ### Table / List families. Revisado ✅ (2026-08-17)
 
-`List`, `NavList` (addendum), `ProcessList`, `Steps`, `Changelog`: cubiertos por la barrida de arriba. Sin otros gaps encontrados en sus contratos más allá del rol de lista. Anatomía nativa (`<ul>`/`<ol>`/`<li>`), sin necesidad de patrón WAI dedicado más allá de "es una lista real".
+`List`, `NavList` (addendum), `Procedure`, `Steps`, `Changelog`: cubiertos por la barrida de arriba. Sin otros gaps encontrados en sus contratos más allá del rol de lista. Anatomía nativa (`<ul>`/`<ol>`/`<li>`), sin necesidad de patrón WAI dedicado más allá de "es una lista real".
 
 ### Split Button. Revisado ✅ (2026-08-17)
 

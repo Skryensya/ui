@@ -15,7 +15,7 @@ export const DEMO_IMAGE_FRAME_SRC = "https://dummyimage.com/800x500/9ca3af/37415
 
 /*
  * Frame, media, and an optional caption wash: every part the contract can emit. Caption and gradient
- * are MediaCaption/MediaGradient (parents of ImageFrame), not ImageFrame's own parts, but the page
+ * are MediaOverlay/MediaOverlayShade (parents of ImageFrame), not ImageFrame's own parts, but the page
  * teaches the composition the frame is built for, so the diagram names what that composition draws.
  */
 export const imageFrameAnatomyTree = (t: Translate): UsageTree => ({
@@ -38,14 +38,14 @@ export const imageFrameAnatomyTree = (t: Translate): UsageTree => ({
       },
       slots: {
         caption: {
-          contract: "media-gradient",
-          signature: "MediaCaption",
+          contract: "media-overlay",
+          signature: "MediaOverlay",
           options: { edge: "bottom" },
           children: [
             {
-              contract: "media-gradient",
-              signature: "MediaGradient",
-              options: { strength: "md" },
+              contract: "media-overlay",
+              signature: "MediaOverlayShade",
+              options: { strength: "moderate" },
             },
             {
               contract: "typography",
@@ -61,8 +61,8 @@ export const imageFrameAnatomyTree = (t: Translate): UsageTree => ({
     items: [
       namePart(".sk-image-frame", "block-start", { mark: "bracket" }),
       namePart(".sk-image-frame__media", "inline-start"),
-      namePart(".sk-media-caption", "inline-end", { ringPlacement: "offset", ringDistance: 2 }),
-      namePart(".sk-media-gradient", "block-end"),
+      namePart(".sk-media-overlay", "inline-end", { ringPlacement: "offset", ringDistance: 2 }),
+      namePart(".sk-media-overlay-shade", "block-end"),
     ],
   },
 });

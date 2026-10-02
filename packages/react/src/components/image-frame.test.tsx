@@ -40,11 +40,11 @@ describe("ImageFrame", () => {
         src="/cover.jpg"
         alt=""
         aspect="16/9"
-        caption={<div className="sk-media-caption" data-edge="bottom">Title</div>}
+        caption={<div className="sk-media-overlay" data-edge="bottom">Title</div>}
       />,
     );
     const frame = ui.container.querySelector(".sk-image-frame");
     expect(frame?.querySelector("img.sk-image-frame__media")?.getAttribute("src")).toBe("/cover.jpg");
-    expect(frame?.querySelector(".sk-media-caption")?.textContent).toBe("Title");
+    expect(frame?.querySelector(".sk-media-overlay")?.textContent).toBe("Title");
   });
 });

@@ -16,3 +16,4 @@ export const DoAppMenu: StoryObj = treeStory(demos.appBarDoAppMenuTree);
 export const DontNoAppMenu: StoryObj = treeStory(demos.appBarDontNoAppMenuTree);
 export const DoShortTitles: StoryObj = treeStory(demos.appBarDoShortTitlesTree);
 export const DontLongTitles: StoryObj = treeStory(demos.appBarDontLongTitlesTree);
+export const Compare: StoryObj = treeStory(demos.appBarCompareTree);

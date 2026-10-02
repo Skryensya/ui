@@ -1,5 +1,5 @@
 ---
-import Base from "../../layouts/Base.astro";
+import FoundationPage from "../../components/FoundationPage.astro";
 import CodeBlock from "../../components/CodeBlock.astro";
 import EasingCurve from "../../components/EasingCurve.astro";
 import MotionTrack from "../../components/MotionTrack.astro";
@@ -75,26 +75,15 @@ const reduced = `@media (prefers-reduced-motion: reduce) {
 }`;
 ---
 
-<Base
+<FoundationPage
   title="Motion"
-  documentLayout="grid"
   description="Los componentes consumen tokens de intención, no duraciones ni curvas crudas."
 >
-  <h1>Motion</h1>
   <p class="lede">
     Motion describe por qué algo se mueve: entrar, salir, revelar, responder, cargar. Los componentes
     consumen tokens de intención; las duraciones, curvas y distancias técnicas quedan debajo y pueden
     cambiar sin tocar un Contract.
   </p>
-
-  <div class="sk-callout" data-tone="info">
-    <div class="sk-callout__content">
-      <p>
-        Motion viene con <code>tokens.scss</code>. No es un componente ni un Pattern opt-in: es parte
-        de la plataforma visual que leen los componentes.
-      </p>
-    </div>
-  </div>
 
   <h2>Qué falla sin intención</h2>
   <p>
@@ -105,11 +94,11 @@ const reduced = `@media (prefers-reduced-motion: reduce) {
   <CodeBlock code={bad} label="CSS · inválido" />
   <CodeBlock code={good} label="CSS · válido" />
 
-  <h2>Mecanismo</h2>
+  <h2>Cómo funciona</h2>
   <p>
     Tier 1 mide tiempo y curva. Tier 2 compone esos valores en tokens de intención. Un componente solo
     ve el nombre semántico, y por eso una revisión de timing reestiliza el sistema sin migrar cada
-    transición.
+    transición. Motion viene con <code>tokens.scss</code>: no hay nada que importar.
   </p>
   <p class="howto">
     Las muestras usan los tokens reales. Al pulsar <em>Reproducir</em>, todas las filas del bloque se
@@ -213,7 +202,7 @@ const reduced = `@media (prefers-reduced-motion: reduce) {
                       <span class="intents__used"><Used token={`--motion-${i.key}-distance`} /></span>
                     </>
                   ) : (
-                    <span class="intents__none">N/D</span>
+                    <span class="intents__none">n/d</span>
                   )}
                 </td>
                 <td class="sk-table__cell">
@@ -282,7 +271,7 @@ const reduced = `@media (prefers-reduced-motion: reduce) {
     <li><a href="/es/state-layer">State layer</a> usa estos tokens para feedback de interacción.</li>
     <li><a href="/es/tiers">Tiers</a> explica por qué un componente no salta a valores primitivos.</li>
   </ul>
-</Base>
+</FoundationPage>
 
 <style>
   .specimens {
