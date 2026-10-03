@@ -42,6 +42,9 @@
       "devalue (added 2026-09-26, GHSA-9rgm-9g3h-6x36, DoS on malformed input): reached only through",
       "@astrojs/react in apps/docs. 5.9.2 is the first patched version and the newest one past the",
       "30-day cooldown on the day it was added; one major (5) in the lockfile, so the caret is safe.",
+      "Raised to ^5.9.4 on 2026-10-03: 5.9.3 closed three more HIGH advisories (shared-memory stringify,",
+      "quadratic expansion in uneval, an unhandled rejection in stringifyAsync) and 5.9.4 followed it",
+      "twenty minutes later. Both are inside the cooldown, see minimumReleaseAgeExclude.",
       "The entry is deleted when the package above bumps on its own: an override that no longer changes",
       "anything is a frozen old version waiting for someone to notice it."
     ],
@@ -58,7 +61,7 @@
       "smol-toml": "^1.7.1",
       "svgo": "^4.1.0",
       "undici": "~7.29.1",
-      "devalue": "^5.9.2"
+      "devalue": "^5.9.4"
     }
   }
 }
