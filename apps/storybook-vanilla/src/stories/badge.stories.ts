@@ -11,7 +11,7 @@ import "@skryensya/core/patterns/layout.css";
 import * as demos from "@docs/demos/badge";
 import { treeStory, type Meta, type StoryObj } from "../tree-story";
 
-export default { title: "Components/Content/Badge", tags: ["autodocs"] } satisfies Meta;
+export default { title: "Components/Labels & Identity/Badge", tags: ["autodocs"] } satisfies Meta;
 
 export const Anatomy: StoryObj = treeStory(demos.badgeAnatomyTree);
 export const Label: StoryObj = treeStory(demos.badgeLabelTree);

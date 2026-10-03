@@ -2962,22 +2962,18 @@ describe("menubar: labelled bar of Menu-backed items", () => {
   });
 
   it("rejects the removed nav option, and keeps the trigger a ghost Button", () => {
-    const item = (options?: Record<string, unknown>): UsageTree => ({
-      contract: "menubar",
-      signature: "Menubar",
-      options: { label: "Principal" },
-      slots: {
-        children: {
-          contract: "menubar",
-          signature: "MenubarItem",
-          ...(options ? { options } : {}),
-          slots: {
-            children: "Producto",
-            items: [{ options: { value: "overview" }, slots: { label: "Overview" } }],
-          },
+    const item = (options?: Record<string, boolean | string | number>): UsageTree => {
+      const entry: UsageTree = {
+        contract: "menubar",
+        signature: "MenubarItem",
+        ...(options ? { options } : {}),
+        slots: {
+          children: "Producto",
+          items: [{ options: { value: "overview" }, slots: { label: "Overview" } }],
         },
-      },
-    });
+      };
+      return { contract: "menubar", signature: "Menubar", options: { label: "Principal" }, slots: { children: entry } };
+    };
     expect(validateUsageTree(item({ nav: true })).valid).toBe(false);
     const markup = emitMarkup(item());
     expect(markup).toContain('data-variant="ghost"');

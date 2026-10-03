@@ -2557,6 +2557,66 @@ const signatureTrees: readonly Canonical[] = [
   },
   {
     /*
+     * MESSAGE, the conversation row: a received row with its avatar lane, a name above the surface and a
+     * status below, then a sent row carrying the actions slot, both inside a group. The surface itself
+     * (the bubble) is app content, so here it is plain text.
+     */
+    name: "message/conversation",
+    enhanced: false,
+    tree: {
+      contract: "message",
+      signature: "MessageGroup",
+      children: [
+        {
+          contract: "message",
+          signature: "Message",
+          options: { align: "start" },
+          children: [
+            { contract: "message", signature: "MessageAvatar", children: "R" },
+            {
+              contract: "message",
+              signature: "MessageContent",
+              children: [
+                { contract: "message", signature: "MessageHeader", children: "Robin" },
+                "Can you review this?",
+                { contract: "message", signature: "MessageFooter", children: "14:32" },
+              ],
+            },
+          ],
+        },
+        {
+          contract: "message",
+          signature: "Message",
+          options: { align: "end" },
+          children: [
+            { contract: "message", signature: "MessageAvatar" },
+            {
+              contract: "message",
+              signature: "MessageContent",
+              children: [
+                "On it.",
+                { contract: "message", signature: "MessageActions", children: "Copy" },
+              ],
+            },
+          ],
+        },
+      ],
+    },
+  },
+  {
+    /* SHIMMER, live status copy: text only, every option left at its default. */
+    name: "shimmer/status",
+    enhanced: false,
+    tree: { contract: "shimmer", signature: "Shimmer", children: "Thinking" },
+  },
+  {
+    /* EXPRESSIVE AVATAR, the one required option: the name that becomes its accessible label. */
+    name: "expressive-avatar/default",
+    enhanced: false,
+    tree: { contract: "expressive-avatar", signature: "ExpressiveAvatar", options: { name: "Robin" } },
+  },
+  {
+    /*
      * COMPARISON TABLE, the one shape it has: two things in the columns, two aspects in the rows, a
      * visually hidden corner cell, a `scope` on every header. Short text is all a cell holds.
      */

@@ -10,7 +10,7 @@ import "@skryensya/core/patterns/visually-hidden.css";
 import * as demos from "@docs/demos/canvas";
 import { treeStory, type Meta, type StoryObj } from "../tree-story";
 
-export default { title: "Components/Content/Canvas", tags: ["autodocs"] } satisfies Meta;
+export default { title: "Components/Media & Visuals/Canvas", tags: ["autodocs"] } satisfies Meta;
 
 export const Anatomy: StoryObj = treeStory(demos.canvasAnatomyTree);
 export const Diagram: StoryObj = treeStory(demos.canvasDiagramTree);

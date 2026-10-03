@@ -16,7 +16,7 @@ export type AvatarImageSource = Pick<
 export type AvatarProps = Omit<HTMLAttributes<HTMLSpanElement>, "children" | "onError"> & {
   /**
    * Image URL, or the image descriptor emitted by an optimizer (`src`, `srcSet`, `sizes`, etc.).
-   * When absent — or when the image fails in the browser — the fallback (initials) shows.
+   * When absent, or when the image fails in the browser, the fallback (initials) shows.
    */
   src?: string | AvatarImageSource;
   /** Accessible name (initials) or alt text (image). Required either way. */

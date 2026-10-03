@@ -9,7 +9,7 @@ import "@skryensya/core/patterns/icon.css";
 import * as demos from "@docs/demos/timeline";
 import { treeStory, type Meta, type StoryObj } from "../tree-story";
 
-export default { title: "Components/Content/Timeline", tags: ["autodocs"] } satisfies Meta;
+export default { title: "Components/Surfaces & Collections/Timeline", tags: ["autodocs"] } satisfies Meta;
 
 export const Anatomy: StoryObj = treeStory(demos.timelineAnatomyTree);
 export const Default: StoryObj = treeStory(demos.timelineTree);

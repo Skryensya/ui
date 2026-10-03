@@ -3,8 +3,21 @@
 # `surface` is the shape of the contract the last time somebody reviewed it. If the compiler says it
 # does not match, something a consumer depends on has moved: write the entry and paste in the new
 # hash.
-surface: "ede167cf7a2dcb0c"
+surface: "625f7eceb8e1bd35"
 entries:
+  - date: 2026-10-03
+    kind: chore
+    target: CodePreview
+    es:
+      title: CodePreview documenta el hook de interlineado
+      body: >-
+        <code>--sk-code-preview-line-height</code> ya existía en el CSS y ahora está declarado en el
+        contrato, así que aparece en la referencia y se puede ajustar como cualquier otro hook.
+    en:
+      title: CodePreview documents its line-height hook
+      body: >-
+        <code>--sk-code-preview-line-height</code> was already in the CSS and is now declared in the
+        contract, so it shows in the reference and can be tuned like any other hook.
   - date: 2026-09-26
     kind: feature
     target: appearance

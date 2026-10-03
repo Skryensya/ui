@@ -8,14 +8,22 @@
 @layer components {
   .sk-code-preview {
     --sk-code-preview-bg: var(--color-bg-surface);
+    /* LIGHT NEEDS ITS OWN DEPTH. In dark the strip is darker than the code well and the block frames itself;
+       in light the strip was the page's own grey and the block had no edge but a hairline. The strip stays
+       NEUTRAL (an accent wash read green and loud over a page of code), and the block lifts off the page with
+       the soft shadow on the root instead. */
     --sk-code-preview-label-bg: var(--color-bg-surface-sunken);
     --sk-code-preview-fg: var(--color-text-primary);
     --sk-code-preview-border-color: var(--color-border-subtle);
     --sk-code-preview-label-fg: var(--color-text-tertiary);
     --sk-code-preview-label-active-fg: var(--color-text-secondary);
-    --sk-code-preview-footer-bg: var(--color-bg-surface);
     --sk-code-preview-count-fg: var(--color-text-tertiary);
     --sk-code-preview-font-size: var(--font-size-body-sm);
+    /* Code is read line by line, not as prose: the body-relaxed 1.7 spread it into a ladder with a line's
+       worth of air between rows. 1.55 keeps the rows distinct and the block compact. One hook, because the
+       collapsed window (`lh`), the fallback viewport and the copy button's centring all read it. */
+    --sk-code-preview-line-height: 1.55;
+    --sk-code-preview-footer-bg: var(--sk-code-preview-label-bg);
     /*
      * How tall the collapsed window is. `lh` units are RENDERED LINES, so this is literally "fifteen
      * lines of code" and padding stays outside the ceiling. A hook rather than a literal because the
@@ -61,6 +69,10 @@
     border-radius: var(--radius-surface);
     background: var(--sk-code-preview-bg);
     color: var(--sk-code-preview-fg);
+    /* light-dark() takes colours only, so the pair sits inside the shadow, not around it. */
+    box-shadow:
+      0 1px 2px light-dark(var(--shadow-sm), transparent),
+      0 10px 24px -14px light-dark(var(--shadow-sm), transparent);
   }
 
   .sk-code-preview,
@@ -76,6 +88,7 @@
     align-items: center;
     justify-content: space-between;
     gap: var(--space-inline-sm);
+    min-block-size: var(--size-control-sm);
     padding: var(--space-inset-xs) var(--space-inset-md);
     border-block-end: 1px solid var(--sk-code-preview-border-color);
     background: var(--sk-code-preview-label-bg);
@@ -91,10 +104,27 @@
     border-start-end-radius: var(--radius-surface);
   }
 
+  /* The file name is the label's subject, the language a quiet note at the far end: two things in one
+     strip should not read as one run of monospace. Alone, a single span stays at the start. */
   .sk-code-preview__meta {
     display: flex;
+    flex: 1;
+    align-items: baseline;
+    justify-content: space-between;
     min-inline-size: 0;
-    gap: var(--space-inline-sm);
+    gap: var(--space-inline-md);
+  }
+
+  .sk-code-preview__meta > :first-child {
+    color: var(--sk-code-preview-label-active-fg);
+    overflow-wrap: anywhere;
+  }
+
+  .sk-code-preview__meta > :not(:first-child) {
+    flex: none;
+    font-size: calc(var(--font-size-caption) - 1px);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
   }
 
   .sk-code-preview__density {
@@ -168,7 +198,7 @@
     overflow-x: auto;
     font-family: var(--font-family-code);
     font-size: var(--sk-code-preview-font-size);
-    line-height: var(--font-line-height-body-relaxed);
+    line-height: var(--sk-code-preview-line-height);
     white-space: pre-wrap;
     overflow-wrap: anywhere;
   }
@@ -248,7 +278,7 @@
     margin-inline-end: calc(var(--size-control-sm) + max(
       var(--space-inset-xs),
       calc(
-        var(--space-inset-md) + var(--sk-code-preview-font-size) * var(--font-line-height-body-relaxed) / 2 -
+        var(--space-inset-md) + var(--sk-code-preview-font-size) * var(--sk-code-preview-line-height) / 2 -
           var(--size-control-sm) / 2
       )
     ) * 2);
@@ -259,14 +289,14 @@
     margin-block-start: max(
       var(--space-inset-xs),
       calc(
-        var(--space-inset-md) + var(--sk-code-preview-font-size) * var(--font-line-height-body-relaxed) / 2 -
+        var(--space-inset-md) + var(--sk-code-preview-font-size) * var(--sk-code-preview-line-height) / 2 -
           var(--size-control-sm) / 2
       )
     );
     margin-inline-end: max(
       var(--space-inset-xs),
       calc(
-        var(--space-inset-md) + var(--sk-code-preview-font-size) * var(--font-line-height-body-relaxed) / 2 -
+        var(--space-inset-md) + var(--sk-code-preview-font-size) * var(--sk-code-preview-line-height) / 2 -
           var(--size-control-sm) / 2
       )
     );
@@ -291,6 +321,8 @@
   .sk-code-preview__toggle {
     min-inline-size: 0;
     gap: var(--space-inline-xs);
+    color: var(--sk-code-preview-label-active-fg);
+    font-size: var(--font-size-caption);
   }
 
   .sk-code-preview__toggle-count {
@@ -322,7 +354,7 @@
       color-mix(in oklab, var(--color-text-primary) 8%, transparent);
     scrollbar-width: thin;
     font-size: var(--sk-code-preview-font-size);
-    line-height: var(--font-line-height-body-relaxed);
+    line-height: var(--sk-code-preview-line-height);
   }
 
   .sk-code-preview[data-sk-code-preview-density="condensed"]
@@ -379,7 +411,7 @@
     color: var(--sk-code-preview-fg);
     font-family: var(--font-family-code);
     font-size: var(--sk-code-preview-font-size);
-    line-height: var(--font-line-height-body-relaxed);
+    line-height: var(--sk-code-preview-line-height);
     white-space: pre;
   }
 

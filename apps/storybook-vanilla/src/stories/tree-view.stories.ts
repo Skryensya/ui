@@ -10,7 +10,7 @@ import "@skryensya/core/patterns/layout.css";
 import * as demos from "@docs/demos/tree-view";
 import { treeStory, type Meta, type StoryObj } from "../tree-story";
 
-export default { title: "Components/Navigation/TreeView", tags: ["autodocs"] } satisfies Meta;
+export default { title: "Components/Surfaces & Collections/TreeView", tags: ["autodocs"] } satisfies Meta;
 
 export const Anatomy: StoryObj = treeStory(demos.treeViewAnatomyTree);
 export const Minimal: StoryObj = treeStory(demos.treeViewMinimalTree);

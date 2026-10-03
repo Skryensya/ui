@@ -15,7 +15,7 @@ import "@skryensya/core/patterns/visually-hidden.css";
 import * as demos from "@docs/demos/feed";
 import { treeStory, type Meta, type StoryObj } from "../tree-story";
 
-export default { title: "Components/Content/Feed", tags: ["autodocs"] } satisfies Meta;
+export default { title: "Components/Surfaces & Collections/Feed", tags: ["autodocs"] } satisfies Meta;
 
 export const Anatomy: StoryObj = treeStory(demos.feedAnatomyTree);
 export const Default: StoryObj = treeStory(demos.feedTree);

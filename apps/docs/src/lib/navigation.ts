@@ -80,10 +80,11 @@ export type NavigationSection = {
   href?: string;
   blurb: string;
   /**
-   * The rail draws no title or blurb over this section: its categories speak for themselves. The section
-   * keeps its name for assistive tech (the landmark's label) and for everything else that lists sections.
+   * The rail draws this one short caption over the section INSTEAD of its title and blurb: the categories
+   * speak for themselves and need only to be named as a set. The section keeps its own name for assistive
+   * tech (the landmark's label) and for everything else that lists sections. An i18n key.
    */
-  headless?: boolean;
+  caption?: string;
   groups: readonly NavigationGroup[];
 };
 
@@ -1577,7 +1578,7 @@ export const documentationNavigation = [
     section: "section.components",
     href: "/components",
     blurb: "section.components.blurb",
-    headless: true,
+    caption: "section.components.caption",
     /* A hundred entries do not fit in one view: each category opens and closes. */
     groups: componentNavigation.map((group) => ({ ...group, collapsible: true })),
   },
@@ -1616,6 +1617,7 @@ export function getNavigation(locale: Locale): readonly NavigationSection[] {
     ...section,
     section: t(section.section as Parameters<typeof t>[0]),
     blurb: t(section.blurb as Parameters<typeof t>[0]),
+    caption: section.caption ? t(section.caption as Parameters<typeof t>[0]) : undefined,
     href: section.href ? resolveHref(section.href, locale) : undefined,
     groups: section.groups.map((group: NavigationGroup) => ({
       ...group,

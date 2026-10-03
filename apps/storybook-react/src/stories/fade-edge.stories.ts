@@ -14,7 +14,7 @@ import "@skryensya/core/patterns/layout.css";
 import * as demos from "@docs/demos/fade-edge";
 import { treeStory, type Meta, type StoryObj } from "../tree-story";
 
-export default { title: "Components/Layout/FadeEdge", tags: ["autodocs"] } satisfies Meta;
+export default { title: "Components/Utilities/FadeEdge", tags: ["autodocs"] } satisfies Meta;
 
 export const Anatomy: StoryObj = treeStory(demos.fadeEdgeAnatomyTree);
 export const FadeHorizontalAgenda: StoryObj = treeStory(demos.fadeHorizontalAgendaTree);

@@ -2510,6 +2510,25 @@
     ],
     "code-preview": [
       {
+        "date": null,
+        "entries": [
+          {
+            "date": "2026-10-03",
+            "en": {
+              "body": "<code>--sk-code-preview-line-height</code> was already in the CSS and is now declared in the contract, so it shows in the reference and can be tuned like any other hook.",
+              "title": "CodePreview documents its line-height hook"
+            },
+            "es": {
+              "body": "<code>--sk-code-preview-line-height</code> ya existía en el CSS y ahora está declarado en el contrato, así que aparece en la referencia y se puede ajustar como cualquier otro hook.",
+              "title": "CodePreview documenta el hook de interlineado"
+            },
+            "kind": "chore",
+            "target": "CodePreview"
+          }
+        ],
+        "version": "0.0.2-dev"
+      },
+      {
         "date": "2026-10-01",
         "entries": [
           {
@@ -6987,6 +7006,19 @@
       {
         "date": null,
         "entries": [
+          {
+            "date": "2026-10-02",
+            "en": {
+              "body": "A row reserves the avatar column on its own side and keeps the opposite one free: a sent message no longer stretches across the column of the received avatars, or the other way round, so no bubble sits above or below somebody else's avatar. The lane width is the new <code>--sk-message-lane-size</code> hook (avatar plus gap).",
+              "title": "Every avatar has its lane"
+            },
+            "es": {
+              "body": "Una fila reserva la columna del avatar de su lado y deja libre la del lado opuesto: un mensaje enviado ya no se extiende sobre la columna de los avatares de los recibidos, ni al revés, así que ninguna burbuja queda encima o debajo del avatar de otra persona. El ancho del carril es el nuevo hook <code>--sk-message-lane-size</code> (avatar más separación).",
+              "title": "Cada avatar tiene su carril"
+            },
+            "kind": "feature",
+            "target": "Message"
+          },
           {
             "date": "2026-10-02",
             "en": {
@@ -20605,7 +20637,7 @@
           "sheet": "@skryensya/core/components/code-preview.css"
         },
         "--sk-code-preview-footer-bg": {
-          "default": "var(--color-bg-surface)",
+          "default": "var(--sk-code-preview-label-bg)",
           "output": false,
           "part": "root",
           "sheet": "@skryensya/core/components/code-preview.css"
@@ -20624,6 +20656,12 @@
         },
         "--sk-code-preview-label-fg": {
           "default": "var(--color-text-tertiary)",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/code-preview.css"
+        },
+        "--sk-code-preview-line-height": {
+          "default": "1.55",
           "output": false,
           "part": "root",
           "sheet": "@skryensya/core/components/code-preview.css"
@@ -20649,6 +20687,7 @@
         "--sk-code-preview-label-active-fg",
         "--sk-code-preview-label-bg",
         "--sk-code-preview-label-fg",
+        "--sk-code-preview-line-height",
         "--sk-code-preview-window"
       ],
       "hookSheets": [
@@ -27734,8 +27773,14 @@
           "part": "root",
           "sheet": "@skryensya/core/components/expressive-avatar.css"
         },
+        "--sk-expressive-avatar-scale": {
+          "default": "tan(atan2(var(--sk-expressive-avatar-size), 160px))",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/expressive-avatar.css"
+        },
         "--sk-expressive-avatar-size": {
-          "default": "calc(var(--size-control-lg) * 4 / 3)",
+          "default": "6rem",
           "output": false,
           "part": "root",
           "sheet": "@skryensya/core/components/expressive-avatar.css"
@@ -27743,6 +27788,7 @@
       },
       "hooks": [
         "--sk-expressive-avatar-size",
+        "--sk-expressive-avatar-scale",
         "--sk-expressive-avatar-bg"
       ],
       "id": "expressive-avatar",
@@ -27834,11 +27880,11 @@
         }
       },
       "parts": {
+        "bubble": "sk-expressive-avatar__bubble",
         "grid": "sk-expressive-avatar__grid",
+        "host": "sk-expressive-avatar-host",
         "image": "sk-expressive-avatar__image",
-        "part": "sk-expressive-avatar__part",
         "root": "sk-expressive-avatar",
-        "sprite": "sk-expressive-avatar__sprite",
         "tile": "sk-expressive-avatar__tile"
       },
       "semantics": {
@@ -36034,6 +36080,12 @@
           "part": "root",
           "sheet": "@skryensya/core/components/message.css"
         },
+        "--sk-message-lane-size": {
+          "default": "calc(var(--sk-message-avatar-size) + var(--sk-message-gap))",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/message.css"
+        },
         "--sk-message-max-inline-size": {
           "default": "min(var(--size-wrapper-sm), 100%)",
           "output": false,
@@ -36046,6 +36098,7 @@
         "--sk-message-content-gap",
         "--sk-message-footer-offset",
         "--sk-message-gap",
+        "--sk-message-lane-size",
         "--sk-message-group-gap",
         "--sk-message-header-fg",
         "--sk-message-header-font-size",
@@ -56410,7 +56463,7 @@
     "working": "0.0.2"
   },
   "schemaVersion": "2.3",
-  "sourceHash": "fc6b78b711a98dae",
+  "sourceHash": "2a3b98bcd36170d6",
   "vocabulary": {
     "a11y": "When `when` holds, one of `requiresOneOf` must be given: an option, a raw attribute, a filled slot, or a child signature by name.",
     "atLeastOneOf": "At least one member of each group counts: a filled slot, a boolean option set to true, or an option other than its default.",

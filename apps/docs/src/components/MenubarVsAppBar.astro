@@ -21,6 +21,7 @@ import { getLocale, useTranslations } from "../i18n";
 
 const locale = getLocale(Astro.url);
 const t = useTranslations(locale);
+const tr = (key: string) => t(key as Parameters<typeof t>[0]);
 
 const rows = ["where", "entries", "dropdown", "status", "device"] as const;
 
@@ -41,8 +42,8 @@ const ruleKey = from === "menubar" ? "menubarVs.rule" : "menubarVs.appbarPage.ru
 ---
 
 <section class="menubar-vs-appbar">
-  <h3>{t(titleKey as Parameters<typeof t>[0])}</h3>
-  <p set:html={t(ruleKey as Parameters<typeof t>[0])} />
+  <h3>{tr(titleKey)}</h3>
+  <p set:html={tr(ruleKey)} />
 
   <UsagePreview
     tree={trees[here]}
@@ -61,8 +62,8 @@ const ruleKey = from === "menubar" ? "menubarVs.rule" : "menubarVs.appbarPage.ru
     aspectLabel={t("menubarVs.col.aspect")}
     columns={[here, other].map((side) => names[side])}
     rows={rows.map((row) => ({
-      label: t(`menubarVs.row.${row}` as Parameters<typeof t>[0]),
-      cells: [here, other].map((side) => t(`menubarVs.row.${row}.${sides[side]}` as Parameters<typeof t>[0])),
+      label: tr(`menubarVs.row.${row}`),
+      cells: [here, other].map((side) => tr(`menubarVs.row.${row}.${sides[side]}`)),
     }))}
   />
 </section>

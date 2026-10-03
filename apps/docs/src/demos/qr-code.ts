@@ -454,22 +454,32 @@ export const qrCodeDoWithLinkTree = (locale: Locale): UsageTree =>
 /** Don't: the code alone, for whoever cannot scan it. */
 export const qrCodeDontAloneTree = (locale: Locale): UsageTree => guideStack([guideCode(locale, qrCodeDocsUrl(locale))]);
 
-/** Do: a short link, so a sparse code a camera reads at a glance. */
+/*
+ * EVERY EXAMPLE BELOW CARRIES THE WRITTEN LINK except the one that is about leaving it out. The pairs are read
+ * together, and a "Do" that drew its code alone would break the first rule (the link also as text) while
+ * teaching its own. The long link's text is cut with an ellipsis: it is the real URL, and it must still fit
+ * the one line this frame has.
+ */
+const LONG_READABLE = `${LONG_URL.replace("https://", "").slice(0, 34)}…`;
+
+/** Do: a short link, so a sparse code a camera reads at a glance, with the link in words. */
 export const qrCodeDoShortLinkTree = (locale: Locale): UsageTree =>
-  guideStack([guideCode(locale, qrCodeDocsUrl(locale))]);
+  guideStack([guideCode(locale, qrCodeDocsUrl(locale)), guideText(readable(locale))]);
 
 /** Don't: a long link with tracking parameters: the same code, packed with tiny modules. */
 export const qrCodeDontLongLinkTree = (locale: Locale): UsageTree =>
-  guideStack([guideCode(locale, LONG_URL)]);
+  guideStack([guideCode(locale, LONG_URL), guideText(LONG_READABLE)]);
 
-/** Do: a logo with the highest correction level behind it. */
-export const qrCodeDoLogoLevelTree = (locale: Locale): UsageTree => ({
-  ...guideCode(locale, qrCodeDocsUrl(locale), { level: "H", logoRatio: 0.22 }),
-  slots: { logo: { contract: "icon", signature: "Icon", options: { name: "settings", size: "lg" } } },
-} as UsageTree);
+const guideLogoCode = (locale: Locale, level: "H" | "L"): UsageTree =>
+  ({
+    ...guideCode(locale, qrCodeDocsUrl(locale), { level, logoRatio: 0.22 }),
+    slots: { logo: { contract: "icon", signature: "Icon", options: { name: "settings", size: "lg" } } },
+  }) as UsageTree;
+
+/** Do: a logo with the highest correction level behind it, and the link in words. */
+export const qrCodeDoLogoLevelTree = (locale: Locale): UsageTree =>
+  guideStack([guideLogoCode(locale, "H"), guideText(readable(locale))]);
 
 /** Don't: the same hole with the lowest level: nothing left to rebuild what the logo covers. */
-export const qrCodeDontLogoLevelTree = (locale: Locale): UsageTree => ({
-  ...guideCode(locale, qrCodeDocsUrl(locale), { level: "L", logoRatio: 0.22 }),
-  slots: { logo: { contract: "icon", signature: "Icon", options: { name: "settings", size: "lg" } } },
-} as UsageTree);
+export const qrCodeDontLogoLevelTree = (locale: Locale): UsageTree =>
+  guideStack([guideLogoCode(locale, "L"), guideText(readable(locale))]);

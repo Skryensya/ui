@@ -144,6 +144,7 @@ export const expressiveAvatarContract = {
   parts: expressiveAvatarParts,
   hooks: [
     "--sk-expressive-avatar-size",
+    "--sk-expressive-avatar-scale",
     "--sk-expressive-avatar-bg",
   ],
   options: {
