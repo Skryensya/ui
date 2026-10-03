@@ -1,0 +1,335 @@
+---
+/*
+ * The Prerequisites foundation page, once for both languages. The two copies had drifted: the English
+ * one carried Spanish leftovers in titles and notes. The links are the same everywhere, so they live
+ * in `concepts` and only the words live in `copy`.
+ *
+ * Concepts are grouped under an h2 and each concept is an h3, so the page's rail (which indexes the
+ * body's own h2/h3, see `FoundationPage.astro`) shows two levels instead of thirteen flat entries.
+ */
+import FoundationPage from "../FoundationPage.astro";
+import { getLocale, localizePath } from "../../i18n";
+
+type Lang = "en" | "es";
+type Words = Record<Lang, string>;
+type Ref = { label: string; href: string; note: Words };
+type Concept = { id: string; title: Words; why: Words; refs: readonly Ref[]; here: Words };
+type Group = { id: string; title: Words; intro: Words; concepts: readonly Concept[] };
+
+const locale = getLocale(Astro.url);
+const lang: Lang = locale === "es" ? "es" : "en";
+
+const MDN = "https://developer.mozilla.org/en-US/docs/Web";
+
+const groups: readonly Group[] = [
+  {
+    id: "css",
+    title: { en: "CSS", es: "CSS" },
+    intro: {
+      en: "How tokens, color and user preferences reach the browser.",
+      es: "Cómo llegan al navegador los tokens, el color y las preferencias de quien usa la página.",
+    },
+    concepts: [
+      {
+        id: "custom-properties",
+        title: { en: "Custom properties", es: "Custom properties" },
+        why: {
+          en: "Every system value is a custom property that the browser reads at runtime. They are how tokens reach your page.",
+          es: "Cada valor del sistema es una custom property que el navegador lee en ejecución. Así llegan los tokens a tu página.",
+        },
+        refs: [
+          { label: "MDN, using CSS custom properties", href: `${MDN}/CSS/CSS_cascading_variables/Using_CSS_custom_properties`, note: { en: "Declaring, var(), inheritance and fallbacks.", es: "Declaración, var(), herencia y fallbacks." } },
+          { label: "MDN, var()", href: `${MDN}/CSS/Reference/Values/var`, note: { en: "Reference and cascade behavior.", es: "Referencia y comportamiento en la cascada." } },
+        ],
+        here: { en: "Tiers, styling hooks and the live reference.", es: "Tiers, styling hooks y la referencia en vivo." },
+      },
+      {
+        id: "cascade-layers",
+        title: { en: "Cascade layers", es: "Capas de la cascada" },
+        why: {
+          en: "The order between tiers comes from @layer, not from the order of your @import lines.",
+          es: "El orden entre tiers lo da @layer, no el orden de tus líneas @import.",
+        },
+        refs: [
+          { label: "MDN, @layer", href: `${MDN}/CSS/Reference/At-rules/@layer`, note: { en: "Precedence between layers, and CSS that has no layer.", es: "Precedencia entre capas y frente al CSS sin capa." } },
+          { label: "MDN, cascade layers", href: "https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Styling_basics/Cascade_layers", note: { en: "How layers fit into the cascade.", es: "Cómo encajan las capas en la cascada." } },
+        ],
+        here: { en: "primitives → semantic → components → overrides.", es: "primitives → semantic → components → overrides." },
+      },
+      {
+        id: "light-dark",
+        title: { en: "light-dark()", es: "light-dark()" },
+        why: {
+          en: "Light and dark are one color axis with two slots. light-dark() takes exactly two values, so there is no third slot for high contrast.",
+          es: "Claro y oscuro son un solo eje de color con dos espacios. light-dark() recibe exactamente dos valores, así que no hay un tercero para el alto contraste.",
+        },
+        refs: [{ label: "MDN, light-dark()", href: `${MDN}/CSS/Reference/Values/light-dark`, note: { en: "The function and color-scheme.", es: "La función y color-scheme." } }],
+        here: { en: "Dimensions and semantic color tokens.", es: "Dimensiones y tokens semánticos de color." },
+      },
+      {
+        id: "oklch",
+        title: { en: "OKLCH and color-mix()", es: "OKLCH y color-mix()" },
+        why: {
+          en: "Color primitives are written in oklch(). Blends and states use color-mix() in the same perceptual space.",
+          es: "Las primitivas de color se escriben en oklch(). Las mezclas y los estados usan color-mix() en el mismo espacio perceptual.",
+        },
+        refs: [
+          { label: "MDN, oklch()", href: `${MDN}/CSS/Reference/Values/color_value/oklch`, note: { en: "Lightness, chroma and hue.", es: "Luminosidad, chroma y hue." } },
+          { label: "MDN, color-mix()", href: `${MDN}/CSS/Reference/Values/color_mix`, note: { en: "Mixing in oklab, oklch and other spaces.", es: "Mezcla en oklab, oklch y otros espacios." } },
+          { label: "W3C, CSS Color Module Level 4", href: "https://www.w3.org/TR/css-color-4/", note: { en: "The color model behind CSS.", es: "El modelo de color de CSS." } },
+        ],
+        here: { en: "Explicit ramps, branding and contrast.", es: "Rampas explícitas, marca y contraste." },
+      },
+      {
+        id: "media-queries",
+        title: { en: "User preference queries", es: "Consultas de preferencias" },
+        why: {
+          en: "Contrast, motion and transparency follow the operating system as well as the site's own controls. inverted-colors is not covered: the inversion happens after rendering, only WebKit implements it, and there is no token to redefine.",
+          es: "El contraste, el movimiento y la transparencia siguen al sistema operativo además de los controles del sitio. inverted-colors queda fuera: la inversión ocurre después del render, solo la implementa WebKit y no hay un token que redefinir.",
+        },
+        refs: [
+          { label: "MDN, prefers-contrast", href: `${MDN}/CSS/Reference/At-rules/@media/prefers-contrast`, note: { en: "The contrast the operating system asks for.", es: "El contraste que pide el sistema operativo." } },
+          { label: "MDN, prefers-reduced-motion", href: `${MDN}/CSS/Reference/At-rules/@media/prefers-reduced-motion`, note: { en: "Reducing motion does not mean setting everything to zero.", es: "Reducir el movimiento no es poner todo en cero." } },
+          { label: "MDN, prefers-reduced-transparency", href: `${MDN}/CSS/Reference/At-rules/@media/prefers-reduced-transparency`, note: { en: "Experimental. Keep an opaque surface as the fallback.", es: "Experimental. Deja una superficie opaca como alternativa." } },
+        ],
+        here: { en: "Dimensions, motion by intent and transparency.", es: "Dimensiones, movimiento por intención y transparencias." },
+      },
+    ],
+  },
+  {
+    id: "html",
+    title: { en: "HTML and the platform", es: "HTML y la plataforma" },
+    intro: {
+      en: "What the browser already does, so the system does not do it again.",
+      es: "Lo que el navegador ya resuelve, para que el sistema no lo repita.",
+    },
+    concepts: [
+      {
+        id: "dialog",
+        title: { en: "The dialog element", es: "El elemento dialog" },
+        why: {
+          en: "The platform provides modality, Esc, focus handling and an inert page. The system does not rebuild a dialog from a div.",
+          es: "La plataforma ya da la modalidad, Esc, el manejo del foco y la página inerte. El sistema no reconstruye un dialog con un div.",
+        },
+        refs: [
+          { label: "MDN, <dialog>", href: `${MDN}/HTML/Reference/Elements/dialog`, note: { en: "The element, showModal() and ::backdrop.", es: "El elemento, showModal() y ::backdrop." } },
+          { label: "HTML Living Standard, the dialog element", href: "https://html.spec.whatwg.org/multipage/interactive-elements.html#the-dialog-element", note: { en: "The normative behavior.", es: "El comportamiento normativo." } },
+        ],
+        here: { en: "Dialog, and its Vaul option.", es: "Dialog y su opción Vaul." },
+      },
+      {
+        id: "tables",
+        title: { en: "HTML tables and caption", es: "Tablas HTML y caption" },
+        why: {
+          en: "Data tables keep their native semantics. The caption gives the table its accessible name.",
+          es: "Las tablas de datos conservan su semántica nativa. El caption le da a la tabla su nombre accesible.",
+        },
+        refs: [
+          { label: "MDN, <caption>", href: `${MDN}/HTML/Reference/Elements/caption`, note: { en: "First child of the table; provides the accessible name.", es: "Primer hijo de la tabla; da el nombre accesible." } },
+          { label: "web.dev, tables", href: "https://web.dev/learn/html/tables", note: { en: "Captions, headers and accessibility.", es: "Captions, encabezados y accesibilidad." } },
+          { label: "W3C WAI, captions and summaries", href: "https://www.w3.org/WAI/tutorials/tables/caption-summary/", note: { en: "When to use a caption and when a summary.", es: "Cuándo usar un caption y cuándo un resumen." } },
+        ],
+        here: { en: "The Table component.", es: "El componente Table." },
+      },
+      {
+        id: "progressive-enhancement",
+        title: { en: "Progressive enhancement", es: "Mejora progresiva" },
+        why: {
+          en: "Vanilla enhances HTML you author. Without JavaScript, everything the platform already handles keeps working.",
+          es: "Vanilla mejora el HTML que tú escribes. Sin JavaScript, lo que la plataforma ya resuelve sigue funcionando.",
+        },
+        refs: [
+          { label: "MDN, progressive enhancement", href: "https://developer.mozilla.org/en-US/docs/Glossary/Progressive_Enhancement", note: { en: "Definition and approach.", es: "Definición y enfoque." } },
+          { label: "GOV.UK, using progressive enhancement", href: "https://www.gov.uk/service-manual/technology/using-progressive-enhancement", note: { en: "How it works on real services.", es: "Cómo se aplica en servicios reales." } },
+        ],
+        here: { en: "The Vanilla layer and initComponents().", es: "La capa Vanilla e initComponents()." },
+      },
+    ],
+  },
+  {
+    id: "accessibility",
+    title: { en: "Accessibility", es: "Accesibilidad" },
+    intro: {
+      en: "The numbers the validator checks against.",
+      es: "Los números contra los que valida el sistema.",
+    },
+    concepts: [
+      {
+        id: "wcag",
+        title: { en: "WCAG contrast and target size", es: "Contraste y tamaño de objetivo en WCAG" },
+        why: {
+          en: "The validator measures color pairs against WCAG, and the touch-target floor in density comes from it too.",
+          es: "El validador mide los pares de color contra WCAG, y el mínimo de área táctil de la densidad también sale de ahí.",
+        },
+        refs: [
+          { label: "WCAG 2.2, contrast (minimum)", href: "https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html", note: { en: "1.4.3: text contrast.", es: "1.4.3: contraste del texto." } },
+          { label: "WCAG 2.2, non-text contrast", href: "https://www.w3.org/WAI/WCAG22/Understanding/non-text-contrast.html", note: { en: "1.4.11: contrast for UI and graphics.", es: "1.4.11: contraste de la interfaz y los gráficos." } },
+          { label: "WCAG 2.2, target size (minimum)", href: "https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum.html", note: { en: "2.5.8: minimum target size.", es: "2.5.8: tamaño mínimo del objetivo." } },
+        ],
+        here: { en: "The validator, density and high contrast.", es: "El validador, la densidad y el alto contraste." },
+      },
+    ],
+  },
+  {
+    id: "tooling",
+    title: { en: "Ideas and tooling", es: "Ideas y herramientas" },
+    intro: {
+      en: "The vocabulary the system is written in.",
+      es: "El vocabulario en el que está escrito el sistema.",
+    },
+    concepts: [
+      {
+        id: "design-tokens",
+        title: { en: "Design tokens", es: "Design tokens" },
+        why: {
+          en: "The system speaks of primitives, semantics and hooks: tokens in layers. Here that idea is applied in plain CSS.",
+          es: "El sistema habla de primitivas, semánticos y hooks: tokens en capas. Aquí esa idea se aplica en CSS puro.",
+        },
+        refs: [
+          { label: "W3C Design Tokens Community Group", href: "https://www.w3.org/community/design-tokens/", note: { en: "Vocabulary and format under standardization.", es: "Vocabulario y formato en proceso de estandarización." } },
+          { label: "Design Tokens Format Module (draft)", href: "https://design-tokens.github.io/community-group/format/", note: { en: "How tokens are described for exchange.", es: "Cómo se describen los tokens para intercambiarlos." } },
+        ],
+        here: { en: "Tiers and styling hooks. This system uses CSS, not JSON.", es: "Tiers y styling hooks. Este sistema usa CSS, no JSON." },
+      },
+      {
+        id: "bem",
+        title: { en: "BEM", es: "BEM" },
+        why: {
+          en: "Parts of a component with a fixed anatomy are named in BEM. Those names are permanent, even if the machine behind them changes.",
+          es: "Las partes de un componente con anatomía fija se nombran en BEM. Esos nombres son permanentes, aunque cambie la máquina que hay debajo.",
+        },
+        refs: [
+          { label: "getbem.com", href: "https://getbem.com/", note: { en: "Block, element, modifier.", es: "Bloque, elemento, modificador." } },
+          { label: "BEM, naming convention", href: "https://en.bem.info/methodology/naming-convention/", note: { en: "The naming rules.", es: "Las reglas de nombres." } },
+        ],
+        here: { en: "The markup contract and its parts, such as sk-tabs__list.", es: "El contrato de marcado y sus partes, como sk-tabs__list." },
+      },
+      {
+        id: "sass",
+        title: { en: "Sass", es: "Sass" },
+        why: {
+          en: "The token entry points use Sass where CSS has no macros. You still import plain CSS and custom properties.",
+          es: "Los puntos de entrada de los tokens usan Sass donde CSS no tiene macros. Tú sigues importando CSS y custom properties.",
+        },
+        refs: [
+          { label: "Sass, @use", href: "https://sass-lang.com/documentation/at-rules/use/", note: { en: "Modules and the public API.", es: "Módulos y API pública." } },
+          { label: "Sass documentation", href: "https://sass-lang.com/documentation/", note: { en: "Language reference.", es: "Referencia del lenguaje." } },
+        ],
+        here: { en: "Ramps, high contrast and the tokens.scss entry point.", es: "Rampas, alto contraste y el punto de entrada tokens.scss." },
+      },
+    ],
+  },
+];
+
+const copy = {
+  en: {
+    title: "Prerequisites",
+    description: "The web platform ideas this design system assumes you know, each with a reason and links to the source.",
+    lede: "This page does not teach the system. It lists the web platform ideas the system assumes you know, each with a reason and links to the source (MDN, W3C, the specs). How the system applies them is on its own pages; why it made each choice is in <code>docs/decisions/</code> in the repository.",
+    how: "Each concept says why it matters here, what to read, and where it shows up in the system.",
+    read: "Read",
+    here: "In the system",
+    nextTitle: "Where to go next",
+    next: (h: Record<string, string>) =>
+      `Once you know these, <a href="${h.install}">install the system</a>, <a href="${h.first}">build your first component</a>, then read the basics: <a href="${h.tiers}">tiers</a>, <a href="${h.dimensions}">dimensions</a> and <a href="${h.hooks}">styling hooks</a>.`,
+  },
+  es: {
+    title: "Prerrequisitos",
+    description: "Las ideas de la plataforma web que este design system da por sabidas, cada una con su motivo y enlaces a la fuente.",
+    lede: "Esta página no enseña el sistema. Lista las ideas de la plataforma web que el sistema da por sabidas, cada una con su motivo y enlaces a la fuente (MDN, W3C, las especificaciones). Cómo las aplica el sistema está en sus propias páginas; por qué tomó cada decisión está en <code>docs/decisions/</code> del repositorio.",
+    how: "Cada concepto dice por qué importa aquí, qué leer y dónde aparece en el sistema.",
+    read: "Lee",
+    here: "En el sistema",
+    nextTitle: "Qué sigue",
+    next: (h: Record<string, string>) =>
+      `Cuando conozcas estas ideas, <a href="${h.install}">instala el sistema</a>, <a href="${h.first}">crea tu primer componente</a> y lee los fundamentos: <a href="${h.tiers}">tiers</a>, <a href="${h.dimensions}">dimensiones</a> y <a href="${h.hooks}">styling hooks</a>.`,
+  },
+}[lang];
+
+const hrefs = {
+  install: localizePath("/installation", locale),
+  first: localizePath("/first-component", locale),
+  tiers: localizePath("/tiers", locale),
+  dimensions: localizePath("/dimensions", locale),
+  hooks: localizePath("/styling-hooks", locale),
+};
+---
+
+<FoundationPage title={copy.title} description={copy.description}>
+  <p class="lede" set:html={copy.lede} />
+  <p>{copy.how}</p>
+
+  {
+    groups.map((group) => (
+      <section class="docs-prereq-group" aria-labelledby={`prereq-${group.id}`} data-toc-transparent>
+        <h2 id={`prereq-${group.id}`}>{group.title[lang]}</h2>
+        <p class="docs-prereq-group__intro">{group.intro[lang]}</p>
+
+        {group.concepts.map((concept) => (
+          <section class="docs-prereq" aria-labelledby={`prereq-${concept.id}`} data-toc-transparent>
+            <h3 id={`prereq-${concept.id}`}>{concept.title[lang]}</h3>
+            <p>{concept.why[lang]}</p>
+            <p class="docs-prereq__label">{copy.read}</p>
+            <ul class="docs-prereq__refs">
+              {concept.refs.map((ref) => (
+                <li>
+                  <a href={ref.href} rel="noopener noreferrer" target="_blank">{ref.label}</a><span class="docs-prereq__note">: {ref.note[lang]}</span>
+                </li>
+              ))}
+            </ul>
+            <p class="docs-prereq__here">
+              {copy.here}: <em>{concept.here[lang]}</em>
+            </p>
+          </section>
+        ))}
+      </section>
+    ))
+  }
+
+  <h2>{copy.nextTitle}</h2>
+  <p set:html={copy.next(hrefs)} />
+</FoundationPage>
+
+<style>
+  .docs-prereq-group + .docs-prereq-group {
+    margin-block-start: var(--space-stack-xl);
+  }
+
+  .docs-prereq-group__intro {
+    color: var(--color-text-secondary);
+  }
+
+  .docs-prereq {
+    margin-block-start: var(--space-stack-lg);
+    padding-block-start: var(--space-stack-md);
+    border-block-start: 1px solid var(--color-border-subtle);
+  }
+
+  .docs-prereq__label {
+    margin-block: var(--space-stack-sm) var(--space-stack-xs);
+    color: var(--color-text-tertiary);
+    font-size: var(--font-size-caption);
+    font-weight: var(--font-weight-label);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  .docs-prereq__refs {
+    margin: 0;
+    padding-inline-start: 1.25rem;
+  }
+
+  .docs-prereq__refs li + li {
+    margin-block-start: var(--space-stack-xs);
+  }
+
+  .docs-prereq__note {
+    color: var(--color-text-secondary);
+  }
+
+  .docs-prereq__here {
+    margin-block-start: var(--space-stack-sm);
+    color: var(--color-text-secondary);
+    font-size: var(--font-size-body-sm);
+  }
+</style>
