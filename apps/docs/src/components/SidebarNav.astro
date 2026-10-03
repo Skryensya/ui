@@ -37,27 +37,28 @@ const holdsCurrentPage = (items: readonly { href: string }[]): boolean => items.
 {
   nav.map((section, sectionIndex) => (
     <section class="docs-nav-section" aria-label={section.section}>
-      {section.caption && (
+      {/* `caption` undefined: the section's title and blurb. A caption: that line alone. An EMPTY caption: nothing
+          (a rail whose groups speak for themselves, like the Templates page's). */}
+      {section.caption ? (
         <header class="docs-nav-section__header">
           <h2 class="docs-nav-section__title" data-flush>{section.caption}</h2>
         </header>
-      )}
-      {!section.caption && <header class="docs-nav-section__header">
-        {
-          section.href ? (
+      ) : section.caption === undefined ? (
+        <header class="docs-nav-section__header">
+          {section.href ? (
             <a class="docs-nav-section__title" href={section.href}>{section.section}</a>
           ) : (
             <h2 class="docs-nav-section__title" data-flush>{section.section}</h2>
-          )
-        }
-        <p class="docs-nav-section__blurb">{section.blurb}</p>
-      </header>}
+          )}
+          <p class="docs-nav-section__blurb">{section.blurb}</p>
+        </header>
+      ) : null}
       <nav class="sk-nav-list" aria-label={section.section}>
         {section.groups.map((group, groupIndex) => {
           const labelId = `${idPrefix}-${sectionIndex}-${groupIndex}`;
 
           if (group.collapsible) {
-            const open = holdsCurrentPage(group.items);
+            const open = group.defaultOpen ?? holdsCurrentPage(group.items);
             return (
               <div class="sk-nav-list__group" data-collapsible data-default-open={open ? undefined : "false"}>
                 <button
@@ -66,7 +67,7 @@ const holdsCurrentPage = (items: readonly { href: string }[]): boolean => items.
                   id={labelId}
                   data-sk-nav-list-group-trigger
                   data-nav-group-trigger={group.id}
-                  data-nav-group-active={open ? "true" : "false"}
+                  data-nav-group-active={holdsCurrentPage(group.items) ? "true" : "false"}
                   aria-expanded={open ? "true" : "false"}
                   aria-controls={`${labelId}-list`}
                 >

@@ -17,9 +17,44 @@ export interface TemplateSection {
   title: string;
   /** The example's `aria-label`. */
   label: string;
+  /** Which group of the rail and the drawer lists it (`TemplateGroup.id`). */
+  group: TemplateGroupId;
 }
 
-export function templateSections(t: Translate): TemplateSection[] {
+export type TemplateGroupId = "app" | "marketing" | "content" | "flows" | "system";
+
+export interface TemplateGroup {
+  id: TemplateGroupId;
+  /** The group's name, as the rail and the drawer show it. */
+  label: string;
+  sections: TemplateSection[];
+}
+
+/* The groups in the order a reader looks for them: the app itself, the pages that sell it, the pages that
+   explain it, the flows a person walks through, and the page nobody plans for. */
+const GROUP_ORDER: readonly TemplateGroupId[] = ["app", "marketing", "content", "flows", "system"];
+
+const GROUP_OF: Record<string, TemplateGroupId> = {
+  "app-shell": "app",
+  "app-shell-explorer": "app",
+  dashboard: "app",
+  settings: "app",
+  team: "app",
+  marketing: "marketing",
+  pricing: "marketing",
+  product: "marketing",
+  "docs-site": "content",
+  article: "content",
+  "help-center": "content",
+  changelog: "content",
+  "sign-in": "flows",
+  onboarding: "flows",
+  checkout: "flows",
+  booking: "flows",
+  "not-found": "system",
+};
+
+function authoredSections(t: Translate): Omit<TemplateSection, "group">[] {
   return [
     {
       id: "app-shell",
@@ -124,4 +159,22 @@ export function templateSections(t: Translate): TemplateSection[] {
       label: t("templates.notFoundLabel"),
     },
   ];
+}
+
+/**
+ * Every template, ordered by group (and by the authored order inside one), so the stage, the rail and the
+ * drawer all walk the same sequence: scrolling the page goes down the rail.
+ */
+export function templateSections(t: Translate): TemplateSection[] {
+  const withGroup = authoredSections(t).map((section) => ({ ...section, group: GROUP_OF[section.id] ?? "system" }));
+  return GROUP_ORDER.flatMap((group) => withGroup.filter((section) => section.group === group));
+}
+
+export function templateGroups(t: Translate): TemplateGroup[] {
+  const sections = templateSections(t);
+  return GROUP_ORDER.map((id) => ({
+    id,
+    label: t(`templates.group.${id}` as Parameters<Translate>[0]),
+    sections: sections.filter((section) => section.group === id),
+  })).filter((group) => group.sections.length > 0);
 }

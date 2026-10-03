@@ -68,7 +68,9 @@ body {
   top: 0;
   z-index: var(--z-sticky);
   min-block-size: var(--docs-header-block-size);
-  background: var(--color-bg-surface);
+  /* The navbar and the rail are one frame around the page: the same colour (`--docs-rail-bg`, set with the
+     light/dark page tokens below), not two neighbouring whites. */
+  background: var(--docs-rail-bg, var(--color-bg-surface));
   border-bottom: 1px solid var(--color-border-subtle);
   box-shadow: var(--elevation-raised);
 }
@@ -1396,7 +1398,7 @@ h2.docs-nav-section__title {
  * Scoped to the rail's collapsible groups (`[data-collapsible]`): a static group label keeps the caption
  * treatment above, and the drawer keeps its own.
  */
-.docs-sidebar .sk-nav-list__group[data-collapsible] > .sk-nav-list__group-label {
+:is(.docs-sidebar, .templates__sidebar) .sk-nav-list__group[data-collapsible] > .sk-nav-list__group-label {
   display: flex;
   align-items: center;
   min-block-size: var(--sk-nav-list-link-height);
@@ -1412,14 +1414,14 @@ h2.docs-nav-section__title {
   --state-layer-color: var(--color-text-primary);
 }
 
-.docs-sidebar .sk-nav-list__group[data-collapsible] > .sk-nav-list__group-label::after {
+:is(.docs-sidebar, .templates__sidebar) .sk-nav-list__group[data-collapsible] > .sk-nav-list__group-label::after {
   flex: none;
   color: var(--color-text-tertiary);
   -webkit-mask-size: contain;
   mask-size: contain;
 }
 
-.docs-sidebar .sk-nav-list__group[data-collapsible] > [data-sk-nav-list-group-list] {
+:is(.docs-sidebar, .templates__sidebar) .sk-nav-list__group[data-collapsible] > [data-sk-nav-list-group-list] {
   margin-inline-start: var(--space-inline-md);
   padding-inline-start: var(--space-inline-xs);
   border-inline-start: 1px solid var(--sk-sidebar-separator-color, var(--color-border-subtle));
@@ -1427,12 +1429,12 @@ h2.docs-nav-section__title {
 
 /* The category that holds the current page says so, open or closed: the accent the current link takes
    below, one step quieter (ink only, no fill), so the reader can find "where am I" in a closed rail too. */
-.docs-sidebar .sk-nav-list__group[data-collapsible] > .sk-nav-list__group-label[data-nav-group-active="true"] {
+:is(.docs-sidebar, .templates__sidebar) .sk-nav-list__group[data-collapsible] > .sk-nav-list__group-label[data-nav-group-active="true"] {
   color: var(--color-text-accent);
 }
 
 /* A little air above and below an open category's entries, so its last entry does not touch the next category. */
-.docs-sidebar .sk-nav-list__group[data-collapsible] > [data-sk-nav-list-group-list]:not([hidden]) {
+:is(.docs-sidebar, .templates__sidebar) .sk-nav-list__group[data-collapsible] > [data-sk-nav-list-group-list]:not([hidden]) {
   margin-block: var(--space-stack-xs) var(--space-stack-sm);
 }
 
@@ -1442,7 +1444,7 @@ h2.docs-nav-section__title {
 }
 
 /* The categories are peers: the same air between every one of them, open or closed. */
-.docs-sidebar .sk-nav-list__group[data-collapsible] {
+:is(.docs-sidebar, .templates__sidebar) .sk-nav-list__group[data-collapsible] {
   padding-block: 0;
 }
 
@@ -2244,18 +2246,26 @@ main .lede {
  */
 :root {
   --docs-hero-bg: light-dark(var(--palette-blue-200), var(--palette-blue-950));
+}
 
-  /*
-   * LIGHT: A DEEPER, WARMER PAGE UNDER WHITE SURFACES. The system's canvas is stone-100 (97%), a hair under
-   * the white of every surface, so a card, the rail and the navbar were all "white on almost white" and
-   * the layers that dark gets for free were missing. The docs page sits a clear step lower (a warm
-   * stone, 95%), surfaces stay white and rise off it, and `sunken` goes below the canvas (92.5%) so a
-   * recessed strip (a code label, a table header) is darker than the page and not lighter than it.
-   * Docs-only on purpose: these are the site's own values, the kit's tokens are untouched. Dark keeps the
-   * kit's own values (second argument).
-   */
-  --color-bg-canvas: light-dark(oklch(95% 0.006 95), var(--palette-stone-950));
-  --color-bg-surface-sunken: light-dark(oklch(92.5% 0.007 95), var(--palette-stone-950));
+@media not (prefers-contrast: more) {
+  :root:not([data-contrast="high"]) {
+    /*
+     * LIGHT: A WHITE PAGE, A DARKER RAIL. The system's canvas is stone-100, a hair under the white of every
+     * surface, so the page, the rail and the cards were all "almost white" with only hairlines between them.
+     * Here the reading page is the white and the navigation is the recessed part: the rail takes a warm
+     * stone (below), so the eye finds the content first and the index as the frame around it. Cards are
+     * white on white, and keep their edge and shadow.
+     * Docs-only on purpose: the site's own values, the kit's tokens untouched. Dark keeps the kit's own
+     * (second argument), and high contrast keeps its own tokens (this block is excluded for it).
+     */
+    --color-bg-canvas: light-dark(var(--palette-white), var(--palette-stone-950));
+    --docs-rail-bg: light-dark(oklch(97% 0.004 95), var(--palette-stone-900));
+  }
+}
+
+.docs-sidebar {
+  --sk-sidebar-bg: var(--docs-rail-bg, var(--color-bg-surface));
 }
 
 .docs-component-shell,
@@ -3688,6 +3698,9 @@ html[data-sk-component-preview-pref="vanilla"] [data-sk-install-binding="react"]
  */
 .site-footer {
   padding-inline: 0;
+  /* Navbar, rail and footer are one frame around the page: the same colour. The kit's `sunken` is a step
+     darker than all three in light, which made the footer a different grey from the bars above it. */
+  --sk-footer-bg: var(--docs-rail-bg, var(--color-bg-surface-sunken));
   /* A compact, quiet reading of the nav-list, denser than the rail's and one tone back. */
   --sk-nav-list-gap: var(--space-stack-xs);
   --sk-nav-list-link-font-size: var(--font-size-body-sm);

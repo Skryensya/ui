@@ -66,6 +66,13 @@ export type NavigationGroup = {
    * foundations, which are a short reading path, do not.
    */
   collapsible?: boolean;
+  /**
+   * Whether a collapsible group starts open. Absent, it starts open only when it holds the current page
+   * (a long catalog: the reader sees where they are and nothing else). `true` opens it on arrival whatever the
+   * page (a short reading path, where hiding a group would hide a step of it). The reader's own open/closed
+   * choice still wins over it on later visits.
+   */
+  defaultOpen?: boolean;
   items: readonly NavigationItem[];
 };
 
@@ -88,7 +95,7 @@ export type NavigationSection = {
   groups: readonly NavigationGroup[];
 };
 
-export type NavigationSectionId = "foundations" | "components";
+export type NavigationSectionId = "foundations" | "components" | "templates";
 
 /** Component inventory. The catalog groups this single source by task below. */
 const componentItems = [
@@ -1327,8 +1334,11 @@ export const documentationNavigation = [
     section: "section.foundations",
     href: "/foundations",
     blurb: "section.foundations.blurb",
-    groups: [
+    /* A short reading path: every group opens and closes (the same disclosure as the catalog's), and they all
+       start open, so no step of it is hidden until the reader chooses to hide it. */
+    groups: ([
       {
+        id: "foundations-first-steps",
         group: "group.firstSteps",
         items: [
           {
@@ -1359,6 +1369,7 @@ export const documentationNavigation = [
         ],
       },
       {
+        id: "foundations-model",
         group: "group.foundationModel",
         blurb: "group.foundationModel.blurb",
         items: [
@@ -1377,6 +1388,7 @@ export const documentationNavigation = [
         ],
       },
       {
+        id: "foundations-dimensions",
         group: "group.visualDimensions",
         blurb: "group.visualDimensions.blurb",
         items: [
@@ -1442,6 +1454,7 @@ export const documentationNavigation = [
         ],
       },
       {
+        id: "foundations-surfaces",
         group: "group.publicSurfaces",
         blurb: "group.publicSurfaces.blurb",
         items: [
@@ -1467,6 +1480,7 @@ export const documentationNavigation = [
         ],
       },
       {
+        id: "foundations-platform",
         group: "group.platformAccessibility",
         blurb: "group.platformAccessibility.blurb",
         items: [
@@ -1571,7 +1585,7 @@ export const documentationNavigation = [
           // },
         // ],
       // },
-    ],
+    ] satisfies readonly NavigationGroup[]).map((group) => ({ ...group, collapsible: true, defaultOpen: true })),
   },
   {
     id: "components",
