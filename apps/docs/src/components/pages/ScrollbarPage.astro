@@ -1,0 +1,192 @@
+---
+/*
+ * Scrollbar has no contract: it is a CSS pattern (`patterns/scrollbar.css`), so this page uses the
+ * component frame without `contractId`, the way Hotkey does. There is no Referencia or Cambios tab to
+ * read; the hooks come from `styleGroups`.
+ *
+ * The pattern is imported HERE so its sheet reaches the previews: a frame copies only the styles this
+ * page loaded, and without this import `.sk-scrollbar` painted nothing in them.
+ */
+import "@skryensya/core/patterns/scrollbar.css";
+import "@skryensya/core/patterns/layout.css";
+import ComponentPageShell from "./ComponentPageShell.astro";
+import CodeBlock from "../CodeBlock.astro";
+import UsagePreview from "../UsagePreview.astro";
+import DoDont from "../DoDont.astro";
+import WhenToUse from "../WhenToUse.astro";
+import A11yNotes from "../A11yNotes.astro";
+import {
+  scrollbarAlwaysTree,
+  scrollbarCustomTree,
+  scrollbarDemoCss,
+  scrollbarDontShortTree,
+  scrollbarHorizontalTree,
+  scrollbarRevealTree,
+} from "../../demos/scrollbar";
+import { getLocale, localizePath, useTranslations } from "../../i18n";
+
+const locale = getLocale(Astro.url);
+const t = useTranslations(locale);
+const isEs = locale === "es";
+const scrollLockHref = localizePath("/scroll-lock", locale);
+
+const copy = isEs
+  ? {
+      description: "Pinta la scrollbar nativa del navegador: siempre visible, o en silencio hasta hover y foco.",
+      lede: "No reemplaza el scroll: colorea la barra que el navegador ya expone (<code>scrollbar-color</code>, <code>scrollbar-width</code> y <code>::-webkit-scrollbar*</code>). La rueda, la inercia, el gesto táctil y las preferencias del sistema siguen siendo de la plataforma.",
+      installTitle: "Úsalo en una región que ya hace scroll",
+      installBody: "Marca con <code>sk-scrollbar</code> un contenedor con <code>overflow: auto</code> y un tamaño limitado. El patrón no define el overflow: solo pinta la barra que aparece.",
+      alwaysTitle: "Siempre visible",
+      alwaysBody: "<code>sk-scrollbar</code> deja pista y thumb a la vista. Úsala cuando el scroll es parte del mapa de la interfaz: un panel de código, una tabla ancha, un registro.",
+      revealTitle: "Silenciosa hasta tocarla",
+      revealBody: "<code>sk-scrollbar sk-scrollbar--reveal</code> reserva el espacio para que el layout no salte y deja el thumb transparente hasta <code>:hover</code> o <code>:focus-within</code>. Al revelarse aparece solo el thumb, sin pista.",
+      revealCaption: "Pasa el cursor o entra con Tab para verla",
+      horizontalTitle: "Horizontal",
+      horizontalBody: "Funciona igual en el eje X: la barra aparece cuando el contenido es más ancho que su caja.",
+      customTitle: "Ajustada con sus hooks",
+      customBody: "Tamaño, pista y thumb son hooks <code>--sk-scrollbar-*</code>: se cambian desde tu CSS, sobre <code>.sk-scrollbar</code>, como cualquier otro hook.",
+      contractTitle: "Notas del contrato",
+      contract: [
+        "Es opt-in: importa <code>patterns/scrollbar.css</code> y marca la región con <code>sk-scrollbar</code>.",
+        "La región debe poder hacer scroll (<code>overflow: auto|scroll</code> y un tamaño limitado).",
+        "<code>sk-scrollbar--reveal</code> necesita también <code>sk-scrollbar</code>: la variante solo redeclara hooks.",
+        "No inventes un thumb con JS ni escondas el scroll nativo detrás de un div. Con scrollbars superpuestas del sistema, el espacio reservado no hace nada y no molesta.",
+      ],
+      lockNote: `Congelar el scroll del <em>documento</em> detrás de un modal es otro patrón: <a href="${scrollLockHref}">scroll lock</a>. Uno pinta regiones; el otro congela <code>html</code>.`,
+      guidelinesLede: "Una barra de scroll informa que hay más contenido; la clase solo decide cómo se ve.",
+      whenUse: [
+        "<strong>Siempre visible</strong> cuando quien lee debe saber de antemano que hay más: listas largas, registros, editores.",
+        "<strong>Reveal</strong> cuando el cromo compite con el contenido: navegación, paneles estrechos, interfaces táctiles.",
+      ],
+      whenAvoid: [
+        "Sobre el documento entero: el scroll de la página es del navegador y debe verse como el del sistema.",
+        "Para reemplazar el scroll con uno propio hecho en JS.",
+      ],
+      ddTitle: "Hace falta algo que recorrer",
+      ddDo: "La región tiene un tamaño limitado y más contenido que su caja: la barra aparece y se ve.",
+      ddDont: "Con todo el contenido a la vista no hay barra que pintar: la clase no hace nada.",
+      a11yIntro: "El scroll sigue siendo el nativo, así que teclado, lector de pantalla y gestos funcionan como siempre.",
+      a11yDoes: [
+        "No toca el comportamiento del scroll: solo el color y el grosor de la barra.",
+        "<code>sk-scrollbar--reveal</code> también se revela con <code>:focus-within</code>, no solo con el cursor.",
+      ],
+      a11yYours: [
+        "Si la región se recorre con el teclado, hazla alcanzable: <code>tabindex=\"0\"</code> y un nombre accesible.",
+        "No dependas de que se vea la barra para avisar que hay más: deja el contenido cortado a la vista.",
+      ],
+      keyScroll: "Recorre la región enfocada.",
+    }
+  : {
+      description: "Paints the browser's native scrollbar: always visible, or quiet until hover and focus.",
+      lede: "It does not replace scrolling: it colors the bar the browser already exposes (<code>scrollbar-color</code>, <code>scrollbar-width</code> and <code>::-webkit-scrollbar*</code>). The wheel, momentum, touch gestures and system preferences stay the platform's.",
+      installTitle: "Use it on a region that already scrolls",
+      installBody: "Mark a container that has <code>overflow: auto</code> and a limited size with <code>sk-scrollbar</code>. The pattern does not define the overflow: it only paints the bar that appears.",
+      alwaysTitle: "Always visible",
+      alwaysBody: "<code>sk-scrollbar</code> keeps track and thumb in view. Use it when scrolling is part of the interface's map: a code panel, a wide table, a log.",
+      revealTitle: "Quiet until touched",
+      revealBody: "<code>sk-scrollbar sk-scrollbar--reveal</code> reserves the gutter so the layout does not jump and leaves the thumb transparent until <code>:hover</code> or <code>:focus-within</code>. When revealed, only the thumb shows, with no track.",
+      revealCaption: "Hover it or Tab into it to see it",
+      horizontalTitle: "Horizontal",
+      horizontalBody: "It works the same on the X axis: the bar shows when the content is wider than its box.",
+      customTitle: "Tuned with its hooks",
+      customBody: "Size, track and thumb are <code>--sk-scrollbar-*</code> hooks: change them from your CSS, on <code>.sk-scrollbar</code>, like any other hook.",
+      contractTitle: "Contract notes",
+      contract: [
+        "It is opt-in: import <code>patterns/scrollbar.css</code> and mark the region with <code>sk-scrollbar</code>.",
+        "The region must be able to scroll (<code>overflow: auto|scroll</code> and a limited size).",
+        "<code>sk-scrollbar--reveal</code> also needs <code>sk-scrollbar</code>: the variant only re-declares hooks.",
+        "Do not invent a thumb in JS or hide the native scroll behind a div. With the system's overlay scrollbars the reserved gutter does nothing and does no harm.",
+      ],
+      lockNote: `Freezing the <em>document</em>'s scroll behind a modal is another pattern: <a href="${scrollLockHref}">scroll lock</a>. One paints regions; the other freezes <code>html</code>.`,
+      guidelinesLede: "A scrollbar tells people there is more content; the class only decides how it looks.",
+      whenUse: [
+        "<strong>Always visible</strong> when readers must know in advance that there is more: long lists, logs, editors.",
+        "<strong>Reveal</strong> when chrome competes with content: navigation, narrow panels, touch interfaces.",
+      ],
+      whenAvoid: [
+        "On the whole document: the page's scroll belongs to the browser and should look like the system's.",
+        "To replace scrolling with one of your own built in JS.",
+      ],
+      ddTitle: "There has to be something to scroll",
+      ddDo: "The region has a limited size and more content than its box: the bar appears and is seen.",
+      ddDont: "With all the content in view there is no bar to paint: the class does nothing.",
+      a11yIntro: "Scrolling stays native, so keyboard, screen readers and gestures work as they always do.",
+      a11yDoes: [
+        "It does not touch how scrolling behaves: only the bar's color and thickness.",
+        "<code>sk-scrollbar--reveal</code> also reveals on <code>:focus-within</code>, not only with the pointer.",
+      ],
+      a11yYours: [
+        "If the region is scrolled by keyboard, make it reachable: <code>tabindex=\"0\"</code> and an accessible name.",
+        "Do not rely on the bar being seen to say there is more: leave cut-off content in view.",
+      ],
+      keyScroll: "Scrolls the focused region.",
+    };
+
+const importCss = `@import "@skryensya/core/patterns/scrollbar.css";`;
+const markup = `<!-- a container that already scrolls -->
+<div class="sk-scrollbar" tabindex="0" aria-label="…">…</div>
+
+<!-- or quiet until hover and focus -->
+<div class="sk-scrollbar sk-scrollbar--reveal" tabindex="0" aria-label="…">…</div>`;
+const hooks = `.my-panel {
+  --sk-scrollbar-size: 0.75rem;
+  --sk-scrollbar-thumb-bg: var(--color-accent-default);
+}`;
+---
+
+<ComponentPageShell
+  title="Scrollbar"
+  description={copy.description}
+  styleGroups={[{ file: "patterns/scrollbar.css", probe: "sk-scrollbar" }]}
+>
+  <Fragment slot="usage">
+    <p class="lede" set:html={copy.lede} />
+
+    <h3>{copy.installTitle}</h3>
+    <p set:html={copy.installBody} />
+    <CodeBlock code={markup} label="HTML" lang="html" />
+
+    <h3>{t("component.examplesTitle")}</h3>
+    <UsagePreview tree={scrollbarAlwaysTree(t)} css={scrollbarDemoCss} title={copy.alwaysTitle} description={copy.alwaysBody} caption="sk-scrollbar" />
+    <UsagePreview tree={scrollbarRevealTree(t)} css={scrollbarDemoCss} title={copy.revealTitle} description={copy.revealBody} caption={copy.revealCaption} />
+    <UsagePreview tree={scrollbarHorizontalTree(t)} css={scrollbarDemoCss} title={copy.horizontalTitle} description={copy.horizontalBody} />
+    <UsagePreview tree={scrollbarCustomTree(t)} css={scrollbarDemoCss} title={copy.customTitle} description={copy.customBody} />
+    <CodeBlock code={hooks} label="CSS" lang="css" />
+
+    <h3>{copy.contractTitle}</h3>
+    <ul>
+      {copy.contract.map((item) => <li set:html={item} />)}
+    </ul>
+    <p set:html={copy.lockNote} />
+  </Fragment>
+
+  <Fragment slot="guidelines">
+    <p class="lede">{copy.guidelinesLede}</p>
+    <WhenToUse use={copy.whenUse} avoid={copy.whenAvoid} />
+    <DoDont
+      canvas
+      title={copy.ddTitle}
+      do={{ tree: scrollbarAlwaysTree(t), caption: copy.ddDo }}
+      dont={{ tree: scrollbarDontShortTree(t), caption: copy.ddDont }}
+    />
+  </Fragment>
+
+  <Fragment slot="install">
+    <CodeBlock code={importCss} label="CSS" lang="css" />
+  </Fragment>
+
+  <Fragment slot="a11y">
+    <A11yNotes
+      intro={copy.a11yIntro}
+      does={copy.a11yDoes}
+      yours={copy.a11yYours}
+      keys={[
+        { keys: ["↑", "↓", "←", "→"], action: copy.keyScroll },
+        { keys: ["PageUp", "PageDown"], action: copy.keyScroll },
+        { keys: ["Home", "End"], action: copy.keyScroll },
+      ]}
+    />
+  </Fragment>
+</ComponentPageShell>
+
+<style is:global set:html={scrollbarDemoCss}></style>

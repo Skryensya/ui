@@ -1,5 +1,6 @@
 export const scrollbarMessages = {
   es: {
+    "demo.scrollbar.label": "Región con scroll",
     "demo.scrollbar.length": "Longitud: medio",
     "demo.scrollbar.state": "Estado: sincronizado",
     "demo.scrollbar.contract": "Contrato: publicado",
@@ -9,6 +10,7 @@ export const scrollbarMessages = {
     "demo.scrollbar.scroll": "Scroll: nativo",
   },
   en: {
+    "demo.scrollbar.label": "Scrolling region",
     "demo.scrollbar.length": "Length: medium",
     "demo.scrollbar.state": "State: synchronized",
     "demo.scrollbar.contract": "Contract: published",
