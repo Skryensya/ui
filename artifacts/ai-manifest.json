@@ -8804,6 +8804,25 @@
     ],
     "rating": [
       {
+        "date": null,
+        "entries": [
+          {
+            "date": "2026-10-03",
+            "en": {
+              "body": "The filled symbol drops the warning text brown and takes the warning border amber, which holds 3:1 on a light surface. The empty one becomes a half-strength grey so it does not compete with the filled one. Dark mode is unchanged. The <code>--sk-rating-on-color</code> and <code>--sk-rating-off-color</code> hooks still win.",
+              "title": "Rating looks cleaner in light mode"
+            },
+            "es": {
+              "body": "La estrella encendida deja el marrón del texto de advertencia y toma el ámbar del borde de advertencia, que mantiene 3:1 sobre una superficie clara. La apagada pasa a un gris a media intensidad, para que no compita con la encendida. El modo oscuro no cambia. Los hooks <code>--sk-rating-on-color</code> y <code>--sk-rating-off-color</code> siguen mandando.",
+              "title": "Rating se ve más limpio en modo claro"
+            },
+            "kind": "rework",
+            "target": "Rating"
+          }
+        ],
+        "version": "0.0.2-dev"
+      },
+      {
         "date": "2026-10-01",
         "entries": [
           {
@@ -42756,13 +42775,13 @@
           "sheet": "@skryensya/core/components/rating.css"
         },
         "--sk-rating-off-color": {
-          "default": "var(--color-border-default)",
+          "default": "light-dark(\n      color-mix(in oklab, var(--color-border-default) 50%, transparent),\n      var(--color-border-default)\n    )",
           "output": false,
           "part": "root",
           "sheet": "@skryensya/core/components/rating.css"
         },
         "--sk-rating-on-color": {
-          "default": "var(--color-text-warning)",
+          "default": "light-dark(var(--color-border-warning), var(--color-text-warning))",
           "output": false,
           "part": "root",
           "sheet": "@skryensya/core/components/rating.css"
@@ -56463,7 +56482,7 @@
     "working": "0.0.2"
   },
   "schemaVersion": "2.3",
-  "sourceHash": "2a3b98bcd36170d6",
+  "sourceHash": "36d7f9db677216db",
   "vocabulary": {
     "a11y": "When `when` holds, one of `requiresOneOf` must be given: an option, a raw attribute, a filled slot, or a child signature by name.",
     "atLeastOneOf": "At least one member of each group counts: a filled slot, a boolean option set to true, or an option other than its default.",

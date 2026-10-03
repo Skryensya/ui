@@ -5,6 +5,23 @@
 # hash nuevo.
 surface: "de133eee0c66843d"
 entries:
+  - date: 2026-10-03
+    kind: rework
+    target: Rating
+    es:
+      title: Rating se ve más limpio en modo claro
+      body: >-
+        La estrella encendida deja el marrón del texto de advertencia y toma el ámbar del borde de
+        advertencia, que mantiene 3:1 sobre una superficie clara. La apagada pasa a un gris a media
+        intensidad, para que no compita con la encendida. El modo oscuro no cambia. Los hooks
+        <code>--sk-rating-on-color</code> y <code>--sk-rating-off-color</code> siguen mandando.
+    en:
+      title: Rating looks cleaner in light mode
+      body: >-
+        The filled symbol drops the warning text brown and takes the warning border amber, which holds
+        3:1 on a light surface. The empty one becomes a half-strength grey so it does not compete with
+        the filled one. Dark mode is unchanged. The <code>--sk-rating-on-color</code> and
+        <code>--sk-rating-off-color</code> hooks still win.
   - date: 2026-09-20
     kind: feature
     es:
