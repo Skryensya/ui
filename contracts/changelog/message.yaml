@@ -1,0 +1,39 @@
+# Qué cambió en message, en las palabras que lee quien lo usa. Sólo se agrega, nunca se reescribe.
+#
+# `surface` es la forma del contrato la última vez que alguien la revisó. Si el compilador dice
+# que no coincide, algo de lo que un consumidor depende se movió: escribe la entrada y pega el
+# hash nuevo.
+surface: "641c85bc068176bf"
+entries:
+  - date: 2026-10-02
+    kind: feature
+    target: Message
+    es:
+      title: Cada avatar tiene su carril
+      body: >-
+        Una fila reserva la columna del avatar de su lado y deja libre la del lado opuesto: un mensaje
+        enviado ya no se extiende sobre la columna de los avatares de los recibidos, ni al revés, así
+        que ninguna burbuja queda encima o debajo del avatar de otra persona. El ancho del carril es
+        el nuevo hook <code>--sk-message-lane-size</code> (avatar más separación).
+    en:
+      title: Every avatar has its lane
+      body: >-
+        A row reserves the avatar column on its own side and keeps the opposite one free: a sent
+        message no longer stretches across the column of the received avatars, or the other way
+        round, so no bubble sits above or below somebody else's avatar. The lane width is the new
+        <code>--sk-message-lane-size</code> hook (avatar plus gap).
+  - date: 2026-10-02
+    kind: feature
+    target: MessageActions
+    es:
+      title: Message suma un slot de acciones
+      body: >-
+        Nuevo <code>MessageActions</code> para controles que pertenecen al mensaje: copiar,
+        reaccionar o eliminar. El contrato solo da el lugar y la alineación; la app decide qué
+        acciones existen según permisos, por ejemplo eliminar solo mensajes propios.
+    en:
+      title: Message adds an actions slot
+      body: >-
+        New <code>MessageActions</code> for controls that belong to the message: copy, react, or
+        delete. The contract only provides placement and alignment; the app decides which actions are
+        available from permissions, such as deleting only your own messages.
