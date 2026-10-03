@@ -364,18 +364,24 @@ const drawerSections: readonly DrawerSection[] = [
  */
 /* Matched on `canonical`, so one rule covers `/componentes/...` and `/components/...` alike. */
 const currentSection =
-  canonical === "/components" || canonical.startsWith("/componentes/")
+  canonical === "/components" || (canonical.startsWith("/components/") || canonical.startsWith("/componentes/"))
     ? componentSection ?? navigation[0]
     : canonical === "/foundations" || canonical.startsWith("/referencia/")
       ? foundationsSection ?? navigation[0]
       : navigation.find((section) => section.groups.some((group) => group.items.some((item) => item.href === path))) ?? navigation[0];
+const belongsToFoundations =
+  canonical === "/foundations" ||
+  canonical.startsWith("/referencia/") ||
+  (foundationsSection?.groups.some((group) => group.items.some((item) => item.href === path)) ?? false);
 const sectionNavigation = (railIndex ? navigation : [currentSection]) satisfies readonly NavigationSection[];
 const isGlobalItemCurrent = (href: string): boolean => {
   const itemCanonical = canonicalPath(href);
-  if (itemCanonical === "/components") return canonical === "/components" || canonical.startsWith("/componentes/");
+  if (itemCanonical === "/components") return canonical === "/components" || (canonical.startsWith("/components/") || canonical.startsWith("/componentes/"));
   /* The home belongs to no section: `currentSection` falls back to the first one there, which would mark
      Foundations as current next to the home entry itself. */
-  if (itemCanonical === "/foundations") return canonical !== "/" && currentSection.id === "foundations";
+  /* Only a page that really is in Foundations. `currentSection` FALLS BACK to the first section for a page in
+     none (the home, Templates, Presets), which marked Foundations current beside Templates. */
+  if (itemCanonical === "/foundations") return belongsToFoundations;
   return canonical === itemCanonical;
 };
 
