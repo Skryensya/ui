@@ -53,6 +53,12 @@ minimumReleaseAge: 43200
 # the cooldown again. Verified by removing them and reinstalling: nothing changes today. They are
 # insurance for the next `pnpm install` that does have to resolve, not a patch for something broken now.
 minimumReleaseAgeExclude:
+  # DELETE AFTER 2026-10-19, when devalue 5.9.4 (2026-09-18) is 30 days old.
+  # `devalue <= 5.9.2` carries three HIGH advisories (shared memory in stringify/uneval, quadratic
+  # expansion of repeated strings in uneval, an unhandled rejection in stringifyAsync), reached through
+  # apps/docs > @astrojs/react. The fix is the override in package.json; this lets it resolve inside
+  # the window.
+  - "devalue"
   # DELETE AFTER 2026-10-04, when undici 7.29.1 (2026-09-04) is 30 days old.
   # `undici < 7.29.1` carries two HIGH advisories (a WebSocket subprotocol denial of service and a
   # TLS validation bypass in BalancedPool), reached through apps/docs > astro > unifont. The fix is
@@ -159,3 +165,13 @@ minimumReleaseAgeExclude:
 # ES5 polyfills that none of this needs. No package in this tree requires compiling to work (sharp
 # included: it downloads precompiled binaries).
 onlyBuiltDependencies: []
+
+# AUDIT EXCEPTIONS: an advisory with NO patched version, accepted on purpose and with a date to look at it again.
+# `pnpm audit` and scripts/audit-gate.ts both honor it, so everything else HIGH still blocks the push.
+auditConfig:
+  ignoreGhsas:
+    # REVIEW BY 2026-11-03. GHSA-ch52-4w7c-c8xp, http-cache-semantics <= 4.2.0 (4.2.0 is the latest, no
+    # fix exists): `max-stale` handling can disclose a cached response across users. Reached only through
+    # apps/docs > astro, and it matters only behind a cache shared by several users; this repo is a
+    # statically built docs site. DELETE this entry when a patched version ships and the lockfile has it.
+    - GHSA-ch52-4w7c-c8xp
