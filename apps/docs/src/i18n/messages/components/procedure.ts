@@ -1,5 +1,6 @@
 export const procedureMessages = {
   es: {
+    "procedurePage.guidelinesLede": "Un procedimiento sirve cuando el orden importa y cada paso se puede seguir de uno en uno.",
     "demo.procedure.dd.commandInline.1.title": "Instala el paquete",
     "demo.procedure.dd.commandInline.1.body": "Ejecuta pnpm add @skryensya/core en la terminal.",
     "demo.procedure.dd.commandInline.2.title": "Inicia el proyecto",
@@ -160,6 +161,7 @@ export const procedureMessages = {
     "procedurePage.test2": "Mantiene el título y el contenido arbitrario de cada paso dentro de su ítem.",
   },
   en: {
+    "procedurePage.guidelinesLede": "A procedure fits when the order matters and each step can be followed one at a time.",
     "demo.procedure.dd.commandInline.1.title": "Install the package",
     "demo.procedure.dd.commandInline.1.body": "Run pnpm add @skryensya/core in the terminal.",
     "demo.procedure.dd.commandInline.2.title": "Start the project",

@@ -15,7 +15,7 @@ import "@skryensya/core/patterns/layout.css";
 import * as demos from "@docs/demos/procedure";
 import { treeStory, type Meta, type StoryObj } from "../tree-story";
 
-export default { title: "Components/Content/Procedure", tags: ["autodocs"] } satisfies Meta;
+export default { title: "Components/Surfaces & Collections/Procedure", tags: ["autodocs"] } satisfies Meta;
 
 export const Anatomy: StoryObj = treeStory(demos.procedureAnatomyTree);
 export const Default: StoryObj = treeStory(demos.procedureTree);

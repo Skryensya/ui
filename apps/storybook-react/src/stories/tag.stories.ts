@@ -8,7 +8,7 @@ import "@skryensya/core/patterns/layout.css";
 import * as demos from "@docs/demos/tag";
 import { treeStory, type Meta, type StoryObj } from "../tree-story";
 
-export default { title: "Components/Content/Tag", tags: ["autodocs"] } satisfies Meta;
+export default { title: "Components/Labels & Identity/Tag", tags: ["autodocs"] } satisfies Meta;
 
 export const Anatomy: StoryObj = treeStory(demos.tagAnatomyTree);
 export const Simple: StoryObj = treeStory(demos.tagSimpleTree);

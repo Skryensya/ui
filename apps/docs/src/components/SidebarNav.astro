@@ -37,7 +37,12 @@ const holdsCurrentPage = (items: readonly { href: string }[]): boolean => items.
 {
   nav.map((section, sectionIndex) => (
     <section class="docs-nav-section" aria-label={section.section}>
-      {!section.headless && <header class="docs-nav-section__header">
+      {section.caption && (
+        <header class="docs-nav-section__header">
+          <h2 class="docs-nav-section__title" data-flush>{section.caption}</h2>
+        </header>
+      )}
+      {!section.caption && <header class="docs-nav-section__header">
         {
           section.href ? (
             <a class="docs-nav-section__title" href={section.href}>{section.section}</a>

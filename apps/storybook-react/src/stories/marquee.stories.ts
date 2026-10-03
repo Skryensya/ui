@@ -15,7 +15,7 @@ import "@skryensya/core/patterns/visually-hidden.css";
 import * as demos from "@docs/demos/marquee";
 import { treeStory, type Meta, type StoryObj } from "../tree-story";
 
-export default { title: "Components/Content/Marquee", tags: ["autodocs"] } satisfies Meta;
+export default { title: "Components/Media & Visuals/Marquee", tags: ["autodocs"] } satisfies Meta;
 
 export const Anatomy: StoryObj = treeStory(demos.marqueeAnatomyTree);
 export const Manual: StoryObj = treeStory(demos.marqueeManualTree);

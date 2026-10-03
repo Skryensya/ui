@@ -9,7 +9,7 @@ import "@skryensya/core/patterns/layout.css";
 import * as demos from "@docs/demos/typography";
 import { treeStory, type Meta, type StoryObj } from "../tree-story";
 
-export default { title: "Components/Content/Heading", tags: ["autodocs"] } satisfies Meta;
+export default { title: "Components/Typography & Code/Heading", tags: ["autodocs"] } satisfies Meta;
 
 export const HeadingAnatomy: StoryObj = treeStory(demos.headingAnatomyTree);
 export const TextAnatomy: StoryObj = treeStory(demos.textAnatomyTree);

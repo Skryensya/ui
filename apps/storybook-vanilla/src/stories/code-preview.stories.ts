@@ -8,7 +8,7 @@ import "@skryensya/core/components/switch.css";
 import * as demos from "@docs/demos/code-preview";
 import { treeStory, type Meta, type StoryObj } from "../tree-story";
 
-export default { title: "Components/Content/CodePreview", tags: ["autodocs"] } satisfies Meta;
+export default { title: "Components/Typography & Code/CodePreview", tags: ["autodocs"] } satisfies Meta;
 
 export const Anatomy: StoryObj = treeStory(demos.codePreviewAnatomyTree);
 export const Default: StoryObj = treeStory(demos.codePreviewTree);

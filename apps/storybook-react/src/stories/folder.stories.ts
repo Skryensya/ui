@@ -12,7 +12,7 @@ import "@skryensya/core/patterns/media-overlay.css";
 import * as demos from "@docs/demos/folder";
 import { treeStory, type Meta, type StoryObj } from "../tree-story";
 
-export default { title: "Components/Content/Folder", tags: ["autodocs"] } satisfies Meta;
+export default { title: "Components/Surfaces & Collections/Folder", tags: ["autodocs"] } satisfies Meta;
 
 export const Anatomy: StoryObj = treeStory(demos.folderAnatomyTree);
 export const Default: StoryObj = treeStory(demos.folderTree);

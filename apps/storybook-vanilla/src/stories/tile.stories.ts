@@ -12,7 +12,7 @@ import "@skryensya/core/patterns/layout.css";
 import * as demos from "@docs/demos/tile";
 import { treeStory, type Meta, type StoryObj } from "../tree-story";
 
-export default { title: "Components/Content/Tile", tags: ["autodocs"] } satisfies Meta;
+export default { title: "Components/Surfaces & Collections/Tile", tags: ["autodocs"] } satisfies Meta;
 
 export const Anatomy: StoryObj = treeStory(demos.tileAnatomyTree);
 export const LinkDemo: StoryObj = treeStory(demos.tileLinkDemoTree);

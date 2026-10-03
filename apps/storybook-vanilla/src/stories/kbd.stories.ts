@@ -10,7 +10,7 @@ import "@skryensya/core/patterns/layout.css";
 import * as demos from "@docs/demos/kbd";
 import { treeStory, type Meta, type StoryObj } from "../tree-story";
 
-export default { title: "Components/Content/Kbd", tags: ["autodocs"] } satisfies Meta;
+export default { title: "Components/Typography & Code/Kbd", tags: ["autodocs"] } satisfies Meta;
 
 export const Anatomy: StoryObj = treeStory(demos.kbdAnatomyTree);
 export const Default: StoryObj = treeStory(() => demos.kbdTree);

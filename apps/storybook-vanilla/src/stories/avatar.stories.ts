@@ -11,7 +11,7 @@ import "@skryensya/core/patterns/layout.css";
 import * as demos from "@docs/demos/avatar";
 import { treeStory, type Meta, type StoryObj } from "../tree-story";
 
-export default { title: "Components/Content/Avatar", tags: ["autodocs"] } satisfies Meta;
+export default { title: "Components/Labels & Identity/Avatar", tags: ["autodocs"] } satisfies Meta;
 
 export const Anatomy: StoryObj = treeStory(demos.avatarAnatomyTree);
 export const GroupAnatomy: StoryObj = treeStory(demos.avatarGroupAnatomyTree);

@@ -285,7 +285,7 @@ export const megamenuTree = (
  */
 type Hrefs = { overview: string; pricing: string; integrations: string; teams: string; enterprise: string };
 
-const variantLink = (label: Parameters<Translate>[0], href: string, photo: string): UsageTree => ({
+const variantLink = (label: string, href: string, photo: string): UsageTree => ({
   contract: "nav-list",
   signature: "NavListLink",
   options: { href },

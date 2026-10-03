@@ -460,7 +460,10 @@ export const procedureContentTree = (
     );
     if (kind === "text") return description;
     if (kind === "code")
-      return column([description, code(...CONTENT_COMMANDS[key])]);
+      {
+      const [label, command] = CONTENT_COMMANDS[key];
+      return column([description, code(label, command)]);
+    }
     if (key === "install") {
       return column([
         description,

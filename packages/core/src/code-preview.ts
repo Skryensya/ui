@@ -100,6 +100,7 @@ export const codePreviewContract = {
     "--sk-code-preview-label-active-fg",
     "--sk-code-preview-label-bg",
     "--sk-code-preview-label-fg",
+    "--sk-code-preview-line-height",
     "--sk-code-preview-window",
   ],
   /*

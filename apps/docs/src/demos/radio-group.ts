@@ -1,4 +1,4 @@
-import type { ItemInput, UsageTree } from "@skryensya/core/usage-tree";
+import type { UsageTree } from "@skryensya/core/usage-tree";
 import type { Translate } from "../i18n";
 import { radioGroupItems, tileRadioGroupItems } from "./data/radio-group";
 import {

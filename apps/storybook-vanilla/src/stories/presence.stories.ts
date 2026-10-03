@@ -14,7 +14,7 @@ import "@skryensya/core/patterns/layout.css";
 import * as demos from "@docs/demos/presence";
 import { treeStory, type Meta, type StoryObj } from "../tree-story";
 
-export default { title: "Components/Layout/Presence", tags: ["autodocs"] } satisfies Meta;
+export default { title: "Components/Utilities/Presence", tags: ["autodocs"] } satisfies Meta;
 
 export const Anatomy: StoryObj = treeStory(demos.presenceAnatomyTree);
 export const Notice: StoryObj = treeStory(demos.presenceNoticeTree);

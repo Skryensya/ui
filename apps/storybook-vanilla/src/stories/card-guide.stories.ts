@@ -7,6 +7,6 @@ import * as demos from "@docs/demos/card-guide";
 import { cardCopy } from "@docs/examples/card-data";
 import { treeStory, localeOf, type Meta, type StoryObj } from "../tree-story";
 
-export default { title: "Components/Content/Card/CardGuide", tags: ["autodocs"] } satisfies Meta;
+export default { title: "Components/Surfaces & Collections/Card/CardGuide", tags: ["autodocs"] } satisfies Meta;
 
 export const CardDontInnerLink: StoryObj = treeStory((t) => demos.cardDontInnerLinkTree(cardCopy[localeOf(t)], "#"));

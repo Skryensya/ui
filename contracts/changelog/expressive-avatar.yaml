@@ -3,5 +3,5 @@
 # `surface` es la forma del contrato la última vez que alguien la revisó. Si el compilador dice
 # que no coincide, algo de lo que un consumidor depende se movió: escribe la entrada y pega el
 # hash nuevo.
-surface: "b527b1ec2e09d98f"
+surface: "605a40dfd792216f"
 entries: []

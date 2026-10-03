@@ -7,6 +7,15 @@
 .docs-canvas {
   min-block-size: 100dvh;
   background: var(--color-bg-canvas);
+  /* LIGHT ONLY: a wash of the accent behind the top of the page, fading out within the first screen, so
+     light is no longer one flat grey and follows whichever accent the reader picked. Dark's side is
+     transparent. Here and not in site.css because this shorthand lives here and loads after it. */
+  background-image: radial-gradient(
+    90rem 40rem at 50% -6rem,
+    light-dark(color-mix(in oklab, var(--color-bg-accent-subtle) 75%, transparent), transparent),
+    transparent 72%
+  );
+  background-repeat: no-repeat;
 }
 
 /*

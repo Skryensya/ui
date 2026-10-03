@@ -182,7 +182,7 @@ export const menubarDontDestinationsHtml = (t: Translate): string =>
  * rows, a disabled row, a destructive one (`tone: "danger"`) and a row that is a real link (`href`).
  * Each function is one entry's rows; the trees below put them in a bar.
  */
-const separator = (value: string): ItemInput => ({ options: { value, kind: "separator" } });
+const separator = (value: string): ItemInput => ({ options: { value, kind: "separator" }, slots: {} });
 
 const fileItems = (t: Translate): readonly ItemInput[] => [
   dropdownItem("new", t("demo.menubar.new")),

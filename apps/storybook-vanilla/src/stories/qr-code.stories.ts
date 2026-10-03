@@ -14,7 +14,7 @@ import "@skryensya/core/patterns/layout.css";
 import * as demos from "@docs/demos/qr-code";
 import { treeStory, localeOf, type Meta, type StoryObj } from "../tree-story";
 
-export default { title: "Components/Content/QRCode", tags: ["autodocs"] } satisfies Meta;
+export default { title: "Components/Media & Visuals/QRCode", tags: ["autodocs"] } satisfies Meta;
 
 export const Anatomy: StoryObj = treeStory((t) => demos.qrCodeAnatomyTree(t, localeOf(t)));
 export const Default: StoryObj = treeStory((t) => demos.qrCodeTree(localeOf(t)));

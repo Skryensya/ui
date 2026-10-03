@@ -8,7 +8,7 @@ import "@skryensya/core/components/changelog.css";
 import * as demos from "@docs/demos/changelog";
 import { treeStory, type Meta, type StoryObj } from "../tree-story";
 
-export default { title: "Components/Content/Changelog", tags: ["autodocs"] } satisfies Meta;
+export default { title: "Components/Surfaces & Collections/Changelog", tags: ["autodocs"] } satisfies Meta;
 
 export const Anatomy: StoryObj = treeStory(demos.changelogAnatomyTree);
 export const Default: StoryObj = treeStory(demos.changelogTree);

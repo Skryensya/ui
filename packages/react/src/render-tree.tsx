@@ -50,6 +50,7 @@ const loaders: Record<string, () => Promise<Record<string, unknown>>> = {
   "@skryensya/react/tag": () => import("./components/tag.js"),
   "@skryensya/react/progress": () => import("./components/progress.js"),
   "@skryensya/react/avatar": () => import("./components/avatar.js"),
+  "@skryensya/react/expressive-avatar": () => import("./components/expressive-avatar.js"),
   "@skryensya/react/typography": () => import("./components/typography.js"),
   "@skryensya/react/layout": () => import("./components/layout.js"),
   "@skryensya/react/breadcrumb": () => import("./components/breadcrumb.js"),
@@ -127,6 +128,7 @@ const loaders: Record<string, () => Promise<Record<string, unknown>>> = {
   "@skryensya/react/editor": () => import("./components/editor.js"),
   "@skryensya/react/folder": () => import("./components/folder.js"),
   "@skryensya/react/message": () => import("./components/message.js"),
+  "@skryensya/react/shimmer": () => import("./components/shimmer.js"),
 };
 
 /*

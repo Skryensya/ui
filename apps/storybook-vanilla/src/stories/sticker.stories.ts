@@ -9,7 +9,7 @@ import "@skryensya/core/patterns/layout.css";
 import * as demos from "@docs/demos/sticker";
 import { treeStory, type Meta, type StoryObj } from "../tree-story";
 
-export default { title: "Components/Content/Sticker", tags: ["autodocs"] } satisfies Meta;
+export default { title: "Components/Media & Visuals/Sticker", tags: ["autodocs"] } satisfies Meta;
 
 export const Anatomy: StoryObj = treeStory(demos.stickerAnatomyTree);
 export const Default: StoryObj = treeStory(demos.stickerTree);

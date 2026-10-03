@@ -10,7 +10,7 @@ import "@skryensya/core/patterns/layout.css";
 import * as demos from "@docs/demos/icon";
 import { treeStory, type Meta, type StoryObj } from "../tree-story";
 
-export default { title: "Components/Content/Icon", tags: ["autodocs"] } satisfies Meta;
+export default { title: "Components/Labels & Identity/Icon", tags: ["autodocs"] } satisfies Meta;
 
 export const Anatomy: StoryObj = treeStory(demos.iconAnatomyTree);
 export const Single: StoryObj = treeStory(() => demos.iconSingleTree);

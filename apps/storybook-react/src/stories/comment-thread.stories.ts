@@ -16,7 +16,7 @@ import "@skryensya/core/patterns/visually-hidden.css";
 import * as demos from "@docs/demos/comment-thread";
 import { treeStory, type Meta, type StoryObj } from "../tree-story";
 
-export default { title: "Components/Content/CommentThread", tags: ["autodocs"] } satisfies Meta;
+export default { title: "Components/Surfaces & Collections/CommentThread", tags: ["autodocs"] } satisfies Meta;
 
 export const CommentAnatomy: StoryObj = treeStory(demos.commentAnatomyTree);
 export const CommentAlone: StoryObj = treeStory(demos.commentAloneTree);

@@ -13,7 +13,7 @@ import "@skryensya/core/patterns/visually-hidden.css";
 import * as demos from "@docs/demos/lightbox";
 import { treeStory, type Meta, type StoryObj } from "../tree-story";
 
-export default { title: "Components/Overlays/Lightbox", tags: ["autodocs"] } satisfies Meta;
+export default { title: "Components/Media & Visuals/Lightbox", tags: ["autodocs"] } satisfies Meta;
 
 export const DoGalleryDd: StoryObj = treeStory(demos.lightboxDoGalleryDdTree);
 export const DontStaticDd: StoryObj = treeStory(demos.lightboxDontStaticDdTree);

@@ -12,7 +12,7 @@ import "@skryensya/core/patterns/layout.css";
 import * as demos from "@docs/demos/quote";
 import { treeStory, type Meta, type StoryObj } from "../tree-story";
 
-export default { title: "Components/Content/Quote", tags: ["autodocs"] } satisfies Meta;
+export default { title: "Components/Typography & Code/Quote", tags: ["autodocs"] } satisfies Meta;
 
 export const Anatomy: StoryObj = treeStory(demos.quoteAnatomyTree);
 export const Default: StoryObj = treeStory(demos.quoteTree);
