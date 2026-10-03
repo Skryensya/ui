@@ -143,9 +143,9 @@ import { vanillaMountSections } from "../lib/vanilla-mount-sections";
 import VanillaMount from "../components/VanillaMount.astro";
 import { vanillaMounts } from "../lib/vanilla-mounts";
 import { iconMarkup, siteIconSet } from "../icons";
-import { getGlobalNavigation, getNavigation, type NavigationItem, type NavigationSection } from "../lib/navigation";
+import { getGlobalNavigation, getNavigation, type NavigationGroup, type NavigationItem, type NavigationSection } from "../lib/navigation";
 import type { DrawerSection } from "../components/DrawerNav.astro";
-import { templateSections } from "../lib/templates-nav";
+import { templateGroups } from "../lib/templates-nav";
 import { palettePresets } from "../lib/palette-presets";
 import { reportIssueUrl } from "../lib/report-issue";
 import {
@@ -323,7 +323,7 @@ const drawerHome =
   ({ href: href("/"), label: t("nav.home") } satisfies { href: string; label: string });
 
 /** A synthetic drawer section for a dev-only gallery page (Templates / Presets). */
-const gallerySection = (canon: "/templates" | "/presets", items: readonly NavigationItem[]): DrawerSection[] => {
+const gallerySection = (canon: "/templates" | "/presets", groups: readonly NavigationGroup[]): DrawerSection[] => {
   const label = globalLabel(canon);
   if (!label) return [];
   return [
@@ -333,7 +333,7 @@ const gallerySection = (canon: "/templates" | "/presets", items: readonly Naviga
       href: isDev ? globalHref(canon) : undefined,
       disabled: !isDev,
       blurb: "",
-      groups: [{ group: "", items: isDev ? items : [] }],
+      groups: isDev ? groups : [{ group: "", items: [] }],
     },
   ];
 };
@@ -343,9 +343,16 @@ const drawerSections: readonly DrawerSection[] = [
   ...navigation,
   ...gallerySection(
     "/templates",
-    templateSections(t).map((section) => ({
-      href: `${templatesHref}#${section.id}`,
-      label: section.navLabel,
+    /* The same groups the Templates page's own rail draws: open, and opening and closing like Foundations'. */
+    templateGroups(t).map((group) => ({
+      id: `templates-${group.id}`,
+      group: group.label,
+      collapsible: true,
+      defaultOpen: true,
+      items: group.sections.map((section) => ({
+        href: `${templatesHref}#${section.id}`,
+        label: section.navLabel,
+      })),
     })),
   ),
   ...gallerySection("/presets", []),

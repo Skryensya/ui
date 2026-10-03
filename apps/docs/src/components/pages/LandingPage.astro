@@ -466,7 +466,9 @@ const bentoSets = Array.from({ length: bentoCycle.length + 3 }, (_, index) => be
       </div>
     </div>
 
-    <div class="sk-wrapper landing-footer-wrap" data-size="md" data-gutter="lg">
+    {/* Outside any wrapper: the footer band is a surface and spans the page edge to edge; only its
+        CONTENT sits in the md measure (the rules below, on `.site-footer__inner`). */}
+    <div class="landing-footer-wrap">
       <SiteFooter nav={navigation} locale={locale} />
     </div>
   </main>
@@ -643,7 +645,13 @@ const bentoSets = Array.from({ length: bentoCycle.length + 3 }, (_, index) => be
     --bento-gap: 1rem;
     /* One set plus the gap that follows it: the exact distance the track shifts per loop. */
     --bento-set: calc(12 * (var(--bento-col) + var(--bento-gap)));
-    /* Clipped to its wrapper: the band is as wide as the page's other sections and no wider. */
+    /* A BREAKOUT, not a band the width of the text: it is wider than the wrapper it sits in, centred on it,
+       and capped (90rem) so on a very wide screen it stops growing instead of running to the edges.
+       `100vw - 3rem` keeps a margin on a screen narrower than the cap, and clears the scrollbar. The
+       margin is half the difference to the wrapper, which goes negative exactly when the band is wider. */
+    --bento-breakout: min(90rem, calc(100vw - 3rem));
+    inline-size: var(--bento-breakout);
+    margin-inline: calc((100% - var(--bento-breakout)) / 2);
     overflow: hidden;
     padding-block-end: clamp(3rem, 6vw, 5rem);
     mask-image: linear-gradient(to right, transparent, #000 8%, #000 92%, transparent);
@@ -831,18 +839,20 @@ const bentoSets = Array.from({ length: bentoCycle.length + 3 }, (_, index) => be
     line-height: 1.6;
   }
 
-  /* The footer content keeps the same md Wrapper measure as the home page, but the footer band
-     itself escapes that wrapper so the closing surface reaches the viewport edges. */
-  .landing-footer-wrap > .site-footer {
-    inline-size: 100vw;
-    margin-inline: calc((100vw - 100%) / -2);
+  /* The footer BAND spans the page edge to edge (it is a surface); its CONTENT keeps the home page's md
+     Wrapper measure. `:global` because the footer is a child component: Astro's scoping attribute never
+     lands on its elements, so a scoped selector for them silently matched nothing (which is how the band
+     ended up as narrow as the content). */
+  .landing-footer-wrap :global(.site-footer) {
+    inline-size: 100%;
+    margin-inline: 0;
   }
 
-  .landing-footer-wrap > .site-footer > .site-footer__inner {
+  .landing-footer-wrap :global(.site-footer > .site-footer__inner) {
     box-sizing: border-box;
-    inline-size: min(100%, var(--sk-wrapper-max));
+    inline-size: min(100%, var(--sk-wrapper-max, var(--size-wrapper-md)));
     margin-inline: auto;
-    padding-inline: var(--sk-wrapper-padding-inline);
+    padding-inline: var(--space-inset-lg);
   }
 
   @media (prefers-reduced-motion: reduce) {

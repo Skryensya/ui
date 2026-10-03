@@ -53,7 +53,9 @@ import "@skryensya/core/patterns/footer.css";
 import { templateTrees } from "../../demos/templates/registry";
 import { makerUrl } from "../../lib/navigation";
 import { getLocale, useTranslations } from "../../i18n";
-import { templateSections } from "../../lib/templates-nav";
+import { templateGroups, templateSections } from "../../lib/templates-nav";
+import SidebarNav from "../SidebarNav.astro";
+import type { NavigationSection } from "../../lib/navigation";
 
 const locale = getLocale(Astro.url);
 const t = useTranslations(locale);
@@ -65,6 +67,23 @@ const t = useTranslations(locale);
  * tree here.
  */
 const TREES = templateTrees(t, locale);
+/* The SAME rail component as the rest of the site (`SidebarNav`), fed the templates' groups: open, and
+   opening and closing like Foundations'. An empty caption: the page's own title already says where this is. */
+const railNavigation: NavigationSection[] = [
+  {
+    id: "templates",
+    section: t("templates.navLabel"),
+    blurb: "",
+    caption: "",
+    groups: templateGroups(t).map((group) => ({
+      id: `templates-${group.id}`,
+      group: group.label,
+      collapsible: true,
+      defaultOpen: true,
+      items: group.sections.map((section) => ({ href: `#${section.id}`, label: section.navLabel })),
+    })),
+  },
+];
 
 const templates = templateSections(t).map((section) => ({
   ...section,
@@ -85,21 +104,7 @@ const templates = templateSections(t).map((section) => ({
 <div class="templates">
   <aside class="sk-sidebar templates__sidebar">
     <div class="sk-sidebar__content">
-      <nav class="sk-nav-list" aria-label={t("templates.navLabel")}>
-        <div class="sk-nav-list__group">
-          <ul class="sk-nav-list__list">
-            {
-              templates.map((template) => (
-                <li class="sk-nav-list__item">
-                  <a class="sk-nav-list__link sk-interactive" href={`#${template.id}`}>
-                    <span class="sk-nav-list__label">{template.navLabel}</span>
-                  </a>
-                </li>
-              ))
-            }
-          </ul>
-        </div>
-      </nav>
+      <SidebarNav nav={railNavigation} path="" idPrefix="templates-nav" />
     </div>
   </aside>
 

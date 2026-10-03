@@ -96,9 +96,17 @@ describe("the component navigation", () => {
     expect(getDevCommandPaletteOnlyComponentNavigation("en").flatMap((group) => group.items.map((item) => item.label))).toContain("Annotation");
   });
 
-  it("flags the component categories as collapsible, and the foundations as not", () => {
+  it("flags the component categories as collapsible, closed until they hold the current page", () => {
     expect(componentsSection("en").groups.every((group) => group.collapsible)).toBe(true);
+    expect(componentsSection("en").groups.some((group) => group.defaultOpen)).toBe(false);
+  });
+
+  it("makes the foundations' groups collapsible, all open on arrival, each with a stable id", () => {
     const foundations = getNavigation("en").find((section) => section.id === "foundations")!;
-    expect(foundations.groups.some((group) => group.collapsible)).toBe(false);
+    expect(foundations.groups.length).toBeGreaterThan(1);
+    expect(foundations.groups.every((group) => group.collapsible && group.defaultOpen)).toBe(true);
+    const ids = foundations.groups.map((group) => group.id);
+    expect(ids.every(Boolean)).toBe(true);
+    expect(new Set(ids).size).toBe(ids.length);
   });
 });

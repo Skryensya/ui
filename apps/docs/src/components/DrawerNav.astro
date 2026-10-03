@@ -141,7 +141,7 @@ const holdsCurrentPage = (items: readonly NavigationItem[]): boolean => items.so
             {hasCollapsibleGroups(section) ? (
               section.groups.map((group, groupIndex) => {
                 const labelId = `docs-drawer-${section.id}-${groupIndex}`;
-                const groupOpen = holdsCurrentPage(group.items);
+                const groupOpen = group.defaultOpen ?? holdsCurrentPage(group.items);
                 return (
                   <li class="sk-nav-list__item">
                     <div class="sk-nav-list__group" data-collapsible data-default-open={groupOpen ? undefined : "false"}>
@@ -151,7 +151,7 @@ const holdsCurrentPage = (items: readonly NavigationItem[]): boolean => items.so
                         id={labelId}
                         data-sk-nav-list-group-trigger
                         data-nav-group-trigger={group.id}
-                        data-nav-group-active={groupOpen ? "true" : "false"}
+                        data-nav-group-active={holdsCurrentPage(group.items) ? "true" : "false"}
                         aria-expanded={groupOpen ? "true" : "false"}
                         aria-controls={`${labelId}-list`}
                       >

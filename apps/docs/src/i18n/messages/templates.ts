@@ -60,6 +60,11 @@ export const templatesMessages = {
     "templates.notFoundLabel": "Página 404 con salidas y destinos sugeridos",
     "templates.notFoundNavLabel": "404",
     "templates.navLabel": "Templates",
+    "templates.group.app": "Aplicación",
+    "templates.group.marketing": "Marketing",
+    "templates.group.content": "Contenido",
+    "templates.group.flows": "Flujos",
+    "templates.group.system": "Sistema",
 
     /* Marketing landing. Product names ("Lumen") stay written in the tree: they are proper nouns and
        are not translated. */
@@ -512,6 +517,11 @@ export const templatesMessages = {
     "templates.notFoundLabel": "A 404 page with ways out and suggested destinations",
     "templates.notFoundNavLabel": "404",
     "templates.navLabel": "Templates",
+    "templates.group.app": "Application",
+    "templates.group.marketing": "Marketing",
+    "templates.group.content": "Content",
+    "templates.group.flows": "Flows",
+    "templates.group.system": "System",
 
     /* Marketing landing. Product names ("Lumen") stay written in the tree: proper nouns do not
        translate. */
