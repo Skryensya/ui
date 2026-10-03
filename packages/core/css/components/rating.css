@@ -32,8 +32,19 @@
     --sk-rating-symbol: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='black'%3E%3Cpath d='M11.5 2.3a.6.6 0 0 1 1 0l2.6 5.3 5.8.8a.6.6 0 0 1 .3 1l-4.2 4.1 1 5.8a.6.6 0 0 1-.9.6L12 17.2l-5.2 2.7a.6.6 0 0 1-.9-.6l1-5.8-4.2-4.1a.6.6 0 0 1 .3-1l5.8-.8z'/%3E%3C/svg%3E");
     --sk-rating-size: var(--size-icon-md);
     --sk-rating-gap: var(--space-inline-xs);
-    --sk-rating-on-color: var(--color-text-warning);
-    --sk-rating-off-color: var(--color-border-default);
+    /*
+     * LIGHT MODE USED TO LOOK MUDDY. The filled symbol took the warning TEXT colour (amber-800, a brown
+     * chosen for reading words) and the empty one took the default border (stone-500), which on white is
+     * nearly as heavy as the filled one: a row of five read as brown and grey at similar weight. A symbol
+     * is a graphic, not text, so the filled one now takes the warning BORDER amber (amber-600: the
+     * strongest gold that still holds 3:1 on a light surface) and the empty one is the same border grey
+     * at about half strength, a quiet outline that does not compete. Dark mode keeps the colours it had.
+     */
+    --sk-rating-on-color: light-dark(var(--color-border-warning), var(--color-text-warning));
+    --sk-rating-off-color: light-dark(
+      color-mix(in oklab, var(--color-border-default) 50%, transparent),
+      var(--color-border-default)
+    );
     --sk-rating-max: 5;
     /* The reading itself, written by both bindings from the `value` option. Declared here so a
        strip in markup that never set it paints an empty scale instead of an invalid gradient. */
