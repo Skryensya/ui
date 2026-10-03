@@ -6,7 +6,7 @@ export const sectionMessages = {
     "section.foundations": "Fundamentos",
     "section.foundations.blurb": "Contrato, tokens, adaptación y patterns compartidos.",
     "section.components": "Componentes",
-    "section.components.blurb": "Catálogo A–Z de piezas del sistema.",
+    "section.components.blurb": "Catálogo de piezas del sistema, por categoría.",
   },
   en: {
 
@@ -15,6 +15,6 @@ export const sectionMessages = {
     "section.foundations": "Foundations",
     "section.foundations.blurb": "Shared contract, tokens, adaptation, and patterns.",
     "section.components": "Components",
-    "section.components.blurb": "A–Z catalog of the system's pieces.",
+    "section.components.blurb": "Catalog of the system's pieces, by category.",
   },
 } as const;

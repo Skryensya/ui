@@ -68,9 +68,29 @@
       "types": "./src/callout.ts",
       "default": "./src/callout.ts"
     },
+    "./expressive-avatar": {
+      "types": "./src/expressive-avatar.ts",
+      "default": "./src/expressive-avatar.ts"
+    },
+    "./expressive-avatar-behavior": {
+      "types": "./src/expressive-avatar-behavior.ts",
+      "default": "./src/expressive-avatar-behavior.ts"
+    },
+    "./expressive-avatar-atlas": {
+      "types": "./src/expressive-avatar-atlas.ts",
+      "default": "./src/expressive-avatar-atlas.ts"
+    },
     "./avatar": {
       "types": "./src/avatar.ts",
       "default": "./src/avatar.ts"
+    },
+    "./pixel-portrait": {
+      "types": "./src/pixel-portrait.ts",
+      "default": "./src/pixel-portrait.ts"
+    },
+    "./pixel-portrait-sprite": {
+      "types": "./src/pixel-portrait-sprite.ts",
+      "default": "./src/pixel-portrait-sprite.ts"
     },
     "./tag": {
       "types": "./src/tag.ts",
@@ -111,6 +131,14 @@
     "./placeholder": {
       "types": "./src/placeholder.ts",
       "default": "./src/placeholder.ts"
+    },
+    "./shimmer": {
+      "types": "./src/shimmer.ts",
+      "default": "./src/shimmer.ts"
+    },
+    "./message": {
+      "types": "./src/message.ts",
+      "default": "./src/message.ts"
     },
     "./slider": {
       "types": "./src/slider.ts",

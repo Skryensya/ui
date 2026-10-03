@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-28T11:04:14.165Z",
+  "generatedAt": "2026-10-02T21:25:22.103Z",
   "results": {
     "apps/docs/src/components/pages/CardPage.test.ts": {
       "imports tile.css, which Base.astro never loads globally": "passed",
@@ -1986,6 +1986,14 @@
       "carries an open dropdown to the neighbour with Right": "passed",
       "switches by pointing once a menu is open, across to the status side, and never opens on pointing alone": "passed",
       "a click on another trigger closes the open menu first": "passed"
+    },
+    "packages/react/src/components/message.test.tsx": {
+      "renders the conversation row and defaults to start alignment": "passed",
+      "serializes end alignment": "passed",
+      "renders header and footer metadata inside content": "passed",
+      "renders action controls": "passed",
+      "groups consecutive messages": "passed",
+      "keeps consumer classes": "passed"
     }
   }
 }

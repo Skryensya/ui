@@ -62,6 +62,8 @@ import "@skryensya/core/patterns/vaul.css";
 import "@skryensya/core/patterns/dialog-vaul.css";
 import "@skryensya/core/components/command-palette.css";
 import "@skryensya/core/components/tabs.css";
+/* The docs rail is a scroll container; FadeEdge makes overflow visible without a hard cutoff. */
+import "@skryensya/core/components/fade-edge.css";
 /* Anchoring: the placement shared by tooltip, popover, popup, menu, select, combobox and date picker
  * (decision 25). It goes before them because they are its consumers. */
 import "@skryensya/core/patterns/anchored.css";
@@ -93,7 +95,7 @@ import "@skryensya/core/patterns/scrollbar.css";
 import "@skryensya/core/patterns/scroll-lock.css";
 import "@skryensya/core/patterns/media-overlay.css";
 import "@skryensya/core/patterns/layout.css";
-import "@skryensya/core/patterns/footer.css"; // <SiteFooter>'s `sk-footer`, on every page with a rail
+import "@skryensya/core/patterns/footer.css"; // <SiteFooter>'s `sk-footer`, used by the landing page
 import "@skryensya/core/patterns/table-pager.css";
 import "@skryensya/core/patterns/icon-toggle.css";
 /* The mobile preference sheet (`#docs-prefs-sheet`, below) renders every setting as a Tile Button -
@@ -133,7 +135,6 @@ import { emitMarkup } from "@skryensya/ai-compiler/emit";
 import { DOCS_TOUR_TEMPLATE_ID, docsTourTree } from "../lib/docs-tour";
 import ContrastToggle from "../components/ContrastToggle.astro";
 import SidebarNav from "../components/SidebarNav.astro";
-import SiteFooter from "../components/SiteFooter.astro";
 import DrawerNav from "../components/DrawerNav.astro";
 import ThemeToggle from "../components/ThemeToggle.astro";
 import Toc from "../components/Toc.astro";
@@ -1204,12 +1205,137 @@ const PALETTE_PRESETS = palettePresets(locale);
         all of them, so the next Tab from here is the first link in the index.
       */}
         <div
-          class="sk-sidebar__content sk-scrollbar sk-scrollbar--reveal"
+          class="sk-sidebar__content sk-scrollbar sk-scrollbar--reveal sk-fade-edge"
           id="docs-nav"
           tabindex="-1"
+          data-sk-fade-edge
+          data-scroll-aware
+          data-direction="vertical"
         >
           <SidebarNav nav={sectionNavigation} path={path} idPrefix="docs-nav" />
         </div>
+        {/*
+          WHICH CATEGORIES ARE OPEN, kept for the session. The markup opens only the category that holds the
+          current page; this puts back what the reader opened or closed by hand, BEFORE first paint (a
+          multi-page site: every navigation is a fresh document, and a list that opened a moment after it
+          appeared would be the very shift this script exists to avoid).
+
+          Rules: the current page's category is ALWAYS open, whatever was stored (the reader must be able to
+          see where they are); every other one takes its stored state, if it has one. After that the script
+          only LISTENS: any change of a trigger's `aria-expanded`, whoever made it (the nav-list enhancer on a
+          click or Escape, or this script mirroring), is stored under the category's stable id and copied to
+          the same category in the other nav (the rail and the drawer both render it), so the two never
+          disagree. It does not toggle anything itself: the toggling is the nav-list pattern's.
+
+          `sessionStorage` can throw (blocked storage, private windows): then nothing is kept and nothing breaks.
+        */}
+        <script is:inline>
+          (function () {
+            var KEY = "docs-nav-groups";
+            var triggers = function () {
+              return document.querySelectorAll("[data-nav-group-trigger]");
+            };
+            var read = function () {
+              try {
+                return JSON.parse(sessionStorage.getItem(KEY) || "{}") || {};
+              } catch (error) {
+                return {};
+              }
+            };
+            var write = function (state) {
+              try {
+                sessionStorage.setItem(KEY, JSON.stringify(state));
+              } catch (error) {}
+            };
+            var setOpen = function (trigger, open) {
+              if ((trigger.getAttribute("aria-expanded") === "true") === open) return;
+              trigger.setAttribute("aria-expanded", open ? "true" : "false");
+              var list = document.getElementById(trigger.getAttribute("aria-controls"));
+              if (list) list.hidden = !open;
+            };
+            var observed = new WeakSet();
+            var observer = new MutationObserver(function (records) {
+              var state = read();
+              records.forEach(function (record) {
+                var trigger = record.target;
+                var id = trigger.getAttribute("data-nav-group-trigger");
+                if (!id) return;
+                var open = trigger.getAttribute("aria-expanded") === "true";
+                state[id] = open;
+                triggers().forEach(function (other) {
+                  if (other !== trigger && other.getAttribute("data-nav-group-trigger") === id) setOpen(other, open);
+                });
+              });
+              write(state);
+            });
+            var restore = function () {
+              var state = read();
+              triggers().forEach(function (trigger) {
+                var id = trigger.getAttribute("data-nav-group-trigger");
+                if (trigger.getAttribute("data-nav-group-active") === "true") setOpen(trigger, true);
+                else if (id && typeof state[id] === "boolean") setOpen(trigger, state[id]);
+                if (!observed.has(trigger)) {
+                  observed.add(trigger);
+                  observer.observe(trigger, { attributes: true, attributeFilter: ["aria-expanded"] });
+                }
+              });
+            };
+            restore();
+            /* The drawer is later in the document than the rail: its copy of each category joins here. */
+            document.addEventListener("DOMContentLoaded", restore);
+          })();
+        </script>
+        {/*
+          A CATEGORY THE READER OPENS STAYS IN VIEW. Opening one near the bottom of the rail pushes its entries
+          below the fold, and the reader would have to scroll to find what they just asked for. So after a
+          click that OPENS a category in the rail, the rail scrolls, smoothly, just enough to bring the category
+          into view: all of it if it fits, otherwise its button at the top. Closing never scrolls.
+
+          The reader stays in charge: any wheel, touch, pointer press or key on the rail cancels the animation
+          where it is (setting the current offset stops a smooth scroll). With reduced motion it jumps instead.
+        */}
+        <script is:inline>
+          (function () {
+            var rail = document.getElementById("docs-nav");
+            if (!rail) return;
+            /* The rail fades its edges (`--sk-fade-edge-size`): an entry inside that band is legible but
+               dimmed, so "in view" means clear of it. Read from the rail, not restated; a third of the
+               rail at most, so a short rail still has somewhere to put the category. */
+            var gap = function () {
+              var raw = parseFloat(getComputedStyle(rail).getPropertyValue("--sk-fade-edge-size")) || 6;
+              var px = raw * parseFloat(getComputedStyle(document.documentElement).fontSize);
+              return Math.min(px, rail.clientHeight / 3);
+            };
+            var reduced = window.matchMedia("(prefers-reduced-motion: reduce)");
+            var cancel = function () {
+              rail.scrollTo({ top: rail.scrollTop, behavior: "auto" });
+            };
+            ["wheel", "touchstart", "pointerdown", "keydown"].forEach(function (type) {
+              rail.addEventListener(type, function (event) {
+                if (type === "pointerdown" && event.target.closest && event.target.closest("[data-nav-group-trigger]")) return;
+                cancel();
+              }, { passive: true });
+            });
+            rail.addEventListener("click", function (event) {
+              var trigger = event.target.closest && event.target.closest("[data-nav-group-trigger]");
+              if (!trigger) return;
+              /* After the nav-list enhancer has toggled and the list has its real height. */
+              requestAnimationFrame(function () {
+                if (trigger.getAttribute("aria-expanded") !== "true") return;
+                var group = trigger.closest(".sk-nav-list__group") || trigger;
+                var box = rail.getBoundingClientRect();
+                var head = trigger.getBoundingClientRect();
+                var all = group.getBoundingClientRect();
+                var GAP = gap();
+                var delta = 0;
+                if (head.top < box.top + GAP) delta = head.top - box.top - GAP;
+                else if (all.bottom > box.bottom - GAP) delta = Math.min(all.bottom - box.bottom + GAP, head.top - box.top - GAP);
+                if (Math.abs(delta) < 1) return;
+                rail.scrollTo({ top: rail.scrollTop + delta, behavior: reduced.matches ? "auto" : "smooth" });
+              });
+            });
+          })();
+        </script>
         {/*
           Restore as soon as `#docs-nav` exists, not at the end of the body. This is a multi-page
           site and the rail's `overflow-y: auto` would otherwise snap back to the top on every
@@ -1226,6 +1352,17 @@ const PALETTE_PRESETS = palettePresets(locale);
             if (!rail) return;
             var saved = sessionStorage.getItem(KEY);
             if (saved) rail.scrollTop = parseInt(saved, 10) || 0;
+            /* The saved offset belongs to the last page's open categories. If this page's entry is not in view
+               with the ones that are open now, bring it to the middle of the rail (the rail only: scrolling the
+               entry itself into view would move the document too). */
+            var current = rail.querySelector('[aria-current="page"]');
+            if (current) {
+              var box = rail.getBoundingClientRect();
+              var at = current.getBoundingClientRect();
+              if (at.top < box.top || at.bottom > box.bottom) {
+                rail.scrollTop += at.top - box.top - (box.height - at.height) / 2;
+              }
+            }
             var save = function () {
               sessionStorage.setItem(KEY, String(rail.scrollTop));
             };
@@ -1406,38 +1543,14 @@ const PALETTE_PRESETS = palettePresets(locale);
           the pager (see `.docs-report-issue`): the two were never the same kind of statement, one
           is about the page the reader is on and the other about how the site is built.
 
-          A plain `<div>`, not a `<footer>`: the one document-level `contentinfo` landmark is
-          `<SiteFooter>`, a sibling of `.docs-document-pair` below, never a child of it. Two
-          `<footer>` elements at document level would be two `contentinfo`s, which WAI treats as
-          an error.
+          A plain `<div>`, not a `<footer>`: docs pages deliberately do not render the landing
+          page's global `<SiteFooter>`, so this stays a small document colophon rather than a second
+          site navigation band.
         */}
         <div class="docs-footer">
           <p set:html={t("footer.body", { core: "<code>@skryensya/core</code>" })} />
         </div>
       </main>
-      </div>
-
-      {/*
-        A SIBLING of `.docs-document-pair`, not a child of it: the footer is site-global chrome,
-        not this document's own furniture (its Toc, its per-page "report an issue" line), so it
-        does not live inside the per-document container either, the same reasoning that already
-        keeps it out of `<main>` itself.
-
-        `.docs-footer-row` reproduces `.docs-document-pair`'s OWN content/rail split from out
-        here, rather than merely capping a width: `grid-column: 2` (site.css) puts it in the
-        SAME `.shell` track the pair occupies, never the sidebar's, and `sk-layout-grid` (the
-        real pattern the pair itself is built on, `packages/core/css/patterns/layout.css`) sizes
-        its content the same way `<main>`'s own does, `--sk-layout-content`. The empty
-        `__rail` span beside it is the reason the LEFT edge lines up too, not just the width: it
-        reserves the identical `--docs-toc-inline-size` the real Toc rail claims (bridged the
-        same way `.docs-document-pair[data-document-layout="grid"]` bridges it for main, and
-        already 0px for free on a page whose Toc is empty, the same custom property both read),
-        so the content column sits exactly as far from center as the article's own does, without
-        this row needing to know whether THIS page's Toc is currently showing.
-      */}
-      <div class="docs-footer-row sk-layout-grid">
-        <SiteFooter nav={navigation} locale={locale} />
-        <div class="docs-footer-row__rail" data-width="rail" aria-hidden="true"></div>
       </div>
 
       {/*

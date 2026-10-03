@@ -48,11 +48,24 @@ export function componentStatus(item: NavigationItem): ComponentStatus {
 }
 
 export type NavigationGroup = {
+  /**
+   * Stable identity, independent of language, like a section's `id`: the key a renderer keeps a group's
+   * open/closed state under (`sessionStorage`) and the hook a script finds its copies by. Optional because
+   * most groups have never needed one.
+   */
+  id?: string;
   group: string;
   /** Short task-oriented explanation used by catalog section headers. */
   blurb?: string;
   /** A platform-native fallback: discoverable, but visually and structurally below the enhanced route. */
   secondary?: boolean;
+  /**
+   * The group opens and closes: a renderer shows its label as a disclosure button over its items instead of
+   * a plain label. Whether to do it is the DATA's call, not the renderer's: a renderer never decides it from
+   * a group's name. The component catalog sets it (a hundred entries are too many to show at once); the
+   * foundations, which are a short reading path, do not.
+   */
+  collapsible?: boolean;
   items: readonly NavigationItem[];
 };
 
@@ -66,6 +79,11 @@ export type NavigationSection = {
   section: string;
   href?: string;
   blurb: string;
+  /**
+   * The rail draws no title or blurb over this section: its categories speak for themselves. The section
+   * keeps its name for assistive tech (the landmark's label) and for everything else that lists sections.
+   */
+  headless?: boolean;
   groups: readonly NavigationGroup[];
 };
 
@@ -175,6 +193,19 @@ const componentItems = [
     ],
   },
   { href: "/components/avatar", label: "Avatar", aliases: ["perfil"] },
+  {
+    href: "/components/expressive-avatar",
+    label: "Expressive Avatar",
+    trailing: "Beta",
+    aliases: [
+      "avatar expresivo",
+      "expressive avatar",
+      "avatar interactivo",
+      "reactive avatar",
+      "avatar con expresiones",
+      "avatar pixel",
+    ],
+  },
   { href: "/components/badge", label: "Badge", aliases: ["insignia"] },
   {
     href: "/components/back-to-top",
@@ -488,6 +519,11 @@ const componentItems = [
     href: "/components/loader",
     label: "Loader",
     aliases: ["carga", "cargando", "spinner", "indicador de carga"],
+  },
+  {
+    href: "/components/message",
+    label: "Message",
+    aliases: ["mensaje", "chat", "conversación", "conversacion", "burbuja de chat", "assistant message"],
   },
   {
     href: "/components/meter",
@@ -949,42 +985,50 @@ const componentGroupItems = (...hrefs: readonly ComponentHref[]): readonly Navig
     .sort((a, b) => a.label.localeCompare(b.label, "es"));
 
 /*
- * EIGHT GROUPS, NAMED THE WAY DESIGN SYSTEMS USUALLY NAME THEM, so a reader finds a piece by the
- * word they already use for it. A twelve-group pass split things finer ("Selección" vs "Campos de
- * formulario", "Superficies", "Documentación y conversación") and read as invented vocabulary.
- * Every entry still belongs to exactly one group; the check below enforces it.
+ * TWELVE CATEGORIES, in the order a reader goes looking: what you DO, what you FILL IN, where you GO, what
+ * you READ, how it is SET, who it IS, what HOLDS content, what TELLS you, what sits ON TOP, how it is
+ * ARRANGED, what is SEEN, and what is left over. Every entry belongs to exactly one category; the check
+ * below enforces it. Inside a category the order is alphabetical, applied at the end (`componentGroupItems`
+ * sorts the source, and `getNavigation` sorts again by the LOCALISED label, which is what a reader sees).
  *
  * AUTHORED IN FULL, PUBLISHED FILTERED. This table is the whole inventory, paused entries included,
- * because the invariant below is about authorship: every entry belongs to exactly one group, and a
+ * because the invariant below is about authorship: every entry belongs to exactly one category, and a
  * table that quietly dropped some could not say that. `componentNavigation` under it is what the
- * site actually renders.
+ * site actually renders. A paused entry (DataGrid) and a dev-only one (Annotation) keep a category here
+ * for that reason, and are filtered out below.
+ *
+ * Where a piece could sit in two places it sits where a reader would look first: ExpressiveAvatar with
+ * Avatar (an identity, not a picture), Message with the other things that hold content (a turn of a
+ * conversation), TreeView with Surfaces & Collections (a collection, not a way to navigate), Hotkey with
+ * the utilities (it is a behaviour, not a control).
  */
 const allComponentNavigation = [
   {
+    id: "actions",
     group: "group.componentActions",
     blurb: "group.componentActions.blurb",
     items: componentGroupItems(
+      "/components/app-bar",
       "/components/button",
-      "/components/split-button",
+      "/components/clipboard",
+      "/components/command-palette",
       "/components/menu",
       "/components/menubar",
-      "/components/app-bar",
-      "/components/toolbar",
-      "/components/command-palette",
+      "/components/split-button",
       "/components/state-button",
-      "/components/clipboard",
-      "/hotkey",
+      "/components/toolbar",
     ),
   },
   {
+    id: "forms",
     group: "group.componentForms",
     blurb: "group.componentForms.blurb",
     items: componentGroupItems(
+      "/components/calendar",
       "/components/checkbox",
       "/components/color-picker",
       "/components/combobox",
       "/components/date-picker",
-      "/components/calendar",
       "/components/editor",
       "/components/file-upload",
       "/components/form-field",
@@ -1005,6 +1049,7 @@ const allComponentNavigation = [
     ),
   },
   {
+    id: "navigation",
     group: "group.componentNavigation",
     blurb: "group.componentNavigation.blurb",
     items: componentGroupItems(
@@ -1020,24 +1065,70 @@ const allComponentNavigation = [
       "/components/steps",
       "/components/tabs",
       "/components/toc",
+    ),
+  },
+  {
+    id: "data",
+    group: "group.componentData",
+    blurb: "group.componentData.blurb",
+    items: componentGroupItems(
+      "/components/charts",
+      "/components/comparison-table",
+      "/components/data-grid",
+      "/components/description-list",
+      "/components/meter",
+      "/components/rating",
+      "/components/stat",
+      "/components/table",
+      "/components/table-pager",
+      "/components/treegrid",
+    ),
+  },
+  {
+    id: "typography",
+    group: "group.componentTypography",
+    blurb: "group.componentTypography.blurb",
+    items: componentGroupItems(
+      "/components/code-preview",
+      "/components/heading",
+      "/components/kbd",
+      "/components/quote",
+      "/components/text",
+    ),
+  },
+  {
+    id: "identity",
+    group: "group.componentIdentity",
+    blurb: "group.componentIdentity.blurb",
+    items: componentGroupItems(
+      "/components/avatar",
+      "/components/badge",
+      "/components/expressive-avatar",
+      "/components/icon",
+      "/components/tag",
+    ),
+  },
+  {
+    id: "surfaces",
+    group: "group.componentSurfaces",
+    blurb: "group.componentSurfaces.blurb",
+    items: componentGroupItems(
+      "/components/accordion",
+      "/components/card",
+      "/components/changelog",
+      "/components/comment-thread",
+      "/components/feed",
+      "/components/folder",
+      "/components/list",
+      "/components/message",
+      "/components/procedure",
+      "/components/tile",
+      "/components/timeline",
       "/components/tree-view",
     ),
   },
   {
-    group: "group.componentOverlays",
-    blurb: "group.componentOverlays.blurb",
-    items: componentGroupItems(
-      "/components/dialog",
-      "/components/lightbox",
-      "/components/drawer",
-      "/components/popover",
-      "/components/tooltip",
-      "/components/tour",
-      "/components/window",
-      "/vaul",
-    ),
-  },
-  {
+    id: "feedback",
     group: "group.componentFeedback",
     blurb: "group.componentFeedback.blurb",
     items: componentGroupItems(
@@ -1050,69 +1141,59 @@ const allComponentNavigation = [
     ),
   },
   {
-    group: "group.componentData",
-    blurb: "group.componentData.blurb",
+    id: "overlays",
+    group: "group.componentOverlays",
+    blurb: "group.componentOverlays.blurb",
     items: componentGroupItems(
-      "/components/description-list",
-      "/components/comparison-table",
-      "/components/table",
-      "/components/table-pager",
-      "/components/data-grid",
-      "/components/treegrid",
-      "/components/list",
-      "/components/charts",
-      "/components/stat",
-      "/components/meter",
-      "/components/rating",
+      "/components/dialog",
+      "/components/drawer",
+      "/components/popover",
+      "/components/tooltip",
+      "/components/tour",
+      "/vaul",
+      "/components/window",
     ),
   },
   {
-    group: "group.componentContent",
-    blurb: "group.componentContent.blurb",
-    items: componentGroupItems(
-      "/components/heading",
-      "/components/text",
-      "/components/kbd",
-      "/components/icon",
-      "/components/badge",
-      "/components/tag",
-      "/components/avatar",
-      "/components/image-frame",
-      "/components/media-overlay",
-      "/components/sticker",
-      "/components/carousel",
-      "/components/qr-code",
-      "/components/marquee",
-      "/components/card",
-      "/components/tile",
-      "/components/folder",
-      "/components/accordion",
-      "/components/annotation",
-      "/components/canvas",
-      "/components/diagram",
-      "/components/code-preview",
-      "/components/changelog",
-      "/components/comment-thread",
-      "/components/feed",
-      "/components/procedure",
-      "/components/quote",
-      "/components/timeline",
-    ),
-  },
-  {
+    id: "layout",
     group: "group.componentLayout",
     blurb: "group.componentLayout.blurb",
     items: componentGroupItems(
-      "/components/separator",
       "/components/box",
-      "/components/stack",
-      "/components/inline",
-      "/components/grid",
-      "/components/layout-grid",
-      "/components/wrapper",
-      "/components/hero",
       "/components/footer",
+      "/components/grid",
+      "/components/hero",
+      "/components/inline",
+      "/components/layout-grid",
+      "/components/separator",
+      "/components/stack",
+      "/components/wrapper",
+    ),
+  },
+  {
+    id: "media",
+    group: "group.componentMedia",
+    blurb: "group.componentMedia.blurb",
+    items: componentGroupItems(
+      "/components/annotation",
+      "/components/canvas",
+      "/components/carousel",
+      "/components/diagram",
+      "/components/image-frame",
+      "/components/lightbox",
+      "/components/marquee",
+      "/components/media-overlay",
+      "/components/qr-code",
+      "/components/sticker",
+    ),
+  },
+  {
+    id: "utilities",
+    group: "group.componentUtilities",
+    blurb: "group.componentUtilities.blurb",
+    items: componentGroupItems(
       "/components/fade-edge",
+      "/hotkey",
       "/components/presence",
       "/scrollbar",
     ),
@@ -1126,7 +1207,7 @@ if (
   categorizedComponentHrefs.length !== componentItems.length ||
   new Set(categorizedComponentHrefs).size !== componentItems.length
 ) {
-  throw new Error("Every component catalog entry must belong to exactly one usage group");
+  throw new Error("Every component catalog entry must belong to exactly one category");
 }
 
 /*
@@ -1496,7 +1577,9 @@ export const documentationNavigation = [
     section: "section.components",
     href: "/components",
     blurb: "section.components.blurb",
-    groups: componentNavigation,
+    headless: true,
+    /* A hundred entries do not fit in one view: each category opens and closes. */
+    groups: componentNavigation.map((group) => ({ ...group, collapsible: true })),
   },
 ] satisfies readonly NavigationSection[];
 
@@ -1538,10 +1621,18 @@ export function getNavigation(locale: Locale): readonly NavigationSection[] {
       ...group,
       group: group.group ? t(group.group as Parameters<typeof t>[0]) : "",
       blurb: group.blurb ? t(group.blurb as Parameters<typeof t>[0]) : undefined,
-      items: group.items.map((entry) => localizeNavigationItem(entry, locale)),
+      items: sortedForGroup(group, group.items.map((entry) => localizeNavigationItem(entry, locale)), locale),
     })),
   }));
 }
+
+/*
+ * A category that opens and closes is a list a reader scans for a NAME, so it is alphabetical in the
+ * language the reader sees: the labels were authored in one language and a few are overridden per locale,
+ * so the order has to be taken after that, not before. A group that is a reading path keeps its authored order.
+ */
+const sortedForGroup = (group: NavigationGroup, items: readonly NavigationItem[], locale: Locale): readonly NavigationItem[] =>
+  group.collapsible ? items.slice().sort((a, b) => a.label.localeCompare(b.label, locale)) : items;
 
 export function getDevCommandPaletteOnlyComponentNavigation(locale: Locale): readonly NavigationGroup[] {
   const t = useTranslations(locale);

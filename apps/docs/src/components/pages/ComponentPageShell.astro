@@ -10,13 +10,14 @@
  *
  * Referencia and Cambios are wired automatically from `contractId`: a page cannot describe an
  * option the compiled contract does not also carry, because both are the one artifact
- * `contract-reference.ts` reads (see `ContractReference`, `ContractChangelog`). `usage`, `install`
- * and `a11y` stay named slots because their content is prose only a person can write.
+ * `contract-reference.ts` reads (see `ContractReference`, `ContractChangelog`). Styling hooks now
+ * live inside Referencia too: they are the CSS half of the same public API, not a second destination.
+ * `usage`, `install` and `a11y` stay named slots because their content is prose only a person can write.
  *
- * Install, Style hooks and Accesibilidad are OPTIONAL, the same reasoning `hasChanges` already
- * used for Cambios: most of the smaller primitives (Box, Badge…) have nothing to install beyond
- * the package, no styling hooks published yet, or no accessibility note beyond what their contract
- * already states, and a tab that always opens on "nothing yet" trains a reader to stop clicking it.
+ * Install and Accesibilidad are OPTIONAL, the same reasoning `hasChanges` already used for Cambios:
+ * most of the smaller primitives (Box, Badge…) have nothing to install beyond the package or no
+ * accessibility note beyond what their contract already states, and a tab that always opens on
+ * "nothing yet" trains a reader to stop clicking it.
  *
  * `contractId` is ALSO optional, for the handful of pages that survey several components at once
  * (Primitivas) or that document a composition pattern with no contract of its own (Card): there is
@@ -145,6 +146,9 @@ const vanillaMountSnippet = vanillaMount
 const canToggleInstall = hasInstall && (hasVanillaInstall || vanillaStyleImports.length > 0 || vanillaMountSnippet);
 
 const hasStyle = derivedStyleGroups.length > 0 || Astro.slots.has("style");
+/* On contract-backed pages, hooks belong to Referencia. A standalone Style hooks tab remains only
+ * for composition pages like Card that deliberately have no single contract to render. */
+const hasStandaloneStyle = hasStyle && !hasContract;
 const hasAnatomy = Astro.slots.has("anatomy");
 /*
  * DO'S AND DON'TS GET A "USAGE GUIDE" TAB. A page that passes `guidelines` splits what used to be
@@ -354,7 +358,7 @@ const markMarkup = findComponentIconMarkup(Astro.url.pathname, { className: "doc
           )
         }
         {
-          hasStyle && (
+          hasStandaloneStyle && (
             <button class="sk-tabs__trigger sk-interactive" data-sk-tabs-trigger data-value="style" type="button">
               {t("component.tabStyle")}
             </button>
@@ -492,12 +496,18 @@ const markMarkup = findComponentIconMarkup(Astro.url.pathname, { className: "doc
               </>
             )}
             <ContractReference id={contractId} />
+            {hasStyle && (
+              <>
+                {derivedStyleGroups.length > 0 && <StylingHooks groups={derivedStyleGroups} />}
+                <slot name="style" />
+              </>
+            )}
           </div>
         )
       }
 
       {
-        hasStyle && (
+        hasStandaloneStyle && (
           <div class="sk-tabs__content sk-layout-grid" data-sk-tabs-content data-value="style">
             {derivedStyleGroups.length > 0 && <StylingHooks groups={derivedStyleGroups} />}
             <slot name="style" />

@@ -1,0 +1,202 @@
+@layer components {
+  .sk-expressive-avatar {
+    --sk-expressive-avatar-size: 6rem;
+    --sk-expressive-avatar-bg: var(--theme-colorful, var(--color-bg-surface-sunken));
+    /*
+     * A PORTRAIT DOES NOT INVERT. The art is dark ink on light paper, and the paper is the circle itself
+     * (the tileset leaves it transparent), so the circle must stay light in a dark theme too: a dark
+     * circle under dark ink loses the face. It keeps its light look in every theme, as a photograph on a
+     * dark page would.
+     */
+    color-scheme: light;
+    /*
+     * The face is drawn for a 160px circle (a 6x6 grid of 32px tiles, shown through the circle) and scaled
+     * to the size asked for. The scale is a NUMBER (size over 160px), made from two lengths with `atan2`
+     * and `tan`: `calc(length / 160)` is a length, and `scale()` takes a number, so that form silently
+     * drops the whole transform and leaves the face unscaled, off to one side, and clipped out of its
+     * own circle.
+     */
+    --sk-expressive-avatar-scale: tan(atan2(var(--sk-expressive-avatar-size), 160px));
+    position: relative;
+    display: inline-grid;
+    place-items: center;
+    inline-size: var(--sk-expressive-avatar-size);
+    block-size: var(--sk-expressive-avatar-size);
+    overflow: hidden;
+    border-radius: var(--radius-pill);
+    background: var(--sk-expressive-avatar-bg);
+    contain: layout paint style;
+    image-rendering: pixelated;
+    image-rendering: crisp-edges;
+    user-select: none;
+  }
+
+  /* A face needs room to read: the smallest is 4rem, and 10rem is the size it was drawn for. */
+  .sk-expressive-avatar[data-size="sm"] {
+    --sk-expressive-avatar-size: 4rem;
+  }
+  .sk-expressive-avatar[data-size="md"] {
+    --sk-expressive-avatar-size: 6rem;
+  }
+  .sk-expressive-avatar[data-size="lg"] {
+    --sk-expressive-avatar-size: 8rem;
+  }
+  .sk-expressive-avatar[data-size="xl"] {
+    --sk-expressive-avatar-size: 10rem;
+  }
+
+  .sk-expressive-avatar__grid {
+    position: absolute;
+    display: grid;
+    grid-template-columns: repeat(6, 32px);
+    grid-template-rows: repeat(6, 32px);
+    gap: 0;
+    inset-block-start: calc(-8px * var(--sk-expressive-avatar-scale));
+    inset-inline-start: 50%;
+    transform: translateX(-50%) scale(var(--sk-expressive-avatar-scale));
+    transform-origin: top center;
+    image-rendering: pixelated;
+    image-rendering: crisp-edges;
+  }
+
+  /*
+   * A TILE IS A WINDOW ONTO THE TILESET. The tileset is one image, `columns` by `rows` cells; every tile of
+   * the face is a 32px box showing one cell of it, chosen by `--sk-expressive-avatar-column` and `-row`
+   * (and a second cell on top for a hat). The image is sized to the whole grid of cells (`columns` times
+   * the box, `rows` times it), so a cell is `100%` of the box and the position of a cell is its index over
+   * the number of gaps. Moving an eye is moving the image; nothing is loaded or created.
+   *
+   * The first layer is the hat's cell, the second the tile's, because the first layer paints on top.
+   */
+  .sk-expressive-avatar__tile {
+    display: block;
+    inline-size: 32px;
+    block-size: 32px;
+    pointer-events: none;
+    background-image: var(--sk-expressive-avatar-atlas), var(--sk-expressive-avatar-atlas);
+    background-repeat: no-repeat;
+    background-size: calc(var(--sk-expressive-avatar-columns) * 100%) calc(var(--sk-expressive-avatar-rows) * 100%);
+    background-position:
+      calc(var(--sk-expressive-avatar-hat-column, 0) / (var(--sk-expressive-avatar-columns) - 1) * 100%)
+        calc(var(--sk-expressive-avatar-hat-row, 0) / (var(--sk-expressive-avatar-rows) - 1) * 100%),
+      calc(var(--sk-expressive-avatar-column, 0) / (var(--sk-expressive-avatar-columns) - 1) * 100%)
+        calc(var(--sk-expressive-avatar-row, 0) / (var(--sk-expressive-avatar-rows) - 1) * 100%);
+    image-rendering: pixelated;
+  }
+
+  .sk-expressive-avatar[data-mode="image"] .sk-expressive-avatar__grid {
+    display: none;
+  }
+
+  /* ALIVE, IMAGE MODE: every state's image is in the DOM, stacked, and one is shown (see `__state`). */
+  .sk-expressive-avatar[data-interactive] .sk-expressive-avatar__image {
+    position: absolute;
+    inset: 0;
+    visibility: hidden;
+  }
+
+  .sk-expressive-avatar[data-interactive] .sk-expressive-avatar__image[data-active="true"] {
+    visibility: visible;
+  }
+
+  .sk-expressive-avatar__image {
+    /* The root asks for crisp pixels (the tileset); an image the author supplies is not necessarily pixel
+       art, and at a size that is not a whole multiple of its own, crisp edges are jagged. */
+    image-rendering: auto;
+    inline-size: 100%;
+    block-size: 100%;
+    object-fit: cover;
+  }
+
+  .sk-expressive-avatar[data-appearance="brutalist"] {
+    border: 1px solid oklch(from var(--shadow-lg) l c h / 1);
+    box-shadow: 4px 4px 0 oklch(from var(--shadow-lg) l c h / 1);
+  }
+
+  /*
+   * ALIVE. With `interactive` the root is a button: it follows the pointer, blinks, and a press makes it
+   * speak. The button's own chrome is taken off (the face is the whole of it) and keyboard focus is a
+   * ring OUTSIDE the circle, since the circle clips everything inside it.
+   */
+  .sk-expressive-avatar[data-interactive] {
+    padding: 0;
+    border: 0;
+    font: inherit;
+    color: inherit;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .sk-expressive-avatar[data-interactive]:focus-visible {
+    outline: var(--focus-ring-width) solid var(--focus-ring-color);
+    outline-offset: var(--focus-ring-offset);
+  }
+
+  /*
+   * THE WORDS, beside the face. The face is clipped to its circle, so the bubble cannot live inside it:
+   * the host holds both and the bubble sits above, centred, with a small tail toward the face. It is
+   * `aria-hidden` while it types (a hidden copy is what is announced), and fades once it is gone.
+   */
+  .sk-expressive-avatar-host {
+    position: relative;
+    display: inline-block;
+  }
+
+  .sk-expressive-avatar__bubble {
+    position: absolute;
+    inset-block-end: calc(100% + var(--space-stack-sm));
+    inset-inline-start: 50%;
+    z-index: 1;
+    box-sizing: border-box;
+    inline-size: max-content;
+    max-inline-size: min(18rem, 80vw);
+    padding: var(--space-inset-sm) var(--space-inset-md);
+    border: 1px solid var(--color-border-subtle);
+    border-radius: var(--radius-surface);
+    background: var(--color-bg-surface);
+    color: var(--color-text-primary);
+    box-shadow: var(--elevation-overlay);
+    font-size: var(--font-size-body-sm);
+    line-height: var(--font-line-height-body);
+    text-align: start;
+    text-wrap: balance;
+    pointer-events: none;
+    translate: -50% 0;
+    transition:
+      opacity var(--motion-state-change-duration) var(--motion-state-change-easing),
+      translate var(--motion-state-change-duration) var(--motion-state-change-easing);
+  }
+
+  .sk-expressive-avatar__bubble::after {
+    content: "";
+    position: absolute;
+    inset-block-start: 100%;
+    inset-inline-start: 50%;
+    inline-size: 0.5rem;
+    block-size: 0.5rem;
+    border-block-end: 1px solid var(--color-border-subtle);
+    border-inline-end: 1px solid var(--color-border-subtle);
+    background: var(--color-bg-surface);
+    rotate: 45deg;
+    translate: -50% -50%;
+  }
+
+  .sk-expressive-avatar__bubble[data-phase="hidden"],
+  .sk-expressive-avatar__bubble[data-phase="hiding"] {
+    opacity: 0;
+    translate: -50% 0.25rem;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .sk-expressive-avatar__bubble {
+      transition: none;
+    }
+  }
+
+  @media (forced-colors: active) {
+    .sk-expressive-avatar[data-appearance="brutalist"] {
+      border-color: CanvasText;
+      box-shadow: none;
+    }
+  }
+}

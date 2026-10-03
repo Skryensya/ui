@@ -1,6 +1,6 @@
 import { avatarInitials, avatarParts, type AvatarAppearance, type AvatarSize, avatarContract } from "@skryensya/core/avatar";
 import { imageFrameParts } from "@skryensya/core/image-frame";
-import { Children, type HTMLAttributes, type ImgHTMLAttributes, type ReactNode } from "react";
+import { Children, type HTMLAttributes, type ImgHTMLAttributes, type ReactNode, useEffect, useState } from "react";
 import { ImageFrame } from "./image-frame.js";
 
 /* Derived, never restated: the default lives in the contract. */
@@ -8,9 +8,17 @@ const { appearance: appearanceOption, size: sizeOption } = avatarContract.option
 
 const cx = (base: string, className: string | undefined) => (className ? `${base} ${className}` : base);
 
-export type AvatarProps = Omit<HTMLAttributes<HTMLSpanElement>, "children"> & {
-  /** Image URL. When absent, the fallback (initials) shows. */
-  src?: string;
+export type AvatarImageSource = Pick<
+  ImgHTMLAttributes<HTMLImageElement>,
+  "crossOrigin" | "decoding" | "fetchPriority" | "height" | "loading" | "referrerPolicy" | "sizes" | "src" | "srcSet" | "width"
+>;
+
+export type AvatarProps = Omit<HTMLAttributes<HTMLSpanElement>, "children" | "onError"> & {
+  /**
+   * Image URL, or the image descriptor emitted by an optimizer (`src`, `srcSet`, `sizes`, etc.).
+   * When absent — or when the image fails in the browser — the fallback (initials) shows.
+   */
+  src?: string | AvatarImageSource;
   /** Accessible name (initials) or alt text (image). Required either way. */
   name: string;
   size?: AvatarSize;
@@ -18,26 +26,65 @@ export type AvatarProps = Omit<HTMLAttributes<HTMLSpanElement>, "children"> & {
   appearance?: AvatarAppearance;
   /** Fallback content, usually initials. Defaults to the first two letters of `name`. */
   children?: ReactNode;
-} & Pick<ImgHTMLAttributes<HTMLImageElement>, "loading">;
+} & Pick<
+  ImgHTMLAttributes<HTMLImageElement>,
+  "crossOrigin" | "decoding" | "fetchPriority" | "height" | "loading" | "onError" | "referrerPolicy" | "sizes" | "srcSet" | "width"
+>;
 
 export function Avatar({
   appearance = appearanceOption.default,
   children,
   className,
+  crossOrigin,
+  decoding,
+  fetchPriority,
+  height,
   loading,
   name,
+  onError,
+  referrerPolicy,
   size = sizeOption.default,
+  sizes,
   src,
+  srcSet,
+  width,
   ...props
 }: AvatarProps) {
   const fallback = children ?? avatarInitials(name);
+  const source = typeof src === "string" ? { src } : src;
+  const imageProps = {
+    ...source,
+    crossOrigin: crossOrigin ?? source?.crossOrigin,
+    decoding: decoding ?? source?.decoding ?? "async",
+    fetchPriority: fetchPriority ?? source?.fetchPriority,
+    height: height ?? source?.height,
+    loading: loading ?? source?.loading ?? "lazy",
+    referrerPolicy: referrerPolicy ?? source?.referrerPolicy,
+    sizes: sizes ?? source?.sizes,
+    srcSet: srcSet ?? source?.srcSet,
+    width: width ?? source?.width,
+  };
+  const imageKey = [imageProps.src, imageProps.srcSet, imageProps.sizes].filter(Boolean).join("\n");
+  const [imageFailed, setImageFailed] = useState(false);
+
+  useEffect(() => {
+    setImageFailed(false);
+  }, [imageKey]);
 
   // With an image, ImageFrame clips the media and <img alt> carries the semantics. Without one,
   // the wrapper becomes the img role and the initials go decorative, so there is exactly one node.
-  return src ? (
+  return imageProps.src && !imageFailed ? (
     <span {...props} className={cx(avatarParts.root, className)} data-appearance={appearance} data-size={size}>
       <ImageFrame as="span" aspect="1/1" fit="cover" radius="pill">
-        <img alt={name} className={imageFrameParts.media} loading={loading} src={src} />
+        <img
+          {...imageProps}
+          alt={name}
+          className={imageFrameParts.media}
+          onError={(event) => {
+            setImageFailed(true);
+            onError?.(event);
+          }}
+        />
       </ImageFrame>
     </span>
   ) : (

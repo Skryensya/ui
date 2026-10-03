@@ -31,6 +31,7 @@ export const kbdContract = {
     "--sk-kbd-border-color",
     "--sk-kbd-border-width",
     "--sk-kbd-fg",
+    "--sk-kbd-icon",
     "--sk-kbd-font-family",
     "--sk-kbd-font-size",
     "--sk-kbd-line-height",

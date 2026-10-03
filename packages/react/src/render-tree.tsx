@@ -126,6 +126,7 @@ const loaders: Record<string, () => Promise<Record<string, unknown>>> = {
   "@skryensya/react/toc": () => import("./components/toc.js"),
   "@skryensya/react/editor": () => import("./components/editor.js"),
   "@skryensya/react/folder": () => import("./components/folder.js"),
+  "@skryensya/react/message": () => import("./components/message.js"),
 };
 
 /*

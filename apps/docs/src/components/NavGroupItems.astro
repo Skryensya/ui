@@ -1,0 +1,48 @@
+---
+/*
+ * The `<li>` rows of a nav-list, for the rail and the drawer alike: the same link, the same catalogue
+ * icon, the same "not written yet" and trailing-badge treatment. One place, because the rail renders a
+ * group's items and the drawer renders them too (nested, inside a disclosure), and two copies of a row
+ * are two rows that disagree the first time one of them grows a feature.
+ */
+import { getLocale, useTranslations } from "../i18n";
+import { findComponentIconMarkup } from "../lib/component-icons";
+import type { NavigationItem } from "../lib/navigation";
+
+interface Props {
+  items: readonly NavigationItem[];
+  /** The current path, already in this locale's vocabulary. */
+  path: string;
+}
+
+const { items, path } = Astro.props;
+const t = useTranslations(getLocale(Astro.url));
+---
+
+{
+  items.map((item) => (
+    <li class="sk-nav-list__item" data-todo={item.todo ? "" : undefined}>
+      <a
+        class="sk-nav-list__link sk-interactive"
+        href={item.href}
+        target={item.external ? "_blank" : undefined}
+        rel={item.external ? "noopener noreferrer" : undefined}
+        aria-current={path === item.href ? "page" : undefined}
+        aria-disabled={item.todo ? "true" : undefined}
+        title={item.todo ? t("nav.notWritten") : undefined}
+        data-sk-vaul-close={item.href.includes("#") ? "" : undefined}
+      >
+        {/* NavListLink's own `icon` slot: a component page gets its catalogue glyph, anything else none. */}
+        <Fragment set:html={findComponentIconMarkup(item.href, { size: "sm", className: "docs-nav-icon" }) ?? ""} />
+        <span class="sk-nav-list__label">{item.label}</span>
+        {
+          item.trailing ? (
+            <span class="sk-nav-list__trailing">
+              <span class="sk-badge" data-size="sm" data-tone="warning">{item.trailing}</span>
+            </span>
+          ) : null
+        }
+      </a>
+    </li>
+  ))
+}
