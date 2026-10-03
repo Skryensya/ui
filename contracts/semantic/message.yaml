@@ -1,0 +1,65 @@
+# The structure lives in packages/core/src/message.ts. Here, only why it is chosen.
+
+Message:
+  useWhen:
+    - "one turn in a conversation needs row geometry: side, avatar, content and metadata"
+    - "start/end alignment communicates whether the message was received or sent"
+    - "the visible surface is supplied by the product: a Bubble, attachment preview, card or custom block"
+  avoidWhen:
+    - "the row is a generic notification or feed item; use Feed or List instead"
+    - "the avatar identifies authorship for a card, not a conversation turn; use Avatar in that composition"
+  alternatives:
+    - Feed
+    - List
+    - Avatar.image
+
+MessageGroup:
+  useWhen:
+    - "consecutive messages from the same sender should stack with a shared avatar column"
+  avoidWhen:
+    - "messages come from different people or different times and should read as separate turns"
+  alternatives:
+    - Message
+
+MessageAvatar:
+  useWhen:
+    - "the row needs a speaker avatar, or an empty avatar slot to preserve grouped alignment"
+  avoidWhen:
+    - "the image is content inside the message rather than the speaker identity"
+  alternatives:
+    - Avatar.image
+    - Avatar.initials
+
+MessageContent:
+  useWhen:
+    - "header, message surface and footer need one aligned stack inside the conversation row"
+  avoidWhen:
+    - "there is no conversation row; the surface can stand on its own"
+  alternatives:
+    - Box
+
+MessageHeader:
+  useWhen:
+    - "sender name or compact metadata belongs above the message surface"
+  avoidWhen:
+    - "the name is already clear from surrounding context or repeated on every grouped message"
+  alternatives:
+    - Text
+
+MessageFooter:
+  useWhen:
+    - "delivery state, time or edited state belongs below the message surface"
+  avoidWhen:
+    - "the content is an interactive control; use MessageActions for controls"
+  alternatives:
+    - MessageActions
+
+MessageActions:
+  useWhen:
+    - "message-level controls such as copy, react or delete should travel with the message row"
+    - "the available actions depend on author or permissions, such as delete only on my messages"
+  avoidWhen:
+    - "the command acts on the whole conversation or selected messages; use Toolbar"
+    - "the action is primary content of the message rather than metadata around it"
+  alternatives:
+    - Toolbar

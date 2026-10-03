@@ -1,0 +1,144 @@
+/*
+ * TIER 3, MESSAGE
+ *
+ * A conversation row. The row owns alignment, avatar placement and metadata alignment. The visible
+ * message surface is intentionally supplied by the consumer inside `sk-message__content`.
+ */
+@layer components {
+  .sk-message {
+    --sk-message-avatar-size: var(--size-control-md);
+    --sk-message-content-gap: var(--space-stack-xs);
+    --sk-message-footer-offset: calc(var(--font-size-caption) * var(--font-line-height-caption) + var(--sk-message-content-gap));
+    --sk-message-gap: var(--space-inline-md);
+    --sk-message-lane-size: calc(var(--sk-message-avatar-size) + var(--sk-message-gap));
+    --sk-message-header-fg: var(--color-text-tertiary);
+    --sk-message-header-font-size: var(--font-size-caption);
+    --sk-message-footer-fg: var(--color-text-tertiary);
+    --sk-message-footer-font-size: var(--font-size-caption);
+    --sk-message-actions-gap: var(--space-inline-xs);
+    --sk-message-max-inline-size: min(var(--size-wrapper-sm), 100%);
+
+    display: flex;
+    align-items: flex-end;
+    gap: var(--sk-message-gap);
+    inline-size: 100%;
+    min-inline-size: 0;
+  }
+
+  .sk-message[data-align="end"] {
+    flex-direction: row-reverse;
+  }
+
+  /*
+   * EVERY AVATAR HAS ITS LANE. A message owns the avatar column on its own side AND keeps the opposite
+   * one empty: a received row leaves the end lane free, a sent row leaves the start lane free. Without
+   * it a long bubble from one side stretched across the other side's avatar column, so in a mixed
+   * thread a message sat directly above or below somebody else's avatar. With both lanes reserved the
+   * bubbles live between them and the avatars stack in clean columns at each edge.
+   */
+  .sk-message {
+    box-sizing: border-box;
+    padding-inline-end: var(--sk-message-lane-size);
+  }
+
+  .sk-message[data-align="end"] {
+    padding-inline-start: var(--sk-message-lane-size);
+    padding-inline-end: 0;
+  }
+
+  .sk-message-group {
+    --sk-message-group-gap: var(--space-stack-xs);
+
+    display: grid;
+    gap: var(--sk-message-group-gap);
+    min-inline-size: 0;
+  }
+
+  .sk-message__avatar {
+    display: flex;
+    flex: 0 0 var(--sk-message-avatar-size);
+    align-items: center;
+    justify-content: center;
+    inline-size: var(--sk-message-avatar-size);
+    min-inline-size: 0;
+  }
+
+  .sk-message:has(.sk-message__footer) > .sk-message__avatar {
+    margin-block-end: var(--sk-message-footer-offset);
+  }
+
+  .sk-message__avatar:empty {
+    visibility: hidden;
+  }
+
+  .sk-message__avatar > * {
+    flex: none;
+  }
+
+  .sk-message__content {
+    display: flex;
+    flex: 0 1 var(--sk-message-max-inline-size);
+    flex-direction: column;
+    gap: var(--sk-message-content-gap);
+    min-inline-size: 0;
+  }
+
+  .sk-message[data-align="end"] > .sk-message__content {
+    align-items: flex-end;
+    margin-inline-start: auto;
+  }
+
+  .sk-message:not([data-align="end"]) > .sk-message__content {
+    align-items: flex-start;
+    margin-inline-end: auto;
+  }
+
+  .sk-message[data-align="end"] .sk-message__header {
+    align-self: flex-end;
+    text-align: end;
+  }
+
+  .sk-message:not([data-align="end"]) .sk-message__header {
+    align-self: flex-start;
+    text-align: start;
+  }
+
+  .sk-message__header {
+    color: var(--sk-message-header-fg);
+    font-size: var(--sk-message-header-font-size);
+    line-height: var(--font-line-height-caption);
+  }
+
+  .sk-message__footer {
+    color: var(--sk-message-footer-fg);
+    font-size: var(--sk-message-footer-font-size);
+    line-height: var(--font-line-height-caption);
+  }
+
+  .sk-message[data-align="end"] .sk-message__footer {
+    align-self: flex-end;
+    text-align: end;
+  }
+
+  .sk-message:not([data-align="end"]) .sk-message__footer {
+    align-self: flex-start;
+    text-align: start;
+  }
+
+  .sk-message__actions {
+    display: inline-flex;
+    flex-wrap: wrap;
+    gap: var(--sk-message-actions-gap);
+  }
+
+  .sk-message[data-align="end"] .sk-message__actions {
+    align-self: flex-end;
+    justify-content: flex-end;
+  }
+
+  .sk-message:not([data-align="end"]) .sk-message__actions {
+    align-self: flex-start;
+    justify-content: flex-start;
+  }
+}
+

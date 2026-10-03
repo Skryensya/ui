@@ -1,0 +1,232 @@
+---
+import "@skryensya/core/components/message.css";
+import "@skryensya/core/components/avatar.css";
+import ComponentPageShell from "./ComponentPageShell.astro";
+import UsagePreview from "../UsagePreview.astro";
+import CodeBlock from "../CodeBlock.astro";
+import DoDont from "../DoDont.astro";
+import WhenToUse from "../WhenToUse.astro";
+import ContentRules from "../ContentRules.astro";
+import A11yNotes from "../A11yNotes.astro";
+import "@skryensya/core/components/button.css";
+import "@skryensya/core/components/typography.css";
+import "@skryensya/core/patterns/layout.css";
+import "@skryensya/core/patterns/box.css";
+import {
+  messageActionsScript,
+  messageActionsTree,
+  messageDemoCss,
+  messageGroupVariants,
+  messageMetadataVariants,
+  messagePlaygroundTree,
+  messageReactionTree,
+  messageWritingTree,
+} from "../../demos/message";
+import { getLocale, tList, useTranslations } from "../../i18n";
+
+const t = useTranslations(getLocale(Astro.url));
+const install = `pnpm add @skryensya/core @skryensya/react`;
+const styles = `@import "@skryensya/core/components/message.css";`;
+const storybookTitle = "Components/Content/Message";
+const explain = (option: string, values: readonly string[]) =>
+  Object.fromEntries(values.map((value) => [value, t(`messagePage.prop.${option}.${value}` as Parameters<typeof t>[0])]));
+const doAlignmentGood = `<div class="message-demo message-demo--pair">
+  <div class="sk-message" data-align="start">
+    <div class="sk-message__avatar"><span class="message-demo__avatar">R</span></div>
+    <div class="sk-message__content"><div class="message-demo__bubble">Can you review this?</div></div>
+  </div>
+  <div class="sk-message" data-align="end">
+    <div class="sk-message__avatar"><span class="message-demo__avatar message-demo__avatar--me">ME</span></div>
+    <div class="sk-message__content"><div class="message-demo__bubble message-demo__bubble--accent">On it.</div></div>
+  </div>
+</div>`;
+const doAlignmentBad = `<div class="message-demo message-demo--pair">
+  <div class="sk-message" data-align="start">
+    <div class="sk-message__avatar"><span class="message-demo__avatar">ME</span></div>
+    <div class="sk-message__content"><div class="message-demo__bubble message-demo__bubble--accent">On it.</div></div>
+  </div>
+  <div class="sk-message" data-align="start">
+    <div class="sk-message__avatar"><span class="message-demo__avatar">R</span></div>
+    <div class="sk-message__content"><div class="message-demo__bubble">Can you review this?</div></div>
+  </div>
+</div>`;
+const doGroupGood = `<div class="message-demo message-demo--pair">
+  <div class="sk-message-group">
+    <div class="sk-message" data-align="start"><div class="sk-message__avatar"><span class="message-demo__avatar">R</span></div><div class="sk-message__content"><div class="message-demo__bubble">First point.</div></div></div>
+    <div class="sk-message" data-align="start"><div class="sk-message__avatar"></div><div class="sk-message__content"><div class="message-demo__bubble">Second point.</div></div></div>
+  </div>
+</div>`;
+const doGroupBad = `<div class="message-demo message-demo--pair">
+  <div class="sk-message" data-align="start"><div class="sk-message__avatar"><span class="message-demo__avatar">R</span></div><div class="sk-message__content"><div class="message-demo__bubble">First point.</div></div></div>
+  <div class="sk-message" data-align="start"><div class="sk-message__avatar"><span class="message-demo__avatar">R</span></div><div class="sk-message__content"><div class="message-demo__bubble">Second point.</div></div></div>
+</div>`;
+const doMetadataGood = `<div class="message-demo message-demo--pair">
+  <div class="sk-message" data-align="end">
+    <div class="sk-message__avatar"><span class="message-demo__avatar message-demo__avatar--me">ME</span></div>
+    <div class="sk-message__content"><div class="message-demo__bubble message-demo__bubble--accent">Done.</div><div class="sk-message__footer">Sent 14:32</div></div>
+  </div>
+</div>`;
+const doMetadataBad = `<div class="message-demo message-demo--pair">
+  <div class="sk-message" data-align="end">
+    <div class="sk-message__avatar"><span class="message-demo__avatar message-demo__avatar--me">ME</span></div>
+    <div class="sk-message__content"><div class="message-demo__bubble message-demo__bubble--accent">Done. Sent 14:32. Delivered. Seen.</div></div>
+  </div>
+</div>`;
+const doReactionGood = `<div class="message-demo message-demo--pair">
+  <div class="sk-message" data-align="start">
+    <div class="sk-message__avatar"><span class="message-demo__avatar">R</span></div>
+    <div class="sk-message__content">
+      <div class="message-demo__surface"><div class="message-demo__bubble">Ship it.</div><div class="message-demo__reaction" aria-label="${t("messagePage.reactionLabel")}">👍</div></div>
+    </div>
+  </div>
+</div>`;
+const doReactionBad = `<div class="message-demo message-demo--pair">
+  <div class="sk-message" data-align="start">
+    <div class="sk-message__avatar"><span class="message-demo__avatar">R</span></div>
+    <div class="sk-message__content"><div class="message-demo__bubble">Ship it. 👍👍👍👍👍</div></div>
+  </div>
+</div>`;
+const doActionsGood = `<div class="message-demo message-demo--pair">
+  <div class="message-demo__selection-actions" aria-label="Selected message actions"><button class="message-demo__action" type="button">Copy</button><button class="message-demo__action" type="button">React</button><button class="message-demo__action message-demo__action--danger" type="button">Delete</button></div>
+  <div class="sk-message message-demo__message--selected" data-align="end">
+    <div class="sk-message__avatar"><span class="message-demo__avatar message-demo__avatar--me">ME</span></div>
+    <div class="sk-message__content"><div class="message-demo__bubble message-demo__bubble--accent">Sent.</div></div>
+  </div>
+</div>`;
+const doActionsBad = `<div class="message-demo message-demo--pair">
+  <div class="sk-message" data-align="start">
+    <div class="sk-message__avatar"><span class="message-demo__avatar">R</span></div>
+    <div class="sk-message__content"><div class="message-demo__bubble">Can you send the link?</div><div class="sk-message__actions"><button class="message-demo__action" type="button">Copy</button><button class="message-demo__action" type="button">React</button><button class="message-demo__action message-demo__action--danger" type="button">Delete</button></div></div>
+  </div>
+</div>`;
+
+const react = `import {
+  Message,
+  MessageActions,
+  MessageAvatar,
+  MessageContent,
+  MessageFooter,
+  MessageGroup,
+  MessageHeader,
+} from "@skryensya/react/message";
+
+<>
+  {selectedMessageId === message.id && (
+    <MessageActions aria-label="Selected message actions">
+      <button type="button">Copy</button>
+      <button type="button">React</button>
+      {message.mine && <button type="button">Delete</button>}
+    </MessageActions>
+  )}
+  <Message align={message.mine ? "end" : "start"} onContextMenu={openMessageMenu}>
+    <MessageAvatar>{/* Avatar */}</MessageAvatar>
+    <MessageContent>
+      <MessageHeader>{message.author}</MessageHeader>
+      <div className="bubble">{message.text}</div>
+      <MessageFooter>{message.status}</MessageFooter>
+    </MessageContent>
+  </Message>
+</>`;
+---
+
+<ComponentPageShell
+  title="Message"
+  description={t("messagePage.description")}
+  contractId="message"
+  testFiles={["packages/react/src/components/message.test.tsx"]}
+>
+  <Fragment slot="usage">
+    <p class="lede" set:html={t("messagePage.lede")} />
+
+    <UsagePreview
+      tree={messagePlaygroundTree(t)}
+      optionName="align"
+      title={t("messagePage.prop.align.title")}
+      description={t("messagePage.prop.align.body")}
+      explain={explain("align", ["start", "end"])}
+      stageMinBlockSize="10rem"
+    />
+
+    <UsagePreview
+      tree={messageMetadataVariants(t)[0]!.tree}
+      variants={messageMetadataVariants(t)}
+      variantsLabel={t("messagePage.prop.metadata.title")}
+      initialVariant="both"
+      title={t("messagePage.prop.metadata.title")}
+      description={t("messagePage.prop.metadata.body")}
+      stageMinBlockSize="10rem"
+    />
+
+    <UsagePreview
+      tree={messageGroupVariants(t)[0]!.tree}
+      variants={messageGroupVariants(t)}
+      variantsLabel={t("messagePage.prop.group.title")}
+      initialVariant="last"
+      title={t("messagePage.prop.group.title")}
+      description={t("messagePage.prop.group.body")}
+      stageMinBlockSize="11rem"
+    />
+
+    <h3>{t("component.examplesTitle")}</h3>
+
+    <UsagePreview tree={messageWritingTree(t)} css={messageDemoCss} title={t("messagePage.writingTitle")} description={t("messagePage.writingBody")} />
+    <UsagePreview tree={messageReactionTree(t)} css={messageDemoCss} title={t("messagePage.reactionTitle")} description={t("messagePage.reactionBody")} />
+    <UsagePreview
+      tree={messageActionsTree(t)}
+      css={messageDemoCss}
+      script={messageActionsScript}
+      stageMinBlockSize="20rem"
+      title={t("messagePage.actionsTitle")}
+      description={t("messagePage.actionsBody")}
+    />
+
+    <h3>{t("component.contractNotesTitle")}</h3>
+    <ul>
+      {tList(t, "messagePage.contract").map((item) => <li set:html={item} />)}
+    </ul>
+
+    <CodeBlock code={react} label="React" />
+  </Fragment>
+
+  <Fragment slot="guidelines">
+    <p class="lede" set:html={t("messagePage.guidelinesLede")} />
+    <WhenToUse use={tList(t, "messagePage.when")} avoid={tList(t, "messagePage.whenNot")} />
+    <DoDont
+      title={t("messagePage.dd.alignment.title")}
+      do={{ html: doAlignmentGood, caption: t("messagePage.dd.alignment.do") }}
+      dont={{ html: doAlignmentBad, caption: t("messagePage.dd.alignment.dont") }}
+    />
+    <DoDont
+      title={t("messagePage.dd.group.title")}
+      do={{ html: doGroupGood, caption: t("messagePage.dd.group.do") }}
+      dont={{ html: doGroupBad, caption: t("messagePage.dd.group.dont") }}
+    />
+    <DoDont
+      title={t("messagePage.dd.metadata.title")}
+      do={{ html: doMetadataGood, caption: t("messagePage.dd.metadata.do") }}
+      dont={{ html: doMetadataBad, caption: t("messagePage.dd.metadata.dont") }}
+    />
+    <DoDont
+      title={t("messagePage.dd.reaction.title")}
+      do={{ html: doReactionGood, caption: t("messagePage.dd.reaction.do") }}
+      dont={{ html: doReactionBad, caption: t("messagePage.dd.reaction.dont") }}
+    />
+    <DoDont
+      title={t("messagePage.dd.actions.title")}
+      do={{ html: doActionsGood, caption: t("messagePage.dd.actions.do") }}
+      dont={{ html: doActionsBad, caption: t("messagePage.dd.actions.dont") }}
+    />
+    <ContentRules items={tList(t, "messagePage.content")} />
+  </Fragment>
+
+  <Fragment slot="install">
+    <CodeBlock code={install} label="terminal" />
+    <CodeBlock code={styles} label="CSS" />
+  </Fragment>
+
+  <Fragment slot="a11y">
+    <A11yNotes intro={t("messagePage.a11yIntro")} does={tList(t, "messagePage.a11yDoes")} yours={tList(t, "messagePage.a11yYours")} />
+  </Fragment>
+</ComponentPageShell>
+
+<style is:global set:html={messageDemoCss}></style>
