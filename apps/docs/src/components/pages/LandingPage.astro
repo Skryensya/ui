@@ -466,7 +466,7 @@ const bentoSets = Array.from({ length: bentoCycle.length + 3 }, (_, index) => be
       </div>
     </div>
 
-    <div class="sk-wrapper" data-size="md" data-gutter="lg">
+    <div class="sk-wrapper landing-footer-wrap" data-size="md" data-gutter="lg">
       <SiteFooter nav={navigation} locale={locale} />
     </div>
   </main>
@@ -829,6 +829,20 @@ const bentoSets = Array.from({ length: bentoCycle.length + 3 }, (_, index) => be
     margin: 0;
     max-inline-size: 62ch;
     line-height: 1.6;
+  }
+
+  /* The footer content keeps the same md Wrapper measure as the home page, but the footer band
+     itself escapes that wrapper so the closing surface reaches the viewport edges. */
+  .landing-footer-wrap > .site-footer {
+    inline-size: 100vw;
+    margin-inline: calc((100vw - 100%) / -2);
+  }
+
+  .landing-footer-wrap > .site-footer > .site-footer__inner {
+    box-sizing: border-box;
+    inline-size: min(100%, var(--sk-wrapper-max));
+    margin-inline: auto;
+    padding-inline: var(--sk-wrapper-padding-inline);
   }
 
   @media (prefers-reduced-motion: reduce) {

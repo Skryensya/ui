@@ -20,11 +20,22 @@ export type KbdProps = Omit<HTMLAttributes<HTMLElement>, "children"> & {
  * <kbd> element (its semantics are the platform's; the component only adds the look). Static: no state,
  * no machine, so there is no vanilla enhancer, only this wrapper and the core hooks.
  */
+const keyIcon = (label: string): string | undefined => {
+  const key = label.trim().toLowerCase();
+  if (["arrowup", "up", "↑"].includes(key)) return "arrowup";
+  if (["arrowdown", "down", "↓"].includes(key)) return "arrowdown";
+  if (["arrowleft", "left", "←"].includes(key)) return "arrowleft";
+  if (["arrowright", "right", "→"].includes(key)) return "arrowright";
+  if (["enter", "return", "↵", "⏎"].includes(key)) return "enter";
+  return undefined;
+};
+
 export function Kbd({ appearance = appearanceOption.default, children, className, tone = toneOption.default, ...props }: KbdProps) {
   const classes = className ? `${kbdParts.root} ${className}` : kbdParts.root;
+  const dataKey = (props as { "data-key"?: string })["data-key"] ?? keyIcon(children);
 
   return (
-    <kbd {...props} className={classes} data-appearance={appearance} data-tone={tone}>
+    <kbd {...props} className={classes} data-appearance={appearance} data-tone={tone} data-key={dataKey}>
       {children}
     </kbd>
   );

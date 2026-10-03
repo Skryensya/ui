@@ -74,6 +74,11 @@ export const avatarContract = {
     /** The image's alt text; React calls this prop `name`. */
     imageName: { type: "string", attr: "alt", prop: "name" },
     src: { type: "string", attr: "src" },
+    srcSet: { type: "string", attr: "srcset", prop: "srcSet" },
+    sizes: { type: "string", attr: "sizes" },
+    loading: { type: "enum", values: ["eager", "lazy"], default: "lazy", attr: "loading" },
+    decoding: { type: "enum", values: ["async", "auto", "sync"], default: "async", attr: "decoding" },
+    fetchPriority: { type: "enum", values: ["high", "low", "auto"], attr: "fetchpriority", prop: "fetchPriority" },
     /** The group's own accessible name; see `AvatarGroup`'s `role="group"` doc for why it is optional. */
     label: { type: "string", attr: "aria-label" },
   },
@@ -104,7 +109,7 @@ export const avatarContract = {
     "Avatar.image": {
       intent: ["person", "user-identity", "photo"],
       host: { element: "span", when: { src: "present" } },
-      options: ["size", "appearance", "imageName", "src"],
+      options: ["size", "appearance", "imageName", "src", "srcSet", "sizes", "loading", "decoding", "fetchPriority"],
       requires: ["imageName", "src"],
       slots: {},
       /* ImageFrame chrome via `also`; sheets already resolve. */
@@ -135,7 +140,7 @@ export const avatarContract = {
               {
                 element: "img",
                 also: ["sk-image-frame__media"],
-                options: ["src", "imageName"],
+                options: ["src", "imageName", "srcSet", "sizes", "loading", "decoding", "fetchPriority"],
               },
             ],
           },

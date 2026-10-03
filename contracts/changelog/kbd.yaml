@@ -3,8 +3,22 @@
 # `surface` is the shape of the contract the last time somebody reviewed it. If the compiler says it
 # does not match, something a consumer depends on has moved: write the entry and paste in the new
 # hash.
-surface: "526dee590cd044cc"
+surface: "fbf500587e92805a"
 entries:
+  - date: 2026-10-02
+    kind: bugfix
+    es:
+      title: Kbd publica el hook de sus iconos estrechos
+      body: >-
+        El contrato ahora declara <code>--sk-kbd-icon</code>, el hook interno que alimenta los
+        glifos de flechas y Enter. La hoja ya lo usaba; esta entrada alinea la referencia con el CSS
+        para que el compilador no deje un hook sin documentar.
+    en:
+      title: Kbd publishes the hook for its narrow icons
+      body: >-
+        The contract now declares <code>--sk-kbd-icon</code>, the internal hook that feeds the arrow
+        and Enter glyphs. The stylesheet already used it; this entry aligns the reference with the CSS
+        so the compiler does not leave a hook undocumented.
   - date: 2026-09-26
     kind: feature
     target: appearance

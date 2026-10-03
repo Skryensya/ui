@@ -1673,6 +1673,34 @@
       ]
     },
     {
+      "category": "content",
+      "css": "@skryensya/core/components/expressive-avatar.css",
+      "id": "expressive-avatar",
+      "signatures": [
+        {
+          "alternatives": [
+            "Avatar.initials"
+          ],
+          "avoidWhen": [
+            "a compact, static identity token is enough; use Avatar",
+            "the image is editorial content rather than an expressive identity; use ImageFrame"
+          ],
+          "host": "span",
+          "id": "ExpressiveAvatar",
+          "intent": [
+            "expressive-identity",
+            "reactive-avatar",
+            "character-portrait"
+          ],
+          "parents": [],
+          "useWhen": [
+            "a character, assistant or mascot needs to express a visible state",
+            "the same identity has pixel-art parts or a complete image for each expression"
+          ]
+        }
+      ]
+    },
+    {
       "category": "layout",
       "css": "@skryensya/core/components/fade-edge.css",
       "id": "fade-edge",
@@ -2814,6 +2842,148 @@
       ]
     },
     {
+      "category": "content",
+      "css": "@skryensya/core/components/message.css",
+      "id": "message",
+      "signatures": [
+        {
+          "alternatives": [
+            "Feed",
+            "List",
+            "Avatar.image"
+          ],
+          "avoidWhen": [
+            "the row is a generic notification or feed item; use Feed or List instead",
+            "the avatar identifies authorship for a card, not a conversation turn; use Avatar in that composition"
+          ],
+          "host": "div",
+          "id": "Message",
+          "intent": [
+            "conversation-row",
+            "chat-message",
+            "sender-receiver-row"
+          ],
+          "parents": [],
+          "useWhen": [
+            "one turn in a conversation needs row geometry: side, avatar, content and metadata",
+            "start/end alignment communicates whether the message was received or sent",
+            "the visible surface is supplied by the product: a Bubble, attachment preview, card or custom block"
+          ]
+        },
+        {
+          "alternatives": [
+            "Message"
+          ],
+          "avoidWhen": [
+            "messages come from different people or different times and should read as separate turns"
+          ],
+          "host": "div",
+          "id": "MessageGroup",
+          "intent": [
+            "consecutive-messages",
+            "same-sender-message-stack"
+          ],
+          "parents": [],
+          "useWhen": [
+            "consecutive messages from the same sender should stack with a shared avatar column"
+          ]
+        },
+        {
+          "alternatives": [
+            "Avatar.image",
+            "Avatar.initials"
+          ],
+          "avoidWhen": [
+            "the image is content inside the message rather than the speaker identity"
+          ],
+          "host": "div",
+          "id": "MessageAvatar",
+          "intent": [
+            "message-avatar-slot",
+            "speaker-avatar"
+          ],
+          "parents": [],
+          "useWhen": [
+            "the row needs a speaker avatar, or an empty avatar slot to preserve grouped alignment"
+          ]
+        },
+        {
+          "alternatives": [
+            "Box"
+          ],
+          "avoidWhen": [
+            "there is no conversation row; the surface can stand on its own"
+          ],
+          "host": "div",
+          "id": "MessageContent",
+          "intent": [
+            "message-content-stack",
+            "message-surface-and-metadata"
+          ],
+          "parents": [],
+          "useWhen": [
+            "header, message surface and footer need one aligned stack inside the conversation row"
+          ]
+        },
+        {
+          "alternatives": [
+            "Text"
+          ],
+          "avoidWhen": [
+            "the name is already clear from surrounding context or repeated on every grouped message"
+          ],
+          "host": "div",
+          "id": "MessageHeader",
+          "intent": [
+            "message-sender-name",
+            "message-header-metadata"
+          ],
+          "parents": [],
+          "useWhen": [
+            "sender name or compact metadata belongs above the message surface"
+          ]
+        },
+        {
+          "alternatives": [
+            "MessageActions"
+          ],
+          "avoidWhen": [
+            "the content is an interactive control; use MessageActions for controls"
+          ],
+          "host": "div",
+          "id": "MessageFooter",
+          "intent": [
+            "message-status",
+            "message-footer-metadata"
+          ],
+          "parents": [],
+          "useWhen": [
+            "delivery state, time or edited state belongs below the message surface"
+          ]
+        },
+        {
+          "alternatives": [
+            "Toolbar"
+          ],
+          "avoidWhen": [
+            "the command acts on the whole conversation or selected messages; use Toolbar",
+            "the action is primary content of the message rather than metadata around it"
+          ],
+          "host": "div",
+          "id": "MessageActions",
+          "intent": [
+            "message-actions",
+            "copy-react-delete-message"
+          ],
+          "parents": [],
+          "useWhen": [
+            "message-level controls such as copy, react or delete should travel with the message row",
+            "the available actions depend on author or permissions, such as delete only on my messages"
+          ]
+        }
+      ]
+    },
+    {
       "category": "data",
       "css": "@skryensya/core/components/meter.css",
       "id": "meter",
@@ -3767,6 +3937,36 @@
           "parents": [],
           "useWhen": [
             "there is a word between the two halves: or, since 2019, older"
+          ]
+        }
+      ]
+    },
+    {
+      "category": "content",
+      "css": "@skryensya/core/components/shimmer.css",
+      "id": "shimmer",
+      "signatures": [
+        {
+          "alternatives": [
+            "Placeholder",
+            "Loader"
+          ],
+          "avoidWhen": [
+            "the absent content shape needs to be reserved; use Placeholder",
+            "the wait state needs a standalone progress indicator; use Loader",
+            "the effect would run on permanent body copy or decoration"
+          ],
+          "host": "span",
+          "id": "Shimmer",
+          "intent": [
+            "live-status-text",
+            "temporary-progress-copy",
+            "streaming-response-copy"
+          ],
+          "parents": [],
+          "useWhen": [
+            "temporary status text should feel alive while work is happening, such as generating or reading",
+            "the text itself remains present and readable; only the highlight moves across it"
           ]
         }
       ]
@@ -5581,5 +5781,5 @@
     }
   ],
   "schemaVersion": "2.3",
-  "sourceHash": "604fc22246b86106"
+  "sourceHash": "fc6b78b711a98dae"
 }

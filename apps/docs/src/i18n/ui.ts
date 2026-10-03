@@ -79,6 +79,7 @@ import { passwordInputMessages } from "./messages/components/password-input";
 import { otpInputMessages } from "./messages/components/otp-input";
 import { tablePagerMessages } from "./messages/components/table-pager";
 import { mediaOverlayMessages } from "./messages/components/media-overlay";
+import { messageMessages } from "./messages/components/message";
 import { qrCodeMessages } from "./messages/components/qr-code";
 import { feedMessages } from "./messages/components/feed";
 import { fileUploadMessages } from "./messages/components/file-upload";
@@ -227,6 +228,7 @@ export const ui = {
     ...otpInputMessages.es,
     ...tablePagerMessages.es,
     ...mediaOverlayMessages.es,
+    ...messageMessages.es,
     ...qrCodeMessages.es,
     ...feedMessages.es,
     ...fileUploadMessages.es,
@@ -372,6 +374,7 @@ export const ui = {
     ...otpInputMessages.en,
     ...tablePagerMessages.en,
     ...mediaOverlayMessages.en,
+    ...messageMessages.en,
     ...qrCodeMessages.en,
     ...feedMessages.en,
     ...fileUploadMessages.en,

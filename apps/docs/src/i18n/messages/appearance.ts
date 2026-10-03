@@ -66,7 +66,7 @@ export const appearanceMessages = {
 
     "appearancePage.hooksTitle": "Hooks",
     "appearancePage.hooksBody":
-      "Cada componente publica las magnitudes y las tintas de sus construcciones con el mismo patrón de nombres, así que un ajuste se escribe igual en todos. La lista exacta de cada uno está en su pestaña Style hooks. Frosted no publica ninguno: su opacidad es el mínimo que mantiene el texto legible, no un ajuste.",
+      "Cada componente publica las magnitudes y las tintas de sus construcciones con el mismo patrón de nombres, así que un ajuste se escribe igual en todos. La lista exacta de cada uno está en su pestaña Referencia. Frosted no publica ninguno: su opacidad es el mínimo que mantiene el texto legible, no un ajuste.",
 
     "appearancePage.demo.save": "Guardar",
     "appearancePage.demo.preview": "Vista previa",
@@ -145,7 +145,7 @@ export const appearanceMessages = {
 
     "appearancePage.hooksTitle": "Hooks",
     "appearancePage.hooksBody":
-      "Every component publishes the magnitudes and inks of its constructions under the same naming pattern, so a retune is written the same way on all of them. Each one's exact list is in its Style hooks tab. Frosted publishes none: its opacity is the minimum that keeps text legible, not a setting.",
+      "Every component publishes the magnitudes and inks of its constructions under the same naming pattern, so a retune is written the same way on all of them. Each one's exact list is in its Reference tab. Frosted publishes none: its opacity is the minimum that keeps text legible, not a setting.",
 
     "appearancePage.demo.save": "Save",
     "appearancePage.demo.preview": "Preview",

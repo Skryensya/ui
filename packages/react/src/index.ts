@@ -8,7 +8,13 @@ export type {
 } from "./components/accordion.js";
 export type { CalloutProps } from "./components/callout.js";
 export { Avatar, AvatarGroup } from "./components/avatar.js";
-export type { AvatarGroupProps, AvatarProps } from "./components/avatar.js";
+export type { AvatarGroupProps, AvatarImageSource, AvatarProps } from "./components/avatar.js";
+export { ExpressiveAvatar } from "./components/expressive-avatar.js";
+export type {
+  ExpressiveAvatarExpression,
+  ExpressiveAvatarImageSource,
+  ExpressiveAvatarProps,
+} from "./components/expressive-avatar.js";
 export { Badge } from "./components/badge.js";
 export type { BadgeProps } from "./components/badge.js";
 export { Pagination } from "./components/pagination.js";
@@ -117,6 +123,18 @@ export { useHotkey } from "./components/hotkey.js";
 export type { UseHotkeyOptions } from "./components/hotkey.js";
 export { Kbd } from "./components/kbd.js";
 export type { KbdProps, KbdTone } from "./components/kbd.js";
+export { Shimmer } from "./components/shimmer.js";
+export type { ShimmerProps } from "./components/shimmer.js";
+export { Message, MessageActions, MessageAvatar, MessageContent, MessageFooter, MessageGroup, MessageHeader } from "./components/message.js";
+export type {
+  MessageActionsProps,
+  MessageAvatarProps,
+  MessageContentProps,
+  MessageFooterProps,
+  MessageGroupProps,
+  MessageHeaderProps,
+  MessageProps,
+} from "./components/message.js";
 export { Folder, FolderLink, FolderPreview, FolderStack } from "./components/folder.js";
 export type { FolderProps, FolderLinkProps, FolderPreviewProps, FolderStackProps } from "./components/folder.js";
 export { FormField } from "./components/form-field.js";

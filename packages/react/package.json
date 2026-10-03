@@ -33,9 +33,17 @@
       "types": "./src/components/callout.tsx",
       "default": "./src/components/callout.tsx"
     },
+    "./expressive-avatar": {
+      "types": "./src/components/expressive-avatar.tsx",
+      "default": "./src/components/expressive-avatar.tsx"
+    },
     "./avatar": {
       "types": "./src/components/avatar.tsx",
       "default": "./src/components/avatar.tsx"
+    },
+    "./pixel-portrait": {
+      "types": "./src/components/pixel-portrait.tsx",
+      "default": "./src/components/pixel-portrait.tsx"
     },
     "./tag": {
       "types": "./src/components/tag.tsx",
@@ -76,6 +84,14 @@
     "./placeholder": {
       "types": "./src/components/placeholder.tsx",
       "default": "./src/components/placeholder.tsx"
+    },
+    "./shimmer": {
+      "types": "./src/components/shimmer.tsx",
+      "default": "./src/components/shimmer.tsx"
+    },
+    "./message": {
+      "types": "./src/components/message.tsx",
+      "default": "./src/components/message.tsx"
     },
     "./slider": {
       "types": "./src/components/slider.tsx",

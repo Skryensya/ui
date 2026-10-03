@@ -34,6 +34,17 @@ describe("Kbd", () => {
     expect(ui.container.querySelector("kbd")?.getAttribute("aria-hidden")).toBe("true");
   });
 
+  it("marks arrow and enter legends for icon drawing", () => {
+    const ui = render(
+      <>
+        <Kbd>↑</Kbd>
+        <Kbd>Enter</Kbd>
+      </>,
+    );
+    expect(ui.getByText("↑").getAttribute("data-key")).toBe("arrowup");
+    expect(ui.getByText("Enter").getAttribute("data-key")).toBe("enter");
+  });
+
   it("defaults to the neutral tone and opts into accent", () => {
     const rest = render(<Kbd>K</Kbd>);
     expect(rest.container.querySelector("kbd")?.getAttribute("data-tone")).toBe("neutral");

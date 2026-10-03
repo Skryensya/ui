@@ -3,8 +3,20 @@
 # `surface` is the shape of the contract the last time somebody reviewed it. If the compiler says it
 # does not match, something a consumer depends on has moved: write the entry and paste in the new
 # hash.
-surface: "924379c3e48ad4db"
+surface: "e03f7ca973dde968"
 entries:
+  - date: 2026-10-02
+    kind: feature
+    es:
+      title: Avatar admite imágenes responsivas y fallback por error
+      body: >-
+        <code>src</code> acepta una URL o un descriptor con <code>srcSet</code>, <code>sizes</code> y dimensiones.
+        La imagen usa carga diferida y decoding asíncrono por defecto; si falla, muestra las iniciales.
+    en:
+      title: Avatar accepts responsive images and falls back on errors
+      body: >-
+        <code>src</code> accepts a URL or an image descriptor with <code>srcSet</code>, <code>sizes</code> and dimensions.
+        Images default to lazy loading and async decoding; if loading fails, initials are shown.
   - date: 2026-09-27
     kind: bugfix
     es:

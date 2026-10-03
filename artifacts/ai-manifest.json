@@ -685,6 +685,24 @@
     ],
     "avatar": [
       {
+        "date": null,
+        "entries": [
+          {
+            "date": "2026-10-02",
+            "en": {
+              "body": "<code>src</code> accepts a URL or an image descriptor with <code>srcSet</code>, <code>sizes</code> and dimensions. Images default to lazy loading and async decoding; if loading fails, initials are shown.",
+              "title": "Avatar accepts responsive images and falls back on errors"
+            },
+            "es": {
+              "body": "<code>src</code> acepta una URL o un descriptor con <code>srcSet</code>, <code>sizes</code> y dimensiones. La imagen usa carga diferida y decoding asíncrono por defecto; si falla, muestra las iniciales.",
+              "title": "Avatar admite imágenes responsivas y fallback por error"
+            },
+            "kind": "feature"
+          }
+        ],
+        "version": "0.0.2-dev"
+      },
+      {
         "date": "2026-10-01",
         "entries": [
           {
@@ -4141,6 +4159,7 @@
         "version": "0.0.1"
       }
     ],
+    "expressive-avatar": [],
     "fade-edge": [
       {
         "date": "2026-10-01",
@@ -5472,6 +5491,24 @@
       }
     ],
     "kbd": [
+      {
+        "date": null,
+        "entries": [
+          {
+            "date": "2026-10-02",
+            "en": {
+              "body": "The contract now declares <code>--sk-kbd-icon</code>, the internal hook that feeds the arrow and Enter glyphs. The stylesheet already used it; this entry aligns the reference with the CSS so the compiler does not leave a hook undocumented.",
+              "title": "Kbd publishes the hook for its narrow icons"
+            },
+            "es": {
+              "body": "El contrato ahora declara <code>--sk-kbd-icon</code>, el hook interno que alimenta los glifos de flechas y Enter. La hoja ya lo usaba; esta entrada alinea la referencia con el CSS para que el compilador no deje un hook sin documentar.",
+              "title": "Kbd publica el hook de sus iconos estrechos"
+            },
+            "kind": "bugfix"
+          }
+        ],
+        "version": "0.0.2-dev"
+      },
       {
         "date": "2026-10-01",
         "entries": [
@@ -6946,6 +6983,27 @@
         "version": "0.0.1"
       }
     ],
+    "message": [
+      {
+        "date": null,
+        "entries": [
+          {
+            "date": "2026-10-02",
+            "en": {
+              "body": "New <code>MessageActions</code> for controls that belong to the message: copy, react, or delete. The contract only provides placement and alignment; the app decides which actions are available from permissions, such as deleting only your own messages.",
+              "title": "Message adds an actions slot"
+            },
+            "es": {
+              "body": "Nuevo <code>MessageActions</code> para controles que pertenecen al mensaje: copiar, reaccionar o eliminar. El contrato solo da el lugar y la alineación; la app decide qué acciones existen según permisos, por ejemplo eliminar solo mensajes propios.",
+              "title": "Message suma un slot de acciones"
+            },
+            "kind": "feature",
+            "target": "MessageActions"
+          }
+        ],
+        "version": "0.0.2-dev"
+      }
+    ],
     "meter": [
       {
         "date": "2026-10-01",
@@ -7657,6 +7715,24 @@
     ],
     "placeholder": [
       {
+        "date": null,
+        "entries": [
+          {
+            "date": "2026-10-02",
+            "en": {
+              "body": "Each bar used to sweep its own width, so a column of different widths never lit up together. The shimmer is now a band anchored to the viewport and every shape shows the same slice of it. Inside an <code>aria-busy=\"true\"</code> region one clock, <code>--sk-placeholder-phase</code>, drives the sweep, so skeletons mounted at different moments no longer drift apart. It lasts 1.75 times the loading token and is tuned with <code>--sk-placeholder-sweep-duration</code> and <code>--sk-placeholder-sweep-size</code>.",
+              "title": "The shimmer crosses every shape as one band, and slower"
+            },
+            "es": {
+              "body": "Antes cada barra barría su propio ancho, así que una columna de anchos distintos nunca brillaba a la vez. Ahora el brillo es una banda anclada al viewport y todas las formas muestran el mismo trozo de ella. Dentro de una región <code>aria-busy=\"true\"</code> el barrido lo marca un solo reloj, <code>--sk-placeholder-phase</code>, así que lo montado en momentos distintos tampoco se desfasa. Dura 1,75 veces el token de carga y se ajusta con <code>--sk-placeholder-sweep-duration</code> y <code>--sk-placeholder-sweep-size</code>.",
+              "title": "El brillo cruza todas las formas como una sola banda, más lento"
+            },
+            "kind": "rework"
+          }
+        ],
+        "version": "0.0.2-dev"
+      },
+      {
         "date": "2026-10-01",
         "entries": [
           {
@@ -7738,6 +7814,25 @@
       }
     ],
     "popover": [
+      {
+        "date": null,
+        "entries": [
+          {
+            "date": "2026-10-02",
+            "en": {
+              "body": "The arrow was never placed: the open panel's <code>scale</code>, <code>translate</code> and <code>filter</code> made it the containing block of the arrow, and the button, outside it, was not a valid anchor. The open state is now <code>none</code> (same picture, no containing block), so the arrow anchors to the button as in Tooltip and Menu and follows it when the panel is pushed to the screen edge. So that it is right from the first frame the panel no longer scales, slides or blurs in and out: it fades with opacity only, and the arrow fades with it. It also paints the panel's elevation wash. The contract's surface does not change.",
+              "title": "The Popover's arrow points at the button, even when the panel is pushed aside"
+            },
+            "es": {
+              "body": "La flecha nunca se colocaba: <code>scale</code>, <code>translate</code> y <code>filter</code> del panel abierto lo convertían en el bloque contenedor de la flecha, y el botón, fuera de él, no era un ancla válida. El estado abierto ahora es <code>none</code> (la misma imagen, sin bloque contenedor), así que la flecha se ancla al botón como en Tooltip y Menu y lo sigue cuando el panel se empuja al borde de la pantalla. Para que esté bien desde el primer cuadro, el panel ya no escala, desliza ni desenfoca al abrirse o cerrarse: entra y sale solo con opacidad, y la flecha se desvanece con él. Pinta también el degradado de elevación del panel. La superficie del contrato no cambia.",
+              "title": "La flecha del Popover apunta al botón, incluso si el panel se desplaza"
+            },
+            "kind": "bugfix",
+            "target": "arrow"
+          }
+        ],
+        "version": "0.0.2-dev"
+      },
       {
         "date": "2026-10-01",
         "entries": [
@@ -7913,6 +8008,24 @@
       }
     ],
     "procedure": [
+      {
+        "date": null,
+        "entries": [
+          {
+            "date": "2026-10-02",
+            "en": {
+              "body": "<code>ProcessList</code> and <code>ProcessListItem</code> are now <code>Procedure</code> and <code>ProcedureStep</code>: the name says what it is, a procedure followed in order, and sets it apart from <code>Steps</code>, which measures progress. The contract id (<code>procedure</code>), the import (<code>@skryensya/react/procedure</code>), the stylesheet (<code>components/procedure.css</code>), the classes (<code>sk-procedure</code>, <code>sk-procedure__step</code>) and the hooks (<code>--sk-procedure-*</code>, with <code>item</code> becoming <code>step</code>) all change. There is no deprecation period.",
+              "title": "ProcessList is now called Procedure"
+            },
+            "es": {
+              "body": "<code>ProcessList</code> y <code>ProcessListItem</code> son ahora <code>Procedure</code> y <code>ProcedureStep</code>: el nombre dice lo que es, un procedimiento que se sigue en orden, y se distingue de <code>Steps</code>, que mide avance. Cambian el id del contrato (<code>procedure</code>), el import (<code>@skryensya/react/procedure</code>), la hoja (<code>components/procedure.css</code>), las clases (<code>sk-procedure</code>, <code>sk-procedure__step</code>) y los hooks (<code>--sk-procedure-*</code>, con <code>item</code> convertido en <code>step</code>). No hay período de deprecación.",
+              "title": "ProcessList pasa a llamarse Procedure"
+            },
+            "kind": "breaking"
+          }
+        ],
+        "version": "0.0.2-dev"
+      },
       {
         "date": "2026-10-01",
         "entries": [
@@ -8165,6 +8278,25 @@
       }
     ],
     "questionnaire": [
+      {
+        "date": null,
+        "entries": [
+          {
+            "date": "2026-10-02",
+            "en": {
+              "body": "When free text is all a question asks for (no <code>choices</code>, no <code>control</code> and no <code>textType</code>), it is now a three-row textarea instead of one line: an open question needs room. <code>textLines</code> still sets its own rows and <code>textType=\"text\"</code> asks for a single line. Text beside choices and typed answers (email, number, date) stay an input.",
+              "title": "A question that only asks for free text is a textarea"
+            },
+            "es": {
+              "body": "Si el texto libre es lo único que pide una pregunta (sin <code>choices</code>, sin <code>control</code> y sin <code>textType</code>), ahora es un textarea de tres filas en vez de una línea: una pregunta abierta necesita espacio. <code>textLines</code> sigue fijando sus propias filas y <code>textType=\"text\"</code> pide una sola línea. El texto junto a opciones y las respuestas tipadas (email, número, fecha) siguen siendo un input.",
+              "title": "Una pregunta que solo pide texto libre es un textarea"
+            },
+            "kind": "feature",
+            "target": "text"
+          }
+        ],
+        "version": "0.0.2-dev"
+      },
       {
         "date": "2026-10-01",
         "entries": [
@@ -8443,6 +8575,25 @@
       }
     ],
     "quote": [
+      {
+        "date": null,
+        "entries": [
+          {
+            "date": "2026-10-02",
+            "en": {
+              "body": "New <code>image</code> slot: an <code>Avatar</code> (photo or initials) beside the name. It decorates the attribution and does not replace it, so on its own it does not make the caption appear. To place it, the caption now holds the picture in <code>sk-quote__media</code> and the name with the work in <code>sk-quote__author</code>; the space between them is tuned with <code>--sk-quote-media-gap</code>. Without a picture it looks the same as before.",
+              "title": "Quote accepts a picture of the person quoted"
+            },
+            "es": {
+              "body": "Nuevo slot <code>image</code>: un <code>Avatar</code> (con foto o con iniciales) junto al nombre. Decora la atribución y no la reemplaza, así que por sí solo no hace aparecer el caption. Para ubicarlo, el caption ahora guarda la imagen en <code>sk-quote__media</code> y el nombre con la obra en <code>sk-quote__author</code>; el espacio entre ambos se ajusta con <code>--sk-quote-media-gap</code>. Sin imagen se ve igual que antes.",
+              "title": "Quote acepta la imagen de la persona citada"
+            },
+            "kind": "feature",
+            "target": "media"
+          }
+        ],
+        "version": "0.0.2-dev"
+      },
       {
         "date": "2026-10-01",
         "entries": [
@@ -9105,6 +9256,7 @@
         "version": "0.0.1"
       }
     ],
+    "shimmer": [],
     "sidebar": [
       {
         "date": "2026-10-01",
@@ -15240,6 +15392,26 @@
             "brutalist"
           ]
         },
+        "decoding": {
+          "attr": "decoding",
+          "default": "async",
+          "type": "enum",
+          "values": [
+            "async",
+            "auto",
+            "sync"
+          ]
+        },
+        "fetchPriority": {
+          "attr": "fetchpriority",
+          "prop": "fetchPriority",
+          "type": "enum",
+          "values": [
+            "high",
+            "low",
+            "auto"
+          ]
+        },
         "imageName": {
           "attr": "alt",
           "prop": "name",
@@ -15248,6 +15420,15 @@
         "label": {
           "attr": "aria-label",
           "type": "string"
+        },
+        "loading": {
+          "attr": "loading",
+          "default": "lazy",
+          "type": "enum",
+          "values": [
+            "eager",
+            "lazy"
+          ]
         },
         "name": {
           "attr": "aria-label",
@@ -15264,8 +15445,17 @@
             "xl"
           ]
         },
+        "sizes": {
+          "attr": "sizes",
+          "type": "string"
+        },
         "src": {
           "attr": "src",
+          "type": "string"
+        },
+        "srcSet": {
+          "attr": "srcset",
+          "prop": "srcSet",
           "type": "string"
         }
       },
@@ -15340,7 +15530,12 @@
             "size",
             "appearance",
             "imageName",
-            "src"
+            "src",
+            "srcSet",
+            "sizes",
+            "loading",
+            "decoding",
+            "fetchPriority"
           ],
           "react": {
             "from": "@skryensya/react/avatar",
@@ -15373,7 +15568,12 @@
                     "element": "img",
                     "options": [
                       "src",
-                      "imageName"
+                      "imageName",
+                      "srcSet",
+                      "sizes",
+                      "loading",
+                      "decoding",
+                      "fetchPriority"
                     ]
                   }
                 ],
@@ -27516,6 +27716,185 @@
         }
       }
     },
+    "expressive-avatar": {
+      "bindings": {
+        "ExpressiveAvatar": {
+          "enhancer": null,
+          "markup": true,
+          "portals": false,
+          "react": "@skryensya/react/expressive-avatar#ExpressiveAvatar"
+        }
+      },
+      "category": "content",
+      "css": "@skryensya/core/components/expressive-avatar.css",
+      "hookDetails": {
+        "--sk-expressive-avatar-bg": {
+          "default": "var(--theme-colorful, var(--color-bg-surface-sunken))",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/expressive-avatar.css"
+        },
+        "--sk-expressive-avatar-size": {
+          "default": "calc(var(--size-control-lg) * 4 / 3)",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/expressive-avatar.css"
+        }
+      },
+      "hooks": [
+        "--sk-expressive-avatar-size",
+        "--sk-expressive-avatar-bg"
+      ],
+      "id": "expressive-avatar",
+      "options": {
+        "appearance": {
+          "attr": "data-appearance",
+          "default": "plain",
+          "type": "enum",
+          "values": [
+            "plain",
+            "brutalist"
+          ]
+        },
+        "direction": {
+          "attr": "data-direction",
+          "default": "base",
+          "type": "enum",
+          "values": [
+            "base",
+            "top-left",
+            "top",
+            "top-right",
+            "left",
+            "right",
+            "bottom-left",
+            "bottom",
+            "bottom-right"
+          ]
+        },
+        "hat": {
+          "attr": "data-hat",
+          "default": "none",
+          "type": "enum",
+          "values": [
+            "none",
+            "la-cap",
+            "batman-mask"
+          ]
+        },
+        "mode": {
+          "attr": "data-mode",
+          "default": "pixel",
+          "type": "enum",
+          "values": [
+            "pixel",
+            "image"
+          ]
+        },
+        "mouth": {
+          "attr": "data-mouth",
+          "default": "default",
+          "type": "enum",
+          "values": [
+            "default",
+            "neutral",
+            "closed",
+            "a",
+            "e",
+            "i",
+            "o",
+            "u",
+            "smile"
+          ]
+        },
+        "name": {
+          "attr": "aria-label",
+          "type": "string"
+        },
+        "outfit": {
+          "attr": "data-outfit",
+          "default": "base",
+          "type": "enum",
+          "values": [
+            "base",
+            "sweater-alt",
+            "batman"
+          ]
+        },
+        "size": {
+          "attr": "data-size",
+          "default": "md",
+          "type": "enum",
+          "values": [
+            "sm",
+            "md",
+            "lg",
+            "xl"
+          ]
+        }
+      },
+      "parts": {
+        "grid": "sk-expressive-avatar__grid",
+        "image": "sk-expressive-avatar__image",
+        "part": "sk-expressive-avatar__part",
+        "root": "sk-expressive-avatar",
+        "sprite": "sk-expressive-avatar__sprite",
+        "tile": "sk-expressive-avatar__tile"
+      },
+      "semantics": {
+        "ExpressiveAvatar": {
+          "alternatives": [
+            "Avatar.initials"
+          ],
+          "avoidWhen": [
+            "a compact, static identity token is enough; use Avatar",
+            "the image is editorial content rather than an expressive identity; use ImageFrame"
+          ],
+          "useWhen": [
+            "a character, assistant or mascot needs to express a visible state",
+            "the same identity has pixel-art parts or a complete image for each expression"
+          ]
+        }
+      },
+      "signatures": {
+        "ExpressiveAvatar": {
+          "host": {
+            "element": "span"
+          },
+          "intent": [
+            "expressive-identity",
+            "reactive-avatar",
+            "character-portrait"
+          ],
+          "options": [
+            "mode",
+            "name",
+            "size",
+            "appearance",
+            "direction",
+            "mouth",
+            "outfit",
+            "hat"
+          ],
+          "react": {
+            "from": "@skryensya/react/expressive-avatar",
+            "name": "ExpressiveAvatar"
+          },
+          "requires": [
+            "name"
+          ],
+          "slots": {},
+          "template": {
+            "attrs": {
+              "role": "img"
+            },
+            "element": "span",
+            "host": true,
+            "part": "root"
+          }
+        }
+      }
+    },
     "fade-edge": {
       "bindings": {
         "FadeEdge": {
@@ -30719,6 +31098,12 @@
           "part": "root",
           "sheet": "@skryensya/core/components/kbd.css"
         },
+        "--sk-kbd-icon": {
+          "default": "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 19V5'/%3E%3Cpath d='m6 11 6-6 6 6'/%3E%3C/svg%3E\")",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/kbd.css"
+        },
         "--sk-kbd-line-height": {
           "default": "var(--font-line-height-display)",
           "output": false,
@@ -30761,6 +31146,7 @@
         "--sk-kbd-border-color",
         "--sk-kbd-border-width",
         "--sk-kbd-fg",
+        "--sk-kbd-icon",
         "--sk-kbd-font-family",
         "--sk-kbd-font-size",
         "--sk-kbd-line-height",
@@ -35540,6 +35926,432 @@
         }
       }
     },
+    "message": {
+      "bindings": {
+        "Message": {
+          "enhancer": null,
+          "markup": true,
+          "portals": false,
+          "react": "@skryensya/react/message#Message"
+        },
+        "MessageActions": {
+          "enhancer": null,
+          "markup": true,
+          "portals": false,
+          "react": "@skryensya/react/message#MessageActions"
+        },
+        "MessageAvatar": {
+          "enhancer": null,
+          "markup": true,
+          "portals": false,
+          "react": "@skryensya/react/message#MessageAvatar"
+        },
+        "MessageContent": {
+          "enhancer": null,
+          "markup": true,
+          "portals": false,
+          "react": "@skryensya/react/message#MessageContent"
+        },
+        "MessageFooter": {
+          "enhancer": null,
+          "markup": true,
+          "portals": false,
+          "react": "@skryensya/react/message#MessageFooter"
+        },
+        "MessageGroup": {
+          "enhancer": null,
+          "markup": true,
+          "portals": false,
+          "react": "@skryensya/react/message#MessageGroup"
+        },
+        "MessageHeader": {
+          "enhancer": null,
+          "markup": true,
+          "portals": false,
+          "react": "@skryensya/react/message#MessageHeader"
+        }
+      },
+      "category": "content",
+      "css": "@skryensya/core/components/message.css",
+      "hookDetails": {
+        "--sk-message-actions-gap": {
+          "default": "var(--space-inline-xs)",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/message.css"
+        },
+        "--sk-message-avatar-size": {
+          "default": "var(--size-control-md)",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/message.css"
+        },
+        "--sk-message-content-gap": {
+          "default": "var(--space-stack-xs)",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/message.css"
+        },
+        "--sk-message-footer-fg": {
+          "default": "var(--color-text-tertiary)",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/message.css"
+        },
+        "--sk-message-footer-font-size": {
+          "default": "var(--font-size-caption)",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/message.css"
+        },
+        "--sk-message-footer-offset": {
+          "default": "calc(var(--font-size-caption) * var(--font-line-height-caption) + var(--sk-message-content-gap))",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/message.css"
+        },
+        "--sk-message-gap": {
+          "default": "var(--space-inline-md)",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/message.css"
+        },
+        "--sk-message-group-gap": {
+          "default": "var(--space-stack-xs)",
+          "output": false,
+          "part": "group",
+          "sheet": "@skryensya/core/components/message.css"
+        },
+        "--sk-message-header-fg": {
+          "default": "var(--color-text-tertiary)",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/message.css"
+        },
+        "--sk-message-header-font-size": {
+          "default": "var(--font-size-caption)",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/message.css"
+        },
+        "--sk-message-max-inline-size": {
+          "default": "min(var(--size-wrapper-sm), 100%)",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/message.css"
+        }
+      },
+      "hooks": [
+        "--sk-message-avatar-size",
+        "--sk-message-content-gap",
+        "--sk-message-footer-offset",
+        "--sk-message-gap",
+        "--sk-message-group-gap",
+        "--sk-message-header-fg",
+        "--sk-message-header-font-size",
+        "--sk-message-footer-fg",
+        "--sk-message-footer-font-size",
+        "--sk-message-actions-gap",
+        "--sk-message-max-inline-size"
+      ],
+      "id": "message",
+      "options": {
+        "align": {
+          "attr": "data-align",
+          "default": "start",
+          "type": "enum",
+          "values": [
+            "start",
+            "end"
+          ]
+        }
+      },
+      "parts": {
+        "actions": "sk-message__actions",
+        "avatar": "sk-message__avatar",
+        "content": "sk-message__content",
+        "footer": "sk-message__footer",
+        "group": "sk-message-group",
+        "header": "sk-message__header",
+        "root": "sk-message"
+      },
+      "semantics": {
+        "Message": {
+          "alternatives": [
+            "Feed",
+            "List",
+            "Avatar.image"
+          ],
+          "avoidWhen": [
+            "the row is a generic notification or feed item; use Feed or List instead",
+            "the avatar identifies authorship for a card, not a conversation turn; use Avatar in that composition"
+          ],
+          "useWhen": [
+            "one turn in a conversation needs row geometry: side, avatar, content and metadata",
+            "start/end alignment communicates whether the message was received or sent",
+            "the visible surface is supplied by the product: a Bubble, attachment preview, card or custom block"
+          ]
+        },
+        "MessageActions": {
+          "alternatives": [
+            "Toolbar"
+          ],
+          "avoidWhen": [
+            "the command acts on the whole conversation or selected messages; use Toolbar",
+            "the action is primary content of the message rather than metadata around it"
+          ],
+          "useWhen": [
+            "message-level controls such as copy, react or delete should travel with the message row",
+            "the available actions depend on author or permissions, such as delete only on my messages"
+          ]
+        },
+        "MessageAvatar": {
+          "alternatives": [
+            "Avatar.image",
+            "Avatar.initials"
+          ],
+          "avoidWhen": [
+            "the image is content inside the message rather than the speaker identity"
+          ],
+          "useWhen": [
+            "the row needs a speaker avatar, or an empty avatar slot to preserve grouped alignment"
+          ]
+        },
+        "MessageContent": {
+          "alternatives": [
+            "Box"
+          ],
+          "avoidWhen": [
+            "there is no conversation row; the surface can stand on its own"
+          ],
+          "useWhen": [
+            "header, message surface and footer need one aligned stack inside the conversation row"
+          ]
+        },
+        "MessageFooter": {
+          "alternatives": [
+            "MessageActions"
+          ],
+          "avoidWhen": [
+            "the content is an interactive control; use MessageActions for controls"
+          ],
+          "useWhen": [
+            "delivery state, time or edited state belongs below the message surface"
+          ]
+        },
+        "MessageGroup": {
+          "alternatives": [
+            "Message"
+          ],
+          "avoidWhen": [
+            "messages come from different people or different times and should read as separate turns"
+          ],
+          "useWhen": [
+            "consecutive messages from the same sender should stack with a shared avatar column"
+          ]
+        },
+        "MessageHeader": {
+          "alternatives": [
+            "Text"
+          ],
+          "avoidWhen": [
+            "the name is already clear from surrounding context or repeated on every grouped message"
+          ],
+          "useWhen": [
+            "sender name or compact metadata belongs above the message surface"
+          ]
+        }
+      },
+      "signatures": {
+        "Message": {
+          "host": {
+            "element": "div"
+          },
+          "intent": [
+            "conversation-row",
+            "chat-message",
+            "sender-receiver-row"
+          ],
+          "options": [
+            "align"
+          ],
+          "react": {
+            "from": "@skryensya/react/message",
+            "name": "Message"
+          },
+          "slots": {
+            "children": {
+              "accepts": "node",
+              "required": true
+            }
+          },
+          "template": {
+            "element": "div",
+            "host": true,
+            "options": [
+              "align"
+            ],
+            "part": "root",
+            "slot": "children"
+          }
+        },
+        "MessageActions": {
+          "host": {
+            "element": "div"
+          },
+          "intent": [
+            "message-actions",
+            "copy-react-delete-message"
+          ],
+          "options": [],
+          "react": {
+            "from": "@skryensya/react/message",
+            "name": "MessageActions"
+          },
+          "slots": {
+            "children": {
+              "accepts": "node",
+              "required": true
+            }
+          },
+          "template": {
+            "element": "div",
+            "host": true,
+            "part": "actions",
+            "slot": "children"
+          }
+        },
+        "MessageAvatar": {
+          "host": {
+            "element": "div"
+          },
+          "intent": [
+            "message-avatar-slot",
+            "speaker-avatar"
+          ],
+          "options": [],
+          "react": {
+            "from": "@skryensya/react/message",
+            "name": "MessageAvatar"
+          },
+          "slots": {
+            "children": {
+              "accepts": "node"
+            }
+          },
+          "template": {
+            "element": "div",
+            "host": true,
+            "part": "avatar",
+            "slot": "children"
+          }
+        },
+        "MessageContent": {
+          "host": {
+            "element": "div"
+          },
+          "intent": [
+            "message-content-stack",
+            "message-surface-and-metadata"
+          ],
+          "options": [],
+          "react": {
+            "from": "@skryensya/react/message",
+            "name": "MessageContent"
+          },
+          "slots": {
+            "children": {
+              "accepts": "node",
+              "required": true
+            }
+          },
+          "template": {
+            "element": "div",
+            "host": true,
+            "part": "content",
+            "slot": "children"
+          }
+        },
+        "MessageFooter": {
+          "host": {
+            "element": "div"
+          },
+          "intent": [
+            "message-status",
+            "message-footer-metadata"
+          ],
+          "options": [],
+          "react": {
+            "from": "@skryensya/react/message",
+            "name": "MessageFooter"
+          },
+          "slots": {
+            "children": {
+              "accepts": "node",
+              "required": true
+            }
+          },
+          "template": {
+            "element": "div",
+            "host": true,
+            "part": "footer",
+            "slot": "children"
+          }
+        },
+        "MessageGroup": {
+          "host": {
+            "element": "div"
+          },
+          "intent": [
+            "consecutive-messages",
+            "same-sender-message-stack"
+          ],
+          "options": [],
+          "react": {
+            "from": "@skryensya/react/message",
+            "name": "MessageGroup"
+          },
+          "slots": {
+            "children": {
+              "accepts": "node",
+              "required": true
+            }
+          },
+          "template": {
+            "element": "div",
+            "host": true,
+            "part": "group",
+            "slot": "children"
+          }
+        },
+        "MessageHeader": {
+          "host": {
+            "element": "div"
+          },
+          "intent": [
+            "message-sender-name",
+            "message-header-metadata"
+          ],
+          "options": [],
+          "react": {
+            "from": "@skryensya/react/message",
+            "name": "MessageHeader"
+          },
+          "slots": {
+            "children": {
+              "accepts": "node",
+              "required": true
+            }
+          },
+          "template": {
+            "element": "div",
+            "host": true,
+            "part": "header",
+            "slot": "children"
+          }
+        }
+      }
+    },
     "meter": {
       "bindings": {
         "Meter": {
@@ -38270,10 +39082,28 @@
           "part": "root",
           "sheet": "@skryensya/core/components/placeholder.css"
         },
+        "--sk-placeholder-phase": {
+          "default": "1",
+          "output": true,
+          "part": null,
+          "sheet": "@skryensya/core/components/placeholder.css"
+        },
         "--sk-placeholder-size": {
           "default": "var(--size-control-md)",
           "output": false,
           "part": "root",
+          "sheet": "@skryensya/core/components/placeholder.css"
+        },
+        "--sk-placeholder-sweep-duration": {
+          "default": "calc(var(--motion-loading-duration-slow) * 1.75)",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/placeholder.css"
+        },
+        "--sk-placeholder-sweep-size": {
+          "default": "40rem",
+          "output": false,
+          "part": "line",
           "sheet": "@skryensya/core/components/placeholder.css"
         }
       },
@@ -38288,7 +39118,10 @@
         "--sk-placeholder-leading",
         "--sk-placeholder-line-box",
         "--sk-placeholder-line-gap",
-        "--sk-placeholder-size"
+        "--sk-placeholder-phase",
+        "--sk-placeholder-size",
+        "--sk-placeholder-sweep-duration",
+        "--sk-placeholder-sweep-size"
       ],
       "id": "placeholder",
       "options": {
@@ -38357,6 +39190,9 @@
           "type": "string"
         }
       },
+      "outputHooks": [
+        "--sk-placeholder-phase"
+      ],
       "parts": {
         "line": "sk-placeholder__line",
         "root": "sk-placeholder"
@@ -39284,24 +40120,6 @@
           "part": "root",
           "sheet": "@skryensya/core/components/procedure.css"
         },
-        "--sk-procedure-step-gap": {
-          "default": "var(--space-inline-md)",
-          "output": false,
-          "part": "root",
-          "sheet": "@skryensya/core/components/procedure.css"
-        },
-        "--sk-procedure-step-padding-x": {
-          "default": "var(--space-inset-md)",
-          "output": false,
-          "part": "root",
-          "sheet": "@skryensya/core/components/procedure.css"
-        },
-        "--sk-procedure-step-padding-y": {
-          "default": "var(--space-inset-md)",
-          "output": false,
-          "part": "root",
-          "sheet": "@skryensya/core/components/procedure.css"
-        },
         "--sk-procedure-marker-bg": {
           "default": "var(--color-bg-surface-sunken)",
           "output": false,
@@ -39328,6 +40146,24 @@
         },
         "--sk-procedure-marker-size": {
           "default": "var(--size-control-sm)",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/procedure.css"
+        },
+        "--sk-procedure-step-gap": {
+          "default": "var(--space-inline-md)",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/procedure.css"
+        },
+        "--sk-procedure-step-padding-x": {
+          "default": "var(--space-inset-md)",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/procedure.css"
+        },
+        "--sk-procedure-step-padding-y": {
+          "default": "var(--space-inset-md)",
           "output": false,
           "part": "root",
           "sheet": "@skryensya/core/components/procedure.css"
@@ -39372,8 +40208,8 @@
       "options": {},
       "parts": {
         "content": "sk-procedure__content",
-        "item": "sk-procedure__step",
         "root": "sk-procedure",
+        "step": "sk-procedure__step",
         "title": "sk-procedure__title"
       },
       "semantics": {
@@ -39480,7 +40316,7 @@
             ],
             "element": "li",
             "host": true,
-            "part": "item"
+            "part": "step"
           }
         }
       }
@@ -41041,6 +41877,11 @@
                           "textMax",
                           "textStep"
                         ],
+                        "whenGiven": [
+                          "choices",
+                          "control",
+                          "textType"
+                        ],
                         "whenMissing": "textLines"
                       },
                       {
@@ -41062,6 +41903,31 @@
                           "textLines"
                         ],
                         "whenGiven": "textLines"
+                      },
+                      {
+                        "also": [
+                          "sk-input",
+                          "sk-input--textarea"
+                        ],
+                        "attrs": {
+                          "data-size": "sm",
+                          "rows": "3"
+                        },
+                        "element": "textarea",
+                        "name": "text",
+                        "optionAttrs": {
+                          "name": "name"
+                        },
+                        "options": [
+                          "name",
+                          "textPlaceholder"
+                        ],
+                        "whenMissing": [
+                          "textLines",
+                          "choices",
+                          "control",
+                          "textType"
+                        ]
                       }
                     ],
                     "element": "div",
@@ -41177,6 +42043,12 @@
           "part": "root",
           "sheet": "@skryensya/core/components/quote.css"
         },
+        "--sk-quote-media-gap": {
+          "default": "var(--space-inline-sm)",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/quote.css"
+        },
         "--sk-quote-padding-inline": {
           "default": "var(--space-inline-md)",
           "output": false,
@@ -41211,6 +42083,7 @@
         "--sk-quote-font-style",
         "--sk-quote-gap",
         "--sk-quote-line-height",
+        "--sk-quote-media-gap",
         "--sk-quote-measure",
         "--sk-quote-padding-inline",
         "--sk-quote-rule-color",
@@ -41235,7 +42108,9 @@
       },
       "parts": {
         "attribution": "sk-quote__attribution",
+        "author": "sk-quote__author",
         "body": "sk-quote__body",
+        "media": "sk-quote__media",
         "root": "sk-quote",
         "source": "sk-quote__source"
       },
@@ -41286,6 +42161,13 @@
               "accepts": "node",
               "required": true
             },
+            "image": {
+              "accepts": "signature",
+              "of": [
+                "Avatar.image",
+                "Avatar.initials"
+              ]
+            },
             "source": {
               "accepts": "node"
             }
@@ -41303,13 +42185,25 @@
               {
                 "children": [
                   {
-                    "slot": "attribution"
+                    "element": "span",
+                    "part": "media",
+                    "slot": "image",
+                    "whenGiven": "image"
                   },
                   {
-                    "element": "cite",
-                    "part": "source",
-                    "slot": "source",
-                    "whenGiven": "source"
+                    "children": [
+                      {
+                        "slot": "attribution"
+                      },
+                      {
+                        "element": "cite",
+                        "part": "source",
+                        "slot": "source",
+                        "whenGiven": "source"
+                      }
+                    ],
+                    "element": "span",
+                    "part": "author"
                   }
                 ],
                 "element": "figcaption",
@@ -43372,6 +44266,158 @@
             "element": "hr",
             "host": true,
             "part": "root"
+          }
+        }
+      }
+    },
+    "shimmer": {
+      "bindings": {
+        "Shimmer": {
+          "enhancer": null,
+          "markup": true,
+          "portals": false,
+          "react": "@skryensya/react/shimmer#Shimmer"
+        }
+      },
+      "category": "content",
+      "css": "@skryensya/core/components/shimmer.css",
+      "hookDetails": {
+        "--sk-shimmer-angle": {
+          "default": "100deg",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/shimmer.css"
+        },
+        "--sk-shimmer-color": {
+          "default": "color-mix(in oklab, currentColor 32%, transparent)",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/shimmer.css"
+        },
+        "--sk-shimmer-duration": {
+          "default": "var(--motion-loading-duration-slow)",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/shimmer.css"
+        },
+        "--sk-shimmer-position": {
+          "default": "200%",
+          "output": false,
+          "part": null,
+          "sheet": "@skryensya/core/components/shimmer.css"
+        },
+        "--sk-shimmer-spread": {
+          "default": "2.5em",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/shimmer.css"
+        },
+        "--sk-shimmer-text-fill": {
+          "default": "color-mix(in oklab, currentColor 62%, transparent)",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/shimmer.css"
+        }
+      },
+      "hooks": [
+        "--sk-shimmer-angle",
+        "--sk-shimmer-color",
+        "--sk-shimmer-duration",
+        "--sk-shimmer-position",
+        "--sk-shimmer-spread",
+        "--sk-shimmer-text-fill"
+      ],
+      "id": "shimmer",
+      "options": {
+        "active": {
+          "attr": "data-shimmer",
+          "default": true,
+          "falseValue": "false",
+          "type": "boolean"
+        },
+        "angle": {
+          "styleProperty": "--sk-shimmer-angle",
+          "type": "string"
+        },
+        "color": {
+          "styleProperty": "--sk-shimmer-color",
+          "type": "string"
+        },
+        "duration": {
+          "styleProperty": "--sk-shimmer-duration",
+          "type": "string"
+        },
+        "once": {
+          "attr": "data-once",
+          "default": false,
+          "trueValue": "",
+          "type": "boolean"
+        },
+        "reverse": {
+          "attr": "data-reverse",
+          "default": false,
+          "trueValue": "",
+          "type": "boolean"
+        },
+        "spread": {
+          "styleProperty": "--sk-shimmer-spread",
+          "type": "string"
+        }
+      },
+      "parts": {
+        "root": "sk-shimmer"
+      },
+      "semantics": {
+        "Shimmer": {
+          "alternatives": [
+            "Placeholder",
+            "Loader"
+          ],
+          "avoidWhen": [
+            "the absent content shape needs to be reserved; use Placeholder",
+            "the wait state needs a standalone progress indicator; use Loader",
+            "the effect would run on permanent body copy or decoration"
+          ],
+          "useWhen": [
+            "temporary status text should feel alive while work is happening, such as generating or reading",
+            "the text itself remains present and readable; only the highlight moves across it"
+          ]
+        }
+      },
+      "signatures": {
+        "Shimmer": {
+          "host": {
+            "element": "span"
+          },
+          "intent": [
+            "live-status-text",
+            "temporary-progress-copy",
+            "streaming-response-copy"
+          ],
+          "options": [
+            "color",
+            "duration",
+            "spread",
+            "angle",
+            "once",
+            "reverse",
+            "active"
+          ],
+          "react": {
+            "from": "@skryensya/react/shimmer",
+            "name": "Shimmer"
+          },
+          "slots": {
+            "children": {
+              "accepts": "text",
+              "required": true
+            }
+          },
+          "template": {
+            "element": "span",
+            "host": true,
+            "part": "root",
+            "slot": "children"
           }
         }
       }
@@ -55364,7 +56410,7 @@
     "working": "0.0.2"
   },
   "schemaVersion": "2.3",
-  "sourceHash": "604fc22246b86106",
+  "sourceHash": "fc6b78b711a98dae",
   "vocabulary": {
     "a11y": "When `when` holds, one of `requiresOneOf` must be given: an option, a raw attribute, a filled slot, or a child signature by name.",
     "atLeastOneOf": "At least one member of each group counts: a filled slot, a boolean option set to true, or an option other than its default.",

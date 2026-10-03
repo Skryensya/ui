@@ -1,4 +1,4 @@
-import { render } from "@testing-library/react";
+import { fireEvent, render } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
 import { Avatar, AvatarGroup } from "./avatar.js";
 
@@ -19,9 +19,35 @@ describe("Avatar", () => {
     const img = ui.getByRole("img", { name: "Ada Lovelace" }) as HTMLImageElement;
     expect(img.tagName).toBe("IMG");
     expect(img.getAttribute("src")).toBe("/ada.png");
+    expect(img.getAttribute("decoding")).toBe("async");
+    expect(img.getAttribute("loading")).toBe("lazy");
     expect(img.className).toContain("sk-image-frame__media");
     expect(img.closest(".sk-image-frame")).toBeTruthy();
     expect(img.closest(".sk-avatar")).toBeTruthy();
+  });
+
+  it("accepts optimizer image descriptors and serializes responsive image hints", () => {
+    const ui = render(
+      <Avatar
+        name="Ada Lovelace"
+        src={{ src: "/ada-64.png", srcSet: "/ada-32.png 32w, /ada-64.png 64w", sizes: "40px", width: 64, height: 64 }}
+      />,
+    );
+    const img = ui.getByRole("img", { name: "Ada Lovelace" }) as HTMLImageElement;
+    expect(img.getAttribute("src")).toBe("/ada-64.png");
+    expect(img.getAttribute("srcset")).toBe("/ada-32.png 32w, /ada-64.png 64w");
+    expect(img.getAttribute("sizes")).toBe("40px");
+    expect(img.getAttribute("width")).toBe("64");
+    expect(img.getAttribute("height")).toBe("64");
+  });
+
+  it("falls back to initials when the image fails", () => {
+    const ui = render(<Avatar name="Ada Lovelace" src="/missing.png" />);
+    fireEvent.error(ui.getByRole("img", { name: "Ada Lovelace" }));
+
+    const fallback = ui.getByLabelText("Ada Lovelace");
+    expect(fallback.textContent).toBe("AL");
+    expect(fallback.querySelector("img")).toBeNull();
   });
 
   it("serializes the xl size onto the same attribute both structures use", () => {

@@ -1,0 +1,13 @@
+# The structure lives in packages/core/src/shimmer.ts. Here, only why it is chosen.
+
+Shimmer:
+  useWhen:
+    - "temporary status text should feel alive while work is happening, such as generating or reading"
+    - "the text itself remains present and readable; only the highlight moves across it"
+  avoidWhen:
+    - "the absent content shape needs to be reserved; use Placeholder"
+    - "the wait state needs a standalone progress indicator; use Loader"
+    - "the effect would run on permanent body copy or decoration"
+  alternatives:
+    - Placeholder
+    - Loader

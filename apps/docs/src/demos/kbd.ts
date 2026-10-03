@@ -15,7 +15,7 @@ export const kbdTree: UsageTree = {
     { contract: "kbd", signature: "Kbd", children: "⌘" },
     { contract: "kbd", signature: "Kbd", children: "K" },
     { contract: "kbd", signature: "Kbd", children: "Esc" },
-    { contract: "kbd", signature: "Kbd", children: "↵" },
+    { contract: "kbd", signature: "Kbd", attrs: { "data-key": "enter" }, children: "↵" }
   ],
 };
 
@@ -27,7 +27,7 @@ export const kbdAccentTree: UsageTree = {
     { contract: "kbd", signature: "Kbd", options: { tone: "accent" }, children: "⌘" },
     { contract: "kbd", signature: "Kbd", options: { tone: "accent" }, children: "K" },
     { contract: "kbd", signature: "Kbd", options: { tone: "accent" }, children: "Esc" },
-    { contract: "kbd", signature: "Kbd", options: { tone: "accent" }, children: "↵" },
+    { contract: "kbd", signature: "Kbd", options: { tone: "accent" }, attrs: { "data-key": "enter" }, children: "↵" }
   ],
 };
 

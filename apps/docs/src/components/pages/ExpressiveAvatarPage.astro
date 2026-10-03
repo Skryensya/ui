@@ -1,0 +1,950 @@
+---
+import "@skryensya/core/components/expressive-avatar.css";
+import "@skryensya/core/components/expressive-avatar-tileset.css";
+import ComponentPageShell from "./ComponentPageShell.astro";
+import CodeBlock from "../CodeBlock.astro";
+import WhenToUse from "../WhenToUse.astro";
+import A11yNotes from "../A11yNotes.astro";
+import ComparisonTable from "../ComparisonTable.astro";
+import "@skryensya/core/components/procedure.css";
+import { Procedure, ProcedureStep } from "@skryensya/react/procedure";
+import { ExpressiveAvatar } from "@skryensya/react/expressive-avatar";
+import { ExpressiveAvatarTriggers } from "../react-demos/expressive-avatar-triggers";
+import {
+  expressiveAvatarGrid,
+  expressiveAvatarLeftEyeTiles,
+  expressiveAvatarMouthLeftTiles,
+  expressiveAvatarOutfitIndices,
+  expressiveAvatarRequiredTiles,
+  type ExpressiveAvatarDirection,
+  type ExpressiveAvatarMouth,
+} from "@skryensya/core/expressive-avatar";
+import { expressiveAvatarAtlasLayout } from "@skryensya/core/expressive-avatar-atlas";
+import { getLocale } from "../../i18n";
+
+const locale = getLocale(Astro.url);
+const copy = locale === "es"
+  ? {
+      description: "Avatar reactivo con expresiones. Su cara es un tileset: una sola imagen con baldosas con nombre.",
+      lede: "ExpressiveAvatar muestra una identidad visual que te mira, parpadea y habla. Su cara es un <strong>tileset</strong>, una sola imagen dividida en baldosas con nombre, y cada expresión es un conjunto de baldosas que se cambian. Puedes usar el tuyo, crear expresiones nuevas y dispararlas cuando quieras.",
+      expressionsTitle: "Todas las expresiones",
+      expressionsBody: "Diecinueve estados: nueve miradas, parpadeo y guiño, y ocho bocas (una por vocal, una cerrada para m, b y p, una neutra y la sonrisa).",
+      gazeLabel: "Mirada",
+      eyesLabel: "Ojos",
+      mouthLabel: "Boca",
+      tilesetTitle: "El tileset",
+      tilesetBody: "Esta es la imagen que usa el avatar, entera: una cuadrícula de 8 por 8 celdas de 25 píxeles, un archivo. Cada baldosa es un lugar de la cuadrícula, y el avatar muestra una moviendo la imagen detrás de una ventana de 25 por 25, así que cambiar los ojos o la boca no carga nada.",
+      atlasLabel: "El tileset completo, con el número de cada celda",
+      atlasDownload: "Descargar el tileset (SVG)",
+      atlasHint: "Pasa el cursor por una celda para ver su nombre.",
+      mapTitle: "El mapa de la cara",
+      mapBody: "La cara es una cuadrícula de 6 por 6 baldosas de ese tileset. Los ojos y la boca (resaltados) son las que cambian con la expresión; las dos filas de abajo son el cuerpo, que la ropa puede reemplazar.",
+      mapSlots: { eye: "ojo", mouth: "boca", body: "cuerpo", head: "cabeza" },
+      extendTitle: "Crea tus propios estados y dispáralos",
+      extendLede: "Una expresión es un nombre para unas baldosas. Cubre solo las partes que nombra (un ojo, los dos, la boca) y deja el resto de la cara a lo que estaba haciendo: una expresión que solo mueve los ojos deja que la boca siga hablando.",
+      extendSteps: [
+        { title: "Dibuja la baldosa nueva", body: "Si el estado necesita un dibujo que no existe, agrégalo al tileset en una celda nueva, después de las que ya hay. Si solo recombina baldosas que ya existen (como los ejemplos de abajo), no hace falta dibujar nada." },
+        { title: "Dale un nombre y un lugar", body: "Agrega su nombre al final de la lista de nombres del tileset: el lugar de la celda es su posición en esa lista. La cuadrícula crece por filas." },
+        { title: "Define la expresión", body: "Un nombre nuevo con las baldosas que cambia: <code>leftEye</code>, <code>rightEye</code>, <code>mouthLeft</code> y <code>mouthRight</code>. Las que no nombras siguen con lo suyo. Un nombre que ya existe (<code>smile</code>, <code>wink</code>) se reemplaza." },
+        { title: "Dispárala", body: "De cuatro formas, abajo: el valor <code>expression</code>, el manejador del avatar, un evento en su elemento y una frase que la pide mientras habla." },
+      ],
+      triggersTitle: "Cómo dispararla",
+      triggerColumns: ["Cuándo sirve"],
+      triggerAspect: "Forma",
+      triggerRows: [
+        { label: "El valor <code>expression</code>", cells: ["Cuando el estado depende de tu interfaz: un formulario con error, un asistente que piensa. El avatar la muestra mientras valga."] },
+        { label: "El manejador (<code>apiRef</code>)", cells: ["Cuando algo ocurre en un momento: un botón, un temporizador, una respuesta que llega. Puede durar un tiempo y se quita sola."] },
+        { label: "Un evento en el avatar", cells: ["Cuando quien lo dispara no tiene una referencia al componente: otro script, otro framework, un elemento en otra parte de la página."] },
+        { label: "Una frase", cells: ["Cuando la expresión va con lo que dice: la frase la pide y la mantiene mientras se escribe y se lee."] },
+      ],
+      triggersDemoTitle: "Pruébalo",
+      triggersDemoBody: "Tres expresiones hechas solo con baldosas que el tileset ya tiene, recombinadas. Cada botón la dispara de una forma distinta.",
+      triggers: {
+        asombro: "Asombro",
+        duda: "Duda",
+        picaro: "Pícaro",
+        clear: "Quitar",
+        viaApi: "Con el manejador",
+        viaEvent: "Con un evento en el avatar",
+        viaPhrase: "Con una frase",
+        phrase: "¡Sorpresa!",
+        eventButton: "Asombro, por evento",
+        phraseButton: "Decir una frase pícara",
+      },
+      extendCode: "El código de cada caso, con el tileset propio y las expresiones, está en Storybook.",
+      aliveTitle: "Viva: te mira y te habla",
+      aliveBody: "Con <code>interactive</code> sigue el puntero con la mirada, parpadea sola y, al hacer clic, dice su siguiente frase moviendo la boca. Pasa el cursor por encima y haz clic.",
+      phrases: {
+        greetings: [{ text: "Hola, soy Allison", category: "short" as const }, { text: "Qué bueno verte por aquí", category: "short" as const }],
+        general: [
+          { text: "Me gustan las cosas pequeñas y bien hechas", category: "mid" as const },
+          { text: "Los componentes también pueden tener cara", category: "mid" as const },
+          { text: "¿Viste cómo te seguía con la mirada?", category: "mid" as const },
+          { text: "Esto está hecho con un tileset", category: "short" as const },
+        ],
+      },
+      imagesTitle: "Una imagen por estado",
+      imagesBody: "El tileset no es la única forma. Con <code>mode=\"image\"</code> le das una imagen entera por cada estado (la mirada, el parpadeo, el guiño, cada forma de la boca y la sonrisa, y los nombres que quieras) y el avatar cambia de una a otra, con la misma mirada, parpadeo y habla de siempre. Esta cara está hecha así: 19 imágenes WebP, exportadas del mismo tileset a un tamaño que cae justo sobre su cuadrícula de píxeles. Pasa el cursor y haz clic.",
+      imagesStates: "Los estados llevan los mismos nombres que arriba: <code>base</code>, las miradas, <code>blink</code>, <code>wink</code>, las bocas y <code>smile</code>. Solo <code>base</code> es obligatoria: un estado sin imagen muestra la base.",
+      compareTitle: "Tileset o una imagen por estado",
+      compareAspect: "Qué importa",
+      compareColumns: ["Tileset", "Una imagen por estado"],
+      compareRows: [
+        { label: "Peso", cells: ["Una sola imagen de unos 15 KB comprimida, sea cual sea el número de expresiones.", "Una imagen por estado: unas 19 de unos 7 KB cada una (alrededor de 130 KB en WebP sin pérdida)."] },
+        { label: "Cómo se dibuja", cells: ["Pixel art con una cuadrícula y nombres fijos, en tres tonos.", "Lo que quieras: pixel art, ilustración, fotos, imágenes generadas."] },
+        { label: "Partes que se combinan", cells: ["Ojos y boca son independientes: mira de lado mientras habla.", "Un estado es una cara entera: al hablar mira al frente, y un parpadeo a mitad de palabra se omite."] },
+        { label: "Estados nuevos", cells: ["Una baldosa más, o dos si es de los ojos o la boca; o una recombinación de las que hay.", "Una imagen entera más."] },
+        { label: "Escala", cells: ["Vectorial: nítida a cualquier tamaño.", "Fija: la resolución de las imágenes."] },
+      ],
+      guideTitle: "Haz tu propia cara",
+      guideLede: "La cara es una sola imagen, el tileset: una cuadrícula de celdas iguales con las baldosas en un orden conocido. Dibuja la tuya en esa misma cuadrícula y el avatar la usa igual, con su mirada, sus parpadeos y su habla.",
+      guideSteps: [
+        { title: "Parte del tileset de arriba", body: "Descarga el tileset y ábrelo en tu editor de pixel art. Cada celda es de 25 por 25 píxeles y ya sabes qué es cada una por su número: si reemplazas el dibujo en su celda, el avatar usa el tuyo." },
+        { title: "Dibuja la cabeza y el cuerpo", body: "Las 23 baldosas de cabeza y cuerpo forman un retrato de 150 por 150 píxeles, de frente y mirando al centro, cortado en 6 por 6. Usa tinta y gris sobre papel transparente: el papel es el color del círculo." },
+        { title: "Dibuja los ojos", body: "Los ojos son baldosas aparte, izquierda y derecha, y cada uno tiene su fila de estados: de frente, ocho miradas hacia los lados, parpadeo y guiño (solo el derecho). Mantén el ojo en el mismo sitio de la celda para que no salte al mirar." },
+        { title: "Dibuja la boca", body: "También son dos baldosas, izquierda y derecha, con nueve formas: reposo, neutra, cerrada para m, b y p, una por vocal y la sonrisa. La boca de reposo debe encajar con las demás en el mismo punto." },
+        { title: "Exporta una sola imagen", body: "PNG, WebP o SVG con la misma cuadrícula: mismas celdas, mismo orden. Un SVG se ve nítido a cualquier tamaño; un PNG o un WebP, a la resolución con que lo hagas." },
+        { title: "Compruébala aquí", body: "Elige tu imagen en la comprobación de abajo: te dice si la cuadrícula es la correcta, qué celdas necesarias están vacías y te enseña tu cara con la imagen que subiste." },
+        { title: "Úsala", body: "Pon la imagen en tu carpeta pública y pásala al componente en la propiedad <code>tileset</code>, con su <code>src</code>. El código de cada caso está en Storybook." },
+      ],
+      tipsTitle: "Para que se vea bien",
+      tips: [
+        "Una celda es un cuadrado entero: los píxeles se dibujan sin suavizado, así que dibuja y exporta sin escalar.",
+        "Deja ojos y boca con margen: la mirada y las vocales cambian solo esas baldosas, nunca el resto de la cara.",
+        "La ropa y los sombreros son opcionales: si no los dibujas, la cara usa el cuerpo base.",
+        "El retrato no se invierte en dark mode: el círculo sigue claro, así que dibuja tinta oscura.",
+      ],
+      requiredTitle: "Las baldosas que hacen falta",
+      requiredBody: "Estas son las baldosas que tu tileset necesita, con su número de celda. La ropa y los sombreros son extras opcionales.",
+      checkTitle: "Comprueba tu tileset",
+      checkBody: "Elige tu imagen. No sale de tu navegador.",
+      checkChoose: "Elegir imagen",
+      checkIdle: "Esperando una imagen.",
+      checkOk: "Tu tileset tiene todo lo necesario.",
+      checkEmpty: "{count} celdas necesarias están vacías:",
+      checkShape: "La imagen no encaja con la cuadrícula: debe ser de {columns} por {rows} celdas iguales y cuadradas (la tuya mide {width} por {height}).",
+      checkPreview: "Tu cara",
+      accessibility: "El nombre accesible identifica a la persona, personaje o asistente. Las imágenes internas son decorativas, y la frase que dice se anuncia una sola vez a los lectores de pantalla.",
+      use: ["Asistentes, mascotas y personajes que expresan estados."],
+      avoid: ["Identidades estáticas y compactas en listas: usa Avatar."],
+      install: "Instala el paquete React y las hojas de estilo del componente y del tileset.",
+    }
+  : {
+      description: "Reactive avatar with expressions. Its face is a tileset: one image of named tiles.",
+      lede: "ExpressiveAvatar shows a visual identity that looks at you, blinks and talks. Its face is a <strong>tileset</strong>, one image divided into named tiles, and each expression is a set of tiles that gets swapped. You can use your own, create new expressions and trigger them whenever you want.",
+      expressionsTitle: "Every expression",
+      expressionsBody: "Nineteen states: nine gazes, a blink and a wink, and eight mouths (one per vowel, a closed one for m, b and p, a neutral one and the smile).",
+      gazeLabel: "Gaze",
+      eyesLabel: "Eyes",
+      mouthLabel: "Mouth",
+      tilesetTitle: "The tileset",
+      tilesetBody: "This is the image the avatar uses, whole: an 8 by 8 grid of 25 pixel cells, one file. Each tile is a place in the grid, and the avatar shows one by moving the image behind a 25 by 25 window, so changing the eyes or the mouth loads nothing.",
+      atlasLabel: "The whole tileset, with each cell's number",
+      atlasDownload: "Download the tileset (SVG)",
+      atlasHint: "Hover a cell to see its name.",
+      mapTitle: "The face map",
+      mapBody: "The face is a 6 by 6 grid of tiles from that tileset. The eyes and mouth (highlighted) are the ones that change with the expression; the two bottom rows are the body, which an outfit can replace.",
+      mapSlots: { eye: "eye", mouth: "mouth", body: "body", head: "head" },
+      extendTitle: "Create your own states and trigger them",
+      extendLede: "An expression is a name for some tiles. It covers only the parts it names (an eye, both, the mouth) and leaves the rest of the face to what it was doing: an expression that only moves the eyes lets the mouth go on speaking.",
+      extendSteps: [
+        { title: "Draw the new tile", body: "If the state needs a drawing that does not exist, add it to the tileset in a new cell, after the ones already there. If it only recombines tiles that already exist (like the examples below), there is nothing to draw." },
+        { title: "Give it a name and a place", body: "Add its name at the end of the tileset's list of names: a cell's place is its position in that list. The grid grows by rows." },
+        { title: "Define the expression", body: "A new name with the tiles it changes: <code>leftEye</code>, <code>rightEye</code>, <code>mouthLeft</code> and <code>mouthRight</code>. The ones you do not name carry on. A name that already exists (<code>smile</code>, <code>wink</code>) is replaced." },
+        { title: "Trigger it", body: "Four ways, below: the <code>expression</code> value, the avatar's handle, an event on its element and a phrase that asks for it while it speaks." },
+      ],
+      triggersTitle: "How to trigger it",
+      triggerColumns: ["When it fits"],
+      triggerAspect: "Way",
+      triggerRows: [
+        { label: "The <code>expression</code> value", cells: ["When the state depends on your interface: a form with an error, an assistant that is thinking. The avatar shows it for as long as it holds."] },
+        { label: "The handle (<code>apiRef</code>)", cells: ["When something happens at a moment: a button, a timer, a response arriving. It can last a while and lifts by itself."] },
+        { label: "An event on the avatar", cells: ["When whatever triggers it has no reference to the component: another script, another framework, an element elsewhere on the page."] },
+        { label: "A phrase", cells: ["When the expression goes with what it says: the phrase asks for it and holds it while it is typed and read."] },
+      ],
+      triggersDemoTitle: "Try it",
+      triggersDemoBody: "Three expressions made only from tiles the tileset already has, recombined. Each button triggers it a different way.",
+      triggers: {
+        asombro: "Amazed",
+        duda: "Doubt",
+        picaro: "Cheeky",
+        clear: "Clear",
+        viaApi: "With the handle",
+        viaEvent: "With an event on the avatar",
+        viaPhrase: "With a phrase",
+        phrase: "Surprise!",
+        eventButton: "Amazed, by event",
+        phraseButton: "Say a cheeky phrase",
+      },
+      extendCode: "The code for each case, with your own tileset and expressions, is in Storybook.",
+      aliveTitle: "Alive: it looks at you and talks to you",
+      aliveBody: "With <code>interactive</code> it follows the pointer with its eyes, blinks on its own and, on a click, says its next phrase moving its mouth. Move the cursor over it and click.",
+      phrases: {
+        greetings: [{ text: "Hi, I'm Allison", category: "short" as const }, { text: "Good to see you here", category: "short" as const }],
+        general: [
+          { text: "I like small things done well", category: "mid" as const },
+          { text: "Components can have a face too", category: "mid" as const },
+          { text: "Did you see it follow you with its eyes?", category: "mid" as const },
+          { text: "This is made with a tileset", category: "short" as const },
+        ],
+      },
+      imagesTitle: "One image per state",
+      imagesBody: "The tileset is not the only way. With <code>mode=\"image\"</code> you give it a whole image for each state (the gaze, the blink, the wink, each mouth shape and the smile, and any names you like) and the avatar switches from one to another, with the same gaze, blinking and speech as ever. This face is made that way: 19 WebP images, exported from the same tileset at a size that lands right on its pixel grid. Move the cursor over it and click.",
+      imagesStates: "The states use the same names as above: <code>base</code>, the gazes, <code>blink</code>, <code>wink</code>, the mouths and <code>smile</code>. Only <code>base</code> is required: a state with no image shows the base.",
+      compareTitle: "Tileset or one image per state",
+      compareAspect: "What matters",
+      compareColumns: ["Tileset", "One image per state"],
+      compareRows: [
+        { label: "Weight", cells: ["One image of about 15 KB compressed, however many expressions.", "One image per state: about 19 of around 7 KB each (about 130 KB as lossless WebP)."] },
+        { label: "How it is drawn", cells: ["Pixel art on a fixed grid with fixed names, in three tones.", "Whatever you like: pixel art, illustration, photos, generated images."] },
+        { label: "Parts that combine", cells: ["Eyes and mouth are independent: it looks sideways while it talks.", "A state is a whole face: it looks ahead while it talks, and a blink mid-word is skipped."] },
+        { label: "New states", cells: ["One more tile, or two for the eyes or mouth; or a recombination of the ones there are.", "One more whole image."] },
+        { label: "Scale", cells: ["Vector: sharp at any size.", "Fixed: the images' resolution."] },
+      ],
+      guideTitle: "Make your own face",
+      guideLede: "The face is a single image, the tileset: a grid of equal cells with the tiles in a known order. Draw yours on that same grid and the avatar uses it just the same, with its gaze, its blinks and its speech.",
+      guideSteps: [
+        { title: "Start from the tileset above", body: "Download the tileset and open it in your pixel art editor. Each cell is 25 by 25 pixels and you know what each one is by its number: if you replace the drawing in its cell, the avatar uses yours." },
+        { title: "Draw the head and body", body: "The 23 head and body tiles make a 150 by 150 pixel portrait, front on and looking at the centre, cut into 6 by 6. Use ink and grey on transparent paper: the paper is the circle's colour." },
+        { title: "Draw the eyes", body: "The eyes are separate tiles, left and right, and each has its row of states: front on, eight side looks, blink and wink (the right one only). Keep the eye in the same place in the cell so it does not jump as it looks around." },
+        { title: "Draw the mouth", body: "Also two tiles, left and right, in nine shapes: rest, neutral, closed for m, b and p, one per vowel and the smile. The resting mouth has to line up with the others at the same spot." },
+        { title: "Export one image", body: "PNG, WebP or SVG with the same grid: same cells, same order. An SVG stays sharp at any size; a PNG or a WebP, at the resolution you make it." },
+        { title: "Check it here", body: "Choose your image in the check below: it tells you whether the grid is right, which needed cells are empty and shows your face drawn with the image you uploaded." },
+        { title: "Use it", body: "Put the image in your public folder and pass it to the component in the <code>tileset</code> property, with its <code>src</code>. The code for each case is in Storybook." },
+      ],
+      tipsTitle: "To make it look right",
+      tips: [
+        "A cell is a whole square: pixels are drawn without smoothing, so draw and export without scaling.",
+        "Leave the eyes and mouth some margin: the gaze and the vowels only swap those tiles, never the rest of the face.",
+        "Outfits and hats are optional: if you do not draw them, the face uses the base body.",
+        "The portrait does not invert in dark mode: the circle stays light, so draw dark ink.",
+      ],
+      requiredTitle: "The tiles you need",
+      requiredBody: "These are the tiles your tileset needs, with their cell number. Outfits and hats are optional extras.",
+      checkTitle: "Check your tileset",
+      checkBody: "Choose your image. It never leaves your browser.",
+      checkChoose: "Choose an image",
+      checkIdle: "Waiting for an image.",
+      checkOk: "Your tileset has everything it needs.",
+      checkEmpty: "{count} needed cells are empty:",
+      checkShape: "The image does not fit the grid: it must be {columns} by {rows} equal, square cells (yours is {width} by {height}).",
+      checkPreview: "Your face",
+      accessibility: "The accessible name identifies the person, character, or assistant. Internal images are decorative, and the phrase it says is announced once to screen readers.",
+      use: ["Assistants, mascots, and characters that express states."],
+      avoid: ["Compact static identities in lists: use Avatar."],
+      install: "Install the React package and the component and tileset stylesheets.",
+    };
+
+const { columns, rows, names, tileSize } = expressiveAvatarAtlasLayout;
+const cellIndex = (name: string) => names.indexOf(name);
+
+/* One image per state, taken from the tileset: the same faces, as files. */
+const stateNames = ["base", "top-left", "top", "top-right", "left", "right", "bottom-left", "bottom", "bottom-right", "blink", "wink", "neutral", "closed", "a", "e", "i", "o", "u", "smile"];
+const stateImages = Object.fromEntries(stateNames.map((name) => [name, `/expressive-avatar/states/${name}.webp`]));
+
+/* Every look, drawn as a card: the face and its name. */
+type Look = { key: string; name: string; props: Record<string, unknown> };
+const gazes: Look[] = (Object.keys(expressiveAvatarLeftEyeTiles).filter((name) => name !== "blink") as ExpressiveAvatarDirection[]).map((direction) => ({
+  key: direction,
+  name: direction,
+  props: { direction },
+}));
+const eyes: Look[] = [
+  { key: "blink", name: "blink", props: { blink: true } },
+  { key: "wink", name: "wink", props: { wink: true } },
+];
+const mouths: Look[] = (Object.keys(expressiveAvatarMouthLeftTiles) as ExpressiveAvatarMouth[])
+  .filter((mouth) => mouth !== "default")
+  .map((mouth) => ({ key: mouth, name: mouth, props: { mouth } }));
+const lookSections = [
+  { title: copy.gazeLabel, looks: gazes },
+  { title: copy.eyesLabel, looks: eyes },
+  { title: copy.mouthLabel, looks: mouths },
+];
+
+/* The face's grid, cell by cell, with what each cell is for. */
+const outfitIndexSet = new Set<number>(expressiveAvatarOutfitIndices as readonly number[]);
+const roleOf = (name: string, index: number) =>
+  name.includes("eye") ? "eye" : name.includes("mouth") ? "mouth" : outfitIndexSet.has(index) ? "body" : "head";
+const gridCells = expressiveAvatarGrid.flat().map((name, index) => ({ name, role: roleOf(name, index) }));
+
+/* The tiles a face needs, in the order of the tileset, grouped. */
+const required = new Set(expressiveAvatarRequiredTiles);
+const groups = [
+  { id: "base", title: locale === "es" ? "Cabeza y cuerpo" : "Head and body", tiles: names.filter((id) => id.startsWith("base-tile-")) },
+  { id: "eyes", title: locale === "es" ? "Ojos" : "Eyes", tiles: names.filter((id) => /^(left|right)-eye-/.test(id)) },
+  { id: "mouths", title: locale === "es" ? "Bocas" : "Mouths", tiles: names.filter((id) => required.has(id) && !id.startsWith("base-tile-") && !/-eye-/.test(id)) },
+];
+
+const usage = `import { ExpressiveAvatar } from "@skryensya/react/expressive-avatar";
+import "@skryensya/core/components/expressive-avatar.css";
+import "@skryensya/core/components/expressive-avatar-tileset.css";
+
+<ExpressiveAvatar
+  name="Assistant"
+  size="xl"
+  interactive
+  phrases={{ greetings: [{ text: "Hi!" }], general: [{ text: "Nice to see you" }] }}
+/>`;
+const install = `pnpm add @skryensya/core @skryensya/react`;
+const atlasUrl = "/expressive-avatar/atlas.svg";
+---
+
+<ComponentPageShell
+  title="Expressive Avatar"
+  description={copy.description}
+  contractId="expressive-avatar"
+  badge="Beta"
+  testFiles={["packages/react/src/components/expressive-avatar.test.tsx", "packages/core/src/expressive-avatar-behavior.test.ts"]}
+>
+  <Fragment slot="usage">
+    <p class="lede" set:html={copy.lede} />
+
+    <h3>{copy.aliveTitle}</h3>
+    <p set:html={copy.aliveBody} />
+    <div class="ea-stage">
+      <ExpressiveAvatar client:visible name="Allison" size="xl" interactive phrases={copy.phrases} />
+    </div>
+
+    <h3>{copy.expressionsTitle}</h3>
+    <p set:html={copy.expressionsBody} />
+    {lookSections.map((section) => (
+      <section class="ea-looks" aria-label={section.title}>
+        <h4 class="ea-looks__title">{section.title} <span class="ea-count">{section.looks.length}</span></h4>
+        <ul class="ea-looks__grid" role="list">
+          {section.looks.map((look) => (
+            <li class="ea-look">
+              <div class="ea-look__face">
+                <ExpressiveAvatar name={look.name} size="md" {...look.props} />
+              </div>
+              <code class="ea-look__name">{look.name}</code>
+            </li>
+          ))}
+        </ul>
+      </section>
+    ))}
+
+    <h3>{copy.tilesetTitle}</h3>
+    <p set:html={copy.tilesetBody} />
+    <figure class="ea-atlas">
+      <div class="ea-atlas__sheet" role="img" aria-label={copy.atlasLabel}>
+        <img class="ea-atlas__image" src={atlasUrl} alt="" width={columns * tileSize} height={rows * tileSize} />
+        <ol class="ea-atlas__cells" role="list">
+          {Array.from({ length: columns * rows }, (_, index) => (
+            <li class="ea-atlas__cell" title={names[index] ?? ""} data-empty={names[index] ? undefined : ""}>
+              <span class="ea-atlas__index">{index}</span>
+            </li>
+          ))}
+        </ol>
+      </div>
+      <figcaption class="ea-atlas__caption">
+        <span>{copy.atlasHint}</span>
+        <a class="sk-link sk-interactive" href={atlasUrl} download="expressive-avatar-tileset.svg">{copy.atlasDownload}</a>
+      </figcaption>
+    </figure>
+
+    <h4>{copy.mapTitle}</h4>
+    <p set:html={copy.mapBody} />
+    <ol class="ea-map" role="list" aria-label={copy.mapTitle}>
+      {gridCells.map((cell, index) => (
+        <li class="ea-map__cell" data-role={cell.role}>
+          <span
+            class="ea-win ea-map__tile"
+            style={`--c: ${cellIndex(cell.name) % columns}; --r: ${Math.floor(cellIndex(cell.name) / columns)};`}
+            aria-hidden="true"
+          ></span>
+          <span class="ea-map__index">{index}</span>
+        </li>
+      ))}
+    </ol>
+    <ul class="ea-legend" role="list">
+      {(["eye", "mouth", "body", "head"] as const).map((role) => (
+        <li class="ea-legend__item"><span class="ea-legend__swatch" data-role={role} aria-hidden="true"></span>{copy.mapSlots[role]}</li>
+      ))}
+    </ul>
+
+    <h3>{copy.extendTitle}</h3>
+    <p set:html={copy.extendLede} />
+    <Procedure>
+      {copy.extendSteps.map((step) => (
+        <ProcedureStep title={step.title}>
+          <p set:html={step.body} />
+        </ProcedureStep>
+      ))}
+    </Procedure>
+
+    <h4>{copy.triggersTitle}</h4>
+    <ComparisonTable
+      aspectLabel={copy.triggerAspect}
+      columns={copy.triggerColumns}
+      rows={copy.triggerRows.map((row) => ({ label: row.label.replace(/<[^>]+>/g, ""), labelHtml: row.label, cells: row.cells }))}
+    />
+
+    <h4>{copy.triggersDemoTitle}</h4>
+    <p set:html={copy.triggersDemoBody} />
+    <div class="ea-stage ea-stage--triggers">
+      <ExpressiveAvatarTriggers client:visible copy={copy.triggers} />
+    </div>
+    <p class="ea-note">{copy.extendCode}</p>
+
+    <h3>{copy.imagesTitle}</h3>
+    <p set:html={copy.imagesBody} />
+    <div class="ea-stage">
+      <ExpressiveAvatar client:visible name="Allison" size="xl" mode="image" interactive images={stateImages} phrases={copy.phrases} />
+    </div>
+    <p set:html={copy.imagesStates} />
+
+    <h4>{copy.compareTitle}</h4>
+    <ComparisonTable aspectLabel={copy.compareAspect} columns={copy.compareColumns} rows={copy.compareRows} />
+
+    <CodeBlock code={usage} label="React" lang="tsx" note={copy.install} />
+  </Fragment>
+
+  <Fragment slot="guidelines">
+    <WhenToUse use={copy.use} avoid={copy.avoid} />
+
+    <h3>{copy.guideTitle}</h3>
+    <p class="lede" set:html={copy.guideLede} />
+    <Procedure>
+      {copy.guideSteps.map((step) => (
+        <ProcedureStep title={step.title}>
+          <p set:html={step.body} />
+        </ProcedureStep>
+      ))}
+    </Procedure>
+
+    <h4>{copy.tipsTitle}</h4>
+    <ul>
+      {copy.tips.map((tip) => <li>{tip}</li>)}
+    </ul>
+
+    <details class="ea-required">
+      <summary>{copy.requiredTitle} <span class="ea-count">{expressiveAvatarRequiredTiles.length}</span></summary>
+      <p>{copy.requiredBody}</p>
+      {groups.map((group) => (
+        <>
+          <h5>{group.title} <span class="ea-count">{group.tiles.length}</span></h5>
+          <ul class="ea-tiles" role="list">
+            {group.tiles.map((id) => (
+              <li class="ea-tiles__item">
+                <span class="ea-win ea-tiles__tile" style={`--c: ${cellIndex(id) % columns}; --r: ${Math.floor(cellIndex(id) / columns)};`} aria-hidden="true"></span>
+                <code>{id}</code>
+                <span class="ea-tiles__index">{cellIndex(id)}</span>
+              </li>
+            ))}
+          </ul>
+        </>
+      ))}
+    </details>
+
+    <h3>{copy.checkTitle}</h3>
+    <p>{copy.checkBody}</p>
+    <div
+      class="ea-check"
+      data-ea-check
+      data-atlas={atlasUrl}
+      data-columns={columns}
+      data-rows={rows}
+      data-names={JSON.stringify(names)}
+      data-required={JSON.stringify([...required])}
+      data-msg-ok={copy.checkOk}
+      data-msg-empty={copy.checkEmpty}
+      data-msg-shape={copy.checkShape}
+    >
+      <label class="ea-check__drop">
+        <input class="ea-check__input" type="file" accept="image/svg+xml,image/png,image/webp,image/jpeg" data-ea-file />
+        <span>{copy.checkChoose}</span>
+      </label>
+      <p class="ea-check__status" role="status" data-ea-status>{copy.checkIdle}</p>
+      <ul class="ea-check__missing" data-ea-missing hidden></ul>
+      <figure class="ea-check__preview" data-ea-preview hidden>
+        <ExpressiveAvatar name={copy.checkPreview} size="xl" direction="right" mouth="smile" />
+        <figcaption>{copy.checkPreview}</figcaption>
+      </figure>
+    </div>
+  </Fragment>
+
+  <Fragment slot="install">
+    <CodeBlock code={install} label="terminal" />
+  </Fragment>
+
+  <Fragment slot="a11y">
+    <A11yNotes intro={copy.accessibility} does={[]} yours={[]} />
+  </Fragment>
+</ComponentPageShell>
+
+<script>
+  const root = document.querySelector<HTMLElement>("[data-ea-check]");
+  if (root) {
+    const input = root.querySelector<HTMLInputElement>("[data-ea-file]")!;
+    const status = root.querySelector<HTMLElement>("[data-ea-status]")!;
+    const missingList = root.querySelector<HTMLElement>("[data-ea-missing]")!;
+    const preview = root.querySelector<HTMLElement>("[data-ea-preview]")!;
+    const columns = Number(root.dataset.columns);
+    const rows = Number(root.dataset.rows);
+    const names: string[] = JSON.parse(root.dataset.names ?? "[]");
+    const required: string[] = JSON.parse(root.dataset.required ?? "[]");
+    const message = (key: string) => root.dataset[key] ?? "";
+    const fill = (template: string, values: Record<string, string>) =>
+      Object.entries(values).reduce((text, [name, value]) => text.replace(`{${name}}`, value), template);
+
+    const load = (src: string) =>
+      new Promise<HTMLImageElement>((resolve, reject) => {
+        const image = new Image();
+        image.onload = () => resolve(image);
+        image.onerror = reject;
+        image.src = src;
+      });
+
+    /* Which cells of an image have any ink: a cell is a square of `size` pixels, read through a canvas. */
+    const inkedCells = (image: HTMLImageElement, size: number) => {
+      const canvas = document.createElement("canvas");
+      canvas.width = columns * size;
+      canvas.height = rows * size;
+      const context = canvas.getContext("2d", { willReadFrequently: true })!;
+      context.drawImage(image, 0, 0, canvas.width, canvas.height);
+      const inked = new Set<number>();
+      for (let index = 0; index < columns * rows; index++) {
+        const data = context.getImageData((index % columns) * size, Math.floor(index / columns) * size, size, size).data;
+        for (let pixel = 3; pixel < data.length; pixel += 4) {
+          if (data[pixel]! > 8) {
+            inked.add(index);
+            break;
+          }
+        }
+      }
+      return inked;
+    };
+
+    let objectUrl: string | null = null;
+    let reference: Set<number> | null = null;
+
+    input.addEventListener("change", async () => {
+      const file = input.files?.[0];
+      if (!file) return;
+      missingList.replaceChildren();
+      missingList.hidden = true;
+      preview.hidden = true;
+
+      if (objectUrl) URL.revokeObjectURL(objectUrl);
+      objectUrl = URL.createObjectURL(file);
+      const image = await load(objectUrl);
+
+      /* The grid: `columns` by `rows` square cells. */
+      const cell = image.naturalWidth / columns;
+      if (!Number.isInteger(cell) || Math.abs(image.naturalHeight - rows * cell) > 1) {
+        status.textContent = fill(message("msgShape"), {
+          columns: String(columns),
+          rows: String(rows),
+          width: String(image.naturalWidth),
+          height: String(image.naturalHeight),
+        });
+        return;
+      }
+
+      /* A needed cell with no ink is a missing tile, except the ones the bundled tileset leaves transparent
+         on purpose: those are learned from the bundled image itself. */
+      reference ??= inkedCells(await load(root.dataset.atlas!), 25);
+      const mine = inkedCells(image, Math.min(Math.round(cell), 100));
+      const empty = required.filter((name) => {
+        const index = names.indexOf(name);
+        return reference!.has(index) && !mine.has(index);
+      });
+
+      if (empty.length === 0) status.textContent = message("msgOk");
+      else {
+        status.textContent = fill(message("msgEmpty"), { count: String(empty.length) });
+        for (const name of empty) {
+          const item = document.createElement("li");
+          const code = document.createElement("code");
+          code.textContent = `${names.indexOf(name)} · ${name}`;
+          item.append(code);
+          missingList.append(item);
+        }
+        missingList.hidden = false;
+      }
+
+      /* The face, drawn with the image that was dropped: the same component, pointed at the file. */
+      preview.querySelector<HTMLElement>(".sk-expressive-avatar")?.style.setProperty("--sk-expressive-avatar-atlas", `url("${objectUrl}")`);
+      preview.hidden = false;
+    });
+  }
+</script>
+
+<style define:vars={{ vcolumns: columns, vrows: rows }}>
+  .ea-stage {
+    display: flex;
+    justify-content: center;
+    padding: 7rem var(--space-inset-lg) var(--space-inset-lg);
+    margin-block: var(--space-stack-lg);
+    border: 1px solid var(--color-border-subtle);
+    border-radius: var(--radius-surface);
+    background: var(--color-bg-surface);
+  }
+
+  .ea-note {
+    color: var(--color-text-secondary);
+    font-size: var(--font-size-body-sm);
+  }
+
+  .ea-count {
+    color: var(--color-text-tertiary);
+    font-weight: var(--font-weight-regular, 400);
+  }
+
+  /* ── The looks ─────────────────────────────────────────────────────────── */
+  .ea-looks {
+    margin-block: var(--space-stack-lg);
+  }
+
+  .ea-looks__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(8rem, 1fr));
+    gap: var(--space-stack-md) var(--space-inline-md);
+    margin: var(--space-stack-md) 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .ea-look {
+    display: grid;
+    justify-items: center;
+    gap: var(--space-stack-xs);
+    padding: var(--space-inset-md) var(--space-inset-sm);
+    border: 1px solid var(--color-border-subtle);
+    border-radius: var(--radius-surface);
+    background: var(--color-bg-surface);
+  }
+
+  .ea-look__face {
+    display: grid;
+    place-items: center;
+    padding-block-end: var(--space-stack-xs);
+  }
+
+  .ea-look__name {
+    font-size: var(--font-size-body-xs, 0.75rem);
+    color: var(--color-text-primary);
+    white-space: nowrap;
+  }
+
+  /* ── A window onto the tileset, the way the avatar draws a tile ──────────────── */
+  .ea-win {
+    display: block;
+    background-image: var(--sk-expressive-avatar-atlas);
+    background-repeat: no-repeat;
+    background-size: calc(var(--vcolumns) * 100%) calc(var(--vrows) * 100%);
+    background-position: calc(var(--c) / (var(--vcolumns) - 1) * 100%) calc(var(--r) / (var(--vrows) - 1) * 100%);
+    image-rendering: pixelated;
+  }
+
+  /* ── The tileset, as the one image it is ───────────────────────────────────── */
+  .ea-atlas {
+    margin: var(--space-stack-md) 0 var(--space-stack-lg);
+  }
+
+  /* The art is dark ink on light paper: its stages stay in the light scheme in a dark theme, like the face. */
+  .ea-atlas__sheet,
+  .ea-map,
+  .ea-tiles {
+    color-scheme: light;
+  }
+
+  .ea-atlas__sheet {
+    position: relative;
+    inline-size: min(100%, 32rem);
+    aspect-ratio: 1;
+    border: 1px solid var(--color-border-subtle);
+    background: repeating-conic-gradient(var(--color-bg-surface-sunken) 0 25%, var(--color-bg-surface) 0 50%) 0 0 / 1.5rem 1.5rem;
+  }
+
+  .ea-atlas__image {
+    display: block;
+    inline-size: 100%;
+    block-size: 100%;
+    image-rendering: pixelated;
+  }
+
+  .ea-atlas__cells {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    grid-template-columns: repeat(var(--vcolumns), 1fr);
+    grid-template-rows: repeat(var(--vrows), 1fr);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .ea-atlas__cell {
+    position: relative;
+    border: 1px solid color-mix(in srgb, var(--color-text-tertiary) 35%, transparent);
+  }
+
+  .ea-atlas__cell:hover {
+    background: color-mix(in srgb, var(--color-action-accent) 22%, transparent);
+    outline: 2px solid var(--color-action-accent);
+    outline-offset: -2px;
+  }
+
+  .ea-atlas__cell[data-empty] {
+    background: repeating-linear-gradient(135deg, transparent 0 6px, color-mix(in srgb, var(--color-text-tertiary) 25%, transparent) 6px 7px);
+  }
+
+  .ea-atlas__index {
+    position: absolute;
+    inset-block-start: 1px;
+    inset-inline-start: 3px;
+    font-size: 0.6rem;
+    line-height: 1;
+    color: var(--color-text-primary);
+    text-shadow: 0 0 2px var(--color-bg-surface), 0 0 2px var(--color-bg-surface);
+    font-variant-numeric: tabular-nums;
+    pointer-events: none;
+  }
+
+  .ea-atlas__caption {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: var(--space-inline-md);
+    max-inline-size: 32rem;
+    margin-block-start: var(--space-stack-xs);
+    color: var(--color-text-secondary);
+    font-size: var(--font-size-body-sm);
+  }
+
+  /* ── The face's grid ───────────────────────────────────────────────────── */
+  .ea-map {
+    display: grid;
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    max-inline-size: 26rem;
+    gap: 2px;
+    margin: var(--space-stack-md) 0 var(--space-stack-sm);
+    padding: 0;
+    list-style: none;
+  }
+
+  .ea-map__cell {
+    position: relative;
+    aspect-ratio: 1;
+    border: 1px solid var(--color-border-subtle);
+    background: var(--color-bg-surface-sunken);
+  }
+
+  .ea-map__cell[data-role="eye"],
+  .ea-map__cell[data-role="mouth"] {
+    outline: 2px solid var(--color-action-accent);
+    outline-offset: -2px;
+    z-index: 1;
+  }
+
+  .ea-map__cell[data-role="body"] {
+    background: color-mix(in srgb, var(--color-bg-surface-sunken) 88%, var(--color-text-tertiary));
+  }
+
+  .ea-map__tile {
+    inline-size: 100%;
+    block-size: 100%;
+  }
+
+  .ea-map__index {
+    position: absolute;
+    inset-block-start: 1px;
+    inset-inline-start: 3px;
+    font-size: 0.6rem;
+    color: var(--color-text-secondary);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .ea-legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-inline-md);
+    margin: 0 0 var(--space-stack-lg);
+    padding: 0;
+    list-style: none;
+    font-size: var(--font-size-body-sm);
+    color: var(--color-text-secondary);
+  }
+
+  .ea-legend__item {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-inline-xs);
+  }
+
+  .ea-legend__swatch {
+    inline-size: 0.9rem;
+    block-size: 0.9rem;
+    border: 1px solid var(--color-border-subtle);
+    background: var(--color-bg-surface-sunken);
+  }
+
+  .ea-legend__swatch[data-role="eye"],
+  .ea-legend__swatch[data-role="mouth"] {
+    outline: 2px solid var(--color-action-accent);
+    outline-offset: -2px;
+  }
+
+  .ea-legend__swatch[data-role="body"] {
+    background: color-mix(in srgb, var(--color-bg-surface-sunken) 88%, var(--color-text-tertiary));
+  }
+
+  .ea-required {
+    margin-block: var(--space-stack-md) var(--space-stack-lg);
+    padding: var(--space-inset-md);
+    border: 1px solid var(--color-border-subtle);
+    border-radius: var(--radius-surface);
+  }
+
+  .ea-required > summary {
+    cursor: pointer;
+    font-weight: var(--font-weight-label);
+  }
+
+  .ea-tiles {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(5.5rem, 1fr));
+    gap: var(--space-stack-md) var(--space-inline-md);
+    margin: var(--space-stack-md) 0 var(--space-stack-lg);
+    padding: 0;
+    list-style: none;
+  }
+
+  .ea-tiles__item {
+    position: relative;
+    display: grid;
+    justify-items: center;
+    gap: var(--space-stack-xs);
+    text-align: center;
+  }
+
+  .ea-tiles__item code {
+    font-size: var(--font-size-body-xs, 0.75rem);
+    color: var(--color-text-secondary);
+    overflow-wrap: anywhere;
+  }
+
+  .ea-tiles__tile {
+    inline-size: 4rem;
+    block-size: 4rem;
+    border: 1px solid var(--color-border-subtle);
+    border-radius: var(--radius-control);
+    background: var(--color-bg-surface-sunken);
+  }
+
+  .ea-tiles__index {
+    position: absolute;
+    inset-block-start: 2px;
+    inset-inline-start: calc(50% - 2rem + 3px);
+    font-size: 0.6rem;
+    color: var(--color-text-secondary);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .ea-check {
+    display: grid;
+    gap: var(--space-stack-md);
+    justify-items: start;
+    margin-block: var(--space-stack-md) var(--space-stack-lg);
+    padding: var(--space-inset-lg);
+    border: 1px dashed var(--color-border-default, var(--color-border-subtle));
+    border-radius: var(--radius-surface);
+  }
+
+  .ea-check__drop {
+    display: inline-flex;
+    align-items: center;
+    padding: var(--space-inset-sm) var(--space-inset-md);
+    border: 1px solid var(--color-border-subtle);
+    border-radius: var(--radius-control);
+    background: var(--color-bg-surface);
+    cursor: pointer;
+  }
+
+  .ea-check__drop:focus-within {
+    outline: var(--focus-ring-width) solid var(--focus-ring-color);
+    outline-offset: var(--focus-ring-offset);
+  }
+
+  /* The real input stays (it is what is focused and read); only its default chrome is out of the way. */
+  .ea-check__input {
+    position: absolute;
+    inline-size: 1px;
+    block-size: 1px;
+    opacity: 0;
+  }
+
+  .ea-check__status {
+    margin: 0;
+  }
+
+  .ea-check__missing {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-inline-xs) var(--space-inline-sm);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .ea-check__preview {
+    display: grid;
+    justify-items: center;
+    gap: var(--space-stack-xs);
+    margin: 0;
+  }
+
+  .ea-check__preview figcaption {
+    color: var(--color-text-secondary);
+    font-size: var(--font-size-body-sm);
+  }
+</style>
+
+<style is:global>
+  /* The triggers demo is a React island: its own markup, outside this page's scope. */
+  .ea-triggers {
+    display: grid;
+    justify-items: center;
+    gap: var(--space-stack-lg);
+  }
+
+  .ea-triggers__group {
+    display: grid;
+    justify-items: center;
+    gap: var(--space-stack-xs);
+  }
+
+  .ea-triggers__label {
+    margin: 0;
+    color: var(--color-text-secondary);
+    font-size: var(--font-size-body-sm);
+  }
+
+  .ea-triggers__buttons {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: var(--space-inline-sm);
+  }
+
+  .ea-triggers__button {
+    padding: var(--space-inset-xs) var(--space-inset-md);
+    border: 1px solid var(--color-border-subtle);
+    border-radius: var(--radius-control);
+    background: var(--color-bg-surface-raised, var(--color-bg-surface));
+    color: var(--color-text-primary);
+    font: inherit;
+    cursor: pointer;
+  }
+
+  .ea-triggers__button:hover {
+    background: var(--color-bg-surface-sunken);
+  }
+
+  .ea-triggers__button:focus-visible {
+    outline: var(--focus-ring-width) solid var(--focus-ring-color);
+    outline-offset: var(--focus-ring-offset);
+  }
+</style>

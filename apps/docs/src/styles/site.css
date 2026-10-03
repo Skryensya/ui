@@ -43,7 +43,10 @@ body {
      step, <main> carries sk-wrapper[data-size="md"], so this cap is the token itself: the
      grid track and the wrapper agree on one width for prose, tables and examples alike. */
   --docs-shell-max: 120rem;
-  --docs-document-max: var(--size-wrapper-md);
+  /* The reading column is intentionally narrower than the wrapper's `md` ceiling: docs and
+     foundations pages are prose first, and the old 64rem measure made paragraphs scan too wide. */
+  --docs-reading-measure: 76ch;
+  --docs-document-max: min(var(--size-wrapper-md), var(--docs-reading-measure));
   --docs-toc-inline-size: 14rem;
   /*
    * ONE RAIL WIDTH FOR THE WHOLE SITE, and this is the only place it is written.
@@ -57,7 +60,7 @@ body {
    * a consumer with shorter labels should keep. Raising the hook is the documented way to want more
    * (components/sidebar.css); restating a width the component owns is not.
    */
-  --docs-rail-inline-size: 14rem;
+  --docs-rail-inline-size: 16rem;
 }
 
 .dimensions {
@@ -368,8 +371,11 @@ body {
   --sk-icon-toggle-on: 1;
 }
 
-/* The global links and preference cluster move into the drawer on narrow screens. */
-@media (max-width: 52rem) {
+/* The global links and preference cluster move into the drawer until the header has room for the
+   whole desktop row. The shell rail returns at 52rem, but the navbar itself still cannot fit there:
+   the destination labels are squeezed to zero through the middle widths. Keep the compact header
+   through `wide` instead, then restore the full destination row once the text can breathe. */
+@media (max-width: 72rem) {
   .dimensions__content {
     display: grid;
     grid-template-columns: auto 1fr auto auto auto;
@@ -397,7 +403,8 @@ body {
      and sparse auto-placement only moves its cursor forward. Landing on the last column first pushes
      the cursor past the row, so the earlier items fell through to an implicit second row instead of
      sharing the first - confirmed live via a Playwright DOM dump before this fix. */
-  .dimensions__menu-trigger {
+  .dimensions__content > .dimensions__menu-trigger {
+    display: inline-flex;
     grid-row: 1;
     grid-column: 5;
   }
@@ -451,6 +458,24 @@ html:has(dialog:modal) .sk-toc {
 @media (max-width: 40rem) {
   .dimensions__search-trigger {
     min-inline-size: var(--size-control-md);
+  }
+}
+
+/* Between the compact header and the roomy desktop header, the destination labels fit only if the
+   search affordance stops spending a full field's width. Keep the global nav visible, but use the
+   same icon-only command-palette trigger mobile uses until `80rem`, where the labels have enough
+   room beside version and preferences again. */
+@media (min-width: 72rem) and (max-width: 80rem) {
+  .dimensions__search-trigger {
+    display: none;
+  }
+
+  .dimensions__search-trigger-mobile {
+    display: inline-flex;
+    /* In this tier the icon search is visually part of the preference icon cluster, but it is still
+       a separate flex item so the header's larger gap would otherwise sit between it and the first
+       preference button. Pull only that following gap down to the cluster's own `xs` rhythm. */
+    margin-inline-end: calc(-1 * (var(--space-inline-lg) - var(--space-inline-xs)));
   }
 }
 
@@ -819,15 +844,16 @@ main {
    * A LOWER CEILING THAN THE COMPONENT'S, because this rail has nothing more to reveal.
    *
    * Measured, not guessed: at 240px the longest entry in the index ("Densidad de componente") stops
-   * truncating, and every entry after that width is the same list with more air around it. 16rem
-   * leaves room for an entry longer than today's without ever letting the index become a column
-   * that competes with the document.
+   * truncating, and every entry after that width is the same list with more air around it. The rail
+   * STARTS at 16rem (`--docs-rail-inline-size`) so the twelve category names and a labelled entry sit
+   * on one line with room to spare, and may be dragged to 20rem: room for an entry longer than today's
+   * without ever letting the index become a column that competes with the document.
    *
    * The component's own 20rem stays right for a sidebar whose content the system cannot see, which
    * is why this is written here and not there. The accordion source viewer keeps that wider
    * ceiling, and needs it: its deepest filename is only fully readable near 320px.
    */
-  --sk-sidebar-max-inline-size: 16rem;
+  --sk-sidebar-max-inline-size: 20rem;
 }
 
 /* The rail surface runs from the header's underside to the bottom of the viewport. Its own top
@@ -843,6 +869,9 @@ main {
      Added ON TOP of the component's own block padding rather than replacing it, which is why it reads
      `--sk-sidebar-padding-block` (the component's vertical gutter) and not the inline one. */
   padding-block-start: calc(var(--sk-sidebar-padding-block) + var(--space-inset-lg));
+  /* Keep the rail fade stronger than the component default: the sidebar is dense navigation, so a
+     subtle band is easy to miss. A taller fade makes overflow legible before the last item is clipped. */
+  --sk-fade-edge-size: 6rem;
 }
 
 .docs-sidebar .sk-nav-list__link[aria-disabled="true"],
@@ -1348,6 +1377,82 @@ h2.docs-nav-section__title {
   overflow-wrap: anywhere;
 }
 
+/*
+ * THE CATEGORIES OF THE COMPONENT CATALOG ARE ROWS, not captions.
+ *
+ * The rail used to draw a category the way it draws the section title: eleven-pixel, uppercase, tertiary.
+ * That is right for a heading nobody clicks and wrong for the thing the catalog is now navigated BY: twelve
+ * closed categories read as a faint list of labels floating between much louder rows, with different
+ * heights, a different inset and a chevron that was a speck. So a collapsible category takes the rhythm of
+ * the rows it contains:
+ *
+ *   - the same height and the same inset as a link, so left edges and baselines line up down the whole rail;
+ *   - the link's size, in sentence case, in the PRIMARY ink at the emphasis stroke: it outranks its entries by
+ *     weight and colour, not by shouting in capitals, and the section title above it stays the only uppercase;
+ *   - a chevron at full icon size in the tertiary ink, the one affordance the row has;
+ *   - an open category's entries sit one step in with a hairline beside them, so the tree reads as nested
+ *     instead of as a flat run of rows with a heading in it.
+ *
+ * Scoped to the rail's collapsible groups (`[data-collapsible]`): a static group label keeps the caption
+ * treatment above, and the drawer keeps its own.
+ */
+.docs-sidebar .sk-nav-list__group[data-collapsible] > .sk-nav-list__group-label {
+  display: flex;
+  align-items: center;
+  min-block-size: var(--sk-nav-list-link-height);
+  padding-block: 0;
+  padding-inline: var(--sk-nav-list-link-padding-x, var(--space-inset-sm));
+  color: var(--color-text-primary);
+  /* A <button> does not inherit the page's face by default: without this the category was set in the system font. */
+  font-family: inherit;
+  font-size: var(--font-size-body-sm);
+  font-weight: var(--font-weight-emphasis);
+  letter-spacing: normal;
+  text-transform: none;
+  --state-layer-color: var(--color-text-primary);
+}
+
+.docs-sidebar .sk-nav-list__group[data-collapsible] > .sk-nav-list__group-label::after {
+  flex: none;
+  color: var(--color-text-tertiary);
+  -webkit-mask-size: contain;
+  mask-size: contain;
+}
+
+.docs-sidebar .sk-nav-list__group[data-collapsible] > [data-sk-nav-list-group-list] {
+  margin-inline-start: var(--space-inline-md);
+  padding-inline-start: var(--space-inline-xs);
+  border-inline-start: 1px solid var(--sk-sidebar-separator-color, var(--color-border-subtle));
+}
+
+/* The category that holds the current page says so, open or closed: the accent the current link takes
+   below, one step quieter (ink only, no fill), so the reader can find "where am I" in a closed rail too. */
+.docs-sidebar .sk-nav-list__group[data-collapsible] > .sk-nav-list__group-label[data-nav-group-active="true"] {
+  color: var(--color-text-accent);
+}
+
+/* A little air above and below an open category's entries, so its last entry does not touch the next category. */
+.docs-sidebar .sk-nav-list__group[data-collapsible] > [data-sk-nav-list-group-list]:not([hidden]) {
+  margin-block: var(--space-stack-xs) var(--space-stack-sm);
+}
+
+/* Categories are a tight run of rows: the nav-list's group gap is tuned for labelled blocks, not for twelve single rows. */
+.docs-sidebar .sk-nav-list:has(> .sk-nav-list__group[data-collapsible]) {
+  --sk-nav-list-gap: var(--space-stack-xs);
+}
+
+/* The categories are peers: the same air between every one of them, open or closed. */
+.docs-sidebar .sk-nav-list__group[data-collapsible] {
+  padding-block: 0;
+}
+
+/* The drawer nests the same categories inside its Components section: one step lighter than the section
+   button above them, or the two levels read as one. */
+.docs-drawer-nav [data-sk-nav-list-group-list] .sk-nav-list__group-label {
+  font-weight: var(--font-weight-label);
+  color: var(--color-text-secondary);
+}
+
 /* Same palette as the navbar trigger (`data-sk-command-palette-open`), one dialog, many openers. */
 .docs-catalog-search {
   display: flex;
@@ -1584,8 +1689,8 @@ main > :where(h2, h3) {
 }
 
 main[data-document-layout="grid"] :is(.sk-tabs__content, .docs-component-body).sk-layout-grid {
-  --sk-layout-content: 90ch;
-  --docs-preview-chrome-measure: 90ch;
+  --sk-layout-content: var(--docs-reading-measure);
+  --docs-preview-chrome-measure: var(--docs-reading-measure);
   --sk-layout-breakout: min(
     var(--size-wrapper-lg),
     calc(var(--size-wrapper-md) + var(--space-inset-md) * 2)
@@ -1760,13 +1865,16 @@ main[data-document-layout="grid"]
  * absolutely positioned against the shell (the full column), and half the leftover column is how it
  * finds the card's edge (`.docs-component-hero__mark`). Every term still resolves at the USE site,
  * which is what keeps this identical to the per-element version it replaced: `100%` against each
- * element's own containing block, `90ch` against its own font. */
+ * element's own containing block, `--docs-reading-measure` against its own font. */
 main[data-document-layout="grid"]:has(> .docs-component-shell) {
   --docs-measure-room: calc(100% - var(--space-inset-lg) * 2);
   --docs-measure-narrow: min(var(--docs-measure-room), var(--size-wrapper-sm));
   --docs-measure-solved: calc(
     var(--docs-measure-narrow) +
-      min(90ch - var(--size-wrapper-sm), (var(--docs-measure-room) - var(--docs-measure-narrow)) / 2)
+      min(
+        var(--docs-reading-measure) - var(--size-wrapper-sm),
+        (var(--docs-measure-room) - var(--docs-measure-narrow)) / 2
+      )
   );
 }
 
@@ -1827,8 +1935,8 @@ main[data-document-layout="grid"]:has(> .docs-component-shell) > :is(.docs-repor
  *
  * - It is spent as `margin-inline`, not `inline-size`: the blurb and the lede carry their own
  *   `max-inline-size`, and `inline-size` + `margin-inline: auto` would centre them in the column.
- * - `90ch` is resolved once, on `<main>`, through a registered length. Left as a token it
- *   resolves per element, so every `h2` came out wider than the text under it. */
+ * - The reading measure is resolved once, on `<main>`, through a registered length. Left as a token
+ *   it resolves per element, so every `h2` came out wider than the text under it. */
 @property --docs-catalog-measure-ch {
   syntax: "<length>";
   inherits: true;
@@ -1836,7 +1944,7 @@ main[data-document-layout="grid"]:has(> .docs-component-shell) > :is(.docs-repor
 }
 
 main[data-document-layout="grid"]:has(> .docs-catalog-groups) {
-  --docs-catalog-measure-ch: 90ch;
+  --docs-catalog-measure-ch: var(--docs-reading-measure);
 }
 
 main[data-document-layout="grid"]:has(> .docs-catalog-groups) > * {

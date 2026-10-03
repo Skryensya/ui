@@ -25,7 +25,7 @@
  * link here can 404 on a locale that has the page.
  */
 import { getLocale, useTranslations } from "../i18n";
-import { findComponentIconMarkup } from "../lib/component-icons";
+import NavGroupItems from "./NavGroupItems.astro";
 import type { NavigationItem, NavigationSection } from "../lib/navigation";
 
 /** A `NavigationSection`, or a synthetic one the layout builds for Templates / Presets. */
@@ -53,18 +53,14 @@ const sectionContainsPath = (section: DrawerSection): boolean =>
   section.groups.some((group) => group.items.some((item) => item.href === path));
 
 /*
- * Components flatten to one A–Z list, the call the rail already made ("six unlabelled task headers
- * just add scanning cost"), and a narrow drawer only sharpens it; the task grouping lives on the
- * `/components` catalog, which is the first link inside this disclosure. Every other section keeps
- * its AUTHORED order (Fundamentos' "Arquitectura → Tiers → Tokens" is a reading path, not an
- * alphabet), just without the visible sub-labels, which a nav-list `<ul>` has no legal slot for.
+ * Every section keeps its AUTHORED order (Fundamentos' "Arquitectura → Tiers → Tokens" is a reading path,
+ * not an alphabet), and a section whose groups are `collapsible` (the component catalog) keeps its groups:
+ * each becomes a disclosure nested inside the section's own, the same shape the rail draws. Any other
+ * section is flattened, because a nav-list `<ul>` has no legal slot for a visible sub-label.
  */
-const itemsFor = (section: DrawerSection): readonly NavigationItem[] => {
-  const flat = section.groups.flatMap((group) => group.items);
-  return section.id === "components"
-    ? flat.slice().sort((a, b) => a.label.localeCompare(b.label, locale))
-    : flat;
-};
+const hasCollapsibleGroups = (section: DrawerSection): boolean => section.groups.some((group) => group.collapsible);
+const itemsFor = (section: DrawerSection): readonly NavigationItem[] => section.groups.flatMap((group) => group.items);
+const holdsCurrentPage = (items: readonly NavigationItem[]): boolean => items.some((item) => item.href === path);
 ---
 
 <nav class="sk-nav-list docs-drawer-nav" aria-label={t("nav.siteNav")}>
@@ -142,29 +138,35 @@ const itemsFor = (section: DrawerSection): readonly NavigationItem[] => {
                 </a>
               </li>
             )}
-            {items.map((item) => (
-              <li class="sk-nav-list__item" data-todo={item.todo ? "" : undefined}>
-                <a
-                  class="sk-nav-list__link sk-interactive"
-                  href={item.href}
-                  target={item.external ? "_blank" : undefined}
-                  rel={item.external ? "noopener noreferrer" : undefined}
-                  aria-current={path === item.href ? "page" : undefined}
-                  aria-disabled={item.todo ? "true" : undefined}
-                  title={item.todo ? t("nav.notWritten") : undefined}
-                  data-sk-vaul-close={item.href.includes("#") ? "" : undefined}
-                >
-                  {/* NavListLink's own `icon` slot: a component page gets its catalogue glyph, anything else none. */}
-                  <Fragment set:html={findComponentIconMarkup(item.href, { size: "sm", className: "docs-nav-icon" }) ?? ""} />
-                  <span class="sk-nav-list__label">{item.label}</span>
-                  {item.trailing && (
-                    <span class="sk-nav-list__trailing">
-                      <span class="sk-badge" data-size="sm" data-tone="warning">{item.trailing}</span>
-                    </span>
-                  )}
-                </a>
-              </li>
-            ))}
+            {hasCollapsibleGroups(section) ? (
+              section.groups.map((group, groupIndex) => {
+                const labelId = `docs-drawer-${section.id}-${groupIndex}`;
+                const groupOpen = holdsCurrentPage(group.items);
+                return (
+                  <li class="sk-nav-list__item">
+                    <div class="sk-nav-list__group" data-collapsible data-default-open={groupOpen ? undefined : "false"}>
+                      <button
+                        class="sk-nav-list__group-label sk-interactive"
+                        type="button"
+                        id={labelId}
+                        data-sk-nav-list-group-trigger
+                        data-nav-group-trigger={group.id}
+                        data-nav-group-active={groupOpen ? "true" : "false"}
+                        aria-expanded={groupOpen ? "true" : "false"}
+                        aria-controls={`${labelId}-list`}
+                      >
+                        {group.group}
+                      </button>
+                      <ul class="sk-nav-list__list" role="list" id={`${labelId}-list`} data-sk-nav-list-group-list hidden={!groupOpen}>
+                        <NavGroupItems items={group.items} path={path} />
+                      </ul>
+                    </div>
+                  </li>
+                );
+              })
+            ) : (
+              <NavGroupItems items={items} path={path} />
+            )}
           </ul>
         </div>
       );

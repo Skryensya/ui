@@ -28,6 +28,10 @@ const componentDescriptions = {
     es: "Representa la identidad de una persona con foto o iniciales.",
     en: "Represents a person's identity with a photo or initials.",
   },
+  "/components/expressive-avatar": {
+    es: "Avatar reactivo con expresiones: modo pixel SVG y cambio de foto completa por emoción.",
+    en: "Reactive avatar with expressions: SVG pixel mode and full photo swapping per emotion.",
+  },
   "/components/badge": {
     es: "Señala estados, conteos o etiquetas breves junto a otro elemento.",
     en: "Marks short statuses, counts, or labels next to another element.",
@@ -235,6 +239,10 @@ const componentDescriptions = {
   "/components/menubar": {
     es: "Barra horizontal persistente de comandos, algunos con desplegable.",
     en: "A persistent horizontal bar of commands, some opening a dropdown.",
+  },
+  "/components/message": {
+    es: "Ordena una fila de conversación con avatar, alineación, contenido y metadatos.",
+    en: "Lays out one conversation row with avatar, alignment, content, and metadata.",
   },
   "/components/meter": {
     es: "Muestra una medición dentro de un rango conocido, no el avance de una tarea.",

@@ -8,32 +8,8 @@
  * drawer hosting it.
  */
 
-import { getLocale, useTranslations } from "../i18n";
-import { findComponentIconMarkup } from "../lib/component-icons";
-
-type NavigationItem = {
-  href: string;
-  label: string;
-  aliases?: readonly string[];
-  todo?: boolean;
-  /** Short trailing text next to the label ("Beta", a count): `nav-list.ts`'s own `trailing` slot,
-   *  its part class (`sk-nav-list__trailing`) already styled in `patterns/nav-list.css`. */
-  trailing?: string;
-};
-
-type NavigationGroup = {
-  group: string;
-  secondary?: boolean;
-  items: readonly NavigationItem[];
-};
-
-type NavigationSection = {
-  id?: string;
-  section: string;
-  href?: string;
-  blurb: string;
-  groups: readonly NavigationGroup[];
-};
+import NavGroupItems from "./NavGroupItems.astro";
+import type { NavigationSection } from "../lib/navigation";
 
 interface Props {
   nav: readonly NavigationSection[];
@@ -44,37 +20,24 @@ interface Props {
 }
 
 const { nav, path, idPrefix } = Astro.props;
-const locale = getLocale(Astro.url);
-const t = useTranslations(locale);
 
 /*
- * The rail and the catalog page (`/components`) read the SAME task-grouped source
- * (`componentNavigation` in `lib/navigation.ts`) on purpose: one inventory, so a new component
- * cannot land in the catalog without also landing in the rail. But they answer different
- * questions: the catalog helps someone who does not know the name yet pick by what they need to
- * DO ("capturar datos", "orientar"); the rail is for someone who already knows the name and wants
- * it fast, where six unlabeled task headers just add scanning cost. So only the rail flattens the
- * groups back into one alphabetical list, a presentation choice made here, not a second data
- * source to keep in sync.
+ * A GROUP THAT OPENS AND CLOSES is the data's decision (`collapsible` in `lib/navigation.ts`), never the
+ * renderer's: this file does not know which sections are long. The component catalog sets it, so a hundred
+ * entries arrive as twelve categories; the foundations, a short reading path, do not.
+ *
+ * Open on arrival: the category that holds the current page, and nothing else. What a reader opened or
+ * closed by hand is applied on top by the script in `Base.astro`, before first paint, and the current
+ * category always wins over a stored "closed". The closed list is `hidden` in the markup, so the page is
+ * right before any script runs.
  */
-const groupsForSection = (section: NavigationSection): readonly NavigationGroup[] =>
-  section.id === "components"
-    ? [
-        {
-          group: "",
-          items: section.groups
-            .flatMap((group) => group.items)
-            .slice()
-            .sort((a, b) => a.label.localeCompare(b.label, locale)),
-        },
-      ]
-    : section.groups;
+const holdsCurrentPage = (items: readonly { href: string }[]): boolean => items.some((item) => item.href === path);
 ---
 
 {
   nav.map((section, sectionIndex) => (
     <section class="docs-nav-section" aria-label={section.section}>
-      <header class="docs-nav-section__header">
+      {!section.headless && <header class="docs-nav-section__header">
         {
           section.href ? (
             <a class="docs-nav-section__title" href={section.href}>{section.section}</a>
@@ -83,49 +46,43 @@ const groupsForSection = (section: NavigationSection): readonly NavigationGroup[
           )
         }
         <p class="docs-nav-section__blurb">{section.blurb}</p>
-      </header>
+      </header>}
       <nav class="sk-nav-list" aria-label={section.section}>
-        {groupsForSection(section).map((group, groupIndex) => (
-          <div class="sk-nav-list__group" data-secondary={group.secondary ? "" : undefined}>
-            {
-              group.group ? (
-                <div class="sk-nav-list__group-label" id={`${idPrefix}-${sectionIndex}-${groupIndex}`}>
-                  {group.group}
-                </div>
-              ) : null
-            }
-            <ul
-              class="sk-nav-list__list"
-              aria-labelledby={group.group ? `${idPrefix}-${sectionIndex}-${groupIndex}` : undefined}
-            >
-              {group.items.map((item) => (
-                <li
-                  class="sk-nav-list__item"
-                  data-todo={item.todo ? "" : undefined}
+        {section.groups.map((group, groupIndex) => {
+          const labelId = `${idPrefix}-${sectionIndex}-${groupIndex}`;
+
+          if (group.collapsible) {
+            const open = holdsCurrentPage(group.items);
+            return (
+              <div class="sk-nav-list__group" data-collapsible data-default-open={open ? undefined : "false"}>
+                <button
+                  class="sk-nav-list__group-label sk-interactive"
+                  type="button"
+                  id={labelId}
+                  data-sk-nav-list-group-trigger
+                  data-nav-group-trigger={group.id}
+                  data-nav-group-active={open ? "true" : "false"}
+                  aria-expanded={open ? "true" : "false"}
+                  aria-controls={`${labelId}-list`}
                 >
-                  <a
-                    class="sk-nav-list__link sk-interactive"
-                    href={item.href}
-                    aria-current={path === item.href ? "page" : undefined}
-                    aria-disabled={item.todo ? "true" : undefined}
-                    title={item.todo ? t("nav.notWritten") : undefined}
-                  >
-                    {/* NavListLink's own `icon` slot: a component page gets its catalogue glyph, anything else none. */}
-                    <Fragment set:html={findComponentIconMarkup(item.href, { size: "sm", className: "docs-nav-icon" }) ?? ""} />
-                    <span class="sk-nav-list__label">{item.label}</span>
-                    {
-                      item.trailing ? (
-                        <span class="sk-nav-list__trailing">
-                          <span class="sk-badge" data-size="sm" data-tone="warning">{item.trailing}</span>
-                        </span>
-                      ) : null
-                    }
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </div>
-        ))}
+                  {group.group}
+                </button>
+                <ul class="sk-nav-list__list" id={`${labelId}-list`} data-sk-nav-list-group-list hidden={!open}>
+                  <NavGroupItems items={group.items} path={path} />
+                </ul>
+              </div>
+            );
+          }
+
+          return (
+            <div class="sk-nav-list__group" data-secondary={group.secondary ? "" : undefined}>
+              {group.group ? <div class="sk-nav-list__group-label" id={labelId}>{group.group}</div> : null}
+              <ul class="sk-nav-list__list" aria-labelledby={group.group ? labelId : undefined}>
+                <NavGroupItems items={group.items} path={path} />
+              </ul>
+            </div>
+          );
+        })}
       </nav>
     </section>
   ))

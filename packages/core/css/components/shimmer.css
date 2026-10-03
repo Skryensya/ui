@@ -1,0 +1,72 @@
+/*
+ * TIER 3, SHIMMER
+ *
+ * A moving highlight for temporary live text: "Generating response…", "Reading 4 files".
+ * It paints the text itself; it does not reserve layout like Placeholder and it does not announce
+ * loading like Loader. Put the accessible status/role on the surrounding text when needed.
+ */
+@property --sk-shimmer-position {
+  syntax: "<percentage>";
+  inherits: false;
+  initial-value: -100%;
+}
+
+@keyframes sk-shimmer-sweep {
+  to { --sk-shimmer-position: 200%; }
+}
+
+@layer components {
+  .sk-shimmer {
+    --sk-shimmer-angle: 100deg;
+    --sk-shimmer-color: color-mix(in oklab, currentColor 32%, transparent);
+    --sk-shimmer-duration: var(--motion-loading-duration-slow);
+    --sk-shimmer-spread: 2.5em;
+    --sk-shimmer-text-fill: color-mix(in oklab, currentColor 62%, transparent);
+
+    display: inline;
+    color: currentColor;
+    background-image:
+      linear-gradient(
+        var(--sk-shimmer-angle),
+        var(--sk-shimmer-text-fill) calc(var(--sk-shimmer-position) - var(--sk-shimmer-spread)),
+        currentColor var(--sk-shimmer-position),
+        var(--sk-shimmer-color) calc(var(--sk-shimmer-position) + var(--sk-shimmer-spread) * 0.35),
+        var(--sk-shimmer-text-fill) calc(var(--sk-shimmer-position) + var(--sk-shimmer-spread))
+      );
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: sk-shimmer-sweep var(--sk-shimmer-duration) var(--motion-loading-easing) infinite;
+  }
+
+  .sk-shimmer[data-once] {
+    animation-iteration-count: 1;
+  }
+
+  .sk-shimmer[data-reverse] {
+    animation-direction: reverse;
+  }
+
+  .sk-shimmer[data-shimmer="false"] {
+    --sk-shimmer-text-fill: currentColor;
+    background-image: none;
+    -webkit-text-fill-color: currentColor;
+    animation: none;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .sk-shimmer {
+      --sk-shimmer-text-fill: currentColor;
+      background-image: none;
+      -webkit-text-fill-color: currentColor;
+      animation: none;
+    }
+  }
+
+  @media (forced-colors: active) {
+    .sk-shimmer {
+      background-image: none;
+      -webkit-text-fill-color: currentColor;
+      animation: none;
+    }
+  }
+}

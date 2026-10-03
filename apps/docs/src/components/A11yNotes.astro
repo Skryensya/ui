@@ -28,11 +28,24 @@ interface Props {
 
 const { intro, does, yours, keys = [], keysNote } = Astro.props;
 
-const escape = (text: string) => text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+const escape = (text: string) => text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/\"/g, "&quot;");
+const keyIcon = (key: string): string | undefined => {
+  const normalized = key.trim().toLowerCase();
+  if (["arrowup", "up", "↑"].includes(normalized)) return "arrowup";
+  if (["arrowdown", "down", "↓"].includes(normalized)) return "arrowdown";
+  if (["arrowleft", "left", "←"].includes(normalized)) return "arrowleft";
+  if (["arrowright", "right", "→"].includes(normalized)) return "arrowright";
+  if (["enter", "return", "↵", "⏎"].includes(normalized)) return "enter";
+  return undefined;
+};
+const kbdHtml = (key: string) => {
+  const icon = keyIcon(key);
+  return `<kbd class="sk-kbd"${icon ? ` data-key="${icon}"` : ""}>${escape(key)}</kbd>`;
+};
 /* Written as one string, not JSX: Astro keeps the whitespace between expressions, which would print
    "Shift + Tab" and "Tab , Enter". */
 const keysHtml = (combos: readonly string[]) =>
-  combos.map((combo) => (combo.length > 1 ? combo.split("+") : [combo]).map((key) => `<kbd>${escape(key)}</kbd>`).join("+")).join(", ");
+  combos.map((combo) => (combo.length > 1 ? combo.split("+") : [combo]).map(kbdHtml).join("+")).join(", ");
 const t = useTranslations(getLocale(Astro.url));
 ---
 

@@ -19,6 +19,7 @@ import { chartContract } from "./chart.js";
 import { stepsContract } from "./steps.js";
 import { listContract } from "./list.js";
 import { mediaOverlayContract } from "./media-overlay.js";
+import { messageContract } from "./message.js";
 import { timeFieldContract } from "./time-field.js";
 import { fileUploadContract } from "./file-upload.js";
 import { carouselContract } from "./carousel.js";
@@ -74,10 +75,12 @@ import { codePreviewContract } from "./code-preview.js";
 import { segmentedContract } from "./segmented.js";
 import { sliderContract } from "./slider.js";
 import { avatarContract } from "./avatar.js";
+import { expressiveAvatarContract } from "./expressive-avatar.js";
 import { progressContract } from "./progress.js";
 import { tagContract } from "./tag.js";
 import { badgeContract } from "./badge.js";
 import { kbdContract } from "./kbd.js";
+import { shimmerContract } from "./shimmer.js";
 import { loaderContract } from "./loader.js";
 import { placeholderContract } from "./placeholder.js";
 import { buttonContract } from "./button.js";
@@ -122,6 +125,7 @@ function fromContracts<const T extends readonly ComponentContract[]>(
 
 export const contracts = fromContracts(
   avatarContract,
+  expressiveAvatarContract,
   backToTopContract,
   badgeContract,
   boxContract,
@@ -148,10 +152,12 @@ export const contracts = fromContracts(
   passwordInputContract,
   qrCodeContract,
   kbdContract,
+  shimmerContract,
   layoutContract,
   listContract,
   loaderContract,
   mediaOverlayContract,
+  messageContract,
   inputContract,
   navListContract,
   navbarContract,
