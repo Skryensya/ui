@@ -5,17 +5,21 @@ import type { UsageTree } from "@skryensya/core/usage-tree";
  * most of the time  -  "a card in a grid", "an icon-only button that explains itself", "a settings
  * row"  -  and it is published so composing does not start from a blank tree every time.
  *
- * TWO LEVELS, not one, because they solve different problems:
+ * THREE LEVELS, not one, because they solve different problems:
  *   - "component": ONE family, well-composed  -  every slot worth using is used, every option that
  *     matters is set. What "the idiomatic way to use Callout" looks like, not just "a Callout".
  *   - "molecule": a FEW families working together for one small piece of UI that is not a screen  - 
  *     a card in a grid, a toolbar of icon buttons, a table with its pager. The compositions that sit
  *     between "one component" and a whole screen.
+ *   - "page": a WHOLE screen: global chrome, regions and content together (a dashboard, a checkout, a
+ *     sign-in). The place a composer starts from when the ask is a page, not a piece. These are not
+ *     hand-written here: they are the Templates gallery's own trees, generated, so the gallery a person
+ *     looks at and the page an agent copies are one artifact (`pages.generated.ts`).
  *
  * This is DATA: the compiler validates every snippet's tree against the contracts, so one naming a
  * signature that changed fails the build instead of teaching the wrong thing forever.
  */
-export type SnippetLevel = "component" | "molecule";
+export type SnippetLevel = "component" | "molecule" | "page";
 
 export type Snippet = {
   /** Stable id. What an agent asks `get_examples` for and what the docs page would route on. */

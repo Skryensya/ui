@@ -274,6 +274,8 @@ export const dashboardTree = (t: Translate, locale: "es" | "en"): UsageTree => {
                   contract: "table",
                   signature: "TableScroll",
                   options: { stickyHeader: true },
+                  /* A scrolling box is reachable by keyboard and named, or what is off screen is out of reach (quality.ts: table-scroll-focusable). */
+                  attrs: { tabindex: "0", role: "region", "aria-label": t("demo.dashboard.tableCaption") },
                   children: {
                     contract: "table",
                     signature: "Table",

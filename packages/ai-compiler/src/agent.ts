@@ -5,6 +5,7 @@ import { emitMarkup, emitReactSource } from "./emit.js";
 import { sheetsForTree } from "./sheets-for-tree.js";
 import { contractsIn } from "./usage-walk.js";
 import { validateUsageTree, type Problem } from "./validate.js";
+import { reviewTree, type Review } from "./quality.js";
 
 /*
  * THE AGENT-FACING SERVICE: every deterministic operation an agent performs against the kit, as
@@ -47,6 +48,14 @@ export type ExampleIndexEntry = {
 };
 
 export type Example = ExampleIndexEntry & { readonly tree: UsageTree };
+
+/** A design review of a tree that composes: the findings a good page would not have. `review` is null when the tree is invalid, because nothing about its design can be judged until it holds. */
+export type ReviewOutcome = {
+  readonly valid: boolean;
+  readonly problems: readonly Problem[];
+  readonly review: Review | null;
+  readonly hint: string;
+};
 
 export type ValidateOutcome =
   | {
@@ -223,6 +232,35 @@ export function createAgentService(pair: CompiledPair, snippets: readonly AgentS
 
     discover(input: DiscoverInput): AgentResult<DiscoverResult> {
       return ok(discover(pair.index, snippets, input));
+    },
+
+    /*
+     * THE OTHER QUESTION. `validate` answers "does it compose?"; this answers "is it any good?", for the
+     * part of good that a tree can show (headings, landmarks, bypass blocks, names, tables, competing
+     * actions). Errors are accessibility failures the tree itself causes; warnings are mediocre-design
+     * smells. See `quality.ts` for every rule and the guideline behind it.
+     */
+    review(tree: UsageTree): AgentResult<ReviewOutcome> {
+      const { valid, problems } = validateUsageTree(tree);
+      if (!valid) {
+        return ok({
+          valid: false,
+          problems,
+          review: null,
+          hint: "The tree does not compose, so its design cannot be judged yet. Fix the problems with validate_ui first.",
+        });
+      }
+      const review = reviewTree(tree);
+      return ok({
+        valid: true,
+        problems,
+        review,
+        hint: review.passes
+          ? review.warnings === 0
+            ? "No findings. This tree meets every checkable rule; contrast, focus visibility and reflow still have to be checked where it is rendered."
+            : "No accessibility errors. The warnings are design smells to weigh, not failures."
+          : "Fix the errors: each is an accessibility failure the tree itself causes. Then review again.",
+      });
     },
 
     /*

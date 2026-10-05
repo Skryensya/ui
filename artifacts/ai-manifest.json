@@ -1059,6 +1059,25 @@
     ],
     "box": [
       {
+        "date": null,
+        "entries": [
+          {
+            "date": "2026-10-04",
+            "en": {
+              "body": "<code>radius</code> (<code>none</code>, <code>control</code>, <code>surface</code>) sets how round the corners are. Without it the Box keeps the surface radius it always had. <code>none</code> is for a band that runs edge to edge (a page header with a background): rounded, it reads as a clipped rectangle.",
+              "title": "Box chooses its corners with radius"
+            },
+            "es": {
+              "body": "<code>radius</code> (<code>none</code>, <code>control</code>, <code>surface</code>) cambia la curvatura de las esquinas. Sin él, el Box conserva el radio de superficie de siempre. <code>none</code> es para una banda que corre de borde a borde de la pantalla (la cabecera de una página con fondo): redondeada, parece un rectángulo recortado.",
+              "title": "Box elige sus esquinas con radius"
+            },
+            "kind": "feature",
+            "target": "radius"
+          }
+        ],
+        "version": "0.0.2-dev"
+      },
+      {
         "date": "2026-10-01",
         "entries": [
           {
@@ -5587,6 +5606,25 @@
     ],
     "layout": [
       {
+        "date": null,
+        "entries": [
+          {
+            "date": "2026-10-04",
+            "en": {
+              "body": "<code>AppShell</code> places a header across the top, a rail (<code>Sidebar</code>) down the side, the work area (<code>Main</code>) filling the rest and an optional footer. Children are placed by what they are, with no options: the rail reaches the bottom and <code>Main</code> takes the width that is left. Before, <code>Inline</code> holding a <code>Sidebar</code> and a <code>Main</code> validated and looked wrong (the <code>Main</code> did not fill the row and the rail stopped halfway down), so every application wrote its own class. It publishes two hooks, <code>--sk-app-shell-gap</code> and <code>--sk-app-shell-min-block-size</code>.",
+              "title": "AppShell builds an application's frame"
+            },
+            "es": {
+              "body": "<code>AppShell</code> coloca una cabecera arriba, un rail (<code>Sidebar</code>) a un lado, el área de trabajo (<code>Main</code>) llenando el resto y un pie opcional. Los hijos se ubican por lo que son, sin opciones: el rail llega hasta abajo y <code>Main</code> ocupa el ancho que sobra. Antes, <code>Inline</code> con un <code>Sidebar</code> y un <code>Main</code> validaba y se veía mal (el <code>Main</code> no llenaba la fila y el rail se quedaba a mitad de página), así que cada aplicación escribía su propia clase. Publica dos hooks, <code>--sk-app-shell-gap</code> y <code>--sk-app-shell-min-block-size</code>.",
+              "title": "AppShell arma el marco de una aplicación"
+            },
+            "kind": "feature",
+            "target": "AppShell"
+          }
+        ],
+        "version": "0.0.2-dev"
+      },
+      {
         "date": "2026-10-01",
         "entries": [
           {
@@ -7094,6 +7132,24 @@
       }
     ],
     "nav-list": [
+      {
+        "date": null,
+        "entries": [
+          {
+            "date": "2026-10-04",
+            "en": {
+              "body": "A collapsible group's button now reads as a navigation row (a link's height and inset, primary ink, a full-size chevron), with a guide line beside its open list and the accent on the group that holds the current page. Seven new hooks tune it (<code>--sk-nav-list-category-*</code> and <code>--sk-nav-list-guide-*</code>). The enhancer remembers what is open in <code>sessionStorage</code> when you set <code>data-storage-key</code> on the nav and <code>data-group-id</code> on each group, always opens the group of the current page and, on opening one, smoothly scrolls its container so the group is fully visible, clear of the edge fade. A static group keeps its caption look.",
+              "title": "The collapsible category is a row, and it remembers and reveals itself"
+            },
+            "es": {
+              "body": "El botón de un grupo colapsable ahora se ve como una fila de navegación (alto y margen de un enlace, tinta primaria, chevron grande), con una línea guía junto a su lista abierta y el acento en el grupo que contiene la página actual. Se ajusta con siete hooks nuevos (<code>--sk-nav-list-category-*</code> y <code>--sk-nav-list-guide-*</code>). El enhancer recuerda lo abierto en <code>sessionStorage</code> si pones <code>data-storage-key</code> en el nav y <code>data-group-id</code> en cada grupo, abre siempre el grupo de la página actual y, al abrir uno, desplaza suavemente el contenedor para que se vea completo, sin invadir el degradado del borde. Un grupo estático conserva el aspecto de título.",
+              "title": "La categoría colapsable es una fila, y recuerda y se muestra sola"
+            },
+            "kind": "feature"
+          }
+        ],
+        "version": "0.0.2-dev"
+      },
       {
         "date": "2026-10-01",
         "entries": [
@@ -16477,6 +16533,15 @@
             "xl"
           ]
         },
+        "radius": {
+          "attr": "data-radius",
+          "type": "enum",
+          "values": [
+            "none",
+            "control",
+            "surface"
+          ]
+        },
         "surface": {
           "attr": "data-surface",
           "default": "none",
@@ -16535,6 +16600,7 @@
             "border",
             "appearance",
             "measure",
+            "radius",
             "boxElement"
           ],
           "react": {
@@ -31294,6 +31360,12 @@
     },
     "layout": {
       "bindings": {
+        "AppShell": {
+          "enhancer": null,
+          "markup": true,
+          "portals": false,
+          "react": "@skryensya/react/layout#AppShell"
+        },
         "Grid": {
           "enhancer": null,
           "markup": true,
@@ -31328,6 +31400,18 @@
       "category": "layout",
       "css": "@skryensya/core/patterns/layout.css",
       "hookDetails": {
+        "--sk-app-shell-gap": {
+          "default": "0",
+          "output": false,
+          "part": "appShell",
+          "sheet": "@skryensya/core/patterns/layout.css"
+        },
+        "--sk-app-shell-min-block-size": {
+          "default": "100dvh",
+          "output": false,
+          "part": "appShell",
+          "sheet": "@skryensya/core/patterns/layout.css"
+        },
         "--sk-grid-columns": {
           "default": "1",
           "output": false,
@@ -31414,6 +31498,8 @@
         }
       },
       "hooks": [
+        "--sk-app-shell-gap",
+        "--sk-app-shell-min-block-size",
         "--sk-grid-columns",
         "--sk-grid-gap",
         "--sk-inline-block-start",
@@ -31574,12 +31660,30 @@
         }
       },
       "parts": {
+        "appShell": "sk-app-shell",
         "grid": "sk-grid",
         "inline": "sk-inline",
         "layoutGrid": "sk-layout-grid",
         "stack": "sk-stack"
       },
       "semantics": {
+        "AppShell": {
+          "alternatives": [
+            "Stack",
+            "Wrapper",
+            "LayoutGrid"
+          ],
+          "avoidWhen": [
+            "the page is a document, a landing page or an article: a Wrapper column with a Navbar above is the whole layout",
+            "there is no persistent rail or header: a Main inside a Stack is enough",
+            "the region is a card or a panel inside a page; that is Box"
+          ],
+          "useWhen": [
+            "the page is an application: a header across the top, a rail (Sidebar) down the side and a work area (Main) filling the rest",
+            "the page needs the rail to reach the bottom and the work area to fill the row, without a hand-written class to make it so",
+            "a dashboard, a mail client, a chat or a settings area: anything with persistent navigation around a changing region"
+          ]
+        },
         "Grid": {
           "alternatives": [
             "Inline",
@@ -31654,6 +31758,43 @@
         }
       },
       "signatures": {
+        "AppShell": {
+          "host": {
+            "element": "div"
+          },
+          "intent": [
+            "app-shell",
+            "application-frame",
+            "header-rail-and-main",
+            "dashboard-frame",
+            "page-chrome-layout"
+          ],
+          "options": [],
+          "react": {
+            "from": "@skryensya/react/layout",
+            "name": "AppShell"
+          },
+          "slots": {
+            "children": {
+              "accepts": "signature",
+              "of": [
+                "SkipLink",
+                "Navbar",
+                "AppBar",
+                "Sidebar",
+                "Main",
+                "Footer"
+              ],
+              "required": true
+            }
+          },
+          "template": {
+            "element": "div",
+            "host": true,
+            "part": "appShell",
+            "slot": "children"
+          }
+        },
         "Grid": {
           "excludes": {
             "minColumn": [
@@ -36632,6 +36773,36 @@
       "category": "navigation",
       "css": "@skryensya/core/patterns/nav-list.css",
       "hookDetails": {
+        "--sk-nav-list-category-chevron-fg": {
+          "default": "var(--color-text-tertiary)",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/patterns/nav-list.css"
+        },
+        "--sk-nav-list-category-current-fg": {
+          "default": "var(--sk-nav-list-link-current-fg)",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/patterns/nav-list.css"
+        },
+        "--sk-nav-list-category-fg": {
+          "default": "var(--color-text-primary)",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/patterns/nav-list.css"
+        },
+        "--sk-nav-list-category-font-size": {
+          "default": "var(--sk-nav-list-link-font-size)",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/patterns/nav-list.css"
+        },
+        "--sk-nav-list-category-font-weight": {
+          "default": "var(--font-weight-emphasis)",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/patterns/nav-list.css"
+        },
         "--sk-nav-list-duration": {
           "default": "var(--motion-state-change-duration)",
           "output": false,
@@ -36700,6 +36871,18 @@
         },
         "--sk-nav-list-group-label-padding-x": {
           "default": "var(--space-inset-sm)",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/patterns/nav-list.css"
+        },
+        "--sk-nav-list-guide-color": {
+          "default": "var(--color-border-subtle)",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/patterns/nav-list.css"
+        },
+        "--sk-nav-list-guide-inset": {
+          "default": "var(--space-inline-md)",
           "output": false,
           "part": "root",
           "sheet": "@skryensya/core/patterns/nav-list.css"
@@ -36802,6 +36985,11 @@
         }
       },
       "hooks": [
+        "--sk-nav-list-category-chevron-fg",
+        "--sk-nav-list-category-current-fg",
+        "--sk-nav-list-category-fg",
+        "--sk-nav-list-category-font-size",
+        "--sk-nav-list-category-font-weight",
         "--sk-nav-list-duration",
         "--sk-nav-list-easing",
         "--sk-nav-list-gap",
@@ -36814,6 +37002,8 @@
         "--sk-nav-list-group-label-padding-block-end",
         "--sk-nav-list-group-label-padding-block-start",
         "--sk-nav-list-group-label-padding-x",
+        "--sk-nav-list-guide-color",
+        "--sk-nav-list-guide-inset",
         "--sk-nav-list-item-gap",
         "--sk-nav-list-label-opacity",
         "--sk-nav-list-link-bg",
@@ -56482,7 +56672,7 @@
     "working": "0.0.2"
   },
   "schemaVersion": "2.3",
-  "sourceHash": "36d7f9db677216db",
+  "sourceHash": "f1f9bd5dcac71047",
   "vocabulary": {
     "a11y": "When `when` holds, one of `requiresOneOf` must be given: an option, a raw attribute, a filled slot, or a child signature by name.",
     "atLeastOneOf": "At least one member of each group counts: a filled slot, a boolean option set to true, or an option other than its default.",

@@ -65,7 +65,7 @@ describe("the surface", () => {
     const { tools: listed } = await client.listTools();
     /* The declared inventory, then the Maker's two, which only the local stdio server offers. */
     expect(listed.map((tool) => tool.name)).toEqual([...toolNames, "maker_projects", "maker_read", "maker_context", "maker_try", "maker_apply", "maker_publish"]);
-    expect(toolNames).toEqual(["discover_ui", "get_examples", "get_contract", "get_contracts", "validate_ui", "get_catalog"]);
+    expect(toolNames).toEqual(["discover_ui", "get_examples", "get_contract", "get_contracts", "validate_ui", "review_ui", "get_catalog"]);
   });
 
   it("declares an outputSchema on every tool, and read-only annotations on all but the ones that change things", async () => {
@@ -452,4 +452,40 @@ describe("a client of the previous server", () => {
       await legacy.close();
     }
   }, 30_000);
+});
+
+describe("review_ui, the other question", () => {
+  it("passes a page-level example with no findings", async () => {
+    const page = snippets.find((snippet) => snippet.id === "page-chat")!;
+    const { payload } = await call("review_ui", { tree: page.tree });
+    expect(payload.valid).toBe(true);
+    expect(payload.review.passes).toBe(true);
+    expect(payload.review.findings).toEqual([]);
+  });
+
+  it("fails a page that composes but has two h1s and no skip link, naming rule, guideline and fix", async () => {
+    const h1 = { contract: "typography", signature: "Heading", options: { headingElement: "h1" }, children: "Title" };
+    const tree = {
+      contract: "layout",
+      signature: "Stack",
+      children: [
+        { contract: "navbar", signature: "Navbar", children: { contract: "navbar", signature: "NavbarBrand", children: "Brand" } },
+        { contract: "layout", signature: "Main", attrs: { id: "main", tabindex: "-1" }, children: [h1, h1] },
+      ],
+    };
+    const { payload } = await call("review_ui", { tree });
+    const rules = payload.review.findings.map((finding: { rule: string }) => finding.rule);
+    expect(rules).toEqual(expect.arrayContaining(["one-h1", "skip-link"]));
+    expect(payload.review.passes).toBe(false);
+    for (const finding of payload.review.findings) {
+      expect(finding.reference).not.toBe("");
+      expect(finding.fix).not.toBe("");
+    }
+  });
+
+  it("does not review a tree that does not compose", async () => {
+    const { payload } = await call("review_ui", { tree: { contract: "button", signature: "Button.action" } });
+    expect(payload.valid).toBe(false);
+    expect(payload.review).toBeNull();
+  });
 });

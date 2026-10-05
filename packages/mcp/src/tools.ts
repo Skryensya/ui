@@ -9,6 +9,7 @@ import {
   discoverOutput,
   examplesOutput,
   usageTree,
+  reviewOutput,
   validateOutput,
 } from "./schemas.js";
 
@@ -178,7 +179,28 @@ const validateUi = define({
   run: (service, { tree }) => service.validate(tree as UsageTree),
 });
 
+const reviewUi = define({
+  name: "review_ui",
+  title: "Review a composition's design: accessibility errors and mediocre-design smells",
+  summary: "Judges a tree that composes: structure, bypass blocks, names, tables, competing actions. Each finding names its guideline and its fix.",
+  description:
+    "The other question. validate_ui says whether a tree COMPOSES; this says whether it is any GOOD, for the " +
+    "part of good a tree can show. Deterministic rules, each with the guideline behind it and how to fix it. " +
+    "`error` is an accessibility failure the tree itself causes (no h1, a heading that skips a level, no skip " +
+    "link, controls that share one name, a table with no caption, an unnamed landmark, a scrolling table the " +
+    "keyboard cannot reach): a page with one is broken for somebody, whatever it looks like, and style never " +
+    "outranks it. `warn` is a smell (several competing primary actions, a table without row headers): nothing " +
+    "is inaccessible, but the page is harder to use than it needs to be. A tree that does not compose comes back " +
+    "unreviewed. A clean review is necessary, not sufficient: contrast, focus visibility and reflow depend on " +
+    "rendering. Run it on a whole page after validate_ui; page-level examples from get_examples pass it.",
+  input: z.object({
+    tree: usageTree.describe("The composition to review, written in signatures."),
+  }),
+  output: reviewOutput,
+  run: (service, { tree }) => service.review(tree as UsageTree),
+});
+
 /** In workflow order, which is also the order `tools/list` returns and the README shows. */
-export const tools = [discoverUi, getExamples, getContract, getContracts, validateUi, getCatalog] as const;
+export const tools = [discoverUi, getExamples, getContract, getContracts, validateUi, reviewUi, getCatalog] as const;
 
 export const toolNames: readonly string[] = tools.map((tool) => tool.name);

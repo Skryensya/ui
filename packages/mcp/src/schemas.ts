@@ -6,6 +6,7 @@ import type {
   Example,
   ExampleIndexEntry,
   Provenance,
+  ReviewOutcome,
   ValidateOutcome,
 } from "@skryensya/ai-compiler/agent";
 import type { DiscoverResult } from "@skryensya/ai-compiler/discover";
@@ -224,6 +225,30 @@ export const discoverOutput = z.object({
   guidance: z.string(),
 });
 
+const finding = z.object({
+  rule: z.string(),
+  severity: z.enum(["error", "warn"]).describe("error: an accessibility failure the tree causes. warn: a design smell."),
+  path: z.string(),
+  message: z.string(),
+  reference: z.string().describe("The guideline behind the rule (a WCAG success criterion or the kit's convention)."),
+  fix: z.string().describe("What to change in the tree."),
+});
+
+export const reviewOutput = z.object({
+  ...provenance,
+  valid: z.boolean().describe("Whether the tree composes. A tree that does not compose is not reviewed."),
+  problems: z.array(problem),
+  review: z
+    .object({
+      findings: z.array(finding),
+      errors: z.number().int(),
+      warnings: z.number().int(),
+      passes: z.boolean().describe("True when no error remains. Warnings never fail a review."),
+    })
+    .nullable(),
+  hint: z.string(),
+});
+
 export const validateOutput = z.object({
   ...provenance,
   valid: z.boolean(),
@@ -293,11 +318,12 @@ const pins: [
   Pinned<Provenance & Example, typeof examplesOutput>,
   Pinned<Provenance & DiscoverResult, typeof discoverOutput>,
   Pinned<Provenance & ValidateOutcome, typeof validateOutput>,
+  Pinned<Provenance & ReviewOutcome, typeof reviewOutput>,
   Pinned<Provenance & ContractView, typeof contractOutput>,
   Pinned<Provenance & { contracts: readonly ContractView[] }, typeof contractsOutput>,
   Pinned<AgentError, typeof errorOutput>,
   Pinned<OptionInput, typeof optionValue>,
-] = [true, true, true, true, true, true, true, true, true];
+] = [true, true, true, true, true, true, true, true, true, true];
 void pins;
 
 /* The guard, guarded: a result with one field the schema lacks must not compile as pinned. */

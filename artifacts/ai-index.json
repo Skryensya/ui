@@ -2301,6 +2301,33 @@
         },
         {
           "alternatives": [
+            "Stack",
+            "Wrapper",
+            "LayoutGrid"
+          ],
+          "avoidWhen": [
+            "the page is a document, a landing page or an article: a Wrapper column with a Navbar above is the whole layout",
+            "there is no persistent rail or header: a Main inside a Stack is enough",
+            "the region is a card or a panel inside a page; that is Box"
+          ],
+          "host": "div",
+          "id": "AppShell",
+          "intent": [
+            "app-shell",
+            "application-frame",
+            "header-rail-and-main",
+            "dashboard-frame",
+            "page-chrome-layout"
+          ],
+          "parents": [],
+          "useWhen": [
+            "the page is an application: a header across the top, a rail (Sidebar) down the side and a work area (Main) filling the rest",
+            "the page needs the rail to reach the bottom and the work area to fill the row, without a hand-written class to make it so",
+            "a dashboard, a mail client, a chat or a settings area: anything with persistent navigation around a changing region"
+          ]
+        },
+        {
+          "alternatives": [
             "Box",
             "Stack",
             "LayoutGrid"
@@ -5781,5 +5808,5 @@
     }
   ],
   "schemaVersion": "2.3",
-  "sourceHash": "36d7f9db677216db"
+  "sourceHash": "f1f9bd5dcac71047"
 }

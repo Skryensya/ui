@@ -23,6 +23,16 @@ import { questionnaireBranchingSurveySnippet } from "./questionnaire-branching-s
 import { productCardInGridSnippet } from "./product-card-in-grid.js";
 import { settingsRowWithSwitchSnippet } from "./settings-row-with-switch.js";
 import { tableWithPaginationSnippet } from "./table-with-pagination.js";
+import { chatPattern } from "./patterns/chat.js";
+import { checkoutPattern } from "./patterns/checkout.js";
+import { inboxPattern } from "./patterns/inbox.js";
+import { issueTrackerPattern } from "./patterns/issue-tracker.js";
+import { pageSnippets } from "./pages.generated.js";
+import { repoOverviewPattern } from "./patterns/repo-overview.js";
+import { searchResultsPattern } from "./patterns/search-results.js";
+import { settingsPattern } from "./patterns/settings.js";
+import { signInPattern } from "./patterns/sign-in.js";
+import { storeListingPattern } from "./patterns/store-listing.js";
 import type { Snippet } from "./snippet.js";
 
 /*
@@ -57,6 +67,17 @@ export const snippets: readonly Snippet[] = [
   heroWithVideoDemoSnippet,
   heroWithAudienceTabsSnippet,
   heroWithTestimonialSnippet,
+  ...pageSnippets,
+  /* Reference patterns: the shape a family of well-known sites converges on, hand-composed and held to the accessibility rules in `quality.ts`. */
+  repoOverviewPattern,
+  inboxPattern,
+  issueTrackerPattern,
+  storeListingPattern,
+  chatPattern,
+  signInPattern,
+  checkoutPattern,
+  settingsPattern,
+  searchResultsPattern,
 ];
 
 export type { Snippet, SnippetLevel } from "./snippet.js";

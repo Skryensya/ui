@@ -24,6 +24,8 @@ export const instructions = [
   "   - children: the children slot, written directly.",
   "5. validate_ui(tree). Invalid: fix the problems and validate again; nothing is emitted. Valid: use the",
   "   returned markup, React source, reactData file and css as-is; never retype them.",
+  "6. review_ui(tree) for a whole page: validity is not quality. Errors are accessibility failures the tree",
+  "   causes (fix them; style never outranks them); warnings are design smells to weigh.",
   "",
   "Prefer a signature whose useWhen fits over one whose avoidWhen names your case. When nothing named",
   "fits a shape, use a layout primitive (Stack, Inline, Grid, Box) with an intentional gap. Give every",

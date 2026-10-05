@@ -22,7 +22,8 @@ the same input give the same bytes, and only `validate_ui` decides whether a tre
 | 3 | `get_contract` | One family's contract: options, slots, constraints, accessibility and CSS. |
 | 4 | `get_contracts` | Up to 8 contracts in one call, in the order asked, for one composition. |
 | 5 | `validate_ui` | Validates a usage tree; when valid, returns Vanilla markup, React source, data module and CSS. |
-| 6 | `get_catalog` | The exhaustive catalogue, paged: every family and signature with useWhen and avoidWhen. |
+| 6 | `review_ui` | Judges a tree that composes: structure, bypass blocks, names, tables, competing actions. Each finding names its guideline and its fix. |
+| 7 | `get_catalog` | The exhaustive catalogue, paged: every family and signature with useWhen and avoidWhen. |
 
 <!-- tools:end -->
 
@@ -198,6 +199,27 @@ The token is checked through the SDK's bearer machinery (`verifyBearerToken` wit
 standards-based MCP authorization is a replacement of that verifier with one that validates OAuth
 access tokens, plus the SDK's `oauthMetadataResponse` for the protected-resource metadata. There is no
 authorization server here and none should be written: use an existing identity provider.
+
+## Acceptance tests over HTTP
+
+`src/web.test.ts` is the suite a client of the HTTP server is promised, asserted through the wire (an MCP
+client and `fetch`), never through the server's own functions. It runs in two modes:
+
+- **No `MCP_URL`**: it starts the server in-process. This runs on every `pnpm check`, so the suite itself is
+  always tested.
+- **With `MCP_URL`**: the same assertions run against a deployed server, and become the deploy's acceptance
+  test. It also compares the deployed catalogue's `sourceHash` with the one in this commit's artifacts, so a
+  rollout that has not finished fails with a clear message instead of passing against the old build.
+
+```sh
+MCP_URL=https://mcp.example pnpm --filter @skryensya/mcp test:web
+# a deployment with a token:
+MCP_URL=https://mcp.example MCP_HTTP_TOKEN=… pnpm --filter @skryensya/mcp test:web
+```
+
+It checks the route (`/healthz`, 405, 404, malformed JSON without a stack trace, an unknown Origin), that the
+server is this commit's (same tools, same `sourceHash`), the workflow an agent runs (discovery, page examples,
+`validate_ui`, `review_ui`, an `AppShell` emitted), and that it is stateless (parallel clients) and quick.
 
 ## Deploying with Docker on Dokploy
 
