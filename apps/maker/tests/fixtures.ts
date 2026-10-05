@@ -44,10 +44,15 @@ export async function addFromPalette(page: Page, signature: string): Promise<voi
 }
 
 /** Select a node by clicking its row in the outline (the last row with that label). */
+/** A layer row: the signature's name ("Button.action" reads "Button"), then optionally " · its text". */
+export function outlineRow(label: string): RegExp {
+  return new RegExp(`^${label.split("\\.")[0]}( · .*)?$`);
+}
+
 export async function selectInOutline(page: Page, label: string): Promise<void> {
   const escaped = label.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
   await (await layers(page))
-    .locator(".maker-outline :is(.sk-tree-view__branch-text, .sk-tree-view__item-text)", { hasText: new RegExp(`^${escaped}$`) })
+    .locator(".maker-outline :is(.sk-tree-view__branch-text, .sk-tree-view__item-text)", { hasText: outlineRow(escaped) })
     .last()
     /* A leaf's text takes no pointer events (the row does), so the click is forced onto it. */
     .click({ force: true });

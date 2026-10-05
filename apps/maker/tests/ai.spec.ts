@@ -67,6 +67,9 @@ test("freezes selection, previews without mutation, applies once, and undoes", a
   await expect(page.frameLocator(".maker-play__frame").getByRole("heading", { name: "Build faster" })).toBeVisible();
   await page.getByRole("button", { name: "Close play" }).click();
   await page.getByRole("button", { name: "Apply", exact: true }).click();
+  /* The canvas already SHOWS the proposal before it is applied (a draft), so seeing it is no sign that it was
+     applied. The status says so once the project has actually taken it. */
+  await expect(page.getByRole("status").filter({ hasText: "Applied as one undoable edit." })).toBeVisible();
   await expect(stage(page).getByRole("heading", { name: "Build faster" })).toBeVisible();
   await expect(syncState(page)).toHaveText("Saved");
   expect(JSON.stringify(await savedProject(page, id))).not.toContain(KEY);
@@ -92,6 +95,7 @@ test("multi-selected sibling buttons wrap in Inline as one proposal", async ({ p
   await expect(page.getByRole("button", { name: "Apply", exact: true })).toBeVisible();
   expect(agent.context()!.selection.capabilities.canWrapTogether).toBe(true);
   await page.getByRole("button", { name: "Apply", exact: true }).click();
+  await expect(page.getByRole("status").filter({ hasText: "Applied as one undoable edit." })).toBeVisible();
   await expect(stage(page).locator(".sk-inline").getByRole("button")).toHaveCount(2);
   await page.locator(".maker-ai textarea").blur();
   await page.keyboard.press("ControlOrMeta+z");

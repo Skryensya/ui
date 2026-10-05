@@ -3,6 +3,7 @@ import { isNode, type MakerChild, type MakerNode, type Place } from "./node.js";
 import type { Operation } from "./operations.js";
 import { pending } from "./problems.js";
 import { presetFor } from "./preset.js";
+import { buildVariant, variantsFor, type WrapperId } from "./variants.js";
 import { fromUsageTree, type IdFactory } from "./project.js";
 import { brokenLinks, emptyPage, type MakerSite, type SiteOperation } from "./site.js";
 
@@ -18,7 +19,16 @@ import { brokenLinks, emptyPage, type MakerSite, type SiteOperation } from "./si
 
 /** A page operation as an agent writes it. */
 export type AgentOperation =
-  | { readonly type: "insert"; readonly at: Place; readonly tree?: UsageTree; readonly signature?: { readonly contract: string; readonly signature: string } }
+  | {
+      readonly type: "insert";
+      readonly at: Place;
+      readonly tree?: UsageTree;
+      readonly signature?: { readonly contract: string; readonly signature: string };
+      /** With `signature`: one of that signature's presets (`maker_presets` lists them) instead of the default. */
+      readonly preset?: string;
+      /** With `signature`: the wrapper it arrives in. `auto` is the preset's own; absent, the preset is inserted as it is. */
+      readonly wrap?: "auto" | WrapperId;
+    }
   | { readonly type: "move"; readonly child: string; readonly to: Place }
   | { readonly type: "remove"; readonly child: string }
   | { readonly type: "wrap"; readonly children: readonly string[]; readonly with: { readonly contract: string; readonly signature: string; readonly options?: Readonly<Record<string, OptionInput>> } }
@@ -67,7 +77,14 @@ function resolvePageOperation(operation: AgentOperation, newId: IdFactory): Agen
     case "insert": {
       let child: MakerChild | undefined;
       if (operation.tree) child = fromUsageTree(operation.tree, newId);
-      else if (operation.signature) child = presetFor(operation.signature, newId);
+      else if (operation.signature && (operation.preset || operation.wrap)) {
+        const variants = variantsFor(operation.signature);
+        const variant = operation.preset ? variants.find((entry) => entry.id === operation.preset) : variants[0];
+        if (!variant) {
+          return { ok: false, reason: `${operation.signature.contract}/${operation.signature.signature} has no preset "${operation.preset}". It has: ${variants.map((entry) => entry.id).join(", ")}.` };
+        }
+        child = buildVariant(variant, operation.wrap ?? "auto", newId);
+      } else if (operation.signature) child = presetFor(operation.signature, newId);
       if (!child) return { ok: false, reason: "An insert needs a `tree` (a usage tree) or a `signature` from the catalogue." };
       return { ok: true, value: { type: "insert", at: operation.at, child } };
     }

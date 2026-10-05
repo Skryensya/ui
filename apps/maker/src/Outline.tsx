@@ -44,18 +44,34 @@ function parseSlotBranch(id: string): { owner: string; slot: string } | undefine
  * worth dropping into, and otherwise every button would carry two empty rows (`› pre`, `› post`).
  */
 function toTree(child: MakerChild, selected?: string): TreeNode {
-  if (!isNode(child)) {
-    const text = child.text.trim();
-    return { id: child.id, label: `“${text.length > 32 ? `${text.slice(0, 32)}…` : text || " "}”` };
-  }
-  const children: TreeNode[] = childrenOf(child, "children").map((c) => toTree(c, selected));
+  if (!isNode(child)) return { id: child.id, label: preview(child.text) || "“ ”" };
+  const held = childrenOf(child, "children");
+  /*
+   * A node whose only content is one run of text is named by it ("Button · Get started"), and the run is not
+   * a row of its own: two rows for one thing was the noise. The Inspector still edits that text from the node.
+   */
+  const only = held.length === 1 && !isNode(held[0]!) ? (held[0] as { text: string }).text : undefined;
+  const children: TreeNode[] = only !== undefined ? [] : held.map((c) => toTree(c, selected));
   for (const slot of nodeSlots(child)) {
     if (slot === "children") continue;
-    const held = childrenOf(child, slot);
-    if (held.length === 0 && selected !== child.id) continue;
-    children.push({ id: slotBranchId(child.id, slot), label: `› ${slot}`, children: held.map((c) => toTree(c, selected)) });
+    const inSlot = childrenOf(child, slot);
+    if (inSlot.length === 0 && selected !== child.id) continue;
+    children.push({ id: slotBranchId(child.id, slot), label: `› ${slot}`, children: inSlot.map((c) => toTree(c, selected)) });
   }
-  return children.length > 0 ? { id: child.id, label: child.signature, children } : { id: child.id, label: child.signature };
+  const label = outlineLabel(child.signature, only);
+  return children.length > 0 ? { id: child.id, label, children } : { id: child.id, label };
+}
+
+/** `Button.action` is the contract's name for a variant; the layers say what it is, "Button". */
+export function outlineLabel(signature: string, text?: string): string {
+  const name = signature.split(".")[0]!;
+  const shown = text === undefined ? "" : preview(text);
+  return shown ? `${name} · ${shown}` : name;
+}
+
+function preview(text: string): string {
+  const trimmed = text.trim().replace(/\s+/g, " ");
+  return trimmed.length > 28 ? `${trimmed.slice(0, 28)}…` : trimmed;
 }
 
 function branchIds(nodes: readonly TreeNode[], into: string[] = []): string[] {

@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { parseSite, randomId, serializeSite, type MakerSite } from "@skryensya/maker-model";
+import { parseSite, randomId, serializeSite, walk, type MakerSite } from "@skryensya/maker-model";
 import { getProject, projectEvents, saveProject, type Project } from "./projects";
 import { CATALOGUE_HASH, type Maker } from "./state";
 
@@ -17,6 +17,25 @@ import { CATALOGUE_HASH, type Maker } from "./state";
  */
 
 export type SyncState = "syncing" | "saved" | "offline";
+
+/*
+ * WHAT ARRIVES FROM OUTSIDE, as it arrives. An agent that builds a page through the MCP does it one
+ * `maker_apply` at a time, and each one lands here as one change. Listeners are told which nodes it
+ * ADDED, by identity, so the canvas can bring them in the way it does for Maker AI's own drafts: the
+ * page reads as being built instead of jumping to its next state.
+ */
+type Arrival = (added: ReadonlySet<string>) => void;
+const arrivals = new Set<Arrival>();
+export function onArrival(listener: Arrival): () => void {
+  arrivals.add(listener);
+  return () => void arrivals.delete(listener);
+}
+
+const idsOf = (site: MakerSite) => {
+  const ids = new Set<string>();
+  for (const page of site.pages) for (const node of walk(page.root)) ids.add(node.id);
+  return ids;
+};
 
 /* Per project, outside any component, so a tab that is not showing keeps what it knew. */
 const known = new Map<string, number>();
@@ -52,7 +71,12 @@ export function useProjectSync(maker: Maker, enabled: boolean): SyncState {
     if (!checked.ok) return;
     known.set(id, project.revision);
     saved.set(id, checked.site);
-    if (!same(checked.site, live.current.site)) live.current.receive(checked.site, notice);
+    if (!same(checked.site, live.current.site)) {
+      const before = idsOf(live.current.site);
+      const added = new Set([...idsOf(checked.site)].filter((node) => !before.has(node)));
+      live.current.receive(checked.site, notice);
+      if (added.size) for (const listener of arrivals) listener(added);
+    }
   };
 
   /*

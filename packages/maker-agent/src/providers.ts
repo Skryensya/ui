@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { sseData } from "./stream.js";
 
 export type ProviderId = "openai" | "anthropic" | "openrouter" | "compatible";
 /** Session memory only. Never pass this object to a tool, transcript or project serializer. */
@@ -10,15 +11,26 @@ export type Message =
   | { role: "assistant"; content: string; calls: ToolCall[] }
   | { role: "tool"; content: string; call: ToolCall };
 export interface ProviderReply { text: string; calls: ToolCall[] }
+/** What a streamed reply reports as it arrives, before the reply is complete. All optional. */
+export interface StreamHandlers {
+  /** A piece of the assistant's visible text. */
+  text?(delta: string): void;
+  /** The model has begun a tool call. Arguments follow through `callArgs`. */
+  callStart?(call: { id: string; name: string }): void;
+  /** The next piece of a tool call's JSON arguments. */
+  callArgs?(id: string, delta: string): void;
+}
 export interface ProviderAdapter {
   complete(connection: ProviderConnection, system: string, messages: readonly Message[], tools: readonly ToolSpec[], signal: AbortSignal): Promise<ProviderReply>;
+  /** The same reply, reported piece by piece while it is written. Resolves with the complete reply. */
+  stream?(connection: ProviderConnection, system: string, messages: readonly Message[], tools: readonly ToolSpec[], signal: AbortSignal, on: StreamHandlers): Promise<ProviderReply>;
 }
 
-async function request(url: string, headers: Record<string, string>, body: unknown, signal: AbortSignal) {
+async function post(url: string, headers: Record<string, string>, body: unknown, signal: AbortSignal, timeoutMs: number) {
   let response: Response;
   try {
     response = await fetch(url, { method: "POST", headers: { "content-type": "application/json", ...headers }, body: JSON.stringify(body),
-      redirect: "error", signal: AbortSignal.any([signal, AbortSignal.timeout(60_000)]) });
+      redirect: "error", signal: AbortSignal.any([signal, AbortSignal.timeout(timeoutMs)]) });
   } catch {
     if (signal.aborted) throw new Error("Cancelled.");
     throw new Error("Provider unavailable or timed out. Check your endpoint and browser CORS support.");
@@ -26,7 +38,28 @@ async function request(url: string, headers: Record<string, string>, body: unkno
   // Never relay provider bodies: they can echo credentials or request headers.
   if (!response.ok) throw new Error(response.status === 401 || response.status === 403 ? "Provider rejected the credential or browser access." :
     response.status === 429 ? "Provider rate limit reached. Try again later." : `Provider request failed (HTTP ${response.status}).`);
+  return response;
+}
+
+async function request(url: string, headers: Record<string, string>, body: unknown, signal: AbortSignal) {
+  const response = await post(url, headers, body, signal, 60_000);
   try { return await response.json() as unknown; } catch { throw new Error("Malformed provider response."); }
+}
+
+/** A streamed reply may legitimately take minutes to write; the cap is on the whole stream, not on silence. */
+const STREAM_TIMEOUT_MS = 240_000;
+
+async function* events(response: Response, signal: AbortSignal): AsyncGenerator<unknown> {
+  if (!response.body) throw new Error("Malformed provider response.");
+  try {
+    for await (const data of sseData(response.body, signal)) {
+      if (data === "[DONE]") return;
+      try { yield JSON.parse(data) as unknown; } catch { /* a keep-alive or a non-JSON line: not an event */ }
+    }
+  } catch (error) {
+    if (signal.aborted) throw new Error("Cancelled.");
+    throw error instanceof Error && error.message.startsWith("Provider") ? error : new Error("Provider stream was interrupted.");
+  }
 }
 
 const openaiResponse = z.object({ choices: z.array(z.object({ message: z.object({
@@ -38,47 +71,164 @@ const anthropicResponse = z.object({ content: z.array(z.union([
   z.object({ type: z.literal("tool_use"), id: z.string(), name: z.string(), input: z.unknown() }),
 ])) });
 
+function openaiBase(connection: ProviderConnection): string {
+  let base = connection.provider === "openrouter" ? "https://openrouter.ai/api/v1" : "https://api.openai.com/v1";
+  if (connection.provider === "compatible") {
+    if (!connection.endpoint) throw new Error("Enter an OpenAI-compatible endpoint.");
+    const url = new URL(connection.endpoint);
+    if (url.protocol !== "https:" && !(url.protocol === "http:" && ["localhost", "127.0.0.1"].includes(url.hostname))) throw new Error("Use HTTPS (or localhost) for credentials.");
+    if (url.username || url.password || url.search || url.hash) throw new Error("Endpoint must not contain credentials, query or fragment.");
+    base = connection.endpoint.replace(/\/$/, "");
+  }
+  return base;
+}
+
+function openaiBody(connection: ProviderConnection, system: string, messages: readonly Message[], tools: readonly ToolSpec[]) {
+  return {
+    model: connection.model,
+    messages: [{ role: "system", content: system }, ...messages.map(m => m.role === "tool" ? { role: "tool", content: m.content, tool_call_id: m.call.id } :
+      m.role === "assistant" ? { role: "assistant", content: m.content || null, ...(m.calls.length ? { tool_calls: m.calls.map(c => ({ id: c.id, type: "function", function: { name: c.name, arguments: c.arguments } })) } : {}) } : m)],
+    ...(tools.length ? { tools: tools.map(t => ({ type: "function", function: { name: t.name, description: t.description, parameters: t.parameters } })) } : {}),
+  };
+}
+
+function parseOpenaiReply(raw: unknown): ProviderReply {
+  const parsed = openaiResponse.safeParse(raw);
+  if (!parsed.success) throw new Error("Malformed provider response.");
+  const message = parsed.data.choices[0]!.message;
+  return { text: message.content ?? "", calls: (message.tool_calls ?? []).map(c => ({ id: c.id, name: c.function.name, arguments: c.function.arguments })) };
+}
+
+function parseAnthropicReply(raw: unknown): ProviderReply {
+  const parsed = anthropicResponse.safeParse(raw);
+  if (!parsed.success) throw new Error("Malformed provider response.");
+  return { text: parsed.data.content.filter(c => c.type === "text").map(c => c.text).join("\n"),
+    calls: parsed.data.content.filter(c => c.type === "tool_use").map(c => ({ id: c.id, name: c.name, arguments: JSON.stringify(c.input) })) };
+}
+
+const isEventStream = (response: Response) => (response.headers.get("content-type") ?? "").includes("text/event-stream");
+
+/**
+ * An endpoint that ignores `stream: true` answers with the whole reply as plain JSON. That is still a valid
+ * answer: it is handed to the same handlers in one piece, so the caller does not care which it got.
+ */
+async function wholeReply(response: Response, parse: (raw: unknown) => ProviderReply, on: StreamHandlers): Promise<ProviderReply> {
+  let raw: unknown;
+  try { raw = await response.json(); } catch { throw new Error("Malformed provider response."); }
+  const reply = parse(raw);
+  if (reply.text) on.text?.(reply.text);
+  for (const call of reply.calls) { on.callStart?.({ id: call.id, name: call.name }); on.callArgs?.(call.id, call.arguments); }
+  return reply;
+}
+
+const openaiChunk = z.object({ choices: z.array(z.object({ delta: z.object({
+  content: z.string().nullable().optional(),
+  tool_calls: z.array(z.object({ index: z.number().int().min(0).max(63), id: z.string().optional(),
+    function: z.object({ name: z.string().optional(), arguments: z.string().optional() }).optional() })).optional(),
+}).optional() })).optional() });
+
 export const openaiAdapter: ProviderAdapter = {
   async complete(connection, system, messages, tools, signal) {
-    let base = connection.provider === "openrouter" ? "https://openrouter.ai/api/v1" : "https://api.openai.com/v1";
-    if (connection.provider === "compatible") {
-      if (!connection.endpoint) throw new Error("Enter an OpenAI-compatible endpoint.");
-      const url = new URL(connection.endpoint);
-      if (url.protocol !== "https:" && !(url.protocol === "http:" && ["localhost", "127.0.0.1"].includes(url.hostname))) throw new Error("Use HTTPS (or localhost) for credentials.");
-      if (url.username || url.password || url.search || url.hash) throw new Error("Endpoint must not contain credentials, query or fragment.");
-      base = connection.endpoint.replace(/\/$/, "");
+    const base = openaiBase(connection);
+    const raw = await request(`${base}/chat/completions`, { authorization: `Bearer ${connection.apiKey}` }, openaiBody(connection, system, messages, tools), signal);
+    return parseOpenaiReply(raw);
+  },
+  async stream(connection, system, messages, tools, signal, on) {
+    const base = openaiBase(connection);
+    const response = await post(`${base}/chat/completions`, { authorization: `Bearer ${connection.apiKey}` },
+      { ...openaiBody(connection, system, messages, tools), stream: true }, signal, STREAM_TIMEOUT_MS);
+    if (!isEventStream(response)) return wholeReply(response, parseOpenaiReply, on);
+    let text = "";
+    let seen = false;
+    const calls = new Map<number, { id: string; name: string; arguments: string; started: boolean }>();
+    for await (const raw of events(response, signal)) {
+      const chunk = openaiChunk.safeParse(raw);
+      if (!chunk.success) continue;
+      seen = true;
+      const delta = chunk.data.choices?.[0]?.delta;
+      if (!delta) continue;
+      if (delta.content) { text += delta.content; on.text?.(delta.content); }
+      for (const piece of delta.tool_calls ?? []) {
+        const call = calls.get(piece.index) ?? { id: "", name: "", arguments: "", started: false };
+        calls.set(piece.index, call);
+        if (piece.id) call.id = piece.id;
+        if (piece.function?.name) call.name += piece.function.name;
+        if (!call.started && call.id && call.name) { call.started = true; on.callStart?.({ id: call.id, name: call.name }); }
+        const args = piece.function?.arguments;
+        if (args) { call.arguments += args; if (call.started) on.callArgs?.(call.id, args); }
+      }
     }
-    const raw = await request(`${base}/chat/completions`, { authorization: `Bearer ${connection.apiKey}` }, {
-      model: connection.model,
-      messages: [{ role: "system", content: system }, ...messages.map(m => m.role === "tool" ? { role: "tool", content: m.content, tool_call_id: m.call.id } :
-        m.role === "assistant" ? { role: "assistant", content: m.content || null, ...(m.calls.length ? { tool_calls: m.calls.map(c => ({ id: c.id, type: "function", function: { name: c.name, arguments: c.arguments } })) } : {}) } : m)],
-      ...(tools.length ? { tools: tools.map(t => ({ type: "function", function: { name: t.name, description: t.description, parameters: t.parameters } })) } : {}),
-    }, signal);
-    const parsed = openaiResponse.safeParse(raw);
-    if (!parsed.success) throw new Error("Malformed provider response.");
-    const message = parsed.data.choices[0]!.message;
-    return { text: message.content ?? "", calls: (message.tool_calls ?? []).map(c => ({ id: c.id, name: c.function.name, arguments: c.function.arguments })) };
+    if (!seen) throw new Error("Malformed provider response.");
+    const finished = [...calls.entries()].sort((a, b) => a[0] - b[0]).map(([, c]) => c).filter(c => c.id && c.name);
+    if (finished.length > 16) throw new Error("Provider response exceeds the agent limit.");
+    return { text, calls: finished.map(c => ({ id: c.id, name: c.name, arguments: c.arguments || "{}" })) };
   },
 };
 
+function anthropicWire(messages: readonly Message[]) {
+  const wire: { role: "user" | "assistant"; content: unknown[] }[] = [];
+  for (const message of messages) {
+    const role = message.role === "assistant" ? "assistant" : "user";
+    const content = message.role === "tool" ? [{ type: "tool_result", tool_use_id: message.call.id, content: message.content }] :
+      message.role === "assistant" ? [...(message.content ? [{ type: "text", text: message.content }] : []), ...message.calls.map(c => ({ type: "tool_use", id: c.id, name: c.name, input: JSON.parse(c.arguments) as unknown }))] : [{ type: "text", text: message.content }];
+    if (wire.at(-1)?.role === role) wire.at(-1)!.content.push(...content);
+    else wire.push({ role, content });
+  }
+  return wire;
+}
+
+const anthropicHeaders = (connection: ProviderConnection) => ({
+  "x-api-key": connection.apiKey, "anthropic-version": "2023-06-01", "anthropic-dangerous-direct-browser-access": "true",
+});
+
+/** Room for a whole page of operations: a short cap cut long proposals off mid-JSON. */
+const ANTHROPIC_MAX_TOKENS = 8192;
+
+const anthropicBody = (connection: ProviderConnection, system: string, messages: readonly Message[], tools: readonly ToolSpec[]) => ({
+  model: connection.model, max_tokens: ANTHROPIC_MAX_TOKENS, system, messages: anthropicWire(messages),
+  ...(tools.length ? { tools: tools.map(t => ({ name: t.name, description: t.description, input_schema: t.parameters })) } : {}),
+});
+
+const anthropicEvent = z.discriminatedUnion("type", [
+  z.object({ type: z.literal("content_block_start"), index: z.number().int(), content_block: z.object({ type: z.string(), id: z.string().optional(), name: z.string().optional() }) }),
+  z.object({ type: z.literal("content_block_delta"), index: z.number().int(), delta: z.object({ type: z.string(), text: z.string().optional(), partial_json: z.string().optional() }) }),
+  z.object({ type: z.literal("error") }),
+]).or(z.object({ type: z.string() }));
+
 export const anthropicAdapter: ProviderAdapter = {
   async complete(connection, system, messages, tools, signal) {
-    const wire: { role: "user" | "assistant"; content: unknown[] }[] = [];
-    for (const message of messages) {
-      const role = message.role === "assistant" ? "assistant" : "user";
-      const content = message.role === "tool" ? [{ type: "tool_result", tool_use_id: message.call.id, content: message.content }] :
-        message.role === "assistant" ? [...(message.content ? [{ type: "text", text: message.content }] : []), ...message.calls.map(c => ({ type: "tool_use", id: c.id, name: c.name, input: JSON.parse(c.arguments) as unknown }))] : [{ type: "text", text: message.content }];
-      if (wire.at(-1)?.role === role) wire.at(-1)!.content.push(...content);
-      else wire.push({ role, content });
+    const raw = await request("https://api.anthropic.com/v1/messages", anthropicHeaders(connection), anthropicBody(connection, system, messages, tools), signal);
+    return parseAnthropicReply(raw);
+  },
+  async stream(connection, system, messages, tools, signal, on) {
+    const response = await post("https://api.anthropic.com/v1/messages", anthropicHeaders(connection),
+      { ...anthropicBody(connection, system, messages, tools), stream: true }, signal, STREAM_TIMEOUT_MS);
+    if (!isEventStream(response)) return wholeReply(response, parseAnthropicReply, on);
+    const blocks = new Map<number, { kind: "text" | "tool"; id: string; name: string; text: string }>();
+    let seen = false;
+    for await (const raw of events(response, signal)) {
+      const event = anthropicEvent.safeParse(raw);
+      if (!event.success) continue;
+      seen = true;
+      const e = event.data as { type: string; index?: number; content_block?: { type: string; id?: string; name?: string }; delta?: { type: string; text?: string; partial_json?: string } };
+      if (e.type === "error") throw new Error("Provider request failed.");
+      if (e.type === "content_block_start" && e.index !== undefined && e.content_block) {
+        const tool = e.content_block.type === "tool_use";
+        blocks.set(e.index, { kind: tool ? "tool" : "text", id: e.content_block.id ?? "", name: e.content_block.name ?? "", text: "" });
+        if (tool && e.content_block.id && e.content_block.name) on.callStart?.({ id: e.content_block.id, name: e.content_block.name });
+      } else if (e.type === "content_block_delta" && e.index !== undefined && e.delta) {
+        const block = blocks.get(e.index);
+        if (!block) continue;
+        if (e.delta.type === "text_delta" && e.delta.text) { block.text += e.delta.text; on.text?.(e.delta.text); }
+        else if (e.delta.type === "input_json_delta" && e.delta.partial_json !== undefined) { block.text += e.delta.partial_json; if (block.id) on.callArgs?.(block.id, e.delta.partial_json); }
+      }
     }
-    const raw = await request("https://api.anthropic.com/v1/messages", {
-      "x-api-key": connection.apiKey, "anthropic-version": "2023-06-01", "anthropic-dangerous-direct-browser-access": "true",
-    }, { model: connection.model, max_tokens: 4096, system, messages: wire,
-      ...(tools.length ? { tools: tools.map(t => ({ name: t.name, description: t.description, input_schema: t.parameters })) } : {}) }, signal);
-    const parsed = anthropicResponse.safeParse(raw);
-    if (!parsed.success) throw new Error("Malformed provider response.");
-    return { text: parsed.data.content.filter(c => c.type === "text").map(c => c.text).join("\n"),
-      calls: parsed.data.content.filter(c => c.type === "tool_use").map(c => ({ id: c.id, name: c.name, arguments: JSON.stringify(c.input) })) };
+    if (!seen) throw new Error("Malformed provider response.");
+    const ordered = [...blocks.entries()].sort((a, b) => a[0] - b[0]).map(([, block]) => block);
+    const calls = ordered.filter(b => b.kind === "tool" && b.id && b.name);
+    if (calls.length > 16) throw new Error("Provider response exceeds the agent limit.");
+    return { text: ordered.filter(b => b.kind === "text").map(b => b.text).join("\n"),
+      calls: calls.map(b => ({ id: b.id, name: b.name, arguments: b.text || "{}" })) };
   },
 };
 

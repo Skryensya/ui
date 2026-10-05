@@ -1,11 +1,18 @@
 import { z } from "zod";
 import type { AgentService } from "@skryensya/ai-compiler/agent";
 import type { UsageTree } from "@skryensya/core/usage-tree";
-import { describeSite, findNode, randomId, tryAgentOperations, type AgentSiteOperation, type MakerAgentContext, type MakerProposal, type MakerSite } from "@skryensya/maker-model";
+import { describeSite, findNode, randomId, variantsFor, type AgentSiteOperation, type IdFactory, type MakerAgentContext, type MakerProposal, type MakerSite } from "@skryensya/maker-model";
 import { proposalInput } from "./schema.js";
+import { tryProposal } from "./draft.js";
 import type { ToolSpec } from "./providers.js";
 
-export function createMakerTools(site: MakerSite, context: MakerAgentContext, service: AgentService) {
+/**
+ * `ids` makes a FRESH id factory for every attempt. The default is random, so two attempts mint different
+ * identities. The streaming runtime passes a counter that restarts each time: the same operations then mint
+ * the same ids, so the draft shown while the model writes and the proposal prepared at the end are the same
+ * nodes, and the canvas keeps what it already drew instead of rebuilding it.
+ */
+export function createMakerTools(site: MakerSite, context: MakerAgentContext, service: AgentService, ids: () => IdFactory = () => randomId) {
   let proposal: MakerProposal | undefined;
   const empty = z.object({}).strict();
   const detail = z.enum(["contract", "full"]).default("contract");
@@ -24,17 +31,16 @@ export function createMakerTools(site: MakerSite, context: MakerAgentContext, se
     { name: "get_contracts", description: "Get up to eight authoritative family contracts.", schema: z.object({ ids: z.array(z.string()).min(1).max(8), detail }).strict(), run: (a: { ids: string[]; detail: "contract" | "full" }) => service.contracts(a.ids, a.detail).value },
     { name: "get_examples", description: "Established usage trees; no id lists examples.", schema: z.object({ id: z.string().optional() }).strict(), run: (a: { id?: string }) => (a.id ? service.example(a.id) : service.examples()).value },
     { name: "validate_ui", description: "Validate an insertion's usage tree against the real contracts.", schema: z.object({ tree: z.record(z.string(), z.unknown()) }).strict(), run: (a: { tree: unknown }) => service.validate(a.tree as UsageTree).value },
+    { name: "maker_presets", description: "The presets of one signature (Button.action: primary, destructive, icon-only, a pair...) and the wrapper each arrives in. Insert one with `signature` plus `preset` (and `wrap` to choose another wrapper).", schema: z.object({ contract: z.string(), signature: z.string() }).strict(), run: (a: { contract: string; signature: string }) => {
+      const variants = variantsFor(a);
+      return variants.length ? { presets: variants.map(v => ({ id: v.id, name: v.name, ...(v.description ? { description: v.description } : {}), arrivesIn: v.wrapper })) } : { refused: "No such signature." };
+    } },
     { name: "maker_try", description: "Prepare a complete operation batch against the frozen original site. All or none; no save. Replaces any previous proposal. User must apply.", schema: proposalInput, run: (a: z.infer<typeof proposalInput>) => {
       proposal = undefined;
-      const result = tryAgentOperations(site, a.operations as AgentSiteOperation[], randomId);
-      if (!result.ok) return { refused: result.reason };
-      // Maker allows pending authoring. Agent proposals must not introduce new errors.
-      const baseline = tryAgentOperations(site, [], randomId);
-      const keys = new Set(baseline.ok ? baseline.pending.filter(p => p.severity === "error").map(p => JSON.stringify([p.page, p.rule, p.nodes, p.message])) : []);
-      const introduced = result.pending.filter(p => p.severity === "error" && !keys.has(JSON.stringify([p.page, p.rule, p.nodes, p.message])));
-      if (introduced.length) return { refused: "Proposal introduces contract errors. Repair the complete batch.", problems: introduced };
-      proposal = { base: site, revision: context.project.revision, site: result.site, operations: result.operations };
-      return { proposed: true, operations: a.operations.length, outline: describeSite(result.site), pending: result.pending };
+      const trial = tryProposal(site, a.operations as AgentSiteOperation[], ids());
+      if (!trial.ok) return { refused: trial.reason, ...(trial.problems ? { problems: trial.problems } : {}) };
+      proposal = { base: site, revision: context.project.revision, site: trial.site, operations: trial.operations };
+      return { proposed: true, operations: a.operations.length, outline: describeSite(trial.site), pending: trial.pending };
     } },
   ];
   const specs: ToolSpec[] = definitions.map(d => ({ name: d.name, description: d.description, parameters: z.toJSONSchema(d.schema) }));

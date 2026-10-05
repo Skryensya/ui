@@ -1,10 +1,13 @@
-import { lazy, Suspense, useEffect, useRef, useState, type CSSProperties, type PointerEvent as ReactPointerEvent } from "react";
+import { lazy, Suspense, useEffect, useMemo, useRef, useState, type CSSProperties, type PointerEvent as ReactPointerEvent } from "react";
 import { createPortal } from "react-dom";
 import { isTypingContext } from "@skryensya/core/hotkey";
 import { trapModalDialogs } from "@skryensya/core/focus-trap";
 import { useHotkey } from "@skryensya/react/hotkey";
 import { useDrag } from "./drag";
-import { useProjectSync } from "./sync";
+import { onArrival, useProjectSync } from "./sync";
+import { MAKER_TOUR_ID, MakerTour } from "./tour";
+import { getTourStatus } from "@skryensya/core/tour-controller";
+import type { TourHandle } from "@skryensya/react/tour";
 import { ProjectsPanel } from "./ProjectsPanel";
 import { PublishPanel } from "./PublishPanel";
 import { useWorkspace, type Workspace } from "./workspace";
@@ -12,6 +15,7 @@ import { ExportPanel } from "./ExportPanel";
 import { IconButton } from "./IconButton";
 import { Inspector } from "./Inspector";
 import type { MakerSite } from "@skryensya/maker-model";
+import type { Draft } from "./ai/draft";
 import { Outline } from "./Outline";
 import { Pages } from "./Pages";
 import { Palette } from "./Palette";
@@ -38,6 +42,9 @@ const AIPanel = lazy(() => import("./ai/Panel").then(module => ({ default: modul
  * THE SHELL: the open projects as tabs, and the one that shows. With nothing open, the list of
  * projects is the whole screen.
  */
+/* Said once per page load, not once per project opened. */
+let tourHinted = false;
+
 export function App() {
   const workspace = useWorkspace();
   const [uiScheme, setUiScheme] = useUiScheme();
@@ -108,13 +115,47 @@ function Editor({
   const [aiOpen, setAiOpen] = useState(false);
   const [aiStarted, setAiStarted] = useState(false);
   const [aiPreview, setAiPreview] = useState<MakerSite>();
+  /* The site as Maker AI has written it so far, drawn read-only on the canvas, and where its bar goes. */
+  const [aiDraft, setAiDraft] = useState<Draft>();
+  const [draftSlot, setDraftSlot] = useState<HTMLElement | null>(null);
   const [panels, setPanels] = usePanels();
   const [panelWidths, setPanelWidths] = usePanelWidths();
   const [leftTab, setLeftTab] = useState<"layers" | "insert">("layers");
   const rightPanel = projectsOpen ? "Projects" : publishingOpen ? "Publish" : exporting ? "Export" : "Inspector";
   const rightDocked = panels.right || projectsOpen || publishingOpen || exporting;
   const canvas = useRef<CanvasControls | null>(null);
+  const tour = useRef<TourHandle>(null);
+  /* Once per page load, and only to someone who has never finished, skipped or dismissed it: a line in the
+     notice, never the tour itself (the Tour starts only when asked). */
+  useEffect(() => {
+    if (tourHinted || getTourStatus(MAKER_TOUR_ID) !== "idle") return;
+    tourHinted = true;
+    maker.say("New to Maker? Open Help and choose Take the tour.");
+  }, []);
   const [zoom, setZoom] = useState(1);
+
+  /*
+   * WHAT THE CANVAS DRAWS. Normally the project. While Maker AI has a draft, a read-only copy of it: the
+   * draft's site, in `interact` mode so nothing on it can be selected or dragged, with the nodes the draft
+   * added marked so the stage brings them in. Memoized on the draft so an unrelated re-render does not make
+   * the stage draw again.
+   */
+  /* Nodes that just arrived from outside (an agent through the MCP), marked for a moment. */
+  const [arrived, setArrived] = useState<ReadonlySet<string>>();
+  useEffect(() => {
+    let timer = 0;
+    const off = onArrival((added) => {
+      /* Only the newest arrival keeps the outline: the ones before it have already come in. */
+      setArrived(added);
+      window.clearTimeout(timer);
+      timer = window.setTimeout(() => setArrived(undefined), 2200);
+    });
+    return () => { off(); window.clearTimeout(timer); };
+  }, []);
+  const onCanvas = useMemo<Maker>(() => aiDraft
+    ? { ...maker, site: aiDraft.site, page: aiDraft.site.pages.find((entry) => entry.id === maker.page.id) ?? aiDraft.site.pages[0]!,
+        view: { ...maker.view, mode: "interact", selected: undefined, selectedIds: [] }, fresh: aiDraft.added }
+    : arrived ? { ...maker, fresh: arrived } : maker, [aiDraft, arrived, maker]);
 
   /* Undo and redo page-wide, through the kit's hotkeys; inside a text field they stay the field's. */
   const history = (step: () => void) => (event: KeyboardEvent) => {
@@ -167,6 +208,7 @@ function Editor({
                   setPanels({ ...panels, left: true });
                   setLeftTab("insert");
                 },
+                startTour: () => tour.current?.restart(),
               }}
             />,
             barSlot,
@@ -220,7 +262,8 @@ function Editor({
       {workspace.mode.kind === "server" ? <ProjectTabs workspace={workspace} projectsOpen={projectsOpen} onProjects={onProjects} panels={panels} rightDocked={rightDocked} panelWidths={panelWidths} uiScheme={uiScheme} toggleUiScheme={toggleUiScheme} setPanels={setPanels} /> : null}
 
       <main className="maker__stage">
-        <Canvas maker={maker} drag={drag} insets={{ left: panels.left ? panelWidths.left + 16 : 16, right: rightDocked ? panelWidths.right + 16 : 16, top: workspace.mode.kind === "server" ? 144 : 96 }} controls={canvas} onZoom={setZoom} />
+        <div ref={setDraftSlot} className="maker-draft-slot" />
+        <Canvas maker={onCanvas} drag={drag} insets={{ left: panels.left ? panelWidths.left + 16 : 16, right: rightDocked ? panelWidths.right + 16 : 16, top: workspace.mode.kind === "server" ? 144 : 96 }} controls={canvas} onZoom={setZoom} />
       </main>
 
       <QuickToolbar
@@ -235,6 +278,8 @@ function Editor({
         }}
         onPlay={() => setPlaying(true)}
       />
+
+      <MakerTour handle={tour} />
 
       {playing ? createPortal(<PlayPreview maker={maker} onClose={() => setPlaying(false)} />, document.body) : null}
       {aiPreview ? createPortal(<PlayPreview maker={{ ...maker, site: aiPreview, page: aiPreview.pages.find(p => p.id === maker.page.id) ?? aiPreview.pages[0]! }} label="AI proposal preview" onClose={() => setAiPreview(undefined)} />, document.body) : null}
@@ -262,7 +307,7 @@ function Editor({
             <Inspector maker={maker} />
           )}
         </div>
-        <div hidden={rightPanel !== "Inspector" || !aiOpen}>{aiStarted && <Suspense fallback={<p role="status">Loading Maker AI…</p>}><AIPanel maker={maker} onPreview={setAiPreview} /></Suspense>}</div>
+        <div hidden={rightPanel !== "Inspector" || !aiOpen}>{aiStarted && <Suspense fallback={<p role="status">Loading Maker AI…</p>}><AIPanel maker={maker} onPreview={setAiPreview} onDraft={setAiDraft} barSlot={draftSlot} /></Suspense>}</div>
       </aside>
       )}
 
@@ -401,7 +446,7 @@ function ProjectTabs({
       <span className="maker-tabs__ui-button">
         <IconButton
           icon={{ glyph: "scheme" }}
-          label={uiScheme === "dark" ? "Use light UI" : "Use dark UI"}
+          label="Dark interface"
           appearance="tactile"
           pressed={uiScheme === "dark"}
           onClick={toggleUiScheme}

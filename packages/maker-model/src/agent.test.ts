@@ -110,3 +110,24 @@ describe("the outline an agent reads", () => {
     expect(outline).toMatch(/pending:\n\s+\[ag\d+\] missing-required-slot/);
   });
 });
+
+describe("inserting a preset", () => {
+  const at = { parent: "s", slot: "children", index: 0 };
+  const button = { contract: "button", signature: "Button.action" };
+  const insertOp = (extra: Record<string, unknown>): AgentSiteOperation[] => [{ type: "page", page: "home", operations: [{ type: "insert", at, signature: button, ...extra } as never] }];
+  const firstOfStack = (result: MakerSite) => childrenOf(findNode(result.pages[0]!.root, "s") as never, "children")[0] as { signature: string };
+
+  it("inserts a named preset of a signature, in the wrapper it arrives in", () => {
+    expect(firstOfStack(run(site(), insertOp({ preset: "confirm-pair" }))).signature).toBe("Inline");
+  });
+
+  it("lets the wrap override the preset's own", () => {
+    expect(firstOfStack(run(site(), insertOp({ preset: "primary", wrap: "box" }))).signature).toBe("Box");
+  });
+
+  it("refuses a preset that does not exist, naming the ones that do", () => {
+    const refused = resolveAgentOperations(site(), insertOp({ preset: "nope" }), counterIds("ag"));
+    expect(refused.ok).toBe(false);
+    expect((refused as { ok: false; reason: string }).reason).toContain("confirm-pair");
+  });
+});

@@ -61,9 +61,12 @@ export function QuickToolbar({
           onClick={() => maker.setView({ mode: "interact", selected: undefined })}
         />
         <span className="maker-quick-toolbar__separator" aria-hidden="true" />
+        {/* The PAGE's scheme, not the Maker's: its own icon (the interface switch beside the project tabs keeps
+            the sun-and-moon), and one name with a pressed state, since a name that flips AND a pressed state
+            say the same thing twice. */}
         <IconButton
-          icon={{ glyph: "scheme" }}
-          label={maker.view.scheme === "dark" ? "Use light canvas" : "Use dark canvas"}
+          icon={{ glyph: "page-dark" }}
+          label="Dark page preview"
           appearance="tactile"
           pressed={maker.view.scheme === "dark"}
           onClick={() => maker.setView({ scheme: maker.view.scheme === "dark" ? "light" : "dark" })}

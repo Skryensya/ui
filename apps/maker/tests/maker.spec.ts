@@ -1,6 +1,6 @@
 import { expect, test } from "@playwright/test";
 import { applySiteAll, randomId, resolveAgentOperations, type MakerSite } from "@skryensya/maker-model";
-import { addFromPalette, buildSamplePage, openMaker, pageTree, savedProject, selectInOutline, stage, layers, insert, setWidth, zoomTo, pageCommand, bar } from "./fixtures";
+import { addFromPalette, buildSamplePage, openMaker, pageTree, savedProject, selectInOutline, outlineRow, stage, layers, insert, setWidth, zoomTo, pageCommand, bar } from "./fixtures";
 
 /*
  * The Maker in a real browser (decision 31): a page is built by composing, changed by operations,
@@ -136,7 +136,8 @@ test("edit mode selects instead of activating; interact mode activates; navigati
   await addFromPalette(page, "Button.navigation");
   const link = stage(page).locator("a[href]").first();
   await link.click();
-  await expect(page.locator(".maker__right h2").first()).toHaveText("Button.navigation");
+  await expect(page.locator(".maker__right h2").first()).toHaveText("Button");
+  await expect(page.locator(".maker__right .maker-inspector__header")).toContainText("navigation");
   await bar(page, ["View", "Interact mode"]);
   await link.click();
   expect(await page.frames()[1]!.url()).toContain("/stage.html");
@@ -162,7 +163,7 @@ test("export emits React, HTML and the usage tree from the same page, pending or
 test("dragging a row in the outline moves the node, and only where the contract allows", async ({ page }) => {
   const panel = await layers(page);
   const row = (label: string) =>
-    panel.locator(".maker-outline :is(.sk-tree-view__branch-text, .sk-tree-view__item-text)", { hasText: new RegExp(`^${label}$`) }).last();
+    panel.locator(".maker-outline :is(.sk-tree-view__branch-text, .sk-tree-view__item-text)", { hasText: outlineRow(label) }).last();
   const text = (await row("Text").boundingBox())!;
   const heading = (await row("Heading").boundingBox())!;
   await page.mouse.move(text.x + 10, text.y + text.height / 2);
@@ -241,7 +242,8 @@ test("a dialog is held open on the stage while it or something in it is selected
 });
 
 test("the selection toolbar runs the keyboard's gestures, disabled exactly where the contract refuses", async ({ page }) => {
-  const tools = page.getByRole("toolbar", { name: "Selection" });
+  /* One row of these, over the canvas: the Inspector no longer repeats it. */
+  const tools = page.getByRole("toolbar", { name: "Edit actions" });
   await selectInOutline(page, "Wrapper");
   /* The Wrapper is Main's only child: nothing to move past, nothing to indent into. */
   await expect(tools.getByRole("button", { name: "Move after the next sibling" })).toBeDisabled();

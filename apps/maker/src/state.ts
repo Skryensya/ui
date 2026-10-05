@@ -305,7 +305,12 @@ export function useMaker(projectId: string) {
   };
 }
 
-export type Maker = ReturnType<typeof useMaker>;
+/**
+ * The Maker the chrome works with. `fresh` is only ever set on the read-only copy the canvas draws while
+ * an AI draft is on screen: the nodes the draft added, which the stage lets arrive and outlines. The real
+ * project never carries it.
+ */
+export type Maker = ReturnType<typeof useMaker> & { readonly fresh?: ReadonlySet<string> };
 
 /**
  * One step up the tree, the way a design tool's Escape does: from a node to the container it sits
@@ -324,8 +329,11 @@ export function selectParent(maker: Maker): void {
  * part of it: every node marked with its identity (`data-maker-node`), so the chrome can find it in
  * the stage's DOM, and the top-layer ancestors of the selection held open, so what is inside a
  * dialog can be seen while it is being edited. Neither reaches the page, the history or an export.
+ *
+ * A third, only while an AI draft is shown: the nodes it just added are marked `data-maker-fresh`, so the
+ * stage can bring them in and outline them. Same rule: a mark for looking, never part of the page.
  */
-export function stageTree(root: MakerNode, selected: string | undefined): UsageTree {
+export function stageTree(root: MakerNode, selected: string | undefined, fresh?: ReadonlySet<string>): UsageTree {
   const open = new Set<string>();
   if (selected) {
     const itself = [...walk(root)].find((node) => node.id === selected);
@@ -344,7 +352,7 @@ export function stageTree(root: MakerNode, selected: string | undefined): UsageT
     return {
       ...node,
       ...(open.has(node.id) ? { options: { ...node.options, open: true } } : {}),
-      attrs: { ...node.attrs, "data-maker-node": node.id },
+      attrs: { ...node.attrs, "data-maker-node": node.id, ...(fresh?.has(node.id) ? { "data-maker-fresh": "" } : {}) },
       slots,
     };
   };

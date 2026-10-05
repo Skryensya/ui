@@ -73,6 +73,7 @@ export function Artboard({
   const selected = active ? maker.view.selected : undefined;
   const selectedIds = active ? maker.view.selectedIds : [];
   const stageSelected = active && mode === "edit" ? selected : undefined;
+  const fresh = maker.fresh;
   const scale = zoom;
   const targetPx = widthPx(maker.view.width);
   const frameHeight = Math.max(MIN_HEIGHT, contentHeight);
@@ -109,7 +110,7 @@ export function Artboard({
     if (!ready || !stage) return;
     let cancelled = false;
     stage
-      .render(stageTree(root, stageSelected))
+      .render(stageTree(root, stageSelected, fresh))
       .then(() => {
         if (cancelled) return;
         setRenderError(undefined);
@@ -119,7 +120,7 @@ export function Artboard({
     return () => {
       cancelled = true;
     };
-  }, [ready, root, stageSelected]);
+  }, [ready, root, stageSelected, fresh]);
 
   /* ─── theme: view state mirrored onto the stage's root, never into the page ──────────────── */
 

@@ -4,7 +4,7 @@ const place = z.object({ parent: z.string(), slot: z.string(), index: z.number()
 const signature = z.object({ contract: z.string(), signature: z.string() }).strict();
 const option = z.union([z.string(), z.number(), z.boolean()]);
 const pageOperation = z.discriminatedUnion("type", [
-  z.object({ type: z.literal("insert"), at: place, tree: z.record(z.string(), z.unknown()).optional(), signature: signature.optional() }).strict(),
+  z.object({ type: z.literal("insert"), at: place, tree: z.record(z.string(), z.unknown()).optional(), signature: signature.optional(), preset: z.string().max(80).optional(), wrap: z.enum(["auto", "none", "box", "stack", "inline", "wrapper"]).optional() }).strict(),
   z.object({ type: z.literal("move"), child: z.string(), to: place }).strict(),
   z.object({ type: z.literal("remove"), child: z.string() }).strict(),
   z.object({ type: z.literal("wrap"), children: z.array(z.string()).min(1).max(100), with: signature.extend({ options: z.record(z.string(), option).optional() }).strict() }).strict(),

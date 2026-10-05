@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import { createAgentService } from "@skryensya/ai-compiler/agent";
 import { asCompiledPair } from "@skryensya/ai-compiler/artifact";
 import { snippets } from "@skryensya/snippets";
@@ -10,13 +11,21 @@ import { knownRevision } from "../sync";
 import { getProject } from "../projects";
 import index from "../../../../artifacts/ai-index.json";
 import manifest from "../../../../artifacts/ai-manifest.json";
+import { draftOf, type Draft } from "./draft";
 import "./panel.css";
 
 const service = createAgentService(asCompiledPair(index, manifest), snippets);
 const defaults: Record<ProviderId, string> = { openai: "gpt-4.1", anthropic: "claude-sonnet-4-6", openrouter: "openai/gpt-4.1", compatible: "" };
 
 /** Everything here is ephemeral. No credentials or conversation enter useMaker or localStorage. */
-export function AIPanel({ maker, onPreview }: { maker: Maker; onPreview: (site: MakerSite) => void }) {
+export function AIPanel({ maker, onPreview, onDraft, barSlot }: {
+  maker: Maker;
+  onPreview: (site: MakerSite) => void;
+  /** The site as it would be with what the AI has written so far, or nothing. The canvas draws it. */
+  onDraft: (draft: Draft | undefined) => void;
+  /** Where the progress and Apply/Discard bar goes: over the canvas, where the draft is being drawn. */
+  barSlot: HTMLElement | null;
+}) {
   const [connection, setConnection] = useState<ProviderConnection>({ provider: "openai", apiKey: "", model: defaults.openai });
   const [connected, setConnected] = useState(false);
   const [settings, setSettings] = useState(true);
@@ -26,14 +35,21 @@ export function AIPanel({ maker, onPreview }: { maker: Maker; onPreview: (site: 
   const [status, setStatus] = useState("");
   const [error, setError] = useState("");
   const [busy, setBusy] = useState(false);
+  /** A turn is being written: the bar over the canvas shows its progress and owns Stop. */
+  const [building, setBuilding] = useState(false);
   const [proposed, setProposed] = useState<{ proposal: MakerProposal; generation: number }>();
   const controller = useRef<AbortController | null>(null);
   const mounted = useRef(true);
+  /* A person's own edit makes any proposal, and its draft on the canvas, stale: the canvas goes back to the
+     project they are editing. The proposal stays listed, and Apply says it conflicts, as it always has. */
+  const revision = useRef(maker.revision);
+  revision.current = maker.revision;
+  useEffect(() => { if (proposed && proposed.generation !== maker.revision) onDraft(undefined); }, [maker.revision, proposed]);
   const selectionKey = `${maker.view.page}:${maker.view.selected}:${maker.view.selectedIds.join(",")}`;
   useEffect(() => { setExcluded([]); }, [selectionKey]);
   useEffect(() => {
     mounted.current = true;
-    return () => { mounted.current = false; controller.current?.abort(); };
+    return () => { mounted.current = false; controller.current?.abort(); onDraft(undefined); };
   }, []);
 
   const attached = [...new Set([...(maker.view.selected ? [maker.view.selected] : []), ...maker.view.selectedIds])].filter(id => !excluded.includes(id));
@@ -54,6 +70,7 @@ export function AIPanel({ maker, onPreview }: { maker: Maker; onPreview: (site: 
     const text = next.signal.aborted ? "Cancelled. No changes applied." : e instanceof Error ? e.message : "AI request failed.";
     setError(connection.apiKey ? text.split(connection.apiKey).join("[credential]") : text);
     setStatus("");
+    onDraft(undefined);
   };
   const connect = async () => {
     const next = begin();
@@ -68,21 +85,25 @@ export function AIPanel({ maker, onPreview }: { maker: Maker; onPreview: (site: 
     const site = maker.site;
     const intent = content.trim();
     const next = begin();
-    setProposed(undefined); setContent("");
+    setBuilding(true); setProposed(undefined); setContent(""); onDraft(undefined);
     const turn: ConversationTurn = { content: intent, context: frozen };
     setTurns(previous => [...previous.slice(-19), turn]);
     try {
       for await (const event of runAgent({ connection: { ...connection }, site, context: frozen, content: intent, history: turns, service, signal: next.signal })) {
         if (!mounted.current || next.signal.aborted) break;
         if (event.type === "status") setStatus(event.text);
+        else if (event.type === "say") setTurns(previous => previous.map(t => t === turn ? { ...t, answer: (t.answer ?? "") + event.delta } : t));
+        else if (event.type === "draft") onDraft(revision.current === generation ? draftOf(site, event.site, event.operations, true) : undefined);
         else {
           setTurns(previous => previous.map(t => t === turn ? { ...t, answer: event.text || (event.proposal ? "Changes ready for review." : "No changes proposed.") } : t));
           setProposed(event.proposal ? { proposal: event.proposal, generation } : undefined);
+          /* The final proposal replaces the last draft: same nodes, now waiting for the person to decide. */
+          onDraft(event.proposal && revision.current === generation ? draftOf(site, event.proposal.site, event.proposal.operations.length, false) : undefined);
           setStatus(event.proposal ? "Proposal ready. Your project is unchanged." : "Finished without changes.");
         }
       }
     } catch (e) { fail(e, next); }
-    finally { finish(next); }
+    finally { if (mounted.current) setBuilding(false); finish(next); }
   };
   const apply = async () => {
     if (!proposed || busy) return;
@@ -100,7 +121,7 @@ export function AIPanel({ maker, onPreview }: { maker: Maker; onPreview: (site: 
       if (!mounted.current) return;
       const result = commitProposal(maker.projectId, captured.proposal, captured.generation);
       if (!result.ok) throw new Error(result.reason);
-      setProposed(undefined); setStatus("Applied as one undoable edit.");
+      setProposed(undefined); onDraft(undefined); setStatus("Applied as one undoable edit.");
     } catch (e) { fail(e, next); }
     finally { finish(next); }
   };
@@ -118,15 +139,16 @@ export function AIPanel({ maker, onPreview }: { maker: Maker; onPreview: (site: 
       <label>API key<input type="password" autoComplete="off" value={connection.apiKey} onChange={e => { setConnected(false); setConnection({ ...connection, apiKey: e.target.value }); }} /></label>
       <label>Model<input value={connection.model} onChange={e => { setConnected(false); setConnection({ ...connection, model: e.target.value }); }} /></label>
       <Button size="sm" onClick={() => void connect()}>Test &amp; connect</Button>
-      <Button size="sm" variant="ghost" onClick={() => { setConnection({ ...connection, apiKey: "" }); setConnected(false); setProposed(undefined); setStatus("Disconnected."); }}>Disconnect</Button>
+      <Button size="sm" variant="ghost" onClick={() => { setConnection({ ...connection, apiKey: "" }); setConnected(false); setProposed(undefined); onDraft(undefined); setStatus("Disconnected."); }}>Disconnect</Button>
     </fieldset>}
     <div className="maker-ai__conversation" role="log" aria-label="Conversation">
       {turns.map((turn, i) => <article key={i}><p><strong>You</strong> · {turn.context.page.name} · {turn.context.selection.primary ?? "page"} · revision {turn.context.project.revision}</p><p>{turn.content}</p>{turn.answer && <p><strong>Maker AI</strong><br />{turn.answer}</p>}</article>)}
     </div>
     {proposed && <section aria-label="Proposed changes"><h3>{proposed.proposal.operations.length} proposed changes</h3>
       <ul>{proposed.proposal.operations.map((op, i) => <li key={i}>{summarize(op, proposed.proposal.base)}</li>)}</ul>
-      <Button size="sm" disabled={busy} onClick={() => onPreview(proposed.proposal.site)}>Preview</Button>{" "}
-      <Button size="sm" disabled={busy} onClick={() => void apply()}>Apply</Button>{" "}<Button size="sm" variant="ghost" disabled={busy} onClick={() => { setProposed(undefined); setStatus("Proposal discarded."); }}>Discard</Button>
+      <Button size="sm" disabled={busy} onClick={() => onPreview(proposed.proposal.site)}>Preview</Button>
+      {/* Apply and Discard live in the bar over the canvas, next to the draft they act on. */}
+      {!barSlot && <>{" "}<Button size="sm" disabled={busy} onClick={() => void apply()}>Apply</Button>{" "}<Button size="sm" variant="ghost" disabled={busy} onClick={() => { setProposed(undefined); onDraft(undefined); setStatus("Proposal discarded."); }}>Discard</Button></>}
     </section>}
     <p role="status" aria-live="polite">{status}</p>{error && <p role="alert">{error}</p>}
     <form onSubmit={e => { e.preventDefault(); void send(); }}>
@@ -137,8 +159,20 @@ export function AIPanel({ maker, onPreview }: { maker: Maker; onPreview: (site: 
       {excluded.length > 0 && <button type="button" onClick={() => setExcluded([])}>Restore selection</button>}</div>
       <label>Ask Maker<textarea value={content} maxLength={8000} rows={4} placeholder="Make this section more compact…" onChange={e => setContent(e.target.value)} onKeyDown={e => { if (e.key === "Enter" && (e.metaKey || e.ctrlKey)) { e.preventDefault(); void send(); } }} /></label>
       <Button type="submit" size="sm" disabled={!connected || busy || !content.trim()}>Send</Button>{" "}
-      {busy && <Button type="button" size="sm" variant="ghost" onClick={() => controller.current?.abort()}>Stop</Button>}
+      {busy && !barSlot && <Button type="button" size="sm" variant="ghost" onClick={() => controller.current?.abort()}>Stop</Button>}
     </form>
+    {barSlot && (building || proposed) ? createPortal(
+      <div className="maker-draft-bar" role="group" aria-label="Maker AI draft" data-building={building && !proposed ? "" : undefined}>
+        {building && !proposed ? <>
+          <span className="maker-draft-bar__pulse" aria-hidden="true" />
+          <span className="maker-draft-bar__text">{status || "Maker AI is working…"}</span>
+          <Button size="sm" variant="ghost" onClick={() => controller.current?.abort()}>Stop</Button>
+        </> : proposed ? <>
+          <span className="maker-draft-bar__text">{proposed.proposal.operations.length} {proposed.proposal.operations.length === 1 ? "change" : "changes"} on the canvas. Your project is unchanged.</span>
+          <Button size="sm" disabled={busy} onClick={() => void apply()}>Apply</Button>
+          <Button size="sm" variant="ghost" disabled={busy} onClick={() => { setProposed(undefined); onDraft(undefined); setStatus("Proposal discarded."); }}>Discard</Button>
+        </> : null}
+      </div>, barSlot) : null}
   </section>;
 }
 

@@ -42,6 +42,8 @@ export type BarEditor = {
   openExport: () => void;
   openPublish: () => void;
   openInsertPanel: () => void;
+  /** Starts the guided tour. */
+  startTour: () => void;
 };
 
 /** One menu: its items, and what choosing each one does, keyed by the item's value. */
@@ -84,12 +86,14 @@ export function MakerBar({ workspace, onProjects, editor }: { workspace: Workspa
 
   const makerMenu = build([["projects", "All projects…", server ? onProjects : undefined]]);
   const help = build([
+    ...(editor ? ([["tour", "Take the tour", editor.startTour]] as const) : []),
     ["docs", "Maker documentation", undefined, { href: DOCS }],
     ["keyboard", "Keyboard shortcuts", undefined, { href: `${DOCS}#keyboard` }],
   ]);
   /* A link is followed, never "run": the builder marks entries without an action unavailable, so the
-     two links get theirs back here. */
-  for (const item of help.items) delete item.disabled;
+     two links get theirs back here. The tour has an action, and is only offered once there is a Maker
+     on screen for it to point at. */
+  for (const item of help.items) if (item.value !== "tour") delete item.disabled;
 
   if (!editor) {
     return (

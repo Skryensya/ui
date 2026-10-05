@@ -27,10 +27,13 @@ import {
 } from "@skryensya/maker-model";
 import { wrapIn, type Gesture } from "./actions";
 import { PageSettings } from "./Pages";
-import { SelectionTools } from "./SelectionTools";
 import { IconButton } from "./IconButton";
 import { glyphFor } from "./icons";
 import type { Maker } from "./state";
+import { outlineLabel } from "./Outline";
+
+/** `Button.action` is a Button of the "action" kind; the Inspector names the thing and says the kind beneath. */
+const variantOf = (signature: string) => signature.split(".").slice(1).join(" ") || undefined;
 
 /*
  * THE INSPECTOR shows what decision 31 says exists for a node, and nothing else: which signature it
@@ -63,6 +66,9 @@ function useEditTextRequests() {
   }, []);
 }
 
+/** How many of a component options show before the rest fold under "More options". */
+const FRONT_OPTIONS = 4;
+
 export function Inspector({ maker }: { maker: Maker }) {
   useEditTextRequests();
   const root = maker.page.root;
@@ -93,7 +99,6 @@ export function Inspector({ maker }: { maker: Maker }) {
       <div className="maker-inspector">
         <Stack gap="md">
           <Header title="Text" role={role} onParent={(parent) => maker.setView({ selected: parent })} />
-          <SelectionTools maker={maker} />
           <CommitField label="Text" value={child.text} multiline liveKey={`${id}:${locate(root, id)?.slot ?? "children"}`} onCommit={(text) => gesture([{ type: "setText", node: id, slot: "children", text }])} />
           <Actions maker={maker} id={id} node={undefined} at={at !== undefined} />
         </Stack>
@@ -113,12 +118,28 @@ export function Inspector({ maker }: { maker: Maker }) {
   const takesLabel = needsAccessibleName(resolved?.contract, resolved?.signature.forward, child);
 
   const setOption = (name: string, value: OptionInput | undefined) => gesture([{ type: "setOption", node: id, name, value }]);
+  /*
+   * THE FEW FIRST, THE REST ON REQUEST. A component can declare a dozen options; most edits touch the first
+   * few (a button's variant, tone, size). Those and any option already set stay in view, so nothing set is
+   * ever hidden; the others fold under "More options" instead of a wall of selects.
+   */
+  const front = base.filter((name, index) => index < FRONT_OPTIONS || child.options?.[name] !== undefined);
+  const more = base.filter((name) => !front.includes(name));
+  const field = (name: string) => (
+    <OptionField
+      key={name}
+      name={name}
+      option={resolved!.contract.options[name]!}
+      value={child.options?.[name]}
+      onChange={(value) => setOption(name, value)}
+      suggestions={resolved!.contract.options[name]!.attr === "href" ? maker.site.pages.map((page) => page.path) : undefined}
+    />
+  );
 
   return (
     <div className="maker-inspector">
       <Stack gap="lg">
-        <Header title={child.signature} subtitle={child.contract} role={role} onParent={(parent) => maker.setView({ selected: parent })} />
-        <SelectionTools maker={maker} />
+        <Header title={outlineLabel(child.signature)} subtitle={variantOf(child.signature)} role={role} onParent={(parent) => maker.setView({ selected: parent })} />
 
         <SlotsSection maker={maker} node={child} />
 
@@ -146,16 +167,13 @@ export function Inspector({ maker }: { maker: Maker }) {
               {choices.map((choice) => (
                 <ExclusiveChoice key={choice.key} choice={choice} node={child} contract={resolved!.contract} maker={maker} />
               ))}
-              {base.map((name) => (
-                <OptionField
-                  key={name}
-                  name={name}
-                  option={resolved!.contract.options[name]!}
-                  value={child.options?.[name]}
-                  onChange={(value) => setOption(name, value)}
-                  suggestions={resolved!.contract.options[name]!.attr === "href" ? maker.site.pages.map((page) => page.path) : undefined}
-                />
-              ))}
+              {front.map(field)}
+              {more.length > 0 ? (
+                <details className="maker-inspector__more">
+                  <summary>More options ({more.length})</summary>
+                  <Stack gap="sm">{more.map(field)}</Stack>
+                </details>
+              ) : null}
             </Stack>
           </section>
         ) : null}

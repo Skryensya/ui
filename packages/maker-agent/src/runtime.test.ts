@@ -30,6 +30,32 @@ async function collect(adapter: ProviderAdapter, signal = new AbortController().
   return events;
 }
 
+describe("presets for the embedded agent", () => {
+  const tools = createMakerTools(site, context, service);
+
+  it("lists a signature's presets with the wrapper each arrives in", () => {
+    const listed = tools.execute("maker_presets", { contract: "button", signature: "Button.action" }) as { presets: { id: string; arrivesIn: string }[] };
+    expect(listed.presets.map((preset) => preset.id)).toContain("icon-only");
+    expect(listed.presets.find((preset) => preset.id === "confirm-pair")?.arrivesIn).toBe("inline");
+  });
+
+  it("proposes an insert of a preset, and the proposal holds its wrapper", () => {
+    const stack = childrenOf(root, "children")[0]!;
+    const result = tools.execute("maker_try", {
+      operations: [{ type: "page", page: site.pages[0]!.id, operations: [{ type: "insert", at: { parent: stack.id, slot: "children", index: 0 }, signature: { contract: "button", signature: "Button.action" }, preset: "confirm-pair" }] }],
+    });
+    expect(result).toMatchObject({ proposed: true });
+  });
+
+  it("refuses a preset that does not exist", () => {
+    const stack = childrenOf(root, "children")[0]!;
+    const result = tools.execute("maker_try", {
+      operations: [{ type: "page", page: site.pages[0]!.id, operations: [{ type: "insert", at: { parent: stack.id, slot: "children", index: 0 }, signature: { contract: "button", signature: "Button.action" }, preset: "nope" }] }],
+    });
+    expect(result).toHaveProperty("refused");
+  });
+});
+
 describe("embedded Maker capability boundary", () => {
   it("shares context/read and prepares a dry-run without mutating the site", () => {
     const tools = createMakerTools(site, context, service);

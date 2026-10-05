@@ -1,21 +1,15 @@
-import { Toolbar } from "@skryensya/react/toolbar";
 import { actions, allowed, shortcutOf } from "./actions";
 import { runCanvasCommand, type CanvasCommand } from "./CanvasMenu";
 import { IconButton } from "./IconButton";
 import type { Maker } from "./state";
 
 /*
- * The structural actions on the selection as a toolbar above the layers: the same gestures the
- * keyboard sends, each disabled exactly when the model would refuse it.
+ * THE STRUCTURAL ACTIONS ON THE SELECTION, as buttons: the same gestures the keyboard sends, each disabled
+ * exactly when the model would refuse it. They live in ONE place on screen, the toolbar over the canvas
+ * (QuickToolbar), plus the Edit menu and the context menu for people who look for words. The Inspector used
+ * to repeat the whole row in its header; a second copy of eight icons was something to scan past, not
+ * something that helped.
  */
-export function SelectionTools({ maker }: { maker: Maker }) {
-  return (
-    <Toolbar label="Selection" className="maker__selection-tools">
-      <SelectionActionButtons maker={maker} appearance="tactile" />
-    </Toolbar>
-  );
-}
-
 export function SelectionActionButtons({
   maker,
   appearance,
