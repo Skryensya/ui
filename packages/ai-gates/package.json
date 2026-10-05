@@ -10,7 +10,8 @@
     "test:quick": "playwright test src/hidden.spec.ts src/rendered.spec.ts",
     "test:ui": "playwright test --ui",
     "heights": "node scripts/build-preview-heights.ts",
-    "test:browser": "playwright test"
+    "test:browser": "playwright test",
+    "test:patterns": "playwright test -c patterns.config.ts"
   },
   "dependencies": {
     "@skryensya/ai-compiler": "workspace:*",
