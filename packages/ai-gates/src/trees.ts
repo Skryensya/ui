@@ -3455,6 +3455,51 @@ const signatureTrees: readonly Canonical[] = [
     },
   },
   {
+    // The application frame: header, rail, work area. `enhanced`: the Sidebar's trigger and width are
+    // machine-driven, the same as the standalone sidebar cases. A Navbar, a Sidebar with its trigger and
+    // a Main with a heading is the smallest shell that exercises all three grid placements.
+    name: "layout/app-shell",
+    enhanced: true,
+    tree: {
+      contract: "layout",
+      signature: "AppShell",
+      children: [
+        { contract: "navbar", signature: "Navbar", children: { contract: "navbar", signature: "NavbarBrand", children: "Northstar" } },
+        {
+          contract: "sidebar",
+          signature: "Sidebar",
+          options: { landmarkLabel: "Workspace" },
+          children: [
+            {
+              contract: "sidebar",
+              signature: "SidebarHeader",
+              children: { contract: "sidebar", signature: "SidebarTrigger", options: { label: "Collapse the sidebar" }, slots: { icon: { contract: "icon", signature: "Icon", options: { name: "chevron-left" } } } },
+            },
+            {
+              contract: "sidebar",
+              signature: "SidebarContent",
+              children: {
+                contract: "nav-list",
+                signature: "NavList",
+                attrs: { "aria-label": "Workspace" },
+                children: {
+                  contract: "nav-list",
+                  signature: "NavListGroup",
+                  slots: { children: [{ contract: "nav-list", signature: "NavListLink", options: { href: "#overview", current: true }, slots: { children: "Overview" } }] },
+                },
+              },
+            },
+          ],
+        },
+        {
+          contract: "layout",
+          signature: "Main",
+          children: { contract: "typography", signature: "Heading", options: { headingSize: "h2", headingElement: "h1" }, children: "Overview" },
+        },
+      ],
+    },
+  },
+  {
     // The shell region: no options, children optional. An app shell can show chrome and a
     // deliberately empty work area before deciding what goes there, so a heading is content here,
     // not a requirement of the signature.

@@ -182,6 +182,10 @@
      * unbreakable label (a path, a filename) makes the flex column's automatic minimum size win and
      * the panel quietly grows past the width it was told to be. */
     max-inline-size: var(--sk-sidebar-inline-size);
+    /* ...and never NARROWER either. In a flex row (the usual app shell: rail, list, content) the default
+     * `flex: 0 1 auto` let a wide neighbour squeeze the rail below its own minimum, and its links ran out
+     * of the panel's padding. A rail is as wide as its hook says; the resize handle is how it changes. */
+    flex: none;
     block-size: 100%;
     border-inline-end: var(--sk-sidebar-border-width) solid var(--sk-sidebar-border-color);
     background: var(--sk-sidebar-bg);

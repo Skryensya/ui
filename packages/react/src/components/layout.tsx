@@ -4,6 +4,7 @@ import {
   type BoxAppearance,
   type BoxBorder,
   type BoxMeasure,
+  type BoxRadius,
   type BoxSurface,
   type GridColumns,
   type GridMinColumn,
@@ -51,6 +52,7 @@ export type BoxProps<Element extends ElementType = "div"> = PolymorphicProps<
     measure?: BoxMeasure;
     padding?: Space;
     paddingExpanded?: Space;
+    radius?: BoxRadius;
     surface?: BoxSurface;
   }
 >;
@@ -63,6 +65,7 @@ export function Box<Element extends ElementType = "div">({
   measure,
   padding = "none",
   paddingExpanded,
+  radius,
   surface = "none",
   ...props
 }: BoxProps<Element>) {
@@ -76,6 +79,7 @@ export function Box<Element extends ElementType = "div">({
       data-measure={measure}
       data-padding={padding}
       data-padding-expanded={paddingExpanded}
+      data-radius={radius}
       data-surface={surface}
     />
   );
@@ -285,6 +289,17 @@ export function LayoutGrid<Element extends ElementType = "div">({
 }: LayoutGridProps<Element>) {
   const Component = as ?? "div";
   return <Component {...props} className={classes(layoutGridParts.layoutGrid, className)} />;
+}
+
+/**
+ * The application shell: header across the top, a rail down the side, the work area filling the rest, an
+ * optional footer. Its children are placed by what they are (header, aside, main, footer); there is no
+ * option to set. See `AppShell` in `@skryensya/core/layout`.
+ */
+export type AppShellProps = ComponentPropsWithoutRef<"div">;
+
+export function AppShell({ className, ...props }: AppShellProps) {
+  return <div {...props} className={classes(layoutGridParts.appShell, className)} />;
 }
 
 /**

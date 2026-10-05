@@ -27,6 +27,8 @@ type AxeViolation = { id: string; impact?: string; nodes: { html: string }[] };
  */
 const AXE_STAGE_ARTIFACT: Readonly<Record<string, readonly string[]>> = {
   "layout/main": ["landmark-main-is-top-level", "landmark-no-duplicate-main"],
+  /* The shell holds its own `main`, nested in the stage's. The same stage artifact as `layout/main`. */
+  "layout/app-shell": ["landmark-main-is-top-level", "landmark-no-duplicate-main"],
 };
 
 for (const { name } of canonicalTrees) {

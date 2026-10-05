@@ -4,6 +4,8 @@ export type Space = "none" | "xs" | "sm" | "md" | "lg" | "xl";
 export type BoxSurface = "none" | "sunken" | "surface" | "raised";
 export type BoxBorder = "none" | "subtle" | "default";
 export type BoxAppearance = "plain" | "brutalist" | "frosted";
+/** How round a Box's corners are: the surface radius by default, `control` for a tighter one, `none` for a band that runs edge to edge. */
+export type BoxRadius = "none" | "control" | "surface";
 /** A Box's inline ceiling, on the Wrapper's size scale but never centred: see patterns/box.css. */
 export type BoxMeasure = "sm" | "md" | "lg";
 export type LayoutAlign = "start" | "center" | "end" | "stretch";
@@ -61,6 +63,7 @@ export const layoutParts = {
 export const layoutGridParts = {
   ...layoutParts,
   layoutGrid: "sk-layout-grid",
+  appShell: "sk-app-shell",
 } as const;
 
 export type LayoutPart = keyof typeof layoutParts;
@@ -125,6 +128,12 @@ export const boxContract = {
      * that should not stretch to a 90rem row. No default: absent, the Box is as wide as its parent.
      */
     measure: { type: "enum", values: ["sm", "md", "lg"], attr: "data-measure" },
+    /*
+     * THE CORNERS. A card wants the surface radius; a BAND (a region that runs edge to edge, like a page header
+     * with a background) must not be rounded, because rounded corners on something that touches the viewport
+     * edge read as a clipped rectangle. No default: absent, the surface radius holds, exactly as before.
+     */
+    radius: { type: "enum", values: ["none", "control", "surface"], attr: "data-radius" },
     /** The element it renders as; React's `as`. A `section` or `nav` still wants an accessible name. */
     boxElement: { type: "enum", values: layoutElements, default: "div", element: true, prop: "as" },
   },
@@ -133,7 +142,7 @@ export const boxContract = {
     Box: {
       intent: ["padded-region", "card-like-surface", "bordered-region"],
       host: { element: "div" },
-      options: ["padding", "paddingExpanded", "surface", "border", "appearance", "measure", "boxElement"],
+      options: ["padding", "paddingExpanded", "surface", "border", "appearance", "measure", "radius", "boxElement"],
       /* A Box IS its visual style. With all three at `none` it paints nothing and is a bare `div`
          standing in for a decision; grouping without paint is Stack, Inline or Grid. */
       atLeastOneOf: [["padding", "surface", "border", "appearance", "measure"]],
@@ -161,8 +170,11 @@ export const layoutContract = {
     inline: layoutParts.inline,
     grid: layoutParts.grid,
     layoutGrid: layoutGridParts.layoutGrid,
+    appShell: layoutGridParts.appShell,
   },
   hooks: [
+    "--sk-app-shell-gap",
+    "--sk-app-shell-min-block-size",
     "--sk-grid-columns",
     "--sk-grid-gap",
     "--sk-inline-block-start",
@@ -300,6 +312,29 @@ export const layoutContract = {
       },
       template: { element: "div", part: "layoutGrid", host: true, slot: "children" },
       react: { from: "@skryensya/react/layout", name: "LayoutGrid" },
+    },
+
+    /*
+     * THE APPLICATION SHELL: header across the top, a rail down the side, the work area filling the rest,
+     * an optional footer across the bottom. It exists because that arrangement is what every application
+     * page is, and without a primitive for it an agent (or a person) composes `Inline[Sidebar, Main]`,
+     * which is VALID and wrong: the Main does not fill the row, the rail does not reach the bottom, and
+     * the page needs a hand-written class to look like an app. Children are placed by what they ARE
+     * (a header, an aside, a main, a footer), not by an option, so there is nothing to mis-set.
+     */
+    AppShell: {
+      intent: ["app-shell", "application-frame", "header-rail-and-main", "dashboard-frame", "page-chrome-layout"],
+      host: { element: "div" },
+      options: [],
+      slots: {
+        children: {
+          accepts: "signature",
+          of: ["SkipLink", "Navbar", "AppBar", "Sidebar", "Main", "Footer"],
+          required: true,
+        },
+      },
+      template: { element: "div", part: "appShell", host: true, slot: "children" },
+      react: { from: "@skryensya/react/layout", name: "AppShell" },
     },
 
     /*

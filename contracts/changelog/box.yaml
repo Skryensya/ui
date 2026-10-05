@@ -3,7 +3,7 @@
 # `surface` is the shape of the contract the last time somebody reviewed it. If the compiler says it
 # does not match, something a consumer depends on has moved: write the entry and paste in the new
 # hash.
-surface: "53a5e458df15c436"
+surface: "cd21656d76780b09"
 entries:
   - date: 2026-09-27
     kind: feature
@@ -156,3 +156,14 @@ entries:
         <code>aside</code>, <code>header</code>, <code>footer</code>, <code>nav</code> and
         <code>main</code>. React already allowed it through <code>as</code>, but a tree could only
         emit a <code>div</code>, so a region or a landmark had no way to be written.
+  - date: 2026-10-04
+    kind: feature
+    target: radius
+    es:
+      title: Box elige sus esquinas con radius
+      body: >-
+        <code>radius</code> (<code>none</code>, <code>control</code>, <code>surface</code>) cambia la curvatura de las esquinas. Sin él, el Box conserva el radio de superficie de siempre. <code>none</code> es para una banda que corre de borde a borde de la pantalla (la cabecera de una página con fondo): redondeada, parece un rectángulo recortado.
+    en:
+      title: Box chooses its corners with radius
+      body: >-
+        <code>radius</code> (<code>none</code>, <code>control</code>, <code>surface</code>) sets how round the corners are. Without it the Box keeps the surface radius it always had. <code>none</code> is for a band that runs edge to edge (a page header with a background): rounded, it reads as a clipped rectangle.

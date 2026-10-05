@@ -3,7 +3,7 @@
 # `surface` is the shape of the contract the last time somebody reviewed it. If the compiler says it
 # does not match, something a consumer depends on has moved: write the entry and paste in the new
 # hash.
-surface: "48932c085d8912e1"
+surface: "7d3789e517346da5"
 entries:
   - date: 2026-09-27
     kind: feature
@@ -341,3 +341,14 @@ entries:
         <code>aside</code>, <code>header</code>, <code>footer</code>, <code>nav</code> and
         <code>main</code>. React already allowed it through <code>as</code>, but a tree could only
         emit a <code>div</code>, so a region or a landmark had no way to be written.
+  - date: 2026-10-04
+    kind: feature
+    target: AppShell
+    es:
+      title: AppShell arma el marco de una aplicación
+      body: >-
+        <code>AppShell</code> coloca una cabecera arriba, un rail (<code>Sidebar</code>) a un lado, el área de trabajo (<code>Main</code>) llenando el resto y un pie opcional. Los hijos se ubican por lo que son, sin opciones: el rail llega hasta abajo y <code>Main</code> ocupa el ancho que sobra. Antes, <code>Inline</code> con un <code>Sidebar</code> y un <code>Main</code> validaba y se veía mal (el <code>Main</code> no llenaba la fila y el rail se quedaba a mitad de página), así que cada aplicación escribía su propia clase. Publica dos hooks, <code>--sk-app-shell-gap</code> y <code>--sk-app-shell-min-block-size</code>.
+    en:
+      title: AppShell builds an application's frame
+      body: >-
+        <code>AppShell</code> places a header across the top, a rail (<code>Sidebar</code>) down the side, the work area (<code>Main</code>) filling the rest and an optional footer. Children are placed by what they are, with no options: the rail reaches the bottom and <code>Main</code> takes the width that is left. Before, <code>Inline</code> holding a <code>Sidebar</code> and a <code>Main</code> validated and looked wrong (the <code>Main</code> did not fill the row and the rail stopped halfway down), so every application wrote its own class. It publishes two hooks, <code>--sk-app-shell-gap</code> and <code>--sk-app-shell-min-block-size</code>.

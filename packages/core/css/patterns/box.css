@@ -24,6 +24,11 @@
     box-shadow: var(--sk-box-shadow);
   }
 
+  /* The corners are a hook (`--sk-box-radius`), so this only picks its value: the surface radius is the
+     default (absent attribute), a band that touches the viewport edge takes none. */
+  .sk-box[data-radius="none"] { --sk-box-radius: 0; }
+  .sk-box[data-radius="control"] { --sk-box-radius: var(--radius-control); }
+
   .sk-box[data-surface="sunken"] {
     --sk-box-bg: var(--color-bg-surface-sunken);
     --sk-box-shadow: var(--elevation-sunken);

@@ -47,6 +47,20 @@ LayoutGrid:
     - Wrapper
     - Grid
 
+AppShell:
+  useWhen:
+    - "the page is an application: a header across the top, a rail (Sidebar) down the side and a work area (Main) filling the rest"
+    - "the page needs the rail to reach the bottom and the work area to fill the row, without a hand-written class to make it so"
+    - "a dashboard, a mail client, a chat or a settings area: anything with persistent navigation around a changing region"
+  avoidWhen:
+    - "the page is a document, a landing page or an article: a Wrapper column with a Navbar above is the whole layout"
+    - "there is no persistent rail or header: a Main inside a Stack is enough"
+    - "the region is a card or a panel inside a page; that is Box"
+  alternatives:
+    - Stack
+    - Wrapper
+    - LayoutGrid
+
 Main:
   useWhen:
     - "the region is the page's <main> landmark: the work area of an application or a template"

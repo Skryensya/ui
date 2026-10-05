@@ -535,6 +535,51 @@
   }
 
   /*
+   * THE APPLICATION SHELL. A grid of three rows (header, body, footer) and two columns (rail, content), with
+   * each child placed by what it is: a header or footer spans both columns, an aside or Sidebar takes the rail
+   * column, a main takes the rest. A region that is absent collapses (an `auto` track with nothing in it has no
+   * height or width), so the same shell serves a page with no rail and a page with no footer.
+   *
+   * `minmax(0, 1fr)`, never bare `1fr`: a grid track's automatic minimum is its content, and a wide table in
+   * the work area would hold the whole page open instead of scrolling inside its own box.
+   *
+   * The rail stretches to the body row on its own (the grid does it), which is the thing `Inline[Sidebar, Main]`
+   * could not do: its height came from its content, so it stopped halfway down the page.
+   */
+  .sk-app-shell {
+    --sk-app-shell-gap: 0;
+    --sk-app-shell-min-block-size: 100dvh;
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    grid-template-rows: auto minmax(0, 1fr) auto;
+    gap: var(--sk-app-shell-gap);
+    min-block-size: var(--sk-app-shell-min-block-size);
+  }
+
+  .sk-app-shell > :is(header, .sk-navbar, .sk-app-bar) {
+    grid-column: 1 / -1;
+    grid-row: 1;
+  }
+
+  .sk-app-shell > :is(aside, .sk-sidebar) {
+    grid-column: 1;
+    grid-row: 2;
+    /* The rail's own `block-size: 100%` has no definite parent height in a grid track; stretch fills the row. */
+    block-size: auto;
+  }
+
+  .sk-app-shell > main {
+    grid-column: 2;
+    grid-row: 2;
+    min-inline-size: 0;
+  }
+
+  .sk-app-shell > :is(footer, .sk-footer) {
+    grid-column: 1 / -1;
+    grid-row: 3;
+  }
+
+  /*
    * EXPANDED OVERRIDES, declared (decision 30). 52rem is `--breakpoint-desktop`
    * (semantic/_breakpoints.scss), a literal here because a CSS `@media` cannot read a custom
    * property, the same hand-copy `vaul.css` makes. The plain attribute is the value from the smallest

@@ -141,12 +141,13 @@ export { FormField } from "./components/form-field.js";
 export type { FormFieldProps } from "./components/form-field.js";
 export { Input, Textarea } from "./components/input.js";
 export type { InputProps, TextareaProps } from "./components/input.js";
-export { Box, Grid, Inline, LayoutGrid, Main, Stack, Wrapper } from "./components/layout.js";
+export { AppShell, Box, Grid, Inline, LayoutGrid, Main, Stack, Wrapper } from "./components/layout.js";
 export type {
   BoxProps,
   GridProps,
   InlineProps,
   LayoutGridProps,
+  AppShellProps,
   MainProps,
   StackProps,
   WrapperProps,

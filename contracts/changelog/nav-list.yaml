@@ -3,7 +3,7 @@
 # `surface` is the shape of the contract the last time somebody reviewed it. If the compiler says it
 # does not match, something a consumer depends on has moved: write the entry and paste in the new
 # hash.
-surface: "b6441fc4ac357d0c"
+surface: "679f368ed1b20800"
 entries:
   - date: 2026-09-17
     kind: feature
@@ -228,3 +228,26 @@ entries:
       title: The surface hash also covers constraints
       body: >-
         The surface hash now covers the constraints between options (<code>implies</code>, <code>excludes</code>, <code>notInside</code>, <code>pairs</code>) and <code>outputHooks</code>. This contract did not change; only what the hash measures did.
+  - date: 2026-10-04
+    kind: feature
+    es:
+      title: La categoría colapsable es una fila, y recuerda y se muestra sola
+      body: >-
+        El botón de un grupo colapsable ahora se ve como una fila de navegación (alto y margen de un enlace,
+        tinta primaria, chevron grande), con una línea guía junto a su lista abierta y el acento en el grupo
+        que contiene la página actual. Se ajusta con siete hooks nuevos (<code>--sk-nav-list-category-*</code>
+        y <code>--sk-nav-list-guide-*</code>). El enhancer recuerda lo abierto en <code>sessionStorage</code>
+        si pones <code>data-storage-key</code> en el nav y <code>data-group-id</code> en cada grupo, abre
+        siempre el grupo de la página actual y, al abrir uno, desplaza suavemente el contenedor para que se
+        vea completo, sin invadir el degradado del borde. Un grupo estático conserva el aspecto de título.
+    en:
+      title: The collapsible category is a row, and it remembers and reveals itself
+      body: >-
+        A collapsible group's button now reads as a navigation row (a link's height and inset, primary ink,
+        a full-size chevron), with a guide line beside its open list and the accent on the group that holds
+        the current page. Seven new hooks tune it (<code>--sk-nav-list-category-*</code> and
+        <code>--sk-nav-list-guide-*</code>). The enhancer remembers what is open in
+        <code>sessionStorage</code> when you set <code>data-storage-key</code> on the nav and
+        <code>data-group-id</code> on each group, always opens the group of the current page and, on
+        opening one, smoothly scrolls its container so the group is fully visible, clear of the edge fade.
+        A static group keeps its caption look.

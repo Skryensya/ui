@@ -54,6 +54,20 @@
     --sk-nav-list-link-current-emphasis: 0.02em;
     --sk-nav-list-link-disabled-fg: var(--color-text-disabled);
 
+    /* A COLLAPSIBLE group's label is a navigation ROW (a button you press to open a category), not the
+     * caption a static label is. So by default it takes a link's height and inset, at the emphasis
+     * stroke in the primary ink, so a column of categories scans as a column of rows. Re-declare these to
+     * quiet it back toward a caption. */
+    --sk-nav-list-category-fg: var(--color-text-primary);
+    --sk-nav-list-category-font-size: var(--sk-nav-list-link-font-size);
+    --sk-nav-list-category-font-weight: var(--font-weight-emphasis);
+    --sk-nav-list-category-chevron-fg: var(--color-text-tertiary);
+    /* The category that holds the current page: the accent, so "where am I" survives a closed list. */
+    --sk-nav-list-category-current-fg: var(--sk-nav-list-link-current-fg);
+    /* The hairline that runs beside an open category's entries; `transparent` for none. */
+    --sk-nav-list-guide-color: var(--color-border-subtle);
+    --sk-nav-list-guide-inset: var(--space-inline-md);
+
     --sk-nav-list-label-opacity: 1;
     --sk-nav-list-trailing-fg: var(--color-text-tertiary);
 
@@ -129,6 +143,53 @@
     button.sk-nav-list__group-label::after { transition: none; }
   }
 
+  /*
+   * THE COLLAPSIBLE CATEGORY, as a row.
+   *
+   * The caption treatment above (small, tertiary, padded for a heading) is right for a label nobody
+   * presses. A category you open is the thing the list is navigated BY, so it is drawn like the rows it
+   * contains: the link's height and inset (left edges and baselines line up down the whole column), the
+   * link's size in the primary ink at the emphasis stroke, and a chevron at full icon size as its one
+   * affordance. Scoped to `[data-collapsible]`, so a static label keeps the caption look.
+   */
+  .sk-nav-list__group[data-collapsible] > button.sk-nav-list__group-label {
+    min-block-size: var(--sk-nav-list-link-height);
+    padding-block: 0;
+    padding-inline: var(--sk-nav-list-link-padding-x);
+    color: var(--sk-nav-list-category-fg);
+    font-family: inherit;
+    font-size: var(--sk-nav-list-category-font-size);
+    font-weight: var(--sk-nav-list-category-font-weight);
+    letter-spacing: normal;
+    text-transform: none;
+    white-space: normal;
+    overflow-wrap: anywhere;
+    --state-layer-color: var(--sk-nav-list-category-fg);
+  }
+
+  .sk-nav-list__group[data-collapsible] > button.sk-nav-list__group-label::after {
+    flex: none;
+    color: var(--sk-nav-list-category-chevron-fg);
+    -webkit-mask-size: contain;
+    mask-size: contain;
+  }
+
+  /* A category that holds the current page says so, open or closed: the hidden list still matches `:has()`,
+     so this needs no script and no attribute. */
+  .sk-nav-list__group[data-collapsible]:has(.sk-nav-list__link[aria-current="page"])
+    > button.sk-nav-list__group-label {
+    color: var(--sk-nav-list-category-current-fg);
+  }
+
+  /* The open category's entries sit one step in with a hairline beside them, so the tree reads as nested
+     rather than as a flat run of rows with a heading in it. */
+  .sk-nav-list__group[data-collapsible] > [data-sk-nav-list-group-list]:not([hidden]) {
+    margin-inline-start: var(--sk-nav-list-guide-inset);
+    margin-block: var(--space-stack-xs) var(--space-stack-sm);
+    padding-inline-start: var(--space-inline-xs);
+    border-inline-start: 1px solid var(--sk-nav-list-guide-color);
+  }
+
   .sk-nav-list__list {
     display: flex;
     flex-direction: column;
@@ -164,6 +225,9 @@
   }
 
   .sk-nav-list__link {
+    /* `inline-size: 100%` plus padding is only 100% under border-box. Without it a consumer with no global
+     * reset got a link wider than its list by exactly its own padding, running out of the rail's gutter. */
+    box-sizing: border-box;
     display: flex;
     align-items: center;
     gap: var(--sk-nav-list-link-gap);

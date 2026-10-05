@@ -129,3 +129,52 @@ describe("NavListGroup collapsible enhancer", () => {
     expect(outerList.hidden).toBe(true);
   });
 });
+
+describe("NavListGroup remembering", () => {
+  const rail = (current = false) => `<nav class="sk-nav-list" data-storage-key="test-nav">
+    <div class="sk-nav-list__group" data-collapsible data-group-id="a">
+      <button type="button" class="sk-nav-list__group-label" data-sk-nav-list-group-trigger aria-expanded="false">A</button>
+      <ul class="sk-nav-list__list" data-sk-nav-list-group-list hidden>
+        <li><a class="sk-nav-list__link" href="/a" ${current ? 'aria-current="page"' : ""}>A1</a></li>
+      </ul>
+    </div>
+  </nav>`;
+  const mountAll = () => mountNavListGroup(document);
+  const triggers = () => [...document.querySelectorAll<HTMLButtonElement>("[data-sk-nav-list-group-trigger]")];
+
+  afterEach(() => sessionStorage.clear());
+
+  it("keeps a choice across a fresh mount", () => {
+    document.body.innerHTML = rail();
+    mountAll();
+    fireEvent.click(triggers()[0]!);
+    for (const trigger of triggers()) destroyMount(trigger);
+
+    document.body.innerHTML = rail();
+    mountAll();
+    expect(triggers()[0]!.getAttribute("aria-expanded")).toBe("true");
+    expect(list().hidden).toBe(false);
+  });
+
+  it("always opens the group that holds the current page, whatever was stored", () => {
+    sessionStorage.setItem("sk-nav-list:test-nav", JSON.stringify({ a: false }));
+    document.body.innerHTML = rail(true);
+    mountAll();
+    expect(triggers()[0]!.getAttribute("aria-expanded")).toBe("true");
+  });
+
+  it("mirrors a choice to another list that shares the key and the group id", () => {
+    document.body.innerHTML = rail() + rail();
+    mountAll();
+    const [first, second] = triggers();
+    fireEvent.click(first!);
+    expect(second!.getAttribute("aria-expanded")).toBe("true");
+  });
+
+  it("remembers nothing without a storage key", () => {
+    document.body.innerHTML = rail().replace('data-storage-key="test-nav"', "");
+    mountAll();
+    fireEvent.click(triggers()[0]!);
+    expect(sessionStorage.getItem("sk-nav-list:test-nav")).toBeNull();
+  });
+});

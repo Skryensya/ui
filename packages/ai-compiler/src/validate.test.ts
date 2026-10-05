@@ -2386,15 +2386,16 @@ describe("input: native text controls", () => {
 describe("layout: flow primitives that own only their own parts", () => {
   const text: UsageTree = { contract: "typography", signature: "Text", children: "Hola" };
 
-  it("publishes only stack/inline/grid/layoutGrid parts and layout.css hooks", () => {
+  it("publishes only stack/inline/grid/layoutGrid/appShell parts and layout.css hooks", () => {
     const contract = getContract("layout")!;
     expect(Object.values(contract.parts).sort()).toEqual([
+      "sk-app-shell",
       "sk-grid",
       "sk-inline",
       "sk-layout-grid",
       "sk-stack",
     ]);
-    expect(contract.hooks?.every((hook) => /--sk-(stack|inline|grid|layout)-/.test(hook))).toBe(true);
+    expect(contract.hooks?.every((hook) => /--sk-(stack|inline|grid|layout|app-shell)-/.test(hook))).toBe(true);
     expect(contract.hookSheets ?? []).toEqual([]);
   });
 
@@ -2405,6 +2406,14 @@ describe("layout: flow primitives that own only their own parts", () => {
     expect(sheets).not.toContain("@skryensya/core/patterns/box.css");
     expect(sheets).not.toContain("@skryensya/core/patterns/wrapper.css");
     expect(unplaced).toEqual([]);
+  });
+
+  it("accepts an AppShell of header, rail and main, and rejects anything else inside it", () => {
+    const navbar: UsageTree = { contract: "navbar", signature: "Navbar", children: { contract: "navbar", signature: "NavbarBrand", children: "Brand" } };
+    const main: UsageTree = { contract: "layout", signature: "Main", children: text };
+    expect(validateUsageTree({ contract: "layout", signature: "AppShell", children: [navbar, main] }).valid).toBe(true);
+    const stray: UsageTree = { contract: "typography", signature: "Text", children: "stray" };
+    expect(validateUsageTree({ contract: "layout", signature: "AppShell", children: [navbar, stray] }).valid).toBe(false);
   });
 
   it("accepts Stack/Inline/Grid/LayoutGrid/Main shapes and Grid fill", () => {
@@ -3167,10 +3176,10 @@ describe("nav-list: landmark of destinations with optional disclosure groups", (
     expect(markup).toContain('href="/proyecto/general"');
   });
 
-  it("publishes its own sheet with no foreign hookSheets and 28 styling hooks", () => {
+  it("publishes its own sheet with no foreign hookSheets and 35 styling hooks", () => {
     const contract = getContract("nav-list")!;
     expect(contract.hookSheets ?? []).toEqual([]);
-    expect(contract.hooks).toHaveLength(28);
+    expect(contract.hooks).toHaveLength(35);
     expect(contract.css).toBe("@skryensya/core/patterns/nav-list.css");
     const { sheets, unplaced } = sheetsForTree(list());
     expect(sheets).toEqual(["@skryensya/core/patterns/nav-list.css"]);

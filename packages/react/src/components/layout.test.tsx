@@ -1,6 +1,6 @@
 import { render } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
-import { Box, Footer, Grid, Hero, Inline, LayoutGrid, Main, Stack, Wrapper } from "./layout.js";
+import { AppShell, Box, Footer, Grid, Hero, Inline, LayoutGrid, Main, Stack, Wrapper } from "./layout.js";
 
 describe("layout primitives", () => {
   it("keeps semantic ownership with the caller while applying Box defaults", () => {
@@ -257,5 +257,30 @@ describe("layout primitives", () => {
     expect(plain?.hasAttribute("data-measure")).toBe(false);
     expect(autoFit?.getAttribute("data-min-column")).toBe("md");
     expect(fixed?.hasAttribute("data-min-column")).toBe(false);
+  });
+
+  it("serializes Box radius only when asked, so an absent one keeps the surface radius", () => {
+    const ui = render(
+      <>
+        <Box padding="md">Default</Box>
+        <Box padding="md" radius="none">Band</Box>
+      </>,
+    );
+    const [plain, band] = ui.container.querySelectorAll(".sk-box");
+    expect(plain?.hasAttribute("data-radius")).toBe(false);
+    expect(band?.getAttribute("data-radius")).toBe("none");
+  });
+
+  it("renders the AppShell as the shell class, with no options, keeping the caller's own props", () => {
+    const ui = render(
+      <AppShell className="mine" data-testid="shell">
+        <header>Bar</header>
+        <Main>Work</Main>
+      </AppShell>,
+    );
+    const shell = ui.getByTestId("shell");
+    expect(shell.classList).toContain("sk-app-shell");
+    expect(shell.classList).toContain("mine");
+    expect(shell.querySelector("main")).not.toBeNull();
   });
 });

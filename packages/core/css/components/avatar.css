@@ -32,6 +32,9 @@
     overflow: hidden;
     border-radius: var(--radius-pill);
     background: var(--sk-avatar-bg);
+    /* A hairline ring, so the disc exists on a page whose canvas is the same tone as its fill: sunken on canvas
+     * is one stone in light mode, and an initial floating on nothing reads as a stray label, not a person. */
+    box-shadow: inset 0 0 0 1px var(--color-border-subtle);
     color: var(--sk-avatar-fg);
     font-size: var(--font-size-caption);
     font-weight: var(--font-weight-label);
@@ -69,7 +72,7 @@
 
   .sk-avatar-group { display: inline-flex; align-items: center; }
   .sk-avatar-group > .sk-avatar,
-  .sk-avatar-group > .sk-avatar-group__overflow { box-shadow: 0 0 0 2px var(--color-bg-surface); }
+  .sk-avatar-group > .sk-avatar-group__overflow { box-shadow: 0 0 0 2px var(--color-bg-surface), inset 0 0 0 1px var(--color-border-subtle); }
   /*
    * The "+N" chip and the overlap follow the discs' own size. They were fixed at md, so a stack of
    * sm avatars ended in a chip taller than every disc beside it, which any fixed-height host (a
