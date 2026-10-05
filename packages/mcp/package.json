@@ -10,7 +10,8 @@
     "start:http": "node dist/http.js",
     "check": "node scripts/build.ts && tsc -p tsconfig.json --noEmit && tsc -p tsconfig.scripts.json && vitest run",
     "inspector": "npx @modelcontextprotocol/inspector node dist/index.js",
-    "docs": "tsx scripts/docs.ts"
+    "docs": "tsx scripts/docs.ts",
+    "test:web": "vitest run src/web.test.ts"
   },
   "bin": {
     "skryensya-mcp": "./dist/index.js"
