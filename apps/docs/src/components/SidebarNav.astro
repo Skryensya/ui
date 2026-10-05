@@ -53,21 +53,19 @@ const holdsCurrentPage = (items: readonly { href: string }[]): boolean => items.
           <p class="docs-nav-section__blurb">{section.blurb}</p>
         </header>
       ) : null}
-      <nav class="sk-nav-list" aria-label={section.section}>
+      <nav class="sk-nav-list" aria-label={section.section} data-storage-key="docs-nav-groups">
         {section.groups.map((group, groupIndex) => {
           const labelId = `${idPrefix}-${sectionIndex}-${groupIndex}`;
 
           if (group.collapsible) {
             const open = group.defaultOpen ?? holdsCurrentPage(group.items);
             return (
-              <div class="sk-nav-list__group" data-collapsible data-default-open={open ? undefined : "false"}>
+              <div class="sk-nav-list__group" data-collapsible data-group-id={group.id} data-default-open={open ? undefined : "false"}>
                 <button
                   class="sk-nav-list__group-label sk-interactive"
                   type="button"
                   id={labelId}
                   data-sk-nav-list-group-trigger
-                  data-nav-group-trigger={group.id}
-                  data-nav-group-active={holdsCurrentPage(group.items) ? "true" : "false"}
                   aria-expanded={open ? "true" : "false"}
                   aria-controls={`${labelId}-list`}
                 >

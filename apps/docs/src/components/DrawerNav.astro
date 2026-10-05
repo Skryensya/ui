@@ -63,7 +63,7 @@ const itemsFor = (section: DrawerSection): readonly NavigationItem[] => section.
 const holdsCurrentPage = (items: readonly NavigationItem[]): boolean => items.some((item) => item.href === path);
 ---
 
-<nav class="sk-nav-list docs-drawer-nav" aria-label={t("nav.siteNav")}>
+<nav class="sk-nav-list docs-drawer-nav" aria-label={t("nav.siteNav")} data-storage-key="docs-nav-groups">
   <div class="sk-nav-list__group">
     <ul class="sk-nav-list__list" role="list">
       <li class="sk-nav-list__item">
@@ -144,14 +144,12 @@ const holdsCurrentPage = (items: readonly NavigationItem[]): boolean => items.so
                 const groupOpen = group.defaultOpen ?? holdsCurrentPage(group.items);
                 return (
                   <li class="sk-nav-list__item">
-                    <div class="sk-nav-list__group" data-collapsible data-default-open={groupOpen ? undefined : "false"}>
+                    <div class="sk-nav-list__group" data-collapsible data-group-id={group.id} data-default-open={groupOpen ? undefined : "false"}>
                       <button
                         class="sk-nav-list__group-label sk-interactive"
                         type="button"
                         id={labelId}
                         data-sk-nav-list-group-trigger
-                        data-nav-group-trigger={group.id}
-                        data-nav-group-active={holdsCurrentPage(group.items) ? "true" : "false"}
                         aria-expanded={groupOpen ? "true" : "false"}
                         aria-controls={`${labelId}-list`}
                       >

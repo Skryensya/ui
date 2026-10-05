@@ -1248,22 +1248,6 @@ h2.docs-nav-section__title {
   font-weight: var(--font-weight-body);
 }
 
-/* Docs rail re-declares nav-list hooks so groups read as indexes, not as peers of the links. */
-.docs-sidebar .sk-nav-list,
-.docs-drawer .sk-nav-list {
-  --sk-nav-list-gap: var(--space-stack-sm);
-  --sk-nav-list-group-gap: var(--space-stack-xs);
-  --sk-nav-list-group-label-fg: var(--color-text-tertiary);
-  /* Same sub-index step as .docs-nav-section__title; the drawer's collapsible section buttons
-     re-raise their own size (body-sm) below, so this only lands on the rail's static labels. */
-  --sk-nav-list-group-label-font-size: calc(var(--font-size-caption) - 1px);
-  --sk-nav-list-group-label-font-weight: var(--font-weight-emphasis);
-  --sk-nav-list-group-label-padding-block-start: var(--space-stack-xs);
-  --sk-nav-list-link-font-size: var(--font-size-body-sm);
-  --sk-nav-list-link-font-weight: var(--font-weight-body);
-  --sk-nav-list-link-fg: var(--color-text-secondary);
-}
-
 /* The rail is mouse-driven (32px, --size-control-sm, is plenty); the drawer is touch-driven and
    needs the real touch-target floor. Scoped to the drawer alone so the desktop rail's density is
    untouched. */
@@ -1343,11 +1327,6 @@ h2.docs-nav-section__title {
   padding-inline-start: var(--space-inset-sm);
 }
 
-.docs-sidebar .sk-nav-list__group-label,
-.docs-drawer .sk-nav-list__group-label {
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-}
 
 /* nav-list.css sets the group label `white-space: nowrap` for the drawer's collapse-fade, where a
    reflow mid-animation would look broken. The rail doesn't collapse, it RESIZES (drag handle), so a
@@ -1374,79 +1353,6 @@ h2.docs-nav-section__title {
   }
 }
 
-.docs-sidebar .sk-nav-list__group-label {
-  white-space: normal;
-  overflow-wrap: anywhere;
-}
-
-/*
- * THE CATEGORIES OF THE COMPONENT CATALOG ARE ROWS, not captions.
- *
- * The rail used to draw a category the way it draws the section title: eleven-pixel, uppercase, tertiary.
- * That is right for a heading nobody clicks and wrong for the thing the catalog is now navigated BY: twelve
- * closed categories read as a faint list of labels floating between much louder rows, with different
- * heights, a different inset and a chevron that was a speck. So a collapsible category takes the rhythm of
- * the rows it contains:
- *
- *   - the same height and the same inset as a link, so left edges and baselines line up down the whole rail;
- *   - the link's size, in sentence case, in the PRIMARY ink at the emphasis stroke: it outranks its entries by
- *     weight and colour, not by shouting in capitals, and the section title above it stays the only uppercase;
- *   - a chevron at full icon size in the tertiary ink, the one affordance the row has;
- *   - an open category's entries sit one step in with a hairline beside them, so the tree reads as nested
- *     instead of as a flat run of rows with a heading in it.
- *
- * Scoped to the rail's collapsible groups (`[data-collapsible]`): a static group label keeps the caption
- * treatment above, and the drawer keeps its own.
- */
-:is(.docs-sidebar, .templates__sidebar) .sk-nav-list__group[data-collapsible] > .sk-nav-list__group-label {
-  display: flex;
-  align-items: center;
-  min-block-size: var(--sk-nav-list-link-height);
-  padding-block: 0;
-  padding-inline: var(--sk-nav-list-link-padding-x, var(--space-inset-sm));
-  color: var(--color-text-primary);
-  /* A <button> does not inherit the page's face by default: without this the category was set in the system font. */
-  font-family: inherit;
-  font-size: var(--font-size-body-sm);
-  font-weight: var(--font-weight-emphasis);
-  letter-spacing: normal;
-  text-transform: none;
-  --state-layer-color: var(--color-text-primary);
-}
-
-:is(.docs-sidebar, .templates__sidebar) .sk-nav-list__group[data-collapsible] > .sk-nav-list__group-label::after {
-  flex: none;
-  color: var(--color-text-tertiary);
-  -webkit-mask-size: contain;
-  mask-size: contain;
-}
-
-:is(.docs-sidebar, .templates__sidebar) .sk-nav-list__group[data-collapsible] > [data-sk-nav-list-group-list] {
-  margin-inline-start: var(--space-inline-md);
-  padding-inline-start: var(--space-inline-xs);
-  border-inline-start: 1px solid var(--sk-sidebar-separator-color, var(--color-border-subtle));
-}
-
-/* The category that holds the current page says so, open or closed: the accent the current link takes
-   below, one step quieter (ink only, no fill), so the reader can find "where am I" in a closed rail too. */
-:is(.docs-sidebar, .templates__sidebar) .sk-nav-list__group[data-collapsible] > .sk-nav-list__group-label[data-nav-group-active="true"] {
-  color: var(--color-text-accent);
-}
-
-/* A little air above and below an open category's entries, so its last entry does not touch the next category. */
-:is(.docs-sidebar, .templates__sidebar) .sk-nav-list__group[data-collapsible] > [data-sk-nav-list-group-list]:not([hidden]) {
-  margin-block: var(--space-stack-xs) var(--space-stack-sm);
-}
-
-/* Categories are a tight run of rows: the nav-list's group gap is tuned for labelled blocks, not for twelve single rows. */
-.docs-sidebar .sk-nav-list:has(> .sk-nav-list__group[data-collapsible]) {
-  --sk-nav-list-gap: var(--space-stack-xs);
-}
-
-/* The categories are peers: the same air between every one of them, open or closed. */
-:is(.docs-sidebar, .templates__sidebar) .sk-nav-list__group[data-collapsible] {
-  padding-block: 0;
-}
 
 /* The drawer nests the same categories inside its Components section: one step lighter than the section
    button above them, or the two levels read as one. */
