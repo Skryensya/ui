@@ -48,6 +48,12 @@ const makerVisible = (ref: SignatureRef) => !makerHiddenContracts.has(ref.contra
 const thumbnailSrc = (ref: SignatureRef, scheme: "light" | "dark", variant?: string) =>
   `/component-thumbnails/${ref.contract}-${ref.signature.replace(/[^a-z0-9]+/gi, "-")}${variant ? `--${variant}` : ""}-${scheme}.png`;
 
+/** `Button.action` and `Button.navigation` are two kinds of Button: named so, not by the contract's dotted id. */
+const paletteName = (signature: string) => {
+  const [name, ...kind] = signature.split(".");
+  return kind.length > 0 ? `${name} (${kind.join(" ")})` : signature;
+};
+
 /** Where an insert lands: inside the selected container, after the selected node, or at the page's end. */
 export function insertionFor(maker: Maker): Place {
   const root = maker.page.root;
@@ -219,7 +225,7 @@ export function Palette({ maker, drag }: { maker: Maker; drag: Drag }) {
                       <li key={key} className="maker-palette__entry">
                         <div className="maker-palette__row">
                           <button type="button" className="maker-palette__item maker-palette__item--component" onClick={() => insert(make)} onPointerDown={pressToDrag(make)}>
-                            <span className="maker-palette__label">{ref.signature}</span>
+                            <span className="maker-palette__label">{paletteName(ref.signature)}</span>
                             <ComponentThumbnail ref_={ref} />
                           </button>
                           {others.length > 0 ? (

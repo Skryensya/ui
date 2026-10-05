@@ -40,7 +40,13 @@ export async function savedProject(page: Page, id = current): Promise<{ revision
 }
 
 export async function addFromPalette(page: Page, signature: string): Promise<void> {
-  await (await insert(page)).locator(".maker-palette").getByRole("button", { name: signature, exact: true }).first().click();
+  await (await insert(page)).locator(".maker-palette").getByRole("button", { name: paletteName(signature), exact: true }).first().click();
+}
+
+/** The palette names a kind of component "Button (action)", not by the contract's dotted id. */
+export function paletteName(signature: string): string {
+  const [name, ...kind] = signature.split(".");
+  return kind.length > 0 ? `${name} (${kind.join(" ")})` : signature;
 }
 
 /** Select a node by clicking its row in the outline (the last row with that label). */
