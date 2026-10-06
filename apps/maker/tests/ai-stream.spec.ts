@@ -39,7 +39,7 @@ async function mockProvider(root: string): Promise<Mock> {
     }
     response.setHeader("content-type", "text/event-stream");
     const send = (delta: unknown) => response.write(`data: ${JSON.stringify({ choices: [{ delta }] })}\n\n`);
-    if (last.role === "tool") {
+    if (last.role === "tool" || last.content.includes('"review"')) {
       send({ content: "Added a hero, features and pricing." });
       response.write("data: [DONE]\n\n");
       return void response.end();

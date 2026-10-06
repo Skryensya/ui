@@ -279,6 +279,7 @@ export function layoutAdvice(root: MakerNode): readonly string[] {
       advice.push(`Stack ${node.id} has two or more Buttons as direct children, one under another. Actions that sit together go in an Inline inside the Stack.`);
     }
   }
+  advice.push(...structureAdvice(root));
   if (root.signature !== "Main") return advice;
   for (const section of childrenOf(root, "children")) {
     if (!isNode(section) || OWN_MEASURE.has(section.signature)) continue;
@@ -286,6 +287,47 @@ export function layoutAdvice(root: MakerNode): readonly string[] {
     const hasContent = childrenOf(section, "children").some((child) => !isNode(child) || !["Stack", "Inline", "Grid", "Box"].includes(child.signature));
     if (!hasWrapper && hasContent) {
       advice.push(`Section ${section.signature} ${section.id} has no Wrapper: its content grows with the window. Put its content in a Wrapper (wrapperSize md for text, lg for wide layouts).`);
+    }
+  }
+  return advice;
+}
+
+/*
+ * STRUCTURE ADVICE: the document's outline and the things that are empty or pointless. Each is wrong on any page, so each is said
+ * once, by node, in words an agent can act on. Heading levels are read from the element the Heading will be (headingElement, else
+ * its size when that is an h1 to h6, else h2: the contract's default).
+ */
+const levelOf = (node: MakerNode): number => {
+  const element = node.options?.headingElement;
+  const size = node.options?.headingSize;
+  const name = typeof element === "string" ? element : typeof size === "string" && /^h[1-6]$/.test(size) ? size : "h2";
+  return Number(/^h([1-6])$/.exec(name)?.[1] ?? 2);
+};
+
+const CONTAINERS = new Set(["Stack", "Inline", "Box", "Wrapper", "Grid", "Hero", "Footer"]);
+
+export function structureAdvice(root: MakerNode): readonly string[] {
+  const advice: string[] = [];
+  const headings = [...walk(root)].filter((node) => node.signature === "Heading");
+  const h1s = headings.filter((node) => levelOf(node) === 1);
+  if (h1s.length > 1) advice.push(`The page has ${h1s.length} top-level headings (h1: ${h1s.map((node) => node.id).join(", ")}). A page has one: keep the first as the h1 and give the others headingElement h2.`);
+  let previous = 0;
+  for (const heading of headings) {
+    const level = levelOf(heading);
+    if (previous > 0 && level > previous + 1) advice.push(`Heading ${heading.id} jumps from h${previous} to h${level}. Headings go down one level at a time: use h${previous + 1} (headingElement), and size it with headingSize if it should look smaller.`);
+    previous = level;
+  }
+  for (const node of walk(root)) {
+    if (CONTAINERS.has(node.signature) && node.id !== root.id && childrenOf(node, "children").length === 0 && !Object.values(node.slots).some((held) => held.kind !== "nodes" || held.children.length > 0)) {
+      advice.push(`${node.signature} ${node.id} is empty. Put content in it or remove it.`);
+    }
+    if (node.signature === "Grid") {
+      const count = childrenOf(node, "children").length;
+      if (count === 1) advice.push(`Grid ${node.id} has one child: a grid arranges several. Use a Stack, or add the others.`);
+    }
+    if (node.signature === "Heading" || node.signature === "Text") {
+      const words = childrenOf(node, "children").map((child) => ("text" in child ? child.text : "")).join(" ");
+      if (/lorem ipsum|dolor sit amet/i.test(words)) advice.push(`${node.signature} ${node.id} holds lorem ipsum. Write real copy from the request, or an honest placeholder such as "Your headline here".`);
     }
   }
   return advice;

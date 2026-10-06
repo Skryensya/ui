@@ -15,6 +15,8 @@ export const briefInput = z.object({
   kind: z.enum(["edit", "build"]),
   goal: z.string().min(1).max(500),
   checklist: z.array(z.string().min(1).max(240)).min(1).max(10),
+  /** For a page or a site: its information architecture before anything is built, one entry per section in order. */
+  plan: z.array(z.object({ section: z.string().min(1).max(80), role: z.string().min(1).max(40), content: z.string().max(240).default(""), components: z.array(z.string().max(40)).max(8).default([]) }).strict()).max(14).default([]),
   known: z.array(z.string().max(240)).max(10).default([]),
   assumptions: z.array(z.string().max(240)).max(8).default([]),
   missing: z.array(askedQuestion).max(3).default([]),
@@ -50,6 +52,12 @@ depends on whether you can build anything useful without it:
   anything just to be thorough.
 - If canAsk is false (they said to just do it, or you have already asked once), do not ask: assume, as placeholders and never as facts.
 
+plan: ONLY for a page or a whole site (kind build and more than one section). The information architecture, decided before anything is
+built: one entry per section, in page order, none merged. section is its working name ("Hero", "Pricing"); role is what it is FOR (navigation,
+hero, features, steps, pricing, testimonials, faq, cta, contact, footer, content); content is what it says, from the request or as an honest
+placeholder; components are the design system's components it will use (Navbar, Hero, Grid, Box, Accordion, Footer...). Every section sits in
+a Wrapper, and the page has one h1. Leave plan empty for an edit or a single block.
+
 known: the facts you rely on and where they came from (the request, the page, an earlier answer).`;
 
 const briefSpec = (): ToolSpec => {
@@ -74,7 +82,7 @@ export function canAskAgain(content: string, askedBefore: number): boolean {
 
 /** A brief that asks nothing and promises nothing: used when the briefing call fails, so a hiccup never blocks the build. */
 /* No checklist: with nothing to check against, nothing is reviewed. */
-export const fallbackBrief = (goal: string): Brief => ({ kind: "build", goal: goal.slice(0, 500), checklist: [], known: [], assumptions: [], missing: [] });
+export const fallbackBrief = (goal: string): Brief => ({ kind: "build", goal: goal.slice(0, 500), checklist: [], plan: [], known: [], assumptions: [], missing: [] });
 
 export async function makeBrief(args: {
   adapter: ProviderAdapter;

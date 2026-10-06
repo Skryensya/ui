@@ -339,8 +339,13 @@ export function AIPanel({ maker, onPreview, onDraft, barSlot }: {
                 : last && busy ? <span className="maker-ai__bubble maker-ai__typing" role="status" aria-label="Maker AI is working"><i /><i /><i />{status ? <span className="maker-ai__typing-status">{status}</span> : null}</span> : null}
               {turn.questions && <QuestionCard questions={turn.questions} {...(turn.answers ? { answers: turn.answers } : {})} disabled={busy} onSubmit={(answers, recommended) => answerQuestions(turn, answers, recommended)} />}
               {turn.outcome && turn.changes && <section className="maker-ai__summary" aria-label="Summary of changes" data-outcome={turn.outcome}>
-                <Text size="sm" weight="emphasis">{OUTCOME[turn.outcome]}</Text>
-                {(turn.outcome === "applied" || turn.outcome === "discarded" || turn.outcome === "reverted") && <ul>{turn.changes.map((line, n) => <li key={n}>{line}</li>)}</ul>}
+                <header className="maker-ai__summary-head">
+                  <Text size="sm" weight="emphasis">{OUTCOME[turn.outcome]}</Text>
+                  <span className="maker-ai__summary-count">{turn.changes.length} {turn.changes.length === 1 ? "change" : "changes"}</span>
+                </header>
+                {turn.changes.length > 0 && (turn.changes.length > 4
+                  ? <details className="maker-ai__changes" open={turn.outcome === "pending"}><summary>Show the {turn.changes.length} changes</summary><ChangeList lines={turn.changes} /></details>
+                  : <ChangeList lines={turn.changes} />)}
                 {turn.outcome === "pending" && <Text size="sm" tone="secondary">Nothing changes until you choose Apply or Discard.</Text>}
                 {turn.outcome === "applied" && <Button size="sm" variant="ghost" disabled={busy} onClick={() => rollback(turn)}>Roll back</Button>}
               </section>}
@@ -388,6 +393,22 @@ export function AIPanel({ maker, onPreview, onDraft, barSlot }: {
   </section>;
 }
 
+/** What a change does, read off its line: the chip that lets a long list be scanned by kind instead of read in full. */
+function changeKind(line: string): "add" | "remove" | "move" | "edit" {
+  if (/^(Add|Insert|Wrap)\b/.test(line)) return "add";
+  if (/^Remove\b/.test(line)) return "remove";
+  if (/^Move\b/.test(line)) return "move";
+  return "edit";
+}
+const KIND_LABEL = { add: "Add", remove: "Remove", move: "Move", edit: "Edit" } as const;
+
+function ChangeList({ lines }: { lines: readonly string[] }) {
+  return <ul className="maker-ai__change-list">{lines.map((line, n) => {
+    const kind = changeKind(line);
+    return <li key={n} data-kind={kind}><span className="maker-ai__change-kind" aria-hidden="true">{KIND_LABEL[kind]}</span><span className="maker-ai__change-text">{line}</span></li>;
+  })}</ul>;
+}
+
 function summarize(op: MakerProposal["operations"][number], site: MakerSite): string {
   if (op.type !== "edit") {
     switch (op.type) {
@@ -408,6 +429,9 @@ function summarize(op: MakerProposal["operations"][number], site: MakerSite): st
   if (action.type === "setOption") return `${label}: ${action.name} · ${node && isNode(node) ? String(node.options?.[action.name] ?? "default") : "default"} → ${String(action.value ?? "default")}`;
   if (action.type === "setText") return `${label}: change text to “${action.text}”`;
   if (action.type === "wrap") return `Wrap ${action.children.length} layers in ${action.container.signature}`;
+  if (action.type === "remove") return `Remove ${label}`;
+  if (action.type === "move") return `Move ${label}`;
+  if (action.type === "unwrap") return `Unwrap ${label}`;
   if (action.type === "insert") return `Insert ${isNode(action.child) ? action.child.signature : "text"}`;
   return `${label}: ${action.type}`;
 }

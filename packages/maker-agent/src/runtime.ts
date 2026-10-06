@@ -26,7 +26,7 @@ export type AgentEvent =
   | { type: "say"; delta: string; reset?: boolean }
   | { type: "draft"; site: MakerSite; added: readonly string[]; operations: number }
   /** What the request is for and how it will be checked: shown to the person before anything is built. */
-  | { type: "brief"; goal: string; checklist: readonly string[]; assumptions: readonly string[] }
+  | { type: "brief"; goal: string; checklist: readonly string[]; assumptions: readonly string[]; plan?: readonly { section: string; role: string; content: string; components: readonly string[] }[] }
   | { type: "done"; text: string; proposal?: MakerProposal; questions?: readonly AskedQuestion[] };
 const activity: Record<string, string> = {
   maker_context: "Inspecting the attached selection…", maker_read: "Inspecting page structure…",
@@ -109,10 +109,10 @@ export async function* runAgent(request: {
     yield { type: "done", text: questionsText(brief.missing), questions: brief.missing };
     return;
   }
-  yield { type: "brief", goal: brief.goal, checklist: brief.checklist, assumptions: brief.assumptions };
+  yield { type: "brief", goal: brief.goal, checklist: brief.checklist, assumptions: brief.assumptions, plan: brief.plan };
 
   const mentioned = mentionedComponents(request.content, request.service);
-  const initial = JSON.stringify({ intent: request.content, context: request.context, pageOutline, ...(mentioned.length ? { mentionedComponents: mentioned } : {}), brief: { goal: brief.goal, checklist: brief.checklist, assumptions: brief.assumptions, known: brief.known } });
+  const initial = JSON.stringify({ intent: request.content, context: request.context, pageOutline, ...(mentioned.length ? { mentionedComponents: mentioned } : {}), brief: { goal: brief.goal, checklist: brief.checklist, ...(brief.plan.length ? { plan: brief.plan } : {}), assumptions: brief.assumptions, known: brief.known } });
   if (initial.length > 120_000) throw new Error("Selection context is too large. Select fewer layers and try again.");
   messages.push({ role: "user", content: initial });
   /* After it proposes, the result is held to the brief: up to this many reviews, each adding what is still missing. */
@@ -169,7 +169,11 @@ export async function* runAgent(request: {
     messages.push({ role: "assistant", content: reply.text, calls: reply.calls });
     if (!reply.calls.length) {
       const proposal = tools.proposal();
-      if (proposal && !inReview && brief.kind === "build" && brief.checklist.length > 0 && reviews < MAX_REVIEWS) {
+      /* Only what THIS proposal introduced: advice about a page as the person left it is not the agent's to fix unasked. */
+      const before = new Set((request.carry?.site ?? request.site).pages.flatMap((entry) => [...layoutAdvice(entry.root)]));
+      const standing = proposal ? proposal.site.pages.flatMap((entry) => [...layoutAdvice(entry.root)]).filter((line) => !before.has(line)) : [];
+      /* A build is checked against its goal; ANY proposal with advice standing (a second h1, loose content, no ceiling) is sent back once to fix it. */
+      if (proposal && !inReview && ((brief.kind === "build" && brief.checklist.length > 0) || standing.length > 0) && reviews < MAX_REVIEWS) {
         reviews++;
         inReview = true;
         tools.review();
@@ -177,9 +181,9 @@ export async function* runAgent(request: {
         yield { type: "status", text: reviews === 1 ? "Checking the result against your goal…" : "Checking what is still missing…" };
         const page = proposal.site.pages.find((entry) => entry.id === request.context.page.id) ?? proposal.site.pages[0]!;
         const now = describeSite({ ...proposal.site, pages: [page] });
-        const advice = proposal.site.pages.flatMap((entry) => layoutAdvice(entry.root));
+        const advice = standing;
         messages.push({ role: "user", content: JSON.stringify({ review: {
-          goal: brief.goal, checklist: brief.checklist, assumptions: brief.assumptions,
+          goal: brief.goal, checklist: brief.checklist, ...(brief.plan.length ? { plan: brief.plan } : {}), assumptions: brief.assumptions,
           now: now.length > OUTLINE_LIMIT ? `${now.slice(0, OUTLINE_LIMIT)}\n… (cut)` : now,
           ...(advice.length ? { advice } : {}),
           instruction: REVIEW_INSTRUCTION,

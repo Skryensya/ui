@@ -247,6 +247,27 @@ describe("streaming runtime", () => {
     expect(proposal.operations.length).toBe(2);
   });
 
+  it("sends ANY proposal back once when advice stands, even a plain edit with no checklist, and the plan reaches the build", async () => {
+    const h1 = (text: string, index: number) => ({ type: "insert", at: { parent: root.id, slot: "children", index }, tree: { contract: "typography", signature: "Heading", options: { headingElement: "h1" }, children: text } });
+    const args = JSON.stringify({ operations: [{ type: "page", page: pageId, operations: [h1("One", 1), h1("Two", 2)] }] });
+    const brief = JSON.stringify({ kind: "edit", goal: "Add two titles", checklist: ["Two titles"], plan: [{ section: "Titles", role: "content", content: "Two titles", components: ["Heading"] }] });
+    const seen: string[] = [];
+    let round = 0;
+    const adapter: ProviderAdapter = {
+      complete: vi.fn(async () => ({ text: "", calls: [{ id: "b", name: "submit_brief", arguments: brief }] })),
+      stream: vi.fn(async (_c, _s, messages, _t, _sig, on: StreamHandlers) => {
+        round++;
+        seen.push(messages.at(-1)!.content);
+        if (round === 1) { on.callStart?.({ id: "c1", name: "maker_try" }); on.callArgs?.("c1", args); return { text: "", calls: [{ id: "c1", name: "maker_try", arguments: args }] }; }
+        return { text: "Added the titles.", calls: [] };
+      }),
+    };
+    await run(adapter);
+    expect(JSON.parse(seen[0]!).brief.plan[0]).toMatchObject({ section: "Titles", role: "content" });
+    const review = seen.map((content) => { try { return (JSON.parse(content) as { review?: { advice?: string[] } }).review; } catch { return undefined; } }).find(Boolean);
+    expect(review?.advice?.join(" ")).toContain("2 top-level headings");
+  });
+
   it("keeps the same identities from the first draft to the final proposal", async () => {
     const events = await run(streamingAdapter());
     const drafts = events.filter((e): e is Extract<AgentEvent, { type: "draft" }> => e.type === "draft");
@@ -263,7 +284,11 @@ describe("streaming runtime", () => {
 
   it("streams the written answer and still ends with the validated proposal", async () => {
     const events = await run(streamingAdapter());
-    expect(events.filter((e) => e.type === "say").map((e) => (e as { delta: string }).delta).join("")).toBe("Added three sections.");
+    /* Each round starts the chat's text over (`reset`): what the person reads is what follows the last reset. The plain sections here
+       have no Wrapper, so the advice sends them back once and there are two rounds. */
+    const says = events.filter((e): e is Extract<AgentEvent, { type: "say" }> => e.type === "say");
+    const lastReset = says.map((e) => e.reset === true).lastIndexOf(true);
+    expect(says.slice(lastReset + 1).map((e) => e.delta).join("")).toBe("Added three sections.");
     expect(events.at(-1)).toMatchObject({ type: "done", text: "Added three sections.", proposal: { revision: 1 } });
   });
 

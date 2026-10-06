@@ -45,6 +45,8 @@ async function fakeAgent(page: Page, operation: (context: MakerAgentContext) => 
     if (isBrief(body)) return respond(route, brief("edit"));
     const last = body.input.at(-1);
     if (last.type === "function_call_output") return respond(route, said("Prepared the requested Maker changes."));
+    /* A proposal that leaves advice standing is sent back once to fix it: the mock has nothing to add, and says so. */
+    if (typeof last.content === "string" && last.content.includes('"review"')) return respond(route, said("Prepared the requested Maker changes."));
     const frozen = JSON.parse(last.content).context as MakerAgentContext;
     captured = frozen;
     if (wait) await wait;
