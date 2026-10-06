@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useLayoutEffect, useRef, useState, type MutableRefObject } from "react";
 import { useHotkey } from "@skryensya/react/hotkey";
+import { layoutsOf } from "@skryensya/maker-model";
 import type { Drag } from "../drag";
 import type { Maker } from "../state";
 import { Artboard, type CanvasWheel } from "./Artboard";
@@ -80,14 +81,15 @@ export function Canvas({
 
   /** Frame a region of the world (unzoomed px) in the room, never past 100%. */
   const frame = useCallback(
-    (region: { x: number; y: number; width: number; height: number }, maxK = 1) => {
+    (region: { x: number; y: number; width: number; height: number }, maxK = 1, instant = false) => {
       const space = room();
       const viewport = viewportRef.current?.getBoundingClientRect();
       if (!space || !viewport || region.width <= 0) return;
       const k = clamp(Math.min(maxK, (space.width - PAD * 2) / region.width, (space.height - PAD * 2) / region.height));
       const left = space.left - viewport.left + (space.width - region.width * k) / 2;
       const top = space.top - viewport.top + PAD;
-      smoothZoom();
+      /* The first framing is not a movement: nothing has been drawn yet to move. */
+      if (!instant) smoothZoom();
       setCamera({ x: left - region.x * k, y: top - region.y * k, k });
     },
     [room, smoothZoom],
@@ -96,14 +98,17 @@ export function Canvas({
   /** Every artboard, measured in world coordinates (their layout box, not their zoomed one). */
   const artboards = () => [...(worldRef.current?.querySelectorAll<HTMLElement>(".maker-artboard") ?? [])];
 
-  const fitAll = useCallback(() => {
-    const boards = artboards();
-    if (boards.length === 0) return;
-    const right = Math.max(...boards.map((board) => board.offsetLeft + board.offsetWidth));
-    const bottom = Math.max(...boards.map((board) => board.offsetTop + board.offsetHeight));
-    /* The height counted is capped, so a very long page does not shrink everything to a sliver. */
-    frame({ x: 0, y: 0, width: right, height: Math.min(bottom, right * 0.75) });
-  }, [frame]);
+  const fitAll = useCallback(
+    (instant = false) => {
+      const boards = artboards();
+      if (boards.length === 0) return;
+      const right = Math.max(...boards.map((board) => board.offsetLeft + board.offsetWidth));
+      const bottom = Math.max(...boards.map((board) => board.offsetTop + board.offsetHeight));
+      /* The height counted is capped, so a very long page does not shrink everything to a sliver. */
+      frame({ x: 0, y: 0, width: right, height: Math.min(bottom, right * 0.75) }, 1, instant);
+    },
+    [frame],
+  );
 
   const fitPage = useCallback(
     (id: string) => {
@@ -137,15 +142,34 @@ export function Canvas({
     [zoomAt],
   );
 
-  /* The first view of a project frames all of it, once the artboards have a size. */
+  /*
+   * THE FIRST VIEW OF A PROJECT frames all of it, once every artboard has said it is rendered and measured, not
+   * after a guessed delay: a fixed wait framed boards still at their placeholder height, and drew them at the
+   * origin first. The world stays undrawn (`data-pending`) until it is framed, and a board that never reports
+   * (a page that cannot render) is not waited for past a second and a half.
+   */
+  const [settledPages, setSettledPages] = useState<ReadonlySet<string>>(new Set());
+  const [pending, setPending] = useState(true);
+  const onSettled = useCallback((id: string) => setSettledPages((current) => new Set(current).add(id)), []);
+  /* Layouts are boards too: edited on the canvas like a page, after the pages. */
+  const boards = [...maker.site.pages, ...layoutsOf(maker.site)];
+  const total = boards.length;
+
   useLayoutEffect(() => {
     if (fitted.current) return;
-    const timer = window.setTimeout(() => {
+    const reveal = () => {
+      if (fitted.current) return;
       fitted.current = true;
-      fitAll();
-    }, 250);
+      fitAll(true);
+      setPending(false);
+    };
+    if (total > 0 && settledPages.size >= total) {
+      reveal();
+      return;
+    }
+    const timer = window.setTimeout(reveal, 1500);
     return () => window.clearTimeout(timer);
-  }, [fitAll]);
+  }, [fitAll, settledPages, total]);
 
   /* Opening a page that is off screen brings its artboard into view. */
   const pageId = maker.page.id;
@@ -253,9 +277,9 @@ export function Canvas({
         aria-label="Canvas"
         role="region"
       >
-        <div ref={worldRef} className="maker-canvas__world" style={{ transform: `translate(${camera.x}px, ${camera.y}px) scale(${camera.k})` }}>
-          {maker.site.pages.map((page) => (
-            <Artboard key={page.id} maker={maker} drag={drag} pageId={page.id} zoom={camera.k} onWheel={onWheel} onPanKey={setPanKey} onPanStart={beginPan} />
+        <div ref={worldRef} className="maker-canvas__world" data-pending={pending ? "" : undefined} style={{ transform: `translate(${camera.x}px, ${camera.y}px) scale(${camera.k})` }}>
+          {boards.map((page) => (
+            <Artboard key={page.id} maker={maker} drag={drag} pageId={page.id} zoom={camera.k} onWheel={onWheel} onPanKey={setPanKey} onPanStart={beginPan} onSettled={onSettled} />
           ))}
         </div>
       </div>

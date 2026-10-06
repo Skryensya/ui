@@ -30,6 +30,8 @@ export type Action = {
   /** Hotkey specs in the kit's syntax (decision 25); the first is the one shown. */
   readonly hotkeys: readonly string[];
   readonly icon: AnyIcon;
+  /** Shown as words beside the icon on the toolbar: the few actions that deserve reading. The label starts with it. */
+  readonly text?: string;
   readonly gesture: (root: MakerNode, id: string) => Gesture | undefined;
 };
 
@@ -81,6 +83,7 @@ export const actions: readonly Action[] = [
   {
     id: "wrap",
     label: "Wrap in a Stack",
+    text: "Wrap",
     hotkeys: ["mod+g"],
     icon: { glyph: "wrap" },
     gesture: (root, id) => wrapIn(root, id, "layout", "Stack"),
@@ -98,6 +101,7 @@ export const actions: readonly Action[] = [
   {
     id: "duplicate",
     label: "Duplicate",
+    text: "Duplicate",
     hotkeys: ["mod+d"],
     icon: { glyph: "duplicate" },
     gesture: (root, id) => {
@@ -111,6 +115,7 @@ export const actions: readonly Action[] = [
   {
     id: "remove",
     label: "Remove",
+    text: "Remove",
     hotkeys: ["delete", "backspace"],
     icon: { role: "delete" },
     gesture: (root, id) => {
@@ -134,6 +139,24 @@ export function allowed(root: MakerNode, id: string | undefined, action: Action)
   if (!id) return undefined;
   const gesture = action.gesture(root, id);
   return gesture && applyAll(root, gesture.operations).ok ? gesture : undefined;
+}
+
+/*
+ * WHETHER AN ACTION IS AVAILABLE, remembered. Asking is applying the gesture, which validates the whole page, and the
+ * toolbars ask for all eight actions on every render: zoom, hover and a keystroke in an unrelated field all re-render
+ * them. A page is immutable (an edit makes a new one), so the answer for a given page, selection and action never
+ * changes, and a WeakMap keyed by the page forgets it with the page. Only the yes/no is kept: running an action still
+ * calls `allowed`, which mints fresh identities each time.
+ */
+const availability = new WeakMap<MakerNode, Map<string, boolean>>();
+export function canDo(root: MakerNode, id: string | undefined, action: Action): boolean {
+  if (!id) return false;
+  let known = availability.get(root);
+  if (!known) availability.set(root, (known = new Map()));
+  const key = `${id}|${action.id}`;
+  let answer = known.get(key);
+  if (answer === undefined) known.set(key, (answer = Boolean(allowed(root, id, action))));
+  return answer;
 }
 
 /** An action's shortcut the way the platform writes it: "⌘G" on a Mac, "Ctrl+G" elsewhere. */

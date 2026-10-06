@@ -1,14 +1,23 @@
-.maker-ai { display: flex; flex-direction: column; gap: 12px; padding: 12px; overflow: auto; max-block-size: calc(100vh - 180px); }
-.maker-ai p { margin: 0; white-space: pre-wrap; overflow-wrap: anywhere; }
-.maker-ai label { display: grid; gap: 4px; font-size: 12px; }
-.maker-ai input, .maker-ai select, .maker-ai textarea { font: inherit; color: inherit; background: transparent; border: 1px solid currentColor; border-radius: 6px; padding: 8px; min-inline-size: 0; inline-size: 100%; box-sizing: border-box; }
-.maker-ai textarea { resize: vertical; }
-.maker-ai__settings, .maker-ai form { display: grid; gap: 10px; min-inline-size: 0; }
-.maker-ai__settings p { font-size: 12px; }
-.maker-ai__conversation { display: grid; gap: 12px; }
-.maker-ai__conversation article { display: grid; gap: 6px; border-block-end: 1px solid currentColor; padding-block-end: 12px; }
-.maker-ai__context { display: flex; gap: 6px; flex-wrap: wrap; font-size: 12px; }
-.maker-ai__context button { font: inherit; color: inherit; background: transparent; border: 1px solid currentColor; border-radius: 16px; padding: 4px 8px; }
+/* The AI's side of the chat, told apart from the panel behind it: a tint of the text colour over the panel, in light and in dark,
+   with an edge to match. A flat surface on a near-identical surface read as nothing. */
+.maker-ai {
+  --maker-ai-bubble: color-mix(in oklab, var(--color-text-primary) 9%, var(--maker-surface-panel, var(--color-bg-surface)));
+  --maker-ai-bubble-edge: color-mix(in oklab, var(--color-text-primary) 44%, var(--maker-surface-panel, var(--color-bg-surface)));
+}
+.maker-ai { display: flex; flex-direction: column; gap: var(--space-stack-sm); padding: var(--space-inset-md); padding-block-start: var(--space-inset-sm); block-size: 100%; box-sizing: border-box; min-block-size: 0; overflow: hidden; }
+.maker-ai__settings, .maker-ai form { display: grid; gap: var(--space-stack-sm); min-inline-size: 0; border: 0; padding: 0; margin: 0; }
+.maker-ai__conversation { display: grid; align-content: start; gap: var(--space-stack-md); flex: 1 1 0; min-block-size: 0; overflow: auto; padding-inline-end: var(--space-inline-xs); }
+.maker-ai__empty { display: grid; gap: var(--space-stack-sm); padding: var(--space-inset-md); border-radius: var(--radius-control); background: var(--maker-ai-bubble); }
+.maker-ai__idea { justify-content: flex-start; text-align: start; }
+.maker-ai__bubble { box-sizing: border-box; max-inline-size: 100%; border: 1px solid var(--maker-ai-bubble-edge); border-radius: 1rem; border-start-start-radius: 0.25rem; padding: var(--space-inset-xs) var(--space-inline-md); background: var(--maker-ai-bubble); overflow-wrap: anywhere; white-space: pre-wrap; }
+.maker-ai__bubble--you { border-radius: 1rem; border-start-end-radius: 0.25rem; background: var(--color-bg-accent-subtle); border-color: color-mix(in oklab, var(--color-border-accent) 48%, transparent); color: var(--color-text-accent); }
+.maker-ai__typing { display: inline-flex; gap: 0.25rem; align-items: center; }
+.maker-ai__typing i { inline-size: 0.375rem; block-size: 0.375rem; border-radius: 50%; background: var(--color-text-tertiary); animation: maker-ai-typing 1.2s ease-in-out infinite; }
+.maker-ai__typing i:nth-child(2) { animation-delay: 0.15s; }
+.maker-ai__typing i:nth-child(3) { animation-delay: 0.3s; }
+@keyframes maker-ai-typing { 0%, 80%, 100% { opacity: 0.3; } 40% { opacity: 1; } }
+@media (prefers-reduced-motion: reduce) { .maker-ai__typing i { animation: none; opacity: 0.6; } }
+.maker-ai__context { display: flex; gap: var(--space-inline-xs); flex-wrap: wrap; align-items: center; }
 
 /* ─── the draft bar: progress and Apply/Discard, over the canvas where the draft is being drawn ───── */
 
@@ -59,4 +68,62 @@
 
 @media (prefers-reduced-motion: reduce) {
   .maker-draft-bar__pulse { animation: none; }
+}
+
+.maker-ai__setup { display: grid; gap: var(--space-stack-sm); padding: var(--space-inset-md); border: 1px dashed var(--color-border-default); border-radius: var(--radius-control); }
+
+.maker-ai__summary { display: grid; gap: var(--space-stack-xs); padding: var(--space-inset-sm) var(--space-inline-md); border: 1px solid var(--maker-ai-bubble-edge); border-radius: var(--radius-control); background: var(--maker-ai-bubble); }
+.maker-ai__summary ul { margin: 0; padding-inline-start: 1.1rem; font-size: var(--font-size-sm); }
+.maker-ai__summary[data-outcome="applied"] { border-color: color-mix(in oklab, var(--color-border-accent) 55%, transparent); }
+.maker-ai__summary[data-outcome="discarded"], .maker-ai__summary[data-outcome="reverted"] { color: var(--color-text-secondary); }
+.maker-ai__summary .sk-button { justify-self: start; }
+
+/*
+ * THE COMPOSER, as in a chat: one box holding the attached context, the field and its send button, so the thing you type and
+ * the thing that sends it are one object. The field grows with what is typed; the hint says the keys once.
+ */
+.maker-ai form.maker-ai__composer { gap: var(--space-stack-xs); padding: var(--space-inset-sm); border: 1px solid var(--color-border-default); border-radius: var(--radius-surface); background: var(--color-bg-surface); }
+/* ONE focus indicator: the box. The field inside is the box's own content, so it draws no ring of its own (two nested rings, one on
+   the field and one on its container, read as a double border); the box takes the kit's ring whenever the field has keyboard focus. */
+.maker-ai form.maker-ai__composer:has(:focus-visible) { outline: var(--focus-ring-width) solid var(--focus-ring-color); outline-offset: var(--focus-ring-offset); }
+.maker-ai__field .sk-input:focus-visible { outline: none; }
+.maker-ai__field { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: end; gap: var(--space-inline-xs); }
+.maker-ai__field .sk-form-field { min-inline-size: 0; }
+.maker-ai__hint { margin: 0; }
+.maker-ai__latest { position: sticky; inset-block-end: 0; justify-self: center; }
+/* The composer is the box, so the field inside it gives up its own: the kit's hooks, not a restyle. */
+/* On the control itself: the kit declares these hooks there, so an ancestor's value would never reach it. */
+.maker-ai__field .sk-input { --sk-input-border-width: 0; --sk-input-bg: transparent; --sk-input-shadow: none; --sk-input-wash: none; --sk-input-height: 0; resize: none; }
+
+.maker-ai__questions { display: grid; gap: var(--space-stack-sm); padding: var(--space-inset-sm) var(--space-inline-md); border: 1px solid color-mix(in oklab, var(--color-border-accent) 55%, transparent); border-radius: var(--radius-control); background: var(--maker-ai-bubble); }
+.maker-ai__questions[data-answered] { border-color: var(--color-border-subtle); color: var(--color-text-secondary); }
+.maker-ai__questions ul { margin: 0; padding-inline-start: 1.1rem; font-size: var(--font-size-sm); }
+.maker-ai__question { display: grid; gap: var(--space-stack-xs); min-inline-size: 0; border: 0; margin: 0; padding: 0; }
+.maker-ai__question legend { padding: 0; font-weight: 600; }
+.maker-ai__question-n { color: var(--color-text-accent); margin-inline-end: 0.25rem; }
+.maker-ai__question-title { font-weight: 600; }
+
+/* Everything but the conversation keeps its own height; a long proposal scrolls inside itself instead of crowding the composer out. */
+.maker-ai > :not(.maker-ai__conversation) { flex: 0 0 auto; }
+.maker-ai > section[aria-label="Proposed changes"] { max-block-size: 30%; overflow: auto; }
+.maker-ai .maker-ai__composer { margin-block-start: auto; }
+
+/* The plan is a message like the rest: the same bubble, with its goal, its checklist and what is a placeholder. */
+.maker-ai__bubble--plan { display: grid; gap: var(--space-stack-xs); white-space: normal; animation: maker-ai-in 0.28s ease-out both; }
+.maker-ai__bubble--plan ul { margin: 0; padding-inline-start: 1.1rem; font-size: var(--font-size-sm); color: var(--color-text-secondary); }
+
+/* The caret that follows the text while it is being written. */
+.maker-ai__caret { display: inline-block; inline-size: 2px; block-size: 1em; margin-inline-start: 2px; vertical-align: text-bottom; background: currentColor; animation: maker-ai-caret 0.9s steps(1) infinite; }
+@keyframes maker-ai-caret { 50% { opacity: 0; } }
+
+/* What it is doing, beside the dots, while no words have arrived yet. */
+.maker-ai__typing-status { margin-inline-start: 0.5rem; color: var(--color-text-secondary); font-size: var(--font-size-sm); }
+
+/* A card that arrives (the plan, the questions, the summary) eases in instead of appearing. */
+.maker-ai__questions, .maker-ai__summary { animation: maker-ai-in 0.28s ease-out both; }
+@keyframes maker-ai-in { from { opacity: 0; translate: 0 6px; } }
+
+@media (prefers-reduced-motion: reduce) {
+  .maker-ai__caret { animation: none; }
+  .maker-ai__bubble--plan, .maker-ai__questions, .maker-ai__summary { animation: none; }
 }

@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { createSite, randomId, type MakerSite } from "@skryensya/maker-model";
+import { applySite, createSite, randomId, starterLayout, type MakerSite } from "@skryensya/maker-model";
 import { siteNameProblem, suggestSiteName } from "./names.js";
 import { renderSite } from "./render.js";
 
@@ -79,5 +79,23 @@ describe("site names", () => {
     expect(suggestSiteName("Café Aurora")).toBe("cafe-aurora");
     expect(suggestSiteName("UI")).toBe("site-ui");
     expect(suggestSiteName("¡¡¡")).toBe("site-new");
+  });
+
+  it("publishes every page inside the site's layout: its header and footer are in each file", () => {
+    const framed = applySite(site(), { type: "addLayout", layout: starterLayout("frame", "Frame", randomId), makeDefault: true });
+    if (!framed.ok) throw new Error(framed.reason);
+    const rendered = renderSite(framed.site, { siteTitle: "Aurora", kitBase: "/_kit/x" });
+    if (!rendered.ok) throw new Error(rendered.reason);
+    for (const file of rendered.files) {
+      expect(file.body).toContain("Your site");
+      expect(file.body).toContain("Made with Skryensya.");
+      /* The page's own content is still there, between them. */
+      expect(file.body.indexOf("Your site")).toBeLessThan(file.body.indexOf("Made with Skryensya."));
+    }
+    const alone = applySite(framed.site, { type: "setPageLayout", page: "p2", layout: "none" });
+    if (!alone.ok) throw new Error(alone.reason);
+    const again = renderSite(alone.site, { siteTitle: "Aurora", kitBase: "/_kit/x" });
+    if (!again.ok) throw new Error(again.reason);
+    expect(again.files.find((file) => file.path.startsWith("about"))!.body).not.toContain("Your site");
   });
 });

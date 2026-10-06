@@ -20,23 +20,61 @@ export type Session = {
   readonly fresh: boolean;
   readonly allowed: readonly Place[];
   readonly target?: Target;
+  /** Set when the keyboard is choosing the place: `at` indexes `allowed`, and Enter drops there. */
+  readonly keyboard?: boolean;
+  readonly at?: number;
 };
+
+/** Says where a place is on a surface, or that it is not on it. The pointer's inverse. */
+export type Placer = (place: Place) => Target | undefined;
 
 export function useDrag(root: MakerNode, gesture: (operations: readonly Operation[], select?: string) => void) {
   const [session, setSession] = useState<Session>();
   const resolvers = useRef(new Map<string, Resolver>());
+  const placers = useRef(new Map<string, Placer>());
   const current = useRef<Session | undefined>(undefined);
   current.current = session;
 
-  const register = useCallback((name: string, resolver: Resolver) => {
+  const register = useCallback((name: string, resolver: Resolver, placer?: Placer) => {
     resolvers.current.set(name, resolver);
-    return () => void resolvers.current.delete(name);
+    if (placer) placers.current.set(name, placer);
+    return () => {
+      resolvers.current.delete(name);
+      placers.current.delete(name);
+    };
   }, []);
+
+  const targetFor = (place: Place | undefined): Target | undefined => {
+    if (!place) return undefined;
+    for (const place_ of placers.current.values()) {
+      const found = place_(place);
+      if (found) return found;
+    }
+    return undefined;
+  };
 
   const begin = useCallback(
     (child: MakerChild, fresh: boolean) => setSession({ child, fresh, allowed: dropTargets(root, child) }),
     [root],
   );
+
+  /** The keyboard's drag: the same session, its place chosen from `allowed` instead of found under a pointer. */
+  const beginKeyboard = useCallback(
+    (child: MakerChild, start?: Place) => {
+      const allowed = dropTargets(root, child);
+      const found = start ? allowed.findIndex((p) => p.parent === start.parent && p.slot === start.slot && p.index === start.index) : -1;
+      const at = Math.max(found, 0);
+      setSession({ child, fresh: true, allowed, keyboard: true, at, target: targetFor(allowed[at]) });
+    },
+    [root],
+  );
+
+  const step = useCallback((delta: number) => {
+    const active = current.current;
+    if (!active?.keyboard || active.allowed.length === 0) return;
+    const at = (((active.at ?? 0) + delta) % active.allowed.length + active.allowed.length) % active.allowed.length;
+    setSession({ ...active, at, target: targetFor(active.allowed[at]) });
+  }, []);
 
   const move = useCallback((x: number, y: number) => {
     const active = current.current;
@@ -53,8 +91,8 @@ export function useDrag(root: MakerNode, gesture: (operations: readonly Operatio
     (drop: boolean) => {
       const active = current.current;
       setSession(undefined);
-      if (!drop || !active?.target) return;
-      const { place } = active.target;
+      const place = active?.target?.place ?? (active?.keyboard ? active.allowed[active.at ?? 0] : undefined);
+      if (!drop || !active || !place) return;
       gesture(
         [active.fresh ? { type: "insert", at: place, child: active.child } : { type: "move", child: active.child.id, to: place }],
         active.child.id,
@@ -67,20 +105,35 @@ export function useDrag(root: MakerNode, gesture: (operations: readonly Operatio
     if (!session) return;
     const onMove = (event: PointerEvent) => move(event.clientX, event.clientY);
     const onUp = () => end(true);
+    const keyboard = session.keyboard === true;
     const onKey = (event: KeyboardEvent) => {
-      if (event.key === "Escape") end(false);
+      if (event.key === "Escape") return end(false);
+      if (!keyboard) return;
+      /* Captured, so the focused button neither scrolls its list nor presses itself as the drop is chosen. */
+      const next = event.key === "ArrowDown" || event.key === "ArrowRight" ? 1 : event.key === "ArrowUp" || event.key === "ArrowLeft" ? -1 : 0;
+      if (next !== 0) {
+        event.preventDefault();
+        event.stopPropagation();
+        step(next);
+      } else if (event.key === "Enter") {
+        event.preventDefault();
+        event.stopPropagation();
+        end(true);
+      }
     };
-    window.addEventListener("pointermove", onMove);
-    window.addEventListener("pointerup", onUp);
-    window.addEventListener("keydown", onKey);
+    if (!keyboard) {
+      window.addEventListener("pointermove", onMove);
+      window.addEventListener("pointerup", onUp);
+    }
+    window.addEventListener("keydown", onKey, true);
     return () => {
       window.removeEventListener("pointermove", onMove);
       window.removeEventListener("pointerup", onUp);
-      window.removeEventListener("keydown", onKey);
+      window.removeEventListener("keydown", onKey, true);
     };
-  }, [session !== undefined, move, end]);
+  }, [session !== undefined, session?.keyboard, move, end, step]);
 
-  return { session, begin, move, end, register };
+  return { session, begin, beginKeyboard, step, move, end, register };
 }
 
 export type Drag = ReturnType<typeof useDrag>;

@@ -7,9 +7,10 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "check": "tsc -p tsconfig.json --noEmit",
+    "check": "tsc -p tsconfig.json --noEmit && node --test scripts/design-system.test.ts",
     "test": "playwright test",
-    "thumbnails": "tsx scripts/generate-component-thumbnails.ts"
+    "thumbnails": "tsx scripts/generate-component-thumbnails.ts",
+    "drive": "node scripts/drive.mjs"
   },
   "dependencies": {
     "@skryensya/ai-compiler": "workspace:*",

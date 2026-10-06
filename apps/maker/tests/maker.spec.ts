@@ -1,6 +1,6 @@
 import { expect, test } from "@playwright/test";
 import { applySiteAll, randomId, resolveAgentOperations, type MakerSite } from "@skryensya/maker-model";
-import { addFromPalette, buildSamplePage, openMaker, pageTree, savedProject, selectInOutline, outlineRow, stage, layers, insert, setWidth, zoomTo, pageCommand, bar } from "./fixtures";
+import { addFromPalette, buildSamplePage, openMaker, pageTree, savedProject, selectInOutline, outlineRow, choose, stage, layers, insert, setWidth, zoomTo, pageCommand, bar } from "./fixtures";
 
 /*
  * The Maker in a real browser (decision 31): a page is built by composing, changed by operations,
@@ -93,22 +93,53 @@ test("the inspector offers the contract's options and nothing else, and they rea
   await selectInOutline(page, "Stack");
   const inspector = page.locator(".maker__right");
   await expect(inspector.getByText("Layout role")).toBeVisible();
-  await expect(inspector.getByLabel("Gap", { exact: true })).toBeVisible();
+  await expect(inspector.getByRole("combobox", { name: "Gap", exact: true })).toBeVisible();
   /* Stack declares no padding and no justify; nothing in the inspector names a length or a position. */
   await expect(inspector.getByLabel("Padding", { exact: true })).toHaveCount(0);
   await expect(inspector.getByLabel("Justify", { exact: true })).toHaveCount(0);
   for (const word of ["Width", "Height", "Top", "Left", "X", "Y", "width", "height", "top", "left", "x", "y"]) {
     await expect(inspector.getByLabel(word, { exact: true })).toHaveCount(0);
   }
-  await inspector.getByLabel("Gap", { exact: true }).selectOption("xl");
+  await choose(page, inspector, "Gap", "xl");
   await expect(stage(page).locator(".sk-stack").first()).toHaveAttribute("data-gap", "xl");
+});
+
+test("an option with a default shows that value, not a word that names nothing", async ({ page }) => {
+  await selectInOutline(page, "Heading");
+  const inspector = page.locator(".maker__right");
+  /* A Heading's level and size both default to h2: that is what they read, and choosing it again keeps nothing. */
+  const level = inspector.getByRole("combobox", { name: "Heading element", exact: true });
+  await expect(level).toContainText("h2");
+  await expect(inspector).not.toContainText("(default)");
+  await choose(page, inspector, "Heading element", "h3");
+  await expect(level).toContainText("h3");
+  await expect(stage(page).locator("h3")).toHaveCount(1);
+  await choose(page, inspector, "Heading element", "h2");
+  await expect.poll(() => savedJson(page)).not.toMatch(/"headingElement"/);
+});
+
+test("on or off is a switch, and every segmented control keeps a target a pointer can hit", async ({ page }) => {
+  await selectInOutline(page, "Button.action");
+  const inspector = page.locator(".maker__right");
+  /* No "false | true" choice: a boolean option is a switch, and flipping it reaches the page. */
+  await expect(inspector.getByRole("radio", { name: "false" })).toHaveCount(0);
+  await inspector.getByText("More options").first().click();
+  const pressed = inspector.getByRole("switch", { name: "Pressed" });
+  await expect(pressed).not.toBeChecked();
+  await inspector.locator("label", { hasText: "Pressed" }).click();
+  await expect(pressed).toBeChecked();
+  await expect.poll(() => savedJson(page)).toMatch(/"pressed":true/);
+  /* The options of every segmented control in the tool are at least 24px tall, the size of a target. */
+  const heights = await page.evaluate(() => [...document.querySelectorAll(".maker-shell .sk-segmented__option")].map((e) => Math.round(e.getBoundingClientRect().height)));
+  expect(heights.length).toBeGreaterThan(0);
+  expect(Math.min(...heights)).toBeGreaterThanOrEqual(24);
 });
 
 test("fill or fit is offered as the Inline's, and it is left behind when the child moves out", async ({ page }) => {
   await selectInOutline(page, "Button.action");
   const inspector = page.locator(".maker__right");
   await expect(inspector.getByRole("heading", { name: "In this Inline" })).toBeVisible();
-  await inspector.getByLabel("Sizing", { exact: true }).selectOption("fill");
+  await inspector.getByRole("radio", { name: "fill" }).click();
   await expect(stage(page).locator('[data-sizing="fill"]')).toHaveCount(1);
   await (await layers(page)).locator(".maker-outline [role=tree]").focus();
   await page.keyboard.press("Alt+ArrowLeft");
@@ -190,6 +221,37 @@ test("dragging from the palette onto the stage inserts exactly there", async ({ 
   await page.mouse.move(first.x + 3, first.y + first.height / 2, { steps: 10 });
   await page.mouse.up();
   await expect.poll(() => pageTree(page)).toContain("      Inline\n        Badge");
+});
+
+test("the palette can place an insert with the keyboard too: Shift+Enter, arrows to choose, Enter to drop", async ({ page }) => {
+  await (await insert(page)).getByRole("radio", { name: "Components" }).click();
+  await selectInOutline(page, "Inline");
+  await (await insert(page)).getByRole("radio", { name: "Insert" }).click().catch(() => undefined);
+  const item = (await insert(page)).locator(".maker-palette").getByRole("button", { name: "Badge", exact: true });
+  await item.focus();
+  await page.keyboard.press("Shift+Enter");
+  const status = (await insert(page)).locator(".maker-palette").getByRole("status");
+  /* It starts where Enter would insert: inside the selected Inline, at its end. */
+  await expect(status).toContainText("Badge: in Inline, at the end");
+  /* The canvas shows the chosen place while it is being chosen. */
+  await expect(page.locator(".maker-overlay--drop-line")).toBeVisible();
+  /* One step back is before the last Button. Nothing is inserted until Enter (reading the layers would leave the item, which gives up). */
+  await page.keyboard.press("ArrowUp");
+  await expect(status).toContainText("Badge: in Inline, before Button.action");
+  await page.keyboard.press("Enter");
+  await expect.poll(() => pageTree(page)).toContain('      Inline\n        Button.action\n          "Button"\n        Badge\n        Button.action');
+});
+
+test("Escape gives up a keyboard pick without touching the page", async ({ page }) => {
+  await selectInOutline(page, "Inline");
+  const item = (await insert(page)).locator(".maker-palette").getByRole("button", { name: "Badge", exact: true });
+  await item.focus();
+  await page.keyboard.press("Shift+Enter");
+  await expect((await insert(page)).locator(".maker-palette").getByRole("status")).toContainText("Place ");
+  await page.keyboard.press("Escape");
+  await expect((await insert(page)).locator(".maker-palette").getByRole("status")).toHaveText("");
+  await expect(page.locator(".maker-overlay--drop-line")).toHaveCount(0);
+  expect(await pageTree(page)).not.toContain("Badge");
 });
 
 test("a section is inserted as a whole subtree with fresh identities", async ({ page }) => {
@@ -283,11 +345,11 @@ test("a Grid is decided one way or the other, never both: columns, or minColumn"
   await selectInOutline(page, "Stack");
   await addFromPalette(page, "Grid");
   const inspector = page.locator(".maker__right");
-  await expect(inspector.getByLabel("Columns", { exact: true })).toBeVisible();
+  await expect(inspector.getByRole("combobox", { name: "Columns", exact: true })).toBeVisible();
   await expect(inspector.getByLabel("Min column", { exact: true })).toHaveCount(0);
-  await inspector.getByLabel("Columns", { exact: true }).selectOption("3");
+  await choose(page, inspector, "Columns", "3");
   await inspector.getByRole("radio", { name: "Min column" }).click();
-  await expect(inspector.getByLabel("Min column", { exact: true })).toBeVisible();
+  await expect(inspector.getByRole("combobox", { name: "Min column", exact: true })).toBeVisible();
   await expect(inspector.getByLabel("Columns", { exact: true })).toHaveCount(0);
   const grid = stage(page).locator(".sk-grid").first();
   await expect(grid).toHaveAttribute("data-min-column", "sm");
@@ -418,7 +480,7 @@ test("an agent's change to the project arrives live, as one step the person can 
 
 test("the person's changes are saved to the project for an agent to read", async ({ page }) => {
   await selectInOutline(page, "Stack");
-  await page.locator(".maker__right").getByLabel("Gap", { exact: true }).selectOption("lg");
+  await choose(page, page.locator(".maker__right"), "Gap", "lg");
   await expect.poll(() => savedJson(page)).toMatch(/"gap":"lg"/);
 });
 
@@ -430,14 +492,13 @@ test("inserting after a heading, a paragraph or a button lands below it, so a se
   await expect.poll(() => pageTree(page)).toMatch(/Heading\n\s+"Heading"\n\s+Text\n\s+"Text"\n\s+Text\n\s+"Text"\n\s+Text/);
 });
 
-test("double-clicking text on the stage selects it and puts the caret in its text", async ({ page }) => {
+test("double-clicking text on the stage edits it in place: type, Enter, done", async ({ page }) => {
   await stage(page).locator("h2").dblclick();
-  await expect(page.locator(".maker__right h2").first()).toHaveText("Heading");
-  const field = page.locator(".maker__right").getByLabel("Text", { exact: true });
-  await expect(field).toBeFocused();
+  await expect(stage(page).locator("h2[data-maker-editing]")).toBeVisible();
   await page.keyboard.type("Café Aurora");
   await page.keyboard.press("Enter");
   await expect(stage(page).locator("h2")).toHaveText("Café Aurora");
+  await expect(stage(page).locator("[data-maker-editing]")).toHaveCount(0);
 });
 
 test("the canvas shows every page as an artboard at its exact CSS width, and zooming never touches the site", async ({ page }) => {

@@ -36,8 +36,24 @@ async function post(url: string, headers: Record<string, string>, body: unknown,
     throw new Error("Provider unavailable or timed out. Check your endpoint and browser CORS support.");
   }
   // Never relay provider bodies: they can echo credentials or request headers.
-  if (!response.ok) throw new Error(response.status === 401 || response.status === 403 ? "Provider rejected the credential or browser access." :
-    response.status === 429 ? "Provider rate limit reached. Try again later." : `Provider request failed (HTTP ${response.status}).`);
+  if (!response.ok) {
+    if (response.status === 401 || response.status === 403) throw new Error("Provider rejected the credential or browser access.");
+    if (response.status === 429) throw new Error("Provider rate limit reached. Try again later.");
+    /* A model the provider does not know is the one failure a person can fix on the spot, so it is named. Nothing
+       else of the body is relayed: it can echo credentials. */
+    const model = typeof body === "object" && body !== null && "model" in body ? String((body as { model: unknown }).model) : "";
+    if (response.status === 404 || response.status === 400) {
+      const text = await response.text().catch(() => "");
+      if (model && /model/i.test(text) && /(not found|does not exist|unknown|do not have access)/i.test(text)) throw new Error(`The provider has no model "${model}" for this key. Check the model name.`);
+      /* A 400 is the provider saying what is wrong with the REQUEST, never with the key. Its message is relayed with
+         every credential we sent removed, since without it the failure cannot be told apart from any other. */
+      let detail = "";
+      try { const parsed = JSON.parse(text) as { error?: { message?: unknown } | string }; detail = typeof parsed.error === "string" ? parsed.error : typeof parsed.error?.message === "string" ? parsed.error.message : ""; } catch { /* not JSON */ }
+      for (const value of Object.values(headers)) for (const secret of value.split(/\s+/).filter(part => part.length >= 8)) detail = detail.split(secret).join("[credential]");
+      if (detail) throw new Error(`Provider request failed (HTTP ${response.status}): ${detail.slice(0, 300)}`);
+    }
+    throw new Error(`Provider request failed (HTTP ${response.status}).`);
+  }
   return response;
 }
 
@@ -165,6 +181,105 @@ export const openaiAdapter: ProviderAdapter = {
   },
 };
 
+/*
+ * OPENAI'S RESPONSES API (POST /v1/responses), the one OpenAI recommends for new work and the one that takes
+ * reasoning and function calling together. Used for the `openai` provider only: OpenRouter and OpenAI-compatible
+ * endpoints speak chat/completions, which `openaiAdapter` above keeps serving.
+ *
+ * The conversation is resent whole each turn, so nothing depends on the server keeping state. A function call is
+ * sent back WITHOUT its item `id` (only `call_id`, name and arguments): with the id, the API demands the reasoning
+ * item that preceded it, which a stateless resend does not have.
+ */
+const REASONING_MODEL = /^(o\d|gpt-(?:[5-9]|\d{2,}))/i;
+
+function responsesBody(connection: ProviderConnection, system: string, messages: readonly Message[], tools: readonly ToolSpec[]) {
+  const input: unknown[] = [];
+  for (const m of messages) {
+    if (m.role === "user") input.push({ role: "user", content: m.content });
+    else if (m.role === "tool") input.push({ type: "function_call_output", call_id: m.call.id, output: m.content });
+    else {
+      if (m.content) input.push({ role: "assistant", content: m.content });
+      for (const c of m.calls) input.push({ type: "function_call", call_id: c.id, name: c.name, arguments: c.arguments });
+    }
+  }
+  return {
+    model: connection.model,
+    instructions: system,
+    input,
+    /* Only a reasoning model takes `reasoning`; sending it to gpt-4.1 and the like is a 400. Low effort: the person is
+       watching the canvas wait, and the contracts are in the prompt, so the model has little to work out. */
+    ...(REASONING_MODEL.test(connection.model) ? { reasoning: { effort: "low" } } : {}),
+    ...(tools.length ? { tools: tools.map(t => ({ type: "function", name: t.name, description: t.description, parameters: t.parameters })) } : {}),
+  };
+}
+
+const responsesOutput = z.object({ output: z.array(z.object({ type: z.string() }).passthrough()).max(64) });
+const functionCall = z.object({ type: z.literal("function_call"), call_id: z.string(), name: z.string(), arguments: z.string() });
+const outputMessage = z.object({ type: z.literal("message"), content: z.array(z.object({ type: z.string(), text: z.string().optional() }).passthrough()) });
+
+function parseResponsesReply(raw: unknown): ProviderReply {
+  const parsed = responsesOutput.safeParse(raw);
+  if (!parsed.success) throw new Error("Malformed provider response.");
+  let text = "";
+  const calls: ToolCall[] = [];
+  for (const item of parsed.data.output) {
+    const call = functionCall.safeParse(item);
+    if (call.success) { calls.push({ id: call.data.call_id, name: call.data.name, arguments: call.data.arguments }); continue; }
+    const message = outputMessage.safeParse(item);
+    if (message.success) text += message.data.content.filter(c => c.type === "output_text").map(c => c.text ?? "").join("");
+  }
+  if (calls.length > 16) throw new Error("Provider response exceeds the agent limit.");
+  return { text, calls };
+}
+
+const responsesEvent = z.object({ type: z.string() }).passthrough();
+
+export const responsesAdapter: ProviderAdapter = {
+  async complete(connection, system, messages, tools, signal) {
+    const raw = await request(`${openaiBase(connection)}/responses`, { authorization: `Bearer ${connection.apiKey}` }, responsesBody(connection, system, messages, tools), signal);
+    return parseResponsesReply(raw);
+  },
+  async stream(connection, system, messages, tools, signal, on) {
+    const response = await post(`${openaiBase(connection)}/responses`, { authorization: `Bearer ${connection.apiKey}` },
+      { ...responsesBody(connection, system, messages, tools), stream: true }, signal, STREAM_TIMEOUT_MS);
+    if (!isEventStream(response)) return wholeReply(response, parseResponsesReply, on);
+    let text = "";
+    let seen = false;
+    const calls = new Map<number, { id: string; name: string; arguments: string }>();
+    for await (const raw of events(response, signal)) {
+      const parsed = responsesEvent.safeParse(raw);
+      if (!parsed.success) continue;
+      seen = true;
+      const event = parsed.data as { type: string; delta?: unknown; output_index?: unknown; item?: unknown; error?: { message?: unknown }; response?: { error?: { message?: unknown } } };
+      const index = typeof event.output_index === "number" ? event.output_index : -1;
+      if (event.type === "response.output_text.delta" && typeof event.delta === "string") { text += event.delta; on.text?.(event.delta); }
+      else if (event.type === "response.output_item.added") {
+        const item = functionCall.partial().safeParse(event.item);
+        if (item.success && item.data.type === "function_call" && item.data.call_id && item.data.name) {
+          calls.set(index, { id: item.data.call_id, name: item.data.name, arguments: "" });
+          on.callStart?.({ id: item.data.call_id, name: item.data.name });
+        }
+      } else if (event.type === "response.function_call_arguments.delta" && typeof event.delta === "string") {
+        const call = calls.get(index);
+        if (call) { call.arguments += event.delta; on.callArgs?.(call.id, event.delta); }
+      } else if (event.type === "response.output_item.done") {
+        /* The finished item carries the arguments whole: they win over what the deltas added up to. */
+        const done = functionCall.safeParse(event.item);
+        if (done.success) {
+          if (!calls.has(index)) on.callStart?.({ id: done.data.call_id, name: done.data.name });
+          calls.set(index, { id: done.data.call_id, name: done.data.name, arguments: done.data.arguments });
+        }
+      } else if (event.type === "response.failed" || event.type === "error") {
+        throw new Error("Provider request failed.");
+      }
+    }
+    if (!seen) throw new Error("Malformed provider response.");
+    const finished = [...calls.entries()].sort((a, b) => a[0] - b[0]).map(([, c]) => c).filter(c => c.id && c.name);
+    if (finished.length > 16) throw new Error("Provider response exceeds the agent limit.");
+    return { text, calls: finished.map(c => ({ id: c.id, name: c.name, arguments: c.arguments || "{}" })) };
+  },
+};
+
 function anthropicWire(messages: readonly Message[]) {
   const wire: { role: "user" | "assistant"; content: unknown[] }[] = [];
   for (const message of messages) {
@@ -232,7 +347,7 @@ export const anthropicAdapter: ProviderAdapter = {
   },
 };
 
-export const providers: Record<ProviderId, ProviderAdapter> = { openai: openaiAdapter, anthropic: anthropicAdapter, openrouter: openaiAdapter, compatible: openaiAdapter };
+export const providers: Record<ProviderId, ProviderAdapter> = { openai: responsesAdapter, anthropic: anthropicAdapter, openrouter: openaiAdapter, compatible: openaiAdapter };
 
 export async function testConnection(connection: ProviderConnection, signal: AbortSignal) {
   if (!connection.apiKey.trim() || !connection.model.trim()) throw new Error("Enter an API key and model.");

@@ -4,6 +4,33 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Maker stage</title>
+    <!--
+      THE STAGE'S FIRST PAINT IS THE MAKER'S OWN THEME. This document is an iframe inside the Maker, and its
+      stylesheet arrives through its module graph, a moment after the browser first draws it. Until then a
+      document with no colour scheme draws the browser default (white), which in dark mode was a flash
+      before the page arrived. The parent is same-origin, so its scheme is read synchronously, here, before
+      anything paints; the parent keeps mirroring later changes (Artboard.tsx).
+    -->
+    <script>
+      try {
+        var maker = window.parent !== window ? window.parent.document.documentElement : null;
+        if (maker) {
+          var scheme = maker.getAttribute("data-scheme");
+          if (scheme) {
+            document.documentElement.setAttribute("data-scheme", scheme);
+            document.documentElement.style.colorScheme = scheme;
+          }
+          if (maker.getAttribute("data-contrast")) document.documentElement.setAttribute("data-contrast", "high");
+        }
+      } catch (error) {
+        /* A stage opened on its own (the thumbnail script) has no parent: it keeps the default. */
+      }
+    </script>
+    <style>
+      html {
+        background: transparent;
+      }
+    </style>
   </head>
   <body>
     <div id="stage"></div>

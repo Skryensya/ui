@@ -4,8 +4,9 @@ import type { ItemInput, OptionInput } from "@skryensya/core/usage-tree";
 import { Button } from "@skryensya/react/button";
 import { Toolbar } from "@skryensya/react/toolbar";
 import { FormField } from "@skryensya/react/form-field";
-import { Input } from "@skryensya/react/input";
-import { NativeSelect } from "@skryensya/react/select-native";
+import { Input, Textarea } from "@skryensya/react/input";
+import { Select } from "@skryensya/react/select";
+import { Switch } from "@skryensya/react/switch";
 import { SegmentedControl } from "@skryensya/react/segmented";
 import { Heading, Text } from "@skryensya/react/typography";
 import { Inline, Stack } from "@skryensya/react/layout";
@@ -31,6 +32,7 @@ import { IconButton } from "./IconButton";
 import { glyphFor } from "./icons";
 import type { Maker } from "./state";
 import { outlineLabel } from "./Outline";
+import { Details } from "@skryensya/react/details";
 
 /** `Button.action` is a Button of the "action" kind; the Inspector names the thing and says the kind beneath. */
 const variantOf = (signature: string) => signature.split(".").slice(1).join(" ") || undefined;
@@ -66,8 +68,21 @@ function useEditTextRequests() {
   }, []);
 }
 
+/** The Select's value for "this option has no value", which a Select item cannot spell as an empty string. */
+const UNSET = "__unset__";
+
 /** How many of a component options show before the rest fold under "More options". */
 const FRONT_OPTIONS = 4;
+
+/** The options an edit most often touches: the first few the contract declares, and any already set (never hidden). */
+export function frontOptions(child: MakerNode): readonly string[] {
+  const resolved = resolve(child);
+  const options = resolved?.signature.options ?? [];
+  const { choices, hidden } = exclusions(child, resolved?.signature.excludes ?? {}, options);
+  const inChoice = new Set(choices.flatMap((choice) => [choice.key, ...choice.others]));
+  const base = options.filter((name) => !name.endsWith("Expanded") && !inChoice.has(name) && !hidden.has(name));
+  return base.filter((name, index) => index < FRONT_OPTIONS || child.options?.[name] !== undefined);
+}
 
 export function Inspector({ maker }: { maker: Maker }) {
   useEditTextRequests();
@@ -79,7 +94,7 @@ export function Inspector({ maker }: { maker: Maker }) {
       <div className="maker-inspector">
         <Stack gap="lg">
           <Heading as="h2" size="h5">
-            Page
+            {maker.isLayout ? "Layout" : "Page"}
           </Heading>
           <PageSettings maker={maker} />
           <Text size="sm" tone="secondary">
@@ -123,7 +138,7 @@ export function Inspector({ maker }: { maker: Maker }) {
    * few (a button's variant, tone, size). Those and any option already set stay in view, so nothing set is
    * ever hidden; the others fold under "More options" instead of a wall of selects.
    */
-  const front = base.filter((name, index) => index < FRONT_OPTIONS || child.options?.[name] !== undefined);
+  const front = frontOptions(child);
   const more = base.filter((name) => !front.includes(name));
   const field = (name: string) => (
     <OptionField
@@ -169,10 +184,12 @@ export function Inspector({ maker }: { maker: Maker }) {
               ))}
               {front.map(field)}
               {more.length > 0 ? (
-                <details className="maker-inspector__more">
-                  <summary>More options ({more.length})</summary>
-                  <Stack gap="sm">{more.map(field)}</Stack>
-                </details>
+                <Details>
+                  <Details.Summary>More options ({more.length})</Details.Summary>
+                  <Details.Content>
+                    <Stack gap="sm">{more.map(field)}</Stack>
+                  </Details.Content>
+                </Details>
               ) : null}
             </Stack>
           </section>
@@ -277,6 +294,7 @@ function ExclusiveChoice({ choice, node, contract, maker }: { choice: Choice; no
       <legend>Decided by</legend>
       <Stack gap="sm">
         <SegmentedControl
+          size="md"
           label={`What decides ${choice.others.map(humanize).join(", ")}`}
           value={byKey ? "key" : "others"}
           onValueChange={(value) => choose(value as "key" | "others")}
@@ -315,25 +333,23 @@ function Header({
             {subtitle}
           </Text>
         ) : null}
-        <dl className="maker-inspector__role">
-          {role?.parent && role.parentId ? (
-            <>
-              <dt>Parent</dt>
-              <dd>
-                <button type="button" className="maker-link" onClick={() => onParent(role.parentId!)}>
-                  {role.parent}
-                  {role.slot && role.slot !== "children" ? ` › ${role.slot}` : ""}
-                </button>
-              </dd>
-              <dt>Position</dt>
-              <dd>
-                {role.position} of {role.of}
-              </dd>
-            </>
-          ) : null}
-          <dt>Layout role</dt>
-          <dd>{role?.summary}</dd>
-        </dl>
+        {/* Where it sits, on one line, and what that means in a sentence under it: three label-value rows for one fact each was
+            more reading than the answer. */}
+        {role?.parent && role.parentId ? (
+          <Inline gap="xs" align="center" className="maker-inspector__where">
+            <Text as="span" size="sm" tone="tertiary">In</Text>
+            <Button variant="ghost" size="xs" onClick={() => onParent(role.parentId!)}>
+              {role.parent}
+              {role.slot && role.slot !== "children" ? ` › ${role.slot}` : ""}
+            </Button>
+            <Text as="span" size="sm" tone="tertiary">· {role.position} of {role.of}</Text>
+          </Inline>
+        ) : null}
+        {role?.summary ? (
+          <Text size="sm" tone="secondary">
+            <span className="maker-inspector__role-label">Layout role:</span> {role.summary}
+          </Text>
+        ) : null}
       </Stack>
     </header>
   );
@@ -355,9 +371,17 @@ function OptionField({
   suggestions?: readonly string[];
 }) {
   const label = humanize(name);
-  const fallback = option.default === undefined ? "not set" : "default";
   if (option.type === "enum" || option.type === "boolean") {
     const values = option.type === "enum" ? (option.values ?? []) : ["false", "true"];
+    /* On or off is a switch. A segmented control chooses between named alternatives; "false | true" is not a choice. */
+    if (option.type === "boolean") {
+      const on = value === undefined ? option.default === true : value === true;
+      return (
+        <Switch checked={on} onCheckedChange={({ checked }) => onChange(checked === (option.default === true) ? undefined : checked)}>
+          {label}
+        </Switch>
+      );
+    }
     const binary = values.length === 2;
     if (binary) {
       const defaultValue = option.default === undefined ? undefined : String(option.default);
@@ -365,6 +389,7 @@ function OptionField({
       return (
         <FormField label={label}>
           <SegmentedControl
+            size="md"
             className="maker-inspector__segmented"
             label={label}
             value={current}
@@ -374,17 +399,24 @@ function OptionField({
         </FormField>
       );
     }
+    /*
+     * An option with a default SHOWS it: a Heading's level reads "h2", the value it has, not "(default)", which
+     * names nothing. Choosing that value again clears the option, so the page keeps no value it did not need.
+     * Only an option with no default at all has an honest "not set".
+     */
+    const defaultValue = option.default === undefined ? undefined : String(option.default);
+    const current = value === undefined ? (defaultValue ?? UNSET) : String(value);
+    const choices = [...(defaultValue === undefined ? [{ value: UNSET, label: "not set" }] : []), ...values.map((v) => ({ value: v, label: v }))];
     return (
-      <FormField label={label}>
-        <NativeSelect
-          value={value === undefined ? "" : String(value)}
-          onChange={(event) => {
-            const raw = event.currentTarget.value;
-            onChange(raw === "" ? undefined : option.type === "boolean" ? raw === "true" : raw);
-          }}
-          options={[{ value: "", label: `(${fallback})` }, ...values.map((v) => ({ value: v, label: v }))]}
-        />
-      </FormField>
+      <Select
+        label={label}
+        value={current}
+        options={choices}
+        onValueChange={({ value: [raw] }) => {
+          if (raw === undefined) return;
+          onChange(raw === UNSET || raw === defaultValue ? undefined : option.type === "boolean" ? raw === "true" : raw);
+        }}
+      />
     );
   }
   return (
@@ -441,8 +473,8 @@ export function CommitField({
   return (
     <FormField label={label}>
       {multiline ? (
-        <textarea
-          className="sk-input maker-textarea"
+        <Textarea
+          className="maker-textarea"
           value={draft}
           rows={3}
           onChange={(event) => setDraft(event.currentTarget.value)}

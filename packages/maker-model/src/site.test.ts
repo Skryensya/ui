@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { commitSite, startHistory, undo } from "./history.js";
-import { walk } from "./node.js";
+import { walk, type MakerNode } from "./node.js";
+import { fromUsageTree } from "./project.js";
 import { createPage, serialize } from "./page.js";
 import { counterIds } from "./project.js";
 import {
@@ -8,8 +9,11 @@ import {
   applySiteAll,
   brokenLinks,
   createSite,
+  composePage,
   duplicatePage,
+  emptyLayout,
   emptyPage,
+  layoutFor,
   onPage,
   parseSite,
   pathProblem,
@@ -119,5 +123,89 @@ describe("files", () => {
   it("refuses a site whose pages share a path", () => {
     const bad = { ...site(), pages: site().pages.map((page) => ({ ...page, path: "/" })) };
     expect(parseSite(JSON.stringify(bad), "hash", counterIds()).ok).toBe(false);
+  });
+});
+
+
+describe("layouts: a frame every page sits in, edited once", () => {
+  const footer = (): MakerNode =>
+    fromUsageTree({ contract: "footer", signature: "Footer", children: [{ contract: "typography", signature: "Text", children: "Made by hand" }] }, counterIds("f")) as MakerNode;
+  const withLayout = () => {
+    const base = site();
+    const layout = emptyLayout("frame", "Marketing", counterIds("l"));
+    const shell = layout.root;
+    const added = ok(applySite(base, { type: "addLayout", layout, makeDefault: true }));
+    /* A footer under the outlet, added to the layout the way anything is added to a page: an `edit` addressed to it. */
+    return { added, layout, shell, withFooter: ok(applySite(added, { type: "edit", page: "frame", operation: { type: "insert", at: { parent: shell.id, slot: "children", index: 1 }, child: footer() } })) };
+  };
+
+  it("a layout is an AppShell with an outlet, and the default one reaches every page that does not say otherwise", () => {
+    const { withFooter } = withLayout();
+    const home = withFooter.pages[0]!;
+    expect(layoutFor(withFooter, home)?.id).toBe("frame");
+    const composed = composePage(withFooter, home);
+    const signatures = [...walk(composed.root)].map((node) => node.signature);
+    expect(composed.root.signature).toBe("AppShell");
+    expect(signatures).toContain("Footer");
+    /* The page's own Main stands where the outlet was, and its nodes are the page's, not the layout's. */
+    expect(composed.root.slots.children).toMatchObject({ kind: "nodes" });
+    expect([...walk(composed.root)].some((node) => node.id === home.root.id)).toBe(true);
+    expect(composed.layout.has(home.root.id)).toBe(false);
+    expect([...walk(home.root)].every((node) => !composed.layout.has(node.id))).toBe(true);
+    expect([...composed.layout].length).toBeGreaterThan(1);
+  });
+
+  it("a page added later has the layout without anyone setting it, and can opt out or pick another", () => {
+    const { withFooter } = withLayout();
+    const added = ok(applySite(withFooter, { type: "addPage", page: emptyPage("pricing", "Pricing", "/pricing", counterIds("p")) }));
+    const pricing = added.pages.find((page) => page.id === "pricing")!;
+    expect(layoutFor(added, pricing)?.id).toBe("frame");
+    const alone = ok(applySite(added, { type: "setPageLayout", page: "pricing", layout: "none" }));
+    expect(composePage(alone, alone.pages.find((page) => page.id === "pricing")!).root.signature).toBe("Main");
+    const back = ok(applySite(alone, { type: "setPageLayout", page: "pricing" }));
+    expect(layoutFor(back, back.pages.find((page) => page.id === "pricing")!)?.id).toBe("frame");
+    expect(applySite(added, { type: "setPageLayout", page: "pricing", layout: "nope" }).ok).toBe(false);
+  });
+
+  it("an edit that would remove the outlet is refused, and a layout without one cannot be added", () => {
+    const { added, layout } = withLayout();
+    const outlet = layout.root.slots.children!.kind === "nodes" ? (layout.root.slots.children.children[0] as MakerNode) : undefined;
+    const removed = applySite(added, { type: "edit", page: "frame", operation: { type: "remove", child: outlet!.id } });
+    expect(removed.ok).toBe(false);
+    const noOutlet = { ...layout, id: "bad", root: { ...layout.root, id: "x1", slots: { children: { kind: "nodes" as const, children: [] } } } };
+    expect(applySite(added, { type: "addLayout", layout: noOutlet }).ok).toBe(false);
+  });
+
+  it("removing a layout sets pages that named it free, and clears the default", () => {
+    const { added } = withLayout();
+    const named = ok(applySite(added, { type: "setPageLayout", page: "about", layout: "frame" }));
+    const gone = ok(applySite(named, { type: "removeLayout", layout: "frame" }));
+    expect(gone.layouts).toEqual([]);
+    expect(gone.defaultLayout).toBeUndefined();
+    expect(gone.pages.every((page) => page.layout === undefined)).toBe(true);
+    expect(layoutFor(gone, gone.pages[0]!)).toBeUndefined();
+  });
+
+  it("one undo takes back adding a layout, and the saved file keeps it and refuses a broken reference", () => {
+    const base = site();
+    let history = startHistory(base);
+    const layout = emptyLayout("frame", "Marketing", counterIds("l"));
+    const committed = commitSite(history, [{ type: "addLayout", layout, makeDefault: true }]);
+    if (!committed.ok) throw new Error(committed.reason);
+    history = committed.history;
+    expect(history.present.layouts).toHaveLength(1);
+    expect(undo(history).present.layouts ?? []).toHaveLength(0);
+    const saved = serializeSite(history.present, "hash");
+    const reopened = parseSite(saved, "hash", counterIds("n"));
+    expect(reopened.ok && reopened.site.defaultLayout).toBe("frame");
+    const broken = JSON.parse(saved);
+    broken.defaultLayout = "ghost";
+    expect(parseSite(JSON.stringify(broken), "hash", counterIds("n")).ok).toBe(false);
+  });
+
+  it("a site made before layouts opens as it was", () => {
+    const old = parseSite(serializeSite(site(), "hash"), "hash", counterIds("n"));
+    expect(old.ok && old.site.layouts).toBeUndefined();
+    expect(old.ok && composePage(old.site, old.site.pages[0]!).root).toBe(old.ok && old.site.pages[0]!.root);
   });
 });

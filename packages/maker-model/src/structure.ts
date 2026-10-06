@@ -187,14 +187,15 @@ export function insertionPlace(root: MakerNode, selected: string): Place | undef
 }
 
 /** Whether `child` may be dropped at this place. */
-export function canPlaceAt(root: MakerNode, place: Place, child: MakerChild): boolean {
+export function canPlaceAt(root: MakerNode, place: Place, child: MakerChild, baseline?: number): boolean {
   const parent = findChild(root, place.parent);
   if (!parent || !isNode(parent)) return false;
   const from = locate(root, child.id);
   const leaving = from && from.parent.id === parent.id && from.slot === place.slot ? child.id : undefined;
   if (isNode(child) && [...walk(child)].some((node) => node.id === parent.id)) return false;
   if (!canPlace(parent, place.slot, child, ancestors(root, parent.id), leaving)) return false;
-  return keepsContentModel(root, parent.id, place.slot, child, contentModelErrors(root));
+  /* `baseline` lets a caller asking about many children at one place validate the page once, not once each. */
+  return keepsContentModel(root, parent.id, place.slot, child, baseline ?? contentModelErrors(root));
 }
 
 /**
@@ -210,8 +211,15 @@ function keepsContentModel(root: MakerNode, parentId: string, slot: string, chil
 
 /** How many content-model errors the page has: the one structural rule only the validator knows. */
 export function contentModelErrors(root: MakerNode): number {
-  return validateUsageTree(toUsageTree(root)).problems.filter((problem) => problem.rule === "content-model").length;
+  /* A page is immutable, so the count for one never changes: asked for the same page by the toolbars, the menus, the
+     palette and every structural operation, it validated the whole page each time. The WeakMap forgets it with the page. */
+  const known = contentModelCache.get(root);
+  if (known !== undefined) return known;
+  const count = validateUsageTree(toUsageTree(root)).problems.filter((problem) => problem.rule === "content-model").length;
+  contentModelCache.set(root, count);
+  return count;
 }
+const contentModelCache = new WeakMap<MakerNode, number>();
 
 function detached(root: MakerNode, id: string): MakerNode {
   const at = locate(root, id);
@@ -236,8 +244,49 @@ export function insertable(
   presetOf: (ref: SignatureRef) => MakerNode | undefined,
   refs: readonly SignatureRef[] = catalogue(),
 ): readonly SignatureRef[] {
+  const baseline = contentModelErrors(root);
   return refs.filter((ref) => {
     const preset = presetOf(ref);
-    return preset !== undefined && canPlaceAt(root, place, preset);
+    return preset !== undefined && canPlaceAt(root, place, preset, baseline);
   });
+}
+
+/*
+ * LAYOUT ADVICE: what the validator accepts and a page should not do. Not errors (the page composes) and not for the person at
+ * the canvas: it is what an agent is told after it proposes a page, so its next attempt fixes it. The one that matters most is
+ * a page with no limit on its width: content directly in Main grows with the window, which is what a Wrapper's ceiling exists for.
+ */
+/* Components that set their own measure, or are meant to span the page: advising a Wrapper around a Marquee squeezes a strip that was asked to be full width. */
+const OWN_MEASURE = new Set(["Wrapper", "Navbar", "AppBar", "Sidebar", "Footer", "LayoutGrid", "SkipLink", "Hero", "Marquee", "Marquee.autoplay", "Carousel"]);
+
+export function layoutAdvice(root: MakerNode): readonly string[] {
+  const advice: string[] = [];
+  for (const node of walk(root)) {
+    if (node.signature === "Wrapper" && node.options?.wrapperSize === "full") {
+      advice.push(`Wrapper ${node.id} has wrapperSize "full", which has no maximum width: the page grows with the window. Use sm, md or lg unless a full-width column was asked for.`);
+    }
+    const kids = childrenOf(node, "children").filter(isNode);
+    /* A Wrapper only measures. Two things sitting in it directly have no spacing of their own: the Stack is what arranges them. */
+    if (node.signature === "Wrapper" && kids.length >= 2) {
+      advice.push(`Wrapper ${node.id} holds ${kids.length} things directly, with nothing to space them. Put them in one Stack (gap md) inside the Wrapper.`);
+    }
+    /* Inline is a ROW: actions, tags, a label and its value. A heading is a block, and belongs in a Stack. */
+    if (node.signature === "Inline" && kids.some((child) => child.signature === "Heading" || child.signature === "Hero")) {
+      advice.push(`Inline ${node.id} holds a Heading: an Inline is a row of things side by side (buttons, tags). Put headings and paragraphs in a Stack, and the row of actions in an Inline inside it.`);
+    }
+    /* Buttons side by side are an Inline; as direct children of a Stack they run down the page. */
+    if (node.signature === "Stack" && kids.filter((child) => child.signature.startsWith("Button")).length >= 2) {
+      advice.push(`Stack ${node.id} has two or more Buttons as direct children, one under another. Actions that sit together go in an Inline inside the Stack.`);
+    }
+  }
+  if (root.signature !== "Main") return advice;
+  for (const section of childrenOf(root, "children")) {
+    if (!isNode(section) || OWN_MEASURE.has(section.signature)) continue;
+    const hasWrapper = [...walk(section)].some((node) => node.signature === "Wrapper");
+    const hasContent = childrenOf(section, "children").some((child) => !isNode(child) || !["Stack", "Inline", "Grid", "Box"].includes(child.signature));
+    if (!hasWrapper && hasContent) {
+      advice.push(`Section ${section.signature} ${section.id} has no Wrapper: its content grows with the window. Put its content in a Wrapper (wrapperSize md for text, lg for wide layouts).`);
+    }
+  }
+  return advice;
 }

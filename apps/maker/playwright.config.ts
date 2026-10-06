@@ -10,6 +10,9 @@ import { defineConfig } from "@playwright/test";
  */
 const PUBLISH_TOKEN = `e2e-${process.pid}`;
 export const SITES_PORT = 8799;
+/* Its own port when asked: the dev server, the stream config and another run all want 4201, and two servers on one
+   port is how a run dies half way. `MAKER_E2E_PORT=4301 pnpm test` keeps this run apart from the rest. */
+const PORT = Number(process.env.MAKER_E2E_PORT ?? 4201);
 
 export default defineConfig({
   testDir: "./tests",
@@ -17,15 +20,16 @@ export default defineConfig({
   fullyParallel: true,
   workers: process.env.CI ? undefined : 4,
   reporter: process.env.CI ? "github" : "list",
-  use: { baseURL: "http://localhost:4201", viewport: { width: 1600, height: 1000 } },
+  use: { baseURL: `http://localhost:${PORT}`, viewport: { width: 1600, height: 1000 } },
   webServer: [
     {
-      command: `pnpm --filter @skryensya/maker-server build:kit && vite --port 4201 --strictPort`,
-      url: "http://localhost:4201",
+      command: `pnpm --filter @skryensya/maker-server build:kit && vite --port ${PORT} --strictPort`,
+      url: `http://localhost:${PORT}`,
       reuseExistingServer: false,
       env: {
         MAKER_STORE: "memory",
         SITES_PUBLISH_TOKEN: PUBLISH_TOKEN,
+        MAKER_AI_LOG: "off",
         SITES_PUBLISH_URL: `http://localhost:${SITES_PORT}`,
         SITES_DOMAIN: `localhost:${SITES_PORT}`,
       },

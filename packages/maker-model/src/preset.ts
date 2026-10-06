@@ -59,6 +59,9 @@ function presetForInner(ref: SignatureRef, newId: IdFactory, depth: number, stac
     }
   }
   addDisplayDefaults(contract, signature, options, slots, ref, newId, depth, stack);
+  /* A Wrapper is a measure, so it is born with its ceiling written down: the stylesheet's default would hold, but a column whose
+     width is only implied is one an edit or an agent can leave without a limit, and the page then grows with the window. */
+  if (ref.contract === "wrapper" && ref.signature === "Wrapper") options.wrapperSize ??= "md";
 
   return { id: newId(), contract: ref.contract, signature: ref.signature, ...(Object.keys(options).length ? { options } : {}), slots };
 }
@@ -233,4 +236,17 @@ function humanize(signature: string): string {
 
 function kebab(signature: string): string {
   return signature.replace(/\./g, "-").replace(/([a-z])([A-Z])/g, "$1-$2").toLowerCase();
+}
+
+/*
+ * THE PREVIEW PRESET, built once per signature. The palette asks "may this go here?" for every signature in the
+ * catalogue each time the selection or the page changes, and the answer only needs the preset's SHAPE, never its
+ * identity. Building 211 presets on every click was most of the time it took to select something; the shape of a
+ * preset depends on the contract alone, so it is cached for the life of the page.
+ */
+const previewCache = new Map<string, MakerNode | undefined>();
+export function previewPreset(ref: SignatureRef): MakerNode | undefined {
+  const key = `${ref.contract}/${ref.signature}`;
+  if (!previewCache.has(key)) previewCache.set(key, presetFor(ref, () => "preview"));
+  return previewCache.get(key);
 }

@@ -7,7 +7,8 @@
   "scripts": {
     "check": "tsc -p tsconfig.json --noEmit && vitest run && tsx run.ts",
     "agent": "tsx run-agent.ts",
-    "maker-agent": "tsx maker/run.ts"
+    "maker-agent": "tsx maker/run.ts",
+    "maker-ui": "tsx maker/run-ui.ts"
   },
   "dependencies": {
     "@skryensya/ai-compiler": "workspace:*",

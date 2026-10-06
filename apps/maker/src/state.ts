@@ -4,6 +4,7 @@ import {
   brokenLinks,
   commitSite,
   createSite,
+  entryOf,
   isNode,
   locate,
   onPage,
@@ -77,8 +78,8 @@ const VIEW_KEY = "skryensya-maker:view";
 
 /** The view, held to the site: an open page that no longer exists falls back to the first. */
 function settle(site: MakerSite, view: View): View {
-  const page = site.pages.some((entry) => entry.id === view.page) ? view.page : site.pages[0]!.id;
-  const root = site.pages.find((entry) => entry.id === page)!.root;
+  const page = entryOf(site, view.page) ? view.page : site.pages[0]!.id;
+  const root = entryOf(site, page)!.root;
   const selected = page === view.page ? keep(root, view.selected) : undefined;
   const selectedIds = page === view.page ? view.selectedIds.filter((id) => keep(root, id)) : [];
   return { ...view, page, selected, selectedIds: selected ? (selectedIds.includes(selected) ? selectedIds : [selected, ...selectedIds]) : selectedIds };
@@ -248,7 +249,10 @@ export function useMaker(projectId: string) {
   const state = useSyncExternalStore(subscribe, () => states.get(projectId)!);
   const dispatch = useCallback((action: Action) => dispatchTo(projectId, action), [projectId]);
   const site = state.history.present;
-  const page: MakerPageEntry = site.pages.find((entry) => entry.id === state.view.page) ?? site.pages[0]!;
+  const entry = entryOf(site, state.view.page) ?? site.pages[0]!;
+  /* A layout is opened and edited like a page; it has no path, and `isLayout` is how the few places that differ ask. */
+  const isLayout = !site.pages.some((candidate) => candidate.id === entry.id);
+  const page: MakerPageEntry = useMemo(() => (isLayout ? { ...entry, path: "" } : (entry as MakerPageEntry)), [entry, isLayout]);
 
   /* Only the browser-only project is kept in the browser; the others are kept by the server. */
   useEffect(() => {
@@ -280,6 +284,7 @@ export function useMaker(projectId: string) {
     revision: state.revision,
     site,
     page,
+    isLayout,
     view: state.view,
     notice: state.notice,
     problems,
@@ -333,15 +338,25 @@ export function selectParent(maker: Maker): void {
  * A third, only while an AI draft is shown: the nodes it just added are marked `data-maker-fresh`, so the
  * stage can bring them in and outline them. Same rule: a mark for looking, never part of the page.
  */
-export function stageTree(root: MakerNode, selected: string | undefined, fresh?: ReadonlySet<string>): UsageTree {
-  const open = new Set<string>();
+/**
+ * The nodes the stage holds open because the selection is in or on them (a dialog being edited). It is the ONLY thing
+ * about the selection that changes what the stage draws, so the artboard re-renders on this and not on the selection
+ * itself: selecting a heading used to rebuild and re-render the whole page to change nothing in it.
+ */
+export function openIdsFor(root: MakerNode, selected: string | undefined): readonly string[] {
+  const open: string[] = [];
   if (selected) {
     const itself = [...walk(root)].find((node) => node.id === selected);
     for (const above of [...ancestors(root, selected), ...(itself ? [itself] : [])]) {
       const resolved = resolve(above);
-      if (resolved?.signature.options.includes("open") && resolved.contract.options.open?.type === "boolean") open.add(above.id);
+      if (resolved?.signature.options.includes("open") && resolved.contract.options.open?.type === "boolean") open.push(above.id);
     }
   }
+  return open;
+}
+
+export function stageTree(root: MakerNode, selected: string | undefined, fresh?: ReadonlySet<string>, openIds?: readonly string[], layout?: ReadonlySet<string>): UsageTree {
+  const open = new Set<string>(openIds ?? openIdsFor(root, selected));
   const mark = (node: MakerNode): MakerNode => {
     const slots = Object.fromEntries(
       Object.entries(node.slots).map(([name, held]) => [
@@ -352,7 +367,10 @@ export function stageTree(root: MakerNode, selected: string | undefined, fresh?:
     return {
       ...node,
       ...(open.has(node.id) ? { options: { ...node.options, open: true } } : {}),
-      attrs: { ...node.attrs, "data-maker-node": node.id, ...(fresh?.has(node.id) ? { "data-maker-fresh": "" } : {}) },
+      /* A node of the layout, seen on a page, is drawn but not selectable there: it is changed in the layout, once. */
+      attrs: layout?.has(node.id)
+        ? { ...node.attrs, "data-maker-layout": "" }
+        : { ...node.attrs, "data-maker-node": node.id, ...(fresh?.has(node.id) ? { "data-maker-fresh": "" } : {}) },
       slots,
     };
   };

@@ -1,2 +1,5 @@
 test-results/
 playwright-report/
+
+# Maker AI conversation log (dev only): read it with `jq`, never committed.
+.ai-logs/

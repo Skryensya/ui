@@ -67,6 +67,17 @@ describe("maker tools", () => {
     expect((await call("maker_try", { project, revision: read.revision + 1, operations: [{ type: "renamePage", page, name: "Conflict" }] })).refused).toContain("conflict");
   });
 
+  it("lists a component's presets without needing a project, and refuses a signature that does not exist", async () => {
+    const found = await client.callTool({ name: "maker_presets", arguments: { contract: "button", signature: "Button.action" } });
+    const presets = (found.structuredContent as { presets: { id: string; name: string; arrivesIn?: string }[] }).presets;
+    expect(found.isError).toBeFalsy();
+    expect(presets.length).toBeGreaterThan(1);
+    expect(presets.map((preset) => preset.id)).toContain("default");
+    const missing = await client.callTool({ name: "maker_presets", arguments: { contract: "button", signature: "Nope" } });
+    expect(missing.isError).toBe(true);
+    expect(missing.structuredContent).toMatchObject({ presets: [], refused: "No such signature." });
+  });
+
   it("applies structure and saves it one revision up", async () => {
     const read = await call("maker_read", { project });
     const page = /^page (\S+)/.exec(read.outline)![1]!;

@@ -66,7 +66,7 @@ export async function selectInOutline(page: Page, label: string): Promise<void> 
 
 /** The page open in the Maker, as saved: an indented list of signatures and quoted text runs. */
 export async function pageTree(page: Page): Promise<string> {
-  const openName = (await (await layers(page)).locator(".maker-pages__item[aria-current=page] .maker-pages__name").textContent()) ?? "";
+  const openName = (await (await layers(page)).locator(".maker-pages__item[aria-current=page] .sk-tile__title").textContent()) ?? "";
   const { site } = await savedProject(page);
   const saved = site.pages.find((entry) => entry.name === openName) ?? site.pages[0];
   if (!saved) return "";
@@ -130,4 +130,10 @@ export async function zoomTo(page: Page, command: "Fit every page" | "Fit the op
 export async function pageCommand(page: Page, command: string): Promise<void> {
   await (await layers(page)).locator(".maker-pages").getByRole("button", { name: "Page actions" }).click();
   await page.getByRole("menuitem", { name: command }).click();
+}
+
+/** Choose from one of the kit's Selects the way a person does: open it by its label, then pick the option. */
+export async function choose(page: Page, scope: Locator, label: string, value: string): Promise<void> {
+  await scope.getByRole("combobox", { name: label, exact: true }).click();
+  await page.getByRole("option", { name: value, exact: true }).click();
 }

@@ -16,6 +16,7 @@ export function IconButton({
   tone,
   appearance,
   size = "sm",
+  text,
 }: {
   icon: AnyIcon;
   label: string;
@@ -26,6 +27,8 @@ export function IconButton({
   tone?: "accent" | "danger";
   appearance?: "plain" | "tactile" | "brutalist" | "frosted";
   size?: "xs" | "sm" | "md" | "lg";
+  /** Words beside the icon, for the few actions worth reading. The label stays the accessible name and starts with it. */
+  text?: string;
 }) {
   const activeTone = pressed ? "accent" : tone;
   return (
@@ -34,7 +37,7 @@ export function IconButton({
         variant="ghost"
         appearance={appearance}
         size={size}
-        iconOnly
+        iconOnly={text === undefined}
         aria-label={label}
         disabled={disabled}
         {...(pressed !== undefined ? { pressed } : {})}
@@ -42,6 +45,7 @@ export function IconButton({
         onClick={onClick}
       >
         <MakerIcon icon={icon} />
+        {text}
       </Button>
     </Tooltip>
   );

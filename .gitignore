@@ -51,5 +51,6 @@ apps/docs/.astro/
 # Output of evals/run-agent.ts: one folder per run, read locally in apps/eval-viewer or a plain
 # editor. It's a measurement of THIS run against the current catalogue, not a fixture to keep.
 evals/agent/runs/
+evals/maker/runs/
 
 

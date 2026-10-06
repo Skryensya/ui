@@ -822,6 +822,9 @@ importers:
       '@skryensya/maker-model':
         specifier: workspace:*
         version: link:../maker-model
+      parse5:
+        specifier: ^8.0.1
+        version: 8.0.1
       postgres:
         specifier: ^3.4.9
         version: 3.4.9

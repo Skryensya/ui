@@ -1,7 +1,10 @@
-import { actions, allowed, shortcutOf } from "./actions";
+import { actions, canDo, shortcutOf } from "./actions";
 import { runCanvasCommand, type CanvasCommand } from "./CanvasMenu";
 import { IconButton } from "./IconButton";
 import type { Maker } from "./state";
+
+/** Where a gap opens in the row: structure moves, then the things you make or remove. */
+const GROUP_STARTS = new Set(["wrap", "remove"]);
 
 /*
  * THE STRUCTURAL ACTIONS ON THE SELECTION, as buttons: the same gestures the keyboard sends, each disabled
@@ -21,12 +24,13 @@ export function SelectionActionButtons({
 }) {
   const root = maker.page.root;
   const selected = maker.view.selected;
-  return actions.map((action) => {
-    const gesture = allowed(root, selected, action);
-    const enabled = Boolean(gesture) || (maker.view.selectedIds.length > 1 && ["duplicate", "move-up", "move-down", "remove"].includes(action.id));
-    return (
+  return actions.flatMap((action) => {
+    const enabled = canDo(root, selected, action) || (maker.view.selectedIds.length > 1 && ["duplicate", "move-up", "move-down", "remove"].includes(action.id));
+    return [
+      ...(GROUP_STARTS.has(action.id) ? [<span key={`${action.id}-gap`} className="maker-quick-toolbar__separator" aria-hidden="true" />] : []),
       <IconButton
         key={action.id}
+        text={action.text}
         icon={action.icon}
         label={action.label}
         shortcut={shortcutOf(action)}
@@ -35,7 +39,7 @@ export function SelectionActionButtons({
         disabled={!enabled}
         tone={action.id === "remove" ? "danger" : undefined}
         onClick={() => runCanvasCommand(maker, action.id as CanvasCommand)}
-      />
-    );
+      />,
+    ];
   });
 }

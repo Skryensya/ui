@@ -4,6 +4,7 @@ import { loadTree, renderTree, setPortalContainer } from "@skryensya/react/rende
 import type { UsageTree } from "@skryensya/core/usage-tree";
 import "@skryensya/core/fonts/hanken-grotesk.css";
 import "@skryensya/core/tokens.scss";
+import "@skryensya/icons-lucide/select.css";
 import "./stage.css";
 
 /*

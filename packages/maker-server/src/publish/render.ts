@@ -1,6 +1,6 @@
 import { emitMarkup } from "@skryensya/ai-compiler/emit";
 import { validateUsageTree, type Problem } from "@skryensya/ai-compiler/validate";
-import { toUsageTree, type MakerPageEntry, type MakerSite } from "@skryensya/maker-model";
+import { composePage, toUsageTree, type MakerNode, type MakerPageEntry, type MakerSite } from "@skryensya/maker-model";
 
 /*
  * A MAKER SITE AS STATIC FILES: one HTML document per page, at the path the page declares
@@ -24,9 +24,10 @@ export function pageFile(page: MakerPageEntry): string {
   return page.path === "/" ? "index.html" : `${page.path.slice(1)}/index.html`;
 }
 
-export function document(page: MakerPageEntry, options: { siteTitle: string; kitBase: string; lang: string }): string {
+/** `root` is what is drawn when it is not the page's own tree: the page inside its layout. */
+export function document(page: MakerPageEntry, options: { siteTitle: string; kitBase: string; lang: string; root?: MakerNode }): string {
   const title = page.path === "/" ? options.siteTitle : `${page.name} · ${options.siteTitle}`;
-  const body = emitMarkup(toUsageTree(page.root));
+  const body = emitMarkup(toUsageTree(options.root ?? page.root));
   return `<!doctype html>
 <html lang="${escape(options.lang)}" data-scheme="system">
 <head>
@@ -47,8 +48,10 @@ ${body}
 export function renderSite(site: MakerSite, options: { siteTitle: string; kitBase: string; lang?: string }): Rendered {
   const lang = options.lang ?? "es";
   const pending: (Problem & { page: string })[] = [];
+  /* Every page is published inside its layout, so the layout's header and footer are in each file and checked with it. */
+  const drawn = new Map(site.pages.map((page) => [page.id, composePage(site, page).root]));
   for (const page of site.pages) {
-    for (const problem of validateUsageTree(toUsageTree(page.root)).problems) {
+    for (const problem of validateUsageTree(toUsageTree(drawn.get(page.id)!)).problems) {
       if (problem.rule === "unsafe-url") return { ok: false, reason: `Page "${page.name}" (${page.path}): ${problem.message}` };
       if (problem.severity === "error") pending.push({ ...problem, page: page.path });
     }
@@ -56,7 +59,7 @@ export function renderSite(site: MakerSite, options: { siteTitle: string; kitBas
   const files = site.pages.map((page) => ({
     path: pageFile(page),
     type: "text/html; charset=utf-8",
-    body: document(page, { siteTitle: options.siteTitle, kitBase: options.kitBase, lang }),
+    body: document(page, { siteTitle: options.siteTitle, kitBase: options.kitBase, lang, root: drawn.get(page.id)! }),
   }));
   return { ok: true, files, pending };
 }

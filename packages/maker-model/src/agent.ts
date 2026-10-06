@@ -5,7 +5,7 @@ import { pending } from "./problems.js";
 import { presetFor } from "./preset.js";
 import { buildVariant, variantsFor, type WrapperId } from "./variants.js";
 import { fromUsageTree, type IdFactory } from "./project.js";
-import { brokenLinks, emptyPage, type MakerSite, type SiteOperation } from "./site.js";
+import { brokenLinks, emptyPage, entryOf, layoutFor, layoutsOf, starterLayout, type MakerSite, type SiteOperation } from "./site.js";
 
 /*
  * THE MAKER, AS AN AGENT SEES IT (decision 31's "a prompt speaks only in operations").
@@ -44,7 +44,13 @@ export type AgentSiteOperation =
   | { readonly type: "removePage"; readonly page: string }
   | { readonly type: "renamePage"; readonly page: string; readonly name: string }
   | { readonly type: "setPagePath"; readonly page: string; readonly path: string }
-  | { readonly type: "movePage"; readonly page: string; readonly index: number };
+  | { readonly type: "movePage"; readonly page: string; readonly index: number }
+  /** A layout to start from (a header bar and a footer around the outlet); its content is then edited with `page` operations addressed to its id. */
+  | { readonly type: "addLayout"; readonly name: string; readonly makeDefault?: boolean }
+  | { readonly type: "removeLayout"; readonly layout: string }
+  | { readonly type: "renameLayout"; readonly layout: string; readonly name: string }
+  | { readonly type: "setDefaultLayout"; readonly layout?: string }
+  | { readonly type: "setPageLayout"; readonly page: string; readonly layout?: string };
 
 export type AgentResolved<T> = { readonly ok: true; readonly value: T } | { readonly ok: false; readonly reason: string };
 
@@ -54,7 +60,7 @@ export function resolveAgentOperations(site: MakerSite, input: readonly AgentSit
   for (const operation of input) {
     switch (operation.type) {
       case "page": {
-        if (!site.pages.some((page) => page.id === operation.page)) return { ok: false, reason: `No page "${operation.page}".` };
+        if (!entryOf(site, operation.page)) return { ok: false, reason: `No page or layout "${operation.page}".` };
         for (const each of operation.operations) {
           const resolved = resolvePageOperation(each, newId);
           if (!resolved.ok) return resolved;
@@ -65,6 +71,11 @@ export function resolveAgentOperations(site: MakerSite, input: readonly AgentSit
       case "addPage":
         out.push({ type: "addPage", page: emptyPage(newId(), operation.name, operation.path, newId), index: operation.index });
         break;
+      case "addLayout": {
+        const id = newId();
+        out.push({ type: "addLayout", layout: starterLayout(id, operation.name, newId), ...(operation.makeDefault ? { makeDefault: true } : {}) });
+        break;
+      }
       default:
         out.push(operation);
     }
@@ -118,7 +129,8 @@ export function describeSite(site: MakerSite): string {
   const broken = brokenLinks(site);
   const lines: string[] = [];
   for (const page of site.pages) {
-    lines.push(`page ${page.id} "${page.name}" ${page.path}`);
+    const layout = layoutFor(site, page);
+    lines.push(`page ${page.id} "${page.name}" ${page.path}${layout ? ` layout=${layout.id}` : page.layout === "none" ? " layout=none" : ""}`);
     describeNode(page.root, 1, lines);
     const problems = pending(page.root).problems.filter((problem) => problem.severity === "error");
     const links = broken.filter((link) => link.page === page.id);
@@ -127,6 +139,12 @@ export function describeSite(site: MakerSite): string {
       for (const problem of problems) lines.push(`    [${problem.nodes.join(", ")}] ${problem.rule}: ${problem.message}`);
       for (const link of links) lines.push(`    [${link.node}] broken-link: "${link.href}" is not a page of this site.`);
     }
+  }
+  /* Layouts are listed after the pages, and edited with `page` operations addressed to their id. The Main in each is the
+     outlet: where a page's own content goes. */
+  for (const layout of layoutsOf(site)) {
+    lines.push(`layout ${layout.id} "${layout.name}"${layout.id === site.defaultLayout ? " (default for pages that do not choose)" : ""}`);
+    describeNode(layout.root, 1, lines);
   }
   return lines.join("\n");
 }

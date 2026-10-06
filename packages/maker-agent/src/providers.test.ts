@@ -42,8 +42,14 @@ describe("BYOK provider adapters", () => {
     await expect(openaiAdapter.complete(connection, "Maker", [], [], controller.signal)).rejects.toThrow("Cancelled");
   });
   it("tests connections without sending credentials in the prompt", async () => {
-    vi.stubGlobal("fetch", vi.fn(async () => Response.json({ choices: [{ message: { content: "Connected" } }] })));
+    const fetch = vi.fn(async (url: string) => Response.json(url.endsWith("/responses")
+      ? { output: [{ type: "message", content: [{ type: "output_text", text: "Connected" }] }] }
+      : { choices: [{ message: { content: "Connected" } }] }));
+    vi.stubGlobal("fetch", fetch);
     await expect(testConnection(connection, signal())).resolves.toBeUndefined();
     await expect(testConnection({ ...connection, apiKey: "" }, signal())).rejects.toThrow("API key");
+    /* OpenAI is asked on the Responses API; OpenRouter and compatible endpoints stay on chat/completions. */
+    await testConnection({ ...connection, provider: "openrouter" }, signal());
+    expect(fetch.mock.calls.map(([url]) => url)).toEqual(["https://api.openai.com/v1/responses", "https://openrouter.ai/api/v1/chat/completions"]);
   });
 });

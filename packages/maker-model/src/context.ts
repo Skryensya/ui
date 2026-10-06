@@ -2,7 +2,7 @@ import { ancestors, childrenOf, findChild, isNode, isText, locate, walkChildren,
 import { layoutRole } from "./role.js";
 import { insertionPlace, isContainer, nodeSlots } from "./structure.js";
 import { pending } from "./problems.js";
-import type { MakerSite } from "./site.js";
+import { entryOf, type MakerSite } from "./site.js";
 import { applyAll } from "./operations.js";
 import { presetFor } from "./preset.js";
 import { counterIds } from "./project.js";
@@ -60,7 +60,7 @@ function subtree(node: MakerNode, maxNodes: number, maxDepth: number) {
  * the particular child. No child-independent placement can promise that a heading accepts a Grid.
  */
 export function makerContext(site: MakerSite, project: { id: string; revision: number }, view: MakerAgentView) {
-  const page = site.pages.find(p => p.id === view.page) ?? site.pages[0]!;
+  const page = entryOf(site, view.page) ?? site.pages[0]!;
   const root = page.root;
   const ids = [...new Set([...(view.selected ? [view.selected] : []), ...view.selectedIds])].filter(id => findChild(root, id));
   const primary = view.selected && ids.includes(view.selected) ? view.selected : undefined;
@@ -81,7 +81,7 @@ export function makerContext(site: MakerSite, project: { id: string; revision: n
   }) : [];
   const problems = pending(root).problems;
   const context = {
-    project, page: { id: page.id, name: page.name, path: page.path },
+    project, page: { id: page.id, name: page.name, path: "path" in page ? page.path : "" },
     selection: {
       primary, selectedIds: ids, total: ids.length, truncated: ids.length > 32,
       nodes: ids.slice(0, 32).map(id => {

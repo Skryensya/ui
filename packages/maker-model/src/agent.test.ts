@@ -89,6 +89,34 @@ describe("an agent's operations", () => {
     expect(describeSite(next)).toMatch(/layout\/Grid/);
   });
 
+  it("adds a layout, edits it by its id like a page, and puts every page inside it", () => {
+    /* A new id prefix per call, as each turn of the real agent has: one counter would mint the same ids twice. */
+    const step = (start: MakerSite, prefix: string, operations: readonly AgentSiteOperation[]): MakerSite => {
+      const resolved = resolveAgentOperations(start, operations, counterIds(prefix));
+      if (!resolved.ok) throw new Error(resolved.reason);
+      const applied = applySiteAll(start, resolved.value);
+      if (!applied.ok) throw new Error(applied.reason);
+      return applied.site;
+    };
+    const withLayout = step(site(), "a", [{ type: "addLayout", name: "Marketing", makeDefault: true }]);
+    const outline = describeSite(withLayout);
+    expect(outline).toMatch(/^page home "Home" \/ layout=/m);
+    expect(outline).toMatch(/^layout \S+ "Marketing" \(default/m);
+    expect(outline).toContain("layout/AppShell");
+    /* The layout's brand text is changed with a `page` operation addressed to the layout, not a new vocabulary. */
+    const layout = withLayout.layouts![0]!;
+    const brand = /^\s+(\S+) navbar\/NavbarBrand/m.exec(outline)![1]!;
+    const edited = step(withLayout, "b", [{ type: "page", page: layout.id, operations: [{ type: "setText", node: brand, text: "Aurora" }] }]);
+    expect(describeSite(edited)).toContain("Aurora");
+    /* A page the agent adds afterwards has the layout without being told. */
+    const more = step(edited, "c", [{ type: "addPage", name: "About", path: "/about" }]);
+    expect(describeSite(more)).toMatch(/^page \S+ "About" \/about layout=/m);
+    /* A name that is neither a page nor a layout is refused, naming both. */
+    const refused = resolveAgentOperations(more, [{ type: "page", page: "nope", operations: [{ type: "remove", child: "x" }] }], counterIds("r"));
+    expect(refused.ok).toBe(false);
+    if (!refused.ok) expect(refused.reason).toContain("page or layout");
+  });
+
   it("is refused, whole, when any operation breaks the contract", () => {
     const resolved = resolveAgentOperations(site(), [
       { type: "page", page: "home", operations: [

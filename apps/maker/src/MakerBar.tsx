@@ -1,4 +1,4 @@
-import { useMemo, type MutableRefObject } from "react";
+import { useDeferredValue, useMemo, type MutableRefObject } from "react";
 import { AppBar, AppBarMenu, AppBarStatus, type AppBarItem } from "@skryensya/react/app-bar";
 import { actions, allowed } from "./actions";
 import { quickInserts } from "./Palette";
@@ -80,7 +80,11 @@ export function MakerBar({ workspace, onProjects, editor }: { workspace: Workspa
      of the page or the selection, never once per render (the Editor renders on every hover). */
   const root = editor?.maker.page.root;
   const selectedId = editor?.maker.view.selected;
-  const quick = useMemo(() => (editor ? quickInserts(editor.maker, QUICK) : []), [root, selectedId]);
+  /* Which blocks the Insert menu can offer here takes a few validations of the whole page, and nothing on the screen
+     waits for it: it follows the selection a moment later, at low priority, so a click is not charged for it. */
+  const quickRoot = useDeferredValue(root);
+  const quickSelected = useDeferredValue(selectedId);
+  const quick = useMemo(() => (editor ? quickInserts(editor.maker, QUICK) : []), [quickRoot, quickSelected]);
   const server = workspace.mode.kind === "server";
   const active = workspace.active;
 

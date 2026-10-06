@@ -1,10 +1,17 @@
 import { useMemo, useState } from "react";
 import { discover } from "@skryensya/ai-compiler/discover";
+import type { UsageTree } from "@skryensya/core/usage-tree";
 import { snippets } from "@skryensya/snippets";
+import { SectionPreview } from "./SectionPreview";
 import { Icon } from "@skryensya/react/icon";
+import { Details } from "@skryensya/react/details";
+import { FormField } from "@skryensya/react/form-field";
 import { Input } from "@skryensya/react/input";
+import { NativeSelect } from "@skryensya/react/select-native";
+import { TileButton, TileContent } from "@skryensya/react/tile";
+import { Button } from "@skryensya/react/button";
 import { SegmentedControl } from "@skryensya/react/segmented";
-import { Text } from "@skryensya/react/typography";
+import { Heading, Text } from "@skryensya/react/typography";
 import {
   canPlaceAt,
   childrenOf,
@@ -12,11 +19,17 @@ import {
   fromUsageTree,
   insertable,
   insertionPlace,
+  layoutFor,
   buildVariant,
+  BLOCK_CATEGORIES,
+  blocks,
+  catalogue,
   presetFor,
+  previewPreset,
   randomId,
   resolve,
   variantsFor,
+  walk,
   wrapperChoices,
   type MakerChild,
   type Place,
@@ -43,7 +56,7 @@ import type { Maker } from "./state";
 const COMMON: readonly string[] = ["Heading", "Text", "Button.action", "Stack", "Inline", "Box"];
 
 const compiled = index as unknown as Parameters<typeof discover>[0];
-const makerHiddenContracts = new Set(["annotation", "chart", "diagram"]);
+const makerHiddenContracts = new Set(["annotation", "chart", "diagram", "expressive-avatar"]);
 const makerVisible = (ref: SignatureRef) => !makerHiddenContracts.has(ref.contract);
 const thumbnailSrc = (ref: SignatureRef, scheme: "light" | "dark", variant?: string) =>
   `/component-thumbnails/${ref.contract}-${ref.signature.replace(/[^a-z0-9]+/gi, "-")}${variant ? `--${variant}` : ""}-${scheme}.png`;
@@ -67,7 +80,9 @@ export function insertionFor(maker: Maker): Place {
  */
 export function quickInserts(maker: Maker, signatures: readonly string[]): readonly { signature: string; insert?: () => void }[] {
   const place = insertionFor(maker);
-  const allowed = insertable(maker.page.root, place, (ref) => presetFor(ref, () => "preview"));
+  /* Only the few the menu shows, not the whole catalogue: this runs on every selection, for the bar. */
+  const asked = catalogue().filter((ref) => signatures.includes(ref.signature));
+  const allowed = insertable(maker.page.root, place, previewPreset, asked);
   return signatures.map((signature) => {
     const ref = allowed.find((entry) => entry.signature === signature);
     return {
@@ -102,7 +117,7 @@ export function Palette({ maker, drag }: { maker: Maker; drag: Drag }) {
     return parent?.id === root.id ? "at the end of the page" : `inside ${parentName}, at the end`;
   }, [root, place, maker.view.selected]);
 
-  const allowed = useMemo(() => insertable(root, place, (ref) => presetFor(ref, () => "preview")).filter(makerVisible), [root, place]);
+  const allowed = useMemo(() => insertable(root, place, previewPreset, catalogue().filter(makerVisible)), [root, place]);
 
   const keyOf = (ref: SignatureRef) => `${ref.contract}/${ref.signature}`;
 
@@ -135,18 +150,75 @@ export function Palette({ maker, drag }: { maker: Maker; drag: Drag }) {
     return [...byCategory.entries()].sort(([a], [b]) => rank(a) - rank(b) || a.localeCompare(b));
   }, [shown, query]);
 
-  const sections = useMemo(
-    () =>
-      snippets
-        .map((snippet) => ({ snippet, child: fromUsageTree(snippet.tree, () => "preview") }))
-        .filter(({ child }) => canPlaceAt(root, place, child)),
-    [root, place],
-  );
+  /*
+   * THE SECTIONS: the Maker's own blocks (nav, features, pricing, testimonials, FAQ, call to action, form, footer...) and then the
+   * published snippets, heroes first. Each is a whole piece of a page; what fits the selection is offered, and a search narrows by
+   * name and description. Grouped by what the section is for, so "I need a pricing table" is one heading away.
+   */
+  const [sectionQuery, setSectionQuery] = useState("");
+  /* A page inside a layout already has the layout's header and footer: offering a second navigation bar or footer would put two on it. */
+  const framed = useMemo(() => {
+    if (maker.isLayout) return [];
+    const layout = layoutFor(maker.site, maker.page);
+    const has = new Set(layout ? [...walk(layout.root)].map((node) => node.signature) : []);
+    return [has.has("Navbar") ? "Navigation" : "", has.has("Footer") ? "Footer" : ""].filter(Boolean);
+  }, [maker.site, maker.page, maker.isLayout]);
+  const sectionGroups = useMemo(() => {
+    type Entry = { id: string; name: string; description: string; category: string; tree: UsageTree };
+    const fromBlocks: Entry[] = blocks.map((block) => ({ id: `block:${block.id}`, name: block.name, description: block.description, category: block.category, tree: block.tree }));
+    const fromSnippets: Entry[] = snippets.map((snippet) => ({
+      id: `snippet:${snippet.id}`,
+      name: snippet.id.replace(/-/g, " ").replace(/^./, (letter) => letter.toUpperCase()),
+      description: snippet.intent,
+      category: snippet.id.startsWith("hero") ? "Heroes" : "More examples",
+      tree: snippet.tree as UsageTree,
+    }));
+    const needle = sectionQuery.trim().toLowerCase();
+    const fits = [...fromBlocks, ...fromSnippets]
+      .filter((entry) => !needle || `${entry.name} ${entry.description} ${entry.category}`.toLowerCase().includes(needle))
+      .filter((entry) => !framed.includes(entry.category))
+      .filter((entry) => canPlaceAt(root, place, fromUsageTree(entry.tree, () => "preview")));
+    const order = ["Navigation", "Heroes", ...BLOCK_CATEGORIES.filter((name) => name !== "Navigation"), "More examples"];
+    return order.map((category) => [category, fits.filter((entry) => entry.category === category)] as const).filter(([, entries]) => entries.length > 0);
+  }, [root, place, sectionQuery, framed]);
+
+  /* What the keyboard's pick is saying, for someone who cannot see the line on the canvas. */
+  const announce = useMemo(() => {
+    const active = drag.session;
+    if (!active?.keyboard) return "";
+    const at = active.at ?? 0;
+    const target = active.allowed[at];
+    if (!target) return "No place accepts this.";
+    const parent = findChild(root, target.parent);
+    const siblings = parent && "signature" in parent ? childrenOf(parent, target.slot) : [];
+    const name = parent && "signature" in parent ? parent.signature : "the page";
+    const label = "signature" in active.child ? active.child.signature : "text";
+    const next = siblings[target.index];
+    const where = siblings.length === 0 ? `inside ${name}, empty` : next ? `in ${name}, before ${"signature" in next ? next.signature : "text"}` : `in ${name}, at the end`;
+    return `${label}: ${where}. Place ${at + 1} of ${active.allowed.length}. Up and Down choose, Enter drops, Escape cancels.`;
+  }, [drag.session, root]);
 
   const insert = (make: () => MakerChild) => {
     const child = make();
     maker.gesture([{ type: "insert", at: place, child }], child.id);
   };
+
+  /*
+   * DRAGGING, WITH THE KEYBOARD. Enter inserts where the selection says; Shift+Enter instead picks the place:
+   * Up and Down walk the places the contract allows (the same list a drag is offered), the canvas shows the
+   * one chosen, Enter drops there and Escape gives up. Leaving the item gives up too, so no pick-up is left
+   * half-held behind a Tab.
+   */
+  const pickPlace = (make: () => MakerChild) => ({
+    onKeyDown: (event: React.KeyboardEvent<HTMLButtonElement>) => {
+      if (event.key !== "Enter" || !event.shiftKey || drag.session) return;
+      event.preventDefault();
+      drag.beginKeyboard(make(), place);
+    },
+    onBlur: () => {
+      if (drag.session?.keyboard) drag.end(false);
+    },
+  });
 
   const pressToDrag = (make: () => MakerChild) => (event: React.PointerEvent<HTMLButtonElement>) => {
     if (event.button !== 0) return;
@@ -190,30 +262,28 @@ export function Palette({ maker, drag }: { maker: Maker; drag: Drag }) {
             <Input type="search" placeholder="Search the catalogue" aria-label="Search the catalogue" value={query} onChange={(event) => setQuery(event.currentTarget.value)} />
           </div>
           <Text size="sm" tone="tertiary">
-            {shown.length} fit {whereItGoes}
+            {shown.length} fit {whereItGoes}. Enter inserts there; Shift+Enter lets you choose where.
           </Text>
+          <p className="sk-visually-hidden" role="status" aria-live="assertive">
+            {announce}
+          </p>
           {/* Where each insert is wrapped is a decision most inserts never need: folded, with its own words. */}
-          <details className="maker-palette__advanced">
-            <summary>Wrapping</summary>
-            <label className="maker-palette__wrap">
-              <span>Wrap in</span>
-              <select value={wrap} onChange={(event) => setWrap(event.currentTarget.value as typeof wrap)} aria-describedby="maker-wrap-hint">
-                <option value="auto">Automatic</option>
-                {wrapperChoices.map((choice) => (
-                  <option key={choice.id} value={choice.id}>
-                    {choice.label}
-                  </option>
-                ))}
-              </select>
-            </label>
-            <Text size="sm" tone="tertiary" id="maker-wrap-hint">
-              Automatic puts each preset in the wrapper it is usually in.
-            </Text>
-          </details>
+          <Details>
+            <Details.Summary>Wrapping</Details.Summary>
+            <Details.Content>
+              <FormField label="Wrap in" hint="Automatic puts each preset in the wrapper it is usually in.">
+                <NativeSelect
+                  value={wrap}
+                  onChange={(event) => setWrap(event.currentTarget.value as typeof wrap)}
+                  options={[{ value: "auto", label: "Automatic" }, ...wrapperChoices.map((choice) => ({ value: choice.id, label: choice.label }))]}
+                />
+              </FormField>
+            </Details.Content>
+          </Details>
           <div className="maker-palette__list">
             {groups.map(([category, refs]) => (
               <section key={category} aria-label={category}>
-                <h3 className="maker-palette__category">{category}</h3>
+                <Heading as="h3" size="h6" className="maker-palette__category">{category}</Heading>
                 <ul>
                   {refs.map((ref) => {
                     const key = keyOf(ref);
@@ -224,21 +294,22 @@ export function Palette({ maker, drag }: { maker: Maker; drag: Drag }) {
                     return (
                       <li key={key} className="maker-palette__entry">
                         <div className="maker-palette__row">
-                          <button type="button" className="maker-palette__item maker-palette__item--component" onClick={() => insert(make)} onPointerDown={pressToDrag(make)}>
-                            <span className="maker-palette__label">{paletteName(ref.signature)}</span>
+                          <TileButton className="maker-palette__item--component" onClick={() => insert(make)} onPointerDown={pressToDrag(make)} {...pickPlace(make)}>
+                            <TileContent title={paletteName(ref.signature)} />
                             <ComponentThumbnail ref_={ref} />
-                          </button>
+                          </TileButton>
                           {others.length > 0 ? (
-                            <button
-                              type="button"
+                            <Button
                               className="maker-palette__expand"
+                              size="xs"
+                              variant="soft"
                               aria-expanded={expanded}
                               aria-label={`${ref.signature}: ${others.length} presets`}
+                              post={<Icon name={expanded ? "chevron-up" : "chevron-down"} />}
                               onClick={() => setOpen((current) => toggled(current, key))}
                             >
-                              <span aria-hidden="true">{others.length}</span>
-                              <Icon name={expanded ? "chevron-up" : "chevron-down"} />
-                            </button>
+                              {others.length}
+                            </Button>
                           ) : null}
                         </div>
                         {expanded ? (
@@ -246,7 +317,7 @@ export function Palette({ maker, drag }: { maker: Maker; drag: Drag }) {
                             {others
                               .filter((variant) => canPlaceAt(root, place, buildVariant(variant, wrap, () => "preview")))
                               .map((variant) => (
-                                <VariantRow key={variant.id} ref_={ref} variant={variant} wrap={wrap} insert={insert} pressToDrag={pressToDrag} />
+                                <VariantRow key={variant.id} ref_={ref} variant={variant} wrap={wrap} insert={insert} pressToDrag={pressToDrag} pickPlace={pickPlace} />
                               ))}
                           </ul>
                         ) : null}
@@ -259,22 +330,35 @@ export function Palette({ maker, drag }: { maker: Maker; drag: Drag }) {
           </div>
         </>
       ) : (
-        <div className="maker-palette__list">
-          {sections.length === 0 ? <Text size="sm">No section fits at the selection.</Text> : null}
-          <ul>
-            {sections.map(({ snippet }) => {
-              const make = () => fromUsageTree(snippet.tree, randomId);
-              return (
-                <li key={snippet.id}>
-                  <button type="button" className="maker-palette__item maker-palette__item--section" onClick={() => insert(make)} onPointerDown={pressToDrag(make)}>
-                    <strong>{snippet.id.replace(/-/g, " ")}</strong>
-                    <span>{snippet.intent}</span>
-                  </button>
-                </li>
-              );
-            })}
-          </ul>
-        </div>
+        <>
+          <div className="maker-palette__search">
+            <Icon name="search" />
+            <Input type="search" placeholder="Search sections" aria-label="Search sections" value={sectionQuery} onChange={(event) => setSectionQuery(event.currentTarget.value)} />
+          </div>
+          <Text size="sm" tone="tertiary">Whole parts of a page. Click to add {whereItGoes}, or drag one in.</Text>
+          {framed.length > 0 ? <Text size="sm" tone="tertiary">This page's layout already has {framed.includes("Navigation") && framed.includes("Footer") ? "the header and the footer" : framed.includes("Navigation") ? "the header" : "the footer"}, so {framed.length > 1 ? "those sections are" : "that section is"} not offered here.</Text> : null}
+          <div className="maker-palette__list">
+            {sectionGroups.length === 0 ? <Text size="sm">{sectionQuery ? "No section matches." : "No section fits at the selection."}</Text> : null}
+            {sectionGroups.map(([category, entries]) => (
+              <section key={category} aria-label={category}>
+                <Heading as="h3" size="h6" className="maker-palette__category">{category}</Heading>
+                <ul className="maker-palette__sections">
+                  {entries.map((entry) => {
+                    const make = () => fromUsageTree(entry.tree, randomId);
+                    return (
+                      <li key={entry.id}>
+                        <TileButton className="maker-palette__section" onClick={() => insert(make)} onPointerDown={pressToDrag(make)} {...pickPlace(make)}>
+                          <SectionPreview tree={entry.tree} scheme={maker.view.scheme} />
+                          <TileContent title={entry.name} description={entry.description} />
+                        </TileButton>
+                      </li>
+                    );
+                  })}
+                </ul>
+              </section>
+            ))}
+          </div>
+        </>
       )}
     </div>
   );
@@ -284,8 +368,8 @@ function ComponentThumbnail({ ref_, variant }: { ref_: SignatureRef; variant?: s
   const category = resolve(ref_)?.contract.category ?? "other";
   return (
     <span className="maker-palette__thumb" data-category={category} aria-hidden="true">
-      <img className="maker-palette__thumb-image maker-palette__thumb-image--light" src={thumbnailSrc(ref_, "light", variant)} alt="" loading="lazy" onError={(event) => (event.currentTarget.hidden = true)} />
-      <img className="maker-palette__thumb-image maker-palette__thumb-image--dark" src={thumbnailSrc(ref_, "dark", variant)} alt="" loading="lazy" onError={(event) => (event.currentTarget.hidden = true)} />
+      <img className="maker-palette__thumb-image maker-palette__thumb-image--light" src={thumbnailSrc(ref_, "light", variant)} alt="" draggable={false} loading="lazy" onError={(event) => (event.currentTarget.hidden = true)} />
+      <img className="maker-palette__thumb-image maker-palette__thumb-image--dark" src={thumbnailSrc(ref_, "dark", variant)} alt="" draggable={false} loading="lazy" onError={(event) => (event.currentTarget.hidden = true)} />
       <span className="maker-palette__thumb-fallback">
         <MakerIcon icon={{ glyph: glyphFor(ref_.signature) ?? "component" }} />
       </span>
@@ -305,23 +389,23 @@ function VariantRow({
   wrap,
   insert,
   pressToDrag,
+  pickPlace,
 }: {
   ref_: SignatureRef;
   variant: Variant;
   wrap: "auto" | WrapperId;
   insert: (make: () => MakerChild) => void;
   pressToDrag: (make: () => MakerChild) => (event: React.PointerEvent<HTMLButtonElement>) => void;
+  pickPlace: (make: () => MakerChild) => { onKeyDown: (event: React.KeyboardEvent<HTMLButtonElement>) => void; onBlur: () => void };
 }) {
   const make = () => buildVariant(variant, wrap, randomId);
   const arrivesIn = wrap === "auto" ? variant.wrapper : wrap;
   return (
     <li>
-      <button type="button" className="maker-palette__item maker-palette__variant" onClick={() => insert(make)} onPointerDown={pressToDrag(make)}>
+      <TileButton onClick={() => insert(make)} onPointerDown={pressToDrag(make)} {...pickPlace(make)}>
         {variant.source === "curated" ? <ComponentThumbnail ref_={ref_} variant={variant.id} /> : null}
-        <strong>{variant.name}</strong>
-        {variant.description ? <span>{variant.description}</span> : null}
-        {arrivesIn !== "none" ? <small>in {arrivesIn}</small> : null}
-      </button>
+        <TileContent title={variant.name} description={[variant.description, arrivesIn !== "none" ? `in ${arrivesIn}` : ""].filter(Boolean).join(" · ")} />
+      </TileButton>
     </li>
   );
 }

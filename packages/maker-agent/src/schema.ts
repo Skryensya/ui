@@ -22,5 +22,12 @@ export const siteOperation = z.discriminatedUnion("type", [
   z.object({ type: z.literal("renamePage"), page: z.string(), name: z.string() }).strict(),
   z.object({ type: z.literal("setPagePath"), page: z.string(), path: z.string() }).strict(),
   z.object({ type: z.literal("movePage"), page: z.string(), index: z.number().int().min(0) }).strict(),
+  /* Layouts: a frame (header, footer, a rail) that pages sit in. `addLayout` makes one to start from; its content is
+     then edited with `page` operations addressed to the layout's id. */
+  z.object({ type: z.literal("addLayout"), name: z.string().min(1).max(120), makeDefault: z.boolean().optional() }).strict(),
+  z.object({ type: z.literal("removeLayout"), layout: z.string() }).strict(),
+  z.object({ type: z.literal("renameLayout"), layout: z.string(), name: z.string().min(1).max(120) }).strict(),
+  z.object({ type: z.literal("setDefaultLayout"), layout: z.string().optional() }).strict(),
+  z.object({ type: z.literal("setPageLayout"), page: z.string(), layout: z.string().optional() }).strict(),
 ]);
 export const proposalInput = z.object({ operations: z.array(siteOperation).min(1).max(100) }).strict();

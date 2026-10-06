@@ -59,6 +59,8 @@ async function mockProvider(root: string): Promise<Mock> {
 }
 
 async function setup(page: Page) {
+  /* These tests are about reviewing a proposal; review is off by default, so they turn it on. */
+  await page.addInitScript(() => localStorage.setItem("maker.ai.review", "1"));
   const id = await openMaker(page);
   const saved = await savedProject(page, id);
   const base = createSite("hash", counterIds("s"));
@@ -73,7 +75,7 @@ test("the canvas shows each section as it is written, before the answer is finis
   const { id, root } = await setup(page);
   const mock = await mockProvider(root);
   try {
-    await page.getByRole("radio", { name: "AI", exact: true }).click();
+    await page.getByRole("tab", { name: "AI", exact: true }).click();
     await page.getByLabel("Provider").selectOption("compatible");
     await page.getByLabel("API base endpoint", { exact: true }).fill(mock.url);
     await page.getByLabel("API key", { exact: true }).fill(KEY);
@@ -116,7 +118,7 @@ test("Stop discards the draft and leaves the project untouched", async ({ page }
   const { id, root } = await setup(page);
   const mock = await mockProvider(root);
   try {
-    await page.getByRole("radio", { name: "AI", exact: true }).click();
+    await page.getByRole("tab", { name: "AI", exact: true }).click();
     await page.getByLabel("Provider").selectOption("compatible");
     await page.getByLabel("API base endpoint", { exact: true }).fill(mock.url);
     await page.getByLabel("API key", { exact: true }).fill(KEY);
@@ -134,5 +136,42 @@ test("Stop discards the draft and leaves the project untouched", async ({ page }
   } finally {
     mock.release();
     mock.server.close();
+  }
+});
+
+test("a streamed answer arrives whole, however many pieces it comes in", async ({ page }) => {
+  await setup(page);
+  const words = ["Intenté ", "reconstruir ", "la ", "página ", "con ", "el ", "kit."];
+  const server = createServer(async (request, response) => {
+    response.setHeader("access-control-allow-origin", "*");
+    response.setHeader("access-control-allow-headers", "authorization, content-type");
+    if (request.method === "OPTIONS") { response.statusCode = 204; return void response.end(); }
+    const chunks: Buffer[] = [];
+    for await (const chunk of request) chunks.push(chunk as Buffer);
+    const body = JSON.parse(Buffer.concat(chunks).toString("utf8")) as { stream?: boolean };
+    if (!body.stream) { response.setHeader("content-type", "application/json"); return void response.end(JSON.stringify({ choices: [{ message: { content: "Connected" } }] })); }
+    response.setHeader("content-type", "text/event-stream");
+    for (const word of words) {
+      response.write(`data: ${JSON.stringify({ choices: [{ delta: { content: word } }] })}\n\n`);
+      await new Promise((resolve) => setTimeout(resolve, 40));
+    }
+    response.write("data: [DONE]\n\n");
+    response.end();
+  });
+  await new Promise<void>((resolve) => server.listen(0, "127.0.0.1", resolve));
+  try {
+    await page.getByRole("tab", { name: "AI", exact: true }).click();
+    await page.getByLabel("Provider").selectOption("compatible");
+    await page.getByLabel("API base endpoint", { exact: true }).fill(`http://127.0.0.1:${(server.address() as AddressInfo).port}/v1`);
+    await page.getByLabel("API key", { exact: true }).fill(KEY);
+    await page.getByLabel("Model", { exact: true }).fill("mock-model");
+    await page.getByRole("button", { name: "Test & connect" }).click();
+    await expect(page.getByRole("status").filter({ hasText: "Connected." })).toBeVisible();
+    await page.getByLabel("Ask Maker", { exact: true }).fill("Hola");
+    await page.keyboard.press("Enter");
+    /* All of it, not the first piece: every later piece used to be dropped once the first had been stored. */
+    await expect(page.getByRole("log", { name: "Conversation" })).toContainText("Intenté reconstruir la página con el kit.");
+  } finally {
+    server.close();
   }
 });

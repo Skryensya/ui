@@ -156,6 +156,7 @@ page the way a person does: by structure, never by position.
 | `maker_projects` | Every project the Maker keeps: id, name, revision. |
 | `maker_read` | One project as an outline: each page, one line per node with its id, signature and the options set, text runs with their ids, and what is pending. |
 | `maker_context` | Bounded semantic selection context, calculated from caller-supplied page/selection evidence without persisting view state. |
+| `maker_presets` | The presets of one signature (a primary, destructive or icon-only Button, a pair…) and the wrapper each arrives in; an insert names one with `signature` plus `preset`. Needs no project. |
 | `maker_try` | Resolve and validate the same operations as apply on a temporary site; return the resulting outline/refusal without saving. |
 | `maker_apply` | Maker operations on one project (insert a usage tree or a signature, move, remove, wrap, unwrap, set an option, an attribute or text; add, remove, rename, re-path or move a page), all or none, as one undoable step. Nothing in its schema can carry a coordinate, a length or a style. |
 | `maker_publish` | Publish a project at `https://<name>.skryensya.dev/`, or take it down. Works only where the Maker has the publish token (ADR-0033). |

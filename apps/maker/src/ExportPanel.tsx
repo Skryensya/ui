@@ -4,9 +4,12 @@ import { sheetsForTree } from "@skryensya/ai-compiler/sheets-for-tree";
 import { Button } from "@skryensya/react/button";
 import { Icon } from "@skryensya/react/icon";
 import { SegmentedControl } from "@skryensya/react/segmented";
-import { Text } from "@skryensya/react/typography";
+import { Heading, Text } from "@skryensya/react/typography";
+import { FileUpload } from "@skryensya/react/file-upload";
+import { FormField } from "@skryensya/react/form-field";
+import { Textarea } from "@skryensya/react/input";
 import { Inline, Stack } from "@skryensya/react/layout";
-import { parseSite, randomId, serializeSite, toUsageTree, type MakerPageEntry, type MakerSite } from "@skryensya/maker-model";
+import { composePage, parseSite, randomId, serializeSite, toUsageTree, type MakerPageEntry, type MakerSite } from "@skryensya/maker-model";
 import { IconButton } from "./IconButton";
 import { CATALOGUE_HASH, type Maker } from "./state";
 
@@ -39,7 +42,7 @@ export function ExportPanel({
   importAsProject?: (name: string, site: MakerSite) => Promise<void>;
 }) {
   const [format, setFormat] = useState<Format>("react");
-  const tree = useMemo(() => toUsageTree(maker.page.root), [maker.page.root]);
+  const tree = useMemo(() => toUsageTree(maker.isLayout ? maker.page.root : composePage(maker.site, maker.page).root), [maker.page, maker.site, maker.isLayout]);
   const output = useMemo(() => {
     try {
       switch (format) {
@@ -47,7 +50,8 @@ export function ExportPanel({
           return { text: serializeSite(maker.site, CATALOGUE_HASH), file: "site.maker.json" };
         case "site-react": {
           const files = maker.site.pages.map((page) => {
-            const tree = toUsageTree(page.root);
+            /* Each page as it is drawn: inside its layout. */
+            const tree = toUsageTree(composePage(maker.site, page).root);
             const source = emitReactSource(tree, { component: componentName(page) });
             const imports = sheetsForTree(tree).sheets.map((sheet) => `import "${sheet}";`).join("\n");
             const data = source.data ? `\n\n// pages/${source.data.file}\n${source.data.source}` : "";
@@ -105,7 +109,7 @@ export function ExportPanel({
     <div className="maker-export">
       <Stack gap="md">
         <Inline justify="between" align="center">
-          <h2 className="maker-export__title">Export {maker.page.name}</h2>
+          <Heading as="h2" size="h5" flush className="maker-export__title">Export {maker.page.name}</Heading>
           <IconButton icon={{ role: "close" }} label="Close export" onClick={onClose} />
         </Inline>
         {errors.length > 0 ? (
@@ -125,6 +129,7 @@ export function ExportPanel({
           </div>
         ) : null}
         <SegmentedControl
+          size="md"
           label="Format"
           value={format}
           onValueChange={(value) => setFormat(value as Format)}
@@ -136,7 +141,7 @@ export function ExportPanel({
             { value: "site", label: "Site" },
           ]}
         />
-        <textarea className="maker-export__code" readOnly value={output.text} aria-label="Exported code" spellCheck={false} />
+        <FormField label="Exported code" labelHidden><Textarea className="maker-export__code" readOnly value={output.text} spellCheck={false} /></FormField>
         <Inline gap="sm">
           <Button variant="solid" size="sm" pre={<Icon name="download" />} onClick={download} disabled={!output.file}>
             Download {output.file ?? ""}
@@ -144,18 +149,18 @@ export function ExportPanel({
           <Button variant="soft" size="sm" pre={<Icon name="copy" />} onClick={() => void navigator.clipboard?.writeText(output.text)}>
             Copy
           </Button>
-          <label className="maker-export__import">
-            <Icon name="upload" />
-            <span>{importAsProject ? "Open a site file as a new project…" : "Open a site…"}</span>
-            <input
-              type="file"
-              accept=".json,application/json"
-              onChange={(event) => {
-                const file = event.currentTarget.files?.[0];
-                if (file) void importPage(file);
-              }}
-            />
-          </label>
+          <FileUpload
+            label="Site file"
+            triggerLabel={importAsProject ? "Open a site file as a new project…" : "Open a site…"}
+            dropzoneLabel="Drop a site file here"
+            accept=".json,application/json"
+            multiple={false}
+            maxFiles={1}
+            onFileChange={(details) => {
+              const file = details.acceptedFiles[0];
+              if (file) void importPage(file);
+            }}
+          />
         </Inline>
       </Stack>
     </div>

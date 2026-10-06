@@ -41,7 +41,7 @@ export const wrapperChoices: readonly WrapperChoice[] = [
   { id: "box", label: "Box", ref: { contract: "box", signature: "Box" }, options: { padding: "md", border: "subtle" } },
   { id: "stack", label: "Stack", ref: { contract: "layout", signature: "Stack" }, options: { gap: "sm" } },
   { id: "inline", label: "Inline", ref: { contract: "layout", signature: "Inline" }, options: { gap: "sm" } },
-  { id: "wrapper", label: "Wrapper", ref: { contract: "wrapper", signature: "Wrapper" } },
+  { id: "wrapper", label: "Wrapper", ref: { contract: "wrapper", signature: "Wrapper" }, options: { wrapperSize: "md" } },
 ];
 
 /** A node to add: a signature (default: the one the variant is for), its overlay, and what its slots hold. */

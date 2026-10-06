@@ -35,6 +35,7 @@
     "@skryensya/ai-compiler": "workspace:*",
     "@skryensya/core": "workspace:*",
     "@skryensya/maker-model": "workspace:*",
+    "parse5": "^8.0.1",
     "postgres": "^3.4.9"
   },
   "devDependencies": {

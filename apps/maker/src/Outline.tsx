@@ -44,7 +44,7 @@ function parseSlotBranch(id: string): { owner: string; slot: string } | undefine
  * and its node is selected: that is when it is worth dropping into, and otherwise every selected button
  * carried two empty rows (`› pre`, `› post`) to scan past.
  */
-function toTree(child: MakerChild, selected?: string, dragging = false): TreeNode {
+function toTree(child: MakerChild, selected?: string, dragging = false, inLayout = false): TreeNode {
   if (!isNode(child)) return { id: child.id, label: preview(child.text) || "“ ”" };
   const held = childrenOf(child, "children");
   /*
@@ -52,14 +52,15 @@ function toTree(child: MakerChild, selected?: string, dragging = false): TreeNod
    * a row of its own: two rows for one thing was the noise. The Inspector still edits that text from the node.
    */
   const only = held.length === 1 && !isNode(held[0]!) ? (held[0] as { text: string }).text : undefined;
-  const children: TreeNode[] = only !== undefined ? [] : held.map((c) => toTree(c, selected, dragging));
+  const children: TreeNode[] = only !== undefined ? [] : held.map((c) => toTree(c, selected, dragging, inLayout));
   for (const slot of nodeSlots(child)) {
     if (slot === "children") continue;
     const inSlot = childrenOf(child, slot);
     if (inSlot.length === 0 && !(dragging && selected === child.id)) continue;
-    children.push({ id: slotBranchId(child.id, slot), label: `› ${slot}`, children: inSlot.map((c) => toTree(c, selected, dragging)) });
+    children.push({ id: slotBranchId(child.id, slot), label: `› ${slot}`, children: inSlot.map((c) => toTree(c, selected, dragging, inLayout)) });
   }
-  const label = outlineLabel(child.signature, only);
+  /* On a layout's board, the Main is not a section of its own: it is the OUTLET, where each page that uses the layout goes. */
+  const label = inLayout && child.signature === "Main" ? "Main · where the page goes" : outlineLabel(child.signature, only);
   return children.length > 0 ? { id: child.id, label, children } : { id: child.id, label };
 }
 
@@ -90,7 +91,7 @@ export function Outline({ maker, drag }: { maker: Maker; drag: Drag }) {
   const selected = maker.view.selected;
   const selectedIds = maker.view.selectedIds;
   const dragging = drag.session !== undefined;
-  const nodes = useMemo(() => [toTree(root, selected, dragging)], [root, selected, dragging]);
+  const nodes = useMemo(() => [toTree(root, selected, dragging, maker.isLayout)], [root, selected, dragging, maker.isLayout]);
   const branches = useMemo(() => branchIds(nodes), [nodes]);
   const [collapsed, setCollapsed] = useState<ReadonlySet<string>>(new Set());
   const expanded = branches.filter((id) => !collapsed.has(id));

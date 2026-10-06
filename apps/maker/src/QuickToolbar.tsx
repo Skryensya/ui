@@ -1,7 +1,9 @@
 import type { CSSProperties } from "react";
 import { Toolbar } from "@skryensya/react/toolbar";
 import { IconButton } from "./IconButton";
+import { OptionBar } from "./OptionBar";
 import { SelectionActionButtons } from "./SelectionTools";
+import { findChild, isNode } from "@skryensya/maker-model";
 import { selectParent, type Maker } from "./state";
 
 /*
@@ -41,6 +43,9 @@ export function QuickToolbar({
           <SelectionActionButtons maker={maker} appearance="tactile" />
         </Toolbar>
       ) : null}
+      {maker.view.mode === "edit" && selected && maker.view.selectedIds.length <= 1 ? (
+        <SelectedOptions maker={maker} id={selected} />
+      ) : null}
       <Toolbar label="Canvas actions" className="maker-quick-toolbar">
         <IconButton icon={{ glyph: "undo" }} label="Undo" appearance="tactile" disabled={!maker.canUndo} onClick={maker.undo} />
         <IconButton icon={{ glyph: "redo" }} label="Redo" appearance="tactile" disabled={!maker.canRedo} onClick={maker.redo} />
@@ -74,4 +79,10 @@ export function QuickToolbar({
       </Toolbar>
     </div>
   );
+}
+
+/* The options an edit most often touches, docked under the edit actions: always in the same place, never over the page. */
+function SelectedOptions({ maker, id }: { maker: Maker; id: string }) {
+  const node = findChild(maker.page.root, id);
+  return node && isNode(node) ? <OptionBar maker={maker} node={node} /> : null;
 }

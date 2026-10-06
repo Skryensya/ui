@@ -14,13 +14,14 @@ import { useWorkspace, type Workspace } from "./workspace";
 import { ExportPanel } from "./ExportPanel";
 import { IconButton } from "./IconButton";
 import { Inspector } from "./Inspector";
-import type { MakerSite } from "@skryensya/maker-model";
+import { childrenOf, composePage, type MakerSite } from "@skryensya/maker-model";
 import type { Draft } from "./ai/draft";
 import { Outline } from "./Outline";
 import { Pages } from "./Pages";
 import { Palette } from "./Palette";
 import { MakerBar } from "./MakerBar";
 import { CanvasMenu } from "./CanvasMenu";
+import { PanelTabs } from "./PanelTabs";
 import { QuickToolbar } from "./QuickToolbar";
 import { Canvas, type CanvasControls } from "./stage/Canvas";
 import { Button } from "@skryensya/react/button";
@@ -29,6 +30,7 @@ import { SegmentedControl } from "@skryensya/react/segmented";
 import { MakerIcon } from "./icons";
 import { LOCAL_PROJECT, selectParent, stageTree, useMaker, type Maker } from "./state";
 import type { StageApi } from "./stage/entry";
+import { Heading } from "@skryensya/react/typography";
 
 const AIPanel = lazy(() => import("./ai/Panel").then(module => ({ default: module.AIPanel })));
 
@@ -121,6 +123,16 @@ function Editor({
   const [panels, setPanels] = usePanels();
   const [panelWidths, setPanelWidths] = usePanelWidths();
   const [leftTab, setLeftTab] = useState<"layers" | "insert">("layers");
+  /* AN EMPTY PAGE OPENS ON THE BLOCKS. A blank page with a card saying so told people where to begin without taking them there:
+     opening a project whose page has nothing on it shows the Insert panel instead, once per project (a page added later does not pull the panel away from the pages list), so the way in is
+     already in front of them and nothing sits on the page. A person who empties a page themselves is left where they are. */
+  const emptyOnOpen = childrenOf(maker.page.root, "children").length === 0;
+  useEffect(() => {
+    if (!emptyOnOpen) return;
+    setLeftTab("insert");
+    if (!panels.left) setPanels({ ...panels, left: true });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [maker.projectId]);
   const rightPanel = projectsOpen ? "Projects" : publishingOpen ? "Publish" : exporting ? "Export" : "Inspector";
   const rightDocked = panels.right || projectsOpen || publishingOpen || exporting;
   const canvas = useRef<CanvasControls | null>(null);
@@ -219,6 +231,7 @@ function Editor({
         <aside className="maker__left maker-float" aria-label="Site" style={{ inlineSize: panelWidths.left }}> 
           <div className="maker-float__head">
             <SegmentedControl
+              size="md"
               appearance="frosted"
               className="maker-left-tabs"
               label="Left panel"
@@ -238,9 +251,9 @@ function Editor({
               </section>
               <section className="maker__panel maker__outline" aria-labelledby="maker-layers">
                 <header className="maker__panel-header maker__panel-header--stacked">
-                  <h2 className="maker__panel-title" id="maker-layers">
+                  <Heading as="h2" size="h6" flush className="maker__panel-title" id="maker-layers">
                     Layers
-                  </h2>
+                  </Heading>
                   <p className="maker__panel-help">Select, drag, or use shortcuts to reorganize.</p>
                 </header>
                 <Outline maker={maker} drag={drag} />
@@ -289,10 +302,21 @@ function Editor({
           <IconButton icon={{ glyph: "inspect" }} label="Show the inspector" onClick={() => setPanels({ ...panels, right: true })} />
         </span>
       ) : (
-      <aside className="maker__right maker-float" aria-label={rightPanel === "Inspector" && aiOpen ? "AI" : rightPanel} style={{ inlineSize: panelWidths.right }}>
+      <aside className="maker__right maker-float" data-chat={rightPanel === "Inspector" && aiOpen ? "" : undefined} aria-label={rightPanel === "Inspector" && aiOpen ? "AI" : rightPanel} style={{ inlineSize: panelWidths.right }}>
         <PanelResizeHandle side="right" width={panelWidths.right} onWidth={(right) => setPanelWidths({ ...panelWidths, right })} />
-        {rightPanel === "Inspector" && <SegmentedControl label="Editing mode" value={aiOpen ? "ai" : "inspector"} onValueChange={v => { setAiOpen(v === "ai"); if (v === "ai") setAiStarted(true); }} options={[{ value: "inspector", label: "Inspector" }, { value: "ai", label: "AI" }]} />}
-        <div key={rightPanel} className="maker-panel-swap" hidden={rightPanel === "Inspector" && aiOpen}>
+        {rightPanel === "Inspector" && (
+          <PanelTabs
+            label="Editing mode"
+            value={aiOpen ? "ai" : "inspector"}
+            onValueChange={(v) => { setAiOpen(v === "ai"); if (v === "ai") setAiStarted(true); }}
+            panelId={(v) => `maker-right-${v}`}
+            tabs={[
+              { value: "inspector", label: "Inspector" },
+              { value: "ai", label: "AI", badge: aiDraft && !aiOpen ? <span className="maker-panel-tabs__dot" role="img" aria-label="Maker AI has changes to review" /> : undefined },
+            ]}
+          />
+        )}
+        <div key={rightPanel} id="maker-right-inspector" role={rightPanel === "Inspector" ? "tabpanel" : undefined} aria-labelledby={rightPanel === "Inspector" ? "maker-right-inspector-tab" : undefined} className="maker-panel-swap" hidden={rightPanel === "Inspector" && aiOpen}>
           {projectsOpen ? (
             <ProjectsPanel workspace={workspace} onClose={onCloseProjects} />
           ) : publishingOpen ? (
@@ -307,7 +331,7 @@ function Editor({
             <Inspector maker={maker} />
           )}
         </div>
-        <div hidden={rightPanel !== "Inspector" || !aiOpen}>{aiStarted && <Suspense fallback={<p role="status">Loading Maker AI…</p>}><AIPanel maker={maker} onPreview={setAiPreview} onDraft={setAiDraft} barSlot={draftSlot} /></Suspense>}</div>
+        <div id="maker-right-ai" className="maker-right-ai" role="tabpanel" aria-labelledby="maker-right-ai-tab" hidden={rightPanel !== "Inspector" || !aiOpen}>{aiStarted && <Suspense fallback={<p role="status">Loading Maker AI…</p>}><AIPanel maker={maker} onPreview={setAiPreview} onDraft={setAiDraft} barSlot={draftSlot} /></Suspense>}</div>
       </aside>
       )}
 
@@ -366,9 +390,12 @@ function PlayPreview({ maker, onClose, label = "Play site" }: { maker: Maker; on
     doc.documentElement.style.setProperty("--sk-density", maker.view.density === "compact" ? "0.75" : maker.view.density === "comfortable" ? "1.25" : "1");
     doc.documentElement.setAttribute("data-radius", maker.view.radius);
     doc.documentElement.setAttribute("data-maker-mode", "interact");
-    void stage.render(stageTree(page.root, undefined));
-  }, [ready, page.root, maker.view.scheme, maker.view.contrast, maker.view.density, maker.view.radius]);
+    /* A page is played inside its layout, as it will be published; a layout opened on its own is played as it is. */
+    const isPage = maker.site.pages.some((entry) => entry.id === page.id);
+    void stage.render(stageTree(isPage ? composePage(maker.site, page).root : page.root, undefined));
+  }, [ready, maker.site, page, maker.view.scheme, maker.view.contrast, maker.view.density, maker.view.radius]);
 
+  // ds-exception: the full-screen play preview: its bar, page switcher and frame fill the viewport, which the kit's titled Dialog does not model.
   return (
     <dialog ref={modal} className="maker-play" aria-label={label} onCancel={e => { e.preventDefault(); onClose(); }}>
       <header className="maker-play__bar">
@@ -428,6 +455,7 @@ function ProjectTabs({
       <div className="maker-tabs__list sk-tabs__list" role="list">
         {workspace.open.map((id) => (
           <span key={id} className="maker-tabs__tab" data-active={id === workspace.active ? "" : undefined} role="listitem">
+            {/* ds-exception: a closable workspace tab: it wears the kit's own Tabs classes, but Tabs has no close affordance to compose with. */}
             <button
               type="button"
               className="maker-tabs__name sk-tabs__trigger sk-interactive"

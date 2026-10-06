@@ -1,4 +1,4 @@
-import { readFileSync } from "node:fs";
+import { appendFileSync, mkdirSync, readFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import type { Plugin, ViteDevServer } from "vite";
 import type * as Api from "@skryensya/maker-server/api";
@@ -46,6 +46,26 @@ export function makerApi(settings: PublishSettings = {}): Plugin {
         : undefined;
       server.config.logger.info(`  maker: publishing ${publishing ? `to ${publishing.endpoint}` : "off (no SITES_PUBLISH_TOKEN)"}`);
       const api = store ? createMakerApi(store, index.sourceHash, publishing) : undefined;
+      /* The AI log (dev only): each line a client posts is appended to a git-ignored file, to be read and scored later. */
+      const logDir = fileURLToPath(new URL("../.ai-logs/", import.meta.url));
+      server.middlewares.use("/__maker-ai-log", (request, response) => {
+        if (request.method !== "POST") { response.statusCode = 405; return void response.end(); }
+        const chunks: Buffer[] = [];
+        let size = 0;
+        request.on("data", (chunk: Buffer) => { size += chunk.length; if (size <= 1_000_000) chunks.push(chunk); });
+        request.on("end", () => {
+          try {
+            if (size > 1_000_000) throw new Error("too large");
+            /* The browser checks set this: their conversations are not worth reading. */
+            if (process.env.MAKER_AI_LOG === "off") { response.statusCode = 204; return void response.end(); }
+            const entry = JSON.parse(Buffer.concat(chunks).toString("utf8")) as unknown;
+            mkdirSync(logDir, { recursive: true });
+            appendFileSync(`${logDir}turns.jsonl`, `${JSON.stringify(entry)}\n`);
+            response.statusCode = 204;
+          } catch { response.statusCode = 400; }
+          response.end();
+        });
+      });
       server.middlewares.use((request, response, next) => {
         if (!request.url?.startsWith("/api/")) return next();
         if (!api) {

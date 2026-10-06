@@ -5,6 +5,8 @@ import {
   makerContext,
   parseSite,
   randomId,
+  resolve,
+  variantsFor,
   type AgentSiteOperation,
   type MakerSite,
 } from "@skryensya/maker-model";
@@ -176,6 +178,31 @@ export function registerMakerTools(server: McpServer, makerUrl: string): void {
         page, selected, selectedIds, width: "fit", scheme: "light", contrast: false, density: "default", mode: "edit",
       });
       return { content: [{ type: "text" as const, text: JSON.stringify(context) }], structuredContent: { ...provenance, ...context } };
+    }),
+  );
+
+  /* No project needed: what a component's presets are is a fact about the catalogue, the same one the Maker's own AI
+     is given. An insert then names one with `signature` plus `preset` (and `wrap`), instead of setting options one by one. */
+  server.registerTool(
+    "maker_presets",
+    {
+      title: "List a component's presets",
+      description: "The presets of one signature (Button.action: primary, destructive, icon-only, a pair...) and the wrapper each arrives in. Insert one with maker_try's insert using `signature` plus `preset` (and `wrap` to choose another wrapper).",
+      inputSchema: z.object({ contract: z.string(), signature: z.string() }),
+      outputSchema: z.object({
+        ...{ schemaVersion: z.string(), sourceHash: z.string() },
+        presets: z.array(z.object({ id: z.string(), name: z.string(), description: z.string().optional(), arrivesIn: z.string().optional() })),
+        refused: z.string().optional(),
+      }),
+      annotations: { readOnlyHint: true, idempotentHint: true, openWorldHint: false },
+    },
+    async ({ contract, signature }) => guard(async () => {
+      /* variantsFor answers "default" for any name at all, so the signature is checked against the catalogue first. */
+      const variants = resolve({ contract, signature }) ? variantsFor({ contract, signature }) : [];
+      const body = variants.length
+        ? { presets: variants.map((v) => ({ id: v.id, name: v.name, ...(v.description ? { description: v.description } : {}), arrivesIn: v.wrapper })) }
+        : { presets: [], refused: "No such signature." };
+      return { content: [{ type: "text" as const, text: JSON.stringify(body) }], structuredContent: { ...provenance, ...body }, ...(variants.length ? {} : { isError: true }) };
     }),
   );
 

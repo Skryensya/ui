@@ -3,6 +3,7 @@ import { createRoot } from "react-dom/client";
 import { App } from "./App";
 import "@skryensya/core/fonts/hanken-grotesk.css";
 import "@skryensya/core/tokens.scss";
+import "@skryensya/icons-lucide/select.css";
 import "./app.css";
 
 /* The chrome is built from the kit, so it loads the kit's sheets; the stage loads its own. */

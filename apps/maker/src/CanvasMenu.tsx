@@ -3,7 +3,7 @@ import { anchoredParts } from "@skryensya/core/anchored";
 import { isTypingContext } from "@skryensya/core/hotkey";
 import { menuParts, type MenuItem } from "@skryensya/core/menu";
 import { MenuPopup, useMenuMachine } from "@skryensya/react/menu";
-import { actions, allowed } from "./actions";
+import { actions, allowed, canDo } from "./actions";
 import { ancestors, childrenOf, findChild, locate, randomId, reidentify, type MakerChild, type Operation } from "@skryensya/maker-model";
 import { canPaste, copied, copySelection, cutSelection, paste } from "./clipboard";
 import { selectParent, type Maker } from "./state";
@@ -223,10 +223,10 @@ export function CanvasMenu({ maker }: { maker: Maker }) {
   const isPage = selected === root.id;
   const available = (command: CanvasCommand) => {
     if (command === "copy") return Boolean(selected) && !isPage;
-    if (command === "cut") return !isPage && Boolean(allowed(root, selected, actions.find((action) => action.id === "remove")!));
+    if (command === "cut") return !isPage && canDo(root, selected, actions.find((action) => action.id === "remove")!);
     if (command === "paste") return canPaste(maker);
     if (command === "remove" && maker.view.selectedIds.length > 1) return rootMostSelection(maker).some((id) => id !== root.id);
-    return Boolean(allowed(root, selected, actions.find((action) => action.id === command)!));
+    return canDo(root, selected, actions.find((action) => action.id === command)!);
   };
   /* The four moves share one submenu: side by side at the top level they made the menu taller than
      the screen, and the move a person wants is found by its verb first. */
@@ -235,7 +235,7 @@ export function CanvasMenu({ maker }: { maker: Maker }) {
   const entry = (action: (typeof actions)[number]): MenuItem => ({
     value: `action-${action.id}`,
     label: action.label,
-    disabled: !allowed(root, selected, action),
+    disabled: !canDo(root, selected, action),
   });
 
   const items: MenuItem[] = [
@@ -246,7 +246,7 @@ export function CanvasMenu({ maker }: { maker: Maker }) {
     { value: "select-all", label: "Select all", disabled: selectableIds(root).length === 0 },
     { value: "sep-edit", kind: "separator" },
     { value: "parent", label: "Select parent", disabled: !selected },
-    { value: "move", label: "Move", disabled: moves.every((action) => !allowed(root, selected, action)), children: moves.map(entry) },
+    { value: "move", label: "Move", disabled: moves.every((action) => !canDo(root, selected, action)), children: moves.map(entry) },
     ...wraps.map(entry),
     { value: "sep-remove", kind: "separator" },
     { value: "remove", label: "Delete", tone: "danger", disabled: !available("remove") },

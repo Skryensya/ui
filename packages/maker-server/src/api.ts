@@ -2,6 +2,7 @@ import type { IncomingMessage, ServerResponse } from "node:http";
 import { createSite, parseSite, randomId, type MakerSite } from "@skryensya/maker-model";
 import { isProjectId, type ProjectStore } from "./store.js";
 import { publishSite, unpublishSite, type PublishConfig } from "./publish/client.js";
+import { snapshotSite, SnapshotError } from "./snapshot.js";
 import { siteNameProblem, suggestSiteName } from "./publish/names.js";
 
 /*
@@ -17,6 +18,7 @@ import { siteNameProblem, suggestSiteName } from "./publish/names.js";
  *   PATCH  /api/projects/:id              { name }
  *   DELETE /api/projects/:id
  *   GET    /api/projects/:id/events       server-sent events: { revision } on every change
+ *   GET    /api/snapshot?url=…            a public web page read for cloning: its sections, words, links and images (never the markup)
  *   GET    /api/health                    { store: "postgres" | "memory" }
  *   GET    /api/publishing                { configured, domain }
  *   POST   /api/projects/:id/publish      { name? }: the project's site at https://<name>.<domain>/
@@ -111,6 +113,16 @@ export function createMakerApi(store: ProjectStore, sourceHash: string, publishi
 
     if (resource === "health" && parts.length === 1) return send(response, 200, { store: store.kind });
     if (resource === "publishing" && parts.length === 1) return send(response, 200, { configured: publishing !== undefined, domain: publishing?.domain ?? null });
+    if (resource === "snapshot" && parts.length === 1) {
+      if (method !== "GET") return send(response, 405);
+      const address = new URL(request.url ?? "/", "http://maker").searchParams.get("url") ?? "";
+      try {
+        return send(response, 200, await snapshotSite(address));
+      } catch (error) {
+        if (error instanceof SnapshotError) return send(response, 422, { error: error.message });
+        return send(response, 502, { error: "The site could not be read." });
+      }
+    }
     if (resource !== "projects") return send(response, 404);
 
     if (!id) {

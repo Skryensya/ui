@@ -1,11 +1,12 @@
-import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
-import { childrenOf, findChild, findNode, locate, type MakerNode } from "@skryensya/maker-model";
+import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
+import { childrenOf, composePage, entryOf, findChild, findNode, locate, type MakerNode, type MakerPageEntry } from "@skryensya/maker-model";
 import { DRAG_THRESHOLD, type Drag } from "../drag";
-import { selectParent, stageTree, type Maker, type StageWidth } from "../state";
-import { elementFor, nodeIdAt, placeAt, type Rect } from "./geometry";
+import { openIdsFor, selectParent, stageTree, type Maker, type StageWidth } from "../state";
+import { elementFor, indicatorFor, nodeIdAt, placeAt, type Rect } from "./geometry";
 import type { CanvasPan } from "./Canvas";
 import { CANVAS_COMMAND, CANVAS_CONTEXT_MENU, canvasKeyCommand } from "../CanvasMenu";
 import { EDIT_TEXT } from "../Inspector";
+import { Button } from "@skryensya/react/button";
 
 /*
  * AN ARTBOARD: one page of the site on the canvas, in an iframe as wide as the chosen stage width
@@ -48,11 +49,14 @@ export function Artboard({
   onWheel,
   onPanKey,
   onPanStart,
+  onSettled,
 }: {
   maker: Maker;
   drag: Drag;
   pageId: string;
   zoom: number;
+  /** Said once: the page in this artboard is rendered, themed and measured, so its size is final enough to lay out around. */
+  onSettled?: (pageId: string) => void;
   onWheel: (wheel: CanvasWheel) => void;
   /** Space held or released inside the page, so the canvas can pan while the pointer is over it. */
   onPanKey: (held: boolean) => void;
@@ -66,14 +70,24 @@ export function Artboard({
   const [frameWidth, setFrameWidth] = useState(0);
   const [contentHeight, setContentHeight] = useState(MIN_HEIGHT);
   const [renderError, setRenderError] = useState<string>();
-  const page = maker.site.pages.find((entry) => entry.id === pageId) ?? maker.page;
+  /* The first render, theme and measure are done: the iframe is shown, and the canvas may frame the world. */
+  const [settled, setSettled] = useState(false);
+  const entry = entryOf(maker.site, pageId);
+  const isLayout = entry !== undefined && !maker.site.pages.some((candidate) => candidate.id === entry.id);
+  const page = entry ?? maker.page;
   const root = page.root;
+  /* What is drawn: a page inside its layout, with the layout's nodes marked so they are shown and not selected here. */
+  const drawn = useMemo(() => (entry && !isLayout ? composePage(maker.site, entry as MakerPageEntry) : { root, layout: undefined }), [maker.site, entry, isLayout, root]);
   const active = page.id === maker.page.id;
   const mode = maker.view.mode;
   const selected = active ? maker.view.selected : undefined;
+  const selectedNode = selected ? findChild(root, selected) : undefined;
   const selectedIds = active ? maker.view.selectedIds : [];
   const stageSelected = active && mode === "edit" ? selected : undefined;
   const fresh = maker.fresh;
+  /* What the selection changes on the stage, as a string: stable while the selection moves between things that
+     hold nothing open, so the page is not re-rendered for it. */
+  const openKey = useMemo(() => openIdsFor(root, stageSelected).join(","), [root, stageSelected]);
   const scale = zoom;
   const targetPx = widthPx(maker.view.width);
   const frameHeight = Math.max(MIN_HEIGHT, contentHeight);
@@ -95,7 +109,9 @@ export function Artboard({
   };
   useEffect(() => {
     const onMessage = (event: MessageEvent) => {
-      if (event.origin === window.location.origin && event.data?.type === "maker-stage-ready") setReady(true);
+      /* Only MY stage's word counts: another board that finished loading first must not mark this one ready, or this one
+         never renders (it is "ready" with no stage to render into, and nothing makes it try again). */
+      if (event.origin === window.location.origin && event.data?.type === "maker-stage-ready" && event.source === frameRef.current?.contentWindow) setReady(true);
     };
     window.addEventListener("message", onMessage);
     checkReady();
@@ -110,17 +126,21 @@ export function Artboard({
     if (!ready || !stage) return;
     let cancelled = false;
     stage
-      .render(stageTree(root, stageSelected, fresh))
+      .render(stageTree(drawn.root, undefined, fresh, openKey ? openKey.split(",") : [], drawn.layout))
       .then(() => {
         if (cancelled) return;
         setRenderError(undefined);
         setTick((t) => t + 1);
       })
-      .catch((error: unknown) => setRenderError(error instanceof Error ? error.message : String(error)));
+      .catch((error: unknown) => {
+        setRenderError(error instanceof Error ? error.message : String(error));
+        /* A page that failed to render still has to appear, with its error, not stay hidden for good. */
+        setSettled(true);
+      });
     return () => {
       cancelled = true;
     };
-  }, [ready, root, stageSelected, fresh]);
+  }, [ready, drawn, openKey, fresh]);
 
   /* ─── theme: view state mirrored onto the stage's root, never into the page ──────────────── */
 
@@ -167,6 +187,24 @@ export function Artboard({
   }, [selected, hovered, mode, root]);
 
   useLayoutEffect(measure, [measure, tick]);
+
+  /* The first render has resolved (`tick` moved) and the theme went on in the same commit: measured once more on
+     the next frame, so the height is the page's, and then it is shown. */
+  useEffect(() => {
+    if (settled || tick === 0) return;
+    const frame = requestAnimationFrame(() => {
+      measure();
+      setSettled(true);
+    });
+    return () => cancelAnimationFrame(frame);
+  }, [tick, settled, measure]);
+
+  const announced = useRef(false);
+  useEffect(() => {
+    if (!settled || announced.current) return;
+    announced.current = true;
+    onSettled?.(pageId);
+  }, [settled, onSettled, pageId]);
 
   useEffect(() => {
     const frameWindow = frameRef.current?.contentWindow;
@@ -225,7 +263,7 @@ export function Artboard({
       }
       /* A click on the page where no node is (below the last section, in a margin) selects the page's
          Main: the one place that means "the page itself", and where an insert goes to the end. */
-      const id = nodeIdAt(target) ?? live.current.maker.site.pages.find((entry) => entry.id === live.current.pageId)?.root.id;
+      const id = nodeIdAt(target) ?? entryOf(live.current.maker.site, live.current.pageId)?.root.id;
       /* On another page's artboard, the click opens that page, with what was clicked selected. */
       if (!live.current.active) live.current.maker.setView({ page: live.current.pageId, selected: id });
       else if (id) {
@@ -387,7 +425,7 @@ export function Artboard({
       if (live.current.mode !== "edit") return;
       if ((event.target as Element).closest("[data-maker-editing]")) return;
       event.preventDefault();
-      const id = nodeIdAt(event.target as Element) ?? live.current.maker.site.pages.find((entry) => entry.id === live.current.pageId)?.root.id;
+      const id = nodeIdAt(event.target as Element) ?? entryOf(live.current.maker.site, live.current.pageId)?.root.id;
       live.current.maker.setView({ page: live.current.pageId, selected: id });
       const at = toCanvas(event);
       window.dispatchEvent(new CustomEvent(CANVAS_CONTEXT_MENU, { detail: at }));
@@ -458,6 +496,17 @@ export function Artboard({
           surface: "stage",
           indicator: { kind: found.indicator.kind, rect: { left: box.left + r.left * k, top: box.top + r.top * k, width: r.width * k, height: r.height * k } },
         };
+      }, (place) => {
+        /* A place chosen by keyboard, drawn where the pointer's would be. */
+        const frame = frameRef.current;
+        const document = doc();
+        if (!frame || !document || !live.current.active) return undefined;
+        const indicator = indicatorFor(document, live.current.root, place);
+        if (!indicator) return undefined;
+        const box = frame.getBoundingClientRect();
+        const k = live.current.scale;
+        const r = indicator.rect;
+        return { place, surface: "stage", indicator: { kind: indicator.kind, rect: { left: box.left + r.left * k, top: box.top + r.top * k, width: r.width * k, height: r.height * k } } };
       }),
     [drag.register, pageId],
   );
@@ -466,19 +515,20 @@ export function Artboard({
   const frameBox = frameRef.current?.getBoundingClientRect();
 
   return (
-    <div className="maker-artboard" data-active={active ? "" : undefined} data-page={page.id}>
-      <button
-        type="button"
+    <div className="maker-artboard" data-active={active ? "" : undefined} data-layout={isLayout ? "" : undefined} data-page={page.id} data-settled={settled ? "" : undefined}>
+      <Button
+        variant="ghost"
+        size="xs"
         className="maker-artboard__label"
         style={{ transform: `scale(${1 / zoom})` }}
         onClick={() => maker.setView({ page: page.id, selected: undefined })}
         aria-current={active ? "page" : undefined}
       >
-        <span className="maker-artboard__name">{page.name}</span>
-        <span className="maker-artboard__path">{page.path}</span>
-      </button>
+        <span className="maker-artboard__name">{isLayout ? `Layout · ${page.name}` : page.name}</span>
+        <span className="maker-artboard__path" data-note={isLayout ? "" : undefined}>{isLayout ? "shared by pages" : (page as MakerPageEntry).path}</span>
+      </Button>
       <div className="maker-stage__frame" style={{ inlineSize: targetPx, blockSize: frameHeight }}>
-        <iframe ref={frameRef} src="/stage.html" title={`Page ${page.name}`} className="maker-stage__iframe" onLoad={checkReady} />
+        <iframe ref={frameRef} src="/stage.html" title={`${isLayout ? "Layout" : "Page"} ${page.name}`} className="maker-stage__iframe" onLoad={checkReady} />
         <div className="maker-stage__overlays" aria-hidden="true">
           {overlay.hovered ? <div className="maker-overlay maker-overlay--hover" style={box(overlay.hovered)} /> : null}
           {overlay.selectedMany?.map((rect, index) => <div key={index} className="maker-overlay maker-overlay--selected maker-overlay--multi" style={{ ...box(rect), borderWidth: 1 / zoom }} />)}

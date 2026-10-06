@@ -70,6 +70,36 @@ export function placeAt(doc: Document, root: MakerNode, allowed: readonly Place[
   return rootElement ? gapIn(doc, root, rootSlot, rootElement, bySlot.get(`${root.id}\u0000${rootSlot}`)!, x, y) : undefined;
 }
 
+/**
+ * Where a place is, as the indicator that would show it: a line before the child at its index (or after the
+ * last one), a box around an empty slot's container. The same shapes `placeAt` draws for a pointer, asked of
+ * a place instead of a point, which is what choosing a place with the keyboard needs. `undefined` when the
+ * parent has nothing on the stage to point at.
+ */
+export function indicatorFor(doc: Document, root: MakerNode, place: Place): Indicator | undefined {
+  const parent = findNode(root, place.parent);
+  const container = elementFor(doc, place.parent);
+  if (!parent || !container) return undefined;
+  const siblings = childrenOf(parent, place.slot)
+    .map((child, index) => ({ index, element: isNode(child) ? elementFor(doc, child.id) : null }))
+    .filter((entry): entry is { index: number; element: HTMLElement } => entry.element !== null);
+  if (siblings.length === 0) return { kind: "box", rect: rectOf(container) };
+  const before = siblings.find((entry) => entry.index >= place.index);
+  const anchor = before ?? siblings[siblings.length - 1]!;
+  const rect = anchor.element.getBoundingClientRect();
+  const horizontal = flowsInline(doc, container);
+  const atStart = before !== undefined;
+  const line: Rect = horizontal
+    ? { left: (atStart ? rect.left : rect.right) - LINE / 2, top: rect.top, width: LINE, height: rect.height }
+    : { left: rect.left, top: (atStart ? rect.top : rect.bottom) - LINE / 2, width: rect.width, height: LINE };
+  return { kind: "line", rect: line };
+}
+
+const rectOf = (element: HTMLElement): Rect => {
+  const r = element.getBoundingClientRect();
+  return { left: r.left, top: r.top, width: r.width, height: r.height };
+};
+
 function preferredSlot(node: MakerNode, bySlot: Map<string, Set<number>>): string | undefined {
   if (bySlot.has(`${node.id}\u0000children`)) return "children";
   for (const key of bySlot.keys()) {

@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { NativeSelect } from "@skryensya/react/select-native";
 import { listTemplates, templateSite, type TemplateEntry, type TemplateLocale } from "./templates";
 import { Button } from "@skryensya/react/button";
+import { TileButton, TileContent } from "@skryensya/react/tile";
 import { Icon } from "@skryensya/react/icon";
 import { Input } from "@skryensya/react/input";
 import { FormField } from "@skryensya/react/form-field";
@@ -56,7 +57,7 @@ export function ProjectsPanel({ workspace, onClose }: { workspace: Workspace; on
           <FormField label="New project">
             <Input value={name} placeholder="Landing page" onChange={(event) => setName(event.currentTarget.value)} />
           </FormField>
-          <Button type="submit" variant="solid" size="sm" pre={<Icon name="add" />} disabled={!name.trim()}>
+          <Button type="submit" variant="solid" size="lg" pre={<Icon name="add" />} disabled={!name.trim()}>
             Create
           </Button>
         </form>
@@ -87,20 +88,16 @@ export function ProjectsPanel({ workspace, onClose }: { workspace: Workspace; on
                       }}
                     />
                   ) : (
-                    <button
-                      type="button"
+                    <TileButton
+                      padding="sm"
                       className="maker-projects__open"
                       onClick={() => {
                         void workspace.openProject(project.id);
                         onClose?.();
                       }}
                     >
-                      <span className="maker-projects__name">{project.name}</span>
-                      <span className="maker-projects__meta">
-                        {isOpen ? "Open · " : ""}
-                        {when.format(new Date(project.updatedAt))}
-                      </span>
-                    </button>
+                      <TileContent title={project.name} description={`${isOpen ? "Open · " : ""}${when.format(new Date(project.updatedAt))}`} />
+                    </TileButton>
                   )}
                   <Inline gap="xs">
                     <IconButton icon={{ role: "edit" }} label={`Rename ${project.name}`} onClick={() => setRenaming(project.id)} />

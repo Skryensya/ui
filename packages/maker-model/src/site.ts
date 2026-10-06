@@ -1,7 +1,7 @@
 import { apply, type Operation } from "./operations.js";
 import { FORMAT as PAGE_FORMAT, parse as parsePage, type MakerPage } from "./page.js";
 import { walk, type MakerNode } from "./node.js";
-import { reidentify, type IdFactory } from "./project.js";
+import { fromUsageTree, reidentify, type IdFactory } from "./project.js";
 
 /*
  * A MAKER SITE: pages, in order, each with a name, a path and its own tree whose root is a `Main`.
@@ -23,6 +23,24 @@ export type MakerPageEntry = {
   /** Where the page lives: `/`, `/about`, `/docs/start`. Unique in the site. */
   readonly path: string;
   readonly root: MakerNode;
+  /**
+   * The layout the page sits in. Absent: the site's default layout, if it has one. `"none"`: no layout, the page stands
+   * alone. Otherwise a layout's id. Absent is what makes every new page have the site's header and footer without anyone
+   * setting anything.
+   */
+  readonly layout?: string;
+};
+
+/**
+ * A LAYOUT: what every page that uses it is drawn inside, edited once. Its tree is an `AppShell` (header, rail, footer,
+ * whatever the kit's shell takes) with one `Main` that is the OUTLET: the page's own `Main` takes that place when the
+ * page is drawn, exported or published. Shares its id space with pages, so the Maker opens and edits one exactly as it
+ * does a page, with the same operations.
+ */
+export type MakerLayout = {
+  readonly id: string;
+  readonly name: string;
+  readonly root: MakerNode;
 };
 
 export type MakerSite = {
@@ -30,6 +48,10 @@ export type MakerSite = {
   readonly formatVersion: typeof SITE_FORMAT_VERSION;
   readonly sourceHash: string;
   readonly pages: readonly MakerPageEntry[];
+  /** Shared page frames. Absent in a site made before layouts: it then has none. */
+  readonly layouts?: readonly MakerLayout[];
+  /** The layout a page uses when it does not say. */
+  readonly defaultLayout?: string;
 };
 
 export type SiteOperation =
@@ -38,7 +60,12 @@ export type SiteOperation =
   | { readonly type: "renamePage"; readonly page: string; readonly name: string }
   | { readonly type: "setPagePath"; readonly page: string; readonly path: string }
   | { readonly type: "movePage"; readonly page: string; readonly index: number }
-  | { readonly type: "edit"; readonly page: string; readonly operation: Operation };
+  | { readonly type: "edit"; readonly page: string; readonly operation: Operation }
+  | { readonly type: "addLayout"; readonly layout: MakerLayout; readonly makeDefault?: boolean }
+  | { readonly type: "removeLayout"; readonly layout: string }
+  | { readonly type: "renameLayout"; readonly layout: string; readonly name: string }
+  | { readonly type: "setDefaultLayout"; readonly layout?: string }
+  | { readonly type: "setPageLayout"; readonly page: string; readonly layout?: string };
 
 export type SiteApplied = { readonly ok: true; readonly site: MakerSite } | { readonly ok: false; readonly reason: string };
 
@@ -85,6 +112,65 @@ export function pageOf(site: MakerSite, id: string): MakerPageEntry | undefined 
   return site.pages.find((page) => page.id === id);
 }
 
+export const layoutsOf = (site: MakerSite): readonly MakerLayout[] => site.layouts ?? [];
+
+export function layoutOf(site: MakerSite, id: string): MakerLayout | undefined {
+  return layoutsOf(site).find((layout) => layout.id === id);
+}
+
+/** What the Maker opens and edits by id: a page, or a layout, which it treats the same way. */
+export function entryOf(site: MakerSite, id: string): MakerPageEntry | MakerLayout | undefined {
+  return pageOf(site, id) ?? layoutOf(site, id);
+}
+
+/** A layout with its outlet and nothing else: a header, a footer or a rail are added to it like to any tree. */
+export function emptyLayout(id: string, name: string, newId: IdFactory): MakerLayout {
+  const outlet: MakerNode = { id: newId(), contract: "layout", signature: "Main", slots: { children: { kind: "nodes", children: [] } } };
+  return { id, name, root: { id: newId(), contract: "layout", signature: "AppShell", slots: { children: { kind: "nodes", children: [outlet] } } } };
+}
+
+/**
+ * A layout to start from: a header bar with a brand, the outlet, and a footer with a line of text. Everything in it is
+ * ordinary content, changed like any other once it is on the layout's board.
+ */
+export function starterLayout(id: string, name: string, newId: IdFactory): MakerLayout {
+  const base = emptyLayout(id, name, newId);
+  const outlet = (base.root.slots.children as { readonly kind: "nodes"; readonly children: readonly MakerNode[] }).children[0]!;
+  const header = fromUsageTree({ contract: "navbar", signature: "Navbar", children: [{ contract: "navbar", signature: "NavbarBrand", children: "Your site" }] }, newId) as MakerNode;
+  const footer = fromUsageTree(
+    { contract: "footer", signature: "Footer", options: { padding: "md" }, children: [{ contract: "wrapper", signature: "Wrapper", children: [{ contract: "typography", signature: "Text", options: { tone: "tertiary", size: "sm" }, children: "Made with Skryensya." }] }] },
+    newId,
+  ) as MakerNode;
+  return { ...base, root: { ...base.root, slots: { children: { kind: "nodes", children: [header, outlet, footer] } } } };
+}
+
+/** The layout a page is drawn in: its own choice, else the site's default, else none. */
+export function layoutFor(site: MakerSite, page: MakerPageEntry): MakerLayout | undefined {
+  if (page.layout === "none") return undefined;
+  return layoutOf(site, page.layout ?? site.defaultLayout ?? "");
+}
+
+const outletOf = (layout: MakerLayout): MakerNode | undefined => [...walk(layout.root)].find((node) => node.signature === "Main");
+
+/**
+ * THE PAGE AS IT IS DRAWN: the layout's tree with the page's own `Main` standing where the layout's outlet is. This is
+ * what the stage shows, what is exported and what is published. `layout` holds the ids that belong to the layout, so a
+ * page's artboard can show them without letting them be selected there: they are changed in the layout, once.
+ */
+export function composePage(site: MakerSite, page: MakerPageEntry): { readonly root: MakerNode; readonly layout: ReadonlySet<string> } {
+  const layout = layoutFor(site, page);
+  const outlet = layout ? outletOf(layout) : undefined;
+  if (!layout || !outlet) return { root: page.root, layout: new Set() };
+  const place = (node: MakerNode): MakerNode => {
+    if (node.id === outlet.id) return page.root;
+    const slots = Object.fromEntries(
+      Object.entries(node.slots).map(([name, held]) => [name, held.kind === "nodes" ? { ...held, children: held.children.map((child) => ("signature" in child ? place(child) : child)) } : held]),
+    );
+    return { ...node, slots } as MakerNode;
+  };
+  return { root: place(layout.root), layout: new Set([...walk(layout.root)].map((node) => node.id).filter((id) => id !== outlet.id)) };
+}
+
 export function applySite(site: MakerSite, operation: SiteOperation): SiteApplied {
   switch (operation.type) {
     case "addPage": {
@@ -94,7 +180,9 @@ export function applySite(site: MakerSite, operation: SiteOperation): SiteApplie
       if (problem) return refuse(problem);
       if (!page.name.trim()) return refuse("A page needs a name.");
       if (page.root.signature !== "Main") return refuse("A page's root is a Main.");
-      const nodeIds = new Set(site.pages.flatMap((p) => [...walk(p.root)].map((n) => n.id)));
+      if (layoutOf(site, page.id)) return refuse(`A layout "${page.id}" already exists.`);
+      if (page.layout !== undefined && page.layout !== "none" && !layoutOf(site, page.layout)) return refuse(`No layout "${page.layout}".`);
+      const nodeIds = allNodeIds(site);
       if ([...walk(page.root)].some((node) => nodeIds.has(node.id))) return refuse("The new page reuses identities from another page.");
       const pages = [...site.pages];
       pages.splice(clamp(operation.index ?? pages.length, 0, pages.length), 0, page);
@@ -124,10 +212,57 @@ export function applySite(site: MakerSite, operation: SiteOperation): SiteApplie
     }
     case "edit": {
       const page = pageOf(site, operation.page);
-      if (!page) return refuse(`No page "${operation.page}".`);
-      const result = apply(page.root, operation.operation);
+      if (page) {
+        const result = apply(page.root, operation.operation);
+        if (!result.ok) return result;
+        return change(site, page.id, (entry) => ({ ...entry, root: result.root }));
+      }
+      const layout = layoutOf(site, operation.page);
+      if (!layout) return refuse(`No page "${operation.page}".`);
+      const result = apply(layout.root, operation.operation);
       if (!result.ok) return result;
-      return change(site, page.id, (entry) => ({ ...entry, root: result.root }));
+      /* The outlet is what makes it a layout: an edit that removed it would leave pages with nowhere to go. */
+      if (!outletOf({ ...layout, root: result.root })) return refuse("A layout keeps its Main: it is where each page goes.");
+      return { ok: true, site: { ...site, layouts: layoutsOf(site).map((entry) => (entry.id === layout.id ? { ...entry, root: result.root } : entry)) } };
+    }
+    case "addLayout": {
+      const { layout } = operation;
+      if (entryOf(site, layout.id)) return refuse(`Something with the id "${layout.id}" already exists.`);
+      if (!layout.name.trim()) return refuse("A layout needs a name.");
+      if (layout.root.signature !== "AppShell") return refuse("A layout's root is an AppShell.");
+      if (!outletOf(layout)) return refuse("A layout needs a Main: it is where each page goes.");
+      const nodeIds = allNodeIds(site);
+      if ([...walk(layout.root)].some((node) => nodeIds.has(node.id))) return refuse("The new layout reuses identities from the site.");
+      return { ok: true, site: { ...site, layouts: [...layoutsOf(site), layout], ...(operation.makeDefault ? { defaultLayout: layout.id } : {}) } };
+    }
+    case "removeLayout": {
+      if (!layoutOf(site, operation.layout)) return refuse(`No layout "${operation.layout}".`);
+      const { defaultLayout, ...rest } = site;
+      return {
+        ok: true,
+        site: {
+          ...rest,
+          layouts: layoutsOf(site).filter((layout) => layout.id !== operation.layout),
+          ...(defaultLayout !== undefined && defaultLayout !== operation.layout ? { defaultLayout } : {}),
+          /* A page that named it falls back to the default, which is now none or another. */
+          pages: site.pages.map((page) => (page.layout === operation.layout ? (({ layout: _gone, ...kept }) => kept)(page) : page)),
+        },
+      };
+    }
+    case "renameLayout": {
+      if (!operation.name.trim()) return refuse("A layout needs a name.");
+      if (!layoutOf(site, operation.layout)) return refuse(`No layout "${operation.layout}".`);
+      return { ok: true, site: { ...site, layouts: layoutsOf(site).map((layout) => (layout.id === operation.layout ? { ...layout, name: operation.name.trim() } : layout)) } };
+    }
+    case "setDefaultLayout": {
+      const { defaultLayout: _old, ...rest } = site;
+      if (operation.layout === undefined) return { ok: true, site: rest };
+      if (!layoutOf(site, operation.layout)) return refuse(`No layout "${operation.layout}".`);
+      return { ok: true, site: { ...rest, defaultLayout: operation.layout } };
+    }
+    case "setPageLayout": {
+      if (operation.layout !== undefined && operation.layout !== "none" && !layoutOf(site, operation.layout)) return refuse(`No layout "${operation.layout}".`);
+      return change(site, operation.page, ({ layout: _was, ...page }) => (operation.layout === undefined ? page : { ...page, layout: operation.layout }));
     }
   }
 }
@@ -157,7 +292,7 @@ export type BrokenLink = { readonly page: string; readonly node: string; readonl
 export function brokenLinks(site: MakerSite): readonly BrokenLink[] {
   const paths = new Set(site.pages.map((page) => page.path));
   const broken: BrokenLink[] = [];
-  for (const page of site.pages) {
+  for (const page of [...site.pages, ...layoutsOf(site)]) {
     for (const node of walk(page.root)) {
       for (const value of Object.values(node.options ?? {})) {
         if (typeof value !== "string" || !value.startsWith("/") || value.startsWith("//")) continue;
@@ -203,7 +338,22 @@ export function parseSite(json: string, sourceHash: string, newId: IdFactory): O
     }
   }
   if (new Set(site.pages.map((page) => page.path)).size !== site.pages.length) return { ok: false, reason: "Two pages share a path." };
+  for (const layout of site.layouts ?? []) {
+    if (typeof layout.id !== "string" || typeof layout.name !== "string" || layout.root?.signature !== "AppShell" || !outletOf(layout)) {
+      return { ok: false, reason: `Layout "${String(layout.name)}" is not an AppShell with a Main.` };
+    }
+  }
+  const ids = [...site.pages, ...(site.layouts ?? [])].map((entry) => entry.id);
+  if (new Set(ids).size !== ids.length) return { ok: false, reason: "Two pages or layouts share an id." };
+  const known = new Set((site.layouts ?? []).map((layout) => layout.id));
+  if (site.defaultLayout !== undefined && !known.has(site.defaultLayout)) return { ok: false, reason: `The default layout "${site.defaultLayout}" does not exist.` };
+  for (const page of site.pages) if (page.layout !== undefined && page.layout !== "none" && !known.has(page.layout)) return { ok: false, reason: `Page "${page.name}" uses a layout that does not exist.` };
   return { ok: true, site, catalogueChanged: site.sourceHash !== sourceHash };
+}
+
+/** Every node id in the site, pages and layouts alike: one id names one node anywhere. */
+function allNodeIds(site: MakerSite): Set<string> {
+  return new Set([...site.pages, ...layoutsOf(site)].flatMap((entry) => [...walk(entry.root)].map((node) => node.id)));
 }
 
 function taken(site: MakerSite, path: string, except?: string): string | undefined {

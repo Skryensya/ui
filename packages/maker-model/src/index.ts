@@ -13,3 +13,4 @@ export * from "./context.js";
 export * from "./proposal.js";
 export * from "./template.js";
 export * from "./variants.js";
+export * from "./blocks.js";

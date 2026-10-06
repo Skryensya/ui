@@ -21,8 +21,11 @@ const context = makerContext(site, { id: "project", revision: 3 }, { page: site.
 const operations = [{ type: "page", page: site.pages[0]!.id, operations: [{ type: "wrap", children: buttons, with: { contract: "layout", signature: "Inline" } }] }];
 const connection = { provider: "openai" as const, apiKey: "secret-test-credential", model: "test" };
 
+/* The briefing call comes first and asks for submit_brief: it is answered with an edit brief (nothing to ask, nothing to
+   review) so the scripted replies are the build's own. */
+const editBrief: ProviderReply = { text: "", calls: [{ id: "b", name: "submit_brief", arguments: JSON.stringify({ kind: "edit", goal: "Do it", checklist: ["It is done"] }) }] };
 function scripted(replies: ProviderReply[]): ProviderAdapter {
-  return { complete: vi.fn(async () => replies.shift() ?? { text: "Ready", calls: [] }) };
+  return { complete: vi.fn(async (_c, _s, _m, tools) => ((tools as readonly { name: string }[]).some((tool) => tool.name === "submit_brief") ? editBrief : replies.shift() ?? { text: "Ready", calls: [] })) };
 }
 async function collect(adapter: ProviderAdapter, signal = new AbortController().signal) {
   const events: AgentEvent[] = [];
@@ -101,7 +104,8 @@ describe("bounded tool-using runtime", () => {
     const events = await collect(adapter);
     expect(events.at(-1)).toMatchObject({ type: "done", proposal: { revision: 3 } });
     const calls = vi.mocked(adapter.complete).mock.calls;
-    expect(calls).toHaveLength(2);
+    /* The brief, then the build's two rounds. */
+    expect(calls).toHaveLength(3);
     for (const args of calls) expect(JSON.stringify(args.slice(1))).not.toContain(connection.apiKey);
     expect(JSON.stringify(events)).not.toContain(connection.apiKey);
   });
@@ -109,7 +113,7 @@ describe("bounded tool-using runtime", () => {
     const adapter = scripted([{ text: "", calls: [{ id: "1", name: "maker_try", arguments: "not json" }] }]);
     const events = await collect(adapter);
     expect(events.at(-1)).not.toHaveProperty("proposal", expect.anything());
-    const messages = vi.mocked(adapter.complete).mock.calls[1]![2];
+    const messages = vi.mocked(adapter.complete).mock.calls[2]![2];
     expect(messages.some(m => m.role === "tool" && m.content.includes("Malformed tool call"))).toBe(true);
   });
   it("checks aborts before executing tools", async () => {
@@ -123,5 +127,86 @@ describe("bounded tool-using runtime", () => {
     const run = async () => { for await (const _ of runAgent({ connection: { ...connection, apiKey: "" }, site, context, content: "edit", service, adapter, signal: new AbortController().signal })) { /* consume */ } };
     await expect(run()).rejects.toThrow("Connect a provider");
     expect(adapter.complete).not.toHaveBeenCalled();
+  });
+});
+
+describe("layout guidance for the embedded agent", () => {
+  it("teaches the design system's page structure, and wrapping things inside a container", async () => {
+    const { MAKER_SYSTEM_PROMPT } = await import("./system-prompt.js");
+    for (const word of ["Wrapper", "wrapperSize", "never put a Wrapper inside another Wrapper", "wrap operation", "Main > Box (band) > Wrapper > Stack"]) {
+      expect(MAKER_SYSTEM_PROMPT.toLowerCase()).toContain(word.toLowerCase());
+    }
+  });
+
+  it("refuses a Wrapper inside a Wrapper with the reason, so the agent can repair the batch", () => {
+    const tools = createMakerTools(site, context, service);
+    const stack = childrenOf(root, "children")[0]!;
+    const wrapIn = (tools: ReturnType<typeof createMakerTools>, id: string) => tools.execute("maker_try", {
+      operations: [{ type: "page", page: site.pages[0]!.id, operations: [{ type: "wrap", children: [id], with: { contract: "wrapper", signature: "Wrapper" } }] }],
+    }) as { proposed?: boolean; refused?: string };
+    expect(wrapIn(tools, stack.id).proposed).toBe(true);
+    const wrapper = childrenOf(tools.proposal()!.site.pages[0]!.root, "children")[0]!;
+    const again = wrapIn(createMakerTools(tools.proposal()!.site, context, service), wrapper.id);
+    expect(again.refused).toBe("Wrapper cannot go inside Wrapper.");
+  });
+});
+
+describe("reading a website to clone it", () => {
+  it("teaches cloning: read first, rebuild with the kit, never copy markup", async () => {
+    const { MAKER_SYSTEM_PROMPT } = await import("./system-prompt.js");
+    for (const word of ["maker_read_site", "never reproduce the", "likelyScripted"]) expect(MAKER_SYSTEM_PROMPT).toContain(word);
+  });
+
+  it("hands the model the server's summary, and its failure as a refusal it can answer", async () => {
+    const seen: string[] = [];
+    const ok = createMakerTools(site, context, service, undefined, undefined, async (url) => { seen.push(url); return { title: "Acme", sections: [] }; });
+    expect(await ok.execute("maker_read_site", { url: "https://acme.test/" })).toEqual({ title: "Acme", sections: [] });
+    expect(seen).toEqual(["https://acme.test/"]);
+    const down = createMakerTools(site, context, service, undefined, undefined, async () => { throw new Error("That address is not public."); });
+    expect(await down.execute("maker_read_site", { url: "https://acme.test/" })).toEqual({ refused: "That address is not public." });
+    expect(await createMakerTools(site, context, service).execute("maker_read_site", { url: "https://acme.test/" })).toEqual({ refused: "Reading websites is not available here." });
+    expect((await down.execute("maker_read_site", { url: "not a url" }) as { refused: string }).refused).toBe("Malformed tool arguments.");
+  });
+});
+
+describe("the agent asks, but not for everything", () => {
+  it("can ask, is told to do it rarely, and still never invents content", async () => {
+    const { MAKER_SYSTEM_PROMPT } = await import("./system-prompt.js");
+    expect(MAKER_SYSTEM_PROMPT).toContain("ASK RARELY");
+    expect(MAKER_SYSTEM_PROMPT).toContain("NEVER INVENT");
+    expect(MAKER_SYSTEM_PROMPT).toContain("FINISH THE JOB");
+    const tools = createMakerTools(site, context, service);
+    const ask = tools.specs.find((spec: { name: string }) => spec.name === "ask_user") as { description: string } | undefined;
+    expect(ask?.description.startsWith("RARELY.")).toBe(true);
+    expect(await tools.execute("ask_user", { questions: [{ title: "Audience", recommended: "Developers" }] })).toMatchObject({ asked: true });
+    const { BRIEF_SYSTEM_PROMPT } = await import("./brief.js");
+    /* The briefing step asks only when a build would be a coin flip, never for copy that can be a placeholder. */
+    expect(BRIEF_SYSTEM_PROMPT).toContain("ASK LITTLE");
+    expect(BRIEF_SYSTEM_PROMPT).toContain("Never ask for copy, prices, names or numbers");
+  });
+});
+
+describe("components the person names", () => {
+  it("are found in the request, with the design system's guidance for deciding whether to use them", async () => {
+    const { mentionedComponents } = await import("./mentions.js");
+    const found = mentionedComponents("pon un wrapper y un Navbar arriba", service);
+    expect(found.map(m => m.signature)).toEqual(expect.arrayContaining(["Wrapper", "Navbar"]));
+    expect(mentionedComponents("nada que ver aquí", service)).toEqual([]);
+    const { MAKER_SYSTEM_PROMPT } = await import("./system-prompt.js");
+    expect(MAKER_SYSTEM_PROMPT).toContain("mentionedComponents");
+  });
+});
+
+describe("centered layouts", () => {
+  it("teaches the three levers: Wrapper for the column, Stack and Inline for the items, Hero for the text lines", async () => {
+    const { MAKER_SYSTEM_PROMPT } = await import("./system-prompt.js");
+    for (const word of ["CENTERED LAYOUTS", "Hero align center", "Inline (justify center)", "hero-centered-minimal", "does NOT centre a"]) expect(MAKER_SYSTEM_PROMPT).toContain(word);
+  });
+});
+
+describe("cloning keeps the page's architecture", () => {
+  it("plans from the section roles, copies the real content and heading levels, and never invents", async () => {
+    const { MAKER_SYSTEM_PROMPT } = await import("./system-prompt.js");
+    for (const word of ["INFORMATION ARCHITECTURE", "PLAN from structure", "ONE card per item", "Keep the heading levels of outline", "Never write copy the original does not have"]) expect(MAKER_SYSTEM_PROMPT).toContain(word);
   });
 });

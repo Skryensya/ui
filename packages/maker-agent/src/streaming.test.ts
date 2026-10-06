@@ -5,7 +5,7 @@ import { createSite, counterIds, fromUsageTree, makerContext, walk } from "@skry
 import index from "../../../artifacts/ai-index.json" with { type: "json" };
 import manifest from "../../../artifacts/ai-manifest.json" with { type: "json" };
 import { runAgent, type AgentEvent } from "./runtime.js";
-import { anthropicAdapter, openaiAdapter, type ProviderAdapter, type ProviderConnection, type StreamHandlers } from "./providers.js";
+import { anthropicAdapter, openaiAdapter, responsesAdapter, type ProviderAdapter, type ProviderConnection, type StreamHandlers } from "./providers.js";
 
 const service = createAgentService(asCompiledPair(index, manifest), []);
 const base = createSite("hash", counterIds("site"));
@@ -55,6 +55,196 @@ describe("streaming runtime", () => {
     expect(events.findIndex((e) => e.type === "draft")).toBeLessThan(events.findIndex((e) => e.type === "done"));
     const sizes = drafts.map((d) => [...walk(d.site.pages[0]!.root)].length);
     expect(sizes[0]).toBeLessThan(sizes.at(-1)!);
+  });
+
+  it("hands the model the open page with every node's id, and an edit touches only what it names", async () => {
+    const text = [...walk(root)].find((n) => n.signature === "Text")!;
+    const seen: string[] = [];
+    const edit = JSON.stringify({ operations: [{ type: "page", page: pageId, operations: [
+      { type: "setText", node: text.id, text: "Changed" },
+      { type: "insert", at: { parent: root.id, slot: "children", index: 1 }, tree: { contract: "typography", signature: "Text", children: "Appended" } },
+    ] }] });
+    let round = 0;
+    const adapter: ProviderAdapter = {
+      complete: vi.fn(async () => ({ text: "", calls: [] })),
+      stream: vi.fn(async (_c, system, messages, _t, _s, on: StreamHandlers) => {
+        if (round++ === 0) {
+          seen.push(messages.at(-1)!.content, system);
+          on.callStart?.({ id: "c1", name: "maker_try" });
+          on.callArgs?.("c1", edit);
+          return { text: "", calls: [{ id: "c1", name: "maker_try", arguments: edit }] };
+        }
+        return { text: "Done.", calls: [] };
+      }),
+    };
+    const events = await run(adapter);
+    const first = JSON.parse(seen[0]!) as { pageOutline: string };
+    expect(first.pageOutline).toContain(text.id);
+    expect(first.pageOutline).toContain("typography/Text");
+    expect(seen[1]).toContain("WORK ON WHAT IS THERE");
+    expect(seen[1]).toContain("CONTRACTS YOU CAN USE NOW");
+    const done = events.find((e): e is Extract<AgentEvent, { type: "done" }> => e.type === "done")!;
+    const texts = [...walk(done.proposal!.site.pages[0]!.root)].flatMap((n) => JSON.stringify(n.slots)).join(" ");
+    expect(texts).toContain("Changed");
+    expect(texts).toContain("Appended");
+    expect(texts).not.toContain("Existing");
+  });
+
+  it("a follow-up builds on a proposal still waiting, and the result is both changes against the original project", async () => {
+    const text = [...walk(root)].find((n) => n.signature === "Text")!;
+    const batch = (operations: unknown[]) => JSON.stringify({ operations: [{ type: "page", page: pageId, operations }] });
+    const scripted = (arguments_: string, seen: string[]): ProviderAdapter => {
+      let round = 0;
+      return {
+        complete: vi.fn(async () => ({ text: "", calls: [] })),
+        stream: vi.fn(async (_c, _s, messages, _t, _sig, on: StreamHandlers) => {
+          if (round++ === 0) {
+            seen.push(messages.at(-1)!.content);
+            on.callStart?.({ id: "c1", name: "maker_try" });
+            on.callArgs?.("c1", arguments_);
+            return { text: "", calls: [{ id: "c1", name: "maker_try", arguments: arguments_ }] };
+          }
+          return { text: "Done.", calls: [] };
+        }),
+      };
+    };
+    const firstEvents = await run(scripted(batch([{ type: "setText", node: text.id, text: "First" }]), []));
+    const first = firstEvents.find((e): e is Extract<AgentEvent, { type: "done" }> => e.type === "done")!.proposal!;
+
+    const seen: string[] = [];
+    const events: AgentEvent[] = [];
+    const carry = { site: first.site, operations: first.operations };
+    for await (const e of runAgent({ connection, site, context, content: "And add a line", service, adapter: scripted(batch([{ type: "insert", at: { parent: root.id, slot: "children", index: 1 }, tree: { contract: "typography", signature: "Text", children: "Second" } }]), seen), carry, signal: new AbortController().signal })) events.push(e);
+    const proposal = events.find((e): e is Extract<AgentEvent, { type: "done" }> => e.type === "done")!.proposal!;
+    /* The model is shown the draft, not the untouched project. */
+    expect(JSON.parse(seen[0]!).pageOutline).toContain("First");
+    /* Both changes are in the result, and it still commits from the ORIGINAL project as one edit. */
+    const result = JSON.stringify([...walk(proposal.site.pages[0]!.root)].map((n) => n.slots));
+    expect(result).toContain("First");
+    expect(result).toContain("Second");
+    expect(proposal.base).toBe(site);
+    expect(proposal.operations.length).toBe(first.operations.length + 1);
+  });
+
+  it("a follow-up can change what the earlier, still unapplied proposal added, and Apply stays one edit", async () => {
+    const batch = (operations: unknown[]) => JSON.stringify({ operations: [{ type: "page", page: pageId, operations }] });
+    const scripted = (arguments_: string, seen: string[] = []): ProviderAdapter => {
+      let round = 0;
+      return {
+        complete: vi.fn(async () => ({ text: "", calls: [] })),
+        stream: vi.fn(async (_c, _s, messages, _t, _sig, on: StreamHandlers) => {
+          if (round++ === 0) { seen.push(messages.at(-1)!.content); on.callStart?.({ id: "c1", name: "maker_try" }); on.callArgs?.("c1", arguments_); return { text: "", calls: [{ id: "c1", name: "maker_try", arguments: arguments_ }] }; }
+          return { text: "Done.", calls: [] };
+        }),
+      };
+    };
+    const done = (events: AgentEvent[]) => events.find((e): e is Extract<AgentEvent, { type: "done" }> => e.type === "done")!.proposal!;
+    const first = done(await run(scripted(batch([{ type: "insert", at: { parent: root.id, slot: "children", index: 1 }, tree: { contract: "typography", signature: "Text", children: "Draft line" } }]))));
+    /* The node the first proposal added: it exists only in the draft. */
+    const added = [...walk(first.site.pages[0]!.root)].find((n) => n.signature === "Text" && JSON.stringify(n.slots).includes("Draft line"))!;
+    expect([...walk(root)].some((n) => n.id === added.id)).toBe(false);
+
+    const seen: string[] = [];
+    const events: AgentEvent[] = [];
+    for await (const e of runAgent({ connection, site, context, content: "Make that line say Final", service, carry: { site: first.site, operations: first.operations },
+      adapter: scripted(batch([{ type: "setText", node: added.id, text: "Final line" }]), seen), signal: new AbortController().signal })) events.push(e);
+    expect(JSON.parse(seen[0]!).pageOutline).toContain(added.id);
+    const proposal = done(events);
+    const text = JSON.stringify([...walk(proposal.site.pages[0]!.root)].map((n) => n.slots));
+    expect(text).toContain("Final line");
+    expect(text).not.toContain("Draft line");
+    /* Still one proposal against the untouched project: the insert, then the edit of what it inserted. */
+    expect(proposal.base).toBe(site);
+    expect(proposal.operations.length).toBe(first.operations.length + 1);
+  });
+
+  it("asks once, and only what blocks the build: a brief with questions ends the turn before anything is built", async () => {
+    let briefed = "";
+    const asks = JSON.stringify({ kind: "build", goal: "A page for the business", checklist: ["A page"], missing: [
+      { title: "What does the business do?", body: "Nothing in the request says what this page is for.", recommended: "A bakery" },
+    ] });
+    const adapter: ProviderAdapter = {
+      complete: vi.fn(async (_c, _s, messages) => { briefed = messages[0]!.content; return { text: "", calls: [{ id: "b", name: "submit_brief", arguments: asks }] }; }),
+      stream: vi.fn(async () => ({ text: "", calls: [] })),
+    };
+    const events = await run(adapter);
+    const done = events.find((e): e is Extract<AgentEvent, { type: "done" }> => e.type === "done")!;
+    expect(JSON.parse(briefed).canAsk).toBe(true);
+    expect(done.questions).toHaveLength(1);
+    expect(done.proposal).toBeUndefined();
+    expect(adapter.stream).not.toHaveBeenCalled();
+  });
+
+  it("never asks twice: once a round was asked, the brief is told it may not and the build goes on with placeholders", async () => {
+    let briefed = "";
+    const asks = JSON.stringify({ kind: "build", goal: "A pricing section", checklist: ["Three plans"], assumptions: ["Plan names are placeholders"], missing: [{ title: "Plans", recommended: "Placeholders" }] });
+    const adapter: ProviderAdapter = {
+      complete: vi.fn(async (_c, _s, messages) => { briefed = messages[0]!.content; return { text: "", calls: [{ id: "b", name: "submit_brief", arguments: asks }] }; }),
+      stream: vi.fn(async () => ({ text: "Built it with placeholders.", calls: [] })),
+    };
+    const earlier = { content: "A page", context, questions: [{ title: "Q", recommended: "x" }] };
+    const events: AgentEvent[] = [];
+    for await (const e of runAgent({ connection, site, context, content: "My answers: ...", service, adapter, history: [earlier], signal: new AbortController().signal })) events.push(e);
+    const done = events.find((e): e is Extract<AgentEvent, { type: "done" }> => e.type === "done")!;
+    expect(JSON.parse(briefed).canAsk).toBe(false);
+    expect(done.questions).toBeUndefined();
+    expect(adapter.stream).toHaveBeenCalled();
+  });
+
+  it("once the person has said to just proceed, nothing is asked: the brief records assumptions and the build goes on", async () => {
+    let briefed = "";
+    const adapter: ProviderAdapter = {
+      complete: vi.fn(async (_c, _s, messages) => {
+        briefed = messages[0]!.content;
+        /* A brief that tries to ask anyway: it is not allowed to. */
+        return { text: "", calls: [{ id: "b", name: "submit_brief", arguments: JSON.stringify({ kind: "build", goal: "A hero", checklist: ["A hero"], assumptions: ["Headline is a placeholder"], missing: [{ title: "Name", recommended: "x" }] }) }] };
+      }),
+      stream: vi.fn(async () => ({ text: "Built.", calls: [] })),
+    };
+    const events: AgentEvent[] = [];
+    for await (const e of runAgent({ connection, site, context, content: "Use my recommendations and just do it", service, adapter, signal: new AbortController().signal })) events.push(e);
+    expect(JSON.parse(briefed).canAsk).toBe(false);
+    expect(events.find((e) => e.type === "brief")).toMatchObject({ goal: "A hero", assumptions: ["Headline is a placeholder"] });
+    expect(events.find((e): e is Extract<AgentEvent, { type: "done" }> => e.type === "done")!.questions).toBeUndefined();
+  });
+
+  it("keeps going until the goal is met: after proposing it reviews the result and adds only what is missing", async () => {
+    const text = [...walk(root)].find((n) => n.signature === "Text")!;
+    const batch = (operations: unknown[]) => JSON.stringify({ operations: [{ type: "page", page: pageId, operations }] });
+    const first = batch([{ type: "setText", node: text.id, text: "Headline" }]);
+    const more = batch([{ type: "insert", at: { parent: root.id, slot: "children", index: 1 }, tree: { contract: "typography", signature: "Text", children: "Supporting line" } }]);
+    const brief = JSON.stringify({ kind: "build", goal: "A hero with a headline and a supporting line", checklist: ["A headline", "A supporting line"] });
+    const reviews: string[] = [];
+    const roundsSeen: number[] = [];
+    let round = 0;
+    const adapter: ProviderAdapter = {
+      complete: vi.fn(async () => ({ text: "", calls: [{ id: "b", name: "submit_brief", arguments: brief }] })),
+      stream: vi.fn(async (_c, _s, messages, _t, _sig, on: StreamHandlers) => {
+        roundsSeen.push(++round);
+        const last = messages.at(-1)!;
+        if (round === 1) { on.callStart?.({ id: "c1", name: "maker_try" }); on.callArgs?.("c1", first); return { text: "", calls: [{ id: "c1", name: "maker_try", arguments: first }] }; }
+        /* Round 2 is the tool result of round 1: the agent says it is done after only the first part. */
+        if (round === 2) return { text: "Done.", calls: [] };
+        /* Round 3 is the REVIEW: it is shown the page as proposed and the checklist, and adds the missing line. */
+        if (round === 3) {
+          reviews.push(last.content);
+          on.callStart?.({ id: "c2", name: "maker_try" }); on.callArgs?.("c2", more);
+          return { text: "", calls: [{ id: "c2", name: "maker_try", arguments: more }] };
+        }
+        return { text: "Built the headline and the supporting line; both are your content to adjust.", calls: [] };
+      }),
+    };
+    const events = await run(adapter);
+    const review = JSON.parse(reviews[0]!).review as { goal: string; checklist: string[]; now: string };
+    expect(review.checklist).toEqual(["A headline", "A supporting line"]);
+    expect(review.now).toContain("Headline");
+    const proposal = events.find((e): e is Extract<AgentEvent, { type: "done" }> => e.type === "done")!.proposal!;
+    const result = JSON.stringify([...walk(proposal.site.pages[0]!.root)].map((n) => n.slots));
+    /* Both parts are in one proposal: the review ADDED the line, it did not start over. */
+    expect(result).toContain("Headline");
+    expect(result).toContain("Supporting line");
+    expect(proposal.base).toBe(site);
+    expect(proposal.operations.length).toBe(2);
   });
 
   it("keeps the same identities from the first draft to the final proposal", async () => {
@@ -137,6 +327,58 @@ describe("streaming provider adapters", () => {
     const request = fetch.mock.calls[0] as unknown as [string, RequestInit];
     expect(JSON.parse(request[1].body as string)).toMatchObject({ stream: true });
     expect(request[1].body).not.toContain(connection.apiKey);
+  });
+
+  it("speaks the Responses API for OpenAI: instructions and input, flat tools, reasoning only where it is accepted", async () => {
+    const fetch = vi.fn(async () => sse([
+      { type: "response.output_text.delta", delta: "Hel" },
+      { type: "response.output_text.delta", delta: "lo" },
+      { type: "response.output_item.added", output_index: 1, item: { type: "function_call", id: "fc_1", call_id: "call_1", name: "maker_try", arguments: "" } },
+      { type: "response.function_call_arguments.delta", output_index: 1, delta: '{"operations":' },
+      { type: "response.function_call_arguments.delta", output_index: 1, delta: "[]}" },
+      { type: "response.output_item.done", output_index: 1, item: { type: "function_call", id: "fc_1", call_id: "call_1", name: "maker_try", arguments: '{"operations":[]}' } },
+      { type: "response.completed", response: {} },
+    ]));
+    vi.stubGlobal("fetch", fetch);
+    const text: string[] = [];
+    const args: string[] = [];
+    const history = [
+      { role: "user" as const, content: "hi" },
+      { role: "assistant" as const, content: "Looking.", calls: [{ id: "call_0", name: "maker_read", arguments: "{}" }] },
+      { role: "tool" as const, content: "{}", call: { id: "call_0", name: "maker_read", arguments: "{}" } },
+    ];
+    const tools = [{ name: "maker_try", description: "Try.", parameters: { type: "object", properties: {} } }];
+    const reply = await responsesAdapter.stream!({ ...connection, model: "gpt-6-sol" }, "Maker", history, tools, signal(), { text: (d) => text.push(d), callArgs: (_id, d) => args.push(d) });
+    expect(text.join("")).toBe("Hello");
+    expect(args.join("")).toBe('{"operations":[]}');
+    expect(reply).toEqual({ text: "Hello", calls: [{ id: "call_1", name: "maker_try", arguments: '{"operations":[]}' }] });
+    const [url, init] = fetch.mock.calls[0] as unknown as [string, RequestInit];
+    expect(url).toBe("https://api.openai.com/v1/responses");
+    const body = JSON.parse(init.body as string);
+    expect(body).toMatchObject({ model: "gpt-6-sol", instructions: "Maker", stream: true, reasoning: { effort: "low" } });
+    expect(body.tools).toEqual([{ type: "function", name: "maker_try", description: "Try.", parameters: { type: "object", properties: {} } }]);
+    expect(body.messages).toBeUndefined();
+    /* A call goes back by call_id with no item id, and its result as function_call_output. */
+    expect(body.input).toEqual([
+      { role: "user", content: "hi" },
+      { role: "assistant", content: "Looking." },
+      { type: "function_call", call_id: "call_0", name: "maker_read", arguments: "{}" },
+      { type: "function_call_output", call_id: "call_0", output: "{}" },
+    ]);
+    expect(init.body).not.toContain(connection.apiKey);
+    /* gpt-4.1 takes no `reasoning`. */
+    await responsesAdapter.stream!({ ...connection, model: "gpt-4.1" }, "Maker", [], [], signal(), {}).catch(() => undefined);
+    expect(JSON.parse((fetch.mock.calls[1] as unknown as [string, RequestInit])[1].body as string).reasoning).toBeUndefined();
+  });
+
+  it("reads a whole Responses reply: output_text and function_call items", async () => {
+    vi.stubGlobal("fetch", vi.fn(async () => new Response(JSON.stringify({ output: [
+      { type: "reasoning", id: "rs_1", summary: [] },
+      { type: "message", content: [{ type: "output_text", text: "Done." }] },
+      { type: "function_call", call_id: "call_9", name: "maker_try", arguments: "{}" },
+    ] }), { status: 200, headers: { "content-type": "application/json" } })));
+    expect(await responsesAdapter.complete({ ...connection, model: "gpt-6-sol" }, "Maker", [{ role: "user", content: "hi" }], [], signal()))
+      .toEqual({ text: "Done.", calls: [{ id: "call_9", name: "maker_try", arguments: "{}" }] });
   });
 
   it("reads Anthropic blocks: text deltas and input_json_delta for a tool_use", async () => {
