@@ -6,6 +6,7 @@ import { snippets } from "@skryensya/snippets";
 import { makerContext, entryOf, findChild, isNode, layoutOf, pageOf, type MakerProposal, type MakerSite } from "@skryensya/maker-model";
 import { runAgent, testConnection, type AskedQuestion, type ConversationTurn, type ProviderConnection, type ProviderId } from "@skryensya/maker-agent";
 import { Button } from "@skryensya/react/button";
+import { Details } from "@skryensya/react/details";
 import { Icon } from "@skryensya/react/icon";
 import { Dialog } from "@skryensya/react/dialog";
 import { FormField } from "@skryensya/react/form-field";
@@ -344,7 +345,7 @@ export function AIPanel({ maker, onPreview, onDraft, barSlot }: {
                   <span className="maker-ai__summary-count">{turn.changes.length} {turn.changes.length === 1 ? "change" : "changes"}</span>
                 </header>
                 {turn.changes.length > 0 && (turn.changes.length > 4
-                  ? <details className="maker-ai__changes" open={turn.outcome === "pending"}><summary>Show the {turn.changes.length} changes</summary><ChangeList lines={turn.changes} /></details>
+                  ? <Details className="maker-ai__changes" open={turn.outcome === "pending"}><Details.Summary>Show the {turn.changes.length} changes</Details.Summary><Details.Content><ChangeList lines={turn.changes} /></Details.Content></Details>
                   : <ChangeList lines={turn.changes} />)}
                 {turn.outcome === "pending" && <Text size="sm" tone="secondary">Nothing changes until you choose Apply or Discard.</Text>}
                 {turn.outcome === "applied" && <Button size="sm" variant="ghost" disabled={busy} onClick={() => rollback(turn)}>Roll back</Button>}
