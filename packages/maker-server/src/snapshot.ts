@@ -133,7 +133,7 @@ const SKIP = new Set(["script", "style", "noscript", "template", "head", "iframe
 
 const ROLE_WORDS: [Role, RegExp][] = [
   ["pricing", /\b(pricing|plans?|per month|\/\s?mo|\/\s?month|billed|free trial|precios?|planes?)\b|[$€£]\s?\d/i],
-  ["testimonials", /\b(testimonials?|what (our )?(customers|users|people) say|loved by|reviews?|opiniones|clientes dicen)\b|[“"].{20,}[”"]\s*[-—–]/i],
+  ["testimonials", /\b(testimonials?|what (our )?(customers|users|people) say|loved by|reviews?|opiniones|clientes dicen)\b|[“"].{20,}[”"]\s*[-\u2014\u2013]/i],
   ["faq", /\b(faq|frequently asked|questions|preguntas frecuentes)\b/i],
   ["steps", /\b(how it works|get started in|steps?|c[oó]mo funciona|paso)\b/i],
   ["stats", /\b\d[\d,.]*\s?(\+|%|k|m|x)\b.*\b\d[\d,.]*\s?(\+|%|k|m|x)\b/i],

@@ -1,6 +1,7 @@
 import type { UsageTree } from "@skryensya/core/usage-tree";
 import type { Translate } from "../../i18n";
-import { measured, menuButton } from "./shared";
+import { measured } from "../../lib/measured";
+import { menuButton } from "./shared";
 
 /*
  * DOCUMENTATION SITE. Three columns, and each one answers a different question: the Sidebar says
