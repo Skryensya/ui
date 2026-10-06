@@ -585,6 +585,17 @@ body,
   --sk-tree-row-inset: 0.375rem;
 }
 
+/* The selected layer reads as selected: the same accent the stage outlines it with. */
+.maker-outline :is(.sk-tree-view__item, .sk-tree-view__branch-control)[data-selected] {
+  background: var(--color-bg-accent-subtle);
+  font-weight: 600;
+}
+
+/* Keyboard focus left on a row the selection moved away from (a click on the stage) is not a second selection. */
+.maker-outline :is(.sk-tree-view__item, .sk-tree-view__branch-control).sk-interactive:is([data-highlighted], [data-focus]):not([data-selected], :hover, :active) {
+  --state-layer-opacity: 0;
+}
+
 .maker-outline .sk-tree-view__tree,
 .maker-outline .sk-tree-view__branch-content {
   min-inline-size: 0;
@@ -1468,4 +1479,60 @@ html[data-scheme="dark"] .maker-palette__thumb-image--dark {
   .maker-section-preview[data-shown] .maker-section-preview__frame {
     transition: none;
   }
+}
+
+/* A template's picture, over its name: the starting point as it will look. The scheme picks the image, as for the components'. */
+.maker-templates__thumb {
+  display: block;
+  overflow: hidden;
+  aspect-ratio: 8 / 5;
+  border: 1px solid var(--color-border-subtle);
+  border-radius: var(--radius-control);
+  background: var(--color-bg-surface-sunken);
+}
+
+.maker-templates__thumb-image {
+  display: block;
+  inline-size: 100%;
+  block-size: 100%;
+  object-fit: cover;
+  object-position: top;
+}
+
+.maker-templates__thumb-image--dark,
+html[data-scheme="dark"] .maker-templates__thumb-image--light {
+  display: none;
+}
+
+html[data-scheme="dark"] .maker-templates__thumb-image--dark {
+  display: block;
+}
+
+.maker-templates__card.sk-button {
+  block-size: auto;
+}
+
+.maker-templates__card .sk-button__label {
+  inline-size: 100%;
+}
+
+/* The card is a column (picture, name, description) that wraps inside the panel instead of running off it. */
+.maker-templates__card.sk-button {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  padding: var(--space-inset-xs);
+  white-space: normal;
+  max-inline-size: 100%;
+}
+
+.maker-templates__card .sk-button__label {
+  display: grid;
+  gap: var(--space-stack-xs);
+  inline-size: 100%;
+  white-space: normal;
+}
+
+.maker-templates__list {
+  max-inline-size: 100%;
 }

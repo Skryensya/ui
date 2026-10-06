@@ -682,460 +682,469 @@ export const pageSnippets: readonly Snippet[] = [
                     "tabindex": "-1"
                   },
                   "children": {
-                    "contract": "layout",
-                    "signature": "Stack",
+                    "contract": "wrapper",
+                    "signature": "Wrapper",
                     "options": {
-                      "gap": "md",
-                      "gapExpanded": "lg"
+                      "wrapperSize": "lg",
+                      "gutter": "md",
+                      "gutterExpanded": "lg"
                     },
-                    "children": [
-                      {
-                        "contract": "layout",
-                        "signature": "Inline",
-                        "options": {
-                          "gap": "md",
-                          "justify": "between",
-                          "inlineAlign": "center",
-                          "wrap": true
-                        },
-                        "children": [
-                          {
-                            "contract": "typography",
-                            "signature": "Heading",
-                            "options": {
-                              "headingSize": "h2",
-                              "flush": true,
-                              "headingElement": "h1"
-                            },
-                            "children": "Overview"
-                          },
-                          {
-                            "contract": "segmented",
-                            "signature": "Segmented",
-                            "options": {
-                              "value": "30d",
-                              "label": "Date range"
-                            },
-                            "slots": {
-                              "items": [
-                                {
-                                  "options": {
-                                    "value": "7d"
-                                  },
-                                  "slots": {
-                                    "label": "7 days"
-                                  }
-                                },
-                                {
-                                  "options": {
-                                    "value": "30d"
-                                  },
-                                  "slots": {
-                                    "label": "30 days"
-                                  }
-                                },
-                                {
-                                  "options": {
-                                    "value": "90d"
-                                  },
-                                  "slots": {
-                                    "label": "90 days"
-                                  }
-                                }
-                              ]
-                            }
-                          }
-                        ]
+                    "children": {
+                      "contract": "layout",
+                      "signature": "Stack",
+                      "options": {
+                        "gap": "md",
+                        "gapExpanded": "lg"
                       },
-                      {
-                        "contract": "layout",
-                        "signature": "Grid",
-                        "options": {
-                          "columns": "4",
-                          "gap": "md",
-                          "responsive": true
-                        },
-                        "attrs": {
-                          "aria-label": "Metrics for the period"
-                        },
-                        "children": [
-                          {
-                            "contract": "box",
-                            "signature": "Box",
-                            "options": {
-                              "surface": "surface",
-                              "border": "subtle",
-                              "padding": "md"
-                            },
-                            "children": {
-                              "contract": "stat",
-                              "signature": "Stat",
-                              "options": {
-                                "trend": "up"
-                              },
-                              "slots": {
-                                "label": "Revenue",
-                                "value": "$48.200",
-                                "change": [
-                                  {
-                                    "contract": "icon",
-                                    "signature": "Icon",
-                                    "options": {
-                                      "name": "arrow-up",
-                                      "size": "sm"
-                                    }
-                                  },
-                                  "12,5%"
-                                ]
-                              }
-                            }
+                      "children": [
+                        {
+                          "contract": "layout",
+                          "signature": "Inline",
+                          "options": {
+                            "gap": "md",
+                            "justify": "between",
+                            "inlineAlign": "center",
+                            "wrap": true
                           },
-                          {
-                            "contract": "box",
-                            "signature": "Box",
-                            "options": {
-                              "surface": "surface",
-                              "border": "subtle",
-                              "padding": "md"
-                            },
-                            "children": {
-                              "contract": "stat",
-                              "signature": "Stat",
-                              "options": {
-                                "trend": "up"
-                              },
-                              "slots": {
-                                "label": "Orders",
-                                "value": "1.204",
-                                "change": [
-                                  {
-                                    "contract": "icon",
-                                    "signature": "Icon",
-                                    "options": {
-                                      "name": "arrow-up",
-                                      "size": "sm"
-                                    }
-                                  },
-                                  "8,2%"
-                                ]
-                              }
-                            }
-                          },
-                          {
-                            "contract": "box",
-                            "signature": "Box",
-                            "options": {
-                              "surface": "surface",
-                              "border": "subtle",
-                              "padding": "md"
-                            },
-                            "children": {
-                              "contract": "stat",
-                              "signature": "Stat",
-                              "options": {
-                                "trend": "up"
-                              },
-                              "slots": {
-                                "label": "New customers",
-                                "value": "318",
-                                "change": [
-                                  {
-                                    "contract": "icon",
-                                    "signature": "Icon",
-                                    "options": {
-                                      "name": "arrow-up",
-                                      "size": "sm"
-                                    }
-                                  },
-                                  "4,1%"
-                                ]
-                              }
-                            }
-                          },
-                          {
-                            "contract": "box",
-                            "signature": "Box",
-                            "options": {
-                              "surface": "surface",
-                              "border": "subtle",
-                              "padding": "md"
-                            },
-                            "children": {
-                              "contract": "stat",
-                              "signature": "Stat",
-                              "options": {
-                                "trend": "down"
-                              },
-                              "slots": {
-                                "label": "Refunds",
-                                "value": "0,9%",
-                                "change": [
-                                  {
-                                    "contract": "icon",
-                                    "signature": "Icon",
-                                    "options": {
-                                      "name": "arrow-down",
-                                      "size": "sm"
-                                    }
-                                  },
-                                  "0,3"
-                                ]
-                              }
-                            }
-                          }
-                        ]
-                      },
-                      {
-                        "contract": "table",
-                        "signature": "TableScroll",
-                        "options": {
-                          "stickyHeader": true
-                        },
-                        "attrs": {
-                          "tabindex": "0",
-                          "role": "region",
-                          "aria-label": "Latest orders"
-                        },
-                        "children": {
-                          "contract": "table",
-                          "signature": "Table",
                           "children": [
                             {
-                              "contract": "table",
-                              "signature": "TableCaption",
-                              "children": "Latest orders"
+                              "contract": "typography",
+                              "signature": "Heading",
+                              "options": {
+                                "headingSize": "h2",
+                                "flush": true,
+                                "headingElement": "h1"
+                              },
+                              "children": "Overview"
                             },
                             {
-                              "contract": "table",
-                              "signature": "TableHead",
+                              "contract": "segmented",
+                              "signature": "Segmented",
+                              "options": {
+                                "value": "30d",
+                                "label": "Date range"
+                              },
+                              "slots": {
+                                "items": [
+                                  {
+                                    "options": {
+                                      "value": "7d"
+                                    },
+                                    "slots": {
+                                      "label": "7 days"
+                                    }
+                                  },
+                                  {
+                                    "options": {
+                                      "value": "30d"
+                                    },
+                                    "slots": {
+                                      "label": "30 days"
+                                    }
+                                  },
+                                  {
+                                    "options": {
+                                      "value": "90d"
+                                    },
+                                    "slots": {
+                                      "label": "90 days"
+                                    }
+                                  }
+                                ]
+                              }
+                            }
+                          ]
+                        },
+                        {
+                          "contract": "layout",
+                          "signature": "Grid",
+                          "options": {
+                            "columns": "4",
+                            "gap": "md",
+                            "responsive": true
+                          },
+                          "attrs": {
+                            "aria-label": "Metrics for the period"
+                          },
+                          "children": [
+                            {
+                              "contract": "box",
+                              "signature": "Box",
+                              "options": {
+                                "surface": "surface",
+                                "border": "subtle",
+                                "padding": "md"
+                              },
                               "children": {
+                                "contract": "stat",
+                                "signature": "Stat",
+                                "options": {
+                                  "trend": "up"
+                                },
+                                "slots": {
+                                  "label": "Revenue",
+                                  "value": "$48.200",
+                                  "change": [
+                                    {
+                                      "contract": "icon",
+                                      "signature": "Icon",
+                                      "options": {
+                                        "name": "arrow-up",
+                                        "size": "sm"
+                                      }
+                                    },
+                                    "12,5%"
+                                  ]
+                                }
+                              }
+                            },
+                            {
+                              "contract": "box",
+                              "signature": "Box",
+                              "options": {
+                                "surface": "surface",
+                                "border": "subtle",
+                                "padding": "md"
+                              },
+                              "children": {
+                                "contract": "stat",
+                                "signature": "Stat",
+                                "options": {
+                                  "trend": "up"
+                                },
+                                "slots": {
+                                  "label": "Orders",
+                                  "value": "1.204",
+                                  "change": [
+                                    {
+                                      "contract": "icon",
+                                      "signature": "Icon",
+                                      "options": {
+                                        "name": "arrow-up",
+                                        "size": "sm"
+                                      }
+                                    },
+                                    "8,2%"
+                                  ]
+                                }
+                              }
+                            },
+                            {
+                              "contract": "box",
+                              "signature": "Box",
+                              "options": {
+                                "surface": "surface",
+                                "border": "subtle",
+                                "padding": "md"
+                              },
+                              "children": {
+                                "contract": "stat",
+                                "signature": "Stat",
+                                "options": {
+                                  "trend": "up"
+                                },
+                                "slots": {
+                                  "label": "New customers",
+                                  "value": "318",
+                                  "change": [
+                                    {
+                                      "contract": "icon",
+                                      "signature": "Icon",
+                                      "options": {
+                                        "name": "arrow-up",
+                                        "size": "sm"
+                                      }
+                                    },
+                                    "4,1%"
+                                  ]
+                                }
+                              }
+                            },
+                            {
+                              "contract": "box",
+                              "signature": "Box",
+                              "options": {
+                                "surface": "surface",
+                                "border": "subtle",
+                                "padding": "md"
+                              },
+                              "children": {
+                                "contract": "stat",
+                                "signature": "Stat",
+                                "options": {
+                                  "trend": "down"
+                                },
+                                "slots": {
+                                  "label": "Refunds",
+                                  "value": "0,9%",
+                                  "change": [
+                                    {
+                                      "contract": "icon",
+                                      "signature": "Icon",
+                                      "options": {
+                                        "name": "arrow-down",
+                                        "size": "sm"
+                                      }
+                                    },
+                                    "0,3"
+                                  ]
+                                }
+                              }
+                            }
+                          ]
+                        },
+                        {
+                          "contract": "table",
+                          "signature": "TableScroll",
+                          "options": {
+                            "stickyHeader": true
+                          },
+                          "attrs": {
+                            "tabindex": "0",
+                            "role": "region",
+                            "aria-label": "Latest orders"
+                          },
+                          "children": {
+                            "contract": "table",
+                            "signature": "Table",
+                            "children": [
+                              {
                                 "contract": "table",
-                                "signature": "TableRow",
+                                "signature": "TableCaption",
+                                "children": "Latest orders"
+                              },
+                              {
+                                "contract": "table",
+                                "signature": "TableHead",
+                                "children": {
+                                  "contract": "table",
+                                  "signature": "TableRow",
+                                  "children": [
+                                    {
+                                      "contract": "table",
+                                      "signature": "TableHeader",
+                                      "children": "Order"
+                                    },
+                                    {
+                                      "contract": "table",
+                                      "signature": "TableHeader",
+                                      "children": "Customer"
+                                    },
+                                    {
+                                      "contract": "table",
+                                      "signature": "TableHeader",
+                                      "children": "State"
+                                    },
+                                    {
+                                      "contract": "table",
+                                      "signature": "TableHeader",
+                                      "children": "Amount"
+                                    }
+                                  ]
+                                }
+                              },
+                              {
+                                "contract": "table",
+                                "signature": "TableBody",
                                 "children": [
                                   {
                                     "contract": "table",
-                                    "signature": "TableHeader",
-                                    "children": "Order"
+                                    "signature": "TableRow",
+                                    "children": [
+                                      {
+                                        "contract": "table",
+                                        "signature": "TableHeader",
+                                        "options": {
+                                          "scope": "row"
+                                        },
+                                        "children": "#4821"
+                                      },
+                                      {
+                                        "contract": "table",
+                                        "signature": "TableCell",
+                                        "children": "Marta Ruiz"
+                                      },
+                                      {
+                                        "contract": "table",
+                                        "signature": "TableCell",
+                                        "children": {
+                                          "contract": "badge",
+                                          "signature": "Badge",
+                                          "options": {
+                                            "tone": "success"
+                                          },
+                                          "children": "Paid"
+                                        }
+                                      },
+                                      {
+                                        "contract": "table",
+                                        "signature": "TableCell",
+                                        "children": "$1.280"
+                                      }
+                                    ]
                                   },
                                   {
                                     "contract": "table",
-                                    "signature": "TableHeader",
-                                    "children": "Customer"
+                                    "signature": "TableRow",
+                                    "children": [
+                                      {
+                                        "contract": "table",
+                                        "signature": "TableHeader",
+                                        "options": {
+                                          "scope": "row"
+                                        },
+                                        "children": "#4820"
+                                      },
+                                      {
+                                        "contract": "table",
+                                        "signature": "TableCell",
+                                        "children": "Iván Costa"
+                                      },
+                                      {
+                                        "contract": "table",
+                                        "signature": "TableCell",
+                                        "children": {
+                                          "contract": "badge",
+                                          "signature": "Badge",
+                                          "options": {
+                                            "tone": "warning"
+                                          },
+                                          "children": "Pending"
+                                        }
+                                      },
+                                      {
+                                        "contract": "table",
+                                        "signature": "TableCell",
+                                        "children": "$640"
+                                      }
+                                    ]
                                   },
                                   {
                                     "contract": "table",
-                                    "signature": "TableHeader",
-                                    "children": "State"
+                                    "signature": "TableRow",
+                                    "children": [
+                                      {
+                                        "contract": "table",
+                                        "signature": "TableHeader",
+                                        "options": {
+                                          "scope": "row"
+                                        },
+                                        "children": "#4819"
+                                      },
+                                      {
+                                        "contract": "table",
+                                        "signature": "TableCell",
+                                        "children": "Nadia Fuentes"
+                                      },
+                                      {
+                                        "contract": "table",
+                                        "signature": "TableCell",
+                                        "children": {
+                                          "contract": "badge",
+                                          "signature": "Badge",
+                                          "options": {
+                                            "tone": "success"
+                                          },
+                                          "children": "Paid"
+                                        }
+                                      },
+                                      {
+                                        "contract": "table",
+                                        "signature": "TableCell",
+                                        "children": "$2.115"
+                                      }
+                                    ]
                                   },
                                   {
                                     "contract": "table",
-                                    "signature": "TableHeader",
-                                    "children": "Amount"
+                                    "signature": "TableRow",
+                                    "children": [
+                                      {
+                                        "contract": "table",
+                                        "signature": "TableHeader",
+                                        "options": {
+                                          "scope": "row"
+                                        },
+                                        "children": "#4818"
+                                      },
+                                      {
+                                        "contract": "table",
+                                        "signature": "TableCell",
+                                        "children": "Teo Lombardi"
+                                      },
+                                      {
+                                        "contract": "table",
+                                        "signature": "TableCell",
+                                        "children": {
+                                          "contract": "badge",
+                                          "signature": "Badge",
+                                          "options": {
+                                            "tone": "neutral"
+                                          },
+                                          "children": "Refunded"
+                                        }
+                                      },
+                                      {
+                                        "contract": "table",
+                                        "signature": "TableCell",
+                                        "children": "$310"
+                                      }
+                                    ]
+                                  },
+                                  {
+                                    "contract": "table",
+                                    "signature": "TableRow",
+                                    "children": [
+                                      {
+                                        "contract": "table",
+                                        "signature": "TableHeader",
+                                        "options": {
+                                          "scope": "row"
+                                        },
+                                        "children": "#4817"
+                                      },
+                                      {
+                                        "contract": "table",
+                                        "signature": "TableCell",
+                                        "children": "Sara Okafor"
+                                      },
+                                      {
+                                        "contract": "table",
+                                        "signature": "TableCell",
+                                        "children": {
+                                          "contract": "badge",
+                                          "signature": "Badge",
+                                          "options": {
+                                            "tone": "success"
+                                          },
+                                          "children": "Paid"
+                                        }
+                                      },
+                                      {
+                                        "contract": "table",
+                                        "signature": "TableCell",
+                                        "children": "$980"
+                                      }
+                                    ]
                                   }
                                 ]
                               }
-                            },
-                            {
-                              "contract": "table",
-                              "signature": "TableBody",
-                              "children": [
-                                {
-                                  "contract": "table",
-                                  "signature": "TableRow",
-                                  "children": [
-                                    {
-                                      "contract": "table",
-                                      "signature": "TableHeader",
-                                      "options": {
-                                        "scope": "row"
-                                      },
-                                      "children": "#4821"
-                                    },
-                                    {
-                                      "contract": "table",
-                                      "signature": "TableCell",
-                                      "children": "Marta Ruiz"
-                                    },
-                                    {
-                                      "contract": "table",
-                                      "signature": "TableCell",
-                                      "children": {
-                                        "contract": "badge",
-                                        "signature": "Badge",
-                                        "options": {
-                                          "tone": "success"
-                                        },
-                                        "children": "Paid"
-                                      }
-                                    },
-                                    {
-                                      "contract": "table",
-                                      "signature": "TableCell",
-                                      "children": "$1.280"
-                                    }
-                                  ]
-                                },
-                                {
-                                  "contract": "table",
-                                  "signature": "TableRow",
-                                  "children": [
-                                    {
-                                      "contract": "table",
-                                      "signature": "TableHeader",
-                                      "options": {
-                                        "scope": "row"
-                                      },
-                                      "children": "#4820"
-                                    },
-                                    {
-                                      "contract": "table",
-                                      "signature": "TableCell",
-                                      "children": "Iván Costa"
-                                    },
-                                    {
-                                      "contract": "table",
-                                      "signature": "TableCell",
-                                      "children": {
-                                        "contract": "badge",
-                                        "signature": "Badge",
-                                        "options": {
-                                          "tone": "warning"
-                                        },
-                                        "children": "Pending"
-                                      }
-                                    },
-                                    {
-                                      "contract": "table",
-                                      "signature": "TableCell",
-                                      "children": "$640"
-                                    }
-                                  ]
-                                },
-                                {
-                                  "contract": "table",
-                                  "signature": "TableRow",
-                                  "children": [
-                                    {
-                                      "contract": "table",
-                                      "signature": "TableHeader",
-                                      "options": {
-                                        "scope": "row"
-                                      },
-                                      "children": "#4819"
-                                    },
-                                    {
-                                      "contract": "table",
-                                      "signature": "TableCell",
-                                      "children": "Nadia Fuentes"
-                                    },
-                                    {
-                                      "contract": "table",
-                                      "signature": "TableCell",
-                                      "children": {
-                                        "contract": "badge",
-                                        "signature": "Badge",
-                                        "options": {
-                                          "tone": "success"
-                                        },
-                                        "children": "Paid"
-                                      }
-                                    },
-                                    {
-                                      "contract": "table",
-                                      "signature": "TableCell",
-                                      "children": "$2.115"
-                                    }
-                                  ]
-                                },
-                                {
-                                  "contract": "table",
-                                  "signature": "TableRow",
-                                  "children": [
-                                    {
-                                      "contract": "table",
-                                      "signature": "TableHeader",
-                                      "options": {
-                                        "scope": "row"
-                                      },
-                                      "children": "#4818"
-                                    },
-                                    {
-                                      "contract": "table",
-                                      "signature": "TableCell",
-                                      "children": "Teo Lombardi"
-                                    },
-                                    {
-                                      "contract": "table",
-                                      "signature": "TableCell",
-                                      "children": {
-                                        "contract": "badge",
-                                        "signature": "Badge",
-                                        "options": {
-                                          "tone": "neutral"
-                                        },
-                                        "children": "Refunded"
-                                      }
-                                    },
-                                    {
-                                      "contract": "table",
-                                      "signature": "TableCell",
-                                      "children": "$310"
-                                    }
-                                  ]
-                                },
-                                {
-                                  "contract": "table",
-                                  "signature": "TableRow",
-                                  "children": [
-                                    {
-                                      "contract": "table",
-                                      "signature": "TableHeader",
-                                      "options": {
-                                        "scope": "row"
-                                      },
-                                      "children": "#4817"
-                                    },
-                                    {
-                                      "contract": "table",
-                                      "signature": "TableCell",
-                                      "children": "Sara Okafor"
-                                    },
-                                    {
-                                      "contract": "table",
-                                      "signature": "TableCell",
-                                      "children": {
-                                        "contract": "badge",
-                                        "signature": "Badge",
-                                        "options": {
-                                          "tone": "success"
-                                        },
-                                        "children": "Paid"
-                                      }
-                                    },
-                                    {
-                                      "contract": "table",
-                                      "signature": "TableCell",
-                                      "children": "$980"
-                                    }
-                                  ]
-                                }
-                              ]
-                            }
-                          ]
+                            ]
+                          }
+                        },
+                        {
+                          "contract": "pagination",
+                          "signature": "Pagination",
+                          "options": {
+                            "page": 1,
+                            "total": 8,
+                            "label": "Order pages",
+                            "previousLabel": "Previous page",
+                            "nextLabel": "Next page"
+                          }
                         }
-                      },
-                      {
-                        "contract": "pagination",
-                        "signature": "Pagination",
-                        "options": {
-                          "page": 1,
-                          "total": 8,
-                          "label": "Order pages",
-                          "previousLabel": "Previous page",
-                          "nextLabel": "Next page"
-                        }
-                      }
-                    ]
+                      ]
+                    }
                   }
                 }
               ]
@@ -4084,148 +4093,157 @@ export const pageSnippets: readonly Snippet[] = [
                     "tabindex": "-1"
                   },
                   "children": {
-                    "contract": "layout",
-                    "signature": "Stack",
+                    "contract": "wrapper",
+                    "signature": "Wrapper",
                     "options": {
-                      "gap": "md",
-                      "gapExpanded": "lg"
+                      "wrapperSize": "md",
+                      "gutter": "md",
+                      "gutterExpanded": "lg"
                     },
-                    "children": [
-                      {
-                        "contract": "breadcrumb",
-                        "signature": "Breadcrumb",
-                        "options": {
-                          "label": "Breadcrumb",
-                          "collapsedLabel": "Show hidden levels"
+                    "children": {
+                      "contract": "layout",
+                      "signature": "Stack",
+                      "options": {
+                        "gap": "md",
+                        "gapExpanded": "lg"
+                      },
+                      "children": [
+                        {
+                          "contract": "breadcrumb",
+                          "signature": "Breadcrumb",
+                          "options": {
+                            "label": "Breadcrumb",
+                            "collapsedLabel": "Show hidden levels"
+                          },
+                          "slots": {
+                            "items": [
+                              {
+                                "options": {
+                                  "href": "#docs"
+                                },
+                                "slots": {
+                                  "label": "Docs"
+                                }
+                              },
+                              {
+                                "options": {
+                                  "href": "#empezar"
+                                },
+                                "slots": {
+                                  "label": "Get started"
+                                }
+                              },
+                              {
+                                "options": {
+                                  "current": true
+                                },
+                                "slots": {
+                                  "label": "Quickstart"
+                                }
+                              }
+                            ]
+                          }
                         },
-                        "slots": {
-                          "items": [
-                            {
+                        {
+                          "contract": "typography",
+                          "signature": "Heading",
+                          "options": {
+                            "headingSize": "h1",
+                            "flush": true,
+                            "headingElement": "h1"
+                          },
+                          "children": "Quickstart"
+                        },
+                        {
+                          "contract": "typography",
+                          "signature": "Text",
+                          "options": {
+                            "size": "lg",
+                            "tone": "secondary"
+                          },
+                          "children": "From nothing to a component on screen in three steps. By the end of this page you will have the kit installed and a button rendering with your tokens."
+                        },
+                        {
+                          "contract": "callout",
+                          "signature": "Callout",
+                          "options": {
+                            "tone": "info"
+                          },
+                          "slots": {
+                            "icon": {
+                              "contract": "icon",
+                              "signature": "Icon",
                               "options": {
-                                "href": "#docs"
-                              },
+                                "name": "info"
+                              }
+                            },
+                            "title": "Before you start"
+                          },
+                          "children": "You need Node 20 or newer. Coming from v2, read the migration guide first: the token names changed."
+                        },
+                        {
+                          "contract": "typography",
+                          "signature": "Heading",
+                          "options": {
+                            "headingSize": "h3",
+                            "flush": true
+                          },
+                          "attrs": {
+                            "id": "instalar"
+                          },
+                          "children": "Install the package"
+                        },
+                        {
+                          "contract": "typography",
+                          "signature": "Text",
+                          "children": "The kit ships as a single package with per-component stylesheets, so a page only loads the CSS it actually uses."
+                        },
+                        {
+                          "contract": "procedure",
+                          "signature": "Procedure",
+                          "children": [
+                            {
+                              "contract": "procedure",
+                              "signature": "ProcedureStep",
                               "slots": {
-                                "label": "Docs"
+                                "title": "Install the package with your usual package manager."
                               }
                             },
                             {
-                              "options": {
-                                "href": "#empezar"
-                              },
+                              "contract": "procedure",
+                              "signature": "ProcedureStep",
                               "slots": {
-                                "label": "Get started"
+                                "title": "Import the token sheet once, at the root of the application."
                               }
                             },
                             {
-                              "options": {
-                                "current": true
-                              },
+                              "contract": "procedure",
+                              "signature": "ProcedureStep",
                               "slots": {
-                                "label": "Quickstart"
+                                "title": "Import a component's CSS where you use it."
                               }
                             }
                           ]
+                        },
+                        {
+                          "contract": "typography",
+                          "signature": "Heading",
+                          "options": {
+                            "headingSize": "h3",
+                            "flush": true
+                          },
+                          "attrs": {
+                            "id": "siguiente"
+                          },
+                          "children": "What comes next"
+                        },
+                        {
+                          "contract": "typography",
+                          "signature": "Text",
+                          "children": "With the kit installed, the next step is picking your palette: the theming guide covers which tokens to redefine and which are better left alone."
                         }
-                      },
-                      {
-                        "contract": "typography",
-                        "signature": "Heading",
-                        "options": {
-                          "headingSize": "h1",
-                          "flush": true,
-                          "headingElement": "h1"
-                        },
-                        "children": "Quickstart"
-                      },
-                      {
-                        "contract": "typography",
-                        "signature": "Text",
-                        "options": {
-                          "size": "lg",
-                          "tone": "secondary"
-                        },
-                        "children": "From nothing to a component on screen in three steps. By the end of this page you will have the kit installed and a button rendering with your tokens."
-                      },
-                      {
-                        "contract": "callout",
-                        "signature": "Callout",
-                        "options": {
-                          "tone": "info"
-                        },
-                        "slots": {
-                          "icon": {
-                            "contract": "icon",
-                            "signature": "Icon",
-                            "options": {
-                              "name": "info"
-                            }
-                          },
-                          "title": "Before you start"
-                        },
-                        "children": "You need Node 20 or newer. Coming from v2, read the migration guide first: the token names changed."
-                      },
-                      {
-                        "contract": "typography",
-                        "signature": "Heading",
-                        "options": {
-                          "headingSize": "h3",
-                          "flush": true
-                        },
-                        "attrs": {
-                          "id": "instalar"
-                        },
-                        "children": "Install the package"
-                      },
-                      {
-                        "contract": "typography",
-                        "signature": "Text",
-                        "children": "The kit ships as a single package with per-component stylesheets, so a page only loads the CSS it actually uses."
-                      },
-                      {
-                        "contract": "procedure",
-                        "signature": "Procedure",
-                        "children": [
-                          {
-                            "contract": "procedure",
-                            "signature": "ProcedureStep",
-                            "slots": {
-                              "title": "Install the package with your usual package manager."
-                            }
-                          },
-                          {
-                            "contract": "procedure",
-                            "signature": "ProcedureStep",
-                            "slots": {
-                              "title": "Import the token sheet once, at the root of the application."
-                            }
-                          },
-                          {
-                            "contract": "procedure",
-                            "signature": "ProcedureStep",
-                            "slots": {
-                              "title": "Import a component's CSS where you use it."
-                            }
-                          }
-                        ]
-                      },
-                      {
-                        "contract": "typography",
-                        "signature": "Heading",
-                        "options": {
-                          "headingSize": "h3",
-                          "flush": true
-                        },
-                        "attrs": {
-                          "id": "siguiente"
-                        },
-                        "children": "What comes next"
-                      },
-                      {
-                        "contract": "typography",
-                        "signature": "Text",
-                        "children": "With the kit installed, the next step is picking your palette: the theming guide covers which tokens to redefine and which are better left alone."
-                      }
-                    ]
+                      ]
+                    }
                   }
                 },
                 {

@@ -1,6 +1,6 @@
 import type { UsageTree } from "@skryensya/core/usage-tree";
 import type { Translate } from "../../i18n";
-import { menuButton } from "./shared";
+import { measured, menuButton } from "./shared";
 
 /*
  * ANALYTICS DASHBOARD. The SaaS back-office shape. It shares the app shell with `app-shell.ts`;
@@ -215,7 +215,7 @@ export const dashboardTree = (t: Translate, locale: "es" | "en"): UsageTree => {
             contract: "layout",
             signature: "Main",
             attrs: { class: "app-shell__main" },
-            children: {
+            children: measured({
               contract: "layout",
               signature: "Stack",
               options: { gap: "md", gapExpanded: "lg" },
@@ -371,7 +371,7 @@ export const dashboardTree = (t: Translate, locale: "es" | "en"): UsageTree => {
                   },
                 },
               ],
-            },
+            }, "lg"),
           },
         ],
       },

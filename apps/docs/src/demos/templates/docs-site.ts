@@ -1,6 +1,6 @@
 import type { UsageTree } from "@skryensya/core/usage-tree";
 import type { Translate } from "../../i18n";
-import { menuButton } from "./shared";
+import { measured, menuButton } from "./shared";
 
 /*
  * DOCUMENTATION SITE. Three columns, and each one answers a different question: the Sidebar says
@@ -127,7 +127,7 @@ export const docsSiteTree = (t: Translate): UsageTree => ({
           contract: "layout",
           signature: "Main",
           attrs: { class: "app-shell__main" },
-          children: {
+          children: measured({
             contract: "layout",
             signature: "Stack",
             options: { gap: "md", gapExpanded: "lg" },
@@ -227,7 +227,7 @@ export const docsSiteTree = (t: Translate): UsageTree => ({
                 children: t("demo.docsSite.sectionNextBody"),
               },
             ],
-          },
+          }, "md"),
         },
         /*
          * The page rail. `Toc`'s host IS an `<aside>`, so it needs no wrapper to be a landmark -

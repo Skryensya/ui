@@ -190,6 +190,11 @@ function TemplateGallery({ workspace, onCreated }: { workspace: Workspace; onCre
                 {templates.map((template) => (
                   <li key={template.id}>
                     <Button className="maker-templates__card" variant="ghost" size="sm" disabled={busy !== undefined} onClick={() => void start(template.id)}>
+                      <span className="maker-templates__thumb" aria-hidden="true">
+                        {(["light", "dark"] as const).map((scheme) => (
+                          <img key={scheme} className={`maker-templates__thumb-image maker-templates__thumb-image--${scheme}`} src={`/template-thumbnails/${template.id}.${locale}.${scheme}.png`} alt="" loading="lazy" draggable={false} onError={(event) => (event.currentTarget.hidden = true)} />
+                        ))}
+                      </span>
                       <span className="maker-projects__name">{busy === template.id ? "Creating…" : template.title}</span>
                       <span className="maker-projects__meta">{template.description}</span>
                     </Button>

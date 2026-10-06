@@ -11,7 +11,7 @@ test("a new project can start as one of the docs templates", async ({ page }) =>
   await openMaker(page);
   await page.getByRole("button", { name: "All projects" }).click();
   const panel = page.locator(".maker__right");
-  await panel.getByText("Start from a template").click();
+  await panel.getByRole("button", { name: "Browse" }).click();
   await panel.getByRole("list", { name: "Templates" }).getByRole("button", { name: /^Landing de producto/ }).click();
   const tabs = page.getByRole("navigation", { name: "Open projects" });
   await expect(tabs.getByRole("button", { name: /^Landing de producto/ })).toHaveAttribute("aria-current", "page");

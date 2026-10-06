@@ -102,6 +102,11 @@ export function Outline({ maker, drag }: { maker: Maker; drag: Drag }) {
    * was selected, so a fold that did not come from the chevron or a key is ignored.
    */
   const intent = useRef<"fold" | "select">("fold");
+  /* A selection made on the stage can be a row out of view: bring it in. */
+  useEffect(() => {
+    if (!selected) return;
+    hostRef.current?.querySelector<HTMLElement>(`[data-value="${CSS.escape(selected)}"]`)?.scrollIntoView({ block: "nearest" });
+  }, [selected]);
   const pendingIds = useMemo(() => new Set(maker.problems.problems.filter((p) => p.severity === "error").flatMap((p) => p.nodes)), [maker.problems]);
 
   /* ─── keyboard: every structural gesture, on the selected node ──────────────────────────── */
