@@ -141,6 +141,12 @@
     gap: var(--sk-grid-gap);
   }
 
+  /* A track that may shrink to 0 is only half the rule: a cell keeps `min-width: auto` and is held open by its
+     widest content (a select's longest option), spilling past its lane. Cells shrink with their track. */
+  .sk-grid > * {
+    min-inline-size: 0;
+  }
+
   .sk-grid[data-columns="2"] { --sk-grid-columns: 2; }
   .sk-grid[data-columns="3"] { --sk-grid-columns: 3; }
   .sk-grid[data-columns="4"] { --sk-grid-columns: 4; }
