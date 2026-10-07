@@ -7,6 +7,8 @@ import { ReferenceService } from "./service.js";
 
 it("collects, manually classifies and accepts without Jev or GitHub credentials", async () => {
   const integrations = createIntegrations({});
+  expect(integrations.classifyOnCapture).toBe(false);
+  expect(createIntegrations({ TYPESAFE_API_KEY: "key" }).classifyOnCapture).toBe(true);
   const service = new ReferenceService(
     memoryStore(),
     memoryAssets(),

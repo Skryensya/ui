@@ -48,6 +48,8 @@ export class ReferenceService {
     readonly assets: AssetStore,
     readonly classifier: ReferenceClassifier,
     readonly publisher: ReferencePublisher,
+    /* With a classifier configured (JEV on the server), every capture is classified as it arrives. */
+    readonly options: { classifyOnCapture?: boolean } = {},
   ) {}
   async create(value: unknown) {
     const input = captureInputSchema.parse(value),
@@ -93,7 +95,7 @@ export class ReferenceService {
       bytes: Buffer.from(JSON.stringify(input.raw)),
       contentType: "application/json",
     });
-    return this.store.create({
+    const created = await this.store.create({
       id,
       source: input.source,
       status: "captured",
@@ -117,6 +119,14 @@ export class ReferenceService {
       createdAt: time,
       updatedAt: time,
     });
+    if (!this.options.classifyOnCapture) return created;
+    /* Answered as `processing`, so Studio opening the capture waits for JEV instead of asking again.
+     * A failed run returns the ingest to review, where it can be proposed again by hand. */
+    const processing = await this.startClassification(created.id, created.revision);
+    void this.runClassification(processing).catch((error: unknown) =>
+      console.error(`Classification on capture failed for ${created.id}:`, error),
+    );
+    return processing;
   }
   async get(id: string) {
     const i = await this.store.get(id);
@@ -131,10 +141,16 @@ export class ReferenceService {
       );
   }
   async classify(id: string, revision: number) {
-    const processing = await this.store.update(id, revision, (i) => ({
+    return this.runClassification(await this.startClassification(id, revision));
+  }
+  private startClassification(id: string, revision: number) {
+    return this.store.update(id, revision, (i) => ({
       ...transition(i, "processing"),
       processingId: randomUUID(),
     }));
+  }
+  private async runClassification(processing: ReferenceIngest) {
+    const id = processing.id;
     try {
       const asset = await this.assets.get(processing.capture.rawCaptureAssetId);
       if (!asset) throw new Error("Raw evidence missing");

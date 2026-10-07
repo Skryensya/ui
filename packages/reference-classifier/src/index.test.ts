@@ -83,3 +83,13 @@ it("uses the documented Jev answers.choice HTTP protocol and validates confidenc
     ).choose({}, "subject?", {}),
   ).rejects.toThrow("503");
 });
+it("reports what Jev rejected, not only the status", async () => {
+  const boundary = jevBoundary(
+    "key",
+    "jev-unknown",
+    async () => new Response('{"error":"unknown model jev-unknown"}', { status: 400 }),
+  );
+  await expect(boundary.choose({}, "Which?", { a: "a" })).rejects.toThrow(
+    'Jev failed: 400 {"error":"unknown model jev-unknown"}',
+  );
+});

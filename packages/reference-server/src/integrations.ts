@@ -15,6 +15,7 @@ import { StoreError } from "./store.js";
 /** Collection remains available without either external integration. */
 export function createIntegrations(env: Record<string, string | undefined>): {
   classifier: ReferenceClassifier;
+  classifyOnCapture: boolean;
   publisher: ReferencePublisher;
 } {
   const unavailableClassifier = async (): Promise<never> => {
@@ -36,6 +37,7 @@ export function createIntegrations(env: Record<string, string | undefined>): {
     return value;
   };
   return {
+    classifyOnCapture: Boolean(env.TYPESAFE_API_KEY),
     classifier: env.TYPESAFE_API_KEY
       ? createClassifier(
           jevBoundary(

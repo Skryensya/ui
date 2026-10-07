@@ -167,3 +167,45 @@ it("persists filesystem assets separately, rejects traversal and signs S3/R2 req
     ).get("test/raw.json"),
   ).toBeDefined();
 });
+it("classifies each capture as it arrives when JEV is configured", async () => {
+  let finish!: () => void;
+  const s = new ReferenceService(
+    memoryStore(),
+    memoryAssets(),
+    {
+      async classify() {
+        await new Promise<void>((resolve) => (finish = resolve));
+        return classificationFixture();
+      },
+    },
+    publisher,
+    { classifyOnCapture: true },
+  );
+  const created = await s.create(captureFixture());
+  // Answered before JEV finishes, already marked as being classified.
+  expect(created.status).toBe("processing");
+  finish();
+  await vi.waitFor(async () => expect((await s.get(created.id)).status).toBe("review"));
+  const done = await s.get(created.id);
+  expect(done.classification).toBeDefined();
+  expect(done.classificationRuns).toHaveLength(1);
+});
+it("returns a capture to review when classification on arrival fails", async () => {
+  const error = vi.spyOn(console, "error").mockImplementation(() => {});
+  const s = new ReferenceService(
+    memoryStore(),
+    memoryAssets(),
+    {
+      async classify() {
+        throw new Error("JEV unavailable");
+      },
+    },
+    publisher,
+    { classifyOnCapture: true },
+  );
+  const created = await s.create(captureFixture());
+  await vi.waitFor(async () => expect((await s.get(created.id)).status).toBe("review"));
+  expect((await s.get(created.id)).classification).toBeUndefined();
+  expect(error).toHaveBeenCalled();
+  error.mockRestore();
+});

@@ -53,7 +53,11 @@ export function jevBoundary(
         }),
         signal: AbortSignal.timeout(30_000),
       });
-      if (!response.ok) throw new Error(`Jev failed: ${response.status}`);
+      // Jev's body says what it rejected (an unknown model, a malformed question); a bare status does not.
+      if (!response.ok) {
+        const detail = (await response.text().catch(() => "")).slice(0, 500);
+        throw new Error(`Jev failed: ${response.status}${detail ? ` ${detail}` : ""}`);
+      }
       const result = answerSchema.parse(await response.json());
       if (!Object.hasOwn(criteria, result.answers.category.choice))
         throw new Error("Jev returned an unknown category");

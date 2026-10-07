@@ -15,7 +15,7 @@ const required = (name: string) => {
   if (!value) throw new Error(`${name} is required`);
   return value;
 };
-const { classifier, publisher } = createIntegrations(env);
+const { classifier, classifyOnCapture, publisher } = createIntegrations(env);
 const store =
   env.REFERENCE_STORE === "memory"
     ? memoryStore()
@@ -31,7 +31,9 @@ const assets = env.REFERENCE_S3_ENDPOINT
   : filesystemAssets(
       resolve(env.REFERENCE_ASSETS_DIR ?? "../../tmp/reference-assets"),
     );
-const service = new ReferenceService(store, assets, classifier, publisher);
+const service = new ReferenceService(store, assets, classifier, publisher, {
+  classifyOnCapture,
+});
 const server = createServer(
   createReferenceApi(service, {
     token: required("REFERENCE_API_TOKEN"),
