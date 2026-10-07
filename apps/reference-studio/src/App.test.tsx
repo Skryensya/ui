@@ -173,3 +173,20 @@ it("rejects explicitly and renders exact publication preview files before any pu
   await screen.findByText("export const curated = true;");
   expect(client.publish).not.toHaveBeenCalled();
 });
+it("walks the list it was opened from with J and K, and offers only the decisions the status allows", async () => {
+  const i = { ...ingestFixture(), status: "accepted" as const };
+  client.get.mockResolvedValue(i);
+  const next = "00000000-0000-4000-8000-000000000002";
+  render(
+    <Workbench
+      client={client as ReferenceClient}
+      id={i.id}
+      queue={[i.id, next]}
+    />,
+  );
+  await screen.findByText("Closed catalogue vocabulary");
+  expect(screen.getByText("Return to review")).toBeTruthy();
+  expect(screen.queryByText("Accept")).toBeNull();
+  fireEvent.keyDown(window, { key: "j" });
+  expect(location.hash).toBe(`#/ingests/${next}`);
+});

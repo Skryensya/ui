@@ -1,13 +1,12 @@
 import { useEffect, useState } from "react";
-import { Button } from "@skryensya/react/button";
-import { Icon } from "@skryensya/react/icon";
+import { SegmentedControl } from "@skryensya/react/segmented";
 export type Scheme = "system" | "light" | "dark";
 const key = "reference-studio:scheme";
 const order: Scheme[] = ["system", "light", "dark"];
 const labels: Record<Scheme, string> = {
-  system: "Color mode: system",
-  light: "Color mode: light",
-  dark: "Color mode: dark",
+  system: "System",
+  light: "Light",
+  dark: "Dark",
 };
 export function storedScheme(): Scheme {
   try {
@@ -17,13 +16,19 @@ export function storedScheme(): Scheme {
     return "system";
   }
 }
-/* The tokens are light-dark() pairs, so `color-scheme` on <html> is the whole switch;
- * `data-scheme` is what the kit's Theme Toggle reads to light its face. */
+/* The tokens are light-dark() pairs, so `color-scheme` on <html> is the whole switch; "system"
+ * leaves both open and the OS decides, live. `data-scheme` mirrors the choice for any kit CSS that
+ * keys off it. */
 export function applyScheme(scheme: Scheme) {
   const root = document.documentElement;
   root.dataset.scheme = scheme;
   root.style.colorScheme = scheme === "system" ? "light dark" : scheme;
 }
+/*
+ * An explicit three-way choice, not a cycling icon: a cycle that starts on "system" spends its first
+ * click on whichever mode the OS already shows, so that click changes nothing on screen and reads as
+ * broken. Every option is visible here, and the current one is marked.
+ */
 export function ThemeToggle() {
   const [scheme, setScheme] = useState(storedScheme);
   useEffect(() => {
@@ -36,21 +41,12 @@ export function ThemeToggle() {
     }
   }, [scheme]);
   return (
-    <Button
-      variant="ghost"
-      iconOnly
-      className="sk-icon-toggle sk-theme-toggle"
-      aria-label={labels[scheme]}
-      title={labels[scheme]}
-      onClick={() =>
-        setScheme(order[(order.indexOf(scheme) + 1) % order.length]!)
-      }
-    >
-      {order.map((face) => (
-        <span key={face} data-face={face}>
-          <Icon name={`mode-${face}`} />
-        </span>
-      ))}
-    </Button>
+    <SegmentedControl
+      label="Color mode"
+      size="sm"
+      value={scheme}
+      onValueChange={(value) => setScheme(value as Scheme)}
+      options={order.map((value) => ({ value, label: labels[value] }))}
+    />
   );
 }

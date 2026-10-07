@@ -1,7 +1,15 @@
-import { useEffect, useMemo, useState, type FormEvent } from "react";
+import {
+  useEffect,
+  useMemo,
+  useState,
+  type CSSProperties,
+  type FormEvent,
+} from "react";
 import { Button } from "@skryensya/react/button";
 import { Badge } from "@skryensya/react/badge";
+import { Combobox } from "@skryensya/react/combobox";
 import { Callout } from "@skryensya/react/callout";
+import { Dialog } from "@skryensya/react/dialog";
 import { EmptyState } from "@skryensya/react/empty-state";
 import { FormField } from "@skryensya/react/form-field";
 import { Input } from "@skryensya/react/input";
@@ -14,7 +22,6 @@ import {
   subjects,
   SCALES,
   statuses,
-  intents,
   type IngestFilter,
   type ReferenceIngest,
 } from "@skryensya/reference-model";
@@ -25,9 +32,10 @@ import {
   type Connection,
 } from "./client";
 import { Workbench } from "./Workbench";
-import { Screenshot } from "./Screenshot";
+import { Screenshot, type NaturalSize } from "./Screenshot";
 import { ThemeToggle } from "./theme";
 import { toneOf } from "./status";
+import { comboboxCopy, intentItems } from "./intents";
 function ConnectionForm({ connect }: { connect: (c: Connection) => void }) {
   function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -101,6 +109,9 @@ export function App() {
     [error, setError] = useState(""),
     [compare, setCompare] = useState<string[]>([]),
     [refresh, setRefresh] = useState(0),
+    [moreFilters, setMoreFilters] = useState(false),
+    [resets, setResets] = useState(0),
+    [sizes, setSizes] = useState<Record<string, NaturalSize>>({}),
     narrow = useNarrow();
   const client = useMemo(
     () => (connection ? createClient(connection) : undefined),
@@ -149,8 +160,29 @@ export function App() {
           : undefined;
       return next;
     });
+  const advanced = (
+    ["host", "from", "to", "minConfidence", "published"] as const
+  ).filter((key) => filter[key] !== undefined && filter[key] !== "").length;
+  const filtered =
+    advanced +
+    (["status", "subject", "scale", "intent"] as const).filter(
+      (key) => filter[key],
+    ).length;
+  /* Side by side at the size each was seen at, shrunk only when the column is narrower. */
+  const naturalStyle = (ref: string): CSSProperties => {
+    const size = sizes[ref],
+      scale =
+        rows.find((r) => r.id === ref)?.capture.viewport.deviceScaleFactor ?? 1;
+    return size
+      ? { width: Math.round(size.width / scale), maxWidth: "100%" }
+      : { maxWidth: "100%" };
+  };
+  const openCompare = () =>
+    (
+      document.getElementById("studio-compare") as HTMLDialogElement | null
+    )?.showModal();
   return (
-    <>
+    <div className="studio-app" data-route={id ? "reference" : "list"}>
       <header className="studio-header">
         <a className="studio-brand" href="#">
           <strong>Reference Studio</strong>
@@ -161,50 +193,88 @@ export function App() {
           Disconnect
         </Button>
       </header>
-      <div className="studio-shell">
-        <div className="studio-nav">
-          <NavList
-            aria-label="Reference views"
-            orientation={narrow ? "horizontal" : "vertical"}
-          >
-            <NavListGroup>
-              {views.map((item) => (
-                <NavListLink
-                  key={item}
-                  href="#"
-                  current={view === item && !id}
-                  onClick={(event) => {
-                    event.preventDefault();
-                    location.hash = "";
-                    setView(item);
-                    setFilter({});
-                    setCompare([]);
-                  }}
-                >
-                  {item}
-                </NavListLink>
-              ))}
-            </NavListGroup>
-          </NavList>
-        </div>
-        <main className="studio-main">
-          {id ? (
-            <Workbench key={id} client={client} id={id} />
-          ) : (
-            <Stack gap="lg">
+      {id ? (
+        <main className="studio-main studio-main--reference">
+          <Workbench
+            key={id}
+            client={client}
+            id={id}
+            queue={rows.map((r) => r.id)}
+            listName={view}
+          />
+        </main>
+      ) : (
+        <div className="studio-shell">
+          <div className="studio-nav">
+            <NavList
+              aria-label="Reference views"
+              orientation={narrow ? "horizontal" : "vertical"}
+            >
+              <NavListGroup>
+                {views.map((item) => (
+                  <NavListLink
+                    key={item}
+                    href="#"
+                    current={view === item}
+                    onClick={(event) => {
+                      event.preventDefault();
+                      setView(item);
+                      setFilter({});
+                      setCompare([]);
+                    }}
+                  >
+                    {item}
+                  </NavListLink>
+                ))}
+              </NavListGroup>
+            </NavList>
+          </div>
+          <main className="studio-main studio-main--list">
+            <div className="studio-listbar">
               <Inline justify="between" align="center">
-                <Heading as="h1" size="h3" flush>
-                  {view}
-                </Heading>
-                <Button
-                  variant="ghost"
-                  onClick={() => setRefresh((n) => n + 1)}
-                >
-                  Refresh
-                </Button>
+                <Inline gap="sm" align="baseline">
+                  <Heading as="h1" size="h3" flush>
+                    {view}
+                  </Heading>
+                  <Text as="span" size="sm" tone="tertiary">
+                    {rows.length === 100
+                      ? "100+ references"
+                      : `${rows.length} ${rows.length === 1 ? "reference" : "references"}`}
+                  </Text>
+                </Inline>
+                <Inline gap="sm" align="center">
+                  {filtered > 0 && (
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => {
+                        setFilter({});
+                        setResets((n) => n + 1);
+                      }}
+                    >
+                      Clear filters
+                    </Button>
+                  )}
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    aria-expanded={moreFilters}
+                    aria-controls="studio-more-filters"
+                    onClick={() => setMoreFilters((open) => !open)}
+                  >
+                    {advanced ? `More filters (${advanced})` : "More filters"}
+                  </Button>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => setRefresh((n) => n + 1)}
+                  >
+                    Refresh
+                  </Button>
+                </Inline>
               </Inline>
               <div
-                className="studio-panel studio-filters"
+                className="studio-filters"
                 role="group"
                 aria-label="Inbox filters"
               >
@@ -241,89 +311,74 @@ export function App() {
                     ))}
                   </NativeSelect>
                 </FormField>
-                <FormField label="Intent">
-                  <Input
-                    list="intent-options"
-                    value={filter.intent ?? ""}
-                    onChange={(e) => set("intent", e.target.value)}
-                    placeholder="domain/area/intent"
-                  />
-                </FormField>
-                <datalist id="intent-options">
-                  {intents.map((i) => (
-                    <option key={i.id} value={i.id} />
-                  ))}
-                </datalist>
-                <FormField label="Source host">
-                  <Input
-                    value={filter.host ?? ""}
-                    onChange={(e) => set("host", e.target.value)}
-                  />
-                </FormField>
-                <FormField label="From">
-                  <Input
-                    type="date"
-                    value={filter.from?.slice(0, 10) ?? ""}
-                    onChange={(e) => set("from", e.target.value)}
-                  />
-                </FormField>
-                <FormField label="To">
-                  <Input
-                    type="date"
-                    value={filter.to?.slice(0, 10) ?? ""}
-                    onChange={(e) => set("to", e.target.value)}
-                  />
-                </FormField>
-                <FormField label="Minimum confidence">
-                  <Input
-                    type="number"
-                    min="0"
-                    max="1"
-                    step=".05"
-                    value={filter.minConfidence ?? ""}
-                    onChange={(e) => set("minConfidence", e.target.value)}
-                  />
-                </FormField>
-                <FormField label="Publication">
-                  <NativeSelect
-                    value={filter.published ?? ""}
-                    onChange={(e) => set("published", e.target.value)}
-                  >
-                    <option value="">All</option>
-                    <option value="true">Published</option>
-                    <option value="false">Unpublished</option>
-                  </NativeSelect>
-                </FormField>
+                <Combobox
+                  {...comboboxCopy}
+                  key={`intent-${view}-${resets}`}
+                  label="Intent"
+                  items={intentItems}
+                  placeholder="domain/area/intent"
+                  allowCustomValue
+                  defaultInputValue={filter.intent ?? ""}
+                  onInputValueChange={({ inputValue }) =>
+                    set("intent", inputValue)
+                  }
+                />
               </div>
+              {moreFilters && (
+                <div
+                  className="studio-filters"
+                  id="studio-more-filters"
+                  role="group"
+                  aria-label="More filters"
+                >
+                  <FormField label="Source host">
+                    <Input
+                      value={filter.host ?? ""}
+                      onChange={(e) => set("host", e.target.value)}
+                    />
+                  </FormField>
+                  <FormField label="From">
+                    <Input
+                      type="date"
+                      value={filter.from?.slice(0, 10) ?? ""}
+                      onChange={(e) => set("from", e.target.value)}
+                    />
+                  </FormField>
+                  <FormField label="To">
+                    <Input
+                      type="date"
+                      value={filter.to?.slice(0, 10) ?? ""}
+                      onChange={(e) => set("to", e.target.value)}
+                    />
+                  </FormField>
+                  <FormField label="Minimum confidence">
+                    <Input
+                      type="number"
+                      min="0"
+                      max="1"
+                      step=".05"
+                      value={filter.minConfidence ?? ""}
+                      onChange={(e) => set("minConfidence", e.target.value)}
+                    />
+                  </FormField>
+                  <FormField label="Publication">
+                    <NativeSelect
+                      value={filter.published ?? ""}
+                      onChange={(e) => set("published", e.target.value)}
+                    >
+                      <option value="">All</option>
+                      <option value="true">Published</option>
+                      <option value="false">Unpublished</option>
+                    </NativeSelect>
+                  </FormField>
+                </div>
+              )}
+            </div>
+            <div className="studio-results">
               {error && (
                 <Callout tone="danger" title="Could not load references">
                   {error}
                 </Callout>
-              )}
-              {compare.length > 0 && (
-                <section
-                  className="studio-panel"
-                  aria-label="Reference comparison"
-                >
-                  <Stack gap="md">
-                    <Inline justify="between" align="center">
-                      <Heading as="h2" size="h4" flush>
-                        Comparison
-                      </Heading>
-                      <Button variant="ghost" onClick={() => setCompare([])}>
-                        Clear comparison
-                      </Button>
-                    </Inline>
-                    <div className="studio-comparison">
-                      {compare.map((id) => (
-                        <Stack gap="xs" key={id}>
-                          <Screenshot client={client} id={id} />
-                          <a href={`#/ingests/${id}`}>Open reference</a>
-                        </Stack>
-                      ))}
-                    </div>
-                  </Stack>
-                </section>
               )}
               {rows.length > 0 && (
                 <section
@@ -347,10 +402,7 @@ export function App() {
                         <time dateTime={i.capture.capturedAt}>
                           {new Date(i.capture.capturedAt).toLocaleString(
                             undefined,
-                            {
-                              dateStyle: "medium",
-                              timeStyle: "short",
-                            },
+                            { dateStyle: "medium", timeStyle: "short" },
                           )}
                         </time>
                       </p>
@@ -391,33 +443,95 @@ export function App() {
                   description="Clip a page with the Reference Clipper, or loosen the filters."
                 />
               )}
-              <Inline justify="end">
-                <Button
-                  variant="ghost"
-                  disabled={!filter.offset}
-                  onClick={() =>
-                    setFilter((f) => ({
-                      ...f,
-                      offset: Math.max(0, (f.offset ?? 0) - 100),
-                    }))
+              {(filter.offset || rows.length >= 100) && (
+                <Inline justify="end">
+                  <Button
+                    variant="ghost"
+                    disabled={!filter.offset}
+                    onClick={() =>
+                      setFilter((f) => ({
+                        ...f,
+                        offset: Math.max(0, (f.offset ?? 0) - 100),
+                      }))
+                    }
+                  >
+                    Previous page
+                  </Button>
+                  <Button
+                    variant="ghost"
+                    disabled={rows.length < 100}
+                    onClick={() =>
+                      setFilter((f) => ({
+                        ...f,
+                        offset: (f.offset ?? 0) + 100,
+                      }))
+                    }
+                  >
+                    Next page
+                  </Button>
+                </Inline>
+              )}
+            </div>
+            {compare.length > 0 && (
+              <div
+                className="studio-tray"
+                role="region"
+                aria-label="Comparison"
+              >
+                <Text as="span" size="sm">
+                  {compare.length} of 3 selected to compare
+                </Text>
+                <Inline gap="sm" align="center">
+                  <Button variant="ghost" onClick={() => setCompare([])}>
+                    Clear
+                  </Button>
+                  <Button
+                    tone="accent"
+                    disabled={compare.length < 2}
+                    onClick={openCompare}
+                  >
+                    Compare side by side
+                  </Button>
+                </Inline>
+              </div>
+            )}
+          </main>
+        </div>
+      )}
+      <Dialog
+        id="studio-compare"
+        className="studio-compare"
+        title="Compare references"
+        closeLabel="Close comparison"
+      >
+        <div
+          className="studio-compare__grid"
+          style={{ "--studio-compare-count": compare.length } as CSSProperties}
+        >
+          {compare.map((ref) => {
+            const row = rows.find((r) => r.id === ref);
+            return (
+              <Stack gap="xs" key={ref}>
+                <Inline justify="between" align="center">
+                  <Text as="span" weight="emphasis">
+                    {row?.source.title || row?.source.hostname || "Reference"}
+                  </Text>
+                  <a href={`#/ingests/${ref}`}>Open</a>
+                </Inline>
+                <Screenshot
+                  client={client}
+                  id={ref}
+                  className="studio-canvas__frame"
+                  style={naturalStyle(ref)}
+                  onNaturalSize={(size) =>
+                    setSizes((all) => ({ ...all, [ref]: size }))
                   }
-                >
-                  Previous
-                </Button>
-                <Button
-                  variant="ghost"
-                  disabled={rows.length < 100}
-                  onClick={() =>
-                    setFilter((f) => ({ ...f, offset: (f.offset ?? 0) + 100 }))
-                  }
-                >
-                  Next
-                </Button>
-              </Inline>
-            </Stack>
-          )}
-        </main>
-      </div>
-    </>
+                />
+              </Stack>
+            );
+          })}
+        </div>
+      </Dialog>
+    </div>
   );
 }

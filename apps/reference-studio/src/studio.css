@@ -1,6 +1,11 @@
 /*
  * Studio chrome. The kit draws every control; this sheet only places them, and every value is a
  * semantic token so the light-dark() pairs carry both schemes.
+ *
+ * THE APP IS A SCREEN, NOT A DOCUMENT. On a wide window it is exactly one viewport tall and each
+ * region scrolls on its own: the header, the list's filters and the reference's action bar never
+ * leave the screen, so nothing a reviewer acts on is hidden under scroll. Below 900px it becomes a
+ * page again, because a phone has no room for side-by-side regions.
  */
 body {
   margin: 0;
@@ -14,10 +19,13 @@ body {
   box-sizing: border-box;
 }
 
+.studio-app {
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr);
+  block-size: 100dvh;
+}
+
 .studio-header {
-  position: sticky;
-  inset-block-start: 0;
-  z-index: var(--z-sticky);
   display: flex;
   align-items: center;
   gap: var(--space-inline-md);
@@ -46,42 +54,59 @@ body {
   text-overflow: ellipsis;
 }
 
+/* ── The list ─────────────────────────────────────────────────────────────────────────────────── */
+
 .studio-shell {
   display: grid;
   grid-template-columns: 200px minmax(0, 1fr);
-  min-block-size: calc(
-    100dvh - var(--size-control-md) - 2 * var(--space-inset-sm) - 1px
-  );
+  min-block-size: 0;
 }
 .studio-nav {
   padding: var(--space-inset-md);
+  overflow: auto;
   border-inline-end: 1px solid var(--color-border-subtle);
   background: var(--color-bg-surface);
 }
-.studio-nav > nav {
-  position: sticky;
-  inset-block-start: calc(
-    var(--size-control-md) + 2 * var(--space-inset-sm) + var(--space-inset-md)
-  );
-}
 .studio-main {
   min-width: 0;
-  padding: var(--space-inset-lg);
+  min-block-size: 0;
+}
+.studio-main--list {
+  display: flex;
+  flex-direction: column;
+  overflow: auto;
 }
 
-/* A panel: the surface every grouped block sits on. */
-.studio-panel {
-  min-width: 0;
-  padding: var(--space-inset-lg);
-  border: 1px solid var(--color-border-subtle);
-  border-radius: var(--radius-surface);
-  background: var(--color-bg-surface);
+/* Title, counts and filters stay pinned while the cards scroll under them. */
+.studio-listbar {
+  position: sticky;
+  inset-block-start: 0;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-stack-md);
+  padding: var(--space-inset-md) var(--space-inset-lg);
+  border-block-end: 1px solid var(--color-border-subtle);
+  background: var(--color-bg-canvas);
 }
-
 .studio-filters {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
-  gap: var(--space-stack-md) var(--space-inline-md);
+  gap: var(--space-stack-sm) var(--space-inline-md);
+}
+/* Intent ids are long paths; one lane of the filter grid wraps every one of them. */
+@media (min-width: 901px) {
+  .studio-filters > .sk-combobox {
+    grid-column: span 2;
+  }
+}
+
+.studio-results {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: var(--space-stack-lg);
+  padding: var(--space-inset-lg);
 }
 
 .studio-cards {
@@ -170,6 +195,229 @@ body {
   object-position: top;
 }
 
+/* The comparison is collected at the floor of the list, where it never pushes the cards down. */
+.studio-tray {
+  position: sticky;
+  inset-block-end: 0;
+  z-index: 1;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-inline-md);
+  padding: var(--space-inset-sm) var(--space-inset-lg);
+  border-block-start: 1px solid var(--color-border-subtle);
+  background: var(--color-bg-surface);
+  box-shadow: var(--shadow-md);
+}
+.studio-compare {
+  --sk-dialog-inline-size: min(96vw, 1600px);
+}
+.studio-compare__grid {
+  display: grid;
+  grid-template-columns: repeat(
+    var(--studio-compare-count, 2),
+    minmax(240px, 1fr)
+  );
+  align-items: start;
+  gap: var(--space-stack-md);
+  overflow-x: auto;
+}
+.studio-compare__grid .studio-canvas__frame {
+  margin-inline: 0;
+  max-inline-size: 100%;
+}
+
+/* ── The reference ────────────────────────────────────────────────────────────────────────────── */
+
+.studio-main--reference {
+  overflow: hidden;
+}
+.studio-workbench {
+  display: grid;
+  grid-template-rows: auto auto minmax(0, 1fr);
+  block-size: 100%;
+}
+.studio-workbench__loading {
+  display: grid;
+  place-items: center;
+  block-size: 100%;
+  padding: var(--space-inset-lg);
+}
+
+/* Where the reference is, and every decision about it: one bar, always on screen. */
+.studio-actionbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-stack-sm) var(--space-inline-lg);
+  padding: var(--space-inset-sm) var(--space-inset-lg);
+  border-block-end: 1px solid var(--color-border-subtle);
+  background: var(--color-bg-surface);
+}
+.studio-actionbar__lead {
+  display: flex;
+  align-items: center;
+  gap: var(--space-inline-md);
+  min-width: 0;
+}
+.studio-actionbar__title {
+  min-width: 0;
+}
+.studio-actionbar__title .sk-heading {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.studio-actionbar__actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--space-inline-md);
+  margin-inline-start: auto;
+}
+.studio-workbench__alerts {
+  display: grid;
+  gap: var(--space-stack-sm);
+  padding: var(--space-inset-sm) var(--space-inset-lg) 0;
+}
+
+/*
+ * THE CAPTURE DECIDES THE LAYOUT. At actual size the canvas column is as wide as the capture (plus
+ * its gutter), and the inspector takes what is left; a narrow capture hands the inspector up to
+ * 640px, a wide one leaves it its 360px floor and the canvas scrolls sideways instead of shrinking
+ * the capture. Fit gives the canvas everything but a fixed inspector.
+ */
+.studio-workbench__body {
+  --studio-canvas-gutter: var(--space-inset-lg);
+  display: grid;
+  grid-template-columns:
+    minmax(
+      0,
+      max(
+        calc(var(--studio-capture-width) + 2 * var(--studio-canvas-gutter)),
+        calc(100% - 640px)
+      )
+    )
+    minmax(360px, 1fr);
+  min-block-size: 0;
+}
+.studio-workbench[data-zoom="fit"] .studio-workbench__body {
+  grid-template-columns: minmax(0, 1fr) minmax(360px, 440px);
+}
+
+.studio-canvas {
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr);
+  min-width: 0;
+  min-block-size: 0;
+  background: var(--color-bg-surface-sunken);
+}
+.studio-canvas__bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-inline-md);
+  padding: var(--space-inset-sm) var(--studio-canvas-gutter);
+}
+/* Centred with auto margins, not `justify-items`: a capture wider than the canvas must overflow to
+ * the right, where scrolling reaches it, never to the left, where it would be cut off for good. */
+.studio-canvas__scroll {
+  display: block;
+  min-block-size: 0;
+  overflow: auto;
+  padding: 0 var(--studio-canvas-gutter) var(--studio-canvas-gutter);
+}
+.studio-canvas__scroll:focus-visible {
+  outline: var(--size-focus-ring) solid var(--color-border-focus);
+  outline-offset: calc(var(--size-focus-ring) * -1);
+}
+.studio-canvas__frame {
+  display: grid;
+  place-items: center;
+  inline-size: fit-content;
+  margin-inline: auto;
+  min-inline-size: 240px;
+  min-block-size: 160px;
+  max-inline-size: none;
+  border: 1px solid var(--color-border-subtle);
+  background: var(--color-bg-surface);
+  box-shadow: var(--shadow-md);
+  color: var(--color-text-tertiary);
+}
+.studio-workbench[data-zoom="fit"] .studio-canvas__frame {
+  inline-size: 100%;
+}
+.studio-canvas__frame img {
+  display: block;
+  height: auto;
+}
+
+.studio-inspector {
+  display: grid;
+  min-width: 0;
+  min-block-size: 0;
+  border-inline-start: 1px solid var(--color-border-subtle);
+  background: var(--color-bg-surface);
+}
+/* The tab strip stays put; only the open panel scrolls. */
+.studio-inspector > .sk-tabs {
+  --sk-tabs-gap: 0;
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-rows: auto minmax(0, 1fr);
+  min-block-size: 0;
+}
+.studio-inspector .sk-tabs__list {
+  --sk-tabs-trigger-padding-x: var(--space-inset-sm);
+  padding-inline: var(--space-inset-md);
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.studio-inspector .sk-tabs__content {
+  min-block-size: 0;
+  overflow: auto;
+  padding: var(--space-inset-lg);
+}
+
+.studio-traits {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: var(--space-stack-xs) var(--space-inline-md);
+}
+
+.studio-similar {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: var(--space-stack-md);
+}
+.studio-similar__item {
+  display: grid;
+  gap: var(--space-stack-xs);
+  justify-items: start;
+  color: inherit;
+  font-size: var(--font-size-body-sm);
+  text-decoration: none;
+}
+.studio-similar__item .studio-thumbnail {
+  justify-self: stretch;
+  border: 1px solid var(--color-border-subtle);
+  border-radius: var(--radius-control);
+}
+
+/* ── Shared pieces ────────────────────────────────────────────────────────────────────────────── */
+
+/* A panel: the surface every grouped block sits on. */
+.studio-panel {
+  min-width: 0;
+  padding: var(--space-inset-lg);
+  border: 1px solid var(--color-border-subtle);
+  border-radius: var(--radius-surface);
+  background: var(--color-bg-surface);
+}
+
 .studio-shot {
   display: grid;
   place-items: center;
@@ -183,19 +431,6 @@ body {
   display: block;
   width: 100%;
   height: auto;
-}
-
-.studio-workbench {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) 320px;
-  gap: var(--space-stack-lg);
-  align-items: start;
-}
-.studio-aside {
-  position: sticky;
-  inset-block-start: calc(
-    var(--size-control-md) + 2 * var(--space-inset-sm) + var(--space-inset-lg)
-  );
 }
 
 .studio-code {
@@ -241,12 +476,6 @@ textarea.studio-mono {
   font-size: var(--font-size-caption);
 }
 
-.studio-comparison {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-  gap: var(--space-stack-md);
-}
-
 .studio-connection {
   display: grid;
   place-items: center;
@@ -258,7 +487,34 @@ textarea.studio-mono {
   box-shadow: var(--shadow-md);
 }
 
+/* ── Phone: a page again ──────────────────────────────────────────────────────────────────────── */
+
 @media (max-width: 900px) {
+  .studio-app {
+    display: block;
+    block-size: auto;
+  }
+  .studio-header {
+    flex-wrap: wrap;
+    padding-inline: var(--space-inset-md);
+  }
+  .studio-brand span {
+    display: none;
+  }
+  /* The brand keeps its own line rather than being covered by the controls beside it. */
+  .studio-brand {
+    flex: 1 0 100%;
+  }
+  .studio-header {
+    justify-content: space-between;
+    row-gap: var(--space-stack-xs);
+  }
+  .studio-actionbar__lead {
+    flex-wrap: wrap;
+  }
+  .studio-actionbar__title {
+    flex-basis: 100%;
+  }
   .studio-shell {
     grid-template-columns: minmax(0, 1fr);
   }
@@ -266,31 +522,49 @@ textarea.studio-mono {
     padding: var(--space-inset-sm) var(--space-inset-md);
     border-inline-end: 0;
     border-block-end: 1px solid var(--color-border-subtle);
-    overflow-x: auto;
   }
-  .studio-nav > nav {
+  .studio-main--list,
+  .studio-main--reference {
+    overflow: visible;
+  }
+  .studio-listbar {
     position: static;
-  }
-  .studio-workbench {
-    grid-template-columns: minmax(0, 1fr);
-  }
-  .studio-aside {
-    position: static;
-  }
-  .studio-brand span {
-    display: none;
-  }
-  .studio-header,
-  .studio-main {
     padding-inline: var(--space-inset-md);
   }
-}
-
-/* The workbench tabs outgrow a phone: the strip scrolls instead of widening the page. */
-.studio-panel > .sk-tabs {
-  grid-template-columns: minmax(0, 1fr);
-}
-.studio-panel > .sk-tabs > .sk-tabs__list {
-  overflow-x: auto;
-  scrollbar-width: none;
+  .studio-results {
+    padding: var(--space-inset-md);
+  }
+  .studio-tray {
+    padding-inline: var(--space-inset-md);
+  }
+  /* On a phone the decisions are what must stay reachable, so the action bar is what sticks. */
+  .studio-actionbar {
+    position: sticky;
+    inset-block-start: 0;
+    z-index: var(--z-sticky);
+    padding-inline: var(--space-inset-md);
+  }
+  .studio-actionbar__actions {
+    margin-inline-start: 0;
+    justify-content: flex-start;
+  }
+  .studio-workbench,
+  .studio-workbench[data-zoom="fit"] .studio-workbench__body,
+  .studio-workbench__body {
+    display: block;
+    block-size: auto;
+  }
+  .studio-workbench__body {
+    --studio-canvas-gutter: var(--space-inset-md);
+  }
+  .studio-canvas__scroll {
+    max-block-size: 70dvh;
+  }
+  .studio-inspector {
+    border-inline-start: 0;
+    border-block-start: 1px solid var(--color-border-subtle);
+  }
+  .studio-inspector .sk-tabs__content {
+    padding: var(--space-inset-md);
+  }
 }
