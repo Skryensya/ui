@@ -18,6 +18,18 @@ export interface CatalogVariant {
   tree: UsageTree;
   intentLabel: string;
   layoutLabel: string;
+  /** The pattern's name alone, or "Fixed tree": for a record whose term already says "Layout". */
+  layoutTitle: string;
+  /** The filing, for the page's filters: the intent id (`domain/area/intent`), the scale and the contract families the tree touches. */
+  intent: string;
+  scale: string;
+  components: string[];
+  /** What the catalog's palette matches besides the title: the intent at its three levels, the layout, the scale, the components and the purpose. */
+  aliases: string[];
+  /** The line a search result shows under its title: subject › domain › area › intent. */
+  context: string;
+  /** The intent's first level, for the domain facet. */
+  domain: string;
   relations: { kind: "sameLayout" | "sameIntent" | "contains" | "containedIn" | "similar" | "related"; label: string; items: { id: string; title: string; shown: boolean }[] }[];
 }
 
@@ -27,6 +39,18 @@ export function catalogView(locale: Locale) {
   const shownIds = new Set(all.filter((entry) => entry.catalog && entry.scale !== "page").map((entry) => entry.id));
   const byId = new Map(all.map((entry) => [entry.id, entry]));
   const ref = (id: string) => ({ id, title: byId.get(id)?.title ?? id, shown: shownIds.has(id) });
+
+  const taxonomy = library.tree(locale);
+  const labelOf = new Map<string, string>();
+  for (const domain of taxonomy) {
+    labelOf.set(domain.id, domain.label);
+    for (const area of domain.areas) for (const intent of area.intents) labelOf.set(intent.id, intent.label);
+  }
+  const pathLabels = (intentId: string) => {
+    const [domain, area] = intentId.split("/");
+    const areaLabel = taxonomy.find((entry) => entry.id === domain)?.areas.find((entry) => entry.id === area)?.label;
+    return [labelOf.get(domain!), areaLabel, labelOf.get(intentId)].filter(Boolean) as string[];
+  };
 
   const subjects = library
     .subjects(locale)
@@ -50,6 +74,7 @@ export function catalogView(locale: Locale) {
                 group("related", (relations?.related ?? []).map((related) => related.id)),
                 group("similar", (relations?.similar ?? []).map((similar) => similar.id)),
               ];
+              const layoutTitle = pattern ? pattern.title : "";
               return {
                 id: entry.id,
                 title: entry.title,
@@ -57,6 +82,13 @@ export function catalogView(locale: Locale) {
                 tree: entry.tree,
                 intentLabel: library.intent(entry.intent, locale)?.label ?? entry.intent,
                 layoutLabel: pattern ? `${t("catalog.meta.layout")}: ${pattern.title}` : t("catalog.meta.fixed"),
+                layoutTitle: pattern ? pattern.title : t("catalog.meta.fixed"),
+                intent: entry.intent,
+                scale: entry.scale,
+                components: [...entry.contracts],
+                aliases: [...pathLabels(entry.intent), layoutTitle, t(`catalog.scale.${entry.scale}` as UIKey), ...entry.contracts, entry.purpose].filter(Boolean),
+                context: `${subject.title} › ${pathLabels(entry.intent).join(" › ")}`,
+                domain: entry.intent.split("/")[0]!,
                 relations: groups.filter((group) => group.items.length > 0),
               };
             }),
@@ -80,5 +112,27 @@ export function catalogView(locale: Locale) {
       .filter((area) => area.intents.length > 0),
   }));
 
-  return { subjects, intents };
+  /*
+   * THE FACETS of the advanced search, counted over what the page shows. Each is one axis of the filing: the
+   * subject, the scale, the intent's domain and the components a tree touches. A value nothing carries has no
+   * option, so no checkbox ever leads to an empty result on its own.
+   */
+  const variants = subjects.flatMap((subject) => subject.scales.flatMap((group) => group.variants.map((variant) => ({ subject: subject.id, variant }))));
+  const tally = (keys: (entry: (typeof variants)[number]) => string[]) => {
+    const counts = new Map<string, number>();
+    for (const entry of variants) for (const key of new Set(keys(entry))) counts.set(key, (counts.get(key) ?? 0) + 1);
+    return counts;
+  };
+  const bySubject = tally((entry) => [entry.subject]);
+  const byScale = tally((entry) => [entry.variant.scale]);
+  const byDomain = tally((entry) => [entry.variant.domain]);
+  const byComponent = tally((entry) => entry.variant.components);
+  const facets = {
+    subject: subjects.map((subject) => ({ value: subject.id, label: subject.title, count: bySubject.get(subject.id) ?? 0 })).filter((option) => option.count > 0),
+    scale: SCALES.filter((scale) => byScale.has(scale)).map((scale) => ({ value: scale as string, label: t(`catalog.scale.${scale}` as UIKey), count: byScale.get(scale)! })),
+    domain: taxonomy.filter((domain) => byDomain.has(domain.id)).map((domain) => ({ value: domain.id, label: domain.label, count: byDomain.get(domain.id)! })),
+    component: [...byComponent].sort(([a], [b]) => a.localeCompare(b)).map(([value, count]) => ({ value, label: value, count })),
+  };
+
+  return { subjects, intents, facets };
 }

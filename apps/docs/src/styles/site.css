@@ -886,12 +886,9 @@ main {
 /* The panel, its motion and its backdrop are Vaul's; what is left for the site is
    what goes inside, exactly like the rail (which writes its own structure over sk-sidebar's hooks). */
 .dimensions__menu-trigger {
-  /* the rail is already on screen, a second door to the same nav is just noise */
+  /* On a desktop the navbar's own links (and the rail, where a page has one) already reach every section:
+     a second door to the same nav is just noise. Every page, full-bleed or not. */
   display: none;
-}
-
-.dimensions__menu-trigger--always {
-  display: inline-flex;
 }
 
 /* Scoped to [open] deliberately: an author `display` would beat the UA's `dialog:not([open])

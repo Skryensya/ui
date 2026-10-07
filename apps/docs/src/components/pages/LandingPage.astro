@@ -311,7 +311,7 @@ const quiet = (html: string) =>
 const bentoSets = Array.from({ length: bentoCycle.length + 3 }, (_, index) => bentoCycle[index % bentoCycle.length]);
 ---
 
-<Base fullBleed title={copy.title} description={copy.description} hideVanillaMount alwaysShowNavTrigger={false}>
+<Base fullBleed title={copy.title} description={copy.description} hideVanillaMount>
   <main class="landing-page">
     <div class="sk-wrapper" data-size="md" data-gutter="lg">
       <section class="landing-hero" aria-labelledby="landing-title">

@@ -91,6 +91,18 @@ describe("the library's words", () => {
   });
 });
 
+function segmentedLabelsWithParentheses(node: unknown, found: string[] = []): string[] {
+  if (Array.isArray(node)) node.forEach((child) => segmentedLabelsWithParentheses(child, found));
+  else if (node && typeof node === "object") {
+    const tree = node as { signature?: string; options?: { label?: unknown }; slots?: { items?: { slots?: { label?: unknown } }[] } };
+    if (tree.signature === "Segmented") {
+      for (const label of [tree.options?.label, ...(tree.slots?.items ?? []).map((item) => item.slots?.label)]) if (typeof label === "string" && /[(（]/.test(label)) found.push(label);
+    }
+    for (const value of Object.values(node)) segmentedLabelsWithParentheses(value, found);
+  }
+  return found;
+}
+
 for (const locale of locales) {
   describe(`the library's trees (${locale})`, () => {
     for (const entry of entries(locale)) {
@@ -102,6 +114,9 @@ for (const locale of locales) {
         expect(review.map((finding) => `${finding.rule} at ${finding.path}: ${finding.message}`)).toEqual([]);
 
         expect(sheetsForTree(entry.tree).unplaced).toEqual([]);
+
+        /* A Segmented option is one short word. What qualifies it ("Annual (2 months free)") is a note beside the control. */
+        expect(segmentedLabelsWithParentheses(entry.tree)).toEqual([]);
       });
     }
   });

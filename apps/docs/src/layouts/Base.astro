@@ -207,14 +207,6 @@ interface Props {
    * structure the page chose; a page with tabs cannot have content the tabs don't own.
    */
   hideVanillaMount?: boolean;
-  /**
-   * `fullBleed` pages have no rail, so by default the drawer trigger stays visible at every width
-   * (there is no other way to reach the index once the rail is gone, e.g. /personalizar). A
-   * `fullBleed` page that DOES want the ordinary responsive trigger instead - hidden on desktop,
-   * shown on mobile, same as every railed page - opts out explicitly (the marketing home, which has
-   * nothing to reach the drawer for on desktop but still wants it on mobile like any other page).
-   */
-  alwaysShowNavTrigger?: boolean;
 }
 
 const {
@@ -224,7 +216,6 @@ const {
   railIndex = false,
   documentLayout = "column",
   hideVanillaMount = false,
-  alwaysShowNavTrigger = fullBleed,
 } = Astro.props;
 const path = Astro.url.pathname.replace(/\/$/, "") || "/";
 
@@ -803,7 +794,7 @@ const PALETTE_PRESETS = palettePresets(locale);
     <header class="dimensions">
       <div class="dimensions__content sk-wrapper" data-size="lg">
         <button
-          class={`sk-button sk-interactive dimensions__menu-trigger${alwaysShowNavTrigger ? " dimensions__menu-trigger--always" : ""}`}
+          class="sk-button sk-interactive dimensions__menu-trigger"
           data-variant="ghost"
           data-icon-only
           type="button"

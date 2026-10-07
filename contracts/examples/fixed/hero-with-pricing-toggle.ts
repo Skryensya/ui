@@ -61,9 +61,15 @@ export const heroWithPricingToggleSnippet: Snippet = {
                 slots: {
                   items: [
                     { options: { value: "monthly" }, slots: { label: "Monthly" } },
-                    { options: { value: "annual" }, slots: { label: "Annual (2 months free)" } },
+                    { options: { value: "annual" }, slots: { label: "Annual" } },
                   ],
                 },
+              },
+              {
+                contract: "typography",
+                signature: "Text",
+                options: { tone: "secondary", size: "caption" },
+                children: "Annual billing gets 2 months free.",
               },
               {
                 contract: "typography",

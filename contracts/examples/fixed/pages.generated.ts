@@ -4030,11 +4030,20 @@ export const pageSnippets: readonly Snippet[] = [
                               "value": "annual"
                             },
                             "slots": {
-                              "label": "Annual (2 months free)"
+                              "label": "Annual"
                             }
                           }
                         ]
                       }
+                    },
+                    {
+                      "contract": "typography",
+                      "signature": "Text",
+                      "options": {
+                        "size": "caption",
+                        "tone": "secondary"
+                      },
+                      "children": "Annual billing gets 2 months free."
                     }
                   ]
                 },

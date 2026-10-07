@@ -2,6 +2,24 @@
   "changelogs": {
     "accordion": [
       {
+        "date": null,
+        "entries": [
+          {
+            "date": "2026-10-06",
+            "en": {
+              "body": "The summary title was measured against a line-height token that did not exist and was compensated by an override. It now uses <code>--font-line-height-heading</code> and the override is gone; the header height does not visibly change.",
+              "title": "Accordion's section title uses the real line height"
+            },
+            "es": {
+              "body": "El título del summary se medía contra un token de interlineado que no existía y se compensaba con un ajuste. Ahora usa <code>--font-line-height-heading</code> y el ajuste desapareció; el alto del encabezado no cambia de forma visible.",
+              "title": "El título de la sección de Accordion usa el interlineado real"
+            },
+            "kind": "bugfix"
+          }
+        ],
+        "version": "0.0.2-dev"
+      },
+      {
         "date": "2026-10-01",
         "entries": [
           {
@@ -4913,6 +4931,24 @@
     ],
     "footer": [
       {
+        "date": null,
+        "entries": [
+          {
+            "date": "2026-10-06",
+            "en": {
+              "body": "The <code>surface=\"sunken\"</code> rule only held with the attribute written. It now also holds when it is absent.",
+              "title": "Footer applies its default surface without the attribute"
+            },
+            "es": {
+              "body": "La regla de <code>surface=\"sunken\"</code> sólo valía con el atributo escrito. Ahora también cuando falta.",
+              "title": "Footer aplica su superficie por defecto sin atributo"
+            },
+            "kind": "bugfix"
+          }
+        ],
+        "version": "0.0.2-dev"
+      },
+      {
         "date": "2026-10-01",
         "entries": [
           {
@@ -5050,6 +5086,24 @@
       }
     ],
     "hero": [
+      {
+        "date": null,
+        "entries": [
+          {
+            "date": "2026-10-06",
+            "en": {
+              "body": "The <code>surface=\"surface\"</code> and <code>padding=\"xl\"</code> rules only held when the attribute was written. They now also hold when it is absent, which is what the compiler emits with defaults left out.",
+              "title": "Hero applies its default surface and padding without attributes"
+            },
+            "es": {
+              "body": "Las reglas de <code>surface=\"surface\"</code> y <code>padding=\"xl\"</code> sólo valían si el atributo estaba escrito. Ahora también valen cuando falta, que es lo que emite el compilador con los defaults omitidos.",
+              "title": "Hero aplica su superficie y su padding por defecto sin atributos"
+            },
+            "kind": "bugfix"
+          }
+        ],
+        "version": "0.0.2-dev"
+      },
       {
         "date": "2026-10-01",
         "entries": [
@@ -5643,6 +5697,18 @@
           {
             "date": "2026-10-06",
             "en": {
+              "body": "<code>sizing=\"fit\"</code> was in the contract and not in the CSS: the child now keeps its width and never shrinks. The children of an <code>equal</code> <code>Inline</code> floor at their longest word (<code>min-inline-size: min-content</code>), so the row wraps before breaking words. A <code>Stack</code> with <code>align</code> set to <code>center</code> or <code>end</code> now aligns its multi-line text too.",
+              "title": "Inline <code>sizing=\"fit\"</code>, a floor on <code>equal</code>, and centred text in Stack"
+            },
+            "es": {
+              "body": "<code>sizing=\"fit\"</code> estaba en el contrato y no en el CSS: ahora el hijo conserva su ancho y no se encoge. Los hijos de un <code>Inline</code> con <code>equal</code> tienen como piso su palabra más larga (<code>min-inline-size: min-content</code>), así que la fila envuelve antes de partir palabras. Un <code>Stack</code> con <code>align</code> en <code>center</code> o <code>end</code> alinea también su texto de varias líneas.",
+              "title": "Inline <code>sizing=\"fit\"</code>, piso en <code>equal</code> y texto centrado en Stack"
+            },
+            "kind": "bugfix"
+          },
+          {
+            "date": "2026-10-06",
+            "en": {
               "body": "Below a 52rem container the shell stacks header, main and footer and draws no Sidebar: a phone has no room for a column beside the work. What the rail carries reaches it in a <code>Vaul.drawer</code> child of the shell, opened by a <code>Vaul.Trigger</code> in the header; <code>review_ui</code> fails a shell with a rail and no such drawer.",
               "title": "AppShell is one column below the expanded line and draws no rail"
             },
@@ -6103,6 +6169,25 @@
     ],
     "list": [
       {
+        "date": null,
+        "entries": [
+          {
+            "date": "2026-10-06",
+            "en": {
+              "body": "The row's content starts from basis 0 with a floor of <code>min(8rem, 40%)</code> and the <code>trailing</code> slot takes its natural width and wraps right-aligned, instead of running over the title. <code>ListItemPlain</code>'s content fills the row, and title and description use the line-height tokens that exist (<code>--font-line-height-heading</code>, <code>--font-line-height-body</code>), not ones that did not.",
+              "title": "Rows with several things at the end no longer crush the title"
+            },
+            "es": {
+              "body": "El contenido de la fila parte de base 0 con un piso de <code>min(8rem, 40%)</code> y el slot <code>trailing</code> toma su ancho natural y envuelve alineado a la derecha, en vez de montarse sobre el título. El contenido de <code>ListItemPlain</code> ocupa la fila, y título y descripción usan los tokens de interlineado que existen (<code>--font-line-height-heading</code>, <code>--font-line-height-body</code>), no los que no existían.",
+              "title": "Las filas con varios datos al final ya no aplastan el título"
+            },
+            "kind": "bugfix",
+            "target": "ListItem"
+          }
+        ],
+        "version": "0.0.2-dev"
+      },
+      {
         "date": "2026-10-01",
         "entries": [
           {
@@ -6464,6 +6549,19 @@
       {
         "date": null,
         "entries": [
+          {
+            "date": "2026-10-06",
+            "en": {
+              "body": "The overlay is a grid and stretched its children: a Badge ran across the whole image. Each line now keeps its width (<code>justify-items: start</code>).",
+              "title": "Each line of the overlay keeps its own width"
+            },
+            "es": {
+              "body": "El overlay es una grilla y estiraba a sus hijos: una Badge cruzaba toda la imagen. Ahora cada línea (<code>justify-items: start</code>) conserva su ancho.",
+              "title": "Cada línea del overlay conserva su propio ancho"
+            },
+            "kind": "bugfix",
+            "target": "MediaOverlay"
+          },
           {
             "date": "2026-10-02",
             "en": {
@@ -9526,6 +9624,25 @@
     ],
     "separator": [
       {
+        "date": null,
+        "entries": [
+          {
+            "date": "2026-10-06",
+            "en": {
+              "body": "The horizontal rule required <code>data-orientation=\"horizontal\"</code>, which is the default and which the emitter does not write, so a <code>Separator</code> with no explicit orientation was invisible. Horizontal is now everything that is not vertical.",
+              "title": "Separator draws its line without <code>data-orientation</code>"
+            },
+            "es": {
+              "body": "La regla horizontal exigía <code>data-orientation=\"horizontal\"</code>, que es el valor por defecto y que el emisor no escribe, así que un <code>Separator</code> sin orientación explícita no se veía. Ahora horizontal es todo lo que no es vertical.",
+              "title": "Separator dibuja su línea sin <code>data-orientation</code>"
+            },
+            "kind": "bugfix",
+            "target": "Separator"
+          }
+        ],
+        "version": "0.0.2-dev"
+      },
+      {
         "date": "2026-10-01",
         "entries": [
           {
@@ -10149,6 +10266,25 @@
       }
     ],
     "stat": [
+      {
+        "date": null,
+        "entries": [
+          {
+            "date": "2026-10-06",
+            "en": {
+              "body": "<code>.sk-stat__value</code> used the code font at the <code>h2</code> size. It now uses the body font with tabular numbers at the <code>h1</code> size, so a key figure reads as part of the page.",
+              "title": "Stat's value reads as a figure, not as code"
+            },
+            "es": {
+              "body": "<code>.sk-stat__value</code> usaba la fuente de código y el tamaño <code>h2</code>. Ahora usa la fuente del cuerpo con números tabulares y el tamaño <code>h1</code>, así que una cifra clave se ve como parte de la página.",
+              "title": "El valor de Stat se lee como cifra, no como código"
+            },
+            "kind": "bugfix",
+            "target": "Stat"
+          }
+        ],
+        "version": "0.0.2-dev"
+      },
       {
         "date": "2026-10-01",
         "entries": [
@@ -11403,6 +11539,24 @@
       }
     ],
     "tile": [
+      {
+        "date": null,
+        "entries": [
+          {
+            "date": "2026-10-06",
+            "en": {
+              "body": "Title and description asked for <code>--line-height-heading</code> and <code>--line-height-body</code>, which nothing declared, and fell back to the inherited line height. They now use <code>--font-line-height-*</code>. <code>overflow-wrap</code> also goes from <code>anywhere</code> to <code>break-word</code>: a word breaks only when it cannot fit a line alone, and the tile's minimum width is again its longest word.",
+              "title": "Tile uses the real line-height tokens and breaks a word only when it cannot fit"
+            },
+            "es": {
+              "body": "El título y la descripción pedían <code>--line-height-heading</code> y <code>--line-height-body</code>, que nada declaraba, y caían al interlineado heredado. Ahora usan <code>--font-line-height-*</code>. Además <code>overflow-wrap</code> pasa de <code>anywhere</code> a <code>break-word</code>: una palabra se parte sólo si no cabe sola en una línea, y el mínimo del tile vuelve a ser su palabra más larga.",
+              "title": "Tile usa los tokens de interlineado reales y parte las palabras sólo si no caben"
+            },
+            "kind": "bugfix"
+          }
+        ],
+        "version": "0.0.2-dev"
+      },
       {
         "date": "2026-10-01",
         "entries": [
@@ -12852,6 +13006,24 @@
       }
     ],
     "vaul": [
+      {
+        "date": null,
+        "entries": [
+          {
+            "date": "2026-10-06",
+            "en": {
+              "body": "The <code>edge=\"block-end\"</code> rules required the attribute, which the enhancer writes on mount: before that the panel was not anchored. They now also hold without it.",
+              "title": "Vaul draws on its default edge before its JS loads"
+            },
+            "es": {
+              "body": "Las reglas de <code>edge=\"block-end\"</code> exigían el atributo, que el enhancer escribe al montar: antes de eso el panel no estaba anclado. Ahora valen también sin atributo.",
+              "title": "Vaul se dibuja en su borde por defecto antes de que cargue su JS"
+            },
+            "kind": "bugfix"
+          }
+        ],
+        "version": "0.0.2-dev"
+      },
       {
         "date": "2026-10-01",
         "entries": [
@@ -42508,8 +42680,7 @@
                       },
                       {
                         "also": [
-                          "sk-input",
-                          "sk-input--textarea"
+                          "sk-input"
                         ],
                         "attrs": {
                           "data-size": "sm"
@@ -42528,8 +42699,7 @@
                       },
                       {
                         "also": [
-                          "sk-input",
-                          "sk-input--textarea"
+                          "sk-input"
                         ],
                         "attrs": {
                           "data-size": "sm",
@@ -57043,7 +57213,7 @@
     "working": "0.0.2"
   },
   "schemaVersion": "2.3",
-  "sourceHash": "2eb09b2cb9432ab0",
+  "sourceHash": "3da9d22e56fc7d25",
   "vocabulary": {
     "a11y": "When `when` holds, one of `requiresOneOf` must be given: an option, a raw attribute, a filled slot, or a child signature by name.",
     "atLeastOneOf": "At least one member of each group counts: a filled slot, a boolean option set to true, or an option other than its default.",

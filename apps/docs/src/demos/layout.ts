@@ -563,6 +563,7 @@ export const heroPricingToggleTree = (t: Translate): UsageTree => ({
                 ],
               },
             },
+            { contract: "typography", signature: "Text", options: { tone: "secondary", size: "caption" }, children: t("demo.hero.pricingAnnualNote") },
             { contract: "typography", signature: "Text", options: { tone: "primary", size: "lg", weight: "emphasis" }, children: t("demo.hero.pricingPrice") },
             { contract: "button", signature: "Button.action", options: { tone: "accent" }, children: t("demo.hero.pricingAction") },
           ],

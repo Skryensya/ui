@@ -2,13 +2,13 @@
 import { emitMarkup } from "@skryensya/ai-compiler/emit";
 import "@skryensya/core/components/sidebar.css";
 import "@skryensya/core/components/typography.css";
-import "@skryensya/core/patterns/nav-list.css";
 /*
  * One import per stylesheet a variant needs. `catalog.test.ts` reads this file and fails, naming the
  * sheet, when a variant's `sheetsForTree` lists one that is missing here: the emitter writes the
  * classes, it does not carry the styles.
  */
 import "@skryensya/core/patterns/box.css";
+import "@skryensya/core/patterns/nav-list.css";
 import "@skryensya/core/patterns/layout.css";
 import "@skryensya/core/patterns/icon.css";
 import "@skryensya/core/patterns/image-frame.css";
@@ -40,7 +40,9 @@ import "@skryensya/core/patterns/footer.css";
 import "@skryensya/core/patterns/hero.css";
 import "@skryensya/core/patterns/wrapper.css";
 import "@skryensya/core/components/breadcrumb.css";
+import "@skryensya/core/components/accordion.css";
 import "@skryensya/core/components/callout.css";
+import "@skryensya/core/components/details.css";
 import "@skryensya/core/components/menu.css";
 import "@skryensya/core/components/toolbar.css";
 import "@skryensya/core/components/empty-state.css";
@@ -53,13 +55,54 @@ import "@skryensya/core/patterns/anchored.css";
 import { getLocale, useTranslations } from "../../i18n";
 import type { NavigationSection } from "../../lib/navigation";
 import { catalogView } from "../../lib/catalog-view";
+import { backTree, headerTree, introTree, metaTree, pagerTree, resultsTree, searchTree, type ChromeWords } from "../../lib/catalog-chrome";
 import SidebarNav from "../SidebarNav.astro";
 
 const locale = getLocale(Astro.url);
 const t = useTranslations(locale);
 const view = catalogView(locale);
 
-/* The same rail as Templates: one open group per subject, one jump link per example. */
+const words: ChromeWords = {
+  search: t("catalog.search.label"),
+  searchPlaceholder: t("catalog.search.placeholder"),
+  advanced: t("catalog.search.advanced"),
+  facetSubject: t("catalog.facet.subject"),
+  facetScale: t("catalog.facet.scale"),
+  facetDomain: t("catalog.facet.domain"),
+  facetComponent: t("catalog.facet.component"),
+  remove: t("catalog.search.remove"),
+  clearAll: t("catalog.search.clear"),
+  results: t("catalog.results.label"),
+  back: t("catalog.results.back"),
+  metaIntent: t("catalog.meta.intent"),
+  metaLayout: t("catalog.meta.layout"),
+  metaComponents: t("catalog.meta.components"),
+  previous: t("catalog.pager.previous"),
+  next: t("catalog.pager.next"),
+  pagerLabel: t("catalog.pager.label"),
+};
+
+const emit = (tree: Parameters<typeof emitMarkup>[0]) => emitMarkup(tree, { fillDefaults: false });
+
+/* Every example in the rail's order: by subject, then smallest first. */
+const ordered = view.subjects.flatMap((subject) => subject.scales.flatMap((group) => group.variants.map((variant) => ({ subject, group, variant }))));
+const examples = ordered.map(({ subject, group, variant }, index) => {
+  const caption = { id: variant.id, title: variant.title, purpose: variant.purpose, subjectLabel: subject.title, scaleLabel: group.label, intentLabel: variant.intentLabel, layoutLabel: variant.layoutTitle, components: variant.components, relations: variant.relations };
+  const neighbour = (at: number) => (ordered[at] ? { id: ordered[at]!.variant.id, title: ordered[at]!.variant.title } : undefined);
+  return {
+    id: variant.id,
+    scale: variant.scale,
+    /* What the search reads, kept beside the example: the words it matches and the facet values it carries. */
+    facets: { subject: subject.id, scale: variant.scale, domain: variant.domain, component: variant.components.join(" ") },
+    words: [variant.title, variant.context, ...variant.aliases, variant.id].join(" ").toLocaleLowerCase(locale),
+    header: emit(headerTree(caption)),
+    markup: emit(variant.tree),
+    meta: emit(metaTree(words, caption)),
+    pager: emit(pagerTree(words, neighbour(index - 1), neighbour(index + 1))),
+  };
+});
+
+/* The SAME rail as Templates and the rest of the site (`SidebarNav`): one group per subject, one link per example. */
 const railNavigation: NavigationSection[] = [
   {
     id: "catalog",
@@ -76,16 +119,14 @@ const railNavigation: NavigationSection[] = [
   },
 ];
 
-const sections = view.subjects.map((subject) => ({
-  ...subject,
-  scales: subject.scales.map((group) => ({
-    ...group,
-    variants: group.variants.map((variant) => ({ ...variant, markup: emitMarkup(variant.tree, { fillDefaults: false }) })),
-  })),
-}));
+const intro = emit(introTree(t("catalog.title"), t("catalog.description")));
+const search = emit(searchTree(words, view.facets));
+const results = emit(resultsTree(words, ordered.map(({ group, variant }) => ({ id: variant.id, title: variant.title, context: variant.context, scaleLabel: group.label }))));
+const back = emit(backTree(words));
+const countTemplate = t("catalog.results.count", { count: "{count}", total: "{total}" });
 ---
 
-<div class="catalog">
+<div class="catalog" data-catalog data-count-template={countTemplate}>
   <aside class="sk-sidebar catalog__sidebar">
     <div class="sk-sidebar__content">
       <SidebarNav nav={railNavigation} path="" idPrefix="catalog-nav" />
@@ -94,93 +135,31 @@ const sections = view.subjects.map((subject) => ({
 
   <main class="catalog__stage">
     <header class="catalog__intro">
-      <h1 class="sk-heading" data-size="h1">{t("catalog.title")}</h1>
-      <p class="sk-text" data-tone="secondary">{t("catalog.description")}</p>
+      <Fragment set:html={intro} />
+      <Fragment set:html={search} />
     </header>
 
-    <section class="catalog__taxonomy" aria-labelledby="catalog-by-intent">
-      <h2 id="catalog-by-intent" class="sk-heading" data-size="h3">{t("catalog.index.title")}</h2>
-      <p class="sk-text catalog__lede" data-tone="secondary">{t("catalog.index.body")}</p>
-      <div class="catalog__domains">
-        {
-          view.intents.map((domain) => (
-            <details class="catalog__domain">
-              <summary>
-                <span class="sk-text" data-weight="label">{domain.label}</span>
-                <span class="sk-text" data-size="caption" data-tone="tertiary">{t("catalog.index.examples", { count: String(domain.count) })}</span>
-              </summary>
-              {domain.areas.map((area) => (
-                <div class="catalog__area">
-                  <p class="sk-text" data-role="eyebrow">{area.label}</p>
-                  <ul class="catalog__intents" role="list">
-                    {area.intents.map((intent) => (
-                      <li>
-                        <span class="sk-text" data-size="sm" data-weight="label">{intent.label}</span>
-                        <span class="catalog__intent-examples">
-                          {intent.examples.map((example) => (example.shown ? <a class="sk-link sk-text" data-size="caption" href={`#${example.id}`}>{example.title}</a> : <span class="sk-text" data-size="caption" data-tone="tertiary">{example.title}</span>))}
-                        </span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              ))}
-            </details>
-          ))
-        }
-      </div>
+    <section class="catalog__results" id="catalog-results-view" aria-labelledby="catalog-results-count" hidden>
+      <h2 class="catalog__count" id="catalog-results-count" aria-live="polite"></h2>
+      <Fragment set:html={results} />
     </section>
 
-    {
-      sections.map((subject) => (
-        <section id={subject.id} class="catalog__subject" aria-labelledby={`${subject.id}-title`}>
-          <h2 id={`${subject.id}-title`} class="sk-heading" data-size="h2">
-            {subject.title}
-          </h2>
-          <p class="sk-text catalog__lede" data-tone="secondary">
-            {subject.lede}
-          </p>
+    <div class="catalog__back" id="catalog-back" hidden>
+      <Fragment set:html={back} />
+    </div>
 
-          {subject.scales.map((group) => (
-            <div class="catalog__scale" data-scale={group.scale}>
-              <p class="sk-text" data-role="eyebrow">
-                {group.label}
-              </p>
-              <div class="catalog__variants">
-                {group.variants.map((variant) => (
-                  <article id={variant.id} class="catalog__variant" aria-labelledby={`${variant.id}-title`}>
-                    <div class="catalog__caption">
-                      <h3 id={`${variant.id}-title`} class="sk-heading" data-size="h5" data-flush>
-                        {variant.title}
-                      </h3>
-                      <p class="sk-text" data-size="sm" data-tone="secondary">
-                        {variant.purpose}
-                      </p>
-                      <p class="catalog__meta sk-text" data-size="caption" data-tone="tertiary">
-                        <span>{variant.intentLabel}</span>
-                        <span>{variant.layoutLabel}</span>
-                      </p>
-                    </div>
-                    <div class="catalog__specimen">
-                      <Fragment set:html={variant.markup} />
-                    </div>
-                    {variant.relations.length > 0 ? (
-                      <dl class="catalog__relations">
-                        {variant.relations.map((relation) => (
-                          <div>
-                            <dt class="sk-text" data-size="caption" data-tone="tertiary">{relation.label}</dt>
-                            <dd>
-                              {relation.items.map((item) => (item.shown ? <a class="sk-link sk-text" data-size="caption" href={`#${item.id}`}>{item.title}</a> : <span class="sk-text" data-size="caption">{item.title}</span>))}
-                            </dd>
-                          </div>
-                        ))}
-                      </dl>
-                    ) : null}
-                  </article>
-                ))}
-              </div>
+    {
+      examples.map((example, index) => (
+        <article id={example.id} class="catalog__example" aria-labelledby={`${example.id}-title`} data-scale={example.scale} data-subject={example.facets.subject} data-domain={example.facets.domain} data-component={example.facets.component} data-words={example.words} hidden={index !== 0}>
+          <Fragment set:html={example.header} />
+          <div class="catalog__canvas">
+            <div class="catalog__specimen">
+              <Fragment set:html={example.markup} />
             </div>
-          ))}
-        </section>
+          </div>
+          <Fragment set:html={example.meta} />
+          <Fragment set:html={example.pager} />
+        </article>
       ))
     }
   </main>
@@ -218,133 +197,204 @@ const sections = view.subjects.map((subject) => ({
     }
   }
 
+  .catalog__intro,
+  .catalog__results,
+  .catalog__example {
+    max-inline-size: 72rem;
+  }
+
   .catalog__intro {
-    margin-block-end: var(--space-stack-xl);
-  }
-
-  .catalog__taxonomy {
-    margin-block-end: var(--space-section);
-  }
-
-  .catalog__domains {
     display: grid;
-    gap: var(--space-stack-xs);
-    margin-block-start: var(--space-stack-sm);
-  }
-
-  .catalog__domain {
-    border: 1px solid var(--color-border-subtle);
-    border-radius: var(--radius-surface);
-    background: var(--color-bg-surface);
-  }
-
-  .catalog__domain > summary {
-    display: flex;
-    justify-content: space-between;
-    align-items: baseline;
-    gap: var(--space-inline-md);
-    padding: var(--space-inset-sm) var(--space-inset-md);
-    cursor: pointer;
-  }
-
-  .catalog__area {
-    padding: var(--space-inset-xs) var(--space-inset-md) var(--space-inset-sm);
-  }
-
-  .catalog__intents {
-    display: grid;
-    gap: var(--space-stack-xs);
-    margin: 0;
-    padding: 0;
-    list-style: none;
-  }
-
-  .catalog__intents li {
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--space-inline-sm);
-    align-items: baseline;
-  }
-
-  .catalog__intent-examples {
-    display: inline-flex;
-    flex-wrap: wrap;
-    gap: var(--space-inline-sm);
-  }
-
-  /* The separator is drawn on the second span, so a wrapped line never starts or ends on a stray dot. */
-  .catalog__meta {
-    display: flex;
-    flex-wrap: wrap;
-    column-gap: var(--space-inline-xs);
-    margin: 0;
-  }
-
-  .catalog__meta span + span::before {
-    content: "·";
-    margin-inline-end: var(--space-inline-xs);
-  }
-
-  .catalog__relations {
-    display: grid;
-    gap: var(--space-stack-xs);
-    margin: 0;
-  }
-
-  .catalog__relations div {
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--space-inline-sm);
-    align-items: baseline;
-  }
-
-  .catalog__relations dt,
-  .catalog__relations dd {
-    margin: 0;
-  }
-
-  .catalog__relations dd {
-    display: inline-flex;
-    flex-wrap: wrap;
-    gap: var(--space-inline-sm);
-  }
-
-  .catalog__subject + .catalog__subject {
-    margin-block-start: var(--space-section);
-  }
-
-  .catalog__lede {
-    max-inline-size: 65ch;
-  }
-
-  .catalog__scale {
-    margin-block-start: var(--space-stack-xl);
-  }
-
-  /* Fragments and components sit at a card's own width; a composition takes the whole stage. */
-  .catalog__variants {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(min(100%, 20rem), 1fr));
-    align-items: start;
     gap: var(--space-stack-lg);
-    margin-block-start: var(--space-stack-sm);
+    padding-block-end: var(--space-stack-lg);
+    margin-block-end: var(--space-stack-xl);
+    border-block-end: 1px solid var(--color-border-subtle);
   }
 
-  .catalog__scale[data-scale="composition"] .catalog__variants {
-    grid-template-columns: minmax(0, 1fr);
+  /* Tall enough that the short facets show whole; only a long one (the components) scrolls inside its column. */
+  .catalog__intro :global([role="group"]) {
+    max-block-size: 26rem;
+    overflow-y: auto;
+    align-content: start;
   }
 
-  .catalog__variant {
-    display: flex;
-    flex-direction: column;
+  .catalog__results {
+    display: grid;
     gap: var(--space-stack-sm);
+  }
+
+  .catalog__count {
+    margin: 0;
+    font-size: var(--font-size-body);
+    font-weight: var(--font-weight-label);
+    color: var(--color-text-secondary);
+  }
+
+  .catalog__back {
+    margin-block-end: var(--space-stack-md);
+  }
+
+  .catalog__example {
+    display: grid;
+    gap: var(--space-stack-xl);
     scroll-margin-top: calc(var(--docs-navbar-h, var(--docs-header-block-size)) + var(--space-stack-md));
   }
 
-  .catalog__specimen {
-    padding: var(--space-inset-lg);
+  /* The canvas: a quiet field the specimen sits on, centred, never touching the edge. */
+  .catalog__canvas {
+    display: grid;
+    place-items: center;
+    min-block-size: 20rem;
+    padding: var(--space-inset-xl);
     border: 1px solid var(--color-border-subtle);
     border-radius: var(--radius-surface);
-    background: var(--color-bg-surface-sunken);
+    background-color: var(--color-bg-surface-sunken);
+    background-image: radial-gradient(var(--color-border-subtle) 1px, transparent 1px);
+    background-size: 16px 16px;
+    overflow-x: auto;
+  }
+
+  /* A piece or a component is shown at a card's width; a composition takes the canvas. */
+  .catalog__specimen {
+    inline-size: min(100%, 34rem);
+  }
+
+  .catalog__example[data-scale="composition"] .catalog__canvas {
+    place-items: stretch;
+  }
+
+  .catalog__example[data-scale="composition"] .catalog__specimen {
+    inline-size: 100%;
+  }
+
+  /* Rows, chips, groups and examples set their own `display`, which beats the `hidden` the script sets. */
+  .catalog :global([hidden]) {
+    display: none !important;
+  }
+
+  @include bp.down("desktop") {
+    .catalog__canvas {
+      min-block-size: 0;
+      padding: var(--space-inset-md);
+    }
   }
 </style>
+
+<script>
+  import { FACETS, type Facet } from "../../lib/catalog-chrome";
+
+  /*
+   * THE ADVANCED SEARCH. Words that must all appear, AND every facet that has something checked (any value
+   * within a facet). With nothing asked, the stage shows one example; with something asked, the results, and
+   * choosing one shows it with the way back. The search lives in the query string (`?q=&subject=card&
+   * component=meter`), the chosen example in the hash, so both can be shared. The rail narrows with the search.
+   */
+  const root = document.querySelector<HTMLElement>("[data-catalog]");
+  if (root) {
+    const query = root.querySelector<HTMLInputElement>('input[name="q"]')!;
+    const boxes = [...root.querySelectorAll<HTMLInputElement>('input[type="checkbox"]')].filter((box) => (FACETS as readonly string[]).includes(box.name));
+    const articles = [...root.querySelectorAll<HTMLElement>(".catalog__example")];
+    const resultRows = new Map([...root.querySelectorAll<HTMLAnchorElement>("#catalog-results a[href^='#']")].map((anchor) => [anchor.getAttribute("href")!.slice(1), anchor.closest("li") as HTMLElement] as const));
+    const railLinks = [...root.querySelectorAll<HTMLAnchorElement>(".catalog__sidebar a[href^='#']")];
+    const railGroups = [...root.querySelectorAll<HTMLElement>(".catalog__sidebar .sk-nav-list__group")];
+    const resultsView = root.querySelector<HTMLElement>("#catalog-results-view")!;
+    const count = root.querySelector<HTMLElement>("#catalog-results-count")!;
+    const back = root.querySelector<HTMLElement>("#catalog-back")!;
+    const clear = root.querySelector<HTMLButtonElement>("#catalog-clear")!;
+    const details = root.querySelector<HTMLDetailsElement>("details")!;
+    const chip = (facet: string, value: string) => root.querySelector<HTMLElement>(`#catalog-chip-${facet}-${CSS.escape(value)}`);
+
+    const checked = (facet: Facet) => boxes.filter((box) => box.name === facet && box.checked).map((box) => box.value);
+    const asking = () => query.value.trim() !== "" || boxes.some((box) => box.checked);
+
+    const matches = (article: HTMLElement) => {
+      const haystack = article.dataset.words ?? "";
+      if (!query.value.toLocaleLowerCase().split(/\s+/).filter(Boolean).every((word) => haystack.includes(word))) return false;
+      return FACETS.every((facet) => {
+        const wanted = checked(facet);
+        if (wanted.length === 0) return true;
+        const carried = facet === "scale" ? [article.dataset.scale ?? ""] : (article.dataset[facet] ?? "").split(" ");
+        return wanted.some((value) => carried.includes(value));
+      });
+    };
+
+    const render = () => {
+      const visible = new Set(articles.filter(matches).map((article) => article.id));
+      const id = decodeURIComponent(location.hash.slice(1));
+      const chosen = articles.find((article) => article.id === id);
+      const showResults = !chosen && asking();
+      const onStage = chosen ?? (showResults ? undefined : articles[0]);
+
+      for (const article of articles) article.hidden = article !== onStage;
+      resultsView.hidden = !showResults;
+      back.hidden = !(chosen && asking());
+      for (const [rowId, row] of resultRows) row.hidden = !visible.has(rowId);
+      count.textContent = (root.dataset.countTemplate ?? "").replace("{count}", String(visible.size)).replace("{total}", String(articles.length));
+
+      for (const link of railLinks) {
+        const linkId = link.getAttribute("href")!.slice(1);
+        (link.closest("li") as HTMLElement).hidden = !visible.has(linkId);
+        if (onStage && linkId === onStage.id) link.setAttribute("aria-current", "page");
+        else link.removeAttribute("aria-current");
+      }
+      for (const group of railGroups) group.hidden = !group.querySelector("li:not([hidden])");
+
+      for (const box of boxes) {
+        const tag = chip(box.name, box.value);
+        if (tag) tag.hidden = !box.checked;
+      }
+      clear.hidden = !asking();
+    };
+
+    const write = (keepHash: boolean) => {
+      const params = new URLSearchParams();
+      if (query.value.trim()) params.set("q", query.value.trim());
+      for (const box of boxes) if (box.checked) params.append(box.name, box.value);
+      const search = params.toString();
+      history.replaceState(null, "", location.pathname + (search ? `?${search}` : "") + (keepHash ? location.hash : ""));
+    };
+
+    /* Asking something new leaves the example on stage for the results it changed. */
+    const ask = () => {
+      write(false);
+      render();
+    };
+
+    const params = new URLSearchParams(location.search);
+    query.value = params.get("q") ?? "";
+    for (const box of boxes) box.checked = params.getAll(box.name).includes(box.value);
+    if (boxes.some((box) => box.checked)) details.open = true;
+    render();
+
+    query.addEventListener("input", ask);
+    for (const box of boxes) box.addEventListener("change", ask);
+    root.querySelector('[role="search"]')?.closest("form")?.addEventListener("submit", (event) => event.preventDefault());
+
+    /* A chip's remove button unchecks its facet value; Tag has no behaviour of its own, the host does the rest. */
+    root.addEventListener("click", (event) => {
+      const remove = (event.target as Element).closest(".sk-tag__remove");
+      const tag = remove?.closest<HTMLElement>("[id^='catalog-chip-']");
+      if (!tag) return;
+      const box = boxes.find((entry) => tag.id === `catalog-chip-${entry.name}-${entry.value}`);
+      if (box) box.checked = false;
+      ask();
+    });
+
+    clear.addEventListener("click", () => {
+      query.value = "";
+      for (const box of boxes) box.checked = false;
+      ask();
+    });
+
+    const follow = () => {
+      render();
+      window.scrollTo({ top: 0 });
+    };
+    window.addEventListener("hashchange", follow);
+    window.addEventListener("popstate", follow);
+    /* The docs' own anchor handling moves the hash with pushState, which fires neither event: a click on a `#id` link is the signal. */
+    document.addEventListener("click", (event) => {
+      if ((event.target as Element).closest("a[href^='#']")) setTimeout(follow, 0);
+    });
+  }
+</script>

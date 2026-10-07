@@ -171,6 +171,12 @@ export const pricingTree = (t: Translate, locale: "es" | "en"): UsageTree => {
                       ],
                     },
                   },
+                  {
+                    contract: "typography",
+                    signature: "Text",
+                    options: { size: "caption", tone: "secondary" },
+                    children: t("demo.pricing.annualNote"),
+                  },
                 ],
               },
               {
