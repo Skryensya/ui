@@ -1,0 +1,30 @@
+{
+  "name": "@skryensya/reference-server",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "check": "tsc --noEmit && vitest run",
+    "test": "vitest run",
+    "dev": "tsx --env-file-if-exists=.env src/main.ts"
+  },
+  "dependencies": {
+    "@skryensya/examples": "workspace:*",
+    "@skryensya/core": "workspace:*",
+    "zod": "^4.4.3",
+    "@skryensya/reference-model": "workspace:*",
+    "postgres": "^3.4.9",
+    "sharp": "^0.35.4",
+    "@skryensya/reference-classifier": "workspace:*",
+    "@skryensya/reference-publisher": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/node": "catalog:",
+    "typescript": "^5.9.3",
+    "vitest": "^4.1.11",
+    "tsx": "^4.19.2"
+  }
+}

@@ -122,6 +122,10 @@ report. The command above serves the same site locally.
 | [`@skryensya/maker-model`](packages/maker-model) | The Maker's model: a page as a tree of signatures, changed only by operations that take a parent and an index, never a position ([ADR-0031](docs/decisions/0031-the-maker-speaks-only-the-contract-and-changes-only-through-operations.md)). |
 | [`@skryensya/maker-agent`](packages/maker-agent) | A provider-independent, proposal-first tool loop for the Maker: schemas, provider translation and orchestration over the same operations the MCP uses. |
 | [`@skryensya/maker-server`](packages/maker-server) | The Maker's projects: a PostgreSQL store (memory for tests) and the HTTP API over it ([ADR-0032](docs/decisions/0032-maker-projects-live-in-postgresql-behind-the-makers-own-api.md)). |
+| [`@skryensya/reference-model`](packages/reference-model) | Shared reference evidence, classification provenance, lifecycle and runtime schemas. |
+| [`@skryensya/reference-server`](packages/reference-server) | Independent PostgreSQL working store, asset storage and revision-aware HTTP/SSE APIs. |
+| [`@skryensya/reference-classifier`](packages/reference-classifier) | Bounded Jev proposals over the existing example taxonomy; human corrections win. |
+| [`@skryensya/reference-publisher`](packages/reference-publisher) | Curated example generation, existing compiler validation and GitHub branch/PR publication. |
 | [`@skryensya/figma`](packages/figma) | Compiles the Button contract and the tokens it reaches into a Figma manifest, and a local check ([ADR-0034](docs/decisions/0034-figma-is-a-compile-target-fed-by-a-derived-manifest.md)). |
 | [`@skryensya/storybook-kit`](packages/storybook-kit) | What the React and Vanilla Storybooks share: the stories generator over the docs demos. |
 
@@ -129,11 +133,23 @@ report. The command above serves the same site locally.
 
 | Package | What it is |
 |---|---|
-| [`@skryensya/examples`](contracts/examples) | Established compositions below screen scale: one component well composed, or a small molecule. |
+| [`@skryensya/examples`](contracts/examples) | The published pattern/use/fixed catalogue and intent taxonomy, shared by MCP, docs and Maker. |
 | [`@skryensya/docs`](apps/docs) | The documentation site at [ui.skryensya.dev](https://ui.skryensya.dev) (Astro), and the system's own biggest consumer. |
 | [`@skryensya/eval-viewer`](apps/eval-viewer) | Local-only viewer for agent eval runs. |
 | [`@skryensya/storybook-react`](apps/storybook-react) · [`-vanilla`](apps/storybook-vanilla) | The React and Vanilla Storybooks: every docs demo tree drawn in each binding. `pnpm storybook:react`, `pnpm storybook:vanilla`. |
 | [`@skryensya/maker`](apps/maker) | Local-only visual page builder. The browser does the layout: pages compose Stack, Inline, Grid, Box and Wrapper, and export as React or HTML. `pnpm --filter @skryensya/maker dev`. |
+| [`@skryensya/reference-studio`](apps/reference-studio) | Internal reference triage, classification, review, comparison and publication workbench. |
+| [`@skryensya/reference-clipper`](apps/reference-clipper) | Thin Chrome MV3 page/region/element evidence collector. |
+
+### Reference ingestion
+
+Capture is not a catalogue entry: evidence → ingest → classification → review → acceptance →
+validated publication preview → GitHub PR → merged catalogue content. Working records live in
+PostgreSQL; screenshots and raw DOM evidence live in asset storage. `contracts/examples` remains
+Git-authoritative and is the only library exposed by `get_examples`.
+
+See [setup, workflow, API and tests](docs/reference-ingestion.md) and
+[ADR 37](docs/decisions/0037-references-are-evidence-until-published-through-git.md).
 
 ## Repository layout
 
@@ -141,13 +157,15 @@ report. The command above serves the same site locally.
 .
 ├── packages/          the system: core, both bindings, icons, tooling
 ├── apps/docs/         the documentation site, and the system's own biggest consumer
+├── apps/reference-studio/   the internal reference workbench
+├── apps/reference-clipper/  the Chrome evidence collector
 ├── contracts/
 │   ├── semantic/      one YAML per contract, the human-readable overlay (99 of them)
 │   ├── changelog/     one YAML per contract, its published history
-│   └── snippets/      established compositions as usage trees
+│   └── examples/      Git-authoritative patterns, uses and fixed UsageTrees
 ├── artifacts/         compiled output: ai-manifest.json, ai-index.json, test-results.json
 ├── docs/
-│   ├── decisions/    34 decision records, each with the alternatives rejected
+│   ├── decisions/     architectural decision records
 │   └── ...            audits, writing guide, pending work
 ├── evals/             agent evaluation corpus and runner
 └── CONTEXT.md         the glossary: what the words mean, and which words not to use

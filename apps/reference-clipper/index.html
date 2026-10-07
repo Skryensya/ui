@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Reference Clipper</title>
+  </head>
+  <body>
+    <main>
+      <h1>Reference Clipper</h1>
+      <p>Capture evidence. Review and publish separately in Studio.</p>
+      <form id="capture">
+        <label
+          >Capture
+          <select name="mode">
+            <option value="page">Complete page</option>
+            <option value="region">Selected region</option>
+            <option value="element">DOM element</option>
+          </select></label
+        ><label>Title (optional)<input name="title" maxlength="500" /></label
+        ><label
+          >Notes<textarea name="notes" maxlength="10000"></textarea>
+        </label>
+        <details>
+          <summary>Connection</summary>
+          <label
+            >Reference Server<input name="server" type="url" required /></label
+          ><label
+            >Reference Studio<input name="studio" type="url" required /></label
+          ><label
+            >Access token<input name="token" type="password" required
+          /></label>
+          <p>Configure this extension’s origin in the server allowlist.</p>
+        </details>
+        <button type="submit">Capture</button>
+      </form>
+      <p id="status" role="status"></p>
+    </main>
+    <script type="module" src="/src/popup.ts"></script>
+  </body>
+</html>

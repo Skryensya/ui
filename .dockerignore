@@ -13,6 +13,13 @@ test-results
 .DS_Store
 .mcp.json
 
+# Never bake local credentials or captured evidence into an image.
+**/.env
+**/.env.*
+!**/.env.example
+tmp
+.pi
+
 # Local scratch / porting harnesses
 PORTING-DEMOS.md
 shot-stages*.mjs

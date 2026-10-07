@@ -11,6 +11,14 @@
     ".": {
       "types": "./index.ts",
       "default": "./index.ts"
+    },
+    "./taxonomy": {
+      "types": "./model/taxonomy.ts",
+      "default": "./model/taxonomy.ts"
+    },
+    "./types": {
+      "types": "./model/types.ts",
+      "default": "./model/types.ts"
     }
   }
 }

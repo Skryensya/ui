@@ -1,0 +1,39 @@
+body {
+  width: 340px;
+  margin: 0;
+  font: 14px system-ui;
+  color: #18202b;
+  background: #fafafa;
+}
+main {
+  padding: 20px;
+}
+h1 {
+  font-size: 20px;
+}
+label {
+  display: grid;
+  gap: 4px;
+  margin-block: 12px;
+}
+input,
+select,
+textarea,
+button {
+  font: inherit;
+  padding: 8px;
+}
+textarea {
+  min-height: 64px;
+}
+button {
+  width: 100%;
+  cursor: pointer;
+}
+#status {
+  overflow-wrap: anywhere;
+}
+:focus-visible {
+  outline: 2px solid #2563eb;
+  outline-offset: 2px;
+}

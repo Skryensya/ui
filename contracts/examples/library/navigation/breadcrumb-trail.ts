@@ -1,3 +1,4 @@
+import type { ItemInput } from "@skryensya/core/usage-tree";
 import { definePattern, type PatternModule } from "../../model/types.js";
 import { icon } from "../kit.js";
 
@@ -21,7 +22,7 @@ const { pattern, use } = definePattern<Content>({
     options: { label },
     slots: {
       separator: icon("chevron-right", "sm"),
-      items: trail.map((crumb, index) => (index === trail.length - 1 ? { options: { current: true }, slots: { label: crumb } } : { options: { href: "#" }, slots: { label: crumb } })),
+      items: trail.map((crumb, index): ItemInput => (index === trail.length - 1 ? { options: { current: true }, slots: { label: crumb } } : { options: { href: "#" }, slots: { label: crumb } })),
     },
   }),
 });

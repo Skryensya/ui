@@ -1,0 +1,24 @@
+{
+  "name": "@skryensya/reference-classifier",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "check": "tsc --noEmit && vitest run",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@skryensya/examples": "workspace:*",
+    "@skryensya/core": "workspace:*",
+    "zod": "^4.4.3",
+    "@skryensya/reference-model": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/node": "catalog:",
+    "typescript": "^5.9.3",
+    "vitest": "^4.1.11"
+  }
+}

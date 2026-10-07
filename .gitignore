@@ -53,4 +53,7 @@ apps/docs/.astro/
 evals/agent/runs/
 evals/maker/runs/
 
+# Raw reference evidence belongs in asset storage, never in the catalogue or Git.
+tmp/reference-assets/
+
 
