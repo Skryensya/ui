@@ -31,6 +31,10 @@ import { iconWordStates } from "./list/icon-word-states.js";
 import { separatedGroups } from "./list/separated-groups.js";
 import { titleWithLink } from "./list/title-with-link.js";
 import { titledPanel } from "./list/titled-panel.js";
+import { viewerToolbar } from "./action/viewer-toolbar.js";
+import { inlineNotice } from "./feedback/inline-notice.js";
+import { breadcrumbTrail } from "./navigation/breadcrumb-trail.js";
+import { sectionTabs } from "./navigation/section-tabs.js";
 import { rememberRecoverRow } from "./form/access-fragments.js";
 import { labelledDivider } from "./form/access-fragments.js";
 import { accountFormCard } from "./form/account-form-card.js";
@@ -93,4 +97,8 @@ export const modules: readonly PatternModule[] = [
   messageFormCard,
   settingsSections,
   switchRowsCard,
+  viewerToolbar,
+  inlineNotice,
+  breadcrumbTrail,
+  sectionTabs,
 ];

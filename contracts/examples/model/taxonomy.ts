@@ -110,6 +110,8 @@ export const intents = [
   intent("navigation/destinations/link-group", { en: "Link group", es: "Grupo de enlaces" }, { en: "Destinations of one area under a group name.", es: "Destinos de una misma área bajo un nombre de grupo." }),
   intent("navigation/destinations/settings-menu", { en: "Settings menu", es: "Menú de ajustes" }, { en: "Rows that each lead to a screen, saying what changes there.", es: "Filas que llevan cada una a una pantalla, diciendo qué se cambia ahí." }),
   intent("navigation/destinations/setting-shortcuts", { en: "Setting shortcuts", es: "Atajos a ajustes" }, { en: "Rows that lead to settings, each saying what it changes.", es: "Filas que llevan a ajustes, cada una diciendo qué cambia." }),
+  intent("navigation/destinations/breadcrumb", { en: "Breadcrumb", es: "Ruta de navegación" }, { en: "Say where a page sits in its hierarchy and let the reader go back up.", es: "Decir dónde está una página en su jerarquía y dejar volver hacia arriba." }),
+  intent("navigation/destinations/section-tabs", { en: "Section tabs", es: "Pestañas de sección" }, { en: "Switch between the sections of one screen without leaving it.", es: "Cambiar entre las secciones de una pantalla sin salir de ella." }),
   intent("navigation/site/footer-credit", { en: "Footer credit", es: "Crédito de pie" }, { en: "A footer's closing line of credit.", es: "La línea de crédito que cierra un pie de página." }),
   intent("navigation/shells/app-shell", { en: "App shell", es: "Marco de aplicación" }, { en: "The frame of an application: bar, rail and work area.", es: "El marco de una aplicación: barra, riel y área de trabajo." }),
   intent("navigation/shells/nested-navigation-shell", { en: "Nested navigation shell", es: "Marco con navegación anidada" }, { en: "An app frame whose rail holds a tree of destinations.", es: "Un marco cuyo riel guarda un árbol de destinos." }),
@@ -129,6 +131,7 @@ export const intents = [
   /* ── status: what state something is in ─────────────────────────────────────────────────────── */
   intent("status/progress/state-indicator", { en: "State indicator", es: "Indicador de estado" }, { en: "Where an item stands, with an icon and a word.", es: "Dónde está un elemento, con ícono y palabra." }),
   intent("status/emptiness/empty-collection", { en: "Empty collection", es: "Colección vacía" }, { en: "What shows while there is nothing yet, and how to start.", es: "Lo que se ve mientras no hay nada, y cómo empezar." }),
+  intent("status/notices/inline-notice", { en: "Inline notice", es: "Aviso en línea" }, { en: "Tell the reader something is about to change, without interrupting them.", es: "Avisar de que algo va a cambiar, sin interrumpir." }),
   intent("status/errors/error-with-retry", { en: "Error with retry", es: "Error con reintento" }, { en: "Say something failed and offer to try again.", es: "Decir que algo falló y ofrecer reintentar." }),
   intent("status/errors/not-found", { en: "Not found", es: "No encontrado" }, { en: "A whole screen for an address that leads nowhere.", es: "Una pantalla completa para una dirección que no lleva a nada." }),
 
@@ -226,6 +229,7 @@ export const areaLabels: Readonly<Record<string, Text>> = {
   collections: { en: "Collections", es: "Colecciones" },
   emptiness: { en: "Emptiness", es: "Vacío" },
   errors: { en: "Errors", es: "Errores" },
+  notices: { en: "Notices", es: "Avisos" },
   landing: { en: "Landing", es: "Landing" },
   proof: { en: "Proof", es: "Prueba" },
   conversion: { en: "Conversion", es: "Conversión" },

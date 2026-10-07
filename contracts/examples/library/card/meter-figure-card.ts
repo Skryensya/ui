@@ -41,5 +41,19 @@ export const meterFigureCard: PatternModule<Content> = {
       purpose: { en: "How much of a limit is already used and what to do near it.", es: "Cuánto de un límite ya se usó y qué hacer al acercarse." },
       content: { label: { en: "Storage used", es: "Almacenamiento usado" }, value: "68 GB", meterLabel: { en: "Storage", es: "Almacenamiento" }, used: 68, limit: 100, valueText: { en: "68 of 100 GB", es: "68 de 100 GB" }, tone: "warning", note: { en: "Renews on November 1", es: "Se renueva el 1 de noviembre" }, actionLabel: { en: "Upgrade plan", es: "Ampliar plan" } },
     }),
+    use({
+      id: "quota-seats",
+      intent: "metrics/usage/quota",
+      title: { en: "Seats", es: "Asientos" },
+      purpose: { en: "How many of a plan's seats are taken, and how to add more.", es: "Cuántos asientos de un plan están ocupados, y cómo añadir más." },
+      content: { label: { en: "Seats in use", es: "Asientos en uso" }, value: { en: "7 seats", es: "7 asientos" }, meterLabel: { en: "Seats", es: "Asientos" }, used: 7, limit: 10, valueText: { en: "7 of 10 seats", es: "7 de 10 asientos" }, tone: "accent", note: { en: "3 seats left on Team", es: "Quedan 3 asientos en Team" }, actionLabel: { en: "Add seats", es: "Añadir asientos" } },
+    }),
+    use({
+      id: "quota-api-calls",
+      intent: "metrics/usage/quota",
+      title: { en: "API calls", es: "Llamadas a la API" },
+      purpose: { en: "A metered limit that is nearly spent: the tone says it, the action raises it.", es: "Un límite medido casi agotado: el tono lo dice, la acción lo sube." },
+      content: { label: { en: "API calls this month", es: "Llamadas a la API este mes" }, value: "92,000", meterLabel: { en: "API calls", es: "Llamadas a la API" }, used: 92000, limit: 100000, valueText: { en: "92,000 of 100,000 calls", es: "92.000 de 100.000 llamadas" }, tone: "danger", note: { en: "Resets in 6 days", es: "Se reinicia en 6 días" }, actionLabel: { en: "Raise limit", es: "Subir límite" } },
+    }),
   ],
 };

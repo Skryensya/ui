@@ -262,7 +262,7 @@ describe("get_examples", () => {
     expect(Object.keys(payload.pattern.fields)).toEqual(expect.arrayContaining(["label", "value", "used", "limit"]));
     expect(payload.content.label).toBe("Storage used");
     /* Same layout, another job: the tree is the pattern, the content is the use. */
-    expect(payload.relations.sameLayout).toEqual([]);
+    expect(payload.relations.sameLayout.map((ref: Payload) => ref.id)).toEqual(expect.arrayContaining(["quota-seats", "quota-api-calls"]));
     const plan = (await call("get_examples", { id: "plan-team" })).payload;
     expect(plan.relations.containedIn.map((ref: Payload) => ref.id)).toContain("plans-comparison");
     /* Siblings on one pattern are the same layout; "sameIntent" is the OTHER ways to do the job. */

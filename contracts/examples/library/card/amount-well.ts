@@ -40,5 +40,19 @@ export const amountWell: PatternModule<Content> = {
         total: { label: { en: "Total to claim", es: "Total a cobrar" }, value: { en: "$1,211.29", es: "1.211,29 US$" } },
       },
     }),
+    use({
+      id: "credits-breakdown",
+      intent: "metrics/money/breakdown",
+      title: { en: "Credits left", es: "Créditos restantes" },
+      purpose: { en: "What was granted, what was used and what is left, when the unit is not money.", es: "Lo que se otorgó, lo que se usó y lo que queda, cuando la unidad no es dinero." },
+      content: {
+        rows: [
+          { label: { en: "Plan credits", es: "Créditos del plan" }, value: "5,000" },
+          { label: { en: "Top-ups", es: "Recargas" }, value: "1,200" },
+          { label: { en: "Used this month", es: "Usados este mes" }, value: "-4,350" },
+        ],
+        total: { label: { en: "Credits left", es: "Créditos restantes" }, value: "1,850" },
+      },
+    }),
   ],
 };
