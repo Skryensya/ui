@@ -33,7 +33,7 @@ const answerSchema = z.object({
 /** Narrow HTTP adapter; see https://docs.typesafe.ai/api. No text-generation endpoint. */
 export function jevBoundary(
   apiKey: string,
-  model = "jev-1.13",
+  model = "jev-1.13.0",
   transport: typeof fetch = fetch,
 ): ChoiceBoundary {
   return {

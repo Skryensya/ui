@@ -42,7 +42,7 @@ export function createIntegrations(env: Record<string, string | undefined>): {
       ? createClassifier(
           jevBoundary(
             env.TYPESAFE_API_KEY,
-            env.REFERENCE_JEV_MODEL ?? "jev-1.13",
+            env.REFERENCE_JEV_MODEL ?? "jev-1.13.0",
           ),
         )
       : { classify: unavailableClassifier },
