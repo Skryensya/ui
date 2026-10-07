@@ -1111,6 +1111,23 @@ function checkSlots(
     // A collection is entries, not children: `slotItems` filters them out, so without this branch a
     // filled collection reads as empty and its entries are never checked at all.
     if (slot.accepts === "items") {
+      /*
+       * An entry is { options, slots }. Anything else (a bare { value, label }, a string, a node) is not read as an entry
+       * at all, so it escaped every check below, was stored as it was, and broke the renderer that met it (No contract
+       * "undefined"). Said here, with the shape it should have been, so the author fixes it instead of shipping it.
+       */
+      const raw = filled[name];
+      const list: readonly unknown[] = raw === undefined ? [] : Array.isArray(raw) ? raw : [raw];
+      const stray = list.find((entry) => !(typeof entry === "object" && entry !== null && "slots" in entry && !("signature" in entry)));
+      if (stray !== undefined) {
+        const fields = slot.item ? [...Object.keys(slot.item.options).map((key) => `options.${key}`), ...Object.keys(slot.item.slots).map((key) => `slots.${key}`)].join(", ") : "options, slots";
+        problems.push({
+          path,
+          rule: "invalid-child",
+          severity: "error",
+          message: `Slot "${name}" is a collection: every entry is { "options": {...}, "slots": {...} } (${fields}), not ${JSON.stringify(stray)?.slice(0, 80) ?? String(stray)}.`,
+        });
+      }
       checkCollection(name, slot, collectionItems(filled[name]), tree, path, problems);
       continue;
     }

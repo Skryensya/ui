@@ -4,6 +4,8 @@
 services:
   maker-db:
     image: postgres:17-alpine
+    # Back up on its own when Docker restarts: down, the Maker cannot save a project, and creating one only errors.
+    restart: unless-stopped
     environment:
       POSTGRES_USER: maker
       POSTGRES_PASSWORD: maker

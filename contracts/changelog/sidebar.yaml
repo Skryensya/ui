@@ -3,8 +3,19 @@
 # `surface` is the shape of the contract the last time somebody reviewed it. If the compiler says it
 # does not match, something a consumer depends on has moved: write the entry and paste in the new
 # hash.
-surface: "440ec013205ae6ea"
+surface: "96926f9d97697589"
 entries:
+  - date: 2026-10-06
+    kind: feature
+    target: side
+    es:
+      title: Sidebar puede pararse al final con side
+      body: >-
+        <code>side="end"</code> refleja el riel: el borde, la manija de resize, el trigger flotante y la flecha miran al otro lado, y arrastrar hacia el contenido sigue ensanchándolo. El riel también es un contenedor de consultas: lo que va dentro se arma para su ancho.
+    en:
+      title: Sidebar can stand at the end with side
+      body: >-
+        <code>side="end"</code> mirrors the rail: the border, the resize handle, the floating trigger and the chevron face the other way, and a drag toward the content still widens it. The rail is also a query container: what sits in it is laid out for its width.
   - date: 2026-09-26
     kind: feature
     target: appearance

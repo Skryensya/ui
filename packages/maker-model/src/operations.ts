@@ -58,7 +58,11 @@ export function apply(root: MakerNode, operation: Operation): Applied {
   return result;
 }
 
-const STRUCTURAL = new Set<Operation["type"]>(["insert", "move", "wrap", "unwrap"]);
+/*
+ * `setOption` is here because an option can pick the ELEMENT (`textElement`, a layout primitive's `as`): turning a
+ * Text inside a span into a div changes the content model exactly as dropping a Stack into it would.
+ */
+const STRUCTURAL = new Set<Operation["type"]>(["insert", "move", "wrap", "unwrap", "setOption"]);
 
 function dispatch(root: MakerNode, operation: Operation): Applied {
   switch (operation.type) {

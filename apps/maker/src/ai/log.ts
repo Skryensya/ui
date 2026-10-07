@@ -20,8 +20,9 @@ export type AiLogEntry =
       answer?: string;
       operations?: readonly unknown[];
       changes?: readonly string[];
-      questions?: unknown;
       error?: string;
+      /** Every maker_try of the turn, accepted or refused and why: what explains a turn that looked built and proposed nothing. */
+      attempts?: readonly unknown[];
       durationMs: number;
     }
   | { type: "outcome"; turn: number; outcome: string };

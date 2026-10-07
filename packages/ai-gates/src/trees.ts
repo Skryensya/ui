@@ -3494,7 +3494,58 @@ const signatureTrees: readonly Canonical[] = [
         {
           contract: "layout",
           signature: "Main",
+          options: { paddingBlock: "md", paddingBlockExpanded: "lg" },
           children: { contract: "typography", signature: "Heading", options: { headingSize: "h2", headingElement: "h1" }, children: "Overview" },
+        },
+        {
+          contract: "sidebar",
+          signature: "Sidebar",
+          options: { landmarkLabel: "Details", side: "end" },
+          children: [
+            { contract: "sidebar", signature: "SidebarContent", children: { contract: "typography", signature: "Text", children: "Inspector" } },
+            { contract: "sidebar", signature: "SidebarResizeHandle", options: { label: "Resize the inspector" } },
+          ],
+        },
+        {
+          contract: "vaul",
+          signature: "Vaul.drawer",
+          options: { panelId: "app-shell-menu", label: "Workspace" },
+          children: { contract: "typography", signature: "Text", children: "Overview" },
+        },
+      ],
+    },
+  },
+  {
+    // Decision 35's surface on the flow primitives, as attributes both bindings must agree on: a group on
+    // one side of the expanded line, a Stack that spends the height it is given, uneven columns as a span
+    // of even ones, and the section gap. What the stylesheet does with them is container-queries.spec.ts.
+    name: "layout/container-surface",
+    enhanced: false,
+    tree: {
+      contract: "layout",
+      signature: "Stack",
+      options: { gap: "section", stackJustify: "between" },
+      children: [
+        {
+          contract: "layout",
+          signature: "Inline",
+          options: { show: "expanded" },
+          children: { contract: "typography", signature: "Text", children: "Wide" },
+        },
+        {
+          contract: "box",
+          signature: "Box",
+          options: { padding: "sm", show: "compact" },
+          children: { contract: "typography", signature: "Text", children: "Narrow" },
+        },
+        {
+          contract: "layout",
+          signature: "Grid",
+          options: { columns: "3", align: "start", show: "expanded" },
+          children: [
+            { contract: "layout", signature: "Stack", attrs: { "data-span": "2" }, children: { contract: "typography", signature: "Text", children: "Two thirds" } },
+            { contract: "layout", signature: "Stack", children: { contract: "typography", signature: "Text", children: "One third" } },
+          ],
         },
       ],
     },
@@ -3508,6 +3559,7 @@ const signatureTrees: readonly Canonical[] = [
     tree: {
       contract: "layout",
       signature: "Main",
+      options: { paddingBlock: "lg" },
       children: {
         contract: "typography",
         signature: "Heading",

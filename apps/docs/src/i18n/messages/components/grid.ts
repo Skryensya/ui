@@ -78,6 +78,9 @@ export const gridMessages = {
     "grid.contract2": "No necesita JavaScript.",
 
 
+    "grid.contract3": "Las columnas desiguales son spans de columnas iguales: un hijo con <code>data-span</code> toma esa cantidad de carriles, nunca más de los que hay.",
+    "grid.spanTitle": "Dos tercios y un tercio",
+    "grid.spanBody": "Tres carriles iguales y un hijo con <code>data-span=\"2\"</code>. Con <code>align</code> en <code>start</code>, cada celda conserva su alto.",
     "grid.contract1": "Aplica <code>sk-grid</code> al elemento que elijas, como <code>section</code>; en React, <code>as</code> lo elige.",
 
 
@@ -91,7 +94,7 @@ export const gridMessages = {
     "grid.anatomyPreviewLabel": "Grid, parte por parte",
     "grid.lede": "Grid reparte elementos parecidos en columnas del mismo ancho: tarjetas, miniaturas, cifras que se comparan. Cada columna usa <code>minmax(0, 1fr)</code>, así un contenido largo no ensancha la suya. El elemento semántico lo eliges tú.",
     "grid.multicolTitle": "Multicolumna: un muro de tarjetas",
-    "grid.multicolBody1": "<code>multicol</code> reparte las tarjetas en carriles que se llenan de arriba hacia abajo, y <code>columns</code> es el máximo: 1 carril antes de 36rem, 2 desde 36rem, más en pantallas anchas. Úsalo para tarjetas independientes, no para una secuencia.",
+    "grid.multicolBody1": "<code>multicol</code> reparte las tarjetas en carriles que se llenan de arriba hacia abajo, y <code>columns</code> es el máximo: 1 carril si su contenedor mide menos de 36rem, 2 desde 36rem, más cuanto más ancho sea. Úsalo para tarjetas independientes, no para una secuencia.",
     "grid.responsiveTitle": "Responsivo: filas del mismo alto",
     "grid.responsiveBody1": "<code>responsive</code> usa la misma progresión de carriles con un Grid CSS real: cada tarjeta conserva su alto, y un hijo puede ocupar dos columnas para destacar.",
     "grid.responsiveFeaturedLabel": "Destacado, ocupa dos carriles",
@@ -185,6 +188,9 @@ export const gridMessages = {
     "grid.contract2": "It needs no JavaScript.",
 
 
+    "grid.contract3": "Uneven columns are spans of even ones: a child with <code>data-span</code> takes that many lanes, never more than exist.",
+    "grid.spanTitle": "Two thirds and one third",
+    "grid.spanBody": "Three even lanes and a child with <code>data-span=\"2\"</code>. With <code>align</code> at <code>start</code>, each cell keeps its own height.",
     "grid.contract1": "Apply <code>sk-grid</code> to the element you choose, like <code>section</code>; in React, <code>as</code> chooses it.",
 
 
@@ -198,7 +204,7 @@ export const gridMessages = {
     "grid.anatomyPreviewLabel": "Grid, part by part",
     "grid.lede": "Grid lays similar items out in columns of equal width: cards, thumbnails, figures compared side by side. Each column uses <code>minmax(0, 1fr)</code>, so long content does not widen its own. You choose the semantic element.",
     "grid.multicolTitle": "Multi-column: a wall of cards",
-    "grid.multicolBody1": "<code>multicol</code> spreads the cards into lanes filled top to bottom, and <code>columns</code> is the maximum: 1 lane below 36rem, 2 from 36rem, more on wide screens. Use it for independent cards, not a sequence.",
+    "grid.multicolBody1": "<code>multicol</code> spreads the cards into lanes filled top to bottom, and <code>columns</code> is the maximum: 1 lane when its container is under 36rem, 2 from 36rem, more the wider it gets. Use it for independent cards, not a sequence.",
     "grid.responsiveTitle": "Responsive: rows of equal height",
     "grid.responsiveBody1": "<code>responsive</code> uses the same lane progression with a real CSS Grid: each card keeps its height, and a child can span two columns to stand out.",
     "grid.responsiveFeaturedLabel": "Featured, spans two lanes",

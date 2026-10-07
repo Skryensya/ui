@@ -38,7 +38,7 @@ COPY packages/maker-model/package.json ./packages/maker-model/package.json
 COPY packages/mcp/package.json ./packages/mcp/package.json
 COPY packages/react/package.json ./packages/react/package.json
 COPY packages/vanilla/package.json ./packages/vanilla/package.json
-COPY contracts/snippets/package.json ./contracts/snippets/package.json
+COPY contracts/examples/package.json ./contracts/examples/package.json
 COPY evals/package.json ./evals/package.json
 
 RUN --mount=type=cache,id=pnpm-store,target=/pnpm/store \
@@ -58,7 +58,7 @@ COPY artifacts ./artifacts
 
 # The compiled manifest the server reads at runtime (packages/mcp/src/manifest.ts never falls back
 # to reading source, per its own header comment), then both of the server's own entry points,
-# bundled by esbuild with the whole workspace chain (ai-compiler -> core -> snippets)
+# bundled by esbuild with the whole workspace chain (ai-compiler -> core -> examples)
 # inlined. Only the REAL npm dependencies packages/mcp/scripts/build.ts leaves external
 # (@modelcontextprotocol/server, @modelcontextprotocol/node, zod) are not in this bundle; the runtime
 # stage installs those directly instead of copying this stage's own node_modules, whose @skryensya/* workspace symlinks

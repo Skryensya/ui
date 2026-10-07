@@ -84,6 +84,53 @@ export function isUsageTree(value: string | UsageTree): value is UsageTree {
   return typeof value !== "string";
 }
 
+/*
+ * ONE descent through a usage tree, visiting every real node once: the root, every node in every
+ * slot (the `children` sugar included), and every node nested in a collection entry's own slots (a
+ * tab's label and panel). A collection entry is data, not a node, so it is walked through and never
+ * visited. Each visit also receives the nodes above it, root first.
+ *
+ * `sheetsForTree`, the MCP server and the example library each wrote this by hand. The copies were
+ * close enough to look identical and different enough that only one reached a collection entry's
+ * slots correctly, which is the drift one shared walk exists to make impossible.
+ */
+export function walkUsageTree(
+  tree: UsageTree,
+  visit: (node: UsageTree, ancestors: readonly UsageTree[]) => void,
+  ancestors: readonly UsageTree[] = [],
+): void {
+  visit(tree, ancestors);
+  const below = [...ancestors, tree];
+  for (const content of Object.values(slotsOf(tree))) walkSlot(content, visit, below);
+}
+
+function walkSlot(
+  content: SlotContent | undefined,
+  visit: (node: UsageTree, ancestors: readonly UsageTree[]) => void,
+  ancestors: readonly UsageTree[],
+): void {
+  for (const item of slotItems(content)) {
+    if (isUsageTree(item)) walkUsageTree(item, visit, ancestors);
+  }
+  for (const entry of collectionItems(content)) {
+    for (const nested of Object.values(entry.slots)) walkSlot(nested, visit, ancestors);
+  }
+}
+
+/** Every family id a tree touches, anywhere in it, sorted. */
+export function contractsIn(tree: UsageTree): readonly string[] {
+  const into = new Set<string>();
+  walkUsageTree(tree, (node) => into.add(node.contract));
+  return [...into].sort();
+}
+
+/** Every signature id a tree touches, anywhere in it, sorted. */
+export function signaturesIn(tree: UsageTree): readonly string[] {
+  const into = new Set<string>();
+  walkUsageTree(tree, (node) => into.add(node.signature));
+  return [...into].sort();
+}
+
 /**
  * One collection entry, flattened into the plain object every emitter eventually takes: options
  * spread as-is, each slot renamed to the binding's own field (`shape?.slots[field]?.prop`, a tile

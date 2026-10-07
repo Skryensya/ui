@@ -341,6 +341,50 @@ const rules: readonly Rule[] = [
         reference: "WCAG 3.3.2 Labels or Instructions; plain-language guidance",
         fix: "Show the label unless a visible heading or button already says exactly what the field is (a search box beside a Search button).",
       })),
+  /* ── the frame on a phone ────────────────────────────────────────────────────────────────────── */
+  (all) =>
+    all
+      .filter(({ node }) => node.signature === "AppShell")
+      .flatMap(({ node: shell, path }) => {
+        const children = slotItems(shell.children as Parameters<typeof slotItems>[0]).filter(isUsageTree);
+        if (!children.some((child) => child.signature === "Sidebar")) return [];
+        const drawers = children.filter((child) => child.signature === "Vaul.drawer");
+        const opened = new Set(
+          all.filter(({ node }) => node.signature === "Vaul.Trigger").map(({ node }) => String(node.options?.opens ?? "")),
+        );
+        if (drawers.some((drawer) => opened.has(String(drawer.options?.panelId ?? "")))) return [];
+        return [
+          {
+            rule: "rails-reach-compact",
+            severity: "error" as const,
+            path,
+            message: drawers.length
+              ? "The AppShell's drawer has no Vaul.Trigger that opens it, so its rails never reach a narrow screen."
+              : "The AppShell has a rail but no drawer: below the expanded line the rail is not drawn, and what it carries is gone.",
+            reference: "WCAG 1.4.10 Reflow; decision 35 (rails become a drawer below the expanded line)",
+            fix: 'Add a Vaul.drawer child to the AppShell (options { panelId, label }) carrying the rail\'s navigation, and a Vaul.Trigger with opens: panelId in the header, inside an Inline with show "compact".',
+          },
+        ];
+      }),
+  (all) =>
+    all
+      .filter(({ node }) => node.signature === "AppShell")
+      .flatMap(({ node: shell, path }) => {
+        const children = slotItems(shell.children as Parameters<typeof slotItems>[0]).filter(isUsageTree);
+        const main = children.findIndex((child) => child.signature === "Main");
+        if (main < 0) return [];
+        return children
+          .slice(main + 1)
+          .filter((child) => child.signature === "Sidebar" && child.options?.side !== "end")
+          .map(() => ({
+            rule: "end-rail-side",
+            severity: "warn" as const,
+            path: `${path} > Sidebar`,
+            message: "A Sidebar after the Main stands on the end edge, but its border, resize edge and trigger still face the start.",
+            reference: "Kit convention: the rail faces the content it sits beside",
+            fix: 'Give it options { side: "end" }.',
+          }));
+      }),
   /* ── mediocre-design smells ─────────────────────────────────────────────────────────────────── */
   (all) => {
     const primary = all.filter(

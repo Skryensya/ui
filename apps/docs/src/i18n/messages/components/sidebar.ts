@@ -56,6 +56,7 @@ export const sidebarMessages = {
 
     "sidebarPage.contract2": "Contraído, las etiquetas se desvanecen pero siguen en el DOM: nombran los íconos para el lector de pantalla.",
 
+    "sidebarPage.contract5": "<code>side=\"end\"</code> pone el riel al final: el borde, la manija, el trigger flotante y la flecha miran al otro lado, y arrastrar hacia el contenido sigue ensanchándolo.",
     "sidebarPage.contract1": "Tiene header, un medio que se desplaza y footer; lo que va adentro es tuyo.",
 
     "sidebarPage.collapseTitle": "Contraer: un riel de íconos",
@@ -137,6 +138,7 @@ export const sidebarMessages = {
 
     "sidebarPage.contract2": "Collapsed, the labels fade but stay in the DOM: they name the icons for the screen reader.",
 
+    "sidebarPage.contract5": "<code>side=\"end\"</code> puts the rail at the end: the border, the handle, the floating trigger and the chevron face the other way, and dragging toward the content still widens it.",
     "sidebarPage.contract1": "It has a header, a scrolling middle and a footer; what goes inside is yours.",
 
     "sidebarPage.collapseTitle": "Collapse: an icon rail",

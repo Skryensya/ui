@@ -1,0 +1,347 @@
+---
+import { emitMarkup } from "@skryensya/ai-compiler/emit";
+import "@skryensya/core/components/sidebar.css";
+import "@skryensya/core/components/typography.css";
+import "@skryensya/core/patterns/nav-list.css";
+/*
+ * One import per stylesheet a variant needs. `catalog.test.ts` reads this file and fails, naming the
+ * sheet, when a variant's `sheetsForTree` lists one that is missing here: the emitter writes the
+ * classes, it does not carry the styles.
+ */
+import "@skryensya/core/patterns/box.css";
+import "@skryensya/core/patterns/layout.css";
+import "@skryensya/core/patterns/icon.css";
+import "@skryensya/core/patterns/image-frame.css";
+import "@skryensya/core/patterns/media-overlay.css";
+import "@skryensya/core/components/avatar.css";
+import "@skryensya/core/components/badge.css";
+import "@skryensya/core/components/button.css";
+import "@skryensya/core/components/checkbox.css";
+import "@skryensya/core/components/description-list.css";
+import "@skryensya/core/components/list.css";
+import "@skryensya/core/components/meter.css";
+import "@skryensya/core/components/progress.css";
+import "@skryensya/core/components/qr-code.css";
+import "@skryensya/core/components/separator.css";
+import "@skryensya/core/components/stat.css";
+import "@skryensya/core/components/switch.css";
+import "@skryensya/core/components/tag.css";
+import "@skryensya/core/components/tile.css";
+import "@skryensya/core/components/code-preview.css";
+import "@skryensya/core/components/kbd.css";
+import "@skryensya/core/components/pagination.css";
+import "@skryensya/core/components/questionnaire.css";
+import "@skryensya/core/components/radio-group.css";
+import "@skryensya/core/components/steps.css";
+import "@skryensya/core/components/table.css";
+import "@skryensya/core/components/tabs.css";
+import "@skryensya/core/components/tooltip.css";
+import "@skryensya/core/patterns/footer.css";
+import "@skryensya/core/patterns/hero.css";
+import "@skryensya/core/patterns/wrapper.css";
+import "@skryensya/core/components/callout.css";
+import "@skryensya/core/components/empty-state.css";
+import "@skryensya/core/components/form-field.css";
+import "@skryensya/core/components/input.css";
+import "@skryensya/core/components/password-input.css";
+import "@skryensya/core/components/segmented.css";
+import "@skryensya/core/components/select.css";
+import "@skryensya/core/patterns/anchored.css";
+import { getLocale, useTranslations } from "../../i18n";
+import type { NavigationSection } from "../../lib/navigation";
+import { catalogView } from "../../lib/catalog-view";
+import SidebarNav from "../SidebarNav.astro";
+
+const locale = getLocale(Astro.url);
+const t = useTranslations(locale);
+const view = catalogView(locale);
+
+/* The same rail as Templates: one open group per subject, one jump link per example. */
+const railNavigation: NavigationSection[] = [
+  {
+    id: "catalog",
+    section: t("catalog.navLabel"),
+    blurb: "",
+    caption: "",
+    groups: view.subjects.map((subject) => ({
+      id: `catalog-${subject.id}`,
+      group: subject.title,
+      collapsible: true,
+      defaultOpen: true,
+      items: subject.scales.flatMap((group) => group.variants.map((variant) => ({ href: `#${variant.id}`, label: variant.title }))),
+    })),
+  },
+];
+
+const sections = view.subjects.map((subject) => ({
+  ...subject,
+  scales: subject.scales.map((group) => ({
+    ...group,
+    variants: group.variants.map((variant) => ({ ...variant, markup: emitMarkup(variant.tree, { fillDefaults: false }) })),
+  })),
+}));
+---
+
+<div class="catalog">
+  <aside class="sk-sidebar catalog__sidebar">
+    <div class="sk-sidebar__content">
+      <SidebarNav nav={railNavigation} path="" idPrefix="catalog-nav" />
+    </div>
+  </aside>
+
+  <main class="catalog__stage">
+    <header class="catalog__intro">
+      <h1 class="sk-heading" data-size="h1">{t("catalog.title")}</h1>
+      <p class="sk-text" data-tone="secondary">{t("catalog.description")}</p>
+    </header>
+
+    <section class="catalog__taxonomy" aria-labelledby="catalog-by-intent">
+      <h2 id="catalog-by-intent" class="sk-heading" data-size="h3">{t("catalog.index.title")}</h2>
+      <p class="sk-text catalog__lede" data-tone="secondary">{t("catalog.index.body")}</p>
+      <div class="catalog__domains">
+        {
+          view.intents.map((domain) => (
+            <details class="catalog__domain">
+              <summary>
+                <span class="sk-text" data-weight="label">{domain.label}</span>
+                <span class="sk-text" data-size="caption" data-tone="tertiary">{t("catalog.index.examples", { count: String(domain.count) })}</span>
+              </summary>
+              {domain.areas.map((area) => (
+                <div class="catalog__area">
+                  <p class="sk-text" data-role="eyebrow">{area.label}</p>
+                  <ul class="catalog__intents" role="list">
+                    {area.intents.map((intent) => (
+                      <li>
+                        <span class="sk-text" data-size="sm" data-weight="label">{intent.label}</span>
+                        <span class="catalog__intent-examples">
+                          {intent.examples.map((example) => (example.shown ? <a class="sk-link sk-text" data-size="caption" href={`#${example.id}`}>{example.title}</a> : <span class="sk-text" data-size="caption" data-tone="tertiary">{example.title}</span>))}
+                        </span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ))}
+            </details>
+          ))
+        }
+      </div>
+    </section>
+
+    {
+      sections.map((subject) => (
+        <section id={subject.id} class="catalog__subject" aria-labelledby={`${subject.id}-title`}>
+          <h2 id={`${subject.id}-title`} class="sk-heading" data-size="h2">
+            {subject.title}
+          </h2>
+          <p class="sk-text catalog__lede" data-tone="secondary">
+            {subject.lede}
+          </p>
+
+          {subject.scales.map((group) => (
+            <div class="catalog__scale" data-scale={group.scale}>
+              <p class="sk-text" data-role="eyebrow">
+                {group.label}
+              </p>
+              <div class="catalog__variants">
+                {group.variants.map((variant) => (
+                  <article id={variant.id} class="catalog__variant" aria-labelledby={`${variant.id}-title`}>
+                    <div class="catalog__caption">
+                      <h3 id={`${variant.id}-title`} class="sk-heading" data-size="h5" data-flush>
+                        {variant.title}
+                      </h3>
+                      <p class="sk-text" data-size="sm" data-tone="secondary">
+                        {variant.purpose}
+                      </p>
+                      <p class="catalog__meta sk-text" data-size="caption" data-tone="tertiary">
+                        <span>{variant.intentLabel}</span>
+                        <span>{variant.layoutLabel}</span>
+                      </p>
+                    </div>
+                    <div class="catalog__specimen">
+                      <Fragment set:html={variant.markup} />
+                    </div>
+                    {variant.relations.length > 0 ? (
+                      <dl class="catalog__relations">
+                        {variant.relations.map((relation) => (
+                          <div>
+                            <dt class="sk-text" data-size="caption" data-tone="tertiary">{relation.label}</dt>
+                            <dd>
+                              {relation.items.map((item) => (item.shown ? <a class="sk-link sk-text" data-size="caption" href={`#${item.id}`}>{item.title}</a> : <span class="sk-text" data-size="caption">{item.title}</span>))}
+                            </dd>
+                          </div>
+                        ))}
+                      </dl>
+                    ) : null}
+                  </article>
+                ))}
+              </div>
+            </div>
+          ))}
+        </section>
+      ))
+    }
+  </main>
+</div>
+
+<style lang="scss">
+  /* The Templates page's frame: a sticky rail on desktop that rides into the drawer below `desktop`. */
+  @use "@skryensya/core/breakpoints" as bp;
+
+  .catalog {
+    display: flex;
+    align-items: flex-start;
+  }
+
+  .catalog__sidebar {
+    position: sticky;
+    top: var(--docs-navbar-h, var(--docs-header-block-size));
+    block-size: calc(100dvh - var(--docs-navbar-h, var(--docs-header-block-size)));
+    flex: none;
+  }
+
+  .catalog__stage {
+    flex: 1;
+    min-inline-size: 0;
+    padding: var(--space-inset-xl);
+  }
+
+  @include bp.down("desktop") {
+    .catalog__sidebar {
+      display: none;
+    }
+
+    .catalog__stage {
+      padding: var(--space-inset-md);
+    }
+  }
+
+  .catalog__intro {
+    margin-block-end: var(--space-stack-xl);
+  }
+
+  .catalog__taxonomy {
+    margin-block-end: var(--space-section);
+  }
+
+  .catalog__domains {
+    display: grid;
+    gap: var(--space-stack-xs);
+    margin-block-start: var(--space-stack-sm);
+  }
+
+  .catalog__domain {
+    border: 1px solid var(--color-border-subtle);
+    border-radius: var(--radius-surface);
+    background: var(--color-bg-surface);
+  }
+
+  .catalog__domain > summary {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: var(--space-inline-md);
+    padding: var(--space-inset-sm) var(--space-inset-md);
+    cursor: pointer;
+  }
+
+  .catalog__area {
+    padding: var(--space-inset-xs) var(--space-inset-md) var(--space-inset-sm);
+  }
+
+  .catalog__intents {
+    display: grid;
+    gap: var(--space-stack-xs);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .catalog__intents li {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-inline-sm);
+    align-items: baseline;
+  }
+
+  .catalog__intent-examples {
+    display: inline-flex;
+    flex-wrap: wrap;
+    gap: var(--space-inline-sm);
+  }
+
+  /* The separator is drawn on the second span, so a wrapped line never starts or ends on a stray dot. */
+  .catalog__meta {
+    display: flex;
+    flex-wrap: wrap;
+    column-gap: var(--space-inline-xs);
+    margin: 0;
+  }
+
+  .catalog__meta span + span::before {
+    content: "·";
+    margin-inline-end: var(--space-inline-xs);
+  }
+
+  .catalog__relations {
+    display: grid;
+    gap: var(--space-stack-xs);
+    margin: 0;
+  }
+
+  .catalog__relations div {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-inline-sm);
+    align-items: baseline;
+  }
+
+  .catalog__relations dt,
+  .catalog__relations dd {
+    margin: 0;
+  }
+
+  .catalog__relations dd {
+    display: inline-flex;
+    flex-wrap: wrap;
+    gap: var(--space-inline-sm);
+  }
+
+  .catalog__subject + .catalog__subject {
+    margin-block-start: var(--space-section);
+  }
+
+  .catalog__lede {
+    max-inline-size: 65ch;
+  }
+
+  .catalog__scale {
+    margin-block-start: var(--space-stack-xl);
+  }
+
+  /* Fragments and components sit at a card's own width; a composition takes the whole stage. */
+  .catalog__variants {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 20rem), 1fr));
+    align-items: start;
+    gap: var(--space-stack-lg);
+    margin-block-start: var(--space-stack-sm);
+  }
+
+  .catalog__scale[data-scale="composition"] .catalog__variants {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .catalog__variant {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-stack-sm);
+    scroll-margin-top: calc(var(--docs-navbar-h, var(--docs-header-block-size)) + var(--space-stack-md));
+  }
+
+  .catalog__specimen {
+    padding: var(--space-inset-lg);
+    border: 1px solid var(--color-border-subtle);
+    border-radius: var(--radius-surface);
+    background: var(--color-bg-surface-sunken);
+  }
+</style>

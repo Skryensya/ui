@@ -332,6 +332,17 @@ option beside the compact one (`paddingExpanded`, `gapExpanded`, `gutterExpanded
 is the compact value. Named for the room available, not the device; never inferred: see decision 30.
 _Avoid_: desktop spacing, responsive spacing, fluid spacing, breakpoint variant
 
+**Query container**:
+The element a layout rule asks "how much room is there?": the nearest `Main`, `Sidebar` or, failing
+those, the document. Every width rule in the layout family is a container query against it, never a
+viewport query: see decision 35.
+_Avoid_: breakpoint container, responsive wrapper, viewport
+
+**Show**:
+A layout primitive's side of the expanded line, `compact` or `expanded`. The element does not exist on
+the other side, for the eye or the accessibility tree.
+_Avoid_: hide on mobile, desktop only, visibility class, responsive visibility
+
 **Radius**:
 A dimension. Global corner *roundness*, five discrete steps `none · sm · md · lg · xl`, with `md`
 the baseline, as an override block that re-declares the semantic radius roles, orthogonal to brand.

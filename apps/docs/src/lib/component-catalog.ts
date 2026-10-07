@@ -432,6 +432,10 @@ const componentDescriptions = {
     es: "Selecciona una o varias personas de una lista, con avatars y búsqueda.",
     en: "Selects one or more people from a list, with avatars and search.",
   },
+  "/components/app-shell": {
+    es: "Arma el marco de una página o una aplicación: header, rieles, contenido y footer.",
+    en: "Frames a page or an application: header, rails, content and footer.",
+  },
   "/components/wrapper": {
     es: "Centra el contenido y limita su ancho de lectura.",
     en: "Centers content and caps its readable width.",

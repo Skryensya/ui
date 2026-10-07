@@ -115,7 +115,7 @@ describe(`${target}: the workflow an agent runs`, () => {
   it("publishes whole pages as examples, and each one composes and passes the design review", async () => {
     await withClient(async (client) => {
       const index = await call(client, "get_examples");
-      const pages = (index.examples as { id: string; level: string }[]).filter((example) => example.level === "page");
+      const pages = (index.examples as { id: string; scale: string }[]).filter((example) => example.scale === "page");
       expect(pages.length).toBeGreaterThanOrEqual(22);
       for (const id of ["page-chat", "page-inbox", "page-repo-overview"]) {
         const example = await call(client, "get_examples", { id });

@@ -1,4 +1,4 @@
-import { snippets } from "@skryensya/snippets";
+import { snippets } from "@skryensya/examples";
 import { canonicalTrees } from "@skryensya/ai-gates/src/trees.js";
 import type { UsageTree } from "@skryensya/core/usage-tree";
 

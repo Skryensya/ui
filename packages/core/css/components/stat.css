@@ -7,7 +7,8 @@
  *
  * Count-up (opt-in via bindings) reads `--sk-stat-count-duration` so tempo stays on the motion
  * intent ladder. The value stacks an invisible sizer (final string) under the ticking digits so the
- * box never grows as figures appear: mono + tabular nums keep intermediate glyphs from jittering.
+ * box never grows as figures appear: tabular nums keep intermediate digits from jittering, in the
+ * body family, so a figure reads as part of the page and not as code.
  */
 @layer components {
   .sk-stat {
@@ -18,10 +19,9 @@
   }
   .sk-stat__label { font-size: var(--font-size-body-sm); color: var(--color-text-tertiary); }
   .sk-stat__value {
-    font-family: var(--font-family-code);
-    font-size: var(--font-size-heading-md, var(--font-size-heading-sm));
+    font-size: var(--font-size-heading-h1);
     font-weight: var(--font-weight-heading);
-    line-height: var(--font-line-height-heading);
+    line-height: var(--font-line-height-heading-h1);
     color: var(--color-text-primary);
     font-variant-numeric: tabular-nums;
   }

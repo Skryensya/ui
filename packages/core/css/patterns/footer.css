@@ -57,7 +57,7 @@
   .sk-footer[data-surface="none"] {
     --sk-footer-bg: transparent;
   }
-  .sk-footer[data-surface="sunken"] {
+  .sk-footer:is([data-surface="sunken"], :not([data-surface])) {
     --sk-footer-bg: var(--color-bg-surface-sunken);
     --sk-footer-shadow: var(--elevation-sunken);
     --sk-footer-wash: var(--elevation-wash-sunken);
@@ -106,12 +106,12 @@
   }
 
   /*
-   * 36rem is `--breakpoint-compact` (semantic/_breakpoints.scss), a literal here because a CSS
-   * `@media` cannot read a custom property, the same hand-copy `hero.css` and `vaul.css` do.
+   * 36rem is `--breakpoint-compact` (semantic/_breakpoints.scss), asked of the nearest query
+   * container (decision 35), a literal because a container query cannot read a custom property.
    * On a phone the `lg` inset is a lot of the viewport spent on the page's least important band;
    * step it down to `md` so the footer stays a considered close without eating the screen.
    */
-  @media (max-width: 35.999rem) {
+  @container (width < 36rem) {
     /* Only when the author left the expanded side unsaid: a footer that declares
        `paddingExpanded` has already said what its phone padding is, and this guess would overrule it. */
     .sk-footer[data-padding="lg"]:not([data-padding-expanded]) {
@@ -171,12 +171,13 @@
   }
 
   /*
-   * EXPANDED OVERRIDES, declared (decision 30). 52rem is `--breakpoint-desktop`
-   * (semantic/_breakpoints.scss), a literal here because a CSS `@media` cannot read a custom
-   * property, the same hand-copy `vaul.css` makes. The plain attribute is the value from the smallest
-   * screen up; the `-expanded` one replaces it from this width up, and only when the author wrote it.
+   * EXPANDED OVERRIDES, declared (decision 30), measured on the nearest query container (decision
+   * 35). 52rem is `--breakpoint-desktop` (semantic/_breakpoints.scss), a literal here because a
+   * container query cannot read a custom property. The plain attribute is the value from the
+   * narrowest container up; the `-expanded` one replaces it from this width up, and only when the
+   * author wrote it.
    */
-  @media (min-width: 52rem) {
+  @container (width >= 52rem) {
     .sk-footer[data-padding-expanded="none"] { --sk-footer-padding: 0; }
     .sk-footer[data-padding-expanded="xs"] { --sk-footer-padding: var(--space-inset-xs); }
     .sk-footer[data-padding-expanded="sm"] { --sk-footer-padding: var(--space-inset-sm); }

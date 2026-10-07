@@ -13,7 +13,7 @@
     "@skryensya/core": "workspace:*",
     "yaml": "^2.9.0",
     "typescript": "^5.9.3",
-    "@skryensya/snippets": "workspace:*"
+    "@skryensya/examples": "workspace:*"
   },
   "devDependencies": {
     "@types/node": "catalog:",
@@ -32,6 +32,10 @@
     "./validate": {
       "types": "./src/validate.ts",
       "default": "./src/validate.ts"
+    },
+    "./quality": {
+      "types": "./src/quality.ts",
+      "default": "./src/quality.ts"
     },
     "./manifest": {
       "types": "./src/manifest.ts",

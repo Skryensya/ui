@@ -3,7 +3,7 @@ import { Client } from "@modelcontextprotocol/client";
 import { StdioClientTransport } from "@modelcontextprotocol/client/stdio";
 import { Client as LegacyClient } from "@modelcontextprotocol/sdk/client/index.js";
 import { StdioClientTransport as LegacyStdioClientTransport } from "@modelcontextprotocol/sdk/client/stdio.js";
-import { snippets } from "@skryensya/snippets";
+import { library, snippets } from "@skryensya/examples";
 import { createAgentService } from "@skryensya/ai-compiler/agent";
 import { SCHEMA_VERSION } from "@skryensya/ai-compiler/artifact";
 import { emitMarkup, emitReactSource } from "@skryensya/ai-compiler/emit";
@@ -64,7 +64,7 @@ describe("the surface", () => {
   it("exposes exactly the declared inventory, in workflow order", async () => {
     const { tools: listed } = await client.listTools();
     /* The declared inventory, then the Maker's two, which only the local stdio server offers. */
-    expect(listed.map((tool) => tool.name)).toEqual([...toolNames, "maker_projects", "maker_read", "maker_context", "maker_presets", "maker_try", "maker_apply", "maker_publish"]);
+    expect(listed.map((tool) => tool.name)).toEqual([...toolNames, "maker_projects", "maker_read", "maker_context", "maker_presets", "maker_try", "maker_apply"]);
     expect(toolNames).toEqual(["discover_ui", "get_examples", "get_contract", "get_contracts", "validate_ui", "review_ui", "get_catalog"]);
   });
 
@@ -72,7 +72,7 @@ describe("the surface", () => {
     const { tools: listed } = await client.listTools();
     for (const tool of listed) {
       expect(tool.outputSchema?.type, tool.name).toBe("object");
-      expect(tool.annotations?.readOnlyHint, tool.name).toBe(tool.name !== "maker_apply" && tool.name !== "maker_publish");
+      expect(tool.annotations?.readOnlyHint, tool.name).toBe(tool.name !== "maker_apply");
     }
   });
 
@@ -221,31 +221,82 @@ describe("get_contracts", () => {
   });
 
   it("is the service's answer, unchanged: the adapter adds nothing", async () => {
-    const service = createAgentService(pair, snippets);
+    const service = createAgentService(pair, library);
     const { payload } = await call("get_contracts", { ids: ["navbar", "wrapper"] });
     expect(payload).toEqual(JSON.parse(JSON.stringify(service.contracts(["navbar", "wrapper"], "contract").value)));
   });
 });
 
 describe("get_examples", () => {
-  it("lists every snippet without shipping a tree", async () => {
+  it("browses the whole library compactly, with the taxonomy to filter by and no trees", async () => {
     const { payload } = await call("get_examples");
     expect(payload.examples.length).toBe(snippets.length);
-    const card = payload.examples.find((entry: Payload) => entry.id === "product-card-in-grid");
-    expect(card.contracts).toEqual(expect.arrayContaining(["box", "image-frame", "layout", "typography"]));
+    expect(payload.matched).toBe(payload.total);
+    expect(payload.facets.intents.length).toBeGreaterThan(40);
+    expect(payload.facets.subjects.map((subject: Payload) => subject.id)).toEqual(expect.arrayContaining(["card", "list", "form", "hero", "screen"]));
+    const card = payload.examples.find((entry: Payload) => entry.id === "quota-storage");
+    expect(card).toMatchObject({ kind: "use", intent: "metrics/usage/quota", subject: "card", scale: "component", pattern: "meter-figure-card" });
     expect(card.tree).toBeUndefined();
   });
 
-  it("returns one snippet's full tree by id", async () => {
-    const { payload } = await call("get_examples", { id: "pagination-standalone" });
-    expect(payload.tree.contract).toBe("pagination");
-    expect(payload.tree.options.total).toBe(9);
+  it("filters by intent prefix, subject, scale, pattern, contract and words", async () => {
+    const money = (await call("get_examples", { intent: "metrics/money/" })).payload;
+    expect(money.examples.length).toBeGreaterThan(2);
+    expect(money.examples.every((entry: Payload) => entry.intent.startsWith("metrics/money/"))).toBe(true);
+    expect(money.facets).toBeUndefined();
+
+    const meters = (await call("get_examples", { contract: "meter" })).payload;
+    expect(meters.examples.map((entry: Payload) => entry.id)).toContain("quota-storage");
+
+    const sameLayout = (await call("get_examples", { pattern: "equal-grid" })).payload;
+    expect(sameLayout.examples.map((entry: Payload) => entry.intent)).toEqual(expect.arrayContaining(["commerce/pricing/plan-comparison", "identity/people/team-directory", "content/publishing/post-feed"]));
+
+    const pages = (await call("get_examples", { scale: "page", subject: "screen", query: "settings" })).payload;
+    expect(pages.examples.length).toBeGreaterThan(0);
   });
 
-  it("names what IS published when asked for an id that is not", async () => {
-    const { isError, payload } = await call("get_examples", { id: "nonesuch" });
+  it("returns one example with its tree, its layout's fields and its content, and the graph around it", async () => {
+    const { payload } = await call("get_examples", { id: "quota-storage" });
+    expect(payload.tree.contract).toBe("box");
+    expect(payload.intent).toMatchObject({ id: "metrics/usage/quota" });
+    expect(Object.keys(payload.pattern.fields)).toEqual(expect.arrayContaining(["label", "value", "used", "limit"]));
+    expect(payload.content.label).toBe("Storage used");
+    /* Same layout, another job: the tree is the pattern, the content is the use. */
+    expect(payload.relations.sameLayout).toEqual([]);
+    const plan = (await call("get_examples", { id: "plan-team" })).payload;
+    expect(plan.relations.containedIn.map((ref: Payload) => ref.id)).toContain("plans-comparison");
+    /* Siblings on one pattern are the same layout; "sameIntent" is the OTHER ways to do the job. */
+    expect(plan.relations.sameLayout.map((ref: Payload) => ref.id)).toEqual(expect.arrayContaining(["plan-starter", "plan-business"]));
+    expect(plan.relations.sameIntent).toEqual([]);
+    const toggle = (await call("get_examples", { id: "setting-weekly-summary" })).payload;
+    expect(toggle.relations.sameIntent.map((ref: Payload) => ref.id)).toContain("settings-row-with-switch");
+    const grid = (await call("get_examples", { id: "plans-comparison" })).payload;
+    expect(grid.relations.contains.map((ref: Payload) => ref.id)).toEqual(["plan-starter", "plan-team", "plan-business"]);
+    expect(grid.relations.sameLayout.map((ref: Payload) => ref.id)).toEqual(expect.arrayContaining(["team-directory", "posts-feed"]));
+  });
+
+  it("serves the same example in Spanish, tree and all", async () => {
+    const en = (await call("get_examples", { id: "quota-storage" })).payload;
+    const es = (await call("get_examples", { id: "quota-storage", locale: "es" })).payload;
+    expect(es.locale).toBe("es");
+    expect(es.title).toBe("Cuota");
+    expect(es.content.label).toBe("Almacenamiento usado");
+    expect(JSON.stringify(es.tree)).not.toEqual(JSON.stringify(en.tree));
+  });
+
+  it("returns a fixed tree by id too", async () => {
+    const { payload } = await call("get_examples", { id: "pagination-standalone" });
+    expect(payload.kind).toBe("fixed");
+    expect(payload.tree.contract).toBe("pagination");
+    expect(payload.tree.options.total).toBe(9);
+    expect(payload.pattern).toBeUndefined();
+  });
+
+  it("points at close ids and at the filters when asked for an id that is not published", async () => {
+    const { isError, payload } = await call("get_examples", { id: "pagination" });
     expect(isError).toBe(true);
     expect(payload.detail).toContain("pagination-standalone");
+    expect(payload.detail).toContain("intent");
   });
 });
 

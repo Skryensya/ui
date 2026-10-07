@@ -1,6 +1,4 @@
 import { z } from "zod";
-import { ASKING_ENABLED } from "./brief.js";
-import { askInput } from "./questions.js";
 import type { AgentService } from "@skryensya/ai-compiler/agent";
 import type { UsageTree } from "@skryensya/core/usage-tree";
 import { describeSite, findNode, layoutAdvice, randomId, resolve, variantsFor, type AgentSiteOperation, type IdFactory, type MakerAgentContext, type MakerProposal, type MakerSite, type SiteOperation } from "@skryensya/maker-model";
@@ -24,10 +22,7 @@ const withoutDialect = (schema: Record<string, unknown>): Record<string, unknown
  */
 export interface Carry { readonly site: MakerSite; readonly operations: readonly SiteOperation[] }
 
-/** Reads a public web page for cloning: the Maker's server fetches it (a browser cannot) and answers with a summary. */
-export type SiteReader = (url: string, signal?: AbortSignal) => Promise<unknown>;
-
-export function createMakerTools(site: MakerSite, context: MakerAgentContext, service: AgentService, ids: () => IdFactory = () => randomId, carry?: Carry, readSite?: SiteReader, signal?: AbortSignal) {
+export function createMakerTools(site: MakerSite, context: MakerAgentContext, service: AgentService, ids: () => IdFactory = () => randomId, carry?: Carry) {
   /*
    * THE CHECKPOINT: the proposal as an earlier round of THIS turn left it. After the agent has proposed, it reviews the
    * result against its goal and may add what is missing: that next maker_try is added on top of the checkpoint rather than
@@ -59,11 +54,6 @@ export function createMakerTools(site: MakerSite, context: MakerAgentContext, se
       const variants = resolve(a) ? variantsFor(a) : [];
       return variants.length ? { presets: variants.map(v => ({ id: v.id, name: v.name, ...(v.description ? { description: v.description } : {}), arrivesIn: v.wrapper })) } : { refused: "No such signature." };
     } },
-    { name: "maker_read_site", description: "Read a public web page to clone or take inspiration from. Returns its content and information architecture: title, language, brand colour, the role of each section in order (structure), the heading hierarchy (outline), primary and footer navigation, the actions it leads with, and each section's blocks and repeated items (cards, plans, quotes, steps). Never its markup or styles. The page is not run, so a site that draws itself with scripts comes back thin (likelyScripted). Rebuild what it shows with the design system's components; never reproduce its HTML or CSS.", schema: z.object({ url: z.string().url().max(2000) }).strict(), run: async (a: { url: string }) => {
-      if (!readSite) return { refused: "Reading websites is not available here." };
-      try { return await readSite(a.url, signal); } catch (error) { return { refused: error instanceof Error ? error.message : "The site could not be read." }; }
-    } },
-    { name: "ask_user", description: "RARELY. Ask the person for the context you lack ONLY when their intent or goal is unknowable and any build would be a coin flip (a request with no subject, a page whose purpose you cannot infer, two very different readings). Never for details you can choose well, never for facts the page or conversation already hold. One call with the fewest questions (usually one, at most three), each with a recommended answer and named options. Do not build in the same turn.", schema: askInput, run: () => ({ asked: true }) },
     { name: "maker_try", description: "Prepare a complete operation batch against the site as it stands (including any draft not yet applied). All or none; no save. Replaces a previous batch of THIS turn, never earlier work; but when you are REVIEWING a proposal you already made, the batch is ADDED to it, so send only what is missing. User must apply.", schema: proposalInput, run: (a: z.infer<typeof proposalInput>) => {
       proposal = undefined;
       const from = base();
@@ -73,29 +63,29 @@ export function createMakerTools(site: MakerSite, context: MakerAgentContext, se
       const advice = trial.site.pages.flatMap(page => layoutAdvice(page.root));
       return { proposed: true, operations: (from?.operations.length ?? 0) + a.operations.length, outline: describeSite(trial.site), pending: trial.pending, ...(advice.length ? { advice } : {}) };
     } },
-  ].filter(tool => ASKING_ENABLED || tool.name !== "ask_user");
-  const specs: ToolSpec[] = definitions.filter(d => ASKING_ENABLED || d.name !== "ask_user").map(d => ({ name: d.name, description: d.description, parameters: withoutDialect(z.toJSONSchema(d.schema)) }));
+  ];
+  const specs: ToolSpec[] = definitions.map(d => ({ name: d.name, description: d.description, parameters: withoutDialect(z.toJSONSchema(d.schema)) }));
   return {
     specs,
     /** The proposal so far: the latest attempt, or the checkpoint when the latest was refused. */
     proposal: () => proposal ?? checkpoint,
     /** The site the model is working on right now: the checkpoint, the carried draft, or the project. */
     working,
+    /** The operations `working` already stands for: what a new batch is added to. */
+    baseOperations: () => base()?.operations ?? [],
     /** Starts a review: what has been proposed becomes the base the next maker_try adds to. */
     review: () => { checkpoint = proposal ?? checkpoint; proposal = undefined; },
     clearProposal: () => { proposal = undefined; },
     execute(name: string, args: unknown): unknown {
       if (name === "maker_try") proposal = undefined;
-      const tool = definitions.find(d => d.name === name && (ASKING_ENABLED || name !== "ask_user"));
+      const tool = definitions.find(d => d.name === name);
       if (!tool) return { refused: "Unknown tool. Only Maker-specific tools are available." };
       const parsed = tool.schema.safeParse(args);
       if (!parsed.success) return { refused: "Malformed tool arguments.", issues: parsed.error.issues.map(i => ({ path: i.path, message: i.message })) };
       const refused = { refused: "Tool refused malformed data. Inspect contracts and repair the request." };
       try {
         // Each heterogeneous definition's schema guards its own handler.
-        const result = (tool.run as (args: unknown) => unknown)(parsed.data);
-        /* Only reading a website is asynchronous; its handler answers its own failures, this is for the unexpected. */
-        return result instanceof Promise ? result.catch(() => refused) : result;
+        return (tool.run as (args: unknown) => unknown)(parsed.data);
       } catch { return refused; }
     },
   };

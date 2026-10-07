@@ -28,8 +28,7 @@ const suggestion = (title: string, description: string, href: string): UsageTree
 
 export const notFoundTree = (t: Translate): UsageTree => ({
   contract: "layout",
-  signature: "Stack",
-  options: { gap: "none" },
+  signature: "AppShell",
   children: [
     {
       contract: "navbar",
@@ -38,74 +37,66 @@ export const notFoundTree = (t: Translate): UsageTree => ({
     },
     {
       contract: "layout",
-      signature: "Stack",
-      options: { gap: "none" },
-      attrs: { class: "page-shell" },
-      children: [
-        {
+      signature: "Main",
+      options: { paddingBlock: "lg", paddingBlockExpanded: "xl" },
+      children: {
+        contract: "wrapper",
+        signature: "Wrapper",
+        options: { wrapperSize: "sm", gutter: "md", gutterExpanded: "lg" },
+        children: {
           contract: "layout",
-          signature: "Main",
-          attrs: { class: "page-shell__main" },
-          children: {
-            contract: "wrapper",
-            signature: "Wrapper",
-            options: { wrapperSize: "sm", gutter: "md", gutterExpanded: "lg" },
-            children: {
+          signature: "Stack",
+          options: { gap: "lg", gapExpanded: "xl" },
+          children: [
+            {
+              contract: "empty-state",
+              signature: "EmptyState",
+              slots: {
+                icon: { contract: "icon", signature: "Icon", options: { name: "search" } },
+                title: t("demo.notFound.title"),
+                description: t("demo.notFound.body"),
+                actions: [
+                  {
+                    contract: "button",
+                    signature: "Button.navigation",
+                    options: { href: "#inicio", tone: "accent" },
+                    children: t("demo.notFound.home"),
+                  },
+                  {
+                    contract: "button",
+                    signature: "Button.navigation",
+                    options: { href: "#contacto", variant: "soft" },
+                    children: t("demo.notFound.contact"),
+                  },
+                ],
+              },
+            },
+            {
               contract: "layout",
               signature: "Stack",
-              options: { gap: "lg", gapExpanded: "xl" },
+              options: { gap: "sm" },
               children: [
                 {
-                  contract: "empty-state",
-                  signature: "EmptyState",
-                  slots: {
-                    icon: { contract: "icon", signature: "Icon", options: { name: "search" } },
-                    title: t("demo.notFound.title"),
-                    description: t("demo.notFound.body"),
-                    actions: [
-                      {
-                        contract: "button",
-                        signature: "Button.navigation",
-                        options: { href: "#inicio", tone: "accent" },
-                        children: t("demo.notFound.home"),
-                      },
-                      {
-                        contract: "button",
-                        signature: "Button.navigation",
-                        options: { href: "#contacto", variant: "soft" },
-                        children: t("demo.notFound.contact"),
-                      },
-                    ],
-                  },
+                  contract: "typography",
+                  signature: "Heading",
+                  options: { headingSize: "h4", flush: true },
+                  children: t("demo.notFound.suggestionsTitle"),
                 },
                 {
-                  contract: "layout",
-                  signature: "Stack",
-                  options: { gap: "sm" },
+                  contract: "list",
+                  signature: "List",
                   children: [
-                    {
-                      contract: "typography",
-                      signature: "Heading",
-                      options: { headingSize: "h4", flush: true },
-                      children: t("demo.notFound.suggestionsTitle"),
-                    },
-                    {
-                      contract: "list",
-                      signature: "List",
-                      children: [
-                        suggestion(t("demo.notFound.s1"), t("demo.notFound.s1Hint"), "#docs"),
-                        suggestion(t("demo.notFound.s2"), t("demo.notFound.s2Hint"), "#precios"),
-                        suggestion(t("demo.notFound.s3"), t("demo.notFound.s3Hint"), "#blog"),
-                      ],
-                    },
+                    suggestion(t("demo.notFound.s1"), t("demo.notFound.s1Hint"), "#docs"),
+                    suggestion(t("demo.notFound.s2"), t("demo.notFound.s2Hint"), "#precios"),
+                    suggestion(t("demo.notFound.s3"), t("demo.notFound.s3Hint"), "#blog"),
                   ],
                 },
               ],
             },
-          },
+          ],
         },
-        siteFooter(t),
-      ],
+      },
     },
+    siteFooter(t),
   ],
 });

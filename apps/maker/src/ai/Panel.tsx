@@ -2,9 +2,9 @@ import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { createAgentService } from "@skryensya/ai-compiler/agent";
 import { asCompiledPair } from "@skryensya/ai-compiler/artifact";
-import { snippets } from "@skryensya/snippets";
+import { library } from "@skryensya/examples";
 import { makerContext, entryOf, findChild, isNode, layoutOf, pageOf, type MakerProposal, type MakerSite } from "@skryensya/maker-model";
-import { runAgent, testConnection, type AskedQuestion, type ConversationTurn, type ProviderConnection, type ProviderId } from "@skryensya/maker-agent";
+import { runAgent, testConnection, type AgentEvent, type ConversationTurn, type ProviderConnection, type ProviderId } from "@skryensya/maker-agent";
 import { Button } from "@skryensya/react/button";
 import { Details } from "@skryensya/react/details";
 import { Icon } from "@skryensya/react/icon";
@@ -24,16 +24,17 @@ import { knownRevision } from "../sync";
 import { getProject } from "../projects";
 import index from "../../../../artifacts/ai-index.json";
 import manifest from "../../../../artifacts/ai-manifest.json";
-import { draftOf, type Draft } from "./draft";
+import { addedPieces, draftOf, planStatuses, type Draft } from "./draft";
 import { canRemember, forget, recall, remember } from "./vault";
-import { QuestionCard } from "./QuestionCard";
 import { logAi } from "./log";
 import { StreamedText } from "./StreamedText";
 import "./panel.css";
 
 type Outcome = "pending" | "applied" | "discarded" | "reverted" | "merged";
 /** A turn of the conversation, with what it proposed and what the person did about it. */
-type Turn = ConversationTurn & { id: number; changes?: string[]; outcome?: Outcome; appliedAt?: number; questions?: readonly AskedQuestion[]; answers?: readonly string[]; plan?: { goal: string; checklist: readonly string[]; assumptions: readonly string[] } };
+/** One step of a turn, as the person watches it happen. */
+type Step = Omit<Extract<AgentEvent, { type: "step" }>, "type">;
+type Turn = ConversationTurn & { id: number; steps?: Step[]; changes?: string[]; outcome?: Outcome; appliedAt?: number; plan?: { goal: string; checklist: readonly string[]; assumptions: readonly string[]; sections: readonly { section: string; role: string }[]; done?: number; building?: boolean } };
 const OUTCOME: Record<Outcome, string> = {
   pending: "Waiting for your approval",
   applied: "Applied to your project",
@@ -43,27 +44,20 @@ const OUTCOME: Record<Outcome, string> = {
 };
 
 /** First ideas for an empty conversation: a click fills the composer, so nothing is sent until the person says so. */
-const SUGGESTIONS = ["Clone https://example.com", "Help me make a hero section", "Add a pricing section with three plans"];
+const SUGGESTIONS = ["A landing page for a bakery", "Help me make a hero section", "Add a pricing section with three plans"];
 
-/** The Maker's own server reads the page (a browser cannot read another site's HTML) and answers with a summary of it. */
-const readSite = async (url: string, signal?: AbortSignal): Promise<unknown> => {
-  const response = await fetch(`/api/snapshot?url=${encodeURIComponent(url)}`, { signal });
-  const body = (await response.json().catch(() => ({}))) as { error?: string };
-  if (!response.ok) throw new Error(body.error ?? "The site could not be read.");
-  return body;
-};
-
-const service = createAgentService(asCompiledPair(index, manifest), snippets);
+const service = createAgentService(asCompiledPair(index, manifest), library);
 const defaults: Record<ProviderId, string> = { openai: "gpt-4.1", anthropic: "claude-sonnet-4-6", openrouter: "openai/gpt-4.1", compatible: "" };
 
 /** Everything here is ephemeral. No credentials or conversation enter useMaker or localStorage. */
-export function AIPanel({ maker, onPreview, onDraft, barSlot }: {
+export function AIPanel({ maker, onDraft, barSlot, focusRequest = 0 }: {
   maker: Maker;
-  onPreview: (site: MakerSite) => void;
   /** The site as it would be with what the AI has written so far, or nothing. The canvas draws it. */
   onDraft: (draft: Draft | undefined) => void;
   /** Where the progress and Apply/Discard bar goes: over the canvas, where the draft is being drawn. */
   barSlot: HTMLElement | null;
+  /** Changes each time something outside asks for the composer: it takes focus. */
+  focusRequest?: number;
 }) {
   const [connection, setConnection] = useState<ProviderConnection>({ provider: "openai", apiKey: "", model: defaults.openai });
   const [connected, setConnected] = useState(false);
@@ -71,21 +65,34 @@ export function AIPanel({ maker, onPreview, onDraft, barSlot }: {
   const [settings, setSettings] = useState(false);
   /* Keep the key encrypted on this device so it is not asked for again. On by default, and Disconnect forgets it. */
   const [keep, setKeep] = useState(true);
-  /* REVIEW BEFORE APPLYING is off by default: a finished proposal goes straight into the project as one undoable edit (and
-     can be rolled back from the chat). Turned on, it waits for Apply or Discard as before. Remembered on this device. */
-  const [review, setReviewState] = useState(() => { try { return localStorage.getItem("maker.ai.review") === "1"; } catch { return false; } });
-  const setReview = (on: boolean) => { setReviewState(on); try { localStorage.setItem("maker.ai.review", on ? "1" : "0"); } catch { /* not remembered */ } };
   const [recalled, setRecalled] = useState(false);
   useEffect(() => {
     let live = true;
-    void recall().then(saved => {
+    void recall().then((saved) => {
       if (!live) return;
       if (!saved) { setSettings(true); return; }
-      setConnection(saved); setConnected(true); setSettings(false); setStatus("Connected with the key saved on this device.");
+      setConnection(saved); setConnected(true); setSettings(false);
+      setStatus("Connected with the key saved on this device.");
     }).finally(() => { if (live) setRecalled(true); });
     return () => { live = false; };
   }, []);
   const dialogHost = useRef<HTMLDivElement>(null);
+  /* THE PROJECT PROMPT has a place of its own, apart from the conversation and the provider: it is the project's, saved with
+     it, and sent as context with every request. Editing it is an edit to the project, undone like any other. */
+  const promptHost = useRef<HTMLDivElement>(null);
+  const [promptOpen, setPromptOpen] = useState(false);
+  const [promptDraft, setPromptDraft] = useState("");
+  useEffect(() => {
+    const dialog = promptHost.current?.querySelector("dialog");
+    if (!dialog) return;
+    if (promptOpen && !dialog.open) dialog.showModal();
+    if (!promptOpen && dialog.open) dialog.close();
+  }, [promptOpen]);
+  const openPrompt = () => { setPromptDraft(maker.site.prompt ?? ""); setPromptOpen(true); };
+  const savePrompt = () => {
+    if (promptDraft.trim() !== (maker.site.prompt ?? "")) maker.siteGesture([{ type: "setPrompt", prompt: promptDraft }]);
+    setPromptOpen(false);
+  };
   const log = useRef<HTMLDivElement>(null);
   const input = useRef<HTMLTextAreaElement>(null);
   useEffect(() => {
@@ -130,6 +137,7 @@ export function AIPanel({ maker, onPreview, onDraft, barSlot }: {
     el.style.blockSize = "auto";
     el.style.blockSize = `${Math.min(el.scrollHeight, 6 * 24)}px`;
   }, [content]);
+  useEffect(() => { if (focusRequest > 0) input.current?.focus(); }, [focusRequest]);
   const selectionKey = `${maker.view.page}:${maker.view.selected}:${maker.view.selectedIds.join(",")}`;
   useEffect(() => { setExcluded([]); }, [selectionKey]);
   useEffect(() => {
@@ -159,7 +167,15 @@ export function AIPanel({ maker, onPreview, onDraft, barSlot }: {
   };
   const connect = async () => {
     const next = begin();
-    try { await testConnection(connection, next.signal); if (!next.signal.aborted && mounted.current) { setConnected(true); setSettings(false); if (keep) await remember(connection); else await forget(); setStatus(keep ? "Connected. The key is saved, encrypted, on this device." : "Connected. The key stays in this session only."); } }
+    try {
+      await testConnection(connection, next.signal);
+      if (!next.signal.aborted && mounted.current) {
+        setConnected(true);
+        if (keep) await remember(connection); else await forget();
+        setStatus(keep ? "Connected. The key is saved, encrypted, on this device." : "Connected. The key stays in this session only.");
+        setSettings(false);
+      }
+    }
     catch (e) { fail(e, next); }
     finally { finish(next); }
   };
@@ -175,42 +191,55 @@ export function AIPanel({ maker, onPreview, onDraft, barSlot }: {
        new proposal contains both. Only a stale one (the project moved on underneath it) is dropped. */
     const carry = proposed && proposed.generation === maker.revision ? { site: proposed.proposal.site, operations: proposed.proposal.operations } : undefined;
     if (proposed) markTurn(proposed.turn, { outcome: carry ? "merged" : "discarded" });
+    /* Cleared as it is sent; a request that fails or is stopped gives it back (see the catch below). */
     setBuilding(true); setProposed(undefined); setContent("");
     if (!carry) onDraft(undefined);
     const turn: Turn = { id: nextTurn.current++, content: intent, context: frozen };
     const started = Date.now();
     let final: { proposal: MakerProposal; generation: number; turn: number } | undefined;
-    const record: { brief?: unknown; answer?: string; operations?: readonly unknown[]; changes?: readonly string[]; questions?: unknown; error?: string } = {};
-    /* A round of questions the person did not answer in the card is answered by this message instead. */
-    setTurns(previous => [...previous.slice(-19).map(t => t.questions && !t.answers ? { ...t, answers: [] } : t), turn]);
+    const record: { brief?: unknown; answer?: string; operations?: readonly unknown[]; changes?: readonly string[]; error?: string; attempts?: unknown[] } = {};
+    setTurns(previous => [...previous.slice(-19), turn]);
     try {
-      for await (const event of runAgent({ connection: { ...connection }, site, context: frozen, content: intent, history: turns, service, signal: next.signal, readSite, ...(carry ? { carry } : {}) })) {
+      for await (const event of runAgent({ connection: { ...connection }, site, context: frozen, content: intent, history: turns, service, signal: next.signal, ...(carry ? { carry } : {}) })) {
         if (!mounted.current || next.signal.aborted) break;
         if (event.type === "status") setStatus(event.text);
-        else if (event.type === "brief") { record.brief = { goal: event.goal, checklist: event.checklist, assumptions: event.assumptions }; markTurn(turn.id, { plan: { goal: event.goal, checklist: event.checklist, assumptions: event.assumptions } }); }
+        else if (event.type === "step") { const { type: _type, ...step } = event; setTurns(previous => previous.map(t => t.id === turn.id ? { ...t, steps: nextSteps(t.steps ?? [], step) } : t)); }
+        else if (event.type === "attempt") (record.attempts ??= []).push({ ok: event.ok, characters: event.characters, ...(event.reason ? { reason: event.reason, problems: event.problems } : {}) });
+        else if (event.type === "brief") { record.brief = { goal: event.goal, checklist: event.checklist, assumptions: event.assumptions }; markTurn(turn.id, { plan: { goal: event.goal, checklist: event.checklist, assumptions: event.assumptions, sections: (event.plan ?? []).map(({ section, role }) => ({ section, role })) } }); }
         else if (event.type === "say") setTurns(previous => previous.map(t => t.id === turn.id ? { ...t, answer: (event.reset ? "" : t.answer ?? "") + event.delta } : t));
-        else if (event.type === "draft") onDraft(revision.current === generation ? draftOf(site, event.site, event.operations, true) : undefined);
+        else if (event.type === "draft") {
+          const draft = draftOf(site, event.site, event.operations, true);
+          onDraft(revision.current === generation ? draft : undefined);
+          const done = addedPieces(draft);
+          setTurns(previous => previous.map(t => t.id === turn.id && t.plan ? { ...t, plan: { ...t.plan, done, building: true } } : t));
+        }
         else {
           record.answer = event.text;
           record.operations = event.proposal?.operations;
-          record.questions = event.questions;
-          setTurns(previous => previous.map(t => t.id === turn.id ? { ...t, answer: event.text || (event.proposal ? "Changes ready for review." : "No changes proposed.") } : t));
+          setTurns(previous => previous.map(t => t.id === turn.id ? { ...t, steps: settle(t.steps, "done"), answer: event.text || (event.proposal ? (event.partial ? "Changes ready for review." : "Changes made.") : "No changes proposed.") } : t));
           if (event.proposal) {
-            const changes = event.proposal.operations.map(op => summarize(op, event.proposal!.base));
+            const changes = event.proposal.operations.map(op => summarize(op, event.proposal!.base, event.proposal!.site));
             record.changes = changes;
-            markTurn(turn.id, { changes, outcome: "pending" });
+            /* Only what waits for the person is pending; a finished proposal is marked applied once it is in. */
+            markTurn(turn.id, event.partial ? { changes, outcome: "pending" } : { changes });
           }
+          /* A finished proposal is the whole plan; one kept from a turn that stopped counts only what it actually holds. */
+          const built = event.proposal ? (event.partial ? addedPieces(draftOf(site, event.proposal.site, event.proposal.operations.length, false)) : Infinity) : undefined;
+          setTurns(previous => previous.map(t => t.id === turn.id && t.plan ? { ...t, plan: { ...t.plan, building: false, ...(built !== undefined ? { done: Math.min(built, t.plan.sections.length) } : {}) } } : t));
           setProposed(event.proposal ? { proposal: event.proposal, generation, turn: turn.id } : undefined);
-          if (event.proposal && !event.questions) final = { proposal: event.proposal, generation, turn: turn.id };
+          /* What was kept from a turn that stopped on a problem is never applied unasked: it waits for Apply or Discard. */
+          if (event.proposal && !event.partial) final = { proposal: event.proposal, generation, turn: turn.id };
           /* The final proposal replaces the last draft: same nodes, now waiting for the person to decide. */
           onDraft(event.proposal && revision.current === generation ? draftOf(site, event.proposal.site, event.proposal.operations.length, false) : undefined);
-          if (event.questions) markTurn(turn.id, { questions: event.questions });
-          setStatus(event.questions ? "Maker AI has questions for you." : event.proposal ? "Proposal ready. Your project is unchanged." : "Finished without changes.");
+          setStatus(event.partial ? "Kept what was built before the problem. Review it, then Apply or Discard." : event.proposal ? "Proposal ready. Your project is unchanged." : "Finished without changes.");
         }
       }
-      /* Review off: what was proposed is applied now, still one undoable edit. A conflict is reported like any other error. */
-      if (final && !review && mounted.current && !next.signal.aborted) await commit(final, next.signal);
-    } catch (e) { record.error = next.signal.aborted ? "cancelled" : e instanceof Error ? e.message : "AI request failed."; fail(e, next); }
+      /* A finished proposal is applied now, as one undoable edit. A conflict is reported like any other error. */
+      if (final && mounted.current && !next.signal.aborted) await commit(final, next.signal);
+    } catch (e) {
+      record.error = next.signal.aborted ? "cancelled" : e instanceof Error ? e.message : "AI request failed.";
+      if (mounted.current) setTurns(previous => previous.map(t => t.id === turn.id ? { ...t, steps: settle(t.steps, next.signal.aborted ? "done" : "failed") } : t));
+      fail(e, next); if (mounted.current) setContent(typed => typed || intent); }
     finally {
       logAi({ type: "turn", turn: turn.id, intent, provider: connection.provider, model: connection.model, project: maker.projectId, page: frozen.page.name, selection: frozen.selection.selectedIds, durationMs: Date.now() - started, ...record });
       if (mounted.current) setBuilding(false); finish(next);
@@ -228,13 +257,6 @@ export function AIPanel({ maker, onPreview, onDraft, barSlot }: {
     maker.undo();
     markTurn(turn.id, { outcome: "reverted" });
     setStatus("Rolled back. The project is as it was before this change.");
-  };
-  /* The answers go back as the next message, in the form the agent reads: one line per question. */
-  const answerQuestions = (turn: Turn, answers: string[], recommended = false) => {
-    if (!turn.questions) return;
-    markTurn(turn.id, { answers });
-    /* Taking every recommendation is a go-ahead: it says so, and the briefing step then asks no more. */
-    void send([recommended ? "Use your recommendations. My answers:" : "My answers:", ...turn.questions.map((q, i) => `Q${i + 1} ${q.title}: ${answers[i]}`)].join("\n"));
   };
   /* Puts a proposal into the project: one gesture, one undo step. Shared by Apply and by the automatic apply. */
   const commit = async (captured: NonNullable<typeof proposed>, signal: AbortSignal) => {
@@ -277,6 +299,7 @@ export function AIPanel({ maker, onPreview, onDraft, barSlot }: {
     <header className="maker__panel-header"><Heading as="h2" size="h4" flush>Maker AI</Heading>
       <Inline gap="xs">
         <Button size="sm" variant="ghost" onClick={newChat} disabled={busy || turns.length === 0}>New chat</Button>
+        <Button size="sm" variant="ghost" onClick={openPrompt} disabled={busy} aria-haspopup="dialog">Project prompt</Button>
         <Button size="sm" variant="ghost" onClick={() => setSettings(!settings)} disabled={busy}>AI settings</Button>
       </Inline></header>
     {recalled && !connected && <section className="maker-ai__setup" aria-label="Set up AI">
@@ -299,7 +322,6 @@ export function AIPanel({ maker, onPreview, onDraft, barSlot }: {
         <FormField label="Model"><Input value={connection.model} onChange={e => { setConnected(false); setConnection({ ...connection, model: e.currentTarget.value }); }} /></FormField>
         {settings && <div role="status" aria-live="polite" className="maker-ai__settings-result">{status}</div>}
         {settings && error && <div role="alert">{error}</div>}
-        <Switch checked={review} onCheckedChange={({ checked }) => setReview(checked === true)}>Review changes before applying (Apply and Discard)</Switch>
         {canRemember() && <Switch checked={keep} onCheckedChange={({ checked }) => setKeep(checked === true)}>Remember on this device (encrypted)</Switch>}
         <Inline gap="sm">
           <Button size="sm" onClick={() => void connect()}>Test &amp; connect</Button>
@@ -307,6 +329,16 @@ export function AIPanel({ maker, onPreview, onDraft, barSlot }: {
         </Inline>
       </Stack>
 </fieldset></Dialog></div>
+    <div ref={promptHost}><Dialog title="Project prompt" closeLabel="Close project prompt" onClose={() => setPromptOpen(false)}>
+      <Stack gap="sm">
+        <Text size="sm" tone="secondary">What this project is: the product, who uses it, the tone, how its screens relate. Maker AI receives it as context with every request in this project. It is saved with the project.</Text>
+        <FormField label="Project prompt" labelHidden><Textarea rows={10} maxLength={4000} value={promptDraft} onChange={e => setPromptDraft(e.currentTarget.value)} /></FormField>
+        <Inline gap="sm">
+          <Button size="sm" onClick={savePrompt}>Save</Button>
+          <Button size="sm" variant="ghost" onClick={() => setPromptOpen(false)}>Cancel</Button>
+        </Inline>
+      </Stack>
+    </Dialog></div>
     <div className="maker-ai__conversation sk-scrollbar" role="log" aria-label="Conversation" aria-live="polite" ref={log}>
       {connected && turns.length === 0 && <div className="maker-ai__empty">
         <Text weight="emphasis">What should Maker build?</Text>
@@ -327,18 +359,24 @@ export function AIPanel({ maker, onPreview, onDraft, barSlot }: {
           <Message>
             <MessageAvatar><Avatar name="AI" size="sm" /></MessageAvatar>
             <MessageContent>
-              {turn.plan && <>
-                <MessageHeader>Plan</MessageHeader>
-                <section className="maker-ai__bubble maker-ai__bubble--plan" aria-label="Plan">
-                  <Text size="sm" weight="emphasis">{turn.plan.goal}</Text>
-                  <ul>{turn.plan.checklist.map((item, n) => <li key={n}>{item}</li>)}</ul>
-                  {turn.plan.assumptions.length > 0 && <Text size="sm" tone="secondary">Placeholders you will want to replace: {turn.plan.assumptions.join(" · ")}</Text>}
-                </section>
-              </>}
+              {(turn.steps?.length || turn.plan) && <section className="maker-ai__bubble maker-ai__steps" aria-label="Steps">
+                <ol>{shownSteps(turn.steps ?? []).map((step, n, shown) => {
+                  /* The plan sits under the step that made it, so the turn reads as one line, top to bottom. */
+                  const plan = step.step === "plan" && step.state === "done" && turn.plan && shown.findIndex(s => s.step === "plan" && s.state === "done") === n ? turn.plan : undefined;
+                  return <li key={n} data-state={step.state} aria-current={step.state === "active" ? "step" : undefined}>
+                    <span className="maker-ai__step-mark" aria-hidden="true" />
+                    <span className="maker-ai__step-label">{step.label}<span className="maker-ai__sr"> ({STEP_STATE[step.state]})</span></span>
+                    {step.detail && !plan && <Text as="span" size="sm" tone="secondary" className="maker-ai__step-detail">{step.detail}</Text>}
+                    {step.refused && step.refused.length > 0 && <Details className="maker-ai__refused"><Details.Summary>{step.refused.length === 1 ? "Why it was refused" : `Why ${step.refused.length} attempts were refused`}</Details.Summary><Details.Content><ul>{step.refused.map((reason, r) => <li key={r}>{reason}</li>)}</ul></Details.Content></Details>}
+                    {plan && <PlanView plan={plan} />}
+                  </li>;
+                })}</ol>
+                {/* A turn whose steps were not reported (an older runtime) still shows its plan. */}
+                {turn.plan && !turn.steps?.some(s => s.step === "plan") && <PlanView plan={turn.plan} />}
+              </section>}
               {turn.answer
                 ? <Text className="maker-ai__bubble"><StreamedText text={turn.answer} writing={last && busy} /></Text>
-                : last && busy ? <span className="maker-ai__bubble maker-ai__typing" role="status" aria-label="Maker AI is working"><i /><i /><i />{status ? <span className="maker-ai__typing-status">{status}</span> : null}</span> : null}
-              {turn.questions && <QuestionCard questions={turn.questions} {...(turn.answers ? { answers: turn.answers } : {})} disabled={busy} onSubmit={(answers, recommended) => answerQuestions(turn, answers, recommended)} />}
+                : last && busy && !turn.steps?.length ? <span className="maker-ai__bubble maker-ai__typing" role="status" aria-label="Maker AI is working"><i /><i /><i />{status ? <span className="maker-ai__typing-status">{status}</span> : null}</span> : null}
               {turn.outcome && turn.changes && <section className="maker-ai__summary" aria-label="Summary of changes" data-outcome={turn.outcome}>
                 <header className="maker-ai__summary-head">
                   <Text size="sm" weight="emphasis">{OUTCOME[turn.outcome]}</Text>
@@ -355,12 +393,8 @@ export function AIPanel({ maker, onPreview, onDraft, barSlot }: {
         </MessageGroup>;
       })}
     </div>
-    {proposed && <section aria-label="Proposed changes"><Heading as="h3" size="h5" flush>{proposed.proposal.operations.length} proposed changes</Heading>
-      <ul>{proposed.proposal.operations.map((op, i) => <li key={i}>{summarize(op, proposed.proposal.base)}</li>)}</ul>
-      <Button size="sm" disabled={busy} onClick={() => onPreview(proposed.proposal.site)}>Preview</Button>
-      {/* Apply and Discard live in the bar over the canvas, next to the draft they act on. */}
-      {!barSlot && <>{" "}<Button size="sm" disabled={busy} onClick={() => void apply()}>Apply</Button>{" "}<Button size="sm" variant="ghost" disabled={busy} onClick={() => discard()}>Discard</Button></>}
-    </section>}
+    {/* Apply and Discard live in the bar over the canvas, next to the draft they act on; here only when there is no bar. */}
+    {proposed && !barSlot && <Inline gap="sm"><Button size="sm" disabled={busy} onClick={() => void apply()}>Apply</Button><Button size="sm" variant="ghost" disabled={busy} onClick={() => discard()}>Discard</Button></Inline>}
     {!settings && <><p role="status" aria-live="polite">{status}</p>{error && <p role="alert">{error}</p>}</>}
     {stuck === false && turns.length > 0 && <Button size="sm" variant="soft" className="maker-ai__latest" onClick={() => { stick.current = true; setStuck(true); log.current?.scrollTo({ top: log.current.scrollHeight, behavior: "smooth" }); }} post={<Icon name="arrow-down" />}>Jump to latest</Button>}
     <form className="maker-ai__composer" onSubmit={e => { e.preventDefault(); void send(); }}>
@@ -394,6 +428,66 @@ export function AIPanel({ maker, onPreview, onDraft, barSlot }: {
   </section>;
 }
 
+const STEP_STATE = { active: "in progress", done: "done", failed: "needs another pass" } as const;
+
+/** The next steps of a turn: a step still in progress is updated in place; one that comes back after finishing is a new line. */
+function nextSteps(steps: readonly Step[], step: Step): Step[] {
+  const last = steps.at(-1);
+  if (last && last.step === step.step && last.state === "active") return [...steps.slice(0, -1), { ...step, ...(step.detail === undefined && last.detail && step.state === "active" ? { detail: last.detail } : {}) }];
+  if (step.state === "active" && last?.state === "active") return [...steps.slice(0, -1), { ...last, state: "done" }, step];
+  return [...steps, step];
+}
+
+type Shown = Step & { refused?: readonly string[] };
+const isCycle = (step: Step) => (step.step === "build" && step.label === "Writing changes") || (step.step === "check" && step.label === "Checking with Maker");
+/** The first sentence of a refusal, short enough for one line: the whole of it is one click away. */
+const firstLine = (text = "") => { const sentence = text.replace(/^Refused:\s*/, "").split(/(?<=\.)\s/)[0] ?? ""; return sentence.length > 90 ? `${sentence.slice(0, 89)}…` : sentence; };
+
+/*
+ * THE STEPS AS THEY ARE READ. Writing and Maker's check go back and forth (a refused batch, written again, checked again),
+ * and every pass as its own line buried the turn under "Writing changes · done". Each run of them reads as two lines: the
+ * writing, with what it is doing only while it does it, and the check, with how it ended and how many tries it took; the
+ * refusals themselves are folded away under it.
+ */
+function shownSteps(steps: readonly Step[]): Shown[] {
+  const out: Shown[] = [];
+  for (let i = 0; i < steps.length;) {
+    if (!isCycle(steps[i]!)) { out.push(steps[i]!); i++; continue; }
+    const run: Step[] = [];
+    while (i < steps.length && isCycle(steps[i]!)) run.push(steps[i++]!);
+    const writing = run.filter(step => step.step === "build");
+    const checks = run.filter(step => step.step === "check");
+    const active = writing.find(step => step.state === "active");
+    const write: Shown = { step: "build", label: "Writing changes", state: active ? "active" : "done", ...(active?.detail ? { detail: active.detail } : {}) };
+    const last = checks.at(-1);
+    if (!last) { out.push(write); continue; }
+    const refused = checks.filter(step => step.state === "failed").map(step => (step.detail ?? "").replace(/^Refused:\s*/, ""));
+    const earlier = last.state === "failed" ? refused.length - 1 : refused.length;
+    const outcome = last.state === "failed" ? `Refused: ${firstLine(last.detail)}` : last.detail;
+    const check: Shown = { ...last, ...(outcome || earlier > 0 ? { detail: [outcome, earlier > 0 ? `after ${earlier} refused ${earlier === 1 ? "try" : "tries"}` : ""].filter(Boolean).join(" · ") } : {}), refused };
+    /* Writing again after a refusal: the refusal came first, the new writing is what happens now. */
+    out.push(...(run.at(-1)!.step === "build" && run.at(-1)!.state === "active" ? [check, write] : [write, check]));
+  }
+  return out;
+}
+
+/** When the turn ends, nothing is left looking like it still runs. */
+const settle = (steps: readonly Step[] | undefined, state: "done" | "failed") => steps?.map(step => step.state === "active" ? { ...step, state } : step);
+
+type Plan = NonNullable<Turn["plan"]>;
+function PlanView({ plan }: { plan: Plan }) {
+  return <section className="maker-ai__plan" aria-label="Plan">
+    <Text size="sm" weight="emphasis">{plan.goal}</Text>
+    {plan.sections.length > 0
+      ? <ol className="maker-ai__sections" aria-label="Sections">{plan.sections.map((s, n) => {
+          const status = planStatuses(plan.sections.length, plan.done ?? 0, plan.building ?? false)[n];
+          return <li key={n} data-status={status}>{s.section} <Text as="span" size="sm" tone="secondary">{s.role} · {status === "complete" ? "built" : status === "building" ? "building…" : "waiting"}</Text></li>;
+        })}</ol>
+      : <ul>{plan.checklist.map((item, n) => <li key={n}>{item}</li>)}</ul>}
+    {plan.assumptions.length > 0 && <Text size="sm" tone="secondary">Placeholders to replace: {plan.assumptions.join(" · ")}</Text>}
+  </section>;
+}
+
 /** What a change does, read off its line: the chip that lets a long list be scanned by kind instead of read in full. */
 function changeKind(line: string): "add" | "remove" | "move" | "edit" {
   if (/^(Add|Insert|Wrap)\b/.test(line)) return "add";
@@ -410,7 +504,7 @@ function ChangeList({ lines }: { lines: readonly string[] }) {
   })}</ul>;
 }
 
-function summarize(op: MakerProposal["operations"][number], site: MakerSite): string {
+function summarize(op: MakerProposal["operations"][number], site: MakerSite, after?: MakerSite): string {
   if (op.type !== "edit") {
     switch (op.type) {
       case "addPage": return `Add page: ${op.page.name}`;
@@ -419,17 +513,23 @@ function summarize(op: MakerProposal["operations"][number], site: MakerSite): st
       case "renameLayout": return `Rename layout to ${op.name}`;
       case "setDefaultLayout": return op.layout ? `Use ${layoutOf(site, op.layout)?.name ?? "a layout"} for pages that do not choose` : "No default layout";
       case "setPageLayout": return `${pageOf(site, op.page)?.name ?? "Page"}: ${op.layout === "none" ? "no layout" : op.layout ? `layout ${layoutOf(site, op.layout)?.name ?? op.layout}` : "site default layout"}`;
+      case "setPrompt": return op.prompt ? "Update the project prompt" : "Remove the project prompt";
       default: return `${op.type} · ${op.page}`;
     }
   }
   const action = op.operation;
   const page = entryOf(site, op.page);
+  /* A node the proposal itself made is not in the site it started from: it is named from the site as it would be. */
+  const nodeNamed = (id: string | undefined) => {
+    if (!id) return undefined;
+    return (page ? findChild(page.root, id) : undefined) ?? (after ? findChild(entryOf(after, op.page)?.root ?? after.pages[0]!.root, id) : undefined);
+  };
   const id = "node" in action ? action.node : "child" in action && typeof action.child === "string" ? action.child : undefined;
-  const node = id && page ? findChild(page.root, id) : undefined;
+  const node = nodeNamed(id);
   const label = node && isNode(node) ? node.signature : id ?? page?.name ?? "Page";
   if (action.type === "setOption") return `${label}: ${action.name} · ${node && isNode(node) ? String(node.options?.[action.name] ?? "default") : "default"} → ${String(action.value ?? "default")}`;
   if (action.type === "setText") return `${label}: change text to “${action.text}”`;
-  if (action.type === "wrap") return `Wrap ${action.children.length} layers in ${action.container.signature}`;
+  if (action.type === "wrap") return `Wrap ${action.children.length} ${action.children.length === 1 ? "layer" : "layers"} in ${action.container.signature}`;
   if (action.type === "remove") return `Remove ${label}`;
   if (action.type === "move") return `Move ${label}`;
   if (action.type === "unwrap") return `Unwrap ${label}`;

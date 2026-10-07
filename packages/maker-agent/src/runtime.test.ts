@@ -1,9 +1,10 @@
 import { describe, expect, it, vi } from "vitest";
 import { createAgentService } from "@skryensya/ai-compiler/agent";
 import { asCompiledPair } from "@skryensya/ai-compiler/artifact";
-import { createSite, counterIds, fromUsageTree, makerContext, findNode, childrenOf, commitSite, startHistory, undo } from "@skryensya/maker-model";
+import { createSite, counterIds, fromUsageTree, siteFromTemplate, makerContext, findNode, childrenOf, commitSite, startHistory, undo } from "@skryensya/maker-model";
 import index from "../../../artifacts/ai-index.json" with { type: "json" };
 import manifest from "../../../artifacts/ai-manifest.json" with { type: "json" };
+import templates from "../../../artifacts/templates.json" with { type: "json" };
 import { runAgent, type AgentEvent } from "./runtime.js";
 import { createMakerTools } from "./tools.js";
 import type { ProviderAdapter, ProviderReply } from "./providers.js";
@@ -151,38 +152,15 @@ describe("layout guidance for the embedded agent", () => {
   });
 });
 
-describe("reading a website to clone it", () => {
-  it("teaches cloning: read first, rebuild with the kit, never copy markup", async () => {
+describe("the agent never asks", () => {
+  it("has no tool to ask with, decides instead, and still never invents content", async () => {
     const { MAKER_SYSTEM_PROMPT } = await import("./system-prompt.js");
-    for (const word of ["maker_read_site", "never reproduce the", "likelyScripted"]) expect(MAKER_SYSTEM_PROMPT).toContain(word);
-  });
-
-  it("hands the model the server's summary, and its failure as a refusal it can answer", async () => {
-    const seen: string[] = [];
-    const ok = createMakerTools(site, context, service, undefined, undefined, async (url) => { seen.push(url); return { title: "Acme", sections: [] }; });
-    expect(await ok.execute("maker_read_site", { url: "https://acme.test/" })).toEqual({ title: "Acme", sections: [] });
-    expect(seen).toEqual(["https://acme.test/"]);
-    const down = createMakerTools(site, context, service, undefined, undefined, async () => { throw new Error("That address is not public."); });
-    expect(await down.execute("maker_read_site", { url: "https://acme.test/" })).toEqual({ refused: "That address is not public." });
-    expect(await createMakerTools(site, context, service).execute("maker_read_site", { url: "https://acme.test/" })).toEqual({ refused: "Reading websites is not available here." });
-    expect((await down.execute("maker_read_site", { url: "not a url" }) as { refused: string }).refused).toBe("Malformed tool arguments.");
-  });
-});
-
-describe("the agent asks, but not for everything", () => {
-  it("can ask, is told to do it rarely, and still never invents content", async () => {
-    const { MAKER_SYSTEM_PROMPT } = await import("./system-prompt.js");
-    expect(MAKER_SYSTEM_PROMPT).toContain("ASK RARELY");
+    expect(MAKER_SYSTEM_PROMPT).toContain("DO NOT ASK, DECIDE");
     expect(MAKER_SYSTEM_PROMPT).toContain("NEVER INVENT");
     expect(MAKER_SYSTEM_PROMPT).toContain("FINISH THE JOB");
-    const tools = createMakerTools(site, context, service);
-    const ask = tools.specs.find((spec: { name: string }) => spec.name === "ask_user") as { description: string } | undefined;
-    expect(ask?.description.startsWith("RARELY.")).toBe(true);
-    expect(await tools.execute("ask_user", { questions: [{ title: "Audience", recommended: "Developers" }] })).toMatchObject({ asked: true });
+    expect(createMakerTools(site, context, service).specs.map((spec) => spec.name)).not.toContain("ask_user");
     const { BRIEF_SYSTEM_PROMPT } = await import("./brief.js");
-    /* The briefing step asks only when a build would be a coin flip, never for copy that can be a placeholder. */
-    expect(BRIEF_SYSTEM_PROMPT).toContain("ASK LITTLE");
-    expect(BRIEF_SYSTEM_PROMPT).toContain("Never ask for copy, prices, names or numbers");
+    expect(BRIEF_SYSTEM_PROMPT).toContain("NEVER INVENT, NEVER ASK");
   });
 });
 
@@ -204,9 +182,110 @@ describe("centered layouts", () => {
   });
 });
 
-describe("cloning keeps the page's architecture", () => {
-  it("plans from the section roles, copies the real content and heading levels, and never invents", async () => {
-    const { MAKER_SYSTEM_PROMPT } = await import("./system-prompt.js");
-    for (const word of ["INFORMATION ARCHITECTURE", "PLAN from structure", "ONE card per item", "Keep the heading levels of outline", "Never write copy the original does not have"]) expect(MAKER_SYSTEM_PROMPT).toContain(word);
+describe("a refused proposal", () => {
+  const refused = { text: "", calls: [{ id: "1", name: "maker_try", arguments: JSON.stringify({ operations: [{ type: "page", page: site.pages[0]!.id, operations: buttons.map(child => ({ type: "remove", child })) }] }) }] };
+  const claim = { text: "I proposed a landing page.", calls: [] };
+
+  it("is never taken for done: the model is told nothing was proposed, and tries again", async () => {
+    const adapter = scripted([refused, claim, { text: "", calls: [{ id: "2", name: "maker_try", arguments: JSON.stringify({ operations }) }] }, { text: "Wrapped.", calls: [] }]);
+    const events = await collect(adapter);
+    expect(events).toContainEqual(expect.objectContaining({ type: "attempt", ok: false }));
+    const retry = vi.mocked(adapter.complete).mock.calls[3]![2].find((m) => m.role === "user" && m.content.includes("notProposed"));
+    expect(retry).toBeDefined();
+    expect(events.at(-1)).toMatchObject({ type: "done", text: "Wrapped.", proposal: { revision: 3 } });
+  });
+
+  it("ends saying what was refused, never with the model's claim, when retrying does not help", async () => {
+    const adapter = scripted([refused, claim, refused, claim, refused, claim]);
+    const done = (await collect(adapter)).at(-1);
+    expect(done).toMatchObject({ type: "done" });
+    expect(done).not.toHaveProperty("proposal");
+    expect((done as { text: string }).text).toMatch(/^No changes were proposed: Maker refused the last attempt \(/);
+  });
+});
+
+describe("nothing built is lost to an error", () => {
+  const accepted = { text: "", calls: [{ id: "1", name: "maker_try", arguments: JSON.stringify({ operations }) }] };
+  const refused = { text: "", calls: [{ id: "2", name: "maker_try", arguments: JSON.stringify({ operations: [{ type: "page", page: site.pages[0]!.id, operations: buttons.map(child => ({ type: "remove", child })) }] }) }] };
+  function failingAfter(replies: ProviderReply[], error = new Error("Provider unavailable or timed out.")): ProviderAdapter {
+    const adapter = scripted(replies);
+    const complete = adapter.complete;
+    let calls = 0;
+    adapter.complete = vi.fn(async (...args: Parameters<ProviderAdapter["complete"]>) => { if (++calls > replies.length + 1) throw error; return complete(...args); });
+    return adapter;
+  }
+
+  it("hands over the accepted batch when the provider fails afterwards, waiting for review", async () => {
+    const events = await collect(failingAfter([accepted]));
+    expect(events.at(-1)).toMatchObject({ type: "done", partial: true, proposal: { revision: 3, operations: [expect.anything()] } });
+    expect((events.at(-1) as { text: string }).text).toContain("Provider unavailable or timed out.");
+  });
+
+  it("keeps an accepted batch when a later one is refused and never fixed", async () => {
+    const claim = { text: "I proposed it.", calls: [] };
+    const events = await collect(scripted([accepted, refused, claim, refused, claim, refused, claim]));
+    expect(events.at(-1)).toMatchObject({ type: "done", partial: true, proposal: { operations: [expect.anything()] } });
+  });
+
+  it("keeps the last draft that validated while it streamed, when the stream breaks", async () => {
+    const args = JSON.stringify({ operations });
+    const adapter: ProviderAdapter = {
+      complete: async () => editBrief,
+      stream: async (_c, _s, _m, _t, _signal, on) => {
+        on.callStart?.({ id: "s", name: "maker_try" });
+        on.callArgs?.("s", args);
+        throw new Error("Provider stream was interrupted.");
+      },
+    };
+    const events = await collect(adapter);
+    expect(events.some((event) => event.type === "draft")).toBe(true);
+    expect(events.at(-1)).toMatchObject({ type: "done", partial: true, proposal: { revision: 3 } });
+  });
+
+  it("discards it when the person presses Stop", async () => {
+    const controller = new AbortController();
+    const adapter = scripted([accepted]);
+    const complete = adapter.complete;
+    let calls = 0;
+    adapter.complete = vi.fn(async (...args: Parameters<ProviderAdapter["complete"]>) => { if (++calls === 3) { controller.abort(); throw new Error("Cancelled."); } return complete(...args); });
+    await expect(collect(adapter, controller.signal)).rejects.toThrow();
+  });
+});
+
+describe("the steps of a turn", () => {
+  it("show planning, writing, Maker's check, and the back and forth of a refused batch", async () => {
+    const refused = { text: "", calls: [{ id: "2", name: "maker_try", arguments: JSON.stringify({ operations: [{ type: "page", page: site.pages[0]!.id, operations: buttons.map(child => ({ type: "remove", child })) }] }) }] };
+    const adapter = scripted([refused, { text: "", calls: [{ id: "1", name: "maker_try", arguments: JSON.stringify({ operations }) }] }, { text: "Wrapped.", calls: [] }]);
+    const steps = (await collect(adapter)).flatMap((event) => (event.type === "step" && event.state !== "active" ? [`${event.step}:${event.state}`] : []));
+    expect(steps).toEqual(["plan:done", "check:failed", "check:done"]);
+  });
+});
+
+describe("the project prompt", () => {
+  it("is context for every request: in the system prompt and the brief's input, never a message of the conversation", async () => {
+    const adapter = scripted([{ text: "Done.", calls: [] }]);
+    const prompted = { ...site, prompt: "Northstar is an operations console for on-call engineers." };
+    for await (const _ of runAgent({ connection, site: prompted, context, content: "Put these next to each other.", service, adapter, signal: new AbortController().signal })) { /* consume */ }
+    const calls = vi.mocked(adapter.complete).mock.calls;
+    const [briefCall, buildCall] = [calls[0]!, calls.at(-1)!];
+    expect(buildCall[1]).toContain("THE PROJECT.");
+    expect(buildCall[1]).toContain("Northstar is an operations console");
+    expect(JSON.parse(briefCall[2][0]!.content).project).toContain("Northstar");
+    expect(buildCall[2].some((m) => m.content.includes("Northstar"))).toBe(false);
+  });
+});
+
+describe("a page inside a layout", () => {
+  it("shows the model the layout and its id however long the page is, so the rail and the header can be addressed", async () => {
+    const shell = (templates as unknown as { templates: { id: string; locales: Record<string, { title: string; tree: never }> }[] }).templates.find((t) => t.id === "app-shell")!.locales.es!;
+    const made = siteFromTemplate(shell.tree, { pageName: shell.title, sourceHash: "hash", newId: counterIds("t") });
+    const long = { ...made, pages: [{ ...made.pages[0]!, root: { ...made.pages[0]!.root, attrs: { "data-filler": "x".repeat(20_000) } } }] };
+    const on = makerContext(long, { id: "p", revision: 1 }, { page: long.pages[0]!.id, selectedIds: [], width: "fit", scheme: "light", contrast: false, density: "default", mode: "edit" });
+    const adapter = scripted([{ text: "Done.", calls: [] }]);
+    for await (const _ of runAgent({ connection, site: long, context: on, content: "add a user menu to the sidebar", service, adapter, signal: new AbortController().signal })) { /* consume */ }
+    const request = vi.mocked(adapter.complete).mock.calls.at(-1)![2].find((m) => m.role === "user" && m.content.includes('"pageOutline"'))!;
+    const outline = JSON.parse(request.content).pageOutline as string;
+    expect(outline).toContain(`layout ${made.layouts![0]!.id}`);
+    expect(outline).toContain("sidebar/Sidebar");
   });
 });

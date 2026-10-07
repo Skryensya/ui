@@ -57,23 +57,69 @@ export type AgentResolved<T> = { readonly ok: true; readonly value: T } | { read
 /** The operations an agent's request stands for, identities minted, or why it cannot stand for any. */
 export function resolveAgentOperations(site: MakerSite, input: readonly AgentSiteOperation[], newId: IdFactory): AgentResolved<readonly SiteOperation[]> {
   const out: SiteOperation[] = [];
+  /* What this batch itself creates, by name and path: a page added here is edited here, and the model cannot know the identity minted for it. */
+  const created = new Map<string, string>();
+  const known = (id: string) => entryOf(site, id) !== undefined || [...created.values()].includes(id);
+  const refer = (value: string | undefined, kind: "page" | "layout"): AgentResolved<string> => {
+    if (value === undefined) return { ok: false, reason: `Name the ${kind}.` };
+    if (known(value)) return { ok: true, value };
+    const key = value.trim().toLowerCase();
+    const made = created.get(key);
+    if (made) return { ok: true, value: made };
+    const matches = [...site.pages.map((entry) => ({ id: entry.id, name: entry.name, path: entry.path })), ...(site.layouts ?? []).map((entry) => ({ id: entry.id, name: entry.name, path: "" }))].filter(
+      (entry) => entry.name.toLowerCase() === key || (entry.path !== "" && entry.path.toLowerCase() === key),
+    );
+    if (matches.length === 1) return { ok: true, value: matches[0]!.id };
+    const have = [...site.pages.map((entry) => `${entry.id} "${entry.name}" ${entry.path}`), ...(site.layouts ?? []).map((entry) => `${entry.id} "${entry.name}" (layout)`), ...[...created].filter(([key]) => !key.startsWith("/")).map(([name, id]) => `${id} "${name}" (added in this batch)`)];
+    return { ok: false, reason: `No page or layout "${value}". Use an id, a name or a path. Available: ${have.join("; ") || "none"}.` };
+  };
   for (const operation of input) {
     switch (operation.type) {
       case "page": {
-        if (!entryOf(site, operation.page)) return { ok: false, reason: `No page or layout "${operation.page}".` };
+        const target = refer(operation.page, "page");
+        if (!target.ok) return target;
         for (const each of operation.operations) {
           const resolved = resolvePageOperation(each, newId);
           if (!resolved.ok) return resolved;
-          out.push({ type: "edit", page: operation.page, operation: resolved.value });
+          out.push({ type: "edit", page: target.value, operation: resolved.value });
         }
         break;
       }
-      case "addPage":
-        out.push({ type: "addPage", page: emptyPage(newId(), operation.name, operation.path, newId), index: operation.index });
+      case "addPage": {
+        const page = emptyPage(newId(), operation.name, operation.path, newId);
+        created.set(operation.name.trim().toLowerCase(), page.id);
+        created.set(operation.path.trim().toLowerCase(), page.id);
+        out.push({ type: "addPage", page, index: operation.index });
         break;
+      }
       case "addLayout": {
         const id = newId();
+        created.set(operation.name.trim().toLowerCase(), id);
         out.push({ type: "addLayout", layout: starterLayout(id, operation.name, newId), ...(operation.makeDefault ? { makeDefault: true } : {}) });
+        break;
+      }
+      case "removePage":
+      case "renamePage":
+      case "setPagePath":
+      case "movePage": {
+        const target = refer(operation.page, "page");
+        if (!target.ok) return target;
+        out.push({ ...operation, page: target.value });
+        break;
+      }
+      case "removeLayout":
+      case "renameLayout": {
+        const target = refer(operation.layout, "layout");
+        if (!target.ok) return target;
+        out.push({ ...operation, layout: target.value });
+        break;
+      }
+      case "setPageLayout": {
+        const target = refer(operation.page, "page");
+        if (!target.ok) return target;
+        const layout = operation.layout === undefined || operation.layout === "none" ? { ok: true as const, value: operation.layout } : refer(operation.layout, "layout");
+        if (!layout.ok) return layout;
+        out.push({ ...operation, page: target.value, ...(layout.value !== undefined ? { layout: layout.value } : {}) });
         break;
       }
       default:

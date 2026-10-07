@@ -4,7 +4,7 @@ import { listTemplates, templateSite, type TemplateEntry, type TemplateLocale } 
 import { Button } from "@skryensya/react/button";
 import { TileButton, TileContent } from "@skryensya/react/tile";
 import { Icon } from "@skryensya/react/icon";
-import { Input } from "@skryensya/react/input";
+import { Input, Textarea } from "@skryensya/react/input";
 import { FormField } from "@skryensya/react/form-field";
 import { Heading, Text } from "@skryensya/react/typography";
 import { Inline, Stack } from "@skryensya/react/layout";
@@ -27,7 +27,7 @@ export function ProjectsPanel({ workspace, onClose }: { workspace: Workspace; on
   const create = async () => {
     const trimmed = name.trim();
     if (!trimmed) return;
-    await workspace.create(trimmed);
+    if (!(await workspace.create(trimmed))) return;
     setName("");
     onClose?.();
   };
@@ -133,17 +133,27 @@ function TemplateGallery({ workspace, onCreated }: { workspace: Workspace; onCre
   const [locale, setLocale] = useState<TemplateLocale>("es");
   const [templates, setTemplates] = useState<TemplateEntry[]>([]);
   const [busy, setBusy] = useState<string>();
+  /* A template is chosen first and made second: in between, its prompt for Maker AI can be read and made this project's own. */
+  const [chosen, setChosen] = useState<TemplateEntry>();
+  const [prompt, setPrompt] = useState("");
 
   useEffect(() => {
     if (open) void listTemplates(locale).then(setTemplates);
   }, [open, locale]);
+  useEffect(() => { setChosen(undefined); }, [locale]);
 
+  const choose = (template: TemplateEntry) => { setChosen(template); setPrompt(template.prompt ?? ""); };
   const start = async (id: string) => {
     setBusy(id);
-    const opened = await templateSite(id, locale);
-    if (opened) await workspace.create(opened.title, opened.site);
-    setBusy(undefined);
-    onCreated?.();
+    try {
+      const opened = await templateSite(id, locale, prompt);
+      /* Kept open on a failure, with what was typed: the error says why above, and Create can be pressed again. */
+      if (!opened || !(await workspace.create(opened.title, opened.site))) return;
+      setChosen(undefined);
+      onCreated?.();
+    } finally {
+      setBusy(undefined);
+    }
   };
 
   return (
@@ -181,7 +191,20 @@ function TemplateGallery({ workspace, onCreated }: { workspace: Workspace; onCre
                 ]}
               />
             </FormField>
-            {templates.length === 0 ? (
+            {chosen ? (
+              <section className="maker-templates__chosen" aria-label={`New project from ${chosen.title}`}>
+                <Stack gap="sm">
+                  <Text weight="emphasis">{chosen.title}</Text>
+                  <FormField label="Prompt for Maker AI" hint="Maker AI reads this with every request in this project: what the product is, who uses it, the tone. Edit it to describe yours; you can change it later from Maker AI.">
+                    <Textarea rows={7} value={prompt} maxLength={4000} onChange={(event) => setPrompt(event.currentTarget.value)} />
+                  </FormField>
+                  <Inline gap="sm">
+                    <Button size="sm" tone="accent" disabled={busy !== undefined} onClick={() => void start(chosen.id)}>{busy === chosen.id ? "Creating…" : "Create project"}</Button>
+                    <Button size="sm" variant="ghost" disabled={busy !== undefined} onClick={() => setChosen(undefined)}>Back to templates</Button>
+                  </Inline>
+                </Stack>
+              </section>
+            ) : templates.length === 0 ? (
               <Text size="sm" tone="secondary">
                 Loading templates…
               </Text>
@@ -189,13 +212,13 @@ function TemplateGallery({ workspace, onCreated }: { workspace: Workspace; onCre
               <ul className="maker-templates__list" aria-label="Templates">
                 {templates.map((template) => (
                   <li key={template.id}>
-                    <Button className="maker-templates__card" variant="ghost" size="sm" disabled={busy !== undefined} onClick={() => void start(template.id)}>
+                    <Button className="maker-templates__card" variant="ghost" size="sm" disabled={busy !== undefined} onClick={() => choose(template)}>
                       <span className="maker-templates__thumb" aria-hidden="true">
                         {(["light", "dark"] as const).map((scheme) => (
                           <img key={scheme} className={`maker-templates__thumb-image maker-templates__thumb-image--${scheme}`} src={`/template-thumbnails/${template.id}.${locale}.${scheme}.png`} alt="" loading="lazy" draggable={false} onError={(event) => (event.currentTarget.hidden = true)} />
                         ))}
                       </span>
-                      <span className="maker-projects__name">{busy === template.id ? "Creating…" : template.title}</span>
+                      <span className="maker-projects__name">{template.title}</span>
                       <span className="maker-projects__meta">{template.description}</span>
                     </Button>
                   </li>

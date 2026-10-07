@@ -11,6 +11,7 @@ import { treeStory, type Meta, type StoryObj } from "../tree-story";
 export default { title: "Components/Surfaces & Collections/Message", tags: ["autodocs"] } satisfies Meta;
 
 export const Playground: StoryObj = treeStory(demos.messagePlaygroundTree);
+export const Group: StoryObj = treeStory(demos.messageGroupTree);
 export const Writing: StoryObj = treeStory(demos.messageWritingTree);
 export const Reaction: StoryObj = treeStory(demos.messageReactionTree);
 export const Actions: StoryObj = treeStory(demos.messageActionsTree);

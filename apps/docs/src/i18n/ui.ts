@@ -148,6 +148,8 @@ import { treeViewMessages } from "./messages/components/tree-view";
 import { treegridMessages } from "./messages/components/treegrid";
 import { userSelectMessages } from "./messages/components/user-select";
 import { wrapperMessages } from "./messages/components/wrapper";
+import { appShellMessages } from "./messages/components/app-shell";
+import { layoutContainerMessages } from "./messages/components/layout-container";
 import { foundationsMessages } from "./messages/foundations";
 import { appearanceMessages } from "./messages/appearance";
 import { indexMessages } from "./messages/index";
@@ -158,6 +160,7 @@ import { releaseNotesMessages } from "./messages/release-notes";
 import { scrollbarMessages } from "./messages/scrollbar";
 import { stateButtonMessages } from "./messages/components/state-button";
 import { stateLayerMessages } from "./messages/state-layer";
+import { catalogMessages } from "./messages/catalog";
 import { templatesMessages } from "./messages/templates";
 import { typographyMessages } from "./messages/components/typography";
 import { vaulMessages } from "./messages/vaul";
@@ -299,6 +302,8 @@ export const ui = {
     ...treegridMessages.es,
     ...userSelectMessages.es,
     ...wrapperMessages.es,
+    ...appShellMessages.es,
+    ...layoutContainerMessages.es,
     ...foundationsMessages.es,
     ...appearanceMessages.es,
     ...indexMessages.es,
@@ -308,6 +313,7 @@ export const ui = {
     ...releaseNotesMessages.es,
     ...scrollbarMessages.es,
     ...stateLayerMessages.es,
+    ...catalogMessages.es,
     ...templatesMessages.es,
     ...vaulMessages.es,
   },
@@ -445,6 +451,8 @@ export const ui = {
     ...treegridMessages.en,
     ...userSelectMessages.en,
     ...wrapperMessages.en,
+    ...appShellMessages.en,
+    ...layoutContainerMessages.en,
     ...foundationsMessages.en,
     ...appearanceMessages.en,
     ...indexMessages.en,
@@ -454,6 +462,7 @@ export const ui = {
     ...releaseNotesMessages.en,
     ...scrollbarMessages.en,
     ...stateLayerMessages.en,
+    ...catalogMessages.en,
     ...templatesMessages.en,
     ...vaulMessages.en,
   },

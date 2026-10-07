@@ -1560,7 +1560,7 @@ export const questionnaireContract = {
                   },
                   {
                     element: "textarea",
-                    also: ["sk-input", "sk-input--textarea"],
+                    also: ["sk-input"],
                     name: "text",
                     whenGiven: "textLines",
                     options: ["name", "textPlaceholder", "textLines"],
@@ -1577,7 +1577,7 @@ export const questionnaireContract = {
                    */
                   {
                     element: "textarea",
-                    also: ["sk-input", "sk-input--textarea"],
+                    also: ["sk-input"],
                     name: "text",
                     whenMissing: ["textLines", "choices", "control", "textType"],
                     options: ["name", "textPlaceholder"],

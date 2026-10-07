@@ -7,25 +7,6 @@ import type { Translate } from "../../i18n";
  * new link.
  */
 
-/**
- * The phone's stand-in for whatever the Navbar folds away. Icon-only, so it carries its own name;
- * `template-narrow-only` (site.css) shows it only when the template's frame is phone-narrow, and
- * the links it replaces carry `template-wide-only`.
- */
-export const menuButton = (t: Translate): UsageTree => ({
-  contract: "button",
-  signature: "Button.action",
-  options: { variant: "ghost", iconOnly: true },
-  attrs: { "aria-label": t("demo.shared.menu"), class: "template-narrow-only" },
-  children: { contract: "icon", signature: "Icon", options: { name: "menu" } },
-});
-
-/** Marks a node as desktop-width only (site.css `.template-wide-only`). */
-export const wideOnly = (node: UsageTree): UsageTree => ({
-  ...node,
-  attrs: { ...node.attrs, class: "template-wide-only" },
-});
-
 const footerLink = (label: string, href: string): UsageTree => ({
   contract: "typography",
   signature: "Link",

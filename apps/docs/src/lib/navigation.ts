@@ -95,7 +95,7 @@ export type NavigationSection = {
   groups: readonly NavigationGroup[];
 };
 
-export type NavigationSectionId = "foundations" | "components" | "templates";
+export type NavigationSectionId = "foundations" | "components" | "catalog" | "templates";
 
 /** Component inventory. The catalog groups this single source by task below. */
 const componentItems = [
@@ -833,6 +833,11 @@ const componentItems = [
   { href: "/vaul", label: "Vaul", aliases: ["drawer pattern", "sheet"] },
   { href: "/components/wrapper", label: "Wrapper", aliases: ["container", "contenedor", "envoltorio"] },
   {
+    href: "/components/app-shell",
+    label: "AppShell",
+    aliases: ["app shell", "page shell", "layout", "frame", "marco", "main", "esqueleto de página", "shell de aplicación"],
+  },
+  {
     href: "/components/breadcrumb",
     label: "Breadcrumb",
     aliases: ["migas de pan", "ruta jerárquica", "ruta jerarquica"],
@@ -1167,6 +1172,7 @@ const allComponentNavigation = [
     group: "group.componentLayout",
     blurb: "group.componentLayout.blurb",
     items: componentGroupItems(
+      "/components/app-shell",
       "/components/box",
       "/components/footer",
       "/components/grid",
@@ -1322,6 +1328,7 @@ export const globalNavigation = [
   { href: "/", label: "nav.home" },
   { href: "/foundations", label: "nav.foundations" },
   { href: "/components", label: "nav.components" },
+  { href: "/catalog", label: "nav.catalog" },
   { href: "/templates", label: "nav.templates" },
   { href: "/presets", label: "nav.presets" },
 ] satisfies readonly NavigationItem[];

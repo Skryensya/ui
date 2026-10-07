@@ -1,7 +1,7 @@
 import { useMemo, useState } from "react";
 import { discover } from "@skryensya/ai-compiler/discover";
 import type { UsageTree } from "@skryensya/core/usage-tree";
-import { snippets } from "@skryensya/snippets";
+import { library } from "@skryensya/examples";
 import { SectionPreview } from "./SectionPreview";
 import { Icon } from "@skryensya/react/icon";
 import { Details } from "@skryensya/react/details";
@@ -152,7 +152,7 @@ export function Palette({ maker, drag }: { maker: Maker; drag: Drag }) {
 
   /*
    * THE SECTIONS: the Maker's own blocks (nav, features, pricing, testimonials, FAQ, call to action, form, footer...) and then the
-   * published snippets, heroes first. Each is a whole piece of a page; what fits the selection is offered, and a search narrows by
+   * published examples, heroes first. Each is a whole piece of a page; what fits the selection is offered, and a search narrows by
    * name and description. Grouped by what the section is for, so "I need a pricing table" is one heading away.
    */
   const [sectionQuery, setSectionQuery] = useState("");
@@ -166,13 +166,17 @@ export function Palette({ maker, drag }: { maker: Maker; drag: Drag }) {
   const sectionGroups = useMemo(() => {
     type Entry = { id: string; name: string; description: string; category: string; tree: UsageTree };
     const fromBlocks: Entry[] = blocks.map((block) => ({ id: `block:${block.id}`, name: block.name, description: block.description, category: block.category, tree: block.tree }));
-    const fromSnippets: Entry[] = snippets.map((snippet) => ({
-      id: `snippet:${snippet.id}`,
-      name: snippet.id.replace(/-/g, " ").replace(/^./, (letter) => letter.toUpperCase()),
-      description: snippet.intent,
-      category: snippet.id.startsWith("hero") ? "Heroes" : "More examples",
-      tree: snippet.tree as UsageTree,
-    }));
+    /* A use that exists to sit inside a composition is offered inside it, not as a section of its own. */
+    const fromSnippets: Entry[] = library
+      .entries("en")
+      .filter((example) => example.catalog)
+      .map((example) => ({
+        id: `snippet:${example.id}`,
+        name: example.title,
+        description: example.purpose,
+        category: example.id.startsWith("hero") ? "Heroes" : "More examples",
+        tree: example.tree as UsageTree,
+      }));
     const needle = sectionQuery.trim().toLowerCase();
     const fits = [...fromBlocks, ...fromSnippets]
       .filter((entry) => !needle || `${entry.name} ${entry.description} ${entry.category}`.toLowerCase().includes(needle))

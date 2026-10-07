@@ -15,6 +15,7 @@ export function QuickToolbar({
   panels,
   panelWidths = { left: 272, right: 320 },
   openInsertPanel,
+  askMaker,
   onPlay,
   top = "10px",
   rightDocked = panels.right,
@@ -23,6 +24,8 @@ export function QuickToolbar({
   panels: { left: boolean; right: boolean };
   panelWidths?: { left: number; right: number };
   openInsertPanel: () => void;
+  /** Reveals Maker AI with its composer focused: the selection is already what it is attached to. */
+  askMaker: () => void;
   onPlay: () => void;
   top?: string;
   rightDocked?: boolean;
@@ -34,13 +37,15 @@ export function QuickToolbar({
     "--maker-tools-right": rightDocked ? `${panelWidths.right + 16}px` : "16px",
   } as CSSProperties;
   return (
-    <div className="maker-quick-tools" style={style}>
+    <div className="maker-quick-tools" role="region" aria-label="Canvas tools" style={style}>
       {maker.view.mode === "edit" ? (
         <Toolbar label="Edit actions" className="maker-mode-toolbar">
           <IconButton icon={{ glyph: "insert" }} label="Insert blocks and sections" appearance="tactile" onClick={openInsertPanel} />
           <IconButton icon={{ glyph: "outdent" }} label="Select parent" appearance="tactile" disabled={!selected} onClick={() => selectParent(maker)} />
           <span className="maker-quick-toolbar__separator" aria-hidden="true" />
           <SelectionActionButtons maker={maker} appearance="tactile" />
+          <span className="maker-quick-toolbar__separator" aria-hidden="true" />
+          <IconButton icon={{ glyph: "ai" }} label={selected ? "Ask Maker about this selection" : "Ask Maker about this page"} appearance="tactile" onClick={askMaker} />
         </Toolbar>
       ) : null}
       {maker.view.mode === "edit" && selected && maker.view.selectedIds.length <= 1 ? (

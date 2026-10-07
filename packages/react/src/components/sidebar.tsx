@@ -1,5 +1,5 @@
-import { SIDEBAR_WIDTH_PROPERTY, sidebarEvents, sidebarParts, sidebarWidthPercent, sidebarWidthPreference, type SidebarOptions, type SidebarResizeChangeDetails, type SidebarCollapsedChangeDetails, sidebarContract } from "@skryensya/core/sidebar";
-import { hasCrossedDragThreshold, resolveSplitterKey, splitterDirectionSign } from "@skryensya/core/splitter";
+import { SIDEBAR_WIDTH_PROPERTY, sidebarEvents, sidebarParts, sidebarTowardWider, sidebarWidthPercent, sidebarWidthPreference, type SidebarOptions, type SidebarResizeChangeDetails, type SidebarCollapsedChangeDetails, sidebarContract } from "@skryensya/core/sidebar";
+import { hasCrossedDragThreshold, resolveSplitterKey } from "@skryensya/core/splitter";
 import {
   createContext,
   forwardRef,
@@ -21,7 +21,7 @@ import {
 import { useStoredPreference } from "./storage.js";
 
 /* Derived, never restated: the default lives in the contract. */
-const { appearance: appearanceOption, defaultCollapsed: defaultCollapsedOption } = sidebarContract.options;
+const { appearance: appearanceOption, defaultCollapsed: defaultCollapsedOption, side: sideOption } = sidebarContract.options;
 
 const cx = (base: string, className: string | undefined) => (className ? `${base} ${className}` : base);
 
@@ -71,6 +71,7 @@ export function Sidebar({
   minInlineSize,
   onCollapsedChange,
   onResizeChange,
+  side = sideOption.default,
   storageKey,
   style,
   id,
@@ -117,6 +118,7 @@ export function Sidebar({
         className={cx(sidebarParts.root, className)}
         data-appearance={appearance}
         data-default-collapsed={defaultCollapsed ? "" : undefined}
+        data-side={side}
         data-sk-sidebar=""
         data-state={collapsed ? "collapsed" : "expanded"}
         data-storage-key={storageKey || undefined}
@@ -279,8 +281,9 @@ export const SidebarResizeHandle = forwardRef<HTMLDivElement, SidebarResizeHandl
 
     const towardWider = useCallback(
       () =>
-        splitterDirectionSign(
+        sidebarTowardWider(
           rootRef.current && getComputedStyle(rootRef.current).direction === "rtl" ? "rtl" : "ltr",
+          rootRef.current?.dataset.side,
         ),
       [rootRef],
     );

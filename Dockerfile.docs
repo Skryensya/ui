@@ -32,7 +32,7 @@ COPY packages/mcp/package.json ./packages/mcp/package.json
 COPY packages/phone/package.json ./packages/phone/package.json
 COPY packages/react/package.json ./packages/react/package.json
 COPY packages/vanilla/package.json ./packages/vanilla/package.json
-COPY contracts/snippets/package.json ./contracts/snippets/package.json
+COPY contracts/examples/package.json ./contracts/examples/package.json
 COPY evals/package.json ./evals/package.json
 
 RUN --mount=type=cache,id=pnpm-store,target=/pnpm/store \

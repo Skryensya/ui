@@ -340,6 +340,9 @@ export function resolve(text: string, kind: Kind, ctx: Context, role: string): B
   // `100%` too: a Callout fills whatever holds it, and a component drawn alone has nothing to fill,
   // so it hugs until an instance is stretched.
   if (/^(auto|none|normal|fit-content|max-content|min-content|100%)$/.test(current)) return undefined;
+  // The same for a bound that mixes a length with a percentage (`min(8rem, 40%)`): the percentage is of
+  // the containing block, which a component drawn alone does not have, so there is no one number to draw.
+  if (/%/.test(current) && /\b(min|max|clamp)\(/.test(current)) return undefined;
 
   try {
     const touchesVars = /var\(|light-dark\(|currentcolor/i.test(current);

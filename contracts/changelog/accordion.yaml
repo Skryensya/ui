@@ -9,6 +9,16 @@
 # hash.
 surface: "e038684b11cef48c"
 entries:
+  - date: 2026-10-06
+    kind: bugfix
+    es:
+      title: "El título de la sección de Accordion usa el interlineado real"
+      body: >-
+        El título del summary se medía contra un token de interlineado que no existía y se compensaba con un ajuste. Ahora usa <code>--font-line-height-heading</code> y el ajuste desapareció; el alto del encabezado no cambia de forma visible.
+    en:
+      title: "Accordion's section title uses the real line height"
+      body: >-
+        The summary title was measured against a line-height token that did not exist and was compensated by an override. It now uses <code>--font-line-height-heading</code> and the override is gone; the header height does not visibly change.
   - date: 2026-09-26
     kind: feature
     target: appearance

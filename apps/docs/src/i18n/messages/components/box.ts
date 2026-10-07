@@ -45,6 +45,7 @@ export const boxMessages = {
 
     "box.contract2": "En React, <code>as</code> elige el elemento; <code>surface</code>, <code>border</code> y <code>padding</code> escriben sus atributos.",
 
+    "box.contract3": "<code>show</code> (<code>compact</code> o <code>expanded</code>) deja la caja de un solo lado de los 52rem de su contenedor; <code>paddingExpanded</code> también se mide en el contenedor.",
     "box.contract1": "En HTML, elige el elemento semántico y agrega la clase <code>sk-box</code>.",
     "demo.layoutAnatomy.cellA": "Uno",
     "demo.layoutAnatomy.cellB": "Dos",
@@ -134,6 +135,7 @@ export const boxMessages = {
 
     "box.contract2": "In React, <code>as</code> chooses the element; <code>surface</code>, <code>border</code> and <code>padding</code> write its attributes.",
 
+    "box.contract3": "<code>show</code> (<code>compact</code> or <code>expanded</code>) keeps the box on one side of its container's 52rem; <code>paddingExpanded</code> is measured on the container too.",
     "box.contract1": "In HTML, choose the semantic element and add the <code>sk-box</code> class.",
     "demo.layoutAnatomy.cellA": "One",
     "demo.layoutAnatomy.cellB": "Two",

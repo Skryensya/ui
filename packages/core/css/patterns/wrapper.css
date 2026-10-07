@@ -46,12 +46,13 @@
   .sk-wrapper[data-gutter="xl"] { --sk-wrapper-padding-inline: var(--space-inset-xl); }
 
   /*
-   * EXPANDED OVERRIDES, declared (decision 30). 52rem is `--breakpoint-desktop`
-   * (semantic/_breakpoints.scss), a literal here because a CSS `@media` cannot read a custom
-   * property, the same hand-copy `vaul.css` makes. The plain attribute is the value from the smallest
-   * screen up; the `-expanded` one replaces it from this width up, and only when the author wrote it.
+   * EXPANDED OVERRIDES, declared (decision 30), measured on the nearest query container (decision
+   * 35). 52rem is `--breakpoint-desktop` (semantic/_breakpoints.scss), a literal here because a
+   * container query cannot read a custom property. The plain attribute is the value from the
+   * narrowest container up; the `-expanded` one replaces it from this width up, and only when the
+   * author wrote it.
    */
-  @media (min-width: 52rem) {
+  @container (width >= 52rem) {
     .sk-wrapper[data-gutter-expanded="none"] { --sk-wrapper-padding-inline: 0; }
     .sk-wrapper[data-gutter-expanded="sm"] { --sk-wrapper-padding-inline: var(--space-inset-sm); }
     .sk-wrapper[data-gutter-expanded="md"] { --sk-wrapper-padding-inline: var(--space-inset-md); }

@@ -12,41 +12,21 @@
     "./store": {
       "types": "./src/store.ts",
       "default": "./src/store.ts"
-    },
-    "./publish": {
-      "types": "./src/publish/index.ts",
-      "default": "./src/publish/index.ts"
-    },
-    "./names": {
-      "types": "./src/publish/names.ts",
-      "default": "./src/publish/names.ts"
     }
   },
   "files": [
-    "src",
-    "kit",
-    "kit-dist"
+    "src"
   ],
   "scripts": {
-    "check": "tsc -p tsconfig.json --noEmit && vitest run",
-    "build:kit": "vite build --config kit/vite.config.ts"
+    "check": "tsc -p tsconfig.json --noEmit && vitest run"
   },
   "dependencies": {
-    "@skryensya/ai-compiler": "workspace:*",
-    "@skryensya/core": "workspace:*",
     "@skryensya/maker-model": "workspace:*",
-    "parse5": "^8.0.1",
     "postgres": "^3.4.9"
   },
   "devDependencies": {
-    "@skryensya/icons-lucide": "workspace:*",
-    "@skryensya/vanilla": "workspace:*",
-    "@sveltejs/vite-plugin-svelte": "^7.0.0",
     "@types/node": "catalog:",
-    "sass": "^1.83.0",
-    "svelte": "^5.0.0",
     "typescript": "^5.9.3",
-    "vite": "^8.1.5",
     "vitest": "^4.1.11"
   }
 }

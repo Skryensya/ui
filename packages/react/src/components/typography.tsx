@@ -104,9 +104,9 @@ export type LinkProps = Omit<AnchorHTMLAttributes<HTMLAnchorElement>, "children"
 
 /* Always underlined, the underline is not configurable, because a text link with no permanent
  * non-color cue fails WCAG 1.4.1 (see core/css/components/typography.css). Hover/press/focus come
- * from `sk-interactive` + the state layer, same as every other control. Neutral paint matches prose;
+ * from `sk-interactive` + the state layer, same as every other control. Unset (or `neutral`) paints like prose;
  * pass `tone="accent"` for the brand-colored call-out. */
-export function Link({ children, className, tone = "neutral", ...props }: LinkProps) {
+export function Link({ children, className, tone, ...props }: LinkProps) {
   return (
     <a
       {...props}

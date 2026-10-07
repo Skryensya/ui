@@ -24,6 +24,7 @@ import {
   Undo2,
   Ungroup,
   Component,
+  Sparkles,
   Contrast,
   Files,
   FilePlus2,
@@ -75,6 +76,7 @@ export const makerGlyphs = {
   play: fromLucide(Play),
   "add-page": fromLucide(FilePlus2),
   wrapper: fromLucide(PanelsTopLeft),
+  ai: fromLucide(Sparkles),
 } as const;
 
 export type MakerGlyph = keyof typeof makerGlyphs;

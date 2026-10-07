@@ -1,6 +1,7 @@
 import { mountAccordion } from "@skryensya/vanilla/accordion";
 import { mountAnnotated } from "@skryensya/vanilla/annotation";
 import { mountBackToTop } from "@skryensya/vanilla/back-to-top";
+import { mountExpressiveAvatar } from "@skryensya/vanilla/expressive-avatar";
 import { mountCanvas } from "@skryensya/vanilla/canvas";
 import { mountDialog } from "@skryensya/vanilla/dialog";
 import { mountLightbox } from "@skryensya/vanilla/lightbox";
@@ -86,6 +87,7 @@ const mounts = [
   mountAnnotated,
   mountAppBar,
   mountBackToTop,
+  mountExpressiveAvatar,
   mountBreadcrumb,
   mountButton,
   mountCalendar,
@@ -152,7 +154,7 @@ const mounts = [
 describe("Vanilla public entry points", () => {
   it("publishes the lazy auto-loader and one mount for every regular enhanced module", () => {
     expect(initComponents).toBeTypeOf("function");
-    expect(mounts).toHaveLength(65);
+    expect(mounts).toHaveLength(66);
     expect(mounts.every((mount) => typeof mount === "function")).toBe(true);
   });
 
@@ -195,6 +197,7 @@ describe("Vanilla public entry points", () => {
         mountAnnotated,
         mountAppBar,
         mountBackToTop,
+        mountExpressiveAvatar,
         mountBreadcrumb,
         mountButton,
         mountCalendar,

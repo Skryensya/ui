@@ -6,13 +6,19 @@ import {
   type BoxMeasure,
   type BoxRadius,
   type BoxSurface,
+  type AppShellScroll,
+  type Gap,
+  type GridAlign,
   type GridColumns,
   type GridMinColumn,
   type InlineAlign,
   type InlineBlockStart,
   type InlineJustify,
   type LayoutAlign,
+  type LayoutShow,
+  type MainPadding,
   type Space,
+  type StackJustify,
   type WrapperGutter,
   type WrapperSize,
 } from "@skryensya/core/layout";
@@ -53,6 +59,8 @@ export type BoxProps<Element extends ElementType = "div"> = PolymorphicProps<
     padding?: Space;
     paddingExpanded?: Space;
     radius?: BoxRadius;
+    /** Exists on one side of the expanded line only: `compact` or `expanded`. */
+    show?: LayoutShow;
     surface?: BoxSurface;
   }
 >;
@@ -66,6 +74,7 @@ export function Box<Element extends ElementType = "div">({
   padding = "none",
   paddingExpanded,
   radius,
+  show,
   surface = "none",
   ...props
 }: BoxProps<Element>) {
@@ -80,6 +89,7 @@ export function Box<Element extends ElementType = "div">({
       data-padding={padding}
       data-padding-expanded={paddingExpanded}
       data-radius={radius}
+      data-show={show}
       data-surface={surface}
     />
   );
@@ -165,7 +175,14 @@ export function Footer<Element extends ElementType = "footer">({
 
 export type StackProps<Element extends ElementType = "div"> = PolymorphicProps<
   Element,
-  LayoutChildren & { align?: LayoutAlign; gap?: Space; gapExpanded?: Space }
+  LayoutChildren & {
+    align?: LayoutAlign;
+    gap?: Gap;
+    gapExpanded?: Gap;
+    /** Fill the parent's height and spend the leftover: `center` centres, `between` sends the last child down. */
+    justify?: StackJustify;
+    show?: LayoutShow;
+  }
 >;
 
 export function Stack<Element extends ElementType = "div">({
@@ -174,6 +191,8 @@ export function Stack<Element extends ElementType = "div">({
   className,
   gap = "md",
   gapExpanded,
+  justify,
+  show,
   ...props
 }: StackProps<Element>) {
   const Component = as ?? "div";
@@ -184,6 +203,8 @@ export function Stack<Element extends ElementType = "div">({
       data-align={align}
       data-gap={gap}
       data-gap-expanded={gapExpanded}
+      data-justify={justify}
+      data-show={show}
     />
   );
 }
@@ -194,9 +215,10 @@ export type InlineProps<Element extends ElementType = "div"> = PolymorphicProps<
     align?: InlineAlign;
     blockStart?: InlineBlockStart;
     equal?: boolean;
-    gap?: Space;
-    gapExpanded?: Space;
+    gap?: Gap;
+    gapExpanded?: Gap;
     justify?: InlineJustify;
+    show?: LayoutShow;
     wrap?: boolean;
   }
 >;
@@ -210,6 +232,7 @@ export function Inline<Element extends ElementType = "div">({
   gap = "md",
   gapExpanded,
   justify = "start",
+  show,
   wrap = true,
   ...props
 }: InlineProps<Element>) {
@@ -224,6 +247,7 @@ export function Inline<Element extends ElementType = "div">({
       data-gap={gap}
       data-gap-expanded={gapExpanded}
       data-justify={justify}
+      data-show={show}
       data-wrap={wrap}
     />
   );
@@ -232,29 +256,32 @@ export function Inline<Element extends ElementType = "div">({
 export type GridProps<Element extends ElementType = "div"> = PolymorphicProps<
   Element,
   LayoutChildren & {
+    /** How cells sit in their row: Grid's own `stretch` when absent (`start` under `responsive`). */
+    align?: GridAlign;
     columns?: GridColumns;
-    fill?: boolean;
-    gap?: Space;
-    gapExpanded?: Space;
+    gap?: Gap;
+    gapExpanded?: Gap;
     /** The narrowest lane before the grid drops one; the grid's own width decides the count. */
     minColumn?: GridMinColumn;
     multicol?: boolean;
     responsive?: boolean;
+    show?: LayoutShow;
     "data-multicol"?: string;
     "data-responsive"?: string;
   }
 >;
 
 export function Grid<Element extends ElementType = "div">({
+  align,
   as,
   className,
   columns = 1,
-  fill = false,
   gap = "md",
   gapExpanded,
   minColumn,
   multicol,
   responsive,
+  show,
   "data-multicol": rawMulticol,
   "data-responsive": rawResponsive,
   ...props
@@ -264,13 +291,14 @@ export function Grid<Element extends ElementType = "div">({
     <Component
       {...props}
       className={classes(layoutParts.grid, className)}
+      data-align={align}
       data-columns={columns}
-      data-fill={fill ? "" : undefined}
       data-gap={gap}
       data-gap-expanded={gapExpanded}
       data-min-column={minColumn}
       data-multicol={multicol === true ? "" : multicol === false ? undefined : rawMulticol}
       data-responsive={responsive === true ? "" : responsive === false ? undefined : rawResponsive}
+      data-show={show}
     />
   );
 }
@@ -292,23 +320,50 @@ export function LayoutGrid<Element extends ElementType = "div">({
 }
 
 /**
- * The application shell: header across the top, a rail down the side, the work area filling the rest, an
- * optional footer. Its children are placed by what they are (header, aside, main, footer); there is no
- * option to set. See `AppShell` in `@skryensya/core/layout`.
+ * The application shell: header across the top, rails down the sides, the work area filling the rest, an
+ * optional footer. Its children are placed by what they are and where they stand (a Sidebar after the Main is
+ * the end rail). Below the expanded line it is one column and the rails are not drawn. See `AppShell` in
+ * `@skryensya/core/layout`.
  */
-export type AppShellProps = ComponentPropsWithoutRef<"div">;
+export type AppShellProps = ComponentPropsWithoutRef<"div"> & {
+  /** `screen` (the default, at least a screen tall) or `fit` (as tall as its content). */
+  height?: "screen" | "fit";
+  /** `page` (the default): one document. `regions`: a screen tall, each region scrolling on its own. */
+  scroll?: AppShellScroll;
+  /** The header stays at the top while the page scrolls under it. */
+  stickyHeader?: boolean;
+};
 
-export function AppShell({ className, ...props }: AppShellProps) {
-  return <div {...props} className={classes(layoutGridParts.appShell, className)} />;
+export function AppShell({ className, height, scroll, stickyHeader = false, ...props }: AppShellProps) {
+  return (
+    <div
+      {...props}
+      className={classes(layoutGridParts.appShell, className)}
+      data-height={height}
+      data-scroll={scroll}
+      data-sticky-header={stickyHeader ? "" : undefined}
+    />
+  );
 }
 
 /**
- * The application work-area landmark. It deliberately owns no layout styling and may be empty.
+ * The work-area landmark, and the query container what sits in it is laid out against. Its block inset is
+ * the only spacing it owns; the inline gutter stays the Wrapper's.
  */
-export type MainProps = ComponentPropsWithoutRef<"main">;
+export type MainProps = ComponentPropsWithoutRef<"main"> & {
+  paddingBlock?: MainPadding;
+  paddingBlockExpanded?: MainPadding;
+};
 
-export function Main(props: MainProps) {
-  return <main {...props} />;
+export function Main({ className, paddingBlock, paddingBlockExpanded, ...props }: MainProps) {
+  return (
+    <main
+      {...props}
+      className={classes(layoutGridParts.main, className)}
+      data-padding-block={paddingBlock}
+      data-padding-block-expanded={paddingBlockExpanded}
+    />
+  );
 }
 
 export type WrapperProps<Element extends ElementType = "div"> = PolymorphicProps<

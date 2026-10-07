@@ -1,7 +1,6 @@
 import type { UsageTree } from "@skryensya/core/usage-tree";
 import type { Translate } from "../../i18n";
-import { measured } from "../../lib/measured";
-import { menuButton } from "./shared";
+import { menuDrawer, menuTrigger, shownOn } from "../../lib/template-chrome";
 
 /*
  * DOCUMENTATION SITE. Three columns, and each one answers a different question: the Sidebar says
@@ -28,10 +27,34 @@ const group = (label: string, children: UsageTree[]): UsageTree => ({
   slots: { label, children },
 });
 
+/* One navigation, two places: the rail on a wide screen, the drawer on a phone. */
+const navigation = (t: Translate): UsageTree => ({
+  contract: "nav-list",
+  signature: "NavList",
+  attrs: { "aria-label": t("demo.docsSite.navigation") },
+  children: [
+    group(t("demo.docsSite.groupStart"), [
+      docLink(t("demo.docsSite.linkInstall"), "#instalacion"),
+      docLink(t("demo.docsSite.linkQuickstart"), "#inicio-rapido", true),
+      docLink(t("demo.docsSite.linkTokens"), "#tokens"),
+    ]),
+    group(t("demo.docsSite.groupGuides"), [
+      docLink(t("demo.docsSite.linkTheming"), "#theming"),
+      docLink(t("demo.docsSite.linkForms"), "#formularios"),
+      docLink(t("demo.docsSite.linkA11y"), "#accesibilidad"),
+    ]),
+    group(t("demo.docsSite.groupReference"), [
+      docLink(t("demo.docsSite.linkApi"), "#api"),
+      docLink(t("demo.docsSite.linkChangelog"), "#changelog"),
+    ]),
+  ],
+});
+
 export const docsSiteTree = (t: Translate): UsageTree => ({
   contract: "layout",
-  signature: "Stack",
-  options: { gap: "none" },
+  signature: "AppShell",
+  /* An application frame: the header and the rail stay put while the page under them scrolls. */
+  options: { scroll: "regions" },
   children: [
     {
       contract: "navbar",
@@ -48,197 +71,168 @@ export const docsSiteTree = (t: Translate): UsageTree => ({
              * typed into is a lie the whole pattern is built on avoiding, and the shortcut hint is
              * what tells a reader it is a door rather than a field.
              */
-            {
+            shownOn("expanded", {
               contract: "button",
               signature: "Button.action",
               options: { variant: "soft" },
-              attrs: { class: "template-wide-only" },
               children: [
                 { contract: "icon", signature: "Icon", options: { name: "search", size: "sm" } },
                 t("demo.docsSite.search"),
                 { contract: "kbd", signature: "Kbd", children: "⌘K" },
               ],
-            },
+            }),
             /* The phone's version: the same door, icon-only. A keyboard shortcut means nothing on a
              * touch screen, and the labelled button left the brand wrapping onto two lines. */
-            {
+            shownOn("compact", {
               contract: "button",
               signature: "Button.action",
               options: { variant: "soft", iconOnly: true },
-              attrs: { "aria-label": t("demo.docsSite.search"), class: "template-narrow-only" },
+              attrs: { "aria-label": t("demo.docsSite.search") },
               children: { contract: "icon", signature: "Icon", options: { name: "search" } },
-            },
-            {
+            }),
+            shownOn("expanded", {
               contract: "button",
               signature: "Button.action",
               options: { tone: "accent" },
-              attrs: { class: "template-wide-only" },
               children: t("demo.docsSite.getStarted"),
-            },
-            menuButton(t),
+            }),
+            menuTrigger(t, "docs-menu"),
           ],
         },
       ],
     },
     {
-      contract: "layout",
-      signature: "Stack",
-      options: { gap: "none" },
-      attrs: { class: "app-shell" },
+      contract: "sidebar",
+      signature: "Sidebar",
+      /* On a phone the AppShell does not draw the rail; the Navbar's menu opens the same links in a drawer. */
       children: [
         {
           contract: "sidebar",
-          signature: "Sidebar",
-          /* On a phone the rail folds behind the Navbar's menu button, as the docs site's own does. */
-          attrs: { id: "docs-template-sidebar", class: "template-wide-only" },
+          signature: "SidebarContent",
+          children: navigation(t),
+        },
+        {
+          contract: "sidebar",
+          signature: "SidebarResizeHandle",
+          options: { label: t("demo.docsSite.resize") },
+        },
+      ],
+    },
+    {
+      contract: "layout",
+      signature: "Main",
+      options: { paddingBlock: "lg" },
+      /* The page's own index rides beside the article as a LayoutGrid rail where there is room, and above it where there is not. */
+      children: {
+        contract: "layout",
+        signature: "LayoutGrid",
+        children: [
+        {
+          contract: "layout",
+          signature: "Stack",
+          options: { gap: "md", gapExpanded: "lg" },
           children: [
             {
-              contract: "sidebar",
-              signature: "SidebarContent",
-              children: {
-                contract: "nav-list",
-                signature: "NavList",
-                attrs: { "aria-label": t("demo.docsSite.navigation") },
-                children: [
-                  group(t("demo.docsSite.groupStart"), [
-                    docLink(t("demo.docsSite.linkInstall"), "#instalacion"),
-                    docLink(t("demo.docsSite.linkQuickstart"), "#inicio-rapido", true),
-                    docLink(t("demo.docsSite.linkTokens"), "#tokens"),
-                  ]),
-                  group(t("demo.docsSite.groupGuides"), [
-                    docLink(t("demo.docsSite.linkTheming"), "#theming"),
-                    docLink(t("demo.docsSite.linkForms"), "#formularios"),
-                    docLink(t("demo.docsSite.linkA11y"), "#accesibilidad"),
-                  ]),
-                  group(t("demo.docsSite.groupReference"), [
-                    docLink(t("demo.docsSite.linkApi"), "#api"),
-                    docLink(t("demo.docsSite.linkChangelog"), "#changelog"),
-                  ]),
+              contract: "breadcrumb",
+              signature: "Breadcrumb",
+              options: { label: t("demo.docsSite.breadcrumbLabel"), collapsedLabel: t("kit.showHiddenLevels") },
+              slots: {
+                items: [
+                  { options: { href: "#docs" }, slots: { label: t("demo.docsSite.crumbDocs") } },
+                  {
+                    options: { href: "#empezar" },
+                    slots: { label: t("demo.docsSite.groupStart") },
+                  },
+                  {
+                    options: { current: true },
+                    slots: { label: t("demo.docsSite.linkQuickstart") },
+                  },
                 ],
               },
             },
             {
-              contract: "sidebar",
-              signature: "SidebarResizeHandle",
-              options: { label: t("demo.docsSite.resize") },
+              contract: "typography",
+              signature: "Heading",
+              options: { headingSize: "h1", flush: true },
+              children: t("demo.docsSite.title"),
+            },
+            {
+              contract: "typography",
+              signature: "Text",
+              options: { size: "lg", tone: "secondary" },
+              children: t("demo.docsSite.lede"),
+            },
+            {
+              contract: "callout",
+              signature: "Callout",
+              options: { tone: "info" },
+              slots: {
+                icon: { contract: "icon", signature: "Icon", options: { name: "info" } },
+                title: t("demo.docsSite.calloutTitle"),
+              },
+              children: t("demo.docsSite.calloutBody"),
+            },
+            {
+              contract: "typography",
+              signature: "Heading",
+              options: { headingSize: "h3", flush: true },
+              attrs: { id: "instalar" },
+              children: t("demo.docsSite.sectionInstall"),
+            },
+            {
+              contract: "typography",
+              signature: "Text",
+              children: t("demo.docsSite.sectionInstallBody"),
+            },
+            /*
+             * `Procedure`, and the catalogue decides this one outright: these are instructions
+             * to read and carry out, and `Steps.avoidWhen` names that case by hand: "son
+             * instrucciones para leer y hacer; eso es un Procedure". `OrderedList` was the wrong
+             * answer for the same reason from the other side: it is a list whose ORDER carries
+             * meaning, but its rows have no step anatomy, and `ListItem.leading` only accepts an
+             * `Icon` or an `Avatar.initials`: never a numeral, so the numbers had to be smuggled
+             * in as text the contract does not allow. Procedure draws its own.
+             */
+            {
+              contract: "procedure",
+              signature: "Procedure",
+              children: [
+                {
+                  contract: "procedure",
+                  signature: "ProcedureStep",
+                  slots: { title: t("demo.docsSite.step1") },
+                },
+                {
+                  contract: "procedure",
+                  signature: "ProcedureStep",
+                  slots: { title: t("demo.docsSite.step2") },
+                },
+                {
+                  contract: "procedure",
+                  signature: "ProcedureStep",
+                  slots: { title: t("demo.docsSite.step3") },
+                },
+              ],
+            },
+            {
+              contract: "typography",
+              signature: "Heading",
+              options: { headingSize: "h3", flush: true },
+              attrs: { id: "siguiente" },
+              children: t("demo.docsSite.sectionNext"),
+            },
+            {
+              contract: "typography",
+              signature: "Text",
+              children: t("demo.docsSite.sectionNextBody"),
             },
           ],
         },
         {
-          contract: "layout",
-          signature: "Main",
-          attrs: { class: "app-shell__main" },
-          children: measured({
-            contract: "layout",
-            signature: "Stack",
-            options: { gap: "md", gapExpanded: "lg" },
-            children: [
-              {
-                contract: "breadcrumb",
-                signature: "Breadcrumb",
-                options: { label: t("demo.docsSite.breadcrumbLabel"), collapsedLabel: t("kit.showHiddenLevels") },
-                slots: {
-                  items: [
-                    { options: { href: "#docs" }, slots: { label: t("demo.docsSite.crumbDocs") } },
-                    {
-                      options: { href: "#empezar" },
-                      slots: { label: t("demo.docsSite.groupStart") },
-                    },
-                    {
-                      options: { current: true },
-                      slots: { label: t("demo.docsSite.linkQuickstart") },
-                    },
-                  ],
-                },
-              },
-              {
-                contract: "typography",
-                signature: "Heading",
-                options: { headingSize: "h1", flush: true },
-                children: t("demo.docsSite.title"),
-              },
-              {
-                contract: "typography",
-                signature: "Text",
-                options: { size: "lg", tone: "secondary" },
-                children: t("demo.docsSite.lede"),
-              },
-              {
-                contract: "callout",
-                signature: "Callout",
-                options: { tone: "info" },
-                slots: {
-                  icon: { contract: "icon", signature: "Icon", options: { name: "info" } },
-                  title: t("demo.docsSite.calloutTitle"),
-                },
-                children: t("demo.docsSite.calloutBody"),
-              },
-              {
-                contract: "typography",
-                signature: "Heading",
-                options: { headingSize: "h3", flush: true },
-                attrs: { id: "instalar" },
-                children: t("demo.docsSite.sectionInstall"),
-              },
-              {
-                contract: "typography",
-                signature: "Text",
-                children: t("demo.docsSite.sectionInstallBody"),
-              },
-              /*
-               * `Procedure`, and the catalogue decides this one outright: these are instructions
-               * to read and carry out, and `Steps.avoidWhen` names that case by hand: "son
-               * instrucciones para leer y hacer; eso es un Procedure". `OrderedList` was the wrong
-               * answer for the same reason from the other side: it is a list whose ORDER carries
-               * meaning, but its rows have no step anatomy, and `ListItem.leading` only accepts an
-               * `Icon` or an `Avatar.initials`: never a numeral, so the numbers had to be smuggled
-               * in as text the contract does not allow. Procedure draws its own.
-               */
-              {
-                contract: "procedure",
-                signature: "Procedure",
-                children: [
-                  {
-                    contract: "procedure",
-                    signature: "ProcedureStep",
-                    slots: { title: t("demo.docsSite.step1") },
-                  },
-                  {
-                    contract: "procedure",
-                    signature: "ProcedureStep",
-                    slots: { title: t("demo.docsSite.step2") },
-                  },
-                  {
-                    contract: "procedure",
-                    signature: "ProcedureStep",
-                    slots: { title: t("demo.docsSite.step3") },
-                  },
-                ],
-              },
-              {
-                contract: "typography",
-                signature: "Heading",
-                options: { headingSize: "h3", flush: true },
-                attrs: { id: "siguiente" },
-                children: t("demo.docsSite.sectionNext"),
-              },
-              {
-                contract: "typography",
-                signature: "Text",
-                children: t("demo.docsSite.sectionNextBody"),
-              },
-            ],
-          }, "md"),
-        },
-        /*
-         * The page rail. `Toc`'s host IS an `<aside>`, so it needs no wrapper to be a landmark -
-         * the class only gives it a width and its own scroll inside the shell (site.css).
-         */
-        {
           contract: "toc",
           signature: "Toc",
           options: { title: t("demo.docsSite.onThisPage") },
-          attrs: { class: "docs-template__toc template-wide-only" },
+          attrs: { "data-width": "rail" },
           slots: {
             items: [
               {
@@ -260,7 +254,9 @@ export const docsSiteTree = (t: Translate): UsageTree => ({
             ],
           },
         },
-      ],
+        ],
+      },
     },
+    menuDrawer(t, "docs-menu", navigation(t)),
   ],
 });

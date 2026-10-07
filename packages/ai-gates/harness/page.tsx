@@ -3,7 +3,7 @@ import { flushSync } from "react-dom";
 import { emitMarkup } from "@skryensya/ai-compiler/emit";
 import { mountComponentsWithIcons } from "@skryensya/vanilla/auto";
 import { lucideIcons } from "@skryensya/icons-lucide";
-import { snippets } from "../../../contracts/snippets/index.js";
+import { snippets } from "../../../contracts/examples/index.js";
 import { loadTree, renderTree } from "./react-render.js";
 
 import "@skryensya/core/tokens.scss";

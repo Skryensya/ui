@@ -5,16 +5,12 @@ import { trapModalDialogs } from "@skryensya/core/focus-trap";
 import { useHotkey } from "@skryensya/react/hotkey";
 import { useDrag } from "./drag";
 import { onArrival, useProjectSync } from "./sync";
-import { MAKER_TOUR_ID, MakerTour } from "./tour";
-import { getTourStatus } from "@skryensya/core/tour-controller";
-import type { TourHandle } from "@skryensya/react/tour";
 import { ProjectsPanel } from "./ProjectsPanel";
-import { PublishPanel } from "./PublishPanel";
 import { useWorkspace, type Workspace } from "./workspace";
 import { ExportPanel } from "./ExportPanel";
 import { IconButton } from "./IconButton";
 import { Inspector } from "./Inspector";
-import { childrenOf, composePage, type MakerSite } from "@skryensya/maker-model";
+import { childrenOf, composePage } from "@skryensya/maker-model";
 import type { Draft } from "./ai/draft";
 import { Outline } from "./Outline";
 import { Pages } from "./Pages";
@@ -44,8 +40,6 @@ const AIPanel = lazy(() => import("./ai/Panel").then(module => ({ default: modul
  * THE SHELL: the open projects as tabs, and the one that shows. With nothing open, the list of
  * projects is the whole screen.
  */
-/* Said once per page load, not once per project opened. */
-let tourHinted = false;
 
 export function App() {
   const workspace = useWorkspace();
@@ -112,11 +106,12 @@ function Editor({
   const drag = useDrag(maker.page.root, maker.gesture);
   const sync = useProjectSync(maker, projectId !== LOCAL_PROJECT);
   const [exporting, setExporting] = useState(false);
-  const [publishingOpen, setPublishingOpen] = useState(false);
   const [playing, setPlaying] = useState(false);
   const [aiOpen, setAiOpen] = useState(false);
   const [aiStarted, setAiStarted] = useState(false);
-  const [aiPreview, setAiPreview] = useState<MakerSite>();
+  /* Counts requests to focus the AI composer: a number, so asking twice in a row is two requests. */
+  const [askFocus, setAskFocus] = useState(0);
+  const askMaker = () => { setPanels({ ...panels, right: true }); setAiOpen(true); setAiStarted(true); setAskFocus(n => n + 1); };
   /* The site as Maker AI has written it so far, drawn read-only on the canvas, and where its bar goes. */
   const [aiDraft, setAiDraft] = useState<Draft>();
   const [draftSlot, setDraftSlot] = useState<HTMLElement | null>(null);
@@ -133,17 +128,9 @@ function Editor({
     if (!panels.left) setPanels({ ...panels, left: true });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [maker.projectId]);
-  const rightPanel = projectsOpen ? "Projects" : publishingOpen ? "Publish" : exporting ? "Export" : "Inspector";
-  const rightDocked = panels.right || projectsOpen || publishingOpen || exporting;
+  const rightPanel = projectsOpen ? "Projects" : exporting ? "Export" : "Inspector";
+  const rightDocked = panels.right || projectsOpen || exporting;
   const canvas = useRef<CanvasControls | null>(null);
-  const tour = useRef<TourHandle>(null);
-  /* Once per page load, and only to someone who has never finished, skipped or dismissed it: a line in the
-     notice, never the tour itself (the Tour starts only when asked). */
-  useEffect(() => {
-    if (tourHinted || getTourStatus(MAKER_TOUR_ID) !== "idle") return;
-    tourHinted = true;
-    maker.say("New to Maker? Open Help and choose Take the tour.");
-  }, []);
   const [zoom, setZoom] = useState(1);
 
   /*
@@ -208,19 +195,11 @@ function Editor({
                 setPanels,
                 canvas,
                 zoom,
-                openExport: () => {
-                  setPublishingOpen(false);
-                  setExporting(true);
-                },
-                openPublish: () => {
-                  setExporting(false);
-                  setPublishingOpen(true);
-                },
+                openExport: () => setExporting(true),
                 openInsertPanel: () => {
                   setPanels({ ...panels, left: true });
                   setLeftTab("insert");
                 },
-                startTour: () => tour.current?.restart(),
               }}
             />,
             barSlot,
@@ -289,15 +268,14 @@ function Editor({
           setPanels({ ...panels, left: true });
           setLeftTab("insert");
         }}
+        askMaker={askMaker}
         onPlay={() => setPlaying(true)}
       />
 
-      <MakerTour handle={tour} />
 
       {playing ? createPortal(<PlayPreview maker={maker} onClose={() => setPlaying(false)} />, document.body) : null}
-      {aiPreview ? createPortal(<PlayPreview maker={{ ...maker, site: aiPreview, page: aiPreview.pages.find(p => p.id === maker.page.id) ?? aiPreview.pages[0]! }} label="AI proposal preview" onClose={() => setAiPreview(undefined)} />, document.body) : null}
 
-      {!panels.right && !projectsOpen && !publishingOpen && !exporting ? (
+      {!panels.right && !projectsOpen && !exporting ? (
         <span className="maker-float-toggle maker-float-toggle--right">
           <IconButton icon={{ glyph: "inspect" }} label="Show the inspector" onClick={() => setPanels({ ...panels, right: true })} />
         </span>
@@ -319,19 +297,13 @@ function Editor({
         <div key={rightPanel} id="maker-right-inspector" role={rightPanel === "Inspector" ? "tabpanel" : undefined} aria-labelledby={rightPanel === "Inspector" ? "maker-right-inspector-tab" : undefined} className="maker-panel-swap" hidden={rightPanel === "Inspector" && aiOpen}>
           {projectsOpen ? (
             <ProjectsPanel workspace={workspace} onClose={onCloseProjects} />
-          ) : publishingOpen ? (
-            <PublishPanel maker={maker} sync={sync} onClose={() => setPublishingOpen(false)} onPublished={() => void workspace.refresh()} />
           ) : exporting ? (
-            <ExportPanel
-              maker={maker}
-              onClose={() => setExporting(false)}
-              importAsProject={workspace.mode.kind === "server" ? (name, site) => workspace.create(name, site) : undefined}
-            />
+            <ExportPanel maker={maker} onClose={() => setExporting(false)} />
           ) : (
             <Inspector maker={maker} />
           )}
         </div>
-        <div id="maker-right-ai" className="maker-right-ai" role="tabpanel" aria-labelledby="maker-right-ai-tab" hidden={rightPanel !== "Inspector" || !aiOpen}>{aiStarted && <Suspense fallback={<p role="status">Loading Maker AI…</p>}><AIPanel maker={maker} onPreview={setAiPreview} onDraft={setAiDraft} barSlot={draftSlot} /></Suspense>}</div>
+        <div id="maker-right-ai" className="maker-right-ai" role="tabpanel" aria-labelledby="maker-right-ai-tab" hidden={rightPanel !== "Inspector" || !aiOpen}>{aiStarted && <Suspense fallback={<p role="status">Loading Maker AI…</p>}><AIPanel maker={maker} onDraft={setAiDraft} barSlot={draftSlot} focusRequest={askFocus} /></Suspense>}</div>
       </aside>
       )}
 

@@ -103,8 +103,7 @@ const separator: UsageTree = {
 
 export const settingsTree = (t: Translate): UsageTree => ({
   contract: "layout",
-  signature: "Stack",
-  options: { gap: "none" },
+  signature: "AppShell",
   children: [
     {
       contract: "navbar",
@@ -125,141 +124,135 @@ export const settingsTree = (t: Translate): UsageTree => ({
     },
     {
       contract: "layout",
-      signature: "Stack",
-      options: { gap: "none" },
-      attrs: { class: "page-shell" },
+      signature: "Main",
+      options: { paddingBlock: "lg", paddingBlockExpanded: "xl" },
       children: {
-        contract: "layout",
-        signature: "Main",
-        attrs: { class: "page-shell__main" },
+        contract: "wrapper",
+        signature: "Wrapper",
+        options: { wrapperSize: "md", gutter: "md", gutterExpanded: "lg" },
         children: {
-          contract: "wrapper",
-          signature: "Wrapper",
-          options: { wrapperSize: "md", gutter: "md", gutterExpanded: "lg" },
-          children: {
-            contract: "layout",
-            signature: "Stack",
-            options: { gap: "md", gapExpanded: "lg" },
-            children: [
+          contract: "layout",
+          signature: "Stack",
+          options: { gap: "md", gapExpanded: "lg" },
+          children: [
+            {
+              contract: "layout",
+              signature: "Stack",
+              options: { gap: "xs" },
+              children: [
+                {
+                  contract: "typography",
+                  signature: "Heading",
+                  options: { headingSize: "h2", flush: true },
+                  children: t("demo.settings.title"),
+                },
+                {
+                  contract: "typography",
+                  signature: "Text",
+                  options: { tone: "secondary" },
+                  children: t("demo.settings.lede"),
+                },
+              ],
+            },
+            section(t("demo.settings.profileTitle"), t("demo.settings.profileHint"), [
               {
                 contract: "layout",
-                signature: "Stack",
-                options: { gap: "xs" },
+                signature: "Inline",
+                options: { gap: "md", inlineAlign: "center" },
                 children: [
                   {
-                    contract: "typography",
-                    signature: "Heading",
-                    options: { headingSize: "h2", flush: true },
-                    children: t("demo.settings.title"),
+                    contract: "avatar",
+                    signature: "Avatar.initials",
+                    options: { name: "Helena Park", size: "lg" },
+                    children: "HP",
                   },
                   {
-                    contract: "typography",
-                    signature: "Text",
-                    options: { tone: "secondary" },
-                    children: t("demo.settings.lede"),
+                    contract: "button",
+                    signature: "Button.action",
+                    options: { size: "sm" },
+                    children: [
+                      { contract: "icon", signature: "Icon", options: { name: "upload", size: "sm" } },
+                      t("demo.settings.changePhoto"),
+                    ],
                   },
                 ],
               },
-              section(t("demo.settings.profileTitle"), t("demo.settings.profileHint"), [
-                {
+              field(t("demo.settings.name"), "name", "Helena Park"),
+              field(t("demo.settings.email"), "email", "helena@lumen.dev", "email"),
+              {
+                contract: "layout",
+                signature: "Inline",
+                options: { justify: "end" },
+                children: {
+                  contract: "button",
+                  signature: "Button.action",
+                  options: { tone: "accent", type: "submit" },
+                  children: t("demo.settings.save"),
+                },
+              },
+            ]),
+            section(t("demo.settings.notificationsTitle"), t("demo.settings.notificationsHint"), [
+              /*
+               * `gap: "none"`: the separators carry their own block margin, so a Stack gap on top
+               * of it would space these rows twice.
+               */
+              {
+                contract: "layout",
+                signature: "Stack",
+                options: { gap: "none" },
+                children: [
+                  switchRow(
+                    t("demo.settings.notifyDeploys"),
+                    t("demo.settings.notifyDeploysHint"),
+                    "notify-deploys",
+                    true,
+                  ),
+                  separator,
+                  switchRow(
+                    t("demo.settings.notifyMentions"),
+                    t("demo.settings.notifyMentionsHint"),
+                    "notify-mentions",
+                    true,
+                  ),
+                  separator,
+                  switchRow(
+                    t("demo.settings.notifyDigest"),
+                    t("demo.settings.notifyDigestHint"),
+                    "notify-digest",
+                    false,
+                  ),
+                ],
+              },
+            ]),
+            {
+              contract: "callout",
+              signature: "Callout",
+              options: { tone: "danger" },
+              slots: {
+                icon: { contract: "icon", signature: "Icon", options: { name: "danger" } },
+                title: t("demo.settings.dangerTitle"),
+                children: {
                   contract: "layout",
-                  signature: "Inline",
-                  options: { gap: "md", inlineAlign: "center" },
+                  signature: "Stack",
+                  options: { gap: "sm", align: "start" },
                   children: [
                     {
-                      contract: "avatar",
-                      signature: "Avatar.initials",
-                      options: { name: "Helena Park", size: "lg" },
-                      children: "HP",
+                      contract: "typography",
+                      signature: "Text",
+                      options: { size: "sm" },
+                      children: t("demo.settings.dangerBody"),
                     },
                     {
                       contract: "button",
                       signature: "Button.action",
-                      options: { size: "sm" },
-                      children: [
-                        { contract: "icon", signature: "Icon", options: { name: "upload", size: "sm" } },
-                        t("demo.settings.changePhoto"),
-                      ],
+                      options: { tone: "danger" },
+                      children: t("demo.settings.delete"),
                     },
                   ],
                 },
-                field(t("demo.settings.name"), "name", "Helena Park"),
-                field(t("demo.settings.email"), "email", "helena@lumen.dev", "email"),
-                {
-                  contract: "layout",
-                  signature: "Inline",
-                  options: { justify: "end" },
-                  children: {
-                    contract: "button",
-                    signature: "Button.action",
-                    options: { tone: "accent", type: "submit" },
-                    children: t("demo.settings.save"),
-                  },
-                },
-              ]),
-              section(t("demo.settings.notificationsTitle"), t("demo.settings.notificationsHint"), [
-                /*
-                 * `gap: "none"`: the separators carry their own block margin, so a Stack gap on top
-                 * of it would space these rows twice.
-                 */
-                {
-                  contract: "layout",
-                  signature: "Stack",
-                  options: { gap: "none" },
-                  children: [
-                    switchRow(
-                      t("demo.settings.notifyDeploys"),
-                      t("demo.settings.notifyDeploysHint"),
-                      "notify-deploys",
-                      true,
-                    ),
-                    separator,
-                    switchRow(
-                      t("demo.settings.notifyMentions"),
-                      t("demo.settings.notifyMentionsHint"),
-                      "notify-mentions",
-                      true,
-                    ),
-                    separator,
-                    switchRow(
-                      t("demo.settings.notifyDigest"),
-                      t("demo.settings.notifyDigestHint"),
-                      "notify-digest",
-                      false,
-                    ),
-                  ],
-                },
-              ]),
-              {
-                contract: "callout",
-                signature: "Callout",
-                options: { tone: "danger" },
-                slots: {
-                  icon: { contract: "icon", signature: "Icon", options: { name: "danger" } },
-                  title: t("demo.settings.dangerTitle"),
-                  children: {
-                    contract: "layout",
-                    signature: "Stack",
-                    options: { gap: "sm", align: "start" },
-                    children: [
-                      {
-                        contract: "typography",
-                        signature: "Text",
-                        options: { size: "sm" },
-                        children: t("demo.settings.dangerBody"),
-                      },
-                      {
-                        contract: "button",
-                        signature: "Button.action",
-                        options: { tone: "danger" },
-                        children: t("demo.settings.delete"),
-                      },
-                    ],
-                  },
-                },
               },
-            ],
-          },
+            },
+          ],
         },
       },
     },

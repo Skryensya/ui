@@ -5,6 +5,17 @@
 # hash.
 surface: "1ef58b7bddf30491"
 entries:
+  - date: 2026-10-06
+    kind: bugfix
+    target: MediaOverlay
+    es:
+      title: "Cada línea del overlay conserva su propio ancho"
+      body: >-
+        El overlay es una grilla y estiraba a sus hijos: una Badge cruzaba toda la imagen. Ahora cada línea (<code>justify-items: start</code>) conserva su ancho.
+    en:
+      title: "Each line of the overlay keeps its own width"
+      body: >-
+        The overlay is a grid and stretched its children: a Badge ran across the whole image. Each line now keeps its width (<code>justify-items: start</code>).
   - date: 2026-09-17
     kind: feature
     target: MediaOverlay

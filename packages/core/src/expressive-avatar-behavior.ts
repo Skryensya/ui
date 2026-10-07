@@ -11,12 +11,21 @@
  * never during render, so nothing here runs on a server.
  */
 import {
+  expressiveAvatarGrid,
+  expressiveAvatarHatIndices,
+  expressiveAvatarHats,
   expressiveAvatarLeftEyeTiles,
   expressiveAvatarMouthLeftTiles,
   expressiveAvatarMouthRightTiles,
+  expressiveAvatarOutfitIndices,
+  expressiveAvatarOutfits,
   expressiveAvatarRightEyeTiles,
+  expressiveAvatarTilePosition,
   type ExpressiveAvatarDirection,
+  type ExpressiveAvatarHat,
   type ExpressiveAvatarMouth,
+  type ExpressiveAvatarOutfit,
+  type ExpressiveAvatarTileset,
 } from "./expressive-avatar.js";
 
 export type ExpressiveAvatarLeftEye = ExpressiveAvatarDirection | "blink";
@@ -160,6 +169,53 @@ export function expressiveAvatarTilesFor(face: ExpressiveAvatarFace, custom: Exp
   };
   const named = face.expression ? (custom[face.expression] ?? expressiveAvatarBuiltInExpressions[face.expression]) : undefined;
   return named ? { ...own, ...Object.fromEntries(Object.entries(named).filter(([, tile]) => tile)) } : own;
+}
+
+/** One cell of the face: where the tileset sits behind it, and where the hat layer does. */
+export type ExpressiveAvatarCell = { column: number; row: number; hatColumn: number; hatRow: number };
+
+/**
+ * PIXEL MODE, every cell of the face. The face is 36 windows onto one image, and a tile is shown by where
+ * the image sits behind its window, so this is the whole drawing: both bindings write these positions and
+ * nothing else. An outfit the tileset has not drawn falls back to the base body, tile by tile; a hat it has
+ * not drawn shows nothing.
+ */
+export function expressiveAvatarCells(
+  face: ExpressiveAvatarFace,
+  options: {
+    outfit: ExpressiveAvatarOutfit;
+    hat: ExpressiveAvatarHat;
+    tileset: Pick<ExpressiveAvatarTileset, "columns" | "names">;
+    expressions?: ExpressiveAvatarExpressions;
+  },
+): ExpressiveAvatarCell[] {
+  const { tileset } = options;
+  const position = (name: string) => expressiveAvatarTilePosition(tileset, name);
+  const has = (name: string) => tileset.names.includes(name);
+  const empty = position("hat-empty") ?? { column: 0, row: 0 };
+  const moving = expressiveAvatarTilesFor(face, options.expressions);
+  const outfitIndices = new Set<number>(expressiveAvatarOutfitIndices as readonly number[]);
+  const hatIndices = new Set<number>(expressiveAvatarHatIndices as readonly number[]);
+  const hatTiles = expressiveAvatarHats[options.hat] ?? expressiveAvatarHats.none;
+  const outfitTiles = expressiveAvatarOutfits[options.outfit] ?? expressiveAvatarOutfits.base;
+  let hatSlot = 0;
+  let outfitSlot = 0;
+
+  return expressiveAvatarGrid.flat().map((baseName, index) => {
+    let tileName: string = baseName;
+    if (baseName === "left-eye-base") tileName = moving.leftEye;
+    else if (baseName === "right-eye-base") tileName = moving.rightEye;
+    else if (baseName === "mouth-rest-left") tileName = moving.mouthLeft;
+    else if (baseName === "mouth-rest-right") tileName = moving.mouthRight;
+    else if (outfitIndices.has(index)) {
+      const wanted = outfitTiles[outfitSlot++] ?? tileName;
+      tileName = has(wanted) ? wanted : tileName;
+    }
+    const hatName = hatIndices.has(index) ? (hatTiles[hatSlot++] ?? "hat-empty") : "hat-empty";
+    const at = position(tileName) ?? empty;
+    const over = has(hatName) ? (position(hatName) ?? empty) : empty;
+    return { column: at.column, row: at.row, hatColumn: over.column, hatRow: over.row };
+  });
 }
 
 /* ── Speech: from text to mouth shapes ─────────────────────────────────────────────────────────── */

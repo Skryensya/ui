@@ -30,6 +30,16 @@ export function templateTrees(t: Translate, locale: Locale): Record<string, () =
 }
 
 /*
+ * THE PROMPT A TEMPLATE STARTS MAKER AI WITH: what the product is, who uses it, the tone, and how new screens relate
+ * to this one. It is written into the templates artifact, offered for editing when a project is made from the template,
+ * and kept with the project. Only templates that have one are listed; the rest start Maker AI with nothing.
+ */
+export function templatePrompt(t: Translate, id: string): string | undefined {
+  const keys: Record<string, Parameters<Translate>[0]> = { "app-shell": "templates.appShellPrompt" };
+  return keys[id] ? t(keys[id]!) : undefined;
+}
+
+/*
  * WHAT EVERY PAGE OWES, applied once. A template is a whole page, so it owes the three things a page's
  * structure cannot do without (and which the quality review, `packages/ai-compiler/src/quality.ts`, fails
  * a page for): a way past the chrome to the content, a main landmark that the skip link points at, and ONE
@@ -78,6 +88,8 @@ function withPageBasics(tree: UsageTree, id: string, t: Translate): UsageTree {
   }
 
   const skip: UsageTree = { contract: "skip-link", signature: "SkipLink", options: { href: `#${target}` }, children: t("nav.skipToContent") };
+  /* An AppShell takes the skip link as its own first child: it is part of the frame, before the header, not a sibling of it. */
+  if (body.signature === "AppShell") return { ...body, children: [skip, ...(Array.isArray(body.children) ? body.children : body.children ? [body.children] : [])] } as UsageTree;
   return { contract: "layout", signature: "Stack", options: { gap: "none" }, children: [skip, body] };
 }
 

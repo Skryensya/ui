@@ -38,4 +38,5 @@ export {
 export { sheetsForTree, type SheetsForTree } from "./sheets-for-tree.js";
 export { walkUsageTree, contractsIn, signaturesIn } from "./usage-walk.js";
 export { discover, type DiscoverInput, type DiscoverResult } from "./discover.js";
+export { browseExamples, fetchExample, type ExampleDetail, type ExampleLibrary, type ExamplesFilter, type ExamplesIndex, type ExampleSummary, type Facets, type LibraryEntry, type LibraryRelations, type PatternInfo } from "./examples-service.js";
 export { createAgentService, CATALOG_PAGE_SIZE, type AgentService, type AgentResult } from "./agent.js";

@@ -16,7 +16,7 @@ import {
   messageActionsScript,
   messageActionsTree,
   messageDemoCss,
-  messageGroupVariants,
+  messageGroupTree,
   messageMetadataVariants,
   messagePlaygroundTree,
   messageReactionTree,
@@ -158,10 +158,8 @@ const react = `import {
     />
 
     <UsagePreview
-      tree={messageGroupVariants(t)[0]!.tree}
-      variants={messageGroupVariants(t)}
-      variantsLabel={t("messagePage.prop.group.title")}
-      initialVariant="last"
+      tree={messageGroupTree(t)}
+      css={messageDemoCss}
       title={t("messagePage.prop.group.title")}
       description={t("messagePage.prop.group.body")}
       stageMinBlockSize="11rem"

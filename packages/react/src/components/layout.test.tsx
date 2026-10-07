@@ -91,16 +91,40 @@ describe("layout primitives", () => {
     expect(grid?.querySelector("[data-span='2']")?.textContent).toBe("Featured");
   });
 
-  it("writes data-fill when Grid asks for an equal resting floor", () => {
+  it("writes the block-axis justify and the one-sided show a Stack declares", () => {
     const ui = render(
-      <Grid columns={5} responsive fill>
+      <Stack justify="center" show="expanded">
         <div>A</div>
-      </Grid>,
+      </Stack>,
     );
 
-    const grid = ui.container.querySelector(".sk-grid");
-    expect(grid?.hasAttribute("data-responsive")).toBe(true);
-    expect(grid?.hasAttribute("data-fill")).toBe(true);
+    const stack = ui.container.querySelector(".sk-stack");
+    expect(stack?.getAttribute("data-justify")).toBe("center");
+    expect(stack?.getAttribute("data-show")).toBe("expanded");
+  });
+
+  it("leaves a Stack with no justify free of data-justify, so it never claims height", () => {
+    const ui = render(<Stack>A</Stack>);
+
+    expect(ui.container.querySelector(".sk-stack")?.hasAttribute("data-justify")).toBe(false);
+  });
+
+  it("writes AppShell's scroll and sticky header, and nothing for the defaults", () => {
+    const ui = render(
+      <>
+        <AppShell scroll="regions" stickyHeader data-testid="app">
+          <Main />
+        </AppShell>
+        <AppShell data-testid="page">
+          <Main />
+        </AppShell>
+      </>,
+    );
+
+    expect(ui.getByTestId("app").getAttribute("data-scroll")).toBe("regions");
+    expect(ui.getByTestId("app").hasAttribute("data-sticky-header")).toBe(true);
+    expect(ui.getByTestId("page").hasAttribute("data-scroll")).toBe(false);
+    expect(ui.getByTestId("page").hasAttribute("data-sticky-header")).toBe(false);
   });
 
   it("renders LayoutGrid while leaving width on its semantic children", () => {
@@ -125,6 +149,15 @@ describe("layout primitives", () => {
     const ui = render(<Main aria-label="Workspace" />);
 
     expect(ui.getByRole("main", { name: "Workspace" }).childElementCount).toBe(0);
+  });
+
+  it("renders Main with its part and the block inset it declares", () => {
+    const ui = render(<Main aria-label="Workspace" paddingBlock="lg" paddingBlockExpanded="section" />);
+
+    const main = ui.getByRole("main", { name: "Workspace" });
+    expect(main.classList.contains("sk-main")).toBe(true);
+    expect(main.getAttribute("data-padding-block")).toBe("lg");
+    expect(main.getAttribute("data-padding-block-expanded")).toBe("section");
   });
 
   it("renders Wrapper as a page column on the size scale", () => {

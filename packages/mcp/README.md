@@ -18,7 +18,7 @@ the same input give the same bytes, and only `validate_ui` decides whether a tre
 | # | Tool | What it returns |
 |---|---|---|
 | 1 | `discover_ui` | Narrows the catalogue to candidate signatures, each with the evidence that matched it. |
-| 2 | `get_examples` | Established example trees: the index with no id, one full tree with an id. |
+| 2 | `get_examples` | The example library: filter the taxonomy with no id, one full example with its graph with an id. |
 | 3 | `get_contract` | One family's contract: options, slots, constraints, accessibility and CSS. |
 | 4 | `get_contracts` | Up to 8 contracts in one call, in the order asked, for one composition. |
 | 5 | `validate_ui` | Validates a usage tree; when valid, returns Vanilla markup, React source, data module and CSS. |
@@ -159,7 +159,6 @@ page the way a person does: by structure, never by position.
 | `maker_presets` | The presets of one signature (a primary, destructive or icon-only Button, a pair…) and the wrapper each arrives in; an insert names one with `signature` plus `preset`. Needs no project. |
 | `maker_try` | Resolve and validate the same operations as apply on a temporary site; return the resulting outline/refusal without saving. |
 | `maker_apply` | Maker operations on one project (insert a usage tree or a signature, move, remove, wrap, unwrap, set an option, an attribute or text; add, remove, rename, re-path or move a page), all or none, as one undoable step. Nothing in its schema can carry a coordinate, a length or a style. |
-| `maker_publish` | Publish a project at `https://<name>.skryensya.dev/`, or take it down. Works only where the Maker has the publish token (ADR-0033). |
 
 They talk to the Maker's own API at `MAKER_URL` (the dev server, `http://localhost:4200`, by default),
 which keeps projects in PostgreSQL. `maker_apply` saves on top of the revision it read and never

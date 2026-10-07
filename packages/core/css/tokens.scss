@@ -35,6 +35,10 @@
  * set (passing your own geometry), not having icons at all. (decision 15) */
 @import url("./patterns/icon.css");
 
+/* The root query container ships in base for the reason the icon does: every layout rule that changes
+ * with width asks a container, and one with no container to ask is never true (decision 35). */
+@import url("./patterns/query-container.css");
+
 /* Density scopes ship with semantic tokens: add `data-sk-density-scope` to a container, then set
  * `--sk-density-factor` for a value relative to the system or `--sk-density` for an absolute value.
  *

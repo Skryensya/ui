@@ -15,7 +15,7 @@ const KEY = "session-only-test-key";
 
 type Mock = { server: Server; url: string; release(): void; sectionsSent(): number };
 
-async function mockProvider(root: string): Promise<Mock> {
+async function mockProvider(root: string, plan = false, breakAfterFirst = false): Promise<Mock> {
   let release!: () => void;
   const gate = new Promise<void>((resolve) => { release = resolve; });
   let sent = 0;
@@ -31,14 +31,25 @@ async function mockProvider(root: string): Promise<Mock> {
     if (request.method === "OPTIONS") { response.statusCode = 204; return void response.end(); }
     const chunks: Buffer[] = [];
     for await (const chunk of request) chunks.push(chunk as Buffer);
-    const body = JSON.parse(Buffer.concat(chunks).toString("utf8")) as { stream?: boolean; messages: { role: string; content: string }[] };
+    const body = JSON.parse(Buffer.concat(chunks).toString("utf8")) as { stream?: boolean; messages: { role: string; content: string }[]; tools?: { function?: { name: string } }[] };
+    const briefing = plan && body.tools?.some((tool) => tool.function?.name === "submit_brief") === true;
+    const brief = JSON.stringify({ kind: "build", goal: "A landing page", checklist: ["Three sections"], plan: ["Hero", "Features", "Pricing"].map((section) => ({ section, role: section.toLowerCase() })) });
     const last = body.messages.at(-1)!;
+    if (briefing && !body.stream) {
+      response.setHeader("content-type", "application/json");
+      return void response.end(JSON.stringify({ choices: [{ message: { content: null, tool_calls: [{ id: "brief", type: "function", function: { name: "submit_brief", arguments: brief } }] } }] }));
+    }
     if (!body.stream) {
       response.setHeader("content-type", "application/json");
       return void response.end(JSON.stringify({ choices: [{ message: { content: "Connected" } }] }));
     }
     response.setHeader("content-type", "text/event-stream");
     const send = (delta: unknown) => response.write(`data: ${JSON.stringify({ choices: [{ delta }] })}\n\n`);
+    if (briefing) {
+      send({ tool_calls: [{ index: 0, id: "brief", function: { name: "submit_brief", arguments: brief } }] });
+      response.write("data: [DONE]\n\n");
+      return void response.end();
+    }
     if (last.role === "tool" || last.content.includes('"review"')) {
       send({ content: "Added a hero, features and pricing." });
       response.write("data: [DONE]\n\n");
@@ -48,6 +59,8 @@ async function mockProvider(root: string): Promise<Mock> {
     for (let i = 0; i < pieces.length; i++) {
       send({ tool_calls: [{ index: 0, function: { arguments: pieces[i] } }] });
       sent = i + 1;
+      /* The connection dies mid-answer, as a provider's sometimes does. */
+      if (i === 0 && breakAfterFirst) { await new Promise((resolve) => setTimeout(resolve, 300)); return void response.destroy(); }
       if (i === 0) await gate;
       else await new Promise((resolve) => setTimeout(resolve, 250));
     }
@@ -59,8 +72,6 @@ async function mockProvider(root: string): Promise<Mock> {
 }
 
 async function setup(page: Page) {
-  /* These tests are about reviewing a proposal; review is off by default, so they turn it on. */
-  await page.addInitScript(() => localStorage.setItem("maker.ai.review", "1"));
   const id = await openMaker(page);
   const saved = await savedProject(page, id);
   const base = createSite("hash", counterIds("s"));
@@ -95,17 +106,12 @@ test("the canvas shows each section as it is written, before the answer is finis
     await expect(stage(page).locator("[data-maker-fresh]")).toHaveCount(1);
     expect((await savedProject(page, id)).site).toEqual(before);
 
-    /* Let the rest through: the other two sections arrive, the bar turns into Apply and Discard. */
+    /* Let the rest through: the other two sections arrive, and the finished proposal goes in as one edit. */
     mock.release();
     await expect(stage(page).getByRole("heading", { name: "Features" })).toBeVisible();
-    await expect(stage(page).getByRole("heading", { name: "Pricing" })).toBeVisible();
-    const bar = page.getByRole("group", { name: "Maker AI draft" });
-    await expect(bar.getByRole("button", { name: "Apply" })).toBeVisible();
-    await expect(bar).toContainText("3 changes");
-    expect((await savedProject(page, id)).site).toEqual(before);
+    await expect(page.getByRole("status").filter({ hasText: "Applied as one undoable edit." })).toBeVisible();
 
-    /* Applying commits the SAME nodes: they are not rebuilt, and nothing is left marked as new. */
-    await bar.getByRole("button", { name: "Apply" }).click();
+    /* What is applied are the SAME nodes: they are not rebuilt, and nothing is left marked as new. */
     await expect(stage(page).locator("[data-maker-fresh]")).toHaveCount(0);
     await expect(stage(page).getByRole("heading", { name: "Pricing" })).toBeVisible();
     await expect.poll(async () => JSON.stringify((await savedProject(page, id)).site).includes("Pricing")).toBe(true);
@@ -173,5 +179,88 @@ test("a streamed answer arrives whole, however many pieces it comes in", async (
     await expect(page.getByRole("log", { name: "Conversation" })).toContainText("Intenté reconstruir la página con el kit.");
   } finally {
     server.close();
+  }
+});
+
+test("the plan's sections turn from waiting to building to built as the draft fills in", async ({ page }) => {
+  const { root } = await setup(page);
+  const mock = await mockProvider(root, true);
+  try {
+    await page.getByRole("tab", { name: "AI", exact: true }).click();
+    await page.getByLabel("Provider").selectOption("compatible");
+    await page.getByLabel("API base endpoint", { exact: true }).fill(mock.url);
+    await page.getByLabel("API key", { exact: true }).fill(KEY);
+    await page.getByLabel("Model", { exact: true }).fill("mock-model");
+    await page.getByRole("button", { name: "Test & connect" }).click();
+    await expect(page.getByRole("status").filter({ hasText: "Connected." })).toBeVisible();
+    await page.getByLabel("Ask Maker", { exact: true }).fill("Add a landing page: hero, features, pricing");
+    await page.getByRole("button", { name: "Send", exact: true }).click();
+    const items = page.getByRole("list", { name: "Sections" }).getByRole("listitem");
+    await expect(stage(page).getByRole("heading", { name: "Hero" })).toBeVisible({ timeout: 15_000 });
+    await expect(items.nth(0)).toHaveAttribute("data-status", "complete");
+    await expect(items.nth(1)).toHaveAttribute("data-status", "building");
+    await expect(items.nth(2)).toHaveAttribute("data-status", "pending");
+    mock.release();
+    await expect(items.nth(2)).toHaveAttribute("data-status", "complete");
+    await expect(items.first()).toHaveAttribute("data-status", "complete");
+  } finally {
+    mock.server.close();
+  }
+});
+
+test("the composer keeps what is typed in it, in the same field, while a draft streams onto the canvas", async ({ page }) => {
+  const { root } = await setup(page);
+  const mock = await mockProvider(root, true);
+  try {
+    await page.getByRole("tab", { name: "AI", exact: true }).click();
+    await page.getByLabel("Provider").selectOption("compatible");
+    await page.getByLabel("API base endpoint", { exact: true }).fill(mock.url);
+    await page.getByLabel("API key", { exact: true }).fill(KEY);
+    await page.getByLabel("Model", { exact: true }).fill("mock-model");
+    await page.getByRole("button", { name: "Test & connect" }).click();
+    await expect(page.getByRole("status").filter({ hasText: "Connected." })).toBeVisible();
+    const composer = page.getByLabel("Ask Maker", { exact: true });
+    await composer.evaluate((el) => { (el as HTMLTextAreaElement & { __same?: boolean }).__same = true; });
+    await composer.fill("Add a landing page: hero, features, pricing");
+    await page.getByRole("button", { name: "Send", exact: true }).click();
+    await expect(stage(page).getByRole("heading", { name: "Hero" })).toBeVisible({ timeout: 15_000 });
+    await composer.focus();
+    await composer.pressSequentially("and then a footer", { delay: 30 });
+    await expect(composer).toHaveValue("and then a footer");
+    mock.release();
+    await expect(page.getByRole("status").filter({ hasText: "Applied as one undoable edit." })).toBeVisible();
+    await expect(composer).toHaveValue("and then a footer");
+    expect(await composer.evaluate((el) => (el as HTMLTextAreaElement & { __same?: boolean }).__same === true)).toBe(true);
+  } finally {
+    mock.server.close();
+  }
+});
+
+test("a stream that breaks keeps what was already built, waiting for review, and the steps say what happened", async ({ page }) => {
+  const { id, root } = await setup(page);
+  const mock = await mockProvider(root, true, true);
+  try {
+    await page.getByRole("tab", { name: "AI", exact: true }).click();
+    await page.getByLabel("Provider").selectOption("compatible");
+    await page.getByLabel("API base endpoint", { exact: true }).fill(mock.url);
+    await page.getByLabel("API key", { exact: true }).fill(KEY);
+    await page.getByLabel("Model", { exact: true }).fill("mock-model");
+    await page.getByRole("button", { name: "Test & connect" }).click();
+    await expect(page.getByRole("status").filter({ hasText: "Connected." })).toBeVisible();
+    const before = (await savedProject(page, id)).site;
+    await page.getByLabel("Ask Maker", { exact: true }).fill("Add a landing page: hero, features, pricing");
+    await page.getByRole("button", { name: "Send", exact: true }).click();
+
+    await expect(page.getByRole("status").filter({ hasText: "Kept what was built before the problem" })).toBeVisible({ timeout: 15_000 });
+    await expect(stage(page).getByRole("heading", { name: "Hero" })).toBeVisible();
+    const steps = page.getByRole("region", { name: "Steps" }).last();
+    await expect(steps.getByRole("region", { name: "Plan" })).toContainText("A landing page");
+    await expect(steps).toContainText("Stopped");
+    expect((await savedProject(page, id)).site).toEqual(before);
+    await page.getByRole("group", { name: "Maker AI draft" }).getByRole("button", { name: "Apply" }).click();
+    await expect.poll(async () => JSON.stringify((await savedProject(page, id)).site).includes("Hero")).toBe(true);
+  } finally {
+    mock.release();
+    mock.server.close();
   }
 });

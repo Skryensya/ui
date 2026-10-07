@@ -6,6 +6,12 @@
  * without also importing layout arrangements they do not use. Wrapper is the page-column cousin:
  * a max measure on a size scale. ImageFrame is the media cousin: aspect, object-fit and clip for
  * authored images and video.
+ *
+ * EVERY WIDTH HERE IS ASKED OF A CONTAINER, never of the viewport (decision 35). `@container` with no
+ * name answers for the nearest query container: a Main, a Sidebar, or the document itself
+ * (`query-container.css`), so a Grid beside a rail counts the room the work area has. The literals
+ * are the `_breakpoints.scss` steps, hand-copied because a container query cannot read a custom
+ * property any more than a media query can (ADR-19, tier-3 stays CSS).
  */
 @import url("./box.css");
 @import url("./wrapper.css");
@@ -27,14 +33,33 @@
   }
 
   .sk-stack[data-align="start"] { justify-items: start; }
-  .sk-stack[data-align="center"] { justify-items: center; }
-  .sk-stack[data-align="end"] { justify-items: end; }
+  /* A centred column centres its lines too: a wrapped heading under a centred icon reads as one block. */
+  .sk-stack[data-align="center"] { justify-items: center; text-align: center; }
+  .sk-stack[data-align="end"] { justify-items: end; text-align: end; }
   .sk-stack[data-align="stretch"] { justify-items: stretch; }
   .sk-stack[data-gap="none"] { --sk-stack-gap: 0; }
   .sk-stack[data-gap="xs"] { --sk-stack-gap: var(--space-stack-xs); }
   .sk-stack[data-gap="sm"] { --sk-stack-gap: var(--space-stack-sm); }
   .sk-stack[data-gap="lg"] { --sk-stack-gap: var(--space-stack-lg); }
   .sk-stack[data-gap="xl"] { --sk-stack-gap: var(--space-stack-xl); }
+  .sk-stack[data-gap="section"] { --sk-stack-gap: var(--space-section); }
+
+  /*
+   * JUSTIFY, the block axis. Declared, the Stack takes the height its parent has and spends what its
+   * content leaves. `min-block-size: 100%` resolves wherever the parent's height is definite (a Main in an
+   * AppShell, a card stretched by its Grid row); `flex-grow` covers a flex column parent, where a percentage
+   * would not. A parent with no height to give leaves the Stack as tall as its content, which is the honest
+   * answer: there is nothing to centre in.
+   */
+  .sk-stack[data-justify] {
+    flex-grow: 1;
+    min-block-size: 100%;
+  }
+
+  .sk-stack[data-justify="start"] { align-content: start; }
+  .sk-stack[data-justify="center"] { align-content: center; }
+  .sk-stack[data-justify="end"] { align-content: end; }
+  .sk-stack[data-justify="between"] { align-content: space-between; }
 
   /*
    * `align-items: flex-end` by default: an Inline row's own items land on a shared bottom edge
@@ -59,11 +84,16 @@
   .sk-inline[data-align="baseline"] { align-items: baseline; }
   .sk-inline[data-align="stretch"] { align-items: stretch; }
   .sk-inline[data-wrap="false"] { flex-wrap: nowrap; }
-  .sk-inline[data-equal] > * { flex: 1 1 0; min-inline-size: 0; }
+  /* Equal shares of the row, floored at each child's longest word: the row wraps before a share is
+     narrower than a word, instead of breaking words mid-way. `min-content` is written out because a
+     child that clips (a Tile) resolves the flex default `auto` to 0. */
+  .sk-inline[data-equal] > * { flex: 1 1 0; min-inline-size: min-content; }
   /* A `fill` child starts from its content and takes what the row leaves. The row still wraps
      before it squeezes: the break is decided on the content size, so a field beside a button
      stays one row where both fit and drops the button to a line of its own where they do not. */
   .sk-inline > [data-sizing="fill"] { flex: 1 1 auto; min-inline-size: 0; }
+  /* `fit`, the other value the contract publishes: the child keeps its own width and never shrinks (a tag, a price). */
+  .sk-inline > [data-sizing="fit"] { flex: none; }
   .sk-inline[data-justify="start"] { justify-content: flex-start; }
   .sk-inline[data-justify="center"] { justify-content: center; }
   .sk-inline[data-justify="end"] { justify-content: flex-end; }
@@ -73,6 +103,7 @@
   .sk-inline[data-gap="sm"] { --sk-inline-gap: var(--space-inline-sm); }
   .sk-inline[data-gap="lg"] { --sk-inline-gap: var(--space-inline-lg); }
   .sk-inline[data-gap="xl"] { --sk-inline-gap: var(--space-inset-xl); }
+  .sk-inline[data-gap="section"] { --sk-inline-gap: var(--space-section); }
   .sk-inline[data-block-start="none"] { --sk-inline-block-start: 0; }
   .sk-inline[data-block-start="xs"] { --sk-inline-block-start: var(--space-stack-xs); }
   .sk-inline[data-block-start="sm"] { --sk-inline-block-start: var(--space-stack-sm); }
@@ -119,6 +150,23 @@
   .sk-grid[data-gap="sm"] { --sk-grid-gap: var(--space-stack-sm); }
   .sk-grid[data-gap="lg"] { --sk-grid-gap: var(--space-stack-lg); }
   .sk-grid[data-gap="xl"] { --sk-grid-gap: var(--space-stack-xl); }
+  .sk-grid[data-gap="section"] { --sk-grid-gap: var(--space-section); }
+
+  .sk-grid[data-align="start"] { align-items: start; }
+  .sk-grid[data-align="center"] { align-items: center; }
+  .sk-grid[data-align="end"] { align-items: end; }
+  .sk-grid[data-align="stretch"] { align-items: stretch; }
+
+  /*
+   * SPAN in a grid of FIXED lanes: two thirds and one third is `columns="3"` and a child spanning 2. Written
+   * only where the grid has at least that many lanes, so a span larger than the grid never conjures an
+   * implicit track (the failure the responsive rules below document). Not under `minColumn` or `multicol`,
+   * whose lanes are not counted.
+   */
+  .sk-grid:not([data-responsive], [data-multicol], [data-min-column]):is([data-columns="2"], [data-columns="3"], [data-columns="4"], [data-columns="5"]) > [data-span="2"] { grid-column: span 2; }
+  .sk-grid:not([data-responsive], [data-multicol], [data-min-column]):is([data-columns="3"], [data-columns="4"], [data-columns="5"]) > [data-span="3"] { grid-column: span 3; }
+  .sk-grid:not([data-responsive], [data-multicol], [data-min-column]):is([data-columns="4"], [data-columns="5"]) > [data-span="4"] { grid-column: span 4; }
+  .sk-grid:not([data-responsive], [data-multicol], [data-min-column])[data-columns="5"] > [data-span="5"] { grid-column: span 5; }
 
   /*
    * AUTO-FIT, the lane count the Grid's own width decides. `min(X, 100%)` keeps a single lane from
@@ -216,19 +264,17 @@
   .sk-layout-grid > [data-width="full-width"] > [data-width="full-width"] { grid-column: full-width-start / full-width-end; }
 
   /*
-   * FLUSH BREAKOUT, an opt-in escape hatch for a breakout child that should hit the true edge
-   * instead of merely reading wider once the viewport is too narrow for the difference to matter.
+   * FLUSH BREAKOUT, an opt-in for a breakout child that should hit the true edge instead of merely
+   * reading wider once the container is too narrow for the difference to matter.
    * Below the breakpoint the outer gutter track never grows past its fixed floor
    * (`--sk-layout-gutter`), so an ordinary breakout there sits at the same inset as `content` with
    * nothing gained; `data-breakout="flush"` jumps it to the same lines `full-width` already spans
    * instead. Opt-in rather than a default, so an existing breakout composition keeps its current
    * inset unless asked otherwise.
    *
-   * `48rem`, hardcoded: media queries cannot read custom properties, the same exception the rail
-   * rule below and semantic/_breakpoints.scss's own comment already take (ADR-19, tier-3 stays
-   * CSS). Not tied to a named tier: this is a standalone choice, not the "compact" step.
+   * Below the expanded line (52rem, decision 30), the same side of it every other compact rule takes.
    */
-  @media (max-width: 48rem) {
+  @container (width < 52rem) {
     .sk-layout-grid > [data-width="breakout"][data-breakout="flush"],
     .sk-layout-grid > [data-width="full-width"] > [data-width="breakout"][data-breakout="flush"] {
       grid-column: full-width-start / full-width-end;
@@ -242,7 +288,7 @@
    * content span: the small `--sk-layout-rail-gap` is the only air between them. The same
    * `minmax(gutter, 1fr)` tracks the un-railed grid already uses sit OUTSIDE the rails, so the
    * whole unit (start rail, content, end rail) stays centered in its container with equal air
-   * to either viewport edge. A start rail is not flush-left while an end rail floats.
+   * to either edge. A start rail is not flush-left while an end rail floats.
    * Breakout coincides with content whenever a rail is present: there is no open side left to
    * grow into without un-centering the unit.
    *
@@ -251,11 +297,8 @@
    * and `order: -1` is the only addition. Both rails share that order so they keep source order
    * relative to each other and read as an index, first, above the content they index.
    *
-   * `72rem`, hardcoded: media queries cannot read custom properties, so this has to be a
-   * compile-time constant. The same exception `patterns/dialog-vaul.css` and `patterns/vaul.css`
-   * already take for their own hand-written breakpoints (ADR-19, tier-3 stays CSS). This is the
-   * "wide" step from `core/css/semantic/_breakpoints.scss`, hand-copied for the same reason theirs
-   * is: a `@media` query is the one place that file's own comment admits CSS genuinely can't reach.
+   * `72rem` is the "wide" step from `core/css/semantic/_breakpoints.scss`, asked of the container
+   * the grid sits in (see the header).
    *
    * `:has()` scopes each rewritten track list to grids that actually carry that rail (or both),
    * so every other consumer of this pattern keeps the plain fluid form above, untouched.
@@ -265,7 +308,7 @@
     order: -1;
   }
 
-  @media (min-width: 72rem) {
+  @container (width >= 72rem) {
     .sk-layout-grid:has(> [data-width="rail"]):not(:has(> [data-width="rail-start"])) {
       grid-template-columns:
         [full-width-start]
@@ -346,9 +389,7 @@
    * `data-columns` names the maximum lane count. A collection starts with one lane, gains a
    * second at compact (36rem), a third at desktop (52rem), a fourth at wide (72rem), and a fifth
    * at ultrawide (90rem, the same measure as `--size-wrapper-lg`: the widest a page column ever
-   * gets is exactly where a 5th lane has room to breathe). The same named breakpoints live in
-   * semantic/_breakpoints.scss; these literals are necessary because CSS media queries cannot
-   * read custom properties.
+   * gets is exactly where a 5th lane has room to breathe), each measured on the container.
    *
    * Columns flow each card down a lane before continuing into the next. Keep source order useful
    * for reading and keyboard navigation; this pattern is for independent cards, not a sequence
@@ -365,7 +406,7 @@
     margin-block-end: var(--sk-grid-gap);
   }
 
-  @media (min-width: 36rem) {
+  @container (width >= 36rem) {
     .sk-grid[data-multicol][data-columns="2"],
     .sk-grid[data-multicol][data-columns="3"],
     .sk-grid[data-multicol][data-columns="4"],
@@ -374,7 +415,7 @@
     }
   }
 
-  @media (min-width: 52rem) {
+  @container (width >= 52rem) {
     .sk-grid[data-multicol][data-columns="3"],
     .sk-grid[data-multicol][data-columns="4"],
     .sk-grid[data-multicol][data-columns="5"] {
@@ -382,14 +423,14 @@
     }
   }
 
-  @media (min-width: 72rem) {
+  @container (width >= 72rem) {
     .sk-grid[data-multicol][data-columns="4"],
     .sk-grid[data-multicol][data-columns="5"] {
       column-count: 4;
     }
   }
 
-  @media (min-width: 90rem) {
+  @container (width >= 90rem) {
     .sk-grid[data-multicol][data-columns="5"] {
       column-count: 5;
     }
@@ -412,14 +453,18 @@
   .sk-grid[data-responsive][data-columns] {
     --sk-grid-columns: 1;
     grid-auto-flow: dense;
-    /* Grid's own default is `stretch`: every cell in a row grows to match that row's tallest
-       neighbour. `start` keeps each card's own height instead, so a short card next to a tall
-       `data-span` feature reads as a short card with air below it in its own row track, not as a
-       card that got stretched to a height its own content never asked for. */
+  }
+
+  /* Grid's own default is `stretch`: every cell in a row grows to match that row's tallest
+     neighbour. `start` keeps each card's own height instead, so a short card next to a tall
+     `data-span` feature reads as a short card with air below it in its own row track, not as a
+     card that got stretched to a height its own content never asked for. Zero specificity, so a
+     declared `align` still wins. */
+  :where(.sk-grid[data-responsive]:not([data-align])) {
     align-items: start;
   }
 
-  @media (min-width: 36rem) {
+  @container (width >= 36rem) {
     .sk-grid[data-responsive][data-columns="2"],
     .sk-grid[data-responsive][data-columns="3"],
     .sk-grid[data-responsive][data-columns="4"],
@@ -428,7 +473,7 @@
     }
   }
 
-  @media (min-width: 52rem) {
+  @container (width >= 52rem) {
     .sk-grid[data-responsive][data-columns="3"],
     .sk-grid[data-responsive][data-columns="4"],
     .sk-grid[data-responsive][data-columns="5"] {
@@ -436,14 +481,14 @@
     }
   }
 
-  @media (min-width: 72rem) {
+  @container (width >= 72rem) {
     .sk-grid[data-responsive][data-columns="4"],
     .sk-grid[data-responsive][data-columns="5"] {
       --sk-grid-columns: 4;
     }
   }
 
-  @media (min-width: 90rem) {
+  @container (width >= 90rem) {
     .sk-grid[data-responsive][data-columns="5"] {
       --sk-grid-columns: 5;
     }
@@ -460,7 +505,7 @@
    * applies at all, on purpose: that is what keeps a spanning child to its one real lane there
    * instead of conjuring a phantom second one.
    */
-  @media (min-width: 36rem) {
+  @container (width >= 36rem) {
     .sk-grid[data-responsive] > [data-span="2"],
     .sk-grid[data-responsive] > [data-span="3"],
     .sk-grid[data-responsive] > [data-span="4"],
@@ -469,7 +514,7 @@
     }
   }
 
-  @media (min-width: 52rem) {
+  @container (width >= 52rem) {
     .sk-grid[data-responsive] > [data-span="3"],
     .sk-grid[data-responsive] > [data-span="4"],
     .sk-grid[data-responsive] > [data-span="5"] {
@@ -477,83 +522,50 @@
     }
   }
 
-  @media (min-width: 72rem) {
+  @container (width >= 72rem) {
     .sk-grid[data-responsive] > [data-span="4"],
     .sk-grid[data-responsive] > [data-span="5"] {
       grid-column: span 4;
     }
   }
 
-  @media (min-width: 90rem) {
+  @container (width >= 90rem) {
     .sk-grid[data-responsive] > [data-span="5"] {
       grid-column: span 5;
     }
   }
 
   /*
-   * FILL, opt-in on top of `data-responsive`: every direct child gets the SAME minimum
-   * block-size, so a column shorter than that floor still stretches down to it (no bare
-   * background under a short column, the failure mode `align-items: start` alone leaves open),
-   * while a column TALLER than the floor keeps growing - a `<details>` or an accordion section
-   * opening inside one tile lengthens that tile, that tile lengthens its `.sk-stack` column,
-   * and the column pushes its own lower tiles down and rises past its neighbours. Meant for a
-   * grid of COLUMNS (each direct child its own `.sk-stack`, one column of tiles), not tiles
-   * directly: five columns that START level and read as one continuous wall, then move
-   * independently as their content does. Every lane stays exactly one lane wide here -
-   * `data-span` and a sized column both trying to own a child's box at once don't compose.
+   * THE APPLICATION SHELL. Three rows (header, body, footer), each child placed by what it is and where it
+   * stands: a header or footer spans every column, a Sidebar before the main is the start rail, one after it
+   * the end rail, the main takes the rest. A region that is absent collapses (an `auto` track with nothing in
+   * it has no size), so the same shell is an application with two rails and a plain document with none: a
+   * page with no rail is a header, a main that grows, and a footer that stays on the floor of a short page.
    *
-   * The floor is caller-supplied, as `style="--sk-grid-fill: Npx"` on the grid itself, inherited
-   * down to every child rather than repeated per child - a literal number the same way
-   * `data-span`'s value already is: how tall a column's resting content measures isn't something
-   * CSS can derive on its own. The caller sizes each column's own resting content close to that
-   * number so the five start level; growth from there is expected, not an overflow to hide.
+   * COMPACT FIRST. Below the expanded line the shell is one column and the rails are not drawn: a phone has
+   * no room for a column of navigation beside the work it navigates. What a rail carries reaches that side
+   * through a `Vaul.drawer` the header opens (decision 35); the drawer is a child of the shell for that
+   * reason, and a closed `<dialog>` takes no track.
    *
-   * Gated to the same `90rem` tier `data-columns="5"` reaches its real 5 lanes at: a narrower
-   * viewport reflows every column's content to a different total height than whatever measured the
-   * fill size, so below this tier the rule doesn't apply at all and every column keeps its own
-   * natural height, the same safe behaviour `data-responsive` already has without `data-fill`.
-   */
-  @media (min-width: 90rem) {
-    .sk-grid[data-responsive][data-fill] > * {
-      min-block-size: var(--sk-grid-fill);
-    }
-
-    /*
-     * `--sk-grid-template`, an escape hatch for the SAME tier: `data-fill`'s columns default to
-     * even (`repeat(var(--sk-grid-columns), minmax(0, 1fr))`, the base rule above), but a caller
-     * can pass explicit per-column weights instead - `style="--sk-grid-template: 0.9fr 1fr 1.15fr
-     * 1fr 0.9fr"` for a center lane a little wider than its neighbours, say - without inventing a
-     * new named variant for every weighting a bento gallery might want. Falls back to the even
-     * `var(--sk-grid-columns)` count when unset, so this changes nothing for a `data-fill` grid
-     * that never sets it. Scoped to the same `90rem` tier as the rest of `data-fill`, for the same
-     * reason: custom weights measured for the wide column widths would misfit the narrower ones a
-     * smaller viewport reflows to.
-     */
-    .sk-grid[data-responsive][data-fill] {
-      grid-template-columns: var(--sk-grid-template, repeat(var(--sk-grid-columns), minmax(0, 1fr)));
-    }
-  }
-
-  /*
-   * THE APPLICATION SHELL. A grid of three rows (header, body, footer) and two columns (rail, content), with
-   * each child placed by what it is: a header or footer spans both columns, an aside or Sidebar takes the rail
-   * column, a main takes the rest. A region that is absent collapses (an `auto` track with nothing in it has no
-   * height or width), so the same shell serves a page with no rail and a page with no footer.
-   *
-   * `minmax(0, 1fr)`, never bare `1fr`: a grid track's automatic minimum is its content, and a wide table in
-   * the work area would hold the whole page open instead of scrolling inside its own box.
-   *
-   * The rail stretches to the body row on its own (the grid does it), which is the thing `Inline[Sidebar, Main]`
-   * could not do: its height came from its content, so it stopped halfway down the page.
+   * The work-area COLUMN is `minmax(0, 1fr)`, never bare `1fr`: a track's automatic minimum is its content,
+   * and a wide table in the work area would hold the whole page open instead of scrolling inside its own box.
+   * The work-area ROW is the opposite on purpose: a page's main is as tall as its content (`1fr` keeps its
+   * automatic minimum), so the document grows past the screen and the footer follows it. Only `regions`
+   * zeroes that minimum, because there the main scrolls inside its own track.
    */
   .sk-app-shell {
     --sk-app-shell-gap: 0;
-    --sk-app-shell-min-block-size: 100dvh;
+    --sk-app-shell-block-size: 100dvh;
     display: grid;
-    grid-template-columns: auto minmax(0, 1fr);
-    grid-template-rows: auto minmax(0, 1fr) auto;
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: auto 1fr auto;
     gap: var(--sk-app-shell-gap);
-    min-block-size: var(--sk-app-shell-min-block-size);
+    min-block-size: var(--sk-app-shell-block-size);
+  }
+
+  /* As tall as its content: the shell is a part of a page, not the page. */
+  .sk-app-shell[data-height="fit"] {
+    --sk-app-shell-block-size: auto;
   }
 
   .sk-app-shell > :is(header, .sk-navbar, .sk-app-bar) {
@@ -561,15 +573,8 @@
     grid-row: 1;
   }
 
-  .sk-app-shell > :is(aside, .sk-sidebar) {
-    grid-column: 1;
-    grid-row: 2;
-    /* The rail's own `block-size: 100%` has no definite parent height in a grid track; stretch fills the row. */
-    block-size: auto;
-  }
-
-  .sk-app-shell > main {
-    grid-column: 2;
+  .sk-app-shell > :is(main, .sk-main) {
+    grid-column: 1 / -1;
     grid-row: 2;
     min-inline-size: 0;
   }
@@ -579,19 +584,104 @@
     grid-row: 3;
   }
 
+  @container (width < 52rem) {
+    .sk-app-shell > :is(aside, .sk-sidebar) {
+      display: none;
+    }
+  }
+
+  /* Pinned while the page scrolls under it. The header brings its own surface; the shell only lifts it. */
+  .sk-app-shell[data-sticky-header] > :is(header, .sk-navbar, .sk-app-bar) {
+    position: sticky;
+    inset-block-start: 0;
+    z-index: var(--z-sticky);
+  }
+
+  @container (width >= 52rem) {
+    .sk-app-shell {
+      grid-template-columns: auto minmax(0, 1fr) auto;
+    }
+
+    .sk-app-shell > :is(aside, .sk-sidebar) {
+      grid-column: 1;
+      grid-row: 2;
+      /* The rail's own `block-size: 100%` has no definite parent height in a grid track; stretch fills the row. */
+      block-size: auto;
+    }
+
+    .sk-app-shell > :is(main, .sk-main) {
+      grid-column: 2;
+    }
+
+    /* After the main: the end rail. */
+    .sk-app-shell > :is(main, .sk-main) ~ :is(aside, .sk-sidebar) {
+      grid-column: 3;
+    }
+
+    /*
+     * REGIONS: exactly a screen tall, and each region scrolls inside its own box, so the header and the rails
+     * stay put while the work area moves. A Sidebar already scrolls its own middle; the main is given the same.
+     * Compact never gets here: one column of panes on a phone is a page, and it scrolls as one.
+     */
+    .sk-app-shell[data-scroll="regions"] {
+      grid-template-rows: auto minmax(0, 1fr) auto;
+      block-size: var(--sk-app-shell-block-size);
+      min-block-size: 0;
+      overflow: hidden;
+    }
+
+    .sk-app-shell[data-scroll="regions"] > :is(main, .sk-main) {
+      overflow: auto;
+      overscroll-behavior: contain;
+    }
+  }
+
   /*
-   * EXPANDED OVERRIDES, declared (decision 30). 52rem is `--breakpoint-desktop`
-   * (semantic/_breakpoints.scss), a literal here because a CSS `@media` cannot read a custom
-   * property, the same hand-copy `vaul.css` makes. The plain attribute is the value from the smallest
-   * screen up; the `-expanded` one replaces it from this width up, and only when the author wrote it.
+   * MAIN, the work area. A query container (decision 35): what sits in it is laid out for the room it has,
+   * which beside a rail is not the room the window has. Inline-size containment is safe because a main's
+   * width never comes from its content: it is a block, or a shell track sized `minmax(0, 1fr)`.
    */
-  @media (min-width: 52rem) {
+  .sk-main {
+    --sk-main-padding-block: 0;
+    container-type: inline-size;
+    padding-block: var(--sk-main-padding-block);
+  }
+
+  .sk-main[data-padding-block="none"] { --sk-main-padding-block: 0; }
+  .sk-main[data-padding-block="sm"] { --sk-main-padding-block: var(--space-inset-sm); }
+  .sk-main[data-padding-block="md"] { --sk-main-padding-block: var(--space-inset-md); }
+  .sk-main[data-padding-block="lg"] { --sk-main-padding-block: var(--space-inset-lg); }
+  .sk-main[data-padding-block="xl"] { --sk-main-padding-block: var(--space-inset-xl); }
+  .sk-main[data-padding-block="section"] { --sk-main-padding-block: var(--space-section); }
+
+  /*
+   * A page that opens on a Hero starts flush under the header, the way a real landing does, rather than
+   * with a strip of canvas between the bar and the band. A Hero straight in the main runs edge to edge, so
+   * it drops its card radius too: rounded corners against the window's edge read as a clipped rectangle.
+   */
+  .sk-main:has(> .sk-hero:first-child, > .sk-stack:first-child > .sk-hero:first-child) {
+    padding-block-start: 0;
+  }
+
+  .sk-main > .sk-hero,
+  .sk-main > .sk-stack > .sk-hero {
+    --sk-hero-radius: 0;
+  }
+
+  /*
+   * EXPANDED OVERRIDES, declared (decision 30), measured on the container (decision 35). 52rem is
+   * `--breakpoint-desktop` (semantic/_breakpoints.scss). The plain attribute is the value from the
+   * narrowest container up; the `-expanded` one replaces it from this width up, and only when the
+   * author wrote it.
+   */
+  @container (width >= 52rem) {
     .sk-stack[data-gap-expanded="none"] { --sk-stack-gap: 0; }
     .sk-stack[data-gap-expanded="xs"] { --sk-stack-gap: var(--space-stack-xs); }
     .sk-stack[data-gap-expanded="sm"] { --sk-stack-gap: var(--space-stack-sm); }
     .sk-stack[data-gap-expanded="md"] { --sk-stack-gap: var(--space-stack-md); }
     .sk-stack[data-gap-expanded="lg"] { --sk-stack-gap: var(--space-stack-lg); }
     .sk-stack[data-gap-expanded="xl"] { --sk-stack-gap: var(--space-stack-xl); }
+    .sk-stack[data-gap-expanded="section"] { --sk-stack-gap: var(--space-section); }
 
     .sk-inline[data-gap-expanded="none"] { --sk-inline-gap: 0; }
     .sk-inline[data-gap-expanded="xs"] { --sk-inline-gap: var(--space-inline-xs); }
@@ -599,6 +689,7 @@
     .sk-inline[data-gap-expanded="md"] { --sk-inline-gap: var(--space-inline-md); }
     .sk-inline[data-gap-expanded="lg"] { --sk-inline-gap: var(--space-inline-lg); }
     .sk-inline[data-gap-expanded="xl"] { --sk-inline-gap: var(--space-inset-xl); }
+    .sk-inline[data-gap-expanded="section"] { --sk-inline-gap: var(--space-section); }
 
     .sk-grid[data-gap-expanded="none"] { --sk-grid-gap: 0; }
     .sk-grid[data-gap-expanded="xs"] { --sk-grid-gap: var(--space-stack-xs); }
@@ -606,5 +697,27 @@
     .sk-grid[data-gap-expanded="md"] { --sk-grid-gap: var(--space-stack-md); }
     .sk-grid[data-gap-expanded="lg"] { --sk-grid-gap: var(--space-stack-lg); }
     .sk-grid[data-gap-expanded="xl"] { --sk-grid-gap: var(--space-stack-xl); }
+    .sk-grid[data-gap-expanded="section"] { --sk-grid-gap: var(--space-section); }
+
+    .sk-main[data-padding-block-expanded="none"] { --sk-main-padding-block: 0; }
+    .sk-main[data-padding-block-expanded="sm"] { --sk-main-padding-block: var(--space-inset-sm); }
+    .sk-main[data-padding-block-expanded="md"] { --sk-main-padding-block: var(--space-inset-md); }
+    .sk-main[data-padding-block-expanded="lg"] { --sk-main-padding-block: var(--space-inset-lg); }
+    .sk-main[data-padding-block-expanded="xl"] { --sk-main-padding-block: var(--space-inset-xl); }
+    .sk-main[data-padding-block-expanded="section"] { --sk-main-padding-block: var(--space-section); }
+  }
+
+  /*
+   * SHOW, one side of the expanded line only (decision 35). `display: none` takes the element out of the
+   * accessibility tree with its paint, which is the point: a phone's menu button is not a second, silent copy
+   * of the desktop's links. The selector is the primitive's own class, so the rule outranks the primitive's
+   * `display` without `!important`.
+   */
+  @container (width < 52rem) {
+    :is(.sk-stack, .sk-inline, .sk-grid)[data-show="expanded"] { display: none; }
+  }
+
+  @container (width >= 52rem) {
+    :is(.sk-stack, .sk-inline, .sk-grid)[data-show="compact"] { display: none; }
   }
 }

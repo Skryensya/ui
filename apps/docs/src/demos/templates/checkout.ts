@@ -37,8 +37,7 @@ export const checkoutTree = (t: Translate, locale: "es" | "en"): UsageTree => {
   const money = (amount: string) => (locale === "es" ? `${amount} €` : `$${amount}`);
   return {
     contract: "layout",
-    signature: "Stack",
-    options: { gap: "none" },
+    signature: "AppShell",
     children: [
       {
         contract: "navbar",
@@ -65,61 +64,145 @@ export const checkoutTree = (t: Translate, locale: "es" | "en"): UsageTree => {
       },
       {
         contract: "layout",
-        signature: "Stack",
-        options: { gap: "none" },
-        attrs: { class: "page-shell" },
+        signature: "Main",
+        options: { paddingBlock: "lg", paddingBlockExpanded: "xl" },
         children: {
-          contract: "layout",
-          signature: "Main",
-          attrs: { class: "page-shell__main" },
+          contract: "wrapper",
+          signature: "Wrapper",
+          options: { wrapperSize: "lg", gutter: "md", gutterExpanded: "lg" },
           children: {
-            contract: "wrapper",
-            signature: "Wrapper",
-            options: { wrapperSize: "lg", gutter: "md", gutterExpanded: "lg" },
-            children: {
-              contract: "layout",
-              signature: "Stack",
-              options: { gap: "md", gapExpanded: "lg" },
-              children: [
-                {
-                  contract: "steps",
-                  signature: "Steps",
-                  slots: {
-                    items: [
+            contract: "layout",
+            signature: "Stack",
+            options: { gap: "md", gapExpanded: "lg" },
+            children: [
+              {
+                contract: "steps",
+                signature: "Steps",
+                slots: {
+                  items: [
+                    {
+                      options: { status: "complete" },
+                      slots: {
+                        /* A check, not a "1": the completion cue has to survive without colour. */
+                        marker: { contract: "icon", signature: "Icon", options: { name: "check" } },
+                        label: t("demo.checkout.step1"),
+                        description: t("demo.checkout.step1Hint"),
+                      },
+                    },
+                    {
+                      options: { status: "current" },
+                      slots: {
+                        marker: "2",
+                        label: t("demo.checkout.step2"),
+                        description: t("demo.checkout.step2Hint"),
+                      },
+                    },
+                    {
+                      options: { status: "upcoming" },
+                      slots: {
+                        marker: "3",
+                        label: t("demo.checkout.step3"),
+                        description: t("demo.checkout.step3Hint"),
+                      },
+                    },
+                  ],
+                },
+              },
+              {
+                contract: "layout",
+                signature: "Grid",
+                options: { columns: "2", gap: "md", gapExpanded: "lg", responsive: true },
+                children: [
+                  {
+                    contract: "layout",
+                    signature: "Stack",
+                    options: { gap: "md" },
+                    children: [
                       {
-                        options: { status: "complete" },
+                        contract: "typography",
+                        signature: "Heading",
+                        options: { headingSize: "h3", flush: true },
+                        children: t("demo.checkout.formTitle"),
+                      },
+                      field(
+                        t("demo.checkout.fieldName"),
+                        "name",
+                        t("demo.checkout.fieldNamePlaceholder"),
+                      ),
+                      field(
+                        t("demo.checkout.fieldEmail"),
+                        "email",
+                        t("demo.checkout.fieldEmailPlaceholder"),
+                        "email",
+                      ),
+                      field(
+                        t("demo.checkout.fieldAddress"),
+                        "address",
+                        t("demo.checkout.fieldAddressPlaceholder"),
+                      ),
+                      /*
+                       * City and Country are their own rows, not an `Inline` pair. Side by side
+                       * they looked tidier and measured badly: this column is already half of a
+                       * two-column split, so at anything under a wide desktop the two fields were
+                       * asking for 319px inside 245 and their labels clipped with no way to
+                       * scroll. `equal` distributes the space it is given; it cannot create any.
+                       */
+                      field(
+                        t("demo.checkout.fieldCity"),
+                        "city",
+                        t("demo.checkout.fieldCityPlaceholder"),
+                      ),
+                      /*
+                       * `Select.native`, wrapped in a FormField like every other control in this
+                       * column. The custom `Select` exists for options that need markup, a
+                       * controlled collection or its own positioning; three plain country names
+                       * need none of that, and `Select.avoidWhen` is blunt about it: "appearance
+                       * stopped being a reason to replace the native control". On a phone the
+                       * native one also opens the platform picker, which on a checkout is worth
+                       * more than matching the input's border radius.
+                       */
+                      {
+                        contract: "form-field",
+                        signature: "FormField",
+                        options: { required: true },
                         slots: {
-                          /* A check, not a "1": the completion cue has to survive without colour. */
-                          marker: { contract: "icon", signature: "Icon", options: { name: "check" } },
-                          label: t("demo.checkout.step1"),
-                          description: t("demo.checkout.step1Hint"),
+                          label: t("demo.checkout.fieldCountry"),
+                          children: {
+                            contract: "select",
+                            signature: "Select.native",
+                            options: { name: "country" },
+                            slots: {
+                              items: [
+                                {
+                                  options: { value: "es" },
+                                  slots: { label: t("demo.checkout.countryEs") },
+                                },
+                                {
+                                  options: { value: "cl" },
+                                  slots: { label: t("demo.checkout.countryCl") },
+                                },
+                                {
+                                  options: { value: "mx" },
+                                  slots: { label: t("demo.checkout.countryMx") },
+                                },
+                              ],
+                            },
+                          },
                         },
                       },
                       {
-                        options: { status: "current" },
-                        slots: {
-                          marker: "2",
-                          label: t("demo.checkout.step2"),
-                          description: t("demo.checkout.step2Hint"),
-                        },
-                      },
-                      {
-                        options: { status: "upcoming" },
-                        slots: {
-                          marker: "3",
-                          label: t("demo.checkout.step3"),
-                          description: t("demo.checkout.step3Hint"),
-                        },
+                        contract: "checkbox",
+                        signature: "Checkbox",
+                        options: { name: "billing", defaultChecked: true },
+                        children: t("demo.checkout.sameBilling"),
                       },
                     ],
                   },
-                },
-                {
-                  contract: "layout",
-                  signature: "Grid",
-                  options: { columns: "2", gap: "md", gapExpanded: "lg", responsive: true },
-                  children: [
-                    {
+                  {
+                    contract: "box",
+                    signature: "Box",
+                    options: { surface: "sunken", border: "subtle", padding: "md", paddingExpanded: "lg" },
+                    children: {
                       contract: "layout",
                       signature: "Stack",
                       options: { gap: "md" },
@@ -127,164 +210,74 @@ export const checkoutTree = (t: Translate, locale: "es" | "en"): UsageTree => {
                         {
                           contract: "typography",
                           signature: "Heading",
-                          options: { headingSize: "h3", flush: true },
-                          children: t("demo.checkout.formTitle"),
+                          options: { headingSize: "h4", flush: true },
+                          children: t("demo.checkout.summaryTitle"),
                         },
-                        field(
-                          t("demo.checkout.fieldName"),
-                          "name",
-                          t("demo.checkout.fieldNamePlaceholder"),
-                        ),
-                        field(
-                          t("demo.checkout.fieldEmail"),
-                          "email",
-                          t("demo.checkout.fieldEmailPlaceholder"),
-                          "email",
-                        ),
-                        field(
-                          t("demo.checkout.fieldAddress"),
-                          "address",
-                          t("demo.checkout.fieldAddressPlaceholder"),
-                        ),
+                        {
+                          contract: "list",
+                          signature: "List",
+                          options: { density: "compact" },
+                          children: [
+                            lineItem(
+                              t("demo.checkout.item1"),
+                              t("demo.checkout.item1Hint"),
+                              money("89,00"),
+                            ),
+                            lineItem(
+                              t("demo.checkout.item2"),
+                              t("demo.checkout.item2Hint"),
+                              money("32,00"),
+                            ),
+                            lineItem(
+                              t("demo.checkout.shipping"),
+                              t("demo.checkout.shippingHint"),
+                              money("7,00"),
+                            ),
+                          ],
+                        },
                         /*
-                         * City and Country are their own rows, not an `Inline` pair. Side by side
-                         * they looked tidier and measured badly: this column is already half of a
-                         * two-column split, so at anything under a wide desktop the two fields were
-                         * asking for 319px inside 245 and their labels clipped with no way to
-                         * scroll. `equal` distributes the space it is given; it cannot create any.
-                         */
-                        field(
-                          t("demo.checkout.fieldCity"),
-                          "city",
-                          t("demo.checkout.fieldCityPlaceholder"),
-                        ),
-                        /*
-                         * `Select.native`, wrapped in a FormField like every other control in this
-                         * column. The custom `Select` exists for options that need markup, a
-                         * controlled collection or its own positioning; three plain country names
-                         * need none of that, and `Select.avoidWhen` is blunt about it: "appearance
-                         * stopped being a reason to replace the native control". On a phone the
-                         * native one also opens the platform picker, which on a checkout is worth
-                         * more than matching the input's border radius.
+                         * The total is a `Stat`. One number with its name, which is exactly what
+                         * that contract is for, and it brings the tabular figures every other
+                         * figure in the kit already has.
+                         *
+                         * The tax note is NOT in its `change` slot, though it fitted there and
+                         * looked right. `change` is the DELTA, where the number is heading. And
+                         * "IVA incluido" says nothing about direction; parked there it would have
+                         * inherited the trend styling and read as movement that does not exist.
+                         * A qualifier under a figure is just text.
                          */
                         {
-                          contract: "form-field",
-                          signature: "FormField",
-                          options: { required: true },
+                          contract: "stat",
+                          signature: "Stat",
                           slots: {
-                            label: t("demo.checkout.fieldCountry"),
-                            children: {
-                              contract: "select",
-                              signature: "Select.native",
-                              options: { name: "country" },
-                              slots: {
-                                items: [
-                                  {
-                                    options: { value: "es" },
-                                    slots: { label: t("demo.checkout.countryEs") },
-                                  },
-                                  {
-                                    options: { value: "cl" },
-                                    slots: { label: t("demo.checkout.countryCl") },
-                                  },
-                                  {
-                                    options: { value: "mx" },
-                                    slots: { label: t("demo.checkout.countryMx") },
-                                  },
-                                ],
-                              },
-                            },
+                            label: t("demo.checkout.total"),
+                            value: money("128,00"),
                           },
                         },
                         {
-                          contract: "checkbox",
-                          signature: "Checkbox",
-                          options: { name: "billing", defaultChecked: true },
-                          children: t("demo.checkout.sameBilling"),
+                          contract: "typography",
+                          signature: "Text",
+                          options: { size: "sm", tone: "secondary" },
+                          children: t("demo.checkout.taxNote"),
+                        },
+                        {
+                          contract: "button",
+                          signature: "Button.action",
+                          options: { tone: "accent", size: "lg" },
+                          children: t("demo.checkout.pay"),
+                        },
+                        {
+                          contract: "typography",
+                          signature: "Text",
+                          options: { size: "sm", tone: "tertiary" },
+                          children: t("demo.checkout.terms"),
                         },
                       ],
                     },
-                    {
-                      contract: "box",
-                      signature: "Box",
-                      options: { surface: "sunken", border: "subtle", padding: "md", paddingExpanded: "lg" },
-                      children: {
-                        contract: "layout",
-                        signature: "Stack",
-                        options: { gap: "md" },
-                        children: [
-                          {
-                            contract: "typography",
-                            signature: "Heading",
-                            options: { headingSize: "h4", flush: true },
-                            children: t("demo.checkout.summaryTitle"),
-                          },
-                          {
-                            contract: "list",
-                            signature: "List",
-                            options: { density: "compact" },
-                            children: [
-                              lineItem(
-                                t("demo.checkout.item1"),
-                                t("demo.checkout.item1Hint"),
-                                money("89,00"),
-                              ),
-                              lineItem(
-                                t("demo.checkout.item2"),
-                                t("demo.checkout.item2Hint"),
-                                money("32,00"),
-                              ),
-                              lineItem(
-                                t("demo.checkout.shipping"),
-                                t("demo.checkout.shippingHint"),
-                                money("7,00"),
-                              ),
-                            ],
-                          },
-                          /*
-                           * The total is a `Stat`. One number with its name, which is exactly what
-                           * that contract is for, and it brings the tabular figures every other
-                           * figure in the kit already has.
-                           *
-                           * The tax note is NOT in its `change` slot, though it fitted there and
-                           * looked right. `change` is the DELTA, where the number is heading. And
-                           * "IVA incluido" says nothing about direction; parked there it would have
-                           * inherited the trend styling and read as movement that does not exist.
-                           * A qualifier under a figure is just text.
-                           */
-                          {
-                            contract: "stat",
-                            signature: "Stat",
-                            slots: {
-                              label: t("demo.checkout.total"),
-                              value: money("128,00"),
-                            },
-                          },
-                          {
-                            contract: "typography",
-                            signature: "Text",
-                            options: { size: "sm", tone: "secondary" },
-                            children: t("demo.checkout.taxNote"),
-                          },
-                          {
-                            contract: "button",
-                            signature: "Button.action",
-                            options: { tone: "accent", size: "lg" },
-                            children: t("demo.checkout.pay"),
-                          },
-                          {
-                            contract: "typography",
-                            signature: "Text",
-                            options: { size: "sm", tone: "tertiary" },
-                            children: t("demo.checkout.terms"),
-                          },
-                        ],
-                      },
-                    },
-                  ],
-                },
-              ],
-            },
+                  },
+                ],
+              },
+            ],
           },
         },
       },

@@ -4,6 +4,7 @@ Sidebar:
   useWhen:
     - "an application's main navigation lives on the side and stays for the whole session"
     - "there are many sections and they should be visible without opening anything"
+    - "a panel of details or properties sits beside the work area on the end edge (an inspector); that is a Sidebar with side end, written after the Main in an AppShell"
   avoidWhen:
     - "it is a content site with a few sections; that is a Navbar"
     - "it appears over the content and closes on choosing; that is a Drawer / Vaul"

@@ -602,7 +602,7 @@ mark the row `done` here.
 | Gap | Severity | Status |
 | --- | --- | --- |
 | Child `data-width` (LayoutGrid spans/rails) has no UsageTree channel | high | **resolved 2026-09-17**: child `attrs["data-width"]` + `invalid-attr-value` against `childAttrs.width` |
-| Child `data-span` / root `data-fill` style hooks `--sk-grid-fill` / `--sk-grid-template` | medium | `fill` option locked; numeric floor + template stay intentional style escape hatches |
+| Child `data-span` / root `data-fill` style hooks `--sk-grid-fill` / `--sk-grid-template` | medium | Resolved (decision 35): `span` is a published child attribute in fixed and responsive grids; `fill` and both escape hatches were removed, since uneven columns are spans of even ones |
 | React `as` still allows any element while trees only expose sectioning tags | low | intentional narrow channel (same Box/Hero) |
 | layout.css `@import`s box/wrapper/image-frame as a CSS bundle; contract does not claim them | low | intentional convenience; trees load only layout.css |
 | No events / mount (static primitives; no enhancer) | low | intentional |

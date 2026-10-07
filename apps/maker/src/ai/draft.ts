@@ -1,4 +1,4 @@
-import { walk, type MakerSite } from "@skryensya/maker-model";
+import { isNode, walk, type MakerNode, type MakerSite } from "@skryensya/maker-model";
 
 /**
  * What the canvas draws while Maker AI works: the site as it would be with the operations written so far.
@@ -20,4 +20,31 @@ export function draftOf(base: MakerSite, site: MakerSite, operations: number, bu
   const added = new Set<string>();
   for (const page of site.pages) for (const node of walk(page.root)) if (!known.has(node.id)) added.add(node.id);
   return { site, added, operations, building };
+}
+
+export type PlanItemStatus = "pending" | "building" | "complete";
+
+/**
+ * How far a build has got, read off the draft and not stored: each node the draft adds whose parent
+ * is not itself new is one finished piece of the page, and a lone new wrapper counts its new children.
+ * Best effort: pieces are matched to the plan by order, not by name.
+ */
+export function addedPieces(draft: Draft): number {
+  const pieces = (node: MakerNode): number => {
+    const own: MakerNode[] = [];
+    const collect = (parent: MakerNode) => {
+      for (const held of Object.values(parent.slots)) {
+        if (held.kind !== "nodes") continue;
+        for (const child of held.children) if (isNode(child)) draft.added.has(child.id) ? own.push(child) : collect(child);
+      }
+    };
+    collect(node);
+    return own.length === 1 ? Math.max(1, pieces(own[0]!)) : own.length;
+  };
+  return draft.site.pages.reduce((sum, page) => sum + pieces(page.root), 0);
+}
+
+/** The plan's items in order: the first `done` are complete, the next is being built while the draft is still being written. */
+export function planStatuses(total: number, done: number, building: boolean): PlanItemStatus[] {
+  return Array.from({ length: total }, (_, n) => n < done ? "complete" : n === done && building ? "building" : "pending");
 }

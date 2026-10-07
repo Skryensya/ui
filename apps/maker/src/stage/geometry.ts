@@ -20,6 +20,21 @@ export function elementFor(doc: Document, id: string): HTMLElement | null {
   return doc.querySelector<HTMLElement>(`[data-maker-node="${CSS.escape(id)}"]`);
 }
 
+/**
+ * What is under a point. In edit mode the page's own elements take no pointer events (nothing on the
+ * canvas hovers, focuses or reacts: the page is being edited, not used), so the browser never reports
+ * them as a target; the stage asks for them here, switching the events back on for the one lookup.
+ */
+export function hitAt(doc: Document, x: number, y: number): Element | null {
+  const html = doc.documentElement;
+  html.setAttribute("data-maker-probe", "");
+  try {
+    return doc.elementFromPoint(x, y);
+  } finally {
+    html.removeAttribute("data-maker-probe");
+  }
+}
+
 /** The maker node an element belongs to: the nearest marked ancestor, the element included. */
 export function nodeIdAt(element: Element | null): string | undefined {
   return element?.closest<HTMLElement>("[data-maker-node]")?.dataset.makerNode;
@@ -38,7 +53,7 @@ export function placeAt(doc: Document, root: MakerNode, allowed: readonly Place[
     bySlot.get(key)!.add(place.index);
   }
 
-  let element: Element | null = doc.elementFromPoint(x, y);
+  let element: Element | null = hitAt(doc, x, y);
   /* Set once the pointer has been placed beside a child: its container takes it, edges or not. */
   let inside = false;
   while (element) {

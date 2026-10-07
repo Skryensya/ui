@@ -29,7 +29,7 @@ COPY packages/icons-phosphor/package.json ./packages/icons-phosphor/package.json
 COPY packages/react/package.json ./packages/react/package.json
 COPY packages/storybook-kit/package.json ./packages/storybook-kit/package.json
 COPY packages/vanilla/package.json ./packages/vanilla/package.json
-COPY contracts/snippets/package.json ./contracts/snippets/package.json
+COPY contracts/examples/package.json ./contracts/examples/package.json
 
 RUN --mount=type=cache,id=pnpm-store,target=/pnpm/store \
   pnpm config set store-dir /pnpm/store && pnpm fetch --frozen-lockfile

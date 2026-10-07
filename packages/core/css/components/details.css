@@ -87,16 +87,6 @@
     margin-block-start: var(--sk-details-heading-gap);
   }
 
-  /*
-   * A heading in the summary sits at the line-height a Tile title actually RENDERS at, so the two
-   * halves of Accordion measure the same. That is 1.5 today, not the heading scale's snug 1.35:
-   * tile.css asks for `var(--line-height-heading)`, a token nothing declares, and the title falls
-   * back to the inherited body line-height. If tile.css moves to the real heading token, this goes.
-   */
-  .sk-details .sk-details__summary > .sk-heading {
-    --sk-heading-line-height: var(--font-line-height-body);
-  }
-
   .sk-details__summary > .sk-details__indicator {
     grid-column: 2;
     grid-row: 1 / span 12;
@@ -162,7 +152,7 @@
     border-block-start: 1px solid var(--sk-details-border-color);
     background: var(--sk-details-content-bg);
     color: var(--sk-details-content-fg);
-    line-height: var(--line-height-body);
+    line-height: var(--font-line-height-body);
     overflow-wrap: anywhere;
   }
 

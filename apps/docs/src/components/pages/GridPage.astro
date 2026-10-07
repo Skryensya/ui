@@ -1,6 +1,8 @@
 ---
 /* The anatomy diagram is an Annotated frame, so this page needs its sheet. */
 import "@skryensya/core/components/annotation.css";
+/* The span example's cells hold the shape of content. */
+import "@skryensya/core/components/placeholder.css";
 import { annotationDemoCss } from "../../demos/annotation";
 import { gridAnatomyTree } from "../../demos/layout-anatomy";
 import ComponentPageShell from "./ComponentPageShell.astro";
@@ -18,6 +20,7 @@ import {
   inlineButtonsTree,
 } from "../../demos/layout-guide";
 import { gridMulticolTree, gridResponsiveTree, gridTree, gridScaleSpecimenTree } from "../../demos/layout";
+import { gridSpanTree } from "../../demos/layout-container";
 import { tableTree } from "../../demos/table";
 import { getLocale, tList, useTranslations } from "../../i18n";
 import { variantsTree } from "../../demos/variants";
@@ -26,7 +29,7 @@ const install = `pnpm add @skryensya/core @skryensya/react`;
 const t = useTranslations(getLocale(Astro.url));
 
 const multicolCss = `/* data-columns="5": 1 carril → 2 → 3 → 4 → 5,
-   según el viewport. */
+   según el ancho de su contenedor. */
 .sk-grid[data-multicol] {
   column-count: 1;
   column-gap: var(--sk-grid-gap);
@@ -37,7 +40,7 @@ const multicolCss = `/* data-columns="5": 1 carril → 2 → 3 → 4 → 5,
   margin-block-end: var(--sk-grid-gap);
 }
 
-@media (min-width: 36rem) {
+@container (width >= 36rem) {
   .sk-grid[data-multicol][data-columns="2"],
   .sk-grid[data-multicol][data-columns="3"],
   .sk-grid[data-multicol][data-columns="4"],
@@ -46,7 +49,7 @@ const multicolCss = `/* data-columns="5": 1 carril → 2 → 3 → 4 → 5,
   }
 }
 
-@media (min-width: 52rem) {
+@container (width >= 52rem) {
   .sk-grid[data-multicol][data-columns="3"],
   .sk-grid[data-multicol][data-columns="4"],
   .sk-grid[data-multicol][data-columns="5"] {
@@ -54,14 +57,14 @@ const multicolCss = `/* data-columns="5": 1 carril → 2 → 3 → 4 → 5,
   }
 }
 
-@media (min-width: 72rem) {
+@container (width >= 72rem) {
   .sk-grid[data-multicol][data-columns="4"],
   .sk-grid[data-multicol][data-columns="5"] {
     column-count: 4;
   }
 }
 
-@media (min-width: 90rem) {
+@container (width >= 90rem) {
   .sk-grid[data-multicol][data-columns="5"] {
     column-count: 5;
   }
@@ -76,7 +79,7 @@ const responsiveCss = `/* data-responsive: la misma progresión de carriles, per
 
 /* A direct child asks for more tracks with data-span (up to the grid's
    maximum), clamped to whatever exists at each breakpoint. */
-@media (min-width: 36rem) {
+@container (width >= 36rem) {
   .sk-grid[data-responsive] > [data-span="2"],
   .sk-grid[data-responsive] > [data-span="3"],
   .sk-grid[data-responsive] > [data-span="4"],
@@ -123,6 +126,7 @@ const explain = (option: string, values: readonly string[]) =>
     />
 
     <h3>{t("component.examplesTitle")}</h3>
+    <UsagePreview tree={gridSpanTree(t)} title={t("grid.spanTitle")} description={t("grid.spanBody")} />
     <UsagePreview tree={gridTree(t)} title={t("grid.basicTitle")} description={t("grid.basicBody")} />
     <UsagePreview tree={gridMulticolTree(t)} title={t("grid.multicolTitle")} description={t("grid.multicolBody1")} />
     <CodeBlock code={multicolCss} label="patterns/layout.css" />

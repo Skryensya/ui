@@ -13,21 +13,11 @@ import type { MakerSite } from "@skryensya/maker-model";
  * LISTEN/NOTIFY, so a write from any process reaches every open Maker.
  */
 
-export type Publication = {
-  /** The subdomain: `<siteName>.skryensya.dev`. */
-  readonly siteName: string;
-  readonly url: string;
-  readonly revision: number;
-  readonly at: string;
-};
-
 export type ProjectSummary = {
   readonly id: string;
   readonly name: string;
   readonly revision: number;
   readonly updatedAt: string;
-  /** The live publication, or undefined while the project is not published. */
-  readonly publication?: Publication;
 };
 
 export type Project = ProjectSummary & { readonly site: MakerSite };
@@ -47,8 +37,6 @@ export interface ProjectStore {
   save(id: string, baseRevision: number, site: MakerSite): Promise<Saved>;
   rename(id: string, name: string): Promise<ProjectSummary | undefined>;
   remove(id: string): Promise<boolean>;
-  /** Record or clear a publication. A site name already held by another project is refused. */
-  setPublication(id: string, publication: Publication | null): Promise<{ ok: true } | { ok: false; reason: string }>;
   subscribe(listener: (event: ProjectEvent) => void): () => void;
   close(): Promise<void>;
 }
@@ -67,10 +55,6 @@ type Row = {
   revision: number;
   updated_at: Date;
   site?: MakerSite;
-  site_name?: string | null;
-  published_revision?: number | null;
-  published_url?: string | null;
-  published_at?: Date | null;
 };
 
 const summary = (row: Row): ProjectSummary => ({
@@ -78,12 +62,9 @@ const summary = (row: Row): ProjectSummary => ({
   name: row.name,
   revision: row.revision,
   updatedAt: row.updated_at.toISOString(),
-  ...(row.site_name && row.published_url && row.published_revision && row.published_at
-    ? { publication: { siteName: row.site_name, url: row.published_url, revision: row.published_revision, at: row.published_at.toISOString() } }
-    : {}),
 });
 
-const COLUMNS = "id, name, revision, updated_at, site_name, published_revision, published_url, published_at";
+const COLUMNS = "id, name, revision, updated_at";
 
 export async function postgresStore(url: string): Promise<ProjectStore> {
   const sql = postgres(url, { max: 5, onnotice: () => {} });
@@ -132,23 +113,6 @@ export async function postgresStore(url: string): Promise<ProjectStore> {
       if (!isProjectId(id)) return false;
       const result = await sql`delete from maker_projects where id = ${id}`;
       return result.count > 0;
-    },
-    async setPublication(id, publication) {
-      if (!isProjectId(id)) return { ok: false, reason: `No project "${id}".` };
-      try {
-        const [row] = publication
-          ? await sql<Row[]>`
-              update maker_projects set site_name = ${publication.siteName}, published_revision = ${publication.revision},
-                published_url = ${publication.url}, published_at = ${publication.at}
-              where id = ${id} returning id`
-          : await sql<Row[]>`
-              update maker_projects set published_revision = null, published_url = null, published_at = null
-              where id = ${id} returning id`;
-        return row ? { ok: true } : { ok: false, reason: `No project "${id}".` };
-      } catch (error) {
-        if ((error as { code?: string }).code === "23505") return { ok: false, reason: `"${publication?.siteName}" is already the site name of another project.` };
-        throw error;
-      }
     },
     subscribe(listener) {
       listeners.add(listener);
@@ -200,16 +164,6 @@ export function memoryStore(): ProjectStore {
       announce({ id, revision: next.revision, op: "update" });
       const { site: _site, ...rest } = next;
       return rest;
-    },
-    async setPublication(id, publication) {
-      const current = projects.get(id);
-      if (!current) return { ok: false, reason: `No project "${id}".` };
-      if (publication && [...projects.values()].some((other) => other.id !== id && other.publication?.siteName === publication.siteName)) {
-        return { ok: false, reason: `"${publication.siteName}" is already the site name of another project.` };
-      }
-      const { publication: _old, ...rest } = current;
-      projects.set(id, publication ? { ...rest, publication } : rest);
-      return { ok: true };
     },
     async remove(id) {
       const had = projects.delete(id);

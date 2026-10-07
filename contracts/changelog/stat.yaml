@@ -5,6 +5,17 @@
 # hash.
 surface: "f0a11f0e56139cc3"
 entries:
+  - date: 2026-10-06
+    kind: bugfix
+    target: Stat
+    es:
+      title: "El valor de Stat se lee como cifra, no como código"
+      body: >-
+        <code>.sk-stat__value</code> usaba la fuente de código y el tamaño <code>h2</code>. Ahora usa la fuente del cuerpo con números tabulares y el tamaño <code>h1</code>, así que una cifra clave se ve como parte de la página.
+    en:
+      title: "Stat's value reads as a figure, not as code"
+      body: >-
+        <code>.sk-stat__value</code> used the code font at the <code>h2</code> size. It now uses the body font with tabular numbers at the <code>h1</code> size, so a key figure reads as part of the page.
   - date: 2026-09-27
     kind: bugfix
     target: Stat

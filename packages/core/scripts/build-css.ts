@@ -113,8 +113,8 @@ results.push([
 
 // The a-la-carte path: tokens compiled standalone, so a page can link just the components it uses
 // instead of the whole bundle. Primitives + semantic only, matching what a bare `@use
-// "@skryensya/core/tokens"` gives a Sass consumer before it opts into modes/dimensions. The three
-// patterns `tokens.scss` ships in base. State-layer, visually-hidden, icon; never opt-in, see that
+// "@skryensya/core/tokens"` gives a Sass consumer before it opts into modes/dimensions. The four
+// patterns `tokens.scss` ships in base. State-layer, visually-hidden, icon, query container; never opt-in, see that
 // file's own header. Are inlined here rather than `@import`-ed: their source `@import
 // url("./patterns/…")` is only valid relative to css/, and this file is published from dist/.
 const TOKENS_ENTRY = `
@@ -122,7 +122,7 @@ const TOKENS_ENTRY = `
 @use "semantic";
 @layer primitives, semantic, components, overrides;
 `;
-const BASE_PATTERNS = ["state-layer.css", "visually-hidden.css", "icon.css"];
+const BASE_PATTERNS = ["state-layer.css", "visually-hidden.css", "icon.css", "query-container.css"];
 const tokensOnlyCss = compileString(TOKENS_ENTRY, { loadPaths: [CSS], style: "expanded" }).css;
 const tokensOut =
   `@charset "UTF-8";\n` +

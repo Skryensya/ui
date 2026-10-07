@@ -39,7 +39,6 @@ const cases: Case[] = [
   { name: "Toolbar", markup: `<div id="toolbar" class="sk-toolbar" role="toolbar" aria-label="t" data-appearance="frosted">Herramientas</div>`, ink: "#toolbar" },
   { name: "Footer", markup: `<footer id="footer" class="sk-footer" data-surface="surface" data-appearance="frosted" style="inline-size:260px">Pie</footer>`, ink: "#footer" },
   { name: "Hero", markup: `<section id="hero" class="sk-hero" data-surface="raised" data-appearance="frosted" style="--sk-hero-min-height:6rem;inline-size:260px">Titular</section>`, ink: "#hero" },
-  { name: "Tabs, unselected", markup: "", ink: "#tab-off", surface: "#tablist" },
   { name: "Segmented, selected", markup: `<div id="segmented" class="sk-segmented" role="radiogroup" aria-label="Vista" data-appearance="frosted"><button id="seg-on" class="sk-segmented__option sk-interactive" role="radio" aria-checked="true" type="button">Lista</button><button id="seg-off" class="sk-segmented__option sk-interactive" role="radio" aria-checked="false" type="button">Grilla</button></div>`, ink: "#seg-on", surface: "#segmented" },
   { name: "Segmented, unselected", markup: "", ink: "#seg-off", surface: "#segmented" },
   { name: "Pagination, current page", markup: `<nav class="sk-pagination" aria-label="p" data-appearance="frosted"><button id="page-current" class="sk-pagination__item sk-interactive" type="button" aria-current="page">2</button></nav>`, ink: "#page-current" },

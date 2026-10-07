@@ -52,7 +52,8 @@ test("brutalist draws a black edge and a hard offset, at plain's exact footprint
     return Array.from(ctx.getImageData(0, 0, 1, 1).data);
   });
   expect(Math.max(edge[0]!, edge[1]!, edge[2]!)).toBeLessThan(13);
-  expect(plain.shadow).toBe("none");
+  /* Plain keeps only its hairline ring (an inset, so it costs no footprint), never the hard offset. */
+  expect(plain.shadow).toMatch(/0px 0px 0px 1px inset$/);
 });
 
 test("the offset scales with the disc", async ({ page }) => {

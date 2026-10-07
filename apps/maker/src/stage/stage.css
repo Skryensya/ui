@@ -44,6 +44,17 @@ body {
 /* In edit mode nothing in the page reacts to the pointer on its own: a click selects. */
 html[data-maker-mode="edit"] #stage * {
   cursor: default;
+  pointer-events: none;
+}
+
+/* The stage looks things up by position: for that one moment the page answers. */
+html[data-maker-mode="edit"][data-maker-probe] #stage * {
+  pointer-events: auto;
+}
+
+html[data-maker-mode="edit"] [data-maker-editing],
+html[data-maker-mode="edit"] [data-maker-editing] * {
+  pointer-events: auto;
 }
 
 html[data-maker-mode="edit"] [data-maker-editing] {
@@ -72,7 +83,7 @@ html[data-maker-panning] #stage * {
 @keyframes maker-arrive {
   from {
     opacity: 0;
-    translate: 0 0.75rem;
+    translate: 0 1.25rem;
   }
   to {
     opacity: 1;
@@ -80,11 +91,13 @@ html[data-maker-panning] #stage * {
   }
 }
 
+/* Unhurried on purpose: what Jev and the catalogue place lands in a tenth of a second, and a snap that fast reads as a
+   jump. A slower settle, after a beat, reads as the page being built, and covers the moment the model goes over it. */
 [data-maker-fresh] {
   outline: 2px solid color-mix(in oklab, var(--color-border-accent, Highlight) 55%, transparent);
   outline-offset: 4px;
   border-radius: var(--radius-surface, 0.5rem);
-  animation: maker-arrive 420ms cubic-bezier(0.2, 0.7, 0.2, 1) both;
+  animation: maker-arrive 1100ms cubic-bezier(0.22, 0.61, 0.36, 1) 150ms both;
 }
 
 [data-maker-fresh] [data-maker-fresh] {

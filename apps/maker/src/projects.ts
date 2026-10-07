@@ -6,8 +6,7 @@ import type { MakerSite } from "@skryensya/maker-model";
  * stopped database leaves the Maker working in the browser alone instead of failing.
  */
 
-export type Publication = { siteName: string; url: string; revision: number; at: string };
-export type ProjectSummary = { id: string; name: string; revision: number; updatedAt: string; publication?: Publication };
+export type ProjectSummary = { id: string; name: string; revision: number; updatedAt: string };
 export type Project = ProjectSummary & { site: MakerSite };
 
 async function call<T>(path: string, init?: RequestInit): Promise<T> {
@@ -47,9 +46,3 @@ export async function saveProject(id: string, baseRevision: number, site: MakerS
 }
 
 export const projectEvents = (id: string) => new EventSource(`/api/projects/${id}/events`);
-
-export const publishingStatus = () => call<{ configured: boolean; domain: string | null }>("/publishing");
-
-export type PublishOutcome = { name: string; url: string; revision: number; pending: { page: string; message: string }[] };
-export const publishProject = (id: string, name: string) => call<PublishOutcome>(`/projects/${id}/publish`, body("POST", { name }));
-export const unpublishProject = (id: string) => call<{ unpublished: string | null }>(`/projects/${id}/publish`, { method: "DELETE" });

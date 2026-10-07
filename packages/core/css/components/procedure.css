@@ -119,7 +119,7 @@
     color: var(--sk-procedure-title-fg);
     font-size: var(--sk-procedure-title-font-size);
     font-weight: var(--sk-procedure-title-font-weight);
-    line-height: var(--line-height-heading);
+    line-height: var(--font-line-height-heading);
   }
 
   /*

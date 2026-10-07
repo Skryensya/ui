@@ -74,7 +74,7 @@
     --sk-hero-shadow: var(--elevation-sunken);
     --sk-hero-wash: var(--elevation-wash-sunken);
   }
-  .sk-hero[data-surface="surface"] { --sk-hero-bg: var(--color-bg-surface); }
+  .sk-hero:is([data-surface="surface"], :not([data-surface])) { --sk-hero-bg: var(--color-bg-surface); }
   .sk-hero[data-surface="raised"] {
     --sk-hero-bg: var(--color-bg-surface-raised);
     --sk-hero-shadow: var(--elevation-raised);
@@ -96,7 +96,7 @@
   .sk-hero[data-padding="sm"] { --sk-hero-padding: var(--space-inset-sm); }
   .sk-hero[data-padding="md"] { --sk-hero-padding: var(--space-inset-md); }
   .sk-hero[data-padding="lg"] { --sk-hero-padding: var(--space-inset-lg); }
-  .sk-hero[data-padding="xl"] { --sk-hero-padding: var(--space-inset-xl); }
+  .sk-hero:is([data-padding="xl"], :not([data-padding])) { --sk-hero-padding: var(--space-inset-xl); }
 
   /*
    * HORIZONTAL alignment only, the one axis `justify-content: center` above does not touch:
@@ -113,9 +113,8 @@
   }
 
   /*
-   * 36rem is `--breakpoint-compact` (semantic/_breakpoints.scss), a literal here for the same
-   * reason `patterns/vaul.css`'s own desktop rule hand-copies `52rem`: a CSS `@media` cannot read a
-   * custom property, so the one shared source has to be typed twice.
+   * 36rem is `--breakpoint-compact` (semantic/_breakpoints.scss), asked of the nearest query
+   * container (decision 35), a literal because a container query cannot read a custom property.
    *
    * The 26rem floor above is tuned for a real hero on a real page, sharing the screen with a nav
    * bar above and more content below. On a phone that same floor is the majority of the viewport
@@ -124,7 +123,7 @@
    * reads as a considered opening section, not a paragraph, while giving a short mobile hero room
    * to breathe above the fold instead of eating it.
    */
-  @media (max-width: 35.999rem) {
+  @container (width < 36rem) {
     .sk-hero {
       --sk-hero-min-height: 18rem;
     }
@@ -180,12 +179,13 @@
   }
 
   /*
-   * EXPANDED OVERRIDES, declared (decision 30). 52rem is `--breakpoint-desktop`
-   * (semantic/_breakpoints.scss), a literal here because a CSS `@media` cannot read a custom
-   * property, the same hand-copy `vaul.css` makes. The plain attribute is the value from the smallest
-   * screen up; the `-expanded` one replaces it from this width up, and only when the author wrote it.
+   * EXPANDED OVERRIDES, declared (decision 30), measured on the nearest query container (decision
+   * 35). 52rem is `--breakpoint-desktop` (semantic/_breakpoints.scss), a literal here because a
+   * container query cannot read a custom property. The plain attribute is the value from the
+   * narrowest container up; the `-expanded` one replaces it from this width up, and only when the
+   * author wrote it.
    */
-  @media (min-width: 52rem) {
+  @container (width >= 52rem) {
     .sk-hero[data-padding-expanded="none"] { --sk-hero-padding: 0; }
     .sk-hero[data-padding-expanded="xs"] { --sk-hero-padding: var(--space-inset-xs); }
     .sk-hero[data-padding-expanded="sm"] { --sk-hero-padding: var(--space-inset-sm); }

@@ -32,11 +32,3 @@ drop trigger if exists maker_projects_notify on maker_projects;
 create trigger maker_projects_notify
   after insert or update or delete on maker_projects
   for each row execute function maker_projects_notify();
-
--- Publication: the site name a project is published under (unique across projects), which revision
--- is live, where, and since when. Null while the project is not published.
-alter table maker_projects add column if not exists site_name text;
-alter table maker_projects add column if not exists published_revision integer;
-alter table maker_projects add column if not exists published_url text;
-alter table maker_projects add column if not exists published_at timestamptz;
-create unique index if not exists maker_projects_site_name on maker_projects (site_name) where site_name is not null;

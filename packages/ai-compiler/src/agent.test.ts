@@ -1,6 +1,6 @@
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
-import { snippets } from "@skryensya/snippets";
+import { library } from "@skryensya/examples";
 import { CONTRACTS_BATCH_BYTES, CONTRACTS_BATCH_LIMIT, createAgentService } from "./agent.js";
 import { buildManifest } from "./manifest.js";
 
@@ -10,7 +10,7 @@ import { buildManifest } from "./manifest.js";
  */
 const REPO = join(import.meta.dirname, "..", "..", "..");
 const built = buildManifest(join(REPO, "contracts", "semantic"));
-const service = createAgentService({ index: built.index, manifest: built.manifest }, snippets);
+const service = createAgentService({ index: built.index, manifest: built.manifest }, library);
 
 describe("contracts: several families in one answer", () => {
   it("keeps the order asked, lists a repeated id once, and stamps provenance once", () => {

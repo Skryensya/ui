@@ -29,7 +29,9 @@
     margin: 0;
   }
 
-  hr.sk-separator[data-orientation="horizontal"] {
+  /* Horizontal is the default, so it must not wait for the attribute: an emitter that leaves defaults
+   * out (`fillDefaults: false`) writes no `data-orientation`, and the rule would never draw. */
+  hr.sk-separator:not([data-orientation="vertical"]) {
     inline-size: 100%;
     block-size: 0;
     border-block-start: var(--sk-separator-thickness) solid var(--sk-separator-color);

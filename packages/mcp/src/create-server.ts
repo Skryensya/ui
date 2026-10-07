@@ -1,6 +1,6 @@
 import { McpServer } from "@modelcontextprotocol/server";
 import { createAgentService, type AgentResult } from "@skryensya/ai-compiler/agent";
-import { snippets } from "@skryensya/snippets";
+import { library } from "@skryensya/examples";
 import { instructions } from "./instructions.js";
 import { pair } from "./manifest.js";
 import { reportingInput, type Checked } from "./schemas.js";
@@ -19,7 +19,7 @@ import { tools } from "./tools.js";
  * that `manifest.ts` froze, so a thousand concurrent requests share read-only data and nothing else.
  */
 
-const service = createAgentService(pair, snippets);
+const service = createAgentService(pair, library);
 
 export type ServerOptions = {
   /** A warning to attach to every answer, or undefined when there is none (see `staleness.ts`). */

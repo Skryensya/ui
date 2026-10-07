@@ -98,20 +98,37 @@ const getCatalog = define({
 
 const getExamples = define({
   name: "get_examples",
-  title: "Browse established example trees, or fetch one by id",
-  summary: "Established example trees: the index with no id, one full tree with an id.",
+  title: "Browse the example library by intent, subject, scale or layout, or fetch one by id",
+  summary: "The example library: filter the taxonomy with no id, one full example with its graph with an id.",
   description:
-    "Established, known-good trees below page scale: one component well-composed (`component`) or a " +
-    "few as one small piece of UI (`molecule`). discover_ui already lists the ones related to its " +
-    "candidates; call this with an id to read one, or with no id for the whole index (id, level, " +
-    "intent, notes, families used; no trees). When one fits, adapt its CONTENT, not just its shape: " +
-    "an example records a composition decision, such as which box pads what. Then validate what you " +
-    "adapted: an example proves its tree matched a contract when it was written, not that it still does.",
+    "Established, known-good trees, filed on two axes. INTENT is what the reader is trying to do " +
+    "(`domain/area/intent`, e.g. `metrics/usage/quota`; a prefix such as `metrics/` is every figure). " +
+    "SUBJECT is what a person would call it (card, list, form, hero…); the components an example uses are " +
+    "read off its tree (`contract`). A SCALE says how much of a page it is: fragment, component, " +
+    "composition or page.\n\n" +
+    "Layout and meaning are kept apart. A PATTERN is the structure alone, with the fields it fills; a USE " +
+    "is one intent put on a pattern, with its content. So an example's `relations` answer both questions: " +
+    "`sameLayout` is this layout put to other jobs (reach for it when you like the shape but the purpose " +
+    "differs), `sameIntent` is other ways to do this job, `contains`/`containedIn` are what a composition " +
+    "is made of, `similar` is structural kinship across patterns, and `related` carries written " +
+    "judgements.\n\n" +
+    "With no id and no filter you get the facets (every intent with a count) and the whole compact index; " +
+    "filter to narrow it. With an id you get the full tree, its pattern's `fields` and the use's `content`: " +
+    "to reuse the layout for another purpose, keep the pattern's structure and replace the content. " +
+    "`locale` is `en` or `es`. Then validate what you adapted: an example proves its tree matched a " +
+    "contract when it was written, not that it still does.",
   input: z.object({
-    id: z.string().max(120).optional().describe("An example id. Omit to list every example."),
+    id: z.string().max(120).optional().describe("An example id. Omit to browse."),
+    intent: z.string().max(120).optional().describe("An intent id or a prefix: `metrics/`, `metrics/money/`, `metrics/usage/quota`."),
+    subject: z.string().max(40).optional().describe("card, list, form, hero, action, feedback, navigation, table, survey or screen."),
+    scale: z.enum(["fragment", "component", "composition", "page"]).optional(),
+    pattern: z.string().max(120).optional().describe("Every use of one pattern: the same layout put to other jobs."),
+    contract: z.string().max(80).optional().describe("Examples whose tree touches this contract family, e.g. `meter`."),
+    query: z.string().max(200).optional().describe("Words that must all appear in an example's id, title, purpose or intent."),
+    locale: z.enum(["en", "es"]).default("en").describe("The language of titles, purposes and content. The trees' words follow it."),
   }),
   output: examplesOutput,
-  run: (service, { id }) => (id ? service.example(id) : service.examples()),
+  run: (service, { id, locale, ...filter }) => (id ? service.example(id, locale) : service.examples({ ...filter, locale })),
 });
 
 const detail = z

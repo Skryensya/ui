@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { snippets } from "@skryensya/snippets";
+import { snippets } from "@skryensya/examples";
 import type { UsageTree } from "@skryensya/core/usage-tree";
 import { reviewTree } from "./quality.js";
 import { validateUsageTree } from "./validate.js";
@@ -155,6 +155,30 @@ describe("the counterexamples: valid trees that are still not good", () => {
   it("several unnamed navigations", () => {
     const nav = (): UsageTree => ({ contract: "nav-list", signature: "NavList", children: [] });
     expect(rulesFor(page(heading("A", "h1"), nav(), nav()))).toContain("landmarks-named");
+  });
+
+  it("a shell whose rail never reaches a phone", () => {
+    const rail = (side?: "end"): UsageTree => ({
+      contract: "sidebar",
+      signature: "Sidebar",
+      ...(side ? { options: { side } } : {}),
+      children: { contract: "sidebar", signature: "SidebarContent", children: text("Links") },
+    });
+    const drawer: UsageTree = { contract: "vaul", signature: "Vaul.drawer", options: { label: "Menu", panelId: "menu" }, children: text("Links") };
+    const trigger: UsageTree = {
+      contract: "vaul",
+      signature: "Vaul.Trigger",
+      options: { opens: "menu", buttonIconOnly: true, buttonLabel: "Menu" },
+      children: { contract: "icon", signature: "Icon", options: { name: "menu" } },
+    };
+    const header: UsageTree = { contract: "navbar", signature: "Navbar", children: [{ contract: "navbar", signature: "NavbarBrand", children: "Brand" }, trigger] };
+    const shell = (...children: UsageTree[]): UsageTree => ({ contract: "layout", signature: "AppShell", children: [skip, ...children] });
+
+    expect(rulesFor(shell(navbar, rail(), main(heading("Inbox", "h1"))))).toContain("rails-reach-compact");
+    expect(rulesFor(shell(navbar, rail(), main(heading("Inbox", "h1")), drawer))).toContain("rails-reach-compact");
+    expect(rulesFor(shell(header, rail(), main(heading("Inbox", "h1")), drawer))).not.toContain("rails-reach-compact");
+    expect(rulesFor(shell(header, rail(), main(heading("Inbox", "h1")), rail(), drawer))).toContain("end-rail-side");
+    expect(rulesFor(shell(header, rail(), main(heading("Inbox", "h1")), rail("end"), drawer))).not.toContain("end-rail-side");
   });
 
   it("warnings never fail a review, errors always do", () => {

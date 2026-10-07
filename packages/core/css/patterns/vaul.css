@@ -129,7 +129,7 @@
    *
    * Each edge fills the direction its own gap would open, which is the direction it is anchored to;
    * RTL swaps the inline pair, exactly as it swaps their translate. */
-  .sk-vaul[data-edge="block-end"] {
+  .sk-vaul:is([data-edge="block-end"], :not([data-edge])) {
     box-shadow: 0 var(--sk-vaul-material) 0 0 var(--sk-vaul-bg), var(--sk-vaul-elevation);
   }
 
@@ -180,7 +180,7 @@
 
   /* The bottom sheet: it spans the viewport and is sized by its content up to a ceiling, because a
    * sheet that always claimed the full height would just be a slow full-screen dialog. */
-  .sk-vaul[data-edge="block-end"] {
+  .sk-vaul:is([data-edge="block-end"], :not([data-edge])) {
     inset-block: auto 0;
     inset-inline: 0;
     inline-size: 100dvw;
@@ -211,7 +211,7 @@
     translate: calc(-1 * var(--sk-vaul-drag-offset)) 0;
   }
 
-  .sk-vaul[data-edge="block-end"][open] {
+  .sk-vaul:is([data-edge="block-end"], :not([data-edge]))[open] {
     translate: 0 var(--sk-vaul-drag-offset);
   }
 
@@ -259,7 +259,7 @@
       translate: -100% 0;
     }
 
-    .sk-vaul[data-edge="block-end"][open] {
+    .sk-vaul:is([data-edge="block-end"], :not([data-edge]))[open] {
       translate: 0 100%;
     }
   }
@@ -288,12 +288,12 @@
     background: var(--color-border-strong);
   }
 
-  .sk-vaul[data-edge="block-end"] .sk-vaul__handle {
+  .sk-vaul:is([data-edge="block-end"], :not([data-edge])) .sk-vaul__handle {
     flex: none;
     padding-block: var(--space-inset-xs);
   }
 
-  .sk-vaul[data-edge="block-end"] .sk-vaul__handle::before {
+  .sk-vaul:is([data-edge="block-end"], :not([data-edge])) .sk-vaul__handle::before {
     inline-size: 2.25rem;
     block-size: 0.25rem;
   }
@@ -382,12 +382,12 @@
    * dropped; the backdrop's fade is what says the page went inert. Dragging is a direct manipulation,
    * not motion the system plays at you, so it is untouched here. */
   @media (prefers-reduced-motion: reduce) {
-    .sk-vaul:where([data-edge="inline-start"], [data-edge="inline-end"], [data-edge="block-end"]) {
+    .sk-vaul:where([data-edge="inline-start"], [data-edge="inline-end"], [data-edge="block-end"], :not([data-edge])) {
       translate: 0 0;
     }
 
     @starting-style {
-      .sk-vaul:where([data-edge="inline-start"], [data-edge="inline-end"], [data-edge="block-end"])[open] {
+      .sk-vaul:where([data-edge="inline-start"], [data-edge="inline-end"], [data-edge="block-end"], :not([data-edge]))[open] {
         translate: 0 0;
       }
     }

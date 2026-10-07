@@ -117,6 +117,30 @@ describe("an agent's operations", () => {
     if (!refused.ok) expect(refused.reason).toContain("page or layout");
   });
 
+  it("a page added in the batch is edited in the same batch, by its name or its path; an existing one by its name", () => {
+    const insert = { type: "insert", at: { parent: "", slot: "children", index: 0 }, signature: { contract: "typography", signature: "Heading" } } as const;
+    const resolved = resolveAgentOperations(site(), [
+      { type: "addPage", name: "Configuración", path: "/configuracion" },
+      { type: "page", page: "/configuracion", operations: [{ ...insert, at: { ...insert.at, parent: "x" } }] },
+      { type: "page", page: "configuración", operations: [] },
+    ], counterIds("ag"));
+    expect(resolved.ok).toBe(true);
+    if (!resolved.ok) return;
+    const added = resolved.value.find((operation) => operation.type === "addPage");
+    const edit = resolved.value.find((operation) => operation.type === "edit");
+    expect(added && added.type === "addPage" && edit && edit.type === "edit" && edit.page === added.page.id).toBe(true);
+    /* An existing page by its name, whatever the case. */
+    const home = site().pages[0]!;
+    const byName = resolveAgentOperations(site(), [{ type: "renamePage", page: home.name.toUpperCase(), name: "Start" }], counterIds("ag"));
+    expect(byName.ok && byName.value[0]).toMatchObject({ type: "renamePage", page: "home" });
+  });
+
+  it("a reference to nothing says what exists", () => {
+    const refused = resolveAgentOperations(site(), [{ type: "page", page: "ghost", operations: [] }], counterIds("ag"));
+    expect(refused.ok).toBe(false);
+    if (!refused.ok) expect(refused.reason).toMatch(/Available: home /);
+  });
+
   it("is refused, whole, when any operation breaks the contract", () => {
     const resolved = resolveAgentOperations(site(), [
       { type: "page", page: "home", operations: [

@@ -55,29 +55,19 @@ export const messageMetadataVariants = (t: Translate): { value: string; label: s
   },
 ];
 
-/** The avatar card's trees: how a run of messages from one person carries its avatar. */
-export const messageGroupVariants = (t: Translate): { value: string; label: string; tree: Node; explain: string }[] => {
+/** A run of messages from one person: the avatar on the first, an empty `MessageAvatar` holding the column on the rest. */
+export const messageGroupTree = (t: Translate): Node => {
   const line = (text: string, withAvatar: boolean): Node =>
     row({
       align: "start",
       avatar: withAvatar ? avatar("R", "Robin") : { contract: "message", signature: "MessageAvatar" },
       content: [bubble(text)],
     });
-  const stack = (children: Node[]): Node => ({ contract: "message", signature: "MessageGroup", children });
-  return [
-    {
-      value: "last",
-      label: t("messagePage.prop.group.lastLabel"),
-      tree: stack([line(t("messagePage.demo.first"), true), line(t("messagePage.demo.second"), false)]),
-      explain: t("messagePage.prop.group.last"),
-    },
-    {
-      value: "each",
-      label: t("messagePage.prop.group.eachLabel"),
-      tree: stack([line(t("messagePage.demo.first"), true), line(t("messagePage.demo.second"), true)]),
-      explain: t("messagePage.prop.group.each"),
-    },
-  ];
+  return {
+    contract: "message",
+    signature: "MessageGroup",
+    children: [line(t("messagePage.demo.first"), true), line(t("messagePage.demo.second"), false)],
+  };
 };
 
 /** A typing indicator: a temporary status row on the author's side. Three dots, one `status` region. */

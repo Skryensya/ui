@@ -14,7 +14,7 @@ import type { BoxSurface, Space } from "./layout.js";
  * `layout.Grid` for the column row, `nav-list.NavList` for each column, `typography.Text` for the
  * legal line, `wrapper.Wrapper` to hold it all at the page's own measure. Three real compositions
  * this stays open to, all valid against the SAME contract below, ship as snippets
- * (`contracts/snippets/footer-*.ts`): a full site footer (column row + legal bar), a minimal
+ * (`contracts/examples/fixed/footer-*.ts`): a full site footer (column row + legal bar), a minimal
  * legal-only bar, and a two-tier footer with a brand block above a credit line.
  *
  * What IS fixed, because it's true of every footer regardless of contents:

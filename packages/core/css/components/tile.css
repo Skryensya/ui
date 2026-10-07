@@ -57,7 +57,9 @@
     box-shadow: var(--sk-tile-shadow);
     color: var(--sk-color-text-primary);
     font-size: var(--sk-font-body-sm);
-    overflow-wrap: anywhere;
+    /* `break-word`, not `anywhere`: a word breaks only when it cannot fit a line on its own, and the
+     * tile's min-content stays its longest word, so a row of tiles wraps instead of spelling them out. */
+    overflow-wrap: break-word;
     overflow: hidden;
 
   }
@@ -88,14 +90,14 @@
     color: var(--sk-color-text-primary);
     font-size: var(--sk-font-heading-sm);
     font-weight: var(--sk-tile-title-weight);
-    line-height: var(--line-height-heading);
+    line-height: var(--font-line-height-heading);
   }
 
   .sk-tile__description {
     min-inline-size: 0;
     margin: 0;
     color: var(--sk-color-text-secondary);
-    line-height: var(--line-height-body);
+    line-height: var(--font-line-height-body);
   }
 
   .sk-tile--interactive {

@@ -5,6 +5,16 @@
 # hash.
 surface: "796e072bd665546a"
 entries:
+  - date: 2026-10-06
+    kind: bugfix
+    es:
+      title: "Vaul se dibuja en su borde por defecto antes de que cargue su JS"
+      body: >-
+        Las reglas de <code>edge="block-end"</code> exigían el atributo, que el enhancer escribe al montar: antes de eso el panel no estaba anclado. Ahora valen también sin atributo.
+    en:
+      title: "Vaul draws on its default edge before its JS loads"
+      body: >-
+        The <code>edge="block-end"</code> rules required the attribute, which the enhancer writes on mount: before that the panel was not anchored. They now also hold without it.
   - date: 2026-09-26
     kind: feature
     target: appearance

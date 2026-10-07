@@ -22,7 +22,7 @@
   },
   "devDependencies": {
     "@skryensya/ai-gates": "workspace:*",
-    "@skryensya/snippets": "workspace:*",
+    "@skryensya/examples": "workspace:*",
     "typescript": "^5.9.3",
     "vitest": "^4.1.11"
   }

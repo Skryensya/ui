@@ -5,7 +5,8 @@ import type { Translate } from "../../i18n";
  * SIGN IN. The smallest template here, and the one a stranger meets before any other screen. It
  * does one job, so the page is one narrow column and nothing else:
  *
- *   - the frame is a `Wrapper` at `sm`, not a two-column split. A login form is short, and a form
+ *   - the frame is a `Wrapper` at `sm`, centred in the work area's height by a Stack's `justify`,
+ *     not a two-column split. A login form is short, and a form
  *     stretched across a wide column reads as unfinished rather than calm;
  *   - the password is `PasswordInput`, NOT a FormField around `Input type="password"`. The
  *     show/hide control and its two accessible names belong to that contract, and it owns its own
@@ -18,8 +19,7 @@ import type { Translate } from "../../i18n";
 
 export const signInTree = (t: Translate): UsageTree => ({
   contract: "layout",
-  signature: "Stack",
-  options: { gap: "none" },
+  signature: "AppShell",
   children: [
     {
       contract: "navbar",
@@ -28,13 +28,13 @@ export const signInTree = (t: Translate): UsageTree => ({
     },
     {
       contract: "layout",
-      signature: "Stack",
-      options: { gap: "none" },
-      attrs: { class: "page-shell" },
+      signature: "Main",
+      options: { paddingBlock: "lg", paddingBlockExpanded: "xl" },
       children: {
+        /* The form sits in the middle of the work area's height: the Main gives the Stack its height and `justify` spends it. */
         contract: "layout",
-        signature: "Main",
-        attrs: { class: "page-shell__main" },
+        signature: "Stack",
+        options: { stackJustify: "center" },
         children: {
           contract: "wrapper",
           signature: "Wrapper",

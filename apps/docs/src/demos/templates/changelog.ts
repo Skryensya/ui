@@ -38,8 +38,7 @@ export const changelogTree = (t: Translate): UsageTree => {
   };
   return {
     contract: "layout",
-    signature: "Stack",
-    options: { gap: "none" },
+    signature: "AppShell",
     children: [
       {
         contract: "navbar",
@@ -48,136 +47,128 @@ export const changelogTree = (t: Translate): UsageTree => {
       },
       {
         contract: "layout",
-        signature: "Stack",
-        options: { gap: "none" },
-        attrs: { class: "page-shell" },
-        children: [
-          {
+        signature: "Main",
+        options: { paddingBlock: "lg", paddingBlockExpanded: "xl" },
+        children: {
+          contract: "wrapper",
+          signature: "Wrapper",
+          options: { wrapperSize: "md", gutter: "md", gutterExpanded: "lg" },
+          children: {
             contract: "layout",
-            signature: "Main",
-            attrs: { class: "page-shell__main" },
-            children: {
-              contract: "wrapper",
-              signature: "Wrapper",
-              options: { wrapperSize: "md", gutter: "md", gutterExpanded: "lg" },
-              children: {
+            signature: "Stack",
+            options: { gap: "lg", gapExpanded: "xl" },
+            children: [
+              {
                 contract: "layout",
                 signature: "Stack",
-                options: { gap: "lg", gapExpanded: "xl" },
+                options: { gap: "md" },
                 children: [
                   {
-                    contract: "layout",
-                    signature: "Stack",
-                    options: { gap: "md" },
-                    children: [
-                      {
-                        contract: "typography",
-                        signature: "Heading",
-                        options: { headingSize: "display-sm", headingElement: "h1", flush: true },
-                        children: t("demo.changelog.title"),
-                      },
-                      {
-                        contract: "typography",
-                        signature: "Text",
-                        options: { size: "lg", tone: "secondary" },
-                        children: t("demo.changelog.lede"),
-                      },
-                      {
-                        contract: "layout",
-                        signature: "Inline",
-                        options: { gap: "sm", inlineAlign: "end", wrap: true },
-                        children: [
-                          {
-                            contract: "form-field",
-                            signature: "FormField",
-                            slots: {
-                              label: t("demo.changelog.subscribeLabel"),
-                              children: {
-                                contract: "input",
-                                signature: "Input",
-                                options: {
-                                  type: "email",
-                                  name: "email",
-                                  placeholder: t("demo.changelog.subscribePlaceholder"),
-                                },
-                              },
-                            },
-                          },
-                          {
-                            contract: "button",
-                            signature: "Button.action",
-                            options: { variant: "soft", type: "submit" },
-                            children: t("demo.changelog.subscribe"),
-                          },
-                        ],
-                      },
-                    ],
+                    contract: "typography",
+                    signature: "Heading",
+                    options: { headingSize: "display-sm", headingElement: "h1", flush: true },
+                    children: t("demo.changelog.title"),
                   },
                   {
-                    contract: "changelog",
-                    signature: "Changelog",
+                    contract: "typography",
+                    signature: "Text",
+                    options: { size: "lg", tone: "secondary" },
+                    children: t("demo.changelog.lede"),
+                  },
+                  {
+                    contract: "layout",
+                    signature: "Inline",
+                    options: { gap: "sm", inlineAlign: "end", wrap: true },
                     children: [
                       {
-                        contract: "changelog",
-                        signature: "ChangelogRelease",
-                        options: { date: "2026-09-18" },
+                        contract: "form-field",
+                        signature: "FormField",
                         slots: {
-                          version: "3.2.0",
-                          date: t("demo.changelog.date1"),
-                          children: [
-                            entry(
-                              "feature",
-                              kinds.feature,
-                              t("demo.changelog.r1e1"),
-                              t("demo.changelog.r1e1Body"),
-                            ),
-                            entry(
-                              "feature",
-                              kinds.feature,
-                              t("demo.changelog.r1e2"),
-                              t("demo.changelog.r1e2Body"),
-                            ),
-                            entry(
-                              "bugfix",
-                              kinds.bugfix,
-                              t("demo.changelog.r1e3"),
-                              t("demo.changelog.r1e3Body"),
-                            ),
-                          ],
+                          label: t("demo.changelog.subscribeLabel"),
+                          children: {
+                            contract: "input",
+                            signature: "Input",
+                            options: {
+                              type: "email",
+                              name: "email",
+                              placeholder: t("demo.changelog.subscribePlaceholder"),
+                            },
+                          },
                         },
                       },
                       {
-                        contract: "changelog",
-                        signature: "ChangelogRelease",
-                        options: { date: "2026-08-02" },
-                        slots: {
-                          version: "3.0.0",
-                          date: t("demo.changelog.date2"),
-                          children: [
-                            entry(
-                              "breaking",
-                              kinds.breaking,
-                              t("demo.changelog.r2e1"),
-                              t("demo.changelog.r2e1Body"),
-                            ),
-                            entry(
-                              "rework",
-                              kinds.rework,
-                              t("demo.changelog.r2e2"),
-                              t("demo.changelog.r2e2Body"),
-                            ),
-                          ],
-                        },
+                        contract: "button",
+                        signature: "Button.action",
+                        options: { variant: "soft", type: "submit" },
+                        children: t("demo.changelog.subscribe"),
                       },
                     ],
                   },
                 ],
               },
-            },
+              {
+                contract: "changelog",
+                signature: "Changelog",
+                children: [
+                  {
+                    contract: "changelog",
+                    signature: "ChangelogRelease",
+                    options: { date: "2026-09-18" },
+                    slots: {
+                      version: "3.2.0",
+                      date: t("demo.changelog.date1"),
+                      children: [
+                        entry(
+                          "feature",
+                          kinds.feature,
+                          t("demo.changelog.r1e1"),
+                          t("demo.changelog.r1e1Body"),
+                        ),
+                        entry(
+                          "feature",
+                          kinds.feature,
+                          t("demo.changelog.r1e2"),
+                          t("demo.changelog.r1e2Body"),
+                        ),
+                        entry(
+                          "bugfix",
+                          kinds.bugfix,
+                          t("demo.changelog.r1e3"),
+                          t("demo.changelog.r1e3Body"),
+                        ),
+                      ],
+                    },
+                  },
+                  {
+                    contract: "changelog",
+                    signature: "ChangelogRelease",
+                    options: { date: "2026-08-02" },
+                    slots: {
+                      version: "3.0.0",
+                      date: t("demo.changelog.date2"),
+                      children: [
+                        entry(
+                          "breaking",
+                          kinds.breaking,
+                          t("demo.changelog.r2e1"),
+                          t("demo.changelog.r2e1Body"),
+                        ),
+                        entry(
+                          "rework",
+                          kinds.rework,
+                          t("demo.changelog.r2e2"),
+                          t("demo.changelog.r2e2Body"),
+                        ),
+                      ],
+                    },
+                  },
+                ],
+              },
+            ],
           },
-          siteFooter(t),
-        ],
+        },
       },
+      siteFooter(t),
     ],
   };
 };

@@ -7,8 +7,23 @@
 # `surface` is the shape of the contract the last time somebody reviewed it. If the compiler says it
 # does not match, something a consumer depends on has moved: write the entry and paste in the new
 # hash.
-surface: "d0e99e7256f36229"
+surface: "5b0a0183a63969fb"
 entries:
+  - date: 2026-10-06
+    kind: feature
+    target: size
+    es:
+      title: ChangelogEntry elige el tamaño del badge y el espaciado entre sus líneas
+      body: >-
+        <code>size</code> (<code>sm</code> o <code>md</code>, por defecto <code>md</code>) es el tamaño de la pastilla de
+        <code>kind</code>. <code>gap</code> (<code>none</code> a <code>lg</code>, por defecto <code>xs</code>) es el aire entre el
+        badge, el titular y el texto de una misma entrada; el aire entre entradas sigue siendo del release.
+    en:
+      title: ChangelogEntry chooses the badge size and the spacing between its lines
+      body: >-
+        <code>size</code> (<code>sm</code> or <code>md</code>, <code>md</code> by default) is the size of the
+        <code>kind</code> pill. <code>gap</code> (<code>none</code> to <code>lg</code>, <code>xs</code> by default) is the air
+        between the badge, the headline and the text of one entry; the air between entries stays the release's.
   - date: 2026-09-17
     kind: feature
     target: ChangelogEntry

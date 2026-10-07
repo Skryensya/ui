@@ -1062,6 +1062,19 @@
         "date": null,
         "entries": [
           {
+            "date": "2026-10-06",
+            "en": {
+              "body": "<code>show</code> (<code>compact</code> or <code>expanded</code>) hides the box on the other side of its 52rem container. <code>paddingExpanded</code> also answers to the container now, not the window.",
+              "title": "Box exists on one side of the expanded line with show"
+            },
+            "es": {
+              "body": "<code>show</code> (<code>compact</code> o <code>expanded</code>) oculta la caja del otro lado de 52rem de su contenedor. <code>paddingExpanded</code> también responde ahora al contenedor y no a la ventana.",
+              "title": "Box existe de un solo lado de la línea expandida con show"
+            },
+            "kind": "feature",
+            "target": "show"
+          },
+          {
             "date": "2026-10-04",
             "en": {
               "body": "<code>radius</code> (<code>none</code>, <code>control</code>, <code>surface</code>) sets how round the corners are. Without it the Box keeps the surface radius it always had. <code>none</code> is for a band that runs edge to edge (a page header with a background): rounded, it reads as a clipped rectangle.",
@@ -2047,6 +2060,25 @@
       }
     ],
     "changelog": [
+      {
+        "date": null,
+        "entries": [
+          {
+            "date": "2026-10-06",
+            "en": {
+              "body": "<code>size</code> (<code>sm</code> or <code>md</code>, <code>md</code> by default) is the size of the <code>kind</code> pill. <code>gap</code> (<code>none</code> to <code>lg</code>, <code>xs</code> by default) is the air between the badge, the headline and the text of one entry; the air between entries stays the release's.",
+              "title": "ChangelogEntry chooses the badge size and the spacing between its lines"
+            },
+            "es": {
+              "body": "<code>size</code> (<code>sm</code> o <code>md</code>, por defecto <code>md</code>) es el tamaño de la pastilla de <code>kind</code>. <code>gap</code> (<code>none</code> a <code>lg</code>, por defecto <code>xs</code>) es el aire entre el badge, el titular y el texto de una misma entrada; el aire entre entradas sigue siendo del release.",
+              "title": "ChangelogEntry elige el tamaño del badge y el espaciado entre sus líneas"
+            },
+            "kind": "feature",
+            "target": "size"
+          }
+        ],
+        "version": "0.0.2-dev"
+      },
       {
         "date": "2026-10-01",
         "entries": [
@@ -5609,6 +5641,136 @@
         "date": null,
         "entries": [
           {
+            "date": "2026-10-06",
+            "en": {
+              "body": "Below a 52rem container the shell stacks header, main and footer and draws no Sidebar: a phone has no room for a column beside the work. What the rail carries reaches it in a <code>Vaul.drawer</code> child of the shell, opened by a <code>Vaul.Trigger</code> in the header; <code>review_ui</code> fails a shell with a rail and no such drawer.",
+              "title": "AppShell is one column below the expanded line and draws no rail"
+            },
+            "es": {
+              "body": "Bajo 52rem del contenedor, el shell apila header, main y footer y no dibuja ningún Sidebar: un teléfono no tiene espacio para una columna al lado del trabajo. Lo que el riel lleva llega en un <code>Vaul.drawer</code> hijo del shell, que abre un <code>Vaul.Trigger</code> del header; <code>review_ui</code> marca como error un shell con riel y sin ese drawer.",
+              "title": "AppShell es de una sola columna bajo la línea expandida y no dibuja sus rieles"
+            },
+            "kind": "breaking",
+            "target": "AppShell"
+          },
+          {
+            "date": "2026-10-06",
+            "en": {
+              "body": "<code>scroll</code> (<code>page</code> or <code>regions</code>): with <code>regions</code> the shell is a screen tall and each region scrolls on its own, so the header and the rails stay put. <code>stickyHeader</code> pins the header on a page that scrolls. A Sidebar written after the Main is the end rail.",
+              "title": "AppShell decides where the scroll lives, and takes an end rail"
+            },
+            "es": {
+              "body": "<code>scroll</code> (<code>page</code> o <code>regions</code>): con <code>regions</code> el shell mide una pantalla y cada región hace scroll propio, así que el header y los rieles quedan quietos. <code>stickyHeader</code> fija el header en una página que hace scroll. Un Sidebar escrito después del Main es el riel del final.",
+              "title": "AppShell decide dónde vive el scroll, y acepta un riel al final"
+            },
+            "kind": "feature",
+            "target": "scroll"
+          },
+          {
+            "date": "2026-10-06",
+            "en": {
+              "body": "Main publishes the <code>sk-main</code> part, <code>paddingBlock</code> and <code>paddingBlockExpanded</code> (<code>none</code> to <code>section</code>). Block axis only: the inline gutter stays the Wrapper's. A Hero that opens the Main sits flush under the header.",
+              "title": "Main owns its block inset and is a query container"
+            },
+            "es": {
+              "body": "Main publica la parte <code>sk-main</code>, <code>paddingBlock</code> y <code>paddingBlockExpanded</code> (de <code>none</code> a <code>section</code>). Solo el eje vertical: el margen lateral sigue siendo del Wrapper. Un Hero que abre el Main queda pegado al header.",
+              "title": "Main tiene su espaciado vertical y es un contenedor de consultas"
+            },
+            "kind": "feature",
+            "target": "paddingBlock"
+          },
+          {
+            "date": "2026-10-06",
+            "en": {
+              "body": "The <code>responsive</code> and <code>multicol</code> lanes, <code>gapExpanded</code>, the LayoutGrid rail and the <code>flush</code> breakout ask the nearest query container: a Main, a Sidebar or the document. A Grid beside a rail counts the room the work area has.",
+              "title": "Layout answers to its container, not the window"
+            },
+            "es": {
+              "body": "Las columnas de <code>responsive</code> y <code>multicol</code>, <code>gapExpanded</code>, el riel de LayoutGrid y el breakout <code>flush</code> preguntan al contenedor de consultas más cercano: un Main, un Sidebar o el documento. Un Grid al lado de un riel cuenta el espacio del área de trabajo.",
+              "title": "El layout responde a su contenedor, no a la ventana"
+            },
+            "kind": "breaking",
+            "target": "Grid"
+          },
+          {
+            "date": "2026-10-06",
+            "en": {
+              "body": "A child asks for lanes with <code>data-span</code> (2 to 5) in a fixed-column Grid too: two thirds and one third is <code>columns=\"3\"</code> with a child spanning 2. <code>align</code> places cells in their row. <code>fill</code>, <code>--sk-grid-fill</code> and <code>--sk-grid-template</code> are removed.",
+              "title": "Grid publishes span and align, and drops fill"
+            },
+            "es": {
+              "body": "Un hijo pide carriles con <code>data-span</code> (de 2 a 5) también en un Grid de columnas fijas: dos tercios y un tercio es <code>columns=\"3\"</code> con un hijo de span 2. <code>align</code> ubica las celdas en su fila. <code>fill</code>, <code>--sk-grid-fill</code> y <code>--sk-grid-template</code> se eliminan.",
+              "title": "Grid publica span y align, y pierde fill"
+            },
+            "kind": "breaking",
+            "target": "Grid"
+          },
+          {
+            "date": "2026-10-06",
+            "en": {
+              "body": "<code>show</code> (<code>compact</code> or <code>expanded</code>) hides the element on the other side of a 52rem container, and takes it out of the accessibility tree with it. It is what lets a header's links give way to the drawer's button on a phone.",
+              "title": "Stack, Inline and Grid exist on one side of the expanded line with show"
+            },
+            "es": {
+              "body": "<code>show</code> (<code>compact</code> o <code>expanded</code>) oculta el elemento del otro lado de 52rem del contenedor, y con él lo saca del árbol de accesibilidad. Es lo que deja que los links de un header den paso al botón del drawer en un teléfono.",
+              "title": "Stack, Inline y Grid existen de un solo lado de la línea expandida con show"
+            },
+            "kind": "feature",
+            "target": "show"
+          },
+          {
+            "date": "2026-10-06",
+            "en": {
+              "body": "<code>justify</code> (<code>start</code>, <code>center</code>, <code>end</code>, <code>between</code>) makes the Stack take its parent's height and spend the leftover: a form centred in the work area, or the last child on a card's floor. Left out, the Stack is as tall as its content, as before.",
+              "title": "Stack spends the height it is given with justify"
+            },
+            "es": {
+              "body": "<code>justify</code> (<code>start</code>, <code>center</code>, <code>end</code>, <code>between</code>) hace que el Stack tome la altura de su padre y reparta lo que sobra: un formulario centrado en el área de trabajo, o el último hijo al fondo de una tarjeta. Sin declararlo, el Stack mide su contenido como siempre.",
+              "title": "Stack gasta la altura que le dan con justify"
+            },
+            "kind": "feature",
+            "target": "stackJustify"
+          },
+          {
+            "date": "2026-10-06",
+            "en": {
+              "body": "<code>gap</code> and <code>gapExpanded</code> take <code>section</code> (<code>--space-section</code>), the distance between the bands of a page.",
+              "title": "The gap reaches section"
+            },
+            "es": {
+              "body": "<code>gap</code> y <code>gapExpanded</code> aceptan <code>section</code> (<code>--space-section</code>), la distancia entre las bandas de una página.",
+              "title": "El gap llega a section"
+            },
+            "kind": "feature",
+            "target": "gap"
+          },
+          {
+            "date": "2026-10-06",
+            "en": {
+              "body": "<code>data-breakout=\"flush\"</code> on a <code>breakout</code> child runs it edge to edge below the expanded line, and the validator now knows it.",
+              "title": "LayoutGrid's flush breakout is a published attribute"
+            },
+            "es": {
+              "body": "<code>data-breakout=\"flush\"</code> en un hijo <code>breakout</code> lo lleva de borde a borde bajo la línea expandida, y ahora el validador lo conoce.",
+              "title": "El breakout flush de LayoutGrid es un atributo publicado"
+            },
+            "kind": "feature",
+            "target": "LayoutGrid"
+          },
+          {
+            "date": "2026-10-06",
+            "en": {
+              "body": "<code>height</code> (<code>screen</code> or <code>fit</code>) sets the height. Unset, the shell still fills at least a screen; with <code>fit</code> it is as tall as its content, for a shell that is one part of a page and not the page.",
+              "title": "AppShell can be as tall as its content"
+            },
+            "es": {
+              "body": "<code>height</code> (<code>screen</code> o <code>fit</code>) decide la altura. Sin valor, el shell sigue ocupando al menos una pantalla; con <code>fit</code> mide lo que mide su contenido, para un shell que es una parte de una página y no la página.",
+              "title": "AppShell puede ser tan alto como su contenido"
+            },
+            "kind": "feature",
+            "target": "shellHeight"
+          },
+          {
             "date": "2026-10-04",
             "en": {
               "body": "<code>AppShell</code> places a header across the top, a rail (<code>Sidebar</code>) down the side, the work area (<code>Main</code>) filling the rest and an optional footer. Children are placed by what they are, with no options: the rail reaches the bottom and <code>Main</code> takes the width that is left. Before, <code>Inline</code> holding a <code>Sidebar</code> and a <code>Main</code> validated and looked wrong (the <code>Main</code> did not fill the row and the rail stopped halfway down), so every application wrote its own class. It publishes two hooks, <code>--sk-app-shell-gap</code> and <code>--sk-app-shell-min-block-size</code>.",
@@ -7296,6 +7458,25 @@
       }
     ],
     "navbar": [
+      {
+        "date": null,
+        "entries": [
+          {
+            "date": "2026-10-06",
+            "en": {
+              "body": "An <code>Inline</code> groups bar items that share a fate, almost always <code>show</code>: the site's links in one with <code>show=\"expanded\"</code> and the drawer's <code>Vaul.Trigger</code> in another with <code>show=\"compact\"</code>.",
+              "title": "Navbar takes an Inline as a child"
+            },
+            "es": {
+              "body": "Un <code>Inline</code> agrupa ítems de la barra que comparten destino, casi siempre <code>show</code>: los links del sitio en uno con <code>show=\"expanded\"</code> y el <code>Vaul.Trigger</code> del drawer en otro con <code>show=\"compact\"</code>.",
+              "title": "Navbar acepta un Inline como hijo"
+            },
+            "kind": "feature",
+            "target": "Navbar"
+          }
+        ],
+        "version": "0.0.2-dev"
+      },
       {
         "date": "2026-10-01",
         "entries": [
@@ -9365,6 +9546,25 @@
     ],
     "shimmer": [],
     "sidebar": [
+      {
+        "date": null,
+        "entries": [
+          {
+            "date": "2026-10-06",
+            "en": {
+              "body": "<code>side=\"end\"</code> mirrors the rail: the border, the resize handle, the floating trigger and the chevron face the other way, and a drag toward the content still widens it. The rail is also a query container: what sits in it is laid out for its width.",
+              "title": "Sidebar can stand at the end with side"
+            },
+            "es": {
+              "body": "<code>side=\"end\"</code> refleja el riel: el borde, la manija de resize, el trigger flotante y la flecha miran al otro lado, y arrastrar hacia el contenido sigue ensanchándolo. El riel también es un contenedor de consultas: lo que va dentro se arma para su ancho.",
+              "title": "Sidebar puede pararse al final con side"
+            },
+            "kind": "feature",
+            "target": "side"
+          }
+        ],
+        "version": "0.0.2-dev"
+      },
       {
         "date": "2026-10-01",
         "entries": [
@@ -16542,6 +16742,14 @@
             "surface"
           ]
         },
+        "show": {
+          "attr": "data-show",
+          "type": "enum",
+          "values": [
+            "compact",
+            "expanded"
+          ]
+        },
         "surface": {
           "attr": "data-surface",
           "default": "none",
@@ -16570,7 +16778,8 @@
             "a page column needs centering; that is Wrapper"
           ],
           "useWhen": [
-            "a group needs padding, a surface or a border around it"
+            "a group needs padding, a surface or a border around it",
+            "a surfaced group exists on one side of the expanded line only; that is show compact or show expanded"
           ]
         }
       },
@@ -16601,6 +16810,7 @@
             "appearance",
             "measure",
             "radius",
+            "show",
             "boxElement"
           ],
           "react": {
@@ -18750,6 +18960,12 @@
           "part": "root",
           "sheet": "@skryensya/core/components/changelog.css"
         },
+        "--sk-changelog-entry-row-gap": {
+          "default": "0",
+          "output": false,
+          "part": "entry",
+          "sheet": "@skryensya/core/components/changelog.css"
+        },
         "--sk-changelog-fade": {
           "default": "2.5rem",
           "output": false,
@@ -18841,6 +19057,7 @@
         "--sk-changelog-connector-size",
         "--sk-changelog-date-fg",
         "--sk-changelog-entry-gap",
+        "--sk-changelog-entry-row-gap",
         "--sk-changelog-fade",
         "--sk-changelog-heading-gap",
         "--sk-changelog-marker-color",
@@ -18866,6 +19083,18 @@
           },
           "type": "string"
         },
+        "gap": {
+          "attr": "data-gap",
+          "default": "xs",
+          "type": "enum",
+          "values": [
+            "none",
+            "xs",
+            "sm",
+            "md",
+            "lg"
+          ]
+        },
         "kind": {
           "attr": "data-kind",
           "default": "chore",
@@ -18876,6 +19105,15 @@
             "bugfix",
             "rework",
             "chore"
+          ]
+        },
+        "size": {
+          "attr": "data-size",
+          "default": "md",
+          "type": "enum",
+          "values": [
+            "sm",
+            "md"
           ]
         }
       },
@@ -18984,7 +19222,9 @@
             "release-note"
           ],
           "options": [
-            "kind"
+            "kind",
+            "size",
+            "gap"
           ],
           "parents": [
             "ChangelogRelease"
@@ -19055,6 +19295,9 @@
                   }
                 ],
                 "element": "span",
+                "options": [
+                  "size"
+                ],
                 "part": "kind",
                 "slot": "kind"
               },
@@ -19078,7 +19321,8 @@
             "element": "li",
             "host": true,
             "options": [
-              "kind"
+              "kind",
+              "gap"
             ],
             "part": "entry"
           }
@@ -31400,14 +31644,14 @@
       "category": "layout",
       "css": "@skryensya/core/patterns/layout.css",
       "hookDetails": {
-        "--sk-app-shell-gap": {
-          "default": "0",
+        "--sk-app-shell-block-size": {
+          "default": "100dvh",
           "output": false,
           "part": "appShell",
           "sheet": "@skryensya/core/patterns/layout.css"
         },
-        "--sk-app-shell-min-block-size": {
-          "default": "100dvh",
+        "--sk-app-shell-gap": {
+          "default": "0",
           "output": false,
           "part": "appShell",
           "sheet": "@skryensya/core/patterns/layout.css"
@@ -31490,6 +31734,12 @@
           "part": "layoutGrid",
           "sheet": "@skryensya/core/patterns/layout.css"
         },
+        "--sk-main-padding-block": {
+          "default": "0",
+          "output": false,
+          "part": "main",
+          "sheet": "@skryensya/core/patterns/layout.css"
+        },
         "--sk-stack-gap": {
           "default": "var(--space-stack-md)",
           "output": false,
@@ -31498,8 +31748,8 @@
         }
       },
       "hooks": [
+        "--sk-app-shell-block-size",
         "--sk-app-shell-gap",
-        "--sk-app-shell-min-block-size",
         "--sk-grid-columns",
         "--sk-grid-gap",
         "--sk-inline-block-start",
@@ -31513,6 +31763,7 @@
         "--sk-layout-rail-gap",
         "--sk-layout-rail-inline-size",
         "--sk-layout-rail-row-span",
+        "--sk-main-padding-block",
         "--sk-stack-gap"
       ],
       "id": "layout",
@@ -31559,12 +31810,6 @@
           "trueValue": "",
           "type": "boolean"
         },
-        "fill": {
-          "attr": "data-fill",
-          "default": false,
-          "trueValue": "",
-          "type": "boolean"
-        },
         "gap": {
           "attr": "data-gap",
           "default": "md",
@@ -31575,7 +31820,8 @@
             "sm",
             "md",
             "lg",
-            "xl"
+            "xl",
+            "section"
           ]
         },
         "gapExpanded": {
@@ -31587,7 +31833,8 @@
             "sm",
             "md",
             "lg",
-            "xl"
+            "xl",
+            "section"
           ]
         },
         "inlineAlign": {
@@ -31645,8 +31892,74 @@
           "trueValue": "",
           "type": "boolean"
         },
+        "paddingBlock": {
+          "attr": "data-padding-block",
+          "type": "enum",
+          "values": [
+            "none",
+            "sm",
+            "md",
+            "lg",
+            "xl",
+            "section"
+          ]
+        },
+        "paddingBlockExpanded": {
+          "attr": "data-padding-block-expanded",
+          "type": "enum",
+          "values": [
+            "none",
+            "sm",
+            "md",
+            "lg",
+            "xl",
+            "section"
+          ]
+        },
         "responsive": {
           "attr": "data-responsive",
+          "default": false,
+          "trueValue": "",
+          "type": "boolean"
+        },
+        "scroll": {
+          "attr": "data-scroll",
+          "type": "enum",
+          "values": [
+            "page",
+            "regions"
+          ]
+        },
+        "shellHeight": {
+          "attr": "data-height",
+          "prop": "height",
+          "type": "enum",
+          "values": [
+            "screen",
+            "fit"
+          ]
+        },
+        "show": {
+          "attr": "data-show",
+          "type": "enum",
+          "values": [
+            "compact",
+            "expanded"
+          ]
+        },
+        "stackJustify": {
+          "attr": "data-justify",
+          "prop": "justify",
+          "type": "enum",
+          "values": [
+            "start",
+            "center",
+            "end",
+            "between"
+          ]
+        },
+        "stickyHeader": {
+          "attr": "data-sticky-header",
           "default": false,
           "trueValue": "",
           "type": "boolean"
@@ -31664,6 +31977,7 @@
         "grid": "sk-grid",
         "inline": "sk-inline",
         "layoutGrid": "sk-layout-grid",
+        "main": "sk-main",
         "stack": "sk-stack"
       },
       "semantics": {
@@ -31674,14 +31988,16 @@
             "LayoutGrid"
           ],
           "avoidWhen": [
-            "the page is a document, a landing page or an article: a Wrapper column with a Navbar above is the whole layout",
-            "there is no persistent rail or header: a Main inside a Stack is enough",
-            "the region is a card or a panel inside a page; that is Box"
+            "the region is a card or a panel inside a page; that is Box",
+            "it is nested inside another AppShell or a Main: a page has one frame"
           ],
           "useWhen": [
             "the page is an application: a header across the top, a rail (Sidebar) down the side and a work area (Main) filling the rest",
-            "the page needs the rail to reach the bottom and the work area to fill the row, without a hand-written class to make it so",
-            "a dashboard, a mail client, a chat or a settings area: anything with persistent navigation around a changing region"
+            "the page is a whole document or site page: a Navbar, a Main and a Footer that stays on the floor of a short page, with no rail",
+            "a dashboard, a mail client, a chat or a settings area: anything with persistent navigation around a changing region",
+            "the header and the rails should stay put while only the work area scrolls (a mail client, a chat, an editor); that is scroll regions",
+            "a second panel sits on the end edge (an inspector, a detail pane): a Sidebar with side end after the Main",
+            "the rails must still reach a phone: below the expanded line they are not drawn, so a Vaul.drawer child of the AppShell carries the same navigation, opened by a Vaul.Trigger the header shows in an Inline with show compact"
           ]
         },
         "Grid": {
@@ -31690,12 +32006,13 @@
             "LayoutGrid"
           ],
           "avoidWhen": [
-            "the widths differ from each other; that is an Inline",
+            "the widths follow each item's content rather than a proportion; that is an Inline",
             "the page needs named measures (narrow/content/breakout/rail); that is LayoutGrid"
           ],
           "useWhen": [
             "equal-width columns: a grid of cards",
-            "a responsive grid whose column ceiling is columns, optionally with fill to even out the columns' resting height"
+            "a responsive grid whose column ceiling is columns",
+            "uneven columns in fixed proportions (two thirds and one third, a quarter and the rest): columns 3 or 4 and a child with data-span"
           ]
         },
         "Inline": {
@@ -31709,7 +32026,8 @@
           ],
           "useWhen": [
             "things go side by side: a row of buttons, a label with its value",
-            "a row of actions is the last thing in a card and should sit on the floor when neighbouring cards grow; that is blockStart auto, not a second component called button-wrapper"
+            "a row of actions is the last thing in a card and should sit on the floor when neighbouring cards grow; that is blockStart auto, not a second component called button-wrapper",
+            "the links of a header give way to a menu button on a phone: the links in an Inline with show expanded, the Vaul.Trigger in one with show compact"
           ]
         },
         "LayoutGrid": {
@@ -31737,7 +32055,8 @@
             "it is a section inside the page, not the main landmark; use Box, Stack or LayoutGrid as appropriate"
           ],
           "useWhen": [
-            "the region is the page's <main> landmark: the work area of an application or a template"
+            "the region is the page's <main> landmark: the work area of an application or a template",
+            "the work area needs breathing room above and below its content; that is paddingBlock, while the inline gutter stays the Wrapper's"
           ]
         },
         "Stack": {
@@ -31753,7 +32072,10 @@
           ],
           "useWhen": [
             "things go one below another with a steady rhythm",
-            "it is a form's default arrangement"
+            "it is a form's default arrangement",
+            "the bands of a page are spaced apart; that is gap section",
+            "its content should sit in the middle of the height it was given (a sign-in form in the work area) or send its last child to the floor; that is justify center or between",
+            "a group exists only on a phone or only on a wide screen; that is show compact or show expanded"
           ]
         }
       },
@@ -31769,7 +32091,11 @@
             "dashboard-frame",
             "page-chrome-layout"
           ],
-          "options": [],
+          "options": [
+            "shellHeight",
+            "scroll",
+            "stickyHeader"
+          ],
           "react": {
             "from": "@skryensya/react/layout",
             "name": "AppShell"
@@ -31783,7 +32109,8 @@
                 "AppBar",
                 "Sidebar",
                 "Main",
-                "Footer"
+                "Footer",
+                "Vaul.drawer"
               ],
               "required": true
             }
@@ -31791,6 +32118,11 @@
           "template": {
             "element": "div",
             "host": true,
+            "options": [
+              "shellHeight",
+              "scroll",
+              "stickyHeader"
+            ],
             "part": "appShell",
             "slot": "children"
           }
@@ -31800,8 +32132,7 @@
             "minColumn": [
               "columns",
               "multicol",
-              "responsive",
-              "fill"
+              "responsive"
             ]
           },
           "host": {
@@ -31818,8 +32149,9 @@
             "columns",
             "multicol",
             "responsive",
-            "fill",
             "minColumn",
+            "align",
+            "show",
             "layoutElement"
           ],
           "react": {
@@ -31829,6 +32161,18 @@
           "slots": {
             "children": {
               "accepts": "node",
+              "childAttrs": {
+                "span": {
+                  "attr": "data-span",
+                  "type": "enum",
+                  "values": [
+                    "2",
+                    "3",
+                    "4",
+                    "5"
+                  ]
+                }
+              },
               "required": true
             }
           },
@@ -31856,6 +32200,7 @@
             "wrap",
             "equal",
             "blockStart",
+            "show",
             "layoutElement"
           ],
           "react": {
@@ -31907,6 +32252,13 @@
             "children": {
               "accepts": "node",
               "childAttrs": {
+                "breakout": {
+                  "attr": "data-breakout",
+                  "type": "enum",
+                  "values": [
+                    "flush"
+                  ]
+                },
                 "width": {
                   "attr": "data-width",
                   "type": "enum",
@@ -31939,7 +32291,10 @@
             "application-work-area",
             "app-shell-main"
           ],
-          "options": [],
+          "options": [
+            "paddingBlock",
+            "paddingBlockExpanded"
+          ],
           "react": {
             "from": "@skryensya/react/layout",
             "name": "Main"
@@ -31952,6 +32307,7 @@
           "template": {
             "element": "main",
             "host": true,
+            "part": "main",
             "slot": "children"
           }
         },
@@ -31968,6 +32324,8 @@
             "gap",
             "gapExpanded",
             "align",
+            "stackJustify",
+            "show",
             "layoutElement"
           ],
           "react": {
@@ -37523,7 +37881,8 @@
             "a multi-column category panel is needed; that is Megamenu"
           ],
           "useWhen": [
-            "the app needs a top bar with a brand and actions"
+            "the app needs a top bar with a brand and actions",
+            "the site's links do not fit a phone: the NavList in an Inline with show expanded, and a Vaul.Trigger in an Inline with show compact that opens a Vaul.drawer holding the same links"
           ]
         },
         "NavbarActions": {
@@ -37569,7 +37928,8 @@
                 "NavbarBrand",
                 "NavbarActions",
                 "NavList",
-                "Megamenu"
+                "Megamenu",
+                "Inline"
               ],
               "required": true
             }
@@ -45061,6 +45421,15 @@
           "styleProperty": "--sk-sidebar-min-inline-size",
           "type": "string"
         },
+        "side": {
+          "attr": "data-side",
+          "default": "start",
+          "type": "enum",
+          "values": [
+            "start",
+            "end"
+          ]
+        },
         "storageKey": {
           "attr": "data-storage-key",
           "type": "string"
@@ -45087,7 +45456,8 @@
           ],
           "useWhen": [
             "an application's main navigation lives on the side and stays for the whole session",
-            "there are many sections and they should be visible without opening anything"
+            "there are many sections and they should be visible without opening anything",
+            "a panel of details or properties sits beside the work area on the end edge (an inspector); that is a Sidebar with side end, written after the Main in an AppShell"
           ]
         },
         "SidebarContent": {
@@ -45173,7 +45543,8 @@
             "minInlineSize",
             "maxInlineSize",
             "landmarkLabel",
-            "appearance"
+            "appearance",
+            "side"
           ],
           "react": {
             "from": "@skryensya/react/sidebar",
@@ -56672,7 +57043,7 @@
     "working": "0.0.2"
   },
   "schemaVersion": "2.3",
-  "sourceHash": "f1f9bd5dcac71047",
+  "sourceHash": "2eb09b2cb9432ab0",
   "vocabulary": {
     "a11y": "When `when` holds, one of `requiresOneOf` must be given: an option, a raw attribute, a filled slot, or a child signature by name.",
     "atLeastOneOf": "At least one member of each group counts: a filled slot, a boolean option set to true, or an option other than its default.",

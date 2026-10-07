@@ -5,6 +5,17 @@
 # hash.
 surface: "eba257019376cb6c"
 entries:
+  - date: 2026-10-06
+    kind: bugfix
+    target: ListItem
+    es:
+      title: "Las filas con varios datos al final ya no aplastan el título"
+      body: >-
+        El contenido de la fila parte de base 0 con un piso de <code>min(8rem, 40%)</code> y el slot <code>trailing</code> toma su ancho natural y envuelve alineado a la derecha, en vez de montarse sobre el título. El contenido de <code>ListItemPlain</code> ocupa la fila, y título y descripción usan los tokens de interlineado que existen (<code>--font-line-height-heading</code>, <code>--font-line-height-body</code>), no los que no existían.
+    en:
+      title: "Rows with several things at the end no longer crush the title"
+      body: >-
+        The row's content starts from basis 0 with a floor of <code>min(8rem, 40%)</code> and the <code>trailing</code> slot takes its natural width and wraps right-aligned, instead of running over the title. <code>ListItemPlain</code>'s content fills the row, and title and description use the line-height tokens that exist (<code>--font-line-height-heading</code>, <code>--font-line-height-body</code>), not ones that did not.
   - date: 2026-09-17
     kind: feature
     es:

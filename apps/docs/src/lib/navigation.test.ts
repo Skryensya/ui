@@ -38,7 +38,7 @@ const expected: Record<(typeof expectedOrder)[number], readonly string[]> = {
   surfaces: ["Accordion", "Card", "Changelog", "CommentThread", "Feed", "Folder", "List", "Message", "Procedure", "Tile", "Timeline", "TreeView"],
   feedback: ["Callout", "EmptyState", "Loader", "Placeholder", "Progress", "Toast"],
   overlays: ["Dialog", "Drawer", "Popover", "Tooltip", "Tour", "Vaul", "Window"],
-  layout: ["Box", "Footer", "Grid", "Hero", "Inline", "Layout Grid", "Separator", "Stack", "Wrapper"],
+  layout: ["AppShell", "Box", "Footer", "Grid", "Hero", "Inline", "Layout Grid", "Separator", "Stack", "Wrapper"],
   media: ["Canvas", "Carousel", "Diagram", "ImageFrame", "Lightbox", "Marquee", "MediaOverlay", "QRCode", "Sticker"],
   utilities: ["FadeEdge", "Hotkey", "Presence", "Scrollbar"],
 };

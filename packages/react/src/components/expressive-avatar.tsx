@@ -1,12 +1,6 @@
 import {
   expressiveAvatarEvents,
-  expressiveAvatarGrid,
-  expressiveAvatarHatIndices,
-  expressiveAvatarHats,
-  expressiveAvatarOutfitIndices,
-  expressiveAvatarOutfits,
   expressiveAvatarParts,
-  expressiveAvatarTilePosition,
   type ExpressiveAvatarAppearance,
   type ExpressiveAvatarDirection,
   type ExpressiveAvatarHat,
@@ -23,7 +17,7 @@ import {
   createExpressiveAvatarSpeaker,
   expressiveAvatarDisplayDuration,
   expressiveAvatarExpressionFor,
-  expressiveAvatarTilesFor,
+  expressiveAvatarCells,
   type ExpressiveAvatarController,
   type ExpressiveAvatarExpressions,
   type ExpressiveAvatarFace,
@@ -447,9 +441,6 @@ export function ExpressiveAvatar({
    */
   const columns = tileset.columns;
   const rows = Math.ceil(tileset.names.length / columns);
-  const position = (tileName: string) => expressiveAvatarTilePosition(tileset, tileName);
-  const empty = position("hat-empty") ?? { column: 0, row: 0 };
-  const has = (tileName: string) => tileset.names.includes(tileName);
 
   const own: ExpressiveAvatarFace = behavior.face ?? {
     leftEye: blink ? "blink" : direction,
@@ -457,14 +448,8 @@ export function ExpressiveAvatar({
     mouth,
     expression: requested,
   };
-  const moving = expressiveAvatarTilesFor(own, expressions);
-
-  const outfitIndexSet = new Set<number>(expressiveAvatarOutfitIndices as readonly number[]);
-  const hatIndexSet = new Set<number>(expressiveAvatarHatIndices as readonly number[]);
-  const hatTiles = expressiveAvatarHats[hat] ?? expressiveAvatarHats.none;
-  const outfitTiles = expressiveAvatarOutfits[outfit] ?? expressiveAvatarOutfits.base;
-  let hatSlot = 0;
-  let outfitSlot = 0;
+  /* Every cell from core, the same call the vanilla enhancer makes, so the two draw one face. */
+  const cells = expressiveAvatarCells(own, { outfit, hat, tileset, expressions });
 
   const rootStyle = {
     ...props.style,
@@ -487,36 +472,20 @@ export function ExpressiveAvatar({
       data-interactive={alive ? "" : undefined}
     >
       <span className={expressiveAvatarParts.grid} aria-hidden="true">
-        {expressiveAvatarGrid.flat().map((baseName, index) => {
-          let tileName: string = baseName;
-          if (baseName === "left-eye-base") tileName = moving.leftEye;
-          else if (baseName === "right-eye-base") tileName = moving.rightEye;
-          else if (baseName === "mouth-rest-left") tileName = moving.mouthLeft;
-          else if (baseName === "mouth-rest-right") tileName = moving.mouthRight;
-          else if (outfitIndexSet.has(index)) {
-            /* An outfit the tileset has not drawn falls back to the base body, tile by tile. */
-            const wanted = outfitTiles[outfitSlot++] ?? tileName;
-            tileName = has(wanted) ? wanted : tileName;
-          }
-          const hatName = hatIndexSet.has(index) ? (hatTiles[hatSlot++] ?? "hat-empty") : "hat-empty";
-          const at = position(tileName) ?? empty;
-          const over = has(hatName) ? (position(hatName) ?? empty) : empty;
-
-          return (
-            <span
-              className={expressiveAvatarParts.tile}
-              style={
-                {
-                  "--sk-expressive-avatar-column": at.column,
-                  "--sk-expressive-avatar-row": at.row,
-                  "--sk-expressive-avatar-hat-column": over.column,
-                  "--sk-expressive-avatar-hat-row": over.row,
-                } as CSSProperties
-              }
-              key={index}
-            />
-          );
-        })}
+        {cells.map((cell, index) => (
+          <span
+            className={expressiveAvatarParts.tile}
+            style={
+              {
+                "--sk-expressive-avatar-column": cell.column,
+                "--sk-expressive-avatar-row": cell.row,
+                "--sk-expressive-avatar-hat-column": cell.hatColumn,
+                "--sk-expressive-avatar-hat-row": cell.hatRow,
+              } as CSSProperties
+            }
+            key={index}
+          />
+        ))}
       </span>
     </Root>
   );

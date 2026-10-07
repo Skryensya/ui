@@ -1,9 +1,10 @@
 import { badgeParts } from "@skryensya/core/badge";
 import { changeKindTones, changelogParts, type ChangeKind, changelogContract } from "@skryensya/core/changelog";
+import type { OptionValue } from "@skryensya/core/contract";
 import { type LiHTMLAttributes, type OlHTMLAttributes, type ReactNode } from "react";
 
 /* Derived, never restated: the default lives in the contract. */
-const { kind: kindOption } = changelogContract.options;
+const { kind: kindOption, size: sizeOption, gap: gapOption } = changelogContract.options;
 
 const cx = (base: string, className: string | undefined) => (className ? `${base} ${className}` : base);
 
@@ -79,6 +80,10 @@ export function ChangelogRelease({
 
 export type ChangelogEntryProps = Omit<LiHTMLAttributes<HTMLLIElement>, "children"> & {
   kind?: ChangeKind;
+  /** The size of the kind's badge. */
+  size?: OptionValue<typeof changelogContract.options.size>;
+  /** The air between the entry's own lines: the badge row, the headline and the prose. */
+  gap?: OptionValue<typeof changelogContract.options.gap>;
   /** The kind as a word, so the kind is never colour alone. */
   kindLabel: ReactNode;
   /** The headline: what changed, in one line. What a reader scans a release for. */
@@ -96,19 +101,21 @@ export function ChangelogEntry({
   // into markup, so an undefined here would make the two bindings differ on an unmarked entry.
   kind = kindOption.default,
   kindLabel,
+  size = sizeOption.default,
+  gap = gapOption.default,
   target,
   title,
   ...props
 }: ChangelogEntryProps) {
   return (
-    <li {...props} className={cx(changelogParts.entry, className)} data-kind={kind}>
+    <li {...props} className={cx(changelogParts.entry, className)} data-gap={gap} data-kind={kind}>
       {/* `sk-badge` alongside the part class, not instead of it: Badge owns what a status label looks
           like and this component owns where it sits. Same composition as Avatar over ImageFrame. */}
       {/* The tone is READ FROM CORE, never decided here. It is a rendering of `kind` rather than a
           prop, so there is no way to file a breaking change under a calm badge, and importing the
           table instead of restating it is what stops this binding and the contract's `attrsWhen`
           from drifting the day a kind changes colour. */}
-      <span className={`${changelogParts.kind} ${badgeParts.root}`} data-tone={changeKindTones[kind]}>
+      <span className={`${changelogParts.kind} ${badgeParts.root}`} data-size={size} data-tone={changeKindTones[kind]}>
         {kindLabel}
       </span>
       {/* The target rides with the badge: both answer "what is this about" before anything is read,

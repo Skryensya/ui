@@ -3,8 +3,19 @@
 # `surface` is the shape of the contract the last time somebody reviewed it. If the compiler says it
 # does not match, something a consumer depends on has moved: write the entry and paste in the new
 # hash.
-surface: "cd21656d76780b09"
+surface: "f484eb9501e2e2f4"
 entries:
+  - date: 2026-10-06
+    kind: feature
+    target: show
+    es:
+      title: Box existe de un solo lado de la línea expandida con show
+      body: >-
+        <code>show</code> (<code>compact</code> o <code>expanded</code>) oculta la caja del otro lado de 52rem de su contenedor. <code>paddingExpanded</code> también responde ahora al contenedor y no a la ventana.
+    en:
+      title: Box exists on one side of the expanded line with show
+      body: >-
+        <code>show</code> (<code>compact</code> or <code>expanded</code>) hides the box on the other side of its 52rem container. <code>paddingExpanded</code> also answers to the container now, not the window.
   - date: 2026-09-27
     kind: feature
     target: measure

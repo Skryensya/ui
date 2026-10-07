@@ -1,6 +1,6 @@
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
-import { snippets } from "@skryensya/snippets";
+import { snippets } from "@skryensya/examples";
 import type { CompiledIndex } from "./artifact.js";
 import { discover, termMatchesWord, wordsOf, DISCOVER_MAX_LIMIT } from "./discover.js";
 import { buildManifest, canonical } from "./manifest.js";

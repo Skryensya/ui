@@ -55,6 +55,7 @@ export const sidebarRealization: Realization = {
     names: { "NavListGroup.label": "group", "NavListLink.children": "link", "SidebarFooter.children": "footer" },
   },
   icons,
-  grid: { columns: [], rows: [], descending: [] },
+  /* A rail on either edge (`side`) is the same rail in a mirror: the two sit side by side, as they would on a shell. */
+  grid: { columns: ["side"], rows: [], descending: [] },
   stage,
 };

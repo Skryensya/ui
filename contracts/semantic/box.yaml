@@ -3,6 +3,7 @@
 Box:
   useWhen:
     - "a group needs padding, a surface or a border around it"
+    - "a surfaced group exists on one side of the expanded line only; that is show compact or show expanded"
   avoidWhen:
     - "things only need to be spaced apart; that is a Stack, Inline or Grid with no box"
     - "a page column needs centering; that is Wrapper"

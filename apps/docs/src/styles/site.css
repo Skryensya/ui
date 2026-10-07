@@ -2953,87 +2953,16 @@ main a:not(
 }
 
 /*
- * The OTHER shape a template can stand in for: a whole PAGE rather than an application.
- *
- * The difference is where the scroll lives, and it is not cosmetic. `.app-shell` is a row of panes
- * that each scroll inside a fixed screen. That is what an app shell IS, and it is why the rail
- * stays put while the work area moves. A marketing landing or a checkout has no panes: it is one
- * document that runs past the bottom of the window, so the scroll belongs to the shell itself and
- * the navbar above it scrolls away with everything else, exactly as it would on the real site.
- *
- * Getting this wrong is subtle rather than broken: a landing page inside `.app-shell` renders, and
- * then silently letterboxes its hero into a 22rem strip with the CTA below the fold and no way to
- * reach it, because a flex ROW gave the whole document one column's worth of height.
- */
-.page-shell {
-  display: flex;
-  flex-direction: column;
-  inline-size: 100%;
-  block-size: 22rem;
-  overflow: auto;
-  background: var(--color-bg-canvas);
-  /* Same reasoning as `.app-shell`: this box is the body of a site, not a card, so it must not
-     round the corner where it meets the Navbar above it. A Hero placed straight in the page is the
-     same kind of thing, a full-width band, so it drops its card radius too (below). */
-  --sk-box-radius: 0;
-}
-
-/* The Hero declares its radius hook on itself, so the value has to be set on the Hero, not
-   inherited from the shell. */
-.page-shell .sk-hero {
-  --sk-hero-radius: 0;
-}
-
-/* Block padding only. Every page template puts its content in a `Wrapper`, and the Wrapper already
- * owns the inline gutter: a second one here stacked on top of it and, on a phone, left a 390px
- * screen a 200px column. Without it a Hero placed straight in the main also runs edge to edge, as a
- * page band does on a real site. */
-.page-shell__main {
-  /* Grows into whatever the page leaves, so a short page (sign-in, 404) keeps its footer on the
-     bottom edge instead of floating it halfway up the screen. */
-  flex: 1 0 auto;
-  padding-block: var(--space-inset-xl);
-}
-
-/* The page footer's content sits in a Wrapper (templates/shared.ts), which owns the gutter; the
-   Footer's own inline padding on top of it set the credit line in from the column above it. */
-.page-shell > .sk-footer {
-  padding-inline: 0;
-}
-
-/* A page that opens on a Hero band starts flush under the Navbar, the way a real landing does,
-   rather than with a strip of canvas between the bar and the band. */
-.page-shell__main:has(> .sk-stack > .sk-hero:first-child) {
-  padding-block-start: 0;
-}
-
-/*
- * NARROW-SCREEN SWAPS for templates, measured against the FRAME, not the viewport: a template sits
- * inside the docs stage, and on a desktop reader's screen that stage can still be phone-narrow (or
- * the reverse), so a viewport query would answer the wrong question. The frame is the query
- * container; a template opts an element in with `attrs: { class: "template-wide-only" }` or
- * `"template-narrow-only"`.
- *
- * This is the site acting as the consuming app, like `.app-shell` above: the Navbar publishes no
- * collapsed state, and which links fold behind a menu on a phone is each product's own call.
+ * NARROW-FRAME TWEAKS for templates. The kit answers "is this compact?" against the nearest query
+ * container (decision 35), and the frame is one, so a template folds its own links into a drawer
+ * here exactly as it would on a phone. What stays below is the site acting as the consuming app,
+ * adjusting components that publish no option for it.
  */
 .templates__example {
   container: template-frame / inline-size;
 }
 
-.template-narrow-only {
-  display: none;
-}
-
 @container template-frame (max-width: 40rem) {
-  .template-wide-only {
-    display: none;
-  }
-
-  .template-narrow-only {
-    display: revert-layer;
-  }
-
   /* On a phone-sized frame the Navbar's own `lg` inset leaves the brand and one action fighting for
      a row. The page's Wrappers declare an `md` phone gutter (decision 30); the Navbar publishes no
      spacing option, so it is aligned to that gutter here. */
@@ -3086,20 +3015,6 @@ main a:not(
 }
 
 
-/*
- * The docs template's third column. `Toc`'s host is already an `<aside>` (a landmark on its own),
- * so this only gives it a width it will not give up and its own scroll, without `flex: none` the
- * rail is the first thing a long article squeezes, and a table of contents that wraps every entry
- * onto three lines is worse than no table of contents.
- */
-.docs-template__toc {
-  flex: none;
-  inline-size: 14rem;
-  padding: var(--space-inset-md);
-  overflow: auto;
-  border-inline-start: 1px solid var(--color-border-subtle);
-}
-
 /* Templates render in the docs' main region rather than an iframe. This quiet frame separates the
  * consuming application from the prose without pretending it is another document or card. */
 .templates__example {
@@ -3115,26 +3030,20 @@ main a:not(
 }
 
 /* On the full-bleed /templates page the example IS the page, not an aside in a paragraph: at the
- * inline component page's 22rem it reads as a letterboxed thumbnail rather than a screen. Sized to
- * fill what the sticky navbar and the stage's own chrome leave of the viewport (`--space-inset-xl`
- * is the stage's padding, `--space-inset-sm` and `--space-stack-sm` are this frame's own padding
- * and margin), so it reads like the real screen it is standing in for. Scoped to this page's frame
- * only: SidebarPage's inline demo keeps the 22rem box above, sized for sitting beside prose. */
-.templates__example :is(.app-shell, .page-shell) {
-  block-size: calc(
+ * inline component page's 22rem it reads as a letterboxed thumbnail rather than a screen. Every
+ * template is an AppShell, so the frame owes it nothing but a screen's height, through the shell's own
+ * published hook: sized to what the sticky navbar and the stage's chrome leave of the viewport
+ * (`--space-inset-xl` is the stage's padding, `--space-inset-sm` and `--space-stack-sm` this frame's
+ * padding and margin). An application (`scroll: regions`) scrolls its own Main inside that height; a
+ * page, or any shell below the expanded line, scrolls the shell itself, as a window would. */
+.templates__example > .sk-app-shell {
+  --sk-app-shell-block-size: calc(
     100dvh - var(--docs-navbar-h, var(--docs-header-block-size)) - (var(--space-inset-xl) * 2) -
       (var(--space-inset-sm) * 2) - (var(--space-stack-sm) * 2)
   );
-}
-
-/* The templates that model a whole page carry their own Navbar INSIDE the frame, so the frame's
-   viewport is what is left after that bar. Otherwise the shell alone is a full screen tall and the
-   two together overflow the stage by exactly the navbar's height. */
-.templates__example > .sk-stack:has(> .page-shell) .page-shell {
-  block-size: calc(
-    100dvh - var(--docs-navbar-h, var(--docs-header-block-size)) - (var(--space-inset-xl) * 2) -
-      (var(--space-inset-sm) * 2) - (var(--space-stack-sm) * 2) - var(--docs-header-block-size)
-  );
+  max-block-size: var(--sk-app-shell-block-size);
+  overflow: auto;
+  background: var(--color-bg-canvas);
 }
 
 .mono {

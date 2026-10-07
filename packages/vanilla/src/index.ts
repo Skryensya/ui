@@ -2,6 +2,7 @@ export { mountAccordion } from "./components/accordion.js";
 export { connectAnnotated, mountAnnotated } from "./components/annotation.js";
 export { connectDiagram, mountDiagram } from "./components/diagram.js";
 export { connectBackToTop, mountBackToTop } from "./components/back-to-top.js";
+export { connectExpressiveAvatar, mountExpressiveAvatar } from "./components/expressive-avatar.js";
 export { connectCanvas, mountCanvas } from "./components/canvas.js";
 export { mountDialog } from "./components/dialog.js";
 export { connectLightboxRoot, getLightbox, mountLightbox, readLightboxConfig } from "./components/lightbox.js";

@@ -1,7 +1,7 @@
 import type { UsageTree } from "@skryensya/core/usage-tree";
 import type { Translate } from "../../i18n";
 import { measured } from "../../lib/measured";
-import { menuButton } from "./shared";
+import { menuDrawer, menuTrigger, shownOn } from "../../lib/template-chrome";
 
 /*
  * ANALYTICS DASHBOARD. The SaaS back-office shape. It shares the app shell with `app-shell.ts`;
@@ -23,12 +23,9 @@ import { menuButton } from "./shared";
  * and never reflows: measured at a 900px viewport, the four cards were 43px wide each, which is not
  * a narrow dashboard so much as an unreadable one. With it they were 73px.
  *
- * That is an improvement, not a fix, and the reason is worth writing down: those breakpoints are
- * `@media`, so they read the VIEWPORT, while this row lives inside a pane that is much narrower -
- * the docs rail, then the template's own sidebar. The kit publishes no container query (grepped:
- * zero `@container` rules in core), so a template cannot currently reflow on the space it actually
- * has. Closing that gap means adding container support to the layout pattern, which is a contract
- * change and belongs in its own piece of work, not smuggled in as docs-local CSS here.
+ * Those lanes are counted on the CONTAINER, not the viewport (decision 35): the work area is a `Main`,
+ * which is a query container, so the row reflows on the room it actually has beside the rail and
+ * inside the docs frame, not on the width of the window around both.
  */
 
 const navLink = (
@@ -105,10 +102,42 @@ const row = (
 
 export const dashboardTree = (t: Translate, locale: "es" | "en"): UsageTree => {
   const money = (amount: string) => (locale === "es" ? `${amount} €` : `$${amount}`);
+  /* One navigation, two places: the rail on a wide screen, the drawer on a phone. */
+  const navigation: UsageTree = {
+    contract: "nav-list",
+    signature: "NavList",
+    attrs: { "aria-label": t("demo.dashboard.navigation") },
+    children: [
+      {
+        contract: "nav-list",
+        signature: "NavListGroup",
+        slots: {
+          label: t("demo.dashboard.groupAnalyze"),
+          children: [
+            navLink(t("demo.dashboard.navOverview"), "info", "#resumen", true),
+            navLink(t("demo.dashboard.navOrders"), "file", "#pedidos", false, "24"),
+            navLink(t("demo.dashboard.navCustomers"), "user", "#clientes"),
+          ],
+        },
+      },
+      {
+        contract: "nav-list",
+        signature: "NavListGroup",
+        slots: {
+          label: t("demo.dashboard.groupManage"),
+          children: [
+            navLink(t("demo.dashboard.navReports"), "calendar", "#informes"),
+            navLink(t("demo.dashboard.navSettings"), "settings", "#ajustes"),
+          ],
+        },
+      },
+    ],
+  };
   return {
     contract: "layout",
-    signature: "Stack",
-    options: { gap: "none" },
+    signature: "AppShell",
+    /* An application: the header and the rail stay put while the work area scrolls. */
+    options: { scroll: "regions" },
     children: [
       {
         contract: "navbar",
@@ -119,17 +148,16 @@ export const dashboardTree = (t: Translate, locale: "es" | "en"): UsageTree => {
             contract: "navbar",
             signature: "NavbarActions",
             children: [
-              {
+              shownOn("expanded", {
                 contract: "button",
                 signature: "Button.action",
                 options: { variant: "soft" },
-                attrs: { class: "template-wide-only" },
                 children: [
                   { contract: "icon", signature: "Icon", options: { name: "download", size: "sm" } },
                   t("demo.dashboard.export"),
                 ],
-              },
-              menuButton(t),
+              }),
+              menuTrigger(t, "dashboard-menu"),
               /*
                * `name` is the ACCESSIBLE name; the letters on screen are `children`. They are two
                * separate things on purpose: "HP" is not what anyone should hear read aloud. And
@@ -146,236 +174,199 @@ export const dashboardTree = (t: Translate, locale: "es" | "en"): UsageTree => {
         ],
       },
       {
-        contract: "layout",
-        signature: "Stack",
-        options: { gap: "none" },
-        attrs: { class: "app-shell" },
+        contract: "sidebar",
+        signature: "Sidebar",
+        /* On a phone the AppShell does not draw the rail, and the same navigation rides in the drawer
+         * the Navbar's menu opens: a 390px screen has no room for a column beside the figures. */
         children: [
+          /*
+           * NOT `floating`. The floating trigger is an overlay pinned to the rail's outer edge,
+           * which works in `app-shell.ts` only because that template's `main` is empty. Here it
+           * lands on top of the work area's own first line (measured: straight through the
+           * "Resumen" heading). In flow it takes a row of the rail and collides with nothing.
+           */
           {
             contract: "sidebar",
-            signature: "Sidebar",
-            /* On a phone the rail folds behind the Navbar's menu button: a 390px screen has no room
-             * for a navigation column beside the figures it is meant to navigate between. */
-            attrs: { id: "dashboard-template-sidebar", class: "template-wide-only" },
-            children: [
-              /*
-               * NOT `floating`. The floating trigger is an overlay pinned to the rail's outer edge,
-               * which works in `app-shell.ts` only because that template's `main` is empty. Here it
-               * lands on top of the work area's own first line (measured: straight through the
-               * "Resumen" heading). In flow it takes a row of the rail and collides with nothing.
-               */
-              {
-                contract: "sidebar",
-                signature: "SidebarHeader",
-                children: {
-                  contract: "sidebar",
-                  signature: "SidebarTrigger",
-                  options: { label: t("demo.dashboard.collapse") },
-                  slots: {
-                    icon: { contract: "icon", signature: "Icon", options: { name: "chevron-left" } },
-                  },
-                },
+            signature: "SidebarHeader",
+            children: {
+              contract: "sidebar",
+              signature: "SidebarTrigger",
+              options: { label: t("demo.dashboard.collapse") },
+              slots: {
+                icon: { contract: "icon", signature: "Icon", options: { name: "chevron-left" } },
               },
-              {
-                contract: "sidebar",
-                signature: "SidebarContent",
-                children: {
-                  contract: "nav-list",
-                  signature: "NavList",
-                  attrs: { "aria-label": t("demo.dashboard.navigation") },
-                  children: [
-                    {
-                      contract: "nav-list",
-                      signature: "NavListGroup",
-                      slots: {
-                        label: t("demo.dashboard.groupAnalyze"),
-                        children: [
-                          navLink(t("demo.dashboard.navOverview"), "info", "#resumen", true),
-                          navLink(t("demo.dashboard.navOrders"), "file", "#pedidos", false, "24"),
-                          navLink(t("demo.dashboard.navCustomers"), "user", "#clientes"),
-                        ],
-                      },
-                    },
-                    {
-                      contract: "nav-list",
-                      signature: "NavListGroup",
-                      slots: {
-                        label: t("demo.dashboard.groupManage"),
-                        children: [
-                          navLink(t("demo.dashboard.navReports"), "calendar", "#informes"),
-                          navLink(t("demo.dashboard.navSettings"), "settings", "#ajustes"),
-                        ],
-                      },
-                    },
-                  ],
-                },
-              },
-            ],
+            },
           },
           {
-            contract: "layout",
-            signature: "Main",
-            attrs: { class: "app-shell__main" },
-            children: measured({
+            contract: "sidebar",
+            signature: "SidebarContent",
+            children: navigation,
+          },
+        ],
+      },
+      {
+        contract: "layout",
+        signature: "Main",
+        options: { paddingBlock: "lg" },
+        children: measured({
+          contract: "layout",
+          signature: "Stack",
+          options: { gap: "md", gapExpanded: "lg" },
+          children: [
+            {
               contract: "layout",
-              signature: "Stack",
-              options: { gap: "md", gapExpanded: "lg" },
+              signature: "Inline",
+              options: { gap: "md", justify: "between", inlineAlign: "center", wrap: true },
               children: [
                 {
-                  contract: "layout",
-                  signature: "Inline",
-                  options: { gap: "md", justify: "between", inlineAlign: "center", wrap: true },
-                  children: [
-                    {
-                      contract: "typography",
-                      signature: "Heading",
-                      options: { headingSize: "h2", flush: true },
-                      children: t("demo.dashboard.title"),
-                    },
-                    /*
-                     * A range picker, and `Segmented` is what its own `useWhen` describes: three
-                     * mutually exclusive options that fit on one row, changing a VIEW rather than a
-                     * value the form submits. Both halves matter. Past three or four options this
-                     * would owe a Select, and a value that posted with a form would owe a
-                     * RadioGroup.
-                     */
-                    {
-                      contract: "segmented",
-                      signature: "Segmented",
-                      options: { value: "30d", label: t("demo.dashboard.rangeLabel") },
-                      slots: {
-                        items: [
-                          { options: { value: "7d" }, slots: { label: t("demo.dashboard.range7") } },
-                          {
-                            options: { value: "30d" },
-                            slots: { label: t("demo.dashboard.range30") },
-                          },
-                          {
-                            options: { value: "90d" },
-                            slots: { label: t("demo.dashboard.range90") },
-                          },
-                        ],
-                      },
-                    },
-                  ],
+                  contract: "typography",
+                  signature: "Heading",
+                  options: { headingSize: "h2", flush: true },
+                  children: t("demo.dashboard.title"),
                 },
+                /*
+                 * A range picker, and `Segmented` is what its own `useWhen` describes: three
+                 * mutually exclusive options that fit on one row, changing a VIEW rather than a
+                 * value the form submits. Both halves matter. Past three or four options this
+                 * would owe a Select, and a value that posted with a form would owe a
+                 * RadioGroup.
+                 */
                 {
-                  contract: "layout",
-                  signature: "Grid",
-                  options: { columns: "4", gap: "md", responsive: true },
-                  attrs: { "aria-label": t("demo.dashboard.kpiLabel") },
-                  children: [
-                    kpi(t("demo.dashboard.kpiRevenue"), money("48.200"), "12,5%", "up"),
-                    kpi(t("demo.dashboard.kpiOrders"), "1.204", "8,2%", "up"),
-                    kpi(t("demo.dashboard.kpiCustomers"), "318", "4,1%", "up"),
-                    kpi(t("demo.dashboard.kpiRefunds"), "0,9%", "0,3", "down"),
-                  ],
-                },
-                {
-                  contract: "table",
-                  signature: "TableScroll",
-                  options: { stickyHeader: true },
-                  /* A scrolling box is reachable by keyboard and named, or what is off screen is out of reach (quality.ts: table-scroll-focusable). */
-                  attrs: { tabindex: "0", role: "region", "aria-label": t("demo.dashboard.tableCaption") },
-                  children: {
-                    contract: "table",
-                    signature: "Table",
-                    children: [
+                  contract: "segmented",
+                  signature: "Segmented",
+                  options: { value: "30d", label: t("demo.dashboard.rangeLabel") },
+                  slots: {
+                    items: [
+                      { options: { value: "7d" }, slots: { label: t("demo.dashboard.range7") } },
                       {
-                        contract: "table",
-                        signature: "TableCaption",
-                        children: t("demo.dashboard.tableCaption"),
+                        options: { value: "30d" },
+                        slots: { label: t("demo.dashboard.range30") },
                       },
                       {
-                        contract: "table",
-                        signature: "TableHead",
-                        children: {
-                          contract: "table",
-                          signature: "TableRow",
-                          children: [
-                            {
-                              contract: "table",
-                              signature: "TableHeader",
-                              children: t("demo.dashboard.colId"),
-                            },
-                            {
-                              contract: "table",
-                              signature: "TableHeader",
-                              children: t("demo.dashboard.colCustomer"),
-                            },
-                            {
-                              contract: "table",
-                              signature: "TableHeader",
-                              children: t("demo.dashboard.colState"),
-                            },
-                            {
-                              contract: "table",
-                              signature: "TableHeader",
-                              children: t("demo.dashboard.colAmount"),
-                            },
-                          ],
-                        },
-                      },
-                      {
-                        contract: "table",
-                        signature: "TableBody",
-                        children: [
-                          row(
-                            "#4821",
-                            "Marta Ruiz",
-                            t("demo.dashboard.statePaid"),
-                            "success",
-                            money("1.280"),
-                          ),
-                          row(
-                            "#4820",
-                            "Iván Costa",
-                            t("demo.dashboard.statePending"),
-                            "warning",
-                            money("640"),
-                          ),
-                          row(
-                            "#4819",
-                            "Nadia Fuentes",
-                            t("demo.dashboard.statePaid"),
-                            "success",
-                            money("2.115"),
-                          ),
-                          row(
-                            "#4818",
-                            "Teo Lombardi",
-                            t("demo.dashboard.stateRefunded"),
-                            "neutral",
-                            money("310"),
-                          ),
-                          row(
-                            "#4817",
-                            "Sara Okafor",
-                            t("demo.dashboard.statePaid"),
-                            "success",
-                            money("980"),
-                          ),
-                        ],
+                        options: { value: "90d" },
+                        slots: { label: t("demo.dashboard.range90") },
                       },
                     ],
                   },
                 },
-                {
-                  contract: "pagination",
-                  signature: "Pagination",
-                  options: {
-                    page: 1,
-                    total: 8,
-                    label: t("demo.dashboard.paginationLabel"),
-                    previousLabel: t("demo.dashboard.paginationPrevious"),
-                    nextLabel: t("demo.dashboard.paginationNext"),
-                  },
-                },
               ],
-            }, "lg"),
-          },
-        ],
+            },
+            {
+              contract: "layout",
+              signature: "Grid",
+              options: { columns: "4", gap: "md", responsive: true },
+              attrs: { "aria-label": t("demo.dashboard.kpiLabel") },
+              children: [
+                kpi(t("demo.dashboard.kpiRevenue"), money("48.200"), "12,5%", "up"),
+                kpi(t("demo.dashboard.kpiOrders"), "1.204", "8,2%", "up"),
+                kpi(t("demo.dashboard.kpiCustomers"), "318", "4,1%", "up"),
+                kpi(t("demo.dashboard.kpiRefunds"), "0,9%", "0,3", "down"),
+              ],
+            },
+            {
+              contract: "table",
+              signature: "TableScroll",
+              options: { stickyHeader: true },
+              /* A scrolling box is reachable by keyboard and named, or what is off screen is out of reach (quality.ts: table-scroll-focusable). */
+              attrs: { tabindex: "0", role: "region", "aria-label": t("demo.dashboard.tableCaption") },
+              children: {
+                contract: "table",
+                signature: "Table",
+                children: [
+                  {
+                    contract: "table",
+                    signature: "TableCaption",
+                    children: t("demo.dashboard.tableCaption"),
+                  },
+                  {
+                    contract: "table",
+                    signature: "TableHead",
+                    children: {
+                      contract: "table",
+                      signature: "TableRow",
+                      children: [
+                        {
+                          contract: "table",
+                          signature: "TableHeader",
+                          children: t("demo.dashboard.colId"),
+                        },
+                        {
+                          contract: "table",
+                          signature: "TableHeader",
+                          children: t("demo.dashboard.colCustomer"),
+                        },
+                        {
+                          contract: "table",
+                          signature: "TableHeader",
+                          children: t("demo.dashboard.colState"),
+                        },
+                        {
+                          contract: "table",
+                          signature: "TableHeader",
+                          children: t("demo.dashboard.colAmount"),
+                        },
+                      ],
+                    },
+                  },
+                  {
+                    contract: "table",
+                    signature: "TableBody",
+                    children: [
+                      row(
+                        "#4821",
+                        "Marta Ruiz",
+                        t("demo.dashboard.statePaid"),
+                        "success",
+                        money("1.280"),
+                      ),
+                      row(
+                        "#4820",
+                        "Iván Costa",
+                        t("demo.dashboard.statePending"),
+                        "warning",
+                        money("640"),
+                      ),
+                      row(
+                        "#4819",
+                        "Nadia Fuentes",
+                        t("demo.dashboard.statePaid"),
+                        "success",
+                        money("2.115"),
+                      ),
+                      row(
+                        "#4818",
+                        "Teo Lombardi",
+                        t("demo.dashboard.stateRefunded"),
+                        "neutral",
+                        money("310"),
+                      ),
+                      row(
+                        "#4817",
+                        "Sara Okafor",
+                        t("demo.dashboard.statePaid"),
+                        "success",
+                        money("980"),
+                      ),
+                    ],
+                  },
+                ],
+              },
+            },
+            {
+              contract: "pagination",
+              signature: "Pagination",
+              options: {
+                page: 1,
+                total: 8,
+                label: t("demo.dashboard.paginationLabel"),
+                previousLabel: t("demo.dashboard.paginationPrevious"),
+                nextLabel: t("demo.dashboard.paginationNext"),
+              },
+            },
+          ],
+        }, "lg"),
       },
+      menuDrawer(t, "dashboard-menu", navigation),
     ],
   };
 };

@@ -1,4 +1,4 @@
-import { snippets } from "@skryensya/snippets";
+import { snippets } from "@skryensya/examples";
 import { describe, expect, it } from "vitest";
 import { checkSnippets } from "./snippets.js";
 import { checkStylingHooks } from "./hooks.js";

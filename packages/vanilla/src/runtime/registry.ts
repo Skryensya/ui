@@ -43,6 +43,11 @@ const registrations: readonly Registration[] = [
     load: async () => (await import("../components/input.js")).mountInput,
   },
   {
+    /* A pixel face is drawn, not authored: the root arrives empty and this fills in its cells. */
+    selector: ".sk-expressive-avatar:not([data-mode=\"image\"])",
+    load: async () => (await import("../components/expressive-avatar.js")).mountExpressiveAvatar,
+  },
+  {
     selector: "[data-sk-back-to-top]",
     load: async () => (await import("../components/back-to-top.js")).mountBackToTop,
   },

@@ -142,6 +142,7 @@ export const changelogContract = {
     "--sk-changelog-connector-size",
     "--sk-changelog-date-fg",
     "--sk-changelog-entry-gap",
+    "--sk-changelog-entry-row-gap",
     "--sk-changelog-fade",
     "--sk-changelog-heading-gap",
     "--sk-changelog-marker-color",
@@ -182,6 +183,17 @@ export const changelogContract = {
       default: "chore",
       attr: "data-kind",
     },
+    /**
+     * The size of the kind's badge: Badge's own two sizes, `md` by default and `sm` for a list that is scanned in
+     * bulk. It is written on the badge and not on the entry, so what it changes is the pill and nothing around it.
+     */
+    size: { type: "enum", values: ["sm", "md"], default: "md", attr: "data-size" },
+    /**
+     * The air between the entry's own lines: the badge and its target, the headline, and the prose. Not the air
+     * BETWEEN entries, which the release owns (`--sk-changelog-entry-gap`): a change reads as one thought, and this
+     * is how tight or loose that thought is.
+     */
+    gap: { type: "enum", values: ["none", "xs", "sm", "md", "lg"], default: "xs", attr: "data-gap" },
   },
 
   signatures: {
@@ -294,7 +306,7 @@ export const changelogContract = {
     ChangelogEntry: {
       intent: ["one-change", "changelog-entry", "release-note"],
       host: { element: "li" },
-      options: ["kind"],
+      options: ["kind", "size", "gap"],
       parents: ["ChangelogRelease"],
       slots: {
         /** The kind as a word: "Añadido", "Breaking". Required, so the kind is never colour alone. */
@@ -314,12 +326,13 @@ export const changelogContract = {
         element: "li",
         part: "entry",
         host: true,
-        options: ["kind"],
+        options: ["kind", "gap"],
         children: [
           {
             element: "span",
             part: "kind",
             also: ["sk-badge"],
+            options: ["size"],
             /*
              * `changeKindTones`, written out. Five `equals` branches rather than a loop over the
              * table, because this object is `as const` and a mapped array widens every literal in

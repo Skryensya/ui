@@ -175,7 +175,8 @@ function addDisplayDefaults(
     if (option.type === "number" && /^(value|progress|percent|rating|count|total)$/i.test(name)) {
       options[name] = numberDisplayValue(option);
     }
-    if (option.type === "boolean" && /^(checked|selected|expanded|open|active|current)$/i.test(name)) {
+    /* An overlay is not saved open: it would cover the page, and the stage holds it open while it is selected. */
+    if (option.type === "boolean" && /^(checked|selected|expanded|open|active|current)$/i.test(name) && !(name === "open" && contract.category === "overlays")) {
       options[name] = true;
     }
     if (option.type === "enum" && /^variant$/i.test(name)) {

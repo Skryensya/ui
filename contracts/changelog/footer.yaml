@@ -5,6 +5,16 @@
 # hash.
 surface: "669fd03da743e380"
 entries:
+  - date: 2026-10-06
+    kind: bugfix
+    es:
+      title: "Footer aplica su superficie por defecto sin atributo"
+      body: >-
+        La regla de <code>surface="sunken"</code> sólo valía con el atributo escrito. Ahora también cuando falta.
+    en:
+      title: "Footer applies its default surface without the attribute"
+      body: >-
+        The <code>surface="sunken"</code> rule only held with the attribute written. It now also holds when it is absent.
   - date: 2026-09-27
     kind: feature
     target: paddingExpanded

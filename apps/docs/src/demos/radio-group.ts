@@ -249,10 +249,12 @@ export const radioGroupLikertTree = (t: Translate): UsageTree => ({
             {
               contract: "layout",
               signature: "Inline",
-              options: { justify: "between", gap: "md" },
+              /* No wrap: the two ends stay under the first and the last point, and each wraps its own words. */
+              options: { justify: "between", gap: "md", wrap: false },
               children: [
                 caption(t("demo.likert.min")),
-                caption(t("demo.likert.max")),
+                /* In a Stack aligned to the end, so its words sit flush under the last point when they wrap. */
+                { contract: "layout", signature: "Stack", options: { gap: "none", align: "end" }, children: [caption(t("demo.likert.max"))] },
               ],
             },
           ],
@@ -315,7 +317,16 @@ const matrixRow = (
   ],
 });
 
+/*
+ * In a TableScroll with the statement column sticky: on a phone the four points scroll sideways under
+ * a statement that stays put, instead of the last column being cut off by the frame.
+ */
 export const radioGroupMatrixTree = (t: Translate): UsageTree => ({
+  contract: "table",
+  signature: "TableScroll",
+  options: { stickyColumn: true },
+  attrs: { "aria-label": t("radioGroupPage.matrixLabel") },
+  children: {
   contract: "table",
   signature: "Table",
   attrs: { class: "likert-matrix" },
@@ -358,6 +369,7 @@ export const radioGroupMatrixTree = (t: Translate): UsageTree => ({
       ],
     },
   ],
+  },
 });
 
 /* Usage guide: ten countries as radios, a list long enough that it belongs in a Select. The names

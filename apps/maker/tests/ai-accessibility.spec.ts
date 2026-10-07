@@ -57,7 +57,7 @@ test("a remembered key is encrypted at rest, is not asked for again after a relo
   await page.getByRole("tab", { name: "AI", exact: true }).click();
   await expect(page.getByRole("dialog", { name: "AI settings" })).toBeHidden();
   await expect(page.getByRole("status").filter({ hasText: "saved on this device" })).toBeVisible();
-  await expect(page.getByLabel("Ask Maker")).toBeVisible();
+  await expect(page.getByLabel("Ask Maker", { exact: true })).toBeVisible();
   await page.getByRole("button", { name: "AI settings" }).click();
   await page.getByRole("button", { name: "Disconnect" }).click();
   await expect(page.getByRole("status").filter({ hasText: "saved key was removed" })).toBeVisible();

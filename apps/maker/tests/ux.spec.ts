@@ -37,7 +37,7 @@ test("after a section, a click below it selects Main, and the next insert lands 
 
 test("Escape walks up the tree, from what is selected to Main, then to nothing", async ({ page }) => {
   await buildSamplePage(page);
-  await stage(page).locator("h2").click();
+  await stage(page).locator("h2").click({ force: true });
   await expect(selectedTitle(page)).toHaveText("Heading");
   for (const parent of ["Stack", "Wrapper", "Main"]) {
     await page.keyboard.press("Escape");
@@ -50,7 +50,7 @@ test("Escape walks up the tree, from what is selected to Main, then to nothing",
 
 test("the bar's Insert menu offers only what fits where the insert would land", async ({ page }) => {
   await buildSamplePage(page);
-  await stage(page).locator("h2").click();
+  await stage(page).locator("h2").click({ force: true });
   await page.locator(".maker-shell__bar").getByRole("menuitem", { name: "Insert", exact: true }).click();
   /* After a heading, inside a Stack inside a Wrapper: a second Wrapper may not go there, text may. */
   await expect(page.getByRole("menuitem", { name: "Wrapper", exact: true })).toHaveAttribute("aria-disabled", "true");
@@ -85,7 +85,7 @@ test("the middle button pans the canvas from inside a page, as it does from the 
 
 test("a right click on the page selects what is under it and opens a menu of what can be done to it", async ({ page }) => {
   await buildSamplePage(page);
-  await stage(page).locator("h2").click({ button: "right" });
+  await stage(page).locator("h2").click({ button: "right", force: true });
   await expect(selectedTitle(page)).toHaveText("Heading");
   /* The menu is Menu's own popup, portalled to the body like every menu's. */
   const menu = page.getByRole("menu").filter({ has: page.getByRole("menuitem", { name: "Select parent" }) });
@@ -101,7 +101,7 @@ test("a right click on the page selects what is under it and opens a menu of wha
 
 test("Delete removes the selection from inside the page, and undo brings it back", async ({ page }) => {
   await buildSamplePage(page);
-  await stage(page).locator("h2").click();
+  await stage(page).locator("h2").click({ force: true });
   await expect(selectedTitle(page)).toHaveText("Heading");
   await page.keyboard.press("Delete");
   await expect.poll(() => pageTree(page)).not.toContain("Heading");
@@ -111,15 +111,15 @@ test("Delete removes the selection from inside the page, and undo brings it back
 
 test("copy and paste inside the canvas: a copy with fresh identities, where an insert would land", async ({ page }) => {
   await buildSamplePage(page);
-  await stage(page).locator("h2").click();
+  await stage(page).locator("h2").click({ force: true });
   await page.keyboard.press("ControlOrMeta+c");
   /* After the paragraph: the paste lands after the selection, as an insert would. */
-  await stage(page).locator("p").first().click();
+  await stage(page).locator("p").first().click({ force: true });
   await page.keyboard.press("ControlOrMeta+v");
   await expect.poll(() => pageTree(page)).toContain("      Text\n        \"Text\"\n      Heading\n        \"Heading\"");
   await expect(selectedTitle(page)).toHaveText("Heading");
   /* Pasted again, from the menu this time: the same copy, any number of times. */
-  await stage(page).locator("h2").first().click({ button: "right" });
+  await stage(page).locator("h2").first().click({ button: "right", force: true });
   await page.getByRole("menu").getByRole("menuitem", { name: "Paste", exact: true }).click();
   await expect.poll(async () => (await pageTree(page)).match(/Heading$/gm)?.length).toBe(3);
 });

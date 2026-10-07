@@ -61,6 +61,11 @@ export const inlineMessages = {
 
     "inlinePage.contract2": '<code>wrap</code> viene activado; <code>wrap="false"</code> fuerza una sola línea.',
 
+    "inlinePage.contract4": "<code>show</code> (<code>compact</code> o <code>expanded</code>) deja la fila de un solo lado de los 52rem de su contenedor, y del otro la saca también del árbol de accesibilidad.",
+    "inlinePage.showTitle": "Show: los links donde caben, el menú donde no",
+    "inlinePage.showBody": "La misma fila con sus dos lados escritos una vez. La línea se mide en el espacio que tiene la fila, no en la ventana.",
+    "inlinePage.showPhone": "En un teléfono",
+    "inlinePage.showWide": "En una pantalla amplia",
     "inlinePage.contract1": "Aplica <code>sk-inline</code> al elemento que corresponda; en React, <code>as</code> lo elige.",
 
     "inlinePage.barBody": "Una Inline dentro de un Box, con la acción principal y la secundaria.",
@@ -152,6 +157,11 @@ export const inlineMessages = {
 
     "inlinePage.contract2": '<code>wrap</code> is on; <code>wrap="false"</code> forces a single line.',
 
+    "inlinePage.contract4": "<code>show</code> (<code>compact</code> or <code>expanded</code>) keeps the row on one side of its container's 52rem, and on the other takes it out of the accessibility tree too.",
+    "inlinePage.showTitle": "Show: the links where they fit, the menu where they do not",
+    "inlinePage.showBody": "The same row with both sides written once. The line is measured on the room the row has, not the window.",
+    "inlinePage.showPhone": "On a phone",
+    "inlinePage.showWide": "On a wide screen",
     "inlinePage.contract1": "Apply <code>sk-inline</code> to the right element; in React, <code>as</code> chooses it.",
 
     "inlinePage.barBody": "An Inline inside a Box, with the main and the secondary action.",

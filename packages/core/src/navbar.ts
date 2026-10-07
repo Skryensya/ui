@@ -64,8 +64,12 @@ export const navbarContract = {
           required: true,
           /* `Megamenu`, alongside `NavList`: another guest with its own navigation destinations -
            * see megamenu.ts's own header comment for why it is a peer, never a variant, of anything
-           * else in this catalogue. */
-          of: ["NavbarBrand", "NavbarActions", "NavList", "Megamenu"],
+           * else in this catalogue.
+           *
+           * `Inline`: a group of the bar's items that share a fate, which in practice is `show`. A site's
+           * links exist on a wide screen and give way to a drawer's trigger on a phone (decision 35); the
+           * bar is a flex row, so the group is one more item in it and needs no part of its own. */
+          of: ["NavbarBrand", "NavbarActions", "NavList", "Megamenu", "Inline"],
         },
       },
       template: { element: "header", part: "root", host: true, slot: "children" },

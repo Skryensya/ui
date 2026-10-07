@@ -62,6 +62,17 @@ function showInAddress(id: string | undefined): void {
   window.history.replaceState(null, "", url);
 }
 
+/*
+ * A FAILURE IS SAID, NEVER WAITED ON. A project that cannot be made, renamed or removed (the database is down, the server
+ * refused it) leaves the button it came from free and says why, here, once: an action that threw and was never caught
+ * left "Creating…" on screen for good, which reads as a hang, not as an error.
+ */
+function failureText(reason: unknown): string {
+  const text = reason instanceof Error ? reason.message : String(reason);
+  if (/ECONNREFUSED|No database/i.test(text)) return "The projects database is not reachable, so nothing was saved. Start it with `docker compose -f apps/maker/docker-compose.yml up -d` and try again.";
+  return text;
+}
+
 export function useWorkspace() {
   const [mode, setMode] = useState<WorkspaceMode>({ kind: "connecting" });
   const [projects, setProjects] = useState<readonly ProjectSummary[]>([]);
@@ -91,11 +102,20 @@ export function useWorkspace() {
     }
   }, []);
 
+  /** Resolves true once the project exists and is open; false when it could not be made, with `error` saying why. */
   const create = useCallback(
-    async (name: string, site?: MakerSite) => {
-      const project = await createProject(name, site);
+    async (name: string, site?: MakerSite): Promise<boolean> => {
+      let project: Awaited<ReturnType<typeof createProject>>;
+      try {
+        project = await createProject(name, site);
+      } catch (reason) {
+        setError(failureText(reason));
+        return false;
+      }
+      setError(undefined);
       await refresh();
       await openProject(project.id);
+      return true;
     },
     [refresh, openProject],
   );
@@ -112,7 +132,7 @@ export function useWorkspace() {
 
   const rename = useCallback(
     async (id: string, name: string) => {
-      await renameProject(id, name);
+      try { await renameProject(id, name); } catch (reason) { setError(failureText(reason)); return; }
       await refresh();
     },
     [refresh],
@@ -120,7 +140,7 @@ export function useWorkspace() {
 
   const remove = useCallback(
     async (id: string) => {
-      await deleteProject(id);
+      try { await deleteProject(id); } catch (reason) { setError(failureText(reason)); return; }
       close(id);
       await refresh();
     },
@@ -163,9 +183,13 @@ export function useWorkspace() {
       if (templateId) {
         const opened = await templateSite(templateId, templateLocale);
         if (opened) {
-          const project = await createProject(opened.title, opened.site);
-          setProjects(await listProjects().catch(() => [] as ProjectSummary[]));
-          await openProject(project.id);
+          try {
+            const project = await createProject(opened.title, opened.site);
+            setProjects(await listProjects().catch(() => [] as ProjectSummary[]));
+            await openProject(project.id);
+          } catch (reason) {
+            setError(failureText(reason));
+          }
         } else {
           setError(`No template "${templateId}".`);
         }

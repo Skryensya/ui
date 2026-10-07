@@ -5,21 +5,20 @@ import { Button } from "@skryensya/react/button";
 import { Icon } from "@skryensya/react/icon";
 import { SegmentedControl } from "@skryensya/react/segmented";
 import { Heading, Text } from "@skryensya/react/typography";
-import { FileUpload } from "@skryensya/react/file-upload";
 import { FormField } from "@skryensya/react/form-field";
 import { Textarea } from "@skryensya/react/input";
 import { Inline, Stack } from "@skryensya/react/layout";
-import { composePage, parseSite, randomId, serializeSite, toUsageTree, type MakerPageEntry, type MakerSite } from "@skryensya/maker-model";
+import { composePage, toUsageTree, type MakerPageEntry } from "@skryensya/maker-model";
 import { IconButton } from "./IconButton";
-import { CATALOGUE_HASH, type Maker } from "./state";
+import type { Maker } from "./state";
 
 /*
- * EXPORT, every form produced by the same emitter `validate_ui` uses, in the browser. A pending
- * page exports anyway, with its problems listed: blocking the export would punish someone who
- * only wanted to keep their work.
+ * EXPORT: code for a framework, never a hosted site. Every form is produced by the same emitter
+ * `validate_ui` uses, in the browser. A pending page exports anyway, with its problems listed:
+ * blocking the export would punish someone who only wanted to keep their work.
  */
 
-type Format = "site" | "tree" | "react" | "html" | "site-react";
+type Format = "react" | "html" | "site-react";
 
 /** `/about/team` → `AboutTeamPage`; `/` → `HomePage`. */
 function componentName(page: MakerPageEntry): string {
@@ -31,23 +30,12 @@ function fileName(page: MakerPageEntry): string {
   return page.path === "/" ? "index.tsx" : `${page.path.slice(1)}.tsx`;
 }
 
-export function ExportPanel({
-  maker,
-  onClose,
-  importAsProject,
-}: {
-  maker: Maker;
-  onClose: () => void;
-  /** With a projects server, an opened site file becomes a new project instead of replacing this one. */
-  importAsProject?: (name: string, site: MakerSite) => Promise<void>;
-}) {
+export function ExportPanel({ maker, onClose }: { maker: Maker; onClose: () => void }) {
   const [format, setFormat] = useState<Format>("react");
   const tree = useMemo(() => toUsageTree(maker.isLayout ? maker.page.root : composePage(maker.site, maker.page).root), [maker.page, maker.site, maker.isLayout]);
   const output = useMemo(() => {
     try {
       switch (format) {
-        case "site":
-          return { text: serializeSite(maker.site, CATALOGUE_HASH), file: "site.maker.json" };
         case "site-react": {
           const files = maker.site.pages.map((page) => {
             /* Each page as it is drawn: inside its layout. */
@@ -59,8 +47,6 @@ export function ExportPanel({
           });
           return { text: files.join("\n\n"), file: "pages.tsx.txt" };
         }
-        case "tree":
-          return { text: JSON.stringify(tree, null, 2), file: "page.usage-tree.json" };
         case "html": {
           const { sheets } = sheetsForTree(tree);
           const links = sheets.map((sheet) => `<!-- import "${sheet}" -->`).join("\n");
@@ -89,20 +75,6 @@ export function ExportPanel({
     link.download = output.file;
     link.click();
     URL.revokeObjectURL(url);
-  };
-
-  const importPage = async (file: File) => {
-    const opened = parseSite(await file.text(), CATALOGUE_HASH, randomId);
-    if (!opened.ok) {
-      maker.say(opened.reason);
-      return;
-    }
-    if (importAsProject) {
-      await importAsProject(file.name.replace(/\.maker\.json$|\.json$/, "") || "Imported site", opened.site);
-    } else {
-      maker.load(opened.site, opened.catalogueChanged ? "The catalogue changed since this site was saved; anything that no longer fits is marked pending." : undefined);
-    }
-    onClose();
   };
 
   return (
@@ -136,9 +108,7 @@ export function ExportPanel({
           options={[
             { value: "react", label: "React" },
             { value: "html", label: "HTML" },
-            { value: "tree", label: "Usage tree" },
             { value: "site-react", label: "All pages" },
-            { value: "site", label: "Site" },
           ]}
         />
         <FormField label="Exported code" labelHidden><Textarea className="maker-export__code" readOnly value={output.text} spellCheck={false} /></FormField>
@@ -149,18 +119,6 @@ export function ExportPanel({
           <Button variant="soft" size="sm" pre={<Icon name="copy" />} onClick={() => void navigator.clipboard?.writeText(output.text)}>
             Copy
           </Button>
-          <FileUpload
-            label="Site file"
-            triggerLabel={importAsProject ? "Open a site file as a new project…" : "Open a site…"}
-            dropzoneLabel="Drop a site file here"
-            accept=".json,application/json"
-            multiple={false}
-            maxFiles={1}
-            onFileChange={(details) => {
-              const file = details.acceptedFiles[0];
-              if (file) void importPage(file);
-            }}
-          />
         </Inline>
       </Stack>
     </div>

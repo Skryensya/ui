@@ -141,7 +141,9 @@ const holdsCurrentPage = (items: readonly NavigationItem[]): boolean => items.so
             {hasCollapsibleGroups(section) ? (
               section.groups.map((group, groupIndex) => {
                 const labelId = `docs-drawer-${section.id}-${groupIndex}`;
-                const groupOpen = group.defaultOpen ?? holdsCurrentPage(group.items);
+                const groupOpen =
+                  group.defaultOpen ??
+                  (holdsCurrentPage(group.items) || (groupIndex === 0 && !holdsCurrentPage(itemsFor(section))));
                 return (
                   <li class="sk-nav-list__item">
                     <div class="sk-nav-list__group" data-collapsible data-group-id={group.id} data-default-open={groupOpen ? undefined : "false"}>

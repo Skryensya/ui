@@ -52,9 +52,10 @@ Each layout primitive that owns spacing gets an `Expanded` sibling for it:
   `--space-inset-lg` until declared.
 - **Declared beats automatic.** Footer already stepped `lg`/`xl` down on phones on its own. That
   guess now yields as soon as `paddingExpanded` is present: the author has said what the phone gets.
-- **Viewport, like the rest of the kit.** The switch is an `@media` at 52rem, the literal the other
-  breakpoint rules hand-copy from `semantic/_breakpoints.scss`. Container queries remain a separate,
-  kit-wide change.
+- **Viewport, like the rest of the kit, at the time.** The switch was an `@media` at 52rem, the literal
+  the other breakpoint rules hand-copy from `semantic/_breakpoints.scss`. Container queries were left
+  as a separate, kit-wide change, and [decision 35](./0035-layout-answers-to-its-container.md) made it:
+  the same line is now asked of the nearest query container.
 
 ## Evidence
 

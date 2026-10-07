@@ -26,12 +26,15 @@ const { nav, path, idPrefix } = Astro.props;
  * renderer's: this file does not know which sections are long. The component catalog sets it, so a hundred
  * entries arrive as twelve categories; the foundations, a short reading path, do not.
  *
- * Open on arrival: the category that holds the current page, and nothing else. What a reader opened or
+ * Open on arrival: the category that holds the current page, and nothing else; on a page no category holds
+ * (the `/components` index), the first one, so the rail never arrives fully shut. What a reader opened or
  * closed by hand is applied on top by the script in `Base.astro`, before first paint, and the current
  * category always wins over a stored "closed". The closed list is `hidden` in the markup, so the page is
  * right before any script runs.
  */
 const holdsCurrentPage = (items: readonly { href: string }[]): boolean => items.some((item) => item.href === path);
+const opensFirst = (groups: readonly { items: readonly { href: string }[] }[], index: number): boolean =>
+  index === 0 && !groups.some((group) => holdsCurrentPage(group.items));
 ---
 
 {
@@ -58,7 +61,7 @@ const holdsCurrentPage = (items: readonly { href: string }[]): boolean => items.
           const labelId = `${idPrefix}-${sectionIndex}-${groupIndex}`;
 
           if (group.collapsible) {
-            const open = group.defaultOpen ?? holdsCurrentPage(group.items);
+            const open = group.defaultOpen ?? (holdsCurrentPage(group.items) || opensFirst(section.groups, groupIndex));
             return (
               <div class="sk-nav-list__group" data-collapsible data-group-id={group.id} data-default-open={open ? undefined : "false"}>
                 <button

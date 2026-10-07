@@ -9,9 +9,10 @@ import { CATALOGUE_HASH } from "./state";
  */
 
 export type TemplateLocale = "es" | "en";
-export type TemplateEntry = { id: string; title: string; description: string; tree: UsageTree };
+/** `prompt`: what the template starts Maker AI with, offered for editing when a project is made from it. */
+export type TemplateEntry = { id: string; title: string; description: string; prompt?: string; tree: UsageTree };
 
-type Artifact = { templates: { id: string; locales: Record<string, { title: string; description: string; tree: UsageTree }> }[] };
+type Artifact = { templates: { id: string; locales: Record<string, { title: string; description: string; prompt?: string; tree: UsageTree }> }[] };
 
 let loaded: Promise<Artifact> | undefined;
 
@@ -26,8 +27,10 @@ export async function listTemplates(locale: TemplateLocale): Promise<TemplateEnt
     .filter((entry): entry is TemplateEntry => entry !== undefined);
 }
 
-export async function templateSite(id: string, locale: TemplateLocale): Promise<{ title: string; site: MakerSite } | undefined> {
+/** The template as a new site. `prompt` replaces the template's own (an edited one); absent, the template's is kept. */
+export async function templateSite(id: string, locale: TemplateLocale, prompt?: string): Promise<{ title: string; site: MakerSite } | undefined> {
   const template = (await listTemplates(locale)).find((entry) => entry.id === id);
   if (!template) return undefined;
-  return { title: template.title, site: siteFromTemplate(template.tree, { pageName: template.title, sourceHash: CATALOGUE_HASH, newId: randomId }) };
+  const chosen = prompt ?? template.prompt;
+  return { title: template.title, site: siteFromTemplate(template.tree, { pageName: template.title, sourceHash: CATALOGUE_HASH, newId: randomId, ...(chosen ? { prompt: chosen } : {}) }) };
 }

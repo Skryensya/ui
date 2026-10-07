@@ -613,7 +613,7 @@ pantallas como datos, cada una en sus cuatro estados (`loading`/`empty`/`error`/
 en el build por `checkRecipes` y publicadas al MCP como nivel `"screen"` de `get_examples`. **Se
 eliminó**: la galería de templates ya enseñaba las mismas pantallas y mantener dos publicaciones de
 lo mismo costaba más de lo que enseñaba. Lo que sobrevive como ejemplo publicado para un agente es
-`contracts/snippets`, por debajo de la escala de pantalla.
+`contracts/examples`, por debajo de la escala de pantalla.
 
 Lo que encontró escribirlas, en cambio, sigue siendo cierto y por eso queda anotado acá.
 

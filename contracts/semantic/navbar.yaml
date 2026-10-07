@@ -3,6 +3,7 @@
 Navbar:
   useWhen:
     - "the app needs a top bar with a brand and actions"
+    - "the site's links do not fit a phone: the NavList in an Inline with show expanded, and a Vaul.Trigger in an Inline with show compact that opens a Vaul.drawer holding the same links"
   avoidWhen:
     - "the navigation goes on the side; that is a Sidebar"
     - "a multi-column category panel is needed; that is Megamenu"

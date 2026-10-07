@@ -188,6 +188,11 @@
     flex: none;
     block-size: 100%;
     border-inline-end: var(--sk-sidebar-border-width) solid var(--sk-sidebar-border-color);
+    /*
+     * A QUERY CONTAINER (decision 35): a Grid or a Stack in the rail is laid out for the rail's width, not the
+     * window's. Safe because the rail's width is its hook, never its content (the two width properties above).
+     */
+    container-type: inline-size;
     background: var(--sk-sidebar-bg);
     color: var(--sk-sidebar-fg);
     box-shadow: var(--sk-sidebar-elevation);
@@ -452,6 +457,45 @@
 
   .sk-sidebar[data-state="collapsed"] .sk-sidebar__trigger .sk-icon {
     transform: rotate(180deg);
+  }
+
+  /*
+   * ── THE END SIDE ─────────────────────────────────────────────────────────────────────────────
+   *
+   * The same rail in a mirror, standing after the work area (an inspector, a detail pane). Everything that
+   * faced the content faces the other way: the border, the resize edge, the floating trigger's corner and the
+   * chevron's resting direction. The resize sign flips in the bindings, which read `data-side` the way they
+   * read `direction`: a drag toward the content widens a rail on either side.
+   */
+  .sk-sidebar[data-side="end"] {
+    border-inline-end: 0;
+    border-inline-start: var(--sk-sidebar-border-width) solid var(--sk-sidebar-border-color);
+  }
+
+  .sk-sidebar[data-side="end"] .sk-sidebar__resize-handle,
+  .sk-sidebar[data-side="end"] .sk-sidebar__resize-handle::before {
+    inset-inline: 0 auto;
+  }
+
+  .sk-sidebar[data-side="end"] .sk-sidebar__trigger[data-floating] {
+    inset-inline: auto calc(100% + var(--sk-sidebar-trigger-offset-inline));
+    transition: inset-inline-end var(--sk-sidebar-duration) var(--sk-sidebar-easing);
+  }
+
+  .sk-sidebar[data-side="end"] .sk-sidebar__trigger .sk-icon {
+    transform: rotate(180deg);
+  }
+
+  .sk-sidebar[data-side="end"][data-state="collapsed"] .sk-sidebar__trigger .sk-icon {
+    transform: none;
+  }
+
+  .sk-sidebar[data-side="end"][data-appearance="brutalist"] {
+    --brutalist-direction: -1;
+  }
+
+  .sk-sidebar[data-side="end"][data-appearance="brutalist"]:dir(rtl) {
+    --brutalist-direction: 1;
   }
 
   /*

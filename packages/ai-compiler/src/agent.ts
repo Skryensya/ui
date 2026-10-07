@@ -1,9 +1,9 @@
 import type { UsageTree } from "@skryensya/core/usage-tree";
 import type { CompiledContract, CompiledIndexEntry, CompiledPair } from "./artifact.js";
-import { discover, type DiscoverInput, type DiscoverResult, type DiscoverSnippet } from "./discover.js";
+import { discover, type DiscoverInput, type DiscoverResult } from "./discover.js";
+import { browseExamples, fetchExample, type ExampleDetail, type ExampleLibrary, type ExamplesFilter, type ExamplesIndex } from "./examples-service.js";
 import { emitMarkup, emitReactSource } from "./emit.js";
 import { sheetsForTree } from "./sheets-for-tree.js";
-import { contractsIn } from "./usage-walk.js";
 import { validateUsageTree, type Problem } from "./validate.js";
 import { reviewTree, type Review } from "./quality.js";
 
@@ -21,6 +21,8 @@ import { reviewTree, type Review } from "./quality.js";
  * result, success or failure, names the `schemaVersion` and `sourceHash` it was computed from.
  */
 
+export type { ExampleDetail, ExampleLibrary, ExamplesFilter, ExamplesIndex } from "./examples-service.js";
+
 export type Provenance = { readonly schemaVersion: string; readonly sourceHash: string };
 
 export type AgentError = Provenance & { readonly error: string; readonly detail: string };
@@ -29,7 +31,6 @@ export type AgentResult<T> =
   | { readonly ok: true; readonly value: Provenance & T }
   | { readonly ok: false; readonly value: AgentError };
 
-export type AgentSnippet = DiscoverSnippet & { readonly notes: readonly string[] };
 
 export type CatalogPage = {
   readonly contracts: readonly CompiledIndexEntry[];
@@ -39,15 +40,7 @@ export type CatalogPage = {
   readonly more: boolean;
 };
 
-export type ExampleIndexEntry = {
-  readonly id: string;
-  readonly level: string;
-  readonly intent: string;
-  readonly notes: readonly string[];
-  readonly contracts: readonly string[];
-};
 
-export type Example = ExampleIndexEntry & { readonly tree: UsageTree };
 
 /** A design review of a tree that composes: the findings a good page would not have. `review` is null when the tree is invalid, because nothing about its design can be judged until it holds. */
 export type ReviewOutcome = {
@@ -116,7 +109,7 @@ function splitByBudget(ids: readonly string[], sizes: readonly number[]): string
   return groups;
 }
 
-export function createAgentService(pair: CompiledPair, snippets: readonly AgentSnippet[]) {
+export function createAgentService(pair: CompiledPair, library: ExampleLibrary) {
   const provenance: Provenance = {
     schemaVersion: pair.index.schemaVersion,
     sourceHash: pair.index.sourceHash,
@@ -138,14 +131,8 @@ export function createAgentService(pair: CompiledPair, snippets: readonly AgentS
     return rest;
   };
 
-  // Pure functions of the artifact and the snippets, so computed once per service, not per call.
-  const exampleIndex: readonly ExampleIndexEntry[] = snippets.map((snippet) => ({
-    id: snippet.id,
-    level: snippet.level,
-    intent: snippet.intent,
-    notes: snippet.notes,
-    contracts: contractsIn(snippet.tree),
-  }));
+  /* Discovery reads the English list: it matches words, and the catalogue it matches against is English. */
+  const discoverable = library.entries("en").map((entry) => ({ id: entry.id, level: entry.scale, intent: entry.purpose, tree: entry.tree }));
 
   return {
     provenance,
@@ -218,20 +205,25 @@ export function createAgentService(pair: CompiledPair, snippets: readonly AgentS
       return ok({ contracts });
     },
 
-    examples(): AgentResult<{ readonly examples: readonly ExampleIndexEntry[] }> {
-      return ok({ examples: exampleIndex });
+    examples(filter: ExamplesFilter = {}): AgentResult<ExamplesIndex> {
+      return ok(browseExamples(library, filter));
     },
 
-    example(id: string): AgentResult<Example> {
-      const at = snippets.findIndex((entry) => entry.id === id);
-      if (at === -1) {
-        return fail(`No example "${id}".`, `Published: ${exampleIndex.map((entry) => entry.id).join(", ")}.`);
+    example(id: string, locale: "en" | "es" = "en"): AgentResult<ExampleDetail> {
+      const found = fetchExample(library, id, locale);
+      if (!found) {
+        const near = library
+          .entries(locale)
+          .filter((entry) => entry.id.includes(id) || id.includes(entry.id))
+          .slice(0, 8)
+          .map((entry) => entry.id);
+        return fail(`No example "${id}".`, `${near.length > 0 ? `Close ids: ${near.join(", ")}. ` : ""}Call get_examples with no id for the taxonomy, or filter by intent, subject, scale, pattern or contract.`);
       }
-      return ok({ ...exampleIndex[at]!, tree: snippets[at]!.tree });
+      return ok(found);
     },
 
     discover(input: DiscoverInput): AgentResult<DiscoverResult> {
-      return ok(discover(pair.index, snippets, input));
+      return ok(discover(pair.index, discoverable, input));
     },
 
     /*

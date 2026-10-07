@@ -158,54 +158,14 @@ describe("streaming runtime", () => {
     expect(proposal.operations.length).toBe(first.operations.length + 1);
   });
 
-  it("asks once, and only what blocks the build: a brief with questions ends the turn before anything is built", async () => {
-    let briefed = "";
-    const asks = JSON.stringify({ kind: "build", goal: "A page for the business", checklist: ["A page"], missing: [
-      { title: "What does the business do?", body: "Nothing in the request says what this page is for.", recommended: "A bakery" },
-    ] });
+  it("never asks: the brief records its assumptions and the build goes on", async () => {
     const adapter: ProviderAdapter = {
-      complete: vi.fn(async (_c, _s, messages) => { briefed = messages[0]!.content; return { text: "", calls: [{ id: "b", name: "submit_brief", arguments: asks }] }; }),
-      stream: vi.fn(async () => ({ text: "", calls: [] })),
-    };
-    const events = await run(adapter);
-    const done = events.find((e): e is Extract<AgentEvent, { type: "done" }> => e.type === "done")!;
-    expect(JSON.parse(briefed).canAsk).toBe(true);
-    expect(done.questions).toHaveLength(1);
-    expect(done.proposal).toBeUndefined();
-    expect(adapter.stream).not.toHaveBeenCalled();
-  });
-
-  it("never asks twice: once a round was asked, the brief is told it may not and the build goes on with placeholders", async () => {
-    let briefed = "";
-    const asks = JSON.stringify({ kind: "build", goal: "A pricing section", checklist: ["Three plans"], assumptions: ["Plan names are placeholders"], missing: [{ title: "Plans", recommended: "Placeholders" }] });
-    const adapter: ProviderAdapter = {
-      complete: vi.fn(async (_c, _s, messages) => { briefed = messages[0]!.content; return { text: "", calls: [{ id: "b", name: "submit_brief", arguments: asks }] }; }),
-      stream: vi.fn(async () => ({ text: "Built it with placeholders.", calls: [] })),
-    };
-    const earlier = { content: "A page", context, questions: [{ title: "Q", recommended: "x" }] };
-    const events: AgentEvent[] = [];
-    for await (const e of runAgent({ connection, site, context, content: "My answers: ...", service, adapter, history: [earlier], signal: new AbortController().signal })) events.push(e);
-    const done = events.find((e): e is Extract<AgentEvent, { type: "done" }> => e.type === "done")!;
-    expect(JSON.parse(briefed).canAsk).toBe(false);
-    expect(done.questions).toBeUndefined();
-    expect(adapter.stream).toHaveBeenCalled();
-  });
-
-  it("once the person has said to just proceed, nothing is asked: the brief records assumptions and the build goes on", async () => {
-    let briefed = "";
-    const adapter: ProviderAdapter = {
-      complete: vi.fn(async (_c, _s, messages) => {
-        briefed = messages[0]!.content;
-        /* A brief that tries to ask anyway: it is not allowed to. */
-        return { text: "", calls: [{ id: "b", name: "submit_brief", arguments: JSON.stringify({ kind: "build", goal: "A hero", checklist: ["A hero"], assumptions: ["Headline is a placeholder"], missing: [{ title: "Name", recommended: "x" }] }) }] };
-      }),
+      complete: vi.fn(async () => ({ text: "", calls: [{ id: "b", name: "submit_brief", arguments: JSON.stringify({ kind: "build", goal: "A hero", checklist: ["A hero"], assumptions: ["Headline is a placeholder"] }) }] })),
       stream: vi.fn(async () => ({ text: "Built.", calls: [] })),
     };
-    const events: AgentEvent[] = [];
-    for await (const e of runAgent({ connection, site, context, content: "Use my recommendations and just do it", service, adapter, signal: new AbortController().signal })) events.push(e);
-    expect(JSON.parse(briefed).canAsk).toBe(false);
+    const events = await run(adapter);
     expect(events.find((e) => e.type === "brief")).toMatchObject({ goal: "A hero", assumptions: ["Headline is a placeholder"] });
-    expect(events.find((e): e is Extract<AgentEvent, { type: "done" }> => e.type === "done")!.questions).toBeUndefined();
+    expect(adapter.stream).toHaveBeenCalled();
   });
 
   it("keeps going until the goal is met: after proposing it reviews the result and adds only what is missing", async () => {

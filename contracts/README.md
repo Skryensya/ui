@@ -7,7 +7,7 @@ composiciones que se publican como ejemplo.
 | --- | --- | --- |
 | `semantic/` | cuándo usar cada signature y cuándo no. Se reescribe libremente: describe el contrato **como es hoy**, no tiene historia. | un agente eligiendo qué componer |
 | `changelog/` | qué cambió en cada contrato, fechado y en los dos idiomas. **Sólo se agrega, nunca se reescribe.** | quien ya lo estaba usando |
-| `snippets/` | composiciones establecidas como árboles de uso, validadas en cada build | quien arranca algo nuevo |
+| `examples/` | la biblioteca de ejemplos: patrones (estructura) y usos (significado) archivados por intención y sujeto, más árboles fijos y páginas; validados en cada build | quien arranca algo nuevo, el Catálogo del sitio y el MCP |
 
 La estructura no está aquí: vive en `packages/core/src/<componente>.ts`, que es su único autor.
 

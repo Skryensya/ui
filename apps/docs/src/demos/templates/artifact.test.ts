@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { useTranslations, type Locale } from "../../i18n";
 import { templateSections } from "../../lib/templates-nav";
-import { templateTrees } from "./registry";
+import { templatePrompt, templateTrees } from "./registry";
 
 /*
  * THE TEMPLATES, AS DATA THE MAKER CAN OPEN.
@@ -25,7 +25,8 @@ describe("the templates artifact", () => {
           locales.map((locale) => {
             const t = useTranslations(locale);
             const localized = templateSections(t).find((entry) => entry.id === section.id)!;
-            return [locale, { title: localized.title, description: localized.label, tree: templateTrees(t, locale)[section.id]!() }];
+            const prompt = templatePrompt(t, section.id);
+            return [locale, { title: localized.title, description: localized.label, ...(prompt ? { prompt } : {}), tree: templateTrees(t, locale)[section.id]!() }];
           }),
         ),
       })),
@@ -60,6 +61,6 @@ export const pageSnippets: readonly Snippet[] = [
 ${pages.join(",\n")},
 ];
 `;
-    await expect(source).toMatchFileSnapshot("../../../../../contracts/snippets/pages.generated.ts");
+    await expect(source).toMatchFileSnapshot("../../../../../contracts/examples/fixed/pages.generated.ts");
   });
 });

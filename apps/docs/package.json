@@ -23,6 +23,7 @@
     "@skryensya/ai-compiler": "workspace:*",
     "@skryensya/charts": "workspace:*",
     "@skryensya/core": "workspace:*",
+    "@skryensya/examples": "workspace:*",
     "@skryensya/icons-lucide": "workspace:*",
     "@skryensya/icons-material": "workspace:*",
     "@skryensya/icons-phosphor": "workspace:*",

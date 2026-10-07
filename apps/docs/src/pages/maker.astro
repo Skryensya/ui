@@ -96,7 +96,7 @@ const apply = `{
   <h2>The bar</h2>
   <p>
     Every command is a word in the <a href="/components/app-bar">AppBar</a> across the top: File (new,
-    close, export, publish), Edit (undo, redo, select the parent, and the actions on the selection),
+    close, export), Edit (undo, redo, select the parent, and the actions on the selection),
     View (edit or interact, the stage width, the preview, zoom, the panels), Page, Insert and Help.
     The width and the zoom are also on its right, next to whether the project is saved. The open
     projects are tabs under it. Clicking a blank part of a page selects the page itself (its Main), so
@@ -152,21 +152,10 @@ const apply = `{
     inside a Wrapper) refuses the whole request, with the reason.
   </p>
 
-  <h2>Publish</h2>
-  <p>
-    A project is published as a static site at <code>https://&lt;name&gt;.skryensya.dev/</code>: one page
-    per path, with the kit's stylesheets and enhancers, served by one Cloudflare Worker. Only the
-    machine that holds the publish token can publish. A link that would run code
-    (<code>javascript:</code>, a <code>data:</code> document) keeps the whole site from being published,
-    and every page is served with a policy that runs the kit and no other script. The one-time setup is
-    in <code>apps/sites-worker/README.md</code>.
-  </p>
-
   <h2>Export</h2>
   <p>
-    The open page exports as React, HTML with the stylesheets it needs, or the usage tree; the whole
-    site exports as one component per page, or as a site file, which the Maker opens again as a new
-    project. Every form
+    What the Maker produces is code, never a hosted site. The open page exports as React or as HTML
+    with the stylesheets it needs, and the whole site as one React component per page. Every form
     comes from the same emitter <code>validate_ui</code> uses.
   </p>
 </FoundationPage>

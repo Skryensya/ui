@@ -1,13 +1,14 @@
 import {
   SIDEBAR_WIDTH_PROPERTY,
   sidebarEvents,
+  sidebarTowardWider,
   sidebarWidthPercent,
   sidebarWidthPreference,
   type SidebarCollapsedChangeDetails,
   type SidebarOptions,
   type SidebarResizeChangeDetails,
 } from "@skryensya/core/sidebar";
-import { hasCrossedDragThreshold, resolveSplitterKey, splitterDirectionSign } from "@skryensya/core/splitter";
+import { hasCrossedDragThreshold, resolveSplitterKey } from "@skryensya/core/splitter";
 import { applyAttrs, bindEvents } from "../runtime/apply.js";
 import { createConnectMount } from "../runtime/svelte-hydrate.js";
 import { clearPreference, getPreference, setPreference } from "../storage.js";
@@ -222,9 +223,10 @@ function connectResize(root: HTMLElement, handle: HTMLElement, options: SidebarO
   }
   describe();
 
-  /* The handle sits on the inline END of the panel, so in RTL a drag toward the reader's start is a
-   * drag toward larger x. Read per gesture rather than cached: a document can flip direction. */
-  const towardWider = () => splitterDirectionSign(getComputedStyle(root).direction === "rtl" ? "rtl" : "ltr");
+  /* The handle sits on the edge facing the content: RTL flips it, and so does an end rail. Read per
+   * gesture rather than cached: a document can flip direction. */
+  const towardWider = () =>
+    sidebarTowardWider(getComputedStyle(root).direction === "rtl" ? "rtl" : "ltr", root.dataset.side);
 
   /*
    * ── PRESSED IS NOT DRAGGING ───────────────────────────────────────────────────────────────────

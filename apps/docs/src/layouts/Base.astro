@@ -146,6 +146,7 @@ import { iconMarkup, siteIconSet } from "../icons";
 import { getGlobalNavigation, getNavigation, type NavigationGroup, type NavigationItem, type NavigationSection } from "../lib/navigation";
 import type { DrawerSection } from "../components/DrawerNav.astro";
 import { templateGroups } from "../lib/templates-nav";
+import { catalogView } from "../lib/catalog-view";
 import { palettePresets } from "../lib/palette-presets";
 import { reportIssueUrl } from "../lib/report-issue";
 import {
@@ -300,7 +301,7 @@ const foundationsSection = navigation.find((section) => section.id === "foundati
 
 /*
  * The mobile drawer's full-index nav (DrawerNav.astro): `navigation` for the three documentation
- * sections, plus a synthetic section each for Templates and Presets so they are ORDINARY rows in the
+ * sections, plus a synthetic section each for Catalog, Templates and Presets so they are ORDINARY rows in the
  * one tree, not a rail poured in above it. Matched on the CANONICAL (Spanish) path so `/` vs `/en`
  * and `/templates` vs its localised twin resolve the same in every locale.
  *
@@ -323,7 +324,7 @@ const drawerHome =
   ({ href: href("/"), label: t("nav.home") } satisfies { href: string; label: string });
 
 /** A synthetic drawer section for a dev-only gallery page (Templates / Presets). */
-const gallerySection = (canon: "/templates" | "/presets", groups: readonly NavigationGroup[]): DrawerSection[] => {
+const gallerySection = (canon: "/catalog" | "/templates" | "/presets", groups: readonly NavigationGroup[]): DrawerSection[] => {
   const label = globalLabel(canon);
   if (!label) return [];
   return [
@@ -339,8 +340,20 @@ const gallerySection = (canon: "/templates" | "/presets", groups: readonly Navig
 };
 
 const templatesHref = globalHref("/templates") ?? "/templates";
+const catalogHref = globalHref("/catalog") ?? "/catalog";
 const drawerSections: readonly DrawerSection[] = [
   ...navigation,
+  ...gallerySection(
+    "/catalog",
+    /* The Catalog page's own rail: one group per subject, one jump link per variant. */
+    catalogView(locale).subjects.map((subject) => ({
+      id: `catalog-${subject.id}`,
+      group: subject.title,
+      collapsible: true,
+      defaultOpen: true,
+      items: subject.scales.flatMap((group) => group.variants.map((variant) => ({ href: `${catalogHref}#${variant.id}`, label: variant.title }))),
+    })),
+  ),
   ...gallerySection(
     "/templates",
     /* The same groups the Templates page's own rail draws: open, and opening and closing like Foundations'. */
@@ -813,7 +826,7 @@ const PALETTE_PRESETS = palettePresets(locale);
               {
                 globalNavigation.map((item) => {
                   /* Canonical, so the localised twin of each (`/en/templates`) is caught too. */
-                  const isDevOnly = ["/templates", "/presets"].includes(canonicalPath(item.href));
+                  const isDevOnly = ["/catalog", "/templates", "/presets"].includes(canonicalPath(item.href));
                   const isDev = import.meta.env.DEV;
                   const isDisabled = isDevOnly && !isDev;
 

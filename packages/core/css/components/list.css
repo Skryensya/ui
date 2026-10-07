@@ -77,6 +77,13 @@
     min-inline-size: 0;
   }
 
+  /* A plain row's own content (ListItemPlain) takes the row: an Inline inside can then spread a
+   * checkbox and its tag to the two edges instead of stopping at its own width. */
+  .sk-list__item > :not(.sk-list__leading, .sk-list__content, .sk-list__trailing, .sk-list__action) {
+    flex: 1 1 auto;
+    min-inline-size: 0;
+  }
+
   /* Dividers ride BETWEEN rows: a border on every item after the first, so there is no rule above
    * the first row or below the last. */
   .sk-list__item + .sk-list__item {
@@ -112,8 +119,10 @@
     display: flex;
     flex-direction: column;
     gap: 2px;
-    flex: 1 1 auto;
-    min-inline-size: 0;
+    /* Basis 0: the trailing slot gets its natural width first and the content takes the rest, down to
+     * this floor; only past the floor does a wide trailing slot wrap. */
+    flex: 1 1 0;
+    min-inline-size: min(8rem, 40%);
   }
 
   .sk-list__title {
@@ -122,7 +131,7 @@
     color: var(--sk-list-title-fg);
     font-size: var(--sk-list-title-font-size);
     font-weight: var(--sk-list-title-font-weight);
-    line-height: var(--line-height-heading);
+    line-height: var(--font-line-height-heading);
   }
 
   .sk-list__description {
@@ -131,13 +140,18 @@
     color: var(--sk-list-description-fg);
     font-size: var(--sk-list-description-font-size);
     font-weight: var(--font-weight-body);
-    line-height: var(--line-height-body);
+    line-height: var(--font-line-height-body);
   }
 
+  /* Shrinks and wraps (right-aligned) when it holds more than one thing, so a figure and its badge
+   * stack at the row's end on a narrow card instead of running over the title. */
   .sk-list__trailing {
     display: inline-flex;
-    flex: none;
+    flex: 0 1 auto;
+    flex-wrap: wrap;
+    justify-content: flex-end;
     align-items: center;
+    white-space: nowrap;
     gap: var(--space-inline-sm);
     margin-inline-start: auto;
     color: var(--sk-list-trailing-fg);

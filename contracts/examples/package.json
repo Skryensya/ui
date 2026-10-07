@@ -1,0 +1,16 @@
+{
+  "name": "@skryensya/examples",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "The example library: patterns (layout) and uses (meaning) classified by a two-axis taxonomy, plus fixed trees and whole pages. What the docs Catalog, the MCP and the Maker all read.",
+  "dependencies": {
+    "@skryensya/core": "workspace:*"
+  },
+  "exports": {
+    ".": {
+      "types": "./index.ts",
+      "default": "./index.ts"
+    }
+  }
+}

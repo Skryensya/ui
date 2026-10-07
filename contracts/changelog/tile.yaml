@@ -5,6 +5,16 @@
 # hash.
 surface: "7087b4e1f89e3813"
 entries:
+  - date: 2026-10-06
+    kind: bugfix
+    es:
+      title: "Tile usa los tokens de interlineado reales y parte las palabras sólo si no caben"
+      body: >-
+        El título y la descripción pedían <code>--line-height-heading</code> y <code>--line-height-body</code>, que nada declaraba, y caían al interlineado heredado. Ahora usan <code>--font-line-height-*</code>. Además <code>overflow-wrap</code> pasa de <code>anywhere</code> a <code>break-word</code>: una palabra se parte sólo si no cabe sola en una línea, y el mínimo del tile vuelve a ser su palabra más larga.
+    en:
+      title: "Tile uses the real line-height tokens and breaks a word only when it cannot fit"
+      body: >-
+        Title and description asked for <code>--line-height-heading</code> and <code>--line-height-body</code>, which nothing declared, and fell back to the inherited line height. They now use <code>--font-line-height-*</code>. <code>overflow-wrap</code> also goes from <code>anywhere</code> to <code>break-word</code>: a word breaks only when it cannot fit a line alone, and the tile's minimum width is again its longest word.
   - date: 2026-09-27
     kind: feature
     es:

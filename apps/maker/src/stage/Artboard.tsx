@@ -2,7 +2,7 @@ import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } fr
 import { childrenOf, composePage, entryOf, findChild, findNode, locate, type MakerNode, type MakerPageEntry } from "@skryensya/maker-model";
 import { DRAG_THRESHOLD, type Drag } from "../drag";
 import { openIdsFor, selectParent, stageTree, type Maker, type StageWidth } from "../state";
-import { elementFor, indicatorFor, nodeIdAt, placeAt, type Rect } from "./geometry";
+import { elementFor, hitAt, indicatorFor, nodeIdAt, placeAt, type Rect } from "./geometry";
 import type { CanvasPan } from "./Canvas";
 import { CANVAS_COMMAND, CANVAS_CONTEXT_MENU, canvasKeyCommand } from "../CanvasMenu";
 import { EDIT_TEXT } from "../Inspector";
@@ -240,8 +240,12 @@ export function Artboard({
     let swallowClick = false;
     const offset = () => frameRef.current!.getBoundingClientRect();
 
+    /* The element under the pointer: in edit mode the page takes no pointer events, so it is asked for by position. */
+    const hit = (event: MouseEvent): Element =>
+      (live.current.mode === "edit" ? hitAt(document, event.clientX, event.clientY) : null) ?? (event.target as Element);
+
     const onClick = (event: MouseEvent) => {
-      const target = event.target as Element;
+      const target = hit(event);
       /* Navigation and submission are always blocked: the stage is not a browser tab. In interact
          mode a link to a page of this site opens that page, which is what following it means here. */
       const anchor = target.closest<HTMLAnchorElement>("a[href]");
@@ -277,18 +281,18 @@ export function Artboard({
     const onDoubleClick = (event: MouseEvent) => {
       if (live.current.mode !== "edit") return;
       event.preventDefault();
-      const id = nodeIdAt(event.target as Element);
+      const id = nodeIdAt(hit(event));
       if (!id) return;
       live.current.maker.setView({ page: live.current.pageId, selected: id });
       requestAnimationFrame(() => {
-        if (!startInlineTextEdit(document, live.current.root, id, live.current.maker, event.target as Element)) window.dispatchEvent(new CustomEvent(EDIT_TEXT));
+        if (!startInlineTextEdit(document, live.current.root, id, live.current.maker, hit(event))) window.dispatchEvent(new CustomEvent(EDIT_TEXT));
       });
     };
     let marquee: { x: number; y: number; additive: boolean } | undefined;
     const onPointerDown = (event: PointerEvent) => {
       if (live.current.mode !== "edit" || event.button !== 0 || !live.current.active) return;
-      if ((event.target as Element).closest("[data-maker-editing]")) return;
-      const id = nodeIdAt(event.target as Element);
+      if (hit(event).closest("[data-maker-editing]")) return;
+      const id = nodeIdAt(hit(event));
       if (!id || id === live.current.root.id) {
         marquee = { x: event.clientX, y: event.clientY, additive: event.shiftKey || event.metaKey || event.ctrlKey };
         return;
@@ -324,7 +328,7 @@ export function Artboard({
         setOverlay((current) => ({ ...current, marquee: rect }));
         return;
       }
-      if (live.current.mode === "edit" && live.current.active) setHovered(nodeIdAt(event.target as Element));
+      if (live.current.mode === "edit" && live.current.active) setHovered(nodeIdAt(hit(event)));
     };
     const onPointerUp = (event: PointerEvent) => {
       if (marquee) {
@@ -423,9 +427,9 @@ export function Artboard({
      */
     const onContextMenu = (event: MouseEvent) => {
       if (live.current.mode !== "edit") return;
-      if ((event.target as Element).closest("[data-maker-editing]")) return;
+      if (hit(event).closest("[data-maker-editing]")) return;
       event.preventDefault();
-      const id = nodeIdAt(event.target as Element) ?? entryOf(live.current.maker.site, live.current.pageId)?.root.id;
+      const id = nodeIdAt(hit(event)) ?? entryOf(live.current.maker.site, live.current.pageId)?.root.id;
       live.current.maker.setView({ page: live.current.pageId, selected: id });
       const at = toCanvas(event);
       window.dispatchEvent(new CustomEvent(CANVAS_CONTEXT_MENU, { detail: at }));

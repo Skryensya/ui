@@ -11,7 +11,7 @@ import type { BoxSurface, Space } from "./layout.js";
  * screenshot, a login screen's own welcome) to fit one fixed anatomy, and forcing named slots onto it
  * would mean rejecting valid heroes that don't happen to have all of them. Five real compositions
  * this stays open to, all valid against the SAME contract below, are published as snippets
- * (`contracts/snippets/hero-*.ts`): a left-aligned pitch with two actions, a centered minimal
+ * (`contracts/examples/fixed/hero-*.ts`): a left-aligned pitch with two actions, a centered minimal
  * headline with no actions at all, a small "eyebrow" label above the headline, a split layout with a
  * screenshot beside the text, and a centered pitch backed by a group of avatars and a trust count.
  * "Free" was never "unclear": it means the anatomy varies while the SURFACE, the accessible-name

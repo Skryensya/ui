@@ -1,0 +1,17 @@
+---
+/* DEV-ONLY, like `/debug/*`: `astro build` runs with NODE_ENV=production, so this 404s out of the
+   static build. The header and the drawer already render it as "coming soon" there (Base.astro). */
+if (import.meta.env.PROD) {
+  return new Response(null, { status: 404 });
+}
+
+import Base from "../../layouts/Base.astro";
+import CatalogPage from "../../components/pages/CatalogPage.astro";
+import { getLocale, useTranslations } from "../../i18n";
+
+const t = useTranslations(getLocale(Astro.url));
+---
+
+<Base fullBleed title={t("catalog.title")} description={t("catalog.description")}>
+  <CatalogPage />
+</Base>

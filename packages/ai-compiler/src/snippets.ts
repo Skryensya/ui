@@ -1,4 +1,4 @@
-import { snippets } from "@skryensya/snippets";
+import { snippets } from "@skryensya/examples";
 import { validateUsageTree } from "./validate.js";
 
 /*

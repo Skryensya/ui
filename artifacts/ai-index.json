@@ -481,7 +481,8 @@
           ],
           "parents": [],
           "useWhen": [
-            "a group needs padding, a surface or a border around it"
+            "a group needs padding, a surface or a border around it",
+            "a surfaced group exists on one side of the expanded line only; that is show compact or show expanded"
           ]
         }
       ]
@@ -2227,7 +2228,10 @@
           "parents": [],
           "useWhen": [
             "things go one below another with a steady rhythm",
-            "it is a form's default arrangement"
+            "it is a form's default arrangement",
+            "the bands of a page are spaced apart; that is gap section",
+            "its content should sit in the middle of the height it was given (a sign-in form in the work area) or send its last child to the floor; that is justify center or between",
+            "a group exists only on a phone or only on a wide screen; that is show compact or show expanded"
           ]
         },
         {
@@ -2249,7 +2253,8 @@
           "parents": [],
           "useWhen": [
             "things go side by side: a row of buttons, a label with its value",
-            "a row of actions is the last thing in a card and should sit on the floor when neighbouring cards grow; that is blockStart auto, not a second component called button-wrapper"
+            "a row of actions is the last thing in a card and should sit on the floor when neighbouring cards grow; that is blockStart auto, not a second component called button-wrapper",
+            "the links of a header give way to a menu button on a phone: the links in an Inline with show expanded, the Vaul.Trigger in one with show compact"
           ]
         },
         {
@@ -2258,7 +2263,7 @@
             "LayoutGrid"
           ],
           "avoidWhen": [
-            "the widths differ from each other; that is an Inline",
+            "the widths follow each item's content rather than a proportion; that is an Inline",
             "the page needs named measures (narrow/content/breakout/rail); that is LayoutGrid"
           ],
           "host": "div",
@@ -2271,7 +2276,8 @@
           "parents": [],
           "useWhen": [
             "equal-width columns: a grid of cards",
-            "a responsive grid whose column ceiling is columns, optionally with fill to even out the columns' resting height"
+            "a responsive grid whose column ceiling is columns",
+            "uneven columns in fixed proportions (two thirds and one third, a quarter and the rest): columns 3 or 4 and a child with data-span"
           ]
         },
         {
@@ -2306,9 +2312,8 @@
             "LayoutGrid"
           ],
           "avoidWhen": [
-            "the page is a document, a landing page or an article: a Wrapper column with a Navbar above is the whole layout",
-            "there is no persistent rail or header: a Main inside a Stack is enough",
-            "the region is a card or a panel inside a page; that is Box"
+            "the region is a card or a panel inside a page; that is Box",
+            "it is nested inside another AppShell or a Main: a page has one frame"
           ],
           "host": "div",
           "id": "AppShell",
@@ -2322,8 +2327,11 @@
           "parents": [],
           "useWhen": [
             "the page is an application: a header across the top, a rail (Sidebar) down the side and a work area (Main) filling the rest",
-            "the page needs the rail to reach the bottom and the work area to fill the row, without a hand-written class to make it so",
-            "a dashboard, a mail client, a chat or a settings area: anything with persistent navigation around a changing region"
+            "the page is a whole document or site page: a Navbar, a Main and a Footer that stays on the floor of a short page, with no rail",
+            "a dashboard, a mail client, a chat or a settings area: anything with persistent navigation around a changing region",
+            "the header and the rails should stay put while only the work area scrolls (a mail client, a chat, an editor); that is scroll regions",
+            "a second panel sits on the end edge (an inspector, a detail pane): a Sidebar with side end after the Main",
+            "the rails must still reach a phone: below the expanded line they are not drawn, so a Vaul.drawer child of the AppShell carries the same navigation, opened by a Vaul.Trigger the header shows in an Inline with show compact"
           ]
         },
         {
@@ -2344,7 +2352,8 @@
           ],
           "parents": [],
           "useWhen": [
-            "the region is the page's <main> landmark: the work area of an application or a template"
+            "the region is the page's <main> landmark: the work area of an application or a template",
+            "the work area needs breathing room above and below its content; that is paddingBlock, while the inline gutter stays the Wrapper's"
           ]
         }
       ]
@@ -3146,7 +3155,8 @@
           ],
           "parents": [],
           "useWhen": [
-            "the app needs a top bar with a brand and actions"
+            "the app needs a top bar with a brand and actions",
+            "the site's links do not fit a phone: the NavList in an Inline with show expanded, and a Vaul.Trigger in an Inline with show compact that opens a Vaul.drawer holding the same links"
           ]
         },
         {
@@ -4023,7 +4033,8 @@
           "parents": [],
           "useWhen": [
             "an application's main navigation lives on the side and stays for the whole session",
-            "there are many sections and they should be visible without opening anything"
+            "there are many sections and they should be visible without opening anything",
+            "a panel of details or properties sits beside the work area on the end edge (an inspector); that is a Sidebar with side end, written after the Main in an AppShell"
           ]
         },
         {
@@ -5808,5 +5819,5 @@
     }
   ],
   "schemaVersion": "2.3",
-  "sourceHash": "f1f9bd5dcac71047"
+  "sourceHash": "2eb09b2cb9432ab0"
 }

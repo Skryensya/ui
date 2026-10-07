@@ -23,7 +23,7 @@
     "@skryensya/core": "workspace:*",
     "@skryensya/maker-model": "workspace:*",
     "@skryensya/maker-agent": "workspace:*",
-    "@skryensya/snippets": "workspace:*",
+    "@skryensya/examples": "workspace:*",
     "hono": "^4.12.34",
     "zod": "^4.4.3"
   },

@@ -3,10 +3,6 @@ import { fileURLToPath } from "node:url";
 import type { Plugin, ViteDevServer } from "vite";
 import type * as Api from "@skryensya/maker-server/api";
 import type * as Store from "@skryensya/maker-server/store";
-import type * as Publish from "@skryensya/maker-server/publish";
-
-/** Publishing settings, from `apps/maker/.env.local` (never committed) or the environment. */
-export type PublishSettings = { token?: string; url?: string; domain?: string };
 
 /*
  * THE PROJECTS API INSIDE THE DEV SERVER, so the Maker is still one command. The store is Postgres
@@ -17,7 +13,7 @@ export type PublishSettings = { token?: string; url?: string; domain?: string };
  * The server package is loaded through Vite rather than imported: it reads the Maker's model from
  * TypeScript source, which the config's plain Node loader cannot resolve.
  */
-export function makerApi(settings: PublishSettings = {}): Plugin {
+export function makerApi(): Plugin {
   const index = JSON.parse(readFileSync(new URL("../../../artifacts/ai-index.json", import.meta.url), "utf8")) as { sourceHash: string };
 
   return {
@@ -35,17 +31,7 @@ export function makerApi(settings: PublishSettings = {}): Plugin {
         unavailable = `No database: ${error instanceof Error ? error.message : String(error)}. Start it with \`docker compose -f apps/maker/docker-compose.yml up -d\`.`;
         server.config.logger.warn(`  maker: ${unavailable}`);
       }
-      /* Publishing exists only where the token does: on the one machine that publishes (ADR-0033). */
-      const publishing: Publish.PublishConfig | undefined = settings.token
-        ? {
-            token: settings.token,
-            endpoint: settings.url ?? "https://publish.skryensya.dev",
-            domain: settings.domain ?? "skryensya.dev",
-            kitDir: fileURLToPath(new URL("../../../packages/maker-server/kit-dist", import.meta.url)),
-          }
-        : undefined;
-      server.config.logger.info(`  maker: publishing ${publishing ? `to ${publishing.endpoint}` : "off (no SITES_PUBLISH_TOKEN)"}`);
-      const api = store ? createMakerApi(store, index.sourceHash, publishing) : undefined;
+      const api = store ? createMakerApi(store, index.sourceHash) : undefined;
       /* The AI log (dev only): each line a client posts is appended to a git-ignored file, to be read and scored later. */
       const logDir = fileURLToPath(new URL("../.ai-logs/", import.meta.url));
       server.middlewares.use("/__maker-ai-log", (request, response) => {

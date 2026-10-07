@@ -1,6 +1,6 @@
 import { fileURLToPath } from "node:url";
 import react from "@vitejs/plugin-react";
-import { defineConfig, loadEnv } from "vite";
+import { defineConfig } from "vite";
 import { makerApi } from "./server/plugin";
 
 /*
@@ -19,12 +19,9 @@ import { makerApi } from "./server/plugin";
 const workspaceRoot = fileURLToPath(new URL("../..", import.meta.url));
 
 
-export default defineConfig(({ mode }) => {
-  /* SITES_* from `.env.local` (git-ignored) or the environment: the publish token never reaches the
-     browser, since nothing here is prefixed VITE_. */
-  const env = { ...loadEnv(mode, fileURLToPath(new URL(".", import.meta.url)), "SITES_"), ...process.env };
+export default defineConfig(() => {
   return {
-  plugins: [react(), makerApi({ token: env.SITES_PUBLISH_TOKEN, url: env.SITES_PUBLISH_URL, domain: env.SITES_DOMAIN })],
+  plugins: [react(), makerApi()],
   build: {
     rollupOptions: {
       input: {

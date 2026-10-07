@@ -23,8 +23,7 @@ const detail = (term: string, value: string): UsageTree => ({
 
 export const bookingTree = (t: Translate, locale: "es" | "en"): UsageTree => ({
   contract: "layout",
-  signature: "Stack",
-  options: { gap: "none" },
+  signature: "AppShell",
   children: [
     {
       contract: "navbar",
@@ -45,152 +44,144 @@ export const bookingTree = (t: Translate, locale: "es" | "en"): UsageTree => ({
     },
     {
       contract: "layout",
-      signature: "Stack",
-      options: { gap: "none" },
-      attrs: { class: "page-shell" },
-      children: [
-        {
+      signature: "Main",
+      options: { paddingBlock: "lg", paddingBlockExpanded: "xl" },
+      children: {
+        contract: "wrapper",
+        signature: "Wrapper",
+        options: { wrapperSize: "lg", gutter: "md", gutterExpanded: "lg" },
+        children: {
           contract: "layout",
-          signature: "Main",
-          attrs: { class: "page-shell__main" },
-          children: {
-            contract: "wrapper",
-            signature: "Wrapper",
-            options: { wrapperSize: "lg", gutter: "md", gutterExpanded: "lg" },
-            children: {
+          signature: "Stack",
+          options: { gap: "md", gapExpanded: "lg" },
+          children: [
+            {
               contract: "layout",
               signature: "Stack",
-              options: { gap: "md", gapExpanded: "lg" },
+              options: { gap: "xs" },
+              children: [
+                {
+                  contract: "typography",
+                  signature: "Heading",
+                  options: { headingSize: "h2", flush: true },
+                  children: t("demo.booking.title"),
+                },
+                {
+                  contract: "typography",
+                  signature: "Text",
+                  options: { tone: "secondary" },
+                  children: t("demo.booking.lede"),
+                },
+              ],
+            },
+            {
+              contract: "layout",
+              signature: "Grid",
+              options: { columns: "2", gap: "md", gapExpanded: "lg", responsive: true },
               children: [
                 {
                   contract: "layout",
                   signature: "Stack",
-                  options: { gap: "xs" },
+                  options: { gap: "md", gapExpanded: "lg" },
                   children: [
                     {
-                      contract: "typography",
-                      signature: "Heading",
-                      options: { headingSize: "h2", flush: true },
-                      children: t("demo.booking.title"),
+                      contract: "calendar",
+                      signature: "Calendar",
+                      options: {
+                        value: "2026-10-14",
+                        min: "2026-10-01",
+                        max: "2026-10-31",
+                        locale,
+                      },
+                      slots: { label: t("demo.booking.dateLabel") },
                     },
                     {
-                      contract: "typography",
-                      signature: "Text",
-                      options: { tone: "secondary" },
-                      children: t("demo.booking.lede"),
-                    },
-                  ],
-                },
-                {
-                  contract: "layout",
-                  signature: "Grid",
-                  options: { columns: "2", gap: "md", gapExpanded: "lg", responsive: true },
-                  children: [
-                    {
-                      contract: "layout",
-                      signature: "Stack",
-                      options: { gap: "md", gapExpanded: "lg" },
-                      children: [
-                        {
-                          contract: "calendar",
-                          signature: "Calendar",
-                          options: {
-                            value: "2026-10-14",
-                            min: "2026-10-01",
-                            max: "2026-10-31",
-                            locale,
-                          },
-                          slots: { label: t("demo.booking.dateLabel") },
-                        },
-                        {
-                          contract: "tile",
-                          signature: "TileRadioGroup",
-                          options: { name: "slot", defaultValue: "1030", padding: "sm" },
-                          attrs: { "aria-label": t("demo.booking.slotLabel") },
-                          slots: {
-                            items: [
-                              { options: { value: "0900" }, slots: { label: "09:00" } },
-                              { options: { value: "1030" }, slots: { label: "10:30" } },
-                              { options: { value: "1200" }, slots: { label: "12:00" } },
-                              { options: { value: "1630" }, slots: { label: "16:30" } },
-                            ],
-                          },
-                        },
-                      ],
-                    },
-                    {
-                      contract: "box",
-                      signature: "Box",
-                      options: { surface: "sunken", border: "subtle", padding: "md", paddingExpanded: "lg" },
-                      children: {
-                        contract: "layout",
-                        signature: "Stack",
-                        options: { gap: "md" },
-                        children: [
-                          {
-                            contract: "typography",
-                            signature: "Heading",
-                            options: { headingSize: "h4", flush: true },
-                            children: t("demo.booking.summaryTitle"),
-                          },
-                          {
-                            contract: "description-list",
-                            signature: "DescriptionList",
-                            options: { dividers: true },
-                            children: [
-                              detail(t("demo.booking.service"), t("demo.booking.serviceValue")),
-                              detail(t("demo.booking.date"), t("demo.booking.dateValue")),
-                              detail(t("demo.booking.time"), "10:30"),
-                              detail(t("demo.booking.with"), "Ana Morales"),
-                            ],
-                          },
-                          {
-                            contract: "form-field",
-                            signature: "FormField",
-                            options: { required: true },
-                            slots: {
-                              label: t("demo.booking.email"),
-                              children: {
-                                contract: "input",
-                                signature: "Input",
-                                options: {
-                                  type: "email",
-                                  name: "email",
-                                  placeholder: t("demo.booking.emailPlaceholder"),
-                                },
-                              },
-                            },
-                          },
-                          {
-                            contract: "layout",
-                            signature: "Inline",
-                            options: { justify: "between", inlineAlign: "center", wrap: true },
-                            children: [
-                              {
-                                contract: "button",
-                                signature: "Button.action",
-                                options: { variant: "ghost" },
-                                children: t("demo.booking.back"),
-                              },
-                              {
-                                contract: "button",
-                                signature: "Button.action",
-                                options: { appearance: "tactile", tone: "accent", type: "submit" },
-                                children: t("demo.booking.confirm"),
-                              },
-                            ],
-                          },
+                      contract: "tile",
+                      signature: "TileRadioGroup",
+                      options: { name: "slot", defaultValue: "1030", padding: "sm" },
+                      attrs: { "aria-label": t("demo.booking.slotLabel") },
+                      slots: {
+                        items: [
+                          { options: { value: "0900" }, slots: { label: "09:00" } },
+                          { options: { value: "1030" }, slots: { label: "10:30" } },
+                          { options: { value: "1200" }, slots: { label: "12:00" } },
+                          { options: { value: "1630" }, slots: { label: "16:30" } },
                         ],
                       },
                     },
                   ],
                 },
+                {
+                  contract: "box",
+                  signature: "Box",
+                  options: { surface: "sunken", border: "subtle", padding: "md", paddingExpanded: "lg" },
+                  children: {
+                    contract: "layout",
+                    signature: "Stack",
+                    options: { gap: "md" },
+                    children: [
+                      {
+                        contract: "typography",
+                        signature: "Heading",
+                        options: { headingSize: "h4", flush: true },
+                        children: t("demo.booking.summaryTitle"),
+                      },
+                      {
+                        contract: "description-list",
+                        signature: "DescriptionList",
+                        options: { dividers: true },
+                        children: [
+                          detail(t("demo.booking.service"), t("demo.booking.serviceValue")),
+                          detail(t("demo.booking.date"), t("demo.booking.dateValue")),
+                          detail(t("demo.booking.time"), "10:30"),
+                          detail(t("demo.booking.with"), "Ana Morales"),
+                        ],
+                      },
+                      {
+                        contract: "form-field",
+                        signature: "FormField",
+                        options: { required: true },
+                        slots: {
+                          label: t("demo.booking.email"),
+                          children: {
+                            contract: "input",
+                            signature: "Input",
+                            options: {
+                              type: "email",
+                              name: "email",
+                              placeholder: t("demo.booking.emailPlaceholder"),
+                            },
+                          },
+                        },
+                      },
+                      {
+                        contract: "layout",
+                        signature: "Inline",
+                        options: { justify: "between", inlineAlign: "center", wrap: true },
+                        children: [
+                          {
+                            contract: "button",
+                            signature: "Button.action",
+                            options: { variant: "ghost" },
+                            children: t("demo.booking.back"),
+                          },
+                          {
+                            contract: "button",
+                            signature: "Button.action",
+                            options: { appearance: "tactile", tone: "accent", type: "submit" },
+                            children: t("demo.booking.confirm"),
+                          },
+                        ],
+                      },
+                    ],
+                  },
+                },
               ],
             },
-          },
+          ],
         },
-        siteFooter(t),
-      ],
+      },
     },
+    siteFooter(t),
   ],
 });

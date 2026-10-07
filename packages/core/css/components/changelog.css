@@ -389,10 +389,18 @@
     display: flex;
     flex-wrap: wrap;
     align-items: baseline;
+    /* The air between the entry's own lines: the badge row, the headline and the prose. Set by `gap`. */
+    row-gap: var(--sk-changelog-entry-row-gap, var(--space-stack-xs));
     font-size: var(--font-size-body-sm);
     line-height: var(--font-line-height-body);
     min-inline-size: 0;
   }
+
+  .sk-changelog__entry[data-gap="none"] { --sk-changelog-entry-row-gap: 0; }
+  .sk-changelog__entry[data-gap="xs"] { --sk-changelog-entry-row-gap: var(--space-stack-xs); }
+  .sk-changelog__entry[data-gap="sm"] { --sk-changelog-entry-row-gap: var(--space-stack-sm); }
+  .sk-changelog__entry[data-gap="md"] { --sk-changelog-entry-row-gap: var(--space-stack-md); }
+  .sk-changelog__entry[data-gap="lg"] { --sk-changelog-entry-row-gap: var(--space-stack-lg); }
 
   /*
    * THE BADGE IS BADGE'S, entirely: fill, border, radius and caption type all come from `sk-badge`,
@@ -419,9 +427,8 @@
     /* `max-` rather than `inline-size` so a narrow column still wins: a ceiling on the measure, not
        a claim about how much room the component needs. Same on the body below. */
     max-inline-size: var(--sk-changelog-measure);
-    /* The air under the badge row. Small: these two lines are one thought, and the gap between
+    /* The air under the badge row is the entry's row gap (`gap`): these lines are one thought, and the gap between
        CHANGES is what has to be bigger than the gap inside one. */
-    margin-block-start: var(--space-stack-xs);
     color: var(--sk-changelog-title-fg);
     font-weight: var(--font-weight-emphasis);
     text-wrap: pretty;

@@ -24,6 +24,13 @@ export const stackMessages = {
 
     "stackPage.contract2": "Es CSS: no necesita JavaScript. El elemento lo eliges tú (<code>as</code> en React).",
 
+    "stackPage.contract3": "<code>justify</code> no tiene valor por defecto: sin declararlo, el Stack mide lo que mide su contenido y nunca reclama altura.",
+    "stackPage.prop.justify.title": "Justify: la altura que le dan",
+    "stackPage.prop.justify.body": "Con <code>justify</code>, el Stack toma la altura de su padre y reparte lo que sobra. El padre tiene que tener altura: un Main, una tarjeta estirada por su fila.",
+    "stackPage.prop.justify.start": "El contenido arriba y el aire abajo.",
+    "stackPage.prop.justify.center": "En el medio: un formulario de entrada en el área de trabajo.",
+    "stackPage.prop.justify.end": "El contenido abajo y el aire arriba.",
+    "stackPage.prop.justify.between": "El primero arriba y el último al fondo: las acciones al pie de una tarjeta.",
     "stackPage.contract1": "<code>gap</code> acepta <code>none</code>, <code>xs</code>, <code>sm</code>, <code>md</code>, <code>lg</code> o <code>xl</code>; por defecto, <code>md</code>.",
 
     "stackPage.cardBody": "Tres hijos con el mismo espacio entre ellos.",
@@ -71,6 +78,13 @@ export const stackMessages = {
 
     "stackPage.contract2": "It is CSS: it needs no JavaScript. You choose the element (<code>as</code> in React).",
 
+    "stackPage.contract3": "<code>justify</code> has no default: left out, the Stack is as tall as its content and never claims height.",
+    "stackPage.prop.justify.title": "Justify: the height it is given",
+    "stackPage.prop.justify.body": "With <code>justify</code>, the Stack takes its parent's height and spends what is left. The parent needs a height: a Main, a card stretched by its row.",
+    "stackPage.prop.justify.start": "The content on top and the air below.",
+    "stackPage.prop.justify.center": "In the middle: a sign-in form in the work area.",
+    "stackPage.prop.justify.end": "The content at the bottom and the air above.",
+    "stackPage.prop.justify.between": "The first on top and the last on the floor: the actions at the foot of a card.",
     "stackPage.contract1": "<code>gap</code> takes <code>none</code>, <code>xs</code>, <code>sm</code>, <code>md</code>, <code>lg</code> or <code>xl</code>; by default, <code>md</code>.",
 
     "stackPage.cardBody": "Three children with the same space between them.",

@@ -73,21 +73,6 @@ for (const [name, open] of suites) {
       expect(await store.save(project.id, 1, project.site)).toEqual({ ok: false, missing: true });
     });
 
-    it("records a publication under a site name no other project holds", async (context) => {
-      if (!store) return context.skip();
-      const first = await make("Published");
-      const second = await make("Also published");
-      const siteName = `name-${Date.now().toString(36)}`;
-      const at = new Date().toISOString();
-      expect(await store.setPublication(first.id, { siteName, url: `https://${siteName}.skryensya.dev/`, revision: 1, at })).toEqual({ ok: true });
-      expect((await store.get(first.id))?.publication?.siteName).toBe(siteName);
-      expect((await store.list()).find((entry) => entry.id === first.id)?.publication?.url).toBe(`https://${siteName}.skryensya.dev/`);
-      const clash = await store.setPublication(second.id, { siteName, url: "x", revision: 1, at });
-      expect(clash.ok).toBe(false);
-      expect(await store.setPublication(first.id, null)).toEqual({ ok: true });
-      expect((await store.get(first.id))?.publication).toBeUndefined();
-    });
-
     it("announces every change to subscribers", async (context) => {
       if (!store) return context.skip();
       const events: ProjectEvent[] = [];

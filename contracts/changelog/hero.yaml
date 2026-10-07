@@ -5,6 +5,16 @@
 # hash.
 surface: "4cf2621e93bc51a4"
 entries:
+  - date: 2026-10-06
+    kind: bugfix
+    es:
+      title: "Hero aplica su superficie y su padding por defecto sin atributos"
+      body: >-
+        Las reglas de <code>surface="surface"</code> y <code>padding="xl"</code> sólo valían si el atributo estaba escrito. Ahora también valen cuando falta, que es lo que emite el compilador con los defaults omitidos.
+    en:
+      title: "Hero applies its default surface and padding without attributes"
+      body: >-
+        The <code>surface="surface"</code> and <code>padding="xl"</code> rules only held when the attribute was written. They now also hold when it is absent, which is what the compiler emits with defaults left out.
   - date: 2026-09-27
     kind: feature
     target: paddingExpanded

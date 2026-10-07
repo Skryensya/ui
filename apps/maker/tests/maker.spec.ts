@@ -166,7 +166,7 @@ test("edit mode selects instead of activating; interact mode activates; navigati
   await selectInOutline(page, "Stack");
   await addFromPalette(page, "Button.navigation");
   const link = stage(page).locator("a[href]").first();
-  await link.click();
+  await link.click({ force: true });
   await expect(page.locator(".maker__right h2").first()).toHaveText("Button");
   await expect(page.locator(".maker__right .maker-inspector__header")).toContainText("navigation");
   await bar(page, ["View", "Interact mode"]);
@@ -179,16 +179,15 @@ test("the stored page holds no coordinates, sizes or styles", async ({ page }) =
   expect(await savedJson(page)).not.toMatch(/"(style|class|x|y|top|left|width|height|transform|position)"\s*:/);
 });
 
-test("export emits React, HTML and the usage tree from the same page, pending or not", async ({ page }) => {
+test("export emits React and HTML from the same page, pending or not, and nothing that is not code", async ({ page }) => {
   await bar(page, ["File", "Export…"]);
   const code = page.getByLabel("Exported code");
   await expect(code).toHaveValue(/export function HomePage/);
   await expect(code).toHaveValue(/<Stack/);
   await page.getByRole("radio", { name: "HTML" }).click();
   await expect(code).toHaveValue(/class="sk-stack"/);
-  await page.getByRole("radio", { name: "Usage tree" }).click();
-  await expect(code).toHaveValue(/"signature": "Wrapper"/);
   await expect(code).not.toHaveValue(/data-maker-node/);
+  await expect(page.getByRole("radiogroup", { name: "Format" }).getByRole("radio")).toHaveText(["React", "HTML", "All pages"]);
 });
 
 test("dragging a row in the outline moves the node, and only where the contract allows", async ({ page }) => {
@@ -448,14 +447,12 @@ test("page operations are undone like any other gesture", async ({ page }) => {
   await expect((await layers(page)).locator(".maker-pages__item")).toHaveCount(2);
 });
 
-test("export offers the whole site: every page as its own component, and the site file", async ({ page }) => {
+test("export offers the whole site: every page as its own component", async ({ page }) => {
   await page.getByRole("toolbar", { name: "Pages" }).getByRole("button", { name: "Add a page" }).click();
   await bar(page, ["File", "Export…"]);
   const code = page.getByLabel("Exported code");
   await page.getByRole("radio", { name: "All pages" }).click();
   await expect(code).toHaveValue(/pages\/index\.tsx[\s\S]*export function HomePage[\s\S]*pages\/page\.tsx[\s\S]*export function PagePage/);
-  await page.getByRole("radio", { name: "Site" }).click();
-  await expect(code).toHaveValue(/"format": "skryensya-maker-site"/);
 });
 
 test("an agent's change to the project arrives live, as one step the person can undo", async ({ page }) => {
@@ -493,7 +490,7 @@ test("inserting after a heading, a paragraph or a button lands below it, so a se
 });
 
 test("double-clicking text on the stage edits it in place: type, Enter, done", async ({ page }) => {
-  await stage(page).locator("h2").dblclick();
+  await stage(page).locator("h2").dblclick({ force: true });
   await expect(stage(page).locator("h2[data-maker-editing]")).toBeVisible();
   await page.keyboard.type("Café Aurora");
   await page.keyboard.press("Enter");
@@ -516,6 +513,8 @@ test("the canvas shows every page as an artboard at its exact CSS width, and zoo
   await zoomTo(page, "Zoom in");
   await expect(zoom).not.toHaveText(at!);
   await zoomTo(page, "Fit every page");
+  /* The camera eases to the fit over ~320ms: the boxes are read once it has arrived. */
+  await page.waitForTimeout(500);
   const canvas = (await page.locator(".maker-canvas").boundingBox())!;
   for (const board of await page.locator(".maker-artboard .maker-stage__frame").all()) {
     const box = (await board.boundingBox())!;

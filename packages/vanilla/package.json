@@ -85,6 +85,10 @@
       "types": "./src/components/back-to-top.ts",
       "default": "./src/components/back-to-top.ts"
     },
+    "./expressive-avatar": {
+      "types": "./src/components/expressive-avatar.ts",
+      "default": "./src/components/expressive-avatar.ts"
+    },
     "./button": {
       "types": "./src/components/button.ts",
       "default": "./src/components/button.ts"

@@ -1,0 +1,72 @@
+---
+/* Every sheet the examples paint from: the frames copy this page's sheets, and a shell's regions are other
+   contracts (Navbar, Sidebar, the drawer, the footer band). */
+import "@skryensya/core/patterns/layout.css";
+import "@skryensya/core/patterns/footer.css";
+import "@skryensya/core/patterns/nav-list.css";
+import "@skryensya/core/patterns/vaul.css";
+import "@skryensya/core/components/navbar.css";
+import "@skryensya/core/components/sidebar.css";
+import "@skryensya/core/components/button.css";
+import ComponentPageShell from "./ComponentPageShell.astro";
+import CodeBlock from "../CodeBlock.astro";
+import UsagePreview from "../UsagePreview.astro";
+import WhenToUse from "../WhenToUse.astro";
+import A11yNotes from "../A11yNotes.astro";
+import { appShellApplicationTree, appShellDocumentTree } from "../../demos/app-shell-page";
+import { getLocale, tList, useTranslations } from "../../i18n";
+
+/*
+ * AppShell and Main share a page: Main is the shell's work area, and documenting it apart would split one
+ * decision (where the content goes, and how much air it gets) across two pages. Every example renders in
+ * its own frame, because a shell owns a whole document (one main landmark) and answers to the frame's
+ * width (decision 35): the phone example is the same tree as the application one, at a phone's width.
+ */
+const t = useTranslations(getLocale(Astro.url));
+const install = `pnpm add @skryensya/core @skryensya/react`;
+/* A frame sizes itself to its content, so a shell that is "a screen tall" would measure itself in a loop.
+   The shell's own published hook gives it a screen instead, as a host page would by being the window. */
+const screenTall = `.sk-app-shell { --sk-app-shell-block-size: 26rem; }`;
+---
+
+<ComponentPageShell
+  title="AppShell"
+  description={t("appShellPage.description")}
+  contractId="layout"
+  tests={[
+    {
+      file: "packages/react/src/components/layout.test.tsx",
+      tests: [
+        { name: "writes AppShell's scroll and sticky header, and nothing for the defaults", description: t("appShellPage.test1") },
+        { name: "renders Main with its part and the block inset it declares", description: t("appShellPage.test2") },
+      ],
+    },
+  ]}
+>
+  <Fragment slot="usage">
+    <p class="lede" set:html={t("appShellPage.lede")} />
+
+    <h3>{t("component.examplesTitle")}</h3>
+    <UsagePreview tree={appShellDocumentTree(t)} title={t("appShellPage.documentTitle")} description={t("appShellPage.documentBody")} flush isolate stageMinBlockSize="22rem" />
+    <UsagePreview tree={appShellApplicationTree(t)} title={t("appShellPage.applicationTitle")} description={t("appShellPage.applicationBody")} flush screen="xl" css={screenTall} />
+    <UsagePreview tree={appShellApplicationTree(t)} title={t("appShellPage.phoneTitle")} description={t("appShellPage.phoneBody")} flush screen="mobile" css={screenTall} />
+
+    <h3>{t("component.contractNotesTitle")}</h3>
+    <ul>
+      {tList(t, "appShellPage.contract").map((item) => <li set:html={item} />)}
+    </ul>
+    <p set:html={t("component.reactNote")} />
+  </Fragment>
+
+  <Fragment slot="guidelines">
+    <p class="lede" set:html={t("appShellPage.guidelinesLede")} />
+    <WhenToUse use={tList(t, "appShellPage.when")} avoid={tList(t, "appShellPage.whenNot")} />
+  </Fragment>
+
+  <Fragment slot="install">
+    <CodeBlock code={install} label="terminal" />
+  </Fragment>
+  <Fragment slot="a11y">
+    <A11yNotes intro={t("appShellPage.a11yIntro")} does={tList(t, "appShellPage.a11yDoes")} yours={tList(t, "appShellPage.a11yYours")} />
+  </Fragment>
+</ComponentPageShell>

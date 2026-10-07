@@ -4,7 +4,7 @@ import type { UsageTree } from "@skryensya/core/usage-tree";
  * AN EVAL CASE: one product intent, in both languages the catalogue is written for, paired with a
  * tree an agent given only that intent and the MCP tools would be expected to arrive at.
  *
- * This is not a Snippet (contracts/snippets/snippet.ts). A snippet is published for an agent to
+ * This is not a Snippet (contracts/examples/fixed/snippet.ts). A snippet is published for an agent to
  * copy. A case points the other way: it exists to be RE-VALIDATED, not copied, so `run.ts` can catch
  * a contract change that quietly breaks a composition this corpus already proved correct once.
  */

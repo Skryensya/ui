@@ -129,12 +129,11 @@ report. The command above serves the same site locally.
 
 | Package | What it is |
 |---|---|
-| [`@skryensya/snippets`](contracts/snippets) | Established compositions below screen scale: one component well composed, or a small molecule. |
+| [`@skryensya/examples`](contracts/examples) | Established compositions below screen scale: one component well composed, or a small molecule. |
 | [`@skryensya/docs`](apps/docs) | The documentation site at [ui.skryensya.dev](https://ui.skryensya.dev) (Astro), and the system's own biggest consumer. |
 | [`@skryensya/eval-viewer`](apps/eval-viewer) | Local-only viewer for agent eval runs. |
 | [`@skryensya/storybook-react`](apps/storybook-react) · [`-vanilla`](apps/storybook-vanilla) | The React and Vanilla Storybooks: every docs demo tree drawn in each binding. `pnpm storybook:react`, `pnpm storybook:vanilla`. |
-| [`@skryensya/sites-worker`](apps/sites-worker) | The Cloudflare Worker that serves every site the Maker publishes ([ADR-0033](docs/decisions/0033-published-sites-are-served-by-one-worker-from-r2.md)). |
-| [`@skryensya/maker`](apps/maker) | Local-only visual page builder. The browser does the layout: pages compose Stack, Inline, Grid, Box and Wrapper, and export as React, HTML or a usage tree. `pnpm --filter @skryensya/maker dev`. |
+| [`@skryensya/maker`](apps/maker) | Local-only visual page builder. The browser does the layout: pages compose Stack, Inline, Grid, Box and Wrapper, and export as React or HTML. `pnpm --filter @skryensya/maker dev`. |
 
 ## Repository layout
 

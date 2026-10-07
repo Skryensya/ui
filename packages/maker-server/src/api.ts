@@ -1,9 +1,6 @@
 import type { IncomingMessage, ServerResponse } from "node:http";
 import { createSite, parseSite, randomId, type MakerSite } from "@skryensya/maker-model";
 import { isProjectId, type ProjectStore } from "./store.js";
-import { publishSite, unpublishSite, type PublishConfig } from "./publish/client.js";
-import { snapshotSite, SnapshotError } from "./snapshot.js";
-import { siteNameProblem, suggestSiteName } from "./publish/names.js";
 
 /*
  * THE MAKER'S PROJECTS OVER HTTP, one handler both the Vite dev server and a standalone server
@@ -18,11 +15,7 @@ import { siteNameProblem, suggestSiteName } from "./publish/names.js";
  *   PATCH  /api/projects/:id              { name }
  *   DELETE /api/projects/:id
  *   GET    /api/projects/:id/events       server-sent events: { revision } on every change
- *   GET    /api/snapshot?url=…            a public web page read for cloning: its sections, words, links and images (never the markup)
  *   GET    /api/health                    { store: "postgres" | "memory" }
- *   GET    /api/publishing                { configured, domain }
- *   POST   /api/projects/:id/publish      { name? }: the project's site at https://<name>.<domain>/
- *   DELETE /api/projects/:id/publish      taken down; the name stays the project's
  *
  * A site is stored only if it reads as a Maker site (`parseSite`): what the database holds is always
  * something the Maker can open.
@@ -59,7 +52,7 @@ function siteOf(value: unknown, sourceHash: string): { ok: true; site: MakerSite
   return opened.ok ? { ok: true, site: opened.site } : { ok: false, reason: opened.reason };
 }
 
-export function createMakerApi(store: ProjectStore, sourceHash: string, publishing?: PublishConfig): Handler {
+export function createMakerApi(store: ProjectStore, sourceHash: string): Handler {
   return (request, response, next) => {
     const url = new URL(request.url ?? "/", "http://maker");
     const parts = url.pathname.split("/").filter(Boolean);
@@ -73,56 +66,11 @@ export function createMakerApi(store: ProjectStore, sourceHash: string, publishi
     });
   };
 
-  /*
-   * Publishing, only when this server was given the publish token: whoever runs the Maker with it
-   * is the one person who publishes (ADR-0033).
-   */
-  async function publishRoute(request: IncomingMessage, response: ServerResponse, id: string, method: string): Promise<void> {
-    if (!publishing) return send(response, 503, { error: "Publishing is not configured: set SITES_PUBLISH_TOKEN (and SITES_PUBLISH_URL) for the Maker's server." });
-    const project = await store.get(id);
-    if (!project) return send(response, 404, { error: `No project "${id}".` });
-    if (method === "DELETE") {
-      const name = project.publication?.siteName;
-      if (!name) return send(response, 200, { unpublished: null });
-      const done = await unpublishSite(publishing, name);
-      if (!done.ok) return send(response, 502, { error: done.reason });
-      await store.setPublication(id, null);
-      return send(response, 200, { unpublished: name });
-    }
-    if (method !== "POST") return send(response, 405);
-    const body = (await readJson(request)) as { name?: unknown };
-    const name = typeof body.name === "string" && body.name.trim() ? body.name.trim().toLowerCase() : (project.publication?.siteName ?? suggestSiteName(project.name));
-    const problem = siteNameProblem(name);
-    if (problem) return send(response, 400, { error: problem });
-    const taken = (await store.list()).find((other) => other.id !== id && other.publication?.siteName === name);
-    if (taken) return send(response, 409, { error: `"${name}" is already the site name of "${taken.name}".` });
-
-    const result = await publishSite(publishing, { name, site: project.site, siteTitle: project.name, revision: project.revision });
-    if (!result.ok) return send(response, 502, { error: result.reason });
-    const recorded = await store.setPublication(id, { siteName: name, url: result.url, revision: project.revision, at: new Date().toISOString() });
-    if (!recorded.ok) return send(response, 409, { error: recorded.reason });
-    /* A name this project gave up by moving to a new one is taken down, so it does not linger. */
-    const previous = project.publication?.siteName;
-    if (previous && previous !== name) await unpublishSite(publishing, previous);
-    return send(response, 200, { name, url: result.url, revision: project.revision, pending: result.pending });
-  }
-
   async function route(request: IncomingMessage, response: ServerResponse, parts: string[]): Promise<void> {
     const method = request.method ?? "GET";
     const [resource, id, sub] = parts;
 
     if (resource === "health" && parts.length === 1) return send(response, 200, { store: store.kind });
-    if (resource === "publishing" && parts.length === 1) return send(response, 200, { configured: publishing !== undefined, domain: publishing?.domain ?? null });
-    if (resource === "snapshot" && parts.length === 1) {
-      if (method !== "GET") return send(response, 405);
-      const address = new URL(request.url ?? "/", "http://maker").searchParams.get("url") ?? "";
-      try {
-        return send(response, 200, await snapshotSite(address));
-      } catch (error) {
-        if (error instanceof SnapshotError) return send(response, 422, { error: error.message });
-        return send(response, 502, { error: "The site could not be read." });
-      }
-    }
     if (resource !== "projects") return send(response, 404);
 
     if (!id) {
@@ -159,7 +107,6 @@ export function createMakerApi(store: ProjectStore, sourceHash: string, publishi
       });
       return;
     }
-    if (sub === "publish") return publishRoute(request, response, id, method);
     if (sub) return send(response, 404);
 
     if (method === "GET") {

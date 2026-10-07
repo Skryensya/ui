@@ -11,6 +11,7 @@ import WhenToUse from "../WhenToUse.astro";
 import A11yNotes from "../A11yNotes.astro";
 import { inlineButtonsTree, stackDontButtonsTree } from "../../demos/layout-guide";
 import { stackTree, stackScaleSpecimenTree } from "../../demos/layout";
+import { stackJustifyTree } from "../../demos/layout-container";
 import { getLocale, tList, useTranslations } from "../../i18n";
 import { variantsTree } from "../../demos/variants";
 
@@ -46,6 +47,15 @@ const explain = (option: string, values: readonly string[]) =>
       description={t("stackPage.prop.align.body")}
       explain={explain("align", ["start", "center", "end", "stretch"])}
       stageMinBlockSize="16rem"
+    />
+
+    <UsagePreview
+      tree={stackJustifyTree(t)}
+      optionName="stackJustify"
+      target={["children"]}
+      title={t("stackPage.prop.justify.title")}
+      description={t("stackPage.prop.justify.body")}
+      explain={explain("justify", ["start", "center", "end", "between"])}
     />
 
     <h3>{t("component.examplesTitle")}</h3>

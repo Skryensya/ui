@@ -56,8 +56,7 @@ const topicGrid = (children: UsageTree[]): UsageTree => ({
 
 export const helpCenterTree = (t: Translate): UsageTree => ({
   contract: "layout",
-  signature: "Stack",
-  options: { gap: "none" },
+  signature: "AppShell",
   children: [
     {
       contract: "navbar",
@@ -78,189 +77,181 @@ export const helpCenterTree = (t: Translate): UsageTree => ({
     },
     {
       contract: "layout",
-      signature: "Stack",
-      options: { gap: "none" },
-      attrs: { class: "page-shell" },
-      children: [
-        {
-          contract: "layout",
-          signature: "Main",
-          attrs: { class: "page-shell__main" },
-          children: {
-            contract: "layout",
-            signature: "Stack",
-            options: { gap: "lg", gapExpanded: "xl" },
-            children: [
-              {
-                contract: "hero",
-                signature: "Hero",
-                options: { surface: "raised", align: "center", padding: "lg", paddingExpanded: "xl" },
-                children: {
-                  contract: "wrapper",
-                  signature: "Wrapper",
-                  options: { wrapperSize: "sm", gutter: "md", gutterExpanded: "lg" },
-                  children: {
-                    contract: "layout",
-                    signature: "Stack",
-                    /*
-                     * No `align: "center"` here, unlike the other centred heroes: a centred Stack
-                     * shrinks each child to its content, and the search box would collapse to the
-                     * width of its placeholder. The Hero's own `align` already centres the text.
-                     */
-                    options: { gap: "md" },
-                    children: [
-                      {
-                        contract: "typography",
-                        signature: "Heading",
-                        options: { headingSize: "display-sm", headingElement: "h1", flush: true },
-                        children: t("demo.help.title"),
+      signature: "Main",
+      options: { paddingBlock: "lg", paddingBlockExpanded: "xl" },
+      children: {
+        contract: "layout",
+        signature: "Stack",
+        options: { gap: "lg", gapExpanded: "xl" },
+        children: [
+          {
+            contract: "hero",
+            signature: "Hero",
+            options: { surface: "raised", align: "center", padding: "lg", paddingExpanded: "xl" },
+            children: {
+              contract: "wrapper",
+              signature: "Wrapper",
+              options: { wrapperSize: "sm", gutter: "md", gutterExpanded: "lg" },
+              children: {
+                contract: "layout",
+                signature: "Stack",
+                /*
+                 * No `align: "center"` here, unlike the other centred heroes: a centred Stack
+                 * shrinks each child to its content, and the search box would collapse to the
+                 * width of its placeholder. The Hero's own `align` already centres the text.
+                 */
+                options: { gap: "md" },
+                children: [
+                  {
+                    contract: "typography",
+                    signature: "Heading",
+                    options: { headingSize: "display-sm", headingElement: "h1", flush: true },
+                    children: t("demo.help.title"),
+                  },
+                  {
+                    contract: "typography",
+                    signature: "Text",
+                    options: { size: "lg", tone: "secondary" },
+                    children: t("demo.help.lede"),
+                  },
+                  {
+                    contract: "form-field",
+                    signature: "FormField",
+                    slots: {
+                      label: t("demo.help.searchLabel"),
+                      children: {
+                        contract: "input",
+                        signature: "Input",
+                        options: {
+                          type: "search",
+                          name: "q",
+                          placeholder: t("demo.help.searchPlaceholder"),
+                        },
                       },
+                    },
+                  },
+                ],
+              },
+            },
+          },
+          {
+            contract: "wrapper",
+            signature: "Wrapper",
+            options: { wrapperSize: "lg", gutter: "md", gutterExpanded: "lg" },
+            children: {
+              contract: "layout",
+              signature: "Stack",
+              options: { gap: "lg", gapExpanded: "xl" },
+              children: [
+                {
+                  contract: "tabs",
+                  signature: "Tabs",
+                  options: { value: "start", variant: "underline" },
+                  attrs: { "aria-label": t("demo.help.topicsLabel") },
+                  slots: {
+                    items: [
                       {
-                        contract: "typography",
-                        signature: "Text",
-                        options: { size: "lg", tone: "secondary" },
-                        children: t("demo.help.lede"),
-                      },
-                      {
-                        contract: "form-field",
-                        signature: "FormField",
+                        options: { value: "start" },
                         slots: {
-                          label: t("demo.help.searchLabel"),
-                          children: {
-                            contract: "input",
-                            signature: "Input",
-                            options: {
-                              type: "search",
-                              name: "q",
-                              placeholder: t("demo.help.searchPlaceholder"),
-                            },
-                          },
+                          label: t("demo.help.tabStart"),
+                          children: topicGrid([
+                            topic("#cuenta", t("demo.help.topicAccount"), t("demo.help.topicAccountHint")),
+                            topic("#equipo", t("demo.help.topicTeam"), t("demo.help.topicTeamHint")),
+                            topic("#proyecto", t("demo.help.topicProject"), t("demo.help.topicProjectHint")),
+                          ]),
+                        },
+                      },
+                      {
+                        options: { value: "billing" },
+                        slots: {
+                          label: t("demo.help.tabBilling"),
+                          children: topicGrid([
+                            topic("#planes", t("demo.help.topicPlans"), t("demo.help.topicPlansHint")),
+                            topic("#facturas", t("demo.help.topicInvoices"), t("demo.help.topicInvoicesHint")),
+                            topic("#reembolsos", t("demo.help.topicRefunds"), t("demo.help.topicRefundsHint")),
+                          ]),
+                        },
+                      },
+                      {
+                        options: { value: "security" },
+                        slots: {
+                          label: t("demo.help.tabSecurity"),
+                          children: topicGrid([
+                            topic("#sso", t("demo.help.topicSso"), t("demo.help.topicSsoHint")),
+                            topic("#2fa", t("demo.help.topic2fa"), t("demo.help.topic2faHint")),
+                            topic("#auditoria", t("demo.help.topicAudit"), t("demo.help.topicAuditHint")),
+                          ]),
                         },
                       },
                     ],
                   },
                 },
-              },
-              {
-                contract: "wrapper",
-                signature: "Wrapper",
-                options: { wrapperSize: "lg", gutter: "md", gutterExpanded: "lg" },
-                children: {
+                {
                   contract: "layout",
                   signature: "Stack",
-                  options: { gap: "lg", gapExpanded: "xl" },
+                  options: { gap: "md" },
                   children: [
                     {
-                      contract: "tabs",
-                      signature: "Tabs",
-                      options: { value: "start", variant: "underline" },
-                      attrs: { "aria-label": t("demo.help.topicsLabel") },
-                      slots: {
-                        items: [
-                          {
-                            options: { value: "start" },
-                            slots: {
-                              label: t("demo.help.tabStart"),
-                              children: topicGrid([
-                                topic("#cuenta", t("demo.help.topicAccount"), t("demo.help.topicAccountHint")),
-                                topic("#equipo", t("demo.help.topicTeam"), t("demo.help.topicTeamHint")),
-                                topic("#proyecto", t("demo.help.topicProject"), t("demo.help.topicProjectHint")),
-                              ]),
-                            },
-                          },
-                          {
-                            options: { value: "billing" },
-                            slots: {
-                              label: t("demo.help.tabBilling"),
-                              children: topicGrid([
-                                topic("#planes", t("demo.help.topicPlans"), t("demo.help.topicPlansHint")),
-                                topic("#facturas", t("demo.help.topicInvoices"), t("demo.help.topicInvoicesHint")),
-                                topic("#reembolsos", t("demo.help.topicRefunds"), t("demo.help.topicRefundsHint")),
-                              ]),
-                            },
-                          },
-                          {
-                            options: { value: "security" },
-                            slots: {
-                              label: t("demo.help.tabSecurity"),
-                              children: topicGrid([
-                                topic("#sso", t("demo.help.topicSso"), t("demo.help.topicSsoHint")),
-                                topic("#2fa", t("demo.help.topic2fa"), t("demo.help.topic2faHint")),
-                                topic("#auditoria", t("demo.help.topicAudit"), t("demo.help.topicAuditHint")),
-                              ]),
-                            },
-                          },
-                        ],
-                      },
+                      contract: "typography",
+                      signature: "Heading",
+                      options: { headingSize: "h3", flush: true },
+                      children: t("demo.help.faqTitle"),
                     },
                     {
-                      contract: "layout",
-                      signature: "Stack",
-                      options: { gap: "md" },
+                      contract: "accordion",
+                      signature: "Accordion",
+                      options: { collapsible: true },
                       children: [
-                        {
-                          contract: "typography",
-                          signature: "Heading",
-                          options: { headingSize: "h3", flush: true },
-                          children: t("demo.help.faqTitle"),
-                        },
-                        {
-                          contract: "accordion",
-                          signature: "Accordion",
-                          options: { collapsible: true },
-                          children: [
-                            faq("reset", t("demo.help.faq1"), t("demo.help.faq1Answer")),
-                            faq("invite", t("demo.help.faq2"), t("demo.help.faq2Answer")),
-                            faq("export", t("demo.help.faq3"), t("demo.help.faq3Answer")),
-                          ],
-                        },
+                        faq("reset", t("demo.help.faq1"), t("demo.help.faq1Answer")),
+                        faq("invite", t("demo.help.faq2"), t("demo.help.faq2Answer")),
+                        faq("export", t("demo.help.faq3"), t("demo.help.faq3Answer")),
                       ],
-                    },
-                    {
-                      contract: "box",
-                      signature: "Box",
-                      options: { surface: "sunken", border: "subtle", padding: "md", paddingExpanded: "lg" },
-                      children: {
-                        contract: "layout",
-                        signature: "Inline",
-                        options: { justify: "between", inlineAlign: "center", wrap: true },
-                        children: [
-                          {
-                            contract: "layout",
-                            signature: "Stack",
-                            options: { gap: "xs" },
-                            children: [
-                              {
-                                contract: "typography",
-                                signature: "Text",
-                                options: { weight: "emphasis" },
-                                children: t("demo.help.contactTitle"),
-                              },
-                              {
-                                contract: "typography",
-                                signature: "Text",
-                                options: { size: "sm", tone: "secondary" },
-                                children: t("demo.help.contactBody"),
-                              },
-                            ],
-                          },
-                          {
-                            contract: "button",
-                            signature: "Button.action",
-                            options: { variant: "soft" },
-                            children: t("demo.help.contact"),
-                          },
-                        ],
-                      },
                     },
                   ],
                 },
-              },
-            ],
+                {
+                  contract: "box",
+                  signature: "Box",
+                  options: { surface: "sunken", border: "subtle", padding: "md", paddingExpanded: "lg" },
+                  children: {
+                    contract: "layout",
+                    signature: "Inline",
+                    options: { justify: "between", inlineAlign: "center", wrap: true },
+                    children: [
+                      {
+                        contract: "layout",
+                        signature: "Stack",
+                        options: { gap: "xs" },
+                        children: [
+                          {
+                            contract: "typography",
+                            signature: "Text",
+                            options: { weight: "emphasis" },
+                            children: t("demo.help.contactTitle"),
+                          },
+                          {
+                            contract: "typography",
+                            signature: "Text",
+                            options: { size: "sm", tone: "secondary" },
+                            children: t("demo.help.contactBody"),
+                          },
+                        ],
+                      },
+                      {
+                        contract: "button",
+                        signature: "Button.action",
+                        options: { variant: "soft" },
+                        children: t("demo.help.contact"),
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
           },
-        },
-        siteFooter(t),
-      ],
+        ],
+      },
     },
+    siteFooter(t),
   ],
 });

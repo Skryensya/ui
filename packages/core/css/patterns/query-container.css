@@ -1,0 +1,18 @@
+/*
+ * THE QUERY CONTAINER OF LAST RESORT (decision 35).
+ *
+ * Every layout rule that changes with width asks its nearest query container, not the viewport: a
+ * Grid in a work area beside a rail has the room the work area has, not the room the window has. The
+ * regions that change width are containers of their own (`Main`, `Sidebar`); this makes the document
+ * the one every other element falls back to, so a page with no Main still answers like a viewport.
+ *
+ * It ships in base, beside the state layer and the icon, because a query with no container to ask is
+ * never true: without this, a page that loaded only `box.css` would keep every `paddingExpanded`
+ * shut at any width. Inline-size containment on the root costs nothing a document relies on, since the
+ * root's width never came from its content.
+ */
+@layer components {
+  :root {
+    container-type: inline-size;
+  }
+}

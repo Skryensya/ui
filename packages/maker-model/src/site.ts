@@ -52,7 +52,16 @@ export type MakerSite = {
   readonly layouts?: readonly MakerLayout[];
   /** The layout a page uses when it does not say. */
   readonly defaultLayout?: string;
+  /**
+   * What this project is, in its author's words: given to Maker AI with every request, so it knows the product,
+   * the audience and the tone without being told again. A template brings one to start from; it is the project's
+   * own after that, edited like anything else in it. Absent: Maker AI knows only what each request says.
+   */
+  readonly prompt?: string;
 };
+
+/** A project prompt is guidance, not a document: past this it is cut rather than refused. */
+export const PROMPT_LIMIT = 4000;
 
 export type SiteOperation =
   | { readonly type: "addPage"; readonly page: MakerPageEntry; readonly index?: number }
@@ -65,7 +74,9 @@ export type SiteOperation =
   | { readonly type: "removeLayout"; readonly layout: string }
   | { readonly type: "renameLayout"; readonly layout: string; readonly name: string }
   | { readonly type: "setDefaultLayout"; readonly layout?: string }
-  | { readonly type: "setPageLayout"; readonly page: string; readonly layout?: string };
+  | { readonly type: "setPageLayout"; readonly page: string; readonly layout?: string }
+  /** The project's prompt for Maker AI; empty removes it. */
+  | { readonly type: "setPrompt"; readonly prompt: string };
 
 export type SiteApplied = { readonly ok: true; readonly site: MakerSite } | { readonly ok: false; readonly reason: string };
 
@@ -264,6 +275,11 @@ export function applySite(site: MakerSite, operation: SiteOperation): SiteApplie
       if (operation.layout !== undefined && operation.layout !== "none" && !layoutOf(site, operation.layout)) return refuse(`No layout "${operation.layout}".`);
       return change(site, operation.page, ({ layout: _was, ...page }) => (operation.layout === undefined ? page : { ...page, layout: operation.layout }));
     }
+    case "setPrompt": {
+      const prompt = operation.prompt.trim().slice(0, PROMPT_LIMIT);
+      const { prompt: _was, ...rest } = site;
+      return { ok: true, site: prompt ? { ...rest, prompt } : rest };
+    }
   }
 }
 
@@ -347,6 +363,7 @@ export function parseSite(json: string, sourceHash: string, newId: IdFactory): O
   if (new Set(ids).size !== ids.length) return { ok: false, reason: "Two pages or layouts share an id." };
   const known = new Set((site.layouts ?? []).map((layout) => layout.id));
   if (site.defaultLayout !== undefined && !known.has(site.defaultLayout)) return { ok: false, reason: `The default layout "${site.defaultLayout}" does not exist.` };
+  if (site.prompt !== undefined && (typeof site.prompt !== "string" || site.prompt.length > PROMPT_LIMIT)) return { ok: false, reason: "The project prompt is not text, or is too long." };
   for (const page of site.pages) if (page.layout !== undefined && page.layout !== "none" && !known.has(page.layout)) return { ok: false, reason: `Page "${page.name}" uses a layout that does not exist.` };
   return { ok: true, site, catalogueChanged: site.sourceHash !== sourceHash };
 }

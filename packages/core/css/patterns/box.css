@@ -153,17 +153,27 @@
   }
 
   /*
-   * EXPANDED OVERRIDES, declared (decision 30). 52rem is `--breakpoint-desktop`
-   * (semantic/_breakpoints.scss), a literal here because a CSS `@media` cannot read a custom
-   * property, the same hand-copy `vaul.css` makes. The plain attribute is the value from the smallest
-   * screen up; the `-expanded` one replaces it from this width up, and only when the author wrote it.
+   * EXPANDED OVERRIDES, declared (decision 30), measured on the nearest query container (decision
+   * 35). 52rem is `--breakpoint-desktop` (semantic/_breakpoints.scss), a literal here because a
+   * container query cannot read a custom property. The plain attribute is the value from the
+   * narrowest container up; the `-expanded` one replaces it from this width up, and only when the
+   * author wrote it.
    */
-  @media (min-width: 52rem) {
+  @container (width >= 52rem) {
     .sk-box[data-padding-expanded="none"] { --sk-box-padding: 0; }
     .sk-box[data-padding-expanded="xs"] { --sk-box-padding: var(--space-inset-xs); }
     .sk-box[data-padding-expanded="sm"] { --sk-box-padding: var(--space-inset-sm); }
     .sk-box[data-padding-expanded="md"] { --sk-box-padding: var(--space-inset-md); }
     .sk-box[data-padding-expanded="lg"] { --sk-box-padding: var(--space-inset-lg); }
     .sk-box[data-padding-expanded="xl"] { --sk-box-padding: var(--space-inset-xl); }
+  }
+
+  /* SHOW, one side of the expanded line only (decision 35). The layout primitives' twin lives in layout.css. */
+  @container (width < 52rem) {
+    .sk-box[data-show="expanded"] { display: none; }
+  }
+
+  @container (width >= 52rem) {
+    .sk-box[data-show="compact"] { display: none; }
   }
 }

@@ -2386,16 +2386,17 @@ describe("input: native text controls", () => {
 describe("layout: flow primitives that own only their own parts", () => {
   const text: UsageTree = { contract: "typography", signature: "Text", children: "Hola" };
 
-  it("publishes only stack/inline/grid/layoutGrid/appShell parts and layout.css hooks", () => {
+  it("publishes only stack/inline/grid/layoutGrid/appShell/main parts and layout.css hooks", () => {
     const contract = getContract("layout")!;
     expect(Object.values(contract.parts).sort()).toEqual([
       "sk-app-shell",
       "sk-grid",
       "sk-inline",
       "sk-layout-grid",
+      "sk-main",
       "sk-stack",
     ]);
-    expect(contract.hooks?.every((hook) => /--sk-(stack|inline|grid|layout|app-shell)-/.test(hook))).toBe(true);
+    expect(contract.hooks?.every((hook) => /--sk-(stack|inline|grid|layout|app-shell|main)-/.test(hook))).toBe(true);
     expect(contract.hookSheets ?? []).toEqual([]);
   });
 
@@ -2416,7 +2417,36 @@ describe("layout: flow primitives that own only their own parts", () => {
     expect(validateUsageTree({ contract: "layout", signature: "AppShell", children: [navbar, stray] }).valid).toBe(false);
   });
 
-  it("accepts Stack/Inline/Grid/LayoutGrid/Main shapes and Grid fill", () => {
+  it("accepts an end rail after the Main and the drawer that carries the rails to a phone", () => {
+    const navbar: UsageTree = { contract: "navbar", signature: "Navbar", children: { contract: "navbar", signature: "NavbarBrand", children: "Brand" } };
+    const main: UsageTree = { contract: "layout", signature: "Main", options: { paddingBlock: "lg" }, children: text };
+    const rail = (side: "start" | "end"): UsageTree => ({
+      contract: "sidebar",
+      signature: "Sidebar",
+      options: { side },
+      children: { contract: "sidebar", signature: "SidebarContent", children: text },
+    });
+    const drawer: UsageTree = {
+      contract: "vaul",
+      signature: "Vaul.drawer",
+      options: { label: "Navigation", panelId: "nav" },
+      children: text,
+    };
+    const shell: UsageTree = {
+      contract: "layout",
+      signature: "AppShell",
+      options: { scroll: "regions", stickyHeader: true },
+      children: [navbar, rail("start"), main, rail("end"), drawer],
+    };
+    expect(validateUsageTree(shell).valid).toBe(true);
+    const markup = emitMarkup(shell);
+    expect(markup).toContain('data-scroll="regions"');
+    expect(markup).toContain("data-sticky-header");
+    expect(markup).toContain('data-side="end"');
+    expect(markup).toMatch(/<main class="sk-main" data-padding-block="lg"/);
+  });
+
+  it("accepts Stack/Inline/Grid/LayoutGrid/Main shapes", () => {
     expect(validateUsageTree({ contract: "layout", signature: "Stack", children: text }).valid).toBe(true);
     expect(
       validateUsageTree({
@@ -2426,26 +2456,53 @@ describe("layout: flow primitives that own only their own parts", () => {
         children: text,
       }).valid,
     ).toBe(true);
-    expect(
-      validateUsageTree({
-        contract: "layout",
-        signature: "Grid",
-        options: { columns: "3", responsive: true, fill: true },
-        children: text,
-      }).valid,
-    ).toBe(true);
     expect(validateUsageTree({ contract: "layout", signature: "LayoutGrid", children: text }).valid).toBe(true);
     expect(validateUsageTree({ contract: "layout", signature: "Main" }).valid).toBe(true);
+  });
 
-    const grid = emitMarkup({
+  it("publishes uneven columns as a span of even ones, and rejects a span past five", () => {
+    const grid = (span: string): UsageTree => ({
       contract: "layout",
       signature: "Grid",
-      options: { columns: "5", responsive: true, fill: true },
-      children: text,
+      options: { columns: "3", align: "start" },
+      children: [
+        { contract: "layout", signature: "Stack", attrs: { "data-span": span }, children: text },
+        { contract: "layout", signature: "Stack", children: text },
+      ],
     });
-    expect(grid).toContain('data-columns="5"');
-    expect(grid).toContain("data-responsive");
-    expect(grid).toContain("data-fill");
+    expect(validateUsageTree(grid("2")).valid).toBe(true);
+    expect(emitMarkup(grid("2"))).toContain('data-span="2"');
+    expect(emitMarkup(grid("2"))).toContain('data-align="start"');
+    expect(validateUsageTree(grid("7")).valid).toBe(false);
+  });
+
+  it("gives Stack a block-axis justify with no default, so a plain Stack never claims height", () => {
+    const plain = emitMarkup({ contract: "layout", signature: "Stack", children: text });
+    expect(plain).not.toContain("data-justify");
+    const centred = { contract: "layout", signature: "Stack", options: { stackJustify: "center", gap: "section" }, children: text } as const;
+    expect(validateUsageTree(centred).valid).toBe(true);
+    expect(emitMarkup(centred)).toContain('data-justify="center"');
+    expect(emitMarkup(centred)).toContain('data-gap="section"');
+  });
+
+  it("writes show on the flow primitives and on Box, and nothing when it is absent", () => {
+    const inline = { contract: "layout", signature: "Inline", options: { show: "expanded" }, children: text } as const;
+    expect(validateUsageTree(inline).valid).toBe(true);
+    expect(emitMarkup(inline)).toContain('data-show="expanded"');
+    const box = { contract: "box", signature: "Box", options: { padding: "md", show: "compact" }, children: text } as const;
+    expect(validateUsageTree(box).valid).toBe(true);
+    expect(emitMarkup(box)).toContain('data-show="compact"');
+    expect(emitMarkup({ contract: "layout", signature: "Inline", children: text })).not.toContain("data-show");
+  });
+
+  it("lets a LayoutGrid breakout run flush, and nothing else", () => {
+    const flow = (breakout: string): UsageTree => ({
+      contract: "layout",
+      signature: "LayoutGrid",
+      children: { contract: "layout", signature: "Stack", attrs: { "data-width": "breakout", "data-breakout": breakout }, children: text },
+    });
+    expect(validateUsageTree(flow("flush")).valid).toBe(true);
+    expect(validateUsageTree(flow("bleed")).valid).toBe(false);
   });
 
   it("requires children on flow signatures but not on Main", () => {
@@ -3246,6 +3303,7 @@ describe("navbar: header shell for brand, guests, and actions", () => {
       "NavbarActions",
       "NavList",
       "Megamenu",
+      "Inline",
     ]);
     const { sheets, unplaced } = sheetsForTree(bar(brand(), nav(), actions()));
     expect(sheets).toContain("@skryensya/core/components/navbar.css");
@@ -6271,5 +6329,15 @@ describe("unsafe URLs", () => {
   it("checks attributes too", () => {
     const problems = validateUsageTree({ contract: "typography", signature: "Text", attrs: { cite: "javascript:x" }, children: "Hola" }).problems;
     expect(problems.some((problem) => problem.rule === "unsafe-url")).toBe(true);
+  });
+});
+
+describe("a collection's entries", () => {
+  it("are { options, slots }: anything else is an error that names the shape, never stored to break a renderer", () => {
+    const menu = { contract: "menu", signature: "Menu", options: { label: "Options" }, slots: { trigger: "Options", items: [{ value: "a", label: "A" }] } };
+    const problems = validateUsageTree(menu as never).problems.filter((problem) => problem.message.includes("is a collection"));
+    expect(problems).toHaveLength(1);
+    expect(problems[0]!.severity).toBe("error");
+    expect(problems[0]!.message).toContain("slots.label");
   });
 });

@@ -56,10 +56,15 @@ export const checkboxGroupTree = (t: Translate): UsageTree => ({
   slots: { label: t("demo.checkbox.group"), items: checkboxGroupItems(t) },
 });
 
+/*
+ * A Grid at `minColumn: "sm"`, not an equal Inline: cards in a row must reflow, and auto-fit with a
+ * column floor puts three side by side where they fit and one per row on a phone. An equal Inline
+ * shares the row without a floor, so a Tile (which clips) was crushed to a letter per line.
+ */
 export const tileCheckboxTree = (t: Translate): UsageTree => ({
   contract: "layout",
-  signature: "Inline",
-  options: { gap: "md", inlineAlign: "stretch", equal: true },
+  signature: "Grid",
+  options: { gap: "md", minColumn: "sm" },
   children: [
     {
       contract: "tile",
@@ -150,7 +155,8 @@ export const checkboxScaleTree = (t: Translate): UsageTree => ({
             {
               contract: "layout",
               signature: "Inline",
-              options: { justify: "between", gap: "md" },
+              /* No wrap, and the far end flush right: the same ends as the Likert scale on the RadioGroup page. */
+              options: { justify: "between", gap: "md", wrap: false },
               children: [
                 {
                   contract: "typography",
@@ -159,10 +165,17 @@ export const checkboxScaleTree = (t: Translate): UsageTree => ({
                   children: t("demo.checkboxScale.min"),
                 },
                 {
-                  contract: "typography",
-                  signature: "Text",
-                  options: { size: "caption", tone: "secondary" },
-                  children: t("demo.checkboxScale.max"),
+                  contract: "layout",
+                  signature: "Stack",
+                  options: { gap: "none", align: "end" },
+                  children: [
+                    {
+                      contract: "typography",
+                      signature: "Text",
+                      options: { size: "caption", tone: "secondary" },
+                      children: t("demo.checkboxScale.max"),
+                    },
+                  ],
                 },
               ],
             },

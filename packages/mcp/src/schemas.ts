@@ -3,8 +3,8 @@ import type {
   AgentError,
   CatalogPage,
   ContractView,
-  Example,
-  ExampleIndexEntry,
+  ExampleDetail,
+  ExamplesIndex,
   Provenance,
   ReviewOutcome,
   ValidateOutcome,
@@ -104,12 +104,24 @@ const indexEntry = z.object({
   signatures: z.array(indexSignature),
 });
 
-const exampleIndexEntry = z.object({
+const exampleSummary = z.object({
   id: z.string(),
-  level: z.string(),
-  intent: z.string(),
+  kind: z.enum(["use", "fixed"]),
+  title: z.string(),
+  intent: z.string().describe("The taxonomy intent id, `domain/area/intent`: what the reader is trying to do."),
+  subject: z.string().describe("What a person would call it: card, list, form, hero…"),
+  scale: z.string().describe("fragment, component, composition or page."),
+  pattern: z.string().optional().describe("The layout this use is written against; absent for a fixed tree. Other uses of the same pattern are the same layout put to other jobs."),
+});
+
+const exampleRef = z.object({ id: z.string(), title: z.string(), intent: z.string(), scale: z.string() });
+
+const patternInfo = z.object({
+  id: z.string(),
+  title: z.string(),
+  layout: z.string().describe("The structure alone, with no purpose in it."),
+  fields: z.record(z.string(), z.string()).describe("Every field the layout fills, with what it holds: what a new use writes."),
   notes: z.array(z.string()),
-  contracts: z.array(z.string()),
 });
 
 const problem = z.object({
@@ -168,12 +180,41 @@ export const contractsOutput = z.object({
  */
 export const examplesOutput = z.object({
   ...provenance,
-  examples: z.array(exampleIndexEntry).optional().describe("Present when called with no id: every example, without trees."),
+  /* The index (no id). */
+  locale: z.enum(["en", "es"]),
+  total: z.number().int().optional().describe("Every example in the library."),
+  matched: z.number().int().optional().describe("How many passed the filters."),
+  examples: z.array(exampleSummary).optional().describe("Present when called with no id: the matching examples, without trees."),
+  facets: z
+    .object({
+      intents: z.array(z.object({ id: z.string(), label: z.string(), job: z.string(), count: z.number().int() })),
+      subjects: z.array(z.object({ id: z.string(), title: z.string(), count: z.number().int() })),
+      scales: z.array(z.object({ scale: z.string(), count: z.number().int() })),
+    })
+    .optional()
+    .describe("Only on an unfiltered call: the taxonomy with a count under each line, to choose a filter from."),
+  /* One example (an id). */
   id: z.string().optional(),
-  level: z.string().optional(),
-  intent: z.string().optional(),
+  kind: z.enum(["use", "fixed"]).optional(),
+  title: z.string().optional(),
+  purpose: z.string().optional().describe("When a page picks this example, in one sentence."),
   notes: z.array(z.string()).optional(),
-  contracts: z.array(z.string()).optional(),
+  intent: z.object({ id: z.string(), label: z.string(), job: z.string() }).optional(),
+  subject: z.string().optional(),
+  scale: z.string().optional(),
+  contracts: z.array(z.string()).optional().describe("The contract families the tree touches."),
+  pattern: patternInfo.optional(),
+  content: z.unknown().optional().describe("What fills the pattern in this use. Replace it to put the same layout to another job."),
+  relations: z
+    .object({
+      sameLayout: z.array(exampleRef).describe("Other uses of this pattern: the same layout, other jobs."),
+      sameIntent: z.array(exampleRef).describe("Other examples for the same job: alternatives."),
+      contains: z.array(exampleRef).describe("The uses this composition renders."),
+      containedIn: z.array(exampleRef).describe("The compositions that render this use."),
+      similar: z.array(exampleRef.extend({ score: z.number() })).describe("Structurally close trees under another pattern, by shared signatures."),
+      related: z.array(exampleRef.extend({ kind: z.string(), why: z.string() })).describe("Written judgements: when to prefer the other one, or why it only looks alike."),
+    })
+    .optional(),
   tree: z.record(z.string(), z.unknown()).optional().describe("Present when called with an id: the example's usage tree."),
 });
 
@@ -314,8 +355,8 @@ type Pinned<Value, Schema extends z.ZodType> =
 
 const pins: [
   Pinned<Provenance & CatalogPage, typeof catalogOutput>,
-  Pinned<Provenance & { examples: readonly ExampleIndexEntry[] }, typeof examplesOutput>,
-  Pinned<Provenance & Example, typeof examplesOutput>,
+  Pinned<Provenance & ExamplesIndex, typeof examplesOutput>,
+  Pinned<Provenance & ExampleDetail, typeof examplesOutput>,
   Pinned<Provenance & DiscoverResult, typeof discoverOutput>,
   Pinned<Provenance & ValidateOutcome, typeof validateOutput>,
   Pinned<Provenance & ReviewOutcome, typeof reviewOutput>,

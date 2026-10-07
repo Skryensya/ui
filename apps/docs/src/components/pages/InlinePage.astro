@@ -20,6 +20,7 @@ import {
   inlineDontWrapTree,
 } from "../../demos/layout-guide";
 import { inlineCardFloorTree, inlineTree } from "../../demos/layout";
+import { inlineShowTree } from "../../demos/layout-container";
 import { getLocale, tList, useTranslations } from "../../i18n";
 
 const explain = (option: string, values: readonly string[]) =>
@@ -62,6 +63,11 @@ const t = useTranslations(getLocale(Astro.url));
     <h3>{t("component.examplesTitle")}</h3>
     <UsagePreview tree={inlineTree(t)} title={t("inlinePage.barTitle")} description={t("inlinePage.barBody")} />
     <UsagePreview tree={inlineCardFloorTree(t)} title={t("inlinePage.floorTitle")} description={t("inlinePage.floorBody")} />
+
+    <h3>{t("inlinePage.showTitle")}</h3>
+    <p set:html={t("inlinePage.showBody")} />
+    <UsagePreview tree={inlineShowTree(t)} title={t("inlinePage.showPhone")} screen="mobile" />
+    <UsagePreview tree={inlineShowTree(t)} title={t("inlinePage.showWide")} screen="xl" />
 
     <h3>{t("component.contractNotesTitle")}</h3>
     <ul>

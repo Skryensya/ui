@@ -17,7 +17,14 @@
   font-weight: var(--font-weight-label);
 }
 
-/* The matrix: the statement on the start edge, every point in an equal column with its circle centred. */
+/* The matrix: the statement on the start edge, every point in an equal column with its circle centred.
+ * A TableScroll floors every cell at a data column's width (8rem); a point holds one radio, so the
+ * table's own hooks bring the floors down and four points fit beside the statement on a phone. */
+.likert-matrix {
+  --sk-table-cell-min-inline-size: 2.5rem;
+  --sk-table-row-header-min-inline-size: 7rem;
+}
+
 .likert-matrix th,
 .likert-matrix td {
   text-align: center;
@@ -25,7 +32,7 @@
 
 .likert-matrix th:first-child,
 .likert-matrix td:first-child {
-  inline-size: 46%;
+  inline-size: 40%;
   text-align: start;
 }
 

@@ -177,7 +177,7 @@ export const boxUnmeasuredTree = (t: Translate): UsageTree => ({
 /**
  * FIVE real hero patterns, all valid against the SAME minimal contract (no anatomy of Hero's own
  * beyond `padding`/`surface`/`align`). Everything else in each is ordinary Stack/Heading/Text/Button
- * composition, mirroring `contracts/snippets/hero-*.ts`, the trees an agent actually reaches via
+ * composition, mirroring `contracts/examples/fixed/hero-*.ts`, the trees an agent actually reaches via
  * `get_examples`. The docs page renders all five so a person sees the same range an agent does.
  */
 
@@ -317,7 +317,7 @@ export const heroSplitTree = (t: Translate): UsageTree => ({
 
 /**
  * Pattern 5: a centered pitch backed by a group of real avatars and a trust count. Replaces an
- * earlier stat-row pattern; see `contracts/snippets/hero-with-social-proof.ts`'s own notes for why
+ * earlier stat-row pattern; see `contracts/examples/fixed/hero-with-social-proof.ts`'s own notes for why
  * (the docs page never loaded `components/stat.css`, so every number rendered with zero styling,
  * and a KPI row is proof content a page earns AFTER the pitch, not something a hero's own three
  * seconds can establish on its own).
@@ -374,7 +374,7 @@ export const heroSocialProofTree = (t: Translate): UsageTree => ({
 });
 
 /**
- * TEN more real hero patterns, added after the original five (see `contracts/snippets/hero-*.ts`
+ * TEN more real hero patterns, added after the original five (see `contracts/examples/fixed/hero-*.ts`
  * for the same trees, agent-facing): common shapes surveyed against real hero-section galleries
  * (Saaspo's own catalogue, browsed via web search: "Email CTA", "Logos", "Tabs" are all named
  * categories there, not invented here) plus a few less common but still useful ones. Same rule as
@@ -1290,7 +1290,7 @@ export const gridResponsiveTree = (t: Translate): UsageTree => ({
  * FOOTER demos. Footer owns no anatomy of its own beyond `padding`/`surface`/`divider` (see
  * `packages/core/src/footer.ts`): everything below is ordinary Wrapper/Grid/Stack/Text/Link
  * composition inside its `children`, the same way the hero patterns above compose inside Hero.
- * Mirrors `contracts/snippets/footer-credit-line.ts`, the tree an agent reaches via `get_examples`.
+ * Mirrors `contracts/examples/fixed/footer-credit-line.ts`, the tree an agent reaches via `get_examples`.
  */
 
 /** A full site footer: a row of link columns over a legal line. `Wrapper` holds it at the page's

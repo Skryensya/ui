@@ -1,5 +1,5 @@
 import type { ComponentContract } from "./contract.js";
-import { splitterValuePercent } from "./splitter.js";
+import { splitterDirectionSign, splitterValuePercent } from "./splitter.js";
 import { definePreference, numberValue, type Preference } from "./storage.js";
 
 export type SidebarCollapsedChangeDetails = {
@@ -13,6 +13,8 @@ export type SidebarResizeChangeDetails = {
 
 export type SidebarOptions = {
   id?: string;
+  /** Which edge of the shell the rail stands on: `start` (the default) or `end`. */
+  side?: (typeof sidebarContract.options.side.values)[number];
   /** How the rail is drawn: `plain`, `brutalist` (black edge, hard offset) or `frosted` (see-through). */
   appearance?: (typeof sidebarContract.options.appearance.values)[number];
   /** Controlled: the caller owns the state and re-renders on change. */
@@ -92,6 +94,15 @@ export function sidebarWidthPreference(storageKey: string): Preference<number | 
  * tested API and a rename would be a breaking one for no behavioural reason.
  */
 export const sidebarWidthPercent = splitterValuePercent;
+
+/**
+ * Which way a drag or an arrow key widens the rail: +1 toward larger x, -1 toward smaller. The handle sits on
+ * the edge that faces the content, so a right-to-left page and an end rail each flip it, and an end rail in a
+ * right-to-left page flips it back. Both bindings read the two inputs per gesture and ask this.
+ */
+export function sidebarTowardWider(direction: "ltr" | "rtl", side: string | undefined): 1 | -1 {
+  return (splitterDirectionSign(direction) * (side === "end" ? -1 : 1)) as 1 | -1;
+}
 
 /*
  * The shell only. There is no `link`, `item` or `list` part here on purpose: the list of
@@ -246,6 +257,13 @@ export const sidebarContract = {
      * instead. Purely presentational. The DOM position (and which legal parent hosts it) is
      * unchanged, so `aria-controls` and the click handler need nothing new to find it.
      */
+    /*
+     * WHICH EDGE OF THE SHELL the rail stands on. `end` is the same rail in a mirror: its border, its resize
+     * edge and its floating trigger face the other way, and a drag toward the content still widens it,
+     * exactly as a start rail behaves in a right-to-left page. An AppShell puts a Sidebar written after its
+     * Main on the end edge; this is what makes the rail itself face that way.
+     */
+    side: { type: "enum", values: ["start", "end"], default: "start", attr: "data-side" },
     floating: { type: "boolean", default: false, attr: "data-floating", trueValue: "" },
   },
 
@@ -253,7 +271,7 @@ export const sidebarContract = {
     Sidebar: {
       intent: ["sidebar", "side-navigation", "app-shell-rail", "left-nav"],
       host: { element: "aside" },
-      options: ["defaultCollapsed", "storageKey", "minInlineSize", "maxInlineSize", "landmarkLabel", "appearance"],
+      options: ["defaultCollapsed", "storageKey", "minInlineSize", "maxInlineSize", "landmarkLabel", "appearance", "side"],
       slots: {
         children: {
           accepts: "signature",

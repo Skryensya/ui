@@ -9,6 +9,9 @@ summary: >-
   new site touches no DNS and creates nothing in Cloudflare.
 ---
 
+> **Withdrawn** (2026-10-06): the Maker no longer hosts anything. What it produces is code (React, vanilla HTML),
+> so the publish path, the site kit and `apps/sites-worker` were removed.
+
 A published site is the project rendered by the emitter (the markup `validate_ui` returns), one HTML
 document per page, plus the shared site kit (every stylesheet and the vanilla enhancers), uploaded
 under a content hash so every site after the first reuses it.

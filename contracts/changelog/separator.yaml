@@ -5,6 +5,17 @@
 # hash.
 surface: "f79deebf1cf837b3"
 entries:
+  - date: 2026-10-06
+    kind: bugfix
+    target: Separator
+    es:
+      title: "Separator dibuja su línea sin <code>data-orientation</code>"
+      body: >-
+        La regla horizontal exigía <code>data-orientation="horizontal"</code>, que es el valor por defecto y que el emisor no escribe, así que un <code>Separator</code> sin orientación explícita no se veía. Ahora horizontal es todo lo que no es vertical.
+    en:
+      title: "Separator draws its line without <code>data-orientation</code>"
+      body: >-
+        The horizontal rule required <code>data-orientation="horizontal"</code>, which is the default and which the emitter does not write, so a <code>Separator</code> with no explicit orientation was invisible. Horizontal is now everything that is not vertical.
   - date: 2026-09-20
     kind: feature
     es:

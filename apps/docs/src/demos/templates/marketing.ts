@@ -1,13 +1,14 @@
 import type { UsageTree } from "@skryensya/core/usage-tree";
 import type { Translate } from "../../i18n";
-import { menuButton, siteFooter } from "./shared";
+import { menuDrawer, menuTrigger, shownOn } from "../../lib/template-chrome";
+import { siteFooter } from "./shared";
 
 /*
  * MARKETING LANDING. The "sitio público" shape: a document a stranger scrolls top to bottom, not
  * an application someone logs into. What that changes, template to template:
  *
- *   - the page SCROLLS (`.page-shell`, site.css), so the frame is a viewport and the content runs
- *     past it, rather than an app shell whose panes each scroll inside a fixed screen;
+ *   - the page SCROLLS (an `AppShell` with no rail and the default `page` scroll), so the frame is a
+ *     viewport and the content runs past it, rather than an app whose panes each scroll on their own;
  *   - the copy is measured (`Wrapper`), because a line of prose at 1440px is unreadable while an
  *     application's work area legitimately fills its pane; and
  *   - the nav's last item is a CTA `Button`, not a destination. This is the one place on the page
@@ -61,205 +62,207 @@ const proof = (label: string, value: string): UsageTree => ({
   slots: { label, value },
 });
 
+/* The site's four destinations, drawn twice: across the bar on a wide screen, down the drawer on a phone. */
+const siteNav = (t: Translate, orientation: "horizontal" | "vertical"): UsageTree => ({
+  contract: "nav-list",
+  signature: "NavList",
+  options: { orientation },
+  attrs: { "aria-label": t("demo.marketing.nav") },
+  children: {
+    contract: "nav-list",
+    signature: "NavListGroup",
+    children: [
+      navLink(t("demo.marketing.navProduct"), "#producto", true),
+      navLink(t("demo.marketing.navPricing"), "#precios"),
+      navLink(t("demo.marketing.navCustomers"), "#clientes"),
+      navLink(t("demo.marketing.navDocs"), "#docs"),
+    ],
+  },
+});
+
 export const marketingTree = (t: Translate): UsageTree => ({
   contract: "layout",
-  signature: "Stack",
-  options: { gap: "none" },
+  signature: "AppShell",
   children: [
     {
       contract: "navbar",
       signature: "Navbar",
       children: [
         { contract: "navbar", signature: "NavbarBrand", children: "Lumen" },
-        {
-          contract: "nav-list",
-          signature: "NavList",
-          options: { orientation: "horizontal" },
-          /* The phone gets the menu button below instead; four links do not fit beside a CTA. */
-          attrs: { "aria-label": t("demo.marketing.nav"), class: "template-wide-only" },
-          children: {
-            contract: "nav-list",
-            signature: "NavListGroup",
-            children: [
-              navLink(t("demo.marketing.navProduct"), "#producto", true),
-              navLink(t("demo.marketing.navPricing"), "#precios"),
-              navLink(t("demo.marketing.navCustomers"), "#clientes"),
-              navLink(t("demo.marketing.navDocs"), "#docs"),
-            ],
-          },
-        },
+        /* The phone gets the drawer instead; four links do not fit beside a CTA. */
+        shownOn("expanded", siteNav(t, "horizontal")),
         {
           contract: "navbar",
           signature: "NavbarActions",
           children: [
-            {
+            shownOn("expanded", {
               contract: "button",
               signature: "Button.action",
               options: { variant: "ghost" },
-              attrs: { class: "template-wide-only" },
               children: t("demo.marketing.signIn"),
-            },
+            }),
             {
               contract: "button",
               signature: "Button.action",
               options: { tone: "accent" },
               children: t("demo.marketing.cta"),
             },
-            menuButton(t),
+            menuTrigger(t, "marketing-menu"),
           ],
         },
       ],
     },
     {
       contract: "layout",
-      signature: "Stack",
-      options: { gap: "none" },
-      attrs: { class: "page-shell" },
-      children: [
-        {
+      signature: "Main",
+      options: { paddingBlock: "lg", paddingBlockExpanded: "xl" },
+      children: {
+        contract: "wrapper",
+        signature: "Wrapper",
+        options: { wrapperSize: "lg", gutter: "md", gutterExpanded: "lg" },
+        children: {
           contract: "layout",
-          signature: "Main",
-          attrs: { class: "page-shell__main" },
-          children: {
-            contract: "wrapper",
-            signature: "Wrapper",
-            options: { wrapperSize: "lg", gutter: "md", gutterExpanded: "lg" },
-            children: {
+          signature: "Stack",
+          options: { gap: "lg", gapExpanded: "xl" },
+          children: [
+            /*
+             * HERO. The eyebrow is a `Badge`, not a `Tag`, and the catalogue draws that line
+             * itself: a Tag is something the reader can REMOVE (an applied filter, a keyword),
+             * and `Tag.avoidWhen` sends exactly this case away: "it is just a count or a state
+             * nobody can touch; that is a Badge". A release marker is read, never dismissed.
+             * Both render as a capsule, which is precisely why picking by appearance gets it
+             * wrong: the difference is whether it can be acted on.
+             */
+            {
               contract: "layout",
               signature: "Stack",
-              options: { gap: "lg", gapExpanded: "xl" },
+              options: { gap: "md", align: "start" },
               children: [
-                /*
-                 * HERO. The eyebrow is a `Badge`, not a `Tag`, and the catalogue draws that line
-                 * itself: a Tag is something the reader can REMOVE (an applied filter, a keyword),
-                 * and `Tag.avoidWhen` sends exactly this case away: "it is just a count or a state
-                 * nobody can touch; that is a Badge". A release marker is read, never dismissed.
-                 * Both render as a capsule, which is precisely why picking by appearance gets it
-                 * wrong: the difference is whether it can be acted on.
-                 */
                 {
-                  contract: "layout",
-                  signature: "Stack",
-                  options: { gap: "md", align: "start" },
-                  children: [
-                    {
-                      contract: "badge",
-                      signature: "Badge",
-                      options: { tone: "accent" },
-                      children: t("demo.marketing.heroTag"),
-                    },
-                    {
-                      contract: "typography",
-                      signature: "Heading",
-                      options: { headingSize: "display-md", flush: true },
-                      children: t("demo.marketing.heroTitle"),
-                    },
-                    {
-                      contract: "typography",
-                      signature: "Text",
-                      options: { size: "lg", tone: "secondary" },
-                      children: t("demo.marketing.heroBody"),
-                    },
-                    {
-                      contract: "layout",
-                      signature: "Inline",
-                      options: { gap: "sm" },
-                      children: [
-                        {
-                          contract: "button",
-                          signature: "Button.action",
-                          options: { tone: "accent", size: "lg" },
-                          children: t("demo.marketing.heroPrimary"),
-                        },
-                        {
-                          contract: "button",
-                          signature: "Button.action",
-                          options: { variant: "ghost", size: "lg" },
-                          children: t("demo.marketing.heroSecondary"),
-                        },
-                      ],
-                    },
-                  ],
+                  contract: "badge",
+                  signature: "Badge",
+                  options: { tone: "accent" },
+                  children: t("demo.marketing.heroTag"),
+                },
+                {
+                  contract: "typography",
+                  signature: "Heading",
+                  options: { headingSize: "display-md", flush: true },
+                  children: t("demo.marketing.heroTitle"),
+                },
+                {
+                  contract: "typography",
+                  signature: "Text",
+                  options: { size: "lg", tone: "secondary" },
+                  children: t("demo.marketing.heroBody"),
                 },
                 {
                   contract: "layout",
-                  signature: "Grid",
-                  options: { columns: "3", gap: "md", responsive: true },
+                  signature: "Inline",
+                  options: { gap: "sm" },
                   children: [
-                    feature(
-                      "settings",
-                      t("demo.marketing.feature1Title"),
-                      t("demo.marketing.feature1Body"),
-                    ),
-                    feature(
-                      "success",
-                      t("demo.marketing.feature2Title"),
-                      t("demo.marketing.feature2Body"),
-                    ),
-                    feature(
-                      "refresh",
-                      t("demo.marketing.feature3Title"),
-                      t("demo.marketing.feature3Body"),
-                    ),
+                    {
+                      contract: "button",
+                      signature: "Button.action",
+                      options: { tone: "accent", size: "lg" },
+                      children: t("demo.marketing.heroPrimary"),
+                    },
+                    {
+                      contract: "button",
+                      signature: "Button.action",
+                      options: { variant: "ghost", size: "lg" },
+                      children: t("demo.marketing.heroSecondary"),
+                    },
                   ],
-                },
-                {
-                  contract: "box",
-                  signature: "Box",
-                  options: { surface: "sunken", border: "subtle", padding: "md", paddingExpanded: "lg" },
-                  children: {
-                    contract: "layout",
-                    signature: "Grid",
-                    options: { columns: "3", gap: "md", responsive: true },
-                    attrs: { "aria-label": t("demo.marketing.proofLabel") },
-                    children: [
-                      proof(t("demo.marketing.proof1Label"), t("demo.marketing.proof1Value")),
-                      proof(t("demo.marketing.proof2Label"), t("demo.marketing.proof2Value")),
-                      proof(t("demo.marketing.proof3Label"), t("demo.marketing.proof3Value")),
-                    ],
-                  },
-                },
-                /*
-                 * CLOSING CTA. `align: center` on the Stack, not a text-align override: the button is
-                 * a box and the heading is a box, and centring the FLOW is what puts both on the same
-                 * axis without either of them knowing about the other.
-                 */
-                {
-                  contract: "box",
-                  signature: "Box",
-                  options: { surface: "raised", border: "subtle", padding: "lg", paddingExpanded: "xl" },
-                  children: {
-                    contract: "layout",
-                    signature: "Stack",
-                    options: { gap: "md", align: "center" },
-                    children: [
-                      {
-                        contract: "typography",
-                        signature: "Heading",
-                        options: { headingSize: "h2", flush: true },
-                        children: t("demo.marketing.ctaTitle"),
-                      },
-                      {
-                        contract: "typography",
-                        signature: "Text",
-                        options: { tone: "secondary" },
-                        children: t("demo.marketing.ctaBody"),
-                      },
-                      {
-                        contract: "button",
-                        signature: "Button.action",
-                        options: { tone: "accent", size: "lg" },
-                        children: t("demo.marketing.cta"),
-                      },
-                    ],
-                  },
                 },
               ],
             },
-          },
+            {
+              contract: "layout",
+              signature: "Grid",
+              options: { columns: "3", gap: "md", responsive: true },
+              children: [
+                feature(
+                  "settings",
+                  t("demo.marketing.feature1Title"),
+                  t("demo.marketing.feature1Body"),
+                ),
+                feature(
+                  "success",
+                  t("demo.marketing.feature2Title"),
+                  t("demo.marketing.feature2Body"),
+                ),
+                feature(
+                  "refresh",
+                  t("demo.marketing.feature3Title"),
+                  t("demo.marketing.feature3Body"),
+                ),
+              ],
+            },
+            {
+              contract: "box",
+              signature: "Box",
+              options: { surface: "sunken", border: "subtle", padding: "md", paddingExpanded: "lg" },
+              children: {
+                contract: "layout",
+                signature: "Grid",
+                options: { columns: "3", gap: "md", responsive: true },
+                attrs: { "aria-label": t("demo.marketing.proofLabel") },
+                children: [
+                  proof(t("demo.marketing.proof1Label"), t("demo.marketing.proof1Value")),
+                  proof(t("demo.marketing.proof2Label"), t("demo.marketing.proof2Value")),
+                  proof(t("demo.marketing.proof3Label"), t("demo.marketing.proof3Value")),
+                ],
+              },
+            },
+            /*
+             * CLOSING CTA. `align: center` on the Stack, not a text-align override: the button is
+             * a box and the heading is a box, and centring the FLOW is what puts both on the same
+             * axis without either of them knowing about the other.
+             */
+            {
+              contract: "box",
+              signature: "Box",
+              options: { surface: "raised", border: "subtle", padding: "lg", paddingExpanded: "xl" },
+              children: {
+                contract: "layout",
+                signature: "Stack",
+                options: { gap: "md", align: "center" },
+                children: [
+                  {
+                    contract: "typography",
+                    signature: "Heading",
+                    options: { headingSize: "h2", flush: true },
+                    children: t("demo.marketing.ctaTitle"),
+                  },
+                  {
+                    contract: "typography",
+                    signature: "Text",
+                    options: { tone: "secondary" },
+                    children: t("demo.marketing.ctaBody"),
+                  },
+                  {
+                    contract: "button",
+                    signature: "Button.action",
+                    options: { tone: "accent", size: "lg" },
+                    children: t("demo.marketing.cta"),
+                  },
+                ],
+              },
+            },
+          ],
         },
-        siteFooter(t),
-      ],
+      },
     },
+    siteFooter(t),
+    menuDrawer(t, "marketing-menu", [
+      siteNav(t, "vertical"),
+      {
+        contract: "button",
+        signature: "Button.action",
+        options: { variant: "soft" },
+        children: t("demo.marketing.signIn"),
+      },
+    ]),
   ],
 });
