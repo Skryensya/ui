@@ -150,6 +150,18 @@ describe("CommandPalette Vanilla contracts", () => {
     expect(assign).toHaveBeenLastCalledWith("/tokens");
   });
 
+  it("closes before it navigates, so a link to a place on this page does not leave it open", () => {
+    markup();
+    mountCommandPalette(document);
+    fireEvent.click(trigger());
+    const dialog = document.querySelector<HTMLDialogElement>("dialog")!;
+    expect(dialog.open).toBe(true);
+
+    fireEvent.keyDown(input(), { key: "Enter" });
+    expect(assign).toHaveBeenCalled();
+    expect(dialog.open).toBe(false);
+  });
+
   it("runs a command instead of navigating: closes, then fires the event", () => {
     const dialog = markup({ index: [...entries, { command: "tour", label: "/tour" }] });
     mountCommandPalette(document);

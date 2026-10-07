@@ -189,6 +189,9 @@ export function connectCommandPalette(root: HTMLElement): Cleanup {
     const entry = results[i];
     if (!entry) return;
     if (entry.command === undefined) {
+      /* Closed first: a link to a place on THIS page (`#id`) does not unload it, and the palette would
+       * stay open over the destination it just took the reader to. */
+      close();
       window.location.assign(entry.href);
       return;
     }
