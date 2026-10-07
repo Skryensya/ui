@@ -152,6 +152,56 @@ minimumReleaseAgeExclude:
   # resolving 4.3.1 and pre-push refuses. Comes in under apps/docs > @astrojs/react.
   - "js-yaml"
 
+  # DELETE AFTER 2026-10-15, when proxy-addr 2.0.8 (2026-09-15) is 30 days old.
+  # `proxy-addr < 2.0.8` carries a CRITICAL advisory (IP spoofing through an IPv4-mapped IPv6 trust
+  # subnet), reached through packages/mcp > @modelcontextprotocol/sdk > express. 2.0.8 is the only
+  # patched version; the fix is the override in package.json.
+  - "proxy-addr"
+  # DELETE AFTER 2026-10-30, when source-map-js 1.2.2 (2026-09-30) is 30 days old.
+  # `source-map-js < 1.2.2` carries a HIGH event-loop DoS through indexed source-map section offsets,
+  # reached through apps/docs > astro > magicast. 1.2.2 is the only patched version.
+  - "source-map-js"
+  # DELETE AFTER 2026-10-28, when @modelcontextprotocol/* 2.2.0 and sdk 1.31.0 (2026-09-28) are 30
+  # days old. Both lines fix a HIGH advisory (the OAuth client could send credentials to an
+  # authorization server the MCP server chose). packages/mcp pins them with `~` to the patched floor,
+  # so the exclude does not let the 2.3.x published days ago in; widen back to `^` once they age.
+  # `core` is the exact-version dependency client and server share.
+  - "@modelcontextprotocol/client"
+  - "@modelcontextprotocol/server"
+  - "@modelcontextprotocol/core"
+  - "@modelcontextprotocol/sdk"
+  # DELETE AFTER 2026-10-27, when sharp 0.35.5 (2026-09-27) is 30 days old.
+  # `sharp < 0.35.5` carries a HIGH advisory in its bundled librsvg (CVE-2026-96889), reached through
+  # packages/reference-server. As with astro's satteri binaries, pnpm drops an OPTIONAL dependency in
+  # silence when the cooldown blocks it, so every per-platform binary and libvips build is listed, not
+  # only this machine's.
+  - "sharp"
+  - "@img/sharp-darwin-arm64"
+  - "@img/sharp-darwin-x64"
+  - "@img/sharp-linux-arm"
+  - "@img/sharp-linux-arm64"
+  - "@img/sharp-linux-ppc64"
+  - "@img/sharp-linux-riscv64"
+  - "@img/sharp-linux-s390x"
+  - "@img/sharp-linux-x64"
+  - "@img/sharp-linuxmusl-arm64"
+  - "@img/sharp-linuxmusl-x64"
+  - "@img/sharp-freebsd-wasm32"
+  - "@img/sharp-webcontainers-wasm32"
+  - "@img/sharp-win32-arm64"
+  - "@img/sharp-win32-ia32"
+  - "@img/sharp-win32-x64"
+  - "@img/sharp-libvips-darwin-arm64"
+  - "@img/sharp-libvips-darwin-x64"
+  - "@img/sharp-libvips-linux-arm"
+  - "@img/sharp-libvips-linux-arm64"
+  - "@img/sharp-libvips-linux-ppc64"
+  - "@img/sharp-libvips-linux-riscv64"
+  - "@img/sharp-libvips-linux-s390x"
+  - "@img/sharp-libvips-linux-x64"
+  - "@img/sharp-libvips-linuxmusl-arm64"
+  - "@img/sharp-libvips-linuxmusl-x64"
+
 # NOTHING RUNS CODE ON INSTALL, and the list is empty on purpose, not by oversight.
 #
 # An `install`/`postinstall` script runs with your permissions, on your machine, as soon as you

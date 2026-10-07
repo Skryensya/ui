@@ -18,7 +18,7 @@
   },
   "dependencies": {
     "@modelcontextprotocol/node": "^2.0.0",
-    "@modelcontextprotocol/server": "^2.0.0",
+    "@modelcontextprotocol/server": "~2.2.0",
     "@skryensya/ai-compiler": "workspace:*",
     "@skryensya/core": "workspace:*",
     "@skryensya/maker-model": "workspace:*",
@@ -28,8 +28,8 @@
     "zod": "^4.4.3"
   },
   "devDependencies": {
-    "@modelcontextprotocol/client": "^2.0.0",
-    "@modelcontextprotocol/sdk": "^1.30.0",
+    "@modelcontextprotocol/client": "~2.2.0",
+    "@modelcontextprotocol/sdk": "~1.31.0",
     "@skryensya/maker-server": "workspace:*",
     "@types/node": "catalog:",
     "esbuild": "^0.28.1",

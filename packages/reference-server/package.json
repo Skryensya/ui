@@ -17,7 +17,7 @@
     "zod": "^4.4.3",
     "@skryensya/reference-model": "workspace:*",
     "postgres": "^3.4.9",
-    "sharp": "^0.35.4",
+    "sharp": "^0.35.5",
     "@skryensya/reference-classifier": "workspace:*",
     "@skryensya/reference-publisher": "workspace:*"
   },
