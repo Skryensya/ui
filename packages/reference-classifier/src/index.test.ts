@@ -1,5 +1,5 @@
 import { expect, it } from "vitest";
-import { createClassifier, jevBoundary, type ChoiceBoundary } from "./index.js";
+import { classificationState, createClassifier, jevBoundary, STATE_BUDGET, type ChoiceBoundary } from "./index.js";
 import {
   captureFixture,
   ingestFixture,
@@ -92,4 +92,33 @@ it("reports what Jev rejected, not only the status", async () => {
   await expect(boundary.choose({}, "Which?", { a: "a" })).rejects.toThrow(
     'Jev failed: 400 {"error":"unknown model jev-unknown"}',
   );
+});
+
+type Node = ReturnType<typeof captureFixture>["raw"]["root"];
+const node = (tag: string, children: Node[] = [], text = ""): Node => ({
+  tag,
+  attributes: { "aria-label": "x".repeat(4000), href: "https://example.com/" + "p".repeat(4000) },
+  text,
+  styles: { display: "flex", gap: "12.5px", color: "rgb(0, 0, 0)" },
+  rect: { x: 10.123456, y: 20.987654, width: 300.5, height: 40.25 },
+  children,
+});
+it("keeps a huge page under Jev's budget and outlines every section before any one's depth", () => {
+  const deep = (depth: number): Node => node("div", depth ? [deep(depth - 1), deep(depth - 1)] : [], "t".repeat(2000));
+  const sections = Array.from({ length: 8 }, (_, i) => node("section", [deep(10)], `Section ${i}`));
+  const raw = { ...captureFixture().raw, mode: "page" as const, root: node("body", sections) };
+  const state = classificationState(ingestFixture(), raw);
+  expect(JSON.stringify(state).length).toBeLessThanOrEqual(STATE_BUDGET);
+  expect(state.evidenceTruncated).toBe(true);
+  expect(state.nodes.filter((n) => n.tag === "section")).toHaveLength(8);
+  const first = state.nodes[1];
+  expect(first.attributes?.["aria-label"].length).toBeLessThanOrEqual(80);
+  expect(first.attributes).not.toHaveProperty("href");
+  expect(first.layout).toEqual({ display: "flex", gap: "12.5px" });
+  expect(first.rect).toEqual([10, 21, 301, 40]);
+});
+it("sends the whole capture when it fits", () => {
+  const state = classificationState(ingestFixture(), captureFixture().raw);
+  expect(state.nodes).toHaveLength(1);
+  expect(state.evidenceTruncated).toBe(false);
 });

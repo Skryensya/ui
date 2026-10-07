@@ -69,6 +69,83 @@ export function jevBoundary(
     },
   };
 }
+/*
+ * WHAT JEV SEES. Jev 1.13 reads at most 64k tokens per request, and TypeSafe's guidance is that
+ * accuracy falls as the state fills with detail unrelated to the decision. So the state is a compact
+ * outline under a fixed character budget, not the capture: breadth first, so a full page shows all of
+ * its sections before any one section's depth; only the attributes and layout styles that say what a
+ * node is; integer geometry. The complete capture stays in asset storage for human inspection.
+ * Jev counts about a token per character of JSON (a ~250-character request is billed 328 tokens in
+ * TypeSafe's own example, and an ~80k-character state was refused), so 32k characters leaves room
+ * for each question's criteria inside the 64k window.
+ */
+export const STATE_BUDGET = 32_000;
+const ATTRIBUTES = ["aria-label", "type", "alt", "title", "placeholder", "heading-level"];
+const STYLES: Record<string, string[]> = {
+  display: ["block", "inline"],
+  "flex-direction": ["row"],
+  "grid-template-columns": ["none"],
+  gap: ["normal", "0px"],
+  padding: ["0px"],
+  "border-radius": ["0px"],
+};
+const clip = (value: string, max: number) => {
+  const text = value.replace(/\s+/g, " ").trim();
+  return text.length > max ? `${text.slice(0, max - 1)}…` : text;
+};
+type StateNode = {
+  parent: number | null;
+  tag: string;
+  role?: string;
+  text?: string;
+  attributes?: Record<string, string>;
+  layout?: Record<string, string>;
+  rect: [number, number, number, number];
+};
+function stateNode(node: RawCapture["root"], parent: number | null): StateNode {
+  const attributes = Object.fromEntries(
+    ATTRIBUTES.filter((k) => node.attributes[k]).map((k) => [k, clip(node.attributes[k], 80)]),
+  );
+  const layout = Object.fromEntries(
+    Object.entries(STYLES)
+      .map(([k, defaults]) => [k, node.styles[k] ?? "", defaults] as const)
+      .filter(([, v, defaults]) => v && !defaults.includes(v))
+      .map(([k, v]) => [k, clip(v, 80)]),
+  );
+  const text = clip(node.text, 160);
+  return {
+    parent,
+    tag: node.tag,
+    ...(node.role ? { role: node.role } : {}),
+    ...(text ? { text } : {}),
+    ...(Object.keys(attributes).length ? { attributes } : {}),
+    ...(Object.keys(layout).length ? { layout } : {}),
+    rect: [node.rect.x, node.rect.y, node.rect.width, node.rect.height].map(Math.round) as StateNode["rect"],
+  };
+}
+export function classificationState(ingest: ReferenceIngest, raw: RawCapture) {
+  const head = {
+    source: { hostname: ingest.source.hostname, title: clip(ingest.source.title ?? "", 200) },
+    pageTitle: clip(raw.pageTitle ?? "", 200),
+    mode: raw.mode,
+    viewport: { width: raw.viewport.width, height: raw.viewport.height },
+    bounds: Object.fromEntries(Object.entries(raw.bounds).map(([k, v]) => [k, Math.round(v)])),
+  };
+  const nodes: StateNode[] = [];
+  let size = JSON.stringify(head).length + 64;
+  const queue: { node: RawCapture["root"]; parent: number | null }[] = [{ node: raw.root, parent: null }];
+  let next = 0;
+  for (; next < queue.length; next++) {
+    const { node, parent } = queue[next];
+    const entry = stateNode(node, parent);
+    const cost = JSON.stringify(entry).length + 1;
+    if (size + cost > STATE_BUDGET) break;
+    size += cost;
+    const index = nodes.push(entry) - 1;
+    for (const child of node.children) queue.push({ node: child, parent: index });
+  }
+  return { ...head, nodes, evidenceTruncated: raw.truncated || next < queue.length };
+}
 export interface ReferenceClassifier {
   classify(
     ingest: ReferenceIngest,
@@ -80,52 +157,7 @@ export function createClassifier(
 ): ReferenceClassifier {
   return {
     async classify(ingest, raw) {
-      // Classification sees bounded semantic evidence, not an unbounded page/style dump.
-      // The complete original capture remains in asset storage for human inspection.
-      const nodes: unknown[] = [];
-      let textBudget = 12_000;
-      function collect(node: RawCapture["root"], parent: number | null) {
-        if (nodes.length >= 300) return;
-        const index = nodes.length;
-        const text = node.text.slice(0, Math.min(400, textBudget));
-        textBudget -= text.length;
-        nodes.push({
-          parent,
-          tag: node.tag,
-          role: node.role,
-          text,
-          attributes: Object.fromEntries(
-            Object.entries(node.attributes)
-              .slice(0, 20)
-              .map(([k, v]) => [k, v.slice(0, 200)]),
-          ),
-          styles: Object.fromEntries(
-            [
-              "display",
-              "flex-direction",
-              "grid-template-columns",
-              "gap",
-              "padding",
-              "border-radius",
-            ].map((k) => [k, node.styles[k]]),
-          ),
-          rect: node.rect,
-        });
-        for (const child of node.children) {
-          if (nodes.length >= 300) break;
-          collect(child, index);
-        }
-      }
-      collect(raw.root, null);
-      const state = {
-        source: ingest.source,
-        pageTitle: raw.pageTitle,
-        mode: raw.mode,
-        viewport: raw.viewport,
-        bounds: raw.bounds,
-        nodes,
-        evidenceTruncated: raw.truncated || nodes.length >= 300,
-      };
+      const state = classificationState(ingest, raw);
       const choose = async (
         question: string,
         criteria: Record<string, unknown>,
