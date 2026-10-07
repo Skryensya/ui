@@ -148,7 +148,7 @@ it("rejects explicitly and renders exact publication preview files before any pu
   render(<Workbench client={client as ReferenceClient} id={i.id} />);
   await screen.findByText("Closed catalogue vocabulary");
   fireEvent.click(screen.getByRole("tab", { name: "Publication" }));
-  fireEvent.change(screen.getByLabelText("Publication mode"), {
+  fireEvent.change(await screen.findByLabelText("Publication mode"), {
     target: { value: "fixed" },
   });
   fireEvent.change(screen.getByLabelText("Title (Spanish)"), {

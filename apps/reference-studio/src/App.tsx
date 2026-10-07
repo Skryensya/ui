@@ -1,6 +1,15 @@
 import { useEffect, useMemo, useState, type FormEvent } from "react";
 import { Button } from "@skryensya/react/button";
 import { Badge } from "@skryensya/react/badge";
+import { Callout } from "@skryensya/react/callout";
+import { EmptyState } from "@skryensya/react/empty-state";
+import { FormField } from "@skryensya/react/form-field";
+import { Input } from "@skryensya/react/input";
+import { NativeSelect } from "@skryensya/react/select-native";
+import { Checkbox } from "@skryensya/react/selection";
+import { NavList, NavListGroup, NavListLink } from "@skryensya/react/nav-list";
+import { Heading, Text } from "@skryensya/react/typography";
+import { Inline, Stack } from "@skryensya/react/layout";
 import {
   subjects,
   SCALES,
@@ -17,6 +26,8 @@ import {
 } from "./client";
 import { Workbench } from "./Workbench";
 import { Screenshot } from "./Screenshot";
+import { ThemeToggle } from "./theme";
+import { toneOf } from "./status";
 function ConnectionForm({ connect }: { connect: (c: Connection) => void }) {
   function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -27,31 +38,59 @@ function ConnectionForm({ connect }: { connect: (c: Connection) => void }) {
     });
   }
   return (
-    <main className="connection">
-      <h1>Reference Studio</h1>
-      <p>Capture evidence. Curate references. Publish through review.</p>
-      <form onSubmit={submit}>
-        <label>
-          Server
-          <input
-            name="server"
-            type="url"
-            defaultValue={
-              sessionStorage.getItem("referenceServer") ??
-              (import.meta.env.VITE_REFERENCE_API_URL ||
-                "http://localhost:4318")
-            }
-            required
-          />
-        </label>
-        <label>
-          Access token
-          <input name="token" type="password" required />
-        </label>
-        <Button type="submit">Connect</Button>
-      </form>
+    <main className="studio-connection">
+      <div className="studio-panel">
+        <Stack gap="lg">
+          <Stack gap="xs">
+            <Heading as="h1" size="h3" flush>
+              Reference Studio
+            </Heading>
+            <Text tone="secondary">
+              Capture evidence. Curate references. Publish through review.
+            </Text>
+          </Stack>
+          <Stack as="form" gap="md" onSubmit={submit}>
+            <FormField label="Server">
+              <Input
+                name="server"
+                type="url"
+                defaultValue={
+                  sessionStorage.getItem("referenceServer") ??
+                  (import.meta.env.VITE_REFERENCE_API_URL ||
+                    "http://localhost:4318")
+                }
+                required
+              />
+            </FormField>
+            <FormField label="Access token">
+              <Input name="token" type="password" required />
+            </FormField>
+            <Inline justify="between" align="center">
+              <ThemeToggle />
+              <Button type="submit" tone="accent">
+                Connect
+              </Button>
+            </Inline>
+          </Stack>
+        </Stack>
+      </div>
     </main>
   );
+}
+const views = ["Inbox", "References", "Accepted", "Published", "Rejected"];
+function useNarrow() {
+  const query = "(max-width: 900px)";
+  const [narrow, setNarrow] = useState(
+    () => typeof matchMedia === "function" && matchMedia(query).matches,
+  );
+  useEffect(() => {
+    if (typeof matchMedia !== "function") return;
+    const media = matchMedia(query);
+    const changed = () => setNarrow(media.matches);
+    media.addEventListener("change", changed);
+    return () => media.removeEventListener("change", changed);
+  }, []);
+  return narrow;
 }
 export function App() {
   const [connection, setConnection] = useState<Connection>(),
@@ -61,7 +100,8 @@ export function App() {
     [rows, setRows] = useState<ReferenceIngest[]>([]),
     [error, setError] = useState(""),
     [compare, setCompare] = useState<string[]>([]),
-    [refresh, setRefresh] = useState(0);
+    [refresh, setRefresh] = useState(0),
+    narrow = useNarrow();
   const client = useMemo(
     () => (connection ? createClient(connection) : undefined),
     [connection],
@@ -111,50 +151,65 @@ export function App() {
     });
   return (
     <>
-      <header>
-        <a href="#">Reference Studio</a>
-        <span>Evidence is not a catalogue entry</span>
+      <header className="studio-header">
+        <a className="studio-brand" href="#">
+          <strong>Reference Studio</strong>
+          <span>Evidence is not a catalogue entry</span>
+        </a>
+        <ThemeToggle />
         <Button variant="ghost" onClick={() => setConnection(undefined)}>
           Disconnect
         </Button>
       </header>
-      <div className="shell">
-        <nav aria-label="Reference views">
-          {["Inbox", "References", "Accepted", "Published", "Rejected"].map(
-            (item) => (
-              <Button
-                key={item}
-                variant={view === item && !id ? "solid" : "ghost"}
-                onClick={() => {
-                  location.hash = "";
-                  setView(item);
-                  setFilter({});
-                  setCompare([]);
-                }}
-              >
-                {item}
-              </Button>
-            ),
-          )}
-        </nav>
-        <main>
+      <div className="studio-shell">
+        <div className="studio-nav">
+          <NavList
+            aria-label="Reference views"
+            orientation={narrow ? "horizontal" : "vertical"}
+          >
+            <NavListGroup>
+              {views.map((item) => (
+                <NavListLink
+                  key={item}
+                  href="#"
+                  current={view === item && !id}
+                  onClick={(event) => {
+                    event.preventDefault();
+                    location.hash = "";
+                    setView(item);
+                    setFilter({});
+                    setCompare([]);
+                  }}
+                >
+                  {item}
+                </NavListLink>
+              ))}
+            </NavListGroup>
+          </NavList>
+        </div>
+        <main className="studio-main">
           {id ? (
             <Workbench key={id} client={client} id={id} />
           ) : (
-            <>
-              <div className="title-row">
-                <h1>{view}</h1>
+            <Stack gap="lg">
+              <Inline justify="between" align="center">
+                <Heading as="h1" size="h3" flush>
+                  {view}
+                </Heading>
                 <Button
                   variant="ghost"
                   onClick={() => setRefresh((n) => n + 1)}
                 >
                   Refresh
                 </Button>
-              </div>
-              <div className="filters" aria-label="Inbox filters">
-                <label>
-                  Status
-                  <select
+              </Inline>
+              <div
+                className="studio-panel studio-filters"
+                role="group"
+                aria-label="Inbox filters"
+              >
+                <FormField label="Status">
+                  <NativeSelect
                     value={filter.status ?? ""}
                     onChange={(e) => set("status", e.target.value)}
                   >
@@ -162,11 +217,10 @@ export function App() {
                     {statuses.map((s) => (
                       <option key={s}>{s}</option>
                     ))}
-                  </select>
-                </label>
-                <label>
-                  Subject
-                  <select
+                  </NativeSelect>
+                </FormField>
+                <FormField label="Subject">
+                  <NativeSelect
                     value={filter.subject ?? ""}
                     onChange={(e) => set("subject", e.target.value)}
                   >
@@ -174,11 +228,10 @@ export function App() {
                     {subjects.map((s) => (
                       <option key={s.id}>{s.id}</option>
                     ))}
-                  </select>
-                </label>
-                <label>
-                  Scale
-                  <select
+                  </NativeSelect>
+                </FormField>
+                <FormField label="Scale">
+                  <NativeSelect
                     value={filter.scale ?? ""}
                     onChange={(e) => set("scale", e.target.value)}
                   >
@@ -186,48 +239,43 @@ export function App() {
                     {SCALES.map((s) => (
                       <option key={s}>{s}</option>
                     ))}
-                  </select>
-                </label>
-                <label>
-                  Intent
-                  <input
+                  </NativeSelect>
+                </FormField>
+                <FormField label="Intent">
+                  <Input
                     list="intent-options"
                     value={filter.intent ?? ""}
                     onChange={(e) => set("intent", e.target.value)}
                     placeholder="domain/area/intent"
                   />
-                </label>
+                </FormField>
                 <datalist id="intent-options">
                   {intents.map((i) => (
                     <option key={i.id} value={i.id} />
                   ))}
                 </datalist>
-                <label>
-                  Source host
-                  <input
+                <FormField label="Source host">
+                  <Input
                     value={filter.host ?? ""}
                     onChange={(e) => set("host", e.target.value)}
                   />
-                </label>
-                <label>
-                  From
-                  <input
+                </FormField>
+                <FormField label="From">
+                  <Input
                     type="date"
                     value={filter.from?.slice(0, 10) ?? ""}
                     onChange={(e) => set("from", e.target.value)}
                   />
-                </label>
-                <label>
-                  To
-                  <input
+                </FormField>
+                <FormField label="To">
+                  <Input
                     type="date"
                     value={filter.to?.slice(0, 10) ?? ""}
                     onChange={(e) => set("to", e.target.value)}
                   />
-                </label>
-                <label>
-                  Minimum confidence
-                  <input
+                </FormField>
+                <FormField label="Minimum confidence">
+                  <Input
                     type="number"
                     min="0"
                     max="1"
@@ -235,87 +283,117 @@ export function App() {
                     value={filter.minConfidence ?? ""}
                     onChange={(e) => set("minConfidence", e.target.value)}
                   />
-                </label>
-                <label>
-                  Publication
-                  <select
+                </FormField>
+                <FormField label="Publication">
+                  <NativeSelect
                     value={filter.published ?? ""}
                     onChange={(e) => set("published", e.target.value)}
                   >
                     <option value="">All</option>
                     <option value="true">Published</option>
                     <option value="false">Unpublished</option>
-                  </select>
-                </label>
+                  </NativeSelect>
+                </FormField>
               </div>
-              {error && <p role="alert">{error}</p>}
+              {error && (
+                <Callout tone="danger" title="Could not load references">
+                  {error}
+                </Callout>
+              )}
               {compare.length > 0 && (
                 <section
-                  className="comparison"
+                  className="studio-panel"
                   aria-label="Reference comparison"
                 >
-                  {compare.map((id) => (
-                    <article key={id}>
-                      <a href={`#/ingests/${id}`}>Open reference</a>
-                      <Screenshot client={client} id={id} />
-                    </article>
-                  ))}
-                  <Button variant="ghost" onClick={() => setCompare([])}>
-                    Clear comparison
-                  </Button>
+                  <Stack gap="md">
+                    <Inline justify="between" align="center">
+                      <Heading as="h2" size="h4" flush>
+                        Comparison
+                      </Heading>
+                      <Button variant="ghost" onClick={() => setCompare([])}>
+                        Clear comparison
+                      </Button>
+                    </Inline>
+                    <div className="studio-comparison">
+                      {compare.map((id) => (
+                        <Stack gap="xs" key={id}>
+                          <Screenshot client={client} id={id} />
+                          <a href={`#/ingests/${id}`}>Open reference</a>
+                        </Stack>
+                      ))}
+                    </div>
+                  </Stack>
                 </section>
               )}
-              <section className="inbox" aria-label="Reference ingests">
-                {rows.map((i) => (
-                  <article key={i.id}>
-                    <a
-                      href={`#/ingests/${i.id}`}
-                      aria-label={i.source.title || i.source.hostname}
+              {rows.length > 0 && (
+                <section
+                  className="studio-cards"
+                  aria-label="Reference ingests"
+                >
+                  {rows.map((i) => (
+                    <article
+                      className="studio-card"
+                      key={i.id}
+                      data-selected={compare.includes(i.id) ? "" : undefined}
                     >
-                      <div className="thumbnail">
-                        <Screenshot client={client} id={i.id} thumbnail />
+                      <Screenshot client={client} id={i.id} thumbnail />
+                      <h2 className="studio-card__title">
+                        <a href={`#/ingests/${i.id}`}>
+                          {i.source.title || i.source.hostname}
+                        </a>
+                      </h2>
+                      <p className="studio-meta">
+                        {i.source.hostname} ·{" "}
+                        <time dateTime={i.capture.capturedAt}>
+                          {new Date(i.capture.capturedAt).toLocaleString(
+                            undefined,
+                            {
+                              dateStyle: "medium",
+                              timeStyle: "short",
+                            },
+                          )}
+                        </time>
+                      </p>
+                      <p className="studio-meta">
+                        {[
+                          i.classification?.subject?.value,
+                          i.classification?.scale?.value,
+                          i.classification?.intent?.value,
+                        ]
+                          .filter(Boolean)
+                          .join(" · ") || "Unclassified"}
+                      </p>
+                      <div className="studio-card__footer">
+                        <Badge tone={toneOf(i.status)}>{i.status}</Badge>
+                        <Checkbox
+                          checked={compare.includes(i.id)}
+                          disabled={
+                            !compare.includes(i.id) && compare.length >= 3
+                          }
+                          onCheckedChange={({ checked }) =>
+                            setCompare((ids) =>
+                              checked === true
+                                ? [...ids, i.id]
+                                : ids.filter((id) => id !== i.id),
+                            )
+                          }
+                        >
+                          Compare
+                        </Checkbox>
                       </div>
-                      <h2>{i.source.title || i.source.hostname}</h2>
-                    </a>
-                    <p>{i.source.hostname}</p>
-                    <Badge>{i.status}</Badge>
-                    <p>
-                      {[
-                        i.classification?.subject?.value,
-                        i.classification?.scale?.value,
-                        i.classification?.intent?.value,
-                      ]
-                        .filter(Boolean)
-                        .join(" · ") || "Unclassified"}
-                    </p>
-                    <time dateTime={i.capture.capturedAt}>
-                      {new Date(i.capture.capturedAt).toLocaleString()}
-                    </time>
-                    <label className="check">
-                      <input
-                        type="checkbox"
-                        checked={compare.includes(i.id)}
-                        disabled={
-                          !compare.includes(i.id) && compare.length >= 3
-                        }
-                        onChange={(e) =>
-                          setCompare((ids) =>
-                            e.target.checked
-                              ? [...ids, i.id]
-                              : ids.filter((id) => id !== i.id),
-                          )
-                        }
-                      />
-                      Compare
-                    </label>
-                  </article>
-                ))}
-              </section>
-              {!rows.length && !error && (
-                <p>No references match these filters.</p>
+                    </article>
+                  ))}
+                </section>
               )}
-              <div className="actions">
+              {!rows.length && !error && (
+                <EmptyState
+                  title="No references match these filters."
+                  description="Clip a page with the Reference Clipper, or loosen the filters."
+                />
+              )}
+              <Inline justify="end">
                 <Button
+                  variant="ghost"
                   disabled={!filter.offset}
                   onClick={() =>
                     setFilter((f) => ({
@@ -327,6 +405,7 @@ export function App() {
                   Previous
                 </Button>
                 <Button
+                  variant="ghost"
                   disabled={rows.length < 100}
                   onClick={() =>
                     setFilter((f) => ({ ...f, offset: (f.offset ?? 0) + 100 }))
@@ -334,8 +413,8 @@ export function App() {
                 >
                   Next
                 </Button>
-              </div>
-            </>
+              </Inline>
+            </Stack>
           )}
         </main>
       </div>

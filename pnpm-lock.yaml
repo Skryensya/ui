@@ -267,6 +267,9 @@ importers:
       '@skryensya/core':
         specifier: workspace:*
         version: link:../../packages/core
+      '@skryensya/icons-lucide':
+        specifier: workspace:*
+        version: link:../../packages/icons-lucide
       '@skryensya/react':
         specifier: workspace:*
         version: link:../../packages/react

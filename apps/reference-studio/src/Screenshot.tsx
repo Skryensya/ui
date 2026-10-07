@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Loader } from "@skryensya/react/loader";
 import type { ReferenceClient } from "./client";
 export function Screenshot({
   client,
@@ -31,9 +32,15 @@ export function Screenshot({
       if (objectUrl) URL.revokeObjectURL(objectUrl);
     };
   }, [client, id, thumbnail]);
-  return src ? (
-    <img src={src} alt="Captured UI reference" loading="lazy" />
-  ) : (
-    <p>{error ? "Screenshot unavailable" : "Loading screenshot…"}</p>
+  return (
+    <div className={thumbnail ? "studio-thumbnail" : "studio-shot"}>
+      {src ? (
+        <img src={src} alt="Captured UI reference" loading="lazy" />
+      ) : error ? (
+        <span>Screenshot unavailable</span>
+      ) : (
+        <Loader label={thumbnail ? undefined : "Loading screenshot"} />
+      )}
+    </div>
   );
 }

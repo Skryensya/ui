@@ -13,6 +13,7 @@
     "@skryensya/reference-model": "workspace:*",
     "@skryensya/react": "workspace:*",
     "@skryensya/core": "workspace:*",
+    "@skryensya/icons-lucide": "workspace:*",
     "react": "^19.2.7",
     "react-dom": "^19.2.7"
   },
