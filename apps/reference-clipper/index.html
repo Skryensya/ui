@@ -6,35 +6,245 @@
     <title>Reference Clipper</title>
   </head>
   <body>
-    <main>
-      <h1>Reference Clipper</h1>
-      <p>Capture evidence. Review and publish separately in Studio.</p>
-      <form id="capture">
-        <label
-          >Capture
-          <select name="mode">
-            <option value="page">Complete page</option>
-            <option value="region">Selected region</option>
-            <option value="element">DOM element</option>
-          </select></label
-        ><label>Title (optional)<input name="title" maxlength="500" /></label
-        ><label
-          >Notes<textarea name="notes" maxlength="10000"></textarea>
-        </label>
-        <details>
-          <summary>Connection</summary>
-          <label
-            >Reference Server<input name="server" type="url" required /></label
-          ><label
-            >Reference Studio<input name="studio" type="url" required /></label
-          ><label
-            >Access token<input name="token" type="password" required
-          /></label>
-          <p>Configure this extension’s origin in the server allowlist.</p>
-        </details>
-        <button type="submit">Capture</button>
+    <main class="clipper">
+      <form id="capture" hidden>
+        <section
+          class="sk-stack"
+          data-gap="md"
+          id="capture-view"
+          aria-labelledby="capture-title"
+        >
+          <div
+            class="sk-inline"
+            data-gap="md"
+            data-align="center"
+            data-justify="between"
+            data-wrap="false"
+            data-block-start="none"
+          >
+            <h1 class="sk-heading" data-size="h4" data-flush id="capture-title">
+              Reference Clipper
+            </h1>
+            <button
+              class="sk-button sk-interactive"
+              data-sk-button
+              data-variant="ghost"
+              data-tone="neutral"
+              data-appearance="plain"
+              data-size="sm"
+              type="button"
+              data-icon-only
+              aria-label="Connection settings"
+              id="open-settings"
+            >
+              <span data-sk-icon="settings" data-sk-icon-size="md"></span>
+            </button>
+          </div>
+          <p
+            class="sk-text"
+            data-tone="secondary"
+            data-size="sm"
+            data-weight="body"
+            id="connection-summary"
+          >
+            Not connected
+          </p>
+          <div class="sk-stack" data-gap="md">
+            <div
+              class="sk-segmented"
+              data-sk-segmented
+              data-value="page"
+              aria-label="Capture"
+              data-appearance="plain"
+              data-size="md"
+              role="radiogroup"
+              id="mode"
+            >
+              <span class="sk-segmented__indicator" aria-hidden="true"></span>
+              <button
+                class="sk-segmented__option sk-interactive"
+                data-sk-segmented-option
+                aria-checked
+                data-value="page"
+                type="button"
+                role="radio"
+              >
+                Full page
+              </button>
+              <button
+                class="sk-segmented__option sk-interactive"
+                data-sk-segmented-option
+                data-value="selection"
+                type="button"
+                role="radio"
+              >
+                Selection
+              </button>
+            </div>
+            <button
+              class="sk-button sk-interactive"
+              data-sk-button
+              data-variant="solid"
+              data-tone="accent"
+              data-appearance="plain"
+              data-size="md"
+              type="submit"
+              id="capture-button"
+            >
+              Capture full page
+            </button>
+          </div>
+        </section>
       </form>
-      <p id="status" role="status"></p>
+
+      <form id="settings" hidden>
+        <section
+          class="sk-stack"
+          data-gap="md"
+          id="settings-view"
+          aria-labelledby="settings-title"
+        >
+          <div
+            class="sk-inline"
+            data-gap="xs"
+            data-align="center"
+            data-justify="start"
+            data-wrap="false"
+            data-block-start="none"
+          >
+            <button
+              class="sk-button sk-interactive"
+              data-sk-button
+              data-variant="ghost"
+              data-tone="neutral"
+              data-appearance="plain"
+              data-size="sm"
+              type="button"
+              data-icon-only
+              aria-label="Back to capture"
+              id="close-settings"
+            >
+              <span data-sk-icon="arrow-left" data-sk-icon-size="md"></span>
+            </button>
+            <h1 class="sk-heading" data-size="h4" data-flush id="settings-title">
+              Connection
+            </h1>
+          </div>
+          <p
+            class="sk-text"
+            data-tone="secondary"
+            data-size="sm"
+            data-weight="body"
+          >
+            Saved in this browser and used for every capture.
+          </p>
+          <div class="sk-stack" data-gap="md">
+            <div class="sk-form-field" required>
+              <label class="sk-form-field__label" for="reference-server">
+                Reference Server
+                <span class="sk-form-field__required" aria-hidden="true">*</span>
+              </label>
+              <input
+                class="sk-input"
+                type="url"
+                name="server"
+                placeholder="http://localhost:4318"
+                autocomplete="url"
+                id="reference-server"
+                required
+              />
+            </div>
+            <div class="sk-form-field" required>
+              <label class="sk-form-field__label" for="reference-studio">
+                Reference Studio
+                <span class="sk-form-field__required" aria-hidden="true">*</span>
+              </label>
+              <input
+                class="sk-input"
+                type="url"
+                name="studio"
+                placeholder="http://localhost:5174"
+                autocomplete="url"
+                id="reference-studio"
+                required
+              />
+            </div>
+            <div
+              class="sk-password-input"
+              data-sk-password-input
+              data-ignore-password-managers
+            >
+              <label class="sk-password-input__label" data-sk-password-input-label>
+                Access token
+              </label>
+              <div
+                class="sk-password-input__control"
+                data-sk-password-input-control
+              >
+                <input
+                  class="sk-password-input__input"
+                  data-sk-password-input-input
+                  name="token"
+                  autocomplete="current-password"
+                  required
+                  type="password"
+                  autocapitalize="off"
+                  spellcheck="false"
+                />
+                <button
+                  class="sk-password-input__visibility-trigger sk-button sk-interactive sk-icon-toggle"
+                  data-sk-password-input-trigger
+                  aria-label="Show token"
+                  data-hide-label="Hide token"
+                  type="button"
+                  data-variant="ghost"
+                  data-size="sm"
+                  data-icon-only
+                  data-state="hidden"
+                  aria-expanded="false"
+                >
+                  <span data-face="show" aria-hidden="true">
+                    <span data-sk-icon="visibility" data-sk-icon-size="sm"></span>
+                  </span>
+                  <span data-face="hide" aria-hidden="true">
+                    <span data-sk-icon="visibility-off" data-sk-icon-size="sm"></span>
+                  </span>
+                </button>
+              </div>
+              <span class="sk-password-input__hint">
+                Add this extension's origin to the server allowlist.
+              </span>
+            </div>
+            <button
+              class="sk-button sk-interactive"
+              data-sk-button
+              data-variant="solid"
+              data-tone="accent"
+              data-appearance="plain"
+              data-size="md"
+              type="submit"
+            >
+              Save connection
+            </button>
+          </div>
+        </section>
+      </form>
+
+      <!-- Kept in the DOM so the live region exists before its first message. -->
+      <div
+        class="sk-callout"
+        data-tone="neutral"
+        data-appearance="plain"
+        role="status"
+        aria-live="polite"
+        aria-atomic="true"
+        id="status"
+        hidden
+      >
+        <div class="sk-callout__content">
+          <div class="sk-callout__description" id="status-text"></div>
+        </div>
+      </div>
     </main>
     <script type="module" src="/src/popup.ts"></script>
   </body>

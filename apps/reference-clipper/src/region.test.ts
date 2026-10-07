@@ -19,7 +19,7 @@ it("retains zero-box ancestors of intersecting UI and shields selection from pag
   const pageHandler = vi.fn();
   document.addEventListener("pointerdown", pageHandler, true);
   try {
-    const pending = captureDocument("region");
+    const pending = captureDocument("selection");
     const overlay = document.documentElement.lastElementChild!;
     overlay.dispatchEvent(
       new MouseEvent("pointerdown", {
@@ -35,6 +35,8 @@ it("retains zero-box ancestors of intersecting UI and shields selection from pag
         bubbles: true,
       }),
     );
+    // Nothing is captured until the choice shown on the page is confirmed.
+    document.dispatchEvent(new KeyboardEvent("keydown", { key: "Enter", bubbles: true }));
     const result = await pending;
     expect(result.raw.root.children[0].styles.display).toBe("contents");
     expect(result.raw.root.children[0].children[0].role).toBe("dialog");

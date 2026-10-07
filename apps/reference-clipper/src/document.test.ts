@@ -33,7 +33,7 @@ it("selects one DOM element, removes the overlay and reports document-coordinate
     configurable: true,
     value: () => {},
   });
-  const pending = captureDocument("element");
+  const pending = captureDocument("selection");
   const overlay = document.documentElement.lastElementChild as HTMLElement;
   overlay.dispatchEvent(
     new MouseEvent("pointerdown", { clientX: 40, clientY: 45, bubbles: true }),
@@ -41,13 +41,16 @@ it("selects one DOM element, removes the overlay and reports document-coordinate
   overlay.dispatchEvent(
     new MouseEvent("pointerup", { clientX: 40, clientY: 45, bubbles: true }),
   );
+  expect(overlay.isConnected).toBe(true);
+  document.dispatchEvent(new KeyboardEvent("keydown", { key: "Enter", bubbles: true }));
   const result = await pending;
+  expect(result.raw.mode).toBe("element");
   expect(result.raw.root.tag).toBe("article");
   expect(result.raw.bounds).toEqual({ x: 20, y: 30, width: 120, height: 80 });
   expect(overlay.isConnected).toBe(false);
 });
 it("cancels selection with Escape and never leaves an overlay behind", async () => {
-  const pending = captureDocument("region");
+  const pending = captureDocument("selection");
   const overlay = document.documentElement.lastElementChild!;
   document.dispatchEvent(
     new KeyboardEvent("keydown", { key: "Escape", bubbles: true }),

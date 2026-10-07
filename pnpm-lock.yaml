@@ -236,13 +236,25 @@ importers:
 
   apps/reference-clipper:
     dependencies:
+      '@skryensya/core':
+        specifier: workspace:*
+        version: link:../../packages/core
+      '@skryensya/icons-lucide':
+        specifier: workspace:*
+        version: link:../../packages/icons-lucide
       '@skryensya/reference-model':
         specifier: workspace:*
         version: link:../../packages/reference-model
+      '@skryensya/vanilla':
+        specifier: workspace:*
+        version: link:../../packages/vanilla
       zod:
         specifier: ^4.4.3
         version: 4.4.3
     devDependencies:
+      '@sveltejs/vite-plugin-svelte':
+        specifier: ^7.2.0
+        version: 7.2.0(svelte@5.56.7)(vite@8.1.5(@types/node@24.13.3)(esbuild@0.28.1)(sass@1.101.0)(tsx@4.23.1)(yaml@2.9.0))
       '@types/chrome':
         specifier: ^0.0.287
         version: 0.0.287
@@ -252,6 +264,12 @@ importers:
       jsdom:
         specifier: ^29.1.1
         version: 29.1.1
+      sass:
+        specifier: ^1.83.0
+        version: 1.101.0
+      svelte:
+        specifier: ^5.56.7
+        version: 5.56.7
       typescript:
         specifier: ^5.9.3
         version: 5.9.3

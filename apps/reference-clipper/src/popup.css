@@ -1,39 +1,27 @@
+/* The kit styles every control; this only frames the popup. */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+html {
+  color-scheme: light;
+}
 body {
   width: 340px;
   margin: 0;
-  font: 14px system-ui;
-  color: #18202b;
-  background: #fafafa;
+  background: var(--color-bg-canvas);
+  color: var(--color-text-primary);
+  font-family: var(--font-family-body);
 }
-main {
-  padding: 20px;
-}
-h1 {
-  font-size: 20px;
-}
-label {
+.clipper {
   display: grid;
-  gap: 4px;
-  margin-block: 12px;
+  gap: var(--space-stack-md);
+  padding: var(--space-inset-lg);
 }
-input,
-select,
-textarea,
-button {
-  font: inherit;
-  padding: 8px;
-}
-textarea {
-  min-height: 64px;
-}
-button {
-  width: 100%;
-  cursor: pointer;
+.clipper [hidden] {
+  display: none;
 }
 #status {
   overflow-wrap: anywhere;
-}
-:focus-visible {
-  outline: 2px solid #2563eb;
-  outline-offset: 2px;
 }

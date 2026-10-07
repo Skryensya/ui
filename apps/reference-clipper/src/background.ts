@@ -1,13 +1,12 @@
 import { z } from "zod";
 import { captureDocument } from "./document";
+import { hidePreview, showPreview } from "./preview";
 import { payload, submitCapture } from "./capture";
 const requestSchema = z
   .object({
-    mode: z.enum(["page", "region", "element"]),
+    mode: z.enum(["page", "selection"]),
     tabId: z.number().int(),
     windowId: z.number().int(),
-    title: z.string().max(500).optional(),
-    notes: z.string().max(10000).optional(),
     config: z
       .object({ server: z.url(), studio: z.url(), token: z.string().min(1) })
       .strict(),
@@ -16,12 +15,17 @@ const requestSchema = z
 let busy = false;
 async function capture(request: z.infer<typeof requestSchema>) {
   const target = { tabId: request.tabId };
+  await chrome.scripting.executeScript({ target, func: hidePreview });
   const [result] = await chrome.scripting.executeScript({
     target,
     func: captureDocument,
     args: [request.mode],
   });
   if (!result.result) throw new Error("Could not capture this page");
+  if (request.mode === "selection")
+    void chrome.storage.local.set({
+      captureStatus: "Capturing… Keep this tab active.",
+    });
   const { raw, source, scroll } = result.result;
   const dpr = raw.viewport.deviceScaleFactor ?? 1;
   const b = raw.bounds,
@@ -113,12 +117,7 @@ async function capture(request: z.infer<typeof requestSchema>) {
     binary += String.fromCharCode(...bytes.subarray(i, i + 8192));
   await submitCapture(
     request.config,
-    payload(
-      raw,
-      { ...source, title: request.title || source.title },
-      `data:image/png;base64,${btoa(binary)}`,
-      request.notes,
-    ),
+    payload(raw, source, `data:image/png;base64,${btoa(binary)}`),
   );
 }
 chrome.runtime.onMessage.addListener((message: unknown, sender, respond) => {
@@ -136,7 +135,10 @@ chrome.runtime.onMessage.addListener((message: unknown, sender, respond) => {
   respond({ started: true });
   void chrome.storage.local.set({
     lastError: "",
-    captureStatus: "Capturing… Keep this tab active.",
+    captureStatus:
+      result.data.mode === "selection"
+        ? "Click an element or drag an area on the page, then press Capture."
+        : "Capturing… Keep this tab active.",
   });
   void capture(result.data)
     .then(() =>
@@ -153,4 +155,31 @@ chrome.runtime.onMessage.addListener((message: unknown, sender, respond) => {
     .finally(() => {
       busy = false;
     });
+});
+
+/*
+ * The popup holds a port open while it is showing; each message is the mode it would capture, and
+ * the page previews it. Closing the popup (or starting a capture) takes the preview away.
+ */
+chrome.runtime.onConnect.addListener((port) => {
+  if (port.name !== "preview" || port.sender?.id !== chrome.runtime.id) return;
+  let tabId: number | undefined;
+  const run = (func: () => void, args: unknown[] = []) => {
+    if (tabId === undefined) return;
+    // Pages the extension cannot script (chrome://, the Web Store) simply show no preview.
+    chrome.scripting
+      .executeScript({ target: { tabId }, func, args } as chrome.scripting.ScriptInjection<unknown[], void>)
+      .catch(() => {});
+  };
+  port.onMessage.addListener(
+    (message: { tabId: number; mode: "page" | "selection" | null }) => {
+      tabId = message.tabId;
+      if (busy) return;
+      if (message.mode) run(showPreview as () => void, [message.mode]);
+      else run(hidePreview);
+    },
+  );
+  port.onDisconnect.addListener(() => {
+    if (!busy) run(hidePreview);
+  });
 });
