@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from "vitest";
-import { createAgentService } from "@skryensya/ai-compiler/agent";
+import { createAgentService, type ExampleLibrary } from "@skryensya/ai-compiler/agent";
 import { asCompiledPair } from "@skryensya/ai-compiler/artifact";
 import { createSite, counterIds, fromUsageTree, siteFromTemplate, makerContext, findNode, childrenOf, commitSite, startHistory, undo } from "@skryensya/maker-model";
 import index from "../../../artifacts/ai-index.json" with { type: "json" };
@@ -9,7 +9,16 @@ import { runAgent, type AgentEvent } from "./runtime.js";
 import { createMakerTools } from "./tools.js";
 import type { ProviderAdapter, ProviderReply } from "./providers.js";
 
-const service = createAgentService(asCompiledPair(index, manifest), []);
+/* The agent loop is under test, not example lookup, so the library is empty. */
+const noExamples: ExampleLibrary = {
+  entries: () => [],
+  relations: () => undefined,
+  pattern: () => undefined,
+  content: () => undefined,
+  facets: () => ({ intents: [], subjects: [], scales: [] }),
+  intent: () => undefined,
+};
+const service = createAgentService(asCompiledPair(index, manifest), noExamples);
 const base = createSite("hash", counterIds("site"));
 const root = fromUsageTree({ contract: "layout", signature: "Main", children: [{ contract: "layout", signature: "Stack", children: [
   { contract: "button", signature: "Button.action", children: "One" },
