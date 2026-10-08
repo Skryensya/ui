@@ -958,6 +958,25 @@
     ],
     "badge": [
       {
+        "date": null,
+        "entries": [
+          {
+            "date": "2026-10-07",
+            "en": {
+              "body": "<code>size=\"xs\"</code> drops the vertical padding and tightens the horizontal, at the same type size as <code>sm</code>: it does not make the line it sits on any taller. It is not the default, which stays <code>md</code>; it is for lists read at a glance, like the kinds in a changelog.",
+              "title": "Badge adds size xs, the compact one"
+            },
+            "es": {
+              "body": "<code>size=\"xs\"</code> quita el relleno vertical y aprieta el horizontal, con la misma letra que <code>sm</code>: no hace más alta la línea sobre la que se apoya. No es el defecto, que sigue siendo <code>md</code>; sirve para listas que se leen de un vistazo, como los tipos de un changelog.",
+              "title": "Badge suma size xs, la versión compacta"
+            },
+            "kind": "feature",
+            "target": "size"
+          }
+        ],
+        "version": "0.0.2-dev"
+      },
+      {
         "date": "2026-10-01",
         "entries": [
           {
@@ -2081,6 +2100,19 @@
       {
         "date": null,
         "entries": [
+          {
+            "date": "2026-10-07",
+            "en": {
+              "body": "<code>layout=\"inline\"</code> puts the kind, the target and the headline on one row and leaves the prose under them: a two-line entry instead of three, with the same words in the same order. <code>size</code> now accepts <code>xs</code>, the compact badge. Neither is the default: without them an entry looks the same.",
+              "title": "Entries can be compact, with an inline layout and the xs badge"
+            },
+            "es": {
+              "body": "<code>layout=\"inline\"</code> pone el tipo, el target y el título en una sola fila y deja el texto debajo: una entrada de dos líneas en vez de tres, con las mismas palabras en el mismo orden. <code>size</code> acepta ahora <code>xs</code>, el badge compacto. Ninguno es el defecto: sin ellos la entrada se ve igual.",
+              "title": "Las entradas pueden ser compactas, con layout inline y el badge xs"
+            },
+            "kind": "feature",
+            "target": "layout"
+          },
           {
             "date": "2026-10-06",
             "en": {
@@ -4247,7 +4279,26 @@
         "version": "0.0.1"
       }
     ],
-    "expressive-avatar": [],
+    "expressive-avatar": [
+      {
+        "date": null,
+        "entries": [
+          {
+            "date": "2026-10-07",
+            "en": {
+              "body": "The face is no longer assembled from tiles: each expression is a complete image, and the component only picks which one to show. <code>mode</code>, <code>tileset</code>, <code>expressions</code>, <code>outfit</code>, <code>hat</code>, <code>direction</code>, <code>mouth</code>, <code>blink</code> and <code>wink</code> are removed, along with the bundled tileset and its stylesheet and the Vanilla binding. Pass <code>images</code> (or <code>src</code> for a single image) and ask for the gaze, the blink or the mouth with <code>expression</code>. <code>expressiveAvatarImages(\"/folder\")</code> builds the map from a folder with one image per name. A new expression is one more name with its image.",
+              "title": "ExpressiveAvatar is one whole image per expression; pixel mode is gone"
+            },
+            "es": {
+              "body": "La cara ya no se arma con baldosas: cada expresión es una imagen completa, y el componente solo elige cuál mostrar. Se eliminan <code>mode</code>, <code>tileset</code>, <code>expressions</code>, <code>outfit</code>, <code>hat</code>, <code>direction</code>, <code>mouth</code>, <code>blink</code> y <code>wink</code>, el tileset incluido y su hoja de estilos, y el enlace de Vanilla. Pasa <code>images</code> (o <code>src</code> para una sola imagen) y pide la mirada, el parpadeo o la boca con <code>expression</code>. <code>expressiveAvatarImages(\"/carpeta\")</code> arma el mapa de una carpeta con una imagen por nombre. Una expresión nueva es un nombre más con su imagen.",
+              "title": "ExpressiveAvatar es una imagen entera por expresión; se va el modo píxel"
+            },
+            "kind": "breaking"
+          }
+        ],
+        "version": "0.0.2-dev"
+      }
+    ],
     "fade-edge": [
       {
         "date": "2026-10-01",
@@ -9198,6 +9249,51 @@
           }
         ],
         "version": "0.0.1"
+      }
+    ],
+    "resizable": [
+      {
+        "date": null,
+        "entries": [
+          {
+            "date": "2026-10-07",
+            "en": {
+              "body": "<code>collapsible</code> lets a panel go below its <code>minSize</code> until it closes: past the halfway point it snaps shut, and dragged back out it opens to its floor. <code>collapsedSize</code> leaves a rail instead of zero. The bar stays, more marked, and Home and End beside a collapsible panel close it. It reopens by dragging, a double click or Enter (which reset), Ctrl or Cmd + Enter (which toggles), <code>apiRef</code> in React or the <code>sk:resizablecommand</code> event. A panel closed to zero sets <code>data-collapsed</code> and becomes <code>inert</code>. Without <code>collapsible</code> nothing changes: the floor holds and the panel never disappears.",
+              "title": "A panel can close all the way, with its bar in view to reopen it"
+            },
+            "es": {
+              "body": "<code>collapsible</code> deja que un panel baje de su <code>minSize</code> hasta cerrarse: pasada la mitad salta a cerrado, y al sacarlo de vuelta se abre hasta su piso. <code>collapsedSize</code> deja un riel en vez de cero. La barra se queda, más marcada, y Home y End junto a un panel colapsable lo cierran. Se reabre arrastrando, con doble clic o Enter (que reinician), con Ctrl o Cmd + Enter (que alterna), con <code>apiRef</code> en React o con el evento <code>sk:resizablecommand</code>. Un panel cerrado a cero marca <code>data-collapsed</code> y queda <code>inert</code>. Sin <code>collapsible</code> nada cambia: el piso se mantiene y el panel nunca desaparece.",
+              "title": "Un panel puede cerrarse del todo, con la barra a la vista para reabrirlo"
+            },
+            "kind": "feature",
+            "target": "collapsible"
+          },
+          {
+            "date": "2026-10-07",
+            "en": {
+              "body": "A panel's size is now a percentage of the group under <code>border-box</code>, instead of a flex weight over a zero basis. Before, padding was paid first and the weights split what was left, so a padded panel did not occupy its percentage and a drag trailed the pointer. The bar no longer takes room: it is drawn on the boundary, and the <code>--sk-resizable-gap</code> hook is gone. <code>--sk-resizable-handle-line</code> now defaults to <code>1px</code>.",
+              "title": "Panels measure their exact percentage, padded or not"
+            },
+            "es": {
+              "body": "El tamaño de un panel pasa a ser un porcentaje del grupo con <code>border-box</code>, en vez de un peso de flex sobre base cero. Antes el padding se descontaba primero y los pesos repartían el resto, así que un panel con padding no ocupaba su porcentaje y el arrastre iba por detrás del puntero. La barra ya no ocupa espacio: se dibuja sobre el límite, y el hook <code>--sk-resizable-gap</code> desaparece. <code>--sk-resizable-handle-line</code> ahora vale <code>1px</code> por defecto.",
+              "title": "Los paneles miden su porcentaje exacto, con o sin padding"
+            },
+            "kind": "rework"
+          },
+          {
+            "date": "2026-10-07",
+            "en": {
+              "body": "It joins the catalogue as <code>Resizable</code>, <code>Resizable.Panel</code> and <code>Resizable.Handle</code>: panels that share one box, with a bar between each pair that moves the boundary. Sizes are percentages of the group and always add up to 100; a bar redistributes only the pair it separates, so every other panel stays put. <code>size</code>, <code>minSize</code> and <code>maxSize</code> go on each panel and <code>direction</code> chooses whether they stack or sit side by side. Every bar is a focusable <code>separator</code> (arrows, Shift to jump further, Home/End and Enter to reset) and requires a <code>label</code>. Until now this behaviour only lived inside Sidebar, Treegrid and Table.",
+              "title": "Resizable ships as a component"
+            },
+            "es": {
+              "body": "Entra al catálogo con <code>Resizable</code>, <code>Resizable.Panel</code> y <code>Resizable.Handle</code>: paneles que comparten una caja, con una barra entre cada par que mueve el límite. Los tamaños son porcentajes del grupo y siempre suman 100; una barra redistribuye sólo el par que separa, así que el resto de los paneles no se mueve. <code>size</code>, <code>minSize</code> y <code>maxSize</code> van en cada panel y <code>direction</code> elige si se apilan o van lado a lado. Cada barra es un <code>separator</code> enfocable (flechas, Mayús para saltar más, Inicio/Fin y Enter para restablecer) y exige <code>label</code>. Hasta ahora este comportamiento sólo vivía dentro de Sidebar, Treegrid y Table.",
+              "title": "Resizable se publica como componente"
+            },
+            "kind": "feature"
+          }
+        ],
+        "version": "0.0.2-dev"
       }
     ],
     "segmented": [
@@ -16544,6 +16640,7 @@
           "default": "md",
           "type": "enum",
           "values": [
+            "xs",
             "sm",
             "md"
           ]
@@ -19279,11 +19376,21 @@
             "chore"
           ]
         },
+        "layout": {
+          "attr": "data-layout",
+          "default": "stacked",
+          "type": "enum",
+          "values": [
+            "stacked",
+            "inline"
+          ]
+        },
         "size": {
           "attr": "data-size",
           "default": "md",
           "type": "enum",
           "values": [
+            "xs",
             "sm",
             "md"
           ]
@@ -19396,7 +19503,8 @@
           "options": [
             "kind",
             "size",
-            "gap"
+            "gap",
+            "layout"
           ],
           "parents": [
             "ChangelogRelease"
@@ -19494,7 +19602,8 @@
             "host": true,
             "options": [
               "kind",
-              "gap"
+              "gap",
+              "layout"
             ],
             "part": "entry"
           }
@@ -28274,8 +28383,8 @@
           "part": "root",
           "sheet": "@skryensya/core/components/expressive-avatar.css"
         },
-        "--sk-expressive-avatar-scale": {
-          "default": "tan(atan2(var(--sk-expressive-avatar-size), 160px))",
+        "--sk-expressive-avatar-image-rendering": {
+          "default": "auto",
           "output": false,
           "part": "root",
           "sheet": "@skryensya/core/components/expressive-avatar.css"
@@ -28289,8 +28398,8 @@
       },
       "hooks": [
         "--sk-expressive-avatar-size",
-        "--sk-expressive-avatar-scale",
-        "--sk-expressive-avatar-bg"
+        "--sk-expressive-avatar-bg",
+        "--sk-expressive-avatar-image-rendering"
       ],
       "id": "expressive-avatar",
       "options": {
@@ -28303,70 +28412,33 @@
             "brutalist"
           ]
         },
-        "direction": {
-          "attr": "data-direction",
+        "decoding": {
+          "attr": "decoding",
+          "default": "async",
+          "type": "enum",
+          "values": [
+            "async",
+            "auto",
+            "sync"
+          ]
+        },
+        "expression": {
+          "attr": "data-expression",
           "default": "base",
-          "type": "enum",
-          "values": [
-            "base",
-            "top-left",
-            "top",
-            "top-right",
-            "left",
-            "right",
-            "bottom-left",
-            "bottom",
-            "bottom-right"
-          ]
+          "type": "string"
         },
-        "hat": {
-          "attr": "data-hat",
-          "default": "none",
+        "loading": {
+          "attr": "loading",
+          "default": "lazy",
           "type": "enum",
           "values": [
-            "none",
-            "la-cap",
-            "batman-mask"
-          ]
-        },
-        "mode": {
-          "attr": "data-mode",
-          "default": "pixel",
-          "type": "enum",
-          "values": [
-            "pixel",
-            "image"
-          ]
-        },
-        "mouth": {
-          "attr": "data-mouth",
-          "default": "default",
-          "type": "enum",
-          "values": [
-            "default",
-            "neutral",
-            "closed",
-            "a",
-            "e",
-            "i",
-            "o",
-            "u",
-            "smile"
+            "eager",
+            "lazy"
           ]
         },
         "name": {
           "attr": "aria-label",
           "type": "string"
-        },
-        "outfit": {
-          "attr": "data-outfit",
-          "default": "base",
-          "type": "enum",
-          "values": [
-            "base",
-            "sweater-alt",
-            "batman"
-          ]
         },
         "size": {
           "attr": "data-size",
@@ -28378,15 +28450,17 @@
             "lg",
             "xl"
           ]
+        },
+        "src": {
+          "attr": "src",
+          "type": "string"
         }
       },
       "parts": {
         "bubble": "sk-expressive-avatar__bubble",
-        "grid": "sk-expressive-avatar__grid",
         "host": "sk-expressive-avatar-host",
         "image": "sk-expressive-avatar__image",
-        "root": "sk-expressive-avatar",
-        "tile": "sk-expressive-avatar__tile"
+        "root": "sk-expressive-avatar"
       },
       "semantics": {
         "ExpressiveAvatar": {
@@ -28399,7 +28473,7 @@
           ],
           "useWhen": [
             "a character, assistant or mascot needs to express a visible state",
-            "the same identity has pixel-art parts or a complete image for each expression"
+            "the same identity has a complete image for each expression"
           ]
         }
       },
@@ -28414,27 +28488,42 @@
             "character-portrait"
           ],
           "options": [
-            "mode",
             "name",
             "size",
             "appearance",
-            "direction",
-            "mouth",
-            "outfit",
-            "hat"
+            "expression",
+            "src",
+            "loading",
+            "decoding"
           ],
           "react": {
             "from": "@skryensya/react/expressive-avatar",
             "name": "ExpressiveAvatar"
           },
           "requires": [
-            "name"
+            "name",
+            "src"
           ],
           "slots": {},
           "template": {
             "attrs": {
               "role": "img"
             },
+            "children": [
+              {
+                "attrs": {
+                  "alt": "",
+                  "aria-hidden": "true"
+                },
+                "element": "img",
+                "options": [
+                  "src",
+                  "loading",
+                  "decoding"
+                ],
+                "part": "image"
+              }
+            ],
             "element": "span",
             "host": true,
             "part": "root"
@@ -43830,6 +43919,294 @@
         }
       }
     },
+    "resizable": {
+      "bindings": {
+        "Resizable": {
+          "enhancer": "data-sk-resizable",
+          "markup": true,
+          "portals": false,
+          "react": "@skryensya/react/resizable#Resizable"
+        },
+        "Resizable.Handle": {
+          "enhancer": null,
+          "markup": true,
+          "portals": false,
+          "react": "@skryensya/react/resizable#Resizable.Handle"
+        },
+        "Resizable.Panel": {
+          "enhancer": null,
+          "markup": true,
+          "portals": false,
+          "react": "@skryensya/react/resizable#Resizable.Panel"
+        }
+      },
+      "category": "layout",
+      "css": "@skryensya/core/components/resizable.css",
+      "hookDetails": {
+        "--sk-resizable-handle-active-color": {
+          "default": "var(--color-border-accent)",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/resizable.css"
+        },
+        "--sk-resizable-handle-color": {
+          "default": "var(--color-border-strong)",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/resizable.css"
+        },
+        "--sk-resizable-handle-hit": {
+          "default": "var(--space-inset-md)",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/resizable.css"
+        },
+        "--sk-resizable-handle-line": {
+          "default": "1px",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/resizable.css"
+        },
+        "--sk-resizable-size": {
+          "default": "50",
+          "output": true,
+          "part": "panel",
+          "sheet": "@skryensya/core/components/resizable.css"
+        }
+      },
+      "hooks": [
+        "--sk-resizable-handle-active-color",
+        "--sk-resizable-handle-color",
+        "--sk-resizable-handle-hit",
+        "--sk-resizable-handle-line",
+        "--sk-resizable-size"
+      ],
+      "id": "resizable",
+      "options": {
+        "collapsedSize": {
+          "attr": "data-collapsed-size",
+          "default": 0,
+          "machineInput": true,
+          "max": 100,
+          "min": 0,
+          "type": "number"
+        },
+        "collapsible": {
+          "attr": "data-collapsible",
+          "default": false,
+          "machineInput": true,
+          "trueValue": "",
+          "type": "boolean"
+        },
+        "direction": {
+          "attr": "data-direction",
+          "default": "horizontal",
+          "type": "enum",
+          "values": [
+            "horizontal",
+            "vertical"
+          ]
+        },
+        "label": {
+          "attr": "aria-label",
+          "type": "string"
+        },
+        "maxSize": {
+          "attr": "data-max-size",
+          "default": 100,
+          "machineInput": true,
+          "max": 100,
+          "min": 0,
+          "type": "number"
+        },
+        "minSize": {
+          "attr": "data-min-size",
+          "default": 10,
+          "machineInput": true,
+          "max": 100,
+          "min": 0,
+          "type": "number"
+        },
+        "size": {
+          "attr": "data-size",
+          "machineInput": true,
+          "max": 100,
+          "min": 1,
+          "type": "number"
+        }
+      },
+      "outputHooks": [
+        "--sk-resizable-size"
+      ],
+      "parts": {
+        "handle": "sk-resizable__handle",
+        "panel": "sk-resizable__panel",
+        "root": "sk-resizable"
+      },
+      "semantics": {
+        "Resizable": {
+          "alternatives": [
+            "Sidebar",
+            "Grid",
+            "Inline",
+            "Tabs"
+          ],
+          "avoidWhen": [
+            "it is an application's navigation rail, with its own open and close, rail and remembered width; that is Sidebar, which clamps one value instead of trading between two",
+            "the columns belong to a table; Table and Treegrid already carry their own column resizers",
+            "the regions never change size; a Grid or Inline with fixed measures is simpler and has nothing to drag",
+            "there is only room for one region at a time (a phone); resizing needs space the screen does not have, and Tabs fits better"
+          ],
+          "useWhen": [
+            "two or more regions share one box and the person decides how much room each gets: a list beside its detail, an editor over its output",
+            "the split is a working preference worth keeping, not a fixed layout the page has already decided",
+            "panels are peers: growing one is exactly shrinking its neighbour, and the box is always full",
+            "a keyboard has to be able to move the boundary too: every handle is a focusable separator"
+          ]
+        },
+        "Resizable.Handle": {
+          "alternatives": [
+            "Separator"
+          ],
+          "avoidWhen": [
+            "a static rule is all that is wanted; that is Separator, which divides and does not move",
+            "it has no label: a focusable separator with no name is announced as just 'separator'"
+          ],
+          "useWhen": [
+            "between two panels, so a person can drag or arrow the boundary; one handle per pair"
+          ]
+        },
+        "Resizable.Panel": {
+          "alternatives": [
+            "Box"
+          ],
+          "avoidWhen": [
+            "it holds the handle or any layout of its own; the panel is the box, put the content inside it",
+            "it should be able to reach zero by setting minSize to 0; that leaves no clear way back, use collapsible"
+          ],
+          "useWhen": [
+            "one region of the split; give it a size when the starting proportion matters and leave it out to share equally",
+            "a region that must never vanish or swallow the others: set minSize and maxSize",
+            "a region the person may want out of the way (a file list, an inspector): mark it collapsible, so dragging past its floor closes it and its bar stays to open it again"
+          ]
+        }
+      },
+      "signatures": {
+        "Resizable": {
+          "forward": [
+            "id",
+            "aria-*"
+          ],
+          "host": {
+            "element": "div"
+          },
+          "intent": [
+            "resizable-panels",
+            "split-view",
+            "draggable-divider",
+            "master-detail-split",
+            "adjustable-columns"
+          ],
+          "mount": "data-sk-resizable",
+          "options": [
+            "direction"
+          ],
+          "react": {
+            "from": "@skryensya/react/resizable",
+            "name": "Resizable"
+          },
+          "slots": {
+            "children": {
+              "accepts": "signature",
+              "of": [
+                "Resizable.Panel",
+                "Resizable.Handle"
+              ],
+              "required": true
+            }
+          },
+          "template": {
+            "element": "div",
+            "host": true,
+            "part": "root",
+            "slot": "children"
+          }
+        },
+        "Resizable.Handle": {
+          "forward": [
+            "id"
+          ],
+          "host": {
+            "element": "div"
+          },
+          "intent": [
+            "resize-bar",
+            "panel-divider"
+          ],
+          "options": [
+            "label"
+          ],
+          "parents": [
+            "Resizable"
+          ],
+          "react": {
+            "from": "@skryensya/react/resizable",
+            "name": "Resizable.Handle"
+          },
+          "requires": [
+            "label"
+          ],
+          "slots": {},
+          "template": {
+            "attrs": {
+              "role": "separator",
+              "tabindex": "0"
+            },
+            "element": "div",
+            "host": true,
+            "part": "handle"
+          }
+        },
+        "Resizable.Panel": {
+          "forward": [
+            "id",
+            "aria-*"
+          ],
+          "host": {
+            "element": "div"
+          },
+          "intent": [
+            "resizable-pane",
+            "split-view-side"
+          ],
+          "options": [
+            "size",
+            "minSize",
+            "maxSize",
+            "collapsible",
+            "collapsedSize"
+          ],
+          "parents": [
+            "Resizable"
+          ],
+          "react": {
+            "from": "@skryensya/react/resizable",
+            "name": "Resizable.Panel"
+          },
+          "slots": {
+            "children": {
+              "accepts": "node"
+            }
+          },
+          "template": {
+            "element": "div",
+            "host": true,
+            "part": "panel",
+            "slot": "children"
+          }
+        }
+      }
+    },
     "segmented": {
       "bindings": {
         "Segmented": {
@@ -57213,7 +57590,7 @@
     "working": "0.0.2"
   },
   "schemaVersion": "2.3",
-  "sourceHash": "3da9d22e56fc7d25",
+  "sourceHash": "85cdaaa164520b88",
   "vocabulary": {
     "a11y": "When `when` holds, one of `requiresOneOf` must be given: an option, a raw attribute, a filled slot, or a child signature by name.",
     "atLeastOneOf": "At least one member of each group counts: a filled slot, a boolean option set to true, or an option other than its default.",
